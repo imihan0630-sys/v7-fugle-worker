@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "D16_STRATEGY_STAGE_DEPENDENCY_MATRIX_V0_1",
+  "updatedAt": "2026-10-02 Asia/Taipei",
+  "status": "RESEARCH_ONLY_NO_RUNTIME_IMPACT",
+  "ownerRoom": "11｜統計驗證與策略市場狀態研究室",
+  "formalCoreImpact": "NONE",
+  "purpose": "Freeze currently evidenced strategy/evidence/source dependency relationships while preserving unresolved stage mappings as UNKNOWN.",
+  "stageVocabulary": [
+    "SOURCE_READY",
+    "STRATEGY_VALIDITY_READY",
+    "ENTRY_READINESS_READY",
+    "SHARED_SELECTION_READY",
+    "EXECUTION_READY"
+  ],
+  "strategies": [
+    {
+      "strategyId": "SHORT_MOMENTUM",
+      "strategyVersion": "V0.1-CONTRACT",
+      "limitedShadowSpecId": "S2-SM-LS-001",
+      "ownerApprovedCoreLogic": true,
+      "requiredFamiliesForNonIncomplete": [
+        "TECHNICAL_STRUCTURE",
+        "PRICE_VOLUME",
+        "RISK_FRICTION"
+      ],
+      "explicitlyAllowedUnknownContext": [
+        "TPEX_SMALL_CAP_REGIME",
+        "PROSPECTIVE_BREADTH",
+        "SECTOR_ROTATION",
+        "SAME_SLOT_RVOL",
+        "CUMULATIVE_VOLUME_PACE",
+        "ADVANCED_PATTERN_LIFECYCLE",
+        "GLOBAL_MACRO"
+      ],
+      "sourceMappings": [
+        {
+          "evidenceFamily": "TECHNICAL_STRUCTURE",
+          "sourceOrDerivedContracts": [
+            "A1_TW_DAILY_OHLCV_DERIVED"
+          ],
+          "readinessState": "MAPPED_WITH_CONTINUITY_GUARDS",
+          "stageRole": "UNRESOLVED_STAGE_ROLE",
+          "note": "Daily trend/levels/extension are A1-derived; shared technical continuity requirements remain separate."
+        },
+        {
+          "evidenceFamily": "PRICE_VOLUME",
+          "sourceOrDerivedContracts": [
+            "A1_TW_DAILY_OHLCV_DERIVED"
+          ],
+          "readinessState": "MAPPED",
+          "stageRole": "UNRESOLVED_STAGE_ROLE",
+          "note": "Current relative-volume/response/pullback-breakout context is A1-derived."
+        },
+        {
+          "evidenceFamily": "RISK_FRICTION",
+          "sourceOrDerivedContracts": [
+            "A1_TW_DAILY_OHLCV_DERIVED",
+            "EXECUTION_SEMANTICS_UNKNOWN_EXACT_CONTRACT"
+          ],
+          "readinessState": "PARTIAL_MAPPING",
+          "stageRole": "UNRESOLVED_STAGE_ROLE",
+          "note": "Liquidity/extension/reward-risk are partly A1-derived; exact stage-level execution dependency graph is not frozen."
+        }
+      ],
+      "notRequiredByFrozenNonIncompleteContract": [
+        "A5_QUARTERLY_FINANCIALS",
+        "B2_INDUSTRY_THESIS_PROSPECTIVE_AS_GLOBAL_REQUIRED_GATE"
+      ],
+      "inference": {
+        "globalClockOverConstraintEvidence": "CONFIRMED_AT_CONTRACT_LEVEL",
+        "earlierActionSafety": "UNPROVEN",
+        "reason": "The global clock requires A5/B2 while the frozen Limited Shadow non-INCOMPLETE requirement does not; downstream shared-stage dependencies are not yet fully mapped."
+      }
+    },
+    {
+      "strategyId": "SWING_GROWTH",
+      "strategyVersion": "V0.1-CONTRACT",
+      "limitedShadowSpecId": "S2-SG-LS-001",
+      "ownerApprovedCoreLogic": true,
+      "requiredFamiliesForNonIncomplete": [
+        "FUNDAMENTAL_QUALITY",
+        "INDUSTRY_THESIS"
+      ],
+      "sourceMappings": [
+        {
+          "evidenceFamily": "FUNDAMENTAL_QUALITY",
+          "sourceOrDerivedContracts": [
+            "A5_QUARTERLY_FINANCIALS"
+          ],
+          "readinessState": "PARTIAL_FAMILY_MAPPING",
+          "stageRole": "STRATEGY_VALIDITY_CANDIDATE",
+          "note": "A5 supports quarterly financial quality but may not exhaust every future FUNDAMENTAL_QUALITY field."
+        },
+        {
+          "evidenceFamily": "INDUSTRY_THESIS",
+          "sourceOrDerivedContracts": [
+            "B2_INDUSTRY_THESIS_PROSPECTIVE"
+          ],
+          "readinessState": "SEMANTIC_GAP",
+          "stageRole": "STRATEGY_VALIDITY_CANDIDATE",
+          "note": "Current B2 observer is descriptive breadth/participation and explicitly does not itself assign an industry thesis direction or strategy score."
+        },
+        {
+          "evidenceFamily": "TECHNICAL_TIMING",
+          "sourceOrDerivedContracts": [
+            "A1_TW_DAILY_OHLCV_DERIVED"
+          ],
+          "readinessState": "ENTRY_ROLE_PLAUSIBLE_BUT_NOT_FROZEN",
+          "stageRole": "ENTRY_READINESS_CANDIDATE",
+          "note": "Strategy Contract separates thesis validity from entry timing; exact Swing Growth entry timing dependency remains to be frozen."
+        }
+      ],
+      "inference": {
+        "b2ReadyEqualsIndustryThesisReady": false,
+        "strategyValidityReady": "UNPROVEN",
+        "entryReadinessReady": "UNPROVEN"
+      }
+    }
+  ],
+  "globalDecisionClockCurrentRequiredSet": {
+    "sameSessionCandidate": [
+      "A1_TWSE_DAILY_CLOSE",
+      "A1_TPEX_DAILY_CLOSE",
+      "B2_INDUSTRY_THESIS_PROSPECTIVE"
+    ],
+    "periodicBoundary": [
+      "A5_QUARTERLY_FINANCIALS_READY_BY_CANDIDATE"
+    ],
+    "stageAuthorizedByCurrentName": "AMBIGUOUS_GLOBAL_DECISION_READY"
+  },
+  "requiredNextFieldsBeforeTimingComparison": [
+    "exactStageRolePerRequiredFamily",
+    "derivedFieldFinalityPerA1Family",
+    "sharedSelectionDependencies",
+    "executionDependencies",
+    "unknownBehaviorPerDependency",
+    "firstReadyTimestampPerStage",
+    "dependencyVersion"
+  ],
+  "falsification": [
+    "If downstream shared selection legally requires B2/A5 before any actionable Short Momentum output, the practical slowest-source tax may disappear even though the contract sets differ.",
+    "If undocumented dependencies are found inside derived eligibility logic, the matrix must be revised before timing comparisons.",
+    "If A1 remains the latest required dependency on all valid dates, removing non-required dependencies has no operational timing value.",
+    "If stage-specific readiness cannot be versioned reproducibly, do not split readiness."
+  ],
+  "safety": {
+    "runtimeChanged": false,
+    "cronChanged": false,
+    "selectionChanged": false,
+    "rankingChanged": false,
+    "capitalChanged": false,
+    "executionChanged": false,
+    "pushChanged": false
+  }
+}
