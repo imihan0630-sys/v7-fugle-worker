@@ -198,6 +198,7 @@ jobs:
           node tests/test_v8_15_1_c1_capture_integrity.mjs
           node tests/test_system1_c1_c2_collection_v0_1.mjs
           node tests/test_system1_c3_c4_c5_shadow_v0_1.mjs
+          node tests/test_system1_c3_capture_contract_v0_1.mjs
           node --check tests/collect_system1_c1_evidence.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs
