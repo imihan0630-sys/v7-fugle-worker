@@ -1,6 +1,10 @@
 name: System 1 C1 Prospective Evidence
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/system1-c1-evidence.yml'
   workflow_dispatch:
     inputs:
       scan_date:
