@@ -1050,3 +1050,101 @@ Formal Core remains LOCKED.
 3. While the gate remains open, continue mechanism/falsification on D03-13 multi-timeframe conflict and exact information overlap among multi-horizon returns, EMA16/64 and Impulse MACD.
 4. Once the raw-receipt gate is genuinely closed, TI-005 KD-vs-RSI remains first efficacy inference; TI-006 MACD-vs-direct-trend remains second.
 5. Formal selection/ranking/capital/monitoring/signal/push behavior remains unchanged.
+
+
+## TI-468 through TI-473 — EMA16/64 effective horizon and local-reseed falsification (2026-10-02)
+
+Durable evidence:
+- `research/TECHNICAL_INDICATOR_EMA16_64_HORIZON_WARMUP_V0_1.md`
+- `research/test_technical_indicator_ema16_64_horizon_warmup_v0_1.mjs`
+
+### TI-468 — EMA period is a decay parameter, not a hard cutoff
+
+For standard `alpha=2/(N+1)`, unrolled EMA weights decay geometrically. Useful time-horizon summaries are:
+- `meanAge=(N-1)/2`;
+- `halfLife=ln(0.5)/ln(1-alpha)`;
+- 10%-residual age `=ln(0.1)/ln(1-alpha)`.
+
+EMA16:
+- mean age 7.5 bars;
+- half-life ≈5.538;
+- 10%-residual age ≈18.397.
+
+EMA64:
+- mean age 31.5 bars;
+- half-life ≈22.179;
+- 10%-residual age ≈73.677.
+
+Thus EMA64 does not only consume the most recent 64 bars; old recursive state still matters.
+
+### TI-469 — 65-bar local re-seed is not automatically equivalent for EMA64
+
+Synthetic same-path SMA-seeded EMA witness:
+- EMA16 full-history 116.2190231843 vs last-65 116.2203350853, delta ≈ +0.001312.
+- EMA64 full-history 115.0611555282:
+  - last-65 delta ≈ +0.333575;
+  - last-80 delta ≈ -0.109072;
+  - last-100 delta ≈ +0.007814;
+  - last-150 delta ≈ -0.000482.
+
+This proves a counterexample to the assumption that a 65-bar locally reseeded EMA64 is always replay-equivalent. It is not a universal error estimate.
+
+Trusted continuous recursive state or canonical full replay is a different construction and is not condemned by this witness.
+
+### TI-470 — EMA16/64 crossover is a filtered-price state
+
+`EMA16-EMA64` is the difference between two low-pass filters of the same Close path. It may provide useful transition timing, but the source information remains price-derived and overlaps direct returns, MA/EMA slopes, trend persistence and MACD-family transforms.
+
+Crossover visibility does not create an independent evidence family.
+
+### TI-471 — EMA16/64 + Impulse MACD is partial/nested confluence
+
+Impulse MACD is not algebraically identical because it also uses smoothed High/Low envelope location and dead-zone suppression. Nevertheless, both constructs transform the PRICE_OHLC path.
+
+Frozen prior:
+`EMA16_64_PLUS_IMPULSE = PARTIAL_REDUNDANCY_HIGH / RESIDUAL_VALUE_UNKNOWN`.
+
+It must remain within-family confirmation until residual value survives direct trend, structure, volatility/Regime and cost controls.
+
+### TI-472 — System 2 state-lineage guard
+
+Any future System 2 EMA16/64 evidence must preserve formulaVersion, stateConstructionMode, initializationAnchor, continuitySpaceVersion, sourceFamilyVersion, sessionCalendarVersion, barCompletionState and stateLineageId.
+
+A moving 65-bar local EMA64 reconstruction is QA-only unless replay parity to canonical long-history state is proven.
+
+### TI-473 — multi-timeframe hierarchy remains authoritative
+
+Existing D03 multi-timeframe semantics remain:
+- weekly = major context;
+- daily = primary selection/setup;
+- 15m = transition/acceptance/execution confirmation;
+- 5m = execution detail where allowed.
+
+Dynamic same-day daily state is PROVISIONAL; completed daily state is CONFIRMED. Intraday agreement is not another independent daily-selection vote.
+
+### Maturity decision
+
+No new maturity promotion:
+- D03-01 already L3/60;
+- D03-13 remains L2/40 because the current tranche improves mechanism/implementation safeguards but does not add Taiwan PIT/OOS incremental-value evidence.
+
+D03 remains **47.7%**.
+
+### Current status
+
+`EMA64_65_BAR_LOCAL_RESEED_EQUIVALENCE = REJECTED_AS_ASSUMPTION`  
+`EMA16_64_CROSSOVER = FILTERED_TREND_STATE / ALPHA_UNKNOWN`  
+`EMA16_64_PLUS_IMPULSE = PARTIAL_REDUNDANCY_HIGH / RESIDUAL_VALUE_UNKNOWN`  
+`MULTITIMEFRAME_AGREEMENT = HIERARCHICAL_CONTEXT_NOT_VOTE_COUNT`  
+`D03_MATURITY = 47.7_PERCENT`  
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Formal Core remains LOCKED.
+
+### Exact next continuation point
+
+1. Add EMA16/64 state-lineage/warm-up parity to future System 2 resonance research before any outcome inference.
+2. Do not use a 65-bar locally reseeded EMA64 as promotion-grade evidence without canonical replay equivalence.
+3. Keep EMA16/64 + Impulse inside the same price-derived family until residual value survives direct-return/trend/structure/Regime controls.
+4. Raw-byte third-session gate remains 2/3; once genuinely closed, resume TI-005 then TI-006 in the preregistered efficacy order.
+5. Formal Core remains unchanged.
