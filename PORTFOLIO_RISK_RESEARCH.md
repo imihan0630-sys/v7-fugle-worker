@@ -3996,3 +3996,59 @@ Status:
 `POOL_IDENTITY_SOURCE_CONTRACT_READY / PRODUCTION_AUDIT_PENDING / DIVERSIFICATION_UNPROVEN`.
 
 Formal Core unchanged.
+
+
+## D15-MP-001 Production result — pool identity is PIT-valid; cross-pool diversification has zero identifying dates
+
+Read-only Production run `36968309192` / job `110716767898` returned four recorded scan dates.
+
+Results:
+- recorded dates = 4;
+- selected dates with complete pool reconstruction = 2;
+- dates with GENERAL and THOUSAND both represented = **0**;
+- selected single-pool dates = 2.
+
+2026-09-18:
+- selected = 2006 / 3105 / 6133;
+- GENERAL = 3;
+- THOUSAND = 0;
+- all NT$168,000 planned capital and NT$6,483.4292 projected stop-risk belong to GENERAL.
+
+2026-09-21:
+- selected = 3006;
+- GENERAL = 1;
+- THOUSAND = 0.
+
+2026-09-22 / 2026-09-23:
+- zero selected names.
+
+### Falsification result
+
+The evidence supports:
+`selected-plan pool identity is PIT-reconstructable`.
+
+It does **not** support:
+`3+3 has demonstrated cross-pool diversification`.
+
+The zero count of both-pools dates means:
+`ABSENCE_OF_IDENTIFYING_SAMPLE`,
+not:
+`cross-pool diversification effect = 0`.
+
+True diversification/effective-bets claims remain dependent on D15-03/04/05/06 PIT-synchronized return/covariance evidence.
+
+### Maturity
+
+D15-15 advances:
+`L2 / 40% -> L3 / 60%`
+for **Taiwan Production source/data feasibility only**.
+
+No L4, OOS, alpha or diversification-effect claim.
+
+Receipt:
+`research/d15_multi_pool_production_receipt_20261002.json`.
+
+Status:
+`POOL_IDENTITY_PIT_VALIDATED / BOTH_POOLS_SAMPLE_ZERO / CROSS_POOL_DIVERSIFICATION_UNKNOWN / D15_15_L3`.
+
+Formal Core unchanged. No `FORMAL_OPTIMIZATION_CANDIDATE`.
