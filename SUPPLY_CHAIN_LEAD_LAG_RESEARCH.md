@@ -1737,3 +1737,80 @@ Formal Core unchanged.
 ### Exact next
 SC-033: collect >=3 independent issuer pricing-event receipts outcome-blind using the frozen state vector.
 SC-034: only after native publication clocks mature, compare posted-price response with realized ASP/margin on compatible product scope.
+
+
+## SC-033 / SC-034 — Three-event pricing calibration and cross-industry source-access control
+
+Artifacts:
+- `research/sc033_pricing_power_three_event_calibration_v0_1.json`
+- `research/sc034_fpcc_pricing_source_access_note_v0_1.json`
+
+### SC-033 — same issuer, three distinct pricing states
+China Steel official pricing notices provide a useful source-only calibration sequence:
+
+1. **2026-08 monthly pricing**
+   - steelmaking cost remained high;
+   - end demand / Asian market were weak;
+   - listed monthly products were broadly cut by NT$800/t.
+
+2. **2026-09 monthly pricing**
+   - iron ore/metallurgical-coal cost remained high;
+   - downstream inventory was healthier and restocking was expected, but traditional demand remained soft;
+   - all listed monthly products were unchanged.
+
+3. **2026-10 / Q4 pricing**
+   - metallurgical coal rose materially and steelmaking cost pressure increased;
+   - global steel prices/supply-demand improved;
+   - October monthly products rose NT$500-600/t, while the Q4 matrix remained selective with both +500/+600 and 0 adjustments.
+
+### Falsification
+This same-issuer sequence directly rejects a cost-only pricing rule:
+
+`HIGH_INPUT_COST != AUTOMATIC_PRICE_UP`.
+
+Under one issuer:
+- high cost + weak demand -> BROAD_DOWN;
+- high cost + mixed/soft demand -> FLAT;
+- stronger cost pressure + firmer market -> UP, with product heterogeneity.
+
+Therefore Pricing Power is a state interaction, not a fixed company trait.
+
+But this set has an important limitation:
+`EVENT_INDEPENDENT != ISSUER_INDEPENDENT`.
+
+It calibrates the state schema; it does not prove cross-company or cross-industry generality.
+
+No stock-return, realized ASP or future margin was used to classify these events.
+
+### SC-034 — cross-industry control candidate deliberately not counted
+A 2026 Formosa Petrochemical gasoline/diesel pricing notice was discovered on the issuer's official domain, with search evidence of an effective gasoline wholesale adjustment and explicit references to:
+- international oil prices;
+- TWD/USD;
+- domestic market competition;
+- Asian-neighbor lowest-price constraints.
+
+However:
+- direct page access triggered browser verification;
+- structured fetch failed;
+- the complete official product matrix, including exact diesel adjustment, was not captured.
+
+Research decision:
+`SOURCE_ACCESS_PARTIAL`.
+
+A search snippet is insufficient to construct a complete issuer pricing receipt.
+
+The event therefore does **not** count toward the different-issuer pricing calibration denominator, and missing exact fields remain UNKNOWN.
+
+### Maturity
+D10-06 remains L3.
+SC-033 strengthens the state semantics but is same-issuer and historical current-page capture does not authenticate original firstKnownAt.
+SC-034 is a source-access control, not positive evidence.
+
+No L4 promotion. D10-09 remains L2.
+
+Formal Core unchanged.
+
+### Exact next
+- SC-034: obtain one different-issuer official full pricing event under the SC-032 state vector.
+- SC-035: prospectively preserve native sourcePublishedAt/capturedAt on future pricing events.
+- Only after compatible product scope and native publication clocks mature may realized ASP/margin be joined.
