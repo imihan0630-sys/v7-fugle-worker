@@ -598,3 +598,32 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 3. Obtain reproducible execution receipts for DL-008 (16 cases), RG2 relation (12 cases) and shared-child identity (12 cases).
 4. Keep outcome joins and Class-B runtime approval closed.
 5. No R09 / no Formal change.
+
+## Continuation update — DL-013A through DL-013D (2026-10-02)
+
+- Equal-horizon and aggregation-boundary falsification is now frozen before outcomes:
+  - research/PATTERN_EQUAL_HORIZON_BOUNDARY_CONTROL_V0_1.md
+  - research/pattern_equal_horizon_boundary_control_v0_1.json
+- Terminology correction:
+  "bar-boundary placebo" as a guaranteed null is rejected.
+  The correct role is BOUNDARY_SENSITIVITY_CONTROL because shifted aggregation can have different information age/session composition and may contain real structure.
+- Two confounds are separated:
+  effective-horizon difference vs aggregation-boundary difference.
+- Primary future test remains B0 daily long-horizon controls vs B1 B0 + canonical completed-calendar-week Pattern relation on common support/equal dates.
+- Frozen comparators:
+  DAILY_EQUIVALENT_CLOCK_HORIZON and SIMPLE_LONG_HORIZON_PRICE_GEOMETRY.
+- Boundary sensitivity variant:
+  SHIFTED_5_ELIGIBLE_SESSION_BLOCK_V0_1,
+  preregistered before outcomes, fully causal, no future block completion.
+- Comparability can explicitly be NOT_COMPARABLE_FEATURE_AGE or NOT_COMPARABLE_SESSION_COVERAGE; dates are never force-paired.
+- Timeframe/boundary variants remain inside one multiple-testing family.
+- Pattern shared-child contract v0.2 now adds featureAgeEligibleSessions and aggregationBoundaryVersion plus DL-008/RG2 provenance.
+- No outcome join / no timeframe search / no score. D01 remains 51.7%. Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-013
+
+1. Audit immutable Pattern payload fingerprint coverage for all v0.2 provenance/geometry fields.
+2. Obtain reproducible execution receipts for authored DL-008/RG2/shared-child tests; do not infer PASS from V8 regression CI.
+3. Re-read latest main before any merge because parallel research rooms may advance it.
+4. Keep runtime/Class-B proposal closed until parent/continuity/session/storage gates clear.
+5. No R09 / no Formal change.
