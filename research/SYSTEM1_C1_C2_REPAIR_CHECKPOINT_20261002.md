@@ -1,5 +1,7 @@
 # System 1 C1/C2 continuation — S1-C1-005 / S1-C2-002
 
+Current status (2026-10-02): PR #306 merged and C1-only runtime deployed; PR #311 merged and paired read-only collector activated. Exact-head CI 57/57 PASS and deployment configuration/Cron readback PASS. First live collection retained C1_GENERATION_NOT_FOUND / FORMAL_SCAN_NOT_CONFIRMED. Genuine complete-generation acceptance remains PENDING; next cursor is 2026-10-02 23:35/23:55 scan and 2026-10-03 00:10 collector. Earlier entries below are historical snapshots; the final activation sections supersede their draft/not-approved/not-deployed state.
+
 Saved 2026-10-02 15:03 Asia/Taipei. Status: ENGINEERING_VERIFIED / LIVE_BLOCKED.
 Canonical base main: c9548bc30699a9e032b71d4618b4ba0e5b49db7a.
 Remote engineering commit: c452642dcccad6f0d7608629889e69b18661393b.

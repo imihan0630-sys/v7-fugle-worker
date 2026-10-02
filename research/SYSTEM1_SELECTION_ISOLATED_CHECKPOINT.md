@@ -1,5 +1,7 @@
 # System 1 selection redesign — isolated engineering checkpoint
 
+Current status (2026-10-02): PR #306 merged and C1-only runtime deployed; PR #311 merged and paired read-only collector activated. Exact-head CI 57/57 PASS and deployment configuration/Cron readback PASS. First live collection retained C1_GENERATION_NOT_FOUND / FORMAL_SCAN_NOT_CONFIRMED. Genuine complete-generation acceptance remains PENDING; next cursor is 2026-10-02 23:35/23:55 scan and 2026-10-03 00:10 collector. Earlier entries below are historical snapshots; the final activation sections supersede their draft/not-approved/not-deployed state.
+
 Date: 2026-10-01 Asia/Taipei. Cursor: S1-C1-001.
 Classification: Class A offline only. Formal Core LOCKED. No deployment authorization.
 Base main: 7ae8df72ea178e3fc5c19828424d515ad1df42f3.
