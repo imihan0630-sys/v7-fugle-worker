@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "D04_MARKET_RV_CURRENT_SOURCE_DIAGNOSTIC_V0_1",
+  "marketDate": "2026-10-02",
+  "observedPhase": "EVENING_RETROSPECTIVE_DIAGNOSTIC",
+  "pointInTimeDecisionEligible": false,
+  "promotionGradeProspectiveDateCount": 0,
+  "sourceSemantics": {
+    "currentMonthSource": "TWSE FMTQIK 2026/10 current monthly report",
+    "priorMonthSource": "TWSE FMTQIK 2026/09 monthly report",
+    "currentMonthUrl": "https://www.twse.com.tw/en/exchangeReport/FMTQIK?date=20261001&response=html",
+    "priorMonthUrl": "https://www.twse.com.tw/en/exchangeReport/FMTQIK?date=20260901&response=html",
+    "firstKnownAtTargetDecisionClock": "UNKNOWN",
+    "warning": "Current evening retrieval proves present availability only. It does not prove the same payload was available at the earlier System2 decision boundary."
+  },
+  "officialCloseWindow": [
+    [
+      "2026-09-02",
+      46164.72
+    ],
+    [
+      "2026-09-03",
+      45857.66
+    ],
+    [
+      "2026-09-04",
+      46551.13
+    ],
+    [
+      "2026-09-07",
+      47326.27
+    ],
+    [
+      "2026-09-08",
+      47105.78
+    ],
+    [
+      "2026-09-09",
+      47183.36
+    ],
+    [
+      "2026-09-10",
+      46940.49
+    ],
+    [
+      "2026-09-11",
+      46184.85
+    ],
+    [
+      "2026-09-14",
+      45862.52
+    ],
+    [
+      "2026-09-15",
+      45511.49
+    ],
+    [
+      "2026-09-16",
+      45848.9
+    ],
+    [
+      "2026-09-17",
+      46288
+    ],
+    [
+      "2026-09-18",
+      47180.75
+    ],
+    [
+      "2026-09-21",
+      47718.84
+    ],
+    [
+      "2026-09-22",
+      47800.17
+    ],
+    [
+      "2026-09-23",
+      48157.29
+    ],
+    [
+      "2026-09-24",
+      48024.6
+    ],
+    [
+      "2026-09-29",
+      47631.96
+    ],
+    [
+      "2026-09-30",
+      47940.13
+    ],
+    [
+      "2026-10-01",
+      48353.49
+    ],
+    [
+      "2026-10-02",
+      48475.74
+    ]
+  ],
+  "formula": {
+    "returnType": "SIMPLE_CLOSE_TO_CLOSE",
+    "dispersionEstimator": "POPULATION_STD",
+    "recentWindowReturns": 5,
+    "longWindowReturns": 20,
+    "annualized": false,
+    "semanticName": "ROLLING_CLOSE_TO_CLOSE_RETURN_DISPERSION_POPSTD_SIMPLE"
+  },
+  "diagnosticMetrics": {
+    "dispersion5": 0.00613323888560212,
+    "dispersion20": 0.009349144506361198,
+    "overlapRatio5to20": 0.656021401897151,
+    "prior15Dispersion": 0.010169278843981618,
+    "nonOverlapRecent5ToPrior15": 0.6031144370902853,
+    "meanReturn5": 0.0013378673975778855,
+    "meanReturn20": 0.002488963447700376,
+    "cumulativeReturn5": 0.006612705989062162,
+    "cumulativeReturn20": 0.050060305791955306,
+    "rmsReturn5": 0.00627746034645889,
+    "rmsReturn20": 0.009674783824190198,
+    "rmsRatio5to20": 0.6488476084357707,
+    "meanSquareShare5": 0.04542115620271195,
+    "meanSquareShare20": 0.06618422653170958
+  },
+  "interpretation": [
+    "Recent 5-session return dispersion is lower than the full 20-return dispersion.",
+    "The overlapping 5/20 ratio and non-overlap recent5/prior15 comparison point in the same direction for this current-source diagnostic.",
+    "This does not identify bullish/bearish direction, low latent risk, or pre-breakout contraction.",
+    "The current window still has positive recent cumulative return, illustrating that dispersion and direction are distinct estimands.",
+    "RMS return is a deterministic combination of dispersion and mean return; it is not authorized as an extra independent factor."
+  ],
+  "evidenceStatus": "DIAGNOSTIC_ONLY_NOT_DECISION_CLOCK_PIT",
+  "formalCoreImpact": "NONE"
+}
