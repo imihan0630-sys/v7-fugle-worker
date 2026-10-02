@@ -22543,3 +22543,15 @@ Pattern is now explicitly modeled as a multi-object observer: exactly one ROOT a
 DL-008 multi-scale provenance and DL-009/010 RG2 relation fields are now enumerated as prospective schema requirements. Generic timing separates as_of, available_at, captured_at and created_at. Later weekly confirmation or next-session 15m evidence cannot backfill a prior after-market decision.
 
 This is a schema reconciliation only. D1/Worker/runtime wiring remains Class-B NO_GO. Outcome inference remains CLOSED. D01 remains 51.7%; Formal Core LOCKED.
+
+# DL-012 — Pattern shared-child identity contract (2026-10-02)
+
+Pattern shared-parent reconciliation now has a deterministic child-identity design.
+
+ROOT is a fixed parent-attempt key. Structural Pattern episode identity uses causal immutable anchors and initial confirmation, not named labels or later maturity state. RG2 relation identity uses the local-boundary and parent-zone IDs/versions, not current availableAir or lifecycle state.
+
+This distinction is deliberate: identity and state must not be conflated. Lifecycle progression must not manufacture new samples. Conversely, same item identity with mutated immutable geometry is a provenance conflict, not permission to invent a new key.
+
+New pure research helper/test files define 12 adversarial identity cases, but no reproducible Node execution receipt exists in this chat; no PASS count is claimed.
+
+No D1/Worker/runtime change. Outcome joins remain closed. D01 remains 51.7%; Formal Core LOCKED.
