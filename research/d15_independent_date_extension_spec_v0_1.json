@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "D15_INDEPENDENT_DATE_EXTENSION_V0_1",
+  "preregisteredAt": "2026-10-02T12:08:00+08:00",
+  "ownership": [
+    "D15-01",
+    "D15-02",
+    "D15-07",
+    "D15-09",
+    "D15-12",
+    "D15-14"
+  ],
+  "purpose": "Prospectively re-read the current Production journal and determine whether portfolio-risk evidence has expanded beyond the 2026-09-18 multi-name witness.",
+  "baselineMultiNameDate": "2026-09-18",
+  "eligibility": [
+    "selected_count must equal immutable plan-row count for the date",
+    "selected_count >= 2",
+    "plan-time stop geometry required for heat/frontier metrics"
+  ],
+  "nonIdentifying": [
+    "zero-selected date",
+    "single-name date",
+    "plan-count mismatch",
+    "missing stop/buyHigh geometry"
+  ],
+  "inferenceRules": {
+    "noNewMultiNameDate": "Record no-progress evidence; do not raise D15 maturity and do not generalize the 2026-09-18 structural witness.",
+    "additionalMultiNameDate": "Compute the same frozen heat/concentration metrics on the new date and compare direction across independent dates before any maturity review.",
+    "oneAdditionalDate": "Two total multi-name dates permit only a direction-consistency check; they do not establish population significance, OOS, or economic superiority."
+  },
+  "guardrails": [
+    "read-only Production access",
+    "no outcome tuning",
+    "no Formal Core change",
+    "no actual-live heat claim without broker-confirmed holdings/fills/effective-stop provenance",
+    "UNKNOWN remains UNKNOWN"
+  ],
+  "status": "PREREGISTERED / PRODUCTION_READ_PENDING",
+  "formalCoreImpact": false
+}
