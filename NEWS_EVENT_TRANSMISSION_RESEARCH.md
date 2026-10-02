@@ -707,3 +707,19 @@ D11 treasury-stock and convertible-bond mechanics provide a concrete expectation
 A valid surprise feature must compare the pre-event expected state with information newly knowable at the realization timestamp. Final execution or conversion data cannot be backdated into the earlier expectation state.
 
 This deepens D17-06 but does not promote it beyond L2. Prospective/OOS outcome evidence is still required.
+
+
+---
+
+## D17-13 — Scheduled versus unscheduled Taiwan event clocks (2026-10-02)
+
+The Taiwan source contract now distinguishes five states: SCHEDULED_EXACT, SCHEDULED_WINDOW, DEADLINE_ONLY, UNSCHEDULED and UNKNOWN.
+
+Monthly-revenue due-by-10th and statutory financial-report deadlines are not exact publication timestamps. Investor conferences can become SCHEDULED_EXACT only when their time is actually public before the decision cutoff. Unscheduled disclosures enter replay only at conservative first-known/capture time.
+
+Counterevidence is explicit: scheduled events may be postponed/cancelled; multiple events may cluster; a legal deadline can be filed early; no scheduled event does not imply no event; retrospective calendars may contain information unavailable ex ante.
+
+D17-13 advances L2 -> L3 for Taiwan PIT source/data feasibility only. Outcome joins remain closed and no directional effect is claimed.
+
+Reusable anchor: `EVENT_TRANSACTION_AND_DISCLOSURE_CLOCK_RESEARCH.md`.
+Machine contract: `research/d11_d17_event_clock_contract_v0_1.json`.
