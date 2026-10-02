@@ -256,7 +256,7 @@ This candidate can become a `FORMAL_OPTIMIZATION_CANDIDATE` only after the speci
 
 ## Curriculum expansion — D19 to D22 (2026-10-02)
 
-Owner-approved expansion from 18 to 22 domains. Canonical machine tracker now contains 297 modules; all newly added modules begin at L0 and therefore lower aggregate curriculum maturity without reducing any prior evidence.
+Owner-approved expansion from 18 to 22 domains. Canonical machine tracker now contains 337 modules; all newly added modules begin at L0 and therefore lower aggregate curriculum maturity without reducing any prior evidence.
 
 New domains:
 - **D19 Asset Pricing / Factor Investing / Market Anomalies** — primary room 12. Treat factor labels as hypotheses; require neutralization/redundancy checks against existing D03/D07/D08/D09 information and D16 multiple-testing controls.
@@ -272,10 +272,32 @@ Approved second-level curriculum extensions:
 
 Research routing only. No System 1/System 2 Formal Core, production strategy, ranking, capital, signal or notification behavior changes are authorized by this curriculum expansion.
 
+## Curriculum expansion — approved cross-domain gaps (2026-10-02)
+
+Owner approved the second gap audit without creating D23. The canonical curriculum remains **22 domains** and expands from **297 to 337 modules**. All 40 newly registered modules begin at L0; this lowers aggregate curriculum maturity by denominator expansion only and does not downgrade prior evidence.
+
+New second-level knowledge coverage:
+- D05: market impact, adverse selection/order-flow toxicity, queue position/order priority.
+- D07: WACC/cost of capital, capital budgeting/NPV/IRR/real options, integrated three-statement forecasting, revenue/margin/OPEX drivers, working-capital/CAPEX/FCF forecasting, scenario/sensitivity analysis, revenue-recognition/accounting-policy quality, forensic-accounting red flags.
+- D10: trade policy/export-control/sanctions supply-chain transmission; industrial policy/subsidy/geopolitical bottlenecks.
+- D11: IPO/listing/bookbuilding, lock-up expiry, secondary offering/private placement, tender offer/going-private/delisting, spin-off/merger-arbitrage/deal-break risk.
+- D13: fiscal policy, monetary transmission/financial conditions, central-bank balance sheet/system liquidity, trade/geopolitical/capital-flow transmission.
+- D14: market-vs-limit/order-type choice, VWAP/TWAP/participation execution, implementation shortfall/market-impact cost, alpha decay/execution urgency.
+- D15: mean-variance/efficient frontier, risk budgeting/risk parity, Black-Litterman, Kelly/fractional Kelly, tracking error/active share, performance attribution, risk attribution/information ratio.
+- D16: alternative-data provenance/selection bias; NLP/LLM financial-text feature validation.
+- D17: policy/regulatory event clock and surprise.
+- D19: pairs trading/cointegration, residual mean reversion/cross-sectional relative value, index/benchmark construction methodology.
+- D21: ESG/climate/social materiality risk.
+
+Governance interpretation:
+- These are curriculum modules, not validated alpha factors or production rules.
+- No System 1/System 2 Formal Core, ranking, signal, allocation, execution or notification behavior is changed by this approval.
+- Specialist rooms own evidence generation; room 00 owns only curriculum/routing synchronization.
+
 ## Shared inventory
 
 - `shared-knowledge/SHARED_RESEARCH_INVENTORY.md` is the cross-system domain/tag inventory. It points to original evidence without relocating it.
-- `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 22-domain / 297-module learning curriculum and chatroom routing dashboard.
+- `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 22-domain / 337-module learning curriculum and chatroom routing dashboard.
 - `research/stock_market_learning_tracker_v0_1.json` is the machine-readable maturity tracker for that curriculum.
 - `shared-knowledge/LEARNING_ROOM_ROUTER.md` is the mandatory public routing file every learning chat reads to know its assigned domains, modules, learning scope, progress and checkpoints.
 
