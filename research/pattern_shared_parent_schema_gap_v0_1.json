@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "pattern-shared-parent-schema-gap-v0.1",
+  "updated": "2026-10-02 Asia/Taipei",
+  "researchOnly": true,
+  "runtimeImplemented": false,
+  "formalCore": "LOCKED",
+  "legacyPatternContract": {
+    "file": "research/PATTERN_OBSERVER_PERSISTENCE_V0_1.md",
+    "status": "LEGACY_QA_COMPATIBLE_PROMOTION_PARENTAGE_SUPERSEDED",
+    "legacyParentAuthority": "trade_research_shadow_candidates_parent_snapshot_hash"
+  },
+  "futureParentAuthority": {
+    "contract": "research/IMMUTABLE_DECISION_STATE_PARENT_CONTRACT_V0_1.md",
+    "required": [
+      "parentDecisionReceiptId",
+      "captureGeneration",
+      "parentScopeId",
+      "semanticFingerprint",
+      "decisionCutoffAt"
+    ],
+    "runSetIntegrity": [
+      "expectedParentKeysetHash",
+      "attemptedParentKeysetHash",
+      "decisionSetHash"
+    ]
+  },
+  "patternAttemptSemantics": {
+    "rootRowsPerExpectedParent": 1,
+    "rootItemKey": "ROOT",
+    "episodeRows": "ZERO_OR_MORE",
+    "episodeItemKey": "DETERMINISTIC_CAUSAL_STRUCTURAL_IDENTITY",
+    "episodeCountIsCoverageDenominator": false
+  },
+  "requiredMultiscalePayloadFields": [
+    "timeframe",
+    "effectiveClockHorizon",
+    "barCompletionState",
+    "sourceBarsThrough",
+    "sessionRule",
+    "sessionCalendarVersion",
+    "overlapClass",
+    "sharedEventIds",
+    "rawInformationClass",
+    "representationClass",
+    "crossScaleRelationType",
+    "higherTimeframeConfirmedAt",
+    "relationDefinitionVersion",
+    "multipleTestingFamilyKey"
+  ],
+  "requiredRg2PayloadFields": [
+    "localBoundaryId",
+    "localBoundaryVersion",
+    "localLower",
+    "localUpper",
+    "localConfirmedAt",
+    "localFamily",
+    "localFirstBreakAt",
+    "parentZoneId",
+    "parentZoneVersion",
+    "parentLower",
+    "parentUpper",
+    "parentCenter",
+    "parentConfirmedAt",
+    "parentScale",
+    "parentSourceWindowStart",
+    "parentSourceWindowEnd",
+    "parentZoneAgeEligibleSessions",
+    "availableAirToParentLowerPct",
+    "distanceLocalToParentCenterPct",
+    "availableAirToParentLowerATR",
+    "geometryRelationState",
+    "compoundLifecycleState"
+  ],
+  "genericTiming": [
+    "as_of",
+    "available_at",
+    "captured_at",
+    "created_at"
+  ],
+  "runCompletenessRules": [
+    "ONE_ROOT_PER_EXPECTED_PARENT",
+    "NO_DUPLICATE_ROOT_PARENT",
+    "ROOT_COUNT_EQUALS_EXPECTED_COUNT",
+    "ATTEMPTED_KEYSET_HASH_EQUALS_EXPECTED_KEYSET_HASH",
+    "CAPTURE_GENERATION_MATCH",
+    "PARENT_SCOPE_ID_MATCH",
+    "MISSING_COUNT_ZERO",
+    "PROVENANCE_CONFLICT_COUNT_ZERO",
+    "OBSERVER_QA_FAILURES_ZERO"
+  ],
+  "promotionKillRules": [
+    "LEGACY_MUTABLE_SHADOW_PARENTAGE_ONLY",
+    "UNCERTIFIED_CAPTURE_GENERATION",
+    "INCOMPLETE_ROOT_KEYSET",
+    "EPISODE_WITHOUT_ROOT_ATTEMPT",
+    "MISSING_MULTISCALE_PROVENANCE",
+    "MISSING_RG2_ZONE_VERSION_PROVENANCE",
+    "LATER_VINTAGE_CROSS_LANE_COMPARATOR",
+    "CURRENT_CODE_HISTORICAL_RECONSTRUCTION"
+  ],
+  "runtimeStatus": "NO_GO",
+  "formalOptimizationCandidate": "NONE"
+}

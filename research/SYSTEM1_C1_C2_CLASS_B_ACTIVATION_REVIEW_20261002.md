@@ -1,6 +1,6 @@
 # C1-only Class-B activation review — PR #306
 
-Status: REVIEWABLE / NOT APPROVED / NOT DEPLOYED.
+Status: OWNER APPROVED 2026-10-02 / INTEGRATION IN PROGRESS / NOT YET DEPLOYED.
 Engineering commit: c452642dcccad6f0d7608629889e69b18661393b.
 Linux isolated candidate regression: 57/57 PASS (36976181250).
 
@@ -26,3 +26,7 @@ Public GitHub Actions artifacts are not approved for this new payload. Obtain ex
 
 Require version/bindings/TEST_MODE/Cron/target readback; protected Formal invariants; same completed scan-to-C1 generation linkage; full pagination and digest coverage; a C2 ledger from that exact generation; no missing-as-zero or backdated WATCH. Engineering CI alone does not meet live acceptance.
 If research capture fails, Formal output remains unaffected but research status is DATA_QUALITY_BLOCKED with null unverified counts. Runtime performance is measured on the first authorized normal capture. Roll back code through the existing path; retain immutable stored evidence. A Formal strategy switch is outside this packet.
+
+## Owner authorization, 2026-10-02
+
+The owner replied "批准" to the concrete C1-only deployment and the listed public GitHub Actions artifact destination. This authorizes the three build-chain integrations and activation of the read-only paired collector described above. Earlier NOT APPROVED statements describe the pre-approval snapshot. Formal strategy changes remain outside authorization. Exact-head CI, deployment/readback, and genuine-generation acceptance are still required.

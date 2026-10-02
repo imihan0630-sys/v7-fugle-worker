@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "pattern-equal-horizon-boundary-control-v0.1",
+  "updated": "2026-10-02 Asia/Taipei",
+  "researchOnly": true,
+  "formalCore": "LOCKED",
+  "terminology": {
+    "rejected": "BAR_BOUNDARY_PLACEBO_AS_TRUE_NULL",
+    "frozen": "BOUNDARY_SENSITIVITY_CONTROL"
+  },
+  "primaryAggregation": "CALENDAR_WEEK_COMPLETED",
+  "sensitivityAggregation": "SHIFTED_5_ELIGIBLE_SESSION_BLOCK_V0_1",
+  "requiredProvenance": [
+    "timeframe",
+    "lookbackBars",
+    "effectiveClockHorizonEligibleSessions",
+    "sourceStart",
+    "sourceEnd",
+    "featureAgeEligibleSessions",
+    "aggregationBoundaryVersion",
+    "barCompletionState",
+    "sessionCalendarVersion",
+    "semanticSpaceId"
+  ],
+  "comparabilityStates": [
+    "COMPARABLE",
+    "NOT_COMPARABLE_FEATURE_AGE",
+    "NOT_COMPARABLE_SESSION_COVERAGE",
+    "DATA_BLOCKED",
+    "UNKNOWN"
+  ],
+  "baselineControls": [
+    "priorHigh60_or_majorStructuralHigh",
+    "MA60_120",
+    "ret20_ret60",
+    "ATR_or_realizedVol",
+    "dailyMajorZoneState",
+    "dailySetup",
+    "D02Acceptance_if_available",
+    "regime",
+    "liquidity"
+  ],
+  "equalHorizonComparators": [
+    "DAILY_EQUIVALENT_CLOCK_HORIZON",
+    "SIMPLE_LONG_HORIZON_PRICE_GEOMETRY"
+  ],
+  "rules": [
+    "NO_POST_OUTCOME_BOUNDARY_SEARCH",
+    "SHIFTED_BOUNDARY_IS_ROBUSTNESS_CONTROL_NOT_NEW_FACTOR",
+    "BOUNDARY_VARIANTS_SHARE_MULTIPLE_TESTING_FAMILY",
+    "NONCOMPARABLE_DATES_REMAIN_NONCOMPARABLE",
+    "REPRESENTATION_PAIR_DOES_NOT_DOUBLE_SAMPLE_N"
+  ],
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}

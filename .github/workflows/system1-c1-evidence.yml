@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       scan_date:
-        description: Optional Taiwan scan date (YYYY-MM-DD); blank reads the latest immutable generation
+        description: Optional Taiwan scan date (YYYY-MM-DD); blank reads the previous Taiwan session
         required: false
         type: string
   schedule:
@@ -31,11 +31,17 @@ jobs:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
           C1_SCAN_DATE: ${{ inputs.scan_date }}
           C1_EVIDENCE_OUTPUT: artifacts/system1-c1-evidence.json
-        run: node tests/collect_system1_c1_evidence.mjs
-      - name: Preserve the verified research artifact
+          C2_EVIDENCE_OUTPUT: artifacts/system1-c2-paired.json
+          C1_READINESS_OUTPUT: artifacts/system1-c1-readiness.json
+        run: node tests/collect_system1_c1_c2_evidence.mjs
+      - name: Preserve approved research evidence or explicit readiness blocker
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: system1-c1-evidence-${{ github.run_id }}
-          path: artifacts/system1-c1-evidence.json
+          path: |
+            artifacts/system1-c1-evidence.json
+            artifacts/system1-c2-paired.json
+            artifacts/system1-c1-readiness.json
           if-no-files-found: error
           retention-days: 90

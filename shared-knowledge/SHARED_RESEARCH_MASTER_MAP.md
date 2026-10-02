@@ -338,3 +338,77 @@ K-line/Pattern research added an implementation-level replay/path falsification 
 Status: RESEARCH_ONLY / ALPHA_UNKNOWN / NO_FORMAL_PROMOTION.
 
 - Event transaction/disclosure clock anchor: `EVENT_TRANSACTION_AND_DISCLOSURE_CLOCK_RESEARCH.md` (D11-06 M&A/asset-event lifecycle, D11-09 recurring disclosure windows, D17-13 scheduled/unscheduled taxonomy and PIT replay clocks).
+
+### D01 shared handoff — DL-008 multi-scale incrementality (2026-10-02)
+
+Reusable cross-system rule:
+- Source Novelty（來源新穎性） != Representation Novelty（表示新穎性） != Predictive Incrementality（預測增量）.
+- Weekly OHLC derived from daily constituents is deterministic aggregation of the same PRICE_OHLC root: no new raw-source vote.
+- Temporal aggregation is many-to-one and can lose path information; higher timeframe is not automatically superior.
+- A cross-scale topology relation may still be a nonlinear representation candidate relative to finite baseline controls, but its predictive incrementality remains UNKNOWN until prospective/OOS residual testing.
+- Reuse the shared overlap classes from Technical Indicator research; do not create separate D01 timeframe-voting semantics.
+- Timeframe pair / bar alignment / relation definition belong to the multiple-testing family.
+- Repeated scale snapshots do not inflate effective N.
+- Pattern nested-resistance inference remains under existing PATTERN-RG2; no R09.
+
+Status: EXECUTABLE_SPEC_WRITTEN / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / FORMAL_CORE_LOCKED.
+
+### D01 shared handoff — DL-009 PATTERN-RG2 nested resistance (2026-10-02)
+
+Reusable rules:
+- keep local Pattern trigger boundary distinct from priorHigh20 comparator;
+- inherit BASE k=2/120 and MAJOR k=3/260 eligible-session scales; never retune them from outcomes;
+- simple 260-session high is a mandatory redundancy comparator for structural-zone claims;
+- availableAir is continuous context, never a hard veto by itself;
+- separate local-break-below-parent / entered-parent / parent-first-break / hold / reentry / failure states;
+- future parent zones cannot be backfilled into historical decisions;
+- round-price proximity is a confound control, not an added score;
+- one structural relation episode may have many daily snapshots but one independent relation identity.
+
+PATTERN-RG2 remains OUTCOME_CLOSED / ALPHA_UNKNOWN / FORMAL_CORE_LOCKED.
+
+### D01 shared handoff — DL-010 RG2 executable semantics / ownership (2026-10-02)
+
+- RG2 research now has a threshold-free relation calculator and 12 defined adversarial cases; execution receipt is still pending.
+- Negative availableAir is preserved and unsigned; no hard resistance veto.
+- Cross-lane ownership is frozen: Pattern geometry, Corporate Actions continuity, D02 acceptance, Target-RR target construction, round-price proximity, Microstructure execution mechanics, and Technical-Indicator timeframe taxonomy remain separate canonical owners.
+- Do not fork those definitions in System 2; consume the shared objects instead.
+Status: RG2_SPEC_EXECUTABLE / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / FORMAL_LOCKED.
+
+### D01 shared handoff — DL-011 Pattern shared-parent schema reconciliation (2026-10-02)
+
+- Legacy Pattern parent_snapshot_hash linkage remains valid for old isolated QA but is superseded for promotion-grade parent authority.
+- Future Pattern evidence must attach to the shared immutable decision-state parent using parentDecisionReceiptId + captureGeneration + parentScopeId + semanticFingerprint.
+- Pattern requires one ROOT attempt per expected parent and zero/many deterministic episode children; episode count never replaces parent coverage.
+- Multi-scale and RG2 provenance fields belong in the Pattern payload, not in a new parent universe.
+- Later weekly/15m information cannot backfill an earlier decision-time parent.
+- No runtime/D1 wiring is authorized.
+Status: DESIGN_RECONCILED / RUNTIME_NOT_IMPLEMENTED / OUTCOME_CLOSED / FORMAL_LOCKED.
+
+### D01 shared handoff — DL-012 Pattern child identity (2026-10-02)
+
+- Pattern uses one ROOT attempt per immutable decision parent plus zero/many deterministic item rows.
+- Structural episode identity excludes named-label/lifecycle changes; same anchors remain one episode.
+- RG2 relation identity excludes current availableAir/lifecycle state; same local/parent boundary versions remain one relation.
+- Same item identity with changed immutable geometry is PROVENANCE_CONFLICT.
+- Outcome fields never enter decision-time child identity.
+- Tests are authored but execution receipt is still pending.
+Status: CHILD_IDENTITY_DESIGN_FROZEN / TEST_EXECUTION_PENDING / RUNTIME_NO_GO / FORMAL_LOCKED.
+
+### D01 shared handoff — DL-013 equal-horizon / boundary sensitivity (2026-10-02)
+
+- Higher-timeframe value must first beat equivalent daily clock-horizon and simple long-horizon geometry controls.
+- Shifted bar boundaries are robustness controls, not guaranteed-null placebos.
+- featureAgeEligibleSessions and aggregationBoundaryVersion are mandatory provenance for future cross-scale evidence.
+- Non-comparable feature-age/session cases remain explicit, never force-paired.
+- No post-outcome timeframe/boundary search.
+Status: CONTROL_SPEC_FROZEN / OUTCOME_CLOSED / FORMAL_LOCKED.
+
+### D01 shared handoff — DL-014 Pattern fingerprint semantics (2026-10-02)
+
+- Separate immutable structural identity fingerprint from evolving as-of observation payload hash.
+- Same item key + changed immutable structural fingerprint is a provenance conflict.
+- Same structural episode across later parent/as-of may legitimately have a new observation hash.
+- ROOT commits to the episode-item keyset; episode count never replaces parent coverage.
+- Outcome/later revisions never enter decision-time fingerprints.
+Status: FINGERPRINT_SPEC_FROZEN / RUNTIME_NO_GO / OUTCOME_CLOSED / FORMAL_LOCKED.

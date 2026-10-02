@@ -3,7 +3,8 @@ from pathlib import Path
 import os, re, subprocess, sys, json
 workflow=Path('.github/workflows/v7-regression.yml').read_text(encoding='utf-8')
 for script in re.findall(r'python3 (scripts/\S+\.py)',workflow):
-    subprocess.run([sys.executable,script],check=True)
+    if script != "scripts/apply_v8_15_1.py":
+        subprocess.run([sys.executable,script],check=True)
 baseline=Path('Worker.js').read_text(encoding='utf-8')
 subprocess.run([sys.executable,'scripts/apply_v8_15_1.py'],check=True)
 candidate=Path('Worker.js').read_text(encoding='utf-8')

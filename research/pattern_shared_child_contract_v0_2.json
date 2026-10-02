@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "pattern-shared-child-v0.2",
+  "updated": "2026-10-02 Asia/Taipei",
+  "researchOnly": true,
+  "runtimeImplemented": false,
+  "formalCore": "LOCKED",
+  "supersedes": "research/pattern_shared_child_contract_v0_1.json",
+  "genericIdentity": [
+    "parentDecisionReceiptId",
+    "captureGeneration",
+    "parentScopeId",
+    "evidence_family=PATTERN",
+    "evidence_item_key",
+    "observer_version",
+    "as_of"
+  ],
+  "root": {
+    "evidenceItemKey": "ROOT",
+    "rowsPerExpectedParent": 1,
+    "coverageAuthority": true
+  },
+  "requiredTimeframeProvenance": [
+    "timeframe",
+    "effectiveClockHorizon",
+    "barCompletionState",
+    "sourceBarsThrough",
+    "sessionRule",
+    "sessionCalendarVersion",
+    "featureAgeEligibleSessions",
+    "aggregationBoundaryVersion"
+  ],
+  "requiredOverlapProvenance": [
+    "overlapClass",
+    "sharedEventIds",
+    "rawInformationClass",
+    "representationClass",
+    "crossScaleRelationType",
+    "relationDefinitionVersion",
+    "multipleTestingFamilyKey"
+  ],
+  "requiredRg2Provenance": [
+    "localBoundaryId",
+    "localBoundaryVersion",
+    "localConfirmedAt",
+    "parentZoneId",
+    "parentZoneVersion",
+    "parentConfirmedAt",
+    "parentScale",
+    "geometryRelationState",
+    "compoundLifecycleState",
+    "availableAirToParentLowerPct",
+    "distanceLocalToParentCenterPct"
+  ],
+  "boundaryControl": {
+    "primary": "CALENDAR_WEEK_COMPLETED",
+    "sensitivity": "SHIFTED_5_ELIGIBLE_SESSION_BLOCK_V0_1",
+    "comparabilityStates": [
+      "COMPARABLE",
+      "NOT_COMPARABLE_FEATURE_AGE",
+      "NOT_COMPARABLE_SESSION_COVERAGE",
+      "DATA_BLOCKED",
+      "UNKNOWN"
+    ],
+    "trueNullPlaceboClaim": false
+  },
+  "timing": [
+    "as_of",
+    "available_at",
+    "captured_at",
+    "created_at"
+  ],
+  "crossLaneReceiptReferences": [
+    "continuityReceiptRef",
+    "symbolSessionReceiptRef",
+    "corporateActionSemanticReceiptRef",
+    "priceVolumeReceiptRef_if_used",
+    "regimeReceiptRef_if_used",
+    "roundPriceControlReceiptRef_if_used"
+  ],
+  "invariants": [
+    "IDENTITY_AND_STATE_SEPARATE",
+    "ROOT_COVERAGE_AUTHORITY",
+    "LIFECYCLE_PROGRESS_DOES_NOT_CREATE_NEW_ITEM_ID",
+    "SAME_VERSION_GEOMETRY_MUTATION_IS_CONFLICT",
+    "FUTURE_CONFIRMATION_CANNOT_BACKFILL",
+    "BOUNDARY_VARIANTS_SHARE_MULTIPLE_TESTING_FAMILY",
+    "NONCOMPARABLE_REPRESENTATIONS_ARE_NOT_FORCE_PAIRED",
+    "OUTCOME_NEVER_ENTERS_DECISION_TIME_CHILD"
+  ],
+  "predictiveIncrementality": "UNKNOWN_REQUIRES_PREREGISTERED_PROSPECTIVE_OUTCOME_TEST",
+  "runtimeStatus": "NO_GO",
+  "formalOptimizationCandidate": "NONE"
+}

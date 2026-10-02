@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "pattern-rg2-nested-resistance-v0.1",
+  "updated": "2026-10-02 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCore": "LOCKED",
+  "hypothesisFamily": "PATTERN_RG2_NESTED_RESISTANCE",
+  "newHypothesisFamilyCreated": false,
+  "scaleContract": {
+    "formalComparator": "priorHigh20",
+    "base": "DirectionalChange_k2_120_eligible_symbol_sessions",
+    "major": "DirectionalChange_k3_260_eligible_symbol_sessions",
+    "simpleRedundancyComparator": "simple_260_session_high",
+    "scaleOptimizationFromOutcomes": false
+  },
+  "requiredLocalBoundaryFields": [
+    "localBoundaryId",
+    "localBoundaryVersion",
+    "localLower",
+    "localUpper",
+    "localConfirmedAt",
+    "localFamily",
+    "localSemanticSpaceId",
+    "localFirstBreakAt"
+  ],
+  "requiredParentZoneFields": [
+    "parentZoneId",
+    "parentZoneVersion",
+    "parentLower",
+    "parentUpper",
+    "parentCenter",
+    "parentConfirmedAt",
+    "parentScale",
+    "parentSemanticSpaceId",
+    "parentSourceWindowStart",
+    "parentSourceWindowEnd",
+    "parentZoneAgeEligibleSessions"
+  ],
+  "geometryFields": [
+    "availableAirToParentLowerPct",
+    "distanceLocalToParentCenterPct",
+    "availableAirToParentLowerATR"
+  ],
+  "relationStates": [
+    "NO_CONFIRMED_PARENT",
+    "LOCAL_BELOW_PARENT_POSITIVE_AIR",
+    "LOCAL_BOUNDARY_OVERLAPS_PARENT_ZONE",
+    "LOCAL_BOUNDARY_ABOVE_PARENT_ZONE",
+    "UNKNOWN"
+  ],
+  "compoundLifecycleStates": [
+    "LOCAL_BREAK_STILL_BELOW_PARENT",
+    "LOCAL_BREAK_ENTERED_PARENT_ZONE",
+    "LOCAL_BREAK_AND_PARENT_FIRST_BREAK",
+    "LOCAL_BREAK_PARENT_HOLDING_ABOVE",
+    "LOCAL_BREAK_PARENT_REENTERED",
+    "LOCAL_BREAK_PARENT_FAILED",
+    "UNKNOWN"
+  ],
+  "redundancyLadder": [
+    "R0_priorHigh20",
+    "R1_plus_priorHigh60",
+    "R2_plus_MA60_ret20_ret60_overheat",
+    "R3_plus_simple260HighDistance",
+    "R4_plus_BASE_MAJORStructuralZoneDistance",
+    "R5_plus_zoneAge_repeatedTest_lifecycle",
+    "R6_plus_roundPrice_D02_regime_liquidity"
+  ],
+  "rules": [
+    "NO_HARD_MAJOR_ZONE_VETO",
+    "AVAILABLE_AIR_IS_CONTINUOUS_UNSIGNED_EVIDENCE",
+    "PARENT_CONFIRMED_AT_MUST_BE_LE_ASOF",
+    "LOCAL_CONFIRMED_AT_MUST_BE_LE_ASOF",
+    "FUTURE_PARENT_CANNOT_BACKFILL_HISTORY",
+    "SEMANTIC_SPACE_CONFLICT_FAILS_CLOSED",
+    "SAME_ZONE_ID_VERSION_COORDINATE_MUTATION_IS_PROVENANCE_CONFLICT",
+    "SIMPLE_260_HIGH_IS_MANDATORY_REDUNDANCY_COMPARATOR",
+    "ROUND_PRICE_PROXIMITY_IS_A_CONFOUND_CONTROL_NOT_A_SCORE",
+    "DAILY_SNAPSHOTS_OF_ONE_RELATION_EPISODE_DO_NOT_INFLATE_N"
+  ],
+  "predictiveIncrementality": "UNKNOWN_REQUIRES_PROSPECTIVE_OUTCOME_TEST",
+  "formalOptimizationCandidate": "NONE"
+}

@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "pattern-fingerprint-contract-v0.1",
+  "updated": "2026-10-02 Asia/Taipei",
+  "researchOnly": true,
+  "formalCore": "LOCKED",
+  "structuralIdentityFingerprint": {
+    "role": "IMMUTABLE_STRUCTURAL_OBJECT_CERTIFICATE",
+    "conflictRule": "SAME_ITEM_KEY_DIFFERENT_STRUCTURAL_IDENTITY_FINGERPRINT => PROVENANCE_CONFLICT",
+    "excludes": [
+      "currentLifecycle",
+      "latestPrice",
+      "availableAir",
+      "touchCount",
+      "outcome"
+    ]
+  },
+  "observationPayloadHash": {
+    "role": "EXACT_ASOF_CHILD_OBSERVATION_CERTIFICATE",
+    "binds": [
+      "parentDecisionReceiptId",
+      "captureGeneration",
+      "parentScopeId",
+      "evidenceItemKey",
+      "observerVersion",
+      "as_of",
+      "available_at",
+      "structuralIdentityFingerprint",
+      "currentLifecycle",
+      "multiscaleProvenance",
+      "rg2CurrentGeometry",
+      "crossLaneReceiptRefs",
+      "dataQualityStatus"
+    ],
+    "excludes": [
+      "outcome",
+      "created_at_retry_timestamp",
+      "database_order",
+      "later_source_revision"
+    ],
+    "conflictRule": "SAME_GENERIC_CHILD_IDENTITY_DIFFERENT_OBSERVATION_HASH => PROVENANCE_CONFLICT"
+  },
+  "rootPayloadHash": {
+    "binds": [
+      "parentDecisionReceiptId",
+      "captureGeneration",
+      "parentScopeId",
+      "observerVersion",
+      "attemptStatus",
+      "reason",
+      "sourceAvailabilitySummary",
+      "episodeItemKeysetHash",
+      "qaFlags"
+    ]
+  },
+  "longitudinalRule": "SAME_EPISODE_KEY_DIFFERENT_PARENT_ASOF_MAY_HAVE_DIFFERENT_OBSERVATION_HASH",
+  "effectiveNRule": "CLUSTER_BY_STRUCTURAL_OR_RELATION_EPISODE_AS_PREREGISTERED",
+  "outcomeInFingerprint": false,
+  "runtimeStatus": "NO_GO",
+  "formalOptimizationCandidate": "NONE"
+}
