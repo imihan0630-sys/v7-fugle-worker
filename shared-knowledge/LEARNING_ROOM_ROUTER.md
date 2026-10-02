@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-02 16:31 Asia/Taipei
+Updated: 2026-10-02 22:06 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -504,6 +504,8 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 
 
 ## 07｜產業與供應鏈研究室
+
+> 最新 durable progress（2026-10-02）：SC-040 已凍結 2026-07～09 三個 NDC/CIER PMI 月度訂單／交期 receipt；SC-041 已建立 8046／3189 的 bounded industry-to-issuer product-scope bridge。D10-07 維持 L3；缺失曝險權重、survey membership、issuer-native backlog 一律 UNKNOWN，Formal Core 不變。
 
 負責領域：**D09 產業／族群／市場廣度／輪動；D10 供應鏈／產能／庫存／原物料傳導**  
 必讀 checkpoint：`MARKET_BREADTH_ROTATION_CHECKPOINT.md`、`MARKET_BREADTH_ROTATION_RESEARCH.md`、`SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md`  
