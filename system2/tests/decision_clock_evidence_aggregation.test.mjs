@@ -125,7 +125,10 @@ assert.equal(result.promotionCoverageComplete, true);
 assert.equal(result.promotionReadinessStatus, "INSUFFICIENT_DATES");
 assert.equal(result.nonTradingScheduledRuns.length, 1);
 assert.equal(result.tradingDayArtifactGaps.length, 0);
+assert.deepEqual(result.a5BoundaryEvaluableDates, ["2026-09-29", "2026-09-30"]);
+assert.deepEqual(result.a5BoundaryPassDates, ["2026-09-29", "2026-09-30"]);
 assert.deepEqual(result.a5BoundaryFailureDates, []);
+assert.deepEqual(result.a5BoundaryNotEvaluableDates, []);
 assert.equal(result.collectorContractConsistent, true);
 assert.deepEqual(result.collectorContractFingerprints, ["collector-fp-A"]);
 assert.equal(result.exactDecisionClockAuthorized, false);
@@ -227,8 +230,57 @@ const lateA5 = aggregateDecisionClockEvidence({
     },
   ],
 });
+assert.deepEqual(lateA5.a5BoundaryEvaluableDates, ["2026-10-03"]);
+assert.deepEqual(lateA5.a5BoundaryPassDates, []);
 assert.deepEqual(lateA5.a5BoundaryFailureDates, ["2026-10-03"]);
+assert.deepEqual(lateA5.a5BoundaryNotEvaluableDates, []);
 assert.equal(lateA5.readiness.status, "INCOMPLETE_REQUIRED_EVIDENCE");
+
+const noCandidateA5 = aggregateDecisionClockEvidence({
+  scheduledRunCoverage: [
+    {
+      marketDate: "2026-10-05",
+      runId: "750",
+      expectedTradingDay: true,
+      artifactPresent: true,
+      runConclusion: "success",
+    },
+  ],
+  candidates: [
+    {
+      runId: "750",
+      runAttempt: 1,
+      runHeadSha: "abababababababababababababababababababab",
+      eventName: "schedule",
+      runCreatedAt: "2026-10-05T05:25:00Z",
+      bundle: {
+        ...bundle("2026-10-05", {
+          runId: "750",
+          workflowSha: "abababababababababababababababababababab",
+          requiredReady: false,
+          precisionEligible: false,
+        }),
+        evidence: {
+          ...bundle("2026-10-05", {
+            runId: "750",
+            workflowSha: "abababababababababababababababababababab",
+            requiredReady: false,
+            precisionEligible: false,
+          }).evidence,
+          sameSessionClockReady: false,
+          a5ObservedAtDecisionBoundary: "2026-10-05T05:35:00Z",
+          a5AvailableByCandidate: false,
+          candidateTimestamp: null,
+        },
+      },
+    },
+  ],
+});
+assert.deepEqual(noCandidateA5.a5BoundaryEvaluableDates, []);
+assert.deepEqual(noCandidateA5.a5BoundaryPassDates, []);
+assert.deepEqual(noCandidateA5.a5BoundaryFailureDates, []);
+assert.deepEqual(noCandidateA5.a5BoundaryNotEvaluableDates, ["2026-10-05"]);
+assert.equal(noCandidateA5.readiness.status, "INCOMPLETE_REQUIRED_EVIDENCE");
 
 
 const coverageMismatch = aggregateDecisionClockEvidence({
