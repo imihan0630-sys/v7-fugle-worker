@@ -1056,7 +1056,7 @@
       "anchors": [
         "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md"
       ],
-      "maturityPct": 50,
+      "maturityPct": 51.7,
       "modules": [
         {
           "id": "D10-01",
@@ -1127,10 +1127,12 @@
         {
           "id": "D10-09",
           "name": "上游與下游不對稱傳導",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「上游與下游不對稱傳導」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TWO_VINTAGE_ASYMMETRIC_CHAIN_PIT_FEASIBLE / DOWNSTREAM_STICKY_WITNESS / OUTCOMES_CLOSED",
+          "next": "SC-037 append the next independent steel-chain monthly vintage; SC-038 add a second three-layer Taiwan industry chain before any L4 transmission-effect test."
         },
         {
           "id": "D10-10",
