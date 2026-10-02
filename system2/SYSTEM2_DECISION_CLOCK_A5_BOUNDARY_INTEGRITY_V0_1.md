@@ -94,3 +94,41 @@ After the first promotion-grade sample exists, a comparable material semantic ch
 - No System 1/V8 runtime or Formal Core change is made.
 - Historical retrieval cannot be relabeled as prospective A5 availability.
 - Exact Decision Clock authorization remains false even if future readiness gates pass.
+
+
+## Research diagnostic clarification — V0.2
+
+2026-10-02 D16 review identified an attribution ambiguity in the aggregation/review layer.
+
+Original safety semantics remain unchanged:
+- same-session candidate time is determined by A1 TWSE + A1 TPEx + B2;
+- A5 is periodic;
+- when a same-session candidate exists, A5 must have been prospectively observed no later than that candidate;
+- late A5 keeps `requiredReady=false` and `precisionEligible=false`.
+
+Diagnostic correction:
+- a date with `sameSessionClockReady=false` or `candidateTimestamp=null` has no candidate boundary against which A5 lateness can be evaluated;
+- such a date remains incomplete, but is not truthfully an `A5_NOT_AVAILABLE_BY_CANDIDATE` event.
+
+Research aggregation now separates:
+- `a5BoundaryEvaluableDates`;
+- `a5BoundaryPassDates`;
+- `a5BoundaryFailureDates`;
+- `a5BoundaryNotEvaluableDates`.
+
+Only an evaluable date with:
+- same-session candidate present; and
+- `a5AvailableByCandidate=false`
+
+enters `a5BoundaryFailureDates`.
+
+Owner-review continues to block on true A5 boundary failures.
+No-candidate dates remain blocked through Decision Clock readiness and are reported as not evaluable for A5 boundary attribution.
+
+This is a provenance/failure-taxonomy correction only.
+It does not:
+- weaken A5 requirements;
+- change candidate timing;
+- authorize the exact Decision Clock;
+- authorize Worker Cron/capture;
+- change any strategy/rank/capital/order/signal behavior.
