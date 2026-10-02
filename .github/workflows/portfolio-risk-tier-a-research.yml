@@ -165,6 +165,8 @@ on:
       - "tests/test_positive_signal_plan_linkage_v0_1.mjs"
       - "tests/test_cross_store_write_asymmetry_v0_1.mjs"
       - "tests/positive_signal_cross_store_readonly_audit.mjs"
+      - "research/d15_kv_last_scan_corroboration_spec_v0_1.json"
+      - "tests/d15_kv_last_scan_corroboration_readonly_audit.mjs"
       - "PORTFOLIO_RISK_TIER_A_AUDIT.md"
       - ".github/workflows/portfolio-risk-tier-a-research.yml"
   workflow_dispatch:
@@ -261,3 +263,4 @@ jobs:
           node tests/portfolio_risk_cash_attribution_readonly_audit.mjs
           node tests/portfolio_risk_d15_independent_date_extension_readonly_audit.mjs
           node tests/positive_signal_cross_store_readonly_audit.mjs
+          node tests/d15_kv_last_scan_corroboration_readonly_audit.mjs
