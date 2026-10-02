@@ -579,7 +579,7 @@ GitHub專屬checkpoint：
 | D19-15 | Index／Benchmark Construction／Methodology指數與基準建構方法 | L0 未研究 | 0% |
 
 
-### D20｜行為金融／投資人注意力／市場心理 — 0%
+### D20｜行為金融／投資人注意力／市場心理 — 13.3%
 
 專責：13｜行為金融與市場心理研究室  
 證據錨點：`BEHAVIORAL_FINANCE_CHECKPOINT.md`、`BEHAVIORAL_FINANCE_RESEARCH.md`
