@@ -374,3 +374,13 @@ PATTERN-RG2 remains OUTCOME_CLOSED / ALPHA_UNKNOWN / FORMAL_CORE_LOCKED.
 - Cross-lane ownership is frozen: Pattern geometry, Corporate Actions continuity, D02 acceptance, Target-RR target construction, round-price proximity, Microstructure execution mechanics, and Technical-Indicator timeframe taxonomy remain separate canonical owners.
 - Do not fork those definitions in System 2; consume the shared objects instead.
 Status: RG2_SPEC_EXECUTABLE / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / FORMAL_LOCKED.
+
+### D01 shared handoff — DL-011 Pattern shared-parent schema reconciliation (2026-10-02)
+
+- Legacy Pattern parent_snapshot_hash linkage remains valid for old isolated QA but is superseded for promotion-grade parent authority.
+- Future Pattern evidence must attach to the shared immutable decision-state parent using parentDecisionReceiptId + captureGeneration + parentScopeId + semanticFingerprint.
+- Pattern requires one ROOT attempt per expected parent and zero/many deterministic episode children; episode count never replaces parent coverage.
+- Multi-scale and RG2 provenance fields belong in the Pattern payload, not in a new parent universe.
+- Later weekly/15m information cannot backfill an earlier decision-time parent.
+- No runtime/D1 wiring is authorized.
+Status: DESIGN_RECONCILED / RUNTIME_NOT_IMPLEMENTED / OUTCOME_CLOSED / FORMAL_LOCKED.
