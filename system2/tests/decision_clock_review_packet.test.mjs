@@ -25,8 +25,11 @@ function aggregation({
     collectorContractConsistencyVersion: "S2_DECISION_CLOCK_COLLECTOR_CONSISTENCY_V0_3",
     collectorContractFingerprints: ["collector-fp-A"],
     collectorContractConsistent: true,
-    a5BoundaryIntegrityVersion: "S2_DECISION_CLOCK_A5_BOUNDARY_INTEGRITY_V0_1",
+    a5BoundaryIntegrityVersion: "S2_DECISION_CLOCK_A5_BOUNDARY_INTEGRITY_V0_2",
+    a5BoundaryEvaluableDates: [],
+    a5BoundaryPassDates: [],
     a5BoundaryFailureDates: [],
+    a5BoundaryNotEvaluableDates: [],
     readiness: {
       assessmentVersion: "S2_DECISION_CLOCK_READINESS_V0_2",
       status,
@@ -107,12 +110,28 @@ const a5Blocked = buildDecisionClockReviewPacket({
     coverage: true,
     gapCount: 0,
   }),
+  a5BoundaryEvaluableDates: ["2026-10-03"],
   a5BoundaryFailureDates: ["2026-10-03"],
 });
 assert.equal(a5Blocked.reviewState, "ACCUMULATING");
 assert.ok(a5Blocked.blockers.includes("A5_NOT_AVAILABLE_BY_CANDIDATE"));
 assert.equal(a5Blocked.a5BoundaryFailureCount, 1);
 assert.deepEqual(a5Blocked.a5BoundaryFailureDates, ["2026-10-03"]);
+
+const noCandidateDiagnostic = buildDecisionClockReviewPacket({
+  ...aggregation({
+    status: "INCOMPLETE_REQUIRED_EVIDENCE",
+    dates: 3,
+    allPrecise: false,
+    coverage: true,
+    gapCount: 0,
+  }),
+  a5BoundaryNotEvaluableDates: ["2026-09-29", "2026-09-30", "2026-10-01"],
+});
+assert.equal(noCandidateDiagnostic.a5BoundaryFailureCount, 0);
+assert.equal(noCandidateDiagnostic.a5BoundaryNotEvaluableCount, 3);
+assert.ok(!noCandidateDiagnostic.blockers.includes("A5_NOT_AVAILABLE_BY_CANDIDATE"));
+assert.ok(noCandidateDiagnostic.blockers.includes("READINESS_NOT_FREEZE_ELIGIBLE"));
 
 
 const provenanceBlocked = buildDecisionClockReviewPacket({
