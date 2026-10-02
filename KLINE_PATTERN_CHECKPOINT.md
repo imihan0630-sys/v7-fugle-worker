@@ -462,3 +462,38 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 5. Keep scale count out of effective N; cluster later inference by scan date and parent/child episode.
 6. Keep prospective Pattern outcomes blocked until COMPLETE immutable parent/run receipts and runtime semantic readiness exist.
 7. No R09 / no Formal optimization proposal before PIT, prospective/OOS, redundancy, regime, cost and multiple-testing gates pass.
+
+## Continuation update — DL-009A through DL-009E (2026-10-02)
+
+- Existing PATTERN-RG2 nested-resistance hypothesis is now semantically frozen before outcomes; no new hypothesis family was created.
+- New durable artifacts:
+  - research/PATTERN_RG2_NESTED_RESISTANCE_V0_1.md
+  - research/pattern_rg2_nested_resistance_v0_1.json
+- Scale definitions are inherited unchanged from the already-frozen Pattern hierarchy:
+  - Formal comparator = priorHigh20;
+  - BASE = lagged-ATR Directional-Change k=2 / 120 eligible symbol sessions;
+  - MAJOR = k=3 / 260 eligible symbol sessions;
+  - simple 260-session high = mandatory redundancy comparator.
+- Primary local boundary is the immutable confirmed Pattern trigger boundary (neckline/rim/platform/VCP boundary). priorHigh20 remains a comparator and must not masquerade as a true Pattern neckline.
+- Primary parent zone is the immutable confirmed MAJOR structural zone with zoneId/version/lower/upper/center/confirmedAt and semantic-space provenance.
+- Future parent confirmation, semantic-space conflict, or same-version coordinate mutation fails closed.
+- availableAir is frozen as a continuous descriptor; it may be positive/zero/negative and is not a hard rejection rule.
+- Relation semantics separate:
+  local break still below parent / local break entered parent / parent first break / holding above / reentered / failed.
+- No arbitrary new "near resistance = X%" threshold is introduced.
+- Redundancy ladder is frozen from priorHigh20 -> priorHigh60 -> MA60/ret20/ret60/overheat -> simple260-high -> structural BASE/MAJOR zone -> lifecycle -> round-price/D02/regime/liquidity.
+- If MAJOR topology loses residual value after simple260-high, classify it REDUNDANT rather than preserve a named structural factor.
+- Taiwan 2025 historical-high evidence remains explicit counterevidence to a hard resistance veto: a true break can transition into underreaction/momentum. Round-price clustering literature is retained as a confound control, not a score.
+- RG2 outcome status remains CLOSED. Predictive incrementality remains UNKNOWN.
+- D01 maturity remains 51.7%; no module promotion.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core remains LOCKED.
+
+### Updated exact next continuation point after DL-009
+
+1. Create outcome-blind RG2 adversarial fixtures for local-below-parent, overlap, local-break-enters-parent, parent-first-break, hold, reentry/failure, future-parent, coordinate-mutation and semantic-space-conflict cases.
+2. Reuse existing major-zone lifecycle rather than fork another state machine.
+3. Map RG2 fields against Pattern round-price control and Target/RR research so each source owns one canonical definition.
+4. Preserve the simple260-high comparator and the full redundancy ladder in any future PATTERN-RG2 outcome design.
+5. Keep outcome joins closed until prospective Pattern parent/run coverage is COMPLETE and semantic runtime blockers clear.
+6. No hard resistance veto / no R09 / no Formal change.
