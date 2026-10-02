@@ -2484,27 +2484,27 @@
         "ASSET_PRICING_FACTOR_CHECKPOINT.md",
         "ASSET_PRICING_FACTOR_RESEARCH.md"
       ],
-      "maturityPct": 0,
+      "maturityPct": 6.7,
       "modules": [
         {
           "id": "D19-01",
           "name": "CAPM／Beta／Alpha與Benchmark Residual",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「CAPM／Beta／Alpha與Benchmark Residual」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D19-01 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED",
+          "next": "建立台股PIT benchmark/risk-free/adjusted-return/beta-estimation資料契約與可重播receipt；比較普通Beta與lead-lag調整Beta後再考慮L3。"
         },
         {
           "id": "D19-02",
           "name": "Size規模因子",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Size規模因子」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D19-02 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED",
+          "next": "建立台股PIT市值、股本、公司行動、下市/停牌、流動性與成本資料契約；完成size對liquidity/value/profitability/industry中性化後再考慮L3。"
         },
         {
           "id": "D19-03",
@@ -2607,10 +2607,10 @@
           "next": "從理論與定義開始，建立 D19-12 的機制、反證與資料需求；不得直接進 Formal。"
         }
       ],
-      "status": "UNSTUDIED / CURRICULUM_APPROVED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D19-01：從理論、機制與反證開始；建立資料來源/PIT/replay需求後再考慮 L1→L2。",
-      "lastResearchUpdate": "2026-10-02T16:31:00+08:00",
-      "researchNote": "Owner approved expansion from 18 to 22 domains on 2026-10-02. Curriculum initialized at L0; no evidence or maturity promotion is implied."
+      "status": "RESEARCH_ACTIVE / D19-01_L2 / D19-02_L2 / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D19-03：Value價值因子由理論→機制→反證；並建立D19-01/D19-02升L3所需台股PIT來源圖與可重播資料契約。",
+      "lastResearchUpdate": "2026-10-02T22:05:00+08:00",
+      "researchNote": "Stage 1 completed: D19-01 and D19-02 reached L2 after theory, mechanism, counterevidence, Taiwan-conflict review, PIT/replay/data-quality/redundancy/cost requirements. No Formal promotion."
     },
     {
       "id": "D20",
