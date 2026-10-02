@@ -1,6 +1,6 @@
 # Corporate Governance / Insider Research
 
-Updated: 2026-10-02 23:23 Asia/Taipei
+Updated: 2026-10-02 23:21 Asia/Taipei
 Scope: D21
 Status: D21-01 L2 MECHANISM_AND_FALSIFICATION_DEFINED / PIT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED
 
