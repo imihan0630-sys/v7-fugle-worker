@@ -65,11 +65,14 @@ eq(audit.rows.find(x=>x.symbol==="BBB").status,"INPUT_BLOCKED");
 ok(audit.rows.find(x=>x.symbol==="BBB").blockers.includes("BAR_MICROSTRUCTURE_UNVERIFIED"));
 eq(audit.rows.find(x=>x.symbol==="AAA").barCount,17);
 eq(audit.rows.find(x=>x.symbol==="AAA").missingSlots,[]);
-eq(audit.selectionDepthNeverImputed,true);\neq(audit.selectionLateStageNeverImputed,true);
+eq(audit.selectionDepthNeverImputed,true);
+eq(audit.selectionLateStageNeverImputed,true);
 eq(audit.limitStateNeverImputed,true);
 eq(audit.readyReceipts.length,1);
 eq(audit.readyReceipts[0].bars.length,17);
-ok(audit.readyReceipts[0].bars.every(x=>typeof x.limitUp==="boolean"&&typeof x.lateStage==="boolean"));\neq(audit.rows.find(x=>x.symbol==="AAA").selectionDepthVerified,true);\neq(audit.rows.find(x=>x.symbol==="AAA").selectionLateStageVerified,true);
+ok(audit.readyReceipts[0].bars.every(x=>typeof x.limitUp==="boolean"&&typeof x.lateStage==="boolean"));
+eq(audit.rows.find(x=>x.symbol==="AAA").selectionDepthVerified,true);
+eq(audit.rows.find(x=>x.symbol==="AAA").selectionLateStageVerified,true);
 ok(audit.readyReceipts[0].bars.every(x=>Number.isFinite(x.gapPct)));
 
 const c3=buildC3EntryExperiment(c2,audit.readyReceipts,{costs:{brokerFeeBpsPerSide:14.25,sellTaxBps:30,slippageBpsPerSide:5}});
