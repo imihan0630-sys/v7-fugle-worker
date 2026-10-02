@@ -1,9 +1,33 @@
 # System 2 Initial Strategy Preregistry
 
-Updated: 2026-09-26
+Updated: 2026-10-03 03:16 Asia/Taipei
 Status: PRE-REGISTERED HYPOTHESES / NOT LIVE
 
 Purpose: freeze initial hypotheses before outcome data is used to tune weights.
+
+## Canonical Hybrid decision architecture — OWNER APPROVED 2026-10-03
+
+System 2 strategy selection SHALL be designed under the shared Hybrid（混合式）decision-role governance in:
+`shared-knowledge/PROBABILISTIC_SELECTION_GOVERNANCE_V0_1.md`.
+
+This is a preregistration/design authority, not live-selection authority.
+
+For every strategy contract, each input must be assigned exactly one primary role:
+- **HARD_INVALIDATION（硬否決）** — minimal safety/source/tradability/event/risk constraints only;
+- **PRIMARY_ALPHA（主要 Alpha）** — strategy-specific evidence families with validated incremental predictive/economic value;
+- **SUPPORTIVE（輔助證據）** — may adjust posterior/ranking/confidence but does not independently reject;
+- **CONTEXT_ONLY（情境資訊）** — changes priors, interpretation, sizing or strategy state rather than imposing universal stock gates;
+- **CONFIDENCE／UNCERTAINTY（可信度／不確定性）** — freshness, missingness, disagreement and model uncertainty; UNKNOWN != FAIL and UNKNOWN != 0.
+
+Additional rules:
+1. The 22-domain / 366-module curriculum is a knowledge universe, not an all-domain voting checklist.
+2. Correlated indicators must be grouped into evidence families to avoid double counting.
+3. Each strategy defines its own PRIMARY_ALPHA families; SHORT_MOMENTUM and SWING_GROWTH must not be forced through identical universal evidence gates.
+4. ABSTAIN（不交易） is a valid outcome when expected value is inadequate or uncertainty excessive.
+5. Higher selection count is not an optimization target.
+6. Final policy must compare against simple baselines and report after-cost value, calibration, false acceptance, drawdown/tail risk, opportunity capture, zero-pick causes and capital utilization.
+7. No final-selection, rank, capital or live-monitoring authority is granted until the applicable owner gate and evidence gates are satisfied.
+
 
 ## S2-SM-001 — SHORT_MOMENTUM_V0
 
