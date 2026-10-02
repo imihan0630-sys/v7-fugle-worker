@@ -26,12 +26,13 @@ for(const token of [
 ]){assert.ok(source.includes(token),token);n++;}
 
 const limits=api.c3ResearchLimits({});
-eq(limits,{ready:true,providerLimitPerMinute:60,maxSymbols:6,maxCallsPerSlot:6,callsPerSession:102,reason:null});
+eq(limits,{ready:true,providerLimitPerMinute:60,maxTotalCallsPerMinute:50,maxSymbols:6,maxCallsPerSlot:6,callsPerSession:102,reason:null});
 const disabled=api.c3ResearchLimits({C3_RESEARCH_CAPTURE_DISABLED:"true"});
 eq(disabled.ready,false);
 eq(disabled.reason,"C3_CAPTURE_OPERATOR_DISABLED");
 eq(disabled.maxSymbols,6);
 assert.match(source,/providerLimitPerMinute:60/);n++;
+assert.match(source,/maxTotalCallsPerMinute:50/);n++;
 assert.match(source,/maxSymbols:6/);n++;
 assert.match(source,/maxCallsPerSlot:6/);n++;
 assert.match(source,/callsPerSession:102/);n++;
@@ -59,7 +60,7 @@ assert.throws(()=>api.c3NormalizeCohortRows([
 const formalPersist=source.indexOf("await writeLiveSnapshot(env, snapshot)");
 const formalSignal=source.indexOf("processSignalState(result");
 const pvHook=source.lastIndexOf("const pvShadow = await recordPvIntradayShadowSafe(env,results");
-const c3Hook=source.lastIndexOf("const c3ResearchCapture = await captureC3ResearchBarsSafe(env,scheduledTime,need15)");
+const c3Hook=source.lastIndexOf("const c3ResearchCapture = await captureC3ResearchBarsSafe(env,scheduledTime,need15,Number(baseCallSummary.total||0))");
 ok(formalPersist>=0&&formalSignal>=0&&pvHook>formalPersist&&c3Hook>pvHook&&c3Hook>formalSignal);
 
 const start=source.indexOf("async function captureC3ResearchBarsSafe(");
@@ -74,6 +75,8 @@ assert.doesNotMatch(segment,/saveStockConfig\(/);n++;
 assert.doesNotMatch(segment,/monitoringStocks\.push|results\.push/);n++;
 assert.match(segment,/failOpen:true/);n++;
 assert.match(segment,/target_trade_date=\?1/);n++;
+assert.match(segment,/C3_CAPTURE_MINUTE_BUDGET_BLOCKED/);n++;
+assert.match(segment,/baseCalls\+rows\.length>limits\.maxTotalCallsPerMinute/);n++;
 
 const cohortRoute=source.slice(
   source.indexOf('if (url.pathname === "/api/research/c3-capture-cohort")'),
@@ -86,7 +89,7 @@ assert.doesNotMatch(cohortRoute,/isPushAuthorized|sendPush|processSignalState/);
 
 console.log(JSON.stringify({
   ok:true,assertions:n,version:"8.15.2-c3-research-capture",
-  operatorCeilingsFrozen:true,basicProviderLimitPerMinute:60,maxShadowSymbols:6,formalTargetMutation:false,formalSignalPath:false,
+  operatorCeilingsFrozen:true,basicProviderLimitPerMinute:60,maxTotalCallsPerMinute:50,maxShadowSymbols:6,formalTargetMutation:false,formalSignalPath:false,
   pushPath:false,orderPath:false,extraQuoteCalls:0,extra15mCandlesOnly:true,
   formalCoreImpact:false,system2Touched:false
 }));
