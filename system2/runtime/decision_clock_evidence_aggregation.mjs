@@ -198,8 +198,21 @@ export function aggregateDecisionClockEvidence({
     promotionSelected.map((x) => x.collectorContractFingerprint).filter(Boolean),
   )].sort();
   const collectorContractConsistent = collectorContractFingerprints.length <= 1;
-  const a5BoundaryFailureDates = promotionSelected
+  const a5BoundaryEvaluable = promotionSelected.filter((x) =>
+    x.bundle.evidence.sameSessionClockReady === true
+    && Boolean(x.bundle.evidence.candidateTimestamp)
+  );
+  const a5BoundaryPassDates = a5BoundaryEvaluable
+    .filter((x) => x.bundle.evidence.a5AvailableByCandidate === true)
+    .map((x) => x.marketDate);
+  const a5BoundaryFailureDates = a5BoundaryEvaluable
     .filter((x) => x.bundle.evidence.a5AvailableByCandidate !== true)
+    .map((x) => x.marketDate);
+  const a5BoundaryNotEvaluableDates = promotionSelected
+    .filter((x) =>
+      x.bundle.evidence.sameSessionClockReady !== true
+      || !x.bundle.evidence.candidateTimestamp
+    )
     .map((x) => x.marketDate);
 
   const tradingDayArtifactGaps = coverageRows.filter(
@@ -284,8 +297,11 @@ export function aggregateDecisionClockEvidence({
     collectorContractConsistencyVersion: "S2_DECISION_CLOCK_COLLECTOR_CONSISTENCY_V0_3",
     collectorContractFingerprints,
     collectorContractConsistent,
-    a5BoundaryIntegrityVersion: "S2_DECISION_CLOCK_A5_BOUNDARY_INTEGRITY_V0_1",
+    a5BoundaryIntegrityVersion: "S2_DECISION_CLOCK_A5_BOUNDARY_INTEGRITY_V0_2",
+    a5BoundaryEvaluableDates: a5BoundaryEvaluable.map((x) => x.marketDate),
+    a5BoundaryPassDates,
     a5BoundaryFailureDates,
+    a5BoundaryNotEvaluableDates,
     artifactCoverageAudited,
     promotionCoverageComplete,
     promotionReadinessStatus,
