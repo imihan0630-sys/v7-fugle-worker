@@ -254,10 +254,28 @@ Promotion gate:
 Formal Core remains LOCKED.  
 This candidate can become a `FORMAL_OPTIMIZATION_CANDIDATE` only after the specialist rooms produce reproducible positive **and** negative evidence and it survives the above gates.
 
+## Curriculum expansion — D19 to D22 (2026-10-02)
+
+Owner-approved expansion from 18 to 22 domains. Canonical machine tracker now contains 297 modules; all newly added modules begin at L0 and therefore lower aggregate curriculum maturity without reducing any prior evidence.
+
+New domains:
+- **D19 Asset Pricing / Factor Investing / Market Anomalies** — primary room 12. Treat factor labels as hypotheses; require neutralization/redundancy checks against existing D03/D07/D08/D09 information and D16 multiple-testing controls.
+- **D20 Behavioral Finance / Investor Attention / Market Psychology** — primary room 13. Behavioral explanations require observable proxies and structural/microstructure counterfactuals; price action alone never proves investor intent.
+- **D21 Corporate Governance / Management / Insider / Control Quality** — primary room 14. Preserve PIT disclosure/vintage semantics and separate from D06 ownership flow, D07 accounting fundamentals and D11 event clocks.
+- **D22 Credit Markets / Capital Structure / Refinancing / Equity-Credit Transmission** — primary room 15. Prove incrementality beyond D07 accounting leverage and D13 rate context; missing bond/rating/covenant evidence remains UNKNOWN.
+
+Approved second-level curriculum extensions:
+- D07: business model, moat, unit economics/operating leverage, concentration, product lifecycle/TAM/penetration, management-guidance quality.
+- D08: DCF/FCFF/FCFE, DDM, residual income, SOTP, liquidation/asset-based value.
+- D12: Greeks, IV-RV spread, volatility risk premium, volatility surface/smile.
+- D16: time-series, panel/cross-sectional models, regularization/feature selection, machine learning/calibration, causal inference.
+
+Research routing only. No System 1/System 2 Formal Core, production strategy, ranking, capital, signal or notification behavior changes are authorized by this curriculum expansion.
+
 ## Shared inventory
 
 - `shared-knowledge/SHARED_RESEARCH_INVENTORY.md` is the cross-system domain/tag inventory. It points to original evidence without relocating it.
-- `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 18-domain / 226-module learning curriculum and chatroom routing dashboard.
+- `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 22-domain / 297-module learning curriculum and chatroom routing dashboard.
 - `research/stock_market_learning_tracker_v0_1.json` is the machine-readable maturity tracker for that curriculum.
 - `shared-knowledge/LEARNING_ROOM_ROUTER.md` is the mandatory public routing file every learning chat reads to know its assigned domains, modules, learning scope, progress and checkpoints.
 
