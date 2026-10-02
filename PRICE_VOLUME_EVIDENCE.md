@@ -4695,3 +4695,91 @@ Machine-readable receipt:
 
 Status:
 `RECOVERY_LINEAGE_AUDITED / FIRST_CLEAN_DATE_INVALIDATED / ORDINARY_PV_BOOTSTRAP_NOT_PROVEN / PLAN_DATE_RECOVERY_INVARIANT_VIOLATION / OUTCOMES_CLOSED / FORMAL_UNCHANGED`.
+
+
+# PVE-203~216 — pipeline readiness and cumulative-pace structural falsification (2026-10-02)
+
+## 9/30 did not become a recovered clean cohort
+The 2026-09-30 recovery workflow had official quality ready and verified the 2026-07-10 closure proof, but `/api/scan-preview` terminated with Cloudflare HTTP 503 / Error 1102 due Worker CPU or memory resource limits. The stage-selection step was never reached.
+
+Therefore no 9/30 plan persistence or ordinary PV bootstrap can be inferred.
+
+## 10/1 also did not produce a verified new cohort
+The first late-evening recovery had all named quality families ready but its single recovery POST was not confirmed and returned 503. The workflow correctly refused blind retry.
+
+A later sync failed during quality synchronization timeout.
+
+At 00:00 the encrypted plan mirror workflow succeeded only because the existing mirror was already verified. Its business payload explicitly read scanDate=2026-09-29.
+
+At 00:01 the health workflow itself returned skipped=true because it ran after midnight and was outside its verified trading-day/window. Its green job result is therefore not evidence for the prior trading day's scan.
+
+The V8.15 C1 collector started later and returned:
+`C1_GENERATION_NOT_FOUND`.
+
+Combined state:
+- no verified 9/30 selection;
+- no verified 10/1 selection;
+- latest explicit mirrored plan remains 9/29;
+- clean D02 prospective date count remains zero.
+
+## Local-volume primitive audit
+Formal intraday `buildBar()` and PV `pvEnrichSessionBars()` both compute the same primitive:
+current bar volume divided by the mean of the previous five completed bars.
+
+Formal rounds the ratio to two decimals; PV retains the unrounded value.
+
+Research consequence:
+do not call these two separate factors.
+H001 is specifically the incremental test of historical same-slot RVOL beyond this local five-bar primitive.
+
+## Common-support timing
+Because five prior bars are required, the local ratio is unavailable for:
+09:00, 09:15, 09:30, 09:45 and 10:00.
+
+The earliest full A/B/C/D common-support slot is 10:15.
+
+## Exact first-slot H002 redundancy proof
+At 09:00:
+`cumulativeVolume = slotVolume`
+for the current session and each cumulative-valid historical session.
+
+Thus:
+`median20(cumulativeVolume_09:00) = median20(slotVolume_09:00)`.
+
+Therefore:
+`pvCumvolPace20_09:00 = pvSlotRvol20_09:00`
+exactly.
+
+This is an algebraic identity, not a sample estimate.
+The first slot is also `OPEN_AUCTION_MIXED`.
+
+## Later-slot constructive non-equivalence
+Using twenty identical historical sessions with 100 units in each of the first six slots gives 10:15 baseline cumulative volume=600.
+
+Four current paths:
+- [200,200,200,200,200,200] -> slot=2.00, cumulative=2.00, local5=1.00;
+- [100,100,100,100,100,300] -> slot=3.00, cumulative=1.33, local5=3.00;
+- [300,300,300,100,100,100] -> slot=1.00, cumulative=2.00, local5≈0.45;
+- [100,100,100,300,100,300] -> slot=3.00, cumulative=1.67, local5≈2.14.
+
+Thus cumulative pace can represent session-prefix participation not uniquely recoverable from the current slot alone.
+
+## Missing-prefix asymmetry
+`pvEnrichSessionBars()` freezes `prefixValid=false` after an earlier expected slot is missing.
+Later current-slot RVOL may still be computable, while cumulative pace becomes invalid/null.
+
+Therefore D common support is naturally narrower than C.
+Missing D rows must not be recoded as neutral participation.
+
+## Persistence redundancy burden
+The existing persistence state already compresses sequential RVOL into shock/persistent/decay/reignition/normalization states.
+
+Cumulative pace can still differ for paths that map to the same coarse state because it retains magnitude-weighted prefix information.
+That establishes possible non-redundancy, not alpha.
+
+H002 must therefore beat both:
+- C: same-slot RVOL;
+- the existing persistence state.
+
+Status:
+`PIPELINE_CLEAN_DATE_ZERO / FIRST_SLOT_H002_EXACT_REDUNDANCY / LATER_SLOT_NON_IDENTITY / COMMON_SUPPORT_FROM_10_15 / OUTCOMES_CLOSED / FORMAL_UNCHANGED`.
