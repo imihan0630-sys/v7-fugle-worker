@@ -22469,3 +22469,31 @@ External evidence is intentionally two-sided. Chen et al. (2026, Pacific-Basin F
 Therefore the current research direction remains: preserve chart geometry and lifecycle as measurable state, but do not convert famous names into unconditional signs or votes. Any future Pattern outcome test must condition on existing momentum, close location, volatility/range, D02 price-volume acceptance, round-number/tick proximity, liquidity/microstructure and current Formal priorHigh/MA/lateStage/maxChase controls.
 
 D01 remains 51.7%. Pattern alpha remains UNKNOWN. Runtime remains NO_GO. No R09. FORMAL_OPTIMIZATION_CANDIDATE = NONE. Formal Core LOCKED.
+
+# DL-008 — 多週期型態：來源資訊 vs 表示增量 vs 預測增量 (2026-10-02)
+
+Durable detailed contract:
+research/PATTERN_MULTISCALE_INCREMENTALITY_V0_1.md
+
+This tranche does not ask whether "weekly + daily agreement looks stronger." It separates three different questions.
+
+Source Novelty（來源新穎性） asks whether the higher timeframe contains new raw market observations. When weekly OHLC is constructed from the already-available verified daily constituent bars, the answer is no: it is deterministic aggregation of the same PRICE_OHLC root.
+
+Representation Novelty（表示新穎性） is different. A weekly parent structure can be a nonlinear compressed representation of a longer history that is not fully summarized by current Formal fields. Therefore same-source does not imply useless; it implies high redundancy prior and no independent vote.
+
+Predictive Incrementality（預測增量） is a third question and remains UNKNOWN. It can only be opened later through preregistered equal-date / common-support B0-vs-B1 testing after existing long-horizon daily controls, D02 acceptance, volatility, liquidity and regime controls.
+
+A many-to-one witness is now explicit: different daily paths can produce the same weekly O/H/L/C. Temporal aggregation therefore loses path ordering. Weekly cannot be treated as a new source and cannot replace daily path information.
+
+The D01 contract inherits the existing Technical Indicator multi-timeframe overlap classes instead of forking them:
+SAME_EVENT_DUPLICATE / NESTED_HORIZON / SHARED_COMPONENT / DISTINCT_HORIZON_CONTEXT / DISTINCT_SESSION_INFORMATION / UNKNOWN.
+
+New research-only code/spec files define 16 adversarial cases, but this tranche does not claim they have executed successfully. The current status is EXECUTABLE_SPEC_WRITTEN / TEST_EXECUTION_PENDING.
+
+The future outcome family stays compact: nested weekly-major vs daily-local resistance conflict maps to existing PATTERN-RG2. No R09 is created.
+
+Multi-timeframe alignment is therefore represented as hierarchy/context/relationship metadata. scaleAgreementVoteCount remains null. Repeated daily snapshots of one weekly-parent/daily-child episode do not increase effective sample N.
+
+External evidence supports both sides. Multi-timescale and wavelet studies show transformed scale representations can sometimes improve forecasts; 2026 evidence also finds predictor heterogeneity, unstable technical indicators and strong short-term components. Overlapping-return research shows mechanical dependence can inflate measured momentum. Large technical-rule universes under data-snooping controls show that timeframe, lookback and alignment choices must be included in the multiple-testing family.
+
+D01 remains 51.7%. D01-10 remains L3. Pattern alpha UNKNOWN. Runtime NO_GO. FORMAL_OPTIMIZATION_CANDIDATE = NONE. Formal Core LOCKED.
