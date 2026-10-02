@@ -1,6 +1,12 @@
 import assert from 'node:assert/strict';
 const origin='https://fugle-test.imihan0630.workers.dev';
-const marketDate=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+const now=new Date();
+const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
+const requestedMarketDate=String(process.env.OFFICIAL_MARKET_DATE || '').trim();
+const marketDate=requestedMarketDate || today;
+assert.match(marketDate,/^\d{4}-\d{2}-\d{2}$/,'OFFICIAL_MARKET_DATE must be YYYY-MM-DD');
+assert.ok(marketDate<=today,'OFFICIAL_MARKET_DATE cannot be in the future');
+assert.ok(Date.parse(today+'T00:00:00Z')-Date.parse(marketDate+'T00:00:00Z')<=86400000,'OFFICIAL_MARKET_DATE exceeds one-day scheduled recovery window');
 assert.ok(process.env.V7_ADMIN_TOKEN,'Normal V7_ADMIN_TOKEN authorization is required');
 const adminHeaders={'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json'};
 async function admin(path,options={}) {
