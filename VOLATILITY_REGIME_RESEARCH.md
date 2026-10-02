@@ -1178,3 +1178,73 @@ Market-level TAIEX RV remains a separate regime descriptor and cannot repair a c
 
 Status:
 `LIMIT_CENSORING_IS_CLOCK_SPECIFIC / CROSS_SCALE_SUBSTITUTION_PROHIBITED`.
+
+
+## VR-040 — dispersion versus drift decomposition; RMS is not a new vote
+
+The frozen D04 daily metric is rolling population standard deviation of close-to-close SIMPLE returns.
+
+For any return window:
+`mean(r^2) = Var_pop(r) + mean(r)^2`.
+
+Therefore:
+`RMS_return^2 = dispersion^2 + drift^2`.
+
+Research implication:
+- rolling dispersion answers how variable returns are around their own window mean;
+- mean return answers directional drift;
+- RMS return combines the two mechanically;
+- adding RMS beside dispersion and mean return as a third independent vote would double-count deterministic information.
+
+This also explains the prior falsification where five identical +3% daily returns produce near-zero 5-day dispersion:
+- dispersion is near zero because the five returns are similar to each other;
+- drift is strongly positive;
+- RMS remains large because it includes the drift term.
+
+Therefore no single label such as `LOW_VOLATILITY` may be inferred from low rolling dispersion alone if the intended concept is "small absolute movement."
+
+Frozen decomposition for future diagnostics:
+- `returnMean5`, `returnMean20`: directional drift descriptors;
+- `dispersion5`, `dispersion20`: demeaned variability descriptors;
+- `rmsReturn5`, `rmsReturn20`: diagnostic identity check only unless a future measurement question specifically requires absolute return energy.
+
+No extra factor vote is authorized.
+
+Status:
+`DRIFT_DISPERSION_SEPARATED / RMS_REDUNDANCY_PROVEN`.
+
+
+## VR-041 — 2026-10-02 official-current-source diagnostic; not PIT evidence
+
+An evening current-source reconstruction was performed only to validate semantics, using official TWSE monthly market reports.
+
+Exact latest 21 official TAIEX closes available in the current official reports span 2026-09-02 through 2026-10-02.
+
+Under the frozen project convention:
+- 5-return population dispersion ~= 0.6133%;
+- 20-return population dispersion ~= 0.9349%;
+- overlapping 5/20 dispersion ratio ~= 0.6560;
+- prior15 dispersion ~= 1.0169%;
+- non-overlap recent5/prior15 ratio ~= 0.6031;
+- recent 5-return cumulative return ~= +0.6613%;
+- full 20-return cumulative return ~= +5.0060%.
+
+Interpretation:
+- both overlapping and non-overlap diagnostics currently describe lower recent return dispersion than the earlier comparison window;
+- the positive recent cumulative return again demonstrates that dispersion and direction are different estimands;
+- this is NOT evidence for a BUY, bullish regime, breakout forecast or "low latent risk."
+
+Critical provenance boundary:
+- the current official monthly report proves the data are available by the evening retrieval;
+- it does NOT prove the same October payload was already available at the intended earlier System2 decision boundary;
+- therefore this observation is `DIAGNOSTIC_ONLY_NOT_DECISION_CLOCK_PIT` and adds zero promotion-grade prospective dates.
+
+Machine-readable receipt:
+- `research/d04_market_rv_current_source_diagnostic_20261002.json`.
+
+Official sources:
+- TWSE FMTQIK September 2026 monthly report.
+- TWSE FMTQIK October 2026 current monthly report.
+
+Status:
+`CURRENT_SOURCE_DIAGNOSTIC = PASS / PIT_PROMOTION = NO`.
