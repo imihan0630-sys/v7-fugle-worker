@@ -145,15 +145,23 @@ export function buildC3EntryExperiment(c2Ledger,entryReceipts,{costs}={}){
     const pair=pairMap.get(symbol),g=verifyGeometry(r,c2),bars=verifyBars(r,c2);
     const baseSetup=["A","B"].includes(r?.baseSetup)?r.baseSetup:null;
     const admissible=pair.short?.gateStatus==="PASS"&&Array.isArray(pair.short?.missingSafety)&&pair.short.missingSafety.length===0;
-    const formalStatus=["TRIGGERED","NO_TRIGGER","UNKNOWN"].includes(r?.formalBaseline?.status)?r.formalBaseline.status:"UNKNOWN";
+    const fb=r?.formalBaseline;
+    const formalVerified=fb?.verified===true&&fb?.parentId===c2.generationId&&fb?.sessionDate===c2.sessionDate&&
+      Number.isFinite(ts(fb?.knownAt))&&ts(fb.knownAt)>ts(c2.decisionAt);
+    const formalStatus=formalVerified&&["TRIGGERED","NO_TRIGGER"].includes(fb?.status)?fb.status:"UNKNOWN";
     let alt={status:"NOT_ELIGIBLE",reason:admissible?"BASE_SETUP_UNKNOWN":"C2_SHORT_NOT_FULLY_ADMISSIBLE"};
     if(admissible&&baseSetup==="A") alt=findSupportTrigger(bars,g);
     if(admissible&&baseSetup==="B") alt=findContinuationTrigger(bars,g);
     const simulated=simulateFillAndExit(alt,bars,g,cost);
-    rows.push({symbol,pool:pair.pool,baseSetup,formalBaseline:{status:formalStatus,reason:r?.formalBaseline?.reason||null},
+    rows.push({symbol,pool:pair.pool,baseSetup,formalBaseline:{status:formalStatus,verified:formalVerified,reason:formalVerified?(fb?.reason||null):"FORMAL_BASELINE_RECEIPT_UNVERIFIED"},
       challenger:simulated,barCount:bars.length,researchOnly:true,decisionImpact:false,formalSelected:false,buyAuthorized:false,allocation:0,signal:null});
   }
-  const tally={receiptN:rows.length,formalTriggeredN:rows.filter(x=>x.formalBaseline.status==="TRIGGERED").length,
+  const eligibleSymbols=c2.pairs.filter(pair=>pair.short?.gateStatus==="PASS"&&Array.isArray(pair.short?.missingSafety)&&pair.short.missingSafety.length===0).map(x=>x.symbol);
+  const missingEntryReceiptSymbols=eligibleSymbols.filter(symbol=>!seen.has(symbol));
+  const tally={receiptN:rows.length,eligiblePairN:eligibleSymbols.length,missingEntryReceiptN:missingEntryReceiptSymbols.length,
+    entryReceiptCoveragePct:eligibleSymbols.length?round((eligibleSymbols.length-missingEntryReceiptSymbols.length)/eligibleSymbols.length*100):null,
+    formalBaselineUnknownN:rows.filter(x=>x.formalBaseline.status==="UNKNOWN").length,
+    formalTriggeredN:rows.filter(x=>x.formalBaseline.status==="TRIGGERED").length,
     challengerTriggeredN:rows.filter(x=>x.challenger.status==="TRIGGERED").length,
     simFillN:rows.filter(x=>x.challenger.fillStatus==="SIM_FILL").length,
     noTradeAtFillN:rows.filter(x=>x.challenger.fillStatus==="INVALIDATED_AT_FILL").length,
@@ -161,7 +169,7 @@ export function buildC3EntryExperiment(c2Ledger,entryReceipts,{costs}={}){
     targetN:rows.filter(x=>x.challenger.outcome==="TARGET").length,
     formalNoTriggerChallengerSimFillN:rows.filter(x=>x.formalBaseline.status==="NO_TRIGGER"&&x.challenger.fillStatus==="SIM_FILL").length};
   return {schemaVersion:"SYSTEM1_C3_ENTRY_EXPERIMENT_V0_1",generationId:c2.generationId,sessionDate:c2.sessionDate,
-    sourceC2Fingerprint:c2.fingerprint,contract:C3_CONTRACT,costs:cost,tally,rows,
+    sourceC2Fingerprint:c2.fingerprint,contract:C3_CONTRACT,costs:cost,tally,missingEntryReceiptSymbols,rows,
     economicSuperiority:"UNKNOWN",prospectiveEvidenceMature:false,formalCoreLocked:true,researchOnly:true,
     decisionImpact:false,formalCoreImpact:false,noPlanChanges:true,noTrade:true,noPush:true};
 }
