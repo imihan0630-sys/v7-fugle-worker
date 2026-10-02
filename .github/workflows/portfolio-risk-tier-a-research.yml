@@ -160,6 +160,11 @@ on:
       - "research/d15_independent_date_extension_spec_v0_1.json"
       - "tests/test_d15_independent_date_extension_v0_1.mjs"
       - "tests/portfolio_risk_d15_independent_date_extension_readonly_audit.mjs"
+      - "research/positive_signal_plan_linkage_v0_1.mjs"
+      - "research/positive_signal_plan_linkage_spec_v0_1.json"
+      - "tests/test_positive_signal_plan_linkage_v0_1.mjs"
+      - "tests/test_cross_store_write_asymmetry_v0_1.mjs"
+      - "tests/positive_signal_cross_store_readonly_audit.mjs"
       - "PORTFOLIO_RISK_TIER_A_AUDIT.md"
       - ".github/workflows/portfolio-risk-tier-a-research.yml"
   workflow_dispatch:
@@ -224,6 +229,8 @@ jobs:
           node tests/test_effective_bets_semantic_firewall_v0_1.mjs
           node tests/test_cash_attribution_v0_1.mjs
           node tests/test_d15_independent_date_extension_v0_1.mjs
+          node tests/test_positive_signal_plan_linkage_v0_1.mjs
+          node tests/test_cross_store_write_asymmetry_v0_1.mjs
       - name: Read-only production journal coverage audit
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
@@ -253,3 +260,4 @@ jobs:
           node tests/portfolio_risk_score_cap_reserve_readonly_audit.mjs
           node tests/portfolio_risk_cash_attribution_readonly_audit.mjs
           node tests/portfolio_risk_d15_independent_date_extension_readonly_audit.mjs
+          node tests/positive_signal_cross_store_readonly_audit.mjs
