@@ -403,3 +403,12 @@ Status: CHILD_IDENTITY_DESIGN_FROZEN / TEST_EXECUTION_PENDING / RUNTIME_NO_GO / 
 - Non-comparable feature-age/session cases remain explicit, never force-paired.
 - No post-outcome timeframe/boundary search.
 Status: CONTROL_SPEC_FROZEN / OUTCOME_CLOSED / FORMAL_LOCKED.
+
+### D01 shared handoff — DL-014 Pattern fingerprint semantics (2026-10-02)
+
+- Separate immutable structural identity fingerprint from evolving as-of observation payload hash.
+- Same item key + changed immutable structural fingerprint is a provenance conflict.
+- Same structural episode across later parent/as-of may legitimately have a new observation hash.
+- ROOT commits to the episode-item keyset; episode count never replaces parent coverage.
+- Outcome/later revisions never enter decision-time fingerprints.
+Status: FINGERPRINT_SPEC_FROZEN / RUNTIME_NO_GO / OUTCOME_CLOSED / FORMAL_LOCKED.
