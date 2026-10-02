@@ -1,0 +1,20 @@
+{
+  "version": "0.1",
+  "id": "SC-034_SOURCE_ACCESS_NOTE",
+  "capturedAt": "2026-10-02T15:48:00+08:00",
+  "targetIssuer": "6505 台塑石化",
+  "targetEvent": "2026-09 gasoline/diesel price adjustment",
+  "discovery": {
+    "officialDomain": "fpcc.com.tw",
+    "officialUrl": "https://www.fpcc.com.tw/cn/news/articles/3/429",
+    "searchEvidence": "Official-domain search result indicates a 2026-09-14 effective gasoline wholesale increase and cites international oil price, TWD/USD, domestic competition and Asian-neighbor lowest-price factors."
+  },
+  "accessState": {
+    "directPage": "ANTI_BOT_BROWSER_VERIFICATION",
+    "structuredFetch": "PROXY_ERROR",
+    "exactDieselAdjustment": "UNKNOWN",
+    "fullTextCaptured": false
+  },
+  "researchRule": "Do not create a complete pricing receipt from a search snippet when the official page body is not captured. Keep exact product matrix UNKNOWN rather than infer or copy from secondary media.",
+  "status": "SOURCE_ACCESS_PARTIAL / CROSS_INDUSTRY_CONTROL_CANDIDATE / NOT_COUNTED_AS_SC033_COMPLETE_EVENT"
+}
