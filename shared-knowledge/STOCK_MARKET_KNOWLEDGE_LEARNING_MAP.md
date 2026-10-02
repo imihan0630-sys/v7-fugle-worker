@@ -508,15 +508,15 @@ GitHub專屬checkpoint：
 | D18-13 | 策略績效Regime Attribution | L1 理論理解 | 20% |
 | D18-14 | Walk-forward市場狀態驗證 | L1 理論理解 | 20% |
 
-### D19｜資產定價／因子投資／市場異象 — 0%
+### D19｜資產定價／因子投資／市場異象 — 6.7%
 
 專責：12｜資產定價與因子研究室  
 證據錨點：`ASSET_PRICING_FACTOR_CHECKPOINT.md`、`ASSET_PRICING_FACTOR_RESEARCH.md`
 
 | 模組 | 課題 | 成熟度 | 百分比 |
 |---|---|---|---:|
-| D19-01 | CAPM／Beta／Alpha與Benchmark Residual | L0 未研究 | 0% |
-| D19-02 | Size規模因子 | L0 未研究 | 0% |
+| D19-01 | CAPM／Beta／Alpha與Benchmark Residual | L2 機制＋反證已定義 | 40% |
+| D19-02 | Size規模因子 | L2 機制＋反證已定義 | 40% |
 | D19-03 | Value價值因子 | L0 未研究 | 0% |
 | D19-04 | Cross-sectional Momentum橫截面動能因子 | L0 未研究 | 0% |
 | D19-05 | Quality／Profitability品質與獲利能力因子 | L0 未研究 | 0% |
