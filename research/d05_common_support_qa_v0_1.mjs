@@ -42,8 +42,13 @@ function auditCadence(row, spec, windowStartMs) {
     if (age === null || age === undefined || age === ""
       || !Number.isFinite(Number(age)) || Number(age) < 0) reasons.push("QUOTE_AGE_MISSING");
   }
-  const localRv = Number(row?.localMidquoteRv);
-  if (!Number.isFinite(localRv) || localRv < 0) reasons.push("LOCAL_MIDQUOTE_RV_MISSING");
+  const localRvRaw = row?.localMidquoteRv;
+  const localRv = localRvRaw === null || localRvRaw === undefined || localRvRaw === ""
+    ? null
+    : Number(localRvRaw);
+  if (localRv === null || !Number.isFinite(localRv) || localRv < 0) {
+    reasons.push("LOCAL_MIDQUOTE_RV_MISSING");
+  }
   const unique = [...new Set(reasons)].sort();
   return deepFreeze({
     cadence: spec.key,
@@ -55,7 +60,7 @@ function auditCadence(row, spec, windowStartMs) {
       return age === null || age === undefined || age === ""
         || !Number.isFinite(Number(age)) ? null : Number(age);
     })),
-    localMidquoteRv: Number.isFinite(localRv) && localRv >= 0 ? localRv : null,
+    localMidquoteRv: localRv !== null && Number.isFinite(localRv) && localRv >= 0 ? localRv : null,
     pressureState: row?.pressureState ?? null,
     spreadState: row?.spreadState ?? null,
     depthImbalanceState: row?.depthImbalanceState ?? null,
