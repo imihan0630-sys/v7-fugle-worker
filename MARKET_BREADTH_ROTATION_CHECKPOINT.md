@@ -651,3 +651,79 @@ Exact next:
 BR-043 freezes the first source-only/live Taiwan sector dispersion receipt on a clean member-universe lineage, with one fixed quantile convention and no forward outcomes.
 
 Formal Core unchanged.
+
+
+## BR-044 — Official TWSE industry-index rank transition establishes sector-rotation PIT feasibility
+
+Artifact:
+`research/br044_twse_sector_rotation_pit_pilot_20261002_v0_1.json`
+
+### Source contract
+TWSE `MI_INDEX` daily reports expose official industry price and total-return indices by date. This provides a Taiwan-native sector series that is independent from System 1's custom same-day sector score.
+
+For rotation research, use official **total-return** industry indices when comparing multi-day relative performance so dividend treatment is not silently inconsistent.
+
+### Bounded rank-transition witness
+A seven-sector source-only pilot compares official 2026-09-23 and 2026-10-02 observations.
+
+2026-09-23 daily-return rank within the bounded pilot:
+1. 電子零組件 +1.49%
+2. 半導體 +1.25%
+3. 數位雲端 +0.73%
+4. 油電燃氣 +0.06%
+5. 航運 -0.49%
+6. 金融保險 -0.78%
+7. 綠能環保 -1.10%
+
+2026-10-02:
+1. 油電燃氣 +5.51%
+2. 電子零組件 +2.21%
+3. 航運 +0.81%
+4. 金融保險 -0.11%
+5. 半導體 -0.18%
+6. 數位雲端 -0.21%
+7. 綠能環保 -0.85%
+
+This gives deterministic rank transitions without any arbitrary Top-N entry rule.
+
+A useful counterexample appears immediately:
+金融保險 improves from rank 6 to rank 4 even though its daily return remains negative.
+Therefore:
+`RANK_IMPROVEMENT != ABSOLUTE_POSITIVE_RETURN`.
+
+### Multi-day interval context
+Using the same official total-return index levels from 2026-09-23 to 2026-10-02:
+- 油電燃氣: +13.01%
+- 電子零組件: +4.82%
+- 綠能環保: +0.55%
+- 半導體: -0.13%
+- 航運: -0.63%
+- 數位雲端: -1.91%
+- 金融保險: -2.30%
+
+This is descriptive state evidence only, not a predictive ranking.
+
+### Firewalls
+- Seven sectors are a bounded pilot, not the full TWSE industry universe.
+- The dates are not consecutive sessions; this does not estimate one-day rotation velocity.
+- Cap-weighted industry indices can move on concentrated leadership; member breadth and concentration must remain separate.
+- Historical page retrieval now does not authenticate original historical first-known time. Future prospective receipts use capturedAt conservatively unless native availability time is proven.
+- Constituent-level interpretation requires effective-dated membership; current constituents may not be backfilled.
+
+### Maturity
+`D09-06 Sector Rotation族群輪動: L2 -> L3`.
+
+Reason:
+official Taiwan industry total-return indices are date-addressable, replayable and support continuous rank/percentile transitions under a prospective capturedAt clock. The pilot also validates a concrete rank-vs-absolute-return counterexample.
+
+This is PIT/source feasibility only:
+- no persistence/reversal alpha;
+- no preferred sector;
+- no Formal sector-score change;
+- no System 2 weight change.
+
+### Exact next
+BR-045: create an append-only prospective daily official-industry-index receipt over the full eligible TWSE industry-index set, with rank/percentile and source clock.
+Accumulate independent dates before testing persistence, reversal, breadth confirmation or stock-selection interaction.
+
+Formal Core unchanged.
