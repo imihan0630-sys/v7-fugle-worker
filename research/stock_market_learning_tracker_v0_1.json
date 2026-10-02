@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-02T16:23:00+08:00",
+  "updatedAt": "2026-10-02T16:24:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -267,11 +267,11 @@
         "TECHNICAL_INDICATOR_CHECKPOINT.md",
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
       ],
-      "maturityPct": 46.2,
-      "status": "ADX_MECHANISM_FALSIFICATION_L2 / THREE_SESSION_PIT_GATE_ACCUMULATING_2_OF_3",
-      "lastResearchUpdate": "2026-10-01",
-      "researchNote": "TI-453~459 establish exact SMA deduction/slope directional redundancy, reject SMA-style deduction semantics for EMA, and define executable ADX mechanism/falsification. Synthetic Wilder-14 witnesses show ADX is directionless (smooth up/down both 100), path-sensitive beyond identical endpoint return (smooth 100->120 ADX 100 vs choppy same-return ≈16.7353), and materially warm-up-sensitive at 65 bars versus a long baseline (delta ≈+0.8294; 150-bar delta ≈+0.0001). ADX and Impulse MACD remain a shared OHLC-derived family with high redundancy prior; ADX starts as a moderator, not an additive vote. D03-09 advances L1/20 to L2/40 and D03 aggregate to 46.2%. The source/version prospective gate remains 2/3; no outcomes or Formal behavior were opened.",
-      "exactNextContinuationPoint": "Do not manufacture a third source/version session. After the next completed Taiwan session, append the third prospective capture plus validated same-trade-date repeat and close/retain the preregistered source gate. If governance passes, execute TI-005 KD-vs-RSI then TI-006 MACD-vs-direct-trend with equal-date residualized controls. Before ADX outcome testing, prove a stable long-enough history/warm-up contract and freeze +DI/-DI/DX/ADX/formulaVersion/continuity fields. ADX efficacy follows TI-005/TI-006 and must be residualized against direct trend, ATR/regime and Impulse MACD; no additive vote, threshold sweep, historical Shadow repair or Formal change.",
+      "maturityPct": 47.7,
+      "status": "ROC_EXACT_REDUNDANCY_L2 / THREE_SESSION_RAW_RECEIPT_GATE_ACCUMULATING_2_OF_3",
+      "lastResearchUpdate": "2026-10-02",
+      "researchNote": "TI-460~467 confirm the completed 2026-10-02 TWSE/TPEx session is publicly source-visible, but the chat fetch path returns extracted/normalized content rather than the frozen observer's origin raw bytes, so the preregistered raw-receipt gate remains 2/3 and no 10/2 raw receipt is backfilled. Standard percent ROC is exactly 100*retN; common Momentum index is ROC+100; same-horizon log return is a monotonic one-to-one transform preserving rank; raw price difference is nominal-price-scale confounded. Smoothed/delta ROC remain same-family candidates needing residual tests. D03-11 advances L1/20 to L2/40; D03 aggregate becomes 47.7%. Outcomes and Formal Core remain closed.",
+      "exactNextContinuationPoint": "Keep the raw-byte three-session gate open at 2/3 until the frozen observer or receipt-equivalent authorized transport captures one new completed Taiwan session plus same-trade-date repeat. Do not backfill 2026-10-02 from extracted content. While blocked, continue outcome-blind mechanism/falsification on D03-13 multi-timeframe conflict and exact overlap among multi-horizon returns, EMA16/64 and Impulse MACD. Once the raw receipt gate genuinely closes, TI-005 KD-vs-RSI remains first efficacy inference and TI-006 MACD-vs-direct-trend second.",
       "modules": [
         {
           "id": "D03-01",
@@ -358,10 +358,12 @@
         {
           "id": "D03-11",
           "name": "ROC變動率",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「ROC變動率」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "EXACT_REDUNDANCY_DEFINED / SAME_FAMILY_RESIDUAL_ONLY / OUTCOME_UNKNOWN",
+          "next": "Do not score standard same-horizon ROC separately from retN. If studying smoothed/delta ROC, residualize against direct multi-horizon returns, acceleration, MA slope/persistence, volatility and Regime before any outcome claim."
         },
         {
           "id": "D03-12",
