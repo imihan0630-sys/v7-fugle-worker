@@ -1,0 +1,121 @@
+{
+  "version": "0.1",
+  "id": "SC-042",
+  "capturedAt": "2026-10-02T22:06:48+08:00",
+  "module": "D10-08 缺貨／供需缺口事件",
+  "mode": "TAIWAN_PIT_SHORTAGE_SUPPLY_GAP_EVENT_CONTRACT / SOURCE_ONLY / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "objective": "Define a replayable Taiwan shortage/supply-gap event state that cannot be inferred from supplier-delivery time alone.",
+  "requiredClocks": [
+    "sourcePublishedAt",
+    "capturedAt",
+    "firstEligibleDecision",
+    "observationPeriod",
+    "revisionVintage"
+  ],
+  "stateVector": [
+    "demandState",
+    "explicitShortageOrAllocationEvidence",
+    "capacityConstraintEvidence",
+    "supplierDeliveryState",
+    "productionScheduleImpact",
+    "inputPriceState",
+    "inventoryState",
+    "customerInventoryState",
+    "backlogState",
+    "passThroughState"
+  ],
+  "classificationContract": {
+    "SUPPLY_GAP_CONFIRMED_SOURCE_STATE": [
+      "Explicit shortage/allocation/capacity-constraint evidence from a dated source is required.",
+      "At least one operational consequence must also be present: lead-time stress, production scheduling impact, inventory response or input-price pressure.",
+      "Demand is stored as a separate dimension and is not required to be strong."
+    ],
+    "SUPPLY_GAP_CANDIDATE": [
+      "Indirect stress such as long supplier delivery or high input prices exists but explicit shortage/allocation evidence is absent."
+    ],
+    "MISMATCH_OR_BUFFERING_STATE": [
+      "Lead time or inventory stress exists while fresh-order momentum weakens or customer inventory rises; do not call this a clean shortage-demand boom."
+    ],
+    "NO_CONFIRMED_GAP": [
+      "Explicit shortage/allocation evidence is absent and operational stress evidence does not jointly support a supply-gap state."
+    ],
+    "UNKNOWN": [
+      "Required evidence is missing, scope-incompatible or publication timing is not authenticated."
+    ]
+  },
+  "taiwanEvidence": [
+    {
+      "observationPeriod": "2026-07",
+      "sourcePublishedAt": "2026-08-03T16:00:00+08:00",
+      "source": "NDC/CIER Taiwan PMI",
+      "evidence": [
+        "Overall manufacturing new orders 63.3 and production 62.7.",
+        "Key-material suppliers were described as capacity-limited and using selective order acceptance / quota allocation.",
+        "Electronics/optical new orders and production were both 47.7 despite a high composite PMI 65.5."
+      ],
+      "classification": "SUPPLY_GAP_CONFIRMED_SOURCE_STATE_WITH_SECTOR_DEMAND_DIVERGENCE"
+    },
+    {
+      "observationPeriod": "2026-08",
+      "sourcePublishedAt": "2026-09-01T16:00:00+08:00",
+      "source": "NDC/CIER Taiwan PMI",
+      "evidence": [
+        "Manufacturing new orders 66.5 and production 65.2.",
+        "Official release explicitly cited material shortages, allocation, long lead times and rising key-material prices.",
+        "Supply bottlenecks and cost increases were stated to constrain some order and production scheduling."
+      ],
+      "classification": "SUPPLY_GAP_CONFIRMED_SOURCE_STATE"
+    },
+    {
+      "observationPeriod": "2026-H1",
+      "sourcePublishedAt": "2026-07-24",
+      "source": "NDC/CIER Taiwan purchasing-manager outlook survey",
+      "evidence": [
+        "53.1% of manufacturing respondents identified raw-material/key-component shortages as a concern.",
+        "Under Middle East conflict effects, reported delivery time increased 31.7% on average and 16.7% reported delivery-time uncertainty.",
+        "86.9% reported supply-chain risk-management actions; 78.9% advanced orders/lengthened preparation and 73.2% increased safety stock."
+      ],
+      "classification": "STRUCTURAL_SHORTAGE_AND_BUFFERING_CONTEXT"
+    },
+    {
+      "observationPeriod": "2026-09",
+      "sourcePublishedAt": "2026-10-01",
+      "source": "NDC/CIER Taiwan PMI",
+      "evidence": [
+        "Electronics/optical supplier delivery 73.8 and input prices 83.3.",
+        "New-order momentum slowed, unfinished-order expansion decelerated to 54.3 and inventory rose to 64.8; customer inventory reached 51.0."
+      ],
+      "classification": "MISMATCH_OR_BUFFERING_STATE",
+      "negativeControl": true
+    }
+  ],
+  "falsification": [
+    "Long supplier delivery can be caused by geopolitics, logistics or material mismatch rather than demand acceleration.",
+    "High input prices can coexist with weak or slowing orders.",
+    "Inventory accumulation can be a defensive buffer or forced accumulation, not proof of shortage severity.",
+    "An industry shortage state does not prove any individual issuer has more backlog, higher ASP, better margin or higher stock return.",
+    "A shortage in one component can coexist with excess inventory elsewhere; long/short material mismatch must remain explicit."
+  ],
+  "pitRules": [
+    "Never backdate a release to the observation month.",
+    "Do not fill missing event dimensions from later releases.",
+    "Keep survey category, formal industry and issuer product exposure as separate taxonomies.",
+    "Any issuer-level use requires independent issuer-native product/revenue/order evidence.",
+    "No fixed bullish/bearish sign is assigned to a supply-gap state."
+  ],
+  "maturityDecision": {
+    "D10-08": "PROMOTE_L2_TO_L3_TAIWAN_PIT_DATA_FEASIBILITY_ONLY",
+    "D10-07": "KEEP_L3",
+    "D10-03": "KEEP_L3",
+    "D10-09": "KEEP_L3"
+  },
+  "promotionReason": "A dedicated, replayable Taiwan event contract can now be populated from dated official NDC/CIER releases with explicit shortage/allocation language, operational consequences, demand state, inventory state and negative-control months. This proves PIT/source feasibility only; it does not establish predictive efficacy or issuer-level effects.",
+  "exactNext": [
+    "Accumulate independent future shortage/supply-gap events under the same contract and preserve source-family identity.",
+    "Add issuer-native shortage/allocation or capacity evidence before mapping any event to a listed company.",
+    "Only after multiple independent dates and issuer mappings exist may D10-08 enter L4 prospective/OOS effect testing."
+  ],
+  "status": "DEDICATED_SHORTAGE_EVENT_CONTRACT / TAIWAN_PIT_SOURCE_FEASIBLE / NEGATIVE_CONTROL_INCLUDED / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
