@@ -1,7 +1,7 @@
 # System 1 Selection Redesign Governance Proposal V0.1
-Updated: 2026-10-01 Asia/Taipei
+Updated: 2026-10-03 03:16 Asia/Taipei
 Owner: 00｜研究總控室（governance and routing only）
-Status: GOVERNANCE_PROPOSAL / SHADOW_CHALLENGER_REQUEST / NO_PRODUCTION_AUTHORITY
+Status: OWNER_APPROVED_SHADOW_EXECUTION / HYBRID_CHALLENGER / NO_PRODUCTION_AUTHORITY
 Formal Core: LOCKED
 
 ## Purpose
@@ -54,6 +54,24 @@ On identical selected names and price/stop snapshots compare present score-propo
 Study breadth/sector state as a regime-dependent variable rather than always replacing a sector-level hard FAIL with a stock-level PASS. A leader/relative-strength exception is a Shadow challenger only after proving independent sector/leader definitions and no look-ahead. Fix the currently known sampling/PIT defects before any claim about sector-gate removal.
 Do not modify the third hybrid pool or cross-pool quotas in initial tests; isolate admission, timing, ranking and sizing effects.
 
+### Hybrid role-classification requirement
+
+Before changing any Challenger admission behavior, inventory every current System 1 gate and assign one research role:
+- HARD_INVALIDATION,
+- PRIMARY_ALPHA,
+- SUPPORTIVE,
+- CONTEXT_ONLY,
+- CONFIDENCE／UNCERTAINTY.
+
+A current Formal gate is not presumed to remain a hard gate merely because it is presently implemented as one. Conversely, no gate may be softened merely to increase selections. Each reclassification requires matched-date counterfactual evidence and explicit false-acceptance / drawdown accounting.
+
+The first implementation tranche is observational:
+1. full gate-overlap observer and complete denominators;
+2. immutable role-classification receipt for every current gate;
+3. matched baseline vs Hybrid Challenger decisions with no production effect;
+4. zero-pick decomposition into genuine no-opportunity, optional-gate rejection, UNKNOWN/source failure and entry/no-fill;
+5. only after those receipts exist, run preregistered gate-to-supportive experiments.
+
 ## Pre-registered evaluation
 Same completed Taiwan trade dates, same price universe and price pools, same source availability, identical benchmark/cost/fill simulator and immutable decision-clock snapshots. Count all zero-pick and failed-source days with different labels; report opportunity coverage and reasons for exclusion.
 Primary: after-cost portfolio return per calendar day at fixed budget with marked cash; drawdown/tail risk; realized or explicitly simulated capital deployment; selection-to-trigger-to-fill funnel.
@@ -68,5 +86,5 @@ System 1 engineering room: after reading latest main and RESEARCH_ENGINEERING_GO
 Owner decisions: authorize formal changes only after evidence-ready Class-C packet states exact changed lines/behavior, positive and negative prospective/OOS evidence, costs/fill quality, risks, rollback and matched baseline.
 
 ## Current decision
-AUTHORIZE GOVERNANCE DESIGN ONLY. No claim that Challenger code or PIT/OOS results exist; no Formal deployment or operational behavior change; no maturity upgrade.
+OWNER AUTHORIZES CLASS-A SHADOW EXECUTION of C1/C2/C3/C4/C5 under the Hybrid decision-role governance. Formal production remains locked. No claim that Challenger code or PIT/OOS results exist; no Formal deployment or operational behavior change; no maturity upgrade.
 Exact next engineering continuation: inventory currently available full-population gate/entry/fill receipts and pre-existing Shadow observer ownership; implement missing C1 denominator/overlap observers in isolated Class A if possible; present source/shared-schema Class B request only if needed; then preregister C2/C3 contrasts before the next observation window.
