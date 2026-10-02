@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-01 06:33 Asia/Taipei
+Updated: 2026-10-02 16:40 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -277,7 +277,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | 00｜研究總控室 | 全域治理 | 0 | — | 只管理18大領域、226模組、成熟度、研究依賴、聊天室路由、重複研究與跨線整合；不自行深挖專科。 |
 | 01｜K線與型態研究室 | D01 | 12 | 51.7% | K線／型態／價格結構 |
 | 02｜價量研究室 | D02 | 12 | 48.3% | 價量關係 |
-| 03｜技術指標與趨勢動能研究室 | D03 | 13 | 46.2% | 趨勢／動能／反轉／技術指標 |
+| 03｜技術指標與趨勢動能研究室 | D03 | 13 | 47.7% | 趨勢／動能／反轉／技術指標 |
 | 04｜波動與市場微結構研究室 | D04＋D05 | 20 | 44.0% | 波動率／波動狀態＋市場微結構／撮合／流動性 |
 | 05｜法人與籌碼研究室 | D06 | 15 | 40.0% | 法人／籌碼／槓桿／擁擠／被動資金 |
 | 06｜基本面與估值研究室 | D07＋D08 | 23 | 28.7% | 基本面／財報／資訊動態＋估值 |
@@ -349,7 +349,9 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 必讀 checkpoint：`TECHNICAL_INDICATOR_CHECKPOINT.md`、`TREND_MOMENTUM_REVERSAL_CHECKPOINT.md`  
 禁止：不得把其他 Dxx 領域當成本聊天室主線；跨領域發現只能建立 dependency（依賴）或引用證據，不能雙重計算進度。
 
-### D03｜趨勢／動能／反轉／技術指標 — 46.2%
+### D03｜趨勢／動能／反轉／技術指標 — 47.7%
+
+> D03 latest 2026-10-02: TI-460~473 confirm same-horizon standard ROC is exactly 100×retN, promote D03-11 to L2/40, and freeze EMA64 state-lineage/warm-up safeguards for System 2 resonance. 2026-10-02 official session content is source-visible, but extracted chat transport is not origin-raw-receipt-equivalent, so the preregistered raw-byte gate remains 2/3. D03 aggregate = 47.7%; Formal Core remains locked.
 
 > D03 latest 2026-10-01: TI-453~459 establish exact SMA deduction/slope directional redundancy, reject SMA-style EMA deduction semantics, and complete executable ADX mechanism/falsification plus warm-up/redundancy design. D03-09 advances to L2/40%; aggregate D03 = 46.2%. Prospective source/version gate remains 2/3; outcome join and Formal Core remain closed.
 
@@ -365,7 +367,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | D03-08 | MACD指數平滑異同移動平均 | 聚焦「MACD指數平滑異同移動平均」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D03-09 | ADX平均趨向指標 | 聚焦「ADX平均趨向指標」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 | D03-10 | Bollinger Bands布林通道 | 聚焦「Bollinger Bands布林通道」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
-| D03-11 | ROC變動率 | 聚焦「ROC變動率」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L1 理論已理解 | 20% |
+| D03-11 | ROC變動率 | 聚焦「ROC變動率」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 | D03-12 | 指標背離／repaint-safe確認 | 聚焦「指標背離／repaint-safe確認」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 | D03-13 | 多時間框架趨勢／動能衝突 | 聚焦「多時間框架趨勢／動能衝突」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 
