@@ -70,3 +70,13 @@ ER-028 prepare research-only event-vintage capture proposal only if needed.
 - Passive rebalance pressure is an event-risk/liquidity mechanism candidate, not a directional alpha rule.
 - Future event-risk studies must separate announcement reaction, pre-effective anticipation, effective-session auction pressure and post-effective continuation/reversal.
 - D11-14 source/PIT feasibility is L3; Event Risk outcome evidence remains pending.
+
+
+## D11-06 / D11-09 / D17-13 Taiwan event-clock deepening — 2026-10-02
+- New anchor: `EVENT_TRANSACTION_AND_DISCLOSURE_CLOCK_RESEARCH.md`; machine contract: `research/d11_d17_event_clock_contract_v0_1.json`.
+- D11-06 advances L2 -> L3 for Taiwan PIT source feasibility. FSC rules separate M&A/asset lifecycle clocks: fact occurrence, board/shareholder decisions, contract, regulatory approval, completion, revision/termination/delay. Announcement is explicitly not completion.
+- D11-09 advances L2 -> L3 for Taiwan PIT source feasibility. TWSE rules expose recurring financial-report, monthly-revenue and investor-conference timing. Monthly revenue due-by-10th is frozen as DEADLINE_ONLY unless actual publication is observed.
+- D17-13 advances L2 -> L3 for Taiwan PIT source feasibility. Taxonomy frozen: SCHEDULED_EXACT / SCHEDULED_WINDOW / DEADLINE_ONLY / UNSCHEDULED / UNKNOWN.
+- Conservative replay rule unchanged: capturedAt controls availability until source-native availability is independently authenticated; deadline or displayed publication time cannot backdate knowledge.
+- No return, gap, continuation, reversal, cost or directional alpha was inspected. FORMAL_OPTIMIZATION_CANDIDATE = NO. Formal Core unchanged.
+- Exact next: immutable prospective event-state and publication receipts across independent dates; keep D11-13 negative-evidence completeness at L2 until expected/observed source coverage can prove absence.
