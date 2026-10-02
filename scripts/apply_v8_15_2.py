@@ -64,6 +64,7 @@ const C3_RESEARCH_CLASSIFICATIONS=new Set(["FULL_SHORT_PASS","CONDITIONAL_SAFETY
 
 const C3_RESEARCH_OPERATOR_LIMITS=Object.freeze({
   providerLimitPerMinute:60,
+  maxTotalCallsPerMinute:50,
   maxSymbols:6,
   maxCallsPerSlot:6,
   callsPerSession:102
@@ -255,7 +256,7 @@ async function persistC3ResearchBar(session,row,scheduledTime,rawBar) {
   return {stored:true,duplicate:false,symbol:row.symbol,barStart};
 }
 
-async function captureC3ResearchBarsSafe(env,scheduledTime,need15) {
+async function captureC3ResearchBarsSafe(env,scheduledTime,need15,baseFugleCallsThisMinute=0) {
   if(!need15) return {enabled:true,skipped:true,reason:"NO_NEW_COMPLETED_15M_BAR",extraCalls:0,researchOnly:true,decisionImpact:false};
   if(!env?.V7_DB||!env?.FUGLE_API_KEY) return {enabled:false,skipped:true,reason:"C3_CAPTURE_RUNTIME_BINDING_MISSING",extraCalls:0,researchOnly:true,decisionImpact:false};
   const limits=c3ResearchLimits(env);
@@ -272,6 +273,13 @@ async function captureC3ResearchBarsSafe(env,scheduledTime,need15) {
     if(rows.length>limits.maxSymbols||rows.length>limits.maxCallsPerSlot||
        rows.length*C3_RESEARCH_CAPTURE_SLOTS.length>limits.callsPerSession)
       return {enabled:false,skipped:true,reason:"C3_CAPTURE_ACTIVE_COHORT_EXCEEDS_OPERATOR_LIMITS",extraCalls:0,researchOnly:true,decisionImpact:false,formalCoreImpact:false};
+    const baseCalls=Number(baseFugleCallsThisMinute);
+    if(!Number.isFinite(baseCalls)||baseCalls<0||baseCalls+rows.length>limits.maxTotalCallsPerMinute)
+      return {enabled:false,skipped:true,reason:"C3_CAPTURE_MINUTE_BUDGET_BLOCKED",extraCalls:0,
+        baseFugleCallsThisMinute:Number.isFinite(baseCalls)&&baseCalls>=0?baseCalls:null,
+        projectedTotalCallsThisMinute:Number.isFinite(baseCalls)&&baseCalls>=0?baseCalls+rows.length:null,
+        maxTotalCallsPerMinute:limits.maxTotalCallsPerMinute,
+        researchOnly:true,decisionImpact:false,formalCoreImpact:false};
 
     const formal=await loadStockConfig(env);
     const formalSet=new Set((formal?.stocks||[]).map(x=>String(x.symbol)));
@@ -290,6 +298,8 @@ async function captureC3ResearchBarsSafe(env,scheduledTime,need15) {
     });
     return {
       enabled:true,skipped:false,targetDate,expectedSlot,cohortSize:rows.length,extraCalls:rows.length,
+      baseFugleCallsThisMinute:baseCalls,projectedTotalCallsThisMinute:baseCalls+rows.length,
+      maxTotalCallsPerMinute:limits.maxTotalCallsPerMinute,
       stored:details.filter(x=>x.stored).length,duplicates:details.filter(x=>x.duplicate).length,
       errors:details.filter(x=>x.error).length,details,
       researchOnly:true,decisionImpact:false,formalCoreImpact:false,noPlanChanges:true,noTrade:true,noPush:true
@@ -351,9 +361,9 @@ r'''  const pvShadow = await recordPvIntradayShadowSafe(env,results,scheduledTim
 r'''  const pvShadow = await recordPvIntradayShadowSafe(env,results,scheduledTime,forceFrames||need15);
   // C3 research capture runs only after Formal signal processing, live-state persistence,
   // and the existing PV Shadow recorder. It never joins monitoringStocks/results.
-  const c3ResearchCapture = await captureC3ResearchBarsSafe(env,scheduledTime,need15);
-  const c3ExtraCalls=Number(c3ResearchCapture?.extraCalls||0);
   const baseCallSummary=kvSummary.fugleCallsThisRun||{};
+  const c3ResearchCapture = await captureC3ResearchBarsSafe(env,scheduledTime,need15,Number(baseCallSummary.total||0));
+  const c3ExtraCalls=Number(c3ResearchCapture?.extraCalls||0);
   return {...kvSummary,
     fugleCallsThisRun:{...baseCallSummary,c3ResearchCandles:c3ExtraCalls,total:Number(baseCallSummary.total||0)+c3ExtraCalls},
     executionResearchRecorder,pvShadow,c3ResearchCapture};''',
