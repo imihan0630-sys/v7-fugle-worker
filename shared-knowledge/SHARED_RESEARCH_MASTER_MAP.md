@@ -338,3 +338,17 @@ K-line/Pattern research added an implementation-level replay/path falsification 
 Status: RESEARCH_ONLY / ALPHA_UNKNOWN / NO_FORMAL_PROMOTION.
 
 - Event transaction/disclosure clock anchor: `EVENT_TRANSACTION_AND_DISCLOSURE_CLOCK_RESEARCH.md` (D11-06 M&A/asset-event lifecycle, D11-09 recurring disclosure windows, D17-13 scheduled/unscheduled taxonomy and PIT replay clocks).
+
+### D01 shared handoff — DL-008 multi-scale incrementality (2026-10-02)
+
+Reusable cross-system rule:
+- Source Novelty（來源新穎性） != Representation Novelty（表示新穎性） != Predictive Incrementality（預測增量）.
+- Weekly OHLC derived from daily constituents is deterministic aggregation of the same PRICE_OHLC root: no new raw-source vote.
+- Temporal aggregation is many-to-one and can lose path information; higher timeframe is not automatically superior.
+- A cross-scale topology relation may still be a nonlinear representation candidate relative to finite baseline controls, but its predictive incrementality remains UNKNOWN until prospective/OOS residual testing.
+- Reuse the shared overlap classes from Technical Indicator research; do not create separate D01 timeframe-voting semantics.
+- Timeframe pair / bar alignment / relation definition belong to the multiple-testing family.
+- Repeated scale snapshots do not inflate effective N.
+- Pattern nested-resistance inference remains under existing PATTERN-RG2; no R09.
+
+Status: EXECUTABLE_SPEC_WRITTEN / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / FORMAL_CORE_LOCKED.
