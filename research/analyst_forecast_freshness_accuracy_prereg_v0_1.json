@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "ANALYST_FORECAST_FRESHNESS_ACCURACY_PREREG_V0_1",
+  "researchRoom": "06",
+  "domains": [
+    "D07",
+    "D08"
+  ],
+  "modules": [
+    "D07-11",
+    "D08-04"
+  ],
+  "status": "PREREGISTERED_RESEARCH_ONLY_SOURCE_BLOCKED",
+  "frozenAtAsiaTaipei": "2026-10-02T13:45:00+08:00",
+  "purpose": "Study forecast freshness and consensus construction using forecast accuracy only, before any stock-return outcome or stale-cutoff optimization.",
+  "sourceDependency": "Requires an authorized canonical PIT analyst-estimate source satisfying analyst_forecast_revision_pit_contract_v0_1.",
+  "primaryUnit": "symbol × target fiscal period × forecast basis × asOf",
+  "actualAlignment": {
+    "rule": "Compare forecasts only to the first decision-time eligible actual EPS for the same target fiscal period and compatible EPS basis.",
+    "corrections": "Later restatements are separate vintages; do not rewrite the original forecast-accuracy target unless the experiment explicitly studies corrected actuals.",
+    "incompatibleBasis": "UNKNOWN"
+  },
+  "forecastAge": {
+    "primaryVariable": "forecastAgeDays continuous",
+    "descriptiveBands": [
+      "0_7",
+      "8_30",
+      "31_60",
+      "61_90",
+      "GT_90"
+    ],
+    "policyRule": "Bands are diagnostics only. No stale cutoff or production weight may be chosen from stock-return outcomes.",
+    "horizonRule": "Age comparisons are within identical target fiscal horizon/basis."
+  },
+  "preregisteredConsensusVariants": [
+    {
+      "id": "ALL_ACTIVE_LATEST_PER_FORECASTER_MEAN",
+      "description": "Mean of each forecaster's latest active same-horizon compatible forecast as of decision time."
+    },
+    {
+      "id": "ALL_ACTIVE_LATEST_PER_FORECASTER_MEDIAN",
+      "description": "Median of each forecaster's latest active same-horizon compatible forecast."
+    },
+    {
+      "id": "MOST_RECENT_SINGLE",
+      "description": "Single most recent compatible forecast; benchmark only, not assumed best."
+    },
+    {
+      "id": "THREE_MOST_RECENT_MEAN",
+      "description": "Mean of the three most recent compatible forecasts when coverage>=3; benchmark motivated by recency/aggregation literature."
+    },
+    {
+      "id": "THIRTY_DAY_MEAN",
+      "description": "Mean of compatible forecasts published in the prior 30 calendar days; literature benchmark only, never a preselected production cutoff."
+    }
+  ],
+  "accuracyMetrics": {
+    "primary": [
+      "absoluteForecastError = abs(forecastEPS - actualEPS)",
+      "signedForecastError = forecastEPS - actualEPS"
+    ],
+    "guardedSecondary": [
+      "absolutePercentageError only when actualEPS is positive and safely away from zero",
+      "scaledAbsoluteError using an ex-ante frozen positive scale"
+    ],
+    "prohibited": [
+      "treating negative/near-zero actual EPS percentage errors as ordinary comparable errors",
+      "choosing a metric after seeing stock returns"
+    ]
+  },
+  "requiredStrata": [
+    "coverageCount",
+    "forecastAgeDays",
+    "forecastDispersion",
+    "brokerConcentration",
+    "companySize/liquidity",
+    "industry",
+    "targetHorizon",
+    "earningsSign/turnaroundState",
+    "daysSinceMaterialFundamentalDisclosure"
+  ],
+  "hypotheses": [
+    "FRESH_H1: More recent forecasts may be more accurate, but recency benefit must be measured after holding target horizon/basis constant.",
+    "FRESH_H2: A synchronized multi-forecast consensus may outperform an unsynchronized all-active mean because stale forecasts dilute information.",
+    "FRESH_H3: The most recent single forecast need not dominate a recent multi-forecast consensus because recency and aggregation trade off.",
+    "FRESH_H4: Any apparent analyst-ability ranking must be robust to timing advantage, sparse coverage and heterogeneous firm predictability.",
+    "FRESH_H5: Forecast-age effects may vary with company size, disclosure intensity and event proximity; no universal stale cutoff is assumed."
+  ],
+  "falsification": [
+    "If age loses explanatory power after event timing/horizon/coverage controls, reject universal freshness weighting.",
+    "If a 30-day composite is not consistently more accurate than other preregistered variants, do not promote 30 days as a cutoff.",
+    "If sparse coverage or a few firms dominate relative-accuracy rankings, classify ANALYST_RANKING_FRAGILE.",
+    "If provider membership/history cannot be reconstructed point-in-time, accuracy comparison remains SOURCE_BLOCKED."
+  ],
+  "returnOutcomeGate": "CLOSED",
+  "formalCoreChanged": false,
+  "promotionState": "NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
