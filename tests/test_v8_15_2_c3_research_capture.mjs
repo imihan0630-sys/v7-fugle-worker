@@ -14,22 +14,19 @@ for(const token of [
   "CREATE TABLE IF NOT EXISTS trade_research_c3_bars",
   'url.pathname === "/api/research/c3-capture-cohort"',
   'url.pathname === "/api/research/c3-capture-bars"',
-  "C3_CAPTURE_OPERATOR_LIMITS_UNSET",
+  "C3_RESEARCH_OPERATOR_LIMITS",
   "C3_CAPTURE_FORMAL_SYMBOL_MUST_REUSE_EXISTING_PV",
   "C3_CAPTURE_FORMAL_OVERLAP_DETECTED",
   "C3_CAPTURE_IMMUTABLE_BAR_CONFLICT",
   "C3_CAPTURE_TARGET_ALREADY_BOUND_TO_ANOTHER_GENERATION"
 ]){assert.ok(source.includes(token),token);n++;}
 
-const limitsMissing=api.c3ResearchLimits({});
-eq(limitsMissing.ready,false);
-eq(limitsMissing.reason,"C3_CAPTURE_OPERATOR_LIMITS_UNSET");
-const limits=api.c3ResearchLimits({
-  C3_RESEARCH_MAX_SYMBOLS:"4",
-  C3_RESEARCH_MAX_CALLS_PER_SLOT:"4",
-  C3_RESEARCH_CALL_BUDGET_PER_SESSION:"68"
-});
-eq(limits,{ready:true,maxSymbols:4,maxCallsPerSlot:4,callsPerSession:68,reason:null});
+const limits=api.c3ResearchLimits({});
+eq(limits,{ready:true,providerLimitPerMinute:60,maxSymbols:6,maxCallsPerSlot:6,callsPerSession:102,reason:null});
+const disabled=api.c3ResearchLimits({C3_RESEARCH_CAPTURE_DISABLED:"true"});
+eq(disabled.ready,false);
+eq(disabled.reason,"C3_CAPTURE_OPERATOR_DISABLED");
+eq(disabled.maxSymbols,6);
 
 eq(api.c3ExpectedSlot(Date.parse("2026-10-05T01:16:00Z")),"09:00");
 eq(api.c3ExpectedSlot(Date.parse("2026-10-05T01:31:00Z")),"09:15");
@@ -80,7 +77,7 @@ assert.doesNotMatch(cohortRoute,/isPushAuthorized|sendPush|processSignalState/);
 
 console.log(JSON.stringify({
   ok:true,assertions:n,version:"8.15.2-c3-research-capture",
-  operatorLimitsRequired:true,formalTargetMutation:false,formalSignalPath:false,
+  operatorCeilingsFrozen:true,basicProviderLimitPerMinute:60,maxShadowSymbols:6,formalTargetMutation:false,formalSignalPath:false,
   pushPath:false,orderPath:false,extraQuoteCalls:0,extra15mCandlesOnly:true,
   formalCoreImpact:false,system2Touched:false
 }));
