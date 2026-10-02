@@ -1,0 +1,126 @@
+{
+  "version": "0.1",
+  "id": "BR-042",
+  "date": "2026-10-02 Asia/Taipei",
+  "module": "D09-09 橫截面報酬離散度",
+  "mode": "ISOLATED_SYNTHETIC_FALSIFICATION_QA",
+  "formalCoreChanged": false,
+  "outcomesOpened": false,
+  "quantileConvention": "linear interpolation at (n-1)*q for synthetic QA; production/research receipt must freeze one convention before use",
+  "fixtures": [
+    {
+      "case": "BROAD_UP_LOW_DISPERSION",
+      "returnsPct": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "metrics": {
+        "mean": 2,
+        "median": 2,
+        "CSSD": 0,
+        "CSAD": 0,
+        "IQR": 0,
+        "MAD": 0
+      },
+      "conclusion": "Low dispersion can coexist with broad bullish synchronization."
+    },
+    {
+      "case": "BROAD_DOWN_LOW_DISPERSION",
+      "returnsPct": [
+        -2,
+        -2,
+        -2,
+        -2
+      ],
+      "metrics": {
+        "mean": -2,
+        "median": -2,
+        "CSSD": 0,
+        "CSAD": 0,
+        "IQR": 0,
+        "MAD": 0
+      },
+      "conclusion": "The exact same zero-dispersion state can coexist with broad bearish synchronization; dispersion has no sign by itself."
+    },
+    {
+      "case": "SINGLE_EXTREME_WINNER",
+      "returnsPct": [
+        10,
+        0,
+        0,
+        0
+      ],
+      "metrics": {
+        "mean": 2.5,
+        "median": 0,
+        "CSSD": 5,
+        "CSAD": 3.75,
+        "IQR": 2.5,
+        "MAD": 0
+      },
+      "conclusion": "CSSD/CSAD can look high while median-based MAD stays zero; one extreme member can dominate non-robust dispersion."
+    },
+    {
+      "case": "SYMMETRIC_SPLIT",
+      "returnsPct": [
+        -10,
+        0,
+        0,
+        10
+      ],
+      "metrics": {
+        "mean": 0,
+        "median": 0,
+        "CSSD": 8.16497,
+        "CSAD": 5,
+        "IQR": 5,
+        "MAD": 5
+      },
+      "conclusion": "High dispersion can reflect genuine two-sided disagreement even when average return is exactly zero."
+    },
+    {
+      "case": "MODERATE_DISTRIBUTED_DISPERSION",
+      "returnsPct": [
+        -1,
+        0,
+        1,
+        2
+      ],
+      "metrics": {
+        "mean": 0.5,
+        "median": 0.5,
+        "CSSD": 1.29099,
+        "CSAD": 1,
+        "IQR": 1.5,
+        "MAD": 1
+      },
+      "conclusion": "Multiple robust/non-robust measures agree more closely when dispersion is distributed rather than driven by one extreme member."
+    }
+  ],
+  "falsificationResults": [
+    "LOW_DISPERSION != BULLISH",
+    "LOW_DISPERSION != BEARISH",
+    "HIGH_CSSD != BROAD_DIFFERENTIATION",
+    "MEAN_RETURN != DISPERSION_DIRECTION",
+    "ROBUST_AND_NONROBUST_DISPERSION_MUST_BE_PRESERVED_SEPARATELY"
+  ],
+  "productionResearchRules": [
+    "Freeze quantile convention before any live IQR comparison.",
+    "Report member count and return coverage.",
+    "Preserve price-limit/event contamination.",
+    "Leader-removal must be selected by pre-return tradeValue, never realized return.",
+    "No threshold sweep and no forward outcome join before source-only live receipt."
+  ],
+  "maturityDecision": {
+    "D09-09": "KEEP_L3",
+    "D09-12": "KEEP_L2"
+  },
+  "exactNext": [
+    "BR-043 freeze the first live/source-only Taiwan sector dispersion receipt when the member-universe lineage is clean.",
+    "Compare CSSD/CSAD/IQR/MAD and trade-value leader-removal on the same member set.",
+    "Accumulate independent dates before testing strategy/regime interactions."
+  ],
+  "status": "SYNTHETIC_DIRECTION_FALSIFICATION_PASS / ROBUSTNESS_NEED_CONFIRMED / LIVE_RECEIPT_PENDING / FORMAL_UNCHANGED"
+}
