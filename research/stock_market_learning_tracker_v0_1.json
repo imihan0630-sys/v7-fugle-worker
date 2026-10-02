@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-02T16:31:00+08:00",
+  "updatedAt": "2026-10-02T20:04:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 297,
-    "maturityWeightedPct": 37.3
+    "maturityWeightedPct": 37.8
   },
   "domains": [
     {
@@ -1427,7 +1427,7 @@
         "DERIVATIVES_VOLATILITY_CHECKPOINT.md",
         "DERIVATIVES_VOLATILITY_RESEARCH.md"
       ],
-      "maturityPct": 30,
+      "maturityPct": 40,
       "modules": [
         {
           "id": "D12-01",
@@ -1534,42 +1534,46 @@
         {
           "id": "D12-13",
           "name": "Greeks：Delta／Gamma／Vega／Theta",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Greeks：Delta／Gamma／Vega／Theta」。學習範圍：衍生品研究必須凍結合約、到期、履約價、DTE、價格／IV時計與流動性語意；研究 Greeks、IV-RV、VRP與波動率曲面時必須包含正向機制、反證、PIT、可重播、交易成本、稀疏報價／插值風險、與既有VIX／Skew／Gamma資訊的冗餘及增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D12-13 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "CURRICULUM_RECONCILED / CONCEPT_AND_FALSIFICATION_FROZEN / TAIWAN_PIT_EVIDENCE_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "next": "Audit permitted TAIFEX historical/statistical option-chain source for parser/surface QA, freeze surface method/quality receipts, then accumulate source-attested independent dates before L3.",
+          "evidence": "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json plus DERIVATIVES_VOLATILITY_RESEARCH.md DR-051..DR-059 reconcile pre-existing Gamma/VIX/VRP/surface work into the expanded D12 curriculum. No L3: strict Taiwan option-chain/surface prospective receipts and OOS evidence remain absent."
         },
         {
           "id": "D12-14",
           "name": "IV-RV Spread隱含與實現波動差",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「IV-RV Spread隱含與實現波動差」。學習範圍：衍生品研究必須凍結合約、到期、履約價、DTE、價格／IV時計與流動性語意；研究 Greeks、IV-RV、VRP與波動率曲面時必須包含正向機制、反證、PIT、可重播、交易成本、稀疏報價／插值風險、與既有VIX／Skew／Gamma資訊的冗餘及增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D12-14 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "CURRICULUM_RECONCILED / CONCEPT_AND_FALSIFICATION_FROZEN / TAIWAN_PIT_EVIDENCE_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "next": "Audit permitted TAIFEX historical/statistical option-chain source for parser/surface QA, freeze surface method/quality receipts, then accumulate source-attested independent dates before L3.",
+          "evidence": "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json plus DERIVATIVES_VOLATILITY_RESEARCH.md DR-051..DR-059 reconcile pre-existing Gamma/VIX/VRP/surface work into the expanded D12 curriculum. No L3: strict Taiwan option-chain/surface prospective receipts and OOS evidence remain absent."
         },
         {
           "id": "D12-15",
           "name": "Volatility Risk Premium波動率風險溢酬",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Volatility Risk Premium波動率風險溢酬」。學習範圍：衍生品研究必須凍結合約、到期、履約價、DTE、價格／IV時計與流動性語意；研究 Greeks、IV-RV、VRP與波動率曲面時必須包含正向機制、反證、PIT、可重播、交易成本、稀疏報價／插值風險、與既有VIX／Skew／Gamma資訊的冗餘及增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D12-15 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "CURRICULUM_RECONCILED / CONCEPT_AND_FALSIFICATION_FROZEN / TAIWAN_PIT_EVIDENCE_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "next": "Audit permitted TAIFEX historical/statistical option-chain source for parser/surface QA, freeze surface method/quality receipts, then accumulate source-attested independent dates before L3.",
+          "evidence": "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json plus DERIVATIVES_VOLATILITY_RESEARCH.md DR-051..DR-059 reconcile pre-existing Gamma/VIX/VRP/surface work into the expanded D12 curriculum. No L3: strict Taiwan option-chain/surface prospective receipts and OOS evidence remain absent."
         },
         {
           "id": "D12-16",
           "name": "Volatility Surface／Smile波動率曲面與微笑",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Volatility Surface／Smile波動率曲面與微笑」。學習範圍：衍生品研究必須凍結合約、到期、履約價、DTE、價格／IV時計與流動性語意；研究 Greeks、IV-RV、VRP與波動率曲面時必須包含正向機制、反證、PIT、可重播、交易成本、稀疏報價／插值風險、與既有VIX／Skew／Gamma資訊的冗餘及增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D12-16 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "CURRICULUM_RECONCILED / CONCEPT_AND_FALSIFICATION_FROZEN / TAIWAN_PIT_EVIDENCE_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "next": "Audit permitted TAIFEX historical/statistical option-chain source for parser/surface QA, freeze surface method/quality receipts, then accumulate source-attested independent dates before L3.",
+          "evidence": "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json plus DERIVATIVES_VOLATILITY_RESEARCH.md DR-051..DR-059 reconcile pre-existing Gamma/VIX/VRP/surface work into the expanded D12 curriculum. No L3: strict Taiwan option-chain/surface prospective receipts and OOS evidence remain absent."
         }
       ]
     },
