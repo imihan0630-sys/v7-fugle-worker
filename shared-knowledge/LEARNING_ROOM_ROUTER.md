@@ -145,7 +145,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 不合規：
 - `Forecast Freshness（預估新鮮度）`
 - `Consensus Accuracy（共識準確度）`
-- `Volume Profile（成交量分布）`
+- `Volume（成交量） Profile（分布）`
 因為前面的英文單字沒有逐字緊接中文。
 
 ### Machine literal（機器原樣字串）例外
@@ -231,9 +231,9 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 - PIT（時點一致性）
 - OOS（樣本外驗證）
 - Shadow（影子驗證）
-- Market Regime（市場狀態）
-- Moving Average（移動平均線）
-- Factor Redundancy（因子冗餘）
+- Market（市場） Regime（狀態）
+- Moving（移動） Average（平均線）
+- Factor（因子） Redundancy（冗餘）
 
 為避免破壞機器可讀內容，GitHub 路徑、檔名、URL、commit SHA、程式碼、JSON key、資料欄位名稱、函式名、正式模組 ID 等 machine literal（機器原樣字串）必須保留原文；若需要說明，應在其後另加中文解釋，不得改寫原始字串本身。
 
@@ -893,7 +893,7 @@ maturityPct（成熟度百分比）、Level（等級）、status（狀態）必�
    - 【本輪執行指令】＋固定指令全文
 
 2. 研究內容與末尾區塊中的英文術語、英文縮寫、英文專有名詞，是否都已立即補中文解釋。
-   - 例如：PIT（時點一致性）、OOS（樣本外驗證）、Shadow（影子驗證）、Tracker（進度追蹤器）、Volume Profile（成交量分布）、alpha（超額報酬）、recovery（恢復／補回）、generation（世代／生成批次）、common support（共同支撐區間）、Persistence state（持續性狀態）。
+   - 例如：PIT（時點一致性）、OOS（樣本外驗證）、Shadow（影子驗證）、Tracker（進度追蹤器）、Volume Profile（成交量分布）、alpha（超額報酬）、recovery（恢復／補回）、generation（世代／生成批次）、common（共同） support（支撐區間）、Persistence（持續性） state（狀態）。
    - GitHub 路徑、檔名、URL、commit SHA、程式碼、JSON key、正式欄位名、模組 ID 等 machine literal（機器原樣字串）可保留原文，但若其語意對使用者有必要理解，後方仍應另加中文解釋。
 
 3. 結尾是否完整包含：
