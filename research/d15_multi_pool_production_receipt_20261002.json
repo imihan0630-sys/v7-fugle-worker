@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "D15_MULTI_POOL_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-10-02T13:18:56+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36968309192 / job 110716767898",
+  "workflowRunId": 36968309192,
+  "jobId": 110716767898,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "sourceEndpoint": "/api/journal?days=365",
+  "recordedDates": 4,
+  "readySelectedDates": 2,
+  "bothPoolsRepresentedDates": 0,
+  "singlePoolSelectedDates": 2,
+  "dates": [
+    {
+      "scanDate": "2026-09-18",
+      "selectedCount": 3,
+      "poolCounts": {
+        "GENERAL": 3,
+        "THOUSAND": 0
+      },
+      "symbols": {
+        "GENERAL": [
+          "2006",
+          "3105",
+          "6133"
+        ],
+        "THOUSAND": []
+      },
+      "totalPlannedCapitalNTD": 168000,
+      "totalProjectedStopRiskNTD": 6483.4292,
+      "aggregateNameRiskHHI": 0.3772380854,
+      "crossPoolRiskIdentifiable": false
+    },
+    {
+      "scanDate": "2026-09-21",
+      "selectedCount": 1,
+      "poolCounts": {
+        "GENERAL": 1,
+        "THOUSAND": 0
+      },
+      "symbols": {
+        "GENERAL": [
+          "3006"
+        ],
+        "THOUSAND": []
+      },
+      "totalPlannedCapitalNTD": 70000,
+      "totalProjectedStopRiskNTD": 2613.9055,
+      "aggregateNameRiskHHI": 1,
+      "crossPoolRiskIdentifiable": false
+    },
+    {
+      "scanDate": "2026-09-22",
+      "selectedCount": 0,
+      "status": "ZERO_SELECTED",
+      "crossPoolRiskIdentifiable": false
+    },
+    {
+      "scanDate": "2026-09-23",
+      "selectedCount": 0,
+      "status": "ZERO_SELECTED",
+      "crossPoolRiskIdentifiable": false
+    }
+  ],
+  "conclusions": {
+    "proven": [
+      "GENERAL/THOUSAND selected-plan pool identity is PIT-reconstructable from formal_close because formalClose is the same scan-date close used by the 1000-NTD selector split.",
+      "Plan-time capital and projected stop-risk can be aggregated by reconstructed price-tier pool."
+    ],
+    "notProven": [
+      "Cross-pool diversification benefit: no recorded selected date has both pools represented.",
+      "GENERAL and THOUSAND statistical independence/correlation diversification.",
+      "Sector/factor diversification from the price-tier split."
+    ],
+    "missingnessRule": "Zero both-pools dates is ABSENCE_OF_IDENTIFYING_SAMPLE, not evidence that cross-pool diversification equals zero or fails."
+  },
+  "maturityDecision": {
+    "module": "D15-15",
+    "from": "L2 / 40%",
+    "to": "L3 / 60%",
+    "basis": "Taiwan Production PIT source/data feasibility only",
+    "forbiddenInterpretation": "No alpha/diversification/OOS effect claim."
+  },
+  "status": "POOL_IDENTITY_PIT_VALIDATED / BOTH_POOLS_SAMPLE_ZERO / CROSS_POOL_DIVERSIFICATION_UNKNOWN / D15_15_L3",
+  "formalCoreImpact": false
+}
