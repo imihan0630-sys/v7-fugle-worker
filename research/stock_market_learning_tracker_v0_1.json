@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-02 Asia/Taipei",
+  "updatedAt": "2026-10-02T15:48:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -939,7 +939,7 @@
         "MARKET_BREADTH_ROTATION_CHECKPOINT.md",
         "MARKET_BREADTH_ROTATION_RESEARCH.md"
       ],
-      "maturityPct": 48.3,
+      "maturityPct": 50,
       "modules": [
         {
           "id": "D09-01",
@@ -968,10 +968,12 @@
         {
           "id": "D09-04",
           "name": "漲跌家數／Advance-Decline",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「漲跌家數／Advance-Decline」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "OFFICIAL_TWSE_STOCK_BREADTH_PIT_PASS / INDEX_BREADTH_DIVERGENCE_WITNESS / OUTCOMES_CLOSED",
+          "next": "BR-040 repeat official TWSE stock breadth across independent dates and add TPEx plus strategy-universe lanes without denominator mixing; only later test D09-12 index/breadth divergence prospectively."
         },
         {
           "id": "D09-05",
@@ -1006,8 +1008,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「大型股vs小型股領導」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "TAIWAN_PIT_DATA_FEASIBLE / SIZE_STATE_CONTRACT_FROZEN / OUTCOMES_CLOSED",
-          "next": "BR-037 build outcome-blind SIZE_LEADERSHIP_RECEIPT from official Taiwan50/MidCap100/SC300 total-return values at D1/D5/D20/D60; control sector mix, liquidity, limit-hit context, breadth and regime before any strategy use."
+          "status": "TAIWAN_PIT_DATA_FEASIBLE / FIRST_OFFICIAL_SIZE_STATE_RECEIPT_FROZEN / HORIZON_CONFLICT_OBSERVED / OUTCOMES_CLOSED",
+          "next": "BR-038 accumulate independent common-complete Taiwan50/MidCap100/SmallCap300 total-return receipts and add sector-mix, liquidity, limit-hit, breadth and regime controls before any outcome interpretation."
         },
         {
           "id": "D09-09",
@@ -1099,8 +1101,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Pricing Power定價能力」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "TAIWAN_PIT_DATA_FEASIBLE / PRICING_POWER_RECEIPT_SCHEMA_FROZEN / OUTCOMES_CLOSED",
-          "next": "SC-033 collect >=3 independent issuer pricing events outcome-blind using the multidimensional state vector; SC-034 later join realized ASP/margin only on native publication clocks and compatible product scope."
+          "status": "TAIWAN_PIT_DATA_FEASIBLE / THREE_EVENT_SINGLE_ISSUER_CALIBRATION / CROSS_INDUSTRY_SOURCE_PARTIAL / OUTCOMES_CLOSED",
+          "next": "SC-034 obtain one different-issuer official full pricing event under the SC-032 state vector; the FPCC candidate remains SOURCE_ACCESS_PARTIAL and does not count. SC-035 prospectively capture native sourcePublishedAt/capturedAt for future pricing events before realized ASP/margin joins."
         },
         {
           "id": "D10-07",
