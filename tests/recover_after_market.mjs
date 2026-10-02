@@ -7,14 +7,18 @@ const helpers=await import('data:text/javascript;base64,'+Buffer.from(source+'\n
 const now=new Date(),today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
 const time=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Taipei',hour:'2-digit',minute:'2-digit',hour12:false}).format(now);
 const requestedDate=String(process.env.RECOVERY_MARKET_DATE || '').trim();
-const historicalRecovery=requestedDate.length>0;
-const date=historicalRecovery ? requestedDate : today;
-if(!historicalRecovery && (time<'23:35' || time>'23:59')) {console.log(JSON.stringify({skipped:true,reason:'Outside 23:35-23:59 same-day recovery window',date,time}));process.exit(0);}
+const scheduledFallback=String(process.env.RECOVERY_SCHEDULED_FALLBACK || '').trim().toLowerCase()==='true';
+if(scheduledFallback && !requestedDate) throw new Error('Scheduled fallback requires frozen RECOVERY_MARKET_DATE');
+const historicalRecovery=requestedDate.length>0 && !scheduledFallback;
+const date=requestedDate || today;
+if(!historicalRecovery && !scheduledFallback && (time<'23:35' || time>'23:59')) {console.log(JSON.stringify({skipped:true,reason:'Outside 23:35-23:59 same-day recovery window',date,time}));process.exit(0);}
 if(!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error('RECOVERY_MARKET_DATE must be YYYY-MM-DD');
 if(date>today) throw new Error('RECOVERY_MARKET_DATE cannot be in the future');
-if(Date.parse(today+'T00:00:00Z')-Date.parse(date+'T00:00:00Z')>14*86400000) throw new Error('RECOVERY_MARKET_DATE exceeds 14-day recovery window');
+const ageMs=Date.parse(today+'T00:00:00Z')-Date.parse(date+'T00:00:00Z');
+if(ageMs>14*86400000) throw new Error('RECOVERY_MARKET_DATE exceeds 14-day recovery window');
+if(scheduledFallback && ageMs>86400000) throw new Error('Scheduled fallback target exceeds one-day cross-midnight window');
 await helpers.loadTradingCalendar({},Number(date.slice(0,4)));
-if(!helpers.isTradingDate(date)) {console.log(JSON.stringify({skipped:true,reason:'Not a trading day',date,historicalRecovery}));process.exit(0);}
+if(!helpers.isTradingDate(date)) {console.log(JSON.stringify({skipped:true,reason:'Not a trading day',date,historicalRecovery,scheduledFallback}));process.exit(0);}
 assert.ok(process.env.V7_ADMIN_TOKEN,'Normal configured administrator token required');
 const origin='https://fugle-test.imihan0630.workers.dev';
 async function admin(path,options={}) {
@@ -39,7 +43,7 @@ for(const kind of ['FINANCIAL','VALUATION','ANNOUNCEMENTS','QUARTER_EPS']) asser
 // Only one POST. A timeout is ambiguous: never retry a business write blindly.
 try {
   const result=await admin('/api/scan',{method:'POST',body:JSON.stringify({onlyIfMissing:true,marketDate:date})});
-  console.log(JSON.stringify({recovery:true,historicalRecovery,requestedDate:date,skipped:!!result.skipped,reason:result.reason,scanDate:result.scanDate,selectedCount:result.selectedCount,pipelineComplete:result.pipeline?.complete,dailyDeliveryState:result.dailyReport?.deliveryState || null}));
+  console.log(JSON.stringify({recovery:true,historicalRecovery,scheduledFallback,requestedDate:date,skipped:!!result.skipped,reason:result.reason,scanDate:result.scanDate,selectedCount:result.selectedCount,pipelineComplete:result.pipeline?.complete,dailyDeliveryState:result.dailyReport?.deliveryState || null}));
 } catch(error) {
   if(/authorization rejected/.test(String(error))) throw error;
   const latest=await admin('/api/scan/status');
