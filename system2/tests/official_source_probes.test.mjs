@@ -71,12 +71,47 @@ assert.equal(missingCloseTwse.payloadDate, marketDate);
 assert.equal(missingCloseTwse.recordCount, 0);
 assert.equal(missingCloseTwse.coverageDiagnostics.usableCloseUniqueSymbolCount, 0);
 
-const taiex = parseOfficialSourcePayload("A2_TAIEX_CLOSE", {
+const taiexPayload = {
   stat: "OK",
   fields: ["日期", "發行量加權股價指數"],
   data: [["115/09/28", "25,000"]],
-}, marketDate);
-assert.deepEqual(taiex, { schemaValid: true, payloadDate: marketDate, recordCount: 1 });
+};
+const taiex = parseOfficialSourcePayload("A2_TAIEX_CLOSE", taiexPayload, marketDate);
+assert.equal(taiex.schemaValid, true);
+assert.equal(taiex.payloadDate, marketDate);
+assert.equal(taiex.recordCount, 1);
+assert.equal(taiex.validationVersion, "S2_A2_TAIEX_VALIDATION_V0_2");
+assert.deepEqual(taiex.coverageDiagnostics, {
+  targetDateRowCount: 1,
+  targetDateUsableCloseCount: 1,
+  targetDateTaiexClose: 25000,
+  monthlyRowCount: 1,
+  normalizedDateCount: 1,
+  duplicateTargetDateRowCount: 0,
+});
+
+const taiexNow = [
+  new Date("2026-09-28T06:04:00Z"),
+  new Date("2026-09-28T06:04:01Z"),
+];
+const taiexProbe = await probeOfficialSource({
+  sourceId: "A2_TAIEX_CLOSE",
+  marketDate,
+  fetchImpl: async () => ({
+    ok: true,
+    status: 200,
+    async json() { return taiexPayload; },
+  }),
+  now: () => taiexNow.shift(),
+});
+assert.equal(taiexProbe.state, "READY");
+assert.equal(taiexProbe.validationVersion, "S2_A2_TAIEX_VALIDATION_V0_2");
+assert.equal(taiexProbe.coverageDiagnostics.targetDateTaiexClose, 25000);
+assert.match(taiexProbe.coverageDiagnostics.canonicalPayloadHash, /^[a-f0-9]{64}$/);
+assert.equal(
+  taiexProbe.coverageDiagnostics.payloadHashSemantics,
+  "CANONICAL_JSON_SHA256",
+);
 
 const institution = parseOfficialSourcePayload("A3_TWSE_INSTITUTION_FLOW", {
   stat: "OK",
