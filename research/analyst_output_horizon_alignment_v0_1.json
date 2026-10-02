@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "0.1",
+  "researchRoom": "06",
+  "domains": ["D07", "D08"],
+  "modules": ["D07-11", "D08-04"],
+  "status": "PREREGISTERED_RESEARCH_ONLY",
+  "formalCoreImpact": "NONE_LOCKED",
+  "purpose": "Prevent analyst revision and forward-valuation contamination caused by mixing fiscal horizons, forecast bases, provider roll conventions, or revised historical snapshots.",
+  "canonicalIdentityKey": [
+    "symbol",
+    "forecasterId",
+    "outputFamily",
+    "targetFiscalPeriod",
+    "forecastBasis",
+    "publishedAt",
+    "firstObservedAt",
+    "providerPolicyVersion"
+  ],
+  "rules": {
+    "exactHorizonMatching": true,
+    "currentFY_nextFY_ntm_are_distinct_series": true,
+    "revisionCurvePreserved": true,
+    "no_posthoc_horizon_weight_tuning": true,
+    "horizonRollIsNotRevision": true,
+    "providerRollConventionMustBeProven": true,
+    "missingProvenance": "UNKNOWN"
+  },
+  "revisionShapeStates": [
+    "NEAR_TERM_ONLY_REVISION",
+    "LONG_HORIZON_ONLY_REVISION",
+    "PARALLEL_CURVE_SHIFT",
+    "CURVE_STEEPENING",
+    "CURVE_FLATTENING",
+    "HORIZON_ROLL",
+    "MIXED_CHANGE",
+    "UNATTRIBUTABLE_UNKNOWN"
+  ],
+  "forwardValuationAttribution": [
+    "PRICE_EFFECT",
+    "SAME_HORIZON_EPS_REVISION_EFFECT",
+    "MEMBERSHIP_OR_ELIGIBILITY_EFFECT",
+    "HORIZON_ROLL_EFFECT",
+    "RESIDUAL_UNKNOWN"
+  ],
+  "sourceGate": {
+    "required": [
+      "individual_forecaster_identity",
+      "output_family",
+      "exact_fiscal_horizon_and_basis",
+      "immutable_historical_vintage_or_prospective_receipt",
+      "published_or_first_observed_timestamp",
+      "correction_supersession_lineage",
+      "provider_eligibility_and_roll_policy_provenance"
+    ],
+    "outcomesClosedUntilGatePass": true,
+    "historicalLatestSnapshotBackfillForbidden": true
+  },
+  "falsification": [
+    "If apparent revision disappears under fixed-horizon matching, classify as horizon contamination.",
+    "If forward-valuation effect exists only under one provider roll convention, classify PROVIDER_DEFINITION_FRAGILE.",
+    "If required provenance cannot be reconstructed, preserve UNKNOWN and do not infer BAD or zero."
+  ],
+  "promotion": {
+    "formalOptimizationCandidate": false,
+    "requiresTaiwanPIT": true,
+    "requiresProspectiveShadowOrOOS": true,
+    "ownerApprovalRequired": true
+  },
+  "createdAtAsiaTaipei": "2026-10-02T10:40:00+08:00"
+}
