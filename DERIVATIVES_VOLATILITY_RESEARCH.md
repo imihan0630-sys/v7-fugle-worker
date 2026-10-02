@@ -1640,3 +1640,305 @@ Next:
 4. use independent date as inference unit.
 
 Formal Core remains LOCKED.
+
+
+---
+
+## DR-051 — curriculum reconciliation: D12-13 through D12-16 are new modules, not empty research history
+
+The 2026-10-02 expanded curriculum adds:
+- D12-13 Greeks;
+- D12-14 IV-RV Spread;
+- D12-15 Volatility Risk Premium;
+- D12-16 Volatility Surface / Smile.
+
+Their tracker state started at L0, but prior D12 work already contains material mechanism/counterevidence:
+- DR-005/006: skew and surface construction risk;
+- DR-007: VRP is not simply VIX minus past volatility;
+- DR-016/017: IV/skew term structures;
+- DR-018 and DR-030..034: Gamma semantics and public-position identifiability;
+- D12-05 VRP semantic spec;
+- D04 realized-volatility estimator taxonomy.
+
+Therefore this continuation performs **curriculum reconciliation**, not retroactive alpha invention.
+
+Status: CURRICULUM RECONCILIATION ALLOWED / EVIDENCE CLOCK UNCHANGED.
+
+---
+
+## DR-052 — D12-13 Greeks are local sensitivity coordinates, not directional forecasts
+
+### Delta
+Delta is a local first-order sensitivity of option value to the underlying and, under a frozen model, a local hedge-ratio coordinate.
+
+It must not be relabeled:
+- probability of profit;
+- probability the market rises;
+- bullishness score.
+
+### Gamma
+Gamma is the local change in Delta as the underlying moves.
+
+For standard long options:
+- long Call Gamma > 0;
+- long Put Gamma > 0.
+
+Position side, not Call/Put label, determines signed portfolio Gamma.
+
+Magnitude tends to be largest near ATM and can change rapidly near expiry.
+
+### Vega
+Vega is local price sensitivity to implied volatility. A “one-point” volatility unit must be frozen:
+- one percentage point;
+- versus decimal 0.01.
+
+Mixing those units can create 100x errors.
+
+### Theta
+Theta describes time sensitivity under a pricing/model clock. Long vanilla options usually have negative Theta, but:
+- portfolio combinations;
+- rates/dividends;
+- moneyness;
+- expiry mechanics
+make “Theta = bearish” invalid.
+
+### Joint-state rule
+Greeks do not operate independently. A large underlying move changes Delta through Gamma while IV and time simultaneously change Vega/Theta effects.
+
+Status: D12-13 GREEK SEMANTICS FROZEN.
+
+---
+
+## DR-053 — Greek-derived features must beat simpler contract-state variables
+
+A Greek is a model-derived transformation of:
+- underlying/forward;
+- strike;
+- DTE;
+- IV;
+- rates/dividends.
+
+Therefore any claimed Greek signal must be tested against simpler parent-state baselines:
+- moneyness;
+- DTE;
+- IV;
+- OI;
+- bid/ask quality;
+- expiry/event regime.
+
+If `gammaMagnitude` predicts risk only because it identifies ATM near-expiry options, it may add no information beyond moneyness + DTE.
+
+If `vegaMagnitude` only restates longer maturity / ATM status, keep the simpler variable.
+
+This is a **derived-feature redundancy test**, not evidence that Greeks are useless.
+
+Status: GREEK REDUNDANCY FIREWALL FROZEN.
+
+---
+
+## DR-054 — D12-14 IV-RV Spread needs three different names
+
+Do not use one label “IV-RV” for three distinct objects.
+
+### A. Trailing implied-realized spread
+Example:
+`IV_t - trailingVol_t`
+
+Known at t, but compares forward-looking option price to backward-looking realized conditions.
+
+Name:
+`IMPLIED_MINUS_TRAILING_VOL_STATE`.
+
+### B. Forecast-based contemporaneous spread
+Example:
+`impliedVariance_t - forecastPhysicalVariance_t`
+
+Potential live research proxy for variance richness if the physical forecast uses past-only inputs.
+
+Name:
+`FORECAST_BASED_IMPLIED_REALIZED_SPREAD`.
+
+### C. Ex-post implied minus future realized variance
+Example:
+`impliedVariance_t - realizedVariance_{t,t+H}`
+
+Future realized variance is not known at t.
+
+Name:
+`EX_POST_VARIANCE_PREMIUM_REALIZATION`.
+
+It is an outcome/realized premium estimate, never a live feature at t.
+
+Status: D12-14 CLOCK/NAMING FIREWALL FROZEN.
+
+---
+
+## DR-055 — variance and volatility units must not be mixed
+
+Variance is squared volatility.
+
+Therefore:
+- `IV - RV` in volatility points;
+- `IV² - RV²` in variance units
+are different objects.
+
+Classic VRP work is fundamentally about variance under risk-neutral versus physical measures.
+
+A research pipeline must store:
+- raw volatility;
+- squared variance representation;
+- annualization/horizon;
+- estimator identity.
+
+No automatic sign/scale comparison across:
+- 30-day implied variance;
+- D04 RV5/RV20 rolling close-to-close dispersion;
+- intraday realized variance;
+unless an explicit horizon/estimator mapping is frozen.
+
+Status: VARIANCE-VOLATILITY UNIT GUARD FROZEN.
+
+---
+
+## DR-056 — D12-15 structural VRP versus proxy versus ex-post realization
+
+Freeze sign convention:
+
+`VRP = risk-neutral expected future variance - physical expected future variance`.
+
+Some literature uses the negative convention. Every imported study/series must be transformed to the project convention explicitly.
+
+Three objects:
+
+1. **Structural/expected VRP**
+   - risk-neutral expected variance minus physical expected variance.
+
+2. **Live forecast-based proxy**
+   - option-implied variance minus a frozen past-only physical-variance forecast.
+
+3. **Ex-post realized premium**
+   - option-implied variance at t minus future realized variance.
+
+Only #2 can be a live candidate at t, and it is still a proxy unless the physical expectation model is justified.
+
+Bollerslev-Tauchen-Zhou evidence supports economically meaningful VRP return predictability in U.S. aggregate data, but:
+- model-free implied variance matters;
+- accurate high-frequency realized variation matters;
+- the strongest reported horizon is intermediate/quarterly.
+
+Therefore it does not authorize:
+`Taiwan VRP high => tomorrow Taiwan rises`.
+
+Status: D12-15 VRP SEMANTICS/HORIZON GUARD FROZEN.
+
+---
+
+## DR-057 — D12-16 surface method is part of the feature identity
+
+An implied-volatility surface is not raw market data.
+
+It is constructed from sparse/noisy quotes across:
+- strike/log-moneyness or Delta;
+- maturity.
+
+The construction requires:
+- quote filters;
+- IV inversion;
+- interpolation/extrapolation;
+- arbitrage constraints;
+- surface parameterization/version.
+
+Ulrich & Walther show option-implied variance/skew/VRP estimates can differ economically across surface constructions, with particularly large differences around OTM puts.
+
+Therefore:
+`surfaceSlope(method=A)`
+and
+`surfaceSlope(method=B)`
+are not automatically the same factor.
+
+Every research receipt must carry:
+- surfaceMethodVersion;
+- strike/expiry coverage;
+- zero-bid/spread-quality statistics;
+- fit error;
+- extrapolation share;
+- arbitrage-check state.
+
+Status: SURFACE METHOD IDENTITY FROZEN.
+
+---
+
+## DR-058 — level / slope / curvature must remain separate hypotheses
+
+Minimum factorization:
+
+- **level**: broad IV height;
+- **slope/skew**: downside-vs-upside asymmetry;
+- **curvature/smile**: wing-versus-center shape;
+- **term structure**: maturity differences.
+
+Recent 2026 NCCU TAIFEX master's-thesis evidence reports OOS predictability of slope/curvature but not level over its 2007-2024 monthly surface-factor setup.
+
+This is useful Taiwan-specific hypothesis generation, but:
+- it is a master's thesis;
+- target is surface-factor forecasting/economic option strategies;
+- horizon/frequency differs from this project's 18:10 after-market stock selection.
+
+It cannot promote D12-16 to PIT/OOS maturity by itself.
+
+Status: TAIWAN SECONDARY EVIDENCE / NO PROMOTION BY THESIS.
+
+---
+
+## DR-059 — joint falsification order and maturity decision
+
+Validation order is frozen:
+
+1. D04 ATR / realized-volatility Regime;
+2. D12-05 TAIWAN VIX level/change;
+3. D12-07 simple skew / term structure;
+4. D12-11 liquidity/quote-quality;
+5. D12-13 Greeks;
+6. D12-14 IV-RV spread;
+7. D12-15 VRP;
+8. D12-16 complex surface factors.
+
+Why this order:
+- complex option-derived quantities inherit all source/model errors of simpler parents;
+- complexity must earn incremental value.
+
+Mandatory falsification:
+- at least two pre-specified reasonable surface constructions for surface-dependent results;
+- moneyness/DTE/OI baselines for Greek effects;
+- VIX/realized-vol baselines for IV-RV/VRP;
+- expiry/macro-event/liquidity stratification;
+- independent date as inference unit;
+- no outcome-selected surface method, horizon or threshold;
+- transaction cost + Theta decay before economic tradability claim.
+
+### Maturity reconciliation
+- D12-13: L0 -> L2.
+- D12-14: L0 -> L2.
+- D12-15: L0 -> L2.
+- D12-16: L0 -> L2.
+
+This is justified by mechanism + counterevidence + PIT/data-quality/falsification definition already present and now integrated.
+
+No module advances to L3:
+- strict Taiwan option-chain/surface source receipts are absent;
+- live TAIFEX MIS automated-use entitlement is not approved by this audit;
+- no Taiwan prospective/OOS outcome evidence under the frozen contracts exists.
+
+Machine-readable contract:
+`research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json`.
+
+Formal Core remains LOCKED.
+No Greek/VRP/surface score, veto, rank weight, position sizing or entry timing change is approved.
+
+## Exact next continuation after DR-059
+
+1. Separate permitted TAIFEX historical/statistical option-chain QA sources from restricted/uncertain live MIS automation.
+2. Build isolated research-only option-chain quality/parser receipt from a permitted source; do not claim first-known history.
+3. Freeze surface method V0.1 plus static-arbitrage/quote-quality tests.
+4. Replay simple skew/term-structure and complex surface factors on the exact same parent quotes to quantify method sensitivity before outcomes.
+5. Only after source-attested independent dates exist, preregister Taiwan risk/OOS targets and compare complexity incrementally.
