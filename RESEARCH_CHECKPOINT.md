@@ -2411,3 +2411,40 @@ Exact next for Room 09:
 - Latest canonical 24-module Room 07 maturity: D09 = 55.0%, D10 = 53.3%, Room 07 = 54.2%.
 - No stock-return outcomes were opened for these promotions. Formal Core unchanged; no FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: BR-045 full-industry prospective TWSE rotation receipts; BR-047/048 broaden current theme bridges and seek historical effective-dated exposure vintages; SC-037/038 add independent asymmetric-transmission vintages/second-industry chain; SC-040/041 accumulate monthly order-leadtime receipts and exposure mapping; BR-035/038/040/043 remain elapsed-data/live-lineage dependent.
+
+
+## 09 derivatives/global-macro evening continuation — expanded D12 reconciliation + pre-NFP source QA (2026-10-02)
+
+- Re-read latest main after the shared curriculum expansion. Canonical tracker is now **22 domains / 297 modules**. The earlier 229-module denominator is obsolete. D12 temporarily displayed 30% because four newly approved modules D12-13..16 entered at L0; existing D12 modules did not regress.
+- Continued strictly post-18:10 and pre-20:30. No 2026-10-02 18:10 VIX/TX receipt was retroactively fabricated.
+- At ~19:55 Taipei, official BLS CPS page still displayed September 2026 Employment Situation as the Next Release for 2026-10-02 08:30 ET; realization was not in the audited extract. Saved as **post-decision/pre-release QA**, not an 18:10 parent: `research/d12_d13_20261002_postdecision_prerelease_source_qa_v0_1.json`.
+- TAIFEX official current-month VIX statistics page exposed 2026/10/02 and 2026/10/01 date rows, but the audited text/JSON extraction did not expose numeric VIX cells. No number was inferred.
+- TAIFEX MIS live VIX path redirected to a disclaimer reserving rights in site/market-price information and describing prior-written-consent requirements for specified uses. Live MIS automated/non-display capture is therefore **NOT_AUTHORIZED_BY_THIS_AUDIT**; no scraper or recurring capture was created. Historical/statistical download endpoints are a separate source lane.
+- TAIFEX official option daily report / historical download / recent-30-trading-day transaction sources are materially sufficient for **EOD/replay parser and surface-method QA**: contract/month/date, strike, Call/Put, prices, settlement, volume, OI and best bid/ask are exposed. Their present historical completeness does not certify historical 18:10 first-known availability.
+- New source contract: `research/d12_taifex_option_chain_replay_source_feasibility_v0_1.json`.
+
+### D12 curriculum reconciliation
+- New curriculum modules D12-13 Greeks, D12-14 IV-RV Spread, D12-15 VRP and D12-16 Volatility Surface/Smile were L0, but prior research already contained material mechanism/counterevidence.
+- Integrated contract `research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json` plus DR-051..DR-059 freezes:
+  - Greeks are state/model-dependent sensitivities, not direction/probability votes;
+  - IV-minus-trailing-RV, forecast-based implied-realized spread and ex-post implied-minus-future-RV are distinct clocks/objects;
+  - project VRP sign = risk-neutral expected variance minus physical expected variance;
+  - ex-post future realized variance is outcome, never a live feature;
+  - surface interpolation/filters/arbitrage constraints/method version are part of factor identity;
+  - complex features must beat VIX/realized-vol/simple-skew/moneyness-DTE-OI/liquidity baselines.
+- D12-13..16 each advance **L0 -> L2 / 40%** for mechanism+falsification only. None advances to L3.
+- Expanded D12 recomputes to **40.0%** across 16 modules. Global 297-module maturity recomputes to **37.8%**. This is curriculum reconciliation, not new predictive evidence.
+- Router and learning map synchronized. Room 09 arithmetic D12+D13 aggregate is now ~40.7% across 29 modules.
+- Recent 2026 NCCU TAIFEX IV-surface thesis is retained as **secondary hypothesis-generating evidence only**; its surface-factor OOS findings do not promote this project's 18:10 stock-selection lane.
+
+### Governance
+- Formal Core unchanged; outcomes remain CLOSED for the new complex option factors.
+- No paid-data purchase, live MIS scraper, runtime/cron/schema change or FORMAL_OPTIMIZATION_CANDIDATE.
+
+### Exact next Room-09 continuation
+1. If continuing after the Oct-2 20:30 BLS release, create a **new** first-print source object; never modify the 19:55 pre-release QA. Preserve consensus separately or leave surprise UNKNOWN.
+2. Obtain one permitted TAIFEX historical/statistical option-chain raw parent for replay/parser QA only; do not claim it was historically first-known at 18:10.
+3. Freeze exact option-file header mapping, quote-quality rules and Surface Method V0.1; add adversarial parser/surface tests.
+4. Run simple D12-07 skew/term structure and D12-16 surface level/slope/curvature on identical parents to quantify method/redundancy before opening outcomes.
+5. Keep live TAIWAN VIX/TX automation blocked until explicit authorized source terms exist.
+6. Accumulate strict source-attested independent dates before L3/OOS; Formal remains locked.
