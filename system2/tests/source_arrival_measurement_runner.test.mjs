@@ -35,6 +35,9 @@ const probe = async ({ sourceIds } = {}) => {
   return [
     receipt("A1_TWSE_DAILY_CLOSE", observedAt, payloadDate),
     receipt("A1_TPEX_DAILY_CLOSE", observedAt, payloadDate),
+    ...(sourceIds?.includes("A2_TAIEX_CLOSE")
+      ? [receipt("A2_TAIEX_CLOSE", observedAt, payloadDate)]
+      : []),
   ];
 };
 
@@ -52,6 +55,7 @@ const report = await runReadOnlySourceArrivalMeasurement({
   expectedTradingDay: true,
   stopWhenDailyGateReady: true,
   requiredDailyOnly: true,
+  additionalSourceIds: ["A2_TAIEX_CLOSE"],
   probe,
   now,
   wait: async () => { waitCall += 1; },
@@ -60,14 +64,19 @@ const report = await runReadOnlySourceArrivalMeasurement({
 assert.equal(probeCall, 2);
 assert.equal(waitCall, 1);
 assert.deepEqual(requestedSourceIds, [
-  ["A1_TWSE_DAILY_CLOSE", "A1_TPEX_DAILY_CLOSE"],
-  ["A1_TWSE_DAILY_CLOSE", "A1_TPEX_DAILY_CLOSE"],
+  ["A1_TWSE_DAILY_CLOSE", "A1_TPEX_DAILY_CLOSE", "A2_TAIEX_CLOSE"],
+  ["A1_TWSE_DAILY_CLOSE", "A1_TPEX_DAILY_CLOSE", "A2_TAIEX_CLOSE"],
 ]);
-assert.equal(report.collectionScope, "REQUIRED_DAILY_CLOCK_SOURCES_ONLY");
+assert.equal(report.collectionScope, "REQUIRED_DAILY_PLUS_CONTEXT_SOURCES");
 assert.deepEqual(report.requestedSourceIds, [
   "A1_TWSE_DAILY_CLOSE",
   "A1_TPEX_DAILY_CLOSE",
+  "A2_TAIEX_CLOSE",
 ]);
+assert.equal(
+  report.measurement.sourceSummaries.find((x) => x.sourceId === "A2_TAIEX_CLOSE").readyObserved,
+  true,
+);
 assert.equal(report.measurement.dailyGateComplete, true);
 assert.equal(
   report.measurement.sourceSummaries.find((x) => x.sourceId === "A1_TWSE_DAILY_CLOSE")
