@@ -22555,3 +22555,13 @@ This distinction is deliberate: identity and state must not be conflated. Lifecy
 New pure research helper/test files define 12 adversarial identity cases, but no reproducible Node execution receipt exists in this chat; no PASS count is claimed.
 
 No D1/Worker/runtime change. Outcome joins remain closed. D01 remains 51.7%; Formal Core LOCKED.
+
+# DL-013 — Equal-horizon and boundary-sensitivity control (2026-10-02)
+
+The earlier phrase "bar-boundary placebo" is corrected. A shifted bar boundary is not a guaranteed null because it can change information age, session composition, high/low extrema and actual topology. It is therefore a BOUNDARY_SENSITIVITY_CONTROL, not proof-by-placebo.
+
+Future multi-scale inference must separately test whether apparent weekly value is only a longer effective horizon, and whether it is fragile to one preregistered nearby aggregation boundary. Non-comparable dates remain non-comparable rather than being forced into paired inference.
+
+Pattern shared-child contract v0.2 now carries featureAgeEligibleSessions and aggregationBoundaryVersion so this robustness can be audited prospectively.
+
+No outcomes inspected. D01 remains 51.7%. Formal Core LOCKED.
