@@ -296,7 +296,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | 04｜波動與市場微結構研究室 | D04＋D05 | 20 | 44% | 波動率／波動狀態＋市場微結構／撮合／流動性 |
 | 05｜法人與籌碼研究室 | D06 | 15 | 45.3% | 法人／籌碼／槓桿／擁擠／被動資金 |
 | 06｜基本面與估值研究室 | D07＋D08 | 34 | 29.4% | 基本面／財報／資訊動態＋估值 |
-| 07｜產業與供應鏈研究室 | D09＋D10 | 24 | 54.2% | 產業／族群／市場廣度／輪動＋供應鏈／產能／庫存／原物料傳導 |
+| 07｜產業與供應鏈研究室 | D09＋D10 | 24 | 55% | 產業／族群／市場廣度／輪動＋供應鏈／產能／庫存／原物料傳導 |
 | 08｜事件與新聞研究室 | D11＋D17 | 27 | 48.1% | 公司行動／重大事件／事件風險＋新聞／事件半衰期／受益受害傳導 |
 | 09｜衍生品與國際總經研究室 | D12＋D13 | 29 | 40.7% | 期貨／選擇權／衍生品＋總體經濟／跨市場傳導 |
 | 10｜投組風控與交易執行研究室 | D14＋D15 | 29 | 49% | 交易成本／執行品質／Execution Alpha＋投資組合／風險／資金利用／部位生命週期 |
@@ -505,7 +505,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 
 ## 07｜產業與供應鏈研究室
 
-> 最新 durable progress（2026-10-02）：SC-040 已凍結 2026-07～09 三個 NDC/CIER PMI 月度訂單／交期 receipt；SC-041 已建立 8046／3189 的 bounded industry-to-issuer product-scope bridge。D10-07 維持 L3；缺失曝險權重、survey membership、issuer-native backlog 一律 UNKNOWN，Formal Core 不變。
+> 最新 durable progress（2026-10-02）：SC-040 已凍結 2026-07～09 三個 NDC/CIER PMI 月度訂單／交期 receipt；SC-041 已建立 8046／3189 的 bounded industry-to-issuer product-scope bridge；SC-042 建立缺貨／供需缺口 PIT 事件合約並以正反例驗證資料可行性，D10-08 升至 L3。缺失曝險權重、survey membership、issuer-native backlog 一律 UNKNOWN，Formal Core 不變。
 
 負責領域：**D09 產業／族群／市場廣度／輪動；D10 供應鏈／產能／庫存／原物料傳導**  
 必讀 checkpoint：`MARKET_BREADTH_ROTATION_CHECKPOINT.md`、`MARKET_BREADTH_ROTATION_RESEARCH.md`、`SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md`  
