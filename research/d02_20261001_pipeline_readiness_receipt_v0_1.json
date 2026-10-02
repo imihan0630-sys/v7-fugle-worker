@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "D02_20261001_PIPELINE_READINESS_RECEIPT_V0_1",
+  "generatedAt": "2026-10-02T08:10:00+08:00",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCoreImpact": false,
+  "outcomesUsed": false,
+  "authoritativeRepoHeadAtWrite": "98a142747a5845adb46040077a6ffafd1afe4e77",
+  "recovery20260930": {
+    "sourceCommit": "973ac6e07797c494ac7673dc2389a13fc9cf98ee",
+    "runId": 36777755759,
+    "jobId": 110099864451,
+    "startedAtTaipei": "2026-10-01T05:11:08+08:00",
+    "officialQualityReady": true,
+    "closureProof20260710Verified": true,
+    "scanPreview": {
+      "completed": false,
+      "httpStatus": 503,
+      "cloudflareErrorCode": 1102,
+      "classification": "WORKER_RESOURCE_LIMIT_EXCEEDED",
+      "retryable": false
+    },
+    "stageSelectionReached": false,
+    "selectionPersisted": false
+  },
+  "session20261001": {
+    "qualityAt2344": {
+      "marketDate": "2026-10-01",
+      "index": {
+        "ready": true,
+        "count": 42,
+        "asOfDate": "2026-10-01"
+      },
+      "tdcc": {
+        "ready": true,
+        "count": 2957,
+        "asOfDate": "2026-09-24"
+      },
+      "financial": {
+        "ready": true,
+        "count": 1881,
+        "asOfDate": "2026-10-01"
+      },
+      "valuation": {
+        "ready": true,
+        "count": 1968,
+        "asOfDate": "2026-10-01"
+      },
+      "announcements": {
+        "ready": true,
+        "count": 240,
+        "asOfDate": "2026-10-01"
+      },
+      "quarterEps": {
+        "ready": true,
+        "count": 1,
+        "asOfDate": "2026-10-01"
+      }
+    },
+    "recovery2340": {
+      "runId": 36886021172,
+      "jobId": 110449404383,
+      "conclusion": "failure",
+      "result": "Single recovery attempt not confirmed; no repeated POST. 503",
+      "safetyInterpretation": "NO_BLIND_RETRY"
+    },
+    "recovery2358": {
+      "runId": 36888421751,
+      "jobId": 110457578263,
+      "conclusion": "failure",
+      "result": "Quality synchronization failed: operation aborted due to timeout"
+    },
+    "mirror0000": {
+      "runId": 36888612420,
+      "jobId": 110458235324,
+      "conclusion": "success",
+      "prepared": false,
+      "alreadyVerified": true,
+      "scanDate": "2026-09-29",
+      "interpretation": "CONTINUITY_OF_OLD_PLAN_ONLY_NOT_20261001_SCAN_SUCCESS"
+    },
+    "health0001": {
+      "runId": 36888821385,
+      "jobId": 110458917537,
+      "conclusion": "success",
+      "businessCheckExecuted": false,
+      "result": {
+        "skipped": true,
+        "date": "2026-10-02",
+        "time": "00:01",
+        "reason": "Outside verified trading-day/window; no business action"
+      },
+      "interpretation": "JOB_SUCCESS_IS_NOT_AFTER_MARKET_HEALTH_EVIDENCE"
+    },
+    "c1Collect0023": {
+      "runId": 36891658021,
+      "jobId": 110468503582,
+      "conclusion": "failure",
+      "error": "C1_GENERATION_NOT_FOUND",
+      "httpStatus": 200,
+      "researchOnly": true
+    }
+  },
+  "d02Classification": {
+    "ordinarySelection20260930": "NOT_PERSISTED",
+    "ordinarySelection20261001": "NOT_ESTABLISHED",
+    "latestVerifiedMirroredScanDate": "2026-09-29",
+    "cleanProspectiveSelectionDates": 0,
+    "intraday20261002": "DATA_QA_ONLY_UNTIL_NEW_ORDINARY_SELECTION_BOOTSTRAP_PROVEN",
+    "pvOutcomeGate": "CLOSED",
+    "formalOptimizationCandidate": "NONE"
+  }
+}
