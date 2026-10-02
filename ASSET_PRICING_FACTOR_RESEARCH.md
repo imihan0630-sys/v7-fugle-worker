@@ -113,3 +113,111 @@ Only residual incremental spread after neutralization can qualify as an independ
 - D19 domain maturity -> 6.7% (2 modules at 40%, 10 modules at 0%, simple module average).
 - No module promoted to L3 because a Taiwan point-in-time source map and executable replay receipt have not yet been built.
 - Formal Core remains unchanged.
+
+
+## 2026-10-02 Long-block Stage 2 — D19-03 / D19-04 theory -> falsification
+
+### D19-03 Value factor
+
+#### Core separation
+1. A valuation characteristic (for example book-to-market) is an observable cross-sectional descriptor.
+2. A value factor is a diversified return spread formed from valuation characteristics.
+3. D08 valuation research asks whether a security appears cheap/expensive relative to fundamentals or peers; D19-03 instead asks whether a cross-sectional value exposure earns a persistent, independent premium.
+4. Therefore "cheap stock" and "positive value-factor alpha" are not interchangeable.
+
+#### Positive mechanisms
+- Fama-French evidence establishes book-to-market as a strong cross-sectional return characteristic in U.S. historical samples.
+- A rational interpretation is compensation for distress or other omitted systematic risks.
+- Lakonishok-Shleifer-Vishny provide a behavioral alternative: investors extrapolate past growth too far, creating glamour overpricing and value underpricing.
+
+#### Falsification / counterevidence
+- Fama-French five-factor evidence shows the original value factor can become statistically redundant once profitability and investment are included in some samples. This is a direct warning against counting D08 cheapness, D07 profitability and D19 value as three independent sources of alpha.
+- Taiwan evidence is mixed across sample periods and methods. Chui-Wei report no significant conventional book-to-market effect for Taiwan in their regional comparison, while later Taiwan studies report value effects under other samples/specifications.
+- A recent long-history Taiwan thesis covering listed and delisted firms reports that size/value effects are heavily concentrated in small caps and stresses timely book-to-market construction; this is useful Taiwan-specific evidence but should be treated as thesis evidence rather than final peer-reviewed proof.
+- Accounting staleness is a major look-ahead/stale-information risk: using a book value that was not yet public at the portfolio formation date manufactures an unrealistically clean value signal.
+
+#### PIT / replay contract before L3
+- Financial statement first-public timestamps, not fiscal-period labels alone.
+- Original first-known accounting values retained separately from later restatements.
+- Frozen book-equity definition, treatment of negative book equity and financial-sector accounting exceptions.
+- Market-cap denominator sampled on the documented formation date.
+- Corporate actions, delistings, suspensions, price limits and listing-age status preserved.
+- Formation lag after public disclosure must be explicit and replayable.
+- Alternative value definitions (B/M, E/P, cash-flow yield) must be declared ex ante for each experiment; selecting the best historical definition after testing is data snooping.
+- Equal-weight and value-weight spreads plus realistic turnover/cost estimates must both be reported.
+
+#### Redundancy tests
+- D08 valuation: raw cheapness / peer valuation.
+- D07 profitability / quality.
+- D19-02 size.
+- D05 liquidity / turnover.
+- D09 industry composition.
+Only the residual spread after these controls can be treated as an independent D19 value candidate.
+
+#### System 1 / System 2 incremental-value assessment
+- System 1: do not add a blanket "cheap = buy" score. A potential future role is valuation-context metadata or a residual valuation control.
+- System 2: test sector-, size-, liquidity- and profitability-neutral value ranks as one cross-sectional sleeve, then measure incremental information versus existing D08 signals.
+- Formal optimization candidate: NO. Theory, mechanisms, counterevidence and PIT design are defined; Taiwan executable PIT replay is still missing.
+
+#### Evidence anchors
+- Fama & French (1992), Journal of Finance, DOI 10.1111/j.1540-6261.1992.tb04398.x
+- Lakonishok, Shleifer & Vishny (1994), Journal of Finance, DOI 10.1111/j.1540-6261.1994.tb04772.x
+- Fama & French (2015), Journal of Financial Economics, DOI 10.1016/j.jfineco.2014.10.010
+- Chui & Wei (1998), Pacific-Basin Finance Journal, DOI 10.1016/S0927-538X(98)00013-4
+
+### D19-04 Cross-sectional Momentum factor
+
+#### Core separation
+1. Cross-sectional momentum ranks securities against one another on lagged performance; it is not the same object as time-series trend following.
+2. D03 technical momentum/trend and D09 relative strength can contain the same raw price information. D19-04 is independent only if a factor-level, neutralized cross-sectional spread retains incremental information.
+3. A classic momentum specification typically excludes the most recent short interval to reduce short-term reversal contamination, but the exact formation/skip/holding windows must be frozen before the confirmatory test rather than selected from the best backtest.
+
+#### Positive mechanisms
+- Jegadeesh-Titman document medium-horizon winner-minus-loser continuation in U.S. stocks.
+- Rouwenhorst finds similar continuation across multiple international equity markets, indicating that the phenomenon is not uniquely U.S.
+- Candidate mechanisms include gradual information diffusion/underreaction, investor behavior and time-varying risk exposure.
+
+#### Falsification / counterevidence
+- Momentum is not stable across market states. Daniel-Moskowitz show severe momentum crashes can occur after market declines, high volatility and sharp rebounds.
+- Taiwan is a particularly important counterexample to any universal momentum claim. Taiwan studies report weak or absent ordinary momentum in some periods, positive momentum during continuing market states but reversals around transitions, and cancellation between positive intraday and negative overnight components.
+- High turnover can attenuate conventional momentum; persistence-based variants may behave differently.
+- A 2026 Taiwan study using 1993-2025 data and listed plus delisted firms finds volatility-scaled momentum often improves conventional strategies and that time-series momentum can be more stable than cross-sectional momentum, with much of profit coming from the winner/long side. Because it compares many specifications, multiple-testing control is mandatory before treating the best specification as evidence.
+
+#### PIT / replay contract before L3
+- Point-in-time universe including delisted names.
+- Corporate-action-adjusted total-return policy fixed before ranking.
+- Suspended/no-trade dates and price-limit states retained; UNKNOWN must not be converted to zero momentum.
+- Formation, skip and holding windows recorded as experiment parameters.
+- Market/industry/size/volatility neutralization inputs must themselves be point-in-time.
+- Short-leg evidence must include contemporaneous borrowability/short-sale restrictions and realistic costs; if not available, report long-only evidence separately.
+- Turnover, spread, impact and capacity estimated using information available at the formation date.
+- Regime labels must be generated with contemporaneous data only; no ex-post regime labeling for a prospective rule.
+
+#### Redundancy tests
+- D03 price trend / technical momentum.
+- D09 sector RS and stock RS.
+- D04 volatility / microstructure.
+- D18 regime interaction.
+- D19-02 size.
+Momentum can be called an independent D19 alpha candidate only if residualized ranks preserve OOS/Shadow value after these overlaps.
+
+#### System 1 / System 2 incremental-value assessment
+- System 1: no direct replacement of current selection logic. Momentum research is useful mainly as a diagnostic for whether existing trend/RS rules are duplicating the same exposure.
+- System 2: a promising research path is long-side cross-sectional residual momentum after sector/size/volatility controls, with a regime/crash-risk gate and explicit cost model.
+- Formal optimization candidate: NO. The Taiwan literature is sufficiently mixed that a direct formal rule would be premature.
+
+#### Evidence anchors
+- Jegadeesh & Titman (1993), Journal of Finance
+- Rouwenhorst (1998), Journal of Finance
+- Daniel & Moskowitz (2016), Journal of Financial Economics
+- Lin et al. (2016), Taiwan market dynamics and momentum evidence
+- Ho et al. (2023), Taiwan intraday versus overnight momentum evidence
+- Chen et al. (2023), Taiwan persistence-based momentum evidence
+- Huang, Pan & Wang (2026), Taiwan momentum study using 1993-2025 data
+
+### Stage 2 maturity decision
+- D19-03 -> L2: theory, competing mechanisms, Taiwan counterevidence, PIT/replay, redundancy and cost requirements defined.
+- D19-04 -> L2: theory, regime/crash counterevidence, Taiwan-specific failure modes, PIT/replay, redundancy and cost requirements defined.
+- D19 domain maturity -> 13.3% (four modules at 40%, eight modules at 0%, simple module average).
+- D19-01 through D19-04 remain below L3 pending a shared Taiwan point-in-time source map and executable replay receipts.
+- Formal Core remains unchanged.
