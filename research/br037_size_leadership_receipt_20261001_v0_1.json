@@ -1,0 +1,126 @@
+{
+  "version": "0.1",
+  "id": "BR-037",
+  "capturedAt": "2026-10-02T15:48:00+08:00",
+  "asOfTradeDate": "2026-10-01",
+  "mode": "OUTCOME_BLIND_OFFICIAL_INDEX_STATE",
+  "formalCoreChanged": false,
+  "futureStockOutcomesOpened": false,
+  "sourceAuthority": "Taiwan Stock Exchange",
+  "indexSeries": {
+    "large": {
+      "name": "FTSE TWSE Taiwan 50 Total Return Index",
+      "sourceUrl": "https://www.twse.com.tw/en/indicesReport/TAI50I?date=20261002&response=html",
+      "asOfValue": 104203.6,
+      "valuesByReferenceDate": {
+        "2026-09-30": 103089.4,
+        "2026-09-22": 103123.71,
+        "2026-09-01": 100445.49,
+        "2026-07-06": 98824.31
+      }
+    },
+    "mid": {
+      "name": "FTSE TWSE Taiwan Mid-Cap 100 Total Return Index",
+      "sourceUrl": "https://www.twse.com.tw/en/indicesReport/TAI100I?date=20261002&response=html",
+      "asOfValue": 80861.32,
+      "valuesByReferenceDate": {
+        "2026-09-30": 80723.75,
+        "2026-09-22": 79700.77,
+        "2026-09-01": 79912.32,
+        "2026-07-06": 81264.72
+      }
+    },
+    "small": {
+      "name": "TWSE TAIEX Small-Cap 300 Total Return Sub-Index",
+      "sourceUrl": "https://www.twse.com.tw/en/indicesReport/SC300?date=20261002&response=html",
+      "asOfValue": 21307.33,
+      "valuesByReferenceDate": {
+        "2026-09-30": 21213.78,
+        "2026-09-22": 20931,
+        "2026-09-01": 21132.84,
+        "2026-07-06": 22293.57
+      }
+    }
+  },
+  "horizonReferenceDates": {
+    "D1": "2026-09-30",
+    "D5": "2026-09-22",
+    "D20": "2026-09-01",
+    "D60": "2026-07-06"
+  },
+  "returnsPct": {
+    "D1": {
+      "large": 1.0808,
+      "mid": 0.1704,
+      "small": 0.441
+    },
+    "D5": {
+      "large": 1.0472,
+      "mid": 1.4561,
+      "small": 1.798
+    },
+    "D20": {
+      "large": 3.7414,
+      "mid": 1.1876,
+      "small": 0.8257
+    },
+    "D60": {
+      "large": 5.4433,
+      "mid": -0.4964,
+      "small": -4.4239
+    }
+  },
+  "spreadsPctPoints": {
+    "D1": {
+      "smallMinusLarge": -0.6398,
+      "midMinusLarge": -0.9104,
+      "smallMinusMid": 0.2706
+    },
+    "D5": {
+      "smallMinusLarge": 0.7508,
+      "midMinusLarge": 0.409,
+      "smallMinusMid": 0.3418
+    },
+    "D20": {
+      "smallMinusLarge": -2.9158,
+      "midMinusLarge": -2.5539,
+      "smallMinusMid": -0.3619
+    },
+    "D60": {
+      "smallMinusLarge": -9.8672,
+      "midMinusLarge": -5.9397,
+      "smallMinusMid": -3.9275
+    }
+  },
+  "descriptiveState": {
+    "D1": "LARGE_LEAD_VS_MID_SMALL",
+    "D5": "SMALL_THEN_MID_LEAD_VS_LARGE",
+    "D20": "LARGE_LEAD",
+    "D60": "STRONG_LARGE_LEAD / SMALL_LAG",
+    "crossHorizon": "HORIZON_CONFLICT / SHORT_TERM_SMALL_DIFFUSION_INSIDE_MEDIUM_TERM_LARGE_LEADERSHIP"
+  },
+  "sourceQualityCounterexample": {
+    "date": "2026-10-02",
+    "finding": "Price index values were available for all three families, but Taiwan 50 and Mid-Cap 100 total-return fields were '--' while Small-Cap 300 TRI was available.",
+    "interpretation": "Same-day price-index availability does not prove same-day total-return-series readiness. The receipt therefore uses 2026-10-01, the latest common complete TRI date.",
+    "forbiddenInference": "Do not mix 2026-10-02 price-index returns with 2026-10-02 Small-Cap TRI and call that a common-basis size spread."
+  },
+  "falsificationAndControls": [
+    "No permanent bullish/bearish sign is assigned to any size state.",
+    "D5 small-cap leadership coexists with D20/D60 large-cap leadership, falsifying one-horizon risk-on labeling.",
+    "Sector composition, liquidity, price-limit effects, institutional flow, breadth and concentration are not yet controlled in this receipt.",
+    "Index spread describes size-bucket state; it does not prove stock-selection alpha.",
+    "No constituent-level attribution is permitted without effective-dated membership."
+  ],
+  "maturityDecision": {
+    "D09-08": "KEEP_L3_TAIWAN_PIT_DATA_FEASIBILITY",
+    "D09-06": "KEEP_L2",
+    "D09-12": "KEEP_L2"
+  },
+  "exactNext": [
+    "BR-038 accumulate independent common-complete TRI dates and add sector-composition/liquidity/breadth controls.",
+    "Test whether cross-horizon conflict states persist prospectively before defining any regime interaction.",
+    "Do not use 2026-10-02 as a common-TRI receipt until all three official total-return values are available on a common clock."
+  ],
+  "status": "FIRST_OFFICIAL_SIZE_STATE_RECEIPT_FROZEN / HORIZON_CONFLICT_OBSERVED / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
