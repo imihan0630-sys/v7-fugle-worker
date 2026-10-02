@@ -3,11 +3,13 @@ import {
   buildSourceProbeReceipt,
   taipeiMarketCloseTimestamp,
 } from "./source_arrival_latency.mjs";
+import { sha256Hex } from "./decision_archive.mjs";
 
 const DEFAULT_TIMEOUT_MS = 30_000;
 const USER_AGENT = "System2-ReadOnly-Source-Arrival/0.2";
 
 export const A1_DAILY_CLOSE_VALIDATION_VERSION = "S2_A1_DAILY_CLOSE_VALIDATION_V0_2";
+export const A2_TAIEX_VALIDATION_VERSION = "S2_A2_TAIEX_VALIDATION_V0_2";
 
 function rocDate(marketDate) {
   const [year, month, day] = marketDate.split("-").map(Number);
@@ -153,14 +155,36 @@ export function parseOfficialSourcePayload(sourceId, payload, marketDate) {
     if (String(payload?.stat || "").toUpperCase() !== "OK"
       || !Array.isArray(fields) || !Array.isArray(rows)
       || !fields.includes("日期") || !fields.includes("發行量加權股價指數")) {
-      return { schemaValid: false, payloadDate: null, recordCount: null };
+      return {
+        schemaValid: false,
+        payloadDate: null,
+        recordCount: null,
+        validationVersion: A2_TAIEX_VALIDATION_VERSION,
+        coverageDiagnostics: null,
+      };
     }
     const dateIndex = fields.indexOf("日期");
-    const dates = rows.map((row) => normalizeOfficialDate(row?.[dateIndex])).filter(Boolean);
+    const closeIndex = fields.indexOf("發行量加權股價指數");
+    const normalized = rows.map((row) => ({
+      date: normalizeOfficialDate(row?.[dateIndex]),
+      close: numericPrice(row?.[closeIndex]),
+    })).filter((row) => row.date);
+    const dates = normalized.map((row) => row.date);
+    const targetRows = normalized.filter((row) => row.date === marketDate);
+    const usableTargetRows = targetRows.filter((row) => row.close !== null);
     return {
-      schemaValid: true,
+      schemaValid: targetRows.length <= 1 && targetRows.length === usableTargetRows.length,
       payloadDate: dates.includes(marketDate) ? marketDate : [...dates].sort().at(-1) || null,
-      recordCount: dates.filter((date) => date === marketDate).length,
+      recordCount: usableTargetRows.length,
+      validationVersion: A2_TAIEX_VALIDATION_VERSION,
+      coverageDiagnostics: {
+        targetDateRowCount: targetRows.length,
+        targetDateUsableCloseCount: usableTargetRows.length,
+        targetDateTaiexClose: usableTargetRows[0]?.close ?? null,
+        monthlyRowCount: rows.length,
+        normalizedDateCount: dates.length,
+        duplicateTargetDateRowCount: Math.max(0, targetRows.length - 1),
+      },
     };
   }
 
@@ -246,6 +270,17 @@ export async function probeOfficialSource({
   const parsed = result.transportOk
     ? parseOfficialSourcePayload(sourceId, result.payload, marketDate)
     : { schemaValid: false, payloadDate: null, recordCount: null };
+  const canonicalPayloadHash = result.transportOk && result.payload
+    ? await sha256Hex(result.payload)
+    : null;
+  const coverageDiagnostics = parsed.coverageDiagnostics && typeof parsed.coverageDiagnostics === "object"
+    ? {
+      ...parsed.coverageDiagnostics,
+      ...(sourceId === "A2_TAIEX_CLOSE"
+        ? { canonicalPayloadHash, payloadHashSemantics: "CANONICAL_JSON_SHA256" }
+        : {}),
+    }
+    : parsed.coverageDiagnostics || null;
 
   return buildSourceProbeReceipt({
     sourceId,
@@ -259,7 +294,7 @@ export async function probeOfficialSource({
     payloadDate: parsed.payloadDate,
     recordCount: parsed.recordCount,
     validationVersion: parsed.validationVersion || null,
-    coverageDiagnostics: parsed.coverageDiagnostics || null,
+    coverageDiagnostics,
     errorCode: result.errorCode,
   });
 }
