@@ -3,7 +3,7 @@
   "name": "GLOBAL_MARKET_PROVIDER_ENTITLEMENT_MATRIX_V0_1",
   "status": "RESEARCH_ONLY_SOURCE_MATRIX_FROZEN",
   "formalCoreImpact": "NONE",
-  "updatedAt": "2026-09-30T05:20:18+08:00",
+  "updatedAt": "2026-10-02T20:04:00+08:00",
   "decisionClock": "18:10 Asia/Taipei",
   "lanes": [
     {
@@ -42,7 +42,20 @@
       "decisionTimeFeasibility": "15:00_TO_18:10_PIT_ELIGIBLE_IF_CAPTURED",
       "entitlementStatus": "PUBLIC_RECENT / OLDER_HISTORY_APPLICATION_OR_PURCHASE",
       "historical1810Replay": "LONG_HISTORY_NOT_ESTABLISHED",
-      "keyRisk": "full-night OHLC is look-ahead for 18:10"
+      "keyRisk": "full-night OHLC is look-ahead for 18:10; live MIS automated entitlement is unresolved; do not conflate public historical downloads with live website permission.",
+      "liveMisEntitlementStatus": "NOT_AUTHORIZED_BY_THIS_AUDIT__SEPARATE_FROM_PUBLIC_HISTORICAL_DOWNLOAD",
+      "publicHistoricalPath": "TAIFEX public/recent transaction and statistical downloads are a separate source contract; availability/terms must be evaluated per endpoint."
+    },
+    {
+      "family": "TAIWAN_VIX",
+      "canonicalCandidate": "TAIFEX TAIWAN VIX",
+      "sourceStatus": "OFFICIAL_STATISTICAL_SOURCE_IDENTIFIED__LIVE_MIS_ENTITLEMENT_UNRESOLVED",
+      "decisionTimeFeasibility": "ECONOMIC_CLOCK_PASS__AUTHORIZED_LIVE_CAPTURE_REQUIRED",
+      "entitlementStatus": "STATISTICAL_PAGE_PUBLIC__LIVE_MIS_AUTOMATED_USE_NOT_AUTHORIZED_BY_THIS_AUDIT",
+      "historical1810Replay": "NOT_ESTABLISHED",
+      "keyRisk": "TAIFEX MIS disclaimer reserves market-data/site rights; current statistical-page extraction exposes date rows but not numeric VIX values; live/non-display automated source contract unresolved.",
+      "publicWebEvidence": "TAIFEX statistical VIX page publicly exposes current-month dates and methodology note. TAIFEX MIS real-time site redirects to a disclaimer reserving rights and requiring prior written consent for specified uses; this audit therefore does not authorize automated MIS scraping.",
+      "automatedNonDisplayUse": "DO_NOT_AUTOMATE_MIS_UNTIL_TAIFEX_OR_AUTHORIZED_PROVIDER_TERMS_EXPLICITLY_PERMIT_INTENDED_RESEARCH_USE"
     },
     {
       "family": "OIL",
@@ -133,18 +146,18 @@
     }
   ],
   "priorityOrder": [
-    "P0: public official schedule/rate/FX/TAIFEX lanes with explicit timing and public-official entitlement",
-    "P1: prospective TAIWAN VIX + TX NIGHT_PRE_SCAN via isolated public-official research receipts",
-    "P2: DXY after ICE/provider entitlement + latency contract is frozen",
-    "P3: CME WTI/HG/GC only through an authorized automated/non-display contract or licensed distributor; public website is reference-only and delayed >=10m",
-    "P4: historical replay, macro consensus, opaque critical-mineral prices only after source rights and vintages are explicit"
+    "P0: public official schedule/rate/FX/statistical lanes with explicit use/timing and no live-price scraping",
+    "P1: permitted TAIFEX historical/statistical option-chain/VIX/TX QA to validate parser, session and surface methods without pretending first-known capture",
+    "P2: live TAIFEX VIX/TX only through an explicitly authorized source/contract; MIS webpage visibility is not automation permission",
+    "P3: DXY/CME WTI/HG/GC only after licensed non-display provider contract",
+    "P4: historical replay, macro consensus and opaque critical-mineral prices only after source rights/vintage semantics are explicit"
   ],
   "implementationGuard": "Do not wire into Formal. A standalone research capture can be Class A only if isolated from Formal/shared runtime, schedules, budgets and schemas; otherwise Class B proposal-first.",
   "nextContinuation": [
-    "accumulate public-official P0/P1 receipts first; do not buy data yet",
-    "audit DXY entitlement separately",
-    "do not automate CME website quote scraping as a substitute for a licensed non-display source",
-    "revisit paid/licensed CME lanes only after cheaper public-official lanes demonstrate incremental research value",
-    "run independent-date Shadow before any L3/optimization promotion"
+    "audit TAIFEX historical/statistical option-chain download terms and machine-readable fields for research-only replay QA",
+    "do not automate TAIFEX MIS live pages unless explicit permission/source contract is established",
+    "use statistical/historical data only for replay/parser/method sensitivity unless first-known timing is independently attested",
+    "accumulate strict source-attested dates before OOS/optimization",
+    "avoid paid feeds until public-official lanes demonstrate a material unresolved information gap"
   ]
 }
