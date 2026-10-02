@@ -3929,3 +3929,70 @@ Dependency artifact:
 
 Status:
 `HISTORICAL_SOURCE_FOUNDATION_AVAILABLE / CONTINUOUS_TAIL_DATASET_NOT_PROVEN`.
+
+
+## D15-MP-001 — 3+3 pool separation is price-tier capacity, not proven diversification (2026-10-02)
+
+D15-15 starts by falsifying a common semantic shortcut:
+
+`GENERAL pool + THOUSAND pool = two independent portfolio risk bets`.
+
+Current Formal source does **not** support that statement.
+
+### Exact pool mechanism
+
+The selector splits on the same scan-date close used in the final plan:
+
+- GENERAL = formal close < NT$1,000;
+- THOUSAND = formal close >= NT$1,000;
+- each pool keeps at most 3 names;
+- unused slots do not cross-fill.
+
+The split is therefore a **price-tier capacity rule**. It is not defined from:
+- sector;
+- covariance;
+- correlation;
+- factor exposure;
+- volatility cluster;
+- effective independent bets.
+
+### PIT reconstruction
+
+The immutable trade-journal plan stores `formal_close`.
+
+Current plan construction sets:
+`formalClose = item.close`
+on the same scan date, while the pool split also uses `item.close`.
+
+Therefore historical selected-plan pool identity is PIT-safe to reconstruct from `formal_close` without using any later price.
+
+### Research metrics
+
+For each selected date the audit freezes:
+- name count by pool;
+- capital by pool;
+- projected stop-risk by pool;
+- aggregate name-level risk HHI;
+- pool capital HHI;
+- pool projected-risk HHI;
+- within-pool HHI where at least two names exist.
+
+### Anti-overclaim firewall
+
+A date with only one represented pool is:
+`CROSS_POOL_NON_IDENTIFYING`.
+
+A date with both pools represented can describe capital/risk split across price tiers, but still cannot prove genuine diversification.
+
+True cross-pool diversification requires PIT-synchronized return/covariance evidence under D15-03/04/05/06. Price tier, industry labels or number of pools are not substitutes.
+
+Artifacts:
+- `research/d15_multi_pool_structural_risk_v0_1.mjs`
+- `research/d15_multi_pool_structural_risk_spec_v0_1.json`
+- `tests/test_d15_multi_pool_structural_risk_v0_1.mjs`
+- `tests/d15_multi_pool_production_readonly_audit.mjs`
+
+Status:
+`POOL_IDENTITY_SOURCE_CONTRACT_READY / PRODUCTION_AUDIT_PENDING / DIVERSIFICATION_UNPROVEN`.
+
+Formal Core unchanged.
