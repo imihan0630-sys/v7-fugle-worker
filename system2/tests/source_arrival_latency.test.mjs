@@ -177,4 +177,56 @@ assert.equal(freezeEligible.independentTradingDates, 20);
 assert.equal(freezeEligible.candidateIsAuthorizedDecisionClock, false);
 assert.equal(freezeEligible.cronAuthorized, false);
 
+
+const a2ContextReadyCannotRescueA1 = buildSourceArrivalMeasurement({
+  measurementRunId: "A2-CONTEXT-READY-A1-INCOMPLETE",
+  marketDate: "2026-09-28",
+  expectedTradingDay: true,
+  attempts: [
+    receipt({
+      sourceId: "A1_TWSE_DAILY_CLOSE",
+      observedAt: "2026-09-28T06:00:00Z",
+      payloadDate: "2026-09-25",
+    }),
+    receipt({
+      sourceId: "A1_TPEX_DAILY_CLOSE",
+      observedAt: "2026-09-28T06:00:00Z",
+      payloadDate: "2026-09-25",
+    }),
+    receipt({
+      sourceId: "A2_TAIEX_CLOSE",
+      observedAt: "2026-09-28T06:00:00Z",
+      recordCount: 1,
+    }),
+  ],
+  createdAt: "2026-09-28T06:01:00Z",
+});
+assert.equal(a2ContextReadyCannotRescueA1.dailyGateComplete, false);
+assert.equal(
+  a2ContextReadyCannotRescueA1.sourceSummaries.find((x) => x.sourceId === "A2_TAIEX_CLOSE").readyObserved,
+  true,
+);
+
+const a2NotReadyCannotBlockA1 = buildSourceArrivalMeasurement({
+  measurementRunId: "A1-COMPLETE-A2-CONTEXT-NOT-READY",
+  marketDate: "2026-09-28",
+  expectedTradingDay: true,
+  attempts: [
+    receipt({ sourceId: "A1_TWSE_DAILY_CLOSE", observedAt: "2026-09-28T06:00:00Z" }),
+    receipt({ sourceId: "A1_TPEX_DAILY_CLOSE", observedAt: "2026-09-28T06:00:00Z" }),
+    receipt({
+      sourceId: "A2_TAIEX_CLOSE",
+      observedAt: "2026-09-28T06:00:00Z",
+      payloadDate: "2026-09-25",
+      recordCount: 0,
+    }),
+  ],
+  createdAt: "2026-09-28T06:01:00Z",
+});
+assert.equal(a2NotReadyCannotBlockA1.dailyGateComplete, true);
+assert.equal(
+  a2NotReadyCannotBlockA1.sourceSummaries.find((x) => x.sourceId === "A2_TAIEX_CLOSE").readyObserved,
+  false,
+);
+
 console.log("System2 source-arrival latency contract tests passed");
