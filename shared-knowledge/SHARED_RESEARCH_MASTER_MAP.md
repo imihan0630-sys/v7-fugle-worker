@@ -366,3 +366,11 @@ Reusable rules:
 - one structural relation episode may have many daily snapshots but one independent relation identity.
 
 PATTERN-RG2 remains OUTCOME_CLOSED / ALPHA_UNKNOWN / FORMAL_CORE_LOCKED.
+
+### D01 shared handoff — DL-010 RG2 executable semantics / ownership (2026-10-02)
+
+- RG2 research now has a threshold-free relation calculator and 12 defined adversarial cases; execution receipt is still pending.
+- Negative availableAir is preserved and unsigned; no hard resistance veto.
+- Cross-lane ownership is frozen: Pattern geometry, Corporate Actions continuity, D02 acceptance, Target-RR target construction, round-price proximity, Microstructure execution mechanics, and Technical-Indicator timeframe taxonomy remain separate canonical owners.
+- Do not fork those definitions in System 2; consume the shared objects instead.
+Status: RG2_SPEC_EXECUTABLE / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / FORMAL_LOCKED.
