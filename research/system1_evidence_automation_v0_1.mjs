@@ -1,0 +1,229 @@
+import {buildC4AllocationExperiment,buildC5OverfilterDiagnostic} from "./system1_c3_c4_c5_shadow_v0_1.mjs";
+import {C3_CAPTURE_SLOTS} from "./system1_c3_capture_contract_v0_1.mjs";
+
+const HEX64=/^[0-9a-f]{64}$/i;
+const finite=x=>typeof x==="number"&&Number.isFinite(x)?x:null;
+const round=(x,d=4)=>Number.isFinite(x)?Math.round(x*10**d)/10**d:null;
+const ts=x=>typeof x==="string"&&/(?:Z|[+-]\d\d:\d\d)$/.test(x)?Date.parse(x):NaN;
+
+function verifyC2(c2){
+  if(c2?.schemaVersion!=="SYSTEM1_C2_PAIRED_LEDGER_V0_1"||
+     c2?.completeMatchedCohort!==true||c2?.researchOnly!==true||
+     c2?.formalCoreLocked!==true||!c2?.generationId||!c2?.sessionDate||
+     !Number.isFinite(ts(c2?.decisionAt))||!Array.isArray(c2?.pairs)||
+     c2.pairs.length!==c2?.tally?.populationN) throw new Error("S1_EVIDENCE_VERIFIED_C2_REQUIRED");
+  return c2;
+}
+function taipeiSlot(iso){
+  const ms=Date.parse(iso);
+  if(!Number.isFinite(ms)) return null;
+  const parts=new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Taipei",hour:"2-digit",minute:"2-digit",hourCycle:"h23"})
+    .formatToParts(new Date(ms));
+  const get=t=>parts.find(x=>x.type===t)?.value;
+  return get("hour")+":"+get("minute");
+}
+function parseBar(row){
+  if(row?.completed_bar!==1&&row?.completed_bar!==true) throw new Error("C3_LIVE_BAR_NOT_COMPLETED");
+  let bar;
+  try{bar=typeof row?.bar_json==="string"?JSON.parse(row.bar_json):row?.bar_json;}catch(_){throw new Error("C3_LIVE_BAR_JSON_INVALID");}
+  const start=String(row?.bar_start||bar?.time||""),end=String(row?.bar_end||"");
+  if(!Number.isFinite(ts(start))||!Number.isFinite(ts(end))||ts(end)<=ts(start)) throw new Error("C3_LIVE_BAR_TIME_INVALID");
+  const out={start,end,slot:taipeiSlot(start),open:finite(bar?.open),high:finite(bar?.high),low:finite(bar?.low),close:finite(bar?.close),
+    volume:finite(bar?.volume),volumeRatio:finite(bar?.volumeRatio),depthScore:finite(bar?.depthScore),
+    limitUp:typeof bar?.limitUp==="boolean"?bar.limitUp:null,lateStage:typeof bar?.lateStage==="boolean"?bar.lateStage:null};
+  if(!C3_CAPTURE_SLOTS.includes(out.slot)||[out.open,out.high,out.low,out.close].some(x=>!(x>0))||
+     out.high<Math.max(out.open,out.close)||out.low>Math.min(out.open,out.close)||out.volume===null||out.volume<0)
+    throw new Error("C3_LIVE_BAR_VALUES_INVALID");
+  return out;
+}
+function receiptMap(rows,label){
+  const map=new Map();
+  for(const row of rows||[]){
+    const symbol=String(row?.symbol||"").trim();
+    if(!symbol||map.has(symbol)) throw new Error(label+"_DUPLICATE_OR_INVALID_SYMBOL");
+    map.set(symbol,row);
+  }
+  return map;
+}
+function verifiedPriorClose(row,c2){
+  if(row?.verified!==true||row?.parentId!==c2.generationId||row?.sessionDate!==c2.sessionDate||
+     !(finite(row?.close)>0)||!Number.isFinite(ts(row?.knownAt))||ts(row.knownAt)>ts(c2.decisionAt))
+    return null;
+  return row.close;
+}
+function verifiedGeometry(row,c2){
+  const g=row?.geometry;
+  if(g?.authenticated!==true||g?.parentId!==c2.generationId||g?.sessionDate!==c2.sessionDate||
+     !Number.isFinite(ts(g?.knownAt))||ts(g.knownAt)>ts(c2.decisionAt)||!(finite(g.stop)>0)||!(finite(g.target)>0))
+    return null;
+  if(g.support!=null&&!(finite(g.support)>0)) return null;
+  if(g.breakout!=null&&!(finite(g.breakout)>0)) return null;
+  return g;
+}
+function verifiedFormalBaseline(row,c2){
+  if(row?.verified!==true||row?.parentId!==c2.generationId||row?.sessionDate!==c2.sessionDate||
+     !Number.isFinite(ts(row?.knownAt))||ts(row.knownAt)<=ts(c2.decisionAt)||
+     !["TRIGGERED","NO_TRIGGER"].includes(row?.status)) return null;
+  return row;
+}
+function verifiedBarState(row,barStart){
+  if(row?.verified!==true||row?.barStart!==barStart) return null;
+  const depth=finite(row.depthScore);
+  if(depth===null||depth<0||typeof row.limitUp!=="boolean"||typeof row.lateStage!=="boolean") return null;
+  return {depthScore:depth,limitUp:row.limitUp,lateStage:row.lateStage};
+}
+function eligibleShortSymbols(c2){
+  return c2.pairs.filter(p=>p?.short?.gateStatus==="PASS"&&Array.isArray(p?.short?.missingSafety)&&p.short.missingSafety.length===0)
+    .map(p=>String(p.symbol));
+}
+
+export function auditC3LiveInputs(c2Ledger,{
+  captureRows=[],geometryReceipts=[],formalBaselineReceipts=[],priorCloseReceipts=[],barStateReceipts=[]
+}={}){
+  const c2=verifyC2(c2Ledger),eligible=new Set(eligibleShortSymbols(c2));
+  const geometry=receiptMap(geometryReceipts,"C3_GEOMETRY");
+  const formal=receiptMap(formalBaselineReceipts,"C3_FORMAL_BASELINE");
+  const prior=receiptMap(priorCloseReceipts,"C3_PRIOR_CLOSE");
+  const stateByKey=new Map();
+  for(const r of barStateReceipts||[]){
+    const key=String(r?.symbol||"")+"|"+String(r?.barStart||"");
+    if(!r?.symbol||!r?.barStart||stateByKey.has(key)) throw new Error("C3_BAR_STATE_DUPLICATE_OR_INVALID");
+    stateByKey.set(key,r);
+  }
+  const grouped=new Map();
+  for(const row of captureRows||[]){
+    if(row?.generation_id!==c2.generationId) throw new Error("C3_CAPTURE_GENERATION_MISMATCH");
+    const symbol=String(row?.symbol||"");
+    if(!eligible.has(symbol)) continue;
+    const bar=parseBar(row);
+    if(!grouped.has(symbol)) grouped.set(symbol,[]);
+    grouped.get(symbol).push(bar);
+  }
+
+  const rows=[],readyReceipts=[];
+  for(const symbol of [...eligible].sort()){
+    const bars=(grouped.get(symbol)||[]).sort((a,b)=>ts(a.start)-ts(b.start));
+    const slots=bars.map(x=>x.slot),slotSet=new Set(slots);
+    const duplicateSlots=[...new Set(slots.filter((x,i)=>slots.indexOf(x)!==i))];
+    const missingSlots=C3_CAPTURE_SLOTS.filter(x=>!slotSet.has(x));
+    const blockers=[];
+    if(duplicateSlots.length) blockers.push("DUPLICATE_15M_SLOT");
+    if(missingSlots.length) blockers.push("INCOMPLETE_15M_SESSION");
+    const g=verifiedGeometry(geometry.get(symbol),c2);
+    if(!g) blockers.push("GEOMETRY_UNVERIFIED");
+    const pc=verifiedPriorClose(prior.get(symbol),c2);
+    if(!(pc>0)) blockers.push("PRIOR_CLOSE_UNVERIFIED");
+    const fb=verifiedFormalBaseline(formal.get(symbol),c2);
+    if(!fb) blockers.push("FORMAL_BASELINE_RECEIPT_UNVERIFIED");
+
+    const adapted=[];
+    for(const bar of bars){
+      const st=verifiedBarState(stateByKey.get(symbol+"|"+bar.start),bar.start);
+      const missing=[];
+      if(bar.volumeRatio===null) missing.push("VOLUME_RATIO");
+      if(!st) missing.push("DEPTH_LIMIT_LATE_STATE");
+      if(missing.length) blockers.push("BAR_MICROSTRUCTURE_UNVERIFIED");
+      adapted.push({
+        endAt:bar.end,open:bar.open,high:bar.high,low:bar.low,close:bar.close,
+        volumeRatio:bar.volumeRatio,depthScore:st?.depthScore??null,
+        gapPct:pc>0?round((bars[0].open/pc-1)*100,6):null,
+        completed:true,limitUp:st?.limitUp??null,lateStage:st?.lateStage??null,
+        missingMicrostructure:missing
+      });
+    }
+    const uniqueBlockers=[...new Set(blockers)];
+    const status=uniqueBlockers.length?"INPUT_BLOCKED":"READY";
+    const pair=c2.pairs.find(x=>String(x.symbol)===symbol);
+    const baseSetup=pair?.formal?.setupA===true?"A":pair?.formal?.setupB===true?"B":
+      (["A","B"].includes(geometry.get(symbol)?.baseSetup)?geometry.get(symbol).baseSetup:null);
+    if(status==="READY"&&!baseSetup) uniqueBlockers.push("BASE_SETUP_UNVERIFIED");
+    const finalStatus=uniqueBlockers.length?"INPUT_BLOCKED":"READY";
+    if(finalStatus==="READY"){
+      readyReceipts.push({symbol,parentId:c2.generationId,sessionDate:c2.sessionDate,baseSetup,
+        geometry:g,formalBaseline:fb,bars:adapted});
+    }
+    rows.push({symbol,status:finalStatus,barCount:bars.length,missingSlots,duplicateSlots,
+      blockers:uniqueBlockers,depthStateAvailableBars:adapted.filter(x=>x.depthScore!==null).length,
+      volumeRatioAvailableBars:adapted.filter(x=>x.volumeRatio!==null).length,
+      gapPctVerified:pc>0,geometryVerified:!!g,formalBaselineVerified:!!fb,
+      researchOnly:true,decisionImpact:false});
+  }
+  const readyN=rows.filter(x=>x.status==="READY").length;
+  return {schemaVersion:"SYSTEM1_C3_LIVE_INPUT_AUDIT_V0_1",generationId:c2.generationId,sessionDate:c2.sessionDate,
+    eligibleN:rows.length,readyN,blockedN:rows.length-readyN,coveragePct:rows.length?round(readyN/rows.length*100):null,
+    rows,readyReceipts,missingMeansUnknown:true,depthScoreNeverImputed:true,limitStateNeverImputed:true,
+    economicSuperiority:"UNKNOWN",researchOnly:true,decisionImpact:false,formalCoreImpact:false,noTrade:true,noPush:true};
+}
+
+function sortedCounts(obj){return Object.entries(obj||{}).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).map(([key,count])=>({key,count}));}
+export function buildC5DailyReport(c1Diagnosis,c2Ledger){
+  const short=buildC5OverfilterDiagnostic(c1Diagnosis,c2Ledger,{strategy:"SHORT"});
+  const swing=buildC5OverfilterDiagnostic(c1Diagnosis,c2Ledger,{strategy:"SWING"});
+  const render=d=>({
+    formalRejectedN:d.formalRejectedN,
+    optionalOnlyFailN:d.optionalOnlyFailN,
+    hardOrPrimaryFailN:d.hardOrPrimaryFailN,
+    hardUnknownN:d.hardUnknownN,
+    setupNotReadyN:d.setupNotReadyN,
+    safetyUnknownUpperBoundN:d.safetyUnknownUpperBoundN,
+    conditionalShortUpperBoundN:d.conditionalShortUpperBoundN,
+    topFailedGates:sortedCounts(d.gateFails).slice(0,10),
+    topUnknownGates:sortedCounts(d.gateUnknown).slice(0,10),
+    topFirstFailures:sortedCounts(d.firstFailures).slice(0,10),
+    roleFailures:sortedCounts(d.roleFails)
+  });
+  return {schemaVersion:"SYSTEM1_C5_DAILY_REPORT_V0_1",sessionDate:c2Ledger.sessionDate,generationId:c2Ledger.generationId,
+    short:render(short),swing:render(swing),denominatorN:c2Ledger.tally.populationN,
+    firstFailureIsNotCausalAttribution:true,optionalOnlyIsNotAdmission:true,economicSuperiority:"UNKNOWN",
+    researchOnly:true,decisionImpact:false,formalCoreImpact:false,noTrade:true,noPush:true};
+}
+
+export function buildC4DailyComparison(candidates,options={}){
+  const exp=buildC4AllocationExperiment(candidates,options);
+  return {schemaVersion:"SYSTEM1_C4_DAILY_COMPARISON_V0_1",
+    selectedCount:exp.selectedCount,totalCapitalNTD:exp.totalCapitalNTD,nominalDeployRatioPct:exp.nominalDeployRatioPct??0,
+    comparators:exp.comparators.map(x=>({name:x.name,plannedAllocationNTD:x.plannedAllocationNTD,
+      capitalUtilizationPct:x.capitalUtilizationPct,reserveVsNominalTargetNTD:x.reserveVsNominalTargetNTD,
+      plannedStopRiskNTD:x.plannedStopRiskNTD,plannedStopRiskPctCapital:x.plannedStopRiskPctCapital,riskHHI:x.riskHHI,
+      rows:x.rows})),
+    preferredAllocator:null,economicSuperiority:"UNKNOWN",sameCandidateSet:true,researchOnly:true,
+    decisionImpact:false,formalCoreImpact:false,noTrade:true,noPush:true};
+}
+
+export const FORMAL_SWITCH_MATURITY_V0_1=Object.freeze({
+  matureD5Rows:60,completeProspectiveSnapshots:30,independentScanDates:15,calendarYears:2,marketRegimes:2,
+  dateClusterDirectionAgreementPct:70
+});
+
+export function evaluateFormalSwitchMaturity({
+  matureD5Rows=0,completeProspectiveSnapshots=0,scanDates=[],calendarYears=[],marketRegimes=[],
+  dateClusterDirectionAgreementPct=null,sourceCoveragePass=false,purgedHoldoutPass=false,
+  multipleTestingPass=false,redundancyPass=false,costStressPass=false,
+  afterCostReturnAvailable=false,drawdownTailAvailable=false,mfeMaeAvailable=false,
+  triggerFillFunnelAvailable=false,turnoverConcentrationAvailable=false,deploymentReserveAvailable=false,
+  brokerFillsCashComplete=false
+}={}){
+  const t=FORMAL_SWITCH_MATURITY_V0_1;
+  const uniqueDates=new Set(scanDates).size,uniqueYears=new Set(calendarYears).size,uniqueRegimes=new Set(marketRegimes).size;
+  const checks={
+    matureD5Rows:matureD5Rows>=t.matureD5Rows,
+    completeProspectiveSnapshots:completeProspectiveSnapshots>=t.completeProspectiveSnapshots,
+    independentScanDates:uniqueDates>=t.independentScanDates,
+    calendarYears:uniqueYears>=t.calendarYears,
+    marketRegimes:uniqueRegimes>=t.marketRegimes,
+    dateClusterDirectionAgreementPct:finite(dateClusterDirectionAgreementPct)!==null&&dateClusterDirectionAgreementPct>=t.dateClusterDirectionAgreementPct,
+    sourceCoveragePass:sourceCoveragePass===true,purgedHoldoutPass:purgedHoldoutPass===true,
+    multipleTestingPass:multipleTestingPass===true,redundancyPass:redundancyPass===true,costStressPass:costStressPass===true,
+    afterCostReturnAvailable:afterCostReturnAvailable===true,drawdownTailAvailable:drawdownTailAvailable===true,
+    mfeMaeAvailable:mfeMaeAvailable===true,triggerFillFunnelAvailable:triggerFillFunnelAvailable===true,
+    turnoverConcentrationAvailable:turnoverConcentrationAvailable===true,deploymentReserveAvailable:deploymentReserveAvailable===true,
+    brokerFillsCashComplete:brokerFillsCashComplete===true
+  };
+  const blockers=Object.entries(checks).filter(([,ok])=>!ok).map(([key])=>key);
+  return {schemaVersion:"SYSTEM1_FORMAL_SWITCH_MATURITY_GATE_V0_1",thresholds:t,
+    observed:{matureD5Rows,completeProspectiveSnapshots,independentScanDates:uniqueDates,calendarYears:uniqueYears,
+      marketRegimes:uniqueRegimes,dateClusterDirectionAgreementPct:finite(dateClusterDirectionAgreementPct)},
+    checks,blockers,eligibleForClassCReview:blockers.length===0,
+    formalOptimizationCandidate:blockers.length===0?"EVIDENCE_GATE_PASSED_REVIEW_REQUIRED":"NO",
+    autoSwitchAuthorized:false,formalCoreLocked:true,researchOnly:true,decisionImpact:false,formalCoreImpact:false};
+}
