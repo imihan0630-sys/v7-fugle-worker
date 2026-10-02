@@ -46,7 +46,16 @@ const good = {
   assert.equal(x.auditHash, (await auditD05CommonSupportV0_1({ symbol: "2330", marketDate: date, windows: [good] })).auditHash);
 }
 {
-  const bad = structuredClone(good);
+  const secondStart = new Date(Date.parse(start) + 15000).toISOString();
+  const bad = {
+    windowStart: secondStart,
+    sessionMechanismState: "NORMAL_CONTINUOUS_TWO_SIDED_BOOK",
+    cadences: {
+      "1s": cadence(secondStart, 1),
+      "5s": cadence(secondStart, 5),
+      "15s": cadence(secondStart, 15),
+    },
+  };
   bad.cadences["1s"].buckets.pop();
   const x = await auditD05CommonSupportV0_1({ symbol: "2330", marketDate: date, windows: [good, bad] });
   assert.equal(x.totalWindowCount, 2);
