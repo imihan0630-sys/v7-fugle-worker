@@ -18,7 +18,7 @@ replace_once(
 
 replace_once(
     '  D1_SCHEMA_READY = true;',
-    r'''  await env.V7_DB.prepare(\`CREATE TABLE IF NOT EXISTS trade_research_c3_cohorts (
+    r'''  await env.V7_DB.prepare(`CREATE TABLE IF NOT EXISTS trade_research_c3_cohorts (
     generation_id TEXT NOT NULL,
     source_session_date TEXT NOT NULL,
     target_trade_date TEXT NOT NULL,
@@ -31,10 +31,10 @@ replace_once(
     classification TEXT NOT NULL,
     created_at TEXT NOT NULL,
     PRIMARY KEY(generation_id,symbol)
-  )\`).run();
-  await env.V7_DB.prepare(\`CREATE INDEX IF NOT EXISTS idx_trade_research_c3_cohort_target
-    ON trade_research_c3_cohorts(target_trade_date,generation_id)\`).run();
-  await env.V7_DB.prepare(\`CREATE TABLE IF NOT EXISTS trade_research_c3_bars (
+  )`).run();
+  await env.V7_DB.prepare(`CREATE INDEX IF NOT EXISTS idx_trade_research_c3_cohort_target
+    ON trade_research_c3_cohorts(target_trade_date,generation_id)`).run();
+  await env.V7_DB.prepare(`CREATE TABLE IF NOT EXISTS trade_research_c3_bars (
     generation_id TEXT NOT NULL,
     target_trade_date TEXT NOT NULL,
     symbol TEXT NOT NULL,
@@ -47,9 +47,9 @@ replace_once(
     completed_bar INTEGER NOT NULL DEFAULT 1,
     created_at TEXT NOT NULL,
     PRIMARY KEY(generation_id,symbol,bar_start)
-  )\`).run();
-  await env.V7_DB.prepare(\`CREATE INDEX IF NOT EXISTS idx_trade_research_c3_bars_date
-    ON trade_research_c3_bars(target_trade_date,symbol,bar_start)\`).run();
+  )`).run();
+  await env.V7_DB.prepare(`CREATE INDEX IF NOT EXISTS idx_trade_research_c3_bars_date
+    ON trade_research_c3_bars(target_trade_date,symbol,bar_start)`).run();
   D1_SCHEMA_READY = true;''',
     "C3 research D1 schema"
 )
@@ -116,8 +116,8 @@ function c3NormalizeCohortRows(symbols) {
 }
 
 async function c3ReadC1Universe(session,generationId) {
-  const result=await session.prepare(\`SELECT rows_json FROM trade_research_c1_chunks
-    WHERE generation_id=?1 ORDER BY chunk_index ASC\`).bind(generationId).all();
+  const result=await session.prepare(`SELECT rows_json FROM trade_research_c1_chunks
+    WHERE generation_id=?1 ORDER BY chunk_index ASC`).bind(generationId).all();
   const symbols=new Set();
   for(const row of result?.results||[]) {
     let values;try{values=JSON.parse(row.rows_json||"[]");}catch(_){throw new Error("C3_CAPTURE_C1_CHUNK_INVALID");}
@@ -162,14 +162,14 @@ async function saveC3ResearchCohort(env,body) {
 
   await ensureD1Schema(env);
   const session=env.V7_DB.withSession("first-primary");
-  const generation=await session.prepare(\`SELECT generation_id,scan_date,content_digest,universe_digest,population_n
-    FROM trade_research_c1_generations WHERE generation_id=?1\`).bind(generationId).first();
+  const generation=await session.prepare(`SELECT generation_id,scan_date,content_digest,universe_digest,population_n
+    FROM trade_research_c1_generations WHERE generation_id=?1`).bind(generationId).first();
   if(!generation||generation.scan_date!==sourceSessionDate||
      generation.content_digest!==sourceC1ContentDigest||generation.universe_digest!==sourceC1UniverseDigest)
     throw new Error("C3_CAPTURE_C1_GENERATION_MISMATCH");
 
-  const active=await session.prepare(\`SELECT generation_id FROM trade_research_c3_cohorts
-    WHERE target_trade_date=?1 LIMIT 1\`).bind(targetTradeDate).first();
+  const active=await session.prepare(`SELECT generation_id FROM trade_research_c3_cohorts
+    WHERE target_trade_date=?1 LIMIT 1`).bind(targetTradeDate).first();
   if(active&&active.generation_id!==generationId) throw new Error("C3_CAPTURE_TARGET_ALREADY_BOUND_TO_ANOTHER_GENERATION");
 
   const universe=await c3ReadC1Universe(session,generationId);
@@ -183,8 +183,8 @@ async function saveC3ResearchCohort(env,body) {
     generationId,sourceSessionDate,targetTradeDate,sourceC1ContentDigest,sourceC1UniverseDigest,
     sourceC2Fingerprint,rows
   }));
-  const existing=await session.prepare(\`SELECT cohort_digest,COUNT(*) AS row_count FROM trade_research_c3_cohorts
-    WHERE generation_id=?1 GROUP BY cohort_digest\`).bind(generationId).first();
+  const existing=await session.prepare(`SELECT cohort_digest,COUNT(*) AS row_count FROM trade_research_c3_cohorts
+    WHERE generation_id=?1 GROUP BY cohort_digest`).bind(generationId).first();
   if(existing) {
     if(existing.cohort_digest!==cohortDigest||Number(existing.row_count)!==rows.length)
       throw new Error("C3_CAPTURE_IMMUTABLE_COHORT_CONFLICT");
@@ -193,15 +193,15 @@ async function saveC3ResearchCohort(env,body) {
   }
 
   const now=new Date().toISOString();
-  await session.batch(rows.map(row=>session.prepare(\`INSERT INTO trade_research_c3_cohorts(
+  await session.batch(rows.map(row=>session.prepare(`INSERT INTO trade_research_c3_cohorts(
     generation_id,source_session_date,target_trade_date,source_c1_content_digest,source_c1_universe_digest,
     source_c2_fingerprint,cohort_digest,symbol,pool,classification,created_at
-  ) VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11)\`).bind(
+  ) VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11)`).bind(
     generationId,sourceSessionDate,targetTradeDate,sourceC1ContentDigest,sourceC1UniverseDigest,
     sourceC2Fingerprint,cohortDigest,row.symbol,row.pool,row.classification,now
   )));
-  const readback=await session.prepare(\`SELECT COUNT(*) AS n,MIN(cohort_digest) AS digest,MAX(cohort_digest) AS digest2
-    FROM trade_research_c3_cohorts WHERE generation_id=?1\`).bind(generationId).first();
+  const readback=await session.prepare(`SELECT COUNT(*) AS n,MIN(cohort_digest) AS digest,MAX(cohort_digest) AS digest2
+    FROM trade_research_c3_cohorts WHERE generation_id=?1`).bind(generationId).first();
   if(Number(readback?.n)!==rows.length||readback?.digest!==cohortDigest||readback?.digest2!==cohortDigest)
     throw new Error("C3_CAPTURE_COHORT_READBACK_MISMATCH");
   return {ok:true,idempotent:false,generationId,targetTradeDate,cohortDigest,symbols:rows.length,
@@ -214,12 +214,12 @@ async function readC3ResearchCohort(env,{generationId=null,targetTradeDate=null}
   const session=env.V7_DB.withSession("first-primary");
   const gid=String(generationId||"").trim(),date=c3ResearchDate(targetTradeDate);
   let result;
-  if(gid) result=await session.prepare(\`SELECT generation_id,source_session_date,target_trade_date,source_c1_content_digest,
+  if(gid) result=await session.prepare(`SELECT generation_id,source_session_date,target_trade_date,source_c1_content_digest,
     source_c1_universe_digest,source_c2_fingerprint,cohort_digest,symbol,pool,classification,created_at
-    FROM trade_research_c3_cohorts WHERE generation_id=?1 ORDER BY symbol\`).bind(gid).all();
-  else if(date) result=await session.prepare(\`SELECT generation_id,source_session_date,target_trade_date,source_c1_content_digest,
+    FROM trade_research_c3_cohorts WHERE generation_id=?1 ORDER BY symbol`).bind(gid).all();
+  else if(date) result=await session.prepare(`SELECT generation_id,source_session_date,target_trade_date,source_c1_content_digest,
     source_c1_universe_digest,source_c2_fingerprint,cohort_digest,symbol,pool,classification,created_at
-    FROM trade_research_c3_cohorts WHERE target_trade_date=?1 ORDER BY symbol\`).bind(date).all();
+    FROM trade_research_c3_cohorts WHERE target_trade_date=?1 ORDER BY symbol`).bind(date).all();
   else throw new Error("C3_CAPTURE_QUERY_REQUIRES_GENERATION_OR_DATE");
   return {ok:true,rows:result?.results||[],researchOnly:true,decisionImpact:false,formalCoreImpact:false};
 }
@@ -237,16 +237,16 @@ async function persistC3ResearchBar(session,row,scheduledTime,rawBar) {
   if(["open","high","low","close"].some(k=>!(payload[k]>0))||payload.volume===null||payload.volume<0)
     throw new Error("C3_CAPTURE_BAR_VALUES_INVALID");
   const encoded=JSON.stringify(payload);
-  const existing=await session.prepare(\`SELECT bar_json FROM trade_research_c3_bars
-    WHERE generation_id=?1 AND symbol=?2 AND bar_start=?3\`).bind(row.generation_id,row.symbol,barStart).first();
+  const existing=await session.prepare(`SELECT bar_json FROM trade_research_c3_bars
+    WHERE generation_id=?1 AND symbol=?2 AND bar_start=?3`).bind(row.generation_id,row.symbol,barStart).first();
   if(existing) {
     if(existing.bar_json!==encoded) throw new Error("C3_CAPTURE_IMMUTABLE_BAR_CONFLICT");
     return {stored:false,duplicate:true,symbol:row.symbol,barStart};
   }
   const fetchedAt=new Date().toISOString();
-  await session.prepare(\`INSERT INTO trade_research_c3_bars(
+  await session.prepare(`INSERT INTO trade_research_c3_bars(
     generation_id,target_trade_date,symbol,bar_start,bar_end,scheduled_time,bar_json,source_fetched_at,source_family,completed_bar,created_at
-  ) VALUES(?1,?2,?3,?4,?5,?6,?7,?8,'FUGLE_INTRADAY_CANDLES_15M',1,?8)\`).bind(
+  ) VALUES(?1,?2,?3,?4,?5,?6,?7,?8,'FUGLE_INTRADAY_CANDLES_15M',1,?8)`).bind(
     row.generation_id,row.target_trade_date,row.symbol,barStart,barEnd,Number(scheduledTime),encoded,fetchedAt
   ).run();
   return {stored:true,duplicate:false,symbol:row.symbol,barStart};
@@ -262,8 +262,8 @@ async function captureC3ResearchBarsSafe(env,scheduledTime,need15) {
   try {
     await ensureD1Schema(env);
     const targetDate=taiwanDate(scheduledTime),session=env.V7_DB.withSession("first-primary");
-    const result=await session.prepare(\`SELECT generation_id,target_trade_date,symbol,pool,classification
-      FROM trade_research_c3_cohorts WHERE target_trade_date=?1 ORDER BY symbol\`).bind(targetDate).all();
+    const result=await session.prepare(`SELECT generation_id,target_trade_date,symbol,pool,classification
+      FROM trade_research_c3_cohorts WHERE target_trade_date=?1 ORDER BY symbol`).bind(targetDate).all();
     const rows=result?.results||[];
     if(!rows.length) return {enabled:true,skipped:true,reason:"NO_ACTIVE_C3_COHORT",extraCalls:0,researchOnly:true,decisionImpact:false};
     if(rows.length>limits.maxSymbols||rows.length>limits.maxCallsPerSlot||
@@ -302,9 +302,9 @@ async function readC3ResearchBars(env,generationId) {
   const gid=String(generationId||"").trim();
   if(!gid) throw new Error("C3_CAPTURE_GENERATION_REQUIRED");
   await ensureD1Schema(env);
-  const result=await env.V7_DB.withSession("first-primary").prepare(\`SELECT generation_id,target_trade_date,symbol,bar_start,bar_end,
+  const result=await env.V7_DB.withSession("first-primary").prepare(`SELECT generation_id,target_trade_date,symbol,bar_start,bar_end,
     scheduled_time,bar_json,source_fetched_at,source_family,completed_bar
-    FROM trade_research_c3_bars WHERE generation_id=?1 ORDER BY symbol,bar_start LIMIT 500\`).bind(gid).all();
+    FROM trade_research_c3_bars WHERE generation_id=?1 ORDER BY symbol,bar_start LIMIT 500`).bind(gid).all();
   return {ok:true,generationId:gid,rows:result?.results||[],researchOnly:true,decisionImpact:false,formalCoreImpact:false};
 }
 
