@@ -1814,3 +1814,76 @@ Formal Core unchanged.
 - SC-034: obtain one different-issuer official full pricing event under the SC-032 state vector.
 - SC-035: prospectively preserve native sourcePublishedAt/capturedAt on future pricing events.
 - Only after compatible product scope and native publication clocks mature may realized ASP/margin be joined.
+
+
+## SC-036 — Two monthly steel-chain vintages prove asymmetric transmission is PIT-observable
+
+Artifact:
+`research/sc036_steel_asymmetric_transmission_two_vintage_v0_1.json`
+
+### Same-chain evidence
+Using the Taiwan basic-metals monitoring platform under the previously verified 2006 東和鋼鐵 EAF/scrap route anchor:
+
+2026-08:
+- scrap +2.1% MoM;
+- billet -3.5% MoM;
+- Tung Ho H-beam 0.0% MoM.
+
+State:
+`INPUT_UP / INTERMEDIATE_DOWN / DOWNSTREAM_FLAT`.
+
+2026-09:
+- scrap NT$10.2/kg, +4.1% MoM, +32.5% YoY;
+- billet NT$16,050/t, +3.8% MoM, +15.6% YoY;
+- Tung Ho H-beam NT$37,500/t, 0.0% MoM, +12.9% YoY.
+
+State:
+`INPUT_UP / INTERMEDIATE_UP / DOWNSTREAM_FLAT`.
+
+### Main conclusion
+The upstream shock direction does not mechanically determine same-month downstream price direction.
+
+The intermediate layer also changes behavior across vintages:
+- August billet moved opposite scrap;
+- September billet moved with scrap;
+- downstream H-beam stayed flat in both.
+
+Therefore D10-09 must preserve a vector:
+`INPUT / INTERMEDIATE / DOWNSTREAM`,
+not one scalar pass-through coefficient.
+
+### Counterfactual firewall
+This is not a company-margin claim.
+
+The market benchmarks do not prove:
+- issuer realized scrap inventory cost;
+- internal billet transfer economics;
+- realized H-beam ASP;
+- electricity/yield/freight;
+- customer/product mix;
+- contract lag.
+
+Never compute synthetic gross margin by directly subtracting these differently-scaled benchmarks.
+
+### PIT contract
+Each monthly layer is stored under the same observation month, but `capturedAt` remains the conservative research-known clock unless native publication timing is authenticated.
+
+Later revisions append a new vintage and do not rewrite the earlier state.
+
+### Maturity
+`D10-09 上游與下游不對稱傳導: L2 -> L3`.
+
+Reason:
+two independent Taiwan monthly chain vintages support replayable upstream/intermediate/downstream direction states and already show distinct transmission configurations.
+
+This is Taiwan PIT/source feasibility only:
+- no stable elasticity;
+- no realized margin conclusion;
+- no stock-return sign;
+- no L4 prospective/OOS effect.
+
+### Exact next
+SC-037: append the next independent steel-chain monthly vintage.
+SC-038: add a second three-layer Taiwan industry chain to test whether downstream stickiness is steel-specific.
+
+Formal Core unchanged.
