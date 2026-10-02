@@ -308,3 +308,51 @@ Until a same-session candidate exists, optimize:
 3. transport stability.
 
 Do not optimize A5 merely because the old aggregate review packet listed an A5 boundary failure.
+
+
+## 14. Cross-room independent witness — D09 BR-039
+
+After this source-family correction was already underway, latest main added:
+`research/br039_twse_advance_decline_receipt_20261002_v0_1.json`
+
+D09 independently observed the same official TWSE 2026-10-02 MI_INDEX stock breadth:
+- up 483 / limit-up 24;
+- down 506 / limit-down 1;
+- unchanged 91;
+- untraded 0;
+- not-comparable 2;
+- comparable N = 1080;
+- total stock classification base = 1082.
+
+D09 also preserved a useful contemporaneous counterexample:
+- TAIEX close was positive on the day;
+- stock-count net breadth was negative because decliners exceeded advancers.
+
+This independent room result supports:
+- MI_INDEX as a valid official same-day Taiwan stock-breadth source;
+- the economic distinction between capitalization-weighted index direction and cross-sectional participation.
+
+It does NOT eliminate this room's parser/replay work:
+- BR-039 is a frozen research receipt;
+- the D18 MI_INDEX module supplies source-specific machine parsing, schema-drift guards, PIT timestamp guards and replayable receipt hashing.
+
+Do not duplicate D09's alpha research.
+D18 should inherit BR-039 as upstream factor evidence and focus on source/provenance, cross-market common support, missingness, continuity and Regime × Strategy validation.
+
+## 15. Cross-room maturity firewall — D09 BR-041
+
+D09 BR-041 promotes same-day cross-sectional raw price-change dispersion data feasibility.
+
+D18 does not inherit that L3 status into U2B True Return Distribution.
+
+See:
+`research/D18_RETURN_DISPERSION_CROSS_ROOM_BOUNDARY_V0_1.md`.
+
+Reason:
+D18 primary return-distribution semantics require continuity-certified economic returns, while current same-day/fallback price-change paths do not by themselves prove target-date-bounded corporate-action continuity.
+
+This keeps:
+- D09 raw price-change dispersion;
+- D18 continuity-certified return distribution
+
+related but non-identical estimands.
