@@ -1887,3 +1887,87 @@ SC-037: append the next independent steel-chain monthly vintage.
 SC-038: add a second three-layer Taiwan industry chain to test whether downstream stickiness is steel-specific.
 
 Formal Core unchanged.
+
+
+## SC-039 — Taiwan PMI makes orders, lead times and backlog PIT-observable as a multivariate state
+
+Artifact:
+`research/sc039_taiwan_pmi_order_leadtime_pit_v0_1.json`
+
+### Official Taiwan source
+The 2026-09 Taiwan PMI release, published 2026-10-01 by NDC/CIER, exposes dated industry states for:
+- new orders;
+- production;
+- supplier delivery time;
+- unfinished orders;
+- inventory;
+- customer inventory;
+- input prices;
+- six-month outlook.
+
+### Electronics counterexample
+Electronics/optical September 2026:
+- PMI 62.6;
+- new orders 56.7, down 10.8 points;
+- unfinished orders 54.3, slowest expansion since 2025-12;
+- inventory 64.8;
+- customer inventory 51.0;
+- supplier delivery time 73.8;
+- input prices 83.3;
+- six-month outlook 62.4, down 6.9 points.
+
+Therefore:
+`LONGER_DELIVERY != STRONGER_FRESH_DEMAND`.
+
+Long lead time can coexist with slowing new orders, backlog deceleration, inventory accumulation, customer-inventory normalization and input-cost stress.
+
+### Basic-material contrast
+September basic materials:
+- PMI 56.7;
+- new orders 61.9 (+8.6 points);
+- production 61.9;
+- supplier delivery 58.3;
+- unfinished orders 59.5 (+12.8 points);
+- inventory 51.2;
+- outlook 59.5;
+- input prices 73.8.
+
+This is a distinct state:
+`ORDERS_ACCELERATING / BACKLOG_RISING / DELIVERY_RISING / INPUT_COST_PRESSURE`.
+
+The same delivery-time direction can therefore have different economic meaning.
+
+### State-vector rule
+Preserve jointly:
+`NEW_ORDERS / UNFINISHED_ORDERS / SUPPLIER_DELIVERY / INVENTORY / CUSTOMER_INVENTORY / INPUT_PRICE / OUTLOOK`.
+
+Do not reduce these into one backlog/lead-time score before incremental-value testing.
+
+### PIT semantics
+Observation month is not first-known.
+For 2026-09:
+- source publication date = 2026-10-01;
+- prospective decision use begins no earlier than release/capture;
+- later revisions append a new vintage.
+
+PMI diffusion indices are industry survey states, not physical order quantities and not company-specific order books.
+
+### Maturity
+`D10-07 訂單／交期／Backlog: L2 -> L3`.
+
+Reason:
+NDC/CIER monthly Taiwan PMI releases provide dated new-order, unfinished-order, supplier-delivery, inventory and outlook observations with explicit release dates and replayable industry semantics.
+
+This is PIT/source feasibility only:
+- no company backlog inference without exposure mapping;
+- no bullish sign for longer delivery;
+- no predictive/OOS alpha.
+
+D10-08 remains L2 because shortage/supply-gap event classification still needs a dedicated event/source contract rather than being inferred from PMI alone.
+
+### Exact next
+SC-040: append monthly ORDER_LEADTIME receipts across independent releases.
+SC-041: map one industry state to listed issuers only with independently evidenced product/revenue scope.
+SC-042: define a dedicated shortage/supply-gap event contract rather than using high supplier-delivery time as a shortcut.
+
+Formal Core unchanged.
