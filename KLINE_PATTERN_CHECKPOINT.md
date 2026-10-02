@@ -538,3 +538,35 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 4. Preserve cross-lane canonical ownership; do not duplicate D02 acceptance, Target-RR target selection, Microstructure execution or Corporate Actions continuity logic.
 5. Prospective outcome join remains blocked until COMPLETE Pattern parent/run coverage and runtime semantic readiness.
 6. No R09 / no hard resistance veto / no Formal change.
+
+## Continuation update — DL-011A through DL-011E (2026-10-02)
+
+- Pattern observer persistence v0.1 was audited against the newer shared immutable-parent architecture.
+- New artifacts:
+  - research/PATTERN_SHARED_PARENT_SCHEMA_GAP_V0_1.md
+  - research/pattern_shared_parent_schema_gap_v0_1.json
+- Key finding: the older Pattern contract is still valid for isolated legacy QA, but its inference-authoritative parent assumption is superseded for promotion-grade work.
+- Legacy parentage:
+  scan_date + symbol + parent_snapshot_hash against the bounded/mutable Shadow archive.
+- Future promotion-grade parentage must inherit:
+  parentDecisionReceiptId + captureGeneration + parentScopeId + semanticFingerprint + decisionCutoffAt,
+  with certified parentKeysetHash / decisionSetHash at run level.
+- Pattern is explicitly a multi-object observer:
+  every expected parent requires exactly one ROOT attempt row,
+  followed by zero/many deterministic episode child rows.
+- Episode row count is never the coverage denominator.
+- DL-008 multi-scale fields and DL-009/010 RG2 fields are now enumerated as required future prospective payload/provenance fields.
+- Generic timing must separate as_of / available_at / captured_at / created_at.
+- Next-session 15m information and later weekly confirmations cannot backfill the prior after-market parent.
+- Promotion-grade Pattern inference is killed if only legacy mutable Shadow linkage exists, capture generation is uncertified, ROOT keyset is incomplete, scale/zone provenance is missing, or current-code reconstruction substitutes for decision-time capture.
+- No D1 schema, Worker, schedule or runtime persistence change is authorized.
+- PATTERN_SHARED_PARENT_SCHEMA = DESIGN_RECONCILED / RUNTIME_NOT_IMPLEMENTED.
+- D01 remains 51.7%; Pattern alpha UNKNOWN; Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-011
+
+1. Freeze the machine-readable Pattern shared-parent child contract and deterministic ROOT/episode/relation item-key rules.
+2. Audit Pattern payload-hash identity so DL-008/DL-009 fields cannot mutate under one item identity.
+3. Freeze equal-horizon / bar-boundary placebo identity before outcomes.
+4. Keep Pattern outcome joins closed until immutable parent runtime + COMPLETE ROOT keysets + semantic runtime readiness exist.
+5. No Class-B runtime approval request yet; no R09 / no Formal change.
