@@ -38,7 +38,9 @@ function auditCadence(row, spec, windowStartMs) {
     if (b?.crossesReconnect === true) reasons.push("RECONNECT_CROSSED");
     if (b?.gapBoundaryFlag === true) reasons.push("GAP_BOUNDARY");
     if (b?.heldAcrossGap === true) reasons.push("HELD_ACROSS_GAP");
-    if (!Number.isFinite(Number(b?.quoteAgeMs)) || Number(b.quoteAgeMs) < 0) reasons.push("QUOTE_AGE_MISSING");
+    const age = b?.quoteAgeMs;
+    if (age === null || age === undefined || age === ""
+      || !Number.isFinite(Number(age)) || Number(age) < 0) reasons.push("QUOTE_AGE_MISSING");
   }
   const unique = [...new Set(reasons)].sort();
   return deepFreeze({
@@ -46,8 +48,11 @@ function auditCadence(row, spec, windowStartMs) {
     structurallyEligible: unique.length === 0,
     exclusionReasons: Object.freeze(unique),
     bucketCount: buckets.length,
-    quoteAgeMs: Object.freeze(buckets.map((b) =>
-      Number.isFinite(Number(b?.quoteAgeMs)) ? Number(b.quoteAgeMs) : null)),
+    quoteAgeMs: Object.freeze(buckets.map((b) => {
+      const age = b?.quoteAgeMs;
+      return age === null || age === undefined || age === ""
+        || !Number.isFinite(Number(age)) ? null : Number(age);
+    })),
     localMidquoteRv: Number.isFinite(Number(row?.localMidquoteRv)) ? Number(row.localMidquoteRv) : null,
     pressureState: row?.pressureState ?? null,
     spreadState: row?.spreadState ?? null,
