@@ -356,3 +356,58 @@ This keeps:
 - D18 continuity-certified return distribution
 
 related but non-identical estimands.
+
+
+## 16. TPEx early machine-file falsification
+
+A potentially attractive alternative was audited:
+
+`STKT1SUMMARY.TXT`
+- official TPEx name: 大盤日行情彙總資料;
+- machine-readable TXT;
+- documented production time: 13:50 GMT+8.
+
+It is NOT a Direction Breadth substitute.
+
+Official TPEx EDIS format documentation shows S04 / STKT1SUMMARY fields are:
+- trading target class;
+- trading shares;
+- transaction count;
+- trading value;
+- issued shares;
+- market capitalization;
+plus file header/date/production-time metadata.
+
+It does not expose:
+- advancing count;
+- declining count;
+- flat count;
+- untraded count.
+
+Therefore:
+`EARLIER_MACHINE_FILE != SEMANTICALLY_VALID_BREADTH_SOURCE`.
+
+Do not select a source merely because its clock is attractive.
+
+Current TPEx aggregate-Breadth options remain:
+
+1. official public market-highlight surface
+   - correct breadth semantics observed;
+   - free/public;
+   - exact stable machine transport/version and first-ready clock still pending.
+
+2. official `MARKET_HIGHLIGHT.CSV`
+   - explicit machine-readable aggregate breadth product;
+   - documented 17:20 production;
+   - paid subscription product;
+   - must not be silently treated as the free runtime source.
+
+3. per-symbol official daily rows
+   - may reconstruct ordinary-company breadth;
+   - different estimand/universe;
+   - requires source/identity/missingness reconciliation.
+
+Rejected as aggregate breadth source:
+- STKT1SUMMARY.TXT despite its 13:50 production time.
+
+This rejection is retained to prevent clock-driven source shopping.
