@@ -1,0 +1,81 @@
+{
+  "version": "0.1",
+  "id": "SC-041",
+  "capturedAt": "2026-10-02T22:06:48+08:00",
+  "module": "D10-07 訂單／交期／Backlog",
+  "mode": "INDUSTRY_STATE_TO_ISSUER_EXPOSURE_BRIDGE / SOURCE_ONLY / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "industryStateSource": {
+    "observationMonth": "2026-09",
+    "category": "電子暨光學產業",
+    "pmi": 62.6,
+    "newOrders": 56.7,
+    "unfinishedOrders": 54.3,
+    "inventory": 64.8,
+    "customerInventory": 51,
+    "supplierDeliveryTime": 73.8,
+    "inputPrices": 83.3,
+    "futureSixMonthOutlook": 62.4,
+    "interpretation": "High expansion with long delivery and high input prices, but slowing new-order/backlog momentum and rising inventory."
+  },
+  "issuers": [
+    {
+      "symbol": "8046",
+      "name": "南亞電路板",
+      "formalIndustry": "電子零組件業",
+      "formalIndustrySource": "TWSE issuer information",
+      "issuerSource": "https://www.nanyapcb.com.tw/nypcb/chinese/AboutNanYaPCB/CompanyProfile/Company",
+      "evidencedProducts": [
+        "Conventional PCB",
+        "HDI",
+        "Rigid-Flex",
+        "ABF substrate",
+        "PP substrate"
+      ],
+      "exposureClass": "DIRECT_ELECTRONICS_COMPONENT_AND_IC_SUBSTRATE_PRODUCT_SCOPE",
+      "revenueExposureWeight": "UNKNOWN",
+      "surveyMembership": "UNKNOWN",
+      "bridgeUse": "BROAD_INDUSTRY_CONTEXT_ONLY"
+    },
+    {
+      "symbol": "3189",
+      "name": "景碩",
+      "formalIndustry": "半導體業",
+      "formalIndustrySource": "TWSE issuer information",
+      "issuerSource": "https://www.kinsus.com.tw/zh-tw",
+      "evidencedProducts": [
+        "High-end IC substrates",
+        "full-process substrate manufacturing"
+      ],
+      "exposureClass": "DIRECT_IC_SUBSTRATE_PRODUCT_SCOPE",
+      "revenueExposureWeight": "UNKNOWN",
+      "surveyMembership": "UNKNOWN",
+      "bridgeUse": "BROAD_INDUSTRY_CONTEXT_ONLY"
+    }
+  ],
+  "bridgeRules": [
+    "A broad Taiwan electronics/optical PMI state may be attached as industry context only when issuer product scope is independently evidenced.",
+    "Formal TWSE industry taxonomy and PMI survey category are different classification systems; category membership must not be assumed one-to-one.",
+    "Revenue exposure weight remains UNKNOWN unless the issuer discloses a compatible revenue/product denominator.",
+    "Survey membership is UNKNOWN unless explicitly disclosed; do not claim the issuer contributed to the PMI survey.",
+    "Industry backlog/lead-time state cannot be converted into issuer backlog, revenue growth, margin or stock score without issuer-native evidence."
+  ],
+  "negativeControls": [
+    "8046 and 3189 sit in different TWSE formal industries despite both having IC-substrate exposure; this falsifies a one-taxonomy theme mapping.",
+    "The same broad electronics PMI state can affect substrate makers differently by customer mix, node/product mix, qualification, utilization, pricing terms and inventory.",
+    "High supplier-delivery time can coexist with slowing new-order momentum and high inventory, so a direct positive company score is prohibited."
+  ],
+  "maturityDecision": {
+    "D10-07": "KEEP_L3",
+    "D10-01": "KEEP_L2",
+    "D10-12": "KEEP_L3"
+  },
+  "reasonNoPromotion": "Product-scope bridging is PIT-feasible, but revenue magnitude, survey membership and issuer-native order/backlog clocks remain incomplete; no company-level predictive efficacy is established.",
+  "exactNext": [
+    "SC-042 define the shortage/supply-gap event contract with independent evidence for demand, constrained supply, allocation/lead-time, price and inventory state.",
+    "For future issuer mapping, add disclosed product/revenue exposure weights before using industry states in any System1/System2 research score.",
+    "Keep issuer order/backlog and stock outcomes closed until native company disclosures are captured on their own publication clocks."
+  ],
+  "status": "BOUNDED_PRODUCT_SCOPE_BRIDGE / EXPOSURE_MAGNITUDE_UNKNOWN / COMPANY_SCORE_FORBIDDEN / FORMAL_UNCHANGED"
+}
