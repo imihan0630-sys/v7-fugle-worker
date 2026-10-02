@@ -1,0 +1,46 @@
+# S2-07 daily immutable input/factor diagnostics V0.1
+
+Updated: 2026-10-02 Asia/Taipei
+Classification: Class A / isolated research diagnostics
+Formal Core impact: NONE
+Baseline main: a5323d7e74ecf2d3a6b162e50fc67301a15389a6
+
+## Problem and resulting behavior
+
+The existing daily source/history preflight and ranking/capacity assembler were disconnected from physical daily persistence. Both registered strategy assessors remain `ASSESSOR_POLICY_NOT_FROZEN`. An absent assessor cannot be treated as a legitimate zero-pick or used to produce capacity.
+
+The new diagnostic orchestrator executes the authorized portion daily: official calendar -> official same-date full-market A1 -> isolated PIT-history coverage -> existing unweighted A1 factor primitives -> immutable source/diagnostic shards -> final completion marker -> readback. No strategy thresholds or scores are added.
+
+## Execution and time contract
+
+- GitHub Actions `System2 Daily Shadow Diagnostic` targets main only, using the existing `system2-research` environment and non-cancelling `system2-isolated-d1-writer` concurrency group.
+- Scheduled at 18:35 Taipei on weekdays; push/manual runs provide physical acceptance. GitHub schedule can be delayed and is not an exact Decision Clock or guaranteed pre-19:00 delivery.
+- Each invocation derives its market date from actual Taipei wall time. Before 13:30 it records a skip without market/calendar calls. Official non-trading dates record a skip; unavailable calendar fails closed.
+- Source observation time is a diagnostic clock, never the authorized prospective Decision Clock or proof of official publication time. First-known fields explicitly mean this observation's upper bound only.
+- Stale/undated/duplicate/future/incomplete market data are archived as diagnostics and cannot enter factor computation. Source audit includes raw row count, reported dates and payload hash, including stale HTTP-200 responses.
+- History is read through the existing PIT eligibility/availability/revision guard. Only coverage-qualified symbols load prior bars. Today's corporate-action continuity remains `UNVERIFIED`; prior-history continuity does not establish current continuity.
+- Raw metrics remain available for research. Existing factor primitives retain UNKNOWN/null for unavailable history or continuity. No factor values are relabeled as strategy scores or SUPPORTIVE/ADVERSE assessments.
+
+## Immutable physical storage and failure semantics
+
+- No schema migration: isolated schema V1.1 and 46 tables remain unchanged.
+- Source-session rows use existing `s2_source_session_receipts`; operational diagnostic shards and completion markers use existing `s2_infrastructure_checks`.
+- Source rows, source/history metadata, per-symbol primitive bundles and manifests are stored in small content-hashed shards. All shards must write and read back identically before the completion marker is written.
+- The existing immutable persistence executor rejects changed rows for the same identity. No UPDATE, REPLACE, delete or historical rewrite is used.
+- Run IDs include GitHub run ID and attempt. A completed identical run returns its original saved receipt without refetching. Changed revision/content conflicts fail closed. Interrupted runs never gain a completion marker; a new attempt has a separate identity and cannot overwrite partial prior evidence.
+- The public GET `/api/system2/shadow/diagnostic` returns the latest completed diagnostic. Optional `marketDate=YYYY-MM-DD` reads a specific date; absence means `DIAGNOSTIC_NOT_YET_OBSERVED`. Reads never invoke source discovery or writes.
+- GitHub artifacts are retained for 90 days as a convenience; D1 is the durable diagnostic authority. Public API exposes the aggregate diagnostic receipt, not credentials or raw provider errors.
+
+## Authority gates and exact remaining work
+
+Regime stays UNKNOWN until validated regime sources are wired. Strategy evaluation/ranking, frozen decisions/prediction snapshot and capacity are explicitly `NOT_PRODUCED`/blocked in this diagnostic lane. `zeroPickDay`, `selectedCount`, and `capacityRunId` remain null, not zero. These diagnostics do not count toward Decision Clock promotion evidence.
+
+The next implementation unit remains preregistration/owner authorization of actual assessor mappings, validated regime/fundamental/industry sources, current continuity evidence, then wiring the already-built Limited Shadow strategy orchestrator and capacity assembler to isolated batch execution. Only an authorized, genuinely evaluated zero-pick may produce `s2_capacity_runs`. Diagnostics cannot seed the 19:00 watch pool.
+
+General selection capture stays false. No Baseline/Challenger change, live push, capital, order or System1/V8 change. No extra Cloudflare Cron; its existing single System2 trigger and four System1 triggers remain unchanged.
+
+## Verification
+
+Targeted tests cover missing inputs/policy, UNKNOWN factors, source/history clock mismatch, before-close and holiday skips, calendar/source failures, interrupted shard writes, final-marker ordering, immutable reruns/conflicts, aggregate hash checks and read-only dated lookup. Existing capacity/persistence/preflight tests remain required. GitHub System2 Research CI and V8 Regression plus post-merge physical writer/Worker API readback are required before claiming deployment.
+
+2026-10-02 13:53 Taipei local source read: TWSE and TPEx HTTP 200, both latest reported date `1151001` (2026-10-01). Target 2026-10-02 normalized ordinary count = 0. This is truthful incomplete input, not a zero-pick result. The 2026-10-02 19:00 new-format resonance audit had not occurred at this observation.

@@ -4,6 +4,7 @@ import {
   buildSystem2HealthPayload,
 } from "./worker_core.mjs";
 import { buildResonancePageHtml } from "./resonance_page.mjs";
+import { readDailyShadowDiagnosticV0_1 } from "../runtime/daily_shadow_diagnostic_orchestrator_v0_1.mjs";
 import {
   taipeiMarketDateV0_1,
   classifyResonanceScheduleTimeV0_1,
@@ -144,6 +145,11 @@ export default {
     if (url.pathname === "/api/system2/resonance/operations") {
       const marketDate = url.searchParams.get("marketDate") || taipeiMarketDateV0_1(new Date());
       return json(await readResonanceOperationsV0_1(env.SYSTEM2_DB, { marketDate }));
+    }
+    if (url.pathname === "/api/system2/shadow/diagnostic") {
+      return json(await readDailyShadowDiagnosticV0_1(env.SYSTEM2_DB, {
+        marketDate: url.searchParams.get("marketDate"),
+      }));
     }
     const symbolMatch = url.pathname.match(/^\/api\/system2\/resonance\/([0-9A-Za-z._-]+)$/);
     if (symbolMatch) {
