@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-02T23:24:00+08:00",
+  "updatedAt": "2026-10-02T23:19:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -3137,7 +3137,7 @@
       ],
       "status": "FOUNDATION_CLUSTER_L2 / D20_01_02_04_07 / FORMAL_CORE_UNCHANGED",
       "exactNextContinuationPoint": "D20-03 Overconfidence：從理論、機制、可觀測代理與反證開始；並行準備 D20-01/02/04/07 的台股 PIT/replay 資料可行性稽核，優先區分外生注意力代理與由價格/成交量衍生的內生代理。",
-      "lastResearchUpdate": "2026-10-02T23:24:00+08:00",
+      "lastResearchUpdate": "2026-10-02T23:19:00+08:00",
       "researchNote": "First deep-research block completed. D20-01/02/04/07 advanced L0→L2 after theory + counterevidence review. Key finding: behavioral labels are not direct market-state observables. Prospect theory does not mechanically imply the disposition effect; reference-point specification matters. Taiwan evidence supports heterogeneous disposition and attention effects, but investor type/regime and structural alternatives must be controlled. 52-week-high anchoring and attention proxies must be residualized against price/momentum/volume families before any incremental-value claim. No L3 promotion because replayable Taiwan PIT data contracts are not yet validated. Formal Core unchanged."
     },
     {
