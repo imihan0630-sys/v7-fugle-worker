@@ -1,0 +1,141 @@
+{
+  "version": "0.1",
+  "id": "SC-036",
+  "capturedAt": "2026-10-02T16:23:00+08:00",
+  "module": "D10-09 上游與下游不對稱傳導",
+  "mode": "SOURCE_ONLY_COMMON_CHAIN_TWO_VINTAGE_PILOT / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "chain": "TAIWAN_EAF_STEEL_SCRAP_TO_BILLET_TO_H_BEAM",
+  "routeAnchor": {
+    "issuerSymbol": "2006",
+    "issuerName": "東和鋼鐵",
+    "issuerEvidence": "Official issuer sustainability disclosure identifies EAF steelmaking with scrap as 98% of 2025 main raw material.",
+    "economicUse": "Route relevance only; monitoring-platform benchmarks are not assumed to equal issuer realized procurement/sales prices."
+  },
+  "sources": {
+    "monitoringPlatform": "我國基本金屬供需情勢發展監控平台",
+    "scrap": "https://chart.metaltrade.tw/ste/domestic/10/",
+    "billet": "https://chart.metaltrade.tw/ste/domestic/11/",
+    "hBeam": "https://chart.metaltrade.tw/ste/domestic/13/",
+    "sourceClockRule": "Use capturedAt conservatively for prospective replay unless native publication timestamp is separately frozen."
+  },
+  "vintages": [
+    {
+      "month": "2026-08",
+      "sourceReceipt": "research/sc027_first_material_transmission_receipt_20260930_v0_1.json",
+      "input": {
+        "metric": "北部廢鋼大盤收購價",
+        "value": 9.8,
+        "unit": "NTD/kg",
+        "momPct": 2.1,
+        "state": "UP"
+      },
+      "intermediate": {
+        "metric": "小鋼胚中級出廠價",
+        "value": 15460,
+        "unit": "NTD/t",
+        "momPct": -3.5,
+        "state": "DOWN"
+      },
+      "downstream": {
+        "metric": "東鋼H型鋼流通價",
+        "value": 37500,
+        "unit": "NTD/t",
+        "momPct": 0,
+        "state": "FLAT"
+      },
+      "vector": "INPUT_UP / INTERMEDIATE_DOWN / DOWNSTREAM_FLAT"
+    },
+    {
+      "month": "2026-09",
+      "input": {
+        "metric": "北部廢鋼大盤收購價",
+        "value": 10.2,
+        "unit": "NTD/kg",
+        "momPct": 4.1,
+        "yoyPct": 32.5,
+        "state": "UP"
+      },
+      "intermediate": {
+        "metric": "小鋼胚中級出廠價",
+        "value": 16050,
+        "unit": "NTD/t",
+        "momPct": 3.8,
+        "yoyPct": 15.6,
+        "state": "UP"
+      },
+      "downstream": {
+        "metric": "東鋼H型鋼流通價",
+        "value": 37500,
+        "unit": "NTD/t",
+        "momPct": 0,
+        "yoyPct": 12.9,
+        "state": "FLAT"
+      },
+      "vector": "INPUT_UP / INTERMEDIATE_UP / DOWNSTREAM_FLAT"
+    }
+  ],
+  "asymmetricTransmissionWitnesses": [
+    "2026-08: upstream scrap rose while billet fell and H-beam stayed flat.",
+    "2026-09: upstream scrap and billet both rose while H-beam stayed flat.",
+    "The direction of an upstream price move therefore does not mechanically determine contemporaneous downstream posted/market price direction.",
+    "Intermediate and downstream layers can respond differently to the same broad input-cost environment."
+  ],
+  "forbiddenInferences": [
+    "Do not call the flat H-beam benchmark a realized issuer ASP.",
+    "Do not infer a margin squeeze from scrap-up/H-beam-flat without inventory, electricity, yield, freight, mix and contract-lag evidence.",
+    "Do not subtract NTD/kg scrap from NTD/t H-beam to create a synthetic company margin.",
+    "Do not assume billet is an internal transfer price for 2006 or that all H-beam output shares the same input vintage.",
+    "Do not assign bullish/bearish stock direction from the chain vector.",
+    "Two monthly vintages establish data semantics, not stable elasticity."
+  ],
+  "pitSemantics": {
+    "observationFrequency": "MONTHLY",
+    "sameChainClock": "Each monthly layer is frozen under the same observation month; capturedAt remains the conservative research-known clock.",
+    "firstEligibleDecision": "Only after the monthly source is captured; never backdate to month-end.",
+    "revisionRule": "Later revisions append a new source vintage and do not overwrite the earlier research state."
+  },
+  "stateSchema": {
+    "inputDirection": [
+      "UP",
+      "FLAT",
+      "DOWN",
+      "UNKNOWN"
+    ],
+    "intermediateDirection": [
+      "UP",
+      "FLAT",
+      "DOWN",
+      "UNKNOWN"
+    ],
+    "downstreamDirection": [
+      "UP",
+      "FLAT",
+      "DOWN",
+      "UNKNOWN"
+    ],
+    "transmissionLabel": [
+      "SAME_DIRECTION",
+      "INPUT_LEADS_DOWNSTREAM",
+      "INTERMEDIATE_ABSORBS",
+      "DOWNSTREAM_STICKY",
+      "MIXED",
+      "UNKNOWN"
+    ],
+    "currentSeptemberLabel": "DOWNSTREAM_STICKY"
+  },
+  "maturityDecision": {
+    "D10-09": "PROMOTE_L2_TO_L3_TAIWAN_PIT_DATA_FEASIBILITY_ONLY",
+    "D10-06": "KEEP_L3",
+    "D10-05": "KEEP_L3",
+    "D10-12": "KEEP_L3"
+  },
+  "promotionReason": "Two independent monthly Taiwan chain vintages can be replayed with explicit upstream/intermediate/downstream direction states, and they already produce different transmission vectors under a common route anchor. This establishes Taiwan PIT/source feasibility for asymmetric transmission, not a pass-through coefficient, realized margin effect or predictive alpha.",
+  "exactNext": [
+    "SC-037 append the next independent monthly chain vintage and preserve revision/source clocks.",
+    "SC-038 add a second industry chain with at least three layers to test whether DOWNSTREAM_STICKY is steel-specific.",
+    "Only after independent chains/dates accumulate may D10-09 enter L4 prospective/OOS effect testing."
+  ],
+  "status": "TWO_VINTAGE_ASYMMETRIC_CHAIN_PIT_FEASIBLE / DOWNSTREAM_STICKY_WITNESS / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
