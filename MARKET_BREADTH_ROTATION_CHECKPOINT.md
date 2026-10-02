@@ -561,3 +561,65 @@ Formal Core unchanged.
 - BR-038: accumulate independent common-complete total-return size receipts.
 - BR-040: repeat TWSE stock breadth across dates, add TPEx and strategy-universe lanes without denominator mixing.
 - Only after multiple independent dates may index/breadth divergence states enter D09-12 interaction testing.
+
+
+## BR-041 — Cross-sectional return dispersion is a state descriptor, not a direction signal
+
+Artifact:
+`research/br041_cross_sectional_return_dispersion_contract_v0_1.json`
+
+### Source audit
+Current `buildTodaySectorStats(rows, features)` already groups same-day Taiwan rows by `industry` and reads member-level `changePercent`, `tradeValue` and symbol identity at the decision clock.
+
+Combined with D09-01 effective-dated classification semantics, sector return dispersion is prospectively PIT-computable without a new external data source.
+
+### Frozen metric family
+Do not use one standard deviation as the whole concept.
+
+Initial receipt must preserve:
+- CSSD: sample cross-sectional standard deviation;
+- CSAD: mean absolute deviation around sector mean;
+- IQR: Q75-Q25;
+- MAD: median absolute deviation;
+- median return;
+- member count / valid-return coverage;
+- upside/downside descriptive dispersion;
+- dispersion after removing top-1/top-3 members by **trade value**, never by realized return.
+
+Trade-value removal is a robustness diagnostic against mega-cap/activity dominance. Removing names because their return is extreme would be outcome-conditioned and is forbidden.
+
+### Interpretation states
+Examples:
+- positive sector return + low dispersion -> broad synchronized strength candidate;
+- positive return + high dispersion -> selective rotation / leader differentiation candidate;
+- negative return + low dispersion -> broad sell-off candidate;
+- negative return + high dispersion -> idiosyncratic stress / event differentiation candidate.
+
+No state receives a permanent bullish/bearish sign.
+
+### Taiwan-specific falsification
+Taiwan herding literature itself warns against a one-line dispersion rule:
+- linear CSSD evidence and nonlinear/state-space evidence can disagree;
+- more recent CSAD evidence shows herding varies with venue/microstructure, ESG grouping and market stress.
+
+Therefore dispersion requires:
+- regime;
+- market/sector volatility;
+- breadth;
+- leader concentration;
+- price-limit/event contamination;
+- liquidity;
+- member-count/coverage controls.
+
+### Maturity
+`D09-09 橫截面報酬離散度: L2 -> L3`.
+
+Reason:
+member return, industry identity and trade-value fields are already available at the Taiwan decision clock, and PIT classification semantics are established. This is source/data feasibility only.
+
+D09-12 remains L2. No predictive/OOS conclusion exists.
+
+Formal Core unchanged.
+
+### Exact next
+BR-042: build an isolated research-only CSSD/CSAD/IQR/MAD receipt with coverage and trade-value leader-removal diagnostics; freeze one source-only Taiwan date before forward outcomes.
