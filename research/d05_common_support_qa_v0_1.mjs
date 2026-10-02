@@ -42,6 +42,8 @@ function auditCadence(row, spec, windowStartMs) {
     if (age === null || age === undefined || age === ""
       || !Number.isFinite(Number(age)) || Number(age) < 0) reasons.push("QUOTE_AGE_MISSING");
   }
+  const localRv = Number(row?.localMidquoteRv);
+  if (!Number.isFinite(localRv) || localRv < 0) reasons.push("LOCAL_MIDQUOTE_RV_MISSING");
   const unique = [...new Set(reasons)].sort();
   return deepFreeze({
     cadence: spec.key,
@@ -53,7 +55,7 @@ function auditCadence(row, spec, windowStartMs) {
       return age === null || age === undefined || age === ""
         || !Number.isFinite(Number(age)) ? null : Number(age);
     })),
-    localMidquoteRv: Number.isFinite(Number(row?.localMidquoteRv)) ? Number(row.localMidquoteRv) : null,
+    localMidquoteRv: Number.isFinite(localRv) && localRv >= 0 ? localRv : null,
     pressureState: row?.pressureState ?? null,
     spreadState: row?.spreadState ?? null,
     depthImbalanceState: row?.depthImbalanceState ?? null,
@@ -65,6 +67,9 @@ export async function auditD05CommonSupportV0_1({ symbol, marketDate, windows = 
   const date = requiredText(marketDate, "marketDate");
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error("marketDate must be YYYY-MM-DD");
   if (!Array.isArray(windows)) throw new Error("windows must be array");
+  const rawStarts = windows.map((w) => String(w?.windowStart || ""));
+  const startCounts = new Map();
+  for (const start of rawStarts) startCounts.set(start, (startCounts.get(start) || 0) + 1);
   const rows = [];
   for (let i = 0; i < windows.length; i += 1) {
     const w = windows[i] || {};
@@ -78,6 +83,12 @@ export async function auditD05CommonSupportV0_1({ symbol, marketDate, windows = 
       reasons.push("WINDOW_TAIPEI_DATE_MISMATCH");
     }
     if (w.sessionMechanismState !== PRIMARY_MECHANISM) reasons.push("WINDOW_NON_PRIMARY_MECHANISM");
+    if ((startCounts.get(start) || 0) > 1) reasons.push("DUPLICATE_WINDOW_START");
+    const taipei = new Date(startMs + 8 * 3600_000);
+    const localSeconds = taipei.getUTCHours() * 3600 + taipei.getUTCMinutes() * 60 + taipei.getUTCSeconds();
+    if (localSeconds < 9 * 3600 || localSeconds + 15 > 13 * 3600 + 25 * 60) {
+      reasons.push("WINDOW_OUTSIDE_NORMAL_CONTINUOUS_CLOCK");
+    }
     for (const item of perCadence) {
       if (!item.structurallyEligible) {
         reasons.push(...item.exclusionReasons.map((x) => item.cadence + ":" + x));
