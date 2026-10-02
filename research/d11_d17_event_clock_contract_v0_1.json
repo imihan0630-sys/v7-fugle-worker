@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-02 Asia/Taipei",
+  "room": "08｜事件與新聞研究室",
+  "modules": [
+    "D11-06",
+    "D11-09",
+    "D17-13"
+  ],
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "eventClocks": [
+    "firstKnownScheduledAt",
+    "scheduledEventAt",
+    "regulatoryDueAt",
+    "eventOccurredAt",
+    "sourcePublishedAt",
+    "capturedAt",
+    "effectiveFromSession"
+  ],
+  "scheduledTaxonomy": [
+    "SCHEDULED_EXACT",
+    "SCHEDULED_WINDOW",
+    "DEADLINE_ONLY",
+    "UNSCHEDULED",
+    "UNKNOWN"
+  ],
+  "replayRule": "Use capturedAt as conservative availability until provider-native availability is independently authenticated. Never backdate from a legal deadline or displayed source publication time.",
+  "mergerStates": [
+    "RUMOR_OR_UNVERIFIED",
+    "INTENT_OR_NEGOTIATION",
+    "BOARD_APPROVED",
+    "SHAREHOLDER_APPROVED_IF_REQUIRED",
+    "CONTRACTED",
+    "REGULATORY_PENDING_IF_REQUIRED",
+    "EFFECTIVE_OR_COMPLETED",
+    "REVISED",
+    "TERMINATED",
+    "DELAYED"
+  ],
+  "antiLookAhead": [
+    "regulatory deadline != actual publication timestamp",
+    "announcement != completion",
+    "later correction cannot rewrite earlier replay",
+    "conference video posted after event cannot be treated as pre-event knowledge",
+    "no scheduled event != no possible event"
+  ],
+  "maturity": {
+    "D11-06": "L3_TAIWAN_PIT_SOURCE_FEASIBLE",
+    "D11-09": "L3_TAIWAN_PIT_SOURCE_FEASIBLE",
+    "D17-13": "L3_TAIWAN_PIT_SOURCE_FEASIBLE"
+  },
+  "outcomeGate": "CLOSED",
+  "formalOptimizationCandidate": false
+}
