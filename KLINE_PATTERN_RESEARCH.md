@@ -22469,3 +22469,111 @@ External evidence is intentionally two-sided. Chen et al. (2026, Pacific-Basin F
 Therefore the current research direction remains: preserve chart geometry and lifecycle as measurable state, but do not convert famous names into unconditional signs or votes. Any future Pattern outcome test must condition on existing momentum, close location, volatility/range, D02 price-volume acceptance, round-number/tick proximity, liquidity/microstructure and current Formal priorHigh/MA/lateStage/maxChase controls.
 
 D01 remains 51.7%. Pattern alpha remains UNKNOWN. Runtime remains NO_GO. No R09. FORMAL_OPTIMIZATION_CANDIDATE = NONE. Formal Core LOCKED.
+
+# DL-008 — 多週期型態：來源資訊 vs 表示增量 vs 預測增量 (2026-10-02)
+
+Durable detailed contract:
+research/PATTERN_MULTISCALE_INCREMENTALITY_V0_1.md
+
+This tranche does not ask whether "weekly + daily agreement looks stronger." It separates three different questions.
+
+Source Novelty（來源新穎性） asks whether the higher timeframe contains new raw market observations. When weekly OHLC is constructed from the already-available verified daily constituent bars, the answer is no: it is deterministic aggregation of the same PRICE_OHLC root.
+
+Representation Novelty（表示新穎性） is different. A weekly parent structure can be a nonlinear compressed representation of a longer history that is not fully summarized by current Formal fields. Therefore same-source does not imply useless; it implies high redundancy prior and no independent vote.
+
+Predictive Incrementality（預測增量） is a third question and remains UNKNOWN. It can only be opened later through preregistered equal-date / common-support B0-vs-B1 testing after existing long-horizon daily controls, D02 acceptance, volatility, liquidity and regime controls.
+
+A many-to-one witness is now explicit: different daily paths can produce the same weekly O/H/L/C. Temporal aggregation therefore loses path ordering. Weekly cannot be treated as a new source and cannot replace daily path information.
+
+The D01 contract inherits the existing Technical Indicator multi-timeframe overlap classes instead of forking them:
+SAME_EVENT_DUPLICATE / NESTED_HORIZON / SHARED_COMPONENT / DISTINCT_HORIZON_CONTEXT / DISTINCT_SESSION_INFORMATION / UNKNOWN.
+
+New research-only code/spec files define 16 adversarial cases, but this tranche does not claim they have executed successfully. The current status is EXECUTABLE_SPEC_WRITTEN / TEST_EXECUTION_PENDING.
+
+The future outcome family stays compact: nested weekly-major vs daily-local resistance conflict maps to existing PATTERN-RG2. No R09 is created.
+
+Multi-timeframe alignment is therefore represented as hierarchy/context/relationship metadata. scaleAgreementVoteCount remains null. Repeated daily snapshots of one weekly-parent/daily-child episode do not increase effective sample N.
+
+External evidence supports both sides. Multi-timescale and wavelet studies show transformed scale representations can sometimes improve forecasts; 2026 evidence also finds predictor heterogeneity, unstable technical indicators and strong short-term components. Overlapping-return research shows mechanical dependence can inflate measured momentum. Large technical-rule universes under data-snooping controls show that timeframe, lookback and alignment choices must be included in the multiple-testing family.
+
+D01 remains 51.7%. D01-10 remains L3. Pattern alpha UNKNOWN. Runtime NO_GO. FORMAL_OPTIMIZATION_CANDIDATE = NONE. Formal Core LOCKED.
+
+# DL-009 — PATTERN-RG2 巢狀壓力語意凍結 (2026-10-02)
+
+Detailed contract:
+- research/PATTERN_RG2_NESTED_RESISTANCE_V0_1.md
+- research/pattern_rg2_nested_resistance_v0_1.json
+
+PATTERN-RG2 remains one of the four already preregistered Pattern interaction families. This tranche adds no R09.
+
+The primary local object is the actual immutable confirmed Pattern trigger boundary; priorHigh20 is a comparator, not a substitute label for a neckline/rim. The primary parent object is the already-frozen MAJOR k=3 / 260 eligible-session structural zone. BASE k=2 / 120 and simple 260-session high remain mandatory comparators.
+
+RG2 stores continuous available-air geometry and parent/local lifecycle relations. It does not produce a resistance score and does not reject a setup merely because overhead structure exists.
+
+The falsification ladder is explicit. A structural-zone effect must survive priorHigh20, priorHigh60, MA60, ret20/ret60, overheat and especially the simple260-high comparator. It must also be tested against round-price clustering, D02 acceptance, regime and liquidity. If the richer topology does not survive, it is REDUNDANT.
+
+Taiwan historical-high evidence is retained as a direct anti-veto counterexample: after a true historical-high break, the sign can switch toward underreaction/momentum. Therefore approach, first break, holding above, reentry and failed break remain separate lifecycle states.
+
+No outcome data were inspected. RG2 predictive incrementality remains UNKNOWN. D01 remains 51.7%. Formal Core LOCKED.
+
+# DL-010 — RG2 executable relation specification and cross-lane ownership (2026-10-02)
+
+New research-only artifacts:
+- research/pattern_rg2_relation_v0_1.mjs
+- research/test_pattern_rg2_relation_v0_1.mjs
+- research/pattern_rg2_nested_resistance_fixtures_v0_1.json
+- research/PATTERN_RG2_CROSS_LANE_OWNERSHIP_V0_1.md
+
+The RG2 relation calculator is intentionally descriptive and threshold-free. It calculates geometry/lifecycle relations but emits no BUY/SELL state, no resistance score and no hard veto. Negative available-air is preserved, not clipped or assigned a direction.
+
+Twelve adversarial cases are defined, but execution evidence is not claimed in this chat. Status remains DEFINED_NOT_YET_EXECUTED.
+
+Cross-lane ownership is now explicit to prevent research drift: Pattern owns structural geometry; Corporate Actions owns continuity spaces; D02 owns price-volume acceptance; Target-RR owns target/RR semantics; round-price research owns tick proximity; Microstructure owns auction/order-book mechanics; Technical Indicator research owns the shared multi-timeframe overlap taxonomy.
+
+No outcome join. Alpha UNKNOWN. D01 51.7%. Formal Core LOCKED.
+
+# DL-011 — Pattern Observer shared-parent schema gap audit (2026-10-02)
+
+The older Pattern observer persistence contract is retained for legacy isolated QA but is no longer sufficient as promotion-grade parent authority. It binds to the bounded/mutable legacy Shadow archive using scan_date/symbol/parent_snapshot_hash.
+
+The current shared architecture instead requires immutable decision-state parent identity through parentDecisionReceiptId, captureGeneration, parentScopeId, semanticFingerprint and decisionCutoffAt, plus certified parent-keyset and decision-set integrity at run level.
+
+Pattern is now explicitly modeled as a multi-object observer: exactly one ROOT attempt row per expected parent, plus zero/many deterministic episode children. Episode count never defines coverage.
+
+DL-008 multi-scale provenance and DL-009/010 RG2 relation fields are now enumerated as prospective schema requirements. Generic timing separates as_of, available_at, captured_at and created_at. Later weekly confirmation or next-session 15m evidence cannot backfill a prior after-market decision.
+
+This is a schema reconciliation only. D1/Worker/runtime wiring remains Class-B NO_GO. Outcome inference remains CLOSED. D01 remains 51.7%; Formal Core LOCKED.
+
+# DL-012 — Pattern shared-child identity contract (2026-10-02)
+
+Pattern shared-parent reconciliation now has a deterministic child-identity design.
+
+ROOT is a fixed parent-attempt key. Structural Pattern episode identity uses causal immutable anchors and initial confirmation, not named labels or later maturity state. RG2 relation identity uses the local-boundary and parent-zone IDs/versions, not current availableAir or lifecycle state.
+
+This distinction is deliberate: identity and state must not be conflated. Lifecycle progression must not manufacture new samples. Conversely, same item identity with mutated immutable geometry is a provenance conflict, not permission to invent a new key.
+
+New pure research helper/test files define 12 adversarial identity cases, but no reproducible Node execution receipt exists in this chat; no PASS count is claimed.
+
+No D1/Worker/runtime change. Outcome joins remain closed. D01 remains 51.7%; Formal Core LOCKED.
+
+# DL-013 — Equal-horizon and boundary-sensitivity control (2026-10-02)
+
+The earlier phrase "bar-boundary placebo" is corrected. A shifted bar boundary is not a guaranteed null because it can change information age, session composition, high/low extrema and actual topology. It is therefore a BOUNDARY_SENSITIVITY_CONTROL, not proof-by-placebo.
+
+Future multi-scale inference must separately test whether apparent weekly value is only a longer effective horizon, and whether it is fragile to one preregistered nearby aggregation boundary. Non-comparable dates remain non-comparable rather than being forced into paired inference.
+
+Pattern shared-child contract v0.2 now carries featureAgeEligibleSessions and aggregationBoundaryVersion so this robustness can be audited prospectively.
+
+No outcomes inspected. D01 remains 51.7%. Formal Core LOCKED.
+
+# DL-014 — Pattern identity vs observation fingerprint semantics (2026-10-02)
+
+A structural Pattern episode must be able to persist while its lifecycle evolves. Therefore one hash cannot safely represent both immutable object identity and the current as-of observation.
+
+The frozen design separates structuralIdentityFingerprint from observationPayloadHash. The first binds anchors/boundary identity and immutable geometry; the second certifies the exact parent/as-of state, including multi-scale and RG2 context.
+
+Same structural key with changed immutable fingerprint is a provenance conflict. The same structural key observed under a later immutable parent can legitimately have a new observation hash because lifecycle state has evolved.
+
+ROOT additionally commits to the episode-item keyset emitted for the parent. Outcomes and later source revisions are excluded from all decision-time fingerprints.
+
+Pattern shared-child contract v0.3 now carries these rules. Runtime remains NO_GO. D01 remains 51.7%; Formal Core LOCKED.

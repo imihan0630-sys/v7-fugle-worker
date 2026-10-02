@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "pattern-shared-child-v0.1",
+  "updated": "2026-10-02 Asia/Taipei",
+  "researchOnly": true,
+  "runtimeImplemented": false,
+  "formalCore": "LOCKED",
+  "genericIdentity": [
+    "parentDecisionReceiptId",
+    "captureGeneration",
+    "parentScopeId",
+    "evidence_family=PATTERN",
+    "evidence_item_key",
+    "observer_version",
+    "as_of"
+  ],
+  "root": {
+    "evidenceItemKey": "ROOT",
+    "rowsPerExpectedParent": 1,
+    "coverageAuthority": true,
+    "episodeCountDoesNotReplaceRoot": true
+  },
+  "structuralEpisodeKey": {
+    "purpose": "CROSS_PARENT_CAUSAL_STRUCTURAL_IDENTITY",
+    "identityFields": [
+      "symbol",
+      "semanticSpaceId",
+      "detectorFamilyVersion",
+      "latentFamily",
+      "scale",
+      "orderedConfirmedAnchorIds",
+      "initialConfirmedAt"
+    ],
+    "excludedMutableFields": [
+      "currentLifecycleState",
+      "maturityState",
+      "latestBarDate",
+      "availableAir",
+      "aboveZoneCloseStreak",
+      "touchCount",
+      "outcome"
+    ],
+    "conflictRule": "SAME_EPISODE_KEY_DIFFERENT_IMMUTABLE_ANCHOR_PAYLOAD => PROVENANCE_CONFLICT"
+  },
+  "rg2RelationKey": {
+    "purpose": "CROSS_PARENT_LOCAL_TO_MAJOR_RELATION_IDENTITY",
+    "identityFields": [
+      "symbol",
+      "semanticSpaceId",
+      "relationDefinitionVersion",
+      "localBoundaryId",
+      "localBoundaryVersion",
+      "parentZoneId",
+      "parentZoneVersion"
+    ],
+    "excludedMutableFields": [
+      "geometryRelationState",
+      "compoundLifecycleState",
+      "availableAirToParentLowerPct",
+      "distanceLocalToParentCenterPct",
+      "availableAirToParentLowerATR",
+      "outcome"
+    ],
+    "conflictRule": "SAME_RELATION_KEY_CHANGED_IMMUTABLE_BOUNDARY_COORDINATES => PROVENANCE_CONFLICT"
+  },
+  "payloadFingerprint": {
+    "mustBind": [
+      "immutable structural geometry",
+      "immutable boundary coordinates and versions",
+      "confirmation clocks",
+      "multi-scale provenance",
+      "RG2 provenance",
+      "cross-lane receipt references used by the payload"
+    ],
+    "mustNotBind": [
+      "database created_at retry timestamp",
+      "outcomes",
+      "later revised source data"
+    ]
+  },
+  "timing": [
+    "as_of",
+    "available_at",
+    "captured_at",
+    "created_at"
+  ],
+  "invariants": [
+    "IDENTITY_AND_STATE_ARE_SEPARATE",
+    "NAMED_LABEL_CHANGE_WITH_SAME_ANCHORS_DOES_NOT_CREATE_NEW_EPISODE",
+    "LIFECYCLE_PROGRESS_DOES_NOT_CREATE_NEW_EPISODE",
+    "NEW_CONFIRMED_ANCHOR_SET_CREATES_NEW_STRUCTURAL_EPISODE",
+    "NEW_BOUNDARY_VERSION_CREATES_NEW_RG2_RELATION_IDENTITY",
+    "SAME_VERSION_COORDINATE_MUTATION_IS_CONFLICT_NOT_NEW_ID",
+    "ROOT_REQUIRED_BEFORE_EPISODE_ROWS_ARE_INFERENCE_ELIGIBLE",
+    "OUTCOME_NEVER_ENTERS_IDENTITY_OR_DECISION_TIME_PAYLOAD"
+  ],
+  "status": "DESIGN_FROZEN_NO_RUNTIME",
+  "formalOptimizationCandidate": "NONE"
+}

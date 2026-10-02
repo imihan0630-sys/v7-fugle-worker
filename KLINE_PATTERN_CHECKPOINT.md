@@ -421,3 +421,232 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 5. Continue source-semantic blockers: PIT RAW_EXECUTION + TECHNICAL_CONTINUITY + explicit symbol-session membership + fit-for-purpose volume/trading-unit semantics.
 6. Prospective Pattern outcome joins remain blocked pending COMPLETE immutable parent/run receipts.
 7. No R09 / no Formal optimization proposal before prospective/OOS, redundancy, regime, cost and multiple-testing gates pass.
+
+## Continuation update — DL-008A through DL-008F (2026-10-02)
+
+- D01 multi-timeframe research now explicitly inherits the shared Technical-Indicator multi-timeframe contract instead of creating a second incompatible framework.
+- Three novelty layers are frozen:
+  1. Source Novelty（來源新穎性）;
+  2. Representation Novelty（表示新穎性）;
+  3. Predictive Incrementality（預測增量）.
+- Weekly OHLC built from verified daily constituents is deterministic aggregation and therefore not new raw PRICE_OHLC information.
+- A many-to-one aggregation witness is frozen: two different daily paths can share the same weekly Open/High/Low/Close. Higher-timeframe aggregation can compress/lose path information; it cannot manufacture new raw observations.
+- Same raw source does NOT imply zero possible research value. A weekly parent topology can still be a nonlinear representation candidate relative to the current finite daily baseline controls, but it remains one PRICE_OHLC root family and never receives an independent vote.
+- New Class-A research-only artifacts:
+  - research/PATTERN_MULTISCALE_INCREMENTALITY_V0_1.md
+  - research/pattern_multiscale_incrementality_v0_1.mjs
+  - research/test_pattern_multiscale_incrementality_v0_1.mjs
+  - research/pattern_multiscale_incrementality_contract_v0_1.json
+- The executable test file defines 16 adversarial cases covering deterministic aggregation, many-to-one information loss, same-event de-dup, equal-horizon nesting, cross-scale representation, partial higher-timeframe blocking, future confirmation, semantic-space conflicts, missing provenance, episode de-dup, multiple-testing identity and after-market vs next-session intraday clocks.
+- IMPORTANT evidence boundary: these 16 cases are authored but not yet executed in a reproducible Node environment in this tranche. Do NOT record 16/16 PASS until an actual run receipt exists.
+- Outcome testing remains closed. Predictive Incrementality is frozen as UNKNOWN_REQUIRES_PREREGISTERED_OUTCOME_TEST.
+- No multiTimeframeScore and no scale-alignment vote count.
+- No new R09. Future nested-resistance outcome work remains inside existing PATTERN-RG2.
+- External evidence remains two-sided:
+  - 2026 Pacific-Basin Finance Journal multi-timescale/shrinkage evidence supports horizon decomposition but finds technical predictors unstable and short-term components dominant;
+  - wavelet/de-noising and aligned-index literature supports the possibility that transformed representations can add forecast value without creating a new raw source family;
+  - 2026 overlapping-return evidence strengthens the effective-N / overlapping-window firewall;
+  - large technical-rule universes under data-snooping / false-discovery controls reinforce the need to count timeframe/alignment choices in the multiple-testing family.
+- D01 maturity remains 51.7%; D01-10 remains L3.
+- Pattern alpha remains UNKNOWN.
+- Pattern runtime remains NO_GO.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core remains LOCKED.
+
+### Updated exact next continuation point after DL-008
+
+1. Obtain a reproducible Node run receipt for the 16 DL-008 adversarial cases; until then status is EXECUTABLE_SPEC_WRITTEN / TEST_EXECUTION_PENDING.
+2. Deepen PATTERN-RG2 nested resistance: freeze local boundary vs major parent boundary identity, normalized distance and lifecycle semantics.
+3. Freeze equal-horizon and bar-boundary placebo definitions before any outcome join; do not search for the best timeframe after outcomes.
+4. Build an outcome-blind redundancy map from weekly-parent descriptors to existing priorHigh60 / MA60 / major-zone / ret60 / ATR / daily-Pattern controls.
+5. Keep scale count out of effective N; cluster later inference by scan date and parent/child episode.
+6. Keep prospective Pattern outcomes blocked until COMPLETE immutable parent/run receipts and runtime semantic readiness exist.
+7. No R09 / no Formal optimization proposal before PIT, prospective/OOS, redundancy, regime, cost and multiple-testing gates pass.
+
+## Continuation update — DL-009A through DL-009E (2026-10-02)
+
+- Existing PATTERN-RG2 nested-resistance hypothesis is now semantically frozen before outcomes; no new hypothesis family was created.
+- New durable artifacts:
+  - research/PATTERN_RG2_NESTED_RESISTANCE_V0_1.md
+  - research/pattern_rg2_nested_resistance_v0_1.json
+- Scale definitions are inherited unchanged from the already-frozen Pattern hierarchy:
+  - Formal comparator = priorHigh20;
+  - BASE = lagged-ATR Directional-Change k=2 / 120 eligible symbol sessions;
+  - MAJOR = k=3 / 260 eligible symbol sessions;
+  - simple 260-session high = mandatory redundancy comparator.
+- Primary local boundary is the immutable confirmed Pattern trigger boundary (neckline/rim/platform/VCP boundary). priorHigh20 remains a comparator and must not masquerade as a true Pattern neckline.
+- Primary parent zone is the immutable confirmed MAJOR structural zone with zoneId/version/lower/upper/center/confirmedAt and semantic-space provenance.
+- Future parent confirmation, semantic-space conflict, or same-version coordinate mutation fails closed.
+- availableAir is frozen as a continuous descriptor; it may be positive/zero/negative and is not a hard rejection rule.
+- Relation semantics separate:
+  local break still below parent / local break entered parent / parent first break / holding above / reentered / failed.
+- No arbitrary new "near resistance = X%" threshold is introduced.
+- Redundancy ladder is frozen from priorHigh20 -> priorHigh60 -> MA60/ret20/ret60/overheat -> simple260-high -> structural BASE/MAJOR zone -> lifecycle -> round-price/D02/regime/liquidity.
+- If MAJOR topology loses residual value after simple260-high, classify it REDUNDANT rather than preserve a named structural factor.
+- Taiwan 2025 historical-high evidence remains explicit counterevidence to a hard resistance veto: a true break can transition into underreaction/momentum. Round-price clustering literature is retained as a confound control, not a score.
+- RG2 outcome status remains CLOSED. Predictive incrementality remains UNKNOWN.
+- D01 maturity remains 51.7%; no module promotion.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core remains LOCKED.
+
+### Updated exact next continuation point after DL-009
+
+1. Create outcome-blind RG2 adversarial fixtures for local-below-parent, overlap, local-break-enters-parent, parent-first-break, hold, reentry/failure, future-parent, coordinate-mutation and semantic-space-conflict cases.
+2. Reuse existing major-zone lifecycle rather than fork another state machine.
+3. Map RG2 fields against Pattern round-price control and Target/RR research so each source owns one canonical definition.
+4. Preserve the simple260-high comparator and the full redundancy ladder in any future PATTERN-RG2 outcome design.
+5. Keep outcome joins closed until prospective Pattern parent/run coverage is COMPLETE and semantic runtime blockers clear.
+6. No hard resistance veto / no R09 / no Formal change.
+
+## Continuation update — DL-010A through DL-010D (2026-10-02)
+
+- RG2 now has an isolated research-only relation calculator:
+  - research/pattern_rg2_relation_v0_1.mjs
+- 12 adversarial RG2 cases are defined:
+  - research/test_pattern_rg2_relation_v0_1.mjs
+  - research/pattern_rg2_nested_resistance_fixtures_v0_1.json
+- IMPORTANT evidence boundary: the 12 RG2 cases are DEFINED_NOT_YET_EXECUTED in this chat. Do not claim 12/12 PASS without a reproducible Node run receipt.
+- The calculator is deliberately threshold-free:
+  - local below parent;
+  - boundary overlap;
+  - local above parent;
+  - first parent break;
+  - parent holding above;
+  - reentry;
+  - failure;
+  - no local break;
+  - future confirmation / semantic conflict / coordinate mutation blockers.
+- Negative availableAir is retained as a signed geometric value; it is not clipped and has no automatic bullish/bearish meaning.
+- Cross-lane definition ownership is frozen in:
+  research/PATTERN_RG2_CROSS_LANE_OWNERSHIP_V0_1.md
+- Canonical ownership:
+  Corporate Actions = continuity semantics;
+  Pattern = structural boundaries/zones/lifecycle;
+  Technical Indicator shared contract = multi-timeframe overlap taxonomy;
+  D02 = price-volume acceptance/persistence;
+  Round-price control = tick-aware proximity confound;
+  Microstructure = auction/VI/order-book mechanics;
+  Target-RR = target construction/RR semantics.
+- Pattern must not fork any of those definitions.
+- D01 remains 51.7%. Outcome joins remain closed. Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-010
+
+1. Obtain reproducible execution receipts for DL-008 16-case and RG2 12-case research tests; until then both remain TEST_EXECUTION_PENDING.
+2. Audit RG2 local/parent fields against existing Pattern observer persistence schema to identify missing prospective fields without wiring runtime.
+3. Freeze equal-horizon / calendar-boundary placebo objects for future PATTERN-RG2 inference.
+4. Preserve cross-lane canonical ownership; do not duplicate D02 acceptance, Target-RR target selection, Microstructure execution or Corporate Actions continuity logic.
+5. Prospective outcome join remains blocked until COMPLETE Pattern parent/run coverage and runtime semantic readiness.
+6. No R09 / no hard resistance veto / no Formal change.
+
+## Continuation update — DL-011A through DL-011E (2026-10-02)
+
+- Pattern observer persistence v0.1 was audited against the newer shared immutable-parent architecture.
+- New artifacts:
+  - research/PATTERN_SHARED_PARENT_SCHEMA_GAP_V0_1.md
+  - research/pattern_shared_parent_schema_gap_v0_1.json
+- Key finding: the older Pattern contract is still valid for isolated legacy QA, but its inference-authoritative parent assumption is superseded for promotion-grade work.
+- Legacy parentage:
+  scan_date + symbol + parent_snapshot_hash against the bounded/mutable Shadow archive.
+- Future promotion-grade parentage must inherit:
+  parentDecisionReceiptId + captureGeneration + parentScopeId + semanticFingerprint + decisionCutoffAt,
+  with certified parentKeysetHash / decisionSetHash at run level.
+- Pattern is explicitly a multi-object observer:
+  every expected parent requires exactly one ROOT attempt row,
+  followed by zero/many deterministic episode child rows.
+- Episode row count is never the coverage denominator.
+- DL-008 multi-scale fields and DL-009/010 RG2 fields are now enumerated as required future prospective payload/provenance fields.
+- Generic timing must separate as_of / available_at / captured_at / created_at.
+- Next-session 15m information and later weekly confirmations cannot backfill the prior after-market parent.
+- Promotion-grade Pattern inference is killed if only legacy mutable Shadow linkage exists, capture generation is uncertified, ROOT keyset is incomplete, scale/zone provenance is missing, or current-code reconstruction substitutes for decision-time capture.
+- No D1 schema, Worker, schedule or runtime persistence change is authorized.
+- PATTERN_SHARED_PARENT_SCHEMA = DESIGN_RECONCILED / RUNTIME_NOT_IMPLEMENTED.
+- D01 remains 51.7%; Pattern alpha UNKNOWN; Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-011
+
+1. Freeze the machine-readable Pattern shared-parent child contract and deterministic ROOT/episode/relation item-key rules.
+2. Audit Pattern payload-hash identity so DL-008/DL-009 fields cannot mutate under one item identity.
+3. Freeze equal-horizon / bar-boundary placebo identity before outcomes.
+4. Keep Pattern outcome joins closed until immutable parent runtime + COMPLETE ROOT keysets + semantic runtime readiness exist.
+5. No Class-B runtime approval request yet; no R09 / no Formal change.
+
+## Continuation update — DL-012A through DL-012D (2026-10-02)
+
+- Pattern shared-child identity is now frozen at design level:
+  - research/pattern_shared_child_contract_v0_1.json
+  - research/pattern_shared_child_identity_v0_1.mjs
+  - research/test_pattern_shared_child_identity_v0_1.mjs
+- Generic Pattern child identity inherits:
+  parentDecisionReceiptId + captureGeneration + parentScopeId + evidence_family=PATTERN + evidence_item_key + observer_version + as_of.
+- ROOT is a fixed parent-attempt item key and remains the coverage authority.
+- Structural episode identity is separated from lifecycle state:
+  symbol + semantic space + detector family version + latent family + scale + ordered confirmed anchors + initial confirmedAt.
+- Named-label changes or lifecycle progress under the same structural anchors do not create a new episode.
+- RG2 relation identity is separated from relation state:
+  symbol + semantic space + RG2 relation-definition version + local boundary id/version + parent zone id/version.
+- availableAir, geometry relation and lifecycle state do not create a new RG2 relation identity.
+- Same identity with changed immutable anchor/boundary coordinates must become PROVENANCE_CONFLICT rather than silently generating a new ID.
+- Outcome fields are prohibited from decision-time child identity/payload validation.
+- 12 shared-child identity adversarial tests are authored but NOT executed in a reproducible Node environment in this chat. Status remains TEST_EXECUTION_PENDING.
+- No persistence/runtime change. D01 remains 51.7%. Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-012
+
+1. Freeze equal-horizon / bar-boundary placebo identity and causal timing before any multi-scale outcome work.
+2. Audit whether Pattern child payload fingerprint must bind all DL-008 multi-scale and RG2 immutable geometry fields; keep mutable lifecycle state append-only/snapshot-versioned without mutating prior rows.
+3. Obtain reproducible execution receipts for DL-008 (16 cases), RG2 relation (12 cases) and shared-child identity (12 cases).
+4. Keep outcome joins and Class-B runtime approval closed.
+5. No R09 / no Formal change.
+
+## Continuation update — DL-013A through DL-013D (2026-10-02)
+
+- Equal-horizon and aggregation-boundary falsification is now frozen before outcomes:
+  - research/PATTERN_EQUAL_HORIZON_BOUNDARY_CONTROL_V0_1.md
+  - research/pattern_equal_horizon_boundary_control_v0_1.json
+- Terminology correction:
+  "bar-boundary placebo" as a guaranteed null is rejected.
+  The correct role is BOUNDARY_SENSITIVITY_CONTROL because shifted aggregation can have different information age/session composition and may contain real structure.
+- Two confounds are separated:
+  effective-horizon difference vs aggregation-boundary difference.
+- Primary future test remains B0 daily long-horizon controls vs B1 B0 + canonical completed-calendar-week Pattern relation on common support/equal dates.
+- Frozen comparators:
+  DAILY_EQUIVALENT_CLOCK_HORIZON and SIMPLE_LONG_HORIZON_PRICE_GEOMETRY.
+- Boundary sensitivity variant:
+  SHIFTED_5_ELIGIBLE_SESSION_BLOCK_V0_1,
+  preregistered before outcomes, fully causal, no future block completion.
+- Comparability can explicitly be NOT_COMPARABLE_FEATURE_AGE or NOT_COMPARABLE_SESSION_COVERAGE; dates are never force-paired.
+- Timeframe/boundary variants remain inside one multiple-testing family.
+- Pattern shared-child contract v0.2 now adds featureAgeEligibleSessions and aggregationBoundaryVersion plus DL-008/RG2 provenance.
+- No outcome join / no timeframe search / no score. D01 remains 51.7%. Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-013
+
+1. Audit immutable Pattern payload fingerprint coverage for all v0.2 provenance/geometry fields.
+2. Obtain reproducible execution receipts for authored DL-008/RG2/shared-child tests; do not infer PASS from V8 regression CI.
+3. Re-read latest main before any merge because parallel research rooms may advance it.
+4. Keep runtime/Class-B proposal closed until parent/continuity/session/storage gates clear.
+5. No R09 / no Formal change.
+
+## Continuation update — DL-014A through DL-014D (2026-10-02)
+
+- Pattern fingerprint semantics are now split into immutable structural identity vs evolving as-of observation:
+  - research/PATTERN_FINGERPRINT_CONTRACT_V0_1.md
+  - research/pattern_fingerprint_contract_v0_1.json
+- structuralIdentityFingerprint binds immutable anchors/boundaries/versions and excludes lifecycle/outcomes.
+- observationPayloadHash binds one exact parent/as-of Pattern observation, including current lifecycle, multi-scale provenance, RG2 geometry and consumed cross-lane receipt references.
+- Same item key + changed structuralIdentityFingerprint = PROVENANCE_CONFLICT.
+- Same generic child identity + changed observationPayloadHash = PROVENANCE_CONFLICT.
+- Same structural episode key across a later immutable parent/as-of may legitimately carry a different observationPayloadHash; that is longitudinal evolution, not mutation.
+- ROOT must commit to the sorted episode-item keyset for that parent so missing/duplicate/foreign episode rows can be audited independently from parent coverage.
+- Pattern shared-child contract v0.3 incorporates these fingerprint rules.
+- Outcomes and later source revisions are prohibited from decision-time fingerprints.
+- No runtime wiring. D01 remains 51.7%; Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-014
+
+1. Recheck latest PR CI and current main divergence.
+2. If production regression/repair CI passes, treat it only as Formal-isolation evidence; DL-008/RG2/child tests remain TEST_EXECUTION_PENDING without a dedicated Node receipt.
+3. Preserve all new contracts on a clean latest-main lineage before any merge.
+4. Next scientific research after engineering closure: preregister RG2 cross-parent episode clustering and future B0-vs-B1 estimands; do not inspect outcomes yet.
+5. No R09 / no Formal change.

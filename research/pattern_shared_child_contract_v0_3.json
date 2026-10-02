@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "pattern-shared-child-v0.3",
+  "updated": "2026-10-02 Asia/Taipei",
+  "researchOnly": true,
+  "runtimeImplemented": false,
+  "formalCore": "LOCKED",
+  "supersedes": "research/pattern_shared_child_contract_v0_2.json",
+  "genericIdentity": [
+    "parentDecisionReceiptId",
+    "captureGeneration",
+    "parentScopeId",
+    "evidence_family=PATTERN",
+    "evidence_item_key",
+    "observer_version",
+    "as_of"
+  ],
+  "root": {
+    "evidenceItemKey": "ROOT",
+    "rowsPerExpectedParent": 1,
+    "coverageAuthority": true,
+    "episodeItemKeysetCommitmentRequired": true
+  },
+  "fingerprints": {
+    "structuralIdentityFingerprint": "REQUIRED_FOR_EPISODE_AND_RG2_RELATION_ITEMS",
+    "observationPayloadHash": "REQUIRED_FOR_EVERY_CHILD_ROW",
+    "rootPayloadHash": "REQUIRED_FOR_ROOT",
+    "outcomeExcluded": true
+  },
+  "requiredTimeframeProvenance": [
+    "timeframe",
+    "effectiveClockHorizon",
+    "barCompletionState",
+    "sourceBarsThrough",
+    "sessionRule",
+    "sessionCalendarVersion",
+    "featureAgeEligibleSessions",
+    "aggregationBoundaryVersion"
+  ],
+  "requiredOverlapProvenance": [
+    "overlapClass",
+    "sharedEventIds",
+    "rawInformationClass",
+    "representationClass",
+    "crossScaleRelationType",
+    "relationDefinitionVersion",
+    "multipleTestingFamilyKey"
+  ],
+  "requiredRg2Provenance": [
+    "localBoundaryId",
+    "localBoundaryVersion",
+    "localConfirmedAt",
+    "parentZoneId",
+    "parentZoneVersion",
+    "parentConfirmedAt",
+    "parentScale",
+    "geometryRelationState",
+    "compoundLifecycleState",
+    "availableAirToParentLowerPct",
+    "distanceLocalToParentCenterPct"
+  ],
+  "timing": [
+    "as_of",
+    "available_at",
+    "captured_at",
+    "created_at"
+  ],
+  "crossLaneReceiptReferences": [
+    "continuityReceiptRef",
+    "symbolSessionReceiptRef",
+    "corporateActionSemanticReceiptRef",
+    "priceVolumeReceiptRef_if_used",
+    "regimeReceiptRef_if_used",
+    "roundPriceControlReceiptRef_if_used"
+  ],
+  "boundaryControl": {
+    "primary": "CALENDAR_WEEK_COMPLETED",
+    "sensitivity": "SHIFTED_5_ELIGIBLE_SESSION_BLOCK_V0_1",
+    "trueNullPlaceboClaim": false
+  },
+  "integrityRules": [
+    "ROOT_COVERAGE_AUTHORITY",
+    "ROOT_COMMITS_TO_SORTED_EPISODE_ITEM_KEY_SET",
+    "SAME_ITEM_KEY_DIFFERENT_STRUCTURAL_FINGERPRINT_IS_CONFLICT",
+    "SAME_GENERIC_CHILD_ID_DIFFERENT_OBSERVATION_HASH_IS_CONFLICT",
+    "SAME_EPISODE_KEY_ACROSS_LATER_PARENT_ASOF_MAY_HAVE_DIFFERENT_OBSERVATION_HASH",
+    "OUTCOME_NEVER_ENTERS_DECISION_TIME_FINGERPRINT",
+    "LATER_SOURCE_REVISION_NEVER_REWRITES_OLD_CHILD"
+  ],
+  "predictiveIncrementality": "UNKNOWN_REQUIRES_PREREGISTERED_PROSPECTIVE_OUTCOME_TEST",
+  "runtimeStatus": "NO_GO",
+  "formalOptimizationCandidate": "NONE"
+}

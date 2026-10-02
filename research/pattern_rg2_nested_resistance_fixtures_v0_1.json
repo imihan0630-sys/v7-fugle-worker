@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "pattern-rg2-fixtures-v0.1",
+  "updated": "2026-10-02 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCoreImpact": "NONE",
+  "executionStatus": "DEFINED_NOT_YET_EXECUTED",
+  "cases": [
+    {"id":"RG2F01","case":"local_far_below_parent","expect":"LOCAL_BELOW_PARENT_POSITIVE_AIR; positive availableAir; no hard veto"},
+    {"id":"RG2F02","case":"local_boundary_overlaps_parent","expect":"LOCAL_BOUNDARY_OVERLAPS_PARENT_ZONE"},
+    {"id":"RG2F03","case":"local_break_enters_parent","expect":"LOCAL_BREAK_ENTERED_PARENT_ZONE"},
+    {"id":"RG2F04","case":"parent_first_break","expect":"LOCAL_BREAK_AND_PARENT_FIRST_BREAK"},
+    {"id":"RG2F05","case":"parent_holding_above","expect":"LOCAL_BREAK_PARENT_HOLDING_ABOVE"},
+    {"id":"RG2F06","case":"parent_reentered","expect":"LOCAL_BREAK_PARENT_REENTERED"},
+    {"id":"RG2F07","case":"parent_failed","expect":"LOCAL_BREAK_PARENT_FAILED"},
+    {"id":"RG2F08","case":"future_parent_confirmation","expect":"DATA_BLOCKED/FUTURE_CONFIRMATION"},
+    {"id":"RG2F09","case":"same_version_parent_coordinate_mutation","expect":"DATA_BLOCKED/PROVENANCE_CONFLICT_SAME_VERSION_MUTATED"},
+    {"id":"RG2F10","case":"semantic_space_conflict","expect":"DATA_BLOCKED/SEMANTIC_SPACE_CONFLICT"},
+    {"id":"RG2F11","case":"no_local_break","expect":"LOCAL_NOT_BROKEN"},
+    {"id":"RG2F12","case":"local_boundary_above_parent_negative_air","expect":"negative air preserved; UNSIGNED; no clipping"}
+  ],
+  "rules": [
+    "NO_OUTCOME_RETURN",
+    "NO_HARD_VETO",
+    "NO_THRESHOLD_TUNING",
+    "NEGATIVE_AVAILABLE_AIR_IS_NOT_AUTO_BULLISH_OR_BEARISH",
+    "FUTURE_PARENT_CANNOT_BACKFILL",
+    "UNKNOWN_IS_NOT_ZERO"
+  ]
+}
