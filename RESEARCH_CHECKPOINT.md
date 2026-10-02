@@ -2371,3 +2371,16 @@ Exact next for Room 09:
 2. Obtain actual TAIWAN VIX and 15:00–18:10 TX NIGHT_PRE_SCAN before the selected 18:10 cutoff on eligible dates, never retroactively reconstruct from full-session reports.
 3. Preserve post-20:30 NFP and post-release TX as separate future objects; no return/outcome join during coverage stage.
 4. Accumulate independent strict clean dates and coverage/missingness before comparing D13-12 Taiwan absorption residual with domestic/sector/ATR controls.
+
+
+## 08 Event & News long-block — D11-06 / D11-09 / D17-13 event clocks (2026-10-02 Asia/Taipei)
+- Re-read latest main before continuation; concurrent research preserved and no stale overwrite.
+- New anchor: `EVENT_TRANSACTION_AND_DISCLOSURE_CLOCK_RESEARCH.md`; machine contract: `research/d11_d17_event_clock_contract_v0_1.json`.
+- D11-06 M&A/disposition advances L2 -> L3 for Taiwan PIT source/data feasibility only. FSC rules expose fact-occurrence, board/shareholder, contract, approval, completion and later revision/termination/delay clocks. Announcement != completion is a mandatory falsification guard.
+- D11-09 financial-report/monthly-revenue/investor-conference windows advances L2 -> L3 for Taiwan PIT feasibility. Monthly revenue due by the 10th is DEADLINE_ONLY until actual publication is captured; conference info has explicit pre/during/post-session filing clocks.
+- D17-13 scheduled vs unscheduled events advances L2 -> L3 for Taiwan PIT feasibility. Frozen states: SCHEDULED_EXACT / SCHEDULED_WINDOW / DEADLINE_ONLY / UNSCHEDULED / UNKNOWN.
+- Conservative first-known rule remains capturedAt until source-native availability is authenticated; legal deadline and displayed source timestamp cannot backdate replay.
+- Canonical tracker now: D11=54.3%, D17=41.5%, Room 08=48.1%. Global tracker=47.8% across 229 modules.
+- Repaired a display-only drift in STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md where D17-08/09 still appeared L0/0 although canonical tracker had already advanced them to L2/40. No maturity was newly awarded by that repair.
+- No return/outcome inspection, no strategy scoring, no live/runtime change. FORMAL_OPTIMIZATION_CANDIDATE = NO; Formal Core unchanged.
+- Exact next: collect immutable prospective M&A/asset state transitions and recurring disclosure versions across independent Taiwan dates; preserve deadline/published/captured clocks; keep D11-13 negative-evidence completeness at L2 until expected/observed source coverage proves absence; preregister outcome cohorts before opening returns.
