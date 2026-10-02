@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-02T16:40:00+08:00",
+  "updatedAt": "2026-10-02T16:23:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -941,7 +941,7 @@
         "MARKET_BREADTH_ROTATION_CHECKPOINT.md",
         "MARKET_BREADTH_ROTATION_RESEARCH.md"
       ],
-      "maturityPct": 53.3,
+      "maturityPct": 55,
       "modules": [
         {
           "id": "D09-01",
@@ -1036,10 +1036,12 @@
         {
           "id": "D09-11",
           "name": "題材股與正式產業分類橋接",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「題材股與正式產業分類橋接」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "BOUNDED_MANY_TO_MANY_TAIWAN_PIT_BRIDGE / CROSS_INDUSTRY_ABF_WITNESS / MAGNITUDE_UNKNOWN / OUTCOMES_CLOSED",
+          "next": "BR-047 add more current prospective cross-industry theme bridges; BR-048 require effective-dated historical exposure vintages before any historical theme-return study."
         },
         {
           "id": "D09-12",
