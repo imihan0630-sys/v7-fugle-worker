@@ -2003,3 +2003,26 @@ Formal Core remains LOCKED.
 5. Keep 09:00 H002 incremental effect structurally fixed at zero relative to C; do not spend statistical degrees of freedom retesting an identity.
 6. Test cumulative pace against persistence-state redundancy as well as same-slot RVOL.
 7. Gate 7 outcomes remain closed until Gate 0->6 all pass.
+
+
+## Evidence progress — PVE-217 through PVE-227 (2026-10-02 intraday lineage block)
+
+Durable details:
+- `research/d02_pve_217_221_continuation_20261002.md`
+- `research/d02_20261002_intraday_lineage_and_persistence_receipt_v0_1.json`
+- `research/d02_pve_222_227_continuation_20261002.md`
+- `research/d02_20261002_monitor_config_lineage_receipt_v0_1.json`
+
+Frozen conclusions:
+1. Fresh production health observations show current configured membership [2454] while fresh live monitoring shows [2404,2454,3189,6213,6672]. The simple stale-live-snapshot explanation is falsified, but the four extra symbols' membership provenance remains UNKNOWN.
+2. Current Worker source proves runBackgroundMonitor() reads mutable STOCK_CONFIG_V7 once, computes results only from that loaded stock set, then writes the live snapshot. saveStockConfig() can independently replace STOCK_CONFIG_V7. No immutable generation ID atomically links the exact config instance consumed by a monitor run to a later live/config comparison.
+3. Therefore the mismatch is classified MONITOR_CONFIG_LINEAGE_INCONSISTENCY, not proven monitor expansion. A config mutation/race or another writer is a viable explanation; the actual writer remains UNKNOWN.
+4. D02 denominators now require generation-linked membership. Freshness, symbol/date equality or presence in /api/live is insufficient to label SELECTED or CONTROL. Missing generation provenance => membership UNKNOWN => DATA_QA-only.
+5. Shared V8.15.1 deployment acceptance preserved configUpdatedAt/monitoring targets versus predeploy baseline and triggered no business scan/recovery/import, so deployment itself is not evidence that created the mismatch.
+6. The activated read-only C1 collector at 16:23 failed closed for scanDate 2026-10-01 with C1_GENERATION_NOT_FOUND and mayCountAsZeroPick=false. Clean prospective selection-date count remains 0.
+7. H001~H004 outcomes remain closed. Gate 7 CLOSED. Maturity remains 48.3%. No threshold tuning, no hypothesis promotion/rejection, no FORMAL_OPTIMIZATION_CANDIDATE, Formal Core LOCKED.
+
+Current Price-Volume evidence cursor: PVE-001 through PVE-227.
+
+## Exact continuation after PVE-227
+PVE-228: re-read latest main after the genuine 2026-10-02 ordinary after-market window. Inspect the normal 23:35 scan, 23:55 fallback and 2026-10-03 00:10 C1/C2 collector without reconstructing missing receipts. Require same-session scanDate->planDate, verified selection persistence, C1 save/readback generation, config/live generation linkage when available, ordinary PV bootstrap/daily readiness and pool/cohort integrity. If clean, open Gate 0->6 only; Gate 7 performance remains closed until all prerequisites pass. If blocked, preserve UNKNOWN/null and diagnose the first failed prerequisite.
