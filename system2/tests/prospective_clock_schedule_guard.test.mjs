@@ -12,6 +12,7 @@ assert.match(workflow, /permissions:\s*\n\s*contents: read/);
 assert.match(workflow, /check_twse_trading_day_readonly\.mjs/);
 assert.match(workflow, /--stop-when-daily-gate-ready true/);
 assert.match(workflow, /--required-daily-only true/);
+assert.match(workflow, /--additional-source-ids A2_TAIEX_CLOSE/);
 assert.match(workflow, /measure_required_dependency_series_readonly\.mjs/);
 assert.match(workflow, /build_decision_clock_daily_bundle\.mjs/);
 assert.match(workflow, /prospective_clock_schedule_guard\.test\.mjs/);
