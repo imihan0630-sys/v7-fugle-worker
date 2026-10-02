@@ -384,3 +384,13 @@ Status: RG2_SPEC_EXECUTABLE / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / FORMAL_L
 - Later weekly/15m information cannot backfill an earlier decision-time parent.
 - No runtime/D1 wiring is authorized.
 Status: DESIGN_RECONCILED / RUNTIME_NOT_IMPLEMENTED / OUTCOME_CLOSED / FORMAL_LOCKED.
+
+### D01 shared handoff — DL-012 Pattern child identity (2026-10-02)
+
+- Pattern uses one ROOT attempt per immutable decision parent plus zero/many deterministic item rows.
+- Structural episode identity excludes named-label/lifecycle changes; same anchors remain one episode.
+- RG2 relation identity excludes current availableAir/lifecycle state; same local/parent boundary versions remain one relation.
+- Same item identity with changed immutable geometry is PROVENANCE_CONFLICT.
+- Outcome fields never enter decision-time child identity.
+- Tests are authored but execution receipt is still pending.
+Status: CHILD_IDENTITY_DESIGN_FROZEN / TEST_EXECUTION_PENDING / RUNTIME_NO_GO / FORMAL_LOCKED.
