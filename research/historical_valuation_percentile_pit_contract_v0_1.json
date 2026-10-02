@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "HISTORICAL_VALUATION_PERCENTILE_PIT_CONTRACT_V0_1",
+  "researchRoom": "06",
+  "domain": "D08",
+  "module": "D08-03",
+  "status": "TAIWAN_OFFICIAL_SOURCE_FEASIBLE_RESEARCH_ONLY",
+  "frozenAtAsiaTaipei": "2026-10-02T13:45:00+08:00",
+  "purpose": "Define PIT-safe self-history PE/PB percentile semantics using official TWSE/TPEx archived daily valuation observations without reconstructing past valuation from current financial statements.",
+  "sourceContracts": {
+    "TWSE": {
+      "source": "Official TWSE daily P/E, dividend yield and P/B inquiry by stock code",
+      "archiveAvailability": "Official page states data available since 2005-09-01.",
+      "peSemantics": "Closing price divided by EPS derived from the most recent four reported quarters; PE not calculated when EPS<=0.",
+      "pbSemantics": "Closing price divided by book value per share from the most recent reported quarter.",
+      "historicalRule": "Official page explicitly states it does not provide back-calculations.",
+      "status": "PIT_HISTORY_SOURCE_FEASIBLE"
+    },
+    "TPEx": {
+      "source": "Official TPEx daily/stock-code P/E, dividend yield and P/B inquiries",
+      "archiveAvailability": "Daily page states data from ROC 96-01 onward, with an older-history link; stock-code page states availability since ROC 101-09.",
+      "corporateActionWarning": "Official page explicitly warns that ex-rights trading dates and financial-data update timing can differ and that capital changes affect PE interpretation.",
+      "status": "PIT_HISTORY_SOURCE_FEASIBLE_WITH_DENOMINATOR_GUARD"
+    }
+  },
+  "rawState": {
+    "preserve": [
+      "tradeDate",
+      "symbol",
+      "PE",
+      "PB",
+      "dividendYield_if_used",
+      "fiscalYearQuarter_if_available",
+      "sourceMarket",
+      "sourceFingerprint",
+      "capturedAt_if_prospective"
+    ],
+    "peUndefinedStates": [
+      "NONPOSITIVE_EPS",
+      "SOURCE_NA_OTHER",
+      "UNKNOWN"
+    ],
+    "rule": "Do not coerce N/A PE to zero, infinity, or cheapest bucket."
+  },
+  "percentileSemantics": {
+    "direction": "Percentile uses only observations strictly before or at the asOf date, never future days.",
+    "initialWindows": [
+      "TRAILING_252_VALID_SESSIONS",
+      "TRAILING_756_VALID_SESSIONS",
+      "TRAILING_1260_VALID_SESSIONS",
+      "EXPANDING_SINCE_AVAILABLE"
+    ],
+    "windowRule": "All four are preregistered descriptive variants. No best window is selected by return mining.",
+    "minimumHistory": "Preserve validObservationCount and calendar/session span; insufficient history => UNKNOWN.",
+    "tieRule": "Freeze an explicit empirical-CDF tie convention before implementation; provider rounding can create many ties.",
+    "peCensoring": "PE percentile is conditional on PE being defined; retain nonpositive-EPS state separately so censoring is visible.",
+    "pbInterpretation": "PB remains observable with negative earnings but can be economically incomparable across sectors/business models; sector policy remains mandatory."
+  },
+  "structuralBreakGuards": [
+    "financial-report denominator update / fiscal-quarter change",
+    "stock split / reverse split / par-value change / rights issue / capital reduction",
+    "large M&A or accounting-scope change",
+    "industry/business-model transition",
+    "negative-to-positive EPS transition",
+    "listing-age and long suspension gaps"
+  ],
+  "hypotheses": [
+    "HV_H1: Self-history percentile can add context beyond raw PE/PB level because firm-specific normal valuation ranges differ.",
+    "HV_H2: Raw low historical PE percentile can be a false cheapness signal near cyclical peak earnings.",
+    "HV_H3: PB percentile may be more stable than PE for loss-making/turnaround states but is not universally comparable across sectors.",
+    "HV_H4: Historical percentile may contribute more to downside/path-quality or mean-reversion context than to short-horizon directional alpha.",
+    "HV_H5: Percentile effects must be tested after profitability/quality, sector/peer, price trend/RS, regime and corporate-action controls."
+  ],
+  "falsification": [
+    "If percentile adds no stable incremental information beyond raw valuation + quality + sector/RS/regime, mark REDUNDANT.",
+    "If effect depends on one window only, mark WINDOW_FRAGILE.",
+    "If apparent cheapness is concentrated in cyclical peak-earnings or denominator-transition states, reject universal low-percentile rule.",
+    "If official archive semantics cannot be replayed for a target period, preserve UNKNOWN; never rebuild from current statements."
+  ],
+  "outcomeGate": "CLOSED_UNTIL_PREREGISTERED_SHADOW_JOIN",
+  "formalCoreChanged": false,
+  "promotionState": "NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
