@@ -1,0 +1,134 @@
+{
+  "version": "0.1",
+  "id": "BR-046",
+  "capturedAt": "2026-10-02T16:23:00+08:00",
+  "module": "D09-11 題材股與正式產業分類橋接",
+  "mode": "BOUNDED_TAIWAN_PROSPECTIVE_EXPOSURE_BRIDGE / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "theme": "ABF_IC_SUBSTRATE",
+  "bridgeSchema": "INDUSTRY_EXPOSURE_VINTAGE_V0_1",
+  "issuers": [
+    {
+      "symbol": "8046",
+      "name": "南亞電路板",
+      "formalIndustry": {
+        "market": "TWSE",
+        "label": "電子零組件業",
+        "source": "https://wwwc.twse.com.tw/pdf/ch/8046_ch.pdf",
+        "sourceProducedDate": "2026-05-16",
+        "capturedAt": "2026-10-02T16:23:00+08:00",
+        "historicalEffectiveFrom": "UNKNOWN",
+        "historicalEffectiveTo": "UNKNOWN",
+        "currentProspectiveState": "KNOWN"
+      },
+      "exposureEdges": [
+        {
+          "exposure": "ABF_SUBSTRATE",
+          "basis": "Issuer current official company profile explicitly lists production/sales of ABF substrate.",
+          "source": "https://www.nanyapcb.com.tw/nypcb/chinese/AboutNanYaPCB/CompanyProfile/Company",
+          "magnitude": "UNKNOWN",
+          "revenueShare": "UNKNOWN",
+          "customerOrders": "UNKNOWN",
+          "currentProspectiveState": "KNOWN"
+        },
+        {
+          "exposure": "IC_SUBSTRATE",
+          "basis": "Issuer official product/technology materials include ABF and PP substrates.",
+          "source": "https://www.nanyapcb.com.tw/nypcb/chinese/Technology/ABFSRoadmap",
+          "magnitude": "UNKNOWN",
+          "currentProspectiveState": "KNOWN"
+        }
+      ]
+    },
+    {
+      "symbol": "3189",
+      "name": "景碩科技",
+      "formalIndustry": {
+        "market": "TWSE",
+        "label": "半導體業",
+        "source": "https://www.twse.com.tw/pdf/ch/3189_ch.pdf",
+        "currentCorroboration": "https://mopsfin.twse.com.tw/compare/report?bcodeAvg=false&companyAvg=false&companyId=3189&compareItem=IncomeStatement&qnumber=&quarter=true&revenue=&ylabel=&ys=20254",
+        "capturedAt": "2026-10-02T16:23:00+08:00",
+        "historicalEffectiveFrom": "UNKNOWN",
+        "historicalEffectiveTo": "UNKNOWN",
+        "currentProspectiveState": "KNOWN"
+      },
+      "exposureEdges": [
+        {
+          "exposure": "FCBGA_IC_SUBSTRATE",
+          "basis": "Issuer current official product page identifies FCBGA as a high-end GPU/CPU substrate solution.",
+          "source": "https://www.kinsus.com.tw/en/product/products/products_overview",
+          "magnitude": "UNKNOWN",
+          "revenueShare": "UNKNOWN",
+          "currentProspectiveState": "KNOWN"
+        },
+        {
+          "exposure": "ABF_SUBSTRATE",
+          "basis": "Issuer chairman message explicitly describes large-area high-layer-count ABF substrates and 2026 capacity deployment/customer certification.",
+          "source": "https://www.kinsus.com.tw/en/html/message_from_the_chairman/index",
+          "magnitude": "UNKNOWN",
+          "revenueShare": "UNKNOWN",
+          "customerOrders": "PARTIAL / customer identity not established here",
+          "currentProspectiveState": "KNOWN"
+        }
+      ]
+    }
+  ],
+  "coreCounterexample": {
+    "fact": "Two issuers with verified ABF/IC-substrate exposure sit in different formal TWSE industries: 8046 Electronic Parts/Components and 3189 Semiconductor.",
+    "conclusion": "FORMAL_INDUSTRY != THEME_EXPOSURE and THEME_EXPOSURE != ONE_FORMAL_INDUSTRY",
+    "implication": "Theme/supply-chain groups require effective-dated many-to-many exposure edges; formal industry labels alone cannot define the theme universe."
+  },
+  "pitRules": [
+    "Current official formal-industry and issuer-product pages support prospective mapping from capturedAt; they are not automatically valid for earlier historical dates.",
+    "Historical formal-industry attribution requires classificationSchemeId plus effectiveFrom/effectiveTo/knownAt; current classification must not be backfilled.",
+    "Historical product/theme exposure requires evidence available at that historical decision clock; current product capability must not be backfilled.",
+    "Capability/product presence does not prove revenue share, order share, earnings sensitivity or theme importance; missing magnitude remains UNKNOWN.",
+    "A theme edge can coexist with multiple formal-industry labels and one issuer can have multiple theme/product edges."
+  ],
+  "requiredBridgeFields": [
+    "issuerMarket",
+    "issuerSymbol",
+    "formalIndustryCode",
+    "formalIndustryLabel",
+    "classificationSchemeId",
+    "formalIndustryKnownAt",
+    "formalIndustryEffectiveFrom",
+    "formalIndustryEffectiveTo",
+    "themeId",
+    "supplyChainNode",
+    "productExposure",
+    "exposureBasis",
+    "exposureMagnitude",
+    "magnitudeBasis",
+    "exposureKnownAt",
+    "exposureEffectiveFrom",
+    "exposureEffectiveTo",
+    "sourceId",
+    "sourceClass",
+    "confidence",
+    "revisionOf",
+    "supersededBy",
+    "pitEligible"
+  ],
+  "falsification": [
+    "If a theme universe is reconstructed only from one formal industry code, known cross-industry ABF exposures are omitted.",
+    "If all companies in a formal industry are assigned the theme, false positives are created.",
+    "Current capability cannot be treated as historical capability before knownAt.",
+    "Product capability cannot be converted into revenue/order weight without disclosed basis.",
+    "Theme labels from media/analysts remain discovery evidence until issuer/official exposure is independently verified."
+  ],
+  "maturityDecision": {
+    "D09-11": "PROMOTE_L2_TO_L3_BOUNDED_TAIWAN_PIT_FEASIBILITY",
+    "D10-01": "KEEP_L2",
+    "D10-12": "KEEP_L3"
+  },
+  "promotionReason": "A bounded Taiwan prospective many-to-many bridge can now be replayed using official TWSE industry identity plus issuer-official product exposure on the same conservative capture clock. The ABF counterexample proves formal-industry and theme taxonomies are not interchangeable. L3 is bounded PIT feasibility, not complete historical theme membership or exposure magnitude.",
+  "exactNext": [
+    "BR-047 append additional theme bridges across at least two more industries/issuers using the same current prospective clock.",
+    "BR-048 seek effective-dated historical theme/exposure vintages before any historical theme-return study.",
+    "Do not use theme membership as a score until exposure magnitude/coverage and redundancy versus formal industry are tested."
+  ],
+  "status": "BOUNDED_MANY_TO_MANY_TAIWAN_PIT_BRIDGE / CROSS_INDUSTRY_ABF_WITNESS / MAGNITUDE_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
