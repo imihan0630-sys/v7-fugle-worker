@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "HISTORICAL_VALUATION_SOURCE_FEASIBILITY_RECEIPT_20261002",
+  "researchRoom": "06",
+  "domain": "D08",
+  "module": "D08-03",
+  "observedAtAsiaTaipei": "2026-10-02T13:45:00+08:00",
+  "status": "SOURCE_ONLY_NO_OUTCOME",
+  "sources": [
+    {
+      "market": "TWSE",
+      "url": "https://www.twse.com.tw/en/trading/historical/bwibbu.html",
+      "observedSemantics": [
+        "history available since 2005-09-01",
+        "PE based on latest four reported quarters",
+        "PE undefined when EPS <= 0",
+        "PB based on most recent reported quarterly book value per share",
+        "official page states no back-calculations"
+      ],
+      "pitFeasibility": "PASS_FOR_ARCHIVED_DAILY_TRAILING_PE_PB",
+      "exactHistoricalProviderFirstKnownClock": "NOT_REQUIRED_FOR_END_OF_DAY_ARCHIVED_VALUE_CONTEXT_BUT_CAPTURE_PROVENANCE_REQUIRED"
+    },
+    {
+      "market": "TPEx",
+      "url": "https://www.tpex.org.tw/zh-tw/mainboard/trading/info/daily-pe.html",
+      "observedSemantics": [
+        "daily historical PE/PB source exists from ROC 96-01 with older-history route",
+        "PE undefined when EPS <= 0",
+        "official warning: ex-rights date and financial-data update timing may differ",
+        "capital changes can affect PE interpretation"
+      ],
+      "pitFeasibility": "PASS_WITH_CORPORATE_ACTION_DENOMINATOR_GUARD"
+    }
+  ],
+  "negativeControls": [
+    "N/A PE is not zero/infinity/cheap",
+    "current financial statements are not used to reconstruct past PE/PB",
+    "historical percentile does not imply directional alpha",
+    "structural breaks and denominator transitions remain context"
+  ],
+  "outcomeJoin": "CLOSED",
+  "formalCoreChanged": false
+}
