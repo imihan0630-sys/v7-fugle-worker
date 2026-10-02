@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 03:16 Asia/Taipei
+Updated: 2026-10-03 04:34 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -356,12 +356,30 @@ Execution tracks:
 Owner-approved forward philosophy:
 minimal HARD_INVALIDATION + strategy-specific PRIMARY_ALPHA + SUPPORTIVE + CONTEXT_ONLY + separate CONFIDENCE／UNCERTAINTY + ABSTAIN when expected value is inadequate or uncertainty excessive.
 
-The learning curriculum (22 domains / 366 modules) is a knowledge universe, not an all-domain AND-gate checklist.
+The learning curriculum (22 domains / 362 modules) is a knowledge universe, not an all-domain AND-gate checklist.
+
+## Seven-item curriculum audit and capability-preservation execution (2026-10-03)
+
+Owner approved the re-audit of seven previously proposed deletions. The current canonical curriculum is **22 domains / 362 modules**.
+
+Executed:
+- D03-11 ROC: standalone module retired because standard ROC is exactly redundant with same-horizon retN; alias/anti-double-count ownership transferred to D03-02.
+- D10-11 official-data automation: standalone curriculum module retired; automated official-source acquisition capability permanently preserved under Research Engineering / Data Source governance.
+- D14-13 complete broker fee schedule semantics: standalone module retired; complete fee-schedule provenance permanently merged into D14-01.
+- D21-08 governance/ESG score provenance: standalone module retired; source/version provenance transferred to D16-11 and financially material ESG/governance risk transferred to D21-13.
+- D01-12 Sakata/traditional candlestick: retained as OBSERVATION / MERGE_CANDIDATE / RESEARCH_ONLY.
+- D02-07 OBV: retained as OBSERVATION / MERGE_CANDIDATE / PRICE_VOLUME_COMPARATOR_ONLY.
+- D10-12 retained and renamed to Industry-specific Transmission Model／Issuer Exposure Mapping（產業專屬傳導模型與公司曝險映射）.
+
+Canonical dependency/ownership record:
+`shared-knowledge/CURRICULUM_RETIREMENT_AND_CAPABILITY_LEDGER_V0_1.md`
+
+Historical research files and existing runtime capabilities remain preserved. Formal Core remains unchanged.
 
 ## Shared inventory
 
 - `shared-knowledge/SHARED_RESEARCH_INVENTORY.md` is the cross-system domain/tag inventory. It points to original evidence without relocating it.
-- `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 22-domain / 366-module learning curriculum and chatroom routing dashboard.
+- `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 22-domain / 362-module learning curriculum and chatroom routing dashboard.
 - `research/stock_market_learning_tracker_v0_1.json` is the machine-readable maturity tracker for that curriculum.
 - `shared-knowledge/LEARNING_ROOM_ROUTER.md` is the mandatory public routing file every learning chat reads to know its assigned domains, modules, learning scope, progress and checkpoints.
 
