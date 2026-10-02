@@ -44,7 +44,7 @@ Finalized acceptance for 2026-09-29:
 - precisionEligible = false;
 - candidateTimestamp = null;
 - a5AvailableByCandidate = false;
-- blocker includes A5_NOT_AVAILABLE_BY_CANDIDATE.
+- the historical owner-review aggregation also listed A5_NOT_AVAILABLE_BY_CANDIDATE, but later D16 audit on 2026-10-02 proved that aggregation attribution was too broad when sameSessionClockReady=false and candidateTimestamp=null; finalized-date acceptance correctly classified this case as INCOMPLETE_REQUIRED_EVIDENCE.
 
 Interpretation:
 2026-09-29 is a valid independent prospective evidence date for the frozen evidence program, but it is NOT a complete/precise Decision Clock date.
