@@ -3,6 +3,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   REQUIRED_DAILY_CLOCK_SOURCES_V0_1,
+  SOURCE_ARRIVAL_REGISTRY_V0_1,
   SOURCE_PROBE_STATE,
   assessDecisionClockReadiness,
   buildSourceArrivalMeasurement,
@@ -43,6 +44,7 @@ export async function runReadOnlySourceArrivalMeasurement({
   expectedTradingDay = true,
   stopWhenDailyGateReady = false,
   requiredDailyOnly = false,
+  additionalSourceIds = [],
   outputPath,
   probe = probeOfficialSources,
   now = () => new Date(),
@@ -64,15 +66,28 @@ export async function runReadOnlySourceArrivalMeasurement({
   if (typeof requiredDailyOnly !== "boolean") {
     throw new Error("requiredDailyOnly must be boolean");
   }
+  if (!Array.isArray(additionalSourceIds)) {
+    throw new Error("additionalSourceIds must be an array");
+  }
+  const normalizedAdditionalSourceIds = [...new Set(additionalSourceIds.map(String))];
+  if (normalizedAdditionalSourceIds.length !== additionalSourceIds.length) {
+    throw new Error("additionalSourceIds contains duplicates");
+  }
+  for (const sourceId of normalizedAdditionalSourceIds) {
+    if (!SOURCE_ARRIVAL_REGISTRY_V0_1[sourceId]) {
+      throw new Error("unknown additional sourceId: " + sourceId);
+    }
+  }
+  const requestedSourceIds = requiredDailyOnly
+    ? [...new Set([...REQUIRED_DAILY_CLOCK_SOURCES_V0_1, ...normalizedAdditionalSourceIds])]
+    : null;
 
   const startedAt = now().toISOString();
   const receipts = [];
   for (let attempt = 0; attempt < attempts; attempt += 1) {
     receipts.push(...await probe({
       marketDate,
-      ...(requiredDailyOnly
-        ? { sourceIds: REQUIRED_DAILY_CLOCK_SOURCES_V0_1 }
-        : {}),
+      ...(requestedSourceIds ? { sourceIds: requestedSourceIds } : {}),
     }));
     const requiredReady = REQUIRED_DAILY_CLOCK_SOURCES_V0_1.every((sourceId) =>
       receipts.some((receipt) =>
@@ -97,11 +112,11 @@ export async function runReadOnlySourceArrivalMeasurement({
     measurement,
     decisionClockAssessment,
     collectionScope: requiredDailyOnly
-      ? "REQUIRED_DAILY_CLOCK_SOURCES_ONLY"
+      ? (normalizedAdditionalSourceIds.length
+          ? "REQUIRED_DAILY_PLUS_CONTEXT_SOURCES"
+          : "REQUIRED_DAILY_CLOCK_SOURCES_ONLY")
       : "ALL_REGISTERED_SOURCES",
-    requestedSourceIds: requiredDailyOnly
-      ? [...REQUIRED_DAILY_CLOCK_SOURCES_V0_1]
-      : null,
+    requestedSourceIds,
     safety: {
       httpMethods: ["GET"],
       system2D1Written: false,
@@ -137,6 +152,10 @@ async function main() {
     requiredDailyOnly: String(
       args["required-daily-only"] || "false",
     ).toLowerCase() === "true",
+    additionalSourceIds: String(args["additional-source-ids"] || "")
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean),
     outputPath: args.output,
   });
   console.log(JSON.stringify({
