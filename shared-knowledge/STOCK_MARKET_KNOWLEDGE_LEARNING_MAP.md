@@ -306,7 +306,7 @@ GitHub專屬checkpoint：
 | D10-11 | 官方資料自動化擷取 |L3 台股PIT資料可行 | 60% |
 | D10-12 | 產業別專用傳導模板 |L3 台股PIT資料可行 | 60% |
 
-### D11｜公司行動／重大事件／事件風險 — 51.4%
+### D11｜公司行動／重大事件／事件風險 — 54.3%
 
 專責：08｜事件與新聞研究室  
 證據錨點：`CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md`、`EVENT_RISK_CHECKPOINT.md`
@@ -318,10 +318,10 @@ GitHub專屬checkpoint：
 | D11-03 | 減資／股票分割／面額變更 | L3 台股PIT資料可行 | 60% |
 | D11-04 | 可轉債／CB事件 | L2 機制＋反證 | 40% |
 | D11-05 | 庫藏股 | L2 機制＋反證 | 40% |
-| D11-06 | 併購／處分／重大交易 | L2 機制＋反證 | 40% |
+| D11-06 | 併購／處分／重大交易 | L3 台股PIT資料可行 | 60% |
 | D11-07 | 停牌／復牌 | L3 台股PIT資料可行 | 60% |
 | D11-08 | 重大訊息first-known時間 | L2 機制＋反證 | 40% |
-| D11-09 | 財報／月營收／法說事件窗 | L2 機制＋反證 | 40% |
+| D11-09 | 財報／月營收／法說事件窗 | L3 台股PIT資料可行 | 60% |
 | D11-10 | Overnight Gap跳空事件風險 | L2 機制＋反證 | 40% |
 | D11-11 | 漲跌停造成多日退出風險 | L2 機制＋反證 | 40% |
 | D11-12 | Corporate-action歷史連續性防火牆 | L3 台股PIT資料可行 | 60% |
@@ -437,7 +437,7 @@ GitHub專屬checkpoint：
 | D16-14 | Generation Alignment跨資料表世代對齊 | L3 台股PIT資料可行 | 60% |
 | D16-15 | Maturity Gate成熟度與升級門檻 | L4 前瞻/OOS證據 | 80% |
 
-### D17｜新聞／事件半衰期／受益受害傳導 — 40.0%
+### D17｜新聞／事件半衰期／受益受害傳導 — 41.5%
 
 專責：08｜事件與新聞研究室  
 證據錨點：`EVENT_RISK_CHECKPOINT.md`、`SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md`
@@ -451,12 +451,12 @@ GitHub專屬checkpoint：
 | D17-05 | 間接受益／供應鏈二階傳導 | L2 機制＋反證 | 40% |
 | D17-06 | Expectation vs Surprise預期差 | L2 機制＋反證 | 40% |
 | D17-07 | Priced-in已反映程度 | L2 機制＋反證 | 40% |
-| D17-08 | 新聞Sentiment情緒 | L0 未研究 | 0% |
-| D17-09 | 重複新聞／同事件Cluster去重 | L0 未研究 | 0% |
+| D17-08 | 新聞Sentiment情緒 | L2 機制＋反證 | 40% |
+| D17-09 | 重複新聞／同事件Cluster去重 | L2 機制＋反證 | 40% |
 | D17-10 | 消息來源交叉驗證 | L2 機制＋反證 | 40% |
 | D17-11 | Sector Propagation族群擴散 | L2 機制＋反證 | 40% |
 | D17-12 | 事件後Gap／延續／反轉 | L2 機制＋反證 | 40% |
-| D17-13 | Scheduled vs Unscheduled已知／未知事件 | L2 機制＋反證 | 40% |
+| D17-13 | Scheduled vs Unscheduled已知／未知事件 | L3 台股PIT資料可行 | 60% |
 
 ### D18｜市場Regime×策略互動 — 28.6%
 
