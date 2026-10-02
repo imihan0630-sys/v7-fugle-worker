@@ -22565,3 +22565,15 @@ Future multi-scale inference must separately test whether apparent weekly value 
 Pattern shared-child contract v0.2 now carries featureAgeEligibleSessions and aggregationBoundaryVersion so this robustness can be audited prospectively.
 
 No outcomes inspected. D01 remains 51.7%. Formal Core LOCKED.
+
+# DL-014 — Pattern identity vs observation fingerprint semantics (2026-10-02)
+
+A structural Pattern episode must be able to persist while its lifecycle evolves. Therefore one hash cannot safely represent both immutable object identity and the current as-of observation.
+
+The frozen design separates structuralIdentityFingerprint from observationPayloadHash. The first binds anchors/boundary identity and immutable geometry; the second certifies the exact parent/as-of state, including multi-scale and RG2 context.
+
+Same structural key with changed immutable fingerprint is a provenance conflict. The same structural key observed under a later immutable parent can legitimately have a new observation hash because lifecycle state has evolved.
+
+ROOT additionally commits to the episode-item keyset emitted for the parent. Outcomes and later source revisions are excluded from all decision-time fingerprints.
+
+Pattern shared-child contract v0.3 now carries these rules. Runtime remains NO_GO. D01 remains 51.7%; Formal Core LOCKED.
