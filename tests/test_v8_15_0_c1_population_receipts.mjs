@@ -4,7 +4,7 @@ import {DatabaseSync} from "node:sqlite";
 
 const workerPath=process.env.V7_TEST_WORKER_PATH||"Worker.js";
 const source=fs.readFileSync(workerPath,"utf8");
-assert.match(source,/const VERSION = "8\.15\.0-c1-population-receipts";/);
+assert.match(source,/const VERSION = "8\.15\.[01]-c1-(?:population-receipts|capture-integrity)";/);
 assert.match(source,/url\.pathname === "\/api\/research\/c1-population"/);
 assert.match(source,/trade_research_c1_generations/);
 assert.match(source,/trade_research_c1_chunks/);
