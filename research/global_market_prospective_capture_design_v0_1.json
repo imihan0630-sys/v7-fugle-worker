@@ -5,7 +5,7 @@
   "formalCoreImpact": "NONE",
   "researchClass": "CLASS_A_IF_STANDALONE_ARTIFACT_ONLY__CLASS_B_IF_SHARED_RUNTIME_CRON_SCHEMA_BUDGET_TOUCHED",
   "decisionClock": "18:10 Asia/Taipei",
-  "updatedAt": "2026-10-02T05:37:02+08:00",
+  "updatedAt": "2026-10-02T20:12:00+08:00",
   "objective": "Accumulate immutable prospective PIT receipts before any outcome join or Formal use.",
   "phase1": [
     {
@@ -113,12 +113,11 @@
     "FormalSelectorOrRiskBehavior": "Class C owner approval"
   },
   "exactNext": [
-    "On the next real decision date, collect authorized official source raw bytes plus response timing and archive/readback attestation; do not backdate any Sept 30/Oct 1 source snapshot.",
-    "Apply existing unified receipt guard and strict source-attestation guard; independently verify archive bytes and hash; only then count strict clean prospective dates.",
-    "For 2026-10-02, segregate 18:10-known BLS NFP schedule from 20:30 future first-print and later TX response; see research/d12_d13_20261002_nfp_event_clock_falsification_v0_1.md.",
-    "Keep real TAIWAN VIX and 15:00-18:10 TX source collection pending actual authorized data; full-night retrospective bars are QA only.",
-    "Use separate later first-print/vintage receipts for PMI/NFP outcomes; absent pre-release consensus remains UNKNOWN.",
-    "No D13-12 outcomes, maturity inflation, paid-source purchase or Formal optimization until sufficient source-attested independent dates."
+    "Acquire a permitted TAIFEX historical/statistical option-chain raw parent for replay/parser QA only; preserve raw identity and timing without claiming 18:10 first-known.",
+    "Implement exact row/schema validator and Surface Method V0.1 in research-only isolation.",
+    "Do not automate TAIFEX MIS live VIX/TX pages until explicit authorized source terms are established.",
+    "At/after a future authorized decision-time source response, preserve raw bytes and pass unified + strict source-attestation guards before counting a clean date.",
+    "Keep D13-12 outcomes closed and Formal locked until sufficient independent strict clean dates exist."
   ],
   "implementationProgress": {
     "unifiedGuard": "IMPLEMENTED_AND_ADVERSARIAL_TESTED",
@@ -140,5 +139,13 @@
     "independentStrictCleanDates": 0,
     "archivedSourceProofRule": "Future caller must preserve authorized native raw bytes, exact source responseCompletedAt, provider use permission and immutable archive ref, then independently read back raw bytes and check hash/length. Manifest assertions alone are insufficient.",
     "guardLimit": "Code cannot authenticate provider truth or archive immutability without independent trusted evidence; never use synthetic test examples as real data."
+  },
+  "taifexSourceLaneAudit": {
+    "liveMis": "AUTOMATED_USE_NOT_AUTHORIZED_BY_THIS_AUDIT",
+    "vixStatistical": "OFFICIAL_PAGE_IDENTIFIED__DATE_ROWS_VISIBLE__NUMERIC_EXTRACTION_NOT_ESTABLISHED",
+    "optionDailyHistorical": "OFFICIAL_EOD_REPLAY_QA_FEASIBLE",
+    "recentOptionTrades": "OFFICIAL_RECENT_TRANSACTION_REPLAY_QA_FEASIBLE",
+    "strict1810": "STILL_PENDING_AUTHORIZED_FIRST_KNOWN_CAPTURE",
+    "keyGuard": "Historical/statistical replay feasibility must not be promoted into a historical first-known claim."
   }
 }
