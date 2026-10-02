@@ -574,3 +574,44 @@ Production pipeline failure must never be encoded as a zero-return or zero-pick 
 No hypothesis is promoted/rejected on economic outcomes.
 No FORMAL_OPTIMIZATION_CANDIDATE is created.
 Formal Core remains LOCKED.
+
+
+## Pre-PVE-228 D02-05/08/09 identifiability overlay — 2026-10-02
+
+### Explosive/climax/distribution volume
+Status: DESCRIPTIVE_STATE_ONLY / DIRECTIONAL_MECHANISM_UNIDENTIFIED.
+
+Abnormal RVOL can identify unusual participation.
+It does not determine whether the mechanism is distribution, absorption or exhaustion.
+
+Directional mechanism claims require an additional side-pressure data family plus market-structure guards.
+
+### Accumulation/distribution proxy family
+Status: LATENT_MECHANISM_DATA_GATED.
+
+OHLCV-only labels must remain descriptive hypotheses.
+No OBV/A-D/CMF/MFI value is accepted as direct proof of accumulation/distribution.
+
+A future provider-side pressure proxy may refine the state, but:
+- it is not true OFI;
+- unclassified volume must be measured;
+- dynamic absorption additionally requires replenishment/resiliency evidence.
+
+### Price-volume divergence
+Status: COMPARATOR_ONLY UNTIL_INCREMENTAL_VALUE.
+
+Preferred primitive comparisons:
+- price progress vs same-slot RVOL;
+- price progress vs cumulative pace;
+- price progress vs persistence/Acceptance;
+- later, price progress vs prospectively captured tradePressureProxy.
+
+Classic-indicator divergence can be included only as a comparator after common-support/redundancy controls.
+
+### No new hypothesis family
+Do not create a separate “smart money” factor family from these labels.
+Reuse:
+PARTICIPATION -> RESPONSE -> PERSISTENCE/ACCEPTANCE -> MICROSTRUCTURE PRESSURE/LIQUIDITY.
+
+No outcome inspection, no hypothesis promotion/rejection, no FORMAL_OPTIMIZATION_CANDIDATE.
+PVE evidence cursor remains 227 pending the after-market generation audit.
