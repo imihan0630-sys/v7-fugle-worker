@@ -13,7 +13,7 @@ Formal Core impact: NONE
 
 1. `shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md`
 2. **本檔 `shared-knowledge/LEARNING_ROOM_ROUTER.md`**
-3. `research/stock_market_learning_tracker_v0_1.json`（297模組、learningScope、L0-L5與完成度的機器權威）
+3. `research/stock_market_learning_tracker_v0_1.json`（337模組、learningScope、L0-L5與完成度的機器權威）
 4. 自己專線的 dedicated checkpoint / research files
 5. `RESEARCH_ENGINEERING_GOVERNANCE.md`、`RESEARCH_CHECKPOINT.md` 與需要的 System 1 / System 2 bridge
 
