@@ -26,19 +26,19 @@ const geomA={authenticated:true,parentId:generationId,sessionDate,knownAt:decisi
 const geomB={authenticated:true,parentId:generationId,sessionDate,knownAt:decisionAt,support:null,breakout:200,stop:190,target:235};
 const bar=(endAt,open,high,low,close,volumeRatio=1.3,depthScore=70,gapPct=1)=>({endAt,open,high,low,close,volumeRatio,depthScore,gapPct,completed:true,limitUp:false,lateStage:false});
 const receipts=[
-  {symbol:"BBB",sessionDate,parentId:generationId,baseSetup:"A",geometry:geomA,formalBaseline:{status:"TRIGGERED"},
+  {symbol:"BBB",sessionDate,parentId:generationId,baseSetup:"A",geometry:geomA,formalBaseline:{status:"TRIGGERED",verified:true,parentId:generationId,sessionDate,knownAt:"2026-10-03T09:16:00+08:00"},
    bars:[
     bar("2026-10-03T09:15:00+08:00",101,103,99,101.5,0.9,55,0.5),
     bar("2026-10-03T09:30:00+08:00",102,104,101,103),
     bar("2026-10-03T09:45:00+08:00",103,118,94,110)
    ]},
-  {symbol:"CCC",sessionDate,parentId:generationId,baseSetup:"B",geometry:geomB,formalBaseline:{status:"NO_TRIGGER"},
+  {symbol:"CCC",sessionDate,parentId:generationId,baseSetup:"B",geometry:geomB,formalBaseline:{status:"NO_TRIGGER",verified:true,parentId:generationId,sessionDate,knownAt:"2026-10-03T13:30:00+08:00"},
    bars:[
     bar("2026-10-03T09:15:00+08:00",202,204,201,203,1.3,70,1),
     bar("2026-10-03T09:30:00+08:00",204,209,203,208,1.4,75,1),
     bar("2026-10-03T09:45:00+08:00",208,236,207,234,1.5,80,1)
    ]},
-  {symbol:"AAA",sessionDate,parentId:generationId,baseSetup:"B",geometry:geomB,formalBaseline:{status:"UNKNOWN"},
+  {symbol:"AAA",sessionDate,parentId:generationId,baseSetup:"B",geometry:geomB,formalBaseline:{status:"TRIGGERED"},
    bars:[
     bar("2026-10-03T09:15:00+08:00",202,204,201,203),
     bar("2026-10-03T09:30:00+08:00",204,209,203,208)
@@ -46,12 +46,12 @@ const receipts=[
 ];
 const c3=buildC3EntryExperiment(c2,receipts,{costs:{brokerFeeBpsPerSide:14.25,sellTaxBps:30,slippageBpsPerSide:5}});
 eq(c3.schemaVersion,"SYSTEM1_C3_ENTRY_EXPERIMENT_V0_1");
-eq(c3.tally.receiptN,3);
+eq(c3.tally.receiptN,3);\neq(c3.tally.eligiblePairN,3);\neq(c3.tally.missingEntryReceiptN,1);\neq(c3.tally.formalBaselineUnknownN,1);
 eq(c3.tally.formalTriggeredN,1);
 eq(c3.tally.formalNoTriggerChallengerSimFillN,1);
 eq(c3.rows.find(x=>x.symbol==="BBB").challenger.outcome,"STOP_FIRST_AMBIGUOUS");
 eq(c3.rows.find(x=>x.symbol==="CCC").challenger.outcome,"TARGET");
-eq(c3.rows.find(x=>x.symbol==="AAA").challenger.status,"NOT_ELIGIBLE");
+eq(c3.rows.find(x=>x.symbol==="AAA").challenger.status,"NOT_ELIGIBLE");\neq(c3.rows.find(x=>x.symbol==="AAA").formalBaseline.status,"UNKNOWN");\neq(c3.rows.find(x=>x.symbol==="AAA").formalBaseline.verified,false);
 eq(c3.rows.find(x=>x.symbol==="CCC").challenger.fillStatus,"SIM_FILL");
 ok(c3.rows.find(x=>x.symbol==="CCC").challenger.simulatedNetReturnPct>0);
 eq(c3.economicSuperiority,"UNKNOWN");
