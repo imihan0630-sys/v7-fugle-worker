@@ -2486,7 +2486,7 @@
         "ASSET_PRICING_FACTOR_CHECKPOINT.md",
         "ASSET_PRICING_FACTOR_RESEARCH.md"
       ],
-      "maturityPct": 13.3,
+      "maturityPct": 20,
       "modules": [
         {
           "id": "D19-01",
@@ -2531,22 +2531,22 @@
         {
           "id": "D19-05",
           "name": "Quality／Profitability品質與獲利能力因子",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Quality／Profitability品質與獲利能力因子」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D19-05 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED",
+          "next": "以first-known財報資料建立profitability多定義PIT切片，先做gross/operating/cash-based定義敏感度與D07/D08/D19-03/D19-06冗餘測試，再考慮L3。"
         },
         {
           "id": "D19-06",
           "name": "Investment／Asset Growth投資與資產成長因子",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Investment／Asset Growth投資與資產成長因子」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D19-06 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED",
+          "next": "建立asset-growth/investment的first-known資產負債表PIT切片，處理重編/併購/公司行動並驗證台股投資因子符號，再考慮L3。"
         },
         {
           "id": "D19-07",
@@ -2609,10 +2609,10 @@
           "next": "從理論與定義開始，建立 D19-12 的機制、反證與資料需求；不得直接進 Formal。"
         }
       ],
-      "status": "RESEARCH_ACTIVE / D19-01_TO_D19-04_L2 / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D19-05與D19-06：品質/獲利能力、投資/資產成長由理論→機制→反證；同時建立D19-01至D19-04升L3所需台股PIT來源圖與可重播資料契約。",
+      "status": "RESEARCH_ACTIVE / D19-01_TO_D19-06_L2 / PIT_SOURCE_MAP_DESIGNED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D19-07與D19-08：低波動/低Beta、特質波動由理論→機制→反證；並開始D19-01至D19-06最小可執行台股PIT replay切片，未有receipt不得升L3。",
       "lastResearchUpdate": "2026-10-02T22:05:00+08:00",
-      "researchNote": "Stage 2 completed: D19-03 and D19-04 reached L2 after competing mechanisms, Taiwan counterevidence, PIT/replay/data-quality/redundancy/cost requirements. D19-01 through D19-04 are L2; no Formal promotion."
+      "researchNote": "Stage 3 completed: D19-05 and D19-06 reached L2. Official-source Taiwan PIT map was designed for market/returns, shares/market cap, first-known fundamentals, risk-free rates and tradability; no L3 promotion without executable replay receipts."
     },
     {
       "id": "D20",
