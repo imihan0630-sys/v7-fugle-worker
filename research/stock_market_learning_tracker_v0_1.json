@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-02T23:17:00+08:00",
+  "updatedAt": "2026-10-03T00:58:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -32,8 +32,8 @@
   },
   "aggregate": {
     "domainCount": 22,
-    "moduleCount": 363,
-    "maturityWeightedPct": 32.2
+    "moduleCount": 366,
+    "maturityWeightedPct": 32
   },
   "domains": [
     {
@@ -792,7 +792,7 @@
         "FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md",
         "FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md"
       ],
-      "maturityPct": 15,
+      "maturityPct": 14.5,
       "modules": [
         {
           "id": "D07-01",
@@ -1097,6 +1097,16 @@
           "levelMeaning": "未研究",
           "status": "UNSTUDIED / CURRICULUM_APPROVED",
           "next": "從理論、定義、機制與反證開始，建立 D07-32 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+        },
+        {
+          "id": "D07-33",
+          "name": "Intangible Capital／R&D／Innovation Accounting無形資本、研發與創新會計",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Intangible Capital／R&D／Innovation Accounting無形資本、研發與創新會計」。研究研發、軟體、專利、品牌、資料、人才等未完整資本化的經濟性無形資產，辨識會計費用化造成的獲利、資產、ROIC與估值偏差。不得把所有R&D自動資本化或視為品質加分；需對攤銷期、失敗率、產業差異與實際商業化結果做敏感度及反證。主要用途是校正基本面與估值解讀，不作單一硬門檻。 每個結論都必須記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、交易成本，以及對 System 1／System 2 的可驗證增量價值；未取得證據不得升級成熟度或進入 Formal（正式核心）。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論、機制、反證與資料契約開始建立 D07-33；先研究與Shadow驗證，不直接修改正式選股規則。"
         }
       ]
     },
@@ -1107,7 +1117,7 @@
       "anchors": [
         "VALUATION_RESEARCH.md"
       ],
-      "maturityPct": 28.9,
+      "maturityPct": 27.4,
       "modules": [
         {
           "id": "D08-01",
@@ -1270,6 +1280,16 @@
           "levelMeaning": "未研究",
           "status": "UNSTUDIED / CURRICULUM_APPROVED",
           "next": "從理論、定義、機制與反證開始，建立 D08-18 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+        },
+        {
+          "id": "D08-19",
+          "name": "Reverse DCF／Market-Implied Expectations／Expectations Gap反向DCF、市場隱含預期與預期差",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Reverse DCF／Market-Implied Expectations／Expectations Gap反向DCF、市場隱含預期與預期差」。從市場價格反推隱含營收成長、利潤率、自由現金流、資本成本或終值假設，再與公司指引、分析師共識、產業容量及歷史執行力比較。必須輸出區間與敏感度，不得以單一WACC或終值假設形成機械式PASS／FAIL；主要用途是量化priced-in（已反映）程度與預期差。 每個結論都必須記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、交易成本，以及對 System 1／System 2 的可驗證增量價值；未取得證據不得升級成熟度或進入 Formal（正式核心）。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論、機制、反證與資料契約開始建立 D08-19；先研究與Shadow驗證，不直接修改正式選股規則。"
         }
       ]
     },
@@ -2540,7 +2560,7 @@
         "research/D16_STRATEGY_STAGE_CLOCK_DEPENDENCY_AUDIT_V0_1.md",
         "research/d16_strategy_stage_dependency_matrix_v0_1.json"
       ],
-      "maturityPct": 45.8,
+      "maturityPct": 44,
       "modules": [
         {
           "id": "D16-01",
@@ -2763,6 +2783,16 @@
           "levelMeaning": "未研究",
           "status": "UNSTUDIED / CURRICULUM_APPROVED",
           "next": "從理論、定義、機制與反證開始，建立 D16-24 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+        },
+        {
+          "id": "D16-25",
+          "name": "Probabilistic Decision／Bayesian Updating／Uncertainty-aware Selection機率式決策、貝氏更新與不確定性選股",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Probabilistic Decision／Bayesian Updating／Uncertainty-aware Selection機率式決策、貝氏更新與不確定性選股」。研究如何把證據轉成可校準的機率、期望值與不確定性，而不是把更多研究模組堆成串聯硬門檻。必須明確區分HARD_INVALIDATION、PRIMARY_ALPHA、SUPPORTIVE、CONTEXT_ONLY、CONFIDENCE／UNCERTAINTY五種決策角色；UNKNOWN不得等同FAIL或0。研究Bayesian updating（貝氏更新）、base rate（基準率）、probability calibration（機率校準）、expected value／utility（期望值／效用）、abstention（不交易）與uncertainty penalty（不確定性折扣）。任何System 1／System 2應用都先走Prospective Shadow／OOS，並同時驗證機會捕捉率、zero-pick、false acceptance、成本、回撤與校準誤差，禁止因提高選股數量而直接宣稱改善。 每個結論都必須記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、交易成本，以及對 System 1／System 2 的可驗證增量價值；未取得證據不得升級成熟度或進入 Formal（正式核心）。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論、機制、反證與資料契約開始建立 D16-25；先研究與Shadow驗證，不直接修改正式選股規則。"
         }
       ]
     },
