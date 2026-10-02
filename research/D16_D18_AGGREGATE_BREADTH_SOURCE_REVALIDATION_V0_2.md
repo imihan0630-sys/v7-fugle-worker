@@ -411,3 +411,64 @@ Rejected as aggregate breadth source:
 - STKT1SUMMARY.TXT despite its 13:50 production time.
 
 This rejection is retained to prevent clock-driven source shopping.
+
+
+## 17. 2026-10-02 same-day source-family latency witness
+
+A1 daily-arrival artifact:
+- workflow run: `36969602620`;
+- artifact: `system2-a1-arrival-2026-10-02-36969602620`;
+- measurement window: 13:35:29 through 16:08:27 Asia/Taipei;
+- immutable source-arrival artifact completed before the overall dependency workflow finished.
+
+### TWSE full per-symbol A1
+
+30/30 probes:
+- state = NOT_READY;
+- reason = TARGET_DATE_NOT_PRESENT;
+- payload date remained 2026-10-01;
+- no READY observation by 16:08:25 Taipei.
+
+### TPEx full per-symbol A1
+
+30 probes:
+- 13 NOT_READY / prior-date;
+- 16 INVALID_PAYLOAD / NON_JSON_RESPONSE;
+- 1 READY.
+
+First/only READY:
+- observedAt = 2026-10-02 16:08:27.888 Taipei;
+- target-date ordinary rows = 888;
+- unique ordinary symbols = 888;
+- usable-close unique symbols = 868;
+- duplicate target symbols = 0.
+
+Measured first-ready upper bound:
+- latencyUpperBoundMinutes = 158.465 after 13:30 close;
+- preceding not-ready lower bound = 148.195 minutes;
+- this is an observation bracket, not source publication time.
+
+### Same-day contrast with TWSE aggregate Breadth
+
+Independent official TWSE MI_INDEX evidence was already available on 2026-10-02 by approximately 15:48 Taipei:
+- D09 BR-039 captured the official stock breadth at 15:48;
+- this room independently read same-date MI_INDEX machine JSON with the identical 483 / 506 / 91 / 0 / 2 stock counts.
+
+Therefore on the same market date:
+- TWSE aggregate market-direction breadth was observable;
+- TWSE full per-stock A1 remained prior-date through at least 16:08.
+
+This is direct prospective evidence that:
+
+`FACTOR_SPECIFIC_SOURCE_READINESS != FULL_PER_SYMBOL_SOURCE_READINESS`.
+
+It supports the D18 architecture choice to source market-level Direction Breadth from an appropriate aggregate exchange report rather than block that factor on the later full per-symbol A1 source.
+
+It does NOT yet authorize:
+- a new global Decision Clock;
+- strategy-specific clock execution;
+- replacement of A1 for factors that actually require symbol-level rows;
+- any strategy or capital action.
+
+The correct implication is narrower:
+**source clock must be attached to the factor/estimand whose data it actually proves.**
