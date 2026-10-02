@@ -2,7 +2,7 @@
 
 Updated: 2026-09-28 20:35 Asia/Taipei
 Formal Core: LOCKED
-Current cursor: MC-001 through MC-089 complete.
+Current cursor: MC-001 through MC-092 complete.
 
 ## Durable conclusions
 
@@ -240,3 +240,21 @@ New audit: `research/global_market_source_attestation_audit_20261002.json`. Sour
 2. On future qualified dates capture official TAIWAN VIX during 09:00–13:45 and TX NIGHT_PRE_SCAN 15:00–18:10 before the decision; do not retrofit 2026-09-30/10-01 using complete-night bars.
 3. For Oct 2 NFP event, preserve the 18:10 known schedule without inferred payroll surprise; separately timestamp future 20:30 realization and post-release TX response.
 4. Once independent source-attested dates accumulate, test D13-12 residual versus Taiwan domestic/sector baselines using past-only parameters; preserve non-event Friday controls and separate expected/observed clocks.
+
+
+## 2026-10-02 evening post-decision / pre-release QA (MC-090–MC-092)
+
+- MC-090: exact local clock was post 18:10 and still pre 20:30. A live official BLS CPS page check at ~19:55 Taipei still displayed September 2026 Employment Situation as the **Next Release**, scheduled October 2 at 8:30 a.m. ET. No release value was present in the audited extract.
+- MC-091: this proves a clean temporal distinction in the research design: at this later post-decision time the release was still unresolved. It does **not** retroactively authenticate what the 18:10 process captured. The observation is therefore `POST_DECISION_PRE_RELEASE_QA`, never an 18:10 parent.
+- MC-092: frozen append-only artifact `research/d12_d13_20261002_postdecision_prerelease_source_qa_v0_1.json`. It separately records BLS pre-release status and TAIFEX VIX/statistical/live-source feasibility. Parsed connector output is not native raw-source attestation, so strict clean count remains unchanged.
+
+Employment first print / payroll surprise remain UNKNOWN until actual official publication plus a separately preserved source object. Any post-20:30 market reaction is future relative to 18:10.
+
+Formal Core LOCKED. No maturity promotion and no FORMAL_OPTIMIZATION_CANDIDATE.
+
+## Exact next continuation after MC-092
+
+1. Never edit the pre-release QA after publication; create a separate first-print object only in a later continuation when the release is actually observed.
+2. Preserve first print and consensus as separate clocks/sources. If no authentic pre-release consensus vintage exists, surprise remains UNKNOWN.
+3. Keep post-release TX/U.S.-market reaction as an outcome/mediator for the 18:10 study, not a predictor.
+4. Continue source-attested independent-date accumulation before D13-12 absorption-residual outcome tests.
