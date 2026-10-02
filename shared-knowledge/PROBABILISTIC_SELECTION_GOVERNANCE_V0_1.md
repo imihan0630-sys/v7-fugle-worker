@@ -1,7 +1,7 @@
 # Probabilistic Selection Governance V0.1
 
-Updated: 2026-10-03 00:58 Asia/Taipei
-Status: OWNER_APPROVED_RESEARCH_GOVERNANCE / SHADOW_FIRST / FORMAL_CORE_LOCKED
+Updated: 2026-10-03 03:16 Asia/Taipei
+Status: OWNER_APPROVED_EXECUTION_GOVERNANCE / SHADOW_IMPLEMENTATION_AUTHORIZED / FORMAL_CORE_LOCKED
 Scope: Cross-system decision architecture for System 1 and System 2
 Formal Core impact: NONE
 
@@ -140,3 +140,17 @@ Owner approved:
 - D16-25 Probabilistic Decision／Bayesian Updating／Uncertainty-aware Selection
 
 All start at L0. No production behavior change is authorized by this document.
+
+
+## Owner execution authorization — 2026-10-03
+
+The owner explicitly approved execution of the Hybrid（混合式）decision architecture.
+
+Authorization scope:
+- **System 1:** proceed with isolated research-only / Shadow implementation of the Probabilistic Challenger and gate-role audit. Production Formal logic remains unchanged.
+- **System 2:** use the Hybrid role architecture as the canonical design baseline for future final-selection contracts: minimal HARD_INVALIDATION, strategy-specific PRIMARY_ALPHA, SUPPORTIVE, CONTEXT_ONLY and separate CONFIDENCE／UNCERTAINTY, with ABSTAIN allowed.
+- **Cross-system:** new knowledge defaults to RESEARCH_ONLY and does not create a new hard gate.
+
+This authorization is sufficient for Class A research-only engineering under `RESEARCH_ENGINEERING_GOVERNANCE.md`. It is **not** authorization to merge/deploy any Class B shared-runtime change or any Class C Formal-Core behavior change.
+
+The implementation goal is not to maximize pick count. It is to improve Opportunity Capture Efficiency（有效機會捕捉效率） under bounded risk while preserving source integrity, PIT, execution feasibility and risk controls.
