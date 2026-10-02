@@ -1018,8 +1018,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「橫截面報酬離散度」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "TAIWAN_PIT_DATA_FEASIBLE / ROBUST_DISPERSION_SCHEMA_FROZEN / OUTCOMES_CLOSED",
-          "next": "BR-042 build isolated research-only CSSD/CSAD/IQR/MAD sector-dispersion receipt with coverage and trade-value leader-removal diagnostics; freeze one source-only Taiwan date before any outcome join."
+          "status": "TAIWAN_PIT_DATA_FEASIBLE / SYNTHETIC_DIRECTION_FALSIFICATION_PASS / LIVE_RECEIPT_PENDING / OUTCOMES_CLOSED",
+          "next": "BR-043 freeze the first source-only/live Taiwan sector dispersion receipt on a clean member-universe lineage with one fixed quantile convention; compare CSSD/CSAD/IQR/MAD and trade-value leader-removal before any forward outcome join."
         },
         {
           "id": "D09-10",
