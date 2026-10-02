@@ -1,0 +1,106 @@
+{
+  "version": "0.1",
+  "id": "SC-039",
+  "capturedAt": "2026-10-02T16:23:00+08:00",
+  "module": "D10-07 訂單／交期／Backlog",
+  "mode": "OFFICIAL_TAIWAN_PMI_SOURCE_ONLY / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "source": {
+    "authority": "National Development Council + Chung-Hua Institution for Economic Research",
+    "releaseTitle": "2026年9月台灣採購經理人指數",
+    "publishedDate": "2026-10-01",
+    "ndcUrl": "https://www.ndc.gov.tw/News_Content.aspx?n=831DB5067D671449&s=B783781F407588E6&sms=0A35F578D2BCF855",
+    "cierUrl": "https://www.cier.edu.tw/eco_cat/pmi-ch/",
+    "sourceClockRule": "For future prospective receipts, use capturedAt unless a native release timestamp finer than publication date is authenticated."
+  },
+  "stateVectorFields": [
+    "newOrders",
+    "production",
+    "supplierDeliveryTime",
+    "unfinishedOrders",
+    "inventory",
+    "customerInventory",
+    "inputPrices",
+    "futureSixMonthOutlook"
+  ],
+  "september2026Witnesses": {
+    "overallManufacturing": {
+      "pmi": 63.4,
+      "seasonallyAdjustedNewOrders": 63.6,
+      "production": 65.6,
+      "futureSixMonthOutlook": 61.4,
+      "interpretation": "High aggregate expansion coexists with slowing new-order acceleration and higher delivery/inventory pressure."
+    },
+    "electronicsOptical": {
+      "pmi": 62.6,
+      "newOrders": 56.7,
+      "newOrdersChangePctPoints": -10.8,
+      "unfinishedOrders": 54.3,
+      "unfinishedOrdersContext": "slowest expansion since 2025-12",
+      "inventory": 64.8,
+      "customerInventory": 51,
+      "supplierDeliveryTime": 73.8,
+      "inputPrices": 83.3,
+      "futureSixMonthOutlook": 62.4,
+      "futureOutlookChangePctPoints": -6.9,
+      "state": "LONG_DELIVERY / ORDER_MOMENTUM_SLOWING / BACKLOG_STILL_EXPANDING_BUT_DECELERATING / INVENTORY_HIGH"
+    },
+    "basicMaterials": {
+      "pmi": 56.7,
+      "newOrders": 61.9,
+      "newOrdersChangePctPoints": 8.6,
+      "production": 61.9,
+      "supplierDeliveryTime": 58.3,
+      "unfinishedOrders": 59.5,
+      "unfinishedOrdersChangePctPoints": 12.8,
+      "inventory": 51.2,
+      "futureSixMonthOutlook": 59.5,
+      "inputPrices": 73.8,
+      "state": "ORDERS_ACCELERATING / BACKLOG_RISING / DELIVERY_TIME_RISING / INPUT_COST_PRESSURE"
+    }
+  },
+  "keyCounterexample": {
+    "statement": "Longer supplier delivery times are not a monotonic bullish demand signal.",
+    "evidence": "Electronics/optical delivery time reached 73.8 while new-order momentum fell sharply, unfinished-order growth slowed, inventory rose to 64.8 and customer inventory crossed above 50.",
+    "implication": "Delivery-time pressure can represent supply bottlenecks, material mismatch and scheduling friction rather than pure demand acceleration."
+  },
+  "backlogSemantics": [
+    "unfinishedOrders above 50 means expansion of unfinished work/orders, but the level and direction of change must be kept separately.",
+    "A high backlog with falling new orders can describe legacy work accumulation rather than fresh demand acceleration.",
+    "Supplier delivery-time index must be paired with order, inventory and price states; slower delivery alone is ambiguous.",
+    "PMI industry aggregates are industry-level states, not company-specific order books.",
+    "Future six-month outlook is survey expectation, not committed backlog."
+  ],
+  "pitSemantics": {
+    "observationMonth": "2026-09",
+    "releaseDate": "2026-10-01",
+    "firstEligibleDecision": "No earlier than release/capture; never backdate to September month-end.",
+    "revisionRule": "If NDC/CIER revises a release, append a new vintage and preserve the original captured state."
+  },
+  "positiveMechanism": [
+    "New orders and unfinished orders can separate fresh demand from accumulated work.",
+    "Supplier delivery time can expose bottlenecks/lead-time stress when joined with new orders, inventories and prices.",
+    "Industry-specific PMI subindices permit Taiwan-native order/lead-time state classification before company-level mapping."
+  ],
+  "falsification": [
+    "Long delivery time can coexist with slowing demand; do not assign a fixed positive sign.",
+    "Backlog expansion can reflect bottlenecks or inability to deliver, not only strong final demand.",
+    "Inventory expansion can be strategic buffering, forced accumulation, or demand mismatch.",
+    "PMI survey states are diffusion indices, not physical order quantities.",
+    "Industry PMI cannot be directly mapped to an individual listed company's revenue without exposure evidence."
+  ],
+  "maturityDecision": {
+    "D10-07": "PROMOTE_L2_TO_L3_TAIWAN_PIT_DATA_FEASIBILITY_ONLY",
+    "D10-08": "KEEP_L2",
+    "D10-03": "KEEP_L3",
+    "D10-09": "KEEP_L3"
+  },
+  "promotionReason": "NDC/CIER monthly Taiwan PMI releases expose dated, industry-level new-order, unfinished-order, supplier-delivery, inventory and outlook states with explicit publication dates. The September electronics counterexample demonstrates why these fields must be joined rather than reduced to a single bullish backlog/lead-time number. This establishes Taiwan PIT/source feasibility, not company-level predictive efficacy.",
+  "exactNext": [
+    "SC-040 build an append-only monthly ORDER_LEADTIME_RECEIPT with release/capture clocks and industry state vectors across independent months.",
+    "SC-041 map one industry PMI state to listed-company exposure only where product/revenue scope is independently evidenced.",
+    "Do not use PMI supplier-delivery time as a direct company score before incremental-value/OOS tests."
+  ],
+  "status": "TAIWAN_ORDER_LEADTIME_PIT_FEASIBLE / MULTIVARIATE_STATE_REQUIRED / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
