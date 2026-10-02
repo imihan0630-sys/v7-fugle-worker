@@ -71,3 +71,9 @@ main merge or Worker/runtime update was authorized.
 - Checkpoint PR head 7d0cac1dc36c6334ccdd4a42e319cfc82a32b4f7: Regression run 36930026290 PASS; Repair CI run 36930026250 PASS. The final documentation-only append may retrigger CI.
 - Parallel rooms have advanced main since branch creation. Before any merge or new engineering write, rebase/revalidate on latest main; do not overwrite research09 or System2 work.
 - Evidence status remains fixture-only; live C1 and positive/negative market return comparisons PENDING. Formal strategy switch NOT AUTHORIZED.
+
+## S1-C2-002 continuation — 2026-10-02
+Draft PR #306 continues #292/#293 on main c9548bc30699a9e032b71d4618b4ba0e5b49db7a; engineering commit c452642dcccad6f0d7608629889e69b18661393b.
+The dormant paired collector now requires exact full C1 generation/header/hash/count verification plus same-date completed Formal/config/C1-save linkage. Unknown Formal qualification/selection is retained as null and separately counted; it cannot be called a rejected candidate.
+Linux isolated build/regression 57/57 PASS; new paired collection assertions 20 PASS. No scheduler references the new collector; existing live evidence uploads remain unchanged. Production activation and new artifact destination remain owner-gated.
+Precise next cursor: `SYSTEM1_C1_C2_REPAIR_CHECKPOINT_20261002.md`, S1-C1-005/S1-C2-002. Live C1/C2 and economic superiority remain UNKNOWN/PENDING; no historical WATCH or Formal promotion.

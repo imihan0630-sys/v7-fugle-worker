@@ -64,3 +64,8 @@ first live evidence or of strategy superiority.
    is Class C and requires separate explicit approval.
 
 Rollback: close PR #292 and delete its isolated branch; production is unchanged.
+
+## S1-C1-005 continuation — 2026-10-02
+Latest-main continuation and C1 integrity repair candidate are preserved in draft PR #306, engineering commit c452642dcccad6f0d7608629889e69b18661393b.
+Linux isolated candidate tests 57/57 PASS; existing Regression/Repair CI PASS. No merge/deploy or live receipt claim.
+Read `SYSTEM1_C1_C2_REPAIR_CHECKPOINT_20261002.md` for confirmed staged-path/UTF-8/readback defects, approval blockers and exact continuation; activation review packet is `SYSTEM1_C1_C2_CLASS_B_ACTIVATION_REVIEW_20261002.md`.
