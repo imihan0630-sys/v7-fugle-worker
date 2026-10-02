@@ -13661,3 +13661,27 @@ The research protocol is now narrower but cleaner:
 H002 primary inference begins no earlier than 10:15, only on complete prefixes and common support, with the 09:00 D-vs-C effect fixed to structural redundancy rather than estimated from data.
 
 No Formal logic, threshold, ranking or capital behavior was changed.
+
+
+# 2026-10-02 identifiability addendum — why narrative volume labels stop at L2
+
+The remaining low-maturity D02 modules are not blocked by a shortage of indicator formulas. They are blocked by observability.
+
+An OHLCV bar is a lossy summary of an event path. Two opposite microstructure paths can end with the same open/high/low/close/volume. For example, strong aggressive buying repeatedly met by passive sell replenishment and strong aggressive selling repeatedly met by passive buy replenishment can both produce high volume with little net price progress.
+
+That is why HIGH_EFFORT_LOW_PROGRESS is intentionally mechanism-neutral.
+
+The same logic limits classic accumulation/distribution indicators. OBV signs an entire bar's volume from a price-direction rule. A/D and CMF redistribute volume using close location. MFI combines typical price and volume. They can create useful transformed predictors, but they cannot reconstruct side-specific order-flow information not present in OHLCV. Multiple deterministic transformations do not solve missing observability.
+
+The upstream provider can support a better future research layer. Official Fugle stock data expose cumulative AtBid/AtAsk volume, transaction count, actual lastTrade fields, per-trade bid/ask/price/size/time and best-five book events. Current execution-shadow-v2 does not preserve the crucial cumulative pressure/event fields; v3 remains design-only.
+
+A future coarse pressure layer must start with data-quality accounting rather than a bullish/bearish score. In particular, interval classified volume should be divided by interval total volume. Fugle's own semantics exclude the opening first trade from inside/outside-volume classification, so unclassified volume is structurally real and opening auction must remain separate.
+
+The D02 module consequence is conservative:
+- “高潮量” may describe extremity, not direction;
+- “吸籌/出貨” remains a latent mechanism hypothesis;
+- “價量背離” remains a primitive/comparator relationship unless incremental value survives redundancy and prospective evidence.
+
+This does not justify implementing a second D02 microstructure recorder. Ownership remains with the existing Microstructure lane.
+
+No maturity, Formal logic, threshold, ranking, capital, monitoring or push behavior changed.
