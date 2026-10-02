@@ -18,7 +18,11 @@ for(const token of [
   "C3_CAPTURE_FORMAL_SYMBOL_MUST_REUSE_EXISTING_PV",
   "C3_CAPTURE_FORMAL_OVERLAP_DETECTED",
   "C3_CAPTURE_IMMUTABLE_BAR_CONFLICT",
-  "C3_CAPTURE_TARGET_ALREADY_BOUND_TO_ANOTHER_GENERATION"
+  "C3_CAPTURE_TARGET_ALREADY_BOUND_TO_ANOTHER_GENERATION",
+  "const requestedTargetTradeDate=",
+  "const targetTradeDate=nextTradingDate(sourceSessionDate);",
+  "C3_CAPTURE_TARGET_DATE_INVALID",
+  "C3_CAPTURE_SOURCE_NOT_TRADING_SESSION"
 ]){assert.ok(source.includes(token),token);n++;}
 
 const limits=api.c3ResearchLimits({});
@@ -27,6 +31,11 @@ const disabled=api.c3ResearchLimits({C3_RESEARCH_CAPTURE_DISABLED:"true"});
 eq(disabled.ready,false);
 eq(disabled.reason,"C3_CAPTURE_OPERATOR_DISABLED");
 eq(disabled.maxSymbols,6);
+assert.match(source,/providerLimitPerMinute:60/);n++;
+assert.match(source,/maxSymbols:6/);n++;
+assert.match(source,/maxCallsPerSlot:6/);n++;
+assert.match(source,/callsPerSession:102/);n++;
+assert.match(source,/sourceSessionDate\.slice\(5,7\)==="12"/);n++;
 
 eq(api.c3ExpectedSlot(Date.parse("2026-10-05T01:16:00Z")),"09:00");
 eq(api.c3ExpectedSlot(Date.parse("2026-10-05T01:31:00Z")),"09:15");
