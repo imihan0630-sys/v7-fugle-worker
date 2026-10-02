@@ -1,6 +1,6 @@
 # 股市知識學習大地圖 — 22領域 / 297模組
 
-Updated: 2026-10-02 16:31 Asia/Taipei
+Updated: 2026-10-02 22:06 Asia/Taipei
 Status: CANONICAL_LEARNING_CURRICULUM_V0_1 / CROSS_SYSTEM  
 Formal Core impact: NONE  
 Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 正式研究成熟度仍由 `RESEARCH_MASTER_MAP.md` 與 `research/research_master_map.json` 管理。
@@ -306,6 +306,8 @@ GitHub專屬checkpoint：
 | D09-12 | Breadth×Regime交互作用 |L2 機制＋反證已定義 | 40% |
 
 ### D10｜供應鏈／產能／庫存／原物料傳導 — 53.3%
+
+> 2026-10-02 SC-040／SC-041：D10-07 已有 2026-07～09 三個獨立 NDC/CIER PMI release vintages，並完成 bounded issuer product-scope bridge；成熟度仍為 L3，因公司營收曝險權重、survey membership、issuer-native backlog 與 OOS/Shadow outcomes 尚未成立。
 
 專責：07｜產業與供應鏈研究室  
 證據錨點：`SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md`
