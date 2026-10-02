@@ -1971,3 +1971,48 @@ SC-041: map one industry state to listed issuers only with independently evidenc
 SC-042: define a dedicated shortage/supply-gap event contract rather than using high supplier-delivery time as a shortcut.
 
 Formal Core unchanged.
+
+
+## SC-040 — Three independent Taiwan PMI release vintages freeze order/lead-time states without backfilling
+
+Artifact:
+`research/sc040_order_leadtime_multi_release_receipt_202607_202609_v0_1.json`
+
+Three independent official NDC/CIER monthly releases (2026-07, 2026-08, 2026-09) are now frozen as append-only source vintages. The receipt preserves exact release clocks where authenticated and keeps unavailable sector fields as `UNKNOWN` rather than interpolating or forward filling.
+
+Key falsification:
+- A high composite PMI does not imply fresh sector demand is accelerating.
+- 2026-07 electronics/optical PMI remained high while new orders and production were both 47.7.
+- 2026-09 supplier delivery reached 73.8 while new-order momentum slowed, unfinished-order expansion decelerated and inventory rose to 64.8.
+- Therefore supplier delivery, backlog and inventory must remain a joint state vector, never a single bullish score.
+
+PIT controls:
+- no observation-month backdating;
+- no seasonal-adjustment mixing;
+- no missing-field imputation;
+- revisions append a new vintage.
+
+Maturity: `D10-07 KEEP L3`. This is stronger replayability and common falsification, not L4 outcome evidence.
+
+## SC-041 — Broad industry PMI can map to issuer product exposure, but not directly to issuer backlog or stock score
+
+Artifact:
+`research/sc041_pmi_industry_to_issuer_exposure_bridge_v0_1.json`
+
+A bounded issuer bridge is frozen for 8046 南亞電路板 and 3189 景碩 using independently evidenced IC-substrate/electronics product scope. The bridge deliberately keeps revenue exposure magnitude and PMI survey membership as `UNKNOWN`.
+
+Important negative control:
+- 8046 is formally classified by TWSE as electronic components while 3189 is semiconductor, despite both having IC-substrate exposure.
+- This demonstrates that PMI survey categories, TWSE formal industries and investment themes are different taxonomies.
+- The industry state may be used only as broad context until issuer-native revenue/order/backlog evidence exists.
+
+Forbidden inference:
+`electronics PMI long delivery -> issuer backlog up -> revenue up -> margin up -> stock bullish` is invalid without issuer-native clocks and exposure denominators.
+
+Maturity: `D10-07 KEEP L3`; `D10-01 KEEP L2`; `D10-12 KEEP L3`.
+
+### Exact next
+SC-042: define a dedicated shortage/supply-gap event contract requiring independent demand, constrained-supply, allocation/lead-time, price and inventory evidence.
+Prospectively append the next PMI release with native publication/capture clocks. Keep issuer order/backlog and stock outcomes closed until issuer-native disclosures are available.
+
+Formal Core unchanged.
