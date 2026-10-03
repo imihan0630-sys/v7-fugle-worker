@@ -2622,3 +2622,19 @@ Exact next Room-09 continuation:
 2. Preserve NDC monthly vintage/component definitions, SEP/CBO projections, H.4.1, CBC BOP and one official policy-event legal/effective lineage.
 3. Audit 18:10 TWSE foreign-flow partial-version source and entitlement; later block-inclusive files remain future for 18:10.
 4. Only after independent source-attested vintages accumulate, design incremental/OOS tests versus Taiwan domestic/rates/USD/simple-component baselines.
+
+## 2026-10-03 late continuation — D11-18 tender-offer L3
+
+- Continued beyond D11-16/17 rather than stopping after one subtopic.
+- New receipt: `research/d11_18_tender_offer_pit_receipt_v0_1.json`.
+- Official tender-offer rules expose filing, offer period, min/max quantity, regulator approval, condition achievement, extension, period-end tendered/actual quantity and settlement/payment clocks.
+- 6414/超恩->博來 provides a completed success path; 3045/台信電訊->精誠 provides a regulatory-pending extension path; 4303 信立->邁達康 provides oversubscription plus a later correction version.
+- D11-18 advances **L2 -> L3** for Taiwan PIT/source feasibility only.
+- A realized minimum-not-met/withdrawn/regulatory-failure case is still required before any spread-return/L4 cohort.
+- Concurrent rooms advanced the global tracker during this work; after merging latest state the tracker reads 38.2% / 354 modules, while Room08 itself is D11=53.7%, D17=41.4%, weighted=48.5%.
+- Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE=NO.
+
+Exact next Room08:
+1. D11-16 complete one official issuer-level custody release -> transfer declaration -> realized holdings/untransferred chain.
+2. D11-19 freeze Taiwan merger/spin-off consideration terms, exchange ratios, effective dates, hedge/borrow states and real break/reprice/extension controls.
+3. D11-18 add at least one native failed-tender control before L4.
