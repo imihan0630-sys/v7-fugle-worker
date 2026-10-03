@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "curriculum_coverage_specialist_return_schema_v0_1",
+  "title": "Curriculum Coverage Specialist Return V0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "candidateId",
+    "domain",
+    "specialistRoom",
+    "artifactPath",
+    "evidenceCutoff",
+    "currentCandidateClass",
+    "exactKnowledgeDefinition",
+    "overlapMatrix",
+    "whyCurrentScopeIsInsufficient",
+    "taiwanDataFeasibility",
+    "pitReplayImplication",
+    "decisionRole",
+    "antiDoubleCountRule",
+    "proposedOwner",
+    "maturityStartingPoint",
+    "terminalRecommendation",
+    "strongestPositiveEvidence",
+    "strongestCounterevidence",
+    "unresolvedBlocker"
+  ],
+  "properties": {
+    "candidateId": {
+      "type": "string",
+      "pattern": "^COV-(0[1-9]|1[0-2])$"
+    },
+    "domain": {
+      "type": "string",
+      "pattern": "^D(0[1-9]|1[0-9]|2[0-2])$"
+    },
+    "specialistRoom": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifactPath": {
+      "type": "string",
+      "pattern": "^research/.+\\.md$"
+    },
+    "evidenceCutoff": {
+      "type": "string",
+      "minLength": 1
+    },
+    "currentCandidateClass": {
+      "type": "string",
+      "minLength": 1
+    },
+    "exactKnowledgeDefinition": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "overlapMatrix": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "minProperties": 1
+      }
+    },
+    "whyCurrentScopeIsInsufficient": {
+      "type": "string",
+      "minLength": 1
+    },
+    "taiwanDataFeasibility": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "pitReplayImplication": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "decisionRole": {
+      "type": "object",
+      "required": [
+        "primary",
+        "roles"
+      ],
+      "properties": {
+        "primary": {
+          "enum": [
+            "explanatory",
+            "validation",
+            "context",
+            "supportive",
+            "strategy evidence"
+          ]
+        },
+        "roles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "explanatory",
+              "validation",
+              "context",
+              "supportive",
+              "strategy evidence"
+            ]
+          }
+        }
+      }
+    },
+    "antiDoubleCountRule": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "proposedOwner": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "maturityStartingPoint": {
+      "type": [
+        "string",
+        "number",
+        "object"
+      ]
+    },
+    "terminalRecommendation": {
+      "enum": [
+        "ADD_MODULE",
+        "EXTEND_EXISTING_SCOPE",
+        "MERGE_INTO_EXISTING",
+        "NOT_A_GAP",
+        "EVIDENCE_INSUFFICIENT"
+      ]
+    },
+    "strongestPositiveEvidence": {
+      "type": "string",
+      "minLength": 1
+    },
+    "strongestCounterevidence": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unresolvedBlocker": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
