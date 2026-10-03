@@ -27,7 +27,7 @@ A high textual similarity score alone is never sufficient for retirement.
 - Strong future merge candidates requiring specialist validation: **1 pair**
 - Semantic split-or-merge candidates: **1 pair**
 - Scope de-duplication candidate without full module retirement: **1 pair**
-- High-overlap pairs retained with explicit owner boundaries: **13 pairs**
+- High-overlap pairs retained with explicit owner boundaries: **14 pairs**
 - Current curriculum remains **22 domains / 354 modules**
 - No maturity upgrade, no Formal Core change and no new Hard Gate are authorized.
 
