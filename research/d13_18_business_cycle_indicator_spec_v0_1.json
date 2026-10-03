@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D13-18",
+  "name": "Business Cycle / Leading-Coincident-Lagging Indicators contract",
+  "status": "CONCEPT_AND_FALSIFICATION_FROZEN__REALTIME_VINTAGE_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-10-03T23:19:00+08:00",
+  "objectSeparation": {
+    "BUSINESS_CYCLE_STATE": "latent/current macro state such as expansion/contraction or acceleration/deceleration; must be estimated from information available at the decision time.",
+    "LEADING_INDICATOR": "indicator designed to lead turning points in the reference business cycle, not necessarily stock-market returns.",
+    "COINCIDENT_INDICATOR": "indicator intended to move with current economic activity.",
+    "LAGGING_INDICATOR": "indicator intended to confirm prior/current cycle dynamics after a lag.",
+    "MONITORING_SIGNAL": "NDC monitoring-light composite describing current economic conditions under its own component/threshold methodology.",
+    "OFFICIAL_TURNING_POINT": "retrospective peak/trough chronology; ex-post benchmark unless announced in real time before the target decision."
+  },
+  "taiwanNDC": {
+    "source": "National Development Council",
+    "releaseFrequency": "monthly",
+    "leadingComponents": [
+      "export orders diffusion index by firms",
+      "real M1B",
+      "TAIEX average closing price",
+      "net accession rate of industry/service employees",
+      "floor area of new building starts",
+      "real semiconductor-equipment imports",
+      "TIER manufacturing business climate indicator"
+    ],
+    "coincidentComponents": [
+      "industrial production",
+      "enterprise electricity consumption",
+      "manufacturing sales/shipments",
+      "wholesale/retail/food-service sales",
+      "industry/service overtime hours",
+      "real customs exports",
+      "real machinery/electrical-equipment imports"
+    ],
+    "laggingComponents": [
+      "reciprocal unemployment rate",
+      "manufacturing unit labor cost",
+      "average new-loan rate at five major banks",
+      "financial institution loans/investments",
+      "manufacturing inventory value"
+    ],
+    "monitoringSignalIncludesTAIEX": true,
+    "revisionPolicy": "NDC traces and revises historical leading/coincident/lagging data monthly because new component data arrive, source agencies revise data, and seasonal/trend adjustments change.",
+    "keyGuard": "Current historical series is not guaranteed to equal the value known in earlier months."
+  },
+  "circularityFirewall": {
+    "problem": "TAIEX is a component of NDC leading index and monitoring indicators. Using the aggregate composite to predict TAIEX/stock returns can partially reuse the target market price.",
+    "requiredTests": [
+      "aggregate NDC leading index vs ex-TAIEX reconstructed/available variant",
+      "component-only macro baseline excluding market-price component",
+      "same-period TAIEX contribution share if reconstructable",
+      "no stock-return claim unless value survives exclusion of price-derived component"
+    ],
+    "defaultClassification": "If ex-TAIEX value cannot be reconstructed from a valid vintage, aggregate leading/monitoring signal is descriptive cycle context only for stock-return research."
+  },
+  "internationalBenchmarks": {
+    "OECD_CLI": {
+      "meaning": "Designed to provide early qualitative signals of turning points in business cycles relative to trend/output-gap fluctuations.",
+      "guard": "CLI is qualitative turning-point information, not a quantitative GDP or stock-return forecast."
+    },
+    "NBER_DATING": {
+      "meaning": "Retrospective U.S. peak/trough chronology based on multiple economy-wide real-activity measures.",
+      "guard": "NBER intentionally waits for sufficient evidence and revisions; the eventual recession date is an ex-post benchmark, not a contemporaneous regime label."
+    }
+  },
+  "timeAndVintageContract": {
+    "requiredFields": [
+      "source",
+      "referenceMonth",
+      "publishedAt",
+      "capturedAt",
+      "knownAtTaipei",
+      "vintageIdOrHash",
+      "revisionStatus",
+      "trendAdjustmentVersion",
+      "componentDefinitionVersion",
+      "firstEligibleTaiwanDecision"
+    ],
+    "publicationGuard": "Reference month and publication date are different. A July indicator published in August cannot be used as if it were known in July.",
+    "revisionGuard": "Later revised historical values never overwrite first-known vintage in backtests.",
+    "turningPointGuard": "Official peak/trough dates announced later cannot be backfilled into historical trading decisions."
+  },
+  "candidateStates": [
+    "LEADING_ACCELERATION",
+    "LEADING_DECELERATION",
+    "COINCIDENT_ACCELERATION",
+    "COINCIDENT_DECELERATION",
+    "LEAD_COINCIDENT_DIVERGENCE",
+    "LAGGING_CONFIRMATION",
+    "TURNING_POINT_RISK_CANDIDATE",
+    "EX_TAIEX_LEADING_STATE"
+  ],
+  "stateMachineGuard": "No cycle phase is assigned from one monthly move. Require frozen multi-month/level/slope/diffusion rules and minimum component coverage before labeling; otherwise UNKNOWN.",
+  "redundancyOrder": [
+    "Taiwan price trend/breadth/sector state",
+    "individual NDC components excluding TAIEX",
+    "NDC leading/coincident/lagging composites",
+    "global growth/PMI/export-order context",
+    "then derived cycle-state model"
+  ],
+  "targetHierarchy": [
+    "next-month macro acceleration/deceleration",
+    "sector earnings/order environment",
+    "medium-horizon Taiwan risk/dispersion",
+    "stock-return direction only last and only after price-component circularity is removed"
+  ],
+  "falsification": [
+    "aggregate leading index versus ex-TAIEX version",
+    "first-known vintage versus current revised history",
+    "one-month change versus frozen multi-month trend",
+    "component breadth/diffusion versus composite",
+    "NDC versus OECD/global cycle disagreement",
+    "NBER ex-post recession labels prohibited as live features",
+    "different Taiwan sectors with different cycle sensitivity",
+    "event/crisis removal and cycle-specific robustness",
+    "date-shift placebo",
+    "no turning-point threshold selected from stock returns"
+  ],
+  "ownershipBoundary": {
+    "D13_18": "business-cycle measurement, first-known macro state, indicator vintage and turning-point uncertainty",
+    "D18_15": "strategy effectiveness conditional on an already frozen business/credit-cycle state",
+    "D09_D07": "industry/sector rotation or supply-chain response conditional on D13 cycle state; no duplicate cycle maturity"
+  },
+  "maturityDecision": {
+    "from": "L0",
+    "to": "L2",
+    "reason": "Leading/coincident/lagging semantics, Taiwan component structure, price-component circularity, vintage/revision rules, retrospective turning-point limits and falsification are frozen; no source-attested OOS Taiwan evidence for L3."
+  },
+  "exactNext": [
+    "Preserve an official NDC monthly business-indicator vintage with reference month/publishedAt/hash and component definitions.",
+    "Design ex-TAIEX leading/monitoring reconstruction only if component vintages make it reproducible; otherwise keep aggregate composite descriptive-only for stock studies.",
+    "Build outcome-blind cycle-state classifier from first-known vintages with UNKNOWN for insufficient history/components.",
+    "Continue D13-19 Capital Market Expectations / Long-run Growth Drivers after this module.",
+    "No Formal cycle gate before PIT/OOS incremental evidence."
+  ]
+}
