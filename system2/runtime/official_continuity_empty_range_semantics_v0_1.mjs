@@ -1,6 +1,6 @@
 import { sha256Hex } from "./decision_archive.mjs";
 
-export const OFFICIAL_CONTINUITY_EMPTY_RANGE_VERSION = "0.1-RESEARCH";
+export const OFFICIAL_CONTINUITY_EMPTY_RANGE_VERSION = "0.2-RESEARCH";
 
 const HISTORICAL_SOURCE_IDS = new Set([
   "TWSE_EX_RIGHT_DIVIDEND_ACTUAL",
@@ -201,4 +201,131 @@ export async function characterizeOfficialContinuityEmptyRangeV0_1({
     orderImpact: false,
     system1RuntimeUsed: false,
   });
+}
+
+
+const EMPTY_CERTIFICATION_RULES = deepFreeze({
+  TWSE_EX_RIGHT_DIVIDEND_ACTUAL: {
+    mode: "CONTROLLED_NO_DATA_STATUS",
+    expectedStatus: "很抱歉，沒有符合條件的資料!",
+    positiveControlDate: "2026-04-08",
+  },
+  TWSE_CAPITAL_REDUCTION_REFERENCE: {
+    mode: "CONTROLLED_NO_DATA_STATUS",
+    expectedStatus: "很抱歉，沒有符合條件的資料!",
+    positiveControlDate: "2026-06-29",
+  },
+  TWSE_PAR_VALUE_CHANGE_REFERENCE: {
+    mode: "EXACT_RANGE_ZERO_ROWS",
+    expectedStatus: "OK",
+    parserShape: "JSON_FIELDS_DATA",
+  },
+  TPEX_EX_RIGHT_DIVIDEND_ACTUAL: {
+    mode: "EXACT_RANGE_ZERO_ROWS",
+    expectedStatus: "ok",
+    parserShape: "JSON_TABLES",
+  },
+  TPEX_CAPITAL_REDUCTION_REFERENCE: {
+    mode: "EXACT_RANGE_ZERO_ROWS",
+    expectedStatus: "ok",
+    parserShape: "JSON_TABLES",
+  },
+  TPEX_PAR_VALUE_CHANGE_REFERENCE: {
+    mode: "EXACT_RANGE_ZERO_ROWS",
+    expectedStatus: "ok",
+    parserShape: "JSON_TABLES",
+  },
+});
+
+function pushBlocker(blockers, condition, code) {
+  if (!condition) blockers.push(code);
+}
+
+export function certifyOfficialContinuityEmptyRangeV0_1({
+  observation,
+  positiveControl = null,
+} = {}) {
+  if (!observation || typeof observation !== "object" || Array.isArray(observation)) {
+    throw new Error("observation is required");
+  }
+  const sourceId = requiredText(observation.sourceId, "observation.sourceId");
+  const rule = EMPTY_CERTIFICATION_RULES[sourceId];
+  if (!rule) throw new Error("unsupported historical sourceId: " + sourceId);
+
+  const blockers = [];
+  pushBlocker(blockers, observation.httpOk === true, "HTTP_NOT_OK");
+  pushBlocker(blockers, observation.payloadParsed === true, "PAYLOAD_NOT_PARSED");
+
+  let positiveControlRequired = false;
+  let positiveControlMatched = null;
+
+  if (rule.mode === "EXACT_RANGE_ZERO_ROWS") {
+    pushBlocker(
+      blockers,
+      observation.state === "EXACT_RANGE_ZERO_ROWS_OBSERVED",
+      "NOT_EXACT_RANGE_ZERO_ROWS",
+    );
+    pushBlocker(blockers, observation.responseRangeVerified === true, "RANGE_IDENTITY_NOT_VERIFIED");
+    pushBlocker(blockers, observation.zeroRows === true, "ROW_COUNT_NOT_ZERO");
+    pushBlocker(blockers, observation.upstreamStatus === rule.expectedStatus, "UPSTREAM_STATUS_MISMATCH");
+    pushBlocker(blockers, observation.parserShape === rule.parserShape, "PARSER_SHAPE_MISMATCH");
+  } else {
+    positiveControlRequired = true;
+    pushBlocker(
+      blockers,
+      observation.state === "EMPTY_OR_NO_DATA_RANGE_UNVERIFIED",
+      "TARGET_NOT_FROZEN_NO_DATA_SHAPE",
+    );
+    pushBlocker(blockers, observation.responseRangeRaw === null, "TARGET_UNEXPECTED_RANGE_IDENTITY");
+    pushBlocker(blockers, observation.recognizedRowContainer === false, "TARGET_UNEXPECTED_ROW_CONTAINER");
+    pushBlocker(blockers, observation.parserShape === "JSON_NO_ROW_CONTAINER", "TARGET_PARSER_SHAPE_MISMATCH");
+    pushBlocker(blockers, observation.upstreamStatus === rule.expectedStatus, "TARGET_NO_DATA_STATUS_MISMATCH");
+
+    positiveControlMatched = Boolean(
+      positiveControl &&
+      positiveControl.sourceId === sourceId &&
+      positiveControl.requestedStartDate === rule.positiveControlDate &&
+      positiveControl.requestedEndDate === rule.positiveControlDate &&
+      positiveControl.httpOk === true &&
+      positiveControl.payloadParsed === true &&
+      positiveControl.state === "NON_EMPTY_RANGE" &&
+      positiveControl.responseRangeVerified === true &&
+      Number(positiveControl.rowCount) > 0
+    );
+    pushBlocker(blockers, positiveControlMatched, "POSITIVE_CONTROL_NOT_VERIFIED");
+  }
+
+  const certified = blockers.length === 0;
+  return deepFreeze({
+    schemaVersion: "S2_OFFICIAL_CA_EMPTY_RANGE_CERTIFICATION_V0_1",
+    version: OFFICIAL_CONTINUITY_EMPTY_RANGE_VERSION,
+    sourceId,
+    mode: rule.mode,
+    expectedStatus: rule.expectedStatus,
+    positiveControlRequired,
+    positiveControlDate: rule.positiveControlDate || null,
+    positiveControlMatched,
+    certificationBlockers: Object.freeze(blockers),
+    emptyRangeSemanticsCertified: certified,
+
+    // Source-level empty semantics do not by themselves prove a symbol had no event.
+    sourceCoverageComplete: false,
+    revisionCoverageComplete: false,
+    noEventMayBeClaimed: false,
+    symbolSessionCompletenessCertified: false,
+    technicalContinuityCertified: false,
+    historyMutationPerformed: false,
+    strategyEvaluationPerformed: false,
+    capacityRunProduced: false,
+    selectionAuthority: false,
+    finalSelectionEnabled: false,
+    livePushEnabled: false,
+    capitalImpact: false,
+    orderImpact: false,
+    system1RuntimeUsed: false,
+  });
+}
+
+export function officialContinuityEmptyRangeCertificationRulesV0_1() {
+  return EMPTY_CERTIFICATION_RULES;
 }
