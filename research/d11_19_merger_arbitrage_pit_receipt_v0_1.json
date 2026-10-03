@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04T07:42:00+08:00",
+  "owner": "08｜事件與新聞研究室",
+  "module": "D11-19",
+  "title": "Spin-off／Merger Arbitrage／Deal-break Risk分拆併購套利與破局風險",
+  "status": "TAIWAN_PIT_SOURCE_FEASIBILITY_VALIDATED / REPRICE_AND_CANCELLATION_STATES_OBSERVED / COST_AND_BORROW_OUTCOMES_CLOSED",
+  "formalCoreImpact": "NONE",
+  "ownershipBoundary": {
+    "transactionStateOwner": "D11-06",
+    "d1119Owner": "tradable consideration geometry, exchange-ratio versioning, spread/break state, hedge/borrow/cost semantics, spin-off entitlement/stub semantics",
+    "doubleVoteProhibited": true
+  },
+  "officialSourceContract": [
+    {
+      "name": "TWSE material information clause 11",
+      "url": "https://twse-regulation.twse.com.tw/TW/law/DOC01_print.aspx?FLCODE=FL007111&FLNO=11",
+      "finding": "Board resolutions for merger/demerger/acquisition/share exchange/conversion and later cancellation/material changes are disclosure events.",
+      "quality": "OFFICIAL_RULE"
+    },
+    {
+      "name": "TWSE Operating Rules Chapter IV-1",
+      "url": "https://twse-regulation.twse.com.tw/TW/law/DAT0202.aspx?FLCODE=fl007304&LCC=2&LCNOS=++53-+1",
+      "finding": "Merger/share-conversion/spin-off stages have explicit stop-trading, termination-of-listing, listing and effective-date mechanics.",
+      "quality": "OFFICIAL_RULE"
+    },
+    {
+      "name": "TWSE demerger rules",
+      "url": "https://twse-regulation.twse.com.tw/TW/law/DAT07.aspx?FLCODE=FL007304&FLNO=53-21&LDATE=20260806&LSID=FL007304&TY=L",
+      "finding": "For qualifying listed-company demergers, independent expert opinion on exchange ratio/acquisition price and shareholder-rights impact is required; demerger and relisting/stop-trading mechanics are separately defined.",
+      "quality": "OFFICIAL_RULE"
+    },
+    {
+      "name": "D11-06 material-transaction PIT contract",
+      "path": "research/D11_06_MATERIAL_TRANSACTION_PIT_CONTRACT_V0_1.md",
+      "finding": "Official Taiwan rules already establish versioned announcement/amendment/cancellation/closing clocks. D11-19 reuses these clocks and must not duplicate D11-06 alpha/event votes.",
+      "quality": "REPO_OFFICIAL_SOURCE_SYNTHESIS"
+    }
+  ],
+  "boundedCases": [
+    {
+      "case": "2887 台新金 / 2888 新光金 merger",
+      "transactionType": "STOCK_AND_PREFERRED_CONSIDERATION_MERGER",
+      "originalTerms": {
+        "sourceDate": "2024-08-22",
+        "commonExchangeRatio": "0.6022 台新普通股 per 1 新光普通股"
+      },
+      "revisedTerms": {
+        "sourceDate": "2025-04-24",
+        "commonExchangeRatio": "0.672 台新普通股 per 1 新光普通股",
+        "additionalPreferred": "0.175 台新辛種特別股 per 1 新光普通股"
+      },
+      "regulatorApprovalDate": "2025-03-31",
+      "mergerEffectiveDate": "2025-07-24",
+      "targetTerminationOfListingDate": "2025-07-24",
+      "role": "REAL_REPRICE_AND_SUCCESSFUL_CLOSE_WITNESS",
+      "sourceQuality": "ISSUER_OFFICIAL_IR + TWSE_OFFICIAL_LISTING_NOTICE"
+    },
+    {
+      "case": "8179 旭德 / 3037 欣興 transaction structure revision",
+      "transactionType": "MERGER_TERMINATED_THEN_SHARE_EXCHANGE",
+      "originalAnnouncementDate": "2022-02-22",
+      "originalMergerRatio": "0.219 欣興股 per 1 旭德股",
+      "revisionDate": "2022-03-31",
+      "revisedState": "terminate original merger agreement and switch to share-exchange structure",
+      "role": "DEAL_STRUCTURE_BREAK_AND_REWRITE_COUNTEREXAMPLE",
+      "sourceQuality": "MOPS announcement transported by public financial media; native immutable source version should be archived before L4"
+    },
+    {
+      "case": "5203 訊連 / 100%-owned BVI subsidiary",
+      "transactionType": "SIMPLE_MERGER_CANCELLED",
+      "boardApprovalDate": "2026-04-29",
+      "cancellationDate": "2026-07-28",
+      "statedReason": "operating-strategy adjustment, organizational needs and economic-environment changes; immediate merger no longer necessary",
+      "role": "ACTUAL_CANCELLATION_STATE_WITNESS",
+      "limitation": "not a tradable public-target merger-arbitrage case; used only to prove cancellation is a real disclosure/lifecycle state",
+      "sourceQuality": "MOPS announcement transported by public market-data mirror"
+    },
+    {
+      "case": "2409 友達 energy business demerger",
+      "transactionType": "DEMERGER_TO_WHOLLY_OWNED_SUBSIDIARY",
+      "boardApprovalDate": "2026-04-13",
+      "plannedEffectiveDate": "2026-08-01",
+      "transferee": "達耀能源科技股份有限公司",
+      "condition": "execution subject to shareholder approval",
+      "laterStrategicDispositionPlanned": true,
+      "role": "CURRENT_TAIWAN_SPINOFF_CLOCK_WITNESS",
+      "limitation": "does not by itself create a listed child/stub arbitrage payoff; entitlement/tradability geometry remains case-specific",
+      "sourceQuality": "ISSUER_OFFICIAL"
+    }
+  ],
+  "payoffGeometry": {
+    "cashDeal": "dealValue_t = cashConsiderationKnownAt_t",
+    "stockDeal": "dealValue_t = exchangeRatioKnownAt_t * acquirerPrice_t + cashOrPreferredComponentKnownAt_t",
+    "repriceRule": "Use only terms first-known at t. Revised ratios/components append a new version; never rewrite the earlier deal value.",
+    "spinOffRule": "Parent, distributed child, retained stake and stub are distinct instruments/claims. If child tradability or entitlement is not proven, value is UNKNOWN."
+  },
+  "frozenStateMachine": [
+    "AGREEMENT",
+    "TERMS_KNOWN",
+    "TERMS_REVISED",
+    "SHAREHOLDER_PENDING",
+    "REGULATORY_PENDING",
+    "CLOSING_CONDITIONS_PENDING",
+    "STOP_TRADING_OR_CONVERSION_WINDOW",
+    "CLOSE",
+    "TERMINATION_OF_LISTING_IF_APPLICABLE",
+    "BREAK_OR_CANCEL",
+    "STRUCTURE_CHANGED",
+    "EXTEND",
+    "SPINOFF_BOARD_APPROVED",
+    "SPINOFF_SHAREHOLDER_PENDING",
+    "SPINOFF_EFFECTIVE",
+    "CHILD_TRADABLE_OR_NONTRADABLE",
+    "UNKNOWN"
+  ],
+  "falsification": [
+    "announced consideration is not timeless; 2887/2888 terms changed materially before closing",
+    "deal spread is not expected return without success probability, time, funding, tax, fees, hedge/borrow and break-loss assumptions",
+    "original merger cancellation can lead to a different transaction structure rather than company-level deal abandonment",
+    "a cancellation state is real even when the counterparty is not publicly tradable",
+    "spin-off approval does not imply distributed/listed child shares",
+    "acquirer and target cannot inherit one common sign",
+    "multiple disclosures from one deal are correlated versions, not independent event observations"
+  ],
+  "costAndExecutionRequirements": [
+    "borrow availability and recall for stock consideration",
+    "hedge-ratio drift after exchange-ratio revisions",
+    "funding/capital lock-up",
+    "fees/taxes/slippage",
+    "suspension/stop-trading and settlement gap",
+    "price-limit and deal-break gap risk",
+    "odd-lot/fractional-share and preferred-security treatment when relevant"
+  ],
+  "pitRules": [
+    "Use capturedAt as conservative replay availability unless native availability is authenticated.",
+    "Append every terms revision, approval, cancellation and close version.",
+    "Do not backfill final exchange ratio, preferred component or closing state to original announcement.",
+    "If child/stub tradability or hedge/borrow status is not source-verified, keep UNKNOWN."
+  ],
+  "maturityDecision": {
+    "from": "L2",
+    "to": "L3",
+    "scope": "TAIWAN_PIT_SOURCE_AND_EVENT_STATE_FEASIBILITY",
+    "limitations": [
+      "no borrow/locate history validated",
+      "no transaction-cost or spread-return outcome cohort opened",
+      "no listed-child spin-off arbitrage sample yet",
+      "some cancellation/structure-change witnesses rely on MOPS transports rather than immutable native payload archives"
+    ]
+  },
+  "outcomesOpened": false,
+  "formalOptimizationCandidate": false,
+  "exactNext": "Archive native immutable MOPS versions for one repriced stock deal and one public-target break/termination; add a listed-child or entitlement-bearing spin-off case if available; only then preregister identical-parent spread, hedge, borrow, cost and break-loss outcomes for L4."
+}
