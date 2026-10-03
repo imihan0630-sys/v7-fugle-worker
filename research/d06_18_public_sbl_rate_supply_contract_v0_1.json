@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "D06_18_PUBLIC_SBL_RATE_SUPPLY_CONTRACT_V0_1",
+  "updatedAt": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "question": "Can public TWSE securities-lending quote/rate disclosures support a prospective borrow-economics receipt without falsely treating displayed supply/demand as symmetric or total lendable inventory?",
+  "officialSemanticContract": {
+    "rule": "TWSE SBL Rules Article 28",
+    "fixedPrice": {
+      "fields": [
+        "fixedRate",
+        "executedTotalQty",
+        "unexecutedLendTotalQty",
+        "unexecutedBorrowTotalQty"
+      ]
+    },
+    "competitiveBid": {
+      "fields": [
+        "executedSecurity",
+        "executedQty",
+        "executedRate",
+        "executedTotalQty",
+        "best5LendQtyRate",
+        "totalLendQty",
+        "best5BorrowQtyRate",
+        "totalBorrowQty"
+      ]
+    },
+    "negotiated": {
+      "fields": [
+        "loanBalanceStatement"
+      ],
+      "guard": "Public negotiated disclosure does not establish a comparable public live quote-book/rate contract."
+    }
+  },
+  "orderPersistenceAsymmetry": {
+    "rule": "TWSE SBL Rules Article 17",
+    "borrowingQuote": "valid only for the submission day",
+    "lendingQuote": "remains valid until cancelled",
+    "consequence": "Displayed unexecuted borrowing and lending quantities have different survival clocks.",
+    "prohibitedMetric": "RAW_UNEXECUTED_BORROW_QTY_DIV_RAW_UNEXECUTED_LEND_QTY_AS_SYMMETRIC_DEMAND_SUPPLY_PRESSURE",
+    "requiredControls": [
+      "quoteSide",
+      "tradeDate",
+      "capturedAt",
+      "recallNotificationTerm",
+      "quoteAgeOrUnknown",
+      "transactionType"
+    ]
+  },
+  "termMatchingGuard": {
+    "rule": "Fixed-price and competitive-bid matching requires compatible recall-notification terms.",
+    "consequence": "Depth across different recall-notification terms must not be pooled into one homogeneous lend/borrow book without a documented aggregation rule."
+  },
+  "feeSemantics": {
+    "fixedPrice": "fixed rate currently published by TWSE",
+    "competitiveBid": "matched rate is endogenous to bid/ask schedule and matching",
+    "negotiated": "rate/terms privately negotiated subject to rule limits; public balance is not a rate surface",
+    "feePaymentVintage": "2026-06-01 payment/settlement rule change must be separated from trade-time rate."
+  },
+  "availabilityGuard": {
+    "displayedLendQty": "DISPLAYED_MARKET_SUPPLY_WITHIN_EXACT_TWSE_TRANSACTION_TYPE_AND_TERM",
+    "notEquivalentTo": [
+      "TOTAL_LENDABLE_INVENTORY",
+      "ALL_MARKET_SECURITIES_LENDING_SUPPLY"
+    ],
+    "trueUtilization": "UNKNOWN until verified total lendable-inventory denominator exists"
+  },
+  "prospectiveReceipt": {
+    "required": [
+      "market",
+      "security",
+      "transactionType",
+      "recallNotificationTerm",
+      "sourceDate",
+      "requestedAt",
+      "capturedAt",
+      "firstKnownAt",
+      "fixedRateOrMatchedRate",
+      "executedQty",
+      "executedTotalQty",
+      "unexecutedLendQty",
+      "unexecutedBorrowQty",
+      "best5LendQtyRate",
+      "best5BorrowQtyRate",
+      "quotePersistenceRuleVintage",
+      "settlementRuleVintage",
+      "sourceUrl",
+      "contentHash",
+      "parserVersion",
+      "schemaVersion",
+      "pointInTimeEligible",
+      "unknownReasons"
+    ],
+    "endpointState": "OFFICIAL_INTERNET_DISCLOSURE_REQUIRED_BY_RULE / EXACT_CURRENT_MACHINE_ENDPOINT_CONTRACT_NOT_YET_VERIFIED",
+    "firstLiveCapture": "PENDING_NEXT_VALID_TRADING_DAY"
+  },
+  "falsification": [
+    "Displayed lending supply may contain older still-valid lend quotes while borrowing demand resets daily.",
+    "Displayed lend supply is not total market lendable inventory.",
+    "Competitive-bid rate is affected by both supply and demand and contract terms.",
+    "Negotiated-market dominance means public competitive/fixed quote data may not represent the entire Taiwan lending market.",
+    "High fee or thin displayed supply is not a standalone bearish signal.",
+    "A public quote snapshot proves a quoted state, not eventual executed short selling."
+  ],
+  "status": "PUBLIC_SEMANTIC_FIELDS_VERIFIED / ORDER_PERSISTENCE_ASYMMETRY_FROZEN / EXACT_MACHINE_ENDPOINT_PENDING / PROSPECTIVE_CAPTURE_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "exactNext": "On the next valid trading day, capture the official public lending/borrowing/rate snapshot at a frozen time using an authorized public route, preserving transaction type and recall term. Do not compute symmetric demand/supply pressure until quote-age/persistence asymmetry is handled; do not call displayed supply total lendable inventory."
+}
