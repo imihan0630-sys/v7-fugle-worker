@@ -141,3 +141,74 @@ Candidate state remains FALSIFICATION_IN_PROGRESS. Formal Core remains LOCKED. N
 1. Build D22-03 Taiwan PIT component contract and bounded replay receipts for at least three non-financial issuers spanning at least two industries and more than one reporting date.
 2. Explicitly test unrestricted-cash vs total-cash offset, lease-liability inclusion, and gross-debt vs net-debt views without outcomes.
 3. Continue D22-02 cross-industry interest-coverage replay and D22-01 multi-date maturity panel in parallel; do not open stock outcomes.
+
+## 2026-10-04 07:43 continuation｜D22-02 / D22-03 promotion + D22-04 launch
+
+### D22-02 current maturity
+L3 / 60% — cross-industry, multi-date Taiwan PIT replay validated; outcomes remain CLOSED.
+
+New durable replay:
+- `research/d22_02_interest_coverage_replay_v0_1.json`
+- Chunghwa Telecom adds telecom-sector evidence and two independently timestamped annual states (2023 and 2024).
+- 2023 accounting coverage: operating income NT$46,353m / interest expense NT$319m ≈ 145.31x.
+- 2024 accounting coverage: operating income NT$46,873m / interest expense NT$339m ≈ 138.27x.
+- Very high coverage coexists with a larger <1y maturity wall in 2024, so interest coverage and maturity timing remain distinct evidence families.
+
+### D22-03 current maturity
+L3 / 60% — Taiwan PIT component replay validated; outcomes remain CLOSED.
+
+New durable files:
+- `research/d22_03_net_debt_component_replay_v0_1.json`
+- `research/d22_03_version_lineage_v0_1.json`
+
+Key falsification:
+Chunghwa Telecom 2023→2024 improved from derived net debt about -NT$1.139bn to -NT$3.845bn, while contractual <1y financing rose from about NT$2.2bn to NT$9.2bn and <1y wall/cash from about 6.5% to 25.4%. Negative net debt therefore cannot be used as sufficient evidence of low near-term refinancing pressure.
+
+ASE Technology Holding supplies a third exact-known issuer state:
+- 2024-02-01 first-known consolidated FY2023 release;
+- cash NT$67,284m;
+- short-term borrowings NT$53,042m;
+- current portion bonds/long-term borrowings NT$28,616m;
+- non-current bonds NT$20,489m;
+- non-current long-term borrowings NT$81,365m;
+- derived gross interest-bearing debt NT$183,512m;
+- derived net debt NT$116,228m;
+- reported net-debt/equity ratio 0.38;
+- unused credit lines NT$373,763m, with commitment/drawability quality left UNKNOWN.
+
+Version-lineage firewall:
+A later filing retrospectively adjusted ASE's 2023 short-term borrowings to about NT$37,737m. Historical replay preserves the 2024-02-01 first-known value and appends the later revision. Latest-restated history must never overwrite first-known PIT state.
+
+### D22-04 current maturity
+L2 / 40% — debt-cost / refinancing-risk mechanism, anti-double-count boundary, Taiwan source route and falsification contract defined; issuer-specific market-yield replay still pending.
+
+Durable file:
+- `research/d22_04_cost_of_debt_refinancing_risk_contract_v0_1.json`
+
+Ownership:
+- D13-06 owns sovereign/risk-free curve;
+- D22-04 owns issuer-specific debt-cost / refinancing spread / repricing interaction with exposed debt;
+- D07-18 owns enterprise WACC composite.
+
+Key semantic firewall:
+legacy coupon != accounting effective cost != current market yield != issuer spread != prospective refinancing cost.
+
+Taiwan source feasibility:
+TPEx offers bond trade/quote files, yield-price files, fair values and daily corporate-bond reference/yield-curve data. No-trade or stale observations remain UNKNOWN.
+
+Mechanism example:
+Chunghwa Telecom's existing bonds carry legacy coupons around 0.42%-0.69%, including an NT$8.8bn 0.50% tranche maturing July 2025. That legacy coupon is not a forward refinancing quote. Replacement cost remains UNKNOWN until an actual funding transaction or valid PIT market proxy is observed.
+
+### Combined research status
+D22-01 L3 / D22-02 L3 / D22-03 L3 / D22-04 L2.
+Equity outcomes remain CLOSED.
+Formal Core remains LOCKED.
+No FORMAL_OPTIMIZATION_CANDIDATE exists yet.
+
+### Exact next continuation
+1. Build D22-04 issuer-security-date TPEx debt-cost receipts with actual trade / quote / reference / fair-value provenance.
+2. Match duration and currency to the sovereign benchmark; no simple maturity-mismatched subtraction.
+3. Construct research-only refinancing-gap challengers and interact only with D22-01 principal actually exposed to repricing.
+4. Test benchmark-vs-spread divergent states and no-refinancing/cash-repayment counterfactuals.
+5. Continue D22-01~03 multi-date/version-lineage panel expansion while outcomes stay closed.
+
