@@ -1,0 +1,297 @@
+{
+  "schemaVersion": "D08_TWSE_MONTH_END_SCAN_DATE_RECEIPT_V0_1",
+  "generatedAt": "2026-10-03T23:28:07.089Z",
+  "researchOnly": true,
+  "outcomeJoin": false,
+  "resolver": "official TWSE BWIBBU monthly 1102 last observed session",
+  "monthCount": 44,
+  "firstMonth": "2023-01",
+  "lastMonth": "2026-08",
+  "scanDates": [
+    {
+      "month": "2023-01",
+      "scanDate": "2023-01-31",
+      "rowCount": 13,
+      "sourceHash": "2a07a0096037b7e2e72e0a92f0221df6296c79f9fc28a65111d343589785526f"
+    },
+    {
+      "month": "2023-02",
+      "scanDate": "2023-02-24",
+      "rowCount": 18,
+      "sourceHash": "7a2c3ce96074faff6cba06c477d31e28b8dd47cedd328240ec4d4fd3c2dd3584"
+    },
+    {
+      "month": "2023-03",
+      "scanDate": "2023-03-31",
+      "rowCount": 23,
+      "sourceHash": "0caebb41a526a8c0d841efcb5bb7481849d3810e3a163459f6c4f4ac44db2fd1"
+    },
+    {
+      "month": "2023-04",
+      "scanDate": "2023-04-28",
+      "rowCount": 17,
+      "sourceHash": "48086e2015be1f6530ee1b853594513ed47b564848860c0ccf379cb9e0b57a31"
+    },
+    {
+      "month": "2023-05",
+      "scanDate": "2023-05-31",
+      "rowCount": 22,
+      "sourceHash": "c21a4d03488c82fb7d482ea066d65547910c1c1ac0f452b70da944a6c655c6d4"
+    },
+    {
+      "month": "2023-06",
+      "scanDate": "2023-06-30",
+      "rowCount": 20,
+      "sourceHash": "cd18c273ea9c74b9b2092045dbe6eaffdc48833ccdfe1b0d32ab0db71b614bd0"
+    },
+    {
+      "month": "2023-07",
+      "scanDate": "2023-07-31",
+      "rowCount": 21,
+      "sourceHash": "559b302b7c6b32563eb0f47a4b2a47f87f00f329da2a11a52cf000bdd3f11ad7"
+    },
+    {
+      "month": "2023-08",
+      "scanDate": "2023-08-31",
+      "rowCount": 22,
+      "sourceHash": "f40fc4772849bb1d3ebe2abbdcedca4842106e21a5d037a464e57018c71b01fa"
+    },
+    {
+      "month": "2023-09",
+      "scanDate": "2023-09-28",
+      "rowCount": 20,
+      "sourceHash": "ae48551cfdac57ee5eb0691e7ae341db601e616ec075e3b3862cca2693e58265"
+    },
+    {
+      "month": "2023-10",
+      "scanDate": "2023-10-31",
+      "rowCount": 20,
+      "sourceHash": "7e0da0eb157f121bcb566e46dc9021b9cb708166c08759657de54cd801d2d4d2"
+    },
+    {
+      "month": "2023-11",
+      "scanDate": "2023-11-30",
+      "rowCount": 22,
+      "sourceHash": "b6d0a9871a59edb6f1993488c221706743938c198ba6ab65c10108e2305e7644"
+    },
+    {
+      "month": "2023-12",
+      "scanDate": "2023-12-29",
+      "rowCount": 21,
+      "sourceHash": "b6d9335b34fa8513138a67776b49c61f8c248ecad91a484941f48e0f5f9b46bf"
+    },
+    {
+      "month": "2024-01",
+      "scanDate": "2024-01-31",
+      "rowCount": 22,
+      "sourceHash": "22020936f210356cc70b3ab1fe98d1f43e65188fca7e58b1447e29898490ec9d"
+    },
+    {
+      "month": "2024-02",
+      "scanDate": "2024-02-29",
+      "rowCount": 13,
+      "sourceHash": "868eedae967afc707686fc781d6607df1c042e9065dc72a7ffe1b01fb44c7b55"
+    },
+    {
+      "month": "2024-03",
+      "scanDate": "2024-03-29",
+      "rowCount": 21,
+      "sourceHash": "c207fda9aacbb5e8f51895a44fdc2e679e4641ad6f25b8803c6612eb4435cb52"
+    },
+    {
+      "month": "2024-04",
+      "scanDate": "2024-04-30",
+      "rowCount": 20,
+      "sourceHash": "d749dfe2add03dd6fdea863bed3cccb14bd5a478ebc14205f1884cda85663a35"
+    },
+    {
+      "month": "2024-05",
+      "scanDate": "2024-05-31",
+      "rowCount": 22,
+      "sourceHash": "dfef58c8119594e4a5b5c228172dc0524635369ee633ef6301111bc72ed5867c"
+    },
+    {
+      "month": "2024-06",
+      "scanDate": "2024-06-28",
+      "rowCount": 19,
+      "sourceHash": "5424fc3bfe745a9e6ae9a737211bc2ae1dd630709be3b76aa52d975fef2026f0"
+    },
+    {
+      "month": "2024-07",
+      "scanDate": "2024-07-31",
+      "rowCount": 21,
+      "sourceHash": "31b1e8294f44b6b0b50688a8853ca073b222855b680d96d220cf59855edb848d"
+    },
+    {
+      "month": "2024-08",
+      "scanDate": "2024-08-30",
+      "rowCount": 22,
+      "sourceHash": "bac2f4a1a1f3f3bdc6b3b899f26f7060a4f0a7d9511bbdecaddf1569021c1976"
+    },
+    {
+      "month": "2024-09",
+      "scanDate": "2024-09-30",
+      "rowCount": 20,
+      "sourceHash": "38326148b0d9c478ceb4d21d7b94d2174b4091b0ea91cc53c3c96a9bce5caa2c"
+    },
+    {
+      "month": "2024-10",
+      "scanDate": "2024-10-30",
+      "rowCount": 19,
+      "sourceHash": "5bf39580c16a4c48de6331bc55c0e92dc80f5c60470d7ac3dba6529eab54a31f"
+    },
+    {
+      "month": "2024-11",
+      "scanDate": "2024-11-29",
+      "rowCount": 21,
+      "sourceHash": "c1493d62e79dbe7e48fb4a4bc6dda1b7931119af06965d2db9ba7580873ac14b"
+    },
+    {
+      "month": "2024-12",
+      "scanDate": "2024-12-31",
+      "rowCount": 22,
+      "sourceHash": "b8ab384065d00509b4d9d6f1504a69c5f28c93224092853fbc25fb3e750d0162"
+    },
+    {
+      "month": "2025-01",
+      "scanDate": "2025-01-22",
+      "rowCount": 15,
+      "sourceHash": "a9f61929aa9847c3d83cbf4ce797e6691f73c2f5dd72b37a2c1b1b59935dc1cc"
+    },
+    {
+      "month": "2025-02",
+      "scanDate": "2025-02-27",
+      "rowCount": 19,
+      "sourceHash": "3266532d0cba6ce46170db207e0ae31cdea8c81c48c2bb7a98e5a46942cb1806"
+    },
+    {
+      "month": "2025-03",
+      "scanDate": "2025-03-31",
+      "rowCount": 21,
+      "sourceHash": "1a0b5ce1b84a46a447e13758f7dcb9a57f0cd0ef23cc5171f856052fd760d89c"
+    },
+    {
+      "month": "2025-04",
+      "scanDate": "2025-04-30",
+      "rowCount": 20,
+      "sourceHash": "884833d5c8a0320053ce0c9cdd3905437388d70b9afa00e09609c619f447f3b7"
+    },
+    {
+      "month": "2025-05",
+      "scanDate": "2025-05-29",
+      "rowCount": 20,
+      "sourceHash": "b6cd1116b87ca5db1487f58f1561bed73e2d5551908d6aa8c04f92d7f9a3b10f"
+    },
+    {
+      "month": "2025-06",
+      "scanDate": "2025-06-30",
+      "rowCount": 21,
+      "sourceHash": "e7ca59ab8e1aa381f192bd41e9f86b0807007b46fc550b4d7422e08242fbd7a9"
+    },
+    {
+      "month": "2025-07",
+      "scanDate": "2025-07-31",
+      "rowCount": 23,
+      "sourceHash": "f4a32f9ad559718303a970c5d1505eb52c88b7a178415fa4a02962e906930023"
+    },
+    {
+      "month": "2025-08",
+      "scanDate": "2025-08-29",
+      "rowCount": 21,
+      "sourceHash": "636695c394461d3f222c786607fce5f818bdb1491c11cc847603c4f21f51caf6"
+    },
+    {
+      "month": "2025-09",
+      "scanDate": "2025-09-30",
+      "rowCount": 21,
+      "sourceHash": "e5f3704633a4a00a56be3976106200331d15a961adb56225997be4393df8b7cc"
+    },
+    {
+      "month": "2025-10",
+      "scanDate": "2025-10-31",
+      "rowCount": 20,
+      "sourceHash": "cede65cf0d8032c3eebe40a733128207c9dd99da3162ac9d81a1e8fbf400dd96"
+    },
+    {
+      "month": "2025-11",
+      "scanDate": "2025-11-28",
+      "rowCount": 20,
+      "sourceHash": "d3022086b2fec6ec6a86730bf9c17a9a94f9d425f3f0fca1184f144c9ebea00d"
+    },
+    {
+      "month": "2025-12",
+      "scanDate": "2025-12-31",
+      "rowCount": 22,
+      "sourceHash": "fa26de21732e8b09bac6fafa73b0b604b3507a41c07191165b1b4c1072c3c3ce"
+    },
+    {
+      "month": "2026-01",
+      "scanDate": "2026-01-30",
+      "rowCount": 21,
+      "sourceHash": "2d592933045c2b19e24e4e4b7461ec71ed0d2a1a916a155347f67dabc0fa632e"
+    },
+    {
+      "month": "2026-02",
+      "scanDate": "2026-02-26",
+      "rowCount": 12,
+      "sourceHash": "ac034ff2e1eca42cfb09c3b86ee8e178893b99010b2c1938a76d94669b82a8fa"
+    },
+    {
+      "month": "2026-03",
+      "scanDate": "2026-03-31",
+      "rowCount": 22,
+      "sourceHash": "357ba8b0f077bf82dae814758626c81c5b728c804da6dfed33ae436dbf233c1e"
+    },
+    {
+      "month": "2026-04",
+      "scanDate": "2026-04-30",
+      "rowCount": 20,
+      "sourceHash": "d35482c47dc4f7eff2dd1925c8a9562df1af11339b5452bd4137e554e9289b6c"
+    },
+    {
+      "month": "2026-05",
+      "scanDate": "2026-05-29",
+      "rowCount": 20,
+      "sourceHash": "dcb955e4e7ce81788a6842c17637d0ddc4afa4e8b6d3d3f72295e8d67686ac0c"
+    },
+    {
+      "month": "2026-06",
+      "scanDate": "2026-06-30",
+      "rowCount": 21,
+      "sourceHash": "14568d73458c3e87a5d16b200a52626497871eef57dd4747a8bd2ef3db13206a"
+    },
+    {
+      "month": "2026-07",
+      "scanDate": "2026-07-31",
+      "rowCount": 22,
+      "sourceHash": "e3631ffbadad75c05f70ef6f3d97f71b443aafa9cc1938def81df431c4407575"
+    },
+    {
+      "month": "2026-08",
+      "scanDate": "2026-08-31",
+      "rowCount": 21,
+      "sourceHash": "df715ee4b48a1c583dde6586eca68c8cac3df570f7fd7cbea3fbb077928b238c"
+    }
+  ],
+  "scanDateListHash": "e4475abd9fe2ab867bf20e5a8ee2f1a000bdb78365afe6083e6433c2b5abc490",
+  "sourceBundleHash": "2ed426589c0e103e1d0ed8ce8f3e776a1e34aa252366fd2b4d4e9fc32819c2b2",
+  "guards": {
+    "noReturns": true,
+    "noThresholdSelection": true,
+    "noFormalCoreImpact": true
+  },
+  "observedAtAsiaTaipei": "2026-10-04T07:28:07+08:00",
+  "execution": {
+    "temporaryPr": 427,
+    "sourceCommit": "614b72af164c6791c0d51925e872a31be21b7b14",
+    "system2ResearchCiRun": 37161852747,
+    "system2ResearchCiResult": "PASS",
+    "disposition": "TEMPORARY_CAPTURE_ONLY_DO_NOT_MERGE"
+  },
+  "interpretation": [
+    "All 44 monthly scan dates were frozen before return outcomes.",
+    "Dates are last observed official TWSE valuation sessions for long-lived ordinary stock 1102 in each month.",
+    "No calendar month-end substitution is permitted.",
+    "These scan dates define only the TWSE historical valuation research clock; they are not trading recommendations."
+  ]
+}
