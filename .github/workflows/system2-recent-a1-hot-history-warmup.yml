@@ -1,0 +1,83 @@
+name: System2 Recent A1 Hot History Warmup
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 8 * * *" # 16:30 Asia/Taipei; bounded historical warmup may run on weekends
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/recent_a1_hot_history_warmup_v0_1.mjs"
+      - "system2/runtime/official_historical_a1_source_v0_1.mjs"
+      - "system2/runtime/historical_store_v0_1.mjs"
+      - "system2/runtime/historical_bulk_persistence_v0_1.mjs"
+      - "system2/deploy/remote_d1_rest_adapter.mjs"
+      - "system2/scripts/run_recent_a1_hot_history_warmup_v0_1.mjs"
+      - ".github/workflows/system2-recent-a1-hot-history-warmup.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-isolated-d1-writer
+  cancel-in-progress: false
+
+jobs:
+  warmup:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: system2-research
+    env:
+      SYSTEM2_HOT_HISTORY_MAX_DATES: "5"
+      SYSTEM2_HOT_HISTORY_REQUIRED_SESSIONS: "60"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Verify bounded warmup and isolation
+        run: |
+          set -euo pipefail
+          node system2/tests/recent_a1_hot_history_warmup_v0_1.test.mjs
+          node system2/tests/recent_a1_hot_history_workflow_guard.test.mjs
+          node system2/tests/official_historical_a1_source_v0_1.test.mjs
+          node system2/tests/historical_bulk_persistence_v0_1.test.mjs
+          node --check system2/scripts/run_recent_a1_hot_history_warmup_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+
+      - name: Warm recent official A1 history into isolated D1
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_CONFIRM: WRITE_SYSTEM2_RECENT_A1_HOT_HISTORY_ONLY
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test -n "$SYSTEM2_CLOUDFLARE_API_TOKEN"
+          node system2/scripts/run_recent_a1_hot_history_warmup_v0_1.mjs | tee /tmp/system2-recent-a1-hot-history.json
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          const receipt=JSON.parse(fs.readFileSync("/tmp/system2-recent-a1-hot-history.json","utf8"));
+          if(receipt.result!=="PASS"||receipt.databaseName!=="system2-research")throw new Error("wrong warmup/database");
+          if(receipt.maxDatesPerRun!==5||receipt.requiredSessions!==60)throw new Error("warmup bounds changed");
+          if(receipt.historyCoverageOnly!==true||receipt.continuityPromotionPerformed!==false||receipt.continuityStateForNewRows!=="UNVERIFIED")throw new Error("continuity firewall changed");
+          if(receipt.strategyEvaluationPerformed!==false||receipt.capacityRunProduced!==false||receipt.zeroPickClaimed!==false||receipt.selectionAuthority!==false)throw new Error("selection authority leak");
+          if(receipt.livePushEnabled!==false||receipt.orderImpact!==false||receipt.system1RuntimeUsed!==false)throw new Error("production boundary leak");
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+            "Recent A1 hot-history warmup PASS\n\nAnchor: "+receipt.anchorMarketDate+
+            "; target sessions: "+receipt.requiredSessions+
+            "; planned dates: "+receipt.plannedDateCount+
+            "; ready dates after: "+receipt.readyDateCountAfter+
+            ". Continuity remains UNVERIFIED.\n");
+          NODE
+
+      - name: Preserve warmup receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-recent-a1-hot-history-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/system2-recent-a1-hot-history.json
+          if-no-files-found: warn
+          retention-days: 90
