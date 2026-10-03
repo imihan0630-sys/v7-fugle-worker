@@ -1,0 +1,30 @@
+name: Curriculum Coverage Intake Preflight
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'research/COV*_SPECIALIST_RETURN_V0_1.md'
+      - 'research/curriculum_coverage_intake_preflight_v0_1.mjs'
+      - 'tests/test_curriculum_coverage_intake_preflight_v0_1.mjs'
+      - 'research/curriculum_coverage_return_validator_v0_1.mjs'
+      - '.github/workflows/curriculum-coverage-intake-preflight.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate intake preflight
+        run: |
+          set -euo pipefail
+          node --check research/curriculum_coverage_intake_preflight_v0_1.mjs
+          node tests/test_curriculum_coverage_intake_preflight_v0_1.mjs
+          node research/curriculum_coverage_intake_preflight_v0_1.mjs
