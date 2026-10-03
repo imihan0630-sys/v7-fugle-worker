@@ -2420,3 +2420,76 @@ Still unresolved:
 No maturity change.
 Evidence cursor remains PVE-239.
 Formal Core remains LOCKED.
+
+## Pre-PVE-240 continuation — D02-10 + D02-12 PIT readiness promotion (2026-10-04)
+
+Status: OUTCOME_BLIND / PVE_CURSOR_REMAINS_239 / FORMAL_UNCHANGED.
+
+Durable artifacts:
+- `research/d02_10_volume_trend_pit_readiness_20261004_v0_1.md`
+- `research/d02_10_volume_trend_pit_readiness_v0_1.json`
+- `research/d02_12_intraday_volume_profile_pit_readiness_20261004_v0_1.md`
+- `research/d02_12_intraday_volume_profile_pit_readiness_v0_1.json`
+
+### D02-10 — 成交量狀態 × 趨勢互動
+
+Primary V0.1 clock is frozen as:
+- D03-owned trend context from the last completed eligible symbol session before current market date;
+- D02 current participation from a completed 15m bar;
+- interaction firstKnownAt = max(trendParentKnownAt, volumeBarEnd, volumeSourceFetchedAt).
+
+This blocks same-bar circularity and keeps D03 trend ownership separate from D02 participation ownership.
+
+Primary volume inputs:
+- pvSlotRvol20;
+- pvCumvolPace20 when cumulative continuity is valid;
+- pvPersistenceState only when adjacency is independently verified.
+
+At 09:00 cumulative pace is exactly the same as same-slot RVOL and cannot receive an additional interaction vote.
+
+Taiwan PIT source/time semantics are feasible; no outcome success is claimed.
+
+Maturity:
+D02-10 L2/40 -> L3/60.
+
+### D02-12 — 盤中量能曲線 / Volume Profile
+
+The ambiguous label is split into:
+1. TIME_OF_DAY_VOLUME_CURVE
+2. PRICE_BY_VOLUME_PROFILE
+
+TIME_OF_DAY_VOLUME_CURVE:
+- historical 15m Taiwan equity candles are available from 2023-05-23;
+- current intraday 15m candles are available;
+- regular-stock intraday volume uses LOTS;
+- completed-bar clock + prior-session same-slot denominator is PIT-replayable.
+
+Current repository monitor is bounded:
+- observable slots begin 09:00 and end 13:00;
+- 13:15-start bar / complete closing-auction activity are not captured;
+- V0.1 therefore cannot claim a complete full-session curve.
+
+PRICE_BY_VOLUME_PROFILE:
+- current-day price/volume, volumeAtBid and volumeAtAsk have a prospective source;
+- opening first trade is excluded from bid/ask classification by provider semantics;
+- historical replay source is not established, so this subfamily is prospective-only beyond current-day observation.
+
+These limitations block L4/L5 performance maturity, not L3 PIT feasibility.
+
+Maturity:
+D02-12 L2/40 -> L3/60.
+
+### Aggregate implication
+
+Two 20-point module promotions add 40 module-points across 12 D02 modules:
+580 -> 620 total points.
+620 / 12 = 51.666...%.
+
+D02 aggregate:
+48.3% -> 51.7%.
+
+No H001/H002/H20 outcome gate is opened.
+No threshold or Formal rule is changed.
+No FORMAL_OPTIMIZATION_CANDIDATE is created.
+Formal evidence cursor remains PVE-239.
+PVE-240 remains reserved for the first genuine completed post-repair market session.
