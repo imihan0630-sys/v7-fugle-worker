@@ -360,3 +360,159 @@ This source map establishes feasibility and known coverage gaps only. No D19-01.
 - D19 domain maturity -> 20.0% (six modules at 40%, six modules at 0%, simple module average).
 - Shared Taiwan PIT source map designed; no L3 promotion yet because no executable ingestion/replay receipt exists.
 - Formal Core remains unchanged.
+
+
+## 2026-10-03 Long-block Stage 4 — D19-07 / D19-08 / D19-09 / D19-10
+
+### D19-07 Low Volatility（低波動）／Low Beta（低貝塔）因子
+
+#### Core separation
+1. Low Volatility（低波動）是總報酬變異的橫截面特徵；Low Beta（低貝塔）是相對市場系統性敏感度。兩者相關但不等價。
+2. D19-07 與 D19-01 的 Beta（貝塔）估計及 D04 的 Volatility（波動）研究不得重複投票；D19-07 只研究低風險曝險是否形成獨立資產定價溢酬。
+3. 任何低風險候選都必須先控制 Size（規模）、Liquidity（流動性）、Industry（產業）、Momentum（動能）、Market Beta（市場貝塔）與既有波動特徵。
+
+#### Positive mechanisms
+- Leverage constraints（槓桿限制）與 benchmark-oriented demand（基準導向需求）可使無法或不願使用槓桿的投資者偏好高 Beta（高貝塔）股票，形成高 Beta（高貝塔）相對高估、低 Beta（低貝塔）相對低估的可能機制。
+- Lottery preference（彩券偏好）、attention（注意力）與 delegated management（委託管理）亦可使高波動股票被過度追逐。
+- Taiwan evidence（台灣證據）顯示低波動報酬關係可能隨 funding-liquidity regime（資金流動性狀態）改變，表示機制具有狀態依賴性。
+
+#### Falsification / failure modes
+- 低波動並非固定方向的 Alpha（超額報酬）。不同資金流動性與市場狀態下，低波動／高波動報酬排序可能反轉。
+- 若低波動效果在控制 Size（規模）、Liquidity（流動性）、Value（價值）、Momentum（動能）、Industry（產業）後消失，就應視為既有因子的重新包裝。
+- 低波動策略可能集中大型防禦股並產生產業、利率與估值曝險；若未中性化，不能把組合結果解讀成純低波動溢酬。
+- 使用 ex-post regime（事後市場狀態）切樣會製造不可重播的假穩健性。
+
+#### PIT / replay contract before L3
+- 固定 volatility window（波動估計窗）、return adjustment（報酬調整）與 Beta window（貝塔估計窗）。
+- benchmark（基準）、risk-free proxy（無風險利率代理）、公司行動、停牌／無成交、下市與上市狀態必須 PIT（時點一致）。
+- 同時保存 total volatility（總波動）、market beta（市場貝塔）、residual volatility（殘差波動）、size（規模）、liquidity（流動性）、industry（產業）與 regime（市場狀態）以供冗餘檢查。
+- 必須比較 equal-weight（等權）與 value-weight（市值加權）、長多與可執行的多空版本，並納入 turnover（換手）、spread（價差）、impact（市場衝擊）與 capacity（容量）。
+
+#### System 1 / System 2 implication
+- System 1：不得新增固定「低波動加分」或「低 Beta（低貝塔）加分」。
+- System 2：可研究 neutralized low-risk residual（中性化低風險殘差）作為風險狀態或候選排序輔助，但只有 OOS（樣本外）／Shadow（影子）增量證據才能升級。
+- Formal optimization candidate（正式優化候選）：NO（否）。
+
+### D19-08 Idiosyncratic Volatility（特質波動）異象
+
+#### Core separation
+1. Idiosyncratic volatility（特質波動）是相對指定資產定價模型後的殘差波動，不是「公司自己的真實風險」的無模型量測。
+2. 模型改變，residual（殘差）與 idiosyncratic volatility（特質波動）也會改變，因此 D19-08 必須與 D19-10 的因子曝險／共線性治理綁定。
+3. D19-08 不得與 D04 total volatility（總波動）或 D19-07 low volatility（低波動）重複加權。
+
+#### Positive mechanisms
+- 經典實證曾發現高 idiosyncratic volatility（特質波動）股票未來平均報酬偏低。
+- Candidate explanations（候選解釋）包含 diversification constraints（分散限制）、lottery demand（彩券需求）、limits to arbitrage（套利限制）與 mispricing（錯價）。
+
+#### Falsification / counterevidence
+- 結果對資料頻率、portfolio weighting（投組加權）、breakpoints（分組切點）、價格／規模／流動性篩選高度敏感。
+- 若用 expected idiosyncratic volatility（預期特質波動）而不是 lagged realized idiosyncratic volatility（落後已實現特質波動），文獻可得到相反方向。
+- microstructure noise（市場微結構噪音）與 bid-ask effects（買賣價差效應）可能污染特質波動估計。
+- Taiwan evidence（台灣證據）顯示關係具有 funding-liquidity regime dependence（資金流動性狀態依賴），不支持固定方向規則。
+
+#### Required controls
+- Size（規模）、Beta（貝塔）、total volatility（總波動）、Liquidity（流動性）、Industry（產業）、Momentum（動能）及極端報酬／MAX-like（類最大單日報酬）特徵。
+- contemporaneous short-sale constraints（當時放空限制）與交易成本。
+- 模型規格、估計窗、最少有效觀測數與缺失處理必須 preregistered（事前登錄）。
+
+#### System 1 / System 2 implication
+- System 1：僅能研究風險診斷，不得成為獨立買進票數。
+- System 2：先建立 residual IVOL（殘差特質波動）研究欄位，再與 D19-07、D04 做增量資訊檢驗。
+- Governance role（治理角色）維持 OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / RESIDUAL_ALPHA_UNPROVEN。
+- Formal optimization candidate（正式優化候選）：NO（否）。
+
+### D19-09 Residual Momentum（殘差動能）／Factor Neutralization（因子中性化）
+
+#### Core separation
+1. Residual momentum（殘差動能）是先以指定因子模型拆除共同因子報酬，再以剩餘報酬建立動能排序；它不是一般 total-return momentum（總報酬動能）的別名。
+2. time-series residualization（時間序列殘差化）與 cross-sectional neutralization（橫截面中性化）是不同操作：前者估計每檔股票相對因子模型的殘差報酬，後者在同一截面扣除產業／規模／風格曝險。兩者不得混稱。
+3. Residual（殘差）永遠 model-relative（相對模型）；若漏掉重要共同因子，所謂「個股殘差」仍可能只是 omitted factor exposure（遺漏因子曝險）。
+
+#### Positive evidence
+- Blitz、Huij、Martens（2011）發現以 residual stock returns（股票殘差報酬）排序可大幅降低傳統動能策略對 Fama-French factors（法瑪－法蘭奇因子）的時變曝險，並在其樣本中得到較高且較穩定的風險調整後報酬。
+- 台灣 2015 年碩士論文對 residual momentum（殘差動能）與 recent 52-week momentum（近期五十二週動能）皆找到顯著 Fama-French alpha（法瑪－法蘭奇超額報酬），但沒有明確證據證明其中一種支配另一種。
+- 2026 年台灣因子動能研究顯示，產業中立與相互涵蓋後，部分表面因子動能顯著減弱，提示「中性化後仍有效」才是增量價值的真正測試。
+
+#### Falsification / failure modes
+- neutralization model risk（中性化模型風險）：換因子集合、估計窗或基準即可改變 residual（殘差）。
+- omitted-factor contamination（遺漏因子污染）：若模型未含產業、規模、價值、獲利、投資、低風險與流動性等重要共同來源，殘差不是獨立 Alpha（超額報酬）。
+- sequential orthogonalization（順序正交化）具有 order dependence（順序依賴）；不同因子先後順序可能得到不同殘差。
+- Taiwan industry momentum（台灣產業動能）可能是重要共同來源；若殘差動能在產業中立後消失，就不得視為獨立股票選擇能力。
+- 高換手與估計誤差可能使理論改善在交易成本後消失。
+
+#### PIT / replay contract before L3
+- 因子報酬、股票報酬、因子曝險估計窗、benchmark id（基準識別碼）、industry classification vintage（產業分類版本）皆需 PIT（時點一致）。
+- 每次殘差化保存 factor set id（因子集合識別碼）、factor version（因子版本）、estimation window（估計窗）、minimum observations（最少觀測數）、coefficient vector（係數向量）、residual hash（殘差雜湊）與 as-of timestamp（截至時間）。
+- 必須同時保留 raw momentum（原始動能）與 residual momentum（殘差動能），用 paired OOS（成對樣本外）測試確認增量，而非各自看單一回測。
+- 產業／規模／Beta（貝塔）／波動／流動性控制均使用 formation date（形成日）當時可知資料。
+- long-only（僅做多）與 long-short（多空）結果分離；沒有歷史可借券證據時，short leg（空方腿）不得假定可成交。
+
+#### System 1 / System 2 implication
+- System 1：暫不新增殘差動能票數；先用於診斷現有 D03／D09 動能與相對強弱到底承載多少共同因子曝險。
+- System 2：D19-09 是較有價值的研究候選，但應採 paired comparator（成對比較器）：raw momentum（原始動能）對 residual momentum（殘差動能），並要求 turnover-adjusted（換手調整）、cost-adjusted（成本調整）與 multi-regime（多市場狀態）增量。
+- Formal optimization candidate（正式優化候選）：NO（否）；尚缺台股 PIT（時點一致）可執行重播與 OOS（樣本外）證據。
+
+### D19-10 Factor Exposure（因子曝險）／Multicollinearity（多重共線性）
+
+#### Core separation
+1. 多個因子高度相關時，模型可能仍有預測力，但 individual coefficient attribution（單一係數歸因）會變得不穩定；「模型能預測」不等於「每個因子都獨立有價值」。
+2. 因子治理的核心是 incremental information（增量資訊）與 redundancy（冗餘），不是把更多顯著因子疊進同一分數。
+3. orthogonalization（正交化）是工具，不是自動真相。順序式正交化可能有 leader bias（領先因子偏誤）與 order dependence（順序依賴）。
+
+#### Positive evidence / methods
+- Factor-zoo（因子動物園）研究顯示，高維既有因子控制後，多數新因子可被判為冗餘；只有少數仍提供額外解釋力。
+- Green、Hand、Zhang 類型的 simultaneous-characteristic analysis（多特徵同時分析）與 Feng、Giglio、Xiu 類型的 high-dimensional model selection（高維模型選擇）提供「新因子必須在既有因子集合之外仍有增量」的正式框架。
+- latent-factor methods（潛在因子方法）亦顯示大量特徵資訊可以被較少維度摘要，支持 dimension reduction（降維）而非無限制增加投票因子。
+
+#### Falsification / failure modes
+- pairwise correlation（兩兩相關）低不代表不存在多重共線性；一個因子可能由多個其他因子線性組合高度解釋。
+- VIF-like diagnostics（類變異膨脹診斷）只能辨識線性共線性，不能證明經濟冗餘或樣本外冗餘。
+- regularization（正則化）與機器學習可改善預測，但被選中的變數集合可能不穩定；預測穩定性與經濟歸因必須分開。
+- in-sample orthogonalization（樣本內正交化）若用全期係數會洩漏未來；所有正交化係數必須 rolling（滾動）或 expanding-window（擴張視窗）且只用當時已知資料。
+- 因子數愈多，多重測試與 data snooping（資料探勘）風險愈高；不能用一般單一檢定門檻直接宣告獨立 Alpha（超額報酬）。
+
+#### D19 governance contract
+- 每個候選因子建立 exposure matrix（曝險矩陣）、pairwise correlation（兩兩相關）、partial correlation（偏相關）、cross-sectional residual R2（橫截面殘差解釋度）、spanning test（涵蓋檢定）與 OOS incremental metric（樣本外增量指標）。
+- 同一資訊家族原則上只允許一個 PRIMARY_ALPHA（主要超額報酬）候選；其餘降為 context（情境）、risk control（風險控制）、comparator（比較器）或 merge candidate（合併候選）。
+- 若不同中性化順序給出不同方向或不同顯著性，狀態必須標記 MODEL_SENSITIVE（模型敏感），不得升級。
+- 必須以 cost-adjusted（成本調整）與 capacity-adjusted（容量調整）後的 OOS（樣本外）增量作最終比較，不以樣本內 t-stat（t統計量）單獨決策。
+
+#### System 1 / System 2 implication
+- System 1：D19-10 更適合作為 anti-double-count（防重複計票）治理層，而不是新選股因子。
+- System 2：應把它實作成 factor attribution / neutralization audit（因子歸因／中性化稽核）研究層，對所有策略候選輸出共線性、殘差增量與模型敏感性。
+- Formal optimization candidate（正式優化候選）：NO（否）；目前是研究治理框架，不是 Formal Core（正式核心）變更。
+
+### Minimal executable Taiwan PIT（台股時點一致） replay slice — updated engineering assessment
+
+現有 System2（系統二）歷史冷資料層已具備可直接利用的基礎：
+- historical cold rows（歷史冷資料列）保存 observedAt（觀測時間）、availableAt（可用時間）、barHash（價格列雜湊）與 source provenance（來源溯源）。
+- survivorship registry（存活者控制股票池登錄）可依指定 registry id（登錄識別碼）重播，且不把未來下市日期暴露給過去。
+- cold loader（冷資料載入器）已可接 PIT Replay（時點重播）與 partitioned bulk backtest（分割大量回測）。
+- completion receipt（完成收據）採 immutable / rerun-safe（不可變／可安全重跑）設計。
+
+但 D19 升 L3（第三級）仍缺 factor-layer receipt（因子層收據）。最低可執行切片需額外產生：
+1. universeReceipt（股票池收據）：形成日、上市／上櫃、停牌、下市、有效會員資格。
+2. returnReceipt（報酬收據）：調整價政策、公司行動、無成交語意與資料來源。
+3. factorInputReceipt（因子輸入收據）：市值、股本、財報 first-known（首次可知）、benchmark（基準）、risk-free proxy（無風險利率代理）及其 availableAt（可用時間）。
+4. neutralizationReceipt（中性化收據）：因子集合版本、係數、估計窗、有效樣本數與殘差雜湊。
+5. costReceipt（成本收據）：turnover（換手）、spread（價差）／slippage proxy（滑價代理）、borrowability（可借券性）若涉及空方。
+6. replayReceipt（重播收據）：上述收據雜湊、輸出排序、結果雜湊與程式版本。
+
+目前 price-history / universe infrastructure（價格歷史／股票池基礎）已足以支援「研究切片設計與測試」，但完整 2017 全市場冷資料回填尚未被正式宣稱完成，因此本輪仍不得把任何 D19 模組提升到 L3（第三級）。
+
+### Stage 4 maturity decision
+- D19-07 -> L2 / 40%.
+- D19-08 -> L2 / 40%; governance role remains research-only and residual-alpha-unproven.
+- D19-09 -> L2 / 40%.
+- D19-10 -> L2 / 40%.
+- With the current 15-module D19 curriculum, domain simple-average maturity becomes 26.7% (10 modules at 40%, 5 modules at 0%).
+- No L3 promotion: executable Taiwan factor-layer PIT replay receipts are still missing.
+- Formal Core remains unchanged and locked.
+
+### Evidence anchors added in Stage 4
+- Blitz, Huij & Martens (2011), Journal of Empirical Finance, DOI 10.1016/j.jempfin.2011.01.003.
+- 徐斌瑋（2015），國立成功大學碩士論文：台股殘餘動能相對近期五十二週動能。
+- 林祐祥（2026），國立成功大學碩士論文：因子動能—以台灣市場為例。
+- Feng, Giglio & Xiu (2020), Journal of Finance, Taming the Factor Zoo.
+- Green, Hand & Zhang (2017), Review of Financial Studies, independent stock-return characteristics.
+- Hou, Xue & Zhang (2020), Review of Financial Studies, Replicating Anomalies.
