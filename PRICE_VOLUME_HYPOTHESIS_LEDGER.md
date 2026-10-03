@@ -742,3 +742,29 @@ Do not spend scarce prospective dates testing:
 SVB + CMF + raw OBV + multiple OBV slopes as separate alpha candidates.
 
 Any later SVB-vs-CMF challenger comparison must be preregistered before outcomes.
+
+## Pre-PVE-240 daily-volume continuity overlay — 2026-10-03
+
+No H001~H006 outcome status changes.
+
+### H001 / H002
+H001/H002 remain intraday participation hypotheses. Their regular-stock intraday candle magnitude is LOTS under the documented provider contract, while the daily D1 lane is SHARES.
+
+Rules:
+- compare H001/H002 features on their own frozen same-slot/cumulative common support;
+- do not use daily-vs-intraday absolute magnitude as a hidden consistency test without an explicit unit/odd-lot adapter;
+- daily continuity defects do not automatically destroy field-valid intraday RVOL evidence, but any cross-lane control must preserve unit provenance.
+
+### D02-07 / D02-09
+signedVolumeBalance20 and pivot signed-volume divergence require verified daily volume-magnitude continuity.
+
+Freeze:
+- UNIT_SCALE: bridge or reset-clean; unresolved => DATA_BLOCKED.
+- SUPPLY_CHANGE: RAW_ACTIVITY remains factual, but COMPARABLE_PARTICIPATION requires denominator normalization or a fully post-break 20-session baseline.
+- exact expected symbol sessions, not merely 20 surviving rows, define the denominator.
+- factual zero volume is not missing.
+- missing expected session cannot be backfilled by an older row.
+
+No hypothesis is SUPPORTED or REJECTED.
+No FORMAL_OPTIMIZATION_CANDIDATE is created.
+Formal Core remains LOCKED.
