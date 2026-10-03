@@ -1,7 +1,7 @@
 {
   "schemaVersion": "D22_01_D13_BASELINE_READINESS_V0_1",
-  "generatedAt": "2026-10-03T18:50:00+08:00",
-  "status": "D13_BASELINE_PARTIALLY_READY / SESSION_ALIGNED_20TD_CHANGE_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "generatedAt": "2026-10-03T18:55:00+08:00",
+  "status": "D13_BASELINE_READY_FOR_TSMC_UMC / TCC_KNOWNAT_BLOCKED / SAME_CALENDAR_DATE_LOOKAHEAD_REPAIRED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "purpose": "Audit preregistered rate-context readiness before any equity-outcome join.",
   "officialSources": {
     "usTreasury": "U.S. Department of the Treasury Daily Treasury Par Yield Curve Rates",
@@ -11,42 +11,51 @@
     {
       "issuer": "UMC",
       "sourceKnownAt": "2024-03-25",
-      "ust10yPct": 4.25,
+      "latestKnownUSTSession": "2024-03-22",
+      "ust10yPct": 4.22,
+      "lag20USTSession": "2024-02-23",
+      "ust10yLag20Pct": 4.26,
+      "ust10yChange20tdPctPoint": -0.04,
+      "ust10yChange20tdBps": -4,
       "cbcDiscountRatePct": 2,
       "cbcRateEffectiveSince": "2024-03-22",
-      "ust10yChange20TradingDays": null,
-      "readiness": "LEVELS_READY / 20TD_CHANGE_PENDING_D13_SESSION_ALIGNMENT",
-      "note": "The 2024-03-25 U.S. Treasury 10-year par yield is 4.25%. Taiwan CBC discount rate became 2.0% effective 2024-03-22."
+      "readiness": "READY_FOR_PREREGISTERED_BASELINE",
+      "note": "2024-03-25 U.S. close was not yet available at Taiwan daytime. The 2024-03-22 Treasury close is used; 20 U.S. trading sessions earlier is 2024-02-23."
     },
     {
       "issuer": "TSMC",
       "sourceKnownAt": "2024-04-18",
-      "ust10yPct": 4.64,
+      "latestKnownUSTSession": "2024-04-17",
+      "ust10yPct": 4.59,
+      "lag20USTSession": "2024-03-19",
+      "ust10yLag20Pct": 4.3,
+      "ust10yChange20tdPctPoint": 0.29,
+      "ust10yChange20tdBps": 29,
       "cbcDiscountRatePct": 2,
       "cbcRateEffectiveSince": "2024-03-22",
-      "ust10yChange20TradingDays": null,
-      "readiness": "LEVELS_READY / 20TD_CHANGE_PENDING_D13_SESSION_ALIGNMENT",
-      "note": "The 2024-04-18 U.S. Treasury 10-year par yield is 4.64%. Taiwan CBC discount rate remained 2.0%."
+      "readiness": "READY_FOR_PREREGISTERED_BASELINE",
+      "note": "TSMC Form 20-F was accepted 2024-04-18 at 06:27:53 UTC, after the Taiwan close but before the 2024-04-18 U.S. Treasury close. The latest completed U.S. Treasury session is therefore 2024-04-17."
     },
     {
       "issuer": "Taiwan Cement",
       "sourceKnownAt": null,
       "ust10yPct": null,
       "cbcDiscountRatePct": null,
-      "ust10yChange20TradingDays": null,
+      "ust10yChange20tdBps": null,
       "readiness": "BLOCKED_SOURCE_PUBLIC_KNOWN_AT_UNKNOWN",
       "note": "Board approval date cannot substitute for verified public knownAt."
     }
   ],
   "timingFirewall": [
-    "Use the latest rate observation that was public before the Taiwan outcome-start timestamp.",
-    "Do not use a U.S. close that occurred after the relevant Taiwan information decision point.",
-    "The 20-trading-day change requires D13-13 calendar/session alignment; do not approximate by calendar-day subtraction.",
-    "Missing rate/session fields remain UNKNOWN and block the applicable incremental test rather than becoming zero."
+    "Use the latest completed U.S. Treasury session public before the Taiwan information decision point; same-calendar-date U.S. yields may be future information in Taiwan time.",
+    "Use actual U.S. Treasury trading-session observations for the 20-session lag; do not approximate by calendar days.",
+    "Taiwan CBC policy rate is mapped by its effective date, not later commentary.",
+    "Missing source time or session data remains UNKNOWN and blocks the applicable row."
   ],
   "next": [
     "Resolve Taiwan Cement public knownAt or exclude it from timed outcome tests.",
-    "Materialize the 20-trading-day U.S. Treasury change using D13-13 session alignment.",
-    "Confirm whether the outcome start is next eligible Taiwan session after source knownAt and freeze that mapping before return labels are opened."
-  ]
+    "Build a larger multi-issuer/multi-date replay panel before any OOS claim; two timing-eligible issuer/date rows are not a statistical test.",
+    "Keep equity outcomes closed while the replay panel remains too small for independent-date evidence."
+  ],
+  "finding": "Same-calendar-date U.S. Treasury yields at the Taiwan disclosure date were not necessarily known at Taiwan information time. Use the latest completed U.S. Treasury session available before the Taiwan outcome-start decision point."
 }
