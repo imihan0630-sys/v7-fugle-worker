@@ -865,3 +865,14 @@ Specialist task packet:
 D16-25 is specialist-complete at L2 for curriculum merge comparison; D15-19 research is now the active missing side.
 No maturity transfer, retirement or Formal change is authorized.
 
+## System1 A2 gate-role inventory — 2026-10-03
+
+Canonical:
+`shared-knowledge/SYSTEM1_A2_GATE_ROLE_INVENTORY_20261003_V0_1.md`
+
+Machine-readable:
+`shared-knowledge/system1_a2_gate_role_inventory_20261003_v0_1.json`
+
+Current finding:
+21 Formal fail-fast branches collapse safety, confidence, primary evidence and context/supportive evidence. P1 contains 8 likely short-horizon over-hardening candidates; P2 contains 7 secondary review gates. No Formal change is authorized.
+
