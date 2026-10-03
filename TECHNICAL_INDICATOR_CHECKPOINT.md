@@ -2417,3 +2417,39 @@ Current:
 4. Continue D03-04 momentum continuation vs persistence/direct return construct separation and PIT feasibility.
 5. TI-005/TI-006 efficacy remains blocked until the raw receipt gate genuinely closes.
 6. Formal Core unchanged.
+
+
+## TI-504 through TI-515 — D03-04 momentum continuation PIT (2026-10-03)
+
+Durable artifacts:
+- `research/D03_MOMENTUM_CONTINUATION_CONSTRUCT_PIT_V0_1.md`
+- `research/d03_momentum_continuation_contract_v0_1.json`
+- `research/test_d03_momentum_continuation_construct_v0_1.mjs`
+
+Key findings:
+- D03-04 is a post-decision continuation/outcome relation, not another retN/persistence score;
+- rolling retN sign retention is rejected as primary continuation evidence because of heavy pre-decision overlap;
+- synthetic witness: ret20(t)=+20%, true forward D5=-4.1667%, but rolling ret20(t+5)=+9.5238%;
+- primary outcomes are non-overlapping D5/D10/D20 return, MFE and MAE using exact future symbol sessions;
+- rank retention and economic forward return are distinct;
+- Regime construction remains D18-owned; D03 consumes the causal context;
+- exact symbol-session/corporate-action outcome provenance is mandatory.
+
+Maturity:
+- D03-04 L2/40 -> L3/60;
+- active 12-module D03 53.3% -> **55.0%**.
+
+Current:
+`D03_04 = L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED`
+`ROLLING_RETN_SIGN_RETENTION = REJECTED_AS_PRIMARY_OUTCOME`
+`RAW_RECEIPT_GATE = 2_OF_3`
+`OUTCOME_INFERENCE = NO_GO`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+### Exact next after TI-515
+
+1. Weekend source denominator stays 2/3.
+2. Preserve non-overlapping future-outcome semantics.
+3. Continue D03-05 pullback/short-term reversal construct separation and PIT feasibility.
+4. TI-005/TI-006 remain first actual efficacy tests after source-gate completion.
+5. Formal Core unchanged.
