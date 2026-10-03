@@ -1,7 +1,7 @@
 # Curriculum Coverage Execution Registry 2026-10-03 V0.1
 
 Updated: 2026-10-03 Asia/Taipei
-Status: COVERAGE_A_PACKETS_READY / SPECIALIST_RETURNS_PENDING
+Status: COVERAGE_A_AND_B_PACKETS_READY / SPECIALIST_RETURNS_PENDING
 Parent audit:
 `shared-knowledge/CURRICULUM_COVERAGE_AUDIT_20261003_V0_1.md`
 Specialist packet:
@@ -30,16 +30,19 @@ This registry tracks routing and return state; it does not itself decide module 
 | COV-11 | D21 | 14｜公司治理與內部人研究室 | TRUE_GAP_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV11_D21_SPECIALIST_RETURN_V0_1.md` |
 | COV-12 | D22 | 15｜信用市場與資本結構研究室 | SCOPE_EXTENSION_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV12_D22_SPECIALIST_RETURN_V0_1.md` |
 
-## Coverage-B queue
+## Coverage-B registry
 
-Coverage-B remains queued behind Coverage-A unless an assigned specialist room independently returns evidence earlier.
+Packet:
+`shared-knowledge/CURRICULUM_COVERAGE_B_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
 
-- COV-03 → 05｜法人與籌碼研究室
-- COV-05 → 06｜基本面與估值研究室
-- COV-08 → 11｜統計驗證與策略市場狀態研究室
-- COV-09 → 12｜資產定價與因子研究室
+| Candidate | Domain | Room | Current class | Specialist state | Expected return path |
+|---|---|---|---|---|---|
+| COV-03 | D06 | 05｜法人與籌碼研究室 | TRUE_GAP_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV03_D06_SPECIALIST_RETURN_V0_1.md` |
+| COV-05 | D08 | 06｜基本面與估值研究室 | SCOPE_EXTENSION_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV05_D08_SPECIALIST_RETURN_V0_1.md` |
+| COV-08 | D16 | 11｜統計驗證與策略市場狀態研究室 | SCOPE_EXTENSION_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV08_D16_SPECIALIST_RETURN_V0_1.md` |
+| COV-09 | D19 | 12｜資產定價與因子研究室 | SCOPE_EXTENSION_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV09_D19_SPECIALIST_RETURN_V0_1.md` |
 
-No Coverage-B packet is promoted to structural decision by this registry.
+Coverage-B packet readiness is not a structural curriculum decision.
 
 ## Intake states
 
