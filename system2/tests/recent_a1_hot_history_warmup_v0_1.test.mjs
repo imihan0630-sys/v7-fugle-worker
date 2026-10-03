@@ -21,6 +21,11 @@ assert.deepEqual(prior, [
   "2025-12-30",
   "2025-12-29",
 ]);
+assert.throws(() => buildPriorTradingDatesV0_1({
+  anchorMarketDate: "2026-01-06",
+  calendars: new Map([[2026, calendars.get(2026)]]),
+  requiredSessions: 4,
+}), /official trading calendar missing for 2025/);
 
 function coverageRow(marketDate, market, {
   symbolCount = 0,

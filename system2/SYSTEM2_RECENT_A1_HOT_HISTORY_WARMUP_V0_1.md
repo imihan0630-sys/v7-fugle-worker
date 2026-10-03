@@ -75,3 +75,15 @@ The daily schedule may run on weekends because it fetches finalized historical d
 4. `historyCoverage` may be promoted only from actual D1 readback.
 5. `continuityCoverage` remains a separate unresolved gate until corporate-action/adjustment evidence is implemented and verified.
 6. Strategy assessor and Regime/fundamental/industry gates remain independent even after 60-session history coverage is complete.
+
+## Trading-calendar source boundary — 2026-10-03 correction
+
+The first physical warmup attempt proved that the current TWSE holiday endpoint can return the current-year schedule even when an older `queryYear` is requested. The parser correctly rejected that response when it was labeled as the prior year.
+
+V0.1 therefore:
+- fetches only the anchor-year official holiday schedule when the required 60 prior sessions fit inside that year;
+- does not request an unnecessary prior-year schedule;
+- fails closed with `CROSS_YEAR_OFFICIAL_CALENDAR_SOURCE_REQUIRED` if the requested window actually crosses into a year for which a verified calendar is not supplied;
+- does not infer holidays from weekdays alone and does not relabel a current-year calendar as a prior-year calendar.
+
+For the 2026-10-03 anchor, the 60-session target is contained within 2026, so the prior-year source is unnecessary. Cross-year calendar support remains a separate source-contract task before it is needed operationally.
