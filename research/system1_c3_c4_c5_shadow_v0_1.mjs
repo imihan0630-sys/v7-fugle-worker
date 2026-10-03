@@ -22,7 +22,7 @@ export const P1A_GATE_IDS=Object.freeze(["RS_CONTEXT","CHIP_CONCENTRATION_PRESEN
 
 const finite=x=>typeof x==="number"&&Number.isFinite(x)?x:null;
 const round=(x,d=6)=>Number.isFinite(x)?Math.round(x*10**d)/10**d:null;
-const ts=x=>typeof x==="string"&&/(?:Z|[+-]\\d\\d:\\d\\d)$/.test(x)?Date.parse(x):NaN;
+const ts=x=>typeof x==="string"&&/(?:Z|[+-]\d\d:\d\d)$/.test(x)?Date.parse(x):NaN;
 const hash=x=>createHash("sha256").update(JSON.stringify(x)).digest("hex");
 
 export function gateRole(gateId,strategy="SHORT"){
