@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_PIT_READINESS_PASS",
+  "module": "D02-11",
+  "oldLevel": "L2",
+  "oldMaturityPct": 40,
+  "newLevel": "L3",
+  "newMaturityPct": 60,
+  "evidenceCursor": "PVE-239",
+  "formalCoreChanged": false,
+  "formalOptimizationCandidate": "NONE",
+  "families": {
+    "LONG_HORIZON_VOLUME_CAPACITY": [
+      "avgVolume20Lots",
+      "avgAmount20",
+      "close",
+      "deterministic minLots reference"
+    ],
+    "CURRENT_EXECUTION_LIQUIDITY_CONTEXT": [
+      "bid/ask spread",
+      "top-five displayed depth",
+      "quoteUpdatedAt/sourceFetchedAt"
+    ],
+    "FORMAL_ADMISSION_RULE_REFERENCE": "reference only; exact exception-field production coverage remains UNKNOWN where not evidenced"
+  },
+  "formalReferenceThresholds": {
+    "generalMinLots": 1000,
+    "thousandPrice": 1000,
+    "thousandMinLots": 300
+  },
+  "rejectedResearchTruth": "pvIlliquidityWarning due reversed threshold and missing/exception semantics defects",
+  "missingness": "UNKNOWN",
+  "thresholdOptimization": "FORBIDDEN_AT_L3",
+  "alphaStatus": "UNKNOWN",
+  "l4Status": "NOT_REACHED"
+}
