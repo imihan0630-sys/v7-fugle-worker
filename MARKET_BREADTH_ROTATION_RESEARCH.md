@@ -2113,3 +2113,71 @@ The resulting H01 specialist classification is superseded from preliminary `SCOP
 Maturity: **D09-14 L2 -> L3 Taiwan PIT data feasibility only**.
 
 No merge/retirement or Formal change executed.
+
+
+## BR-053 — Steel proves industry structure must remain route/product specific
+
+Artifact:
+`research/br053_taiwan_steel_industry_structure_control_v0_1.json`
+
+Taiwan steel is the second non-semiconductor structural control:
+- CSC is an integrated blast-furnace/basic-oxygen-furnace producer with about 10m tonnes annual crude-steel capacity, broad flat/long product coverage and both domestic/export demand.
+- Tung Ho is a scrap-based electric-arc-furnace producer focused on construction/structural steel; 2025 primary raw material is about 98% scrap.
+- Therefore one TWSE steel label does not imply one economic market, one raw-material beta or one pricing-power state.
+
+Key falsification:
+- integrated BF/BOF and EAF producers face different upstream inputs, fixed-cost structures, decarbonization burdens and end-demand regimes;
+- iron ore/coking-coal exposure cannot be copied to scrap/electricity-based steel;
+- capacity, production index and issuer revenue remain incompatible market-share denominators unless explicitly reconciled.
+
+D09-13 remains L3. This strengthens cross-industry generalization, not predictive efficacy.
+
+## BR-054 — Strategic action must allow failure/suspension states
+
+Artifact:
+`research/br054_cross_industry_competitive_action_failure_control_v0_1.json`
+
+D09-14 is extended outside semiconductors using:
+- Tung Ho smart-scrap inspection R&D as an in-progress process action;
+- CSC AI sinter optimization as an implemented operational action;
+- Foxconn/Lordstown as a specific strategic-action chain that moved from agreement and partial implementation to investment dispute, counterparty bankruptcy/litigation and suspended negotiations.
+
+The Lordstown control is deliberately bounded: it is evidence that one strategic partnership chain can fail after partial implementation; it is not evidence that Foxconn's entire EV strategy failed.
+
+D09-14 remains L3.
+
+## BR-055 — PCB structure is product/application/material segmented
+
+Artifact:
+`research/br055_taiwan_pcb_industry_structure_control_v0_1.json`
+
+2025 Taiwan PCB evidence shows broad industry growth can coexist with opposite product/application states:
+- multilayer, substrates and HDI grew while flex and rigid-flex declined in the same period;
+- computer/semiconductor applications strengthened while communications/automotive weakened;
+- advanced-material bottlenecks such as low-CTE glass and high-end copper foil can create upstream supplier power;
+- one issuer may span conventional PCB, HDI, rigid-flex and ABF/PP substrates, so theme membership is not one economic exposure.
+
+D09-13 remains L3.
+
+## BR-056 — Native strategic-action outcome semantics frozen
+
+Artifact:
+`research/br056_strategic_action_native_outcome_contract_v0_1.json`
+
+Strategic actions now have explicit native lifecycle states:
+ANNOUNCED / APPROVED_OR_CONTRACTED / FUNDED / IMPLEMENTATION_STARTED / OPERATIONAL_MILESTONE_ACHIEVED / COMMERCIALIZED / PARTIAL_SUCCESS / DELAYED / SUSPENDED / CANCELLED / COUNTERPARTY_FAILURE / RESTRUCTURED / OUTCOME_UNKNOWN.
+
+Controls:
+- CSC AI sinter action = operational milestone achieved, but no company-wide alpha claim.
+- Tung Ho smart-scrap project = implementation started, outcome unknown.
+- Foxconn/Lordstown = partial implementation followed by suspended partnership/investment path and counterparty failure.
+
+No cross-action scalar "strategy success score" is allowed because native metrics are not common-support.
+
+### Exact next
+- BR-057: effective-dated PCB/ABF issuer product/application exposure denominator.
+- BR-058: prospective new strategic-action receipts frozen before outcomes are known, followed later by native outcomes on publication clocks.
+- D09-13 and D09-14 both remain L3.
+- H01 specialist return has been submitted to the canonical intake ledger for 00 Dependency Audit / owner review.
+
+Formal Core unchanged.
