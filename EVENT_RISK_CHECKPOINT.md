@@ -80,3 +80,17 @@ ER-028 prepare research-only event-vintage capture proposal only if needed.
 - Conservative replay rule unchanged: capturedAt controls availability until source-native availability is independently authenticated; deadline or displayed publication time cannot backdate knowledge.
 - No return, gap, continuation, reversal, cost or directional alpha was inspected. FORMAL_OPTIMIZATION_CANDIDATE = NO. Formal Core unchanged.
 - Exact next: immutable prospective event-state and publication receipts across independent dates; keep D11-13 negative-evidence completeness at L2 until expected/observed source coverage can prove absence.
+
+## Room 08 special-situations / policy-event long-block — 2026-10-03
+
+- Cross-link added for the newly approved D11-15..19 and D17-14 curriculum.
+- Unified research anchor: `SPECIAL_SITUATIONS_POLICY_EVENT_RESEARCH.md`; machine contract: `research/d11_d17_special_situations_event_clock_contract_v0_1.json`.
+- Special situations reinforce the existing ER conclusion that announcement, effective/tradable state and realized outcome are different clocks.
+- IPO failure/withdrawal, lock-up release without sale, private-placement restricted tradability, tender failure/extension, merger deal-break and policy draft/final/effective stages are now explicit negative/failure states.
+- D17-14 surprise requires a preserved ex-ante expectation; absent expectation => UNKNOWN, never inferred from price reaction.
+- Existing ER-024 prospective Shadow remains blocked by its original point-in-time/opening-data conditions; this research does not fabricate that evidence.
+- D11-15..19 and D17-14 advance only L0 -> L2. No L3/L4 outcome claim.
+- Formal Core unchanged; no event penalty or avoidance rule approved.
+
+Exact next:
+Build immutable prospective/historical source-version receipts for the six new modules while continuing ER event-vintage coverage. Keep outcome joins closed until source completeness and preregistered cohort gates pass.
