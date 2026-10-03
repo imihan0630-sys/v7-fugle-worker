@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 10:05 Asia/Taipei
+Updated: 2026-10-03 10:26 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -1325,4 +1325,17 @@ D15-15 advances to L3/60 for Taiwan PIT source/data feasibility only.
 - D05-05 vs D05-12。
 
 本輪只完成 governance scan（治理掃描）與 routing（路由），不退休模組、不改成熟度、不修改 Formal Core（正式核心）。任何未來合併仍需專科驗證、Dependency Audit（依賴審查）與 owner（持有人）明確批准。
+
+## 高重疊候選驗收契約 — 2026-10-03
+
+專責研究室執行 Priority-A（優先級A）重疊驗證前，必須讀：
+- `shared-knowledge/CURRICULUM_OVERLAP_MERGE_ACCEPTANCE_CONTRACT_20261003_V0_1.md`
+- `shared-knowledge/curriculum_overlap_merge_acceptance_contract_20261003_v0_1.json`
+
+凍結驗收方向：
+- 10｜投組風控與交易執行研究室：D15-21、D15-22 必須連同 D15-16 做三方責任矩陣，分清事前投組建構／最佳化與事後／基準相對診斷歸因。
+- 06｜基本面與估值研究室＋14｜公司治理與內部人研究室：D07-17、D21-12 必須證明有不同可觀測資料、不同決策角色及可分離反證；若只重複同一份展望／修正／實現資料，不得保留兩張獨立票。
+- 11｜統計驗證與策略市場狀態研究室：D16-11 持有通用資料來源／版本／first-known（首次可知）／replay（重播）治理；D16-21 只應保留替代資料特有的 selection bias（選樣偏誤）、coverage bias（覆蓋偏誤）、leakage（洩漏）、representativeness（代表性）與 model drift（模型漂移）。
+
+研究室只提交證據包；是否真正合併／退休由 00｜研究總控室依凍結契約驗收，再交 owner（持有人）批准。
 
