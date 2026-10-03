@@ -1109,3 +1109,31 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
   2. do not backfill 2026-10-02 extracted content;
   3. before System 2 resonance outcome testing, prove EMA64 canonical replay/state-lineage equivalence and retain EMA16/64 + Impulse as within-family evidence;
   4. after raw receipt gate passes, TI-005 KD-vs-RSI remains first efficacy inference, TI-006 MACD-vs-direct-trend second.
+
+
+## 2026-10-03 D03 — TI-474~481 persistence PIT / tick-confound audit
+
+- Room/domain: 03｜技術指標與趨勢動能研究室 / D03.
+- Curriculum reconciliation: D03-11 ROC is already CURRICULUM_RETIRED / EXACT_REDUNDANCY and its alias/anti-double-count responsibility is owned by D03-02. Current D03 denominator = 12 modules.
+- Exact current own-path persistence formula recovered:
+  35% positiveDayRatio20 + 25% positive ret5/10/20/60 fraction + 20% drawdown quality + 20% MA20/MA60 quality.
+- Deterministic counterexample:
+  same ret5/10/20/60 endpoints, same positive horizon states, same MA states and no last-20 drawdown can still produce persistence 100 vs 84.25 due only to daily sign frequency.
+- Taiwan-specific falsification:
+  zero-return sessions reduce positiveDayRatio20; current TWSE tiered tick grid can mechanically generate different zero-return frequency for the same latent percentage trend. Synthetic +0.08%/session paths produced persistence 93 to 72 across price tiers. This is mechanism evidence, not a real-stock effect-size estimate.
+- Score geometry:
+  +1.75 per additional positive day; 6.25 per ret-horizon sign state; 10 per MA state; -1 per 1% additional drawdown until -20% floor.
+- Construct firewall:
+  current persistenceScoreResearch = own-path trend consistency;
+  Chen-Hsieh-Lee momentum persistency = consecutive winner/loser rank membership duration;
+  do not merge or transfer literature effect sizes.
+- PIT feasibility:
+  own-path score requires at most 61 continuity-valid closes; existing real Taiwan D03 source audit has demonstrated 82 daily bars on 2330/5314/2006/4977;
+  future rows still require official-session, raw-history, TECHNICAL_CONTINUITY/corporate-action, constrained-session, formula and immutable parent provenance;
+  cross-sectional ret60 rank retention is prospective-feasible but historical backfill remains forbidden.
+- Maturity:
+  D03-03 L2/40 -> L3/60;
+  active 12-module D03 48.3% -> 50.0%.
+- Raw-byte prospective source/version gate remains 2/3; Saturday 2026-10-03 does not add a Taiwan completed trading session.
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`; Formal Core LOCKED.
+- Exact next: freeze component-level research-only persistence snapshot semantics, then continue D03-12 repaint-safe divergence PIT feasibility. TI-005/TI-006 efficacy stays blocked until the raw-receipt gate genuinely closes.
