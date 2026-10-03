@@ -1,10 +1,10 @@
 {
   "schemaVersion": "D22_03_NET_DEBT_LEVERAGE_STRUCTURE_CONTRACT_V0_1",
-  "generatedAt": "2026-10-04T03:18:00+08:00",
+  "generatedAt": "2026-10-04T07:35:00+08:00",
   "module": "D22-03",
-  "level": "L2",
-  "maturityPct": 40,
-  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / PIT_COMPONENT_CONTRACT_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "level": "L3",
+  "maturityPct": 60,
+  "status": "TAIWAN_PIT_COMPONENT_REPLAY_VALIDATED / VERSION_LINEAGE_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "researchQuestion": "Does financing-structure information built from gross debt, liquidity quality and financing-like obligations add incremental credit/funding information beyond D07 accounting leverage, D22-01 maturity timing, D22-02 interest coverage and D13 rate context?",
   "boundary": {
     "D07": "Accounting balance-sheet leverage is an input/control, not a duplicate vote.",
@@ -44,7 +44,7 @@
     "Missing component or restriction evidence remains UNKNOWN."
   ],
   "validation": {
-    "L3": "At least three Taiwan non-financial issuers, at least two industries and more than one reporting date with source-attested knownAt and component replay.",
+    "L3": "PASSED: at least three source-attested knownAt Taiwan non-financial issuers, at least two industries, and multiple reporting dates now have component replay. Missing cash accessibility remains explicit UNKNOWN rather than being imputed.",
     "L4": "Preregistered OOS or prospective Shadow evidence with walk-forward splits; no fabricated historical Shadow.",
     "L5": "Multi-regime robustness, costs, missingness/coverage, industry/date clustering, multiple-testing, data-mining, redundancy and stable definitions."
   },
@@ -66,8 +66,16 @@
   "outcomeGate": "CLOSED",
   "formalCore": "LOCKED",
   "next": [
-    "Build Taiwan PIT component receipts for at least three non-financial issuers across at least two industries and multiple reporting dates.",
-    "Falsify unrestricted-cash versus total-cash offset, lease-liability inclusion and gross-debt versus net-debt views with outcomes closed.",
-    "Control D07, D22-01, D22-02 and D13 before any incremental-value claim."
-  ]
+    "Expand unrestricted/restricted/pledged-cash source receipts and quantify sensitivity of total-cash versus accessible-cash offsets.",
+    "Reconcile first-known preliminary versus later audited/restated versions as append-only lineage across more issuers.",
+    "Preregister lease-liability and financing-like-obligation inclusion variants before outcome joins.",
+    "Prepare L4 research-only OOS/walk-forward/prospective Shadow design controlling D07, D22-01, D22-02 and D13; outcomes remain closed until the independent-date panel is large enough."
+  ],
+  "newEvidence": {
+    "componentReplay": "research/d22_03_net_debt_component_replay_v0_1.json",
+    "versionLineage": "research/d22_03_version_lineage_v0_1.json",
+    "divergentState": "Chunghwa Telecom 2023→2024: derived net cash improved while contractual <1y financing-to-cash rose from about 6.5% to about 25.4%, falsifying negative net debt as sufficient evidence of low near-term refinancing pressure.",
+    "thirdExactKnownIssuer": "ASE Technology Holding 2023 first-known consolidated state on 2024-02-01.",
+    "revisionFinding": "ASE short-term borrowings for the 2023 period changed materially in a later retrospectively adjusted comparative presentation; first-known replay must preserve the earlier value and append later versions."
+  }
 }
