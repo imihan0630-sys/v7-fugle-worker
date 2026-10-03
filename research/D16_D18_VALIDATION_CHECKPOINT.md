@@ -1269,3 +1269,112 @@ FORMAL_OPTIMIZATION_CANDIDATE: NONE.
    - comparison with fixed-risk, equal allocation, capped sizing, risk budgeting and D15-16 optimization family.
 3. After D15-19 reaches at least mechanism/falsification maturity, compare Options A/B/C/D in `research/D16_25_D15_19_MERGE_DECISION_INPUT_V0_1.md`.
 4. Any standalone module retirement still requires owner decision + anti-orphan verification.
+
+
+## 2026-10-03 D16-25 specialist completion addendum — date-balanced calibration and merge-comparison readiness
+
+Owner priority:
+D16-25 remains the immediate prerequisite for D15-19 merge governance. This addendum closes the last identified D16-side methodological gap before handing the comparison to D15 specialist research.
+
+Engineering evidence:
+- PR #340 merged as `399287ac5ad669686f5f40fcfe72ea28617fd680`;
+- final PR head `716b9038a1437b03dc5de92ee24709918a5b2deb`;
+- System2 Research CI `37095784670` PASS;
+- V8 Repair CI `37095784642` PASS;
+- V8 Regression `37095784664` PASS.
+
+No Worker/Cron/D1 mutation, Formal selection/rank/capital/monitor/push change, probability-model deployment, Kelly sizing, or live-trading behavior was introduced.
+
+### Date-clustering / pseudo-replication firewall added
+
+The probability evaluator now reports both:
+- row-weighted Brier/log loss;
+- date-balanced Brier/log loss.
+
+It also reports:
+- per-date N / empirical outcome rate / mean predicted probability / Brier / log loss;
+- independentScanDateCount;
+- meanPredictedProbability;
+- calibrationInTheLargeGap.
+
+Reason:
+multiple stock rows from one scan date can share the same market/regime/source shock. A large cross-section can dominate row-weighted calibration even though it is not an independent-date replication.
+
+Interpretation:
+- row-weighted scores estimate average quality per prediction row;
+- date-balanced scores are a robustness diagnostic across independent scan dates;
+- neither substitutes for D16/D18 purging, overlapping-label control or Regime-episode robustness.
+
+Adversarial test now proves that when one date contributes multiple poor rows and another date contributes one good row:
+- row-weighted Brier and date-balanced Brier differ;
+- the evaluator preserves both estimands;
+- row multiplicity is not reported as extra independent dates.
+
+### External-methodology counterevidence retained
+
+Proper scoring:
+probability quality must be evaluated with proper scores/reliability, not hit rate or rank spread alone.
+
+Selective prediction:
+ABSTAIN/reject-option quality is inseparable from accepted coverage and opportunity capture.
+
+Covariate / Regime shift:
+historical calibration may fail under changed deployment distribution; old calibration cannot be silently reused.
+
+Kelly under parameter uncertainty:
+sizing with unknown edge/payoff depends on posterior/uncertainty state. Fractional Kelly is not a probability-calibration method.
+
+These findings strengthen the D16/D15 responsibility separation rather than collapsing the two modules into one.
+
+### D16-25 specialist completion judgment
+
+D16-25 is now considered **specialist-complete at L2 for curriculum merge comparison**.
+
+D16-side conceptual ownership is sufficiently closed on:
+- target/horizon/action conditioning;
+- PIT outcome maturity;
+- base-rate/prior semantics;
+- Bayesian double-counting firewall;
+- probability calibration vs discrimination;
+- proper scoring/reliability;
+- uncertainty channels;
+- distribution/Regime shift;
+- ABSTAIN/selective policy risk-coverage;
+- after-cost expected utility;
+- population/selection-bias firewall;
+- date-clustering robustness;
+- PredictiveDecisionReceipt handoff;
+- sizing firewall.
+
+Remaining blockers are empirical maturity only:
+- genuine complete Taiwan PIT intended population;
+- immutable real probability predictions;
+- matured outcomes;
+- real OOS/prospective calibration;
+- after-cost utility / risk-coverage evidence.
+
+Therefore:
+- D16-25 remains L2 / 40%;
+- L3 is still forbidden;
+- D15-19 may now proceed with specialist research and A/B/C/D merge-structure comparison;
+- direct merge/retirement still requires D15 anti-orphan validation and owner decision.
+
+Current relation:
+`D16_SIDE_READY / D15_SPECIALIST_RESEARCH_REQUIRED / DIRECT_FULL_MERGE_NOT_YET_JUSTIFIED`.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+## Exact next priority handoff — D16-25
+
+1. Stop expanding D16-25 conceptual scope unless new contradictory evidence appears.
+2. Keep D16-25 at L2 until real Taiwan PIT calibration evidence exists.
+3. D15 specialist room should now study D15-19 Kelly / Fractional Kelly:
+   - log-growth objective;
+   - full vs fractional Kelly;
+   - parameter-estimation risk;
+   - correlated multi-position Kelly;
+   - drawdown/ruin constraints;
+   - liquidity/cost/capacity;
+   - comparison with fixed-risk, capped sizing, risk budgeting and D15-16 optimization.
+4. After D15-19 reaches at least L2 mechanism/falsification maturity, compare merge Options A/B/C/D under anti-orphan governance.
+5. Any curriculum merge/retirement remains owner-controlled and must preserve one canonical probability/calibration authority in D16-25.
