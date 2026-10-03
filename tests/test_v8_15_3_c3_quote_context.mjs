@@ -63,8 +63,9 @@ assert.doesNotMatch(seg,/processSignalState\(|sendPush\(|saveStockConfig\(|monit
 const qstart=source.indexOf("function c3NormalizeQuote(");
 const qend=source.indexOf("async function persistC3ResearchQuote",qstart);
 const qseg=source.slice(qstart,qend);
-assert.match(qseg,/isLimitUpPrice:c3QuoteBool\(raw\?\.isLimitUpPrice\)/);n++;
-assert.doesNotMatch(qseg,/isLimitUpPrice:.*isLimitUpHalt/);n++;
+assert.match(qseg,/const isLimitUpPrice=c3QuoteBool\(raw\?\.isLimitUpPrice\)/);n++;
+assert.match(qseg,/isLimitUpPrice,isLimitDownPrice/);n++;
+assert.doesNotMatch(qseg,/isLimitUpPrice\s*=\s*c3QuoteBool\(raw\?\.isLimitUpHalt\)/);n++;
 assert.match(source,/c3ResearchQuotes:Number\(c3ResearchCapture\?\.extraQuoteCalls\|\|0\)/);n++;
 
 console.log(JSON.stringify({ok:true,assertions:n,version:"8.15.3-c3-quote-context",
