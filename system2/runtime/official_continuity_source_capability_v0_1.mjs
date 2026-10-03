@@ -181,11 +181,40 @@ function summarizeJson(payload) {
   };
 }
 
+function embeddedCsvFromHtmlEnvelope(source) {
+  const lines = String(source ?? "").replace(/\r\n/g, "\n").split("\n");
+  const start = lines.findIndex((line) =>
+    line.includes(",") && /(股票代號|證券代號|公司代號)/.test(line));
+  if (start < 0) return null;
+  let end = lines.length;
+  for (let i = start + 1; i < lines.length; i += 1) {
+    const trimmed = lines[i].trim();
+    if (trimmed && /^<\/?[a-z!]/i.test(trimmed)) {
+      end = i;
+      break;
+    }
+  }
+  const candidate = lines.slice(start, end).join("\n").trim();
+  return candidate || null;
+}
+
 function summarizeTextPayload(text) {
   const source = String(text ?? "").replace(/^\uFEFF/, "");
   const trimmed = source.trim();
   if (!trimmed) return { state: "EMPTY_PAYLOAD", parser: null, rowCount: 0, ordinarySymbolCount: 0, fieldCount: 0, fieldSample: [] };
   if (/^<!doctype\s+html|^<html\b/i.test(trimmed)) {
+    const embeddedCsv = embeddedCsvFromHtmlEnvelope(source);
+    if (embeddedCsv) {
+      try {
+        const rows = parseCsvRowsV0_1(embeddedCsv);
+        if (rows.length) {
+          const headers = rows[0].map((x) => String(x ?? "").trim());
+          return { state: "STRUCTURE_READY", parser: "CSV_EMBEDDED_HTML", ...summarizeTableRows(headers, rows.slice(1)) };
+        }
+      } catch {
+        // Preserve fail-closed capability semantics below.
+      }
+    }
     return { state: "UNEXPECTED_HTML", parser: "HTML", rowCount: 0, ordinarySymbolCount: 0, fieldCount: 0, fieldSample: [] };
   }
   if (trimmed.startsWith("{") || trimmed.startsWith("[")) {

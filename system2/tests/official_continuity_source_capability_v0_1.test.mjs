@@ -56,9 +56,12 @@ const ready = await probeOfficialContinuitySourceCapabilityV0_1({
     }
     if (u.includes("revivt_result.php")) {
       return response(
-        "恢復買賣日期,股票代號,名稱,停止買賣前收盤價,恢復買賣參考價\n115/09/21,4530,fixture,20,25\n",
+        "<!doctype html>\n<meta charset=\"utf-8\">\n"
+          + "恢復買賣日期,股票代號,名稱,停止買賣前收盤價,恢復買賣參考價\n"
+          + "115/09/21,4530,fixture,20,25\n"
+          + "<footer>legacy envelope</footer>\n",
         200,
-        "text/csv",
+        "text/html",
       );
     }
     throw new Error("unexpected fixture URL " + u);
@@ -74,6 +77,7 @@ assert.equal(ready.sources.TWSE_EX_RIGHT_DIVIDEND_FORECAST.ordinarySymbolCount, 
 assert.equal(ready.sources.TWSE_CAPITAL_REDUCTION_REFERENCE.ordinarySymbolCount, 1);
 assert.equal(ready.sources.TPEX_EX_RIGHT_DIVIDEND_FORECAST.ordinarySymbolCount, 1);
 assert.equal(ready.sources.TPEX_CAPITAL_REDUCTION_REFERENCE.ordinarySymbolCount, 1);
+assert.equal(ready.sources.TPEX_CAPITAL_REDUCTION_REFERENCE.parser, "CSV_EMBEDDED_HTML");
 assert.equal(ready.prospectiveDiscoveryCandidateObserved, true);
 assert.equal(ready.historicalReferenceCandidateObserved, true);
 assert.equal(ready.sourceCoverageComplete, false);
