@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "0.1",
+  "name": "D13-17 EVENT_FLOW_CLOCK_V0_1",
+  "status": "RESEARCH_ONLY_SCHEMA_FROZEN_NOT_IMPLEMENTED",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-10-03T23:19:00+08:00",
+  "eventStates": [
+    "RUMOR_UNVERIFIED",
+    "INVESTIGATION",
+    "PROPOSED_ACTION",
+    "FINAL_ACTION_ANNOUNCED",
+    "LEGAL_TEXT_PUBLISHED",
+    "EFFECTIVE_NOT_YET_COMPLIANT",
+    "EFFECTIVE",
+    "LICENSE_OR_EXCLUSION_ACTIVE",
+    "AMENDED",
+    "EXPIRED_OR_REMOVED",
+    "UNKNOWN"
+  ],
+  "clockFields": [
+    "firstPublicSourceAt",
+    "announcementAt",
+    "legalPublicationAt",
+    "effectiveAt",
+    "complianceAt",
+    "licenseStartAt",
+    "licenseEndAt",
+    "capturedAt",
+    "knownAtTaipei",
+    "firstEligibleTaiwanDecision"
+  ],
+  "flowFamilies": [
+    "TWSE_FOREIGN_TRADING_EX_BLOCK",
+    "TWSE_FOREIGN_TRADING_INCL_BLOCK",
+    "TAIWAN_BOP_PORTFOLIO",
+    "TAIWAN_BOP_DIRECT_INVESTMENT",
+    "US_TIC_SECURITIES",
+    "US_TIC_BANKING",
+    "FDI_FRAGMENTATION_RESEARCH_STATE"
+  ],
+  "commonGuards": [
+    "Market reaction timestamp never changes legal effective timestamp.",
+    "Legal effective timestamp never proves economic flow has realized.",
+    "Later full/block-inclusive trading data cannot backfill an 18:10 partial-version decision.",
+    "Foreign-investor net trading is not automatically FX conversion or cross-border balance-of-payments flow.",
+    "Monthly/quarterly data may describe regime/context but cannot be aligned as same-day flow.",
+    "Current revised history cannot be treated as real-time vintage without source-vintage evidence.",
+    "Missing scope/exposure/effective date remains UNKNOWN."
+  ],
+  "ownership": {
+    "D13": "event/flow clock and global transmission state",
+    "D10_D07": "supply-chain/company exposure",
+    "D05": "institutional/chip microstructure where canonical"
+  }
+}
