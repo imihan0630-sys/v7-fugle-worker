@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T07:30:00+08:00",
+  "updatedAt": "2026-10-04T07:45:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 39.5
+    "maturityWeightedPct": 39.6
   },
   "domains": [
     {
@@ -3559,12 +3559,12 @@
         {
           "id": "D22-03",
           "name": "Net Debt／Leverage Structure淨負債與槓桿結構",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Net Debt／Leverage Structure淨負債與槓桿結構」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / PIT_COMPONENT_CONTRACT_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-          "next": "建立至少三家台灣非金融發行人、至少兩產業、跨多個財報日期的 PIT component replay；驗證 unrestricted-cash 與 total-cash offset、lease-liability inclusion、gross-debt 與 net-debt views；先控制 D07、D22-01、D22-02、D13，股票 outcomes 維持 CLOSED。"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "續建多公司多日期PIT組件重播，保留現金可用性UNKNOWN，完成樣本外驗證前不開股票結果。"
         },
         {
           "id": "D22-04",
@@ -3658,8 +3658,8 @@
         }
       ],
       "status": "ACTIVE_RESEARCH / D22-01_L3 / D22-02_L3 / D22-03_L3 / D22-04_L2_ACTIVE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D22-04 主線：建立台灣公司債 issuer-security-date PIT 債務成本／再融資價差 replay，先驗證交易新鮮度、benchmark duration/currency matching 與 coupon≠market yield；D22-01～03 繼續擴大獨立日期面板但 outcomes 維持 CLOSED。",
-      "lastResearchUpdate": "2026-10-04T07:41:00+08:00",
+      "exactNextContinuationPoint": "D22-04：建立台灣公司債PIT債務成本與再融資價差重播；D22-01至03持續擴大多日期面板，股票結果維持關閉。",
+      "lastResearchUpdate": "2026-10-04T07:45:00+08:00",
       "researchNote": "D22-02 and D22-03 are L3 PIT-feasibility. D22-04 advanced to L2 after debt-cost/refinancing mechanism, D13/D07 anti-double-count ownership, Taiwan TPEx source route, coupon-vs-market-yield semantics and falsification gates were frozen. No equity outcomes opened; Formal Core unchanged."
     }
   ],
