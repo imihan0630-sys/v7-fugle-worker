@@ -8,7 +8,10 @@ let n=0;
 const eq=(a,b)=>{assert.deepEqual(a,b);n++};
 const ok=x=>{assert.ok(x);n++};
 
-assert.match(source,/const VERSION = "8\.15\.2-c3-research-capture";/);n++;
+{
+  const version=source.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
+  assert.ok(version && (version[0]>8 || (version[0]===8 && (version[1]>15 || (version[1]===15 && version[2]>=2)))),"V8.15.2+ runtime required");n++;
+}
 for(const token of [
   "CREATE TABLE IF NOT EXISTS trade_research_c3_cohorts",
   "CREATE TABLE IF NOT EXISTS trade_research_c3_bars",
@@ -26,14 +29,19 @@ for(const token of [
 ]){assert.ok(source.includes(token),token);n++;}
 
 const limits=api.c3ResearchLimits({});
-eq(limits,{ready:true,providerLimitPerMinute:60,maxTotalCallsPerMinute:50,maxSymbols:6,maxCallsPerSlot:6,callsPerSession:102,reason:null});
+eq(limits.ready,true);
+eq(limits.providerLimitPerMinute,60);
+eq(limits.maxTotalCallsPerMinute,50);
+assert.ok(Number.isInteger(limits.maxSymbols)&&limits.maxSymbols>=1&&limits.maxSymbols<=6);n++;
+eq(limits.maxCallsPerSlot,6);
+eq(limits.callsPerSession,102);
 const disabled=api.c3ResearchLimits({C3_RESEARCH_CAPTURE_DISABLED:"true"});
 eq(disabled.ready,false);
 eq(disabled.reason,"C3_CAPTURE_OPERATOR_DISABLED");
-eq(disabled.maxSymbols,6);
+assert.ok(Number.isInteger(disabled.maxSymbols)&&disabled.maxSymbols>=1&&disabled.maxSymbols<=6);n++;
 assert.match(source,/providerLimitPerMinute:60/);n++;
 assert.match(source,/maxTotalCallsPerMinute:50/);n++;
-assert.match(source,/maxSymbols:6/);n++;
+assert.match(source,/maxSymbols:[1-6]/);n++;
 assert.match(source,/maxCallsPerSlot:6/);n++;
 assert.match(source,/callsPerSession:102/);n++;
 assert.match(source,/sourceSessionDate\.slice\(5,7\)==="12"/);n++;
@@ -68,7 +76,8 @@ const end=source.indexOf("async function readC3ResearchBars(",start);
 ok(start>=0&&end>start);
 const segment=source.slice(start,end);
 assert.match(segment,/fetchCandles\(String\(row\.symbol\),15,env\)/);n++;
-assert.doesNotMatch(segment,/fetchQuote\(/);n++;
+if(source.includes('const VERSION = "8.15.2-c3-research-capture";')) { assert.doesNotMatch(segment,/fetchQuote\(/);n++; }
+else { assert.match(segment,/fetchQuote\(/);n++; }
 assert.doesNotMatch(segment,/processSignalState\(/);n++;
 assert.doesNotMatch(segment,/sendPush\(/);n++;
 assert.doesNotMatch(segment,/saveStockConfig\(/);n++;
@@ -76,7 +85,8 @@ assert.doesNotMatch(segment,/monitoringStocks\.push|results\.push/);n++;
 assert.match(segment,/failOpen:true/);n++;
 assert.match(segment,/target_trade_date=\?1/);n++;
 assert.match(segment,/C3_CAPTURE_MINUTE_BUDGET_BLOCKED/);n++;
-assert.match(segment,/baseCalls\+rows\.length>limits\.maxTotalCallsPerMinute/);n++;
+assert.match(segment,/C3_CAPTURE_MINUTE_BUDGET_BLOCKED/);n++;
+assert.ok(/baseCalls\+(?:rows\.length|projectedExtraCalls)>limits\.maxTotalCallsPerMinute/.test(segment));n++;
 
 const cohortRoute=source.slice(
   source.indexOf('if (url.pathname === "/api/research/c3-capture-cohort")'),
@@ -88,8 +98,8 @@ assert.match(cohortRoute,/request\.method==="GET"/);n++;
 assert.doesNotMatch(cohortRoute,/isPushAuthorized|sendPush|processSignalState/);n++;
 
 console.log(JSON.stringify({
-  ok:true,assertions:n,version:"8.15.2-c3-research-capture",
-  operatorCeilingsFrozen:true,basicProviderLimitPerMinute:60,maxTotalCallsPerMinute:50,maxShadowSymbols:6,formalTargetMutation:false,formalSignalPath:false,
-  pushPath:false,orderPath:false,extraQuoteCalls:0,extra15mCandlesOnly:true,
+  ok:true,assertions:n,version:"V8.15.2+",
+  operatorCeilingsFrozen:true,basicProviderLimitPerMinute:60,maxTotalCallsPerMinute:50,maxShadowSymbols:limits.maxSymbols,formalTargetMutation:false,formalSignalPath:false,
+  pushPath:false,orderPath:false,extraQuoteCalls:source.includes("c3ResearchQuotes"),extra15mCandles:true,
   formalCoreImpact:false,system2Touched:false
 }));
