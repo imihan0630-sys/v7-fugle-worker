@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 19:10 Asia/Taipei
+Updated: 2026-10-03 19:25 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -1588,8 +1588,13 @@ UNKNOWN 當 PASS、用候選數增加當成功、firstFailure 當因果、未做
 
 ## Coverage Audit 主線路由 — 2026-10-03
 
-所有相關研究室續接「學習地圖缺什麼」主線前，先讀：
-`shared-knowledge/CURRICULUM_COVERAGE_AUDIT_20261003_V0_1.md`
+所有相關研究室續接「學習地圖缺什麼」主線前，依序讀：
+1. `shared-knowledge/CURRICULUM_COVERAGE_AUDIT_20261003_V0_1.md`
+2. `shared-knowledge/CURRICULUM_COVERAGE_A_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
+3. `shared-knowledge/CURRICULUM_COVERAGE_EXECUTION_REGISTRY_20261003_V0_1.md`
+4. `shared-knowledge/curriculum_coverage_execution_registry_20261003_v0_1.json`
+
+Coverage-A 任務包目前狀態：`READY_FOR_SPECIALIST_EXECUTION`（專科驗證可執行）；專科回件尚未構成課綱決策。
 
 Coverage-A 高優先：
 - COV-01 → 01｜K線與型態研究室：Continuation/Base Pattern Family（延續／基地型態家族）active owner。
