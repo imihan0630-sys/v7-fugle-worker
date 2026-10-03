@@ -2090,3 +2090,26 @@ Maturity: **D09-13 L2 -> L3 Taiwan PIT data feasibility only**. No predictive ou
 - BR-052 becomes a firm-specific competitive-action/position receipt under the H01 dedup boundary.
 - Add a non-semiconductor industry control before any cross-industry structural score.
 - No Five-Forces composite score, market-share factor or Formal change.
+
+
+## BR-052 — Firm competitive action has a distinct PIT lifecycle
+
+Artifact:
+`research/br052_issuer_competitive_action_pit_v0_1.json`
+
+BR-052 proves that the deduplicated D09-14 scope has a distinct unit and replay contract:
+`issuer × strategic action × implementation stage × vintage`.
+
+Three official action receipts establish the boundary:
+- TSMC 2025 U.S. expansion: announcement/intention later progresses to confirmed construction/schedule acceleration.
+- UMC 2025 Singapore fab: facility unveiled while HVM remains future-dated, proving opening != operating qualified capacity.
+- UMC/Intel 12nm collaboration: node/capacity advancement through partner manufacturing, falsifying the assumption that competitive advancement always requires own-fab capex.
+
+The resulting H01 specialist classification is superseded from preliminary `SCOPE_DEDUP_ONLY` to **KEEP_SEPARATE**, with mandatory scope dedup:
+- D09-13 = industry structure / competition state.
+- D09-14 = issuer-specific competitive action / relative-position lifecycle.
+- Shared share/capacity/price/margin observations have one parent lineage and cannot cast two votes.
+
+Maturity: **D09-14 L2 -> L3 Taiwan PIT data feasibility only**.
+
+No merge/retirement or Formal change executed.
