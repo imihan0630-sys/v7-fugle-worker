@@ -414,3 +414,116 @@ Status: SOURCE_WITNESS_PASS / TPEX_SCHEMA_MAPPING_STILL_REQUIRED / NO_MATURITY_C
 
 Exact next D08-03:
 freeze source parser/schema fingerprints for TWSE and TPEx, then perform representative replay across ordinary, loss-making, capital-action and new-listing histories. Only after replay integrity is proven may the Historical-Valuation × Quality Shadow join be preregistered.
+
+
+## VAL-027 — Historical valuation source contracts must remain market-specific
+
+Research date: 2026-10-03 Asia/Taipei.
+
+Machine contracts:
+- research/historical_valuation_dual_market_source_schema_contract_v0_2.json
+- research/historical_valuation_source_case_validation_receipt_20261003_v0_2.json.
+
+TWSE public historical daily valuation is directly machine-readable through BWIBBU_d. The verified response envelope contains stat/date/title/fields/data and explicit headers for symbol, name, close, PE, PB and financial-report year/quarter. Parsing must use returned header names rather than fixed positions.
+
+TPEx is not currently symmetric:
+- the public historical PE/PB page is verified and states modern coverage from ROC 96/01;
+- the current OpenAPI schema is verified;
+- an old/public historical machine-route candidate can be located, but direct official retrieval in this research environment did not return a stable response envelope;
+- therefore its hidden/legacy JSON layout is NOT frozen from third-party implementations.
+
+Rule:
+source-family existence does not equal machine-replay completeness.
+
+Status: TWSE_PUBLIC_REPLAY_READY / TPEX_PUBLIC_HISTORY_VISIBLE_MACHINE_TRANSPORT_UNVERIFIED / NO_FORMAL_CHANGE.
+
+## VAL-028 — Fiscal denominator-period transitions are part of valuation identity
+
+The official TWSE monthly stock history for 9904 寶成 gives a direct denominator-transition witness:
+- 2026-08-12: PE 6.60, PB 0.47, fiscal report period 115/1;
+- 2026-08-13: PE 5.06, PB 0.38, fiscal report period 115/2.
+
+A large valuation-ratio move can therefore occur when the official denominator vintage changes, even without interpreting the move as a pure price-driven repricing event.
+
+Historical percentile replay must preserve:
+- fiscalReportPeriod;
+- fiscalDenominatorChangedToday;
+- daysSinceFiscalDenominatorChange when available.
+
+No automatic history reset is authorized. The transition is a context tag to be tested, not an exclusion window selected after outcomes.
+
+Status: DENOMINATOR_PERIOD_BREAK_WITNESS_CONFIRMED / PERCENTILE_REPRICING_EQUIVALENCE_REJECTED.
+
+## VAL-029 — TPEx public history and licensed EDIS history are separate authority lanes
+
+The official TPEx public page provides historical PE/PB inquiry. Separately, official EDIS after-market format V1.33 documents S17 / STKPEYIPBR.TXT as a deterministic machine file with:
+- stock code;
+- stock name;
+- PE;
+- dividend yield;
+- PB;
+- YYYYMMDD data date;
+- HHMM production time.
+
+The S17 file belongs to the fourth after-market statistics subscription group. Its documented schema proves that an authorized deterministic machine lane exists, but this research does not authorize purchase, subscription, download or use.
+
+The public historical webpage cannot silently inherit the licensed S17 schema, and a hidden public endpoint cannot be treated as canonical until directly verified.
+
+Status: PUBLIC_UI_AND_LICENSED_MACHINE_LANE_SEPARATED / NO_HIDDEN_ENDPOINT_ASSUMPTION.
+
+## VAL-030 — TWSE-only historical valuation Shadow is preregistered without claiming full Taiwan coverage
+
+Machine preregistration:
+research/historical_valuation_twse_shadow_prereg_v0_1.json.
+
+The first empirical lane is explicitly TWSE-only because TWSE historical replay is machine-verifiable while TPEx automated historical transport remains incomplete.
+
+Primary question:
+does self-history PE/PB percentile add incremental information beyond raw PE/PB after quality, sector/peer, size/liquidity, RS/trend, regime and denominator-transition controls?
+
+No valuation threshold is frozen. Historical percentiles remain continuous primary features; 252/756/1260/expanding windows are parallel preregistered variants, not a tournament for the best return.
+
+The design explicitly tests whether:
+- low PE percentile plus deteriorating/peak-cycle earnings behaves differently from low percentile plus improving quality;
+- fiscal denominator updates create artificial percentile jumps;
+- PB retains contextual value when PE is unavailable;
+- any apparent effect survives raw valuation and existing fundamental controls.
+
+TPEx/full-Taiwan generalization is prohibited from this pilot.
+
+Status: TWSE_SHADOW_PREREGISTERED / OUTCOME_JOIN_LOCKED / NOT_FORMAL_OPTIMIZATION_CANDIDATE.
+
+## VAL-031 — Executable TWSE replay parser and CI guard verified
+
+Research-only implementation:
+- research/historical_valuation_replay_core_v0_1.mjs
+- research/test_historical_valuation_replay_core_v0_1.mjs
+- system2/tests/d08_historical_valuation_replay_guard.test.mjs.
+
+PR #364 merged to main at merge commit 6943edc24ca4c1d78c525b33b730d911f245e4fa after exact-head verification:
+- System2 Research CI run 37107054148: PASS;
+- V8 Repair CI run 37107054216: PASS;
+- V8 Regression run 37107054202: PASS.
+
+The System2 CI log explicitly executed d08_historical_valuation_replay_guard.test.mjs and returned ok=true with system2RuntimeImpact=false and formalCoreImpact=false.
+
+Parser protections include:
+- header-name mapping instead of positional assumptions;
+- PE/PB independent missingness;
+- schema-drift fail-closed behavior;
+- duplicate-symbol rejection;
+- fiscal-denominator transition tagging;
+- average-rank percentile tie semantics;
+- minimum-history fail-closed behavior.
+
+This is implementation/replay integrity evidence only. It does not constitute L4 Shadow/OOS outcome evidence.
+
+Status: TWSE_REPLAY_PARSER_VERIFIED / D08-03_REMAINS_L3 / FORMAL_CORE_UNCHANGED.
+
+Exact next:
+1. collect a bounded source-only TWSE historical replay sample with immutable raw payload fingerprints and readback receipts;
+2. include ordinary, PE-missing/PB-present, fiscal-denominator transition, corporate-action-context and newly listed cases;
+3. calculate preregistered 252/756/1260/expanding percentiles without opening stock-return outcomes;
+4. verify coverage/missingness and listing-age behavior;
+5. only then open the preregistered TWSE Historical-Valuation Shadow outcome join;
+6. keep TPEx outside the empirical cohort until public historical machine transport is directly verified or an authorized licensed lane exists.
