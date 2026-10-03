@@ -2543,3 +2543,55 @@ Exact continuation:
 2. Keep raw source gate 2/3 over the weekend.
 3. Pre-register TI-005 KD-vs-RSI then TI-006 MACD-vs-direct-trend inference before any outcome join.
 4. Do not alter Formal Core.
+
+
+## TI-543 through TI-550 — TI-005/TI-006 outcome-closed preregistration (2026-10-04)
+
+Durable preregistration:
+- `research/D03_PRIMARY_QUEUE_INCREMENTAL_INFERENCE_PREREG_V0_1.md`
+- `research/d03_primary_queue_incremental_inference_prereg_v0_1.json`
+
+Key governance correction:
+- D03 raw source-version 3/3 is a necessary source-clock gate, not sufficient Technical Indicator outcome readiness.
+- System2 2026-10-02 diagnostic evidence is not receipt-equivalent to the D03 raw observer and does not change the 2/3 denominator.
+
+TI-005 frozen ladder:
+- K0 BASE;
+- K1 B2 continuous range-position;
+- K2 continuous RSI14;
+- K3 BOTH;
+- K4 KD-smoothing residual diagnostic.
+No threshold/zone vote and no alternate period search.
+
+TI-006 frozen ladder:
+- M0 direct trend baseline;
+- M1 normalized DIF;
+- M2 DIF/Histogram transition-curvature residuals;
+- M3 combined non-alias residuals.
+Zero-line vs EMA alignment and crossover vs Histogram-sign aliases are excluded.
+
+Outcome family:
+- D5 return/MFE/MAE co-registered primary;
+- D10/D20 return/MFE/MAE secondary;
+- secondary cannot rescue failed primary.
+
+Before outcome access:
+- immutable parent/source/continuity/state gates;
+- exact parent-child attempt accounting;
+- common support;
+- D16 dependence-aware method receipt;
+- forward-only exact outcome join.
+
+Inference floors:
+D5 mature >=60, prospective complete >=30, independent scan dates >=15, >=2 Regimes, purged train >=10 dates, holdout >=5 dates, coverage/zero-pick/redundancy/cost/overfit gates.
+
+Current:
+`TI_005 = PREREGISTERED_NOT_EXECUTABLE`
+`TI_006 = PREREGISTERED_NOT_EXECUTABLE`
+`RAW_SOURCE_VERSION_GATE = 2_OF_3`
+`TECHNICAL_OBSERVER_R1 = BLOCKED_SHARED_PARENT_CONTINUITY_RUNTIME`
+`D03_MATURITY = 56.7_PERCENT`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Exact next:
+next completed Taiwan session -> third raw D03 receipt+repeat -> re-audit T1-T3 -> only then begin true prospective observer clock; outcomes remain closed until T5/T6 and D16 method receipt.
