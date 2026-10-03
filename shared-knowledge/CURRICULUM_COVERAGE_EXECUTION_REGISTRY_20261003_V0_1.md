@@ -96,3 +96,16 @@ Canonical ledger:
 - COV-08 → PARTIAL_EVIDENCE_RECEIVED
 - All other COV candidates remain PENDING_SPECIALIST_RETURN.
 - Partial evidence is not an accepted specialist return and does not authorize curriculum structural change.
+
+
+## Pre-Intake second harvest — 2026-10-03
+
+Additional partial-evidence states:
+- COV-01 → PARTIAL_EVIDENCE_RECEIVED
+- COV-09 → PARTIAL_EVIDENCE_RECEIVED
+- COV-10 → PARTIAL_EVIDENCE_RECEIVED
+
+Combined partial-evidence set:
+COV-01, COV-02, COV-07, COV-08, COV-09, COV-10.
+
+Accepted specialist returns remain 0 / 12. No curriculum structural change is authorized.
