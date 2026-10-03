@@ -2462,7 +2462,7 @@ Exact next for Room 09:
 - D17-14 Policy/Regulatory Event Clock/Surprise L0 -> L2: draft/consultation, decision, implementing rule, effective/revision clocks separated; surprise requires a preserved ex-ante expectation or remains UNKNOWN.
 - Cross-module controls frozen: revisions append, no current-page historical Shadow fabrication, failed/withdrawn events included, event-stage observations clustered, selection bias/look-ahead/data snooping/multiple testing/Factor Zoo/date clustering/cost/redundancy checks mandatory before outcomes.
 - No return/outcome sample was opened. Official legal/source lanes support mechanism semantics but do not by themselves prove L3 PIT replay.
-- Canonical maturity after update: D11=50.5%, D17=41.4%, Room08 module-weighted=46.7%; global tracker=33.3% across 354 modules.
+- Canonical maturity after update: D11=50.5%, D17=41.4%, Room08 module-weighted=46.7%; global tracker snapshot after concurrent merge verification=33.5% across 354 modules.
 - Engineering/governance = Class A research documentation/schema only. Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE = NO.
 
 Exact next Room 08:
