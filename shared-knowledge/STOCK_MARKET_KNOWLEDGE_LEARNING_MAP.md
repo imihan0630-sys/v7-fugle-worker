@@ -1,6 +1,6 @@
 # 股市知識學習大地圖 — 22領域 / 354模組
 
-Updated: 2026-10-03 09:22 Asia/Taipei
+Updated: 2026-10-03 10:25 Asia/Taipei
 Status: CANONICAL_LEARNING_CURRICULUM_V0_1 / CROSS_SYSTEM  
 Formal Core impact: NONE  
 Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 正式研究成熟度仍由 `RESEARCH_MASTER_MAP.md` 與 `research/research_master_map.json` 管理。
@@ -23,7 +23,7 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 
 - 大領域：22
 - 二級研究模組：354
-- 新完整課綱成熟度：**32.5%**
+- 新完整課綱成熟度：**32.6%**
 - 注意：這個百分比與 System 1 現行21模組的46.7%不是同一分母；本表分母更大、更細。
 - 100%不是「世界上再也沒有新知識」，而是本版課綱全部達L5；新增新知識時可版本化擴充分母。
 - 七項汰留與能力移轉紀錄：`shared-knowledge/CURRICULUM_RETIREMENT_AND_CAPABILITY_LEDGER_V0_1.md`。退休模組不代表刪除其必要工程／研究能力。
@@ -45,7 +45,7 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 | D13 | 總體經濟／跨市場傳導 | 19 | 28.4% | 09｜衍生品與國際總經研究室 |
 | D14 | 交易成本／執行品質／Execution Alpha | 18 | 33.3% | 10｜投組風控與交易執行研究室 |
 | D15 | 投資組合／風險／資金利用／部位生命週期 | 21 | 36.2% | 10｜投組風控與交易執行研究室 |
-| D16 | 統計驗證／PIT／Shadow／OOS／防過擬合 | 25 | 44% | 11｜統計驗證與策略市場狀態研究室 |
+| D16 | 統計驗證／PIT／Shadow／OOS／防過擬合 | 25 | 45.6% | 11｜統計驗證與策略市場狀態研究室 |
 | D17 | 新聞／事件半衰期／受益受害傳導 | 14 | 38.6% | 08｜事件與新聞研究室 |
 | D18 | 市場Regime×策略互動 | 15 | 37.3% | 11｜統計驗證與策略市場狀態研究室 |
 | D19 | 資產定價／因子投資／市場異象 | 15 | 16% | 12｜資產定價與因子研究室 |
@@ -498,7 +498,7 @@ GitHub專屬checkpoint：
 | D15-24 | Value at Risk／Parametric-Historical VaR風險值與參數歷史法VaR | L0 未研究 | 0% |
 
 
-### D16｜統計驗證／PIT／Shadow／OOS／防過擬合 — 44%
+### D16｜統計驗證／PIT／Shadow／OOS／防過擬合 — 45.6%
 
 專責：11｜統計驗證與策略市場狀態研究室  
 證據錨點：`RESEARCH_WORKLIST.md`、`research/EXPERIMENT_REGISTRY.md`、`research/research_master_map.json`
@@ -529,7 +529,7 @@ GitHub專屬checkpoint：
 | D16-22 | NLP／LLM Financial-text Feature Validation自然語言與大型語言模型財經文本特徵驗證 | L0 未研究 | 0% |
 | D16-23 | Stress Test／Scenario／Reverse Stress Test壓力測試、情境與反向壓力測試 | L0 未研究 | 0% |
 | D16-24 | Monte Carlo Simulation／Distributional Validation蒙地卡羅模擬與分布驗證 | L0 未研究 | 0% |
-| D16-25 | Probabilistic Decision／Bayesian Updating／Uncertainty-aware Selection機率式決策、貝氏更新與不確定性選股 | L0 未研究 | 0% |
+| D16-25 | Probabilistic Decision／Bayesian Updating／Uncertainty-aware Selection機率式決策、貝氏更新與不確定性選股 | L2 機制＋反證已定義 | 40% |
 
 
 ### D17｜新聞／事件半衰期／受益受害傳導 — 38.6%
