@@ -1434,3 +1434,29 @@ FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 Formal Core: LOCKED.
 
 Exact next: D16 has no remaining L0 modules. Do not invent D16 L3 evidence. Move to genuine executable Taiwan PIT evidence where available, otherwise continue room-owned D18-15 (L0) / evidence-dependent D18 work.
+
+
+## 2026-10-04 D18-15 Business/Credit Cycle × Strategy closure
+
+Canonical evidence: `research/D18_15_BUSINESS_CREDIT_CYCLE_STRATEGY_REGIME_20261004_V0_1.md`.
+
+D18-15 -> L2/40.
+
+Frozen results:
+- D13-18 owns PIT business-cycle measurement/vintage; D18-15 owns strategy interaction only.
+- D22 credit modules own credit-cycle/spread/lending primitives; D18-15 consumes frozen producer receipts.
+- Business and credit cycle states remain separate inputs first; no one-score collapse or policy threshold is authorized.
+- NDC TAIEX-component circularity requires aggregate-vs-ex-TAIEX/non-price-component falsification before stock-return claims.
+- Monthly macro vintages, decision dates and cycle episodes are separate evidence counts; daily rows do not manufacture independent macro samples.
+- Attribution != policy. Cycle-policy promotion requires paired static/exposure-matched controls, costs, OOS/prospective evidence and multiple episodes.
+- Revised history and ex-post turning points cannot become live labels.
+
+D18 L3 audit found no additional justified promotion: D18-01/02/03 builders missing; D18-04 only has a mature TWSE direction-breadth sublane; D18-05 label builder missing; D18-06/07 source/PIT gaps remain; D18-08~14 require executable frozen states + OOS/prospective evidence.
+
+D18 domain maturity after the justified D18-15 L2 promotion: **40%**.
+Global 354-module tracker maturity after recomputation: **41.5%**.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core: LOCKED.
+
+Exact next: do not force D18 L3. Highest-value next evidence path is an isolated PIT-safe market-level Regime builder/replay for D18-01/02/03, plus prospective both-venue/U2B completion for D18-04 and immutable B2->D18 context receipts for D18-05.
