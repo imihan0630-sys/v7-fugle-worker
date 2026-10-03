@@ -19,7 +19,7 @@ one('''    "avgVolume20Lots","avgAmount20","spreadPercent","depthScore","chipCon
   ]) out[key]=c1Number(f[key]);
   for(const key of ["orderBookDepthGood","financialBasis","valuationObserved","announcementsVerified"])''',
 '''    "avgVolume20Lots","avgAmount20","spreadPercent","depthScore","chipConcentration",
-    "quarterRevenue","revenueQoQ","priceBookRatio","priceEarningsRatio",
+    "quarterRevenue","revenueQoQ","revenueQuarterYoY","priceBookRatio","priceEarningsRatio",
     "sectorMedianPe","epsYoY","atrPercent","ret20","maDistance20Pct"
   ]) out[key]=c1Number(f[key]);
   for(const key of ["orderBookDepthGood","financialBasis","valuationObserved","announcementsVerified","lateStage"])''',
