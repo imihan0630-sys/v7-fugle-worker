@@ -1,12 +1,12 @@
 {
   "schemaVersion": "CURRICULUM_COVERAGE_EXECUTION_REGISTRY_V0_1",
-  "updatedAt": "2026-10-03T22:51:00+08:00",
+  "updatedAt": "2026-10-03T23:17:00+08:00",
   "status": "COVERAGE_PACKETS_READY_PREINTAKE_PARTIAL_EVIDENCE",
   "formalCoreImpact": "NONE_LOCKED",
   "canonicalSnapshot": {
     "domains": 22,
     "activeModules": 354,
-    "maturityWeightedPct": 36.3
+    "maturityWeightedPct": 38.2
   },
   "parentAudit": "shared-knowledge/CURRICULUM_COVERAGE_AUDIT_20261003_V0_1.md",
   "specialistPacket": "shared-knowledge/CURRICULUM_COVERAGE_A_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
@@ -193,5 +193,13 @@
   "intakeContractVersion": "COVERAGE_SPECIALIST_RETURN_V0_1",
   "governanceStateMachine": "shared-knowledge/CURRICULUM_COVERAGE_GOVERNANCE_STATE_MACHINE_V0_1.md",
   "governanceStateMachineJson": "shared-knowledge/curriculum_coverage_governance_state_machine_v0_1.json",
-  "governanceStateMachineVersion": "CURRICULUM_COVERAGE_STATE_MACHINE_V0_1"
+  "governanceStateMachineVersion": "CURRICULUM_COVERAGE_STATE_MACHINE_V0_1",
+  "canonicalSnapshotSource": "research/stock_market_learning_tracker_v0_1.json",
+  "canonicalSnapshotSourceUpdatedAt": "2026-10-03T23:17:00+08:00",
+  "canonicalSnapshotReconciliation": "shared-knowledge/CURRICULUM_COVERAGE_CANONICAL_SNAPSHOT_RECONCILIATION_20261003_V0_1.md",
+  "coverageReturnValidator": "research/curriculum_coverage_return_validator_v0_1.mjs",
+  "coverageReturnValidatorTest": "tests/test_curriculum_coverage_return_validator_v0_1.mjs",
+  "coverageReturnValidatorCheckpoint": "research/CURRICULUM_COVERAGE_RETURN_VALIDATOR_CHECKPOINT_20261003.md",
+  "coverageReturnValidatorWorkflow": ".github/workflows/curriculum-coverage-validator.yml",
+  "coverageReturnValidatorStatus": "MERGED_MAIN_PR_407_CI_PASS"
 }
