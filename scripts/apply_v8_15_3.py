@@ -106,6 +106,9 @@ function c3ResearchQuotePayload(quote,symbol,targetDate,scheduledTime) {
   if(String(q?.symbol||"")!==String(symbol)||String(q?.date||"")!==String(targetDate))
     throw new Error("C3_CAPTURE_QUOTE_SYMBOL_OR_DATE_MISMATCH");
   const micros=Number(q?.lastUpdated ?? q?.closeTime),quoteMs=micros>=1e14?micros/1000:NaN;
+  const nowMs=Number(scheduledTime);
+  if(!Number.isFinite(quoteMs)||!Number.isFinite(nowMs)||quoteMs>nowMs+5000||nowMs-quoteMs>LIVE_STALE_SECONDS*1000||
+     q?.isTrial===true||q?.tradingHalt?.isHalted===true) throw new Error("C3_CAPTURE_QUOTE_STALE_OR_INVALID");
   const bestBid=positiveNumber(q?.bids?.[0]?.price),bestAsk=positiveNumber(q?.asks?.[0]?.price);
   const bids=Array.isArray(q.bids)?q.bids.slice(0,5).map(x=>({price:positiveNumber(x?.price),size:positiveNumber(x?.size)})):null;
   const asks=Array.isArray(q.asks)?q.asks.slice(0,5).map(x=>({price:positiveNumber(x?.price),size:positiveNumber(x?.size)})):null;
@@ -133,9 +136,11 @@ function c3ResearchQuotePayload(quote,symbol,targetDate,scheduledTime) {
     isDelayedClose:typeof q?.isDelayedClose==="boolean"?q.isDelayedClose:null,
     isLimitUpHalt:typeof q?.isLimitUpHalt==="boolean"?q.isLimitUpHalt:null,
     isLimitDownHalt:typeof q?.isLimitDownHalt==="boolean"?q.isLimitDownHalt:null,
+    isLimitUpPrice:typeof q?.isLimitUpPrice==="boolean"?q.isLimitUpPrice:null,
+    isLimitDownPrice:typeof q?.isLimitDownPrice==="boolean"?q.isLimitDownPrice:null,
     executionMarketState:marketState,
     marketStateProvenance:"FUGLE_INTRADAY_QUOTE_FLAGS",
-    semanticLimit:"Raw research context only. isLimitUpHalt is not a generic at-limit-up flag; raw depth is not converted to depthScore.",
+    semanticLimit:"Raw research context only. isLimitUpPrice/isLimitDownPrice are preserved when explicitly supplied by Fugle; halt flags remain distinct; raw depth is not converted to depthScore.",
     fetchedAt:new Date(Number(scheduledTime)).toISOString()
   };
 }
