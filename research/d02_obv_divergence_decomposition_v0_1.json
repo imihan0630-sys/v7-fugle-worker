@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "D02_OBV_DIVERGENCE_DECOMPOSITION_V0_1",
+  "updatedAt": "2026-10-03T15:16:00+08:00",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "pveCursorBefore": 239,
+  "pveCursorAfter": 239,
+  "pve240ReservedForNextLiveSession": true,
+  "sourceMainSha": "6b77103a3f5ae9230c816b374ed7217d0d78d7fa",
+  "exactIdentities": {
+    "obvDifference": "OBV_t - OBV_tMinusN = sum(sign(deltaClose_i) * volume_i)",
+    "signedVolumeBalance": "SVB_N = sum(sign(deltaClose_i) * volume_i) / sum(volume_i)",
+    "normalizedOBVChange": "normalizedOBVChangeN = SVB_N",
+    "endpointObvSlope": "endpointSlopeN = sum(sign(deltaClose_i)*volume_i)/N"
+  },
+  "formulaProvenance": {
+    "genericObvSlopeFrozen": false,
+    "endpointSlopeIndependentInformation": false,
+    "olsSlopeWouldAddTimeWeightsNotNewDataFamily": true,
+    "multipleSlopeVariantsBeforeOutcomes": "FORBIDDEN"
+  },
+  "pivotDivergence": {
+    "primitiveOwner": "PATTERN_PRICE_PIVOTS",
+    "pairing": "TWO_MOST_RECENT_CONSECUTIVE_CONFIRMED_SAME_TYPE_SAME_SCALE",
+    "legalClock": "LATER_CONFIRMED_AT_PLUS_VALID_VOLUME_LINEAGE",
+    "bearishEquivalence": "PRICE_HIGHER_HIGH && pivotSignedVolumeBalance < 0",
+    "bullishEquivalence": "PRICE_LOWER_LOW && pivotSignedVolumeBalance > 0",
+    "rawObvStartingLevelRequired": false,
+    "confirmationLagCostRequired": true,
+    "historicalEpisodeRepaintForbidden": true
+  },
+  "divergenceFamilies": {
+    "PIVOT_SIGNED_VOLUME": {
+      "inputs": [
+        "confirmedPricePivots",
+        "intervalSignedVolumeBalance"
+      ],
+      "d02Owners": [
+        "D02-07",
+        "D02-09"
+      ]
+    },
+    "PARTICIPATION_TRAJECTORY": {
+      "inputs": [
+        "priceProgress",
+        "pvSlotRvol20",
+        "pvCumvolPace20",
+        "persistence/acceptance"
+      ],
+      "d02Owners": [
+        "D02-02",
+        "D02-09",
+        "D02-10"
+      ]
+    },
+    "EFFORT_RESULT": {
+      "owner": "D02-06",
+      "isDivergenceFamily": false
+    }
+  },
+  "moduleBoundary": {
+    "D02-07": "COMPARATOR_ONLY / EXACT_DUPLICATE_PRUNING_REQUIRED",
+    "D02-08": "LATENT_MECHANISM_CONSUMER / STRONG_MERGE_CANDIDATE_IF_NO_INDEPENDENT_MICROSTRUCTURE_EVIDENCE",
+    "D02-09": "RELATIONAL_TRANSFORM_ONLY / NO_PRIMITIVE_VOTE / PIT_VOLUME_LINEAGE_BLOCKED"
+  },
+  "maturity": {
+    "D02-07": {
+      "level": "L2",
+      "pct": 40,
+      "change": false
+    },
+    "D02-08": {
+      "level": "L2",
+      "pct": 40,
+      "change": false
+    },
+    "D02-09": {
+      "level": "L2",
+      "pct": 40,
+      "change": false
+    },
+    "D02": 48.3
+  },
+  "d02_09_l3Blockers": [
+    "daily volume corporate-action reset continuity unresolved",
+    "volume unit/trading-unit/sub-lot completeness required",
+    "no clean prospective divergence parent coverage",
+    "no OOS/prospective incremental evidence"
+  ],
+  "formalOptimizationCandidate": "NONE",
+  "formalCore": "LOCKED"
+}
