@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 10:26 Asia/Taipei
+Updated: 2026-10-03 10:25 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -637,4 +637,23 @@ Frozen before specialist results:
 Allowed terminal governance classifications are MERGE_ELIGIBLE, KEEP_SEPARATE, SCOPE_DEDUP_ONLY and EVIDENCE_INSUFFICIENT.
 
 No module retirement is authorized by the contract itself. Specialist evidence + Dependency Audit + owner approval remain mandatory.
+
+## D16-25 specialist maturity synchronization — 2026-10-03
+
+11｜統計驗證與策略市場狀態研究室 completed the D16-25 conceptual/executable validation contract and explicitly advanced D16-25 from L0 / 0% to **L2 / 40%**.
+
+Evidence owner:
+`research/D16_D18_VALIDATION_CHECKPOINT.md`
+
+Supporting artifacts:
+- `research/D16_25_PROBABILISTIC_DECISION_RESEARCH_V0_1.md`
+- `research/d16_25_probabilistic_decision_contract_v0_1.json`
+- `research/D16_25_D15_19_MERGE_DECISION_INPUT_V0_1.md`
+
+Governance synchronization only:
+- D16 aggregate maturity becomes **45.6%**.
+- Overall 354-module curriculum maturity becomes **32.6%**.
+- L3 remains closed because genuine complete Taiwan PIT prediction/outcome/calibration evidence is still missing.
+- D15-19 merge/retirement remains NOT EXECUTED.
+- Formal Core remains unchanged.
 
