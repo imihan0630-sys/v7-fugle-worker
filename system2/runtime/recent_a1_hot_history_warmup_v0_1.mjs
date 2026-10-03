@@ -163,6 +163,18 @@ export function planRecentA1HotHistoryWarmupV0_1({
         blockedDate = true;
         continue;
       }
+      if (row.symbolCount >= row.minimum && row.pitEligibleSymbolCount < row.minimum) {
+        blocked.push(deepFreeze({
+          marketDate,
+          market,
+          state: "EXISTING_NON_PIT_HISTORY_BLOCKS_COVERAGE",
+          symbolCount: row.symbolCount,
+          pitEligibleSymbolCount: row.pitEligibleSymbolCount,
+          minimum: row.minimum,
+        }));
+        blockedDate = true;
+        continue;
+      }
       if (!row.historyCoverageReady) markets.push(market);
     }
     if (blockedDate) continue;
