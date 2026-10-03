@@ -48,3 +48,14 @@ Status: FOUNDATION_CLUSTER_L2 / D20-01_02_04_07 / FORMAL_CORE_UNCHANGED
 - Do not repeat L0/L1 foundation work.
 - Formal Core unchanged.
 
+## Canonical overlay 2026-10-04 03:05 Asia/Taipei
+- D20-08 monthly-revenue event-clock validation advanced; maturity remains L2 / 40%.
+- Official correction workflow supports a version chain: correction disclosure contains before/after values, followed by revenue re-announcement.
+- TWSE company-information records show correction disclosures with publication timestamps to the second.
+- correction_first_known is a viable clock candidate.
+- original issuer_submission_first_known remains unresolved for large-scale replay and must not be inferred from filing deadlines or aggregate snapshot dates.
+- Historical original and corrected values must remain separate vintages.
+- Next: audit at least 30 correction events across market segments, years and publication times; trace each correction to its original revenue version and measure timestamp coverage.
+- If the original clock remains unavailable, record the source blocker and rotate to D20-06 data feasibility.
+- Formal Core remains locked; no optimization candidate.
+
