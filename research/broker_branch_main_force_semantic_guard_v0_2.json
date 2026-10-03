@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "BROKER_BRANCH_MAIN_FORCE_SEMANTIC_GUARD_V0_2",
+  "supersedes": "research/broker_branch_main_force_semantic_guard_v0_1.json",
+  "updated": "2026-10-04 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "question": "Can Taiwan broker/branch flow be studied prospectively without conflating execution venue, proprietary activity, selected-universe products, and beneficial-owner identity?",
+  "officialSourceTiers": [
+    {
+      "tier": "PUBLIC_CURRENT_DAY_BSR",
+      "source": "TWSE broker buy/sell daily query system",
+      "semantics": "same-day broker/branch execution aggregation",
+      "availability": "PUBLIC_CURRENT_DAY_QUERY",
+      "replay": "HISTORICAL_BULK_REPLAY_NOT_ESTABLISHED",
+      "guards": [
+        "contains proprietary plus brokerage-client trading in the ordinary broker/branch report",
+        "same-day current query is not a frozen historical first-known archive",
+        "CAPTCHA/current-day interface is not a stable bulk research contract"
+      ]
+    },
+    {
+      "tier": "FULL_ALL_STOCK_PAID_REPORT",
+      "product": "TWSE 買賣日報表(全部不含權證)",
+      "producedAt": "16:10 Asia/Taipei; block-trade file 17:30",
+      "startDate": "2012-10-25",
+      "fields": [
+        "securityCode",
+        "broker/branch",
+        "executionPrice",
+        "buyShares",
+        "sellShares"
+      ],
+      "semantics": [
+        "broker/branch data combine proprietary-dealer and brokerage-client transactions",
+        "where a broker has head office and branches, proprietary activity is aggregated into head office"
+      ],
+      "access": "PAID_NOT_AUTHORIZED",
+      "observedPriceNtdPerMonth": {
+        "internal": 80000,
+        "external": 80000
+      },
+      "researchValue": "COMPLETE_UNIVERSE_DENOMINATOR",
+      "guard": "Do not purchase autonomously."
+    },
+    {
+      "tier": "MOST_ACTIVE_SELECTED_PRODUCT",
+      "product": "TWSE The Most Active Stocks and Details of Securities Trade",
+      "producedAt": "15:00 Asia/Taipei; block-trade file 17:10",
+      "startDate": "2004-03-01",
+      "fields": [
+        "stockCode",
+        "brokerCode",
+        "bidShares",
+        "askShares",
+        "bidAmount",
+        "askAmount",
+        "bidCount",
+        "askCount"
+      ],
+      "semantics": [
+        "selected by total purchase turnover",
+        "does not include proprietary transaction data",
+        "remaining brokers are aggregated and totals include branch summaries"
+      ],
+      "access": "PAID_NOT_AUTHORIZED",
+      "observedPriceNtdPerMonth": {
+        "internal": 5000,
+        "external": 25000
+      },
+      "researchValue": "LOWER_PROP_DEALER_CONFOUND_BUT_SELECTED_UNIVERSE_ONLY",
+      "guard": "Cannot be used as an unbiased full-market denominator."
+    }
+  ],
+  "keyFalsification": [
+    "Removing proprietary trading does not identify beneficial owners; branch rows still aggregate many unrelated brokerage clients.",
+    "A selected active-stock sample can create collider/selection bias because inclusion is conditioned on turnover/attention.",
+    "A branch can appear persistent because clients repeatedly route there, because dealer inventory is aggregated at head office, or because of operational routing; none proves one main force.",
+    "Comparing concentration metrics across products with different universe-selection rules is invalid without explicit denominator harmonization.",
+    "Public current-day query output downloaded later does not prove what was knowable at an earlier decision time."
+  ],
+  "allowedResearchFeatures": [
+    "branchNetFlow/ADV within one declared source tier",
+    "branchBreadth within one declared source tier",
+    "topKBranchConcentration within one declared source tier",
+    "branchPersistence with broker/branch-code vintage",
+    "headOfficeVsBranchSplit when proprietary-mix semantics are explicit",
+    "flowReactionInteraction"
+  ],
+  "forbiddenLabels": [
+    "MAIN_FORCE_IDENTITY",
+    "SMART_MONEY_IDENTITY",
+    "SINGLE_BENEFICIAL_OWNER",
+    "FULL_MARKET_BRANCH_ALPHA_FROM_SELECTED_ACTIVE_STOCK_PRODUCT"
+  ],
+  "pitRequirements": [
+    "tradeDate",
+    "market",
+    "symbol",
+    "brokerCode",
+    "branchCode/name",
+    "brokerBranchVintage",
+    "buyShares",
+    "sellShares",
+    "sourceProduct",
+    "sourceTier",
+    "coverageUniverse",
+    "selectionRule",
+    "producedAtContract",
+    "capturedAt",
+    "firstKnownAt",
+    "sourceVersion",
+    "contentHash",
+    "headOfficeFlag",
+    "proprietaryMixKnown",
+    "unknownReasons"
+  ],
+  "maturityDecision": {
+    "module": "D06-13",
+    "level": "L2",
+    "maturityPct": 40,
+    "reason": "Mechanism/source semantics are strong, but an authorized complete-universe replayable source is cost-gated and public selected/current-day alternatives do not satisfy unbiased PIT replay."
+  },
+  "status": "SOURCE_TIERS_FROZEN / SELECTED_UNIVERSE_BIAS_EXPLICIT / BENEFICIAL_OWNER_UNIDENTIFIABLE / COST_GATED / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "exactNext": "Do not buy paid data autonomously. If a future authorized full-universe artifact is supplied, first run outcome-blind code-vintage/universe/completeness checks. If only selected active-stock data are available, restrict inference to that selected universe and never generalize to full-market branch alpha."
+}
