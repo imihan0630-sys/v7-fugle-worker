@@ -42,3 +42,14 @@ Formal Core: LOCKED
 4. Universe count/coverage is first-class provenance; membership changes cannot silently become economic exits.
 5. After active V8.15 lineage resolves, Class-A rank capture may be considered only if zero-extra-call, Shadow-only and Formal-invariant.
 6. Continue independent under-reconciled questions while evidence accumulates.
+
+
+## 2026-10-03 continuation / pullback PIT update
+
+- D03-04 L2/40 -> L3/60: continuation is a post-decision outcome relation, not another current-price factor.
+- Overlapped rolling retN sign-retention is not a valid primary continuation outcome.
+- Primary continuation outcomes are exact future D5/D10/D20 return, MFE/MAE under symbol-session/corporate-action provenance.
+- D03-05 remains L2/40: generic reversal score rejected; residual pullback-origin attribution is data-gated.
+- Liquidity-pressure origin requires D05 pressure/depth/response/replenishment completeness; candle morphology alone stays UNKNOWN.
+- Formal Core locked; no optimization candidate.
+- D03 current aggregate after D03-13 and D03-04 promotions: 55.0%.
