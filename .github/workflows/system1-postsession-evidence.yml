@@ -1,0 +1,49 @@
+name: System 1 Post-Session Evidence
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_trade_date:
+        description: Taiwan target trade date whose C3 cohort/bars/quotes should be evaluated (YYYY-MM-DD)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system1-postsession-evidence
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Collect read-only C3/C4/C5 post-session evidence
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+          C3_TARGET_TRADE_DATE: ${{ inputs.target_trade_date }}
+          C3_POSTSESSION_OUTPUT: artifacts/system1-postsession-evidence.json
+          C3_ENTRY_OUTPUT: artifacts/system1-c3-entry.json
+          C4_ALLOCATION_OUTPUT: artifacts/system1-c4-allocation.json
+          C5_OVERFILTER_OUTPUT: artifacts/system1-c5-overfilter.json
+          C3_POSTSESSION_BLOCKER_OUTPUT: artifacts/system1-postsession-blocker.json
+        run: node tests/collect_system1_postsession_evidence.mjs
+      - name: Preserve evidence or explicit blocker
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system1-postsession-evidence-${{ github.run_id }}
+          path: |
+            artifacts/system1-postsession-evidence.json
+            artifacts/system1-c3-entry.json
+            artifacts/system1-c4-allocation.json
+            artifacts/system1-c5-overfilter.json
+            artifacts/system1-postsession-blocker.json
+          if-no-files-found: error
+          retention-days: 90
