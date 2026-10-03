@@ -1265,3 +1265,15 @@ ADD_MODULE／EXTEND_EXISTING_SCOPE／MERGE_INTO_EXISTING／NOT_A_GAP／EVIDENCE_
 
 
 Coverage pre-intake rule: COV-02, COV-07 and COV-08 currently have PARTIAL_EVIDENCE_RECEIVED from pre-existing specialist artifacts. This status is non-terminal and must not be treated as RETURN_ACCEPTED_FOR_INTAKE.
+
+
+## Coverage Pending Evidence Deficit Matrix — 2026-10-03
+
+For COV-03, COV-04, COV-05 and COV-12, read:
+`shared-knowledge/CURRICULUM_COVERAGE_PENDING_EVIDENCE_DEFICIT_MATRIX_20261003_V0_1.md`
+
+Routing rule:
+- 05｜法人與籌碼研究室 closes COV-03 direct retail/natural-person observability.
+- 06｜基本面與估值研究室 closes COV-04 payout sustainability and COV-05 P/S / EV-Sales valuation semantics.
+- 15｜信用市場與資本結構研究室 closes COV-12 seniority/collateral/recovery-waterfall semantics.
+- Do not promote a candidate merely because adjacent research exists; satisfy the minimum evidence threshold in the deficit matrix.

@@ -126,3 +126,17 @@ Accepted specialist returns remain 0 / 12. No curriculum structural change is au
 - Pending specialist returns without accepted partial evidence: COV-03, COV-04, COV-05, COV-12.
 - Accepted specialist returns remain 0 / 12.
 - No curriculum structural change is authorized.
+
+
+## Remaining Coverage evidence deficits — 2026-10-03
+
+Canonical matrix:
+`shared-knowledge/CURRICULUM_COVERAGE_PENDING_EVIDENCE_DEFICIT_MATRIX_20261003_V0_1.md`
+
+Remaining candidates without accepted partial evidence:
+- COV-03 / D06 → direct retail/natural-person observable + Taiwan PIT source contract.
+- COV-04 / D07 → payout/coverage/sustainability semantics + accounting/event clocks.
+- COV-05 / D08 → P/S or EV/Sales formula + numerator/denominator/PIT ownership contract.
+- COV-12 / D22 → debt seniority/collateral/recovery taxonomy + Taiwan document feasibility.
+
+These are dispatch deltas only. States remain PENDING_SPECIALIST_RETURN until qualifying evidence arrives.
