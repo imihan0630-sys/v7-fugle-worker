@@ -3080,7 +3080,7 @@
         "ASSET_PRICING_FACTOR_CHECKPOINT.md",
         "ASSET_PRICING_FACTOR_RESEARCH.md"
       ],
-      "maturityPct": 26.7,
+      "maturityPct": 32,
       "modules": [
         {
           "id": "D19-01",
@@ -3185,22 +3185,22 @@
         {
           "id": "D19-11",
           "name": "Factor Crowding／Capacity／Turnover因子擁擠容量與換手",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Factor Crowding／Capacity／Turnover因子擁擠容量與換手」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D19-11 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / CROWDING_DIRECT_EVIDENCE_REQUIRED",
+          "next": "建立PIT擁擠/容量研究切片：直接部位/資金流若不可得則標UNKNOWN或proxy-only；以換手、價差、impact、participation rate、多日執行與壓力流動性建立成本後容量包絡，再考慮L3。"
         },
         {
           "id": "D19-12",
           "name": "Seasonality／Calendar Anomalies季節性與日曆異象",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Seasonality／Calendar Anomalies季節性與日曆異象」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / HIGH_DATA_MINING_RISK. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
-          "levelMeaning": "未研究",
-          "status": "OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / HIGH_DATA_MINING_RISK",
-          "next": "由 12｜資產定價與因子研究室採事前定義的日曆假說做多年度、多 Regime、獨立日期、成本與多重測試控制；未通過前只屬研究／情境，不得成為通用 Gate。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / L2_MECHANISM_AND_FALSIFICATION_DEFINED / HIGH_DATA_MINING_RISK",
+          "next": "事前登錄星期/月初月底/月分/假日前後/農曆等假說，保存實際交易日曆vintage與公告時間；做多年度、多Regime、成本與多重檢定控制，未通過OOS前不得成為通用Gate。"
         },
         {
           "id": "D19-13",
@@ -3233,10 +3233,10 @@
           "next": "由 12｜資產定價與因子研究室對 Size、Value、Volatility、Turnover、Spread 等中性化並納入成本／容量；只有 residual Taiwan PIT alpha 通過 OOS／多 Regime 才可升級。"
         }
       ],
-      "status": "RESEARCH_ACTIVE / D19-01_TO_D19-10_L2 / FACTOR_LAYER_PIT_RECEIPTS_REQUIRED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D19-11與D19-12：因子擁擠/容量/換手、季節性/日曆異象由理論→機制→反證；並在System2既有cold loader上建立D19-01至D19-10第一個可執行factor-layer台股PIT receipt鏈（universe→return→factorInput→neutralization→cost→replay），未有receipt不得升L3。",
+      "status": "RESEARCH_ACTIVE / D19-01_TO_D19-12_L2 / FACTOR_LAYER_PIT_RECEIPTS_REQUIRED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D19-13、D19-15、D19-16：相對價值/配對/共整合/殘差均值回歸、指數/基準建構、流動性溢酬由理論→機制→反證；並在System2既有cold loader上建立D19-01至D19-12第一個可執行factor-layer台股PIT receipt鏈（universe→return→factorInput→neutralization→cost→replay），未有receipt不得升L3。",
       "lastResearchUpdate": "2026-10-03T19:39:00+08:00",
-      "researchNote": "Stage 4 completed: D19-07 low-vol/low-beta, D19-08 idiosyncratic volatility, D19-09 residual momentum/factor neutralization, and D19-10 factor exposure/multicollinearity reached L2. Low-risk/IVOL effects are regime/model sensitive; residual momentum remains model-relative; sequential orthogonalization can be order-dependent; D19-10 is an anti-double-count governance layer. Existing System2 cold history supports PIT price/universe replay, but factor-layer receipts are still missing. Formal Core unchanged."
+      "researchNote": "Stage 5 completed: D19-11 factor crowding/capacity/turnover and D19-12 seasonality/calendar anomalies reached L2. Crowding requires direct PIT positioning/flow or remains UNKNOWN/proxy-only; capacity must be cost/impact/turnover-specific. Calendar hypotheses are high data-mining risk and require preregistration, actual trading-calendar vintages, multiple-testing control and cost-adjusted OOS evidence. D19 now 32.0%; Formal Core unchanged."
     },
     {
       "id": "D20",
