@@ -2672,3 +2672,406 @@ This alignment is required before B0/B1/B2 nesting.
 
 Status:
 `PRESSURE_VOLATILITY_MECHANISM_ALIGNMENT = MANDATORY`.
+
+
+## MS-063 — Market Impact is not Implementation Shortfall and not generic slippage
+
+D05-11 begins with a strict decomposition.
+
+Observed execution cost can contain several components:
+- explicit fees/taxes;
+- crossing the bid-ask spread;
+- delay/opportunity movement between decision and order submission;
+- own-order market impact;
+- unrelated market drift while the order is active;
+- adverse selection after passive fills;
+- discrete-tick / queue / partial-fill effects.
+
+Therefore:
+`IMPLEMENTATION_SHORTFALL != CAUSAL_MARKET_IMPACT`.
+
+A practical signed implementation-shortfall measure can compare actual fill price with a preregistered decision/arrival benchmark, but it does not identify how much of the difference was caused by our order.
+
+For buys:
+- higher actual fill relative to the benchmark is adverse execution cost;
+for sells:
+- lower actual fill relative to the benchmark is adverse execution cost.
+
+But causal market impact requires a counterfactual:
+"What would the market path have been if the same order had not been submitted?"
+
+That counterfactual is not directly observed.
+
+Research consequence:
+- implementation shortfall is observable execution performance;
+- arrival-price slippage is observable;
+- post-fill markout is observable;
+- causal own-order impact remains a model-dependent estimand unless a valid counterfactual/control design exists.
+
+Sources:
+- Perold implementation-shortfall framework as used in institutional transaction-cost analysis.
+- Almgren & Chriss (2000/2001), Optimal Execution of Portfolio Transactions.
+- Frazzini, Israel & Moskowitz transaction-cost decomposition work.
+
+Status:
+`EXECUTION_COST_OBSERVABLE / CAUSAL_IMPACT_NOT_DIRECTLY_OBSERVABLE`.
+
+
+## MS-064 — Temporary / permanent impact is a model, not a field in the tape
+
+The Almgren-Chriss family separates:
+- temporary impact associated with execution intensity / immediate trading cost;
+- permanent impact associated with a lasting shift in the reference price.
+
+This is useful as an execution model, but the tape does not contain columns named "temporary" and "permanent."
+
+A post-trade price that remains higher after a buy may reflect:
+- true lasting self-impact;
+- information common to our order and the market;
+- broad market/sector drift;
+- continued same-side public order flow;
+- event/news arrival;
+- selection into trading precisely when prices were already moving.
+
+Therefore a decay curve after our executions is descriptive first.
+
+Research-only impact horizons:
+- immediate: fill-to-mid / arrival-to-fill;
+- short markout: +1m / +5m;
+- execution-scale: +10m / +15m;
+- later diagnostic: +30m / close where support is valid.
+
+No horizon is called "permanent" by default.
+
+A lasting component requires independent evidence that it survives controls and is stable across independent dates.
+
+Status:
+`TEMPORARY_PERMANENT = MODELLED_DECOMPOSITION / NOT_RAW_TRUTH`.
+
+
+## MS-065 — Square-root impact is a challenger family, not a Taiwan constant
+
+A common empirical impact model has the shape:
+`impact ~ Y * sigma * sqrt(Q/V)`
+where Q is order size and V is a volume scale.
+
+The literature supports concave impact in many institutional datasets, but it does NOT justify one universal Y or one universal square-root regime.
+
+Relevant counter-evidence / boundary:
+- small orders can exhibit a more nearly linear regime before a square-root crossover;
+- impact shape depends on execution horizon, participation rate, liquidity and market design;
+- spread and tick effects are material for small orders;
+- price-limit / VI / auction states break the ordinary continuous-market approximation.
+
+Gatheral's no-dynamic-arbitrage work constrains admissible impact models but does not provide a ready-made Taiwan coefficient.
+
+Bucci et al. document a linear-to-square-root crossover in institutional U.S. equity trades, which directly falsifies the idea that every order size should use the same square-root rule.
+
+Project rule:
+- square-root impact is a benchmark challenger only;
+- compare against simpler linear-in-participation / spread-depth baselines;
+- do not estimate Y from outcomes and then promote the best-looking specification without OOS validation;
+- never use U.S. institutional coefficients as Taiwan defaults.
+
+Status:
+`SQUARE_ROOT_IMPACT = EMPIRICAL_CHALLENGER / UNIVERSAL_COEFFICIENT_REJECTED`.
+
+Sources:
+- Gatheral (2010), No-Dynamic-Arbitrage and Market Impact.
+- Bucci et al. (2018/2019), Crossover from Linear to Square-Root Market Impact.
+
+
+## MS-066 — Self-impact identifiability requires order-lifecycle evidence
+
+To study D05-11 on this project, market data alone are not enough.
+
+Minimum own-order lifecycle fields:
+- clientOrderId / broker order reference;
+- side;
+- order type;
+- limit price;
+- submitted quantity;
+- submit timestamp;
+- broker/exchange acknowledgement timestamp if available;
+- cancel/replace timestamps;
+- partial-fill timestamps;
+- partial-fill quantities/prices;
+- final status.
+
+Required market context:
+- best bid/ask and spread at submit;
+- visible top1/top5 depth where valid;
+- trade sequence / serial diagnostics;
+- session mechanism state;
+- tick size / price tier;
+- local midquote volatility;
+- market/sector return context;
+- participation estimate relative to contemporaneous traded volume.
+
+Without our own order lifecycle, any "market impact" estimate is only a market-level pressure study, not self-impact.
+
+Without a no-order / matched control, the causal attribution remains weak even with order lifecycle.
+
+Primary falsification:
+- match our execution windows to comparable no-order windows on symbol, time-of-day, spread, local volatility, activity and market regime;
+- if the observed markout is similar in no-order windows, do not attribute it to self-impact.
+
+Status:
+`SELF_IMPACT = ORDER_LIFECYCLE_PLUS_COUNTERFACTUAL_REQUIRED`.
+
+
+## MS-067 — Adverse Selection is a conditional fill outcome, not an inferred informed-trader label
+
+For a passive buy fill, a subsequent downward midprice move is adverse to the liquidity provider.
+For a passive sell fill, a subsequent upward midprice move is adverse.
+
+This motivates a signed post-fill markout.
+
+But:
+`ADVERSE_MARKOUT != PROOF_OF_INFORMED_COUNTERPARTY`.
+
+The same markout can result from:
+- public news;
+- market beta;
+- sector move;
+- transient inventory pressure;
+- our poor queue timing;
+- stale quote;
+- limit/VI transition;
+- ordinary noise.
+
+Therefore D05-12 first measures:
+`SIGNED_POST_FILL_MARKOUT`
+not:
+`INFORMED_TRADER_PROBABILITY`.
+
+Suggested descriptive horizons:
+- +1m;
+- +5m;
+- +10m / +15m;
+subject to common support and mechanism-state continuity.
+
+Required controls:
+- side;
+- passive/aggressive execution type;
+- spread;
+- queue/depth proxy;
+- local volatility;
+- trade/message intensity;
+- market/sector move;
+- session/tick regime.
+
+No motive or trader identity is inferred.
+
+Status:
+`ADVERSE_SELECTION = EXECUTION_CONDITIONAL_MARKOUT / INTENT_UNKNOWN`.
+
+
+## MS-068 — Order-flow toxicity metrics require hard falsification; VPIN is not imported as a ready factor
+
+VPIN and related toxicity metrics are motivated by the idea that liquidity providers lose when one-sided order flow contains superior information.
+
+However, the literature is contested.
+
+Positive side:
+- VPIN-style methods were proposed as real-time measures of order-flow toxicity and linked to liquidity-provider risk.
+
+Strong counter-evidence:
+- Andersen & Bondarenko find that VPIN's apparent volatility-prediction power can be driven by trading intensity / volatility and trade-classification mechanics;
+- the result depends materially on the buy/sell classification method.
+
+Project implication:
+- do not import VPIN as a named factor;
+- do not label volume imbalance "toxicity" merely because it is one-sided;
+- toxicity research must beat B0 activity/volatility and B1 spread/depth controls;
+- if the result disappears after activity/volatility matching, classify it as an ACTIVITY_OR_VOLATILITY_PROXY;
+- trade classification uncertainty must be explicit.
+
+This aligns with the existing D05 rule:
+`pressure != informed intent`.
+
+Sources:
+- Andersen & Bondarenko (2015), Review of Finance 19(1), 1-54.
+- Easley / López de Prado / O'Hara debate retained as contested evidence.
+
+Status:
+`VPIN = NOT_ADOPTED / TOXICITY_REQUIRES_INCREMENTAL_EVIDENCE`.
+
+
+## MS-069 — Taiwan regular trading gives queue priority economic meaning
+
+Current TWSE regular intraday trading uses:
+- price priority;
+- time priority at the same price after market opening;
+- pre-open same-price orders sequenced randomly by computer;
+- opening / closing call auctions;
+- continuous matching during the main intraday interval;
+- VI call-auction interruptions.
+
+Therefore exact queue semantics are mechanism-state dependent.
+
+Continuous session:
+- at the same price, earlier accepted order has higher priority.
+
+Pre-open / first auction:
+- same-price ordering is not ordinary continuous-time FIFO in the same sense because computer random sequencing applies.
+
+Price change:
+- TWSE guidance states that changing order price effectively combines cancel + new order, so the time priority corresponds to the changed order time.
+
+Research consequence:
+- queue position can matter to fill probability and execution quality;
+- a queue model valid in the continuous session cannot simply be reused for opening/closing/VI call-auction states.
+
+Official sources:
+- TWSE Trading Mechanism Introduction.
+- TWSE Operating Rules Article 58-2.
+
+Status:
+`TWSE_QUEUE_PRIORITY = MECHANISM_DEPENDENT / CONTINUOUS_PRICE_TIME_CONFIRMED`.
+
+
+## MS-070 — Public top-five depth cannot reveal exact personal queue position
+
+Current Fugle stock Books exposes:
+- best five bid prices/sizes;
+- best five ask prices/sizes;
+- provider time;
+- continuous/trial flags.
+
+It does not expose:
+- individual order IDs;
+- per-order arrival timestamps;
+- our own order identity inside the public queue;
+- a documented book-event sequence.
+
+Therefore after placing a passive order at best bid/ask:
+- visible aggregate size at that price does not tell us exactly how much volume is ahead of our order;
+- subsequent size decreases cannot be partitioned exactly into trades, cancellations ahead, cancellations behind or new orders without richer event/order-level data;
+- exact queue rank cannot be reconstructed from public top-five snapshots alone.
+
+A research-only proxy may preserve:
+- visibleSamePriceDepthAtSubmit;
+- ownOrderSize;
+- subsequent trade volume at the price;
+- visible depth deltas;
+- elapsed time;
+- fill / partial-fill outcome.
+
+But its label must be:
+`QUEUE_AHEAD_PROXY`
+not:
+`EXACT_QUEUE_POSITION`.
+
+D05-13 requires broker/order acknowledgements plus market data for stronger fill analysis.
+
+Sources:
+- Fugle Stock WebSocket Books documentation.
+- TWSE price-time priority rule.
+
+Status:
+`EXACT_QUEUE_POSITION = UNOBSERVABLE_FROM_PUBLIC_TOP5 / PROXY_ONLY`.
+
+
+## MS-071 — Queue position affects fill probability and adverse-selection exposure, but remains execution capability
+
+Queue position is economically relevant because:
+- orders nearer the front generally have a higher chance of being filled before price moves away;
+- deeper queue position changes expected waiting time;
+- fills at different queue positions can expose a liquidity provider to different adverse-selection / inventory-risk profiles.
+
+Empirical and modelling literature supports queue position as an execution variable:
+- Donnelly & Gan (2018) model optimal decisions in a time-priority queue;
+- recent market-microstructure work shows queue position interacts with adverse-selection and inventory risk;
+- order-scoring literature treats fill probability as dependent on queue state and imbalance.
+
+But for this project:
+`QUEUE_POSITION != STOCK_SELECTION_ALPHA`.
+
+Owner-approved role:
+- execution confidence;
+- passive-versus-aggressive order choice research;
+- fill-probability research;
+- partial-fill / cancellation timing analysis.
+
+Prohibited:
+- adding a stock-selection score because one symbol has a shorter queue;
+- treating current visible queue as a persistent fundamental characteristic;
+- making queue position a universal BUY gate.
+
+Status:
+`D05_13_ROLE = EXECUTION_CONFIDENCE_ONLY / NOT_ALPHA_GATE`.
+
+
+## MS-072 — D05-11 / D05-12 / D05-13 shared validation matrix
+
+Three estimands are frozen separately.
+
+### E1 — Execution cost / implementation shortfall
+Observed:
+- decision/arrival benchmark;
+- actual fills;
+- explicit spread crossing;
+- partial fills;
+- unfilled opportunity.
+
+Question:
+"How costly was the realized execution?"
+
+### E2 — Causal market impact
+Requires:
+- own-order lifecycle;
+- participation / size controls;
+- matched or modelled counterfactual;
+- time-of-day / volatility / spread / market controls.
+
+Question:
+"How much of the price path was caused by our order?"
+
+Default state:
+`UNKNOWN_CAUSAL_ATTRIBUTION`.
+
+### E3 — Adverse-selection markout
+Requires:
+- fill-side sign;
+- post-fill midquote horizons;
+- market/sector/session controls.
+
+Question:
+"After we were filled, did price tend to move against the liquidity-providing side?"
+
+Do not infer counterpart motive.
+
+### E4 — Queue / fill confidence
+Requires:
+- order lifecycle;
+- visible same-price depth;
+- market events / trades;
+- partial fills / cancels.
+
+Question:
+"What was the probability / timing of execution conditional on the observable queue state?"
+
+Exact queue rank remains UNKNOWN unless order-level sequencing is actually available.
+
+### Shared negative controls
+- matched no-order windows;
+- aggressive versus passive fills;
+- common-support windows;
+- spread-only baseline;
+- local-volatility/activity baseline;
+- size / participation-rate strata;
+- tick / price-tier strata;
+- auction / VI / limit / odd-lot separate cohorts;
+- market/sector drift control;
+- independent dates.
+
+### Promotion boundary
+Passing execution-cost research does not imply market-impact identification.
+Passing adverse-selection markout does not imply informed-trader detection.
+Passing queue/fill research does not imply stock-selection alpha.
+
+Formal Core remains locked.
+
+Status:
+`D05_11_12_13_MECHANISM_AND_FALSIFICATION = FROZEN / OWN_PIT_EVIDENCE_PENDING`.
