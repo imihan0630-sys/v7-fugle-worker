@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 11:28 Asia/Taipei
+Updated: 2026-10-03 11:32 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -1471,4 +1471,13 @@ D12-14 vs D12-15。
 3. producer（產生者）與 consumer（使用者）不得重複擁有同一資料來源。
 4. 上游成熟度不得自動提升下游模組。
 5. 專科室不得自行退休正式模組或改 Formal Core（正式核心）。
+
+## 第三輪 H01～H20 執行註冊表 — 2026-10-03
+
+所有研究室若收到 H01～H20 相關任務，先讀：
+`shared-knowledge/CURRICULUM_THIRD_ROUND_EXECUTION_REGISTRY_20261003_V0_1.md`
+
+該註冊表列出每一組的 category（分類）、module（模組）、room（研究室）、acceptance contract（驗收契約）與 specialist packet（專科任務包）。
+
+第三輪目前狀態：20／20 組治理封裝完成，等待各專科研究室驗證；任何模組退休／合併仍須回到 00｜研究總控室做 Dependency Audit（依賴審查）、anti-orphan（防能力孤兒）與 owner（持有人）批准。
 
