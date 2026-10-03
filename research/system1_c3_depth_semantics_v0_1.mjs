@@ -1,3 +1,4 @@
+import {C3_LIVE_DEPTH_NORMALIZATION_CONTRACT_V0_1} from "./system1_c3_live_depth_normalization_v0_1.mjs";
 const finite=x=>typeof x==="number"&&Number.isFinite(x)?x:null;
 const round=(x,d=4)=>Number.isFinite(x)?Math.round(x*10**d)/10**d:null;
 
@@ -42,7 +43,7 @@ export function buildC3DepthSemanticsAudit(c3Audit){
   return {
     schemaVersion:"SYSTEM1_C3_DEPTH_SEMANTICS_AUDIT_V0_1",
     generationId:c3Audit.generationId,sessionDate:c3Audit.sessionDate,
-    status:allReadyRawDepthComplete?"RAW_LIVE_DEPTH_CAPTURE_READY_MAPPING_BLOCKED":"RAW_LIVE_DEPTH_INCOMPLETE",
+    status:allReadyRawDepthComplete?"RAW_LIVE_DEPTH_CAPTURE_READY_MAPPING_PREREGISTERED":"RAW_LIVE_DEPTH_INCOMPLETE",
     rows,totalBars,liveDepthCompleteBars,
     liveDepthCoveragePct:totalBars?round(liveDepthCompleteBars/totalBars*100,4):null,
     triggerDepthSource:"SELECTION_TIME_DEPTH_SCORE_REPLICATED_ACROSS_INTRADAY_BARS",
@@ -50,12 +51,13 @@ export function buildC3DepthSemanticsAudit(c3Audit){
     selectionDepthStillUsedByTrigger:true,
     rawLiveDepthCaptured:true,
     rawLiveDepthUsedForTrigger:false,
-    liveDepthScoreMappingStatus:"NOT_PREREGISTERED",
+    liveDepthScoreMappingStatus:"PREREGISTERED_RESEARCH_ONLY_BASELINE_REQUIRED",
+    liveDepthNormalizationContract:C3_LIVE_DEPTH_NORMALIZATION_CONTRACT_V0_1,
     liveDepthScoreDerived:false,
     noRetestLiveDepthValidationReady:false,
     allReadyRawDepthComplete,allReadySemanticsValid,
     mustNotClaimPoorLiveDepthFilter:true,
-    nextResearchRequirement:"PREREGISTER_OUTCOME_BLIND_RAW_DEPTH_NORMALIZATION_OR_VERSION_ENTRY_CONTRACT",
+    nextResearchRequirement:"ACCUMULATE_PRIOR_SAME_SYMBOL_SAME_SLOT_BASELINE_THEN_VALIDATE_BEFORE_ENTRY_CONTRACT_VERSION",
     economicSuperiority:"UNKNOWN",
     noTriggerMutation:true,noPlanChanges:true,noTrade:true,noPush:true,
     researchOnly:true,decisionImpact:false,formalCoreImpact:false
