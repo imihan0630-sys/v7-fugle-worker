@@ -1,0 +1,454 @@
+{
+  "schemaVersion": "CURRICULUM_PRIORITY_B_OVERLAP_ACCEPTANCE_CONTRACT_V0_1",
+  "updatedAt": "2026-10-03T10:35:00+08:00",
+  "scope": {
+    "activeModules": 354,
+    "pairs": 14,
+    "formalCoreImpact": "NONE",
+    "curriculumCountImpact": "NONE"
+  },
+  "defaultPosture": "KEEP_SEPARATE_UNLESS_STRICT_SUBSUMPTION_PROVEN",
+  "mergeFirewall": [
+    "STRICT_SEMANTIC_SUBSUMPTION",
+    "NO_DISTINCT_SOURCE_CLOCK_UNIVERSE_UNIT_ACTION",
+    "NO_REQUIRED_PRODUCER_CONSUMER_OR_STATE_POLICY_BOUNDARY",
+    "FALSIFICATION_BOUNDARY_PRESERVED",
+    "CAPABILITY_PRESERVATION",
+    "NO_HIDDEN_DUPLICATE_VOTE",
+    "NO_FORMAL_CORE_CHANGE",
+    "OWNER_APPROVAL_AFTER_DEPENDENCY_AUDIT"
+  ],
+  "candidates": [
+    {
+      "id": "B01",
+      "modules": [
+        "D05-08",
+        "D14-08"
+      ],
+      "rooms": [
+        "04｜波動與市場微結構研究室",
+        "10｜投組風控與交易執行研究室"
+      ],
+      "defaultDecision": "KEEP_SEPARATE_PRODUCER_CONSUMER",
+      "boundary": "ODD_LOT_MARKET_MECHANICS_TO_EXECUTION_COST",
+      "allowedOutcomes": [
+        "KEEP_SEPARATE",
+        "SCOPE_DEDUP_ONLY",
+        "MERGE_ELIGIBLE",
+        "EVIDENCE_INSUFFICIENT"
+      ],
+      "requiredPacket": [
+        "semanticOwnershipTable",
+        "sourceClockUniverseUnitTable",
+        "sharedVsUniqueObservables",
+        "decisionRoleComparison",
+        "divergentStateExample",
+        "antiDoubleCountRule",
+        "falsificationAlternatives",
+        "capabilityPreservationList",
+        "proposedTerminalClassification",
+        "formalUnchangedConfirmation"
+      ]
+    },
+    {
+      "id": "B02",
+      "modules": [
+        "D05-06",
+        "D14-14"
+      ],
+      "rooms": [
+        "04｜波動與市場微結構研究室",
+        "10｜投組風控與交易執行研究室"
+      ],
+      "defaultDecision": "KEEP_SEPARATE_PRODUCER_CONSUMER",
+      "boundary": "AUCTION_MICROSTRUCTURE_TO_EXECUTION_COST",
+      "allowedOutcomes": [
+        "KEEP_SEPARATE",
+        "SCOPE_DEDUP_ONLY",
+        "MERGE_ELIGIBLE",
+        "EVIDENCE_INSUFFICIENT"
+      ],
+      "requiredPacket": [
+        "semanticOwnershipTable",
+        "sourceClockUniverseUnitTable",
+        "sharedVsUniqueObservables",
+        "decisionRoleComparison",
+        "divergentStateExample",
+        "antiDoubleCountRule",
+        "falsificationAlternatives",
+        "capabilityPreservationList",
+        "proposedTerminalClassification",
+        "formalUnchangedConfirmation"
+      ]
+    },
+    {
+      "id": "B03",
+      "modules": [
+        "D11-08",
+        "D17-02"
+      ],
+      "rooms": [
+        "08｜事件與新聞研究室"
+      ],
+      "defaultDecision": "KEEP_SEPARATE_SOURCE_FAMILY",
+      "boundary": "OFFICIAL_EVENT_CLOCK_VS_NEWS_PUBLICATION_CLOCK",
+      "allowedOutcomes": [
+        "KEEP_SEPARATE",
+        "SCOPE_DEDUP_ONLY",
+        "MERGE_ELIGIBLE",
+        "EVIDENCE_INSUFFICIENT"
+      ],
+      "requiredPacket": [
+        "semanticOwnershipTable",
+        "sourceClockUniverseUnitTable",
+        "sharedVsUniqueObservables",
+        "decisionRoleComparison",
+        "divergentStateExample",
+        "antiDoubleCountRule",
+        "falsificationAlternatives",
+        "capabilityPreservationList",
+        "proposedTerminalClassification",
+        "formalUnchangedConfirmation"
+      ]
+    },
+    {
+      "id": "B04",
+      "modules": [
+        "D04-05",
+        "D18-11"
+      ],
+      "rooms": [
+        "04｜波動與市場微結構研究室",
+        "11｜統計驗證與策略市場狀態研究室"
+      ],
+      "defaultDecision": "KEEP_SEPARATE_COMPONENT_COMPOSITE",
+      "boundary": "VOLATILITY_TRANSITION_TO_COMPOSITE_REGIME_TRANSITION",
+      "allowedOutcomes": [
+        "KEEP_SEPARATE",
+        "SCOPE_DEDUP_ONLY",
+        "MERGE_ELIGIBLE",
+        "EVIDENCE_INSUFFICIENT"
+      ],
+      "requiredPacket": [
+        "semanticOwnershipTable",
+        "sourceClockUniverseUnitTable",
+        "sharedVsUniqueObservables",
+        "decisionRoleComparison",
+        "divergentStateExample",
+        "antiDoubleCountRule",
+        "falsificationAlternatives",
+        "capabilityPreservationList",
+        "proposedTerminalClassification",
+        "formalUnchangedConfirmation"
+      ]
+    },
+    {
+      "id": "B05",
+      "modules": [
+        "D09-06",
+        "D18-05"
+      ],
+      "rooms": [
+        "07｜產業與供應鏈研究室",
+        "11｜統計驗證與策略市場狀態研究室"
+      ],
+      "defaultDecision": "KEEP_SEPARATE_STATE_STRATEGY_INTERACTION",
+      "boundary": "SECTOR_ROTATION_STATE_TO_STRATEGY_INTERACTION",
+      "allowedOutcomes": [
+        "KEEP_SEPARATE",
+        "SCOPE_DEDUP_ONLY",
+        "MERGE_ELIGIBLE",
+        "EVIDENCE_INSUFFICIENT"
+      ],
+      "requiredPacket": [
+        "semanticOwnershipTable",
+        "sourceClockUniverseUnitTable",
+        "sharedVsUniqueObservables",
+        "decisionRoleComparison",
+        "divergentStateExample",
+        "antiDoubleCountRule",
+        "falsificationAlternatives",
+        "capabilityPreservationList",
+        "proposedTerminalClassification",
+        "formalUnchangedConfirmation"
+      ]
+    },
+    {
+      "id": "B06",
+      "modules": [
+        "D17-08",
+        "D20-10"
+      ],
+      "rooms": [
+        "08｜事件與新聞研究室",
+        "13｜行為金融與市場心理研究室"
+      ],
+      "defaultDecision": "KEEP_SEPARATE_FOR_NOW_SEMANTIC_BOUNDARY",
+      "boundary": "NEWS_SENTIMENT_VS_BROADER_INVESTOR_SENTIMENT",
+      "allowedOutcomes": [
+        "KEEP_SEPARATE",
+        "SCOPE_DEDUP_ONLY",
+        "MERGE_ELIGIBLE",
+        "EVIDENCE_INSUFFICIENT"
+      ],
+      "requiredPacket": [
+        "semanticOwnershipTable",
+        "sourceClockUniverseUnitTable",
+        "sharedVsUniqueObservables",
+        "decisionRoleComparison",
+        "divergentStateExample",
+        "antiDoubleCountRule",
+        "falsificationAlternatives",
+        "capabilityPreservationList",
+        "proposedTerminalClassification",
+        "formalUnchangedConfirmation"
+      ]
+    },
+    {
+      "id": "B07",
+      "modules": [
+        "D07-23",
+        "D16-23"
+      ],
+      "rooms": [
+        "06｜基本面與估值研究室",
+        "11｜統計驗證與策略市場狀態研究室"
+      ],
+      "defaultDecision": "KEEP_SEPARATE_OBJECT_VS_METHOD",
+      "boundary": "FUNDAMENTAL_SCENARIO_VS_STRESS_VALIDATION",
+      "allowedOutcomes": [
+        "KEEP_SEPARATE",
+        "SCOPE_DEDUP_ONLY",
+        "MERGE_ELIGIBLE",
+        "EVIDENCE_INSUFFICIENT"
+      ],
+      "requiredPacket": [
+        "semanticOwnershipTable",
+        "sourceClockUniverseUnitTable",
+        "sharedVsUniqueObservables",
+        "decisionRoleComparison",
+        "divergentStateExample",
+        "antiDoubleCountRule",
+        "falsificationAlternatives",
+        "capabilityPreservationList",
+        "proposedTerminalClassification",
+        "formalUnchangedConfirmation"
+      ]
+    },
+    {
+      "id": "B08",
+      "modules": [
+        "D13-18",
+        "D18-15"
+      ],
+      "rooms": [
+        "09｜衍生品與國際總經研究室",
+        "11｜統計驗證與策略市場狀態研究室"
+      ],
+      "defaultDecision": "KEEP_SEPARATE_MACRO_STATE_STRATEGY_INTERACTION",
+      "boundary": "BUSINESS_CYCLE_STATE_TO_STRATEGY_REGIME",
+      "allowedOutcomes": [
+        "KEEP_SEPARATE",
+        "SCOPE_DEDUP_ONLY",
+        "MERGE_ELIGIBLE",
+        "EVIDENCE_INSUFFICIENT"
+      ],
+      "requiredPacket": [
+        "semanticOwnershipTable",
+        "sourceClockUniverseUnitTable",
+        "sharedVsUniqueObservables",
+        "decisionRoleComparison",
+        "divergentStateExample",
+        "antiDoubleCountRule",
+        "falsificationAlternatives",
+        "capabilityPreservationList",
+        "proposedTerminalClassification",
+        "formalUnchangedConfirmation"
+      ]
+    },
+    {
+      "id": "B09",
+      "modules": [
+        "D08-19",
+        "D17-06"
+      ],
+      "rooms": [
+        "06｜基本面與估值研究室",
+        "08｜事件與新聞研究室"
+      ],
+      "defaultDecision": "KEEP_SEPARATE_HORIZON_SOURCE",
+      "boundary": "MARKET_IMPLIED_EXPECTATIONS_VS_EVENT_SURPRISE",
+      "allowedOutcomes": [
+        "KEEP_SEPARATE",
+        "SCOPE_DEDUP_ONLY",
+        "MERGE_ELIGIBLE",
+        "EVIDENCE_INSUFFICIENT"
+      ],
+      "requiredPacket": [
+        "semanticOwnershipTable",
+        "sourceClockUniverseUnitTable",
+        "sharedVsUniqueObservables",
+        "decisionRoleComparison",
+        "divergentStateExample",
+        "antiDoubleCountRule",
+        "falsificationAlternatives",
+        "capabilityPreservationList",
+        "proposedTerminalClassification",
+        "formalUnchangedConfirmation"
+      ]
+    },
+    {
+      "id": "B10",
+      "modules": [
+        "D10-13",
+        "D13-17"
+      ],
+      "rooms": [
+        "07｜產業與供應鏈研究室",
+        "09｜衍生品與國際總經研究室"
+      ],
+      "defaultDecision": "KEEP_SEPARATE_TRANSMISSION_LAYER",
+      "boundary": "SUPPLY_CHAIN_TRANSMISSION_VS_MACRO_CAPITAL_FLOW",
+      "allowedOutcomes": [
+        "KEEP_SEPARATE",
+        "SCOPE_DEDUP_ONLY",
+        "MERGE_ELIGIBLE",
+        "EVIDENCE_INSUFFICIENT"
+      ],
+      "requiredPacket": [
+        "semanticOwnershipTable",
+        "sourceClockUniverseUnitTable",
+        "sharedVsUniqueObservables",
+        "decisionRoleComparison",
+        "divergentStateExample",
+        "antiDoubleCountRule",
+        "falsificationAlternatives",
+        "capabilityPreservationList",
+        "proposedTerminalClassification",
+        "formalUnchangedConfirmation"
+      ]
+    },
+    {
+      "id": "B11",
+      "modules": [
+        "D06-06",
+        "D19-11"
+      ],
+      "rooms": [
+        "05｜法人與籌碼研究室",
+        "12｜資產定價與因子研究室"
+      ],
+      "defaultDecision": "KEEP_SEPARATE_UNIT_OF_ANALYSIS",
+      "boundary": "SECURITY_INVESTOR_CROWDING_VS_FACTOR_PORTFOLIO_CROWDING",
+      "allowedOutcomes": [
+        "KEEP_SEPARATE",
+        "SCOPE_DEDUP_ONLY",
+        "MERGE_ELIGIBLE",
+        "EVIDENCE_INSUFFICIENT"
+      ],
+      "requiredPacket": [
+        "semanticOwnershipTable",
+        "sourceClockUniverseUnitTable",
+        "sharedVsUniqueObservables",
+        "decisionRoleComparison",
+        "divergentStateExample",
+        "antiDoubleCountRule",
+        "falsificationAlternatives",
+        "capabilityPreservationList",
+        "proposedTerminalClassification",
+        "formalUnchangedConfirmation"
+      ]
+    },
+    {
+      "id": "B12",
+      "modules": [
+        "D01-08",
+        "D04-03"
+      ],
+      "rooms": [
+        "01｜K線與型態研究室",
+        "04｜波動與市場微結構研究室"
+      ],
+      "defaultDecision": "KEEP_SEPARATE_PRIMITIVE_PATTERN",
+      "boundary": "VOLATILITY_CONTRACTION_TO_VCP_PATTERN",
+      "allowedOutcomes": [
+        "KEEP_SEPARATE",
+        "SCOPE_DEDUP_ONLY",
+        "MERGE_ELIGIBLE",
+        "EVIDENCE_INSUFFICIENT"
+      ],
+      "requiredPacket": [
+        "semanticOwnershipTable",
+        "sourceClockUniverseUnitTable",
+        "sharedVsUniqueObservables",
+        "decisionRoleComparison",
+        "divergentStateExample",
+        "antiDoubleCountRule",
+        "falsificationAlternatives",
+        "capabilityPreservationList",
+        "proposedTerminalClassification",
+        "formalUnchangedConfirmation"
+      ]
+    },
+    {
+      "id": "B13",
+      "modules": [
+        "D14-11",
+        "D15-11"
+      ],
+      "rooms": [
+        "10｜投組風控與交易執行研究室"
+      ],
+      "defaultDecision": "KEEP_SEPARATE_COST_POLICY",
+      "boundary": "READD_FRICTION_TO_POSITION_LIFECYCLE",
+      "allowedOutcomes": [
+        "KEEP_SEPARATE",
+        "SCOPE_DEDUP_ONLY",
+        "MERGE_ELIGIBLE",
+        "EVIDENCE_INSUFFICIENT"
+      ],
+      "requiredPacket": [
+        "semanticOwnershipTable",
+        "sourceClockUniverseUnitTable",
+        "sharedVsUniqueObservables",
+        "decisionRoleComparison",
+        "divergentStateExample",
+        "antiDoubleCountRule",
+        "falsificationAlternatives",
+        "capabilityPreservationList",
+        "proposedTerminalClassification",
+        "formalUnchangedConfirmation"
+      ]
+    },
+    {
+      "id": "B14",
+      "modules": [
+        "D05-05",
+        "D05-12"
+      ],
+      "rooms": [
+        "04｜波動與市場微結構研究室"
+      ],
+      "defaultDecision": "KEEP_SEPARATE_OBSERVABLE_LATENT",
+      "boundary": "ORDER_FLOW_IMBALANCE_VS_TOXICITY",
+      "allowedOutcomes": [
+        "KEEP_SEPARATE",
+        "SCOPE_DEDUP_ONLY",
+        "MERGE_ELIGIBLE",
+        "EVIDENCE_INSUFFICIENT"
+      ],
+      "requiredPacket": [
+        "semanticOwnershipTable",
+        "sourceClockUniverseUnitTable",
+        "sharedVsUniqueObservables",
+        "decisionRoleComparison",
+        "divergentStateExample",
+        "antiDoubleCountRule",
+        "falsificationAlternatives",
+        "capabilityPreservationList",
+        "proposedTerminalClassification",
+        "formalUnchangedConfirmation"
+      ]
+    }
+  ]
+}
