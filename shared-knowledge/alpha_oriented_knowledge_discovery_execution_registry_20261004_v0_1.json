@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "ALPHA_ORIENTED_KNOWLEDGE_DISCOVERY_EXECUTION_REGISTRY_V0_1",
+  "date": "2026-10-04",
+  "status": "AOKD01_SPECIALIST_VALIDATION_READY_AOKD02_03_FEASIBILITY_PENDING",
+  "audit": "shared-knowledge/ALPHA_ORIENTED_KNOWLEDGE_DISCOVERY_AUDIT_20261004_V0_1.md",
+  "candidates": [
+    {
+      "id": "AOKD-01",
+      "state": "SPECIALIST_VALIDATION_PACKET_READY",
+      "room": "06｜基本面與估值研究室",
+      "domain": "D07",
+      "packet": "shared-knowledge/AOKD01_INTANGIBLE_CAPITAL_SPECIALIST_VALIDATION_PACKET_20261004_V0_1.md",
+      "expectedReturn": "research/AOKD01_D07_INTANGIBLE_CAPITAL_SPECIALIST_RETURN_V0_1.md",
+      "covId": null
+    },
+    {
+      "id": "AOKD-02",
+      "state": "SOURCE_FEASIBILITY_REQUIRED",
+      "room": "06｜基本面與估值研究室",
+      "domain": "D07",
+      "covId": null
+    },
+    {
+      "id": "AOKD-03",
+      "state": "COVERAGE_BIAS_AND_ENTITY_MAPPING_REQUIRED",
+      "room": "06_or_14",
+      "domain": "D07_or_D21",
+      "covId": null
+    },
+    {
+      "id": "AOKD-04",
+      "state": "WATCHLIST_NONCORE",
+      "room": "14｜公司治理與內部人研究室",
+      "domain": "D21",
+      "covId": null
+    }
+  ],
+  "canonicalImpact": "NONE",
+  "formalCoreImpact": "NONE"
+}
