@@ -1942,3 +1942,201 @@ No Greek/VRP/surface score, veto, rank weight, position sizing or entry timing c
 3. Freeze surface method V0.1 plus static-arbitrage/quote-quality tests.
 4. Replay simple skew/term-structure and complex surface factors on the exact same parent quotes to quantify method sensitivity before outcomes.
 5. Only after source-attested independent dates exist, preregister Taiwan risk/OOS targets and compare complexity incrementally.
+
+
+---
+
+## DR-060 — TAIFEX daily Delta has three publication clocks and two effective-date meanings
+
+TAIFEX states the official daily option Delta table is updated about:
+- 06:45;
+- 14:30;
+- 16:30.
+
+The semantic split is critical:
+- 06:45 publishes Delta for all contracts tradable **that same business day**, including newly listed series;
+- 14:30 and 16:30 pre-publish Delta for the **next business day**, but exclude series that will only be newly listed the next day.
+
+Therefore:
+`publicationDate` and `effectiveTradingDate` are different fields.
+
+For an 18:10 after-market selector, the latest properly timestamped 16:30-class publication is potentially known before the decision and may describe the next business day. It is not a live 18:10 Delta recalculated from night-session market prices.
+
+Status: DAILY-DELTA PUBLICATION/EFFECTIVE-DATE FIREWALL FROZEN.
+
+---
+
+## DR-061 — the 2026-10-02 TAIFEX Delta file is a high-value clock example, not yet a strict historical PIT parent
+
+TAIFEX's current daily-Delta page lists:
+- data date 2026-10-02;
+- generation time 2026-10-02 16:39:28 Taipei.
+
+The same page states afternoon versions are next-business-day Delta.
+
+This makes the file materially stronger for 18:10-clock research than a later EOD page with no generation time.
+
+However, a file retrieved on 2026-10-03 does not by itself prove:
+- immutable first-known availability at 16:39:28;
+- that no later overwrite occurred;
+- preservation of the 14:30 earlier version.
+
+Research classification:
+`OFFICIAL_TIMESTAMPED_HISTORICAL_CANDIDATE`, not yet `STRICT_SOURCE_ATTESTED_PIT_RECEIPT`.
+
+Status: CLOCK FEASIBILITY PASS / STRICT ATTESTATION PENDING.
+
+---
+
+## DR-062 — exchange Delta is a model state, not sentiment
+
+TAIFEX describes Delta as a theoretical hedge ratio.
+
+TAIFEX educational/material on index-option reference pricing shows theoretical pricing inputs can include:
+- futures/index reference prices and related markets;
+- volatility derived from option bid/ask and related volatility measures;
+- rates;
+- strike;
+- time to expiry.
+
+Therefore the published Delta is an **exchange-generated model/risk parameter**.
+
+Do not interpret:
+- Delta 0.70 = 70% chance Taiwan rises;
+- rising Delta = traders became bullish;
+- high absolute Delta = stronger alpha.
+
+The correct first research role is:
+1. official model-state baseline;
+2. contract/moneyness quality check;
+3. comparator against independently computed Greeks.
+
+Status: EXCHANGE-DELTA NON-DIRECTIONAL SEMANTICS FROZEN.
+
+---
+
+## DR-063 — afternoon Delta versions are incomplete by design
+
+TAIFEX explicitly says next-day Delta published at 14:30/16:30 excludes next-day newly listed series.
+
+Consequences:
+- next-session coverage is not 100%;
+- absence of a series does not mean Delta=0;
+- new-series absence must be `NOT_YET_LISTED_IN_ADVANCE_VERSION`;
+- morning 06:45 and prior-afternoon versions have different universes.
+
+A cross-sectional study that compares 16:30 files against next-day 06:45 files without a universe bridge can create false “changes” that are only listings.
+
+Required lineage:
+- publication version;
+- effective date;
+- series universe;
+- added/removed series;
+- rules-regime version.
+
+Status: NEXT-DAY-NEW-SERIES COVERAGE GUARD FROZEN.
+
+---
+
+## DR-064 — Surface Method V0.1 uses conservative quote identity before complexity
+
+Primary source class remains official TAIFEX historical/statistical option rows for replay QA, not historical 18:10 proof.
+
+Primary quote method:
+- use bid/ask midpoint only when bid>0, ask>0 and ask>=bid;
+- zero-bid, one-sided or crossed quotes are excluded from the primary IV fit;
+- settlement and last trade are separate method variants, never silent fallbacks.
+
+Primary Surface Method V0.1:
+- frozen forward/discount/DTE convention;
+- log-moneyness coordinate;
+- total implied variance;
+- interpolate only inside the clean observed strike hull;
+- no primary extrapolation.
+
+Secondary SVI-like fit is for method-sensitivity only until static-arbitrage/fit checks pass.
+
+Quality state must preserve:
+- quote count/coverage;
+- zero-bid share;
+- spread distribution;
+- IV-solve failures;
+- fit error;
+- extrapolation share;
+- static-arbitrage state.
+
+Machine contract:
+`research/d12_surface_method_v0_1_spec.json`.
+
+Status: SURFACE METHOD V0.1 FROZEN / RAW-PARENT PARSER PENDING.
+
+---
+
+## DR-065 — D12-17 parity and synthetic positions are payoff identities, not free trading equivalence
+
+TXO is:
+- European exercise;
+- cash settled;
+- TAIEX underlying;
+- final settlement tied to an expiry-day cash-index averaging rule.
+
+For same strike/expiry under a consistent carry/forward convention:
+
+`C - P = D(T) * (F - K)`.
+
+Thus:
+`Long Call - Long Put`
+creates a **forward-like expiry payoff**, not an unconditional duplicate of owning Taiwan cash equities.
+
+Real trading equivalence can differ because of:
+- funding/dividends/carry;
+- futures basis;
+- margin/capital usage;
+- bid/ask;
+- ticks/fees;
+- execution latency;
+- settlement definition.
+
+Status: PARITY / SYNTHETIC PAYOFF SEMANTICS FROZEN.
+
+---
+
+## DR-066 — parity residual is first a data-quality/liquidity diagnostic
+
+An apparent mid-quote Put-Call Parity deviation is not automatically arbitrage.
+
+Before calling it executable:
+- synchronize leg timestamps;
+- use executable bid/ask bands;
+- include the underlying/forward bid/ask;
+- fees, ticks and financing;
+- available size;
+- price-stability/limit mechanics;
+- session identity.
+
+After hours, the cash index is not live while TX/TXO can trade. A parity study must use an explicit forward/futures convention rather than silently carrying the last cash-index value as current spot.
+
+Research hierarchy:
+1. quote/source consistency;
+2. executable residual after frictions;
+3. only then possible market-state information.
+
+D12-17 advances **L0 -> L2 / 40%** for mechanism + falsification only.
+
+Machine contract:
+`research/d12_17_option_payoff_parity_synthetics_spec_v0_1.json`.
+
+No L3:
+- no synchronized executable-leg PIT receipts;
+- no multi-date Taiwan parity replay under frozen clocks;
+- no OOS evidence.
+
+Formal Core remains LOCKED.
+
+## Exact next continuation after DR-066
+
+1. Acquire one permitted TAIFEX raw option-chain parent for replay QA and freeze exact raw-header mapping.
+2. Parse the same parent rows into simple skew, Surface Method V0.1 and parity-quality diagnostics.
+3. Preserve TAIFEX official Delta as a separate exchange-model baseline with publication/effective-date versioning.
+4. Compare own-computed Delta versus TAIFEX Delta outcome-blind; explain differences via model/input/clock before any alpha claim.
+5. Keep live MIS automation blocked and outcomes closed until source-attested independent dates exist.
