@@ -24,15 +24,19 @@ const baseAudit={
 
 const a=buildC3DepthSemanticsAudit(baseAudit);
 eq(a.schemaVersion,"SYSTEM1_C3_DEPTH_SEMANTICS_AUDIT_V0_1");
-eq(a.status,"RAW_LIVE_DEPTH_CAPTURE_READY_MAPPING_BLOCKED");
+eq(a.status,"RAW_LIVE_DEPTH_CAPTURE_READY_MAPPING_PREREGISTERED");
 eq(a.totalBars,2);
 eq(a.liveDepthCompleteBars,2);
 eq(a.liveDepthCoveragePct,100);
 eq(a.triggerUsesLiveOrderBook,false);
 eq(a.selectionDepthStillUsedByTrigger,true);
 eq(a.rawLiveDepthUsedForTrigger,false);
-eq(a.liveDepthScoreMappingStatus,"NOT_PREREGISTERED");
+eq(a.liveDepthScoreMappingStatus,"PREREGISTERED_RESEARCH_ONLY_BASELINE_REQUIRED");
 eq(a.liveDepthScoreDerived,false);
+eq(a.liveDepthNormalizationContract.schemaVersion,"SYSTEM1_C3_LIVE_DEPTH_NORMALIZATION_CONTRACT_V0_1");
+eq(a.liveDepthNormalizationContract.outcomeBlind,true);
+eq(a.liveDepthNormalizationContract.triggerAuthorized,false);
+eq(a.liveDepthNormalizationContract.existingDepthThresholdsReusable,false);
 eq(a.noRetestLiveDepthValidationReady,false);
 eq(a.allReadyRawDepthComplete,true);
 eq(a.allReadySemanticsValid,true);
