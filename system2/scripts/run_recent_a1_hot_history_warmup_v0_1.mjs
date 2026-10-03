@@ -53,15 +53,28 @@ const anchorMarketDate = process.env.SYSTEM2_HOT_HISTORY_ANCHOR_DATE || taipeiDa
 assert.match(anchorMarketDate, /^\d{4}-\d{2}-\d{2}$/);
 
 const anchorYear = Number(anchorMarketDate.slice(0, 4));
-const calendarPairs = await Promise.all(
-  [anchorYear, anchorYear - 1].map(async (year) => [year, await fetchCalendar(year)]),
-);
-const calendars = new Map(calendarPairs);
-const tradingDates = buildPriorTradingDatesV0_1({
-  anchorMarketDate,
-  calendars,
-  requiredSessions,
-});
+// The current TWSE holiday endpoint is reliable for the current schedule but
+// may answer the current year even when an older queryYear is requested.
+// Fetch only the anchor year here. If the requested prior-session window
+// crosses a year boundary, the planner fails closed rather than consuming a
+// falsely labeled prior-year calendar.
+const calendars = new Map([[anchorYear, await fetchCalendar(anchorYear)]]);
+let tradingDates;
+try {
+  tradingDates = buildPriorTradingDatesV0_1({
+    anchorMarketDate,
+    calendars,
+    requiredSessions,
+  });
+} catch (error) {
+  if (String(error?.message || "").includes("official trading calendar missing")) {
+    throw new Error(
+      "CROSS_YEAR_OFFICIAL_CALENDAR_SOURCE_REQUIRED:" + String(error.message),
+      { cause: error },
+    );
+  }
+  throw error;
+}
 
 const db = await createRemoteD1RestAdapter({
   accountId,
