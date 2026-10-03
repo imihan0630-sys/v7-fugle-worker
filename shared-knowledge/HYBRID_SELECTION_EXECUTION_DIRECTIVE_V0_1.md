@@ -1,6 +1,6 @@
 # Hybrid Selection Execution Directive V0.1
 
-Updated: 2026-10-03 03:16 Asia/Taipei
+Updated: 2026-10-03 11:46 Asia/Taipei
 Status: OWNER_APPROVED / EXECUTION_ACTIVE / SHADOW_FIRST / FORMAL_CORE_LOCKED
 Owner room: 00｜研究總控室（governance only）
 Scope: System 1 + System 2 selection-decision architecture
@@ -124,3 +124,22 @@ A Hybrid candidate is eligible for formal owner review only if:
 - System 2 Hybrid strategy-contract engineering: AUTHORIZED research/design Class A, final-selection authority remains disabled.
 - System 1 Production Formal: unchanged.
 - System 2 general live/final selection: unchanged / owner-gated.
+
+## Curriculum role eligibility overlay — 2026-10-03
+
+Canonical curriculum-level role eligibility:
+`shared-knowledge/HYBRID_ROLE_ELIGIBILITY_AUDIT_20261003_V0_1.md`
+
+Machine-readable overlay:
+`shared-knowledge/hybrid_role_eligibility_audit_20261003_v0_1.json`
+
+Execution registry:
+`shared-knowledge/HYBRID_ROLE_EXECUTION_REGISTRY_20261003_V0_1.md`
+
+This overlay constrains role claims but does not assign live strategy roles.
+
+System 1 A2 must map actual current gates against the overlay.
+System 2 B1 may consume the overlay when building strategy-specific role maps.
+No universal 354-module vote/score is permitted.
+Formal Core remains unchanged.
+
