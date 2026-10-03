@@ -6,10 +6,7 @@ const eq=(a,b)=>{assert.deepEqual(a,b);n++;};
 const ok=x=>{assert.ok(x);n++;};
 
 function iso(date,slot){
-  const [h,m]=slot.split(":").map(Number);
-  const d=new Date(date+"T00:00:00+08:00");
-  d.setHours(h,m,0,0);
-  return d.toISOString();
+  return new Date(date+"T"+slot+":00+08:00").toISOString();
 }
 function bar(date,slot,{bid=1000,ask=900,imbalance=.052632,spread=.1,complete=true}={}){
   return {
