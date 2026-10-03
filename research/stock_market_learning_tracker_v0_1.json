@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T18:26:00+08:00",
+  "updatedAt": "2026-10-03T18:23:55+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1555,7 +1555,7 @@
         "CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md",
         "EVENT_RISK_CHECKPOINT.md"
       ],
-      "maturityPct": 50.5,
+      "maturityPct": 51.6,
       "modules": [
         {
           "id": "D11-01",
@@ -1689,12 +1689,12 @@
         {
           "id": "D11-15",
           "name": "IPO／Listing／Bookbuilding首次上市與詢價圈購",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「IPO／Listing／Bookbuilding首次上市與詢價圈購」。研究初級市場與特殊公司事件。需凍結事件條款、公告時間、生效日期、可交易日與失敗／撤案情境，並計入供給衝擊、鎖定期、交易限制與套利破局風險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_FALSIFICATION_FROZEN / TAIWAN_OFFICIAL_RULE_LANES_IDENTIFIED / HISTORICAL_PIT_CAPTURE_PENDING / OUTCOMES_CLOSED",
-          "next": "Freeze at least two independent Taiwan IPO lifecycles with range/final-price/first-trade clocks and include a failed/withdrawn/delayed control when available; preserve immutable source versions and capturedAt before L3."
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_DATE_LEVEL_FEASIBILITY_VALIDATED / MULTI_LIFECYCLE_AND_WITHDRAWAL_CONTROL / HISTORICAL_INTRADAY_FIRST_KNOWN_UNKNOWN / OUTCOMES_CLOSED",
+          "next": "Prospectively archive immutable IPO/bookbuilding versions with capturedAt; add failed/cancelled underwriting controls and exact bookbuilding range versions. Historical date-only rows must not be backdated intraday. Preregister outcomes before any return join."
         },
         {
           "id": "D11-16",
@@ -1737,10 +1737,10 @@
           "next": "Collect Taiwan merger/share-conversion/spin-off lifecycles with known-at terms, closing/break/reprice states and replicable hedge/borrow/cost evidence; do not duplicate D11-06 transaction-state evidence."
         }
       ],
-      "status": "SPECIAL_SITUATIONS_D11_15_19_L2 / EXISTING_PIT_MODULES_PRESERVED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "Accumulate immutable Taiwan PIT/version receipts for D11-15..19 across independent event lifecycles, explicitly including failure/withdrawal/extension/reprice states; preserve existing CA-113/114 archive gates and do not open outcomes before preregistration.",
+      "status": "D11_15_L3_TAIWAN_PIT_DATE_LEVEL / SPECIAL_SITUATIONS_PROGRESS_PRESERVED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "Continue D11-16..19 PIT lifecycle receipts; for D11-15 add prospective immutable bookbuilding/auction versions and failed/cancelled controls before any L4 outcome work. Preserve CA-113/114 archive gates.",
       "lastResearchUpdate": "2026-10-03",
-      "researchNote": "D11-15..19 advanced L0->L2 after mechanism, counterevidence, multi-clock state machines, failure states, PIT/UNKNOWN/revision/selection-bias/cost/redundancy contracts were frozen. L3 remains closed pending Taiwan first-known/versioned replay evidence. Formal Core unchanged."
+      "researchNote": "D11-15 advanced L2->L3 from bounded official TWSE listing/auction/public-subscription lifecycles plus a dated withdrawal/reapplication negative control. Historical intraday first-known remains UNKNOWN; L3 is date-level Taiwan PIT/source feasibility only."
     },
     {
       "id": "D12",
@@ -2878,14 +2878,14 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Policy／Regulatory Event Clock／Surprise政策法規事件時鐘與預期差」。研究政策與法規事件的首次已知時間、預期差、受益受害與半衰期；必須與 D10（供應鏈）及 D13（總經／地緣）分工，事件本身不等於方向性交易訊號。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "POLICY_DRAFT_DECISION_EFFECTIVE_CLOCK_FROZEN / SURPRISE_EXPECTATION_REQUIRED / TAIWAN_PIT_CAPTURE_PENDING / OUTCOMES_CLOSED",
-          "next": "Prospectively capture independent Taiwan draft/consultation, final-decision and effective-date versions; archive an ex-ante expectation source before computing surprise, otherwise keep surprise UNKNOWN."
+          "status": "POLICY_CLOCK_SUBLANE_TAIWAN_PIT_FEASIBLE / SURPRISE_EXPECTATION_SOURCE_NEEDED / KEEP_L2 / OUTCOMES_CLOSED",
+          "next": "Archive ex-ante expectation sources before independent Taiwan policy decisions; otherwise keep surprise UNKNOWN. Prospectively preserve raw draft/final/effective versions with capturedAt. Do not infer surprise from market reaction."
         }
       ],
-      "status": "D17_14_L2_POLICY_EVENT_CLOCK_FROZEN / EXISTING_D17_PROGRESS_PRESERVED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "For D17-14, prospectively capture Taiwan draft/final/effective policy vintages and archive ex-ante expectations; in parallel preserve existing D17-01/02/09 multi-day source coverage work. Surprise stays UNKNOWN without a compatible pre-event expectation.",
+      "status": "D17_14_CLOCK_SUBLANE_FEASIBLE_SURPRISE_BLOCKED / EXISTING_D17_PROGRESS_PRESERVED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D17-14: validate an ex-ante expectation source lane on independent policy events; D17-01/02/09: continue multi-day source/version coverage. Policy effective dates never backdate first-known.",
       "lastResearchUpdate": "2026-10-03",
-      "researchNote": "D17-14 advanced L0->L2. Draft/consultation, final decision, implementing rule, effective date and later revision/cancellation are separate clocks; market reaction cannot be reverse-engineered into surprise. L3 remains closed pending Taiwan PIT/versioned replay evidence."
+      "researchNote": "D17-14 official draft/final/effective history is date-level PIT-feasible, including retroactive and mixed-effective counterexamples, but the full module stays L2 because no ex-ante expectation archive supports Surprise."
     },
     {
       "id": "D18",
