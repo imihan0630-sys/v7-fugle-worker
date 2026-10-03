@@ -251,3 +251,25 @@ Exact next:
 5. only after replay/readback integrity open the preregistered TWSE-only Historical-Valuation Shadow outcome join;
 6. keep TPEx outside the empirical cohort until public historical machine transport is directly verified or an authorized licensed lane is supplied;
 7. H05 remains waiting for Room-14 counterpart; D07 general-industry financial-quality receipt remains WAITING_PROSPECTIVE; analyst forecast lane remains SOURCE_BLOCKED.
+
+
+## 2026-10-03 Room-06 bounded TWSE historical valuation replay
+
+- Disposable source-capture PR #381 was executed and closed without merge.
+- Final run: System2 Research CI 37122478859 PASS; V8 Regression 37122478893 PASS.
+- Durable receipt: research/d08_twse_bounded_history_source_receipt_20261003_v0_1.json.
+- Failure history preserved:
+  - future 2026-10-31 month-end query rejected -> corrected to 2026-10-02 asOf;
+  - 3593 calendar-adjacent pre-event assumption rejected -> corrected to legal session boundary 2025-12-10 -> 2025-12-22.
+- 1102 亞泥 official TWSE history: 1,300 rows from 2021-06-01 to 2026-10-02. PE/PB support 252/756/1260 and expanding percentile calculations.
+- Current 1102 window ranks materially disagree numerically, confirming window sensitivity must remain preregistered rather than outcome-selected.
+- 9904 denominator-period transition, 3593 corporate-action session break, 7812 newly-listed short history and 1101 PE-missing/PB-present all passed their fail-closed semantics.
+- No return outcome joined. No alpha claim. No threshold selection.
+- D08-03 remains L3/60; FORMAL_OPTIMIZATION_CANDIDATE = NO; Formal Core unchanged.
+
+Exact next:
+1. freeze broader TWSE cohort construction and scan-date sampling without returns;
+2. materialize immutable percentile snapshots and coverage receipts;
+3. add baseline/control variables while outcomes stay closed;
+4. then open the preregistered TWSE-only Shadow outcome join;
+5. TPEx remains excluded until historical machine replay is verified.
