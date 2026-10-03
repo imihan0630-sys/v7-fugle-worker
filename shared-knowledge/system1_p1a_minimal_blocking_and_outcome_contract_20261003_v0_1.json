@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "SYSTEM1_P1A_MINIMAL_BLOCKING_AND_OUTCOME_CONTRACT_V0_1",
+  "updatedAt": "2026-10-03T14:40:00+08:00",
+  "status": "RESEARCH_CONTRACT_FROZEN_CLASS_A_ONLY_FORMAL_CORE_LOCKED",
+  "p1aGates": [
+    "RS_CONTEXT",
+    "CHIP_CONCENTRATION_PRESENT",
+    "FINANCIAL_SOURCE_COMPLETENESS",
+    "FUNDAMENTAL_COMPONENT_COUNT"
+  ],
+  "mixedGateSplit": {
+    "MARKET_CAP_FLOOR": [
+      "MISSING_MARKET_CAP_CONFIDENCE",
+      "KNOWN_MARKET_CAP_THRESHOLD_CONTEXT"
+    ]
+  },
+  "minimalUnblockClasses": [
+    "HARD_BLOCKED",
+    "P1A_ONLY",
+    "P1A_PLUS_CONTEXT",
+    "P1A_PLUS_PRIMARY",
+    "PRIMARY_ONLY",
+    "CONTEXT_ONLY",
+    "UNKNOWN_CONTAMINATED"
+  ],
+  "reachFunnel": [
+    "F0_FORMAL_PARENT",
+    "F1_SAFETY_EVALUABLE",
+    "F2_OWNER_UNIVERSE",
+    "F3_P1A_SEMANTIC_BYPASS",
+    "F4_AB_EVALUABLE",
+    "F5_AB_PASS",
+    "F6_TARGET_RR_EVALUABLE",
+    "F7_RR_PASS",
+    "F8_GRADE_PASS",
+    "F9_RANKABLE"
+  ],
+  "requiredCounts": [
+    "formalRejectedN",
+    "p1aRejectedN",
+    "p1aOnlyN",
+    "p1aPlusContextN",
+    "p1aPlusPrimaryN",
+    "unknownContaminatedN",
+    "p1aReachABN",
+    "p1aABPassN",
+    "p1aReachRRN",
+    "p1aRRPassN",
+    "p1aGradePassN",
+    "p1aRankableN",
+    "hardBlockedN"
+  ],
+  "outcomeLevels": [
+    "SYMBOL",
+    "DATE_CLUSTER"
+  ],
+  "confounderStrata": [
+    "POOL",
+    "SETUP",
+    "MARKET_CAP",
+    "LIQUIDITY",
+    "PRICE",
+    "REGIME",
+    "SECTOR",
+    "SESSION_DATE"
+  ],
+  "terminalStates": [
+    "P1A_NOT_MATERIAL",
+    "P1A_FUNNEL_MATERIAL_OUTCOME_UNKNOWN",
+    "P1A_MATERIAL_NO_ECONOMIC_GAIN",
+    "P1A_POSITIVE_ECONOMIC_EVIDENCE",
+    "DATA_INSUFFICIENT"
+  ],
+  "unknownPolicy": "UNKNOWN_NEVER_IMPUTED_AS_ZERO_NEUTRAL_OR_PASS",
+  "formalCoreImpact": "NONE",
+  "formalOptimizationCandidate": "NONE"
+}
