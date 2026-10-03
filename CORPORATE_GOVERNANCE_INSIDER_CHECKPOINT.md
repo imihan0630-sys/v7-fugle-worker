@@ -1,8 +1,8 @@
 # Corporate Governance / Insider Checkpoint
 
-Updated: 2026-10-03 Asia/Taipei
+Updated: 2026-10-03 18:52 Asia/Taipei
 Scope: D21｜公司治理／經營者／內部人／控制權品質
-Status: D21-01 L2 PARTIAL_PIT_REPLAY / D21-02 L2 MECHANISM_FALSIFICATION_FROZEN / FORMAL_CORE_UNCHANGED
+Status: D21-01 L2 PARTIAL_PIT_REPLAY / D21-02 L3 TAIWAN_PIT_VALIDATED / D21-03 L2 MECHANISM_FALSIFICATION_FROZEN / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - Canonical continuation checkpoint for D21.
@@ -38,5 +38,31 @@ Status: D21-01 L2 PARTIAL_PIT_REPLAY / D21-02 L2 MECHANISM_FALSIFICATION_FROZEN 
 
 ## Exact next continuation
 Build a two-company historical board PIT replay for D21-02. Capture election/appointment known_at, actual term, controller/family affiliation, committee role, accounting/finance or industry expertise, director busyness and CEO-chair duality using contemporaneous evidence. Compare forced versus voluntary appointment context under the regulation version then in force. Keep D21-01 exact original MOPS annual-report first-known timestamp as an unresolved dependency, but do not idle on it while D21-02 is executable. Only after reliable historical board replay may D21-02 be considered for L3.
+
+Formal Core impact: NONE.
+
+
+## 2026-10-03 evening durable continuation
+
+### D21-02 board replay
+- TSMC 2024 board reset is PIT-replayable: board approved 10 seats including 7 independent directors on 2024-02-06; candidate slate was publicly announced on 2024-04-12; AGM elected 10 directors including 7 independent directors on 2024-06-04 for a term through 2027-06-03; the new board elected C.C. Wei as both chairman and CEO the same day.
+- TSMC 2024 capital stock was about NT$259.35 billion, placing it above the NT$100 billion threshold for the 2024 one-third independent-director rule upon board re-election. Chairperson/CEO duality also requires at least 4 independent directors. For a 10-seat board the reconstructed floor is 4; actual = 7, so 3 seats are above the binding numerical floor.
+- Formosa Plastics 2024 board reset is PIT-replayable from official issuer election/board material: 12 directors including 4 independent directors, term 2024-06-20 through 2027-06-19; Wen-Pi Kuo was general manager at the AGM and was elected chairman by the new board on the same date; all four independent directors were appointed to remuneration functions.
+- Formosa Plastics 2024 capital was about NT$63.657 billion, below the NT$100 billion threshold. Its 4 independent directors instead line up with the separate rule requiring at least 4 independent directors when chairperson and president/equivalent are the same person.
+- Therefore raw independent-director ratio is confounded by regulation. Future research must separate legal floor, actual seats, excess seats and trigger type.
+- D21-02 advances L2 -> L3 / 60%. Historical Taiwan board state and relevant regulation-vintage linkage are feasible for core fields. L4 remains closed because prospective/OOS return-risk evidence is absent.
+- Decision role remains CONTEXT_ONLY / CONFIDENCE / GOVERNANCE_TAIL_RISK; no hard gate and no Formal Core change.
+
+### D21-03 insider trading contract
+- Freeze four distinct Taiwan insider evidence families: ex-ante transfer filing, delayed monthly holding change, pledge creation/release, and insider appointment/dismissal / related-person scope.
+- Article 22-2 transfer filing is an intention/permission-to-transfer signal, not proof of execution. Exchange/OTC transfer generally begins at least 3 days after filing; under-10,000-share daily transfers can be exempt from this filing route.
+- Article 25 monthly holding change is delayed net-holding evidence: insiders report prior-month changes by the 5th; issuer files by the 15th. Exact transaction timing can remain interval-censored.
+- Purchases and sales therefore have asymmetric public clocks. Buy-versus-sell studies must not align both on the same filing-day semantics.
+- Related-person aggregation includes spouse, minor children and nominee-held shares under the statutory scope.
+- Mandatory falsification covers transfer method/reason, intention-vs-completion, trade size, insider role, multi-insider clustering, pledge stress, control-cash-flow structure, prior return/valuation, liquidity/attention and gift/trust/estate/tax explanations.
+- D21-03 advances L0 -> L2 / 40%. L3 remains closed pending historical MOPS event replay.
+
+## Exact next continuation
+Build a historical D21-03 MOPS replay using at least one ex-ante transfer filing and one monthly holding-change case. Preserve original filing timestamp, event_clock_type, intended transfer amount/method, actual later holding delta when observable, related-person aggregation and pledge state. Demonstrate that sale-intent and monthly actual-change evidence are not collapsed into one timestamp. Then test whether multi-insider clustering adds information beyond event size and prior returns. D21-01 original MOPS annual-report first-known timestamp remains an unresolved dependency but does not block D21-03.
 
 Formal Core impact: NONE.
