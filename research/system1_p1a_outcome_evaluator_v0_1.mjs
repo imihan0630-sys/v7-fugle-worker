@@ -17,6 +17,7 @@ export const P1A_OUTCOME_GATE_V0_1=Object.freeze({
 
 function validC1(x){
   return x?.schemaVersion==="SYSTEM1_C1_ISOLATED_V0_1"&&DATE.test(String(x?.sessionDate||""))&&
+    Number.isFinite(Date.parse(String(x?.decisionAt||"")))&&
     Number.isInteger(x?.populationN)&&x.populationN>=0&&Array.isArray(x?.observations)&&x.observations.length===x.populationN;
 }
 function validC5(x){
@@ -39,13 +40,13 @@ function validRegime(r){
 function groupMean(rows,key){return round(mean(rows.map(x=>x[key])));}
 function key(scanDate,symbol,generationId){return scanDate+"|"+symbol+"|"+generationId;}
 
-function dateSummary({scanDate,generationId,formalSymbols,p1aSymbols,d5Map,regime}){
+function dateSummary({scanDate,generationId,formalSymbols,p1aSymbols,d5Map,regime,regimePIT}){
   const formalRows=formalSymbols.map(symbol=>d5Map.get(key(scanDate,symbol,generationId))).filter(Boolean);
   const p1aRows=p1aSymbols.map(symbol=>d5Map.get(key(scanDate,symbol,generationId))).filter(Boolean);
   const complete=formalRows.length===formalSymbols.length&&p1aRows.length===p1aSymbols.length&&
     formalSymbols.length>0&&p1aSymbols.length>0;
   const out={
-    scanDate,generationId,regime:regime||null,
+    scanDate,generationId,regime:regime||null,regimePIT:regimePIT===true,
     formalExpectedN:formalSymbols.length,p1aExpectedN:p1aSymbols.length,
     formalOutcomeN:formalRows.length,p1aOutcomeN:p1aRows.length,complete
   };
@@ -125,7 +126,7 @@ export function buildSystem1P1AOutcomeEvaluation({
   for(const r of regimeReceipts){
     if(!validRegime(r)) continue;
     if(regimeMap.has(r.scanDate)) throw new Error("P1A_OUTCOME_DUPLICATE_REGIME_DATE");
-    regimeMap.set(r.scanDate,r.regime);
+    regimeMap.set(r.scanDate,{regime:r.regime,knownAt:r.knownAt});
   }
 
   const dates=[];
@@ -133,6 +134,9 @@ export function buildSystem1P1AOutcomeEvaluation({
   for(const c5 of validC5s){
     const c1=c1ByDate.get(c5.sessionDate);
     if(!c1) throw new Error("P1A_OUTCOME_C1_C5_DATE_MISMATCH");
+    const regimeReceipt=regimeMap.get(c5.sessionDate)||null;
+    const regimePIT=!!(regimeReceipt&&Date.parse(regimeReceipt.knownAt)<=Date.parse(c1.decisionAt));
+    const regime=regimePIT?regimeReceipt.regime:null;
     const formalSymbols=c1.observations.filter(o=>o?.formalResult?.ok===true).map(o=>String(o.symbol));
     const p1aSymbols=c5.rows.filter(r=>Array.isArray(r?.p1aBlockSet)&&r.p1aBlockSet.length>0&&r?.reachStage==="F9_RANKABLE")
       .map(r=>String(r.symbol));
@@ -140,18 +144,18 @@ export function buildSystem1P1AOutcomeEvaluation({
       throw new Error("P1A_OUTCOME_GROUP_OVERLAP");
     totalP1aRankableRows+=p1aSymbols.length;totalFormalAdmittedRows+=formalSymbols.length;
     if(!p1aSymbols.length){
-      dates.push({scanDate:c5.sessionDate,generationId:c5.generationId,regime:regimeMap.get(c5.sessionDate)||null,
+      dates.push({scanDate:c5.sessionDate,generationId:c5.generationId,regime,regimePIT,
         formalExpectedN:formalSymbols.length,p1aExpectedN:0,formalOutcomeN:0,p1aOutcomeN:0,
         complete:false,comparisonEligible:false,blockReason:"NO_P1A_RANKABLE_ON_DATE"});
       continue;
     }
     if(!formalSymbols.length){
-      dates.push({scanDate:c5.sessionDate,generationId:c5.generationId,regime:regimeMap.get(c5.sessionDate)||null,
+      dates.push({scanDate:c5.sessionDate,generationId:c5.generationId,regime,regimePIT,
         formalExpectedN:0,p1aExpectedN:p1aSymbols.length,formalOutcomeN:0,p1aOutcomeN:0,
         complete:false,comparisonEligible:true,blockReason:"FORMAL_COMPARATOR_EMPTY_ZERO_PICK_CONTRACT_REQUIRED"});
       continue;
     }
-    const row=dateSummary({scanDate:c5.sessionDate,generationId:c5.generationId,formalSymbols,p1aSymbols,d5Map,regime:regimeMap.get(c5.sessionDate)});
+    const row=dateSummary({scanDate:c5.sessionDate,generationId:c5.generationId,formalSymbols,p1aSymbols,d5Map,regime,regimePIT});
     row.comparisonEligible=true;dates.push(row);
   }
 
@@ -160,6 +164,7 @@ export function buildSystem1P1AOutcomeEvaluation({
   const deltas=clean.map(d=>d.afterCostDeltaPct);
   const absTotal=deltas.reduce((s,x)=>s+Math.abs(x),0);
   const uniqueRegimes=uniq(clean.map(d=>d.regime).filter(Boolean)).sort();
+  const regimePITComplete=clean.length>0&&clean.every(d=>d.regimePIT===true);
   const dateCoveragePct=eligibleDates.length?round(clean.length/eligibleDates.length*100,2):null;
   const zeroFormalComparatorDates=eligibleDates.filter(d=>d.blockReason==="FORMAL_COMPARATOR_EMPTY_ZERO_PICK_CONTRACT_REQUIRED").length;
   const dateCluster={
@@ -175,13 +180,13 @@ export function buildSystem1P1AOutcomeEvaluation({
     bestDateDeltaPct:deltas.length?round(Math.max(...deltas)):null,
     worstDateDeltaPct:deltas.length?round(Math.min(...deltas)):null,
     maxAbsoluteDateContributionSharePct:absTotal>0?round(Math.max(...deltas.map(Math.abs))/absTotal*100,2):null,
-    regimeCount:uniqueRegimes.length,regimes:uniqueRegimes,regimeStats:regimeStats(clean)
+    regimeCount:uniqueRegimes.length,regimes:uniqueRegimes,regimePITComplete,regimeStats:regimeStats(clean)
   };
 
   const gate=P1A_OUTCOME_GATE_V0_1;
   const completeOutcomeCoverage=eligibleDates.length>0&&clean.length===eligibleDates.length;
   const maturityReady=completeOutcomeCoverage&&clean.length>=gate.minIndependentDates&&
-    uniqueRegimes.length>=gate.minMarketRegimes;
+    uniqueRegimes.length>=gate.minMarketRegimes&&regimePITComplete;
   const validationReady=integrityValidationPass(validation);
   const economicGatePass=
     dateCluster.directionAgreementPct!==null&&dateCluster.directionAgreementPct>=gate.minDateDirectionAgreementPct&&
@@ -221,6 +226,7 @@ export function buildSystem1P1AOutcomeEvaluation({
       symbolsWithinDateAreNotIndependent:true,
       incompleteDatesExcludedFromEconomicComparisonButBlockReadiness:true,
       zeroPickDatesRequireSeparateFrozenCashComparatorBeforeEconomicUse:true,
+      regimeMustBeKnownByC1DecisionTime:true,
       p1aRankableIsNotCandidate:true,
       positiveEvidenceDoesNotAuthorizeFormalChange:true
     },
