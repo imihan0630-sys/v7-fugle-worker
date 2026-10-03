@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "CURRICULUM_H09_H12_SCOPE_DEDUP_ACCEPTANCE_CONTRACT_V0_1",
+  "updatedAt": "2026-10-03T11:15:00+08:00",
+  "formalCoreImpact": "NONE",
+  "curriculumCountImpact": "NONE",
+  "allowedTerminalClassifications": [
+    "KEEP_SEPARATE",
+    "SCOPE_DEDUP_ONLY",
+    "MERGE_ELIGIBLE",
+    "EVIDENCE_INSUFFICIENT"
+  ],
+  "ownershipRules": [
+    "SINGLE_PRIMITIVE_OWNER",
+    "CONSUMER_DOES_NOT_REOWN_PRODUCER_EVIDENCE",
+    "RESIDUAL_SCOPE_EXPLICIT",
+    "SHARED_SCHEMA_RECEIPT_REUSE",
+    "DIVERGENT_STATE_TEST",
+    "MATURITY_ISOLATION",
+    "FORMAL_ISOLATION"
+  ],
+  "candidates": [
+    {
+      "id": "H09",
+      "modules": [
+        "D16-19",
+        "D16-25"
+      ],
+      "preferred": "SCOPE_DEDUP_ONLY",
+      "boundary": "MODEL_CALIBRATION_METHOD_VS_DECISION_POLICY",
+      "rooms": [
+        "11｜統計驗證與策略市場狀態研究室"
+      ]
+    },
+    {
+      "id": "H10",
+      "modules": [
+        "D10-12",
+        "D17-04",
+        "D17-05"
+      ],
+      "preferred": "SCOPE_DEDUP_ONLY",
+      "boundary": "STRUCTURAL_EXPOSURE_MAP_VS_EVENT_SPECIFIC_ATTRIBUTION",
+      "rooms": [
+        "07｜產業與供應鏈研究室",
+        "08｜事件與新聞研究室"
+      ]
+    },
+    {
+      "id": "H11",
+      "modules": [
+        "D12-07",
+        "D12-16"
+      ],
+      "preferred": "KEEP_SEPARATE_FOR_NOW_SCOPE_DEDUP_ONLY",
+      "boundary": "SIMPLE_SURFACE_BASELINE_VS_RESIDUAL_COMPLEX_SURFACE",
+      "rooms": [
+        "09｜衍生品與國際總經研究室"
+      ]
+    },
+    {
+      "id": "H12",
+      "modules": [
+        "D06-09",
+        "D06-18",
+        "D14-19",
+        "D20-13"
+      ],
+      "preferred": "KEEP_ALL_SCOPE_DEDUP_ONLY",
+      "boundary": "OBSERVED_ACTIVITY_TO_LENDING_ECONOMICS_TO_EXECUTION_TO_LIMITS_TO_ARBITRAGE",
+      "rooms": [
+        "05｜法人與籌碼研究室",
+        "10｜投組風控與交易執行研究室",
+        "13｜行為金融與市場心理研究室"
+      ]
+    }
+  ]
+}
