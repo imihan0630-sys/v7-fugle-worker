@@ -139,10 +139,16 @@ export function buildSystem1P1AOutcomeEvaluation({
     if(new Set([...formalSymbols,...p1aSymbols]).size!==formalSymbols.length+p1aSymbols.length)
       throw new Error("P1A_OUTCOME_GROUP_OVERLAP");
     totalP1aRankableRows+=p1aSymbols.length;totalFormalAdmittedRows+=formalSymbols.length;
-    if(!formalSymbols.length||!p1aSymbols.length){
+    if(!p1aSymbols.length){
       dates.push({scanDate:c5.sessionDate,generationId:c5.generationId,regime:regimeMap.get(c5.sessionDate)||null,
-        formalExpectedN:formalSymbols.length,p1aExpectedN:p1aSymbols.length,formalOutcomeN:0,p1aOutcomeN:0,
-        complete:false,comparisonEligible:false});
+        formalExpectedN:formalSymbols.length,p1aExpectedN:0,formalOutcomeN:0,p1aOutcomeN:0,
+        complete:false,comparisonEligible:false,blockReason:"NO_P1A_RANKABLE_ON_DATE"});
+      continue;
+    }
+    if(!formalSymbols.length){
+      dates.push({scanDate:c5.sessionDate,generationId:c5.generationId,regime:regimeMap.get(c5.sessionDate)||null,
+        formalExpectedN:0,p1aExpectedN:p1aSymbols.length,formalOutcomeN:0,p1aOutcomeN:0,
+        complete:false,comparisonEligible:true,blockReason:"FORMAL_COMPARATOR_EMPTY_ZERO_PICK_CONTRACT_REQUIRED"});
       continue;
     }
     const row=dateSummary({scanDate:c5.sessionDate,generationId:c5.generationId,formalSymbols,p1aSymbols,d5Map,regime:regimeMap.get(c5.sessionDate)});
@@ -155,9 +161,11 @@ export function buildSystem1P1AOutcomeEvaluation({
   const absTotal=deltas.reduce((s,x)=>s+Math.abs(x),0);
   const uniqueRegimes=uniq(clean.map(d=>d.regime).filter(Boolean)).sort();
   const dateCoveragePct=eligibleDates.length?round(clean.length/eligibleDates.length*100,2):null;
+  const zeroFormalComparatorDates=eligibleDates.filter(d=>d.blockReason==="FORMAL_COMPARATOR_EMPTY_ZERO_PICK_CONTRACT_REQUIRED").length;
   const dateCluster={
     eligibleComparisonDates:eligibleDates.length,
     cleanComparableDates:clean.length,
+    zeroFormalComparatorDates,
     dateCoveragePct,
     independentDates:clean.length,
     afterCostDeltaMeanPct:round(mean(deltas)),
@@ -212,6 +220,7 @@ export function buildSystem1P1AOutcomeEvaluation({
       equalDateWeightingPrimary:true,
       symbolsWithinDateAreNotIndependent:true,
       incompleteDatesExcludedFromEconomicComparisonButBlockReadiness:true,
+      zeroPickDatesRequireSeparateFrozenCashComparatorBeforeEconomicUse:true,
       p1aRankableIsNotCandidate:true,
       positiveEvidenceDoesNotAuthorizeFormalChange:true
     },
