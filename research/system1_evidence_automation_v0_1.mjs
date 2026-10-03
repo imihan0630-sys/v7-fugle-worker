@@ -1,4 +1,5 @@
-import {buildC4AllocationExperiment,buildC5OverfilterDiagnostic} from "./system1_c3_c4_c5_shadow_v0_1.mjs";
+import {buildC4AllocationExperiment} from "./system1_c3_c4_c5_shadow_v0_1.mjs";
+import {buildC5SemanticRepairDiagnostic} from "./system1_c5_semantic_repair_v0_2.mjs";
 import {C3_CAPTURE_SLOTS} from "./system1_c3_capture_contract_v0_1.mjs";
 
 const HEX64=/^[0-9a-f]{64}$/i;
@@ -195,24 +196,34 @@ export function auditC3LiveInputs(c2Ledger,{
 
 function sortedCounts(obj){return Object.entries(obj||{}).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).map(([key,count])=>({key,count}));}
 export function buildC5DailyReport(c1Diagnosis,c2Ledger){
-  const short=buildC5OverfilterDiagnostic(c1Diagnosis,c2Ledger,{strategy:"SHORT"});
-  const swing=buildC5OverfilterDiagnostic(c1Diagnosis,c2Ledger,{strategy:"SWING"});
+  const short=buildC5SemanticRepairDiagnostic(c1Diagnosis,c2Ledger,{strategy:"SHORT"});
+  const swing=buildC5SemanticRepairDiagnostic(c1Diagnosis,c2Ledger,{strategy:"SWING"});
   const render=d=>({
     formalRejectedN:d.formalRejectedN,
-    optionalOnlyFailN:d.optionalOnlyFailN,
-    hardOrPrimaryFailN:d.hardOrPrimaryFailN,
-    hardUnknownN:d.hardUnknownN,
-    setupNotReadyN:d.setupNotReadyN,
-    safetyUnknownUpperBoundN:d.safetyUnknownUpperBoundN,
-    conditionalShortUpperBoundN:d.conditionalShortUpperBoundN,
+    p1aRejectedN:d.p1aRejectedN,
+    p1aOnlyN:d.p1aOnlyN,
+    p1aPlusContextN:d.p1aPlusContextN,
+    p1aPlusPrimaryN:d.p1aPlusPrimaryN,
+    unknownContaminatedN:d.unknownContaminatedN,
+    hardBlockedN:d.hardBlockedN,
+    p1aReachABN:d.p1aReachABN,
+    p1aABPassN:d.p1aABPassN,
+    p1aReachRRN:d.p1aReachRRN,
+    p1aRRPassN:d.p1aRRPassN,
+    p1aGradePassN:d.p1aGradePassN,
+    p1aRankableN:d.p1aRankableN,
     topFailedGates:sortedCounts(d.gateFails).slice(0,10),
     topUnknownGates:sortedCounts(d.gateUnknown).slice(0,10),
-    topFirstFailures:sortedCounts(d.firstFailures).slice(0,10),
-    roleFailures:sortedCounts(d.roleFails)
+    roleFailures:sortedCounts(d.roleFails),
+    minimalClasses:sortedCounts(d.minimalClassCounts),
+    reachStages:sortedCounts(d.reachCounts)
   });
-  return {schemaVersion:"SYSTEM1_C5_DAILY_REPORT_V0_1",sessionDate:c2Ledger.sessionDate,generationId:c2Ledger.generationId,
+  return {schemaVersion:"SYSTEM1_C5_DAILY_REPORT_V0_2",sessionDate:c2Ledger.sessionDate,generationId:c2Ledger.generationId,
+    sourceRoleInventory:"SYSTEM1_A2_GATE_ROLE_INVENTORY_V0_1",
+    p1aContract:"SYSTEM1_P1A_MINIMAL_BLOCKING_AND_OUTCOME_CONTRACT_20261003_V0_1",
     short:render(short),swing:render(swing),denominatorN:c2Ledger.tally.populationN,
-    firstFailureIsNotCausalAttribution:true,optionalOnlyIsNotAdmission:true,economicSuperiority:"UNKNOWN",
+    firstFailureIsNotCausalAttribution:true,unknownNeverPasses:true,p1aRankableIsNotCandidate:true,
+    candidateCountLiftIsNotSuccess:true,economicSuperiority:"UNKNOWN",formalOptimizationCandidate:"NONE",
     researchOnly:true,decisionImpact:false,formalCoreImpact:false,noTrade:true,noPush:true};
 }
 
