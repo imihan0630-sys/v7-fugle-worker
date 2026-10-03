@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 19:25 Asia/Taipei
+Updated: 2026-10-03 19:10 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
