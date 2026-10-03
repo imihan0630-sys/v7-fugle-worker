@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "D22_01_INCREMENTAL_VALUE_PREREG_V0_1",
+  "frozenAt": "2026-10-03T14:04:00+08:00",
+  "status": "PREREGISTERED / OUTCOMES_CLOSED / RESEARCH_ONLY / FORMAL_CORE_UNCHANGED",
+  "researchQuestion": "Does PIT financing-maturity structure add incremental information beyond PIT accounting leverage/liquidity controls (D07) and PIT rate context (D13) for later Taiwan-equity downside/risk outcomes?",
+  "universe": {
+    "scope": "Taiwan listed non-financial corporates with replayable issuer/date maturity disclosures",
+    "financialInstitutionsExcluded": true,
+    "survivorshipRule": "Use issuer availability at knownAt; delisted/distressed issuers must not be silently dropped when source coverage is available.",
+    "samplingUnit": "issuer x first-known disclosure state"
+  },
+  "exposureDefinition": {
+    "primary": "near_term_financing_maturity_concentration",
+    "bucket": "<1y common-support only for first-stage cross-issuer test",
+    "numeratorClasses": [
+      "interest_bearing_short_term_borrowings",
+      "current_maturity_long_term_debt",
+      "bonds_due_within_1y",
+      "other_verified_financing_obligations_due_within_1y"
+    ],
+    "exclusions": [
+      "trade_payables",
+      "purchase_commitments",
+      "lease_liabilities in primary test",
+      "non_interest_bearing_operating_liabilities",
+      "unknown_or_contingent_amounts without verified financing semantics"
+    ],
+    "liquidityBuffer": {
+      "cash": "PIT cash and cash equivalents",
+      "facilities": "analyze separately; do not add 100% to cash unless commitment quality and drawability are verified",
+      "unknownRule": "UNKNOWN stays UNKNOWN"
+    },
+    "secondaryInteractions": [
+      "floating_rate_repricing_exposure",
+      "verified_facility_quality",
+      "contingent_liquidity_drains"
+    ]
+  },
+  "D07Baseline": {
+    "dependencyModules": [
+      "D07-05",
+      "D07-06",
+      "D07-08"
+    ],
+    "controls": [
+      {
+        "name": "accounting_leverage",
+        "definition": "total liabilities / total assets, PIT"
+      },
+      {
+        "name": "net_interest_bearing_debt_intensity",
+        "definition": "(verified interest-bearing debt - cash and cash equivalents) / total assets, PIT"
+      },
+      {
+        "name": "operating_cash_flow_support",
+        "definition": "trailing operating cash flow / verified interest-bearing debt when denominator is positive, PIT"
+      }
+    ],
+    "readinessRule": "If required PIT balance-sheet or cash-flow fields are unavailable at knownAt, the issuer/date is not scored as zero; the control is UNKNOWN and the applicable incremental test is blocked or restricted to complete-case preregistered analysis."
+  },
+  "D13Baseline": {
+    "dependencyModules": [
+      "D13-06",
+      "D13-10",
+      "D13-13"
+    ],
+    "controls": [
+      {
+        "name": "ust_10y_level",
+        "definition": "latest known U.S. Treasury 10-year yield before Taiwan outcome start"
+      },
+      {
+        "name": "ust_10y_change_20td",
+        "definition": "20-trading-day change using PIT market calendar alignment"
+      },
+      {
+        "name": "cbc_policy_rate",
+        "definition": "latest known CBC policy rate before Taiwan outcome start"
+      }
+    ],
+    "timingRule": "No future macro release, revised vintage or post-Taiwan-close information may enter the baseline."
+  },
+  "outcomes": {
+    "open": false,
+    "primary": {
+      "name": "forward_60td_max_drawdown",
+      "definition": "maximum close-to-close drawdown over next 60 Taiwan trading days from first eligible next session; sign convention frozen before data join"
+    },
+    "secondary": [
+      {
+        "name": "forward_60td_total_return",
+        "definition": "close-to-close total price return over next 60 Taiwan trading days; descriptive secondary"
+      },
+      {
+        "name": "forward_20td_total_return",
+        "definition": "close-to-close total price return over next 20 Taiwan trading days; short-horizon secondary"
+      }
+    ],
+    "noBestHorizonSelection": true,
+    "rule": "Primary result remains 60-trading-day max drawdown even if a secondary horizon looks better."
+  },
+  "comparisons": [
+    "baseline_D07_D13",
+    "baseline_plus_D22_primary",
+    "baseline_plus_D22_primary_and_preregistered_interactions"
+  ],
+  "falsificationGates": [
+    "D22 improvement disappears after D07 and D13 controls",
+    "effect exists only in one issuer/industry/date cluster",
+    "result depends on synthetic bucket splitting",
+    "result flips after excluding stale/low-quality facilities",
+    "result is driven by look-ahead publication timing or revised disclosures",
+    "effect requires post-hoc threshold/sign/horizon selection",
+    "coverage loss or UNKNOWN handling creates apparent improvement",
+    "transaction-cost or tradability constraints erase any actionable value"
+  ],
+  "testingOrder": [
+    "source/version/knownAt validation",
+    "double-count reconciliation",
+    "common-support validation",
+    "baseline completeness audit",
+    "open outcomes once",
+    "OOS or walk-forward comparison",
+    "prospective Shadow accumulation",
+    "redundancy/regime/industry/date-cluster checks",
+    "cost/executability review"
+  ],
+  "promotionRule": "L4 requires OOS or prospective evidence. No Formal optimization candidate unless incremental value survives applicable falsification, redundancy, coverage, regime, cost and overfit controls."
+}
