@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-03 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_SCHEMA_READINESS_ONLY",
+  "evidenceCursor": "PVE-239",
+  "formalCoreChanged": false,
+  "maturityChanged": false,
+  "inheritedByReference": {
+    "corporateActions": [
+      "receiptId/version",
+      "eventFamily",
+      "knownAt",
+      "effectiveSession",
+      "verifiedUnitFactor",
+      "denominatorSemanticSpace",
+      "denominatorKnownAt",
+      "revisionLineage"
+    ],
+    "symbolSessionPattern": [
+      "officialSessionIdentity",
+      "verifiedSuspensionReceipt",
+      "sessionKnownAt",
+      "confirmedPivotIdentity",
+      "pivotAt",
+      "confirmedAt",
+      "swingScale",
+      "patternSpecVersion"
+    ]
+  },
+  "d02Persisted": [
+    "source/sourceFetchedAt/featureKnownAt",
+    "volumeUnit/value",
+    "oddLotCoverage",
+    "baselineAsOfDate",
+    "comparableSessionSetHash",
+    "comparableSessionCount",
+    "missingExpectedSessionCount",
+    "pvDailyRvol20 value/status",
+    "signedVolumeBalance20 value/status",
+    "continuityJoinStatus",
+    "consumedOwnerReceiptIdsVersions"
+  ],
+  "failClosed": [
+    "missing owner evidence => UNKNOWN_BLOCKED",
+    "late correction never rewrites old decision state",
+    "valid pivot does not prove volume continuity",
+    "semantic readiness does not prove runtime availability"
+  ],
+  "readiness": {
+    "schema": "PASS",
+    "runtimeCompliance": "UNKNOWN_NOT_PROVEN",
+    "historicalToProspectivePromotion": "FORBIDDEN",
+    "outcomeGate": "CLOSED"
+  },
+  "maturity": {
+    "D02_07": "L2/40",
+    "D02_09": "L2/40",
+    "D02": "48.3%"
+  },
+  "formalOptimizationCandidate": "NONE",
+  "exactContinuation": {
+    "formal": "PVE-240 first genuine completed post-repair market session; Gate 0-6 before outcomes",
+    "prePVE": "deterministic fail-closed join fixture; research-only; no runtime wiring"
+  }
+}
