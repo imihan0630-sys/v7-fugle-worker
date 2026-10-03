@@ -16,6 +16,28 @@ Read `VERSIONING.md` before assigning any new version number. Version level is d
 
 
 
+## Global execution mode, model, and reasoning routing (owner rule, 2026-10-04)
+
+This rule applies to every ChatGPT room and task that works on this repository or its System 1, System 2, research, learning, monitoring, governance, or engineering workflows.
+
+- The owner only needs to state the goal. Before substantive work, the assistant must decide the most suitable **mode + model + reasoning effort** and proactively tell the owner when switching would materially improve speed, quality, continuity, or tool fit.
+- If the current mode/model is already appropriate, continue directly without interrupting the work just to ask for a mode choice.
+- When a switch is recommended, state these four items concisely before the substantive work:
+  1. **Recommended mode**
+  2. **Recommended model**
+  3. **Reasoning effort**
+  4. **Why this routing is better for the current task**
+- Current default routing:
+  - Routine analysis, market judgment, governance, ordinary research, checkpoint continuation -> **Chat + GPT-5.6 Sol + High**. Use Medium for genuinely simple tasks.
+  - Very difficult architecture, cross-system falsification, Formal-Core-level decision analysis, or unusually hard reasoning -> **Chat + GPT-6 Pro** (or the strongest currently available equivalent) with the highest practical reasoning effort.
+  - Repository engineering, Worker/runtime changes, patch scripts, tests, CI, debugging, refactoring, PR implementation -> **Codex + GPT-6 Astra + High** (or the strongest currently available coding equivalent).
+  - Long multi-file / multi-tool / browser / document integration where the task is not primarily repository coding -> **Work + GPT-6 Astra + High** (or the strongest currently available Work equivalent).
+- Do **not** route everything to Work, Codex, Astra, or the strongest model merely because the subscription allows it. Prefer the lightest mode/model that can complete the task reliably, preserving agentic usage for work that materially benefits from it.
+- If product model names, availability, or effort controls change, use the closest currently available equivalent while preserving the routing intent above. Do not cling to stale model names.
+- A recommendation to use Work/Codex/a stronger model is **not authorization** to cross any existing governance boundary. Class-B/Class-C work, Formal Core changes, production deployment, live trading, capital/risk changes, secrets/MFA, or other protected actions still require their existing explicit approval rules.
+- Do not claim that the interface mode has been switched automatically when the owner must select it. Tell the owner which mode/model/effort to use, then continue only within the capabilities actually available in the current session.
+- This repository rule is durable cross-chat continuity. The owner does not need to repeat this routing preference in each room.
+
 ## Deep-learning continuity
 - Scheduled or manual 台股深度學習 must read `DEEP_LEARNING_CHECKPOINT.md` first, then the latest `RESEARCH_CHECKPOINT.md`, `RESEARCH_WORKLIST.md`, and `RESEARCH_ENGINEERING_GOVERNANCE.md` before continuing.
 - `DEEP_LEARNING_CHECKPOINT.md` is the durable cursor for deep-learning progress across ChatGPT threads. Do not restart from scratch when a chat changes or becomes too long.
