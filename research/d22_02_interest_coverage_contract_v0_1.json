@@ -1,8 +1,8 @@
 {
   "schemaVersion": "D22_02_INTEREST_COVERAGE_CONTRACT_V0_1",
-  "generatedAt": "2026-10-03T19:01:00+08:00",
+  "generatedAt": "2026-10-04T07:21:00+08:00",
   "module": "D22-02",
-  "status": "L2_EVIDENCE / CROSS_INDUSTRY_SEMANTIC_FALSIFICATION_EXPANDED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "status": "L3_EVIDENCE / CROSS_INDUSTRY_MULTI_DATE_TAIWAN_PIT_REPLAY_VALIDATED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "researchQuestion": "Does PIT debt-service capacity add incremental information beyond D07 leverage/cash-flow controls, and how should interest coverage be defined without creating sector/definition threshold artifacts?",
   "mechanism": {
     "primaryConcept": "Interest coverage links earnings capacity to the contractual cost of debt and can deteriorate through lower earnings, higher effective borrowing costs, or both.",
@@ -58,16 +58,16 @@
     "Missing denominator components remain UNKNOWN rather than zero."
   ],
   "maturityDecision": {
-    "level": "L2",
-    "maturityPct": 40,
-    "reason": "Mechanism, semantic distinctions, Taiwan PIT example and explicit counterevidence are defined. Cross-industry Taiwan PIT receipts and replay are still insufficient for L3."
+    "level": "L3",
+    "maturityPct": 60,
+    "reason": "Taiwan PIT replayability is now demonstrated across semiconductor, materials and telecom examples, with Chunghwa Telecom providing two independently timestamped reporting dates. Numerator/denominator taxonomy and major falsification rules are frozen. Predictive outcomes remain closed."
   },
   "exactNext": [
-    "Add at least one additional non-financial industry and multiple dates so the numerator/denominator taxonomy is not inferred from only semiconductor and materials issuers.",
-    "Freeze treatment for negative EBIT, near-zero interest expense, capitalized interest, lease interest and other finance costs.",
-    "Build a machine-readable issuer/date ICR replay table with source-line provenance and compatible entity/accounting basis.",
-    "Compare accounting ICR with cash-interest coverage and D22-01 principal-inclusive debt-service challenger while equity outcomes remain closed.",
-    "Do not promote L3 until cross-industry Taiwan PIT replayability is established beyond isolated examples."
+    "Expand to a broader multi-issuer/multi-date panel including lower-coverage and cyclical issuers; L3 does not authorize outcome opening.",
+    "Source-attest cash-interest-paid data at first-known time where available; do not substitute later comparative disclosures.",
+    "Freeze principal-inclusive debt-service coverage using D22-01 contractual maturity cash flows without double counting.",
+    "Pre-register OOS/walk-forward/prospective Shadow comparison against D07 leverage/cash-flow and D22-01 maturity baselines before L4.",
+    "Reject or classify redundant if interest-coverage information adds no incremental value after D07 + D22-01 + D13 controls."
   ],
   "taiwanPITSemanticExamples": [
     {
@@ -98,5 +98,27 @@
       "interpretation": "Cross-industry example confirms denominator taxonomy matters. Other finance costs and capitalized borrowing costs must not be silently treated as identical to debt/lease interest expense."
     }
   ],
-  "crossIndustryFinding": "UMC and Taiwan Cement show that the same headline label 'finance costs' can contain different components and materially alter the coverage ratio. This supports a source-line taxonomy rather than a universal plug-in denominator."
+  "crossIndustryFinding": "UMC and Taiwan Cement show that the same headline label 'finance costs' can contain different components and materially alter the coverage ratio. This supports a source-line taxonomy rather than a universal plug-in denominator.",
+  "newReplayEvidence": {
+    "durableFile": "research/d22_02_interest_coverage_replay_v0_1.json",
+    "telecomMultiDate": [
+      {
+        "issuer": "Chunghwa Telecom",
+        "periodEnd": "2023-12-31",
+        "sourceKnownAt": "2024-04-17T06:05:47Z",
+        "operatingIncomeTWDmillion": 46353,
+        "accountingInterestExpenseTWDmillion": 319,
+        "accountingInterestCoverage": 145.30721003
+      },
+      {
+        "issuer": "Chunghwa Telecom",
+        "periodEnd": "2024-12-31",
+        "sourceKnownAt": "2025-04-16T06:02:44Z",
+        "operatingIncomeTWDmillion": 46873,
+        "accountingInterestExpenseTWDmillion": 339,
+        "accountingInterestCoverage": 138.26843658
+      }
+    ],
+    "divergentState": "Very high accounting interest coverage coexists with a materially larger <1y financing maturity wall in 2024; D22-02 cannot subsume D22-01."
+  }
 }
