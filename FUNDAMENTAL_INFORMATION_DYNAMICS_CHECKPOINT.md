@@ -178,3 +178,34 @@ Derivatives Information & Volatility Surface.
   4. then preregister Shadow join versus raw valuation + quality + peer/sector + RS/trend + regime;
   5. analyst freshness remains SOURCE_BLOCKED until authorized PIT estimates access exists;
   6. general-industry CFO/balance-sheet receipt remains WAITING_PROSPECTIVE for the next valid financial vintage.
+
+
+## 2026-10-03 Room-06 continuation — H05 semantic split + D08-03 replay QA
+
+- Re-read latest main after curriculum expanded to 22 domains / 354 modules. Prior 229-module denominator is obsolete.
+- Governance priority was reconciled before continuing old work. Room 06 is assigned H05 D07-25 vs D21-10 specialist validation under the owner-approved H05-H08 semantic-split contract.
+- Added research/h05_d07_25_specialist_evidence_packet_v0_1.json.
+- Room-06 H05 result:
+  - D07-25 owns statement-level forensic anomaly context;
+  - D21-10 owns audit/restatement/internal-control governance/control events;
+  - shared restatement evidence must use one canonical receipt with child interpretations;
+  - statement anomaly without governance event and governance event without ratio anomaly are both legitimate divergent states;
+  - accounting anomalies are red flags, not fraud labels.
+- Cross-room terminal classification remains EVIDENCE_INSUFFICIENT because Room 14 counterpart validation is still pending. Room-06 recommendation is KEEP_SEPARATE if independent governance/control observables are confirmed; otherwise SCOPE_DEDUP_ONLY for overlapping content.
+- H05 packet itself causes no maturity promotion, merge, retirement or Formal change.
+- Returned to D08-03 exact continuation after H05 packet.
+- Added research/historical_valuation_percentile_replay_fixture_v0_1.json and research/historical_valuation_percentile_replay_validation_receipt_20261003.json.
+- Frozen average-rank percent-rank tie rule; arithmetic QA passed tie/all-equal/min/max fixtures.
+- Fixed-history requirements: 252/756/1260 valid observations; expanding history also remains UNKNOWN before 252 valid observations.
+- PE missing states remain separate; PB availability is independent.
+- Structural breaks are context tags, not automatic history resets.
+- Late corrections may not backfill an earlier replay state.
+- D08-03 remains L3. Mechanical QA is not L4 evidence and no return outcomes were opened.
+- Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE = NO.
+
+Exact next:
+1. D08-03: freeze exact TWSE/TPEx parser/schema fingerprints and validate representative ordinary, loss-making, capital-action and newly-listed replay cases;
+2. only after source replay integrity, preregister Historical-Valuation × Quality Shadow outcome join;
+3. H05: wait for Room-14 D21-10 counterpart packet, then return cross-room evidence to 00 for Dependency Audit / anti-orphan review;
+4. D07 general-industry CFO/balance-sheet receipt remains WAITING_PROSPECTIVE for the next legitimate financial vintage;
+5. D07-11 analyst forecast lane remains SOURCE_BLOCKED until authorized canonical PIT estimates access exists.
