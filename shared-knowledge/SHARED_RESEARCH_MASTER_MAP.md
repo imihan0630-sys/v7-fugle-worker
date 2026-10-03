@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 11:10 Asia/Taipei
+Updated: 2026-10-03 11:18 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -749,4 +749,23 @@ Frozen protections:
 - Shared source rows/events use one evidence receipt and cannot become duplicate independent votes.
 
 No curriculum count, maturity or Formal Core change.
+
+## H09-H12 scope de-duplication acceptance contract — 2026-10-03
+
+Canonical contract:
+`shared-knowledge/CURRICULUM_H09_H12_SCOPE_DEDUP_ACCEPTANCE_CONTRACT_20261003_V0_1.md`
+
+Machine-readable companion:
+`shared-knowledge/curriculum_h09_h12_scope_dedup_acceptance_contract_20261003_v0_1.json`
+
+Specialist packets:
+`shared-knowledge/CURRICULUM_H09_H12_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
+
+Frozen ownership:
+- D16-19 owns model-estimation/calibration methodology; D16-25 owns decision utility/uncertainty/ABSTAIN policy.
+- D10-12 owns durable structural issuer exposure; D17-04/05 own event-specific attribution overlays.
+- D12-07 is the simple skew/term baseline; D12-16 owns residual complex surface structure only if it adds information beyond that baseline.
+- D06-09 -> D06-18 -> D14-19 -> D20-13 forms a four-layer shorting chain from observation to lending economics to execution to limits-to-arbitrage context.
+
+No count, maturity or Formal Core change.
 
