@@ -230,7 +230,7 @@ const present = classifyCorporateActionSymbolWindowV0_1({
   universeState: "IN_SCOPE",
 });
 assert.equal(present.state, "EVENT_PRESENT");
-assert.deepEqual(present.eventVersionIds, [historicalDuplicate.eventVersionId].sort());
+assert.deepEqual(present.eventVersionIds, [historical.eventVersionId].sort());
 
 const noEvent = classifyCorporateActionSymbolWindowV0_1({
   receipt: complete,
