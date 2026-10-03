@@ -190,3 +190,12 @@ Formal Core remains LOCKED.
 - H01 KEEP_SEPARATE specialist evidence is now submitted to the canonical intake ledger for 00 Dependency Audit / owner review.
 - D09-13 and D09-14 remain L3; no L4/OOS/prospective stock-selection evidence exists.
 - No Production or Formal Core behavior changed.
+
+
+### Room 07 SC-045/046 + BR-057/058 — 2026-10-04
+- SC-045 freezes a Taiwan-semiconductor issuer export-control PIT exposure receipt using current official rule/list/license vintages and issuer-native TSMC compliance/location evidence. D10-13 advances L2 -> L3 data feasibility only.
+- SC-046 freezes TSMC Arizona industrial-policy award -> facility-milestone clocks and the firewall AWARDED_MAX != DISBURSED != SPENT != QUALIFIED_CAPACITY != HVM_OUTPUT. D10-14 advances L2 -> L3 data feasibility only.
+- BR-057 freezes 8046/3189 PCB/ABF product-scope plus total-revenue denominators while leaving unavailable ABF/AI revenue numerators UNKNOWN.
+- BR-058 freezes the first true prospective D09-14 issuer-action cohort before outcomes: UMC phased expansion and Foxconn/Mitsubishi Electric MOU. D09-14 remains L3 until future prospective outcomes exist.
+- D10-01, D10-04, D09-07 and D09-12 are not promoted because their explicit evidence blockers remain.
+- No Production or Formal Core behavior changed.
