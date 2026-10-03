@@ -1,12 +1,12 @@
 {
   "schemaVersion": "CURRICULUM_COVERAGE_EXECUTION_REGISTRY_V0_1",
-  "updatedAt": "2026-10-03T23:17:00+08:00",
-  "status": "COVERAGE_PACKETS_READY_PREINTAKE_PARTIAL_EVIDENCE",
+  "updatedAt": "2026-10-04T07:52:57+08:00",
+  "status": "COVERAGE_COV04_COV05_OWNER_APPROVAL_REQUIRED",
   "formalCoreImpact": "NONE_LOCKED",
   "canonicalSnapshot": {
     "domains": 22,
     "activeModules": 354,
-    "maturityWeightedPct": 38.2
+    "maturityWeightedPct": 42.1
   },
   "parentAudit": "shared-knowledge/CURRICULUM_COVERAGE_AUDIT_20261003_V0_1.md",
   "specialistPacket": "shared-knowledge/CURRICULUM_COVERAGE_A_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
@@ -39,7 +39,7 @@
       "domain": "D07",
       "room": "06｜基本面與估值研究室",
       "class": "TRUE_GAP_CANDIDATE",
-      "state": "PENDING_SPECIALIST_RETURN",
+      "state": "OWNER_APPROVAL_REQUIRED",
       "returnPath": "research/COV04_D07_SPECIALIST_RETURN_V0_1.md"
     },
     {
@@ -92,7 +92,7 @@
     {
       "id": "COV-05",
       "room": "06｜基本面與估值研究室",
-      "state": "PACKET_READY_PENDING_SPECIALIST_RETURN"
+      "state": "OWNER_APPROVAL_REQUIRED"
     },
     {
       "id": "COV-08",
@@ -131,7 +131,7 @@
       "domain": "D08",
       "room": "06｜基本面與估值研究室",
       "class": "SCOPE_EXTENSION_CANDIDATE",
-      "state": "PENDING_SPECIALIST_RETURN",
+      "state": "OWNER_APPROVAL_REQUIRED",
       "returnPath": "research/COV05_D08_SPECIALIST_RETURN_V0_1.md"
     },
     {
@@ -165,25 +165,27 @@
     ],
     "pendingSpecialistReturn": [
       "COV-03",
-      "COV-04",
-      "COV-05",
       "COV-12"
     ],
-    "acceptedSpecialistReturns": 0,
-    "canonicalImpact": "NONE"
+    "acceptedSpecialistReturns": 2,
+    "acceptedSpecialistReturnIds": [
+      "COV-04",
+      "COV-05"
+    ],
+    "ownerApprovalRequired": [
+      "COV-04",
+      "COV-05"
+    ],
+    "canonicalImpact": "NONE_PENDING_OWNER_APPROVAL"
   },
   "pendingEvidenceDeficitMatrix": "shared-knowledge/CURRICULUM_COVERAGE_PENDING_EVIDENCE_DEFICIT_MATRIX_20261003_V0_1.md",
   "pendingDeficitSummary": {
     "candidates": [
       "COV-03",
-      "COV-04",
-      "COV-05",
       "COV-12"
     ],
     "dispatch": {
       "COV-03": "Direct retail/natural-person observable plus Taiwan PIT source contract",
-      "COV-04": "Payout/coverage/sustainability semantics plus D07 PIT accounting clock",
-      "COV-05": "P/S or EV/Sales formula plus numerator/denominator/PIT owner contract",
       "COV-12": "Instrument seniority/collateral/recovery taxonomy plus Taiwan document path"
     },
     "structuralImpact": "NONE"
@@ -195,11 +197,15 @@
   "governanceStateMachineJson": "shared-knowledge/curriculum_coverage_governance_state_machine_v0_1.json",
   "governanceStateMachineVersion": "CURRICULUM_COVERAGE_STATE_MACHINE_V0_1",
   "canonicalSnapshotSource": "research/stock_market_learning_tracker_v0_1.json",
-  "canonicalSnapshotSourceUpdatedAt": "2026-10-03T23:17:00+08:00",
+  "canonicalSnapshotSourceUpdatedAt": "2026-10-04T08:00:00+08:00",
   "canonicalSnapshotReconciliation": "shared-knowledge/CURRICULUM_COVERAGE_CANONICAL_SNAPSHOT_RECONCILIATION_20261003_V0_1.md",
   "coverageReturnValidator": "research/curriculum_coverage_return_validator_v0_1.mjs",
   "coverageReturnValidatorTest": "tests/test_curriculum_coverage_return_validator_v0_1.mjs",
   "coverageReturnValidatorCheckpoint": "research/CURRICULUM_COVERAGE_RETURN_VALIDATOR_CHECKPOINT_20261003.md",
   "coverageReturnValidatorWorkflow": ".github/workflows/curriculum-coverage-validator.yml",
-  "coverageReturnValidatorStatus": "MERGED_MAIN_PR_407_CI_PASS"
+  "coverageReturnValidatorStatus": "MERGED_MAIN_PR_407_CI_PASS",
+  "latestIntakeAudit": "shared-knowledge/CURRICULUM_COVERAGE_COV04_COV05_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md",
+  "latestIntakeAuditJson": "shared-knowledge/curriculum_coverage_cov04_cov05_intake_dependency_audit_20261004_v0_1.json",
+  "latestPreflightReceipt": "research/curriculum_coverage_intake_preflight_receipt_20261004_v0_2.json",
+  "canonicalSnapshotNote": "Audit-time snapshot only; research/stock_market_learning_tracker_v0_1.json remains authoritative and may advance independently."
 }

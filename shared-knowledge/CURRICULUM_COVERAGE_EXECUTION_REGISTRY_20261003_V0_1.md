@@ -185,3 +185,23 @@ Executable validator merged in PR #407:
 - `.github/workflows/curriculum-coverage-validator.yml`
 
 COV states are unchanged by this reconciliation.
+
+
+## COV-04 / COV-05 formal Intake — 2026-10-04
+
+Canonical audit:
+`shared-knowledge/CURRICULUM_COVERAGE_COV04_COV05_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md`
+
+Machine audit:
+`shared-knowledge/curriculum_coverage_cov04_cov05_intake_dependency_audit_20261004_v0_1.json`
+
+Updated preflight receipt:
+`research/curriculum_coverage_intake_preflight_receipt_20261004_v0_2.json`
+
+Results:
+- COV-04 → contract complete → ADD_MODULE survives Dependency / overlap / anti-orphan review → OWNER_APPROVAL_REQUIRED.
+- COV-05 → contract complete → EXTEND_EXISTING_SCOPE into D08-06 survives Dependency / overlap / anti-orphan review → OWNER_APPROVAL_REQUIRED.
+- No canonical structural mutation has been executed.
+- COV-03 and COV-12 remain PENDING_SPECIALIST_RETURN.
+- Accepted formal specialist returns: 2 / 12.
+- Audit-time tracker snapshot: 22 domains / 354 active modules / 42.1% weighted maturity. The tracker remains authoritative and may advance independently.
