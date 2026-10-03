@@ -1,8 +1,8 @@
 # Asset Pricing / Factor Investing Checkpoint
 
-Updated: 2026-10-02 Asia/Taipei
+Updated: 2026-10-03 Asia/Taipei
 Scope: D19｜資產定價／因子投資／市場異象
-Status: RESEARCH_ACTIVE / D19-01_TO_D19-06_L2 / PIT_SOURCE_MAP_DESIGNED / FORMAL_CORE_UNCHANGED
+Status: RESEARCH_ACTIVE / D19-01_TO_D19-10_L2 / FACTOR_LAYER_PIT_RECEIPTS_REQUIRED / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - This file is the canonical continuation checkpoint for D19.
@@ -31,13 +31,32 @@ Status: RESEARCH_ACTIVE / D19-01_TO_D19-06_L2 / PIT_SOURCE_MAP_DESIGNED / FORMAL
 - No L3 promotion until executable PIT ingestion/replay receipts exist.
 
 ## Current maturity
-- D19-01 through D19-06: L2 / 40% each.
-- D19 domain simple-average maturity: 20.0%.
+- D19-01 through D19-10: L2 / 40% each.
+- Current D19 curriculum denominator: 15 modules.
+- D19 domain simple-average maturity: 26.7%.
 - Formal optimization candidate: NO.
 - Formal Core: unchanged.
 
+## Stage 4 completed on 2026-10-03
+- D19-07 Low Volatility／Low Beta低波動低Beta因子 -> L2 / 40%.
+  - Separated total volatility from market beta and from D04 volatility research.
+  - Recorded leverage/benchmark-demand mechanisms and Taiwan funding-liquidity regime reversal risk.
+  - Frozen rule: no blanket low-volatility or low-beta bonus.
+- D19-08 Idiosyncratic Volatility特質波動異象 -> L2 / 40%.
+  - Residual volatility is model-relative; required controls include size, beta, total volatility, liquidity, industry, momentum/MAX-like effects and short-sale constraints.
+  - Governance remains research-only / residual alpha unproven.
+- D19-09 Residual Momentum／Factor Neutralization殘差動能與因子中性化 -> L2 / 40%.
+  - Distinguished time-series residualization from cross-sectional neutralization.
+  - Recorded omitted-factor contamination, model sensitivity and sequential-orthogonalization order dependence.
+  - Taiwan evidence supports research value but does not establish dominance or independence.
+- D19-10 Factor Exposure／Multicollinearity因子曝險與共線性 -> L2 / 40%.
+  - Frozen anti-double-count governance: prediction ability is not proof of independent factor value.
+  - New factors require spanning/residual/OOS incremental evidence after existing-factor controls.
+- Existing System2 historical cold infrastructure preserves observedAt, availableAt, barHash, provenance and survivorship-controlled registry semantics, but D19 still lacks factor-layer PIT receipts.
+- No L3 promotion in Stage 4.
+
 ## Exact next continuation
-1. Start D19-07 Low Volatility／Low Beta低波動低Beta因子 from theory -> mechanism -> falsification, explicitly separating it from D19-01 market beta and D04 volatility.
-2. Continue D19-08 Idiosyncratic Volatility特質波動異象 in the same long block unless blocked.
-3. Build a minimal executable Taiwan PIT replay slice for D19-01..06 using currently accessible sources; record source start dates and UNKNOWN gaps instead of filling them.
-4. Do not promote L3 until replay receipts verify universe vintage, delisted/suspended handling, first-known financials, market-cap/shares semantics and costs.
+1. Start D19-11 Factor Crowding／Capacity／Turnover因子擁擠容量與換手 from theory -> mechanism -> falsification, explicitly linking crowding claims to observable capacity/cost/liquidity evidence.
+2. Continue D19-12 Seasonality／Calendar Anomalies季節性與日曆異象 with strict preregistration and multiple-testing controls.
+3. Build the first executable factor-layer Taiwan PIT replay slice for D19-01..10 on top of the existing System2 cold loader. Minimum receipt chain: universeReceipt -> returnReceipt -> factorInputReceipt -> neutralizationReceipt -> costReceipt -> replayReceipt.
+4. Do not promote L3 until receipts verify universe vintage, delisted/suspended handling, first-known financials, market-cap/shares semantics, factor-set/version lineage and realistic costs.
