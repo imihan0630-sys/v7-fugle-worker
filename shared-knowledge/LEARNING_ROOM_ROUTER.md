@@ -1505,3 +1505,14 @@ R01～R08 任務包由對應專科室驗證後回 00｜研究總控室驗收；�
 
 完成角色驗證後只回傳 role eligibility（角色資格）、例外、UNKNOWN（未知）處理與防重複計票證據；不得自行宣告 production role（正式角色）或變更 Formal Core（正式核心）。
 
+## 專科回件 Intake Ledger — 2026-10-03
+
+所有 H01～H20 專科回件由：
+`shared-knowledge/CURRICULUM_SPECIALIST_INTAKE_LEDGER_20261003_V0_1.md`
+統一追蹤。
+
+目前 H05：
+- 06｜基本面與估值研究室：回件完成／總控收件通過。
+- 14｜公司治理與內部人研究室：counterpart（對側證據包）待回。
+- 在 14 室回件前，H05 維持 EVIDENCE_INSUFFICIENT_PENDING_COUNTERPART，不得合併、退休或升成熟度。
+
