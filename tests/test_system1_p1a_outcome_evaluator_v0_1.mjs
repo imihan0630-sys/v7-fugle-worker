@@ -9,7 +9,7 @@ const pad=x=>String(x).padStart(2,"0");
 function dateOf(i){return i<8?"2026-09-"+pad(i+1):"2026-10-"+pad(i-7);}
 function c1(scanDate,i){
   return {
-    schemaVersion:"SYSTEM1_C1_ISOLATED_V0_1",sessionDate:scanDate,populationN:2,
+    schemaVersion:"SYSTEM1_C1_ISOLATED_V0_1",sessionDate:scanDate,decisionAt:scanDate+"T16:00:00+08:00",populationN:2,
     observations:[
       {symbol:"F"+i,formalResult:{ok:true},gates:{}},
       {symbol:"P"+i,formalResult:{ok:false},gates:{}}
@@ -114,7 +114,7 @@ eq(immature.readiness.maturityReady,false);
 
 const zeroDate="2026-10-20";
 const zeroC1={
-  schemaVersion:"SYSTEM1_C1_ISOLATED_V0_1",sessionDate:zeroDate,populationN:1,
+  schemaVersion:"SYSTEM1_C1_ISOLATED_V0_1",sessionDate:zeroDate,decisionAt:zeroDate+"T16:00:00+08:00",populationN:1,
   observations:[{symbol:"PZ",formalResult:{ok:false},gates:{}}]
 };
 const zeroC5={
@@ -134,6 +134,21 @@ eq(zeroPick.dateCluster.zeroFormalComparatorDates,1);
 eq(zeroPick.dates[0].blockReason,"FORMAL_COMPARATOR_EMPTY_ZERO_PICK_CONTRACT_REQUIRED");
 eq(zeroPick.readiness.completeOutcomeCoverage,false);
 eq(zeroPick.interpretation.zeroPickDatesRequireSeparateFrozenCashComparatorBeforeEconomicUse,true);
+
+const nonPitRegs=[...regs];
+nonPitRegs[0]={
+  schemaVersion:"SYSTEM1_MARKET_REGIME_RECEIPT_V0_1",scanDate:dates[0],regime:"TREND",
+  verified:true,knownAt:dates[0]+"T17:00:00+08:00"
+};
+const nonPit=buildSystem1P1AOutcomeEvaluation({
+  c1Diagnoses:c1s,c5Diagnostics:c5s,d5Receipts:positiveD5,regimeReceipts:nonPitRegs,validation
+});
+eq(nonPit.classification,"P1A_FUNNEL_MATERIAL_OUTCOME_UNKNOWN");
+eq(nonPit.dateCluster.regimePITComplete,false);
+eq(nonPit.readiness.maturityReady,false);
+eq(nonPit.dates[0].regime,null);
+eq(nonPit.dates[0].regimePIT,false);
+eq(nonPit.interpretation.regimeMustBeKnownByC1DecisionTime,true);
 
 assert.throws(()=>buildSystem1P1AOutcomeEvaluation({
   c1Diagnoses:[c1s[0],c1s[0]],c5Diagnostics:[c5s[0]]
