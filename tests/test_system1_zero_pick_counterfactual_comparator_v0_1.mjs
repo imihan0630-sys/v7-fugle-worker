@@ -93,3 +93,4 @@ console.log(JSON.stringify({
 }));
 await import("./test_system1_zero_pick_rank_input_observer_v0_1.mjs");
 await import("./test_system1_zero_pick_research_pipeline_v0_1.mjs");
+await import("./test_system1_zero_pick_c5_eligibility_adapter_v0_1.mjs");
