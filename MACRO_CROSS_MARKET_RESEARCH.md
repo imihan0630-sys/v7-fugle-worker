@@ -2252,3 +2252,255 @@ D13-09/D13-11 remain L2 because one later-observed official release is not a sou
 2. Obtain approved pre-release consensus vintage or preserve surprise UNKNOWN.
 3. Keep headline/revisions/wages/unemployment as separate release dimensions.
 4. After independent events accumulate, test pre-event risk state before directional surprise models.
+
+
+---
+
+## MC-097 — D13-14 fiscal policy is not one observable number
+
+D13-14 starts by separating objects that are commonly collapsed into “fiscal policy.”
+
+### Legislated policy
+A tax/spending law, appropriation or policy decision. The economically relevant clocks include announcement, enactment and effective dates.
+
+### Budget projection
+CBO/OMB or other forecast/baseline. This is an expectations object, not realized spending.
+
+### Treasury cash flow
+The U.S. Treasury Monthly Treasury Statement reports receipts, outlays, surplus/deficit and means of financing on a modified-cash basis. The Daily Treasury Statement is an even higher-frequency cash/debt-operations object.
+
+### NIPA government final demand
+BEA government consumption expenditures and gross investment are national-accounting final-demand concepts. BEA explicitly treats government consumption and gross investment as final demand and uses Treasury/federal records among the source data.
+
+These are related but not interchangeable.
+
+Status: FISCAL OBJECT-SEPARATION FROZEN.
+
+---
+
+## MC-098 — fiscal transmission has competing short- and long-horizon channels
+
+The effect of a fiscal action depends on composition, timing and economic state.
+
+Candidate channels:
+1. short-run aggregate demand;
+2. transfer/tax effects on private demand;
+3. public-investment/productive-capacity effects;
+4. government borrowing / Treasury supply / interest-rate effects;
+5. private-financing / crowding-out effects;
+6. sector-specific procurement or subsidy demand.
+
+CBO descriptions of fiscal transmission likewise distinguish demand, federal borrowing and incentives/investment channels.
+
+Therefore:
+`larger deficit = bullish`
+and
+`larger deficit = bearish`
+are both prohibited universal rules.
+
+Status: FISCAL SIGN AMBIGUITY FROZEN.
+
+---
+
+## MC-099 — “fiscal impulse” requires a methodology, not a deficit difference
+
+A raw deficit can change because of:
+- enacted tax/spending policy;
+- automatic stabilizers;
+- business-cycle changes in receipts;
+- interest expense;
+- timing shifts;
+- one-off items.
+
+Therefore a change in headline deficit is not automatically a discretionary fiscal impulse.
+
+Any `fiscalImpulse` field must state:
+- cyclically adjusted or not;
+- cash/NIPA/accounting basis;
+- baseline;
+- nominal/real scale;
+- GDP normalization;
+- vintage.
+
+Without that methodology, use descriptive cash-flow or final-demand fields instead.
+
+Status: FISCAL-IMPULSE NAMING FIREWALL FROZEN.
+
+---
+
+## MC-100 — fiscal PIT and revision semantics
+
+For after-market Taiwan research, preserve:
+- policy announcedAt / enactedAt / effectiveAt;
+- Treasury MTS/DTS publishedAt and reference period;
+- BEA NIPA vintage/publishedAt;
+- CBO/OMB forecast vintage.
+
+A later-revised BEA history cannot be backfilled as what markets knew at the earlier decision.
+
+Likewise:
+- a CBO forecast is not later realized spending;
+- a Treasury cash outlay is not the same economic concept as BEA government consumption/investment.
+
+Status: FISCAL VINTAGE/PIT CONTRACT FROZEN.
+
+---
+
+## MC-101 — Taiwan fiscal transmission is indirect and sector-conditioned
+
+Possible Taiwan channels:
+- U.S. final demand for Taiwan exports;
+- semiconductor/technology/industrial procurement;
+- U.S. yields and term premium;
+- USD / global financial conditions;
+- global equity risk repricing.
+
+Validation order:
+1. Taiwan domestic market/sector state;
+2. U.S. growth/equity state;
+3. U.S. rates/curve;
+4. USD/TWD;
+5. then fiscal object.
+
+If a fiscal variable loses explanatory value after rates/USD/U.S. demand controls, classify it as redundant rather than create another macro score.
+
+D13-14 advances **L0 -> L2**:
+- objects, channels, PIT/vintage boundaries and falsification are defined;
+- no Taiwan prospective/OOS evidence exists for L3.
+
+Machine contract:
+`research/d13_14_fiscal_policy_transmission_spec_v0_1.json`.
+
+Formal Core remains LOCKED.
+
+---
+
+## MC-102 — D13-15 policy stance is not financial conditions
+
+The policy rate is one input into financial conditions, not the entire state.
+
+Financial conditions can move while the policy rate is unchanged through:
+- long Treasury yields;
+- credit spreads;
+- equity prices;
+- house prices;
+- exchange rates;
+- bank lending standards;
+- market risk/liquidity.
+
+Therefore:
+`Fed funds unchanged = financial conditions unchanged`
+is false as a general identity.
+
+Status: POLICY-STANCE VS FINANCIAL-CONDITIONS FIREWALL FROZEN.
+
+---
+
+## MC-103 — NFCI, ANFCI and FCI-G answer different questions
+
+### Chicago Fed NFCI
+A weekly broad statistical index using 105 financial-activity measures from money, debt/equity and traditional/shadow banking systems.
+- normalized around zero / one standard deviation over its sample;
+- positive historically corresponds to tighter-than-average financial conditions;
+- negative to looser-than-average.
+
+### ANFCI
+Adjusts financial-indicator variation for prevailing economic activity and inflation. It asks whether conditions are tighter/looser than would typically be associated with that macro backdrop.
+
+### Federal Reserve FCI-G
+A model-based “Financial Conditions Impulse on Growth” index using seven financial variables and dynamic model-implied weights to estimate headwinds/tailwinds to future GDP growth.
+
+These are not interchangeable fields.
+
+Status: FCI OBJECT-IDENTITY FROZEN.
+
+---
+
+## MC-104 — revisions make current FCI history unsafe for naïve backtests
+
+Chicago Fed explicitly notes NFCI/ANFCI histories can revise because of:
+- incoming data;
+- revisions to underlying data;
+- changing estimated indicator weights.
+
+The NFCI is released weekly for the previous Friday, creating a release lag, and current revised history can differ from what a real-time observer knew.
+
+Therefore:
+`CURRENT_NFCI_HISTORY = NOT_GUARANTEED_REAL_TIME_VINTAGE`.
+
+Required receipt fields:
+- index type;
+- reference week;
+- release timestamp;
+- capturedAt;
+- vintage identifier/hash;
+- firstEligibleTaiwanDecision.
+
+Status: NFCI REAL-TIME VINTAGE GUARD FROZEN.
+
+---
+
+## MC-105 — composite FCIs can duplicate the exact components already in System research
+
+FCI-G aggregates:
+- federal funds rate;
+- 10Y Treasury yield;
+- mortgage rate;
+- BBB corporate yield;
+- equity prices;
+- house prices;
+- broad dollar.
+
+The 09-room already separately researches:
+- rates;
+- equities;
+- dollar/FX;
+- volatility;
+- credit/financial state.
+
+Therefore FCI-G or NFCI must not automatically be added beside those inputs as another “independent” vote.
+
+Validation order:
+1. raw components / already-approved macro state;
+2. composite FCI;
+3. composite residual or incremental value only if justified.
+
+If composite FCI adds no value after its components, retain it as descriptive summary only.
+
+Status: FCI REDUNDANCY FIREWALL FROZEN.
+
+---
+
+## MC-106 — bank credit standards are a separate lower-frequency transmission channel
+
+SLOOS measures banks' reported lending standards, terms and demand.
+
+This can capture credit-supply conditions not fully represented by traded market prices.
+
+But:
+- it is survey-based;
+- lower frequency;
+- has a reference period different from daily market states;
+- demand and supply answers must remain separate.
+
+Research sequence:
+- market financial conditions first;
+- SLOOS credit standards/terms second;
+- test whether bank-credit state adds incremental Taiwan risk information.
+
+D13-15 advances **L0 -> L2**:
+- policy/FCI/credit objects, official-index semantics, revision/endogeneity limits and falsification are defined;
+- no prospective Taiwan incremental evidence exists for L3.
+
+Machine contract:
+`research/d13_15_monetary_financial_conditions_spec_v0_1.json`.
+
+Formal Core remains LOCKED.
+
+## Exact next continuation after MC-106
+
+1. Preserve source-only vintages for NFCI/ANFCI and FCI-G with release/reference clocks before any Taiwan outcome joins.
+2. Build a component-only baseline before composite FCI testing.
+3. Preserve SLOOS as a separate lower-frequency credit-state object.
+4. Continue D13-16 central-bank balance sheet/system liquidity next; explicitly separate balance-sheet stocks, reserve/liquidity flows and market-price effects.
+5. No scalar macro score or Formal optimization before PIT/OOS incremental evidence.
