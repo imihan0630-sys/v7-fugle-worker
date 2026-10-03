@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "D22_02_INTEREST_COVERAGE_CONTRACT_V0_1",
+  "generatedAt": "2026-10-03T18:58:00+08:00",
+  "module": "D22-02",
+  "status": "L2_EVIDENCE / MECHANISM_AND_FALSIFICATION_DEFINED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "researchQuestion": "Does PIT debt-service capacity add incremental information beyond D07 leverage/cash-flow controls, and how should interest coverage be defined without creating sector/definition threshold artifacts?",
+  "mechanism": {
+    "primaryConcept": "Interest coverage links earnings capacity to the contractual cost of debt and can deteriorate through lower earnings, higher effective borrowing costs, or both.",
+    "complementToD2201": "D22-01 measures when financing obligations mature; D22-02 measures whether current earnings/cash generation can absorb financing cost. A high ICR does not eliminate a principal maturity wall, and a low ICR does not by itself prove default.",
+    "rateTransmission": "Fixed-rate debt slows pass-through of higher market rates; floating-rate or near-term refinancing can transmit rate shocks faster."
+  },
+  "evidenceBase": [
+    {
+      "source": "Federal Reserve FEDS Note 2019",
+      "finding": "EBIT/interest-expense coverage is associated with financial distress, but the same ratio maps to different default rates across industries and time; critical thresholds vary by firm/sector conditions."
+    },
+    {
+      "source": "Federal Reserve FEDS Note 2024",
+      "finding": "ICR can be timelier than debt/assets during rate shocks because it directly incorporates effective borrowing cost; fixed-rate debt can delay rate pass-through."
+    },
+    {
+      "source": "Federal Reserve FEDS Note 2020",
+      "finding": "Coverage distributions, maturity structure and undrawn credit lines jointly matter; refinancing during high spreads can amplify vulnerability."
+    }
+  ],
+  "semantics": {
+    "primaryAccountingCoverage": {
+      "numerator": "operating income / EBIT-compatible measure, PIT and consistently defined",
+      "denominator": "interest expense attributable to debt and lease liabilities, PIT",
+      "warning": "Do not silently substitute total finance costs, net interest, or interest income offsets."
+    },
+    "cashCoverageChallenger": {
+      "numerator": "operating cash flow or preregistered cash-flow numerator",
+      "denominator": "cash interest paid where available",
+      "role": "challenger; not interchangeable with accounting ICR"
+    },
+    "debtServiceCoverageChallenger": {
+      "denominator": "cash interest plus scheduled principal due under a preregistered horizon",
+      "dependency": "D22-01 contractual maturity data",
+      "warning": "Principal-inclusive debt-service coverage is a different construct from ICR."
+    }
+  },
+  "taiwanPITSemanticExample": {
+    "issuer": "UMC",
+    "periodEnd": "2023-12-31",
+    "sourceKnownAt": "2024-03-25 official SEC-source availability no later than this date",
+    "operatingIncomeTWDthousand": 57890661,
+    "debtAndLeaseInterestExpenseTWDthousand": 1473729,
+    "totalFinanceCostsTWDthousand": 1570374,
+    "operatingIncomeOverInterestExpense": 39.28175465,
+    "operatingIncomeOverTotalFinanceCosts": 36.86425081,
+    "interpretation": "Changing only the denominator definition changes the ratio materially. Therefore ICR definitions must be frozen before cross-company comparison or outcome opening."
+  },
+  "falsificationGates": [
+    "No universal cutoff such as 1.5x, 2x or 3x may be promoted without Taiwan PIT cross-sector evidence; external literature explicitly shows threshold heterogeneity.",
+    "Negative or near-zero EBIT and near-zero interest expense create non-monotonic/undefined ratios; do not rank extreme values naively.",
+    "Capitalized borrowing costs can reduce reported current-period interest expense and make coverage look stronger without eliminating economic financing cost.",
+    "Interest income must not be netted against debt interest unless the research question explicitly defines a net-interest construct.",
+    "High accounting ICR can coexist with a large near-term principal wall; principal repayment belongs in a separate debt-service measure.",
+    "Low accounting ICR can be temporary in cyclical/capex-heavy firms and may be buffered by cash, committed facilities, long fixed-rate debt or asset sales; none of these is assumed without evidence.",
+    "If D22-02 adds no information after D07 operating cash flow/leverage and D22-01 maturity timing, classify it REJECTED_OR_REDUNDANT."
+  ],
+  "pitContract": [
+    "Use the earliest publicly known financial statement version; later comparative columns do not backfill prior vintages.",
+    "Preserve numerator and denominator source lines and accounting basis.",
+    "Record whether interest expense includes lease interest, bank loans, bonds, other interest and non-interest financial expenses.",
+    "Missing denominator components remain UNKNOWN rather than zero."
+  ],
+  "maturityDecision": {
+    "level": "L2",
+    "maturityPct": 40,
+    "reason": "Mechanism, semantic distinctions, Taiwan PIT example and explicit counterevidence are defined. Cross-industry Taiwan PIT receipts and replay are still insufficient for L3."
+  },
+  "exactNext": [
+    "Collect at least multiple Taiwan non-financial issuer/date PIT receipts for operating income/EBIT-compatible earnings and interest-expense components.",
+    "Freeze primary ICR denominator taxonomy and negative/near-zero denominator handling.",
+    "Compare accounting ICR with cash-interest coverage and D22-01 principal-inclusive debt-service challenger without opening stock outcomes.",
+    "Test cross-industry comparability before L3."
+  ]
+}
