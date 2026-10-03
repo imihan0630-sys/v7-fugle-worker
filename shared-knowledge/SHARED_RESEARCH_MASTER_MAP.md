@@ -1259,3 +1259,17 @@ Canonical Room08 maturity after this continuation:
 - global tracker = 37.8% across 354 modules.
 
 Formal Core unchanged. No FORMAL_OPTIMIZATION_CANDIDATE.
+
+## 2026-10-03 late continuation — D11-18 tender-offer L3
+
+Added: `research/d11_18_tender_offer_pit_receipt_v0_1.json`.
+
+Reusable tender-offer rule:
+- filing/announcement, condition achievement, regulatory approval, extension, period expiry, actual transaction, payment/settlement and delisting are distinct states;
+- extension/correction appends a new version and never rewrites the original state;
+- oversubscription creates allocation/return mechanics;
+- offer spread is not risk-free convergence;
+- failed offers must enter future outcome denominators.
+
+D11-18 = L3 Taiwan PIT/source feasibility. Failed-tender negative control remains required before L4.
+Current Room08: D11=53.7%, D17=41.4%, module-weighted=48.5%.
