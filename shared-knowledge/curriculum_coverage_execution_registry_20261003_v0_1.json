@@ -6,7 +6,7 @@
   "canonicalSnapshot": {
     "domains": 22,
     "activeModules": 354,
-    "maturityWeightedPct": 41.6
+    "maturityWeightedPct": 42.1
   },
   "parentAudit": "shared-knowledge/CURRICULUM_COVERAGE_AUDIT_20261003_V0_1.md",
   "specialistPacket": "shared-knowledge/CURRICULUM_COVERAGE_A_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
@@ -197,7 +197,7 @@
   "governanceStateMachineJson": "shared-knowledge/curriculum_coverage_governance_state_machine_v0_1.json",
   "governanceStateMachineVersion": "CURRICULUM_COVERAGE_STATE_MACHINE_V0_1",
   "canonicalSnapshotSource": "research/stock_market_learning_tracker_v0_1.json",
-  "canonicalSnapshotSourceUpdatedAt": "2026-10-04T07:37:00+08:00",
+  "canonicalSnapshotSourceUpdatedAt": "2026-10-04T08:00:00+08:00",
   "canonicalSnapshotReconciliation": "shared-knowledge/CURRICULUM_COVERAGE_CANONICAL_SNAPSHOT_RECONCILIATION_20261003_V0_1.md",
   "coverageReturnValidator": "research/curriculum_coverage_return_validator_v0_1.mjs",
   "coverageReturnValidatorTest": "tests/test_curriculum_coverage_return_validator_v0_1.mjs",
@@ -206,5 +206,6 @@
   "coverageReturnValidatorStatus": "MERGED_MAIN_PR_407_CI_PASS",
   "latestIntakeAudit": "shared-knowledge/CURRICULUM_COVERAGE_COV04_COV05_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md",
   "latestIntakeAuditJson": "shared-knowledge/curriculum_coverage_cov04_cov05_intake_dependency_audit_20261004_v0_1.json",
-  "latestPreflightReceipt": "research/curriculum_coverage_intake_preflight_receipt_20261004_v0_2.json"
+  "latestPreflightReceipt": "research/curriculum_coverage_intake_preflight_receipt_20261004_v0_2.json",
+  "canonicalSnapshotNote": "Audit-time snapshot only; research/stock_market_learning_tracker_v0_1.json remains authoritative and may advance independently."
 }
