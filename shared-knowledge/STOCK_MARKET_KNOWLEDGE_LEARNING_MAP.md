@@ -1,6 +1,6 @@
 # 股市知識學習大地圖 — 22領域 / 354模組
 
-Updated: 2026-10-03 14:05 Asia/Taipei
+Updated: 2026-10-03 18:43 Asia/Taipei
 Status: CANONICAL_LEARNING_CURRICULUM_V0_1 / CROSS_SYSTEM  
 Formal Core impact: NONE  
 Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 正式研究成熟度仍由 `RESEARCH_MASTER_MAP.md` 與 `research/research_master_map.json` 管理。
@@ -23,7 +23,7 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 
 - 大領域：22
 - 二級研究模組：354
-- 新完整課綱成熟度：**32.6%**
+- 新完整課綱成熟度：**36%**
 - 注意：這個百分比與 System 1 現行21模組的46.7%不是同一分母；本表分母更大、更細。
 - 100%不是「世界上再也沒有新知識」，而是本版課綱全部達L5；新增新知識時可版本化擴充分母。
 - 七項汰留與能力移轉紀錄：`shared-knowledge/CURRICULUM_RETIREMENT_AND_CAPABILITY_LEDGER_V0_1.md`。退休模組不代表刪除其必要工程／研究能力。
@@ -38,8 +38,8 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 | D06 | 法人／籌碼／槓桿／擁擠／被動資金 | 17 | 40% | 05｜法人與籌碼研究室 |
 | D07 | 基本面／財報／資訊動態 | 33 | 14.5% | 06｜基本面與估值研究室 |
 | D08 | 估值 | 19 | 27.4% | 06｜基本面與估值研究室 |
-| D09 | 產業／族群／市場廣度／輪動 | 14 | 47.1% | 07｜產業與供應鏈研究室 |
-| D10 | 供應鏈／產能／庫存／原物料傳導 | 13 | 46.2% | 07｜產業與供應鏈研究室 |
+| D09 | 產業／族群／市場廣度／輪動 | 14 | 55.7% | 07｜產業與供應鏈研究室 |
+| D10 | 供應鏈／產能／庫存／原物料傳導 | 13 | 52.3% | 07｜產業與供應鏈研究室 |
 | D11 | 公司行動／重大事件／事件風險 | 19 | 40% | 08｜事件與新聞研究室 |
 | D12 | 期貨／選擇權／衍生品 | 17 | 40% | 09｜衍生品與國際總經研究室 |
 | D13 | 總體經濟／跨市場傳導 | 19 | 34.7% | 09｜衍生品與國際總經研究室 |
@@ -312,7 +312,9 @@ GitHub專屬checkpoint：
 | D08-19 | Reverse DCF／Market-Implied Expectations／Expectations Gap反向DCF、市場隱含預期與預期差 | L0 未研究 | 0% |
 
 
-### D09｜產業／族群／市場廣度／輪動 — 47.1%
+### D09｜產業／族群／市場廣度／輪動 — 55.7%
+
+> 2026-10-03 H01 專科驗證完成：D09-13 以 BR-051 台灣晶圓代工產業結構 receipt 達 L3；D09-14 以 BR-052 公司策略動作生命週期 receipt 達 L3。兩者專科建議 KEEP_SEPARATE，但共用市占／產能／價格／毛利父證據不得重複計分；最終 scope 治理由 00 總控審查。
 
 專責：07｜產業與供應鏈研究室  
 證據錨點：`MARKET_BREADTH_ROTATION_CHECKPOINT.md`、`MARKET_BREADTH_ROTATION_RESEARCH.md`
@@ -331,11 +333,11 @@ GitHub專屬checkpoint：
 | D09-10 | 產業成交值／集中度 | L3 台股PIT資料可行 | 60% |
 | D09-11 | 題材股與正式產業分類橋接 | L3 台股PIT資料可行 | 60% |
 | D09-12 | Breadth×Regime交互作用 | L2 機制＋反證 | 40% |
-| D09-13 | Industry Structure／Porter Five Forces產業結構與波特五力 | L0 未研究 | 0% |
-| D09-14 | Market Share／Entry Barrier／Substitution／Competitive Strategy市占、進入障礙、替代與競爭策略 | L0 未研究 | 0% |
+| D09-13 | Industry Structure／Porter Five Forces產業結構與波特五力 | L3 台股PIT資料可行 | 60% |
+| D09-14 | Market Share／Entry Barrier／Substitution／Competitive Strategy市占、進入障礙、替代與競爭策略 | L3 台股PIT資料可行 | 60% |
 
 
-### D10｜供應鏈／產能／庫存／原物料傳導 — 46.2%
+### D10｜供應鏈／產能／庫存／原物料傳導 — 52.3%
 
 > 2026-10-02 SC-040／SC-041／SC-042：D10-07 已有 2026-07～09 三個獨立 NDC/CIER PMI release vintages與 bounded issuer product-scope bridge；SC-042 以明確 shortage/allocation、交期、價格、庫存與反例建立缺貨／供需缺口 PIT event contract，使 D10-08 升至 L3。公司營收曝險權重、survey membership、issuer-native backlog 與 OOS/Shadow outcomes 仍未成立。
 
@@ -355,8 +357,8 @@ GitHub專屬checkpoint：
 | D10-09 | 上游與下游不對稱傳導 | L3 台股PIT資料可行 | 60% |
 | D10-10 | 供應鏈事件PIT時間戳 | L3 台股PIT資料可行 | 60% |
 | D10-12 | Industry-specific Transmission Model／Issuer Exposure Mapping產業專屬傳導模型與公司曝險映射 | L3 台股PIT資料可行 | 60% |
-| D10-13 | Trade Policy／Export Controls／Sanctions Supply-chain Transmission貿易政策出口管制制裁供應鏈傳導 | L0 未研究 | 0% |
-| D10-14 | Industrial Policy／Subsidy／Geopolitical Bottleneck產業政策補貼與地緣瓶頸 | L0 未研究 | 0% |
+| D10-13 | Trade Policy／Export Controls／Sanctions Supply-chain Transmission貿易政策出口管制制裁供應鏈傳導 | L2 機制＋反證 | 40% |
+| D10-14 | Industrial Policy／Subsidy／Geopolitical Bottleneck產業政策補貼與地緣瓶頸 | L2 機制＋反證 | 40% |
 
 
 ### D11｜公司行動／重大事件／事件風險 — 51.6%

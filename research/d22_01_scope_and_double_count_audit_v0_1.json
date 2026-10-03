@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "D22_01_SCOPE_DOUBLE_COUNT_AUDIT_V0_1",
+  "generatedAt": "2026-10-03T18:47:00+08:00",
+  "status": "SCOPE_CONTAMINATION_FOUND_AND_REPAIRED / DOUBLE_COUNT_FIREWALL_DEFINED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "findings": {
+    "priorScopeDefect": "Taiwan Cement 2023 parent-only/unconsolidated disclosure had been placed beside consolidated TSMC/UMC receipts. That cross-issuer comparison is invalid without an entity-scope key.",
+    "repair": "Primary cross-issuer D22-01 replay now requires consolidated-group scope. Parent-only evidence may be retained only as a separately tagged secondary receipt.",
+    "accountingBasisDefect": "An issuer/date D22 maturity exposure and its D07 accounting baseline must not silently mix Taiwan-FSC-endorsed IFRS with IFRS-as-issued/20-F accounting totals when official filings differ.",
+    "knownAtDefect": "Audit date or board approval date is document chronology, not automatically public first-known time."
+  },
+  "firewalls": {
+    "entityScope": "CONSOLIDATED_GROUP_REQUIRED_FOR_PRIMARY_CROSS_ISSUER_TEST",
+    "accountingBasis": "ONE_TAGGED_BASIS_PER_ISSUER_DATE_TEST; CROSS_BASIS_RECONCILIATION_REQUIRED_BEFORE MIXING",
+    "knownAt": "PUBLIC_SOURCE_TIMESTAMP_REQUIRED_FOR_OUTCOME_START; AUDIT_OR_BOARD_DATE_ALONE_INSUFFICIENT",
+    "doubleCount": "CARRYING_CURRENT_FINANCING_AND_CONTRACTUAL_LT1Y_FINANCING_ARE_ALTERNATE_REPRESENTATIONS; NEVER SUM THEM",
+    "primaryExposure": "Use contractual <1y financing cash flows after liability-class filtering.",
+    "D07Baseline": "Use carrying balance-sheet debt/leverage/liquidity on a compatible tagged accounting basis."
+  },
+  "issuerAudits": [
+    {
+      "issuer": "TSMC",
+      "periodEnd": "2023-12-31",
+      "scope": "consolidated",
+      "basis": "IFRS_ISSUED_BY_IASB_20F",
+      "carryingCurrentFinancing": 36583,
+      "contractualLt1yFinancing": 54552,
+      "difference": 17969,
+      "unit": "TWD_million",
+      "interpretation": "Contractual cash flow materially exceeds current carrying classification; both are useful but not additive."
+    },
+    {
+      "issuer": "UMC",
+      "periodEnd": "2023-12-31",
+      "scope": "consolidated",
+      "basis": "TAIWAN_FSC_ENDORSED_IFRS",
+      "carryingCurrentFinancing": 29536797,
+      "contractualLt1yFinancing": 31450552,
+      "difference": 1913755,
+      "unit": "TWD_thousand",
+      "interpretation": "Contractual cash flow exceeds current carrying financing; classifications and interest/cash-flow semantics differ."
+    },
+    {
+      "issuer": "Taiwan Cement",
+      "periodEnd": "2023-12-31",
+      "scope": "consolidated",
+      "basis": "TAIWAN_FSC_ENDORSED_IFRS",
+      "carryingCurrentFinancing": 36895130,
+      "contractualLt1yFinancing": 36718292,
+      "difference": -176838,
+      "unit": "TWD_thousand",
+      "interpretation": "The two representations are close but still not identical; numerical closeness is not authority to sum them."
+    }
+  ],
+  "falsificationImplications": [
+    "Any apparent D22 alpha created by mixing parent-only and consolidated entities is invalid.",
+    "Any apparent incremental signal created by adding carrying-current debt to contractual maturity cash flow is double counting.",
+    "Any result that changes materially after enforcing one accounting basis per issuer/date fails the robustness gate.",
+    "Receipts without a verified public knownAt cannot define the equity-outcome start time."
+  ],
+  "next": [
+    "Align TSMC D07 baseline to the same accounting basis as its D22 receipt.",
+    "Prove Taiwan Cement 2023 public knownAt or exclude it from timed outcome tests.",
+    "Validate D13 rate-baseline readiness for each eligible disclosure date.",
+    "Keep outcomes closed until source timing, scope, basis and double-count gates are all green."
+  ]
+}
