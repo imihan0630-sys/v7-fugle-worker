@@ -21,12 +21,13 @@ const script=await readFile(
 assert.match(workflow, /environment: system2-research/);
 assert.match(workflow, /group: system2-isolated-d1-writer/);
 assert.match(workflow, /cancel-in-progress: false/);
-assert.match(workflow, /SYSTEM2_FUGLE_HOT_HISTORY_SYMBOL_LIMIT: "45"/);
+assert.match(workflow, /SYSTEM2_FUGLE_HOT_HISTORY_SYMBOL_LIMIT: "35"/);
 assert.match(workflow, /SYSTEM2_FUGLE_HOT_HISTORY_PAUSE_MS: "1100"/);
 assert.match(workflow, /WRITE_SYSTEM2_FUGLE_RAW_HOT_HISTORY_ONLY/);
 assert.match(workflow, /FUGLE_API_KEY/);
 assert.match(workflow, /git diff --exit-code -- Worker\.js wrangler\.toml/);
 assert.doesNotMatch(workflow, /^\s*schedule:/m, "bootstrap must not become an unattended recurring API consumer");
+assert.doesNotMatch(workflow, /^\s*push:/m, "physical bootstrap must remain manual-only after first acceptance");
 assert.doesNotMatch(workflow, /wrangler.*deploy|secret put|V7_DB|STOCKS_KV|PUSH_WEBHOOK_URL/);
 
 assert.match(source, /adjusted=false/);
@@ -36,7 +37,10 @@ assert.match(source, /availabilityBasis: "PROSPECTIVE_OBSERVATION"/);
 assert.match(source, /change: null/);
 assert.doesNotMatch(source, /adjusted=true/);
 
+assert.match(runtime, /FUGLE_HOT_HISTORY_DEFAULT_SYMBOL_LIMIT = 35/);
 assert.match(runtime, /FUGLE_HOT_HISTORY_MAX_SYMBOL_LIMIT = 50/);
+assert.match(runtime, /ONE_PHYSICAL_BOOTSTRAP_BATCH_PER_UTC_D1_FREE_QUOTA_DAY/);
+assert.match(runtime, /DAILY_D1_WRITE_QUOTA_GUARD_BLOCKED/);
 assert.match(runtime, /FUGLE_HOT_HISTORY_REQUIRED_BARS = 60/);
 assert.match(runtime, /continuityPromotionPerformed: false/);
 assert.match(runtime, /strategyEvaluationPerformed: false/);

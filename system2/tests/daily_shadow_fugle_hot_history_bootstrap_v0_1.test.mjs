@@ -18,6 +18,13 @@ class Statement {
   }
   async all() {
     if (this.sql.includes("WITH per_date AS")) return { results: this.db.coverageRows };
+    if (this.sql.includes("check_type IN (?, ?)")) {
+      const [firstType, secondType, startAt, endAt] = this.params;
+      return { results: [...this.db.checks.values()].filter((x) =>
+        [firstType, secondType].includes(x.check_type)
+        && x.check_timestamp >= startAt
+        && x.check_timestamp < endAt) };
+    }
     if (this.sql.includes("WHERE check_type=?")) {
       return { results: [...this.db.checks.values()].filter((x) => x.check_type === this.params[0]) };
     }
@@ -205,9 +212,9 @@ assert(db.barRows.every((x) =>
   && x.availability_basis === "PROSPECTIVE_OBSERVATION"
   && x.pit_availability_class === "OBSERVED_AVAILABLE_UPPER_BOUND"
 ));
-assert.equal(db.checks.size, 1);
-const marker = [...db.checks.values()][0];
-assert.equal(marker.check_type, FUGLE_HOT_HISTORY_SYMBOL_COMPLETE_CHECK);
+assert.equal(db.checks.size, 2, "quota claim plus symbol completion marker expected");
+const marker = [...db.checks.values()].find((x) => x.check_type === FUGLE_HOT_HISTORY_SYMBOL_COMPLETE_CHECK);
+assert.ok(marker);
 const markerPayload = JSON.parse(marker.observed_payload_json);
 assert.equal(markerPayload.state, "RAW_HISTORY_BOOTSTRAP_COMPLETE");
 assert.equal(markerPayload.insertedBarCount, 2);
@@ -221,6 +228,29 @@ const rerunPlan = await planDailyShadowFugleHotHistoryBootstrapV0_1({
   symbolLimit: 1,
 });
 assert.equal(rerunPlan.selectedSymbolCount, 0, "completion marker must prevent repeat fetch");
+
+let blockedFetchCalled = false;
+const quotaBlocked = await runDailyShadowFugleHotHistoryBootstrapV0_1({
+  db,
+  fugleApiKey: "secret-test-key",
+  asOf: "2026-10-03T06:31:00.000Z",
+  toDate: "2026-10-02",
+  symbolLimit: 1,
+  pauseMs: 0,
+  listingMetadataFetch: async () => {
+    throw new Error("listing metadata must not be refetched after quota guard");
+  },
+  historicalFetch: async () => {
+    blockedFetchCalled = true;
+    throw new Error("historical fetch must not execute after quota guard");
+  },
+  sleep: async () => {},
+});
+assert.equal(quotaBlocked.state, "DAILY_D1_WRITE_QUOTA_GUARD_BLOCKED");
+assert.equal(quotaBlocked.processedSymbolCount, 0);
+assert.equal(quotaBlocked.insertedBarCount, 0);
+assert.equal(blockedFetchCalled, false);
+assert.equal(quotaBlocked.sourceRateLimitSafety.oneBatchPerUtcQuotaDay, true);
 
 await assert.rejects(
   planDailyShadowFugleHotHistoryBootstrapV0_1({

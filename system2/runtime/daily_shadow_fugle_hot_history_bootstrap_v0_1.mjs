@@ -14,8 +14,10 @@ import { executeSystem2PersistenceBatch } from "./persistence_executor.mjs";
 export const DAILY_SHADOW_FUGLE_HOT_HISTORY_BOOTSTRAP_VERSION = "0.1-RESEARCH";
 export const FUGLE_HOT_HISTORY_SYMBOL_COMPLETE_CHECK =
   "FUGLE_RAW_HOT_HISTORY_SYMBOL_COMPLETE_V0_1";
-export const FUGLE_HOT_HISTORY_DEFAULT_SYMBOL_LIMIT = 45;
+export const FUGLE_HOT_HISTORY_DEFAULT_SYMBOL_LIMIT = 35;
 export const FUGLE_HOT_HISTORY_MAX_SYMBOL_LIMIT = 50;
+export const FUGLE_HOT_HISTORY_QUOTA_DAY_CLAIM_CHECK =
+  "FUGLE_RAW_HOT_HISTORY_QUOTA_DAY_CLAIM_V0_1";
 export const FUGLE_HOT_HISTORY_LOOKBACK_CALENDAR_DAYS = 300;
 export const FUGLE_HOT_HISTORY_REQUIRED_BARS = 60;
 
@@ -126,6 +128,97 @@ async function loadCompletedKeys(db) {
     }
   }
   return keys;
+}
+
+function utcQuotaDayBounds(asOf) {
+  const clock = new Date(timestamp(asOf, "asOf"));
+  const start = new Date(Date.UTC(
+    clock.getUTCFullYear(), clock.getUTCMonth(), clock.getUTCDate(), 0, 0, 0, 0,
+  ));
+  const end = new Date(start);
+  end.setUTCDate(end.getUTCDate() + 1);
+  return {
+    quotaDayUtc: start.toISOString().slice(0, 10),
+    startAt: start.toISOString(),
+    endAt: end.toISOString(),
+  };
+}
+
+async function loadQuotaDayEvidence(db, asOf) {
+  const bounds = utcQuotaDayBounds(asOf);
+  const result = await db.prepare(
+    `SELECT check_type, check_timestamp, observed_payload_json
+       FROM s2_infrastructure_checks
+      WHERE check_type IN (?, ?)
+        AND check_timestamp >= ?
+        AND check_timestamp < ?
+      ORDER BY check_timestamp ASC
+      LIMIT 1`,
+  ).bind(
+    FUGLE_HOT_HISTORY_QUOTA_DAY_CLAIM_CHECK,
+    FUGLE_HOT_HISTORY_SYMBOL_COMPLETE_CHECK,
+    bounds.startAt,
+    bounds.endAt,
+  ).all();
+  const row = result?.results?.[0] || null;
+  return deepFreeze({
+    ...bounds,
+    claimed: Boolean(row),
+    evidenceType: row?.check_type || null,
+    evidenceTimestamp: row?.check_timestamp || null,
+  });
+}
+
+async function persistQuotaDayClaim(db, { asOf, symbolLimit }) {
+  const bounds = utcQuotaDayBounds(asOf);
+  const payload = deepFreeze({
+    schemaVersion: "SYSTEM2_FUGLE_RAW_HOT_HISTORY_QUOTA_DAY_CLAIM_V0_1",
+    state: "CLAIMED",
+    quotaDayUtc: bounds.quotaDayUtc,
+    claimedAt: asOf,
+    symbolLimit,
+    policy: "ONE_PHYSICAL_BOOTSTRAP_BATCH_PER_UTC_D1_FREE_QUOTA_DAY",
+    reason: "PRESERVE_D1_DAILY_WRITE_HEADROOM",
+    selectionAuthority: false,
+    orderImpact: false,
+    system1RuntimeUsed: false,
+  });
+  const checkId = "S2-FUGLE-RAW-HOT-HISTORY-QUOTA:" + bounds.quotaDayUtc;
+  const checkHash = await sha256Hex(payload);
+  const record = {
+    table: "s2_infrastructure_checks",
+    row: {
+      check_id: checkId,
+      check_type: FUGLE_HOT_HISTORY_QUOTA_DAY_CLAIM_CHECK,
+      check_timestamp: asOf,
+      environment: "system2-research",
+      binding_name: "SYSTEM2_DB",
+      schema_version: "1.1",
+      expected_payload_json: canonicalStringify({
+        oneBatchPerUtcQuotaDay: true,
+        selectionAuthority: false,
+      }),
+      observed_payload_json: canonicalStringify(payload),
+      status: "CLAIMED",
+      check_hash: checkHash,
+      notes: "D1 free-tier safety claim; prevents a second Fugle hot-history write batch in the same UTC quota day.",
+    },
+  };
+  const batch = await buildSystem2PersistenceBatch({
+    batchId: checkId + "|CLAIM",
+    marketDate: bounds.quotaDayUtc,
+    decisionTimestamp: asOf,
+    records: [record],
+    createdAt: asOf,
+  });
+  await executeSystem2PersistenceBatch({ db, batch, bindingName: "SYSTEM2_DB" });
+  const saved = await db.prepare(
+    "SELECT observed_payload_json, check_hash FROM s2_infrastructure_checks WHERE check_id=? LIMIT 1",
+  ).bind(checkId).first();
+  if (!saved || saved.check_hash !== checkHash || saved.observed_payload_json !== canonicalStringify(payload)) {
+    throw new Error("FUGLE_HOT_HISTORY_QUOTA_CLAIM_READBACK_MISMATCH");
+  }
+  return deepFreeze({ checkId, payload, ...bounds });
 }
 
 async function loadExistingCanonicalRows(db, { market, symbol, fromDate, toDate }) {
@@ -313,6 +406,52 @@ export async function runDailyShadowFugleHotHistoryBootstrapV0_1({
   if (typeof historicalPersist !== "function") throw new Error("historicalPersist is required");
   if (typeof sleep !== "function") throw new Error("sleep is required");
 
+  const quotaEvidence = await loadQuotaDayEvidence(db, clock);
+  if (quotaEvidence.claimed) {
+    return deepFreeze({
+      schemaVersion: "SYSTEM2_DAILY_SHADOW_FUGLE_HOT_HISTORY_BOOTSTRAP_V0_1",
+      version: DAILY_SHADOW_FUGLE_HOT_HISTORY_BOOTSTRAP_VERSION,
+      state: "DAILY_D1_WRITE_QUOTA_GUARD_BLOCKED",
+      asOf: clock,
+      quotaEvidence,
+      plan: deepFreeze({
+        schemaVersion: "SYSTEM2_DAILY_SHADOW_FUGLE_HOT_HISTORY_PLAN_V0_1",
+        asOf: clock,
+        toDate: toDate || shiftDate(taipeiDate(new Date(clock)), -1),
+        symbolLimit,
+        selectedSymbolCount: 0,
+        selected: Object.freeze([]),
+        blocked: Object.freeze([]),
+        selectionAuthority: false,
+      }),
+      processedSymbolCount: 0,
+      insertedBarCount: 0,
+      reusedExistingCount: 0,
+      noDataCount: 0,
+      receipts: Object.freeze([]),
+      sourceRateLimitSafety: {
+        sequentialRequests: true,
+        pauseMs,
+        maxSymbolsPerRun: FUGLE_HOT_HISTORY_MAX_SYMBOL_LIMIT,
+        oneBatchPerUtcQuotaDay: true,
+      },
+      rawPriceSpaceOnly: true,
+      availabilityBasis: "PROSPECTIVE_OBSERVATION",
+      continuityState: "UNVERIFIED",
+      continuityPromotionPerformed: false,
+      strategyEvaluationPerformed: false,
+      capacityRunProduced: false,
+      zeroPickClaimed: false,
+      selectionAuthority: false,
+      finalSelectionEnabled: false,
+      livePushEnabled: false,
+      capitalImpact: false,
+      orderImpact: false,
+      system1RuntimeUsed: false,
+    });
+  }
+  const quotaClaim = await persistQuotaDayClaim(db, { asOf: clock, symbolLimit });
+
   const listingMetadata = await listingMetadataFetch({
     fetchImpl,
     observedAt: clock,
@@ -425,10 +564,12 @@ export async function runDailyShadowFugleHotHistoryBootstrapV0_1({
     reusedExistingCount,
     noDataCount,
     receipts: Object.freeze(receipts),
+    quotaClaim,
     sourceRateLimitSafety: {
       sequentialRequests: true,
       pauseMs,
       maxSymbolsPerRun: FUGLE_HOT_HISTORY_MAX_SYMBOL_LIMIT,
+      oneBatchPerUtcQuotaDay: true,
     },
     rawPriceSpaceOnly: true,
     availabilityBasis: "PROSPECTIVE_OBSERVATION",
