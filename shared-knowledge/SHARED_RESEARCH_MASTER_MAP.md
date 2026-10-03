@@ -1238,3 +1238,24 @@ Machine graph:
 `shared-knowledge/curriculum_coverage_governance_state_machine_v0_1.json`
 
 State progression is now formally constrained. No curriculum structural change may bypass the frozen transition graph.
+
+## 2026-10-03 late continuation — D11-16 lockup source gap + D11-17 private-placement L3
+
+Room 08 durable additions:
+- `research/d11_16_lockup_source_gap_receipt_v0_1.json`
+- `research/d11_17_private_placement_pit_receipt_v0_1.json`
+
+Reusable rules:
+- Lock-up expiry is potential supply only; release eligibility, custody withdrawal, transfer declaration and realized sale are different states.
+- A source that does not cover an issuer yields UNKNOWN, not NO_SALE.
+- Private-placement authorization, pricing, payment, delivery, restricted holding, public issuance and listing are separate PIT clocks.
+- Failed/rescheduled private-placement rounds stay in the denominator.
+- Registered-issued, listed-common, tradable and private-placement share spaces remain non-interchangeable.
+
+Canonical Room08 maturity after this continuation:
+- D11 = 52.6%
+- D17 = 41.4%
+- Room08 module-weighted = 47.9%
+- global tracker = 37.8% across 354 modules.
+
+Formal Core unchanged. No FORMAL_OPTIMIZATION_CANDIDATE.
