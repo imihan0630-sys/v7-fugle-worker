@@ -22625,3 +22625,43 @@ A new completeness falsifier is frozen: matching session counts cannot certify a
 The research adapter may hash synthetic date lists for QA, but that does not define the upstream production hash algorithm.
 
 Shared-child v0.6 carries the clock-window provenance requirement. Fifteen clock-bundle fixtures are authored, not executed. Runtime/outcomes remain closed.
+
+# DL-019 — Lifecycle category vs continuous path redundancy (2026-10-03)
+
+D01 now separates path memory from categorical novelty.
+
+Current distance/availableAir alone cannot reconstruct whether the same price arrived there through no break, holding, reentry, failure or reclaim. Lifecycle therefore contains path-memory representation relative to a geometry-only snapshot.
+
+However, once complete causal first-event clocks plus continuous breakout-path descriptors are present, the lifecycle label is largely a deterministic / thresholded summary of the same PRICE_OHLC-root information. It is not a new source family.
+
+The frozen comparison ladder is C0 current geometry -> C1 continuous path -> C2 complete path/clocks -> C3 categorical lifecycle. Any future promotion-grade lifecycle claim must beat a flexible C2 comparator. Beating only C0 or a weak linear C2 is insufficient and may only show nonlinear representation convenience.
+
+Synthetic adversarial rules now explicitly reject different lifecycle labels under the same complete path basis as semantic contradiction. Twelve tests are authored but not independently executed.
+
+D16 receives the estimator/inference handoff; D01 keeps semantic ownership. No outcome join, no threshold tuning, no Formal change. D01 remains 51.7%.
+
+# DL-020 — Pattern minimal continuous path basis (2026-10-03)
+
+The complete C2 comparator is now de-duplicated before any lifecycle outcome study.
+
+D01 freezes six semantic layers: immutable boundary geometry, path excursion/occupancy, observability/exposure, first-event clocks, structural identity/age, and derived lifecycle representation.
+
+Several fields are deterministically dependent by construction. Eligible bars are the sum of observable and constrained bars under complete accounting. Geometry state derives from local/parent coordinates. Available-air percent, center distance and ATR-normalized air are alternative transforms of the same structural gap. Event durations derive from certified session ordinals plus first-event clocks. Failure is nested inside reentry semantics.
+
+Therefore these fields remain useful views but cannot become independent votes by default.
+
+Future D16 analysis now has two continuous comparators: FULL_C2 and outcome-blind MINIMAL_C2 (MCPB_V0_1). Lifecycle C3 must survive both flexible comparators before any representation-incrementality claim.
+
+No causal audit field is removed from prospective storage; predictive de-dup and audit provenance are separate concerns. Twelve tests are authored but not independently executed. No outcomes or Formal rules changed.
+
+# DL-021 — First-event clock PIT and right-censoring semantics (2026-10-03)
+
+D01 now freezes a strict predictor/outcome firewall for lifecycle clocks.
+
+At a parent decision timestamp, only events already occurred and legitimately available/observed may enter the predictor-side clock state. An event that has not occurred through asOf is right-censored through that point: occurred=0 with null first time and null age. Age zero instead means the event occurred today. UNKNOWN provenance remains a third distinct state.
+
+Future reentry/failure/reclaim dates are outcome information and can never be backfilled into the earlier Pattern child. They may later support a separate time-to-event analysis under D16/statistical-validation ownership.
+
+First-event timing can encode path-order memory beyond aggregate excursion summaries, but it remains derived from the same PRICE_OHLC path and has no source novelty. Continuous eligible-session age is retained before any duration bucket; post-outcome N-bar threshold search is rejected.
+
+Twelve PIT/censoring adversarial tests are authored but not independently executed. No outcomes or Formal behavior changed.

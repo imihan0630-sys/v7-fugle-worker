@@ -797,3 +797,122 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 4. Keep Pattern prospective clock/runtime persistence blocked until immutable parent + Pattern ROOT + continuity/session exact-set receipts exist.
 5. Next D01 science: study whether transition-state representation itself is redundant with continuous distance/path descriptors before adding any categorical lifecycle challenger.
 6. No outcome join / no N-bar acceptance / no R09 / no Formal change.
+
+## Continuation update — DL-019A through DL-019F (2026-10-03)
+
+- D01 studied whether RG2 / Pattern lifecycle categories add information beyond continuous distance/path descriptors before any outcome join.
+- New research-only artifacts:
+  - research/PATTERN_LIFECYCLE_REDUNDANCY_V0_1.md
+  - research/pattern_lifecycle_redundancy_v0_1.json
+  - research/pattern_lifecycle_redundancy_v0_1.mjs
+  - research/test_pattern_lifecycle_redundancy_v0_1.mjs
+  - research/PATTERN_LIFECYCLE_REDUNDANCY_D16_HANDOFF_V0_1.md
+- Core distinction:
+  current geometry alone is NOT enough to reconstruct path-dependent lifecycle;
+  complete causal path + first-event clocks can make the categorical lifecycle a deterministic / thresholded summary.
+- Frozen redundancy ladder:
+  C0_GEOMETRY_ONLY
+  -> C1_CONTINUOUS_PATH
+  -> C2_CLOCK_COMPLETE_PATH
+  -> C3_CATEGORICAL_LIFECYCLE.
+- Promotion-grade lifecycle incrementality must be evaluated as C3 vs FLEXIBLE(C2), not merely C3 vs C0 and not merely C3 vs a weak linear C2.
+- Same current geometry with different break/reentry/reclaim history is a valid path-memory counterexample.
+- Same complete C2 path basis with different lifecycle labels is a SEMANTIC_CONTRADICTION, not independent evidence.
+- Lifecycle source novelty is frozen as NONE because category states derive from the same PRICE_OHLC / continuity root.
+- Lifecycle may retain explanation / audit / event-indexing value even if predictive incrementality is zero.
+- D16 handoff requires:
+  common-support same-parent comparison,
+  equal scan-date weighting,
+  scanDate + symbol dependence handling,
+  chronological OOS / purged holdout,
+  episode-first / episode-holdout / non-overlapping-date sensitivities,
+  and at least one flexible continuous C2 comparator.
+- External support/counterevidence:
+  2026 Finance and Stochastics formalizes support/resistance as path-dependent regime switching, supporting path-memory relative to current distance;
+  statistical guidance on continuous predictors warns that categorization loses information and can create arbitrary step functions, so lifecycle categories cannot replace continuous descriptors by default.
+- 12 lifecycle redundancy adversarial tests are authored but remain TEST_EXECUTION_PENDING without an independent Node receipt.
+- No outcomes inspected; no N-bar threshold; no R09; no runtime wiring.
+- D01 remains 51.7%; Pattern alpha UNKNOWN; FORMAL_OPTIMIZATION_CANDIDATE=NONE; Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-019
+
+1. Audit C2 internal redundancy so the complete-path comparator itself does not become a factor zoo.
+2. Freeze a minimal continuous path basis using semantics / algebra / deterministic dependency only, not outcomes.
+3. Preserve clock/path fields needed for causal reconstruction even if they are excluded from a minimal predictive basis.
+4. Hand the minimal-basis contract to D16 so C3 is compared against both full-C2 and minimal-flexible-C2 sensitivity.
+5. Preserve TEST_EXECUTION_PENDING for DL-019 tests unless independently executed.
+6. No outcome join / no R09 / no Formal change.
+
+## Continuation update — DL-020A through DL-020E (2026-10-03)
+
+- D01 audited internal redundancy inside the full continuous C2 path basis so the comparator itself does not become a Factor Zoo.
+- New research-only artifacts:
+  - research/PATTERN_MINIMAL_CONTINUOUS_BASIS_V0_1.md
+  - research/pattern_minimal_continuous_basis_v0_1.json
+  - research/pattern_minimal_continuous_basis_v0_1.mjs
+  - research/test_pattern_minimal_continuous_basis_v0_1.mjs
+- Frozen semantic basis:
+  PB1 immutable boundary geometry;
+  PB2 path excursion / occupancy;
+  PB3 observability / exposure;
+  PB4 first-event clocks;
+  PB5 structural identity / episode age;
+  PB6 derived lifecycle representation.
+- Exact/nested dependencies frozen outcome-blind:
+  eligibleBars = observableBars + constrainedBars under complete accounting;
+  parentCenter = midpoint(parentLower,parentUpper) under midpoint semantics;
+  availableAirPct / centerDistancePct / availableAirATR share the same structural geometry numerator/reference family;
+  geometryRelationState is deterministic from local/parent coordinates;
+  barsToReentry/failure/reclaim are derived from certified session ordinals + first clocks;
+  failure is nested inside reentry semantics;
+  compoundLifecycleState is derived when complete clocks + current location are available.
+- Multiple normalization units of one numerator are scaling alternatives / interactions, not multiple source votes.
+- New future dual sensitivity:
+  FULL_C2 versus MINIMAL_C2 (MCPB_V0_1).
+- C3 lifecycle category must be evaluated against both flexible FULL_C2 and flexible MINIMAL_C2.
+- Causal audit fields are NOT deleted from prospective storage merely because they are excluded from a predictive minimal basis.
+- 12 minimal-basis adversarial tests are authored; TEST_EXECUTION_PENDING until independently executed.
+- No outcomes inspected; no runtime wiring; no R09.
+- D01 remains 51.7%; Pattern alpha UNKNOWN; FORMAL_OPTIMIZATION_CANDIDATE=NONE; Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-020
+
+1. Reconcile DL-019/020 against latest main and verify no concurrent-room divergence.
+2. Open one Class-A PR containing only D01 research/docs/helpers/tests.
+3. Treat V8 Repair/Regression CI as Formal-isolation evidence only; the new D01 Node tests remain pending unless explicitly executed.
+4. Next D01 science after merge: study whether first-event clocks themselves add representation value beyond path excursion/occupancy and current geometry, without converting clocks into arbitrary N-bar buckets.
+5. Preserve full audit clocks even if predictive minimal basis later excludes some derived durations.
+6. No outcome join / no R09 / no Formal change.
+
+## Continuation update — DL-021A through DL-021E (2026-10-03)
+
+- First-event clocks are now split into decision-time predictor state versus future time-to-event outcome semantics.
+- New research-only artifacts:
+  - research/PATTERN_FIRST_EVENT_CLOCK_PIT_V0_1.md
+  - research/pattern_first_event_clock_pit_v0_1.json
+  - research/pattern_first_event_clock_pit_v0_1.mjs
+  - research/test_pattern_first_event_clock_pit_v0_1.mjs
+  - research/PATTERN_FIRST_EVENT_CLOCK_D16_HANDOFF_V0_1.md
+- Predictor-side rule:
+  only event clocks occurred/available/first-observed by asOf are legal.
+- Not-yet-occurred event:
+  occurred=0 / firstOccurredAt=null / ageEligibleSessions=null / NOT_YET_OCCURRED_THROUGH_ASOF.
+- Age 0 means the event occurred on the current eligible session; it is NOT equivalent to null/censored.
+- UNKNOWN provenance is distinct from genuine not-yet-occurred censoring.
+- Future first-event date, future time-to-event and future failure/reentry/reclaim distance are prohibited from decision-time payloads.
+- First-event timing can contain path-order memory beyond aggregate excursion descriptors even when current distance/max excursion/cumulative distance match.
+- Failure remains nested inside reentry:
+  same-bar failure+reentry share one sourceEventGroupKey and never count as two confirmations.
+- Continuous eligible-session event age is primary; arbitrary fast/slow or N-bar duration buckets are rejected by default.
+- Future event time may later be analyzed as a right-censored outcome under D16/statistical ownership, but it can never be written back into the earlier Pattern child.
+- 12 first-event PIT/censoring adversarial tests are authored; TEST_EXECUTION_PENDING until independently executed.
+- No outcomes inspected; no runtime wiring; no R09.
+- D01 remains 51.7%; Pattern alpha UNKNOWN; FORMAL_OPTIMIZATION_CANDIDATE=NONE; Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-021
+
+1. Finish PR reconciliation/CI for DL-019 through DL-021 against latest main.
+2. Treat Formal-isolation CI separately from research-specific Node execution receipts.
+3. After merge, next D01 science may study whether event-order information beyond first clocks adds value or is reconstructible from the ordered clock bundle; do not expand categories first.
+4. Keep not-yet-occurred / UNKNOWN / occurred-age-zero semantics distinct in all future schema work.
+5. No outcome join / no N-bar optimization / no R09 / no Formal change.

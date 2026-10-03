@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "pattern-first-event-clock-pit-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "formalCore": "LOCKED",
+  "predictorState": {
+    "occurred": {
+      "flag": 1,
+      "firstOccurredAt": "LE_ASOF_REQUIRED",
+      "ageEligibleSessions": "NONNEGATIVE_INTEGER"
+    },
+    "notYetOccurred": {
+      "flag": 0,
+      "firstOccurredAt": null,
+      "ageEligibleSessions": null,
+      "censoringState": "NOT_YET_OCCURRED_THROUGH_ASOF"
+    },
+    "unknown": {
+      "flag": null,
+      "firstOccurredAt": null,
+      "ageEligibleSessions": null,
+      "censoringState": "UNKNOWN_PROVENANCE"
+    }
+  },
+  "eventFamilies": [
+    "LOCAL_BREAK",
+    "PARENT_ZONE_ENTRY",
+    "PARENT_BREAK",
+    "FIRST_ORDINARY_OBSERVABLE",
+    "FIRST_POST_BREAK_OUTSIDE_CLOSE",
+    "PARENT_REENTRY",
+    "PARENT_FAILURE",
+    "PARENT_RECLAIM"
+  ],
+  "rules": [
+    "FUTURE_EVENT_CLOCK_NEVER_PREDICTOR",
+    "AGE_ZERO_MEANS_EVENT_TODAY",
+    "NULL_AGE_PLUS_FLAG_ZERO_MEANS_RIGHT_CENSORED_THROUGH_ASOF",
+    "UNKNOWN_NOT_EQUAL_CENSORED",
+    "FAILURE_NESTED_IN_REENTRY",
+    "SAME_SOURCE_REENTRY_FAILURE_NOT_TWO_VOTES",
+    "CONTINUOUS_AGE_BEFORE_BUCKETS",
+    "LATER_PARENT_MAY_OBSERVE_EVENT_WITHOUT_MUTATING_EARLIER_PARENT"
+  ],
+  "futureEventOutcome": "SEPARATE_TIME_TO_EVENT_ANALYSIS_WITH_RIGHT_CENSORING",
+  "predictiveIncrementality": "UNKNOWN",
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
