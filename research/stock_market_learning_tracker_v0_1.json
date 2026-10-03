@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T13:35:00+08:00",
+  "updatedAt": "2026-10-03T14:00:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -263,11 +263,11 @@
         "TECHNICAL_INDICATOR_CHECKPOINT.md",
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
       ],
-      "maturityPct": 48.3,
-      "status": "ROC_EXACT_REDUNDANCY_L2 / EMA64_STATE_LINEAGE_GUARD / RAW_RECEIPT_GATE_ACCUMULATING_2_OF_3",
-      "lastResearchUpdate": "2026-10-02",
-      "researchNote": "TI-460~473: completed-session TWSE/TPEx 2026-10-02 content is source-visible, but the chat transport returns extracted/normalized content rather than the frozen observer's origin raw bytes, so the raw-receipt gate remains 2/3 and no backfill is permitted. Standard percent ROC is exactly 100*retN; common Momentum index is ROC+100; same-horizon log return is a monotonic rank-equivalent transform; raw price difference is nominal-price-scale confounded. D03-11 advances L1/20 to L2/40 and D03 aggregate to 47.7%. EMA16/64 horizon analysis shows EMA64 mean age 31.5 bars, half-life ≈22.179 and 10%-residual age ≈73.677; a synthetic 65-bar local SMA-seeded EMA64 differs materially from full-history state, so System2 resonance requires canonical state-lineage/replay equivalence. EMA16/64 + Impulse remains partial/shared price-family confluence. Outcomes and Formal Core remain closed.",
-      "exactNextContinuationPoint": "Keep the raw-byte three-session gate at 2/3 until the frozen observer or receipt-equivalent authorized transport captures one new completed Taiwan session plus same-trade-date repeat; do not backfill 2026-10-02 extracted content. Before System2 resonance inference, prove EMA64 canonical replay/state-lineage equivalence and retain EMA16/64 + Impulse as within-family evidence. Once the raw receipt gate genuinely closes, TI-005 KD-vs-RSI remains first efficacy inference and TI-006 MACD-vs-direct-trend second.",
+      "maturityPct": 50,
+      "status": "TREND_PERSISTENCE_L3 / ROC_RETIRED_INTO_D03_02 / RAW_RECEIPT_GATE_ACCUMULATING_2_OF_3",
+      "lastResearchUpdate": "2026-10-03",
+      "researchNote": "TI-474~481 recover the exact own-path persistenceScoreResearch formula, prove same ret5/10/20/60 endpoints can still produce 100 vs 84.25 persistence from path sign frequency, and freeze a Taiwan-specific zero-return/tick/liquidity confound. Current TWSE price-tier ticks can mechanically change zero-return frequency; persistence is therefore a shared price-path quality state, not an independent cross-family vote or calibrated probability. Existing Taiwan daily-history capability is sufficient for the 61-close maximum ordinary requirement subject to official-session/TECHNICAL_CONTINUITY/corporate-action/parent-generation provenance. Prospective ret60 rank-persistence remains a distinct Chen-Hsieh-Lee-style construct with no historical backfill. D03-03 advances L2/40 to L3/60; after D03-11 ROC retirement the 12-module D03 aggregate becomes 50.0%. Raw receipt gate remains 2/3; outcomes and Formal Core remain closed.",
+      "exactNextContinuationPoint": "Saturday 2026-10-03 cannot add a completed Taiwan session; keep the frozen raw-byte receipt gate at 2/3. Freeze component-level persistence research snapshot semantics, then continue D03-12 repaint-safe divergence PIT feasibility by proving pivotAt/confirmedAt, indicator formula/state lineage and parent as-of causality. TI-005 KD-vs-RSI and TI-006 MACD-vs-direct-trend outcome inference remains blocked until the raw receipt gate genuinely closes.",
       "modules": [
         {
           "id": "D03-01",
@@ -288,10 +288,12 @@
         {
           "id": "D03-03",
           "name": "趨勢持續性與Persistence",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「趨勢持續性與Persistence」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / TICK_ZERO_RETURN_CONFOUND_FROZEN / OUTCOME_UNKNOWN",
+          "next": "Before outcome inference, persist component-level positiveDayRatio20/zeroReturnRatio20/positiveHorizonPct/drawdownQuality20/maQuality/relativeTick/liquidity provenance; test residual value conditional on retN, Residual RS, pathEfficiency and Regime. Keep cross-sectional rank persistency separate and prospective-only."
         },
         {
           "id": "D03-04",
