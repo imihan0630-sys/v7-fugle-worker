@@ -2448,3 +2448,25 @@ Exact next for Room 09:
 4. Run simple D12-07 skew/term structure and D12-16 surface level/slope/curvature on identical parents to quantify method/redundancy before opening outcomes.
 5. Keep live TAIWAN VIX/TX automation blocked until explicit authorized source terms exist.
 6. Accumulate strict source-attested independent dates before L3/OOS; Formal remains locked.
+
+## Room 08 special-situations / policy-event long-block — 2026-10-03
+
+- Re-read latest main and canonical 354-module tracker; did not restart CA or overwrite other rooms.
+- Curriculum expansion had introduced six true L0 modules owned by Room 08: D11-15..19 and D17-14. The prior lower D11/D17 percentages reflected denominator expansion, not regression.
+- New durable anchor: `SPECIAL_SITUATIONS_POLICY_EVENT_RESEARCH.md`; machine contract: `research/d11_d17_special_situations_event_clock_contract_v0_1.json`.
+- D11-15 IPO/Listing/Bookbuilding L0 -> L2: underwriting/listing lifecycle, failure/withdrawal states, allocation and first-trade PIT guards frozen.
+- D11-16 Lock-up Expiry/Insider Supply L0 -> L2: release eligibility != realized sale; quantity/release/sale clocks separated.
+- D11-17 Secondary Offering/Private Placement L0 -> L2: public/private issuance separated; denominator/tradability spaces preserved; mechanical bearish-dilution shortcut falsified.
+- D11-18 Tender Offer/Going Private/Delisting L0 -> L2: minimum condition, approvals, settlement, extension/failure and delisting clocks frozen.
+- D11-19 Spin-off/Merger Arbitrage/Deal-break Risk L0 -> L2: D11-06 remains transaction-state owner; payoff geometry, hedging/borrow/cost and break risk isolated here.
+- D17-14 Policy/Regulatory Event Clock/Surprise L0 -> L2: draft/consultation, decision, implementing rule, effective/revision clocks separated; surprise requires a preserved ex-ante expectation or remains UNKNOWN.
+- Cross-module controls frozen: revisions append, no current-page historical Shadow fabrication, failed/withdrawn events included, event-stage observations clustered, selection bias/look-ahead/data snooping/multiple testing/Factor Zoo/date clustering/cost/redundancy checks mandatory before outcomes.
+- No return/outcome sample was opened. Official legal/source lanes support mechanism semantics but do not by themselves prove L3 PIT replay.
+- Canonical maturity after update: D11=50.5%, D17=41.4%, Room08 module-weighted=46.7%; global tracker=33.3% across 354 modules.
+- Engineering/governance = Class A research documentation/schema only. Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE = NO.
+
+Exact next Room 08:
+1. D11-15..19: collect immutable Taiwan event lifecycle receipts across independent cases, explicitly including failed/withdrawn/delayed/extended/repriced controls.
+2. D17-14: capture draft/final/effective policy vintages and ex-ante expectation sources; absent expectation stays UNKNOWN.
+3. Continue D11-08/D17-01/02/09 fixed-cadence source/version coverage and existing CA-113/114 archive semantics.
+4. Only after Taiwan first-known/version replay gates pass may L3 be considered; preregister inclusion/horizons/controls before any outcome join.
