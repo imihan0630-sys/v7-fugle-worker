@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "DIVIDEND_PAYOUT_SUSTAINABILITY_PIT_CONTRACT_V0_1",
+  "researchRoom": "06",
+  "domain": "D07",
+  "candidateId": "COV-04",
+  "status": "SPECIALIST_RESEARCH_ONLY / CURRICULUM_NOT_YET_APPROVED",
+  "frozenAtAsiaTaipei": "2026-10-04T07:10:00+08:00",
+  "purpose": "Freeze dividend payout capacity, coverage, retention and sustainability semantics before curriculum intake or return-outcome research.",
+  "ownership": {
+    "owns": "Fundamental/accounting capacity to sustain shareholder cash dividends through time.",
+    "doesNotOwn": [
+      "ex-date/reference-price/event mechanics (D11)",
+      "board/shareholder-governance quality or capital-allocation governance (D21)",
+      "dividend yield valuation interpretation (D08)",
+      "raw earnings/CFO/FCF/balance-sheet primitives already owned by D07 sibling modules"
+    ]
+  },
+  "payoutComponents": {
+    "ordinaryCashDividendFromCurrentOrRetainedEarnings": "Cash distribution economically funded from earnings/retained earnings and classified separately by declared source when disclosed.",
+    "cashDistributionFromLegalOrCapitalReserve": "Separate reserve-funded cash distribution; never silently counted as current-earnings payout.",
+    "stockDividendFromEarnings": "Capitalization/share distribution. Not a cash outflow and excluded from cash-coverage ratios.",
+    "stockDividendFromReserve": "Capitalization/share distribution from reserve. Excluded from cash-coverage ratios.",
+    "specialCashDividend": "Only tagged SPECIAL when issuer/source explicitly identifies one-off/special nature or a frozen source rule proves it; size alone cannot infer special.",
+    "buybackOrCashCapitalReduction": "Companion shareholder-payout mechanisms owned outside this module; may be consumed as context but not merged into dividend coverage without separate source/PIT contract."
+  },
+  "coreFormulas": {
+    "earningsCashPayoutRatio": {
+      "formula": "ordinary cash dividends declared for earnings period / net income attributable to owners of parent for the same compatible earnings period",
+      "guards": [
+        "denominator must be positive and safely away from zero",
+        "reserve-funded distributions excluded from numerator",
+        "period basis and consolidated scope must match",
+        "near-zero/negative denominator => ratio UNKNOWN; retain transition state and raw amounts"
+      ]
+    },
+    "earningsDividendCoverage": {
+      "formula": "net income attributable to owners of parent / ordinary cash dividends declared for same earnings period",
+      "guards": [
+        "positive compatible numerator and positive dividend denominator required"
+      ]
+    },
+    "cashSettlementCoverage": {
+      "formula": "operating cash flow for cash-flow period / cash dividends actually paid during the same cash-flow period",
+      "meaning": "Liquidity/funding coverage, not declaration-policy payout ratio.",
+      "guards": [
+        "cash-flow period alignment mandatory",
+        "quarterly/YTD cumulative mismatch prohibited"
+      ]
+    },
+    "fcfDividendCoverage": {
+      "formula": "frozen PIT-safe free cash flow / cash dividends actually paid in aligned period",
+      "status": "SOURCE_AND_DEFINITION_GATED",
+      "rule": "Remain UNKNOWN until D07-05 freezes a replayable FCF/CapEx definition."
+    },
+    "cashRetentionRatio": {
+      "formula": "1 - earningsCashPayoutRatio",
+      "meaning": "Accounting/economic cash retention relative to current earnings; not proof of productive reinvestment.",
+      "guards": [
+        "only when earningsCashPayoutRatio is KNOWN"
+      ]
+    },
+    "perSharePayoutApproximation": {
+      "formula": "cash DPS / basic EPS",
+      "status": "APPROXIMATION_ONLY",
+      "reason": "Share-count, diluted/basic EPS and corporate-action timing can make per-share arithmetic diverge from total-amount payout."
+    }
+  },
+  "sustainabilityContext": {
+    "mandatoryDimensions": [
+      "earnings coverage and earnings quality",
+      "CFO/FCF coverage where PIT-safe",
+      "leverage and liquidity",
+      "ordinary payout history and omission/cut behavior",
+      "earnings cyclicality and normalized profitability",
+      "capital intensity/growth investment needs",
+      "distribution source: earnings vs retained earnings vs reserve",
+      "financial-sector regulatory capital/solvency where applicable"
+    ],
+    "noUniversalThreshold": true,
+    "forbiddenInference": [
+      "high dividend yield = sustainable",
+      "high payout = high quality",
+      "low payout = poor shareholder policy",
+      "stable DPS = stable underlying economics"
+    ]
+  },
+  "payoutStability": {
+    "sequenceIdentity": "distribution earnings period + decision level + ordinary/special classification",
+    "preserve": [
+      "ordinaryCashDividendPerShare",
+      "ordinaryCashDividendTotal",
+      "omissionFlag",
+      "cutFlag",
+      "increaseFlag",
+      "distributionFrequency",
+      "sourceOfDistribution",
+      "specialFlagOrUNKNOWN"
+    ],
+    "rule": "Quarterly/semiannual/annual distributions must not be compared as if frequencies were identical; special distributions are excluded from ordinary stability series."
+  },
+  "taiwanDecisionClocks": {
+    "financialStatementKnownAt": "MOPS financial report publication/filing timestamp for the compatible earnings/cash-flow denominator.",
+    "boardProposalKnownAt": "Earliest MOPS/issuer filing timestamp showing board-approved proposed distribution.",
+    "finalDistributionDecisionKnownAt": "Depends on legal/charter decision level. Board decision can be final for qualifying cash distributions where law/articles allow; otherwise shareholder-meeting approval is the finality event.",
+    "exDate": "Exchange/MOPS ex-right/ex-dividend effective event; D11-owned event mechanics.",
+    "paymentDate": "Cash settlement/payment date; used for cash-settlement coverage period alignment, not as the initial policy knownAt.",
+    "capturedAt": "Research observer timestamp.",
+    "revisionRule": "Every proposal/approval/change/correction is append-only; later final values cannot overwrite earlier decision-time state."
+  },
+  "legalAndAccountingGuards": {
+    "quarterlyOrSemiannual": "Taiwan Company Act Article 228-1 permits articles to provide quarterly/semiannual distributions; public companies use CPA audited/reviewed statements and cash distribution is board-resolved under the specified mechanism.",
+    "stockDividend": "Stock distribution follows share-issuance/corporate-action rules and is not cash payout coverage.",
+    "capitalReserveCash": "Company Act Article 241 permits certain legal/capital reserve distributions under conditions; classify separately from earnings-funded ordinary dividend.",
+    "parentVsConsolidated": "Legal distributable capacity is not identical to consolidated economic earnings. Preserve parent legal reserve/retained-earnings constraints separately from consolidated parent-attributable net income.",
+    "financialInstitutions": "Generic payout ratios may be descriptive, but sustainability requires regulatory capital/solvency constraints from the financial-institution specialist lane; otherwise sustainability=UNKNOWN."
+  },
+  "unknownSemantics": [
+    "negative or near-zero earnings denominator",
+    "distribution source cannot be identified",
+    "ordinary versus special classification unproven",
+    "financial statement/distribution period mismatch",
+    "decision finality level unproven",
+    "FCF definition/source not PIT-ready",
+    "financial-sector regulatory capacity unavailable"
+  ],
+  "antiDoubleCount": {
+    "D07_02": "Consumes net income/EPS but does not duplicate the raw earnings factor as a second vote.",
+    "D07_05": "Consumes CFO/FCF coverage; cash-flow quality remains owned by D07-05.",
+    "D07_06": "Consumes liquidity/leverage context; balance-sheet quality remains D07-06.",
+    "D08": "Dividend yield and valuation are valuation context; payout sustainability is not a valuation multiple.",
+    "D11": "Ex-date/payment/event reaction mechanics are D11; D07 uses clocks only for PIT alignment.",
+    "D21": "Board policy/process and governance quality are D21; D07 measures accounting/economic capacity to sustain payouts.",
+    "sharedEventRule": "One canonical dividend decision/event receipt may feed multiple child views but cannot create independent duplicated votes."
+  },
+  "evidenceRole": {
+    "primary": "validation",
+    "secondary": [
+      "context",
+      "explanatory",
+      "supportive"
+    ],
+    "strategyEvidence": "Not until prospective/OOS tests show incremental information beyond profitability, cash flow, leverage, valuation, sector and regime."
+  },
+  "terminalRecommendationCandidate": "ADD_MODULE",
+  "proposedMaturityStart": "L0",
+  "formalCoreChanged": false,
+  "promotionState": "NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
