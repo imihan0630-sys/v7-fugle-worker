@@ -617,7 +617,7 @@ Governance result after scanning all 354 active modules:
 - Strong future merge candidate: D15-21 <-> D15-22.
 - Semantic split-or-merge candidate: D07-17 <-> D21-12.
 - Scope de-duplication without full retirement: D16-11 <-> D16-21.
-- Thirteen additional high-overlap pairs are retained with explicit producer/consumer, source-family, component/composite, horizon, unit-of-analysis or strategy-interaction boundaries.
+- Fourteen additional high-overlap pairs are retained with explicit producer/consumer, source-family, component/composite, horizon, unit-of-analysis or strategy-interaction boundaries.
 
 No module count, maturity or Formal Core behavior changes. Specialist rooms own validation before any future merge proposal.
 
