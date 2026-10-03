@@ -2181,3 +2181,44 @@ No cross-action scalar "strategy success score" is allowed because native metric
 - H01 specialist return has been submitted to the canonical intake ledger for 00 Dependency Audit / owner review.
 
 Formal Core unchanged.
+
+
+## BR-057 — PCB/ABF issuer exposure requires a compatible numerator
+
+Artifact:
+`research/br057_pcb_abf_issuer_exposure_denominator_firewall_v0_1.json`
+
+For 8046 南亞電路板 and 3189 景碩, issuer-native evidence is sufficient to freeze product/application scope and total-company revenue denominators, but not a compatible ABF/AI product-revenue numerator.
+
+Therefore:
+- verified product presence != numeric revenue exposure;
+- TPCA product growth cannot fill an issuer numerator;
+- ABF material market share cannot become ABF-substrate manufacturer share;
+- roadmap/certification or qualitative contribution growth cannot be converted to a percentage;
+- missing exposure magnitude remains UNKNOWN.
+
+D09-13 remains L3. This improves denominator integrity, not predictive efficacy.
+
+## BR-058 — First prospective issuer strategic-action cohort frozen before outcomes
+
+Artifact:
+`research/br058_prospective_strategic_action_cohort_v0_1.json`
+
+Two issuer actions are frozen before future outcomes are opened:
+- UMC 2026-07-29 phased expansion: Singapore cleanroom expansion plus Tainan fab-building shell, with company-stated long-term customer commitments as context. Future HVM, utilization, margin, share and stock outcomes remain UNKNOWN.
+- Foxconn / Mitsubishi Electric 2026-04-24 automotive-business MOU: possible joint operation / equity transfer remains conditional; definitive agreement, closing and synergy outcomes remain UNKNOWN.
+
+Pre-registered future outcome layers:
+- operational milestones;
+- financial outcomes after material implementation;
+- relative-position outcomes only with compatible denominators;
+- stock-market outcomes only after separate D16 preregistration/common-support approval.
+
+D09-14 remains L3 by design. BR-058 is the first true prospective cohort freeze; L4 requires future evidence, not a receipt count.
+
+### Exact next
+- BR-059: add issuer-native PCB/ABF product/application revenue numerators only when compatible disclosures appear.
+- BR-060: append future strategic-action milestones on native publication clocks and add at least two more pre-outcome actions.
+- D09-07, D09-12 remain L2 until their explicit evidence blockers are cleared.
+
+Formal Core unchanged.
