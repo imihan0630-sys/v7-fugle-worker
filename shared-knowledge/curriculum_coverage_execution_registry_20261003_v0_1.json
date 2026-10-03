@@ -190,5 +190,8 @@
   },
   "specialistReturnIntakeTemplate": "shared-knowledge/CURRICULUM_COVERAGE_SPECIALIST_RETURN_INTAKE_TEMPLATE_20261003_V0_1.md",
   "specialistReturnSchema": "shared-knowledge/curriculum_coverage_specialist_return_schema_v0_1.json",
-  "intakeContractVersion": "COVERAGE_SPECIALIST_RETURN_V0_1"
+  "intakeContractVersion": "COVERAGE_SPECIALIST_RETURN_V0_1",
+  "governanceStateMachine": "shared-knowledge/CURRICULUM_COVERAGE_GOVERNANCE_STATE_MACHINE_V0_1.md",
+  "governanceStateMachineJson": "shared-knowledge/curriculum_coverage_governance_state_machine_v0_1.json",
+  "governanceStateMachineVersion": "CURRICULUM_COVERAGE_STATE_MACHINE_V0_1"
 }

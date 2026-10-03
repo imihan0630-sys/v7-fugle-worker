@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "CURRICULUM_COVERAGE_STATE_MACHINE_V0_1",
+  "updatedAt": "2026-10-03T22:51:00+08:00",
+  "status": "GOVERNANCE_STATE_MACHINE_FROZEN",
+  "states": [
+    "PENDING_SPECIALIST_RETURN",
+    "PARTIAL_EVIDENCE_RECEIVED",
+    "RETURN_ACCEPTED_FOR_INTAKE",
+    "COUNTERPART_OR_DEPENDENCY_REQUIRED",
+    "DEPENDENCY_AUDIT_PENDING",
+    "OWNER_APPROVAL_REQUIRED",
+    "TERMINAL_DECISION_READY",
+    "CANONICAL_UPDATE_COMPLETE",
+    "CLOSED_NO_STRUCTURAL_CHANGE"
+  ],
+  "allowedRecommendations": [
+    "ADD_MODULE",
+    "EXTEND_EXISTING_SCOPE",
+    "MERGE_INTO_EXISTING",
+    "NOT_A_GAP",
+    "EVIDENCE_INSUFFICIENT"
+  ],
+  "transitions": [
+    [
+      "PENDING_SPECIALIST_RETURN",
+      "PARTIAL_EVIDENCE_RECEIVED"
+    ],
+    [
+      "PENDING_SPECIALIST_RETURN",
+      "RETURN_ACCEPTED_FOR_INTAKE"
+    ],
+    [
+      "PARTIAL_EVIDENCE_RECEIVED",
+      "PARTIAL_EVIDENCE_RECEIVED"
+    ],
+    [
+      "PARTIAL_EVIDENCE_RECEIVED",
+      "RETURN_ACCEPTED_FOR_INTAKE"
+    ],
+    [
+      "RETURN_ACCEPTED_FOR_INTAKE",
+      "COUNTERPART_OR_DEPENDENCY_REQUIRED"
+    ],
+    [
+      "RETURN_ACCEPTED_FOR_INTAKE",
+      "DEPENDENCY_AUDIT_PENDING"
+    ],
+    [
+      "COUNTERPART_OR_DEPENDENCY_REQUIRED",
+      "DEPENDENCY_AUDIT_PENDING"
+    ],
+    [
+      "DEPENDENCY_AUDIT_PENDING",
+      "OWNER_APPROVAL_REQUIRED"
+    ],
+    [
+      "DEPENDENCY_AUDIT_PENDING",
+      "TERMINAL_DECISION_READY"
+    ],
+    [
+      "OWNER_APPROVAL_REQUIRED",
+      "TERMINAL_DECISION_READY"
+    ],
+    [
+      "TERMINAL_DECISION_READY",
+      "CANONICAL_UPDATE_COMPLETE"
+    ],
+    [
+      "TERMINAL_DECISION_READY",
+      "CLOSED_NO_STRUCTURAL_CHANGE"
+    ]
+  ],
+  "hardFirewalls": {
+    "specialistReturnIsDecision": false,
+    "partialEvidenceIsDecision": false,
+    "unknownCoercionForbidden": true,
+    "fabricatedHistoricalShadowForbidden": true,
+    "ownerApprovalRequiredForStructuralChange": true,
+    "atomicCanonicalUpdateRequiredForStructuralChange": true,
+    "curriculumInclusionImpliesSystemAdoption": false
+  },
+  "requiredTransitionMetadata": [
+    "candidateId",
+    "fromState",
+    "toState",
+    "changedAt",
+    "sourceArtifacts",
+    "evidenceCutoff",
+    "actorRoom",
+    "reason",
+    "canonicalImpact"
+  ]
+}

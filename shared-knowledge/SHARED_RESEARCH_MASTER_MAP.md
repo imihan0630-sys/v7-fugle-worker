@@ -1227,3 +1227,14 @@ Machine schema:
 Purpose:
 standardize the first formal handoff from specialist rooms to 00｜研究總控室.
 No curriculum structural change is implied by return acceptance.
+
+
+## Coverage governance state machine — 2026-10-03
+
+Canonical contract:
+`shared-knowledge/CURRICULUM_COVERAGE_GOVERNANCE_STATE_MACHINE_V0_1.md`
+
+Machine graph:
+`shared-knowledge/curriculum_coverage_governance_state_machine_v0_1.json`
+
+State progression is now formally constrained. No curriculum structural change may bypass the frozen transition graph.

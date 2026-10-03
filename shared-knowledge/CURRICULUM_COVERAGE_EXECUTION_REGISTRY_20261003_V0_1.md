@@ -151,3 +151,14 @@ Machine-readable schema:
 `shared-knowledge/curriculum_coverage_specialist_return_schema_v0_1.json`
 
 A specialist return cannot become RETURN_ACCEPTED_FOR_INTAKE unless all fixed 10 fields, Taiwan data feasibility, PIT/replay, overlap, anti-double-count, owner and exactly one terminal recommendation are complete.
+
+
+## Coverage governance state machine — 2026-10-03
+
+Canonical contract:
+`shared-knowledge/CURRICULUM_COVERAGE_GOVERNANCE_STATE_MACHINE_V0_1.md`
+
+Machine-readable state graph:
+`shared-knowledge/curriculum_coverage_governance_state_machine_v0_1.json`
+
+No COV candidate may skip a listed governance transition. Partial evidence and specialist recommendations remain non-terminal until the required intake, dependency, overlap, anti-orphan and owner gates are satisfied.

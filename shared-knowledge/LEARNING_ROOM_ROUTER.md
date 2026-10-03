@@ -1290,3 +1290,15 @@ Return rule:
 - exactly one terminal recommendation is mandatory;
 - a specialist room may not alter canonical module count or maturity;
 - incomplete returns remain PARTIAL_EVIDENCE_RECEIVED and return to the specialist room for completion.
+
+
+## Coverage Governance State Machine — 2026-10-03
+
+All COV rooms and 00｜研究總控室 must follow:
+- `shared-knowledge/CURRICULUM_COVERAGE_GOVERNANCE_STATE_MACHINE_V0_1.md`
+- `shared-knowledge/curriculum_coverage_governance_state_machine_v0_1.json`
+
+Forbidden:
+- PARTIAL_EVIDENCE_RECEIVED -> curriculum structural change;
+- specialist recommendation -> direct canonical mutation;
+- skipping Dependency Audit / overlap / anti-orphan / owner approval for structural changes.
