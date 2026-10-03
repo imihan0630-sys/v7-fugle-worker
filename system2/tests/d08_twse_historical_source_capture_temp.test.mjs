@@ -21,7 +21,9 @@ const monthEnds=(startYm,endYm)=>{
   const out=[];
   let y=sy,m=sm;
   while(y<ey || (y===ey && m<=em)){
-    const d=new Date(Date.UTC(y,m,0)).getUTCDate();
+    const monthEnd=new Date(Date.UTC(y,m,0)).getUTCDate();
+    const isCurrentBound=(y===2026 && m===10);
+    const d=isCurrentBound?2:monthEnd;
     out.push(String(y).padStart(4,"0")+String(m).padStart(2,"0")+String(d).padStart(2,"0"));
     m++; if(m===13){m=1;y++;}
   }
