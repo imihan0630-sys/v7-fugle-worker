@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "D22_01_D13_BASELINE_READINESS_V0_1",
+  "generatedAt": "2026-10-03T18:50:00+08:00",
+  "status": "D13_BASELINE_PARTIALLY_READY / SESSION_ALIGNED_20TD_CHANGE_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "purpose": "Audit preregistered rate-context readiness before any equity-outcome join.",
+  "officialSources": {
+    "usTreasury": "U.S. Department of the Treasury Daily Treasury Par Yield Curve Rates",
+    "taiwanCentralBank": "Central Bank of the Republic of China discount-rate history"
+  },
+  "eventRows": [
+    {
+      "issuer": "UMC",
+      "sourceKnownAt": "2024-03-25",
+      "ust10yPct": 4.25,
+      "cbcDiscountRatePct": 2,
+      "cbcRateEffectiveSince": "2024-03-22",
+      "ust10yChange20TradingDays": null,
+      "readiness": "LEVELS_READY / 20TD_CHANGE_PENDING_D13_SESSION_ALIGNMENT",
+      "note": "The 2024-03-25 U.S. Treasury 10-year par yield is 4.25%. Taiwan CBC discount rate became 2.0% effective 2024-03-22."
+    },
+    {
+      "issuer": "TSMC",
+      "sourceKnownAt": "2024-04-18",
+      "ust10yPct": 4.64,
+      "cbcDiscountRatePct": 2,
+      "cbcRateEffectiveSince": "2024-03-22",
+      "ust10yChange20TradingDays": null,
+      "readiness": "LEVELS_READY / 20TD_CHANGE_PENDING_D13_SESSION_ALIGNMENT",
+      "note": "The 2024-04-18 U.S. Treasury 10-year par yield is 4.64%. Taiwan CBC discount rate remained 2.0%."
+    },
+    {
+      "issuer": "Taiwan Cement",
+      "sourceKnownAt": null,
+      "ust10yPct": null,
+      "cbcDiscountRatePct": null,
+      "ust10yChange20TradingDays": null,
+      "readiness": "BLOCKED_SOURCE_PUBLIC_KNOWN_AT_UNKNOWN",
+      "note": "Board approval date cannot substitute for verified public knownAt."
+    }
+  ],
+  "timingFirewall": [
+    "Use the latest rate observation that was public before the Taiwan outcome-start timestamp.",
+    "Do not use a U.S. close that occurred after the relevant Taiwan information decision point.",
+    "The 20-trading-day change requires D13-13 calendar/session alignment; do not approximate by calendar-day subtraction.",
+    "Missing rate/session fields remain UNKNOWN and block the applicable incremental test rather than becoming zero."
+  ],
+  "next": [
+    "Resolve Taiwan Cement public knownAt or exclude it from timed outcome tests.",
+    "Materialize the 20-trading-day U.S. Treasury change using D13-13 session alignment.",
+    "Confirm whether the outcome start is next eligible Taiwan session after source knownAt and freeze that mapping before return labels are opened."
+  ]
+}
