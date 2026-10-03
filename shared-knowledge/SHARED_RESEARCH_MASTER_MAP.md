@@ -897,6 +897,6 @@ Maturity after mechanism/falsification freeze:
 - D11 = 50.5% across 19 modules.
 - D17 = 41.4% across 14 modules.
 - Room 08 module-weighted aggregate = 46.7%.
-- Global tracker recomputes to 33.3% across 354 modules.
+- Global tracker snapshot after concurrent merge verification = 33.5% across 354 modules.
 
 No Formal Core impact. No FORMAL_OPTIMIZATION_CANDIDATE.
