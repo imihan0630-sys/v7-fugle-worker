@@ -1,0 +1,59 @@
+import assert from "node:assert/strict";
+import {
+  fetchCurrentListingMetadataV0_1,
+  parseCsvRowsV0_1,
+  parseListingDateV0_1,
+} from "../runtime/current_listing_metadata_v0_1.mjs";
+
+const listed = [
+  "出表日期,公司代號,公司名稱,公司簡稱,產業別,成立日期,上市日期",
+  '20261003,2330,"台灣積體電路製造股份有限公司",台積電,半導體業,1987/02/21,1994/09/05',
+  "20261003,1101,台灣水泥股份有限公司,台泥,水泥工業,1950/12/29,1962/02/09",
+  "20261003,00631L,ETF,ETF,ETF,2014/01/01,2014/10/31",
+].join("\r\n");
+const otc = [
+  "出表日期,公司代號,公司名稱,公司簡稱,產業別,成立日期,上櫃日期",
+  "20261003,6488,環球晶圓股份有限公司,環球晶,半導體業,2011/03/18,2015/09/25",
+  "20261003,7777,測試新櫃公司,新櫃,其他,2026/08/01,115/09/29",
+].join("\n");
+
+assert.deepEqual(parseCsvRowsV0_1('a,"b,b","c""d"\n1,2,3'), [
+  ["a", "b,b", 'c"d'],
+  ["1", "2", "3"],
+]);
+assert.equal(parseListingDateV0_1("1994/09/05"), "1994-09-05");
+assert.equal(parseListingDateV0_1("115/09/29"), "2026-09-29");
+assert.equal(parseListingDateV0_1("20261002"), "2026-10-02");
+
+const fetched = await fetchCurrentListingMetadataV0_1({
+  observedAt: "2026-10-03T05:00:00.000Z",
+  minimumByMarket: { TWSE: 2, TPEX: 2 },
+  fetchImpl: async (url) => ({
+    ok: true,
+    status: 200,
+    async text() {
+      return String(url).includes("t187ap03_L.csv") ? listed : otc;
+    },
+  }),
+});
+assert.equal(fetched.state, "READY");
+assert.deepEqual(fetched.counts, { TWSE: 2, TPEX: 2 });
+assert.equal(fetched.byMarketSymbol["TWSE|2330"].listingDate, "1994-09-05");
+assert.equal(fetched.byMarketSymbol["TPEX|7777"].listingDate, "2026-09-29");
+assert.equal(fetched.byMarketSymbol["TWSE|00631L"], undefined);
+assert.match(fetched.metadataHash, /^[a-f0-9]{64}$/);
+assert.equal(fetched.externalMutationPerformed, false);
+
+const incomplete = await fetchCurrentListingMetadataV0_1({
+  observedAt: "2026-10-03T05:00:00.000Z",
+  minimumByMarket: { TWSE: 3, TPEX: 2 },
+  fetchImpl: async (url) => ({
+    ok: true,
+    status: 200,
+    text: async () => String(url).includes("t187ap03_L.csv") ? listed : otc,
+  }),
+});
+assert.equal(incomplete.state, "INCOMPLETE");
+assert.ok(incomplete.blockerCodes.includes("TWSE:LISTING_METADATA_COVERAGE_LOW"));
+
+console.log("System2 current listing metadata adapter tests passed");

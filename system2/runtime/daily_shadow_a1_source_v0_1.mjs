@@ -5,8 +5,9 @@ import {
   buildA1SymbolSnapshotBatch,
 } from "./a1_symbol_snapshot_adapter.mjs";
 import { fetchOfficialHistoricalA1DateV0_1 } from "./official_historical_a1_source_v0_1.mjs";
+import { fetchCurrentListingMetadataV0_1 } from "./current_listing_metadata_v0_1.mjs";
 
-export const DAILY_SHADOW_A1_SOURCE_VERSION = "0.2-RESEARCH";
+export const DAILY_SHADOW_A1_SOURCE_VERSION = "0.3-RESEARCH";
 const DEFAULT_TIMEOUT_MS = 30_000;
 const USER_AGENT = "System2-Daily-Shadow-A1-Readonly/0.2";
 
@@ -239,6 +240,7 @@ export async function fetchDailyShadowA1SnapshotV0_1({
   decisionTimestamp = null,
   fetchImpl = globalThis.fetch,
   exactDateFetch = fetchOfficialHistoricalA1DateV0_1,
+  listingMetadataFetch = fetchCurrentListingMetadataV0_1,
   now = () => new Date(),
   timeoutMs = DEFAULT_TIMEOUT_MS,
   minimumByMarket = undefined,
@@ -246,13 +248,30 @@ export async function fetchDailyShadowA1SnapshotV0_1({
   const date = isoDate(marketDate);
   if (typeof fetchImpl !== "function") throw new Error("fetchImpl is required");
   if (typeof exactDateFetch !== "function") throw new Error("exactDateFetch is required");
+  if (typeof listingMetadataFetch !== "function") throw new Error("listingMetadataFetch is required");
   if (!Number.isInteger(timeoutMs) || timeoutMs < 1000 || timeoutMs > 60_000) {
     throw new Error("timeoutMs must be an integer from 1000 to 60000");
   }
 
-  const [twsePrimary, tpexPrimary] = await Promise.all([
+  const [twsePrimary, tpexPrimary, listingMetadataResult] = await Promise.all([
     fetchJson(A1_SYMBOL_SNAPSHOT_SOURCES.TWSE.sourceUrl, fetchImpl, timeoutMs),
     fetchJson(A1_SYMBOL_SNAPSHOT_SOURCES.TPEX.sourceUrl, fetchImpl, timeoutMs),
+    listingMetadataFetch({
+      fetchImpl,
+      timeoutMs,
+      now,
+    }).catch((error) => ({
+      schemaVersion: "SYSTEM2_CURRENT_LISTING_METADATA_V0_1",
+      version: "0.1-RESEARCH",
+      state: "SOURCE_ERROR",
+      observedAt: now().toISOString(),
+      counts: { TWSE: 0, TPEX: 0 },
+      blockerCodes: ["LISTING_METADATA_SOURCE_ERROR"],
+      metadataHash: null,
+      byMarketSymbol: {},
+      safeError: String(error?.message || error).slice(0, 160),
+      externalMutationPerformed: false,
+    })),
   ]);
   const [twse, tpex] = await Promise.all([
     resolveMarketPayload({
@@ -305,6 +324,7 @@ export async function fetchDailyShadowA1SnapshotV0_1({
       decisionClockMode,
       observedAt,
       transports,
+      listingMetadata: listingMetadataResult,
       snapshotBatch: null,
       externalMutationPerformed: false,
     });
@@ -332,6 +352,7 @@ export async function fetchDailyShadowA1SnapshotV0_1({
     decisionClockMode,
     observedAt,
     transports,
+    listingMetadata: listingMetadataResult,
     snapshotBatch: batch,
     externalMutationPerformed: false,
   });

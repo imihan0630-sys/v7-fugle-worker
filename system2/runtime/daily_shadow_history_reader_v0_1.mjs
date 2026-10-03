@@ -1,6 +1,6 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 
-export const DAILY_SHADOW_HISTORY_READER_VERSION = "0.1-RESEARCH";
+export const DAILY_SHADOW_HISTORY_READER_VERSION = "0.2-RESEARCH";
 
 function requiredText(value, field) {
   if (typeof value !== "string" || !value.trim()) throw new Error(`${field} is required`);
@@ -80,7 +80,6 @@ export async function loadPitPriorA1BarsV0_1({
   const clock = timestamp(decisionTimestamp, "decisionTimestamp");
   const limit = positiveInt(lookbackSessions, "lookbackSessions");
   const space = requiredText(priceSpace, "priceSpace");
-
   const result = await db.prepare(
     `SELECT bar_id, canonical_key, market_date, market, symbol, company_name,
             price_space, open_price, high_price, low_price, close_price,
@@ -135,6 +134,8 @@ export async function probePitHistoryCoverageV0_1({
   decisionTimestamp,
   requiredPriorSessions = 60,
   priceSpace = "RAW",
+  listingMetadata = null,
+  priorTradingDates = null,
 } = {}) {
   assertDb(db);
   if (!snapshotBatch || typeof snapshotBatch !== "object") {
@@ -144,6 +145,15 @@ export async function probePitHistoryCoverageV0_1({
   const clock = timestamp(decisionTimestamp, "decisionTimestamp");
   const required = positiveInt(requiredPriorSessions, "requiredPriorSessions");
   const space = requiredText(priceSpace, "priceSpace");
+  const tradingDates = Array.isArray(priorTradingDates)
+    ? [...new Set(priorTradingDates.map((x) => isoDate(x, "priorTradingDates[]")))]
+        .filter((x) => x < date)
+        .sort()
+    : null;
+  const ageAwareAvailable =
+    listingMetadata?.state === "READY"
+    && listingMetadata?.byMarketSymbol
+    && tradingDates?.length >= required;
 
   const result = await db.prepare(
     `WITH eligible AS (
@@ -201,8 +211,44 @@ export async function probePitHistoryCoverageV0_1({
     const selectedDateCount = Number(row?.selected_date_count || 0);
     const ambiguousDateCount = Number(row?.ambiguous_date_count || 0);
     const continuityEligibleCount = Number(row?.continuity_eligible_count || 0);
-    const historyReady = selectedDateCount >= required && ambiguousDateCount === 0;
-    const continuityReady = historyReady && continuityEligibleCount >= required;
+    const listing = market && ageAwareAvailable
+      ? listingMetadata.byMarketSymbol[`${market}|${symbol}`] || null
+      : null;
+    const listingDate = listing?.listingDate || null;
+    let requiredForSymbol = required;
+    let ageLimited = false;
+    let expectedFirstDate = null;
+    let expectedLastDate = tradingDates?.at(-1) || null;
+    if (listingDate && listingDate < date && tradingDates) {
+      const expectedDates = tradingDates.filter((x) => x >= listingDate).slice(-required);
+      if (expectedDates.length < required && listingDate >= tradingDates[0]) {
+        requiredForSymbol = expectedDates.length;
+        ageLimited = true;
+        expectedFirstDate = expectedDates[0] || null;
+        expectedLastDate = expectedDates.at(-1) || null;
+      }
+    } else if (listingDate === date && tradingDates) {
+      requiredForSymbol = 0;
+      ageLimited = true;
+      expectedFirstDate = null;
+      expectedLastDate = null;
+    }
+    const selectedFirstDate = row?.first_selected_date || null;
+    const selectedLastDate = row?.last_selected_date || null;
+    const ageBoundaryMatches = !ageLimited || (
+      selectedDateCount === requiredForSymbol
+      && (requiredForSymbol === 0 || (
+        selectedFirstDate === expectedFirstDate
+        && selectedLastDate === expectedLastDate
+      ))
+    );
+    const historyReady =
+      ambiguousDateCount === 0
+      && selectedDateCount >= requiredForSymbol
+      && ageBoundaryMatches;
+    const continuityReady =
+      historyReady
+      && continuityEligibleCount >= requiredForSymbol;
     if (historyReady) historyReadyCount += 1;
     if (continuityReady) continuityReadyCount += 1;
     if (ambiguousDateCount > 0) ambiguousCount += 1;
@@ -212,8 +258,16 @@ export async function probePitHistoryCoverageV0_1({
       selectedDateCount,
       ambiguousDateCount,
       continuityEligibleCount,
-      firstSelectedDate: row?.first_selected_date || null,
-      lastSelectedDate: row?.last_selected_date || null,
+      firstSelectedDate: selectedFirstDate,
+      lastSelectedDate: selectedLastDate,
+      listingDate,
+      requiredPriorSessionsForSymbol: requiredForSymbol,
+      listingAgeLimited: ageLimited,
+      listingAgeBasis: ageAwareAvailable
+        ? listingDate ? "OFFICIAL_CURRENT_LISTING_DATE_PLUS_OFFICIAL_TRADING_DATES" : "LISTING_DATE_UNKNOWN_STRICT_60"
+        : "AGE_AWARE_METADATA_UNAVAILABLE_STRICT_60",
+      expectedFirstDate,
+      expectedLastDate,
       historyReady,
       continuityReady,
     });
@@ -238,6 +292,9 @@ export async function probePitHistoryCoverageV0_1({
     marketDate: date,
     decisionTimestamp: clock,
     requiredPriorSessions: required,
+    listingAgeAware: ageAwareAvailable,
+    listingMetadataState: listingMetadata?.state || "NOT_PROVIDED",
+    priorTradingDateCount: tradingDates?.length || 0,
     currentUniverseCount: currentCount,
     historyReadyCount,
     continuityReadyCount,

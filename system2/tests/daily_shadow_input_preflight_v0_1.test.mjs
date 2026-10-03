@@ -173,6 +173,57 @@ assert.equal(coverage.continuityReadyCount, 1);
 assert.equal(coverage.historyCoverage, 1);
 assert.equal(coverage.continuityCoverage, 0.5);
 
+const calendarDates = [];
+for (let d = new Date("2026-07-20T00:00:00Z"); d < new Date("2026-10-02T00:00:00Z"); d.setUTCDate(d.getUTCDate() + 1)) {
+  calendarDates.push(d.toISOString().slice(0, 10));
+}
+const newListingSnapshot = {
+  marketDate,
+  ordinarySymbolCount: 1,
+  symbols: ["7777"],
+  bySymbol: { "7777": { market: "TPEX" } },
+};
+const listingMetadata = {
+  state: "READY",
+  byMarketSymbol: {
+    "TPEX|7777": { market: "TPEX", symbol: "7777", listingDate: "2026-09-29" },
+  },
+};
+const ageAware = await probePitHistoryCoverageV0_1({
+  db: fakeDb({ coverageRows: [{
+    symbol: "7777", market: "TPEX", selected_date_count: 3,
+    ambiguous_date_count: 0, continuity_eligible_count: 0,
+    first_selected_date: "2026-09-29", last_selected_date: "2026-10-01",
+  }] }),
+  snapshotBatch: newListingSnapshot,
+  decisionTimestamp: source.decisionTimestamp,
+  requiredPriorSessions: 60,
+  listingMetadata,
+  priorTradingDates: calendarDates,
+});
+assert.equal(ageAware.listingAgeAware, true);
+assert.equal(ageAware.historyReadyCount, 1);
+assert.equal(ageAware.continuityReadyCount, 0);
+assert.equal(ageAware.diagnostics[0].requiredPriorSessionsForSymbol, 3);
+assert.equal(ageAware.diagnostics[0].listingAgeLimited, true);
+assert.equal(ageAware.diagnostics[0].listingAgeBasis, "OFFICIAL_CURRENT_LISTING_DATE_PLUS_OFFICIAL_TRADING_DATES");
+assert.equal(ageAware.state, "CONTINUITY_NOT_VERIFIED");
+
+const ageAwareMissing = await probePitHistoryCoverageV0_1({
+  db: fakeDb({ coverageRows: [{
+    symbol: "7777", market: "TPEX", selected_date_count: 2,
+    ambiguous_date_count: 0, continuity_eligible_count: 0,
+    first_selected_date: "2026-09-30", last_selected_date: "2026-10-01",
+  }] }),
+  snapshotBatch: newListingSnapshot,
+  decisionTimestamp: source.decisionTimestamp,
+  requiredPriorSessions: 60,
+  listingMetadata,
+  priorTradingDates: calendarDates,
+});
+assert.equal(ageAwareMissing.historyReadyCount, 0);
+assert.equal(ageAwareMissing.state, "HISTORY_COVERAGE_INCOMPLETE");
+
 const sm = resolveDailyShadowAssessorReadinessV0_1("SHORT_MOMENTUM");
 assert.equal(sm.state, "ASSESSOR_POLICY_NOT_FROZEN");
 assert.equal(sm.permittedAction, "OBSERVE_INPUT_READINESS_ONLY");
