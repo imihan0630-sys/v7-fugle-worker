@@ -122,13 +122,20 @@ ok(packetMissingLimit.capture.audit.rows[0].blockers.includes("BAR_MICROSTRUCTUR
 eq(packetMissingLimit.c3.tally.receiptN,0);
 
 const c2WithPriority={...c2,pairs:c2.pairs.map(x=>x.symbol==="AAA"?{
-  ...x,selectionContext:{...x.selectionContext,priorityScore:80}
+  ...x,selectionContext:{...x.selectionContext,priorityScore:80,
+    priorityScoreProvenance:"FORMAL_RUNTIME_RESULT_AT_C1_DECISION"}
 }:x)};
 const c4Ready=buildC4ReadinessFromCohort(c2WithPriority,["AAA"]);
 eq(c4Ready.status,"READY");
 eq(c4Ready.comparison.selectedCount,1);
 eq(c4Ready.comparison.preferredAllocator,null);
 eq(c4Ready.comparison.economicSuperiority,"UNKNOWN");
+const c2WrongPriorityProvenance={...c2WithPriority,pairs:c2WithPriority.pairs.map(x=>x.symbol==="AAA"?{
+  ...x,selectionContext:{...x.selectionContext,priorityScoreProvenance:"UNVERIFIED"}
+}:x)};
+const c4WrongProvenance=buildC4ReadinessFromCohort(c2WrongPriorityProvenance,["AAA"]);
+eq(c4WrongProvenance.status,"INPUT_BLOCKED");
+ok(c4WrongProvenance.missing.some(x=>x.symbol==="AAA"&&x.field==="priorityScoreProvenance"));
 
 const c2BadStop={...c2WithPriority,pairs:c2WithPriority.pairs.map(x=>x.symbol==="AAA"?{
   ...x,selectionContext:{...x.selectionContext,entryGeometry:{...x.selectionContext.entryGeometry,stop:null}}

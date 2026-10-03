@@ -6,7 +6,11 @@ const exported=source+"\nexport {c3ResearchLimits,c3ResearchQuotePayload};";
 const api=await import("data:text/javascript;base64,"+Buffer.from(exported).toString("base64"));
 let n=0;const eq=(a,b)=>{assert.deepEqual(a,b);n++};const ok=x=>{assert.ok(x);n++};
 
-assert.match(source,/const VERSION = "8\.15\.3-c3-quote-context";/);n++;
+{
+  const version=source.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
+  assert.ok(version && (version[0]>8 || (version[0]===8 && (version[1]>15 || (version[1]===15 && version[2]>=3)))),"V8.15.3+ runtime required");
+  n++;
+}
 for(const token of [
   "CREATE TABLE IF NOT EXISTS trade_research_c3_quotes",
   'url.pathname === "/api/research/c3-capture-quotes"',
