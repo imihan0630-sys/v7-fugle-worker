@@ -1006,3 +1006,15 @@ Status: **TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / OUTCOME_UNKNOWN**.
 - D16 owns nonlinear estimator / finite-sample inference; D01 owns lifecycle semantics.
 
 Status: LIFECYCLE_REDUNDANCY_SPEC_FROZEN / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / RUNTIME_NO_GO / FORMAL_CORE_LOCKED.
+
+### D01 shared handoff — DL-020 minimal continuous Pattern basis (2026-10-03)
+
+- Pattern C2 is decomposed into PB1 geometry, PB2 path excursion, PB3 exposure/observability, PB4 first-event clocks, PB5 structural identity/age, PB6 derived lifecycle representation;
+- exact aliases / nested transforms remain useful views but are not independent votes;
+- eligible = observable + constrained under complete accounting;
+- geometry/lifecycle categorical states are derived from lower-level structural/path information when the basis is complete;
+- availableAirPct / centerDistancePct / ATR-normalized air are scaling/reference alternatives of shared geometry, not three source families;
+- future lifecycle inference must report flexible FULL_C2 and flexible MINIMAL_C2 sensitivity;
+- predictive minimal basis does not authorize deletion of audit/provenance fields from prospective storage.
+
+Status: MINIMAL_PATH_BASIS_FROZEN / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / RUNTIME_NO_GO / FORMAL_CORE_LOCKED.
