@@ -1,0 +1,28 @@
+{
+  "id": "DL-028-CONTROL-MANIFEST-V0_1",
+  "status": "OUTCOME_BLIND_CONTROL_MANIFEST_FROZEN",
+  "purpose": "freeze parent/control eligibility before any outcome join",
+  "parentFreeze": {
+    "key": ["symbol", "parentDecisionReceiptId", "parentConfirmedAt", "parentZoneFingerprint"],
+    "requireImmutableAtConfirmation": true,
+    "futureRevisionPolicy": "APPEND_NEW_PARENT_NOT_MUTATE_OLD_PARENT"
+  },
+  "controlFreeze": {
+    "eligibilityCutoff": "PARENT_CONFIRMED_AT",
+    "retainAllEligibleControls": true,
+    "retainFailedControls": true,
+    "failureReasonFirstKnownRequired": true,
+    "futureDiscoveredControl": "INELIGIBLE",
+    "postOutcomePruning": "PROHIBITED"
+  },
+  "matchingFamilies": {
+    "salience": ["roundness_tick_position", "preconfirmation_touch_count", "recency_since_touch", "prior_extremum_status", "zone_width", "distance_from_price", "observable_exposure"],
+    "crossingOpportunity": ["volatility_atr", "relative_tick", "liquidity", "constrained_session_share", "distance_path", "d02_acceptance_persistence", "market_sector_regime"],
+    "rule": "KEEP_SEPARATE_NO_OPAQUE_COMPOSITE_SCORE"
+  },
+  "missingness": "UNKNOWN_NOT_ZERO",
+  "outcomeJoin": "CLOSED",
+  "historicalShadow": "PROHIBITED",
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE"
+}
