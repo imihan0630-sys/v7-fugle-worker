@@ -172,3 +172,11 @@ Result:
 FORMAL_OPTIMIZATION_CANDIDATES remains 1.
 Formal Core remains LOCKED.
 
+
+
+### Room 07 H01 specialist validation — 2026-10-03
+- BR-051 freezes a Taiwan-headquartered foundry industry-structure PIT receipt. TSIA/ITRI 2025 foundry output is used only under its documented denominator; issuer consolidated revenue/capacity is not mislabeled as formal market share without compatibility proof.
+- BR-052 freezes a distinct issuer-level competitive-action lifecycle using TSMC/UMC official action evidence.
+- H01 specialist result: KEEP_SEPARATE proposed, with strict scope/evidence dedup. D09-13 owns industry structure; D09-14 owns issuer-specific competitive action/relative-position lifecycle.
+- Shared market-share/capacity/price/margin evidence has one parent lineage and cannot create duplicate Alpha votes.
+- No curriculum merge/retirement, no Production behavior and no Formal Core changed.
