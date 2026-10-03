@@ -1304,3 +1304,17 @@ Build a historical Taiwan D21-04 pledge replay with at least one pledge setup an
 - D03-09 ADX and D03-10 Bollinger remain L2 because TECHNICAL_CONTINUITY is still not physically certified; System2 official final-result pages have revisionCoverageComplete=false.
 - Raw source-version gate remains 2/3. Important correction: 3/3 will be necessary but not sufficient for TI-005/TI-006 outcome inference; full immutable parent/continuity/state/replay gates must still pass.
 - FORMAL_OPTIMIZATION_CANDIDATE = NONE; Formal Core LOCKED.
+
+
+## 2026-10-04 D03 — TI-543~550 primary queue outcome-closed preregistration
+
+- TI-005 KD-vs-RSI and TI-006 MACD-vs-direct-trend are now preregistered before any forward outcome access.
+- Raw D03 source-version gate remains 2/3. No receipt-equivalent 2026-10-02 D03 third-session artifact exists; System2 10/02 diagnostic evidence uses a different schema/clock and itself reports source/history not ready and continuity coverage zero.
+- Important correction: D03 3/3 is necessary, not sufficient. Full Technical observer readiness still requires immutable Level-B parent/capture generation, TECHNICAL_CONTINUITY, symbol-session/limit provenance, exact parent-child attempt reconciliation, stateConstructionMode and replay/prefix certification.
+- TI-005 frozen ladder: K0 BASE -> K1 B2 range-position -> K2 RSI14 -> K3 BOTH -> K4 KD-smoothing residual diagnostic. No overbought/oversold threshold voting or period search.
+- TI-006 frozen ladder: M0 direct trend -> M1 normalized DIF -> M2 transition/curvature -> M3 combined non-alias MACD. Zero-line/EMA alignment and crossover/Histogram-sign aliases are not separate features.
+- Primary outcome family is D5 return/MFE/MAE; D10/D20 are registered secondary and cannot rescue failed D5.
+- D16 method receipt is mandatory before outcome access: exact common support, scanDate dependence-aware inference, purged chronological holdout, untouched holdout, leave-one-date, concentration and non-overlap diagnostics.
+- Inference floors: D5 mature >=60, prospective complete >=30, independent scan dates >=15, >=2 Regimes, purged train >=10 dates, holdout >=5 dates, plus coverage/zero-pick/redundancy/cost/overfit gates.
+- D03 maturity stays 56.7%; preregistration does not inflate maturity.
+- `TI_005/006 = PREREGISTERED_NOT_EXECUTABLE`; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`; Formal Core LOCKED.
