@@ -732,7 +732,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「券商分點／主力代理變數」。研究券商總分公司買賣、分點集中度、持續性與流向反應，但必須區分執行通路與受益人身分；總公司自營混入、同分點多客戶、同客戶多分點、券商代碼Vintage、熱門股樣本選擇偏誤與資料授權／成本都必須納入。不得把分點淨買直接標成主力、聰明錢或單一大戶；每個結論需正反驗證、PIT、完整母體與增量價值檢查。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "SOURCE_TIERS_FROZEN / SELECTED_UNIVERSE_BIAS_EXPLICIT / BENEFICIAL_OWNER_UNIDENTIFIABLE / COMPLETE_UNIVERSE_COST_GATED / OUTCOMES_CLOSED",
+          "next": "若未來取得授權完整母體分點檔，先做代碼版本、母體完整性、總分公司與自營混入稽核；只拿活躍股／排行產品時，推論僅限選樣母體，不得外推全市場，也不得把分點淨買標成主力身分。"
         },
         {
           "id": "D06-14",
@@ -740,7 +742,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「當沖率／短線換手」。研究個股與市場當沖成交股數／金額占比、短線換手與注意力／流動性／擁擠的交互作用；原始量必須按個股成交量值、橫截面與自身歷史正規化，並控制當沖資格、處置／變更交易、規則Vintage與市場Regime。高當沖不得直接解讀為多或空，買賣金額差也不得當作乾淨方向部位；需正反驗證其對波動、假突破、MAE/MFE與續航的增量價值。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "TWSE_2000_SOURCE_CLOCK_VERIFIED / TPEX_T_T1_T2_VINTAGE_SEMANTICS_FROZEN / SURVEILLANCE_THRESHOLD_NOT_ALPHA / PROSPECTIVE_CROSS_MARKET_RECEIPT_REQUIRED / OUTCOMES_CLOSED",
+          "next": "下一有效交易日保存 TPEx T 日初版當沖資料 capturedAt／firstKnownAt／hash，之後追同一交易日 T+1 修訂與 T+2 最終值；先量測 revision（修訂）大小，不讀報酬。TWSE 60%注意門檻只當監理情境，禁止當方向門檻。"
         },
         {
           "id": "D06-15",
@@ -749,8 +753,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「官股行庫／特定資金流」。研究公股行庫逆勢承接、正常化賣出、與外資／投信／市場壓力的背離及可能的穩定市場脈絡；必須區分公股行庫一般投資、政府基金、國安基金與透過公股券商路由的交易，未有獨立證據時動機與最終受益人均為UNKNOWN。初期只作Context／Warning Modifier研究，不得把公股買進直接當利多或公股賣出直接當利空。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / KEEP_ROLE_LIMITED / CONTEXT_ONLY / WARNING_MODIFIER / NOT_DIRECTIONAL_GATE. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "OWNER_APPROVED / KEEP_ROLE_LIMITED / CONTEXT_ONLY / WARNING_MODIFIER / NOT_DIRECTIONAL_GATE",
-          "next": "由 05｜法人與籌碼研究室驗證官股／特定資金流在不同 Regime 的情境增量；公股買進不得直接解讀為利多，賣出不得直接解讀為利空，動機與最終受益人缺證時維持 UNKNOWN。"
+          "status": "OFFICIAL_PUBLIC_ENTITY_SET_SEPARATED_FROM_EIGHT_BANK_PROXY / BENEFICIAL_OWNER_UNKNOWN / POLICY_INTENT_UNKNOWN / CONTEXT_ONLY / SOURCE_CONTRACT_UNRESOLVED / OUTCOMES_CLOSED",
+          "next": "任何八大公股交易資料啟用前，先凍結 provider（供應商）定義、成員清單、券商／分點代碼與版本、總公司／全分點範圍及客戶／自營可分性；沒有獨立官方證據時，政府基金／護盤／政策意圖一律 UNKNOWN。"
         },
         {
           "id": "D06-16",
@@ -773,10 +777,10 @@
           "next": "下一有效交易日以前瞻方式保存 TWSE 借券成交費率、揭示出借／借券量、交易型態、提前還券通知條件、firstKnownAt 與內容雜湊；禁止把每日實付借券費當空方需求，禁止在缺總可借庫存分母時稱 utilization（使用率）。"
         }
       ],
-      "status": "D06_16_EXECUTION_FIREWALL_FROZEN / D06_18_FEE_AND_QUOTE_CLOCK_FIREWALL_FROZEN / ETF_SBL_CROSS_MECHANISM_FIREWALL_FROZEN / H06_ROOM05_PACKET_COMPLETE_COUNTERPART_PENDING / H12_ROOM05_PACKET_COMPLETE_COUNTERPART_PENDING / H14_ROOM05_PACKET_COMPLETE_COUNTERPART_PENDING / IC043_WAITING_NEXT_VALID_PAIRED_VINTAGE / PF040_WAITING_NEXT_TRADING_DAY / INSTITUTIONAL_D5_WAITING",
-      "exactNextContinuationPoint": "IC-043/PF-040/D06-18-PROSPECTIVE/H06/H12/H14/INSTITUTIONAL-D5+: next valid trading day capture TPEx 20:30 EARLY and 22:30 LATE vintages; capture domestic in-kind ETF units-delta+same-generation PCF with execution-uncertainty fields; capture TWSE public borrow-rate/displayed-supply with transaction type, recall term, quote-persistence and 2026-06-01 settlement vintage; link ETF and SBL receipts through primitive IDs to avoid double counting; await Room13 H06, Rooms10/13 H12 and Room08 H14 counterparts; keep all outcomes closed until independent-date gates pass.",
-      "lastResearchUpdate": "2026-10-03",
-      "researchNote": "PF-039 narrows ETF units-delta semantics: TWSE ISSUES-DIFF includes T-1 initial-review net creations/redemptions, T-2 second-review failure reversals and dual-currency conversions; PCF is versioned and may be updated T-day. D06-16 therefore has mechanism+falsification+PIT+H14 anti-double-count defined and advances L0->L2. D06-18 separates lending activity from borrow economics: fee, displayed supply/demand and availability are distinct from borrow/short quantities; true utilization remains UNKNOWN without verified lendable-inventory denominator. H12 Room-05 side freezes single-receipt producer/consumer ownership and advances D06-18 L0->L2. No outcomes, no Formal change. H06 Room-05 packet freezes D06-06 as observable crowding owner and requires independent residual/behavior-specific evidence before D20-06 herding can survive separately. H14 Room-05 packet freezes D11-14 index-event identity versus D06-11 realized passive-flow producer/consumer boundary and single-event-receipt rule. Both are governance/scope evidence only and do not raise maturity. Weekend deepening: D06-16 Taiwan rules show in-kind creation may use existing holdings, collective creation, >=90% minimum basket plus next-day buy/borrow of shortage shares, and cash substitution; units+PCF therefore identify modeled delivery exposure rather than same-day actual constituent execution. D06-18 adds borrow-fee identifiability and rule-vintage guards: 2026-06-01 fee payment timing changed, and TWSE borrow quotes expire daily while lend quotes persist until cancellation, so raw displayed borrow/lend ratios are clock-asymmetric. Cross-mechanism firewall freezes ETF creation-related borrowing as a possible mechanical fulfillment path, preventing ETF flow and borrowing from becoming independent votes by default. Maturity remains 44.7%; no outcomes and no Formal change."
+      "status": "IC044_047_SOURCE_IDENTITY_DEEPENED / D06_13_SOURCE_TIER_FIREWALL_FROZEN / D06_14_TPEX_VINTAGE_AND_SURVEILLANCE_FIREWALL_FROZEN / D06_15_PUBLIC_PROXY_IDENTITY_FIREWALL_FROZEN / D06_16_EXECUTION_FIREWALL_FROZEN / D06_18_FEE_AND_QUOTE_CLOCK_FIREWALL_FROZEN / ETF_SBL_CROSS_MECHANISM_FIREWALL_FROZEN / H06_H12_H14_COUNTERPART_PENDING / IC043_PF040_NEXT_TRADING_DAY / INSTITUTIONAL_D5_WAITING",
+      "exactNextContinuationPoint": "NEXT_VALID_TRADING_DAY: (1) IC-043 TPEx 20:30 EARLY + 22:30 LATE paired vintage; (2) PF-040 domestic in-kind ETF units-delta + same-generation PCF with execution-uncertainty fields; (3) D06-18 TWSE public borrow-rate/displayed-supply receipt with transaction type/recall term/quote clock/2026-06-01 settlement vintage; (4) D06-14 TPEx day-trading T_PRELIM receipt then T1_REVISED/T2_FINAL follow-up; (5) link ETF/SBL/day-trading receipts by primitive lineage where relevant; (6) await H06/H12/H14 counterpart packets; (7) institutional outcomes stay closed until independent D5+ readiness passes.",
+      "lastResearchUpdate": "2026-10-04",
+      "researchNote": "PF-039 narrows ETF units-delta semantics: TWSE ISSUES-DIFF includes T-1 initial-review net creations/redemptions, T-2 second-review failure reversals and dual-currency conversions; PCF is versioned and may be updated T-day. D06-16 therefore has mechanism+falsification+PIT+H14 anti-double-count defined and advances L0->L2. D06-18 separates lending activity from borrow economics: fee, displayed supply/demand and availability are distinct from borrow/short quantities; true utilization remains UNKNOWN without verified lendable-inventory denominator. H12 Room-05 side freezes single-receipt producer/consumer ownership and advances D06-18 L0->L2. No outcomes, no Formal change. H06 Room-05 packet freezes D06-06 as observable crowding owner and requires independent residual/behavior-specific evidence before D20-06 herding can survive separately. H14 Room-05 packet freezes D11-14 index-event identity versus D06-11 realized passive-flow producer/consumer boundary and single-event-receipt rule. Both are governance/scope evidence only and do not raise maturity. Weekend deepening: D06-16 Taiwan rules show in-kind creation may use existing holdings, collective creation, >=90% minimum basket plus next-day buy/borrow of shortage shares, and cash substitution; units+PCF therefore identify modeled delivery exposure rather than same-day actual constituent execution. D06-18 adds borrow-fee identifiability and rule-vintage guards: 2026-06-01 fee payment timing changed, and TWSE borrow quotes expire daily while lend quotes persist until cancellation, so raw displayed borrow/lend ratios are clock-asymmetric. Cross-mechanism firewall freezes ETF creation-related borrowing as a possible mechanical fulfillment path, preventing ETF flow and borrowing from becoming independent votes by default. Maturity remains 44.7%; no outcomes and no Formal change. 2026-10-04 weekend deepening: D06-13 source tiers are now explicit—full all-stock broker data are complete-universe but paid and mix proprietary/brokerage flow, while the cheaper most-active product removes proprietary flow but selects on turnover and is unsuitable for full-market inference. D06-14 now separates TWSE ~20:00 day-trading contract from TPEx T/T+1/T+2 revision vintages; TWSE's >60% day-trading attention condition is a surveillance threshold, not alpha. D06-15 now separates the Ministry of Finance public-financial-institution entity set from vendor 'eight-bank' trading proxies, broker execution identity, beneficial owner and policy/stabilization mandate. D06-13/14/15 remain L2; no maturity inflation, outcomes or Formal change."
     },
     {
       "id": "D07",
