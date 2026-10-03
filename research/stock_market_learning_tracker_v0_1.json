@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T19:25:00+08:00",
+  "updatedAt": "2026-10-03T19:35:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -264,10 +264,10 @@
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
       ],
       "maturityPct": 55,
-      "status": "TREND_PERSISTENCE_L3 / MOMENTUM_CONTINUATION_L3 / DIVERGENCE_PIT_L3 / MULTITIMEFRAME_PIT_L3 / PULLBACK_ORIGIN_L2_DATA_GATED / RAW_RECEIPT_GATE_ACCUMULATING_2_OF_3",
+      "status": "D03_55_PERCENT / PERSISTENCE_CONTINUATION_DIVERGENCE_MULTITIMEFRAME_L3 / PULLBACK_ADX_BOLLINGER_L2_GATED / RAW_RECEIPT_GATE_2_OF_3",
       "lastResearchUpdate": "2026-10-03",
       "researchNote": "TI-491~525 deepen D03 without theory-only inflation. D03-13 multi-timeframe advances L2/40->L3/60 after causal PIT feasibility is frozen across calendar-aware Weekly, Daily PROVISIONAL/CONFIRMED finality, and bounded Fugle M15 coverage with distinct barStart/barEnd/featureKnownAt clocks; current zero-extra-call M15 path explicitly covers 17/18 regular-session slots through 13:15 and cannot claim the 13:15-13:30 closing bar. D03-04 momentum continuation advances L2/40->L3/60 after separating current momentum level (D03-02), persistence (D03-03), and post-decision continuation; rolling retN sign retention is rejected as a primary outcome because it mechanically overlaps pre-decision data, while exact future D5/D10/D20/MFE/MAE symbol-session outcome lineage is technically feasible. D03-05 remains L2/40: generic short-term reversal is rejected/redundant with the existing A/PULLBACK + 15m confirmation architecture, while the genuinely residual pullback-origin question is cross-lane data-gated, especially liquidity-pressure origin requiring D05 pressure/depth/response/replenishment completeness. Active D03 modules remain 12; aggregate becomes 55.0%. Raw-byte source gate remains 2/3; outcomes and Formal Core remain closed.",
-      "exactNextContinuationPoint": "Keep the raw-byte completed-session gate at 2/3 through the weekend. Do not impute the missing 13:15 M15 bar, do not use rolling retN sign retention as economic continuation, and do not infer pullback cause from OHLCV/candles. D03-05 stays L2 until owner-lane source receipts, especially D05 pressure/replenishment, are promotion-grade. Once the raw gate genuinely closes, preserve TI-005 KD-vs-RSI then TI-006 MACD-vs-direct-trend as the first efficacy tests. Outcome-blind continuation may next deepen D03-09 ADX and D03-10 Bollinger data-feasibility blockers without bypassing the primary inference queue.",
+      "exactNextContinuationPoint": "D03 theory/mechanism deepening has reached a temporary evidence ceiling for the remaining L2 modules: D03-05 needs owner-lane pullback-origin receipts (especially D05 pressure/replenishment); D03-10 Bollinger needs physical TECHNICAL_CONTINUITY + immutable parent capture over an exact 20 eligible-session window; D03-09 ADX additionally needs canonical recursive replay/state-lineage certification. Keep raw-byte source gate 2/3 through the weekend. When the gate genuinely closes, execute TI-005 KD-vs-RSI then TI-006 MACD-vs-direct-trend first; do not bypass them with ADX/Bollinger outcomes.",
       "modules": [
         {
           "id": "D03-01",
@@ -346,8 +346,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「ADX平均趨向指標」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WARMUP_CONTRACT_REQUIRED / OUTCOME_UNKNOWN",
-          "next": "After PIT/source gate completion, freeze long-history ADX warm-up/formulaVersion and test residual value beyond direct trend, ATR/regime and Impulse MACD; no threshold sweep or additive vote."
+          "status": "FORMULA_MECHANICS_FROZEN / R1_SOURCE_BLOCKED / CANONICAL_REPLAY_REQUIRED / OUTCOME_UNKNOWN",
+          "next": "Wait for shared TECHNICAL_CONTINUITY and immutable parent observer receipts; then prove canonical H/L/C replay or trusted prior-state lineage with formulaVersion/stateLineageId/replay certification before L3 review. Deeper history alone does not promote ADX."
         },
         {
           "id": "D03-10",
@@ -355,7 +355,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「Bollinger Bands布林通道」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "FORMULA_MECHANICS_FROZEN / FINITE_WINDOW / R1_SOURCE_BLOCKED / OUTCOME_UNKNOWN",
+          "next": "Once shared TECHNICAL_CONTINUITY + immutable parent capture is physically available, validate exact 20 eligible-session continuity window, POPULATION std formulaVersion, price-limit/special-session provenance and replay/prefix exactness. Bollinger may be re-reviewed for L3 before ADX because it has no recursive seed state."
         },
         {
           "id": "D03-12",
