@@ -28,6 +28,8 @@ allowed={'c1ChunkRows','c1ImmutableDecision','persistC1PopulationReceipt','readC
          'runAfterMarketScanCore','selectTomorrowCandidates'}
 if "scripts/apply_v8_15_2.py" in scripts or "scripts/apply_v8_15_3.py" in scripts:
     allowed.update({'ensureD1Schema','runBackgroundMonitor'})
+if "scripts/apply_v8_15_3.py" in scripts:
+    allowed.update({'c1ProjectFeature','c1DerivedState'})
 if set(changed)-allowed: raise SystemExit('Unexpected protected function changes: '+str(sorted(set(changed)-allowed)))
 selector=after['selectTomorrowCandidates'].replace(
     '  let c1PopulationReceipt=null,c1CaptureError=null;\n'
