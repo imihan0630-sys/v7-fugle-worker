@@ -123,3 +123,22 @@ Execution registry:
 Order is frozen: S1 semantic repair -> S2 P1-A reach funnel -> mature matched outcomes -> P1-B only if warranted. TARGET four-state remains a separate P2 semantic study.
 No Formal change.
 
+## S1 implementation acceptance — PR #360
+
+Class-A research-only S1 semantic repair merged at:
+`b360aff680483f2f7c8f746aa24fcfbda20d3ed3`
+
+Accepted research capabilities:
+- observation-aware gate roles;
+- full blocking-set decomposition;
+- P1-A minimal-unblock classes;
+- F0-F9 reach funnel;
+- confidence/context-only rejection metrics;
+- P1-A rankable diagnostic;
+- UNKNOWN contamination firewall.
+
+Formal production gates, A/B, RR, Grade, ranking, quotas, allocation and signals are unchanged.
+
+Next evidence requirement:
+the first genuine complete prospective C1/C2 population. Counts alone cannot justify Formal changes.
+
