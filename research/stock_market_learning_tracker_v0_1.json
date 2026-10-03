@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T23:19:00+08:00",
+  "updatedAt": "2026-10-03T23:17:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 38.1
+    "maturityWeightedPct": 38.2
   },
   "domains": [
     {
@@ -1564,7 +1564,7 @@
         "CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md",
         "EVENT_RISK_CHECKPOINT.md"
       ],
-      "maturityPct": 52.6,
+      "maturityPct": 53.7,
       "modules": [
         {
           "id": "D11-01",
@@ -1728,12 +1728,12 @@
         {
           "id": "D11-18",
           "name": "Tender Offer／Going Private／Delisting公開收購私有化與下市",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Tender Offer／Going Private／Delisting公開收購私有化與下市」。研究初級市場與特殊公司事件。需凍結事件條款、公告時間、生效日期、可交易日與失敗／撤案情境，並計入供給衝擊、鎖定期、交易限制與套利破局風險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "TENDER_CONDITION_AND_DELISTING_CLOCK_FROZEN / DEAL_BREAK_STATE_EXPLICIT / TAIWAN_PIT_CAPTURE_PENDING / OUTCOMES_CLOSED",
-          "next": "Capture complete Taiwan tender/going-private lifecycles including minimum-condition, approval, extension/revision, settlement and failed/withdrawn paths before any return/spread cohort."
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_SOURCE_FEASIBILITY_VALIDATED / SUCCESS_EXTENSION_CORRECTION_STATES_OBSERVED / FAILURE_CONTROL_PENDING_BEFORE_OUTCOMES",
+          "next": "Collect at least one native minimum-not-met/withdrawn/regulatory-failure tender case plus immutable MOPS versions; then preregister spread/deal-break horizons, funding/settlement costs and controls before L4."
         },
         {
           "id": "D11-19",
@@ -1746,10 +1746,10 @@
           "next": "Collect Taiwan merger/share-conversion/spin-off lifecycles with known-at terms, closing/break/reprice states and replicable hedge/borrow/cost evidence; do not duplicate D11-06 transaction-state evidence."
         }
       ],
-      "status": "D11_15_AND_17_L3 / D11_16_SOURCE_GAP_EXPLICIT / SPECIAL_SITUATIONS_PROGRESS_PRESERVED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D11-16: complete issuer-level official custody-release-to-realized-sale chain; D11-18/19: complete tender/deal success plus failure/extension/reprice PIT lifecycles. D11-17 native MOPS archive deepening remains before L4.",
+      "status": "D11_15_17_18_L3 / D11_16_SOURCE_GAP_EXPLICIT / D11_19_PIT_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D11-16 complete issuer-level official custody-release-to-sale chain; D11-19 collect spin-off/merger-arbitrage deal terms plus break/reprice/extension PIT lifecycles; D11-18 add a native failed-tender control before L4.",
       "lastResearchUpdate": "2026-10-03",
-      "researchNote": "D11-17 advanced L2->L3 for Taiwan PIT/source feasibility using official disclosure-field/timing contracts, issuer/private-placement lifecycle evidence, a failed/rescheduled branch, and existing 2465 instrument-space counterevidence. D11-16 remains L2 because issuer-specific official release-to-sale realization evidence is incomplete; missing coverage remains UNKNOWN."
+      "researchNote": "D11-18 advanced L2->L3 for Taiwan PIT/source feasibility using formal tender-offer reporting semantics plus observed successful, oversubscribed, regulatory-pending extension and post-expiry correction states. Actual minimum-not-met/withdrawn failure remains a mandatory negative control before outcome/L4 research."
     },
     {
       "id": "D12",
