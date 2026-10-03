@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 10:56 Asia/Taipei
+Updated: 2026-10-03 11:00 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -1422,4 +1422,11 @@ D12-14 vs D12-15。
 未來即使 owner（持有人）批准合併，也禁止以 max（最大值）、average（平均值）或簡單 carry-forward（延續）方式轉移成熟度。必須對合併後完整語意重新做 evidence mapping（證據映射）與 maturity recomputation（成熟度重算）。
 
 專科研究室只提交證據包，不得自行刪除正式模組。
+
+## H01～H04 專科驗證任務包 — 2026-10-03
+
+07｜產業與供應鏈研究室、09｜衍生品與國際總經研究室、10｜投組風控與交易執行研究室續接 H01～H04 前，直接讀：
+`shared-knowledge/CURRICULUM_H01_H04_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
+
+任務包已凍結每組 required work（必要工作）、forbidden（禁止事項）與 return format（回傳格式）。研究室只能提交證據與建議分類，不得自行退休正式模組或變更 Formal Core（正式核心）。
 
