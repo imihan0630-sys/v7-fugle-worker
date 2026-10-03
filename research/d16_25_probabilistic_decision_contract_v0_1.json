@@ -1,0 +1,231 @@
+{
+  "schemaVersion": "D16_25_PROBABILISTIC_DECISION_CONTRACT_V0_1",
+  "updatedAt": "2026-10-03 Asia/Taipei",
+  "status": "RESEARCH_ONLY_MECHANISM_AND_FALSIFICATION_FROZEN",
+  "ownerRoom": "11｜統計驗證與策略市場狀態研究室",
+  "formalCoreImpact": "NONE",
+  "decisionRoles": [
+    "HARD_INVALIDATION",
+    "PRIMARY_ALPHA",
+    "SUPPORTIVE",
+    "CONTEXT_ONLY",
+    "CONFIDENCE_UNCERTAINTY"
+  ],
+  "layers": {
+    "predictiveEstimation": {
+      "owner": "D16-25",
+      "outputs": [
+        "targetSpecificProbability",
+        "predictiveDistribution",
+        "conditionalPayoffEstimates",
+        "calibrationLineage",
+        "uncertaintyMetadata"
+      ]
+    },
+    "decisionUtility": {
+      "owner": "D16-25",
+      "outputs": [
+        "predictedGrossUtility",
+        "predictedNetUtility",
+        "ACCEPT_ABSTAIN_DATA_BLOCKED",
+        "decisionReason",
+        "policyVersion"
+      ]
+    },
+    "positionAllocation": {
+      "owner": "D15",
+      "candidateModule": "D15-19",
+      "inputsFromD1625": [
+        "PredictiveDecisionReceipt"
+      ],
+      "outputs": [
+        "positionFraction",
+        "riskBudgetUse",
+        "portfolioInteraction"
+      ],
+      "rule": "D16-25 probability output is not an authorized position size."
+    }
+  },
+  "targetIdentityRequired": [
+    "strategyId",
+    "strategyVersion",
+    "decisionStage",
+    "targetId",
+    "horizon",
+    "referenceBasis",
+    "costModelVersion",
+    "outcomeRuleVersion",
+    "modelVersion",
+    "calibrationVersion",
+    "baseRateCohortVersion",
+    "decisionAt"
+  ],
+  "probabilityValidation": {
+    "primaryMetrics": [
+      "BRIER_SCORE",
+      "LOG_LOSS",
+      "FIXED_BIN_RELIABILITY"
+    ],
+    "secondaryMetrics": [
+      "BINNED_BRIER_RELIABILITY_RESOLUTION_UNCERTAINTY",
+      "ECE_SECONDARY_ONLY"
+    ],
+    "distributionalCandidates": [
+      "CRPS_IF_PREDICTIVE_DISTRIBUTION_EXISTS"
+    ],
+    "rules": [
+      "Probability calibration and discrimination are separate.",
+      "Fixed bin edges are preregistered and cannot be retuned on evaluation outcomes.",
+      "Frozen reference base rate must be supplied from prior training; holdout empirical rate cannot be reused as the frozen baseline.",
+      "Exact wrong p=0 or p=1 is not silently clipped; any clipping creates a new explicit version."
+    ]
+  },
+  "priorContract": {
+    "rule": "Prior/base-rate cohorts are target-specific and PIT-safe.",
+    "dimensions": [
+      "strategy",
+      "target",
+      "horizon",
+      "eligibilityPopulation",
+      "costModel"
+    ],
+    "trainingOnly": true,
+    "lowSampleBehavior": "SHRINK_OR_WIDEN_UNCERTAINTY_NOT_EXTREME_ZERO_ONE",
+    "regimeConditioning": "ALLOWED_ONLY_WITH_PIT_AND_MULTI_EPISODE_SUPPORT",
+    "betaBinomial": "BASELINE_ONLY_NOT_EQUITY_PROCESS_TRUTH"
+  },
+  "uncertaintyChannels": [
+    "ALEATORIC_OUTCOME",
+    "EPISTEMIC_PARAMETER_MODEL",
+    "DATA_PROVENANCE",
+    "DISTRIBUTION_SHIFT_REGIME",
+    "EXECUTION_PAYOFF"
+  ],
+  "abstention": {
+    "validAction": true,
+    "candidateReasons": [
+      "NON_POSITIVE_EXPECTED_NET_UTILITY",
+      "UNCERTAINTY_TOO_HIGH",
+      "DATA_OR_PROVENANCE_NOT_DECISION_GRADE",
+      "OUT_OF_SUPPORT_OR_REGIME_SHIFT",
+      "PAYOFF_DISTRIBUTION_INSUFFICIENT",
+      "UNRESOLVED_HARD_INVALIDATION"
+    ],
+    "requiredEvaluation": [
+      "acceptedCoverage",
+      "abstentionRate",
+      "opportunityCapture",
+      "missedPositiveOpportunity",
+      "falseAcceptance",
+      "acceptedAfterCostValue",
+      "zeroPickReasons"
+    ],
+    "antiGamingRule": "Accepted-subset quality without coverage/opportunity-capture reporting is insufficient."
+  },
+  "maturityAndPIT": {
+    "eligibleOutcomeRule": "outcomeMaturedAt <= evaluationCutoff",
+    "immatureOutcome": "IMMATURE_UNKNOWN_NOT_LOSS",
+    "ambiguousTargetStop": "PRESERVE_AMBIGUOUS_UNLESS_PREREGISTERED_LABEL_POLICY",
+    "populationRule": "Intended deployment population must match calibration population or mismatch must be explicit.",
+    "legacyBoundedShadowPromotionGrade": false,
+    "c1CompletePopulationArchitectureFeasible": true,
+    "genuinePositiveC1GenerationObservedAsOf20261003": false,
+    "l3AllowedNow": false
+  },
+  "predictiveDecisionReceipt": {
+    "identity": [
+      "predictionId",
+      "parentDecisionReceiptId",
+      "captureGeneration",
+      "strategyId",
+      "strategyVersion",
+      "targetId",
+      "horizon",
+      "decisionAt"
+    ],
+    "prediction": [
+      "predictedProbability",
+      "predictiveDistributionRef",
+      "conditionalPayoffEstimate",
+      "predictedGrossUtility",
+      "predictedNetUtility"
+    ],
+    "calibration": [
+      "modelVersion",
+      "calibrationVersion",
+      "trainingThroughDate",
+      "baseRateCohortVersion",
+      "calibrationStatus"
+    ],
+    "uncertainty": [
+      "uncertaintyChannels",
+      "uncertaintyScoreOrInterval",
+      "outOfDomainState",
+      "sampleSupport"
+    ],
+    "decision": [
+      "decisionState",
+      "decisionReason",
+      "policyVersion"
+    ],
+    "sizingFirewall": {
+      "sizingEligibleDefault": false,
+      "rule": "Only downstream frozen sizing contract may set sizing eligibility after calibration/payoff/uncertainty/execution requirements are satisfied."
+    }
+  },
+  "d15_19Interface": {
+    "currentState": "DEPENDENCY_CONFIRMED_RESPONSIBILITY_OVERLAP_PARTIAL_FULL_MERGE_NOT_YET_JUSTIFIED",
+    "d1625Owns": [
+      "targetDefinition",
+      "baseRatePrior",
+      "probabilisticEvidenceCombination",
+      "calibration",
+      "uncertainty",
+      "distributionShift",
+      "abstention",
+      "decisionUtilityValidation"
+    ],
+    "d1519Owns": [
+      "kellyLogGrowthObjective",
+      "fractionalKelly",
+      "probabilityPayoffToCapitalFraction",
+      "portfolioCorrelationConcentration",
+      "drawdownRuinRiskConstraints",
+      "positionLifecycle"
+    ],
+    "fullMergePrerequisites": [
+      "calibratedOutcomeProbabilityOrDistribution",
+      "uncertaintyAwareSizing",
+      "comparisonAgainstFixedAndRiskBudgetSizing",
+      "drawdownTailConstraints",
+      "transactionCostAndCapitalUtilization",
+      "antiOrphanPreservationOfKellyTheoryAndEvidence"
+    ]
+  },
+  "falsification": [
+    "UNCALIBRATED_PROBABILITY",
+    "CALIBRATION_BREAKS_CHRONOLOGY_OR_REGIME",
+    "NO_INCREMENTAL_VALUE_VS_SIMPLE_BASELINE",
+    "CORRELATED_EVIDENCE_OVERCONFIDENCE",
+    "ABSTAIN_COVERAGE_GAMING",
+    "HIGH_PROBABILITY_NEGATIVE_AFTER_COST_UTILITY",
+    "BASE_RATE_OR_CALIBRATOR_LOOKAHEAD",
+    "SELECTION_BIASED_CALIBRATION_POPULATION",
+    "DISTRIBUTION_SHIFT_FAILURE",
+    "DOWNSTREAM_SIZING_USES_UNCALIBRATED_OR_PAYOFF_FREE_P"
+  ],
+  "safety": {
+    "formalCoreLocked": true,
+    "system1FormalChanged": false,
+    "system2FinalSelectionAuthorized": false,
+    "capitalSizingAuthorized": false,
+    "kellySizingAuthorized": false,
+    "liveTradingChanged": false
+  },
+  "next": [
+    "Implement pure probability evaluator and adversarial tests.",
+    "Keep D16-25 L2 until genuine Taiwan full-population PIT prediction/outcome linkage exists.",
+    "Freeze first probabilistic challenger preregistration only after evaluator lands.",
+    "Revisit D15-19 merge only after real calibration and downstream sizing evidence."
+  ]
+}
