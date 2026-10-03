@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "0.1",
+  "name": "TAIFEX daily option Delta publication-clock and effective-date contract",
+  "module": "D12-13",
+  "status": "OFFICIAL_CLOCK_SEMANTICS_FROZEN__1810_NEXT_SESSION_FEASIBILITY_IDENTIFIED__STRICT_PIT_RAW_RECEIPT_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-10-03T18:29:06+08:00",
+  "officialSource": {
+    "source": "TAIFEX",
+    "sourceUrl": "https://www.taifex.com.tw/cht/3/optDailyDelta",
+    "fields": [
+      "product",
+      "productName",
+      "callPut",
+      "expiryMonthWeek",
+      "contractExpiryDate",
+      "strike",
+      "delta"
+    ],
+    "definition": "TAIFEX describes Delta as a theoretical hedge ratio under option-pricing/reference-price conditions.",
+    "modelInputsDocumented": [
+      "underlying/futures reference price",
+      "index/related-market information",
+      "volatility inferred from option bid/ask and related volatility inputs",
+      "interest rate",
+      "strike",
+      "time to expiry"
+    ]
+  },
+  "publicationVersions": [
+    {
+      "label": "MORNING_CURRENT_SESSION",
+      "approximateTime": "06:45 Asia/Taipei",
+      "effectiveTradingDate": "SAME_BUSINESS_DAY",
+      "coverage": "all tradable series, including newly listed series",
+      "firstEligibleTaiwanAfterMarketDecision": "same date 18:10 if source receipt is attested"
+    },
+    {
+      "label": "AFTERNOON_NEXT_SESSION_V1",
+      "approximateTime": "14:30 Asia/Taipei",
+      "effectiveTradingDate": "NEXT_BUSINESS_DAY",
+      "coverage": "pre-disclosed next-business-day Delta; excludes next-day newly listed series"
+    },
+    {
+      "label": "AFTERNOON_NEXT_SESSION_V2",
+      "approximateTime": "16:30 Asia/Taipei; exact time depends on settlement processing",
+      "effectiveTradingDate": "NEXT_BUSINESS_DAY",
+      "coverage": "pre-disclosed next-business-day Delta; excludes next-day newly listed series",
+      "preferredFor1810": "Latest official pre-18:10 version if its actual publication time is preserved and <=18:10."
+    }
+  ],
+  "observedExample": {
+    "publicationDate": "2026-10-02",
+    "officialDownloadGenerationTime": "2026-10-02T16:39:28+08:00",
+    "meaning": "Official latest file was generated before 18:10 and the page states afternoon versions describe the next business day.",
+    "caution": "Historical file retrieved later does not by itself prove immutable first-known receipt or preserve the earlier 14:30 version."
+  },
+  "requiredReceiptFields": [
+    "publicationDate",
+    "publicationVersion",
+    "publicationTime",
+    "effectiveTradingDate",
+    "product",
+    "callPut",
+    "expiryMonthWeek",
+    "contractExpiryDate",
+    "strike",
+    "delta",
+    "seriesCoverageState",
+    "sourceHash",
+    "capturedAt",
+    "knownAtTaipei",
+    "sourceAttestationState",
+    "rulesRegimeVersion"
+  ],
+  "keyGuards": [
+    "TAIFEX Delta is an exchange-model theoretical hedge ratio, not market probability or directional sentiment.",
+    "publicationDate != effectiveTradingDate for 14:30/16:30 versions.",
+    "14:30/16:30 next-day files are incomplete for next-day newly listed series.",
+    "Do not overwrite V1 with V2 if studying revision stability; preserve version lineage.",
+    "Do not treat the 16:30 next-day Delta as a live 18:10 recomputation after night-session price moves.",
+    "Do not call a later-downloaded historical file a strict PIT receipt unless publication/capture immutability is attested."
+  ],
+  "researchHypotheses": [
+    "Next-session exchange Delta can serve as an official model-state baseline for D12-13, not as an alpha signal by itself.",
+    "Own model Greeks should be compared to TAIFEX Delta on identical series; persistent disagreement may reveal model/input differences, quote-quality issues or timing mismatch rather than return predictability.",
+    "Version change from 14:30 to 16:30 is a source/model stability object; it must be studied outcome-blind before any predictive interpretation."
+  ],
+  "maturityImpact": "D12-13 remains L2. Clock/source feasibility improves, but no strict raw multi-date PIT receipts or OOS evidence exist for L3.",
+  "exactNext": [
+    "Preserve one official Delta file/page version with actual publication time and raw-source identity.",
+    "Map source publication date to next business-day effective date using official Taiwan trading calendar.",
+    "Build parser/quality tests that reject impossible Delta values, duplicate series keys, wrong effective-date semantics and missing next-day-new-series coverage flag.",
+    "Compare TAIFEX official Delta with independently computed Delta only after option-chain model inputs are frozen.",
+    "Keep outcomes closed."
+  ]
+}
