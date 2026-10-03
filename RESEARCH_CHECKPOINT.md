@@ -2565,3 +2565,19 @@ Exact next Room-09 continuation:
 2. Source-only fiscal/FCI/H.4.1 vintage capture before any Taiwan outcome study.
 3. TAIFEX option replay lane remains: raw option parent -> exact parser -> simple skew vs Surface V0.1 vs parity quality on identical quotes.
 4. Keep composite macro/liquidity scores prohibited until component-level incremental evidence survives PIT/OOS gates.
+
+## 2026-10-03 late continuation — D11-16 lockup source gap + D11-17 private-placement L3
+
+- Re-read latest main before continuation; global canonical tracker had advanced concurrently to 37.6% / 354 modules before this Room08 work.
+- D11-16 lock-up semantics were deepened without maturity inflation. TWSE rules freeze staged custody-release schedules, while current TWSE holding/transfer OpenAPI coverage did not expose the bounded 6921 case. Missing coverage remains UNKNOWN. New receipt: `research/d11_16_lockup_source_gap_receipt_v0_1.json`. D11-16 stays L2.
+- The research attempted a direct MOPS issuer-level interactive query, but the external browser-automation wallet was insufficient. This is a transport/tool limitation, not a MOPS-data absence claim; official public/OpenAPI/regulation lanes were used instead and the blocker was recorded.
+- D11-17 private-placement feasibility was validated. New receipt: `research/d11_17_private_placement_pit_receipt_v0_1.json`.
+- 6648 gives a proposal/private-placement restriction/success-path witness; 2314 gives payment-not-collected and cancellation/reschedule failure branches; existing 2465 CA evidence preserves private-placement versus public-listed/payment-certificate/registered semantic separation.
+- D11-17 advances **L2 -> L3** for Taiwan PIT/source and event-state feasibility only. Native immutable MOPS archive depth and outcomes remain pending.
+- Canonical maturity after update: D11=52.6%, D17=41.4%, Room08=47.9%, global=37.8% across 354 modules.
+- No return outcomes, no dilution sign, no Formal Core change; FORMAL_OPTIMIZATION_CANDIDATE=NO.
+
+Exact next Room08:
+1. Complete D11-16 with one official issuer-level custody quantity -> release tranche -> transfer declaration -> realized holdings/untransferred chain, including an eligible-but-not-sold control.
+2. Move to D11-18 Tender Offer / Going Private / Delisting and D11-19 deal-break geometry; require success and failure/extension/reprice paths.
+3. Deepen D11-17 with native immutable MOPS versions before L4.
