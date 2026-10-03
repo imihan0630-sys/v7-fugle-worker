@@ -266,3 +266,39 @@ PVE cursor remains 239.
 PVE-240 remains reserved for the first genuine completed market session after the cross-midnight repair.
 
 Formal Core remains LOCKED.
+
+
+## 11. SVB versus CMF research-budget decision
+
+CMF uses:
+
+`CLV = ((C-L)-(H-C))/(H-L) = (2C-H-L)/(H-L)`.
+
+If:
+`closePosition = (C-L)/(H-L)`,
+
+then:
+`CLV = 2*closePosition - 1`.
+
+CMF is a volume-weighted finite-window average of this close-location transform.
+
+Therefore CMF is not algebraically identical to signedVolumeBalance:
+- SVB signs full bar/session volume using close-to-close direction;
+- CMF weights volume using within-bar close location.
+
+But both remain deterministic OHLCV compressions.
+
+Current D02 already owns:
+- close-position / response geometry;
+- direct volume / RVOL;
+- effort-vs-result;
+- acceptance/rejection.
+
+Research-budget rule:
+1. primary OBV-family compact comparator = `signedVolumeBalance20`;
+2. CMF = robustness comparator only, not simultaneous independent factor;
+3. do not outcome-test SVB + CMF + OBV slope + OBV divergence as four separate votes;
+4. CMF may replace/challenge SVB later only under a preregistered comparison, not after seeing which performs better.
+
+Reason:
+prospective independent dates are scarce. Outcome budget should test unresolved primitive/relational information, not multiple deterministic compressions of the same OHLCV family.
