@@ -1,0 +1,119 @@
+{
+  "version": "0.1",
+  "id": "BR-057",
+  "capturedAt": "2026-10-04T07:37:00+08:00",
+  "module": "D09-13 Industry Structure／Porter Five Forces產業結構與波特五力",
+  "mode": "PCB_ABF_ISSUER_EXPOSURE_DENOMINATOR_FIREWALL / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "purpose": "Freeze effective-dated issuer product/application scope and compatible revenue denominators while refusing to manufacture unavailable ABF/AI exposure numerators.",
+  "issuers": [
+    {
+      "symbol": "8046",
+      "issuer": "南亞電路板",
+      "productScope": {
+        "source": "issuer official company profile and dated investor briefings",
+        "families": [
+          "Conventional PCB",
+          "HDI",
+          "Rigid-Flex",
+          "ABF substrate",
+          "PP/BT-related substrate offerings"
+        ],
+        "applicationEvidence": [
+          "AI server processors/ASICs",
+          "switch/router/networking",
+          "optical communications",
+          "automotive processors",
+          "server/network cards"
+        ],
+        "evidenceVintages": [
+          "2025-02-19",
+          "2025-05-05",
+          "2025-08-07",
+          "2025-10-22",
+          "2026 current profile"
+        ]
+      },
+      "totalRevenueDenominator": {
+        "period": "2025",
+        "source": "issuer official monthly financial page",
+        "consolidatedRevenueNtdMn": 40171,
+        "status": "KNOWN_TOTAL_DENOMINATOR"
+      },
+      "abfRevenueNumerator": "UNKNOWN",
+      "aiApplicationRevenueNumerator": "UNKNOWN",
+      "exposureRatio": "UNKNOWN",
+      "rule": "Product/application presence is verified; exposure magnitude is not."
+    },
+    {
+      "symbol": "3189",
+      "issuer": "景碩",
+      "productScope": {
+        "source": "issuer official product pages and chairman message",
+        "families": [
+          "high-end IC substrates",
+          "FCBGA",
+          "SiP",
+          "large-area high-layer-count ABF substrates"
+        ],
+        "applicationEvidence": [
+          "AI advanced packaging",
+          "high-performance computing",
+          "advanced semiconductor packaging"
+        ],
+        "currentStrategyEvidence": "Issuer states strategic focus on high-end FCBGA/SiP and significant growth in AI advanced-packaging substrate revenue contribution, without a compatible percentage denominator."
+      },
+      "totalRevenueDenominator": {
+        "period": "2025",
+        "source": "issuer official monthly revenue page",
+        "consolidatedRevenueNtdThousand": 39351096,
+        "status": "KNOWN_TOTAL_DENOMINATOR"
+      },
+      "abfRevenueNumerator": "UNKNOWN",
+      "aiApplicationRevenueNumerator": "UNKNOWN",
+      "exposureRatio": "UNKNOWN",
+      "rule": "Qualitative growth contribution cannot be converted to a numeric share."
+    }
+  ],
+  "externalIndustryContext": {
+    "source": "TPCA/ITRI",
+    "evidence": [
+      "2025 Taiwan PCB manufacturing output reached NT$915.2bn.",
+      "2025 Q3 substrates grew 14.2% YoY while flexible/rigid-flex declined.",
+      "AI/server applications drove ABF, high-layer-count and HDI demand.",
+      "ABF substrate material and substrate manufacturing are separate economic markets."
+    ],
+    "useRule": "Industry product/application growth is context only and cannot fill issuer revenue numerators."
+  },
+  "denominatorFirewall": [
+    "issuer total revenue denominator + product presence does not identify product revenue share",
+    "TPCA product growth cannot be multiplied into issuer exposure percentage",
+    "ABF material market share cannot be mapped to ABF substrate manufacturer share",
+    "company roadmap/certification is not realized revenue",
+    "qualitative 'significant growth' does not supply a numeric denominator"
+  ],
+  "pitSemantics": {
+    "unit": "issuer × product/application evidence vintage × compatible accounting denominator",
+    "clocks": [
+      "issuerPublishedAt",
+      "industryPublishedAt",
+      "observationPeriod",
+      "capturedAt",
+      "firstEligibleDecision"
+    ],
+    "historicalRule": "Do not backfill current product mix into prior years.",
+    "missingRule": "UNKNOWN != zero / immaterial / non-exposed",
+    "outcomeFirewall": "No stock/future-return outcome opened."
+  },
+  "maturityDecision": {
+    "D09-13": "KEEP_L3"
+  },
+  "reasonNoL4": "Exposure semantics improved, but product/application revenue numerators remain missing and no prospective/OOS structure-to-outcome test exists.",
+  "exactNext": [
+    "BR-059 capture issuer-native product/application revenue percentages only if future audited/IR disclosures provide compatible numerators.",
+    "Keep ABF/AI exposure magnitude UNKNOWN until such denominator exists.",
+    "Use BR-057 as a denominator firewall for all future PCB/ABF issuer comparisons."
+  ],
+  "status": "ISSUER_PRODUCT_SCOPE_PIT_FROZEN / TOTAL_REVENUE_DENOMINATORS_KNOWN / PRODUCT_REVENUE_NUMERATORS_UNKNOWN / NO_SYNTHETIC_EXPOSURE / FORMAL_UNCHANGED"
+}
