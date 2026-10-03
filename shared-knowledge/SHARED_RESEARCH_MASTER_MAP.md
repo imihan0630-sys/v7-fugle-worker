@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 11:28 Asia/Taipei
+Updated: 2026-10-03 11:32 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -783,4 +783,20 @@ Specialist packets:
 H13-H20 remain separate dependency chains by default. Their governance purpose is to ensure one primitive receipt, explicit producer-consumer linkage, residual incremental-value testing and no duplicate Alpha/risk vote.
 
 No curriculum count, maturity or Formal Core change.
+
+## Third-round H01-H20 execution registry — 2026-10-03
+
+Canonical registry:
+`shared-knowledge/CURRICULUM_THIRD_ROUND_EXECUTION_REGISTRY_20261003_V0_1.md`
+
+Machine-readable registry:
+`shared-knowledge/curriculum_third_round_execution_registry_20261003_v0_1.json`
+
+Third-round governance packaging is complete for all H01-H20:
+- H01-H04 strong consolidation;
+- H05-H08 semantic split-or-merge;
+- H09-H12 scope de-duplication;
+- H13-H20 keep-separate dependency chains.
+
+All 20 clusters now have frozen acceptance rules and specialist validation packets. No third-round retirement has been executed.
 
