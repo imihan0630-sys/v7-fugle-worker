@@ -1830,3 +1830,160 @@ Current status:
 `FORMAL_OPTIMIZATION_CANDIDATE = NONE`
 
 Formal Core remains LOCKED.
+
+
+## TI-543 through TI-550 — primary queue outcome-closed preregistration (2026-10-04)
+
+Durable preregistration:
+- `research/D03_PRIMARY_QUEUE_INCREMENTAL_INFERENCE_PREREG_V0_1.md`
+- `research/d03_primary_queue_incremental_inference_prereg_v0_1.json`
+
+### TI-543 — raw source 3/3 is necessary, not sufficient
+
+The source-version observer and the Technical Indicator inference observer are distinct gates.
+
+Raw source gate:
+- requires three independent completed Taiwan sessions;
+- current state remains 2/3;
+- the third session must use the frozen receipt-equivalent raw-byte protocol plus same-date repeat.
+
+Even if 3/3 passes, Technical Indicator outcomes remain closed until:
+- shared immutable parent generation/keyset exists;
+- TECHNICAL_CONTINUITY or explicit BLOCKED/UNKNOWN state exists per parent;
+- symbol-session / price-limit / special-session provenance is complete;
+- observer attempts exactly reconcile to the parent keyset;
+- formula/state construction/replay/prefix semantics pass;
+- common-support prospective coverage is ready.
+
+System2's 2026-10-02 daily diagnostic artifact is not substituted for the missing D03 raw receipt. Its schema/clock differs and its own receipt reports source/history not ready and continuity coverage zero.
+
+### TI-544/TI-545 — TI-005 KD vs RSI semantic question and ladder
+
+The primary question is not which named indicator wins.
+
+It is whether:
+- B2 rolling-range / extreme-location information; and
+- B3 signed-return gain/loss balance
+
+add incremental information beyond direct price/trend/context controls.
+
+Frozen ladder:
+- K0 BASE = ret5/10/20/60 + trend/MA/EMA + persistence + path efficiency where valid + ATR/volatility + Pattern + PV + Regime + liquidity/price tier + overheat + constrained-session state.
+- K1 = K0 + one continuous B2 range-position representation.
+- K2 = K0 + continuous RSI14.
+- K3 = K0 + B2 + RSI14.
+- K4 diagnostic = K3 + preregistered K/D smoothing residual fields.
+
+No zone/crossover/20-80/30-70 threshold vote has primary authority.
+
+Frozen nulls:
+- H005-A: B2 adds no increment beyond K0.
+- H005-B: RSI14 adds no increment beyond K0.
+- H005-C: K3 adds no value beyond the better single-basis model.
+- H005-D: K/D smoothing adds no residual information beyond K3.
+
+### TI-546/TI-547 — TI-006 MACD vs direct trend question and ladder
+
+Exact/non-independent aliases stay excluded:
+- zero-line state separately from EMA12/EMA26 alignment;
+- signal-line crossover separately from Histogram sign;
+- raw unnormalized DIF/Histogram magnitude cross-sectionally.
+
+Frozen ladder:
+- M0 = direct returns + EMA/MA trend/alignment/slope + trend persistence + comparable acceleration + Pattern/PV/Regime/liquidity/overheat controls.
+- M1 = M0 + normalized DIF%.
+- M2 = M0 + DIF slope + normalized Histogram% + Histogram slope.
+- M3 = M0 + all preregistered non-alias MACD residual fields.
+
+Frozen nulls:
+- H006-A: normalized DIF adds no residual value.
+- H006-B: transition/curvature fields add no residual value.
+- H006-C: combined MACD residuals add no value beyond the better single residual family.
+
+If faster response is accompanied by materially worse false-transition / MAE / cost burden, classify SPEED_NOISE_TRADEOFF, not incremental alpha.
+
+### TI-548 — outcome family is frozen before outcomes
+
+Primary horizon = D5.
+
+Registered co-primary family:
+- D5 returnPct;
+- D5 MFE;
+- D5 MAE.
+
+All three remain in the same multiplicity ledger. No favorable endpoint selection.
+
+Registered secondary:
+- D10 return/MFE/MAE;
+- D20 return/MFE/MAE.
+
+Secondary horizons cannot rescue a failed D5 primary conclusion.
+
+Execution/fill claims need their own provenance and are not inferred from daily OHLC.
+
+### TI-549 — dependence/inference handoff to D16
+
+D03 freezes feature/estimand identities; D16 owns the final statistical method.
+
+Before outcome access, a D16 method receipt must freeze one procedure with:
+- exact common support;
+- equal-scanDate weighting where date-level aggregation is used;
+- scanDate dependence-aware inference;
+- repeated-symbol/episode dependence diagnostics;
+- purged chronological train/holdout;
+- untouched holdout;
+- leave-one-date sensitivity;
+- Regime/industry/price-tier/liquidity concentration diagnostics;
+- non-overlapping outcome-window sensitivity where feasible;
+- no row-count pseudo-replication.
+
+With few date clusters, naive asymptotic t-statistics alone are not sufficient.
+
+### TI-550 — rejection / promotion firewall
+
+Reject a representation as additive alpha if:
+1. no incremental effect on preregistered common support;
+2. effect disappears after direct-price/trend controls;
+3. effect is carried only by deterministic child/alias fields;
+4. effect exists only in selected-only coverage;
+5. effect is unstable under leave-one-date/holdout/Regime sensitivity;
+6. result is concentrated in one narrow date/industry/price/liquidity cell;
+7. coverage/UNKNOWN/zero-pick/opportunity loss drives the appearance;
+8. response-speed benefit is offset by false transitions/MAE/costs;
+9. outcome-driven threshold/parameter tuning is required;
+10. version/source/state-lineage incompatibility remains unresolved.
+
+Surviving this stage means at most `PREDICTIVE_INCREMENTALITY_CANDIDATE`.
+It does not automatically create a Formal Optimization Candidate.
+
+### Frozen execution floors
+
+Before incremental inference:
+- D5 mature rows >= 60;
+- prospective complete snapshots >= 30;
+- independent Formal scan dates >= 15;
+- >=2 market Regimes;
+- purged train dates >= 10;
+- untouched holdout dates >= 5;
+- coverage/zero-pick/redundancy/cost/overfit gates pass.
+
+### Current status
+
+`TI_005_PREREGISTERED = TRUE / OUTCOME_CLOSED`  
+`TI_006_PREREGISTERED = TRUE / OUTCOME_CLOSED`  
+`RAW_SOURCE_VERSION_GATE = 2_OF_3`  
+`TECHNICAL_OBSERVER_R1 = BLOCKED_SHARED_PARENT_CONTINUITY_RUNTIME`  
+`D03_MATURITY = 56.7_PERCENT`  
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Formal Core remains LOCKED.
+
+### Exact next continuation point
+
+1. On the next genuine Taiwan completed session, capture the third D03 raw source-version receipt and same-date repeat using receipt-equivalent transport.
+2. If 3/3 passes, do not open outcomes automatically.
+3. Re-audit immutable parent keyset/generation, TECHNICAL_CONTINUITY, symbol-session/limit provenance, stateConstructionMode, exact attempt accounting and replay/prefix parity.
+4. The true Technical Indicator prospective observer clock starts only when T1-T3 are physically live.
+5. Accumulate common-support prospective coverage to the frozen T4/T6 floors.
+6. Obtain D16 method receipt before T5 outcome access.
+7. Execute TI-005 first and TI-006 second; do not reorder based on descriptive results.
