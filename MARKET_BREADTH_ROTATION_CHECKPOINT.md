@@ -805,3 +805,15 @@ Formal Core unchanged.
 - Exact next: BR-051 Taiwan industry-structure receipt; BR-052 Taiwan share/barrier/substitution receipt. Existing earlier BR continuations remain open.
 
 Formal Core unchanged.
+
+
+## H01 specialist result + BR-051
+
+- H01 specialist packet completed: proposed terminal classification `SCOPE_DEDUP_ONLY`; no merge/retirement executed.
+- D09-13 industry structure and D09-14 firm competitive action can legitimately diverge, but static share/capacity/price/margin evidence is one parent lineage and must not double count.
+- BR-051 freezes first Taiwan foundry industry-structure PIT receipt with TSIA/ITRI 2025 foundry output plus TSMC/UMC issuer-native capability evidence.
+- Denominator firewall rejects direct consolidated-revenue / industry-production-value 'market share' until measurement compatibility is proven.
+- D09-13 advances L2 -> L3 data feasibility only; D09-14 remains L2 and is routed to a firm-action receipt.
+- Formal Core unchanged.
+
+Exact next: BR-052 firm-specific competitive-action/position receipt; H01 owner/dependency review remains pending.
