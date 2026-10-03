@@ -4998,3 +4998,49 @@ Do not count all four from one episode.
 
 Status:
 `OBV_DUPLICATE_PRUNED / DIVERGENCE_TYPED / D02_09_PIT_VOLUME_LINEAGE_BLOCKED / OUTCOMES_UNUSED / FORMAL_UNCHANGED`.
+
+# Pre-PVE-240 addendum — Daily volume continuity semantics (2026-10-03)
+
+This addendum consumes no PVE number. Evidence cursor remains PVE-239.
+
+## Direct code evidence
+
+Current daily builder:
+- filters `volumeShares` through a strictly-positive helper;
+- selects the last 20 surviving prior rows;
+- does not bind those rows to the verified expected symbol-session set;
+- does not receive a corporate-action/unit-continuity receipt.
+
+Therefore a count of 20 can be numerically complete while semantically incomplete.
+
+New falsification:
+a valid zero-volume session, a verified suspension/non-session, and a missing expected source row are not the same state and must not collapse into one absence category.
+
+## Fresh external source-contract evidence
+
+Fugle Historical Candles documentation, revalidated 2026-10-03, states:
+- regular-stock intraday candle volume is in lots;
+- regular-stock daily/weekly/monthly historical candle volume is in shares.
+
+This supports the daily `volumeShares` unit mapping but falsifies any unguarded absolute daily-vs-intraday volume equivalence.
+
+Daily aggregate odd-lot inclusion is not explicitly established by the cited unit statement; exact daily/intraday odd-lot reconciliation remains UNKNOWN.
+
+## Cross-lane corporate-action evidence
+
+Existing Corporate Actions research proves:
+- pure SUPPLY_CHANGE does not invalidate factual RAW_SHARE_VOLUME;
+- UNIT_SCALE requires a share-unit continuity rule;
+- these transformations must not be pooled.
+
+D02 consequence:
+- UNIT_SCALE => bridge-verified or reset-clean; otherwise magnitude path BLOCKED.
+- SUPPLY_CHANGE => raw activity can remain factual, but participation-intensity comparability requires denominator normalization or a fully post-break baseline.
+
+## Evidence classification
+
+`DAILY_VOLUME_CONTINUITY_CONTRACT_FROZEN / CURRENT_DAILY_BUILDER_NOT_COMPLIANCE_PROVEN / OUTCOMES_UNUSED / FORMAL_UNCHANGED`.
+
+D02-09 remains L2/40.
+No clean prospective date is created.
+No historical sample is promoted into H001/H002/H20 clean denominators.
