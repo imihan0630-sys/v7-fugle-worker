@@ -1324,3 +1324,18 @@ Exact 00 cursor: `shared-knowledge/AOKD_00_CONTINUATION_CHECKPOINT_20261004_V0_2
 After A06, three meaningful follow-up rounds found no additional retained families; bounded sweep temporarily saturated, not universal literature completeness. Counterevidence, full owner scopes, data/clock/missingness/licensing limits and incremental-test gates are recorded. Mostly abstract/documentation-level evidence; no Taiwan alpha/OOS claim. Next: source receipts and existing-owner scope triage, not Coverage promotion.
 
 Baseline read: 22 domains / 354 modules / 41.5% maturity at ca844efda3809050238986acb1a160e2d439a428. Maturity movement belongs to parallel rooms; this docs-only checkpoint does not change tracker, owner, modules, domains, Formal behavior or runtime. Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE NONE. Research 07:20:54–07:40:28 Taipei; Git commit timestamps record checkpoint persistence.
+
+## 2026-10-04 continuation — D11-19 merger-arbitrage / deal-break L3
+
+Added: `research/d11_19_merger_arbitrage_pit_receipt_v0_1.json`.
+
+Reusable rules:
+- transaction-state ownership stays in D11-06; D11-19 must not create a duplicate event vote;
+- deal consideration is versioned: original exchange ratio/consideration and later revised terms are different known-at states;
+- deal cancellation, transaction-structure change, extension and close append new lifecycle states;
+- deal spread is not expected return without success probability, time, funding, taxes/fees/slippage, hedge/borrow and break-loss assumptions;
+- demerger/spin-off parent, child and stub claims remain separate; unsourced child tradability/entitlement stays UNKNOWN.
+
+D11-19 = L3 Taiwan PIT/source feasibility.
+Room08 after this update: D11=54.7%, D17=41.4%, module-weighted=49.1%.
+Formal Core unchanged.
