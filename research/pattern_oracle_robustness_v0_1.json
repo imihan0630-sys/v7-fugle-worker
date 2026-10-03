@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "pattern-oracle-robustness-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "oracles": [
+    {
+      "id": "DC_LAGGED_ATR_V1",
+      "role": "PRIMARY",
+      "promotionGradeRole": true
+    },
+    {
+      "id": "PIP_RULE_V0_1",
+      "role": "SECONDARY_ROBUSTNESS",
+      "promotionGradeRole": "CONDITIONAL_ON_PIT_IMPLEMENTATION"
+    },
+    {
+      "id": "ONE_SIDED_KERNEL_V0_1",
+      "role": "SECONDARY_ROBUSTNESS",
+      "promotionGradeRole": "CONDITIONAL_ON_PIT_IMPLEMENTATION"
+    },
+    {
+      "id": "DTW_EXPLORATORY",
+      "role": "TERTIARY_EXPLORATORY",
+      "promotionGradeRole": false
+    }
+  ],
+  "comparisonFields": [
+    "boundaryOverlapJaccard",
+    "centerDistanceAbs",
+    "centerDistancePct",
+    "centerDistanceATR",
+    "anchorTimeJaccard"
+  ],
+  "mappingStates": [
+    "NO_ALTERNATIVE_OBJECT",
+    "UNIQUE_COMPARABLE_OBJECT",
+    "MULTI_OBJECT_AMBIGUOUS",
+    "DATA_BLOCKED",
+    "UNKNOWN"
+  ],
+  "rules": [
+    "SAME_CUTOFF_PREFIX_REQUIRED",
+    "SAME_SEMANTIC_SPACE_REQUIRED",
+    "NO_ORACLE_CONFLUENCE_VOTING",
+    "NO_POST_OUTCOME_ORACLE_SELECTION",
+    "ORACLE_VARIANTS_SHARE_MULTIPLE_TESTING_FAMILY",
+    "MISSING_ALTERNATIVE_IS_UNKNOWN_NOT_DISAGREEMENT"
+  ],
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
