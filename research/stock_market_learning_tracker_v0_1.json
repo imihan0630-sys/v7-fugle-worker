@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T07:22:00+08:00",
+  "updatedAt": "2026-10-04T07:12:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 39.6
+    "maturityWeightedPct": 40.7
   },
   "domains": [
     {
@@ -2547,7 +2547,7 @@
         "research/d16_25_probabilistic_decision_contract_v0_1.json",
         "research/D16_25_D15_19_MERGE_DECISION_INPUT_V0_1.md"
       ],
-      "maturityPct": 52,
+      "maturityPct": 60,
       "modules": [
         {
           "id": "D16-01",
@@ -2728,52 +2728,57 @@
         {
           "id": "D16-20",
           "name": "Causal Inference因果推論",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Causal Inference因果推論」。學習範圍：統計／模型工具只負責驗證與估計，不因模型複雜而自動產生 Alpha；必須控制 look-ahead、leakage、multiple testing、非平穩、日期群聚、校準、可解釋性、PIT／replay、成本、資料漂移與簡單 baseline，並驗證對 System 1／System 2 是否有真正增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D16-20 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / CAUSAL_IDENTIFICATION_AND_PIT_DESIGN_CONTRACT_FROZEN / TAIWAN_CAUSAL_REPLAY_PENDING",
+          "next": "維持 L2/40%。下一步只在真實 Taiwan PIT treatment/event clock、cohort、pre-treatment covariates、overlap 與 deterministic replay 成立後評估 L3；因果方法複雜度不得當 Alpha。",
+          "evidence": "research/D16_20_24_ADVANCED_VALIDATION_CLUSTER_20261004_V0_1.md"
         },
         {
           "id": "D16-21",
           "name": "Alternative Data Provenance／Selection Bias替代資料來源與選樣偏誤",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Alternative Data Provenance／Selection Bias替代資料來源與選樣偏誤」。研究替代資料與文字模型的資料來源、時間戳、選樣／洩漏、模型漂移與可重播驗證；大型語言模型或機器學習模型只屬驗證／特徵工具，不因複雜度自動構成 Alpha（超額報酬）。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D16-21 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / ALT_DATA_SELECTION_BIAS_AND_REPRESENTATIVENESS_CONTRACT_FROZEN / D16_11_SCOPE_DEDUP_ONLY / TAIWAN_ALT_DATA_PANEL_PENDING",
+          "next": "維持 L2/40%。D16-11 持有 generic provenance；D16-21 僅持有 alternative-data selection/coverage/leakage/representativeness。下一步需真實 Taiwan alt-data panel、entity-link、entry/exit 與 vendor-version replay 才可評估 L3。",
+          "evidence": "research/D16_20_24_ADVANCED_VALIDATION_CLUSTER_20261004_V0_1.md"
         },
         {
           "id": "D16-22",
           "name": "NLP／LLM Financial-text Feature Validation自然語言與大型語言模型財經文本特徵驗證",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「NLP／LLM Financial-text Feature Validation自然語言與大型語言模型財經文本特徵驗證」。研究替代資料與文字模型的資料來源、時間戳、選樣／洩漏、模型漂移與可重播驗證；大型語言模型或機器學習模型只屬驗證／特徵工具，不因複雜度自動構成 Alpha（超額報酬）。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D16-22 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / NLP_LLM_PIT_CONTAMINATION_AND_REPLAY_CONTRACT_FROZEN / POINT_IN_TIME_TEXT_PIPELINE_PENDING",
+          "next": "維持 L2/40%。下一步需 PIT text corpus＋immutable document clocks＋fixed model/prompt/version＋contamination/redaction baseline tests；一般現代 LLM 歷史回測不得直接升 L3。",
+          "evidence": "research/D16_20_24_ADVANCED_VALIDATION_CLUSTER_20261004_V0_1.md"
         },
         {
           "id": "D16-23",
           "name": "Stress Test／Scenario／Reverse Stress Test壓力測試、情境與反向壓力測試",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Stress Test／Scenario／Reverse Stress Test壓力測試、情境與反向壓力測試」。研究壓力測試、反向壓力測試與蒙地卡羅方法的可重播驗證；需控制分布假設、相關性崩解、厚尾、參數漂移、情境選擇偏誤及模型風險，與歷史實證及簡單基準比較。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D16-23 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / STRESS_REVERSE_STRESS_VALIDATION_CONTRACT_FROZEN / D07_23_KEEP_SEPARATE / TAIWAN_STRESS_HARNESS_PENDING",
+          "next": "維持 L2/40%。D07-23 持有 fundamental scenario objects；D16-23 持有 stress/reverse-stress validation methodology。下一步需 research-only Taiwan stress harness 與 replay 才可評估 L3。",
+          "evidence": "research/D16_20_24_ADVANCED_VALIDATION_CLUSTER_20261004_V0_1.md"
         },
         {
           "id": "D16-24",
           "name": "Monte Carlo Simulation／Distributional Validation蒙地卡羅模擬與分布驗證",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Monte Carlo Simulation／Distributional Validation蒙地卡羅模擬與分布驗證」。研究壓力測試、反向壓力測試與蒙地卡羅方法的可重播驗證；需控制分布假設、相關性崩解、厚尾、參數漂移、情境選擇偏誤及模型風險，與歷史實證及簡單基準比較。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D16-24 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / MONTE_CARLO_DISTRIBUTIONAL_VALIDATION_CONTRACT_FROZEN / TAIWAN_PIT_SIMULATION_REPLAY_PENDING",
+          "next": "維持 L2/40%。下一步需 Taiwan PIT input distribution＋dependency-preserving simulation＋seed/version replay＋later-outcome distributional validation；模擬路徑數不得冒充實證樣本。",
+          "evidence": "research/D16_20_24_ADVANCED_VALIDATION_CLUSTER_20261004_V0_1.md"
         },
         {
           "id": "D16-25",

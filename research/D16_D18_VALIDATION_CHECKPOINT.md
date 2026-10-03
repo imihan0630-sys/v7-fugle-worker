@@ -1412,3 +1412,25 @@ FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 Formal Core: LOCKED.
 
 Exact next: D16-20 Causal Inference (L0), then D16-21 Alternative Data Provenance / Selection Bias (L0). Keep D16-16/17/18/19 at L2 until executable Taiwan PIT replay evidence exists.
+
+
+## 2026-10-04 D16 advanced-validation cluster closure — D16-20~24
+
+Canonical evidence: `research/D16_20_24_ADVANCED_VALIDATION_CLUSTER_20261004_V0_1.md`.
+
+Research-only L2 closures:
+- D16-20 Causal Inference -> L2/40: estimand/identification/PIT/falsification contract frozen; causal ML does not create identification.
+- D16-21 Alternative Data Provenance / Selection Bias -> L2/40: alternative-data-specific sampling/coverage/entry-exit/entity-map/MNAR/vendor-drift contract frozen; D16-11 generic provenance remains canonical. Terminal overlap result: `SCOPE_DEDUP_ONLY / KEEP_BOTH_WITH_NARROWED_D16_21_SCOPE`.
+- D16-22 NLP / LLM Financial-text Feature Validation -> L2/40: source-clock/model-vintage/prompt/retrieval/contamination/redaction/simple-baseline contract frozen; unrestricted pretrained LLM historical outputs are not automatically PIT-safe.
+- D16-23 Stress / Scenario / Reverse Stress -> L2/40: scenario-vs-probability, reverse-stress, coherent dependency and execution-stress contract frozen. Terminal overlap result vs D07-23: `KEEP_SEPARATE / OBJECT_MODEL_VS_VALIDATION_METHOD`.
+- D16-24 Monte Carlo / Distributional Validation -> L2/40: simulation-is-not-evidence firewall, dependence-preserving simulation, seed replay and density-forecast validation contract frozen.
+
+No L3 is claimed for these modules. They require executable Taiwan PIT builders/replays.
+
+D16 domain maturity after this justified batch: **60%**.
+354-module global tracker maturity after recomputation: **40.7%**.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core: LOCKED.
+
+Exact next: D16 has no remaining L0 modules. Do not invent D16 L3 evidence. Move to genuine executable Taiwan PIT evidence where available, otherwise continue room-owned D18-15 (L0) / evidence-dependent D18 work.
