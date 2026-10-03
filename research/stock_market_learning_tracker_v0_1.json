@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T07:22:00+08:00",
+  "updatedAt": "2026-10-04T07:11:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -147,7 +147,7 @@
         "PRICE_VOLUME_EVIDENCE.md",
         "PRICE_VOLUME_HYPOTHESIS_LEDGER.md"
       ],
-      "maturityPct": 48.3,
+      "maturityPct": 51.7,
       "modules": [
         {
           "id": "D02-01",
@@ -228,10 +228,12 @@
         {
           "id": "D02-10",
           "name": "成交量狀態×趨勢互動",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「成交量狀態×趨勢互動」。學習範圍：成交量單位與基準化；量價因果與競爭解釋；趨勢／盤整／突破情境；流動性與同時段效應；異常量與反向案例；對進場、突破品質與風險監控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "PIT_READINESS_PASS / PRE_SESSION_TREND_PARENT / INTERACTION_TRANSFORM_ONLY / ALPHA_UNKNOWN",
+          "next": "以 D03 pre-session trend parent + D02 completed-slot participation 做共同樣本 residual interaction 驗證；不得把 trend、volume、interaction 重複計票。L4 等 clean prospective/OOS outcome。"
         },
         {
           "id": "D02-11",
@@ -244,16 +246,18 @@
         {
           "id": "D02-12",
           "name": "盤中量能曲線／Volume Profile",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「盤中量能曲線／Volume Profile」。學習範圍：成交量單位與基準化；量價因果與競爭解釋；趨勢／盤整／突破情境；流動性與同時段效應；異常量與反向案例；對進場、突破品質與風險監控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "PIT_READINESS_PASS / TIME_CURVE_AND_PRICE_PROFILE_TYPED / BOUNDED_MONITOR / ALPHA_UNKNOWN",
+          "next": "時間軸量能曲線先用 09:00~13:00 bounded observable window；分價量 Profile 僅 prospective capture，不回填歷史。L4 等 full-session/closing coverage 與 OOS/prospective outcome。"
         }
       ],
-      "exactNextContinuationPoint": "Formal next evidence remains PVE-240 on the first genuine completed market session after the approved cross-midnight recovery repair; execute Gate 0→6 before outcomes and keep Gate 7 CLOSED. If continuing before that market session, next Pre-PVE-240 work is schema/readiness mapping: identify which continuity fields can be inherited from existing Corporate Actions / Pattern receipts and which require D02-specific persisted fields. No production wiring or historical-to-prospective relabeling.",
-      "status": "STAGE_VIII_COMPLETE / PVE_239 / PRE_PVE_240_DAILY_VOLUME_CONTINUITY_REPLAY_PASS / CLEAN_DATE_ZERO",
-      "lastResearchUpdate": "2026-10-03",
-      "researchNote": "Pre-PVE-240 outcome-blind continuation froze the D02 Daily Volume Continuity Contract without consuming a PVE number. Fresh source/code audit confirms historical regular-stock D/W/M volume is SHARES while regular-stock intraday candle volume is LOTS; daily-vs-intraday absolute magnitude is not interchangeable. Current pvBuildDailyFeature filters strictly positive volume and takes the last 20 surviving rows without symbol-session or corporate-action continuity, so factual zero-volume, verified non-session/suspension and missing expected source rows can collapse into row absence and older rows can silently enter the denominator. D02 now separates UNIT_SCALE from SUPPLY_CHANGE: UNIT_SCALE is a hard magnitude-continuity break requiring a PIT bridge or conservative reset-clean lane with >=20 post-reset comparable sessions; SUPPLY_CHANGE preserves factual RAW_SHARE_VOLUME but clean COMPARABLE_PARTICIPATION requires a PIT denominator or a fully post-break 20-session baseline. Expected sessions reuse OFFICIAL_EXCHANGE_SESSIONS - VERIFIED_SYMBOL_SUSPENSION_SESSIONS. D02-07 and D02-09 remain L2/40, D02 remains 48.3%, outcomes unused, Formal Core locked. Outcome-blind replay then validated the contract against frozen 8454/2465 SUPPLY_CHANGE, 3593/8422 UNIT_SCALE, and 5314 suspension/zero-lot witnesses. 8422 is the key negative control: a 10x unit-scale distortion does not flip the frozen Boolean, proving data-validity gates cannot depend on downstream threshold results. A synthetic code-semantic replay also proves positive-only filtering can keep dailyHistoryCount=20 while substituting an older row for a factual zero-volume expected session, changing denominator identity. Contract replay passes; runtime compliance remains unproven."
+      "exactNextContinuationPoint": "Formal evidence remains PVE-240 on the first genuine completed post-repair market session; Gate 0→6 before outcomes and Gate 7 CLOSED. D02-10 next empirical stage is trend + participation + explicit interaction on identical common support. D02-12 next stage is bounded time-curve coverage validation plus prospective price-profile capture/coverage, without historical Shadow fabrication. D02-07/08/09 remain L2 pending their separate blockers.",
+      "status": "STAGE_VIII_COMPLETE / PVE_239 / D02_10_D02_12_L3_PIT_READINESS_PASS / PRE_PVE_240 / CLEAN_DATE_ZERO",
+      "lastResearchUpdate": "2026-10-04",
+      "researchNote": "Outcome-blind PIT-readiness closure promotes D02-10 and D02-12 from L2/40 to L3/60. D02-10 freezes a non-circular join: D03-owned pre-session trend context from the last completed eligible symbol session plus D02 participation from the current completed 15m bar; firstKnownAt is the max of parent-known and volume-bar/source clocks, with no independent third event vote. D02-12 explicitly separates TIME_OF_DAY_VOLUME_CURVE from PRICE_BY_VOLUME_PROFILE. Historical/live 15m Taiwan candles make the time curve PIT-replayable, but current monitor coverage is bounded through 13:00 and does not claim the 13:15/closing-auction window. Current-day price-by-volume data are prospectively observable; historical profile replay is not claimed, and provider bid/ask classification excludes opening first-trade volume by design. These are L3 data-feasibility promotions only; alpha remains UNKNOWN, Gate 7 CLOSED, Formal Core locked."
     },
     {
       "id": "D03",
