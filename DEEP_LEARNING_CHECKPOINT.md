@@ -1137,3 +1137,18 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Raw-byte prospective source/version gate remains 2/3; Saturday 2026-10-03 does not add a Taiwan completed trading session.
 - `FORMAL_OPTIMIZATION_CANDIDATE = NONE`; Formal Core LOCKED.
 - Exact next: freeze component-level research-only persistence snapshot semantics, then continue D03-12 repaint-safe divergence PIT feasibility. TI-005/TI-006 efficacy stays blocked until the raw-receipt gate genuinely closes.
+
+
+## 2026-10-03 D03 — TI-482~490 repaint-safe divergence PIT feasibility
+
+- D03-12 primary divergence contract now separates pivotAt from confirmedAt/firstObservableAt.
+- Synthetic timeline: L2 pivot D20 but confirmation D23; D22 has no legal divergence, D23 is first observable. A +4.2105% pivot-to-confirmation move in the witness is confirmation-lag cost, not post-signal alpha.
+- Primary pairing is two most recent consecutive confirmed same-type/same-scale price pivots; no skipped-pivot, strongest-pair or outcome-selected matching.
+- Historical episode identity is immutable. Later pivots generate new pairs but cannot rewrite old first-observed divergence state.
+- Indicator value at pivotAt requires frozen formulaVersion/stateLineageId and continuity/source provenance. Later corrections create later observations, not backfilled prior truth.
+- Divergence is Pattern × Indicator interaction evidence and cannot double-count Pattern geometry or RSI/KD/MACD aliases.
+- Machine-readable contract: research/d03_repaint_safe_divergence_contract_v0_1.json.
+- Maturity: D03-12 L2/40 -> L3/60; active 12-module D03 50.0% -> 51.7%.
+- Raw-byte prospective source gate remains 2/3 over the weekend; outcomes stay NO_GO.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE; Formal Core LOCKED.
+- Exact next: D03-13 multi-timeframe PIT feasibility, with weekly/daily/15m aggregation-boundary and partial-bar clocks; TI-005/TI-006 efficacy still waits for raw source gate completion.
