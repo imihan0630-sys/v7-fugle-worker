@@ -115,6 +115,11 @@ eq(c5.short.formalRejectedN,3);
 eq(c5.short.optionalOnlyFailN,1);
 eq(c5.short.setupNotReadyN,1);
 eq(c5.short.hardUnknownN,1);
+eq(c5.short.confidenceOnlyRejectedN,0);
+eq(c5.short.contextOnlyRejectedN,1);
+eq(c5.short.p1aRejectedN,0);
+eq(c5.short.p1aRankableN,0);
+eq(c5.short.roleResolverVersion,"OBSERVATION_AWARE_A2_V0_1");
 eq(c5.short.topFailedGates[0].count,1);
 eq(c5.firstFailureIsNotCausalAttribution,true);
 
