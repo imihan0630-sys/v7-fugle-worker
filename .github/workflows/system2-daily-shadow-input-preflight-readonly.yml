@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "system2/runtime/daily_shadow_a1_source_v0_1.mjs"
+      - "system2/runtime/daily_shadow_a1_source_v0_2.mjs"
       - "system2/runtime/daily_shadow_history_reader_v0_1.mjs"
       - "system2/runtime/daily_shadow_assessor_readiness_v0_1.mjs"
       - "system2/runtime/daily_shadow_input_preflight_v0_1.mjs"
@@ -32,7 +32,7 @@ jobs:
         run: |
           set -euo pipefail
           files=(
-            system2/runtime/daily_shadow_a1_source_v0_1.mjs
+            system2/runtime/daily_shadow_a1_source_v0_2.mjs
             system2/runtime/daily_shadow_history_reader_v0_1.mjs
             system2/runtime/daily_shadow_assessor_readiness_v0_1.mjs
             system2/runtime/daily_shadow_input_preflight_v0_1.mjs

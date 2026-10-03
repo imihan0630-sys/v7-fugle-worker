@@ -6,7 +6,7 @@ const workflow = await readFile(
   "utf8",
 );
 const source = await readFile(
-  new URL("../runtime/daily_shadow_a1_source_v0_1.mjs", import.meta.url),
+  new URL("../runtime/daily_shadow_a1_source_v0_2.mjs", import.meta.url),
   "utf8",
 );
 const history = await readFile(
@@ -31,6 +31,9 @@ assert.match(workflow, /System1 production files unchanged PASS/);
 assert.doesNotMatch(workflow, /wrangler\s+deploy|secret\s+put/);
 
 assert.match(source, /DIAGNOSTIC_OBSERVATION_TIME_NOT_CAPTURE_CLOCK/);
+assert.match(source, /DATE_SCOPED_AFTER_TRADING_SOURCE_DATE_VERIFIED/);
+assert.match(source, /fetchOfficialHistoricalA1DateV0_1/);
+assert.match(source, /sourceDateVerified/);
 assert.match(source, /buildA1SymbolSnapshotBatch/);
 assert.match(history, /pit_replay_eligible = 1/);
 assert.match(history, /available_at <= \?/);

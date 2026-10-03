@@ -1,7 +1,7 @@
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRemoteD1RestAdapter } from "../deploy/remote_d1_rest_adapter.mjs";
-import { fetchDailyShadowA1SnapshotV0_1 } from "../runtime/daily_shadow_a1_source_v0_1.mjs";
+import { fetchDailyShadowA1SnapshotV0_2 } from "../runtime/daily_shadow_a1_source_v0_2.mjs";
 import { probePitHistoryCoverageV0_1 } from "../runtime/daily_shadow_history_reader_v0_1.mjs";
 import { buildDailyShadowInputPreflightV0_1 } from "../runtime/daily_shadow_input_preflight_v0_1.mjs";
 
@@ -41,7 +41,7 @@ export async function runDailyShadowInputPreflightReadonly({
     fetchImpl,
   });
 
-  const a1 = await fetchDailyShadowA1SnapshotV0_1({
+  const a1 = await fetchDailyShadowA1SnapshotV0_2({
     marketDate,
     decisionTimestamp,
     fetchImpl,
