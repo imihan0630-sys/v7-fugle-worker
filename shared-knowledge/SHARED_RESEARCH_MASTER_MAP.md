@@ -1168,3 +1168,16 @@ Current state:
 - Accepted specialist returns: 0 / 12.
 - Canonical curriculum remains 22 domains / 354 active modules.
 - Formal Core remains LOCKED.
+
+
+## Curriculum Coverage pre-intake second harvest — 2026-10-03
+
+Additional partial evidence:
+- COV-01 / D01 → PARTIAL_EVIDENCE_RECEIVED.
+- COV-09 / D19 → PARTIAL_EVIDENCE_RECEIVED.
+- COV-10 / D20 → PARTIAL_EVIDENCE_RECEIVED.
+
+Combined partial evidence: 6 / 12 candidates.
+Accepted specialist returns: 0 / 12.
+Canonical curriculum remains 22 domains / 354 active modules.
+Formal Core remains LOCKED.
