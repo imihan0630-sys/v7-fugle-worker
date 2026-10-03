@@ -758,3 +758,42 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 4. Hand D16 the event/source-group identity rules before any structural-event outcome study.
 5. Keep prospective clock capture/runtime wiring blocked until shared immutable parent, continuity/session and storage prerequisites clear.
 6. No N-bar acceptance threshold / no outcome join / no R09 / no Formal change.
+
+## Continuation update — DL-018A through DL-018E (2026-10-03)
+
+- DL-017 first-transition clocks now have one canonical consumer/adapter design rather than a second RG2 breakout engine.
+- New research-only artifacts:
+  - research/PATTERN_RG2_LIFECYCLE_CLOCK_BUNDLE_V0_1.md
+  - research/pattern_rg2_lifecycle_clock_bundle_v0_1.json
+  - research/pattern_rg2_lifecycle_clock_bundle_v0_1.mjs
+  - research/test_pattern_rg2_lifecycle_clock_bundle_v0_1.mjs
+  - research/pattern_shared_child_contract_v0_6.json
+- The adapter reuses research/pattern_breakout_lifecycle_v0_1.mjs for parent break/reentry/failure/reclaim chronology.
+- RG2 owns only relation-specific firstParentZoneEntryAt and first post-break outside-close mapping.
+- Exact "first" certification requires exact eligible-session DATE SET completeness, not only matching counts.
+- New consumer requirement:
+  expectedEligibleSessionDateSetHash == continuityBarDateSetHash,
+  no duplicate dates,
+  unresolvedMissingSessions == 0.
+- Existing shared continuity handoff already requires exact eligible date-set equality semantically, but its machine-readable v0.1 does not expose the two explicit date-set commitment fields.
+- Therefore upstream status is:
+  SEMANTICS_COMPATIBLE / PROMOTION_GRADE_DATE_SET_RECEIPT_EXTENSION_REQUIRED.
+- D01 does not modify or fork the Corporate Actions/session owner.
+- Close-based firstParentZoneEntryAt is not invented from intrabar crossing. A direct gap/jump from below to above the full parent zone can legitimately have no close-entry event before parent break.
+- parentFirstPostBreakOutsideCloseAt is first later unconstrained outside close before any reentry/failure; it is persistence, not acceptance and not an N-bar threshold.
+- Prefix invariance remains mandatory.
+- Isolated helper computes SHA-256 date-set hashes only for synthetic research QA; production upstream hash domain/version is NOT frozen by D01.
+- 15 clock-bundle adversarial cases are authored but remain TEST_EXECUTION_PENDING without a reproducible Node receipt.
+- Clock bundle status:
+  RESEARCH_EXECUTABLE_DESIGN / UPSTREAM_RECEIPT_EXTENSION_REQUIRED / RUNTIME_NO_GO.
+- No outcomes, no R09, no Formal change.
+- D01 remains 51.7%; Pattern alpha UNKNOWN; FORMAL_OPTIMIZATION_CANDIDATE=NONE; Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-018
+
+1. Hand expected/continuity date-set commitment requirement to the canonical continuity/session owner; D01 must not implement that upstream runtime.
+2. Hand the clock-bundle identity and transition source-group rules to D16 for future event-study validation.
+3. Preserve all clock-bundle research tests as TEST_EXECUTION_PENDING unless independently executed.
+4. Keep Pattern prospective clock/runtime persistence blocked until immutable parent + Pattern ROOT + continuity/session exact-set receipts exist.
+5. Next D01 science: study whether transition-state representation itself is redundant with continuous distance/path descriptors before adding any categorical lifecycle challenger.
+6. No outcome join / no N-bar acceptance / no R09 / no Formal change.

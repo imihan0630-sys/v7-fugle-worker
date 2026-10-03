@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "pattern-rg2-lifecycle-clock-bundle-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeClosed": true,
+  "formalCore": "LOCKED",
+  "canonicalLifecycleEngine": "research/pattern_breakout_lifecycle_v0_1.mjs",
+  "ownerBoundaries": {
+    "sharedLifecycle": [
+      "parentFirstBreakAt",
+      "parentFirstOrdinaryObservableAt",
+      "parentFirstReentryAt",
+      "parentFirstFailureAt",
+      "parentFirstReclaimAt"
+    ],
+    "rg2Adapter": [
+      "firstParentZoneEntryAt",
+      "parentFirstPostBreakOutsideCloseAt"
+    ],
+    "continuitySessionOwner": [
+      "expectedEligibleSessionSet",
+      "verifiedSuspensions",
+      "TECHNICAL_CONTINUITY",
+      "sessionCalendarVersion"
+    ]
+  },
+  "requiredWindowReceipt": [
+    "continuityReceiptId",
+    "symbolSessionContractVersion",
+    "sessionCalendarVersion",
+    "continuityEngineVersion",
+    "expectedEligibleSessionDateSetHash",
+    "continuityBarDateSetHash",
+    "unresolvedMissingSessions",
+    "sourceBarsThrough"
+  ],
+  "setIntegrityRules": [
+    "COUNT_EQUALITY_INSUFFICIENT",
+    "EXPECTED_ELIGIBLE_DATE_SET_HASH_MUST_EQUAL_CONTINUITY_BAR_DATE_SET_HASH",
+    "NO_DUPLICATE_ELIGIBLE_DATES",
+    "UNRESOLVED_MISSING_SESSIONS_ZERO"
+  ],
+  "requiredClockOutput": [
+    "localFirstBreakAt",
+    "firstParentZoneEntryAt",
+    "parentFirstBreakAt",
+    "parentFirstOrdinaryObservableAt",
+    "parentFirstPostBreakOutsideCloseAt",
+    "parentFirstReentryAt",
+    "parentFirstFailureAt",
+    "parentFirstReclaimAt"
+  ],
+  "currentUpstreamStatus": "SEMANTICS_COMPATIBLE_DATE_SET_HASH_EXTENSION_REQUIRED",
+  "runtimeStatus": "NO_GO",
+  "formalOptimizationCandidate": "NONE"
+}
