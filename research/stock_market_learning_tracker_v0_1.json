@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T03:22:00+08:00",
+  "updatedAt": "2026-10-04T07:14:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 38.3
+    "maturityWeightedPct": 38.4
   },
   "domains": [
     {
@@ -3396,7 +3396,7 @@
         "CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md",
         "CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md"
       ],
-      "maturityPct": 12.7,
+      "maturityPct": 16.4,
       "modules": [
         {
           "id": "D21-01",
@@ -3425,18 +3425,18 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Insider Ownership／Trading內部人持股與交易」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_FALSIFICATION_FROZEN / HISTORICAL_MOPS_REPLAY_PENDING / RESEARCH_ONLY",
-          "next": "建立至少一筆事前持股轉讓申報與一筆月度持股變動的歷史 MOPS PIT replay；分離意圖申報與實際持股變化時間軸，保留轉讓方式／目的、關係人彙總、質押狀態與完成狀態，再測試多位內部人群聚是否超越事件規模與前期報酬。"
+          "status": "HISTORICAL_REPLAY_PARTIAL / CLUSTER_CONTROLLER_DEDUP_FROZEN / EXACT_MONTHLY_MOPS_KNOWN_AT_BLOCKED / RESEARCH_ONLY",
+          "next": "保留原始月度 MOPS 首次公開時間戳為待補 dependency；群聚研究必須先將 raw filer 去重為 related group／ultimate controller，再控制事件規模、前期報酬、流動性、價格位置、轉讓方式、質押與治理／財報情境。取得原始月度 receipt 與第二種不同轉讓案例後再評估 L3。"
         },
         {
           "id": "D21-04",
           "name": "Share Pledging大股東與董監質押",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Share Pledging大股東與董監質押」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D21-04 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_FALSIFICATION_FROZEN / HISTORICAL_PLEDGE_REPLAY_PENDING / RESEARCH_ONLY / GOVERNANCE_TAIL_RISK / CONFIDENCE",
+          "next": "建立至少一組歷史質押設定＋解除的台股 PIT replay，優先同一控制人／公司；鎖定原始 known_at、質押股數占本人與控制群組持股比例、股價路徑、相關內部人轉讓、庫藏股／融資背景及公司法第197-1條表決權限制是否適用。缺少借款條件時禁止推估追繳價。"
         },
         {
           "id": "D21-05",
@@ -3509,10 +3509,10 @@
           "next": "從理論、定義、機制與反證開始，建立 D21-13 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
         }
       ],
-      "status": "D21_01_L2_PARTIAL_PIT_REPLAY / D21_02_L3_TAIWAN_PIT_VALIDATED / D21_03_L2_MECHANISM_FALSIFICATION_FROZEN / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "建立至少一筆事前持股轉讓申報與一筆月度持股變動的歷史 MOPS PIT replay；分離意圖申報與實際持股變化時間軸，保留轉讓方式／目的、關係人彙總、質押狀態與完成狀態，再測試多位內部人群聚是否超越事件規模與前期報酬。 D21-01 原始 MOPS 年報首次公開時間戳缺口維持待補，不阻塞 D21-03。",
-      "lastResearchUpdate": "2026-10-03T18:52:00+08:00",
-      "researchNote": "D21-02 historical board replay validated core Taiwan PIT feasibility using TSMC and Formosa Plastics 2024 board resets. Raw independent-director ratio is confounded by regulatory floors; research must separate applicable legal floor, excess independent seats and trigger type. D21-03 established asymmetric event clocks for ex-ante transfer filings versus delayed monthly holding changes and freezes intention-vs-completion, pledge, role, cluster, prior-return and non-directional transfer confounders. Formal Core unchanged."
+      "status": "D21_01_L2_PARTIAL_PIT_REPLAY / D21_02_L3_TAIWAN_PIT_VALIDATED / D21_03_L2_CLUSTER_DEDUP_FROZEN / D21_04_L2_MECHANISM_FALSIFICATION_FROZEN / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "建立至少一組歷史質押設定＋解除的台股 PIT replay，優先同一控制人／公司；鎖定原始 known_at、質押股數占本人與控制群組持股比例、股價路徑、相關內部人轉讓、庫藏股／融資背景及公司法第197-1條表決權限制是否適用。缺少借款條件時禁止推估追繳價。 D21-03 原始月度 MOPS known_at 缺口維持待補，不阻塞 D21-04。",
+      "lastResearchUpdate": "2026-10-04T07:14:00+08:00",
+      "researchNote": "D21-03 Hon Hai 2025-12 replay shows two same-day nominee-holder filings can belong to one ultimate controller group; raw filing count must not be treated as independent insider consensus. Event size also changes drastically by denominator: 100% of filer holdings versus about 0.30% of the ultimate controller's reported total holdings. Exact original monthly MOPS known_at remains unresolved, so L3 stays closed. D21-04 advances to L2 after Taiwan pledge disclosure/legal semantics, competing liquidity/margin-call/agency/corporate-policy/voting-right mechanisms, falsification conditions and a no-fabricated-margin-call rule were frozen. Formal Core unchanged."
     },
     {
       "id": "D22",
