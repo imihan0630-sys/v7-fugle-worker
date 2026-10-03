@@ -133,3 +133,50 @@ The V0.2 physical run must certify all six sources. It remains read-only and use
 4. bind verified corporate-action evidence to expected symbol sessions and RAW A1 lineage without mutating RAW bars.
 
 No assessor or selection authority is enabled by this module.
+
+
+## 2026-10-03 physical acceptance
+
+PR #404 physical verification succeeded.
+
+- Official Continuity Empty Range Readonly run 37133811396: PASS.
+- System2 Research CI run 37133811198: PASS.
+- V8 Regression run 37133811285: PASS.
+- Frozen empty target: 2026-10-03.
+- certifiedEmptySourceCount=6/6.
+- emptyRangeSemanticsCertified=true at the source-response semantic layer.
+
+Observed endpoint-specific evidence:
+
+- TWSE ex-right/ex-dividend actual:
+  - target returned the frozen official no-data status with no range/body row container;
+  - positive control 2026-04-08 returned NON_EMPTY_RANGE;
+  - positive-control range identity verified;
+  - positive-control row count=1.
+- TWSE capital-reduction reference:
+  - target returned the frozen official no-data status with no range/body row container;
+  - positive control 2026-06-29 returned NON_EMPTY_RANGE;
+  - positive-control range identity verified;
+  - positive-control row count=1.
+- TWSE par-value-change reference:
+  - exact requested range echoed;
+  - JSON_FIELDS_DATA;
+  - row count=0;
+  - stat=OK.
+- All three TPEx historical lanes:
+  - exact requested range echoed;
+  - JSON_TABLES;
+  - row count=0;
+  - stat=ok.
+
+Independent gates remain closed after this acceptance:
+
+- sourceCoverageComplete=false;
+- revisionCoverageComplete=false;
+- noEventMayBeClaimed=false;
+- suspensionCoverageComplete=false;
+- symbolSessionCompletenessCertified=false;
+- technicalContinuityCertified=false;
+- selectionAuthority=false.
+
+Next blocker: revision/correction coverage, followed by exchange-complete suspension/resumption coverage.
