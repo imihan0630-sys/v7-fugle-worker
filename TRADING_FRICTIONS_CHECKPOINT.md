@@ -265,3 +265,31 @@ D14-07 / D14-08 / D14-14 remain **L2 / 40%**. Source and schema feasibility are 
 
 Exact next continuation:
 capture at least three independent mixed-lot sessions with immutable decision, mechanism, submit and broker-fill provenance, then perform a readiness review. No automatic maturity promotion and no Formal change.
+
+
+## D14-OC-001 — order-type choice mechanism + falsification contract (2026-10-03)
+
+D14-15 now has a frozen research contract for market/limit and ROD/IOC/FOK choice under Taiwan matching semantics.
+
+Durable boundaries:
+- order type changes execution priority, persistence, partial-fill and non-fill exposure;
+- no globally superior order type is assumed;
+- conditional-on-fill price improvement is not sufficient evidence because non-fill opportunity cost and adverse selection must remain in the sample;
+- opening/closing call auction, continuous regular-lot trading, volatility interruption and discrete odd-lot matching are separate mechanism cohorts;
+- signal price, plan shares, push suggestedShares and simulated matches are never broker fills;
+- realized execution claims require broker-confirmed fill provenance.
+
+Falsified shortcuts:
+- market order is always worse;
+- filled limit order price improvement proves better execution;
+- market order guarantees immediate full fill;
+- close price can stand in for counterfactual execution;
+- one order type can be declared optimal across names/regimes.
+
+Artifact:
+`research/d14_order_choice_contract_v0_1_20261003.md`.
+
+Status:
+`MECHANISM_FALSIFICATION_CONTRACT_FROZEN / TAIWAN_PIT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED`.
+
+D14-15 is L2 / 40%. Exact next continuation: collect at least three independent prospective Taiwan sessions with executed plus unexecuted/cancelled/rejected opportunities, mechanism-state provenance, deterministic replay and broker-confirmed fills. Three dates trigger readiness review only; no automatic L3 promotion.
