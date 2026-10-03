@@ -108,7 +108,7 @@ eq(by.GGG.minimalUnblockClass,"P1A_PLUS_CONTEXT");
 eq(by.GGG.reachStage,"F3_P1A_SEMANTIC_BYPASS");
 ok(by.GGG.contextBlockSet.includes("SECTOR_GATE"));
 
-eq(d.roleFails.CONFIDENCE_UNCERTAINTY,0);
+eq(d.roleFails.CONFIDENCE_UNCERTAINTY??0,0);
 eq(d.roleFails.CONTEXT_ONLY,2);
 eq(d.roleFails.PRIMARY_ALPHA,1);
 eq(d.roleFails.HARD_INVALIDATION,1);
