@@ -1,0 +1,146 @@
+{
+  "version": "0.1",
+  "id": "BR-055",
+  "capturedAt": "2026-10-03T23:20:00+08:00",
+  "module": "D09-13 Industry Structure／Porter Five Forces產業結構與波特五力",
+  "mode": "TAIWAN_PCB_INDUSTRY_STRUCTURE_THIRD_CONTROL / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "purpose": "Add a third structurally different Taiwan industry control and test whether broad theme labels survive product/application/material decomposition.",
+  "sourcePanel": [
+    {
+      "authority": "Taiwan Printed Circuit Association / ITRI",
+      "sourcePublishedAt": "2026-03-12",
+      "url": "https://www.tpca.org.tw/en/news_detail.php?menu_no=597&mod_no=1&news_no=28366",
+      "evidence": "Taiwan PCB industry-chain domestic+overseas output value NT$1.38tn in 2025; PCB manufacturing output NT$915.2bn."
+    },
+    {
+      "authority": "Taiwan Printed Circuit Association / ITRI",
+      "url": "https://www.tpca.org.tw/en/news_detail.php?menu_no=597&mod_no=1&news_no=27991",
+      "evidence": "2025 Q3 product/application divergence and critical-material bottlenecks."
+    },
+    {
+      "authority": "Taiwan Printed Circuit Association",
+      "sourcePublishedAt": "2026-05-06",
+      "url": "https://www.tpca.org.tw/en/news_detail.php?menu_no=597&mod_no=1&news_no=28567",
+      "evidence": "2025 high-speed CCL and substrate-material concentration; Ajinomoto 97.1% of ABF substrate-material market cited by TPCA."
+    },
+    {
+      "issuer": "Nan Ya Printed Circuit Board",
+      "symbol": "8046",
+      "url": "https://www.nanyapcb.com.tw/nypcb/chinese/AboutNanYaPCB/CompanyProfile/Company",
+      "evidence": "Issuer spans conventional PCB, HDI, rigid-flex, ABF substrate and PP substrate across Taiwan/China production sites."
+    },
+    {
+      "issuer": "Kinsus Interconnect Technology",
+      "symbol": "3189",
+      "url": "https://www.kinsus.com.tw/zh-tw",
+      "evidence": "Issuer positions itself in high-end IC substrates; used only as bounded product-scope evidence."
+    }
+  ],
+  "industryState": {
+    "output2025": {
+      "totalIndustryChainNtdTn": 1.38,
+      "pcbManufacturingNtdBn": 915.2,
+      "growthApproxPct": {
+        "industryChain": 13,
+        "pcbManufacturing": 12
+      }
+    },
+    "q3ProductDivergence2025": {
+      "multilayerYoYPct": 20.1,
+      "substrateYoYPct": 14.2,
+      "hdiYoYPct": 8,
+      "flexYoYPct": -10.9,
+      "rigidFlexYoYPct": -14.9
+    },
+    "q3ApplicationDivergence2025": {
+      "computerYoYPct": 25.2,
+      "semiconductorYoYPct": 14.2,
+      "communicationsYoYPct": -7,
+      "automotiveYoYPct": -4.3
+    }
+  },
+  "marketDefinition": {
+    "broadLabel": "Taiwan PCB industry",
+    "requiredSubmarkets": [
+      "multilayer PCB",
+      "HDI",
+      "flex PCB",
+      "rigid-flex PCB",
+      "IC substrate including ABF/BT",
+      "upstream CCL / glass cloth / copper foil / specialty materials"
+    ],
+    "rule": "Broad PCB/theme membership is context only. Market-share, rivalry and pricing-power inference require compatible product/application/material denominators.",
+    "denominatorStatus": "BROAD_INDUSTRY_OUTPUT_AVAILABLE / PRODUCT_LEVEL_DENOMINATORS_PARTIAL / ISSUER_SHARE_DENOMINATORS_UNKNOWN"
+  },
+  "fiveForcesPITState": {
+    "rivalry": {
+      "state": "HIGHLY_SEGMENTED_PRODUCT_APPLICATION_COMPETITION",
+      "evidence": [
+        "2025 Q3 product categories moved in opposite directions.",
+        "AI/server demand favored multilayer/HDI/substrates while flex/rigid-flex weakened.",
+        "One issuer such as Nan Ya PCB spans several product markets, so issuer identity is not a one-theme mapping."
+      ],
+      "confidence": "BOUNDED"
+    },
+    "entryBarrier": {
+      "state": "PRODUCT_SPECIFIC",
+      "evidence": [
+        "High-end HDI, high-layer-count multilayer boards and IC substrates require different process precision, materials and customer qualification.",
+        "General PCB capacity cannot be treated as immediately substitutable with advanced substrate/AI-server capacity."
+      ],
+      "confidence": "BOUNDED"
+    },
+    "substitutes": {
+      "state": "TECHNOLOGY_AND_APPLICATION_SPECIFIC",
+      "evidence": "Product substitution occurs within end-application and packaging/design choices; exact cross-elasticities are not frozen.",
+      "confidence": "UNKNOWN_FOR_MAGNITUDE"
+    },
+    "supplierPower": {
+      "state": "CRITICAL_MATERIAL_CONCENTRATION_CAN_DOMINATE",
+      "evidence": [
+        "TPCA reports structural shortages in low-CTE glass cloth and HVLP copper foil for advanced AI-server platforms.",
+        "TPCA reports Ajinomoto at 97.1% of the 2025 ABF substrate-material market, a strong upstream concentration witness."
+      ],
+      "confidence": "STRONG_FOR_SELECTED_MATERIALS / NOT_GENERALIZED_TO_ALL_INPUTS"
+    },
+    "buyerPower": {
+      "state": "APPLICATION_AND_CUSTOMER_SPECIFIC_UNKNOWN_MAGNITUDE",
+      "evidence": "AI/server, communications, automotive and consumer applications diverged; issuer-level customer concentration and contract terms are not common-support in this receipt.",
+      "confidence": "UNKNOWN_FOR_MAGNITUDE"
+    }
+  },
+  "crossIndustryFalsification": [
+    "A broad growth industry can contain shrinking product categories at the same time.",
+    "Theme strength in AI servers cannot be assigned to flex/rigid-flex or automotive PCB without product/application exposure evidence.",
+    "Upstream material concentration can create supplier power even when downstream PCB manufacturing is fragmented.",
+    "An issuer with multiple PCB/substrate products cannot be assigned one static economic exposure without revenue/product mix.",
+    "ABF film/material dominance is not the same market as ABF substrate manufacturing or general PCB."
+  ],
+  "denominatorFirewall": {
+    "forbidden": [
+      "Taiwan total PCB output -> issuer market share without compatible issuer product/geography denominator",
+      "ABF material share -> ABF substrate manufacturer share",
+      "AI-server theme growth -> all PCB issuer benefit",
+      "broad PCB manufacturing output -> product-level pricing power"
+    ],
+    "missingRule": "Exposure magnitude remains UNKNOWN without compatible disclosed denominator."
+  },
+  "pitSemantics": {
+    "firstEligibleDecision": "No earlier than each TPCA/issuer source publication or capture.",
+    "currentIssuerPagesCapturedAt": "2026-10-03T23:20:00+08:00",
+    "revisionRule": "Append industry/product/application vintages; never overwrite prior forecast/actual states.",
+    "missingRule": "UNKNOWN != zero / weak / not exposed"
+  },
+  "maturityDecision": {
+    "D09-13": "KEEP_L3_TAIWAN_PIT_DATA_FEASIBILITY"
+  },
+  "reasonNoL4": "Three-industry generalization is stronger, but there is still no prospective/OOS test of industry-structure states versus future company outcomes, stock-selection value, cost, redundancy or market regimes.",
+  "exactNext": [
+    "BR-057 freeze an effective-dated product/application exposure denominator for selected PCB/ABF issuers before issuer-level structure comparison.",
+    "Add buyer/customer concentration only from issuer-native compatible disclosures; otherwise retain UNKNOWN.",
+    "No cross-industry Five-Forces composite score before prospective/OOS and redundancy validation."
+  ],
+  "status": "THIRD_INDUSTRY_CONTROL_FROZEN / PRODUCT_APPLICATION_DIVERGENCE_CONFIRMED / MATERIAL_SUPPLIER_POWER_WITNESS / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
