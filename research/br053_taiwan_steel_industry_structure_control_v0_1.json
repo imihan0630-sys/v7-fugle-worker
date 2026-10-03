@@ -1,0 +1,159 @@
+{
+  "version": "0.1",
+  "id": "BR-053",
+  "capturedAt": "2026-10-03T23:20:00+08:00",
+  "module": "D09-13 Industry Structure／Porter Five Forces產業結構與波特五力",
+  "mode": "TAIWAN_STEEL_INDUSTRY_STRUCTURE_CROSS_INDUSTRY_CONTROL / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "purpose": "Test whether the BR-051 industry-structure contract generalizes outside semiconductors using Taiwan steel/basic-metals evidence.",
+  "sourcePanel": [
+    {
+      "authority": "MOEA Department of Statistics",
+      "source": "2025 Industrial Production Statistics Yearbook",
+      "sourceUpdatedAt": "2026-07-16",
+      "url": "https://www.moea.gov.tw/mns/dos/content/SubMenu.aspx?menu_id=44906",
+      "use": "Official detailed-industry production-index and production/sales/inventory source family for Basic Metals and Smelting & Refining of Iron & Steel."
+    },
+    {
+      "issuer": "China Steel Corporation",
+      "symbol": "2002",
+      "url": "https://www.csc.com.tw/csc/ch/ifo/ifo.html",
+      "use": "Issuer-native scale/product/domestic-export structure."
+    },
+    {
+      "issuer": "China Steel Corporation",
+      "symbol": "2002",
+      "url": "https://www.csc.com.tw/csc/pd/pd.html",
+      "use": "Issuer-native integrated blast-furnace/basic-oxygen-furnace process and imported iron-ore/coking-coal input path."
+    },
+    {
+      "issuer": "Tung Ho Steel Enterprise",
+      "symbol": "2006",
+      "url": "https://www.tunghosteel.com/CSR/ep_green.html",
+      "use": "Issuer-native electric-arc-furnace, scrap-steel input and construction-steel product path; 2025 primary raw material approximately 98% scrap."
+    }
+  ],
+  "marketDefinition": {
+    "officialStatisticalIndustry": "MOEA / DGBAS Basic Metals -> Smelting & Refining of Iron & Steel",
+    "listedCompanyTaxonomy": "TWSE steel industry is broader than one economic product market",
+    "researchBoundary": "Do not treat all listed steel names as one homogeneous competitive market. Segment by production route, product family, customer/end-use and geography before market-share or force inference.",
+    "denominatorStatus": "INDUSTRY_OUTPUT_SERIES_AVAILABLE / FIRM_COMPARABLE_MARKET_SHARE_DENOMINATOR_NOT_FROZEN"
+  },
+  "firmStructurePanel": [
+    {
+      "symbol": "2002",
+      "name": "中鋼",
+      "processRoute": "INTEGRATED_BF_BOF",
+      "keyInputs": [
+        "imported coal",
+        "iron ore",
+        "limestone",
+        "scrap as converter input component"
+      ],
+      "crudeSteelAnnualCapacityMt": "~10",
+      "products": [
+        "plate",
+        "bars",
+        "wire rods",
+        "hot-rolled coils",
+        "cold-rolled coils",
+        "electrogalvanized coils",
+        "electrical steel",
+        "hot-dip galvanized coils"
+      ],
+      "domesticSalesPct": 55.8,
+      "exportSalesPct": 44.2,
+      "structuralRole": "large integrated diversified flat/long steel producer with broad end-market/export exposure"
+    },
+    {
+      "symbol": "2006",
+      "name": "東和鋼鐵",
+      "processRoute": "EAF_SCRAP_BASED",
+      "keyInputs": [
+        "scrap steel",
+        "electricity"
+      ],
+      "primaryRawMaterialScrapPct2025": "~98",
+      "products": [
+        "formed steel",
+        "rebar",
+        "building-structure steel"
+      ],
+      "structuralRole": "scrap-based EAF long/construction steel producer with different raw-material and customer transmission"
+    }
+  ],
+  "fiveForcesPITState": {
+    "rivalry": {
+      "state": "SEGMENTED_BY_ROUTE_PRODUCT_AND_END_MARKET",
+      "evidence": [
+        "Integrated BF/BOF and scrap-based EAF producers have different cost curves and raw-material sensitivities.",
+        "Flat products, electrical steel, plate, rebar and structural steel are not one homogeneous economic product market.",
+        "Export-exposed integrated steel and domestically construction-linked EAF producers can face different demand regimes."
+      ],
+      "confidence": "BOUNDED"
+    },
+    "entryBarrier": {
+      "state": "HIGH_BUT_ROUTE_DEPENDENT",
+      "evidence": [
+        "Integrated BF/BOF route requires coke/sinter/blast-furnace/converter/continuous-casting/rolling infrastructure and very large scale.",
+        "EAF route avoids the full integrated ironmaking chain but still requires furnace/rolling capacity, power, scrap procurement, environmental permits and product-quality qualification."
+      ],
+      "confidence": "BOUNDED"
+    },
+    "substitutes": {
+      "state": "PRODUCT_AND_END_USE_SPECIFIC",
+      "evidence": "Substitution depends on product/end use; this receipt does not freeze cross-price elasticity or a complete steel-vs-aluminum/concrete/composite substitution dataset.",
+      "confidence": "UNKNOWN_FOR_MAGNITUDE"
+    },
+    "supplierPower": {
+      "state": "ROUTE_SPECIFIC",
+      "evidence": [
+        "CSC relies on imported iron ore and coal for the integrated route.",
+        "Tung Ho relies primarily on scrap steel and electricity, with 2025 primary raw material about 98% scrap."
+      ],
+      "confidence": "BOUNDED_DIRECTION / UNKNOWN_MAGNITUDE"
+    },
+    "buyerPower": {
+      "state": "SEGMENT_SPECIFIC_UNKNOWN_MAGNITUDE",
+      "evidence": [
+        "CSC reports 55.8% domestic and 44.2% export product disposition.",
+        "Tung Ho products are concentrated in building/structural steel.",
+        "Comparable customer concentration, contract tenor and switching-power denominators are not frozen."
+      ],
+      "confidence": "UNKNOWN_FOR_MAGNITUDE"
+    }
+  },
+  "crossIndustryFalsification": [
+    "The semiconductor-foundry 'high capex + qualification + process learning' barrier template cannot be copied verbatim to steel.",
+    "A single TWSE steel label does not imply a single raw-material beta: iron ore/coking coal and scrap/electricity exposures differ fundamentally.",
+    "High industry concentration or large producer scale does not establish common pricing power across flat steel, rebar, electrical steel and structural steel.",
+    "Lower-carbon EAF route does not mechanically imply superior margins or returns; scrap/electricity availability and construction demand can dominate.",
+    "Integrated scale can create cost/product advantages while also increasing fixed-cost and decarbonization-transition burden."
+  ],
+  "denominatorFirewall": {
+    "prohibited": [
+      "CSC capacity / MOEA industry production index as market share",
+      "CSC revenue / MOEA production value without unit/scope reconciliation",
+      "Tung Ho scrap share as company market share or pricing-power proxy"
+    ],
+    "rule": "Market share requires compatible numerator, denominator, product, geography, period and measurement unit. Otherwise UNKNOWN."
+  },
+  "pitSemantics": {
+    "firstEligibleDecision": "No earlier than each official source publication/capture time.",
+    "moeaAnnualVintage": "2025 statistics, official page updated 2026-07-16",
+    "issuerCurrentPagesCapturedAt": "2026-10-03T23:20:00+08:00",
+    "historicalBackfill": "Current company descriptions may support current structural state but are not backfilled as unchanged historical truth.",
+    "missingRule": "UNKNOWN != zero / weak / absent"
+  },
+  "maturityDecision": {
+    "D09-13": "KEEP_L3_TAIWAN_PIT_DATA_FEASIBILITY"
+  },
+  "reasonNoL4": "Cross-industry generalization and falsification improved, but there is still no prospective/OOS test linking the structure state to future margins, returns, selection utility or multi-regime incremental value.",
+  "exactNext": [
+    "BR-055 add a third structurally different Taiwan industry control such as PCB/ABF, power/thermal, or automotive electronics before any cross-industry structure scoring.",
+    "Freeze buyer/supplier concentration denominators where official or issuer-native data permit; otherwise retain UNKNOWN.",
+    "Do not create a composite Five-Forces score before prospective/OOS and redundancy tests."
+  ],
+  "status": "SECOND_INDUSTRY_CONTROL_FROZEN / STRUCTURE_CONTRACT_GENERALIZES_WITH_ROUTE_SPECIFICITY / DENOMINATOR_FIREWALL_PASS / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
