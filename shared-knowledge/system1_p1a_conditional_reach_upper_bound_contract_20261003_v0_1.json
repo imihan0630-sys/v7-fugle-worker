@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "SYSTEM1_P1A_CONDITIONAL_REACH_UPPER_BOUND_CONTRACT_V0_1",
+  "updatedAt": "2026-10-03T15:58:00+08:00",
+  "status": "CLASS_A_RESEARCH_CONTRACT_FROZEN_FORMAL_CORE_LOCKED",
+  "safetyFamily": [
+    "SOURCE_AUTHENTICITY",
+    "SESSION_CONTINUITY",
+    "CORPORATE_ACTION_CONTINUITY",
+    "EXECUTION_FEASIBILITY",
+    "ACCOUNT_RISK"
+  ],
+  "eligibility": {
+    "requiresP1ABlocker": true,
+    "verifiedHardFailStops": true,
+    "safetyUnknownMayBeConditional": true,
+    "nonSafetyUnknownNeverImputed": true
+  },
+  "funnel": [
+    "F0_FORMAL_PARENT",
+    "F1_SAFETY_EVALUABLE",
+    "F2_OWNER_UNIVERSE",
+    "F3_P1A_SEMANTIC_BYPASS",
+    "F4_AB_EVALUABLE",
+    "F5_AB_PASS",
+    "F6_TARGET_RR_EVALUABLE",
+    "F7_RR_PASS",
+    "F8_GRADE_PASS",
+    "F9_RANKABLE"
+  ],
+  "aggregateFields": [
+    "p1aConditionalSafetyUnknownN",
+    "p1aConditionalReachABN",
+    "p1aConditionalABPassN",
+    "p1aConditionalReachRRN",
+    "p1aConditionalRRPassN",
+    "p1aConditionalGradePassN",
+    "p1aConditionalRankableN"
+  ],
+  "terminalStates": [
+    "CONDITIONAL_P1A_IMMATERIAL",
+    "CONDITIONAL_P1A_MATERIAL_SAFETY_CAPTURE_NEEDED",
+    "CONDITIONAL_P1A_BLOCKED_BY_NONSAFETY_UNKNOWN",
+    "DATA_INSUFFICIENT"
+  ],
+  "researchUpperBoundOnly": true,
+  "unknownToPassForbidden": true,
+  "formalCoreImpact": "NONE",
+  "formalOptimizationCandidate": "NONE"
+}
