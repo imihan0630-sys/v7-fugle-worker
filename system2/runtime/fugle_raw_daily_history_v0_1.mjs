@@ -221,7 +221,8 @@ export async function fetchFugleRawDailyHistoryV0_1({
   listingDate = null,
   fromDate,
   toDate,
-  observedAt = new Date().toISOString(),
+  observedAt = null,
+  now = () => new Date(),
   fetchImpl = globalThis.fetch,
   retryAttempts = 2,
   retryDelayMs = 1200,
@@ -235,6 +236,8 @@ export async function fetchFugleRawDailyHistoryV0_1({
   if (!Number.isInteger(retryDelayMs) || retryDelayMs < 0 || retryDelayMs > 10000) {
     throw new Error("retryDelayMs must be 0..10000");
   }
+  if (observedAt !== null) timestamp(observedAt, "observedAt");
+  if (typeof now !== "function") throw new Error("now is required");
   const url = buildFugleRawDailyHistoryUrlV0_1({ symbol, fromDate, toDate });
   let lastError = null;
   for (let attempt = 1; attempt <= retryAttempts; attempt += 1) {
@@ -247,7 +250,8 @@ export async function fetchFugleRawDailyHistoryV0_1({
       const status = Number(response?.status);
       if (status === 404) {
         return normalizeFugleRawDailyHistoryV0_1({
-          symbol, market, companyName, listingDate, fromDate, toDate, observedAt,
+          symbol, market, companyName, listingDate, fromDate, toDate,
+          observedAt: observedAt || now().toISOString(),
           rawHistory: {
             symbol: String(symbol),
             exchange: String(market),
@@ -262,7 +266,9 @@ export async function fetchFugleRawDailyHistoryV0_1({
       }
       const payload = await response.json();
       return normalizeFugleRawDailyHistoryV0_1({
-        symbol, market, companyName, listingDate, fromDate, toDate, observedAt, rawHistory: payload,
+        symbol, market, companyName, listingDate, fromDate, toDate,
+        observedAt: observedAt || now().toISOString(),
+        rawHistory: payload,
       });
     } catch (error) {
       lastError = error;
