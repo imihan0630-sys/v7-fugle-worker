@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "SYSTEM2_CRON_WEEKDAY_SEMANTICS_PHYSICAL_ACCEPTANCE_V0_1",
+  "observedDateTaipei": "2026-10-03",
+  "defect": {
+    "symptom": "2026-10-02 Friday 19:00 bounded-pool refresh audit was absent",
+    "priorCron": "*/5 0-5,11 * * 1-5",
+    "rootCause": "Cloudflare Workers Cron numeric weekday semantics are 1=SUN ... 7=SAT, so 1-5 represented Sunday-Thursday and excluded Friday.",
+    "impact": "System2 resonance envelope did not invoke on Fridays; runtime itself correctly accepted Friday 19:00 when called.",
+    "dataCorruptionObserved": false,
+    "stalePoolFabricationObserved": false,
+    "system1Impact": false
+  },
+  "correction": {
+    "pr": 329,
+    "mergeCommit": "5abf334015f2d37c27a3e9b53e9021d38a06472a",
+    "correctedCron": "*/5 0-5,11 * * MON-FRI",
+    "cronCount": 1,
+    "runtimeWindowSemanticsUnchanged": true,
+    "addedRegressionTest": "system2/tests/resonance_cron_weekday_semantics.test.mjs"
+  },
+  "verification": {
+    "prSystem2ResearchCiRun": 37089765932,
+    "prSystem2ResearchCi": "PASS",
+    "prV8RegressionRun": 37089765935,
+    "prV8Regression": "PASS",
+    "deployRun": 37089823064,
+    "deploy": "PASS",
+    "workerStateAuditRun": 37089823066,
+    "workerStateAuditRerun": "PASS",
+    "physicalSchedule": [
+      "*/5 0-5,11 * * MON-FRI"
+    ],
+    "d1SchemaVersion": "1.1",
+    "s2TableCount": 46,
+    "fugleSecretConfigured": true,
+    "system1ProductionFilesUnchanged": true,
+    "system1WorkerUsed": false,
+    "captureState": "CAPTURE_DISABLED",
+    "resonanceState": "BOUNDED_RESONANCE_SCHEDULED"
+  },
+  "currentOperationsReadback": {
+    "marketDate": "2026-10-03",
+    "state": "UPSTREAM_CAPACITY_RECEIPT_MISSING",
+    "upstreamCapacity": null,
+    "latestPool": null,
+    "lastPoolRefresh": null,
+    "activeSymbolCount": 0,
+    "note": "2026-10-03 is a Saturday; absence of a new refresh on this date is expected under corrected MON-FRI scheduling."
+  },
+  "nextProspectiveCheck": {
+    "description": "Observe the next actual weekday 19:00 Asia/Taipei invocation and confirm a durable POOL_REFRESH_* audit appears even if capacity remains absent.",
+    "noManualBackfillOfMissed20261002": true
+  }
+}
