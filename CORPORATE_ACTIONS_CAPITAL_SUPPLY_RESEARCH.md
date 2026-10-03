@@ -4409,3 +4409,13 @@ The receipt joins independent TWSE listing, auction and public-subscription lane
 Important guard: archived event dates do not authenticate historical intraday first-known. No event is backdated to market-open/decision time; historical intraday availability remains UNKNOWN. Prospective captures must preserve capturedAt/version.
 
 No return outcome, no IPO underpricing alpha, no Formal change.
+
+## 2026-10-03 late continuation — D11-16 lockup source gap + D11-17 private-placement L3
+
+Two adjacent special-situation modules were deliberately separated.
+
+D11-16 stays L2. TWSE custody rules and data-source families are known, but the official issuer-level chain from custody quantity -> eligible release -> actual withdrawal -> transfer declaration -> realized holding change is incomplete. Missing issuer coverage is UNKNOWN, never NO_SALE.
+
+D11-17 advances L2 -> L3. New receipt: `research/d11_17_private_placement_pit_receipt_v0_1.json`. Official disclosure rules provide the required private-placement lifecycle fields and clocks; 6648 supplies a real proposal-to-payment witness, 2314 supplies failed/rescheduled rounds, and existing 2465 CA-114 artifacts provide a hard semantic counterexample against merging private-placement, registered, listed and tradable supply.
+
+The promotion is source/event-state feasibility only. Native historical MOPS version completeness, intraday availability and return outcomes remain pending. CA-113/114 exact listed-share archive gates are unchanged.
