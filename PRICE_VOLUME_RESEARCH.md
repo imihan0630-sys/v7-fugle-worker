@@ -13736,3 +13736,32 @@ The same episode cannot be counted four times simply because four labels can des
 
 This block consumes no prospective date and no PVE number. PVE-240 remains the next live evidence hinge.
 Formal Core unchanged.
+
+# Pre-PVE-240 — Daily Volume Continuity research contract (2026-10-03)
+
+The D02 daily-volume blocker is now decomposed into three independent questions rather than one generic corporate-action flag.
+
+## 1. Measurement unit
+Provider documentation distinguishes daily SHARES from regular-stock intraday LOTS.
+Dimensionless RVOL can be valid within each lane while absolute volume equality across lanes is invalid without conversion/coverage semantics.
+
+## 2. Session continuity
+A rolling baseline is defined over eligible symbol sessions, not over arbitrary returned rows.
+The semantic denominator is:
+`OFFICIAL_EXCHANGE_SESSIONS - VERIFIED_SYMBOL_SUSPENSION_SESSIONS`.
+
+A zero-volume eligible session, a suspension/non-session and a missing source row have different meanings.
+
+## 3. Corporate-action continuity
+UNIT_SCALE changes the share-count measurement scale and can invalidate cross-event volume magnitude absent a verified bridge.
+SUPPLY_CHANGE preserves the share measurement unit but changes the economic opportunity/supply base.
+
+Therefore:
+- UNIT_SCALE is a hard magnitude-continuity problem.
+- SUPPLY_CHANGE is primarily an interpretation/normalization problem for participation intensity.
+- universal reset and universal rescale rules are both rejected.
+
+For `pvDailyRvol20`, V0.1 uses a conservative reset-only path for unresolved/unsupported UNIT_SCALE continuity and requires 20 post-reset comparable sessions.
+For SUPPLY_CHANGE, raw ratios may remain descriptive RAW_ACTIVITY; clean COMPARABLE_PARTICIPATION requires PIT normalization or a fully post-break baseline.
+
+This contract is outcome-blind and does not authorize production wiring or Formal changes.
