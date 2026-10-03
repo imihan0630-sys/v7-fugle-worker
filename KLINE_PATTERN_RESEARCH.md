@@ -22639,3 +22639,17 @@ The frozen comparison ladder is C0 current geometry -> C1 continuous path -> C2 
 Synthetic adversarial rules now explicitly reject different lifecycle labels under the same complete path basis as semantic contradiction. Twelve tests are authored but not independently executed.
 
 D16 receives the estimator/inference handoff; D01 keeps semantic ownership. No outcome join, no threshold tuning, no Formal change. D01 remains 51.7%.
+
+# DL-020 — Pattern minimal continuous path basis (2026-10-03)
+
+The complete C2 comparator is now de-duplicated before any lifecycle outcome study.
+
+D01 freezes six semantic layers: immutable boundary geometry, path excursion/occupancy, observability/exposure, first-event clocks, structural identity/age, and derived lifecycle representation.
+
+Several fields are deterministically dependent by construction. Eligible bars are the sum of observable and constrained bars under complete accounting. Geometry state derives from local/parent coordinates. Available-air percent, center distance and ATR-normalized air are alternative transforms of the same structural gap. Event durations derive from certified session ordinals plus first-event clocks. Failure is nested inside reentry semantics.
+
+Therefore these fields remain useful views but cannot become independent votes by default.
+
+Future D16 analysis now has two continuous comparators: FULL_C2 and outcome-blind MINIMAL_C2 (MCPB_V0_1). Lifecycle C3 must survive both flexible comparators before any representation-incrementality claim.
+
+No causal audit field is removed from prospective storage; predictive de-dup and audit provenance are separate concerns. Twelve tests are authored but not independently executed. No outcomes or Formal rules changed.
