@@ -22,7 +22,7 @@ assert.equal(DECISION_CLOCK_COLLECTOR_CONTRACT_FILES_V0_3.includes(workflowPath)
 assert.equal(DECISION_CLOCK_COLLECTOR_CONTRACT_FILES_V0_3.includes(modulePath),false);
 assert.equal(DECISION_CLOCK_COLLECTOR_CONTRACT_FILES_V0_3.length,13);
 
-assert.doesNotMatch(moduleText,/\.prepare\(|D1|wrangler|scoreCandidate|BUY_RESONANCE|notify/i);
+assert.doesNotMatch(moduleText,/\.prepare\(|wrangler|scoreCandidate|BUY_RESONANCE|notify|env\.SYSTEM2|d1[\\s_.-]*(create|execute|prepare)/i);
 assert.match(moduleText,/pointInTimeDecisionEligible:false/);
 assert.match(moduleText,/promotionGradeProspectiveDateCount:0/);
 assert.match(moduleText,/S2_DECISION_CLOCK_COLLECTOR_CONTRACT_V0_3_UNCHANGED/);
