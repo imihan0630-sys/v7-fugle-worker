@@ -28,8 +28,8 @@ export function formalSymbolsFromConfig(config){
   return symbols;
 }
 export function buildC3Registration(c1Artifact,c2Artifact,config,{
-  maxShadowSymbols=6,providerBudgetCallsPerSession=102,
-  includeConditionalSafetyUnknown=true,sampleSeed="SYSTEM1_C3_CAPTURE_V0_1"
+  maxShadowSymbols=3,providerBudgetCallsPerSession=102,
+  includeConditionalSafetyUnknown=true,sampleSeed="SYSTEM1_C3_CAPTURE_V0_2"
 }={}){
   const receipt=assertC1(c1Artifact),c2=assertC2(c2Artifact,receipt);
   const formalSymbols=formalSymbolsFromConfig(config);
@@ -38,7 +38,7 @@ export function buildC3Registration(c1Artifact,c2Artifact,config,{
     includeConditionalSafetyUnknown,sampleSeed
   });
   if(contract.providerBudgetStatus!=="PASS") throw new Error("C3_REGISTRATION_PROVIDER_BUDGET_NOT_PASS");
-  const extra=contract.cohort.filter(x=>x.captureSource==="EXTRA_RESEARCH_CANDLE_CAPTURE");
+  const extra=contract.cohort.filter(x=>x.captureSource==="EXTRA_RESEARCH_CANDLE_QUOTE_CAPTURE");
   const base={
     schemaVersion:"SYSTEM1_C3_REGISTRATION_V0_1",
     generationId:receipt.generationId,sessionDate:receipt.sessionDate,
@@ -49,14 +49,14 @@ export function buildC3Registration(c1Artifact,c2Artifact,config,{
     eligibleShadowOnlyN:contract.eligibleShadowOnlyN,
     extraShadowN:extra.length,excludedShadowN:contract.excludedShadowSymbols.length,
     maxShadowSymbols,providerBudgetCallsPerSession,
-    requiredExtraCandleCalls:contract.extraCandleCallsPerSession,
+    requiredExtraCandleCalls:contract.extraCandleCallsPerSession,\n    requiredExtraQuoteCalls:contract.extraQuoteCallsPerSession,\n    requiredExtraProviderCalls:contract.extraProviderCallsPerSession,
     researchOnly:true,decisionImpact:false,formalCoreImpact:false,
     noFormalTargetMutation:true,noSignalPath:true,noPushPath:true,noOrderPath:true,noCapitalPath:true,
     noPlanChanges:true,noTrade:true,noPush:true
   };
   if(!extra.length) return {...base,status:"NO_SHADOW_ONLY_COHORT",postRequired:false,payload:null};
   return {...base,status:"READY_TO_REGISTER",postRequired:true,payload:{
-    schemaVersion:"SYSTEM1_C3_RESEARCH_CAPTURE_CONTRACT_V0_1",
+    schemaVersion:"SYSTEM1_C3_RESEARCH_CAPTURE_CONTRACT_V0_2",
     generationId:receipt.generationId,sessionDate:receipt.sessionDate,
     sourceC1ContentDigest:receipt.contentDigest,sourceC1UniverseDigest:receipt.universeDigest,
     sourceC2Fingerprint:c2.fingerprint,maxShadowSymbols,providerBudgetCallsPerSession,
