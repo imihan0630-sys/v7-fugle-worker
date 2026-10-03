@@ -1,0 +1,126 @@
+{
+  "version": "0.1",
+  "id": "BR-051",
+  "capturedAt": "2026-10-03T18:43:22+08:00",
+  "module": "D09-13 Industry Structure／Porter Five Forces產業結構與波特五力",
+  "mode": "TAIWAN_SEMICONDUCTOR_FOUNDRY_STRUCTURE_PIT_RECEIPT / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "marketDefinition": {
+    "label": "Taiwan-headquartered IC foundry industry output",
+    "period": "2025",
+    "source": "TSIA / ITRI IEK",
+    "foundryOutputNtd100m": 41693,
+    "definitionNote": "TSIA states industry output is calculated based on companies headquartered in Taiwan.",
+    "caveat": "Industry production value is not assumed identical to any issuer's consolidated accounting revenue."
+  },
+  "industryState": {
+    "growthYoYPct": 28.5,
+    "totalIcIndustryOutputNtd100m": 65225,
+    "icManufacturingOutputNtd100m": 43869,
+    "foundryOutputNtd100m": 41693,
+    "implication": "Foundry is a dominant component of Taiwan-headquartered IC manufacturing output, but this does not by itself identify firm-level market shares."
+  },
+  "firmCapabilityPanel": [
+    {
+      "symbol": "2330",
+      "name": "TSMC",
+      "businessModel": "pure-play foundry",
+      "consolidatedRevenueNtdBn": 3809.05,
+      "annualCapacity12inEqMillionWafers": ">17",
+      "shipments12inEqMillionWafers": 15,
+      "customers": 534,
+      "processTechnologies": 305,
+      "products": 12682,
+      "advanced7nmAndBeyondWaferRevenuePct": 74,
+      "geographicCapacity": "Taiwan plus Nanjing, Arizona, Japan and other overseas facilities",
+      "structureUse": "barrier / scale / technology breadth / customer diversification evidence",
+      "marketShareUse": "PROHIBITED_FROM_DIRECT_DIVISION_UNTIL_OUTPUT_REVENUE_SCOPE_COMPATIBILITY_CONFIRMED"
+    },
+    {
+      "symbol": "2303",
+      "name": "UMC",
+      "businessModel": "pure-play foundry",
+      "consolidatedRevenue2025NtdMn": 237553,
+      "totalMonthlyCapacity12inEqWafers": ">400000",
+      "fabCount": 12,
+      "processFocus": "logic and specialty technologies; down to 14nm in Taiwan Fab 12A with broad mature/specialty portfolio",
+      "geographicCapacity": "most core 12/8-inch fabs and R&D in Taiwan plus Singapore, Xiamen and Japan",
+      "structureUse": "rivalry / differentiated node-product positioning / geographic-capacity evidence",
+      "marketShareUse": "PROHIBITED_FROM_DIRECT_DIVISION_UNTIL_OUTPUT_REVENUE_SCOPE_COMPATIBILITY_CONFIRMED"
+    }
+  ],
+  "fiveForcesPITState": {
+    "rivalry": {
+      "state": "SEGMENTED_COMPETITION",
+      "evidence": "TSMC emphasizes leading-edge/advanced technology scale while UMC emphasizes mature/specialty logic platforms; competition is not one homogeneous wafer market.",
+      "confidence": "BOUNDED"
+    },
+    "entryBarrier": {
+      "state": "HIGH_BUT_MULTI_DIMENSIONAL",
+      "evidence": [
+        "large wafer-fab capacity and multi-year expansion",
+        "technology/process breadth and yield learning",
+        "customer qualification and product/process ecosystem",
+        "capital intensity and geographic infrastructure"
+      ],
+      "confidence": "BOUNDED"
+    },
+    "substitutes": {
+      "state": "SEGMENT_SPECIFIC_UNKNOWN_AT_INDUSTRY_AGGREGATE",
+      "evidence": "Different process nodes/specialty platforms are not perfect substitutes; exact cross-elasticity and qualification switching are not in current receipt.",
+      "confidence": "UNKNOWN_FOR_MAGNITUDE"
+    },
+    "supplierPower": {
+      "state": "UNKNOWN",
+      "evidence": "No common PIT supplier concentration/critical-input denominator frozen in this receipt."
+    },
+    "buyerPower": {
+      "state": "MIXED_UNKNOWN_MAGNITUDE",
+      "evidence": "TSMC reports 534 customers and diversified end markets, but customer concentration/contract leverage comparable across firms is not frozen here."
+    }
+  },
+  "denominatorFirewall": {
+    "forbiddenCalculation": "TSMC consolidated revenue / TSIA foundry production value as a formal market-share estimate",
+    "reason": [
+      "industry production value and issuer consolidated accounting revenue are not yet proven identical measurement constructs",
+      "firm geographic/facility scope and industry methodology require explicit compatibility audit",
+      "node/product mix and value per wafer differ, so capacity share is not revenue share"
+    ],
+    "candidateOnlyDiagnostics": [
+      "TSMC and UMC revenue values may be stored for later scope reconciliation but not labeled market share.",
+      "TSMC >17m annual 12-inch-equivalent capacity and UMC >400k/month capacity cannot be turned into total-industry capacity share because the complete denominator is absent."
+    ]
+  },
+  "positiveMechanism": [
+    "Scale, process breadth, yield learning, customer qualification and capital requirements form observable entry-barrier dimensions.",
+    "Different node/product portfolios create segmented rivalry rather than one undifferentiated foundry market.",
+    "Official TSIA output plus issuer-native capacity/product/customer data are sufficient to replay a bounded industry-structure state."
+  ],
+  "falsification": [
+    "High output growth does not prove every foundry earns excess returns.",
+    "Scale is not sufficient for competitive advantage if utilization, technology relevance or price discipline deteriorates.",
+    "Mature-node and leading-edge foundry capacity are not perfect substitutes.",
+    "A large consolidated-revenue issuer cannot be assigned market share without a compatible industry denominator.",
+    "Overseas fab expansion can strengthen geographic resilience while diluting margin or changing cost structure."
+  ],
+  "pitSemantics": {
+    "industrySourcePublished": "2026-02 TSIA/ITRI annual-result release",
+    "issuerSources": "2025 annual reports / 2026 annual-report filings and current official company capability pages",
+    "firstEligibleDecision": "No earlier than each source publication/capture; no 2025 backdating for later-published annual results.",
+    "missingRule": "UNKNOWN != weak / absent / zero",
+    "revisionRule": "Append revised TSIA/issuer vintages; never overwrite earlier captured states."
+  },
+  "maturityDecision": {
+    "D09-13": "PROMOTE_L2_TO_L3_TAIWAN_PIT_DATA_FEASIBILITY_ONLY",
+    "D09-14": "KEEP_L2_PENDING_DEDUP_AND_FIRM_ACTION_RECEIPT"
+  },
+  "promotionReason": "A replayable Taiwan-headquartered foundry industry state can now be built from TSIA/ITRI output data plus issuer-native capacity, technology, product and customer evidence with explicit denominator firewalls and UNKNOWN handling. Exact firm market share and predictive efficacy remain unproven.",
+  "reasonNoL4": "No prospective/OOS relationship to returns, margins or stock-selection outcomes; supplier/buyer power and exact market-share denominators remain incomplete.",
+  "exactNext": [
+    "BR-052 redesign under H01 SCOPE_DEDUP_ONLY as a firm-specific competitive-action/position receipt rather than duplicating static industry structure.",
+    "Add one non-semiconductor priority industry as negative/control comparison before cross-industry scoring.",
+    "Do not create a Five-Forces composite score or market-share factor before redundancy and OOS tests."
+  ],
+  "status": "TAIWAN_PIT_DATA_FEASIBLE / DENOMINATOR_FIREWALL_PASS / PARTIAL_FORCE_STATE / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
