@@ -142,3 +142,16 @@ Formal production gates, A/B, RR, Grade, ranking, quotas, allocation and signals
 Next evidence requirement:
 the first genuine complete prospective C1/C2 population. Counts alone cannot justify Formal changes.
 
+## TARGET four-state implementation acceptance — PR #362
+
+Class-A research-only target semantic side channel merged:
+`3948da9f6722844ee26f3a9dbe6340ed0a21e49b`
+
+Accepted research capability:
+- distinguish verified target found;
+- distinguish verified search-complete no-resistance;
+- preserve source-unknown and geometry-unknown separately;
+- preserve legacy Formal TARGET_AVAILABLE behavior.
+
+No target substitute, RR change or admission change is authorized.
+
