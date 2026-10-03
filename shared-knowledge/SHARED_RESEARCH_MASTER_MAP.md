@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 10:36 Asia/Taipei
+Updated: 2026-10-03 10:47 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -678,4 +678,30 @@ Main governance protections:
 - a merge cannot orphan historical evidence, replay, runtime, UI or risk capabilities.
 
 No module count or maturity change. Formal Core remains LOCKED.
+
+## Third-round hidden overlap audit — 2026-10-03
+
+Canonical audit:
+`shared-knowledge/CURRICULUM_THIRD_ROUND_HIDDEN_OVERLAP_AUDIT_20261003_V0_1.md`
+
+Machine-readable companion:
+`shared-knowledge/curriculum_third_round_hidden_overlap_audit_20261003_v0_1.json`
+
+This scan intentionally ignores superficial title similarity and looks for hidden overlap in shared data, mechanism, decision effect and dependency chains.
+
+Governance result:
+- 20 hidden-overlap clusters frozen.
+- 4 strong consolidation candidates.
+- 4 semantic split-or-merge candidates.
+- 4 scope de-duplication candidates.
+- 8 keep-separate dependency chains with explicit anti-double-count rules.
+- Immediate retirement: NONE.
+
+Highest structural-consolidation candidates:
+- D09-13 <-> D09-14.
+- D14-03 + D14-04 -> D14-17 family.
+- D15-13 <-> D15-24.
+- D12-14 <-> D12-15.
+
+No module count/maturity/Formal Core change is authorized by this scan.
 
