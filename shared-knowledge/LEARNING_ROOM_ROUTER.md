@@ -1528,3 +1528,15 @@ R01～R08 任務包由對應專科室驗證後回 00｜研究總控室驗收；�
 - 只有在自己的適用 PIT/OOS、independent-date（獨立日期）、Regime（市場狀態）、redundancy（冗餘）、cost（成本）、coverage/zero-pick（覆蓋／零選股）與 overfit（過擬合）門檻全部關閉後，才可進 EVIDENCE_READY。
 - 00｜研究總控室發現第一個 EVIDENCE_READY 狀態時，必須立即做 candidate handoff（候選交接）或明確標成 REJECTED_OR_REDUNDANT，不得無限停留在研究。
 
+## D15-19 Kelly 專科驗證交接 — 2026-10-03
+
+10｜投組風控與交易執行研究室續接 D15-19 前，必須讀：
+`shared-knowledge/D15_19_KELLY_SPECIALIST_VALIDATION_PACKET_20261003_V0_1.md`
+
+目前狀態：
+- D16-25 這一側已完成 L2 merge-comparison（合併比較）專科研究。
+- D15-19 仍是 L0 / 0%，不得繼承 D16-25 成熟度。
+- 10 室現在可以直接研究 Kelly／Fractional Kelly（凱利／分數凱利）的 log-growth（對數成長）、估計誤差、多部位相關性、drawdown/ruin（回撤／破產）限制、流動性／成本／容量，以及與 D15-16 Portfolio Optimization（投組最佳化）的比較。
+- 最後需回傳 A／B／C／D 四種結構之一或 EVIDENCE_INSUFFICIENT（證據不足）。
+- 不得自行退休 D15-19、不得改 Formal Core（正式核心）。
+
