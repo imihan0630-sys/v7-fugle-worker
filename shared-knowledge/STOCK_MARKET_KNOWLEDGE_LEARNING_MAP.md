@@ -1,6 +1,6 @@
 # 股市知識學習大地圖 — 22領域 / 354模組
 
-Updated: 2026-10-03 14:00 Asia/Taipei
+Updated: 2026-10-03 14:05 Asia/Taipei
 Status: CANONICAL_LEARNING_CURRICULUM_V0_1 / CROSS_SYSTEM  
 Formal Core impact: NONE  
 Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 正式研究成熟度仍由 `RESEARCH_MASTER_MAP.md` 與 `research/research_master_map.json` 管理。
@@ -32,7 +32,7 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 |---|---|---:|---:|---|
 | D01 | K線／型態／價格結構 | 11 | 52.7% | 01｜K線與型態研究室 |
 | D02 | 價量關係 | 12 | 48.3% | 02｜價量研究室 |
-| D03 | 趨勢／動能／反轉／技術指標 | 12 | 50.0% | 03｜技術指標與趨勢動能研究室 |
+| D03 | 趨勢／動能／反轉／技術指標 | 12 | 51.7% | 03｜技術指標與趨勢動能研究室 |
 | D04 | 波動率／波動狀態 | 10 | 42% | 04｜波動與市場微結構研究室 |
 | D05 | 市場微結構／撮合／流動性 | 14 | 32.9% | 04｜波動與市場微結構研究室 |
 | D06 | 法人／籌碼／槓桿／擁擠／被動資金 | 17 | 40% | 05｜法人與籌碼研究室 |
@@ -152,7 +152,7 @@ GitHub專屬checkpoint：
 | D02-11 | 流動性量能門檻與例外 | L2 機制＋反證 | 40% |
 | D02-12 | 盤中量能曲線／Volume Profile | L2 機制＋反證 | 40% |
 
-### D03｜趨勢／動能／反轉／技術指標 — 50.0%
+### D03｜趨勢／動能／反轉／技術指標 — 51.7%
 
 專責：03｜技術指標與趨勢動能研究室  
 證據錨點：`TECHNICAL_INDICATOR_CHECKPOINT.md`、`TREND_MOMENTUM_REVERSAL_CHECKPOINT.md`
