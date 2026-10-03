@@ -1238,3 +1238,12 @@ Machine graph:
 `shared-knowledge/curriculum_coverage_governance_state_machine_v0_1.json`
 
 State progression is now formally constrained. No curriculum structural change may bypass the frozen transition graph.
+
+
+## Coverage executable return validator — 2026-10-03
+
+- Validator: `research/curriculum_coverage_return_validator_v0_1.mjs`
+- Tests: `tests/test_curriculum_coverage_return_validator_v0_1.mjs`
+- Checkpoint: `research/CURRICULUM_COVERAGE_RETURN_VALIDATOR_CHECKPOINT_20261003.md`
+- V8 Regression Tests execute the validator test on PRs.
+- PASS validates governance structure only; it does not approve curriculum changes.
