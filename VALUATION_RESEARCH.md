@@ -584,3 +584,49 @@ Exact next:
 3. add raw valuation, sector/peer, size/liquidity, trend/RS, regime and denominator-transition controls without inspecting outcomes;
 4. only then open the already preregistered TWSE-only Historical-Valuation Shadow outcome join;
 5. TPEx remains excluded from inference until historical machine transport or an authorized licensed history lane is verified.
+
+
+## VAL-035 — COV-05 sales multiples belong inside D08-06 rather than a new vote
+
+Research date: 2026-10-04 Asia/Taipei.
+
+Machine contract:
+research/sales_enterprise_multiples_pit_contract_v0_1.json.
+
+Specialist return:
+research/COV05_D08_SPECIALIST_RETURN_V0_1.md.
+
+COV-05 specialist recommendation is EXTEND_EXISTING_SCOPE, not ADD_MODULE.
+
+Proposed owner:
+D08-06 extends from a single EV/EBITDA label into a coordinated enterprise/revenue-multiple capability containing:
+- EV/EBITDA;
+- EV/Sales;
+- P/S as the equity-value sales view;
+- enterprise-value numerator contract;
+- revenue-denominator alignment;
+- margin/growth/capital-structure decomposition.
+
+D08-09 remains the peer-normalization owner; D08-12 remains the corporate-action/share-denominator owner; D08-18 remains the financial-institution specialist owner.
+
+The new sales-multiple sub-capability does not inherit D08-06 L2 maturity. Canonical D08-06 maturity remains unchanged pending 00-room intake/owner approval.
+
+Status: COV05_RETURN_CONTRACT_COMPLETE / TERMINAL_RECOMMENDATION_EXTEND_EXISTING_SCOPE / 00_INTAKE_REQUIRED / NO_CANONICAL_CHANGE.
+
+## VAL-036 — Sales multiples require margin and capital-structure interpretation
+
+Frozen semantics:
+- trailing P/S = decision-time equity market value / PIT-safe TTM consolidated revenue;
+- trailing EV/Sales = PIT-safe enterprise value / PIT-safe TTM consolidated revenue;
+- forward variants remain SOURCE_BLOCKED until authorized PIT sales forecasts exist.
+
+Counterevidence:
+- the same P/S can imply very different economics across low-margin distributors and high-margin businesses;
+- peak-cycle sales can create false cheapness;
+- negative-margin firms can have a computable P/S without a viable profit path;
+- acquisition-heavy issuers can change both sales scope and enterprise value;
+- P/S and EV/Sales share one sales denominator and cannot become two independent votes.
+
+Taiwan monthly revenue is a separate timely series. It may not silently substitute for IFRS TTM revenue without a frozen reconciliation/scope contract.
+
+Status: SALES_MULTIPLE_PIT_SEMANTICS_FROZEN / FORWARD_SOURCE_BLOCKED / NO_RETURN_OUTCOME / FORMAL_UNCHANGED.
