@@ -12,18 +12,18 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 
 ## 成熟度
 
-- L2 機制＋反證已定義 40%：UNSTUDIED，尚未研究
-- L2 機制＋反證已定義 40%：THEORY_UNDERSTOOD，理論與定義已理解
-- L2 機制＋反證已定義 40%：MECHANISM_AND_FALSIFICATION_DEFINED，正向機制與反證條件已定義
-- L2 機制＋反證已定義 40%：TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED，台股PIT資料來源／語意／重播可行
-- L2 機制＋反證已定義 40%：PROSPECTIVE_SHADOW_OR_OOS_EVIDENCE，有前瞻Shadow或OOS證據
-- L2 機制＋反證已定義 40%：ROBUSTNESS_COST_REDUNDANCY_MULTI_REGIME_VALIDATED，已通過多Regime、成本、冗餘、獨立日期與穩健性驗證
+- L0 = 0%：UNSTUDIED，尚未研究
+- L1 = 20%：THEORY_UNDERSTOOD，理論與定義已理解
+- L2 = 40%：MECHANISM_AND_FALSIFICATION_DEFINED，正向機制與反證條件已定義
+- L3 = 60%：TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED，台股PIT資料來源／語意／重播可行
+- L4 = 80%：PROSPECTIVE_SHADOW_OR_OOS_EVIDENCE，有前瞻Shadow或OOS證據
+- L5 = 100%：ROBUSTNESS_COST_REDUNDANCY_MULTI_REGIME_VALIDATED，已通過多Regime、成本、冗餘、獨立日期與穩健性驗證
 
 ## 目前總覽
 
 - 大領域：22
 - 二級研究模組：354
-- 新完整課綱成熟度：**36%**
+- 新完整課綱成熟度：**37.8%**
 - 注意：這個百分比與 System 1 現行21模組的46.7%不是同一分母；本表分母更大、更細。
 - 100%不是「世界上再也沒有新知識」，而是本版課綱全部達L5；新增新知識時可版本化擴充分母。
 - 七項汰留與能力移轉紀錄：`shared-knowledge/CURRICULUM_RETIREMENT_AND_CAPABILITY_LEDGER_V0_1.md`。退休模組不代表刪除其必要工程／研究能力。
