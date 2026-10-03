@@ -3,7 +3,7 @@ from pathlib import Path
 import os, re, subprocess, sys, json
 workflow=Path('.github/workflows/v7-regression.yml').read_text(encoding='utf-8')
 scripts=re.findall(r'python3 (scripts/\S+\.py)',workflow)
-tail={"scripts/apply_v8_15_1.py","scripts/apply_v8_15_2.py","scripts/apply_v8_15_3.py","scripts/apply_v8_15_4.py"}
+tail={"scripts/apply_v8_15_1.py","scripts/apply_v8_15_2.py","scripts/apply_v8_15_3.py","scripts/apply_v8_15_4.py","scripts/apply_v8_16_0.py"}
 for script in scripts:
     if script not in tail:
         subprocess.run([sys.executable,script],check=True)
@@ -15,6 +15,8 @@ if "scripts/apply_v8_15_3.py" in scripts:
     subprocess.run([sys.executable,'scripts/apply_v8_15_3.py'],check=True)
 if "scripts/apply_v8_15_4.py" in scripts:
     subprocess.run([sys.executable,'scripts/apply_v8_15_4.py'],check=True)
+class_b_baseline=Path('Worker.js').read_text(encoding='utf-8')
+subprocess.run([sys.executable,'scripts/apply_v8_16_0.py'],check=True)
 candidate=Path('Worker.js').read_text(encoding='utf-8')
 def functions(source):
     matches=list(re.finditer(r'^(?:async )?function (\w+)\(',source,re.M))
@@ -25,6 +27,13 @@ def functions(source):
         result[m.group(1)]=source[m.start():m.end()+end.end()].rstrip()
     return result
 before,after=functions(baseline),functions(candidate)
+class_b_before=functions(class_b_baseline)
+class_b_changed=[name for name,body in class_b_before.items() if body!=after.get(name)]
+class_b_new=sorted(set(after)-set(class_b_before))
+if set(class_b_changed)!={'buildC1PopulationReceipt','persistC1PopulationReceipt','selectTomorrowCandidates'}:
+    raise SystemExit('Unexpected Class-B plumbing changes: '+str(class_b_changed))
+if set(class_b_new)!={'c1ZeroPickOrdinals','buildC1ZeroPickChild','finalizeC1ZeroPickReceipt'}:
+    raise SystemExit('Unexpected Class-B helper changes: '+str(class_b_new))
 changed=[name for name,body in before.items() if body!=after.get(name)]
 allowed={'c1ChunkRows','c1ImmutableDecision','persistC1PopulationReceipt','readC1PopulationReceipt',
          'runAfterMarketScanCore','selectTomorrowCandidates'}
@@ -36,6 +45,10 @@ if "scripts/apply_v8_15_4.py" in scripts:
     allowed.update({'buildC1PopulationReceipt'})
 if set(changed)-allowed: raise SystemExit('Unexpected protected function changes: '+str(sorted(set(changed)-allowed)))
 selector=after['selectTomorrowCandidates'].replace(
+    '  let c1ZeroPickContext=null;\n'
+    '  try { c1ZeroPickContext={ordinals:c1ZeroPickOrdinals(featureRows,todayRows),consensusReference:env.V7_MARKET_CONSENSUS}; }\n'
+    '  catch(error) { c1ZeroPickContext={ordinals:null,consensusReference:null}; }\n', ''
+).replace('selected,scanDate,c1ZeroPickContext);','selected,scanDate);').replace(
     '  let c1PopulationReceipt=null,c1CaptureError=null;\n'
     '  try { c1PopulationReceipt=buildC1PopulationReceipt(featureRows,todayRows,marketState,sectorStats,c1FormalResults,selected,scanDate); }\n'
     '  catch(error) { c1CaptureError=String(error).slice(0,300); }',
@@ -58,6 +71,7 @@ for name,args in commands:
     if result.returncode: print((result.stdout+result.stderr)[-5000:],flush=True)
 Path('artifacts').mkdir(exist_ok=True)
 receipt={'schemaVersion':'SYSTEM1_C1_C2_REPAIR_REVIEW_V0_1','passed':sum(r['exitCode']==0 for r in results),
+  'classBChangedFunctions':class_b_changed,'classBNewFunctions':class_b_new,
   'total':len(results),'changedFunctions':changed,'protectedFunctionCount':len(before)-len(changed),
   'selectorUnchangedExceptCaptureFirewall':True,'fixtureOnly':True,'formalCoreImpact':False,'results':results}
 Path('artifacts/system1-c1-c2-repair-review.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')

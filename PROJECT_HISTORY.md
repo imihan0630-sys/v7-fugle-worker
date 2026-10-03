@@ -462,3 +462,12 @@
 - PR Regression `36234970884`、Repair CI `36234970803` 成功；main Regression `36235023368`、Cloudflare Deploy `36235023379` 成功。
 - 部署後版本／設定／23:35 Cron／research readback 均通過，未觸發 rollback，也未執行補選股、重送或交易動作。
 - Breadth/Rotation 狀態改為 `WAITING_PROSPECTIVE / NOT_OPTIMIZATION_READY`。預計自 2026-09-29 第一個有效盤後開始累積乾淨樣本；至少 20 個獨立 clean scan dates 才做第一輪 descriptive audit，禁止先調門檻。
+
+## 2026-10-04｜V8.16.0 Class-B zero-pick prospective capture candidate
+
+- 重新 fetch main `1e5a7ac975d2902e27351c2921dc888d7acd32af`，並唯讀核對 production 仍為 `8.15.4-c4-priority-provenance`。
+- Owner 明確批准「Class-B zero-pick rank-input prospective capture 實裝」。採 branch/PR 與 guarded patch，沒有直接修改 baseline Worker.js。
+- 新增 C1 immutable research child，沿用已凍結 source adapter／observer；完整 tuple、PIT 上界、同池 ordinal、async SHA-256、既有 D1 conflict/readback guard。
+- Formal scoring／consensus／rankFn／資金／signal／15m／push／order 受完整 source parity 檢查保護，System 2 不變，provider delta=0。
+- 本紀錄為 candidate，不是 production 已部署或策略有效宣告；production merge/deploy approval 與真正未來交易日 evidence 仍待完成。
+- 下一步與量測：`research/SYSTEM1_ZERO_PICK_CLASS_B_IMPLEMENTATION_20261004.md`。
