@@ -348,3 +348,64 @@ Still `PENDING_SPECIALIST_RETURN`:
 Accepted specialist returns remain: 0 / 12.
 Canonical curriculum remains: 22 domains / 354 active modules.
 Formal Core remains LOCKED.
+
+
+---
+
+## Fourth pre-intake harvest — COV-06
+
+### COV-06 — D10 — Supply-chain Network Centrality / Single-point Failure / Resilience
+
+Room: 07｜產業與供應鏈研究室  
+Current pre-intake state: `PARTIAL_EVIDENCE_RECEIVED`
+
+Evidence found in `SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md`:
+- a canonical supply-chain edge model already exists with CUSTOMER_OF, SUPPLIER_OF, RELATED_PARTY_TRADE, MAJOR_COUNTERPARTY_STOP, CONCENTRATION_ONLY and MANAGEMENT_CLAIM;
+- every usable edge already requires sourcePublishedAt, knownAt, effectiveFrom, effectiveTo/expiry or revalidation state, identity resolution, provenance and confidence;
+- Taiwan PIT feasibility is explicitly PARTIAL rather than assumed complete;
+- missing/unresolved edges remain UNKNOWN;
+- D10-01 and D10-12 ownership/maturity boundaries already exist;
+- physical bottlenecks, capacity constraints, supplier allocation, material tightness, pass-through and issuer exposure are already represented as mechanisms/countermechanisms;
+- the research explicitly rejects synthesizing named edges from generic concentration disclosures.
+
+Contract assessment:
+- Exact Knowledge Definition: PARTIAL
+  - graph/edge semantics exist, but centrality, articulation/single-point-failure and resilience metrics are not yet formally frozen.
+- Existing-module Overlap Matrix: STRONG_PARTIAL
+  - D10-01 and D10-12 ownership boundaries already exist; exact COV-06 absorption matrix still required.
+- Why Current Scope Is Insufficient: PARTIAL
+  - graph provenance exists, but independent incremental need for topology metrics remains to be proven.
+- Taiwan Data Feasibility: STRONG_PARTIAL
+  - bounded named edges/events are PIT-feasible; complete market-wide historical graph remains unavailable.
+- PIT / Replay Implication: STRONG_PARTIAL
+  - knownAt/effective-period/source-version semantics are explicit.
+- Decision Role: STRONG_PARTIAL
+  - supply-chain transmission/context role is explicit; centrality must not become an automatic directional vote.
+- Anti-double-count Rule: STRONG_PARTIAL
+  - named-edge versus concentration-only separation is explicit; topology metrics still need de-duplication against exposure/concentration.
+- Proposed Owner: PARTIAL
+  - D10 is clear; D10-01 versus D10-12 versus a new owner remains open.
+- Maturity Starting Point: N/A until structural recommendation.
+- Terminal Recommendation: MISSING.
+
+Required specialist delta:
+- define graph topology metrics precisely: centrality, articulation/single-point-failure, alternate-path redundancy and resilience;
+- prove whether those metrics can be computed from Taiwan evidence without fabricating missing edges;
+- define UNKNOWN behavior for incomplete graph coverage;
+- test incremental information versus existing concentration/exposure/transmission states;
+- decide whether D10-01 or D10-12 can absorb the capability;
+- provide exactly one terminal recommendation.
+
+No structural curriculum change is permitted yet.
+
+## Updated pre-intake state after fourth harvest
+
+`PARTIAL_EVIDENCE_RECEIVED`:
+`COV-01`, `COV-02`, `COV-06`, `COV-07`, `COV-08`, `COV-09`, `COV-10`, `COV-11`.
+
+Still `PENDING_SPECIALIST_RETURN`:
+`COV-03`, `COV-04`, `COV-05`, `COV-12`.
+
+Accepted specialist returns remain: 0 / 12.
+Canonical curriculum remains: 22 domains / 354 active modules.
+Formal Core remains LOCKED.
