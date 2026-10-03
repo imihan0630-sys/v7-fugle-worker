@@ -1215,3 +1215,19 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - D03 aggregate remains 55.0%; no theory-only promotion.
 - Principal remaining D03 L2 modules: D03-05 pullback origin (D05 data-gated), D03-09 ADX (recursive continuity/replay-gated), D03-10 Bollinger (finite-window continuity/parent-gated).
 - Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+
+## 2026-10-03 Room 06 — D08-03 bounded TWSE history receipt
+
+- Source-only historical replay moved from parser feasibility to real bounded TWSE evidence.
+- Temporary PR #381 intentionally closed without merge after evidence capture.
+- Final verification: System2 Research CI 37122478859 PASS; V8 Regression 37122478893 PASS.
+- Anti-look-ahead failure retained: future month-end 2026-10-31 was rejected by TWSE; collector now caps at completed session 2026-10-02.
+- Corporate-action failure retained: 3593 must bridge last old-share session 2025-12-10 to new-share resume 2025-12-22, not calendar-adjacent dates.
+- 1102 long-history sample = 1,300 official valuation rows; all 252/756/1260 windows operational.
+- Same current 1102 PE/PB receives materially different ranks across windows, so no return-driven best-window selection is allowed.
+- 9904 fiscal denominator transition, 3593 unit-scale break, 7812 new-listing insufficiency and 1101 PE-missing/PB-known semantics were independently observed.
+- Durable artifact: research/d08_twse_bounded_history_source_receipt_20261003_v0_1.json.
+- Maturity remains D08-03 L3/60; no OOS/Shadow return evidence yet.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE; Formal Core LOCKED.
+- Exact next: broader TWSE cohort/scan-date freeze -> immutable source-only percentile snapshots -> baseline/control freeze -> TWSE-only Shadow outcome join. TPEx stays out until its historical machine lane is verified.
