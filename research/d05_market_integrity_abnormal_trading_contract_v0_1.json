@@ -1,0 +1,157 @@
+{
+  "schemaVersion": "D05_MARKET_INTEGRITY_ABNORMAL_TRADING_V0_1",
+  "updatedAt": "2026-10-03T21:41:00+08:00",
+  "domain": "D05",
+  "module": "D05-14",
+  "status": "L2_MECHANISM_AND_FALSIFICATION_READY",
+  "formalCoreImpact": "NONE",
+  "semanticLayers": {
+    "observableAnomaly": "MARKET_DATA_OR_STATISTICAL_STATE",
+    "officialSurveillance": "TWSE_ATTENTION_OR_DISPOSITION",
+    "researchPatternCandidate": "NON_ACCUSATORY_PATTERN_TAG",
+    "legalFinding": "AUTHORITATIVE_EXTERNAL_LEGAL_OBJECT_ONLY"
+  },
+  "allowedStates": [
+    "NORMAL_NO_INTEGRITY_FLAG",
+    "OFFICIAL_ATTENTION",
+    "OFFICIAL_DISPOSITION",
+    "OBSERVED_STATISTICAL_ANOMALY",
+    "EXPLAINED_ABNORMALITY",
+    "INTEGRITY_PATTERN_CANDIDATE",
+    "DATA_INSUFFICIENT",
+    "UNKNOWN"
+  ],
+  "researchOnlyPatternTags": [
+    "SPOOFING_LIKE",
+    "LAYERING_LIKE",
+    "WASH_MATCHED_ORDER_LIKE",
+    "MARKING_OPEN_LIKE",
+    "MARKING_CLOSE_LIKE",
+    "MOMENTUM_IGNITION_LIKE",
+    "ABNORMAL_CANCELLATION_LIKE"
+  ],
+  "prohibitedLabelsWithoutAuthoritativeFinding": [
+    "MANIPULATOR",
+    "ILLEGAL_TRADING_CONFIRMED",
+    "INFORMED_TRADER_CONFIRMED",
+    "FRAUD_CONFIRMED"
+  ],
+  "taiwanSurveillance": {
+    "attentionRole": "OFFICIAL_SURVEILLANCE_STATE_NOT_GUILT_LABEL",
+    "dispositionRole": "EXECUTION_REGIME_INTERVENTION_NOT_DIRECTIONAL_ALPHA",
+    "currentRuleVersionDate": "2026-08-03",
+    "attentionPrimitiveFamilies": [
+      "PRICE_CHANGE",
+      "PRICE_CHANGE_PLUS_VOLUME",
+      "TURNOVER",
+      "BROKER_OR_INVESTOR_CONCENTRATION",
+      "VALUATION_PLUS_TURNOVER_CONCENTRATION",
+      "MARGIN_SECURITIES_LENDING_RELATED",
+      "VOLUME_EXPANSION",
+      "ABSOLUTE_PRICE_DIFFERENCE",
+      "SHORT_SELL_BORROWING_SHARE",
+      "DAY_TRADING_SHARE",
+      "OTHER_SURVEILLANCE_COMMITTEE_ABNORMALITY"
+    ],
+    "dispositionMechanismEffects": [
+      "CONTROLLED_MATCHING_CADENCE",
+      "ADVANCE_COLLECTION_OF_FUNDS_OR_SECURITIES",
+      "BROKER_TRANSACTION_LIMITS_WHEN_APPLICABLE",
+      "MARGIN_TRADING_SUSPENSION_WHEN_APPLICABLE",
+      "OTHER_MARKET_ORDER_OR_SETTLEMENT_SAFETY_MEASURES"
+    ]
+  },
+  "identifiability": {
+    "publicTop5CanObserve": [
+      "DEPTH_STATE",
+      "SPREAD",
+      "SNAPSHOT_PRESSURE",
+      "DEPTH_WITHDRAWAL_PROXY",
+      "PRICE_RESPONSE",
+      "OPEN_CLOSE_ABNORMALITY"
+    ],
+    "publicTop5CannotEstablish": [
+      "BENEFICIAL_OWNER_IDENTITY",
+      "ACCOUNT_LINKAGE",
+      "COLLUSIVE_AGREEMENT",
+      "EXACT_SPOOF_INTENT",
+      "EXACT_PERSONAL_QUEUE_RANK",
+      "TRADER_MOTIVE"
+    ],
+    "accountLinkageRequiredFor": [
+      "WASH_TRADING_ATTRIBUTION",
+      "MATCHED_ORDER_COLLUSION",
+      "COORDINATED_MULTI_ACCOUNT_PATTERN"
+    ]
+  },
+  "falsePositiveControls": [
+    "CORPORATE_ACTIONS",
+    "EARNINGS_GUIDANCE_NEWS",
+    "REGULATORY_OR_LITIGATION_EVENT",
+    "INDEX_REBALANCE",
+    "ETF_CREATION_REDEMPTION",
+    "DERIVATIVES_EXPIRY_HEDGING",
+    "VI",
+    "PRICE_LIMIT",
+    "OFFICIAL_DISPOSITION",
+    "OPENING_CLOSING_AUCTION",
+    "ODD_LOT_OR_SPECIAL_SESSION",
+    "LOW_FREE_FLOAT",
+    "SMALL_CAP",
+    "WIDE_SPREAD",
+    "SHALLOW_DEPTH",
+    "TICK_PRICE_TIER",
+    "MARKET_SECTOR_COMMON_SHOCK"
+  ],
+  "cancellationResearchGuards": [
+    "HIGH_CANCEL_RATE_IS_NOT_SPOOFING",
+    "CONTROL_VOLATILITY_SPREAD_TICK_DEPTH_TIME_OF_DAY_ACTIVITY",
+    "REQUIRE_ORDER_LIFETIME_AND_OPPOSITE_SIDE_EXECUTION_CONTEXT",
+    "REQUIRE_REPETITION_ACROSS_INDEPENDENT_WINDOWS",
+    "KEEP_OUTPUT_AS_PATTERN_CANDIDATE_WITHOUT_ACTOR_INTENT_DATA"
+  ],
+  "auctionBoundary": {
+    "D05_06": "CANONICAL_OWNER_OF_AUCTION_MECHANICS_AND_IMBALANCE_PRIMITIVE",
+    "D05_14": "OWNER_OF_INTEGRITY_INTERPRETATION_AND_FALSE_POSITIVE_CONTROLS",
+    "doubleCountingProhibited": true
+  },
+  "officialLabelStudyContract": [
+    "PRE_LABEL_PRIMITIVE_ABNORMALITY",
+    "OFFICIAL_LABEL_KNOWN_AT",
+    "NEXT_SESSION_MECHANISM_INTERVENTION",
+    "SUBSEQUENT_OUTCOME"
+  ],
+  "antiDoubleCount": [
+    "DO_NOT_RECOUNT_PRICE_VOLUME_ANOMALY_ALREADY_OWNED_BY_D01_D02",
+    "DO_NOT_CREATE_SEPARATE_ALPHA_FROM_SHARED_AUCTION_PRIMITIVE",
+    "DO_NOT_TREAT_ATTENTION_DISPOSITION_AS_FREE_DIRECTIONAL_SIGNAL"
+  ],
+  "maturityGate": {
+    "L2": "CURRENT_MECHANISM_FALSIFICATION_DATA_CONTRACT_COMPLETE",
+    "L3": [
+      "EXACT_OFFICIAL_ATTENTION_DISPOSITION_KNOWN_AT",
+      "VERSIONED_RULE_THRESHOLDS",
+      "PIT_MARKET_DATA_REPLAY",
+      "MECHANISM_STATE",
+      "REPRODUCIBLE_PATTERN_INPUTS",
+      "FALSE_POSITIVE_CONTROLS",
+      "UNKNOWN_HANDLING"
+    ],
+    "L4": [
+      "MULTIPLE_INDEPENDENT_EVENTS",
+      "OOS_OR_SHADOW",
+      "COVERAGE_REPLAY_AUDIT",
+      "LIQUIDITY_TICK_SESSION_ROBUSTNESS",
+      "INCREMENTAL_VALUE_VS_EXISTING_PRIMITIVES",
+      "COST_EXECUTION_IMPACT_IF_USED"
+    ]
+  },
+  "sources": [
+    "TWSE Directions for Announcement or Notice of Attention to Trading Information and Dispositions, amended 2026-08-03",
+    "TWSE Numerical Standards for and Exceptions to Article 4 irregularity standards, amended 2026-08-03",
+    "Taiwan Securities and Exchange Act Article 155",
+    "SEC layering/spoofing enforcement descriptions",
+    "Khomyn & Putnins (2021), Journal of Banking & Finance, order cancellations",
+    "FINRA manipulation surveillance / layering-spoofing descriptions"
+  ]
+}
