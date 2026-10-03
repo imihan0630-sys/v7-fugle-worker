@@ -1152,3 +1152,30 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Raw-byte prospective source gate remains 2/3 over the weekend; outcomes stay NO_GO.
 - FORMAL_OPTIMIZATION_CANDIDATE = NONE; Formal Core LOCKED.
 - Exact next: D03-13 multi-timeframe PIT feasibility, with weekly/daily/15m aggregation-boundary and partial-bar clocks; TI-005/TI-006 efficacy still waits for raw source gate completion.
+
+
+## 2026-10-03 Room 06 — D08-03 dual-market historical valuation replay
+
+- Room/domain: 06｜基本面與估值研究室 / D08-03.
+- Governance: Class-A research-only; latest main/router/tracker reread; Formal Core LOCKED; no outcome join.
+- Evidence:
+  - TWSE BWIBBU_d public historical machine schema verified and header-mapped parser frozen.
+  - 2026-10-02 official examples prove PE unavailable while PB remains usable.
+  - 9904 寶成 2026-08-12 -> 2026-08-13 official fiscal-report-period change (115/1 -> 115/2) coincides with PE 6.60 -> 5.06 and PB 0.47 -> 0.38, freezing denominator-transition context.
+  - TPEx public history exists and current OpenAPI schema is verified; public historical machine transport remains unverified.
+  - Official TPEx EDIS S17 deterministic machine format exists as a licensed lane; no subscription/access was authorized.
+  - 1294 漢田生技 official OTC listing date 2024-09-26 provides a limited-history negative control.
+- Counterevidence/bias:
+  - source-family existence != automated historical replay completeness;
+  - percentile jumps can be denominator-vintage changes rather than repricing;
+  - missing PE must not become numeric cheapness;
+  - TWSE-only evidence cannot generalize to TPEx/full Taiwan;
+  - no hidden/legacy endpoint schema may be frozen from third-party code.
+- Research engineering:
+  - machine contracts/preregistration added on main;
+  - PR #364 research-only parser/guard merged at 6943edc24ca4c1d78c525b33b730d911f245e4fa;
+  - exact-head System2 Research CI 37107054148 PASS, V8 Repair CI 37107054216 PASS, V8 Regression 37107054202 PASS;
+  - System2 log explicitly executed D08 historical valuation replay guard with zero runtime/Formal impact.
+- Maturity: D08-03 remains L3/60. No L4 promotion because no prospective/OOS outcome evidence.
+- Candidate handoff: FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Exact next: bounded source-only TWSE history capture/readback -> preregistered percentiles without returns -> coverage/denominator-transition QA -> then TWSE-only Shadow outcome join. TPEx remains excluded until historical machine transport or authorized licensed source is verified.
