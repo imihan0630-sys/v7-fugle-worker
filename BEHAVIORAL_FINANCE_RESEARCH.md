@@ -489,3 +489,84 @@ D20-08 維持 L2 / 40%。研究狀態由單純事件資料待建，推進為「�
 ### 結論
 D20-06 維持 L2 / 40%。台灣研究證明「可辨識從眾需要投資人類型與時序資料」這條方法論成立，但目前本系統尚未證明擁有足夠的個體／高頻投資人資料或可重播社群版本鏈。公開類別淨額與價格同步不得取代直接行為證據。Formal Core unchanged；FORMAL_OPTIMIZATION_CANDIDATE = NONE。
 
+## 2026-10-04｜D20 Taiwan PIT Feasibility Promotion Audit — Seven L3 Promotions
+
+Canonical maturity rule:
+- L2 = mechanism and falsification defined.
+- L3 = Taiwan point-in-time data feasibility validated.
+- L3 does not claim predictive alpha, OOS efficacy, profitability or Formal eligibility.
+
+### D20-02 Disposition Effect -> L3
+Validated scope is deliberately narrow: TWSE short-side disposition research.
+- Official TWSE data distinguish actual securities-lending short sales from securities borrowing.
+- TWT93U exposes prior/current SBL short-sale balance, sell, return, adjustment and next-session limit by date.
+- Taiwan 2024 literature measures short covering relative to short-sale capital-gains overhang and finds a disposition effect among short sellers.
+- A causal research contract can preserve date, price, prior/current short balance, new short sales, covering/returns, adjustments, rule vintage and formula version.
+- Direct long-account PGR/PLR and full TPEx parity remain UNKNOWN.
+Decision: L3 for the bounded TWSE short-side observable sublane; alpha remains UNKNOWN.
+
+### D20-04 Anchoring / Reference Dependence -> L3
+- Taiwan literature explicitly studies the ratio to the 52-week high as an anchoring reference.
+- Existing validated TWSE/TPEx daily historical source contracts can causally reconstruct the last 252 eligible-session high, current-price/high ratio and high occurrence date.
+- Corporate-action or missing-session continuity uncertainty fails closed to BLOCKED/UNKNOWN.
+- Momentum, breakout, MA-distance and volatility remain mandatory redundancy controls.
+Decision: L3 data feasibility; no claim that the 52-week-high proxy is independent alpha.
+
+### D20-05 Representativeness / Recency -> L3
+- Taiwan evidence separates nearness to the 52-week high from recency of the date on which the high occurred and finds strong regime/time dependence.
+- The 52-week-high date and eligible sessions since that high are causally reconstructable from the validated daily price source.
+- A dated Taiwan monthly survey archive can provide an independent expectation/sentiment receipt for future extrapolation tests.
+- The same survey receipt cannot be counted independently under both D20-05 and D20-10.
+Decision: L3 for research diagnostics; module remains OBSERVATION/RESEARCH_ONLY and identifiability remains unproven.
+
+### D20-07 Investor Attention / Salience -> L3
+- TWSE exposes an official machine-readable current attention-stock endpoint.
+- TPEx provides authoritative attention-stock public/history sources; current integration gaps are not source absence.
+- Exchange designation is treated as an observable salience event, not direct psychology and not directional alpha.
+- Preserve designation/source date, capture clock, rule vintage and raw/source hash.
+- Where intraday first-known is unavailable, replay eligibility begins conservatively at the next eligible session.
+- Pre-designation abnormal return/volume and rule-trigger variables are controls because designation is endogenous to abnormal activity.
+Decision: L3 for the exchange-salience-event sublane; causal effect remains UNKNOWN.
+
+### D20-08 Underreaction / Post-event Drift -> L3
+- D11-09 and D17-13 already validate Taiwan recurring-disclosure and scheduled/unscheduled event-clock feasibility.
+- D20-08 consumes only events with valid sourcePublishedAt/capturedAt and exact replay eligibility.
+- Future D1/D5/D20 outcome sessions are non-overlapping post-event windows with symbol-session/corporate-action guards.
+- Historical monthly-revenue rows lacking original first-known timing remain UNKNOWN/excluded; statutory deadlines may not be backfilled as publication timestamps.
+Decision: L3 for the valid-event-clock sublane; the original historical monthly-revenue clock remains partial and no drift alpha is claimed.
+
+### D20-10 Investor Sentiment -> L3
+- Cathay Financial Holdings publishes a monthly Taiwan economic-confidence survey archive with dated releases.
+- The survey directly publishes stock-market optimism and risk-preference indices, plus survey windows/sample metadata in current releases.
+- This source is distinct from news text, VIX, margin balance and raw price/volume.
+- If exact publication time is absent, conservative replay knownAt is the next Taiwan session after the dated public release.
+- No daily interpolation may create information between monthly releases.
+Decision: L3 for market-level monthly sentiment context; OOS efficacy remains unknown.
+
+### D20-12 Behavioral-vs-Structural Falsification -> L3
+A replayable identification-receipt contract is now feasible using canonical Taiwan source families.
+For each behavioral hypothesis preserve on one common cutoff:
+1. behavioral target proxy receipt;
+2. required structural/microstructure alternative-explanation receipts;
+3. shared primitive receipt links to prevent duplicate votes;
+4. source/version/knownAt/capturedAt;
+5. missingness and UNKNOWN state;
+6. formula/rule version;
+7. common-support eligibility.
+The contract can be instantiated immediately for the L3-ready D20-02/04/05/07/08/10 lanes.
+Decision: L3 source/replay feasibility for the falsification framework; outcome joins remain closed.
+
+### Modules intentionally not promoted
+- D20-01: independent reference-point / investor cost-basis source not yet validated.
+- D20-03: direct overconfidence identifiability remains unresolved.
+- D20-06: replayable investor-identity/leader-follower or independent social-network source remains unproven.
+- D20-09: price reversal is PIT-feasible under D03-05, but an independent behavioral-overreaction causal proxy has not yet passed the source gate.
+- D20-11: no canonical PIT/replay social-language narrative-diffusion source.
+- D20-13: upstream borrow-fee/availability/utilization data contract remains L2; true utilization and cross-market parity remain incomplete.
+
+### Milestone
+D20 now has 7 L3 modules and 6 L2 modules.
+Aggregate D20 maturity = 50.8%.
+Formal Core unchanged.
+FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
