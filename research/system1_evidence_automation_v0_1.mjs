@@ -1,6 +1,7 @@
 import {buildC4AllocationExperiment} from "./system1_c3_c4_c5_shadow_v0_1.mjs";
 import {buildC5SemanticRepairDiagnostic} from "./system1_c5_semantic_repair_v0_2.mjs";
-import {buildP1AConditionalReachUpperBound} from "./system1_p1a_conditional_reach_v0_1.mjs";\nimport {buildP1ASafetyCaptureDemand} from "./system1_p1a_safety_capture_demand_v0_1.mjs";
+import {buildP1AConditionalReachUpperBound} from "./system1_p1a_conditional_reach_v0_1.mjs";
+import {buildP1ASafetyCaptureDemand} from "./system1_p1a_safety_capture_demand_v0_1.mjs";
 import {C3_CAPTURE_SLOTS} from "./system1_c3_capture_contract_v0_1.mjs";
 
 const HEX64=/^[0-9a-f]{64}$/i;
