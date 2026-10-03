@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "CURRICULUM_COVERAGE_AUDIT_V0_1",
+  "updatedAt": "2026-10-03T19:00:00+08:00",
+  "status": "FIRST_PASS_COVERAGE_GAP_REGISTRY_NO_MODULE_ADDITION_EXECUTED",
+  "scope": {
+    "domains": 22,
+    "activeModules": 354
+  },
+  "newDomainCandidates": [],
+  "immediateModuleAdditions": [],
+  "candidates": [
+    {
+      "id": "COV-01",
+      "domain": "D01",
+      "title": "Continuation / Base Pattern Family",
+      "class": "ACTIVE_CURRICULUM_OWNER_GAP",
+      "priority": "HIGH",
+      "evidence": "Flag/Pennant/Triangle/Wedge/Platform/High Tight Flag already appear in pattern governance/System2 research, but no active D01 module owns the family.",
+      "proposal": "Evaluate a new umbrella owner or explicit expansion of D01-07/D01-05; do not create separate modules per named pattern."
+    },
+    {
+      "id": "COV-02",
+      "domain": "D05",
+      "title": "Closing Auction / Auction Imbalance",
+      "class": "SCOPE_EXTENSION_CANDIDATE",
+      "priority": "HIGH",
+      "evidence": "Microstructure research explicitly separates opening/closing auction, but active curriculum only names D05-06 opening auction.",
+      "proposal": "Prefer expanding D05-06 to Opening/Closing Auction & Auction Imbalance rather than adding a new module."
+    },
+    {
+      "id": "COV-03",
+      "domain": "D06",
+      "title": "Retail / Individual Investor Flow",
+      "class": "TRUE_GAP_CANDIDATE",
+      "priority": "MEDIUM",
+      "evidence": "Institutional, margin, lending, branch and ETF flows are covered, but retail/individual investor flow or residual retail order imbalance has no explicit owner.",
+      "proposal": "Validate Taiwan observability first; if only residual-from-total proxy is available, keep research-only and do not infer motive."
+    },
+    {
+      "id": "COV-04",
+      "domain": "D07",
+      "title": "Dividend / Payout Policy & Sustainability",
+      "class": "TRUE_GAP_CANDIDATE",
+      "priority": "HIGH",
+      "evidence": "Dividend event mechanics exist in D11 and capital allocation in D21, but payout ratio, dividend sustainability, payout policy and earnings/cash-flow coverage have no explicit fundamental owner.",
+      "proposal": "Candidate new D07 fundamental module; event mechanics remain D11 and governance capital allocation remains D21."
+    },
+    {
+      "id": "COV-05",
+      "domain": "D08",
+      "title": "Sales-based / Enterprise Multiples",
+      "class": "SCOPE_EXTENSION_CANDIDATE",
+      "priority": "MEDIUM",
+      "evidence": "PE/PB, EV/EBITDA, FCF yield, DCF and peers exist; P/S and EV/Sales are not explicit.",
+      "proposal": "Prefer broadening D08-06 or D08-02 into enterprise/sales multiples rather than a standalone module unless sector-specific evidence demands it."
+    },
+    {
+      "id": "COV-06",
+      "domain": "D10",
+      "title": "Supply-chain Network Centrality / Single-point Failure / Resilience",
+      "class": "SCOPE_EXTENSION_CANDIDATE",
+      "priority": "HIGH",
+      "evidence": "Supply-chain map, asymmetry and issuer exposure exist, but network criticality, alternate sourcing, single-point-of-failure and resilience are not explicit.",
+      "proposal": "Likely extend D10-01/D10-12; new module only if network topology has distinct data/decision contract."
+    },
+    {
+      "id": "COV-07",
+      "domain": "D12",
+      "title": "Futures Term Structure / Calendar Spread / Roll Yield",
+      "class": "TRUE_GAP_CANDIDATE",
+      "priority": "HIGH",
+      "evidence": "Basis, OI, expiry and options term structure are covered, but futures curve/calendar-spread/roll-yield economics have no explicit owner.",
+      "proposal": "Candidate new derivatives module if Taiwan futures historical curve data and replay contract are feasible."
+    },
+    {
+      "id": "COV-08",
+      "domain": "D16",
+      "title": "Dependence-aware Resampling / Block Bootstrap",
+      "class": "SCOPE_EXTENSION_CANDIDATE",
+      "priority": "MEDIUM",
+      "evidence": "Stationary/block bootstrap already exists in D16 promotion-gate research but has no explicit curriculum owner.",
+      "proposal": "Absorb into D16-06 Independent-Date/Date-cluster Inference rather than create a new module."
+    },
+    {
+      "id": "COV-09",
+      "domain": "D19",
+      "title": "Multi-factor Benchmark Models",
+      "class": "SCOPE_EXTENSION_CANDIDATE",
+      "priority": "MEDIUM",
+      "evidence": "CAPM/Beta/Alpha and factor exposure exist, but Fama-French/Carhart/q-style multifactor benchmark construction is not explicit.",
+      "proposal": "Extend D19-01 and/or D19-10; avoid duplicate standalone factor-model module unless benchmark construction has distinct validation needs."
+    },
+    {
+      "id": "COV-10",
+      "domain": "D20",
+      "title": "Confirmation Bias / Belief Perseverance / Conservatism",
+      "class": "TRUE_GAP_CANDIDATE",
+      "priority": "HIGH",
+      "evidence": "Prospect theory, disposition, overconfidence, anchoring, representativeness, herding and attention are covered; biased belief updating/confirmation is not.",
+      "proposal": "Prefer one umbrella belief-updating-bias module rather than separate confirmation/conservatism modules."
+    },
+    {
+      "id": "COV-11",
+      "domain": "D21",
+      "title": "Shareholder Rights / Stewardship / Activism / Voting",
+      "class": "TRUE_GAP_CANDIDATE",
+      "priority": "HIGH",
+      "evidence": "Ownership, board, insiders, pledging, RPT and minority-shareholder risk are covered, but shareholder rights, proxy voting, stewardship and activism have no explicit owner.",
+      "proposal": "Candidate governance module; keep event-specific tender/proxy mechanics outside if owned by D11."
+    },
+    {
+      "id": "COV-12",
+      "domain": "D22",
+      "title": "Debt Seniority / Collateral / Recovery Waterfall",
+      "class": "SCOPE_EXTENSION_CANDIDATE",
+      "priority": "HIGH",
+      "evidence": "Covenant/default, capital structure and distress/recovery exist, but security priority, collateral and recovery waterfall are not explicit.",
+      "proposal": "Prefer extending D22-12 Distress/Recovery and D22-07 Covenant/Default; add a new module only if instrument-level capital-structure data justifies it."
+    }
+  ],
+  "actionVocabulary": [
+    "ADD_MODULE",
+    "EXTEND_EXISTING_SCOPE",
+    "MERGE_INTO_EXISTING",
+    "NOT_A_GAP",
+    "EVIDENCE_INSUFFICIENT"
+  ],
+  "next": "ROUTE_COVERAGE_A_HIGH_PRIORITY_CANDIDATES_TO_SPECIALIST_VALIDATION"
+}
