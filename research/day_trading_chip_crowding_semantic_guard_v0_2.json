@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "DAY_TRADING_CHIP_CROWDING_SEMANTIC_GUARD_V0_2",
+  "supersedes": "research/day_trading_chip_crowding_semantic_guard_v0_1.json",
+  "updated": "2026-10-04 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "question": "How should Taiwan stock-level day-trading activity be interpreted across TWSE and TPEx without confusing surveillance thresholds, same-day turnover, and revised data vintages with directional alpha?",
+  "officialSemantics": {
+    "TWSE": {
+      "product": "Objects and Statistics for Day Trading / 當日沖銷交易標的及統計",
+      "producedAt": "approximately 20:00 Asia/Taipei each trading day",
+      "fields": [
+        "market day-trading volume and market share",
+        "market day-trading buy/sell values and market shares",
+        "security code",
+        "sell-first suspension flag",
+        "day-trading shares",
+        "day-trading buy value",
+        "day-trading sell value"
+      ],
+      "interpretation": "same-session turnover composition, not overnight position stock"
+    },
+    "TPEx": {
+      "product": "現股當沖交易統計資訊",
+      "publication": "published after broker reporting/adjustment workflow completes; exact T-day clock is variable",
+      "fields": [
+        "day-trading shares",
+        "day-trading buy value",
+        "day-trading sell value",
+        "market share metrics"
+      ],
+      "vintageRule": [
+        "T-day value is auxiliary/preliminary",
+        "T+1 may revise T-day values",
+        "T+2 update is the final correct value"
+      ],
+      "consequence": "Historical finalized pages cannot recreate the original T-day first-known snapshot unless an actual prospective receipt was preserved."
+    }
+  },
+  "surveillanceThresholdGuard": {
+    "TWSEArticle14": {
+      "trigger": [
+        "latest six-business-day day-trading volume / total volume > 60%",
+        "previous-business-day day-trading volume / total volume > 60%"
+      ],
+      "exemptions": [
+        "initial listing common shares during no-price-limit period",
+        "ETF and active ETF beneficial certificates",
+        "previous-day turnover <= 5%",
+        "previous-day trading value <= NTD 500 million",
+        "previous-day day-trading volume <= 5,000 trading units",
+        "specified repeat-attention exception under the rule"
+      ],
+      "interpretation": "market-surveillance/attention condition",
+      "forbiddenUse": "Do not reuse 60% as a predictive buy/sell threshold or optimize around it as if regulator surveillance implied return direction."
+    }
+  },
+  "keyFalsification": [
+    "High day-trading ratio can coexist with healthy liquidity/price discovery or fragile speculation; sign is conditional.",
+    "Day-trading buy and sell values are mechanically linked by same-day round trips and do not identify overnight directional inventory.",
+    "A regulatory attention threshold is designed for surveillance, not for forecasting returns.",
+    "ETFs are exempt from the cited high-day-trading surveillance criterion, proving the threshold is not a universal economic crowding boundary.",
+    "TPEx T-day and T+2 values are different vintages; using later finalized history as if known at T-day creates look-ahead.",
+    "A fixed TWSE ~20:00 production clock must not be imputed to TPEx, whose T-day completion time depends on broker reporting and revisions."
+  ],
+  "requiredVintageFields": [
+    "tradeDate",
+    "market",
+    "symbol",
+    "dayTradeShares",
+    "dayTradeBuyValue",
+    "dayTradeSellValue",
+    "stockTotalShares",
+    "stockTotalValue",
+    "dayTradeEligible",
+    "sellFirstSuspensionFlag",
+    "attentionDispositionState",
+    "ruleVersion",
+    "sourceDate",
+    "sourceProduct",
+    "producedAtContract",
+    "requestedAt",
+    "capturedAt",
+    "firstKnownAt",
+    "vintageLabel",
+    "revisionSequence",
+    "isFinal",
+    "sourceHash",
+    "parserVersion",
+    "unknownReasons"
+  ],
+  "vintageLabels": {
+    "TWSE": "T_EOD_2000_CONTRACT when actual receipt confirms same-day product",
+    "TPEx": [
+      "T_PRELIM",
+      "T1_REVISED",
+      "T2_FINAL"
+    ]
+  },
+  "candidateStates": [
+    "DAYTRADE_ATTENTION_HIGH",
+    "DAYTRADE_CROWDING_RISK_CONTEXT",
+    "DAYTRADE_LIQUIDITY_PARTICIPATION",
+    "DAYTRADE_REGULATORY_ATTENTION_CONTEXT",
+    "DAYTRADE_UNKNOWN"
+  ],
+  "maturityDecision": {
+    "module": "D06-14",
+    "level": "L2",
+    "maturityPct": 40,
+    "reason": "TWSE same-day production contract is strong, but TPEx same-day first-known clock is variable and historical T+2 finalized values cannot recreate T-day PIT; prospective cross-market receipts are still required before L3."
+  },
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / TWSE_SOURCE_CLOCK_VERIFIED / TPEX_MULTI_VINTAGE_SEMANTICS_FROZEN / SURVEILLANCE_THRESHOLD_NOT_ALPHA / PROSPECTIVE_RECEIPT_REQUIRED / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "exactNext": "On the next valid trading day, preserve an actual T-day TPEx receipt with capturedAt/hash and later T+1/T+2 revisions for the same date. Compare vintage deltas outcome-blind. Keep TWSE 20:00 and TPEx variable clocks separate. No standalone day-trading score or 60% alpha threshold."
+}
