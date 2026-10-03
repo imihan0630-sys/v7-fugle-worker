@@ -843,3 +843,16 @@ Exact next: cross-industry controls and failed/delayed/cancelled strategic-actio
 
 Exact next:
 BR-057 product/application exposure denominators; BR-058 prospective action receipts before outcomes; earlier blocked/prospective BR lanes remain open and are not overwritten.
+
+
+## BR-057 / BR-058 continuation
+
+- BR-057 freezes PCB/ABF issuer product/application exposure with a strict denominator firewall. 8046/3189 product scope is evidenced, but compatible ABF/AI revenue numerators remain UNKNOWN; no synthetic exposure percentage is allowed.
+- BR-058 freezes the first prospective D09-14 firm-action cohort before outcomes: UMC phased expansion and Foxconn/Mitsubishi Electric MOU. Future operational/financial/share/stock outcomes remain closed.
+- D09-13 remains L3/60%; D09-14 remains L3/60%. No L4 promotion.
+- D09-07 remains L2 because repeated independent PIT leadership snapshots are still insufficient.
+- D09-12 remains L2 because executable market-regime producer/common-support interaction evidence is not yet promotion-grade.
+- Formal Core unchanged.
+
+Exact next:
+BR-059 compatible issuer product/application revenue numerator evidence; BR-060 prospective action milestone appends. Earlier BR-035/040/043/045 lanes remain open under their original gates.
