@@ -163,4 +163,4 @@ console.log(JSON.stringify({
   ok:true,assertions:n,failClosedIncompleteDates:true,equalDatePrimary:true,dateClustered:true,
   minIndependentDates:15,minRegimes:2,directionAgreementFloorPct:70,
   positiveEvidenceNotFormalCandidate:true,autoFormalSwitch:false,formalCoreImpact:false
-}));
+}));\nawait import("./test_system1_zero_pick_counterfactual_comparator_v0_1.mjs");\n
