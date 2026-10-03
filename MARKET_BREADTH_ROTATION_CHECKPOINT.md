@@ -829,3 +829,17 @@ Exact next: BR-052 firm-specific competitive-action/position receipt; H01 owner/
 - 00 governance still owns final routing/scope wording reconciliation; no retirement or Formal Core change.
 
 Exact next: cross-industry controls and failed/delayed/cancelled strategic-action receipts before any outcome/score claim.
+
+
+## BR-053 through BR-056 / H01 specialist return submitted
+
+- BR-053 adds Taiwan steel as a second structural control: integrated BF/BOF and scrap-EAF producers require route/product/end-market decomposition.
+- BR-054 adds non-semiconductor firm actions plus Foxconn/Lordstown as a bounded failed/suspended strategic-action control.
+- BR-055 adds Taiwan PCB as a third industry control and proves broad industry/theme growth can coexist with opposite product/application states and concentrated upstream material power.
+- BR-056 freezes native strategic-action outcome semantics and forbids an artificial cross-action scalar success score.
+- D09-13 remains L3/60%; D09-14 remains L3/60%. No L4 claim.
+- H01 specialist packet is now recorded in the canonical specialist intake ledger as evidence received, with KEEP_SEPARATE proposed and 00 Dependency Audit / owner review still required.
+- No merge, retirement, module-count change or Formal Core change.
+
+Exact next:
+BR-057 product/application exposure denominators; BR-058 prospective action receipts before outcomes; earlier blocked/prospective BR lanes remain open and are not overwritten.
