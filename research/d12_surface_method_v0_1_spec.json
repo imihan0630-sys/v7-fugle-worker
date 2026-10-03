@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "0.1",
+  "name": "TAIFEX option-chain Surface Method V0.1 research contract",
+  "modules": [
+    "D12-06",
+    "D12-07",
+    "D12-11",
+    "D12-13",
+    "D12-14",
+    "D12-15",
+    "D12-16"
+  ],
+  "status": "METHOD_V0_1_FROZEN__PARSER_RAW_PARENT_PENDING__OUTCOMES_CLOSED",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-10-03T18:29:06+08:00",
+  "parentSourceClass": "TAIFEX historical/statistical option daily report for replay QA only unless strict first-known attestation exists.",
+  "quoteSelection": {
+    "primaryPrice": "mid=(bestBid+bestAsk)/2 only when bid>0, ask>0 and ask>=bid",
+    "settlementUse": "separate EOD comparison lane only; never silently mix settlement with bid/ask midpoint",
+    "lastTradeUse": "QA/context only unless a separate method version explicitly chooses it",
+    "zeroBid": "exclude from primary IV/surface fit; retain zeroBidFlag",
+    "crossedMarket": "reject",
+    "missingSide": "exclude from primary fit",
+    "duplicateSeries": "reject or require exact provenance/version resolution before fit"
+  },
+  "seriesIdentity": [
+    "product",
+    "session",
+    "sourceDate",
+    "contractDate",
+    "expiryMonthWeek",
+    "expiryDate",
+    "strike",
+    "callPut"
+  ],
+  "modelInputs": {
+    "forwardPrimary": "same-expiry futures or parity-derived forward under separately versioned method",
+    "riskFreeRate": "official rate source with knownAt semantics",
+    "dividendCarry": "explicit forward/dividend convention; never implicit",
+    "timeToExpiry": "exact clock to contract settlement/expiry event",
+    "ivSolver": "bounded root solve with option-price no-arbitrage bounds; failed solve => UNKNOWN"
+  },
+  "methodA": {
+    "id": "V0_1_LINEAR_TOTAL_VARIANCE_NO_EXTRAPOLATION",
+    "procedure": [
+      "convert eligible options to implied variance under frozen model/input convention",
+      "use log-moneyness relative to frozen forward",
+      "fit/interpolate each expiry slice only inside clean observed strike convex hull",
+      "linear interpolation in total implied variance",
+      "no extrapolation outside eligible hull"
+    ]
+  },
+  "methodB": {
+    "id": "V0_1_SVI_SENSITIVITY_ONLY",
+    "role": "secondary method-sensitivity comparison, not primary feature source until static-arbitrage checks pass",
+    "rules": [
+      "same parent quotes as Method A",
+      "no outcome-based parameter choice",
+      "record fit failure and arbitrage state",
+      "no silent extrapolation"
+    ]
+  },
+  "qualityMetrics": [
+    "eligibleQuoteCount",
+    "strikeCoverage",
+    "expiryCoverage",
+    "zeroBidShare",
+    "relativeSpreadDistribution",
+    "ivSolveFailureRate",
+    "surfaceFitError",
+    "extrapolationShare",
+    "staticArbitrageCheckState"
+  ],
+  "staticArbitrageQA": [
+    "option price within intrinsic/upper bounds under frozen convention",
+    "call-price monotonicity in strike on comparable expiry/forward state",
+    "strike convexity/butterfly consistency where data density permits",
+    "nonnegative implied variance",
+    "calendar consistency checked only on comparable moneyness/forward conventions"
+  ],
+  "featureOrder": [
+    "raw ATM/near-ATM IV",
+    "simple downside/upside skew and near/far term structure",
+    "surface level/slope/curvature",
+    "IV-RV/VRP proxy after physical-volatility forecast is independently frozen"
+  ],
+  "falsification": [
+    "A complex surface feature is rejected/downgraded if its sign or rank changes materially between pre-specified reasonable Method A and Method B.",
+    "Surface feature must beat raw moneyness/DTE/OI/quote-quality/simple-skew baselines.",
+    "No factor is computed when quote coverage is too sparse; quality threshold will be frozen from source-only distribution before outcomes.",
+    "Historical EOD replay proves method stability only, not 18:10 PIT availability."
+  ],
+  "maturityImpact": "No L3 promotion. Method identity is frozen but real raw-parent parser/readback and independent-date evidence remain pending.",
+  "exactNext": [
+    "Acquire one official TAIFEX raw daily option parent and freeze header mapping.",
+    "Implement pure parser/validator with adversarial fixtures.",
+    "Run Method A on source-only rows, then Method B on identical rows; compare method disagreement before outcomes.",
+    "Add official TAIFEX Delta as an external model-state baseline with publication/effective-date versioning.",
+    "Keep Formal locked."
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D12-17",
+  "name": "Option payoff structures / Put-Call Parity / synthetic positions / strategy semantics",
+  "status": "CONCEPT_AND_FALSIFICATION_FROZEN__TAIWAN_PIT_EXECUTION_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-10-03T18:29:06+08:00",
+  "txoContractFacts": {
+    "source": "TAIFEX TXO contract specification",
+    "exerciseStyle": "EUROPEAN_ONLY_AT_EXPIRY",
+    "settlement": "CASH_SETTLED",
+    "multiplier": "TWD 50 per index point",
+    "underlying": "TAIEX",
+    "expirySettlement": "Final settlement price based on simple average of underlying index values provided during the final 30 minutes before cash-market close on expiry date."
+  },
+  "parity": {
+    "preferredForwardForm": "C - P = D(T) * (F - K), for same expiry/strike and a consistently defined forward/discount factor.",
+    "spotCarryForm": "C - P = S*exp(-qT) - K*exp(-rT) under simplified continuous-carry assumptions.",
+    "txoInterpretation": "Long Call - Short Put replicates a forward-like expiry payoff S_T-K for the same strike/expiry; it is not automatically identical to holding the cash index/ETF because financing, dividends/carry, basis and settlement definitions differ.",
+    "sameSeriesRequirements": [
+      "same underlying economic settlement",
+      "same strike",
+      "same expiry",
+      "same observation clock",
+      "same session",
+      "consistent discount/forward convention"
+    ]
+  },
+  "syntheticPositions": {
+    "longForwardLike": "Long Call + Short Put at same K,T",
+    "shortForwardLike": "Short Call + Long Put at same K,T",
+    "longCallLike": "Long underlying/forward-like exposure + Long Put under consistent carry convention",
+    "longPutLike": "Short underlying/forward-like exposure + Long Call under consistent carry convention",
+    "guard": "Use payoff equivalence, not execution equivalence. Margin, funding, spread, liquidity, settlement, exercise style and capital usage can differ."
+  },
+  "strategyFamilies": {
+    "directional": [
+      "long/short calls or puts",
+      "vertical spreads",
+      "synthetic forward-like positions"
+    ],
+    "volatility": [
+      "long/short straddle",
+      "long/short strangle"
+    ],
+    "shape": [
+      "butterfly",
+      "condor",
+      "ratio structures"
+    ],
+    "timeStructure": [
+      "calendar/diagonal spreads"
+    ],
+    "rule": "A strategy is a payoff transformation. It is not an alpha source unless entry state, IV/surface, path, costs and exit rules add validated information."
+  },
+  "parityResidual": {
+    "researchRole": "First a quote/source-quality and cross-instrument consistency diagnostic; only later a market-state candidate.",
+    "formulaConcept": "Observed call - put difference minus model-consistent discounted forward-minus-strike value.",
+    "nonArbitrageGuard": "A nonzero mid-quote residual is not automatically executable arbitrage.",
+    "requiredExecutionControls": [
+      "bid/ask on every leg",
+      "synchronized timestamps",
+      "futures/forward bid-ask if used",
+      "fees/taxes",
+      "tick size",
+      "margin/funding",
+      "position limits",
+      "price-limit/dynamic-stability rules",
+      "latency",
+      "available size"
+    ]
+  },
+  "afterHours": {
+    "issue": "Cash index is not continuously trading while TXO/TX night trading continues.",
+    "rule": "After-hours parity should use a frozen forward/futures convention rather than silently carrying the last cash index as current spot.",
+    "settlementGuard": "TXO final settlement uses a cash-index averaging procedure; a futures price is a forward proxy, not the settlement object itself."
+  },
+  "falsification": [
+    "Test parity residual using executable bid/ask bands, not midpoints only.",
+    "Asynchronous quote placebo: widen synchronization window and measure apparent residual inflation.",
+    "Compare residual against quote spread, depth and zero-bid state; if residual is explained by illiquidity, classify DATA_QUALITY rather than alpha.",
+    "Separate regular-session and after-hours parity because underlying/forward observability differs.",
+    "Test whether strategy payoff metrics add anything beyond simpler Greeks/IV/skew/surface state.",
+    "Include transaction costs, margin/capital usage and theta/vega path before economic-value claims.",
+    "No strategy optimization from realized returns until entry/exit rules are frozen."
+  ],
+  "researchCandidates": [
+    "putCallParityResidualExecutableBand",
+    "syntheticForwardBasis",
+    "parityResidualDispersionAcrossStrikes",
+    "strategyBreakEvenGeometry",
+    "definedRiskCapitalEfficiency",
+    "volatilityStrategyCarryVsConvexityState"
+  ],
+  "prohibitedClaims": [
+    "Long call + short put always equals owning Taiwan stocks.",
+    "Mid-quote parity deviation equals free arbitrage.",
+    "A straddle with positive Gamma is automatically profitable.",
+    "Defined-risk spread is lower risk without specifying horizon, gap risk and max loss.",
+    "Strategy backtest may choose strikes/expiries after seeing returns."
+  ],
+  "maturityDecision": {
+    "from": "L0",
+    "to": "L2",
+    "reason": "Contract style, parity/synthetic semantics, execution-equivalence limits, after-hours basis issues and falsification hierarchy are defined. No Taiwan PIT executable-leg/OOS evidence for L3."
+  },
+  "exactNext": [
+    "Use the same permitted TAIFEX parent option rows as D12-16 to build parity-quality diagnostics before outcomes.",
+    "Freeze synchronized quote/executable-band rules and forward source for regular versus after-hours sessions.",
+    "Compare parity residual to bid/ask/liquidity before treating it as market information.",
+    "Add strategy payoff engine only as deterministic mechanics QA; no outcome-driven strategy ranking.",
+    "Accumulate source-attested independent dates before L3/Formal consideration."
+  ]
+}
