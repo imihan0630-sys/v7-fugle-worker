@@ -41,6 +41,9 @@ export function buildC2ProspectivePairedLedger(pages,{watchUntil=null,revalidate
     const swingLifecycle=challenge(raw,source.decisionAt,{strategy:"SWING",watchUntil,revalidatedAt});
     const missingSafety=SAFETY.filter(id=>observed.gates[id]?.status!=="PASS");
     const selectionContext={
+      priorityScore:typeof raw.formalResult?.priorityScore==="number"&&Number.isFinite(raw.formalResult.priorityScore)?raw.formalResult.priorityScore:null,
+      priorityScoreProvenance:raw.formalResult?.priorityScoreProvenance==="FORMAL_RUNTIME_RESULT_AT_C1_DECISION"
+        ? raw.formalResult.priorityScoreProvenance : null,
       close:typeof raw.feature?.close==="number"&&Number.isFinite(raw.feature.close)?raw.feature.close:null,
       depthScore:typeof raw.feature?.depthScore==="number"&&Number.isFinite(raw.feature.depthScore)?raw.feature.depthScore:null,
       spreadPercent:typeof raw.feature?.spreadPercent==="number"&&Number.isFinite(raw.feature.spreadPercent)?raw.feature.spreadPercent:null,
