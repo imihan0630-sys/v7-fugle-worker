@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "CURRICULUM_H13_H20_ANTI_DOUBLE_COUNT_ACCEPTANCE_CONTRACT_V0_1",
+  "updatedAt": "2026-10-03T11:25:00+08:00",
+  "defaultClassification": "KEEP_SEPARATE_DEPENDENCY_CHAIN",
+  "allowedTerminalClassifications": [
+    "KEEP_SEPARATE",
+    "SCOPE_DEDUP_ONLY",
+    "MERGE_ELIGIBLE",
+    "EVIDENCE_INSUFFICIENT"
+  ],
+  "commonRules": [
+    "ONE_PRIMITIVE_RECEIPT",
+    "TRANSFORMATION_NOT_AUTOMATICALLY_INDEPENDENT",
+    "PRODUCER_CONSUMER_LINKAGE",
+    "CONTEXT_VS_SIGNAL_SEPARATION",
+    "MATURITY_ISOLATION",
+    "FORMAL_ISOLATION"
+  ],
+  "clusters": [
+    {
+      "id": "H13",
+      "modules": [
+        "D07-06",
+        "D22-03"
+      ],
+      "boundary": "ACCOUNTING_LEVERAGE_TO_CREDIT_STRUCTURE"
+    },
+    {
+      "id": "H14",
+      "modules": [
+        "D06-11",
+        "D11-14"
+      ],
+      "boundary": "INDEX_EVENT_TO_PASSIVE_FLOW"
+    },
+    {
+      "id": "H15",
+      "modules": [
+        "D11-10",
+        "D04-09",
+        "D17-12"
+      ],
+      "boundary": "GAP_EVENT_TO_TAIL_STATE_TO_POST_EVENT_PATH"
+    },
+    {
+      "id": "H16",
+      "modules": [
+        "D05-02",
+        "D11-11",
+        "D01-09",
+        "D04-10"
+      ],
+      "boundary": "PRICE_LIMIT_MECHANICS_TO_EXIT_PATTERN_VOLATILITY"
+    },
+    {
+      "id": "H17",
+      "modules": [
+        "D13-06",
+        "D22-04",
+        "D07-18"
+      ],
+      "boundary": "RISK_FREE_RATE_TO_ISSUER_DEBT_COST_TO_WACC"
+    },
+    {
+      "id": "H18",
+      "modules": [
+        "D07-19",
+        "D21-07"
+      ],
+      "boundary": "PROJECT_ECONOMICS_TO_MANAGEMENT_ALLOCATION_QUALITY"
+    },
+    {
+      "id": "H19",
+      "modules": [
+        "D03-04",
+        "D19-04",
+        "D19-09"
+      ],
+      "boundary": "TIME_SERIES_TO_CROSS_SECTIONAL_TO_RESIDUAL_MOMENTUM"
+    },
+    {
+      "id": "H20",
+      "modules": [
+        "D01-05",
+        "D02-03",
+        "D04-07"
+      ],
+      "boundary": "BREAKOUT_PRICE_TO_VOLUME_TO_VOLATILITY_INTERACTION"
+    }
+  ],
+  "formalCoreImpact": "NONE",
+  "curriculumCountImpact": "NONE"
+}
