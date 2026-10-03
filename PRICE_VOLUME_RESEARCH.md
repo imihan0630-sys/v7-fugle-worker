@@ -13780,3 +13780,31 @@ D02-10: L3/60.
 D02-12: L3/60.
 D02 aggregate: 51.7%.
 Formal Core remains LOCKED.
+
+# Pre-PVE-240 — D02 58.3% maturity closure candidate (2026-10-04)
+
+This stage closes four L3 data-feasibility questions without using outcome performance.
+
+D02-05:
+observable extreme participation is separable from unobservable distribution motive.
+
+D02-07:
+the bounded signed-volume/OBV-family comparator now has executable continuity replay.
+
+D02-09:
+repaint-safe pivot chronology and executable volume-path continuity can be joined without look-ahead.
+
+D02-11:
+long-horizon volume capacity and current execution-liquidity context are PIT-observable under separate clocks; the defective PV illiquidity helper is not accepted as truth.
+
+D02-08 remains intentionally unpromoted because dynamic microstructure completeness is still absent.
+
+If canonical tracker/router readback agrees:
+D02-05 = L3/60.
+D02-07 = L3/60.
+D02-09 = L3/60.
+D02-11 = L3/60.
+D02 aggregate = 58.3%.
+
+Formal Core remains LOCKED.
+PVE cursor remains 239.
