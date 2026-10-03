@@ -669,3 +669,59 @@ Gate 7 remains CLOSED.
 No hypothesis promotion/rejection on economic outcomes.
 No FORMAL_OPTIMIZATION_CANDIDATE.
 Formal Core remains LOCKED.
+
+
+## Pre-PVE-240 OBV / divergence overlay — 2026-10-03
+
+### D02-07 OBV
+Status: COMPARATOR_ONLY / EXACT_DUPLICATE_PRUNING_REQUIRED.
+
+Do not separately test:
+- raw normalizedOBVChange20;
+- signedVolumeBalance20;
+when computed on the same rows, because they are exactly identical.
+
+Do not outcome-test a generic `obvSlope` until slope estimator semantics are frozen.
+
+Primary V0.1 residual comparator:
+`signedVolumeBalance20`.
+
+Future residual sequence:
+A price path;
+B + direct volume/RVOL/turnover;
+C + response/persistence/acceptance;
+D + signedVolumeBalance20.
+
+Only D-vs-C measures residual OBV-family value.
+
+### D02-09 divergence
+Status: RELATIONAL_TRANSFORM / NO_PRIMITIVE_VOTE / PIT_VOLUME_LINEAGE_BLOCKED.
+
+Primary typed families:
+- PIVOT_SIGNED_VOLUME;
+- PARTICIPATION_TRAJECTORY.
+
+PIVOT_SIGNED_VOLUME must reuse D03/Pattern confirmed-pivot chronology and legal confirmation clock.
+
+No visual/hindsight pivot choice.
+No all-pair scan.
+No best-window search.
+No pivot-to-confirmation return credited as post-signal outcome.
+
+D02-09 does not advance to L3 because daily volume corporate-action/unit continuity is unresolved.
+
+### D02-08 accumulation/distribution
+Status remains:
+INDEPENDENT_MECHANISM_DATA_GATED.
+
+If the evidence input is only:
+- Effort-vs-Result;
+- signed volume / OBV;
+- price-volume divergence;
+then D02-08 adds narrative interpretation rather than a new observable.
+
+Only a separate PIT-valid microstructure family may reopen standalone-mechanism identifiability.
+
+No hypothesis promotion on outcomes.
+No FORMAL_OPTIMIZATION_CANDIDATE.
+PVE cursor remains 239.
