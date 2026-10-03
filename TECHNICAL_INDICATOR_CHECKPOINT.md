@@ -2484,3 +2484,20 @@ Exact next:
 - wait for D05 promotion-grade pressure/replenishment evidence for the liquidity-origin branch;
 - keep primary TI-005/TI-006 efficacy queue unchanged;
 - Formal Core unchanged.
+
+
+## TI-526 through TI-533 — ADX / Bollinger L3 blocker audit (2026-10-03)
+
+- `research/D03_ADX_BOLLINGER_L3_BLOCKER_AUDIT_V0_1.md` freezes the current L3 readiness boundary.
+- ADX formula/mechanics are frozen, but recursive-state PIT certification still requires canonical TECHNICAL_CONTINUITY + state lineage + replay-certified immutable parent data. Deeper history alone is insufficient.
+- Bollinger20x2 is finite-window and needs only a certified 20 eligible-session continuity window, making it simpler than ADX, but the physical continuity/parent receipts are still not armed.
+- D03-09 ADX remains L2/40.
+- D03-10 Bollinger remains L2/40.
+- D03 aggregate remains 55.0%.
+- No outcome inference and no Formal optimization candidate.
+
+Exact continuation:
+1. shared TECHNICAL_CONTINUITY + immutable parent observer path must physically exist;
+2. Bollinger L3 feasibility can be tested first on a clean 20-session window;
+3. ADX additionally needs canonical replay/trusted-state certification;
+4. TI-005/TI-006 empirical priority remains unchanged.
