@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "HYBRID_ROLE_EXECUTION_REGISTRY_V0_1",
+  "updatedAt": "2026-10-03T11:45:00+08:00",
+  "status": "ROLE_ELIGIBILITY_GOVERNANCE_COMPLETE_SPECIALIST_VALIDATION_PENDING",
+  "formalCoreImpact": "NONE",
+  "parentRefs": [
+    "shared-knowledge/HYBRID_SELECTION_EXECUTION_DIRECTIVE_V0_1.md",
+    "shared-knowledge/PROBABILISTIC_SELECTION_GOVERNANCE_V0_1.md",
+    "shared-knowledge/HYBRID_ROLE_ELIGIBILITY_AUDIT_20261003_V0_1.md",
+    "shared-knowledge/HYBRID_ROLE_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md"
+  ],
+  "groups": [
+    {
+      "id": "R01",
+      "riskFamily": "DATA_INTEGRITY_PIT_PROVENANCE",
+      "rooms": "11 + source rooms",
+      "status": "VALIDATION_PENDING"
+    },
+    {
+      "id": "R02",
+      "riskFamily": "EXECUTION_ORDERABILITY",
+      "rooms": "04 + 10 + 08",
+      "status": "VALIDATION_PENDING"
+    },
+    {
+      "id": "R03",
+      "riskFamily": "PORTFOLIO_RISK_SIZING",
+      "rooms": "10",
+      "status": "VALIDATION_PENDING"
+    },
+    {
+      "id": "R04",
+      "riskFamily": "MACRO_REGIME",
+      "rooms": "09 + 11",
+      "status": "VALIDATION_PENDING"
+    },
+    {
+      "id": "R05",
+      "riskFamily": "BEHAVIORAL_GOVERNANCE_IDENTIFIABILITY",
+      "rooms": "13 + 14 + source rooms",
+      "status": "VALIDATION_PENDING"
+    },
+    {
+      "id": "R06",
+      "riskFamily": "FLOW_LENDING_CROWDING",
+      "rooms": "05 + 10 + 12 + 13",
+      "status": "VALIDATION_PENDING"
+    },
+    {
+      "id": "R07",
+      "riskFamily": "CORPORATE_ACTION_EVENT_CONTINUITY",
+      "rooms": "08 + 10",
+      "status": "VALIDATION_PENDING"
+    },
+    {
+      "id": "R08",
+      "riskFamily": "VALIDATION_DECISION_ARCHITECTURE",
+      "rooms": "11",
+      "status": "VALIDATION_PENDING"
+    }
+  ],
+  "system1Use": "TRACK_A2_GOVERNANCE_INPUT_ONLY",
+  "system2Use": "TRACK_B1_GOVERNANCE_INPUT_ONLY",
+  "universal354VoteProhibited": true
+}
