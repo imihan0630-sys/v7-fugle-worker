@@ -220,9 +220,11 @@ export async function runDailyShadowHotHistoryBootstrapV0_1({
     db, asOf: clock, sessionCount, fetchImpl, tradingDateResolver,
   });
 
-  const receipts = [];
-  let insertedBarCount = 0;
-  let reusedExistingCount = 0;
+  // Phase 1: fetch and validate every required market/date before any D1 mutation.
+  // This prevents a transient failure on the second market from creating a
+  // new half-populated date in this run. Existing rows from an interrupted
+  // earlier run are handled idempotently in phase 2.
+  const sourcePlans = [];
   for (const marketDate of plan.targetDates) {
     for (const market of ["TWSE", "TPEX"]) {
       const source = await historicalFetch({
@@ -230,6 +232,8 @@ export async function runDailyShadowHotHistoryBootstrapV0_1({
         marketDate,
         observedAt: clock,
         fetchImpl,
+        retryAttempts: 5,
+        retryDelayMs: 1000,
       });
       if (!source || source.state !== "READY" || source.marketDate !== marketDate
         || source.sourceDateEvidence !== marketDate) {
@@ -241,81 +245,90 @@ export async function runDailyShadowHotHistoryBootstrapV0_1({
       if (Number(source.ordinarySymbolCount || 0) > HOT_HISTORY_MAX_SOURCE_ROWS_PER_MARKET_DATE) {
         throw new Error("HOT_HISTORY_SOURCE_COVERAGE_UNEXPECTEDLY_HIGH:" + market + ":" + marketDate);
       }
+      sourcePlans.push(deepFreeze({ marketDate, market, source }));
+    }
+  }
 
-      const existing = await existingDateRows(db, marketDate, market);
-      const pending = [];
-      let reused = 0;
-      for (const row of source.rows || []) {
-        const key = [market, row.symbol, marketDate, "RAW"].join("|");
-        const prior = existing.get(key);
-        if (prior) {
-          if (!economicMatch(prior, row)) {
-            throw new Error("HOT_HISTORY_EXISTING_ECONOMIC_CONFLICT:" + key);
-          }
-          if (Number(prior.pit_replay_eligible) !== 1 || !prior.available_at
-            || Date.parse(prior.available_at) > Date.parse(clock)) {
-            throw new Error("HOT_HISTORY_EXISTING_PIT_INELIGIBLE:" + key);
-          }
-          reused += 1;
-          continue;
+  // Phase 2: only after the full source set is valid do we inspect existing
+  // canonical rows and persist missing immutable bars.
+  const receipts = [];
+  let insertedBarCount = 0;
+  let reusedExistingCount = 0;
+  for (const item of sourcePlans) {
+    const { marketDate, market, source } = item;
+    const existing = await existingDateRows(db, marketDate, market);
+    const pending = [];
+    let reused = 0;
+    for (const row of source.rows || []) {
+      const key = [market, row.symbol, marketDate, "RAW"].join("|");
+      const prior = existing.get(key);
+      if (prior) {
+        if (!economicMatch(prior, row)) {
+          throw new Error("HOT_HISTORY_EXISTING_ECONOMIC_CONFLICT:" + key);
         }
-        pending.push({
-          marketDate,
-          market,
-          symbol: row.symbol,
-          companyName: row.companyName || null,
-          priceSpace: "RAW",
-          open: row.open,
-          high: row.high,
-          low: row.low,
-          close: row.close,
-          volumeShares: row.volumeShares,
-          tradeValue: row.tradeValue,
-          transactions: row.transactions,
-          change: row.change,
-          continuityState: "UNVERIFIED",
-          observedAt: clock,
-          availableAt: clock,
-          availabilityBasis: "PROSPECTIVE_OBSERVATION",
-          sourceFields: row.sourceFields,
-          sourceRowHash: row.sourceRowHash || await sha256Hex(row.sourceFields),
-        });
+        if (Number(prior.pit_replay_eligible) !== 1 || !prior.available_at
+          || Date.parse(prior.available_at) > Date.parse(clock)) {
+          throw new Error("HOT_HISTORY_EXISTING_PIT_INELIGIBLE:" + key);
+        }
+        reused += 1;
+        continue;
       }
-
-      let persisted = null;
-      if (pending.length) {
-        const batch = await buildHistoricalStoreIngestBatch({
-          batchId: "S2-HOT-HISTORY:" + id + ":" + market + ":" + marketDate,
-          datasetLane: "CORE_2017_PLUS",
-          sourceId: SOURCE_IDS[market],
-          sourceName: SOURCE_NAMES[market],
-          sourceUrl: source.sourceUrl,
-          capturedAt: clock,
-          rows: pending,
-        });
-        persisted = await executeHistoricalIngestBatchBulkV0_1({
-          db,
-          ingestBatch: batch,
-          lookupChunkSize: 80,
-          insertChunkSize: 80,
-        });
-        await verifyInsertedRows(db, toHistoricalA1BarRows(batch));
-        insertedBarCount += Number(persisted.insertedBarCount || 0);
-      }
-      reusedExistingCount += reused;
-      receipts.push(deepFreeze({
+      pending.push({
         marketDate,
         market,
-        sourceId: source.sourceId,
-        sourceDateEvidence: source.sourceDateEvidence,
-        sourceOrdinarySymbolCount: source.ordinarySymbolCount,
-        pendingRowCount: pending.length,
-        reusedExistingCount: reused,
-        persistenceState: persisted?.state || "NO_MISSING_ROWS",
-        insertedBarCount: Number(persisted?.insertedBarCount || 0),
-        readbackVerified: pending.length ? true : null,
-      }));
+        symbol: row.symbol,
+        companyName: row.companyName || null,
+        priceSpace: "RAW",
+        open: row.open,
+        high: row.high,
+        low: row.low,
+        close: row.close,
+        volumeShares: row.volumeShares,
+        tradeValue: row.tradeValue,
+        transactions: row.transactions,
+        change: row.change,
+        continuityState: "UNVERIFIED",
+        observedAt: clock,
+        availableAt: clock,
+        availabilityBasis: "PROSPECTIVE_OBSERVATION",
+        sourceFields: row.sourceFields,
+        sourceRowHash: row.sourceRowHash || await sha256Hex(row.sourceFields),
+      });
     }
+
+    let persisted = null;
+    if (pending.length) {
+      const batch = await buildHistoricalStoreIngestBatch({
+        batchId: "S2-HOT-HISTORY:" + id + ":" + market + ":" + marketDate,
+        datasetLane: "CORE_2017_PLUS",
+        sourceId: SOURCE_IDS[market],
+        sourceName: SOURCE_NAMES[market],
+        sourceUrl: source.sourceUrl,
+        capturedAt: clock,
+        rows: pending,
+      });
+      persisted = await executeHistoricalIngestBatchBulkV0_1({
+        db,
+        ingestBatch: batch,
+        lookupChunkSize: 80,
+        insertChunkSize: 80,
+      });
+      await verifyInsertedRows(db, toHistoricalA1BarRows(batch));
+      insertedBarCount += Number(persisted.insertedBarCount || 0);
+    }
+    reusedExistingCount += reused;
+    receipts.push(deepFreeze({
+      marketDate,
+      market,
+      sourceId: source.sourceId,
+      sourceDateEvidence: source.sourceDateEvidence,
+      sourceOrdinarySymbolCount: source.ordinarySymbolCount,
+      pendingRowCount: pending.length,
+      reusedExistingCount: reused,
+      persistenceState: persisted?.state || "NO_MISSING_ROWS",
+      insertedBarCount: Number(persisted?.insertedBarCount || 0),
+      readbackVerified: pending.length ? true : null,
+    }));
   }
 
   return deepFreeze({
@@ -324,6 +337,8 @@ export async function runDailyShadowHotHistoryBootstrapV0_1({
     runId: id,
     asOf: clock,
     plan,
+    sourceSetValidatedBeforeMutation: true,
+    sourceRetryAttempts: 5,
     state: plan.targetDates.length
       ? "BOUNDED_HOT_HISTORY_BOOTSTRAP_COMPLETE"
       : "HOT_HISTORY_ALREADY_SUFFICIENT_IN_WINDOW",
