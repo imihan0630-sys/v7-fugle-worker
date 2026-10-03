@@ -1,0 +1,128 @@
+{
+  "schemaVersion": "SALES_ENTERPRISE_MULTIPLES_PIT_CONTRACT_V0_1",
+  "researchRoom": "06",
+  "domain": "D08",
+  "candidateId": "COV-05",
+  "status": "SPECIALIST_RESEARCH_ONLY / SCOPE_EXTENSION_CANDIDATE",
+  "frozenAtAsiaTaipei": "2026-10-04T07:10:00+08:00",
+  "purpose": "Freeze P/S and EV/Sales numerator, revenue denominator, PIT alignment, scope, sector guards and anti-double-count semantics before curriculum intake or outcome research.",
+  "proposedOwner": {
+    "primary": "D08-06",
+    "proposal": "Extend D08-06 from a single EV/EBITDA label into a broader enterprise/revenue-multiple owner that can contain EV/EBITDA, EV/Sales and P/S as coordinated views rather than independent votes.",
+    "dependencies": [
+      "D08-09 peer normalization",
+      "D08-10 value-trap/cycle guards",
+      "D08-12 corporate-action denominator firewall",
+      "D07-01 monthly revenue",
+      "D07-08 PIT financial vintage",
+      "D07-14 unit economics/margins",
+      "D07-31 M&A/scope change",
+      "D07-32 financial institutions"
+    ]
+  },
+  "formulas": {
+    "trailingPriceToSales": {
+      "formula": "decision-time equityMarketValue / PIT-safe trailing consolidated revenue",
+      "preferredRevenueBasis": "TTM_IFRS_REVENUE",
+      "alternativeRepresentation": "price / salesPerShare only when numerator/denominator share-count clocks are demonstrably aligned",
+      "guards": [
+        "equityMarketValue must use decision-time eligible price and PIT-safe share-count denominator",
+        "current shares may not reconstruct historical market cap",
+        "revenue must match issuer scope and be positive/known",
+        "financial institutions use specialist branch or UNKNOWN"
+      ]
+    },
+    "trailingEvToSales": {
+      "formula": "decision-time enterpriseValue / PIT-safe trailing consolidated revenue",
+      "guards": [
+        "enterprise-value claim scope must match consolidated operating denominator",
+        "debt/cash/non-common claims must come from compatible statement vintage",
+        "lease treatment must be frozen and consistent within comparisons",
+        "missing EV components => UNKNOWN"
+      ]
+    },
+    "forwardPriceToSales": {
+      "formula": "decision-time equityMarketValue / authorized PIT forecast sales",
+      "status": "SOURCE_BLOCKED",
+      "rule": "No historical reconstruction from today's analyst estimates; requires authorized forecast vintage source."
+    },
+    "forwardEvToSales": {
+      "formula": "decision-time enterpriseValue / authorized PIT forecast sales",
+      "status": "SOURCE_BLOCKED"
+    }
+  },
+  "enterpriseValue": {
+    "canonicalCandidate": "equity market value + interest-bearing debt + economically senior preferred/non-common claims + non-controlling interest when denominator is consolidated + other explicitly frozen financing claims - cash and cash equivalents",
+    "unresolvedComponents": [
+      "exact debt taxonomy remains coupled to D08-06 EV/EBITDA work",
+      "lease-liability inclusion/exclusion requires one consistent policy",
+      "excess/non-operating investments cannot be netted unless their taxonomy is explicitly frozen",
+      "preferred/non-common claims and NCI may be unavailable historically and therefore UNKNOWN"
+    ],
+    "scopeRule": "If numerator represents claims on consolidated operations, denominator must use consolidated revenue. If claim-scope parity cannot be proven, EV/Sales=UNKNOWN.",
+    "timestampRule": "Price/share count and financial-statement components may have different clocks; preserve each component's knownAt and only join values eligible at decision time."
+  },
+  "revenueDenominator": {
+    "quarterlyTtm": {
+      "formula": "sum of four compatible PIT quarterly IFRS revenue observations",
+      "periodRule": "single-quarter values only; cumulative YTD values require proven subtraction using same-scope/same-vintage compatible statements",
+      "vintageRule": "later restatements append; never overwrite the historical asOf denominator"
+    },
+    "taiwanMonthlyRevenue": {
+      "role": "timelier operating evidence and possible separately named monthlyRevenueTTM series",
+      "rule": "Do not silently substitute monthly revenue for IFRS consolidated TTM revenue. Reconciliation/scope contract is required because reporting basis, entities and corrections can differ.",
+      "firstKnown": "MOPS monthly revenue announcement/observer firstObservedAt"
+    },
+    "acquisitionDispositionBreak": {
+      "rule": "Consolidation-scope changes are structural-break tags. Sales growth and EV/Sales compression around M&A/disposal are not automatically organic rerating."
+    },
+    "forwardRevenue": {
+      "status": "SOURCE_BLOCKED",
+      "sourceRequirement": "authorized point-in-time analyst/issuer forecast source with target period, basis, publishedAt and revision lineage"
+    }
+  },
+  "sectorGuards": {
+    "financialInstitutions": "Generic P/S and EV/Sales are not promoted for banks/insurers/financial holding companies; D08-18 specialist valuation applies.",
+    "lowMarginDistribution": "Raw sales multiples can look systematically cheap because each revenue dollar carries low margin; compare only with margin/business-model controls.",
+    "negativeMarginGrowth": "P/S remains numerically computable but low P/S is not proof of cheapness; path to sustainable margins/unit economics is required context.",
+    "cyclicals": "Peak sales can create artificially low multiples before revenue normalizes.",
+    "acquisitionHeavy": "Acquired revenue and acquisition debt/cash change both denominator and EV; scope-break tags required.",
+    "highGrossMarginModels": "Higher sustainable margins, growth and lower capital intensity can justify structurally higher sales multiples."
+  },
+  "antiDoubleCount": {
+    "psVsEvSales": "Same sales denominator family; they are coordinated capital-structure views, not two independent votes.",
+    "evSalesVsEvEbitda": "Same EV numerator and overlapping operating-value mechanism; use as one multiple family with margin decomposition.",
+    "revenueGrowth": "D07-01/D07-09 own raw revenue growth/surprise. D08 only evaluates price/enterprise value relative to revenue.",
+    "peerNormalization": "D08-09 owns peer/sector normalization. Sales multiple module supplies raw PIT-safe ratios.",
+    "marginQuality": "D07-03/D07-14 own margins/unit economics; sales multiples consume these as explanatory controls."
+  },
+  "pitClocks": {
+    "priceKnownAt": "decision-time eligible exchange price/close",
+    "shareCountKnownAt": "PIT-safe exchange/corporate-action share denominator",
+    "revenueKnownAt": "financial statement filing/firstObservedAt for IFRS revenue; monthly MOPS announcement for monthly series",
+    "balanceSheetKnownAt": "compatible statement vintage for debt/cash/NCI/non-common claims",
+    "capturedAt": "research observer timestamp",
+    "restatementRule": "append-only; later corrected revenue or balance-sheet components cannot rewrite prior replay"
+  },
+  "unknownSemantics": [
+    "historical share count unavailable or corporate-action denominator unproven",
+    "revenue scope/period basis incompatible",
+    "EV debt/cash/NCI/non-common claim taxonomy incomplete",
+    "financial-institution generic sales multiple",
+    "forward sales source not authorized/PIT",
+    "M&A scope break unresolved"
+  ],
+  "evidenceRole": {
+    "primary": "context",
+    "secondary": [
+      "validation",
+      "supportive",
+      "explanatory"
+    ],
+    "strategyEvidence": "Only after OOS/Shadow tests demonstrate stable incremental value beyond raw valuation, margins, growth, sector, capital structure and regime."
+  },
+  "terminalRecommendationCandidate": "EXTEND_EXISTING_SCOPE",
+  "proposedMaturityTreatment": "Do not change D08-06 current maturity from the structural return alone; new P/S/EV-Sales sub-capability begins evidence-wise at L0 until its source/replay implementation is proven.",
+  "formalCoreChanged": false,
+  "promotionState": "NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
