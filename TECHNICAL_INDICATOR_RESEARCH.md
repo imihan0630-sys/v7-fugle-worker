@@ -1577,3 +1577,80 @@ Formal Core remains LOCKED.
 3. Once empirical work opens, use non-overlapping future outcomes with exact symbol-session provenance.
 4. TI-005/TI-006 remain first efficacy tests.
 5. Next outcome-blind D03 target: D03-05 Pullback/short-term reversal — separate setup-origin pullback from generic reversal and audit ownership with D01 Pattern + 15m confirmation.
+
+
+## TI-516 through TI-525 — pullback / short-term reversal ownership and data gate (2026-10-03)
+
+Durable evidence:
+- `research/D03_PULLBACK_REVERSAL_OWNERSHIP_DATA_GATE_V0_1.md`
+- `research/d03_pullback_origin_contract_v0_1.json`
+- `research/test_d03_pullback_origin_gate_v0_1.mjs`
+
+### TI-516/TI-517 — generic reversal score is redundant
+
+Current A/PULLBACK daily setup already requires established trend, 2–15% pullback, support proximity, volume/structure and not-late guards. Current M15 execution adds held/volume/reversal-or-strong-close/higher-low/turn-up confirmation.
+
+A new generic short-term reversal score would duplicate D01/D03 setup and execution architecture.
+
+Pullback depth is not pullback cause.
+
+### TI-518 — residual question is origin attribution
+
+Frozen research-only origins:
+STRUCTURAL_DIGESTION_NO_IDENTIFIED_SHOCK /
+MARKET_OR_SECTOR_DRIVEN_PULLBACK /
+EVENT_INFORMATION_PULLBACK /
+LIQUIDITY_PRESSURE_CANDIDATE /
+PRICE_LIMIT_OR_CONSTRAINED_DISCOVERY /
+MULTIPLE_ORIGINS /
+UNKNOWN_ORIGIN.
+
+These are moderators/diagnostics, not BUY/SELL states.
+
+### TI-519/TI-520 — liquidity origin cannot be inferred from candles
+
+Lower shadow, high volume or later rebound cannot certify non-informational liquidity pressure.
+
+Taiwan reversal evidence using actual trading-imbalance data supports the mechanism, but current D05 explicitly lacks promotion-grade true OFI/replenishment completeness at the required horizon.
+
+Absent a valid D05 pressure/depth/response/persistence/capture receipt:
+`LIQUIDITY_PRESSURE_ORIGIN = UNKNOWN`.
+
+No OHLCV fallback is allowed.
+
+### TI-521/TI-522 — owner receipts and price-limit separation
+
+Market/sector origin consumes D09/D18.
+Event origin consumes D11/D17.
+Liquidity origin consumes D05.
+Price-limit/session mechanism consumes D01/D05.
+Structural pullback geometry remains D01/D03.
+
+Multiple valid origins remain MULTIPLE rather than forced single-cause attribution.
+
+Historical Taiwan price-limit continuation/reversal evidence is not portable as a current universal rule; constrained episodes remain separately tagged.
+
+### TI-523/TI-524 — confirmation clock and future design
+
+pullbackLowAt is not reversalConfirmedAt.
+Confirmation lag and price already elapsed before reclaim/higher-low/turn-up/15m acceptance must be charged.
+
+Future primary design compares the same A/PULLBACK setup across valid origin contexts after controlling depth/support, ret20/60, persistence, Residual RS, Regime, ATR, liquidity, Pattern lifecycle and Price-Volume state.
+
+### TI-525 — maturity remains L2
+
+D03-05 stays:
+- **L2 / 40% MECHANISM_AND_FALSIFICATION_DEFINED**.
+
+Reason:
+the remaining independent origin-attribution question is cross-lane data-gated, especially the D05 liquidity-pressure branch.
+
+Current:
+`GENERIC_REVERSAL = REJECTED_OR_REDUNDANT`
+`PULLBACK_ORIGIN = MODERATOR_DIAGNOSTIC`
+`LIQUIDITY_PRESSURE_ORIGIN = DATA_GATED_BY_D05`
+`D03_05 = L2_REMAINS`
+`D03_MATURITY = 55.0_PERCENT`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Formal Core remains LOCKED.
