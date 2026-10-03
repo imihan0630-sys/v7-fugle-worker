@@ -3161,3 +3161,234 @@ No NDC light, CLI state or recession label is approved as a score/gate.
 3. Audit whether all seven leading components can be reconstructed point-in-time; if not, ex-TAIEX composite remains unavailable/UNKNOWN.
 4. Keep NBER/OECD objects as cycle benchmarks/context, not live Taiwan direction signals.
 5. No cycle gate or score before PIT/OOS incremental evidence.
+
+
+---
+
+## MC-133 — D13-19 separates structural growth capacity from expectations and valuation
+
+Three layers must remain distinct:
+
+1. **Structural growth capacity**
+   - labor-force/input growth;
+   - capital accumulation/deepening;
+   - total factor productivity;
+   - institutional/resource-allocation/technology effects.
+
+2. **Expectations**
+   - policymaker projections;
+   - surveys;
+   - market-implied expectations.
+
+3. **Asset valuation**
+   - expected cash flows;
+   - discount rates;
+   - risk premia;
+   - composition/margins.
+
+A higher asset valuation does not uniquely identify higher long-run real growth.
+
+Status: GROWTH / EXPECTATION / VALUATION OBJECT SEPARATION FROZEN.
+
+---
+
+## MC-134 — potential growth is a structural decomposition, not a market quote
+
+CBO describes potential-output growth through:
+- potential labor-force growth;
+- potential labor-force productivity.
+
+Potential productivity in turn reflects:
+- capital accumulation/services;
+- total factor productivity.
+
+This gives D13 a clean structural-growth framework.
+
+But a CBO forecast is:
+- model/projection dependent;
+- assumption dependent;
+- revised over time.
+
+Therefore:
+`CBO_POTENTIAL_GROWTH`
+is a structural projection vintage, not an observable market consensus.
+
+Status: STRUCTURAL-GROWTH DECOMPOSITION FROZEN.
+
+---
+
+## MC-135 — technology investment must be separated from measured productivity
+
+Technology/AI capex can affect:
+- capital stock;
+- organization;
+- TFP;
+- sector demand;
+- profits.
+
+But the chain is not instantaneous.
+
+CBO 2026 projections assume generative-AI diffusion modestly raises future TFP; this is a projection assumption rather than realized productivity evidence.
+
+Required objects:
+- capex;
+- adoption/utilization;
+- measured productivity;
+- earnings/margin effects;
+- valuation effects.
+
+Therefore:
+`AI_CAPEX_UP = TFP_UP_NOW`
+is prohibited.
+
+Status: TECHNOLOGY-CAPEX VS PRODUCTIVITY-REALIZATION FIREWALL FROZEN.
+
+---
+
+## MC-136 — Fed SEP is a policymaker projection, not “the market expectation”
+
+FOMC SEP longer-run values represent participants' views of outcomes expected to prevail over time under:
+- their assessments of appropriate monetary policy;
+- absence of further shocks.
+
+Thus SEP is useful for:
+- policy-maker expectation state;
+- revision/disagreement analysis.
+
+It is not:
+- investor consensus;
+- an objective estimate of potential growth;
+- a market-implied price.
+
+For example, September 2026 SEP median longer-run real GDP growth was 2.0%, but that number belongs to a dated policymaker-projection vintage.
+
+Status: SEP EXPECTATION-POPULATION FIREWALL FROZEN.
+
+---
+
+## MC-137 — nominal yields are not pure growth expectations
+
+New York Fed term-premium framework decomposes Treasury yields into:
+- expected future short rates;
+- term premium.
+
+Therefore:
+- rising 10Y yield can reflect higher expected short rates;
+- higher inflation compensation;
+- higher real-rate expectations;
+- higher term premium;
+- combinations of these.
+
+Do not label:
+`10Y_UP = LONG_RUN_GROWTH_UP`.
+
+The term premium itself is model-estimated and must carry model/version identity.
+
+Status: YIELD EXPECTATION/PREMIUM DECOMPOSITION FROZEN.
+
+---
+
+## MC-138 — breakeven inflation is not pure inflation expectation
+
+Federal Reserve research notes nominal-Treasury minus TIPS yield (“breakeven inflation” / inflation compensation) contains:
+- expected inflation;
+- inflation risk premium;
+- TIPS liquidity premium.
+
+Therefore:
+`BREAKEVEN_UP`
+may reflect a change in any of those components.
+
+For D13:
+- raw breakeven is market inflation-compensation state;
+- “expected inflation” requires a decomposition/model/survey cross-check.
+
+Status: BREAKEVEN EXPECTATION/RISK/LIQUIDITY FIREWALL FROZEN.
+
+---
+
+## MC-139 — r-star and term premium are latent model outputs
+
+Natural real rate (r-star) and term premium are not directly observed.
+
+New York Fed publishes:
+- model-based term-premium estimates;
+- Laubach-Williams / Holston-Laubach-Williams r-star estimates, including real-time vintage work.
+
+Research rules:
+- model name/version required;
+- vintage required;
+- uncertainty/alternative-model sensitivity preserved.
+
+No latent estimate may be merged with an observed market price as if both had the same measurement status.
+
+Status: LATENT-MODEL STATE IDENTITY FROZEN.
+
+---
+
+## MC-140 — long-run macro objects have a horizon mismatch with next-day stock selection
+
+D13-19 variables often move at:
+- quarterly;
+- annual;
+- multi-year horizons.
+
+System 1/System 2 after-market decisions act at:
+- next session;
+- short swing horizons.
+
+Therefore long-run-growth state is first:
+- slow Regime context;
+- sector-duration/valuation conditioning;
+- falsification control.
+
+It is not automatically a next-day alpha input.
+
+Any short-horizon use must independently demonstrate:
+- a transmission mechanism;
+- timing;
+- incremental value beyond rates/USD/valuation/sector state.
+
+Status: LONG-HORIZON TO SHORT-HORIZON TRANSPORTABILITY GATE FROZEN.
+
+---
+
+## MC-141 — D13-19 maturity and ownership boundary
+
+Ownership:
+- D13-19 owns macro expectations/structural-growth decomposition and vintage;
+- stock-level valuation/expected-return factors remain in their canonical asset-pricing/fundamental rooms;
+- D18 owns strategy effectiveness conditional on a frozen macro regime;
+- D07/D10 own company/sector technology-demand and supply-chain exposure.
+
+Mandatory falsification:
+1. market-implied vs survey/policymaker expectation;
+2. yield expected-rate vs term-premium components;
+3. breakeven expectation vs risk/liquidity components;
+4. projection-vintage revisions;
+5. earnings-growth vs discount-rate decomposition;
+6. technology capex vs later measured productivity;
+7. matched-horizon testing;
+8. component baselines before composites;
+9. no model/provider selected from Taiwan returns.
+
+D13-19 advances **L0 -> L2 / 40%**.
+
+Machine contract:
+`research/d13_19_capital_market_expectations_longrun_growth_spec_v0_1.json`.
+
+Why not L3:
+- no source-attested multi-vintage expectation dataset;
+- no matched-horizon Taiwan incremental evidence;
+- market-implied decomposition lanes still depend on D13 rates/inflation source quality.
+
+Formal Core remains LOCKED.
+No long-run growth/expectation score, valuation bonus or position-size change is approved.
+
+## Exact next continuation after MC-141
+
+1. D13 expanded curriculum is now conceptually reconciled through D13-19; next work should shift from adding macro concepts to **source-only vintage evidence** for D13-14..19.
+2. First high-value public lanes: NDC business-indicator vintage, Fed SEP/CBO projection vintage, H.4.1, CBC BOP and official policy-event lineage.
+3. Keep proprietary/paid consensus and live market-data lanes blocked until a material information gap is demonstrated.
+4. Build no scalar macro score; test each family after simpler rate/USD/Taiwan-state controls.
+5. No L3/OOS/Formal promotion before source-attested independent vintages/dates exist.
