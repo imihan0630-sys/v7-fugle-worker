@@ -10,10 +10,15 @@ const ROLES=Object.freeze({
 export {ROLES};
 
 const SAFETY=new Set(["SOURCE_AUTHENTICITY","SESSION_CONTINUITY","CORPORATE_ACTION_CONTINUITY","EXECUTION_FEASIBILITY","ACCOUNT_RISK"]);
-const COMMON_HARD=new Set(["PRICE_FLOOR","HISTORY_60D","DAILY_ABNORMALITY","LIQUIDITY","ANNOUNCEMENT_RISK"]);
-const SHORT_PRIMARY=new Set(["RS_CONTEXT","ATR_QUALITY","SECTOR_GATE","SECTOR_BREADTH","SECTOR_RETURN","SECTOR_AMOUNT","AB_SETUP","SETUP_A","SETUP_B","TARGET_AVAILABLE","REWARD_RISK","FINAL_SIGNAL_GRADE"]);
-const SWING_PRIMARY=new Set([...SHORT_PRIMARY,"MARKET_CAP_FLOOR","SMALL_CAP_SPECIAL","MID_CAP_LIQUIDITY","CHIP_CONCENTRATION_PRESENT","VALUATION_RELATIVE_RISK","FUNDAMENTAL_COMPONENT_COUNT","FUNDAMENTAL_QUALITY"]);
-const SLOW_GATES=["MARKET_CAP_FLOOR","SMALL_CAP_SPECIAL","MID_CAP_LIQUIDITY","CHIP_CONCENTRATION_PRESENT","FINANCIAL_SOURCE_COMPLETENESS","VALUATION_RELATIVE_RISK","FUNDAMENTAL_COMPONENT_COUNT","FUNDAMENTAL_QUALITY"];
+const OWNER_HARD=new Set(["PRICE_FLOOR"]);
+const EVENT_HARD=new Set(["ANNOUNCEMENT_RISK"]);
+const COMMON_PRIMARY=new Set(["AB_SETUP","SETUP_A","SETUP_B","REWARD_RISK","FINAL_SIGNAL_GRADE"]);
+const COMMON_CONTEXT=new Set(["DAILY_ABNORMALITY","ATR_QUALITY","SECTOR_GATE","SECTOR_BREADTH","SECTOR_RETURN","SECTOR_AMOUNT"]);
+const COMMON_UNCERTAINTY=new Set(["HISTORY_60D","RS_CONTEXT","LIQUIDITY","CHIP_CONCENTRATION_PRESENT","FINANCIAL_SOURCE_COMPLETENESS","FUNDAMENTAL_COMPONENT_COUNT","TARGET_AVAILABLE"]);
+const SHORT_SUPPORTIVE=new Set(["FUNDAMENTAL_QUALITY"]);
+const SHORT_CONTEXT=new Set(["MARKET_CAP_FLOOR","SMALL_CAP_SPECIAL","MID_CAP_LIQUIDITY","VALUATION_RELATIVE_RISK"]);
+const SWING_PRIMARY=new Set([...SHORT_CONTEXT,"FUNDAMENTAL_QUALITY"]);
+export const P1A_GATE_IDS=Object.freeze(["RS_CONTEXT","CHIP_CONCENTRATION_PRESENT","FINANCIAL_SOURCE_COMPLETENESS","FUNDAMENTAL_COMPONENT_COUNT"]);
 
 const finite=x=>typeof x==="number"&&Number.isFinite(x)?x:null;
 const round=(x,d=6)=>Number.isFinite(x)?Math.round(x*10**d)/10**d:null;
@@ -21,15 +26,34 @@ const ts=x=>typeof x==="string"&&/(?:Z|[+-]\d\d:\d\d)$/.test(x)?Date.parse(x):Na
 const hash=x=>createHash("sha256").update(JSON.stringify(x)).digest("hex");
 
 export function gateRole(gateId,strategy="SHORT"){
-  if(SAFETY.has(gateId)||COMMON_HARD.has(gateId)) return ROLES.HARD_INVALIDATION;
-  if(gateId==="FINANCIAL_SOURCE_COMPLETENESS") return ROLES.UNCERTAINTY;
+  if(SAFETY.has(gateId)||OWNER_HARD.has(gateId)||EVENT_HARD.has(gateId)) return ROLES.HARD_INVALIDATION;
+  if(COMMON_UNCERTAINTY.has(gateId)) return ROLES.UNCERTAINTY;
+  if(COMMON_PRIMARY.has(gateId)) return ROLES.PRIMARY_ALPHA;
+  if(COMMON_CONTEXT.has(gateId)) return ROLES.CONTEXT_ONLY;
   if(strategy==="SWING"&&SWING_PRIMARY.has(gateId)) return ROLES.PRIMARY_ALPHA;
-  if(strategy==="SHORT"&&SHORT_PRIMARY.has(gateId)) return ROLES.PRIMARY_ALPHA;
-  if(strategy==="SHORT"&&["CHIP_CONCENTRATION_PRESENT","FUNDAMENTAL_COMPONENT_COUNT","FUNDAMENTAL_QUALITY"].includes(gateId)) return ROLES.SUPPORTIVE;
-  if(strategy==="SHORT"&&["MARKET_CAP_FLOOR","SMALL_CAP_SPECIAL","MID_CAP_LIQUIDITY","VALUATION_RELATIVE_RISK"].includes(gateId)) return ROLES.CONTEXT_ONLY;
-  if(strategy==="SWING"&&SLOW_GATES.includes(gateId)) return ROLES.PRIMARY_ALPHA;
+  if(strategy==="SHORT"&&SHORT_SUPPORTIVE.has(gateId)) return ROLES.SUPPORTIVE;
+  if(strategy==="SHORT"&&SHORT_CONTEXT.has(gateId)) return ROLES.CONTEXT_ONLY;
   return ROLES.UNCERTAINTY;
 }
+
+export function resolveGateRole(gateId,observation={},strategy="SHORT"){
+  const status=String(observation?.status||"UNKNOWN");
+  if(SAFETY.has(gateId)) return ROLES.HARD_INVALIDATION;
+  if(status==="UNKNOWN"||status==="NOT_EVALUABLE") return ROLES.UNCERTAINTY;
+  if(EVENT_HARD.has(gateId)) return status==="FAIL"?ROLES.HARD_INVALIDATION:ROLES.UNCERTAINTY;
+  if(OWNER_HARD.has(gateId)) return ROLES.HARD_INVALIDATION;
+  return gateRole(gateId,strategy);
+}
+
+function isP1ABlocker(gateId,observation={}){
+  const status=String(observation?.status||"UNKNOWN");
+  if(gateId==="FUNDAMENTAL_COMPONENT_COUNT") return status==="FAIL"||status==="UNKNOWN";
+  if(P1A_GATE_IDS.includes(gateId)) return status==="UNKNOWN";
+  if(gateId==="MARKET_CAP_FLOOR") return status==="UNKNOWN";
+  return false;
+}
+
+function pushUnique(arr,id){if(!arr.includes(id)) arr.push(id);}
 
 export const C3_CONTRACT=Object.freeze({
   schemaVersion:"SYSTEM1_C3_ENTRY_CONTRACT_V0_1",
@@ -235,34 +259,153 @@ export function buildC5OverfilterDiagnostic(c1Diagnosis,c2Ledger,{strategy="SHOR
      c1Diagnosis?.sessionDate!==c2.sessionDate||c1Diagnosis?.populationN!==c2.tally.populationN||
      !Array.isArray(c1Diagnosis?.observations)) throw new Error("C5_MATCHED_C1_C2_REQUIRED");
   const pairMap=new Map(c2.pairs.map(x=>[x.symbol,x]));
-  const gateFails={},gateUnknown={},roleFails={},firstFailures={};
+  const gateFails={},gateUnknown={},gateNotEvaluable={},roleFails={},firstFailures={},minimalUnblockClasses={},reachStages={};
   let formalRejectedN=0,optionalOnlyFailN=0,hardOrPrimaryFailN=0,hardUnknownN=0,setupNotReadyN=0,safetyUnknownUpperBoundN=0;
+  let confidenceOnlyRejectedN=0,contextOnlyRejectedN=0,p1aRejectedN=0,p1aOnlyN=0,p1aPlusContextN=0,p1aPlusPrimaryN=0;
+  let unknownContaminatedN=0,p1aReachABN=0,p1aABPassN=0,p1aReachRRN=0,p1aRRPassN=0,p1aGradePassN=0,p1aRankableN=0,hardBlockedN=0;
   const rows=[];
+  const stageIndex={
+    F0_FORMAL_PARENT:0,F1_SAFETY_EVALUABLE:1,F2_OWNER_UNIVERSE:2,F3_P1A_SEMANTIC_BYPASS:3,F4_AB_EVALUABLE:4,
+    F5_AB_PASS:5,F6_TARGET_RR_EVALUABLE:6,F7_RR_PASS:7,F8_GRADE_PASS:8,F9_RANKABLE:9
+  };
   for(const o of c1Diagnosis.observations){
     const pair=pairMap.get(o.symbol);if(!pair) throw new Error("C5_SYMBOL_DENOMINATOR_MISMATCH");
     if(o.formalResult?.ok!==false) continue;
     formalRejectedN++;
-    const failed=Object.entries(o.gates).filter(([,v])=>v.status==="FAIL").map(([id])=>id);
-    const unknown=Object.entries(o.gates).filter(([,v])=>v.status==="UNKNOWN").map(([id])=>id);
-    for(const id of failed){gateFails[id]=(gateFails[id]||0)+1;const role=gateRole(id,strategy);roleFails[role]=(roleFails[role]||0)+1;}
+    const entries=Object.entries(o.gates||{});
+    const failed=entries.filter(([,v])=>v?.status==="FAIL").map(([id])=>id);
+    const unknown=entries.filter(([,v])=>v?.status==="UNKNOWN").map(([id])=>id);
+    const notEvaluable=entries.filter(([,v])=>v?.status==="NOT_EVALUABLE").map(([id])=>id);
+    for(const id of failed){
+      gateFails[id]=(gateFails[id]||0)+1;
+      const role=resolveGateRole(id,o.gates[id],strategy);
+      roleFails[role]=(roleFails[role]||0)+1;
+    }
     for(const id of unknown) gateUnknown[id]=(gateUnknown[id]||0)+1;
+    for(const id of notEvaluable) gateNotEvaluable[id]=(gateNotEvaluable[id]||0)+1;
     const first=o.firstFailureReason||"UNKNOWN";firstFailures[first]=(firstFailures[first]||0)+1;
-    const roles=failed.map(id=>gateRole(id,strategy));
-    const optionalOnly=failed.length>0&&roles.every(r=>[ROLES.SUPPORTIVE,ROLES.CONTEXT_ONLY,ROLES.UNCERTAINTY].includes(r))&&
-      !unknown.some(id=>gateRole(id,strategy)===ROLES.HARD_INVALIDATION);
+
+    const hardBlockSet=[],confidenceBlockSet=[],contextBlockSet=[],primaryBlockSet=[],supportiveBlockSet=[];
+    const unknownDependencySet=[...unknown],notEvaluableDependencySet=[...notEvaluable];
+    for(const id of failed){
+      const role=resolveGateRole(id,o.gates[id],strategy);
+      if(role===ROLES.HARD_INVALIDATION) pushUnique(hardBlockSet,id);
+      else if(role===ROLES.UNCERTAINTY) pushUnique(confidenceBlockSet,id);
+      else if(role===ROLES.CONTEXT_ONLY) pushUnique(contextBlockSet,id);
+      else if(role===ROLES.PRIMARY_ALPHA) pushUnique(primaryBlockSet,id);
+      else if(role===ROLES.SUPPORTIVE) pushUnique(supportiveBlockSet,id);
+    }
+    for(const id of unknown){
+      const role=resolveGateRole(id,o.gates[id],strategy);
+      if(role===ROLES.HARD_INVALIDATION) continue;
+      pushUnique(confidenceBlockSet,id);
+    }
+    const hardUnknown=unknown.filter(id=>resolveGateRole(id,o.gates[id],strategy)===ROLES.HARD_INVALIDATION);
+    const p1aBlockers=entries.filter(([id,v])=>isP1ABlocker(id,v)).map(([id])=>id);
+    if(p1aBlockers.length) p1aRejectedN++;
+
+    const failedRoles=failed.map(id=>resolveGateRole(id,o.gates[id],strategy));
+    const optionalOnly=failed.length>0&&failedRoles.every(r=>[ROLES.SUPPORTIVE,ROLES.CONTEXT_ONLY,ROLES.UNCERTAINTY].includes(r))&&hardUnknown.length===0;
     if(optionalOnly) optionalOnlyFailN++;
-    if(roles.some(r=>r===ROLES.HARD_INVALIDATION||r===ROLES.PRIMARY_ALPHA)) hardOrPrimaryFailN++;
-    if(unknown.some(id=>gateRole(id,strategy)===ROLES.HARD_INVALIDATION)) hardUnknownN++;
-    if(o.gates?.AB_SETUP?.status==="FAIL"&&!failed.some(id=>gateRole(id,strategy)===ROLES.HARD_INVALIDATION)) setupNotReadyN++;
+    if(failedRoles.some(r=>r===ROLES.HARD_INVALIDATION||r===ROLES.PRIMARY_ALPHA)) hardOrPrimaryFailN++;
+    if(hardUnknown.length) hardUnknownN++;
+    if(o.gates?.AB_SETUP?.status==="FAIL"&&hardBlockSet.length===0&&hardUnknown.length===0) setupNotReadyN++;
     if(pair.short?.withoutSafetyGateStatus==="PASS"&&Array.isArray(pair.short?.missingSafety)&&pair.short.missingSafety.length>0) safetyUnknownUpperBoundN++;
-    rows.push({symbol:o.symbol,pool:o.pool,firstFailure:first,failedGates:failed,unknownGates:unknown,
-      failedRoles:[...new Set(roles)],optionalOnly,shortGateStatus:pair.short?.gateStatus||"UNKNOWN",
-      swingGateStatus:pair.swing?.gateStatus||"UNKNOWN",researchOnly:true,decisionImpact:false});
+
+    const onlyConfidence=confidenceBlockSet.length>0&&hardBlockSet.length===0&&hardUnknown.length===0&&contextBlockSet.length===0&&primaryBlockSet.length===0&&supportiveBlockSet.length===0;
+    const onlyContext=contextBlockSet.length>0&&hardBlockSet.length===0&&hardUnknown.length===0&&confidenceBlockSet.length===0&&primaryBlockSet.length===0&&supportiveBlockSet.length===0;
+    if(onlyConfidence) confidenceOnlyRejectedN++;
+    if(onlyContext) contextOnlyRejectedN++;
+
+    let reachStage="F0_FORMAL_PARENT";
+    if(hardBlockSet.length===0&&hardUnknown.length===0){
+      reachStage="F1_SAFETY_EVALUABLE";
+      reachStage="F2_OWNER_UNIVERSE";
+      reachStage="F3_P1A_SEMANTIC_BYPASS";
+      const ab=String(o.gates?.AB_SETUP?.status||"UNKNOWN");
+      if(ab==="PASS"){
+        reachStage="F5_AB_PASS";
+        const target=String(o.gates?.TARGET_AVAILABLE?.status||"UNKNOWN");
+        const rr=String(o.gates?.REWARD_RISK?.status||"UNKNOWN");
+        if(target==="PASS"&&(rr==="PASS"||rr==="FAIL")){
+          reachStage="F6_TARGET_RR_EVALUABLE";
+          if(rr==="PASS"){
+            reachStage="F7_RR_PASS";
+            const grade=String(o.gates?.FINAL_SIGNAL_GRADE?.status||"UNKNOWN");
+            if(grade==="PASS"){
+              reachStage="F8_GRADE_PASS";
+              const unresolvedNonP1A=entries.some(([id,v])=>{
+                if(isP1ABlocker(id,v)) return false;
+                const s=String(v?.status||"UNKNOWN");
+                return s==="FAIL"||s==="UNKNOWN"||s==="NOT_EVALUABLE";
+              });
+              if(!unresolvedNonP1A) reachStage="F9_RANKABLE";
+            }
+          }
+        }
+      }else if(ab==="FAIL") reachStage="F4_AB_EVALUABLE";
+    }
+    reachStages[reachStage]=(reachStages[reachStage]||0)+1;
+
+    const downstreamUnknown=[
+      ["AB_SETUP","F3_P1A_SEMANTIC_BYPASS"],
+      ["TARGET_AVAILABLE","F5_AB_PASS"],
+      ["REWARD_RISK","F5_AB_PASS"],
+      ["FINAL_SIGNAL_GRADE","F7_RR_PASS"]
+    ].some(([id,minStage])=>{
+      const s=String(o.gates?.[id]?.status||"UNKNOWN");
+      return (s==="UNKNOWN"||s==="NOT_EVALUABLE")&&stageIndex[reachStage]>=stageIndex[minStage];
+    });
+
+    const residualUnknownContamination=p1aBlockers.length>0&&(
+      downstreamUnknown||
+      unknownDependencySet.some(id=>!isP1ABlocker(id,o.gates?.[id]))||
+      notEvaluableDependencySet.some(id=>!isP1ABlocker(id,o.gates?.[id]))
+    );
+    let minimalUnblockClass;
+    if(hardBlockSet.length||hardUnknown.length) minimalUnblockClass="HARD_BLOCKED";
+    else if(residualUnknownContamination) minimalUnblockClass="UNKNOWN_CONTAMINATED";
+    else if(p1aBlockers.length&&primaryBlockSet.length) minimalUnblockClass="P1A_PLUS_PRIMARY";
+    else if(p1aBlockers.length&&(contextBlockSet.length||supportiveBlockSet.length)) minimalUnblockClass="P1A_PLUS_CONTEXT";
+    else if(p1aBlockers.length) minimalUnblockClass="P1A_ONLY";
+    else if(primaryBlockSet.length) minimalUnblockClass="PRIMARY_ONLY";
+    else if(contextBlockSet.length||supportiveBlockSet.length) minimalUnblockClass="CONTEXT_ONLY";
+    else minimalUnblockClass="UNKNOWN_CONTAMINATED";
+    minimalUnblockClasses[minimalUnblockClass]=(minimalUnblockClasses[minimalUnblockClass]||0)+1;
+
+    if(minimalUnblockClass==="HARD_BLOCKED") hardBlockedN++;
+    if(minimalUnblockClass==="P1A_ONLY") p1aOnlyN++;
+    if(minimalUnblockClass==="P1A_PLUS_CONTEXT") p1aPlusContextN++;
+    if(minimalUnblockClass==="P1A_PLUS_PRIMARY") p1aPlusPrimaryN++;
+    if(minimalUnblockClass==="UNKNOWN_CONTAMINATED") unknownContaminatedN++;
+    if(p1aBlockers.length&&stageIndex[reachStage]>=stageIndex.F4_AB_EVALUABLE) p1aReachABN++;
+    if(p1aBlockers.length&&stageIndex[reachStage]>=stageIndex.F5_AB_PASS) p1aABPassN++;
+    if(p1aBlockers.length&&stageIndex[reachStage]>=stageIndex.F6_TARGET_RR_EVALUABLE) p1aReachRRN++;
+    if(p1aBlockers.length&&stageIndex[reachStage]>=stageIndex.F7_RR_PASS) p1aRRPassN++;
+    if(p1aBlockers.length&&stageIndex[reachStage]>=stageIndex.F8_GRADE_PASS) p1aGradePassN++;
+    if(p1aBlockers.length&&reachStage==="F9_RANKABLE") p1aRankableN++;
+
+    rows.push({
+      symbol:o.symbol,pool:o.pool,firstFailure:first,failedGates:failed,unknownGates:unknown,notEvaluableGates:notEvaluable,
+      hardBlockSet,confidenceBlockSet,contextBlockSet,primaryBlockSet,supportiveBlockSet,
+      unknownDependencySet,notEvaluableDependencySet,p1aBlockers,minimalUnblockClass,reachStage,
+      failedRoles:[...new Set(failedRoles)],optionalOnly,confidenceOnly:onlyConfidence,contextOnly:onlyContext,
+      shortGateStatus:pair.short?.gateStatus||"UNKNOWN",swingGateStatus:pair.swing?.gateStatus||"UNKNOWN",
+      researchOnly:true,decisionImpact:false
+    });
   }
-  return {schemaVersion:"SYSTEM1_C5_OVERFILTER_DIAGNOSTIC_V0_1",sessionDate:c2.sessionDate,generationId:c2.generationId,strategy,
-    formalRejectedN,gateFails,gateUnknown,roleFails,firstFailures,optionalOnlyFailN,hardOrPrimaryFailN,hardUnknownN,
-    setupNotReadyN,safetyUnknownUpperBoundN,conditionalShortUpperBoundN:c2.tally.formalRejectedButConditionalShortGatesPassN,
-    rows,firstFailureIsNotCausalAttribution:true,optionalOnlyIsDiagnosticNotAdmission:true,economicSuperiority:"UNKNOWN",
-    roleMapFingerprint:hash(Object.fromEntries(Object.keys({...gateFails,...gateUnknown}).sort().map(id=>[id,gateRole(id,strategy)]))),
-    formalCoreLocked:true,researchOnly:true,decisionImpact:false,formalCoreImpact:false,noPlanChanges:true,noTrade:true,noPush:true};
+  return {
+    schemaVersion:"SYSTEM1_C5_OVERFILTER_DIAGNOSTIC_V0_2",sessionDate:c2.sessionDate,generationId:c2.generationId,strategy,
+    formalRejectedN,gateFails,gateUnknown,gateNotEvaluable,roleFails,firstFailures,
+    optionalOnlyFailN,hardOrPrimaryFailN,hardUnknownN,setupNotReadyN,safetyUnknownUpperBoundN,
+    confidenceOnlyRejectedN,contextOnlyRejectedN,p1aRejectedN,p1aOnlyN,p1aPlusContextN,p1aPlusPrimaryN,unknownContaminatedN,
+    p1aReachABN,p1aABPassN,p1aReachRRN,p1aRRPassN,p1aGradePassN,p1aRankableN,p1aOverhardeningCounterfactualN:p1aRankableN,hardBlockedN,
+    minimalUnblockClasses,reachStages,
+    conditionalShortUpperBoundN:c2.tally.formalRejectedButConditionalShortGatesPassN,
+    rows,firstFailureIsNotCausalAttribution:true,optionalOnlyIsDiagnosticNotAdmission:true,
+    p1aRankableIsDiagnosticNotCandidate:true,unknownNeverPass:true,economicSuperiority:"UNKNOWN",
+    roleResolverVersion:"OBSERVATION_AWARE_A2_V0_1",
+    roleMapFingerprint:hash(Object.fromEntries(Object.keys({...gateFails,...gateUnknown,...gateNotEvaluable}).sort().map(id=>[id,gateRole(id,strategy)]))),
+    formalCoreLocked:true,researchOnly:true,decisionImpact:false,formalCoreImpact:false,noPlanChanges:true,noTrade:true,noPush:true
+  };
 }
