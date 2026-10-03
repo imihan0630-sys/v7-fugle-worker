@@ -1288,3 +1288,19 @@ Build a historical Taiwan D21-04 pledge replay with at least one pledge setup an
 - Recommended first executable smoke slice: D19-04 cross-sectional momentum + D19-07 low-volatility/low-beta, using existing PIT daily bars/universe membership.
 - Exact next: implement research-only factor-layer receipt adapter with deterministic universe -> return -> factorInput -> neutralization -> cost -> replay receipt chain and fail-closed tests. No D19 L3 until an actual Taiwan frozen-date replay receipt passes deterministic rerun validation.
 - Formal Core unchanged; no formal optimization candidate.
+
+
+## 2026-10-04 D03 — TI-534~542 observable pullback/reversal PIT reconciliation
+
+- Latest H07 owner contract supersedes the earlier overly strict D03-05 interpretation: D03-05 owns the observable price phenomenon; causal origin is optional cross-lane context.
+- Generic reversal factor remains rejected/redundant.
+- Daily parent reuses A/PULLBACK geometry without Formal change.
+- M15 research chronology is stricter than Formal numeric availability: exact expected slot prefix is mandatory; missing slot => DATA_BLOCKED.
+- Seed low/zone entry cannot be backdated into a signal. Confirmation requires a later completed higher-low + bullish turn-up bar; confirmedAt uses bar-end/source-known clocks.
+- Failed zone break/down-volume are first-class states; prior observed history is immutable.
+- Liquidity/event/behavioral/market cause remains UNKNOWN unless the relevant owner provides a valid receipt.
+- Existing PV Shadow implementation + A lifecycle fixture establish replay substrate; local D03 deterministic v0.2 fixture PASS.
+- D03-05 L2/40 -> L3/60; 12-module D03 55.0% -> 56.7%.
+- D03-09 ADX and D03-10 Bollinger remain L2 because TECHNICAL_CONTINUITY is still not physically certified; System2 official final-result pages have revisionCoverageComplete=false.
+- Raw source-version gate remains 2/3. Important correction: 3/3 will be necessary but not sufficient for TI-005/TI-006 outcome inference; full immutable parent/continuity/state/replay gates must still pass.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE; Formal Core LOCKED.
