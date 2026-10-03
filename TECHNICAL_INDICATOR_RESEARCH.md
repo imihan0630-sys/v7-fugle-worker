@@ -1482,3 +1482,98 @@ Formal Core remains LOCKED.
 4. Future weekly inference must beat equal-horizon daily controls and boundary-sensitivity controls.
 5. Primary efficacy queue remains TI-005 then TI-006 once the raw source gate opens.
 6. Next outcome-blind D03 specialist target: D03-04 momentum continuation vs D03-03 persistence and D03-02 direct-return family, focusing on construct separation and Taiwan PIT feasibility.
+
+
+## TI-504 through TI-515 — momentum continuation construct / PIT feasibility (2026-10-03)
+
+Durable evidence:
+- `research/D03_MOMENTUM_CONTINUATION_CONSTRUCT_PIT_V0_1.md`
+- `research/d03_momentum_continuation_contract_v0_1.json`
+- `research/test_d03_momentum_continuation_construct_v0_1.mjs`
+
+### TI-504 — ownership separation
+
+D03-02 owns current ret5/ret20/ret60 momentum level.
+D03-03 owns current own-path persistence / rank-persistency constructs.
+D03-04 owns the post-decision continuation/reversal relationship conditional on frozen decision-time state.
+
+D03-04 therefore does not create another weighted current-price score.
+
+### TI-505 — rolling retN sign retention is mechanically overlapped
+
+Synthetic witness:
+- current ret20 = +20%;
+- next D5 true forward return = -4.1667%;
+- rolling ret20 at D+5 remains +9.5238%.
+
+The future rolling ret20 reuses 15 of 20 pre-decision intervals, so a positive rolling sign can persist despite an actual post-decision loss.
+
+`ROLLING_RETN_SIGN_RETENTION = REJECTED_AS_PRIMARY_CONTINUATION_OUTCOME`.
+
+### TI-506/TI-507 — primary post-decision outcome contract
+
+Primary outcomes use sessions after the parent:
+- D5 forward return / MFE / MAE;
+- D10 and D20 as secondary horizons.
+
+Decision state is frozen before outcomes and includes current ret levels/rank, persistence, Residual RS, tick/liquidity, volatility, Regime/transition, constrained state and source/continuity lineage.
+
+Future outcome never enters the parent fingerprint.
+
+### TI-508/TI-509 — Taiwan state and return-origin confounds
+
+Taiwan literature reports momentum continuation under market-state continuation and reversal under market-state transitions. D18 owns Regime construction; D03 consumes that causally defined state rather than building a second Regime engine.
+
+Taiwan evidence also reports different future behavior for momentum originating from intraday versus overnight returns. D03 freezes return-origin as a potential effect modifier; no new factor is created without source-ready provenance.
+
+### TI-510/TI-511 — persistence/rank retention != economic continuation
+
+High own-path persistence does not logically imply positive forward return.
+Winner-rank retention and economic forward return are distinct:
+- a stock can keep winner rank with negative absolute return if peers fall more;
+- a stock can earn positive return and lose rank if peers rise more.
+
+Rank retention remains a relative/persistence state, not a proxy for D5/D10/D20 economic continuation.
+
+### TI-512 — extreme-strength duplication remains rejected
+
+Existing ret20/MA-distance late-stage/overheat/ATR controls already represent extreme strength. A new extreme-continuation factor would be redundancy-high.
+
+### TI-513/TI-514 — Taiwan PIT outcome feasibility
+
+Promotion-grade future outcomes require exact symbol-session and corporate-action lineage, not generic next-available-row slicing.
+
+Required:
+parent/capture generation, semantic price space, symbol-session calendar, verified suspensions, continuity version, exact future eligible session IDs, outcome source/version and explicit mature/censored/blocked/unknown states.
+
+Existing research infrastructure already supports D5/D10/D20/MFE/MAE and current D03 source paths support the predictor state. No new market-data family is needed.
+
+### TI-515 — maturity
+
+D03-04 advances:
+- L2/40 -> **L3/60 TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED**.
+
+Active 12-module D03:
+- prior 640/1200 = 53.3%;
+- new 660/1200 = **55.0%**.
+
+This is construct + PIT feasibility only. No continuation alpha/OOS/Shadow/threshold/Formal claim.
+
+Current:
+`D03_04 = L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED`
+`MOMENTUM_CONTINUATION = POST_DECISION_TRANSITION_OUTCOME_RELATION`
+`ROLLING_RETN_SIGN_RETENTION = REJECTED_AS_PRIMARY_OUTCOME`
+`REGIME_STATE = D18_OWNED_CONTEXT`
+`D03_MATURITY = 55.0_PERCENT`
+`OUTCOME_INFERENCE = NO_GO`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Formal Core remains LOCKED.
+
+### Exact next continuation point
+
+1. Raw-byte source gate remains 2/3 over the weekend.
+2. Keep predictors and future outcome receipts separate.
+3. Once empirical work opens, use non-overlapping future outcomes with exact symbol-session provenance.
+4. TI-005/TI-006 remain first efficacy tests.
+5. Next outcome-blind D03 target: D03-05 Pullback/short-term reversal — separate setup-origin pullback from generic reversal and audit ownership with D01 Pattern + 15m confirmation.
