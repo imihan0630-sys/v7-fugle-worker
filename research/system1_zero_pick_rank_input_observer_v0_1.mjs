@@ -67,7 +67,8 @@ export function buildSystem1ZeroPickRankObservation(input,hashFn){
     if(values[k]===null) missing.push(k);
   }
 
-  const preSortOrdinal=Number(input.preSortOrdinal);
+  const preSortOrdinal=(input.preSortOrdinal===null||input.preSortOrdinal===undefined||input.preSortOrdinal==="")
+    ? null:Number(input.preSortOrdinal);
   if(!Number.isInteger(preSortOrdinal)||preSortOrdinal<0) missing.push("preSortOrdinal");
 
   const consensusState=reqText(input.marketConsensusState,"marketConsensusState");
