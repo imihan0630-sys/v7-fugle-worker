@@ -361,7 +361,7 @@ GitHub專屬checkpoint：
 | D10-14 | Industrial Policy／Subsidy／Geopolitical Bottleneck產業政策補貼與地緣瓶頸 | L2 機制＋反證 | 40% |
 
 
-### D11｜公司行動／重大事件／事件風險 — 53.7%
+### D11｜公司行動／重大事件／事件風險 — 54.7%
 
 專責：08｜事件與新聞研究室  
 證據錨點：`CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md`、`EVENT_RISK_CHECKPOINT.md`
@@ -386,7 +386,7 @@ GitHub專屬checkpoint：
 | D11-16 | Lock-up Expiry／Insider Supply禁售期到期與內部人供給 | L2 機制＋反證 | 40% |
 | D11-17 | Secondary Offering／Private Placement後續發行與私募 | L3 台股PIT資料可行 | 60% |
 | D11-18 | Tender Offer／Going Private／Delisting公開收購私有化與下市 | L3 台股PIT資料可行 | 60% |
-| D11-19 | Spin-off／Merger Arbitrage／Deal-break Risk分拆併購套利與破局風險 | L2 機制＋反證 | 40% |
+| D11-19 | Spin-off／Merger Arbitrage／Deal-break Risk分拆併購套利與破局風險 | L3 台股PIT資料可行 | 60% |
 
 
 ### D12｜期貨／選擇權／衍生品 — 40%
