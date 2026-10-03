@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D13-17",
+  "name": "Trade / Geopolitical Risk / Capital-flow Transmission contract",
+  "status": "CONCEPT_AND_FALSIFICATION_FROZEN__PIT_EVENT_FLOW_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-10-03T23:19:00+08:00",
+  "objectFamilies": {
+    "TRADE_POLICY_EVENT": {
+      "objects": [
+        "investigation/initiation",
+        "proposal/request-for-comment",
+        "final action/announcement",
+        "legal publication",
+        "effective/compliance/customs-entry date",
+        "exclusion/exemption/license/grandfather window",
+        "actual tariff/customs collection or trade-flow realization"
+      ],
+      "guard": "Announcement, legal effectiveness and realized trade flow are separate clocks."
+    },
+    "EXPORT_CONTROL_EVENT": {
+      "objects": [
+        "press announcement",
+        "Federal Register/public-inspection rule",
+        "effective date",
+        "compliance date",
+        "license-review policy",
+        "temporary/general license",
+        "entity/end-user scope",
+        "shipment/license realization"
+      ],
+      "guard": "BIS rules may have different effective/compliance structures. Never infer effective time from press-release time alone."
+    },
+    "SANCTIONS_EVENT": {
+      "objects": [
+        "designation/list update",
+        "regulation/determination",
+        "general license",
+        "license amendment/expiration",
+        "designation removal",
+        "blocked-property state"
+      ],
+      "guard": "Legal blocking state, license exceptions and market exposure must be separated."
+    },
+    "GEOPOLITICAL_RISK_STATE": {
+      "objects": [
+        "GPR aggregate",
+        "GPR threats",
+        "GPR acts",
+        "country/industry/firm exposure"
+      ],
+      "guard": "News-based risk/intensity state is not a legal-policy event and not a directional trading signal."
+    },
+    "REAL_TRADE_FLOW": {
+      "objects": [
+        "exports/imports",
+        "shipment/customs flow",
+        "order/redirection",
+        "trade balance"
+      ],
+      "guard": "Realized trade data are lagged outcomes of policy, demand and supply-chain adaptation; not same-clock policy shocks."
+    },
+    "CAPITAL_FLOW": {
+      "objects": [
+        "TWSE foreign investor trading flow",
+        "Taiwan BOP portfolio/direct-investment flow",
+        "U.S. TIC cross-border securities/banking flow",
+        "fund allocation/geopolitical-distance research state"
+      ],
+      "guard": "Trading flow, balance-of-payments flow and cross-border portfolio holdings are different objects/frequencies."
+    }
+  },
+  "eventClockContract": {
+    "requiredFields": [
+      "eventId",
+      "eventFamily",
+      "jurisdiction",
+      "affectedEconomy",
+      "affectedSectorOrProduct",
+      "announcementAt",
+      "legalPublicationAt",
+      "effectiveAt",
+      "complianceAt",
+      "expiryAt",
+      "firstEligibleTaiwanDecision",
+      "source",
+      "sourceVersion",
+      "capturedAt",
+      "revisionStatus",
+      "scopeVersion",
+      "exceptionOrLicenseState",
+      "uncertaintyState"
+    ],
+    "unknownRule": "Absent legal/publication/effective timestamp => UNKNOWN; do not use announcement date as substitute.",
+    "versionRule": "Amendments, exclusions, licenses, removals and delayed implementation create new versions; never overwrite prior event state."
+  },
+  "capitalFlowClockContract": {
+    "TWSE_FOREIGN_TRADING": {
+      "meaning": "Same-market trading activity by foreign-investor categories; not equivalent to cross-border balance-of-payments capital movement.",
+      "source": "TWSE",
+      "observedProductionExamples": {
+        "aggregateExBlock": "14:50 Asia/Taipei in Data E-Shop product",
+        "aggregateInclBlock": "19:40 Asia/Taipei",
+        "perSecurityExBlock": "18:00 Asia/Taipei",
+        "perSecurityInclBlock": "20:00 Asia/Taipei"
+      },
+      "decision1810Guard": "At 18:10, data availability/coverage differs by product/version. A 19:40 or 20:00 full version is future. Exact source entitlement and production receipt must be preserved.",
+      "blockTradeGuard": "Excluding-block and including-block versions are different objects, not revisions of one silently overwritten record."
+    },
+    "TAIWAN_BOP": {
+      "meaning": "Quarterly external-account flows including direct/portfolio/other investment; structural capital-flow regime, not daily trading signal.",
+      "source": "Central Bank of the Republic of China (Taiwan)",
+      "frequency": "quarterly",
+      "releaseGuard": "Preserve reference quarter, 16:20 scheduled release time and vintage/revisions. Current revised history is not a daily first-known series."
+    },
+    "US_TIC": {
+      "meaning": "Monthly/quarterly cross-U.S.-border securities/banking/other capital data.",
+      "source": "U.S. Treasury",
+      "lag": "Monthly releases have about a 1.5-month lag between release and as-of date.",
+      "releaseTime": "16:00 Washington D.C. time",
+      "revisionGuard": "January/April/July/October releases revise prior year; other monthly releases revise prior three months per Treasury release policy.",
+      "useGuard": "Structural/global capital-flow state only unless a lower-frequency experiment is explicitly designed."
+    }
+  },
+  "geopoliticalRiskContract": {
+    "GPR": {
+      "definition": "News-based measure of adverse geopolitical events and associated risks; includes threat and realization/acts components.",
+      "firstUse": "Risk/intensity context and event-cluster stratification.",
+      "redundancy": [
+        "VIX/volatility",
+        "trade-policy uncertainty",
+        "news/event intensity",
+        "oil/defense/rates/global risk"
+      ],
+      "prohibited": "GPR high = Taiwan equities down, or GPR low = risk-on, without exposure/regime/incremental tests."
+    },
+    "TPU": {
+      "definition": "Trade-policy uncertainty measures based on news/firm communications/tariff-related uncertainty.",
+      "mechanism": "Uncertainty can delay investment/production/hiring and reduce activity, but does not identify winner/loser sectors by itself.",
+      "guard": "Uncertainty shock != tariff level != legal effective action."
+    }
+  },
+  "transmissionChannels": [
+    "direct tariff/import-cost and demand substitution",
+    "export-control technology/access constraint",
+    "sanctions/compliance/financial-access constraint",
+    "supply-chain rerouting / connector-country substitution",
+    "sectoral capex/FDI reallocation",
+    "portfolio-flow/geopolitical-distance reallocation",
+    "USD/rates/credit/risk-premium repricing",
+    "Taiwan foreign-investor trading and FX feedback"
+  ],
+  "taiwanOwnershipBoundary": {
+    "D13": "policy/legal clocks, global geopolitical/uncertainty state, cross-border/market flow state, source/vintage/provenance, macro transmission",
+    "D10_D07": "company/industry supply-chain exposure, customer/product dependence, beneficiary/victim mapping, substitution/capacity/inventory",
+    "D05": "institutional/chip/ETF trading-flow microstructure where already owned; D13 may consume validated aggregate state but must not duplicate maturity"
+  },
+  "sectorConditioning": [
+    "semiconductor/advanced computing",
+    "electronics manufacturing/supply chain",
+    "transport/logistics",
+    "energy/commodities",
+    "defense/industrial",
+    "financials/funding-sensitive sectors"
+  ],
+  "fragmentationEvidenceGuard": {
+    "finding": "Research literature supports geopolitical fragmentation/diversion in some trade/FDI/portfolio relationships, but effects are targeted/sector- and country-pair-dependent rather than universal.",
+    "implication": "Do not build one global 'deglobalization score'."
+  },
+  "falsification": [
+    "announcement-vs-effective-date placebo",
+    "proposal/final-action/legal-publication separation",
+    "pre-announcement rumor/news contamination test",
+    "policy event versus contemporaneous VIX/USD/rates/global equity controls",
+    "affected-sector versus non-exposed-sector cross-sectional comparison",
+    "trade diversion/connector-country alternative to simple lost-trade hypothesis",
+    "TWSE foreign trading versus CBC BOP portfolio flow non-equivalence",
+    "TIC release-lag and revision-vintage audit",
+    "GPR threat versus act separation",
+    "same geopolitical event with opposite sector exposures",
+    "event clustering and overlapping sanctions/export controls/tariffs",
+    "date-shift placebo and leave-one-event-out",
+    "no event severity or exposure threshold chosen after returns"
+  ],
+  "maturityDecision": {
+    "from": "L0",
+    "to": "L2",
+    "reason": "Policy/legal/flow objects, clocks, capital-flow semantics, geopolitical-risk measurement, Taiwan dependency boundary and falsification are frozen; no Taiwan prospective/OOS evidence for L3."
+  },
+  "exactNext": [
+    "Freeze one official trade/export-control/sanctions event receipt with announcement/legal/effective clocks and version lineage.",
+    "Audit one TWSE foreign-flow product at the 18:10 clock, preserving ex-block vs incl-block version and source entitlement.",
+    "Preserve CBC BOP and U.S. TIC as lower-frequency structural flow vintages; do not mix with daily foreign trading.",
+    "Build event-exposure schema linking D13 event state to D10/D07 validated sector/company exposure without duplicating exposure research.",
+    "Only after independent PIT events/dates exist, test Taiwan gap/MAE/sector-residual outcomes; Formal remains locked."
+  ]
+}
