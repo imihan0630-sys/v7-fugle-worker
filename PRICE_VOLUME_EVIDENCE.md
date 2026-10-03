@@ -5153,3 +5153,53 @@ Classification:
 `D02_07_D02_09_L3_CONTINUITY_REPLAY_PASS / ALPHA_UNKNOWN / PRODUCTION_WIRING_NOT_REQUIRED_FOR_L3 / FORMAL_UNCHANGED`.
 
 D02-08 remains L2 because the independent microstructure evidence family is not completeness-proven.
+
+# Pre-PVE-240 addendum — D02-08 provider-pressure L3 and L4 ceiling (2026-10-04)
+
+No PVE number consumed.
+
+## D02-08 executable evidence
+
+Research-only adapter:
+`research/d02_provider_trade_pressure_proxy_v0_1.mjs`
+
+Test:
+`tests/test_d02_provider_trade_pressure_proxy_v0_1.mjs`
+
+Independent Node.js v22.16.0 result:
+14/14 PASS.
+
+The adapter validates:
+- same identity;
+- independent provider/fetch clocks;
+- cumulative counter monotonicity;
+- classified <= total volume;
+- explicit unclassified coverage;
+- no round/odd-lot mixing;
+- trial-state blocking;
+- no-classified-volume UNKNOWN;
+- optional preregistered coverage floor;
+- pressure-response observation without intent inference.
+
+Classification:
+`D02_08_L3_PIT_FEASIBLE / PROVIDER_PRESSURE_PROXY_ONLY / INTENT_UNIDENTIFIED / ALPHA_UNKNOWN`.
+
+## L4 audit
+
+Repository-wide D02 outcome readiness still reports:
+- CLEAN_DATE_ZERO;
+- Gate 7 CLOSED;
+- PVE-240 pending;
+- no Formal optimization candidate.
+
+H20 explicitly lacks clean prospective residual outcomes.
+Signed-volume/OBV outcomes remain untested.
+Divergence outcomes remain untested.
+Liquidity counterfactual coverage remains incomplete.
+Volume-profile efficacy remains prospective-only/unobserved.
+
+Classification:
+`D02_ALL_MODULES_AT_LEAST_L3 / NO_L4_PROMOTION / PROSPECTIVE_OR_OOS_EVIDENCE_REQUIRED`.
+
+Target aggregate after canonical sync:
+60.0%.
