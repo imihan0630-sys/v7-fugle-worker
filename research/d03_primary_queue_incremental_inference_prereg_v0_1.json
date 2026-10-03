@@ -1,0 +1,225 @@
+{
+  "schemaVersion": "D03_PRIMARY_QUEUE_INCREMENTAL_INFERENCE_PREREG_V0_1",
+  "updatedAt": "2026-10-04T07:25:00+08:00",
+  "status": "OUTCOME_CLOSED_PREREGISTERED",
+  "formalCore": "LOCKED",
+  "rawSourceVersionGate": {
+    "requiredIndependentSessions": 3,
+    "currentIndependentSessions": 2,
+    "sufficientForOutcome": false
+  },
+  "gates": [
+    {
+      "id": "S0",
+      "name": "RAW_SOURCE_VERSION_3_OF_3",
+      "required": true
+    },
+    {
+      "id": "T1",
+      "name": "IMMUTABLE_PARENT_SOURCE_READY",
+      "requires": [
+        "LEVEL_B_PARENT",
+        "CAPTURE_GENERATION",
+        "PARENT_KEYSET_HASH",
+        "TECHNICAL_CONTINUITY",
+        "SYMBOL_SESSION_PROVENANCE",
+        "PRICE_LIMIT_PROVENANCE",
+        "ASOF_AVAILABLE_AT"
+      ]
+    },
+    {
+      "id": "T2",
+      "name": "OBSERVER_COMPLETENESS",
+      "requires": [
+        "ATTEMPTED_EQ_EXPECTED",
+        "NO_DUPLICATE_OR_ORPHAN",
+        "COMPLETE_RUN_RECEIPT",
+        "BLOCKED_UNKNOWN_ACCOUNTED"
+      ]
+    },
+    {
+      "id": "T3",
+      "name": "FORMULA_STATE_REPLAY",
+      "requires": [
+        "FORMULA_VERSION",
+        "STATE_CONSTRUCTION_MODE",
+        "REPLAY_CERTIFICATION",
+        "PREFIX_INVARIANCE",
+        "EXACT_READBACK"
+      ]
+    },
+    {
+      "id": "T4",
+      "name": "COMMON_SUPPORT_DESCRIPTIVE_READY"
+    },
+    {
+      "id": "T5",
+      "name": "OUTCOME_JOIN_READY",
+      "requires": [
+        "FORWARD_ONLY_OUTCOMES",
+        "EXACT_KEYSET_JOIN",
+        "PREREGISTERED_EXPERIMENT",
+        "NO_PARTIAL_DATE_TRUNCATION"
+      ]
+    },
+    {
+      "id": "T6",
+      "name": "INCREMENTAL_INFERENCE_FLOOR",
+      "requires": [
+        "D5_MATURE_GE_60",
+        "PROSPECTIVE_COMPLETE_GE_30",
+        "INDEPENDENT_SCAN_DATES_GE_15",
+        "REGIMES_GE_2",
+        "PURGED_TRAIN_DATES_GE_10",
+        "HOLDOUT_DATES_GE_5",
+        "COVERAGE_ZERO_PICK_SAFE"
+      ]
+    }
+  ],
+  "ti005": {
+    "order": 1,
+    "basis": {
+      "B2": "ROLLING_RANGE_EXTREME_LOCATION",
+      "B3": "SIGNED_RETURN_GAIN_LOSS_BALANCE"
+    },
+    "models": {
+      "K0": [
+        "BASE_CONTROLS"
+      ],
+      "K1": [
+        "BASE_CONTROLS",
+        "B2_RANGE_POSITION_CONTINUOUS"
+      ],
+      "K2": [
+        "BASE_CONTROLS",
+        "RSI14_CONTINUOUS"
+      ],
+      "K3": [
+        "BASE_CONTROLS",
+        "B2_RANGE_POSITION_CONTINUOUS",
+        "RSI14_CONTINUOUS"
+      ],
+      "K4_DIAGNOSTIC": [
+        "K3",
+        "KD_K_D_SMOOTHING_RESIDUAL_FIELDS"
+      ]
+    },
+    "forbiddenIndependentFields": [
+      "KD_ZONE_CHILD_LABELS",
+      "RSI_ZONE_CHILD_LABELS",
+      "THRESHOLD_VOTES"
+    ],
+    "nulls": [
+      "H005_A_B2_NO_INCREMENT",
+      "H005_B_RSI_NO_INCREMENT",
+      "H005_C_BOTH_NO_INCREMENT_OVER_BEST_SINGLE",
+      "H005_D_KD_SMOOTHING_NO_RESIDUAL"
+    ]
+  },
+  "ti006": {
+    "order": 2,
+    "models": {
+      "M0": [
+        "DIRECT_RETURN_TREND_CONTROLS"
+      ],
+      "M1": [
+        "M0",
+        "DIF_PCT"
+      ],
+      "M2": [
+        "M0",
+        "DIF_SLOPE",
+        "HISTOGRAM_PCT",
+        "HISTOGRAM_SLOPE"
+      ],
+      "M3": [
+        "M0",
+        "DIF_PCT",
+        "DIF_SLOPE",
+        "HISTOGRAM_PCT",
+        "HISTOGRAM_SLOPE"
+      ]
+    },
+    "forbiddenIndependentFields": [
+      "MACD_ZERO_LINE_SEPARATE_FROM_EMA_ALIGNMENT",
+      "MACD_CROSSOVER_SEPARATE_FROM_HISTOGRAM_SIGN",
+      "RAW_UNNORMALIZED_DIF_CROSS_SECTION"
+    ],
+    "nulls": [
+      "H006_A_DIF_NO_INCREMENT",
+      "H006_B_TRANSITION_NO_INCREMENT",
+      "H006_C_COMBINED_NO_INCREMENT"
+    ]
+  },
+  "commonControls": [
+    "RET5",
+    "RET10",
+    "RET20",
+    "RET60",
+    "MA_EMA_TREND_SLOPE_ALIGNMENT",
+    "TREND_PERSISTENCE",
+    "PATH_EFFICIENCY_IF_VALID",
+    "ATR_VOLATILITY",
+    "PATTERN_LIFECYCLE",
+    "PRICE_VOLUME_STATE",
+    "MARKET_SECTOR_REGIME",
+    "LIQUIDITY_PRICE_TIER",
+    "OVERHEAT_LATE_STAGE",
+    "CONSTRAINED_SESSION_STATE"
+  ],
+  "outcomes": {
+    "primaryHorizon": "D5",
+    "registeredPrimaryEndpoints": [
+      "D5_RETURN_PCT",
+      "D5_MFE",
+      "D5_MAE"
+    ],
+    "secondaryEndpoints": [
+      "D10_RETURN_PCT",
+      "D10_MFE",
+      "D10_MAE",
+      "D20_RETURN_PCT",
+      "D20_MFE",
+      "D20_MAE"
+    ],
+    "secondaryCannotRescueFailedPrimary": true
+  },
+  "inference": {
+    "d16MethodReceiptRequiredBeforeOutcome": true,
+    "commonSupportExact": true,
+    "equalScanDateWeighting": true,
+    "scanDateDependenceAware": true,
+    "purgedChronologicalHoldout": true,
+    "leaveOneDateSensitivity": true,
+    "regimeIndustryPriceLiquidityConcentrationDiagnostics": true,
+    "nonOverlappingOutcomeWindowSensitivity": true,
+    "rowCountIsNotIndependentN": true
+  },
+  "multipleTestingFamily": [
+    "H005_A",
+    "H005_B",
+    "H005_C",
+    "H005_D",
+    "H006_A",
+    "H006_B",
+    "H006_C",
+    "D5_RETURN",
+    "D5_MFE",
+    "D5_MAE",
+    "D10_REGISTERED_SECONDARY",
+    "D20_REGISTERED_SECONDARY"
+  ],
+  "parameterSearch": {
+    "kdAlternativePeriods": false,
+    "rsiAlternativePeriods": false,
+    "macdAlternativePeriods": false,
+    "timeframeSearch": false,
+    "postOutcomeThresholdSearch": false
+  },
+  "current": {
+    "outcomeJoin": "CLOSED",
+    "ti005": "PREREGISTERED_NOT_EXECUTABLE",
+    "ti006": "PREREGISTERED_NOT_EXECUTABLE",
+    "formalOptimizationCandidate": "NONE"
+  }
+}
