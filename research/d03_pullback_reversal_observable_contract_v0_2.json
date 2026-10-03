@@ -1,0 +1,143 @@
+{
+  "schemaVersion": "D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2",
+  "updatedAt": "2026-10-04T07:07:00+08:00",
+  "classification": "CLASS_A_RESEARCH_ONLY",
+  "formalCoreImpact": "NONE_LOCKED",
+  "ownership": {
+    "owner": "D03-05",
+    "owns": [
+      "PULLBACK_GEOMETRY",
+      "SHORT_HORIZON_REVERSAL",
+      "FAILED_REVERSAL",
+      "OBSERVABLE_PRICE_VOLUME_VOLATILITY_STATE",
+      "PIT_SAFE_REPLAY"
+    ],
+    "doesNotOwn": [
+      "LIQUIDITY_PRESSURE_CAUSE",
+      "EVENT_CAUSE",
+      "MARKET_SECTOR_CAUSE",
+      "BEHAVIORAL_OVERREACTION_CAUSE"
+    ]
+  },
+  "observableVsOrigin": {
+    "observableEpisodeRequired": true,
+    "originRequiredForEpisodeExistence": false,
+    "missingOriginState": "UNKNOWN_ORIGIN",
+    "originDirectTradeAuthority": false
+  },
+  "parentDaily": {
+    "reuseCurrentASetupGeometry": true,
+    "requiredFields": [
+      "parentDecisionReceiptId",
+      "captureGeneration",
+      "scanDate",
+      "planDate",
+      "symbol",
+      "sourceHistoryHash",
+      "formulaVersion",
+      "support",
+      "recentHigh",
+      "pullbackPct",
+      "supportDistancePct",
+      "A.checks",
+      "parentKnownAt"
+    ],
+    "replayPlanValuesMayBeObservedButNotRetroactivelyInvented": true
+  },
+  "states": [
+    "PULLBACK_PENDING",
+    "ZONE_ENTERED_HELD",
+    "REVERSAL_SEED_VISIBLE",
+    "REVERSAL_CONFIRMED",
+    "FAILED_ZONE_BREAK",
+    "FAILED_DOWN_VOLUME",
+    "NO_CONFIRMATION_YET",
+    "DATA_BLOCKED",
+    "UNKNOWN_PROVENANCE"
+  ],
+  "intradayRules": {
+    "timeframe": "M15",
+    "completedBarsOnly": true,
+    "exactExpectedSessionPrefixRequired": true,
+    "missingExpectedSlotState": "DATA_BLOCKED",
+    "zeroFillMissingSlot": false,
+    "interpolateMissingSlot": false,
+    "seed": {
+      "enteredZone": true,
+      "heldLowerBound": true,
+      "maxLocalVolumeRatio": 0.9,
+      "requireReversalMorphology": true
+    },
+    "confirm": {
+      "requireNextCompletedBar": true,
+      "higherLow": true,
+      "bullishTurnUp": true,
+      "closeAboveSeedCloseOrHighAboveSeedHigh": true
+    },
+    "fail": {
+      "closeBelowLowerBound": "FAILED_ZONE_BREAK",
+      "bearishVolumeRatioGte1_3": "FAILED_DOWN_VOLUME"
+    }
+  },
+  "clocks": {
+    "geometricLowMayPrecedeSignal": true,
+    "required": [
+      "seedBarStart",
+      "seedBarEnd",
+      "seedFeatureKnownAt",
+      "confirmBarStart",
+      "confirmBarEnd",
+      "confirmFeatureKnownAt",
+      "reversalConfirmedAt"
+    ],
+    "reversalConfirmedAtRule": "MAX_CONFIRM_BAR_END_CONFIRM_FEATURE_KNOWN_AT_REQUIRED_PARENT_PRIOR_AVAILABILITY",
+    "mayBackdateSignalToLow": false
+  },
+  "lagCostFields": [
+    "pullbackLowAt",
+    "pullbackLowPrice",
+    "confirmationLagEligibleBars",
+    "priceAtConfirmation",
+    "priceMoveLowToConfirmationPct",
+    "priceMoveLowToConfirmationATR"
+  ],
+  "provenanceGuards": [
+    "ORDINARY_SYMBOL_SESSION_OR_EXPLICIT_CONSTRAINED_STATE",
+    "COMPLETED_15M_ONLY",
+    "NO_PSEUDO_BARS",
+    "CORPORATE_ACTION_WINDOW_CHECK",
+    "PRICE_LIMIT_DELAYED_CLOSE_SPECIAL_SESSION_STATE",
+    "SOURCE_FETCHED_AT_GE_BAR_END",
+    "UNKNOWN_NEVER_ZERO"
+  ],
+  "originFields": [
+    "marketSectorContextReceiptId",
+    "eventContextReceiptId",
+    "microstructurePressureReceiptId",
+    "behavioralContextReceiptId",
+    "originState",
+    "originEvidenceCompleteness"
+  ],
+  "originRules": [
+    "CANDLE_MORPHOLOGY_CANNOT_PROVE_LIQUIDITY_PRESSURE",
+    "MULTIPLE_VALID_ORIGINS_REMAIN_MULTIPLE",
+    "MISSING_OWNER_RECEIPT_MEANS_UNKNOWN",
+    "ORIGIN_DOES_NOT_CHANGE_TRADE_ACTION"
+  ],
+  "maturity": {
+    "level": "L3",
+    "maturityPct": 60,
+    "meaning": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
+    "scope": "OBSERVABLE_PULLBACK_REVERSAL_PHENOMENON_ONLY",
+    "originAttributionMaturity": "PARTIAL_DATA_GATED"
+  },
+  "outcomePolicy": {
+    "current": "NO_GO",
+    "historicalShadowFabrication": false,
+    "primarySourceGateRequiredBeforeInference": true,
+    "efficacyQueueBeforePullbackOrigin": [
+      "TI_005_KD_VS_RSI",
+      "TI_006_MACD_VS_DIRECT_TREND"
+    ]
+  }
+}
