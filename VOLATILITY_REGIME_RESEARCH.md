@@ -1248,3 +1248,90 @@ Official sources:
 
 Status:
 `CURRENT_SOURCE_DIAGNOSTIC = PASS / PIT_PROMOTION = NO`.
+
+
+## VR-042 — L3 is Taiwan PIT feasibility, not efficacy: five daily-volatility modules pass the data/replay gate
+
+The canonical learning-map maturity contract defines L3 as:
+`TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED`.
+
+It does not require positive forward-return evidence; that belongs to L4 prospective Shadow/OOS.
+
+A fresh evidence mapping against the live-validated A1 Taiwan daily source, causal bar/session clocks, official price-limit mechanics and shared continuity/UNKNOWN contracts supports L3 for five D04 modules:
+
+- D04-03 Volatility Contraction;
+- D04-04 Volatility Expansion / Shock;
+- D04-07 Volatility × Trend / Breakout Interaction;
+- D04-09 Tail / Gap Volatility Risk;
+- D04-10 Price-Limit Contamination of Volatility.
+
+### Common feasibility proof
+
+Taiwan daily OHLC source:
+- TWSE historical MI_INDEX path live-validated;
+- TPEx historical dailyQuotes path live-validated;
+- requested-date/source-date mismatch fails closed;
+- OHLC/schema integrity failures fail closed.
+
+Replay/semantic guard:
+- official-session identity is explicit;
+- pseudo-bars are prohibited;
+- missing/unexplained symbol sessions remain UNKNOWN/BLOCKED;
+- a relevant unresolved corporate-action continuity event blocks technical-path inference;
+- no module creates its own corporate-action adjustment shortcut.
+
+Thus "data exists" is not enough; the promotion rests on data + clock + semantic space + replay + UNKNOWN behavior.
+
+### Module-specific boundary
+
+D04-03:
+contraction is computable only from completed causal windows. Price-limit-constrained or unresolved-continuity windows are separate/UNKNOWN.
+
+D04-04:
+expansion/shock uses only completed range/return information. Direction is stored separately; expansion is not bullish/bearish.
+
+D04-07:
+PIT-feasible volatility and existing PIT-feasible trend/breakout states may join only on one parent/common-support identity. The breakout event is not counted twice.
+
+D04-09:
+previous-eligible-close to observed Open gap and intraday excursion are source-feasible. Synthetic/missing Open cannot be substituted. Corporate-action mechanical reset and residual market gap are separate.
+
+D04-10:
+current Taiwan price-limit rule/reference semantics and explicit observed limit fields permit prospective contamination-state construction. If exact historical reference/exception state cannot be proven, it remains UNKNOWN; latent unconstrained price is never imputed.
+
+### Explicit non-promotions
+
+D04-02 stays L2:
+A2 Market-RV Decision Clock persistence/readback/replay is not yet closed.
+
+D04-05 stays L2:
+volatility-regime transition needs the same raw market-RV persistence lineage.
+
+D04-06 stays L2:
+stock side is feasible, but market-side A2 decision-clock lineage remains incomplete.
+
+D04-08 stays L2:
+volatility scaling is a portfolio/risk policy transformation and requires a separate policy/execution evidence contract.
+
+### Maturity result
+
+Previous D04:
+420 / 1000 = 42.0%.
+
+Five L2 -> L3 promotions:
++100 maturity points.
+
+New D04:
+**520 / 1000 = 52.0%**.
+
+This is knowledge/data maturity only.
+
+No volatility threshold, stop, RR, sizing, rank or Formal rule changes.
+
+Status:
+`D04_MATURITY = 52.0_PERCENT / L4_OUTCOME_EVIDENCE_STILL_REQUIRED / FORMAL_OPTIMIZATION_CANDIDATE_NONE`.
+
+Machine-readable audit:
+- `research/d04_d05_pit_feasibility_promotion_audit_20261004_v0_1.json`.
+Long-form audit:
+- `research/D04_D05_PIT_FEASIBILITY_PROMOTION_AUDIT_20261004_V0_1.md`.
