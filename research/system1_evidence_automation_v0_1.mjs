@@ -1,6 +1,6 @@
 import {buildC4AllocationExperiment} from "./system1_c3_c4_c5_shadow_v0_1.mjs";
 import {buildC5SemanticRepairDiagnostic} from "./system1_c5_semantic_repair_v0_2.mjs";
-import {buildP1AConditionalReachUpperBound} from "./system1_p1a_conditional_reach_v0_1.mjs";
+import {buildP1AConditionalReachUpperBound} from "./system1_p1a_conditional_reach_v0_1.mjs";\nimport {buildP1ASafetyCaptureDemand} from "./system1_p1a_safety_capture_demand_v0_1.mjs";
 import {C3_CAPTURE_SLOTS} from "./system1_c3_capture_contract_v0_1.mjs";
 
 const HEX64=/^[0-9a-f]{64}$/i;
@@ -225,6 +225,8 @@ export function buildC5DailyReport(c1Diagnosis,c2Ledger){
   const swing=buildC5SemanticRepairDiagnostic(c1Diagnosis,c2Ledger,{strategy:"SWING"});
   const conditionalShort=buildP1AConditionalReachUpperBound(c1Diagnosis,short);
   const conditionalSwing=buildP1AConditionalReachUpperBound(c1Diagnosis,swing);
+  const safetyCaptureDemandShort=buildP1ASafetyCaptureDemand(short,conditionalShort);
+  const safetyCaptureDemandSwing=buildP1ASafetyCaptureDemand(swing,conditionalSwing);
   const render=d=>({
     formalRejectedN:d.formalRejectedN,
     p1aRejectedN:d.p1aRejectedN,
@@ -261,15 +263,29 @@ export function buildC5DailyReport(c1Diagnosis,c2Ledger){
     materialityThresholdStatus:d.materialityThresholdStatus,
     safetyCaptureDecision:d.safetyCaptureDecision
   });
-  return {schemaVersion:"SYSTEM1_C5_DAILY_REPORT_V0_3",sessionDate:c2Ledger.sessionDate,generationId:c2Ledger.generationId,
+  const renderSafetyDemand=d=>({
+    denominator:d.denominator,
+    ratios:d.ratios,
+    familyDemand:d.familyDemand,
+    combinationDemand:d.combinationDemand,
+    demandState:d.demandState,
+    materialityThresholdStatus:d.materialityThresholdStatus,
+    materialityClassification:d.materialityClassification,
+    captureLaneAuthorization:d.captureLaneAuthorization,
+    classBImplementationAuthorized:d.classBImplementationAuthorized
+  });
+  return {schemaVersion:"SYSTEM1_C5_DAILY_REPORT_V0_4",sessionDate:c2Ledger.sessionDate,generationId:c2Ledger.generationId,
     sourceRoleInventory:"SYSTEM1_A2_GATE_ROLE_INVENTORY_V0_1",
     p1aContract:"SYSTEM1_P1A_MINIMAL_BLOCKING_AND_OUTCOME_CONTRACT_20261003_V0_1",
     conditionalContract:"SYSTEM1_P1A_CONDITIONAL_REACH_UPPER_BOUND_CONTRACT_20261003_V0_1",
     short:render(short),swing:render(swing),
     conditionalShort:renderConditional(conditionalShort),conditionalSwing:renderConditional(conditionalSwing),
+    safetyCaptureDemandShort:renderSafetyDemand(safetyCaptureDemandShort),
+    safetyCaptureDemandSwing:renderSafetyDemand(safetyCaptureDemandSwing),
     denominatorN:c2Ledger.tally.populationN,
     firstFailureIsNotCausalAttribution:true,unknownNeverPasses:true,p1aRankableIsNotCandidate:true,
     conditionalRankableIsNotCandidate:true,conditionalUnknownToPassMutation:false,
+    safetyCaptureDemandIsEngineeringDemandOnly:true,classBImplementationAuthorized:false,
     materialityThresholdInvented:false,candidateCountLiftIsNotSuccess:true,
     economicSuperiority:"UNKNOWN",formalOptimizationCandidate:"NONE",
     researchOnly:true,decisionImpact:false,formalCoreImpact:false,noTrade:true,noPush:true};
