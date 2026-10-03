@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 33.5
+    "maturityWeightedPct": 34
   },
   "domains": [
     {
@@ -1281,7 +1281,7 @@
         "MARKET_BREADTH_ROTATION_CHECKPOINT.md",
         "MARKET_BREADTH_ROTATION_RESEARCH.md"
       ],
-      "maturityPct": 47.1,
+      "maturityPct": 52.9,
       "modules": [
         {
           "id": "D09-01",
@@ -1394,22 +1394,22 @@
         {
           "id": "D09-13",
           "name": "Industry Structure／Porter Five Forces產業結構與波特五力",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Industry Structure／Porter Five Forces產業結構與波特五力」。研究產業結構、競爭強度、進入障礙、替代威脅與市占變化；需把敘事轉成可觀測的價格、產能、毛利、份額、客戶與供應商證據，並保留產業結構沒有轉化成股東報酬的反例。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D09-13 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / DATA_CONTRACT_FROZEN / TAIWAN_PIT_RECEIPT_PENDING",
+          "next": "BR-051 build the first Taiwan industry-structure PIT receipt for one priority industry with explicit market denominator, source clocks, force-state UNKNOWN handling and at least one negative control; no stock outcome join."
         },
         {
           "id": "D09-14",
           "name": "Market Share／Entry Barrier／Substitution／Competitive Strategy市占、進入障礙、替代與競爭策略",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Market Share／Entry Barrier／Substitution／Competitive Strategy市占、進入障礙、替代與競爭策略」。研究產業結構、競爭強度、進入障礙、替代威脅與市占變化；需把敘事轉成可觀測的價格、產能、毛利、份額、客戶與供應商證據，並保留產業結構沒有轉化成股東報酬的反例。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D09-14 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / MARKET_SHARE_DENOMINATOR_CONTRACT_FROZEN / TAIWAN_PIT_RECEIPT_PENDING",
+          "next": "BR-052 freeze one Taiwan priority-industry market-share/entry-barrier/substitution receipt with explicit numerator/denominator and substitute/entrant negative control; no share-based company score before OOS/prospective validation."
         }
       ]
     },
@@ -1420,7 +1420,7 @@
       "anchors": [
         "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md"
       ],
-      "maturityPct": 46.2,
+      "maturityPct": 52.3,
       "modules": [
         {
           "id": "D10-01",
@@ -1523,22 +1523,22 @@
         {
           "id": "D10-13",
           "name": "Trade Policy／Export Controls／Sanctions Supply-chain Transmission貿易政策出口管制制裁供應鏈傳導",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Trade Policy／Export Controls／Sanctions Supply-chain Transmission貿易政策出口管制制裁供應鏈傳導」。研究政策、出口限制、制裁、補貼與地緣瓶頸如何經供應鏈、產能、成本、交期與定價權傳導；必須區分政策公告、正式生效與企業實際暴露，禁止把新聞標題直接當產業受益證據。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D10-13 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / POLICY_LIFECYCLE_FROZEN / TAIWAN_EXPOSURE_RECEIPT_PENDING",
+          "next": "SC-045 freeze the first Taiwan semiconductor export-control exposure receipt using current rule text plus issuer-native product/location/customer evidence and at least one exception/rescission/low-exposure negative control."
         },
         {
           "id": "D10-14",
           "name": "Industrial Policy／Subsidy／Geopolitical Bottleneck產業政策補貼與地緣瓶頸",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Industrial Policy／Subsidy／Geopolitical Bottleneck產業政策補貼與地緣瓶頸」。研究政策、出口限制、制裁、補貼與地緣瓶頸如何經供應鏈、產能、成本、交期與定價權傳導；必須區分政策公告、正式生效與企業實際暴露，禁止把新聞標題直接當產業受益證據。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D10-14 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / POLICY_TO_CAPACITY_CLOCKS_FROZEN / TAIWAN_PIT_RECEIPT_PENDING",
+          "next": "SC-046 build one Taiwan strategic-industry policy-to-capacity receipt with official program/award plus issuer/facility evidence and a negative control where announced support did not promptly become operating capacity or margin."
         }
       ]
     },
