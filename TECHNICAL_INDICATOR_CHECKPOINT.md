@@ -2378,3 +2378,42 @@ Current:
 3. Continue D03-13 multi-timeframe PIT feasibility using causal aggregation-boundary / partial-bar clocks and existing hierarchical context semantics.
 4. TI-005/TI-006 efficacy remains blocked until the source gate genuinely opens.
 5. Formal Core unchanged.
+
+
+## TI-491 through TI-503 — D03-13 multi-timeframe PIT feasibility (2026-10-03)
+
+Durable artifacts:
+- `research/D03_MULTITIMEFRAME_PIT_FEASIBILITY_V0_1.md`
+- `research/d03_multitimeframe_pit_contract_v0_1.json`
+- `research/test_d03_multitimeframe_pit_feasibility_v0_1.mjs`
+
+Key results:
+- barStartAt, barEndAt and featureKnownAt are distinct clocks;
+- chart bar labels cannot be used as evidence-known timestamps;
+- current M15 source path is causally usable but bounded to 17 start slots, 09:00..13:00, covering completed intervals through 13:15;
+- TWSE regular session continues to 13:30, so the 13:15-start closing M15 bar is unobserved in the current zero-extra-call path;
+- daily LIVE -> PROVISIONAL and FINAL+independent close gate -> CONFIRMED semantics already exist in System 2;
+- weekly completion is official-calendar/symbol-session aware, not a five-bar count;
+- a partial weekly state can reverse before completion;
+- timeframe alignment is ALIGNED/MIXED/CONFLICT/UNKNOWN, never a default numeric vote count;
+- weekly/daily/M15 data/PIT construction is technically feasible with explicit coverage/provenance limits.
+
+Maturity:
+- D03-13 L2/40 -> L3/60;
+- active 12-module D03 51.7% -> **53.3%**.
+
+Current:
+`D03_13 = L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED_WITH_BOUNDED_INTRADAY_COVERAGE`
+`M15_CURRENT_RUNTIME_COVERAGE = 17_OF_18_REGULAR_SLOTS`
+`RAW_RECEIPT_GATE = 2_OF_3`
+`OUTCOME_INFERENCE = NO_GO`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+### Exact next continuation point after TI-503
+
+1. Weekend raw receipt denominator remains 2/3.
+2. Missing 13:15 M15 capture is explicit and cannot be imputed.
+3. M15 outcome work requires featureKnownAt/common support; weekly work requires equal-horizon controls.
+4. Continue D03-04 momentum continuation vs persistence/direct return construct separation and PIT feasibility.
+5. TI-005/TI-006 efficacy remains blocked until the raw receipt gate genuinely closes.
+6. Formal Core unchanged.
