@@ -3619,6 +3619,9 @@
   },
   "scopeFieldVersion": "LEARNING_SCOPE_V0_1",
   "governanceRefs": [
-    "shared-knowledge/CURRICULUM_15_ITEM_DEPENDENCY_AUDIT_20261003_V0_1.md"
+    "shared-knowledge/CURRICULUM_15_ITEM_DEPENDENCY_AUDIT_20261003_V0_1.md",
+    "shared-knowledge/CURRICULUM_SECOND_ROUND_OVERLAP_AUDIT_20261003_V0_1.md",
+    "shared-knowledge/CURRICULUM_OVERLAP_MERGE_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
+    "shared-knowledge/curriculum_overlap_merge_acceptance_contract_20261003_v0_1.json"
   ]
 }
