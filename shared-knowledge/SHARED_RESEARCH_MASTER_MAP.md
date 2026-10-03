@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 11:32 Asia/Taipei
+Updated: 2026-10-03 11:42 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -799,4 +799,24 @@ Third-round governance packaging is complete for all H01-H20:
 - H13-H20 keep-separate dependency chains.
 
 All 20 clusters now have frozen acceptance rules and specialist validation packets. No third-round retirement has been executed.
+
+## Hybrid role eligibility audit — 2026-10-03
+
+Canonical audit:
+`shared-knowledge/HYBRID_ROLE_ELIGIBILITY_AUDIT_20261003_V0_1.md`
+
+Machine-readable overlay:
+`shared-knowledge/hybrid_role_eligibility_audit_20261003_v0_1.json`
+
+Specialist packets:
+`shared-knowledge/HYBRID_ROLE_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
+
+Governance result:
+- 22 domain-level role-eligibility defaults frozen.
+- 8 high-risk role-conflict groups frozen.
+- Role Eligibility != Actual Strategy Role.
+- HARD_INVALIDATION is restricted to factual source/PIT/replay, non-executability, continuity or explicit risk-authority failures.
+- Execution/sizing/validation/context modules do not automatically become stock-selection Alpha.
+- Behavioral/governance narratives require independent observables.
+- Formal Core unchanged.
 
