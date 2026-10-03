@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T07:12:00+08:00",
+  "updatedAt": "2026-10-04T07:30:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 40.7
+    "maturityWeightedPct": 41
   },
   "domains": [
     {
@@ -147,7 +147,7 @@
         "PRICE_VOLUME_EVIDENCE.md",
         "PRICE_VOLUME_HYPOTHESIS_LEDGER.md"
       ],
-      "maturityPct": 51.7,
+      "maturityPct": 58.3,
       "modules": [
         {
           "id": "D02-01",
@@ -184,10 +184,12 @@
         {
           "id": "D02-05",
           "name": "爆量／高潮量／分配量",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「爆量／高潮量／分配量」。學習範圍：成交量單位與基準化；量價因果與競爭解釋；趨勢／盤整／突破情境；流動性與同時段效應；異常量與反向案例；對進場、突破品質與風險監控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "PIT_READINESS_PASS / EXTREME_PARTICIPATION_OBSERVABLE / DISTRIBUTION_MOTIVE_UNKNOWN / ALPHA_UNKNOWN",
+          "next": "以 EXTREME participation × response × volatility/event/liquidity common support 做前瞻/OOS incremental test；不得把 EXTREME 直接命名為 distribution/absorption。"
         },
         {
           "id": "D02-06",
@@ -200,12 +202,12 @@
         {
           "id": "D02-07",
           "name": "OBV能量潮",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「OBV能量潮」。保留 OBV（能量潮）作為 Price-Volume（價量）比較器，允許研究 obvSlope、divergence 與 lead-lag，但不得把 OBV 與 RVOL、直接成交量、價量狀態重複計票。必須先控制直接價格報酬、成交量／換手、價量反應與資料單位語意；若無獨立增量資訊，降為 UI／解釋用途或合併回價量母模組。不得單獨形成 Hard Gate（硬門檻）或 PRIMARY_ALPHA（主要Alpha）。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / MERGE_CANDIDATE / PRICE_VOLUME_COMPARATOR_ONLY. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / MERGE_CANDIDATE / PRICE_VOLUME_COMPARATOR_ONLY",
-          "next": "由 02｜價量研究室以直接價格、成交量、換手與 RVOL 為共同基準做 residual／incremental-value 驗證；若無獨立增量，再提案合併回價量母模組或僅保留 UI／解釋用途。不得形成 Hard Gate 或獨立 PRIMARY_ALPHA。"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "PIT_READINESS_PASS / EXECUTABLE_CONTINUITY_REPLAY / COMPARATOR_ONLY / MERGE_CANDIDATE / ALPHA_UNKNOWN",
+          "next": "以 signedVolumeBalance20 為 primary compact comparator，對直接價格、RVOL、response/persistence 做 residual incremental-value 驗證；若無增量，維持合併/UI候選。"
         },
         {
           "id": "D02-08",
@@ -220,10 +222,12 @@
         {
           "id": "D02-09",
           "name": "價量背離",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「價量背離」。學習範圍：成交量單位與基準化；量價因果與競爭解釋；趨勢／盤整／突破情境；流動性與同時段效應；異常量與反向案例；對進場、突破品質與風險監控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "PIT_READINESS_PASS / REPAINT_SAFE_PIVOT_PLUS_EXECUTABLE_VOLUME_CONTINUITY / ALPHA_UNKNOWN",
+          "next": "以 PIVOT_SIGNED_VOLUME 與 PARTICIPATION_TRAJECTORY 兩族做共同樣本 prospective/OOS 驗證；不得使用 generic divergence boolean。"
         },
         {
           "id": "D02-10",
@@ -238,10 +242,12 @@
         {
           "id": "D02-11",
           "name": "流動性量能門檻與例外",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「流動性量能門檻與例外」。學習範圍：成交量單位與基準化；量價因果與競爭解釋；趨勢／盤整／突破情境；流動性與同時段效應；異常量與反向案例；對進場、突破品質與風險監控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "PIT_READINESS_PASS / VOLUME_CAPACITY_PLUS_EXECUTION_LIQUIDITY_TYPED / FORMAL_THRESHOLD_OPTIMALITY_UNKNOWN",
+          "next": "建立 reason-stratified liquidity rejected controls 與執行成本/價差/深度 evidence；禁止 outcome 後掃 800/700/500 張等新門檻。"
         },
         {
           "id": "D02-12",
@@ -254,10 +260,10 @@
           "next": "時間軸量能曲線先用 09:00~13:00 bounded observable window；分價量 Profile 僅 prospective capture，不回填歷史。L4 等 full-session/closing coverage 與 OOS/prospective outcome。"
         }
       ],
-      "exactNextContinuationPoint": "Formal evidence remains PVE-240 on the first genuine completed post-repair market session; Gate 0→6 before outcomes and Gate 7 CLOSED. D02-10 next empirical stage is trend + participation + explicit interaction on identical common support. D02-12 next stage is bounded time-curve coverage validation plus prospective price-profile capture/coverage, without historical Shadow fabrication. D02-07/08/09 remain L2 pending their separate blockers.",
-      "status": "STAGE_VIII_COMPLETE / PVE_239 / D02_10_D02_12_L3_PIT_READINESS_PASS / PRE_PVE_240 / CLEAN_DATE_ZERO",
+      "exactNextContinuationPoint": "Formal evidence remains PVE-240 on the first genuine completed post-repair market session; Gate 0→6 before outcomes and Gate 7 CLOSED. Pre-PVE work should not force D02-08 upward: it remains dependent on completeness-proven D05 microstructure evidence. L4 candidates are D02-05/07/09/10/11/12 only after clean prospective/OOS common-support evidence. No historical Shadow fabrication.",
+      "status": "STAGE_VIII_COMPLETE / PVE_239 / D02_05_07_09_11_L3_PIT_READINESS_PASS / PRE_PVE_240 / CLEAN_DATE_ZERO",
       "lastResearchUpdate": "2026-10-04",
-      "researchNote": "Outcome-blind PIT-readiness closure promotes D02-10 and D02-12 from L2/40 to L3/60. D02-10 freezes a non-circular join: D03-owned pre-session trend context from the last completed eligible symbol session plus D02 participation from the current completed 15m bar; firstKnownAt is the max of parent-known and volume-bar/source clocks, with no independent third event vote. D02-12 explicitly separates TIME_OF_DAY_VOLUME_CURVE from PRICE_BY_VOLUME_PROFILE. Historical/live 15m Taiwan candles make the time curve PIT-replayable, but current monitor coverage is bounded through 13:00 and does not claim the 13:15/closing-auction window. Current-day price-by-volume data are prospectively observable; historical profile replay is not claimed, and provider bid/ask classification excludes opening first-trade volume by design. These are L3 data-feasibility promotions only; alpha remains UNKNOWN, Gate 7 CLOSED, Formal Core locked."
+      "researchNote": "Outcome-blind L3 closure promotes D02-05, D02-07, D02-09 and D02-11 from 40 to 60. D02-05 is limited to observable EXTREME_PARTICIPATION_STATE; distribution/absorption motive remains UNKNOWN. D02-11 separates 20-day volume/amount capacity, current quote/depth execution context and Formal gate reference, explicitly rejecting pvIlliquidityWarning as research truth because its threshold/exception semantics are defective. D02-07 and D02-09 share a new executable daily-volume continuity adapter. Independent local Node v22.16.0 replay ended 14/14 PASS after the first run exposed and fixed an anti-look-ahead defect: late-known corporate-action events cannot be applied retrospectively to the earlier decision state. Fixtures cover 3593/8422-like UNIT_SCALE, 8454-like SUPPLY_CHANGE, 5314-like suspension pseudo-bar, zero-vs-missing, duplicate rows, deterministic session hash, signed-volume algebra and clean/blocked pivot-volume eligibility. D02-08 remains L2 because independent microstructure completeness for dynamic replenishment/resiliency/true OFI is not proven. Gate 7 remains CLOSED; Formal Core locked."
     },
     {
       "id": "D03",
