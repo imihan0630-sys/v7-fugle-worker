@@ -45,7 +45,7 @@ try {
       const config=await configResponse.json().catch(()=>null);
       if(!configResponse.ok||!config) throw new Error('C3_REGISTRATION_CONFIG_HTTP_'+configResponse.status);
       const registration=buildC3Registration(artifact,pairedArtifact,config,{
-        maxShadowSymbols:6,providerBudgetCallsPerSession:102,includeConditionalSafetyUnknown:true
+        maxShadowSymbols:3,providerBudgetCallsPerSession:102,includeConditionalSafetyUnknown:true
       });
       if(!registration.postRequired){
         await save(c3RegistrationPath,{...registration,registered:false,observedAt:new Date().toISOString(),
@@ -69,7 +69,7 @@ try {
             noPlanChanges:result.noPlanChanges,noTrade:result.noTrade,noPush:result.noPush}});
         console.log(JSON.stringify({c3Registration:true,status:'REGISTERED',generationId:registration.generationId,
           targetTradeDate:result.targetTradeDate,extraShadowN:registration.extraShadowN,
-          requiredExtraCandleCalls:registration.requiredExtraCandleCalls,noPlanChanges:true,noTrade:true,noPush:true}));
+          requiredExtraCandleCalls:registration.requiredExtraCandleCalls,requiredExtraQuoteCalls:registration.requiredExtraQuoteCalls,\n          requiredExtraProviderCalls:registration.requiredExtraProviderCalls,noPlanChanges:true,noTrade:true,noPush:true}));
       }
     }catch(registrationError){
       const message=String(registrationError?.message||registrationError).slice(0,300);
