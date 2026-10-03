@@ -4429,3 +4429,17 @@ The promotion is based on observable Taiwan state transitions, not a merger-arbi
 A realized failed tender remains required before any outcome/L4 study, but does not block L3 source feasibility because the reporting schema records condition achievement, tendered quantity, actual quantity and settlement state.
 
 No deal-spread sign, no Formal change.
+
+## 2026-10-04 continuation — D11-19 merger-arbitrage / deal-break L3
+
+D11-19 advances L2 -> L3 under `research/d11_19_merger_arbitrage_pit_receipt_v0_1.json`.
+
+Key evidence is not merely a completed merger:
+- 2887/2888 gives real consideration revision before closing;
+- 8179/3037 gives termination of one transaction structure and replacement by share exchange;
+- 5203 gives a real later cancellation state;
+- 2409 gives an issuer-official current demerger clock.
+
+The module remains separate from D11-06: transaction existence/stage belongs to D11-06, while D11-19 owns tradable payoff geometry, revised exchange ratios, deal-break/structure-change state and hedge/borrow/cost semantics.
+
+No outcome evidence. No double vote. Formal Core unchanged.
