@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 05:02 Asia/Taipei
+Updated: 2026-10-03 09:22 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -1277,3 +1277,26 @@ D15-15 advances to L3/60 for Taiwan PIT source/data feasibility only.
 - Therefore current evidence proves pool identity and plan-time pool capital/risk aggregation, but does not prove cross-pool diversification, low correlation, sector/factor diversification, or effective independent bets.
 - Zero both-pools dates means `ABSENCE_OF_IDENTIFYING_SAMPLE`, not a zero or failed diversification effect.
 - Exact next: accumulate the first independent scan dates with both GENERAL and THOUSAND represented; true diversification remains dependent on D15-03/04/05/06 PIT-synchronized return/covariance evidence.
+
+## 15項 owner-approved 治理路由 — 2026-10-03
+
+所有相關專責研究室在續接下列模組前，除本 Router（路由器）與 tracker（追蹤器）外，必須再讀：
+`shared-knowledge/CURRICULUM_15_ITEM_DEPENDENCY_AUDIT_20261003_V0_1.md`
+
+路由與角色：
+- 02｜價量研究室：D02-07、D02-08 -> Observation／RESEARCH_ONLY（觀察／僅研究），優先做冗餘、可識別性與增量價值反證。
+- 04｜波動與市場微結構研究室：D05-13 -> Curriculum Keep（課綱保留），Strategy-specific Capability（策略專屬能力），不得當選股 Alpha（超額報酬）。
+- 05｜法人與籌碼研究室：D06-15 -> Context Only（僅情境），不得把官股買賣直接解讀成方向訊號。
+- 09｜衍生品與國際總經研究室：D12-08 -> Observation／RESEARCH_ONLY（觀察／僅研究），保留 Dealer-position Identifiability Firewall（造市商部位可識別性防火牆）。
+- 10｜投組風控與交易執行研究室：D14-16、D14-19 -> Execution Capability（執行能力）；D15-19 -> 驗證後強合併候選，現在不合併。
+- 12｜資產定價與因子研究室：D19-08、D19-12、D19-16 -> Observation／RESEARCH_ONLY（觀察／僅研究）；D19-13 -> Curriculum Keep（課綱保留）的 Relative Value（相對價值）策略族。
+- 13｜行為金融與市場心理研究室：D20-03、D20-05 -> Observation／RESEARCH_ONLY（觀察／僅研究），先解決 proxy（代理變數）可識別性與與其他行為／價格家族的冗餘。
+- 14｜公司治理與內部人研究室：D21-02 -> Context／Confidence（情境／可信度）與 tail-risk（尾端風險）治理資訊，不作短線 Hard Gate（硬門檻）。
+
+跨模組凍結：
+- D14-19、D06-18、D20-13 暫不合併。
+- D12-08、D12-09、D12-13 暫不合併。
+- D15-19 等 D16-25 與 position sizing（部位配置）證據成熟後再進 Dependency Audit（依賴審查）。
+
+00｜研究總控室只負責治理與驗收，不得把上述分類冒充專科實證完成。
+
