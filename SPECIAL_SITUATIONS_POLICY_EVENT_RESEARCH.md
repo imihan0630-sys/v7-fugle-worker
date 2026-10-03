@@ -360,7 +360,7 @@ Primary Taiwan official:
 
 Mechanism/counterevidence:
 - Field & Hanka (2001), IPO lockup expiry: https://doi.org/10.1111/0022-1082.00334
-- Kang & Park (2020), private placements and firm value: https://doi.org/10.1017/S0022109019000779
+- Kang & Park (2020), private placements and firm value: https://doi.org/10.1017/S0022109020000599
 - Mitchell & Pulvino (2001), risk arbitrage: https://doi.org/10.1111/0022-1082.00385
 - Bauer & Swanson, reassessing monetary-policy surprises: https://www.nber.org/papers/w29939
 - Jarociński & Karadi (2020), monetary policy vs information shocks: https://doi.org/10.1257/mac.20180090
