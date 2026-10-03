@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "SYSTEM1_S1_S2_SHADOW_EXECUTION_REGISTRY_V0_1",
+  "updatedAt": "2026-10-03T14:43:00+08:00",
+  "status": "S1_S2_RESEARCH_SEQUENCE_FROZEN_CLASS_A_ONLY_FORMAL_CORE_LOCKED",
+  "sequence": [
+    {
+      "id": "S1",
+      "name": "SEMANTIC_REPAIR",
+      "status": "SPEC_FROZEN",
+      "decisionImpact": false
+    },
+    {
+      "id": "S2",
+      "name": "P1A_REACH_FUNNEL",
+      "status": "SPEC_FROZEN",
+      "parent": "shared-knowledge/SYSTEM1_P1A_MINIMAL_BLOCKING_AND_OUTCOME_CONTRACT_20261003_V0_1.md",
+      "decisionImpact": false
+    },
+    {
+      "id": "S2B",
+      "name": "TARGET_FOUR_STATE_SIDE_STUDY",
+      "status": "SPEC_FROZEN",
+      "parent": "shared-knowledge/SYSTEM1_TARGET_AVAILABLE_FOUR_STATE_FALSIFICATION_CONTRACT_20261003_V0_1.md",
+      "decisionImpact": false
+    },
+    {
+      "id": "OUTCOME",
+      "name": "MATURE_MATCHED_OUTCOME_JOIN",
+      "status": "PENDING_PROSPECTIVE_DATA"
+    },
+    {
+      "id": "P1B",
+      "name": "SLOW_FACTOR_SHADOW",
+      "status": "BLOCKED_UNTIL_P1A_RESULT"
+    }
+  ],
+  "forbidden": [
+    "CANDIDATE_COUNT_AS_SUCCESS",
+    "FIRST_FAILURE_CAUSAL_ATTRIBUTION",
+    "UNKNOWN_TO_PASS",
+    "MISSING_DATA_IMPUTATION",
+    "NO_DATE_CLUSTERING",
+    "SIMULTANEOUS_MULTI_FAMILY_RELAXATION",
+    "EX_POST_TARGET_SUBSTITUTE"
+  ],
+  "formalCoreImpact": "NONE",
+  "formalOptimizationCandidate": "NONE"
+}
