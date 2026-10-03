@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {GATE_STATE,observeFormalGateOverlap} from "../research/formal_gate_overlap_observer_v0_1.mjs";
+import {GATE_STATE,TARGET_STATE_V2,observeFormalGateOverlap} from "../research/formal_gate_overlap_observer_v0_1.mjs";
 
 const goodFeature={
   close:100,historyDays:80,marketReturn20:3,sectorReturn20:5,marketCapYi:200,changePercent:1,
@@ -12,7 +12,11 @@ const goodSector={breadth:55,avgChange:0.5,amountVs20DayAverage:1.1};
 const goodDerived={
   institutionalScore:75,fundamentalCount:6,fundamentalScore:60,
   setupState:{A:{pass:true},B:{pass:false}},
-  targetState:"FOUND",target:120,rewardPerRisk:2.5,setupQuality:75
+  targetState:"FOUND",target:120,rewardPerRisk:2.5,setupQuality:75,
+  targetSearchComplete:true,targetSearchAlgorithmVersion:"FORMAL_TARGET_SEARCH_FIXTURE_V0_1",
+  targetSearchLookbackStart:"2026-01-01",targetSearchLookbackEnd:"2026-10-03",
+  targetProvenanceState:"VERIFIED",targetSourceVerified:true,targetSourceReceiptIds:["fixture-target-source"],
+  targetGeometryQuality:"VALID",targetGeometryVerified:true
 };
 
 {
@@ -21,6 +25,8 @@ const goodDerived={
   assert.equal(out.counts.UNKNOWN,0);
   assert.equal(out.counts.NOT_EVALUABLE,0);
   assert.equal(out.gates.REWARD_RISK.status,GATE_STATE.PASS);
+  assert.equal(out.targetSemanticsV2.state,TARGET_STATE_V2.FOUND);
+  assert.equal(out.targetSemanticsV2.sourceVerified,true);
   assert.equal(out.formalResult.ok,true);
 }
 
@@ -42,6 +48,28 @@ const goodDerived={
   assert.equal(out.gates.TARGET_AVAILABLE.status,GATE_STATE.FAIL);
   assert.equal(out.gates.REWARD_RISK.status,GATE_STATE.NOT_EVALUABLE);
   assert.equal(out.gates.FINAL_SIGNAL_GRADE.status,GATE_STATE.NOT_EVALUABLE);
+  assert.equal(out.targetSemanticsV2.state,TARGET_STATE_V2.NONE_SEARCH_COMPLETE);
+  assert.equal(out.targetSemanticsV2.searchComplete,true);
+}
+
+{
+  const out=observeFormalGateOverlap({feature:goodFeature,sector:goodSector,derived:{
+    ...goodDerived,targetState:"NONE",target:null,rewardPerRisk:null,
+    targetSourceVerified:false,targetProvenanceState:"UNKNOWN"
+  }});
+  assert.equal(out.gates.TARGET_AVAILABLE.status,GATE_STATE.FAIL,"legacy observer gate must remain unchanged");
+  assert.equal(out.targetSemanticsV2.state,TARGET_STATE_V2.UNKNOWN_SOURCE);
+  assert.equal(out.targetSemanticsV2.reason,"TARGET_SOURCE_PROVENANCE_NOT_VERIFIED");
+}
+
+{
+  const out=observeFormalGateOverlap({feature:goodFeature,sector:goodSector,derived:{
+    ...goodDerived,targetState:"NONE",target:null,rewardPerRisk:null,
+    targetSearchComplete:false
+  }});
+  assert.equal(out.gates.TARGET_AVAILABLE.status,GATE_STATE.FAIL,"legacy NONE remains Formal-mirroring FAIL");
+  assert.equal(out.targetSemanticsV2.state,TARGET_STATE_V2.UNKNOWN_GEOMETRY);
+  assert.equal(out.targetSemanticsV2.reason,"TARGET_SEARCH_COMPLETENESS_NOT_PROVEN");
 }
 
 {

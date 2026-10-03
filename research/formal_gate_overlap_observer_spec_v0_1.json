@@ -51,6 +51,35 @@
     "Treating UNKNOWN as FAIL",
     "Treating target-null as RR=0",
     "Changing Formal result from observer output",
-    "Outcome-tuned gate definitions"
-  ]
+    "Outcome-tuned gate definitions",
+    "Treating legacy targetState NONE as TARGET_NONE_SEARCH_COMPLETE without explicit source/provenance and search-completeness evidence",
+    "Using targetSemanticsV2 to alter Formal RR, target, admission or ranking",
+    "Choosing an alternative RR/target method after observing outcomes"
+  ],
+  "updatedAt": "2026-10-03T15:35:00+08:00",
+  "targetSemanticsV2": {
+    "status": "RESEARCH_SIDE_CHANNEL_ONLY",
+    "version": "TARGET_AVAILABLE_FOUR_STATE_V0_1",
+    "states": {
+      "TARGET_FOUND": "Verified source/provenance plus verified geometry and finite target.",
+      "TARGET_NONE_SEARCH_COMPLETE": "Verified source/provenance plus explicit complete search and verified geometry with no qualifying resistance.",
+      "TARGET_UNKNOWN_SOURCE": "Target source/provenance is not verified; never coerce to NONE.",
+      "TARGET_UNKNOWN_GEOMETRY": "Source may exist but search completeness/geometry is not verified or state cannot be resolved."
+    },
+    "legacyGatePreserved": true,
+    "formalDecisionImpact": false,
+    "noRrSubstitute": true,
+    "requiredMetadata": [
+      "targetSearchComplete",
+      "targetSearchAlgorithmVersion",
+      "targetSearchLookbackStart",
+      "targetSearchLookbackEnd",
+      "targetProvenanceState or targetSourceVerified",
+      "targetSourceReceiptIds",
+      "targetGeometryQuality or targetGeometryVerified",
+      "targetKnownAt",
+      "targetDecisionAt"
+    ],
+    "policy": "Existing TARGET_AVAILABLE PASS/FAIL/UNKNOWN remains unchanged. Four-state semantics is a parallel research interpretation only."
+  }
 }
