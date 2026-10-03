@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "D08_TWSE_BOUNDED_HISTORY_SOURCE_RECEIPT_V0_1",
+  "observedAt": "2026-10-03T20:19:26+08:00",
+  "researchRoom": "06",
+  "module": "D08-03",
+  "researchOnly": true,
+  "outcomeJoin": false,
+  "source": "TWSE official BWIBBU monthly stock valuation history",
+  "endpointFamily": "TWSE_BWIBBU_MONTHLY",
+  "execution": {
+    "temporaryPr": 381,
+    "finalHead": "3e66d97dfea59cf6bef9ebee882ae4f696bef7f6",
+    "system2ResearchCi": {
+      "run": 37122478859,
+      "result": "PASS"
+    },
+    "v8Regression": {
+      "run": 37122478893,
+      "result": "PASS"
+    },
+    "temporaryHarnessDisposition": "DO_NOT_MERGE; evidence capture only"
+  },
+  "failureHistory": [
+    {
+      "attempt": 1,
+      "result": "FAIL_EXPECTED_DIAGNOSTIC",
+      "cause": "October 2026 request used 2026-10-31, which was future-dated relative to 2026-10-03.",
+      "correction": "Bound final month to latest completed session 2026-10-02.",
+      "lesson": "Historical source collection must be PIT bounded; month-end convenience cannot cross asOf."
+    },
+    {
+      "attempt": 2,
+      "result": "FAIL_EXPECTED_DIAGNOSTIC",
+      "cause": "3593 pre-event fixture incorrectly assumed 2025-12-19 was a legal pre-event trading session.",
+      "correction": "Use old-share last trading session 2025-12-10 and new-share resume session 2025-12-22.",
+      "lesson": "Corporate-action replay must join legal symbol sessions, not adjacent calendar dates."
+    },
+    {
+      "attempt": 3,
+      "result": "PASS",
+      "system2ResearchCiRun": 37122478859,
+      "v8RegressionRun": 37122478893
+    }
+  ],
+  "cases": {
+    "ordinaryLongHistory": {
+      "symbol": "1102",
+      "name": "亞泥",
+      "monthsRequested": 65,
+      "sourceFingerprint": "9c384c8a8855ae77186997d65875f181abfae474ba05055d13e150d1b22b2597",
+      "firstDate": "2021-06-01",
+      "lastDate": "2026-10-02",
+      "totalRows": 1300,
+      "pe": {
+        "currentValue": 9.83,
+        "validCount": 1300,
+        "percentile252": 0.11553784860557768,
+        "percentile756": 0.038410596026490065,
+        "percentile1260": 0.1517077045274027,
+        "percentileExpanding": 0.14780600461893764
+      },
+      "pb": {
+        "currentValue": 0.68,
+        "validCount": 1300,
+        "percentile252": 0.2290836653386454,
+        "percentile756": 0.076158940397351,
+        "percentile1260": 0.04567116759332804,
+        "percentileExpanding": 0.04426481909160893
+      },
+      "interpretation": "History-window choice materially changes level; no window may be selected by returns."
+    },
+    "fiscalDenominatorTransition": {
+      "symbol": "9904",
+      "name": "寶成",
+      "sourceFingerprint": "f1da0fd93a4d6bb28d774eccfc1b2eee64e3916db8025c2138b8b26962b6d57c",
+      "before": {
+        "date": "2026-08-12",
+        "pe": 6.6,
+        "pb": 0.47,
+        "fiscalReportPeriod": "115/1"
+      },
+      "after": {
+        "date": "2026-08-13",
+        "pe": 5.06,
+        "pb": 0.38,
+        "fiscalReportPeriod": "115/2"
+      },
+      "current": {
+        "date": "2026-10-02",
+        "pe": 5.23,
+        "pb": 0.39
+      },
+      "validCount": {
+        "pe": 308,
+        "pb": 308
+      },
+      "percentile252": {
+        "pe": 0.05776892430278884,
+        "pb": 0.07569721115537849
+      },
+      "percentile756": "UNKNOWN_INSUFFICIENT_CAPTURE",
+      "percentile1260": "UNKNOWN_INSUFFICIENT_CAPTURE",
+      "interpretation": "A fiscal denominator-period change can create a valuation discontinuity without a pure price repricing interpretation."
+    },
+    "corporateActionContext": {
+      "symbol": "3593",
+      "name": "力銘",
+      "event": "LOSS_REDUCTION_UNIT_SCALE",
+      "effectiveDate": "2025-12-22",
+      "sourceFingerprint": "3e6c789ac985fd137221e20d1dae03aec3fee6abdcf060eed2b21a40f3044a9a",
+      "before": {
+        "date": "2025-12-10",
+        "pe": null,
+        "pb": 4.35,
+        "fiscalReportPeriod": "114/3"
+      },
+      "after": {
+        "date": "2025-12-22",
+        "pe": null,
+        "pb": 6.61,
+        "fiscalReportPeriod": "114/3"
+      },
+      "interpretation": "PB moves across a verified unit-scale corporate-action boundary while PE is unavailable; preserve corporate-action context and legal-session gap."
+    },
+    "newListingShortHistory": {
+      "symbol": "7812",
+      "name": "稜研科技*-創",
+      "officialListingDate": "2026-09-22",
+      "sourceFingerprint": "567df9bcce1e96a890427c7f296b3905f274d3cf03ff10b2408cbb6a8f8e04b5",
+      "firstDate": "2026-09-22",
+      "lastDate": "2026-10-02",
+      "totalRows": 7,
+      "peValid": 0,
+      "pbValid": 7,
+      "eligibility": {
+        "252": false,
+        "756": false,
+        "1260": false
+      },
+      "interpretation": "New listings must remain UNKNOWN for long-window percentiles; PB availability does not create enough history."
+    },
+    "peMissingPbPresent": {
+      "symbol": "1101",
+      "name": "台泥",
+      "sourceFingerprint": "6e22eb2b30cc3c607b1ec1a9de81d6ad69d25136cbe54799a27de4fb6f24ff01",
+      "latest": {
+        "date": "2026-10-02",
+        "pe": null,
+        "pb": 0.82,
+        "fiscalReportPeriod": "115/2"
+      },
+      "interpretation": "PE unavailable and PB known are independent states; PE missing may not be encoded as cheap/expensive numeric."
+    }
+  },
+  "conclusions": [
+    "TWSE historical valuation replay is empirically source-ready for bounded research cohorts.",
+    "252/756/1260 windows are operationally computable when enough valid observations exist.",
+    "Different windows can produce materially different percentile ranks even for the same current valuation.",
+    "Fiscal denominator transitions and corporate-action legal-session boundaries are required context tags.",
+    "New-listing and PE-missing states correctly fail closed.",
+    "No return outcomes were joined and no alpha claim is made."
+  ],
+  "maturity": {
+    "prior": "D08-03 L3/60",
+    "after": "D08-03 L3/60",
+    "reason": "Source/replay integrity strengthened, but L4 still requires prospective/OOS outcome evidence."
+  },
+  "formalCoreChanged": false,
+  "formalOptimizationCandidate": "NONE",
+  "exactNext": [
+    "Freeze a broader multi-symbol TWSE cohort construction rule before any return join.",
+    "Precompute source-only percentile snapshots for candidate scan dates with immutable fingerprints.",
+    "Add sector/peer and raw-valuation controls without outcomes.",
+    "Then open the already preregistered TWSE-only Shadow outcome join.",
+    "Keep TPEx outside empirical inference until historical machine transport or authorized licensed history is verified."
+  ]
+}
