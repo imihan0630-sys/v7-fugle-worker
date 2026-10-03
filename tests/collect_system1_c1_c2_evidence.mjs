@@ -2,7 +2,7 @@ import {mkdir,writeFile} from 'node:fs/promises';
 import {dirname,resolve} from 'node:path';
 import {collectVerifiedC1C2} from '../research/system1_c1_c2_collection_v0_1.mjs';
 import {previousTaipeiDate,collectC1ReadOnlyPreflight} from '../research/system1_c1_readiness_v0_1.mjs';
-import {buildC3Registration} from '../research/system1_c3_registration_v0_1.mjs';
+import {buildC3RegistrationV02} from '../research/system1_c3_registration_v0_2.mjs';
 
 const origin=String(process.env.V7_ORIGIN||'https://fugle-test.imihan0630.workers.dev').replace(/\/$/,'');
 const token=String(process.env.V7_ADMIN_TOKEN||'');
@@ -44,8 +44,8 @@ try {
       if([401,403].includes(configResponse.status)) throw new Error('C3_REGISTRATION_AUTHORIZATION_REJECTED');
       const config=await configResponse.json().catch(()=>null);
       if(!configResponse.ok||!config) throw new Error('C3_REGISTRATION_CONFIG_HTTP_'+configResponse.status);
-      const registration=buildC3Registration(artifact,pairedArtifact,config,{
-        maxShadowSymbols:6,providerBudgetCallsPerSession:102,includeConditionalSafetyUnknown:true
+      const registration=buildC3RegistrationV02(artifact,pairedArtifact,config,{
+        maxShadowSymbols:3,providerBudgetCallsPerSession:102,includeConditionalSafetyUnknown:true
       });
       if(!registration.postRequired){
         await save(c3RegistrationPath,{...registration,registered:false,observedAt:new Date().toISOString(),
@@ -69,7 +69,10 @@ try {
             noPlanChanges:result.noPlanChanges,noTrade:result.noTrade,noPush:result.noPush}});
         console.log(JSON.stringify({c3Registration:true,status:'REGISTERED',generationId:registration.generationId,
           targetTradeDate:result.targetTradeDate,extraShadowN:registration.extraShadowN,
-          requiredExtraCandleCalls:registration.requiredExtraCandleCalls,noPlanChanges:true,noTrade:true,noPush:true}));
+          requiredExtraCandleCalls:registration.requiredExtraCandleCalls,
+          requiredExtraQuoteCalls:registration.requiredExtraQuoteCalls,
+          requiredExtraProviderCalls:registration.requiredExtraProviderCalls,
+          noPlanChanges:true,noTrade:true,noPush:true}));
       }
     }catch(registrationError){
       const message=String(registrationError?.message||registrationError).slice(0,300);
