@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 14:05 Asia/Taipei
+Updated: 2026-10-03 19:25 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -1064,3 +1064,36 @@ Reusable rules:
 - no post-outcome control selection/pruning.
 
 Status: DL022_027_SPEC_FROZEN / ALL_NEW_TESTS_EXECUTION_PENDING / OUTCOME_CLOSED / RUNTIME_NO_GO / FORMAL_CORE_LOCKED.
+
+
+### D03 multi-timeframe / continuation / pullback rule — 2026-10-03
+
+Status: **PIT_FEASIBILITY_ADVANCED / OUTCOMES_CLOSED / FORMAL_LOCKED**.
+
+Reusable cross-system rules from TI-491~525:
+
+1. **Multi-timeframe causal clocks.**
+   - Preserve barStartAt, barEndAt and featureKnownAt separately.
+   - Weekly is calendar-aware aggregation of eligible Daily bars; partial Weekly and completed Weekly are different causal states.
+   - Daily LIVE is PROVISIONAL; FINAL plus independent close confirmation is CONFIRMED.
+   - Current zero-extra-call M15 path covers 17/18 regular-session slots (09:00..13:00 starts, through 13:15) and does not observe the 13:15–13:30 closing bar. Never impute a closing-M15 state.
+   - Weekly/Daily/M15 alignment is hierarchical context, not independent vote counting.
+
+2. **Momentum continuation construct firewall.**
+   - D03-02 owns current return/momentum level; D03-03 owns persistence; D03-04 owns the post-decision continuation/reversal relation.
+   - Rolling future retN sign retention is rejected as a primary continuation outcome because it reuses pre-decision observations.
+   - Primary continuation outcomes must be exact post-parent D5/D10/D20 return plus MFE/MAE under symbol-session/corporate-action provenance.
+   - Winner-rank retention and economic forward return are separate outcomes.
+
+3. **Pullback/reversal ownership firewall.**
+   - Generic short-term reversal is rejected/redundant with the existing A/PULLBACK structure + 15m confirmation.
+   - Pullback depth is not pullback cause.
+   - Pullback origin is diagnostic/moderator only and consumes owner-lane receipts.
+   - Liquidity-pressure origin stays UNKNOWN without D05 pressure/depth/price-response/replenishment/capture-completeness evidence; candle morphology is not a substitute.
+
+4. **Maturity.**
+   - D03-13 L3/60, bounded intraday coverage explicit.
+   - D03-04 L3/60, non-overlapping forward-outcome contract explicit.
+   - D03-05 remains L2/40 because origin attribution is data-gated.
+   - Active 12-module D03 aggregate = 55.0%.
+   - Raw-byte prospective source gate remains 2/3; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
