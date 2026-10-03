@@ -78,7 +78,18 @@
       "Fixed bin edges are preregistered and cannot be retuned on evaluation outcomes.",
       "Frozen reference base rate must be supplied from prior training; holdout empirical rate cannot be reused as the frozen baseline.",
       "Exact wrong p=0 or p=1 is not silently clipped; any clipping creates a new explicit version."
-    ]
+    ],
+    "dateClusteringDiagnostics": {
+      "required": true,
+      "outputs": [
+        "INDEPENDENT_SCAN_DATE_COUNT",
+        "DATE_DIAGNOSTICS",
+        "DATE_BALANCED_BRIER",
+        "DATE_BALANCED_LOG_LOSS",
+        "CALIBRATION_IN_THE_LARGE_GAP"
+      ],
+      "rule": "Row-weighted and date-balanced scores are distinct estimands; neither may be presented as independent-date evidence without the other when multiple predictions share a scan date."
+    }
   },
   "priorContract": {
     "rule": "Prior/base-rate cohorts are target-specific and PIT-safe.",
@@ -225,10 +236,10 @@
     "liveTradingChanged": false
   },
   "next": [
-    "Implement pure probability evaluator and adversarial tests.",
-    "Keep D16-25 L2 until genuine Taiwan full-population PIT prediction/outcome linkage exists.",
-    "Freeze first probabilistic challenger preregistration only after evaluator lands.",
-    "Revisit D15-19 merge only after real calibration and downstream sizing evidence."
+    "Keep D16-25 at L2 until genuine Taiwan full-population PIT prediction/outcome linkage exists.",
+    "Freeze the first real probabilistic challenger only after a genuine complete intended population exists.",
+    "D15-19 may now proceed with specialist Kelly/Fractional-Kelly research and A/B/C/D merge-structure comparison.",
+    "Do not merge/retire either module until D15 specialist anti-orphan review is complete."
   ],
   "calibrationShiftContract": {
     "overallCalibrationInsufficient": true,
@@ -265,6 +276,8 @@
     "adversarialTestsRequired": true,
     "level": "L2",
     "maturityPct": 40,
-    "l3BlockedUntil": "GENUINE_IMMUTABLE_TAIWAN_POPULATION_PLUS_CAUSALLY_MATURED_OUTCOMES"
+    "l3BlockedUntil": "GENUINE_IMMUTABLE_TAIWAN_POPULATION_PLUS_CAUSALLY_MATURED_OUTCOMES",
+    "dateClusteringFirewall": true,
+    "mergeComparisonReadiness": "D16_SIDE_READY_D15_SPECIALIST_REQUIRED"
   }
 }
