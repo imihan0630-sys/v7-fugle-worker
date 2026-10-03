@@ -2076,3 +2076,46 @@ Maturity: `D10-14 L0 -> L2` for mechanism + falsification only.
 - SC-034/035, SC-037/038 and future SC-040 monthly append lanes remain open and are not overwritten.
 
 Formal Core unchanged.
+
+
+## SC-045 — Taiwan semiconductor export-control exposure is PIT-feasible
+
+Artifact:
+`research/sc045_taiwan_semiconductor_export_control_exposure_v0_1.json`
+
+Current U.S. BIS rule text plus issuer-native Taiwan semiconductor evidence now supports an effective-dated issuer exposure receipt:
+- foundry/packaging due-diligence and licensing pathways are transaction/product/end-use/end-user specific;
+- Taiwan appears in the relevant authorization-country list, while approved designer/OSAT status creates additional compliance pathways rather than blanket exemption;
+- TSMC discloses that January 2025 rules can require licenses for specified shipments using 16nm-or-below processes;
+- TSMC Nanjing moved from VEU treatment to an annual export license after the prior authorization expired;
+- TSMC's own control process requires ECCN/end-use information and uses a No-ECCN-No-Shipment rule.
+
+Negative controls:
+- the AI Diffusion Rule was published with a future compliance date and then rescinded before compliance;
+- tighter rules did not mechanically shut TSMC Nanjing because an annual license preserved supply continuity;
+- TSMC disclosed no material current operating impact as of the 2025 report date, despite direct policy exposure.
+
+Maturity: `D10-13 L2 -> L3` for Taiwan PIT/replay feasibility only. No issuer outcome or stock Alpha claim.
+
+## SC-046 — Industrial-policy award must be separated from disbursement and operating capacity
+
+Artifact:
+`research/sc046_tsmc_arizona_policy_to_capacity_pit_v0_1.json`
+
+TSMC Arizona provides a complete policy-to-capacity clock:
+- 2024-04 preliminary non-binding CHIPS terms;
+- 2024-11 final award up to US$6.6bn direct funding plus up to US$5bn loans;
+- funding is milestone-based rather than instantly realized;
+- first Arizona fab entered HVM in 4Q24;
+- second fab remained installation/future-HVM;
+- third fab construction began in 2025;
+- later expansion remains earlier-stage.
+
+Permanent firewall:
+`AWARDED_MAX != DISBURSED != SPENT != QUALIFIED_CAPACITY != HVM_OUTPUT`.
+
+Actual disbursement, loan draw and tax-credit realization remain UNKNOWN unless separately disclosed.
+
+Maturity: `D10-14 L2 -> L3` for Taiwan-issuer PIT/replay feasibility only.
+
+Formal Core unchanged.
