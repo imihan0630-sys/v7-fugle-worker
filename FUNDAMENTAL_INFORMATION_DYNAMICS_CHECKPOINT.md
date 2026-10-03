@@ -209,3 +209,45 @@ Exact next:
 3. H05: wait for Room-14 D21-10 counterpart packet, then return cross-room evidence to 00 for Dependency Audit / anti-orphan review;
 4. D07 general-industry CFO/balance-sheet receipt remains WAITING_PROSPECTIVE for the next legitimate financial vintage;
 5. D07-11 analyst forecast lane remains SOURCE_BLOCKED until authorized canonical PIT estimates access exists.
+
+
+## 2026-10-03 Room-06 afternoon continuation — dual-market valuation source asymmetry + executable TWSE replay
+
+- Re-read latest main and reconciled 22-domain / 354-module governance before continuing.
+- D08-03 exact source contract is now market-specific rather than falsely symmetric.
+- Added:
+  - research/historical_valuation_dual_market_source_schema_contract_v0_2.json
+  - research/historical_valuation_source_case_validation_receipt_20261003_v0_2.json
+  - research/historical_valuation_twse_shadow_prereg_v0_1.json
+- TWSE:
+  - public BWIBBU_d historical machine response verified;
+  - parse-by-header contract frozen;
+  - PE/PB missingness independent;
+  - official 9904 witness shows fiscal denominator period changed 115/1 -> 115/2 between 2026-08-12 and 2026-08-13 while PE/PB changed materially, proving raw percentile movement is not equivalent to pure market repricing.
+- TPEx:
+  - official public historical page and current OpenAPI schema verified;
+  - public historical machine transport remains unresolved in this research environment; a candidate legacy URL found via noncanonical locator was not accepted because direct official response envelope could not be verified;
+  - official EDIS V1.33 S17 / STKPEYIPBR.TXT machine schema is documented, but it is a licensed fourth-group after-market statistics lane and no purchase/access is authorized.
+- New-listing guard: official TPEx announcement fixes 1294 漢田生技 main-board OTC listing date at 2024-09-26; by 2026-10-03, 756/1260-valid-session history is impossible, while 252 still requires actual valid-row count.
+- Initial empirical design is explicitly TWSE-only. It cannot generalize to TPEx/full Taiwan.
+- TWSE historical replay implementation completed as Class-A research-only:
+  - research/historical_valuation_replay_core_v0_1.mjs
+  - research/test_historical_valuation_replay_core_v0_1.mjs
+  - system2/tests/d08_historical_valuation_replay_guard.test.mjs
+  - PR #364 merged at 6943edc24ca4c1d78c525b33b730d911f245e4fa.
+- Exact-head verification:
+  - System2 Research CI 37107054148 PASS and log explicitly executed D08_HISTORICAL_VALUATION_REPLAY;
+  - V8 Repair CI 37107054216 PASS;
+  - V8 Regression 37107054202 PASS.
+- Implementation is pure/parser-only: no market fetch in runtime, no persistence, no selection/ranking/threshold/capital/signal/push change.
+- D08-03 remains L3/60. Parser/replay integrity is not L4 outcome evidence.
+- FORMAL_OPTIMIZATION_CANDIDATE = NO. Formal Core unchanged.
+
+Exact next:
+1. create a bounded source-only TWSE raw-history replay sample with immutable source fingerprints/readback receipts;
+2. include ordinary numeric, PE-missing/PB-present, fiscal denominator transition, corporate-action context and newly-listed/limited-history controls;
+3. compute preregistered 252/756/1260/expanding percentiles without opening returns;
+4. verify coverage/missingness and denominator-transition behavior;
+5. only after replay/readback integrity open the preregistered TWSE-only Historical-Valuation Shadow outcome join;
+6. keep TPEx outside the empirical cohort until public historical machine transport is directly verified or an authorized licensed lane is supplied;
+7. H05 remains waiting for Room-14 counterpart; D07 general-industry financial-quality receipt remains WAITING_PROSPECTIVE; analyst forecast lane remains SOURCE_BLOCKED.
