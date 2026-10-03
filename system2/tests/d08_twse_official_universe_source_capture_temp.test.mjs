@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { fetchCurrentListingMetadataV0_1, parseListingDateV0_1 } from "../runtime/current_listing_metadata_v0_1.mjs";
+import { parseCsvRowsV0_1, parseListingDateV0_1 } from "../runtime/current_listing_metadata_v0_1.mjs";
 import { buildHistoricalUniverseRegistryV0_1, buildHistoricalUniverseSnapshotV0_1 } from "../runtime/historical_universe_registry_v0_1.mjs";
 import fs from "node:fs";
 
@@ -26,12 +26,57 @@ function tableObjects(payload){
 }
 
 const observedAt=new Date().toISOString();
-const current=await fetchCurrentListingMetadataV0_1({
-  observedAt,
-  minimumByMarket:{TWSE:500,TPEX:400},
-});
-assert.equal(current.state,"READY");
-const currentTwse=Object.values(current.byMarketSymbol).filter(x=>x.market==="TWSE");
+
+async function fetchTextRetry(url,{attempts=3,timeoutMs=60_000}={}){
+  let last=null;
+  for(let i=1;i<=attempts;i++){
+    try{
+      const r=await fetch(url,{
+        headers:{accept:"text/csv,text/plain,*/*","user-agent":"D08-universe-source-only/0.1"},
+        signal:AbortSignal.timeout(timeoutMs),
+      });
+      const text=await r.text();
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      return {url,text,hash:sha(text),attempt:i};
+    }catch(e){
+      last=e;
+      if(i<attempts) await new Promise(r=>setTimeout(r,500*i));
+    }
+  }
+  throw last;
+}
+
+async function fetchCurrentTwse(){
+  try{
+    const raw=await fetchTextRetry("https://mopsfin.twse.com.tw/opendata/t187ap03_L.csv");
+    const rows=parseCsvRowsV0_1(raw.text.replace(/^\\uFEFF/,""));
+    assert.ok(rows.length>1,"TWSE company-basic CSV empty");
+    const headers=rows[0].map(x=>String(x).trim());
+    const idx=Object.fromEntries(headers.map((h,i)=>[h,i]));
+    for(const h of ["公司代號","公司名稱","上市日期"]) assert.ok(Number.isInteger(idx[h]),"missing "+h);
+    const currentRows=rows.slice(1).map(row=>({
+      market:"TWSE",
+      symbol:String(row[idx["公司代號"]]??"").trim(),
+      companyName:String(row[idx["公司名稱"]]??"").trim()||null,
+      industry:Number.isInteger(idx["產業別"])?String(row[idx["產業別"]]??"").trim()||null:null,
+      listingDate:parseDate(row[idx["上市日期"]]),
+    })).filter(x=>ordinary(x.symbol)&&x.listingDate);
+    return {rows:currentRows,source:"MOPS_T187AP03_L_CSV",sourceUrl:raw.url,sourceHash:raw.hash,attempt:raw.attempt};
+  }catch(csvErr){
+    const raw=await fetchJson("https://openapi.twse.com.tw/v1/opendata/t187ap03_L");
+    assert.ok(Array.isArray(raw.json),"TWSE OpenAPI current company data must be array");
+    const currentRows=raw.json.map(row=>({
+      market:"TWSE",
+      symbol:String(row["公司代號"]??"").trim(),
+      companyName:String(row["公司名稱"]??"").trim()||null,
+      industry:String(row["產業別"]??"").trim()||null,
+      listingDate:parseDate(row["上市日期"]),
+    })).filter(x=>ordinary(x.symbol)&&x.listingDate);
+    return {rows:currentRows,source:"TWSE_OPENAPI_T187AP03_L",sourceUrl:raw.url,sourceHash:raw.hash,fallbackReason:String(csvErr)};
+  }
+}
+const current=await fetchCurrentTwse();
+const currentTwse=current.rows;
 assert.ok(currentTwse.length>500);
 
 const newlistingRaw=await fetchJson("https://www.twse.com.tw/rwd/zh/company/newlisting?response=json");
@@ -141,7 +186,7 @@ const result={
   researchOnly:true,
   outcomeJoin:false,
   sources:{
-    current:{source:"MOPS t187ap03_L",count:currentTwse.length,metadataHash:current.metadataHash},
+    current:{source:current.source,count:currentTwse.length,sourceHash:current.sourceHash,sourceUrl:current.sourceUrl},
     newlisting:{source:newlistingRaw.url,rowCount:newRows.length,sourceHash:newlistingRaw.hash},
     delisting:{source:delistedRaw.url,rowCount2023Plus:delRows.length,sourceHash:delistedRaw.hash},
   },
