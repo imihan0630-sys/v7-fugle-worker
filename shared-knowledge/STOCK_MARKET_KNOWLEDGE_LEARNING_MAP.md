@@ -42,7 +42,7 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 | D10 | 供應鏈／產能／庫存／原物料傳導 | 13 | 46.2% | 07｜產業與供應鏈研究室 |
 | D11 | 公司行動／重大事件／事件風險 | 19 | 40% | 08｜事件與新聞研究室 |
 | D12 | 期貨／選擇權／衍生品 | 17 | 40% | 09｜衍生品與國際總經研究室 |
-| D13 | 總體經濟／跨市場傳導 | 19 | 28.4% | 09｜衍生品與國際總經研究室 |
+| D13 | 總體經濟／跨市場傳導 | 19 | 34.7% | 09｜衍生品與國際總經研究室 |
 | D14 | 交易成本／執行品質／Execution Alpha | 18 | 33.3% | 10｜投組風控與交易執行研究室 |
 | D15 | 投資組合／風險／資金利用／部位生命週期 | 21 | 36.2% | 10｜投組風控與交易執行研究室 |
 | D16 | 統計驗證／PIT／Shadow／OOS／防過擬合 | 25 | 45.6% | 11｜統計驗證與策略市場狀態研究室 |
@@ -413,7 +413,7 @@ GitHub專屬checkpoint：
 | D12-17 | Option Payoff Structures／Put-Call Parity／Synthetic Positions／Strategies選擇權損益結構、買賣權平價、合成部位與策略 | L2 機制＋反證 | 40% |
 
 
-### D13｜總體經濟／跨市場傳導 — 28.4%
+### D13｜總體經濟／跨市場傳導 — 34.7%
 
 專責：09｜衍生品與國際總經研究室  
 證據錨點：`MACRO_CROSS_MARKET_CHECKPOINT.md`、`MACRO_CROSS_MARKET_RESEARCH.md`
@@ -433,9 +433,9 @@ GitHub專屬checkpoint：
 | D13-11 | Macro Surprise與公告時鐘 | L2 機制＋反證 | 40% |
 | D13-12 | 全球Shock與台股Residual反應 | L2 機制＋反證 | 40% |
 | D13-13 | 時區／休市／Session對齊 | L2 機制＋反證 | 40% |
-| D13-14 | Fiscal Policy／Deficit／Government Spending財政政策赤字與政府支出 | L0 未研究 | 0% |
-| D13-15 | Monetary Transmission／Financial Conditions貨幣傳導與金融條件 | L0 未研究 | 0% |
-| D13-16 | Central-bank Balance Sheet／System Liquidity央行資產負債表與系統流動性 | L0 未研究 | 0% |
+| D13-14 | Fiscal Policy／Deficit／Government Spending財政政策赤字與政府支出 | L2 機制＋反證 | 40% |
+| D13-15 | Monetary Transmission／Financial Conditions貨幣傳導與金融條件 | L2 機制＋反證 | 40% |
+| D13-16 | Central-bank Balance Sheet／System Liquidity央行資產負債表與系統流動性 | L2 機制＋反證 | 40% |
 | D13-17 | Trade／Geopolitical Risk／Capital-flow Transmission貿易地緣風險與資金流傳導 | L0 未研究 | 0% |
 | D13-18 | Business Cycle／Leading-Coincident-Lagging Indicators景氣循環與領先同時落後指標 | L0 未研究 | 0% |
 | D13-19 | Capital Market Expectations／Long-run Growth Drivers資本市場預期與長期成長驅動 | L0 未研究 | 0% |
