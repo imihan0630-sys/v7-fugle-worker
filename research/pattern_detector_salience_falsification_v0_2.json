@@ -1,0 +1,56 @@
+{
+  "id": "DL-028-FALSIFICATION-V0_2",
+  "status": "OUTCOME_BLIND_ADVERSARIAL_FIXTURES_FROZEN",
+  "parentQuestion": "separate detector-selection salience from true structural-memory mechanism",
+  "cases": [
+    {
+      "id": "DL028F01",
+      "name": "ROUNDNESS_MISMATCH",
+      "setup": "true zone and control differ materially in preconfirmation roundness/tick-position salience",
+      "expected": "CONTROL_INELIGIBLE_OR_MATCH_FAILURE",
+      "guard": "do not attribute difference to structural memory"
+    },
+    {
+      "id": "DL028F02",
+      "name": "TOUCH_COUNT_MISMATCH",
+      "setup": "control has materially different preconfirmation touch count from true zone",
+      "expected": "CONTROL_INELIGIBLE_OR_MATCH_FAILURE",
+      "guard": "touch count is salience/exposure, not an independent vote"
+    },
+    {
+      "id": "DL028F03",
+      "name": "FUTURE_DISCOVERED_CONTROL",
+      "setup": "control eligibility is learned only after parent confirmation",
+      "expected": "REJECT_FUTURE_DISCOVERED_CONTROL",
+      "guard": "PIT_ONLY"
+    },
+    {
+      "id": "DL028F04",
+      "name": "MISSING_SALIENCE_PROVENANCE",
+      "setup": "one or more required preconfirmation salience fields lack first-known provenance",
+      "expected": "UNKNOWN_NOT_ZERO",
+      "guard": "no imputation to benign control"
+    },
+    {
+      "id": "DL028F05",
+      "name": "POST_OUTCOME_CONTROL_PRUNING",
+      "setup": "control is removed because later outcome is inconvenient",
+      "expected": "REJECT_OUTCOME_BASED_PRUNING",
+      "guard": "retain all ex-ante eligible controls"
+    }
+  ],
+  "invariants": [
+    "OUTCOME_JOIN_CLOSED",
+    "NO_HISTORICAL_SHADOW",
+    "NO_N_BAR_TUNING",
+    "NO_FORMAL_CHANGE",
+    "FORMAL_CORE_LOCKED"
+  ],
+  "interpretation": {
+    "trueBeatsNonanchorButNotSalienceMatched": "SALIENCE_ALTERNATIVE_EXPLANATION",
+    "trueBeatsSalienceAndOpportunityMatched": "STRUCTURAL_REPRESENTATION_CANDIDATE_NOT_ALPHA",
+    "missingEvidence": "UNKNOWN"
+  },
+  "formalOptimizationCandidate": "NONE",
+  "patternAlpha": "UNKNOWN"
+}
