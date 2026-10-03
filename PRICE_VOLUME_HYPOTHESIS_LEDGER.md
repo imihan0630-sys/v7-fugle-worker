@@ -768,3 +768,34 @@ Freeze:
 No hypothesis is SUPPORTED or REJECTED.
 No FORMAL_OPTIMIZATION_CANDIDATE is created.
 Formal Core remains LOCKED.
+
+## Pre-PVE-240 D02-10 / D02-12 maturity overlay — 2026-10-04
+
+This is a data-feasibility maturity change only.
+
+### D02-10
+L3 PIT feasibility is accepted using:
+- pre-session D03-owned trend context;
+- completed-slot D02 volume state;
+- explicit firstKnownAt join.
+
+No interaction direction is SUPPORTED or REJECTED.
+Future alpha testing must compare:
+A direct trend;
+B direct participation;
+C trend + participation;
+D C + explicit interaction transform;
+on identical common support and with market/sector/liquidity/event/regime controls.
+
+### D02-12
+L3 PIT feasibility is accepted after splitting:
+- TIME_OF_DAY_VOLUME_CURVE;
+- PRICE_BY_VOLUME_PROFILE.
+
+The first has historical + live Taiwan minute data under a bounded 09:00~13:00 current-monitor window.
+The second has a prospective current-day source but no claimed historical profile archive.
+
+No volume-profile alpha hypothesis is promoted.
+No closing-auction or historical price-profile completeness is implied.
+No FORMAL_OPTIMIZATION_CANDIDATE.
+Formal Core remains LOCKED.
