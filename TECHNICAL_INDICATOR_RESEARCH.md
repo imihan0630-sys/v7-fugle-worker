@@ -1259,3 +1259,89 @@ Formal Core remains LOCKED.
 3. When inference opens, test own-path persistence residual value conditional on ret5/10/20/60, Residual RS, pathEfficiency, price/tick/liquidity and Regime.
 4. Keep rank-retention as a distinct prospective-only construct conditional on current ret60 rank.
 5. Continue D03-12 repaint-safe divergence PIT feasibility; it may promote only if confirmed pivot clocks and indicator state lineage are causally replayable.
+
+
+## TI-482 through TI-490 — repaint-safe divergence PIT feasibility (2026-10-03)
+
+Durable evidence:
+- `research/D03_REPAINT_SAFE_DIVERGENCE_PIT_V0_1.md`
+- `research/test_d03_repaint_safe_divergence_pit_v0_1.mjs`
+- `research/d03_repaint_safe_divergence_contract_v0_1.json`
+
+### TI-482/TI-483 — pivot anchor time is not signal time
+
+Divergence first becomes legally observable only after the second price pivot is causally confirmed and required indicator/continuity/parent provenance is available.
+
+Synthetic witness:
+- L1 pivot D10 / confirmed D12, price 100, RSI 30.
+- L2 pivot D20 / confirmed D23, price 95, RSI 36.
+
+D22: no legal divergence exists.
+D23: bullish divergence first becomes observable.
+
+If price has moved from 95 at pivot to 99 at confirmation, +4.2105% has already elapsed and cannot be credited as post-signal performance.
+
+### TI-484 — primary pair selection is now deterministic
+
+Primary v0.1 uses the two most recent **consecutive confirmed price pivots of the same type and same Pattern swing scale** available as of the parent timestamp.
+
+No skipping an intervening pivot, strongest-pair search, post-outcome selection or independent indicator-pivot matching is allowed.
+
+Hidden divergence is outside the primary v0.1 family.
+
+### TI-485/TI-486 — historical episode immutability and indicator lineage
+
+A future pivot creates a new current pair but cannot rewrite an earlier first-observed divergence episode.
+
+Indicator values sampled at pivotAt are causal only when formulaVersion, stateLineageId, TECHNICAL_CONTINUITY and source/session provenance are valid for that historical state. Later corrections create later versioned observations; they do not mutate the old decision truth.
+
+### TI-487 — divergence is Pattern × Indicator interaction evidence
+
+Divergence consumes Pattern-owned price pivot geometry plus D03 indicator progression. The pivot geometry cannot be counted once as Pattern evidence and again as independent confirmation inside divergence.
+
+RSI/KD divergences on the same pivots are not independent votes by default. MACD divergence requires normalized magnitude for cross-sectional work.
+
+### TI-488 — constrained-state taxonomy
+
+Future rows preserve:
+VALID_OBSERVABLE / VALID_BUT_CONSTRAINED / WARMUP_INCOMPLETE / DATA_BLOCKED / UNKNOWN_PROVENANCE.
+
+Price-limit, suspension/no-trade, corporate-action continuity, warm-up and pivot provenance never silently become ordinary evidence.
+
+### TI-489 — Taiwan PIT feasibility
+
+Pattern already provides confirmed swings with pivotAt/confirmedAt, prefix/replay discipline and immutable parent provenance. D03 already provides causal KD/RSI/MACD formula replay, Taiwan OHLC feasibility and indicator state-lineage guards.
+
+A divergence observation can therefore join existing Pattern swing receipts and indicator state at the two pivot dates without creating a new market-data family.
+
+Historical Shadow divergence fabrication remains prohibited.
+
+### TI-490 — maturity decision
+
+D03-12 advances:
+- L2 / 40% -> **L3 / 60% TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED**.
+
+Current 12-module D03 aggregate:
+- prior 50.0%;
+- new **51.7%**.
+
+No predictive authority, OOS/Shadow alpha, pivot-scale optimization or Formal eligibility is claimed.
+
+### Current status
+
+`D03_12 = L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED`  
+`DIVERGENCE_SIGNAL_CLOCK = CONFIRMED_AT_NOT_PIVOT_AT`  
+`PRIMARY_PAIRING = CONSECUTIVE_SAME_SCALE_CONFIRMED_PRICE_PIVOTS`  
+`HISTORICAL_EPISODE_REPAINT = FORBIDDEN`  
+`CONFIRMATION_LAG_COST = REQUIRED`  
+`D03_MATURITY = 51.7_PERCENT`  
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Formal Core remains LOCKED.
+
+### Exact next continuation point
+
+1. Raw-byte source/version gate remains 2/3 over the weekend.
+2. Divergence contract is frozen research-only; no runtime wiring.
+3. Future divergence outcome work comes only after TI-005 KD-vs-RSI and TI-006 MACD-vs-direct-trend once the primary source gate opens.
+4. Next outcome-blind specialist target is D03-13 multi-timeframe PIT feasibility: prove weekly/daily/15m causal boundary/partial-bar clocks can be replayed without treating aggregation agreement as independent votes.
