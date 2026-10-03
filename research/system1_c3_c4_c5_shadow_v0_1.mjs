@@ -259,10 +259,10 @@ export function buildC5OverfilterDiagnostic(c1Diagnosis,c2Ledger,{strategy="SHOR
      c1Diagnosis?.sessionDate!==c2.sessionDate||c1Diagnosis?.populationN!==c2.tally.populationN||
      !Array.isArray(c1Diagnosis?.observations)) throw new Error("C5_MATCHED_C1_C2_REQUIRED");
   const pairMap=new Map(c2.pairs.map(x=>[x.symbol,x]));
-  const gateFails={},gateUnknown={},gateNotEvaluable={},roleFails={},firstFailures={},minimalUnblockClasses={},reachStages={};
+  const gateFails={},gateUnknown={},gateNotEvaluable={},roleFails={},firstFailures={},minimalUnblockClasses={},reachStages={},conditionalReachStages={};
   let formalRejectedN=0,optionalOnlyFailN=0,hardOrPrimaryFailN=0,hardUnknownN=0,setupNotReadyN=0,safetyUnknownUpperBoundN=0;
   let confidenceOnlyRejectedN=0,contextOnlyRejectedN=0,p1aRejectedN=0,p1aOnlyN=0,p1aPlusContextN=0,p1aPlusPrimaryN=0;
-  let unknownContaminatedN=0,p1aReachABN=0,p1aABPassN=0,p1aReachRRN=0,p1aRRPassN=0,p1aGradePassN=0,p1aRankableN=0,hardBlockedN=0;
+  let unknownContaminatedN=0,p1aReachABN=0,p1aABPassN=0,p1aReachRRN=0,p1aRRPassN=0,p1aGradePassN=0,p1aRankableN=0,hardBlockedN=0;\n  let p1aConditionalSafetyUnknownN=0,p1aConditionalReachABN=0,p1aConditionalABPassN=0,p1aConditionalReachRRN=0,p1aConditionalRRPassN=0,p1aConditionalGradePassN=0,p1aConditionalRankableN=0;
   const rows=[];
   const stageIndex={
     F0_FORMAL_PARENT:0,F1_SAFETY_EVALUABLE:1,F2_OWNER_UNIVERSE:2,F3_P1A_SEMANTIC_BYPASS:3,F4_AB_EVALUABLE:4,
@@ -347,6 +347,55 @@ export function buildC5OverfilterDiagnostic(c1Diagnosis,c2Ledger,{strategy="SHOR
     }
     reachStages[reachStage]=(reachStages[reachStage]||0)+1;
 
+    // Conditional upper-bound reach: unresolved SAFETY may remain conditional,
+    // but verified HARD FAIL and every non-safety FAIL/UNKNOWN/NOT_EVALUABLE remain binding.
+    const conditionalSafetyUnknownSet=hardUnknown.filter(id=>SAFETY.has(id));
+    const conditionalOnSafetyUnknown=conditionalSafetyUnknownSet.length>0;
+    let conditionalReachStage="F0_FORMAL_PARENT";
+    if(hardBlockSet.length===0){
+      conditionalReachStage="F1_SAFETY_EVALUABLE";
+      conditionalReachStage="F2_OWNER_UNIVERSE";
+      conditionalReachStage="F3_P1A_SEMANTIC_BYPASS";
+      const ab=String(o.gates?.AB_SETUP?.status||"UNKNOWN");
+      if(ab==="PASS"){
+        conditionalReachStage="F5_AB_PASS";
+        const target=String(o.gates?.TARGET_AVAILABLE?.status||"UNKNOWN");
+        const rr=String(o.gates?.REWARD_RISK?.status||"UNKNOWN");
+        if(target==="PASS"&&(rr==="PASS"||rr==="FAIL")){
+          conditionalReachStage="F6_TARGET_RR_EVALUABLE";
+          if(rr==="PASS"){
+            conditionalReachStage="F7_RR_PASS";
+            const grade=String(o.gates?.FINAL_SIGNAL_GRADE?.status||"UNKNOWN");
+            if(grade==="PASS"){
+              conditionalReachStage="F8_GRADE_PASS";
+              const unresolvedConditional=entries.some(([id,v])=>{
+                if(isP1ABlocker(id,v)) return false;
+                const s=String(v?.status||"UNKNOWN");
+                if(SAFETY.has(id)&&s==="UNKNOWN") return false;
+                return s==="FAIL"||s==="UNKNOWN"||s==="NOT_EVALUABLE";
+              });
+              if(!unresolvedConditional) conditionalReachStage="F9_RANKABLE";
+            }
+          }
+        }
+      }else if(ab==="FAIL") conditionalReachStage="F4_AB_EVALUABLE";
+    }
+    conditionalReachStages[conditionalReachStage]=(conditionalReachStages[conditionalReachStage]||0)+1;
+    const conditionalReachBlockedBy=entries.filter(([id,v])=>{
+      if(isP1ABlocker(id,v)) return false;
+      const s=String(v?.status||"UNKNOWN");
+      if(SAFETY.has(id)&&s==="UNKNOWN") return false;
+      return s==="FAIL"||s==="UNKNOWN"||s==="NOT_EVALUABLE";
+    }).map(([id])=>id);
+    const conditionalP1aRankable=p1aBlockers.length>0&&conditionalReachStage==="F9_RANKABLE";
+    if(p1aBlockers.length&&conditionalOnSafetyUnknown) p1aConditionalSafetyUnknownN++;
+    if(p1aBlockers.length&&stageIndex[conditionalReachStage]>=stageIndex.F4_AB_EVALUABLE) p1aConditionalReachABN++;
+    if(p1aBlockers.length&&stageIndex[conditionalReachStage]>=stageIndex.F5_AB_PASS) p1aConditionalABPassN++;
+    if(p1aBlockers.length&&stageIndex[conditionalReachStage]>=stageIndex.F6_TARGET_RR_EVALUABLE) p1aConditionalReachRRN++;
+    if(p1aBlockers.length&&stageIndex[conditionalReachStage]>=stageIndex.F7_RR_PASS) p1aConditionalRRPassN++;
+    if(p1aBlockers.length&&stageIndex[conditionalReachStage]>=stageIndex.F8_GRADE_PASS) p1aConditionalGradePassN++;
+    if(conditionalP1aRankable) p1aConditionalRankableN++;
+
     const downstreamUnknown=[
       ["AB_SETUP","F3_P1A_SEMANTIC_BYPASS"],
       ["TARGET_AVAILABLE","F5_AB_PASS"],
@@ -389,6 +438,8 @@ export function buildC5OverfilterDiagnostic(c1Diagnosis,c2Ledger,{strategy="SHOR
       symbol:o.symbol,pool:o.pool,firstFailure:first,failedGates:failed,unknownGates:unknown,notEvaluableGates:notEvaluable,
       hardBlockSet,confidenceBlockSet,contextBlockSet,primaryBlockSet,supportiveBlockSet,
       unknownDependencySet,notEvaluableDependencySet,p1aBlockers,minimalUnblockClass,reachStage,
+      conditionalReachStage,conditionalOnSafetyUnknown,conditionalSafetyUnknownSet,conditionalReachBlockedBy,
+      conditionalP1aRankable,researchUpperBoundOnly:true,
       failedRoles:[...new Set(failedRoles)],optionalOnly,confidenceOnly:onlyConfidence,contextOnly:onlyContext,
       shortGateStatus:pair.short?.gateStatus||"UNKNOWN",swingGateStatus:pair.swing?.gateStatus||"UNKNOWN",
       researchOnly:true,decisionImpact:false
@@ -400,10 +451,12 @@ export function buildC5OverfilterDiagnostic(c1Diagnosis,c2Ledger,{strategy="SHOR
     optionalOnlyFailN,hardOrPrimaryFailN,hardUnknownN,setupNotReadyN,safetyUnknownUpperBoundN,
     confidenceOnlyRejectedN,contextOnlyRejectedN,p1aRejectedN,p1aOnlyN,p1aPlusContextN,p1aPlusPrimaryN,unknownContaminatedN,
     p1aReachABN,p1aABPassN,p1aReachRRN,p1aRRPassN,p1aGradePassN,p1aRankableN,p1aOverhardeningCounterfactualN:p1aRankableN,hardBlockedN,
-    minimalUnblockClasses,reachStages,
+    p1aConditionalSafetyUnknownN,p1aConditionalReachABN,p1aConditionalABPassN,p1aConditionalReachRRN,
+    p1aConditionalRRPassN,p1aConditionalGradePassN,p1aConditionalRankableN,
+    minimalUnblockClasses,reachStages,conditionalReachStages,
     conditionalShortUpperBoundN:c2.tally.formalRejectedButConditionalShortGatesPassN,
     rows,firstFailureIsNotCausalAttribution:true,optionalOnlyIsDiagnosticNotAdmission:true,
-    p1aRankableIsDiagnosticNotCandidate:true,unknownNeverPass:true,economicSuperiority:"UNKNOWN",
+    p1aRankableIsDiagnosticNotCandidate:true,conditionalP1aIsUpperBoundNotCandidate:true,unknownNeverPass:true,economicSuperiority:"UNKNOWN",
     roleResolverVersion:"OBSERVATION_AWARE_A2_V0_1",
     roleMapFingerprint:hash(Object.fromEntries(Object.keys({...gateFails,...gateUnknown,...gateNotEvaluable}).sort().map(id=>[id,gateRole(id,strategy)]))),
     formalCoreLocked:true,researchOnly:true,decisionImpact:false,formalCoreImpact:false,noPlanChanges:true,noTrade:true,noPush:true
