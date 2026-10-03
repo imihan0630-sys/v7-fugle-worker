@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "CURRICULUM_COVERAGE_COV04_COV05_INTAKE_DEPENDENCY_AUDIT_V0_1",
+  "updatedAt": "2026-10-04T07:52:57+08:00",
+  "status": "OWNER_APPROVAL_REQUIRED",
+  "canonicalImpact": "NONE_PENDING_OWNER_APPROVAL",
+  "formalCoreImpact": "NONE_LOCKED",
+  "candidates": [
+    {
+      "id": "COV-04",
+      "domain": "D07",
+      "returnPath": "research/COV04_D07_SPECIALIST_RETURN_V0_1.md",
+      "terminalRecommendation": "ADD_MODULE",
+      "contractStatus": "RETURN_CONTRACT_COMPLETE",
+      "currentState": "OWNER_APPROVAL_REQUIRED",
+      "transitions": [
+        "PENDING_SPECIALIST_RETURN->RETURN_ACCEPTED_FOR_INTAKE",
+        "RETURN_ACCEPTED_FOR_INTAKE->DEPENDENCY_AUDIT_PENDING",
+        "DEPENDENCY_AUDIT_PENDING->OWNER_APPROVAL_REQUIRED"
+      ],
+      "overlapResult": "PASS_NEW_CAPABILITY_NOT_CLEANLY_OWNED",
+      "dependencyAuditResult": "PASS_EXPLICIT_UPSTREAM_AND_DOWNSTREAM_LINKS",
+      "antiDoubleCountResult": "PASS_WITH_SHARED_PARENT_EVIDENCE",
+      "antiOrphanResult": "PASS_NOT_ORPHANED",
+      "proposedAction": {
+        "type": "ADD_MODULE",
+        "domain": "D07",
+        "name": "Dividend / Payout Policy & Sustainability（股利／配發政策與永續性）",
+        "startingMaturity": "L0/0%"
+      }
+    },
+    {
+      "id": "COV-05",
+      "domain": "D08",
+      "returnPath": "research/COV05_D08_SPECIALIST_RETURN_V0_1.md",
+      "terminalRecommendation": "EXTEND_EXISTING_SCOPE",
+      "contractStatus": "RETURN_CONTRACT_COMPLETE",
+      "currentState": "OWNER_APPROVAL_REQUIRED",
+      "transitions": [
+        "PENDING_SPECIALIST_RETURN->RETURN_ACCEPTED_FOR_INTAKE",
+        "RETURN_ACCEPTED_FOR_INTAKE->DEPENDENCY_AUDIT_PENDING",
+        "DEPENDENCY_AUDIT_PENDING->OWNER_APPROVAL_REQUIRED"
+      ],
+      "overlapResult": "PASS_SCOPE_EXTENSION_PREFERRED_OVER_NEW_MODULE",
+      "dependencyAuditResult": "PASS_EXISTING_OWNER_GRAPH",
+      "antiDoubleCountResult": "PASS_FAMILY_ORCHESTRATION_REQUIRED",
+      "antiOrphanResult": "PASS_NOT_ORPHANED",
+      "proposedAction": {
+        "type": "EXTEND_EXISTING_SCOPE",
+        "target": "D08-06",
+        "maturityChange": "NONE"
+      }
+    }
+  ]
+}
