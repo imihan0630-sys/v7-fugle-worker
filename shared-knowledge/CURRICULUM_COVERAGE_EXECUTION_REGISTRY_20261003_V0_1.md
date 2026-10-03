@@ -117,3 +117,12 @@ Accepted specialist returns remain 0 / 12. No curriculum structural change is au
 - Combined partial-evidence set: COV-01, COV-02, COV-07, COV-08, COV-09, COV-10, COV-11.
 - Accepted specialist returns remain 0 / 12.
 - No curriculum structural change is authorized.
+
+
+## Pre-Intake fourth harvest — 2026-10-03
+
+- COV-06 → PARTIAL_EVIDENCE_RECEIVED from existing D10 named-edge graph, PIT edge provenance, bottleneck and transmission contracts.
+- Combined partial-evidence set: COV-01, COV-02, COV-06, COV-07, COV-08, COV-09, COV-10, COV-11.
+- Pending specialist returns without accepted partial evidence: COV-03, COV-04, COV-05, COV-12.
+- Accepted specialist returns remain 0 / 12.
+- No curriculum structural change is authorized.
