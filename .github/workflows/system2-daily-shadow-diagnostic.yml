@@ -40,6 +40,7 @@ jobs:
         run: |
           set -euo pipefail
           node system2/tests/daily_shadow_diagnostic_v0_1.test.mjs
+          node system2/tests/daily_shadow_a1_exact_date_fallback_v0_2.test.mjs
           node system2/tests/daily_shadow_diagnostic_workflow_guard.test.mjs
           node system2/tests/persistence_executor.test.mjs
           node system2/tests/daily_shadow_capacity_orchestrator_v0_1.test.mjs
