@@ -34,17 +34,27 @@ const quote=api.c3ResearchQuotePayload({
   bids:[{price:101,size:10},{price:100.5,size:20}],
   asks:[{price:101.5,size:15},{price:102,size:5}],
   tradingHalt:{isHalted:false},isTrial:false,isContinuous:true,
-  isDelayedOpen:false,isDelayedClose:false,isLimitUpHalt:false,isLimitDownHalt:false
+  isDelayedOpen:false,isDelayedClose:false,isLimitUpHalt:false,isLimitDownHalt:false,
+  isLimitUpPrice:false,isLimitDownPrice:false
 },"2330","2026-10-05",Date.parse("2026-10-05T01:16:00Z"));
 eq(quote.bestBid,101);eq(quote.bestAsk,101.5);
 eq(quote.bidDepth5,30);eq(quote.askDepth5,20);
 eq(quote.depthImbalance,0.2);
 eq(quote.executionMarketState,"CONTINUOUS");
 eq(quote.isLimitUpHalt,false);
-assert.match(quote.semanticLimit,/not a generic at-limit-up flag/);n++;
+eq(quote.isLimitUpPrice,false);eq(quote.isLimitDownPrice,false);
+assert.match(quote.semanticLimit,/explicitly supplied by Fugle/);n++;
 assert.match(quote.semanticLimit,/not converted to depthScore/);n++;
 assert.equal("depthScore" in quote,false);n++;
 assert.throws(()=>api.c3ResearchQuotePayload({...quote,symbol:"9999"},"2330","2026-10-05",Date.now()),/SYMBOL_OR_DATE_MISMATCH/);n++;
+assert.throws(()=>api.c3ResearchQuotePayload({
+  symbol:"2330",date:"2026-10-05",lastUpdated:Date.parse("2026-10-05T01:00:00Z")*1000,
+  closePrice:101,bids:[],asks:[],isTrial:false,tradingHalt:{isHalted:false}
+},"2330","2026-10-05",Date.parse("2026-10-05T01:16:00Z")) ,/QUOTE_STALE_OR_INVALID/);n++;
+assert.throws(()=>api.c3ResearchQuotePayload({
+  symbol:"2330",date:"2026-10-05",lastUpdated:Date.parse("2026-10-05T01:16:00Z")*1000,
+  closePrice:101,bids:[],asks:[],isTrial:false,tradingHalt:{isHalted:true}
+},"2330","2026-10-05",Date.parse("2026-10-05T01:16:00Z")) ,/QUOTE_STALE_OR_INVALID/);n++;
 
 const start=source.indexOf("async function captureC3ResearchBarsSafe(");
 const end=source.indexOf("async function readC3ResearchQuotes(",start);
