@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 11:10 Asia/Taipei
+Updated: 2026-10-03 11:18 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -1444,4 +1444,18 @@ D12-14 vs D12-15。
 
 共通硬規則：
 同一 source row（來源列）、event（事件）或 statement（財報敘述）只建立一份 evidence receipt（證據憑證）；不同研究模組可引用同一憑證，但不得因此形成多張獨立票。Behavioral（行為）與 Governance（治理）機制必須有獨立可觀測資料或殘差反證，不能只把價格、籌碼或財報現象改名。
+
+## H09～H12 範圍去重驗收契約 — 2026-10-03
+
+相關研究室續接前必須讀：
+- `shared-knowledge/CURRICULUM_H09_H12_SCOPE_DEDUP_ACCEPTANCE_CONTRACT_20261003_V0_1.md`
+- `shared-knowledge/CURRICULUM_H09_H12_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
+
+路由：
+- H09：11｜統計驗證與策略市場狀態研究室。
+- H10：07｜產業與供應鏈研究室 + 08｜事件與新聞研究室。
+- H11：09｜衍生品與國際總經研究室。
+- H12：05｜法人與籌碼研究室 + 10｜投組風控與交易執行研究室 + 13｜行為金融與市場心理研究室。
+
+固定規則：上游 primitive（原始基礎證據）只有一個 canonical owner（權威持有人）；下游 consumer（使用者模組）不得重新擁有或重新計票同一 primitive。若保留多個模組，必須清楚寫出 residual scope（扣除上游後的剩餘責任）。
 
