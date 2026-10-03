@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "pattern-synthetic-translation-control-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "formalCore": "LOCKED",
+  "empiricalNegativeControlStatus": "REJECTED",
+  "detectorQaStatus": "ALLOWED",
+  "rejectedUses": [
+    "SHIFT_ZONE_ONLY_AS_CAUSAL_CONTROL",
+    "SHIFT_ZONE_AND_PATH_AS_MARKET_COUNTERFACTUAL",
+    "TRANSLATED_FUTURE_RETURN_INFERENCE",
+    "POST_OUTCOME_OFFSET_GRID_SELECTION"
+  ],
+  "allowedUses": [
+    "PRICE_SCALE_INVARIANCE_QA",
+    "DETECTOR_NORMALIZATION_QA",
+    "SEMANTIC_SPACE_GUARD_QA",
+    "BOUNDARY_VERSION_QA"
+  ],
+  "preferredEmpiricalControls": [
+    "REAL_HISTORY_NON_ANCHOR_PSEUDO_ZONES",
+    "SALIENCE_MATCHED_CONTROLS",
+    "BASE_CONFIRMED_MAJOR_REJECTED_FRONTIER",
+    "SIMPLE_260_SESSION_HIGH"
+  ],
+  "formalOptimizationCandidate": "NONE"
+}
