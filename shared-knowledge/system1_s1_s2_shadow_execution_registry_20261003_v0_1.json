@@ -1,20 +1,25 @@
 {
   "schemaVersion": "SYSTEM1_S1_S2_SHADOW_EXECUTION_REGISTRY_V0_1",
-  "updatedAt": "2026-10-03T14:43:00+08:00",
+  "updatedAt": "2026-10-03T15:28:00+08:00",
   "status": "S1_S2_RESEARCH_SEQUENCE_FROZEN_CLASS_A_ONLY_FORMAL_CORE_LOCKED",
   "sequence": [
     {
       "id": "S1",
       "name": "SEMANTIC_REPAIR",
-      "status": "SPEC_FROZEN",
-      "decisionImpact": false
+      "status": "IMPLEMENTED_RESEARCH_ONLY_CI_GREEN",
+      "decisionImpact": false,
+      "pr": 360,
+      "mergeSha": "b360aff680483f2f7c8f746aa24fcfbda20d3ed3",
+      "checkpoint": "research/SYSTEM1_S1_OBSERVATION_AWARE_ROLE_CHECKPOINT_20261003.md"
     },
     {
       "id": "S2",
       "name": "P1A_REACH_FUNNEL",
-      "status": "SPEC_FROZEN",
+      "status": "IMPLEMENTED_RESEARCH_ONLY_PROSPECTIVE_DATA_PENDING",
       "parent": "shared-knowledge/SYSTEM1_P1A_MINIMAL_BLOCKING_AND_OUTCOME_CONTRACT_20261003_V0_1.md",
-      "decisionImpact": false
+      "decisionImpact": false,
+      "outputSchema": "SYSTEM1_C5_OVERFILTER_DIAGNOSTIC_V0_2",
+      "requiredPrimaryMetric": "p1aRankableN"
     },
     {
       "id": "S2B",
