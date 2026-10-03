@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 19:25 Asia/Taipei
+Updated: 2026-10-03 23:20 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -301,7 +301,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | 06｜基本面與估值研究室 | D07＋D08 | 52 | 19.2% | 基本面／無形資本／進階會計／反向DCF／估值 |
 | 07｜產業與供應鏈研究室 | D09＋D10 | 27 | 54.1% | 產業結構／競爭／供應鏈／公司曝險映射／政策傳導 |
 | 08｜事件與新聞研究室 | D11＋D17 | 33 | 39.4% | 公司事件／初級市場／新聞與政策事件 |
-| 09｜衍生品與國際總經研究室 | D12＋D13 | 36 | 37.2% | 衍生品損益結構／策略／景氣循環／資本市場預期 |
+| 09｜衍生品與國際總經研究室 | D12＋D13 | 36 | 40.6% | 衍生品損益結構／策略／景氣循環／資本市場預期 |
 | 10｜投組風控與交易執行研究室 | D14＋D15 | 39 | 34.9% | 交易執行／投組最佳化／績效歸因／避險／VaR |
 | 11｜統計驗證與策略市場狀態研究室 | D16＋D18 | 40 | 41.5% | 資料來源治理／機率式決策／PIT／OOS／壓力測試／Regime |
 | 12｜資產定價與因子研究室 | D19 | 15 | 16% | 資產定價／流動性因子／相對價值 |
@@ -587,7 +587,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 
 ## 07｜產業與供應鏈研究室
 
-> 2026-10-03 H01 專科驗證：BR-051 建立台灣晶圓代工產業結構 PIT receipt，BR-052 證明 D09-14 具獨立公司策略動作生命週期。專科結論為 KEEP_SEPARATE（維持分開）但必須 scope dedup（範圍去重）；D09-13／D09-14 均達 L2 機制＋反證已定義 40%
+> 2026-10-03 H01 專科驗證：BR-051～BR-056 已完成晶圓代工、鋼鐵、PCB 三產業結構控制，以及半導體／鋼鐵／電動車公司策略動作與失敗／中止控制；專科結論為 KEEP_SEPARATE（維持分開）但必須 scope dedup（範圍去重）。D09-13／D09-14 均為 L3 台股PIT資料可行 60%，H01 已送總控收件簿，等待 00 Dependency Audit／owner review；Formal Core 不變。
 
 | 模組 | 研究模組 | 學習範圍 | 等級 | 完成度 |
 |---|---|---|---|---:|
@@ -632,7 +632,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 必讀 checkpoint：`CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md`、`EVENT_RISK_CHECKPOINT.md`、`SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md`  
 禁止：不得把其他 Dxx 領域當成本聊天室主線；跨領域發現只能建立 dependency（依賴）或引用證據，不能雙重計算進度。
 
-### D11｜公司行動／重大事件／事件風險 — 51.6%
+### D11｜公司行動／重大事件／事件風險 — 52.6%
 
 | 模組 | 研究模組 | 學習範圍 | 等級 | 完成度 |
 |---|---|---|---|---:|
@@ -652,7 +652,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | D11-14 | 指數調整事件與被動流 | 聚焦「指數調整事件與被動流」。學習範圍：除權息、增減資、分割、CB、庫藏股、併購、停復牌、重大訊息與指數調整；公告／生效時鐘；歷史價格連續性；負面證據完整性；事件窗與退出風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D11-15 | IPO／Listing／Bookbuilding首次上市與詢價圈購 | 聚焦「IPO／Listing／Bookbuilding首次上市與詢價圈購」。研究初級市場與特殊公司事件。需凍結事件條款、公告時間、生效日期、可交易日與失敗／撤案情境，並計入供給衝擊、鎖定期、交易限制與套利破局風險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D11-16 | Lock-up Expiry／Insider Supply禁售期到期與內部人供給 | 聚焦「Lock-up Expiry／Insider Supply禁售期到期與內部人供給」。研究初級市場與特殊公司事件。需凍結事件條款、公告時間、生效日期、可交易日與失敗／撤案情境，並計入供給衝擊、鎖定期、交易限制與套利破局風險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
-| D11-17 | Secondary Offering／Private Placement後續發行與私募 | 聚焦「Secondary Offering／Private Placement後續發行與私募」。研究初級市場與特殊公司事件。需凍結事件條款、公告時間、生效日期、可交易日與失敗／撤案情境，並計入供給衝擊、鎖定期、交易限制與套利破局風險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
+| D11-17 | Secondary Offering／Private Placement後續發行與私募 | 聚焦「Secondary Offering／Private Placement後續發行與私募」。研究初級市場與特殊公司事件。需凍結事件條款、公告時間、生效日期、可交易日與失敗／撤案情境，並計入供給衝擊、鎖定期、交易限制與套利破局風險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D11-18 | Tender Offer／Going Private／Delisting公開收購私有化與下市 | 聚焦「Tender Offer／Going Private／Delisting公開收購私有化與下市」。研究初級市場與特殊公司事件。需凍結事件條款、公告時間、生效日期、可交易日與失敗／撤案情境，並計入供給衝擊、鎖定期、交易限制與套利破局風險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 | D11-19 | Spin-off／Merger Arbitrage／Deal-break Risk分拆併購套利與破局風險 | 聚焦「Spin-off／Merger Arbitrage／Deal-break Risk分拆併購套利與破局風險」。研究初級市場與特殊公司事件。需凍結事件條款、公告時間、生效日期、可交易日與失敗／撤案情境，並計入供給衝擊、鎖定期、交易限制與套利破局風險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 
@@ -706,7 +706,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | D12-17 | Option Payoff Structures／Put-Call Parity／Synthetic Positions／Strategies選擇權損益結構、買賣權平價、合成部位與策略 | 聚焦選擇權 payoff（損益結構）與價格一致性：Put-Call Parity（買賣權平價）、Synthetic Positions（合成部位）、Covered Call、Protective Put、Vertical／Calendar 等 spreads（價差策略）及其他基本策略結構。必須凍結履約價、到期、IV、Greeks、流動性、交易成本與保證金語意，區分方向、波動、時間價值與尾端曝險。原 D12-18 策略損益結構完整併入本模組；Portfolio overlay／hedging（投組避險）應用仍由 D15-23 負責。不得因策略名稱直接形成股票選股 Gate。 | L2 機制＋反證已定義 | 40% |
 
 
-### D13｜總體經濟／跨市場傳導 — 34.7%
+### D13｜總體經濟／跨市場傳導 — 41.1%
 
 | 模組 | 研究模組 | 學習範圍 | 等級 | 完成度 |
 |---|---|---|---|---:|
@@ -726,9 +726,9 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | D13-14 | Fiscal Policy／Deficit／Government Spending財政政策赤字與政府支出 | 聚焦「Fiscal Policy／Deficit／Government Spending財政政策赤字與政府支出」。研究財政、貨幣、金融條件、央行流動性與地緣／資金流傳導。需區分政策決策、預期差、實際流動性與市場價格反應，避免把單一宏觀指標當成機械式股價方向。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 | D13-15 | Monetary Transmission／Financial Conditions貨幣傳導與金融條件 | 聚焦「Monetary Transmission／Financial Conditions貨幣傳導與金融條件」。研究財政、貨幣、金融條件、央行流動性與地緣／資金流傳導。需區分政策決策、預期差、實際流動性與市場價格反應，避免把單一宏觀指標當成機械式股價方向。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 | D13-16 | Central-bank Balance Sheet／System Liquidity央行資產負債表與系統流動性 | 聚焦「Central-bank Balance Sheet／System Liquidity央行資產負債表與系統流動性」。研究財政、貨幣、金融條件、央行流動性與地緣／資金流傳導。需區分政策決策、預期差、實際流動性與市場價格反應，避免把單一宏觀指標當成機械式股價方向。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
-| D13-17 | Trade／Geopolitical Risk／Capital-flow Transmission貿易地緣風險與資金流傳導 | 聚焦「Trade／Geopolitical Risk／Capital-flow Transmission貿易地緣風險與資金流傳導」。研究財政、貨幣、金融條件、央行流動性與地緣／資金流傳導。需區分政策決策、預期差、實際流動性與市場價格反應，避免把單一宏觀指標當成機械式股價方向。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
-| D13-18 | Business Cycle／Leading-Coincident-Lagging Indicators景氣循環與領先同時落後指標 | 聚焦「Business Cycle／Leading-Coincident-Lagging Indicators景氣循環與領先同時落後指標」。研究景氣循環、領先同時落後指標、資本市場預期與長期成長驅動；需區分實體經濟資料、政策預期與市場先行定價，禁止把單一總經指標機械映射成股價方向。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
-| D13-19 | Capital Market Expectations／Long-run Growth Drivers資本市場預期與長期成長驅動 | 聚焦「Capital Market Expectations／Long-run Growth Drivers資本市場預期與長期成長驅動」。研究景氣循環、領先同時落後指標、資本市場預期與長期成長驅動；需區分實體經濟資料、政策預期與市場先行定價，禁止把單一總經指標機械映射成股價方向。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
+| D13-17 | Trade／Geopolitical Risk／Capital-flow Transmission貿易地緣風險與資金流傳導 | 聚焦「Trade／Geopolitical Risk／Capital-flow Transmission貿易地緣風險與資金流傳導」。研究財政、貨幣、金融條件、央行流動性與地緣／資金流傳導。需區分政策決策、預期差、實際流動性與市場價格反應，避免把單一宏觀指標當成機械式股價方向。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
+| D13-18 | Business Cycle／Leading-Coincident-Lagging Indicators景氣循環與領先同時落後指標 | 聚焦「Business Cycle／Leading-Coincident-Lagging Indicators景氣循環與領先同時落後指標」。研究景氣循環、領先同時落後指標、資本市場預期與長期成長驅動；需區分實體經濟資料、政策預期與市場先行定價，禁止把單一總經指標機械映射成股價方向。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
+| D13-19 | Capital Market Expectations／Long-run Growth Drivers資本市場預期與長期成長驅動 | 聚焦「Capital Market Expectations／Long-run Growth Drivers資本市場預期與長期成長驅動」。研究景氣循環、領先同時落後指標、資本市場預期與長期成長驅動；需區分實體經濟資料、政策預期與市場先行定價，禁止把單一總經指標機械映射成股價方向。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 
 
 ## 10｜投組風控與交易執行研究室
@@ -1302,7 +1302,6 @@ Forbidden:
 - PARTIAL_EVIDENCE_RECEIVED -> curriculum structural change;
 - specialist recommendation -> direct canonical mutation;
 - skipping Dependency Audit / overlap / anti-orphan / owner approval for structural changes.
-
 
 ## Coverage executable validation — 2026-10-03
 
