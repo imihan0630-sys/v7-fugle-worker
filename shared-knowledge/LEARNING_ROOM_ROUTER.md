@@ -1277,3 +1277,16 @@ Routing rule:
 - 06｜基本面與估值研究室 closes COV-04 payout sustainability and COV-05 P/S / EV-Sales valuation semantics.
 - 15｜信用市場與資本結構研究室 closes COV-12 seniority/collateral/recovery-waterfall semantics.
 - Do not promote a candidate merely because adjacent research exists; satisfy the minimum evidence threshold in the deficit matrix.
+
+
+## Coverage Specialist Return Intake Contract — 2026-10-03
+
+Before writing any formal COV specialist return, read:
+- `shared-knowledge/CURRICULUM_COVERAGE_SPECIALIST_RETURN_INTAKE_TEMPLATE_20261003_V0_1.md`
+- `shared-knowledge/curriculum_coverage_specialist_return_schema_v0_1.json`
+
+Return rule:
+- all 10 fields are mandatory;
+- exactly one terminal recommendation is mandatory;
+- a specialist room may not alter canonical module count or maturity;
+- incomplete returns remain PARTIAL_EVIDENCE_RECEIVED and return to the specialist room for completion.
