@@ -69,6 +69,7 @@ eq(positive.dateCluster.lodoDirectionAgreementPct,100);
 eq(positive.readiness.completeOutcomeCoverage,true);
 eq(positive.readiness.maturityReady,true);
 eq(positive.readiness.validationReady,true);
+eq(positive.readiness.economicGatePass,true);
 eq(positive.economicSuperiority,"RESEARCH_EVIDENCE_POSITIVE");
 eq(positive.formalOptimizationCandidate,"NONE");
 eq(positive.autoSwitchAuthorized,false);
@@ -92,7 +93,8 @@ const negativeD5=dates.flatMap((d,i)=>[
 const negative=buildSystem1P1AOutcomeEvaluation({c1Diagnoses:c1s,c5Diagnostics:c5s,d5Receipts:negativeD5,regimeReceipts:regs,validation});
 eq(negative.classification,"P1A_MATERIAL_NO_ECONOMIC_GAIN");
 eq(negative.dateCluster.afterCostDeltaMeanPct,-1);
-eq(negative.readiness.maturityReady,false);
+eq(negative.readiness.maturityReady,true);
+eq(negative.readiness.economicGatePass,false);
 
 const noP1=buildSystem1P1AOutcomeEvaluation({
   c1Diagnoses:[c1(dates[0],0)],c5Diagnostics:[c5(dates[0],0,{rankable:false})],
