@@ -1,0 +1,485 @@
+{
+  "schemaVersion": "HYBRID_ROLE_ELIGIBILITY_AUDIT_V0_1",
+  "updatedAt": "2026-10-03T11:40:00+08:00",
+  "scope": {
+    "domains": 22,
+    "modules": 354,
+    "formalCoreImpact": "NONE"
+  },
+  "canonicalRoles": [
+    "HARD_INVALIDATION",
+    "PRIMARY_ALPHA",
+    "SUPPORTIVE",
+    "CONTEXT_ONLY",
+    "CONFIDENCE_UNCERTAINTY"
+  ],
+  "principle": "ROLE_ELIGIBILITY_NOT_ACTUAL_STRATEGY_ROLE",
+  "domainDefaults": [
+    {
+      "domain": "D01",
+      "eligibleDefault": "PRIMARY_ALPHA_CANDIDATE / SUPPORTIVE",
+      "forbiddenAutoUse": "NO_AUTO_HARD_GATE",
+      "note": "Price structure may support strategy-specific alpha after PIT/OOS; data/session semantics are confidence primitives."
+    },
+    {
+      "domain": "D02",
+      "eligibleDefault": "PRIMARY_ALPHA_CANDIDATE / SUPPORTIVE",
+      "forbiddenAutoUse": "NO_AUTO_HARD_GATE",
+      "note": "Price-volume evidence may support alpha; proxy/intent narratives require identifiability and redundancy controls."
+    },
+    {
+      "domain": "D03",
+      "eligibleDefault": "PRIMARY_ALPHA_CANDIDATE / SUPPORTIVE",
+      "forbiddenAutoUse": "NO_AUTO_HARD_GATE",
+      "note": "Trend/momentum/reversal indicators are candidate evidence, not automatic reject rules."
+    },
+    {
+      "domain": "D04",
+      "eligibleDefault": "CONTEXT / SUPPORTIVE / CONFIDENCE; STRATEGY_SPECIFIC_PRIMARY_ALLOWED",
+      "forbiddenAutoUse": "NO_GENERIC_STOCK_HARD_GATE",
+      "note": "Volatility mainly changes distribution, risk, sizing or regime; strategy-specific alpha requires separate proof."
+    },
+    {
+      "domain": "D05",
+      "eligibleDefault": "EXECUTION_CONFIDENCE / CONTEXT; STRATEGY_SPECIFIC_PRIMARY_ALLOWED",
+      "forbiddenAutoUse": "HARD_ONLY_FACTUAL_NON_EXECUTABILITY",
+      "note": "Microstructure may affect fill/risk; only factual orderability/tradability failures may become hard."
+    },
+    {
+      "domain": "D06",
+      "eligibleDefault": "PRIMARY_ALPHA_CANDIDATE / SUPPORTIVE / CONTEXT",
+      "forbiddenAutoUse": "NO_DIRECTIONAL_HARD_GATE_BY_DEFAULT",
+      "note": "Flow/position data require motive/causality controls; crowding and lending are not automatically directional."
+    },
+    {
+      "domain": "D07",
+      "eligibleDefault": "PRIMARY_ALPHA_CANDIDATE / SUPPORTIVE / CONFIDENCE",
+      "forbiddenAutoUse": "NO_AUTO_HARD_GATE_EXCEPT_PIT_DATA_FAILURE",
+      "note": "Fundamentals may be primary for suitable strategies; data vintage/availability are confidence/PIT safeguards."
+    },
+    {
+      "domain": "D08",
+      "eligibleDefault": "PRIMARY_ALPHA_CANDIDATE / SUPPORTIVE / CONTEXT / CONFIDENCE",
+      "forbiddenAutoUse": "NO_AUTO_HARD_GATE",
+      "note": "Valuation is strategy/horizon dependent; undefined/negative denominators usually create uncertainty, not automatic rejection."
+    },
+    {
+      "domain": "D09",
+      "eligibleDefault": "PRIMARY_ALPHA_CANDIDATE / SUPPORTIVE / CONTEXT",
+      "forbiddenAutoUse": "NO_AUTO_HARD_GATE",
+      "note": "Industry/breadth/rotation may be primary or context depending strategy; taxonomy is not alpha itself."
+    },
+    {
+      "domain": "D10",
+      "eligibleDefault": "PRIMARY_ALPHA_CANDIDATE / SUPPORTIVE / CONTEXT",
+      "forbiddenAutoUse": "NO_AUTO_HARD_GATE_EXCEPT_PIT_DATA_FAILURE",
+      "note": "Supply-chain transmission requires issuer exposure bridge; event clocks/provenance are safeguards."
+    },
+    {
+      "domain": "D11",
+      "eligibleDefault": "PRIMARY_ALPHA_CANDIDATE / SUPPORTIVE / CONTEXT; HARD_SAFEGUARD_ELIGIBLE",
+      "forbiddenAutoUse": "HARD_ONLY_CONTINUITY_TRADABILITY_OR_RISK_AUTHORITY",
+      "note": "Corporate actions/events may be alpha/context; continuity breaks, suspension/orderability and unresolved reference adjustments can be hard safeguards."
+    },
+    {
+      "domain": "D12",
+      "eligibleDefault": "CONTEXT / SUPPORTIVE; STRATEGY_SPECIFIC_PRIMARY_ALLOWED / CONFIDENCE",
+      "forbiddenAutoUse": "NO_GENERIC_STOCK_HARD_GATE",
+      "note": "Derivatives state is usually market/strategy context; derivatives-specific strategies may validate primary use."
+    },
+    {
+      "domain": "D13",
+      "eligibleDefault": "CONTEXT_ONLY_DEFAULT; STRATEGY_SPECIFIC_PRIMARY_ALLOWED",
+      "forbiddenAutoUse": "NO_GENERIC_STOCK_HARD_GATE",
+      "note": "Macro/cross-market evidence changes priors/regime by default; primary use requires an explicit macro strategy."
+    },
+    {
+      "domain": "D14",
+      "eligibleDefault": "EXECUTION / CONFIDENCE / HARD_SAFEGUARD_ELIGIBLE",
+      "forbiddenAutoUse": "NOT_STOCK_SELECTION_ALPHA_BY_DEFAULT",
+      "note": "Execution cost/orderability modules act after or around selection; hard only for factual non-executability/risk authority."
+    },
+    {
+      "domain": "D15",
+      "eligibleDefault": "PORTFOLIO_RISK / SIZING / CONTEXT / CONFIDENCE",
+      "forbiddenAutoUse": "NOT_STOCK_SELECTION_ALPHA_BY_DEFAULT",
+      "note": "Portfolio construction, sizing and risk do not create an independent stock thesis."
+    },
+    {
+      "domain": "D16",
+      "eligibleDefault": "CONFIDENCE / UNCERTAINTY / VALIDATION_GOVERNANCE",
+      "forbiddenAutoUse": "NOT_PRIMARY_ALPHA",
+      "note": "Validation/provenance/calibration determine trust and decision quality; they do not themselves create stock alpha."
+    },
+    {
+      "domain": "D17",
+      "eligibleDefault": "PRIMARY_ALPHA_CANDIDATE / SUPPORTIVE / CONTEXT / CONFIDENCE",
+      "forbiddenAutoUse": "NO_AUTO_HARD_GATE_EXCEPT_SOURCE_PIT_FAILURE",
+      "note": "Event/news evidence may be primary; source quality and clocks remain separate confidence safeguards."
+    },
+    {
+      "domain": "D18",
+      "eligibleDefault": "CONTEXT_ONLY / STRATEGY_ACTIVATION / CONFIDENCE",
+      "forbiddenAutoUse": "NOT_STOCK_LEVEL_PRIMARY_ALPHA_BY_DEFAULT",
+      "note": "Regime modules condition strategy use, not individual-stock votes unless separately validated."
+    },
+    {
+      "domain": "D19",
+      "eligibleDefault": "PRIMARY_ALPHA_CANDIDATE / SUPPORTIVE",
+      "forbiddenAutoUse": "NO_AUTO_HARD_GATE",
+      "note": "Factor/anomaly families can be primary only after redundancy, PIT, OOS, cost and capacity proof."
+    },
+    {
+      "domain": "D20",
+      "eligibleDefault": "RESEARCH_ONLY_DEFAULT -> SUPPORTIVE/CONTEXT_IF_IDENTIFIABLE",
+      "forbiddenAutoUse": "NO_HARD_GATE / NO_PRIMARY_ALPHA_WITHOUT_IDENTIFIABILITY",
+      "note": "Behavioral stories require independent proxies and structural counterfactuals; observed price/flow alone is insufficient."
+    },
+    {
+      "domain": "D21",
+      "eligibleDefault": "CONTEXT / CONFIDENCE / TAIL_RISK; LONG_HORIZON_PRIMARY_ONLY_IF_VALIDATED",
+      "forbiddenAutoUse": "NO_SHORT_TERM_DIRECTIONAL_HARD_GATE",
+      "note": "Governance affects confidence/tail risk by default; stock-selection alpha requires independent long-horizon validation."
+    },
+    {
+      "domain": "D22",
+      "eligibleDefault": "CONTEXT / SUPPORTIVE / CONFIDENCE; CREDIT_STRATEGY_PRIMARY_ALLOWED",
+      "forbiddenAutoUse": "HARD_ONLY_FACTUAL_CREDIT_OR_RISK_AUTHORITY_EVENT",
+      "note": "Credit evidence may be primary in credit-sensitive strategies; generic equity rejection is not automatic."
+    }
+  ],
+  "exceptionGroups": [
+    {
+      "id": "R01_DATA_INTEGRITY_AND_PIT",
+      "modules": [
+        "D01-01",
+        "D02-01",
+        "D05-10",
+        "D07-08",
+        "D07-10",
+        "D09-01",
+        "D10-10",
+        "D11-08",
+        "D11-12",
+        "D11-13",
+        "D13-13",
+        "D16-01",
+        "D16-11",
+        "D16-13",
+        "D16-14",
+        "D16-15",
+        "D17-01",
+        "D17-02",
+        "D17-09",
+        "D17-10"
+      ],
+      "allowed": [
+        "CONFIDENCE_UNCERTAINTY",
+        "HARD_INVALIDATION_IF_FACTUAL_PIT_SOURCE_REPLAY_FAILURE"
+      ],
+      "forbidden": [
+        "PRIMARY_ALPHA_FROM_DATA_QUALITY_ITSELF"
+      ],
+      "note": "Source/provenance/clock/replay quality controls trust. They do not earn alpha because they are complete."
+    },
+    {
+      "id": "R02_EXECUTION_AND_ORDERABILITY",
+      "modules": [
+        "D05-01",
+        "D05-02",
+        "D05-03",
+        "D05-04",
+        "D05-06",
+        "D05-07",
+        "D05-08",
+        "D05-09",
+        "D05-13",
+        "D11-07",
+        "D11-11",
+        "D14-01",
+        "D14-02",
+        "D14-03",
+        "D14-04",
+        "D14-05",
+        "D14-06",
+        "D14-07",
+        "D14-08",
+        "D14-09",
+        "D14-10",
+        "D14-11",
+        "D14-14",
+        "D14-15",
+        "D14-16",
+        "D14-17",
+        "D14-18",
+        "D14-19"
+      ],
+      "allowed": [
+        "EXECUTION_CONFIDENCE",
+        "CONTEXT",
+        "HARD_INVALIDATION_IF_FACTUAL_NON_EXECUTABILITY_OR_EXPLICIT_RISK_AUTHORITY"
+      ],
+      "forbidden": [
+        "GENERIC_STOCK_SELECTION_ALPHA",
+        "DIRECTIONAL_VOTE_FROM_COST_ALONE"
+      ],
+      "note": "Execution affects whether/how to trade a valid thesis. It is not a separate stock thesis."
+    },
+    {
+      "id": "R03_PORTFOLIO_RISK_AND_SIZING",
+      "modules": [
+        "D04-08",
+        "D04-09",
+        "D15-01",
+        "D15-02",
+        "D15-03",
+        "D15-04",
+        "D15-05",
+        "D15-06",
+        "D15-07",
+        "D15-08",
+        "D15-09",
+        "D15-10",
+        "D15-11",
+        "D15-12",
+        "D15-13",
+        "D15-14",
+        "D15-15",
+        "D15-16",
+        "D15-19",
+        "D15-21",
+        "D15-22",
+        "D15-23",
+        "D15-24"
+      ],
+      "allowed": [
+        "PORTFOLIO_RISK",
+        "SIZING",
+        "CONTEXT",
+        "CONFIDENCE",
+        "HARD_INVALIDATION_IF_EXPLICIT_PORTFOLIO_RISK_AUTHORITY_BREACH"
+      ],
+      "forbidden": [
+        "INDEPENDENT_STOCK_ALPHA_FROM_SIZING_OR_ATTRIBUTION"
+      ],
+      "note": "Risk/sizing/attribution governs exposure after evidence; it cannot create a second alpha vote from the same thesis."
+    },
+    {
+      "id": "R04_MACRO_AND_REGIME",
+      "modules": [
+        "D13-01",
+        "D13-02",
+        "D13-03",
+        "D13-04",
+        "D13-05",
+        "D13-06",
+        "D13-07",
+        "D13-08",
+        "D13-09",
+        "D13-10",
+        "D13-11",
+        "D13-12",
+        "D13-14",
+        "D13-15",
+        "D13-16",
+        "D13-17",
+        "D13-18",
+        "D13-19",
+        "D18-01",
+        "D18-02",
+        "D18-03",
+        "D18-04",
+        "D18-05",
+        "D18-06",
+        "D18-07",
+        "D18-08",
+        "D18-09",
+        "D18-10",
+        "D18-11",
+        "D18-12",
+        "D18-13",
+        "D18-14",
+        "D18-15"
+      ],
+      "allowed": [
+        "CONTEXT_ONLY_DEFAULT",
+        "STRATEGY_ACTIVATION",
+        "CONFIDENCE",
+        "PRIMARY_ALPHA_ONLY_FOR_EXPLICIT_MACRO_OR_REGIME_STRATEGY_AFTER_VALIDATION"
+      ],
+      "forbidden": [
+        "GENERIC_STOCK_LEVEL_PASS_FAIL"
+      ],
+      "note": "Macro/regime evidence changes priors and strategy effectiveness; it is not a universal stock veto."
+    },
+    {
+      "id": "R05_BEHAVIORAL_AND_GOVERNANCE_IDENTIFIABILITY",
+      "modules": [
+        "D20-01",
+        "D20-02",
+        "D20-03",
+        "D20-04",
+        "D20-05",
+        "D20-06",
+        "D20-07",
+        "D20-08",
+        "D20-09",
+        "D20-10",
+        "D20-11",
+        "D20-12",
+        "D20-13",
+        "D21-01",
+        "D21-02",
+        "D21-03",
+        "D21-04",
+        "D21-05",
+        "D21-07",
+        "D21-09",
+        "D21-10",
+        "D21-11",
+        "D21-12",
+        "D21-13"
+      ],
+      "allowed": [
+        "RESEARCH_ONLY_DEFAULT",
+        "SUPPORTIVE",
+        "CONTEXT",
+        "CONFIDENCE",
+        "TAIL_RISK",
+        "LONG_HORIZON_PRIMARY_IF_INDEPENDENTLY_VALIDATED"
+      ],
+      "forbidden": [
+        "HARD_GATE_FROM_NARRATIVE_ONLY",
+        "PRIMARY_ALPHA_FROM_UNIDENTIFIED_PROXY"
+      ],
+      "note": "Behavior/governance claims need distinct observables and falsification; price/flow/accounting symptoms alone cannot identify motive."
+    },
+    {
+      "id": "R06_FLOW_LENDING_AND_CROWDING",
+      "modules": [
+        "D06-05",
+        "D06-06",
+        "D06-07",
+        "D06-08",
+        "D06-09",
+        "D06-10",
+        "D06-11",
+        "D06-13",
+        "D06-14",
+        "D06-15",
+        "D06-16",
+        "D06-18",
+        "D19-11",
+        "D20-06",
+        "D20-13",
+        "D14-19"
+      ],
+      "allowed": [
+        "PRIMARY_ALPHA_CANDIDATE_IF_VALIDATED",
+        "SUPPORTIVE",
+        "CONTEXT",
+        "CONFIDENCE",
+        "EXECUTION_FEASIBILITY"
+      ],
+      "forbidden": [
+        "DIRECTIONAL_HARD_GATE_FROM_FLOW_OR_BORROW_STATE_ALONE",
+        "MULTIPLE_VOTES_FROM_ONE_POSITION_OR_LENDING_RECEIPT"
+      ],
+      "note": "Flow/borrow/crowding may carry information, but intent and causal interpretation are not automatic."
+    },
+    {
+      "id": "R07_EVENT_CONTINUITY_AND_CORPORATE_ACTIONS",
+      "modules": [
+        "D11-01",
+        "D11-02",
+        "D11-03",
+        "D11-04",
+        "D11-05",
+        "D11-06",
+        "D11-07",
+        "D11-10",
+        "D11-11",
+        "D11-12",
+        "D11-14",
+        "D11-15",
+        "D11-16",
+        "D11-17",
+        "D11-18",
+        "D11-19"
+      ],
+      "allowed": [
+        "PRIMARY_ALPHA_CANDIDATE",
+        "SUPPORTIVE",
+        "CONTEXT",
+        "HARD_INVALIDATION_IF_REFERENCE_CONTINUITY_TRADABILITY_OR_EXIT_FEASIBILITY_FAILS"
+      ],
+      "forbidden": [
+        "HARD_GATE_FROM_EVENT_LABEL_ALONE"
+      ],
+      "note": "The event can be informative, but only factual continuity/tradability/risk failures are eligible for hard invalidation."
+    },
+    {
+      "id": "R08_VALIDATION_AND_DECISION_ARCHITECTURE",
+      "modules": [
+        "D16-02",
+        "D16-03",
+        "D16-04",
+        "D16-05",
+        "D16-06",
+        "D16-07",
+        "D16-08",
+        "D16-09",
+        "D16-10",
+        "D16-12",
+        "D16-16",
+        "D16-17",
+        "D16-18",
+        "D16-19",
+        "D16-20",
+        "D16-21",
+        "D16-22",
+        "D16-23",
+        "D16-24",
+        "D16-25"
+      ],
+      "allowed": [
+        "VALIDATION",
+        "CONFIDENCE_UNCERTAINTY",
+        "DECISION_POLICY_FOR_D16_25"
+      ],
+      "forbidden": [
+        "PRIMARY_ALPHA_FROM_METHOD_COMPLEXITY",
+        "HARD_GATE_FROM_MODEL_COMPLEXITY"
+      ],
+      "note": "Statistical/model sophistication is not alpha. D16-25 combines evidence but does not manufacture independent evidence."
+    }
+  ],
+  "hardInvalidationBurden": [
+    "SOURCE_PIT_REPLAY_FAILURE",
+    "FACTUAL_NON_EXECUTABILITY",
+    "CORPORATE_ACTION_CONTINUITY_BREAK",
+    "SUSPENSION_EXIT_IMPOSSIBILITY",
+    "EXPLICIT_RISK_AUTHORITY_BREACH",
+    "REQUIRED_SHORT_NOT_ESTABLISHABLE_OR_MAINTAINABLE"
+  ],
+  "primaryAlphaRequirements": [
+    "EXPLICIT_STRATEGY_HORIZON",
+    "PIT_REPLAY",
+    "OOS_OR_PROSPECTIVE",
+    "COST_FILL_FEASIBILITY",
+    "REDUNDANCY_CONTROL",
+    "MULTI_REGIME",
+    "UNCERTAINTY_CALIBRATION_WHERE_APPLICABLE",
+    "INCREMENTAL_VALUE_VS_SIMPLE_BASELINE"
+  ],
+  "roleConflicts": [
+    "EXECUTION_TO_ALPHA_LEAKAGE",
+    "SIZING_TO_ALPHA_LEAKAGE",
+    "MACRO_TO_HARD_GATE",
+    "BEHAVIORAL_NARRATIVE_DUPLICATION",
+    "GOVERNANCE_NARRATIVE_DUPLICATION",
+    "FLOW_BORROW_DIRECTIONAL_OVERREACH",
+    "VALIDATION_METHOD_ALPHA_LEAKAGE",
+    "CORPORATE_ACTION_OVERBLOCKING"
+  ]
+}
