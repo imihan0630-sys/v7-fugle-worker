@@ -1,7 +1,7 @@
 # System1 S1-S2 Shadow Execution Registry 2026-10-03 V0.1
 
 Updated: 2026-10-03 Asia/Taipei
-Status: S1_S2_RESEARCH_SEQUENCE_FROZEN / CLASS_A_ONLY / FORMAL_CORE_LOCKED
+Status: S1_IMPLEMENTED_CI_GREEN / S2_REACH_IMPLEMENTED_DATA_PENDING / CLASS_A_ONLY / FORMAL_CORE_LOCKED
 
 ## Purpose
 
@@ -87,3 +87,32 @@ Do not use:
 
 Formal Core impact: NONE.
 FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+## Implementation checkpoint — PR #360
+
+Merged:
+`b360aff680483f2f7c8f746aa24fcfbda20d3ed3`
+
+Checkpoint:
+`research/SYSTEM1_S1_OBSERVATION_AWARE_ROLE_CHECKPOINT_20261003.md`
+
+Current implementation state:
+- S1 Semantic Repair: **IMPLEMENTED_RESEARCH_ONLY_CI_GREEN**
+- S2 P1-A Reach Funnel diagnostics: **IMPLEMENTED_RESEARCH_ONLY_PROSPECTIVE_DATA_PENDING**
+- S2B TARGET four-state side study: spec frozen, implementation/data study separate
+- Outcome join: pending genuine prospective mature data
+- P1-B: blocked until P1-A economic classification
+
+C5 research schema:
+`SYSTEM1_C5_OVERFILTER_DIAGNOSTIC_V0_2`
+
+Primary diagnostic:
+`p1aRankableN`
+
+CI on validated PR head:
+- V8 Regression: PASS
+- V8 Repair CI: PASS
+- System1 isolated offline review: PASS
+
+Formal `Worker.js` remains unchanged.
+
