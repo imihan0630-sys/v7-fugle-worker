@@ -22577,3 +22577,27 @@ Same structural key with changed immutable fingerprint is a provenance conflict.
 ROOT additionally commits to the episode-item keyset emitted for the parent. Outcomes and later source revisions are excluded from all decision-time fingerprints.
 
 Pattern shared-child contract v0.3 now carries these rules. Runtime remains NO_GO. D01 remains 51.7%; Formal Core LOCKED.
+
+# DL-015 — PATTERN-RG2 cross-parent clustering and preregistered B0/B1 estimand (2026-10-03)
+
+D01 now freezes the sample identity before outcomes.
+
+One parentDecisionReceiptId owns one future outcome vector. Multiple Pattern child rows must not multiply that outcome. The first promotion-grade RG2 estimand accepts only SINGLE_RELATION_ELIGIBLE parents after deterministic evidence de-dup; MULTI_RELATION_AMBIGUOUS remains explicit coverage evidence and cannot be resolved by post-outcome relation selection.
+
+Dependence semantics are refined: scanDate captures shared market shocks, while symbol captures persistent within-stock dependence across multiple episodes. relationEpisodeKey remains the longitudinal/de-dup identity. It cannot replace symbol clustering.
+
+The first challenger is RG2_CORE_V0_1. B0_PRICE_STRUCTURE is a diagnostic baseline; B0_FULL_CONTEXT is required for promotion-grade incremental interpretation. Co-primary future outcomes are D5 MFE and D5 MAE.
+
+The target estimand is same-parent B0-vs-B1 loss differential averaged within scanDate and then equally across dates. Forward OOS is chronological and purged. Episode-first, episode-holdout and non-overlapping-date sensitivities are frozen now, before outcomes.
+
+Exact statistical inference is routed to D16. D01 does not select a p-value method. The handoff requires D16 to account for nested-model comparison, date+symbol dependence, few clusters, overlapping loss windows and global maturity gates before result interpretation.
+
+# DL-016 — RG2 observability and canonical-field repair (2026-10-03)
+
+Audit found that the v0.1 relation helper used geometryState/compoundState while the shared-child schema used geometryRelationState/compoundLifecycleState. It also found that shared-child v0.3 omitted parentZoneAgeEligibleSessions and explicit local/parent coordinates needed to audit the structural fingerprint.
+
+Research-only repair v0.2/v0.4 canonicalizes these semantics and adds the missing provenance. No runtime storage is implemented.
+
+RG2_CORE_V0_1 is therefore DESIGN_OBSERVABLE but still PROSPECTIVE_RUNTIME_BLOCKED.
+
+No outcome join, no score/gate/rank change, no R09. D01 remains 51.7%; Formal Core LOCKED.
