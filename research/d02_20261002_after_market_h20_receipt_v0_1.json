@@ -1,0 +1,179 @@
+{
+  "schemaVersion": "D02_20261002_AFTER_MARKET_AND_H20_V0_1",
+  "generatedAt": "2026-10-03T11:24:00+08:00",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCoreImpact": false,
+  "outcomesUsed": false,
+  "authoritativeRepoHeadAtWrite": "865e016529f552ae635489fb6960fdd8519c7b86",
+  "productionLineage": {
+    "marketDate": "2026-10-02",
+    "normalWorkerGeneration": {
+      "expectedWindows": [
+        "23:35",
+        "23:55"
+      ],
+      "confirmedGeneration": false,
+      "directOriginalFailureReason": "UNKNOWN_FROM_AVAILABLE_RECEIPTS"
+    },
+    "firstLateSync": {
+      "runId": 37028644283,
+      "jobId": 110909603962,
+      "startedAtTaipei": "2026-10-02T23:40:37+08:00",
+      "failure": "QUARTER_EPS source review HTTP 503 after 3 read-only attempts",
+      "recoveryReached": false
+    },
+    "secondLateSync": {
+      "runId": 37030724117,
+      "jobId": 110916572288,
+      "startedAtTaipei": "2026-10-02T23:58:35+08:00",
+      "institution": {
+        "ready": true,
+        "marketDate": "2026-10-02",
+        "stockCount": 1865
+      },
+      "quality": {
+        "ready": true,
+        "index": {
+          "count": 43,
+          "asOfDate": "2026-10-02"
+        },
+        "tdcc": {
+          "count": 2957,
+          "asOfDate": "2026-09-24"
+        },
+        "valuation": {
+          "count": 1969,
+          "asOfDate": "2026-10-02"
+        },
+        "announcements": {
+          "count": 120,
+          "asOfDate": "2026-10-02"
+        },
+        "financial": {
+          "count": 1881,
+          "asOfDate": "2026-10-02"
+        },
+        "quarterEps": {
+          "count": 0,
+          "asOfDate": "2026-10-02"
+        }
+      },
+      "recoveryReachedAtTaipei": "2026-10-03T00:01:12+08:00",
+      "recoveryResult": "SKIPPED",
+      "recoveryReason": "Outside 23:35-23:59 same-day recovery window",
+      "rootCauseForMissedReadyRecovery": "CROSS_MIDNIGHT_TARGET_DATE_DRIFT"
+    },
+    "mirror": {
+      "runId": 37030841648,
+      "jobId": 110916966353,
+      "result": "SUCCESS",
+      "prepared": false,
+      "alreadyVerified": true,
+      "scanDate": "2026-09-29",
+      "interpretation": "OLD_PLAN_CONTINUITY_ONLY"
+    },
+    "health": {
+      "runId": 37031042438,
+      "jobId": 110917631814,
+      "result": "SUCCESS",
+      "businessAction": false,
+      "skipped": true,
+      "date": "2026-10-03",
+      "time": "00:01",
+      "reason": "Outside verified trading-day/window; no business action"
+    },
+    "c1c2Collector": {
+      "runId": 37033639328,
+      "jobId": 110926371872,
+      "observedAtTaipei": "2026-10-03T00:24:14+08:00",
+      "artifactId": 11238851833,
+      "artifactZipSha256": "6cbcf1e61e1e985bcf2d8d88d0f8683ce1136941eaf03d79228f4db6f69f30b3",
+      "scanDate": "2026-10-02",
+      "category": "FORMAL_SCAN_NOT_CONFIRMED",
+      "verificationFailure": "C1_GENERATION_NOT_FOUND",
+      "formalScanDate": "2026-09-29",
+      "formalPipelineComplete": false,
+      "institutionDate": "2026-10-02",
+      "institutionReady": true,
+      "qualityDate": "2026-10-02",
+      "qualityReady": true,
+      "missingQuality": [],
+      "eligibleForResearch": false,
+      "mayCountAsZeroPick": false
+    },
+    "repair": {
+      "review": "research/SYSTEM1_C1_CROSS_MIDNIGHT_RECOVERY_REVIEW_20261003.md",
+      "class": "B",
+      "approved": true,
+      "pr": 318,
+      "approvedHead": "22c9d5028555c4a4011704d74fe2a17ae7542acf",
+      "mergeCommit": "eebabbe1c71fd1694f59fefb68bd589a7c92eac1",
+      "activationClosedAtTaipei": "2026-10-03T03:50:00+08:00",
+      "retrospective20261002GenerationCreated": false,
+      "formalSelectionRulesChanged": false,
+      "nextEvidence": "FIRST_GENUINE_COMPLETED_SESSION_AFTER_REPAIR"
+    }
+  },
+  "d02GateState": {
+    "cleanProspectiveSelectionDates": 0,
+    "marketDate20261002": "RESEARCH_INELIGIBLE / DATA_QA_ONLY",
+    "gate0Provenance": "FAIL_FOR_CLEAN_COHORT",
+    "gate1FormalIsolation": "PASS",
+    "gate2OperationContext": "FAILED_GENERATION_WITH_LATE_READY_RECOVERY_MISSED",
+    "gate3AcquisitionObservability": "PASS_FOR_BLOCKER_CLASSIFICATION",
+    "gate4BaselineReadiness": "NOT_PROVEN",
+    "gate5CohortProvenance": "FAIL",
+    "gate6FeatureQA": "DATA_QA_ONLY",
+    "gate7Outcomes": "CLOSED"
+  },
+  "h20": {
+    "modules": [
+      "D01-05",
+      "D02-03",
+      "D04-07"
+    ],
+    "sharedPrimitive": "ONE_BREAKOUT_EVENT_ANCHOR",
+    "primitiveOwner": "D01-05_PRICE_STRUCTURE",
+    "d02Role": "VOLUME_CONFIRMATION_DOWNSTREAM_TRANSFORM",
+    "d04Role": "VOLATILITY_INTERACTION_DOWNSTREAM_TRANSFORM",
+    "d02TerminalClassification": "KEEP_SEPARATE / CONDITIONAL_INCREMENTAL_EVIDENCE / NO_INDEPENDENT_EVENT_VOTE",
+    "commonReceiptKey": "H20_BREAKOUT:<marketDate>:<symbol>:<anchorBarStart>",
+    "pitClock": "anchor bar end + sourceFetchedAt/featureKnownAt overlay",
+    "d02IncrementalTest": {
+      "baselineA": "price-only breakout/failure lifecycle",
+      "comparatorB": "A + existing previous-five-bar volume ratio",
+      "candidateC": "B + same-slot historical RVOL",
+      "candidateD": "C + cumulative participation pace on valid common support",
+      "noOutcomeTuning": true,
+      "primaryOutcomes": [
+        "false-break/follow-through field-valid",
+        "MFE",
+        "MAE",
+        "opportunity retention"
+      ],
+      "controls": [
+        "market/sector activity",
+        "volatility state via D04 dependency",
+        "liquidity",
+        "event context",
+        "regime",
+        "cost/slippage"
+      ]
+    },
+    "disagreementCases": [
+      "PRICE_BREAKOUT_SUCCEEDS_WITH_NORMAL_VOLUME -> volume not necessary",
+      "PRICE_BREAKOUT_FAILS_WITH_HIGH_VOLUME -> volume not sufficient",
+      "HIGH_VOLUME_WEAK_PRICE_RESPONSE -> mechanism unresolved, not automatic confirmation",
+      "MODERATE_VOLUME_STRONG_ACCEPTANCE -> may outperform extreme volume; test, do not assume",
+      "EXTREME_VOLUME_HIGH_VOLATILITY_EVENT -> event/regime confounding"
+    ],
+    "maturityDecision": {
+      "module": "D02-03",
+      "level": "L3",
+      "maturityPct": 60,
+      "change": false
+    },
+    "formalOptimizationCandidate": "NONE"
+  }
+}
