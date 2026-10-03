@@ -1157,3 +1157,14 @@ Current state:
 - No curriculum structural change is authorized by packet creation.
 - Canonical curriculum remains 22 domains / 354 active modules at packet creation.
 - Formal Core remains LOCKED.
+
+
+## Curriculum Coverage pre-intake evidence — 2026-10-03
+
+- Ledger: `shared-knowledge/CURRICULUM_COVERAGE_PREINTAKE_EVIDENCE_LEDGER_20261003_V0_1.md`.
+- COV-02 / D05: PARTIAL_EVIDENCE_RECEIVED.
+- COV-07 / D12: PARTIAL_EVIDENCE_RECEIVED.
+- COV-08 / D16: PARTIAL_EVIDENCE_RECEIVED.
+- Accepted specialist returns: 0 / 12.
+- Canonical curriculum remains 22 domains / 354 active modules.
+- Formal Core remains LOCKED.
