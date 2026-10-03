@@ -13765,3 +13765,18 @@ For `pvDailyRvol20`, V0.1 uses a conservative reset-only path for unresolved/uns
 For SUPPLY_CHANGE, raw ratios may remain descriptive RAW_ACTIVITY; clean COMPARABLE_PARTICIPATION requires PIT normalization or a fully post-break baseline.
 
 This contract is outcome-blind and does not authorize production wiring or Formal changes.
+
+# Pre-PVE-240 — D02-10 / D02-12 PIT feasibility closure (2026-10-04)
+
+D02-10 and D02-12 now satisfy the curriculum's L3 criterion: Taiwan PIT data source plus explicit legal time semantics.
+
+D02-10 does so by using a prior-session D03 trend parent and a current completed 15m D02 participation parent. The interaction is dependency-owned transformation evidence and cannot create a third primitive vote.
+
+D02-12 is explicitly decomposed into time-of-day volume curve and price-by-volume profile. The time curve has replayable historical/live 15m data, but current monitor coverage is bounded through 13:00. The price profile has current-day prospective price-level volume data; historical profile replay is not claimed.
+
+These maturity promotions do not consume prospective outcome evidence and do not imply predictive value.
+
+D02-10: L3/60.
+D02-12: L3/60.
+D02 aggregate: 51.7%.
+Formal Core remains LOCKED.
