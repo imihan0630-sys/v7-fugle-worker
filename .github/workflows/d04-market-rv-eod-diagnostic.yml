@@ -1,0 +1,92 @@
+name: D04 Market RV EOD Diagnostic
+
+on:
+  schedule:
+    - cron: "15 11 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      market_date:
+        description: "Same Taipei date only (YYYY-MM-DD); blank = today"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: d04-market-rv-eod-diagnostic
+  cancel-in-progress: false
+
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Resolve same-Taipei-date diagnostic only
+        id: date
+        env:
+          INPUT_MARKET_DATE: ${{ inputs.market_date }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TODAY="$(TZ=Asia/Taipei date +%F)"
+          MARKET_DATE="${INPUT_MARKET_DATE:-$TODAY}"
+          test "$MARKET_DATE" = "$TODAY"
+          echo "market_date=$MARKET_DATE" >> "$GITHUB_OUTPUT"
+
+      - name: Fetch official FMTQIK and build diagnostic-only RV receipt
+        env:
+          MARKET_DATE: ${{ steps.date.outputs.market_date }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p system2/artifacts
+          node research/run_d04_market_rv_eod_diagnostic_v0_1.mjs             --market-date "$MARKET_DATE"             --output "system2/artifacts/d04-eod-rv-${MARKET_DATE}.json"
+
+      - name: Publish diagnostic boundary
+        env:
+          MARKET_DATE: ${{ steps.date.outputs.market_date }}
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const fs=require("node:fs");
+          const p="system2/artifacts/d04-eod-rv-"+process.env.MARKET_DATE+".json";
+          const r=JSON.parse(fs.readFileSync(p,"utf8"));
+          const lines=[
+            "## D04 Market RV end-of-day diagnostic",
+            "",
+            "- Market date: "+r.marketDate,
+            "- State: "+r.state,
+            "- Actual observed at: "+r.actualObservedAt,
+            "- Evidence class: "+r.evidenceClass,
+            "- Strategy Decision Clock authority: false",
+            "- Promotion-grade prospective dates added: 0",
+            "- System2 D1 written: false",
+            "- Formal impact: false",
+          ];
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,lines.join("\n")+"\n");
+          NODE
+
+      - name: Upload immutable diagnostic artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: d04-market-rv-eod-${{ steps.date.outputs.market_date }}-${{ github.run_id }}
+          path: system2/artifacts/d04-eod-rv-*.json
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Reassert isolation boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eiq 'secrets\.|wrangler[[:space:]]+(deploy|delete)|d1[[:space:]]+(create|execute)|SYSTEM2_CAPTURE_ENABLED[[:space:]]*=[[:space:]]*true'             .github/workflows/d04-market-rv-eod-diagnostic.yml
+          echo "D04 EOD diagnostic isolation PASS"
