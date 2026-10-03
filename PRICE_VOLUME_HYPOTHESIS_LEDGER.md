@@ -615,3 +615,57 @@ PARTICIPATION -> RESPONSE -> PERSISTENCE/ACCEPTANCE -> MICROSTRUCTURE PRESSURE/L
 
 No outcome inspection, no hypothesis promotion/rejection, no FORMAL_OPTIMIZATION_CANDIDATE.
 PVE evidence cursor remains 227 pending the after-market generation audit.
+
+
+## H001~H004 and D02-03 readiness after PVE-228~239 — 2026-10-03
+
+### 2026-10-02 cohort
+Status: RESEARCH_INELIGIBLE / DATA_QA_ONLY.
+
+The date does not advance any clean evidence counter:
+- no verified same-session Formal generation;
+- no C1 generation;
+- Formal scan date remained 9/29;
+- pipeline incomplete;
+- later source readiness cannot retroactively create the missing decision-time generation.
+
+Missing generation is not zero-pick.
+
+### Cross-midnight repair semantics
+Status: FUTURE_ACQUISITION_REPAIR / NO_RETROSPECTIVE_EVIDENCE.
+
+PR #318 changes future late-fallback date pinning only.
+No 10/02 hypothesis evidence is rehabilitated.
+
+### D02-03 breakout-volume confirmation
+Status: CONDITIONAL_INCREMENTAL_HYPOTHESIS / H20_SHARED_EVENT.
+
+Two claims remain separate:
+1. NECESSITY — breakout requires high volume.
+2. INCREMENTAL QUALITY — volume adds discrimination beyond price-only breakout geometry.
+
+The first is explicitly falsifiable by successful normal/low-volume breakouts.
+The second remains the relevant research question.
+
+No D02 event count is created independently from the D01 breakout event.
+Volume/volatility are transforms on one shared event receipt.
+
+Frozen future comparison:
+A price-only;
+B + local previous-five ratio;
+C + same-slot RVOL;
+D + cumulative pace.
+
+D04 volatility interaction enters as a dependency/control layer and cannot be counted as D02 maturity.
+
+### H001/H002
+Still EVIDENCE_GATED.
+Clean prospective date count remains 0.
+
+### H003/H004
+Still HIGHER_GATED.
+Gate 7 remains CLOSED.
+
+No hypothesis promotion/rejection on economic outcomes.
+No FORMAL_OPTIMIZATION_CANDIDATE.
+Formal Core remains LOCKED.
