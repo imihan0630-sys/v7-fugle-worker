@@ -599,3 +599,143 @@ This source map establishes feasibility and known coverage gaps only. No D19-01.
 - Yang (2016), Emerging Markets Review, Calendar trading of Taiwan stock market.
 - Shiu, Lee & Gleason (2014), Journal of Multinational Financial Management, Institutional shareholdings and the January effects in Taiwan.
 - 劉張旭（2010），國立臺灣大學碩士論文：日曆異常效應—國際主要股票市場之比較研究。
+
+
+## 2026-10-04 Long-block Stage 6 — D19-13 / D19-15 / D19-16 + factor-layer PIT adapter contract
+
+### D19-13 Relative Value／Pairs Trading／Cointegration／Residual Mean Reversion相對價值、配對交易、共整合與殘差均值回歸
+
+#### Core separation
+1. Relative-value research is a strategy family, not a generic long-only factor vote.
+2. Correlation is not cointegration. A stationary or mean-reverting residual depends on the hedge-ratio / factor model used to define the spread.
+3. Residual mean reversion must be separated from common market, industry, size, value, beta and liquidity exposure.
+
+#### Positive mechanism / Taiwan evidence
+- Cointegrated pairs can support a market-relative convergence hypothesis when the spread relationship is stable and both legs are executable.
+- Taiwan evidence using tick data from top TAIEX names identifies structural breaks in cointegration relationships as a material pairs-trading failure mode and shows value in earlier break detection.
+- Later Taiwan evidence combines structural-break awareness, market-closing risk and transaction costs, reinforcing that pair selection alone is insufficient.
+
+#### Falsification / failure modes
+- Formation-period cointegration can fail in the trading period; structural breaks are not nuisance noise.
+- Large pair searches create multiple-testing and data-snooping risk.
+- Non-synchronous trading, stale prices, halts, price limits and thin liquidity can create false convergence/divergence.
+- Short legs require PIT borrowability, borrow cost and recall/forced-buy-in semantics; theoretical shorts cannot be assumed executable.
+- Pair overlap can concentrate risk in a small set of names.
+
+#### PIT / replay contract before L3
+- Preserve pair-definition version, formation window, cointegration test/version, hedge-ratio method, residual formula, break-detection rule and entry/exit bands.
+- Store both-leg universe eligibility, bars, continuity, borrowability/cost and cost assumptions at decision time.
+- Pair-level receipt hashes both symbol receipts plus model/version inputs; if either leg is PIT-incomplete, the pair is not L3-eligible.
+- Report pair overlap and single-name concentration.
+
+#### System implication
+- System 1: no generic long-only score from D19-13.
+- System 2: dedicated relative-value strategy family with its own ranking, capacity and execution contract.
+- Formal optimization candidate: NO.
+
+#### Evidence anchors
+- Huang et al. (2020), IEEE BigComp, DOI 10.1109/BigComp48618.2020.00-73.
+- Lu et al. (2021/2022), Journal of Supercomputing, DOI 10.1007/s11227-021-04013-x.
+
+### D19-15 Index／Benchmark Construction／Methodology指數與基準建構方法
+
+#### Core separation
+1. Benchmark choice is part of the asset-pricing model. Alpha, beta, tracking error and residuals are benchmark-relative.
+2. Current constituents cannot be used to reconstruct historical benchmarks without vintage evidence.
+3. Price-return, total-return, free-float weighting, capping, buffer, rebalance and reconstitution rules can change benchmark paths and factor residuals.
+
+#### Falsification / failure modes
+- Using today's constituents historically introduces survivorship/look-ahead bias.
+- Picking a benchmark ex post to maximize alpha is model-selection/data-snooping bias.
+- Announcement time and effective time differ; future-effective membership cannot be leaked into earlier decisions.
+- Missing historical constituent/weight data remains UNKNOWN if the research claim depends on the original benchmark.
+
+#### PIT / replay contract before L3
+- Required: benchmarkId, methodologyVersion, announcementAt, effectiveFrom/effectiveTo, constituentVintage, weightVintage, returnType and sourceHash.
+- Membership/weight resolution must be deterministic and fail closed on overlapping or conflicting vintages.
+- Benchmark-return construction emits a receipt hash used by D19-01 beta/alpha and D19-09 residual momentum.
+
+#### System implication
+- System 1: diagnostic/governance only.
+- System 2: shared benchmark receipt layer; not a direct stock-selection vote.
+- Formal optimization candidate: NO.
+
+### D19-16 Liquidity Premium／Illiquidity Factor流動性溢酬與非流動性因子
+
+#### Core separation
+1. Trading liquidity as executability/friction is distinct from a cross-sectional liquidity premium.
+2. Amihud-style return-to-volume ratios can mix illiquidity, volume/mispricing, overnight-return effects and price-limit structure.
+3. Independent liquidity-premium claims require neutralization against size, value, volatility, turnover, spread, industry, momentum and distress exposures.
+
+#### Positive / counter evidence from Taiwan
+- Recent Taiwan evidence covering TWSE and TPE finds a time-weighted daytime Amihud variant that excludes overnight returns and incorporates recency has stronger pricing association than conventional variants.
+- A 2023 Taiwan decomposition finds the illiquidity-related component itself has no pricing ability while mispricing/trading-volume effects can dominate under Taiwan price-limit structure.
+- Taiwan OTC evidence documents common market/industry liquidity components, so stock liquidity is partly systematic.
+- Interpretation and sign are therefore measurement- and market-structure-sensitive.
+
+#### Falsification / failure modes
+- Proxy choice can change the result; overnight-return contamination is material in Taiwan.
+- Illiquidity portfolios can be dominated by small, distressed or hard-to-trade names.
+- Price limits, halts and zero-trade days alter the meaning of price-impact proxies.
+- Statistical pricing before costs can disappear after spread/impact/capacity costs.
+- If residual liquidity alpha vanishes after controls, classify as redundant.
+
+#### PIT / replay contract before L3
+- Record liquidityProxyId/version, numerator/denominator definitions, overnight handling, return window, volume/value units, zero-volume semantics and price-limit/halt handling.
+- Inputs must be available by decisionTimestamp and linked to bar / market-status hashes.
+- Store residualization model/version and controls.
+- Net-return claims must use the same cost/impact assumptions as the factor test.
+
+#### System implication
+- System 1: liquidity remains eligibility/execution/risk context; no more-illiquid-is-more-bullish score.
+- System 2: residual-liquidity premium remains research-only pending Taiwan PIT replay, neutralization, cost and OOS multi-regime validation.
+- Formal optimization candidate: NO.
+
+#### Evidence anchors
+- Lin, Ko & Lu (2023), Pacific-Basin Finance Journal, DOI 10.1016/j.pacfin.2023.101984.
+- Lee, Lien, Sheu & Yang (2024/2025), Pacific-Basin Finance Journal, DOI 10.1016/j.pacfin.2024.102483.
+- Lee et al. (2006), International Review of Financial Analysis, Common factors in liquidity: Evidence from Taiwan's OTC stock market.
+
+### Factor-layer PIT adapter contract — research specification V0.1
+
+#### Existing reusable System2 infrastructure confirmed
+- system2/runtime/pit_replay_v0_1.mjs fail-closes on differing eligible revisions, gates by availableAt <= decisionTimestamp and emits deterministic replayHash.
+- system2/runtime/historical_universe_registry_v0_1.mjs plus cold-loader membership provides date-effective historical universe membership without exposing future delisting dates.
+- system2/runtime/historical_cold_pack_store_v0_1.mjs restores provenance, observedAt, conservative availableAt and barHash and exposes loaders to bulk backtests.
+- system2/runtime/bulk_backtest_runner_v0_1.mjs partitions the full universe, builds PIT replay windows, supports checkpoint/resume and rolling digests, and blocks unauthorized SELECTED generation.
+- system2/SYSTEM2_FACTOR_ENGINE_CONTRACT.md and system2/src/contracts.ts already define UNKNOWN/KNOWN semantics, source provenance and factor versioning.
+
+#### Gap confirmed
+The six D19 factor-layer receipt types currently exist only as research requirements. No repository implementation named universeReceipt, returnReceipt, factorInputReceipt, neutralizationReceipt, costReceipt or replayReceipt exists. Existing cold replay alone therefore does not satisfy D19 L3.
+
+#### Minimal implementation boundary
+A new research-only adapter should sit above existing cold loaders and PIT replay, not replace them. It should consume historical universe membership, PIT replay windows / primitive bars, and optional factor-specific PIT inputs, then emit immutable factor-layer receipts.
+
+Recommended V0.1 responsibilities:
+1. universeReceipt: run/date/decisionTimestamp/registryId + exact eligible membership hashes, exclusions/UNKNOWN reasons and membership digest.
+2. returnReceipt: symbol/date/priceSpace + input bar hashes, continuity/company-action policy version, raw/adjusted return definition, missing/no-trade semantics and return digest.
+3. factorInputReceipt: factorId/version + each required input reference, observedAt/availableAt/firstKnownAt where applicable, state/UNKNOWN reason and input digest.
+4. neutralizationReceipt: factor set/version, benchmark/industry vintages, estimation window, valid sample count, coefficients/transformation metadata, residual digest and model-sensitive warning.
+5. costReceipt: fee/tax/slippage/impact/turnover/borrowability assumptions with source/version and UNKNOWN semantics.
+6. replayReceipt: hashes of all upstream receipts + code/schema version + output hash; identical inputs must produce identical hash.
+
+#### Fail-closed requirements
+- No fabricated firstKnownAt / availableAt.
+- Missing required factor input => INCOMPLETE/UNKNOWN, not zero.
+- Revision ambiguity, overlapping universe membership or conflicting benchmark vintage => fail closed.
+- Historical short leg without PIT borrowability evidence => executable-short UNKNOWN/blocked, not assumed available.
+- Research adapter may emit research observations/receipts only; it cannot authorize SELECTED, production ranking, Formal Core changes or live trading.
+
+#### First executable slice recommendation
+Start with D19-04 cross-sectional momentum plus D19-07 low-volatility/low-beta because both primarily depend on already-qualified PIT daily bars and universe membership, and can test return/beta/volatility/neutralization receipt mechanics without waiting for first-known accounting ingestion. Accounting-heavy D19-03/05/06 should follow only after first-known financial ingestion exists.
+
+#### L3 decision
+No D19 module is promoted to L3 in Stage 6. Next gate: executable code + deterministic receipt tests + an actual Taiwan PIT replay receipt on at least one frozen historical date/universe.
+
+### Stage 6 maturity decision
+- D19-13 -> L2 / 40%.
+- D19-15 -> L2 / 40%.
+- D19-16 -> L2 / 40%.
+- All 15 active D19 modules are now L2 / 40%; domain simple-average maturity = 40.0%.
+- Formal Core remains unchanged and locked.
+- No formal optimization candidate.
