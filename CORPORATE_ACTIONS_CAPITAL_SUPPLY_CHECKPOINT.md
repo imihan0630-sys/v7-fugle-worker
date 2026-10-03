@@ -396,3 +396,17 @@ Exact next:
 
 Exact next:
 D11-16 official release-to-sale chain; D11-19 merger/spin-off terms + break/reprice/extension lifecycles; D11-18 native failed-tender negative control before L4.
+
+## 2026-10-04 continuation — D11-19 merger-arbitrage / deal-break L3
+
+- New receipt: `research/d11_19_merger_arbitrage_pit_receipt_v0_1.json`.
+- D11-19 advances L2 -> L3 for Taiwan PIT/source feasibility.
+- 2887/2888 provides real consideration repricing/versioning before successful close.
+- 8179/3037 provides original-merger termination followed by a share-exchange structure, proving structure changes must append versions.
+- 5203 provides an actual merger-cancellation disclosure state; not used as a public-target arbitrage payoff witness.
+- 2409 provides a current issuer-official demerger clock, while child security entitlement/tradability remains case-specific.
+- D11-06 remains transaction-state owner; D11-19 owns payoff/hedge/break/cost geometry.
+- No spread returns, no borrow-cost outcome, no Formal change.
+
+Exact next:
+D11-16 is now the only D11-15..19 module below L3. Complete one official issuer-level custody release -> transfer declaration -> realized holdings/untransferred chain with an eligible-but-not-sold negative control. Before D11-19 L4, archive native MOPS versions plus borrow/cost/break-loss evidence.
