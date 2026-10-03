@@ -4857,3 +4857,86 @@ A state that loses value after its components/path controls are included is REPR
 Durable research note: `research/d02_h003_representation_incrementality_control_20261002.md`.
 
 No outcomes inspected; no maturity uplift; PVE cursor remains 227; Formal unchanged.
+
+
+# PVE-228~239 — 2026-10-02 after-market lineage + H20 breakout anti-double-count
+
+## 10/02 did not create a clean generation
+The 00:24 C1/C2 readiness artifact for scanDate 2026-10-02 reports:
+- C1_GENERATION_NOT_FOUND;
+- FORMAL_SCAN_NOT_CONFIRMED;
+- formalScanDate=2026-09-29;
+- formalPipelineComplete=false;
+- institutionReady=true for 2026-10-02;
+- qualityReady=true for 2026-10-02;
+- missingQuality=[];
+- eligibleForResearch=false;
+- mayCountAsZeroPick=false.
+
+Thus the date is missing evidence, not zero opportunity.
+
+## Late fallback chronology
+23:40 run:
+QUARTER_EPS read-only source review returned HTTP 503 three times; recovery was not reached.
+
+23:58 run:
+institution and all named official-quality families became ready for 10/02.
+
+00:01:
+the old recovery script recomputed local “today” after midnight, switched its target to 10/03 and exited outside the same-day recovery window.
+
+This directly explains why the fully-ready fallback failed to recover 10/02.
+It does not independently prove the original Worker 23:35/23:55 failure mechanism.
+
+## Green checks are field-specific evidence
+The subsequent mirror succeeded with scanDate still 9/29.
+The health job succeeded by skipping business action outside the verified window.
+
+Neither success is evidence of a new Formal generation.
+
+## Future repair is not historical repair
+The owner-approved Class-B PR #318 freezes the intended market date across a delayed fallback and preserves one guarded business POST.
+It was activated on 10/03 without backfilling 10/02.
+
+Therefore:
+10/02 stays research-ineligible forever for clean Prospective Shadow use.
+
+## H20 shared breakout receipt
+One breakout episode is one primitive event.
+
+D01-05 = event identity / price structure.
+D02-03 = volume transform on that event.
+D04-07 = volatility-state interaction on that event.
+
+Suggested shared key:
+`H20_BREAKOUT:<marketDate>:<symbol>:<anchorBarStart>`.
+
+Knowledge clock:
+the event/volume state is usable no earlier than the completed anchor bar's barEnd plus a valid sourceFetchedAt/featureKnownAt overlay.
+
+## D02 incremental test
+A price-only baseline must exist first.
+
+Then test:
+A price only;
+B + existing local five-bar volume ratio;
+C + same-slot historical RVOL;
+D + cumulative participation pace on valid common support.
+
+Do not count C/D as another event occurrence.
+
+Primary outcomes, only after clean maturity:
+- field-valid false-break/follow-through;
+- MFE;
+- MAE;
+- opportunity retention;
+- cost/slippage effect.
+
+## Falsification states
+- normal-volume successful breakouts disprove universal “must have volume” necessity;
+- high-volume failed breakouts disprove “high volume is sufficient”;
+- extreme volume can reflect event shock/climax/crowding rather than confirmation;
+- the useful question is residual discrimination beyond price geometry.
+
+Status:
+`PVE_239 / CLEAN_DATE_COUNT_ZERO / H20_ANTI_DOUBLE_COUNT_FROZEN / OUTCOMES_CLOSED / FORMAL_UNCHANGED`.
