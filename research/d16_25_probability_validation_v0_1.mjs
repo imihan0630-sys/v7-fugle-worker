@@ -100,8 +100,14 @@ function normalizeRecord(raw, index) {
     predictionId,
     scanDate,
     strategyId: assertNonEmpty(raw.strategyId, `records[${index}].strategyId`),
+    strategyVersion: assertNonEmpty(raw.strategyVersion, `records[${index}].strategyVersion`),
+    decisionStage: assertNonEmpty(raw.decisionStage, `records[${index}].decisionStage`),
     targetId: assertNonEmpty(raw.targetId, `records[${index}].targetId`),
     horizon: assertNonEmpty(raw.horizon, `records[${index}].horizon`),
+    referenceBasis: assertNonEmpty(raw.referenceBasis, `records[${index}].referenceBasis`),
+    costModelVersion: assertNonEmpty(raw.costModelVersion, `records[${index}].costModelVersion`),
+    outcomeRuleVersion: assertNonEmpty(raw.outcomeRuleVersion, `records[${index}].outcomeRuleVersion`),
+    baseRateCohortVersion: assertNonEmpty(raw.baseRateCohortVersion, `records[${index}].baseRateCohortVersion`),
     modelVersion: assertNonEmpty(raw.modelVersion, `records[${index}].modelVersion`),
     calibrationVersion: assertNonEmpty(raw.calibrationVersion, `records[${index}].calibrationVersion`),
     predictedProbability: assertProbability(
@@ -118,7 +124,19 @@ function normalizeRecord(raw, index) {
 }
 
 function assertHomogeneous(records) {
-  const keys = ["strategyId", "targetId", "horizon", "modelVersion", "calibrationVersion"];
+  const keys = [
+    "strategyId",
+    "strategyVersion",
+    "decisionStage",
+    "targetId",
+    "horizon",
+    "referenceBasis",
+    "costModelVersion",
+    "outcomeRuleVersion",
+    "baseRateCohortVersion",
+    "modelVersion",
+    "calibrationVersion",
+  ];
   for (const key of keys) {
     const values = new Set(records.map((x) => x[key]));
     if (values.size > 1) throw new Error(`MIXED_${key.toUpperCase()}_NOT_ALLOWED`);
@@ -417,8 +435,14 @@ export function evaluateBinaryPredictionsV01({
     evaluationCutoff:cutoff,
     identity:{
       strategyId:eligible[0].strategyId,
+      strategyVersion:eligible[0].strategyVersion,
+      decisionStage:eligible[0].decisionStage,
       targetId:eligible[0].targetId,
       horizon:eligible[0].horizon,
+      referenceBasis:eligible[0].referenceBasis,
+      costModelVersion:eligible[0].costModelVersion,
+      outcomeRuleVersion:eligible[0].outcomeRuleVersion,
+      baseRateCohortVersion:eligible[0].baseRateCohortVersion,
       modelVersion:eligible[0].modelVersion,
       calibrationVersion:eligible[0].calibrationVersion,
     },
