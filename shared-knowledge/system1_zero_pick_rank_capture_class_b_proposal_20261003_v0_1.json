@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "SYSTEM1_ZERO_PICK_RANK_CAPTURE_CLASS_B_PROPOSAL_V0_1",
+  "updatedAt": "2026-10-03T22:20:00+08:00",
+  "status": "DESIGN_ONLY_OWNER_APPROVAL_REQUIRED",
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE",
+  "parentComparator": "SYSTEM1_ZERO_PICK_COUNTERFACTUAL_SELECTION_V0_1",
+  "inputSchema": "SYSTEM1_ZERO_PICK_COUNTERFACTUAL_RANK_INPUT_V0_1",
+  "rankComparatorVersion": "PRIORITY_RR_CONSENSUS_SETUP_SECTOR_RS_7_5_30",
+  "orderedFields": [
+    "postConsensusPriorityScore",
+    "rewardPerRisk",
+    "marketConsensusScore",
+    "setupQuality",
+    "sectorFlow",
+    "relativeStrength"
+  ],
+  "finalTie": "preSortOrdinal",
+  "poolPolicy": {
+    "GENERAL": 3,
+    "THOUSAND": 3,
+    "crossPoolTransfer": false,
+    "totalMax": 6
+  },
+  "sameScanSources": {
+    "rewardPerRisk": "c1DerivedState.rewardPerRisk",
+    "setupQuality": "c1DerivedState.setupQuality",
+    "sectorFlow": "sectorStats[industry].score",
+    "relativeStrength": "ret20 - marketReturn20",
+    "marketConsensus": "V7_MARKET_CONSENSUS exact scan date",
+    "institutionalScore": "c1DerivedState.institutionalScore",
+    "fundamentalScore": "c1DerivedState.fundamentalScore",
+    "preSortOrdinal": "same-pool feature insertion ordinal"
+  },
+  "requiredFields": [
+    "symbol",
+    "pool",
+    "captureGeneration",
+    "decisionAt",
+    "rankingTupleKnownAt",
+    "rankComparatorVersion",
+    "priorityScoreDefinitionVersion",
+    "counterfactualFormulaVersion",
+    "rankingTupleProvenance",
+    "rankingTupleFingerprint",
+    "preSortOrdinal",
+    "postConsensusPriorityScore",
+    "rewardPerRisk",
+    "marketConsensusScore",
+    "setupQuality",
+    "sectorFlow",
+    "relativeStrength"
+  ],
+  "semantics": {
+    "actualFormalRank": false,
+    "counterfactualResearchInput": true,
+    "imputationAllowed": false,
+    "laterDataRepairAllowed": false,
+    "historicalBackfillAsContemporaneousAllowed": false,
+    "newProviderCalls": 0
+  },
+  "firewall": [
+    "SCORE_CANDIDATE_UNCHANGED",
+    "APPLY_MARKET_CONSENSUS_UNCHANGED",
+    "FORMAL_RANK_FN_UNCHANGED",
+    "SELECTED_SYMBOLS_UNCHANGED",
+    "CAPITAL_UNCHANGED",
+    "SIGNAL_UNCHANGED",
+    "PUSH_UNCHANGED",
+    "ORDER_UNCHANGED",
+    "SYSTEM2_UNTOUCHED"
+  ],
+  "implementationClass": {
+    "proposal": "CLASS_A",
+    "pureConstructorTests": "CLASS_A",
+    "workerCaptureOrD1": "CLASS_B_OWNER_APPROVAL_REQUIRED",
+    "formalBehaviorChange": "CLASS_C_SEPARATE_OWNER_APPROVAL"
+  }
+}
