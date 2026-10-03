@@ -364,3 +364,39 @@ Mechanism/counterevidence:
 - Mitchell & Pulvino (2001), risk arbitrage: https://doi.org/10.1111/0022-1082.00385
 - Bauer & Swanson, reassessing monetary-policy surprises: https://www.nber.org/papers/w29939
 - Jarociński & Karadi (2020), monetary policy vs information shocks: https://doi.org/10.1257/mac.20180090
+
+## 2026-10-03 continuation — D11-15 Taiwan IPO PIT receipt + D17-14 policy-clock falsification
+
+### D11-15 — bounded Taiwan IPO lifecycle evidence
+
+New receipt: `research/d11_15_ipo_pit_receipt_v0_1.json`.
+
+Official TWSE sources now provide a bounded, replayable date-level lifecycle across multiple independent IPOs:
+- 7855 和運租車: application 2026-04-14 -> review 2026-05-22 -> TWSE board approval 2026-06-16 -> contract filing 2026-06-24 -> auction 2026-07-27..29 / open 2026-07-31 -> actual underwriting price 42 -> first tradable session 2026-08-11.
+- 2237 華德動能: application 2025-12-23 -> review 2026-02-03 -> board approval 2026-02-24 -> contract filing 2026-03-09 -> auction 2026-07-24..28 / open 2026-07-30 -> public-subscription stated price 28.6 versus actual underwriting price 26.66 -> first tradable session 2026-08-10.
+- 6921 嘉雨思 is the required negative-control path: first applied 2025-04-25, official TWSE withdrawal notice dated 2025-06-05, then re-applied 2025-08-27 and ultimately listed 2025-12-23 at underwriting price 35.
+
+This directly falsifies success-only IPO sampling and proves withdrawal is not a terminal company identity: the same issuer can later re-enter the listing pipeline.
+
+TWSE auction/public-subscription archives expose bid/subscription windows, auction quantities, minimum bid, winning-price distribution, actual underwriting price, allotment/listing date, application count and cancellation fields. Current underwriting rules separately prove that bookbuilding quantity and expected underwriting-price range are agreed/filed before bookbuilding. Therefore price-stage versioning is operationally observable; however the exact historical intraday publication time of archived rows remains UNKNOWN.
+
+PIT rule:
+- source date without authenticated native time = date-level evidence only;
+- historical intraday replay may not backdate an event to market open;
+- a conservative later eligibility clock or UNKNOWN must be used;
+- future prospective captures preserve capturedAt and immutable versions.
+
+Maturity decision: **D11-15 L2 -> L3** for Taiwan PIT/source feasibility. This is not an IPO return effect and not an underpricing factor.
+
+### D17-14 — policy event-clock sublane validated, surprise lane still blocked
+
+New receipt: `research/d17_14_policy_clock_receipt_v0_1.json`.
+
+Three independent FSC policy histories demonstrate that policy clocks are not reducible to one date:
+- Financial-holding consolidated capital adequacy: draft 2026-05-29, final revision 2026-08-04, but Article 9 effective date = 2026-01-01. Legal retroactivity therefore cannot backdate first-known.
+- Anti-fraud financial/VASP rule: draft 2026-05-28, final revision 2026-07-20, and Article 73 makes publication the effective date.
+- Public-bank financial-report standards: draft 2026-06-23, final 2026-08-18, with mixed provision-level effective dates including 2026-Q2, 2028-01-01 and publication-date treatment.
+
+Thus the policy-clock source lane is Taiwan-PIT-feasible at date level, but **D17-14 remains L2** because the module also owns Surprise（預期差）and no compatible ex-ante expectation archive has yet been validated. Market reaction cannot substitute for a missing expectation.
+
+No returns or policy-direction outcomes were opened. Formal Core unchanged.
