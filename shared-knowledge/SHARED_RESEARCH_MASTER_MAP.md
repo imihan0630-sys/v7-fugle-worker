@@ -1048,3 +1048,19 @@ Current Room 08 canonical maturity after this update:
 - D11 = 51.6%
 - D17 = 41.4%
 - Room 08 module-weighted = 47.3%
+
+### D01 shared handoff — DL-022~027 recurrent Pattern path governance (2026-10-03)
+
+Reusable rules:
+- complete first-event order is derived from certified event clocks/source groups; do not count clocks + order + lifecycle as independent confirmations;
+- repeated cycles add longitudinal path memory beyond first events but remain the same PRICE_OHLC source family;
+- repeated event count does not increase independent N and must carry observable/constrained exposure;
+- failure is nested severity inside return groups; coarse RETURN/RECLAIM alternation is mostly deterministic;
+- repeated-cycle features are time-varying: only later immutable parents may consume history already known by their cutoff;
+- NOT_YET_AT_REPEAT_RISK is not zero events;
+- repeated-cycle frequency must be controlled for volatility, zone width, tick/price resolution, liquidity, constrained sessions, D02 acceptance and regime;
+- true structural zones should be challenged by parent-specific non-anchor horizontal mechanism controls built only from pre-confirmation causal data;
+- pseudo-zones are mechanism negative controls, not guaranteed-null placebos;
+- no post-outcome control selection/pruning.
+
+Status: DL022_027_SPEC_FROZEN / ALL_NEW_TESTS_EXECUTION_PENDING / OUTCOME_CLOSED / RUNTIME_NO_GO / FORMAL_CORE_LOCKED.

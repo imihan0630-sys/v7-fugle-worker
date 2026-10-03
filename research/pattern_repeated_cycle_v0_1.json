@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "pattern-repeated-cycle-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "repeatRiskStart": "parentFirstReclaimAt",
+  "states": [
+    "REPEATED_CYCLE_NOT_YET_AT_RISK",
+    "READY_FOR_RETURN",
+    "OPEN_RETURN"
+  ],
+  "primitives": [
+    "recurrentReturnGroupCount",
+    "recurrentFailureGroupCount",
+    "recurrentReclaimGroupCount",
+    "completedRepeatedCycleCount",
+    "openRepeatedCycle",
+    "observableEligibleSessionsAtRisk",
+    "constrainedEligibleSessionsAtRisk",
+    "repeatGapEligibleSessions",
+    "lastRepeatTransitionAgeEligibleSessions"
+  ],
+  "nestedRules": [
+    "PARENT_FAILURE_IS_SUBTYPE_OF_RETURN_GROUP",
+    "SAME_SOURCE_REENTRY_FAILURE_COUNTS_ONCE",
+    "RAW_EVENT_COUNT_DOES_NOT_INCREASE_INDEPENDENT_N",
+    "CYCLE_RATE_IS_DERIVED_FROM_COUNT_AND_EXPOSURE",
+    "OPEN_CYCLE_IS_RIGHT_CENSORED_AT_ASOF"
+  ],
+  "hierarchy": [
+    "R0_FIRST_EVENT_BUNDLE",
+    "R1_COUNTS_EXPOSURE",
+    "R2_GAP_TIMES",
+    "R3_FULL_RECURRENT_SEQUENCE",
+    "R4_DERIVED_CATEGORIES"
+  ],
+  "outcomeJoin": "CLOSED",
+  "predictiveIncrementality": "UNKNOWN",
+  "formalOptimizationCandidate": "NONE"
+}
