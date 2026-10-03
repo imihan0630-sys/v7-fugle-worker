@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "pattern-detector-frontier-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "detector": {
+    "microK": 1,
+    "baseK": 2,
+    "baseLookbackEligibleSessions": 120,
+    "majorK": 3,
+    "majorLookbackEligibleSessions": 260,
+    "thresholdSource": "LAGGED_ATR_FROZEN_AT_LEG_START"
+  },
+  "frontierFamilies": {
+    "F1_BASE_CONFIRMED_MAJOR_REJECTED": {
+      "status": "PRIMARY_FEASIBLE_DESIGN",
+      "required": [
+        "baseConfirmed",
+        "majorEvaluable",
+        "majorConfirmed=false",
+        "selectionMarginATR",
+        "sameCutoff"
+      ]
+    },
+    "F2_MAJOR_SINGLE_GATE_REJECT": {
+      "status": "INSTRUMENTATION_REQUIRED",
+      "required": [
+        "sameMajorProposalPath",
+        "failedGateCount=1",
+        "failedGate",
+        "selectionMarginATR",
+        "sameCutoff"
+      ]
+    }
+  },
+  "selectionMargin": "observedDirectionalChangeATR - 3",
+  "noNearThresholdCutoff": true,
+  "rddCausalClaim": false,
+  "rules": [
+    "NO_OUTCOME_BASED_FRONTIER_SELECTION",
+    "NO_FUTURE_BAR_MARGIN_RECONSTRUCTION",
+    "HISTORICAL_REJECT_STATUS_NOT_REWRITTEN_BY_LATER_CONFIRMATION",
+    "BASE_AND_MAJOR_ARE_NOT_INDEPENDENT_VOTES",
+    "EMPTY_FRONTIER_REMAINS_NOT_EVALUABLE"
+  ],
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
