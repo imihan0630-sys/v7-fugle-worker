@@ -1719,3 +1719,114 @@ D03 remains **55.0%**.
 `FORMAL_OPTIMIZATION_CANDIDATE = NONE`
 
 Formal Core remains LOCKED.
+
+
+## TI-534 through TI-542 — D03-05 observable pullback/reversal PIT reconciliation (2026-10-04)
+
+Durable artifacts:
+- `research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md`
+- `research/d03_pullback_reversal_observable_contract_v0_2.json`
+- `research/test_d03_pullback_reversal_observable_pit_v0_2.mjs`
+
+### TI-534 — H07 ownership correction
+
+The owner-approved H07 semantic split establishes that D03-05 owns the **observable price phenomenon**:
+- pullback geometry;
+- short-horizon reversal;
+- failed reversal;
+- observable price/volume/volatility state;
+- PIT-safe replay.
+
+Liquidity/event/market/behavioral cause labels are optional owner-lane moderators. Missing cause evidence leaves `originState=UNKNOWN`; it no longer blocks recognition of a causally observable pullback/reversal episode.
+
+This supersedes the earlier overly strict interpretation that promotion-grade causal-origin attribution was required before the observable D03-05 phenomenon itself could reach L3.
+
+### TI-535 — frozen parent geometry
+
+Research reuses current A/PULLBACK observable geometry without changing Formal behavior:
+- trend valid;
+- 2%-15% pullback from recent high;
+- support distance <=4%;
+- volume contraction / no heavy sell-volume condition;
+- structure intact;
+- non-late-stage.
+
+Parent evidence preserves scan/plan/symbol/source/formula/support/recent-high/pullback/support-distance/checks/known-at lineage.
+
+### TI-536/TI-538 — causal 15m state machine and signal clock
+
+Research-only states:
+`PULLBACK_PENDING -> ZONE_ENTERED_HELD -> REVERSAL_SEED_VISIBLE -> REVERSAL_CONFIRMED`,
+with explicit `FAILED_ZONE_BREAK`, `FAILED_DOWN_VOLUME`, `DATA_BLOCKED` and `UNKNOWN_PROVENANCE`.
+
+A seed bar may enter/hold the zone with local volume ratio <=0.9 and reversal morphology. Confirmation requires a later completed 15m bar with higher low and bullish turn-up.
+
+The low/seed bar is a geometric anchor only. Legal signal time is the later confirmation-bar known time:
+`reversalConfirmedAt=max(confirmBarEnd, confirmFeatureKnownAt, required prior/parent availability)`.
+
+Pre-confirmation recovery is confirmation-lag cost, not post-signal alpha.
+
+### TI-537 — exact-slot continuity guard
+
+The production local previous-five volume ratio can remain numerically present if an expected 15m slot is missing because it uses the prior five available completed bars.
+
+D03-05 research is intentionally stricter:
+- all expected ordinary-session slots through confirmation must be present;
+- missing slot => `DATA_BLOCKED/MISSING_EXPECTED_15M_SLOT`;
+- no interpolation/zero-fill/older-bar substitution.
+
+This prevents a valid number from masquerading as a valid clock-consistent feature.
+
+### TI-539/TI-540 — failure and constrained states are first-class
+
+Failed reversal is preserved, not discarded.
+
+Corporate-action/session/price-limit constraints remain explicit:
+- unresolved episode comparability => DATA_BLOCKED;
+- observable but constrained market state => VALID_BUT_CONSTRAINED;
+- no pseudo-bars for no-trade/suspension.
+
+Historical episode chronology is append-only.
+
+### TI-541 — origin is optional moderator
+
+Optional owner receipts may describe:
+- market/sector context;
+- event information;
+- microstructure pressure;
+- behavioral context.
+
+No owner receipt => UNKNOWN_ORIGIN.
+Candle shape cannot certify liquidity-pressure origin.
+Multiple valid owners remain MULTIPLE_ORIGINS.
+Origin never creates direct trading authority.
+
+### TI-542 — maturity
+
+Existing repository infrastructure already provides:
+- replayable A/PULLBACK daily geometry;
+- completed Fugle 15m source semantics;
+- Price-Volume Shadow immutable research snapshots/outcomes;
+- deterministic A lifecycle test `A_PULLBACK_TEST -> A_INITIAL_ACCEPTANCE -> A_REACCELERATION`;
+- same-session horizon and missing/late-session guards.
+
+The new D03 v0.2 contract adds exact-slot continuity and non-backdated confirmation clocks.
+
+Therefore D03-05 advances:
+**L2/40 -> L3/60 TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED** for the observable phenomenon only.
+
+Causal-origin attribution remains PARTIAL/UNKNOWN-allowed and no alpha/outcome/threshold/Formal claim is opened.
+
+With 12 active D03 modules:
+**D03 55.0% -> 56.7%**.
+
+Current status:
+`D03_05 = L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED`
+`OBSERVABLE_PULLBACK_REVERSAL_EPISODE = PIT_FEASIBLE`
+`ORIGIN_ATTRIBUTION = OPTIONAL_MODERATOR / PARTIAL / UNKNOWN_ALLOWED`
+`M15_MISSING_SLOT = DATA_BLOCKED`
+`REVERSAL_SIGNAL_CLOCK = CONFIRM_BAR_KNOWN_AT_NOT_PULLBACK_LOW`
+`D03_MATURITY = 56.7_PERCENT`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Formal Core remains LOCKED.
