@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 09:22 Asia/Taipei
+Updated: 2026-10-03 10:05 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -1299,4 +1299,30 @@ D15-15 advances to L3/60 for Taiwan PIT source/data feasibility only.
 - D15-19 等 D16-25 與 position sizing（部位配置）證據成熟後再進 Dependency Audit（依賴審查）。
 
 00｜研究總控室只負責治理與驗收，不得把上述分類冒充專科實證完成。
+
+## 第二輪高重疊模組掃描路由 — 2026-10-03
+
+所有涉及下列模組的專責研究室，續接前應讀：
+`shared-knowledge/CURRICULUM_SECOND_ROUND_OVERLAP_AUDIT_20261003_V0_1.md`
+
+優先驗證：
+- 10｜投組風控與交易執行研究室：D15-21 vs D15-22，強合併候選；先驗證 D15-22 是否存在無法由 D15-21 子輸出承接的獨立決策契約。
+- 06｜基本面與估值研究室 + 14｜公司治理與內部人研究室：D07-17 vs D21-12，必須先完成「展望內容品質」與「治理可信度」的語意／可觀測資料分離；若仍使用相同證據與決策用途，再提合併。
+- 11｜統計驗證與策略市場狀態研究室：D16-11 vs D16-21；D16-11 持有通用 provenance（來源／世代證明），D16-21 聚焦替代資料特有的選樣、覆蓋、洩漏與模型漂移，不重複擁有通用 provenance。
+
+其餘高重疊組維持明確邊界，不因名稱相似而刪除：
+- D05-08 vs D14-08；D05-06 vs D14-14。
+- D11-08 vs D17-02。
+- D04-05 vs D18-11；D09-06 vs D18-05。
+- D17-08 vs D20-10。
+- D07-23 vs D16-23。
+- D13-18 vs D18-15。
+- D08-19 vs D17-06。
+- D10-13 vs D13-17。
+- D06-06 vs D19-11。
+- D01-08 vs D04-03。
+- D14-11 vs D15-11。
+- D05-05 vs D05-12。
+
+本輪只完成 governance scan（治理掃描）與 routing（路由），不退休模組、不改成熟度、不修改 Formal Core（正式核心）。任何未來合併仍需專科驗證、Dependency Audit（依賴審查）與 owner（持有人）明確批准。
 
