@@ -1142,3 +1142,18 @@ Current state:
 
 00｜研究總控室 next action:
 intake the first Coverage-A specialist return, then perform Dependency Audit, overlap recheck, anti-orphan validation and owner-approval gating before any atomic curriculum update.
+
+
+## Curriculum Coverage-B specialist execution — 2026-10-03
+
+Canonical packet:
+`shared-knowledge/CURRICULUM_COVERAGE_B_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
+
+Current state:
+- COV-03 → 05｜法人與籌碼研究室: PENDING_SPECIALIST_RETURN.
+- COV-05 → 06｜基本面與估值研究室: PENDING_SPECIALIST_RETURN.
+- COV-08 → 11｜統計驗證與策略市場狀態研究室: PENDING_SPECIALIST_RETURN.
+- COV-09 → 12｜資產定價與因子研究室: PENDING_SPECIALIST_RETURN.
+- No curriculum structural change is authorized by packet creation.
+- Canonical curriculum remains 22 domains / 354 active modules at packet creation.
+- Formal Core remains LOCKED.
