@@ -1460,3 +1460,34 @@ FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 Formal Core: LOCKED.
 
 Exact next: do not force D18 L3. Highest-value next evidence path is an isolated PIT-safe market-level Regime builder/replay for D18-01/02/03, plus prospective both-venue/U2B completion for D18-04 and immutable B2->D18 context receipts for D18-05.
+
+
+## 2026-10-04 D18 executable PIT context builders — D18-02/03/05 L3
+
+Canonical evidence: `research/D18_02_03_05_PIT_BUILDER_L3_ACCEPTANCE_20261004_V0_1.md`.
+
+Executable research-only builders:
+- `system2/runtime/d18_taiex_context_v0_1.mjs` for D18-02 trend/range context + D18-03 volatility direction;
+- `system2/runtime/d18_sector_rotation_context_v0_1.mjs` for D18-05 adjacent-session industry-rank transition context.
+
+Acceptance evidence:
+- exact official-session matching;
+- A2/B2 decision-clock guards;
+- deterministic receipt hashes/replay;
+- history mutation changes hashes;
+- post-decision observations fail closed UNKNOWN;
+- non-adjacent/gapped sessions fail closed;
+- no thresholds/policy/selection impact;
+- System2 Research CI 37163232569 SUCCESS;
+- V8 Regression 37163232532 SUCCESS.
+
+Maturity:
+- D18-02 -> L3/60;
+- D18-03 -> L3/60;
+- D18-05 -> L3/60;
+- D18-01 remains L2 because the full multi-dimensional observable regime vector is not executable yet.
+
+D18 domain maturity: **44%**.
+Global tracker maturity: **41.8%**.
+
+No L4 or policy-alpha claim. FORMAL_OPTIMIZATION_CANDIDATE: NONE. Formal Core LOCKED.
