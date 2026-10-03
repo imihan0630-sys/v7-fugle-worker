@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 05:02 Asia/Taipei
+Updated: 2026-10-03 09:22 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -587,3 +587,23 @@ System-use rule:
 - System 1 / System 2 must not double-count retN/ROC/Momentum-index/log-return aliases;
 - System 2 must not reconstruct EMA64 from an arbitrary short rolling window for promotion-grade evidence without parity proof;
 - Formal Core remains LOCKED; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+## Owner-approved 15-item curriculum governance — 2026-10-03
+
+Canonical detail:
+`shared-knowledge/CURRICULUM_15_ITEM_DEPENDENCY_AUDIT_20261003_V0_1.md`
+
+Owner-approved outcome after positive/negative review and Dependency Audit:
+- Curriculum keep: D05-13, D19-13.
+- Keep with role limitation to context/capability: D06-15, D14-16, D14-19, D21-02.
+- Observation / RESEARCH_ONLY: D02-07, D02-08, D12-08, D19-08, D19-12, D19-16, D20-03, D20-05.
+- Validation-then-strong-merge candidate: D15-19.
+- Immediate retirement: NONE.
+
+Cross-dependency freezes:
+- D14-19 / D06-18 / D20-13 remain separate layers: borrow economics -> limits to arbitrage -> actual short execution.
+- D12-08 remains separate from D12-09 and D12-13 until signed dealer-position identifiability and prospective evidence are established.
+- D15-19 is not merged until D16-25 probability calibration / uncertainty work and position-sizing comparisons are sufficiently mature.
+
+No module count or maturity change. Curriculum remains 22 domains / 354 modules. Formal Core remains LOCKED. No new Hard Gate is authorized.
+
