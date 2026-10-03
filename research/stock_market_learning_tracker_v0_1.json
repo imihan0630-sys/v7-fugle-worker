@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T14:05:00+08:00",
+  "updatedAt": "2026-10-03T14:11:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 34
+    "maturityWeightedPct": 34.7
   },
   "domains": [
     {
@@ -3376,7 +3376,7 @@
         "CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md",
         "CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md"
       ],
-      "maturityPct": 3.6,
+      "maturityPct": 7.3,
       "modules": [
         {
           "id": "D21-01",
@@ -3385,18 +3385,18 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Ownership／Control Structure所有權與控制權結構」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_FALSIFICATION_FROZEN / PIT_REPLAY_PENDING",
-          "next": "建立至少兩個上市公司年度樣本的歷史 MOPS PIT replay：鎖定實際 known_at、文件 vintage、前十大股東／法人穿透鏈；重建現金流權與 weakest-link 控制權，保留 UNKNOWN，並比較 10%／20% 控制門檻及直接持股 baseline。通過後才評估 L3。"
+          "status": "PIT_REPLAY_PARTIAL / EXACT_MOPS_KNOWN_AT_BLOCKED / THRESHOLD_FALSIFICATION_FROZEN",
+          "next": "保留原始 MOPS 年報首次公開時間戳為待補 dependency；不得用第三方 mirror 日期、刊印日或法定最晚申報日冒充 known_at。取得原始 receipt 後再完成 D21-01 L3 判定。"
         },
         {
           "id": "D21-02",
           "name": "Board／Independent Directors董事會與獨立董事",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Board／Independent Directors董事會與獨立董事」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / KEEP_ROLE_LIMITED / CONTEXT_ONLY / CONFIDENCE / GOVERNANCE_TAIL_RISK. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
-          "levelMeaning": "未研究",
-          "status": "OWNER_APPROVED / KEEP_ROLE_LIMITED / CONTEXT_ONLY / CONFIDENCE / GOVERNANCE_TAIL_RISK",
-          "next": "由 14｜公司治理與內部人研究室研究董事會／獨董對監督品質、控制權與尾端治理風險的增量價值；維持 PIT／vintage，與 D21-01 控制權、D21-03 內部人、D21-07 管理誘因去重，不作短線 Hard Gate。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_FALSIFICATION_FROZEN / PIT_BOARD_REPLAY_PENDING / CONTEXT_ONLY / CONFIDENCE / GOVERNANCE_TAIL_RISK",
+          "next": "建立兩個上市公司歷史董事會 PIT replay：鎖定選任／就任 known_at、任期、控制股東關聯、委員會席次、專長、忙碌度與董總角色；比較強制與自願設置情境。可靠重播前不得升 L3。"
         },
         {
           "id": "D21-03",
@@ -3489,10 +3489,10 @@
           "next": "從理論、定義、機制與反證開始，建立 D21-13 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
         }
       ],
-      "status": "D21_01_L2_MECHANISM_FALSIFICATION_FROZEN / PIT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "建立至少兩個上市公司年度樣本的歷史 MOPS PIT replay：鎖定實際 known_at、文件 vintage、前十大股東／法人穿透鏈；重建現金流權與 weakest-link 控制權，保留 UNKNOWN，並比較 10%／20% 控制門檻及直接持股 baseline。通過後才評估 L3。",
-      "lastResearchUpdate": "2026-10-02T23:21:00+08:00",
-      "researchNote": "D21-01 completed theory/mechanism/falsification and Taiwan source-clock design. Ownership/control is decomposed into direct ownership, ultimate cash-flow rights, classic weakest-link control rights and separate board/management control. Current official source availability is established, but historical first-known/replay is not yet validated, so L3 remains closed. Formal Core unchanged."
+      "status": "D21_01_L2_PARTIAL_PIT_REPLAY / D21_02_L2_MECHANISM_FALSIFICATION_FROZEN / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "建立兩個上市公司歷史董事會 PIT replay：鎖定選任／就任 known_at、任期、控制股東關聯、委員會席次、專長、忙碌度與董總角色；比較強制與自願設置情境。可靠重播前不得升 L3。 D21-01 原始 MOPS known_at 缺口維持待補，不因此空轉。",
+      "lastResearchUpdate": "2026-10-03T14:11:00+08:00",
+      "researchNote": "D21-01 two-company replay prototype froze both naive-threshold failure modes and a source-provenance failure: ADR/custody lines can create false controller positives, while related group networks can evade single-holder thresholds; exact original MOPS first-known timestamps remain unresolved so L3 stays closed. D21-02 advances to L2 after conflicting Taiwan evidence rejects a monotonic independent-director-count rule; future testing focuses on controller affiliation, appointment context, busyness, expertise and committee/leadership interactions. Formal Core unchanged."
     },
     {
       "id": "D22",
