@@ -2296,3 +2296,100 @@ Separately, once the daily-volume corporate-action/unit continuity blocker is ac
 
 Gate 7 remains CLOSED.
 Formal Core remains LOCKED.
+
+## Pre-PVE-240 continuation — Daily Volume Continuity Contract (2026-10-03)
+
+Status: OUTCOME_BLIND / PVE_CURSOR_REMAINS_239 / FORMAL_UNCHANGED.
+
+Durable artifacts:
+- `research/d02_daily_volume_continuity_contract_20261003_v0_1.md`
+- `research/d02_daily_volume_continuity_contract_v0_1.json`
+
+### New code-level finding: daily 20-row count is not a continuity proof
+
+Current `pvBuildDailyFeature(history, marketDate)` filters with `positiveNumber(volumeShares)`, then takes the last 20 surviving earlier rows.
+
+Therefore:
+- factual zero-volume eligible session is collapsed into row absence;
+- missing expected session / verified suspension / zero-volume session are not distinguished;
+- an older row can silently enter the denominator merely to restore 20 rows;
+- no symbol-session calendar or corporate-action continuity receipt is bound to the daily denominator.
+
+Freeze:
+`20 SURVIVING ROWS != 20 VERIFIED COMPARABLE SYMBOL SESSIONS`.
+
+### Official source-unit clarification
+
+Fresh Fugle documentation confirms:
+- regular-stock historical D/W/M volume = SHARES;
+- regular-stock intraday volume = LOTS;
+- intraday odd-lot is a distinct API type.
+
+Therefore:
+- the D1 `volumeShares` mapping is dimensionally consistent for the daily lane;
+- daily and intraday absolute volume are not interchangeable;
+- within-lane dimensionless RVOL remains the intended comparison form;
+- exact daily odd-lot inclusion remains unproven by the current documented contract and may not be silently assumed when reconciling daily vs intraday activity.
+
+### Corporate-action split replaces a universal-reset interpretation
+
+Reuse Corporate Actions canonical semantics:
+
+1. `UNIT_SCALE`
+   - hard magnitude continuity break unless a verified PIT share-unit bridge exists;
+   - V0.1 conservative fallback = reset-only lane;
+   - require >=20 verified post-reset comparable symbol sessions before clean daily magnitude/RVOL under reset-only semantics.
+
+2. `SUPPLY_CHANGE`
+   - raw executed-share volume remains factual and dimensionally valid;
+   - no mechanical rescaling of RAW_SHARE_VOLUME;
+   - but mixed pre/post supply windows do not prove stable participation/turnover intensity.
+
+Freeze two interpretation modes:
+- `RAW_ACTIVITY`: raw share ratio may be retained with explicit supply-break control/stratum.
+- `COMPARABLE_PARTICIPATION`: requires PIT denominator normalization OR a fully post-break 20-session baseline.
+
+Thus a single generic `corporateActionResetAt` is semantically insufficient: UNIT_SCALE and SUPPLY_CHANGE require different treatment.
+
+### Expected-session rule
+
+Reuse:
+`EXPECTED_SYMBOL_SESSIONS = OFFICIAL_EXCHANGE_SESSIONS - VERIFIED_SYMBOL_SUSPENSION_SESSIONS`.
+
+Required daily states:
+- VALID_SESSION_POSITIVE_VOLUME;
+- VALID_SESSION_ZERO_VOLUME;
+- VERIFIED_SUSPENSION_OR_NON_SYMBOL_SESSION;
+- EXPECTED_SESSION_MISSING_SOURCE;
+- SOURCE_SEMANTICS_UNKNOWN.
+
+UNKNOWN never becomes 0/false.
+Provider bar presence is not symbol-session proof.
+Missing expected session cannot be replaced by an older observation.
+
+### D02-07 / D02-09 implication
+
+The continuity contract is now defined, but current runtime/recorder compliance is not proven.
+
+Therefore:
+- D02-07 remains L2 / 40%;
+- D02-09 remains L2 / 40%;
+- D02 aggregate remains 48.3%;
+- signedVolumeBalance20 and pivotSignedVolumeBalance remain DATA_SEMANTICS_SENSITIVE;
+- no outcomes inspected;
+- no FORMAL_OPTIMIZATION_CANDIDATE.
+
+Formal evidence cursor remains PVE-239.
+
+## Exact continuation after the Daily Volume Continuity Contract
+
+Formal continuation remains PVE-240 on the first genuine completed market session after the approved cross-midnight repair, Gate 0->6 first and Gate 7 CLOSED.
+
+Before that market evidence arrives, safe Pre-PVE-240 continuation is an outcome-blind replay/validation receipt using already-frozen witnesses:
+- UNIT_SCALE mechanics positive witness;
+- UNIT_SCALE large-distortion/no-Boolean-flip counterexample;
+- SUPPLY_CHANGE raw-valid / participation-confounded witness;
+- verified suspension pseudo-bar witness;
+- zero-vs-missing expected-session semantics.
+
+No historical replay may be relabeled as prospective Shadow evidence.
