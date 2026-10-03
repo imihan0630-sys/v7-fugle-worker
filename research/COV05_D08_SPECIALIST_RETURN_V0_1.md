@@ -215,3 +215,6 @@ Unresolved blocker（未解阻塞）：EV/Sales 完整 PIT 仍受 debt/cash/NCI/
 - Taiwan official（台灣官方）：MOPS 月營業收入、IFRS 財報／XBRL 與公司資訊。
 - Valuation literature（估值文獻）：sales multiples 的合理水準依 profit margin（利潤率）、growth（成長）、risk/cost of capital（風險／資金成本）而變；P/S 在 loss firms（虧損公司）可提供仍可計算的尺度，但 leverage（槓桿）與 business-model（商業模式）會改變解讀。
 - Taiwan research（台灣研究）：台股曾有 P/S／sales-to-price 與報酬的實證研究，但歷史分組結果只屬 mechanism/context evidence（機制／情境證據），不能直接匯入本系統門檻。
+
+
+<!-- intake-preflight-trigger: 2026-10-04 room06; no semantic change -->
