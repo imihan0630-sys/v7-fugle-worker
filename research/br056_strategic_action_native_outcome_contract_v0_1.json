@@ -1,0 +1,108 @@
+{
+  "version": "0.1",
+  "id": "BR-056",
+  "capturedAt": "2026-10-03T23:20:00+08:00",
+  "module": "D09-14 Market Share／Entry Barrier／Substitution／Competitive Strategy市占、進入障礙、替代與競爭策略",
+  "mode": "STRATEGIC_ACTION_NATIVE_OUTCOME_SEMANTICS / NO_STOCK_OUTCOMES",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "purpose": "Freeze native strategic-action outcome states and prevent announcement/implementation milestones from being mislabeled as investment success.",
+  "outcomeContract": {
+    "unit": "issuer × strategic action × lifecycle stage × native outcome clock",
+    "terminalOrInterimStates": [
+      "ANNOUNCED",
+      "APPROVED_OR_CONTRACTED",
+      "FUNDED",
+      "IMPLEMENTATION_STARTED",
+      "OPERATIONAL_MILESTONE_ACHIEVED",
+      "COMMERCIALIZED",
+      "PARTIAL_SUCCESS",
+      "DELAYED",
+      "SUSPENDED",
+      "CANCELLED",
+      "COUNTERPARTY_FAILURE",
+      "RESTRUCTURED",
+      "OUTCOME_UNKNOWN"
+    ],
+    "successRule": "Success is action-specific and must be defined ex ante in native operational/commercial terms; a press release, award, capex plan or plant opening alone is not success.",
+    "stockRule": "No stock-return, valuation or trading interpretation is part of this contract."
+  },
+  "controls": [
+    {
+      "issuer": "China Steel Corporation",
+      "symbol": "2002",
+      "action": "AI sinter-machine speed-control deployment",
+      "state": "OPERATIONAL_MILESTONE_ACHIEVED",
+      "nativeOutcome": [
+        "system deployed to No.2 sinter machine",
+        "company reports approximately 4% improvement in sinter production yield",
+        "company reports approximately 22,000 tonnes annual carbon reduction"
+      ],
+      "source": "CSC official news",
+      "interpretationLimit": "Operational milestone success does not establish company-wide margin, market-share or stock-return success."
+    },
+    {
+      "issuer": "Tung Ho Steel Enterprise",
+      "symbol": "2006",
+      "action": "Smart Scrap Inspection System R&D project",
+      "state": "IMPLEMENTATION_STARTED / OUTCOME_UNKNOWN",
+      "nativeOutcome": [
+        "project scheduled 2025-05-01 through 2027-10-31",
+        "2025 planned R&D investment NT$13.82m",
+        "commercial cost/yield/margin outcome not yet established"
+      ],
+      "source": "Tung Ho Steel 2025 sustainability/climate disclosure",
+      "interpretationLimit": "Active project is neither success nor failure before native completion/outcome evidence."
+    },
+    {
+      "issuer": "Hon Hai Precision Industry",
+      "symbol": "2317",
+      "action": "Lordstown partnership/investment pathway",
+      "state": "PARTIAL_SUCCESS_THEN_SUSPENDED / COUNTERPARTY_FAILURE",
+      "nativeOutcome": [
+        "Ohio plant acquisition and manufacturing/joint-development agreements were implemented",
+        "additional equity-investment pathway was only partially funded",
+        "Foxconn financial reporting states remaining investment was suspended after agreement dispute",
+        "Lordstown filed bankruptcy and litigation in 2023; Foxconn suspended subsequent negotiations"
+      ],
+      "source": "Foxconn official releases and consolidated financial reporting",
+      "interpretationLimit": "Negative control applies to the specific Lordstown partnership chain, not Foxconn's entire EV strategy or Ohio-plant capability."
+    }
+  ],
+  "commonSupportLesson": [
+    "Action-state comparison is possible on lifecycle semantics, but economic outcome metrics are not automatically common across steel process optimization and EV partnership actions.",
+    "Do not create a cross-action numeric 'strategy success score' from incomparable native metrics.",
+    "A completed operational milestone, an in-progress R&D project and a suspended partnership are valid distinct states without forcing artificial scalar ranking."
+  ],
+  "falsification": [
+    "Successful implementation can still fail to create durable economic value.",
+    "Delayed projects can later succeed; DELAYED != FAILED.",
+    "Partial success can coexist with failure of a later investment/partner pathway.",
+    "Counterparty failure is not necessarily issuer execution failure.",
+    "One failed action does not imply firm-wide strategy failure."
+  ],
+  "preregisteredFutureOutcomeLayers": [
+    "native operational milestone",
+    "capacity/product-position effect",
+    "revenue/margin effect on native disclosure clock",
+    "market-share/relative-position effect with compatible denominator",
+    "only after all above: prospective/OOS stock-selection utility"
+  ],
+  "redundancyControls": [
+    "D09-14 owns action lifecycle only.",
+    "D10 owns physical capacity/supply-chain transmission.",
+    "D11/D17 own event/news timing.",
+    "D07 owns realized financial fundamentals.",
+    "No shared observation can be independently voted by multiple domains."
+  ],
+  "maturityDecision": {
+    "D09-14": "KEEP_L3_TAIWAN_PIT_DATA_FEASIBILITY"
+  },
+  "reasonNoL4": "Native action outcomes and failure states are now well-defined, but stock-selection predictive efficacy, common financial outcomes, OOS validation, costs and multi-regime robustness remain absent.",
+  "exactNext": [
+    "BR-058 prospectively freeze new strategic actions before outcomes are known, then append native milestone/financial/share outcomes on later publication clocks.",
+    "Build at least one comparable within-industry action cohort before estimating relative-position effects.",
+    "No scalar strategy-success score or System1/System2 role promotion before common-support and OOS validation."
+  ],
+  "status": "NATIVE_ACTION_OUTCOME_CONTRACT_FROZEN / SUCCESS_IN_PROGRESS_FAILURE_CONTROLS_PRESENT / NO_SCALAR_SCORE / STOCK_OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
