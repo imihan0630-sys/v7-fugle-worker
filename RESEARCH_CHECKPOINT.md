@@ -2638,3 +2638,20 @@ Exact next Room08:
 1. D11-16 complete one official issuer-level custody release -> transfer declaration -> realized holdings/untransferred chain.
 2. D11-19 freeze Taiwan merger/spin-off consideration terms, exchange ratios, effective dates, hedge/borrow states and real break/reprice/extension controls.
 3. D11-18 add at least one native failed-tender control before L4.
+
+## 2026-10-04 continuation — D11-19 merger-arbitrage / deal-break L3
+
+- Re-read latest main before resuming after the interrupted visible reply; prior D11-17/D11-18 writes were intact.
+- New receipt: `research/d11_19_merger_arbitrage_pit_receipt_v0_1.json`.
+- D11-19 advances **L2 -> L3** for Taiwan PIT/source feasibility.
+- 2887 台新金 / 2888 新光金 provides a real revised-consideration path: original common-stock ratio 0.6022 -> later 0.672 common + 0.175 preferred per target common share, followed by regulator approval, 2025-07-24 merger effective date and 2888 termination of listing.
+- 8179 旭德 / 3037 欣興 provides a transaction-structure rewrite: original merger terminated and replaced by share exchange.
+- 5203 訊連 supplies an actual later cancellation state; it is explicitly not treated as a public-target arbitrage return sample.
+- 2409 友達 supplies a current issuer-official demerger clock; separately listed/distributed child entitlement is not assumed.
+- D11-06 remains transaction-state owner; D11-19 only owns payoff geometry, terms versioning, deal-break/structure-change and hedge/borrow/cost semantics.
+- Current Room08 canonical maturity after this update: D11=54.7%, D17=41.4%, weighted=49.1%. Outcomes closed; Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE=NO.
+
+Exact next Room08:
+1. D11-16 remains the only newly added special-situation module below L3: complete issuer-level official custody/release -> transfer declaration -> realized holdings/untransferred evidence, including an eligible-but-not-sold negative control.
+2. D11-18 add a native failed-tender case before L4.
+3. D11-19 archive native revised/broken-deal versions plus borrow, hedge, funding, tax/fee and deal-break-loss evidence before L4.
