@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "D03_MOMENTUM_CONTINUATION_CONTRACT_V0_1",
+  "updatedAt": "2026-10-03T19:10:00+08:00",
+  "classification": "CLASS_A_RESEARCH_ONLY",
+  "formalCoreImpact": "NONE_LOCKED",
+  "ownership": {
+    "momentumLevel": "D03-02",
+    "ownPathPersistence": "D03-03",
+    "continuationOutcomeRelation": "D03-04",
+    "regimeState": "D18",
+    "residualRelativeStrength": "D09"
+  },
+  "parentPredictorFields": [
+    "ret20",
+    "ret60",
+    "momentumRankPct60",
+    "persistenceScoreResearch",
+    "residualSectorRs20",
+    "priceTier",
+    "relativeTickPct",
+    "liquidityState",
+    "volatilityState",
+    "marketRegimeState",
+    "marketRegimeTransitionState",
+    "constrainedSessionState",
+    "sourceLineageId",
+    "continuityLineageId"
+  ],
+  "primaryOutcomes": [
+    "D5_RETURN",
+    "D5_MFE",
+    "D5_MAE"
+  ],
+  "secondaryOutcomes": [
+    "D10_RETURN",
+    "D10_MFE",
+    "D10_MAE",
+    "D20_RETURN",
+    "D20_MFE",
+    "D20_MAE"
+  ],
+  "rejectedPrimaryOutcomes": [
+    "ROLLING_RET20_SIGN_RETENTION",
+    "ROLLING_RET60_SIGN_RETENTION",
+    "POST_OUTCOME_BEST_HORIZON",
+    "RANK_RETENTION_AS_ECONOMIC_RETURN_PROXY"
+  ],
+  "outcomeLineageRequired": [
+    "parentDecisionReceiptId",
+    "captureGeneration",
+    "decisionAt",
+    "symbol",
+    "semanticPriceSpace",
+    "symbolSessionCalendarVersion",
+    "verifiedSuspensionState",
+    "corporateActionContinuityVersion",
+    "futureEligibleSymbolSessionIds",
+    "outcomeSourceVersion",
+    "outcomeCompletedAt",
+    "outcomeQualityState"
+  ],
+  "outcomeQualityStates": [
+    "MATURE_VALID",
+    "CENSORED_SYMBOL_SUSPENSION",
+    "DATA_BLOCKED",
+    "CONTINUITY_BLOCKED",
+    "UNKNOWN"
+  ],
+  "antiLeakage": [
+    "PARENT_FINGERPRINT_EXCLUDES_FUTURE_OUTCOMES",
+    "FUTURE_HORIZONS_USE_POST_DECISION_SESSIONS_ONLY",
+    "NO_NEXT_AVAILABLE_ROW_SUBSTITUTION_WITHOUT_SYMBOL_SESSION_PROVENANCE",
+    "NO_POST_OUTCOME_DIRECTION_RECLASSIFICATION",
+    "NO_HORIZON_SWEEP_AFTER_OUTCOME"
+  ],
+  "controls": [
+    "CURRENT_RET20_RET60",
+    "CURRENT_RET60_RANK",
+    "PERSISTENCE_SCORE",
+    "RESIDUAL_RS",
+    "REGIME_TRANSITION",
+    "PRICE_TICK_LIQUIDITY",
+    "VOLATILITY_ATR",
+    "OVERHEAT",
+    "PATTERN_PRICE_VOLUME_CONTEXT"
+  ],
+  "inference": {
+    "dateBalanced": true,
+    "independentParentDatesRequired": true,
+    "rawForwardReturnAuthoritative": true,
+    "directionalAlignedReturnDescriptiveOnly": true,
+    "currentStatus": "NO_GO"
+  }
+}
