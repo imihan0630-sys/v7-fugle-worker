@@ -3084,7 +3084,7 @@
         "ASSET_PRICING_FACTOR_CHECKPOINT.md",
         "ASSET_PRICING_FACTOR_RESEARCH.md"
       ],
-      "maturityPct": 32,
+      "maturityPct": 40,
       "modules": [
         {
           "id": "D19-01",
@@ -3209,38 +3209,38 @@
         {
           "id": "D19-13",
           "name": "Relative Value／Pairs Trading／Cointegration／Residual Mean Reversion相對價值、配對交易、共整合與殘差均值回歸",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦 Relative Value（相對價值）策略族：Pairs Trading（配對交易）、Cointegration（共整合）、Residual Mean Reversion（殘差均值回歸）與 Cross-sectional Relative Value（橫截面相對價值）。需控制 Beta、產業／風格因子曝險、結構斷裂、交易成本、容量與多重測試，避免把共同市場風險誤認為獨立 Alpha。原 D19-14 完整範圍由本模組承接；它是一個策略家族，不應拆成多個高度重疊的獨立投票因子。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / CURRICULUM_KEEP / STRATEGY_SPECIFIC_CAPABILITY / RELATIVE_VALUE_FAMILY / NOT_GENERIC_LONG_ONLY_VOTE. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
-          "levelMeaning": "未研究",
-          "status": "OWNER_APPROVED / CURRICULUM_KEEP / STRATEGY_SPECIFIC_CAPABILITY / RELATIVE_VALUE_FAMILY / NOT_GENERIC_LONG_ONLY_VOTE",
-          "next": "由 12｜資產定價與因子研究室維持相對價值／配對／共整合／殘差均值回歸為獨立策略族，持續控制因子曝險、結構斷裂、成本、容量與多重測試；不得加入一般多頭選股的重複票數。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "OWNER_APPROVED / CURRICULUM_KEEP / STRATEGY_SPECIFIC_CAPABILITY / L2_MECHANISM_AND_FALSIFICATION_DEFINED / RELATIVE_VALUE_FAMILY / NOT_GENERIC_LONG_ONLY_VOTE",
+          "next": "以獨立相對價值策略族建立PIT配對重播；固定pair/model/version、formation window、hedge ratio、結構斷裂、雙腿可交易性、借券/成本、pair overlap與多重檢定；未有可執行receipt不得升L3。"
         },
         {
           "id": "D19-15",
           "name": "Index／Benchmark Construction／Methodology指數與基準建構方法",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Index／Benchmark Construction／Methodology指數與基準建構方法」。研究相對價值、共整合、殘差均值回歸與指數／基準建構。需控制因子曝險、Beta（市場敏感度）、產業曝險、交易成本、容量、結構斷裂與多重測試，避免把共同市場風險誤認為獨立 Alpha（超額報酬）。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D19-15 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / BENCHMARK_VINTAGE_REQUIRED",
+          "next": "建立benchmark PIT receipt：benchmarkId、methodologyVersion、announcementAt/effectiveFrom、歷史成分/權重vintage、returnType、sourceHash；不得用今日成分回填歷史，未有可重播receipt不得升L3。"
         },
         {
           "id": "D19-16",
           "name": "Liquidity Premium／Illiquidity Factor流動性溢酬與非流動性因子",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Liquidity Premium／Illiquidity Factor流動性溢酬與非流動性因子」。研究流動性作為橫截面資產定價風險溢酬，而非僅作成交可行性；需對Size、Value、Volatility、Turnover、Spread等中性化，控制因子動物園、多重測試與交易成本。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / RESIDUAL_LIQUIDITY_PREMIUM_UNPROVEN. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
-          "levelMeaning": "未研究",
-          "status": "OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / RESIDUAL_LIQUIDITY_PREMIUM_UNPROVEN",
-          "next": "由 12｜資產定價與因子研究室對 Size、Value、Volatility、Turnover、Spread 等中性化並納入成本／容量；只有 residual Taiwan PIT alpha 通過 OOS／多 Regime 才可升級。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / L2_MECHANISM_AND_FALSIFICATION_DEFINED / RESIDUAL_LIQUIDITY_PREMIUM_UNPROVEN",
+          "next": "建立台股PIT流動性因子切片；比較Amihud及排除overnight/recency版本，控制Size/Value/Volatility/Turnover/Spread/Industry/Momentum/Distress並納入成本容量；只有residual alpha通過OOS/多Regime才考慮L3。"
         }
       ],
-      "status": "RESEARCH_ACTIVE / D19-01_TO_D19-12_L2 / FACTOR_LAYER_PIT_RECEIPTS_REQUIRED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D19-13、D19-15、D19-16：相對價值/配對/共整合/殘差均值回歸、指數/基準建構、流動性溢酬由理論→機制→反證；並在System2既有cold loader上建立D19-01至D19-12第一個可執行factor-layer台股PIT receipt鏈（universe→return→factorInput→neutralization→cost→replay），未有receipt不得升L3。",
-      "lastResearchUpdate": "2026-10-03T19:39:00+08:00",
-      "researchNote": "Stage 5 completed: D19-11 factor crowding/capacity/turnover and D19-12 seasonality/calendar anomalies reached L2. Crowding requires direct PIT positioning/flow or remains UNKNOWN/proxy-only; capacity must be cost/impact/turnover-specific. Calendar hypotheses are high data-mining risk and require preregistration, actual trading-calendar vintages, multiple-testing control and cost-adjusted OOS evidence. D19 now 32.0%; Formal Core unchanged."
+      "status": "RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / FACTOR_LAYER_PIT_ADAPTER_SPEC_DEFINED / EXECUTABLE_RECEIPTS_REQUIRED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "工程主線：在System2既有cold loader／PIT replay之上新增research-only D19 factor-layer receipt adapter，不複製既有PIT/universe邏輯；第一個可執行smoke slice優先D19-04橫截面動能＋D19-07低波動/低Beta，產生universe→return→factorInput→neutralization→cost→replay deterministic receipt鏈與fail-closed測試；未產生實際台股PIT receipt前任何模組不得升L3。D19-03/05/06等財報因子待first-known financial ingestion後再接。",
+      "lastResearchUpdate": "2026-10-04T07:09:00+08:00",
+      "researchNote": "Stage 6 completed: D19-13 relative-value family, D19-15 benchmark construction and D19-16 liquidity premium reached L2. All 15 active D19 modules are now L2 (40.0%). Repository audit confirms the six factor-layer receipt types are research requirements only, not implemented code. The next gate is a research-only adapter above existing System2 PIT/cold loaders, first smoke slice D19-04 + D19-07. No L3 and no Formal Core change."
     },
     {
       "id": "D20",
