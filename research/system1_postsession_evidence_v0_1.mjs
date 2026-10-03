@@ -93,6 +93,9 @@ export function buildC4ReadinessFromCohort(c2Ledger,cohortSymbols,{totalCapital=
     const pair=pairMap.get(symbol),ctx=pair?.selectionContext,g=ctx?.entryGeometry;
     const priorityScore=finite(ctx?.priorityScore),entry=finite(g?.entry),stop=finite(g?.stop);
     if(!(priorityScore>0)&&priorityScore!==0){missing.push({symbol,field:"priorityScore"});continue;}
+    if(ctx?.priorityScoreProvenance!=="FORMAL_RUNTIME_RESULT_AT_C1_DECISION"){
+      missing.push({symbol,field:"priorityScoreProvenance"});continue;
+    }
     if(!(entry>0)||!(stop>0)||stop>=entry){missing.push({symbol,field:"entryOrStop"});continue;}
     candidates.push({symbol,priorityScore,entry,stop});
   }
