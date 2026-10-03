@@ -301,7 +301,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | 06｜基本面與估值研究室 | D07＋D08 | 52 | 19.2% | 基本面／無形資本／進階會計／反向DCF／估值 |
 | 07｜產業與供應鏈研究室 | D09＋D10 | 27 | 46.7% | 產業結構／競爭／供應鏈／公司曝險映射／政策傳導 |
 | 08｜事件與新聞研究室 | D11＋D17 | 33 | 39.4% | 公司事件／初級市場／新聞與政策事件 |
-| 09｜衍生品與國際總經研究室 | D12＋D13 | 36 | 32.8% | 衍生品損益結構／策略／景氣循環／資本市場預期 |
+| 09｜衍生品與國際總經研究室 | D12＋D13 | 36 | 33.9% | 衍生品損益結構／策略／景氣循環／資本市場預期 |
 | 10｜投組風控與交易執行研究室 | D14＋D15 | 39 | 34.9% | 交易執行／投組最佳化／績效歸因／避險／VaR |
 | 11｜統計驗證與策略市場狀態研究室 | D16＋D18 | 40 | 41.5% | 資料來源治理／機率式決策／PIT／OOS／壓力測試／Regime |
 | 12｜資產定價與因子研究室 | D19 | 15 | 16% | 資產定價／流動性因子／相對價值 |
@@ -639,7 +639,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 必讀 checkpoint：`DERIVATIVES_VOLATILITY_CHECKPOINT.md`、`DERIVATIVES_VOLATILITY_RESEARCH.md`、`MACRO_CROSS_MARKET_CHECKPOINT.md`、`MACRO_CROSS_MARKET_RESEARCH.md`  
 禁止：不得把其他 Dxx 領域當成本聊天室主線；跨領域發現只能建立 dependency（依賴）或引用證據，不能雙重計算進度。
 
-### D12｜期貨／選擇權／衍生品 — 37.6%
+### D12｜期貨／選擇權／衍生品 — 40%
 
 | 模組 | 研究模組 | 學習範圍 | 等級 | 完成度 |
 |---|---|---|---|---:|
@@ -659,7 +659,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | D12-14 | IV-RV Spread隱含與實現波動差 | 聚焦「IV-RV Spread隱含與實現波動差」。學習範圍：衍生品研究必須凍結合約、到期、履約價、DTE、價格／IV時計與流動性語意；研究 Greeks、IV-RV、VRP與波動率曲面時必須包含正向機制、反證、PIT、可重播、交易成本、稀疏報價／插值風險、與既有VIX／Skew／Gamma資訊的冗餘及增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 | D12-15 | Volatility Risk Premium波動率風險溢酬 | 聚焦「Volatility Risk Premium波動率風險溢酬」。學習範圍：衍生品研究必須凍結合約、到期、履約價、DTE、價格／IV時計與流動性語意；研究 Greeks、IV-RV、VRP與波動率曲面時必須包含正向機制、反證、PIT、可重播、交易成本、稀疏報價／插值風險、與既有VIX／Skew／Gamma資訊的冗餘及增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 | D12-16 | Volatility Surface／Smile波動率曲面與微笑 | 聚焦「Volatility Surface／Smile波動率曲面與微笑」。學習範圍：衍生品研究必須凍結合約、到期、履約價、DTE、價格／IV時計與流動性語意；研究 Greeks、IV-RV、VRP與波動率曲面時必須包含正向機制、反證、PIT、可重播、交易成本、稀疏報價／插值風險、與既有VIX／Skew／Gamma資訊的冗餘及增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
-| D12-17 | Option Payoff Structures／Put-Call Parity／Synthetic Positions／Strategies選擇權損益結構、買賣權平價、合成部位與策略 | 聚焦選擇權 payoff（損益結構）與價格一致性：Put-Call Parity（買賣權平價）、Synthetic Positions（合成部位）、Covered Call、Protective Put、Vertical／Calendar 等 spreads（價差策略）及其他基本策略結構。必須凍結履約價、到期、IV、Greeks、流動性、交易成本與保證金語意，區分方向、波動、時間價值與尾端曝險。原 D12-18 策略損益結構完整併入本模組；Portfolio overlay／hedging（投組避險）應用仍由 D15-23 負責。不得因策略名稱直接形成股票選股 Gate。 | L0 未研究 | 0% |
+| D12-17 | Option Payoff Structures／Put-Call Parity／Synthetic Positions／Strategies選擇權損益結構、買賣權平價、合成部位與策略 | 聚焦選擇權 payoff（損益結構）與價格一致性：Put-Call Parity（買賣權平價）、Synthetic Positions（合成部位）、Covered Call、Protective Put、Vertical／Calendar 等 spreads（價差策略）及其他基本策略結構。必須凍結履約價、到期、IV、Greeks、流動性、交易成本與保證金語意，區分方向、波動、時間價值與尾端曝險。原 D12-18 策略損益結構完整併入本模組；Portfolio overlay／hedging（投組避險）應用仍由 D15-23 負責。不得因策略名稱直接形成股票選股 Gate。 | L2 機制＋反證已定義 | 40% |
 
 
 ### D13｜總體經濟／跨市場傳導 — 28.4%
