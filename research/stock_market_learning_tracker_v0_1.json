@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 37.4
+    "maturityWeightedPct": 37.6
   },
   "domains": [
     {
@@ -3246,7 +3246,7 @@
         "BEHAVIORAL_FINANCE_CHECKPOINT.md",
         "BEHAVIORAL_FINANCE_RESEARCH.md"
       ],
-      "maturityPct": 33.8,
+      "maturityPct": 40,
       "modules": [
         {
           "id": "D20-01",
@@ -3351,12 +3351,12 @@
         {
           "id": "D20-11",
           "name": "Narrative／Theme Diffusion敘事與題材擴散",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Narrative／Theme Diffusion敘事與題材擴散」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D20-11 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_NARRATIVE_DIFFUSION_MECHANISM_DEFINED / H08_THREE_LAYER_FIREWALL / PIT_SOCIAL_TEXT_DATA_NOT_READY",
+          "next": "依 H08 完成三層證據契約：D09-11 只擁有題材/產業成員映射；D17-11 擁有有日期事件/新聞傳導；D20-11 只有在社群/語言/注意力敘事具有獨立傳播、時間先後與事件基本面控制後仍有殘差效果時才成立。建立 topic/stance/narrative first-known、來源修訂、去重與網路擴散 replay 契約；若只有題材標籤或新聞擴散，準備縮限/合併提案。"
         },
         {
           "id": "D20-12",
@@ -3371,18 +3371,18 @@
         {
           "id": "D20-13",
           "name": "Limits to Arbitrage／Noise-trader Risk套利限制與雜訊交易者風險",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Limits to Arbitrage／Noise-trader Risk套利限制與雜訊交易者風險」。研究錯價為何可能因資本限制、借券限制、雜訊交易者風險與融資壓力而持續；其用途是反證市場異象的經濟可行性，不直接當作買賣訊號。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D20-13 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_LIMITS_TO_ARBITRAGE_MECHANISM_DEFINED / FOUR_LAYER_SHORTING_CHAIN / PIT_COST_CAPACITY_DATA_NEXT",
+          "next": "依 H12 四層放空鏈建立台股套利限制資料契約：D06-09 實際借券/放空流量、D06-18 借券供給/費率/利用率、D14-19 建倉/維持/回補/召回執行風險、D20-13 理論層的資本限制/雜訊交易者風險。驗證錯價是否在高分歧且高放空限制/高成本/低供給條件下更持久；不得把高融資、高借券或高波動單獨叫套利限制。"
         }
       ],
-      "status": "D20_01_02_03_04_05_06_07_08_09_10_12_L2 / IDENTIFICATION_FIREWALL_ACTIVE / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D20-05 已完成機制與反證定義；下一步先做其獨立代理可辨識性稽核，若只有價格派生變數則不升 L3並準備合併提案。之後續接 D20-11 Narrative/Theme Diffusion，依 H08 與 D09-11、D17-11 建立三層語意與證據時鐘。",
+      "status": "ALL_13_MODULES_L2_FOUNDATION_COMPLETE / PIT_REPLAY_VALIDATION_NEXT / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D20 13 模組理論＋反證基礎層已完成。下一階段禁止再做 L0/L1 重複研究；進入 L2→L3 台股 PIT/replay 可行性驗證。優先序：① D20-08 事件後漂移（月營收/盈餘 first-known 與 surprise）；② D20-06 行為從眾（投資人身分/時序/社群獨立資料）；③ D20-10 投資人情緒（方向性社群/調查/隔夜候選）；④ D20-13 套利限制（借券供給/成本/執行）；⑤ D20-11 敘事擴散（社群語言/主題傳播與 H08 三層證據鏈）。",
       "lastResearchUpdate": "2026-10-03T21:40:00+08:00",
-      "researchNote": "D20-05 advanced L0→L2. Representativeness/recency is treated as a belief-formation hypothesis, not a label for recent price strength. Taiwan 52-week-high evidence is mixed and regime/era dependent, showing recency and anchoring coexist but are not stable universal alpha. Broader expectation evidence supports extrapolative beliefs, while 2026 administrative-trade evidence links forecast bias to buying past winners and selling behavior. Price-only proxies remain overlapping with D03 momentum, D20-04 anchoring, D20-08 underreaction and D20-09 overreaction. Module remains observation/research-only; no L3 until independent expectation/behavior data or residual incrementality is proven. Formal Core unchanged."
+      "researchNote": "Foundation milestone complete: all 13 D20 modules are now L2. D20-11 preserves a strict three-layer H08 split between taxonomy membership (D09-11), dated event/news propagation (D17-11), and independently observable behavioral narrative diffusion; social/language/topic propagation must add evidence beyond theme labels and headlines. D20-13 defines limits-to-arbitrage/noise-trader-risk theory separately from observed short flow, borrow economics and short execution. Classic theory shows professional arbitrage can be capital constrained and noise-trader risk can make mispricing persistent. Taiwan evidence links short-sale constraints plus opinion dispersion to persistent overvaluation and shows shorting restrictions can affect volatility; shorting flows also contain information. No module is L3 because own PIT/replay data contracts remain unvalidated. Formal Core unchanged."
     },
     {
       "id": "D21",
