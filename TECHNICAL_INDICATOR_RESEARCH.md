@@ -1148,3 +1148,114 @@ Formal Core remains LOCKED.
 3. Keep EMA16/64 + Impulse inside the same price-derived family until residual value survives direct-return/trend/structure/Regime controls.
 4. Raw-byte third-session gate remains 2/3; once genuinely closed, resume TI-005 then TI-006 in the preregistered efficacy order.
 5. Formal Core remains unchanged.
+
+
+## TI-474 through TI-481 — trend persistence PIT / tick-confound audit (2026-10-03)
+
+Durable evidence:
+- `research/D03_TREND_PERSISTENCE_PIT_TICK_CONFOUND_V0_1.md`
+- `research/test_d03_trend_persistence_tick_confound_v0_1.mjs`
+
+### TI-474 — exact own-path persistence implementation
+
+Current research implementation:
+
+`0.35*positiveDayRatio20 + 0.25*positiveHorizonPct(ret5,10,20,60>0) + 0.20*drawdownQuality20 + 0.20*maQuality20_60`.
+
+This is a weighted own-price-path trend-consistency heuristic, not literature-style cross-sectional winner/loser membership duration.
+
+### TI-475 — score geometry is stepwise
+
+Exact score changes:
+- one extra positive day out of 20 = +1.75 points;
+- one ret5/10/20/60 sign flip = 6.25 points;
+- one MA20/MA60 state flip = 10 points;
+- one additional percentage point of max drawdown = -1 point until the -20% drawdown-quality floor.
+
+The score is not a calibrated probability and can jump at return-zero/MA boundaries.
+
+### TI-476 — same endpoint returns, different path persistence
+
+Synthetic paths were frozen with exactly the same ret5/ret10/ret20/ret60 endpoints, positive horizon states, MA states and no last-20 drawdown.
+
+Smooth path:
+- positiveDayRatio20 = 100%;
+- persistence = 100.
+
+Alternating rise/flat staircase:
+- positiveDayRatio20 = 55%;
+- persistence = 84.25.
+
+Thus the score contains path-shape information beyond endpoint returns, but that difference is not automatically alpha.
+
+### TI-477/TI-478 — zero-return / Taiwan tick-size confound
+
+positiveDayRatio20 counts zero-return sessions as non-positive for that component.
+
+A synthetic identical latent +0.08% daily trend rounded to the current TWSE stock tick grid produced materially different observed positive-day ratios and persistence scores by nominal price tier, including 80%/93 at NT$9.5 versus 20%/72 at NT$1,200.
+
+This is mechanism evidence only, not an estimate of real-stock bias magnitude.
+
+External evidence supports the confound prior:
+- zero-return frequency is used in the liquidity/transaction-cost literature as an illiquidity proxy;
+- current TWSE Operating Rules Article 62 specifies stock tick sizes by price tier.
+
+Future persistence inference must control relative tick size / price tier, zeroReturnRatio20, liquidity and constrained/special-session state.
+
+### TI-479 — composite and constituents remain one price family
+
+All four components derive from the same Close path. The composite can summarize path quality but must not be counted as a cross-family vote on top of retN, MA state, drawdown and positive-day ratio without redundancy accounting.
+
+### TI-480 — construct separation
+
+Chen-Hsieh-Lee (2023) persistency is consecutive winner/loser portfolio membership duration. The current score is own-path trend consistency.
+
+Repository prospective rank-persistence spec remains separate:
+- same-scan ret60 rank proxy;
+- complete full-universe receipts;
+- consecutive official-session requirement;
+- GAP_UNKNOWN across missing sessions;
+- no historical rank-duration fabrication.
+
+### TI-481 — Taiwan PIT feasibility and maturity
+
+Existing D03 real-source audit already demonstrated 82 daily bars on Taiwan symbols 2330 / 5314 / 2006 / 4977, sufficient for the 61-close maximum ordinary requirement of the own-path score.
+
+Future inference requires:
+- exact eligible official sessions;
+- raw-history admission;
+- TECHNICAL_CONTINUITY or explicit BLOCKED/UNKNOWN;
+- corporate-action ancestry;
+- constrained/special-session provenance;
+- formulaVersion;
+- parent decision/capture generation.
+
+The rank-retention comparator is prospectively feasible from same-scan ret60 ranks without inventing historical duration.
+
+Therefore D03-03 advances:
+- L2 / 40% -> **L3 / 60% TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED**.
+
+With the current 12-module curriculum:
+- D03 aggregate = **50.0%**.
+
+No outcome, OOS, Shadow profitability or threshold claim is opened.
+
+### Current status
+
+`D03_03 = L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED`  
+`OWN_PATH_PERSISTENCE = DISTINCT_FROM_RET_LEVEL_BUT_SHARED_PRICE_FAMILY`  
+`ZERO_RETURN_TICK_LIQUIDITY_CONFOUND = MATERIAL_MECHANISM_RISK`  
+`SCORE_CONTINUITY = PIECEWISE_STEPWISE_NOT_CALIBRATED_PROBABILITY`  
+`RANK_PERSISTENCY = DISTINCT_CONSTRUCT / PROSPECTIVE_ONLY / ALPHA_UNKNOWN`  
+`D03_MATURITY = 50.0_PERCENT`  
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Formal Core remains LOCKED.
+
+### Exact next continuation point
+
+1. Preserve the raw-byte source/version gate at 2/3; Saturday 2026-10-03 is not a new Taiwan completed trading session.
+2. Freeze a component-level research snapshot carrying positiveDayRatio20, zeroReturnRatio20, positiveHorizonPct, drawdownQuality20, maQuality, relativeTickPct, liquidity/provenance without Formal impact.
+3. When inference opens, test own-path persistence residual value conditional on ret5/10/20/60, Residual RS, pathEfficiency, price/tick/liquidity and Regime.
+4. Keep rank-retention as a distinct prospective-only construct conditional on current ret60 rank.
+5. Continue D03-12 repaint-safe divergence PIT feasibility; it may promote only if confirmed pivot clocks and indicator state lineage are causally replayable.
