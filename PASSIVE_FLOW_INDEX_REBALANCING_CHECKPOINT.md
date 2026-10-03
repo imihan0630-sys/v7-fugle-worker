@@ -65,3 +65,20 @@ Next: validate prospective ETF units-delta + PCF timestamp/corporate-action sema
 3. Keep historical first-known units/PCF archive status UNKNOWN until authoritative immutable vintages are proven.
 4. Keep modeled basket exposure separate from actual passive stock trading.
 5. Do not start outcomes until clean prospective receipts and passive-event universe coverage pass.
+
+## PF-039 durable update
+- TWSE 115 年 ETF 申贖流程證明 ISSUES-DIFF 不是單純 same-day net creation/redemption（當日淨申贖）：它還包含 T-2 複審失敗回沖與雙幣 ETF 單位轉換。
+- 因此 units delta 仍比 AUM delta 更接近基金規模變化，但安全語意收窄為 `REPORTED_OUTSTANDING_UNIT_CHANGE_WITH_OPERATIONAL_ADJUSTMENTS`。
+- PCF 可於 T 日更新／重傳，必須保存版本、use-date、capturedAt、firstKnownAt 與標準雜湊；後下載版本不得回填較早決策時點。
+- 0050 2026-10-01 units delta = 0 是負控制：不能證明 gross creation/redemption 都是 0。
+- 0056 2026-10-01 units delta = +27.5m、creation unit = 0.5m，只能稱 55 個 creation-unit-equivalent（申贖基數等值），不得稱實際 55 筆申購或實際個股買盤。
+- D06-16 ETF Mechanics（ETF運作機制）已建立完整機制＋反證＋PIT＋防重複計票契約，可升 L2；L3 仍等待多日期 prospective receipt（前瞻憑證）。
+- Research artifact: `research/d06_etf_mechanics_pf039_v0_1.md`。
+- H14 防重複計票：D11-14 擁有 index event（指數事件）；D06-11 擁有 realized passive flow（已實現被動流量）；D06-16 擁有 creation/redemption / AP / premium-discount / tracking / liquidity（申贖／參與券商／溢折價／追蹤／流動性）機制。共享 receipt 只能計一次。
+- Outcomes remain CLOSED. Formal Core unchanged.
+
+## Exact next continuation after PF-039
+1. PF-040：累積至少第二個獨立交易日的國內實物型 ETF units-delta + PCF 同世代 receipt。
+2. 保存 PCF 更新版本、現金替代與單位公司行動狀態。
+3. exact stock passive flow（精確個股被動資金流）仍為 UNKNOWN；只允許 MODELED_PRIMARY_BASKET_EXPOSURE（模型化籃子曝險）。
+4. 不在 receipt 成熟前開 outcome test（結果檢定）。
