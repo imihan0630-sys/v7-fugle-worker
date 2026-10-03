@@ -5108,3 +5108,48 @@ Classification:
 `D02_12_L3_PIT_FEASIBLE / ALPHA_UNKNOWN / FULL_CLOSE_AND_HISTORICAL_PROFILE_NOT_PROVEN / FORMAL_UNCHANGED`.
 
 D02 aggregate becomes 51.7% if and only if tracker/router canonical readback confirms both promotions.
+
+# Pre-PVE-240 addendum — four-module L3 PIT-readiness closure (2026-10-04)
+
+No PVE number consumed.
+No forward outcomes inspected.
+
+## D02-05
+`EXTREME_PARTICIPATION_STATE` is PIT-observable from completed-slot RVOL plus response/Guard context.
+The distribution-motive label remains UNKNOWN.
+Classification:
+`D02_05_L3_PIT_FEASIBLE / LATENT_DIRECTION_UNIDENTIFIED / ALPHA_UNKNOWN`.
+
+## D02-11
+Long-horizon capacity fields and current quote/depth context have legal PIT clocks.
+Exact Formal exception coverage remains partly UNKNOWN and cannot be inferred from the defective PV illiquidity helper.
+Classification:
+`D02_11_L3_PIT_FEASIBLE / FORMAL_THRESHOLD_OPTIMALITY_UNKNOWN / REJECTED_CONTROL_OUTCOMES_PENDING`.
+
+## Executable daily-volume continuity validation
+
+Artifacts:
+- research/d02_daily_volume_continuity_adapter_v0_1.mjs
+- tests/test_d02_daily_volume_continuity_adapter_v0_1.mjs
+
+Final independent Node result:
+14/14 PASS.
+
+The first run failed because a late-known corporate-action event was still being applied to the historical path.
+After correction, future-known event semantics are not applied retrospectively.
+
+This supplies executable fail-closed replay for:
+- UNIT_SCALE 3593-like mechanics;
+- UNIT_SCALE 8422-like negative-control mechanics;
+- SUPPLY_CHANGE 8454-like raw-vs-participation semantics;
+- 5314-like suspension pseudo-bar;
+- zero-vs-missing expected sessions;
+- duplicates;
+- deterministic session-set identity;
+- signed-volume algebra;
+- clean/blocked pivot-volume eligibility.
+
+Classification:
+`D02_07_D02_09_L3_CONTINUITY_REPLAY_PASS / ALPHA_UNKNOWN / PRODUCTION_WIRING_NOT_REQUIRED_FOR_L3 / FORMAL_UNCHANGED`.
+
+D02-08 remains L2 because the independent microstructure evidence family is not completeness-proven.
