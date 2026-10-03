@@ -1,6 +1,6 @@
 {
   "schemaVersion": "CURRICULUM_SPECIALIST_INTAKE_LEDGER_V0_1",
-  "updatedAt": "2026-10-03T12:12:00+08:00",
+  "updatedAt": "2026-10-03T12:22:00+08:00",
   "status": "ACTIVE_INTAKE_LEDGER",
   "formalCoreImpact": "NONE",
   "clusters": [
@@ -224,6 +224,44 @@
       "formalOptimizationCandidate": "NONE",
       "maturityChange": "NONE",
       "structuralChange": "NONE_PENDING_DEPENDENCY_AUDIT_AND_OWNER_APPROVAL"
+    },
+    {
+      "id": "D16_25_TO_D15_19_MERGE_GOVERNANCE",
+      "packets": [
+        "research/D16_D18_VALIDATION_CHECKPOINT.md",
+        "research/D16_25_D15_19_MERGE_DECISION_INPUT_V0_1.md"
+      ],
+      "sourceRoom": "11｜統計驗證與策略市場狀態研究室",
+      "status": "D16_SIDE_SPECIALIST_COMPLETE_AT_L2 / D15_SPECIALIST_RESEARCH_REQUIRED",
+      "modules": [
+        "D16-25",
+        "D15-19",
+        "D15-16"
+      ],
+      "currentAssessment": {
+        "d16Side": "COMPLETE_FOR_CURRICULUM_MERGE_COMPARISON",
+        "d15Side": "PENDING_SPECIALIST_RESEARCH",
+        "directFullMerge": "NOT_JUSTIFIED",
+        "structurallyCleanerOptions": [
+          "B_ABSORB_D15_19_INTO_D15_16_KEEP_D16_25_UPSTREAM",
+          "D_SPLIT_TRANSFER_D16_25_PLUS_D15_16"
+        ],
+        "optionC": "LEAST_NATURAL_UNLESS_D16_SCOPE_EXPANDS_TO_ALLOCATION"
+      },
+      "remaining": [
+        "D15_19_LOG_GROWTH_OBJECTIVE",
+        "FULL_VS_FRACTIONAL_KELLY",
+        "PARAMETER_ESTIMATION_RISK",
+        "CORRELATED_MULTI_POSITION_KELLY",
+        "DRAWDOWN_RUIN_CONSTRAINTS",
+        "LIQUIDITY_COST_CAPACITY",
+        "COMPARISON_WITH_FIXED_RISK_CAPPED_SIZING_RISK_BUDGETING_D15_16",
+        "ANTI_ORPHAN_REVIEW",
+        "OWNER_DECISION"
+      ],
+      "formalOptimizationCandidate": "NONE",
+      "maturityChange": "D16_25_REMAINS_L2_40",
+      "structuralChange": "NONE"
     }
   ]
 }
