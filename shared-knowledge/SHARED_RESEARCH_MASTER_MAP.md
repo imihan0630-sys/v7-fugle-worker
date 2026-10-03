@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 10:56 Asia/Taipei
+Updated: 2026-10-03 11:00 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -722,4 +722,11 @@ Frozen candidate directions:
 A Maturity Transfer Firewall is mandatory for all four candidates: no max(), average() or simple carry-forward maturity after a merge.
 
 No merge/retirement is executed by this contract. Specialist evidence + Dependency Audit + anti-orphan verification + owner approval remain mandatory.
+
+## H01-H04 specialist validation packets — 2026-10-03
+
+Execution packets:
+`shared-knowledge/CURRICULUM_H01_H04_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
+
+Rooms 07, 09 and 10 can now execute H01-H04 specialist validation directly from the frozen evidence requirements. These packets do not authorize merge, retirement, maturity promotion or Formal Core changes.
 
