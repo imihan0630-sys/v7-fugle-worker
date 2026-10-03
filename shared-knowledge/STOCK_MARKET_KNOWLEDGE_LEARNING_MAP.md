@@ -12,12 +12,12 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 
 ## 成熟度
 
-- L0 = 0%：UNSTUDIED，尚未研究
-- L1 = 20%：THEORY_UNDERSTOOD，理論與定義已理解
-- L2 = 40%：MECHANISM_AND_FALSIFICATION_DEFINED，正向機制與反證條件已定義
-- L3 = 60%：TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED，台股PIT資料來源／語意／重播可行
-- L4 = 80%：PROSPECTIVE_SHADOW_OR_OOS_EVIDENCE，有前瞻Shadow或OOS證據
-- L5 = 100%：ROBUSTNESS_COST_REDUNDANCY_MULTI_REGIME_VALIDATED，已通過多Regime、成本、冗餘、獨立日期與穩健性驗證
+- L0 未研究 0%：UNSTUDIED，尚未研究
+- L0 未研究 0%：THEORY_UNDERSTOOD，理論與定義已理解
+- L0 未研究 0%：MECHANISM_AND_FALSIFICATION_DEFINED，正向機制與反證條件已定義
+- L0 未研究 0%：TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED，台股PIT資料來源／語意／重播可行
+- L0 未研究 0%：PROSPECTIVE_SHADOW_OR_OOS_EVIDENCE，有前瞻Shadow或OOS證據
+- L0 未研究 0%：ROBUSTNESS_COST_REDUNDANCY_MULTI_REGIME_VALIDATED，已通過多Regime、成本、冗餘、獨立日期與穩健性驗證
 
 ## 目前總覽
 
@@ -50,7 +50,7 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 | D18 | 市場Regime×策略互動 | 15 | 37.3% | 11｜統計驗證與策略市場狀態研究室 |
 | D19 | 資產定價／因子投資／市場異象 | 15 | 16% | 12｜資產定價與因子研究室 |
 | D20 | 行為金融／投資人注意力／市場心理 | 13 | 12.3% | 13｜行為金融與市場心理研究室 |
-| D21 | 公司治理／經營者／內部人／控制權品質 | 11 | 3.6% | 14｜公司治理與內部人研究室 |
+| D21 | 公司治理／經營者／內部人／控制權品質 | 11 | 33.8% | 14｜公司治理與內部人研究室 |
 | D22 | 信用市場／資本結構／融資壓力／股債傳導 | 12 | 0% | 15｜信用市場與資本結構研究室 |
 
 ## 母專案歸屬：自我進化學習研究室
