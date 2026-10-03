@@ -1378,3 +1378,14 @@ FORMAL_OPTIMIZATION_CANDIDATE: NONE.
    - comparison with fixed-risk, capped sizing, risk budgeting and D15-16 optimization.
 4. After D15-19 reaches at least L2 mechanism/falsification maturity, compare merge Options A/B/C/D under anti-orphan governance.
 5. Any curriculum merge/retirement remains owner-controlled and must preserve one canonical probability/calibration authority in D16-25.
+
+
+## D16-25 continuation audit — 2026-10-03
+
+Research-only synthetic counterevidence retained in `research/D16_25_SELECTIVE_DENOMINATOR_ACCEPTANCE_AUDIT_20261003_V0_1.md`. Existing evaluator reports selective coverage on matured-known-label rows, not the entire frozen decision population. A four-row reproduction keeps true operational acceptance at 75% while label arrival changes reported matured-subset coverage from 50% to 66.7%. This does not invalidate conditional matured-subset scores; it prohibits interpreting them as population coverage without a separate frozen decision ledger and label/cost completeness. Evaluator code is unchanged; dual-denominator implementation remains next work. Existing D16 probability tests and audit assertions PASS. No real Taiwan calibration evidence, L3 claim, Formal change or sizing authority. D16-25 stays L2/40%; D15-19 stays L0/0%; final merge remains evidence-insufficient pending D15 specialist research.
+
+Latest-main C1 cross-midnight closure already records approved merge/deploy; first genuine accepted population remains pending. Latest C1 run 37067696964 is completed/failure; summary alone cannot identify root cause. Public runtime readback is 8.15.3-c3-quote-context, testMode=false. No historical receipt is created. Exact next: frozen full-population decision ledger, mature-label and cost completeness, label-arrival invariance, genuine parent/prediction/outcome causal join; D15 K1–K8 and anti-orphan review before owner merge choice.
+
+Calibration implementation ownership follows the newer H09 producer-consumer contract: D16-19 produces model calibration; D16-25 consumes its quality and applies uncertainty/utility/ABSTAIN. This is not a second calibration vote or an H09 completion claim. Kelly input remains NOT_READY/UNKNOWN; FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+This package is published on an isolated research branch/draft PR. Main merge is withheld because the current v7-cloudflare workflow includes research non-Markdown files; tracker/MJS/JSON can trigger production deployment. No workflow bypass or production deployment is authorized by this audit.
