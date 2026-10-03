@@ -81,3 +81,17 @@ is null, undefined, or negative. A permanent regression fixture requires
 `SELECTION_DEPTH_UNVERIFIED` and `INPUT_BLOCKED` for null depth.
 
 This correction narrows eligibility; it does not relax any gate or alter Formal behavior.
+
+
+## Latest exact-head revalidation after null-depth hardening
+
+Validated head: `9ac012fdc2d0846cdf72e28fe1fa88b043d37649`.
+
+- V8 Regression run 37089507323: PASS.
+- V8 Repair CI run 37089507325: PASS.
+- System1 isolated offline repair review run 37089507319: PASS.
+- This revalidation includes the null-depth fail-closed correction; missing selection depth remains INPUT_BLOCKED.
+- PR #327 was temporarily retargeted to main only to trigger the repository's main-target CI, then returned to parent PR #323.
+- No Cloudflare deployment occurred.
+- No Formal selector/ranker/signal/capital/order/push authority was changed.
+- V8.15.3 remains a Class-B deployment candidate only.
