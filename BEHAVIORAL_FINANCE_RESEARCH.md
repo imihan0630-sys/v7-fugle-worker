@@ -292,3 +292,84 @@ KEEP_SEPARATE_CONDITIONAL_ON_BEHAVIOR_IDENTIFIABILITY / PHENOMENON_CAUSE_FIREWAL
 If D20-09 is operationalized only as extreme prior return plus later reversal, it should be narrowed/merged rather than receive an independent behavioral vote.
 Formal Core unchanged.
 
+## 2026-10-03｜D20-11 Narrative / Theme Diffusion and D20-13 Limits to Arbitrage / Noise-trader Risk
+
+### D20-11 Narrative / Theme Diffusion
+
+Mechanism:
+- Narrative diffusion requires transmission of stories, language, stance, attention or belief frames across people or communities.
+- Theme membership is not narrative diffusion.
+- Event/news propagation is not narrative diffusion by itself.
+- Common price movement is not narrative diffusion.
+
+Evidence:
+- Shiller's narrative-economics framework treats narratives as contagious stories whose spread can affect economic decisions.
+- Earlier survey evidence documents word-of-mouth diffusion of investment attention.
+- Taiwan real-time forum research shows public sentiment and bullish/bearish stance interact with herding heterogeneously across investor classes and industries, demonstrating that social text can provide a behavior-specific data family beyond static theme membership.
+- Modern narrative/crash-belief research shows that language and stories can alter beliefs, but narrative measures are highly vulnerable to information contamination and hindsight leakage.
+
+H08 three-layer firewall:
+1. D09-11 = theme/company/industry taxonomy and membership.
+2. D17-11 = dated event/news propagation with first-known clock and event half-life.
+3. D20-11 = behavioral narrative/social diffusion only when language/topic/attention propagation adds an independent observable after controlling D09/D17.
+
+Required D20-11 observables:
+- topic or phrase propagation over time;
+- stance/emotion/narrative intensity from a distinct social/community source;
+- network or source-to-source diffusion ordering;
+- persistence/amplification after fundamental event and structural supply-chain controls.
+
+Falsifiers:
+- static theme label only;
+- same headline copied across sites;
+- supply-chain membership alone;
+- price comovement without text/social propagation;
+- event propagation fully explained by fundamentals.
+
+Decision:
+- D20-11 -> L2.
+- No L3 until a PIT/replay social-language/topic stream with first-known and revision semantics is validated.
+- Formal Core unchanged.
+
+### D20-13 Limits to Arbitrage / Noise-trader Risk
+
+Mechanism:
+- Mispricing can persist because arbitrage is risky, capital intensive, capacity constrained and exposed to further price divergence before convergence.
+- Noise-trader risk means rational traders face the possibility that mispricing worsens before it corrects.
+- Professional arbitrage may be constrained by investor withdrawals, leverage, margin, short-sale availability and execution frictions.
+
+Foundational evidence:
+- Shleifer and Vishny show that delegated professional arbitrage can become least effective precisely when mispricing becomes extreme.
+- De Long, Shleifer, Summers and Waldmann show that noise-trader beliefs can affect prices and create risk borne by rational investors.
+- Positive-feedback traders can even make front-running by rational speculators destabilizing rather than automatically correcting prices.
+
+Taiwan evidence:
+- Taiwan short-sale research finds heavily shorted stocks subsequently underperform, and overvaluation is more persistent where short-sale constraints and opinion dispersion coexist.
+- Taiwan evidence on short-selling restrictions finds restrictions can raise return volatility in some regimes rather than stabilize prices.
+- More recent Taiwan shorting-flow research finds shorting flows contain incremental information under local uptick-rule and price-limit settings.
+- These findings support studying arbitrage capacity and constraint state, but do not imply a universal long/short signal.
+
+H12 four-layer ownership:
+1. D06-09 = observed borrowing / actual short-flow state.
+2. D06-18 = borrow availability / fee / utilization economics.
+3. D14-19 = short-position execution, recall, forced buy-in and exit feasibility.
+4. D20-13 = economic theory of why mispricing may survive those constraints plus noise-trader risk.
+
+Falsifiers:
+- high short interest can reflect informed negative information rather than binding arbitrage constraints;
+- high margin/borrowing balances do not identify mispricing;
+- price limits and short-sale rules can change both information production and execution;
+- arbitrage constraints may be irrelevant when mispricing direction itself is not identified.
+
+Decision:
+- D20-13 -> L2.
+- No L3 until Taiwan PIT/replay borrow-supply/cost/capacity and constraint-state data are jointly validated.
+- Formal Core unchanged.
+
+## D20 foundation milestone
+
+All 13 D20 modules have reached L2 mechanism-plus-falsification maturity.
+This does NOT mean the behavioral factors are production-ready.
+The next stage is exclusively L2 -> L3 Taiwan PIT/replay feasibility and identifiability validation.
+No module may be promoted by literature alone.
+
