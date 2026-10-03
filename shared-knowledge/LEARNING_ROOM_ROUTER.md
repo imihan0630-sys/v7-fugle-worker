@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 11:00 Asia/Taipei
+Updated: 2026-10-03 11:10 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -1429,4 +1429,19 @@ D12-14 vs D12-15。
 `shared-knowledge/CURRICULUM_H01_H04_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
 
 任務包已凍結每組 required work（必要工作）、forbidden（禁止事項）與 return format（回傳格式）。研究室只能提交證據與建議分類，不得自行退休正式模組或變更 Formal Core（正式核心）。
+
+## H05～H08 語意拆分驗收契約 — 2026-10-03
+
+相關研究室續接前必須讀：
+- `shared-knowledge/CURRICULUM_H05_H08_SEMANTIC_SPLIT_ACCEPTANCE_CONTRACT_20261003_V0_1.md`
+- `shared-knowledge/CURRICULUM_H05_H08_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
+
+路由：
+- H05：06｜基本面與估值研究室 + 14｜公司治理與內部人研究室。
+- H06：05｜法人與籌碼研究室 + 13｜行為金融與市場心理研究室。
+- H07：03｜技術指標與趨勢動能研究室 + 13｜行為金融與市場心理研究室。
+- H08：07｜產業與供應鏈研究室 + 08｜事件與新聞研究室 + 13｜行為金融與市場心理研究室。
+
+共通硬規則：
+同一 source row（來源列）、event（事件）或 statement（財報敘述）只建立一份 evidence receipt（證據憑證）；不同研究模組可引用同一憑證，但不得因此形成多張獨立票。Behavioral（行為）與 Governance（治理）機制必須有獨立可觀測資料或殘差反證，不能只把價格、籌碼或財報現象改名。
 
