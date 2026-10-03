@@ -1318,3 +1318,12 @@ Build a historical Taiwan D21-04 pledge replay with at least one pledge setup an
 - Inference floors: D5 mature >=60, prospective complete >=30, independent scan dates >=15, >=2 Regimes, purged train >=10 dates, holdout >=5 dates, plus coverage/zero-pick/redundancy/cost/overfit gates.
 - D03 maturity stays 56.7%; preregistration does not inflate maturity.
 - `TI_005/006 = PREREGISTERED_NOT_EXECUTABLE`; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`; Formal Core LOCKED.
+
+
+## 2026-10-04 D03 — TI-551~554 D16 method handoff
+
+- D03 feature/estimand identity for TI-005/TI-006 is frozen before outcomes; D16 owns the statistical method and may not redefine the indicator experiment after results.
+- Dependence graph explicitly includes scanDate common shocks, repeated symbols/episodes, overlapping forward windows, overlapping feature histories and sector dependence. Stock-row count is not independent N.
+- D16 must return a machine-readable method receipt before T5 outcome access, including chronological purge/holdout, dependence/small-cluster treatment, exact estimands, robustness diagnostics and multiple-testing handling.
+- If current evidence cannot support valid inference, D16 must return METHOD_BLOCKED / POWER_INSUFFICIENT rather than relax the preregistration.
+- D03 maturity stays 56.7%; outcomes CLOSED; raw D03 gate 2/3; FORMAL_OPTIMIZATION_CANDIDATE NONE.
