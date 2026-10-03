@@ -1205,3 +1205,13 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Raw-byte prospective source/version gate remains 2/3 over the weekend; outcome inference remains NO_GO.
 - Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
 - Exact continuation: do not inflate D03-05; after raw gate completion preserve TI-005 KD-vs-RSI then TI-006 MACD-vs-direct-trend. Outcome-blind work may next attack D03-09 ADX / D03-10 Bollinger PIT-feasibility blockers.
+
+
+## 2026-10-03 D03 — TI-526~533 ADX/Bollinger blocker audit
+
+- D03-09 ADX: frozen formula and deeper history capability do not satisfy L3. Recursive ADX state requires canonical TECHNICAL_CONTINUITY, stateLineageId and replay-certified immutable parent provenance. L2/40 remains.
+- D03-10 Bollinger: finite-window certification is structurally simpler (exact clean 20 eligible sessions, no recursive seed), but current physical TECHNICAL_CONTINUITY / parent lineage remains blocked. L2/40 remains.
+- Key firewall: numerical observability and history depth are not equivalent to PIT source readiness.
+- D03 aggregate remains 55.0%; no theory-only promotion.
+- Principal remaining D03 L2 modules: D03-05 pullback origin (D05 data-gated), D03-09 ADX (recursive continuity/replay-gated), D03-10 Bollinger (finite-window continuity/parent-gated).
+- Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
