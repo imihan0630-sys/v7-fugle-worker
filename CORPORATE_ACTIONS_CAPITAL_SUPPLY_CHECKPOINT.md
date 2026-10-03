@@ -353,3 +353,18 @@ CA-115: do not re-evaluate Class-A Shadow implementation readiness until the rem
 
 Exact next:
 Accumulate immutable Taiwan PIT/version receipts for D11-15..19 including unsuccessful paths; keep CA-113/114 exact-listed/archive semantics active; only after source/version replay passes may L3 be considered.
+
+## Room 08 continuation — D11-15 L3 IPO PIT + D17-14 clock-lane evidence — 2026-10-03
+
+- Continued from the prior special-situations exact next; did not restart CA or D11-15 theory.
+- New receipt: `research/d11_15_ipo_pit_receipt_v0_1.json`.
+- D11-15 advances **L2 -> L3** for bounded Taiwan PIT/source feasibility at date level.
+- Positive witnesses: 7855 和運租車 and 2237 華德動能 have official TWSE application/review/approval, auction, public-subscription, actual-underwriting-price and first-tradable-session records.
+- Negative-control witness: 6921 嘉雨思 officially applied 2025-04-25, withdrew on a dated TWSE notice 2025-06-05, re-applied 2025-08-27 and later listed 2025-12-23. Success-only sampling is therefore explicitly invalid.
+- 2237 also falsifies a timeless-price shortcut: public-subscription stated price 28.6 differs from actual underwriting price 26.66. Price versions/stages must be preserved.
+- Historical archive rows are date-level. Exact historical intraday first-known remains UNKNOWN and cannot be backdated to market open or an earlier decision cutoff.
+- Existing CA-113/114 denominator/archive gates are unchanged and not bypassed.
+- No return/listing-day outcome, no IPO alpha, no Formal change.
+
+Exact next:
+D11-15 prospective immutable bookbuilding/auction version capture plus cancelled/failed underwriting controls; continue D11-16..19 PIT lifecycle receipts. Outcomes remain closed until preregistered.

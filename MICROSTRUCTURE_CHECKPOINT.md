@@ -429,3 +429,53 @@ Formal Core: LOCKED.
 2. D04-CE/ATR outcome analysis still blocked until shared immutable per-symbol decision-state parent is physically present.
 3. D05-HORIZON-05: first ensure actual entitlement/quota and complete prospective Books+Trades capture design; run 1s/5s/15s common-support quote-age/vol-signature QA before B0->B3 outcome tests. TRUE_OFI remains prohibited without book-event completeness proof.
 4. No L3/L4 maturity promotion and no FORMAL_OPTIMIZATION_CANDIDATE.
+
+
+## 2026-10-03 18:26 segment close — D05-11/12/13 mechanism block
+
+Status: SEGMENT_COMPLETE / D05_11_12_13_L2 / OWN_PIT_EVIDENCE_PENDING  
+Formal Core: LOCKED.
+
+### D05-11 Market Impact
+- Implementation Shortfall / arrival slippage / actual fills are observable execution-cost objects.
+- Causal own-order market impact is NOT directly observable from the tape and defaults to UNKNOWN without own-order lifecycle plus a matched/modelled no-order counterfactual.
+- Temporary/permanent impact is a model decomposition, not a raw-data field.
+- Square-root impact is retained only as an empirical challenger; no universal Taiwan coefficient is authorized.
+
+### D05-12 Adverse Selection / Order-flow Toxicity
+- First observable is signed post-fill markout, conditioned on passive/aggressive execution, spread, local volatility, activity, market/sector drift and mechanism state.
+- An adverse markout does not prove the counterparty was informed.
+- VPIN/toxicity is not imported as a ready factor; it must survive activity/volatility/spread controls and trade-classification uncertainty.
+
+### D05-13 Queue Position / Order Priority
+- TWSE continuous trading uses price priority and time priority at the same price; pre-open same-price sequencing remains a separate call-auction mechanism.
+- Public top-five aggregate depth lacks individual order IDs / per-order timestamps / a documented complete book-event sequence, so exact personal queue rank is not identifiable.
+- Allowed research label is QUEUE_AHEAD_PROXY unless richer order-level sequencing exists.
+- Owner-approved role remains execution confidence / fill-probability / passive-vs-aggressive execution research, NOT stock-selection alpha or a universal gate.
+
+### Shared validation contract
+- Keep execution cost, causal self-impact, adverse-selection markout and queue/fill confidence as four distinct estimands.
+- Required future evidence: own-order lifecycle, prospective Books/Trades, common-support windows, market/sector controls, spread/local-vol/activity controls, size/participation strata, tick/session strata, matched no-order windows and independent dates.
+- No outcome-based promotion, no inferred trader intent, no true OFI from unsequenced book snapshots.
+
+Durable artifacts:
+- `MICROSTRUCTURE_RESEARCH.md` MS-063..MS-072.
+- `research/d05_execution_impact_adverse_queue_contract_v0_1.json`.
+
+### D04 side-lane status (not merged)
+- PR #351, `research: add isolated D04 A2 end-of-day diagnostic epoch`, has green System2 Research CI #430, V8 Regression #1388 and V8 Repair #814.
+- It remains OPEN / UNMERGED / CLASS_B_PROPOSAL.
+- It deliberately leaves the frozen 13-file System2 Decision Clock V0.3 collector unchanged and creates a separate EOD diagnostic evidence epoch.
+- No schedule is enabled and no D04 maturity promotion is claimed.
+
+### Maturity
+- D05-11: L0 -> L2 / 40%.
+- D05-12: L0 -> L2 / 40%.
+- D05-13: L0 -> L2 / 40%.
+- D05 aggregate maturity recalculated to 41.4% under the current 14-module curriculum.
+- This is knowledge maturity only; no own Taiwan PIT execution-event evidence exists yet.
+- No FORMAL_OPTIMIZATION_CANDIDATE.
+
+### Exact next continuation
+This segment is closed. Do not reopen D05-11/12/13 theory unless new evidence falsifies the contract.
+Next fresh segment may start at D05-14 Market Integrity / Abnormal Trading Patterns, while empirical D05-11/12/13 work waits for prospective own-order/event-ledger evidence.

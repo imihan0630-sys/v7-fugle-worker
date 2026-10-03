@@ -2485,3 +2485,22 @@ Exact next Room 08:
 - D08-03 remains L3/60. No return outcome join, no L4 claim, no threshold/ranking/selection change.
 - Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE = NO.
 - Exact next: bounded immutable TWSE raw-history/readback sample -> 252/756/1260/expanding percentile computation without returns -> coverage/denominator-transition QA -> then TWSE-only Shadow outcome join. TPEx remains source-blocked for automated historical replay.
+
+## Room 08 continuation — D11-15 L3 IPO PIT + D17-14 clock-lane evidence — 2026-10-03
+
+- Re-read latest main/tracker before continuation and preserved concurrent room updates.
+- D11-15 official Taiwan IPO evidence moved from design to bounded source feasibility. New durable receipt: `research/d11_15_ipo_pit_receipt_v0_1.json`.
+- 7855 and 2237 provide independent successful lifecycle witnesses across application/review/approval/auction/subscription/final price/listing.
+- 6921 provides an official withdrawal -> reapplication -> later listing negative-control path, directly preventing success-only survivorship bias.
+- Historical TWSE archive rows remain date-level; intraday first-known is UNKNOWN and may not be backdated.
+- D11-15 advances **L2 -> L3** only. No listing-return effect was opened.
+- D17-14 gained a separate receipt: `research/d17_14_policy_clock_receipt_v0_1.json`. FSC histories show final-publication, retroactive-effective and mixed-effective policy cases.
+- D17-14 stays **L2** because no ex-ante expectation archive validates the Surprise sublane; missing expectation remains UNKNOWN.
+- Canonical Room08 maturity: D11=51.6%, D17=41.4%, module-weighted Room08=47.3%. Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE=NO.
+
+Exact next Room08:
+1. D11-16 issuer-specific lock-up/custody-release PIT receipts; release eligibility must remain separate from realized insider sale.
+2. D11-17 public-offering/private-placement lifecycle receipts, reusing CA evidence without treating registered/listed/tradable supply as interchangeable.
+3. D11-18/19 complete tender/deal success plus failure/extension/reprice paths.
+4. D17-14 obtain independent ex-ante expectation archives; otherwise Surprise remains UNKNOWN.
+5. D11-15 add prospective immutable bookbuilding-range/version capture and failed/cancelled underwriting controls before any L4 outcome cohort.

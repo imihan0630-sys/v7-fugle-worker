@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "0.1",
+  "name": "BLS Employment Situation September 2026 official release observed after publication",
+  "modules": [
+    "D13-09",
+    "D13-11"
+  ],
+  "status": "OFFICIAL_RELEASE_CONTENT_OBSERVED_AFTER_PUBLICATION__NOT_NATIVE_RELEASE_TIME_ATTESTED",
+  "formalCoreImpact": "NONE",
+  "observedAt": "2026-10-03T18:29:06+08:00",
+  "officialRelease": {
+    "source": "U.S. Bureau of Labor Statistics",
+    "releaseId": "USDL-26-1549",
+    "releaseTitle": "The Employment Situation - September 2026",
+    "embargoReleaseAt": "2026-10-02T20:30:00+08:00",
+    "sourceUrl": "https://www.bls.gov/news.release/empsit.nr0.htm",
+    "nonfarmPayrollChange": 29000,
+    "unemploymentRatePct": 4.2,
+    "laborForceParticipationRatePct": 61.8,
+    "employmentPopulationRatioPct": 59.2,
+    "averageHourlyEarningsMoMPct": 0.1,
+    "averageHourlyEarningsYoYPct": 3,
+    "averageWorkweekHours": 34.4,
+    "revisions": {
+      "julyFrom": 21000,
+      "julyTo": -10000,
+      "julyRevision": -31000,
+      "augustFrom": 162000,
+      "augustTo": 133000,
+      "augustRevision": -29000,
+      "combinedRevision": -60000
+    },
+    "prior12MonthAveragePayrollGain": 45000
+  },
+  "semanticGuards": {
+    "firstPrintMeaning": "This artifact preserves the official release content now observable on the BLS release page. It does NOT claim this project captured native BLS bytes at 20:30 on 2026-10-02.",
+    "consensusVintage": "UNKNOWN",
+    "payrollSurprise": "UNKNOWN",
+    "unemploymentSurprise": "UNKNOWN",
+    "wageSurprise": "UNKNOWN",
+    "revisionSurprise": "UNKNOWN",
+    "rule": "Realization values and market surprise are separate objects. Without authentic pre-release consensus vintage, no standardized surprise is computed.",
+    "preReleaseObject": "research/d12_d13_20261002_postdecision_prerelease_source_qa_v0_1.json",
+    "noOverwrite": true
+  },
+  "researchUse": {
+    "allowed": [
+      "release-vector semantics QA",
+      "revision-vector semantics QA",
+      "event-clock QA",
+      "future prospective schema validation"
+    ],
+    "prohibited": [
+      "backfilling 2026-10-02 18:10 input",
+      "claiming project captured release at 20:30",
+      "constructing historical surprise from current web consensus",
+      "joining Taiwan returns before preregistered source/outcome gate"
+    ]
+  },
+  "interpretation": {
+    "absoluteActivityContext": "Payroll +29,000 was below the same release's prior-12-month average gain of +45,000, but this is NOT a market surprise measure.",
+    "revisionContext": "The release revised July and August payroll employment lower by a combined 60,000. Revision magnitude is a separate release dimension, not part of headline payroll alone.",
+    "vectorRule": "Preserve payroll, unemployment, earnings, workweek and revisions separately; do not collapse to one macro score."
+  },
+  "maturityImpact": "NO_L3_PROMOTION__OFFICIAL_CONTENT_VERIFIED_BUT_RELEASE_TIME_SOURCE_ATTESTATION_AND_CONSENSUS_VINTAGE_ABSENT",
+  "exactNext": [
+    "On a future release, preserve native official response at release time with raw source attestation.",
+    "Capture authentic pre-release consensus from an approved provider before release or keep surprise UNKNOWN.",
+    "Keep release-vector components separate in D13-09/11 and test risk outcomes before direction.",
+    "Do not alter the Oct-2 pre-release object."
+  ]
+}

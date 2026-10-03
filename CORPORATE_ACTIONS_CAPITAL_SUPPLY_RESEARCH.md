@@ -4398,3 +4398,14 @@ Exact next:
 2. include failed/withdrawn/delayed/extended/repriced controls;
 3. preserve existing CA-113/114 archive and denominator gates;
 4. do not open outcome cohorts until inclusion, horizons and controls are preregistered.
+
+## 2026-10-03 continuation — D11-15 Taiwan IPO PIT receipt + D17-14 policy-clock falsification
+
+D11-15 now has a bounded official Taiwan PIT/source receipt:
+`research/d11_15_ipo_pit_receipt_v0_1.json`.
+
+The receipt joins independent TWSE listing, auction and public-subscription lanes with a dated withdrawal control. 7855 and 2237 provide successful independent lifecycle witnesses; 6921 provides a withdrawal -> later reapplication -> successful listing witness. This closes the prior L2 source-feasibility gap at **date level** and moves D11-15 L2 -> L3.
+
+Important guard: archived event dates do not authenticate historical intraday first-known. No event is backdated to market-open/decision time; historical intraday availability remains UNKNOWN. Prospective captures must preserve capturedAt/version.
+
+No return outcome, no IPO underpricing alpha, no Formal change.

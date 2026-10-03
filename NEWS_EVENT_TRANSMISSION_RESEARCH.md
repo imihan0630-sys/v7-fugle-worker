@@ -763,3 +763,24 @@ Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE = NO.
 
 Exact next:
 Prospectively preserve independent Taiwan draft/final/effective policy vintages with capturedAt and immutable payload/version receipts; archive pre-event expectation sources where available, otherwise preserve surprise UNKNOWN; keep existing D17-01/02/09 multi-day coverage work active.
+
+## 2026-10-03 continuation — D11-15 Taiwan IPO PIT receipt + D17-14 policy-clock falsification
+
+D17-14 policy-event clock source feasibility was tested against three independent FSC draft/final/effective histories. New receipt:
+`research/d17_14_policy_clock_receipt_v0_1.json`.
+
+Positive evidence:
+- FSC preserves historical draft notices with announcement dates and comment-end dates.
+- FSC final-law/history pages preserve final revision date, document number and effective clauses.
+- One case is effective-on-publication, one is legally retroactive, and one has multiple provision-specific effective dates.
+
+Counterevidence:
+- publication != effective;
+- effective can precede publication;
+- one document can have multiple effective clocks;
+- draft != final;
+- legal effect != market first-known.
+
+The clock sublane is L3-ready, but the full D17-14 module stays **L2** because no ex-ante expectation source has been validated. Surprise remains UNKNOWN rather than inferred from returns or narrative.
+
+Formal Core unchanged; outcomes closed.

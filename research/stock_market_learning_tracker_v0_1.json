@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T18:12:00+08:00",
+  "updatedAt": "2026-10-03T18:23:55+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -565,8 +565,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Market Impact市場衝擊機制」。研究成交簿、委託優先序、資訊不對稱與交易衝擊等微結構機制；不得把成交結果事後解釋成不可觀測的主力意圖。需凍結委託簿時間戳、交易時段、撮合規則、PIT（時點一致性）與可重播語意。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / OWN_PIT_EVIDENCE_PENDING",
-          "next": "等待可重播的自有委託生命週期＋台股市場資料；先量 implementation shortfall／arrival slippage／markout，再用 matched no-order controls 研究 causal impact。不得直接套用通用 square-root impact 係數。"
+          "status": "MECHANISM_PLUS_FALSIFICATION_DEFINED / OWN_PIT_EVIDENCE_PENDING",
+          "next": "等待可重播的自有委託生命週期＋台股市場資料；先量 implementation shortfall／arrival slippage／markout，再用 matched no-order controls 研究 causal impact。不得直接套用通用 square-root impact 係數。",
+          "researchNote": "Market Impact: implementation shortfall/slippage are observable execution-cost measures; causal own-order impact requires order lifecycle plus counterfactual/matched controls. Square-root impact is a challenger family, not a Taiwan default."
         },
         {
           "id": "D05-12",
@@ -575,8 +576,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Adverse Selection／Order-flow Toxicity逆向選擇與訂單流毒性」。研究成交簿、委託優先序、資訊不對稱與交易衝擊等微結構機制；不得把成交結果事後解釋成不可觀測的主力意圖。需凍結委託簿時間戳、交易時段、撮合規則、PIT（時點一致性）與可重播語意。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / OWN_PIT_EVIDENCE_PENDING",
-          "next": "以 signed post-fill markout 為主要可觀測量，控制市場／產業／spread／volatility／activity；不得由不利 markout 推論對手方為 informed trader，VPIN 不作現成因子。"
+          "status": "MECHANISM_PLUS_FALSIFICATION_DEFINED / OWN_PIT_EVIDENCE_PENDING",
+          "next": "以 signed post-fill markout 為主要可觀測量，控制市場／產業／spread／volatility／activity；不得由不利 markout 推論對手方為 informed trader，VPIN 不作現成因子。",
+          "researchNote": "Adverse Selection / Order-flow Toxicity: signed post-fill markout is observable; informed-counterparty intent is not. VPIN/toxicity is not imported as a ready factor and must beat activity/volatility/spread controls."
         },
         {
           "id": "D05-13",
@@ -585,8 +587,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Queue Position／Order Priority委託排隊位置與優先權」。研究成交簿、委託優先序、資訊不對稱與交易衝擊等微結構機制；不得把成交結果事後解釋成不可觀測的主力意圖。需凍結委託簿時間戳、交易時段、撮合規則、PIT（時點一致性）與可重播語意。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / CURRICULUM_KEEP / STRATEGY_SPECIFIC_CAPABILITY / EXECUTION_CONFIDENCE / NOT_ALPHA_GATE. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "OWNER_APPROVED / L2 / EXECUTION_CONFIDENCE / NOT_ALPHA_GATE / OWN_PIT_EVIDENCE_PENDING",
-          "next": "研究台股 price-time priority 下的 fill／partial-fill／cancel；公開 top5 僅能建立 QUEUE_AHEAD_PROXY，精確 queue rank 維持 UNKNOWN；角色限定 execution confidence，不轉選股 Alpha。"
+          "status": "MECHANISM_PLUS_FALSIFICATION_DEFINED / OWN_PIT_EVIDENCE_PENDING",
+          "next": "研究台股 price-time priority 下的 fill／partial-fill／cancel；公開 top5 僅能建立 QUEUE_AHEAD_PROXY，精確 queue rank 維持 UNKNOWN；角色限定 execution confidence，不轉選股 Alpha。",
+          "researchNote": "Queue Position / Order Priority: TWSE continuous trading uses price-time priority, but public top-five data cannot reveal exact personal queue position. Queue role is execution confidence only, not stock-selection alpha."
         },
         {
           "id": "D05-14",
@@ -599,10 +602,10 @@
           "next": "從理論、定義、機制與反證開始，建立 D05-14 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
         }
       ],
-      "status": "D05-11_12_13_L2 / EVENT_LEDGER_AND_OWN_ORDER_LIFECYCLE_PENDING",
-      "exactNextContinuationPoint": "D05-HORIZON-06: D05-11/12/13 mechanism layer is frozen at L2. Next empirical gate still requires prospective authenticated Books+Trades plus own broker/order lifecycle if available. First validate provider clock/reconnect/missing-event semantics and 1s/5s/15s common-support QA. Then separate four estimands: E1 implementation shortfall, E2 causal market impact (matched no-order/counterfactual required), E3 signed post-fill adverse markout, E4 queue/fill confidence (exact queue rank UNKNOWN from public top5). Keep B0 activity/midquote-vol -> B1 spread/top1 -> B2 pressure-response -> B3 one top5 block; no VPIN ready factor, no universal square-root coefficient, no queue alpha gate. D05-14 remains unstudied.",
-      "lastResearchUpdate": "2026-10-03T13:55:00+08:00",
-      "researchNote": "D05-11 Market Impact, D05-12 Adverse Selection/Order-flow Toxicity and D05-13 Queue Position/Order Priority advanced L0->L2 after mechanism + falsification freeze. Market impact is separated from implementation shortfall/slippage; causal self-impact requires own-order lifecycle plus counterfactual. Adverse selection is measured first as signed post-fill markout, never inferred informed intent; VPIN not adopted. TWSE continuous trading price-time priority gives queue position economic meaning, but public top5 cannot reveal exact personal queue rank. Queue role remains execution confidence only. No own Taiwan PIT event/order evidence yet."
+      "status": "MECHANISM_EXPANDED / D05-11_12_13_L2 / EVENT_LEDGER_PENDING",
+      "exactNextContinuationPoint": "D05-NEXT-01: one completed segment is frozen. Next segment may begin with D05-14 Market Integrity / Abnormal Trading Patterns from L0, while legacy D05-HORIZON evidence gate remains unchanged: no true OFI, causal self-impact, toxicity inference or exact queue rank without prospective authenticated event/order-lifecycle evidence. D05-11/12/13 next empirical stage requires own order lifecycle + Books/Trades + replay/common-support controls; no Formal gate/action mapping.",
+      "lastResearchUpdate": "2026-10-03T18:26:00+08:00",
+      "researchNote": "D05 curriculum expanded to 14 modules. D05-11 Market Impact, D05-12 Adverse Selection/Order-flow Toxicity, and D05-13 Queue Position/Order Priority now have frozen mechanism, falsification, data requirements and anti-misuse contracts and advance L0->L2 only. No own Taiwan PIT order-lifecycle/event-ledger evidence yet, so no L3. Queue remains owner-approved execution-confidence capability, not alpha gate. Exact self-impact, informed-trader intent and exact public-top5 queue rank remain UNKNOWN."
     },
     {
       "id": "D06",
@@ -1552,7 +1555,7 @@
         "CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md",
         "EVENT_RISK_CHECKPOINT.md"
       ],
-      "maturityPct": 50.5,
+      "maturityPct": 51.6,
       "modules": [
         {
           "id": "D11-01",
@@ -1686,12 +1689,12 @@
         {
           "id": "D11-15",
           "name": "IPO／Listing／Bookbuilding首次上市與詢價圈購",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「IPO／Listing／Bookbuilding首次上市與詢價圈購」。研究初級市場與特殊公司事件。需凍結事件條款、公告時間、生效日期、可交易日與失敗／撤案情境，並計入供給衝擊、鎖定期、交易限制與套利破局風險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_FALSIFICATION_FROZEN / TAIWAN_OFFICIAL_RULE_LANES_IDENTIFIED / HISTORICAL_PIT_CAPTURE_PENDING / OUTCOMES_CLOSED",
-          "next": "Freeze at least two independent Taiwan IPO lifecycles with range/final-price/first-trade clocks and include a failed/withdrawn/delayed control when available; preserve immutable source versions and capturedAt before L3."
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_DATE_LEVEL_FEASIBILITY_VALIDATED / MULTI_LIFECYCLE_AND_WITHDRAWAL_CONTROL / HISTORICAL_INTRADAY_FIRST_KNOWN_UNKNOWN / OUTCOMES_CLOSED",
+          "next": "Prospectively archive immutable IPO/bookbuilding versions with capturedAt; add failed/cancelled underwriting controls and exact bookbuilding range versions. Historical date-only rows must not be backdated intraday. Preregister outcomes before any return join."
         },
         {
           "id": "D11-16",
@@ -1734,10 +1737,10 @@
           "next": "Collect Taiwan merger/share-conversion/spin-off lifecycles with known-at terms, closing/break/reprice states and replicable hedge/borrow/cost evidence; do not duplicate D11-06 transaction-state evidence."
         }
       ],
-      "status": "SPECIAL_SITUATIONS_D11_15_19_L2 / EXISTING_PIT_MODULES_PRESERVED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "Accumulate immutable Taiwan PIT/version receipts for D11-15..19 across independent event lifecycles, explicitly including failure/withdrawal/extension/reprice states; preserve existing CA-113/114 archive gates and do not open outcomes before preregistration.",
+      "status": "D11_15_L3_TAIWAN_PIT_DATE_LEVEL / SPECIAL_SITUATIONS_PROGRESS_PRESERVED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "Continue D11-16..19 PIT lifecycle receipts; for D11-15 add prospective immutable bookbuilding/auction versions and failed/cancelled controls before any L4 outcome work. Preserve CA-113/114 archive gates.",
       "lastResearchUpdate": "2026-10-03",
-      "researchNote": "D11-15..19 advanced L0->L2 after mechanism, counterevidence, multi-clock state machines, failure states, PIT/UNKNOWN/revision/selection-bias/cost/redundancy contracts were frozen. L3 remains closed pending Taiwan first-known/versioned replay evidence. Formal Core unchanged."
+      "researchNote": "D11-15 advanced L2->L3 from bounded official TWSE listing/auction/public-subscription lifecycles plus a dated withdrawal/reapplication negative control. Historical intraday first-known remains UNKNOWN; L3 is date-level Taiwan PIT/source feasibility only."
     },
     {
       "id": "D12",
@@ -2875,14 +2878,14 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Policy／Regulatory Event Clock／Surprise政策法規事件時鐘與預期差」。研究政策與法規事件的首次已知時間、預期差、受益受害與半衰期；必須與 D10（供應鏈）及 D13（總經／地緣）分工，事件本身不等於方向性交易訊號。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "POLICY_DRAFT_DECISION_EFFECTIVE_CLOCK_FROZEN / SURPRISE_EXPECTATION_REQUIRED / TAIWAN_PIT_CAPTURE_PENDING / OUTCOMES_CLOSED",
-          "next": "Prospectively capture independent Taiwan draft/consultation, final-decision and effective-date versions; archive an ex-ante expectation source before computing surprise, otherwise keep surprise UNKNOWN."
+          "status": "POLICY_CLOCK_SUBLANE_TAIWAN_PIT_FEASIBLE / SURPRISE_EXPECTATION_SOURCE_NEEDED / KEEP_L2 / OUTCOMES_CLOSED",
+          "next": "Archive ex-ante expectation sources before independent Taiwan policy decisions; otherwise keep surprise UNKNOWN. Prospectively preserve raw draft/final/effective versions with capturedAt. Do not infer surprise from market reaction."
         }
       ],
-      "status": "D17_14_L2_POLICY_EVENT_CLOCK_FROZEN / EXISTING_D17_PROGRESS_PRESERVED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "For D17-14, prospectively capture Taiwan draft/final/effective policy vintages and archive ex-ante expectations; in parallel preserve existing D17-01/02/09 multi-day source coverage work. Surprise stays UNKNOWN without a compatible pre-event expectation.",
+      "status": "D17_14_CLOCK_SUBLANE_FEASIBLE_SURPRISE_BLOCKED / EXISTING_D17_PROGRESS_PRESERVED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D17-14: validate an ex-ante expectation source lane on independent policy events; D17-01/02/09: continue multi-day source/version coverage. Policy effective dates never backdate first-known.",
       "lastResearchUpdate": "2026-10-03",
-      "researchNote": "D17-14 advanced L0->L2. Draft/consultation, final decision, implementing rule, effective date and later revision/cancellation are separate clocks; market reaction cannot be reverse-engineered into surprise. L3 remains closed pending Taiwan PIT/versioned replay evidence."
+      "researchNote": "D17-14 official draft/final/effective history is date-level PIT-feasible, including retroactive and mixed-effective counterexamples, but the full module stays L2 because no ex-ante expectation archive supports Surprise."
     },
     {
       "id": "D18",

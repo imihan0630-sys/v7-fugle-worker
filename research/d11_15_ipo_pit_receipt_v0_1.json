@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-03T18:23:55+08:00",
+  "owner": "08｜事件與新聞研究室",
+  "module": "D11-15",
+  "status": "TAIWAN_PIT_DATE_LEVEL_FEASIBILITY_VALIDATED / INTRADAY_NATIVE_AVAILABILITY_UNPROVEN / OUTCOMES_CLOSED",
+  "formalCoreImpact": "NONE",
+  "sources": [
+    {
+      "name": "TWSE 最近上市公司",
+      "url": "https://www.twse.com.tw/rwd/zh/company/newlisting?response=html",
+      "quality": "OFFICIAL_CURRENT_ARCHIVE / DATE_LEVEL"
+    },
+    {
+      "name": "TWSE 競價拍賣公告",
+      "url": "https://www.twse.com.tw/announcement/auction?response=html",
+      "quality": "OFFICIAL_ARCHIVE / DATE_LEVEL"
+    },
+    {
+      "name": "TWSE 公開申購公告",
+      "url": "https://www.twse.com.tw/announcement/publicForm?response=html&yy=2026",
+      "quality": "OFFICIAL_ARCHIVE / DATE_LEVEL"
+    },
+    {
+      "name": "TWSE 6921 撤回申請新聞稿",
+      "url": "https://www.twse.com.tw/staticFiles/news/news/tsecnews/8a8216d69734b5c301973fda5b080039.pdf",
+      "sourceDate": "2025-06-05",
+      "quality": "OFFICIAL_DATED_PDF"
+    },
+    {
+      "name": "承銷處理辦法第23條",
+      "url": "https://twse-regulation.twse.com.tw/TW/law/DOC01.aspx?FLCODE=fl007541&FLNO=23",
+      "quality": "OFFICIAL_RULE"
+    }
+  ],
+  "cases": [
+    {
+      "symbol": "7855",
+      "name": "和運租車",
+      "outcome": "LISTED",
+      "applicationDate": "2026-04-14",
+      "reviewDate": "2026-05-22",
+      "boardApprovalDate": "2026-06-16",
+      "contractFiledDate": "2026-06-24",
+      "auctionBidStart": "2026-07-27",
+      "auctionBidEnd": "2026-07-29",
+      "auctionOpenDate": "2026-07-31",
+      "minimumBidPrice": 35.59,
+      "lowestWinningPrice": 38.1,
+      "highestWinningPrice": 430,
+      "weightedAverageWinningPrice": 47.11,
+      "actualUnderwritingPrice": 42,
+      "publicSubscriptionStart": "2026-07-30",
+      "publicSubscriptionEnd": "2026-08-03",
+      "validApplications": 370609,
+      "winningRatePct": 3.88,
+      "firstTradableSession": "2026-08-11"
+    },
+    {
+      "symbol": "2237",
+      "name": "華德動能",
+      "outcome": "INNOVATION_BOARD_LISTED",
+      "applicationDate": "2025-12-23",
+      "reviewDate": "2026-02-03",
+      "boardApprovalDate": "2026-02-24",
+      "contractFiledDate": "2026-03-09",
+      "auctionBidStart": "2026-07-24",
+      "auctionBidEnd": "2026-07-28",
+      "auctionOpenDate": "2026-07-30",
+      "minimumBidPrice": 22,
+      "lowestWinningPrice": 24.5,
+      "highestWinningPrice": 40,
+      "weightedAverageWinningPrice": 26.66,
+      "publicSubscriptionStatedPrice": 28.6,
+      "actualUnderwritingPrice": 26.66,
+      "firstTradableSession": "2026-08-10"
+    },
+    {
+      "symbol": "6921",
+      "name": "嘉雨思",
+      "outcome": "WITHDRAWN_THEN_REAPPLIED_AND_LISTED",
+      "firstApplicationDate": "2025-04-25",
+      "withdrawalSourceDate": "2025-06-05",
+      "reapplicationDate": "2025-08-27",
+      "reviewDate": "2025-10-02",
+      "boardApprovalDate": "2025-10-28",
+      "contractFiledDate": "2025-11-04",
+      "actualUnderwritingPrice": 35,
+      "firstTradableSession": "2025-12-23",
+      "role": "NEGATIVE_CONTROL_FOR_SUCCESS_ONLY_SURVIVORSHIP"
+    }
+  ],
+  "pitRules": [
+    "Date-only historical evidence does not authenticate intraday first-known; do not backdate to market-open or decision time.",
+    "Prospective captures must preserve capturedAt and append revisions.",
+    "Application, underwriting, final price, withdrawal/reapplication and first-trade are separate states.",
+    "WITHDRAWN/FAILED/POSTPONED/CANCELLED paths remain in the denominator."
+  ],
+  "counterevidence": [
+    "Success-only IPO samples create survivorship bias.",
+    "Stated/reference price can differ from actual underwriting price.",
+    "Allocation probability makes offer-to-market returns non-attainable for many investors.",
+    "Current archive pages do not prove historical intraday availability.",
+    "No return or listing-day outcome was inspected."
+  ],
+  "maturityDecision": {
+    "from": "L2",
+    "to": "L3",
+    "scope": "TAIWAN_PIT_SOURCE_FEASIBILITY_AT_DATE_LEVEL",
+    "intradayFirstKnown": "UNKNOWN"
+  },
+  "outcomesOpened": false,
+  "formalOptimizationCandidate": false,
+  "exactNext": "Add prospective immutable IPO/bookbuilding version captures and failed/cancelled underwriting controls before any preregistered outcome cohort."
+}

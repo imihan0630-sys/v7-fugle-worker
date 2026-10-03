@@ -1031,3 +1031,20 @@ Status: MINIMAL_PATH_BASIS_FROZEN / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / RU
 - D16/statistical validation owns future censored-event estimator choice.
 
 Status: FIRST_EVENT_PIT_SPEC_FROZEN / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / RUNTIME_NO_GO / FORMAL_CORE_LOCKED.
+
+## Room 08 continuation — D11-15 L3 IPO PIT + D17-14 clock-lane evidence — 2026-10-03
+
+Room 08 added two durable receipts:
+- `research/d11_15_ipo_pit_receipt_v0_1.json`
+- `research/d17_14_policy_clock_receipt_v0_1.json`
+
+Shared conclusions:
+- D11-15 IPO/Listing/Bookbuilding advances L2 -> L3 for Taiwan date-level PIT/source feasibility. Withdrawn/reapplied cases remain part of the population; historical intraday first-known is still UNKNOWN.
+- D17-14 policy clock sublane is date-level PIT-feasible, but the full module stays L2 because policy Surprise requires a separately archived ex-ante expectation source.
+- Publication, legal effective date and market observability are different clocks. Retroactive legal effect cannot backdate information.
+- No outcome evidence and no Formal Core impact.
+
+Current Room 08 canonical maturity after this update:
+- D11 = 51.6%
+- D17 = 41.4%
+- Room 08 module-weighted = 47.3%
