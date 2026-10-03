@@ -210,3 +210,54 @@ Formal optimization candidate: NONE.
 5. Produce immutable prediction receipts before outcome maturity.
 6. Evaluate row-weighted and date-balanced OOS metrics plus Regime occupancy.
 7. Only after executable PIT replay feasibility may L3 be considered; only after genuine OOS/Prospective Shadow may L4 be considered.
+
+
+## Bounded first executable study — outcome-blind freeze
+
+The first executable D16-16 study is intentionally narrow and reuses an already-frozen research outcome rather than inventing a new target after seeing results.
+
+### Target and horizon
+- parent population: only promotion-grade clean parent decision receipts satisfying repository PIT, source-generation, symbol-session and technical-continuity contracts;
+- target: raw non-overlapping D5 forward close-to-close return already defined by the D03 momentum-continuation contract;
+- horizon: exact future symbol sessions, never next-available-row;
+- outcome maturity: D5 remains unavailable to fitting until future sessions mature;
+- corporate-action/suspension ambiguity => UNKNOWN/BLOCKED, never zero.
+
+D10/D20 remain later experiment-family members and cannot be opened because D5 performs poorly.
+
+### Baseline and challenger
+Primary baseline: expanding-window historical mean D5 return using only mature training parents.
+Primary challenger: AR(1) on the parent-level date-balanced D5-return series, fit on identical training parents.
+No lag, window, Regime threshold, transformation or horizon search is permitted in epoch one.
+
+### Independence firewall
+Primary series uses one date-balanced parent observation per eligible decision date, not stock rows. Stock-row diagnostics remain secondary. Panel/cross-sectional modeling belongs to D16-17.
+
+### Regime role
+D18 Regime fields are captured at the parent decision clock but are attribution-only in epoch one. Report OOS error, coverage, UNKNOWN occupancy and episode counts by PIT-observable Regime; do not choose a model per Regime. A Regime-conditioned model requires a new preregistered epoch.
+
+### Chronological split receipt
+Each forecast receipt stores experimentId, forecastOriginDate, decisionTimestamp, trainStartDate, trainThroughDate, eligibleTrainingDateCount, purgedTrainingDateCount/reason, targetId/horizon, model/baseline/feature/preprocessing versions, parentGenerationId/hash, prediction, predictionWrittenAt, outcomeEligibleAfter, origin-time Regime snapshot/version, source/continuity status and UNKNOWN/BLOCKED reason. Prediction receipt immutability is required before D5 maturity.
+
+### Purge rule
+A training parent is ineligible when its D5 outcome interval is not fully mature before the forecast-origin decision timestamp. Purging follows exact symbol/session outcome intervals, not an arbitrary five-row gap. Incomplete parent-date coverage is reported and may fail the parent under the frozen completeness rule.
+
+### Adversarial leakage tests
+The research harness must fail when: (1) scaler/imputer sees an outer-test date; (2) model parameters use a parent whose D5 label matures after origin; (3) prediction is written after D5 is already available; (4) hindsight Regime replaces origin-time Regime; (5) missing/BLOCKED outcome becomes zero; (6) same-date stock rows inflate independent-origin count; (7) D10/D20 or alternative lags are opened after D5 inspection and reported as original-family evidence.
+
+### Falsification and alternatives
+Support mechanism: stable short-memory dependence could let frozen AR(1) improve OOS error versus expanding mean.
+Counterevidence: no chronological OOS gain; sign reversal across independent Regime episodes; gain vanishes after date balancing; one calendar episode dominates; plausible cost/decision mapping removes value; Prospective Shadow diverges from replay.
+Alternative explanations include volatility clustering, changing cross-sectional composition, source/coverage drift, corporate-action/suspension censoring and one crisis/trend episode domination.
+
+If AR(1) fails, D16-16 does not automatically escalate complexity. The conclusion is no incremental evidence for this challenger; a model zoo requires a new registered question.
+
+### Promotion boundary
+This freeze adds specificity, not executable Taiwan PIT evidence. Proposed L2 remains unchanged. L3 requires implemented/replay-tested PIT receipts; L4 requires genuine untouched OOS or Prospective Shadow. Formal Core remains locked.
+
+## Updated exact continuation
+1. Implement research-only split/prediction receipt validator for frozen D5 date-level target, expanding-mean baseline and AR(1) challenger.
+2. Add seven adversarial leakage fixtures before opening real outcomes.
+3. Re-read latest main and shared D03 outcome/session contracts before wiring parents.
+4. Generate immutable predictions only on future eligible parent generations; historical data may test mechanics but cannot become Prospective Shadow.
+5. When D5 matures, compare date-balanced OOS error and coverage first; Regime remains attribution-only until a separately registered conditional-model epoch.
