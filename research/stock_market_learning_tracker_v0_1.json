@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T19:02:00+08:00",
+  "updatedAt": "2026-10-03T18:52:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 36
+    "maturityWeightedPct": 36.3
   },
   "domains": [
     {
@@ -3386,7 +3386,7 @@
         "CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md",
         "CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md"
       ],
-      "maturityPct": 7.3,
+      "maturityPct": 12.7,
       "modules": [
         {
           "id": "D21-01",
@@ -3401,22 +3401,22 @@
         {
           "id": "D21-02",
           "name": "Board／Independent Directors董事會與獨立董事",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Board／Independent Directors董事會與獨立董事」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / KEEP_ROLE_LIMITED / CONTEXT_ONLY / CONFIDENCE / GOVERNANCE_TAIL_RISK. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_FALSIFICATION_FROZEN / PIT_BOARD_REPLAY_PENDING / CONTEXT_ONLY / CONFIDENCE / GOVERNANCE_TAIL_RISK",
-          "next": "建立兩個上市公司歷史董事會 PIT replay：鎖定選任／就任 known_at、任期、控制股東關聯、委員會席次、專長、忙碌度與董總角色；比較強制與自願設置情境。可靠重播前不得升 L3。"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / CONTEXT_ONLY / CONFIDENCE / GOVERNANCE_TAIL_RISK",
+          "next": "擴大歷史董事會樣本並建立前瞻／樣本外驗證；至少控制法規最低席次、超額獨董席次、控制股東關聯、強制／自願設置、忙碌度、專長、委員會角色與董總兼任。未取得前瞻或 OOS 證據前不得升 L4。"
         },
         {
           "id": "D21-03",
           "name": "Insider Ownership／Trading內部人持股與交易",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Insider Ownership／Trading內部人持股與交易」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D21-03 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_FALSIFICATION_FROZEN / HISTORICAL_MOPS_REPLAY_PENDING / RESEARCH_ONLY",
+          "next": "建立至少一筆事前持股轉讓申報與一筆月度持股變動的歷史 MOPS PIT replay；分離意圖申報與實際持股變化時間軸，保留轉讓方式／目的、關係人彙總、質押狀態與完成狀態，再測試多位內部人群聚是否超越事件規模與前期報酬。"
         },
         {
           "id": "D21-04",
@@ -3499,10 +3499,10 @@
           "next": "從理論、定義、機制與反證開始，建立 D21-13 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
         }
       ],
-      "status": "D21_01_L2_PARTIAL_PIT_REPLAY / D21_02_L2_MECHANISM_FALSIFICATION_FROZEN / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "建立兩個上市公司歷史董事會 PIT replay：鎖定選任／就任 known_at、任期、控制股東關聯、委員會席次、專長、忙碌度與董總角色；比較強制與自願設置情境。可靠重播前不得升 L3。 D21-01 原始 MOPS known_at 缺口維持待補，不因此空轉。",
-      "lastResearchUpdate": "2026-10-03T14:11:00+08:00",
-      "researchNote": "D21-01 two-company replay prototype froze both naive-threshold failure modes and a source-provenance failure: ADR/custody lines can create false controller positives, while related group networks can evade single-holder thresholds; exact original MOPS first-known timestamps remain unresolved so L3 stays closed. D21-02 advances to L2 after conflicting Taiwan evidence rejects a monotonic independent-director-count rule; future testing focuses on controller affiliation, appointment context, busyness, expertise and committee/leadership interactions. Formal Core unchanged."
+      "status": "D21_01_L2_PARTIAL_PIT_REPLAY / D21_02_L3_TAIWAN_PIT_VALIDATED / D21_03_L2_MECHANISM_FALSIFICATION_FROZEN / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "建立至少一筆事前持股轉讓申報與一筆月度持股變動的歷史 MOPS PIT replay；分離意圖申報與實際持股變化時間軸，保留轉讓方式／目的、關係人彙總、質押狀態與完成狀態，再測試多位內部人群聚是否超越事件規模與前期報酬。 D21-01 原始 MOPS 年報首次公開時間戳缺口維持待補，不阻塞 D21-03。",
+      "lastResearchUpdate": "2026-10-03T18:52:00+08:00",
+      "researchNote": "D21-02 historical board replay validated core Taiwan PIT feasibility using TSMC and Formosa Plastics 2024 board resets. Raw independent-director ratio is confounded by regulatory floors; research must separate applicable legal floor, excess independent seats and trigger type. D21-03 established asymmetric event clocks for ex-ante transfer filings versus delayed monthly holding changes and freezes intention-vs-completion, pledge, role, cluster, prior-return and non-directional transfer confounders. Formal Core unchanged."
     },
     {
       "id": "D22",
