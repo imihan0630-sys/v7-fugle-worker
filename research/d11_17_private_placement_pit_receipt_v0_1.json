@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-03T23:17:00+08:00",
+  "owner": "08｜事件與新聞研究室",
+  "module": "D11-17",
+  "title": "Secondary Offering／Private Placement後續發行與私募",
+  "status": "TAIWAN_PIT_SOURCE_FEASIBILITY_VALIDATED / PRIVATE_PLACEMENT_MULTI_CLOCK_CONTRACT / OUTCOMES_CLOSED",
+  "formalCoreImpact": "NONE",
+  "purpose": "Validate Taiwan private-placement lifecycle source feasibility while keeping public offering, private placement, registered, listed and tradable spaces distinct.",
+  "officialSourceContract": [
+    {
+      "name": "TWSE/FSC private-placement disclosure rules",
+      "url": "https://twse-regulation.twse.com.tw/TW/law/DAT0201.aspx?FLCODE=FL037281",
+      "fields": [
+        "private security type",
+        "shareholder resolution date",
+        "amount",
+        "unit price",
+        "pricing basis",
+        "total units",
+        "payment completion date",
+        "delivery date",
+        "maturity date when applicable",
+        "reason",
+        "subscribers and relationship"
+      ],
+      "timing": "payment/value completion +15 days for required MOPS reporting; listed/OTC issuers also have earlier board/pricing disclosure duties under applicable rules",
+      "quality": "OFFICIAL_RULE_AND_MOPS_DATA_CONTRACT"
+    },
+    {
+      "name": "Securities and Exchange Act / post-private-placement transfer restriction",
+      "url": "https://law.fsc.gov.tw/",
+      "finding": "Private-placement securities have restricted transfer conditions and later public-issuance/listing gates; delivery and public tradability are not the same clock.",
+      "quality": "OFFICIAL_LAW"
+    },
+    {
+      "name": "MOPS private-placement area",
+      "url": "https://mops.twse.com.tw/mops/web/t120sb02_q10",
+      "finding": "MOPS publicly exposes a dedicated private-placement area and related-subscriber disclosure surfaces.",
+      "quality": "OFFICIAL_PUBLIC_SURFACE"
+    }
+  ],
+  "boundedCases": [
+    {
+      "issuer": "6648 斯其大",
+      "proposalDate": "2026-03-23",
+      "proposalSource": "issuer official investor-relations page",
+      "proposalUrl": "https://das.com.tw/ch/events.html",
+      "plannedMaxShares": 10000000,
+      "pricingState": "TBD_AT_PROPOSAL",
+      "transferRestriction": "three-year restricted transfer disclosed by issuer",
+      "laterCompletion": {
+        "date": "2026-08-24",
+        "round": "second 2026 private placement",
+        "shares": 2500000,
+        "proceedsNTD": 31500000,
+        "sourceQuality": "MOPS announcement text preserved by financial-institution/news mirrors; native dynamic MOPS item not immutably archived in this receipt"
+      },
+      "role": "SUCCESSFUL_LIFECYCLE_WITNESS"
+    },
+    {
+      "issuer": "2314 台揚",
+      "failureStates": [
+        {
+          "date": "2026-06-17",
+          "state": "PAYMENT_NOT_FULLY_COLLECTED / RESCHEDULE",
+          "note": "private-placement payment was not fully collected within the deadline"
+        },
+        {
+          "date": "2026-08-10",
+          "state": "PRICING_ROUND_CANCELLED_OR_RESCHEDULED",
+          "note": "2026-07-27 pricing decision could not complete payment by 2026-08-10; event was to be rescheduled"
+        }
+      ],
+      "sourceQuality": "MOPS announcement text replicated by multiple public mirrors; used as failure-branch evidence, not native first-known attestation",
+      "role": "FAILURE_AND_REVISION_CONTROL"
+    },
+    {
+      "issuer": "2465 麗臺",
+      "evidenceFromRepo": [
+        "25,000,000 private-placement common shares explicitly excluded from public listed-common supply in the relevant listing-stage contract",
+        "10,000,000 payment certificates became tradable 2025-11-17 as a distinct instrument stage",
+        "2026-01-06 registration approval and 2026-01-16 ordinary-share conversion/listing are later clocks",
+        "MI_QFIIS 93,946,031 reporting state is not interchangeable with registered-issued/listed/tradable truth"
+      ],
+      "sourceFiles": [
+        "research/corporate_action_2465_payment_certificate_resolution_v0_1.json",
+        "research/corporate_action_2465_payment_certificate_resolution_v0_2.json",
+        "research/corporate_action_event_state_reconstruction_contract_v0_1.json"
+      ],
+      "role": "INSTRUMENT_AND_DENOMINATOR_SEMANTIC_COUNTEREVIDENCE"
+    }
+  ],
+  "frozenStateMachine": [
+    "PROPOSAL",
+    "SHAREHOLDER_AUTH",
+    "PRICING",
+    "SUBSCRIBER_FIXED",
+    "PAYMENT_COMPLETE",
+    "DELIVERY",
+    "RESTRICTED_HOLDING",
+    "PUBLIC_ISSUANCE_ELIGIBILITY",
+    "LISTING_OR_OTHER_EXIT",
+    "CANCELLED_OR_RESCHEDULED",
+    "UNKNOWN"
+  ],
+  "falsification": [
+    "authorization does not imply payment completion",
+    "pricing does not imply funds were collected",
+    "payment completion does not imply immediate public tradability",
+    "private-placement shares are not interchangeable with public listed-common or free-float supply",
+    "failed/rescheduled rounds must remain in the event population",
+    "later conversion/listing states cannot be backfilled to earlier dates",
+    "dilution has no preassigned bullish/bearish sign"
+  ],
+  "pitRules": [
+    "Preserve sourcePublishedAt/capturedAt separately; current mirrored MOPS timestamps do not authenticate historical API availability.",
+    "Append cancellation/revision states; never latest-wins overwrite.",
+    "Use exact instrument and denominator space at each stage.",
+    "Missing native event version stays UNKNOWN."
+  ],
+  "maturityDecision": {
+    "from": "L2",
+    "to": "L3",
+    "scope": "TAIWAN_PIT_SOURCE_AND_EVENT_STATE_FEASIBILITY",
+    "limitations": [
+      "not a complete market-wide historical archive",
+      "native intraday availability not authenticated for every bounded case",
+      "exact 2465 daily listed/tradable denominator remains a separate CA-113/114 archive gate"
+    ]
+  },
+  "outcomesOpened": false,
+  "formalOptimizationCandidate": false,
+  "exactNext": "Build immutable native MOPS private-placement receipts across >=2 independent issuers including one successful and one failed/cancelled round; reconcile exact delivery/restricted-trading/public-issuance clocks before any L4 outcome study."
+}
