@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_PIT_READINESS_PASS",
+  "module": "D02-08",
+  "oldLevel": "L2",
+  "oldMaturityPct": 40,
+  "newLevel": "L3",
+  "newMaturityPct": 60,
+  "evidenceCursor": "PVE-239",
+  "formalCoreChanged": false,
+  "formalOptimizationCandidate": "NONE",
+  "observableConstruct": "PROVIDER_TRADE_PRESSURE_PROXY",
+  "formula": "(deltaAtAsk-deltaAtBid)/(deltaAtAsk+deltaAtBid)",
+  "sourceFamily": [
+    "Fugle Intraday Quote cumulative tradeVolume/AtBid/AtAsk/transaction",
+    "Fugle Intraday Volumes",
+    "Fugle Intraday Trades"
+  ],
+  "executableArtifacts": [
+    "research/d02_provider_trade_pressure_proxy_v0_1.mjs",
+    "tests/test_d02_provider_trade_pressure_proxy_v0_1.mjs"
+  ],
+  "execution": {
+    "runtime": "Node.js v22.16.0",
+    "tests": 14,
+    "status": "PASS"
+  },
+  "permanentFalseClaims": {
+    "trueOfiEligible": false,
+    "dynamicAbsorptionEligible": false,
+    "participantIntentEligible": false
+  },
+  "preserve": [
+    "unclassifiedVolume",
+    "classificationCoverage",
+    "sourceFetchedAt",
+    "providerTime",
+    "symbol/type/exchange/date identity"
+  ],
+  "governance": "OBSERVATION / RESEARCH_ONLY / PROXY_ONLY / INTENT_UNIDENTIFIED",
+  "alphaStatus": "UNKNOWN",
+  "l4Status": "NOT_REACHED"
+}
