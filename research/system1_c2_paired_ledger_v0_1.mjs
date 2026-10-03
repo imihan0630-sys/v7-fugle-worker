@@ -40,8 +40,21 @@ export function buildC2ProspectivePairedLedger(pages,{watchUntil=null,revalidate
     const shortLifecycle=challenge(raw,source.decisionAt,{strategy:"SHORT",watchUntil,revalidatedAt});
     const swingLifecycle=challenge(raw,source.decisionAt,{strategy:"SWING",watchUntil,revalidatedAt});
     const missingSafety=SAFETY.filter(id=>observed.gates[id]?.status!=="PASS");
+    const selectionContext={
+      close:typeof raw.feature?.close==="number"&&Number.isFinite(raw.feature.close)?raw.feature.close:null,
+      depthScore:typeof raw.feature?.depthScore==="number"&&Number.isFinite(raw.feature.depthScore)?raw.feature.depthScore:null,
+      spreadPercent:typeof raw.feature?.spreadPercent==="number"&&Number.isFinite(raw.feature.spreadPercent)?raw.feature.spreadPercent:null,
+      orderBookDepthGood:typeof raw.feature?.orderBookDepthGood==="boolean"?raw.feature.orderBookDepthGood:null,
+      lateStage:typeof raw.feature?.lateStage==="boolean"?raw.feature.lateStage:null,
+      ret20:typeof raw.feature?.ret20==="number"&&Number.isFinite(raw.feature.ret20)?raw.feature.ret20:null,
+      maDistance20Pct:typeof raw.feature?.maDistance20Pct==="number"&&Number.isFinite(raw.feature.maDistance20Pct)?raw.feature.maDistance20Pct:null,
+      channel:["A","B"].includes(raw.derived?.channel)?raw.derived.channel:null,
+      entryGeometry:raw.derived?.entryGeometry&&typeof raw.derived.entryGeometry==="object"?structuredClone(raw.derived.entryGeometry):null,
+      provenance:{authenticated:true,parentId:source.generationId,sessionDate:source.sessionDate,knownAt:source.decisionAt}
+    };
     return {
       symbol,pool:observed.pool,sessionDate:source.sessionDate,parentId:source.generationId,
+      selectionContext,
       formal:{qualified:raw.formalResult?.ok??null,selected:raw.formalResult?.selected??null,
         firstFailure:raw.formalResult?.reason??"UNKNOWN"},
       short:{gateStatus:short.status,failedGates:short.fail,unknownGates:short.unknown,
