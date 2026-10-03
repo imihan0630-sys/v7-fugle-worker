@@ -359,6 +359,34 @@ export function evaluateBinaryPredictionsV01({
     ? Number.POSITIVE_INFINITY
     : mean(logLossTerms);
   const empiricalRate = mean(eligible.map((x) => x.outcome));
+  const meanPredictedProbability = mean(eligible.map((x) => x.predictedProbability));
+  const calibrationInTheLargeGap = meanPredictedProbability - empiricalRate;
+
+  const dateGroups = new Map();
+  for (const row of eligible) {
+    if (!dateGroups.has(row.scanDate)) dateGroups.set(row.scanDate, []);
+    dateGroups.get(row.scanDate).push(row);
+  }
+  const dateDiagnostics = Object.fromEntries(
+    [...dateGroups.entries()].sort(([a],[b]) => a.localeCompare(b)).map(([scanDate, rows]) => {
+      const dateLogTerms = rows.map((x) => exactBinaryLogLoss(x.predictedProbability, x.outcome));
+      return [scanDate, {
+        n:rows.length,
+        empiricalOutcomeRate:mean(rows.map((x) => x.outcome)),
+        meanPredictedProbability:mean(rows.map((x) => x.predictedProbability)),
+        brierScore:mean(rows.map((x) => (x.predictedProbability - x.outcome) ** 2)),
+        logLoss:dateLogTerms.some((x) => !Number.isFinite(x))
+          ? Number.POSITIVE_INFINITY
+          : mean(dateLogTerms),
+      }];
+    }),
+  );
+  const dateRows = Object.values(dateDiagnostics);
+  const dateBalancedBrierScore = mean(dateRows.map((x) => x.brierScore));
+  const dateBalancedLogLoss = dateRows.some((x) => !Number.isFinite(x.logLoss))
+    ? Number.POSITIVE_INFINITY
+    : mean(dateRows.map((x) => x.logLoss));
+
 
   let frozenBaseRate = null;
   let baseRateBrier = null;
@@ -475,8 +503,13 @@ export function evaluateBinaryPredictionsV01({
     independentScanDateCount:uniqueScanDates.length,
     scanDates:uniqueScanDates,
     empiricalOutcomeRate:empiricalRate,
+    meanPredictedProbability,
+    calibrationInTheLargeGap,
     brierScore:brier,
     logLoss,
+    dateBalancedBrierScore,
+    dateBalancedLogLoss,
+    dateDiagnostics,
     referenceBaseRate:frozenBaseRate,
     referenceBaseRateBrier:baseRateBrier,
     brierSkillVsFrozenBaseRate,
@@ -492,6 +525,8 @@ export function evaluateBinaryPredictionsV01({
       probabilityClippingApplied:false,
       probabilityNearHalfUsedAsUncertaintyProxy:false,
       thresholdOptimizationPerformed:false,
+      dateBalancedDiagnosticsReported:true,
+      rowWeightedScoresNotTreatedAsIndependentDateCount:true,
     },
     researchOnly:true,
     formalCoreImpact:false,

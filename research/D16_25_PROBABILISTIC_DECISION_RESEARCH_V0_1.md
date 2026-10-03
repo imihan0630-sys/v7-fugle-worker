@@ -730,3 +730,106 @@ For D15-19:
 Therefore dependency is confirmed, but immediate full merge is not justified by D16-25 alone. D15-19 specialist research is still required before retirement/absorption can be decided.
 
 FORMAL_OPTIMIZATION_CANDIDATE remains NONE.
+
+
+## 29. Date-balanced calibration / pseudo-replication firewall
+
+Row-weighted probability scores and date-balanced evidence answer different questions.
+
+Row-weighted Brier/log loss:
+- estimates average forecast quality per prediction/decision row;
+- is appropriate when each row is a genuine deployment decision;
+- can be dominated by a single scan date containing many rows.
+
+Date-balanced Brier/log loss:
+- first averages the score within each independent scan date;
+- then gives each date equal weight;
+- is a robustness diagnostic against pseudo-replication / one-large-cross-section dominance.
+
+Neither replaces the other.
+
+Required reporting when multiple rows can share a scan date:
+- row-weighted Brier/log loss;
+- independentScanDateCount;
+- per-date N / Brier / log loss;
+- date-balanced Brier/log loss;
+- calibration-in-the-large gap = mean predicted probability - empirical event rate.
+
+Interpretation:
+- a large disagreement between row-weighted and date-balanced scores is a warning that evidence is concentrated in a small number of large scan dates;
+- date-balanced evidence still does not create independence when adjacent dates share overlapping D+N outcomes or one persistent Regime episode;
+- D16/D18 purging / episode robustness remains separately required.
+
+The executable evaluator now implements these diagnostics and adversarial tests.
+
+## 30. External-methodology counterevidence retained
+
+### Proper scoring rules
+Gneiting & Raftery and related forecast-evaluation literature support using strictly proper scores for probability forecasts.
+
+Research implication:
+- hit rate / return spread alone cannot validate probability;
+- Brier and log loss remain primary binary calibration-quality scores;
+- proper scoring evaluates belief quality, not capital sizing.
+
+### Selective prediction / reject option
+Selective-classification research treats rejection/abstention as a risk-versus-coverage trade-off.
+
+Research implication:
+- ABSTAIN can improve accepted-subset quality only by sacrificing coverage;
+- accepted accuracy/value without coverage/opportunity-capture reporting is incomplete;
+- multiple operating points may be evaluated, but outcome-based best-threshold selection remains forbidden.
+
+### Calibration under covariate shift
+Calibration-under-shift research shows deployment confidence can become misleading when the input distribution changes.
+
+Research implication:
+- one historical/global calibration certificate is insufficient;
+- chronology / Regime / support shift must remain visible;
+- out-of-support evidence widens uncertainty or triggers ABSTAIN rather than silently reusing an old calibration.
+
+### Kelly under parameter uncertainty
+Bayesian Kelly literature shows allocation under unknown model parameters depends on posterior belief/state rather than a single fixed known edge.
+
+Research implication:
+- D16-25 owns the quality/uncertainty of the predictive belief;
+- D15-19 consumes that belief for a log-growth/capital-allocation problem;
+- Fractional Kelly is a downstream risk-scaling choice, not a substitute for calibration.
+
+These methodological anchors strengthen the separation between predictive validation and portfolio allocation rather than proving that the two curriculum modules are duplicates.
+
+## 31. D16-25 specialist completion status for D15-19 comparison
+
+D16-25 is now considered **specialist-complete at L2** for curriculum merge comparison.
+
+This means the following are no longer open conceptual questions on the D16 side:
+- target/horizon/action-conditioning identity;
+- PIT/label maturity;
+- base-rate/prior construction;
+- Bayesian double-counting guard;
+- probability calibration versus discrimination;
+- proper scoring / reliability;
+- uncertainty channels;
+- distribution/Regime shift;
+- ABSTAIN / selective decision risk-coverage semantics;
+- after-cost expected utility;
+- calibration-population / selection-bias firewall;
+- date-clustering robustness;
+- canonical PredictiveDecisionReceipt handoff;
+- strict sizing firewall;
+- D16 versus D15 responsibility boundary.
+
+Remaining blockers are **empirical maturity**, not missing D16-25 conceptual ownership:
+- genuine complete Taiwan PIT prediction population;
+- frozen real probability predictions;
+- matured outcomes;
+- real OOS/prospective calibration;
+- after-cost utility/coverage evidence.
+
+These blockers prevent L3/L4 promotion.
+They do NOT prevent D15-19 from now performing its own specialist research for the curriculum merge/retirement decision.
+
+Current merge-side conclusion remains:
+`D16_SIDE_READY / D15_SPECIALIST_RESEARCH_REQUIRED / DIRECT_FULL_MERGE_NOT_YET_JUSTIFIED`.
+
+FORMAL_OPTIMIZATION_CANDIDATE remains NONE.
