@@ -33,7 +33,7 @@ function deterministicSample(rows,n,seed){
 export function buildC3ResearchCaptureContract(c2Ledger,{
   formalSymbols=[],
   maxShadowSymbols,
-  sampleSeed="SYSTEM1_C3_CAPTURE_V0_1",
+  sampleSeed="SYSTEM1_C3_CAPTURE_V0_2",
   providerBudgetCallsPerSession=null,
   includeConditionalSafetyUnknown=true
 }={}){
@@ -57,19 +57,19 @@ export function buildC3ResearchCaptureContract(c2Ledger,{
 
   const cohort=eligible.filter(x=>formal.has(x.symbol)||shadowSet.has(x.symbol)).map(x=>({
     ...x,
-    captureSource:formal.has(x.symbol)?"REUSE_FORMAL_PV_CAPTURE":"EXTRA_RESEARCH_CANDLE_CAPTURE",
+    captureSource:formal.has(x.symbol)?"REUSE_FORMAL_PV_CAPTURE":"EXTRA_RESEARCH_CANDLE_QUOTE_CAPTURE",
     formalMonitoringTarget:formal.has(x.symbol),
     tradingAuthority:false,signalAuthority:false,pushAuthority:false,allocationAuthority:false
   })).sort((a,b)=>a.captureSource.localeCompare(b.captureSource)||a.symbol.localeCompare(b.symbol));
 
-  const extraCalls=sampledShadow.length*C3_CAPTURE_SLOTS.length;
+  const extraCandleCalls=sampledShadow.length*C3_CAPTURE_SLOTS.length;\n  const extraQuoteCalls=sampledShadow.length*C3_CAPTURE_SLOTS.length;\n  const extraCalls=extraCandleCalls+extraQuoteCalls;
   const budget=typeof providerBudgetCallsPerSession==="number"&&Number.isFinite(providerBudgetCallsPerSession)&&providerBudgetCallsPerSession>=0
     ? providerBudgetCallsPerSession
     : null;
   const budgetStatus=budget===null?"UNKNOWN":(extraCalls<=budget?"PASS":"FAIL");
 
   return {
-    schemaVersion:"SYSTEM1_C3_RESEARCH_CAPTURE_CONTRACT_V0_1",
+    schemaVersion:"SYSTEM1_C3_RESEARCH_CAPTURE_CONTRACT_V0_2",
     generationId:c2.generationId,sessionDate:c2.sessionDate,
     sourceC2Fingerprint:c2.fingerprint||null,
     sampleSeed,maxShadowSymbols,includeConditionalSafetyUnknown,
@@ -77,7 +77,7 @@ export function buildC3ResearchCaptureContract(c2Ledger,{
     eligibleN:eligible.length,eligibleFormalReuseN:existingFormal.length,
     eligibleShadowOnlyN:shadowOnly.length,capturedShadowOnlyN:sampledShadow.length,
     shadowSamplingFraction:shadowOnly.length?sampledShadow.length/shadowOnly.length:null,
-    extraCandleCallsPerSession:extraCalls,
+    extraCandleCallsPerSession:extraCandleCalls,\n    extraQuoteCallsPerSession:extraQuoteCalls,\n    extraProviderCallsPerSession:extraCalls,
     providerBudgetCallsPerSession:budget,
     providerBudgetStatus:budgetStatus,
     cohort,
