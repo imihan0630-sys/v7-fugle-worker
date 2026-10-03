@@ -2504,3 +2504,156 @@ Formal Core remains LOCKED.
 3. Preserve SLOOS as a separate lower-frequency credit-state object.
 4. Continue D13-16 central-bank balance sheet/system liquidity next; explicitly separate balance-sheet stocks, reserve/liquidity flows and market-price effects.
 5. No scalar macro score or Formal optimization before PIT/OOS incremental evidence.
+
+
+---
+
+## MC-107 — D13-16 central-bank balance sheet stock is not system liquidity
+
+A central-bank balance sheet must be read as an accounting identity, not a one-variable risk score.
+
+On the Federal Reserve balance sheet:
+- securities/other Reserve Bank assets are asset-side stocks;
+- reserve balances are liabilities;
+- Treasury General Account (TGA), reverse repos and currency are other liabilities.
+
+Therefore:
+`Fed total assets`
+and
+`reserve balances`
+are not synonyms.
+
+Reserve balances can move differently from total assets when non-reserve liabilities move.
+
+Status: BALANCE-SHEET-STOCK VS RESERVE-STATE FIREWALL FROZEN.
+
+---
+
+## MC-108 — TGA and ON RRP can mechanically redistribute Fed liabilities
+
+New York Fed balance-sheet explanations make the mechanism explicit:
+- TGA is Treasury's account at the Fed;
+- a TGA drawdown can mechanically raise banking-system reserves/liquidity absent offsets;
+- a TGA rebuild can drain reserves;
+- ON RRP is another liability that can absorb/release liquidity outside bank reserve balances.
+
+This means popular “liquidity” narratives need decomposition.
+
+A decline in TGA or ON RRP does not automatically mean permanent easing, and a rise does not automatically mean durable tightening.
+
+Status: LIABILITY-REDISTRIBUTION MECHANICS FROZEN.
+
+---
+
+## MC-109 — “net liquidity = Fed assets - TGA - ON RRP” is a heuristic, not a universal accounting identity
+
+The heuristic can be useful descriptively in some regimes, but it omits or compresses:
+- currency in circulation;
+- other deposits/liabilities;
+- reserve demand;
+- distribution of reserves across institutions;
+- standing repo / money-market conditions;
+- balance-sheet composition.
+
+It may also accidentally double-count information already captured by rates, dollar, VIX or financial-condition indexes.
+
+Therefore no single `netLiquidity` feature is admitted without:
+- exact component definition;
+- accounting purpose;
+- vintage clocks;
+- redundancy tests.
+
+Status: NET-LIQUIDITY FORMULA FIREWALL FROZEN.
+
+---
+
+## MC-110 — ample reserves is a regime, not a fixed threshold
+
+The Fed's implementation framework is an **ample reserves** system:
+- short-term rate control relies primarily on administered rates;
+- “ample” is a range, not a permanent reserve-balance number;
+- reserve demand can change with payment needs, regulations, growth and stress.
+
+Money-market conditions provide information on proximity to scarcity:
+- EFFR relative to IORB;
+- repo rates;
+- SRF usage;
+- ON RRP usage;
+- reserve distribution.
+
+Thus the same reserve-balance level can have different implications in different demand regimes.
+
+Status: RESERVE-AMPLENESS REGIME SEMANTICS FROZEN.
+
+---
+
+## MC-111 — H.4.1 supports decomposition, not next-day equity direction
+
+Federal Reserve H.4.1 reports factors affecting reserve balances, including:
+- securities held outright;
+- reverse repurchase agreements;
+- TGA;
+- currency;
+- other deposits/liabilities;
+- reserve balances.
+
+The source is weekly and has its own release/reference-date semantics.
+
+For Taiwan research, the first legitimate question is:
+**What changed in the reserve/liability mix and was that state already known before the Taiwan decision?**
+
+Not:
+**Did the Fed balance sheet rise, therefore buy equities?**
+
+Candidate first outputs:
+- reserve change;
+- TGA change;
+- RRP change;
+- reserve-drain decomposition;
+- balance-sheet stock/flow divergence.
+
+Status: H41 DECOMPOSITION CONTRACT FROZEN.
+
+---
+
+## MC-112 — Taiwan transmission and D13-16 maturity
+
+Possible Taiwan channels:
+- USD funding/liquidity;
+- Treasury/repo/discount-rate conditions;
+- global leverage/risk appetite;
+- cross-border capital flow;
+- U.S. technology valuation.
+
+Validation order:
+1. Taiwan domestic/sector state;
+2. U.S. rates;
+3. USD/TWD;
+4. VIX/credit/financial conditions;
+5. only then balance-sheet/liquidity decomposition.
+
+Mandatory falsification:
+- debt-limit/TGA episodes separated;
+- tax dates and Treasury settlements separated;
+- abundant/ample/stress regimes separated;
+- H.4.1 weekly clock aligned to Taiwan decision;
+- compare against financial-condition components;
+- no outcome-selected net-liquidity formula.
+
+D13-16 advances **L0 -> L2**.
+
+Machine contract:
+`research/d13_16_central_bank_liquidity_spec_v0_1.json`.
+
+No L3:
+- no source-attested multi-date Taiwan PIT receipt;
+- no incremental OOS evidence.
+
+Formal Core remains LOCKED.
+
+## Exact next continuation after MC-112
+
+1. Preserve official H.4.1 vintages and decompose reserve/TGA/RRP/currency movements source-only.
+2. Continue D13-17 trade/geopolitical/capital-flow transmission with event/flow clocks separated.
+3. Keep composite financial-condition/liquidity features behind component-level redundancy gates.
+4. No Formal macro/liquidity score before PIT/OOS evidence.
