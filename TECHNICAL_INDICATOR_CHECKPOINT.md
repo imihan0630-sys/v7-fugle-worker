@@ -2302,3 +2302,42 @@ Current status:
 3. Before System 2 resonance outcome testing, prove EMA64 canonical replay/state-lineage equivalence and keep EMA16/64 + Impulse as within-family evidence.
 4. When the raw receipt gate closes, TI-005 KD-vs-RSI remains first efficacy inference; TI-006 MACD-vs-direct-trend remains second.
 5. Formal Core and production behavior remain unchanged.
+
+
+## TI-474 through TI-481 — D03-03 trend persistence PIT/tick audit (2026-10-03)
+
+Durable artifacts:
+- `research/D03_TREND_PERSISTENCE_PIT_TICK_CONFOUND_V0_1.md`
+- `research/test_d03_trend_persistence_tick_confound_v0_1.mjs`
+
+Material results:
+- exact `persistenceScoreResearch` implementation is recovered as 35% positive-day ratio + 25% positive ret5/10/20/60 fraction + 20% drawdown quality + 20% MA20/60 quality;
+- the construct is own-path trend consistency, not Chen-Hsieh-Lee winner/loser membership duration;
+- same ret5/10/20/60 endpoints can produce persistence 100 versus 84.25 because path sign frequency differs;
+- score geometry is stepwise: +1.75 per positive day, 6.25 per horizon sign state, 10 per MA state, and -1 per additional drawdown percentage point until the -20% floor;
+- Taiwan tick-grid synthetic falsification proves zero-return frequency can materially alter positiveDayRatio20 and persistence for the same latent percentage trend;
+- zero-return/tick/liquidity controls are therefore mandatory;
+- the current 61-close maximum ordinary requirement is source-feasible under existing Taiwan daily-history capability, subject to official-session/TECHNICAL_CONTINUITY/corporate-action/parent-generation provenance;
+- prospective ret60 rank-persistence is data-feasible without historical backfill.
+
+Maturity:
+- D03-03 L2/40 -> **L3/60**;
+- current 12-module D03 aggregate 48.3% -> **50.0%**.
+
+This is PIT-data-feasibility maturity only. No alpha/outcome/threshold evidence.
+
+Current status:
+`D03_03 = L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED`
+`PERSISTENCE_SCORE = SHARED_PRICE_FAMILY / PATH_INFORMATION_PRESENT`
+`ZERO_RETURN_TICK_LIQUIDITY_CONFOUND = MUST_CONTROL`
+`RANK_PERSISTENCY = DISTINCT_PROSPECTIVE_CONSTRUCT`
+`RAW_RECEIPT_GATE = 2_OF_3`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+### Exact next continuation point after TI-481
+
+1. Saturday 2026-10-03 cannot change the prospective completed-session denominator; keep raw receipt gate 2/3.
+2. Freeze component-level research-only persistence snapshot semantics before outcomes.
+3. D03-12 repaint-safe divergence PIT feasibility is next: prove pivotAt/confirmedAt, indicator formula/state lineage and parent as-of causality can be replayed without future-bar leakage.
+4. TI-005/TI-006 efficacy remains blocked until the raw receipt gate genuinely closes.
+5. Formal Core remains unchanged.
