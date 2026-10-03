@@ -86,6 +86,7 @@ jobs:
           python3 scripts/apply_v8_15_0.py
           python3 scripts/apply_v8_15_1.py
           python3 scripts/apply_v8_15_2.py
+          python3 scripts/apply_v8_15_3.py
           # V8.9.3 Hybrid WATCH regression contract
       - name: Syntax and offline behavior regression
         env:
