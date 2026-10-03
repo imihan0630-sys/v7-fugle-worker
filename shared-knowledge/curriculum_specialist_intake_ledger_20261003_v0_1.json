@@ -1,0 +1,181 @@
+{
+  "schemaVersion": "CURRICULUM_SPECIALIST_INTAKE_LEDGER_V0_1",
+  "updatedAt": "2026-10-03T11:25:00+08:00",
+  "status": "ACTIVE_INTAKE_LEDGER",
+  "formalCoreImpact": "NONE",
+  "clusters": [
+    {
+      "id": "H01",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H02",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H03",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H04",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H05",
+      "status": "PARTIAL_EVIDENCE_RECEIVED",
+      "receivedPackets": [
+        "research/h05_d07_25_specialist_evidence_packet_v0_1.json"
+      ],
+      "pendingRooms": [
+        "14｜公司治理與內部人研究室"
+      ],
+      "controlDecision": "EVIDENCE_INSUFFICIENT_PENDING_COUNTERPART"
+    },
+    {
+      "id": "H06",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H07",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H08",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H09",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H10",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H11",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H12",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H13",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H14",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H15",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H16",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H17",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H18",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H19",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    },
+    {
+      "id": "H20",
+      "status": "PENDING",
+      "receivedPackets": [],
+      "pendingRooms": [],
+      "controlDecision": "NOT_EVALUATED"
+    }
+  ],
+  "h05": {
+    "received": "research/h05_d07_25_specialist_evidence_packet_v0_1.json",
+    "sourceRoom": "06｜基本面與估值研究室",
+    "intakeResult": "ROOM06_PACKET_ACCEPTED_ROOM14_COUNTERPART_REQUIRED_TERMINAL_DECISION_NOT_READY",
+    "passed": [
+      "D07_25_OWNERSHIP_EXPLICIT",
+      "D21_10_EXCLUSION_EXPLICIT",
+      "TAIWAN_SOURCE_AND_PIT_MAP_PRESENT",
+      "SHARED_EVIDENCE_RECEIPT_PRESENT",
+      "DIVERGENT_STATE_EXAMPLES_PRESENT",
+      "FALSIFIERS_PRESENT",
+      "ANTI_DOUBLE_COUNT_PRESENT",
+      "CAPABILITY_PRESERVATION_PRESENT",
+      "FORMAL_CORE_NONE",
+      "NO_MATURITY_PROMOTION"
+    ],
+    "remainingFromRoom14": [
+      "AUDIT_OPINION_EVENT_SEMANTICS",
+      "RESTATEMENT_CORRECTION_GOVERNANCE_CHRONOLOGY",
+      "INTERNAL_CONTROL_MATERIAL_WEAKNESS_SEMANTICS",
+      "CPA_SPECIAL_REVIEW",
+      "REMEDIATION_CHRONOLOGY",
+      "PIT_FIRST_KNOWN_SOURCE_MAP",
+      "D21_WARNING_D07_LOW_DIVERGENT_EXAMPLE",
+      "SHARED_RECEIPT_COMPATIBILITY",
+      "TERMINAL_RECOMMENDATION"
+    ],
+    "currentControlDecision": "EVIDENCE_INSUFFICIENT_PENDING_COUNTERPART"
+  }
+}
