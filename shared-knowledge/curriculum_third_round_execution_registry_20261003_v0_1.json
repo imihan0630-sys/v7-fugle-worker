@@ -1,6 +1,6 @@
 {
   "schemaVersion": "CURRICULUM_THIRD_ROUND_EXECUTION_REGISTRY_V0_1",
-  "updatedAt": "2026-10-03T11:27:00+08:00",
+  "updatedAt": "2026-10-03T12:18:00+08:00",
   "status": "H01_H20_GOVERNANCE_CONTRACTS_COMPLETE_SPECIALIST_VALIDATION_PENDING",
   "scope": {
     "domains": 22,
@@ -329,7 +329,12 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H13_H20_ANTI_DOUBLE_COUNT_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H13_H20_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "SPECIALIST_VALIDATION_PENDING"
+      "status": "PARTIAL_EVIDENCE_RECEIVED_ROOM02_COMPLETE_ROOMS01_04_PENDING",
+      "receivedPackets": [
+        "research/D02_H20_BREAKOUT_SPECIALIST_RETURN_V0_1.md"
+      ],
+      "intakeDecision": "EVIDENCE_INSUFFICIENT_PENDING_COUNTERPARTS",
+      "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json"
     }
   ],
   "ownerDecisionFirewall": [
