@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "0.1",
+  "researchRoom": "06｜基本面與估值研究室",
+  "moduleId": "D08-03",
+  "status": "OUTCOME_BLIND_COHORT_AND_SCAN_DATE_PREREG_FROZEN",
+  "createdAt": "2026-10-04T06:32:00+08:00",
+  "formalCoreImpact": "NONE",
+  "universe": {
+    "market": "TWSE",
+    "inclusion": "listed common equities with official BWIBBU_d valuation history; TPEx excluded until historical machine replay is verified",
+    "survivorship": "construct membership as-of scan date; do not use current-list-only membership",
+    "newListing": "window unavailable => UNKNOWN; never shorten a preregistered window to force coverage"
+  },
+  "scanDate": {
+    "cadence": "monthly",
+    "rule": "last completed TWSE trading session of each calendar month",
+    "missingReceipt": "UNKNOWN; do not substitute adjacent dates after observing outcomes"
+  },
+  "windows": {
+    "validObservations": [
+      252,
+      756,
+      1260
+    ],
+    "expanding": {
+      "minimumValidObservations": 252
+    },
+    "selection": "report all preregistered windows; no return-driven best-window selection"
+  },
+  "metrics": [
+    "PE",
+    "PB"
+  ],
+  "semantics": {
+    "negativeOrMissingPE": "UNKNOWN for PE percentile; PB may remain independently known",
+    "denominatorTransition": "tag fiscal-report-period transitions; percentile moves are not automatically pure repricing",
+    "corporateActions": "retain explicit context; no silent reset",
+    "revisionPolicy": "append new research vintage; never overwrite an already materialized snapshot"
+  },
+  "snapshotMinimumFields": [
+    "market",
+    "symbol",
+    "scanDate",
+    "metric",
+    "rawValue",
+    "window",
+    "validObservationCount",
+    "percentile",
+    "missingState",
+    "fiscalDenominatorContext",
+    "corporateActionContext",
+    "sourceFingerprint",
+    "observedAt"
+  ],
+  "controlsBeforeOutcomeJoin": [
+    "raw valuation",
+    "quality/fundamental context",
+    "industry/peer context",
+    "trend/relative-strength context",
+    "market-regime dependency reference"
+  ],
+  "falsification": [
+    "effect unstable across preregistered windows",
+    "effect disappears after date-cluster robustness",
+    "incremental value disappears after preregistered controls",
+    "coverage collapses materially",
+    "result depends on denominator-transition contamination"
+  ],
+  "gates": {
+    "pit": true,
+    "oos": true,
+    "walkForward": true,
+    "selectionBias": true,
+    "lookAhead": true,
+    "dataSnooping": true,
+    "multipleTesting": true,
+    "overfitting": true,
+    "factorRedundancy": true,
+    "costLiquidity": true,
+    "regimeDependence": true
+  },
+  "outcomes": "CLOSED",
+  "formalOptimizationCandidate": "NO",
+  "exactNext": [
+    "Materialize immutable source-only monthly TWSE percentile snapshots and coverage receipts without returns.",
+    "Read back fingerprints and verify missing/denominator-transition/new-listing behavior.",
+    "Freeze Shadow join keys and release criteria only after snapshot integrity passes.",
+    "Keep TPEx excluded until historical machine replay or an authorized licensed source is verified."
+  ]
+}
