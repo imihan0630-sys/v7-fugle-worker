@@ -204,4 +204,4 @@ Results:
 - No canonical structural mutation has been executed.
 - COV-03 and COV-12 remain PENDING_SPECIALIST_RETURN.
 - Accepted formal specialist returns: 2 / 12.
-- Current tracker snapshot mirrored here: 22 domains / 354 active modules / 41.6% weighted maturity.
+- Audit-time tracker snapshot: 22 domains / 354 active modules / 42.1% weighted maturity. The tracker remains authoritative and may advance independently.
