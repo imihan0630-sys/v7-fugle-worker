@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "CURRICULUM_OVERLAP_MERGE_ACCEPTANCE_CONTRACT_V0_1",
+  "updatedAt": "2026-10-03T10:25:00+08:00",
+  "formalCoreImpact": "NONE",
+  "curriculumCountImpact": "NONE",
+  "allowedDecisions": [
+    "MERGE_ELIGIBLE",
+    "KEEP_SEPARATE",
+    "SCOPE_DEDUP_ONLY",
+    "EVIDENCE_INSUFFICIENT"
+  ],
+  "commonGates": [
+    "SEMANTIC_SUBSUMPTION",
+    "OBSERVABLE_DATA_CONTRACT",
+    "DECISION_ROLE_CONTRACT",
+    "INCREMENTAL_EVIDENCE",
+    "FALSIFICATION_BOUNDARY",
+    "CAPABILITY_PRESERVATION",
+    "NO_HIDDEN_FORMAL_CHANGE",
+    "NAMING_AND_ROUTING"
+  ],
+  "candidates": [
+    {
+      "id": "OVERLAP_A_D15_21_D15_22",
+      "modules": [
+        "D15-21",
+        "D15-22"
+      ],
+      "dependencyModules": [
+        "D15-16"
+      ],
+      "hypothesis": "STRONG_MERGE_CANDIDATE_AFTER_VALIDATION",
+      "primaryRoom": "10｜投組風控與交易執行研究室",
+      "likelySurvivorIfMerge": "D15-21",
+      "requiredPacket": [
+        "capabilityMatrix",
+        "inputSourceTimeIdentity",
+        "outputMetricMap",
+        "preTradeVsPostTradeRoleMap",
+        "antiDoubleCountMap",
+        "capabilityPreservationList",
+        "proposedSurvivorScope"
+      ]
+    },
+    {
+      "id": "OVERLAP_B_D07_17_D21_12",
+      "modules": [
+        "D07-17",
+        "D21-12"
+      ],
+      "dependencyModules": [],
+      "hypothesis": "SEMANTIC_SPLIT_REQUIRED_MERGE_IF_SAME_OBSERVABLES",
+      "primaryRooms": [
+        "06｜基本面與估值研究室",
+        "14｜公司治理與內部人研究室"
+      ],
+      "likelySurvivorIfMerge": null,
+      "requiredPacket": [
+        "sharedEventFieldMap",
+        "uniqueObservableMap",
+        "divergentStateExamples",
+        "decisionRoleMap",
+        "pitSourceReplayRequirements",
+        "redundancyTestDesign",
+        "proposedSurvivorChildSemantics"
+      ]
+    },
+    {
+      "id": "OVERLAP_C_D16_11_D16_21",
+      "modules": [
+        "D16-11",
+        "D16-21"
+      ],
+      "dependencyModules": [],
+      "hypothesis": "KEEP_BOTH_REMOVE_GENERIC_PROVENANCE_DUPLICATION",
+      "primaryRoom": "11｜統計驗證與策略市場狀態研究室",
+      "likelyDecision": "SCOPE_DEDUP_ONLY",
+      "requiredPacket": [
+        "genericVsAlternativeSpecificFieldMatrix",
+        "sharedSchemaOwnershipMap",
+        "selectionBiasLeakageFalsifiers",
+        "genericProvenanceFailureExamples",
+        "proposedD16_21NarrowedScope",
+        "duplicateSchemaRemovalPlan"
+      ]
+    }
+  ]
+}
