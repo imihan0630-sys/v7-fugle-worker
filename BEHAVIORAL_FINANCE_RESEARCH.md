@@ -63,3 +63,78 @@ Key references:
 - Build Taiwan PIT/replay feasibility contracts for D20-01/02/04/07.
 - For attention, prioritize external/search/news exposure proxies; treat price/volume-derived proxies as comparators to avoid double counting.
 
+## 2026-10-03｜D20-06 Herding and D20-10 Investor Sentiment
+
+### D20-06 Herding / Social Proof
+Mechanism:
+- Behavioral herding means synchronized action caused by imitation, social inference, leader/follower behavior or related behavioral transmission.
+- Observable crowding is not sufficient. Holdings concentration, margin concentration, institutional flow persistence and common price movement can arise from shared information, mandates or mechanical flows.
+
+Positive Taiwan evidence:
+- Chang, Cheng and Khorana (2000) report significant Taiwan herding using nonlinear return-dispersion methods.
+- Demirer, Kutan and Chen (2010) show method dependence: linear CSSD is weak while nonlinear CSAD and state-space methods find stronger herding, particularly during market losses.
+- Hsieh (2013) uses investor-identity intraday data and finds both institutional and individual herding, but with different subsequent return patterns, implying different information/behavior mechanisms.
+- Recent Taiwan studies report time-, venue-, investor-type- and microstructure-dependent herding.
+- Real-time forum stance/sentiment research in Taiwan provides a possible behavior-specific data family beyond static holdings/flow concentration.
+
+Falsification:
+- Low return dispersion can result from common fundamentals, factor exposure, benchmark rebalancing, liquidity shocks or common risk constraints.
+- High crowding can exist with behavioral herding UNKNOWN.
+- Synchronized institutional action can be information-based rather than imitation.
+- Market-design reforms can change measured synchronization.
+
+Research contract:
+- D06-06 owns static/flow crowding primitives.
+- D20-06 must use independent behavior-specific evidence or a residual-herding test after D06, market, sector, factor, event/news, passive-flow and liquidity controls.
+- Preferred tests: actor-level residual synchronization; leader/follower temporal ordering; independent social/network evidence; residual convergence after common-information controls.
+- CSSD/CSAD are screening/measurement tools, not motive proof.
+
+Decision:
+- D20-06 -> L2.
+- L3 blocked until a replayable Taiwan behavior-specific data stream is validated.
+- No independent selection vote from the same crowding primitives.
+
+### D20-10 Investor Sentiment
+Mechanism:
+- Investor sentiment is a non-fundamental optimism/pessimism state that may affect demand and prices when valuation is subjective and arbitrage is limited.
+- Sentiment is not identical to attention, news tone, expected volatility, leverage, turnover or recent return.
+
+Proxy taxonomy:
+A. More direct/independent:
+- investor surveys;
+- investor/forum bullish-vs-bearish stance or textual emotion from a source distinct from news;
+- account-level risk-taking/flow responses linked to independently measured sentiment.
+
+B. Candidate indirect:
+- overnight return where market-specific validation supports a sentiment interpretation;
+- composite market-based sentiment measures after removing macro/fundamental/liquidity components.
+
+C. Weak/non-identifying alone:
+- VIX or option-implied volatility: expected volatility, not directional sentiment;
+- margin balance: leverage/crowding context, not sentiment by itself;
+- turnover/volume: attention/liquidity/information confounded;
+- news sentiment: D17-08 event/news-text family, not an independent D20 vote.
+
+Evidence and counterevidence:
+- Baker and Wurgler show broad sentiment effects are stronger in difficult-to-value/difficult-to-arbitrage stocks, but this is a cross-sectional conditional effect rather than a universal timing rule.
+- Taiwan research finds overnight return can behave as a sentiment proxy, including short-run persistence and long-run reversal, but cross-country studies show overnight return fails as a sentiment proxy in many non-US markets. Taiwan therefore requires its own validation rather than imported assumptions.
+- Taiwan real-time public sentiment/stance data are associated with herding heterogeneously across investor classes and industries, supporting a distinct social-sentiment family.
+- Meta-analysis of survey sentiment-return research finds non-negligible but smaller-than-reported effects and material publication/design heterogeneity.
+- A 2024 proxy-validation study warns that news/text measures can contain information content rather than pure sentiment; a long-run price effect can signal information contamination.
+
+Semantic boundaries:
+- D17-08 owns news/event-text sentiment tied to publication clocks and event half-life.
+- D20-10 owns broader investor sentiment only if it uses independent proxy families and behavioral falsification.
+- D20-07 owns attention; search intensity without direction is attention, not sentiment.
+- D12-05 owns Taiwan VIX as expected-volatility information.
+- D06 owns margin/crowding primitives.
+- D02/D03 own price/volume/return families.
+
+Decision:
+- D20-10 -> L2.
+- L3 blocked until a Taiwan PIT/replay sentiment source is validated with first-known timing and revision policy.
+- Default system role remains RESEARCH_ONLY / CONTEXT_ONLY or SUPPORTIVE until OOS/prospective evidence demonstrates incremental value.
+
+### Shared implication
+Behavioral-finance evidence must add a genuinely new observable family or residual mechanism. Re-labeling existing price, volume, flow, leverage, news or volatility inputs with a psychological name cannot create additional evidence weight.
+
