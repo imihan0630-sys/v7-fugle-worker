@@ -50,7 +50,6 @@ const base={
 };
 
 const pending=evaluateSystem1ZeroPickClassBCandidate({...base,ownerApproval:false});
-console.log("PENDING_BLOCKERS",JSON.stringify(pending.blockers));
 eq(pending.status,"TECHNICALLY_READY_OWNER_APPROVAL_REQUIRED");
 eq(pending.technicalPass,true);
 eq(pending.classBReviewEligible,false);
