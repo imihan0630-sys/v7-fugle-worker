@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 11:46 Asia/Taipei
+Updated: 2026-10-03 14:00 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -945,3 +945,39 @@ Status: EVENT_IDENTITY_FROZEN / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / RUNTIM
 - D01 research SHA-256 fixture hashing is not an upstream production hash decision.
 
 Status: CLOCK_BUNDLE_DESIGN_FROZEN / UPSTREAM_RECEIPT_EXTENSION_REQUIRED / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / RUNTIME_NO_GO / FORMAL_CORE_LOCKED.
+
+
+### D03 reusable rule update — 2026-10-03
+
+Status: **TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / NOT_FORMAL_EVIDENCE**.
+
+Reusable rules from TI-474~481:
+
+1. **Persistence-score family rule.**
+   - Current `persistenceScoreResearch` is 35% positive-day ratio + 25% ret5/10/20/60 sign consistency + 20% 20-day drawdown quality + 20% MA20/60 location.
+   - All four components derive from one Close path. The composite is a path-quality summary, not an independent cross-family vote beside its own components.
+
+2. **Path information is real but not automatically alpha.**
+   - Two paths with identical ret5/10/20/60 endpoints can score 100 vs 84.25 due to daily sign frequency.
+   - This proves information distinct from endpoint return level, but only at the mechanism level.
+
+3. **Taiwan zero-return/tick/liquidity firewall.**
+   - positiveDayRatio20 treats zero-return sessions as non-positive.
+   - Current TWSE tiered tick sizes can mechanically alter observed zero-return frequency for the same latent percentage path.
+   - Any future persistence inference must control relative tick / price tier, zeroReturnRatio20, liquidity and constrained/special-session state.
+
+4. **Score magnitude is stepwise, not calibrated confidence.**
+   - one positive day = 1.75 score points;
+   - one ret-horizon sign flip = 6.25;
+   - one MA20/MA60 state flip = 10;
+   - 1% additional max drawdown = -1 point until the -20% floor.
+   - Do not interpret raw score distance as probability distance.
+
+5. **Literature construct separation.**
+   - Chen-Hsieh-Lee (2023) momentum persistency is consecutive winner/loser membership duration, not this own-path composite.
+   - Cross-sectional rank persistence remains a separate prospective-only research construct; historical duration may not be fabricated.
+
+6. **Maturity / system rule.**
+   - D03-03 is now L3/60 because Taiwan PIT data/source semantics are feasible and replay requirements are explicit.
+   - System 1 / System 2 must preserve component provenance and avoid composite+component double counting.
+   - No Formal change; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
