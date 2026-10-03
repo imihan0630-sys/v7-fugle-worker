@@ -87,9 +87,9 @@ function regimeStats(clean){
     directionAgreementPct:directionAgreement(xs)
   }]));
 }
-function allValidationPass(v){
+function integrityValidationPass(v){
   return ["sourceCoveragePass","matchedStrataPass","costStressPass","redundancyPass","purgedHoldoutPass",
-    "multipleTestingPass","riskSafetyPass","regimeStabilityPass"].every(k=>v?.[k]===true);
+    "multipleTestingPass"].every(k=>v?.[k]===true);
 }
 
 export function buildSystem1P1AOutcomeEvaluation({
@@ -173,15 +173,17 @@ export function buildSystem1P1AOutcomeEvaluation({
   const gate=P1A_OUTCOME_GATE_V0_1;
   const completeOutcomeCoverage=eligibleDates.length>0&&clean.length===eligibleDates.length;
   const maturityReady=completeOutcomeCoverage&&clean.length>=gate.minIndependentDates&&
-    uniqueRegimes.length>=gate.minMarketRegimes&&
-    dateCluster.directionAgreementPct!==null&&dateCluster.directionAgreementPct>=gate.minDateDirectionAgreementPct;
-  const validationReady=allValidationPass(validation);
+    uniqueRegimes.length>=gate.minMarketRegimes;
+  const validationReady=integrityValidationPass(validation);
+  const economicGatePass=
+    dateCluster.directionAgreementPct!==null&&dateCluster.directionAgreementPct>=gate.minDateDirectionAgreementPct&&
+    (dateCluster.lodoDirectionAgreementPct??0)>=gate.minDateDirectionAgreementPct&&
+    validation?.riskSafetyPass===true&&validation?.regimeStabilityPass===true;
 
   let classification;
   if(totalP1aRankableRows===0) classification="P1A_NOT_MATERIAL";
   else if(!maturityReady||!validationReady) classification="P1A_FUNNEL_MATERIAL_OUTCOME_UNKNOWN";
-  else if((dateCluster.afterCostDeltaMeanPct??0)<=0||(dateCluster.afterCostDeltaMedianPct??0)<=0||
-          (dateCluster.lodoDirectionAgreementPct??0)<gate.minDateDirectionAgreementPct)
+  else if((dateCluster.afterCostDeltaMeanPct??0)<=0||(dateCluster.afterCostDeltaMedianPct??0)<=0||!economicGatePass)
     classification="P1A_MATERIAL_NO_ECONOMIC_GAIN";
   else classification="P1A_POSITIVE_ECONOMIC_EVIDENCE";
 
@@ -204,7 +206,7 @@ export function buildSystem1P1AOutcomeEvaluation({
       riskSafetyPass:validation?.riskSafetyPass===true,
       regimeStabilityPass:validation?.regimeStabilityPass===true
     },
-    readiness:{completeOutcomeCoverage,maturityReady,validationReady},
+    readiness:{completeOutcomeCoverage,maturityReady,validationReady,economicGatePass},
     exclusions:{invalidD5N:invalidD5.length,invalidD5Keys:invalidD5},
     interpretation:{
       equalDateWeightingPrimary:true,
