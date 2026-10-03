@@ -842,3 +842,44 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 4. Hand the minimal-basis contract to D16 so C3 is compared against both full-C2 and minimal-flexible-C2 sensitivity.
 5. Preserve TEST_EXECUTION_PENDING for DL-019 tests unless independently executed.
 6. No outcome join / no R09 / no Formal change.
+
+## Continuation update — DL-020A through DL-020E (2026-10-03)
+
+- D01 audited internal redundancy inside the full continuous C2 path basis so the comparator itself does not become a Factor Zoo.
+- New research-only artifacts:
+  - research/PATTERN_MINIMAL_CONTINUOUS_BASIS_V0_1.md
+  - research/pattern_minimal_continuous_basis_v0_1.json
+  - research/pattern_minimal_continuous_basis_v0_1.mjs
+  - research/test_pattern_minimal_continuous_basis_v0_1.mjs
+- Frozen semantic basis:
+  PB1 immutable boundary geometry;
+  PB2 path excursion / occupancy;
+  PB3 observability / exposure;
+  PB4 first-event clocks;
+  PB5 structural identity / episode age;
+  PB6 derived lifecycle representation.
+- Exact/nested dependencies frozen outcome-blind:
+  eligibleBars = observableBars + constrainedBars under complete accounting;
+  parentCenter = midpoint(parentLower,parentUpper) under midpoint semantics;
+  availableAirPct / centerDistancePct / availableAirATR share the same structural geometry numerator/reference family;
+  geometryRelationState is deterministic from local/parent coordinates;
+  barsToReentry/failure/reclaim are derived from certified session ordinals + first clocks;
+  failure is nested inside reentry semantics;
+  compoundLifecycleState is derived when complete clocks + current location are available.
+- Multiple normalization units of one numerator are scaling alternatives / interactions, not multiple source votes.
+- New future dual sensitivity:
+  FULL_C2 versus MINIMAL_C2 (MCPB_V0_1).
+- C3 lifecycle category must be evaluated against both flexible FULL_C2 and flexible MINIMAL_C2.
+- Causal audit fields are NOT deleted from prospective storage merely because they are excluded from a predictive minimal basis.
+- 12 minimal-basis adversarial tests are authored; TEST_EXECUTION_PENDING until independently executed.
+- No outcomes inspected; no runtime wiring; no R09.
+- D01 remains 51.7%; Pattern alpha UNKNOWN; FORMAL_OPTIMIZATION_CANDIDATE=NONE; Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-020
+
+1. Reconcile DL-019/020 against latest main and verify no concurrent-room divergence.
+2. Open one Class-A PR containing only D01 research/docs/helpers/tests.
+3. Treat V8 Repair/Regression CI as Formal-isolation evidence only; the new D01 Node tests remain pending unless explicitly executed.
+4. Next D01 science after merge: study whether first-event clocks themselves add representation value beyond path excursion/occupancy and current geometry, without converting clocks into arbitrary N-bar buckets.
+5. Preserve full audit clocks even if predictive minimal basis later excludes some derived durations.
+6. No outcome join / no R09 / no Formal change.
