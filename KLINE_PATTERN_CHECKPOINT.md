@@ -650,3 +650,71 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 3. Preserve all new contracts on a clean latest-main lineage before any merge.
 4. Next scientific research after engineering closure: preregister RG2 cross-parent episode clustering and future B0-vs-B1 estimands; do not inspect outcomes yet.
 5. No R09 / no Formal change.
+
+## Continuation update — DL-015A through DL-016D (2026-10-03)
+
+- PATTERN-RG2 cross-parent clustering and future B0-vs-B1 estimand are now preregistered before any outcome join:
+  - research/PATTERN_RG2_CLUSTERING_ESTIMAND_V0_1.md
+  - research/pattern_rg2_clustering_estimand_v0_1.json
+- Five identities are explicitly separated:
+  parentDecisionReceiptId / scanDate / symbol / relationEpisodeKey / as-of observation.
+- Important refinement versus the earlier loose "date + episode" wording:
+  primary dependence must account for scanDate common shocks AND symbol persistence.
+  relationEpisodeKey remains de-dup/longitudinal identity but is not a substitute for symbol-level dependence because one symbol can generate multiple episodes.
+- Parent-outcome multiplicity firewall is frozen:
+  zero relation = NO_RG2_RELATION;
+  one relation = SINGLE_RELATION_ELIGIBLE;
+  >1 non-equivalent relations = MULTI_RELATION_AMBIGUOUS;
+  duplicate key = QA_FAIL;
+  same key/different structural fingerprint = PROVENANCE_CONFLICT.
+- Primary outcome inference never chooses "best/nearest/strongest" RG2 relation after outcomes. MULTI_RELATION_AMBIGUOUS remains coverage evidence and is excluded from the first single-relation estimand.
+- New outcome-blind helper/tests:
+  - research/pattern_rg2_sample_unit_v0_1.mjs
+  - research/test_pattern_rg2_sample_unit_v0_1.mjs
+- 14 sample-unit adversarial cases are authored but not executed in a reproducible Node run; do NOT claim 14/14 PASS.
+- Existing global maturity gates remain authoritative; D01 does not invent a second sample threshold.
+- B0_PRICE_STRUCTURE is diagnostic only.
+- B0_FULL_CONTEXT is the promotion-grade baseline: price/structure controls plus D02 acceptance/persistence, market/sector regime, liquidity and round-price proximity.
+- First frozen challenger:
+  RG2_CORE_V0_1 = availableAirToParentLowerPct + geometryRelationState + compoundLifecycleState + parentZoneAgeEligibleSessions.
+- Co-primary future endpoints are D5 MFE and D5 MAE. D5 return and D10/lifecycle outcomes remain secondary.
+- Primary estimand target is equal-scanDate weighted common-support B0-vs-B1 predictive-loss differential. Raw pooled rows do not define the effect.
+- Forward OOS rules are frozen:
+  chronological scanDate split, PURGED_FORWARD_HOLDOUT, training-only transforms, no random row split.
+- New robustness guards:
+  EPISODE_FIRST_SENSITIVITY;
+  EPISODE_HOLDOUT_SENSITIVITY;
+  NON_OVERLAPPING_DATE_SENSITIVITY.
+- If forward OOS works but episode-holdout collapses => EPISODE_MEMORIZATION_RISK.
+- If repeated snapshots drive the effect => LONGITUDINAL_REPEAT_DEPENDENCE.
+- If overlapping D5/D10 windows drive the effect => OUTCOME_WINDOW_DEPENDENCE.
+- Exact finite-sample statistical inference is explicitly routed to D16, not reinvented in D01:
+  - research/PATTERN_RG2_D16_VALIDATION_HANDOFF_V0_1.md
+  - research/pattern_rg2_d16_validation_handoff_v0_1.json
+- D16 must preregister estimator/loss/nested-model comparison/date+symbol dependence/small-cluster handling before outcomes.
+- Schema audit found two canonicalization defects:
+  1. relation helper v0.1 emitted geometryState/compoundState while shared-child expected geometryRelationState/compoundLifecycleState;
+  2. shared-child v0.3 omitted parentZoneAgeEligibleSessions and explicit immutable RG2 coordinates despite the RG2/fingerprint contracts requiring them.
+- Research-only repairs:
+  - research/pattern_rg2_relation_v0_2.mjs
+  - research/test_pattern_rg2_relation_v0_2.mjs
+  - research/pattern_shared_child_contract_v0_4.json
+  - research/PATTERN_RG2_FEATURE_OBSERVABILITY_AUDIT_V0_1.md
+- v0.4 canonical RG2 payload now explicitly preserves local/parent coordinates, source window, zone age, canonical relation/lifecycle names and liquidity receipt reference.
+- Legacy aliases geometryState / compoundState / availableAirPct are not promotion-grade canonical names.
+- RG2_CORE_V0_1 status:
+  DESIGN_OBSERVABLE / PROSPECTIVE_RUNTIME_BLOCKED.
+- No outcomes inspected; no Pattern runtime wiring; no R09.
+- D01 remains 51.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core remains LOCKED.
+
+### Updated exact next continuation point after DL-016
+
+1. Recheck latest main for branch divergence and run Class-A PR Formal-isolation CI.
+2. Preserve research-specific test status as TEST_EXECUTION_PENDING; V8 Repair/Regression success does not imply the new 14+10 research tests executed.
+3. Next D01 scientific continuation: freeze RG2 state-transition episode semantics for first-entry / first-parent-break / first-hold / first-reentry / first-failure without using outcomes, so lifecycle-event analysis cannot duplicate one state across many dates.
+4. Hand D16 the exact preregistration packet; D16 owns the statistical method and must not redefine D01 Pattern semantics.
+5. Keep outcome join CLOSED until immutable parent runtime + Pattern ROOT completeness + continuity/session provenance + canonical cross-lane receipts are prospectively available.
+6. No Class-B runtime wiring request yet; no R09 / no Formal change.

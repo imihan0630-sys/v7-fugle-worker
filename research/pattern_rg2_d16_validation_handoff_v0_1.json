@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "pattern-rg2-d16-validation-handoff-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "sourceOwner": "D01_KLINE_PATTERN_PRICE_STRUCTURE",
+  "inferenceOwner": "D16_STATISTICAL_VALIDATION",
+  "outcomeClosed": true,
+  "formalCore": "LOCKED",
+  "hypothesisFamily": "PATTERN_RG2_NESTED_RESISTANCE",
+  "primaryUnit": "parentDecisionReceiptId",
+  "eligibility": "SINGLE_RELATION_ELIGIBLE",
+  "dependence": [
+    "scanDate",
+    "symbol",
+    "relationEpisodeKey_longitudinal",
+    "overlapping_outcome_windows"
+  ],
+  "primaryEstimand": "equal_weight_scanDate_mean_of_same_parent_loss_differentials",
+  "coPrimaryOutcomes": [
+    "D5_MFE_PCT",
+    "D5_MAE_PCT"
+  ],
+  "requiredSensitivities": [
+    "LEAVE_ONE_SCAN_DATE_OUT",
+    "EPISODE_FIRST",
+    "EPISODE_HOLDOUT",
+    "NON_OVERLAPPING_DATE"
+  ],
+  "d16MustFreezeBeforeOutcome": [
+    "ESTIMATOR",
+    "FEATURE_ENCODING",
+    "SCALING",
+    "LOSS_FUNCTION",
+    "NESTED_MODEL_COMPARISON_METHOD",
+    "DATE_SYMBOL_DEPENDENCE_METHOD",
+    "SMALL_CLUSTER_TREATMENT",
+    "SIGNIFICANCE_OR_UNCERTAINTY_RULE"
+  ],
+  "prohibited": [
+    "IID_ROW_LEVEL_INFERENCE",
+    "RANDOM_ROW_SPLIT",
+    "POST_OUTCOME_FEATURE_SELECTION",
+    "POST_OUTCOME_RELATION_SELECTION",
+    "HOLDOUT_TUNING",
+    "UNKNOWN_TO_ZERO",
+    "RAW_MSE_WIN_AS_PROMOTION_PROOF"
+  ],
+  "resultStatuses": [
+    "WAITING_DATA",
+    "DATA_QUALITY_BLOCKED",
+    "ACCUMULATING",
+    "NO_INCREMENTAL_VALUE",
+    "PRICE_REDUNDANCY",
+    "CONTEXT_PROXY_RISK",
+    "FRAGILE_DATE_DEPENDENCE",
+    "LONGITUDINAL_REPEAT_DEPENDENCE",
+    "EPISODE_MEMORIZATION_RISK",
+    "OUTCOME_WINDOW_DEPENDENCE",
+    "REGIME_OR_INDUSTRY_CONCENTRATED",
+    "PREDICTIVE_INCREMENTALITY_CANDIDATE"
+  ],
+  "d16MethodStatus": "NOT_YET_FROZEN",
+  "formalOptimizationCandidate": "NONE"
+}
