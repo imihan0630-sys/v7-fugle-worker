@@ -400,3 +400,33 @@ Three independent FSC policy histories demonstrate that policy clocks are not re
 Thus the policy-clock source lane is Taiwan-PIT-feasible at date level, but **D17-14 remains L2** because the module also owns Surprise（預期差）and no compatible ex-ante expectation archive has yet been validated. Market reaction cannot substitute for a missing expectation.
 
 No returns or policy-direction outcomes were opened. Formal Core unchanged.
+
+## 2026-10-03 late continuation — D11-16 lockup source gap + D11-17 private-placement L3
+
+### D11-16 — lock-up release remains L2 because release eligibility is not realized supply
+
+New receipt: `research/d11_16_lockup_source_gap_receipt_v0_1.json`.
+
+Official TWSE rules make the lock-up mechanism machine-definable but not yet issuer-realization complete. Innovation Board Article 35 requires specified insiders/key personnel/>5% holders to place covered shares in centralized custody; the standard path permits one-quarter withdrawal after six months and another quarter every six months until two years, while issuers meeting the rule's profitability condition may have a shorter half-at-six-months / full-at-one-year schedule unless TWSE requires otherwise.
+
+The key falsification is now frozen:
+`RELEASE_ELIGIBLE != WITHDRAWN_FROM_CUSTODY != TRANSFER_PREDECLARED != REALIZED_SALE`.
+
+Current TWSE OpenAPI exposes listed-company holding-balance, planned-transfer and untransferred-report lanes, but the bounded current snapshots did not contain 6921. That absence is `SOURCE_COVERAGE_UNKNOWN`, not NO_SALE. A secondary mirror suggested major 6921 holders remained broadly unchanged after the first six-month point, useful only as a negative-control hypothesis, not maturity evidence.
+
+Therefore D11-16 stays L2. L3 requires one official issuer-level chain joining listing basis, covered custody quantity, applicable release tranche/date, transfer declaration and later official holding/untransferred state.
+
+### D11-17 — private-placement source/event-state feasibility validated
+
+New receipt: `research/d11_17_private_placement_pit_receipt_v0_1.json`.
+
+Taiwan official rules require private-placement reporting of security type, shareholder resolution date, amount, unit price, pricing basis, total units, payment-completion date, delivery date, reason, subscribers and relationships, with post-payment reporting to MOPS. Transfer restriction and later public-issuance/listing are separate clocks.
+
+Bounded evidence:
+- 6648 斯其大 issuer-official disclosure on 2026-03-23 froze a <=10,000,000-share private-placement proposal, pricing still TBD, and explicitly stated three-year transfer restriction plus later public issuance/listing intent. A later 2026-08-24 MOPS announcement transport records 2,500,000 shares and NT$31.5m paid for the second placement.
+- 2314 台揚 provides failure/revision controls: payment not fully collected by deadline and later pricing-round cancellation/rescheduling. These prevent completed-round-only survivorship.
+- Existing CA-114 work on 2465 remains the instrument-space counterexample: private-placement common shares, payment certificates, listed common shares and registered-issued shares are not interchangeable semantic spaces.
+
+D11-17 advances **L2 -> L3** for Taiwan PIT/source and event-state feasibility only. Native immutable MOPS archive depth and exact historical intraday availability remain incomplete; outcomes stay closed.
+
+No directional dilution sign is assigned. No Formal Core change.
