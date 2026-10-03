@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-03 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_HISTORICAL_MECHANICS_REPLAY_ONLY",
+  "parentContract": "research/d02_daily_volume_continuity_contract_20261003_v0_1.md",
+  "evidenceCursor": "PVE-239",
+  "formalCoreChanged": false,
+  "outcomesInspected": false,
+  "cases": [
+    {
+      "id": "8454_SUPPLY_CHANGE",
+      "family": "STOCK_DIVIDEND_SUPPLY_CHANGE",
+      "result": "PASS",
+      "rawShareVolume": "FACTUAL",
+      "rawActivity": "AVAILABLE_WITH_BREAK_CONTROL",
+      "comparableParticipation": "NEEDS_PIT_DENOMINATOR_OR_20_POST_BREAK",
+      "falsifies": "UNIVERSAL_CORPORATE_ACTION_RESET"
+    },
+    {
+      "id": "2465_SUPPLY_CHANGE_AMBIGUOUS_DENOMINATOR",
+      "family": "CASH_INCREASE_PAYMENT_CERTIFICATE_SUPPLY",
+      "result": "PASS_UNKNOWN_PRESERVED",
+      "registeredLane": "NO_STEP_ON_2025_11_17",
+      "tradableSupplyLane": "PARTIAL_CONFLICT_SENSITIVITY_ONLY",
+      "comparableParticipation": "UNKNOWN_BLOCKED"
+    },
+    {
+      "id": "3593_UNIT_SCALE",
+      "family": "LOSS_REDUCTION_UNIT_SCALE",
+      "shareUnitFactor": 0.6,
+      "rawRatio": 0.9452,
+      "continuityRatio": 1.5753,
+      "result": "PASS_HARD_BREAK_REQUIRED",
+      "booleanFlipObserved": true
+    },
+    {
+      "id": "8422_UNIT_SCALE",
+      "family": "PAR_VALUE_CHANGE_UNIT_SCALE",
+      "shareUnitFactor": 10,
+      "rawRatio": 21.116,
+      "continuityRatio": 2.1116,
+      "result": "PASS_ANTI_OUTCOME_GATE_CONFIRMED",
+      "booleanFlipObserved": false,
+      "falsifies": "NO_BOOLEAN_FLIP_IMPLIES_UNIT_CONTINUITY_VALID"
+    },
+    {
+      "id": "5314_SUSPENSION_PSEUDOBAR",
+      "result": "PASS",
+      "classification": "VERIFIED_SUSPENSION_OR_NON_SYMBOL_SESSION",
+      "eligibleForBaseline": false
+    },
+    {
+      "id": "5314_ZERO_LOT_POSITIVE_AMOUNT",
+      "result": "PASS_DAILY_ODDLOT_COVERAGE_REMAINS_UNKNOWN",
+      "inference": "INTRADAY_REGULAR_LOT_ZERO_NE_TOTAL_TRADING"
+    }
+  ],
+  "syntheticCodeSemanticReplay": {
+    "purpose": "prove denominator identity drift from positive-only filtering without consuming market evidence",
+    "latest20ExpectedVolumes": [
+      0,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118
+    ],
+    "older21stVolume": 10000,
+    "correctExpectedSessionMedian": 108.5,
+    "currentPositiveFilterMedian": 109.5,
+    "currentDailyHistoryCountCanStillEqual": 20,
+    "result": "CODE_SEMANTIC_COUNTEREXAMPLE_PASS"
+  },
+  "unresolved": [
+    "exact daily odd-lot aggregate inclusion",
+    "production-grade D02 symbol-session receipt binding",
+    "production-grade D02 corporate-action continuity receipt binding",
+    "empirical frequency of valid daily-share zero-volume sessions",
+    "current runtime compliance with the frozen contract"
+  ],
+  "maturity": {
+    "D02_07": "L2/40",
+    "D02_09": "L2/40",
+    "D02": "48.3%"
+  },
+  "formalOptimizationCandidate": "NONE",
+  "exactContinuation": {
+    "formal": "PVE-240 after first genuine completed post-repair market session; Gate 0-6 before outcomes",
+    "prePVE": "map inherited Corporate Actions/Pattern continuity fields versus D02-specific recorder fields; schema/readiness only"
+  }
+}
