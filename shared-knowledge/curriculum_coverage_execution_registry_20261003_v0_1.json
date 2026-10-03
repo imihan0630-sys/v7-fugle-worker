@@ -23,7 +23,7 @@
       "domain": "D01",
       "room": "01｜K線與型態研究室",
       "class": "ACTIVE_CURRICULUM_OWNER_GAP",
-      "state": "PENDING_SPECIALIST_RETURN",
+      "state": "PARTIAL_EVIDENCE_RECEIVED",
       "returnPath": "research/COV01_D01_SPECIALIST_RETURN_V0_1.md"
     },
     {
@@ -63,7 +63,7 @@
       "domain": "D20",
       "room": "13｜行為金融與市場心理研究室",
       "class": "TRUE_GAP_CANDIDATE",
-      "state": "PENDING_SPECIALIST_RETURN",
+      "state": "PARTIAL_EVIDENCE_RECEIVED",
       "returnPath": "research/COV10_D20_SPECIALIST_RETURN_V0_1.md"
     },
     {
@@ -102,7 +102,7 @@
     {
       "id": "COV-09",
       "room": "12｜資產定價與因子研究室",
-      "state": "PACKET_READY_PENDING_SPECIALIST_RETURN"
+      "state": "PARTIAL_EVIDENCE_RECEIVED"
     }
   ],
   "intakeFirewall": {
@@ -147,25 +147,25 @@
       "domain": "D19",
       "room": "12｜資產定價與因子研究室",
       "class": "SCOPE_EXTENSION_CANDIDATE",
-      "state": "PENDING_SPECIALIST_RETURN",
+      "state": "PARTIAL_EVIDENCE_RECEIVED",
       "returnPath": "research/COV09_D19_SPECIALIST_RETURN_V0_1.md"
     }
   ],
   "preIntakeEvidenceLedger": "shared-knowledge/CURRICULUM_COVERAGE_PREINTAKE_EVIDENCE_LEDGER_20261003_V0_1.md",
   "preIntakeSummary": {
     "partialEvidenceReceived": [
+      "COV-01",
       "COV-02",
       "COV-07",
-      "COV-08"
+      "COV-08",
+      "COV-09",
+      "COV-10"
     ],
     "pendingSpecialistReturn": [
-      "COV-01",
       "COV-03",
       "COV-04",
       "COV-05",
       "COV-06",
-      "COV-09",
-      "COV-10",
       "COV-11",
       "COV-12"
     ],
