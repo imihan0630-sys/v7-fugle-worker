@@ -92,6 +92,7 @@ async function summarizeDividends(payload,start,end) {
     if (date?.date && ex && String(row.symbol||"").trim()) requiredFieldReadyCount+=1;
     if (finitePositive(row.previousClose) && finitePositive(row.referencePrice)) priceReferenceReadyCount+=1;
   }
+  if (outOfRangeCount > 0) throw new Error("DIVIDENDS_DATE_RANGE_VIOLATION");
   const payloadHash=await sha256Hex(payload);
   return deepFreeze({
     rowCount:data.length,ordinaryEquityCount,requiredFieldReadyCount,priceReferenceReadyCount,
