@@ -1,0 +1,50 @@
+name: D08 Historical Valuation Universe Readonly
+
+on:
+  pull_request:
+    paths:
+      - "system2/scripts/d08_historical_valuation_universe_readonly_v0_1.mjs"
+      - "system2/tests/d08_historical_valuation_universe_readonly_guard.test.mjs"
+      - ".github/workflows/d08-historical-valuation-universe-readonly.yml"
+      - "research/d08_twse_month_end_scan_date_receipt_20261004_v0_1.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: d08-historical-valuation-universe-readonly-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Guard read-only boundary
+        run: |
+          set -euo pipefail
+          node system2/tests/d08_historical_valuation_universe_readonly_guard.test.mjs
+          node --check system2/scripts/d08_historical_valuation_universe_readonly_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+
+      - name: Read D08 historical universe snapshots
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test -n "$SYSTEM2_CLOUDFLARE_API_TOKEN"
+          node system2/scripts/d08_historical_valuation_universe_readonly_v0_1.mjs | tee /tmp/d08-universe-snapshot.jsonl
+
+      - name: Production isolation guard
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- Worker.js wrangler.toml
