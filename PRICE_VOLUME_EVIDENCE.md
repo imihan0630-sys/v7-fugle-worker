@@ -4940,3 +4940,61 @@ Primary outcomes, only after clean maturity:
 
 Status:
 `PVE_239 / CLEAN_DATE_COUNT_ZERO / H20_ANTI_DOUBLE_COUNT_FROZEN / OUTCOMES_CLOSED / FORMAL_UNCHANGED`.
+
+
+# Pre-PVE-240 — OBV exact redundancy and divergence PIT boundary (2026-10-03)
+
+## Exact identity
+On common eligible rows:
+
+`normalizedOBVChangeN == signedVolumeBalanceN`.
+
+Both are:
+`Σ(sign(close change) * volume) / Σ(volume)`.
+
+Therefore they are one observable, not two features.
+
+Endpoint OBV slope is also only a scaled version of the same signed-volume numerator.
+
+Generic OLS-vs-endpoint `obvSlope` semantics are not frozen, so the name is not promotion-grade provenance.
+
+## Pivot divergence identity
+Raw OBV is unnecessary for the primary divergence geometry.
+
+Bearish:
+higher price high + negative between-pivot signed volume.
+
+Bullish:
+lower price low + positive between-pivot signed volume.
+
+A bounded interval representation:
+`pivotSignedVolumeBalance = signedVolumeSum / totalVolume`
+preserves the sign without arbitrary OBV starting level.
+
+## PIT / repaint rule
+Reuse D03/Pattern:
+- consecutive;
+- confirmed;
+- same-type;
+- same-scale pivots;
+- availability at confirmation, not pivot date.
+
+Confirmation lag is an economic cost.
+
+## Current blocker
+D02 daily volume continuity is still not clean across corporate-action/trading-unit boundaries.
+A valid pivot clock does not make an invalid/mixed volume path PIT-clean.
+
+Therefore:
+D02-09 remains L2/40.
+
+## Semantic separation
+- D02-06 = contemporaneous effort/result.
+- D02-07 = signed-volume comparator.
+- D02-09 = relational divergence transform.
+- D02-08 = hidden-mechanism interpretation, requiring independent microstructure evidence.
+
+Do not count all four from one episode.
+
+Status:
+`OBV_DUPLICATE_PRUNED / DIVERGENCE_TYPED / D02_09_PIT_VOLUME_LINEAGE_BLOCKED / OUTCOMES_UNUSED / FORMAL_UNCHANGED`.
