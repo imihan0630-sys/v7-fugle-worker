@@ -550,3 +550,119 @@ Before opening more theory, follow current total-control routing:
 1. COV-02 specialist validation — determine whether Closing Auction / Auction Imbalance should EXTEND D05-06, MERGE/ADD, NOT_A_GAP or remain evidence-insufficient.
 2. Priority-B overlap validation — D05-05 OFI vs D05-12 Adverse Selection/Toxicity; shared order-flow primitive must not produce duplicate alpha votes.
 3. D05-14 empirical stage remains blocked on PIT official label knownAt, versioned rules, replayable market data and false-positive controls.
+
+
+## 2026-10-04 07:45 — Room04 crosses 50% through validated L3 PIT feasibility
+
+Status: D04_52.0 / D05_51.4 / ROOM04_51.7 / L3_FEASIBILITY_ONLY  
+Formal Core: LOCKED.  
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+### Governance work completed first
+
+COV-02 specialist return:
+- terminal recommendation = EXTEND_EXISTING_SCOPE;
+- recommended owner = D05-06 expanded to Opening / Closing Auction & Auction Imbalance;
+- closing call-auction mechanics and prospective trial state are source-feasible;
+- complete historical pre-close imbalance replay remains PARTIAL/UNKNOWN;
+- no module-count change and no maturity promotion from naming/scope cleanup alone;
+- structural change remains pending 00 intake + dependency/overlap/anti-orphan + owner approval.
+
+B14 D05-05 vs D05-12 specialist return:
+- terminal classification = KEEP_SEPARATE / OBSERVABLE_INPUT_VS_LATENT_MECHANISM;
+- mandatory SCOPE_DEDUP_ONLY at the shared pressure/OFI primitive;
+- D05-12 only becomes distinct evidence when fill-conditioned adverse markout / execution risk adds residual information beyond OFI/activity/volatility/spread/depth;
+- no maturity transfer.
+
+### D04 L3 promotions
+
+Canonical L3 definition:
+TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED.
+
+Promoted L2 -> L3:
+- D04-03 Volatility Contraction;
+- D04-04 Volatility Expansion / Shock;
+- D04-07 Volatility × Trend / Breakout;
+- D04-09 Tail / Gap Volatility Risk;
+- D04-10 Price-Limit Contamination.
+
+Evidence:
+- TWSE/TPEx official historical daily A1 source families have live-validated requested-date/source-date equality and OHLC integrity;
+- exact bar/session clocks and source lineage exist;
+- shared TECHNICAL_CONTINUITY semantics fail closed on unresolved corporate actions/sessions;
+- price-limit state remains constrained/UNKNOWN where exact historical reference semantics are not provable.
+
+Not promoted:
+- D04-02, D04-05, D04-06: A2 market-RV Decision Clock persistence/readback/replay remains incomplete.
+- D04-08: sizing/policy transformation requires separate portfolio/risk evidence.
+
+D04:
+42.0% -> 52.0%.
+
+### D05 L3 promotions
+
+Promoted L2 -> L3:
+- D05-03 Bid-Ask Spread;
+- D05-04 Order-book Depth;
+- D05-07 Intraday Matching / VI & abnormal matching state, with CAUSE_UNKNOWN guard;
+- D05-08 Odd-lot vs round-lot execution difference;
+- D05-09 Liquidity-state classification.
+
+Evidence:
+- merged PR #327 provides bounded prospective raw Quote context with symbol/date/timestamp freshness, top-five bids/asks, spread, depth, and mechanism/limit flags;
+- stale/future/trial/halt incompatibilities fail closed;
+- Class-A live-depth preregistry uses same-symbol same-15m-slot strictly prior sessions, min-history UNKNOWN, no missing-data imputation, no outcome tuning;
+- current Taiwan intraday odd-lot mechanics and current Fugle odd-lot data modes establish prospective source feasibility.
+
+Not promoted:
+- D05-05: true OFI event completeness/sequence unproven.
+- D05-06: COV-02 structural extension pending total-control intake and historical closing imbalance replay partial.
+- D05-11: own-order/counterfactual absent.
+- D05-12: own-fill residual adverse-markout evidence absent.
+- D05-13: exact queue rank unavailable from public top-five.
+- D05-14: official surveillance knownAt/versioned replay incomplete.
+
+D05:
+44.3% -> 51.4%.
+
+### Room maturity
+
+D04 points:
+520 / 1000.
+
+D05 points:
+720 / 1400.
+
+Room04:
+1240 / 2400 = **51.6667% -> 51.7%**.
+
+This crosses 50 legitimately under the canonical learning-maturity scale.
+
+It does NOT claim:
+- profitable volatility alpha;
+- spread/depth alpha;
+- odd-lot premium;
+- VI alpha;
+- true OFI;
+- market-impact identification;
+- toxicity/informed trader identification;
+- OOS/Shadow efficacy.
+
+Those remain L4 questions.
+
+### Durable artifacts
+- `research/D04_D05_PIT_FEASIBILITY_PROMOTION_AUDIT_20261004_V0_1.md`;
+- `research/d04_d05_pit_feasibility_promotion_audit_20261004_v0_1.json`;
+- `research/COV_02_CLOSING_AUCTION_SPECIALIST_RETURN_20261004_V0_1.md`;
+- `research/PRIORITY_B_B14_D05_05_D05_12_SPECIALIST_RETURN_20261004_V0_1.md`;
+- `VOLATILITY_REGIME_RESEARCH.md` VR-042;
+- `MICROSTRUCTURE_RESEARCH.md` MS-085..MS-087.
+
+### Exact continuation
+
+1. Do not re-study the ten promoted L3 modules' source feasibility unless new evidence falsifies a contract.
+2. L4 requires prospective Shadow/OOS and cannot be accelerated by writing more theory.
+3. D04 nearest empirical gate remains A2 market-RV Decision Clock persistence for D04-02/05/06.
+4. D05 nearest event-level gate remains true event completeness for D05-05 and own-order lifecycle for D05-11/12/13.
+5. COV-02 and B14 specialist returns are complete and ready for 00 intake; this room must not directly mutate canonical module count/ownership structure.
+6. Formal Core remains unchanged.
