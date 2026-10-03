@@ -2945,3 +2945,219 @@ No tariff/geopolitical/foreign-flow score, veto, ranking bonus or position-size 
 3. Audit TWSE 18:10 foreign-flow source entitlement/version availability without using the 19:40/20:00 future version.
 4. Keep CBC BOP/TIC as slower structural regimes and GPR/TPU as context, not same-day flows.
 5. Build D13->D10/D07 event-exposure bridge only after source/exposure version lineage is proven.
+
+
+---
+
+## MC-124 — D13-18 “leading” means leading the business cycle, not leading stock returns
+
+A business-cycle leading indicator is constructed to move before turning points in the reference economic cycle.
+
+It does not imply:
+- positive expected stock return;
+- one-month equity timing;
+- causal prediction of every sector.
+
+This distinction matters because financial-market variables themselves can enter leading composites.
+
+Status: BUSINESS-CYCLE LEAD VS MARKET-RETURN LEAD FIREWALL FROZEN.
+
+---
+
+## MC-125 — Taiwan NDC leading/coincident/lagging objects are economically different
+
+NDC leading index components include:
+- export-order diffusion;
+- real M1B;
+- TAIEX average closing price;
+- employee net accession;
+- building starts;
+- real semiconductor-equipment imports;
+- manufacturing business climate.
+
+Coincident components include real-activity variables such as:
+- industrial production;
+- electricity use;
+- manufacturing sales/shipments;
+- trade/food-service sales;
+- overtime hours;
+- real exports;
+- real machinery/electrical imports.
+
+Lagging components include:
+- unemployment reciprocal;
+- unit labor cost;
+- new-loan rate;
+- financial institution loans/investments;
+- manufacturing inventories.
+
+These are not interchangeable signals and have different source/revision clocks.
+
+Status: NDC INDICATOR-FAMILY SEMANTICS FROZEN.
+
+---
+
+## MC-126 — the NDC leading index contains TAIEX, creating stock-target circularity
+
+NDC explicitly includes TAIEX average closing price in:
+- the leading indicator;
+- the monitoring-indicator system.
+
+Therefore an experiment of:
+`NDC leading index -> Taiwan stock return`
+can partially contain the target market itself.
+
+Mandatory stock-research falsification:
+1. aggregate leading index;
+2. ex-TAIEX/component-only macro variant;
+3. current price/trend baseline;
+4. only then incremental cycle-state claim.
+
+If an ex-TAIEX first-known vintage cannot be reproduced, aggregate NDC leading/monitoring indicators remain descriptive cycle context for stock-return research.
+
+Status: NDC PRICE-COMPONENT LEAKAGE FIREWALL FROZEN.
+
+---
+
+## MC-127 — publication month and reference month must remain separate
+
+NDC indicators are published monthly after their reference month.
+
+Example:
+- August 2026 business indicators were published September 29, 2026.
+
+Thus:
+`referenceMonth = 2026-08`
+does not mean the indicator was known during August.
+
+Required fields:
+- referenceMonth;
+- publishedAt;
+- capturedAt;
+- firstEligibleTaiwanDecision.
+
+Status: BUSINESS-INDICATOR RELEASE-LAG CONTRACT FROZEN.
+
+---
+
+## MC-128 — current historical NDC data are not guaranteed real-time vintages
+
+NDC states that it traces and revises historical leading/coincident/lagging indicators each month because:
+- new component data arrive;
+- source agencies revise data;
+- seasonal adjustment changes;
+- long-term trend estimation changes.
+
+Therefore:
+`CURRENT_NDC_HISTORY`
+must not be assumed to equal what a past market participant saw.
+
+For replay:
+- store each release vintage;
+- do not overwrite prior history;
+- preserve component-definition/trend-adjustment version.
+
+Status: NDC REAL-TIME VINTAGE GUARD FROZEN.
+
+---
+
+## MC-129 — monitoring light is a descriptive composite, not a stock gate
+
+NDC monitoring lights summarize current economic conditions.
+
+But the monitoring system also includes TAIEX and other macro components.
+
+Therefore:
+- red light does not mean buy;
+- blue light does not mean sell;
+- a light change may partly reflect market-price movement already known.
+
+Potential valid use:
+- broad cycle context;
+- sector/regime conditioning after component redundancy controls.
+
+Status: MONITORING-LIGHT NON-DIRECTIONAL GUARD FROZEN.
+
+---
+
+## MC-130 — OECD CLI is turning-point oriented and qualitative
+
+OECD Composite Leading Indicators are designed to provide early signals of turning points in fluctuations around long-run potential/trend.
+
+The OECD explicitly characterizes CLI information as primarily **qualitative** regarding short-term movements.
+
+Therefore CLI should not be interpreted as:
+- a direct GDP growth forecast magnitude;
+- a direct stock-return forecast.
+
+Use:
+- cross-country cycle synchronization/divergence;
+- turning-point context;
+- robustness benchmark for Taiwan/global macro state.
+
+Status: OECD CLI TURNING-POINT SEMANTICS FROZEN.
+
+---
+
+## MC-131 — NBER cycle dates are ex-post benchmarks, not live trading labels
+
+NBER Business Cycle Dating Committee:
+- uses multiple economy-wide activity measures;
+- does not use a fixed formula;
+- deliberately waits for sufficient evidence and revisions;
+- announces peaks/troughs months after the actual turning point.
+
+Thus historical labels such as:
+`RECESSION=1`
+from final NBER dates cannot be inserted into a past live decision unless the announcement itself had already occurred.
+
+Correct use:
+- ex-post validation target;
+- cycle-study benchmark;
+- not a contemporaneous predictor.
+
+Status: NBER RETROSPECTIVE-LABEL FIREWALL FROZEN.
+
+---
+
+## MC-132 — D13-18 maturity and first research state machine
+
+Research-only candidate states:
+- LEADING_ACCELERATION;
+- LEADING_DECELERATION;
+- COINCIDENT_ACCELERATION;
+- COINCIDENT_DECELERATION;
+- LEAD_COINCIDENT_DIVERGENCE;
+- LAGGING_CONFIRMATION;
+- TURNING_POINT_RISK_CANDIDATE;
+- EX_TAIEX_LEADING_STATE.
+
+No state may be assigned from one monthly move alone.
+
+Future classifier must freeze:
+- minimum months;
+- slope/level/breadth rules;
+- component coverage;
+- revision/vintage policy;
+- UNKNOWN when incomplete.
+
+D13-18 advances **L0 -> L2 / 40%**.
+
+Machine contract:
+`research/d13_18_business_cycle_indicator_spec_v0_1.json`.
+
+Why not L3:
+- no preserved first-known multi-vintage NDC dataset;
+- ex-TAIEX reconstruction not yet proven;
+- no OOS Taiwan incremental evidence.
+
+Formal Core remains LOCKED.
+No NDC light, CLI state or recession label is approved as a score/gate.
+
+## Exact next continuation after MC-132
+
+1. Continue D13-19 Capital Market Expectations / Long-run Growth Drivers.
+2. Preserve one NDC first-known release vintage including reference-month and revision lineage.
+3. Audit whether all seven leading components can be reconstructed point-in-time; if not, ex-TAIEX composite remains unavailable/UNKNOWN.
+4. Keep NBER/OECD objects as cycle benchmarks/context, not live Taiwan direction signals.
+5. No cycle gate or score before PIT/OOS incremental evidence.
