@@ -453,3 +453,162 @@ Exact next continuation:
 Build a historical D21-03 MOPS replay using at least one ex-ante transfer filing and one monthly holding-change case. Preserve original filing timestamp, event_clock_type, intended transfer amount/method, actual later holding delta when observable, related-person aggregation and pledge state. Demonstrate that the sale-intent event and monthly actual-change event are not merged into one timestamp. Then test whether multi-insider clustering adds information beyond event size and prior returns.
 
 Formal Core impact: NONE.
+
+
+## D21-03 Historical Insider Replay v0.2
+
+Date: 2026-10-04 Asia/Taipei
+Status: HISTORICAL_REPLAY_PARTIAL / CLUSTER_CONTROLLER_DEDUP_FROZEN / EXACT_MONTHLY_MOPS_KNOWN_AT_BLOCKED / RESEARCH_ONLY
+
+### Case — Hon Hai 2317, 2025-12-01 ex-ante transfer filings
+
+Two same-day pre-transfer filings are visible for Hon Hai:
+- Cheng Feng Investment Co., Ltd.: status recorded as a major shareholder's nominee holder; original holding 2,409 lots; intended general-market transfer 2,409 lots; transfer window 2025-12-04 through 2026-01-03.
+- Hung Wei Co., Ltd.: same nominee-holder status; original holding 2,771 lots; intended general-market transfer 2,771 lots; same transfer window.
+- Combined intended transfer = 5,180 lots.
+
+The two filing entities are related to the same ultimate major-shareholder network rather than two independent insiders. Public reporting links both entities to the same representative / controller family context.
+
+Scale-denominator falsification:
+- At the filer-entity level, each filing represents 100% of that entity's reported Hon Hai holding.
+- Relative to the ultimate major shareholder's reported total Hon Hai holdings of about 1,742,198 lots, 5,180 lots is only about 0.30%.
+- Therefore event size must be normalized to multiple denominators: filer holding, related-group holding, ultimate-controller holding, free float and market capitalization where feasible.
+- A large filer-level percentage is not automatically a large controller-level information event.
+
+Secondary monthly reconstruction:
+- A MOPS-derived secondary data page reports December 2025 insider market-sale net change of -5,180 lots for two persons/entities and no other-reason change, consistent with full completion of the combined intended transfer.
+- Another secondary MOPS-derived page reports zero untransferred shares for the December transfer.
+- These are reconstruction checks only. Because the interactive MOPS query could not be captured in this run, the exact original monthly MOPS first-known timestamp remains UNKNOWN.
+- The monthly evidence therefore must not be used as an authoritative event timestamp for backtests until reconciled to original MOPS receipt/timestamp data.
+
+### Cluster-signal falsification and pre-registration
+
+Raw filing count is not an information-source count.
+
+Required cluster fields:
+- raw_filer_count;
+- related_group_count;
+- ultimate_controller_count;
+- independent_information_source_count;
+- related_group_id / ultimate_controller_id;
+- same_day_cluster_flag and rolling-window cluster definition;
+- aggregate_intended_transfer_shares;
+- aggregate_realized_holding_delta where authoritative monthly evidence exists.
+
+Rules:
+1. Multiple legal entities under one ultimate controller are one controller group unless contemporaneous evidence proves independent economic control.
+2. Same issuer/date observations must not be treated as independent statistical samples merely because several filing rows exist.
+3. Event-window overlap must be controlled; one continuing transfer program cannot manufacture multiple independent cluster events.
+4. Multi-insider clustering must be tested after controlling event size, prior return, firm size/liquidity, 52-week price position, transfer method, insider role, pledge state, controller cash-flow/control wedge and accounting-quality/news context.
+5. Purchases and sales remain on asymmetric public clocks. Cluster-buy and cluster-sell tests require clock-specific definitions.
+6. Related-person / nominee duplication must be collapsed before testing cluster alpha.
+
+Evidence synthesis:
+- Peer-reviewed international evidence reports that insider trades cluster, especially among close colleagues, and that clustered purchases can contain more information than isolated purchases in some samples.
+- Other evidence finds stronger negative information around clustered sales than clustered purchases, while recent methodological work warns that overlapping event observations can exaggerate cluster significance.
+- Taiwan evidence on pre-disclosed insider sales is heterogeneous: both positive and negative abnormal reactions appear, with effects varying by firm size, transfer type and price context. This rejects a universal 'cluster sell = bearish' rule.
+
+### D21-03 maturity decision after replay
+
+Keep D21-03 at L2 / 40%.
+
+Positive progress:
+- One concrete Taiwan case demonstrates ex-ante intention, later reconstructed monthly outcome and the necessity of controller-level de-duplication.
+- Source contracts for daily transfer, untransferred-status and monthly post-report data are identified.
+
+Why L3 remains closed:
+- Exact original MOPS monthly first-known timestamp was not captured in this run.
+- The completion check currently relies on secondary MOPS-derived reconstruction rather than an original receipt.
+- A second independent case with a clearly different transfer motive/type is still needed before claiming broad replay feasibility.
+
+No return-prediction or selection-alpha claim is established.
+
+## D21-04 Share Pledging — research contract v0.1
+
+Date: 2026-10-04 Asia/Taipei
+Status: L2 MECHANISM_AND_FALSIFICATION_DEFINED / HISTORICAL_PLEDGE_REPLAY_PENDING / RESEARCH_ONLY / GOVERNANCE_TAIL_RISK
+
+### Taiwan disclosure and legal semantics
+
+Taiwan insider pledge evidence has at least two clocks:
+- monthly insider holding / pledge-change reporting;
+- event-level pledge setup/release disclosure, for which the company must file/publicly announce within the applicable statutory period after receiving notice.
+
+Company Act Article 197-1 also creates a governance consequence: for a public company director, shares pledged in excess of one-half of the shares held at the time of election are excluded from voting-right exercise/counting under the statutory rule.
+
+Therefore pledged shares are not only a financing-risk variable; at high levels they can interact with actual voting power and board-control interpretation.
+
+### Competing mechanisms
+
+Liquidity / funding motive:
+- Share pledging can provide liquidity without selling stock and may be economically benign when leverage is modest and collateral buffers are large.
+
+Margin-call / forced-sale risk:
+- Falling stock prices can tighten collateral constraints and create pressure for additional collateral, refinancing, price support or forced sale.
+- The risk is path-dependent and cannot be inferred from pledge ratio alone.
+
+Control-retention / agency motive:
+- A controller can retain voting exposure while monetizing personal wealth through pledging, potentially increasing the control-cash-flow wedge in economic terms and increasing minority-shareholder conflicts.
+
+Corporate-policy spillover:
+- Taiwan evidence links controller pledging to repurchase decisions, cash-holding value, investment policy and financing costs. Personal collateral stress can therefore spill into corporate decisions.
+
+Regulatory / governance channel:
+- Very high director pledging can reduce exercisable voting rights under Article 197-1, so pledge levels can alter the mapping from nominal ownership to effective control.
+
+### Taiwan evidence synthesis
+
+- Taiwan research using 2000-2015 data links controlling-shareholder pledges to margin-call pressure and to corporate repurchase behavior; pledge-related repurchase announcements are interpreted differently from ordinary repurchases.
+- Taiwan listed-firm evidence links pledging with a lower marginal value of cash holdings, consistent with risk-aversion / agency channels, while repurchases can partly mitigate crash-risk concerns in some settings.
+- Taiwan regulatory-change research shows that market responses around pledging firms depend on the governance/regulatory environment, rejecting the idea that pledging has one unconditional sign.
+- More recent Taiwan evidence links insider pledging to higher corporate bank-loan costs, with effects varying by ownership structure.
+- These results support governance-tail-risk and confidence roles, not a universal bearish hard gate.
+
+### Falsification requirements
+
+Before interpreting pledge evidence:
+- distinguish new pledge, partial increase, partial release, full release, rollover/refinancing and forced liquidation;
+- normalize pledged shares to insider/controller holdings and shares outstanding;
+- aggregate related persons / nominee holders at controller-group level;
+- separate director pledge from other insider/major-shareholder pledge;
+- preserve pledge setup/release known_at and measurement date separately;
+- control contemporaneous price drawdown, volatility, liquidity and market regime;
+- control controller cash-flow/control wedge, board duality, insider transfer activity, repurchases/capital allocation, accounting quality and debt stress;
+- identify whether Article 197-1 voting-right restriction becomes relevant;
+- do NOT estimate a margin-call price unless loan-to-value, maintenance ratio, collateral terms and other required contract terms are known. Otherwise margin-call threshold = UNKNOWN.
+
+### Candidate research features
+
+- pledge_event_type;
+- pledge_known_at;
+- pledged_shares;
+- pledge_to_insider_holding_ratio;
+- pledge_to_controller_group_holding_ratio;
+- pledge_to_shares_outstanding;
+- pledge_ratio_change;
+- controller_group_pledge_concentration;
+- director_vote_restricted_shares_estimate where statutory inputs are complete;
+- pre_event_drawdown / volatility / liquidity;
+- concurrent_insider_transfer_flag;
+- concurrent_repurchase / financing event;
+- pledgee_type and maturity only when reliably disclosed;
+- margin_call_threshold_known flag.
+
+### D21-04 maturity decision
+
+Advance D21-04 from L0 to L2 / 40%.
+
+L1 satisfied:
+- Taiwan disclosure/legal semantics and major economic mechanisms are defined.
+
+L2 satisfied:
+- benign-liquidity, margin-call, agency/control-retention, corporate-policy spillover and regulatory voting-right mechanisms are all retained as competing explanations.
+- explicit falsification conditions and no-fabricated-margin-call rule are frozen.
+
+L3 remains closed:
+- no historical Taiwan pledge setup/release pair has yet been replayed end-to-end with original first-known timestamps and contemporaneous controller-group state.
+
+Exact next continuation:
+Build a historical D21-04 pledge PIT replay with at least one pledge setup and one release event, preferably for the same controller/issuer. Capture original known_at, pledged-share ratios at filer and controller-group levels, price path before/after the event, related insider transfers and Article 197-1 voting-right relevance. Do not infer a margin-call trigger unless loan contract terms are known. Preserve D21-03 exact monthly MOPS receipt as an unresolved dependency without blocking D21-04.
+
+Formal Core impact: NONE.
