@@ -430,3 +430,20 @@ Bounded evidence:
 D11-17 advances **L2 -> L3** for Taiwan PIT/source and event-state feasibility only. Native immutable MOPS archive depth and exact historical intraday availability remain incomplete; outcomes stay closed.
 
 No directional dilution sign is assigned. No Formal Core change.
+
+## 2026-10-03 late continuation — D11-18 tender-offer L3
+
+New receipt: `research/d11_18_tender_offer_pit_receipt_v0_1.json`.
+
+Taiwan tender-offer source/event-state feasibility is now validated:
+- formal rules separately define filing/announcement, 20-50 day offer period, minimum quantity, regulatory approval, condition achievement, extension, funding, period expiry, tendered/actual quantity and settlement/payment;
+- 6414/超恩 -> 博來 provides a completed success path with regulatory approval, threshold crossing, period expiry, tendered=actual quantity and scheduled payment;
+- 3045/台信電訊 -> 精誠資訊 provides a live regulatory-pending extension path, where the original expiry is preserved and a new expiry is appended rather than rewritten;
+- 4303 信立 -> 邁達康 provides condition achievement, oversubscription and a later correction of return-method disclosure, proving revisions/corrections are real event versions.
+
+D11-18 advances **L2 -> L3** for Taiwan PIT/source and event-state feasibility. No spread-return cohort is opened. A native minimum-not-met / withdrawn / regulatory-failure case remains mandatory negative control before L4/OOS.
+
+Core guard:
+`FILED != CONDITION_MET != PERIOD_EXPIRED != PAYMENT_SETTLED != DELISTED`.
+
+Formal Core unchanged.
