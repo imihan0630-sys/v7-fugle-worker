@@ -1,0 +1,127 @@
+{
+  "version": "0.1",
+  "id": "BR-052",
+  "capturedAt": "2026-10-03T18:43:22+08:00",
+  "module": "D09-14 Market Share／Entry Barrier／Substitution／Competitive Strategy市占、進入障礙、替代與競爭策略",
+  "mode": "TAIWAN_ISSUER_COMPETITIVE_ACTION_PIT_RECEIPT / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "deduplicatedScope": "Firm-specific competitive action and relative-position lifecycle. Static industry structure/share/barrier/substitution state remains owned by D09-13.",
+  "actionSchema": [
+    "issuer",
+    "actionType",
+    "announcedAt",
+    "commitmentOrApprovalAt",
+    "implementationStartedAt",
+    "productionOrCommercialAt",
+    "targetTechnologyProduct",
+    "targetGeography",
+    "capacityOrPartnerMechanism",
+    "capitalRequirementMode",
+    "strategicPositionHypothesis",
+    "competitorOrPartnerResponse",
+    "postActionShareOrPositionEvidence",
+    "firstEligibleDecision"
+  ],
+  "receipts": [
+    {
+      "issuer": "TSMC",
+      "symbol": "2330",
+      "actionType": "GEOGRAPHIC_CAPACITY_PREEMPTION_AND_ADVANCED_PACKAGING_EXPANSION",
+      "announcedAt": "2025-03-04",
+      "source": "TSMC official press release",
+      "announcedAction": "Additional US$100bn intended investment; total planned U.S. investment US$165bn; three new fabs, two advanced-packaging facilities and R&D center.",
+      "laterImplementationEvidence": "2025 annual report states Arizona first fab already HVM since 4Q24, second-fab schedule pulled forward toward H2 2027 HVM, and third-fab construction began in 2025.",
+      "targetTechnologyProduct": "advanced semiconductor manufacturing + advanced packaging",
+      "targetGeography": "United States / Arizona",
+      "capitalRequirementMode": "OWN_CAPEX_GLOBAL_FOOTPRINT",
+      "stateTransition": "INTENT_ANNOUNCED -> PARTIAL_IMPLEMENTATION_CONFIRMED",
+      "keyFalsification": "Announced investment amount is not operating capacity; lifecycle fields are required."
+    },
+    {
+      "issuer": "UMC",
+      "symbol": "2303",
+      "actionType": "GREENFIELD_SPECIALTY_CAPACITY_EXPANSION",
+      "announcedAt": "2025-04-01",
+      "source": "UMC official press release",
+      "announcedAction": "Singapore new fab unveiled; first phase to start volume production in 2026; first phase planned full capacity 30,000 wafers/month; Singapore total capacity expected above 1m wafers/year.",
+      "targetTechnologyProduct": "22nm/28nm specialty foundry",
+      "targetGeography": "Singapore",
+      "capitalRequirementMode": "OWN_CAPEX_GREENFIELD",
+      "stateTransition": "FACILITY_UNVEILED -> HVM_PENDING_2026",
+      "keyFalsification": "Grand opening does not equal HVM, qualified capacity or steady-state available capacity."
+    },
+    {
+      "issuer": "UMC",
+      "symbol": "2303",
+      "actionType": "PARTNER_CAPACITY_AND_NODE_UPGRADE",
+      "announcedAt": "2024-01-25",
+      "source": "UMC + Intel official announcement",
+      "announcedAction": "Joint development of 12nm platform using Intel U.S. manufacturing capacity; production expected 2027.",
+      "targetTechnologyProduct": "12nm FinFET foundry platform",
+      "targetGeography": "United States / Arizona",
+      "capacityOrPartnerMechanism": "Intel existing fabs/capacity",
+      "capitalRequirementMode": "PARTNER_CAPACITY / REDUCED_UPFRONT_CAPEX",
+      "stateTransition": "STRATEGIC_COLLABORATION_ANNOUNCED -> DEVELOPMENT / PRODUCTION_PENDING_2027",
+      "keyFalsification": "Entry/technology advancement can occur through partnership and shared capacity; own-fab capex is not the only competitive-strategy route."
+    }
+  ],
+  "divergentStateEvidence": [
+    {
+      "case": "INDUSTRY_BARRIER_HIGH_BUT_FIRM_USES_PARTNER_ROUTE",
+      "D0913State": "Semiconductor foundry entry barriers remain high.",
+      "D0914State": "UMC uses Intel capacity/technology collaboration to lower upfront capital burden and accelerate 12nm roadmap.",
+      "conclusion": "Firm action can alter relative position without eliminating industry-level barriers."
+    },
+    {
+      "case": "CAPACITY_ANNOUNCED_NOT_YET_OPERATING",
+      "D0913State": "Industry capacity context may remain unchanged today.",
+      "D0914State": "UMC Singapore facility is unveiled but HVM is future-dated.",
+      "conclusion": "Firm strategy changes before physical industry capacity state fully changes."
+    },
+    {
+      "case": "GLOBAL_PREEMPTION_WHILE_CURRENT_STRUCTURE_STABLE",
+      "D0913State": "Current industry structure is observed from present output/capacity.",
+      "D0914State": "TSMC commits to multi-fab/advanced-packaging geographic expansion with staged implementation.",
+      "conclusion": "Long-horizon strategic positioning is a distinct firm-level state."
+    }
+  ],
+  "uniquePitReplayContract": {
+    "unit": "issuer × action × implementation stage × vintage",
+    "clocks": [
+      "announcedAt",
+      "approval/commitmentAt",
+      "implementationStartedAt",
+      "productionAt",
+      "capturedAt",
+      "firstEligibleDecision"
+    ],
+    "sourceFamilies": [
+      "issuer official releases",
+      "annual reports",
+      "MOPS/regulatory material disclosures",
+      "partner official releases"
+    ],
+    "noIntentInference": "Use observable action/implementation facts; do not infer management motive beyond documented company language.",
+    "missingRule": "UNKNOWN != no action / failed action",
+    "outcomeFirewall": "No stock-return, margin or share-gain outcome while freezing the action state."
+  },
+  "antiDoubleCountRules": [
+    "Static industry market share, barriers, substitution and bargaining power remain D09-13.",
+    "D09-14 receives an independent state only when actor-specific action and lifecycle fields are present.",
+    "The same capacity figure cannot simultaneously count as D09-13 industry barrier evidence and D09-14 strategic-action alpha; one parent receipt, different analytical role.",
+    "Physical capacity stage is linked to D10-04 rather than duplicated.",
+    "Announcement/event clock is linked to D11/D17 rather than duplicated."
+  ],
+  "maturityDecision": {
+    "D09-14": "PROMOTE_L2_TO_L3_TAIWAN_PIT_DATA_FEASIBILITY_ONLY"
+  },
+  "promotionReason": "Official issuer/partner releases provide replayable, dated firm-specific strategic-action states with implementation lifecycles that can diverge from static industry structure. This establishes a distinct PIT/replay contract for D09-14 after scope deduplication.",
+  "reasonNoL4": "No prospective/OOS evidence that action states improve stock selection, future share gains, margins or returns; action outcomes can fail, delay or be offset by industry/regime effects.",
+  "exactNext": [
+    "Accumulate independent issuer actions across at least one non-semiconductor industry and one failed/delayed/cancelled strategic-action control.",
+    "Freeze post-action relative-position outcomes only on native publication clocks.",
+    "Test incremental value versus D09-13 industry structure, D10 capacity, D11 event and D07 fundamentals before any System1/System2 use."
+  ],
+  "status": "DISTINCT_FIRM_ACTION_PIT_CONTRACT / TAIWAN_PIT_DATA_FEASIBLE / SCOPE_DEDUP_REQUIRED / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
