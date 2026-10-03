@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "CURRICULUM_COVERAGE_STATUS_RECEIPT_V0_1",
+  "status": "IMMUTABLE_STATUS_RECEIPT",
+  "observedMainSha": "45707ef6a7cfb51451e008bb7f2933f12abf1071",
+  "tracker": {
+    "path": "research/stock_market_learning_tracker_v0_1.json",
+    "updatedAt": "2026-10-03T23:17:00+08:00",
+    "domains": 22,
+    "activeModules": 354,
+    "maturityWeightedPct": 38.2
+  },
+  "registry": {
+    "path": "shared-knowledge/curriculum_coverage_execution_registry_20261003_v0_1.json",
+    "historicalSnapshot": {
+      "domains": 22,
+      "activeModules": 354,
+      "maturityWeightedPct": 36.3
+    },
+    "partialEvidenceReceived": [
+      "COV-01",
+      "COV-02",
+      "COV-06",
+      "COV-07",
+      "COV-08",
+      "COV-09",
+      "COV-10",
+      "COV-11"
+    ],
+    "pendingSpecialistReturn": [
+      "COV-03",
+      "COV-04",
+      "COV-05",
+      "COV-12"
+    ],
+    "acceptedSpecialistReturns": 0
+  },
+  "maturitySnapshotDriftPctPoints": 1.9,
+  "canonicalReturnFilesPresent": 0,
+  "pendingDeficits": {
+    "COV-03": "Direct retail/natural-person observable plus Taiwan PIT source contract",
+    "COV-04": "Payout/coverage/sustainability semantics plus D07 PIT accounting clock",
+    "COV-05": "P/S or EV/Sales formula plus numerator/denominator/PIT owner contract",
+    "COV-12": "Instrument seniority/collateral/recovery taxonomy plus Taiwan document path"
+  },
+  "executableGovernance": {
+    "validator": "research/curriculum_coverage_return_validator_v0_1.mjs",
+    "validatorWorkflow": ".github/workflows/curriculum-coverage-validator.yml",
+    "intakePreflight": "research/curriculum_coverage_intake_preflight_v0_1.mjs",
+    "intakePreflightWorkflow": ".github/workflows/curriculum-coverage-intake-preflight.yml"
+  },
+  "invariants": {
+    "formalCore": "LOCKED",
+    "system1Impact": "NONE",
+    "system2FormalImpact": "NONE",
+    "moduleAdditionAuthorized": false,
+    "domainAdditionAuthorized": false
+  },
+  "exactContinuation": "LATEST_MAIN -> LIVE_TRACKER -> 12_RETURN_SCAN -> NEW_PENDING_EVIDENCE_OR_FORMAL_INTAKE"
+}
