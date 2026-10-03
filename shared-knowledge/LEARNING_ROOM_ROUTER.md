@@ -1302,3 +1302,12 @@ Forbidden:
 - PARTIAL_EVIDENCE_RECEIVED -> curriculum structural change;
 - specialist recommendation -> direct canonical mutation;
 - skipping Dependency Audit / overlap / anti-orphan / owner approval for structural changes.
+
+
+## Coverage executable validation — 2026-10-03
+
+00｜研究總控室 must validate formal COV returns and governance transitions with:
+- `research/curriculum_coverage_return_validator_v0_1.mjs`
+- `tests/test_curriculum_coverage_return_validator_v0_1.mjs`
+
+A validator PASS means only that the return/transition contract is structurally valid. It does not imply the research claim is true or that a curriculum structural change is approved.
