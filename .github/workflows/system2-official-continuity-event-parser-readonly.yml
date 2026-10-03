@@ -1,0 +1,48 @@
+name: System2 Official Continuity Event Parser Readonly
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/runtime/official_continuity_event_parser_v0_1.mjs"
+      - "system2/runtime/corporate_action_continuity_archive_v0_1.mjs"
+      - "system2/scripts/probe_official_continuity_event_parser_readonly_v0_1.mjs"
+      - ".github/workflows/system2-official-continuity-event-parser-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/official_continuity_event_parser_v0_1.mjs"
+      - "system2/runtime/corporate_action_continuity_archive_v0_1.mjs"
+      - "system2/scripts/probe_official_continuity_event_parser_readonly_v0_1.mjs"
+      - ".github/workflows/system2-official-continuity-event-parser-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-official-continuity-event-parser-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Parse six official historical continuity sources
+        run: node system2/scripts/probe_official_continuity_event_parser_readonly_v0_1.mjs
+
+      - name: Confirm read-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy' system2/scripts/probe_official_continuity_event_parser_readonly_v0_1.mjs
+          echo "Read-only continuity event parser boundary PASS"
