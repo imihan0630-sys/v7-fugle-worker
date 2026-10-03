@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T23:17:00+08:00",
+  "updatedAt": "2026-10-04T07:42:00+08:00",
   "status": "RESEARCH_ONLY_MECHANISM_FALSIFICATION_FROZEN_OUTCOMES_CLOSED",
   "owner": "08｜事件與新聞研究室",
   "formalCoreImpact": "NONE",
@@ -141,7 +141,8 @@
         "UNKNOWN"
       ],
       "dependencyOwner": "D11-06 owns underlying transaction state; D11-19 owns tradable special-situations payoff/hedge/break-risk geometry",
-      "status": "L2_MECHANISM_FALSIFICATION_FROZEN_PIT_CAPTURE_PENDING"
+      "status": "L3_TAIWAN_PIT_SOURCE_FEASIBILITY_VALIDATED_REPRICE_CANCEL_STATES_COST_OUTCOMES_CLOSED",
+      "receipt": "research/d11_19_merger_arbitrage_pit_receipt_v0_1.json"
     },
     "D17-14": {
       "stages": [
@@ -183,11 +184,11 @@
     "D11-16": "KEEP_L2_SOURCE_REALIZATION_GAP",
     "D11-17": "L2_TO_L3",
     "D11-18": "L2_TO_L3",
-    "D11-19": "L0_TO_L2",
+    "D11-19": "L2_TO_L3",
     "D17-14": "L0_TO_L2",
-    "D11_maturityPct_after": 53.7,
+    "D11_maturityPct_after": 54.7,
     "D17_maturityPct_after": 41.4,
-    "Room08_moduleWeightedPct_after": 48.5
+    "Room08_moduleWeightedPct_after": 49.1
   },
   "optimization": {
     "formalOptimizationCandidate": false,
@@ -198,5 +199,5 @@
     "productionChange": false,
     "formalCoreLocked": true
   },
-  "exactNext": "D11-16 complete issuer custody-release-to-sale realization; D11-19 collect merger/spin-off payoff and break/reprice lifecycles; D11-18 add a native failed-tender control before outcome/L4 research."
+  "exactNext": "D11-16 remains the only new special-situation module below L3: complete issuer-level official custody-release-to-realized-sale evidence with an eligible-but-not-sold control. Deepen D11-18/19 failure/break and borrow/cost evidence before L4."
 }
