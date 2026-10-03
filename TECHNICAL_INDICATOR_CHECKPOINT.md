@@ -2341,3 +2341,40 @@ Current status:
 3. D03-12 repaint-safe divergence PIT feasibility is next: prove pivotAt/confirmedAt, indicator formula/state lineage and parent as-of causality can be replayed without future-bar leakage.
 4. TI-005/TI-006 efficacy remains blocked until the raw receipt gate genuinely closes.
 5. Formal Core remains unchanged.
+
+
+## TI-482 through TI-490 — D03-12 repaint-safe divergence PIT (2026-10-03)
+
+Durable artifacts:
+- `research/D03_REPAINT_SAFE_DIVERGENCE_PIT_V0_1.md`
+- `research/test_d03_repaint_safe_divergence_pit_v0_1.mjs`
+- `research/d03_repaint_safe_divergence_contract_v0_1.json`
+
+Key results:
+- pivotAt is a retrospective geometric anchor; first legal signal clock is firstObservableAt dominated by confirmedAt and required provenance;
+- D22 cannot observe a second-pivot divergence that is confirmed only at D23;
+- confirmation lag/opportunity cost is explicit and pre-confirmation movement cannot be credited as post-signal alpha;
+- primary v0.1 pairing uses two most recent consecutive confirmed same-type, same-scale price pivots; no skipping or strongest-pair selection;
+- future pivots create new episodes but cannot repaint prior first-observed divergence history;
+- divergence is Pattern × Indicator interaction evidence, not a new independent vote family;
+- constrained/UNKNOWN states are explicit;
+- Pattern confirmed-swing lineage + D03 indicator lineage make Taiwan PIT data construction technically feasible without a new market-data family.
+
+Maturity:
+- D03-12 L2/40 -> L3/60;
+- 12-module D03 50.0% -> **51.7%**.
+
+Current:
+`D03_12 = L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED`
+`DIVERGENCE_SIGNAL_CLOCK = CONFIRMED_AT_NOT_PIVOT_AT`
+`CONFIRMATION_LAG_COST = REQUIRED`
+`RAW_RECEIPT_GATE = 2_OF_3`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+### Exact next continuation point after TI-490
+
+1. No weekend denominator inflation; raw source gate remains 2/3.
+2. Keep the machine-readable divergence contract research-only.
+3. Continue D03-13 multi-timeframe PIT feasibility using causal aggregation-boundary / partial-bar clocks and existing hierarchical context semantics.
+4. TI-005/TI-006 efficacy remains blocked until the source gate genuinely opens.
+5. Formal Core unchanged.
