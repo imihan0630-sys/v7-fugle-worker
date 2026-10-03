@@ -193,5 +193,9 @@
   "intakeContractVersion": "COVERAGE_SPECIALIST_RETURN_V0_1",
   "governanceStateMachine": "shared-knowledge/CURRICULUM_COVERAGE_GOVERNANCE_STATE_MACHINE_V0_1.md",
   "governanceStateMachineJson": "shared-knowledge/curriculum_coverage_governance_state_machine_v0_1.json",
-  "governanceStateMachineVersion": "CURRICULUM_COVERAGE_STATE_MACHINE_V0_1"
+  "governanceStateMachineVersion": "CURRICULUM_COVERAGE_STATE_MACHINE_V0_1",
+  "coverageReturnValidator": "research/curriculum_coverage_return_validator_v0_1.mjs",
+  "coverageReturnValidatorTest": "tests/test_curriculum_coverage_return_validator_v0_1.mjs",
+  "coverageReturnValidatorCheckpoint": "research/CURRICULUM_COVERAGE_RETURN_VALIDATOR_CHECKPOINT_20261003.md",
+  "coverageReturnValidatorStatus": "RESEARCH_GOVERNANCE_VALIDATOR_IMPLEMENTED"
 }
