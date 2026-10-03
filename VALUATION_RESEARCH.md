@@ -339,3 +339,78 @@ Falsification:
 D08-03 may advance from L1 to L3 because both mechanism/counterevidence and Taiwan official PIT history feasibility are now established. L4 still requires prospective Shadow or OOS evidence.
 
 Status: D08-03 L3_PIT_FEASIBLE / SHADOW_OUTCOME_JOIN_NOT_OPEN / NOT_FORMAL_OPTIMIZATION_CANDIDATE.
+
+
+## VAL-024 — Historical PE/PB replay mechanics frozen and adversarially checked
+
+Research date: 2026-10-03 Asia/Taipei.
+
+Fixture:
+research/historical_valuation_percentile_replay_fixture_v0_1.json.
+
+Validation receipt:
+research/historical_valuation_percentile_replay_validation_receipt_20261003.json.
+
+Tie convention is now frozen as average-rank percent rank:
+(countLess + 0.5*(countEqual - 1)) / (N - 1), for N > 1.
+
+This convention maps:
+- sample minimum to 0;
+- sample maximum to 1;
+- tied observations to their average rank;
+- an all-equal sample to 0.5.
+
+Independent arithmetic QA passed the tie, all-equal, minimum and maximum fixtures.
+
+Fixed-window minimum history is conservative:
+- 252-valid-session percentile requires 252 valid observations;
+- 756 requires 756;
+- 1260 requires 1260;
+- expanding history is not reported before 252 valid observations.
+
+This prevents short-history/new-listing samples from masquerading as stable historical extremes.
+
+Status: REPLAY_MECHANICS_QA_PASS / NO_OUTCOME_EVIDENCE / D08-03_REMAINS_L3.
+
+## VAL-025 — Missing PE and structural breaks remain stateful
+
+PE missingness is not a number.
+
+Frozen mapping:
+- proven nonpositive trailing EPS -> NONPOSITIVE_EPS;
+- source-declared other N/A -> SOURCE_NA_OTHER;
+- unproven reason -> UNKNOWN.
+
+PB can remain independently usable when PE is missing.
+
+Structural breaks are tags, not automatic reset triggers:
+- fiscal denominator update;
+- EPS sign transition;
+- ex-rights/capital change;
+- par-value/split event;
+- major M&A/scope change;
+- accounting-policy/standard change;
+- limited listing age;
+- long suspension gap.
+
+A structural break may later justify a break-conditioned experiment, but the replay layer itself does not silently reset history or rewrite earlier official ratios.
+
+Late correction rule:
+if a corrected historical ratio first becomes observable after the replay asOf time, it cannot overwrite the earlier decision-time state.
+
+Status: FAIL_CLOSED_NA_AND_VINTAGE_RULES_VALIDATED / OUTCOMES_CLOSED.
+
+## VAL-026 — Official source witnesses confirm numeric and PE-missing/PB-present independence
+
+The 2026-10-02 official TWSE valuation table provides both:
+- ordinary numeric PE/PB rows;
+- rows where PE is unavailable while PB remains numeric.
+
+This directly validates the implementation requirement that PE/PB availability be handled independently.
+
+TPEx official historical PE/PB inquiry remains a separate market source contract; its exact column mapping must be validated from the source schema before automated replay. No ambiguous scraped column order is accepted.
+
+Status: SOURCE_WITNESS_PASS / TPEX_SCHEMA_MAPPING_STILL_REQUIRED / NO_MATURITY_CHANGE.
+
+Exact next D08-03:
+freeze source parser/schema fingerprints for TWSE and TPEx, then perform representative replay across ordinary, loss-making, capital-action and new-listing histories. Only after replay integrity is proven may the Historical-Valuation × Quality Shadow join be preregistered.
