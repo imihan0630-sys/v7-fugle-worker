@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T23:17:00+08:00",
+  "updatedAt": "2026-10-04T03:05:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -3329,8 +3329,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Underreaction／Post-event Drift反應不足與事件後漂移」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2_UNDERREACTION_DRIFT_MECHANISM_DEFINED / EVENT_HORIZON_SEPARATION / PIT_EVENT_DATA_NEXT",
-          "next": "建立台股事件後漂移資料契約：以公告首次可知時間、驚喜定義、事件當下反應與後續 1/5/20/60 日路徑分開；優先月營收與盈餘公告。必須控制事件前走勢、法人流、流動性、產業共同資訊、分析師修正、價格限制與交易成本，不得從單純動能直接反推反應不足。"
+          "status": "L2_UNDERREACTION_DRIFT_MECHANISM_DEFINED / REVENUE_CLOCK_CONTRACT_FROZEN / CORRECTION_CLOCK_SUPPORTED / ORIGINAL_CLOCK_PENDING",
+          "next": "建立台股月營收更正事件覆蓋稽核，逐筆追溯原始月營收版本，量測原始與更正首次可知時間的覆蓋率、版本鏈完整性與來源可追溯性。覆蓋閘門通過前不搜尋最佳事件窗；若原始時鐘來源持續阻塞，記錄 UNKNOWN 後輪轉 D20-06。"
         },
         {
           "id": "D20-09",
@@ -3384,9 +3384,9 @@
         }
       ],
       "status": "ALL_13_MODULES_L2_FOUNDATION_COMPLETE / PIT_REPLAY_VALIDATION_NEXT / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D20 13 模組理論＋反證基礎層已完成。下一階段禁止再做 L0/L1 重複研究；進入 L2→L3 台股 PIT/replay 可行性驗證。優先序：① D20-08 事件後漂移（月營收/盈餘 first-known 與 surprise）；② D20-06 行為從眾（投資人身分/時序/社群獨立資料）；③ D20-10 投資人情緒（方向性社群/調查/隔夜候選）；④ D20-13 套利限制（借券供給/成本/執行）；⑤ D20-11 敘事擴散（社群語言/主題傳播與 H08 三層證據鏈）。",
-      "lastResearchUpdate": "2026-10-03T21:40:00+08:00",
-      "researchNote": "Foundation milestone complete: all 13 D20 modules are now L2. D20-11 preserves a strict three-layer H08 split between taxonomy membership (D09-11), dated event/news propagation (D17-11), and independently observable behavioral narrative diffusion; social/language/topic propagation must add evidence beyond theme labels and headlines. D20-13 defines limits-to-arbitrage/noise-trader-risk theory separately from observed short flow, borrow economics and short execution. Classic theory shows professional arbitrage can be capital constrained and noise-trader risk can make mispricing persistent. Taiwan evidence links short-sale constraints plus opinion dispersion to persistent overvaluation and shows shorting restrictions can affect volatility; shorting flows also contain information. No module is L3 because own PIT/replay data contracts remain unvalidated. Formal Core unchanged."
+      "exactNextContinuationPoint": "優先完成 D20-08 月營收更正事件覆蓋稽核並追溯原始版本。若原始申報首次可知時間無法由公開來源可靠重建，保留 L2 並記錄來源阻塞，隨即輪轉 D20-06 行為從眾資料可行性；不得因資料工程完成自行升級成熟度。",
+      "lastResearchUpdate": "2026-10-04T03:05:00+08:00",
+      "researchNote": "D20-08 月營收事件時鐘續進。官方申報教材確認更正流程包含先揭露更正前後數據，再重新公告月營收；證交所個股資訊可見實際更正重大訊息的秒級發表時間，因此更正首次可知時鐘具高可信候選。原始月營收首次申報時間的大規模歷史覆蓋仍未證明，故維持 L2。原始與更正版必須分版本保存，時間覆蓋閘門通過前不做事件窗績效搜尋。正式核心未變更。"
     },
     {
       "id": "D21",
