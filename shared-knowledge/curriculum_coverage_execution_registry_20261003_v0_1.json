@@ -187,5 +187,8 @@
       "COV-12": "Instrument seniority/collateral/recovery taxonomy plus Taiwan document path"
     },
     "structuralImpact": "NONE"
-  }
+  },
+  "specialistReturnIntakeTemplate": "shared-knowledge/CURRICULUM_COVERAGE_SPECIALIST_RETURN_INTAKE_TEMPLATE_20261003_V0_1.md",
+  "specialistReturnSchema": "shared-knowledge/curriculum_coverage_specialist_return_schema_v0_1.json",
+  "intakeContractVersion": "COVERAGE_SPECIALIST_RETURN_V0_1"
 }

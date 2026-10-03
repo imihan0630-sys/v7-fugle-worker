@@ -1214,3 +1214,16 @@ Current pre-intake distribution:
 
 Canonical curriculum remains 22 domains / 354 active modules.
 Formal Core remains LOCKED.
+
+
+## Coverage specialist return intake contract — 2026-10-03
+
+Canonical template:
+`shared-knowledge/CURRICULUM_COVERAGE_SPECIALIST_RETURN_INTAKE_TEMPLATE_20261003_V0_1.md`
+
+Machine schema:
+`shared-knowledge/curriculum_coverage_specialist_return_schema_v0_1.json`
+
+Purpose:
+standardize the first formal handoff from specialist rooms to 00｜研究總控室.
+No curriculum structural change is implied by return acceptance.
