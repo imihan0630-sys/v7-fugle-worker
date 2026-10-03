@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 11:00 Asia/Taipei
+Updated: 2026-10-03 11:10 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -729,4 +729,24 @@ Execution packets:
 `shared-knowledge/CURRICULUM_H01_H04_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
 
 Rooms 07, 09 and 10 can now execute H01-H04 specialist validation directly from the frozen evidence requirements. These packets do not authorize merge, retirement, maturity promotion or Formal Core changes.
+
+## H05-H08 semantic split acceptance contract — 2026-10-03
+
+Canonical contract:
+`shared-knowledge/CURRICULUM_H05_H08_SEMANTIC_SPLIT_ACCEPTANCE_CONTRACT_20261003_V0_1.md`
+
+Machine-readable companion:
+`shared-knowledge/curriculum_h05_h08_semantic_split_acceptance_contract_20261003_v0_1.json`
+
+Specialist packets:
+`shared-knowledge/CURRICULUM_H05_H08_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
+
+Frozen protections:
+- D07-25 vs D21-10: statement-level forensic evidence vs audit/restatement/internal-control governance evidence.
+- D20-06 vs D06-06: behavioral herding cannot be inferred from crowding alone.
+- D20-09 vs D03-05: behavioral overreaction cannot be inferred from price reversal alone.
+- D09-11 / D17-11 / D20-11: taxonomy membership, event propagation and behavioral narrative diffusion are separate layers unless specialist evidence proves otherwise.
+- Shared source rows/events use one evidence receipt and cannot become duplicate independent votes.
+
+No curriculum count, maturity or Formal Core change.
 
