@@ -85,3 +85,11 @@ FORMAL_OPTIMIZATION_CANDIDATE：NONE（無）。此反證是驗證可靠性補�
 Exact next：先取得真實C1 generation與freezeable合法預測；補完整操作ledger／雙分母報表並驗證標籤到達不變性，再做因果outcome join及first chronological OOS校準。D15-19同步按已存在K1–K8任務獨立研究，但本室不代替10室宣告完成。
 
 寫回分類：隔離Class-A研究包；最新cloudflare workflow對 `research/**`（排除Markdown）會觸發部署，因此含tracker／JSON／MJS的套件只推研究branch／draft PR；未獲production路徑review前不合併main，不改workflow繞過限制。Rollback（回復）：關閉PR即可；Formal Core全程LOCKED。
+
+## 2026-10-03 approved merge and deployment receipt
+
+- User explicitly approved PR #342 merge and consequential existing deployment. PR merged at 2026-10-03 13:37:52 Asia/Taipei; PR merge commit f25ff60c3acbe682d998269dfb7bc60767511807, integrated main head 13a7df69e8aadfa20a6a77fd87985d2f40df817b. Concurrent main/tracker updates preserved; only D16-25 tracker entry changed by this research.
+- Deployment https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37100439817 completed success for that exact integrated head. Preserved-configuration/version verification and research-only counterfactual readback steps succeeded; business backfills, selection/bootstrap and report resend steps were skipped.
+- Public /api/version readback after deployment: 8.15.3-c3-quote-context; testMode=false; KV/D1=true; quote/phonePush/threeMin/threeMinReadback=true; planStorageMode=D1_GITHUB_ENCRYPTED; githubEncryptedMirror=true; firebase=false; requirements30Complete=false. Matches premerge baseline. This does not prove C1 prospective population acceptance or probability calibration.
+- Closure append was based on freshly fetched main d28a455. Markdown-only receipt; no Formal Core, evaluator, runtime, workflow or tracker modification in closure.
+- Research conclusions unchanged: D16-25 L2, maturity 40%; D15-19 L0, 0%; INSUFFICIENT_EVIDENCE for merge; no FORMAL_OPTIMIZATION_CANDIDATE. Synthetic denominator falsification remains synthetic. Next: separate frozen operational denominator from matured known-label evaluation, then genuine PIT/OOS/prospective C1 acceptance.
