@@ -1,0 +1,119 @@
+{
+  "version": "0.1",
+  "id": "BR-049",
+  "capturedAt": "2026-10-03T14:00:00+08:00",
+  "module": "D09-13 Industry Structure／Porter Five Forces產業結構與波特五力",
+  "mode": "THEORY_MECHANISM_FALSIFICATION_CONTRACT / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "theorySources": [
+    {
+      "authority": "Harvard Business Review / Michael Porter",
+      "url": "https://hbr.org/2008/01/the-five-competitive-forces-that-shape-strategy",
+      "use": "Five-force industry-structure mechanism."
+    },
+    {
+      "authority": "OECD",
+      "url": "https://www.oecd.org/en/publications/market-concentration_7231c298-en.html",
+      "use": "Concentration is an imperfect indicator; combine with prices, markups, profits, entry and other competitive-intensity evidence."
+    },
+    {
+      "authority": "Harvard Business Review / Collis & Montgomery",
+      "url": "https://hbr.org/2008/07/competing-on-resources",
+      "use": "Firm resources/capabilities are a competing/complementary explanation to industry structure."
+    }
+  ],
+  "canonicalForces": [
+    "RIVALRY_AMONG_EXISTING_COMPETITORS",
+    "THREAT_OF_NEW_ENTRANTS",
+    "THREAT_OF_SUBSTITUTES",
+    "SUPPLIER_BARGAINING_POWER",
+    "BUYER_BARGAINING_POWER"
+  ],
+  "observableStateVector": {
+    "rivalry": [
+      "competitorCount",
+      "marketShareDistribution",
+      "priceDispersion",
+      "capacityGrowth",
+      "utilizationDispersion",
+      "grossMarginDispersion",
+      "exit/entry events"
+    ],
+    "entry": [
+      "capexRequired",
+      "qualificationTime",
+      "regulatoryApproval",
+      "customerCertification",
+      "minimumEfficientScale",
+      "IP/processKnowHow",
+      "distribution/access constraints"
+    ],
+    "substitutes": [
+      "functionalSubstitutes",
+      "relativePricePerformance",
+      "switchingCost",
+      "qualification/requalification cost",
+      "cross-product migration evidence"
+    ],
+    "supplierPower": [
+      "supplierConcentration",
+      "singleSourceShare",
+      "inputLeadTime",
+      "allocation",
+      "switching/qualification time",
+      "inputPricePassThrough"
+    ],
+    "buyerPower": [
+      "customerConcentration",
+      "topCustomerShare",
+      "contractTenor",
+      "priceResetFrequency",
+      "dualSource ability",
+      "customer switching/qualification leverage"
+    ]
+  },
+  "mechanisms": [
+    "A structurally attractive industry may sustain pricing or returns on invested capital when rivalry, entry, substitute and bargaining pressures are persistently weak.",
+    "Industry structure can shape how value is divided between producers, suppliers and customers rather than simply determining revenue growth.",
+    "Capacity additions, qualification cycles and switching costs can change force strength over time; the framework must be time-varying rather than static."
+  ],
+  "falsification": [
+    "High concentration alone does not prove weak competition or superior profitability; market definition may be wrong and efficient/intangible-intensive leaders can create concentration while prices still fall.",
+    "Attractive industry structure does not guarantee a specific issuer wins; firm resources, execution, customer mix and capital allocation can dominate cross-sectional outcomes.",
+    "Fast technology substitution can destroy apparent barriers before accounting data reveals it.",
+    "Cyclical scarcity can temporarily mimic structural pricing power; a boom-period margin spike is not durable evidence of entry barriers.",
+    "Regulation can both raise entry barriers and cap profitability; barrier direction and shareholder-value direction are not identical."
+  ],
+  "pitContract": {
+    "marketDefinitionVintage": "Product and geographic market definitions must be effective-dated; current taxonomy cannot be backfilled.",
+    "sourceClocks": [
+      "sourcePublishedAt",
+      "capturedAt",
+      "effectiveAt",
+      "firstEligibleDecision"
+    ],
+    "missingRule": "UNKNOWN != 0 != weak force",
+    "revisionRule": "Append revised market-share/capacity/customer evidence as a new vintage.",
+    "outcomeFirewall": "No stock return, future margin or valuation outcome may be opened while classifying the force state."
+  },
+  "redundancyControls": [
+    "Do not double-count Pricing Power from D10-06 as an independent D09-13 vote; treat it as one observable consequence.",
+    "Do not duplicate D09-10 concentration metrics without new structural interpretation.",
+    "Separate company moat/resource evidence from industry-structure evidence."
+  ],
+  "systemUse": {
+    "System1": "Context/reject-confounding research only; no new hard gate or score.",
+    "System2": "Candidate slow-moving industry-state vector that may condition other factors after PIT/OOS validation."
+  },
+  "maturityDecision": {
+    "D09-13": "PROMOTE_L0_TO_L2_MECHANISM_AND_FALSIFICATION_DEFINED"
+  },
+  "reasonNoL3": "Taiwan effective-dated market definitions, market shares, entrant/substitute observations and buyer/supplier concentration are not yet assembled into a replayable PIT dataset.",
+  "exactNext": [
+    "BR-051 build the first Taiwan industry-structure receipt for one priority industry with explicit market denominator, source clocks and force-state UNKNOWN handling.",
+    "Use at least one positive and one negative-control industry/event before any cross-industry comparison.",
+    "Keep stock outcomes closed until the PIT structure receipt is stable."
+  ],
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / DATA_CONTRACT_FROZEN / TAIWAN_PIT_RECEIPT_PENDING / FORMAL_UNCHANGED"
+}
