@@ -1,7 +1,7 @@
 {
   "schemaVersion": "CURRICULUM_COVERAGE_EXECUTION_REGISTRY_V0_1",
   "updatedAt": "2026-10-03T21:40:00+08:00",
-  "status": "COVERAGE_A_AND_B_PACKETS_READY_SPECIALIST_RETURNS_PENDING",
+  "status": "COVERAGE_PACKETS_READY_PREINTAKE_PARTIAL_EVIDENCE",
   "formalCoreImpact": "NONE_LOCKED",
   "canonicalSnapshot": {
     "domains": 22,
@@ -97,7 +97,7 @@
     {
       "id": "COV-08",
       "room": "11｜統計驗證與策略市場狀態研究室",
-      "state": "PACKET_READY_PENDING_SPECIALIST_RETURN"
+      "state": "PARTIAL_EVIDENCE_RECEIVED"
     },
     {
       "id": "COV-09",
