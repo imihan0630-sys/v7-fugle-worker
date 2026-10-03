@@ -69,7 +69,8 @@ try {
             noPlanChanges:result.noPlanChanges,noTrade:result.noTrade,noPush:result.noPush}});
         console.log(JSON.stringify({c3Registration:true,status:'REGISTERED',generationId:registration.generationId,
           targetTradeDate:result.targetTradeDate,extraShadowN:registration.extraShadowN,
-          requiredExtraCandleCalls:registration.requiredExtraCandleCalls,requiredExtraQuoteCalls:registration.requiredExtraQuoteCalls,\n          requiredExtraProviderCalls:registration.requiredExtraProviderCalls,noPlanChanges:true,noTrade:true,noPush:true}));
+          requiredExtraCandleCalls:registration.requiredExtraCandleCalls,requiredExtraQuoteCalls:registration.requiredExtraQuoteCalls,
+          requiredExtraProviderCalls:registration.requiredExtraProviderCalls,noPlanChanges:true,noTrade:true,noPush:true}));
       }
     }catch(registrationError){
       const message=String(registrationError?.message||registrationError).slice(0,300);
