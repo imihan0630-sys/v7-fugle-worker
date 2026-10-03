@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "D03_REPAINT_SAFE_DIVERGENCE_CONTRACT_V0_1",
+  "updatedAt": "2026-10-03T14:00:00+08:00",
+  "classification": "CLASS_A_RESEARCH_ONLY",
+  "formalCoreImpact": "NONE_LOCKED",
+  "scope": {
+    "primaryFamilies": [
+      "REGULAR_BULLISH_DIVERGENCE",
+      "REGULAR_BEARISH_DIVERGENCE"
+    ],
+    "hiddenDivergencePrimary": false,
+    "independentIndicatorPivotsPrimary": false,
+    "pricePivotOwner": "D01_CONFIRMED_PATTERN_SWINGS",
+    "directionalAuthority": false
+  },
+  "pairSelection": {
+    "rule": "TWO_MOST_RECENT_CONSECUTIVE_CONFIRMED_PRICE_PIVOTS",
+    "requireSamePivotType": true,
+    "requireSameSwingScale": true,
+    "allowSkipInterveningConfirmedPivot": false,
+    "allowOutcomeSelectedPair": false,
+    "allowStrengthSelectedPair": false,
+    "robustnessComparatorsRequirePreregistration": true
+  },
+  "clocks": {
+    "pivotAt": "PRICE_EXTREME_ANCHOR_ONLY",
+    "confirmedAt": "PATTERN_SWING_FIRST_CAUSAL_CONFIRMATION",
+    "firstObservableAt": "MAX_OF_PIVOT_CONFIRMATIONS_INDICATOR_AVAILABILITY_CONTINUITY_PARENT_RECEIPTS",
+    "signalTimestampAuthority": "FIRST_OBSERVABLE_AT_NOT_PIVOT_AT",
+    "laterCorrectionMayBackfillPriorObservation": false
+  },
+  "identity": {
+    "fields": [
+      "symbol",
+      "semanticSpaceId",
+      "patternSwingSpecVersion",
+      "swingScale",
+      "pivot1Id",
+      "pivot1Version",
+      "pivot2Id",
+      "pivot2Version",
+      "indicatorFamily",
+      "indicatorFormulaVersion",
+      "indicatorStateLineageId",
+      "initialFirstObservableAt"
+    ],
+    "futurePivotMayMutatePriorEpisode": false,
+    "laterFormulaVersionMayMutatePriorEpisode": false
+  },
+  "requiredObservationFields": [
+    "parentDecisionReceiptId",
+    "captureGeneration",
+    "asOf",
+    "symbol",
+    "semanticSpaceId",
+    "patternSwingSpecVersion",
+    "pivot1Id",
+    "pivot1At",
+    "pivot1ConfirmedAt",
+    "pivot2Id",
+    "pivot2At",
+    "pivot2ConfirmedAt",
+    "swingScale",
+    "indicatorFamily",
+    "indicatorFormulaVersion",
+    "indicatorStateLineageId",
+    "indicatorValue1",
+    "indicatorValue2",
+    "priceProgressionPct",
+    "indicatorProgression",
+    "confirmationLagEligibleBars",
+    "priceMovePivotToConfirmationPct",
+    "constraintState",
+    "dataQualityState",
+    "divergenceEpisodeKey"
+  ],
+  "stateTaxonomy": [
+    "VALID_OBSERVABLE",
+    "VALID_BUT_CONSTRAINED",
+    "WARMUP_INCOMPLETE",
+    "DATA_BLOCKED",
+    "UNKNOWN_PROVENANCE"
+  ],
+  "requiredGuards": [
+    "PATTERN_PIVOT_CONFIRMED_AT_LE_ASOF",
+    "INDICATOR_CAUSAL_PREFIX_ONLY",
+    "FORMULA_VERSION_FIXED_WITHIN_EPISODE",
+    "INDICATOR_STATE_LINEAGE_VALID",
+    "TECHNICAL_CONTINUITY_VALID_OR_EXPLICIT_BLOCK",
+    "SYMBOL_SESSION_PROVENANCE_VALID",
+    "NO_PSEUDO_OR_NO_TRADE_PIVOT",
+    "PRICE_LIMIT_CONSTRAINT_PRESERVED",
+    "PARENT_IDENTITY_UNIQUE",
+    "REPLAY_EXACT",
+    "PREFIX_INVARIANT"
+  ],
+  "redundancyControls": [
+    "RAW_PRICE_SWING_PROGRESSION",
+    "RET5_RET10_RET20",
+    "MA_SLOPE_TREND_PERSISTENCE",
+    "STRUCTURAL_SUPPORT_RESISTANCE",
+    "PATTERN_REVERSAL_LIFECYCLE",
+    "VOLATILITY",
+    "PRICE_VOLUME_ACCEPTANCE_REJECTION"
+  ],
+  "crossIndicatorRules": {
+    "rsiKdDivergenceIndependentVotes": false,
+    "macdCrossSectionRequiresNormalizedMagnitude": true,
+    "patternPivotConfirmationCannotBeCountedAgainAsIndependentVote": true
+  },
+  "lagCost": {
+    "required": true,
+    "fields": [
+      "confirmationLagEligibleBars",
+      "priceAtPivot",
+      "priceAtConfirmation",
+      "priceMovePivotToConfirmationPct",
+      "priceMovePivotToConfirmationATR"
+    ],
+    "preConfirmationMoveMayBeCreditedAsPostSignalAlpha": false
+  },
+  "outcomePolicy": {
+    "currentStatus": "NO_GO",
+    "historicalShadowFabrication": false,
+    "primaryInferenceOrderBeforeDivergence": [
+      "TI_005_KD_VS_RSI",
+      "TI_006_MACD_VS_DIRECT_TREND"
+    ],
+    "requireProspectiveCoverage": true,
+    "requireIndependentDates": true
+  }
+}
