@@ -1,6 +1,6 @@
 # System 1 C4 priority-score provenance Class-B checkpoint — 2026-10-03
 
-Status: CLASS-B CANDIDATE / NOT MERGED / NOT DEPLOYED / FORMAL CORE LOCKED
+Status: CLASS-B DEPLOYED / PRODUCTION READBACK VERIFIED / FORMAL CORE LOCKED
 Parent research: PR #344 post-session C3/C4/C5 evidence pipeline.
 
 ## Purpose
@@ -80,3 +80,37 @@ evidence; no trading plan, signal, fill or order record is deleted.
 PR #347 was temporarily retargeted to latest main only to trigger the repository's main-target pull-request CI.
 Latest-main overlap audit found zero overlapping files with the V8.15.4 candidate.
 This is not merge or deployment authorization. After exact-head CI, PR #347 must return to parent PR #344.
+
+
+## Deployment closure — 2026-10-03
+
+Owner approval was explicitly granted for the Class-B merge/deploy sequence.
+
+Execution:
+- Parent PR #344 merged first as `9a12e0437834a9549f99716517490bc363ff9a88`.
+- Its V8.15.3 rebuild passed Regression and Cloudflare Deploy, including preserved monitoring configuration and research-only readback.
+- Historical PR #347 was not merged because PR #344 had been squash-merged and the child retained ancestry-only conflicts.
+- V8.15.4 was clean-replayed from latest main as PR #353 with only the 14 child files.
+- PR #353 exact-head Regression, Repair CI and isolated review all passed.
+- PR #353 merged as `92abae632671d36b9a8764ead2a657e64ccb6094`.
+- Cloudflare Deploy run `37102186016` completed successfully.
+- Regression run `37102186039` completed successfully.
+
+Production readback:
+- expectedVersion: `8.15.4-c4-priority-provenance`
+- observedVersion: `8.15.4-c4-priority-provenance`
+- research readback verified on the expected deployment.
+- deployed runtime bindings, mode, watchlist routes and existing monitoring configuration were preserved.
+- 23:35 Taipei after-market schedule remained intact.
+
+Formal firewall closure:
+- `priorityScoreCopiedFromFormalResult=true`
+- `priorityScoreRecomputed=false`
+- `formalComparatorFrozen=true`
+- `signalPathChanged=false`
+- `pushPathChanged=false`
+- `orderPathChanged=false`
+- `formalCoreImpact=false`
+- `system2Touched=false`
+
+Therefore V8.15.4 is an evidence/provenance extension only. It does not authorize any Formal admission, ranking, allocation, signal or order-policy change. C4 economic superiority remains UNKNOWN and any future Formal promotion still requires the existing Class-C evidence gate and explicit owner decision.
