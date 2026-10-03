@@ -207,3 +207,66 @@ After D15-19 specialist research:
 2. verify Kelly/log-growth/fractional-risk semantics have a surviving owner;
 3. verify D16-25 remains sole probability/calibration authority;
 4. owner chooses curriculum merge/retirement only after both sides are complete enough.
+
+
+## 9. D16-side specialist completion update — 2026-10-03
+
+D16-25 has now closed its final identified methodological gap for merge governance.
+
+Additional executable evidence:
+- PR #340 merged as `399287ac5ad669686f5f40fcfe72ea28617fd680`;
+- final head `716b9038a1437b03dc5de92ee24709918a5b2deb`;
+- System2 Research CI `37095784670` PASS;
+- V8 Repair CI `37095784642` PASS;
+- V8 Regression `37095784664` PASS.
+
+New date-clustering firewall:
+- row-weighted Brier/log loss and date-balanced Brier/log loss are both reported;
+- per-date N / event rate / predicted probability / scores are preserved;
+- same-date row multiplicity cannot masquerade as independent-date evidence;
+- calibration-in-the-large is reported as a descriptive signed gap;
+- row-weighted and date-balanced estimates remain distinct estimands.
+
+External-methodology review did not collapse D16-25 and D15-19:
+- proper scoring supports D16 probability-quality ownership;
+- selective prediction supports D16 ABSTAIN/risk-coverage ownership;
+- calibration-under-shift supports D16 Regime/shift uncertainty ownership;
+- Bayesian/Kelly-under-parameter-uncertainty literature supports passing uncertainty downstream into sizing rather than treating Fractional Kelly as a calibration method.
+
+Therefore the D16-side conclusion is now stronger:
+
+`D16_SIDE_SPECIALIST_COMPLETE_AT_L2 / D15_SPECIALIST_RESEARCH_REQUIRED`.
+
+No additional D16 conceptual research is required before D15-19 starts its own specialist evaluation, unless contradictory evidence appears.
+
+The remaining D16 blockers are empirical L3/L4 blockers only:
+- genuine complete Taiwan PIT intended population;
+- real frozen probability predictions;
+- causally matured outcomes;
+- real calibration / after-cost utility / coverage evidence.
+
+These blockers prevent Formal deployment but do not prevent curriculum ownership comparison.
+
+## 10. Merge-governance state after D16 completion
+
+The four options remain:
+
+A. Keep D16-25 and D15-19 separate with an explicit handoff.
+
+B. Absorb D15-19 into D15-16 Portfolio Optimization while D16-25 remains the sole probability/calibration authority.
+
+C. Merge D15-19 directly into an expanded D16-25.
+
+D. Retire D15-19 standalone and split-transfer:
+- predictive belief/calibration/uncertainty requirements -> D16-25;
+- Kelly/Fractional-Kelly/log-growth sizing mechanics -> D15-16 / D15 sizing family.
+
+D16-side anti-orphan view:
+- C remains the least natural unless D16 scope is deliberately expanded into portfolio allocation;
+- B or D remain structurally cleaner from the D16 side;
+- final judgment is intentionally withheld until D15-19 independently validates Kelly-specific log-growth, fractional sizing, correlation/concentration, drawdown/ruin, cost/liquidity and benchmark-comparison semantics.
+
+Current action:
+`D15_19_SPECIALIST_RESEARCH_CAN_START_NOW`.
+
+No curriculum merge/retirement is executed by this file.
