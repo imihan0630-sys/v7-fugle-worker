@@ -1,0 +1,115 @@
+{
+  "version": "0.1",
+  "id": "SC-046",
+  "capturedAt": "2026-10-04T07:37:00+08:00",
+  "module": "D10-14 Industrial Policy／Subsidy／Geopolitical Bottleneck產業政策補貼與地緣瓶頸",
+  "mode": "TSMC_ARIZONA_POLICY_TO_CAPACITY_PIT_RECEIPT / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "purpose": "Establish a replayable Taiwan-issuer industrial-policy-to-physical-capacity lifecycle using TSMC Arizona CHIPS award and facility milestones.",
+  "policyLifecycle": [
+    {
+      "at": "2024-04-08",
+      "state": "PRELIMINARY_NON_BINDING_TERMS",
+      "authority": "U.S. Department of Commerce",
+      "directFundingUsdBn": 6.6,
+      "proposedLoansUsdBn": 5,
+      "privateInvestmentPlanUsdBn": ">65",
+      "note": "Preliminary terms were non-binding and subject to due diligence and milestones."
+    },
+    {
+      "at": "2024-11-15",
+      "state": "FINAL_AWARD",
+      "authority": "U.S. Department of Commerce",
+      "directFundingUsdBn": "up to 6.6",
+      "loansUsdBn": "up to 5.0",
+      "milestoneRule": "Direct funding is disbursed based on construction, production and commercial milestones; loans relate to capital expenditures."
+    },
+    {
+      "at": "2024-Q4",
+      "state": "FAB1_HVM",
+      "issuer": "TSMC Arizona",
+      "technology": "N4 / 4nm",
+      "evidence": "First Arizona fab entered high-volume production."
+    },
+    {
+      "at": "2025",
+      "state": "FAB2_STRUCTURE_COMPLETE_SYSTEM_INSTALLATION",
+      "issuer": "TSMC Arizona",
+      "targetTechnology": "N3 and more advanced",
+      "targetHvm": "H2 2027",
+      "evidence": "Second fab structure completed; facility systems being installed."
+    },
+    {
+      "at": "2025-04",
+      "state": "FAB3_CONSTRUCTION_STARTED",
+      "issuer": "TSMC Arizona",
+      "targetTechnology": "N2/A16",
+      "targetHvm": "by end of decade",
+      "evidence": "Third fab ground-breaking/construction began."
+    },
+    {
+      "at": "2026",
+      "state": "ADDITIONAL_EXPANSION_STAGES",
+      "issuer": "TSMC Arizona",
+      "evidence": "Current official Arizona site shows initial construction stages for additional fab/advanced-packaging expansion and expanded long-run investment plans."
+    }
+  ],
+  "awardToCapacityState": {
+    "awardAmount": "KNOWN_MAXIMUM",
+    "actualDisbursedDirectFunding": "UNKNOWN",
+    "actualLoanDrawdown": "UNKNOWN",
+    "taxCreditRealization": "UNKNOWN",
+    "fab1OperatingCapacity": "HVM_CONFIRMED",
+    "fab2OperatingCapacity": "NOT_YET_HVM",
+    "fab3OperatingCapacity": "NOT_YET_HVM",
+    "laterFabsOperatingCapacity": "NOT_YET_HVM_OR_UNKNOWN"
+  },
+  "positiveMechanism": [
+    "Industrial incentives can reduce effective project financing burden and support geographic capacity relocation/expansion when tied to verified milestones.",
+    "Milestone-based disbursement provides an observable policy-to-construction-to-production chain rather than a headline-only subsidy variable.",
+    "TSMC issuer-native facility milestones allow policy and physical-capacity clocks to be replayed separately."
+  ],
+  "negativeControls": [
+    "A final award of up to US$6.6bn does not mean US$6.6bn was immediately disbursed; actual disbursement remains UNKNOWN unless disclosed.",
+    "Final award does not equal usable capacity: only Fab 1 is HVM while later fabs are construction/installation/future-HVM states.",
+    "Subsidized geographic expansion can carry higher overseas manufacturing cost and execution risk; subsidy is not automatically margin accretive.",
+    "The award is issuer/facility specific and cannot be generalized to all Taiwan semiconductor companies.",
+    "Capacity timing is driven by customer demand, construction, equipment, qualification and ramp, not policy award alone."
+  ],
+  "pitContract": {
+    "unit": "issuer × facility × policy program × milestone vintage",
+    "clocks": [
+      "preliminaryTermsAt",
+      "awardAt",
+      "disbursementAt",
+      "capexAt",
+      "constructionAt",
+      "equipmentInstallAt",
+      "qualificationAt",
+      "hvmAt",
+      "capturedAt",
+      "firstEligibleDecision"
+    ],
+    "amountSemantics": "AWARDED_MAX != DISBURSED != SPENT != QUALIFIED_CAPACITY != HVM_OUTPUT",
+    "missingRule": "UNKNOWN != zero / cancelled / realized",
+    "revisionRule": "Append award amendments and facility milestone changes; never backdate future HVM.",
+    "outcomeFirewall": "No stock, margin or valuation outcome is opened while freezing policy/capacity state."
+  },
+  "redundancyControls": [
+    "D10-04 owns physical capacity lifecycle; D10-14 owns the policy cause/conditions and its link to capacity.",
+    "D09-14 owns issuer strategic-action lifecycle; policy support is contextual input, not a duplicate action vote.",
+    "D13 owns macro industrial-policy/regime context; D10-14 owns facility-level supply-chain transmission."
+  ],
+  "maturityDecision": {
+    "D10-14": "PROMOTE_L2_TO_L3_TAIWAN_PIT_DATA_FEASIBILITY_ONLY"
+  },
+  "promotionReason": "Official Commerce award terms plus issuer-native TSMC Arizona facility milestones create a replayable award-to-capacity dataset with explicit maximum-vs-disbursement and award-vs-HVM firewalls.",
+  "reasonNoL4": "No prospective/OOS test establishes whether subsidy-linked facility states improve future margins, returns or stock selection after controlling for demand, capex, cost, capacity and valuation.",
+  "exactNext": [
+    "SC-048 append actual disbursement/loan/tax-credit figures only when issuer/government sources disclose them; otherwise remain UNKNOWN.",
+    "Add a second Taiwan issuer/program policy-to-capacity case before cross-company inference.",
+    "Preregister prospective tests of policy-supported capacity versus unsubsidized/less-subsidized comparable expansions."
+  ],
+  "status": "POLICY_TO_CAPACITY_TAIWAN_ISSUER_PIT_FEASIBLE / MILESTONE_CLOCKS_FROZEN / DISBURSEMENT_UNKNOWN_FIREWALL / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
