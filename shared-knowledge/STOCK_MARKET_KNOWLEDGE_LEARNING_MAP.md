@@ -41,7 +41,7 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 | D09 | 產業／族群／市場廣度／輪動 | 14 | 47.1% | 07｜產業與供應鏈研究室 |
 | D10 | 供應鏈／產能／庫存／原物料傳導 | 13 | 46.2% | 07｜產業與供應鏈研究室 |
 | D11 | 公司行動／重大事件／事件風險 | 19 | 40% | 08｜事件與新聞研究室 |
-| D12 | 期貨／選擇權／衍生品 | 17 | 37.6% | 09｜衍生品與國際總經研究室 |
+| D12 | 期貨／選擇權／衍生品 | 17 | 40% | 09｜衍生品與國際總經研究室 |
 | D13 | 總體經濟／跨市場傳導 | 19 | 28.4% | 09｜衍生品與國際總經研究室 |
 | D14 | 交易成本／執行品質／Execution Alpha | 18 | 33.3% | 10｜投組風控與交易執行研究室 |
 | D15 | 投資組合／風險／資金利用／部位生命週期 | 21 | 36.2% | 10｜投組風控與交易執行研究室 |
@@ -387,7 +387,7 @@ GitHub專屬checkpoint：
 | D11-19 | Spin-off／Merger Arbitrage／Deal-break Risk分拆併購套利與破局風險 | L2 機制＋反證 | 40% |
 
 
-### D12｜期貨／選擇權／衍生品 — 37.6%
+### D12｜期貨／選擇權／衍生品 — 40%
 
 專責：09｜衍生品與國際總經研究室  
 證據錨點：`DERIVATIVES_VOLATILITY_CHECKPOINT.md`、`DERIVATIVES_VOLATILITY_RESEARCH.md`
@@ -410,7 +410,7 @@ GitHub專屬checkpoint：
 | D12-14 | IV-RV Spread隱含與實現波動差 | L2 機制＋反證 | 40% |
 | D12-15 | Volatility Risk Premium波動率風險溢酬 | L2 機制＋反證 | 40% |
 | D12-16 | Volatility Surface／Smile波動率曲面與微笑 | L2 機制＋反證 | 40% |
-| D12-17 | Option Payoff Structures／Put-Call Parity／Synthetic Positions／Strategies選擇權損益結構、買賣權平價、合成部位與策略 | L0 未研究 | 0% |
+| D12-17 | Option Payoff Structures／Put-Call Parity／Synthetic Positions／Strategies選擇權損益結構、買賣權平價、合成部位與策略 | L2 機制＋反證 | 40% |
 
 
 ### D13｜總體經濟／跨市場傳導 — 28.4%
