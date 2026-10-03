@@ -152,3 +152,23 @@ Read order for future research chats: Shared Master Map -> RESEARCH_ENGINEERING_
 - Supply-chain: SC-040 freezes three independent 2026-07..09 NDC/CIER order/lead-time release vintages; SC-041 adds bounded 8046/3189 industry-to-issuer product-scope bridges while revenue exposure and issuer backlog remain UNKNOWN.
 - SC-042 defines a dedicated shortage/supply-gap PIT event contract with explicit shortage/allocation plus operational-consequence requirements and a September mismatch/inventory negative control. D10-08 advances L2 -> L3 for Taiwan PIT/source feasibility only.
 - No issuer backlog, realized margin, stock outcome, scoring weight or Formal Core behavior changed.
+
+## Research-to-Optimization bridge gap audit — 2026-10-03
+
+Canonical audit:
+`shared-knowledge/RESEARCH_TO_OPTIMIZATION_BRIDGE_AUDIT_20261003_V0_1.md`
+
+Machine-readable audit:
+`shared-knowledge/research_to_optimization_bridge_audit_20261003_v0_1.json`
+
+Result:
+- existing canonical Formal optimization candidate lineage: 1 (HISTORY_SOURCE_REVALIDATION_V2.3; already owner-approved/merged/deployed);
+- new unsurfaced EVIDENCE_READY candidates found: 0;
+- explicit blocked/watchlist lanes: 13;
+- L4 D16 validation modules are validation infrastructure, not stock-selection Alpha;
+- System1 evidence automation / C3-C5 research evidence capture is evidence infrastructure, not a new Formal optimization candidate;
+- D02-07, D02-08 and H20 remain non-candidates under current evidence.
+
+FORMAL_OPTIMIZATION_CANDIDATES remains 1.
+Formal Core remains LOCKED.
+
