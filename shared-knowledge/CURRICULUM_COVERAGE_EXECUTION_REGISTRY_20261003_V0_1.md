@@ -109,3 +109,11 @@ Combined partial-evidence set:
 COV-01, COV-02, COV-07, COV-08, COV-09, COV-10.
 
 Accepted specialist returns remain 0 / 12. No curriculum structural change is authorized.
+
+
+## Pre-Intake third harvest — 2026-10-03
+
+- COV-11 → PARTIAL_EVIDENCE_RECEIVED from existing D21 voting-rights / shareholder-meeting / PIT governance evidence.
+- Combined partial-evidence set: COV-01, COV-02, COV-07, COV-08, COV-09, COV-10, COV-11.
+- Accepted specialist returns remain 0 / 12.
+- No curriculum structural change is authorized.

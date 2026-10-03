@@ -71,7 +71,7 @@
       "domain": "D21",
       "room": "14｜公司治理與內部人研究室",
       "class": "TRUE_GAP_CANDIDATE",
-      "state": "PENDING_SPECIALIST_RETURN",
+      "state": "PARTIAL_EVIDENCE_RECEIVED",
       "returnPath": "research/COV11_D21_SPECIALIST_RETURN_V0_1.md"
     },
     {
@@ -159,14 +159,14 @@
       "COV-07",
       "COV-08",
       "COV-09",
-      "COV-10"
+      "COV-10",
+      "COV-11"
     ],
     "pendingSpecialistReturn": [
       "COV-03",
       "COV-04",
       "COV-05",
       "COV-06",
-      "COV-11",
       "COV-12"
     ],
     "acceptedSpecialistReturns": 0,
