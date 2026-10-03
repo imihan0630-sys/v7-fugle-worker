@@ -21,9 +21,11 @@ const safety={SOURCE_AUTHENTICITY:{status:"PASS"},SESSION_CONTINUITY:{status:"PA
   ACCOUNT_RISK:{status:"UNKNOWN",reason:"ACCOUNT_UNKNOWN"}};
 const rows=[
   {symbol:"2006",feature,sector,derived,safety,historyAdmission:{usable:true,status:"VALID"},
-    formalResult:{ok:true,firstFailure:null,selected:true,selectedRank:1,basePassed:true,rrPassed:true}},
+    formalResult:{ok:true,firstFailure:null,selected:true,selectedRank:1,basePassed:true,rrPassed:true,
+      priorityScore:91.5,priorityScoreProvenance:"FORMAL_RUNTIME_RESULT_AT_C1_DECISION"}},
   {symbol:"2330",feature:{...feature,close:100},sector,derived,safety,historyAdmission:{usable:true,status:"VALID"},
-    formalResult:{ok:false,firstFailure:"基本面品質不足",selected:false,basePassed:true,rrPassed:false}},
+    formalResult:{ok:false,firstFailure:"基本面品質不足",selected:false,basePassed:true,rrPassed:false,
+      priorityScore:82.25,priorityScoreProvenance:"FORMAL_RUNTIME_RESULT_AT_C1_DECISION"}},
   {symbol:"9999",feature:{close:30,historyDays:null},sector:null,derived:null,
     safety:{SOURCE_AUTHENTICITY:{status:"PASS"}},historyAdmission:{usable:false,status:"UNKNOWN"},
     formalResult:{ok:false,firstFailure:"HISTORY_OR_FEATURE_ADMISSION_BLOCKED",selected:false}}
@@ -46,6 +48,8 @@ eq(p.tally.shortSafetyUnverifiedN,3);
 eq(p.pairs.find(x=>x.symbol==="2330").short.withoutSafetyGateStatus,"PASS");
 eq(p.pairs.find(x=>x.symbol==="2330").short.gateStatus,"UNKNOWN");
 eq(p.pairs.find(x=>x.symbol==="2330").short.lifecycle,"DATA_BLOCKED");
+eq(p.pairs.find(x=>x.symbol==="2330").selectionContext.priorityScore,82.25);
+eq(p.pairs.find(x=>x.symbol==="2330").selectionContext.priorityScoreProvenance,"FORMAL_RUNTIME_RESULT_AT_C1_DECISION");
 eq(p.pairs.find(x=>x.symbol==="2330").selectionContext.close,100);
 eq(p.pairs.find(x=>x.symbol==="2330").selectionContext.depthScore,90);
 eq(p.pairs.find(x=>x.symbol==="2330").selectionContext.lateStage,false);
