@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "D22_04_COST_OF_DEBT_REFINANCING_RISK_CONTRACT_V0_1",
+  "generatedAt": "2026-10-04T07:40:00+08:00",
+  "module": "D22-04",
+  "level": "L2",
+  "maturityPct": 40,
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_SOURCE_ROUTE_FEASIBLE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "researchQuestion": "Does issuer-specific refinancing-cost pressure add incremental information beyond D13 risk-free rates, D22-01 maturity timing, D22-02 debt-service capacity, D22-03 funding structure and D07-18 WACC?",
+  "ownershipBoundary": {
+    "D13_06": "Owns sovereign/risk-free yield-curve state.",
+    "D22_04": "Owns issuer-specific debt cost, refinancing spread/premium and the repricing of maturing/floating financing.",
+    "D07_18": "Owns enterprise WACC composite; it consumes debt/equity cost components and cannot count the same rate shock again.",
+    "antiDoubleCount": "One benchmark-rate shock is one primitive. D22-04 must prove issuer-specific repricing beyond that primitive."
+  },
+  "semantics": {
+    "legacyCoupon": "Contractual coupon on existing debt; not a current market refinancing rate.",
+    "accountingEffectiveCost": "Backward-looking interest expense relative to an average debt base; sensitive to debt mix, timing, capitalized interest, leases, fees and FX.",
+    "marketYield": "Secondary-market yield for a specific security; may embed credit, liquidity, optionality and technical effects and may be stale if trading is sparse.",
+    "issuerSpread": "Issuer/security yield minus a duration/currency-consistent benchmark; not observable when the bond is stale or incomparable.",
+    "prospectiveRefinancingCost": "Rate/cost expected at replacement funding, conditioned on maturity date, benchmark curve, issuer spread, tenor, currency, fees, collateral/covenants and funding channel.",
+    "refinancingShock": "Prospective refinancing cost minus the contractual/effective cost of the maturing financing, applied only to the amount actually exposed to repricing."
+  },
+  "hypotheses": [
+    {
+      "claim": "A large maturity wall is more dangerous when the replacement funding rate is materially above the legacy cost.",
+      "support": "BIS evidence shows debt rolled from low-rate vintages into current yields can experience multi-percentage-point cost increases.",
+      "counter": "Firms may repay with cash, pre-fund, refinance early, extend maturities, use bank lines or change instrument type.",
+      "failure": "No increment beyond D22-01 maturity wall + D13 rates + D22-02 coverage => REJECTED_OR_REDUNDANT."
+    },
+    {
+      "claim": "Issuer-specific spread widening can raise refinancing cost even if the sovereign benchmark is stable.",
+      "counter": "Observed spread may move because of liquidity, option features, tax/technical effects or stale trades rather than credit deterioration.",
+      "failure": "If matched spread cannot be constructed with sufficient trading/source quality, the observation remains UNKNOWN."
+    },
+    {
+      "claim": "Fixed-rate debt delays pass-through while floating-rate debt reprices faster.",
+      "counter": "Near-term fixed-rate maturity can still create abrupt rollover exposure; floating-rate benchmarks may fall.",
+      "failure": "Rate type without reset/maturity timing is not an independent risk vote."
+    }
+  ],
+  "taiwanExample": {
+    "issuer": "Chunghwa Telecom",
+    "evidence": "At 2023-12-31, bonds payable were NT$30.5bn with contractual coupons about 0.42%-0.69%; the NT$8.8bn 0.50% tranche matures in July 2025. The legacy coupon is observable, but the actual future refinancing rate is UNKNOWN until a replacement funding transaction or PIT market proxy is defined.",
+    "interpretation": "Low legacy coupons can make historical interest coverage look excellent while saying little about the cost of replacing maturing debt. D22-04 must estimate repricing exposure without assuming refinancing occurs."
+  },
+  "taiwanSourceRoute": {
+    "TPEx": [
+      "company-bond interdealer/OTC quotes and trades",
+      "yield/price tables",
+      "daily corporate-bond reference rates",
+      "daily fair values",
+      "government yield curve / benchmark rates"
+    ],
+    "fileExamples": [
+      "BNDEBTSOPS.TXT",
+      "BNDEBTSRATE.TXT",
+      "BNDOTCOPS.TXT",
+      "BNDOTCRATE.TXT",
+      "BNDFAIRVALUE.TXT",
+      "BNDCOCURVE.TXT"
+    ],
+    "warning": "Availability of a market page/file does not guarantee an issuer-specific clean trade for every date; no trade or stale quote remains UNKNOWN."
+  },
+  "pitContract": [
+    "Timestamp benchmark yield, issuer/security yield/quote, trade freshness and source version.",
+    "Match currency and duration/remaining maturity; mismatched benchmark subtraction is prohibited.",
+    "Separate actual trade, executable quote, reference/fair value and model-implied yield.",
+    "Record coupon, effective interest rate, floating/fixed reset terms, maturity and principal amount separately.",
+    "Bank-loan pricing not publicly disclosed remains UNKNOWN; do not infer it from bond yields.",
+    "Corporate actions/refinancing transactions create new states and are never backfilled into earlier observations."
+  ],
+  "falsificationGates": [
+    "Coupon is not market yield and is not prospective refinancing cost.",
+    "Rising risk-free yield is D13 evidence first; D22-04 only owns residual issuer-specific repricing plus interaction with exposed debt.",
+    "A higher bond yield may be liquidity/option/technical rather than pure default risk.",
+    "Sparse/stale bond trading can manufacture false spread signals.",
+    "Historical interest expense can stay low for years under fixed-rate debt and is therefore not a forward refinancing quote.",
+    "Refinancing need is contingent: cash repayment, pre-funding or alternative channels can eliminate assumed rollover.",
+    "Do not count the same maturity amount again as an independent D22-04 signal; D22-01 owns timing/amount.",
+    "If D07-18 WACC later consumes D22-04 debt-cost inputs, the downstream composite is not a second copy of the debt-cost shock."
+  ],
+  "maturityDecision": {
+    "level": "L2",
+    "maturityPct": 40,
+    "reason": "Mechanism, cross-domain ownership, Taiwan source route, PIT semantics and explicit counterevidence are defined. Issuer-specific Taiwan market-yield/spread replay has not yet been validated for L3."
+  },
+  "outcomeGate": "CLOSED",
+  "formalCore": "LOCKED",
+  "next": [
+    "Build PIT issuer/security debt-cost receipts using TPEx actual trade/quote/reference/fair-value labels and matched sovereign benchmarks.",
+    "Start with a small set of Taiwan non-financial issuers having public bonds and known maturity/coupon terms; preserve no-trade UNKNOWN.",
+    "Construct research-only refinance-gap challengers: matched market yield minus legacy coupon/effective cost, interacted with D22-01 repricing amount.",
+    "Test divergent states: stable benchmark + wider issuer spread; rising benchmark + stable spread; high maturity wall + no refinancing because cash repayment.",
+    "Do not open equity outcomes before cross-issuer/multi-date replay and D13/D22-01/D22-02/D22-03 redundancy controls are ready."
+  ]
+}
