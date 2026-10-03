@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 11:18 Asia/Taipei
+Updated: 2026-10-03 11:28 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -768,4 +768,19 @@ Frozen ownership:
 - D06-09 -> D06-18 -> D14-19 -> D20-13 forms a four-layer shorting chain from observation to lending economics to execution to limits-to-arbitrage context.
 
 No count, maturity or Formal Core change.
+
+## H13-H20 anti-double-count acceptance contract — 2026-10-03
+
+Canonical contract:
+`shared-knowledge/CURRICULUM_H13_H20_ANTI_DOUBLE_COUNT_ACCEPTANCE_CONTRACT_20261003_V0_1.md`
+
+Machine-readable companion:
+`shared-knowledge/curriculum_h13_h20_anti_double_count_acceptance_contract_20261003_v0_1.json`
+
+Specialist packets:
+`shared-knowledge/CURRICULUM_H13_H20_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
+
+H13-H20 remain separate dependency chains by default. Their governance purpose is to ensure one primitive receipt, explicit producer-consumer linkage, residual incremental-value testing and no duplicate Alpha/risk vote.
+
+No curriculum count, maturity or Formal Core change.
 
