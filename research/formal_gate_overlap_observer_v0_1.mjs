@@ -13,6 +13,57 @@ function observedNumber(value,label){
   return n===null?result(GATE_STATE.UNKNOWN,"MISSING_"+label):{value:n};
 }
 
+export const TARGET_STATE_V2=Object.freeze({
+  FOUND:"TARGET_FOUND",
+  NONE_SEARCH_COMPLETE:"TARGET_NONE_SEARCH_COMPLETE",
+  UNKNOWN_SOURCE:"TARGET_UNKNOWN_SOURCE",
+  UNKNOWN_GEOMETRY:"TARGET_UNKNOWN_GEOMETRY"
+});
+
+const TARGET_PROVENANCE_VERIFIED=new Set(["VERIFIED","COMPLETE","PIT_VALID","AUTHENTICATED"]);
+const TARGET_GEOMETRY_VERIFIED=new Set(["VALID","PASS","COMPLETE","VERIFIED"]);
+
+export function classifyTargetSemanticsV2(derived={}){
+  const rawTargetState=String(derived?.targetState||"UNKNOWN").toUpperCase();
+  const target=finite(derived?.target);
+  const provenanceState=String(derived?.targetProvenanceState||derived?.targetSourceState||"UNKNOWN").toUpperCase();
+  const sourceVerified=derived?.targetSourceVerified===true||TARGET_PROVENANCE_VERIFIED.has(provenanceState);
+  const searchComplete=derived?.targetSearchComplete===true;
+  const geometryQuality=String(derived?.targetGeometryQuality||"UNKNOWN").toUpperCase();
+  const geometryVerified=derived?.targetGeometryVerified===true||TARGET_GEOMETRY_VERIFIED.has(geometryQuality);
+  const sourceReceiptIds=Array.isArray(derived?.targetSourceReceiptIds)?derived.targetSourceReceiptIds.map(String):[];
+  const base={
+    schemaVersion:"SYSTEM1_TARGET_SEMANTICS_V2_V0_1",
+    rawTargetState,
+    target,
+    searchComplete,
+    searchAlgorithmVersion:derived?.targetSearchAlgorithmVersion??null,
+    searchLookbackStart:derived?.targetSearchLookbackStart??null,
+    searchLookbackEnd:derived?.targetSearchLookbackEnd??null,
+    provenanceState,
+    sourceVerified,
+    sourceReceiptIds,
+    knownAt:derived?.targetKnownAt??null,
+    decisionAt:derived?.targetDecisionAt??null,
+    geometryQuality,
+    geometryVerified,
+    researchOnly:true,
+    decisionImpact:false,
+    formalCoreImpact:false
+  };
+  if(!sourceVerified) return {...base,state:TARGET_STATE_V2.UNKNOWN_SOURCE,reason:"TARGET_SOURCE_PROVENANCE_NOT_VERIFIED"};
+  if(rawTargetState==="FOUND"){
+    if(target===null||!geometryVerified) return {...base,state:TARGET_STATE_V2.UNKNOWN_GEOMETRY,reason:target===null?"TARGET_FOUND_VALUE_MISSING":"TARGET_FOUND_GEOMETRY_NOT_VERIFIED"};
+    return {...base,state:TARGET_STATE_V2.FOUND,reason:null};
+  }
+  if(rawTargetState==="NONE"){
+    if(!searchComplete) return {...base,state:TARGET_STATE_V2.UNKNOWN_GEOMETRY,reason:"TARGET_SEARCH_COMPLETENESS_NOT_PROVEN"};
+    if(!geometryVerified) return {...base,state:TARGET_STATE_V2.UNKNOWN_GEOMETRY,reason:"TARGET_NONE_GEOMETRY_NOT_VERIFIED"};
+    return {...base,state:TARGET_STATE_V2.NONE_SEARCH_COMPLETE,reason:null};
+  }
+  return {...base,state:TARGET_STATE_V2.UNKNOWN_GEOMETRY,reason:"TARGET_GEOMETRY_STATE_NOT_RESOLVED"};
+}
+
 export function observeFormalGateOverlap({
   feature={},sector={},derived={},formalResult=null,
   rules={}
@@ -179,6 +230,7 @@ export function observeFormalGateOverlap({
     ? result(GATE_STATE.UNKNOWN,"MISSING_ATR_PERCENT")
     : result(atr>=1&&atr<=10?GATE_STATE.PASS:GATE_STATE.FAIL,null,{value:atr,min:1,max:10});
 
+  const targetSemanticsV2=classifyTargetSemanticsV2(derived);
   const targetState=String(derived.targetState||"UNKNOWN");
   if(gates.AB_SETUP.status===GATE_STATE.FAIL){
     gates.TARGET_AVAILABLE=result(GATE_STATE.NOT_EVALUABLE,"NO_FORMAL_CHANNEL");
@@ -220,6 +272,8 @@ export function observeFormalGateOverlap({
     rulesVersion:"FORMAL_GATES_OBSERVER_V0_1",
     gates,
     counts,
+    targetSemanticsV2,
+    targetSemanticsVersion:"TARGET_AVAILABLE_FOUR_STATE_V0_1",
     formalResult:{
       ok:formalResult?.ok===true,
       firstFailure:formalResult?.ok===true?null:String(formalResult?.reason||""),
