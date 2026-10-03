@@ -205,6 +205,7 @@ jobs:
           node tests/test_v8_15_1_c1_capture_integrity.mjs
           node tests/test_v8_15_2_c3_research_capture.mjs
           node tests/test_v8_15_3_c3_quote_context.mjs
+          node tests/test_verify_deployment_readonly_retry_v0_1.mjs
           node tests/test_system1_c3_registration_v0_1.mjs
           node tests/test_system1_c1_c2_collection_v0_1.mjs
           node tests/test_system1_c3_c4_c5_shadow_v0_1.mjs
