@@ -3509,3 +3509,192 @@ Formal candidate:
 
 Current status:
 `D05_14 = L2_MECHANISM_AND_FALSIFICATION_READY / PIT_EVIDENCE_PENDING`.
+
+
+## MS-085 — Five D05 modules now satisfy Taiwan PIT feasibility without claiming event-level completeness or alpha
+
+The L3 standard is data/source/clock/replay feasibility, not profitability.
+
+Five D05 modules now satisfy that standard because current merged research infrastructure preserves causal quote timestamps, symbol/date identity, fail-closed freshness, public top-five state and mechanism flags, while the research layer has an outcome-blind prior-session normalization contract.
+
+Promoted:
+- D05-03 Bid-Ask Spread;
+- D05-04 Order-book Depth;
+- D05-07 Intraday Matching / VI / Abnormal Matching State, with bounded cause semantics;
+- D05-08 Odd-lot vs Round-lot Execution Difference;
+- D05-09 Liquidity State Classification.
+
+### D05-03 Spread
+
+PIT-feasible:
+- best bid / best ask;
+- spread;
+- quote timestamp;
+- symbol/date;
+- freshness/validity state.
+
+UNKNOWN/fail-closed:
+- missing side;
+- stale/future quote;
+- ordinary-continuous inference during incompatible mechanism state.
+
+No spread alpha is claimed.
+
+### D05-04 Top-five Depth
+
+PIT-feasible:
+- bidDepth5;
+- askDepth5;
+- depthImbalance;
+- exact quote time;
+- raw completeness state.
+
+Current readiness logic rejects:
+- incomplete raw depth;
+- lookahead prior packet;
+- duplicate prior date;
+- insufficient same-symbol same-slot baseline.
+
+Boundary remains:
+`DISPLAYED_TOP5_SNAPSHOT != COMPLETE_EXCHANGE_EVENT_LEDGER`.
+
+Therefore true OFI / exact queue rank does not inherit this L3 promotion.
+
+### D05-07 Matching-state semantics
+
+Current timestamped Quote evidence can identify bounded observable states such as:
+- continuous;
+- trial;
+- halt;
+- delayed open/close;
+- explicit provider limit flags.
+
+Official TWSE rules provide the exchange-mechanism interpretation.
+
+But:
+`TRIAL_STATE != PROVEN_VI_CAUSE`
+and:
+`NON_CONTINUOUS_STATE != OFFICIAL_DISPOSITION_STATE`.
+
+Exact cause stays UNKNOWN without the corresponding authoritative event receipt.
+
+This bounded state model is replay-feasible and therefore L3.
+
+### D05-08 Odd-lot vs Round-lot
+
+Current TWSE intraday odd-lot mechanics are explicit and the current Fugle source family exposes odd-lot mode across Quote/Candles/Books/Trades.
+
+Therefore a prospective same-symbol/common-clock comparison between:
+- regular-lot market state;
+- intraday odd-lot state;
+is source-feasible.
+
+Historical pre-capture odd-lot books are not fabricated.
+After-hours odd-lot remains a separate mechanism/session.
+
+### D05-09 Liquidity State
+
+A causal component vector is now feasible from:
+- spread;
+- displayed top-five depth;
+- depth imbalance;
+- mechanism state;
+- quote freshness/coverage.
+
+Outcome-blind normalization is already preregistered as:
+same symbol × same 15m slot × strictly prior sessions × ECDF midrank.
+
+Minimum-history failure remains UNKNOWN.
+No composite depthScore or universal GOOD/BAD threshold is authorized.
+
+### Modules deliberately held at L2
+
+D05-05:
+true OFI requires event/sequence completeness beyond public snapshot feasibility.
+
+D05-06:
+COV-02 specialist return recommends EXTEND_EXISTING_SCOPE to opening/closing auction ownership, but historical pre-close imbalance replay remains partially unproven.
+
+D05-11:
+causal self-impact requires own-order lifecycle + counterfactual.
+
+D05-12:
+adverse-selection/toxicity needs own fill lifecycle and residual markout evidence beyond OFI.
+
+D05-13:
+exact personal queue rank is not available from public top-five.
+
+D05-14:
+official attention/disposition first-known/versioned replay remains incomplete.
+
+### Maturity result
+
+Previous:
+620 / 1400 = 44.2857%.
+
+Five L2 -> L3 promotions:
++100 points.
+
+New:
+**720 / 1400 = 51.4286% -> 51.4%**.
+
+No L4/OOS/Shadow efficacy claim is made.
+
+Status:
+`D05_MATURITY = 51.4_PERCENT / EVENT_LEVEL_CAUSAL_INFERENCE_STILL_GATED / FORMAL_OPTIMIZATION_CANDIDATE_NONE`.
+
+
+## MS-086 — COV-02 specialist result: extend D05-06 rather than add a new closing-auction module
+
+The specialist packet is complete.
+
+Terminal recommendation:
+`EXTEND_EXISTING_SCOPE`.
+
+Recommended future owner name:
+`Opening / Closing Auction & Auction Imbalance`.
+
+Reason:
+opening and closing call auctions share one coherent exchange-mechanics owner, while their information sets and substates remain explicit.
+
+Current Taiwan source boundary:
+- closing call-auction mechanics = source-feasible;
+- prospective trial/indicative state = source-feasible;
+- final closing price/volume = source-feasible;
+- complete historical pre-close imbalance snapshot replay = PARTIAL / UNKNOWN.
+
+Therefore missing historical closing imbalance may never be reconstructed from final close/volume.
+
+No module count or maturity change occurs from this structural recommendation alone.
+
+Artifact:
+`research/COV_02_CLOSING_AUCTION_SPECIALIST_RETURN_20261004_V0_1.md`.
+
+Status:
+`COV_02 = EXTEND_EXISTING_SCOPE_RECOMMENDED / PENDING_00_INTAKE_OWNER_APPROVAL`.
+
+
+## MS-087 — B14 overlap result: OFI and toxicity stay separate, but one shared pressure primitive may never vote twice
+
+D05-05 owns observable order-flow pressure/imbalance.
+
+D05-12 owns the incremental adverse-selection / toxicity question.
+
+Same OFI can coexist with different fill-conditioned markout states.
+Likewise extreme mechanical/passive flow can create large OFI without residual toxicity.
+
+Therefore:
+`KEEP_SEPARATE / OBSERVABLE_INPUT_VS_LATENT_MECHANISM`.
+
+But the shared primitive is de-duplicated:
+- one pressure/OFI receipt;
+- downstream D05-12 references it;
+- D05-12 earns distinct evidence only from residual fill-conditioned markout / execution-risk observables beyond OFI, activity, volatility and liquidity controls.
+
+If a future D05-12 implementation is only OFI under a different name, it becomes merge/narrowing eligible.
+
+Artifact:
+`research/PRIORITY_B_B14_D05_05_D05_12_SPECIALIST_RETURN_20261004_V0_1.md`.
+
+Status:
+`B14 = KEEP_SEPARATE / SCOPE_DEDUP_ONLY / NO_MATURITY_TRANSFER`.
