@@ -2393,3 +2393,30 @@ Before that market evidence arrives, safe Pre-PVE-240 continuation is an outcome
 - zero-vs-missing expected-session semantics.
 
 No historical replay may be relabeled as prospective Shadow evidence.
+
+## Pre-PVE-240 replay validation — Daily Volume Continuity Contract (2026-10-03)
+
+Durable artifacts:
+- `research/d02_daily_volume_continuity_replay_20261003_v0_1.md`
+- `research/d02_daily_volume_continuity_replay_v0_1.json`
+
+Outcome-blind replay results:
+- 8454 SUPPLY_CHANGE: PASS; raw share volume remains factual, universal corporate-action reset falsified.
+- 2465 ambiguous supply denominator: PASS with UNKNOWN preserved; registered and tradable-supply semantic spaces cannot be collapsed.
+- 3593 UNIT_SCALE factor 0.6: PASS; hard continuity break required; frozen volume booleans flip in the mechanics witness.
+- 8422 UNIT_SCALE factor 10: PASS negative control; large numeric distortion without Boolean flip proves the unit gate cannot depend on downstream threshold outcomes.
+- TPEx 5314 suspension pseudo-bars: PASS; provider row presence is not symbol-session proof.
+- TPEx 5314 zero-lot/positive-amount: PASS as cross-lane warning; regular-lot zero is not zero total trading and does not prove daily odd-lot inclusion.
+- Synthetic expected-session replay proves current positive-only daily filtering can retain `dailyHistoryCount=20` while substituting an older row for a factual zero-volume expected session. Example median changes from 108.5 to 109.5 solely through denominator identity drift.
+
+Contract survives current mechanics falsification set.
+
+Still unresolved:
+- exact daily odd-lot aggregate inclusion;
+- production-grade D02 symbol-session receipt binding;
+- production-grade D02 corporate-action continuity binding;
+- current runtime compliance with the contract.
+
+No maturity change.
+Evidence cursor remains PVE-239.
+Formal Core remains LOCKED.
