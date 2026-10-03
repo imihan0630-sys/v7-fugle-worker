@@ -5044,3 +5044,22 @@ D02 consequence:
 D02-09 remains L2/40.
 No clean prospective date is created.
 No historical sample is promoted into H001/H002/H20 clean denominators.
+
+# Pre-PVE-240 addendum — Daily continuity replay validation (2026-10-03)
+
+No PVE number consumed.
+
+Historical mechanics / code-semantic replay validates the frozen contract:
+- SUPPLY_CHANGE raw-share validity and participation-normalization ambiguity are separable;
+- UNIT_SCALE validity gate is independent of whether a downstream Boolean threshold flips;
+- verified suspension pseudo-bars are excluded from expected symbol sessions;
+- positive-only filtering can create denominator identity drift while preserving a misleading count of 20.
+
+Important negative control:
+8422 has a 10x UNIT_SCALE distortion but no frozen breakout Boolean flip. This falsifies any outcome-dependent data-validity rule.
+
+Synthetic code-semantic counterexample:
+latest-20 expected volumes `[0,100..118]` have median 108.5. If the zero is dropped and an older 10000 row is pulled in, the surviving 20-row median becomes 109.5 while the numeric history count still reads 20.
+
+Classification:
+`CONTRACT_REPLAY_PASS / OUTCOMES_UNUSED / RUNTIME_COMPLIANCE_UNPROVEN / PVE_239 / FORMAL_UNCHANGED`.
