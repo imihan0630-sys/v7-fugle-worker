@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "pattern-rg2-transition-event-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeClosed": true,
+  "formalCore": "LOCKED",
+  "eventOrdinalPolicy": "FIRST_ONLY_ORDINAL_1",
+  "structuralEventTypes": [
+    "LOCAL_BREAK_CONFIRMED",
+    "FIRST_PARENT_ZONE_ENTRY_CLOSE",
+    "PARENT_BREAK_CONFIRMED",
+    "FIRST_POST_BREAK_OUTSIDE_CLOSE",
+    "PARENT_REENTRY",
+    "PARENT_FAILURE",
+    "PARENT_RECLAIM"
+  ],
+  "observabilityEventTypes": [
+    "FIRST_ORDINARY_OBSERVABLE_AFTER_CONSTRAINED_BREAK"
+  ],
+  "requiredClockBundle": [
+    "localFirstBreakAt",
+    "firstParentZoneEntryAt",
+    "parentFirstBreakAt",
+    "parentFirstOrdinaryObservableAt",
+    "parentFirstPostBreakOutsideCloseAt",
+    "parentFirstReentryAt",
+    "parentFirstFailureAt",
+    "parentFirstReclaimAt"
+  ],
+  "clockSemantics": [
+    "eventOccurredAt",
+    "eventAvailableAt",
+    "firstObservedAt",
+    "createdAt_if_persisted"
+  ],
+  "clockCertificationStates": [
+    "CERTIFIED_FIRST_CLOCK",
+    "UNCERTIFIED_PATH_GAP",
+    "DATA_BLOCKED_SESSION_UNKNOWN",
+    "DATA_BLOCKED_CONTINUITY_UNKNOWN",
+    "PROVENANCE_CONFLICT",
+    "NOT_OCCURRED_AS_OF"
+  ],
+  "eventIdentity": [
+    "relationEpisodeKey",
+    "transitionContractVersion",
+    "eventType",
+    "eventOrdinal"
+  ],
+  "eventIdentityExcludes": [
+    "eventOccurredAt",
+    "eventAvailableAt",
+    "firstObservedAt",
+    "outcome"
+  ],
+  "sourceEventGroupRule": "relationEpisodeKey + PRICE_OHLC_CLOSE + eventOccurredAt",
+  "nestedSemantics": {
+    "parentFailureIsSubtypeOfParentReentry": true,
+    "sameBarFailureAndReentryShareSourceEventGroup": true
+  },
+  "invariants": [
+    "STATE_SNAPSHOT_IS_NOT_TRANSITION_EVENT",
+    "REPEATED_STATE_SNAPSHOTS_DO_NOT_INCREASE_EVENT_N",
+    "FIRST_POST_BREAK_OUTSIDE_CLOSE_IS_NOT_N_BAR_ACCEPTANCE",
+    "FIRST_CLOCK_REQUIRES_COMPLETE_CAUSAL_PATH",
+    "EVENT_DATE_NOT_IN_EVENT_KEY",
+    "SAME_EVENT_KEY_CHANGED_FIRST_CLOCK_IS_PROVENANCE_CONFLICT",
+    "RECLAIM_NEVER_ERASES_PRIOR_REENTRY_OR_FAILURE",
+    "FUTURE_EVENT_NEVER_BACKFILLS_EARLIER_PARENT_CHILD",
+    "CONSTRAINED_BREAK_PRESERVES_BREAK_CLOCK_BUT_ORDINARY_INTERPRETATION_WAITS",
+    "NAMED_EVENT_LABEL_COUNT_NOT_EQUAL_INDEPENDENT_SOURCE_EVENT_COUNT",
+    "INDEPENDENT_EVENT_VOTE_ELIGIBLE_FALSE"
+  ],
+  "runtimeStatus": "NO_GO",
+  "formalOptimizationCandidate": "NONE"
+}

@@ -718,3 +718,43 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 4. Hand D16 the exact preregistration packet; D16 owns the statistical method and must not redefine D01 Pattern semantics.
 5. Keep outcome join CLOSED until immutable parent runtime + Pattern ROOT completeness + continuity/session provenance + canonical cross-lane receipts are prospectively available.
 6. No Class-B runtime wiring request yet; no R09 / no Formal change.
+
+## Continuation update — DL-017A through DL-017F (2026-10-03)
+
+- RG2 current-state snapshots are now explicitly separated from first-transition event identity.
+- New research-only artifacts:
+  - research/PATTERN_RG2_TRANSITION_EVENT_CONTRACT_V0_1.md
+  - research/pattern_rg2_transition_event_v0_1.json
+  - research/pattern_rg2_transition_event_v0_1.mjs
+  - research/test_pattern_rg2_transition_event_v0_1.mjs
+  - research/pattern_shared_child_contract_v0_5.json
+- A state persisting across many scan dates does not create many first-transition events.
+- Three clocks are separated:
+  eventOccurredAt / eventAvailableAt / firstObservedAt.
+  Storage createdAt, if ever implemented, is a fourth operational clock.
+- First-transition taxonomy freezes local break, first parent-zone entry close, parent break, first post-break outside close, reentry, failure, reclaim and constrained-break ordinary-observability.
+- FIRST_POST_BREAK_OUTSIDE_CLOSE is descriptive persistence only; it is NOT an N-bar acceptance threshold or directional signal.
+- Transition event identity excludes eventOccurredAt so a changed first clock under the same event key becomes PROVENANCE_CONFLICT rather than a new event.
+- PARENT_FAILURE is a severe subtype of PARENT_REENTRY. If both happen on the same close, they retain two semantic labels but share one sourceEventGroupKey and never count as independent confirmations.
+- Same-day local break and parent break can likewise share one source event group.
+- Reclaim does not erase first reentry/failure clocks.
+- Price-limit-constrained break preserves structural break timing while ordinary interpretation waits for the first eligible unconstrained observability point.
+- Critical future-leak firewall:
+  a transition occurring after an earlier parent decision may become a later structural outcome, but it is never written back into the earlier decision-time Pattern child.
+- Current RG2 v0.2 state alone cannot reconstruct certified first clocks. Transition analysis therefore remains DESIGN_READY / PROSPECTIVE_CLOCK_CAPTURE_BLOCKED.
+- Shared-child v0.5 now preregisters lifecycle clock provenance but remains design-only / runtime NO_GO.
+- 15 transition-event adversarial tests are authored; without a reproducible Node execution receipt they remain TEST_EXECUTION_PENDING.
+- No outcomes inspected; no repeated-cycle experiment; no R09; no Formal change.
+- D01 remains 51.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-017
+
+1. Reuse or extend one canonical Pattern lifecycle clock-bundle producer; do not reconstruct clocks separately inside RG2.
+2. Reconcile DL-017 onto latest main using the same single-tree commit method before PR.
+3. Formal-isolation CI does not execute the 15 new transition-event tests.
+4. Hand D16 the event/source-group identity rules before any structural-event outcome study.
+5. Keep prospective clock capture/runtime wiring blocked until shared immutable parent, continuity/session and storage prerequisites clear.
+6. No N-bar acceptance threshold / no outcome join / no R09 / no Formal change.

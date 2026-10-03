@@ -917,3 +917,18 @@ Reusable cross-room rules:
 - RG2_CORE_V0_1 is DESIGN_OBSERVABLE / PROSPECTIVE_RUNTIME_BLOCKED.
 
 Status: PREREGISTERED / OUTCOME_CLOSED / RUNTIME_NO_GO / FORMAL_CORE_LOCKED.
+
+### D01 shared handoff — DL-017 RG2 transition-event identity (2026-10-03)
+
+- current lifecycle state != first transition event;
+- repeated daily state snapshots do not increase event N;
+- separate eventOccurredAt / eventAvailableAt / firstObservedAt;
+- first-event keys exclude event date so clock revision becomes provenance conflict;
+- reentry + failure on the same bar share one sourceEventGroupKey;
+- local break + parent break can share the same source observation and are not independent votes;
+- later transition events are append-only future evidence and never backfill earlier decision-time children;
+- constrained breaks preserve structural clocks but ordinary interpretation waits for an eligible unconstrained observation;
+- current state cannot reconstruct certified first clocks without complete session/continuity path;
+- shared-child v0.5 is design-only; prospective clock capture remains blocked.
+
+Status: EVENT_IDENTITY_FROZEN / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / RUNTIME_NO_GO / FORMAL_CORE_LOCKED.
