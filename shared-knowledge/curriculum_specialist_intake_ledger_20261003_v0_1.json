@@ -1,15 +1,23 @@
 {
   "schemaVersion": "CURRICULUM_SPECIALIST_INTAKE_LEDGER_V0_1",
-  "updatedAt": "2026-10-03T12:25:00+08:00",
+  "updatedAt": "2026-10-03T23:20:00+08:00",
   "status": "ACTIVE_INTAKE_LEDGER",
   "formalCoreImpact": "NONE",
   "clusters": [
     {
       "id": "H01",
-      "status": "PENDING",
-      "receivedPackets": [],
+      "status": "SPECIALIST_EVIDENCE_RECEIVED",
+      "receivedPackets": [
+        "research/h01_d09_13_d09_14_specialist_validation_20261003_v0_1.json",
+        "research/br051_taiwan_foundry_industry_structure_pit_v0_1.json",
+        "research/br052_issuer_competitive_action_pit_v0_1.json",
+        "research/br053_taiwan_steel_industry_structure_control_v0_1.json",
+        "research/br054_cross_industry_competitive_action_failure_control_v0_1.json",
+        "research/br055_taiwan_pcb_industry_structure_control_v0_1.json",
+        "research/br056_strategic_action_native_outcome_contract_v0_1.json"
+      ],
       "pendingRooms": [],
-      "controlDecision": "NOT_EVALUATED"
+      "controlDecision": "KEEP_SEPARATE_PROPOSED_PENDING_00_DEPENDENCY_AUDIT_AND_OWNER_REVIEW"
     },
     {
       "id": "H02",
@@ -264,5 +272,38 @@
       "structuralChange": "NONE",
       "nextPacket": "shared-knowledge/D15_19_KELLY_SPECIALIST_VALIDATION_PACKET_20261003_V0_1.md"
     }
-  ]
+  ],
+  "h01": {
+    "sourceRoom": "07｜產業與供應鏈研究室",
+    "intakeResult": "ROOM07_SPECIALIST_PACKET_COMPLETE / TERMINAL_RECOMMENDATION_KEEP_SEPARATE / 00_DEPENDENCY_AUDIT_AND_OWNER_REVIEW_REQUIRED",
+    "passed": [
+      "CONCEPT_OWNERSHIP_MATRIX",
+      "INDUSTRY_VS_FIRM_UNIT_MAP",
+      "SHARED_VS_UNIQUE_OBSERVABLES",
+      "THREE_DIVERGENT_STATE_FAMILIES",
+      "DISTINCT_D09_14_PIT_REPLAY_CONTRACT",
+      "ANTI_DOUBLE_COUNT_RULES",
+      "CAPABILITY_INVENTORY",
+      "TAIWAN_FOUNDRY_PIT_RECEIPT",
+      "TAIWAN_STEEL_CROSS_INDUSTRY_CONTROL",
+      "TAIWAN_PCB_THIRD_INDUSTRY_CONTROL",
+      "NON_SEMICONDUCTOR_FIRM_ACTIONS",
+      "FAILED_SUSPENDED_ACTION_CONTROL",
+      "NATIVE_ACTION_OUTCOME_SEMANTICS",
+      "FORMAL_CORE_NONE"
+    ],
+    "terminalRecommendation": "KEEP_SEPARATE",
+    "scopeBoundary": {
+      "D09_13": "industry × product/geographic market definition × vintage",
+      "D09_14": "issuer × strategic action × implementation/outcome stage × vintage"
+    },
+    "remaining": [
+      "00_DEPENDENCY_AUDIT",
+      "ANTI_ORPHAN_REVIEW",
+      "OWNER_REVIEW_OF_SCOPE_WORDING",
+      "ATOMIC_ROUTER_CURRICULUM_GOVERNANCE_UPDATE_IF_APPROVED"
+    ],
+    "maturityImpact": "D09-13 and D09-14 remain L3/60%; overlap intake itself creates no additional maturity.",
+    "formalOptimizationCandidate": "NONE"
+  }
 }
