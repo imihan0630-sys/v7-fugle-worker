@@ -75,6 +75,11 @@ eq(audit.rows.find(x=>x.symbol==="AAA").selectionDepthVerified,true);
 eq(audit.rows.find(x=>x.symbol==="AAA").selectionLateStageVerified,true);
 ok(audit.readyReceipts[0].bars.every(x=>Number.isFinite(x.gapPct)));
 
+const c2NullDepth={...c2,pairs:c2.pairs.map(x=>x.symbol==="AAA"?{...x,selectionContext:{...x.selectionContext,depthScore:null}}:x)};
+const auditNullDepth=auditC3LiveInputs(c2NullDepth,{captureRows,geometryReceipts,formalBaselineReceipts,priorCloseReceipts,barStateReceipts:[...statesAAA,...statesBBB]});
+eq(auditNullDepth.rows.find(x=>x.symbol==="AAA").status,"INPUT_BLOCKED");
+ok(auditNullDepth.rows.find(x=>x.symbol==="AAA").blockers.includes("SELECTION_DEPTH_UNVERIFIED"));
+
 const c3=buildC3EntryExperiment(c2,audit.readyReceipts,{costs:{brokerFeeBpsPerSide:14.25,sellTaxBps:30,slippageBpsPerSide:5}});
 eq(c3.tally.receiptN,1);
 eq(c3.tally.eligiblePairN,2);
