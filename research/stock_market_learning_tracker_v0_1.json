@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 37.3
+    "maturityWeightedPct": 37.4
   },
   "domains": [
     {
@@ -3246,7 +3246,7 @@
         "BEHAVIORAL_FINANCE_CHECKPOINT.md",
         "BEHAVIORAL_FINANCE_RESEARCH.md"
       ],
-      "maturityPct": 30.8,
+      "maturityPct": 33.8,
       "modules": [
         {
           "id": "D20-01",
@@ -3291,12 +3291,12 @@
         {
           "id": "D20-05",
           "name": "Representativeness／Recency代表性與近因偏誤",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Representativeness／Recency代表性與近因偏誤」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / OVERLAP_D20_08_D20_09_D03. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
-          "levelMeaning": "未研究",
-          "status": "OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / OVERLAP_D20_08_D20_09_D03",
-          "next": "由 13｜行為金融與市場心理研究室檢查代表性／近因偏誤是否有可識別代理及超越 D20-08、D20-09、D03 動能／反轉的殘差增量；若不可分離，再提案合併至行為反應家族。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_RECENCY_EXTRAPOLATION_MECHANISM_DEFINED / OBSERVATION_RESEARCH_ONLY / OVERLAP_FIREWALL_ACTIVE",
+          "next": "檢查代表性／近因偏誤是否存在超越 D20-08 反應不足、D20-09 過度反應與 D03 動能/反轉的獨立代理。優先直接或近直接的投資人預期/交易資料；52 週高點距離、近期報酬排序、時間順序等價格派生代理只能作弱證據並須先做動能、錨定、波動與市場狀態冗餘控制。若無獨立辨識與殘差增量，依治理準備合併至行為反應家族。"
         },
         {
           "id": "D20-06",
@@ -3379,10 +3379,10 @@
           "next": "從理論、定義、機制與反證開始，建立 D20-13 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
         }
       ],
-      "status": "D20_01_02_03_04_06_07_08_09_10_12_L2 / IDENTIFICATION_FIREWALL_ACTIVE / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "先驗證 D20-08 的台股公告 first-known 時鐘、surprise 基準與 1/5/20/60 日路徑是否可 PIT/replay；同時完成 H07 D20-09 對 D03-05 的行為原因 vs 價格現象證據包。完成後續接 D20-05 代表性/近因偏誤，檢查是否能提供超越 D20-08/D20-09/D03 的獨立可觀測代理；否則準備合併提案。",
+      "status": "D20_01_02_03_04_05_06_07_08_09_10_12_L2 / IDENTIFICATION_FIREWALL_ACTIVE / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D20-05 已完成機制與反證定義；下一步先做其獨立代理可辨識性稽核，若只有價格派生變數則不升 L3並準備合併提案。之後續接 D20-11 Narrative/Theme Diffusion，依 H08 與 D09-11、D17-11 建立三層語意與證據時鐘。",
       "lastResearchUpdate": "2026-10-03T21:40:00+08:00",
-      "researchNote": "Fourth deep block. D20-08 and D20-09 advanced L0→L2. Taiwan evidence shows event-horizon coexistence: record-high monthly-revenue announcements can exhibit next-day intraday reversal and subsequent 20-day positive drift, so short-horizon overreaction and medium-horizon underreaction can coexist around the same event. Taiwan earnings-momentum evidence supports underreaction under information-discreteness/attention conditions. Overreaction research must be separated from D03-05 price reversal; price reversal alone cannot identify behavioral cause. Price limits, liquidity, bid-ask bounce, forced flow, information correction and volatility normalization are mandatory counterfactuals. No L3 promotion because own PIT/replay event and causal-proxy data contracts are not yet validated. Formal Core unchanged."
+      "researchNote": "D20-05 advanced L0→L2. Representativeness/recency is treated as a belief-formation hypothesis, not a label for recent price strength. Taiwan 52-week-high evidence is mixed and regime/era dependent, showing recency and anchoring coexist but are not stable universal alpha. Broader expectation evidence supports extrapolative beliefs, while 2026 administrative-trade evidence links forecast bias to buying past winners and selling behavior. Price-only proxies remain overlapping with D03 momentum, D20-04 anchoring, D20-08 underreaction and D20-09 overreaction. Module remains observation/research-only; no L3 until independent expectation/behavior data or residual incrementality is proven. Formal Core unchanged."
     },
     {
       "id": "D21",
