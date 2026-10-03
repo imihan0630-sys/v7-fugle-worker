@@ -1179,3 +1179,29 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Maturity: D08-03 remains L3/60. No L4 promotion because no prospective/OOS outcome evidence.
 - Candidate handoff: FORMAL_OPTIMIZATION_CANDIDATE = NONE.
 - Exact next: bounded source-only TWSE history capture/readback -> preregistered percentiles without returns -> coverage/denominator-transition QA -> then TWSE-only Shadow outcome join. TPEx remains excluded until historical machine transport or authorized licensed source is verified.
+
+
+## 2026-10-03 D03 — TI-491~525 multi-timeframe / continuation / pullback
+
+- D03-13 Multi-timeframe:
+  - three clocks frozen: barStartAt, barEndAt, featureKnownAt;
+  - Weekly completion is official-calendar/symbol-session aware, not five-bar counting;
+  - Daily LIVE→PROVISIONAL, FINAL+independent close→CONFIRMED;
+  - M15 source path is PIT-feasible but bounded to 17/18 regular slots, through 13:15; 13:15–13:30 closing interval is not observed by current zero-extra-call path;
+  - timeframe alignment is hierarchical context, never automatic vote count;
+  - D03-13 L2/40 -> L3/60.
+- D03-04 Momentum Continuation:
+  - current momentum level owned by D03-02; persistence by D03-03;
+  - continuation is a post-decision outcome relation;
+  - synthetic falsifier: ret20(t)=+20%, forward D5=-4.1667%, rolling ret20(t+5)=+9.5238%, proving rolling sign retention can falsely label continuation;
+  - primary future outcomes are non-overlapping D5/D10/D20 return/MFE/MAE with exact symbol-session/corporate-action lineage;
+  - D03-04 L2/40 -> L3/60.
+- D03-05 Pullback/Reversal:
+  - generic reversal factor remains rejected/redundant with current A/PULLBACK + 15m confirmation;
+  - residual question is pullback-origin attribution;
+  - liquidity-pressure origin cannot be inferred from OHLCV/candles and remains D05 pressure/replenishment-data-gated;
+  - D03-05 remains L2/40.
+- Active D03 = 12 modules; aggregate = 55.0%.
+- Raw-byte prospective source/version gate remains 2/3 over the weekend; outcome inference remains NO_GO.
+- Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Exact continuation: do not inflate D03-05; after raw gate completion preserve TI-005 KD-vs-RSI then TI-006 MACD-vs-direct-trend. Outcome-blind work may next attack D03-09 ADX / D03-10 Bollinger PIT-feasibility blockers.
