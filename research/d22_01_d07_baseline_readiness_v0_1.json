@@ -1,7 +1,7 @@
 {
   "schemaVersion": "D22_01_D07_BASELINE_READINESS_V0_1",
-  "generatedAt": "2026-10-03T18:48:00+08:00",
-  "status": "D07_BASELINE_PARTIALLY_READY / TSMC_BASIS_ALIGNMENT_BLOCKED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "generatedAt": "2026-10-03T18:52:00+08:00",
+  "status": "D07_BASELINE_READY_FOR_TSMC_UMC_TCC_DESCRIPTIVE_INPUTS / TCC_OUTCOME_TIMING_BLOCKED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "purpose": "Audit PIT accounting-baseline readiness before any D22 incremental-value outcome join.",
   "formulas": {
     "accountingLeverage": "totalLiabilities / totalAssets",
@@ -61,14 +61,24 @@
       "twseSymbol": "2330",
       "periodEnd": "2023-12-31",
       "basis": "IFRS_ISSUED_BY_IASB_20F",
-      "readiness": "BLOCKED_ACCOUNTING_BASIS_ALIGNMENT",
+      "readiness": "READY_FOR_DESCRIPTIVE_BASELINE",
       "inputs": {
+        "cashAndCashEquivalents": 1465427.8,
+        "totalAssets": 5532197,
+        "totalLiabilities": 2078330.1,
+        "interestBearingDebtCarrying": 954866,
+        "operatingCashFlow": 1241967,
         "contractualLt1yFinancing": 54552,
         "unit": "TWD_million"
       },
-      "derived": null,
-      "outcomeEligibility": "SOURCE_TIMING_READY_2024-04-18 / D07_BASELINE_BLOCKED_UNTIL_SAME_BASIS_ACCOUNTING_INPUTS_ARE_FROZEN",
-      "reason": "Official Taiwan-IFRS and IFRS-as-issued filings differ in accounting totals. Do not combine a 20-F maturity receipt with a baseline silently taken from another basis."
+      "derived": {
+        "accountingLeverage": 0.37567898,
+        "netInterestBearingDebtIntensity": -0.09228916,
+        "operatingCashFlowSupport": 1.30067151,
+        "financingWallToCash": 0.03722599
+      },
+      "outcomeEligibility": "SOURCE_TIMING_READY_2024-04-18 / SAME_BASIS_D07_INPUTS_FROZEN",
+      "reason": null
     }
   ],
   "crossIssuerObservation": {
@@ -78,9 +88,9 @@
   },
   "unknownRule": "Missing or basis-incompatible baseline fields remain UNKNOWN or BLOCKED; never impute zero.",
   "next": [
-    "Freeze same-basis TSMC D07 accounting inputs.",
-    "Verify Taiwan Cement public knownAt.",
-    "Audit D13 rate data availability at each eligible source-known date.",
-    "Then perform a pre-outcome eligibility table; do not open returns early."
+    "Resolve Taiwan Cement public knownAt or exclude it from timed outcome tests.",
+    "Complete D13 20-trading-day rate-change/session-alignment field.",
+    "Build pre-outcome eligibility matrix across all receipts.",
+    "Do not open return labels until all eligible issuer/date rows pass source timing, entity scope, accounting basis, common-support and double-count gates."
   ]
 }
