@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "STATE_OWNED_BANK_FLOW_IDENTITY_GUARD_V0_1",
+  "updated": "2026-10-04 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "question": "Can a market-vendor 'eight state-owned banks' trading aggregate be treated as legal government-bank ownership, government-fund trading, or stabilization-policy flow?",
+  "officialEntitySet": {
+    "source": "Taiwan Ministry of Finance public financial institutions",
+    "currentGovernanceConcept": "MOF_PUBLIC_FINANCIAL_INSTITUTION_SET",
+    "officialNineBankSet": [
+      "Bank of Taiwan",
+      "Land Bank of Taiwan",
+      "Export-Import Bank of the Republic of China",
+      "Mega International Commercial Bank",
+      "First Commercial Bank",
+      "Hua Nan Commercial Bank",
+      "Taiwan Cooperative Bank",
+      "Chang Hwa Commercial Bank",
+      "Taiwan Business Bank"
+    ],
+    "keyGuard": "The official public-financial-institution set is not automatically identical to the market/vendor 'eight state-owned-bank trading' proxy set."
+  },
+  "identityLayers": [
+    {
+      "layer": "LEGAL_PUBLIC_FINANCIAL_INSTITUTION",
+      "meaning": "Institution under Ministry of Finance public-shareholding/governance scope.",
+      "evidence": "official entity/governance records"
+    },
+    {
+      "layer": "SECURITIES_BROKER_OR_BRANCH",
+      "meaning": "Execution intermediary/branch appearing in exchange broker data.",
+      "evidence": "broker code/branch code and vintage"
+    },
+    {
+      "layer": "BENEFICIAL_OWNER_OR_INVESTMENT_BOOK",
+      "meaning": "Entity/account economically owning the trade.",
+      "evidence": "generally not identifiable from ordinary broker-branch aggregates"
+    },
+    {
+      "layer": "GOVERNMENT_POLICY_OR_STABILIZATION_MANDATE",
+      "meaning": "Explicit policy/stabilization motive such as a government fund intervention.",
+      "evidence": "requires independent official mandate/event evidence; must not be inferred from broker flow alone"
+    }
+  ],
+  "coreFalsification": [
+    "A trade executed through a public-bank-affiliated broker/branch can be a customer order rather than the bank's own investment.",
+    "A public bank can route its own investment order through another broker; branch identity is not beneficial-owner identity.",
+    "The market phrase 'eight state-owned banks' is a proxy convention and does not by itself define the official Ministry of Finance public-financial-institution universe.",
+    "Public financial institutions have ordinary commercial/investment operations in addition to policy-linked roles; public ownership does not prove stabilization intent.",
+    "Government-related funds and a public bank's own investment book are distinct legal/economic actors even if execution channels overlap.",
+    "A later public-bank-proxy sell after a rebound may represent normalization, profit-taking, rebalancing, or client flow; it is not automatically bearish."
+  ],
+  "sourceContractRequirements": [
+    "proxyProvider/vendor",
+    "providerDefinitionVersion",
+    "memberInstitutionList",
+    "brokerCodesAndBranchCodes",
+    "includeHeadOfficeOnlyOrAllBranches",
+    "brokerCodeVintage",
+    "legalEntityToBrokerMapping",
+    "customerVsProprietarySeparationStatus",
+    "governmentFundIdentityStatus",
+    "tradeDate",
+    "capturedAt",
+    "firstKnownAt",
+    "coverageUniverse",
+    "stockOrETFInclusion",
+    "sharesAndValueUnits",
+    "corporateActionHandling",
+    "sourceHash",
+    "parserVersion",
+    "unknownReasons"
+  ],
+  "allowedStates": [
+    "PUBLIC_PROXY_FLOW_SUPPORTIVE",
+    "PUBLIC_PROXY_FLOW_COUNTERCYCLICAL",
+    "PUBLIC_PROXY_FLOW_NORMALIZATION_SELL",
+    "PUBLIC_PROXY_FLOW_ALIGNED_SELL",
+    "PUBLIC_PROXY_FLOW_DIVERGENCE",
+    "PUBLIC_PROXY_FLOW_UNKNOWN"
+  ],
+  "forbiddenLabels": [
+    "GOVERNMENT_BUY",
+    "NATIONAL_STABILIZATION_FUND_BUY",
+    "POLICY_SUPPORT_BUY",
+    "STATE_BANK_PROPRIETARY_POSITION"
+  ],
+  "policyIntentRule": "Only independent official evidence may upgrade motive from UNKNOWN to a specific government/stabilization-policy context.",
+  "crossModuleGuard": {
+    "D06_13": "broker/branch execution semantics are upstream; D06-15 must not re-own the same branch flow as an independent primitive",
+    "D06_15": "owns the public-institution/proxy classification and market-regime interpretation only",
+    "antiDoubleCount": "One broker-flow receipt; public-proxy classification is metadata/context unless independent owner/mandate evidence exists."
+  },
+  "maturityDecision": {
+    "module": "D06-15",
+    "level": "L2",
+    "maturityPct": 40,
+    "reason": "Mechanism and identity falsification are defined, but a canonical historical/prospective source with stable member mapping, broker-code vintage, proprietary/client separation and first-known replay remains unresolved."
+  },
+  "status": "OFFICIAL_PUBLIC_ENTITY_SET_SEPARATED_FROM_EIGHT_BANK_TRADING_PROXY / BENEFICIAL_OWNER_UNKNOWN / POLICY_INTENT_UNKNOWN / CONTEXT_ONLY / SOURCE_CONTRACT_UNRESOLVED / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "exactNext": "Freeze the exact provider-specific 'eight-bank' membership/broker-code mapping before any data use. Never infer policy intent from proxy flow alone. If a prospective authorized source becomes available, first audit member/version/coverage and compare against ordinary institutional, market-stress and index-weight controls before outcomes."
+}
