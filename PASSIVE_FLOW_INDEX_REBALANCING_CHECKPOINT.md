@@ -82,3 +82,22 @@ Next: validate prospective ETF units-delta + PCF timestamp/corporate-action sema
 2. 保存 PCF 更新版本、現金替代與單位公司行動狀態。
 3. exact stock passive flow（精確個股被動資金流）仍為 UNKNOWN；只允許 MODELED_PRIMARY_BASKET_EXPOSURE（模型化籃子曝險）。
 4. 不在 receipt 成熟前開 outcome test（結果檢定）。
+
+## PF-039A — creation-to-execution identifiability firewall
+- Taiwan in-kind ETF creation does not identify same-day constituent buying. Applicants/APs may use existing holdings.
+- TWSE rules allow collective in-kind creation, so up to three applicants can pool existing holdings for one creation request.
+- Minimum in-kind creation can initially deliver at least 90% of required basket market value, with shortage stocks bought or borrowed by the next business day.
+- Cash substitution can replace physical delivery for specific PCF constituents under allowed conditions.
+- Therefore units delta + PCF supports only MODELED_PRIMARY_BASKET_EXPOSURE, not ACTUAL_STOCK_PASSIVE_FLOW or SAME_DAY_COMPONENT_EXECUTION.
+- PCF remains a versioned PIT object; later T-day updates/retransmissions cannot be backfilled into an earlier first-known state.
+- External ETF arbitrage literature is treated only as a mechanism/falsification prior: AP arbitrage is designed to close premium/discount gaps, but liquidity, balance-sheet capacity and execution frictions can make convergence incomplete or delayed. This is not Taiwan outcome evidence.
+- Contract upgraded to `research/passive_flow_etf_units_pcf_contract_v0_2.json`.
+- Detailed Taiwan execution firewall: `research/d06_16_etf_creation_execution_identifiability_firewall_v0_1.md`.
+- D06-16 remains L2/40%; no new prospective independent-date receipt or OOS outcome exists.
+- Formal Core unchanged.
+
+## Exact next continuation after PF-039A
+1. PF-040 remains reserved for the next genuine independent trading-day units-delta + PCF prospective receipt.
+2. Preserve existing-inventory, collective-creation, minimum-basket, shortage-stock buy/borrow and cash-substitution uncertainty in every modeled basket receipt.
+3. Without actual AP/market execution evidence, actual constituent execution remains UNKNOWN.
+4. Do not promote D06-16 or start outcomes from mechanism completeness alone.
