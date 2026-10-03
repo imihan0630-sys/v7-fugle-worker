@@ -1097,3 +1097,26 @@ Reusable cross-system rules from TI-491~525:
    - D03-05 remains L2/40 because origin attribution is data-gated.
    - Active 12-module D03 aggregate = 55.0%.
    - Raw-byte prospective source gate remains 2/3; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+## Curriculum coverage audit — 2026-10-03
+
+Canonical audit:
+`shared-knowledge/CURRICULUM_COVERAGE_AUDIT_20261003_V0_1.md`
+
+Machine-readable registry:
+`shared-knowledge/curriculum_coverage_audit_20261003_v0_1.json`
+
+Mainline purpose:
+- identify missing knowledge families;
+- identify scopes that are too narrow;
+- identify research that exists but lacks an active curriculum owner;
+- avoid automatic module-count growth.
+
+First pass:
+- 12 candidates;
+- 0 module additions;
+- 0 new domains;
+- no 23rd domain justified yet.
+
+Coverage-A high priority routes to D01, D05, D07, D10, D12, D20, D21 and D22 owner rooms.
+
