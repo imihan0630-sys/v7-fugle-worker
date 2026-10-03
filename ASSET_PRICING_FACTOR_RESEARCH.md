@@ -516,3 +516,86 @@ This source map establishes feasibility and known coverage gaps only. No D19-01.
 - Feng, Giglio & Xiu (2020), Journal of Finance, Taming the Factor Zoo.
 - Green, Hand & Zhang (2017), Review of Financial Studies, independent stock-return characteristics.
 - Hou, Xue & Zhang (2020), Review of Financial Studies, Replicating Anomalies.
+
+
+## 2026-10-03 Long-block Stage 5 — D19-11 / D19-12
+
+### D19-11 Factor Crowding（因子擁擠）／Capacity（容量）／Turnover（換手）
+
+#### Core separation
+1. Crowding（擁擠）不是單純「很多人知道同一因子」。它必須有可觀測的共同持倉、共同交易方向、有限流動性或套利資本約束等證據。
+2. Capacity（容量）不是固定的資產規模上限；它取決於 turnover（換手）、market depth（市場深度）、spread（價差）、impact（市場衝擊）、participation rate（參與率）、交易時間與可接受的 alpha decay（超額報酬衰減）。
+3. Turnover（換手）同時是成本來源與訊號更新頻率的結果，不能直接解讀成策略品質差。
+4. D19-11 與 D05 liquidity / microstructure（流動性／市場微結構）、D14 execution cost（交易執行成本）、D15 portfolio risk（投組風控）有強依賴，但本模組只研究「因子策略本身的擁擠、容量與換手如何改變可實現因子報酬」。
+
+#### Positive mechanisms
+- 當大量資金同時追逐相同 factor exposure（因子曝險）時，進場可能先把價格推向有利方向，但後續 expected return（預期報酬）會因估值擁擠與套利資本飽和而下降。
+- 市場壓力或 funding shock（融資衝擊）時，擁擠策略可能同時去槓桿，形成 correlated unwind（相關性平倉）與非線性 market impact（市場衝擊）。
+- Factor crowding（因子擁擠）研究顯示，直接持倉擁擠指標對價值、動能、carry（利差／持有收益）等策略未來報酬可呈負向預測，支持「擁擠會壓低未來溢酬」的候選機制。
+- Smart-beta capacity（智慧貝塔容量）研究顯示，不同因子因換手與交易成本不同，容量可相差數量級；momentum（動能）通常較受交易成本／容量限制，而低換手因子容量較大。
+
+#### Falsification / failure modes
+- high ownership concentration（高持倉集中）可能是對基本面或既有高預期報酬的合理反應，未必代表即將反轉。
+- popularity proxy（熱門代理）如搜尋量、ETF（指數股票型基金）規模或新聞熱度，不等於真實因子部位擁擠。
+- crowding measure（擁擠指標）若以事後完整持倉或基金季報回推，容易產生 reporting lag（揭露延遲）與 look-ahead（偷看未來）問題。
+- capacity estimate（容量估計）若只用平均成交量，不含 spread（價差）、impact（市場衝擊）、極端日流動性與成交參與率，會系統性高估可交易規模。
+- 因子報酬衰減可能來自估值改變、景氣狀態或因子定義漂移，不可把所有衰退歸因於 crowding（擁擠）。
+
+#### PIT / replay contract before L3
+- crowding inputs（擁擠輸入）只能使用形成日當時已公開的持倉／資金流／交易資料；有揭露延遲就用 availableAt（可用時間）而不是 period-end（期末日）。
+- factor portfolio holdings（因子投組持倉）需保存版本、再平衡日、權重、換手與每檔股票交易需求。
+- capacity simulation（容量模擬）至少要有 participation-rate grid（參與率網格）、spread/slippage（價差／滑價）、impact curve（衝擊曲線）、多日執行與 stressed-liquidity（壓力流動性）情境。
+- 需分離 gross alpha（毛超額報酬）、implementation shortfall（執行落差）與 net alpha（淨超額報酬）。
+- 若無真正 fund-position / flow（基金部位／資金流）PIT（時點一致）資料，crowding（擁擠）只能標 UNKNOWN（未知）或 proxy-only（僅代理），不得假裝有直接擁擠證據。
+
+#### System 1 / System 2 implication
+- System 1：目前不應新增「熱門因子扣分」；先把 D19-11 當成本／容量警示與風險情境。
+- System 2：適合在策略層建立 capacity envelope（容量包絡）與 turnover budget（換手預算），讓每個策略回測同時報告毛績效與成本後可實現績效。
+- 只有可觀測的 PIT（時點一致）擁擠資料與成本後 OOS（樣本外）預測改善，才可能形成獨立因子候選。
+- Formal optimization candidate（正式優化候選）：NO（否）。
+
+### D19-12 Seasonality（季節性）／Calendar Anomalies（日曆異象）
+
+#### Core separation
+1. Calendar effect（日曆效應）是以事前固定的日期規則形成可重播假說，不是看完整歷史圖後挑「哪一天常漲」。
+2. weekday（星期）、turn-of-month（月初月底）、month-of-year（月分）、pre-holiday（假日前）、post-holiday（假日後）、Lunar-calendar（農曆）與 settlement/rebalance（結算／再平衡）效應屬不同假說，必須分開登錄。
+3. 日曆變數可能只是 tax（稅務）、institutional flow（機構資金流）、payday（薪資流）、index rebalance（指數再平衡）、holiday closure（休市）或 sentiment（情緒）的代理；必須與 D13 行為金融、D11 事件與 D05 微結構建立競爭解釋。
+
+#### Taiwan evidence
+- 台灣研究曾發現 weekday（日別）、holiday（假日）、turn-of-month（月初月底）、monthly（月分）等日曆異象，但效果會隨市場、樣本期與檢定基準改變，且部分效果隨時間下降。
+- 台灣 January effect（一月效應）文獻顯示制度與投資人結構會改變結果，甚至在市場自由化後出現 reverse January effect（反向一月效應）。
+- 2016 年台灣 holiday-seasonality（假日季節性）研究發現不同文化假日與休市安排對不同投資人群體的交易／情緒代理影響並不一致。
+- 因此台灣存在「曾被觀察到的日曆模式」不等於今天存在穩定可交易溢酬。
+
+#### Falsification / data-mining controls
+- D19-12 是高 data-mining（資料探勘）風險模組；若掃描大量日期窗、星期、月份與農曆事件後只保留最佳結果，幾乎必然製造假陽性。
+- 所有假說必須 preregistered（事前登錄）：事件定義、視窗、方向、持有期、基準、樣本內／樣本外切割與成本模型。
+- 多個日曆假說同時測試時必須做 multiple-testing adjustment（多重檢定調整）或 false-discovery control（錯誤發現控制）。
+- holiday effect（假日效應）必須用「實際交易日與休市表」而非固定公曆日期；颱風停市、臨時休市、補班／補假與農曆移動日期均需版本化。
+- 若效果只存在早期樣本、微型股、極低流動性股票或未計成本組合，不能轉成一般選股規則。
+
+#### PIT / replay contract before L3
+- official trading calendar vintage（官方交易日曆版本）、holiday type（假日類型）、market closure reason（休市原因）與 announcedAt（公告時間）需可追溯。
+- corporate actions（公司行動）、index rebalance（指數再平衡）、月／季底機構流、財報／營收公告群聚需作替代解釋控制。
+- 以 rolling OOS（滾動樣本外）檢驗異象是否衰減；至少分多年度、多 Regime（市場狀態）、大型／中小型、流動性層級。
+- 報告 effect size（效果量）、hit rate（命中率）、net return after cost（成本後淨報酬）與 independent event count（獨立事件數），不能只報 p-value（顯著機率值）。
+
+#### System 1 / System 2 implication
+- System 1：不得新增「某月／某星期固定加分」或通用交易 Gate（門檻）。
+- System 2：可將事前登錄的 calendar state（日曆狀態）作 conditioning variable（條件變數）或風險情境，只有長期 OOS（樣本外）及成本後穩健才研究成策略。
+- Governance role（治理角色）維持 OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / HIGH_DATA_MINING_RISK。
+- Formal optimization candidate（正式優化候選）：NO（否）。
+
+### Stage 5 maturity decision
+- D19-11 -> L2 / 40%.
+- D19-12 -> L2 / 40%; governance role remains research-only / high-data-mining-risk.
+- With the current 15-module D19 curriculum, domain simple-average maturity becomes 32.0% (12 modules at 40%, 3 modules at 0%).
+- No L3 promotion: factor-layer PIT replay receipts and prospective/OOS evidence remain missing.
+- Formal Core remains unchanged and locked.
+
+### Evidence anchors added in Stage 5
+- Kang, Rouwenhorst & Tang (2021), Crowding and Factor Returns.
+- Ratcliffe, Miranda & Ang (2017), Capacity of Smart Beta Strategies: A Transaction Cost Perspective.
+- Yang (2016), Emerging Markets Review, Calendar trading of Taiwan stock market.
+- Shiu, Lee & Gleason (2014), Journal of Multinational Financial Management, Institutional shareholdings and the January effects in Taiwan.
+- 劉張旭（2010），國立臺灣大學碩士論文：日曆異常效應—國際主要股票市場之比較研究。
