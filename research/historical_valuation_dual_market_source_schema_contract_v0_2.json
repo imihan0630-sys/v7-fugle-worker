@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "HISTORICAL_VALUATION_DUAL_MARKET_SOURCE_SCHEMA_CONTRACT_V0_2",
+  "researchRoom": "06",
+  "domain": "D08",
+  "module": "D08-03",
+  "frozenAtAsiaTaipei": "2026-10-03T15:13:00+08:00",
+  "status": "TWSE_PUBLIC_REPLAY_READY / TPEX_PUBLIC_HISTORY_VISIBLE_MACHINE_TRANSPORT_UNVERIFIED",
+  "purpose": "Freeze market-specific source and parser semantics for historical daily PE/PB replay without inventing cross-market symmetry.",
+  "twse": {
+    "publicDailyEndpoint": "https://www.twse.com.tw/rwd/zh/afterTrading/BWIBBU_d?date=YYYYMMDD&selectType=ALL&response=json",
+    "responseEnvelope": [
+      "stat",
+      "date",
+      "title",
+      "fields",
+      "data"
+    ],
+    "requiredHeaders": [
+      "證券代號",
+      "證券名稱",
+      "收盤價",
+      "本益比",
+      "股價淨值比",
+      "財報年/季"
+    ],
+    "parseRule": "Map row values by returned header names, never by fixed positional indexes.",
+    "missingPeToken": "-",
+    "missingReasonRule": "A '-' PE value proves PE unavailable; NONPOSITIVE_EPS may be assigned only when denominator evidence/official semantics prove that reason, otherwise SOURCE_NA_OTHER/UNKNOWN.",
+    "denominatorContext": "Preserve 財報年/季. A change in fiscal denominator period is a structural-break tag, not a price signal.",
+    "currentWitnesses": [
+      {
+        "date": "2026-10-02",
+        "symbol": "1102",
+        "name": "亞泥",
+        "pe": "9.83",
+        "pb": "0.68",
+        "fiscalPeriod": "115/2"
+      },
+      {
+        "date": "2026-10-02",
+        "symbol": "1101",
+        "name": "台泥",
+        "pe": "-",
+        "pb": "0.82",
+        "fiscalPeriod": "115/2"
+      }
+    ],
+    "fiscalTransitionWitness": {
+      "symbol": "9904",
+      "name": "寶成",
+      "before": {
+        "date": "2026-08-12",
+        "pe": "6.60",
+        "pb": "0.47",
+        "fiscalPeriod": "115/1"
+      },
+      "after": {
+        "date": "2026-08-13",
+        "pe": "5.06",
+        "pb": "0.38",
+        "fiscalPeriod": "115/2"
+      },
+      "interpretation": "Observed valuation discontinuity coincides with official denominator-period update; do not classify as cheapening/richening without break tag."
+    },
+    "replayReadiness": "PASS_PUBLIC_HISTORICAL_MACHINE_RESPONSE"
+  },
+  "tpex": {
+    "publicHistoryPage": "https://www.tpex.org.tw/zh-tw/mainboard/trading/info/daily-pe.html",
+    "publicCoverage": "Modern page states history since ROC 96/01; older ROC 92/08-95/12 is routed to a separate historical page.",
+    "currentOpenApi": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_peratio_analysis",
+    "currentOpenApiFields": [
+      "Date",
+      "SecuritiesCompanyCode",
+      "CompanyName",
+      "PriceEarningRatio",
+      "DividendPerShare",
+      "YieldRatio",
+      "PriceBookRatio"
+    ],
+    "currentDateEncoding": "ROC compact YYYYMMDD-like, e.g. 1151002 for 2026-10-02",
+    "currentMissingPeToken": "N/A",
+    "currentWitness": {
+      "date": "1151002",
+      "symbol": "1569",
+      "name": "濱川",
+      "pe": "N/A",
+      "pb": "3.23"
+    },
+    "historicalPublicTransport": {
+      "candidateLocatedExternally": "https://www.tpex.org.tw/www/zh-tw/afterTrading/peQryDate?date=YYYY/MM/DD&response=json",
+      "canonicalStatus": "NOT_ACCEPTED_AS_CONTRACT_YET",
+      "reason": "The URL was located through a noncanonical implementation reference. Direct official fetch in the current research environment returned HTTP 520 / no stable response envelope. Do not freeze its schema from third-party code."
+    },
+    "officialLicensedAlternative": {
+      "product": "EDIS S17 / STKPEYIPBR.TXT",
+      "source": "TPEx official after-market information format V1.33",
+      "subscriptionGroup": "第四組 / 上櫃股票統計資料",
+      "recordFields": [
+        "股票代號",
+        "股票名稱",
+        "本益比",
+        "殖利率(%)",
+        "股價淨值比(%)"
+      ],
+      "headerFields": [
+        "資料日期 YYYYMMDD",
+        "資料產製時間 HHMM",
+        "資料長度",
+        "資料筆數"
+      ],
+      "recordLengthBytes": 42,
+      "naSemantics": "Official format states N/A for negative values for PE/yield/PB fields.",
+      "accessRule": "Licensed/paid lane only. This contract does not authorize subscription, purchase, download, or use."
+    },
+    "replayReadiness": "PARTIAL_PUBLIC_UI_AND_CURRENT_SCHEMA_KNOWN / HISTORICAL_MACHINE_TRANSPORT_UNRESOLVED"
+  },
+  "crossMarketRules": [
+    "Do not force one market's transport or N/A token onto the other.",
+    "TWSE historical replay may proceed independently while TPEx machine history remains unresolved.",
+    "A dual-market Shadow cohort cannot claim complete TPEx historical coverage until historical transport/schema is directly verified or an authorized licensed source is supplied.",
+    "Missing historical transport is UNKNOWN coverage, not no valuation event and not zero percentile.",
+    "Current TPEx OpenAPI cannot be used to reconstruct older history."
+  ],
+  "representativeCases": {
+    "ordinaryNumeric": "TWSE 1102 2026-10-02",
+    "peMissingPbPresent": [
+      "TWSE 1101 2026-10-02",
+      "TPEx 1569 2026-10-02 current OpenAPI"
+    ],
+    "denominatorFiscalUpdate": "TWSE 9904 2026-08-12 -> 2026-08-13",
+    "newlyListed": {
+      "market": "TPEx",
+      "symbol": "1294",
+      "name": "漢田生技",
+      "listingDate": "2024-09-26",
+      "rule": "756/1260-valid-session windows are necessarily unavailable by 2026-10-03 because elapsed calendar duration is shorter than 756 sessions; 252 eligibility still requires actual valid valuation-row count."
+    }
+  },
+  "outcomeJoin": "CLOSED",
+  "maturityImpact": "NONE; D08-03 remains L3. This is replay/source integrity work, not OOS/Shadow outcome evidence.",
+  "formalCoreChanged": false
+}
