@@ -799,3 +799,40 @@ No volume-profile alpha hypothesis is promoted.
 No closing-auction or historical price-profile completeness is implied.
 No FORMAL_OPTIMIZATION_CANDIDATE.
 Formal Core remains LOCKED.
+
+## Pre-PVE-240 D02-05 / 07 / 09 / 11 maturity overlay — 2026-10-04
+
+### D02-05
+L3 data feasibility accepted for EXTREME_PARTICIPATION_STATE only.
+DISTRIBUTION remains latent and may not be inferred from OHLCV/RVOL alone.
+No directional hypothesis is promoted.
+
+### D02-07
+L3 data feasibility accepted after executable daily-volume continuity replay.
+Primary compact comparator remains signedVolumeBalance20.
+Governance remains:
+OBSERVATION / RESEARCH_ONLY / MERGE_CANDIDATE / PRICE_VOLUME_COMPARATOR_ONLY.
+L4 requires incremental evidence beyond direct price, volume/RVOL and PV response/persistence.
+
+### D02-09
+L3 data feasibility accepted after:
+- repaint-safe confirmed-pivot dependency was already frozen;
+- volume path now has executable continuity eligibility.
+Typed families remain:
+- PIVOT_SIGNED_VOLUME;
+- PARTICIPATION_TRAJECTORY.
+No generic divergence boolean.
+
+### D02-11
+L3 data feasibility accepted for volume-capacity + prospective execution-liquidity context.
+Formal threshold/exception effectiveness is not validated.
+No threshold sweep is authorized.
+
+### D02-08
+Remains L2.
+Independent microstructure data completeness is still not proven.
+API capability alone is insufficient.
+
+No H001/H002/H20 outcome status changes.
+Gate 7 CLOSED.
+No FORMAL_OPTIMIZATION_CANDIDATE.
