@@ -857,3 +857,11 @@ Control-plane conclusion:
 - 13 plausible future lanes remain explicitly blocked/watchlisted;
 - curriculum maturity and research infrastructure must not be mistaken for Formal optimization readiness.
 
+## D15-19 Kelly merge-governance handoff — 2026-10-03
+
+Specialist task packet:
+`shared-knowledge/D15_19_KELLY_SPECIALIST_VALIDATION_PACKET_20261003_V0_1.md`
+
+D16-25 is specialist-complete at L2 for curriculum merge comparison; D15-19 research is now the active missing side.
+No maturity transfer, retirement or Formal change is authorized.
+
