@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "pattern-touch-history-basis-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "basis": {
+    "TH1_COUNT": [
+      "priorTouchCountThroughAsOf"
+    ],
+    "TH2_SPACING": [
+      "interTouchEligibleSessionGaps",
+      "firstToLastTouchSpan"
+    ],
+    "TH3_RECENCY": [
+      "lastTouchAtThroughAsOf",
+      "lastTouchAgeEligibleSessions"
+    ],
+    "TH4_DWELL": [
+      "observableZoneInteractionSessions",
+      "occupancyRunLengths"
+    ],
+    "TH5_RESPONSE_PROGRESSION": [
+      "lowDistanceSlopePerTest",
+      "closeDistanceSlopePerTest",
+      "rejectionCompressionRatio",
+      "pairwiseImprovementRatios",
+      "firstLastRejectionDistance"
+    ]
+  },
+  "derived": [
+    "touchRate",
+    "meanInterTouchGap",
+    "medianInterTouchGap",
+    "dwellRatio"
+  ],
+  "ladder": [
+    "H0_COUNT",
+    "H1_COUNT_EXPOSURE",
+    "H2_SPACING_RECENCY",
+    "H3_DWELL",
+    "H4_RESPONSE_PROGRESSION",
+    "H5_DERIVED_CATEGORIES"
+  ],
+  "rules": [
+    "TOUCH_HISTORY_ONE_SOURCE_ROOT",
+    "NO_ARBITRARY_RAPID_RETEST_THRESHOLD",
+    "NO_AGE_BUCKET_OPTIMIZATION",
+    "DERIVED_RATE_NOT_INDEPENDENT_VOTE",
+    "CATEGORY_MUST_BEAT_FLEXIBLE_H4"
+  ],
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
