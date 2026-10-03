@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "RESEARCH_TO_OPTIMIZATION_BRIDGE_AUDIT_V0_1",
+  "updatedAt": "2026-10-03T12:15:00+08:00",
+  "status": "BRIDGE_GAP_AUDIT_COMPLETE_NO_UNSURFACED_READY_CANDIDATE_FOUND",
+  "formalCoreImpact": "NONE",
+  "canonicalCandidateCount": 1,
+  "existingCandidate": {
+    "id": "HISTORY_SOURCE_REVALIDATION_V2.3",
+    "status": "FORMAL_OPTIMIZATION_CANDIDATE_OWNER_APPROVED_MERGED_DEPLOYED",
+    "bridgeGap": false
+  },
+  "unsurfacedEvidenceReadyCandidates": [],
+  "watchlist": [
+    {
+      "id": "AF",
+      "name": "Base Admission Funnel",
+      "path": "BASE_ADMISSION_FUNNEL_RESEARCH.md",
+      "status": "FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY",
+      "blocker": "Reason-stratified prospective rejected-control cohort, execution/risk controls, independent dates, size/price/regime strata, downside/cost/coverage safety."
+    },
+    {
+      "id": "LQ",
+      "name": "Liquidity Admission",
+      "path": "LIQUIDITY_ADMISSION_RESEARCH.md",
+      "status": "EVIDENCE_GAP_CAPTURE_CANDIDATE / NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+      "blocker": "Prospective rejected-control opportunity-cost evidence after execution cost, spread/depth, risk and coverage controls."
+    },
+    {
+      "id": "MCAP",
+      "name": "Market Cap Admission",
+      "path": "MARKET_CAP_ADMISSION_RESEARCH.md",
+      "status": "NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+      "blocker": "Prospective counterfactual evidence that changing market-cap admission improves opportunity capture without risk/cost deterioration."
+    },
+    {
+      "id": "TRR",
+      "name": "Target / Resistance / RR",
+      "path": "TARGET_RESISTANCE_RR_RESEARCH.md",
+      "status": "STRUCTURAL_PROVENANCE_RISK_CONFIRMED / NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+      "blocker": "Structural provenance/replay quality must be solved before outcome inference."
+    },
+    {
+      "id": "VAL",
+      "name": "Valuation",
+      "path": "VALUATION_RESEARCH.md",
+      "status": "FALSIFICATION_IN_PROGRESS / PIT_COHORT_AUDIT_REQUIRED / NOT_OPTIMIZATION_READY",
+      "blocker": "PIT cohort audit and outcome join remain incomplete; several valuation sublanes are shadow/spec only."
+    },
+    {
+      "id": "VR",
+      "name": "Volatility Regime",
+      "path": "VOLATILITY_REGIME_RESEARCH.md",
+      "status": "FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY",
+      "blocker": "Prospective capture, historical vintage, independent-date, crisis-removal, redundancy and OOS evidence remain incomplete."
+    },
+    {
+      "id": "TMR",
+      "name": "Trend / Momentum / Reversal",
+      "path": "TREND_MOMENTUM_REVERSAL_RESEARCH.md",
+      "status": "NOT_OPTIMIZATION_READY",
+      "blocker": "Prospective transition-state evidence and incremental value beyond current lateStage/overheat/momentum controls remain missing."
+    },
+    {
+      "id": "IC",
+      "name": "Institutional / Crowding",
+      "path": "INSTITUTIONAL_CROWDING_RESEARCH.md",
+      "status": "FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY",
+      "blocker": "Prospective PIT/source parity, passive-flow separation, redundancy, independent dates, costs and actor/state incrementality."
+    },
+    {
+      "id": "FD",
+      "name": "Fundamental Information Dynamics",
+      "path": "FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md",
+      "status": "SHADOW_SPEC_FROZEN / OUTCOME_JOIN_LOCKED / NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+      "blocker": "Outcome join and prospective official-vintage evidence remain locked."
+    },
+    {
+      "id": "MC",
+      "name": "Macro / Cross-market",
+      "path": "MACRO_CROSS_MARKET_RESEARCH.md",
+      "status": "FALSIFICATION_IN_PROGRESS / DATA_QUALITY_BLOCKED / NOT_OPTIMIZATION_READY",
+      "blocker": "Prospective source receipts, source entitlement/quality, Taiwan/sector controls, non-crisis independent dates and residual incrementality."
+    },
+    {
+      "id": "EA",
+      "name": "Execution Alpha",
+      "path": "EXECUTION_ALPHA_RESEARCH.md",
+      "status": "FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY",
+      "blocker": "Need counterfactual execution evidence showing a specific entry-gate relaxation improves net opportunity after missed-upside, costs and strategy/regime controls."
+    },
+    {
+      "id": "PV",
+      "name": "Price / Volume",
+      "path": "PRICE_VOLUME_CHECKPOINT.md",
+      "status": "OUTCOMES_CLOSED / NO_FORMAL_OPTIMIZATION_CANDIDATE",
+      "blocker": "Clean prospective cohorts and Gate-7 outcome maturity remain absent; price+volume must beat price-only baseline on common support."
+    },
+    {
+      "id": "D16-25",
+      "name": "Probabilistic Decision / Uncertainty-aware Selection",
+      "path": "research/D16_D18_VALIDATION_CHECKPOINT.md",
+      "status": "L2_CLOSED / READY_FOR_D15_19_SPECIALIST_COMPARISON / NOT_OPTIMIZATION_READY",
+      "blocker": "Real Taiwan PIT calibration population, frozen predictions, matured outcome joins, calibration/utility/coverage evidence; D15-19 specialist comparison still required."
+    }
+  ],
+  "matureValidationInfrastructure": {
+    "modules": [
+      "D16-01",
+      "D16-02",
+      "D16-03",
+      "D16-04",
+      "D16-05",
+      "D16-06",
+      "D16-07",
+      "D16-09",
+      "D16-12",
+      "D16-15"
+    ],
+    "role": "VALIDATION_GOVERNANCE_NOT_STOCK_ALPHA"
+  },
+  "antiPrematurePromotion": [
+    {
+      "id": "D02-07",
+      "state": "OBSERVATION_COMPARATOR_ONLY_MERGE_CANDIDATE_PENDING_INCREMENTAL_TEST",
+      "formalOptimizationCandidate": "NONE"
+    },
+    {
+      "id": "D02-08",
+      "state": "STRONG_MERGE_CANDIDATE_IF_OHLCV_ONLY",
+      "formalOptimizationCandidate": "NONE"
+    },
+    {
+      "id": "H20",
+      "state": "PARTIAL_SPECIALIST_RETURN_CLEAN_PROSPECTIVE_RESIDUAL_OUTCOMES_MISSING",
+      "formalOptimizationCandidate": "NONE"
+    }
+  ],
+  "allowedBridgeStates": [
+    "DISCOVERY",
+    "FALSIFICATION_IN_PROGRESS",
+    "EVIDENCE_READY",
+    "FORMAL_OPTIMIZATION_CANDIDATE",
+    "REJECTED_OR_REDUNDANT"
+  ],
+  "leakageFirewalls": [
+    "MATURITY_LEAKAGE",
+    "INFRASTRUCTURE_LEAKAGE",
+    "SHADOW_SPEC_LEAKAGE",
+    "MECHANISM_LEAKAGE",
+    "COVERAGE_PRESSURE_LEAKAGE",
+    "COMPLEXITY_LEAKAGE",
+    "DUPLICATE_VOTE_LEAKAGE"
+  ],
+  "nextAction": "CONTINUE_SPECIALIST_INTAKE_AND_PROSPECTIVE_OUTCOME_COLLECTION_REAUDIT_ON_FIRST_EVIDENCE_READY"
+}
