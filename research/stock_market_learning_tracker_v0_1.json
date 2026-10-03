@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T18:18:00+08:00",
+  "updatedAt": "2026-10-03T18:12:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 35
+    "maturityWeightedPct": 35.4
   },
   "domains": [
     {
@@ -3231,7 +3231,7 @@
         "BEHAVIORAL_FINANCE_CHECKPOINT.md",
         "BEHAVIORAL_FINANCE_RESEARCH.md"
       ],
-      "maturityPct": 18.5,
+      "maturityPct": 24.6,
       "modules": [
         {
           "id": "D20-01",
@@ -3286,12 +3286,12 @@
         {
           "id": "D20-06",
           "name": "Herding／Social Proof從眾與社會證明",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Herding／Social Proof從眾與社會證明」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D20-06 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / H06_BEHAVIOR_IDENTIFIABILITY_FIREWALL / L3_DATA_NOT_READY",
+          "next": "完成 H06 13室對照證據包：以殘差同步交易、領先/跟隨時序、獨立社群立場/網路擴散作為行為特定候選；排除共同資訊、因子曝險、被動再平衡、流動性衝擊、共同委託與市場制度。下一步驗證是否存在可 PIT/replay 的獨立行為資料；否則維持 UNKNOWN 或提案縮限，不得把 D06-06 擁擠再加一票。"
         },
         {
           "id": "D20-07",
@@ -3326,12 +3326,12 @@
         {
           "id": "D20-10",
           "name": "Investor Sentiment情緒測量與代理變數",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Investor Sentiment情緒測量與代理變數」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D20-10 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_SENTIMENT_PROXY_TAXONOMY_DEFINED / NEWS_SENTIMENT_BOUNDARY / PIT_PROXY_CHAIN_NOT_VALIDATED",
+          "next": "建立台股投資人情緒代理資料契約：優先投資人調查、社群多空立場/情緒、經驗證的隔夜報酬候選；融資、VIX、成交量、新聞文字僅可作控制或弱代理，分別受 D06、D12、D02、D17 所有權約束。必須測試資訊內容污染、長短期反轉、投資人類型、估值困難度、套利限制與跨制度穩健性。"
         },
         {
           "id": "D20-11",
@@ -3364,10 +3364,10 @@
           "next": "從理論、定義、機制與反證開始，建立 D20-13 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
         }
       ],
-      "status": "D20_01_02_03_04_07_12_L2 / IDENTIFICATION_FIREWALL_ACTIVE / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D20-03：執行台股可用 proxy 的資料可行性與獨立辨識稽核，優先檢查投資人層級/融資券/交易制度前後資料是否可 PIT/replay；同時啟動 D20-06 Herding 的理論、可觀測代理與 D20-12 結構性反證，避免把共同漲跌或低橫斷面離散直接叫做從眾。",
-      "lastResearchUpdate": "2026-10-03T13:35:00+08:00",
-      "researchNote": "Second deep block completed. D20-03 and D20-12 advanced L0→L2 after theory, direct-measure evidence, Taiwan counterevidence, and identification/falsification review. High turnover or return-following turnover is not uniquely identifying for overconfidence. Taiwan evidence is mixed: some studies support gain→trading and risk-taking patterns, while a large brokerage-account study finds a U-shaped turnover-performance relation and rejects a simple monotonic overconfidence story. Direct psychometric evidence shows some overconfidence facets predict trading but miscalibration does not. A 2026 Taiwan continuous-trading quasi-experiment shows market design can materially shift stock-level behavioral proxies, so microstructure reform is a required structural counterfactual. D20-03 remains OBSERVATION/RESEARCH_ONLY with CONTEXT/CONFIDENCE role unless independent proxy incrementality is proven. D20-12 now owns the identification firewall. No L3 promotion; PIT/replay data contract remains unvalidated. Formal Core unchanged."
+      "status": "D20_01_02_03_04_06_07_10_12_L2 / IDENTIFICATION_FIREWALL_ACTIVE / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "先完成 D20-06 與 D20-10 的台股 PIT/replay 資料可行性稽核；D20-06 優先尋找投資人身分/時序或獨立社群行為資料，D20-10 優先驗證社群多空立場與隔夜報酬等非新聞文字代理。若資料不可重播，不升 L3。之後續接 D20-08 反應不足與事件後漂移。",
+      "lastResearchUpdate": "2026-10-03T18:12:00+08:00",
+      "researchNote": "Third deep block: D20-06 and D20-10 advanced to L2. Herding is separated from D06-06 crowding through behavior-specific residual/leader-follower/social evidence requirements; CSSD/CSAD and static concentration are non-identifying alone. Sentiment proxy taxonomy is separated from D17-08 news sentiment and from D12 VIX, D06 margin/crowding, and D02/D03 price-volume families. Taiwan literature supports heterogeneous herding and candidate sentiment proxies such as overnight returns and real-time public stance, but method/regime dependence and structural contamination prevent L3. Formal Core unchanged."
     },
     {
       "id": "D21",
