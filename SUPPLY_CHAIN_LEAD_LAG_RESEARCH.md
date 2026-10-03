@@ -2119,3 +2119,27 @@ Actual disbursement, loan draw and tax-credit realization remain UNKNOWN unless 
 Maturity: `D10-14 L2 -> L3` for Taiwan-issuer PIT/replay feasibility only.
 
 Formal Core unchanged.
+
+
+## SC-049 — Lead-lag identifiability: two sequential vintages are not enough to promote D10-02
+
+Artifact:
+`research/sc049_supply_chain_lead_lag_identifiability_audit_v0_1.json`
+
+SC-036 creates a plausible one-month steel-chain lag witness:
+- 2026-08: scrap UP / billet DOWN / H-beam FLAT.
+- 2026-09: scrap UP / billet UP / H-beam FLAT.
+
+However, two monthly points cannot distinguish true upstream lead-lag from common shocks, inventory timing, contract repricing, sticky downstream prices, electricity/freight/yield changes or independent demand. Monthly averages also do not reveal within-month causal ordering.
+
+SC-039/040 add multi-month order/delivery states but are survey diffusion measures, not bilateral issuer/product propagation clocks.
+
+Decision:
+`D10-02 KEEP L2`.
+
+Promotion requires multiple independent sequential vintages/chains, ex-ante lag candidates, compatible clocks, common-shock and contract-reset controls, and negative controls. No post-hoc "best lag" selection is allowed.
+
+Exact next:
+SC-050 append another steel-chain vintage and pre-freeze 1M/2M/3M lag candidates; add a second non-steel three-layer chain.
+
+Formal Core unchanged.
