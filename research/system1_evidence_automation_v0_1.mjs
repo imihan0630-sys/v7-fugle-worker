@@ -96,9 +96,16 @@ function eligibleShortSymbols(c2){
 }
 
 export function auditC3LiveInputs(c2Ledger,{
-  captureRows=[],geometryReceipts=[],formalBaselineReceipts=[],priorCloseReceipts=[],barStateReceipts=[]
+  captureRows=[],geometryReceipts=[],formalBaselineReceipts=[],priorCloseReceipts=[],barStateReceipts=[],scopeSymbols=null
 }={}){
-  const c2=verifyC2(c2Ledger),eligible=new Set(eligibleShortSymbols(c2));
+  const c2=verifyC2(c2Ledger),allEligible=eligibleShortSymbols(c2),allEligibleSet=new Set(allEligible);
+  let scoped=allEligible;
+  if(scopeSymbols!==null){
+    if(!Array.isArray(scopeSymbols)||new Set(scopeSymbols.map(String)).size!==scopeSymbols.length) throw new Error("C3_SCOPE_SYMBOLS_INVALID");
+    scoped=scopeSymbols.map(String);
+    if(scoped.some(symbol=>!allEligibleSet.has(symbol))) throw new Error("C3_SCOPE_OUTSIDE_ELIGIBLE_DENOMINATOR");
+  }
+  const eligible=new Set(scoped);
   const geometry=receiptMap(geometryReceipts,"C3_GEOMETRY");
   const formal=receiptMap(formalBaselineReceipts,"C3_FORMAL_BASELINE");
   const prior=receiptMap(priorCloseReceipts,"C3_PRIOR_CLOSE");
@@ -179,6 +186,7 @@ export function auditC3LiveInputs(c2Ledger,{
   }
   const readyN=rows.filter(x=>x.status==="READY").length;
   return {schemaVersion:"SYSTEM1_C3_LIVE_INPUT_AUDIT_V0_3",generationId:c2.generationId,sessionDate:c2.sessionDate,
+    fullEligibleN:allEligible.length,scope:"CAPTURE_COHORT_OR_FULL_ELIGIBLE",scopedSymbols:[...eligible].sort(),
     eligibleN:rows.length,readyN,blockedN:rows.length-readyN,coveragePct:rows.length?round(readyN/rows.length*100):null,
     rows,readyReceipts,missingMeansUnknown:true,formalBaselineMissingDoesNotBlockChallenger:true,
     formalBaselineUnknownNeverCountedAsNoTrigger:true,selectionDepthNeverImputed:true,selectionLateStageNeverImputed:true,limitStateNeverImputed:true,
