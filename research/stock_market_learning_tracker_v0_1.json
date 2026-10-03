@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T21:41:00+08:00",
+  "updatedAt": "2026-10-03T23:17:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 37.6
+    "maturityWeightedPct": 37.8
   },
   "domains": [
     {
@@ -1564,7 +1564,7 @@
         "CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md",
         "EVENT_RISK_CHECKPOINT.md"
       ],
-      "maturityPct": 51.6,
+      "maturityPct": 52.6,
       "modules": [
         {
           "id": "D11-01",
@@ -1712,18 +1712,18 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Lock-up Expiry／Insider Supply禁售期到期與內部人供給」。研究初級市場與特殊公司事件。需凍結事件條款、公告時間、生效日期、可交易日與失敗／撤案情境，並計入供給衝擊、鎖定期、交易限制與套利破局風險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "SUPPLY_RELEASE_CLOCK_FROZEN / LOCKUP_EXPIRY_NOT_EQUAL_SELLING / TAIWAN_PIT_CAPTURE_PENDING / OUTCOMES_CLOSED",
-          "next": "Build issuer-specific centralized-custody/lock-up release receipts with original quantity, release schedule, tradability and later realized insider-sale evidence kept separate; keep unsourced sale inference UNKNOWN."
+          "status": "RULE_AND_SOURCE_LANES_IDENTIFIED / ISSUER_LEVEL_OFFICIAL_REALIZATION_LINK_INCOMPLETE / KEEP_L2 / OUTCOMES_CLOSED",
+          "next": "Obtain one issuer-level official chain from listing basis -> custody quantity -> release tranche/date -> MOPS transfer declaration -> subsequent official holdings/untransferred state. Include an eligible-but-not-sold negative control before L3."
         },
         {
           "id": "D11-17",
           "name": "Secondary Offering／Private Placement後續發行與私募",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Secondary Offering／Private Placement後續發行與私募」。研究初級市場與特殊公司事件。需凍結事件條款、公告時間、生效日期、可交易日與失敗／撤案情境，並計入供給衝擊、鎖定期、交易限制與套利破局風險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "PUBLIC_VS_PRIVATE_SUPPLY_STATE_MACHINE_FROZEN / DILUTION_SIGN_NOT_MONOTONIC / TAIWAN_PIT_CAPTURE_PENDING / OUTCOMES_CLOSED",
-          "next": "Build separate public-offering/private-placement PIT receipts across authorization, pricing, payment, delivery, restricted trading and later listing; reconcile registered/listed/tradable denominator spaces."
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_SOURCE_FEASIBILITY_VALIDATED / PRIVATE_PLACEMENT_MULTI_CLOCK_CONTRACT / NATIVE_ARCHIVE_DEEPENING_PENDING / OUTCOMES_CLOSED",
+          "next": "Build immutable native MOPS private-placement receipts across at least two independent issuers, including successful and failed/cancelled rounds; preserve pricing/payment/delivery/restricted-trading/public-issuance clocks before L4."
         },
         {
           "id": "D11-18",
@@ -1746,10 +1746,10 @@
           "next": "Collect Taiwan merger/share-conversion/spin-off lifecycles with known-at terms, closing/break/reprice states and replicable hedge/borrow/cost evidence; do not duplicate D11-06 transaction-state evidence."
         }
       ],
-      "status": "D11_15_L3_TAIWAN_PIT_DATE_LEVEL / SPECIAL_SITUATIONS_PROGRESS_PRESERVED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "Continue D11-16..19 PIT lifecycle receipts; for D11-15 add prospective immutable bookbuilding/auction versions and failed/cancelled controls before any L4 outcome work. Preserve CA-113/114 archive gates.",
+      "status": "D11_15_AND_17_L3 / D11_16_SOURCE_GAP_EXPLICIT / SPECIAL_SITUATIONS_PROGRESS_PRESERVED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D11-16: complete issuer-level official custody-release-to-realized-sale chain; D11-18/19: complete tender/deal success plus failure/extension/reprice PIT lifecycles. D11-17 native MOPS archive deepening remains before L4.",
       "lastResearchUpdate": "2026-10-03",
-      "researchNote": "D11-15 advanced L2->L3 from bounded official TWSE listing/auction/public-subscription lifecycles plus a dated withdrawal/reapplication negative control. Historical intraday first-known remains UNKNOWN; L3 is date-level Taiwan PIT/source feasibility only."
+      "researchNote": "D11-17 advanced L2->L3 for Taiwan PIT/source feasibility using official disclosure-field/timing contracts, issuer/private-placement lifecycle evidence, a failed/rescheduled branch, and existing 2465 instrument-space counterevidence. D11-16 remains L2 because issuer-specific official release-to-sale realization evidence is incomplete; missing coverage remains UNKNOWN."
     },
     {
       "id": "D12",
