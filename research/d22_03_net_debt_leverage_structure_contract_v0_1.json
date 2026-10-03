@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "D22_03_NET_DEBT_LEVERAGE_STRUCTURE_CONTRACT_V0_1",
+  "generatedAt": "2026-10-04T03:18:00+08:00",
+  "module": "D22-03",
+  "level": "L2",
+  "maturityPct": 40,
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / PIT_COMPONENT_CONTRACT_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "researchQuestion": "Does financing-structure information built from gross debt, liquidity quality and financing-like obligations add incremental credit/funding information beyond D07 accounting leverage, D22-01 maturity timing, D22-02 interest coverage and D13 rate context?",
+  "boundary": {
+    "D07": "Accounting balance-sheet leverage is an input/control, not a duplicate vote.",
+    "D22_03": "Credit/funding structure requires liquidity-quality classification and debt-component provenance.",
+    "antiDoubleCount": "Do not count carrying debt, contractual maturity cash flow and derived net debt as additive independent evidence."
+  },
+  "components": {
+    "grossInterestBearingDebt": "Separate current/non-current borrowings and bonds with entity scope and accounting basis.",
+    "unrestrictedCash": "Offset only cash/cash equivalents demonstrated available to the consolidated group at knownAt.",
+    "restrictedOrPledgedCash": "Keep separate; UNKNOWN restriction evidence is never treated as unrestricted.",
+    "leaseLiabilities": "Separate component until preregistered inclusion rule is validated.",
+    "financingLikeObligations": "Supplier-finance or similar obligations only when separately evidenced; otherwise UNKNOWN.",
+    "derivedNetDebt": "Derived view only; never a source fact."
+  },
+  "hypotheses": [
+    {
+      "claim": "Liquidity-quality-adjusted leverage can distinguish firms with similar accounting leverage but different refinancing buffers.",
+      "counter": "Apparent value may be inherited from D07 leverage/profitability or D22-01 maturity concentration.",
+      "failure": "No incremental information after D07+D22-01+D22-02+D13 => REJECTED_OR_REDUNDANT."
+    },
+    {
+      "claim": "Restricted/pledged cash should not receive the same offset as freely deployable cash.",
+      "counter": "Restrictions may be immaterial or temporary and disclosure can be incomplete.",
+      "failure": "If restriction taxonomy is not reproducible at first-known time, affected offset remains UNKNOWN."
+    },
+    {
+      "claim": "Lease and financing-like obligations may matter for funding pressure.",
+      "counter": "Mechanical inclusion can double-count operating commitments or create cross-industry artifacts.",
+      "failure": "No inclusion until semantic comparability and incremental value are preregistered and validated."
+    }
+  ],
+  "pitContract": [
+    "Preserve issuer, entity scope, accounting basis, fiscal period, filing/public knownAt and source version.",
+    "Restatements/reclassifications append later versions; historical replay uses the first-known eligible version.",
+    "Later issuance, repayment or corporate action is not backfilled into an earlier statement state.",
+    "Financial firms are excluded from the initial comparability lane.",
+    "Missing component or restriction evidence remains UNKNOWN."
+  ],
+  "validation": {
+    "L3": "At least three Taiwan non-financial issuers, at least two industries and more than one reporting date with source-attested knownAt and component replay.",
+    "L4": "Preregistered OOS or prospective Shadow evidence with walk-forward splits; no fabricated historical Shadow.",
+    "L5": "Multi-regime robustness, costs, missingness/coverage, industry/date clustering, multiple-testing, data-mining, redundancy and stable definitions."
+  },
+  "mandatoryChecks": [
+    "PIT",
+    "first-known/knownAt",
+    "financial-report publication time",
+    "restatement/version lineage",
+    "corporate actions",
+    "OOS",
+    "walk-forward",
+    "data mining",
+    "multiple testing",
+    "overfitting",
+    "factor redundancy",
+    "cost",
+    "market-regime dependence"
+  ],
+  "outcomeGate": "CLOSED",
+  "formalCore": "LOCKED",
+  "next": [
+    "Build Taiwan PIT component receipts for at least three non-financial issuers across at least two industries and multiple reporting dates.",
+    "Falsify unrestricted-cash versus total-cash offset, lease-liability inclusion and gross-debt versus net-debt views with outcomes closed.",
+    "Control D07, D22-01, D22-02 and D13 before any incremental-value claim."
+  ]
+}
