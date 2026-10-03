@@ -129,6 +129,8 @@ Strategy evidence（策略證據）只有在 OOS／Shadow（樣本外／影子�
 
 ## 7. Anti-double-count Rule（防重複計算規則）
 
+防重複原則：同一 sales denominator（營收分母）、同一 EV numerator（企業價值分子）、同一 corporate-action denominator（公司行動分母）或同一 margin/growth control（利潤率／成長控制）不得 duplicate（重複）成多張獨立投票；shared evidence（共享證據）只能形成一個 coordinated family view（協調式家族視圖）。
+
 1. P/S 與 EV/Sales 共用 sales denominator，禁止作兩張獨立投票；最多是一個 family state（家族狀態）中的 capital-structure decomposition（資本結構分解）。
 2. EV/Sales 與 EV/EBITDA 共用 EV numerator，禁止因分母不同直接當兩個獨立 alpha（超額報酬）票；需以 margin decomposition（利潤率分解）理解差異。
 3. raw revenue growth／surprise 由 D07-01／09 擁有；D08 只擁有 price/EV relative to revenue。
