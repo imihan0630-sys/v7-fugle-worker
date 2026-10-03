@@ -1,6 +1,6 @@
 {
   "schemaVersion": "CURRICULUM_SPECIALIST_INTAKE_LEDGER_V0_1",
-  "updatedAt": "2026-10-03T12:22:00+08:00",
+  "updatedAt": "2026-10-03T12:25:00+08:00",
   "status": "ACTIVE_INTAKE_LEDGER",
   "formalCoreImpact": "NONE",
   "clusters": [
@@ -261,7 +261,8 @@
       ],
       "formalOptimizationCandidate": "NONE",
       "maturityChange": "D16_25_REMAINS_L2_40",
-      "structuralChange": "NONE"
+      "structuralChange": "NONE",
+      "nextPacket": "shared-knowledge/D15_19_KELLY_SPECIALIST_VALIDATION_PACKET_20261003_V0_1.md"
     }
   ]
 }
