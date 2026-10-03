@@ -2,7 +2,7 @@
 
 Updated: 2026-09-28 20:35 Asia/Taipei
 Formal Core: LOCKED
-Current cursor: MC-001 through MC-096 complete.
+Current cursor: MC-001 through MC-112 complete.
 
 ## Durable conclusions
 
@@ -285,3 +285,52 @@ Formal Core LOCKED. No maturity promotion and no FORMAL_OPTIMIZATION_CANDIDATE.
 2. Consensus stays UNKNOWN unless an approved pre-release timestamped vintage is preserved before release.
 3. Store headline payroll, unemployment, wage, workweek and revision vectors separately; no one-dimensional macro score.
 4. Accumulate independent events, then test scheduled-event risk before signed-surprise direction.
+
+
+## 2026-10-03 continuation — D13-14 fiscal / D13-15 financial conditions / D13-16 system liquidity
+
+### D13-14 Fiscal Policy / Deficit / Government Spending
+- Advances L0 -> L2 / 40%.
+- Fiscal research now separates enacted policy, forecasts/baselines, Treasury cash receipts/outlays/deficit/financing, BEA NIPA government consumption/investment and debt-financing state.
+- Raw deficit change is not automatically discretionary fiscal impulse; cyclical effects, interest cost, timing and one-offs must be separated.
+- Short-run demand, borrowing/rates, private-investment and sector-composition channels can point in different directions.
+- Official-source/PIT requirement: preserve announcement/enactment/effective clocks, MTS/DTS publishedAt/reference period, BEA vintage and forecast vintage.
+- Machine contract: `research/d13_14_fiscal_policy_transmission_spec_v0_1.json`.
+- No scalar fiscal bullish/bearish score.
+
+### D13-15 Monetary Transmission / Financial Conditions
+- Advances L0 -> L2 / 40%.
+- Policy stance != financial conditions. Rates, credit spreads, equities, FX, housing and bank lending can move materially while the policy rate is unchanged.
+- Chicago Fed NFCI/ANFCI and Fed FCI-G are different objects:
+  - NFCI = broad weekly statistical financial-condition state;
+  - ANFCI = conditions adjusted for macro activity/inflation;
+  - FCI-G = model-based future-growth impulse from seven financial variables.
+- NFCI/ANFCI history can revise with incoming/revised data and changing model weights. Current revised history is not automatically the real-time vintage.
+- FCI composites must be tested after their own component baselines to avoid double-counting rates/equity/USD already in D13.
+- SLOOS remains a distinct lower-frequency bank-credit standards/terms/demand object.
+- Machine contract: `research/d13_15_monetary_financial_conditions_spec_v0_1.json`.
+
+### D13-16 Central-bank Balance Sheet / System Liquidity
+- Advances L0 -> L2 / 40%.
+- Fed total assets, reserve balances, TGA, ON RRP and currency are distinct balance-sheet objects.
+- Reserve balances can diverge from Fed asset-stock changes when TGA/ON-RRP/currency/other liabilities move.
+- “net liquidity = Fed assets - TGA - ON RRP” is frozen as a heuristic, not a universal accounting identity or alpha formula.
+- Ample reserves is a demand-dependent regime/range, not one fixed reserve-balance number.
+- H.4.1 is the preferred official weekly decomposition source; release/reference clock and vintage must be preserved.
+- Machine contract: `research/d13_16_central_bank_liquidity_spec_v0_1.json`.
+
+### Current maturity / governance
+- D12: 40.0%.
+- D13: 34.7% across 19 modules.
+- Room 09 weighted D12+D13: ~37.2%.
+- Global tracker: 35.9% across 354 modules at this write.
+- D13-14..16 are L2 mechanism+falsification only; no L3/PIT/OOS promotion.
+- Formal Core remains LOCKED. Outcomes remain CLOSED. No FORMAL_OPTIMIZATION_CANDIDATE.
+
+## Exact next continuation after MC-112
+
+1. Continue D13-17 Trade / Geopolitical Risk / Capital-flow Transmission with tariff/export-control/sanction/capital-flow clocks separated from market reaction.
+2. Preserve source-only fiscal, NFCI/ANFCI/FCI-G and H.4.1 vintages before outcome joins.
+3. D13-15 composite conditions must beat component-only baselines; D13-16 liquidity decomposition must beat rates/USD/VIX/FCI baselines.
+4. Do not create a scalar macro/liquidity risk score from the newly reconciled modules.
+5. No L3 until independent Taiwan PIT/source-attested evidence exists.
