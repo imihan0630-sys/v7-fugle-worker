@@ -13808,3 +13808,22 @@ D02 aggregate = 58.3%.
 
 Formal Core remains LOCKED.
 PVE cursor remains 239.
+
+# Pre-PVE-240 — D02 reaches full L3 floor, L4 remains evidence-blocked (2026-10-04)
+
+D02-08 now satisfies L3 only after its research object is narrowed from latent "accumulation/distribution intent" to an observable provider-side pressure proxy.
+
+The source family is independent of OHLCV:
+current quote cumulative AtBid/AtAsk/transaction statistics and current trade/volume detail APIs.
+
+Executable replay proves the proxy can be formed with strict identity, clock, coverage and counter-monotonicity guards.
+It does not prove true OFI or participant intent.
+
+With D02-08 at L3, all 12 D02 modules are now at least L3.
+D02 aggregate becomes 60.0%.
+
+A separate L4 audit finds zero legal promotions:
+clean prospective selection dates remain 0, Gate 7 is closed and module-specific outcome/counterfactual evidence remains incomplete.
+
+Therefore 60.0% is the current evidence-based ceiling.
+Further progress requires new prospective/OOS evidence rather than more specification.
