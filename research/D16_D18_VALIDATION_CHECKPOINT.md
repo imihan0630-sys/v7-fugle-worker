@@ -907,3 +907,295 @@ FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 7. Only after stage graph + timestamps exist may global-vs-stage timing deltas be measured.
 8. Keep TPEx transport instability separate from publication latency.
 9. Continue TWSE source-family revalidation; no same-date A1 READY has yet been observed in the current four-day raw sequence.
+
+
+## 2026-10-03 priority continuation — D16-25 Probabilistic Decision / Bayesian Updating / Uncertainty-aware Selection
+
+Owner priority:
+D16-25 is temporarily prioritized ahead of other D16/D18 continuations because D15-19 Kelly / Fractional Kelly is an owner-approved strong merge candidate that explicitly depends on D16-25.
+
+Durable artifacts:
+- `research/D16_25_PROBABILISTIC_DECISION_RESEARCH_V0_1.md`
+- `research/d16_25_probabilistic_decision_contract_v0_1.json`
+- `research/d16_25_probability_validation_v0_1.mjs`
+- `system2/tests/d16_25_probability_validation_v0_1.test.mjs`
+- `research/D16_25_D15_19_MERGE_DECISION_INPUT_V0_1.md`
+
+Engineering evidence:
+- PR #325 merged as `2f63157bd0555458331177abd8c3514ad456ae19`;
+- PR #325 final head `ec04987cfcc4680a90d0d351be4ad3b8d89c4a28`;
+- System2 Research CI `37088089033` PASS;
+- V8 Repair CI `37088089159` PASS;
+- V8 Regression `37088089066` PASS.
+- PR #326 merged as `74773b427aa7954d1994825070f8874f2e2197d0`;
+- PR #326 final head `96e1b795d2c52d95b6f1537cd526ec180eee0c3a`;
+- System2 Research CI `37088328576` PASS;
+- V8 Regression `37088328526` PASS;
+- V8 Repair CI `37088328567` PASS.
+
+No Worker/Cron/D1 mutation, Formal selection/rank/capital/monitor/push change, System2 final-selection authority, or Kelly sizing was introduced.
+
+### D16-25 responsibility is now frozen
+
+D16-25 owns two upstream layers:
+
+1. Predictive estimation:
+   - target/horizon definition;
+   - PIT-safe base rate / prior;
+   - Bayesian/probabilistic evidence combination;
+   - probability or predictive distribution;
+   - calibration;
+   - model/data/shift uncertainty.
+
+2. Decision utility:
+   - after-cost expected decision value;
+   - uncertainty-aware ACCEPT / ABSTAIN / DATA_BLOCKED;
+   - opportunity-capture / false-acceptance / missed-opportunity evaluation.
+
+D16-25 does NOT automatically own position size.
+
+Position allocation remains a downstream D15 responsibility unless a later owner-approved curriculum merge explicitly transfers that responsibility.
+
+### Probability identity firewall
+
+A probability is invalid without a frozen semantic identity.
+
+The executable validator now requires homogeneous:
+- strategyId;
+- strategyVersion;
+- decisionStage;
+- targetId;
+- horizon;
+- referenceBasis;
+- costModelVersion;
+- outcomeRuleVersion;
+- baseRateCohortVersion;
+- modelVersion;
+- calibrationVersion.
+
+Changing any of these creates a different calibration family.
+
+Do not pool:
+- D5 and D20;
+- gross and after-cost outcomes;
+- target-first and positive-return labels;
+- selected-conditioned and filled-conditioned targets;
+- different cost models;
+- different calibration versions.
+
+### Outcome-maturity firewall
+
+Only outcomes with:
+`outcomeMaturedAt <= evaluationCutoff`
+enter probability evaluation.
+
+Immature D+N:
+- remains IMMATURE / UNKNOWN;
+- never becomes loss/0.
+
+Target/stop same-bar ambiguity remains explicit unless a label policy was preregistered.
+
+### Calibration contract
+
+Primary binary metrics:
+- Brier score;
+- logarithmic loss;
+- fixed-bin reliability table.
+
+Secondary:
+- binned reliability/resolution/uncertainty decomposition;
+- ECE only as a secondary diagnostic.
+
+A frozen reference base rate must come from prior training evidence.
+The holdout empirical outcome rate is descriptive and cannot be silently reused as the frozen baseline.
+
+Exact wrong p=0 or p=1 produces infinite logarithmic loss.
+The V0.1 evaluator deliberately performs no silent clipping.
+
+### Bayesian prior / updating contract
+
+Base-rate cohorts are target-specific:
+- strategy;
+- target;
+- horizon;
+- intended eligibility population;
+- cost semantics.
+
+A Beta-Binomial updater is implemented as a simple binary baseline only.
+
+Guardrails:
+- only matured prior observations update the posterior;
+- immature/unknown outcomes are excluded and counted;
+- small samples widen uncertainty/shrink toward the prior rather than justify extreme 0/1;
+- correlated evidence cannot be multiplied as independent likelihood ratios without proof;
+- Bayesian complexity must beat simpler base-rate/score/calibration baselines.
+
+### Uncertainty contract
+
+Probability and uncertainty remain separate.
+
+p≈0.5 does not automatically mean "high uncertainty".
+
+Required conceptual channels:
+- ALEATORIC_OUTCOME;
+- EPISTEMIC_PARAMETER_MODEL;
+- DATA_PROVENANCE;
+- DISTRIBUTION_SHIFT_REGIME;
+- EXECUTION_PAYOFF.
+
+The executable selective-policy test proves:
+- p=0.5 with explicitly low uncertainty can pass an uncertainty gate;
+- missing uncertainty becomes DATA_BLOCKED when the frozen policy requires it.
+
+### ABSTAIN contract
+
+ABSTAIN is a valid decision.
+
+A selective policy must report:
+- accepted coverage;
+- abstention;
+- data-blocked share;
+- opportunity capture;
+- missed positive opportunity;
+- false acceptance;
+- accepted after-cost realized value where mature.
+
+Accuracy/return on accepted rows alone is insufficient because a model can game apparent quality by abstaining on nearly everything.
+
+Thresholds are frozen inputs.
+The evaluator does not search outcomes for an optimal probability / EV / uncertainty threshold.
+
+### Utility finding
+
+Probability alone is insufficient.
+
+Executable negative example:
+- p(win)=0.70;
+- avg win=+1%;
+- avg loss magnitude=4%;
+- zero cost;
+=> EV = -0.5%.
+
+Therefore "70% chance" can still be a bad decision.
+
+D16-25 output must preserve payoff/utility semantics, not only probability.
+
+### Population / denominator firewall
+
+Promotion-grade calibration requires the intended decision population.
+
+Do not use selected-only or bounded/reason-sorted legacy Shadow as the deployment population.
+
+System1 C1 complete-population infrastructure gives strong schema/engineering feasibility, but real positive evidence is still blocked.
+
+Latest scheduled C1 collector:
+- workflow run `37033639328`;
+- observed 2026-10-03 00:24 Taipei;
+- scanDate = 2026-10-02;
+- verificationFailure = C1_GENERATION_NOT_FOUND;
+- category = FORMAL_SCAN_NOT_CONFIRMED;
+- formalScanDate remained 2026-09-29;
+- formalPipelineComplete = false;
+- institutionDate=2026-10-02 and institutionReady=true;
+- qualityDate=2026-10-02 and qualityReady=true;
+- eligibleForResearch=false;
+- mayCountAsZeroPick=false.
+
+Therefore:
+missing C1 generation is a data/population failure, not a zero-opportunity market date.
+
+Synthetic fixtures / CI do not satisfy Taiwan PIT L3.
+
+### D16-25 -> D15-19 interface
+
+Dependency is now supported:
+D15-19 requires a calibrated target-specific probability/payoff distribution with uncertainty before Kelly-style sizing can be responsibly evaluated.
+
+But dependency != redundancy.
+
+D16-25 unique:
+- target/base rate/prior;
+- probability/distribution estimation;
+- calibration;
+- uncertainty / shift;
+- ABSTAIN;
+- decision utility validation.
+
+D15-19 unique:
+- log-growth objective;
+- Kelly capital fraction;
+- Fractional Kelly;
+- portfolio correlation/concentration;
+- drawdown/ruin constraints;
+- lifecycle/portfolio heat.
+
+Current relationship:
+`STRONG_DEPENDENCY / PARTIAL_CONCEPTUAL_OVERLAP / DISTINCT_PORTFOLIO_ALLOCATION_RESPONSIBILITY`.
+
+### Four later curriculum structures are now explicit
+
+A. Keep D16-25 + D15-19 with a strict PredictiveDecisionReceipt -> KellySizingReceipt interface.
+
+B. Merge D15-19 into D15-16 Portfolio Optimization method family while D16-25 remains upstream probability/calibration authority.
+
+C. Merge D15-19 directly into an expanded D16-25 only if D16-25 formally absorbs downstream allocation/portfolio responsibilities.
+
+D. Retire D15-19 standalone ID and split-transfer:
+- probability/input semantics -> D16-25;
+- Kelly/Fractional Kelly sizing mechanics -> D15-16 / D15 sizing ownership.
+
+No option is executed here.
+
+The D16-25-side research currently makes B or D structurally more natural than silently moving all Kelly allocation responsibility into statistical validation, but final curriculum action still requires D15-19 specialist research + owner decision.
+
+### D16-25 maturity decision
+
+Advance:
+`L0 / 0% -> L2 / 40%`.
+
+Reason:
+- theory/mechanism;
+- positive mechanism;
+- explicit falsification matrix;
+- PIT/target/label maturity contract;
+- base-rate/Bayesian guardrails;
+- calibration metrics;
+- uncertainty semantics;
+- ABSTAIN;
+- utility/payoff semantics;
+- population firewall;
+- D15-19 handoff;
+- executable pure evaluator;
+- adversarial tests;
+- CI + V8 regression isolation
+
+are all established.
+
+Do NOT advance to L3.
+
+Missing L3 evidence:
+- genuine complete Taiwan PIT intended population;
+- frozen real D16-25 predictions;
+- causally joined matured outcomes;
+- source-generation-complete replay/calibration receipt.
+
+### Current optimization / merge decision
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+D15-19 retirement/merge:
+NOT EXECUTED.
+
+D16-25 is now sufficiently researched on the conceptual/validation side to support a later cross-module ownership comparison, but not to claim empirical Kelly sizing superiority.
+
+## Exact next D16-25 continuation
+
+1. Obtain first genuine complete C1 population generation; keep failures as failures.
+2. Freeze one simple actual probabilistic target before outcome review.
+3. Use a simple base-rate / simple-score calibrator first; Bayesian model is challenger.
+4. Freeze trainingThroughDate and calibrationVersion.
+5. Produce immutable prediction receipts before outcome.
+6. Join only matured D+N outcomes.
+7. Measure Brier/log loss/reliability, after-cost utility, coverage/ABSTAIN and Regime drift.
+8. Only after those exist consider D16-25 L3/L4.
+9. D15 room must independently study Kelly/Fractional Kelly, then compare merge structures A/B/C/D under anti-orphan governance.
