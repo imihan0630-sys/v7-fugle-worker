@@ -36,6 +36,25 @@ This rule applies to every ChatGPT room and task that works on this repository o
 - If product model names, availability, or effort controls change, use the closest currently available equivalent while preserving the routing intent above. Do not cling to stale model names.
 - A recommendation to use Work/Codex/a stronger model is **not authorization** to cross any existing governance boundary. Class-B/Class-C work, Formal Core changes, production deployment, live trading, capital/risk changes, secrets/MFA, or other protected actions still require their existing explicit approval rules.
 - Do not claim that the interface mode has been switched automatically when the owner must select it. Tell the owner which mode/model/effort to use, then continue only within the capabilities actually available in the current session.
+- When **Work** or **Codex** is the recommended mode, do not merely tell the owner to switch. The assistant must also prepare a complete, paste-ready cross-chat handoff package in the same reply.
+  - Provide a concise **recommended new chat title**.
+  - Provide the exact **recommended mode, model, and reasoning effort**.
+  - Before drafting the handoff, re-read the latest authoritative repository state (normally latest `main`) and use the current SHA rather than stale chat memory.
+  - The handoff prompt must include, when relevant:
+    1. repository/project identity and latest authoritative SHA;
+    2. exact task scope and current objective;
+    3. work already completed and what must not be repeated;
+    4. canonical files/checkpoints/read order;
+    5. exact continuation point / first action in the new room;
+    6. governance boundaries and actions that still require explicit owner approval;
+    7. required tests, CI, acceptance criteria, and fail-closed/fail-open semantics;
+    8. any current-chat facts that are materially necessary but not yet durable in the repository;
+    9. explicit instruction to continue from the latest authoritative state rather than restart from scratch.
+  - The handoff must be self-contained enough that a fresh Work/Codex room can continue without asking the owner to reconstruct prior context.
+  - If a durable checkpoint should be written before handoff, write/update it first when safely possible, then cite that checkpoint in the handoff.
+  - If the current product/session does not expose a confirmed tool for creating a new Work/Codex chat, **do not claim that a chat was created or populated automatically**. Instead provide the chat title and full paste-ready prompt so the owner only needs to create the room and send it.
+  - If a future product/tool does provide confirmed new-chat creation, use it only within available authorization and only claim success after the tool confirms creation and prompt insertion.
+  - A handoff package does not relax any existing Class-B/Class-C, Formal Core, production, live-trading, capital/risk, secrets/MFA, or other approval boundary.
 - This repository rule is durable cross-chat continuity. The owner does not need to repeat this routing preference in each room.
 
 ## Deep-learning continuity
