@@ -994,3 +994,15 @@ Status: **TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / OUTCOME_UNKNOWN**.
 - Divergence is Pattern × Indicator interaction evidence. Pattern pivot geometry, RSI/KD/MACD divergence labels and pivot confirmation cannot be multiplied into independent votes without redundancy accounting.
 - D03-12 is L3/60 because Pattern confirmed-swing clocks and D03 indicator state lineage are PIT-joinable under existing source/continuity/parent provenance.
 - No outcome authority or Formal change. `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+### D01 shared handoff — DL-019 lifecycle redundancy (2026-10-03)
+
+- lifecycle can contain genuine path memory relative to current geometry only;
+- lifecycle remains derived from the same PRICE_OHLC root and has no new source novelty;
+- frozen ladder: C0 geometry -> C1 continuous path -> C2 complete first-event-clock path -> C3 categorical lifecycle;
+- promotion-grade category value must beat FLEXIBLE(C2), not merely geometry-only or linear-C2;
+- same complete path + different lifecycle label is semantic contradiction;
+- categories may remain valuable for explanation/audit/event indexing even if alpha incrementality is zero;
+- D16 owns nonlinear estimator / finite-sample inference; D01 owns lifecycle semantics.
+
+Status: LIFECYCLE_REDUNDANCY_SPEC_FROZEN / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / RUNTIME_NO_GO / FORMAL_CORE_LOCKED.
