@@ -932,3 +932,16 @@ Status: PREREGISTERED / OUTCOME_CLOSED / RUNTIME_NO_GO / FORMAL_CORE_LOCKED.
 - shared-child v0.5 is design-only; prospective clock capture remains blocked.
 
 Status: EVENT_IDENTITY_FROZEN / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / RUNTIME_NO_GO / FORMAL_CORE_LOCKED.
+
+### D01 shared handoff — DL-018 canonical lifecycle clock bundle (2026-10-03)
+
+- RG2 must reuse the canonical Pattern breakout lifecycle for break/reentry/failure/reclaim clocks; do not fork definitions;
+- first-event certification requires exact eligible-session date-set completeness, not count equality;
+- required future commitments: expectedEligibleSessionDateSetHash and continuityBarDateSetHash with zero unresolved missing sessions;
+- current shared continuity semantics already require exact date-set equality, but explicit machine-readable set commitments are an upstream extension requirement;
+- RG2-specific clocks are close-based first parent-zone entry and first later post-break outside close;
+- direct gap above the parent zone may have no close-based entry event;
+- first post-break outside close is persistence, not acceptance or an N-bar rule;
+- D01 research SHA-256 fixture hashing is not an upstream production hash decision.
+
+Status: CLOCK_BUNDLE_DESIGN_FROZEN / UPSTREAM_RECEIPT_EXTENSION_REQUIRED / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / RUNTIME_NO_GO / FORMAL_CORE_LOCKED.

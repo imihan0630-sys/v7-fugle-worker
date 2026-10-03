@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "pattern-shared-child-v0.6",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "runtimeImplemented": false,
+  "formalCore": "LOCKED",
+  "supersedes": "research/pattern_shared_child_contract_v0_5.json",
+  "genericIdentity": [
+    "parentDecisionReceiptId",
+    "captureGeneration",
+    "parentScopeId",
+    "evidence_family=PATTERN",
+    "evidence_item_key",
+    "observer_version",
+    "as_of"
+  ],
+  "root": {
+    "evidenceItemKey": "ROOT",
+    "rowsPerExpectedParent": 1,
+    "coverageAuthority": true,
+    "episodeItemKeysetCommitmentRequired": true
+  },
+  "fingerprints": {
+    "structuralIdentityFingerprint": "REQUIRED_FOR_EPISODE_AND_RG2_RELATION_ITEMS",
+    "observationPayloadHash": "REQUIRED_FOR_EVERY_CHILD_ROW",
+    "rootPayloadHash": "REQUIRED_FOR_ROOT",
+    "outcomeExcluded": true
+  },
+  "requiredTimeframeProvenance": [
+    "timeframe",
+    "effectiveClockHorizon",
+    "barCompletionState",
+    "sourceBarsThrough",
+    "sessionRule",
+    "sessionCalendarVersion",
+    "featureAgeEligibleSessions",
+    "aggregationBoundaryVersion"
+  ],
+  "requiredOverlapProvenance": [
+    "overlapClass",
+    "sharedEventIds",
+    "rawInformationClass",
+    "representationClass",
+    "crossScaleRelationType",
+    "relationDefinitionVersion",
+    "multipleTestingFamilyKey"
+  ],
+  "requiredRg2Provenance": [
+    "localBoundaryId",
+    "localBoundaryVersion",
+    "localLower",
+    "localUpper",
+    "localConfirmedAt",
+    "localFamily",
+    "localFirstBreakAt",
+    "parentZoneId",
+    "parentZoneVersion",
+    "parentLower",
+    "parentUpper",
+    "parentCenter",
+    "parentConfirmedAt",
+    "parentScale",
+    "parentSourceWindowStart",
+    "parentSourceWindowEnd",
+    "parentZoneAgeEligibleSessions",
+    "geometryRelationState",
+    "compoundLifecycleState",
+    "availableAirToParentLowerPct",
+    "distanceLocalToParentCenterPct"
+  ],
+  "rg2DiagnosticFields": [
+    "availableAirToParentLowerATR"
+  ],
+  "canonicalRg2FieldNames": {
+    "geometryRelationState": "CANONICAL",
+    "compoundLifecycleState": "CANONICAL",
+    "parentZoneAgeEligibleSessions": "CANONICAL"
+  },
+  "prohibitedPromotionAliases": [
+    "geometryState",
+    "compoundState",
+    "availableAirPct"
+  ],
+  "timing": [
+    "as_of",
+    "available_at",
+    "captured_at",
+    "created_at"
+  ],
+  "crossLaneReceiptReferences": [
+    "continuityReceiptRef",
+    "symbolSessionReceiptRef",
+    "corporateActionSemanticReceiptRef",
+    "priceVolumeReceiptRef_if_used",
+    "regimeReceiptRef_if_used",
+    "roundPriceControlReceiptRef_if_used",
+    "liquidityReceiptRef_if_used"
+  ],
+  "integrityRules": [
+    "ROOT_COVERAGE_AUTHORITY",
+    "ROOT_COMMITS_TO_SORTED_EPISODE_ITEM_KEY_SET",
+    "SAME_ITEM_KEY_DIFFERENT_STRUCTURAL_FINGERPRINT_IS_CONFLICT",
+    "SAME_GENERIC_CHILD_ID_DIFFERENT_OBSERVATION_HASH_IS_CONFLICT",
+    "SAME_EPISODE_KEY_ACROSS_LATER_PARENT_ASOF_MAY_HAVE_DIFFERENT_OBSERVATION_HASH",
+    "OUTCOME_NEVER_ENTERS_DECISION_TIME_FINGERPRINT",
+    "LATER_SOURCE_REVISION_NEVER_REWRITES_OLD_CHILD",
+    "PROMOTION_GRADE_RG2_USES_CANONICAL_V0_4_FIELD_NAMES"
+  ],
+  "predictiveIncrementality": "UNKNOWN_REQUIRES_PREREGISTERED_PROSPECTIVE_OUTCOME_TEST",
+  "runtimeStatus": "NO_GO",
+  "formalOptimizationCandidate": "NONE",
+  "requiredRg2LifecycleClockProvenance": [
+    "lifecycleClockContractVersion",
+    "lifecyclePathCompletenessState",
+    "localFirstBreakAt",
+    "firstParentZoneEntryAt",
+    "parentFirstBreakAt",
+    "parentFirstOrdinaryObservableAt",
+    "parentFirstPostBreakOutsideCloseAt",
+    "parentFirstReentryAt",
+    "parentFirstFailureAt",
+    "parentFirstReclaimAt"
+  ],
+  "lifecycleClockRules": [
+    "ONLY_PREFIX_KNOWN_CLOCKS_MAY_APPEAR_IN_A_DECISION_TIME_CHILD",
+    "FUTURE_TRANSITION_CLOCKS_REMAIN_NULL_OR_NOT_OCCURRED_ASOF",
+    "CURRENT_STATE_CANNOT_REVERSE_ENGINEER_CERTIFIED_FIRST_CLOCK",
+    "FIRST_CLOCK_REQUIRES_COMPLETE_ELIGIBLE_SYMBOL_SESSION_PATH",
+    "TRANSITION_EVENT_LEDGER_IS_APPEND_ONLY_IF_LATER_IMPLEMENTED",
+    "FAILURE_AND_REENTRY_SAME_BAR_SHARE_SOURCE_EVENT_GROUP",
+    "REPEATED_STATE_SNAPSHOTS_DO_NOT_CREATE_REPEATED_FIRST_EVENTS"
+  ],
+  "lifecycleClockProducer": "PATTERN_RG2_LIFECYCLE_CLOCK_BUNDLE_V0_1",
+  "requiredLifecycleClockWindowProvenance": [
+    "continuityReceiptId",
+    "symbolSessionContractVersion",
+    "sessionCalendarVersion",
+    "continuityEngineVersion",
+    "expectedEligibleSessionDateSetHash",
+    "continuityBarDateSetHash",
+    "unresolvedMissingSessions",
+    "sourceBarsThrough"
+  ],
+  "lifecycleClockWindowRules": [
+    "EXPECTED_ELIGIBLE_DATE_SET_HASH_EQUALS_CONTINUITY_BAR_DATE_SET_HASH",
+    "COUNT_EQUALITY_ALONE_IS_INSUFFICIENT",
+    "UNRESOLVED_MISSING_SESSIONS_ZERO",
+    "CANONICAL_SHARED_BREAKOUT_LIFECYCLE_ENGINE_REUSED",
+    "RG2_DOES_NOT_FORK_REENTRY_FAILURE_RECLAIM_DEFINITIONS"
+  ],
+  "upstreamDateSetCommitmentStatus": "EXTENSION_REQUIRED"
+}

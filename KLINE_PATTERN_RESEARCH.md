@@ -22615,3 +22615,13 @@ Event identity excludes the first-event date. This deliberately makes same event
 The most important PIT firewall is append-only future-event handling: a later failure can be used as a future structural outcome for an earlier parent, but must never be written back into that earlier parent child.
 
 Shared-child v0.5 preregisters all lifecycle-clock fields while keeping runtime NO_GO. Fifteen adversarial tests are authored but TEST_EXECUTION_PENDING. No outcomes or Formal rules changed.
+
+# DL-018 — Canonical RG2 lifecycle clock bundle (2026-10-03)
+
+D01 now rejects a second RG2 failure/reentry engine. Parent break/reentry/failure/reclaim clocks must come from the existing canonical breakout lifecycle engine. RG2 adds only relation-specific parent-zone entry and first post-break outside-close clocks.
+
+A new completeness falsifier is frozen: matching session counts cannot certify a first clock. Exact expected eligible-session dates and actual continuity-bar dates must match as sets. The shared continuity contract already requires this semantically, but its machine-readable receipt does not yet expose explicit date-set commitment hashes, so promotion-grade clock capture remains upstream-blocked.
+
+The research adapter may hash synthetic date lists for QA, but that does not define the upstream production hash algorithm.
+
+Shared-child v0.6 carries the clock-window provenance requirement. Fifteen clock-bundle fixtures are authored, not executed. Runtime/outcomes remain closed.
