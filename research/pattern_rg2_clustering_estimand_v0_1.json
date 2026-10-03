@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "pattern-rg2-clustering-estimand-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeClosed": true,
+  "formalCore": "LOCKED",
+  "hypothesisFamily": "PATTERN_RG2_NESTED_RESISTANCE",
+  "identities": {
+    "parent": "parentDecisionReceiptId",
+    "date": "scanDate",
+    "entity": "symbol",
+    "longitudinalRelation": "relationEpisodeKey",
+    "observation": "parent_x_relation_asof_snapshot"
+  },
+  "parentMultiplicity": {
+    "noRelation": "NO_RG2_RELATION",
+    "singleRelation": "SINGLE_RELATION_ELIGIBLE",
+    "multipleRelations": "MULTI_RELATION_AMBIGUOUS",
+    "duplicateRelation": "QA_FAIL_DUPLICATE_RELATION",
+    "conflictingFingerprint": "PROVENANCE_CONFLICT",
+    "primaryInferenceRequires": "SINGLE_RELATION_ELIGIBLE"
+  },
+  "dependence": {
+    "primaryDimensions": [
+      "scanDate",
+      "symbol"
+    ],
+    "longitudinalDedup": "relationEpisodeKey",
+    "naiveIidInferenceProhibited": true,
+    "d16FiniteSampleMethodRequired": true
+  },
+  "inheritedMaturity": {
+    "minMatureD5Rows": 60,
+    "minProspectiveCompleteSnapshots": 30,
+    "minIndependentScanDates": 15,
+    "minLeaveOneDateChecks": 10,
+    "minYears": 2,
+    "minRegimes": 2,
+    "minPurgedTrainingDates": 10,
+    "minHoldoutDates": 5
+  },
+  "baselines": {
+    "B0_PRICE_STRUCTURE": [
+      "priorHigh20",
+      "priorHigh60",
+      "simple260SessionHighDistance",
+      "MA60_MA120_location_if_available",
+      "ret20",
+      "ret60",
+      "ATR_or_realizedVolatility",
+      "closeLocation_upperShadowContext",
+      "dailyPatternMajorZone_currentSetupState"
+    ],
+    "B0_FULL_CONTEXT_adds": [
+      "D02_priceVolumeAcceptancePersistence",
+      "marketSectorRegime",
+      "liquidity",
+      "roundPriceProximityControl"
+    ],
+    "priceOnlyRole": "DIAGNOSTIC",
+    "fullContextRole": "PROMOTION_GRADE_BASELINE"
+  },
+  "challenger": {
+    "id": "RG2_CORE_V0_1",
+    "adds": [
+      "availableAirToParentLowerPct",
+      "geometryRelationState",
+      "compoundLifecycleState",
+      "parentZoneAgeEligibleSessions"
+    ],
+    "diagnosticOnly": [
+      "availableAirToParentLowerATR",
+      "distanceLocalToParentCenterPct",
+      "repeatedTouchProgressionDetail"
+    ]
+  },
+  "outcomes": {
+    "coPrimary": [
+      "D5_MFE_PCT",
+      "D5_MAE_PCT"
+    ],
+    "secondary": [
+      "D5_RETURN_PCT",
+      "D10_MFE_PCT",
+      "D10_MAE_PCT",
+      "STRUCTURAL_REENTRY_FAILURE_CHRONOLOGY",
+      "NO_FOLLOW_THROUGH_CONTINUOUS"
+    ]
+  },
+  "primaryEstimand": {
+    "rowLossDifferential": "d = L0 - L1",
+    "dateAggregation": "D_t = mean(d_it on same clean scanDate common support)",
+    "target": "equal_weight_mean(D_t_across_holdout_scanDates)",
+    "positiveMeaning": "B1_LOWER_PREDICTIVE_LOSS",
+    "pooledRowMeanRole": "DESCRIPTIVE_ONLY",
+    "rawMspeWinSufficient": false
+  },
+  "commonSupportRules": [
+    "CERTIFIED_IMMUTABLE_PARENT_GENERATION",
+    "PATTERN_ROOT_RUN_COMPLETE",
+    "SINGLE_RELATION_ELIGIBLE",
+    "B0_COMPLETE",
+    "B1_COMPLETE",
+    "OUTCOME_PROVENANCE_VALID",
+    "SAME_SYMBOL_DATE_IN_B0_AND_B1",
+    "UNKNOWN_NOT_ZERO",
+    "NO_LATER_VINTAGE_SUBSTITUTION"
+  ],
+  "oos": {
+    "split": "FORWARD_BY_SCAN_DATE_ONLY",
+    "randomRowSplit": false,
+    "purgeForwardOutcomeOverlap": true,
+    "scalingFitTrainingOnly": true,
+    "episodeHoldoutSensitivity": true,
+    "episodeFirstSensitivity": true,
+    "nonOverlappingDateSensitivity": true
+  },
+  "robustnessLabels": [
+    "PRICE_REDUNDANCY",
+    "CONTEXT_PROXY_RISK",
+    "FRAGILE_DATE_DEPENDENCE",
+    "LONGITUDINAL_REPEAT_DEPENDENCE",
+    "EPISODE_MEMORIZATION_RISK",
+    "OUTCOME_WINDOW_DEPENDENCE",
+    "REGIME_OR_INDUSTRY_CONCENTRATED",
+    "PREDICTIVE_INCREMENTALITY_CANDIDATE"
+  ],
+  "d16Ownership": {
+    "owns": [
+      "EXACT_ESTIMATOR",
+      "FINITE_SAMPLE_CLUSTER_INFERENCE",
+      "NESTED_MODEL_FORECAST_TEST",
+      "SIGNIFICANCE_RULE"
+    ],
+    "mustPreregisterBeforeOutcomeJoin": true
+  },
+  "formalOptimizationCandidate": "NONE"
+}
