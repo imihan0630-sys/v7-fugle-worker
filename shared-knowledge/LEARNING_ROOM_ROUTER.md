@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 10:47 Asia/Taipei
+Updated: 2026-10-03 10:56 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -1391,4 +1391,35 @@ D15-15 advances to L3/60 for Taiwan PIT source/data feasibility only.
 - 專科室提供可觀測資料、機制、反證、PIT/replay、增量價值與 anti-double-count（防重複計票）證據。
 - 專科室不得自行退休正式模組。
 - 真正合併前仍需 00｜研究總控室 Dependency Audit（依賴審查）＋ anti-orphan（防能力孤兒）驗證＋ owner（持有人）批准。
+
+## H01～H04 強整併候選驗收契約 — 2026-10-03
+
+相關研究室續接下列模組前，必須讀：
+- `shared-knowledge/CURRICULUM_H01_H04_CONSOLIDATION_ACCEPTANCE_CONTRACT_20261003_V0_1.md`
+- `shared-knowledge/curriculum_h01_h04_consolidation_acceptance_contract_20261003_v0_1.json`
+
+### H01
+07｜產業與供應鏈研究室：
+D09-13 vs D09-14。
+驗證重點：兩者是否其實共享同一產業結構／競爭動態語意；D09-14 若要獨立保留，必須證明有不同單位層級、不同可觀測資料、不同決策輸出與反證邊界。
+
+### H02
+10｜投組風控與交易執行研究室：
+D14-03 + D14-04 vs D14-17。
+驗證重點：Signal Price vs Fill Price（訊號價對成交價）是否只是 measurement identity（量測基準）、Slippage（滑價）是否只是 child metric（子指標）、Implementation Shortfall（執行落差）是否可完整承接其語意與 replay（重播）能力。
+
+### H03
+10｜投組風控與交易執行研究室：
+D15-13 vs D15-24。
+驗證重點：VaR（風險值）、Expected Shortfall（期望損失）與 Tail Risk（尾端風險）是否應統一成一個風險量測家族，同時保留 VaR 與 ES 不同失效條件；不得以單一 VaR 取代壓力測試。
+
+### H04
+09｜衍生品與國際總經研究室：
+D12-14 vs D12-15。
+驗證重點：IV-RV Spread（隱含與實現波動差）是獨立狀態，還是 Volatility Risk Premium（波動率風險溢酬）的操作代理。若使用同一 option-chain（選擇權鏈）＋ realized volatility（實現波動）母資料，不得形成兩張獨立 Alpha（超額報酬）票。
+
+### 共通成熟度防火牆
+未來即使 owner（持有人）批准合併，也禁止以 max（最大值）、average（平均值）或簡單 carry-forward（延續）方式轉移成熟度。必須對合併後完整語意重新做 evidence mapping（證據映射）與 maturity recomputation（成熟度重算）。
+
+專科研究室只提交證據包，不得自行刪除正式模組。
 
