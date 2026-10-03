@@ -49,7 +49,9 @@ export function buildC3Registration(c1Artifact,c2Artifact,config,{
     eligibleShadowOnlyN:contract.eligibleShadowOnlyN,
     extraShadowN:extra.length,excludedShadowN:contract.excludedShadowSymbols.length,
     maxShadowSymbols,providerBudgetCallsPerSession,
-    requiredExtraCandleCalls:contract.extraCandleCallsPerSession,\n    requiredExtraQuoteCalls:contract.extraQuoteCallsPerSession,\n    requiredExtraProviderCalls:contract.extraProviderCallsPerSession,
+    requiredExtraCandleCalls:contract.extraCandleCallsPerSession,
+    requiredExtraQuoteCalls:contract.extraQuoteCallsPerSession,
+    requiredExtraProviderCalls:contract.extraProviderCallsPerSession,
     researchOnly:true,decisionImpact:false,formalCoreImpact:false,
     noFormalTargetMutation:true,noSignalPath:true,noPushPath:true,noOrderPath:true,noCapitalPath:true,
     noPlanChanges:true,noTrade:true,noPush:true
