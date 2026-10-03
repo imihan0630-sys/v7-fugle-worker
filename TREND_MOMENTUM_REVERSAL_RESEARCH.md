@@ -467,3 +467,31 @@ Opportunity-cost evidence around rejected setup boundaries remains cohort-qualit
 - Existing lateStage/B-ret20 boundary value: `FALSIFICATION_IN_PROGRESS`.
 - Existing overheatPenaltyResearch incremental value: `FALSIFICATION_IN_PROGRESS`.
 - Formal Core unchanged.
+
+
+## 2026-10-03 D03 continuation / pullback reconciliation — TI-504 through TI-525
+
+D03-04 Momentum Continuation:
+- current momentum level remains D03-02;
+- own-path persistence remains D03-03;
+- continuation is frozen as a post-decision transition/outcome relation;
+- rolling retN sign retention is rejected because overlapping windows can stay positive despite negative post-decision return;
+- primary economic continuation uses non-overlapping D5/D10/D20 + MFE/MAE with exact symbol-session/corporate-action provenance;
+- Regime construction stays D18-owned;
+- D03-04 advances L2/40 -> L3/60 for Taiwan PIT data feasibility only.
+
+D03-05 Pullback/Reversal:
+- generic reversal factor remains rejected/redundant with current A setup + 15m confirmation;
+- residual question is pullback-origin attribution;
+- liquidity-pressure origin cannot be inferred from OHLCV/candle shape and is blocked on D05 true pressure/replenishment capture;
+- D03-05 remains L2/40.
+
+Durable artifacts:
+- research/D03_MOMENTUM_CONTINUATION_CONSTRUCT_PIT_V0_1.md
+- research/d03_momentum_continuation_contract_v0_1.json
+- research/test_d03_momentum_continuation_construct_v0_1.mjs
+- research/D03_PULLBACK_REVERSAL_OWNERSHIP_DATA_GATE_V0_1.md
+- research/d03_pullback_origin_contract_v0_1.json
+- research/test_d03_pullback_origin_gate_v0_1.mjs
+
+No outcome inference and no Formal change.
