@@ -71,3 +71,13 @@ Validated head: `84a927d5410a2eb3240a65619b769b3a2b17dbfc`.
 
 This PASS proves engineering separation and contract consistency only.
 It does not prove C3 economic superiority and does not authorize Formal changes.
+
+
+## Null-depth hardening
+
+A downstream Class-A falsification test exposed a JavaScript coercion hazard:
+`null >= 0` is true. The C3 evidence audit now rejects selection depth when it
+is null, undefined, or negative. A permanent regression fixture requires
+`SELECTION_DEPTH_UNVERIFIED` and `INPUT_BLOCKED` for null depth.
+
+This correction narrows eligibility; it does not relax any gate or alter Formal behavior.
