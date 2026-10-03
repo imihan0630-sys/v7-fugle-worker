@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03 Asia/Taipei",
+  "updatedAt": "2026-10-03T13:35:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 33.3
+    "maturityWeightedPct": 33.5
   },
   "domains": [
     {
@@ -3222,7 +3222,7 @@
         "BEHAVIORAL_FINANCE_CHECKPOINT.md",
         "BEHAVIORAL_FINANCE_RESEARCH.md"
       ],
-      "maturityPct": 12.3,
+      "maturityPct": 18.5,
       "modules": [
         {
           "id": "D20-01",
@@ -3247,12 +3247,12 @@
         {
           "id": "D20-03",
           "name": "Overconfidence過度自信",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Overconfidence過度自信」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / BEHAVIORAL_PROXY_IDENTIFIABILITY_REQUIRED. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
-          "levelMeaning": "未研究",
-          "status": "OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / BEHAVIORAL_PROXY_IDENTIFIABILITY_REQUIRED",
-          "next": "由 13｜行為金融與市場心理研究室尋找獨立可觀測 proxy，並與 D20-07、D20-10、D20-12 及結構／微結構替代解釋做反證；若無法獨立辨識，提案併入 attention／sentiment／behavioral falsification 家族。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / OBSERVATION_RESEARCH_ONLY / IDENTIFIABILITY_NOT_PROVEN / CONTEXT_CONFIDENCE_ROLE",
+          "next": "建立過度自信代理可辨識性稽核：優先直接/近直接證據（投資人自我評估對實際能力、投資人層級過去績效後的交易與風險承擔、外生幸運事件）；公開市場層級的 lagged return→turnover、volatility、margin/turnover 只能作弱代理並須控制資訊到達、意見分歧、財富/風險承擔、流動性、交易制度、注意力與情緒。若找不到獨立可觀測 proxy 與增量價值，依 owner-approved audit 提案併入 D20-07/D20-10/D20-12，而非保留獨立選股因子。"
         },
         {
           "id": "D20-04",
@@ -3337,12 +3337,12 @@
         {
           "id": "D20-12",
           "name": "Behavioral-vs-Structural Falsification行為解釋與結構性反證",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Behavioral-vs-Structural Falsification行為解釋與結構性反證」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D20-12 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_IDENTIFICATION_FALSIFICATION_CONTRACT_DEFINED / STRUCTURAL_COUNTERFACTUAL_REQUIRED / FORMAL_CORE_UNCHANGED",
+          "next": "把 D20 全域假說套用五級證據階梯與結構性替代解釋矩陣；下一輪先用 D20-03、D20-06、D20-10 做壓力測試，確認同一市場現象是否可被資訊到達、意見分歧、流動性/再平衡、微結構制度、槓桿/放空限制或價格家族變數同樣解釋。"
         },
         {
           "id": "D20-13",
@@ -3355,10 +3355,10 @@
           "next": "從理論、定義、機制與反證開始，建立 D20-13 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
         }
       ],
-      "status": "FOUNDATION_CLUSTER_L2 / D20_01_02_04_07 / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D20-03 Overconfidence：從理論、機制、可觀測代理與反證開始；並行準備 D20-01/02/04/07 的台股 PIT/replay 資料可行性稽核，優先區分外生注意力代理與由價格/成交量衍生的內生代理。",
-      "lastResearchUpdate": "2026-10-02T23:19:00+08:00",
-      "researchNote": "First deep-research block completed. D20-01/02/04/07 advanced L0→L2 after theory + counterevidence review. Key finding: behavioral labels are not direct market-state observables. Prospect theory does not mechanically imply the disposition effect; reference-point specification matters. Taiwan evidence supports heterogeneous disposition and attention effects, but investor type/regime and structural alternatives must be controlled. 52-week-high anchoring and attention proxies must be residualized against price/momentum/volume families before any incremental-value claim. No L3 promotion because replayable Taiwan PIT data contracts are not yet validated. Formal Core unchanged."
+      "status": "D20_01_02_03_04_07_12_L2 / IDENTIFICATION_FIREWALL_ACTIVE / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D20-03：執行台股可用 proxy 的資料可行性與獨立辨識稽核，優先檢查投資人層級/融資券/交易制度前後資料是否可 PIT/replay；同時啟動 D20-06 Herding 的理論、可觀測代理與 D20-12 結構性反證，避免把共同漲跌或低橫斷面離散直接叫做從眾。",
+      "lastResearchUpdate": "2026-10-03T13:35:00+08:00",
+      "researchNote": "Second deep block completed. D20-03 and D20-12 advanced L0→L2 after theory, direct-measure evidence, Taiwan counterevidence, and identification/falsification review. High turnover or return-following turnover is not uniquely identifying for overconfidence. Taiwan evidence is mixed: some studies support gain→trading and risk-taking patterns, while a large brokerage-account study finds a U-shaped turnover-performance relation and rejects a simple monotonic overconfidence story. Direct psychometric evidence shows some overconfidence facets predict trading but miscalibration does not. A 2026 Taiwan continuous-trading quasi-experiment shows market design can materially shift stock-level behavioral proxies, so microstructure reform is a required structural counterfactual. D20-03 remains OBSERVATION/RESEARCH_ONLY with CONTEXT/CONFIDENCE role unless independent proxy incrementality is proven. D20-12 now owns the identification firewall. No L3 promotion; PIT/replay data contract remains unvalidated. Formal Core unchanged."
     },
     {
       "id": "D21",

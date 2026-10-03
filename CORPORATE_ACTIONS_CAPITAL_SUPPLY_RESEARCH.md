@@ -4358,3 +4358,43 @@ Convertible bonds: Taiwan official rules separate issue terms, conversion terms,
 Treasury stock: Taiwan rules separately expose board authorization, plan filing, execution window, threshold disclosures and completion. Actual execution can be materially below planned quantity. Repurchased shares can later be transferred to employees, used for equity conversion or cancelled. A historical denominator cannot subtract planned buyback shares, and a factor cannot score realized repurchase intensity from authorization size alone.
 
 See `CAPITAL_STRUCTURE_EVENT_STATE_MACHINE_RESEARCH.md` and `research/d11_cb_treasury_event_state_contract_v0_1.json`. Formal Core unchanged.
+
+## Room 08 special-situations / policy-event long-block — 2026-10-03
+
+New curriculum modules D11-15 through D11-19 were continued from the latest main rather than restarting CA-001..CA-114.
+
+Research anchor:
+- `SPECIAL_SITUATIONS_POLICY_EVENT_RESEARCH.md`
+- `research/d11_d17_special_situations_event_clock_contract_v0_1.json`
+
+### D11-15 IPO / Listing / Bookbuilding
+Frozen as a multi-clock lifecycle: application, approval, underwriting method, price range, bookbuilding/auction, final price, allocation and first tradable session, with WITHDRAWN/FAILED/POSTPONED/UNKNOWN terminal alternatives. Offer allocation, first-day liquidity and failed offerings are mandatory selection-bias controls. D11-15 advances L0 -> L2 only.
+
+### D11-16 Lock-up Expiry / Insider Supply
+Frozen distinction: release eligibility is potential supply, not realized selling. Original locked quantity, release fraction/date and actual later disposal must remain separate. Known release dates may be priced in; holder behavior is not observable from expiry alone. D11-16 advances L0 -> L2 only.
+
+### D11-17 Secondary Offering / Private Placement
+Public issuance and private placement are separate event families. Authorization, pricing, payment, delivery, restricted holding and later public-issuance/listing clocks are separate. Registered-issued, exchange-listed, tradable and free-float denominator spaces remain non-interchangeable, consistent with CA-111..114 findings. Dilution sign is explicitly non-monotonic because financing, monitoring/certification and balance-sheet channels compete. D11-17 advances L0 -> L2 only.
+
+### D11-18 Tender Offer / Going Private / Delisting
+Tender-offer filing, offer window, minimum condition, regulatory condition, settlement and delisting are separate states. Deal failure, extension, payment failure and revised terms remain explicit branches. Offer spread is not risk-free convergence. D11-18 advances L0 -> L2 only.
+
+### D11-19 Spin-off / Merger Arbitrage / Deal-break Risk
+D11-06 continues to own the underlying transaction state; D11-19 owns tradable payoff geometry, hedge/borrow/cost state and deal-break risk. Cash and stock consideration must use terms known at time t. Spin-off parent/child/stub instruments are separate. D11-19 advances L0 -> L2 only.
+
+Cross-cutting falsification:
+- failed/withdrawn/extended/repriced events must remain in denominators;
+- current websites cannot fabricate historical Shadow;
+- later terms cannot backfill earlier decision clocks;
+- transaction costs, capital lock-up, borrow/hedge risk, gap/limit risk and instrument mapping are mandatory;
+- one event with multiple stages is clustered evidence, not multiple independent observations.
+
+Maturity: D11 40.0% -> 50.5% under the 19-module curriculum. This is knowledge maturity, not alpha evidence.
+
+Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE = NO.
+
+Exact next:
+1. build immutable Taiwan PIT lifecycle receipts for D11-15..19 across independent events;
+2. include failed/withdrawn/delayed/extended/repriced controls;
+3. preserve existing CA-113/114 archive and denominator gates;
+4. do not open outcome cohorts until inclusion, horizons and controls are preregistered.

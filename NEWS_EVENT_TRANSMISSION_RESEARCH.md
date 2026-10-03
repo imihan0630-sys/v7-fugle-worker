@@ -723,3 +723,43 @@ D17-13 advances L2 -> L3 for Taiwan PIT source/data feasibility only. Outcome jo
 
 Reusable anchor: `EVENT_TRANSACTION_AND_DISCLOSURE_CLOCK_RESEARCH.md`.
 Machine contract: `research/d11_d17_event_clock_contract_v0_1.json`.
+
+## Room 08 special-situations / policy-event long-block — 2026-10-03
+
+### D17-14 — Policy / Regulatory Event Clock / Surprise
+
+D17-14 advances L0 -> L2 after freezing the mechanism and falsification contract.
+
+Policy/regulatory information is modeled as a versioned state machine rather than one announcement:
+`RUMOR -> DRAFT_OR_CONSULTATION -> PREANNOUNCEMENT -> SCHEDULED_DECISION -> FINAL_DECISION_PUBLISHED -> IMPLEMENTATION_RULE -> EFFECTIVE -> REVISED/DELAYED/CANCELLED/COURT_STAY/UNKNOWN`.
+
+Taiwan FSC draft-notice history, final-law pages and press releases establish that draft/consultation, final issuance and effective date are distinct source clocks. This is source-structure evidence, not yet historical PIT replay proof.
+
+Expectation/surprise rule:
+- surprise requires an archived ex-ante expectation available before the event;
+- realized decision and expectation must use compatible units/definitions;
+- if the expectation source is absent, surprise = UNKNOWN;
+- market reaction may not be reverse-engineered into an assumed surprise.
+
+General monetary-policy literature is retained as falsification evidence: policy surprises can be correlated with pre-announcement public information, and a central-bank announcement can combine a policy shock with an information shock. Therefore policy direction, information revelation and market reaction remain separate objects.
+
+Boundary:
+- D17 owns event identity/version, first-known clock, expectation/surprise and propagation;
+- D13 owns macro/geopolitical state and controls;
+- D10 owns supply-chain exposure;
+- no duplicate factor votes across domains.
+
+Bias guards:
+- include delayed/revised/cancelled policy paths;
+- cluster statement/press conference/minutes/speeches only when event identity supports it;
+- freeze horizons before outcome joins;
+- control date/event clustering and regime;
+- no historical current-page backfill;
+- corrections append and never overwrite.
+
+D17 maturity recomputes 38.6% -> 41.4% across 14 modules. L3 remains closed pending Taiwan versioned PIT capture across independent policy events.
+
+Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE = NO.
+
+Exact next:
+Prospectively preserve independent Taiwan draft/final/effective policy vintages with capturedAt and immutable payload/version receipts; archive pre-event expectation sources where available, otherwise preserve surprise UNKNOWN; keep existing D17-01/02/09 multi-day coverage work active.

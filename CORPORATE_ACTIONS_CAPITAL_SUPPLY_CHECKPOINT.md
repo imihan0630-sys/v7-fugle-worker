@@ -336,3 +336,20 @@ CA-115: do not re-evaluate Class-A Shadow implementation readiness until the rem
 - Outcome join remains CLOSED. Before any returns are inspected, D17-06 expectation/realization definitions, event time zero, horizons, control cohorts and missingness policy must be preregistered.
 - Formal Core unchanged; maturity unchanged by this contract itself.
 - Exact next: append the first independent-date source receipts for CB and treasury states, then repeat on later independent dates before considering L4/OOS.
+
+## Room 08 special-situations / policy-event long-block — 2026-10-03
+
+- New D11-15..19 curriculum was audited against the existing CA/event-state work; these modules are additive special-situation scopes, not a restart of CA-001..114.
+- New durable anchor: `SPECIAL_SITUATIONS_POLICY_EVENT_RESEARCH.md`; machine contract: `research/d11_d17_special_situations_event_clock_contract_v0_1.json`.
+- D11-15 IPO/Listing/Bookbuilding: L0 -> L2. Multi-stage offer/listing clocks and failed/withdrawn controls frozen; Taiwan PIT versioned lifecycle capture pending.
+- D11-16 Lock-up Expiry/Insider Supply: L0 -> L2. Potential release supply != realized sale; issuer-specific quantity/release/sale clocks required.
+- D11-17 Secondary Offering/Private Placement: L0 -> L2. Public/private issuance separated; registered/listed/tradable/free-float spaces remain distinct; directional dilution shortcut rejected.
+- D11-18 Tender Offer/Going Private/Delisting: L0 -> L2. Minimum-condition, approval, settlement, extension/failure and delisting states frozen; spread != guaranteed return.
+- D11-19 Spin-off/Merger Arbitrage/Deal-break Risk: L0 -> L2. D11-06 remains transaction-state owner; D11-19 owns payoff/hedge/break-risk geometry and special-situation costs.
+- D11 recomputes from 40.0% to 50.5% across 19 modules.
+- No L3 promotion: official rule existence does not yet prove historical/prospective first-known/version completeness.
+- CA-113/114 archive/denominator blockers remain intact and are not bypassed by these new modules.
+- Formal Core unchanged; outcomes closed; FORMAL_OPTIMIZATION_CANDIDATE = NO.
+
+Exact next:
+Accumulate immutable Taiwan PIT/version receipts for D11-15..19 including unsuccessful paths; keep CA-113/114 exact-listed/archive semantics active; only after source/version replay passes may L3 be considered.
