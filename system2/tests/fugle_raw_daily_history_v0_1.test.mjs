@@ -113,8 +113,8 @@ await assert.rejects(
   }),
   /precedes official listing date/,
 );
-await assert.rejects(
-  buildFugleRawDailyHistoryUrlV0_1({
+assert.throws(
+  () => buildFugleRawDailyHistoryUrlV0_1({
     symbol: "6488",
     fromDate: "2025-01-01",
     toDate: "2026-10-02",
