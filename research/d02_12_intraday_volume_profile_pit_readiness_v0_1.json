@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_PIT_READINESS_PASS",
+  "module": "D02-12",
+  "oldLevel": "L2",
+  "oldMaturityPct": 40,
+  "newLevel": "L3",
+  "newMaturityPct": 60,
+  "formalCoreChanged": false,
+  "formalOptimizationCandidate": "NONE",
+  "evidenceCursor": "PVE-239",
+  "families": {
+    "TIME_OF_DAY_VOLUME_CURVE": {
+      "historicalSource": "Fugle historical equity minute candles; 15m available from 2023-05-23",
+      "liveSource": "Fugle intraday candles",
+      "volumeUnit": "LOTS for regular-stock intraday candles",
+      "legalClock": "completed bar only; historical denominator prior sessions only",
+      "boundedObservableWindow": "09:00 through 13:00 in current PV monitor",
+      "fullClosingCoverage": false
+    },
+    "PRICE_BY_VOLUME_PROFILE": {
+      "liveSource": "Fugle intraday volumes endpoint",
+      "fields": [
+        "price",
+        "volume",
+        "volumeAtBid",
+        "volumeAtAsk"
+      ],
+      "oddlotTypeSupported": true,
+      "historicalReplaySource": "NOT_ESTABLISHED",
+      "prospectivePersistenceFeasible": true,
+      "openingClassificationCaveat": "opening first trade excluded from bid/ask classification"
+    }
+  },
+  "structuralRedundancy": "09:00 cumulative pace equals same-slot RVOL; no duplicate vote",
+  "alphaStatus": "UNKNOWN",
+  "l4Status": "NOT_REACHED"
+}
