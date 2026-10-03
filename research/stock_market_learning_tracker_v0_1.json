@@ -3080,7 +3080,7 @@
         "ASSET_PRICING_FACTOR_CHECKPOINT.md",
         "ASSET_PRICING_FACTOR_RESEARCH.md"
       ],
-      "maturityPct": 16,
+      "maturityPct": 26.7,
       "modules": [
         {
           "id": "D19-01",
@@ -3145,42 +3145,42 @@
         {
           "id": "D19-07",
           "name": "Low Volatility／Low Beta低波動低Beta因子",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Low Volatility／Low Beta低波動低Beta因子」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D19-07 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / REGIME_DEPENDENCE_REQUIRED",
+          "next": "建立低波動/低Beta台股PIT重播切片；同時控制Size、Liquidity、Industry、Momentum、Market Beta與D04波動特徵，分資金流動性/市場Regime驗證，未有成本後OOS增量不得升L3。"
         },
         {
           "id": "D19-08",
           "name": "Idiosyncratic Volatility特質波動異象",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Idiosyncratic Volatility特質波動異象」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / RESIDUAL_ALPHA_UNPROVEN. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
-          "levelMeaning": "未研究",
-          "status": "OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / RESIDUAL_ALPHA_UNPROVEN",
-          "next": "由 12｜資產定價與因子研究室先控制 Size、Beta、總波動、流動性與相關因子曝險，完成台股 PIT／OOS／多 Regime 驗證；只有殘差增量可成獨立 PRIMARY_ALPHA 候選。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / L2_MECHANISM_AND_FALSIFICATION_DEFINED / RESIDUAL_ALPHA_UNPROVEN",
+          "next": "建立特質波動台股PIT重播切片；固定因子模型與估計窗，控制Size、Beta、總波動、Liquidity、Industry、Momentum/MAX-like與放空限制；只有殘差增量通過OOS/多Regime才考慮L3。"
         },
         {
           "id": "D19-09",
           "name": "Residual Momentum／Factor Neutralization殘差動能與因子中性化",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Residual Momentum／Factor Neutralization殘差動能與因子中性化」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D19-09 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / MODEL_RELATIVE_RESIDUAL",
+          "next": "建立raw momentum對residual momentum成對PIT/OOS比較；保存factor-set/version、估計窗、係數、產業分類vintage與residual hash；檢查遺漏因子、產業動能、換手成本與正交化順序敏感性後再考慮L3。"
         },
         {
           "id": "D19-10",
           "name": "Factor Exposure／Multicollinearity因子曝險與共線性",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Factor Exposure／Multicollinearity因子曝險與共線性」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D19-10 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / ANTI_DOUBLE_COUNT_GOVERNANCE",
+          "next": "建立因子曝險矩陣、pairwise/partial correlation、spanning、殘差R2與OOS增量檢驗；若不同中性化/正交化順序改變方向則標MODEL_SENSITIVE，不得升L3。"
         },
         {
           "id": "D19-11",
@@ -3233,10 +3233,10 @@
           "next": "由 12｜資產定價與因子研究室對 Size、Value、Volatility、Turnover、Spread 等中性化並納入成本／容量；只有 residual Taiwan PIT alpha 通過 OOS／多 Regime 才可升級。"
         }
       ],
-      "status": "RESEARCH_ACTIVE / D19-01_TO_D19-06_L2 / PIT_SOURCE_MAP_DESIGNED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D19-07與D19-08：低波動/低Beta、特質波動由理論→機制→反證；並開始D19-01至D19-06最小可執行台股PIT replay切片，未有receipt不得升L3。",
-      "lastResearchUpdate": "2026-10-02T22:05:00+08:00",
-      "researchNote": "Stage 3 completed: D19-05 and D19-06 reached L2. Official-source Taiwan PIT map was designed for market/returns, shares/market cap, first-known fundamentals, risk-free rates and tradability; no L3 promotion without executable replay receipts."
+      "status": "RESEARCH_ACTIVE / D19-01_TO_D19-10_L2 / FACTOR_LAYER_PIT_RECEIPTS_REQUIRED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D19-11與D19-12：因子擁擠/容量/換手、季節性/日曆異象由理論→機制→反證；並在System2既有cold loader上建立D19-01至D19-10第一個可執行factor-layer台股PIT receipt鏈（universe→return→factorInput→neutralization→cost→replay），未有receipt不得升L3。",
+      "lastResearchUpdate": "2026-10-03T19:39:00+08:00",
+      "researchNote": "Stage 4 completed: D19-07 low-vol/low-beta, D19-08 idiosyncratic volatility, D19-09 residual momentum/factor neutralization, and D19-10 factor exposure/multicollinearity reached L2. Low-risk/IVOL effects are regime/model sensitive; residual momentum remains model-relative; sequential orthogonalization can be order-dependent; D19-10 is an anti-double-count governance layer. Existing System2 cold history supports PIT price/universe replay, but factor-layer receipts are still missing. Formal Core unchanged."
     },
     {
       "id": "D20",
