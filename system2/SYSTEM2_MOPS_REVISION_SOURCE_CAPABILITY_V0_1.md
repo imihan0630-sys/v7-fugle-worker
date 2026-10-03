@@ -82,3 +82,42 @@ If the MOPS positive control is observed:
 3. verify historical source-reported date/time semantics and whether they are safe as version knownAt clocks;
 4. join with exchange official-document announcements for exchange-side cancellations/revocations;
 5. only then consider supplying a supplemental revision-history channel to the revision coverage receipt.
+
+
+## 2026-10-03 physical capability acceptance
+
+PR #415 physically verified the MOPS historical revision-source capability.
+
+- MOPS Revision Source Capability Readonly run `37135200146`: PASS_CAPABILITY_OBSERVED.
+- System2 Research CI run `37135200161`: PASS.
+- V8 Regression run `37135200126`: PASS.
+- MOPS gateway HTTP=200 / gateway code=200.
+- Official redirect URL passed the official-host allowlist.
+- Historical response HTTP=200 / text/html.
+
+Frozen control 2467 志聖 / 2026-05-22:
+
+- history rowCount=9;
+- expectedDateRowCount=3;
+- matchingSubjectRowCount=2;
+- originalRowCount=1;
+- correctionOrCancellationRowCount=1;
+- distinctVersionKeyCount=2.
+
+Observed version rows:
+
+1. 2026-05-22 16:34:06 / seqNo=2 / original subject:
+   `公告本公司除息基準日等相關事宜`
+2. 2026-05-22 17:42:13 / seqNo=4 / correction subject:
+   `公告本公司除息基準日等相關事宜(更正)`
+
+This proves that the official MOPS historical channel can preserve an original disclosure and a later correction as distinct records with separate date/time/sequence metadata.
+
+It does **not** yet prove:
+- boundedIntervalCoverageComplete;
+- actionFamilyCoverageComplete;
+- cancellationHistoryComplete;
+- knownAtVersionClockCertified;
+- revisionCoverageComplete.
+
+Next: expand from one positive control to bounded multi-company/multi-action-family coverage and add cancellation/revocation controls before the MOPS lane may satisfy the supplemental revision-history contract.
