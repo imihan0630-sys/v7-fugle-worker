@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 11:18 Asia/Taipei
+Updated: 2026-10-03 11:28 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -1458,4 +1458,17 @@ D12-14 vs D12-15。
 - H12：05｜法人與籌碼研究室 + 10｜投組風控與交易執行研究室 + 13｜行為金融與市場心理研究室。
 
 固定規則：上游 primitive（原始基礎證據）只有一個 canonical owner（權威持有人）；下游 consumer（使用者模組）不得重新擁有或重新計票同一 primitive。若保留多個模組，必須清楚寫出 residual scope（扣除上游後的剩餘責任）。
+
+## H13～H20 防重複計票驗收契約 — 2026-10-03
+
+所有涉及 H13～H20 的研究室，續接前必須讀：
+- `shared-knowledge/CURRICULUM_H13_H20_ANTI_DOUBLE_COUNT_ACCEPTANCE_CONTRACT_20261003_V0_1.md`
+- `shared-knowledge/CURRICULUM_H13_H20_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
+
+固定原則：
+1. shared primitive（共用基礎證據）只建立一份 receipt（憑證）。
+2. downstream transform（下游轉換）若要形成獨立 Alpha（超額報酬）／risk（風險）證據，必須證明 residual incremental value（殘餘增量價值）。
+3. producer（產生者）與 consumer（使用者）不得重複擁有同一資料來源。
+4. 上游成熟度不得自動提升下游模組。
+5. 專科室不得自行退休正式模組或改 Formal Core（正式核心）。
 
