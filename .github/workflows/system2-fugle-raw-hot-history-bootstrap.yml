@@ -2,16 +2,6 @@ name: System2 Fugle Raw Hot History Bootstrap
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "system2/runtime/fugle_raw_daily_history_v0_1.mjs"
-      - "system2/runtime/daily_shadow_fugle_hot_history_bootstrap_v0_1.mjs"
-      - "system2/scripts/run_daily_shadow_fugle_hot_history_bootstrap.mjs"
-      - "system2/tests/fugle_raw_daily_history_v0_1.test.mjs"
-      - "system2/tests/daily_shadow_fugle_hot_history_bootstrap_v0_1.test.mjs"
-      - "system2/tests/daily_shadow_fugle_hot_history_workflow_guard.test.mjs"
-      - ".github/workflows/system2-fugle-raw-hot-history-bootstrap.yml"
 
 permissions:
   contents: read
@@ -27,7 +17,7 @@ jobs:
     timeout-minutes: 20
     environment: system2-research
     env:
-      SYSTEM2_FUGLE_HOT_HISTORY_SYMBOL_LIMIT: "45"
+      SYSTEM2_FUGLE_HOT_HISTORY_SYMBOL_LIMIT: "35"
       SYSTEM2_FUGLE_HOT_HISTORY_PAUSE_MS: "1100"
     steps:
       - uses: actions/checkout@v5
@@ -60,7 +50,7 @@ jobs:
           import fs from "node:fs";
           const r=JSON.parse(fs.readFileSync("/tmp/system2-fugle-raw-hot-history.json","utf8"));
           if(r.result!=="PASS"||r.databaseName!=="system2-research"||r.d1SchemaVersion!=="1.1")throw new Error("wrong bootstrap/database");
-          if(r.plan.selectedSymbolCount>45)throw new Error("symbol cap exceeded");
+          if(r.plan.selectedSymbolCount>35)throw new Error("physical symbol cap exceeded");
           if(r.sourceRateLimitSafety.pauseMs<1000)throw new Error("rate-limit spacing weakened");
           if(r.rawPriceSpaceOnly!==true||r.availabilityBasis!=="PROSPECTIVE_OBSERVATION"||r.continuityState!=="UNVERIFIED"||r.continuityPromotionPerformed!==false)throw new Error("PIT/continuity boundary changed");
           if(r.strategyEvaluationPerformed!==false||r.capacityRunProduced!==false||r.zeroPickClaimed!==false||r.selectionAuthority!==false)throw new Error("selection authority leak");
