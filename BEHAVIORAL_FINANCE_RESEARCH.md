@@ -217,3 +217,78 @@ The same event can display:
 
 Therefore D20-08 and D20-09 must be modeled as horizon-specific hypotheses with explicit event clocks, not opposite one-word labels assigned to a whole chart.
 
+## 2026-10-03｜D20-05 Representativeness / Recency
+
+### Mechanism
+- Representativeness is a belief-formation heuristic in which a recent pattern is treated as representative of an underlying state or type, with insufficient weighting of base rates.
+- Recency/extrapolation places excessive weight on recent observations when forming expectations.
+- Neither mechanism is identified by recent return strength alone.
+
+### Integrated behavioral models
+- Barberis, Shleifer and Vishny (1998) show that conservatism and representativeness can jointly generate underreaction to isolated news and overreaction after repeated similar news.
+- Daniel, Hirshleifer and Subrahmanyam (1998) show that continuing overreaction can generate short-run momentum and later long-run reversal; therefore positive autocorrelation is not uniquely an underreaction signature.
+- Modern extrapolation evidence shows that investor expectations often rise after past returns, while direct expectation measures can disagree sharply across investor groups.
+
+### Taiwan evidence
+- Hao, Chu, Ho and Ko (2016) compare 52-week-high anchoring and recency in Taiwan. Results are mixed: recency profitability depends materially on era and market state, while anchoring and recency can coexist.
+- This evidence rejects a universal recency factor. A price-history construction can be useful as a hypothesis proxy but remains highly overlapping with momentum, anchoring, price position and regime.
+- Taiwan event evidence from D20-08/D20-09 also shows that short-horizon reversal and medium-horizon continuation can coexist, making a single recent-return label inadequate.
+
+### Direct/near-direct evidence hierarchy
+Stronger:
+- investor expectation surveys linked to actual behavior;
+- administrative trade data linked to independently measured extrapolative forecast bias;
+- repeated belief updates around controlled or well-identified information sequences.
+
+Weaker:
+- chronological ordering of past returns;
+- nearness/date of the 52-week high;
+- recent winner/loser status;
+- raw momentum/reversal.
+
+### Structural and overlap controls
+Any D20-05 proxy must be compared with:
+- D20-04 anchoring;
+- D20-08 underreaction;
+- D20-09 overreaction;
+- D03 direct momentum/reversal;
+- volatility and regime;
+- valuation/fundamental changes;
+- attention and news/event salience.
+
+### Decision
+- D20-05 -> L2.
+- Remains OBSERVATION / RESEARCH_ONLY.
+- Price-only proxies are not sufficient for L3.
+- If no independent expectation/behavior observable or residual incrementality survives, prepare a merge proposal into the D20 behavior-response family rather than preserve a duplicate factor.
+- Formal Core unchanged.
+
+## H07 Room-13 evidence contribution — D03-05 vs D20-09
+
+### Semantic ownership
+- D03-05 owns observable pullback / short-term reversal geometry.
+- D20-09 owns behavioral overreaction only when a causal/behavioral mechanism is independently identifiable.
+
+### Shared observables
+Past return, reversal magnitude, OHLCV, volatility and price-limit state are shared controls/phenomena, not independent votes.
+
+### D20-09 unique evidence candidates
+- event expectation gap combined with overshoot/correction;
+- investor-type order-flow or behavioral response that temporally precedes reversal;
+- independently measured sentiment/attention state that predicts overshoot after controlling event fundamentals;
+- continuing-overreaction constructions that survive liquidity, price-limit and direct-momentum controls.
+
+### Alternative explanations
+Bid-ask bounce, inventory effects, liquidity provision, forced flow, event correction, volatility normalization, stale opening prices and price-limit mechanics.
+
+### Divergent-state examples
+1. Reversal without behavioral overreaction: temporary liquidity pressure is mechanically corrected.
+2. Behavioral overreaction possible before completed reversal: identifiable event/expectation evidence plus excessive demand relative to fundamentals.
+3. Continuing price movement with eventual correction: overreaction can coexist with short-run momentum.
+4. Event-day overshoot followed by medium-term drift: short-horizon overreaction and longer-horizon underreaction can coexist.
+
+### Terminal specialist view
+KEEP_SEPARATE_CONDITIONAL_ON_BEHAVIOR_IDENTIFIABILITY / PHENOMENON_CAUSE_FIREWALL.
+If D20-09 is operationalized only as extreme prior return plus later reversal, it should be narrowed/merged rather than receive an independent behavioral vote.
+Formal Core unchanged.
+
