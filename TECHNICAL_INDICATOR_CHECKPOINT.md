@@ -2501,3 +2501,45 @@ Exact continuation:
 2. Bollinger L3 feasibility can be tested first on a clean 20-session window;
 3. ADX additionally needs canonical replay/trusted-state certification;
 4. TI-005/TI-006 empirical priority remains unchanged.
+
+
+## TI-534 through TI-542 — D03-05 observable pullback/reversal PIT (2026-10-04)
+
+Durable artifacts:
+- `research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md`
+- `research/d03_pullback_reversal_observable_contract_v0_2.json`
+- `research/test_d03_pullback_reversal_observable_pit_v0_2.mjs`
+
+Key correction:
+- owner-approved H07 says D03-05 owns the observable pullback/reversal phenomenon;
+- causal origin is a separate moderator and may remain UNKNOWN;
+- therefore origin incompleteness no longer blocks PIT feasibility of the price episode itself.
+
+Frozen research semantics:
+- daily A/PULLBACK parent geometry reused without Formal change;
+- exact expected 15m slot prefix required;
+- zone-entry seed is not confirmation;
+- confirmation requires later completed higher-low + bullish turn-up;
+- signal clock is confirmation-bar known-at, never the pullback low;
+- failed zone break / down-volume failure are first-class states;
+- corporate-action/session/price-limit uncertainty remains BLOCKED/CONSTRAINED/UNKNOWN explicitly.
+
+Existing PV Shadow implementation and deterministic A-lifecycle fixture provide the data/replay substrate; D03 v0.2 tightens clock continuity.
+
+Maturity:
+- D03-05 L2/40 -> **L3/60**;
+- active 12-module D03 55.0% -> **56.7%**.
+
+No predictive/Fomal promotion.
+
+Current:
+`D03_05 = L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED`
+`ORIGIN_ATTRIBUTION = OPTIONAL_MODERATOR / PARTIAL`
+`RAW_RECEIPT_GATE = 2_OF_3`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Exact continuation:
+1. Keep D03-09/D03-10 L2 while TECHNICAL_CONTINUITY revision history remains uncertified.
+2. Keep raw source gate 2/3 over the weekend.
+3. Pre-register TI-005 KD-vs-RSI then TI-006 MACD-vs-direct-trend inference before any outcome join.
+4. Do not alter Formal Core.
