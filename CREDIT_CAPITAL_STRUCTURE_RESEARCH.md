@@ -1,8 +1,8 @@
 # Credit / Capital Structure Research
 
-Updated: 2026-10-03 19:03 Asia/Taipei
+Updated: 2026-10-04 00:24 Asia/Taipei
 Scope: D22
-Status: ACTIVE_RESEARCH / D22-01 L3_WAITING_PANEL / D22-02 L2_ACTIVE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
+Status: ACTIVE_RESEARCH / D22-01 L3_WAITING_PANEL / D22-02 L2_ACTIVE / D22-03 L2_MECHANISM_DEFINED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
 ## D22-01｜Debt Maturity Wall / Refinancing Schedule
 
@@ -99,3 +99,45 @@ The examples establish that numerator/denominator taxonomy can materially alter 
 3. Compare accounting ICR, cash-interest coverage and D22-01 principal-inclusive debt-service coverage while equity outcomes remain closed.
 4. Promote D22-02 to L3 only after Taiwan cross-industry PIT replayability is demonstrated.
 5. In parallel, expand D22-01 to multiple issuer/date states; do not open outcomes until a defensible independent-date panel exists.
+
+
+## 2026-10-04 continuation｜D22-03 Net Debt / Leverage Structure
+
+### Current maturity
+L2 / 40% — mechanism and falsification defined; Taiwan PIT replay not yet validated.
+
+### Mechanism boundary
+D22-03 is not a duplicate of D07 accounting leverage. Its research object is financing structure after liquidity-quality classification: gross interest-bearing debt, cash-like offsets, restricted/pledged cash, lease liabilities, supplier-finance-like obligations when separately evidenced, and the maturity/rate/currency composition that determines whether a nominal net-debt number actually reduces refinancing stress.
+
+A single net-debt scalar is therefore insufficient. The primary research representation is a vector with explicit provenance: gross debt; unrestricted cash/cash equivalents; restricted or pledged liquidity; lease liabilities; separately identified financing-like obligations; and scope/basis/knownAt metadata. Net debt is a derived view, never a source fact.
+
+### Support and counterevidence
+- Support: structural credit evidence identifies leverage, recovery assumptions and the risk-free rate as material default-risk inputs; firm-exit evidence also finds short-term debt and weak earnings-to-interest capacity jointly important. This supports studying leverage structure together with D22-01/D22-02 rather than as a standalone ratio.
+- Counterevidence: high cash does not automatically neutralize solvency or refinancing risk; liquidity can be trapped, pledged, operationally necessary, foreign-subsidiary constrained, or simply small relative to a near-term maturity wall. Conversely, gross leverage can overstate pressure when unrestricted liquidity and committed refinancing capacity are genuinely available.
+- Alternative explanation: apparent predictive power can be inherited from D07 leverage/profitability, D22-01 maturity concentration, D22-02 interest coverage, D13 rates, industry capital intensity, or distress-induced cash hoarding. Incremental tests must control these before D22-03 can claim unique value.
+- Failure condition: if the structured representation adds no incremental information after D07 + D22-01 + D22-02 + D13, classify REJECTED_OR_REDUNDANT rather than adding another vote.
+
+### PIT / data contract frozen at mechanism stage
+1. Every issuer/date observation must preserve statement scope, accounting basis, fiscal period, publication/filing knownAt, and source version.
+2. Cash offset must distinguish unrestricted cash/cash equivalents from restricted/pledged balances when evidence permits; missing restriction evidence is UNKNOWN, never assumed unrestricted.
+3. Lease liabilities and other financing-like obligations must remain separate components until a preregistered construct defines inclusion. No silent denominator or debt-definition switching.
+4. Negative net debt is not automatically LOW_RISK; it may coexist with weak operations, covenant risk, maturity concentration or inaccessible cash.
+5. Restatements/reclassifications append a new version. Historical replay uses the first-known eligible version, not the latest revised statement.
+6. Corporate actions and major financing transactions require event-time lineage; period-end statements cannot be backfilled with later issuance/repayment knowledge.
+7. Financial firms are excluded from the initial comparability lane because deposits/regulatory capital make industrial net-debt semantics non-comparable.
+
+### Validation gates before L3+
+- L3: multiple Taiwan non-financial issuers across industries and dates with source-attested knownAt and component replay.
+- L4: preregistered OOS or prospective Shadow evidence, with walk-forward splits and no historical Shadow fabrication.
+- L5: multi-regime robustness, costs, missingness/coverage, industry/date clustering, multiple-testing/data-mining controls, factor redundancy and stability of component definitions.
+
+### Outcome gate
+OUTCOMES_CLOSED. No equity return join, threshold search, sign optimization or ranking experiment was opened in this continuation.
+
+### System-use status
+Candidate state remains FALSIFICATION_IN_PROGRESS. Formal Core remains LOCKED. No FORMAL_OPTIMIZATION_CANDIDATE is created at L2.
+
+### Exact next continuation
+1. Build D22-03 Taiwan PIT component contract and bounded replay receipts for at least three non-financial issuers spanning at least two industries and more than one reporting date.
+2. Explicitly test unrestricted-cash vs total-cash offset, lease-liability inclusion, and gross-debt vs net-debt views without outcomes.
+3. Continue D22-02 cross-industry interest-coverage replay and D22-01 multi-date maturity panel in parallel; do not open stock outcomes.
