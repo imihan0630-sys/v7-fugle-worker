@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "HISTORICAL_VALUATION_PERCENTILE_REPLAY_VALIDATION_RECEIPT_20261003",
+  "status": "MECHANICAL_QA_PASS / SOURCE_ONLY / OUTCOMES_CLOSED",
+  "observedAtAsiaTaipei": "2026-10-03T11:16:00+08:00",
+  "fixture": "research/historical_valuation_percentile_replay_fixture_v0_1.json",
+  "arithmeticAssertions": [
+    {
+      "id": "TIE_MIDRANK",
+      "expected": 0.5,
+      "observed": 0.5,
+      "pass": true
+    },
+    {
+      "id": "ALL_EQUAL",
+      "expected": 0.5,
+      "observed": 0.5,
+      "pass": true
+    },
+    {
+      "id": "MIN_VALUE",
+      "expected": 0,
+      "observed": 0,
+      "pass": true
+    },
+    {
+      "id": "MAX_VALUE",
+      "expected": 1,
+      "observed": 1,
+      "pass": true
+    }
+  ],
+  "semanticAssertions": [
+    {
+      "id": "NONPOSITIVE_EPS",
+      "pass": true,
+      "rule": "percentile remains UNKNOWN; no zero/infinity insertion"
+    },
+    {
+      "id": "NEW_LISTING_INSUFFICIENT_HISTORY",
+      "pass": true,
+      "rule": "120 valid observations cannot satisfy 252-valid-session policy"
+    },
+    {
+      "id": "FUTURE_ROW_EXCLUDED",
+      "pass": true,
+      "rule": "future trade date excluded from asOf rank history"
+    },
+    {
+      "id": "LATE_CORRECTION_NO_BACKFILL",
+      "pass": true,
+      "rule": "later correction cannot overwrite earlier replay state"
+    },
+    {
+      "id": "CAPITAL_ACTION_CONTEXT_NO_AUTO_RESET",
+      "pass": true,
+      "rule": "structural break is tagged, not silently reset"
+    }
+  ],
+  "interpretation": "This validates mechanics and fail-closed semantics only. It does not validate historical predictive alpha, complete archive coverage, or production wiring.",
+  "maturityImpact": "NONE; D08-03 remains L3 until prospective Shadow/OOS evidence exists.",
+  "formalCoreChanged": false
+}
