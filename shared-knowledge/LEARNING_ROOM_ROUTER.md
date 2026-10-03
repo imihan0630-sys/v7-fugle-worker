@@ -305,7 +305,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | 10｜投組風控與交易執行研究室 | D14＋D15 | 39 | 34.9% | 交易執行／投組最佳化／績效歸因／避險／VaR |
 | 11｜統計驗證與策略市場狀態研究室 | D16＋D18 | 40 | 41.5% | 資料來源治理／機率式決策／PIT／OOS／壓力測試／Regime |
 | 12｜資產定價與因子研究室 | D19 | 15 | 16% | 資產定價／流動性因子／相對價值 |
-| 13｜行為金融與市場心理研究室 | D20 | 13 | 33.8% | 行為金融／套利限制／市場心理 |
+| 13｜行為金融與市場心理研究室 | D20 | 13 | 40% | 行為金融／套利限制／市場心理 |
 | 14｜公司治理與內部人研究室 | D21 | 11 | 3.6% | 治理／管理層誘因／資本配置／內部人／財務重大ESG |
 | 15｜信用市場與資本結構研究室 | D22 | 12 | 0% | 信用市場／資本結構／融資壓力 |
 
@@ -372,15 +372,15 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 
 ### D03｜趨勢／動能／反轉／技術指標 — 55.0%
 
-> D03 latest TI-491~525 (2026-10-03): D03-13 Multi-timeframe L0 未研究 0%; raw source gate 2/3; Formal Core locked.
+> D03 latest TI-491~525 (2026-10-03): D03-13 Multi-timeframe L2 機制＋反證已定義 40%; raw source gate 2/3; Formal Core locked.
 
-> D03 divergence latest 2026-10-03: TI-482~490 freeze firstObservableAt/confirmedAt rather than pivotAt as the legal divergence signal clock, consecutive same-scale confirmed pivot pairing, confirmation-lag cost and immutable episode identity. Pattern confirmed-swing provenance plus D03 indicator lineage validate Taiwan PIT feasibility, promoting D03-12 L0 未研究 0%; raw source gate remains 2/3 and outcomes/Formal remain closed.
+> D03 divergence latest 2026-10-03: TI-482~490 freeze firstObservableAt/confirmedAt rather than pivotAt as the legal divergence signal clock, consecutive same-scale confirmed pivot pairing, confirmation-lag cost and immutable episode identity. Pattern confirmed-swing provenance plus D03 indicator lineage validate Taiwan PIT feasibility, promoting D03-12 L2 機制＋反證已定義 40%; raw source gate remains 2/3 and outcomes/Formal remain closed.
 
-> D03 latest 2026-10-03: TI-474~481 recover the exact persistenceScoreResearch formula, freeze zero-return/tick/liquidity confounding, validate Taiwan PIT data feasibility, and promote D03-03 from L0 未研究 0%. Raw-byte prospective source gate remains 2/3; outcomes and Formal Core remain closed.
+> D03 latest 2026-10-03: TI-474~481 recover the exact persistenceScoreResearch formula, freeze zero-return/tick/liquidity confounding, validate Taiwan PIT data feasibility, and promote D03-03 from L2 機制＋反證已定義 40%. Raw-byte prospective source gate remains 2/3; outcomes and Formal Core remain closed.
 
-> D03 latest 2026-10-02: TI-460~473 confirm same-horizon standard ROC is exactly 100×retN, promote D03-11 to L0 未研究 0%; Formal Core remains locked.
+> D03 latest 2026-10-02: TI-460~473 confirm same-horizon standard ROC is exactly 100×retN, promote D03-11 to L2 機制＋反證已定義 40%; Formal Core remains locked.
 
-> D03 latest 2026-10-01: TI-453~459 establish exact SMA deduction/slope directional redundancy, reject SMA-style EMA deduction semantics, and complete executable ADX mechanism/falsification plus warm-up/redundancy design. D03-09 advances to L0 未研究 0%. Prospective source/version gate remains 2/3; outcome join and Formal Core remain closed.
+> D03 latest 2026-10-01: TI-453~459 establish exact SMA deduction/slope directional redundancy, reject SMA-style EMA deduction semantics, and complete executable ADX mechanism/falsification plus warm-up/redundancy design. D03-09 advances to L2 機制＋反證已定義 40%. Prospective source/version gate remains 2/3; outcome join and Formal Core remain closed.
 
 | 模組 | 研究模組 | 學習範圍 | 等級 | 完成度 |
 |---|---|---|---|---:|
@@ -564,7 +564,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 
 ## 07｜產業與供應鏈研究室
 
-> 2026-10-03 H01 專科驗證：BR-051 建立台灣晶圓代工產業結構 PIT receipt，BR-052 證明 D09-14 具獨立公司策略動作生命週期。專科結論為 KEEP_SEPARATE（維持分開）但必須 scope dedup（範圍去重）；D09-13／D09-14 均達 L0 未研究 0%
+> 2026-10-03 H01 專科驗證：BR-051 建立台灣晶圓代工產業結構 PIT receipt，BR-052 證明 D09-14 具獨立公司策略動作生命週期。專科結論為 KEEP_SEPARATE（維持分開）但必須 scope dedup（範圍去重）；D09-13／D09-14 均達 L2 機制＋反證已定義 40%
 
 | 模組 | 研究模組 | 學習範圍 | 等級 | 完成度 |
 |---|---|---|---|---:|
@@ -1004,7 +1004,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 - 研究室／領域：<01～15 研究室名稱；Dxx 或 Dxx＋Dxx>
 - 本輪完成：<本輪實際完成的大段落、模組或研究階段；若無實質升級，明確寫「本輪無成熟度升級」並說明完成了什麼>
 - 當前模組：<Dxx-xx 模組編號＋名稱；若同輪推進多模組，列目前最新續接模組>
-- Level：<例如 L0 未研究 0%`
+- Level：<例如 L2 機制＋反證已定義 40%`
 
 規則：
 - 每格約代表 5 個百分點。
@@ -1178,7 +1178,7 @@ Status: CANCELLED
 
 ### 10室 continuation update — D14 mixed-lot execution clocks (2026-09-30)
 
-D14-07／08／14 remain L0 未研究 0%，不得繼承 D16-25 成熟度。
+D14-07／08／14 remain L2 機制＋反證已定義 40%，不得繼承 D16-25 成熟度。
 - 10 室現在可以直接研究 Kelly／Fractional Kelly（凱利／分數凱利）的 log-growth（對數成長）、估計誤差、多部位相關性、drawdown/ruin（回撤／破產）限制、流動性／成本／容量，以及與 D15-16 Portfolio Optimization（投組最佳化）的比較。
 - 最後需回傳 A／B／C／D 四種結構之一或 EVIDENCE_INSUFFICIENT（證據不足）。
 - 不得自行退休 D15-19、不得改 Formal Core（正式核心）。
