@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "D03_PRIMARY_QUEUE_D16_METHOD_HANDOFF_V0_1",
+  "updatedAt": "2026-10-04T07:35:00+08:00",
+  "producer": "D03",
+  "inferenceOwner": "D16",
+  "status": "OUTCOME_CLOSED_METHOD_HANDOFF_FROZEN",
+  "experiments": [
+    "TI_005_KD_VS_RSI",
+    "TI_006_MACD_VS_DIRECT_TREND"
+  ],
+  "immutableD03Inputs": {
+    "featureModels": [
+      "K0",
+      "K1",
+      "K2",
+      "K3",
+      "K4_DIAGNOSTIC",
+      "M0",
+      "M1",
+      "M2",
+      "M3"
+    ],
+    "primaryOutcomes": [
+      "D5_RETURN_PCT",
+      "D5_MFE",
+      "D5_MAE"
+    ],
+    "secondaryOutcomes": [
+      "D10_RETURN_PCT",
+      "D10_MFE",
+      "D10_MAE",
+      "D20_RETURN_PCT",
+      "D20_MFE",
+      "D20_MAE"
+    ],
+    "experimentOrder": [
+      "TI_005_KD_VS_RSI",
+      "TI_006_MACD_VS_DIRECT_TREND"
+    ],
+    "postOutcomeFormulaOrPeriodChange": false,
+    "postOutcomeEndpointChange": false
+  },
+  "dependenceSources": [
+    "SCAN_DATE_COMMON_SHOCK",
+    "REPEATED_SYMBOL",
+    "EPISODE_LONGITUDINAL_REPEAT",
+    "OVERLAPPING_FORWARD_WINDOWS",
+    "OVERLAPPING_FEATURE_WINDOWS",
+    "SECTOR_INDUSTRY_COMMON_SHOCK"
+  ],
+  "prohibitedInference": [
+    "IID_ROW_LEVEL_PRIMARY_INFERENCE",
+    "ROW_COUNT_AS_INDEPENDENT_N",
+    "SELECTED_ONLY_GENERALIZATION",
+    "HOLDOUT_METHOD_SELECTION"
+  ],
+  "requiredMethodReceiptFields": [
+    "methodReceiptVersion",
+    "d03ExperimentVersion",
+    "preregistrationHash",
+    "featureContractHashes",
+    "parentContractVersion",
+    "continuityContractVersion",
+    "outcomeContractVersion",
+    "expectedParentPopulationDefinition",
+    "commonSupportInclusionRule",
+    "blockedUnknownConstrainedHandling",
+    "chronologicalSplitRule",
+    "trainingScanDates",
+    "purgedTrainingScanDates",
+    "holdoutScanDates",
+    "purgeGapRule",
+    "primaryDependenceMethod",
+    "scanDateTreatment",
+    "symbolTreatment",
+    "overlappingOutcomeTreatment",
+    "smallClusterTreatment",
+    "finiteSampleMethod",
+    "estimands",
+    "leaveOneDateOut",
+    "nonOverlappingDateSensitivity",
+    "dateVsRowBalanceDiagnostic",
+    "concentrationDiagnostics",
+    "repeatedSymbolSensitivity",
+    "coverageSensitivity",
+    "multipleTestingFamilyId",
+    "multipleTestingHandling",
+    "terminalMethodState"
+  ],
+  "allowedMethodStates": [
+    "METHOD_READY",
+    "METHOD_BLOCKED",
+    "POWER_INSUFFICIENT",
+    "DEPENDENCE_TOO_STRONG_FOR_CURRENT_SAMPLE",
+    "COMMON_SUPPORT_INSUFFICIENT",
+    "COVERAGE_BIASED",
+    "VERSION_INCOMPATIBLE"
+  ],
+  "allowedResearchConclusions": [
+    "NO_INCREMENTAL_VALUE",
+    "MECHANISM_PRESENT_BUT_PREDICTIVE_VALUE_INCONCLUSIVE",
+    "SPEED_NOISE_TRADEOFF",
+    "CONTEXT_PROXY_RISK",
+    "COVERAGE_BIASED",
+    "FRAGILE_DATE_DEPENDENCE",
+    "REGIME_OR_INDUSTRY_CONCENTRATED",
+    "VERSION_INCOMPATIBLE",
+    "PREDICTIVE_INCREMENTALITY_CANDIDATE"
+  ],
+  "current": {
+    "d16MethodReceipt": "NOT_YET_RETURNED",
+    "outcomes": "CLOSED",
+    "rawSourceVersionGate": "2_OF_3",
+    "technicalObserverR1": "BLOCKED",
+    "formalOptimizationCandidate": "NONE"
+  }
+}
