@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "ALPHA_ORIENTED_KNOWLEDGE_DISCOVERY_AUDIT_V0_1",
+  "date": "2026-10-04",
+  "status": "DISCOVERY_AUDIT_ACTIVE_NO_CURRICULUM_CHANGE",
+  "admissionCriteria": [
+    "cross_sectional_selection_relevance",
+    "incrementality_vs_existing_354",
+    "taiwan_pit_replay_feasibility",
+    "falsifiability",
+    "clean_owner_and_anti_double_count"
+  ],
+  "candidates": [
+    {
+      "id": "AOKD-01",
+      "name": "Intangible Capital / R&D Capitalization / Innovation Quality",
+      "priority": "HIGH",
+      "state": "PROVISIONAL_COVERAGE_CANDIDATE_READY_FOR_SPECIALIST_VALIDATION",
+      "proposedOwner": "D07",
+      "dependencies": [
+        "D08",
+        "D19",
+        "D16"
+      ],
+      "taiwanFeasibility": "PROMISING",
+      "nextAction": "SPECIALIST_VALIDATION_PACKET",
+      "covId": null
+    },
+    {
+      "id": "AOKD-02",
+      "name": "Firm-level Demand Nowcasting via Alternative Sales / Product Data",
+      "priority": "MEDIUM_HIGH",
+      "state": "RESEARCH_CANDIDATE_DATA_FEASIBILITY_REQUIRED",
+      "proposedOwner": "D07",
+      "dependencies": [
+        "D16-21",
+        "D17",
+        "D09",
+        "D10"
+      ],
+      "taiwanFeasibility": "UNVERIFIED",
+      "nextAction": "SOURCE_FEASIBILITY_AUDIT",
+      "covId": null
+    },
+    {
+      "id": "AOKD-03",
+      "name": "Human Capital / Hiring / Skill-demand Signals",
+      "priority": "MEDIUM",
+      "state": "RESEARCH_CANDIDATE_DATA_FEASIBILITY_REQUIRED",
+      "proposedOwner": "D07_OR_D21",
+      "dependencies": [
+        "D16-21"
+      ],
+      "taiwanFeasibility": "PARTIAL_OFFICIAL_SOURCE_BUT_COVERAGE_BIAS",
+      "nextAction": "COVERAGE_AND_ENTITY_MAPPING_AUDIT",
+      "covId": null
+    },
+    {
+      "id": "AOKD-04",
+      "name": "Employee Culture / Psychological Safety / Employee-review Signals",
+      "priority": "WATCHLIST",
+      "state": "WATCHLIST_NONCORE",
+      "proposedOwner": "D21",
+      "dependencies": [
+        "D16-22"
+      ],
+      "taiwanFeasibility": "UNVERIFIED",
+      "nextAction": "NO_PROMOTION",
+      "covId": null
+    }
+  ],
+  "rejectedAsNewGap": [
+    "analyst_expectations_forecast_revisions",
+    "option_implied_information_volatility_surface",
+    "generic_nlp_llm_financial_text",
+    "generic_alternative_data_methodology",
+    "borrow_fee_securities_lending_shorting"
+  ],
+  "canonicalImpact": "NONE",
+  "formalCoreImpact": "NONE"
+}
