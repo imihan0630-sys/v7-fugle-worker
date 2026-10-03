@@ -171,7 +171,8 @@ export function auditC3LiveInputs(c2Ledger,{
       if(!live?.limitVerified) missing.push("LIVE_LIMIT_STATE");
       if(missing.length) blockers.push("BAR_MICROSTRUCTURE_UNVERIFIED");
       adapted.push({
-        endAt:bar.end,open:bar.open,high:bar.high,low:bar.low,close:bar.close,
+        startAt:bar.start,endAt:bar.end,slot:bar.slot,
+        open:bar.open,high:bar.high,low:bar.low,close:bar.close,
         volumeRatio:bar.volumeRatio,
         depthScore:selectionDepth??null,
         selectionDepthScore:selectionDepth??null,
