@@ -13685,3 +13685,27 @@ The D02 module consequence is conservative:
 This does not justify implementing a second D02 microstructure recorder. Ownership remains with the existing Microstructure lane.
 
 No maturity, Formal logic, threshold, ranking, capital, monitoring or push behavior changed.
+
+
+# 2026-10-03 Stage VIII — failed-generation causal scope and breakout evidence ownership
+
+The 2026-10-02 session provides a useful negative operational experiment.
+
+By 00:24, institutional and official-quality evidence for 10/02 was ready, yet no 10/02 Formal/C1 generation existed. This proves that “all source families eventually ready” is not sufficient for Prospective Shadow admission.
+
+The late fallback sequence provides a more specific failure mechanism. The first late sync failed on repeated QUARTER_EPS 503 reads. The later sync reached full source readiness, but the recovery step crossed midnight and recomputed its target date, causing a safe window exit instead of recovering 10/02. This identifies the direct cause of the missed fully-ready recovery while preserving uncertainty about the original Worker scan failure.
+
+The approved cross-midnight repair improves future acquisition reliability but does not alter historical truth. No retrospective generation was minted.
+
+This same evidence-governance logic applies to H20 breakout research.
+
+A breakout episode must have one event identity. Price structure defines the event anchor. Volume and volatility then describe different properties of that one event. If a single breakout is allowed to generate three independent votes merely because price, volume and volatility are all observable, the system would triple-count one market occurrence.
+
+D02-03 therefore survives as an independent knowledge module only through residual information:
+does same-slot/cumulative participation improve failure/follow-through discrimination after the price-only breakout is already defined?
+
+The universal slogan “breakouts need volume” is not the research target. Successful normal-volume cases falsify strict necessity; high-volume failures falsify sufficiency. The valid target is incremental quality on matched common support.
+
+D02-03 remains L3 because the PIT feature semantics and comparison design are viable, but clean prospective evidence is still absent.
+
+No Formal behavior changed.
