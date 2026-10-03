@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T05:02:00+08:00",
+  "updatedAt": "2026-10-03T09:21:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -202,18 +202,20 @@
           "name": "OBV能量潮",
           "level": "L2",
           "maturityPct": 40,
-          "learningScope": "聚焦「OBV能量潮」。保留 OBV（能量潮）作為 Price-Volume（價量）比較器，允許研究 obvSlope、divergence 與 lead-lag，但不得把 OBV 與 RVOL、直接成交量、價量狀態重複計票。必須先控制直接價格報酬、成交量／換手、價量反應與資料單位語意；若無獨立增量資訊，降為 UI／解釋用途或合併回價量母模組。不得單獨形成 Hard Gate（硬門檻）或 PRIMARY_ALPHA（主要Alpha）。",
+          "learningScope": "聚焦「OBV能量潮」。保留 OBV（能量潮）作為 Price-Volume（價量）比較器，允許研究 obvSlope、divergence 與 lead-lag，但不得把 OBV 與 RVOL、直接成交量、價量狀態重複計票。必須先控制直接價格報酬、成交量／換手、價量反應與資料單位語意；若無獨立增量資訊，降為 UI／解釋用途或合併回價量母模組。不得單獨形成 Hard Gate（硬門檻）或 PRIMARY_ALPHA（主要Alpha）。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / MERGE_CANDIDATE / PRICE_VOLUME_COMPARATOR_ONLY. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "OBSERVATION / MERGE_CANDIDATE / PRICE_VOLUME_COMPARATOR_ONLY",
-          "next": "保持 RESEARCH_ONLY；以直接價量基準做 residual／incremental-value 驗證後，再決定合併或僅保留解釋用途。"
+          "status": "OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / MERGE_CANDIDATE / PRICE_VOLUME_COMPARATOR_ONLY",
+          "next": "由 02｜價量研究室以直接價格、成交量、換手與 RVOL 為共同基準做 residual／incremental-value 驗證；若無獨立增量，再提案合併回價量母模組或僅保留 UI／解釋用途。不得形成 Hard Gate 或獨立 PRIMARY_ALPHA。"
         },
         {
           "id": "D02-08",
           "name": "吸籌／出貨代理變數",
           "level": "L2",
           "maturityPct": 40,
-          "learningScope": "聚焦「吸籌／出貨代理變數」。學習範圍：成交量單位與基準化；量價因果與競爭解釋；趨勢／盤整／突破情境；流動性與同時段效應；異常量與反向案例；對進場、突破品質與風險監控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "learningScope": "聚焦「吸籌／出貨代理變數」。學習範圍：成交量單位與基準化；量價因果與競爭解釋；趨勢／盤整／突破情境；流動性與同時段效應；異常量與反向案例；對進場、突破品質與風險監控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / STRONG_MERGE_CANDIDATE_IF_UNIDENTIFIABLE. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
+          "levelMeaning": "機制＋反證已定義",
+          "status": "OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / STRONG_MERGE_CANDIDATE_IF_UNIDENTIFIABLE",
+          "next": "由 02｜價量研究室驗證獨立可觀測資料族；OHLCV 單獨不得推定吸籌／出貨或主力意圖。需與 D02-06、D02-05、D02-09 及 D05／D06-13 做冗餘與替代機制檢查；若仍不可識別，再提案安全合併。"
         },
         {
           "id": "D02-09",
@@ -577,10 +579,10 @@
           "name": "Queue Position／Order Priority委託排隊位置與優先權",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦「Queue Position／Order Priority委託排隊位置與優先權」。研究成交簿、委託優先序、資訊不對稱與交易衝擊等微結構機制；不得把成交結果事後解釋成不可觀測的主力意圖。需凍結委託簿時間戳、交易時段、撮合規則、PIT（時點一致性）與可重播語意。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「Queue Position／Order Priority委託排隊位置與優先權」。研究成交簿、委託優先序、資訊不對稱與交易衝擊等微結構機制；不得把成交結果事後解釋成不可觀測的主力意圖。需凍結委託簿時間戳、交易時段、撮合規則、PIT（時點一致性）與可重播語意。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / CURRICULUM_KEEP / STRATEGY_SPECIFIC_CAPABILITY / EXECUTION_CONFIDENCE / NOT_ALPHA_GATE. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D05-13 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "status": "OWNER_APPROVED / CURRICULUM_KEEP / STRATEGY_SPECIFIC_CAPABILITY / EXECUTION_CONFIDENCE / NOT_ALPHA_GATE",
+          "next": "由 04｜波動與市場微結構研究室研究台股撮合優先序、排隊位置可觀測性、成交率、部分成交與滑價影響；保留為執行能力，不轉成股票選擇 Alpha 或通用 Gate。"
         },
         {
           "id": "D05-14",
@@ -729,8 +731,10 @@
           "name": "官股行庫／特定資金流",
           "level": "L2",
           "maturityPct": 40,
-          "learningScope": "聚焦「官股行庫／特定資金流」。研究公股行庫逆勢承接、正常化賣出、與外資／投信／市場壓力的背離及可能的穩定市場脈絡；必須區分公股行庫一般投資、政府基金、國安基金與透過公股券商路由的交易，未有獨立證據時動機與最終受益人均為UNKNOWN。初期只作Context／Warning Modifier研究，不得把公股買進直接當利多或公股賣出直接當利空。",
-          "levelMeaning": "機制＋反證已定義"
+          "learningScope": "聚焦「官股行庫／特定資金流」。研究公股行庫逆勢承接、正常化賣出、與外資／投信／市場壓力的背離及可能的穩定市場脈絡；必須區分公股行庫一般投資、政府基金、國安基金與透過公股券商路由的交易，未有獨立證據時動機與最終受益人均為UNKNOWN。初期只作Context／Warning Modifier研究，不得把公股買進直接當利多或公股賣出直接當利空。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / KEEP_ROLE_LIMITED / CONTEXT_ONLY / WARNING_MODIFIER / NOT_DIRECTIONAL_GATE. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
+          "levelMeaning": "機制＋反證已定義",
+          "status": "OWNER_APPROVED / KEEP_ROLE_LIMITED / CONTEXT_ONLY / WARNING_MODIFIER / NOT_DIRECTIONAL_GATE",
+          "next": "由 05｜法人與籌碼研究室驗證官股／特定資金流在不同 Regime 的情境增量；公股買進不得直接解讀為利多，賣出不得直接解讀為利空，動機與最終受益人缺證時維持 UNKNOWN。"
         },
         {
           "id": "D06-16",
@@ -1800,8 +1804,10 @@
           "name": "Gamma Exposure／Dealer Gamma",
           "level": "L2",
           "maturityPct": 40,
-          "learningScope": "聚焦「Gamma Exposure／Dealer Gamma」。學習範圍：期貨、選擇權、基差、OI、外資期貨、PCR、VIX、IV、Skew、Term Structure、Gamma與結算；夜盤與到期效應；合約／DTE語意；對市場與個股的增量資訊。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "learningScope": "聚焦「Gamma Exposure／Dealer Gamma」。學習範圍：期貨、選擇權、基差、OI、外資期貨、PCR、VIX、IV、Skew、Term Structure、Gamma與結算；夜盤與到期效應；合約／DTE語意；對市場與個股的增量資訊。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / DEALER_POSITION_IDENTIFIABILITY_FIREWALL. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
+          "levelMeaning": "機制＋反證已定義",
+          "status": "OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / DEALER_POSITION_IDENTIFIABILITY_FIREWALL",
+          "next": "由 09｜衍生品與國際總經研究室繼續 prospective Gamma evidence 與 signed-position identifiability；D12-13 合約 Greeks 與 D12-09 到期效應不能取代 dealer-position 曝險。未完成 PIT 可識別性前不合併、不進 Formal。"
         },
         {
           "id": "D12-09",
@@ -2221,10 +2227,10 @@
           "name": "VWAP／TWAP／Participation Execution成交量加權時間加權與參與率執行",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦「VWAP／TWAP／Participation Execution成交量加權時間加權與參與率執行」。研究委託類型、執行演算法、執行落差、市場衝擊與訊號衰減。所有研究必須使用可下單性、成交機率、滑價、延遲、部分成交與成本，禁止用收盤價假裝可成交價。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「VWAP／TWAP／Participation Execution成交量加權時間加權與參與率執行」。研究委託類型、執行演算法、執行落差、市場衝擊與訊號衰減。所有研究必須使用可下單性、成交機率、滑價、延遲、部分成交與成本，禁止用收盤價假裝可成交價。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / KEEP_ROLE_LIMITED / STRATEGY_SPECIFIC_EXECUTION_CAPABILITY / NOT_STOCK_SELECTION_GATE. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D14-16 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "status": "OWNER_APPROVED / KEEP_ROLE_LIMITED / STRATEGY_SPECIFIC_EXECUTION_CAPABILITY / NOT_STOCK_SELECTION_GATE",
+          "next": "由 10｜投組風控與交易執行研究室保留 VWAP／TWAP／Participation 為執行方法族，與 D05 市場微結構、D14-17 執行落差、D14-18 訊號衰減交叉驗證；不形成選股 Gate。"
         },
         {
           "id": "D14-17",
@@ -2251,10 +2257,10 @@
           "name": "Short-sale Execution／Recall／Forced Buy-in／Squeeze Risk放空執行、召回、強制回補與軋空風險",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦「Short-sale Execution／Recall／Forced Buy-in／Squeeze Risk放空執行、召回、強制回補與軋空風險」。研究放空交易的可借券性、借券召回、強制回補、成交與軋空執行風險；需與D06借券經濟及D20套利限制交叉驗證，不能假設理論空單都可實際建立與維持。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「Short-sale Execution／Recall／Forced Buy-in／Squeeze Risk放空執行、召回、強制回補與軋空風險」。研究放空交易的可借券性、借券召回、強制回補、成交與軋空執行風險；需與D06借券經濟及D20套利限制交叉驗證，不能假設理論空單都可實際建立與維持。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / KEEP_ROLE_LIMITED / STRATEGY_SPECIFIC_EXECUTION_CAPABILITY / CROSS_DEPENDENCY_D06_18_D20_13. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D14-19 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "status": "OWNER_APPROVED / KEEP_ROLE_LIMITED / STRATEGY_SPECIFIC_EXECUTION_CAPABILITY / CROSS_DEPENDENCY_D06_18_D20_13",
+          "next": "由 10｜投組風控與交易執行研究室研究放空可建立、維持與退出風險。D06-18 保留借券經濟／供給角色，D20-13 保留套利限制角色，三者暫不合併；僅對做空策略的可借券性／強制回補安全條件研究條件式 HARD_INVALIDATION。"
         }
       ]
     },
@@ -2415,10 +2421,10 @@
           "name": "Kelly／Fractional Kelly凱利與分數凱利",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦「Kelly／Fractional Kelly凱利與分數凱利」。研究投組最佳化、風險預算、配置約束與績效／風險歸因。任何最佳化都必須控制估計誤差、集中度、流動性、成本、約束敏感度與基準選擇，且不得用未來報酬倒推最佳權重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「Kelly／Fractional Kelly凱利與分數凱利」。研究投組最佳化、風險預算、配置約束與績效／風險歸因。任何最佳化都必須控制估計誤差、集中度、流動性、成本、約束敏感度與基準選擇，且不得用未來報酬倒推最佳權重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / VALIDATION_THEN_STRONG_MERGE_CANDIDATE / POSITION_SIZING_METHOD / DEPENDS_D16_25. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D15-19 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "status": "OWNER_APPROVED / VALIDATION_THEN_STRONG_MERGE_CANDIDATE / POSITION_SIZING_METHOD / DEPENDS_D16_25",
+          "next": "由 10｜投組風控與交易執行研究室等待 D16-25 機率校準／不確定性研究成熟，再比較 Kelly／Fractional Kelly 與固定風險、風險預算、簡化 sizing。若功能可完整承接且不掉語意，再提案併入 position sizing／probabilistic decision；現在不合併。"
         },
         {
           "id": "D15-21",
@@ -3111,10 +3117,10 @@
           "name": "Idiosyncratic Volatility特質波動異象",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦「Idiosyncratic Volatility特質波動異象」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「Idiosyncratic Volatility特質波動異象」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / RESIDUAL_ALPHA_UNPROVEN. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D19-08 的機制、反證與資料需求；不得直接進 Formal。"
+          "status": "OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / RESIDUAL_ALPHA_UNPROVEN",
+          "next": "由 12｜資產定價與因子研究室先控制 Size、Beta、總波動、流動性與相關因子曝險，完成台股 PIT／OOS／多 Regime 驗證；只有殘差增量可成獨立 PRIMARY_ALPHA 候選。"
         },
         {
           "id": "D19-09",
@@ -3151,20 +3157,20 @@
           "name": "Seasonality／Calendar Anomalies季節性與日曆異象",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦「Seasonality／Calendar Anomalies季節性與日曆異象」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「Seasonality／Calendar Anomalies季節性與日曆異象」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / HIGH_DATA_MINING_RISK. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D19-12 的機制、反證與資料需求；不得直接進 Formal。"
+          "status": "OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / HIGH_DATA_MINING_RISK",
+          "next": "由 12｜資產定價與因子研究室採事前定義的日曆假說做多年度、多 Regime、獨立日期、成本與多重測試控制；未通過前只屬研究／情境，不得成為通用 Gate。"
         },
         {
           "id": "D19-13",
           "name": "Relative Value／Pairs Trading／Cointegration／Residual Mean Reversion相對價值、配對交易、共整合與殘差均值回歸",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦 Relative Value（相對價值）策略族：Pairs Trading（配對交易）、Cointegration（共整合）、Residual Mean Reversion（殘差均值回歸）與 Cross-sectional Relative Value（橫截面相對價值）。需控制 Beta、產業／風格因子曝險、結構斷裂、交易成本、容量與多重測試，避免把共同市場風險誤認為獨立 Alpha。原 D19-14 完整範圍由本模組承接；它是一個策略家族，不應拆成多個高度重疊的獨立投票因子。",
+          "learningScope": "聚焦 Relative Value（相對價值）策略族：Pairs Trading（配對交易）、Cointegration（共整合）、Residual Mean Reversion（殘差均值回歸）與 Cross-sectional Relative Value（橫截面相對價值）。需控制 Beta、產業／風格因子曝險、結構斷裂、交易成本、容量與多重測試，避免把共同市場風險誤認為獨立 Alpha。原 D19-14 完整範圍由本模組承接；它是一個策略家族，不應拆成多個高度重疊的獨立投票因子。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / CURRICULUM_KEEP / STRATEGY_SPECIFIC_CAPABILITY / RELATIVE_VALUE_FAMILY / NOT_GENERIC_LONG_ONLY_VOTE. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED / MERGED_SCOPE_OWNER",
-          "next": "建立統一 Relative Value 研究契約，分別測試 pair／cointegration 與 cross-sectional residual 方法，但共用風險、成本、結構斷裂與中性化驗證。"
+          "status": "OWNER_APPROVED / CURRICULUM_KEEP / STRATEGY_SPECIFIC_CAPABILITY / RELATIVE_VALUE_FAMILY / NOT_GENERIC_LONG_ONLY_VOTE",
+          "next": "由 12｜資產定價與因子研究室維持相對價值／配對／共整合／殘差均值回歸為獨立策略族，持續控制因子曝險、結構斷裂、成本、容量與多重測試；不得加入一般多頭選股的重複票數。"
         },
         {
           "id": "D19-15",
@@ -3181,10 +3187,10 @@
           "name": "Liquidity Premium／Illiquidity Factor流動性溢酬與非流動性因子",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦「Liquidity Premium／Illiquidity Factor流動性溢酬與非流動性因子」。研究流動性作為橫截面資產定價風險溢酬，而非僅作成交可行性；需對Size、Value、Volatility、Turnover、Spread等中性化，控制因子動物園、多重測試與交易成本。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「Liquidity Premium／Illiquidity Factor流動性溢酬與非流動性因子」。研究流動性作為橫截面資產定價風險溢酬，而非僅作成交可行性；需對Size、Value、Volatility、Turnover、Spread等中性化，控制因子動物園、多重測試與交易成本。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / RESIDUAL_LIQUIDITY_PREMIUM_UNPROVEN. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D19-16 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "status": "OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / RESIDUAL_LIQUIDITY_PREMIUM_UNPROVEN",
+          "next": "由 12｜資產定價與因子研究室對 Size、Value、Volatility、Turnover、Spread 等中性化並納入成本／容量；只有 residual Taiwan PIT alpha 通過 OOS／多 Regime 才可升級。"
         }
       ],
       "status": "RESEARCH_ACTIVE / D19-01_TO_D19-06_L2 / PIT_SOURCE_MAP_DESIGNED / FORMAL_CORE_UNCHANGED",
@@ -3227,10 +3233,10 @@
           "name": "Overconfidence過度自信",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦「Overconfidence過度自信」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「Overconfidence過度自信」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / BEHAVIORAL_PROXY_IDENTIFIABILITY_REQUIRED. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D20-03 的機制、反證與資料需求；不得直接進 Formal。"
+          "status": "OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / BEHAVIORAL_PROXY_IDENTIFIABILITY_REQUIRED",
+          "next": "由 13｜行為金融與市場心理研究室尋找獨立可觀測 proxy，並與 D20-07、D20-10、D20-12 及結構／微結構替代解釋做反證；若無法獨立辨識，提案併入 attention／sentiment／behavioral falsification 家族。"
         },
         {
           "id": "D20-04",
@@ -3247,10 +3253,10 @@
           "name": "Representativeness／Recency代表性與近因偏誤",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦「Representativeness／Recency代表性與近因偏誤」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「Representativeness／Recency代表性與近因偏誤」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / OVERLAP_D20_08_D20_09_D03. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D20-05 的機制、反證與資料需求；不得直接進 Formal。"
+          "status": "OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / OVERLAP_D20_08_D20_09_D03",
+          "next": "由 13｜行為金融與市場心理研究室檢查代表性／近因偏誤是否有可識別代理及超越 D20-08、D20-09、D03 動能／反轉的殘差增量；若不可分離，再提案合併至行為反應家族。"
         },
         {
           "id": "D20-06",
@@ -3363,10 +3369,10 @@
           "name": "Board／Independent Directors董事會與獨立董事",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦「Board／Independent Directors董事會與獨立董事」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「Board／Independent Directors董事會與獨立董事」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / KEEP_ROLE_LIMITED / CONTEXT_ONLY / CONFIDENCE / GOVERNANCE_TAIL_RISK. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D21-02 的機制、反證與資料需求；不得直接進 Formal。"
+          "status": "OWNER_APPROVED / KEEP_ROLE_LIMITED / CONTEXT_ONLY / CONFIDENCE / GOVERNANCE_TAIL_RISK",
+          "next": "由 14｜公司治理與內部人研究室研究董事會／獨董對監督品質、控制權與尾端治理風險的增量價值；維持 PIT／vintage，與 D21-01 控制權、D21-03 內部人、D21-07 管理誘因去重，不作短線 Hard Gate。"
         },
         {
           "id": "D21-03",
@@ -3611,5 +3617,8 @@
     "progressRequestExportRule": "When the owner says 進度, re-read GitHub main and regenerate the current Excel learning map from this tracker plus LEARNING_ROOM_ROUTER.md.",
     "roomSelfRouting": "Every learning room must read shared-knowledge/LEARNING_ROOM_ROUTER.md and this tracker before starting or continuing research."
   },
-  "scopeFieldVersion": "LEARNING_SCOPE_V0_1"
+  "scopeFieldVersion": "LEARNING_SCOPE_V0_1",
+  "governanceRefs": [
+    "shared-knowledge/CURRICULUM_15_ITEM_DEPENDENCY_AUDIT_20261003_V0_1.md"
+  ]
 }
