@@ -1128,3 +1128,41 @@ Independent gates remain false:
 5. only after history + continuity are READY address `ASSESSOR_POLICY_NOT_FROZEN`, then Strategy -> Ranking -> Capacity -> real `s2_capacity_runs`.
 
 System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
+
+
+## 2026-10-03 S2-07 MOPS revision-source capability — PHYSICALLY OBSERVED
+
+A supplemental official revision-history candidate is now physically verified at capability level.
+
+- PR #415 merged as `42142a4278dadbe8fb8b9fc9b72b9e7aee04c2b2`.
+- Final checks after evidence write-back:
+  - MOPS Revision Source Capability Readonly `37135267184`: PASS_CAPABILITY_OBSERVED;
+  - System2 Research CI `37135267177`: PASS;
+  - V8 Regression `37135267247`: PASS.
+- Official MOPS gateway returned HTTP 200 / code 200 and an allowlisted official history URL.
+- Frozen positive control: 2467 志聖, ROC 115/05, event date 2026-05-22.
+- Official history response preserved two distinct records for the same ex-dividend subject family:
+  - 16:34:06 / seqNo=2 / original;
+  - 17:42:13 / seqNo=4 / correction.
+- `revisionHistoryCapabilityObserved=true`.
+
+This proves the MOPS historical material-information lane can preserve an original disclosure and a later correction as separate historical records instead of overwriting the original.
+
+It does **not** yet satisfy the supplemental revision-history completeness contract:
+- `boundedIntervalCoverageComplete=false`;
+- `actionFamilyCoverageComplete=false`;
+- `cancellationHistoryComplete=false`;
+- `knownAtVersionClockCertified=false`;
+- `revisionCoverageComplete=false`;
+- `noEventMayBeClaimed=false`;
+- `technicalContinuityCertified=false`;
+- `selectionAuthority=false`.
+
+### Exact continuation
+1. expand MOPS validation from one positive control to bounded multi-company / multi-action-family coverage;
+2. add explicit cancellation/revocation controls and verify their historical representation;
+3. validate source-reported date/time/sequence semantics before using them as version knownAt clocks;
+4. join exchange official-document announcements as exchange-side evidence where MOPS alone is insufficient;
+5. only after the supplemental contract is complete may the six-lane revision coverage receipt be reconsidered.
+
+System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
