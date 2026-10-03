@@ -1,0 +1,85 @@
+name: System2 Hot History Bootstrap
+
+on:
+  workflow_dispatch:
+    inputs:
+      session_count:
+        description: "Recent missing trading sessions to fill (max 3)"
+        required: false
+        default: "3"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/daily_shadow_hot_history_bootstrap_v0_1.mjs"
+      - "system2/scripts/run_daily_shadow_hot_history_bootstrap.mjs"
+      - ".github/workflows/system2-hot-history-bootstrap.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-isolated-d1-writer
+  cancel-in-progress: false
+
+jobs:
+  bootstrap:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: system2-research
+    env:
+      SYSTEM2_HOT_HISTORY_SESSION_COUNT: ${{ inputs.session_count || '3' }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Verify bounded hot-history authority
+        run: |
+          set -euo pipefail
+          node system2/tests/daily_shadow_hot_history_bootstrap_v0_1.test.mjs
+          node system2/tests/historical_store_v0_1.test.mjs
+          node system2/tests/historical_bulk_persistence_v0_1.test.mjs
+          test "$SYSTEM2_HOT_HISTORY_SESSION_COUNT" -ge 1
+          test "$SYSTEM2_HOT_HISTORY_SESSION_COUNT" -le 3
+          git diff --exit-code -- Worker.js wrangler.toml
+
+      - name: Persist bounded recent PIT history
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_CONFIRM: WRITE_SYSTEM2_HOT_HISTORY_BOOTSTRAP
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test -n "$SYSTEM2_CLOUDFLARE_API_TOKEN"
+          node system2/scripts/run_daily_shadow_hot_history_bootstrap.mjs | tee /tmp/system2-hot-history-bootstrap.json
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          const d=JSON.parse(fs.readFileSync("/tmp/system2-hot-history-bootstrap.json","utf8"));
+          const r=d.receipt;
+          if(d.result!=="PASS"||d.databaseName!=="system2-research")throw new Error("wrong result/database");
+          if(r.selectionAuthority!==false||r.capacityWriteAuthorized!==false||r.finalSelectionEnabled!==false)throw new Error("selection authority changed");
+          if(r.livePushEnabled!==false||r.orderImpact!==false||r.system1RuntimeUsed!==false)throw new Error("runtime boundary changed");
+          if(r.continuityState!=="UNVERIFIED"||r.continuityPromotionPerformed!==false)throw new Error("continuity must remain unverified");
+          if(r.plan.targetDates.length>3)throw new Error("session cap exceeded");
+          if(r.insertedBarCount>9000)throw new Error("bounded bar-write cap exceeded");
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+            `Hot-history bootstrap: ${r.state}\n\nDates: ${r.plan.targetDates.join(", ")||"none"}; inserted bars: ${r.insertedBarCount}; continuity remains UNVERIFIED.\n`);
+          NODE
+
+      - name: Preserve bootstrap receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-hot-history-bootstrap-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/system2-hot-history-bootstrap.json
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Confirm System1 production files unchanged
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "System1 production files unchanged PASS"
