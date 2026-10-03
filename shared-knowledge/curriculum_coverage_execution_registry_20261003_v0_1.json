@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "CURRICULUM_COVERAGE_EXECUTION_REGISTRY_V0_1",
+  "updatedAt": "2026-10-03T19:25:00+08:00",
+  "status": "COVERAGE_A_PACKETS_READY_SPECIALIST_RETURNS_PENDING",
+  "formalCoreImpact": "NONE_LOCKED",
+  "canonicalSnapshot": {
+    "domains": 22,
+    "activeModules": 354,
+    "maturityWeightedPct": 36.3
+  },
+  "parentAudit": "shared-knowledge/CURRICULUM_COVERAGE_AUDIT_20261003_V0_1.md",
+  "specialistPacket": "shared-knowledge/CURRICULUM_COVERAGE_A_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
+  "allowedRecommendations": [
+    "ADD_MODULE",
+    "EXTEND_EXISTING_SCOPE",
+    "MERGE_INTO_EXISTING",
+    "NOT_A_GAP",
+    "EVIDENCE_INSUFFICIENT"
+  ],
+  "coverageA": [
+    {
+      "id": "COV-01",
+      "domain": "D01",
+      "room": "01｜K線與型態研究室",
+      "class": "ACTIVE_CURRICULUM_OWNER_GAP",
+      "state": "PENDING_SPECIALIST_RETURN",
+      "returnPath": "research/COV01_D01_SPECIALIST_RETURN_V0_1.md"
+    },
+    {
+      "id": "COV-02",
+      "domain": "D05",
+      "room": "04｜波動與市場微結構研究室",
+      "class": "SCOPE_EXTENSION_CANDIDATE",
+      "state": "PENDING_SPECIALIST_RETURN",
+      "returnPath": "research/COV02_D05_SPECIALIST_RETURN_V0_1.md"
+    },
+    {
+      "id": "COV-04",
+      "domain": "D07",
+      "room": "06｜基本面與估值研究室",
+      "class": "TRUE_GAP_CANDIDATE",
+      "state": "PENDING_SPECIALIST_RETURN",
+      "returnPath": "research/COV04_D07_SPECIALIST_RETURN_V0_1.md"
+    },
+    {
+      "id": "COV-06",
+      "domain": "D10",
+      "room": "07｜產業與供應鏈研究室",
+      "class": "SCOPE_EXTENSION_CANDIDATE",
+      "state": "PENDING_SPECIALIST_RETURN",
+      "returnPath": "research/COV06_D10_SPECIALIST_RETURN_V0_1.md"
+    },
+    {
+      "id": "COV-07",
+      "domain": "D12",
+      "room": "09｜衍生品與國際總經研究室",
+      "class": "TRUE_GAP_CANDIDATE",
+      "state": "PENDING_SPECIALIST_RETURN",
+      "returnPath": "research/COV07_D12_SPECIALIST_RETURN_V0_1.md"
+    },
+    {
+      "id": "COV-10",
+      "domain": "D20",
+      "room": "13｜行為金融與市場心理研究室",
+      "class": "TRUE_GAP_CANDIDATE",
+      "state": "PENDING_SPECIALIST_RETURN",
+      "returnPath": "research/COV10_D20_SPECIALIST_RETURN_V0_1.md"
+    },
+    {
+      "id": "COV-11",
+      "domain": "D21",
+      "room": "14｜公司治理與內部人研究室",
+      "class": "TRUE_GAP_CANDIDATE",
+      "state": "PENDING_SPECIALIST_RETURN",
+      "returnPath": "research/COV11_D21_SPECIALIST_RETURN_V0_1.md"
+    },
+    {
+      "id": "COV-12",
+      "domain": "D22",
+      "room": "15｜信用市場與資本結構研究室",
+      "class": "SCOPE_EXTENSION_CANDIDATE",
+      "state": "PENDING_SPECIALIST_RETURN",
+      "returnPath": "research/COV12_D22_SPECIALIST_RETURN_V0_1.md"
+    }
+  ],
+  "coverageBQueue": [
+    {
+      "id": "COV-03",
+      "room": "05｜法人與籌碼研究室"
+    },
+    {
+      "id": "COV-05",
+      "room": "06｜基本面與估值研究室"
+    },
+    {
+      "id": "COV-08",
+      "room": "11｜統計驗證與策略市場狀態研究室"
+    },
+    {
+      "id": "COV-09",
+      "room": "12｜資產定價與因子研究室"
+    }
+  ],
+  "intakeFirewall": {
+    "specialistReturnIsDecision": false,
+    "requiredBeforeStructuralChange": [
+      "RETURN_CONTRACT_COMPLETE",
+      "DEPENDENCY_AUDIT",
+      "OVERLAP_RECHECK",
+      "ANTI_ORPHAN",
+      "OWNER_APPROVAL",
+      "ATOMIC_CANONICAL_UPDATE"
+    ]
+  }
+}
