@@ -3512,7 +3512,7 @@
         "CREDIT_CAPITAL_STRUCTURE_CHECKPOINT.md",
         "CREDIT_CAPITAL_STRUCTURE_RESEARCH.md"
       ],
-      "maturityPct": 5,
+      "maturityPct": 8.3,
       "modules": [
         {
           "id": "D22-01",
@@ -3521,18 +3521,18 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Debt Maturity Wall／Refinancing Schedule債務到期與再融資時程」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "ACTIVE_RESEARCH / TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-          "next": "建立 TSMC 2023、UMC 2023、台泥 2023 的 machine-readable replay 小表，完成 knownAt/source-version/double-count/common-support 驗證；先凍結 D07 槓桿＋D13 利率 baseline 與 outcome horizon，再開 OOS/Walk-forward/Prospective Shadow 增量資訊檢驗。"
+          "status": "L3 / TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / PRE_OUTCOME_GATES_BUILT / WAITING_MULTI_ISSUER_MULTI_DATE_PANEL / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "擴充多發行人×多日期 Historical PIT replay 面板；台積電與聯電已通過 scope/basis/double-count/D07/D13 時點閘門，但兩筆同年度觀測不足 OOS／獨立日期驗證；台泥 public knownAt 尚待證實。未達樣本要求前保持 outcomes closed。"
         },
         {
           "id": "D22-02",
           "name": "Interest Coverage／Debt Service利息保障與償債能力",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Interest Coverage／Debt Service利息保障與償債能力」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D22-02 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制與反證已定義",
+          "status": "ACTIVE_RESEARCH / MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_PIT_SEMANTIC_EXAMPLE_CAPTURED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "蒐集多個台灣非金融發行人×日期的 PIT 利息保障資料，凍結 EBIT-compatible numerator 與 interest-expense denominator taxonomy、負值／近零分母處理，再比較 accounting ICR、cash-interest coverage 與 D22-01 principal-inclusive debt-service challenger；未完成跨產業 replay 前不升 L3。"
         },
         {
           "id": "D22-03",
@@ -3635,10 +3635,10 @@
           "next": "從理論與定義開始，建立 D22-12 的機制、反證與資料需求；不得直接進 Formal。"
         }
       ],
-      "status": "ACTIVE_RESEARCH / D22-01_L3 / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D22-01：建立三發行人 Historical PIT replay 小表與來源收據；完成帳面流動部分 vs 契約到期表防重複、common-support 映射與 facility-quality 語意；預註冊 D07＋D13 baseline 與 outcome horizon 後才開啟 OOS/Walk-forward/Prospective Shadow，驗證獨立增量資訊。",
-      "lastResearchUpdate": "2026-10-03T14:04:00+08:00",
-      "researchNote": "D22-01 已以台積電 2023、聯電 2023、台泥 2023 歷史官方揭露證明台股 Historical PIT 到期資料可取得與重播，升 L3 僅代表資料可行性，不代表 alpha 或 Formal eligibility。Formal Core unchanged."
+      "status": "ACTIVE_RESEARCH / D22-01_L3_WAITING_PANEL / D22-02_L2_ACTIVE / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D22-02：蒐集多發行人×日期 PIT 利息保障資料與利息費用拆分，完成跨產業可比性／分母語意／負值處理；同步讓 D22-01 累積 Historical PIT 面板，不開股票 outcomes。",
+      "lastResearchUpdate": "2026-10-03T18:59:00+08:00",
+      "researchNote": "D22-01 remains L3 and outcomes closed due insufficient independent issuer/date panel; scope/basis/double-count/session-timing gates repaired. D22-02 promoted to L2 after mechanism, threshold heterogeneity, semantic/falsification contract and UMC Taiwan PIT example were established. No Formal change."
     }
   ],
   "rules": {
