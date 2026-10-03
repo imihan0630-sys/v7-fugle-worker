@@ -7,8 +7,14 @@ import {
 
 const base = {
   strategyId:"SHORT_MOMENTUM",
+  strategyVersion:"SHORT_MOMENTUM_V0_1",
+  decisionStage:"STRATEGY_VALIDITY_READY",
   targetId:"AFTER_COST_D5_POSITIVE",
   horizon:"D5",
+  referenceBasis:"FROZEN_DECISION_CLOSE",
+  costModelVersion:"COST_V0_1",
+  outcomeRuleVersion:"OUTCOME_V0_1",
+  baseRateCohortVersion:"BASE_RATE_SHORT_D5_V0_1",
   modelVersion:"MODEL_V0_1",
   calibrationVersion:"CAL_V0_1",
 };
@@ -161,6 +167,18 @@ assert.throws(
     evaluationCutoff:"2026-10-03T00:00:00Z",
   }),
   /MIXED_TARGETID_NOT_ALLOWED/,
+);
+
+// Different payoff/cost semantics cannot be pooled into one calibration family.
+assert.throws(
+  () => evaluateBinaryPredictionsV01({
+    records:[
+      records[0],
+      {...records[1],predictionId:"COST_MIX",costModelVersion:"COST_V0_2"},
+    ],
+    evaluationCutoff:"2026-10-03T00:00:00Z",
+  }),
+  /MIXED_COSTMODELVERSION_NOT_ALLOWED/,
 );
 
 // Duplicate predictions fail rather than double-count evidence.
