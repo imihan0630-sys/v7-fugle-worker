@@ -2,7 +2,7 @@
 
 Updated: 2026-10-03 Asia/Taipei
 Scope: D19｜資產定價／因子投資／市場異象
-Status: RESEARCH_ACTIVE / D19-01_TO_D19-10_L2 / FACTOR_LAYER_PIT_RECEIPTS_REQUIRED / FORMAL_CORE_UNCHANGED
+Status: RESEARCH_ACTIVE / D19-01_TO_D19-12_L2 / FACTOR_LAYER_PIT_RECEIPTS_REQUIRED / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - This file is the canonical continuation checkpoint for D19.
@@ -31,9 +31,9 @@ Status: RESEARCH_ACTIVE / D19-01_TO_D19-10_L2 / FACTOR_LAYER_PIT_RECEIPTS_REQUIR
 - No L3 promotion until executable PIT ingestion/replay receipts exist.
 
 ## Current maturity
-- D19-01 through D19-10: L2 / 40% each.
+- D19-01 through D19-12: L2 / 40% each.
 - Current D19 curriculum denominator: 15 modules.
-- D19 domain simple-average maturity: 26.7%.
+- D19 domain simple-average maturity: 32.0%.
 - Formal optimization candidate: NO.
 - Formal Core: unchanged.
 
@@ -55,8 +55,19 @@ Status: RESEARCH_ACTIVE / D19-01_TO_D19-10_L2 / FACTOR_LAYER_PIT_RECEIPTS_REQUIR
 - Existing System2 historical cold infrastructure preserves observedAt, availableAt, barHash, provenance and survivorship-controlled registry semantics, but D19 still lacks factor-layer PIT receipts.
 - No L3 promotion in Stage 4.
 
+## Stage 5 completed on 2026-10-03
+- D19-11 Factor Crowding／Capacity／Turnover因子擁擠容量與換手 -> L2 / 40%.
+  - Crowding requires observable shared positioning/flow/liquidity evidence; popularity alone is not crowding.
+  - Capacity is implementation-specific and must be estimated from turnover, spread, impact, participation rate, execution horizon and stressed liquidity.
+  - No direct PIT crowding evidence means UNKNOWN/proxy-only, not a negative score.
+- D19-12 Seasonality／Calendar Anomalies季節性與日曆異象 -> L2 / 40%.
+  - Taiwan literature documents calendar patterns, but effects are sample-, institution- and test-definition-sensitive and may decay or reverse.
+  - All calendar hypotheses require preregistration, actual trading-calendar vintages, multiple-testing control and cost-adjusted OOS evidence.
+  - Governance remains research-only / high-data-mining-risk.
+- No L3 promotion in Stage 5.
+
 ## Exact next continuation
-1. Start D19-11 Factor Crowding／Capacity／Turnover因子擁擠容量與換手 from theory -> mechanism -> falsification, explicitly linking crowding claims to observable capacity/cost/liquidity evidence.
-2. Continue D19-12 Seasonality／Calendar Anomalies季節性與日曆異象 with strict preregistration and multiple-testing controls.
-3. Build the first executable factor-layer Taiwan PIT replay slice for D19-01..10 on top of the existing System2 cold loader. Minimum receipt chain: universeReceipt -> returnReceipt -> factorInputReceipt -> neutralizationReceipt -> costReceipt -> replayReceipt.
-4. Do not promote L3 until receipts verify universe vintage, delisted/suspended handling, first-known financials, market-cap/shares semantics, factor-set/version lineage and realistic costs.
+1. Start D19-13 Relative Value／Pairs Trading／Cointegration／Residual Mean Reversion相對價值／配對交易／共整合／殘差均值回歸 as a strategy-specific family, not a generic long-only factor vote.
+2. Continue D19-15 Index／Benchmark Construction／Methodology指數與基準建構方法 and D19-16 Liquidity Premium／Illiquidity Factor流動性溢酬／非流動性因子; preserve current curriculum numbering and do not invent D19-14.
+3. In parallel, build the first executable factor-layer Taiwan PIT replay slice for D19-01..12 on top of the existing System2 cold loader. Minimum receipt chain: universeReceipt -> returnReceipt -> factorInputReceipt -> neutralizationReceipt -> costReceipt -> replayReceipt.
+4. Do not promote L3 until receipts verify universe vintage, delisted/suspended handling, first-known financials, market-cap/shares semantics, factor-set/version lineage, actual trading-calendar semantics and realistic costs.
