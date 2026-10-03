@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T07:45:00+08:00",
+  "updatedAt": "2026-10-04T07:40:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -268,10 +268,10 @@
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
       ],
       "maturityPct": 56.7,
-      "status": "D03_56_7_PERCENT / TI005_TI006_PREREGISTERED_OUTCOME_CLOSED / ADX_BOLLINGER_L2_CONTINUITY_GATED / RAW_RECEIPT_GATE_2_OF_3",
+      "status": "D03_56_7_PERCENT / TI005_TI006_PREREGISTERED / D16_METHOD_HANDOFF_FROZEN / OUTCOME_CLOSED / RAW_RECEIPT_GATE_2_OF_3",
       "lastResearchUpdate": "2026-10-04",
-      "researchNote": "TI-534~550: H07 ownership reconciliation promotes D03-05 Pullback/Reversal L2/40 to L3/60 for the observable price episode only; causal origin remains optional cross-lane moderator/UNKNOWN and generic reversal factor remains rejected. D03 aggregate=56.7%. TI-005 KD-vs-RSI and TI-006 MACD-vs-direct-trend are now outcome-closed preregistered with frozen model ladders, D5 primary return/MFE/MAE, D10/D20 secondary family, exact common support, dependence-aware D16 handoff, purged holdout, multiple-testing and rejection firewalls. Critical gate correction: the D03 raw source-version 3/3 gate is necessary but not sufficient; System2 2026-10-02 diagnostic evidence is not receipt-equivalent and cannot fill the missing third D03 receipt. Full immutable parent, TECHNICAL_CONTINUITY, symbol-session/limit, state/replay and attempt-accounting gates must pass before the true prospective Technical Indicator observer clock and outcomes. D03-09/10 remain L2; Formal Core locked.",
-      "exactNextContinuationPoint": "Next genuine completed Taiwan session: capture the third frozen D03 raw source-version receipt plus validated same-date repeat. If 3/3 passes, do NOT open outcomes automatically. Re-audit T1-T3: immutable Level-B parent generation/keyset, TECHNICAL_CONTINUITY, symbol-session/price-limit provenance, stateConstructionMode/replay/prefix and exact attempted==expected accounting. Start the true prospective Technical Indicator observer clock only when those are physically live; accumulate T4/T6 floors and obtain a D16 method receipt before T5 outcome access. Then execute TI-005 first, TI-006 second. D03-09/10 stay continuity-gated; Formal Core stays locked.",
+      "researchNote": "TI-534~550: H07 ownership reconciliation promotes D03-05 Pullback/Reversal L2/40 to L3/60 for the observable price episode only; causal origin remains optional cross-lane moderator/UNKNOWN and generic reversal factor remains rejected. D03 aggregate=56.7%. TI-005 KD-vs-RSI and TI-006 MACD-vs-direct-trend are now outcome-closed preregistered with frozen model ladders, D5 primary return/MFE/MAE, D10/D20 secondary family, exact common support, dependence-aware D16 handoff, purged holdout, multiple-testing and rejection firewalls. Critical gate correction: the D03 raw source-version 3/3 gate is necessary but not sufficient; System2 2026-10-02 diagnostic evidence is not receipt-equivalent and cannot fill the missing third D03 receipt. Full immutable parent, TECHNICAL_CONTINUITY, symbol-session/limit, state/replay and attempt-accounting gates must pass before the true prospective Technical Indicator observer clock and outcomes. D03-09/10 remain L2; Formal Core locked. TI-551~554 freeze a D03-to-D16 method handoff before outcomes: D03 owns feature/estimand/multiple-testing identity; D16 owns dependence-aware finite-sample inference, purging/holdout and must return a machine-readable METHOD_READY/BLOCKED receipt. No maturity gain is assigned for this handoff.",
+      "exactNextContinuationPoint": "Next genuine Taiwan completed session: capture third receipt-equivalent D03 raw source-version session + repeat. 3/3 does not open outcomes automatically. Re-audit immutable parent, TECHNICAL_CONTINUITY, symbol-session/limit, state replay and attempt completeness; start true prospective observer only when T1-T3 are physical. Accumulate T4/T6 floors and require the frozen D03->D16 method receipt before T5. Execute TI-005 first, then TI-006. ADX/Bollinger remain continuity-gated; Formal Core locked.",
       "modules": [
         {
           "id": "D03-01",
