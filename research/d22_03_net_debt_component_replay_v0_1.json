@@ -1,7 +1,7 @@
 {
   "schemaVersion": "D22_03_NET_DEBT_COMPONENT_REPLAY_V0_1",
-  "generatedAt": "2026-10-04T07:17:00+08:00",
-  "status": "RESEARCH_ONLY / COMPONENT_REPLAY_SEED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "generatedAt": "2026-10-04T07:28:00+08:00",
+  "status": "RESEARCH_ONLY / THREE_ISSUER_TWO_INDUSTRY_MULTI_DATE_PIT_COMPONENT_REPLAY / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "governance": {
     "netDebtIsDerived": true,
     "unrestrictedCashRequiredForPrimaryOffset": true,
@@ -97,6 +97,31 @@
       "cashAccessibility": "TOTAL_CASH_DISCLOSED / UNRESTRICTED_SUBSET_NOT_PROVEN",
       "currency": "TWD_million",
       "dataQuality": "PUBLIC_TIMESTAMP / TWO_DATE_DIVERGENT_STATE"
+    },
+    {
+      "issuer": "ASE Technology Holding",
+      "twseSymbol": "3711",
+      "industry": "semiconductor_packaging_ems",
+      "periodEnd": "2023-12-31",
+      "entityScope": "consolidated",
+      "accountingBasis": "TAIWAN_FSC_ENDORSED_IFRS_UNAUDITED_6K",
+      "sourceKnownAt": "2024-02-01",
+      "firstPublicKnownAt": "2024-02-01",
+      "sourceType": "official SEC Form 6-K full-year 2023 results",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1122411/000095010324001549/dp206173_6k.htm",
+      "cashAndCashEquivalents": 67284,
+      "shortTermBorrowingsCarrying": 53042,
+      "currentPortionBondsAndLongTermBorrowings": 28616,
+      "bondsPayableNonCurrent": 20489,
+      "longTermBorrowingsNonCurrent": 81365,
+      "grossInterestBearingDebtCarrying": 183512,
+      "derivedNetDebt": 116228,
+      "reportedNetDebtToEquityRatio": 0.38,
+      "unusedCreditLines": 373763,
+      "facilityQuality": "HEADLINE_AVAILABLE / COMMITMENT_AND_DRAWABILITY_NOT_ASSUMED",
+      "cashAccessibility": "TOTAL_CASH_DISCLOSED / RESTRICTED_OR_PLEDGED_SUBSET_UNKNOWN",
+      "currency": "TWD_million",
+      "dataQuality": "PUBLIC_TIMESTAMP_AND_COMPONENT_LINES_REVALIDATED / PRELIMINARY_UNAUDITED_VERSION_TAGGED"
     }
   ],
   "divergentState": {
@@ -117,14 +142,26 @@
     "D2201Link": "Contractual maturity cash flow is a timing representation, not an amount to add to carrying gross debt."
   },
   "maturityDecision": {
-    "currentLevel": "L2",
-    "maturityPct": 40,
-    "reason": "Component replay now spans three issuers, two industries and multiple dates, but unrestricted-cash accessibility is not yet source-attested across the panel and UMC first-public timing is bounded rather than exact. Keep L2 until the L3 contract is satisfied without weakening UNKNOWN semantics."
+    "proposedLevel": "L3",
+    "maturityPct": 60,
+    "rationale": "Component replay now covers at least three exact-knownAt Taiwan non-financial issuers, at least two industries, and multiple reporting dates. Shared accounting primitives remain single receipts, cash-accessibility UNKNOWN is preserved, and the net-cash versus near-term-maturity divergent state is reproduced. This is PIT data-feasibility maturity only."
   },
   "next": [
-    "Source-attest unrestricted/restricted/pledged cash semantics for at least three eligible issuer/date receipts.",
-    "Add another exact-knownAt non-financial issuer or exact-known historical UMC version to remove bounded-timing ambiguity.",
-    "Keep lease liabilities and facilities as separate components until inclusion rules are preregistered.",
-    "Use the Chunghwa Telecom divergent state as a falsification example, not as an equity outcome."
-  ]
+    "Expand restricted/pledged/unrestricted cash source receipts and test whether total-cash offset materially differs from accessible-cash offset.",
+    "Reconcile unaudited first-known ASE state with later audited version as a version-lineage check without replacing the original PIT state.",
+    "Pre-register lease-liability inclusion and financing-like obligation variants before any outcome join.",
+    "Keep D07 accounting primitives as controls/shared receipts; test D22-03 incrementality only after OOS/walk-forward/prospective design is frozen."
+  ],
+  "validationState": {
+    "issuerCount": 4,
+    "exactKnownAtIssuerCount": 3,
+    "industries": [
+      "semiconductor",
+      "telecom",
+      "semiconductor_packaging_ems"
+    ],
+    "multiDateIssuer": "Chunghwa Telecom",
+    "l3GateAssessment": "PASS_DATA_FEASIBILITY_WITH_UNKNOWN_CASH_ACCESSIBILITY",
+    "note": "The contract requires source-attested knownAt and component replay, not perfect availability of every component. Missing restricted-cash/accessibility details remain explicit UNKNOWN and are not imputed."
+  }
 }
