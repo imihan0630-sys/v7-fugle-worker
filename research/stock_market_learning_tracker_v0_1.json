@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T07:14:00+08:00",
+  "updatedAt": "2026-10-04T07:22:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 38.4
+    "maturityWeightedPct": 38.8
   },
   "domains": [
     {
@@ -3526,7 +3526,7 @@
         "CREDIT_CAPITAL_STRUCTURE_CHECKPOINT.md",
         "CREDIT_CAPITAL_STRUCTURE_RESEARCH.md"
       ],
-      "maturityPct": 11.7,
+      "maturityPct": 13.3,
       "modules": [
         {
           "id": "D22-01",
@@ -3541,12 +3541,12 @@
         {
           "id": "D22-02",
           "name": "Interest Coverage／Debt Service利息保障與償債能力",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Interest Coverage／Debt Service利息保障與償債能力」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制與反證已定義",
-          "status": "ACTIVE_RESEARCH / MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_PIT_SEMANTIC_EXAMPLE_CAPTURED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-          "next": "蒐集多個台灣非金融發行人×日期的 PIT 利息保障資料，凍結 EBIT-compatible numerator 與 interest-expense denominator taxonomy、負值／近零分母處理，再比較 accounting ICR、cash-interest coverage 與 D22-01 principal-inclusive debt-service challenger；未完成跨產業 replay 前不升 L3。"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3 / CROSS_INDUSTRY_MULTI_DATE_TAIWAN_PIT_REPLAY_VALIDATED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "擴充更多產業與多日期 PIT 利息保障 replay，特別加入低保障／週期性案例；補 first-known cash-interest-paid 證據並凍結 principal-inclusive debt-service coverage；L4 前須完成 preregistered OOS／walk-forward／Prospective Shadow 與 D07＋D22-01＋D13 冗餘驗證。"
         },
         {
           "id": "D22-03",
@@ -3649,10 +3649,10 @@
           "next": "從理論與定義開始，建立 D22-12 的機制、反證與資料需求；不得直接進 Formal。"
         }
       ],
-      "status": "ACTIVE_RESEARCH / D22-01_L3_WAITING_PANEL / D22-02_L2_ACTIVE / D22-03_L2_MECHANISM_DEFINED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D22-02 與 D22-03 並行：擴充多發行人×多日期 PIT 利息保障與淨負債／槓桿結構 component replay；D22-01 繼續累積 Historical PIT 面板；股票 outcomes 維持 CLOSED。",
-      "lastResearchUpdate": "2026-10-04T03:22:00+08:00",
-      "researchNote": "D22-03 promoted to L2 after mechanism, anti-double-count boundary with D07-06, PIT component semantics, falsification and validation gates were frozen in a durable machine-readable contract. No outcomes opened and no Formal change."
+      "status": "ACTIVE_RESEARCH / D22-01_L3_WAITING_PANEL / D22-02_L3_PIT_REPLAY_VALIDATED / D22-03_L2_COMPONENT_REPLAY_ACTIVE / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D22-03 主線深化：以中華電信 2023／2024 divergent state 驗證 negative net debt 不等於低再融資壓力，補 unrestricted/restricted cash source receipts 與第三個 exact-knownAt issuer；D22-02 已 L3，繼續擴大面板並保持 outcomes CLOSED；D22-01 同步累積多日期 maturity panel。",
+      "lastResearchUpdate": "2026-10-04T07:22:00+08:00",
+      "researchNote": "D22-02 promoted to L3 after cross-industry Taiwan PIT replay expanded to telecom with two independently timestamped Chunghwa Telecom annual states. D22-03 component replay added a divergent-state falsification: headline net cash improved while <1y contractual financing concentration increased sharply. Equity outcomes remain closed; no Formal change."
     }
   ],
   "rules": {
