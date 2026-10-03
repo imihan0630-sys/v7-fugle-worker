@@ -1,7 +1,7 @@
 # D16-25 Probabilistic Decision / Bayesian Updating / Uncertainty-aware Selection V0.1
 
 Updated: 2026-10-03 Asia/Taipei
-Status: RESEARCH-ONLY / MECHANISM_AND_FALSIFICATION_FROZEN / EXECUTABLE_VALIDATION_BUILDING
+Status: RESEARCH-ONLY / L2_MECHANISM_FALSIFICATION_AND_EXECUTABLE_VALIDATION_FROZEN / L3_REAL_PIT_EVIDENCE_PENDING
 Owner room: 11｜統計驗證與策略市場狀態研究室
 Formal Core impact: NONE
 Related merge candidate: D15-19 Kelly / Fractional Kelly
@@ -647,3 +647,86 @@ is authorized.
 4. Wait for a genuine complete C1 generation before L3.
 5. Then freeze first actual probabilistic challenger target/model/calibration preregistration.
 6. Only after real calibration evidence matures revisit D15-19 merge/retirement.
+
+
+## 26. External methodology validation — 2026-10-03
+
+D16-25 was cross-checked against established probabilistic-forecast and selective-decision literature.
+
+### Proper scoring / honest probability
+Gneiting & Raftery (2007), *Strictly Proper Scoring Rules, Prediction, and Estimation*, supports using strictly proper scores for probabilistic forecasts.
+
+Research implication:
+- use Brier / logarithmic loss or another proper score for probability quality;
+- do not certify probability from rank spread or hit rate alone;
+- calibration and discrimination/sharpness are distinct.
+
+### Selective prediction / ABSTAIN
+Geifman & El-Yaniv (2017) and SelectiveNet (2019) formalize selective prediction through risk-versus-coverage behavior.
+
+Research implication:
+- ABSTAIN is a legitimate action;
+- accepted-subset quality is insufficient if coverage collapses;
+- compare multiple pre-frozen operating policies as a risk/coverage profile;
+- never search evaluation outcomes for the prettiest abstention threshold and call it OOS.
+
+### Calibration under distribution shift
+Park et al. (AISTATS 2020) and later calibration-under-shift literature show that calibration can degrade when deployment distribution differs from calibration data.
+
+Research implication:
+- overall calibration is insufficient;
+- retain chronology and relevant Regime labels;
+- report per-Regime diagnostics when sample support exists;
+- drift/out-of-support widens uncertainty or causes ABSTAIN rather than silently reusing old calibration.
+
+### ECE boundary
+Chidambaram et al. (ICML 2024) analyzes discontinuities/pathologies in Expected Calibration Error.
+
+Research implication:
+- ECE remains secondary;
+- exact proper scores + frozen reliability diagnostics remain primary;
+- no promotion from ECE improvement alone.
+
+### Kelly dependency
+Kelly's log-growth objective assumes a specified probability/payoff environment. Estimation-risk research reinforces that Kelly sizing can be fragile when edge/payoff parameters are uncertain.
+
+Research implication:
+- D16-25 validates the probability/payoff input before D15-19 sizes it;
+- parameter uncertainty is a sizing input;
+- Fractional Kelly is not a calibration method.
+
+These references validate the architecture but do not substitute for Taiwan-market PIT/OOS evidence.
+
+## 27. Regime and selective-policy executable requirements
+
+The evaluator must support:
+- optional Regime label on each frozen prediction;
+- per-Regime N, independent-date count, event rate, Brier score and log loss;
+- no automatic pooling of Regimes to hide local miscalibration;
+- multiple preregistered ABSTAIN policies evaluated side-by-side;
+- no automatic best-policy selection from evaluation outcomes.
+
+A policy-set report is descriptive OOS/Shadow evidence. Choosing a production operating point remains a later policy decision.
+
+## 28. L2 closure and D15-19 merge relevance
+
+D16-25 L2 means the module now has:
+- target/base-rate/prior semantics;
+- calibration/discrimination separation;
+- uncertainty channels;
+- UNKNOWN/IMMATURE fail-closed semantics;
+- ABSTAIN risk/coverage semantics;
+- Bayesian double-counting guards;
+- payoff/utility semantics;
+- sizing handoff firewall;
+- executable evaluator + adversarial tests.
+
+L3 still requires a genuine immutable Taiwan intended population, decision-time frozen predictions, causally matured outcomes and replay without source-generation leakage.
+
+For D15-19:
+- D16-25 owns belief quality, probability/distribution calibration, uncertainty and abstention;
+- D15-19 owns capital-fraction optimization from validated beliefs/payoff distributions.
+
+Therefore dependency is confirmed, but immediate full merge is not justified by D16-25 alone. D15-19 specialist research is still required before retirement/absorption can be decided.
+
+FORMAL_OPTIMIZATION_CANDIDATE remains NONE.

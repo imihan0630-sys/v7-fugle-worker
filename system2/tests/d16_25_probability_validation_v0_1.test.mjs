@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import {
   computeBinaryExpectedValueV01,
   evaluateBinaryPredictionsV01,
+  evaluateFrozenSelectivePolicySetV01,
   updateBetaBinomialPriorV01,
 } from "../../research/d16_25_probability_validation_v0_1.mjs";
 
@@ -26,6 +27,7 @@ const records = [
     scanDate:"2026-09-01",
     decisionAt:"2026-09-01T08:00:00Z",
     predictedProbability:0.8,
+    regimeId:"TREND",
     uncertaintyScore:0.1,
     predictedNetUtility:0.02,
     outcome:1,
@@ -38,6 +40,7 @@ const records = [
     scanDate:"2026-09-02",
     decisionAt:"2026-09-02T08:00:00Z",
     predictedProbability:0.2,
+    regimeId:"TREND",
     uncertaintyScore:0.1,
     predictedNetUtility:-0.01,
     outcome:0,
@@ -50,6 +53,7 @@ const records = [
     scanDate:"2026-09-03",
     decisionAt:"2026-09-03T08:00:00Z",
     predictedProbability:0.5,
+    regimeId:"RANGE",
     uncertaintyScore:0.05,
     predictedNetUtility:0.01,
     outcome:1,
@@ -62,6 +66,7 @@ const records = [
     scanDate:"2026-09-04",
     decisionAt:"2026-09-04T08:00:00Z",
     predictedProbability:0.9,
+    regimeId:"STRESS",
     uncertaintyScore:0.9,
     predictedNetUtility:0.03,
     outcome:1,
@@ -74,6 +79,7 @@ const records = [
     scanDate:"2026-09-05",
     decisionAt:"2026-09-05T08:00:00Z",
     predictedProbability:0.7,
+    regimeId:"RANGE",
     uncertaintyScore:null,
     predictedNetUtility:0.02,
     outcome:0,
@@ -102,6 +108,11 @@ assert.equal(result.unknownOutcomeCount,0);
 assert.equal(result.independentScanDateCount,4);
 assert.equal(result.empiricalOutcomeRate,0.5);
 assert.equal(result.referenceBaseRate,0.4);
+assert.equal(result.regimeDiagnostics.TREND.n,2);
+assert.equal(result.regimeDiagnostics.TREND.independentScanDateCount,2);
+assert.ok(Math.abs(result.regimeDiagnostics.TREND.brierScore - 0.04) < 1e-12);
+assert.equal(result.regimeDiagnostics.RANGE.n,2);
+assert.equal(result.regimeDiagnostics.STRESS,undefined); // P4 is not matured at cutoff.
 assert.equal(result.safeguards.empiricalOutcomeRateUsedAsFrozenReferenceBaseRate,false);
 assert.equal(result.safeguards.immatureOutcomeCoercedToLoss,false);
 assert.equal(result.safeguards.probabilityClippingApplied,false);
@@ -232,3 +243,34 @@ assert.equal(noneMature.eligibleMaturedCount,0);
 assert.equal(noneMature.immatureCount,1);
 
 console.log("D16-25 probability validation v0.1 tests passed");
+
+
+// Multiple preregistered selective operating points may be compared,
+// but the evaluator must never choose a winner from outcomes.
+const policySet = evaluateFrozenSelectivePolicySetV01({
+  records,
+  evaluationCutoff:"2026-10-03T00:00:00Z",
+  referenceBaseRate:0.4,
+  policies:[
+    {policyVersion:"SEL_TIGHT",maxUncertaintyScore:0.1,minPredictedNetUtility:0},
+    {policyVersion:"SEL_LOOSE",maxUncertaintyScore:0.3,minPredictedNetUtility:-0.02},
+  ],
+});
+assert.equal(policySet.policyCount,2);
+assert.equal(policySet.bestPolicySelected,false);
+assert.equal(policySet.selectionRule,"NO_OUTCOME_TUNED_POLICY_SELECTION");
+assert.deepEqual(
+  policySet.policyResults.map((x)=>x.policyVersion),
+  ["SEL_TIGHT","SEL_LOOSE"],
+);
+assert.throws(
+  () => evaluateFrozenSelectivePolicySetV01({
+    records,
+    evaluationCutoff:"2026-10-03T00:00:00Z",
+    policies:[
+      {policyVersion:"DUP",maxUncertaintyScore:0.1},
+      {policyVersion:"DUP",maxUncertaintyScore:0.2},
+    ],
+  }),
+  /DUPLICATE_POLICY_VERSION/,
+);

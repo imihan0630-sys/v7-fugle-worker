@@ -110,6 +110,7 @@ function normalizeRecord(raw, index) {
     baseRateCohortVersion: assertNonEmpty(raw.baseRateCohortVersion, `records[${index}].baseRateCohortVersion`),
     modelVersion: assertNonEmpty(raw.modelVersion, `records[${index}].modelVersion`),
     calibrationVersion: assertNonEmpty(raw.calibrationVersion, `records[${index}].calibrationVersion`),
+    regimeId: raw.regimeId == null ? "UNSPECIFIED" : assertNonEmpty(raw.regimeId, `records[${index}].regimeId`),
     predictedProbability: assertProbability(
       raw.predictedProbability,
       `records[${index}].predictedProbability`,
@@ -371,6 +372,25 @@ export function evaluateBinaryPredictionsV01({
   const calibration = buildCalibrationBins(eligible, edges, empiricalRate);
   const uniqueScanDates = [...new Set(eligible.map((x) => x.scanDate))].sort();
 
+  const regimeGroups = new Map();
+  for (const row of eligible) {
+    if (!regimeGroups.has(row.regimeId)) regimeGroups.set(row.regimeId, []);
+    regimeGroups.get(row.regimeId).push(row);
+  }
+  const regimeDiagnostics = Object.fromEntries(
+    [...regimeGroups.entries()].sort(([a],[b]) => a.localeCompare(b)).map(([regimeId, rows]) => {
+      const ll = rows.map((x) => exactBinaryLogLoss(x.predictedProbability, x.outcome));
+      return [regimeId, {
+        n:rows.length,
+        independentScanDateCount:new Set(rows.map((x) => x.scanDate)).size,
+        empiricalOutcomeRate:mean(rows.map((x) => x.outcome)),
+        brierScore:mean(rows.map((x) => (x.predictedProbability - x.outcome) ** 2)),
+        logLoss:ll.some((x) => !Number.isFinite(x)) ? Number.POSITIVE_INFINITY : mean(ll),
+        note:"Regime diagnostics are descriptive; low-N cells must not be interpreted as stable calibration."
+      }];
+    }),
+  );
+
   let selective = null;
   if (selectivePolicy !== null) {
     const maxU = selectivePolicy.maxUncertaintyScore == null
@@ -464,6 +484,7 @@ export function evaluateBinaryPredictionsV01({
     calibrationBins:calibration.bins,
     binnedBrierDecomposition:calibration.binnedDecomposition,
     eceSecondaryOnly:calibration.eceSecondaryOnly,
+    regimeDiagnostics,
     selectivePolicyEvaluation:selective,
     safeguards:{
       empiricalOutcomeRateUsedAsFrozenReferenceBaseRate:false,
@@ -472,6 +493,48 @@ export function evaluateBinaryPredictionsV01({
       probabilityNearHalfUsedAsUncertaintyProxy:false,
       thresholdOptimizationPerformed:false,
     },
+    researchOnly:true,
+    formalCoreImpact:false,
+  });
+}
+
+
+export function evaluateFrozenSelectivePolicySetV01({
+  records,
+  evaluationCutoff,
+  referenceBaseRate = null,
+  calibrationBinEdges = DEFAULT_CALIBRATION_BIN_EDGES_V0_1,
+  policies,
+} = {}) {
+  if (!Array.isArray(policies) || policies.length < 2) {
+    throw new Error("at least two preregistered policies are required");
+  }
+  const seen = new Set();
+  const policyResults = [];
+  for (const policy of policies) {
+    const policyVersion = assertNonEmpty(policy?.policyVersion, "policy.policyVersion");
+    if (seen.has(policyVersion)) throw new Error("DUPLICATE_POLICY_VERSION");
+    seen.add(policyVersion);
+    const result = evaluateBinaryPredictionsV01({
+      records,
+      evaluationCutoff,
+      referenceBaseRate,
+      calibrationBinEdges,
+      selectivePolicy:policy,
+    });
+    policyResults.push({
+      policyVersion,
+      selectivePolicyEvaluation:result.selectivePolicyEvaluation,
+    });
+  }
+  return Object.freeze({
+    version:D16_25_PROBABILITY_VALIDATION_VERSION,
+    evaluationCutoff:assertTimestamp(evaluationCutoff, "evaluationCutoff"),
+    policyCount:policyResults.length,
+    policyResults,
+    bestPolicySelected:false,
+    selectionRule:"NO_OUTCOME_TUNED_POLICY_SELECTION",
+    note:"This function evaluates preregistered operating points only; it never selects an optimal threshold from outcomes.",
     researchOnly:true,
     formalCoreImpact:false,
   });

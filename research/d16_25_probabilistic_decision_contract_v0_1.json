@@ -1,7 +1,7 @@
 {
   "schemaVersion": "D16_25_PROBABILISTIC_DECISION_CONTRACT_V0_1",
   "updatedAt": "2026-10-03 Asia/Taipei",
-  "status": "RESEARCH_ONLY_MECHANISM_AND_FALSIFICATION_FROZEN",
+  "status": "RESEARCH_ONLY_L2_CONTRACT_FROZEN_L3_REAL_PIT_PENDING",
   "ownerRoom": "11｜統計驗證與策略市場狀態研究室",
   "formalCoreImpact": "NONE",
   "decisionRoles": [
@@ -174,7 +174,7 @@
     }
   },
   "d15_19Interface": {
-    "currentState": "DEPENDENCY_CONFIRMED_RESPONSIBILITY_OVERLAP_PARTIAL_FULL_MERGE_NOT_YET_JUSTIFIED",
+    "currentState": "D16_25_L2_STRUCTURAL_BOUNDARY_READY_D15_19_SPECIALIST_EVIDENCE_PENDING",
     "d1625Owns": [
       "targetDefinition",
       "baseRatePrior",
@@ -200,7 +200,9 @@
       "drawdownTailConstraints",
       "transactionCostAndCapitalUtilization",
       "antiOrphanPreservationOfKellyTheoryAndEvidence"
-    ]
+    ],
+    "immediateFullMergeRecommended": false,
+    "reason": "Calibrated belief/uncertainty is an upstream input; Kelly/Fractional Kelly remains a downstream capital-allocation objective until D15 specialist evidence proves safe absorption."
   },
   "falsification": [
     "UNCALIBRATED_PROBABILITY",
@@ -227,5 +229,42 @@
     "Keep D16-25 L2 until genuine Taiwan full-population PIT prediction/outcome linkage exists.",
     "Freeze first probabilistic challenger preregistration only after evaluator lands.",
     "Revisit D15-19 merge only after real calibration and downstream sizing evidence."
-  ]
+  ],
+  "calibrationShiftContract": {
+    "overallCalibrationInsufficient": true,
+    "requiredDiagnostics": [
+      "CHRONOLOGICAL",
+      "REGIME_CONDITIONAL_WHEN_SUPPORTED",
+      "INDEPENDENT_SCAN_DATE_COUNT",
+      "DISTRIBUTION_SHIFT_OUT_OF_SUPPORT_STATE"
+    ],
+    "rule": "Historical/global calibration must not be assumed stable under Regime/distribution shift."
+  },
+  "selectivePolicySetContract": {
+    "multipleFrozenPoliciesAllowed": true,
+    "automaticBestPolicySelection": false,
+    "requiredOutputs": [
+      "acceptedCoverage",
+      "abstentionRate",
+      "dataBlockedRate",
+      "acceptedBrier",
+      "opportunityCapture",
+      "falseAcceptanceRate",
+      "acceptedMeanRealizedAfterCostValue"
+    ],
+    "rule": "Risk/coverage operating points must be preregistered; evaluation outcomes cannot choose the prettiest threshold."
+  },
+  "l2Closure": {
+    "targetPriorContractFrozen": true,
+    "calibrationContractFrozen": true,
+    "uncertaintyContractFrozen": true,
+    "abstentionContractFrozen": true,
+    "correlationDoubleCountFirewall": true,
+    "sizingHandoffFirewall": true,
+    "executableEvaluatorRequired": true,
+    "adversarialTestsRequired": true,
+    "level": "L2",
+    "maturityPct": 40,
+    "l3BlockedUntil": "GENUINE_IMMUTABLE_TAIWAN_POPULATION_PLUS_CAUSALLY_MATURED_OUTCOMES"
+  }
 }
