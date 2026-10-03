@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D13-14",
+  "name": "Fiscal policy / deficit / government spending transmission contract",
+  "status": "CONCEPT_AND_FALSIFICATION_FROZEN__PIT_VINTAGE_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-10-03T18:29:06+08:00",
+  "objectSeparation": {
+    "LEGISLATED_POLICY": "law/appropriation/tax-policy decision with enactment/published clock",
+    "BUDGET_PROJECTION": "OMB/CBO or other forecast/baseline; expectation object, not realized cash flow",
+    "TREASURY_CASH_FLOW": "Daily/Monthly Treasury receipts, outlays, deficit and financing on Treasury reporting basis",
+    "NIPA_GOVERNMENT_DEMAND": "BEA government consumption expenditures and gross investment under national-accounts concepts",
+    "DEBT_FINANCING_STATE": "Treasury issuance/debt/interest-rate/term-premium context",
+    "FISCAL_IMPULSE": "change in fiscal stance requiring an explicit methodology, baseline and cyclical-adjustment convention"
+  },
+  "coreMechanisms": [
+    "Short-run aggregate-demand channel: changes in government purchases/transfers/taxes may alter private and public demand with timing/multiplier uncertainty.",
+    "Interest-rate/borrowing channel: additional federal borrowing may interact with Treasury supply, rates, term premia and private financing conditions.",
+    "Supply/incentive channel: taxes, transfers and public investment may alter labor, saving, productivity or private investment over longer horizons.",
+    "Composition matters: transfer payments, government consumption, infrastructure investment and tax changes do not share one multiplier or sector map."
+  ],
+  "sourceHierarchy": {
+    "TreasuryMTS": {
+      "source": "U.S. Treasury Fiscal Service Monthly Treasury Statement",
+      "semantics": "monthly receipts/outlays/surplus-deficit/means of financing on modified cash basis",
+      "revisionGuard": "preserve report vintage/publishedAt; later cumulative tables do not prove earlier availability"
+    },
+    "TreasuryDTS": {
+      "source": "Daily Treasury Statement",
+      "semantics": "daily cash/debt operations; cash-timing object, not NIPA GDP contribution",
+      "use": "liquidity/cash-flow context only after source clock/vintage is proven"
+    },
+    "BEA_NIPA": {
+      "source": "BEA National Income and Product Accounts",
+      "semantics": "government consumption expenditures and gross investment as final-demand/accounting concepts",
+      "revisionGuard": "NIPA estimates revise; current history is not guaranteed historical vintage"
+    },
+    "CBO_OMB": {
+      "semantics": "baseline/projection/legislation impact expectation objects",
+      "guard": "forecast or scoring vintage must not be treated as realized fiscal flow"
+    }
+  },
+  "pitFields": [
+    "source",
+    "sourceVersion",
+    "publishedAt",
+    "capturedAt",
+    "referencePeriod",
+    "policyEffectiveDate",
+    "firstEligibleTaiwanDecision",
+    "revisionStatus",
+    "cashVsAccrualConcept",
+    "nominalVsReal",
+    "seasonalAdjustment"
+  ],
+  "candidateStates": [
+    "FISCAL_CASH_FLOW_STATE",
+    "GOVERNMENT_FINAL_DEMAND_STATE",
+    "FISCAL_PROJECTION_REVISION",
+    "TREASURY_FINANCING_PRESSURE_CONTEXT",
+    "FISCAL_COMPOSITION_STATE"
+  ],
+  "prohibitedShortcuts": [
+    "deficit up = equities up",
+    "deficit up = equities down",
+    "government spending headline = BEA government GDP contribution",
+    "CBO/OMB forecast = realized outlay",
+    "Treasury cash outlay = fiscal impulse without baseline/cyclical adjustment",
+    "one fiscal scalar score across sectors/horizons"
+  ],
+  "taiwanTransmission": [
+    "U.S. demand/export channel",
+    "U.S. Treasury yield/term-premium channel",
+    "USD/global financial-condition channel",
+    "sector-specific industrial/defense/infrastructure/technology demand channel",
+    "global risk/repricing channel"
+  ],
+  "redundancyOrder": [
+    "Taiwan domestic market/sector Regime",
+    "prior U.S. growth/equity state",
+    "U.S. rates/curve/term-premium context",
+    "USD/TWD and broad-dollar context",
+    "then fiscal candidate object"
+  ],
+  "falsification": [
+    "separate announcement/enactment/appropriation/outlay clocks",
+    "separate forecast revisions from realized cash flows",
+    "normal vs recession/high-inflation/high-rate regimes",
+    "composition interaction rather than total-deficit sign",
+    "date-shift placebo and event-cluster controls",
+    "test whether fiscal state adds beyond rates/USD/U.S.-equity demand",
+    "no outcome-selected fiscal window or multiplier assumption"
+  ],
+  "maturityDecision": {
+    "from": "L0",
+    "to": "L2",
+    "reason": "Objects, transmission channels, PIT/vintage boundaries, redundancy and falsification are frozen; no Taiwan prospective/OOS evidence for L3."
+  },
+  "exactNext": [
+    "Preserve one official MTS/DTS/BEA fiscal vintage with publishedAt/reference-period semantics.",
+    "Build source-only fiscal state receipt without equity outcomes.",
+    "Map Taiwan sector exposure only after separating demand versus rates/financing channels.",
+    "No Formal score/veto until independent PIT evidence demonstrates incremental value."
+  ]
+}
