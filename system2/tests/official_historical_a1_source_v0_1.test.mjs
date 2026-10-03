@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import {
   buildOfficialHistoricalA1UrlV0_1,
+  buildOfficialHistoricalA1FallbackUrlsV0_1,
   parseOfficialHistoricalA1PayloadV0_1,
   officialHistoricalA1SourceContractV0_1,
   fetchOfficialHistoricalA1DateV0_1,
@@ -88,6 +89,11 @@ assert.equal(
   buildOfficialHistoricalA1UrlV0_1("TPEX", "2017-01-03"),
   "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=2017%2F01%2F03",
 );
+const tpexFallbackUrls = buildOfficialHistoricalA1FallbackUrlsV0_1("TPEX", "2017-01-03");
+assert.equal(tpexFallbackUrls.length, 1);
+assert.match(tpexFallbackUrls[0], /otc_quotes_no1430\/stk_wn1430_result\.php/);
+assert.match(tpexFallbackUrls[0], /d=106%2F01%2F03/);
+assert.deepEqual(buildOfficialHistoricalA1FallbackUrlsV0_1("TWSE", "2017-01-03"), []);
 
 assert.equal(
   officialHistoricalA1SourceContractV0_1("TWSE").sourceDateMustMatchRequestedDate,
@@ -141,6 +147,29 @@ const retried = await fetchOfficialHistoricalA1DateV0_1({
 });
 assert.equal(attempts, 2);
 assert.equal(retried.ordinarySymbolCount, 1);
+assert.equal(retried.transportMode, "PRIMARY");
+
+let tpexTransportAttempts = [];
+const tpexFallback = await fetchOfficialHistoricalA1DateV0_1({
+  market: "TPEX",
+  marketDate: "2017-01-03",
+  observedAt,
+  retryAttempts: 2,
+  retryDelayMs: 0,
+  fetchImpl: async (url) => {
+    tpexTransportAttempts.push(url);
+    if (String(url).includes("/www/zh-tw/afterTrading/dailyQuotes")) {
+      return { ok: false, status: 520, json: async () => ({}) };
+    }
+    assert.match(String(url), /otc_quotes_no1430\/stk_wn1430_result\.php/);
+    return { ok: true, status: 200, json: async () => tpexPayload2017 };
+  },
+});
+assert.equal(tpexTransportAttempts.length, 3, "primary retries twice, then fallback succeeds");
+assert.equal(tpexFallback.transportMode, "LEGACY_JSON_FALLBACK");
+assert.match(tpexFallback.sourceUrl, /otc_quotes_no1430\/stk_wn1430_result\.php/);
+assert.equal(tpexFallback.sourceDateEvidence, "2017-01-03");
+assert.equal(tpexFallback.ordinarySymbolCount, 1);
 
 let integrityAttempts = 0;
 await assert.rejects(

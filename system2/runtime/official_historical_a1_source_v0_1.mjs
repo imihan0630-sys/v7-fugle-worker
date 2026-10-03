@@ -1,6 +1,6 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 
-export const OFFICIAL_HISTORICAL_A1_SOURCE_VERSION = "0.1-RESEARCH";
+export const OFFICIAL_HISTORICAL_A1_SOURCE_VERSION = "0.2-RESEARCH";
 
 export const OFFICIAL_HISTORICAL_A1_SOURCES = deepFreeze({
   TWSE: {
@@ -11,9 +11,11 @@ export const OFFICIAL_HISTORICAL_A1_SOURCES = deepFreeze({
   },
   TPEX: {
     sourceId: "A1_TPEX_DAILY_QUOTES_HISTORICAL",
-    sourceName: "TPEx afterTrading dailyQuotes historical report",
+    sourceName: "TPEx official daily-close historical report",
     sourceUrl: "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes",
     sourcePage: "https://www.tpex.org.tw/zh-tw/mainboard/trading/info/pricing.html",
+    legacySourceUrl: "https://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_result.php",
+    legacySourcePage: "https://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430.php?l=zh-tw",
   },
 });
 
@@ -40,6 +42,11 @@ function compactDate(date) {
 
 function slashDate(date) {
   return date.replaceAll("-", "/");
+}
+
+function rocSlashDate(date) {
+  const [year, month, day] = date.split("-");
+  return `${Number(year) - 1911}/${month}/${day}`;
 }
 
 function rocDateToIso(value) {
@@ -245,11 +252,22 @@ export function buildOfficialHistoricalA1UrlV0_1(market, marketDate) {
   throw new Error("unsupported market: " + market);
 }
 
+export function buildOfficialHistoricalA1FallbackUrlsV0_1(market, marketDate) {
+  const date = isoDate(marketDate, "marketDate");
+  if (market !== "TPEX") return deepFreeze([]);
+  const source = OFFICIAL_HISTORICAL_A1_SOURCES.TPEX;
+  return deepFreeze([
+    `${source.legacySourceUrl}?l=zh-tw&d=${encodeURIComponent(rocSlashDate(date))}&se=EW&s=0%2Casc%2C0&o=json`,
+  ]);
+}
+
 export function parseOfficialHistoricalA1PayloadV0_1({
   market,
   marketDate,
   payload,
   observedAt,
+  sourceUrl = null,
+  transportMode = "PRIMARY",
 } = {}) {
   const date = isoDate(marketDate, "marketDate");
   const observed = timestamp(observedAt, "observedAt");
@@ -288,7 +306,8 @@ export function parseOfficialHistoricalA1PayloadV0_1({
     marketDate: date,
     sourceId: OFFICIAL_HISTORICAL_A1_SOURCES[market].sourceId,
     sourceName: OFFICIAL_HISTORICAL_A1_SOURCES[market].sourceName,
-    sourceUrl: buildOfficialHistoricalA1UrlV0_1(market, date),
+    sourceUrl: sourceUrl || buildOfficialHistoricalA1UrlV0_1(market, date),
+    transportMode,
     sourceDateEvidence: evidence.date,
     sourceDateEvidenceBasis: evidence.basis,
     ordinarySymbolCount: rows.length,
@@ -318,58 +337,73 @@ export async function fetchOfficialHistoricalA1DateV0_1({
     throw new Error("retryDelayMs must be an integer from 0 to 10000");
   }
 
-  const url = buildOfficialHistoricalA1UrlV0_1(market, marketDate);
-  let lastError = null;
-  for (let attempt = 1; attempt <= retryAttempts; attempt += 1) {
-    try {
-      const response = await fetchImpl(url, {
-        method: "GET",
-        headers: {
-          Accept: "application/json,text/plain,*/*",
-          "User-Agent": "System2-Historical-Research/0.1",
-          Referer: OFFICIAL_HISTORICAL_A1_SOURCES[market]?.sourcePage || "",
-        },
-        signal: AbortSignal.timeout(45000),
-      });
-      if (!response?.ok) {
-        const status = Number(response?.status);
-        const error = new Error(
-          `official historical A1 source error ${market} ${marketDate}: HTTP ${status}`,
-        );
-        if (status >= 400 && status < 500 && status !== 408 && status !== 429) {
-          throw Object.assign(error, { nonRetryable: true });
+  const primaryUrl = buildOfficialHistoricalA1UrlV0_1(market, marketDate);
+  const candidates = [
+    { url: primaryUrl, transportMode: "PRIMARY" },
+    ...buildOfficialHistoricalA1FallbackUrlsV0_1(market, marketDate)
+      .map((url) => ({ url, transportMode: "LEGACY_JSON_FALLBACK" })),
+  ];
+  const transportErrors = [];
+
+  for (const candidate of candidates) {
+    let lastError = null;
+    for (let attempt = 1; attempt <= retryAttempts; attempt += 1) {
+      try {
+        const source = OFFICIAL_HISTORICAL_A1_SOURCES[market];
+        const response = await fetchImpl(candidate.url, {
+          method: "GET",
+          headers: {
+            Accept: "application/json,text/plain,*/*",
+            "User-Agent": "Mozilla/5.0 System2-Historical-Research/0.2",
+            Referer: candidate.transportMode === "LEGACY_JSON_FALLBACK"
+              ? source?.legacySourcePage || source?.sourcePage || ""
+              : source?.sourcePage || "",
+            "Cache-Control": "no-cache",
+          },
+          signal: AbortSignal.timeout(45000),
+        });
+        if (!response?.ok) {
+          const status = Number(response?.status);
+          throw new Error(
+            `official historical A1 transport error ${market} ${marketDate} ${candidate.transportMode}: HTTP ${status}`,
+          );
         }
-        throw error;
-      }
-      const payload = await response.json();
-      // Parse/source-date failures are data-integrity failures, not transport
-      // failures.  Never retry them into a false success.
-      return parseOfficialHistoricalA1PayloadV0_1({
-        market,
-        marketDate,
-        payload,
-        observedAt,
-      });
-    } catch (error) {
-      lastError = error;
-      if (error?.nonRetryable === true) throw error;
-      if (
-        String(error?.message || "").includes("SOURCE_DATE_MISMATCH")
-        || String(error?.message || "").includes("daily table not found")
-        || String(error?.message || "").includes("OHLC inconsistency")
-      ) {
-        throw error;
-      }
-      if (attempt >= retryAttempts) break;
-      if (retryDelayMs > 0) {
-        await new Promise((resolve) =>
-          setTimeout(resolve, retryDelayMs * attempt));
+        const payload = await response.json();
+        // Source-date/table/OHLC failures are data-integrity failures. A second
+        // transport is not allowed to launder an integrity failure into success.
+        return parseOfficialHistoricalA1PayloadV0_1({
+          market,
+          marketDate,
+          payload,
+          observedAt,
+          sourceUrl: candidate.url,
+          transportMode: candidate.transportMode,
+        });
+      } catch (error) {
+        lastError = error;
+        const message = String(error?.message || error);
+        if (
+          message.includes("SOURCE_DATE_MISMATCH")
+          || message.includes("daily table not found")
+          || message.includes("source date evidence is missing")
+          || message.includes("OHLC inconsistency")
+        ) {
+          throw error;
+        }
+        if (attempt < retryAttempts && retryDelayMs > 0) {
+          await new Promise((resolve) =>
+            setTimeout(resolve, retryDelayMs * attempt));
+        }
       }
     }
+    transportErrors.push({
+      transportMode: candidate.transportMode,
+      error: String(lastError?.message || lastError).slice(0, 240),
+    });
   }
+
   throw new Error(
-    `official historical A1 source exhausted retries ${market} ${marketDate}: ${String(lastError?.message || lastError)}`,
-    { cause: lastError },
+    `official historical A1 source exhausted transports ${market} ${marketDate}: ${JSON.stringify(transportErrors)}`,
   );
 }
 
