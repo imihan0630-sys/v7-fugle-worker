@@ -830,3 +830,16 @@ Machine-readable registry:
 
 R01-R08 role-conflict validation groups are now registered. This is governance input for System 1 A2 and System 2 B1 only; no live role assignment or Formal change is authorized.
 
+## Specialist intake ledger — 2026-10-03
+
+Canonical human-readable intake:
+`shared-knowledge/CURRICULUM_SPECIALIST_INTAKE_LEDGER_20261003_V0_1.md`
+
+Machine-readable intake:
+`shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json`
+
+First received third-round packet:
+- H05 Room 06 complete and accepted.
+- H05 Room 14 counterpart remains required.
+- No terminal merge/retirement decision and no maturity change.
+
