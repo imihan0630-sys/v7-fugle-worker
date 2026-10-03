@@ -171,5 +171,21 @@
     ],
     "acceptedSpecialistReturns": 0,
     "canonicalImpact": "NONE"
+  },
+  "pendingEvidenceDeficitMatrix": "shared-knowledge/CURRICULUM_COVERAGE_PENDING_EVIDENCE_DEFICIT_MATRIX_20261003_V0_1.md",
+  "pendingDeficitSummary": {
+    "candidates": [
+      "COV-03",
+      "COV-04",
+      "COV-05",
+      "COV-12"
+    ],
+    "dispatch": {
+      "COV-03": "Direct retail/natural-person observable plus Taiwan PIT source contract",
+      "COV-04": "Payout/coverage/sustainability semantics plus D07 PIT accounting clock",
+      "COV-05": "P/S or EV/Sales formula plus numerator/denominator/PIT owner contract",
+      "COV-12": "Instrument seniority/collateral/recovery taxonomy plus Taiwan document path"
+    },
+    "structuralImpact": "NONE"
   }
 }
