@@ -2037,3 +2037,42 @@ This establishes `D10-08 L2 -> L3` for Taiwan PIT/source feasibility only. It do
 Accumulate independent future supply-gap events under the same contract; add issuer-native allocation/capacity/order evidence before any company mapping; only then consider prospective/OOS effect tests.
 
 Formal Core unchanged.
+
+
+## SC-043 — Trade policy needs rule lifecycle plus issuer exposure, not headline tagging
+
+Artifact:
+`research/sc043_trade_policy_export_control_transmission_contract_v0_1.json`
+
+D10-13 now has a policy lifecycle:
+proposal -> official announcement -> rule publication -> effective date -> transition/license phase -> enforcement -> amendment/exception -> suspension/rescission -> issuer-specific exposure confirmation.
+
+The 2025 U.S. AI Diffusion Rule is retained as a negative-control pattern: a formally issued rule with a future compliance date was later rescinded before enforcement. Therefore policy headline, publication and realized exposure are different clocks.
+
+Required scope dimensions include controlled item/ECCN or product scope, destination, end-use/end-user, ownership/parent-country tests, FDP/de-minimis reach, license policy, exceptions and transition periods.
+
+Maturity: `D10-13 L0 -> L2` for mechanism + falsification only.
+
+## SC-044 — Industrial policy/subsidy must be traced from authorization to physical capacity
+
+Artifact:
+`research/sc044_industrial_policy_geopolitical_bottleneck_contract_v0_1.json`
+
+D10-14 freezes a policy-to-capacity lifecycle:
+proposal -> authorization -> eligibility -> award -> conditions -> disbursement/tax realization -> capex -> construction/equipment/qualification -> production ramp -> guardrail compliance -> retaliation/countermeasure -> revision/expiry.
+
+Key falsification:
+- subsidy authorization/award != operating capacity;
+- more subsidized capacity can worsen overcapacity and price competition;
+- local labor/power/permitting/compliance constraints can offset benefits;
+- retaliation/counter-subsidy can reverse first-order trade effects;
+- a subsidized sector is not automatically a good equity return.
+
+Maturity: `D10-14 L0 -> L2` for mechanism + falsification only.
+
+### Exact next
+- SC-045: first Taiwan semiconductor export-control exposure receipt using rule text plus issuer-native product/location/customer evidence and a low-exposure/exception negative control.
+- SC-046: first Taiwan strategic-industry policy-to-capacity receipt with official program/award plus issuer/facility physical-ramp evidence.
+- SC-034/035, SC-037/038 and future SC-040 monthly append lanes remain open and are not overwritten.
+
+Formal Core unchanged.
