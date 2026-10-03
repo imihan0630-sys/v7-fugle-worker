@@ -794,3 +794,14 @@ BR-047: append additional cross-industry theme bridges under the same prospectiv
 BR-048: seek effective-dated historical exposure vintages before any historical theme-return study.
 
 Formal Core unchanged.
+
+
+## 2026-10-03 curriculum-extension checkpoint — BR-049 / BR-050
+
+- New approved D09-13 Industry Structure / Porter Five Forces is no longer UNSTUDIED: BR-049 freezes theory, mechanism, falsification, PIT and redundancy contracts. Maturity L0 -> L2 only.
+- New approved D09-14 Market Share / Entry Barrier / Substitution / Competitive Strategy is no longer UNSTUDIED: BR-050 freezes denominator, barrier, substitution, PIT and negative-control contracts. Maturity L0 -> L2 only.
+- Neither module has Taiwan PIT evidence yet; no L3 claim.
+- No market-share, concentration or Five-Forces score is authorized for System1/System2 Formal.
+- Exact next: BR-051 Taiwan industry-structure receipt; BR-052 Taiwan share/barrier/substitution receipt. Existing earlier BR continuations remain open.
+
+Formal Core unchanged.
