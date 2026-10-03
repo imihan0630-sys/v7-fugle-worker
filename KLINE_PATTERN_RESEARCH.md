@@ -22625,3 +22625,17 @@ A new completeness falsifier is frozen: matching session counts cannot certify a
 The research adapter may hash synthetic date lists for QA, but that does not define the upstream production hash algorithm.
 
 Shared-child v0.6 carries the clock-window provenance requirement. Fifteen clock-bundle fixtures are authored, not executed. Runtime/outcomes remain closed.
+
+# DL-019 — Lifecycle category vs continuous path redundancy (2026-10-03)
+
+D01 now separates path memory from categorical novelty.
+
+Current distance/availableAir alone cannot reconstruct whether the same price arrived there through no break, holding, reentry, failure or reclaim. Lifecycle therefore contains path-memory representation relative to a geometry-only snapshot.
+
+However, once complete causal first-event clocks plus continuous breakout-path descriptors are present, the lifecycle label is largely a deterministic / thresholded summary of the same PRICE_OHLC-root information. It is not a new source family.
+
+The frozen comparison ladder is C0 current geometry -> C1 continuous path -> C2 complete path/clocks -> C3 categorical lifecycle. Any future promotion-grade lifecycle claim must beat a flexible C2 comparator. Beating only C0 or a weak linear C2 is insufficient and may only show nonlinear representation convenience.
+
+Synthetic adversarial rules now explicitly reject different lifecycle labels under the same complete path basis as semantic contradiction. Twelve tests are authored but not independently executed.
+
+D16 receives the estimator/inference handoff; D01 keeps semantic ownership. No outcome join, no threshold tuning, no Formal change. D01 remains 51.7%.
