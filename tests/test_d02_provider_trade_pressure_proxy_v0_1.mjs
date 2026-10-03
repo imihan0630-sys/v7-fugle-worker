@@ -68,7 +68,7 @@ assert.ok(r.unknownReasons.includes('NO_CLASSIFIED_VOLUME'));
 r=buildProviderTradePressureProxy(n1,n2,{minCoverage:0.9});
 assert.ok(r.unknownReasons.includes('CLASSIFICATION_COVERAGE_BELOW_PREREGISTERED_FLOOR'));
 
-const earlyFetch=normalizeFuglePressureSnapshot(q2(),'2026-10-02T09:19:01+08:00');
+const earlyFetch=normalizeFuglePressureSnapshot({...q2(),total:{...q2().total,time:1790904000000000}},'2026-10-02T09:20:01+08:00');
 r=buildProviderTradePressureProxy(n1,earlyFetch);
 assert.ok(r.unknownReasons.includes('FETCH_CLOCK_NOT_INCREASING'));
 
