@@ -38,3 +38,13 @@ Status: FOUNDATION_CLUSTER_L2 / D20-01_02_04_07 / FORMAL_CORE_UNCHANGED
    - external attention proxies separated from endogenous return/volume proxies;
    - redundancy controls versus price, volume, momentum, volatility, microstructure and event/news families.
 3. Do not promote to L3 until those data contracts are verifiably available and replayable.
+
+## Canonical overlay 2026-10-03 21:40 Asia/Taipei
+- Canonical tracker: all D20-01 through D20-13 are L2 / 40%.
+- D20 aggregate maturity: 40.0%.
+- Foundation phase complete: mechanism + falsification only.
+- Next phase: L2 -> L3 Taiwan PIT/replay feasibility.
+- Priority: D20-08 event drift, D20-06 herding identifiability, D20-10 investor sentiment, D20-13 arbitrage constraints, D20-11 narrative diffusion.
+- Do not repeat L0/L1 foundation work.
+- Formal Core unchanged.
+
