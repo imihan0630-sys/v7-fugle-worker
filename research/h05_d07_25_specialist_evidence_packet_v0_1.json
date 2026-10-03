@@ -1,0 +1,153 @@
+{
+  "schemaVersion": "H05_D07_25_SPECIALIST_EVIDENCE_PACKET_V0_1",
+  "researchRoom": "06",
+  "targetModules": [
+    "D07-25",
+    "D21-10"
+  ],
+  "ownerModule": "D07-25",
+  "counterpartModule": "D21-10",
+  "status": "ROOM06_SPECIALIST_PACKET_COMPLETE / ROOM14_COUNTERPART_PENDING",
+  "createdAtAsiaTaipei": "2026-10-03T11:16:00+08:00",
+  "formalCoreImpact": "NONE_LOCKED",
+  "governanceParents": [
+    "shared-knowledge/CURRICULUM_H05_H08_SEMANTIC_SPLIT_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
+    "shared-knowledge/CURRICULUM_H05_H08_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md"
+  ],
+  "semanticOwnership": {
+    "D07_25": {
+      "owns": "Statement-level accounting anomaly and forensic red-flag detection from PIT financial-statement vintages.",
+      "primitivesConsumed": [
+        "accrual/cash-flow divergence",
+        "revenue vs receivables divergence",
+        "inventory vs sales/COGS divergence",
+        "cash conversion and earnings persistence",
+        "margin/earnings vs operating-cash mismatch",
+        "one-off/non-operating earnings reliance",
+        "cross-statement inconsistency",
+        "accounting-policy/estimate change context from sibling modules"
+      ],
+      "doesNotOwn": [
+        "audit opinion as an independent governance event",
+        "internal-control statement effectiveness/remediation",
+        "CPA internal-control special review",
+        "restatement governance process",
+        "auditor governance quality"
+      ],
+      "decisionRole": "Forensic risk/context flag and hypothesis generator; not proof of fraud/manipulation and not an automatic directional stock vote."
+    },
+    "D21_10": {
+      "expectedOwnershipFromFrozenContract": [
+        "audit opinion/report event",
+        "restatement/correction governance event",
+        "internal-control statement and material weakness",
+        "CPA special internal-control review",
+        "control remediation chronology"
+      ],
+      "decisionRole": "Governance/control-process evidence, not a duplicate financial-ratio anomaly score."
+    }
+  },
+  "taiwanObservableMap": {
+    "statementLane": {
+      "sources": [
+        "MOPS filed financial statements and XBRL instances",
+        "MOPS financial report announcements/e-books",
+        "MOPS related-party and other statement-supporting disclosures where relevant"
+      ],
+      "clock": "financialStatementFirstObservedAt / filing or publication timestamp where proven",
+      "versioning": "append-only statement vintage; correction/restatement creates a new vintage"
+    },
+    "governanceControlLane": {
+      "sources": [
+        "MOPS internal-control statement disclosure",
+        "MOPS CPA internal-control special review report",
+        "MOPS financial-report correction/supplement announcement",
+        "MOPS/TWSE material information for restatement, modified audit opinion or internal-control statement change"
+      ],
+      "clocks": [
+        "auditReportPublishedAt/firstObservedAt",
+        "restatementOrCorrectionAnnouncementAt",
+        "internalControlStatementPublishedAt",
+        "internalControlStatementAmendmentAt",
+        "specialReviewReportPublishedAt"
+      ]
+    }
+  },
+  "sharedEvidenceReceipt": {
+    "rule": "One canonical source event/statement receipt may be referenced by both modules, but it creates no duplicate vote.",
+    "keys": [
+      "symbol",
+      "sourceType",
+      "sourceEventIdOrFingerprint",
+      "sourcePeriod",
+      "publishedAt_if_proven",
+      "firstObservedAt",
+      "capturedAt",
+      "sourceUrlOrEndpoint",
+      "statementVintageId_if_applicable",
+      "correctionSupersessionId",
+      "contentFingerprint"
+    ],
+    "childViews": {
+      "D07_25": "Measures statement deltas/anomaly state before/after the event.",
+      "D21_10": "Measures audit/control/governance event state and remediation."
+    }
+  },
+  "divergentStateExamples": [
+    {
+      "id": "H05_DIV_A",
+      "D07_25": "RED_FLAG_OR_ELEVATED",
+      "D21_10": "NO_EVENT_OR_UNKNOWN",
+      "example": "Receivables and inventory grow materially faster than sales while operating cash conversion deteriorates, but the filed audit opinion remains unmodified and no internal-control/restatement event is disclosed.",
+      "interpretation": "Statement anomaly exists without a governance/control event."
+    },
+    {
+      "id": "H05_DIV_B",
+      "D07_25": "LOW_OR_UNKNOWN",
+      "D21_10": "WARNING",
+      "example": "An internal-control statement is amended or a CPA/control-process disclosure identifies a material control problem, while ordinary forensic ratios remain within prior ranges and no unusual cash/receivable/inventory divergence is observed.",
+      "interpretation": "Governance/control warning exists without a statement-ratio anomaly."
+    }
+  ],
+  "competingMechanismsAndFalsifiers": [
+    "High accruals can reflect growth, working-capital investment or accounting reliability differences rather than manipulation.",
+    "Receivables/inventory growth can be rational during rapid demand expansion or supply-chain buffering.",
+    "Cash-flow weakness can arise from seasonal working-capital build, acquisitions or expansion.",
+    "Modified audit/control events can arise from scope, evidence or process deficiencies without proving intentional earnings manipulation.",
+    "A later restatement does not prove an earlier forensic metric could identify it ex ante.",
+    "If D07-25 adds no information beyond D07-07 earnings quality, D07-24 accounting-policy quality and existing statement primitives, narrow D07-25 to cross-signal forensic orchestration rather than a second score.",
+    "Financial institutions require separate anomaly semantics; industrial working-capital ratios must not be forced onto banks/insurers."
+  ],
+  "academicCounterevidence": [
+    "Accrual components can be less persistent than cash components, but literature offers competing explanations including growth/investment, risk and measurement error.",
+    "Discretionary-accrual models can mismeasure normal accruals; abnormal accruals are not direct proof of manipulation.",
+    "Post-loss accrual/earnings behavior can reflect genuine operating recovery rather than window dressing."
+  ],
+  "antiDoubleCount": [
+    "Raw accrual metric remains owned by D07-07; D07-25 may consume it only as one forensic primitive.",
+    "Accounting-policy change semantics remain owned by D07-24; D07-25 may consume only anomaly implications.",
+    "Restatement/audit/internal-control event is recorded once and linked to D07-25 and D21-10 child interpretations.",
+    "No combined System score may count the same restatement event once as forensic evidence and again as independent governance evidence without residualization."
+  ],
+  "capabilityPreservation": {
+    "keepD07_25": [
+      "statement-level anomaly combinations",
+      "forensic pattern explanations",
+      "PIT statement-vintage replay",
+      "competing economic explanations"
+    ],
+    "keepD21_10": [
+      "audit opinion chronology",
+      "restatement/correction event chronology",
+      "internal-control statement/special review",
+      "remediation/governance process"
+    ]
+  },
+  "maturityImplication": {
+    "D07_25": "NO_PROMOTION_FROM_OVERLAP_PACKET_ALONE",
+    "D21_10": "OUT_OF_ROOM_NO_CHANGE"
+  },
+  "allowedTerminalClassification": "EVIDENCE_INSUFFICIENT",
+  "specialistRecommendation": "KEEP_SEPARATE if Room 14 confirms independent governance/control observables and child-event semantics; otherwise apply SCOPE_DEDUP_ONLY to any shared restatement/audit content.",
+  "room14ConfirmationRequired": true
+}
