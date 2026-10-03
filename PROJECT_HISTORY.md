@@ -471,3 +471,12 @@
 - Formal scoring／consensus／rankFn／資金／signal／15m／push／order 受完整 source parity 檢查保護，System 2 不變，provider delta=0。
 - 本紀錄為 candidate，不是 production 已部署或策略有效宣告；production merge/deploy approval 與真正未來交易日 evidence 仍待完成。
 - 下一步與量測：`research/SYSTEM1_ZERO_PICK_CLASS_B_IMPLEMENTATION_20261004.md`。
+
+## 2026-10-04｜V8.16.0 Class-B zero-pick capture 正式部署完成
+
+- Owner 另行明確批准「PR #421 合併與 Production 部署」，以 expected head `7f3a10d754c6f895609361382efd69dc8e110399` 保護式合併，merge commit `ccb3c53a7948740736ea3c3a83ae61a69f2df481`。
+- PR 三條指定 CI 全綠；main Regression run `37161566882` 與 Cloudflare Deploy run `37161566862` 成功。
+- 獨立 `/api/version` 讀回 `8.16.0-zero-pick-prospective-capture`；TEST_MODE=false、KV/D1=true；既有監控設定驗證通過，四條 Cron 無變更。
+- authenticated research dashboard readback 通過；未觸發 rollback、業務掃描、歷史回填或重送推播。這不等於新 C1 child 已有真實交易日讀回。
+- 部署時為週末，第一個正常交易日 prospective C1 child 與 fingerprint readback 仍 PENDING。economicSuperiority=UNKNOWN、formalOptimizationCandidate=NONE，Formal Core LOCKED。
+- 接續：`research/SYSTEM1_ZERO_PICK_CLASS_B_IMPLEMENTATION_20261004.md` 第 5 步；監控 https://fugle-test.imihan0630.workers.dev/ 。

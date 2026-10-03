@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "SYSTEM1_ZERO_PICK_CLASS_B_DEPLOYMENT_V0_1",
+  "observedAt": "2026-10-03T23:23:14Z",
+  "runtimeVersion": "8.16.0-zero-pick-prospective-capture",
+  "implementationPr": 421,
+  "approvedHeadSha": "7f3a10d754c6f895609361382efd69dc8e110399",
+  "mergeSha": "ccb3c53a7948740736ea3c3a83ae61a69f2df481",
+  "ownerProductionApproval": "批准 PR #421 合併與 Production 部署",
+  "deploymentRun": 37161566862,
+  "mainRegressionRun": 37161566882,
+  "deploymentConclusion": "success",
+  "mainRegressionConclusion": "success",
+  "versionReadbackVerified": true,
+  "testMode": false,
+  "bindings": {
+    "kv": true,
+    "d1": true
+  },
+  "existingMonitoringConfigurationVerified": true,
+  "cronChanged": false,
+  "researchDashboardReadbackVerified": true,
+  "firstProspectiveC1ChildReadback": "PENDING_NEXT_NORMAL_TRADING_SESSION",
+  "syntheticProspectiveEvidenceCreated": false,
+  "businessScanTriggeredForAcceptance": false,
+  "historicalBackfillPerformed": false,
+  "pushResendPerformed": false,
+  "rollbackPerformed": false,
+  "economicSuperiority": "UNKNOWN",
+  "formalOptimizationCandidate": "NONE",
+  "formalCore": "LOCKED",
+  "nextAction": "After first genuine post-deploy trading-day scan, read matched immutable C1 generation, verify child tuple fingerprints and PIT/pool/ordinal identity before matched C5 eligibility and frozen comparator use."
+}

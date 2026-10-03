@@ -1,14 +1,14 @@
 # System 1 Class-B zero-pick prospective capture — V8.16.0
 
-Status: IMPLEMENTED_ON_BRANCH / PRODUCTION_APPROVAL_REQUIRED / FORMAL_CORE_LOCKED
+Status: DEPLOYED_VERSION_AND_DASHBOARD_VERIFIED / FIRST_PROSPECTIVE_C1_CHILD_PENDING / FORMAL_CORE_LOCKED
 
 ## Authority and approval
 
 - Repository baseline freshly fetched: `1e5a7ac975d2902e27351c2921dc888d7acd32af`.
 - Production `/api/version` readback: `8.15.4-c4-priority-provenance`, TEST_MODE=false, KV/D1=true.
 - Owner explicitly authorized implementation in the current Codex session: **「我批准 Class-B zero-pick rank-input prospective capture 實裝」**.
-- This records implementation authorization. It does not infer production authorization from test results.
-- `RESEARCH_ENGINEERING_GOVERNANCE.md` requires owner review and explicit approval of the material production change before merge/deploy. This PR changes the existing production build chain; merging triggers production deployment.
+- Owner separately approved production: **「批准 PR #421 合併與 Production 部署」**. This explicit approval, not green tests, authorized promotion.
+- `RESEARCH_ENGINEERING_GOVERNANCE.md` production review/approval boundary was satisfied for PR #421. Expected-head merge used `7f3a10d754c6f895609361382efd69dc8e110399`; merge commit is `ccb3c53a7948740736ea3c3a83ae61a69f2df481`.
 - Version rationale: additive research evidence functionality with no selection architecture change, hence V8.16.0 under `VERSIONING.md`.
 
 ## Implementation
@@ -50,7 +50,20 @@ These are fixture measurements, not production resource guarantees. The hard per
 
 Required CI: V8 Regression Tests, V8 Repair CI, System1 C1 C2 isolated offline repair review. The build writes an uncommitted pre-patch artifact solely for the source comparison. Test results are written to `artifacts/system1-zero-pick-runtime-capture.json` and `artifacts/system1-c1-c2-repair-review.json`.
 
-## Production review and exact continuation
+## Deployment verification and exact continuation
+
+Production deployment completed on 2026-10-03 23:23 UTC / 2026-10-04 07:23 Taipei.
+
+- [Cloudflare Deploy 37161566862](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37161566862): SUCCESS.
+- [Main Regression 37161566882](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37161566882): SUCCESS.
+- `/api/version` independently returned `8.16.0-zero-pick-prospective-capture`, TEST_MODE=false, KV/D1=true.
+- Existing monitoring configuration and readiness verification passed. All four Cron expressions were unchanged (`changed=false`).
+- Authenticated research dashboard readback matched V8.16.0 and passed its research firewall checks. This is **not** readback of a new zero-pick C1 child.
+- Backup and downgrade guard passed; rollback, backfill, scan/import acceptance and push resend steps were skipped.
+- No post-deployment normal trading session has occurred. First prospective immutable C1 child/fingerprint readback is **PENDING**, not PASS and not a synthetic weekend sample.
+- Machine-readable receipt: `research/system1_zero_pick_class_b_deployment_20261004_v0_1.json`.
+
+Steps 1–4 below are completed; continue at step 5 after a genuine subsequent trading-day scan. Re-fetch latest main first; do not reimplement Class-A or redeploy merely to collect evidence.
 
 1. Check all three required CI runs on the PR's exact head; re-fetch main and inspect concurrent runtime changes.
 2. Present the PR, technical gate result and bounded storage/CPU risk for owner production approval. Do not equate Class-B acceptance with deploy authorization.
