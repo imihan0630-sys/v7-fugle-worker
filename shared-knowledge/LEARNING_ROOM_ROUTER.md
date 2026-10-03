@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-04 05:31 Asia/Taipei
+Updated: 2026-10-04 05:45 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -11,14 +11,15 @@ Formal Core impact: NONE
 
 ## 強制讀取順序
 
-1. **`shared-knowledge/RESEARCH_OUTPUT_CONTRACT.md`（研究輸出強制契約；每輪開始研究前必讀，送出研究回覆前必須再讀一次）**
-2. `shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md`
-3. **本檔 `shared-knowledge/LEARNING_ROOM_ROUTER.md`**
-4. `shared-knowledge/PROBABILISTIC_SELECTION_GOVERNANCE_V0_1.md`（跨系統選股決策角色與防過度過濾治理）
-5. `shared-knowledge/CURRICULUM_RETIREMENT_AND_CAPABILITY_LEDGER_V0_1.md`（模組退役、合併與功能責任移轉）
-6. `research/stock_market_learning_tracker_v0_1.json`（正式總模組數以檔內最新值為準；learningScope、L0-L5與完成度的機器權威）
-7. 自己專線的 dedicated checkpoint / research files
-8. `RESEARCH_ENGINEERING_GOVERNANCE.md`、`RESEARCH_CHECKPOINT.md` 與需要的 System 1 / System 2 bridge
+1. **`AGENTS.md`（全專案跨聊天室治理；包含模式＋模型＋思考強度主動路由規則）**
+2. **`shared-knowledge/RESEARCH_OUTPUT_CONTRACT.md`（研究輸出強制契約；每輪開始研究前必讀，送出研究回覆前必須再讀一次）**
+3. `shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md`
+4. **本檔 `shared-knowledge/LEARNING_ROOM_ROUTER.md`**
+5. `shared-knowledge/PROBABILISTIC_SELECTION_GOVERNANCE_V0_1.md`（跨系統選股決策角色與防過度過濾治理）
+6. `shared-knowledge/CURRICULUM_RETIREMENT_AND_CAPABILITY_LEDGER_V0_1.md`（模組退役、合併與功能責任移轉）
+7. `research/stock_market_learning_tracker_v0_1.json`（正式總模組數以檔內最新值為準；learningScope、L0-L5與完成度的機器權威）
+8. 自己專線的 dedicated checkpoint / research files
+9. `RESEARCH_ENGINEERING_GOVERNANCE.md`、`RESEARCH_CHECKPOINT.md` 與需要的 System 1 / System 2 bridge
 
 ## 全域學習聊天室強制運作規則
 

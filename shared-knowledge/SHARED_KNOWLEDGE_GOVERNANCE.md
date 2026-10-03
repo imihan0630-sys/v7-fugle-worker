@@ -50,10 +50,11 @@ Use for the multi-strategy selection platform:
 ## Read order
 
 Any research chat in System 1 or System 2 must read:
-1. `shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md`
-2. `RESEARCH_ENGINEERING_GOVERNANCE.md`
-3. the system-specific master/checkpoint
-4. the dedicated research lane evidence/checkpoint
+1. `AGENTS.md` — repository-wide cross-chat governance, including proactive mode + model + reasoning-effort routing
+2. `shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md`
+3. `RESEARCH_ENGINEERING_GOVERNANCE.md`
+4. the system-specific master/checkpoint
+5. the dedicated research lane evidence/checkpoint
 
 This rule replaces the need to manually re-instruct every chatroom.
 
