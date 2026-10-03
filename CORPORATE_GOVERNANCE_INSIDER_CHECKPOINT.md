@@ -1,8 +1,8 @@
 # Corporate Governance / Insider Checkpoint
 
-Updated: 2026-10-03 18:52 Asia/Taipei
+Updated: 2026-10-04 Asia/Taipei
 Scope: D21｜公司治理／經營者／內部人／控制權品質
-Status: D21-01 L2 PARTIAL_PIT_REPLAY / D21-02 L3 TAIWAN_PIT_VALIDATED / D21-03 L2 MECHANISM_FALSIFICATION_FROZEN / FORMAL_CORE_UNCHANGED
+Status: D21-01 L2 PARTIAL_PIT_REPLAY / D21-02 L3 TAIWAN_PIT_VALIDATED / D21-03 L2 CLUSTER_DEDUP_FROZEN / D21-04 L2 MECHANISM_FALSIFICATION_FROZEN / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - Canonical continuation checkpoint for D21.
@@ -64,5 +64,31 @@ Formal Core impact: NONE.
 
 ## Exact next continuation
 Build a historical D21-03 MOPS replay using at least one ex-ante transfer filing and one monthly holding-change case. Preserve original filing timestamp, event_clock_type, intended transfer amount/method, actual later holding delta when observable, related-person aggregation and pledge state. Demonstrate that sale-intent and monthly actual-change evidence are not collapsed into one timestamp. Then test whether multi-insider clustering adds information beyond event size and prior returns. D21-01 original MOPS annual-report first-known timestamp remains an unresolved dependency but does not block D21-03.
+
+Formal Core impact: NONE.
+
+
+## 2026-10-04 morning durable continuation
+
+### D21-03 historical insider replay deepening
+- Hon Hai 2317 has two same-day 2025-12-01 pre-transfer filings totaling 5,180 lots, each filed by a legal entity recorded as a major shareholder's nominee holder and each intending to transfer 100% of that entity's reported Hon Hai holding.
+- The two filing entities belong to the same ultimate major-shareholder relationship network. Raw filer count = 2 must therefore not be interpreted as two independent insider signals.
+- Relative to the ultimate major shareholder's publicly reported total Hon Hai position of about 1,742,198 lots, the 5,180-lot event is only about 0.30%, despite being 100% of each filing entity's own reported holding.
+- Cluster research must preserve raw_filer_count, related_group_count, ultimate_controller_count and independent_information_source_count separately.
+- Secondary MOPS-derived reconstruction indicates December 2025 market-sale net change of -5,180 lots and zero untransferred shares, consistent with full completion, but the original monthly MOPS first-known timestamp was not captured. These secondary records are reconstruction checks only.
+- Exact monthly known_at remains UNKNOWN; D21-03 stays L2 / 40%.
+- Future clustering tests must de-duplicate related entities and overlapping event windows, and control event size, prior return, firm size/liquidity, price position, transfer method, role, pledge state, controller structure and accounting/news context.
+
+### D21-04 share pledging contract
+- D21-04 advances L0 -> L2 / 40%.
+- Pledge evidence is decomposed into liquidity/funding, margin-call/forced-sale risk, control-retention/agency, corporate-policy spillover and voting-right/regulatory mechanisms.
+- Taiwan disclosure contract preserves both monthly pledge-change reporting and event-level pledge setup/release timing.
+- Company Act Article 197-1 is relevant where a public-company director pledges more than half of the shares held at election; the excess pledged shares can lose voting-right exercise/counting under the statutory rule.
+- Candidate pledge variables must normalize pledged shares to insider/controller-group holdings and shares outstanding, preserve setup/release events, related-group aggregation, concurrent insider sales, price drawdown/volatility/liquidity and controller/board context.
+- A margin-call price must NEVER be estimated from pledge ratio alone. Without loan-to-value, maintenance ratio, collateral terms and required loan inputs, margin_call_threshold = UNKNOWN.
+- Research role: RESEARCH_ONLY / GOVERNANCE_TAIL_RISK / CONFIDENCE. No hard gate and no Formal Core change.
+
+## Exact next continuation
+Build a historical D21-04 pledge PIT replay with at least one pledge setup and one release event, preferably for the same controller/issuer. Capture original known_at, pledged-share ratios at filer and controller-group levels, price path before/after, related insider transfers, corporate repurchase/financing context and Article 197-1 voting-right relevance. Keep D21-03 exact original monthly MOPS receipt as an unresolved dependency; do not let it block D21-04. Only after end-to-end historical pledge replay may D21-04 be considered for L3.
 
 Formal Core impact: NONE.
