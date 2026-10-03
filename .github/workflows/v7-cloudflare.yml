@@ -72,13 +72,8 @@ on:
       - "scripts/apply_v8_15_3.py"
       - "scripts/apply_v8_15_4.py"
       - "scripts/rebase_v8_12_*.py"
-      - "RESEARCH_WORKLIST.md"
-      - "research/**"
-      - "!research/**/*.md"
       - "data/v7_formal_scan_backfill.json"
       - "data/recovered_chat_selections.json"
-      - "tests/**"
-      - "!tests/inspect_official_quality_sources.mjs"
       - ".github/workflows/v7-cloudflare.yml"
 
 permissions:
