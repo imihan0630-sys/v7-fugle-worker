@@ -1,0 +1,112 @@
+{
+  "version": "0.1",
+  "id": "SC-044",
+  "capturedAt": "2026-10-03T14:00:00+08:00",
+  "module": "D10-14 Industrial Policy／Subsidy／Geopolitical Bottleneck產業政策補貼與地緣瓶頸",
+  "mode": "INDUSTRIAL_POLICY_AND_GEOPOLITICAL_TRANSMISSION_CONTRACT / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "sources": [
+    {
+      "authority": "IMF",
+      "url": "https://www.imf.org/en/publications/wp/issues/2026/07/24/industrial-policy-and-trade-tensions-in-strategic-sectors-578065",
+      "use": "2026 evidence on subsidy-driven trade reallocation, spillovers and tariff interaction."
+    },
+    {
+      "authority": "IMF",
+      "url": "https://www.imf.org/en/Blogs/Articles/2024/04/12/industrial-policy-is-back-but-the-bar-to-get-it-right-is-high",
+      "use": "Benefits, fiscal cost, government-failure and retaliation risks."
+    },
+    {
+      "authority": "WTO",
+      "url": "https://www.wto.org/english/res_e/publications_e/world-trade-report-2026_execsum_e.htm",
+      "use": "Industrial-policy interface, subsidy transparency gaps and fragmented-response risk."
+    },
+    {
+      "authority": "U.S. BIS",
+      "url": "https://www.bis.gov/press-release/department-commerce-closes-export-controls-loophole-foreign-owned-semiconductor-fabs-china",
+      "use": "Capacity-location policy example where licensing permits operation but not expansion/technology upgrade."
+    }
+  ],
+  "policyLifecycle": [
+    "POLICY_PROPOSAL",
+    "LEGISLATION_OR_PROGRAM_AUTHORIZATION",
+    "ELIGIBILITY_RULES",
+    "AWARD_OR_APPROVAL",
+    "CONTRACT_OR_CONDITIONS",
+    "DISBURSEMENT_OR_TAX_CREDIT_REALIZATION",
+    "CAPEX_COMMITMENT",
+    "CONSTRUCTION_EQUIPMENT_QUALIFICATION",
+    "PRODUCTION_RAMP",
+    "LOCAL_CONTENT_OR_GUARDRAIL_COMPLIANCE",
+    "RETALIATION_OR_COUNTERMEASURE",
+    "PROGRAM_EXPIRY_OR_REVISION"
+  ],
+  "transmissionVector": [
+    "CAPEX_COST_OF_CAPITAL",
+    "CAPACITY_LOCATION",
+    "LOCAL_CONTENT",
+    "SUPPLIER_LOCALIZATION",
+    "DEMAND_PULL",
+    "INPUT_COST",
+    "LABOR_AND_POWER_CONSTRAINT",
+    "TECHNOLOGY_ACCESS",
+    "TRADE_DIVERSION",
+    "PRICE_COMPETITION",
+    "RETALIATION",
+    "FISCAL_OR_COMPLIANCE_BURDEN"
+  ],
+  "mechanisms": [
+    "Subsidies/tax credits can change relative cost of capacity location and accelerate strategic-sector investment.",
+    "Industrial policy can create second-order demand for local suppliers, infrastructure and equipment when eligibility/local-content rules are binding.",
+    "Geopolitical bottlenecks can raise the option value of redundant capacity, inventory and geographic diversification."
+  ],
+  "falsification": [
+    "Program authorization or award does not equal usable capacity; construction, equipment, qualification and ramp clocks can be years apart.",
+    "A subsidy can intensify overcapacity and price competition, reducing margins even while physical capacity expands.",
+    "Benefits can leak abroad through imported equipment/materials or be offset by local labor, power, permitting and compliance constraints.",
+    "Retaliation, tariffs or counter-subsidies can offset first-order gains and redirect trade.",
+    "WTO/IMF evidence shows industrial policy can create cross-border distortions and welfare losses; 'subsidized sector' is not automatically 'good equity return'.",
+    "Geopolitical bottleneck narratives can fade if alternate suppliers, inventories or technology substitution emerge."
+  ],
+  "pitContract": {
+    "clocks": [
+      "policyAnnouncedAt",
+      "authorizedAt",
+      "eligibilityEffectiveAt",
+      "awardAt",
+      "disbursementAt",
+      "capexCommittedAt",
+      "constructionAt",
+      "qualificationAt",
+      "productionAt",
+      "capturedAt"
+    ],
+    "requiredBeneficiaryEvidence": [
+      "legalEntity",
+      "facility/location",
+      "eligibleProduct",
+      "award/credit amount or UNKNOWN",
+      "conditions/guardrails",
+      "capacity stage"
+    ],
+    "missingRule": "UNKNOWN remains UNKNOWN; announced amount is not disbursed amount and disbursed amount is not operating capacity.",
+    "revisionRule": "Program amendments, award changes and cancellations append new vintages.",
+    "outcomeFirewall": "Do not join stock returns until policy and physical-capacity clocks are frozen."
+  },
+  "redundancyControls": [
+    "Capacity lifecycle is owned jointly with D10-04; SC-044 records policy cause/conditions, not duplicate capacity points.",
+    "Macro fragmentation/regime belongs to D13; D10-14 owns supply-chain and capacity transmission.",
+    "Event-news half-life belongs to D17; do not score headline sentiment here."
+  ],
+  "maturityDecision": {
+    "D10-14": "PROMOTE_L0_TO_L2_MECHANISM_AND_FALSIFICATION_DEFINED"
+  },
+  "reasonNoL3": "No Taiwan issuer/facility program-award-to-capacity replay dataset with eligibility, disbursement, guardrails and physical ramp clocks has yet been frozen.",
+  "exactNext": [
+    "SC-046 build one Taiwan strategic-industry policy-to-capacity receipt with official program/award and issuer/facility evidence.",
+    "Use one negative control where announced/approved support did not translate promptly into operating capacity or margin.",
+    "No subsidy-beneficiary score until redundancy versus capex/capacity/valuation and OOS effects are tested."
+  ],
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / POLICY_TO_CAPACITY_CLOCKS_FROZEN / TAIWAN_PIT_RECEIPT_PENDING / FORMAL_UNCHANGED"
+}
