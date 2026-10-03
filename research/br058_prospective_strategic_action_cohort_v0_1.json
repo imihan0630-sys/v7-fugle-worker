@@ -1,0 +1,89 @@
+{
+  "version": "0.1",
+  "id": "BR-058",
+  "capturedAt": "2026-10-04T07:37:00+08:00",
+  "module": "D09-14 Market Share／Entry Barrier／Substitution／Competitive Strategy市占、進入障礙、替代與競爭策略",
+  "mode": "PROSPECTIVE_STRATEGIC_ACTION_COHORT_FREEZE / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "purpose": "Freeze new issuer strategic actions before future outcomes are opened, creating the first truly prospective D09-14 cohort.",
+  "cohortFreezeAt": "2026-10-04T07:37:00+08:00",
+  "actions": [
+    {
+      "symbol": "2303",
+      "issuer": "聯電",
+      "actionPublishedAt": "2026-07-29",
+      "actionType": "PHASED_CAPACITY_EXPANSION_WITH_CUSTOMER_COMMITMENT",
+      "source": "UMC official press release",
+      "frozenFacts": [
+        "Board approved phased expansion plan.",
+        "Immediate cleanroom-capacity expansion in Singapore.",
+        "New fab-building shell construction to begin at Tainan flagship campus.",
+        "Company states near-term capex is aligned with secured long-term customer commitments."
+      ],
+      "frozenHypothesis": "Phased expansion may shorten future capacity lead time while limiting near-term capital overbuild risk.",
+      "counterHypothesis": "Demand can weaken, customer commitments can change, shell capacity may not become qualified economic capacity, and later capex can still destroy returns.",
+      "outcomeStateAtFreeze": "UNKNOWN",
+      "prohibitedAtFreeze": [
+        "future HVM outcome",
+        "future utilization",
+        "future margin",
+        "future market share",
+        "future stock return"
+      ]
+    },
+    {
+      "symbol": "2317",
+      "issuer": "鴻海",
+      "actionPublishedAt": "2026-04-24",
+      "actionType": "AUTOMOTIVE_BUSINESS_JOINT_OPERATION_MOU",
+      "source": "Foxconn official release",
+      "frozenFacts": [
+        "Foxconn and Mitsubishi Electric signed an MOU to explore joint operation of automotive equipment business.",
+        "Discussion includes potential transfer of 50% of Mitsubishi Electric Mobility shares to Foxconn.",
+        "Final agreement remains conditional on commercial terms, negotiations, contract signing and regulatory requirements."
+      ],
+      "frozenHypothesis": "Joint operation could broaden automotive component capability and customer/technology access.",
+      "counterHypothesis": "MOU may never become a definitive transaction; valuation, governance, integration or regulatory terms may prevent closing.",
+      "outcomeStateAtFreeze": "MOU_ONLY / DEFINITIVE_AGREEMENT_UNKNOWN",
+      "prohibitedAtFreeze": [
+        "deal completion",
+        "synergy realization",
+        "revenue/margin effect",
+        "stock return"
+      ]
+    }
+  ],
+  "preregisteredOutcomeWindows": {
+    "operational": [
+      "6 months after cohort freeze",
+      "12 months after cohort freeze"
+    ],
+    "financial": [
+      "next 2 reported quarters after material implementation",
+      "next 4 reported quarters"
+    ],
+    "relativePosition": [
+      "12 months",
+      "24 months where compatible industry denominator exists"
+    ],
+    "stockResearch": "Blocked. Any later D20/D60/D120-style market outcome test requires separate D16 preregistration, common support and outcome-opening receipt."
+  },
+  "futureOutcomeAppendRules": [
+    "Append only issuer-native or regulator-confirmed milestones on their publication clocks.",
+    "Do not retroactively alter the frozen hypothesis/counterhypothesis.",
+    "DELAYED != FAILED; MOU_ONLY != COMPLETED; BUILDING_SHELL != QUALIFIED_CAPACITY.",
+    "No action success score across incomparable actions.",
+    "A later outcome must identify whether it is operational, financial, relative-position or stock-market outcome."
+  ],
+  "maturityDecision": {
+    "D09-14": "KEEP_L3 / FIRST_TRUE_PROSPECTIVE_COHORT_FROZEN"
+  },
+  "reasonNoL4": "L4 requires prospective outcome evidence; this receipt only freezes the pre-outcome cohort and windows. Outcomes remain unknown by design.",
+  "exactNext": [
+    "BR-060 append future operational milestones for these actions only when newly published.",
+    "Do not open stock outcomes until separate D16 preregistration authorizes the exact cohort/horizon/baseline.",
+    "Add at least two more prospectively frozen actions before any cohort-level inference."
+  ],
+  "status": "FIRST_PROSPECTIVE_ACTION_COHORT_FROZEN / TWO_ISSUERS / OUTCOMES_CLOSED / NO_HINDSIGHT_REWRITE / FORMAL_UNCHANGED"
+}
