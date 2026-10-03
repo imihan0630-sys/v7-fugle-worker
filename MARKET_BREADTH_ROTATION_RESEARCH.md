@@ -2004,3 +2004,48 @@ BR-047: append additional cross-industry theme bridges under the same prospectiv
 BR-048: seek effective-dated historical exposure vintages before any historical theme-return study.
 
 Formal Core unchanged.
+
+
+## BR-049 — Industry structure is a state vector, not a moat label
+
+Artifact:
+`research/br049_industry_structure_five_forces_contract_v0_1.json`
+
+D09-13 is initialized with a Five Forces / industry-structure research contract. The contract converts rivalry, entry, substitution, supplier power and buyer power into observable, effective-dated fields rather than a narrative score.
+
+Key falsification:
+- concentration is not equivalent to weak competition;
+- a structurally attractive industry does not prove a specific issuer wins;
+- cyclical scarcity can mimic durable barriers;
+- regulation can simultaneously raise entry barriers and constrain profitability;
+- firm resources/capabilities remain a competing explanation.
+
+PIT rules:
+- product/geographic market definition is a vintage;
+- missing evidence remains UNKNOWN;
+- no current taxonomy backfill;
+- no stock/future-margin outcome while classifying force states.
+
+Maturity: `D09-13 L0 -> L2` for mechanism + falsification only. Taiwan PIT data feasibility is not yet established.
+
+## BR-050 — Market share requires a denominator; entry barriers and substitutes require explicit evidence
+
+Artifact:
+`research/br050_market_share_entry_substitution_contract_v0_1.json`
+
+D09-14 now separates:
+- revenue / shipment / capacity / installed-base share;
+- sunk capex and minimum efficient scale;
+- customer qualification, IP/process know-how, scarce-input access, switching costs, network/data effects and multi-level entry;
+- functional substitution, price-performance, qualification time, switching cost and customer acceptance.
+
+A reported market share is unusable if product, geography, period or denominator is missing. Historical share cannot be assumed to equal future competitive significance after technology, capacity, regulation or customer-sourcing changes.
+
+Maturity: `D09-14 L0 -> L2` for mechanism + falsification only.
+
+### Exact next
+- BR-051: first Taiwan industry-structure PIT receipt for one priority industry.
+- BR-052: first Taiwan market-share / entry-barrier / substitution receipt with explicit denominator and a negative control.
+- Existing BR-038/040/043/045/047 lanes remain valid and are not overwritten.
+
+Formal Core unchanged.
