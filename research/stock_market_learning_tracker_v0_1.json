@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T18:43:22+08:00",
+  "updatedAt": "2026-10-03T19:02:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -263,11 +263,11 @@
         "TECHNICAL_INDICATOR_CHECKPOINT.md",
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
       ],
-      "maturityPct": 51.7,
-      "status": "TREND_PERSISTENCE_L3 / DIVERGENCE_PIT_L3 / RAW_RECEIPT_GATE_ACCUMULATING_2_OF_3",
+      "maturityPct": 53.3,
+      "status": "TREND_PERSISTENCE_L3 / DIVERGENCE_PIT_L3 / MULTITIMEFRAME_PIT_L3 / RAW_RECEIPT_GATE_ACCUMULATING_2_OF_3",
       "lastResearchUpdate": "2026-10-03",
-      "researchNote": "TI-474~490 promote D03-03 trend persistence and D03-12 repaint-safe divergence to Taiwan PIT data-feasibility maturity. Persistence research recovers the exact weighted own-path formula, proves same ret5/10/20/60 endpoints can still score 100 vs 84.25 from path sign frequency, and freezes Taiwan zero-return/tick/liquidity confounding. Divergence research separates pivotAt from confirmedAt/firstObservableAt, freezes consecutive same-scale confirmed pivot pairing, charges confirmation lag, forbids historical episode repaint, and joins Pattern confirmed-swing provenance with D03 indicator formula/state lineage without a new market-data family. D03-11 ROC remains retired into D03-02. Active D03 modules=12; aggregate=51.7%. Raw-byte source gate remains 2/3 over the weekend; outcomes and Formal Core remain closed.",
-      "exactNextContinuationPoint": "Keep the raw-byte completed-session gate at 2/3 over the weekend. Keep persistence/divergence contracts research-only. Continue D03-13 multi-timeframe PIT feasibility by proving weekly/daily/15m causal aggregation-boundary and partial-bar clocks plus source lineage; do not count timeframe agreement as independent votes. TI-005 KD-vs-RSI and TI-006 MACD-vs-direct-trend efficacy remain blocked until the raw receipt gate genuinely closes.",
+      "researchNote": "TI-491~503 validate causal multi-timeframe PIT construction. Weekly state is calendar-aware deterministic aggregation from eligible daily bars and partial-vs-completed semantics are explicit; Daily LIVE/FINAL maps to PROVISIONAL/CONFIRMED under the existing System2 close-finality gate; M15 reuses Fugle completed-bar filtering plus persisted bar_start/bar_end/source_fetched_at provenance. Current zero-extra-call M15 coverage is explicitly bounded to 17/18 regular-session slots, through 13:15, with the 13:15-13:30 closing bar unobserved. Alignment remains hierarchical context, not vote count. D03-13 advances L2/40 to L3/60; 12-module D03 aggregate becomes 53.3%. Raw-byte source gate remains 2/3; outcomes and Formal Core remain closed.",
+      "exactNextContinuationPoint": "Keep raw-byte completed-session gate at 2/3 over the weekend. Do not impute the missing 13:15 M15 bar or expand runtime from this research room. Future M15 inference requires featureKnownAt/common support and daily-setup conditioning; weekly inference requires equal-horizon/boundary controls. Continue D03-04 momentum continuation versus D03-03 persistence and D03-02 direct-return family, focusing on construct separation and Taiwan PIT feasibility. TI-005/TI-006 remain first efficacy tests after source gate completion.",
       "modules": [
         {
           "id": "D03-01",
@@ -366,10 +366,12 @@
         {
           "id": "D03-13",
           "name": "多時間框架趨勢／動能衝突",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「多時間框架趨勢／動能衝突」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED_WITH_BOUNDED_INTRADAY_COVERAGE / OUTCOME_UNKNOWN",
+          "next": "Use calendar-aware weekly completion, daily provisional/final clocks, and M15 featureKnownAt with explicit 17/18 slot coverage. No timeframe vote counting or closing-M15 imputation; future alpha work requires equal-horizon/common-support controls."
         }
       ]
     },
