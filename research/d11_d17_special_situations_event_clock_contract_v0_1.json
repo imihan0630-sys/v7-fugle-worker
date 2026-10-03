@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-10-03 Asia/Taipei",
+  "status": "RESEARCH_ONLY_MECHANISM_FALSIFICATION_FROZEN_OUTCOMES_CLOSED",
+  "owner": "08｜事件與新聞研究室",
+  "formalCoreImpact": "NONE",
+  "modules": [
+    "D11-15",
+    "D11-16",
+    "D11-17",
+    "D11-18",
+    "D11-19",
+    "D17-14"
+  ],
+  "clockFields": [
+    "eventFamily",
+    "eventId",
+    "stage",
+    "eventOccurredAt",
+    "boardApprovedAt",
+    "shareholderApprovedAt",
+    "regulatoryFiledAt",
+    "sourcePublishedAt",
+    "capturedAt",
+    "effectiveFromSession",
+    "tradableFromSession",
+    "settlementOrClosingAt",
+    "expectedAt",
+    "expectedWindow",
+    "expectedState",
+    "realizedState",
+    "revisionOf",
+    "cancelledAt",
+    "sourceVersion",
+    "rawPayloadHash",
+    "parserVersion",
+    "dataQuality",
+    "pointInTimeEligible"
+  ],
+  "replayRules": {
+    "conservativeAvailability": "capturedAt until source-native availability is independently authenticated",
+    "revisions": "append-only; never overwrite earlier replay state",
+    "missing": "UNKNOWN; never coerce to 0/BAD/NO_EVENT",
+    "negativeEvidence": "NO_KNOWN_EVENT requires expected-versus-observed source-lane coverage",
+    "outcomes": "CLOSED until preregistered PIT/source-version gates pass",
+    "historicalShadow": "FORBIDDEN to fabricate from current/ex-post sources"
+  },
+  "eventFamilies": {
+    "D11-15": {
+      "stages": [
+        "APPLICATION",
+        "APPROVAL",
+        "UNDERWRITING_METHOD",
+        "RANGE_KNOWN",
+        "BOOKBUILDING_OR_AUCTION",
+        "FINAL_PRICE",
+        "ALLOCATION",
+        "FIRST_TRADABLE_SESSION"
+      ],
+      "failureStates": [
+        "WITHDRAWN",
+        "FAILED",
+        "POSTPONED",
+        "UNKNOWN"
+      ],
+      "status": "L2_MECHANISM_FALSIFICATION_FROZEN_PIT_CAPTURE_PENDING"
+    },
+    "D11-16": {
+      "stages": [
+        "LOCKUP_DEFINED",
+        "LOCKED",
+        "RELEASE_SCHEDULED",
+        "PARTIAL_RELEASE_AVAILABLE",
+        "FULL_RELEASE_AVAILABLE"
+      ],
+      "separateRealization": [
+        "ACTUAL_RELEASE",
+        "INSIDER_SALE",
+        "BORROW_AVAILABILITY",
+        "PLEDGE_RELEASE"
+      ],
+      "status": "L2_MECHANISM_FALSIFICATION_FROZEN_PIT_CAPTURE_PENDING"
+    },
+    "D11-17": {
+      "stages": [
+        "PROPOSAL",
+        "SHAREHOLDER_AUTH",
+        "PRICING",
+        "SUBSCRIBER_FIXED",
+        "PAYMENT_COMPLETE",
+        "DELIVERY",
+        "RESTRICTED_HOLDING",
+        "PUBLIC_ISSUANCE_ELIGIBILITY",
+        "LISTING_OR_OTHER_EXIT"
+      ],
+      "guards": [
+        "PUBLIC_OFFERING_NE_PRIVATE_PLACEMENT",
+        "REGISTERED_NE_LISTED_NE_TRADABLE_NE_FREE_FLOAT"
+      ],
+      "status": "L2_MECHANISM_FALSIFICATION_FROZEN_PIT_CAPTURE_PENDING"
+    },
+    "D11-18": {
+      "stages": [
+        "FILED_ANNOUNCED",
+        "TENDER_OPEN",
+        "CONDITION_PENDING",
+        "REGULATORY_PENDING",
+        "CONDITION_MET",
+        "TENDER_CLOSED",
+        "PAYMENT_SETTLEMENT",
+        "DELISTING_PROCESS",
+        "DELISTED"
+      ],
+      "failureStates": [
+        "MINIMUM_NOT_MET",
+        "REGULATORY_FAILURE",
+        "WITHDRAWAL_OR_STOP_APPROVED",
+        "PAYMENT_FAILURE",
+        "EXTENDED",
+        "TERMS_REVISED",
+        "UNKNOWN"
+      ],
+      "status": "L2_MECHANISM_FALSIFICATION_FROZEN_PIT_CAPTURE_PENDING"
+    },
+    "D11-19": {
+      "stages": [
+        "AGREEMENT",
+        "TERMS_KNOWN",
+        "SHAREHOLDER_PENDING",
+        "REGULATORY_PENDING",
+        "CLOSING_CONDITIONS_PENDING",
+        "CLOSE"
+      ],
+      "failureStates": [
+        "BREAK",
+        "REPRICE",
+        "EXTEND",
+        "UNKNOWN"
+      ],
+      "dependencyOwner": "D11-06 owns underlying transaction state; D11-19 owns tradable special-situations payoff/hedge/break-risk geometry",
+      "status": "L2_MECHANISM_FALSIFICATION_FROZEN_PIT_CAPTURE_PENDING"
+    },
+    "D17-14": {
+      "stages": [
+        "RUMOR",
+        "DRAFT_OR_CONSULTATION",
+        "PREANNOUNCEMENT",
+        "SCHEDULED_DECISION",
+        "FINAL_DECISION_PUBLISHED",
+        "IMPLEMENTATION_RULE",
+        "EFFECTIVE",
+        "REVISED",
+        "DELAYED",
+        "CANCELLED",
+        "COURT_STAY",
+        "UNKNOWN"
+      ],
+      "surpriseRule": "realized minus ex-ante expectation only with compatible units and an archived expectation source; otherwise UNKNOWN",
+      "dependencies": [
+        "D10 supply-chain transmission only",
+        "D13 macro/geopolitical controls only"
+      ],
+      "status": "L2_MECHANISM_FALSIFICATION_FROZEN_PIT_CAPTURE_PENDING"
+    }
+  },
+  "falsification": {
+    "includeFailuresAndWithdrawals": true,
+    "selectionBiasGuard": true,
+    "lookAheadGuard": true,
+    "revisionGuard": true,
+    "duplicateClusterGuard": true,
+    "dateClusterGuard": true,
+    "multipleTestingGuard": true,
+    "factorZooGuard": true,
+    "transactionCostGuard": true,
+    "redundancyGuard": true
+  },
+  "maturityDecision": {
+    "D11-15": "L0_TO_L2",
+    "D11-16": "L0_TO_L2",
+    "D11-17": "L0_TO_L2",
+    "D11-18": "L0_TO_L2",
+    "D11-19": "L0_TO_L2",
+    "D17-14": "L0_TO_L2",
+    "D11_maturityPct_after": 50.5,
+    "D17_maturityPct_after": 41.4,
+    "Room08_moduleWeightedPct_after": 46.7
+  },
+  "optimization": {
+    "formalOptimizationCandidate": false,
+    "reason": "No L3 PIT replay validation, no prospective/OOS outcome evidence, no cost/redundancy/multi-regime robustness."
+  },
+  "governance": {
+    "engineeringClass": "CLASS_A_RESEARCH_DOCUMENTATION_SCHEMA_ONLY",
+    "productionChange": false,
+    "formalCoreLocked": true
+  }
+}
