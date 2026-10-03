@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 19:25 Asia/Taipei
+Updated: 2026-10-04 07:20 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -1273,3 +1273,25 @@ Reusable tender-offer rule:
 
 D11-18 = L3 Taiwan PIT/source feasibility. Failed-tender negative control remains required before L4.
 Current Room08: D11=53.7%, D17=41.4%, module-weighted=48.5%.
+
+
+### D03 observable pullback/reversal rule — 2026-10-04
+
+Status: **TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / ORIGIN_OPTIONAL**.
+
+Owner-approved H07 separates:
+- D03-05 observable pullback/reversal price phenomenon;
+- D20-09 behavioral overreaction cause;
+- D05/D08/D09/D18 causal/context owner receipts.
+
+Reusable rule:
+1. Observable episode existence does not require causal-origin certainty.
+2. Daily parent may reuse frozen A/PULLBACK geometry; completed M15 episode chronology must use exact contiguous expected slots.
+3. Zone entry/reversal seed is not confirmation. Confirmation requires a later completed bar with higher-low + bullish turn-up.
+4. Signal time is confirmation-bar known-at, never backdated to the pullback low.
+5. Failed zone-break/down-volume states are first-class and episode history is append-only.
+6. Missing owner-cause evidence => UNKNOWN_ORIGIN; candle morphology never proves liquidity pressure.
+7. Generic short-term reversal factor remains rejected/redundant.
+8. D03-05 is L3/60 for the observable phenomenon only; no alpha/Formal claim.
+
+Raw source-version 3/3 is a necessary source-clock gate, not sufficient proof of full Technical Indicator R1/R4/R5 readiness. Immutable parent, TECHNICAL_CONTINUITY, symbol-session/price-limit and state-construction gates remain separate.
