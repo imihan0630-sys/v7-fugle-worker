@@ -296,7 +296,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | 02｜價量研究室 | D02 | 12 | 48.3% | 價量關係 |
 | 03｜技術指標與趨勢動能研究室 | D03 | 12 | 51.7% | 趨勢／動能／反轉／技術指標 |
 | 04｜波動與市場微結構研究室 | D04＋D05 | 24 | 36.7% | 波動率／市場微結構／市場完整性 |
-| 05｜法人與籌碼研究室 | D06 | 17 | 40% | 法人／籌碼／ETF mechanics／借券／擁擠 |
+| 05｜法人與籌碼研究室 | D06 | 17 | 44.7% | 法人／籌碼／ETF mechanics／借券／擁擠 |
 | 06｜基本面與估值研究室 | D07＋D08 | 52 | 19.2% | 基本面／無形資本／進階會計／反向DCF／估值 |
 | 07｜產業與供應鏈研究室 | D09＋D10 | 27 | 46.7% | 產業結構／競爭／供應鏈／公司曝險映射／政策傳導 |
 | 08｜事件與新聞研究室 | D11＋D17 | 33 | 39.4% | 公司事件／初級市場／新聞與政策事件 |
@@ -441,7 +441,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 必讀 checkpoint：`INSTITUTIONAL_CROWDING_RESEARCH.md`、`LEVERAGE_SHORTING_CHECKPOINT.md`、`PASSIVE_FLOW_INDEX_REBALANCING_CHECKPOINT.md`  
 禁止：不得把其他 Dxx 領域當成本聊天室主線；跨領域發現只能建立 dependency（依賴）或引用證據，不能雙重計算進度。
 
-### D06｜法人／籌碼／槓桿／擁擠／被動資金 — 40%
+### D06｜法人／籌碼／槓桿／擁擠／被動資金 — 44.7%
 
 | 模組 | 研究模組 | 學習範圍 | 等級 | 完成度 |
 |---|---|---|---|---:|
@@ -460,8 +460,8 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | D06-13 | 券商分點／主力代理變數 | 聚焦「券商分點／主力代理變數」。研究券商總分公司買賣、分點集中度、持續性與流向反應，但必須區分執行通路與受益人身分；總公司自營混入、同分點多客戶、同客戶多分點、券商代碼Vintage、熱門股樣本選擇偏誤與資料授權／成本都必須納入。不得把分點淨買直接標成主力、聰明錢或單一大戶；每個結論需正反驗證、PIT、完整母體與增量價值檢查。 | L2 機制＋反證已定義 | 40% |
 | D06-14 | 當沖率／短線換手 | 聚焦「當沖率／短線換手」。研究個股與市場當沖成交股數／金額占比、短線換手與注意力／流動性／擁擠的交互作用；原始量必須按個股成交量值、橫截面與自身歷史正規化，並控制當沖資格、處置／變更交易、規則Vintage與市場Regime。高當沖不得直接解讀為多或空，買賣金額差也不得當作乾淨方向部位；需正反驗證其對波動、假突破、MAE/MFE與續航的增量價值。 | L2 機制＋反證已定義 | 40% |
 | D06-15 | 官股行庫／特定資金流 | 聚焦「官股行庫／特定資金流」。研究公股行庫逆勢承接、正常化賣出、與外資／投信／市場壓力的背離及可能的穩定市場脈絡；必須區分公股行庫一般投資、政府基金、國安基金與透過公股券商路由的交易，未有獨立證據時動機與最終受益人均為UNKNOWN。初期只作Context／Warning Modifier研究，不得把公股買進直接當利多或公股賣出直接當利空。 | L2 機制＋反證已定義 | 40% |
-| D06-16 | ETF Mechanics：Creation／Redemption／AP／Premium-Discount／Tracking／Liquidity ETF申贖、參與券商、溢折價、追蹤與流動性 | 聚焦 ETF Mechanics（ETF運作機制）：Creation／Redemption（申購贖回）、Authorized Participant／AP（參與券商）、NAV Premium-Discount（淨值溢折價）、Tracking Difference（追蹤差異）與 Underlying Liquidity（成分資產流動性）。研究申贖套利、機械式資金流、成分股供需與流動性傳導；需區分真正方向性資金、機械式申贖、對沖與再平衡，並與 D06-11 被動資金／指數再平衡分工。原 D06-17 完整範圍由本模組承接。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）、可重播性、資料品質、冗餘、成本與對 System 1／System 2 的增量價值；不得直接進 Formal。 | L0 未研究 | 0% |
-| D06-18 | Securities Lending Economics／Borrow Fee／Availability／Utilization借券經濟、費率、可借量與使用率 | 聚焦「Securities Lending Economics／Borrow Fee／Availability／Utilization借券經濟、費率、可借量與使用率」。研究ETF申贖套利、溢折價、追蹤差異、成分股流動性與證券借貸經濟；需區分資金流、機械式申贖、借券需求、對沖與方向性放空，避免把借券量或ETF流量直接當方向性訊號。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
+| D06-16 | ETF Mechanics：Creation／Redemption／AP／Premium-Discount／Tracking／Liquidity ETF申贖、參與券商、溢折價、追蹤與流動性 | 聚焦 ETF Mechanics（ETF運作機制）：Creation／Redemption（申購贖回）、Authorized Participant／AP（參與券商）、NAV Premium-Discount（淨值溢折價）、Tracking Difference（追蹤差異）與 Underlying Liquidity（成分資產流動性）。研究申贖套利、機械式資金流、成分股供需與流動性傳導；需區分真正方向性資金、機械式申贖、對沖與再平衡，並與 D06-11 被動資金／指數再平衡分工。原 D06-17 完整範圍由本模組承接。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）、可重播性、資料品質、冗餘、成本與對 System 1／System 2 的增量價值；不得直接進 Formal。 | L2 機制＋反證已定義 | 40% |
+| D06-18 | Securities Lending Economics／Borrow Fee／Availability／Utilization借券經濟、費率、可借量與使用率 | 聚焦「Securities Lending Economics／Borrow Fee／Availability／Utilization借券經濟、費率、可借量與使用率」。研究ETF申贖套利、溢折價、追蹤差異、成分股流動性與證券借貸經濟；需區分資金流、機械式申贖、借券需求、對沖與方向性放空，避免把借券量或ETF流量直接當方向性訊號。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 
 
 ## 06｜基本面與估值研究室
