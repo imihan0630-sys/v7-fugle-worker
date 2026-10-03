@@ -56,7 +56,7 @@ const statesBBB=C3_CAPTURE_SLOTS.slice(0,-1).map(slot=>{
 });
 
 const audit=auditC3LiveInputs(c2,{captureRows,geometryReceipts,formalBaselineReceipts,priorCloseReceipts,barStateReceipts:[...statesAAA,...statesBBB]});
-eq(audit.schemaVersion,"SYSTEM1_C3_LIVE_INPUT_AUDIT_V0_2");
+eq(audit.schemaVersion,"SYSTEM1_C3_LIVE_INPUT_AUDIT_V0_3");
 eq(audit.eligibleN,2);
 eq(audit.readyN,1);
 eq(audit.blockedN,1);
@@ -69,6 +69,7 @@ eq(audit.selectionDepthNeverImputed,true);
 eq(audit.selectionLateStageNeverImputed,true);
 eq(audit.limitStateNeverImputed,true);
 eq(audit.readyReceipts.length,1);
+eq(audit.readyReceipts[0].formalBaseline.verified,true);
 eq(audit.readyReceipts[0].bars.length,17);
 ok(audit.readyReceipts[0].bars.every(x=>typeof x.limitUp==="boolean"&&typeof x.lateStage==="boolean"));
 eq(audit.rows.find(x=>x.symbol==="AAA").selectionDepthVerified,true);
@@ -79,6 +80,16 @@ const c2NullDepth={...c2,pairs:c2.pairs.map(x=>x.symbol==="AAA"?{...x,selectionC
 const auditNullDepth=auditC3LiveInputs(c2NullDepth,{captureRows,geometryReceipts,formalBaselineReceipts,priorCloseReceipts,barStateReceipts:[...statesAAA,...statesBBB]});
 eq(auditNullDepth.rows.find(x=>x.symbol==="AAA").status,"INPUT_BLOCKED");
 ok(auditNullDepth.rows.find(x=>x.symbol==="AAA").blockers.includes("SELECTION_DEPTH_UNVERIFIED"));
+
+const auditNoFormalBaseline=auditC3LiveInputs(c2,{captureRows,geometryReceipts,formalBaselineReceipts:[],priorCloseReceipts,barStateReceipts:[...statesAAA,...statesBBB]});
+eq(auditNoFormalBaseline.rows.find(x=>x.symbol==="AAA").status,"READY");
+eq(auditNoFormalBaseline.readyReceipts[0].formalBaseline.status,"UNKNOWN");
+eq(auditNoFormalBaseline.readyReceipts[0].formalBaseline.verified,false);
+eq(auditNoFormalBaseline.formalBaselineMissingDoesNotBlockChallenger,true);
+eq(auditNoFormalBaseline.formalBaselineUnknownNeverCountedAsNoTrigger,true);
+const c3NoBaseline=buildC3EntryExperiment(c2,auditNoFormalBaseline.readyReceipts,{costs:{brokerFeeBpsPerSide:14.25,sellTaxBps:30,slippageBpsPerSide:5}});
+eq(c3NoBaseline.tally.formalBaselineUnknownN,1);
+eq(c3NoBaseline.tally.formalNoTriggerChallengerSimFillN,0);
 
 const c3=buildC3EntryExperiment(c2,audit.readyReceipts,{costs:{brokerFeeBpsPerSide:14.25,sellTaxBps:30,slippageBpsPerSide:5}});
 eq(c3.tally.receiptN,1);
