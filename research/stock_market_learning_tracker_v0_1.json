@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T15:13:00+08:00",
+  "updatedAt": "2026-10-03T18:18:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -2284,7 +2284,7 @@
         "PORTFOLIO_RISK_CHECKPOINT.md",
         "PORTFOLIO_RISK_RESEARCH.md"
       ],
-      "maturityPct": 36.2,
+      "maturityPct": 38.1,
       "modules": [
         {
           "id": "D15-01",
@@ -2431,12 +2431,13 @@
         {
           "id": "D15-19",
           "name": "Kelly／Fractional Kelly凱利與分數凱利",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Kelly／Fractional Kelly凱利與分數凱利」。研究投組最佳化、風險預算、配置約束與績效／風險歸因。任何最佳化都必須控制估計誤差、集中度、流動性、成本、約束敏感度與基準選擇，且不得用未來報酬倒推最佳權重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / VALIDATION_THEN_STRONG_MERGE_CANDIDATE / POSITION_SIZING_METHOD / DEPENDS_D16_25. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
-          "levelMeaning": "未研究",
-          "status": "OWNER_APPROVED / VALIDATION_THEN_STRONG_MERGE_CANDIDATE / POSITION_SIZING_METHOD / DEPENDS_D16_25",
-          "next": "由 10｜投組風控與交易執行研究室等待 D16-25 機率校準／不確定性研究成熟，再比較 Kelly／Fractional Kelly 與固定風險、風險預算、簡化 sizing。若功能可完整承接且不掉語意，再提案併入 position sizing／probabilistic decision；現在不合併。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_SPECIALIST_DEEPENED / K1_K8_CONTRACT / FAIL_CLOSED_ELIGIBILITY_VALIDATOR / ROBUST_SIZING_R0_R6_FROZEN / REAL_TAIWAN_PIT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED",
+          "next": "優先續接 D15-19：以 research/d15_kelly_eligibility_validator_v0_1.mjs 為入口，先完成 synthetic invariants 與 continuous/scenario log-growth simulator；再等待 D16-25 真實 complete Taiwan PIT probability/distribution receipt 做 R0-R6 common-support replay。無真實 PIT 不升 L3；無 OOS/Prospective Shadow＋成本／冗餘／多 Regime 不形成 Formal candidate。",
+          "evidence": "research/D15_19_KELLY_FRACTIONAL_KELLY_RESEARCH_CONTRACT_20261003_V0_1.md + research/D15_19_KELLY_ELIGIBILITY_AND_ROBUST_SIZING_20261003_V0_1.md + research/d15_kelly_eligibility_validator_v0_1.mjs + tests/test_d15_kelly_eligibility_validator_v0_1.mjs. Full Kelly is theoretical comparator; Fractional Kelly is not universal; robust families R0-R6 separate current/simple-risk/full/fractional/uncertainty-shrunk/drawdown-constrained/distributionally-robust sizing. PriorityScore is not probability. Real Taiwan PIT calibrated-edge evidence remains pending."
         },
         {
           "id": "D15-21",
