@@ -2657,3 +2657,291 @@ Formal Core remains LOCKED.
 2. Continue D13-17 trade/geopolitical/capital-flow transmission with event/flow clocks separated.
 3. Keep composite financial-condition/liquidity features behind component-level redundancy gates.
 4. No Formal macro/liquidity score before PIT/OOS evidence.
+
+
+---
+
+## MC-113 — D13-17 starts with a policy/legal/flow clock stack, not one event timestamp
+
+Trade/geopolitical policy research must preserve at least:
+
+1. rumor / unverified report;
+2. investigation or consultation;
+3. proposed action;
+4. final action announcement;
+5. legal publication / rule text;
+6. effective date;
+7. compliance / customs-entry date;
+8. exclusion, temporary/general-license, grandfather or expiration window;
+9. realized shipment/trade/financial flow;
+10. market reaction.
+
+These objects can occur on different dates and sometimes different time zones.
+
+Therefore:
+`NEWS_DATE = POLICY_EFFECTIVE_DATE`
+is prohibited unless the source explicitly makes them identical.
+
+Status: POLICY EVENT-CLOCK STACK FROZEN.
+
+---
+
+## MC-114 — USTR tariff actions demonstrate announcement and customs-effective clocks must be separate
+
+USTR Section 301 processes can include:
+- investigation initiation;
+- consultation;
+- proposed action;
+- comment/hearing periods;
+- final action.
+
+The legal/economic application to imports may then be specified through customs-entry language such as goods entered for consumption on or after a stated time.
+
+A tariff's actual exposure therefore depends on:
+- product/HTS scope;
+- origin;
+- entry/withdrawal date;
+- exclusions;
+- transition rules.
+
+A press release alone cannot determine shipment-level tariff incidence.
+
+Status: TARIFF ANNOUNCEMENT VS CUSTOMS-EFFECTIVE FIREWALL FROZEN.
+
+---
+
+## MC-115 — trade policy uncertainty is a separate economic mechanism from the tariff level
+
+Federal Reserve research finds higher Trade Policy Uncertainty (TPU) can reduce investment and activity because firms delay or alter production/investment under uncertainty.
+
+But:
+- TPU is an uncertainty state;
+- statutory tariff rate is a policy level;
+- realized import cost is an economic outcome;
+- sector/company exposure is another object.
+
+A high TPU state can exist before a final tariff is known, after a proposal is delayed, or while different sectors face opposing effects.
+
+Therefore:
+`TPU_HIGH`
+cannot be converted into a single Taiwan bullish/bearish direction.
+
+Status: TPU VS REALIZED POLICY SEPARATION FROZEN.
+
+---
+
+## MC-116 — export-control rules require rule-specific effective/compliance semantics
+
+BIS semiconductor-control examples show different rule structures:
+- some rules become effective immediately upon Federal Register publication;
+- other rules have effective dates after public inspection/publication;
+- temporary/general licenses or transition periods can modify compliance timing;
+- license-review policy can change without a simple binary “allowed/banned” state.
+
+Required fields:
+- rule publication;
+- effective date;
+- compliance date;
+- license policy;
+- controlled item/end-use/end-user scope;
+- temporary/general-license window;
+- amendment/rescission history.
+
+Do not label a BIS press release as an effective trade-flow stop unless the legal rule and scope support it.
+
+Status: EXPORT-CONTROL LEGAL-CLOCK CONTRACT FROZEN.
+
+---
+
+## MC-117 — sanctions events also need designation/license/removal lineage
+
+OFAC maintains separate objects such as:
+- sanctions-list designation/update;
+- regulation/determination;
+- general license;
+- license amendment/expiration;
+- designation removal.
+
+OFAC describes blocking as an immediate prohibition on transfers/dealings in blocked property when the applicable blocking requirement applies.
+
+But market exposure still depends on:
+- which legal person/property is covered;
+- 50-percent ownership rules;
+- jurisdiction/possession/control;
+- applicable general/specific licenses;
+- affected trade/financing chain.
+
+Therefore:
+`OFAC_DESIGNATION`
+is a legal event state, not a scalar stock-market direction signal.
+
+Status: SANCTIONS LINEAGE / EXPOSURE GUARD FROZEN.
+
+---
+
+## MC-118 — GPR must separate threats from acts and remains a news-intensity state
+
+Caldara-Iacoviello GPR is news-based.
+
+The research explicitly distinguishes:
+- geopolitical threats;
+- realized/escalated geopolitical acts.
+
+The aggregate index can contain both.
+
+This matters because:
+- threat phase may change precautionary behavior before any physical disruption;
+- act phase can create direct supply/destruction/compliance effects;
+- market prices may already have moved during the threat phase.
+
+For D13:
+- GPR is context/event-cluster evidence;
+- threat/act components should remain separate;
+- sector/company exposure is mandatory before Taiwan cross-sectional interpretation.
+
+GPR must also compete with VIX, oil, rates, USD and news/event variables for incremental value.
+
+Status: GPR THREAT/ACT FIREWALL FROZEN.
+
+---
+
+## MC-119 — capital flow has three incompatible meanings in this research room
+
+### A. Taiwan market trading flow
+TWSE foreign-investor buy/sell data describe trading activity by investor classification.
+
+This is useful for:
+- same-market demand/supply state;
+- foreign investor participation.
+
+It is not automatically:
+- FX conversion;
+- balance-of-payments portfolio inflow/outflow;
+- new foreign money entering/leaving Taiwan.
+
+### B. Taiwan Balance of Payments flow
+CBC BOP records quarterly direct/portfolio/other-investment flow concepts under international accounts.
+
+This is structural macro flow:
+- low frequency;
+- published with lag;
+- revisable/vintage-sensitive.
+
+### C. U.S. TIC flow
+Treasury TIC measures cross-U.S.-border securities/banking/related flows at monthly/quarterly frequencies and with release lag.
+
+Do not merge A/B/C into a field named:
+`foreignCapitalFlow`.
+
+Status: CAPITAL-FLOW OBJECT SEPARATION FROZEN.
+
+---
+
+## MC-120 — TWSE has a real 18:10 version problem
+
+TWSE Data E-Shop documentation gives different production clocks.
+
+Examples:
+- aggregate foreign/other investor trading file:
+  - ~14:50 excluding omnibus/block trades;
+  - ~19:40 including them.
+- per-security foreign/institutional trading details:
+  - ~18:00 excluding block trades;
+  - ~20:00 including block trades.
+
+For an 18:10 decision:
+- some partial/ex-block data may exist;
+- the later full/block-inclusive version is future.
+
+Therefore:
+- `EX_BLOCK` and `INCL_BLOCK` are different versioned source objects;
+- later full data must never overwrite the 18:10 version;
+- exact Data E-Shop entitlement/source receipt is required before systematic automated use.
+
+This creates a potentially useful future lane:
+`FOREIGN_TRADING_STATE_AT_1810`,
+but it is not yet validated.
+
+Status: TWSE FOREIGN-FLOW VERSION CLOCK FROZEN.
+
+---
+
+## MC-121 — TIC and BOP are structural capital-flow regimes, not next-session micro signals
+
+U.S. Treasury states monthly TIC releases have roughly a 1.5-month lag between release date and data as-of date and are released at 16:00 Washington time; revisions also follow a known release pattern.
+
+Taiwan CBC BOP is quarterly; for Q2 2026, the official release was August 20 and the next release was scheduled for November 20 at 16:20 Taipei.
+
+Therefore:
+- TIC/BOP can describe structural flow regimes;
+- they cannot honestly be treated as same-day capital-flow measurements;
+- current revised historical series cannot substitute for first-known vintages.
+
+Use cases:
+- medium-horizon regime conditioning;
+- cross-checking whether daily market trading proxies agree with slower external-account flows.
+
+Status: CAPITAL-FLOW FREQUENCY/LAG GUARD FROZEN.
+
+---
+
+## MC-122 — geopolitical fragmentation is targeted, not a universal deglobalization state
+
+IMF research provides evidence of:
+- trade/FDI fragmentation along geopolitical lines;
+- stronger effects in some strategic sectors;
+- investment diversion toward alternative recipient countries;
+- cross-border portfolio allocation related to geopolitical distance.
+
+But research also finds fragmentation is not uniformly widespread across all sectors/country pairs.
+
+For Taiwan this means:
+- semiconductor/ICT exposure may differ materially from consumer/non-strategic sectors;
+- “connector-country” or trade-diversion effects can create beneficiaries as well as victims;
+- loss of one bilateral link may be partly offset by rerouting.
+
+Therefore D13 must pass event state to D10/D07 exposure mapping instead of creating a universal geopolitical penalty.
+
+Status: TARGETED-FRAGMENTATION / DIVERSION CONTRACT FROZEN.
+
+---
+
+## MC-123 — D13-17 maturity and falsification decision
+
+Mandatory falsification:
+
+1. announcement vs legal-effective date;
+2. proposal vs final action;
+3. policy uncertainty vs realized policy;
+4. threat vs act;
+5. affected vs unexposed sector;
+6. lost trade vs trade diversion/connector substitution;
+7. TWSE foreign trading vs CBC BOP non-equivalence;
+8. TIC release lag/vintage;
+9. simultaneous VIX/USD/rates/global-equity controls;
+10. overlapping tariff/export-control/sanctions events;
+11. date-shift/placebo and leave-one-event-out;
+12. no severity/exposure cut chosen from returns.
+
+D13-17 advances **L0 -> L2 / 40%**.
+
+Machine contracts:
+- `research/d13_17_trade_geopolitical_capitalflow_spec_v0_1.json`
+- `research/d13_17_event_flow_clock_schema_v0_1.json`
+
+Why not L3:
+- no source-attested multi-event Taiwan dataset;
+- no validated 18:10 TWSE foreign-flow version lineage;
+- no PIT event-exposure join to D10/D07;
+- no OOS incremental Taiwan evidence.
+
+Formal Core remains LOCKED.
+No tariff/geopolitical/foreign-flow score, veto, ranking bonus or position-size change is approved.
+
+## Exact next continuation after MC-123
+
+1. Continue D13-18 Business Cycle / Leading-Coincident-Lagging Indicators.
+2. Preserve one official policy event with announcement/legal/effective lineage as source-only evidence.
+3. Audit TWSE 18:10 foreign-flow source entitlement/version availability without using the 19:40/20:00 future version.
+4. Keep CBC BOP/TIC as slower structural regimes and GPR/TPU as context, not same-day flows.
+5. Build D13->D10/D07 event-exposure bridge only after source/exposure version lineage is proven.
