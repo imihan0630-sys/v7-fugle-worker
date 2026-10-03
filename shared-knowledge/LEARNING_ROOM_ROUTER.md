@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 14:05 Asia/Taipei
+Updated: 2026-10-03 15:24 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -11,13 +11,14 @@ Formal Core impact: NONE
 
 ## 強制讀取順序
 
-1. `shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md`
-2. **本檔 `shared-knowledge/LEARNING_ROOM_ROUTER.md`**
-3. `shared-knowledge/PROBABILISTIC_SELECTION_GOVERNANCE_V0_1.md`（跨系統選股決策角色與防過度過濾治理）
-4. `shared-knowledge/CURRICULUM_RETIREMENT_AND_CAPABILITY_LEDGER_V0_1.md`（模組退役、合併與功能責任移轉）
-5. `research/stock_market_learning_tracker_v0_1.json`（354模組、learningScope、L0-L5與完成度的機器權威）
-6. 自己專線的 dedicated checkpoint / research files
-7. `RESEARCH_ENGINEERING_GOVERNANCE.md`、`RESEARCH_CHECKPOINT.md` 與需要的 System 1 / System 2 bridge
+1. **`shared-knowledge/RESEARCH_OUTPUT_CONTRACT.md`（研究輸出強制契約；每輪開始研究前必讀，送出研究回覆前必須再讀一次）**
+2. `shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md`
+3. **本檔 `shared-knowledge/LEARNING_ROOM_ROUTER.md`**
+4. `shared-knowledge/PROBABILISTIC_SELECTION_GOVERNANCE_V0_1.md`（跨系統選股決策角色與防過度過濾治理）
+5. `shared-knowledge/CURRICULUM_RETIREMENT_AND_CAPABILITY_LEDGER_V0_1.md`（模組退役、合併與功能責任移轉）
+6. `research/stock_market_learning_tracker_v0_1.json`（354模組、learningScope、L0-L5與完成度的機器權威）
+7. 自己專線的 dedicated checkpoint / research files
+8. `RESEARCH_ENGINEERING_GOVERNANCE.md`、`RESEARCH_CHECKPOINT.md` 與需要的 System 1 / System 2 bridge
 
 ## 全域學習聊天室強制運作規則
 
@@ -746,7 +747,20 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 ## 11｜統計驗證與策略市場狀態研究室
 
 負責領域：**D16 統計驗證／PIT／Shadow／OOS／防過擬合；D18 市場Regime×策略互動**  
-必讀 checkpoint：`RESEARCH_WORKLIST.md`、`research/EXPERIMENT_REGISTRY.md`、`research/research_master_map.json`、`system2/SYSTEM2_MARKET_REGIME_V0.md`、`TREND_MOMENTUM_REVERSAL_CHECKPOINT.md`、`MARKET_BREADTH_ROTATION_CHECKPOINT.md`  
+必讀 checkpoint：`RESEARCH_WORKLIST.md`、`research/EXPERIMENT_REGISTRY.md`、`research/research_master_map.json`、`system2/SYSTEM2_MARKET_REGIME_V0.md`、`TREND_MOMENTUM_REVERSAL_CHECKPOINT.md`、`MARKET_BREADTH_ROTATION_CHECKPOINT.md`
+
+**11 室必讀輸出契約：`shared-knowledge/RESEARCH_OUTPUT_CONTRACT.md`。不論韓哥手動輸入「繼續／繼續學習／開始學習／深入研究」，或由自動學習排程觸發，都必須在讀取 D16／D18 研究內容之前先讀本輸出契約；研究回覆送出前再讀一次，不得只依舊聊天室上下文或舊排程格式。**
+
+**11 室輸出合規閘門：**只要進入實際研究，缺少下列任一項就視為 `ROOM11_OUTPUT_NONCOMPLIANT`（11 室輸出不合規），必須先修正再送出：
+- 【本輪開始】＋實際台北時間；
+- 【本輪執行指令】固定全文；
+- 【GitHub 寫回與續接／本輪總控進度】；
+- D16 與 D18 各自正式百分比＋20 格進度條＋各自重點說明；
+- 【全體研究模組】整體正式百分比＋20 格進度條＋整體重點說明；
+- 【學習進度】；
+- 本輪開始／本輪結束／本輪耗時；
+- 最後日期＋台北時間。
+若本輪未正常完成，改用【非正常中斷】格式，並記錄最後完成點、GitHub／checkpoint 寫回狀態與 exact next continuation point（精確下一續接點）。  
 禁止：不得把其他 Dxx 領域當成本聊天室主線；跨領域發現只能建立 dependency（依賴）或引用證據，不能雙重計算進度。
 
 ### D16｜統計驗證／PIT／Shadow／OOS／防過擬合 — 45.6%
