@@ -1,0 +1,257 @@
+{
+  "schemaVersion": "CURRICULUM_COVERAGE_RETURN_READINESS_MATRIX_V0_1",
+  "asOfMain": "daf27114a8e53c54e67d93baf3e7e01cdfc35e95",
+  "canonicalSnapshot": {
+    "domains": 22,
+    "activeModules": 354,
+    "maturityWeightedPct": 38.2
+  },
+  "readinessVocabulary": [
+    "STRONG_PARTIAL",
+    "PARTIAL",
+    "MISSING"
+  ],
+  "note": "This matrix measures specialist-return contract readiness only. It is not curriculum maturity and does not authorize state transitions.",
+  "fields": [
+    "Exact Knowledge Definition",
+    "Existing-module Overlap Matrix",
+    "Why Current Scope Is Insufficient",
+    "Taiwan Data Feasibility",
+    "PIT / Replay Implication",
+    "Decision Role",
+    "Anti-double-count Rule",
+    "Proposed Owner",
+    "Maturity Starting Point",
+    "Terminal Recommendation"
+  ],
+  "candidates": [
+    {
+      "id": "COV-01",
+      "domain": "D01",
+      "room": "01｜K線與型態研究室",
+      "state": "PARTIAL_EVIDENCE_RECEIVED",
+      "readiness": {
+        "Exact Knowledge Definition": "STRONG_PARTIAL",
+        "Existing-module Overlap Matrix": "PARTIAL",
+        "Why Current Scope Is Insufficient": "STRONG_PARTIAL",
+        "Taiwan Data Feasibility": "STRONG_PARTIAL",
+        "PIT / Replay Implication": "STRONG_PARTIAL",
+        "Decision Role": "STRONG_PARTIAL",
+        "Anti-double-count Rule": "STRONG_PARTIAL",
+        "Proposed Owner": "PARTIAL",
+        "Maturity Starting Point": "MISSING",
+        "Terminal Recommendation": "MISSING"
+      },
+      "nextDelta": "明確比較 D01-05／D01-07 主責，決定 umbrella（傘型）型態家族是擴充既有範圍或獨立主責，並提交唯一終局建議。"
+    },
+    {
+      "id": "COV-02",
+      "domain": "D05",
+      "room": "04｜波動與市場微結構研究室",
+      "state": "PARTIAL_EVIDENCE_RECEIVED",
+      "readiness": {
+        "Exact Knowledge Definition": "PARTIAL",
+        "Existing-module Overlap Matrix": "PARTIAL",
+        "Why Current Scope Is Insufficient": "PARTIAL",
+        "Taiwan Data Feasibility": "MISSING",
+        "PIT / Replay Implication": "PARTIAL",
+        "Decision Role": "PARTIAL",
+        "Anti-double-count Rule": "PARTIAL",
+        "Proposed Owner": "MISSING",
+        "Maturity Starting Point": "MISSING",
+        "Terminal Recommendation": "MISSING"
+      },
+      "nextDelta": "驗證台灣收盤集合競價 imbalance（不平衡量）可觀測性、歷史可重播性與 D05-06 主責吸收關係。"
+    },
+    {
+      "id": "COV-03",
+      "domain": "D06",
+      "room": "05｜法人與籌碼研究室",
+      "state": "PENDING_SPECIALIST_RETURN",
+      "readiness": {
+        "Exact Knowledge Definition": "MISSING",
+        "Existing-module Overlap Matrix": "PARTIAL",
+        "Why Current Scope Is Insufficient": "STRONG_PARTIAL",
+        "Taiwan Data Feasibility": "MISSING",
+        "PIT / Replay Implication": "MISSING",
+        "Decision Role": "PARTIAL",
+        "Anti-double-count Rule": "PARTIAL",
+        "Proposed Owner": "PARTIAL",
+        "Maturity Starting Point": "MISSING",
+        "Terminal Recommendation": "MISSING"
+      },
+      "nextDelta": "找到直接識別散戶／自然人活動的台灣資料欄位與 PIT（時點一致性）來源契約；禁止用總量減法人殘差冒充散戶意圖。"
+    },
+    {
+      "id": "COV-04",
+      "domain": "D07",
+      "room": "06｜基本面與估值研究室",
+      "state": "PENDING_SPECIALIST_RETURN",
+      "readiness": {
+        "Exact Knowledge Definition": "MISSING",
+        "Existing-module Overlap Matrix": "PARTIAL",
+        "Why Current Scope Is Insufficient": "STRONG_PARTIAL",
+        "Taiwan Data Feasibility": "MISSING",
+        "PIT / Replay Implication": "MISSING",
+        "Decision Role": "PARTIAL",
+        "Anti-double-count Rule": "PARTIAL",
+        "Proposed Owner": "PARTIAL",
+        "Maturity Starting Point": "MISSING",
+        "Terminal Recommendation": "MISSING"
+      },
+      "nextDelta": "凍結 payout ratio（支付率）、dividend coverage（股利覆蓋率）、FCF coverage（自由現金流覆蓋率）、retention（保留盈餘）與 sustainability（永續性）及其 PIT 時鐘。"
+    },
+    {
+      "id": "COV-05",
+      "domain": "D08",
+      "room": "06｜基本面與估值研究室",
+      "state": "PENDING_SPECIALIST_RETURN",
+      "readiness": {
+        "Exact Knowledge Definition": "MISSING",
+        "Existing-module Overlap Matrix": "PARTIAL",
+        "Why Current Scope Is Insufficient": "STRONG_PARTIAL",
+        "Taiwan Data Feasibility": "MISSING",
+        "PIT / Replay Implication": "MISSING",
+        "Decision Role": "PARTIAL",
+        "Anti-double-count Rule": "PARTIAL",
+        "Proposed Owner": "PARTIAL",
+        "Maturity Starting Point": "MISSING",
+        "Terminal Recommendation": "MISSING"
+      },
+      "nextDelta": "正式凍結 P/S（股價營收比）或 EV/Sales（企業價值營收比）的公式、企業價值分子、營收分母、財報 vintage（版本）與 owner（主責）。"
+    },
+    {
+      "id": "COV-06",
+      "domain": "D10",
+      "room": "07｜產業與供應鏈研究室",
+      "state": "PARTIAL_EVIDENCE_RECEIVED",
+      "readiness": {
+        "Exact Knowledge Definition": "PARTIAL",
+        "Existing-module Overlap Matrix": "STRONG_PARTIAL",
+        "Why Current Scope Is Insufficient": "PARTIAL",
+        "Taiwan Data Feasibility": "STRONG_PARTIAL",
+        "PIT / Replay Implication": "STRONG_PARTIAL",
+        "Decision Role": "STRONG_PARTIAL",
+        "Anti-double-count Rule": "STRONG_PARTIAL",
+        "Proposed Owner": "PARTIAL",
+        "Maturity Starting Point": "MISSING",
+        "Terminal Recommendation": "MISSING"
+      },
+      "nextDelta": "定義 centrality（中心性）、articulation/single-point failure（關節點／單點失效）、alternate-path redundancy（替代路徑冗餘）與 incomplete graph UNKNOWN（不完整圖未知）規則。"
+    },
+    {
+      "id": "COV-07",
+      "domain": "D12",
+      "room": "09｜衍生品與國際總經研究室",
+      "state": "PARTIAL_EVIDENCE_RECEIVED",
+      "readiness": {
+        "Exact Knowledge Definition": "PARTIAL",
+        "Existing-module Overlap Matrix": "PARTIAL",
+        "Why Current Scope Is Insufficient": "PARTIAL",
+        "Taiwan Data Feasibility": "MISSING",
+        "PIT / Replay Implication": "PARTIAL",
+        "Decision Role": "PARTIAL",
+        "Anti-double-count Rule": "PARTIAL",
+        "Proposed Owner": "MISSING",
+        "Maturity Starting Point": "MISSING",
+        "Terminal Recommendation": "MISSING"
+      },
+      "nextDelta": "證明 TAIFEX（臺灣期貨交易所）合約層級歷史價格／未平倉／成交量／到期資料可做 PIT 重播，並釐清 basis（基差）／OI（未平倉量）／expiry（到期）重疊。"
+    },
+    {
+      "id": "COV-08",
+      "domain": "D16",
+      "room": "11｜統計驗證與策略市場狀態研究室",
+      "state": "PARTIAL_EVIDENCE_RECEIVED",
+      "readiness": {
+        "Exact Knowledge Definition": "STRONG_PARTIAL",
+        "Existing-module Overlap Matrix": "PARTIAL",
+        "Why Current Scope Is Insufficient": "PARTIAL",
+        "Taiwan Data Feasibility": "PARTIAL",
+        "PIT / Replay Implication": "PARTIAL",
+        "Decision Role": "STRONG_PARTIAL",
+        "Anti-double-count Rule": "STRONG_PARTIAL",
+        "Proposed Owner": "PARTIAL",
+        "Maturity Starting Point": "MISSING",
+        "Terminal Recommendation": "MISSING"
+      },
+      "nextDelta": "直接比較 D16-06；凍結何時 cluster-robust inference（叢集穩健推論）已足夠、何時需要 block bootstrap（區塊重抽樣），再給唯一終局建議。"
+    },
+    {
+      "id": "COV-09",
+      "domain": "D19",
+      "room": "12｜資產定價與因子研究室",
+      "state": "PARTIAL_EVIDENCE_RECEIVED",
+      "readiness": {
+        "Exact Knowledge Definition": "STRONG_PARTIAL",
+        "Existing-module Overlap Matrix": "PARTIAL",
+        "Why Current Scope Is Insufficient": "PARTIAL",
+        "Taiwan Data Feasibility": "PARTIAL",
+        "PIT / Replay Implication": "STRONG_PARTIAL",
+        "Decision Role": "STRONG_PARTIAL",
+        "Anti-double-count Rule": "STRONG_PARTIAL",
+        "Proposed Owner": "PARTIAL",
+        "Maturity Starting Point": "MISSING",
+        "Terminal Recommendation": "MISSING"
+      },
+      "nextDelta": "比較 D19-01／D19-10；區分 benchmark-model construction（基準模型建構）與一般因子研究，並決定是否需台灣重建基準投組。"
+    },
+    {
+      "id": "COV-10",
+      "domain": "D20",
+      "room": "13｜行為金融與市場心理研究室",
+      "state": "PARTIAL_EVIDENCE_RECEIVED",
+      "readiness": {
+        "Exact Knowledge Definition": "STRONG_PARTIAL",
+        "Existing-module Overlap Matrix": "PARTIAL",
+        "Why Current Scope Is Insufficient": "PARTIAL",
+        "Taiwan Data Feasibility": "PARTIAL",
+        "PIT / Replay Implication": "PARTIAL",
+        "Decision Role": "STRONG_PARTIAL",
+        "Anti-double-count Rule": "STRONG_PARTIAL",
+        "Proposed Owner": "PARTIAL",
+        "Maturity Starting Point": "MISSING",
+        "Terminal Recommendation": "MISSING"
+      },
+      "nextDelta": "把 confirmation bias（確認偏誤）、belief perseverance（信念固著）、conservatism（保守偏誤）與既有 D20 主責逐一比對，凍結 observable proxy（可觀測代理）與 UNKNOWN。"
+    },
+    {
+      "id": "COV-11",
+      "domain": "D21",
+      "room": "14｜公司治理與內部人研究室",
+      "state": "PARTIAL_EVIDENCE_RECEIVED",
+      "readiness": {
+        "Exact Knowledge Definition": "PARTIAL",
+        "Existing-module Overlap Matrix": "PARTIAL",
+        "Why Current Scope Is Insufficient": "PARTIAL",
+        "Taiwan Data Feasibility": "STRONG_PARTIAL",
+        "PIT / Replay Implication": "PARTIAL",
+        "Decision Role": "STRONG_PARTIAL",
+        "Anti-double-count Rule": "STRONG_PARTIAL",
+        "Proposed Owner": "PARTIAL",
+        "Maturity Starting Point": "MISSING",
+        "Terminal Recommendation": "MISSING"
+      },
+      "nextDelta": "定義 shareholder rights（股東權利）、stewardship（盡職治理）、activism（股東行動）與 voting（表決）的同一知識家族邊界，並驗證台灣歷史 first-known（首次可知時間）。"
+    },
+    {
+      "id": "COV-12",
+      "domain": "D22",
+      "room": "15｜信用市場與資本結構研究室",
+      "state": "PENDING_SPECIALIST_RETURN",
+      "readiness": {
+        "Exact Knowledge Definition": "MISSING",
+        "Existing-module Overlap Matrix": "PARTIAL",
+        "Why Current Scope Is Insufficient": "STRONG_PARTIAL",
+        "Taiwan Data Feasibility": "MISSING",
+        "PIT / Replay Implication": "MISSING",
+        "Decision Role": "PARTIAL",
+        "Anti-double-count Rule": "PARTIAL",
+        "Proposed Owner": "PARTIAL",
+        "Maturity Starting Point": "MISSING",
+        "Terminal Recommendation": "MISSING"
+      },
+      "nextDelta": "凍結 seniority（順位）、collateral（擔保）、guarantee（保證）、structural subordination（結構性次順位）與 recovery waterfall（回收瀑布），並證明至少一條台灣 PIT 文件路徑。"
+    }
+  ]
+}
