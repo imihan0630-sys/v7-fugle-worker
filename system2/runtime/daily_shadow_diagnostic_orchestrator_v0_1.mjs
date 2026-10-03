@@ -10,6 +10,7 @@ import { toSourceSessionRow } from "./storage_rows.mjs";
 import { buildSystem2PersistenceBatch } from "./persistence_batch.mjs";
 import { executeSystem2PersistenceBatch } from "./persistence_executor.mjs";
 import { persistDailyProspectiveHistoryV0_1 } from "./daily_shadow_prospective_history_v0_1.mjs";
+import { buildOfficialTradingDatesV0_1 } from "./official_historical_backfill_source_v0_1.mjs";
 
 export const DAILY_SHADOW_DIAGNOSTIC_VERSION = "S2_DAILY_SHADOW_DIAGNOSTIC_V0_1";
 export const DAILY_SHADOW_DIAGNOSTIC_CHECK_TYPE = "DAILY_SHADOW_DIAGNOSTIC_COMPLETE_V0_1";
@@ -47,6 +48,7 @@ export async function runDailyShadowDiagnosticV0_1({
   db, runId, revision, fetchImpl = globalThis.fetch, now = () => new Date(),
   calendarProbe = probeTwseTradingDate, sourceFetch = fetchDailyShadowA1SnapshotV0_1,
   historyProbe = probePitHistoryCoverageV0_1, historyLoad = loadPitPriorA1BarsV0_1,
+  tradingDateResolver = buildOfficialTradingDatesV0_1,
 } = {}) {
   if (!db?.prepare || !db?.batch) throw new Error("SYSTEM2_DB adapter required");
   if (typeof runId !== "string" || !/^[A-Za-z0-9._:-]+$/.test(runId)) throw new Error("safe runId required");
@@ -71,6 +73,7 @@ export async function runDailyShadowDiagnosticV0_1({
   let history = null;
   let preflight = null;
   let sourceSession = null;
+  let listingAgeCalendar = null;
   let prospectiveHistory = { state: "NOT_OBSERVED", rowCount: 0 };
   let state;
   const shards = [];
@@ -99,7 +102,28 @@ export async function runDailyShadowDiagnosticV0_1({
         throw new Error("SOURCE_BATCH_CLOCK_MISMATCH");
       }
       try {
-        history = source.snapshotBatch ? await historyProbe({ db, snapshotBatch: source.snapshotBatch, decisionTimestamp: clock }) : null;
+        if (source.listingMetadata?.state === "READY") {
+          const from = new Date(`${marketDate}T00:00:00.000Z`);
+          from.setUTCDate(from.getUTCDate() - 180);
+          const to = new Date(`${marketDate}T00:00:00.000Z`);
+          to.setUTCDate(to.getUTCDate() - 1);
+          try {
+            listingAgeCalendar = await tradingDateResolver({
+              fromDate: from.toISOString().slice(0, 10),
+              toDate: to.toISOString().slice(0, 10),
+              fetchImpl,
+            });
+          } catch {
+            listingAgeCalendar = null;
+          }
+        }
+        history = source.snapshotBatch ? await historyProbe({
+          db,
+          snapshotBatch: source.snapshotBatch,
+          decisionTimestamp: clock,
+          listingMetadata: source.listingMetadata || null,
+          priorTradingDates: listingAgeCalendar?.tradingDates || null,
+        }) : null;
       } catch { history = null; }
       history ||= {
         marketDate, decisionTimestamp: clock, state: "NOT_EVALUATED_OR_HISTORY_SOURCE_ERROR",
@@ -153,10 +177,24 @@ export async function runDailyShadowDiagnosticV0_1({
       }
       symbolCount = diagnosticRows.length;
       // Small immutable shards avoid D1's per-value size limit. All source rows remain archived.
-      const payloads = [{ kind: "SOURCE_METADATA", source: { ...source, snapshotBatch: null },
+      const listingMetadataSummary = source.listingMetadata ? {
+        ...source.listingMetadata,
+        byMarketSymbol: undefined,
+      } : null;
+      const payloads = [{ kind: "SOURCE_METADATA", source: {
+          ...source, snapshotBatch: null, listingMetadata: listingMetadataSummary,
+        },
         batchMetadata: source.snapshotBatch ? { ...source.snapshotBatch, markets: undefined, bySymbol: undefined, symbols: undefined } : null,
         marketMetadata: source.snapshotBatch ? Object.fromEntries(Object.entries(source.snapshotBatch.markets).map(([key, value]) => [key, { ...value, snapshots: undefined }])) : null,
-        history: { ...history, diagnostics: undefined }, sourceSession }];
+        history: { ...history, diagnostics: undefined },
+        listingAgeCalendar: listingAgeCalendar ? {
+          state: listingAgeCalendar.state,
+          firstTradingDate: listingAgeCalendar.tradingDates?.[0] || null,
+          lastTradingDate: listingAgeCalendar.tradingDates?.at(-1) || null,
+          tradingDateCount: listingAgeCalendar.tradingDates?.length || 0,
+          sourceReceiptHash: listingAgeCalendar.sourceReceiptHash || null,
+        } : null,
+        sourceSession }];
       for (let i = 0; i < (history.diagnostics || []).length; i += 100) {
         payloads.push({ kind: "HISTORY_COVERAGE", rows: history.diagnostics.slice(i, i + 100) });
       }
@@ -183,6 +221,20 @@ export async function runDailyShadowDiagnosticV0_1({
     calendar: calendar || null, preflight, prospectiveHistory, symbolCount, knownFactorCount, unknownFactorCount, factorFailureCount,
     sourceSessionHash: sourceSession?.sourceSessionHash || null,
     sourceTransports: source?.transports || null,
+    listingMetadata: source?.listingMetadata ? {
+      state: source.listingMetadata.state,
+      counts: source.listingMetadata.counts,
+      blockerCodes: source.listingMetadata.blockerCodes,
+      metadataHash: source.listingMetadata.metadataHash,
+      observedAt: source.listingMetadata.observedAt,
+    } : null,
+    listingAgeCalendar: listingAgeCalendar ? {
+      state: listingAgeCalendar.state,
+      tradingDateCount: listingAgeCalendar.tradingDates?.length || 0,
+      firstTradingDate: listingAgeCalendar.tradingDates?.[0] || null,
+      lastTradingDate: listingAgeCalendar.tradingDates?.at(-1) || null,
+      sourceReceiptHash: listingAgeCalendar.sourceReceiptHash || null,
+    } : null,
     regime: { state: "UNKNOWN", reason: "VALIDATED_REGIME_SOURCES_NOT_WIRED", labels: [] },
     strategyEvaluation: "BLOCKED_ASSESSOR_POLICY_NOT_FROZEN", ranking: "NOT_EXECUTED",
     capacity: "NOT_PRODUCED", predictionSnapshot: "NOT_PRODUCED", zeroPickDay: null,

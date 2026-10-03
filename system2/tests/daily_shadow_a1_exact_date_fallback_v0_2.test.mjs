@@ -85,8 +85,9 @@ const ready = await fetchDailyShadowA1SnapshotV0_1({
   minimumByMarket: { TWSE: 1, TPEX: 1 },
 });
 
-assert.equal(DAILY_SHADOW_A1_SOURCE_VERSION, "0.2-RESEARCH");
+assert.equal(DAILY_SHADOW_A1_SOURCE_VERSION, "0.3-RESEARCH");
 assert.equal(ready.state, "READY");
+assert.equal(ready.listingMetadata.state, "SOURCE_ERROR");
 assert.deepEqual(fallbackCalls, [{ market: "TWSE", marketDate: "2026-10-02" }]);
 assert.equal(ready.transports.TWSE.selection, "EXACT_DATE_FALLBACK");
 assert.equal(ready.transports.TWSE.fallback.ok, true);
