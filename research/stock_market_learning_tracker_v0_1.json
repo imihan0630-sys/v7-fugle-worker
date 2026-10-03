@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T09:21:00+08:00",
+  "updatedAt": "2026-10-03T10:25:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -2484,7 +2484,7 @@
         "research/D16_STRATEGY_STAGE_CLOCK_DEPENDENCY_AUDIT_V0_1.md",
         "research/d16_strategy_stage_dependency_matrix_v0_1.json"
       ],
-      "maturityPct": 44,
+      "maturityPct": 45.6,
       "modules": [
         {
           "id": "D16-01",
@@ -2711,14 +2711,19 @@
         {
           "id": "D16-25",
           "name": "Probabilistic Decision／Bayesian Updating／Uncertainty-aware Selection機率式決策、貝氏更新與不確定性選股",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Probabilistic Decision／Bayesian Updating／Uncertainty-aware Selection機率式決策、貝氏更新與不確定性選股」。研究如何把證據轉成可校準的機率、期望值與不確定性，而不是把更多研究模組堆成串聯硬門檻。必須明確區分HARD_INVALIDATION、PRIMARY_ALPHA、SUPPORTIVE、CONTEXT_ONLY、CONFIDENCE／UNCERTAINTY五種決策角色；UNKNOWN不得等同FAIL或0。研究Bayesian updating（貝氏更新）、base rate（基準率）、probability calibration（機率校準）、expected value／utility（期望值／效用）、abstention（不交易）與uncertainty penalty（不確定性折扣）。任何System 1／System 2應用都先走Prospective Shadow／OOS，並同時驗證機會捕捉率、zero-pick、false acceptance、成本、回撤與校準誤差，禁止因提高選股數量而直接宣稱改善。 每個結論都必須記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、交易成本，以及對 System 1／System 2 的可驗證增量價值；未取得證據不得升級成熟度或進入 Formal（正式核心）。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、機制、反證與資料契約開始建立 D16-25；先研究與Shadow驗證，不直接修改正式選股規則。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "RESEARCHED_TO_L2_CONCEPTUAL_AND_EXECUTABLE_VALIDATION_CONTRACT / REAL_CALIBRATION_EVIDENCE_NONE / FORMAL_UNCHANGED",
+          "next": "取得第一個完整 C1 台股 PIT 目標母體世代；先凍結簡單實際機率目標與 base-rate／simple-score 校準器，再於結果揭露前寫入不可變 prediction receipt；只連接成熟 D+N 結果，量測 Brier／log loss／reliability、成本後效用、coverage／ABSTAIN 與 Regime drift。完成前不得升 L3；D15-19 仍須由 D15 專線獨立研究。",
+          "evidence": "Specialist checkpoint research/D16_D18_VALIDATION_CHECKPOINT.md advanced D16-25 from L0/0% to L2/40% after theory/mechanism, positive mechanism, explicit falsification matrix, PIT/target/label maturity contract, base-rate/Bayesian guardrails, calibration metrics, uncertainty semantics, ABSTAIN, utility/payoff semantics, population firewall, D15-19 handoff, executable pure evaluator, adversarial tests, CI and V8 regression isolation were established. L3 remains blocked by absence of genuine complete Taiwan PIT intended-population predictions/outcomes and replay/calibration receipts."
         }
-      ]
+      ],
+      "status": "D16_25_L2_CONCEPTUAL_EXECUTABLE_CONTRACT / D15_19_HANDOFF_FROZEN / REAL_CALIBRATION_EVIDENCE_PENDING / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "取得第一個完整 C1 台股 PIT 目標母體世代；先凍結簡單實際機率目標與 base-rate／simple-score 校準器，再於結果揭露前寫入不可變 prediction receipt；只連接成熟 D+N 結果，量測 Brier／log loss／reliability、成本後效用、coverage／ABSTAIN 與 Regime drift。完成前不得升 L3；D15-19 仍須由 D15 專線獨立研究。",
+      "lastResearchUpdate": "2026-10-03T10:03:42+08:00",
+      "researchNote": "D16-25 specialist work established the conceptual/executable validation contract and D15-19 handoff, justifying L2/40%. No real calibration/PIT outcome evidence exists yet, so L3 remains closed and no Formal optimization candidate exists."
     },
     {
       "id": "D17",
