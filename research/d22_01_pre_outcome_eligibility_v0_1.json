@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "D22_01_PRE_OUTCOME_ELIGIBILITY_V0_1",
+  "generatedAt": "2026-10-03T18:53:00+08:00",
+  "status": "OUTCOMES_CLOSED / TWO_ROWS_TIMING_READY_BUT_D13_20TD_PENDING / ONE_ROW_KNOWNAT_BLOCKED / FORMAL_CORE_UNCHANGED",
+  "gates": [
+    "consolidated entity scope",
+    "tagged consistent accounting basis",
+    "row-level contractual maturity revalidated",
+    "public source knownAt suitable for outcome start",
+    "common-support <1y financing wall",
+    "double-count reconciliation",
+    "D07 PIT baseline ready",
+    "D13 rate level ready",
+    "D13 20-trading-day change/session alignment ready"
+  ],
+  "rows": [
+    {
+      "issuer": "TSMC",
+      "periodEnd": "2023-12-31",
+      "entityScope": "PASS",
+      "accountingBasis": "PASS",
+      "maturityRows": "PASS",
+      "publicKnownAt": "PASS_2024-04-18",
+      "commonSupport": "PASS",
+      "doubleCount": "PASS",
+      "D07Baseline": "PASS",
+      "D13RateLevel": "PASS_10Y_4.64_CBC_2.0",
+      "D13Rate20tdChange": "PENDING",
+      "outcomeOpenEligible": false,
+      "blocker": "D13_20TD_SESSION_ALIGNED_CHANGE_PENDING"
+    },
+    {
+      "issuer": "UMC",
+      "periodEnd": "2023-12-31",
+      "entityScope": "PASS",
+      "accountingBasis": "PASS",
+      "maturityRows": "PASS",
+      "publicKnownAt": "PASS_SOURCE_KNOWN_NO_LATER_THAN_2024-03-25",
+      "commonSupport": "PASS",
+      "doubleCount": "PASS",
+      "D07Baseline": "PASS",
+      "D13RateLevel": "PASS_10Y_4.25_CBC_2.0",
+      "D13Rate20tdChange": "PENDING",
+      "outcomeOpenEligible": false,
+      "blocker": "D13_20TD_SESSION_ALIGNED_CHANGE_PENDING"
+    },
+    {
+      "issuer": "Taiwan Cement",
+      "periodEnd": "2023-12-31",
+      "entityScope": "PASS_AFTER_SCOPE_REPAIR",
+      "accountingBasis": "PASS",
+      "maturityRows": "PASS",
+      "publicKnownAt": "BLOCKED",
+      "commonSupport": "PASS",
+      "doubleCount": "PASS",
+      "D07Baseline": "PASS",
+      "D13RateLevel": "BLOCKED_BY_KNOWNAT",
+      "D13Rate20tdChange": "BLOCKED_BY_KNOWNAT",
+      "outcomeOpenEligible": false,
+      "blocker": "PUBLIC_SOURCE_KNOWN_AT_NOT_PROVEN"
+    }
+  ],
+  "decision": "DO_NOT_OPEN_EQUITY_OUTCOMES",
+  "rationale": "No issuer/date row has passed every preregistered timing and D13 baseline gate yet. Opening outcomes now would invite post-hoc timing or horizon choices.",
+  "next": [
+    "Materialize D13-13-aligned 20-trading-day U.S. Treasury 10-year changes for TSMC and UMC knownAt dates.",
+    "Continue searching for a verifiable Taiwan Cement public-release timestamp; if unresolved, exclude TCC from timed outcome tests but retain it for schema/falsification evidence.",
+    "Open outcomes once only after at least eligible rows pass all pre-outcome gates."
+  ]
+}
