@@ -84,3 +84,15 @@ A specialist return is not a curriculum decision.
 - no 23rd domain.
 - no automatic L0 creation until owner-approved ADD_MODULE is atomically committed.
 - Formal Core LOCKED.
+
+
+## Pre-Intake partial evidence — 2026-10-03
+
+Canonical ledger:
+`shared-knowledge/CURRICULUM_COVERAGE_PREINTAKE_EVIDENCE_LEDGER_20261003_V0_1.md`
+
+- COV-02 → PARTIAL_EVIDENCE_RECEIVED
+- COV-07 → PARTIAL_EVIDENCE_RECEIVED
+- COV-08 → PARTIAL_EVIDENCE_RECEIVED
+- All other COV candidates remain PENDING_SPECIALIST_RETURN.
+- Partial evidence is not an accepted specialist return and does not authorize curriculum structural change.

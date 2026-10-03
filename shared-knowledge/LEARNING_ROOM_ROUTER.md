@@ -1236,8 +1236,9 @@ UNKNOWN 當 PASS、用候選數增加當成功、firstFailure 當因果、未做
 1. `shared-knowledge/CURRICULUM_COVERAGE_AUDIT_20261003_V0_1.md`
 2. `shared-knowledge/CURRICULUM_COVERAGE_A_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
 3. `shared-knowledge/CURRICULUM_COVERAGE_B_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
-4. `shared-knowledge/CURRICULUM_COVERAGE_EXECUTION_REGISTRY_20261003_V0_1.md`
-5. `shared-knowledge/curriculum_coverage_execution_registry_20261003_v0_1.json`
+4. `shared-knowledge/CURRICULUM_COVERAGE_PREINTAKE_EVIDENCE_LEDGER_20261003_V0_1.md`
+5. `shared-knowledge/CURRICULUM_COVERAGE_EXECUTION_REGISTRY_20261003_V0_1.md`
+6. `shared-knowledge/curriculum_coverage_execution_registry_20261003_v0_1.json`
 
 Coverage-A / Coverage-B 任務包目前狀態：`READY_FOR_SPECIALIST_EXECUTION`（專科驗證可執行）；專科回件尚未構成課綱決策。
 
@@ -1261,3 +1262,6 @@ Coverage-B 中優先：
 ADD_MODULE／EXTEND_EXISTING_SCOPE／MERGE_INTO_EXISTING／NOT_A_GAP／EVIDENCE_INSUFFICIENT。
 專科室不得自行增加正式模組數。
 
+
+
+Coverage pre-intake rule: COV-02, COV-07 and COV-08 currently have PARTIAL_EVIDENCE_RECEIVED from pre-existing specialist artifacts. This status is non-terminal and must not be treated as RETURN_ACCEPTED_FOR_INTAKE.

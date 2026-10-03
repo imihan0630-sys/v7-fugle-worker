@@ -1,7 +1,7 @@
 {
   "schemaVersion": "CURRICULUM_COVERAGE_EXECUTION_REGISTRY_V0_1",
-  "updatedAt": "2026-10-03T20:00:00+08:00",
-  "status": "COVERAGE_A_AND_B_PACKETS_READY_SPECIALIST_RETURNS_PENDING",
+  "updatedAt": "2026-10-03T21:40:00+08:00",
+  "status": "COVERAGE_PACKETS_READY_PREINTAKE_PARTIAL_EVIDENCE",
   "formalCoreImpact": "NONE_LOCKED",
   "canonicalSnapshot": {
     "domains": 22,
@@ -31,7 +31,7 @@
       "domain": "D05",
       "room": "04｜波動與市場微結構研究室",
       "class": "SCOPE_EXTENSION_CANDIDATE",
-      "state": "PENDING_SPECIALIST_RETURN",
+      "state": "PARTIAL_EVIDENCE_RECEIVED",
       "returnPath": "research/COV02_D05_SPECIALIST_RETURN_V0_1.md"
     },
     {
@@ -55,7 +55,7 @@
       "domain": "D12",
       "room": "09｜衍生品與國際總經研究室",
       "class": "TRUE_GAP_CANDIDATE",
-      "state": "PENDING_SPECIALIST_RETURN",
+      "state": "PARTIAL_EVIDENCE_RECEIVED",
       "returnPath": "research/COV07_D12_SPECIALIST_RETURN_V0_1.md"
     },
     {
@@ -97,7 +97,7 @@
     {
       "id": "COV-08",
       "room": "11｜統計驗證與策略市場狀態研究室",
-      "state": "PACKET_READY_PENDING_SPECIALIST_RETURN"
+      "state": "PARTIAL_EVIDENCE_RECEIVED"
     },
     {
       "id": "COV-09",
@@ -139,7 +139,7 @@
       "domain": "D16",
       "room": "11｜統計驗證與策略市場狀態研究室",
       "class": "SCOPE_EXTENSION_CANDIDATE",
-      "state": "PENDING_SPECIALIST_RETURN",
+      "state": "PARTIAL_EVIDENCE_RECEIVED",
       "returnPath": "research/COV08_D16_SPECIALIST_RETURN_V0_1.md"
     },
     {
@@ -150,5 +150,26 @@
       "state": "PENDING_SPECIALIST_RETURN",
       "returnPath": "research/COV09_D19_SPECIALIST_RETURN_V0_1.md"
     }
-  ]
+  ],
+  "preIntakeEvidenceLedger": "shared-knowledge/CURRICULUM_COVERAGE_PREINTAKE_EVIDENCE_LEDGER_20261003_V0_1.md",
+  "preIntakeSummary": {
+    "partialEvidenceReceived": [
+      "COV-02",
+      "COV-07",
+      "COV-08"
+    ],
+    "pendingSpecialistReturn": [
+      "COV-01",
+      "COV-03",
+      "COV-04",
+      "COV-05",
+      "COV-06",
+      "COV-09",
+      "COV-10",
+      "COV-11",
+      "COV-12"
+    ],
+    "acceptedSpecialistReturns": 0,
+    "canonicalImpact": "NONE"
+  }
 }
