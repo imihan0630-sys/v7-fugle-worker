@@ -1806,3 +1806,84 @@ Latest main contains research/analyst_output_horizon_alignment_v0_1.json from a 
 This block did not duplicate or overwrite that artifact.
 
 Status: PARALLEL_RESEARCH_RECONCILED / NO_CONFLICT / NO_MATURITY_CHANGE.
+
+
+## FD-061 — H05 forensic-accounting ownership boundary
+
+Research date: 2026-10-03 Asia/Taipei.
+
+Governance parent:
+shared-knowledge/CURRICULUM_H05_H08_SEMANTIC_SPLIT_ACCEPTANCE_CONTRACT_20261003_V0_1.md.
+
+Room-06 specialist packet:
+research/h05_d07_25_specialist_evidence_packet_v0_1.json.
+
+D07-25 owns statement-level accounting anomaly evidence, not governance/control events.
+
+Candidate forensic primitives:
+- accrual/cash-flow divergence;
+- revenue vs receivables divergence;
+- inventory vs sales/COGS divergence;
+- earnings/margin vs operating-cash mismatch;
+- one-off/non-operating earnings reliance;
+- cross-statement inconsistency.
+
+Sibling ownership remains explicit:
+- raw accrual quality stays with D07-07;
+- accounting-policy quality stays with D07-24;
+- D07-25 consumes those primitives only to construct a forensic anomaly context and may not create duplicate independent votes.
+
+D21-10, under the frozen cross-room contract, owns audit opinion, restatement/correction governance events, internal-control statements, CPA special review and remediation chronology.
+
+Status: H05_ROOM06_OWNERSHIP_DEFINED / CROSS_ROOM_TERMINAL_DECISION_PENDING / FORMAL_UNCHANGED.
+
+## FD-062 — Taiwan disclosure clocks prove the two lanes are independently observable
+
+Taiwan official disclosure structure separates financial statements/XBRL from internal-control statements and CPA internal-control special-review reports.
+
+Relevant independent event clocks include:
+- financial-statement filing/publication vintage;
+- audit/review report publication;
+- correction/restatement announcement;
+- internal-control statement publication/amendment;
+- internal-control special-review report publication.
+
+Therefore same-company evidence can legitimately produce different D07-25 and D21-10 states on the same PIT date.
+
+Divergent state A:
+statement anomalies can be elevated while the audit opinion remains unmodified and no internal-control/restatement event is disclosed.
+
+Divergent state B:
+an internal-control or audit warning can be disclosed while ordinary statement anomaly ratios remain within prior ranges or UNKNOWN.
+
+The same restatement source event must be recorded once and linked to both child interpretations; it cannot become two independent system votes.
+
+Status: DISTINCT_OBSERVABLES_AND_CLOCKS_SUPPORTED / SHARED_RECEIPT_REQUIRED.
+
+## FD-063 — Forensic red flags are suspicion evidence, not fraud labels
+
+Accounting research provides strong counterevidence against converting one anomaly into a manipulation conclusion.
+
+High or unreliable accruals can have lower persistence, but competing mechanisms include normal growth/investment, risk, conservative accounting and measurement error. Discretionary-accrual models can misclassify normal accruals. Post-loss earnings and accrual changes can also reflect genuine operating recovery rather than window dressing.
+
+Consequently:
+- abnormal receivables/inventory/CFO patterns are red flags, not proof of misconduct;
+- rapid-growth, acquisition, seasonality, supply-chain buffering and business-model effects are mandatory alternatives;
+- financial institutions require separate semantics;
+- later restatement does not prove an earlier forensic signal had ex-ante identifying power.
+
+Status: MECHANISM_PLUS_COUNTEREVIDENCE_DEFINED / FRAUD_INFERENCE_PROHIBITED / NO_DIRECTIONAL_SCORE.
+
+## FD-064 — H05 specialist classification remains evidence-insufficient cross-room
+
+Room 06 can support KEEP_SEPARATE semantically because statement anomalies and governance/control events have distinct observables and clocks.
+
+However Room 06 does not own D21-10 evidence maturity. Under the H05 acceptance contract, final cross-room terminal classification therefore remains EVIDENCE_INSUFFICIENT until Room 14 returns its counterpart packet.
+
+Room-06 recommendation:
+KEEP_SEPARATE if Room 14 confirms independent audit/internal-control observables and shared-event child semantics; otherwise apply SCOPE_DEDUP_ONLY to any overlapping restatement/audit content.
+
+No merge, retirement, maturity transfer or Formal change is authorized by this packet.
+
+Exact next for H05:
+wait for Room-14 counterpart evidence, then 00-room dependency/anti-orphan review.
