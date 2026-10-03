@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T07:40:00+08:00",
+  "updatedAt": "2026-10-04T07:22:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -3679,7 +3679,7 @@
       ],
       "status": "ACTIVE_RESEARCH / D22-01_L3 / D22-02_L3 / D22-03_L3 / D22-04_L2_ACTIVE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
       "exactNextContinuationPoint": "D22-04：建立台灣公司債PIT債務成本與再融資價差重播；D22-01至03持續擴大多日期面板，股票結果維持關閉。",
-      "lastResearchUpdate": "2026-10-04T07:45:00+08:00",
+      "lastResearchUpdate": "2026-10-04T07:22:00+08:00",
       "researchNote": "D22-02 and D22-03 are L3 PIT-feasibility. D22-04 advanced to L2 after debt-cost/refinancing mechanism, D13/D07 anti-double-count ownership, Taiwan TPEx source route, coupon-vs-market-yield semantics and falsification gates were frozen. No equity outcomes opened; Formal Core unchanged."
     }
   ],
