@@ -836,3 +836,33 @@ API capability alone is insufficient.
 No H001/H002/H20 outcome status changes.
 Gate 7 CLOSED.
 No FORMAL_OPTIMIZATION_CANDIDATE.
+
+## Pre-PVE-240 D02-08 + L4 readiness overlay — 2026-10-04
+
+### D02-08
+Status after L3 promotion:
+OBSERVATION / RESEARCH_ONLY / PROXY_ONLY / INTENT_UNIDENTIFIED.
+
+Allowed:
+- providerTradePressureProxy;
+- classificationCoverage;
+- unclassifiedVolume;
+- pressure x price-response coordinate;
+- D05 spread/depth/liquidity-state context when PIT-valid.
+
+Forbidden:
+- accumulation/distribution identity;
+- true OFI;
+- smart-money intent;
+- passive absorption;
+- iceberg/spoofing inference.
+
+### L4
+No D02 hypothesis is promoted to L4.
+
+Reason:
+L4 needs Prospective Shadow or genuine OOS evidence.
+Current clean prospective date count is zero and Gate 7 is CLOSED.
+
+No economic hypothesis is SUPPORTED or REJECTED from this round.
+No FORMAL_OPTIMIZATION_CANDIDATE.
