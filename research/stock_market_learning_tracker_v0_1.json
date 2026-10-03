@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 35.8
+    "maturityWeightedPct": 35.9
   },
   "domains": [
     {
@@ -1921,7 +1921,7 @@
         "MACRO_CROSS_MARKET_CHECKPOINT.md",
         "MACRO_CROSS_MARKET_RESEARCH.md"
       ],
-      "maturityPct": 32.6,
+      "maturityPct": 34.7,
       "modules": [
         {
           "id": "D13-01",
@@ -2067,12 +2067,13 @@
         {
           "id": "D13-16",
           "name": "Central-bank Balance Sheet／System Liquidity央行資產負債表與系統流動性",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Central-bank Balance Sheet／System Liquidity央行資產負債表與系統流動性」。研究財政、貨幣、金融條件、央行流動性與地緣／資金流傳導。需區分政策決策、預期差、實際流動性與市場價格反應，避免把單一宏觀指標當成機械式股價方向。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D13-16 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "CONCEPT_AND_FALSIFICATION_FROZEN / BALANCE_SHEET_RESERVE_TGA_RRP_SEPARATION / NET_LIQUIDITY_HEURISTIC_FIREWALL / TAIWAN_PIT_INCREMENTAL_EVIDENCE_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "next": "Capture official H.4.1 vintages source-only and decompose reserve/TGA/RRP/currency flows; continue D13-17 after exact event/flow clocks; no net-liquidity score.",
+          "evidence": "research/d13_16_central_bank_liquidity_spec_v0_1.json + MACRO_CROSS_MARKET_RESEARCH.md MC-107..MC-112: Fed asset stock != reserve balances; TGA/RRP/currency liability mechanics, ample-reserves regime, H.4.1 decomposition, Taiwan transmission and redundancy gates frozen."
         },
         {
           "id": "D13-17",
