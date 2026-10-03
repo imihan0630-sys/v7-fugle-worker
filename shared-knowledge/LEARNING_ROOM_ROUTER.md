@@ -1586,3 +1586,28 @@ TARGET_AVAILABLE 四態是獨立 P2 語意反證，不得與 P1-A 一次同時�
 禁止：
 UNKNOWN 當 PASS、用候選數增加當成功、firstFailure 當因果、未做 date cluster（日期群聚）就宣告顯著。
 
+## Coverage Audit 主線路由 — 2026-10-03
+
+所有相關研究室續接「學習地圖缺什麼」主線前，先讀：
+`shared-knowledge/CURRICULUM_COVERAGE_AUDIT_20261003_V0_1.md`
+
+Coverage-A 高優先：
+- COV-01 → 01｜K線與型態研究室：Continuation/Base Pattern Family（延續／基地型態家族）active owner。
+- COV-02 → 04｜波動與市場微結構研究室：Closing Auction／Auction Imbalance（收盤集合競價／不平衡）是否擴充 D05-06。
+- COV-04 → 06｜基本面與估值研究室：Dividend／Payout Policy & Sustainability（股利／配發政策與永續性）。
+- COV-06 → 07｜產業與供應鏈研究室：Supply-chain Network Centrality／Single-point Failure／Resilience（供應鏈網路中心性／單點失效／韌性）。
+- COV-07 → 09｜衍生品與國際總經研究室：Futures Term Structure／Calendar Spread／Roll Yield（期貨期限結構／跨月價差／轉倉收益）。
+- COV-10 → 13｜行為金融與市場心理研究室：Confirmation Bias／Belief Perseverance／Conservatism（確認偏誤／信念固著／保守偏誤）。
+- COV-11 → 14｜公司治理與內部人研究室：Shareholder Rights／Stewardship／Activism／Voting（股東權利／盡職治理／股東行動／表決）。
+- COV-12 → 15｜信用市場與資本結構研究室：Debt Seniority／Collateral／Recovery Waterfall（債務順位／擔保／回收瀑布）。
+
+Coverage-B 中優先：
+- COV-03 → 05｜法人與籌碼研究室。
+- COV-05 → 06｜基本面與估值研究室。
+- COV-08 → 11｜統計驗證與策略市場狀態研究室。
+- COV-09 → 12｜資產定價與因子研究室。
+
+每一項只能回傳：
+ADD_MODULE／EXTEND_EXISTING_SCOPE／MERGE_INTO_EXISTING／NOT_A_GAP／EVIDENCE_INSUFFICIENT。
+專科室不得自行增加正式模組數。
+
