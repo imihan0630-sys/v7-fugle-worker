@@ -2470,3 +2470,18 @@ Exact next Room 08:
 2. D17-14: capture draft/final/effective policy vintages and ex-ante expectation sources; absent expectation stays UNKNOWN.
 3. Continue D11-08/D17-01/02/09 fixed-cadence source/version coverage and existing CA-113/114 archive semantics.
 4. Only after Taiwan first-known/version replay gates pass may L3 be considered; preregister inclusion/horizons/controls before any outcome join.
+
+
+## 06 fundamental/valuation continuation — D08-03 historical valuation replay (2026-10-03 Asia/Taipei)
+
+- Re-read latest main after 354-module curriculum expansion and preserved H05 pending-counterpart governance.
+- D08-03 source semantics are now explicitly market-specific rather than forcing TWSE/TPEx symmetry.
+- TWSE public historical valuation is machine-replayable via BWIBBU_d with header-mapped schema and fiscal-report-period context.
+- TPEx public historical UI/source family is official, current OpenAPI fields are verified, but public historical machine transport remains unverified in the current research environment. Official licensed EDIS S17 has a deterministic PE/yield/PB schema and production clock, but no purchase/access is authorized.
+- Official TWSE 9904 witness freezes fiscal-denominator-transition risk: 2026-08-12 115/1 PE/PB 6.60/0.47 -> 2026-08-13 115/2 5.06/0.38. Percentile movement is not automatically pure repricing.
+- TWSE-only Shadow preregistration is frozen; TPEx/full-Taiwan generalization is prohibited until source coverage is verified.
+- Research-only parser/test/CI guard merged via PR #364 at 6943edc24ca4c1d78c525b33b730d911f245e4fa.
+- Exact-head CI: System2 Research CI 37107054148 PASS; V8 Repair CI 37107054216 PASS; V8 Regression 37107054202 PASS. Log explicitly executed the D08 replay guard.
+- D08-03 remains L3/60. No return outcome join, no L4 claim, no threshold/ranking/selection change.
+- Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE = NO.
+- Exact next: bounded immutable TWSE raw-history/readback sample -> 252/756/1260/expanding percentile computation without returns -> coverage/denominator-transition QA -> then TWSE-only Shadow outcome join. TPEx remains source-blocked for automated historical replay.
