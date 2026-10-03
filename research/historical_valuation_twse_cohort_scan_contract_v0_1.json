@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "HISTORICAL_VALUATION_TWSE_COHORT_SCAN_CONTRACT_V0_1",
+  "researchRoom": "06",
+  "domain": "D08",
+  "module": "D08-03",
+  "status": "OUTCOME_BLIND_COHORT_AND_SCAN_CLOCK_FROZEN",
+  "frozenAtAsiaTaipei": "2026-10-04T07:10:00+08:00",
+  "parent": [
+    "research/historical_valuation_twse_shadow_prereg_v0_1.json",
+    "research/d08_twse_bounded_history_source_receipt_20261003_v0_1.json"
+  ],
+  "primaryCohort": {
+    "id": "TWSE_ORDINARY_SURVIVORSHIP_CONTROLLED",
+    "market": "TWSE",
+    "membershipSource": "system2/runtime/historical_universe_registry_v0_1.mjs",
+    "eligibility": [
+      "four-digit ordinary equity accepted by historical universe registry",
+      "replayEligible=true",
+      "effectiveFrom <= scanDate",
+      "effectiveTo is null or effectiveTo >= scanDate",
+      "active on scanDate even if delisted later",
+      "valuation row may be missing; missing valuation does not remove membership from coverage denominator"
+    ],
+    "exclusions": [
+      "ETF/ETN/warrant/preferred/non-ordinary instruments not admitted by ordinary four-digit registry semantics",
+      "membership start UNKNOWN or replayEligible=false"
+    ],
+    "survivorshipRule": "Current membership is never required. Future delisting dates are not strategy-visible.",
+    "valuationAvailabilityRule": "Cohort membership and valuation availability are separate. A member with PE/PB UNKNOWN remains in coverage accounting."
+  },
+  "secondaryCohorts": [
+    {
+      "id": "SYSTEM_ELIGIBILITY_SUBGROUP",
+      "role": "deployment relevance only",
+      "rule": "May be built later from a frozen historical system-eligibility contract. It cannot replace the primary broad ordinary-stock inference cohort.",
+      "status": "NOT_FROZEN"
+    },
+    {
+      "id": "SECTOR_COHERENT_SUBGROUPS",
+      "role": "peer/sector robustness",
+      "rule": "Use PIT-safe industry membership where available; sector definitions cannot use future classifications."
+    }
+  ],
+  "scanClock": {
+    "frequency": "MONTHLY",
+    "rule": "Use the last actual TWSE trading session of each calendar month.",
+    "startMonth": "2023-01",
+    "endMonth": "2026-08",
+    "expectedMonthCount": 44,
+    "dateResolver": "Official/replayable TWSE trading calendar; never use calendar month-end if it was not a trading session.",
+    "endReason": "2026-08 is frozen before outcome access so D20 forward windows can mature by the 2026-10-02 completed session without using future dates.",
+    "noDateSelectionByReturns": true
+  },
+  "decisionTimestamp": {
+    "rule": "After-market decision timestamp for each resolved scan session, using the project's frozen Decision Clock semantics.",
+    "requirement": "All valuation, universe, sector and control observations must satisfy availableAt/knownAt <= decisionTimestamp.",
+    "missingClock": "DATA_BLOCKED"
+  },
+  "valuationState": {
+    "inputs": [
+      "official PE",
+      "official PB",
+      "PE percentile 252 valid sessions",
+      "PE percentile 756 valid sessions",
+      "PE percentile 1260 valid sessions",
+      "PE expanding percentile",
+      "PB percentile 252 valid sessions",
+      "PB percentile 756 valid sessions",
+      "PB percentile 1260 valid sessions",
+      "PB expanding percentile"
+    ],
+    "minimumHistory": "Each window uses its already frozen valid-observation minimum; insufficient history => UNKNOWN.",
+    "missingPe": "PE N/A/UNKNOWN stays stateful and never removes the symbol from the universe denominator.",
+    "structuralContext": [
+      "fiscal denominator period and transition",
+      "corporate-action break tags",
+      "listing-age valid sessions"
+    ]
+  },
+  "outcomeBlindControlsToFreezeBeforeJoin": [
+    "raw official PE/PB",
+    "industry/peer identifier where PIT-safe",
+    "size",
+    "liquidity",
+    "price trend / relative strength",
+    "market regime",
+    "realized revenue/EPS/profitability state where PIT-safe",
+    "fiscal-denominator transition",
+    "corporate-action context",
+    "listing age",
+    "valuation coverage/missingness signature"
+  ],
+  "coverageReceipt": {
+    "perDate": [
+      "baseUniverseCount",
+      "replayEligibleUniverseCount",
+      "valuationRowObservedCount",
+      "peKnownCount",
+      "pbKnownCount",
+      "eachPercentileKnownCount",
+      "missingnessStateCounts",
+      "structuralBreakCounts",
+      "newListingInsufficientHistoryCount",
+      "industryKnownCount"
+    ],
+    "invariant": "Every primary-cohort member must be accounted for as KNOWN or explicit UNKNOWN. No silent row dropping.",
+    "zeroCoverage": "A scan date with incomplete/unexplainable source coverage is DATA_BLOCKED, not a valid zero-pick date."
+  },
+  "antiBias": [
+    "do not use current listing membership for historical scans",
+    "do not delete later-delisted names",
+    "do not require valuation to be KNOWN to remain in coverage denominator",
+    "do not choose scan months based on later returns",
+    "do not choose the best percentile window after outcomes",
+    "do not apply current system filters as the primary inference cohort",
+    "do not backfill future sector or financial-statement revisions"
+  ],
+  "outcomeGate": {
+    "open": false,
+    "unlockRequires": [
+      "44 scan sessions resolved from official/replayable TWSE calendar",
+      "historical universe snapshot/hash for every scan session",
+      "valuation/control snapshot coverage receipt for every scan session",
+      "all members accounted KNOWN or explicit UNKNOWN",
+      "immutable snapshot/readback hash verification",
+      "outcome definitions already preregistered"
+    ]
+  },
+  "inferenceScope": "TWSE only; no TPEx/full-Taiwan generalization.",
+  "formalCoreChanged": false,
+  "promotionState": "NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
