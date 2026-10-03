@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 10:25 Asia/Taipei
+Updated: 2026-10-03 10:36 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -1338,4 +1338,27 @@ D15-15 advances to L3/60 for Taiwan PIT source/data feasibility only.
 - 11｜統計驗證與策略市場狀態研究室：D16-11 持有通用資料來源／版本／first-known（首次可知）／replay（重播）治理；D16-21 只應保留替代資料特有的 selection bias（選樣偏誤）、coverage bias（覆蓋偏誤）、leakage（洩漏）、representativeness（代表性）與 model drift（模型漂移）。
 
 研究室只提交證據包；是否真正合併／退休由 00｜研究總控室依凍結契約驗收，再交 owner（持有人）批准。
+
+## 第二優先層高重疊驗收契約 — 2026-10-03
+
+專責研究室執行下列重疊驗證前，必須讀：
+- `shared-knowledge/CURRICULUM_PRIORITY_B_OVERLAP_ACCEPTANCE_CONTRACT_20261003_V0_1.md`
+- `shared-knowledge/curriculum_priority_b_overlap_acceptance_contract_20261003_v0_1.json`
+
+優先順序：
+1. 08｜事件與新聞研究室 + 13｜行為金融與市場心理研究室：D17-08 vs D20-10。
+2. 01｜K線與型態研究室 + 04｜波動與市場微結構研究室：D01-08 vs D04-03。
+3. 04｜波動與市場微結構研究室：D05-05 vs D05-12。
+4. 05｜法人與籌碼研究室 + 12｜資產定價與因子研究室：D06-06 vs D19-11。
+5. 06｜基本面與估值研究室 + 08｜事件與新聞研究室：D08-19 vs D17-06。
+6. 04｜波動與市場微結構研究室 + 10｜投組風控與交易執行研究室：D05-08 vs D14-08、D05-06 vs D14-14。
+7. 04｜波動與市場微結構研究室 + 11｜統計驗證與策略市場狀態研究室：D04-05 vs D18-11。
+8. 07｜產業與供應鏈研究室 + 11｜統計驗證與策略市場狀態研究室：D09-06 vs D18-05。
+9. 10｜投組風控與交易執行研究室：D14-11 vs D15-11。
+10. 08｜事件與新聞研究室：D11-08 vs D17-02。
+11. 06｜基本面與估值研究室 + 11｜統計驗證與策略市場狀態研究室：D07-23 vs D16-23。
+12. 09｜衍生品與國際總經研究室 + 11｜統計驗證與策略市場狀態研究室：D13-18 vs D18-15。
+13. 07｜產業與供應鏈研究室 + 09｜衍生品與國際總經研究室：D10-13 vs D13-17。
+
+固定規則：專科研究室只提交證據包，不得自行刪除、合併或退休正式模組。若結論支持合併，仍必須回到 00｜研究總控室做 Dependency Audit（依賴審查）與 anti-orphan（防孤兒能力）驗證，再由 owner（持有人）批准。
 
