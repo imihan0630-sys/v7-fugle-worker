@@ -185,3 +185,6 @@ Unresolved blocker（未解阻塞）：完整歷史 MOPS proposal/final/version 
 Taiwan official（台灣官方）：MOPS 股利分派／財報／重大訊息／股東會決議；TWSE 除權除息與 Data E-Shop；Company Act §228-1、§240、§241。
 
 Research counterevidence（研究反證）：Wang, Ke, Liu & Huang (2011) Taiwan dividend life-cycle evidence；Huang & Lin (2017) Taiwan imputation-tax/dividend policy evidence；Liu, Chiou & Yang (2014) Taiwan cash-dividend/repurchase/capital-reduction payout evidence；DeAngelo, DeAngelo & Stulz (2006) life-cycle theory；Fama & French (2001) dividend-paying propensity and firm characteristics.
+
+
+<!-- intake-preflight-trigger: 2026-10-04 room06; no semantic change -->
