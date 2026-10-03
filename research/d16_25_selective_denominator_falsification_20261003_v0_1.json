@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "D16_25_SELECTIVE_DENOMINATOR_FALSIFICATION_V0_1",
+  "syntheticOnly": true,
+  "realTaiwanPIT": false,
+  "formalCoreImpact": "NONE",
+  "finding": "MATURED_SUBSET_COVERAGE_IS_NOT_DECISION_POPULATION_COVERAGE",
+  "frozenPolicyVersion": "FROZEN_AUDIT",
+  "totalPredictionCount": 4,
+  "frozenDecisionAcceptedCount": 3,
+  "decisionPopulationCoverage": 0.75,
+  "before": {
+    "maturedCount": 2,
+    "unknownCount": 1,
+    "immatureCount": 1,
+    "reportedMaturedSubsetCoverage": 0.5
+  },
+  "afterOneLabelArrives": {
+    "maturedCount": 3,
+    "reportedMaturedSubsetCoverage": 0.6666666666666666,
+    "frozenDecisionPopulationCoverage": 0.75
+  },
+  "noMatured": {
+    "status": "NO_MATURED_OUTCOMES",
+    "operationalCoverageOmitted": true
+  },
+  "limitation": "Not a failure of conditional matured-subset metrics; promotion misuse arises if interpreted as operational coverage.",
+  "evaluatorChanged": false,
+  "sizingEligible": false
+}
