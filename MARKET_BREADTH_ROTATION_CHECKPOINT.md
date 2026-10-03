@@ -817,3 +817,15 @@ Formal Core unchanged.
 - Formal Core unchanged.
 
 Exact next: BR-052 firm-specific competitive-action/position receipt; H01 owner/dependency review remains pending.
+
+
+## BR-052 / H01 final specialist classification
+
+- BR-052 proves a unique D09-14 firm-action PIT/replay contract from official TSMC/UMC action lifecycles.
+- H01 specialist classification is now `KEEP_SEPARATE`, superseding the earlier preliminary SCOPE_DEDUP_ONLY classification.
+- Required ownership boundary: D09-13 industry structure; D09-14 issuer-specific strategic action/relative position.
+- Shared market-share/capacity/price/margin parent evidence cannot be double counted.
+- D09-14 advances L2 -> L3 data feasibility only.
+- 00 governance still owns final routing/scope wording reconciliation; no retirement or Formal Core change.
+
+Exact next: cross-industry controls and failed/delayed/cancelled strategic-action receipts before any outcome/score claim.
