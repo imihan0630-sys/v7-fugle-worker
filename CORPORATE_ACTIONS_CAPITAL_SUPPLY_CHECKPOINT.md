@@ -368,3 +368,18 @@ Accumulate immutable Taiwan PIT/version receipts for D11-15..19 including unsucc
 
 Exact next:
 D11-15 prospective immutable bookbuilding/auction version capture plus cancelled/failed underwriting controls; continue D11-16..19 PIT lifecycle receipts. Outcomes remain closed until preregistered.
+
+## 2026-10-03 late continuation — D11-16 lockup source gap + D11-17 private-placement L3
+
+- New D11-16 receipt: `research/d11_16_lockup_source_gap_receipt_v0_1.json`.
+- D11-16 remains L2. Official lock-up schedules/data lanes exist, but one issuer-level official release-to-realized-sale chain is still missing. OpenAPI non-coverage for 6921 is UNKNOWN, not evidence of no transfer.
+- New D11-17 receipt: `research/d11_17_private_placement_pit_receipt_v0_1.json`.
+- D11-17 advances L2 -> L3 for Taiwan PIT/source feasibility. Private-placement authorization, pricing, payment, delivery, restricted holding and later public issuance/listing remain separate clocks.
+- 6648 is a success-path witness; 2314 supplies failed/rescheduled payment/pricing controls; 2465 preserves the registered/listed/tradable/private-placement denominator firewall.
+- D11 recomputes to 52.6% across 19 modules.
+- No outcome/alpha test, no historical Shadow fabrication, no Formal change.
+
+Exact next:
+1. D11-16 obtain one official issuer-level custody release -> transfer declaration -> later holdings/untransferred chain, including an eligible-but-not-sold control.
+2. D11-18/19 collect complete tender/deal success plus failure/extension/reprice lifecycles.
+3. D11-17 deepen native immutable MOPS version capture before any L4 outcome cohort.
