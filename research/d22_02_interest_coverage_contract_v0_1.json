@@ -1,8 +1,8 @@
 {
   "schemaVersion": "D22_02_INTEREST_COVERAGE_CONTRACT_V0_1",
-  "generatedAt": "2026-10-03T18:58:00+08:00",
+  "generatedAt": "2026-10-03T19:01:00+08:00",
   "module": "D22-02",
-  "status": "L2_EVIDENCE / MECHANISM_AND_FALSIFICATION_DEFINED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "status": "L2_EVIDENCE / CROSS_INDUSTRY_SEMANTIC_FALSIFICATION_EXPANDED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "researchQuestion": "Does PIT debt-service capacity add incremental information beyond D07 leverage/cash-flow controls, and how should interest coverage be defined without creating sector/definition threshold artifacts?",
   "mechanism": {
     "primaryConcept": "Interest coverage links earnings capacity to the contractual cost of debt and can deteriorate through lower earnings, higher effective borrowing costs, or both.",
@@ -40,17 +40,6 @@
       "warning": "Principal-inclusive debt-service coverage is a different construct from ICR."
     }
   },
-  "taiwanPITSemanticExample": {
-    "issuer": "UMC",
-    "periodEnd": "2023-12-31",
-    "sourceKnownAt": "2024-03-25 official SEC-source availability no later than this date",
-    "operatingIncomeTWDthousand": 57890661,
-    "debtAndLeaseInterestExpenseTWDthousand": 1473729,
-    "totalFinanceCostsTWDthousand": 1570374,
-    "operatingIncomeOverInterestExpense": 39.28175465,
-    "operatingIncomeOverTotalFinanceCosts": 36.86425081,
-    "interpretation": "Changing only the denominator definition changes the ratio materially. Therefore ICR definitions must be frozen before cross-company comparison or outcome opening."
-  },
   "falsificationGates": [
     "No universal cutoff such as 1.5x, 2x or 3x may be promoted without Taiwan PIT cross-sector evidence; external literature explicitly shows threshold heterogeneity.",
     "Negative or near-zero EBIT and near-zero interest expense create non-monotonic/undefined ratios; do not rank extreme values naively.",
@@ -58,7 +47,9 @@
     "Interest income must not be netted against debt interest unless the research question explicitly defines a net-interest construct.",
     "High accounting ICR can coexist with a large near-term principal wall; principal repayment belongs in a separate debt-service measure.",
     "Low accounting ICR can be temporary in cyclical/capex-heavy firms and may be buffered by cash, committed facilities, long fixed-rate debt or asset sales; none of these is assumed without evidence.",
-    "If D22-02 adds no information after D07 operating cash flow/leverage and D22-01 maturity timing, classify it REJECTED_OR_REDUNDANT."
+    "If D22-02 adds no information after D07 operating cash flow/leverage and D22-01 maturity timing, classify it REJECTED_OR_REDUNDANT.",
+    "Parent-only and consolidated earnings/interest rows must not be mixed in the same cross-issuer test; entity scope must match the D22-01 scope firewall.",
+    "If capitalization of borrowing costs is material, reported period interest expense may understate contemporaneous economic borrowing cost; record capitalization separately rather than mechanically adding it back without a preregistered construct."
   ],
   "pitContract": [
     "Use the earliest publicly known financial statement version; later comparative columns do not backfill prior vintages.",
@@ -72,9 +63,40 @@
     "reason": "Mechanism, semantic distinctions, Taiwan PIT example and explicit counterevidence are defined. Cross-industry Taiwan PIT receipts and replay are still insufficient for L3."
   },
   "exactNext": [
-    "Collect at least multiple Taiwan non-financial issuer/date PIT receipts for operating income/EBIT-compatible earnings and interest-expense components.",
-    "Freeze primary ICR denominator taxonomy and negative/near-zero denominator handling.",
-    "Compare accounting ICR with cash-interest coverage and D22-01 principal-inclusive debt-service challenger without opening stock outcomes.",
-    "Test cross-industry comparability before L3."
-  ]
+    "Add at least one additional non-financial industry and multiple dates so the numerator/denominator taxonomy is not inferred from only semiconductor and materials issuers.",
+    "Freeze treatment for negative EBIT, near-zero interest expense, capitalized interest, lease interest and other finance costs.",
+    "Build a machine-readable issuer/date ICR replay table with source-line provenance and compatible entity/accounting basis.",
+    "Compare accounting ICR with cash-interest coverage and D22-01 principal-inclusive debt-service challenger while equity outcomes remain closed.",
+    "Do not promote L3 until cross-industry Taiwan PIT replayability is established beyond isolated examples."
+  ],
+  "taiwanPITSemanticExamples": [
+    {
+      "issuer": "UMC",
+      "periodEnd": "2023-12-31",
+      "sourceKnownAt": "2024-03-25 official SEC-source availability no later than this date",
+      "operatingIncomeTWDthousand": 57890661,
+      "debtAndLeaseInterestExpenseTWDthousand": 1473729,
+      "totalFinanceCostsTWDthousand": 1570374,
+      "operatingIncomeOverInterestExpense": 39.28175465,
+      "operatingIncomeOverTotalFinanceCosts": 36.86425081,
+      "interpretation": "Changing only the denominator definition changes the ratio materially. Therefore ICR definitions must be frozen before cross-company comparison or outcome opening."
+    },
+    {
+      "issuer": "Taiwan Cement",
+      "periodEnd": "2023-12-31",
+      "sourceType": "official consolidated financial statements",
+      "operatingIncomeTWDthousand": 10030160,
+      "bankBorrowingInterestTWDthousand": 1764108,
+      "corporateBondInterestTWDthousand": 1459152,
+      "leaseInterestTWDthousand": 125315,
+      "otherFinanceCostsTWDthousand": 194109,
+      "totalFinanceCostsTWDthousand": 3542684,
+      "capitalizedInterestTWDthousand": 32190,
+      "debtAndLeaseInterestTWDthousand": 3348575,
+      "operatingIncomeOverDebtAndLeaseInterest": 2.99535175,
+      "operatingIncomeOverTotalFinanceCosts": 2.83123191,
+      "interpretation": "Cross-industry example confirms denominator taxonomy matters. Other finance costs and capitalized borrowing costs must not be silently treated as identical to debt/lease interest expense."
+    }
+  ],
+  "crossIndustryFinding": "UMC and Taiwan Cement show that the same headline label 'finance costs' can contain different components and materially alter the coverage ratio. This supports a source-line taxonomy rather than a universal plug-in denominator."
 }
