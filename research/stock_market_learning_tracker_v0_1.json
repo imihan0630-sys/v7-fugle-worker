@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 32.5
+    "maturityWeightedPct": 33.3
   },
   "domains": [
     {
@@ -1548,7 +1548,7 @@
         "CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md",
         "EVENT_RISK_CHECKPOINT.md"
       ],
-      "maturityPct": 40,
+      "maturityPct": 50.5,
       "modules": [
         {
           "id": "D11-01",
@@ -1682,54 +1682,58 @@
         {
           "id": "D11-15",
           "name": "IPO／Listing／Bookbuilding首次上市與詢價圈購",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「IPO／Listing／Bookbuilding首次上市與詢價圈購」。研究初級市場與特殊公司事件。需凍結事件條款、公告時間、生效日期、可交易日與失敗／撤案情境，並計入供給衝擊、鎖定期、交易限制與套利破局風險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D11-15 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_FALSIFICATION_FROZEN / TAIWAN_OFFICIAL_RULE_LANES_IDENTIFIED / HISTORICAL_PIT_CAPTURE_PENDING / OUTCOMES_CLOSED",
+          "next": "Freeze at least two independent Taiwan IPO lifecycles with range/final-price/first-trade clocks and include a failed/withdrawn/delayed control when available; preserve immutable source versions and capturedAt before L3."
         },
         {
           "id": "D11-16",
           "name": "Lock-up Expiry／Insider Supply禁售期到期與內部人供給",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Lock-up Expiry／Insider Supply禁售期到期與內部人供給」。研究初級市場與特殊公司事件。需凍結事件條款、公告時間、生效日期、可交易日與失敗／撤案情境，並計入供給衝擊、鎖定期、交易限制與套利破局風險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D11-16 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "SUPPLY_RELEASE_CLOCK_FROZEN / LOCKUP_EXPIRY_NOT_EQUAL_SELLING / TAIWAN_PIT_CAPTURE_PENDING / OUTCOMES_CLOSED",
+          "next": "Build issuer-specific centralized-custody/lock-up release receipts with original quantity, release schedule, tradability and later realized insider-sale evidence kept separate; keep unsourced sale inference UNKNOWN."
         },
         {
           "id": "D11-17",
           "name": "Secondary Offering／Private Placement後續發行與私募",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Secondary Offering／Private Placement後續發行與私募」。研究初級市場與特殊公司事件。需凍結事件條款、公告時間、生效日期、可交易日與失敗／撤案情境，並計入供給衝擊、鎖定期、交易限制與套利破局風險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D11-17 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "PUBLIC_VS_PRIVATE_SUPPLY_STATE_MACHINE_FROZEN / DILUTION_SIGN_NOT_MONOTONIC / TAIWAN_PIT_CAPTURE_PENDING / OUTCOMES_CLOSED",
+          "next": "Build separate public-offering/private-placement PIT receipts across authorization, pricing, payment, delivery, restricted trading and later listing; reconcile registered/listed/tradable denominator spaces."
         },
         {
           "id": "D11-18",
           "name": "Tender Offer／Going Private／Delisting公開收購私有化與下市",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Tender Offer／Going Private／Delisting公開收購私有化與下市」。研究初級市場與特殊公司事件。需凍結事件條款、公告時間、生效日期、可交易日與失敗／撤案情境，並計入供給衝擊、鎖定期、交易限制與套利破局風險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D11-18 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "TENDER_CONDITION_AND_DELISTING_CLOCK_FROZEN / DEAL_BREAK_STATE_EXPLICIT / TAIWAN_PIT_CAPTURE_PENDING / OUTCOMES_CLOSED",
+          "next": "Capture complete Taiwan tender/going-private lifecycles including minimum-condition, approval, extension/revision, settlement and failed/withdrawn paths before any return/spread cohort."
         },
         {
           "id": "D11-19",
           "name": "Spin-off／Merger Arbitrage／Deal-break Risk分拆併購套利與破局風險",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Spin-off／Merger Arbitrage／Deal-break Risk分拆併購套利與破局風險」。研究初級市場與特殊公司事件。需凍結事件條款、公告時間、生效日期、可交易日與失敗／撤案情境，並計入供給衝擊、鎖定期、交易限制與套利破局風險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D11-19 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "SPECIAL_SITUATIONS_SPREAD_AND_BREAK_RISK_FROZEN / D11_06_TRANSACTION_CLOCK_DEPENDENCY / TAIWAN_PIT_CAPTURE_PENDING / OUTCOMES_CLOSED",
+          "next": "Collect Taiwan merger/share-conversion/spin-off lifecycles with known-at terms, closing/break/reprice states and replicable hedge/borrow/cost evidence; do not duplicate D11-06 transaction-state evidence."
         }
-      ]
+      ],
+      "status": "SPECIAL_SITUATIONS_D11_15_19_L2 / EXISTING_PIT_MODULES_PRESERVED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "Accumulate immutable Taiwan PIT/version receipts for D11-15..19 across independent event lifecycles, explicitly including failure/withdrawal/extension/reprice states; preserve existing CA-113/114 archive gates and do not open outcomes before preregistration.",
+      "lastResearchUpdate": "2026-10-03",
+      "researchNote": "D11-15..19 advanced L0->L2 after mechanism, counterevidence, multi-clock state machines, failure states, PIT/UNKNOWN/revision/selection-bias/cost/redundancy contracts were frozen. L3 remains closed pending Taiwan first-known/versioned replay evidence. Formal Core unchanged."
     },
     {
       "id": "D12",
@@ -2737,7 +2741,7 @@
         "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md",
         "NEWS_EVENT_TRANSMISSION_RESEARCH.md"
       ],
-      "maturityPct": 38.6,
+      "maturityPct": 41.4,
       "modules": [
         {
           "id": "D17-01",
@@ -2858,14 +2862,18 @@
         {
           "id": "D17-14",
           "name": "Policy／Regulatory Event Clock／Surprise政策法規事件時鐘與預期差",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Policy／Regulatory Event Clock／Surprise政策法規事件時鐘與預期差」。研究政策與法規事件的首次已知時間、預期差、受益受害與半衰期；必須與 D10（供應鏈）及 D13（總經／地緣）分工，事件本身不等於方向性交易訊號。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D17-14 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "POLICY_DRAFT_DECISION_EFFECTIVE_CLOCK_FROZEN / SURPRISE_EXPECTATION_REQUIRED / TAIWAN_PIT_CAPTURE_PENDING / OUTCOMES_CLOSED",
+          "next": "Prospectively capture independent Taiwan draft/consultation, final-decision and effective-date versions; archive an ex-ante expectation source before computing surprise, otherwise keep surprise UNKNOWN."
         }
-      ]
+      ],
+      "status": "D17_14_L2_POLICY_EVENT_CLOCK_FROZEN / EXISTING_D17_PROGRESS_PRESERVED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "For D17-14, prospectively capture Taiwan draft/final/effective policy vintages and archive ex-ante expectations; in parallel preserve existing D17-01/02/09 multi-day source coverage work. Surprise stays UNKNOWN without a compatible pre-event expectation.",
+      "lastResearchUpdate": "2026-10-03",
+      "researchNote": "D17-14 advanced L0->L2. Draft/consultation, final decision, implementing rule, effective date and later revision/cancellation are separate clocks; market reaction cannot be reverse-engineered into surprise. L3 remains closed pending Taiwan PIT/versioned replay evidence."
     },
     {
       "id": "D18",
