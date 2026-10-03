@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T08:00:00+08:00",
+  "updatedAt": "2026-10-04T08:02:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 42.1
+    "maturityWeightedPct": 42.3
   },
   "domains": [
     {
@@ -2966,7 +2966,7 @@
         "research/D16_D18_SOURCE_CLOCK_REVALIDATION_V0_1.md",
         "research/D18_U2_TRUE_RETURN_DISTRIBUTION_CONTRACT_V0_1.md"
       ],
-      "maturityPct": 40,
+      "maturityPct": 44,
       "modules": [
         {
           "id": "D18-01",
@@ -2982,22 +2982,24 @@
         {
           "id": "D18-02",
           "name": "Trend vs Range策略互動",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Trend vs Range策略互動」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / SOURCE_FEASIBLE / MARKET_BUILDER_MISSING",
-          "next": "Build/test A2 trend context at market level; treat after-close state as next-session context and audit redundancy versus stock-level trend."
+          "levelMeaning": "台股PIT資料可行性已驗證",
+          "status": "L3 / TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / TAIEX_TREND_BUILDER_REPLAY_PASS / WAITING_OOS_PROSPECTIVE_INTERACTION / FORMAL_UNCHANGED",
+          "next": "維持 L3/60%。先累積 immutable prospective Trend context occupancy；L4 前需 frozen strategy+regime version、next-session timing、untouched OOS/Prospective Shadow、multiple episodes、成本一致與 stock-level trend redundancy control。",
+          "evidence": "research/D18_02_03_05_PIT_BUILDER_L3_ACCEPTANCE_20261004_V0_1.md + system2/runtime/d18_taiex_context_v0_1.mjs + system2/runtime/d18_sector_rotation_context_v0_1.mjs + CI 37163232569 + V8 37163232532"
         },
         {
           "id": "D18-03",
           "name": "High/Low Volatility策略互動",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「High/Low Volatility策略互動」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / SOURCE_FEASIBLE / MARKET_BUILDER_MISSING",
-          "next": "Build/test A2 realized-volatility context from frozen history; no outcome-tuned VOL_NORMAL band."
+          "levelMeaning": "台股PIT資料可行性已驗證",
+          "status": "L3 / TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / TAIEX_VOL_DIRECTION_BUILDER_REPLAY_PASS / WAITING_OOS_PROSPECTIVE_INTERACTION / FORMAL_UNCHANGED",
+          "next": "維持 L3/60%。先累積 RV5/RV20 volatility-direction context occupancy；L4 前需 OOS/Prospective interaction、multiple episodes、成本一致、與 ATR/既有 volatility factors 冗餘控制；不得 outcome-tune VOL_NORMAL epsilon。",
+          "evidence": "research/D18_02_03_05_PIT_BUILDER_L3_ACCEPTANCE_20261004_V0_1.md + system2/runtime/d18_taiex_context_v0_1.mjs + system2/runtime/d18_sector_rotation_context_v0_1.mjs + CI 37163232569 + V8 37163232532"
         },
         {
           "id": "D18-04",
@@ -3013,12 +3015,13 @@
         {
           "id": "D18-05",
           "name": "Sector Rotation×策略",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Sector Rotation×策略」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / B2_PROSPECTIVE_OBSERVER_AVAILABLE / D18_LABEL_BUILDER_MISSING",
-          "next": "Map B2 observer outputs into immutable context fields first; no historical classification backfill and no policy until prospective occupancy exists."
+          "levelMeaning": "台股PIT資料可行性已驗證",
+          "status": "L3 / TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / B2_TO_D18_SECTOR_ROTATION_CONTEXT_REPLAY_PASS / PROSPECTIVE_CLASSIFICATION_ONLY / WAITING_OOS_INTERACTION / FORMAL_UNCHANGED",
+          "next": "維持 L3/60%。以 prospective B2 receipts 累積 adjacent-session industry-rank transitions；禁止用今日分類回填歷史。L4 前需 frozen strategy/context、multiple rotation episodes、static baseline、cost/redundancy controls。",
+          "evidence": "research/D18_02_03_05_PIT_BUILDER_L3_ACCEPTANCE_20261004_V0_1.md + system2/runtime/d18_taiex_context_v0_1.mjs + system2/runtime/d18_sector_rotation_context_v0_1.mjs + CI 37163232569 + V8 37163232532"
         },
         {
           "id": "D18-06",
