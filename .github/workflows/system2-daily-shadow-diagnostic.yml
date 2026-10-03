@@ -8,6 +8,11 @@ on:
     branches: [main]
     paths:
       - "system2/runtime/daily_shadow_diagnostic_orchestrator_v0_1.mjs"
+      - "system2/runtime/daily_shadow_a1_source_v0_1.mjs"
+      - "system2/runtime/a1_symbol_snapshot_adapter.mjs"
+      - "system2/runtime/official_historical_a1_source_v0_1.mjs"
+      - "system2/runtime/daily_shadow_input_preflight_v0_1.mjs"
+      - "system2/runtime/daily_shadow_history_reader_v0_1.mjs"
       - "system2/runtime/daily_shadow_prospective_history_v0_1.mjs"
       - "system2/runtime/historical_store_v0_1.mjs"
       - "system2/scripts/run_daily_shadow_diagnostic.mjs"
