@@ -2108,7 +2108,7 @@
         "TRADING_FRICTIONS_CHECKPOINT.md",
         "EXECUTION_ALPHA_RESEARCH.md"
       ],
-      "maturityPct": 33.3,
+      "maturityPct": 35.6,
       "modules": [
         {
           "id": "D14-01",
@@ -2223,12 +2223,12 @@
         {
           "id": "D14-15",
           "name": "Market vs Limit Order／Order-type Choice市價限價與委託類型選擇",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Market vs Limit Order／Order-type Choice市價限價與委託類型選擇」。研究委託類型、執行演算法、執行落差、市場衝擊與訊號衰減。所有研究必須使用可下單性、成交機率、滑價、延遲、部分成交與成本，禁止用收盤價假裝可成交價。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D14-15 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_FALSIFICATION_CONTRACT_FROZEN / TAIWAN_PIT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED",
+          "next": "建立至少 3 個獨立台股交易日的 prospective read-only order-choice receipt：保留成交與未成交／取消／拒單機會，分離整股逐筆、零股離散撮合與集合競價，保存 decisionAt 行情／機制 provenance，正向連結 broker-confirmed fills，預註冊 marketable-limit 與 market/IOC comparator；先做 deterministic replay，再進行 L3 readiness review。三日期不自動升級。"
         },
         {
           "id": "D14-16",
@@ -2270,7 +2270,11 @@
           "status": "OWNER_APPROVED / KEEP_ROLE_LIMITED / STRATEGY_SPECIFIC_EXECUTION_CAPABILITY / CROSS_DEPENDENCY_D06_18_D20_13",
           "next": "由 10｜投組風控與交易執行研究室研究放空可建立、維持與退出風險。D06-18 保留借券經濟／供給角色，D20-13 保留套利限制角色，三者暫不合併；僅對做空策略的可借券性／強制回補安全條件研究條件式 HARD_INVALIDATION。"
         }
-      ]
+      ],
+      "status": "ACTIVE_RESEARCH / D14-15_L2_ORDER_CHOICE_CONTRACT / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "建立至少 3 個獨立台股交易日的 prospective read-only order-choice receipt：保留成交與未成交／取消／拒單機會，分離整股逐筆、零股離散撮合與集合競價，保存 decisionAt 行情／機制 provenance，正向連結 broker-confirmed fills，預註冊 marketable-limit 與 market/IOC comparator；先做 deterministic replay，再進行 L3 readiness review。三日期不自動升級。",
+      "lastResearchUpdate": "2026-10-03T14:06:00+08:00",
+      "researchNote": "D14-15 已完成市價／限價／ROD／IOC／FOK 的機制、反證、偏誤防火牆與台股委託選擇資料契約。L2 僅代表機制＋反證已定義；L3 仍需 prospective PIT replay 與 broker-confirmed fill provenance。Formal Core unchanged."
     },
     {
       "id": "D15",
