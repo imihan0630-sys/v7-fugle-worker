@@ -1276,3 +1276,15 @@ Can Taiwan insider-transfer and pledge disclosures add governance/risk informati
 
 ### Exact next continuation point
 Build a historical Taiwan D21-04 pledge replay with at least one pledge setup and one release event, preferably the same issuer/controller. Preserve original known_at, filer-level and controller-group pledge ratios, contemporaneous price path, related insider transfers, repurchase/financing context and Article 197-1 voting-right relevance. Never infer a margin-call threshold without contract terms. Separately preserve D21-03 original monthly MOPS receipt as a pending source dependency and add a second independent transfer-motive case before considering L3.
+
+
+## 2026-10-04 D19 specialist return — asset pricing / factor investing
+- Room: 12｜資產定價與因子研究室.
+- D19-13 relative-value/pairs/cointegration/residual-mean-reversion, D19-15 benchmark construction, and D19-16 liquidity premium completed L2 mechanism + falsification review.
+- All 15 active D19 modules are now L2 / 40%; D19-14 remains retired/merged into D19-13 and is not an active denominator item.
+- Counterevidence preserved: pair relationships can structurally break; benchmark vintages can leak future membership; Taiwan Amihud-style liquidity pricing is measure-sensitive and can reflect volume/mispricing rather than pure illiquidity risk.
+- Redundancy control: D19 findings must be neutralized against existing D03/D04/D05/D07/D08/D09 families before independent-alpha claims.
+- PIT engineering audit: existing System2 cold loaders/PIT replay/universe registry are reusable, but the six D19 factor-layer receipts remain unimplemented in code.
+- Recommended first executable smoke slice: D19-04 cross-sectional momentum + D19-07 low-volatility/low-beta, using existing PIT daily bars/universe membership.
+- Exact next: implement research-only factor-layer receipt adapter with deterministic universe -> return -> factorInput -> neutralization -> cost -> replay receipt chain and fail-closed tests. No D19 L3 until an actual Taiwan frozen-date replay receipt passes deterministic rerun validation.
+- Formal Core unchanged; no formal optimization candidate.
