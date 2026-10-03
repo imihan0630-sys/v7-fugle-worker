@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "CURRICULUM_H01_H04_CONSOLIDATION_ACCEPTANCE_CONTRACT_V0_1",
+  "updatedAt": "2026-10-03T10:55:00+08:00",
+  "formalCoreImpact": "NONE",
+  "curriculumCountImpact": "NONE",
+  "allowedTerminalClassifications": [
+    "MERGE_ELIGIBLE",
+    "KEEP_SEPARATE",
+    "SCOPE_DEDUP_ONLY",
+    "EVIDENCE_INSUFFICIENT"
+  ],
+  "commonGates": [
+    "STRICT_SEMANTIC_SUBSUMPTION",
+    "OBSERVABLE_SOURCE_CONTRACT",
+    "DECISION_ROLE_CONTRACT",
+    "INCREMENTAL_EVIDENCE_TEST",
+    "FALSIFICATION_PRESERVATION",
+    "CAPABILITY_PRESERVATION",
+    "NO_HIDDEN_FORMAL_CHANGE",
+    "ROUTING_AND_NAMING",
+    "MATURITY_TRANSFER_FIREWALL"
+  ],
+  "maturityTransferFirewall": {
+    "maxInheritanceForbidden": true,
+    "averageInheritanceForbidden": true,
+    "simpleCarryForwardForbidden": true,
+    "requiresSubscopeEvidenceMapping": true,
+    "requiresMergedScopeMaturityRecomputation": true
+  },
+  "candidates": [
+    {
+      "id": "H01",
+      "modules": [
+        "D09-13",
+        "D09-14"
+      ],
+      "room": "07｜產業與供應鏈研究室",
+      "hypothesis": "STRONG_MERGE_CANDIDATE_AFTER_VALIDATION",
+      "likelySurvivor": "D09-13",
+      "proposedSurvivorName": "Industry Structure／Competitive Dynamics／Porter Five Forces產業結構、競爭動態與波特五力",
+      "currentMaturity": {
+        "D09-13": "L0/0%",
+        "D09-14": "L0/0%"
+      },
+      "requiredPacket": [
+        "conceptMatrix",
+        "sharedVsUniqueObservables",
+        "industryVsFirmUnitMap",
+        "staticVsDynamicExamples",
+        "divergentStateExamples",
+        "survivorWording",
+        "capabilityInventory"
+      ]
+    },
+    {
+      "id": "H02",
+      "modules": [
+        "D14-03",
+        "D14-04",
+        "D14-17"
+      ],
+      "room": "10｜投組風控與交易執行研究室",
+      "hypothesis": "STRONG_CONSOLIDATION_CANDIDATE_AFTER_VALIDATION",
+      "likelySurvivor": "D14-17",
+      "proposedSurvivorName": "Signal-to-Fill／Slippage／Implementation Shortfall／Market-impact Cost訊號到成交、滑價、執行落差與市場衝擊成本",
+      "currentMaturity": {
+        "D14-03": "L3/60%",
+        "D14-04": "L2/40%",
+        "D14-17": "L0/0%"
+      },
+      "maturityRule": "NO_AUTOMATIC_L3_TRANSFER",
+      "requiredPacket": [
+        "signalToFillIdentity",
+        "benchmarkPriceTaxonomy",
+        "costDecompositionTree",
+        "slippageImpactDelaySeparation",
+        "replaySchemaOwnership",
+        "D14_12Interface",
+        "mergedScopeMaturityMap"
+      ]
+    },
+    {
+      "id": "H03",
+      "modules": [
+        "D15-13",
+        "D15-24"
+      ],
+      "room": "10｜投組風控與交易執行研究室",
+      "hypothesis": "STRONG_MERGE_CANDIDATE_AFTER_VALIDATION",
+      "likelySurvivor": "D15-13",
+      "proposedSurvivorName": "VaR／Expected Shortfall／Tail Risk Measures風險值、期望損失與尾端風險量測",
+      "currentMaturity": {
+        "D15-13": "L2/40%",
+        "D15-24": "L0/0%"
+      },
+      "maturityRule": "PRESERVE_ES_EVIDENCE_VaR_SUBSCOPE_REMAINS_UNMATURED_UNTIL_VALIDATED",
+      "requiredPacket": [
+        "portfolioHorizonConfidenceContract",
+        "VaRvsESTable",
+        "methodAssumptions",
+        "tailFailureCounterexamples",
+        "D16_23StressBoundary",
+        "mergedMaturityMap"
+      ]
+    },
+    {
+      "id": "H04",
+      "modules": [
+        "D12-14",
+        "D12-15"
+      ],
+      "room": "09｜衍生品與國際總經研究室",
+      "hypothesis": "STRONG_SEMANTIC_CONSOLIDATION_CANDIDATE",
+      "likelySurvivor": "D12-15",
+      "proposedSurvivorName": "Volatility Risk Premium／IV-RV Proxies波動率風險溢酬與IV-RV代理",
+      "currentMaturity": {
+        "D12-14": "L2/40%",
+        "D12-15": "L2/40%"
+      },
+      "requiredPacket": [
+        "formalDefinitions",
+        "horizonUnitAlignment",
+        "riskNeutralPhysicalExpectationContract",
+        "parentRowLineage",
+        "divergentStateExamples",
+        "incrementalValueDesign",
+        "survivorChildSchema"
+      ]
+    }
+  ]
+}
