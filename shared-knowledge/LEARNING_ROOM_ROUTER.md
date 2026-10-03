@@ -1556,3 +1556,15 @@ System1／相關專科室續接 overfilter（過度過濾）、gate（門檻）�
 - A/B 保留為 current Formal baseline（目前正式基準）的 PRIMARY_ALPHA（主要證據）策略身份。
 - 任何正式放寬仍需 prospective/OOS（前瞻／樣本外）＋成本＋回撤＋false acceptance（錯誤接受）證據與 owner approval（持有人批准）。
 
+## System1 S1／S2 Shadow 研究順序 — 2026-10-03
+
+所有 System1 overfilter（過度過濾）研究續接前讀：
+`shared-knowledge/SYSTEM1_S1_S2_SHADOW_EXECUTION_REGISTRY_20261003_V0_1.md`
+
+固定順序：
+S1 語意修正 -> S2 P1-A Reach Funnel（可到達漏斗）-> 成熟結果 -> 才能決定是否進 P1-B。
+TARGET_AVAILABLE 四態是獨立 P2 語意反證，不得與 P1-A 一次同時放寬。
+
+禁止：
+UNKNOWN 當 PASS、用候選數增加當成功、firstFailure 當因果、未做 date cluster（日期群聚）就宣告顯著。
+
