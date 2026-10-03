@@ -94,3 +94,16 @@ ER-028 prepare research-only event-vintage capture proposal only if needed.
 
 Exact next:
 Build immutable prospective/historical source-version receipts for the six new modules while continuing ER event-vintage coverage. Keep outcome joins closed until source completeness and preregistered cohort gates pass.
+
+## Room 08 continuation — D11-15 L3 IPO PIT + D17-14 clock-lane evidence — 2026-10-03
+
+- D17-14 policy-clock source lane is now bounded Taiwan PIT-feasible at date level via official FSC draft and final-law histories.
+- New receipt: `research/d17_14_policy_clock_receipt_v0_1.json`.
+- Three independent policy histories prove publication/effective semantics can differ: effective-on-publication, legally retroactive, and mixed provision-level effective dates.
+- Retroactive legal effect never backdates first-known or decision observability.
+- The full D17-14 module stays **L2** because Surprise（預期差）still lacks a validated ex-ante expectation source lane. Missing expectation = UNKNOWN; market reaction cannot substitute.
+- Existing ER-024 prospective Shadow/opening-data blockers remain unchanged.
+- No event-direction score, risk penalty, return outcome or Formal change.
+
+Exact next:
+Validate ex-ante expectation archives for independent Taiwan policy decisions and prospectively preserve raw draft/final/effective versions with capturedAt; continue D17-01/02/09 source-version coverage.
