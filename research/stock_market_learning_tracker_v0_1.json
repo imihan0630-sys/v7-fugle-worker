@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T07:11:00+08:00",
+  "updatedAt": "2026-10-04T07:20:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -267,11 +267,11 @@
         "TECHNICAL_INDICATOR_CHECKPOINT.md",
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
       ],
-      "maturityPct": 55,
-      "status": "D03_55_PERCENT / PERSISTENCE_CONTINUATION_DIVERGENCE_MULTITIMEFRAME_L3 / PULLBACK_ADX_BOLLINGER_L2_GATED / RAW_RECEIPT_GATE_2_OF_3",
-      "lastResearchUpdate": "2026-10-03",
-      "researchNote": "TI-491~525 deepen D03 without theory-only inflation. D03-13 multi-timeframe advances L2/40->L3/60 after causal PIT feasibility is frozen across calendar-aware Weekly, Daily PROVISIONAL/CONFIRMED finality, and bounded Fugle M15 coverage with distinct barStart/barEnd/featureKnownAt clocks; current zero-extra-call M15 path explicitly covers 17/18 regular-session slots through 13:15 and cannot claim the 13:15-13:30 closing bar. D03-04 momentum continuation advances L2/40->L3/60 after separating current momentum level (D03-02), persistence (D03-03), and post-decision continuation; rolling retN sign retention is rejected as a primary outcome because it mechanically overlaps pre-decision data, while exact future D5/D10/D20/MFE/MAE symbol-session outcome lineage is technically feasible. D03-05 remains L2/40: generic short-term reversal is rejected/redundant with the existing A/PULLBACK + 15m confirmation architecture, while the genuinely residual pullback-origin question is cross-lane data-gated, especially liquidity-pressure origin requiring D05 pressure/depth/response/replenishment completeness. Active D03 modules remain 12; aggregate becomes 55.0%. Raw-byte source gate remains 2/3; outcomes and Formal Core remain closed.",
-      "exactNextContinuationPoint": "D03 theory/mechanism deepening has reached a temporary evidence ceiling for the remaining L2 modules: D03-05 needs owner-lane pullback-origin receipts (especially D05 pressure/replenishment); D03-10 Bollinger needs physical TECHNICAL_CONTINUITY + immutable parent capture over an exact 20 eligible-session window; D03-09 ADX additionally needs canonical recursive replay/state-lineage certification. Keep raw-byte source gate 2/3 through the weekend. When the gate genuinely closes, execute TI-005 KD-vs-RSI then TI-006 MACD-vs-direct-trend first; do not bypass them with ADX/Bollinger outcomes.",
+      "maturityPct": 56.7,
+      "status": "D03_56_7_PERCENT / PULLBACK_PERSISTENCE_CONTINUATION_DIVERGENCE_MULTITIMEFRAME_L3 / ADX_BOLLINGER_L2_CONTINUITY_GATED / RAW_RECEIPT_GATE_2_OF_3",
+      "lastResearchUpdate": "2026-10-04",
+      "researchNote": "TI-534~542 reconcile D03-05 with the owner-approved H07 semantic split. D03-05 owns the observable price phenomenon (pullback geometry, short-horizon reversal, failed reversal, PIT-safe replay); causal origin remains an optional cross-lane moderator. Existing A/PULLBACK daily geometry, completed Fugle M15 semantics and implemented PV Shadow A lifecycle provide the replay substrate. D03 v0.2 adds strict expected-slot continuity, explicit failure states, non-backdated confirmation clocks and UNKNOWN origin semantics. D03-05 advances L2/40 to L3/60 for the observable phenomenon only; generic reversal factor remains rejected and liquidity/event/behavioral cause inference stays partial/UNKNOWN without owner receipts. Active D03 modules=12; aggregate=56.7%. D03-09/10 remain L2 because shared TECHNICAL_CONTINUITY is not physically certified. Raw source-version gate remains 2/3. Outcomes/Formal remain closed.",
+      "exactNextContinuationPoint": "Pre-register TI-005 KD-vs-RSI then TI-006 MACD-vs-direct-trend now, but treat the raw 3/3 source-version gate as necessary-not-sufficient. After the next completed Taiwan session, first close the raw receipt gate with receipt-equivalent capture; then re-evaluate full observer R1/R2/R4 readiness: immutable parent keyset/generation, TECHNICAL_CONTINUITY, symbol-session/price-limit provenance, stateConstructionMode, exact attempt accounting and replay/prefix parity. Do not open outcomes unless those gates pass. D03-09/10 remain blocked behind continuity; Formal Core stays locked.",
       "modules": [
         {
           "id": "D03-01",
@@ -312,12 +312,12 @@
         {
           "id": "D03-05",
           "name": "Pullback回檔與短期反轉",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Pullback回檔與短期反轉」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "GENERIC_REVERSAL_REJECTED_OR_REDUNDANT / PULLBACK_ORIGIN_MODERATOR / LIQUIDITY_PRESSURE_DATA_GATED_BY_D05 / OUTCOME_UNKNOWN",
-          "next": "Do not create a generic reversal factor. Preserve pullback-origin as diagnostic/moderator only; liquidity-pressure origin stays UNKNOWN without D05 pressure/depth/price-response/replenishment/capture-completeness receipts. Reversal confirmation cannot backdate to the pullback low."
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / OBSERVABLE_PRICE_EPISODE / ORIGIN_OPTIONAL_UNKNOWN_ALLOWED / OUTCOME_UNKNOWN",
+          "next": "Use H07 observable-price ownership: preserve daily pullback parent geometry, exact contiguous completed M15 prefix, causal seed->confirm/failure episode clocks and confirmation-lag cost. Causal origin remains optional moderator/UNKNOWN without owner receipts. No generic reversal factor or Formal change."
         },
         {
           "id": "D03-06",
