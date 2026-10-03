@@ -23,7 +23,9 @@ permissions:
   contents: read
 
 concurrency:
-  group: system2-research-ci
+  # Read-only CI may run independently across research branches/PRs. A newer
+  # run on the same ref still supersedes its older run.
+  group: system2-research-ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:

@@ -7,6 +7,7 @@ assert.match(workflow, /cancel-in-progress: false/);
 assert.match(workflow, /github.ref == 'refs\/heads\/main'/);
 assert.match(workflow, /environment: system2-research/);
 assert.match(workflow, /WRITE_SYSTEM2_DAILY_DIAGNOSTIC_ONLY/);
+assert.match(workflow, /daily_shadow_a1_exact_date_fallback_v0_2\.test\.mjs/);
 for (const requiredSourceTrigger of [
   "system2/runtime/daily_shadow_a1_source_v0_1.mjs",
   "system2/runtime/a1_symbol_snapshot_adapter.mjs",
