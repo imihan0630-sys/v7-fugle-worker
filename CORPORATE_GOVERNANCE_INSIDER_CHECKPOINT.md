@@ -1,8 +1,8 @@
 # Corporate Governance / Insider Checkpoint
 
-Updated: 2026-10-04 Asia/Taipei
+Updated: 2026-10-04 08:00 Asia/Taipei
 Scope: D21｜公司治理／經營者／內部人／控制權品質
-Status: D21-01 L2 PARTIAL_PIT_REPLAY / D21-02 L3 TAIWAN_PIT_VALIDATED / D21-03 L2 CLUSTER_DEDUP_FROZEN / D21-04 L2 MECHANISM_FALSIFICATION_FROZEN / FORMAL_CORE_UNCHANGED
+Status: D21-01 L2 / D21-02 L3 / D21-03 L2 / D21-04 L2 / D21-05 L2 / D21-07 L2 / D21-09 L2 / D21-10 L2 / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - Canonical continuation checkpoint for D21.
@@ -90,5 +90,54 @@ Formal Core impact: NONE.
 
 ## Exact next continuation
 Build a historical D21-04 pledge PIT replay with at least one pledge setup and one release event, preferably for the same controller/issuer. Capture original known_at, pledged-share ratios at filer and controller-group levels, price path before/after, related insider transfers, corporate repurchase/financing context and Article 197-1 voting-right relevance. Keep D21-03 exact original monthly MOPS receipt as an unresolved dependency; do not let it block D21-04. Only after end-to-end historical pledge replay may D21-04 be considered for L3.
+
+Formal Core impact: NONE.
+
+
+## 2026-10-04 accelerated deepening block
+
+### D21-04 pledge replay
+- New Product Insurance 2850 / major shareholder Shin Kong Textile provides a partial historical state-transition case: +8,000 pledged lots on 2024-12-19 (balance 28,000), -4,000 released on 2025-01-23 (balance 24,000), and -5,000 released on 2025-02-03 (balance 19,000), against a reported 51,548-lot position.
+- Pledge intensity therefore fell from about 54.33% to 36.86%.
+- Exact original MOPS receipts remain unavailable in this replay; event dates currently come from a structured secondary mirror. D21-04 remains L2 / 40%, not L3.
+- Margin-call level remains UNKNOWN because loan terms are unavailable.
+
+### D21-05 RPT
+- Advance D21-05 L0 -> L2 / 40%.
+- Freeze separate transaction families: sales, purchases, receivables/payables, loans, borrowings, guarantees, assets/real estate, investments and non-operating items.
+- Freeze competing mechanisms: efficient contracting/internal capital market, tunneling/self-dealing, propping/earnings management.
+- Taiwan evidence rejects a universal negative sign. Some operating RPTs can improve earnings informativeness; other non-operating or financing RPTs can weaken it.
+- PIT requirements: historical relationship status, transaction type/amount, known_at, approval clock, purpose/pricing support, consolidation treatment, scale normalization and UNKNOWN semantics.
+- L3 pending at least two historical Taiwan RPT transaction-family replays.
+
+### D21-07 incentives and capital allocation
+- Advance D21-07 L0 -> L2 / 40%.
+- Research object is incentive design -> decision -> allocation -> realized outcome, not compensation level alone.
+- Taiwan remuneration-committee rules require periodic review of performance/remuneration structures, linkage to operating performance and future risk, and avoidance of incentives exceeding risk appetite.
+- Freeze competing mechanisms: alignment/long-horizon investment, short-termism/metric gaming, overconfidence/control interaction, reverse causality/talent-market pay.
+- Candidate allocation outcomes: R&D, capex, M&A, repurchases, dividends, debt/equity financing and cash accumulation.
+- L3 pending historical compensation-policy plus allocation-decision PIT replay.
+
+### D21-09 succession/key-person
+- Advance D21-09 L0 -> L2 / 40%.
+- Freeze event taxonomy: planned/unplanned, death/illness, resignation/dismissal, family/internal/external successor, interim appointment, chair/CEO/CFO/accounting-officer changes and founder-retains-control state.
+- Taiwan evidence is heterogeneous: family/internal continuity can preserve firm-specific knowledge, while professional succession can improve outcomes in competitive industries. Successor identity alone is not a monotonic score.
+- Role defaults to CONTEXT_ONLY / GOVERNANCE_TAIL_RISK / CONFIDENCE.
+- L3 pending historical date-specific succession replay.
+
+### D21-10 audit/restatement/internal control
+- Advance D21-10 L0 -> L2 / 40%.
+- Freeze distinct event types: correction, formal restatement, regulator/company initiation, auditor opinion deterioration, auditor change, internal-audit-head change, material weakness, special CPA review, fraud/suspected fraud and remediation.
+- Taiwan rules distinguish corrections from restatements using quantitative materiality thresholds; rule vintage is mandatory.
+- Historical financial research must preserve both originally-known and later-restated versions. Never rewrite the past with the corrected figures before public known_at.
+- Taiwan evidence supports more negative interpretation for earnings overstatement/material control weaknesses, but remediation and error type matter.
+- L3 pending Taiwan historical dual-vintage event replay.
+
+## Exact next continuation
+Priority 1: attempt original-source historical D21-04 pledge setup/release receipt recovery; do not promote without authoritative known_at.
+Priority 2: build D21-05 historical replay using at least two economically different RPT families, preferably one operating RPT and one financing/guarantee RPT, preserving relationship vintage and announcement/approval clocks.
+Priority 3: build D21-10 dual-vintage restatement replay preserving both originally-known and corrected financial values.
+D21-07 and D21-09 remain L2 until date-specific Taiwan replay is completed.
+No Formal optimization candidate exists.
 
 Formal Core impact: NONE.
