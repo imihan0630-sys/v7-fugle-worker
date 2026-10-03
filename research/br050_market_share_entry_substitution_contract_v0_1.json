@@ -1,0 +1,113 @@
+{
+  "version": "0.1",
+  "id": "BR-050",
+  "capturedAt": "2026-10-03T14:00:00+08:00",
+  "module": "D09-14 Market Share／Entry Barrier／Substitution／Competitive Strategy市占、進入障礙、替代與競爭策略",
+  "mode": "THEORY_MECHANISM_FALSIFICATION_CONTRACT / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "theorySources": [
+    {
+      "authority": "OECD",
+      "url": "https://www.oecd.org/en/publications/market-concentration_7231c298-en.html",
+      "use": "Market share/concentration require correct market definition and corroborating competition evidence."
+    },
+    {
+      "authority": "OECD",
+      "url": "https://www.oecd.org/en/publications/barriers-to-entry_8bb30107-en.html",
+      "use": "Entry barriers include structural, strategic and network/switching mechanisms."
+    },
+    {
+      "authority": "U.S. DOJ Antitrust Division",
+      "url": "https://www.justice.gov/atr/merger-guidelines/tools/market-shares",
+      "use": "Market shares can be measured using different metrics; recent/foreseeable changes can make historical shares over/understate competitive significance."
+    },
+    {
+      "authority": "U.S. DOJ Antitrust Division",
+      "url": "https://www.justice.gov/atr/merger-guidelines/tools/market-definition",
+      "use": "Product and geographic market definition precedes meaningful market-share interpretation."
+    }
+  ],
+  "marketShareContract": {
+    "denominatorRequired": true,
+    "permittedNumerators": [
+      "revenue",
+      "shipments",
+      "capacity",
+      "installedBase",
+      "activeUsers/customers where economically relevant"
+    ],
+    "rule": "Do not compare shares built from different numerators/denominators as if interchangeable.",
+    "vintage": "Every share requires observationPeriod, sourcePublishedAt/capturedAt and market-definition vintage."
+  },
+  "entryBarrierVector": [
+    "SUNK_CAPEX_AND_MINIMUM_EFFICIENT_SCALE",
+    "CUSTOMER_QUALIFICATION_AND_RELIABILITY_HISTORY",
+    "REGULATORY_OR_LICENSE_APPROVAL",
+    "IP_PROCESS_KNOWHOW_AND_YIELD_LEARNING",
+    "SCARCE_INPUT_OR_SUPPLIER_ACCESS",
+    "DISTRIBUTION_OR_ROUTE_TO_MARKET",
+    "SWITCHING_COST_OR_LOCK_IN",
+    "NETWORK_EFFECT_OR_DATA_SCALE",
+    "MULTI_LEVEL_ENTRY_REQUIREMENT"
+  ],
+  "substitutionVector": [
+    "FUNCTIONAL_EQUIVALENCE",
+    "RELATIVE_PRICE_PERFORMANCE",
+    "QUALIFICATION_TIME",
+    "SWITCHING_COST",
+    "SUPPLY_AVAILABILITY",
+    "CUSTOMER_ACCEPTANCE",
+    "REGULATORY_OR_STANDARD_COMPATIBILITY"
+  ],
+  "competitiveStrategyStates": [
+    "COST_LEADERSHIP_OR_SCALE",
+    "DIFFERENTIATION_TECHNOLOGY_QUALITY",
+    "FOCUS_NICHE_OR_CUSTOMER_LOCK_IN",
+    "CAPACITY_EXPANSION_OR_PREEMPTION",
+    "VERTICAL_INTEGRATION",
+    "MULTI_SOURCING_OR_PLATFORM_STRATEGY"
+  ],
+  "mechanisms": [
+    "Durable share can indicate competitive advantage only when the relevant market is correctly defined and share survives entry/substitution pressure.",
+    "High qualification costs and yield/process learning can delay entry even when capital is available.",
+    "Substitution risk can convert a high-share incumbent into a shrinking economic market; share within an obsolete denominator is misleading."
+  ],
+  "falsification": [
+    "Historical market share can overstate future significance after technology, capacity, regulation or customer-sourcing changes.",
+    "A high-share firm can destroy value through overinvestment, price wars or poor capital allocation.",
+    "A low-share challenger can exert strong competitive pressure if it has credible rapid-entry or swing-capacity capability.",
+    "Reported 'market share' from sell-side or company presentations is unusable unless product/geography/period/denominator are explicit.",
+    "Capex size alone is not an entry barrier if capacity can be leased, outsourced or rapidly repurposed."
+  ],
+  "pitContract": {
+    "required": [
+      "marketDefinitionVintage",
+      "shareMetric",
+      "numerator",
+      "denominator",
+      "observationPeriod",
+      "sourcePublishedAt",
+      "capturedAt",
+      "firstEligibleDecision"
+    ],
+    "noBackfill": true,
+    "missingRule": "UNKNOWN remains UNKNOWN; do not infer zero share or no substitute.",
+    "outcomeFirewall": "No future return/margin outcome when freezing share/barrier/substitution states."
+  },
+  "redundancyControls": [
+    "Share/concentration is not a duplicate vote with D09-10 HHI/activity concentration.",
+    "Entry barriers must be separated from current pricing power and current margins.",
+    "Substitution evidence must not be duplicated with theme/industry classification bridges."
+  ],
+  "maturityDecision": {
+    "D09-14": "PROMOTE_L0_TO_L2_MECHANISM_AND_FALSIFICATION_DEFINED"
+  },
+  "reasonNoL3": "No Taiwan cross-industry effective-dated share/barrier/substitution receipt with verified denominators has yet been frozen.",
+  "exactNext": [
+    "BR-052 freeze one Taiwan priority-industry market-share/barrier/substitution receipt with explicit numerator/denominator and at least one substitute/entrant negative control.",
+    "Require issuer-independent or regulator/industry-association corroboration where possible.",
+    "No share-based company score before OOS/prospective incremental-value tests."
+  ],
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / MARKET_SHARE_DENOMINATOR_CONTRACT_FROZEN / TAIWAN_PIT_RECEIPT_PENDING / FORMAL_UNCHANGED"
+}
