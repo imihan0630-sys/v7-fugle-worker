@@ -1,0 +1,160 @@
+{
+  "schemaVersion": "CURRICULUM_COVERAGE_INTAKE_PREFLIGHT_RECEIPT_V0_1",
+  "scanDate": "2026-10-03",
+  "mainHead": "9dfdedfe908db529dad0b0b2558ab73d626e879e",
+  "validator": "research/curriculum_coverage_intake_preflight_v0_1.mjs",
+  "status": "PREFLIGHT_PASS",
+  "routeCount": 12,
+  "present": 0,
+  "valid": 0,
+  "invalid": 0,
+  "missing": 12,
+  "acceptedForIntake": 0,
+  "currentGovernance": {
+    "partialEvidenceReceived": [
+      "COV-01",
+      "COV-02",
+      "COV-06",
+      "COV-07",
+      "COV-08",
+      "COV-09",
+      "COV-10",
+      "COV-11"
+    ],
+    "pendingSpecialistReturn": [
+      "COV-03",
+      "COV-04",
+      "COV-05",
+      "COV-12"
+    ],
+    "acceptedSpecialistReturns": 0
+  },
+  "canonicalSnapshot": {
+    "domains": 22,
+    "activeModules": 354,
+    "maturityWeightedPct": 38.2
+  },
+  "note": "No formal return artifacts are present. Missing return files are NOT_PRESENT and do not fail preflight. RETURN_CONTRACT_COMPLETE would still require 00-room Intake before any state change.",
+  "rows": [
+    {
+      "candidateId": "COV-01",
+      "domain": "D01",
+      "artifactPath": "research/COV01_D01_SPECIALIST_RETURN_V0_1.md",
+      "present": false,
+      "contractStatus": "NOT_PRESENT",
+      "ok": null,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "candidateId": "COV-02",
+      "domain": "D05",
+      "artifactPath": "research/COV02_D05_SPECIALIST_RETURN_V0_1.md",
+      "present": false,
+      "contractStatus": "NOT_PRESENT",
+      "ok": null,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "candidateId": "COV-03",
+      "domain": "D06",
+      "artifactPath": "research/COV03_D06_SPECIALIST_RETURN_V0_1.md",
+      "present": false,
+      "contractStatus": "NOT_PRESENT",
+      "ok": null,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "candidateId": "COV-04",
+      "domain": "D07",
+      "artifactPath": "research/COV04_D07_SPECIALIST_RETURN_V0_1.md",
+      "present": false,
+      "contractStatus": "NOT_PRESENT",
+      "ok": null,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "candidateId": "COV-05",
+      "domain": "D08",
+      "artifactPath": "research/COV05_D08_SPECIALIST_RETURN_V0_1.md",
+      "present": false,
+      "contractStatus": "NOT_PRESENT",
+      "ok": null,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "candidateId": "COV-06",
+      "domain": "D10",
+      "artifactPath": "research/COV06_D10_SPECIALIST_RETURN_V0_1.md",
+      "present": false,
+      "contractStatus": "NOT_PRESENT",
+      "ok": null,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "candidateId": "COV-07",
+      "domain": "D12",
+      "artifactPath": "research/COV07_D12_SPECIALIST_RETURN_V0_1.md",
+      "present": false,
+      "contractStatus": "NOT_PRESENT",
+      "ok": null,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "candidateId": "COV-08",
+      "domain": "D16",
+      "artifactPath": "research/COV08_D16_SPECIALIST_RETURN_V0_1.md",
+      "present": false,
+      "contractStatus": "NOT_PRESENT",
+      "ok": null,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "candidateId": "COV-09",
+      "domain": "D19",
+      "artifactPath": "research/COV09_D19_SPECIALIST_RETURN_V0_1.md",
+      "present": false,
+      "contractStatus": "NOT_PRESENT",
+      "ok": null,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "candidateId": "COV-10",
+      "domain": "D20",
+      "artifactPath": "research/COV10_D20_SPECIALIST_RETURN_V0_1.md",
+      "present": false,
+      "contractStatus": "NOT_PRESENT",
+      "ok": null,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "candidateId": "COV-11",
+      "domain": "D21",
+      "artifactPath": "research/COV11_D21_SPECIALIST_RETURN_V0_1.md",
+      "present": false,
+      "contractStatus": "NOT_PRESENT",
+      "ok": null,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "candidateId": "COV-12",
+      "domain": "D22",
+      "artifactPath": "research/COV12_D22_SPECIALIST_RETURN_V0_1.md",
+      "present": false,
+      "contractStatus": "NOT_PRESENT",
+      "ok": null,
+      "errors": [],
+      "warnings": []
+    }
+  ]
+}
