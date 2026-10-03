@@ -48,3 +48,26 @@ PR #327 must remain unmerged until:
 3. owner explicitly approves Class-B deployment.
 
 Passing fixture tests alone is not alpha evidence and is not Formal-switch authority.
+
+
+## Exact-head validation closure
+
+Validated head: `84a927d5410a2eb3240a65619b769b3a2b17dbfc`.
+
+- System1 isolated offline review run 37088760481: PASS.
+- V8 Repair CI run 37088760433: PASS.
+- V8 Regression run 37088760437: PASS.
+- V8.15.3 is actually applied after V8.15.2 in every validated build chain.
+- The isolated review allowlist was widened only for the two C1 research-receipt projection helpers
+  `c1ProjectFeature` and `c1DerivedState`, plus previously approved research plumbing.
+  No selector, ranker, signal, capital, order or push function was allowlisted.
+- The registration/sampler/runtime contract is aligned at
+  `SYSTEM1_C3_RESEARCH_CAPTURE_CONTRACT_V0_2`.
+- Full-load research envelope remains 3 Shadow-only names ×
+  (1 completed 15m candle + 1 raw Quote) × 17 slots = 102 extra provider calls/session.
+- Aggregate C3 guard remains projected total <=50/min.
+- No Cloudflare deploy occurred from this validation.
+- PR #327 remains Draft, clean, unmerged and undeployed.
+
+This PASS proves engineering separation and contract consistency only.
+It does not prove C3 economic superiority and does not authorize Formal changes.
