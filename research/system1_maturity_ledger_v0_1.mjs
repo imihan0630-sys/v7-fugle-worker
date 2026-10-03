@@ -62,12 +62,13 @@ export function buildSystem1FormalMaturityLedger({
     if(regimeKeys.has(r.scanDate)) throw new Error("SYSTEM1_MATURITY_DUPLICATE_REGIME_DATE");
     regimeKeys.add(r.scanDate);validRegimes.push(r);
   }
+  const eligibleD5Rows=validD5Rows.filter(r=>scanDates.includes(r.scanDate));
   const regimeMap=new Map(validRegimes.map(r=>[r.scanDate,r.regime]));
   const completedRegimes=uniq(scanDates.map(d=>regimeMap.get(d)).filter(Boolean)).sort();
   const years=uniq(scanDates.map(d=>Number(d.slice(0,4)))).sort();
 
   const gate=evaluateFormalSwitchMaturity({
-    matureD5Rows:validD5Rows.length,
+    matureD5Rows:eligibleD5Rows.length,
     completeProspectiveSnapshots:completedPackets.length,
     scanDates,calendarYears:years,marketRegimes:completedRegimes,
     dateClusterDirectionAgreementPct:validation?.dateClusterDirectionAgreementPct??null,
@@ -97,12 +98,12 @@ export function buildSystem1FormalMaturityLedger({
     },
     observed:{
       validPacketN:validPackets.length,completeProspectiveSnapshots:completedPackets.length,
-      independentScanDates:scanDates.length,matureD5Rows:validD5Rows.length,
+      independentScanDates:scanDates.length,matureD5Rows:eligibleD5Rows.length,
       calendarYears:years.length,marketRegimes:completedRegimes.length,
       scanDates,years,regimes:completedRegimes
     },
     progressPct:{
-      matureD5Rows:progress(validD5Rows.length,t.matureD5Rows),
+      matureD5Rows:progress(eligibleD5Rows.length,t.matureD5Rows),
       completeProspectiveSnapshots:progress(completedPackets.length,t.completeProspectiveSnapshots),
       independentScanDates:progress(scanDates.length,t.independentScanDates),
       calendarYears:progress(years.length,t.calendarYears),
