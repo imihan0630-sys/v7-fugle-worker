@@ -1,0 +1,56 @@
+name: System2 Current Listing Metadata Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/current_listing_metadata_v0_1.mjs"
+      - "system2/scripts/audit_current_listing_metadata_readonly_v0_1.mjs"
+      - "system2/tests/current_listing_metadata_v0_1.test.mjs"
+      - "system2/tests/current_listing_metadata_workflow_guard.test.mjs"
+      - ".github/workflows/system2-current-listing-metadata-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Verify adapter and read-only boundary
+        run: |
+          set -euo pipefail
+          node system2/tests/current_listing_metadata_v0_1.test.mjs
+          node system2/tests/current_listing_metadata_workflow_guard.test.mjs
+          node --check system2/scripts/audit_current_listing_metadata_readonly_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+
+      - name: Fetch official current listing metadata
+        run: |
+          set -euo pipefail
+          node system2/scripts/audit_current_listing_metadata_readonly_v0_1.mjs | tee /tmp/system2-current-listing-metadata.json
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          const r=JSON.parse(fs.readFileSync("/tmp/system2-current-listing-metadata.json","utf8"));
+          if(r.result!=="PASS")throw new Error("listing metadata audit failed");
+          if(r.mutationPerformed!==false||r.selectionAuthority!==false||r.continuityPromotionPerformed!==false||r.system1RuntimeUsed!==false)throw new Error("boundary changed");
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+            "Current listing metadata PASS\n\nTWSE: "+r.counts.TWSE+"; TPEx: "+r.counts.TPEX+"; hash: "+r.metadataHash+".\n");
+          NODE
+
+      - name: Preserve source receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-current-listing-metadata-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/system2-current-listing-metadata.json
+          if-no-files-found: warn
+          retention-days: 90
