@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "pattern-salience-manifest-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "manifestIdentity": [
+    "trueParentZoneId",
+    "trueParentZoneVersion",
+    "symbol",
+    "parentConfirmedAt",
+    "negativeControlContractVersion",
+    "detectorSalienceContractVersion"
+  ],
+  "rowTypes": [
+    "TRUE_ZONE",
+    "PSEUDO_ZONE"
+  ],
+  "matchability": [
+    "E1_ONLY",
+    "E2_ONLY",
+    "E3_READY",
+    "NOT_MATCHABLE_MISSING_PROVENANCE",
+    "NOT_MATCHABLE_OUTSIDE_COMMON_SUPPORT",
+    "CONTROL_POOL_EMPTY"
+  ],
+  "requiredCoverage": [
+    "totalTrueParents",
+    "nonEmptyPoolParents",
+    "e1MatchableParents",
+    "e2MatchableParents",
+    "e3MatchableParents",
+    "outsideCommonSupportParents",
+    "missingProvenanceParents"
+  ],
+  "rules": [
+    "RETAIN_ALL_ELIGIBLE_PSEUDO_CANDIDATES",
+    "NO_FORCED_MATCH_OUTSIDE_COMMON_SUPPORT",
+    "MATCHED_ESTIMAND_APPLIES_TO_MATCHABLE_PARENTS_ONLY",
+    "MISSING_DESCRIPTOR_IS_UNKNOWN_NOT_ZERO",
+    "FUTURE_CONFIRMED_ZONE_DOES_NOT_RETROACTIVELY_INVALIDATE_CONTROL",
+    "MANIFEST_FROZEN_BEFORE_OUTCOMES",
+    "GEOMETRY_DUPLICATES_DIAGNOSED_NOT_SILENTLY_MULTIPLIED"
+  ],
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
