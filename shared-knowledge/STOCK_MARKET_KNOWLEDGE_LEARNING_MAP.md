@@ -1,6 +1,6 @@
 # 股市知識學習大地圖 — 22領域 / 354模組
 
-Updated: 2026-10-03 05:02 Asia/Taipei
+Updated: 2026-10-03 09:22 Asia/Taipei
 Status: CANONICAL_LEARNING_CURRICULUM_V0_1 / CROSS_SYSTEM  
 Formal Core impact: NONE  
 Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 正式研究成熟度仍由 `RESEARCH_MASTER_MAP.md` 與 `research/research_master_map.json` 管理。
@@ -690,3 +690,18 @@ GitHub專屬checkpoint：
 2. 各專線只領取自己尚未達L3的模組，先把可主動完成的知識補齊。
 3. 對已到L3但等待前瞻資料的模組，切換成「等待證據」，不要浪費聊天室反覆讀同一主題。
 4. 研究總控室每次匯總 GitHub 最新main後重新計算22領域與354模組進度。
+
+## 15項候選治理分類 — 韓哥批准 2026-10-03
+
+完整 Dependency Audit（依賴審查）與後續驗證契約：
+`shared-knowledge/CURRICULUM_15_ITEM_DEPENDENCY_AUDIT_20261003_V0_1.md`
+
+目前治理分類：
+- 正式保留課綱：D05-13、D19-13。
+- 保留但限制為 Context／Capability（情境／能力）：D06-15、D14-16、D14-19、D21-02。
+- Observation／RESEARCH_ONLY（觀察／僅研究）：D02-07、D02-08、D12-08、D19-08、D19-12、D19-16、D20-03、D20-05。
+- 驗證後強合併候選：D15-19。
+- 立即退休：0。
+
+本次只改治理角色與下一驗證責任，不改 L0-L5 成熟度，不改模組數，不授權任何 System 1／System 2 Formal Core（正式核心）變更。課綱維持 22 領域／354 模組。
+
