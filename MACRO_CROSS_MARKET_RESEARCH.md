@@ -2147,3 +2147,108 @@ Next maturity evidence must be:
 - then OOS/Shadow outcomes.
 
 Status: NO MATURITY INFLATION / FORMAL CORE LOCKED.
+
+
+---
+
+## MC-093 — Oct-2 Employment Situation first-print content is now officially observable, but project release-time attestation is still absent
+
+BLS official September 2026 Employment Situation release:
+- embargo/release clock: 2026-10-02 08:30 ET = 20:30 Taipei;
+- nonfarm payroll change: +29,000;
+- unemployment rate: 4.2%;
+- labor-force participation: 61.8%;
+- employment-population ratio: 59.2%;
+- average hourly earnings: +0.1% m/m, +3.0% y/y;
+- average workweek: 34.4 hours.
+
+The project observed/verified this official release content on 2026-10-03.
+
+This is **not** equivalent to proving the project captured native BLS bytes at 20:30 on Oct 2.
+
+Classification:
+`OFFICIAL_RELEASE_CONTENT_OBSERVED_AFTER_PUBLICATION`.
+
+Status: REALIZATION CONTENT VERIFIED / RELEASE-TIME SOURCE ATTESTATION PENDING.
+
+---
+
+## MC-094 — revisions are their own macro information dimension
+
+The same BLS release revised:
+- July payroll: +21,000 -> -10,000 (-31,000);
+- August payroll: +162,000 -> +133,000 (-29,000);
+- combined revision: -60,000.
+
+A headline-only macro feature would discard this information.
+
+Minimum release vector:
+- current payroll;
+- unemployment;
+- wages;
+- workweek;
+- prior-month revision vector.
+
+But:
+`revision surprise`
+still requires an expectation/vintage model; the observed -60,000 revision is a release fact, not automatically a market surprise.
+
+Status: REVISION-VECTOR SEMANTICS FROZEN.
+
+---
+
+## MC-095 — absolute weakness is not consensus surprise
+
+The release states the prior-12-month average payroll gain was +45,000 while September was +29,000.
+
+This supports an internal historical comparison:
+`currentPayroll < release-stated prior12m average`.
+
+It does **not** establish:
+- below-consensus;
+- dovish surprise;
+- bullish bonds;
+- bearish equities.
+
+Those require:
+- authentic pre-release consensus;
+- policy regime;
+- market-reaction timing.
+
+Therefore all Oct-2 surprise fields remain `UNKNOWN`.
+
+Machine artifact:
+`research/d13_09_11_bls_employment_release_observed_20261003_v0_1.json`.
+
+Status: FIRST-PRINT VECTOR OBSERVED / SURPRISE UNKNOWN.
+
+---
+
+## MC-096 — pre-release QA remains immutable after publication
+
+The previously frozen:
+`research/d12_d13_20261002_postdecision_prerelease_source_qa_v0_1.json`
+must remain unchanged.
+
+Its role is to prove:
+- at ~19:55 Taipei the official page was still pre-release;
+- a post-decision but pre-release state existed.
+
+The new post-release object is separate.
+
+This preserves a real event-clock sequence:
+1. 18:10 decision;
+2. 19:55 pre-release QA;
+3. 20:30 official release;
+4. post-release markets;
+5. next Taiwan cash session.
+
+Formal Core remains LOCKED.
+D13-09/D13-11 remain L2 because one later-observed official release is not a source-attested multi-event prospective dataset.
+
+## Exact next continuation after MC-096
+
+1. Future macro releases: source-attest native official response at release time.
+2. Obtain approved pre-release consensus vintage or preserve surprise UNKNOWN.
+3. Keep headline/revisions/wages/unemployment as separate release dimensions.
+4. After independent events accumulate, test pre-event risk state before directional surprise models.
