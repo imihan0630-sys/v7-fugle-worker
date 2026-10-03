@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 23:20 Asia/Taipei
+Updated: 2026-10-04 05:26 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -16,7 +16,7 @@ Formal Core impact: NONE
 3. **本檔 `shared-knowledge/LEARNING_ROOM_ROUTER.md`**
 4. `shared-knowledge/PROBABILISTIC_SELECTION_GOVERNANCE_V0_1.md`（跨系統選股決策角色與防過度過濾治理）
 5. `shared-knowledge/CURRICULUM_RETIREMENT_AND_CAPABILITY_LEDGER_V0_1.md`（模組退役、合併與功能責任移轉）
-6. `research/stock_market_learning_tracker_v0_1.json`（354模組、learningScope、L0-L5與完成度的機器權威）
+6. `research/stock_market_learning_tracker_v0_1.json`（正式總模組數以檔內最新值為準；learningScope、L0-L5與完成度的機器權威）
 7. 自己專線的 dedicated checkpoint / research files
 8. `RESEARCH_ENGINEERING_GOVERNANCE.md`、`RESEARCH_CHECKPOINT.md` 與需要的 System 1 / System 2 bridge
 
