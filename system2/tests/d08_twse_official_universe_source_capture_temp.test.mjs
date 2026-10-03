@@ -47,24 +47,16 @@ async function fetchTextRetry(url,{attempts=3,timeoutMs=60_000}={}){
 }
 
 async function fetchCurrentTwse(){
+  let primaryError=null;
   try{
-    const raw=await fetchTextRetry("https://mopsfin.twse.com.tw/opendata/t187ap03_L.csv");
-    const rows=parseCsvRowsV0_1(raw.text.replace(/^\\uFEFF/,""));
-    assert.ok(rows.length>1,"TWSE company-basic CSV empty");
-    const headers=rows[0].map(x=>String(x).trim());
-    const idx=Object.fromEntries(headers.map((h,i)=>[h,i]));
-    for(const h of ["公司代號","公司名稱","上市日期"]) assert.ok(Number.isInteger(idx[h]),"missing "+h);
-    const currentRows=rows.slice(1).map(row=>({
-      market:"TWSE",
-      symbol:String(row[idx["公司代號"]]??"").trim(),
-      companyName:String(row[idx["公司名稱"]]??"").trim()||null,
-      industry:Number.isInteger(idx["產業別"])?String(row[idx["產業別"]]??"").trim()||null:null,
-      listingDate:parseDate(row[idx["上市日期"]]),
-    })).filter(x=>ordinary(x.symbol)&&x.listingDate);
-    return {rows:currentRows,source:"MOPS_T187AP03_L_CSV",sourceUrl:raw.url,sourceHash:raw.hash,attempt:raw.attempt};
-  }catch(csvErr){
     const raw=await fetchJson("https://openapi.twse.com.tw/v1/opendata/t187ap03_L");
     assert.ok(Array.isArray(raw.json),"TWSE OpenAPI current company data must be array");
+    assert.ok(raw.json.length>500,"TWSE OpenAPI current company data too short");
+    const required=["公司代號","公司名稱","上市日期"];
+    for(const h of required){
+      assert.ok(Object.prototype.hasOwnProperty.call(raw.json[0],h),
+        "TWSE OpenAPI missing "+h+"; keys="+Object.keys(raw.json[0]).join("|"));
+    }
     const currentRows=raw.json.map(row=>({
       market:"TWSE",
       symbol:String(row["公司代號"]??"").trim(),
@@ -72,8 +64,23 @@ async function fetchCurrentTwse(){
       industry:String(row["產業別"]??"").trim()||null,
       listingDate:parseDate(row["上市日期"]),
     })).filter(x=>ordinary(x.symbol)&&x.listingDate);
-    return {rows:currentRows,source:"TWSE_OPENAPI_T187AP03_L",sourceUrl:raw.url,sourceHash:raw.hash,fallbackReason:String(csvErr)};
-  }
+    return {rows:currentRows,source:"TWSE_OPENAPI_T187AP03_L",sourceUrl:raw.url,sourceHash:raw.hash};
+  }catch(e){ primaryError=e; }
+
+  const raw=await fetchTextRetry("https://mopsfin.twse.com.tw/opendata/t187ap03_L.csv",{attempts:1,timeoutMs:45_000});
+  const rows=parseCsvRowsV0_1(raw.text.replace(/^\\uFEFF/,""));
+  assert.ok(rows.length>1,"TWSE company-basic CSV empty");
+  const headers=rows[0].map(x=>String(x).trim());
+  const idx=Object.fromEntries(headers.map((h,i)=>[h,i]));
+  for(const h of ["公司代號","公司名稱","上市日期"]) assert.ok(Number.isInteger(idx[h]),"missing "+h);
+  const currentRows=rows.slice(1).map(row=>({
+    market:"TWSE",
+    symbol:String(row[idx["公司代號"]]??"").trim(),
+    companyName:String(row[idx["公司名稱"]]??"").trim()||null,
+    industry:Number.isInteger(idx["產業別"])?String(row[idx["產業別"]]??"").trim()||null:null,
+    listingDate:parseDate(row[idx["上市日期"]]),
+  })).filter(x=>ordinary(x.symbol)&&x.listingDate);
+  return {rows:currentRows,source:"MOPS_T187AP03_L_CSV",sourceUrl:raw.url,sourceHash:raw.hash,fallbackReason:String(primaryError)};
 }
 const current=await fetchCurrentTwse();
 const currentTwse=current.rows;
