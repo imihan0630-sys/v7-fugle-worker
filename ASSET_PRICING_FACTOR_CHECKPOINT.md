@@ -1,8 +1,8 @@
 # Asset Pricing / Factor Investing Checkpoint
 
-Updated: 2026-10-03 Asia/Taipei
+Updated: 2026-10-04 Asia/Taipei
 Scope: D19｜資產定價／因子投資／市場異象
-Status: RESEARCH_ACTIVE / D19-01_TO_D19-12_L2 / FACTOR_LAYER_PIT_RECEIPTS_REQUIRED / FORMAL_CORE_UNCHANGED
+Status: RESEARCH_ACTIVE / D19-01_TO_D19-16_ACTIVE_L2 / FACTOR_LAYER_PIT_ADAPTER_SPEC_DEFINED / EXECUTABLE_RECEIPTS_REQUIRED / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - This file is the canonical continuation checkpoint for D19.
@@ -31,9 +31,9 @@ Status: RESEARCH_ACTIVE / D19-01_TO_D19-12_L2 / FACTOR_LAYER_PIT_RECEIPTS_REQUIR
 - No L3 promotion until executable PIT ingestion/replay receipts exist.
 
 ## Current maturity
-- D19-01 through D19-12: L2 / 40% each.
-- Current D19 curriculum denominator: 15 modules.
-- D19 domain simple-average maturity: 32.0%.
+- All 15 active D19 modules: L2 / 40% each (D19-14 retired/merged into D19-13 and is not an active denominator item).
+- Current D19 curriculum denominator: 15 active modules.
+- D19 domain simple-average maturity: 40.0%.
 - Formal optimization candidate: NO.
 - Formal Core: unchanged.
 
@@ -66,8 +66,24 @@ Status: RESEARCH_ACTIVE / D19-01_TO_D19-12_L2 / FACTOR_LAYER_PIT_RECEIPTS_REQUIR
   - Governance remains research-only / high-data-mining-risk.
 - No L3 promotion in Stage 5.
 
+## Stage 6 completed on 2026-10-04
+- D19-13 Relative Value／Pairs Trading／Cointegration／Residual Mean Reversion -> L2 / 40%.
+  - Locked as a strategy-specific family, not a generic long-only vote.
+  - Taiwan evidence and counterevidence emphasize structural breaks, cost, pair overlap, short-leg executability and multiple testing.
+- D19-15 Index／Benchmark Construction／Methodology -> L2 / 40%.
+  - Benchmark vintage is part of the model; current constituents/weights cannot reconstruct historical alpha/beta.
+  - Benchmark receipt requirements are defined.
+- D19-16 Liquidity Premium／Illiquidity Factor -> L2 / 40%.
+  - Taiwan evidence is measure-sensitive; direct illiquidity-risk interpretation is contradicted by evidence that Amihud pricing can be volume/mispricing-dominant under price limits.
+  - Residual liquidity premium remains research-only.
+- D19 factor-layer PIT adapter V0.1 research contract defined above existing System2 cold replay.
+- Repository audit confirms the six D19 receipt types are not yet implemented in code.
+- No L3 promotion in Stage 6.
+
 ## Exact next continuation
-1. Start D19-13 Relative Value／Pairs Trading／Cointegration／Residual Mean Reversion相對價值／配對交易／共整合／殘差均值回歸 as a strategy-specific family, not a generic long-only factor vote.
-2. Continue D19-15 Index／Benchmark Construction／Methodology指數與基準建構方法 and D19-16 Liquidity Premium／Illiquidity Factor流動性溢酬／非流動性因子; preserve current curriculum numbering and do not invent D19-14.
-3. In parallel, build the first executable factor-layer Taiwan PIT replay slice for D19-01..12 on top of the existing System2 cold loader. Minimum receipt chain: universeReceipt -> returnReceipt -> factorInputReceipt -> neutralizationReceipt -> costReceipt -> replayReceipt.
-4. Do not promote L3 until receipts verify universe vintage, delisted/suspended handling, first-known financials, market-cap/shares semantics, factor-set/version lineage, actual trading-calendar semantics and realistic costs.
+1. Implement a research-only D19 factor-layer PIT receipt adapter above the existing System2 cold loaders/PIT replay; do not fork existing PIT/universe logic.
+2. First executable smoke slice: D19-04 cross-sectional momentum + D19-07 low-volatility/low-beta using existing PIT daily bars/universe membership.
+3. Minimum deterministic chain: universeReceipt -> returnReceipt -> factorInputReceipt -> neutralizationReceipt -> costReceipt -> replayReceipt.
+4. Add fail-closed tests for missing availableAt/firstKnownAt, revision ambiguity, overlapping membership, benchmark-vintage conflicts, UNKNOWN required inputs, non-borrowable/UNKNOWN short legs, and identical-input rerun hashes.
+5. Do not promote any D19 module to L3 until an executable Taiwan replay on at least one frozen historical date/universe produces verified deterministic receipts.
+6. Accounting-heavy D19-03/05/06 remain after first-known financial ingestion is available.
