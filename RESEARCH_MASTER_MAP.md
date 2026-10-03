@@ -180,3 +180,13 @@ Formal Core remains LOCKED.
 - H01 specialist result: KEEP_SEPARATE proposed, with strict scope/evidence dedup. D09-13 owns industry structure; D09-14 owns issuer-specific competitive action/relative-position lifecycle.
 - Shared market-share/capacity/price/margin evidence has one parent lineage and cannot create duplicate Alpha votes.
 - No curriculum merge/retirement, no Production behavior and no Formal Core changed.
+
+
+### Room 07 BR-053 through BR-056 — 2026-10-03
+- BR-053 adds Taiwan steel as a cross-industry structure control: integrated BF/BOF and scrap-EAF routes have different input, product and demand structures.
+- BR-054 adds non-semiconductor issuer actions and a bounded Foxconn/Lordstown failed/suspended strategic-action control.
+- BR-055 adds Taiwan PCB as a third structure control: broad industry growth coexists with opposite product/application states and concentrated upstream-material power.
+- BR-056 freezes native strategic-action outcome states and rejects an artificial cross-action scalar success score.
+- H01 KEEP_SEPARATE specialist evidence is now submitted to the canonical intake ledger for 00 Dependency Audit / owner review.
+- D09-13 and D09-14 remain L3; no L4/OOS/prospective stock-selection evidence exists.
+- No Production or Formal Core behavior changed.
