@@ -166,3 +166,29 @@ Before use:
 
 WORTH_RESEARCH / AUXILIARY_CONTEXT_ONLY.
 Do not use as a standalone buy/sell signal and do not assume "public buy = bullish" or "public sell = bearish".
+
+## 2026-10-04 identity/proxy guard update
+
+New canonical research guard:
+`research/state_owned_bank_flow_identity_guard_v0_1.json`.
+
+Important correction:
+The Ministry of Finance public-financial-institution governance universe is not automatically identical to the market/vendor 'eight state-owned-bank' trading proxy universe. The official public-bank set includes nine institutions, including the Export-Import Bank.
+
+System 2 must therefore keep four identities separate:
+1. legal public financial institution;
+2. securities broker/branch used for execution;
+3. beneficial owner / investment book;
+4. government policy or stabilization mandate.
+
+A public-bank-affiliated broker row can contain customer execution; a public bank's own trade can route through another broker; government-fund intervention is distinct from an ordinary public-bank investment book.
+
+Engineering implication:
+- no field may be named `governmentBuy`, `policySupportBuy` or `stabilizationFundBuy` from vendor eight-bank broker aggregates alone;
+- preferred prefix is `publicProxy*` until owner/motive evidence exists;
+- provider definition, member list, broker/branch-code vintage, head-office/all-branch scope and customer-vs-proprietary separation status must be persisted;
+- public-proxy classification is context metadata on the same upstream broker-flow receipt, not a new independent directional primitive;
+- no Formal/System 2 ranking weight change follows from this research note.
+
+Current decision remains:
+`WORTH_RESEARCH / CONTEXT_ONLY / WARNING_MODIFIER / BENEFICIAL_OWNER_UNKNOWN / POLICY_INTENT_UNKNOWN`.
