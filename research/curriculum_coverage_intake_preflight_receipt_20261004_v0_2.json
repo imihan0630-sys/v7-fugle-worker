@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "CURRICULUM_COVERAGE_INTAKE_PREFLIGHT_RECEIPT_V0_2",
+  "scannedAt": "2026-10-04T07:52:57+08:00",
+  "mainBase": "07e08ed3a091e0d31c6c639eaf359d91ed78acbd",
+  "status": "PREFLIGHT_PASS",
+  "routeCount": 12,
+  "present": 2,
+  "valid": 2,
+  "invalid": 0,
+  "missing": 10,
+  "acceptedForIntake": [
+    "COV-04",
+    "COV-05"
+  ],
+  "rows": [
+    {
+      "candidateId": "COV-04",
+      "domain": "D07",
+      "artifactPath": "research/COV04_D07_SPECIALIST_RETURN_V0_1.md",
+      "present": true,
+      "contractStatus": "RETURN_CONTRACT_COMPLETE",
+      "terminalRecommendation": "ADD_MODULE",
+      "ok": true,
+      "errors": []
+    },
+    {
+      "candidateId": "COV-05",
+      "domain": "D08",
+      "artifactPath": "research/COV05_D08_SPECIALIST_RETURN_V0_1.md",
+      "present": true,
+      "contractStatus": "RETURN_CONTRACT_COMPLETE",
+      "terminalRecommendation": "EXTEND_EXISTING_SCOPE",
+      "ok": true,
+      "errors": []
+    }
+  ],
+  "note": "Ten other canonical return routes remain NOT_PRESENT. Missing files are not errors. COV-04 and COV-05 passed contract validation and proceeded through 00-room dependency/overlap/anti-orphan review to OWNER_APPROVAL_REQUIRED."
+}
