@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 09:22 Asia/Taipei
+Updated: 2026-10-03 10:00 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -260,7 +260,7 @@ This candidate can become a `FORMAL_OPTIMIZATION_CANDIDATE` only after the speci
 
 ## Curriculum expansion — D19 to D22 (2026-10-02)
 
-Owner-approved expansion from 18 to 22 domains. Canonical machine tracker now contains 337 modules; all newly added modules begin at L0 and therefore lower aggregate curriculum maturity without reducing any prior evidence.
+Owner-approved expansion from 18 to 22 domains. **Historical snapshot at this step:** the canonical machine tracker contained 337 modules; all newly added modules began at L0 and therefore lowered aggregate curriculum maturity without reducing any prior evidence. The current canonical count is stated in the later Current Curriculum sections.
 
 New domains:
 - **D19 Asset Pricing / Factor Investing / Market Anomalies** — primary room 12. Treat factor labels as hypotheses; require neutralization/redundancy checks against existing D03/D07/D08/D09 information and D16 multiple-testing controls.
@@ -278,7 +278,7 @@ Research routing only. No System 1/System 2 Formal Core, production strategy, ra
 
 ## Curriculum expansion — approved cross-domain gaps (2026-10-02)
 
-Owner approved the second gap audit without creating D23. The canonical curriculum remains **22 domains** and expands from **297 to 337 modules**. All 40 newly registered modules begin at L0; this lowers aggregate curriculum maturity by denominator expansion only and does not downgrade prior evidence.
+Owner approved the second gap audit without creating D23. **Historical transition:** the canonical curriculum remained **22 domains** and expanded from **297 to 337 modules**. All 40 newly registered modules began at L0; this lowered aggregate curriculum maturity by denominator expansion only and did not downgrade prior evidence. This is a historical transition record, not the current module count.
 
 New second-level knowledge coverage:
 - D05: market impact, adverse selection/order-flow toxicity, queue position/order priority.
@@ -300,7 +300,7 @@ Governance interpretation:
 
 ## Third-pass curriculum refinement — 26 approved modules (2026-10-02)
 
-Owner approved the third residual-gap audit after explicit positive/negative review. The canonical curriculum remains **22 domains** and expands from **337 to 363 modules**. All 26 additions start at L0 and do not imply evidence, maturity promotion or production use.
+Owner approved the third residual-gap audit after explicit positive/negative review. **Historical transition:** the canonical curriculum remained **22 domains** and expanded from **337 to 363 modules**. All 26 additions started at L0 and did not imply evidence, maturity promotion or production use. This is a historical transition record, not the current module count.
 
 Approved additions:
 - D05: market integrity / abnormal-trading-pattern risk. It may lower market-data/signal confidence but must never infer manipulative intent from price/order data alone.
@@ -321,7 +321,7 @@ Formal Core remains LOCKED. No System 1/System 2 signal, ranking, allocation, ex
 
 ## Probabilistic decision and expectations curriculum approval (2026-10-03)
 
-Owner approved three additional L0 modules, expanding the canonical curriculum from 363 to **366 modules** without adding a new domain:
+Owner approved three additional L0 modules, producing the **historical transition from 363 to 366 modules** without adding a new domain. This was the pre-retirement/pre-consolidation count; the current canonical count is lower:
 
 - **D07-33** Intangible Capital／R&D／Innovation Accounting — calibrates interpretation of earnings, book value, ROIC and valuation for R&D/intangible-intensive businesses; not a mandatory stock filter.
 - **D08-19** Reverse DCF／Market-Implied Expectations／Expectations Gap — estimates what growth/margin/cash-flow assumptions are already embedded in price; must use ranges/sensitivity and must not become a single-threshold valuation gate.
@@ -367,7 +367,7 @@ Executed:
 - D10-11 official-data automation: standalone curriculum module retired; automated official-source acquisition capability permanently preserved under Research Engineering / Data Source governance.
 - D14-13 complete broker fee schedule semantics: standalone module retired; complete fee-schedule provenance permanently merged into D14-01.
 - D21-08 governance/ESG score provenance: standalone module retired; source/version provenance transferred to D16-11 and financially material ESG/governance risk transferred to D21-13.
-- D01-12 Sakata/traditional candlestick: retained as OBSERVATION / MERGE_CANDIDATE / RESEARCH_ONLY.
+- D01-12 Sakata/traditional candlestick: **at this interim seven-item audit stage** it was retained as OBSERVATION / MERGE_CANDIDATE / RESEARCH_ONLY; this interim decision was later superseded by the owner-approved Observation-module consolidation below, which merged the standalone ID into D01-02 / D01-03 / D01-05 / D01-09.
 - D02-07 OBV: retained as OBSERVATION / MERGE_CANDIDATE / PRICE_VOLUME_COMPARATOR_ONLY.
 - D10-12 retained and renamed to Industry-specific Transmission Model／Issuer Exposure Mapping（產業專屬傳導模型與公司曝險映射）.
 
