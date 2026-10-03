@@ -422,3 +422,61 @@ This closes only the source-level empty-range semantics blocker. The following r
 5. only after history + continuity are READY address the independent `ASSESSOR_POLICY_NOT_FROZEN` gate, then Strategy -> Ranking -> Capacity -> real `s2_capacity_runs`.
 
 System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
+
+
+## 2026-10-03 S2-07 revision/correction coverage — NEGATIVE GATE PHYSICALLY VERIFIED
+
+The revision/correction completeness boundary is now machine-enforced and physically verified.
+
+- PR #409 merged as `9dfdedfe908db529dad0b0b2558ab73d626e879e`.
+- Final checks after evidence write-back:
+  - Official Continuity Revision Coverage Readonly `37134615903`: PASS_NEGATIVE_GATE;
+  - System2 Research CI `37134615895`: PASS;
+  - V8 Regression `37134615891`: PASS.
+- Frozen interval: 2026-04-05 through 2026-10-02.
+- requiredLaneCount=6.
+- finalResultReadyCount=6.
+- supplementalRevisionReadyCount=0.
+- revisionCoverageComplete=false.
+
+All six TWSE/TPEx historical actual-result lanes were physically readable with exact range identity and complete parsers, but all six are now explicitly classified as `FINAL_RESULT_RANGE_ONLY`.
+
+No lane exposed a complete immutable correction/cancellation/version history or historical knownAt version clock. Every lane therefore remains blocked by:
+
+`SUPPLEMENTAL_REVISION_HISTORY_CHANNEL_INCOMPLETE`
+
+This is an accepted negative result, not an implementation failure. It prevents a complete current/final result page from being silently upgraded into historical revision completeness.
+
+The supplemental channel contract is now frozen. A lane can become revision-complete only when an official supplemental source for the same exchange/action family and exact interval proves all of:
+- revision/correction/cancellation history coverage;
+- exact interval identity;
+- parser completeness;
+- immutable versions preserved;
+- knownAt version clock coverage;
+- correction history complete;
+- cancellation history complete;
+- no missing source dates.
+
+Independent gates remain false:
+- `noEventMayBeClaimed=false`;
+- `suspensionCoverageComplete=false`;
+- `symbolSessionCompletenessCertified=false`;
+- `technicalContinuityCertified=false`;
+- `historyMutationPerformed=false`;
+- `strategyEvaluationPerformed=false`;
+- `capacityRunProduced=false`;
+- `selectionAuthority=false`;
+- `finalSelectionEnabled=false`;
+- `livePushEnabled=false`;
+- `capitalImpact=false`;
+- `orderImpact=false`;
+- `system1RuntimeUsed=false`.
+
+### Exact continuation
+1. discover and physically validate supplemental official revision/correction/cancellation version-history channels; Shared research already identifies MOPS filings/corrections and exchange official-document announcements as candidates, but no endpoint is accepted before physical contract verification;
+2. add exchange-complete suspension/resumption evidence;
+3. design isolated append-only persistence only after the record/coverage contracts are stable;
+4. bind verified event/revision/suspension evidence to expected symbol sessions and RAW A1 lineage without mutating RAW bars;
+5. only after history + continuity are READY address `ASSESSOR_POLICY_NOT_FROZEN`, then Strategy -> Ranking -> Capacity -> real `s2_capacity_runs`.
+
+System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
