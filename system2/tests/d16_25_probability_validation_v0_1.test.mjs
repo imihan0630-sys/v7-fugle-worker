@@ -274,3 +274,51 @@ assert.throws(
   }),
   /DUPLICATE_POLICY_VERSION/,
 );
+
+
+// Date-balanced diagnostics prevent a large same-date cross-section from masquerading
+// as many independent calibration dates. Row-weighted and date-balanced scores are
+// both valid estimands, but they answer different questions and must be reported separately.
+const clusteredDateResult = evaluateBinaryPredictionsV01({
+  records:[
+    {
+      ...base,
+      predictionId:"D1_A",
+      scanDate:"2026-09-01",
+      decisionAt:"2026-09-01T08:00:00Z",
+      predictedProbability:0.9,
+      outcome:0,
+      outcomeMaturedAt:"2026-09-08T08:00:00Z",
+    },
+    {
+      ...base,
+      predictionId:"D1_B",
+      scanDate:"2026-09-01",
+      decisionAt:"2026-09-01T08:00:00Z",
+      predictedProbability:0.9,
+      outcome:0,
+      outcomeMaturedAt:"2026-09-08T08:00:00Z",
+    },
+    {
+      ...base,
+      predictionId:"D2_A",
+      scanDate:"2026-09-02",
+      decisionAt:"2026-09-02T08:00:00Z",
+      predictedProbability:0.1,
+      outcome:0,
+      outcomeMaturedAt:"2026-09-09T08:00:00Z",
+    },
+  ],
+  evaluationCutoff:"2026-10-03T00:00:00Z",
+});
+assert.equal(clusteredDateResult.independentScanDateCount,2);
+assert.equal(Object.keys(clusteredDateResult.dateDiagnostics).length,2);
+assert.ok(Math.abs(clusteredDateResult.brierScore - ((0.81 + 0.81 + 0.01) / 3)) < 1e-12);
+assert.ok(Math.abs(clusteredDateResult.dateBalancedBrierScore - ((0.81 + 0.01) / 2)) < 1e-12);
+assert.notEqual(clusteredDateResult.brierScore,clusteredDateResult.dateBalancedBrierScore);
+assert.equal(clusteredDateResult.safeguards.dateBalancedDiagnosticsReported,true);
+assert.equal(clusteredDateResult.safeguards.rowWeightedScoresNotTreatedAsIndependentDateCount,true);
+
+// Calibration-in-the-large is a signed descriptive gap, not a substitute for full reliability.
+assert.ok(Math.abs(clusteredDateResult.meanPredictedProbability - (1.9 / 3)) < 1e-12);
+assert.ok(Math.abs(clusteredDateResult.calibrationInTheLargeGap - ((1.9 / 3) - 0)) < 1e-12);
