@@ -1,6 +1,6 @@
 # 股市知識學習大地圖 — 22領域 / 354模組
 
-Updated: 2026-10-03 19:10 Asia/Taipei
+Updated: 2026-10-03 23:20 Asia/Taipei
 Status: CANONICAL_LEARNING_CURRICULUM_V0_1 / CROSS_SYSTEM  
 Formal Core impact: NONE  
 Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 正式研究成熟度仍由 `RESEARCH_MASTER_MAP.md` 與 `research/research_master_map.json` 管理。
@@ -314,7 +314,7 @@ GitHub專屬checkpoint：
 
 ### D09｜產業／族群／市場廣度／輪動 — 55.7%
 
-> 2026-10-03 H01 專科驗證完成：D09-13 以 BR-051 台灣晶圓代工產業結構 receipt 達 L3；D09-14 以 BR-052 公司策略動作生命週期 receipt 達 L3。兩者專科建議 KEEP_SEPARATE，但共用市占／產能／價格／毛利父證據不得重複計分；最終 scope 治理由 00 總控審查。
+> 2026-10-03 H01 專科驗證完成並已送總控收件：D09-13 已有晶圓代工、鋼鐵、PCB 三個台灣產業結構 PIT 控制；D09-14 已有半導體／鋼鐵／電動車公司策略動作、失敗／中止控制與原生結果狀態契約。兩者維持 L3/60%，專科建議 KEEP_SEPARATE，但共用市占／產能／價格／毛利父證據不得重複計分；下一步 BR-057／BR-058。
 
 專責：07｜產業與供應鏈研究室  
 證據錨點：`MARKET_BREADTH_ROTATION_CHECKPOINT.md`、`MARKET_BREADTH_ROTATION_RESEARCH.md`
