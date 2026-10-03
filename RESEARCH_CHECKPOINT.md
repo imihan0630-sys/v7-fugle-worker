@@ -2530,3 +2530,38 @@ Exact next Room-09 continuation:
 3. Treat official Daily Delta as separate versioned exchange-model state and audit 14:30->16:30->next-day 06:45 revisions/new-series additions.
 4. Build no live MIS scraper; explicit source authorization remains mandatory.
 5. Continue next unblocked curriculum only after preserving these evidence boundaries; new D13-14..19 remain L0 and can be studied without waiting for prospective option data.
+
+
+## 09 derivatives/global-macro long continuation — D13-14..16 expansion (2026-10-03)
+
+- Continued in chat mode after explicit owner request; no Work handoff was required.
+- Fresh latest-main reads preserved concurrent research and the expanded canonical map of 22 domains / 354 modules.
+- Completed BLS Oct-2 Employment Situation release-vector observation, TAIFEX next-business-day Delta clock semantics, Surface Method V0.1, option-row validator tests and D12-17 parity/synthetics before advancing new D13 modules.
+- D13-14 Fiscal Policy / Deficit / Government Spending:
+  - legislated policy, forecasts/baselines, Treasury cash MTS/DTS, BEA NIPA final demand and financing state are separate objects;
+  - deficit != discretionary fiscal impulse;
+  - demand vs rates/borrowing/private-investment/composition channels frozen;
+  - L0 -> L2 / 40%;
+  - `research/d13_14_fiscal_policy_transmission_spec_v0_1.json`.
+- D13-15 Monetary Transmission / Financial Conditions:
+  - policy stance != financial conditions;
+  - NFCI, ANFCI, FCI-G and SLOOS answer different questions;
+  - real-time vintage/revision and component redundancy gates frozen;
+  - L0 -> L2 / 40%;
+  - `research/d13_15_monetary_financial_conditions_spec_v0_1.json`.
+- D13-16 Central-bank Balance Sheet / System Liquidity:
+  - Fed assets != reserves;
+  - TGA, ON RRP, currency and other liabilities can mechanically redistribute reserve supply;
+  - popular net-liquidity formula is a heuristic, not universal identity/alpha;
+  - ample reserves = regime/range conditioned on reserve demand;
+  - L0 -> L2 / 40%;
+  - `research/d13_16_central_bank_liquidity_spec_v0_1.json`.
+- Tracker after fresh recomputation: D12 40.0%; D13 34.7%; room 09 weighted ~37.2%; global 35.9% / 354 modules.
+- Router and learning map synchronized.
+- No outcomes opened, no paid source, no live scraper, no Worker/Cron/shared production schema changes and no Formal optimization candidate.
+
+Exact next Room-09 continuation:
+1. D13-17 Trade / Geopolitical Risk / Capital-flow Transmission L0 -> mechanism/falsification research, with announcement/effective/flow/market-reaction clocks separated.
+2. Source-only fiscal/FCI/H.4.1 vintage capture before any Taiwan outcome study.
+3. TAIFEX option replay lane remains: raw option parent -> exact parser -> simple skew vs Surface V0.1 vs parity quality on identical quotes.
+4. Keep composite macro/liquidity scores prohibited until component-level incremental evidence survives PIT/OOS gates.
