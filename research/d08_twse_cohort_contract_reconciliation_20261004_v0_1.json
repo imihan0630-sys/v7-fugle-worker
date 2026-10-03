@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "D08_TWSE_COHORT_CONTRACT_RECONCILIATION_20261004_V0_1",
+  "status": "NO_SEMANTIC_CONFLICT / NEWER_CONTRACT_IS_EXECUTABLE_REFINEMENT",
+  "observedAtAsiaTaipei": "2026-10-04T07:30:00+08:00",
+  "parentPrereg": "research/d08_twse_historical_valuation_cohort_prereg_v0_1.json",
+  "executableRefinement": "research/historical_valuation_twse_cohort_scan_contract_v0_1.json",
+  "scanDateReceipt": "research/d08_twse_month_end_scan_date_receipt_20261004_v0_1.json",
+  "sharedInvariants": [
+    "TWSE-only until TPEx historical machine replay is verified",
+    "survivorship-controlled membership as of scan date",
+    "monthly last completed TWSE session",
+    "252/756/1260 plus expanding windows",
+    "PE missing remains UNKNOWN while PB may remain independently known",
+    "fiscal denominator transitions and corporate actions are context tags",
+    "outcomes remain CLOSED until immutable source-only snapshots and coverage receipts pass",
+    "Formal Core unchanged"
+  ],
+  "refinementAdds": [
+    "explicit historical_universe_registry_v0_1 membership authority",
+    "explicit broad ordinary-stock primary cohort and deployment subgroup separation",
+    "fixed 2023-01 through 2026-08 44-month clock",
+    "decisionTimestamp and knownAt/availableAt gate",
+    "per-date coverage accounting with KNOWN/UNKNOWN completeness",
+    "full outcome unlock requirements"
+  ],
+  "authorityRule": "Use the parent preregistration for original hypothesis identity and the executable refinement for cohort/scan implementation. If future edits conflict, fail closed and require a new append-only reconciliation rather than silently overwriting either file.",
+  "outcomeGate": "CLOSED",
+  "formalCoreChanged": false
+}
