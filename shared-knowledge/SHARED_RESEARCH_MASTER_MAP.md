@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-04 07:20 Asia/Taipei
+Updated: 2026-10-04 07:30 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -1295,3 +1295,20 @@ Reusable rule:
 8. D03-05 is L3/60 for the observable phenomenon only; no alpha/Formal claim.
 
 Raw source-version 3/3 is a necessary source-clock gate, not sufficient proof of full Technical Indicator R1/R4/R5 readiness. Immutable parent, TECHNICAL_CONTINUITY, symbol-session/price-limit and state-construction gates remain separate.
+
+
+### D03 primary queue preregistration rule — 2026-10-04
+
+Status: **OUTCOME_CLOSED / PREREGISTERED / NOT_EXECUTABLE**.
+
+Reusable governance:
+- D03 raw source-version 3/3 is necessary but not sufficient for Technical Indicator inference.
+- System2 2026-10-02 diagnostic/source hashes are not receipt-equivalent to the frozen D03 raw observer and do not change the D03 denominator from 2/3.
+- After 3/3, full Technical observer readiness still requires immutable Level-B parent keyset/generation, shared TECHNICAL_CONTINUITY, symbol-session/price-limit provenance, exact attempt accounting, frozen stateConstructionMode and replay/prefix parity.
+- TI-005 executes before TI-006 when/if inference gates open.
+- TI-005 tests B2 rolling-range information and RSI14 signed-return balance through K0→K4 nested common-support models; no zone/threshold vote.
+- TI-006 tests normalized DIF and non-alias MACD transition/curvature through M0→M3; zero-line/EMA-alignment and crossover/Histogram-sign aliases are excluded.
+- Primary outcome family is D5 return/MFE/MAE; D10/D20 are registered secondary and cannot rescue failed D5.
+- D16 must freeze the dependence-aware estimator/method receipt before outcomes.
+- Minimum inference floors remain D5 mature >=60, prospective complete >=30, independent scan dates >=15, >=2 Regimes, purged train >=10 dates, holdout >=5 dates plus coverage/zero-pick/redundancy/cost/overfit gates.
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`; Formal Core remains LOCKED.
