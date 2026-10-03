@@ -1,5 +1,5 @@
 {
-  "version": "0.2",
+  "version": "0.3",
   "id": "H01_ROOM07_SPECIALIST_VALIDATION",
   "capturedAt": "2026-10-03T18:43:22+08:00",
   "targetModules": [
@@ -134,13 +134,19 @@
     "mergeOrRetirement": "NOT_RECOMMENDED on current evidence; scope wording/routing should be deduplicated by 00 governance, with no Formal change."
   },
   "exactNext": [
-    "00 room performs dependency/anti-orphan review and adopts KEEP_SEPARATE if it accepts the deduplicated ownership boundary.",
-    "D09-13 continues cross-industry structure receipts.",
-    "D09-14 accumulates firm-action receipts including failed/delayed/cancelled controls and post-action position evidence.",
+    "00 room may now run dependency/anti-orphan review on H01 KEEP_SEPARATE with stronger cross-industry evidence.",
+    "D09-13: BR-055 third industry control before any cross-industry scoring.",
+    "D09-14: BR-056 prospective/common-support action outcomes with success and failure controls.",
     "No independent scoring from shared parent observations."
   ],
-  "status": "SPECIALIST_PACKET_COMPLETE / KEEP_SEPARATE_PROPOSED / SCOPE_DEDUP_MANDATORY / OWNER_GOVERNANCE_REVIEW_REQUIRED / FORMAL_UNCHANGED",
-  "updatedAt": "2026-10-03T18:43:22+08:00",
+  "status": "SPECIALIST_PACKET_COMPLETE / KEEP_SEPARATE_PROPOSED / CROSS_INDUSTRY_CONFIRMED / FAILURE_CONTROL_INCLUDED / SCOPE_DEDUP_MANDATORY / OWNER_GOVERNANCE_REVIEW_REQUIRED / FORMAL_UNCHANGED",
+  "updatedAt": "2026-10-03T23:20:00+08:00",
   "supersedes": "v0.1 SCOPE_DEDUP_ONLY preliminary classification",
-  "uniqueD0914Evidence": "BR-052 proves a distinct issuer × strategic-action × implementation-stage × vintage PIT/replay contract using TSMC/UMC official action lifecycles."
+  "uniqueD0914Evidence": "BR-052 proves a distinct issuer × strategic-action × implementation-stage × vintage PIT/replay contract using TSMC/UMC official action lifecycles.",
+  "crossIndustryConfirmation": {
+    "BR053": "Taiwan steel control demonstrates D09-13 industry-structure semantics generalize outside foundry but must remain route/product/end-market specific.",
+    "BR054": "Steel actions plus Foxconn/Lordstown suspended partnership demonstrate D09-14 firm-action lifecycle generalizes outside semiconductors and includes explicit failure states.",
+    "terminalClassification": "KEEP_SEPARATE",
+    "confidence": "STRENGTHENED_BY_CROSS_INDUSTRY_AND_FAILURE_CONTROL"
+  }
 }
