@@ -116,3 +116,29 @@ CI on validated PR head:
 
 Formal `Worker.js` remains unchanged.
 
+## S2B implementation checkpoint — PR #362
+
+Merged:
+`3948da9f6722844ee26f3a9dbe6340ed0a21e49b`
+
+Checkpoint:
+`research/SYSTEM1_TARGET_FOUR_STATE_CHECKPOINT_20261003.md`
+
+Status:
+**IMPLEMENTED_RESEARCH_ONLY_CI_GREEN_OUTCOME_PENDING**
+
+Research side-channel states:
+- TARGET_FOUND
+- TARGET_NONE_SEARCH_COMPLETE
+- TARGET_UNKNOWN_SOURCE
+- TARGET_UNKNOWN_GEOMETRY
+
+Legacy `TARGET_AVAILABLE` gate remains unchanged.
+A legacy NONE is not promoted to NONE_SEARCH_COMPLETE without contemporaneous provenance + search-completeness evidence.
+
+Next requirement:
+prospective target-state receipts and mature A/B-separated outcomes.
+
+No replacement RR method is authorized.
+Formal Core remains LOCKED.
+
