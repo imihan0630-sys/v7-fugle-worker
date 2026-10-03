@@ -1,0 +1,165 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D13-19",
+  "name": "Capital Market Expectations / Long-run Growth Drivers contract",
+  "status": "CONCEPT_AND_FALSIFICATION_FROZEN__PIT_EXPECTATION_VINTAGE_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-10-03T23:19:00+08:00",
+  "objectSeparation": {
+    "STRUCTURAL_GROWTH_CAPACITY": "Potential-output growth determined by labor input, capital accumulation/deepening and total factor productivity under a frozen model/source.",
+    "POLICYMAKER_PROJECTION": "Conditional forecast such as Fed SEP or CBO projection; not a market price and not a consensus of investors.",
+    "SURVEY_EXPECTATION": "Professional/household/business forecast with respondent population, horizon and vintage.",
+    "MARKET_IMPLIED_EXPECTATION": "Price-derived object that generally mixes expectations with risk/liquidity premia.",
+    "VALUATION_STATE": "Equity/bond valuation reflecting both expected cash flows and discount rates/risk premia.",
+    "REALIZED_GROWTH": "Ex-post GDP/productivity/earnings outcome; not an expectation."
+  },
+  "structuralGrowth": {
+    "simplifiedIdentity": "Potential growth ≈ labor-force/input growth + labor-productivity growth; productivity itself reflects capital deepening/accumulation and TFP under the chosen framework.",
+    "drivers": [
+      "population and labor-force growth",
+      "participation/hours/human capital",
+      "capital accumulation and capital services",
+      "total factor productivity / technology diffusion",
+      "institutional/policy/resource-allocation effects",
+      "sector composition and intangible capital"
+    ],
+    "CBOGuard": "CBO potential-growth paths are projections based on current assumptions/law and can change with demographics, policy and productivity assumptions; they are not immutable fundamentals."
+  },
+  "marketExpectationSemantics": {
+    "NOMINAL_TREASURY_YIELD": {
+      "decomposition": "expected future short rates + term premium under standard term-structure interpretation",
+      "guard": "Yield level/slope is not pure growth or Fed expectation."
+    },
+    "REAL_YIELD": {
+      "guard": "Real yield contains real-rate expectations plus real term premium/model effects; not a clean long-run growth forecast."
+    },
+    "BREAKEVEN_INFLATION": {
+      "decomposition": "inflation expectation + inflation risk premium + TIPS liquidity effects",
+      "guard": "Breakeven is inflation compensation, not pure expected inflation."
+    },
+    "TERM_PREMIUM": {
+      "sourceCandidate": "NY Fed ACM model",
+      "guard": "Model-estimated and not directly observable; model/version matters."
+    },
+    "R_STAR": {
+      "sourceCandidate": "Laubach-Williams / Holston-Laubach-Williams",
+      "guard": "Latent/model-estimated equilibrium concept with substantial real-time uncertainty; not observed market rate."
+    },
+    "EQUITY_VALUATION": {
+      "guard": "Higher P/E or market cap can arise from higher expected cash-flow growth, lower discount rates, lower risk premium, margin changes or composition; valuation expansion alone does not identify long-run growth expectations."
+    }
+  },
+  "projectionSources": {
+    "FED_SEP": {
+      "meaning": "FOMC participant projections conditional on each participant's assessment of appropriate monetary policy.",
+      "longerRun": "Values expected to prevail over time absent further shocks under appropriate policy assumptions.",
+      "guard": "SEP is policymaker distribution, not market consensus or objective true potential growth."
+    },
+    "CBO": {
+      "meaning": "Potential output/labor/productivity projection under stated policy/demographic assumptions.",
+      "growthDrivers": [
+        "potential labor force",
+        "capital accumulation/services",
+        "TFP/productivity"
+      ],
+      "guard": "Projection revisions are information; current projection must not rewrite prior vintage."
+    },
+    "MARKET_SURVEY": {
+      "guard": "Professional-forecast and analyst consensus require exact timestamp/horizon/provider vintage; later consensus cannot be backfilled."
+    }
+  },
+  "technologyProductivityGuard": {
+    "principle": "Technology adoption/investment is an input/hypothesis, not realized TFP improvement.",
+    "example": "CBO 2026 projections assume generative-AI diffusion modestly raises future TFP; this is a forecast assumption and must not be treated as observed productivity.",
+    "requiredSeparation": [
+      "AI/capex spending",
+      "adoption/utilization",
+      "measured productivity",
+      "profit/margin effect",
+      "valuation effect"
+    ]
+  },
+  "pitContract": {
+    "requiredFields": [
+      "objectType",
+      "source",
+      "referenceDate",
+      "forecastHorizon",
+      "publishedAt",
+      "capturedAt",
+      "knownAtTaipei",
+      "vintageIdOrHash",
+      "modelVersion",
+      "revisionStatus",
+      "firstEligibleTaiwanDecision"
+    ],
+    "marketDataRule": "Intraday market-implied states use actual observed/known clock.",
+    "projectionRule": "Each SEP/CBO/survey vintage is immutable. Later projection revisions create new objects.",
+    "realizedRule": "Future realized GDP/productivity/earnings never backfill expectation object."
+  },
+  "redundancyOrder": [
+    "current Taiwan price/valuation/sector state",
+    "raw yields/real yields/USD",
+    "term-premium/breakeven decompositions",
+    "survey/policymaker expectations",
+    "structural growth projections",
+    "derived long-run expectation state"
+  ],
+  "candidateStates": [
+    "MARKET_GROWTH_EXPECTATION_CANDIDATE",
+    "DISCOUNT_RATE_DOMINATED_REPRICING",
+    "INFLATION_COMPENSATION_REPRICING",
+    "TERM_PREMIUM_REPRICING",
+    "STRUCTURAL_GROWTH_UP_REVISION",
+    "STRUCTURAL_GROWTH_DOWN_REVISION",
+    "MARKET_VS_POLICYMAKER_EXPECTATION_DIVERGENCE",
+    "PRODUCTIVITY_CAPEX_REALIZATION_GAP"
+  ],
+  "prohibitedShortcuts": [
+    "10Y yield up = growth expectations up",
+    "yield curve steepening = economy will accelerate",
+    "breakeven inflation = pure expected inflation",
+    "Fed SEP = market expectation",
+    "CBO potential GDP = market consensus",
+    "higher P/E = higher long-run growth",
+    "AI capex = realized TFP growth",
+    "one long-run-growth score for next-day stock direction"
+  ],
+  "taiwanTransmission": [
+    "global discount-rate/valuation channel",
+    "technology/productivity expectations affecting semiconductor capex/demand",
+    "U.S./global potential-demand channel",
+    "USD/rate/capital-flow channel",
+    "sector-level earnings-duration sensitivity"
+  ],
+  "ownershipBoundary": {
+    "D13_19": "macro expectations, structural long-run growth drivers, projection/market-expectation decomposition and vintage",
+    "D06_D07_D12_assetPricing": "stock-level valuation/fundamental expected-return factors; D13 must not duplicate factor maturity",
+    "D18": "strategy performance conditional on frozen macro expectation/growth regime",
+    "D07_supplyChain": "company/sector technology-capex/product-demand exposure"
+  },
+  "falsification": [
+    "decompose nominal yields into expected-rate and term-premium components before growth inference",
+    "decompose breakeven into expectation/risk/liquidity caveats",
+    "market-implied versus survey/policymaker projection disagreement",
+    "projection-vintage revisions",
+    "valuation change versus earnings-growth revision versus discount-rate change",
+    "AI/capex proxy versus later measured productivity",
+    "horizon match: long-run objects cannot justify next-day direction without separate mechanism",
+    "component baseline before any composite expectation score",
+    "date-shift/placebo and regime robustness",
+    "no model/provider chosen based on Taiwan returns"
+  ],
+  "maturityDecision": {
+    "from": "L0",
+    "to": "L2",
+    "reason": "Expectation/realization/projection/market-implied objects, long-run growth drivers, risk-premium decomposition, vintage and horizon guards, Taiwan transmission and falsification are frozen; no Taiwan prospective/OOS evidence for L3."
+  },
+  "exactNext": [
+    "Preserve one Fed SEP and one CBO structural-growth vintage with exact publication/model version as source-only objects.",
+    "Freeze market-implied expectation decomposition inputs using existing D13 rates/inflation lanes before creating any composite.",
+    "Test whether long-run expectation state adds anything beyond raw rates/USD/valuation and sector duration at matched horizons.",
+    "Do not use D13-19 for next-day direction until horizon transportability is independently demonstrated.",
+    "Formal Core remains locked."
+  ]
+}
