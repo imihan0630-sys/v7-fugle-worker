@@ -1540,3 +1540,15 @@ R01～R08 任務包由對應專科室驗證後回 00｜研究總控室驗收；�
 - 最後需回傳 A／B／C／D 四種結構之一或 EVIDENCE_INSUFFICIENT（證據不足）。
 - 不得自行退休 D15-19、不得改 Formal Core（正式核心）。
 
+## System1 A2 Gate Role Inventory — 2026-10-03
+
+System1／相關專科室續接 overfilter（過度過濾）、gate（門檻）、BUY 稀少、zero-pick（零選股）研究前，必須讀：
+`shared-knowledge/SYSTEM1_A2_GATE_ROLE_INVENTORY_20261003_V0_1.md`
+
+固定要求：
+- 不得把 21 個 fail-fast（遇錯即退）分支全部當成真正 HARD_INVALIDATION（硬否決）。
+- data presence（資料存在性）與 economic evidence（經濟證據）必須分開。
+- 先做 P1 slow/context/confidence gate（慢速／情境／信心門檻）Shadow 反證，再處理 P2。
+- A/B 保留為 current Formal baseline（目前正式基準）的 PRIMARY_ALPHA（主要證據）策略身份。
+- 任何正式放寬仍需 prospective/OOS（前瞻／樣本外）＋成本＋回撤＋false acceptance（錯誤接受）證據與 owner approval（持有人批准）。
+
