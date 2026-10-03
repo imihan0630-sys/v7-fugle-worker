@@ -134,9 +134,9 @@ assert.equal(denB.fiscalReportPeriod,"115/2");
 assert.equal(denA.pe,6.60);
 assert.equal(denB.pe,5.06);
 
-const caBefore=s3593.rows.find(r=>r.tradeDate==="2025-12-19");
+const caBefore=s3593.rows.find(r=>r.tradeDate==="2025-12-10");
 const caAfter=s3593.rows.find(r=>r.tradeDate==="2025-12-22");
-assert.ok(caBefore && caAfter,"3593 corporate-action context rows missing");
+assert.ok(caBefore && caAfter,"3593 corporate-action boundary rows missing");
 
 assert.ok(s7812.firstDate>="2026-09-22","7812 must not predate official listing date");
 assert.ok(s7812.rows.length<252,"7812 must be short-history control");
