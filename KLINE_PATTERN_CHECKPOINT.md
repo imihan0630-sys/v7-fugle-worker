@@ -797,3 +797,48 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 4. Keep Pattern prospective clock/runtime persistence blocked until immutable parent + Pattern ROOT + continuity/session exact-set receipts exist.
 5. Next D01 science: study whether transition-state representation itself is redundant with continuous distance/path descriptors before adding any categorical lifecycle challenger.
 6. No outcome join / no N-bar acceptance / no R09 / no Formal change.
+
+## Continuation update — DL-019A through DL-019F (2026-10-03)
+
+- D01 studied whether RG2 / Pattern lifecycle categories add information beyond continuous distance/path descriptors before any outcome join.
+- New research-only artifacts:
+  - research/PATTERN_LIFECYCLE_REDUNDANCY_V0_1.md
+  - research/pattern_lifecycle_redundancy_v0_1.json
+  - research/pattern_lifecycle_redundancy_v0_1.mjs
+  - research/test_pattern_lifecycle_redundancy_v0_1.mjs
+  - research/PATTERN_LIFECYCLE_REDUNDANCY_D16_HANDOFF_V0_1.md
+- Core distinction:
+  current geometry alone is NOT enough to reconstruct path-dependent lifecycle;
+  complete causal path + first-event clocks can make the categorical lifecycle a deterministic / thresholded summary.
+- Frozen redundancy ladder:
+  C0_GEOMETRY_ONLY
+  -> C1_CONTINUOUS_PATH
+  -> C2_CLOCK_COMPLETE_PATH
+  -> C3_CATEGORICAL_LIFECYCLE.
+- Promotion-grade lifecycle incrementality must be evaluated as C3 vs FLEXIBLE(C2), not merely C3 vs C0 and not merely C3 vs a weak linear C2.
+- Same current geometry with different break/reentry/reclaim history is a valid path-memory counterexample.
+- Same complete C2 path basis with different lifecycle labels is a SEMANTIC_CONTRADICTION, not independent evidence.
+- Lifecycle source novelty is frozen as NONE because category states derive from the same PRICE_OHLC / continuity root.
+- Lifecycle may retain explanation / audit / event-indexing value even if predictive incrementality is zero.
+- D16 handoff requires:
+  common-support same-parent comparison,
+  equal scan-date weighting,
+  scanDate + symbol dependence handling,
+  chronological OOS / purged holdout,
+  episode-first / episode-holdout / non-overlapping-date sensitivities,
+  and at least one flexible continuous C2 comparator.
+- External support/counterevidence:
+  2026 Finance and Stochastics formalizes support/resistance as path-dependent regime switching, supporting path-memory relative to current distance;
+  statistical guidance on continuous predictors warns that categorization loses information and can create arbitrary step functions, so lifecycle categories cannot replace continuous descriptors by default.
+- 12 lifecycle redundancy adversarial tests are authored but remain TEST_EXECUTION_PENDING without an independent Node receipt.
+- No outcomes inspected; no N-bar threshold; no R09; no runtime wiring.
+- D01 remains 51.7%; Pattern alpha UNKNOWN; FORMAL_OPTIMIZATION_CANDIDATE=NONE; Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-019
+
+1. Audit C2 internal redundancy so the complete-path comparator itself does not become a factor zoo.
+2. Freeze a minimal continuous path basis using semantics / algebra / deterministic dependency only, not outcomes.
+3. Preserve clock/path fields needed for causal reconstruction even if they are excluded from a minimal predictive basis.
+4. Hand the minimal-basis contract to D16 so C3 is compared against both full-C2 and minimal-flexible-C2 sensitivity.
+5. Preserve TEST_EXECUTION_PENDING for DL-019 tests unless independently executed.
+6. No outcome join / no R09 / no Formal change.
