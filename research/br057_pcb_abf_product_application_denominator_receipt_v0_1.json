@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "0.1",
+  "moduleId": "D09-13",
+  "researchStep": "BR-057",
+  "status": "PRODUCT_APPLICATION_DENOMINATOR_FIREWALL_PIT_FEASIBLE_OUTCOMES_CLOSED",
+  "issuerCount": 2,
+  "missingExposureMagnitude": "UNKNOWN",
+  "formalCore": "LOCKED",
+  "optimizationCandidate": false
+}
