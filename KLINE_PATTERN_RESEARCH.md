@@ -22653,3 +22653,15 @@ Therefore these fields remain useful views but cannot become independent votes b
 Future D16 analysis now has two continuous comparators: FULL_C2 and outcome-blind MINIMAL_C2 (MCPB_V0_1). Lifecycle C3 must survive both flexible comparators before any representation-incrementality claim.
 
 No causal audit field is removed from prospective storage; predictive de-dup and audit provenance are separate concerns. Twelve tests are authored but not independently executed. No outcomes or Formal rules changed.
+
+# DL-021 — First-event clock PIT and right-censoring semantics (2026-10-03)
+
+D01 now freezes a strict predictor/outcome firewall for lifecycle clocks.
+
+At a parent decision timestamp, only events already occurred and legitimately available/observed may enter the predictor-side clock state. An event that has not occurred through asOf is right-censored through that point: occurred=0 with null first time and null age. Age zero instead means the event occurred today. UNKNOWN provenance remains a third distinct state.
+
+Future reentry/failure/reclaim dates are outcome information and can never be backfilled into the earlier Pattern child. They may later support a separate time-to-event analysis under D16/statistical-validation ownership.
+
+First-event timing can encode path-order memory beyond aggregate excursion summaries, but it remains derived from the same PRICE_OHLC path and has no source novelty. Continuous eligible-session age is retained before any duration bucket; post-outcome N-bar threshold search is rejected.
+
+Twelve PIT/censoring adversarial tests are authored but not independently executed. No outcomes or Formal behavior changed.
