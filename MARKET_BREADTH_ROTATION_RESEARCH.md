@@ -2049,3 +2049,44 @@ Maturity: `D09-14 L0 -> L2` for mechanism + falsification only.
 - Existing BR-038/040/043/045/047 lanes remain valid and are not overwritten.
 
 Formal Core unchanged.
+
+
+## H01 specialist validation — D09-13 vs D09-14
+
+Artifact:
+`research/h01_d09_13_d09_14_specialist_validation_20261003_v0_1.json`
+
+Terminal specialist classification proposed: **SCOPE_DEDUP_ONLY**.
+
+Evidence:
+- D09-13 owns industry×market-definition×vintage structural state.
+- D09-14 is only distinct if narrowed to issuer×industry×observable-strategic-action×implementation-stage×vintage.
+- Static market share, capacity, price, margin, customer and supplier observations are shared parent evidence and cannot create two votes.
+- Three valid divergent-state families exist: attractive-industry/weak-firm, unattractive-industry/strong-firm, and stable-structure/changing-firm-action.
+- Repository search found no Production/runtime/API/UI capability dependent on standalone D09-14 identity.
+- Therefore unrestricted KEEP_SEPARATE would duplicate evidence, while immediate merge would erase a useful dynamic firm-action distinction before owner review.
+
+No merge/retirement executed. Owner/dependency audit remains required.
+
+## BR-051 — First Taiwan foundry industry-structure PIT receipt
+
+Artifact:
+`research/br051_taiwan_foundry_industry_structure_pit_v0_1.json`
+
+2025 TSIA/ITRI industry data freeze Taiwan-headquartered IC foundry output at NT$4.1693tn, +28.5% YoY. The receipt joins this industry denominator with issuer-native TSMC and UMC capacity/technology/product/customer evidence.
+
+Critical denominator firewall:
+TSMC/UMC consolidated revenue is **not** divided by TSIA foundry output and labeled market share. Production value vs accounting revenue compatibility is not yet proven. Likewise wafer-capacity shares cannot be treated as revenue shares without a complete comparable denominator.
+
+Observed structure is segmented rather than homogeneous:
+- TSMC: >17m annual 12-inch-equivalent capacity, 15.0m shipments, 305 technologies, 12,682 products, 534 customers, 74% wafer revenue from 7nm-and-beyond.
+- UMC: >400k 12-inch-equivalent wafers/month across 12 fabs, with mature/specialty logic positioning and geographically diversified Asia capacity.
+
+Entry barriers are directly observable through scale, process/yield learning, qualification, capital and technology breadth. Supplier/buyer power magnitude and exact firm market shares remain UNKNOWN.
+
+Maturity: **D09-13 L2 -> L3 Taiwan PIT data feasibility only**. No predictive outcome or Formal score.
+
+### Exact next
+- BR-052 becomes a firm-specific competitive-action/position receipt under the H01 dedup boundary.
+- Add a non-semiconductor industry control before any cross-industry structural score.
+- No Five-Forces composite score, market-share factor or Formal change.
