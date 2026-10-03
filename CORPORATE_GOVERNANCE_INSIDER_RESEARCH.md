@@ -612,3 +612,468 @@ Exact next continuation:
 Build a historical D21-04 pledge PIT replay with at least one pledge setup and one release event, preferably for the same controller/issuer. Capture original known_at, pledged-share ratios at filer and controller-group levels, price path before/after the event, related insider transfers and Article 197-1 voting-right relevance. Do not infer a margin-call trigger unless loan contract terms are known. Preserve D21-03 exact monthly MOPS receipt as an unresolved dependency without blocking D21-04.
 
 Formal Core impact: NONE.
+
+
+## D21 multi-module deepening — 2026-10-04 morning block
+
+Date: 2026-10-04 Asia/Taipei
+Status: D21-04 PARTIAL_PLEDGE_REPLAY / D21-05 L2 / D21-07 L2 / D21-09 L2 / D21-10 L2 / FORMAL_CORE_UNCHANGED
+
+## D21-04 Share Pledging — partial historical replay v0.2
+
+### Taiwan paired setup/release reconstruction
+New Product Insurance 2850 provides a usable partial reconstruction through structured public-market mirrors:
+- major shareholder Shin Kong Textile Co., Ltd. had 20,000 lots pledged before 2024-12-19;
+- 2024-12-19: +8,000 lots pledged, balance 28,000 lots, reported current holding 51,548 lots;
+- 2025-01-23: -4,000 lots released, balance 24,000 lots;
+- 2025-02-03: -5,000 lots released, balance 19,000 lots.
+
+Interpretation:
+- the pair proves that setup and release events can be sequenced and reconciled to a running pledge balance;
+- pledge intensity moved from about 54.33% of the holder's reported position at 28,000 / 51,548 to about 36.86% at 19,000 / 51,548;
+- the correct economic state is therefore a path, not a static binary pledge flag.
+
+Why this does NOT promote D21-04 to L3:
+- the event dates are currently reconstructed from a secondary structured mirror;
+- exact original MOPS event receipts / first-known timestamps were not captured;
+- the underlying loan terms, collateral maintenance ratio, maturity and other collateral remain UNKNOWN;
+- no margin-call price may be inferred.
+
+Durable lesson:
+- pledge research must model state transitions (setup / increase / partial release / full release / rollover) and running balance.
+- exact MOPS receipt remains required before L3.
+
+## D21-05 Related-party Transactions — research contract v0.1
+
+Status: L2 MECHANISM_AND_FALSIFICATION_DEFINED / PIT_TRANSACTION_REPLAY_PENDING / RESEARCH_ONLY
+
+### 1. Taxonomy
+
+Related-party transactions must be split by economic type rather than aggregated into one ratio:
+- related sales / service revenue;
+- related purchases / outsourced processing;
+- related receivables / payables;
+- loans to related parties;
+- borrowings from related parties;
+- guarantees / endorsements;
+- asset purchases / disposals;
+- real-estate / right-of-use transactions;
+- equity investments / capital injections;
+- other non-operating income / expense with related parties.
+
+### 2. Competing mechanisms
+
+Efficient contracting / internal-capital-market mechanism:
+- business groups can use affiliated suppliers, customers and financing entities to reduce contracting frictions, coordinate production, share resources or fund high-return projects.
+- Taiwan evidence shows some related-party product / processing sales can improve earnings informativeness.
+- therefore high RPT intensity is not intrinsically bad.
+
+Tunneling / self-dealing mechanism:
+- controlling owners may transfer resources on non-arm's-length terms through sales, asset transfers, loans, guarantees or related financing.
+- weak governance can make RPTs a vehicle for minority-shareholder expropriation.
+
+Propping / earnings-management mechanism:
+- affiliates can temporarily support revenue, earnings, working capital or financing around capital raising, earnings declines or financial pressure.
+- this may improve short-run reported performance while weakening information quality.
+
+### 3. Taiwan evidence synthesis
+
+- Yeh, Shu and Su (2012) find stronger governance constrains RPT levels across related sales, lending/guarantees and related borrowings. Their evidence also gives partial support to both propping and internal-capital-market motives.
+- Chen, Chen and Weng (2020) show that different revenue-related RPTs do not have one sign: related product/processing sales can increase earnings informativeness while related non-operating income can reduce it.
+- Taiwan disclosure-regulation evidence shows enhanced disclosure reduced some RPT-related earnings-management behavior, with heterogeneous industry effects.
+- Taiwan listed-firm evidence also links higher related sales/purchase intensity with greater real earnings-management activity in some samples.
+
+Therefore a universal RPT penalty is rejected.
+
+### 4. Official Taiwan control/disclosure architecture
+
+- public companies' internal-control systems explicitly include management of related-party transactions, loans and guarantees.
+- material related-party asset acquisitions/disposals can require pre-transaction board approval and audit-committee involvement.
+- under the current asset-acquisition rules, certain related-party transactions above capital/assets/NT-dollar thresholds require formal approval before contract/payment; very large cases can require shareholder approval subject to stated exceptions.
+- loans and guarantees have monthly and event-driven disclosure clocks. These are separate from annual financial-statement RPT notes.
+
+### 5. PIT contract
+
+Required fields:
+- issuer;
+- counterparty;
+- historical_related_party_status;
+- relationship_type;
+- transaction_type;
+- transaction_amount;
+- denominator basis;
+- announcement_or_filing_known_at;
+- accounting_period;
+- approval_date;
+- board / audit-committee / shareholder-approval flags;
+- stated purpose;
+- pricing / valuation support if disclosed;
+- consolidated_elimination_flag;
+- recurrence / rolling-12m amount;
+- transaction_counterparty_concentration;
+- UNKNOWN flags for undisclosed terms.
+
+Rules:
+1. current related-party relationships may not be backfilled into older dates.
+2. annual-report note disclosure is delayed evidence and must not be assigned to the underlying transaction date unless an earlier public filing exists.
+3. intercompany transactions eliminated on consolidation still matter for governance research but cannot be mechanically compared with external revenue.
+4. transaction amount must be normalized by relevant scale: sales, assets, net worth, cash, or controller-group exposure depending on type.
+5. loans / guarantees need separate state and event clocks.
+6. absence of disclosed RPT evidence is UNKNOWN when source coverage is incomplete.
+
+### 6. Candidate research variables
+
+- related_sales_ratio;
+- related_purchase_ratio;
+- related_receivable_ratio;
+- related_lending_to_networth;
+- related_guarantee_to_networth;
+- related_borrowing_ratio;
+- abnormal_RPT residual relative to industry / firm history;
+- counterparty_concentration;
+- RPT growth shock;
+- RPT-to-cashflow divergence;
+- transaction_before_equity_issue / earnings_decline indicators;
+- governance interaction: control-cashflow wedge, board affiliation, pledge intensity;
+- pricing_fairness / external valuation evidence where available.
+
+### 7. Falsification requirements
+
+Any predictive claim must survive:
+- vertical-integration / supply-chain efficiency;
+- firm size / industry / group-affiliation confounding;
+- growth / capex funding demand;
+- consolidation-boundary changes;
+- acquisition/divestiture changing related-party status;
+- currency / transfer-pricing / tax effects;
+- earnings-management overlap with D07;
+- ownership/control overlap with D21-01;
+- tunneling overlap with D21-11.
+
+### 8. Maturity
+
+Advance D21-05 from L0 to L2 / 40%.
+L3 remains closed pending historical Taiwan transaction replay across at least two transaction families and original first-known timestamps.
+
+Formal Core impact: NONE.
+
+## D21-07 Management Incentives / Capital Allocation Quality — research contract v0.1
+
+Status: L2 MECHANISM_AND_FALSIFICATION_DEFINED / PIT_COMPENSATION_ALLOCATION_REPLAY_PENDING / RESEARCH_ONLY
+
+### 1. Core principle
+
+Compensation design is not the target variable by itself.
+The research object is a chain:
+
+incentive design -> managerial decision -> capital allocation -> realized economic outcome.
+
+A seemingly shareholder-friendly equity incentive can still produce poor allocation; high compensation can coexist with excellent long-term investment; low compensation is not automatically disciplined governance.
+
+### 2. Taiwan institutional baseline
+
+Listed/OTC companies must establish a remuneration committee.
+The committee is required to:
+- formulate and periodically review policies, systems, standards and structures for director / manager performance evaluation and remuneration;
+- periodically evaluate and determine remuneration;
+- consider peer levels, individual performance, company operating performance and future risk;
+- avoid incentives that encourage risk beyond the company's risk appetite;
+- consider industry/business characteristics in short-term bonus proportions and payment timing.
+
+The covered remuneration concept includes cash, stock options, stock-based profit sharing, retirement/severance, allowances and other substantive incentives.
+
+### 3. Competing mechanisms
+
+Alignment / long-horizon investment:
+- performance-sensitive or equity-linked pay may align managers with shareholders and encourage investment in R&D and operating efficiency.
+- Taiwan evidence from listed firms reports positive association between managerial compensation and both R&D investment and operating efficiency.
+
+Short-termism / metric gaming:
+- bonus metrics tied to short-horizon earnings, EPS or ROE can induce earnings timing, underinvestment, leverage changes or repurchases that improve the metric without improving long-run value.
+- a metric such as ROE can change mechanically with leverage/equity-base decisions.
+
+Overconfidence / control interaction:
+- Taiwan evidence links short-term bonuses/equity incentives and managerial overconfidence to repurchase behavior.
+- family-control and CEO-chair duality can alter repurchase motives because repurchases change ownership/control structure.
+
+Reverse causality:
+- high pay may be a consequence of superior growth opportunities or R&D success rather than the cause.
+- higher R&D / efficiency may lead boards to reward executives ex post.
+
+### 4. Capital-allocation outcome map
+
+Research must link incentives to:
+- R&D;
+- capital expenditure;
+- acquisitions / divestitures;
+- share repurchases;
+- dividends;
+- debt issuance / repayment;
+- equity issuance / private placement;
+- cash accumulation;
+- working-capital investment.
+
+Outcome quality cannot be inferred from direction alone.
+Example: more capex may be good under high-return opportunities and bad under empire building.
+
+### 5. PIT contract
+
+Required evidence:
+- historical compensation policy / committee disclosure vintage;
+- fixed vs variable / cash vs equity component where disclosed;
+- performance metrics and measurement horizon where disclosed;
+- grant/vesting/exercise conditions;
+- board/committee approval date;
+- allocation decision known_at;
+- ex-ante opportunity set / financial constraints;
+- later realized ROIC / margins / cash flow / write-offs with a strict future-outcome separation.
+
+Rules:
+- future performance cannot be used to construct the decision-time feature;
+- policy presence is not equivalent to effective incentive intensity;
+- aggregate compensation disclosure cannot be treated as CEO-specific pay;
+- missing individual pay components remain UNKNOWN;
+- employee stock plans and executive incentives must be separated.
+
+### 6. Candidate variables
+
+- variable_pay_share;
+- equity_incentive_share;
+- short_horizon_metric_exposure;
+- long_horizon_vesting_share;
+- pay_performance_sensitivity;
+- compensation_growth_minus_performance_growth;
+- R&D / capex / repurchase / payout responses after incentive changes;
+- investment_efficiency residuals;
+- ROIC spread versus cost-of-capital proxies after allocation;
+- write-off / impairment / acquisition-performance follow-up;
+- governance interactions with family control, CEO-chair duality and board independence.
+
+### 7. Falsification requirements
+
+- endogeneity / reverse causality;
+- talent-market compensation;
+- firm size;
+- industry / technology intensity;
+- risk;
+- lifecycle / growth opportunities;
+- tax / accounting-rule changes;
+- buyback motives unrelated to incentives;
+- equity-compensation dilution;
+- compensation disclosure incompleteness.
+
+### 8. Maturity
+
+Advance D21-07 from L0 to L2 / 40%.
+L3 remains closed until Taiwan historical compensation-policy and allocation-decision PIT replay is demonstrated.
+
+Formal Core impact: NONE.
+
+## D21-09 Succession / Key-person Risk — research contract v0.1
+
+Status: L2 MECHANISM_AND_FALSIFICATION_DEFINED / HISTORICAL_SUCCESSION_REPLAY_PENDING / CONTEXT_ONLY / GOVERNANCE_TAIL_RISK
+
+### 1. Event taxonomy
+
+Succession research must distinguish:
+- planned retirement / staged succession;
+- sudden death / illness / incapacity;
+- resignation;
+- dismissal / forced turnover;
+- family heir succession;
+- internal non-family professional succession;
+- external professional hire;
+- interim / acting appointment;
+- chairperson change;
+- CEO / general-manager change;
+- CFO / chief accounting officer / governance officer change where economically material;
+- founder remains board/controller after operational succession versus full exit.
+
+### 2. Competing mechanisms
+
+Continuity / firm-specific capital:
+- internal or family successors may preserve tacit knowledge, relationships and culture.
+
+Capability / professionalization:
+- outside professional successors may improve performance when family talent is limited, especially under high product-market competition.
+
+Entrenchment:
+- family succession can preserve control even when successor quality is weak.
+
+Disruption / uncertainty:
+- any succession can temporarily increase execution uncertainty, employee/customer/supplier risk and strategic drift.
+
+Planned-transition mitigation:
+- overlap periods, clear delegation and pre-announced successors can reduce key-person shock.
+
+### 3. Taiwan evidence synthesis
+
+- Taiwan listed-company studies show family CEO turnover dynamics differ materially from non-family firms.
+- A 382-event Taiwan family-firm study (1997-2016) finds stronger product-market competition increases non-family succession and that non-family successors can improve post-succession performance; higher family ownership/management participation predicts family succession.
+- Other Taiwan evidence reports succession on average can be associated with weaker performance, but results differ by successor type; some samples find internal/family successors outperform other relatives or external successors.
+- 2026 Taiwan evidence on post-succession strategies shows outcomes depend on heir background and the strategy adopted: internal-improvement / R&D-oriented strategies can outperform, while contraction and some equity-financed expansion can underperform.
+
+These conflicting findings reject a universal rule such as family successor = bad or outside CEO = good.
+
+### 4. PIT/event-clock contract
+
+Required:
+- first public announcement known_at;
+- board resolution date;
+- effective date;
+- predecessor departure reason;
+- acting/interim flag;
+- successor relationship to controlling family;
+- internal/external tenure and prior role;
+- founder/chair/controller continuing involvement;
+- succession plan or overlap period if publicly disclosed;
+- concurrent board/control changes;
+- regulatory reporting vintage.
+
+For listed firms, chair/CEO relationship and relevant board-role changes have prompt disclosure obligations. Current roster must never be backfilled.
+
+### 5. Candidate variables
+
+- succession_type;
+- planned_vs_unplanned;
+- predecessor_tenure;
+- successor_internal_tenure;
+- family_relation;
+- overlap_days;
+- founder_remains_controller;
+- chair_CEO_role_change;
+- concurrent_CFO_CAOfficer_turnover;
+- cluster_turnover_count;
+- product_market_competition;
+- pre_event_performance / distress;
+- post-event strategic actions studied only as later outcomes.
+
+### 6. Falsification requirements
+
+- poor performance causes turnover rather than turnover causes poor performance;
+- succession can coincide with retirement age or board election cycle;
+- sudden-event health/death cases differ from planned events;
+- founder remains shadow controller;
+- family/non-family classification can be ambiguous through marital/related-person networks;
+- industry/firm lifecycle and competition alter successor choice;
+- post-succession strategy, not successor identity, may drive outcomes.
+
+### 7. Maturity and role
+
+Advance D21-09 from L0 to L2 / 40%.
+Role: CONTEXT_ONLY / GOVERNANCE_TAIL_RISK / CONFIDENCE by default.
+L3 remains closed pending date-specific Taiwan succession replay.
+
+Formal Core impact: NONE.
+
+## D21-10 Audit / Restatement / Internal Control — research contract v0.1
+
+Status: L2 MECHANISM_AND_FALSIFICATION_DEFINED / PIT_EVENT_REPLAY_PENDING / GOVERNANCE_TAIL_RISK / RESEARCH_ONLY
+
+### 1. Event taxonomy
+
+Do not merge:
+- financial-statement correction / supplement below restatement threshold;
+- formal restatement;
+- regulator-initiated restatement;
+- company-initiated restatement;
+- auditor-qualified opinion;
+- adverse opinion / disclaimer;
+- material uncertainty / going-concern language;
+- auditor change;
+- internal-audit-head change;
+- internal-control statement with material weakness;
+- regulator-ordered special internal-control review;
+- material fraud / suspected fraud;
+- remediation / repeated weakness.
+
+### 2. Taiwan regulatory materiality
+
+Taiwan enforcement rules set quantitative thresholds that distinguish formal restatement from smaller corrections.
+For example, individual financial statements and consolidated financial statements use separate absolute and percentage thresholds for income-statement and balance-sheet corrections.
+Smaller errors may be corrected without full restatement, while listed-company correction/supplement disclosures have their own prompt filing clock.
+
+Therefore:
+- RESTATEMENT is not interchangeable with any correction;
+- threshold and rule vintage must be stored.
+
+Public-company internal-control rules define effective versus materially deficient internal control and require tracking/remediation of identified weaknesses.
+The FSC can require special CPA review for serious control failures, unreliable external financial reporting, suspected fraud and other specified conditions.
+
+### 3. Mechanisms
+
+Information-quality failure:
+- restatements and material weaknesses can reveal prior financial-report unreliability.
+
+Control-environment failure:
+- recurring or broad deficiencies can indicate weak management integrity, risk assessment or supervision.
+
+Detection/remediation mechanism:
+- disclosure of a weakness can also mean monitoring is functioning; a remediated weakness may be less risky than an undisclosed persistent problem.
+
+Severity / direction:
+- overstated past earnings and regulator-initiated corrections can carry different information from conservative understatements or classification errors.
+
+### 4. Taiwan evidence synthesis
+
+- Taiwan event-study evidence on restatements documents negative average market reaction, with stronger negative reactions where prior income was overstated; one Taiwan study reports positive reaction for income-understatement corrections.
+- Taiwan research on 724 listed companies (2004-2010) finds internal-control weaknesses associated with lower performance, with more severe weakness categories associated with worse outcomes.
+- Another Taiwan non-financial listed-company study (2004-2013) likewise reports negative relation between internal-control weakness and firm performance, moderated by governance quality.
+- International evidence also warns that remediation changes the interpretation of a weakness; persistent/unremediated weakness should not be pooled with corrected problems.
+
+### 5. PIT contract
+
+Required:
+- event_type;
+- original_report_known_at;
+- correction/restatement_known_at;
+- affected fiscal periods;
+- initiator;
+- error category;
+- direction/magnitude of earnings/equity change;
+- rule_vintage and restatement threshold;
+- auditor opinion before/after;
+- auditor change / audit-partner data where reliable;
+- internal-control statement vintage;
+- material_weakness category;
+- remediation date / repeated flag;
+- regulator enforcement linkage.
+
+Rules:
+1. never rewrite historical financial features using restated values before the restatement became public.
+2. maintain both originally-known and subsequently-restated versions.
+3. a regulator-forced restatement is a different event type from voluntary correction.
+4. classification-only corrections should not inherit the same severity as income/equity overstatement automatically.
+5. remediation must be modeled as a state transition, not deletion of the original weakness.
+
+### 6. Candidate variables
+
+- restatement_severity;
+- earnings_overstatement_ratio;
+- equity_overstatement_ratio;
+- regulator_initiated_flag;
+- repeated_restatement_count;
+- days_from_original_report_to_correction;
+- auditor_opinion_deterioration;
+- auditor_change_near_event;
+- internal_control_material_weakness;
+- repeated_weakness;
+- remediation_lag;
+- management_integrity / fraud-category flag only with reliable evidence.
+
+### 7. Falsification / redundancy
+
+- accounting-complexity and acquisition activity can raise correction frequency without fraud;
+- rapid remediation can mitigate risk;
+- firm distress can cause both control failures and poor returns;
+- auditor conservatism may increase detected issues;
+- D07 accounting-quality variables may already absorb part of the signal;
+- D11 event-risk clocks can overlap the announcement effect.
+
+### 8. Maturity and role
+
+Advance D21-10 from L0 to L2 / 40%.
+Role: GOVERNANCE_TAIL_RISK / CONFIDENCE / RESEARCH_ONLY until predictive evidence is established.
+L3 remains closed pending historical Taiwan correction/restatement and internal-control event replay with original first-known timestamps and dual-vintage financial data.
+
+Formal Core impact: NONE.
