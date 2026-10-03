@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 10:05 Asia/Taipei
+Updated: 2026-10-03 10:26 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -620,4 +620,21 @@ Governance result after scanning all 354 active modules:
 - Fourteen additional high-overlap pairs are retained with explicit producer/consumer, source-family, component/composite, horizon, unit-of-analysis or strategy-interaction boundaries.
 
 No module count, maturity or Formal Core behavior changes. Specialist rooms own validation before any future merge proposal.
+
+## Priority overlap merge acceptance contract — 2026-10-03
+
+Canonical human-readable contract:
+`shared-knowledge/CURRICULUM_OVERLAP_MERGE_ACCEPTANCE_CONTRACT_20261003_V0_1.md`
+
+Machine-readable companion:
+`shared-knowledge/curriculum_overlap_merge_acceptance_contract_20261003_v0_1.json`
+
+Frozen before specialist results:
+- D15-21 vs D15-22 requires a three-way ownership check with D15-16. D15-16 owns pre-trade construction/optimization; D15-21 owns benchmark-relative diagnostics/attribution. D15-22 survives separately only if it proves a third non-duplicated contract.
+- D07-17 vs D21-12 may stay separate only if guidance-content quality and governance credibility have distinct observables, decision roles and falsification tests; otherwise a merge proposal is required.
+- D16-11 owns generic provenance primitives. D16-21 should retain only alternative-data-specific selection/coverage/leakage/model-drift validation if that residual scope is real.
+
+Allowed terminal governance classifications are MERGE_ELIGIBLE, KEEP_SEPARATE, SCOPE_DEDUP_ONLY and EVIDENCE_INSUFFICIENT.
+
+No module retirement is authorized by the contract itself. Specialist evidence + Dependency Audit + owner approval remain mandatory.
 
