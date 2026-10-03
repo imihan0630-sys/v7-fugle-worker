@@ -1,6 +1,6 @@
 {
   "schemaVersion": "D22_03_NET_DEBT_COMPONENT_REPLAY_V0_1",
-  "generatedAt": "2026-10-04T07:28:00+08:00",
+  "generatedAt": "2026-10-04T07:18:00+08:00",
   "status": "RESEARCH_ONLY / THREE_ISSUER_TWO_INDUSTRY_MULTI_DATE_PIT_COMPONENT_REPLAY / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "governance": {
     "netDebtIsDerived": true,
