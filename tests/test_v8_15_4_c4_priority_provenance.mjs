@@ -3,7 +3,8 @@ import {readFile} from "node:fs/promises";
 
 const source=await readFile(process.env.V7_TEST_WORKER_PATH||new URL("../Worker.js",import.meta.url),"utf8");
 let n=0;
-assert.ok(source.includes('const VERSION = "8.15.4-c4-priority-provenance";'));n++;
+const version=source.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
+assert.ok(version&&(version[0]>8||(version[0]===8&&(version[1]>15||(version[1]===15&&version[2]>=4)))));n++;
 
 const c1Start=source.indexOf("function buildC1PopulationReceipt(");
 const c1End=source.indexOf("function c1ChunkRows(",c1Start);

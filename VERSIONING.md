@@ -136,3 +136,10 @@
 - 保存既有 40% / -1% / 0.5 sector gate 的實際輸入與 pass/fail provenance，另建立 bounded `SECTOR_GATE_REJECTED` Shadow cohort。
 - Market breadth universe 明確標示為 Formal-normalized，而非官方 whole-market breadth，避免後續研究混用分母。
 - 此版本只讓未來能反證既有 gate；不代表門檻已驗證正確、也不代表需要修改。
+
+## 15. V8.16.0｜Zero-pick prospective rank-input capture（Class-B candidate）
+
+- Runtime candidate: `8.16.0-zero-pick-prospective-capture`.
+- 新增 immutable C1 research child 前瞻擷取功能，不改選股架構、Formal Core、資金或推播，依功能版本規則使用 V8.16.0。
+- Owner 已明確批准實裝；merge/deploy 仍須針對具體 PR 完成 production review。
+- 實裝與驗證說明：`research/SYSTEM1_ZERO_PICK_CLASS_B_IMPLEMENTATION_20261004.md`。
