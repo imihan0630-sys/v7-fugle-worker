@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "D05_EXECUTION_IMPACT_ADVERSE_QUEUE_V0_1",
+  "updatedAt": "2026-10-03T13:55:00+08:00",
+  "domain": "D05",
+  "status": "MECHANISM_AND_FALSIFICATION_FROZEN",
+  "formalCoreImpact": "NONE",
+  "modules": {
+    "D05-11": {
+      "name": "Market Impact市場衝擊機制",
+      "maturityTarget": "L2",
+      "observableEstimands": [
+        "implementationShortfall",
+        "arrivalSlippage",
+        "fillPrice",
+        "postFillMarkout"
+      ],
+      "causalEstimand": "OWN_ORDER_MARKET_IMPACT",
+      "causalDefault": "UNKNOWN_WITHOUT_COUNTERFACTUAL",
+      "guards": [
+        "implementation_shortfall_is_not_causal_market_impact",
+        "temporary_permanent_impact_are_model_components_not_tape_fields",
+        "square_root_impact_is_challenger_not_universal_taiwan_formula",
+        "matched_no_order_windows_required_for_causal_attribution"
+      ]
+    },
+    "D05-12": {
+      "name": "Adverse Selection／Order-flow Toxicity逆向選擇與訂單流毒性",
+      "maturityTarget": "L2",
+      "primaryObservable": "SIGNED_POST_FILL_MARKOUT",
+      "prohibitedInference": "INFORMED_COUNTERPARTY_INTENT",
+      "guards": [
+        "control_market_sector_drift",
+        "control_spread_local_volatility_and_activity",
+        "separate_passive_and_aggressive_fills",
+        "VPIN_not_adopted_as_ready_factor",
+        "toxicity_must_survive_activity_and_volatility_controls"
+      ]
+    },
+    "D05-13": {
+      "name": "Queue Position／Order Priority委託排隊位置與優先權",
+      "maturityTarget": "L2",
+      "role": "EXECUTION_CONFIDENCE_ONLY_NOT_ALPHA_GATE",
+      "exactQueuePositionFromPublicTop5": "UNOBSERVABLE",
+      "allowedProxy": "QUEUE_AHEAD_PROXY",
+      "guards": [
+        "continuous_session_price_time_priority",
+        "preopen_same_price_random_priority_separate",
+        "price_change_resets_time_priority_semantics",
+        "top5_aggregate_depth_has_no_order_ids",
+        "broker_order_lifecycle_required_for_fill_analysis"
+      ]
+    }
+  },
+  "requiredOwnOrderLifecycle": [
+    "clientOrderId",
+    "side",
+    "orderType",
+    "limitPrice",
+    "submittedQty",
+    "submitTimestamp",
+    "ackTimestampIfAvailable",
+    "cancelReplaceTimestamp",
+    "partialFillTimestamp",
+    "partialFillQty",
+    "partialFillPrice",
+    "finalStatus"
+  ],
+  "requiredMarketContext": [
+    "bestBid",
+    "bestAsk",
+    "spreadTicks",
+    "spreadBps",
+    "top1Depth",
+    "top5Depth",
+    "tradeSerialDiagnostics",
+    "sessionMechanism",
+    "tickSize",
+    "relativeTickBps",
+    "midquoteLocalVolatility",
+    "marketReturn",
+    "sectorReturn",
+    "participationRateProxy"
+  ],
+  "estimands": {
+    "executionCost": {
+      "question": "How costly was the realized execution?",
+      "causal": false
+    },
+    "marketImpact": {
+      "question": "How much of the price path was caused by our order?",
+      "causal": true,
+      "default": "UNKNOWN"
+    },
+    "adverseSelection": {
+      "question": "Did price move against the passive fill side after fill?",
+      "causalIntent": false
+    },
+    "queueFillConfidence": {
+      "question": "What fill probability/timing is consistent with observable queue state?",
+      "exactQueueRank": false
+    }
+  },
+  "negativeControls": [
+    "matched_no_order_windows",
+    "passive_vs_aggressive_execution",
+    "common_support_windows",
+    "spread_only_baseline",
+    "local_volatility_activity_baseline",
+    "order_size_participation_strata",
+    "tick_price_tier_strata",
+    "auction_VI_limit_oddlot_separate",
+    "market_sector_drift_control",
+    "independent_dates"
+  ],
+  "prohibited": [
+    "call_slippage_market_impact_without_counterfactual",
+    "infer_informed_trader_from_adverse_markout",
+    "infer_exact_queue_position_from_public_top5",
+    "import_universal_square_root_coefficient",
+    "import_VPIN_as_ready_factor",
+    "use_queue_position_as_stock_selection_alpha",
+    "formal_rule_change_without_owner_approval"
+  ],
+  "evidenceGate": {
+    "level2": "mechanism_plus_falsification_defined",
+    "level3": "own_Taiwan_PIT_order_lifecycle_and_market_data_feasible_with_replay",
+    "level4": "OOS_Shadow_execution_evidence_multiple_independent_dates",
+    "formalCandidate": "owner_review_only_after_incremental_execution_value"
+  },
+  "sources": [
+    "TWSE Trading Mechanism Introduction / Operating Rules Article 58-2",
+    "Almgren & Chriss (2000/2001) Optimal Execution of Portfolio Transactions",
+    "Gatheral (2010) No-Dynamic-Arbitrage and Market Impact",
+    "Cont, Kukanov & Stoikov (2014) The Price Impact of Order Book Events",
+    "Andersen & Bondarenko (2015) Assessing Measures of Order Flow Toxicity",
+    "Donnelly & Gan (2018) Optimal Decisions in a Time Priority Queue",
+    "Garriott, van Kervel & Zoican (2025) Queuing and Inventories in Limit Order Markets",
+    "Fugle Stock WebSocket Books / Trades documentation"
+  ]
+}
