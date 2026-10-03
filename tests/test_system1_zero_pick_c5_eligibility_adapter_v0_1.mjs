@@ -62,7 +62,7 @@ eq(out.eligibility.eligibleReachStage,"F9_RANKABLE");
 eq(out.formalCoreImpact,false);
 
 const mixedRows=[
-  ...symbols.slice(0,6).map(s=>({
+  ...["G1","G2","G3","T1","T2","T3"].map(s=>({
     symbol:s,sessionDate:"2026-10-05",generationId:"C5:g1",
     p1aBlockSet:["RS_CONTEXT"],reachStage:"F9_RANKABLE"
   })),
