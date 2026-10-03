@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "SYSTEM1_ZERO_PICK_CLASS_B_ACCEPTANCE_V0_1",
+  "updatedAt": "2026-10-03T23:20:00+08:00",
+  "implementationClass": "CLASS_B",
+  "ownerApprovalRequired": true,
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE",
+  "technicalAcceptance": {
+    "protectedFormalFunctionsUnchanged": [
+      "scoreCandidate",
+      "applyMarketConsensus",
+      "Formal rankFn"
+    ],
+    "parityRequired": [
+      "selectedSymbols",
+      "plansCapital",
+      "signalState",
+      "15mFormalPath",
+      "push",
+      "order"
+    ],
+    "providerCallDelta": 0,
+    "system2Touched": false,
+    "researchFailureMode": "FAIL_OPEN_TO_FORMAL"
+  },
+  "evidenceSemantics": {
+    "sameScanOnly": true,
+    "pitKnownAtRequired": true,
+    "exactDateConsensusRequired": true,
+    "laterDataRepairAllowed": false,
+    "historicalBackfillAsContemporaneousAllowed": false,
+    "actualFormalRank": false,
+    "incompleteTuple": "FAIL_CLOSED_FROM_COUNTERFACTUAL_COMPARATOR",
+    "preSortOrdinal": "STABLE_WITHIN_POOL"
+  },
+  "storage": {
+    "immutableGenerationConflictGuardRequired": true,
+    "readbackVerificationRequired": true,
+    "maxChunkBytes": 90000,
+    "maxScale2000BytesExclusive": 10000000
+  },
+  "ci": [
+    "V8 Regression Tests",
+    "V8 Repair CI",
+    "System1 C1 C2 isolated offline repair review"
+  ],
+  "authorization": {
+    "technicalGateCanAuthorizeMerge": false,
+    "technicalGateCanAuthorizeDeployment": false,
+    "formalChangeAuthorized": false
+  }
+}
