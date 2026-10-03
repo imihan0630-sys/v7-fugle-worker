@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 19:10 Asia/Taipei
+Updated: 2026-10-03 19:25 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -1120,3 +1120,25 @@ First pass:
 
 Coverage-A high priority routes to D01, D05, D07, D10, D12, D20, D21 and D22 owner rooms.
 
+
+
+## Curriculum Coverage-A specialist execution — 2026-10-03
+
+Canonical packet:
+`shared-knowledge/CURRICULUM_COVERAGE_A_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
+
+Execution registry:
+- `shared-knowledge/CURRICULUM_COVERAGE_EXECUTION_REGISTRY_20261003_V0_1.md`
+- `shared-knowledge/curriculum_coverage_execution_registry_20261003_v0_1.json`
+
+Current state:
+- Coverage-A eight high-priority candidates have executable specialist packets.
+- All eight are `PENDING_SPECIALIST_RETURN`.
+- Coverage-B remains queued.
+- No specialist return has yet changed the curriculum.
+- Canonical curriculum remains 22 domains / 354 active modules.
+- Latest tracker maturity at packet creation: 36.3%.
+- Formal Core remains LOCKED.
+
+00｜研究總控室 next action:
+intake the first Coverage-A specialist return, then perform Dependency Audit, overlap recheck, anti-orphan validation and owner-approval gating before any atomic curriculum update.
