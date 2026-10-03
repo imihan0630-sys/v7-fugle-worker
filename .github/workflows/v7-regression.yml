@@ -223,6 +223,8 @@ jobs:
           node tests/test_system1_c3_live_depth_prereg_v0_1.mjs
           node tests/test_system1_c3_live_depth_readiness_v0_1.mjs
           node tests/test_system1_postsession_workflow_guard_v0_1.mjs
+          node tests/test_system1_postsession_schedule_v0_1.mjs
+          node --check tests/resolve_system1_postsession_target_date.mjs
           node tests/test_system1_maturity_ledger_v0_1.mjs
           node --check tests/collect_system1_c1_evidence.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
