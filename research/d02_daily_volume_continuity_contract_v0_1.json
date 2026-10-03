@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-03 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_RESEARCH_ONLY",
+  "evidenceCursor": "PVE-239",
+  "formalCoreChanged": false,
+  "formalOptimizationCandidate": "NONE",
+  "scope": "D02 daily volume magnitude continuity",
+  "sourceSemantics": {
+    "dailyRegularStockVolumeUnit": "SHARES",
+    "intradayRegularStockVolumeUnit": "LOTS",
+    "dailyOddLotCoverage": "UNKNOWN_FROM_CURRENT_DOC_CONTRACT",
+    "absoluteCrossLaneEquivalence": false
+  },
+  "currentBuilderDefects": [
+    "positiveNumber(volumeShares) removes factual zero-volume rows",
+    "last-20 surviving rows are not verified as last-20 expected comparable symbol sessions",
+    "no corporate-action/reset input",
+    "no symbol-session calendar input",
+    "no explicit daily volumeUnit/tradingUnit provenance input"
+  ],
+  "sessionStates": [
+    "VALID_SESSION_POSITIVE_VOLUME",
+    "VALID_SESSION_ZERO_VOLUME",
+    "VERIFIED_SUSPENSION_OR_NON_SYMBOL_SESSION",
+    "EXPECTED_SESSION_MISSING_SOURCE",
+    "SOURCE_SEMANTICS_UNKNOWN"
+  ],
+  "corporateAction": {
+    "UNIT_SCALE": {
+      "rawPrintsRemainFactual": true,
+      "magnitudeContinuity": "BLOCK_UNLESS_PIT_BRIDGE_OR_RESET",
+      "resetOnlyMinimumPostEventSessions": 20,
+      "statuses": [
+        "UNIT_SCALE_BRIDGE_VERIFIED",
+        "UNIT_SCALE_RESET_ACTIVE",
+        "UNIT_SCALE_UNKNOWN_BLOCKED"
+      ]
+    },
+    "SUPPLY_CHANGE": {
+      "rawShareUnitRemainsComparable": true,
+      "automaticRescale": false,
+      "researchModes": {
+        "RAW_ACTIVITY": "allowed with explicit supply-break control/stratum",
+        "COMPARABLE_PARTICIPATION": "requires PIT denominator normalization or >=20 fully post-break comparable sessions"
+      }
+    }
+  },
+  "expectedSymbolSessionContract": "OFFICIAL_EXCHANGE_SESSIONS - VERIFIED_SYMBOL_SUSPENSION_SESSIONS",
+  "pvDailyRvol20CleanRequirements": [
+    "verified current symbol session",
+    "explicit stable daily SHARES unit",
+    "exact expected prior symbol-session set verified",
+    "no silently missing expected source row",
+    "UNIT_SCALE bridge verified or reset-clean with >=20 post-reset comparable sessions",
+    "for COMPARABLE_PARTICIPATION, SUPPLY_CHANGE normalized or baseline fully post-break",
+    "PIT-valid sourceFetchedAt/featureKnownAt",
+    "pseudo/no-trade bars not treated as eligible sessions",
+    "no assumed equivalence between daily aggregate and intraday regular-lot odd-lot coverage"
+  ],
+  "falsificationCases": [
+    "verified unit-scale factor with <20 post-reset sessions remains data-insufficient under reset-only lane",
+    "pure supply change falsifies universal reset requirement for RAW_SHARE_VOLUME",
+    "mixed pre/post supply baseline does not prove stable participation intensity without normalization",
+    "provider pseudo-bar on verified suspension is ineligible",
+    "factual zero volume is not missing",
+    "missing expected session cannot be replaced by an older row",
+    "daily SHARES and intraday LOTS are not absolutely equivalent without adapter"
+  ],
+  "maturity": {
+    "D02_07": "L2/40",
+    "D02_09": "L2/40",
+    "D02": "48.3%"
+  },
+  "exactContinuation": {
+    "formal": "PVE-240 on first genuine completed post-repair market session; Gate 0-6 first; Gate 7 closed",
+    "prePVE": "build outcome-blind replay/validation receipt on frozen UNIT_SCALE, SUPPLY_CHANGE, suspension and zero-vs-missing witnesses"
+  }
+}
