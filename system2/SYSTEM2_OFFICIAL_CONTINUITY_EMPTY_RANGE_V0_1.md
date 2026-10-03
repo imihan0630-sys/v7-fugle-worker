@@ -1,64 +1,135 @@
-# System 2 Official Continuity Empty-Range Semantics Probe V0.1
+# System 2 Official Continuity Empty-Range Semantics V0.2
 
-Status: RESEARCH_ONLY / READ_ONLY_CHARACTERIZATION
+Status: RESEARCH_ONLY / ENDPOINT_SPECIFIC_CERTIFICATION_IMPLEMENTED / PHYSICAL_ACCEPTANCE_PENDING
 Updated: 2026-10-03 Asia/Taipei
 System 1 Formal Core: LOCKED
 
 ## Purpose
 
-Characterize how the six official TWSE / TPEx historical corporate-action result endpoints represent a requested interval containing zero events.
+Freeze endpoint-specific rules for when a zero-event response from the six official TWSE / TPEx historical corporate-action result lanes may be treated as source-level verified empty-range evidence.
 
-This is required before an empty response can ever contribute to a System2 NO_EVENT proof.
+This is narrower than NO_EVENT. It only answers whether a specific official source response can prove that the requested interval contained no rows in that source.
 
-## Frozen probe interval
+## Physical characterization inherited from V0.1
 
-The physical probe requests:
+The 2026-10-03 Saturday probe established two response families.
 
-`2026-10-03 .. 2026-10-03`
+### Exact-range zero-row responses
 
-This is a Saturday and therefore a known non-trading day. The purpose is response-shape characterization, not a claim about an individual stock.
+Four sources returned an explicit requested range plus an empty row container:
 
-## States
+- TWSE par-value-change reference;
+- TPEx ex-right/ex-dividend actual;
+- TPEx capital-reduction reference;
+- TPEx par-value-change reference.
 
-The pure characterization core distinguishes:
-- `EXACT_RANGE_ZERO_ROWS_OBSERVED`;
-- `ZERO_ROWS_RANGE_IDENTITY_MISSING`;
-- `EXACT_RANGE_WITHOUT_ROW_CONTAINER`;
-- `EMPTY_OR_NO_DATA_RANGE_UNVERIFIED`;
-- `NON_EMPTY_RANGE`;
-- transport / HTTP / parse errors.
+These can be certified only when the exact range identity, expected official status, expected parser envelope and zero row count all match.
 
-Only the first state is an empty-response **candidate**. It is still not semantic certification.
+### TWSE no-data status without response range
+
+Two TWSE sources returned HTTP 200 with a JSON object containing only the official no-data stat field:
+
+很抱歉，沒有符合條件的資料!
+
+They did not echo the requested range:
+
+- TWSE ex-right/ex-dividend actual;
+- TWSE capital-reduction reference.
+
+A no-data message alone is insufficient. V0.2 therefore requires a positive control from the same endpoint and the same request shape.
+
+Frozen positive-control dates are taken from the physically parsed official event set:
+
+- TWSE ex-right/ex-dividend actual: 2026-04-08;
+- TWSE capital-reduction reference: 2026-06-29.
+
+The positive control must return a non-empty response whose embedded range exactly matches the requested control date.
+
+## Certification rules
+
+### Direct exact-range sources
+
+Certification requires all of:
+
+- HTTP success;
+- parseable JSON;
+- state = EXACT_RANGE_ZERO_ROWS_OBSERVED;
+- exact response-range identity;
+- explicit zero rows;
+- frozen official success status;
+- frozen parser envelope.
+
+### Controlled TWSE no-data sources
+
+Certification requires all of:
+
+- HTTP success;
+- parseable JSON;
+- target state = EMPTY_OR_NO_DATA_RANGE_UNVERIFIED;
+- no response-range identity in the target no-data payload;
+- no row container in the target no-data payload;
+- parser shape = JSON_NO_ROW_CONTAINER;
+- exact frozen official no-data status;
+- same-source positive control on the frozen date;
+- positive-control state = NON_EMPTY_RANGE;
+- positive-control range identity verified;
+- positive-control row count > 0.
+
+Any signature drift fails closed.
 
 ## Authority firewall
 
-Even when an endpoint returns exact requested range + explicit zero rows:
+Even when all six source-level empty semantics certify:
 
-- `emptyRangeSemanticsCertified=false`;
-- `sourceCoverageComplete=false`;
-- `noEventMayBeClaimed=false`;
-- `symbolSessionCompletenessCertified=false`;
-- `technicalContinuityCertified=false`.
+- sourceCoverageComplete=false;
+- revisionCoverageComplete=false;
+- noEventMayBeClaimed=false;
+- suspensionCoverageComplete=false;
+- symbolSessionCompletenessCertified=false;
+- technicalContinuityCertified=false;
+- historyMutationPerformed=false;
+- strategyEvaluationPerformed=false;
+- capacityRunProduced=false;
+- selectionAuthority=false;
+- finalSelectionEnabled=false;
+- livePushEnabled=false;
+- capitalImpact=false;
+- orderImpact=false;
+- system1RuntimeUsed=false.
 
-A single observed weekend response cannot prove long-window source completeness, historical revision coverage or official publication semantics.
+## Why NO_EVENT remains locked
 
-## Physical workflow
+The immutable corporate-action completeness receipt still requires:
 
-`.github/workflows/system2-official-continuity-empty-range-readonly.yml`
+1. PIT universe coverage;
+2. complete required source contracts for the full requested interval;
+3. parser completeness;
+4. revision/correction coverage;
+5. no missing source dates;
+6. certified empty-range semantics for zero-row sources;
+7. unambiguous event-version reconciliation.
 
-The workflow:
-- uses no secrets;
-- writes no D1 rows;
-- deploys no Worker;
-- changes no Cron;
-- does not call System1 runtime.
+Symbol-session completeness additionally needs exchange-complete suspension/resumption evidence.
 
-## Follow-up
+## Physical acceptance
 
-After the six physical response shapes are known:
-1. identify which endpoints can provide exact-range empty evidence;
-2. keep endpoints with missing range identity fail-closed;
-3. require separate revision/correction coverage before any bounded NO_EVENT receipt;
-4. combine only with PIT-universe and suspension/resumption completeness.
+Workflow:
 
-No continuity transform or selection authority is enabled.
+.github/workflows/system2-official-continuity-empty-range-readonly.yml
+
+The V0.2 physical run must certify all six sources. It remains read-only and uses:
+
+- no secrets;
+- no D1 write;
+- no Worker deploy;
+- no Cron;
+- no System1 runtime.
+
+## Next gate after acceptance
+
+1. write the physical acceptance receipt to System2 checkpoint/master/build map;
+2. establish revision/correction coverage;
+3. establish exchange-complete suspension/resumption coverage;
+4. bind verified corporate-action evidence to expected symbol sessions and RAW A1 lineage without mutating RAW bars.
+
+No assessor or selection authority is enabled by this module.
