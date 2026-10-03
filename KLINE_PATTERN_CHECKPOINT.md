@@ -916,3 +916,108 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 3. After merge, next D01 science may study whether event-order information beyond first clocks adds value or is reconstructible from the ordered clock bundle; do not expand categories first.
 4. Keep not-yet-occurred / UNKNOWN / occurred-age-zero semantics distinct in all future schema work.
 5. No outcome join / no N-bar optimization / no R09 / no Formal change.
+
+## Continuation update — DL-022 through DL-027 (2026-10-03)
+
+### DL-022 — First-event order redundancy
+- First-event order is frozen as a deterministic derived view of certified first-event clocks + sourceEventGroupKey.
+- Same-source labels on one close are one source group, not sequential confirmations.
+- Distinct source groups sharing one daily date form a tied partial-order block; daily OHLC cannot invent intraday sub-order.
+- An order label without certified clocks/session completeness is audit-only, not promotion-grade.
+- Repeated cycles beyond first events are explicitly outside DL-022.
+- New files:
+  - research/PATTERN_FIRST_EVENT_ORDER_REDUNDANCY_V0_1.md
+  - research/pattern_first_event_order_redundancy_v0_1.json
+  - research/pattern_first_event_order_redundancy_v0_1.mjs
+  - research/test_pattern_first_event_order_redundancy_v0_1.mjs
+- 12 tests authored; TEST_EXECUTION_PENDING.
+
+### DL-023 — Repeated-cycle path memory / exposure
+- Repeated reentry/reclaim cycles add longitudinal path memory beyond first-event clocks by construction, but no new PRICE_OHLC source information.
+- Raw event count does not increase independent N.
+- Repeated-cycle risk starts only after first reclaim; before then state is NOT_YET_AT_RISK, not zero events.
+- Counts require observable/constrained eligible-session exposure; raw count/rate alone is not alpha evidence.
+- Failure remains nested severity inside RETURN_GROUP.
+- Open repeated cycle at asOf is right-censored/open, not completed.
+- New files:
+  - research/PATTERN_REPEATED_CYCLE_V0_1.md
+  - research/pattern_repeated_cycle_v0_1.json
+  - research/pattern_repeated_cycle_v0_1.mjs
+  - research/test_pattern_repeated_cycle_v0_1.mjs
+  - research/PATTERN_REPEATED_CYCLE_D16_HANDOFF_V0_1.md
+- 12 tests authored; TEST_EXECUTION_PENDING.
+
+### DL-024 — Repeated-sequence decomposition
+- Coarse RETURN -> RECLAIM alternation is largely deterministic from the frozen state machine / cycle count.
+- Residual sequence novelty is narrowed to failure severity placement/timing:
+  FAILURE_ON_RETURN_GROUP vs FAILURE_AFTER_REENTRY and escalation lag.
+- Full recurrent source-group ledger remains audit/replay authority, not a default factor family.
+- No named "double fakeout/triple rejection/churn" sequence catalogue.
+- New files:
+  - research/PATTERN_REPEATED_SEQUENCE_DECOMPOSITION_V0_1.md
+  - research/pattern_repeated_sequence_v0_1.mjs
+  - research/test_pattern_repeated_sequence_v0_1.mjs
+- 10 tests authored; TEST_EXECUTION_PENDING.
+
+### DL-025 — Dynamic landmark / immortal-time firewall
+- Repeated-cycle state is a time-varying predictor.
+- Eventual future repeated cycles may never be written back into the original breakout parent.
+- BASELINE_BREAK_COHORT and REPEAT_RISK_LANDMARK_COHORT are different estimand populations.
+- NOT_YET_AT_REPEAT_RISK != AT_RISK_ZERO_EVENTS.
+- Future outcomes for repeat-risk predictor analysis must start after the current later immutable parent cutoff.
+- Conditioning on first reclaim must be explicit; findings cannot be generalized automatically to all original breakouts.
+- New files:
+  - research/PATTERN_REPEATED_CYCLE_LANDMARK_V0_1.md
+  - research/pattern_repeated_cycle_landmark_v0_1.json
+  - research/pattern_repeated_cycle_landmark_v0_1.mjs
+  - research/test_pattern_repeated_cycle_landmark_v0_1.mjs
+  - research/PATTERN_REPEATED_CYCLE_LANDMARK_D16_HANDOFF_V0_1.md
+- 10 tests authored; TEST_EXECUTION_PENDING.
+
+### DL-026 — Crossing-opportunity confound firewall
+- cycleCount / observableSessions is still not fully opportunity-adjusted.
+- Required controls include volatility/ATR, zone width, distance path, relative tick/tick rule, liquidity, constrained-session share, D02 acceptance/persistence and market/sector regime.
+- Raw recurrence can proxy high volatility / narrow zones / price-grid / liquidity mechanics rather than structural memory.
+- No new opportunity score is defined.
+- Q0-Q4 falsification ladder frozen from raw count through full cross-lane controls.
+- New files:
+  - research/PATTERN_REPEATED_CYCLE_CONFOUND_FIREWALL_V0_1.md
+  - research/pattern_repeated_cycle_confound_v0_1.json
+  - research/pattern_repeated_cycle_confound_v0_1.mjs
+  - research/test_pattern_repeated_cycle_confound_v0_1.mjs
+- 6 tests authored; TEST_EXECUTION_PENDING.
+
+### DL-027 — Structural-zone mechanism negative controls
+- A parent-specific non-anchor pseudo-zone pool is frozen as MECHANISM_NEGATIVE_CONTROL, not a guaranteed-null placebo.
+- Pseudo-zones use the same symbol/date/width and only pre-confirmation eligible continuity-safe closes.
+- Controls overlapping the true parent or any structural zone already known by parent confirmation are excluded.
+- Future-discovered structures cannot retroactively clean the pool.
+- All eligible controls are retained; no post-outcome "best pseudo-zone" selection.
+- True ~= pseudo after full opportunity controls weakens structural-memory mechanism.
+- True > pseudo is only a structural-specific representation candidate, not alpha proof.
+- New files:
+  - research/PATTERN_NEGATIVE_CONTROL_BOUNDARY_V0_1.md
+  - research/pattern_negative_control_boundary_v0_1.json
+  - research/pattern_negative_control_boundary_v0_1.mjs
+  - research/test_pattern_negative_control_boundary_v0_1.mjs
+- 8 tests authored; TEST_EXECUTION_PENDING.
+
+### Governance after DL-027
+- No outcomes inspected.
+- No historical Pattern Shadow fabrication.
+- No N-bar acceptance rule.
+- No new R09.
+- No runtime/Worker/D1 wiring.
+- D01 remains 51.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-027
+
+1. Reconcile this branch against latest main; parallel rooms are active.
+2. Open one Class-A PR containing D01 research/docs/helpers/tests only.
+3. Treat Repair/Regression CI as Formal-isolation evidence only; all DL-022..027 research tests remain TEST_EXECUTION_PENDING unless separately executed.
+4. Next D01 science after merge: separate detector-selection salience from true structural-memory mechanism if confirmed zones outperform non-anchor controls.
+5. Preserve pseudo-zone manifests and failed controls; no outcome-based pruning.
+6. No outcome join / no Formal change.

@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "pattern-repeated-cycle-confound-bundle-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "formalCore": "LOCKED",
+  "requiredControls": {
+    "pattern": [
+      "parentZoneWidthPct",
+      "parentZoneWidthATR",
+      "boundaryDistancePath",
+      "episodeAge",
+      "observableEligibleSessionsAtRisk",
+      "constrainedEligibleSessionsAtRisk",
+      "repeatGapEligibleSessions"
+    ],
+    "volatility": [
+      "atrOrVolatilityReceiptRef"
+    ],
+    "microstructure": [
+      "tickRuleVersion",
+      "relativeTick",
+      "liquidity",
+      "priceLimitSessionProvenance"
+    ],
+    "priceVolume": [
+      "priceVolumeAcceptanceReceiptRef"
+    ],
+    "regime": [
+      "marketSectorRegimeReceiptRef"
+    ]
+  },
+  "ladders": {
+    "Q0": [
+      "rawRecurrenceCount"
+    ],
+    "Q1": [
+      "Q0",
+      "observableExposure"
+    ],
+    "Q2": [
+      "Q1",
+      "volatility",
+      "zoneWidth"
+    ],
+    "Q3": [
+      "Q2",
+      "tick",
+      "liquidity",
+      "constrainedSessions"
+    ],
+    "Q4": [
+      "Q3",
+      "D02Acceptance",
+      "marketSectorRegime"
+    ]
+  },
+  "rules": [
+    "RAW_CYCLE_RATE_NOT_FULLY_OPPORTUNITY_ADJUSTED",
+    "MISSING_CONTROL_IS_UNKNOWN_NOT_NEUTRAL",
+    "NO_NEW_OPPORTUNITY_SCORE",
+    "CROSS_LANE_CANONICAL_OWNERSHIP"
+  ],
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
