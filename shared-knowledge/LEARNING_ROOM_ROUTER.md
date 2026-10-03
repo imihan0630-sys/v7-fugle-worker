@@ -295,7 +295,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 |---|---|---:|---:|---|
 | 00｜研究總控室 | 全域治理 | 0 | — | 只管理最新正式領域數／模組數、成熟度、研究依賴、聊天室路由、重複研究與跨線整合；不自行深挖專科。 |
 | 01｜K線與型態研究室 | D01 | 11 | 52.7% | K線／型態／價格結構 |
-| 02｜價量研究室 | D02 | 12 | 58.3% | 價量關係 |
+| 02｜價量研究室 | D02 | 12 | 60.0% | 價量關係 |
 | 03｜技術指標與趨勢動能研究室 | D03 | 12 | 56.7% | 趨勢／動能／反轉／技術指標 |
 | 04｜波動與市場微結構研究室 | D04＋D05 | 24 | 51.7% | 波動率／市場微結構／市場完整性 |
 | 05｜法人與籌碼研究室 | D06 | 17 | 44.7% | 法人／籌碼／ETF mechanics／借券／擁擠 |
@@ -371,7 +371,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 必讀 checkpoint：`PRICE_VOLUME_CHECKPOINT.md`、`PRICE_VOLUME_RESEARCH.md`、`PRICE_VOLUME_EVIDENCE.md`、`PRICE_VOLUME_HYPOTHESIS_LEDGER.md`  
 禁止：不得把其他 Dxx 領域當成本聊天室主線；跨領域發現只能建立 dependency（依賴）或引用證據，不能雙重計算進度。
 
-### D02｜價量關係 — 58.3%
+### D02｜價量關係 — 60.0%
 
 | 模組 | 研究模組 | 學習範圍 | 等級 | 完成度 |
 |---|---|---|---|---:|
@@ -382,7 +382,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | D02-05 | 爆量／高潮量／分配量 | 聚焦「爆量／高潮量／分配量」。學習範圍：成交量單位與基準化；量價因果與競爭解釋；趨勢／盤整／突破情境；流動性與同時段效應；異常量與反向案例；對進場、突破品質與風險監控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D02-06 | Effort-vs-Result量價努力與結果 | 聚焦「Effort-vs-Result量價努力與結果」。學習範圍：成交量單位與基準化；量價因果與競爭解釋；趨勢／盤整／突破情境；流動性與同時段效應；異常量與反向案例；對進場、突破品質與風險監控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D02-07 | OBV能量潮 | 聚焦「OBV能量潮」。保留 OBV（能量潮）作為 Price-Volume（價量）比較器，允許研究 obvSlope、divergence 與 lead-lag，但不得把 OBV 與 RVOL、直接成交量、價量狀態重複計票。必須先控制直接價格報酬、成交量／換手、價量反應與資料單位語意；若無獨立增量資訊，降為 UI／解釋用途或合併回價量母模組。不得單獨形成 Hard Gate（硬門檻）或 PRIMARY_ALPHA（主要Alpha）。 | L3 台股PIT資料可行 | 60% |
-| D02-08 | 吸籌／出貨代理變數 | 聚焦「吸籌／出貨代理變數」。學習範圍：成交量單位與基準化；量價因果與競爭解釋；趨勢／盤整／突破情境；流動性與同時段效應；異常量與反向案例；對進場、突破品質與風險監控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
+| D02-08 | 吸籌／出貨代理變數 | 聚焦「吸籌／出貨代理變數」。學習範圍：成交量單位與基準化；量價因果與競爭解釋；趨勢／盤整／突破情境；流動性與同時段效應；異常量與反向案例；對進場、突破品質與風險監控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D02-09 | 價量背離 | 聚焦「價量背離」。學習範圍：成交量單位與基準化；量價因果與競爭解釋；趨勢／盤整／突破情境；流動性與同時段效應；異常量與反向案例；對進場、突破品質與風險監控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D02-10 | 成交量狀態×趨勢互動 | 聚焦「成交量狀態×趨勢互動」。學習範圍：成交量單位與基準化；量價因果與競爭解釋；趨勢／盤整／突破情境；流動性與同時段效應；異常量與反向案例；對進場、突破品質與風險監控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D02-11 | 流動性量能門檻與例外 | 聚焦「流動性量能門檻與例外」。學習範圍：成交量單位與基準化；量價因果與競爭解釋；趨勢／盤整／突破情境；流動性與同時段效應；異常量與反向案例；對進場、突破品質與風險監控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
@@ -390,6 +390,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 
 > D02 latest 2026-10-04: D02-10 / D02-12 PIT readiness closure: D02-10 freezes D03-owned pre-session trend context × current completed-slot D02 participation with max-known-at timing and no third primitive vote; D02-12 splits TIME_OF_DAY_VOLUME_CURVE from PRICE_BY_VOLUME_PROFILE, accepts historical/live 15m PIT feasibility for the bounded 09:00~13:00 current-monitor window and prospective-only price-profile capture. Both promote L2 機制＋反證已定義 40%; PVE cursor remains 239; Formal Core locked.
 > D02 latest 2026-10-04: D02-05 / D02-07 / D02-09 / D02-11 PIT readiness closure: D02-05 is promoted only as observable EXTREME_PARTICIPATION_STATE while distribution motive stays UNKNOWN; D02-11 separates volume-capacity, execution-liquidity context and Formal-gate reference while rejecting the defective pvIlliquidityWarning as research truth; D02-07/D02-09 gain executable fail-closed daily-volume continuity replay with 14/14 final fixtures PASS after an anti-look-ahead correction. D02-08 remains L2 機制＋反證已定義 40%; PVE cursor 239; Gate 7 CLOSED; Formal Core locked.
+> D02 latest 2026-10-04: D02-08 provider-pressure L3 closure + L4 ceiling audit: D02-08 is promoted only as PROVIDER_TRADE_PRESSURE_PROXY with 14/14 executable fixtures PASS; true OFI, dynamic absorption and participant intent remain explicitly ineligible. All 12 D02 modules are now at least L3, so D02 reaches 60.0%. A full L4 audit makes zero promotions because CLEAN_DATE_ZERO, Gate 7 CLOSED and no genuine prospective/OOS module-level evidence yet. PVE cursor remains 239; Formal Core locked.
 
 ## 03｜技術指標與趨勢動能研究室
 
