@@ -73,3 +73,10 @@ Owner approval is required before merge/deploy.
 
 Rollback: remove/revert V8.15.4. Existing C1/C3 receipts remain valid historical
 evidence; no trading plan, signal, fill or order record is deleted.
+
+
+## Exact-head validation request
+
+PR #347 was temporarily retargeted to latest main only to trigger the repository's main-target pull-request CI.
+Latest-main overlap audit found zero overlapping files with the V8.15.4 candidate.
+This is not merge or deployment authorization. After exact-head CI, PR #347 must return to parent PR #344.
