@@ -161,3 +161,15 @@ Produce:
 ## First action in Work
 
 Re-read latest `main`; if it has advanced beyond `1e5a7ac975d2902e27351c2921dc888d7acd32af`, use the newer main as authority, then begin the external Alpha-oriented sweep without redoing AOKD-01 through AOKD-04.
+
+
+## AOKD external sweep V0.2 — 2026-10-04
+
+New discovery only: 37 topic triages / 31 requested families; Layer A35/B1/C1/D0. No new specialist-ready or confirmed true-gap candidate. AOKD-05 material filing-delta = scope-extension research, corpus/clock/owner triage pending. AOKD-06 B2B payment behavior = Taiwan historical PIT data blocked; inspected detail API is US-only. Existing AOKD01–04 states preserved; D07-33 exists but expected A01 specialist-return path not found at read; 00 reconcile without new COV.
+
+Canonical report: `shared-knowledge/AOKD_EXTERNAL_SWEEP_20261004_V0_2.md`.
+Full registry: `shared-knowledge/aokd_external_sweep_registry_20261004_v0_2.json`.
+Exact 00 cursor: `shared-knowledge/AOKD_00_CONTINUATION_CHECKPOINT_20261004_V0_2.md`.
+After A06, three meaningful follow-up rounds found no additional retained families; bounded sweep temporarily saturated, not universal literature completeness. Counterevidence, full owner scopes, data/clock/missingness/licensing limits and incremental-test gates are recorded. Mostly abstract/documentation-level evidence; no Taiwan alpha/OOS claim. Next: source receipts and existing-owner scope triage, not Coverage promotion.
+
+Baseline read: 22 domains / 354 modules / 41.5% maturity at ca844efda3809050238986acb1a160e2d439a428. Maturity movement belongs to parallel rooms; this docs-only checkpoint does not change tracker, owner, modules, domains, Formal behavior or runtime. Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE NONE. Research 07:20:54–07:40:28 Taipei; Git commit timestamps record checkpoint persistence.

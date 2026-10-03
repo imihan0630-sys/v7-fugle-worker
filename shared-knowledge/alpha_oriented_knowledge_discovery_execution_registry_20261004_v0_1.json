@@ -33,8 +33,34 @@
       "room": "14｜公司治理與內部人研究室",
       "domain": "D21",
       "covId": null
+    },
+    {
+      "id": "AOKD-05",
+      "state": "CORPUS_FEASIBILITY_AND_OWNER_TRIAGE_REQUIRED",
+      "classification": "SCOPE_EXTENSION_CANDIDATE",
+      "layer": "C",
+      "room": "00 triage; proposed D07 consultation only",
+      "domain": "D07 proposed only",
+      "evidencePack": "shared-knowledge/AOKD_NEW_CANDIDATE_EVIDENCE_PACKS_20261004_V0_2.md",
+      "covId": null
+    },
+    {
+      "id": "AOKD-06",
+      "state": "TAIWAN_HISTORICAL_VENDOR_PANEL_UNPROVEN",
+      "classification": "DATA_FEASIBILITY_BLOCKED",
+      "layer": "B",
+      "room": "00 triage; proposed D07 consultation only",
+      "domain": "D07 proposed only",
+      "evidencePack": "shared-knowledge/AOKD_NEW_CANDIDATE_EVIDENCE_PACKS_20261004_V0_2.md",
+      "covId": null
     }
   ],
   "canonicalImpact": "NONE",
-  "formalCoreImpact": "NONE"
+  "formalCoreImpact": "NONE",
+  "latestDiscoverySweep": {
+    "registry": "shared-knowledge/aokd_external_sweep_registry_20261004_v0_2.json",
+    "checkpoint": "shared-knowledge/AOKD_00_CONTINUATION_CHECKPOINT_20261004_V0_2.md",
+    "newSpecialistReady": 0,
+    "curriculumImpact": "NONE"
+  }
 }
