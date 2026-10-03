@@ -1200,3 +1200,17 @@ Formal Core remains LOCKED.
 - Accepted specialist returns: 0 / 12.
 - Canonical curriculum remains 22 domains / 354 active modules.
 - Formal Core remains LOCKED.
+
+
+## Curriculum Coverage pending evidence deficit matrix — 2026-10-03
+
+Canonical matrix:
+`shared-knowledge/CURRICULUM_COVERAGE_PENDING_EVIDENCE_DEFICIT_MATRIX_20261003_V0_1.md`
+
+Current pre-intake distribution:
+- PARTIAL_EVIDENCE_RECEIVED: 8 / 12.
+- PENDING_SPECIALIST_RETURN without accepted partial evidence: COV-03, COV-04, COV-05, COV-12.
+- RETURN_ACCEPTED_FOR_INTAKE: 0 / 12.
+
+Canonical curriculum remains 22 domains / 354 active modules.
+Formal Core remains LOCKED.
