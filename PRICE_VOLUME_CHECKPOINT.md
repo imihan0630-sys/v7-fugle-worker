@@ -2168,3 +2168,131 @@ Formal Core remains LOCKED.
 
 ## Exact continuation after PVE-239
 PVE-240 starts on the first genuine completed market session after the approved cross-midnight repair. Require same-session Formal scanDate->planDate, pipeline complete/config verified, C1 save/readback verification and full hash/pagination/count proof, paired C2 exact-generation linkage, ordinary PV bootstrap/daily readiness, monitor/config generation linkage and cohort integrity. Only Gate 0->6 clean dates enter H001/H002/H20 denominators. Gate 7 remains closed until the preregistered sample/maturity floor is satisfied.
+
+
+## Pre-PVE-240 weekend continuation — OBV algebra / divergence decomposition (2026-10-03)
+
+Status: OUTCOME_BLIND / PVE_CURSOR_REMAINS_239 / FORMAL_UNCHANGED.
+
+Durable artifacts:
+- `research/d02_obv_divergence_decomposition_20261003_v0_1.md`
+- `research/d02_obv_divergence_decomposition_v0_1.json`
+
+### D02-07 — exact OBV-family duplicate pruning
+
+Standard OBV implies:
+
+`OBV_t - OBV_(t-N) = Σ(sign(ΔClose_i) * Volume_i)`.
+
+The frozen V0.1 signed-volume balance is:
+
+`SVB_N = Σ(sign(ΔClose_i) * Volume_i) / Σ(Volume_i)`.
+
+Therefore the previously proposed:
+`normalizedOBVChangeN = (OBV_t - OBV_(t-N)) / Σ(Volume_i)`
+
+is exactly:
+`normalizedOBVChangeN == SVB_N`
+
+on identical eligible support.
+
+This is algebraic identity, not correlation.
+
+If `obvSlopeN` means endpoint difference / N, it is the same signed-volume numerator under a scale change and cannot be an independent factor.
+
+If it means an OLS slope over cumulative OBV levels, it adds time-position weighting but no new market-data family. The repo has not frozen which estimator the generic `obvSlopeN` means, so generic obvSlope is formula-provenance incomplete and must not consume outcome-testing budget.
+
+Canonical V0.1 comparator remains:
+`signedVolumeBalance20`.
+
+Raw cumulative OBV level remains unsuitable for cross-sectional evidence because of arbitrary start and cumulative-memory contamination.
+
+### D02-09 — OBV divergence can be expressed without raw OBV
+
+For two confirmed price pivots P1 -> P2:
+
+`OBV(P2)-OBV(P1) = Σ(signed volume between pivots)`.
+
+Hence:
+- bearish classical OBV divergence = price higher-high + interval signed-volume sum < 0;
+- bullish classical OBV divergence = price lower-low + interval signed-volume sum > 0.
+
+With positive interval volume denominator, the same signs are represented by `pivotSignedVolumeBalance`.
+
+Thus raw OBV starting level is irrelevant to the primary pivot-divergence relation.
+
+### Repaint-safe clock reuse
+
+D02-09 reuses the already-frozen D03/Pattern divergence chronology:
+- two most recent consecutive confirmed pivots;
+- same type;
+- same Pattern swing scale;
+- no intervening-pivot skip;
+- no historical all-pair search;
+- no strongest-divergence cherry-pick.
+
+The legal signal clock is no earlier than the later pivot `confirmedAt` plus valid D02 volume/source continuity receipts.
+
+Pivot-to-confirmation price movement is confirmation-lag cost, never post-signal alpha.
+
+### Why D02-09 does NOT advance to L3
+
+D03's repaint-safe pivot clock is reusable, but D02 does not inherit D03 maturity.
+
+Current D02 daily-volume evidence still has unresolved structural continuity:
+- daily `pvDailyRvol20` builder lacks corporate-action reset filtering;
+- AFTER_MARKET snapshot persists `corporateActionResetAt:null`;
+- volume magnitude needs explicit volumeUnit/tradingUnit/sub-lot/session continuity.
+
+Therefore D02-09 Taiwan PIT price-volume data feasibility is not yet fully validated.
+
+D02-09 remains L2 / 40%.
+
+### Divergence family typing
+
+A generic `priceVolumeDivergence` boolean is rejected.
+
+Freeze two distinct research families:
+
+1. `PIVOT_SIGNED_VOLUME`
+   - price: confirmed Pattern pivot progression;
+   - volume: interval signed-volume balance;
+   - OBV-family comparator.
+
+2. `PARTICIPATION_TRAJECTORY`
+   - price: progress / acceptance;
+   - participation: same-slot RVOL / cumulative pace / persistence trajectory.
+
+`HIGH_EFFORT_LOW_PROGRESS` is not D02-09 divergence; it remains D02-06 Effort-vs-Result ownership.
+
+Neither family identifies hidden actor intent.
+
+### D02-07 / D02-08 / D02-09 anti-double-count boundary
+
+D02-07:
+close-signed volume comparator; no raw-OBV or duplicate normalized-OBV vote.
+
+D02-09:
+relational transform over already-owned price + volume primitives; no new primitive vote.
+
+D02-08:
+latent-mechanism consumer. If based only on D02-06/07/09 OHLCV evidence, it cannot claim independent accumulation/distribution identification. Independent retention requires a genuinely separate microstructure evidence family from the D05 dependency lane.
+
+No module merge/retirement is executed by D02.
+
+Maturity remains:
+- D02-07 L2 / 40%;
+- D02-08 L2 / 40%;
+- D02-09 L2 / 40%;
+- D02 aggregate 48.3%.
+
+Current Price-Volume evidence cursor remains PVE-001 through PVE-239.
+
+## Exact continuation remains PVE-240
+
+On the first genuine completed market session after the approved cross-midnight repair, inspect Gate 0->6 lineage before any outcome use.
+
+Separately, once the daily-volume corporate-action/unit continuity blocker is actually closed, D02-09 may re-evaluate L3 PIT feasibility using the already frozen repaint-safe Pattern pivot chronology.
+
+Gate 7 remains CLOSED.
+Formal Core remains LOCKED.
