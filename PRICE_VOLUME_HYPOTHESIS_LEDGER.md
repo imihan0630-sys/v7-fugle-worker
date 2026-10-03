@@ -725,3 +725,20 @@ Only a separate PIT-valid microstructure family may reopen standalone-mechanism 
 No hypothesis promotion on outcomes.
 No FORMAL_OPTIMIZATION_CANDIDATE.
 PVE cursor remains 239.
+
+
+### Compact comparator budget — SVB first, CMF robustness only
+
+For D02-07 residual inference, freeze one primary compact benchmark:
+`signedVolumeBalance20`.
+
+CMF remains a secondary robustness comparator because:
+`CLV = 2*closePosition - 1`,
+so CMF is a volume-weighted close-location compression of primitives already owned by D02.
+
+SVB and CMF are not identical, but they are not independent market-data families.
+
+Do not spend scarce prospective dates testing:
+SVB + CMF + raw OBV + multiple OBV slopes as separate alpha candidates.
+
+Any later SVB-vs-CMF challenger comparison must be preregistered before outcomes.
