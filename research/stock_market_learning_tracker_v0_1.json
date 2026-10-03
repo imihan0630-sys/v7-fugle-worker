@@ -392,7 +392,7 @@
       "anchors": [
         "VOLATILITY_REGIME_RESEARCH.md"
       ],
-      "maturityPct": 42,
+      "maturityPct": 52,
       "modules": [
         {
           "id": "D04-01",
@@ -413,18 +413,22 @@
         {
           "id": "D04-03",
           "name": "波動收縮",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「波動收縮」。學習範圍：波動率計算、窗口與尺度；收縮、擴張、跳空與狀態轉換；個股與市場波動互動；漲跌停／停牌污染；在選股、停損、部位縮放與Regime判斷中的用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / ALPHA_UNKNOWN",
+          "researchNote": "Official Taiwan daily A1 source + causal completed-bar/session/replay semantics validate PIT feasibility; unresolved continuity/limit states fail closed."
         },
         {
           "id": "D04-04",
           "name": "波動擴張／Shock",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「波動擴張／Shock」。學習範圍：波動率計算、窗口與尺度；收縮、擴張、跳空與狀態轉換；個股與市場波動互動；漲跌停／停牌污染；在選股、停損、部位縮放與Regime判斷中的用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / DIRECTION_SEPARATE",
+          "researchNote": "Expansion/shock state is replay-feasible from causal daily OHLC/range inputs; direction remains a separate estimand and unfinished same-bar range is prohibited."
         },
         {
           "id": "D04-05",
@@ -445,10 +449,12 @@
         {
           "id": "D04-07",
           "name": "波動與趨勢／突破交互作用",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「波動與趨勢／突破交互作用」。學習範圍：波動率計算、窗口與尺度；收縮、擴張、跳空與狀態轉換；個股與市場波動互動；漲跌停／停牌污染；在選股、停損、部位縮放與Regime判斷中的用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / INCREMENTAL_VALUE_UNKNOWN",
+          "researchNote": "PIT-feasible volatility and trend/breakout states can join on one parent/common support; one breakout remains one primitive event."
         },
         {
           "id": "D04-08",
@@ -461,24 +467,28 @@
         {
           "id": "D04-09",
           "name": "尾端／跳空波動風險",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「尾端／跳空波動風險」。學習範圍：波動率計算、窗口與尺度；收縮、擴張、跳空與狀態轉換；個股與市場波動互動；漲跌停／停牌污染；在選股、停損、部位縮放與Regime判斷中的用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / TAIL_PREMIUM_UNKNOWN",
+          "researchNote": "Official OHLC supports causal gap/tail descriptors; synthetic Open prohibited and corporate-action mechanical reset is separated or UNKNOWN."
         },
         {
           "id": "D04-10",
           "name": "漲跌停對波動估計污染",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「漲跌停對波動估計污染」。學習範圍：波動率計算、窗口與尺度；收縮、擴張、跳空與狀態轉換；個股與市場波動互動；漲跌停／停牌污染；在選股、停損、部位縮放與Regime判斷中的用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / LATENT_PRICE_UNOBSERVED",
+          "researchNote": "Versioned Taiwan price-limit mechanics plus explicit observed limit/reference state support PIT contamination classification; unknown historical rule/reference remains UNKNOWN."
         }
       ],
-      "status": "FALSIFICATION_IN_PROGRESS / PIT_ACCEPTANCE_PR294_MERGED / LIVE_RV_CAPTURE_PENDING",
-      "exactNextContinuationPoint": "D04-RV-PERSIST-05: latest main contains isolated pure RV builder and audited PIT acceptance gate. The next Class-A/B-governed evidence task is independently validated prospective A2 TAIEX and exact recent21 official-session receipts, builder-only diagnostic output, then real immutable regimeFactorObservations write/readback/replay with same source receipt/snapshot and run fingerprint. Never count synthetic structural pass or retrospective current-page reconstruction. Market RV economic labels/overlap-vs-nonoverlap tests start only after clean independent actual dates; CE/ATR outcomes still require shared immutable per-symbol parent persistence. Formal Core locked.",
-      "lastResearchUpdate": "2026-10-02T05:43:00+08:00",
-      "researchNote": "PR #294 pure Class-A PIT receipt acceptance was merged after System2 #333/V8 Repair #674/V8 Regression #1189 PASS. Falsified prior builder late observation/capture and noncontiguous 21-date acceptance. New structural audit requires matching A2 clocks/window and independently sourced 21-session calendar; external factorObservations stay UNKNOWN even on synthetic STRUCTURAL_PASS until official authentication plus live immutable write/readback/replay/fingerprint. Also derived exact overlapping 5/20 POPSTD ratio bound [0,2] and counterexample of five +3% days yielding near-zero recent dispersion. No live PIT RV sample yet; 42% unchanged."
+      "status": "PIT_FEASIBILITY_EXPANDED / FIVE_DAILY_VOLATILITY_MODULES_L3 / MARKET_RV_PERSISTENCE_PENDING",
+      "exactNextContinuationPoint": "D04-NEXT-L3-01: D04 is 52.0%. L4 requires genuine prospective Shadow/OOS. Keep D04-02/05/06 behind A2 market-RV decision-clock write/readback/replay and D04-08 behind portfolio-policy evidence. PR #351 remains unmerged Class-B EOD diagnostic and is not Decision Clock evidence.",
+      "lastResearchUpdate": "2026-10-04T07:45:00+08:00",
+      "researchNote": "L3 audit promoted D04-03/04/07/09/10 after Taiwan source/clock/replay/UNKNOWN validation. This is data feasibility only, not alpha. D04-02/05/06 remain L2 behind A2 market-RV decision-clock persistence; D04-08 remains L2 pending policy/sizing evidence."
     },
     {
       "id": "D05",
@@ -488,7 +498,7 @@
         "MICROSTRUCTURE_CHECKPOINT.md",
         "MICROSTRUCTURE_RESEARCH.md"
       ],
-      "maturityPct": 44.3,
+      "maturityPct": 51.4,
       "modules": [
         {
           "id": "D05-01",
@@ -509,18 +519,22 @@
         {
           "id": "D05-03",
           "name": "Bid-Ask Spread買賣價差",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Bid-Ask Spread買賣價差」。學習範圍：台股撮合制度、Tick、限價與集合競價；買賣價差、深度、委託流、流動性狀態；零股／整股差異；資料可觀測性限制；對可成交性、滑價與訊號品質的影響。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / SPREAD_ALPHA_UNKNOWN",
+          "researchNote": "Merged timestamped quote research chain preserves best bid/ask/spread with stale/future/invalid evidence rejected."
         },
         {
           "id": "D05-04",
           "name": "Order-book Depth委買賣深度",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Order-book Depth委買賣深度」。學習範圍：台股撮合制度、Tick、限價與集合競價；買賣價差、深度、委託流、流動性狀態；零股／整股差異；資料可觀測性限制；對可成交性、滑價與訊號品質的影響。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / EVENT_COMPLETENESS_NOT_CLAIMED",
+          "researchNote": "Merged chain preserves top-five displayed depth/depth imbalance with fail-closed completeness; public top5 is not a complete exchange-event ledger."
         },
         {
           "id": "D05-05",
@@ -541,26 +555,32 @@
         {
           "id": "D05-07",
           "name": "盤中撮合／VI與異常撮合狀態",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「盤中撮合／VI與異常撮合狀態」。學習範圍：台股撮合制度、Tick、限價與集合競價；買賣價差、深度、委託流、流動性狀態；零股／整股差異；資料可觀測性限制；對可成交性、滑價與訊號品質的影響。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED_WITH_CAUSE_UNKNOWN_GUARD",
+          "researchNote": "Continuous/trial/halted/delayed/limit flags are timestamped/replayable; exact VI/disposition cause remains UNKNOWN without authoritative event receipt."
         },
         {
           "id": "D05-08",
           "name": "零股與整股執行差異",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「零股與整股執行差異」。學習範圍：台股撮合制度、Tick、限價與集合競價；買賣價差、深度、委託流、流動性狀態；零股／整股差異；資料可觀測性限制；對可成交性、滑價與訊號品質的影響。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED_PROSPECTIVE_ONLY",
+          "researchNote": "TWSE odd-lot mechanism plus Fugle odd-lot Quote/Candles/Books/Trades modes make prospective round-lot vs odd-lot PIT comparison feasible; no historical backfill."
         },
         {
           "id": "D05-09",
           "name": "流動性狀態分類",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「流動性狀態分類」。學習範圍：台股撮合制度、Tick、限價與集合競價；買賣價差、深度、委託流、流動性狀態；零股／整股差異；資料可觀測性限制；對可成交性、滑價與訊號品質的影響。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / COMPOSITE_THRESHOLD_NOT_AUTHORIZED",
+          "researchNote": "Same-symbol same-slot prior-session ECDF contract makes liquidity component vectors replay-feasible with minimum-history UNKNOWN/no imputation; no universal GOOD/BAD or depthScore threshold."
         },
         {
           "id": "D05-10",
@@ -615,10 +635,10 @@
           "researchNote": "Four-layer semantics frozen: observable anomaly, TWSE attention/disposition surveillance state, non-accusatory research pattern candidate, and authoritative legal finding are distinct. Attention/disposition is not a manipulation verdict; disposition is an execution-regime intervention. High cancellation is not spoofing; public top5 cannot establish actor intent/account linkage. False-positive controls and non-accusatory machine vocabulary are mandatory."
         }
       ],
-      "status": "D05_11_12_13_14_L2 / MARKET_INTEGRITY_CONTRACT_FROZEN / PIT_EVENT_EVIDENCE_PENDING",
-      "exactNextContinuationPoint": "D05-NEXT-02: D05-14 theory/mechanism segment is closed. Next room04 work should follow total-control routing before opening new research: COV-02 specialist validation asks whether Closing Auction / Auction Imbalance should EXTEND D05-06 versus ADD/MERGE/NOT_A_GAP, and Priority-B overlap validation requires D05-05 OFI vs D05-12 Adverse Selection/Toxicity anti-double-count evidence. D05-14 empirical stage waits for PIT official attention/disposition knownAt + versioned rules + replayable market data + false-positive controls. Formal Core locked.",
-      "lastResearchUpdate": "2026-10-03T21:41:00+08:00",
-      "researchNote": "D05-14 Market Integrity / Abnormal Trading Patterns completed L0->L2. TWSE 2026-08-03 attention/disposition rules, Securities and Exchange Act Article 155 intent boundary, spoofing/layering cancellation false positives, public-top5 identifiability limits, auction-integrity anti-double-counting and non-accusatory state vocabulary are frozen. D05 aggregate is 44.3% across 14 modules. No actor-intent finding, no alpha mapping, no L3 without own PIT/replay evidence."
+      "status": "PIT_FEASIBILITY_ABOVE_50 / D05_03_04_07_08_09_L3 / EVENT_LEVEL_INFERENCE_PENDING",
+      "exactNextContinuationPoint": "D05-NEXT-L3-01: D05 is 51.4%. COV-02 recommends EXTEND_EXISTING_SCOPE of D05-06 pending 00 intake/owner approval; B14 KEEP_SEPARATE D05-05 vs D05-12 with shared primitive de-dup. L4 requires prospective Shadow/OOS; true OFI, causal impact, toxicity, exact queue and integrity attribution remain blocked.",
+      "lastResearchUpdate": "2026-10-04T07:45:00+08:00",
+      "researchNote": "L3 audit promoted D05-03/04/07/08/09 using merged timestamped/fail-closed quote evidence and current Taiwan/Fugle source contracts. D05-05 true OFI remains blocked; D05-06 COV-02 scope extension awaits 00 intake; D05-11..14 remain behind own-order/legal-event/PIT gates."
     },
     {
       "id": "D06",
