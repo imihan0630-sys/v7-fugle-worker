@@ -1,0 +1,130 @@
+{
+  "version": "0.1",
+  "id": "SC-045",
+  "capturedAt": "2026-10-04T07:37:00+08:00",
+  "module": "D10-13 Trade Policy／Export Controls／Sanctions Supply-chain Transmission貿易政策出口管制制裁供應鏈傳導",
+  "mode": "TAIWAN_ISSUER_EXPORT_CONTROL_EXPOSURE_PIT_RECEIPT / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "purpose": "Establish issuer-level, effective-dated Taiwan semiconductor export-control exposure using current official rule text plus issuer-native product/location/compliance evidence.",
+  "policyVintages": [
+    {
+      "at": "2025-01-16",
+      "authority": "U.S. BIS",
+      "state": "FDD_RULE_EFFECTIVE",
+      "evidence": "Additional due-diligence measures for advanced-computing ICs broadened foundry/packaging licensing and reporting obligations, with approved/authorized designer and approved OSAT pathways."
+    },
+    {
+      "at": "2025-05-13",
+      "authority": "U.S. BIS",
+      "state": "AI_DIFFUSION_RULE_RESCINDED_BEFORE_COMPLIANCE",
+      "evidence": "The January 2025 AI Diffusion Rule had a May 15 compliance date but was rescinded before enforcement; this is a policy-lifecycle negative control."
+    },
+    {
+      "at": "2026-01-13",
+      "authority": "U.S. BIS",
+      "state": "SELECT_ADVANCED_CHINA_EXPORTS_CASE_BY_CASE",
+      "evidence": "BIS revised licensing policy for H200/MI325X-class chips and similar products to case-by-case review under specified security conditions."
+    },
+    {
+      "at": "2026-04-07",
+      "authority": "U.S. BIS",
+      "state": "AUTHORIZED_IC_DESIGNER_TRANSITION_EXTENDED",
+      "evidence": "Timeline for certain authorized IC designer treatment extended through 2026-12-31."
+    }
+  ],
+  "ruleState": {
+    "advancedNodeDefinition": "Logic non-planar transistor architecture at 16/14nm or less is included in the advanced-node definition; memory thresholds are separately defined.",
+    "endUseControl": "EAR 744.23 imposes licensing restrictions for specified supercomputer, advanced-node IC and semiconductor-manufacturing end uses/end users.",
+    "approvedDesignerAndOsatMechanism": "EAR Part 740 supplements identify approved IC designers and approved OSAT companies; approval status can be revised, suspended or revoked.",
+    "taiwanCountryContext": "Taiwan appears in the AI Authorization Countries supplement, but country status does not remove transaction/product/end-use/end-user duties."
+  },
+  "issuerExposure": [
+    {
+      "symbol": "2330",
+      "issuer": "TSMC",
+      "productScope": "Foundry spanning advanced and mature nodes; 2025 wafer revenue includes 3nm/5nm/7nm/16nm and older nodes.",
+      "locationScope": [
+        "Taiwan",
+        "Nanjing, China",
+        "Arizona, U.S.",
+        "Kumamoto, Japan",
+        "Dresden, Germany"
+      ],
+      "issuerNativePolicyEvidence": [
+        "2025 Form 20-F states January 2025 rules may require export licenses before shipping products using 16nm or below process to specified destinations unless conditions are met.",
+        "TSMC Nanjing's prior VEU authorization expired in December 2025; U.S. Commerce granted an annual export license allowing U.S.-controlled items to continue being supplied to the Nanjing fab.",
+        "TSMC states current operations had not been materially affected by expanded export-control regulations as of the annual-report date, while future risk remains.",
+        "TSMC export management uses 'No ECCN, No Shipment' and requires customer end-use and ECCN information for applicable licensing."
+      ],
+      "exposureClass": "DIRECT_HIGH_RELEVANCE / TRANSACTION_SPECIFIC",
+      "currentOperationalImpact": "NO_MATERIAL_IMPACT_DISCLOSED_AS_OF_2025_REPORT_DATE",
+      "chinaFabContinuity": "ANNUAL_LICENSE_PRESENT / RENEWAL_RISK_REMAINS",
+      "exposureMagnitude": "UNKNOWN"
+    },
+    {
+      "symbol": "2454",
+      "issuer": "MediaTek",
+      "officialPolicyRole": "Listed by BIS as an Approved Integrated Circuit Designer in Part 740 supplement 6.",
+      "exposureClass": "APPROVED_DESIGNER_PATHWAY / TRANSACTION_SPECIFIC",
+      "exposureMagnitude": "UNKNOWN",
+      "note": "Approved status changes compliance treatment but is not a blanket exemption from all export controls."
+    },
+    {
+      "symbol": "2379",
+      "issuer": "Realtek",
+      "officialPolicyRole": "Listed by BIS as an Approved Integrated Circuit Designer in Part 740 supplement 6.",
+      "exposureClass": "APPROVED_DESIGNER_PATHWAY / TRANSACTION_SPECIFIC",
+      "exposureMagnitude": "UNKNOWN"
+    },
+    {
+      "symbol": "2303",
+      "issuer": "UMC",
+      "officialPolicyRole": "Listed by BIS as an Approved OSAT company in Part 740 supplement 7.",
+      "companyScope": "Global foundry focused on logic and specialty technologies with most core fabs/R&D in Taiwan and additional Asian fabs.",
+      "exposureClass": "APPROVED_OSAT_PATHWAY / PRODUCT_AND_TRANSACTION_SPECIFIC",
+      "exposureMagnitude": "UNKNOWN",
+      "note": "Approved listing is a compliance-pathway fact, not proof of low business impact."
+    }
+  ],
+  "negativeControls": [
+    "AI Diffusion Rule was formally issued with a future compliance date and then rescinded before that date; publication alone cannot be treated as realized supply-chain exposure.",
+    "Taiwan country authorization status and approved designer/OSAT listing can reduce or reshape compliance burden for some transactions; export-control impact is not one-directional across Taiwan issuers.",
+    "TSMC disclosed an annual license preserving Nanjing supply continuity after VEU expiry; a rule tightening does not mechanically imply fab shutdown.",
+    "TSMC also disclosed no material current operational impact as of its 2025 report date, despite direct exposure to tighter rules; policy relevance != realized earnings damage."
+  ],
+  "pitContract": {
+    "unit": "issuer × product/process × destination/end-use/end-user × policy vintage",
+    "clocks": [
+      "rulePublishedAt",
+      "effectiveAt",
+      "complianceAt",
+      "rescindedOrAmendedAt",
+      "licenseGrantedAt",
+      "licenseExpiresAt",
+      "issuerPublishedAt",
+      "capturedAt",
+      "firstEligibleDecision"
+    ],
+    "missingRule": "UNKNOWN != unaffected / harmed / benefited",
+    "amendmentRule": "Rule amendments, rescissions, list-status changes and license renewals append new vintages; never rewrite prior states.",
+    "outcomeFirewall": "No stock, revenue, margin or market-share outcome is opened while freezing the exposure state."
+  },
+  "redundancyControls": [
+    "D11/D17 own event/news timing; D10-13 owns physical/economic supply-chain exposure.",
+    "D13-17 owns broad macro/geopolitical financial-condition transmission.",
+    "D10-08 shortage is a possible downstream state, not a duplicate policy vote.",
+    "Approved-list status, annual licenses and country classification modify exposure uncertainty; they do not create separate Alpha votes."
+  ],
+  "maturityDecision": {
+    "D10-13": "PROMOTE_L2_TO_L3_TAIWAN_PIT_DATA_FEASIBILITY_ONLY"
+  },
+  "promotionReason": "Current BIS rule text plus issuer-native TSMC location/process/compliance/license disclosures and approved Taiwan designer/OSAT lists form an effective-dated, replayable issuer exposure dataset with explicit negative controls and UNKNOWN handling.",
+  "reasonNoL4": "No prospective/OOS evidence links these policy-exposure states to future issuer revenue, margin, market share or stock-selection utility after controlling for product mix, customer geography, market regime and event effects.",
+  "exactNext": [
+    "SC-047 append future BIS rule/list/license changes prospectively and maintain issuer exposure vintages without backfill.",
+    "Add issuer-native customer/destination revenue exposure only where disclosed on compatible denominators; otherwise keep magnitude UNKNOWN.",
+    "Preregister prospective outcome windows before testing revenue/margin/stock effects."
+  ],
+  "status": "TAIWAN_ISSUER_POLICY_EXPOSURE_PIT_FEASIBLE / RULE_LICENSE_LIST_VINTAGES / NEGATIVE_CONTROLS_PRESENT / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
