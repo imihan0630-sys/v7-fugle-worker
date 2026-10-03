@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 11:42 Asia/Taipei
+Updated: 2026-10-03 11:46 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -819,4 +819,14 @@ Governance result:
 - Execution/sizing/validation/context modules do not automatically become stock-selection Alpha.
 - Behavioral/governance narratives require independent observables.
 - Formal Core unchanged.
+
+## Hybrid role execution registry — 2026-10-03
+
+Canonical registry:
+`shared-knowledge/HYBRID_ROLE_EXECUTION_REGISTRY_20261003_V0_1.md`
+
+Machine-readable registry:
+`shared-knowledge/hybrid_role_execution_registry_20261003_v0_1.json`
+
+R01-R08 role-conflict validation groups are now registered. This is governance input for System 1 A2 and System 2 B1 only; no live role assignment or Formal change is authorized.
 
