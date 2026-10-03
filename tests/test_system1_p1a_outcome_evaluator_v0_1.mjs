@@ -164,3 +164,4 @@ console.log(JSON.stringify({
   minIndependentDates:15,minRegimes:2,directionAgreementFloorPct:70,
   positiveEvidenceNotFormalCandidate:true,autoFormalSwitch:false,formalCoreImpact:false
 }));
+await import("./test_system1_zero_pick_counterfactual_comparator_v0_1.mjs");
