@@ -2597,3 +2597,75 @@ No threshold is tuned.
 No FORMAL_OPTIMIZATION_CANDIDATE.
 Formal Core remains LOCKED.
 PVE-240 remains reserved for the first genuine completed post-repair market session.
+
+## Pre-PVE-240 continuation — D02-08 L3 closure + L4 ceiling audit (2026-10-04)
+
+Status: OUTCOME_BLIND / PVE_CURSOR_REMAINS_239 / FORMAL_UNCHANGED.
+
+Durable artifacts:
+- `research/d02_provider_trade_pressure_proxy_v0_1.mjs`
+- `tests/test_d02_provider_trade_pressure_proxy_v0_1.mjs`
+- `research/d02_08_provider_pressure_proxy_pit_readiness_20261004_v0_1.md`
+- `research/d02_08_provider_pressure_proxy_pit_readiness_v0_1.json`
+- `research/d02_l4_readiness_audit_20261004_v0_1.md`
+- `research/d02_l4_readiness_audit_v0_1.json`
+
+### D02-08 — provider-side pressure proxy
+
+Official source contract revalidation confirms current Fugle Taiwan-equity APIs expose:
+- Quote cumulative tradeVolume / tradeVolumeAtBid / tradeVolumeAtAsk / transaction;
+- current-day price-level volumeAtBid / volumeAtAsk;
+- current-day per-trade bid / ask / price / size / time / serial.
+
+The executable D02 adapter forms only same-symbol/same-type/same-day interval deltas.
+
+Primary research variable:
+`providerTradePressureProxy = (deltaAtAsk - deltaAtBid) / (deltaAtAsk + deltaAtBid)`.
+
+Independent local Node.js v22.16.0 execution:
+14/14 tests PASS after the clock-case fixture was corrected so the intended gate was isolated.
+
+Mandatory semantics:
+- unclassified volume remains explicit;
+- round-lot and odd-lot streams cannot be mixed;
+- cumulative counter regression / time regression / cross-identity join fails closed;
+- trial state fails closed;
+- a preregistered classification-coverage floor may be applied before outcomes;
+- trueOfiEligible=false;
+- dynamicAbsorptionEligible=false;
+- participantIntentEligible=false.
+
+Therefore the module is promoted only as:
+`OBSERVATION / RESEARCH_ONLY / PROXY_ONLY / INTENT_UNIDENTIFIED`.
+
+D02-08 L2/40 -> L3/60.
+
+### L4 ceiling audit
+
+Every D02 module was re-audited against the curriculum L4 requirement:
+Prospective Shadow OR genuine OOS evidence.
+
+Current global blockers:
+- clean prospective selection-date count = 0;
+- Gate 7 remains CLOSED;
+- PVE-240 has not yet occurred;
+- H20 clean prospective residual outcomes are absent;
+- H003 price-only-vs-price-plus-volume outcome gate is closed;
+- D02-11 lacks reason-complete rejected-control evidence;
+- D02-12 lacks full-session/historical price-profile efficacy;
+- new D02-07/08/09/10/05/11/12 L3 receipts are data-feasibility/replay evidence, not outcome evidence.
+
+Result:
+NO D02 module qualifies for L4 in this round.
+
+Current honest ceiling:
+12/12 modules at least L3;
+D02 aggregate = 60.0%.
+
+No historical Shadow fabrication.
+No L4 from unit tests.
+No threshold tuning.
+No FORMAL_OPTIMIZATION_CANDIDATE.
+Formal Core remains LOCKED.
+
+Exact formal continuation remains PVE-240 on the first genuine completed post-repair market session, Gate 0→6 before any outcome use.
