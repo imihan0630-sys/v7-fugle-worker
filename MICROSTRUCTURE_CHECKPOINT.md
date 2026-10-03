@@ -666,3 +666,27 @@ Those remain L4 questions.
 4. D05 nearest event-level gate remains true event completeness for D05-05 and own-order lifecycle for D05-11/12/13.
 5. COV-02 and B14 specialist returns are complete and ready for 00 intake; this room must not directly mutate canonical module count/ownership structure.
 6. Formal Core remains unchanged.
+
+
+### COV-02 formal return-contract closure
+
+After the initial specialist analysis, the newer total-control Intake Template / JSON Schema was re-read and applied.
+
+COV-02 now has:
+- complete formal intake header;
+- evidence cutoff;
+- all 10 required fields;
+- mandatory source table;
+- mandatory overlap table;
+- mandatory counterevidence table;
+- exactly one terminal recommendation: `EXTEND_EXISTING_SCOPE`;
+- schema-aligned machine return: `research/cov_02_closing_auction_specialist_return_20261004_v0_1.json`.
+
+Current lawful state:
+`SPECIALIST_RETURN_CONTRACT_COMPLETE / READY_FOR_00_INTAKE`.
+
+This room does NOT self-assign:
+`RETURN_ACCEPTED_FOR_INTAKE`.
+
+Only 00｜研究總控室 may perform intake acceptance and the later Dependency Audit / overlap / anti-orphan / owner-approval transition.
+No COV-02 structural recommendation was used to inflate maturity; the separate L3 promotions came from the independent PIT-feasibility audit.
