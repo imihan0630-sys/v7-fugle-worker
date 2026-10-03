@@ -95,3 +95,18 @@ Validated head: `9ac012fdc2d0846cdf72e28fe1fa88b043d37649`.
 - No Cloudflare deployment occurred.
 - No Formal selector/ranker/signal/capital/order/push authority was changed.
 - V8.15.3 remains a Class-B deployment candidate only.
+
+
+## Quote freshness and explicit limit-price hardening
+
+Before deployment review, the raw Quote contract was tightened further:
+
+- quote symbol and trading date must match the active C3 symbol/session;
+- Fugle lastUpdated/closeTime is normalized from Unix microseconds;
+- missing timestamp, future timestamp beyond 5 seconds, or quote age beyond the existing LIVE_STALE_SECONDS contract is rejected as C3_CAPTURE_QUOTE_STALE_OR_INVALID;
+- trial quotes and halted quotes are rejected for C3 entry evidence;
+- raw isLimitUpPrice and isLimitDownPrice are preserved when Fugle explicitly supplies boolean values;
+- isLimitUpHalt/isLimitDownHalt remain separate fields and are not relabelled;
+- raw displayed depth remains raw evidence and is never converted into a new depthScore.
+
+This hardening narrows acceptable evidence only. It does not alter Formal monitoring, selection, signal, push, order or capital behavior.
