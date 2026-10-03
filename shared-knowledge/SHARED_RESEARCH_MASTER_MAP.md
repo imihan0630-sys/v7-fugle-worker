@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 10:00 Asia/Taipei
+Updated: 2026-10-03 10:05 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -606,4 +606,18 @@ Cross-dependency freezes:
 - D15-19 is not merged until D16-25 probability calibration / uncertainty work and position-sizing comparisons are sufficiently mature.
 
 No module count or maturity change. Curriculum remains 22 domains / 354 modules. Formal Core remains LOCKED. No new Hard Gate is authorized.
+
+## Second-round curriculum overlap audit — 2026-10-03
+
+Canonical audit:
+`shared-knowledge/CURRICULUM_SECOND_ROUND_OVERLAP_AUDIT_20261003_V0_1.md`
+
+Governance result after scanning all 354 active modules:
+- Immediate retirement: NONE.
+- Strong future merge candidate: D15-21 <-> D15-22.
+- Semantic split-or-merge candidate: D07-17 <-> D21-12.
+- Scope de-duplication without full retirement: D16-11 <-> D16-21.
+- Thirteen additional high-overlap pairs are retained with explicit producer/consumer, source-family, component/composite, horizon, unit-of-analysis or strategy-interaction boundaries.
+
+No module count, maturity or Formal Core behavior changes. Specialist rooms own validation before any future merge proposal.
 
