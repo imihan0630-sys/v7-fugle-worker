@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_EXECUTABLE_REPLAY_PASS",
+  "formalCoreChanged": false,
+  "evidenceCursor": "PVE-239",
+  "executableArtifacts": [
+    "research/d02_daily_volume_continuity_adapter_v0_1.mjs",
+    "tests/test_d02_daily_volume_continuity_adapter_v0_1.mjs"
+  ],
+  "execution": {
+    "environment": "independent local Node.js",
+    "nodeVersion": "22.16.0",
+    "finalStatus": "PASS",
+    "fixtureCount": 14
+  },
+  "firstRunFalsification": {
+    "status": "FAILED_THEN_FIXED",
+    "defect": "late-known corporate-action event was still being applied to historical continuity classification",
+    "correction": "late-known event semantics are not applied; historical decision state remains UNKNOWN_BLOCKED",
+    "antiLookAhead": true
+  },
+  "fixtures": [
+    "clean owner receipts",
+    "missing corporate-action coverage",
+    "late-known corporate-action correction",
+    "3593-like UNIT_SCALE 0.6",
+    "8422-like UNIT_SCALE 10",
+    "8454-like SUPPLY_CHANGE raw-vs-participation modes",
+    "5314-like suspension pseudo-bar",
+    "factual zero-volume expected session",
+    "missing expected session",
+    "duplicate date",
+    "deterministic session hash",
+    "signedVolumeBalance algebra",
+    "clean pivot + clean volume continuity",
+    "clean pivot + blocked volume continuity"
+  ],
+  "maturityPromotion": {
+    "D02-07": {
+      "from": "L2/40",
+      "to": "L3/60",
+      "alpha": "UNKNOWN",
+      "governance": "COMPARATOR_ONLY / MERGE_CANDIDATE"
+    },
+    "D02-09": {
+      "from": "L2/40",
+      "to": "L3/60",
+      "alpha": "UNKNOWN",
+      "governance": "TYPED_DIVERGENCE / PIVOT_CLOCK_REUSE"
+    }
+  },
+  "formalOptimizationCandidate": "NONE"
+}
