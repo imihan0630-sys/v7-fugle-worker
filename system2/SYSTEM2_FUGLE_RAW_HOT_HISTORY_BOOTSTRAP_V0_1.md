@@ -1,7 +1,7 @@
 # System 2 Fugle Raw Hot-History Bootstrap V0.1
 
 Updated: 2026-10-03 Asia/Taipei  
-Status: REPOSITORY IMPLEMENTATION / PHYSICAL ACCEPTANCE PENDING  
+Status: PHYSICALLY ACCEPTED / MANUAL INCREMENTAL POPULATION  
 Scope: S2-07 prospective recent RAW daily-history coverage only  
 System 1 / V8 impact: NONE
 
@@ -48,10 +48,11 @@ This makes the lane one-time prospective seeding, not a silent historical revisi
 
 Workflow: `.github/workflows/system2-fugle-raw-hot-history-bootstrap.yml`
 
-- no recurring schedule;
-- main merge/push of this lane performs one physical batch;
-- manual dispatch is available for additional batches;
-- default 45 symbols per run, hard maximum 50;
+- no recurring schedule and no push-triggered physical population after first acceptance;
+- additional batches are manual dispatch only;
+- physical default 35 symbols per run, runtime hard maximum 50;
+- only one physical bootstrap batch is allowed per UTC D1 free-quota day; an existing quota claim **or any same-quota-day symbol-completion marker** blocks a second batch;
+- the quota-day claim is written before external fetch/persistence, preferring a skipped day over accidental D1 overrun;
 - sequential source calls with at least 1100 ms spacing in the physical workflow;
 - one request covers up to 300 calendar days per symbol, below the provider's single-request one-year ceiling;
 - only symbols with fewer than 60 already PIT-eligible RAW bars and no prior completion marker are selected;
@@ -83,6 +84,32 @@ This bootstrap supplies the missing RAW bars. It does not weaken that preflight 
 1. Unit tests prove raw-source semantics, prospective availability and continuity firewall.
 2. Bootstrap tests prove symbol cap, one-time completion marker, no overwrite of existing canonical keys and readback-before-completion.
 3. System2 Research CI and V8 Regression must pass on the exact PR head.
-4. First main physical run must use isolated `system2-research`, preserve System 1 files, and return a receipt with actual processed/inserted counts.
-5. Re-run the read-only historical inventory and confirm PIT-eligible recent-history coverage increased without ambiguity.
-6. Continuity remains a separate blocker until independently validated corporate-action/session provenance exists.
+4. ✅ First main physical run passed in GitHub Actions run `37104245790`: 45 symbols processed, 8,615 missing RAW bars inserted, 91 existing canonical rows reused, zero no-data symbols; isolated D1 reported 52,050 rows written for the run and System 1 remained unused.
+5. ✅ Read-only inventory rerun (run `37100726469`, attempt 2 / job `111150162333`) confirmed no canonical ambiguity: TPEX rose to 5,764 PIT-eligible rows and TWSE to 8,626; both markets retain `ambiguousCanonicalKeyCount=0`.
+6. ✅ After the first physical acceptance, the workflow is manual-only and defaults to 35 symbols with a one-batch-per-UTC-D1-quota-day fail-closed guard. This preserves headroom under the current Workers Free D1 daily row-write limit.
+7. Continuity remains a separate blocker until independently validated corporate-action/session provenance exists.
+
+## Physical acceptance — 2026-10-03
+
+Main merge PR #357: `cfc722528fe1cb08dbe37c87d051d51837bc9f23`.
+
+Physical bootstrap:
+- workflow run: `37104245790`;
+- state: `BOUNDED_BOOTSTRAP_COMPLETE`;
+- target history end: 2026-10-02;
+- eligible symbols before batch: 1,981;
+- selected / processed: 45 / 45;
+- inserted bars: 8,615;
+- reused pre-existing canonical rows: 91;
+- no-data symbols: 0;
+- D1 schema: 1.1;
+- D1 run metrics: 673 requests, 43,575 rows read, 52,050 rows written, size-after 20,434,944 bytes;
+- continuity promotion: false;
+- capacity / zero-pick / selection authority: false;
+- System 1 runtime used: false.
+
+Post-write inventory:
+- TPEX: 5,764 rows, 967 symbols, 5,764 PIT-eligible, 0 continuity-eligible, 0 ambiguous canonical keys;
+- TWSE: 8,626 rows, 1,146 symbols, 8,626 PIT-eligible, 0 continuity-eligible, 0 ambiguous canonical keys.
+
+The data gate therefore advanced materially while the continuity gate truthfully remains unresolved.
