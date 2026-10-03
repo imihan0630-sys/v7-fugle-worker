@@ -1,0 +1,47 @@
+{
+  "version": "0.1",
+  "id": "SC-049",
+  "capturedAt": "2026-10-04T07:37:00+08:00",
+  "module": "D10-02 供應鏈Lead-Lag領先落後",
+  "mode": "LEAD_LAG_IDENTIFIABILITY_AUDIT / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "evidenceReviewed": [
+    "SC-036 Taiwan EAF steel chain, 2026-08 and 2026-09 monthly vintages",
+    "SC-039 September Taiwan PMI order/lead-time state",
+    "SC-040 July-August-September Taiwan PMI append-only releases",
+    "SC-003/004 supply-chain event-clock and prospective lag contracts"
+  ],
+  "positiveWitness": {
+    "steelSequence": [
+      "2026-08 scrap UP / billet DOWN / H-beam FLAT",
+      "2026-09 scrap UP / billet UP / H-beam FLAT"
+    ],
+    "interpretation": "A one-month upstream-to-intermediate lag is plausible and replayable as a hypothesis."
+  },
+  "identificationFailures": [
+    "Two monthly steel vintages cannot distinguish true lag transmission from contemporaneous common shocks plus sticky price reset.",
+    "The August-to-September change could reflect inventory timing, contract repricing, electricity/freight/yield changes or independent billet demand rather than scrap leading billet.",
+    "Monthly averages can hide within-month ordering; a monthly observation sequence is not a causal event sequence.",
+    "PMI new orders, delivery time and backlog are diffusion indices and do not provide issuer/product bilateral propagation clocks.",
+    "Named customer/supplier event lead-lag remains constrained by incomplete effective-dated graph coverage and automated official-source limitations."
+  ],
+  "minimumPromotionEvidence": [
+    "At least three or more independent sequential vintages per chain, preferably across multiple chains/industries.",
+    "Frozen lag candidates ex ante, e.g. 1M/2M/3M, without choosing the best lag after outcomes.",
+    "Compatible source/knownAt clocks for each layer.",
+    "Controls for common industry/macro shocks, inventory and contract-reset cadence.",
+    "Negative-control chains or non-linked product series.",
+    "No causal wording unless timing and alternative mechanisms are separately falsified."
+  ],
+  "maturityDecision": {
+    "D10-02": "KEEP_L2_MECHANISM_AND_FALSIFICATION_DEFINED"
+  },
+  "reasonNoL3": "PIT monthly source states exist, but a promotion-grade lead-lag mapping is not yet identified. Current evidence supports a lag hypothesis and its falsification contract, not a stable/replayable lead-lag relation.",
+  "exactNext": [
+    "SC-050 append the next independent steel-chain vintage and freeze 1M/2M/3M lag candidates before interpretation.",
+    "Add a second non-steel three-layer chain with compatible monthly clocks.",
+    "Only promote D10-02 after the lag relation can be replayed without post-hoc lag selection and survives common-shock/contract-lag controls."
+  ],
+  "status": "PIT_SOURCE_STATES_EXIST / LEAD_LAG_IDENTIFICATION_INSUFFICIENT / TWO_VINTAGE_FALSE_POSITIVE_RISK / KEEP_L2 / FORMAL_UNCHANGED"
+}
