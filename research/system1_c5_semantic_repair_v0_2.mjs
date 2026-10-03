@@ -201,11 +201,16 @@ export function buildC5SemanticRepairDiagnostic(c1Diagnosis,c2Ledger,{strategy="
     }
     if(klass==="HARD_BLOCKED") hardBlockedN++;
     if(klass==="UNKNOWN_CONTAMINATED") unknownContaminatedN++;
+    const sourceVintageReceiptIds=Array.isArray(o?.sourceVintageReceiptIds)
+      ? dedupeSorted(o.sourceVintageReceiptIds.map(String).filter(Boolean)) : [];
     rows.push({
-      symbol:String(o.symbol),pool:o.pool||pair.pool||null,formalFirstFailure:o.firstFailureReason||"UNKNOWN",
+      symbol:String(o.symbol),sessionDate:c2Ledger.sessionDate,generationId:c2Ledger.generationId,
+      pool:o.pool||pair.pool||null,formalFirstFailure:o.firstFailureReason||"UNKNOWN",
       formalOk:false,...sets,minimalUnblockClass:klass,reachStage:reach,
-      decisionAt:c2Ledger.decisionAt,firstFailureIsDescriptiveOnly:true,
-      researchOnly:true,decisionImpact:false,formalSelected:false,buyAuthorized:false,allocation:0,signal:null
+      decisionAt:c2Ledger.decisionAt,sourceVintageReceiptIds,
+      sourceVintageReceiptIdsStatus:sourceVintageReceiptIds.length?"PRESERVED":"UNAVAILABLE_IN_C1_DIAGNOSIS",
+      firstFailureIsDescriptiveOnly:true,researchOnly:true,decisionImpact:false,
+      formalSelected:false,buyAuthorized:false,allocation:0,signal:null
     });
   }
   return {
