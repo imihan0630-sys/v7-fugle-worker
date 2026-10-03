@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "pattern-structural-age-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "ageClocks": [
+    "zoneAgeEligibleSessions",
+    "zoneAgeCalendarDays",
+    "lastTouchAgeEligibleSessions",
+    "lastBounceAgeEligibleSessions",
+    "lastTransitionAgeEligibleSessions",
+    "dormantEligibleSessions",
+    "interactionSpanEligibleSessions"
+  ],
+  "primaryClock": "ELIGIBLE_SYMBOL_SESSIONS",
+  "noFreshnessScore": true,
+  "noHalfLife": true,
+  "ladder": [
+    "D0_ZONE_AGE",
+    "D1_INTERACTION_RECENCY",
+    "D2_TOUCH_SPACING_DWELL",
+    "D3_OPPORTUNITY",
+    "D4_SELECTION_SALIENCE_REGIME",
+    "D5_RISK_SET_INFERENCE"
+  ],
+  "rules": [
+    "ZONE_AGE_NOT_EQUAL_LAST_TOUCH_AGE",
+    "UNKNOWN_SESSION_PROVENANCE_NO_CALENDAR_FALLBACK",
+    "NEW_BOUNDARY_VERSION_RESETS_LINEAGE",
+    "NO_EVENTUAL_LIFETIME_PREDICTOR",
+    "NO_POST_OUTCOME_AGE_CUTOFF"
+  ],
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
