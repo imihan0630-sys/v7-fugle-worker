@@ -1,6 +1,6 @@
 # Credit / Capital Structure Checkpoint
 
-Updated: 2026-10-04 07:43 Asia/Taipei
+Updated: 2026-10-04 07:22 Asia/Taipei
 Scope: D22｜信用市場／資本結構／融資壓力／股債傳導
 Status: ACTIVE_RESEARCH / D22-01 L3 / D22-02 L3 / D22-03 L3 / D22-04 L2_ACTIVE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
