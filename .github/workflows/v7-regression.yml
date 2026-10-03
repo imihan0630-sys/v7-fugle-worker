@@ -215,6 +215,7 @@ jobs:
           node tests/test_system1_c5_semantic_repair_v0_2.mjs
           node tests/test_system1_p1a_outcome_evaluator_v0_1.mjs
           node tests/test_system1_p1a_conditional_reach_v0_1.mjs
+          node tests/test_system1_p1a_safety_capture_demand_v0_1.mjs
           node tests/test_system1_c3_capture_contract_v0_1.mjs
           node tests/test_system1_evidence_automation_v0_1.mjs
           node tests/test_system1_postsession_evidence_v0_1.mjs
