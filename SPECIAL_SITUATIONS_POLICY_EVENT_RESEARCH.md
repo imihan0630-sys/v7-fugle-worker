@@ -447,3 +447,28 @@ Core guard:
 `FILED != CONDITION_MET != PERIOD_EXPIRED != PAYMENT_SETTLED != DELISTED`.
 
 Formal Core unchanged.
+
+## 2026-10-04 continuation — D11-19 merger-arbitrage / deal-break L3
+
+New receipt: `research/d11_19_merger_arbitrage_pit_receipt_v0_1.json`.
+
+D11-19 now has bounded Taiwan source/event-state feasibility distinct from D11-06:
+- D11-06 remains owner of the underlying transaction lifecycle.
+- D11-19 owns tradable consideration geometry, exchange-ratio versioning, spread/break state, hedge/borrow/cost semantics and spin-off entitlement/stub semantics.
+
+Observed bounded states:
+1. 2887 台新金 / 2888 新光金: original 2024 common-stock exchange ratio 0.6022 was later revised in 2025 to 0.672 common shares plus 0.175 newly created preferred shares per 新光普通股; regulator approval, merger effective date and target termination-of-listing are separately observable. This is a real REPRICE/CONSIDERATION_REVISION -> CLOSE witness.
+2. 8179 旭德 / 3037 欣興: the originally announced merger and merger agreement were terminated and the structure was changed to a share-exchange transaction. This proves a deal can break at one structure while the economic combination continues under another structure.
+3. 5203 訊連 / wholly owned BVI subsidiary: a 2026 board-approved simplified merger was later cancelled. It is not a tradable public-target arbitrage case, but proves CANCELLATION is a real disclosure/version state.
+4. 2409 友達: issuer-official 2026 energy-business demerger proposal to wholly owned 達耀能源, planned effective 2026-08-01 and conditional on shareholder approval. This validates current Taiwan demerger clocks while also proving that demerger approval does not automatically create a separately listed/distributed child security.
+
+Frozen payoff guards:
+- stock-deal value uses only exchange ratio/consideration known at t;
+- revisions append new terms; final terms never overwrite original known state;
+- parent/child/stub claims remain separate;
+- child tradability/entitlement, hedge availability and borrow status are UNKNOWN unless sourced;
+- one deal's multiple disclosures are correlated versions, not independent votes.
+
+D11-19 advances **L2 -> L3** for Taiwan PIT/source and event-state feasibility only. No spread-return, hedge-return, borrow-cost or deal-break outcome cohort was opened.
+
+Formal Core unchanged.
