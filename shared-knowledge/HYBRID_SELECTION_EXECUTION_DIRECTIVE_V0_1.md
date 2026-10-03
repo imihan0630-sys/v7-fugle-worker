@@ -156,3 +156,18 @@ System1 current fail-fast gates are now separated conceptually into:
 
 Important: this is role classification only. It does not soften any production gate. Prospective matched-date evidence remains mandatory before any Class-C proposal.
 
+## System1 S1-S2 causal Shadow contracts — 2026-10-03
+
+System1 low-BUY investigation now uses:
+- full blocking sets instead of firstFailure attribution;
+- minimal-unblock classes;
+- reach funnel through A/B -> RR -> Grade -> Rankable;
+- symbol + date-cluster outcome reporting;
+- explicit missingness-confounding controls;
+- four-state TARGET semantics.
+
+Canonical registry:
+`shared-knowledge/SYSTEM1_S1_S2_SHADOW_EXECUTION_REGISTRY_20261003_V0_1.md`
+
+UNKNOWN remains UNKNOWN. Candidate-count expansion is not success. Formal Core remains locked.
+
