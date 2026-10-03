@@ -110,3 +110,12 @@ Before deployment review, the raw Quote contract was tightened further:
 - raw displayed depth remains raw evidence and is never converted into a new depthScore.
 
 This hardening narrows acceptable evidence only. It does not alter Formal monitoring, selection, signal, push, order or capital behavior.
+
+
+## Owner Class-B deployment approval
+
+On 2026-10-03 Asia/Taipei, the owner explicitly approved proceeding with the V8.15.3 Class-B merge and production deployment after the dependent PR #323 research layer was merged and validated.
+
+This approval covers only the research evidence-capture plumbing described in PR #327. It does not authorize any Formal admission, ranking, A/B, 3+3+3, capital, signal, push, order, or System2 change.
+
+A fresh exact-head CI cycle against post-PR-323 main is required before merge.
