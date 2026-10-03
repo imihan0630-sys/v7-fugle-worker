@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 10:25 Asia/Taipei
+Updated: 2026-10-03 10:36 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -656,4 +656,26 @@ Governance synchronization only:
 - L3 remains closed because genuine complete Taiwan PIT prediction/outcome/calibration evidence is still missing.
 - D15-19 merge/retirement remains NOT EXECUTED.
 - Formal Core remains unchanged.
+
+## Priority-B overlap acceptance contract — 2026-10-03
+
+Canonical human-readable contract:
+`shared-knowledge/CURRICULUM_PRIORITY_B_OVERLAP_ACCEPTANCE_CONTRACT_20261003_V0_1.md`
+
+Machine-readable companion:
+`shared-knowledge/curriculum_priority_b_overlap_acceptance_contract_20261003_v0_1.json`
+
+All 14 Priority-B overlap pairs now have frozen acceptance criteria before specialist evidence returns.
+
+Default posture:
+**KEEP_SEPARATE unless strict semantic subsumption is proven.**
+
+Main governance protections:
+- producer/consumer boundaries must not be collapsed merely because the same data flows through both modules;
+- primitive-state and composite/pattern/strategy-interaction modules must not double-count the same evidence;
+- source-family clocks remain separate where failure/revision/latency semantics differ;
+- latent behavioral/microstructure mechanisms require observables beyond the primitive input;
+- a merge cannot orphan historical evidence, replay, runtime, UI or risk capabilities.
+
+No module count or maturity change. Formal Core remains LOCKED.
 
