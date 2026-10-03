@@ -17,6 +17,12 @@ replace_once(
 )
 
 replace_once(
+    'body?.schemaVersion!=="SYSTEM1_C3_RESEARCH_CAPTURE_CONTRACT_V0_1"',
+    'body?.schemaVersion!=="SYSTEM1_C3_RESEARCH_CAPTURE_CONTRACT_V0_2"',
+    "C3 registration schema V0.2"
+)
+
+replace_once(
 '''    "close","historyDays","marketReturn20","sectorReturn20","marketCapYi","changePercent",
     "avgVolume20Lots","avgAmount20","spreadPercent","depthScore","chipConcentration",
     "quarterRevenue","revenueQoQ","revenueQuarterYoY","priceBookRatio","priceEarningsRatio",
