@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "SYSTEM1_S1_S2_PROSPECTIVE_CAPTURE_READINESS_AUDIT_V0_1",
+  "updatedAt": "2026-10-03T15:52:00+08:00",
+  "status": "READINESS_AUDIT_COMPLETE_CLASS_A_NEXT_STEP_IDENTIFIED_CLASS_B_NOT_YET_AUTHORIZED",
+  "formalCoreImpact": "NONE",
+  "sourceMainAtAudit": "c4aaa5a39521462eddde22eaae3f5966ed7aefa5",
+  "workerSha": "24fd61d7b8dfd5610c40cc67a2b6807dd622bd73",
+  "readiness": {
+    "S1": "READY_IMPLEMENTED",
+    "S2_STRICT_P1A": "SAFETY_CAPTURE_BLOCKED",
+    "S2_CONDITIONAL_P1A": "CLASS_A_IMPLEMENTATION_READY",
+    "S2_OUTCOME": "PROSPECTIVE_OUTCOME_PENDING",
+    "S2B_CLASSIFIER": "READY_IMPLEMENTED",
+    "S2B_GENUINE_NONE": "TARGET_PROVENANCE_CAPTURE_BLOCKED",
+    "P1B": "BLOCKED_UNTIL_P1A_ECONOMIC_CLASSIFICATION"
+  },
+  "currentC1Safety": {
+    "SOURCE_AUTHENTICITY": "PASS",
+    "SESSION_CONTINUITY": "PASS_OR_UNKNOWN",
+    "CORPORATE_ACTION_CONTINUITY": "UNKNOWN_BY_DESIGN",
+    "EXECUTION_FEASIBILITY": "UNKNOWN_BY_DESIGN",
+    "ACCOUNT_RISK": "UNKNOWN_OUT_OF_SCOPE"
+  },
+  "currentReadyFields": [
+    "marketReturn20",
+    "sectorReturn20",
+    "chipConcentration",
+    "financialBasis",
+    "valuationObserved",
+    "announcementsVerified",
+    "officialAnnouncements",
+    "fundamentalCount",
+    "marketCapYi",
+    "setupState",
+    "targetState",
+    "target",
+    "rewardPerRisk",
+    "setupQuality",
+    "entryGeometry",
+    "C1_IMMUTABLE_GENERATION",
+    "C2_MATCHED_DENOMINATOR"
+  ],
+  "targetCaptureGaps": [
+    "targetSearchComplete",
+    "targetSearchAlgorithmVersion",
+    "targetSearchLookbackStart",
+    "targetSearchLookbackEnd",
+    "targetSourceReceiptIds",
+    "targetProvenanceState",
+    "targetSourceVerified",
+    "targetGeometryQuality",
+    "targetGeometryVerified",
+    "targetKnownAt",
+    "priorHigh20",
+    "priorHigh60",
+    "datedPivotCandidates",
+    "targetPriceRaw",
+    "targetPriceSource",
+    "targetPriceAsOf",
+    "targetPriceCapturedAt",
+    "targetPricePointInTimeEligible"
+  ],
+  "nextClassA": "CONDITIONAL_P1A_REACH_FUNNEL",
+  "classBDeferred": [
+    "SAFETY_RECEIPT_PERSISTENCE",
+    "TARGET_SEMANTIC_PROVENANCE_PERSISTENCE"
+  ],
+  "formalOptimizationCandidate": "NONE"
+}
