@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "D03_PULLBACK_ORIGIN_CONTRACT_V0_1",
+  "updatedAt": "2026-10-03T19:20:00+08:00",
+  "classification": "CLASS_A_RESEARCH_ONLY",
+  "formalCoreImpact": "NONE_LOCKED",
+  "genericReversalFactor": "REJECTED_OR_REDUNDANT",
+  "originStates": [
+    "STRUCTURAL_DIGESTION_NO_IDENTIFIED_SHOCK",
+    "MARKET_OR_SECTOR_DRIVEN_PULLBACK",
+    "EVENT_INFORMATION_PULLBACK",
+    "LIQUIDITY_PRESSURE_CANDIDATE",
+    "PRICE_LIMIT_OR_CONSTRAINED_DISCOVERY",
+    "MULTIPLE_ORIGINS",
+    "UNKNOWN_ORIGIN"
+  ],
+  "ownership": {
+    "structuralGeometry": "D01_D03",
+    "marketSector": "D09_D18",
+    "eventInformation": "D11_D17",
+    "liquidityPressure": "D05",
+    "priceLimitMechanism": "D01_D05"
+  },
+  "rules": [
+    "PULLBACK_DEPTH_IS_NOT_ORIGIN",
+    "CANDLE_MORPHOLOGY_CANNOT_CERTIFY_LIQUIDITY_PRESSURE",
+    "MISSING_OWNER_RECEIPT_MEANS_UNKNOWN",
+    "MULTIPLE_VALID_ORIGINS_REMAIN_MULTIPLE",
+    "REVERSAL_CONFIRMED_AT_CANNOT_BACKDATE_TO_PULLBACK_LOW",
+    "ORIGIN_STATE_HAS_NO_DIRECT_BUY_SELL_AUTHORITY"
+  ],
+  "liquidityOriginRequired": [
+    "pressureProvenance",
+    "depthSpreadContext",
+    "priceResponse",
+    "persistenceOrReplenishmentState",
+    "captureCompleteness"
+  ],
+  "primaryFutureControls": [
+    "pullbackDepth",
+    "supportDistance",
+    "ret20",
+    "ret60",
+    "persistence",
+    "residualRS",
+    "regime",
+    "volatilityATR",
+    "liquidity",
+    "patternLifecycle",
+    "priceVolumeState"
+  ],
+  "currentMaturity": {
+    "level": "L2",
+    "maturityPct": 40,
+    "promotionBlockedBy": "D05_TRUE_PRESSURE_REPLENISHMENT_PIT_COMPLETENESS"
+  }
+}
