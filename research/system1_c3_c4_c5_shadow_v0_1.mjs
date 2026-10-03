@@ -357,9 +357,14 @@ export function buildC5OverfilterDiagnostic(c1Diagnosis,c2Ledger,{strategy="SHOR
       return (s==="UNKNOWN"||s==="NOT_EVALUABLE")&&stageIndex[reachStage]>=stageIndex[minStage];
     });
 
+    const residualUnknownContamination=p1aBlockers.length>0&&(
+      downstreamUnknown||
+      unknownDependencySet.some(id=>!isP1ABlocker(id,o.gates?.[id]))||
+      notEvaluableDependencySet.some(id=>!isP1ABlocker(id,o.gates?.[id]))
+    );
     let minimalUnblockClass;
     if(hardBlockSet.length||hardUnknown.length) minimalUnblockClass="HARD_BLOCKED";
-    else if(p1aBlockers.length&&downstreamUnknown) minimalUnblockClass="UNKNOWN_CONTAMINATED";
+    else if(residualUnknownContamination) minimalUnblockClass="UNKNOWN_CONTAMINATED";
     else if(p1aBlockers.length&&primaryBlockSet.length) minimalUnblockClass="P1A_PLUS_PRIMARY";
     else if(p1aBlockers.length&&(contextBlockSet.length||supportiveBlockSet.length)) minimalUnblockClass="P1A_PLUS_CONTEXT";
     else if(p1aBlockers.length) minimalUnblockClass="P1A_ONLY";
