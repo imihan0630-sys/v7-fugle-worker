@@ -1,6 +1,6 @@
 {
   "schemaVersion": "CURRICULUM_COVERAGE_EXECUTION_REGISTRY_V0_1",
-  "updatedAt": "2026-10-03T21:40:00+08:00",
+  "updatedAt": "2026-10-03T22:51:00+08:00",
   "status": "COVERAGE_PACKETS_READY_PREINTAKE_PARTIAL_EVIDENCE",
   "formalCoreImpact": "NONE_LOCKED",
   "canonicalSnapshot": {
@@ -47,7 +47,7 @@
       "domain": "D10",
       "room": "07｜產業與供應鏈研究室",
       "class": "SCOPE_EXTENSION_CANDIDATE",
-      "state": "PENDING_SPECIALIST_RETURN",
+      "state": "PARTIAL_EVIDENCE_RECEIVED",
       "returnPath": "research/COV06_D10_SPECIALIST_RETURN_V0_1.md"
     },
     {
@@ -156,6 +156,7 @@
     "partialEvidenceReceived": [
       "COV-01",
       "COV-02",
+      "COV-06",
       "COV-07",
       "COV-08",
       "COV-09",
@@ -166,7 +167,6 @@
       "COV-03",
       "COV-04",
       "COV-05",
-      "COV-06",
       "COV-12"
     ],
     "acceptedSpecialistReturns": 0,
