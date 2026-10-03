@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T14:11:00+08:00",
+  "updatedAt": "2026-10-03T13:55:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 34.7
+    "maturityWeightedPct": 35
   },
   "domains": [
     {
@@ -476,7 +476,7 @@
         "MICROSTRUCTURE_CHECKPOINT.md",
         "MICROSTRUCTURE_RESEARCH.md"
       ],
-      "maturityPct": 32.9,
+      "maturityPct": 41.4,
       "modules": [
         {
           "id": "D05-01",
@@ -561,32 +561,32 @@
         {
           "id": "D05-11",
           "name": "Market Impact市場衝擊機制",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Market Impact市場衝擊機制」。研究成交簿、委託優先序、資訊不對稱與交易衝擊等微結構機制；不得把成交結果事後解釋成不可觀測的主力意圖。需凍結委託簿時間戳、交易時段、撮合規則、PIT（時點一致性）與可重播語意。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D05-11 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / OWN_PIT_EVIDENCE_PENDING",
+          "next": "等待可重播的自有委託生命週期＋台股市場資料；先量 implementation shortfall／arrival slippage／markout，再用 matched no-order controls 研究 causal impact。不得直接套用通用 square-root impact 係數。"
         },
         {
           "id": "D05-12",
           "name": "Adverse Selection／Order-flow Toxicity逆向選擇與訂單流毒性",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Adverse Selection／Order-flow Toxicity逆向選擇與訂單流毒性」。研究成交簿、委託優先序、資訊不對稱與交易衝擊等微結構機制；不得把成交結果事後解釋成不可觀測的主力意圖。需凍結委託簿時間戳、交易時段、撮合規則、PIT（時點一致性）與可重播語意。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D05-12 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / OWN_PIT_EVIDENCE_PENDING",
+          "next": "以 signed post-fill markout 為主要可觀測量，控制市場／產業／spread／volatility／activity；不得由不利 markout 推論對手方為 informed trader，VPIN 不作現成因子。"
         },
         {
           "id": "D05-13",
           "name": "Queue Position／Order Priority委託排隊位置與優先權",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Queue Position／Order Priority委託排隊位置與優先權」。研究成交簿、委託優先序、資訊不對稱與交易衝擊等微結構機制；不得把成交結果事後解釋成不可觀測的主力意圖。需凍結委託簿時間戳、交易時段、撮合規則、PIT（時點一致性）與可重播語意。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / CURRICULUM_KEEP / STRATEGY_SPECIFIC_CAPABILITY / EXECUTION_CONFIDENCE / NOT_ALPHA_GATE. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
-          "levelMeaning": "未研究",
-          "status": "OWNER_APPROVED / CURRICULUM_KEEP / STRATEGY_SPECIFIC_CAPABILITY / EXECUTION_CONFIDENCE / NOT_ALPHA_GATE",
-          "next": "由 04｜波動與市場微結構研究室研究台股撮合優先序、排隊位置可觀測性、成交率、部分成交與滑價影響；保留為執行能力，不轉成股票選擇 Alpha 或通用 Gate。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "OWNER_APPROVED / L2 / EXECUTION_CONFIDENCE / NOT_ALPHA_GATE / OWN_PIT_EVIDENCE_PENDING",
+          "next": "研究台股 price-time priority 下的 fill／partial-fill／cancel；公開 top5 僅能建立 QUEUE_AHEAD_PROXY，精確 queue rank 維持 UNKNOWN；角色限定 execution confidence，不轉選股 Alpha。"
         },
         {
           "id": "D05-14",
@@ -599,10 +599,10 @@
           "next": "從理論、定義、機制與反證開始，建立 D05-14 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
         }
       ],
-      "status": "EVIDENCE_PENDING / COMMON_SUPPORT_AND_QUOTE_AGE_QA_FROZEN",
-      "exactNextContinuationPoint": "D05-HORIZON-05: prospective authenticated Books+Trades pilot remains owner-governed, no extra subscription/plan/Cron without entitlement and authorization. Before outcome work, prove provider clock/reconnect/serial/missingness contracts and 1s/5s/15s quote-age/volatility-signature QA on exact common 15s support, report excluded stress windows, and separate auction/VI/limit/oddlot cohorts. Only then B0 activity/midquote-vol -> B1 spread/top1 -> B2 pressure-response/persistence -> B3 one top5 block across E0/E1/E2/E3. Preserve three distinct estimands; no true OFI without book-event completeness.",
-      "lastResearchUpdate": "2026-10-02T05:43:00+08:00",
-      "researchNote": "Revalidated Fugle stock Books (no documented sequence), Trades serial, TWSE 09:00-13:25 continuous session, Sep30 pricing. Existing five-minute System2 resonance Quote monitor cannot substitute for 1s/5s/15s books+trades ledger. Frozen sampling identity RVfine-RVcoarse=-2ab, quote-age/reconnect/missingness controls and matched 15s common support plus separate full-coverage reporting. Actual owner quota and event completeness remain UNKNOWN; D05 46% unchanged."
+      "status": "D05-11_12_13_L2 / EVENT_LEDGER_AND_OWN_ORDER_LIFECYCLE_PENDING",
+      "exactNextContinuationPoint": "D05-HORIZON-06: D05-11/12/13 mechanism layer is frozen at L2. Next empirical gate still requires prospective authenticated Books+Trades plus own broker/order lifecycle if available. First validate provider clock/reconnect/missing-event semantics and 1s/5s/15s common-support QA. Then separate four estimands: E1 implementation shortfall, E2 causal market impact (matched no-order/counterfactual required), E3 signed post-fill adverse markout, E4 queue/fill confidence (exact queue rank UNKNOWN from public top5). Keep B0 activity/midquote-vol -> B1 spread/top1 -> B2 pressure-response -> B3 one top5 block; no VPIN ready factor, no universal square-root coefficient, no queue alpha gate. D05-14 remains unstudied.",
+      "lastResearchUpdate": "2026-10-03T13:55:00+08:00",
+      "researchNote": "D05-11 Market Impact, D05-12 Adverse Selection/Order-flow Toxicity and D05-13 Queue Position/Order Priority advanced L0->L2 after mechanism + falsification freeze. Market impact is separated from implementation shortfall/slippage; causal self-impact requires own-order lifecycle plus counterfactual. Adverse selection is measured first as signed post-fill markout, never inferred informed intent; VPIN not adopted. TWSE continuous trading price-time priority gives queue position economic meaning, but public top5 cannot reveal exact personal queue rank. Queue role remains execution confidence only. No own Taiwan PIT event/order evidence yet."
     },
     {
       "id": "D06",
