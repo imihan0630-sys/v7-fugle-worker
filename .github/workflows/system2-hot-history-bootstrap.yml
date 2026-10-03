@@ -6,7 +6,7 @@ on:
       session_count:
         description: "Recent missing trading sessions to fill (max 3)"
         required: false
-        default: "3"
+        default: "1"
   push:
     branches: [main]
     paths:
@@ -28,7 +28,7 @@ jobs:
     timeout-minutes: 25
     environment: system2-research
     env:
-      SYSTEM2_HOT_HISTORY_SESSION_COUNT: ${{ inputs.session_count || '3' }}
+      SYSTEM2_HOT_HISTORY_SESSION_COUNT: ${{ inputs.session_count || '1' }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
