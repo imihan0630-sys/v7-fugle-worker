@@ -57,6 +57,9 @@ export function adaptC1PopulationPages(pages) {
     formalResult:raw.formalResult?{
       ok:typeof raw.formalResult.ok==='boolean'?raw.formalResult.ok:null,reason:raw.formalResult.firstFailure||null,
       basePassed:raw.formalResult.basePassed===true,rrPassed:raw.formalResult.rrPassed===true,
+      priorityScore:number(raw.formalResult.priorityScore),
+      priorityScoreProvenance:raw.formalResult.priorityScoreProvenance==="FORMAL_RUNTIME_RESULT_AT_C1_DECISION"
+        ? raw.formalResult.priorityScoreProvenance : null,
       selected:typeof raw.formalResult.selected==='boolean'?raw.formalResult.selected:null,selectedRank:raw.formalResult.selectedRank??null
     }:null,
     historyAdmission:raw.historyAdmission||null,
