@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03 Asia/Taipei",
+  "updatedAt": "2026-10-03T23:17:00+08:00",
   "status": "RESEARCH_ONLY_MECHANISM_FALSIFICATION_FROZEN_OUTCOMES_CLOSED",
   "owner": "08｜事件與新聞研究室",
   "formalCoreImpact": "NONE",
@@ -79,7 +79,8 @@
         "BORROW_AVAILABILITY",
         "PLEDGE_RELEASE"
       ],
-      "status": "L2_MECHANISM_FALSIFICATION_FROZEN_PIT_CAPTURE_PENDING"
+      "status": "L2_RULE_AND_SOURCE_LANES_IDENTIFIED_ISSUER_REALIZATION_LINK_INCOMPLETE",
+      "receipt": "research/d11_16_lockup_source_gap_receipt_v0_1.json"
     },
     "D11-17": {
       "stages": [
@@ -97,7 +98,8 @@
         "PUBLIC_OFFERING_NE_PRIVATE_PLACEMENT",
         "REGISTERED_NE_LISTED_NE_TRADABLE_NE_FREE_FLOAT"
       ],
-      "status": "L2_MECHANISM_FALSIFICATION_FROZEN_PIT_CAPTURE_PENDING"
+      "status": "L3_TAIWAN_PIT_SOURCE_FEASIBILITY_VALIDATED_OUTCOMES_CLOSED",
+      "receipt": "research/d11_17_private_placement_pit_receipt_v0_1.json"
     },
     "D11-18": {
       "stages": [
@@ -177,14 +179,14 @@
   },
   "maturityDecision": {
     "D11-15": "L0_TO_L2",
-    "D11-16": "L0_TO_L2",
-    "D11-17": "L0_TO_L2",
+    "D11-16": "KEEP_L2_SOURCE_REALIZATION_GAP",
+    "D11-17": "L2_TO_L3",
     "D11-18": "L0_TO_L2",
     "D11-19": "L0_TO_L2",
     "D17-14": "L0_TO_L2",
-    "D11_maturityPct_after": 50.5,
+    "D11_maturityPct_after": 52.6,
     "D17_maturityPct_after": 41.4,
-    "Room08_moduleWeightedPct_after": 46.7
+    "Room08_moduleWeightedPct_after": 47.9
   },
   "optimization": {
     "formalOptimizationCandidate": false,
@@ -194,5 +196,6 @@
     "engineeringClass": "CLASS_A_RESEARCH_DOCUMENTATION_SCHEMA_ONLY",
     "productionChange": false,
     "formalCoreLocked": true
-  }
+  },
+  "exactNext": "D11-16 complete one issuer-level official custody-release-to-sale chain; D11-18/19 collect complete tender/deal success and failure/extension/reprice lifecycles; deepen D11-17 with immutable native MOPS receipts before L4."
 }
