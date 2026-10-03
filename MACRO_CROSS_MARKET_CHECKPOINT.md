@@ -2,7 +2,7 @@
 
 Updated: 2026-09-28 20:35 Asia/Taipei
 Formal Core: LOCKED
-Current cursor: MC-001 through MC-112 complete.
+Current cursor: MC-001 through MC-141 complete.
 
 ## Durable conclusions
 
@@ -334,3 +334,69 @@ Formal Core LOCKED. No maturity promotion and no FORMAL_OPTIMIZATION_CANDIDATE.
 3. D13-15 composite conditions must beat component-only baselines; D13-16 liquidity decomposition must beat rates/USD/VIX/FCI baselines.
 4. Do not create a scalar macro/liquidity risk score from the newly reconciled modules.
 5. No L3 until independent Taiwan PIT/source-attested evidence exists.
+
+
+## 2026-10-03 late continuation — D13-17 trade/geopolitics/flows + D13-18 cycle + D13-19 expectations/growth
+
+### D13-17 Trade / Geopolitical Risk / Capital-flow Transmission
+- Advances L0 -> L2 / 40%.
+- Policy/event clock stack frozen: rumor -> investigation/proposal -> final action -> legal publication -> effective/compliance/customs-entry -> exclusion/license/expiry -> realized trade/financial flow -> market reaction.
+- Tariff announcement != customs-effective exposure; export-control press release != generic effective date; sanctions designation/license/removal lineage preserved.
+- Trade Policy Uncertainty (TPU) is separate from actual tariff level/effective policy.
+- GPR (geopolitical risk) remains news-based context with threats vs acts separated; no directional score.
+- Capital-flow object firewall:
+  - TWSE foreign-investor trading = same-market trading flow;
+  - CBC BOP = quarterly external-account flow;
+  - U.S. TIC = lagged cross-U.S.-border securities/banking flow.
+  These are not one `foreignCapitalFlow`.
+- TWSE 18:10 version issue frozen:
+  - aggregate file ~14:50 ex block / ~19:40 including block;
+  - per-security file ~18:00 ex block / ~20:00 including block;
+  - later full version cannot backfill 18:10.
+- Fragmentation evidence is targeted/sector-country-pair dependent and can create diversion/connector beneficiaries, so D13 owns clocks/global state while D10/D07 own company/supply-chain exposure.
+- Contracts:
+  - `research/d13_17_trade_geopolitical_capitalflow_spec_v0_1.json`
+  - `research/d13_17_event_flow_clock_schema_v0_1.json`.
+
+### D13-18 Business Cycle / Leading-Coincident-Lagging Indicators
+- Advances L0 -> L2 / 40%.
+- “Leading” means leading the business-cycle reference series, not automatically leading stock returns.
+- NDC leading/coincident/lagging families frozen separately.
+- Critical stock-target circularity found: NDC leading index and monitoring indicators include TAIEX. Aggregate NDC leading/monitoring states cannot be used as clean Taiwan-stock predictors without an ex-TAIEX/component-only falsification.
+- NDC monthly publication/reference-month clocks separated; NDC explicitly revises history monthly as components/source data/seasonal and trend adjustments update.
+- OECD CLI is qualitative turning-point context; NBER cycle dates are retrospective labels and never valid historical live features before their announcements.
+- Contract: `research/d13_18_business_cycle_indicator_spec_v0_1.json`.
+
+### D13-19 Capital Market Expectations / Long-run Growth Drivers
+- Advances L0 -> L2 / 40%.
+- Structural growth capacity, expectations and asset valuation are separate objects.
+- Long-run potential growth decomposed into labor-force/input growth plus productivity; productivity includes capital accumulation/deepening and TFP under the chosen framework.
+- Fed SEP = policymaker conditional projection, not market consensus.
+- Nominal Treasury yield = expected short-rate path + term premium under term-structure interpretation; no pure-growth shortcut.
+- Breakeven inflation contains expected inflation + inflation-risk premium + TIPS-liquidity effects.
+- r-star and term premium are model-estimated latent objects with model/vintage uncertainty.
+- AI/technology capex is not realized TFP; horizon mismatch blocks using slow structural-growth objects as next-day alpha without separate transportability evidence.
+- Contract: `research/d13_19_capital_market_expectations_longrun_growth_spec_v0_1.json`.
+
+### Current maturity / governance
+- D12: 40.0%.
+- D13: 41.1% across 19 modules.
+- Room 09 weighted D12+D13: 40.6%.
+- Global tracker: 38.1% across 354 modules at this write.
+- D13-17..19 are L2 mechanism+falsification only; no L3 promotion.
+- Outcome joins remain CLOSED for these new lanes.
+- Formal Core remains LOCKED; no FORMAL_OPTIMIZATION_CANDIDATE.
+
+## Exact next continuation after MC-141
+
+1. Stop adding macro concepts temporarily; begin source-only vintage evidence for D13-14..19.
+2. Priority public-official source vintages:
+   - NDC monthly business indicators + component definition/vintage;
+   - Fed SEP / CBO structural-growth projections;
+   - Fed H.4.1 balance-sheet components;
+   - CBC BOP;
+   - one USTR/BIS/OFAC policy-event lineage with announcement/legal/effective clocks.
+3. Audit TWSE 18:10 foreign-flow version/source entitlement; never substitute the 19:40/20:00 full versions.
+4. Build no scalar macro/geopolitical/liquidity/growth score. Every composite must beat its simpler components and Taiwan domestic/rates/USD baselines.
+5. Preserve D13-18 -> D18-15 ownership boundary: D13 measures first-known cycle state; D18 tests strategy effectiveness conditional on that frozen state.
+6. No L3/OOS/Formal promotion until independent source-attested vintages/dates exist.
