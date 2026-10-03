@@ -1,6 +1,6 @@
 # Curriculum Retirement and Capability Ledger V0.1
 
-Updated: 2026-10-03 09:22 Asia/Taipei
+Updated: 2026-10-03 10:00 Asia/Taipei
 Status: OWNER_APPROVED / EXECUTED / CAPABILITY_PRESERVATION_REQUIRED
 Scope: Seven-item curriculum audit from the 366-module map
 Formal Core impact: NONE
@@ -72,13 +72,14 @@ Decision: **CURRICULUM_RETIRED / SPLIT_OWNERSHIP**
 - Generic ESG/governance scores do not become stock-selection Alpha merely because a provider publishes them.
 - Historical research evidence remains preserved.
 
-## Current curriculum after execution
+## Interim curriculum after seven-item execution
 
 - Domains: 22
-- Modules: 354
+- Modules at this historical checkpoint: 362
 - Formal Core: unchanged
-- Retired standalone module IDs: D03-11, D10-11, D14-13, D21-08
-- Observation/merge candidates retained: D01-12, D02-07
+- Retired standalone module IDs at this checkpoint: D03-11, D10-11, D14-13, D21-08
+- Observation/merge candidates retained at this checkpoint: D01-12, D02-07
+- This is an **interim historical state** from 366 -> 362. D01-12 was subsequently merged/retired in the owner-approved Observation-module merge execution below; D02-07 remains an observation/research-only candidate under the later 15-item audit.
 - Explicitly retained/renamed: D10-12
 
 ## Anti-orphan rule
