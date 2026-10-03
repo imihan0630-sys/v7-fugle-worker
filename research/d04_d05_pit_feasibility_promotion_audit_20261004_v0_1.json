@@ -1,0 +1,181 @@
+{
+  "schemaVersion": "D04_D05_PIT_FEASIBILITY_PROMOTION_AUDIT_V0_1",
+  "updatedAt": "2026-10-04T07:30:00+08:00",
+  "room": "04｜波動與市場微結構研究室",
+  "maturityDefinition": {
+    "L2": "MECHANISM_AND_FALSIFICATION_DEFINED",
+    "L3": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
+    "L4": "PROSPECTIVE_SHADOW_OR_OOS_EVIDENCE"
+  },
+  "formalCoreImpact": "NONE",
+  "alphaClaim": false,
+  "promoted": {
+    "D04": [
+      {
+        "id": "D04-03",
+        "from": "L2",
+        "to": "L3",
+        "pct": 60,
+        "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
+        "boundary": "continuity_unresolved=>UNKNOWN_BLOCKED"
+      },
+      {
+        "id": "D04-04",
+        "from": "L2",
+        "to": "L3",
+        "pct": 60,
+        "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
+        "boundary": "direction_separate_from_volatility_expansion"
+      },
+      {
+        "id": "D04-07",
+        "from": "L2",
+        "to": "L3",
+        "pct": 60,
+        "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
+        "boundary": "shared_parent_common_support_no_duplicate_breakout_vote"
+      },
+      {
+        "id": "D04-09",
+        "from": "L2",
+        "to": "L3",
+        "pct": 60,
+        "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
+        "boundary": "missing_or_synthetic_open_prohibited; corporate_action_reset_separate"
+      },
+      {
+        "id": "D04-10",
+        "from": "L2",
+        "to": "L3",
+        "pct": 60,
+        "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
+        "boundary": "historical_limit_rule_or_reference_unknown=>UNKNOWN"
+      }
+    ],
+    "D05": [
+      {
+        "id": "D05-03",
+        "from": "L2",
+        "to": "L3",
+        "pct": 60,
+        "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
+        "boundary": "stale_future_invalid_quote=>UNKNOWN"
+      },
+      {
+        "id": "D05-04",
+        "from": "L2",
+        "to": "L3",
+        "pct": 60,
+        "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
+        "boundary": "top5_snapshot_depth_not_complete_exchange_event_ledger"
+      },
+      {
+        "id": "D05-07",
+        "from": "L2",
+        "to": "L3",
+        "pct": 60,
+        "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED_WITH_CAUSE_UNKNOWN_GUARD",
+        "boundary": "trial_or_noncontinuous_observed; exact_VI_or_disposition_cause_not_inferred"
+      },
+      {
+        "id": "D05-08",
+        "from": "L2",
+        "to": "L3",
+        "pct": 60,
+        "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED_PROSPECTIVE_ONLY",
+        "boundary": "round_lot_and_intraday_odd_lot_are_separate_mechanisms; historical_book_first_known_not_backfilled"
+      },
+      {
+        "id": "D05-09",
+        "from": "L2",
+        "to": "L3",
+        "pct": 60,
+        "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
+        "boundary": "component_vector_only; no universal_good_bad_or_depthScore_mapping"
+      }
+    ]
+  },
+  "heldAtL2": {
+    "D04": [
+      {
+        "id": "D04-02",
+        "reason": "A2 market-RV decision-clock persistence/readback still unresolved"
+      },
+      {
+        "id": "D04-05",
+        "reason": "raw market-RV transition persistence pending"
+      },
+      {
+        "id": "D04-06",
+        "reason": "market-side A2 decision-clock lineage incomplete"
+      },
+      {
+        "id": "D04-08",
+        "reason": "policy/sizing transform requires portfolio-risk execution evidence"
+      }
+    ],
+    "D05": [
+      {
+        "id": "D05-05",
+        "reason": "true OFI requires event completeness/sequence proof"
+      },
+      {
+        "id": "D05-06",
+        "reason": "COV-02 scope extension submitted; historical pre-close imbalance replay remains partial/UNKNOWN"
+      },
+      {
+        "id": "D05-11",
+        "reason": "own-order lifecycle plus counterfactual absent"
+      },
+      {
+        "id": "D05-12",
+        "reason": "own-fill adverse-markout/order-lifecycle evidence absent"
+      },
+      {
+        "id": "D05-13",
+        "reason": "exact personal queue rank unavailable from public top5"
+      },
+      {
+        "id": "D05-14",
+        "reason": "official attention/disposition knownAt/versioned historical replay incomplete"
+      }
+    ]
+  },
+  "evidenceAnchors": [
+    "system2/SYSTEM2_SOURCE_CONTRACT_AUDIT.md",
+    "research/TECHNICAL_INDICATOR_CONTINUITY_HANDOFF_V0_1.md",
+    "research/D04_CONTRACTION_EXPANSION_PROTOCOL_V0_1.md",
+    "research/D04_PRICE_LIMIT_VOLATILITY_CENSORING_GUARD_V0_1.json",
+    "research/SYSTEM1_C3_QUOTE_CONTEXT_CLASS_B_CHECKPOINT_20261003.md",
+    "research/SYSTEM1_C3_DEPTH_SEMANTICS_CHECKPOINT_20261003.md",
+    "research/SYSTEM1_C3_LIVE_DEPTH_PREREG_CHECKPOINT_20261003.md",
+    "research/system1_c3_live_depth_readiness_v0_1.mjs",
+    "research/COV_02_CLOSING_AUCTION_SPECIALIST_RETURN_20261004_V0_1.md",
+    "research/PRIORITY_B_B14_D05_05_D05_12_SPECIALIST_RETURN_20261004_V0_1.md"
+  ],
+  "maturity": {
+    "D04": {
+      "before": 42,
+      "after": 52,
+      "points": "520/1000"
+    },
+    "D05": {
+      "before": 44.3,
+      "after": 51.4,
+      "exactAfter": 51.4285714286,
+      "points": "720/1400"
+    },
+    "room04": {
+      "before": 43.3,
+      "after": 51.7,
+      "exactAfter": 51.6666666667,
+      "points": "1240/2400"
+    }
+  },
+  "governance": {
+    "cov02": "EXTEND_EXISTING_SCOPE_TO_D05_06_RECOMMENDED_PENDING_00_INTAKE_OWNER_APPROVAL",
+    "b14": "KEEP_SEPARATE_OBSERVABLE_INPUT_VS_LATENT_MECHANISM_SCOPE_DEDUP_ONLY",
+    "moduleCountChanged": false,
+    "formalOptimizationCandidate": "NONE"
+  }
+}
