@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T10:48:00+08:00",
+  "updatedAt": "2026-10-03T11:16:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1003,8 +1003,8 @@
           "maturityPct": 0,
           "learningScope": "聚焦「Forensic Accounting Red Flags鑑識會計與財報紅旗」。研究企業財務、三表預測與鑑識會計。所有假設必須區分管理層指引、分析師估計與模型自建假設，保留 PIT（時點一致性）first-known（首次已知）時間、情境敏感度與財報品質反證，禁止用事後實績回填歷史預測。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D07-25 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "status": "H05_ROOM06_SPECIALIST_PACKET_COMPLETE / STATEMENT_ANOMALY_OWNERSHIP_DEFINED / ROOM14_COUNTERPART_PENDING / NO_MATURITY_PROMOTION",
+          "next": "Wait for Room-14 D21-10 counterpart validation; then submit shared-receipt, divergent-state and falsification evidence to 00-room Dependency Audit. Independently start D07-25 theory only under the frozen ownership boundary."
         },
         {
           "id": "D07-26",
@@ -1120,8 +1120,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「歷史PE／PB百分位」。學習範圍：PE、PB、Forward PE、PEG、EV/EBITDA、FCF Yield等估值方法；歷史與同業正規化；負EPS與週期股例外；公司行動分母調整；成長×估值×Regime互動。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "TWSE_TPEX_OFFICIAL_HISTORICAL_PE_PB_SOURCE_FEASIBLE / PERCENTILE_SEMANTICS_AND_COUNTEREVIDENCE_FROZEN / OUTCOMES_CLOSED",
-          "next": "Build source-only TWSE/TPEx historical PE/PB replay fixture; freeze tie, N/A, minimum-history and structural-break semantics before any Shadow outcome join."
+          "status": "TWSE_TPEX_OFFICIAL_HISTORICAL_PE_PB_SOURCE_FEASIBLE / REPLAY_TIE_NA_VINTAGE_MECHANICS_QA_PASS / TPEX_SCHEMA_MAPPING_PENDING / OUTCOMES_CLOSED",
+          "next": "Freeze exact TWSE/TPEx parser/schema fingerprints and validate ordinary, loss-making, capital-action and newly-listed replay cases before any Shadow outcome join."
         },
         {
           "id": "D08-04",
