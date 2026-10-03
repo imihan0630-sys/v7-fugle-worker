@@ -71,9 +71,10 @@ function verifyBars(r,c2){
     const end=ts(b?.endAt);
     if(!Number.isFinite(end)||end<=ts(c2.decisionAt)||end<=prior||b?.completed!==true) throw new Error("C3_NON_SEQUENTIAL_COMPLETED_BARS");
     prior=end;
+    if(typeof b.limitUp!=="boolean"||typeof b.lateStage!=="boolean") throw new Error("C3_BAR_STATE_REQUIRED");
     const row={index:i,endAt:b.endAt,open:finite(b.open),high:finite(b.high),low:finite(b.low),close:finite(b.close),
       volumeRatio:finite(b.volumeRatio),depthScore:finite(b.depthScore),gapPct:finite(b.gapPct),
-      limitUp:b.limitUp===true,lateStage:b.lateStage===true};
+      limitUp:b.limitUp,lateStage:b.lateStage};
     if([row.open,row.high,row.low,row.close].some(x=>!(x>0))||row.high<Math.max(row.open,row.close)||row.low>Math.min(row.open,row.close)) throw new Error("C3_INVALID_BAR_GEOMETRY");
     return row;
   });

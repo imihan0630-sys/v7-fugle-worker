@@ -9,11 +9,12 @@ const feature={close:100,historyDays:80,marketReturn20:3,sectorReturn20:5,
   spreadPercent:.2,depthScore:90,orderBookDepthGood:true,chipConcentration:60,
   quarterRevenue:100,financialBasis:true,revenueQoQ:3,revenueQuarterYoY:20,
   valuationObserved:true,priceBookRatio:2,announcementsVerified:true,
-  officialAnnouncements:[],priceEarningsRatio:18,sectorMedianPe:15,epsYoY:10,atrPercent:3};
+  officialAnnouncements:[],priceEarningsRatio:18,sectorMedianPe:15,epsYoY:10,atrPercent:3,
+  lateStage:false,ret20:12,maDistance20Pct:6};
 const sector={breadth:55,avgChange:.5,amountVs20DayAverage:1.1};
 const derived={institutionalScore:75,fundamentalCount:6,fundamentalScore:60,
   setupState:{A:{pass:true},B:{pass:false}},targetState:"FOUND",target:120,
-  rewardPerRisk:2.5,setupQuality:75,entryGeometry:{entry:100,stop:92,target:120}};
+  rewardPerRisk:2.5,setupQuality:75,channel:"A",entryGeometry:{entry:100,stop:92,target:120,support:98,breakout:null}};
 const safety={SOURCE_AUTHENTICITY:{status:"PASS"},SESSION_CONTINUITY:{status:"PASS"},
   CORPORATE_ACTION_CONTINUITY:{status:"UNKNOWN",reason:"INDEPENDENT_PROOF_MISSING"},
   EXECUTION_FEASIBILITY:{status:"UNKNOWN",reason:"BROKER_NOT_CONNECTED"},
@@ -45,6 +46,12 @@ eq(p.tally.shortSafetyUnverifiedN,3);
 eq(p.pairs.find(x=>x.symbol==="2330").short.withoutSafetyGateStatus,"PASS");
 eq(p.pairs.find(x=>x.symbol==="2330").short.gateStatus,"UNKNOWN");
 eq(p.pairs.find(x=>x.symbol==="2330").short.lifecycle,"DATA_BLOCKED");
+eq(p.pairs.find(x=>x.symbol==="2330").selectionContext.close,100);
+eq(p.pairs.find(x=>x.symbol==="2330").selectionContext.depthScore,90);
+eq(p.pairs.find(x=>x.symbol==="2330").selectionContext.lateStage,false);
+eq(p.pairs.find(x=>x.symbol==="2330").selectionContext.channel,"A");
+eq(p.pairs.find(x=>x.symbol==="2330").selectionContext.entryGeometry.support,98);
+eq(p.pairs.find(x=>x.symbol==="2330").selectionContext.provenance.parentId,p.generationId);
 eq(p.pairs.find(x=>x.symbol==="9999").short.withoutSafetyGateStatus,"UNKNOWN");
 eq(p.pairs.every(x=>x.buyAuthorized===false&&x.signal===null&&x.allocation===0),true);
 eq(p.completeMatchedCohort,true);

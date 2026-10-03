@@ -59,9 +59,9 @@ assert.throws(()=>buildC3Registration(c1,{...c2,fingerprint:"bad"},{stocks:[]}),
 
 const collector=await import("node:fs/promises").then(fs=>fs.readFile(new URL("./collect_system1_c1_c2_evidence.mjs",import.meta.url),"utf8"));
 assert.match(collector,/C3_REGISTER/);n++;
-assert.match(collector,/buildC3Registration/);n++;
+assert.match(collector,/buildC3RegistrationV02/);n++;
 assert.match(collector,/\/api\/research\/c3-capture-cohort/);n++;
-assert.match(collector,/maxShadowSymbols:6,providerBudgetCallsPerSession:102/);n++;
+assert.match(collector,/maxShadowSymbols:3,providerBudgetCallsPerSession:102/);n++;
 assert.match(collector,/body:JSON\.stringify\(registration\.payload\)/);n++;
 eq(a.payload.targetTradeDate,undefined);
 
@@ -70,4 +70,4 @@ assert.match(workflow,/C3_REGISTER: \$\{\{ github\.event_name == 'schedule' && '
 assert.match(workflow,/artifacts\/system1-c3-registration\.json/);n++;
 
 console.log(JSON.stringify({ok:true,assertions:n,scheduledOnlyRegistration:true,clientDoesNotGuessNextTradeDate:true,
-  formalReuseExcludedFromExtraCapture:true,maxShadowSymbols:6,maxSessionCalls:102,formalCoreImpact:false,system2Touched:false}));
+  formalReuseExcludedFromExtraCapture:true,legacyContractMaxShadowSymbols:6,scheduledCollectorMaxShadowSymbols:3,maxSessionCalls:102,formalCoreImpact:false,system2Touched:false}));
