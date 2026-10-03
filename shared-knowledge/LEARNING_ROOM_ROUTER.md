@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 10:26 Asia/Taipei
+Updated: 2026-10-03 10:25 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -745,7 +745,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 必讀 checkpoint：`RESEARCH_WORKLIST.md`、`research/EXPERIMENT_REGISTRY.md`、`research/research_master_map.json`、`system2/SYSTEM2_MARKET_REGIME_V0.md`、`TREND_MOMENTUM_REVERSAL_CHECKPOINT.md`、`MARKET_BREADTH_ROTATION_CHECKPOINT.md`  
 禁止：不得把其他 Dxx 領域當成本聊天室主線；跨領域發現只能建立 dependency（依賴）或引用證據，不能雙重計算進度。
 
-### D16｜統計驗證／PIT／Shadow／OOS／防過擬合 — 44%
+### D16｜統計驗證／PIT／Shadow／OOS／防過擬合 — 45.6%
 
 | 模組 | 研究模組 | 學習範圍 | 等級 | 完成度 |
 |---|---|---|---|---:|
@@ -773,7 +773,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | D16-22 | NLP／LLM Financial-text Feature Validation自然語言與大型語言模型財經文本特徵驗證 | 聚焦「NLP／LLM Financial-text Feature Validation自然語言與大型語言模型財經文本特徵驗證」。研究替代資料與文字模型的資料來源、時間戳、選樣／洩漏、模型漂移與可重播驗證；大型語言模型或機器學習模型只屬驗證／特徵工具，不因複雜度自動構成 Alpha（超額報酬）。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
 | D16-23 | Stress Test／Scenario／Reverse Stress Test壓力測試、情境與反向壓力測試 | 聚焦「Stress Test／Scenario／Reverse Stress Test壓力測試、情境與反向壓力測試」。研究壓力測試、反向壓力測試與蒙地卡羅方法的可重播驗證；需控制分布假設、相關性崩解、厚尾、參數漂移、情境選擇偏誤及模型風險，與歷史實證及簡單基準比較。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
 | D16-24 | Monte Carlo Simulation／Distributional Validation蒙地卡羅模擬與分布驗證 | 聚焦「Monte Carlo Simulation／Distributional Validation蒙地卡羅模擬與分布驗證」。研究壓力測試、反向壓力測試與蒙地卡羅方法的可重播驗證；需控制分布假設、相關性崩解、厚尾、參數漂移、情境選擇偏誤及模型風險，與歷史實證及簡單基準比較。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
-| D16-25 | Probabilistic Decision／Bayesian Updating／Uncertainty-aware Selection機率式決策、貝氏更新與不確定性選股 | 聚焦「Probabilistic Decision／Bayesian Updating／Uncertainty-aware Selection機率式決策、貝氏更新與不確定性選股」。研究如何把證據轉成可校準的機率、期望值與不確定性，而不是把更多研究模組堆成串聯硬門檻。必須明確區分HARD_INVALIDATION、PRIMARY_ALPHA、SUPPORTIVE、CONTEXT_ONLY、CONFIDENCE／UNCERTAINTY五種決策角色；UNKNOWN不得等同FAIL或0。研究Bayesian updating（貝氏更新）、base rate（基準率）、probability calibration（機率校準）、expected value／utility（期望值／效用）、abstention（不交易）與uncertainty penalty（不確定性折扣）。任何System 1／System 2應用都先走Prospective Shadow／OOS，並同時驗證機會捕捉率、zero-pick、false acceptance、成本、回撤與校準誤差，禁止因提高選股數量而直接宣稱改善。 每個結論都必須記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、交易成本，以及對 System 1／System 2 的可驗證增量價值；未取得證據不得升級成熟度或進入 Formal（正式核心）。 | L0 未研究 | 0% |
+| D16-25 | Probabilistic Decision／Bayesian Updating／Uncertainty-aware Selection機率式決策、貝氏更新與不確定性選股 | 聚焦「Probabilistic Decision／Bayesian Updating／Uncertainty-aware Selection機率式決策、貝氏更新與不確定性選股」。研究如何把證據轉成可校準的機率、期望值與不確定性，而不是把更多研究模組堆成串聯硬門檻。必須明確區分HARD_INVALIDATION、PRIMARY_ALPHA、SUPPORTIVE、CONTEXT_ONLY、CONFIDENCE／UNCERTAINTY五種決策角色；UNKNOWN不得等同FAIL或0。研究Bayesian updating（貝氏更新）、base rate（基準率）、probability calibration（機率校準）、expected value／utility（期望值／效用）、abstention（不交易）與uncertainty penalty（不確定性折扣）。任何System 1／System 2應用都先走Prospective Shadow／OOS，並同時驗證機會捕捉率、zero-pick、false acceptance、成本、回撤與校準誤差，禁止因提高選股數量而直接宣稱改善。 每個結論都必須記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、交易成本，以及對 System 1／System 2 的可驗證增量價值；未取得證據不得升級成熟度或進入 Formal（正式核心）。專科 checkpoint（檢查點）已完成理論／機制、反證矩陣、機率校準指標、不確定性、ABSTAIN（不交易）、效用語意、母體防火牆、D15-19 handoff（交接）、可執行 evaluator（評估器）與反證測試，因此正式同步至 L2；L3 仍需完整台股 PIT 預測／結果與校準 receipt（憑證）。 | L2 機制＋反證已定義 | 40% |
 
 
 ### D18｜市場Regime×策略互動 — 37.3%
