@@ -824,3 +824,73 @@ A TPEx market-summary product has an explicit 17:20 production clock, proving th
 6. Continue PF with prospective ETF units-delta + PCF timestamp/corporate-action receipts; do not substitute AUM delta.
 7. Keep broker-branch beneficial-owner identity prohibited and require complete-universe/source-vintage evidence before alpha tests.
 8. Formal Core remains LOCKED; promotion status remains FALSIFICATION_IN_PROGRESS.
+
+## IC-044 — broker-branch source tiers: dealer-confound reduction can create selection bias
+
+Research cycle: 2026-10-04 Asia/Taipei
+Status: SOURCE_TIER_FALSIFICATION_ADVANCED / COST_GATED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Research artifact: `research/broker_branch_main_force_semantic_guard_v0_2.json`.
+
+Official TWSE products expose three materially different research universes:
+- public current-day BSR query: same-day branch execution view, but not a frozen historical bulk replay contract;
+- full all-stock report: 16:10 production, complete universe, but combines proprietary and brokerage-client flow; proprietary activity is aggregated to head office and the source is paid/cost-gated;
+- most-active-stock broker detail: 15:00 production and excludes proprietary trading, but selects securities by purchase turnover and therefore conditions the sample on activity/attention.
+
+Important falsification:
+Removing proprietary trading does NOT solve beneficial-owner identity. The selected active-stock product reduces dealer confounding but introduces sample-selection/collider risk. It cannot be used to claim full-market branch alpha.
+
+Therefore source denominator is part of the feature definition. Branch concentration/persistence statistics are comparable only inside an explicitly declared source tier and selection rule.
+
+D06-13 remains L2/40%. No authorized complete-universe replayable source is currently available without cost, and no purchase is authorized.
+
+---
+
+## IC-045 — day-trading surveillance threshold is not an alpha threshold; TPEx requires vintage-aware replay
+
+Research artifact: `research/day_trading_chip_crowding_semantic_guard_v0_2.json`.
+
+TWSE official day-trading product is produced at approximately 20:00 and supplies stock-level day-trading shares plus buy/sell values. This confirms a same-day source clock for TWSE.
+
+However TWSE's own surveillance rule is a strong falsifier against treating a popular threshold as alpha. The high-day-trading attention condition uses >60% day-trading-volume ratios over the latest six sessions and the prior session, with liquidity/activity exceptions and ETF/active-ETF exclusions.
+
+Research decision:
+`DAYTRADING_RATIO > 60% => BEARISH` and `=> BULLISH` are both rejected. The 60% level is a regulatory surveillance condition, not a predictive return cutoff.
+
+TPEx adds a separate PIT problem. Its stock-level day-trading figures are broker-reported and can be revised on T+1 and T+2; T+2 is final while T/T+1 are auxiliary. Publication completion on T day varies with broker processing.
+
+Therefore later historical TPEx values must not be backfilled as if they were the original T-day decision-time values. Required labels are `T_PRELIM`, `T1_REVISED`, `T2_FINAL` with actual capturedAt/firstKnownAt.
+
+D06-14 remains L2/40% because cross-market prospective replay is not yet validated even though TWSE's contract is strong.
+
+---
+
+## IC-046 — public-financial-institution identity is not the same object as the market 'eight-bank' trading proxy
+
+Research artifact: `research/state_owned_bank_flow_identity_guard_v0_1.json`.
+
+Ministry of Finance official public-financial-institution governance refers to a nine-bank set that includes the Export-Import Bank. Market/vendor 'eight state-owned-bank' trading aggregates are therefore not automatically the same entity universe.
+
+Four identity layers are now frozen separately:
+1. legal public financial institution;
+2. securities broker/branch used for execution;
+3. beneficial owner / investment book;
+4. government policy or stabilization mandate.
+
+A branch affiliated with a public financial group may execute customer orders, while a public bank can route its own trade through another broker. Likewise public-bank ordinary investment and government-fund/policy intervention are distinct economic actors.
+
+Therefore branch/proxy flow may support `PUBLIC_PROXY_FLOW_*` context states but cannot be labeled `GOVERNMENT_BUY`, `NATIONAL_STABILIZATION_FUND_BUY` or `POLICY_SUPPORT_BUY` without independent official mandate evidence.
+
+D06-15 remains L2/40% and CONTEXT_ONLY / WARNING_MODIFIER. The exact provider-specific member/broker-code map, vintage and customer-vs-proprietary semantics must be frozen before any empirical test.
+
+---
+
+## IC-047 — weekend continuation after source-identity deepening
+1. Do not promote D06-13/14/15 from documentation alone.
+2. Next valid trading day, preserve TPEx day-trading T-day preliminary receipt and later T+1/T+2 revisions for the same date; measure revision magnitude outcome-blind before any return join.
+3. Keep D06-13 complete-universe broker data cost-gated; selected active-stock products may be used only for selected-universe methodology tests, never full-market alpha claims.
+4. Freeze any future 'eight-bank' provider membership and broker-code vintage before use; policy motive stays UNKNOWN without independent official evidence.
+5. Continue IC-043/PF-040/D06-18 prospective capture lanes on the next valid trading day.
+6. H06/H12/H14 remain counterpart-pending until the total-control intake ledger receives all required room packets.
+7. Institutional component outcomes remain closed until independent D5+ and readiness gates pass.
+8. Formal Core remains LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
