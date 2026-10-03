@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import {
   HOT_HISTORY_MAX_SESSIONS_PER_RUN,
   planDailyShadowHotHistoryBootstrapV0_1,
+  runDailyShadowHotHistoryBootstrapV0_1,
 } from "../runtime/daily_shadow_hot_history_bootstrap_v0_1.mjs";
 
 const dates = Array.from({ length: 65 }, (_, i) => {
@@ -10,8 +11,13 @@ const dates = Array.from({ length: 65 }, (_, i) => {
   return d.toISOString().slice(0, 10);
 });
 
-function fakeDb(rows) {
+function fakeDb(rows, counters = { batchCalls: 0 }) {
   return {
+    counters,
+    async batch() {
+      counters.batchCalls += 1;
+      return [];
+    },
     prepare(sql) {
       assert.match(sql, /FROM s2_historical_a1_bars/);
       return {
@@ -96,4 +102,36 @@ await assert.rejects(
   /HOT_HISTORY_EXISTING_CANONICAL_AMBIGUITY/,
 );
 
-console.log("System2 bounded hot-history bootstrap planner tests passed");
+// A later source transport failure must occur before phase-2 D1 mutations.
+const counters = { batchCalls: 0 };
+const sourceCalls = [];
+await assert.rejects(
+  runDailyShadowHotHistoryBootstrapV0_1({
+    db: fakeDb([], counters),
+    runId: "TEST-PREFETCH-FAIL",
+    asOf: "2026-10-03T03:00:00.000Z",
+    sessionCount: 1,
+    tradingDateResolver: async () => ({ tradingDates: dates }),
+    historicalFetch: async (args) => {
+      sourceCalls.push(args);
+      if (args.market === "TPEX") throw new Error("ECONNRESET fixture");
+      return {
+        state: "READY",
+        market: args.market,
+        marketDate: args.marketDate,
+        sourceDateEvidence: args.marketDate,
+        ordinarySymbolCount: 500,
+        sourceId: "FIXTURE",
+        sourceUrl: "https://example.invalid",
+        rows: [],
+      };
+    },
+  }),
+  /ECONNRESET fixture/,
+);
+assert.equal(counters.batchCalls, 0, "no D1 batch write may occur until all sources validate");
+assert.equal(sourceCalls.length, 2);
+assert.equal(sourceCalls[0].retryAttempts, 5);
+assert.equal(sourceCalls[0].retryDelayMs, 1000);
+
+console.log("System2 bounded hot-history bootstrap planner/two-phase tests passed");
