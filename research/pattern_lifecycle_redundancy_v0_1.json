@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "pattern-lifecycle-redundancy-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "ladder": {
+    "C0_GEOMETRY_ONLY": [
+      "availableAirToParentLowerPct",
+      "distanceLocalToParentCenterPct",
+      "currentSignedCloseDistance",
+      "parentZoneAgeEligibleSessions",
+      "geometryRelationState"
+    ],
+    "C1_CONTINUOUS_PATH": [
+      "C0",
+      "eligibleBarsSinceBreak",
+      "observableBarsSinceBreak",
+      "constrainedBarsSinceBreak",
+      "maxFavorableExtension",
+      "maxAdverseExcursion",
+      "cumulativeSignedDistance"
+    ],
+    "C2_CLOCK_COMPLETE_PATH": [
+      "C1",
+      "localFirstBreakAt",
+      "firstParentZoneEntryAt",
+      "parentFirstBreakAt",
+      "parentFirstOrdinaryObservableAt",
+      "parentFirstPostBreakOutsideCloseAt",
+      "parentFirstReentryAt",
+      "parentFirstFailureAt",
+      "parentFirstReclaimAt"
+    ],
+    "C3_CATEGORICAL_LIFECYCLE": [
+      "C2",
+      "geometryRelationState",
+      "compoundLifecycleState",
+      "canonicalParentLifecycleState"
+    ]
+  },
+  "interpretation": [
+    "NO_NEW_SOURCE_INFO",
+    "PATH_MEMORY_RELATIVE_TO_GEOMETRY_ONLY",
+    "DETERMINISTIC_SUMMARY_OF_COMPLETE_PATH_BASIS",
+    "REPRESENTATION_NONLINEARITY_CANDIDATE",
+    "PREDICTIVE_INCREMENTALITY_UNKNOWN"
+  ],
+  "primaryRedundancyTest": "C3_INCREMENTAL_OVER_FLEXIBLE_C2",
+  "insufficientEvidence": [
+    "C3_BEATS_C0_ONLY",
+    "C3_BEATS_LINEAR_C2_ONLY"
+  ],
+  "killRules": [
+    "NO_STABLE_C3_VALUE_BEYOND_FLEXIBLE_C2",
+    "POST_OUTCOME_STATE_REGROUPING",
+    "EPISODE_OR_DATE_CONCENTRATION",
+    "EPISODE_HOLDOUT_COLLAPSE",
+    "NON_OVERLAPPING_DATE_COLLAPSE"
+  ],
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
