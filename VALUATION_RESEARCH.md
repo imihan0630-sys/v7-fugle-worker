@@ -527,3 +527,60 @@ Exact next:
 4. verify coverage/missingness and listing-age behavior;
 5. only then open the preregistered TWSE Historical-Valuation Shadow outcome join;
 6. keep TPEx outside the empirical cohort until public historical machine transport is directly verified or an authorized licensed lane exists.
+
+
+## VAL-032 — Bounded TWSE 5-year historical replay is source-ready
+
+Durable receipt:
+research/d08_twse_bounded_history_source_receipt_20261003_v0_1.json.
+
+A disposable read-only capture harness was executed in PR #381 and intentionally closed without merge. Final exact-head verification:
+- System2 Research CI run 37122478859: PASS;
+- V8 Regression run 37122478893: PASS.
+
+Two failed attempts are retained as evidence rather than erased:
+1. a 2026-10 monthly query first used 2026-10-31, which TWSE correctly rejected as future-dated on 2026-10-03. The collector was corrected to latest completed session 2026-10-02.
+2. the 3593 fixture first assumed a normal pre-event 2025-12-19 session. The verified corporate-action lifecycle instead requires old-share last trading session 2025-12-10 -> new-share resume session 2025-12-22.
+
+This freezes two replay invariants:
+- month-level source convenience may never cross the replay asOf;
+- corporate-action joins use legal exchange sessions, not adjacent calendar dates.
+
+## VAL-033 — Window sensitivity is empirically material before any return join
+
+Official TWSE monthly history for 1102 亞泥 produced 1,300 valuation rows from 2021-06-01 through 2026-10-02.
+
+At 2026-10-02:
+- PE = 9.83;
+- PB = 0.68.
+
+Average-rank historical percentile:
+- PE252 = 0.11554;
+- PE756 = 0.03841;
+- PE1260 = 0.15171;
+- PE expanding = 0.14781;
+- PB252 = 0.22908;
+- PB756 = 0.07616;
+- PB1260 = 0.04567;
+- PB expanding = 0.04426.
+
+Therefore window choice can materially change the numerical rank even before any return outcome is inspected. The preregistered parallel-window design is retained. Selecting the best window by later returns remains prohibited.
+
+This is not a statement that 1102 is cheap or attractive. It is source/mechanics evidence only.
+
+## VAL-034 — Structural-break and missingness controls passed on real TWSE history
+
+Real source-only controls:
+- 9904 寶成: 2026-08-12 fiscal period 115/1 PE/PB 6.60/0.47 -> 2026-08-13 fiscal period 115/2 5.06/0.38. Denominator-period transition remains a required context tag.
+- 3593 力銘: old-share last trading 2025-12-10 has PE unavailable/PB 4.35; new-share resume 2025-12-22 has PE unavailable/PB 6.61, same reported fiscal period 114/3. Corporate-action unit-scale boundary must not be read as ordinary continuous repricing.
+- 7812 稜研科技*-創: official listing 2026-09-22; only 7 valuation rows through 2026-10-02, PE valid count 0 and PB valid count 7. 252/756/1260 percentile eligibility is false.
+- 1101 台泥: 2026-10-02 PE unavailable while PB=0.82. PE missing and PB known remain independent states.
+
+D08-03 remains L3/60. This strengthens source/replay integrity but does not satisfy L4 prospective/OOS outcome evidence.
+
+Exact next:
+1. freeze a broader multi-symbol TWSE cohort construction rule before returns;
+2. precompute immutable source-only percentile snapshots on selected scan dates;
+3. add raw valuation, sector/peer, size/liquidity, trend/RS, regime and denominator-transition controls without inspecting outcomes;
+4. only then open the already preregistered TWSE-only Historical-Valuation Shadow outcome join;
+5. TPEx remains excluded from inference until historical machine transport or an authorized licensed history lane is verified.
