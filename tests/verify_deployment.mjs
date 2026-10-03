@@ -5,6 +5,27 @@ const worker = await readFile(process.env.V7_TEST_WORKER_PATH || 'Worker.js', 'u
 const expectedVersion = worker.match(/const VERSION = "([^"]+)";/)?.[1];
 assert.ok(expectedVersion, 'Worker runtime version must be explicit');
 const origin = 'https://fugle-test.imihan0630.workers.dev';
+
+async function fetchReadOnlyWithRetry(url,{attempts=3,timeoutMs=20000,delayMs=3000}={}) {
+  let lastError=null;
+  for(let attempt=1;attempt<=attempts;attempt++) {
+    try {
+      const response=await fetch(url,{
+        method:'GET',cache:'no-store',
+        headers:{'accept':'application/json','user-agent':'V7-GitHub-Deploy-Verify/1.0'},
+        signal:AbortSignal.timeout(timeoutMs)
+      });
+      if(response.status===401||response.status===403) throw new Error('READ_ONLY_VERIFY_AUTH_REJECTED_'+response.status);
+      if(response.ok) return response;
+      lastError=new Error('READ_ONLY_VERIFY_HTTP_'+response.status);
+    } catch(error) {
+      if(String(error?.message||'').startsWith('READ_ONLY_VERIFY_AUTH_REJECTED_')) throw error;
+      lastError=error;
+    }
+    if(attempt<attempts) await new Promise(resolve=>setTimeout(resolve,delayMs));
+  }
+  throw lastError||new Error('READ_ONLY_VERIFY_FAILED');
+}
 let runtime;
 // Cloudflare accepted uploads can propagate beyond the original 15-second window.
 // Retry only read-only checks; never repeat the code upload here.
@@ -52,7 +73,7 @@ if (versionAtLeast(expectedVersion)) {
 if (process.env.V7_DEPLOY_BASELINE_PATH) {
   const baseline = JSON.parse(await readFile(process.env.V7_DEPLOY_BASELINE_PATH,'utf8'));
   assert.equal(runtime.testMode, baseline.testMode, 'Deployment must not alter TEST_MODE');
-  const response = await fetch(origin + '/?format=json', {signal:AbortSignal.timeout(10000)});
+  const response = await fetchReadOnlyWithRetry(origin + '/?format=json');
   assert.equal(response.ok, true);
   const after = await response.json();
   assert.equal(after.configUpdatedAt, baseline.configUpdatedAt, 'Code deployment must not overwrite stock configuration');
