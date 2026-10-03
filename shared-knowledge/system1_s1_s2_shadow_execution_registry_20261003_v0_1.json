@@ -1,6 +1,6 @@
 {
   "schemaVersion": "SYSTEM1_S1_S2_SHADOW_EXECUTION_REGISTRY_V0_1",
-  "updatedAt": "2026-10-03T15:28:00+08:00",
+  "updatedAt": "2026-10-03T15:40:00+08:00",
   "status": "S1_S2_RESEARCH_SEQUENCE_FROZEN_CLASS_A_ONLY_FORMAL_CORE_LOCKED",
   "sequence": [
     {
@@ -24,9 +24,14 @@
     {
       "id": "S2B",
       "name": "TARGET_FOUR_STATE_SIDE_STUDY",
-      "status": "SPEC_FROZEN",
+      "status": "IMPLEMENTED_RESEARCH_ONLY_CI_GREEN_OUTCOME_PENDING",
       "parent": "shared-knowledge/SYSTEM1_TARGET_AVAILABLE_FOUR_STATE_FALSIFICATION_CONTRACT_20261003_V0_1.md",
-      "decisionImpact": false
+      "decisionImpact": false,
+      "pr": 362,
+      "mergeSha": "3948da9f6722844ee26f3a9dbe6340ed0a21e49b",
+      "checkpoint": "research/SYSTEM1_TARGET_FOUR_STATE_CHECKPOINT_20261003.md",
+      "sideChannelVersion": "TARGET_AVAILABLE_FOUR_STATE_V0_1",
+      "legacyGatePreserved": true
     },
     {
       "id": "OUTCOME",
