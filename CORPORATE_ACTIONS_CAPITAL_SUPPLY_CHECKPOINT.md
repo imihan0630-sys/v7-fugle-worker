@@ -383,3 +383,16 @@ Exact next:
 1. D11-16 obtain one official issuer-level custody release -> transfer declaration -> later holdings/untransferred chain, including an eligible-but-not-sold control.
 2. D11-18/19 collect complete tender/deal success plus failure/extension/reprice lifecycles.
 3. D11-17 deepen native immutable MOPS version capture before any L4 outcome cohort.
+
+## 2026-10-03 late continuation — D11-18 tender-offer L3
+
+- New receipt: `research/d11_18_tender_offer_pit_receipt_v0_1.json`.
+- D11-18 advances L2 -> L3 for Taiwan PIT/source feasibility.
+- Bounded states observed: completed success, oversubscription, regulator-driven extension and post-expiry correction.
+- Filing, minimum threshold, regulator approval, condition achievement, period expiry, actual transaction and payment/settlement remain separate clocks.
+- A native minimum-not-met/withdrawn/regulatory-failure case is still required before L4/outcome work.
+- D11 canonical maturity = 53.7%.
+- No return/spread outcome, no Formal change.
+
+Exact next:
+D11-16 official release-to-sale chain; D11-19 merger/spin-off terms + break/reprice/extension lifecycles; D11-18 native failed-tender negative control before L4.
