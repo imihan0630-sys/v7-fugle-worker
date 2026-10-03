@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "D22_01_MATURITY_REPLAY_V0_1",
+  "generatedAt": "2026-10-03T14:04:00+08:00",
+  "status": "RESEARCH_ONLY / PIT_REPLAY_SEED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "governance": {
+    "unknownIsNotZero": true,
+    "preserveRawBuckets": true,
+    "syntheticDisaggregationForbidden": true,
+    "totalContractualWallNotEqualFinancingWall": true,
+    "laterEventsDoNotRewritePriorPitState": true
+  },
+  "receipts": [
+    {
+      "issuer": "TSMC",
+      "twseSymbol": "2330",
+      "periodEnd": "2023-12-31",
+      "publishedAt": "2024-04-18",
+      "knownAt": "2024-04-18",
+      "sourceType": "official Form 20-F",
+      "sourceUrl": "https://investor.tsmc.com/sites/ir/sec-filings/2023%2020F.pdf",
+      "provenanceStatus": "REVALIDATED_2026-10-03",
+      "currency": "TWD_million",
+      "observations": [
+        {
+          "liabilityClass": "hedging_bank_loans",
+          "financingFlag": true,
+          "amountSemantics": "contractual_principal_interest",
+          "rawMaturityBucket": "<1y",
+          "amount": 27290
+        },
+        {
+          "liabilityClass": "long_term_debt",
+          "financingFlag": true,
+          "amountSemantics": "contractual_principal_interest",
+          "rawMaturityBucket": "<1y",
+          "amount": 27262
+        },
+        {
+          "liabilityClass": "long_term_debt",
+          "financingFlag": true,
+          "amountSemantics": "contractual_principal_interest",
+          "rawMaturityBucket": "1-3y",
+          "amount": 227952
+        },
+        {
+          "liabilityClass": "long_term_debt",
+          "financingFlag": true,
+          "amountSemantics": "contractual_principal_interest",
+          "rawMaturityBucket": "3-5y",
+          "amount": 304110
+        },
+        {
+          "liabilityClass": "long_term_debt",
+          "financingFlag": true,
+          "amountSemantics": "contractual_principal_interest",
+          "rawMaturityBucket": ">5y",
+          "amount": 583364
+        },
+        {
+          "liabilityClass": "purchase_commitments",
+          "financingFlag": false,
+          "amountSemantics": "contractual_obligation",
+          "rawMaturityBucket": "<1y",
+          "amount": 1060587
+        }
+      ],
+      "notes": [
+        "Aggregate long-term debt carrying amount at period end was NT$927,576m; current classification was NT$9,293m. These semantics must not be substituted for contractual maturity cash flows."
+      ]
+    },
+    {
+      "issuer": "UMC",
+      "twseSymbol": "2303",
+      "periodEnd": "2023-12-31",
+      "publishedAt": "2024-04-25",
+      "knownAt": "2024-04-25",
+      "sourceType": "official annual-report archive + Form 20-F filing announcement",
+      "sourceUrl": "https://www.umc.com/zh-TW/Download/annual_reports",
+      "provenanceStatus": "SOURCE_VERSION_REVALIDATED / ROW_VALUES_PRIOR_RESEARCH_RECHECK_PENDING",
+      "currency": "TWD_million",
+      "observations": [],
+      "notes": [
+        "Historical official archive and first-known filing date are independently revalidated. Exact maturity-row amounts from prior research remain excluded from this seed until row-level source revalidation is repeated; missing row values remain UNKNOWN rather than copied from memory."
+      ]
+    },
+    {
+      "issuer": "Taiwan Cement",
+      "twseSymbol": "1101",
+      "periodEnd": "2023-12-31",
+      "publishedAt": "2024-02-27",
+      "knownAt": "2024-02-27",
+      "sourceType": "official unconsolidated financial statements",
+      "sourceUrl": "https://www.tccgroupholdings.com/uploads/files/shares/report/2023/2023%204Q%20Unconsolidated%20Financial%20Statements.pdf",
+      "provenanceStatus": "REVALIDATED_2026-10-03",
+      "currency": "TWD_thousand",
+      "verifiedFacilityAmount": 70139767,
+      "facilityQuality": "UNDRAWN_BANK_FACILITY_DISCLOSED / COMMITMENT_QUALITY_NOT_FULLY_PROVEN",
+      "observations": [
+        {
+          "liabilityClass": "non_interest_bearing",
+          "financingFlag": false,
+          "amountSemantics": "contractual_undiscounted_principal_estimated_interest",
+          "rawMaturityBucket": "<1y",
+          "amount": 6349618
+        },
+        {
+          "liabilityClass": "lease",
+          "financingFlag": false,
+          "amountSemantics": "contractual_undiscounted_principal_estimated_interest",
+          "rawMaturityBucket": "<1y",
+          "amount": 298629
+        },
+        {
+          "liabilityClass": "floating_rate",
+          "financingFlag": true,
+          "amountSemantics": "contractual_undiscounted_principal_estimated_interest",
+          "rawMaturityBucket": "<1y",
+          "amount": 9551774
+        },
+        {
+          "liabilityClass": "fixed_rate",
+          "financingFlag": true,
+          "amountSemantics": "contractual_undiscounted_principal_estimated_interest",
+          "rawMaturityBucket": "<1y",
+          "amount": 13672386
+        },
+        {
+          "liabilityClass": "floating_rate",
+          "financingFlag": true,
+          "amountSemantics": "contractual_undiscounted_principal_estimated_interest",
+          "rawMaturityBucket": "1-5y",
+          "amount": 31208138
+        },
+        {
+          "liabilityClass": "fixed_rate",
+          "financingFlag": true,
+          "amountSemantics": "contractual_undiscounted_principal_estimated_interest",
+          "rawMaturityBucket": "1-5y",
+          "amount": 43701593
+        }
+      ],
+      "notes": [
+        "The disclosure states earliest required repayment date and undiscounted cash flows including principal and estimated interest. Facility headline is not treated as cash-equivalent without commitment-quality fields."
+      ]
+    }
+  ],
+  "commonSupportPolicy": {
+    "safeBuckets": [
+      "<1y"
+    ],
+    "conditionalBuckets": [
+      "1-5y",
+      ">5y"
+    ],
+    "rule": "Only aggregate finer reported buckets upward. Never infer or split coarse intervals."
+  },
+  "nextValidation": [
+    "Revalidate UMC 2023 maturity rows at source level and populate observations without memory carry-forward.",
+    "Add capturedAt and immutable source receipt hashes where collector support exists.",
+    "Reconcile balance-sheet current portions against contractual tables without double counting.",
+    "Freeze D07 and D13 PIT baselines plus outcome horizons before opening equity return labels."
+  ]
+}
