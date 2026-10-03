@@ -22601,3 +22601,17 @@ Research-only repair v0.2/v0.4 canonicalizes these semantics and adds the missin
 RG2_CORE_V0_1 is therefore DESIGN_OBSERVABLE but still PROSPECTIVE_RUNTIME_BLOCKED.
 
 No outcome join, no score/gate/rank change, no R09. D01 remains 51.7%; Formal Core LOCKED.
+
+# DL-017 — RG2 lifecycle transition-event identity (2026-10-03)
+
+RG2 state snapshots and transition events are now separate objects. A five-day HOLDING_ABOVE state is one continuing state, not five hold events.
+
+The event contract separates eventOccurredAt, eventAvailableAt and firstObservedAt. Current state cannot be reverse-engineered into a certified first-event clock when intermediate eligible symbol-session history is incomplete.
+
+Failure is explicitly nested inside reentry. A direct close through the entire parent zone may create both PARENT_REENTRY and PARENT_FAILURE semantic labels on the same date, but both share one sourceEventGroupKey and never become two independent votes.
+
+Event identity excludes the first-event date. This deliberately makes same event key + changed first clock a provenance conflict. Boundary-version changes create a new relationEpisodeKey and new event lineage.
+
+The most important PIT firewall is append-only future-event handling: a later failure can be used as a future structural outcome for an earlier parent, but must never be written back into that earlier parent child.
+
+Shared-child v0.5 preregisters all lifecycle-clock fields while keeping runtime NO_GO. Fifteen adversarial tests are authored but TEST_EXECUTION_PENDING. No outcomes or Formal rules changed.
