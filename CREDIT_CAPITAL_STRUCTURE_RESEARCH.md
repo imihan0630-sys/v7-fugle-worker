@@ -1,6 +1,6 @@
 # Credit / Capital Structure Research
 
-Updated: 2026-10-04 00:24 Asia/Taipei
+Updated: 2026-10-04 07:22 Asia/Taipei
 Scope: D22
 Status: ACTIVE_RESEARCH / D22-01 L3_WAITING_PANEL / D22-02 L2_ACTIVE / D22-03 L2_MECHANISM_DEFINED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
@@ -142,7 +142,7 @@ Candidate state remains FALSIFICATION_IN_PROGRESS. Formal Core remains LOCKED. N
 2. Explicitly test unrestricted-cash vs total-cash offset, lease-liability inclusion, and gross-debt vs net-debt views without outcomes.
 3. Continue D22-02 cross-industry interest-coverage replay and D22-01 multi-date maturity panel in parallel; do not open stock outcomes.
 
-## 2026-10-04 07:43 continuation｜D22-02 / D22-03 promotion + D22-04 launch
+## 2026-10-04 07:22 continuation｜D22-02 / D22-03 promotion + D22-04 launch
 
 ### D22-02 current maturity
 L3 / 60% — cross-industry, multi-date Taiwan PIT replay validated; outcomes remain CLOSED.
