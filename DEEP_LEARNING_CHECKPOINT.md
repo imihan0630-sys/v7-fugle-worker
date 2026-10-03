@@ -1231,3 +1231,48 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Maturity remains D08-03 L3/60; no OOS/Shadow return evidence yet.
 - FORMAL_OPTIMIZATION_CANDIDATE = NONE; Formal Core LOCKED.
 - Exact next: broader TWSE cohort/scan-date freeze -> immutable source-only percentile snapshots -> baseline/control freeze -> TWSE-only Shadow outcome join. TPEx stays out until its historical machine lane is verified.
+
+
+## DL-D21-20261004 — Insider clock / controller de-dup / pledge risk
+Run date: 2026-10-04 Asia/Taipei
+Scope: D21-03 / D21-04
+Status: RESEARCH_ONLY / D21-03_L2_PARTIAL_REPLAY / D21-04_L2_MECHANISM_DEFINED / FORMAL_CORE_UNCHANGED
+
+### Question studied
+Can Taiwan insider-transfer and pledge disclosures add governance/risk information without creating look-ahead, double-counting related entities, or converting personal-liquidity events into false directional trading signals?
+
+### Evidence and provenance
+1. Official Taiwan source contracts identify separate daily pre-transfer filings, untransferred-status reporting and monthly post-report holding changes. The legal reporting clocks are not interchangeable.
+2. Hon Hai 2317, 2025-12-01 provides a concrete cluster-de-duplication case: two same-day transfer filings totaling 5,180 lots were made by nominee-held legal entities associated with the same ultimate major-shareholder network.
+3. Relative-size interpretation changes by denominator: each filing entity intended to transfer 100% of its own reported holding, while the combined 5,180 lots were about 0.30% of the ultimate major shareholder's publicly reported total Hon Hai holding.
+4. Secondary MOPS-derived monthly pages are consistent with full December completion and zero untransferred shares, but the original monthly MOPS first-known receipt was not captured in this run; exact known_at therefore remains UNKNOWN.
+5. Taiwan pledge literature and official rules support multiple mechanisms: personal liquidity, margin-call pressure, controller agency/control retention, corporate-policy spillover and voting-right effects. Company Act Article 197-1 makes very high director pledging potentially relevant to exercisable voting rights.
+
+### Supporting mechanism
+- Controller-level de-duplication can prevent the system from mistaking several related legal entities for independent insider consensus.
+- Multi-denominator normalization can distinguish a transfer that is large for a shell/nominee entity but small for the ultimate controller.
+- Pledge setup/release may add governance-tail-risk context when combined with price drawdown, controller structure, insider transfers and financing/capital-allocation events.
+
+### Counter-evidence / alternative explanations
+- Insider sales can reflect liquidity, diversification, gift, trust, tax, estate or restructuring motives rather than negative private information.
+- Taiwan transfer-announcement effects are heterogeneous by transfer type, firm size and price context.
+- Cluster effects documented internationally may be inflated by overlapping observations or may not transfer directly to Taiwan.
+- Pledging can be a benign liquidity tool; regulatory environment and ownership structure materially condition its consequences.
+- Without loan-to-value, maintenance ratio and collateral contract terms, a margin-call price is not observable and must remain UNKNOWN.
+
+### Bias / overfit / redundancy checks
+- Do not use raw filing-row count as independent cluster count.
+- De-duplicate to related group / ultimate controller before statistical inference.
+- Use issuer-date or non-overlapping event clusters as independent units; repeated rows/programs do not increase independent sample count.
+- Control event size, prior return, liquidity, 52-week position, transfer method, pledge state, controller wedge, accounting quality and nearby news/corporate actions.
+- Keep D21-03 distinct from D06 ownership flow and D07 accounting quality; test incremental value rather than double-counting.
+- Keep D21-04 distinct from D22 financing stress while preserving cross-domain dependency.
+- UNKNOWN exact MOPS timestamps or loan terms remain UNKNOWN, never zero/negative.
+
+### Candidate handoff status
+- D21-03: FALSIFICATION_IN_PROGRESS. Historical replay is partial; exact original monthly MOPS known_at remains missing. Not eligible for Formal optimization.
+- D21-04: FALSIFICATION_IN_PROGRESS. Mechanisms and falsification contract are defined at L2; historical pledge setup/release replay is still required.
+- No FORMAL_OPTIMIZATION_CANDIDATE is created. Formal Core remains LOCKED.
+
+### Exact next continuation point
+Build a historical Taiwan D21-04 pledge replay with at least one pledge setup and one release event, preferably the same issuer/controller. Preserve original known_at, filer-level and controller-group pledge ratios, contemporaneous price path, related insider transfers, repurchase/financing context and Article 197-1 voting-right relevance. Never infer a margin-call threshold without contract terms. Separately preserve D21-03 original monthly MOPS receipt as a pending source dependency and add a second independent transfer-motive case before considering L3.
