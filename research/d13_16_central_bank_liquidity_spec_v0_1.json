@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D13-16",
+  "name": "Central-bank balance sheet / system liquidity contract",
+  "status": "CONCEPT_AND_FALSIFICATION_FROZEN__PIT_INCREMENTAL_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-10-03T18:29:06+08:00",
+  "objectSeparation": {
+    "FED_ASSET_STOCK": "SOMA securities and other Reserve Bank assets; balance-sheet stock, not equivalent to current system liquidity.",
+    "RESERVE_BALANCES": "Depository-institution balances at Federal Reserve Banks; core banking-system reserve quantity.",
+    "TGA": "U.S. Treasury General Account, a non-reserve Fed liability whose changes can mechanically shift reserves absent offsetting asset changes.",
+    "ON_RRP": "Overnight reverse-repo balances; a separate Fed liability/liquidity-absorption channel.",
+    "CURRENCY": "Currency in circulation; non-reserve liability that can reduce reserve supply as it grows absent offsetting asset changes.",
+    "ADMINISTERED_RATES": "IORB/ON-RRP/SRF policy-implementation prices; not balance-sheet quantities.",
+    "MONEY_MARKET_STRESS": "EFFR-IORB/repo-rate/SRF usage and related signals of reserve scarcity/distribution."
+  },
+  "balanceSheetIdentity": {
+    "principle": "Assets = liabilities + capital. Reserve balances are residual to asset-side and non-reserve-liability movements, not a direct synonym for total assets.",
+    "implication": "A decline in Fed assets can coexist with temporarily stable/rising reserves if TGA/ON-RRP/other liabilities move in the offsetting direction; likewise assets can be stable while reserves fall as TGA or currency rises."
+  },
+  "ampleReservesFramework": {
+    "officialFramework": "Federal Reserve currently implements policy in an ample-reserves regime, relying primarily on administered rates rather than active fine-tuning of reserve quantity.",
+    "thresholdGuard": "Ample is a range, not a fixed reserve-balance number; reserve demand changes with banking/payment/regulatory conditions.",
+    "moneyMarketIndicators": [
+      "EFFR relative to IORB",
+      "repo pressures",
+      "SRF usage",
+      "ON RRP usage",
+      "reserve distribution"
+    ]
+  },
+  "systemLiquidity": {
+    "descriptiveCandidate": "reserveBalances + selected ON_RRP balances only under an explicitly frozen accounting purpose",
+    "guard": "No universal 'net liquidity = Fed assets - TGA - ONRRP' alpha formula without precise liability coverage, accounting identity and mechanism. Popular net-liquidity formulas are heuristic and can omit currency/other liabilities and reserve-demand effects.",
+    "tgaMechanics": "A TGA drawdown can mechanically raise reserves/system liquidity; a TGA rebuild can drain reserves, absent offsets.",
+    "onRrpMechanics": "ON RRP can absorb/release liquidity across counterparties and can shrink while reserves remain ample; its level is regime-dependent."
+  },
+  "sources": {
+    "H41": {
+      "source": "Federal Reserve H.4.1 Factors Affecting Reserve Balances",
+      "frequency": "weekly",
+      "keyFields": [
+        "reserve balances",
+        "securities held outright",
+        "reverse repurchase agreements",
+        "Treasury General Account",
+        "currency in circulation",
+        "other deposits/liabilities"
+      ],
+      "pitGuard": "release date/vintage and Wednesday/reference-period semantics must be preserved."
+    },
+    "NYFed": {
+      "source": "Federal Reserve Bank of New York implementation communications/data",
+      "use": "ample-reserve framework, RRP/SRF/reserve-management mechanics and money-market state",
+      "guard": "speeches/explanations are mechanism evidence; live operational data need their own receipt clocks."
+    }
+  },
+  "candidateFeatures": [
+    "reserveBalanceLevelAndChange",
+    "tgaLevelAndChange",
+    "onRrpLevelAndChange",
+    "reserveDrainDecomposition",
+    "h41LiabilityMix",
+    "moneyMarketScarcityState",
+    "balanceSheetFlowVsStockDivergence"
+  ],
+  "prohibitedShortcuts": [
+    "Fed balance sheet up = equities up",
+    "Fed balance sheet down = equities down",
+    "TGA down = permanent liquidity injection",
+    "ON RRP down = guaranteed risk-on",
+    "net liquidity = assets - TGA - ONRRP as an accounting identity or standalone alpha signal",
+    "one weekly H.4.1 change mechanically predicts next Taiwan session"
+  ],
+  "taiwanTransmission": [
+    "U.S. dollar funding/liquidity conditions",
+    "Treasury/repo/discount-rate conditions",
+    "global risk appetite and leverage",
+    "cross-border capital flow",
+    "U.S. tech/semiconductor valuation and demand"
+  ],
+  "redundancyOrder": [
+    "Taiwan market/sector Regime",
+    "U.S. rates and curve",
+    "USD/TWD / broad dollar",
+    "VIX/credit/financial conditions",
+    "then balance-sheet/liquidity decomposition"
+  ],
+  "falsification": [
+    "separate Fed asset-stock changes from reserve-balance changes",
+    "decompose reserve change into TGA/ON-RRP/currency/other-liability contributions where feasible",
+    "test abundant/ample/stress regimes separately",
+    "week/reference-date alignment to Taiwan decision clock",
+    "compare balance-sheet state against money-market prices and FCI components",
+    "date-shift placebo and crisis/debt-limit/tax-date stratification",
+    "no outcome-selected net-liquidity formula"
+  ],
+  "maturityDecision": {
+    "from": "L0",
+    "to": "L2",
+    "reason": "Balance-sheet stocks, reserve/liability flows, ample-reserve regime, source clocks, Taiwan transmission, redundancy and falsification are defined; no Taiwan prospective/OOS evidence for L3."
+  },
+  "exactNext": [
+    "Capture official H.4.1 vintage with release/reference date and component decomposition.",
+    "Build a source-only reserve-liquidity identity receipt before any market outcomes.",
+    "Continue D13-17 trade/geopolitical/capital-flow transmission after freezing event and flow clocks.",
+    "No net-liquidity trading score or Formal use without independent PIT evidence."
+  ]
+}
