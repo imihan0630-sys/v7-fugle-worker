@@ -162,3 +162,13 @@ Machine-readable state graph:
 `shared-knowledge/curriculum_coverage_governance_state_machine_v0_1.json`
 
 No COV candidate may skip a listed governance transition. Partial evidence and specialist recommendations remain non-terminal until the required intake, dependency, overlap, anti-orphan and owner gates are satisfied.
+
+
+## Coverage executable return validator — 2026-10-03
+
+Artifacts:
+- `research/curriculum_coverage_return_validator_v0_1.mjs`
+- `tests/test_curriculum_coverage_return_validator_v0_1.mjs`
+- `research/CURRICULUM_COVERAGE_RETURN_VALIDATOR_CHECKPOINT_20261003.md`
+
+The validator fails closed on incomplete 10-field returns, ambiguous terminal recommendations, UNKNOWN coercion, illegal state transitions and skipped structural governance gates.
