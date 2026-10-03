@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "D22_03_VERSION_LINEAGE_V0_1",
+  "generatedAt": "2026-10-04T07:34:00+08:00",
+  "status": "PIT_VERSION_LINEAGE_FROZEN / OUTCOMES_CLOSED",
+  "issuer": "ASE Technology Holding",
+  "periodEnd": "2023-12-31",
+  "firstKnown": {
+    "knownAt": "2024-02-01",
+    "sourceType": "SEC_6K",
+    "shortTermBorrowingsTWDmillion": 53042
+  },
+  "laterComparative": {
+    "knownAt": "2025-03-27",
+    "sourceType": "SEC_20F_LATER_COMPARATIVE",
+    "shortTermBorrowingsTWDmillion": 37737.217,
+    "presentation": "RETROSPECTIVELY_ADJUSTED_2023"
+  },
+  "rule": "Later audited/restated comparative values append a new version and never overwrite the earlier first-known state.",
+  "falsification": "If an apparent D22-03 effect requires latest-restated values unavailable at the historical decision time, the effect fails PIT validity."
+}
