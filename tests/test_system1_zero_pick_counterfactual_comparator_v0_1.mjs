@@ -92,3 +92,4 @@ console.log(JSON.stringify({
   fullTupleRequired:true,pitKnownAtRequired:true,formalCoreImpact:false,
 }));
 await import("./test_system1_zero_pick_rank_input_observer_v0_1.mjs");
+await import("./test_system1_zero_pick_research_pipeline_v0_1.mjs");
