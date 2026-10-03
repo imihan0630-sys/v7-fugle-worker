@@ -1,0 +1,230 @@
+{
+  "schemaVersion": "D06_IC039_RECEIPT_PRODUCT_MATRIX_V0_2",
+  "supersedes": "research/d06_ic039_receipt_product_matrix_v0_1.json",
+  "updatedAt": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeDataUsed": false,
+  "formalCoreImpact": false,
+  "status": "OUTCOME_BLIND_PRODUCT_MATRIX_FROZEN / BORROW_ECONOMICS_LAYER_ADDED / 20260601_FEE_PAYMENT_VINTAGE_FROZEN / PROSPECTIVE_RECEIPTS_REQUIRED",
+  "governance": {
+    "missingEvidence": "UNKNOWN",
+    "historicalDownloadCannotCreateHistoricalFirstKnownAt": true,
+    "compositeFirstKnownAt": "max(firstKnownAt of all required components)",
+    "substitutionForbidden": true,
+    "paidDataAutonomousPurchaseForbidden": true,
+    "feePaymentCashflowIsNotShortDemand": true,
+    "trueUtilizationRequiresVerifiedLendableInventory": true
+  },
+  "exposures": {
+    "A": {
+      "name": "genericSecuritiesBorrowing",
+      "semantic": "borrowed-not-yet-returned stock/flow; not realized short sale",
+      "normalization": [
+        "ADV20",
+        "ownHistoryPercentile"
+      ],
+      "directionalPrior": "NONE"
+    },
+    "B": {
+      "name": "actualSblShortSaleFlow",
+      "semantic": "realized borrowed-stock market short-sale flow; hedge/arbitrage confounded",
+      "normalization": [
+        "dailyVolume",
+        "ADV20"
+      ],
+      "directionalPrior": "CONDITIONAL"
+    },
+    "C": {
+      "name": "actualSblShortSaleBalance",
+      "semantic": "realized SBL short-sale balance outstanding",
+      "normalization": [
+        "ADV20",
+        "ownHistoryPercentile"
+      ],
+      "directionalPrior": "CONDITIONAL"
+    },
+    "D": {
+      "name": "marginShort",
+      "semantic": "margin-short stock/flow; separate from SBL short",
+      "normalization": [
+        "ADV20",
+        "ownHistoryPercentile"
+      ],
+      "directionalPrior": "CONDITIONAL"
+    },
+    "E": {
+      "name": "twoSidedCrowding",
+      "semantic": "margin-long crowding plus actual SBL-short crowding; disagreement/fragility state",
+      "normalization": [
+        "componentwise"
+      ],
+      "directionalPrior": "VOLATILITY_RISK_FIRST"
+    },
+    "F": {
+      "name": "borrowEconomics",
+      "semantic": "trade-time borrow rate plus displayed supply/demand/availability under exact transaction-type and rule-vintage semantics",
+      "requiredFields": [
+        "transactionType",
+        "borrowRateAtTrade",
+        "agreedAt",
+        "firstKnownAt",
+        "displayedLendQty",
+        "displayedBorrowQty",
+        "bestRateDepthWhenAvailable",
+        "sourceScope",
+        "settlementRuleVintage",
+        "feeSettlementDate",
+        "feePaymentDate"
+      ],
+      "forbiddenProxy": [
+        "dailyFeePaidAsShortDemand",
+        "borrowBalanceAsTrueUtilization",
+        "shortQuotaAsLendableInventory"
+      ],
+      "directionalPrior": "NONE_UNTIL_INCREMENTAL_VALIDATION"
+    }
+  },
+  "feeRuleVintage": {
+    "changeEffectiveDate": "2026-06-01",
+    "officialSource": "TWSE securities-lending fee payment mechanism adjustment",
+    "preState": "returned/partially returned positions triggered next-business-day fee processing under prior mechanism",
+    "postState": {
+      "outstandingPositions": "monthly fee calculation/payment",
+      "negotiatedReturns": "monthly centralized settlement/payment",
+      "fixedPriceCompetitiveBidEarlyReturns": "next-business-day payment remains"
+    },
+    "researchGuard": "Separate borrowRateAtTrade/accrual from settlement/payment cashflow. Any daily paid-fee series spanning 2026-06-01 is structurally confounded unless vintage-adjusted."
+  },
+  "products": [
+    {
+      "market": "TWSE",
+      "productCode": "TWT72U",
+      "semantic": "genericSecuritiesBorrowing",
+      "producedAtContract": "20:30",
+      "contractClockStatus": "VERIFIED",
+      "access": "PAID_PRODUCT",
+      "useFor": [
+        "A"
+      ],
+      "notUseFor": [
+        "B",
+        "C",
+        "F_TRUE_UTILIZATION"
+      ]
+    },
+    {
+      "market": "TWSE",
+      "productCode": "TWT93U",
+      "semantic": "marginShort+actualSblShortSaleFlow+actualSblShortSaleBalance",
+      "producedAtContract": "23:30",
+      "contractClockStatus": "VERIFIED",
+      "access": "PAID_PRODUCT",
+      "useFor": [
+        "B",
+        "C",
+        "D"
+      ],
+      "notUseFor": [
+        "A",
+        "F_TRUE_UTILIZATION"
+      ]
+    },
+    {
+      "market": "TPEx",
+      "productCode": "Margin_SBL.csv",
+      "semantic": "marginShort+actualSblShortSaleFlow+actualSblShortSaleBalance",
+      "producedAtContract": "22:00",
+      "contractClockStatus": "VERIFIED",
+      "access": "PAID_PRODUCT_NOT_AUTHORIZED",
+      "useFor": [
+        "B",
+        "C",
+        "D"
+      ],
+      "notUseFor": [
+        "marginLong",
+        "F_TRUE_UTILIZATION"
+      ]
+    },
+    {
+      "market": "TWSE",
+      "productCode": "public_SBL_transaction_disclosure",
+      "semantic": "transaction-type/rate/supply-demand disclosure when available",
+      "producedAtContract": null,
+      "contractClockStatus": "PROSPECTIVE_RECEIPT_REQUIRED",
+      "access": "PUBLIC_QUERY",
+      "useFor": [
+        "F"
+      ],
+      "notUseFor": [
+        "HISTORICAL_FIRST_KNOWN_WITHOUT_RECEIPT",
+        "TRUE_TOTAL_LENDABLE_INVENTORY"
+      ]
+    },
+    {
+      "market": "TPEx",
+      "productCode": "public_sbl_balance_page",
+      "semantic": "marginShort+actualSblShortSaleFlow+actualSblShortSaleBalance",
+      "producedAtContract": null,
+      "contractClockStatus": "UNKNOWN",
+      "access": "PUBLIC_QUERY",
+      "useFor": [
+        "EVENTUAL_FINALIZED_TRUTH_ONLY"
+      ],
+      "notUseFor": [
+        "HISTORICAL_FIRST_KNOWN",
+        "F_TRUE_UTILIZATION"
+      ]
+    }
+  ],
+  "preregistration": {
+    "primaryQuestions": [
+      "Does actual SBL short-sale flow/balance add information beyond generic borrowing after common-support controls?",
+      "Does borrowEconomics add residual information beyond actual short-sale activity, liquidity, volatility, institutional flow and price-volume?",
+      "Does high borrow fee remain informative after supply/transaction-type/search-friction and benchmark/passive controls?",
+      "Does two-sided crowding predict realized range/downside MAE/stop-first risk more reliably than return direction?"
+    ],
+    "controls": [
+      "liquidity",
+      "priorTrend",
+      "volatility",
+      "sector",
+      "marketRegime",
+      "institutionalFlow",
+      "priceVolume",
+      "transactionType",
+      "ruleVintage",
+      "passiveIndexContext",
+      "displayedSupply"
+    ],
+    "primaryOutcomes": [
+      "D3_D5_downside_MAE",
+      "D3_D5_MFE",
+      "realizedRangeVolatility",
+      "falseBreakout",
+      "stopFirstRisk"
+    ],
+    "secondaryOutcomes": [
+      "D3_D5_returnDirection"
+    ],
+    "negativeControls": [
+      "genericBorrowingAloneAsBearish",
+      "highBorrowFeeAloneAsBearish",
+      "dailyFeePaidAsDailyShortDemand",
+      "rawAbsoluteBalances",
+      "sameDateBeforeLatestFirstKnownAt",
+      "quotaEligibilityAsRealizedFlow",
+      "borrowBalanceDividedByNonLendableDenominatorAsUtilization"
+    ],
+    "inference": [
+      "clusterByMarketDate",
+      "commonSupport",
+      "ruleVintageStratification",
+      "TWSE_TPExStratification",
+      "factorRedundancy",
+      "noThresholdSweep",
+      "PIT_OOS_WalkForward_ProspectiveShadow"
+    ]
+  },
+  "exactNextContinuation": "Next valid trading day: capture outcome-blind public borrow-rate/displayed-supply receipt with firstKnownAt/contentHash if officially accessible; preserve transaction type and 2026-06-01 settlement vintage; do not call any ratio utilization without verified lendable inventory; no paid-data purchase; keep outcome joins closed."
+}
