@@ -883,3 +883,36 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 4. Next D01 science after merge: study whether first-event clocks themselves add representation value beyond path excursion/occupancy and current geometry, without converting clocks into arbitrary N-bar buckets.
 5. Preserve full audit clocks even if predictive minimal basis later excludes some derived durations.
 6. No outcome join / no R09 / no Formal change.
+
+## Continuation update — DL-021A through DL-021E (2026-10-03)
+
+- First-event clocks are now split into decision-time predictor state versus future time-to-event outcome semantics.
+- New research-only artifacts:
+  - research/PATTERN_FIRST_EVENT_CLOCK_PIT_V0_1.md
+  - research/pattern_first_event_clock_pit_v0_1.json
+  - research/pattern_first_event_clock_pit_v0_1.mjs
+  - research/test_pattern_first_event_clock_pit_v0_1.mjs
+  - research/PATTERN_FIRST_EVENT_CLOCK_D16_HANDOFF_V0_1.md
+- Predictor-side rule:
+  only event clocks occurred/available/first-observed by asOf are legal.
+- Not-yet-occurred event:
+  occurred=0 / firstOccurredAt=null / ageEligibleSessions=null / NOT_YET_OCCURRED_THROUGH_ASOF.
+- Age 0 means the event occurred on the current eligible session; it is NOT equivalent to null/censored.
+- UNKNOWN provenance is distinct from genuine not-yet-occurred censoring.
+- Future first-event date, future time-to-event and future failure/reentry/reclaim distance are prohibited from decision-time payloads.
+- First-event timing can contain path-order memory beyond aggregate excursion descriptors even when current distance/max excursion/cumulative distance match.
+- Failure remains nested inside reentry:
+  same-bar failure+reentry share one sourceEventGroupKey and never count as two confirmations.
+- Continuous eligible-session event age is primary; arbitrary fast/slow or N-bar duration buckets are rejected by default.
+- Future event time may later be analyzed as a right-censored outcome under D16/statistical ownership, but it can never be written back into the earlier Pattern child.
+- 12 first-event PIT/censoring adversarial tests are authored; TEST_EXECUTION_PENDING until independently executed.
+- No outcomes inspected; no runtime wiring; no R09.
+- D01 remains 51.7%; Pattern alpha UNKNOWN; FORMAL_OPTIMIZATION_CANDIDATE=NONE; Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-021
+
+1. Finish PR reconciliation/CI for DL-019 through DL-021 against latest main.
+2. Treat Formal-isolation CI separately from research-specific Node execution receipts.
+3. After merge, next D01 science may study whether event-order information beyond first clocks adds value or is reconstructible from the ordered clock bundle; do not expand categories first.
+4. Keep not-yet-occurred / UNKNOWN / occurred-age-zero semantics distinct in all future schema work.
+5. No outcome join / no N-bar optimization / no R09 / no Formal change.
