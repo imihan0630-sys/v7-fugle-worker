@@ -88,3 +88,24 @@ Owner decisions: authorize formal changes only after evidence-ready Class-C pack
 ## Current decision
 OWNER AUTHORIZES CLASS-A SHADOW EXECUTION of C1/C2/C3/C4/C5 under the Hybrid decision-role governance. Formal production remains locked. No claim that Challenger code or PIT/OOS results exist; no Formal deployment or operational behavior change; no maturity upgrade.
 Exact next engineering continuation: inventory currently available full-population gate/entry/fill receipts and pre-existing Shadow observer ownership; implement missing C1 denominator/overlap observers in isolated Class A if possible; present source/shared-schema Class B request only if needed; then preregister C2/C3 contrasts before the next observation window.
+
+## A2 gate-role inventory — 2026-10-03
+
+Canonical audit:
+`shared-knowledge/SYSTEM1_A2_GATE_ROLE_INVENTORY_20261003_V0_1.md`
+
+Machine-readable:
+`shared-knowledge/system1_a2_gate_role_inventory_20261003_v0_1.json`
+
+Result:
+- current Formal `scoreCandidate()` contains 21 fail-fast rejection branches;
+- those branches do not map to 21 true HARD_INVALIDATION states;
+- P1 role-hardening review: 8 slow/context/confidence gates;
+- P2 review: 7 volatility/liquidity/sector/risk-geometry/grade gates;
+- A/B remains PRIMARY_ALPHA strategy identity;
+- 7 existing C5 role-map semantics need research-only correction;
+- 3+3/Top6 remains quota policy, not evidence role;
+- no Formal behavior is changed by this audit.
+
+Next research step: align the Class-A C5 role map with A2 semantics, then wait for a genuine complete C1/C2 prospective population before interpreting overfilter counts economically.
+
