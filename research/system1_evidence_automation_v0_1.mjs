@@ -1,5 +1,6 @@
 import {buildC4AllocationExperiment} from "./system1_c3_c4_c5_shadow_v0_1.mjs";
 import {buildC5SemanticRepairDiagnostic} from "./system1_c5_semantic_repair_v0_2.mjs";
+import {buildP1AConditionalReachUpperBound} from "./system1_p1a_conditional_reach_v0_1.mjs";
 import {C3_CAPTURE_SLOTS} from "./system1_c3_capture_contract_v0_1.mjs";
 
 const HEX64=/^[0-9a-f]{64}$/i;
@@ -221,6 +222,8 @@ function sortedCounts(obj){return Object.entries(obj||{}).sort((a,b)=>b[1]-a[1]|
 export function buildC5DailyReport(c1Diagnosis,c2Ledger){
   const short=buildC5SemanticRepairDiagnostic(c1Diagnosis,c2Ledger,{strategy:"SHORT"});
   const swing=buildC5SemanticRepairDiagnostic(c1Diagnosis,c2Ledger,{strategy:"SWING"});
+  const conditionalShort=buildP1AConditionalReachUpperBound(c1Diagnosis,short);
+  const conditionalSwing=buildP1AConditionalReachUpperBound(c1Diagnosis,swing);
   const render=d=>({
     formalRejectedN:d.formalRejectedN,
     p1aRejectedN:d.p1aRejectedN,
@@ -241,12 +244,33 @@ export function buildC5DailyReport(c1Diagnosis,c2Ledger){
     minimalClasses:sortedCounts(d.minimalClassCounts),
     reachStages:sortedCounts(d.reachCounts)
   });
-  return {schemaVersion:"SYSTEM1_C5_DAILY_REPORT_V0_2",sessionDate:c2Ledger.sessionDate,generationId:c2Ledger.generationId,
+  const renderConditional=d=>({
+    p1aStrictRankableN:d.p1aStrictRankableN,
+    p1aConditionalSafetyUnknownN:d.p1aConditionalSafetyUnknownN,
+    p1aConditionalReachABN:d.p1aConditionalReachABN,
+    p1aConditionalABPassN:d.p1aConditionalABPassN,
+    p1aConditionalReachRRN:d.p1aConditionalReachRRN,
+    p1aConditionalRRPassN:d.p1aConditionalRRPassN,
+    p1aConditionalGradePassN:d.p1aConditionalGradePassN,
+    p1aConditionalRankableN:d.p1aConditionalRankableN,
+    verifiedSafetyFailN:d.verifiedSafetyFailN,
+    nonSafetyUnknownBlockedN:d.nonSafetyUnknownBlockedN,
+    stageCounts:sortedCounts(d.stageCounts),
+    interpretation:d.interpretation,
+    materialityThresholdStatus:d.materialityThresholdStatus,
+    safetyCaptureDecision:d.safetyCaptureDecision
+  });
+  return {schemaVersion:"SYSTEM1_C5_DAILY_REPORT_V0_3",sessionDate:c2Ledger.sessionDate,generationId:c2Ledger.generationId,
     sourceRoleInventory:"SYSTEM1_A2_GATE_ROLE_INVENTORY_V0_1",
     p1aContract:"SYSTEM1_P1A_MINIMAL_BLOCKING_AND_OUTCOME_CONTRACT_20261003_V0_1",
-    short:render(short),swing:render(swing),denominatorN:c2Ledger.tally.populationN,
+    conditionalContract:"SYSTEM1_P1A_CONDITIONAL_REACH_UPPER_BOUND_CONTRACT_20261003_V0_1",
+    short:render(short),swing:render(swing),
+    conditionalShort:renderConditional(conditionalShort),conditionalSwing:renderConditional(conditionalSwing),
+    denominatorN:c2Ledger.tally.populationN,
     firstFailureIsNotCausalAttribution:true,unknownNeverPasses:true,p1aRankableIsNotCandidate:true,
-    candidateCountLiftIsNotSuccess:true,economicSuperiority:"UNKNOWN",formalOptimizationCandidate:"NONE",
+    conditionalRankableIsNotCandidate:true,conditionalUnknownToPassMutation:false,
+    materialityThresholdInvented:false,candidateCountLiftIsNotSuccess:true,
+    economicSuperiority:"UNKNOWN",formalOptimizationCandidate:"NONE",
     researchOnly:true,decisionImpact:false,formalCoreImpact:false,noTrade:true,noPush:true};
 }
 
