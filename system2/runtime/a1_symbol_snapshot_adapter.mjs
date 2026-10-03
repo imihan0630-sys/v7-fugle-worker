@@ -120,8 +120,9 @@ async function normalizeMarketRows({
   decisionTimestamp,
   rows,
   minimumOrdinarySymbols,
+  sourceOverride = null,
 }) {
-  const source = A1_SYMBOL_SNAPSHOT_SOURCES[market];
+  const source = sourceOverride || A1_SYMBOL_SNAPSHOT_SOURCES[market];
   const map = FIELD_MAP[market];
   if (!source || !map) throw new Error(`unsupported market: ${market}`);
   if (!Array.isArray(rows)) {
@@ -256,6 +257,7 @@ export async function buildA1SymbolSnapshotBatch({
   twseRows,
   tpexRows,
   minimumByMarket = {},
+  sourceByMarket = null,
 } = {}) {
   const id = requiredText(batchId, "batchId");
   const date = requiredText(marketDate, "marketDate");
@@ -281,6 +283,7 @@ export async function buildA1SymbolSnapshotBatch({
       decisionTimestamp: clock,
       rows: twseRows,
       minimumOrdinarySymbols: twseMinimum,
+      sourceOverride: sourceByMarket?.TWSE || null,
     }),
     normalizeMarketRows({
       market: "TPEX",
@@ -289,6 +292,7 @@ export async function buildA1SymbolSnapshotBatch({
       decisionTimestamp: clock,
       rows: tpexRows,
       minimumOrdinarySymbols: tpexMinimum,
+      sourceOverride: sourceByMarket?.TPEX || null,
     }),
   ]);
 
