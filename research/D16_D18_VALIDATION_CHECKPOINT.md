@@ -1389,3 +1389,26 @@ Latest-main C1 cross-midnight closure already records approved merge/deploy; fir
 Calibration implementation ownership follows the newer H09 producer-consumer contract: D16-19 produces model calibration; D16-25 consumes its quality and applies uncertainty/utility/ABSTAIN. This is not a second calibration vote or an H09 completion claim. Kelly input remains NOT_READY/UNKNOWN; FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 
 This package is published on an isolated research branch/draft PR. Main merge is withheld because the current v7-cloudflare workflow includes research non-Markdown files; tracker/MJS/JSON can trigger production deployment. No workflow bypass or production deployment is authorized by this audit.
+
+
+## 2026-10-04 D16 model-validation cluster closure — D16-16~19
+
+Canonical evidence: `research/D16_16_19_MODEL_VALIDATION_CLUSTER_20261004_V0_1.md`.
+
+Research-only L2 closures:
+- D16-16 Time-series Models -> L2/40: PIT temporal-model baseline/refit contract + structural-break/latent-state/forecast-vs-utility falsification frozen.
+- D16-17 Panel/Cross-sectional Models -> L2/40: date/issuer dependence, PIT membership, cross-sectional transform and clustered-inference falsification frozen.
+- D16-18 Regularization/Feature Selection -> L2/40: fold-local preprocessing/selection, correlated-feature instability, source-family redundancy and nested-selection falsification frozen.
+- D16-19 Machine Learning/Calibration -> L2/40: model-selection bias, calibration family + IDENTITY baseline, sample-sufficiency, drift-vs-refit state machine and CalibrationReceipt ownership frozen.
+
+H09 terminal specialist result: `SCOPE_DEDUP_ONLY`.
+D16-19 owns model/calibration quality and model drift. D16-25 consumes one canonical CalibrationReceipt and owns decision utility/uncertainty/ABSTAIN/decision drift. No duplicate probability authority.
+
+Repository search found evaluation support in `research/d16_25_probability_validation_v0_1.mjs`, but no proven executable Platt/Beta/Isotonic builder and no genuine complete Taiwan PIT calibrated-prediction -> matured-outcome series. Therefore all four modules stop at L2; no L3 is claimed from specifications or synthetic evidence.
+
+D16 domain maturity after the four justified L2 promotions: **52%**.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core: LOCKED.
+
+Exact next: D16-20 Causal Inference (L0), then D16-21 Alternative Data Provenance / Selection Bias (L0). Keep D16-16/17/18/19 at L2 until executable Taiwan PIT replay evidence exists.
