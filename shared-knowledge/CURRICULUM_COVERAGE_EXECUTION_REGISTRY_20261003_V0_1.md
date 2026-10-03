@@ -162,3 +162,26 @@ Machine-readable state graph:
 `shared-knowledge/curriculum_coverage_governance_state_machine_v0_1.json`
 
 No COV candidate may skip a listed governance transition. Partial evidence and specialist recommendations remain non-terminal until the required intake, dependency, overlap, anti-orphan and owner gates are satisfied.
+
+
+## Canonical snapshot reconciliation — 2026-10-03
+
+Authoritative tracker:
+`research/stock_market_learning_tracker_v0_1.json`
+
+Reconciliation receipt:
+`shared-knowledge/CURRICULUM_COVERAGE_CANONICAL_SNAPSHOT_RECONCILIATION_20261003_V0_1.md`
+
+Current canonical snapshot:
+- 22 domains
+- 354 active modules
+- weighted maturity 38.2%
+
+The prior 36.3% registry value was a historical snapshot, not a current maturity claim.
+
+Executable validator merged in PR #407:
+- `research/curriculum_coverage_return_validator_v0_1.mjs`
+- `tests/test_curriculum_coverage_return_validator_v0_1.mjs`
+- `.github/workflows/curriculum-coverage-validator.yml`
+
+COV states are unchanged by this reconciliation.
