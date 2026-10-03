@@ -74,3 +74,40 @@ This is a negative acceptance gate, not a failure of the build. It proves that f
 Discover and physically validate supplemental official correction/cancellation/version-history sources, with MOPS and exchange official-document channels as candidates already identified by Shared research.
 
 No D1 migration, Worker deploy, System1 runtime, strategy evaluation, push, capital or order behavior is authorized by this gate.
+
+
+## 2026-10-03 physical negative acceptance
+
+PR #409 physically verified the fail-closed revision gate against all six official historical actual-result lanes.
+
+- Official Continuity Revision Coverage Readonly run `37134550069`: PASS_NEGATIVE_GATE.
+- System2 Research CI run `37134550025`: PASS.
+- V8 Regression run `37134549987`: PASS.
+- Frozen interval: 2026-04-05 through 2026-10-02.
+- requiredLaneCount=6.
+- finalResultReadyCount=6.
+- supplementalRevisionReadyCount=0.
+- revisionCoverageComplete=false.
+
+Every lane was physically readable with exact requested range and parser completeness, but every lane remained classified as `FINAL_RESULT_RANGE_ONLY`.
+
+The physical source schemas exposed no field that proves a complete immutable correction/cancellation/version history. All six lanes therefore carry the blocker:
+
+`SUPPLEMENTAL_REVISION_HISTORY_CHANNEL_INCOMPLETE`
+
+This is the accepted result. It prevents a complete current/final result page from being relabeled as complete historical revision evidence.
+
+Independent gates remain closed:
+
+- noEventMayBeClaimed=false;
+- suspensionCoverageComplete=false;
+- symbolSessionCompletenessCertified=false;
+- technicalContinuityCertified=false;
+- selectionAuthority=false;
+- finalSelectionEnabled=false;
+- livePushEnabled=false;
+- capitalImpact=false;
+- orderImpact=false;
+- system1RuntimeUsed=false.
+
+Next: physically discover and validate supplemental official revision/correction/cancellation history channels. MOPS first-known/correction filings and exchange official-document announcements are source candidates from Shared research; no endpoint is accepted until its transport, schema, bounded-range coverage and version clocks are verified.
