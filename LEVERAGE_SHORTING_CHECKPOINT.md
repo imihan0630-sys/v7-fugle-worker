@@ -144,3 +144,36 @@ OFFICIAL_MACHINE_PATHS_VERIFIED / FREE_PROGRAMMATIC_HISTORY_UNRESOLVED / PAID_AC
 3. If an official artifact becomes available through an authorized path, run the finalized-history pilot first with no return/outcome join.
 4. Then run LS-049 completeness/revision/unit audit before H1-H5.
 5. Do not let this source gate block the separate institutional-score decomposition observer lane.
+
+## LS-047B / D06-18 — borrow economics（借券經濟）語意與 H12 去重完成（2026-10-03）
+
+本輪沒有啟動 LS-048 歷史回填，也沒有讀 outcome（結果）。新增的是借券費率／可借性／使用率的機制與資料防火牆。
+
+### Official semantics（官方語意）
+- TWSE 借券交易分定價、競價、議借三類；費率形成機制不同，禁止直接把三類費率混成一條 scarcity score（稀缺分數）。
+- 定價交易 FAQ 目前固定年利率 3.5%；競價與議借上限年利率 16%。
+- 官方揭露可包含成交量／成交費率、未成交出借量、未成交借券量、最佳五檔數量／費率等，因此可以研究 displayed supply/demand（揭示供需）。
+- TWSE 再次明確：借券成交不等於借券放空；借券可用於避險、套利、還券、履約。
+
+### Availability / utilization firewall（可借量／使用率防火牆）
+- 未成交出借量只能稱 displayed availability（揭示可借供給），不能稱 total lendable inventory（全市場總可借庫存）。
+- 真正 utilization（使用率）需要 verified lendable inventory（已驗證可借庫存）作分母。
+- 借券餘額、借券賣出餘額、借券賣出額度都不是合格的 lendable-inventory denominator（可借庫存分母）。
+- 因此目前 `MARKET_WIDE_TRUE_UTILIZATION = UNKNOWN`，不得用偽分母硬算。
+
+### H12 scope de-dup（範圍去重）
+- D06-09 owns observed lending/short activity（已觀測借券／空方活動）。
+- D06-18 owns borrow economics（借券成本／供需／可借性）。
+- D14-19 consumes feasibility（消費執行可行性），只在必要空方部位事實上無法建立／維持時，才可能形成 strategy-specific hard invalidation（策略專屬硬否決）。
+- D20-13 consumes limits-to-arbitrage context（套利限制情境），不得重複形成方向票。
+
+Research artifact:
+`research/d06_securities_lending_economics_h12_v0_1.md`.
+
+Promotion decision:
+D06-18 足以由 L0 升 L2「機制＋反證已定義」；仍不足 L3，因真正 utilization 分母、TPEx 對等借券經濟資料、prospective fee/supply receipt（前瞻費率／供給憑證）與 OOS（樣本外）仍未完成。
+
+Room-05 H12 terminal recommendation:
+`KEEP_ALL / SCOPE_DEDUP_ONLY / COUNTERPART_VALIDATION_REQUIRED_FROM_ROOMS_10_AND_13`.
+
+LS-048 status remains blocked by the previously frozen authorized-source/cost gate. No paid subscription is authorized. Formal Core unchanged.
