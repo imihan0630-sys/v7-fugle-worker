@@ -2581,3 +2581,44 @@ Exact next Room08:
 1. Complete D11-16 with one official issuer-level custody quantity -> release tranche -> transfer declaration -> realized holdings/untransferred chain, including an eligible-but-not-sold control.
 2. Move to D11-18 Tender Offer / Going Private / Delisting and D11-19 deal-break geometry; require success and failure/extension/reprice paths.
 3. Deepen D11-17 with native immutable MOPS versions before L4.
+
+
+## 09 derivatives/global-macro continuation — D13-17..19 curriculum completion (2026-10-03)
+
+- Fresh-read latest main before work; canonical tracker remained 22 domains / 354 modules.
+- Completed D13-17 Trade/Geopolitical Risk/Capital-flow Transmission:
+  - legal/policy/flow clocks separated;
+  - tariff/export-control/sanctions version lineage frozen;
+  - GPR threat/act and TPU-vs-policy separation frozen;
+  - TWSE foreign trading != CBC BOP != U.S. TIC;
+  - 18:10 partial-vs-full TWSE production clocks frozen;
+  - L0 -> L2 / 40%.
+- Completed D13-18 Business Cycle / Leading-Coincident-Lagging:
+  - leading != stock-return lead;
+  - NDC leading/coincident/lagging families and release/reference/vintage semantics frozen;
+  - NDC leading and monitoring composites contain TAIEX, creating a mandatory ex-TAIEX circularity test for stock research;
+  - OECD CLI qualitative turning-point and NBER retrospective-label guards frozen;
+  - L0 -> L2 / 40%.
+- Completed D13-19 Capital Market Expectations / Long-run Growth:
+  - structural growth vs expectations vs valuation separated;
+  - labor/capital/TFP structural decomposition frozen;
+  - SEP != market consensus;
+  - nominal yields and breakevens require risk/liquidity-premium decomposition;
+  - technology capex != realized TFP;
+  - slow-horizon objects require separate transportability proof before short-horizon use;
+  - L0 -> L2 / 40%.
+- New contracts:
+  - `research/d13_17_trade_geopolitical_capitalflow_spec_v0_1.json`
+  - `research/d13_17_event_flow_clock_schema_v0_1.json`
+  - `research/d13_18_business_cycle_indicator_spec_v0_1.json`
+  - `research/d13_19_capital_market_expectations_longrun_growth_spec_v0_1.json`
+- D13 now 41.1%; D12 40.0%; Room09 weighted 40.6%; global tracker 38.1% / 354 modules.
+- Router and learning map synchronized.
+- No L3/OOS promotion; outcomes remain closed for these new modules.
+- Formal Core unchanged; no optimization candidate.
+
+Exact next Room-09 continuation:
+1. Begin source-only vintage evidence rather than adding further macro concepts.
+2. Preserve NDC monthly vintage/component definitions, SEP/CBO projections, H.4.1, CBC BOP and one official policy-event legal/effective lineage.
+3. Audit 18:10 TWSE foreign-flow partial-version source and entitlement; later block-inclusive files remain future for 18:10.
+4. Only after independent source-attested vintages accumulate, design incremental/OOS tests versus Taiwan domestic/rates/USD/simple-component baselines.
