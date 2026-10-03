@@ -876,3 +876,19 @@ Machine-readable:
 Current finding:
 21 Formal fail-fast branches collapse safety, confidence, primary evidence and context/supportive evidence. P1 contains 8 likely short-horizon over-hardening candidates; P2 contains 7 secondary review gates. No Formal change is authorized.
 
+### D01 shared handoff — DL-015/016 RG2 clustering, estimand and observability (2026-10-03)
+
+Reusable cross-room rules:
+- one immutable parent owns one outcome vector; multiple Pattern children cannot inflate outcome N;
+- primary first-pass RG2 inference requires exactly one de-duplicated relation per parent; multi-relation parents remain explicit coverage/ambiguity, never post-outcome relation selection;
+- dependence dimensions are scanDate + symbol; relationEpisodeKey is longitudinal/de-dup identity;
+- promotion-grade incremental value must beat B0_FULL_CONTEXT, not only price-only controls;
+- first RG2 challenger is availableAirToParentLowerPct + geometryRelationState + compoundLifecycleState + parentZoneAgeEligibleSessions;
+- primary target is equal-date weighted common-support B0-vs-B1 predictive-loss differential;
+- freeze episode-first, episode-holdout and non-overlapping-date sensitivities before outcomes;
+- D16 owns estimator / finite-sample inference / nested-model test / cluster-resampling method; D01 owns Pattern semantics and estimand target;
+- shared-child v0.4 canonicalizes complete RG2 coordinates, zone age and relation/lifecycle field names;
+- legacy geometryState / compoundState / availableAirPct are not canonical promotion-grade fields;
+- RG2_CORE_V0_1 is DESIGN_OBSERVABLE / PROSPECTIVE_RUNTIME_BLOCKED.
+
+Status: PREREGISTERED / OUTCOME_CLOSED / RUNTIME_NO_GO / FORMAL_CORE_LOCKED.
