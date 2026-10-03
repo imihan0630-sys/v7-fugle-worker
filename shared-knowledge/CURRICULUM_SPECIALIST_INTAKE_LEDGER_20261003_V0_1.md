@@ -14,7 +14,8 @@ A cluster does not become decided merely because one participating room submits 
 
 ## Current intake summary
 
-- H01-H04: pending.
+- H01: **SPECIALIST_EVIDENCE_RECEIVED / KEEP_SEPARATE_PROPOSED / 00 DEPENDENCY AUDIT PENDING**.
+- H02-H04: pending.
 - H05: **PARTIAL_EVIDENCE_RECEIVED**.
 - H06-H19: pending.
 - H20: **PARTIAL_EVIDENCE_RECEIVED**（02 室完成；01／04 待件）。
@@ -69,7 +70,7 @@ Until that packet arrives:
 
 | Cluster | Status | Received packet | Remaining |
 |---|---|---|---|
-| H01 | PENDING | — | specialist packet(s) |
+| H01 | SPECIALIST_EVIDENCE_RECEIVED | `research/h01_d09_13_d09_14_specialist_validation_20261003_v0_1.json` + BR-051..056 | 00｜研究總控室 Dependency Audit／owner review |
 | H02 | PENDING | — | specialist packet(s) |
 | H03 | PENDING | — | specialist packet(s) |
 | H04 | PENDING | — | specialist packet(s) |
@@ -195,3 +196,60 @@ D16-25 remains L2/40%.
 `FORMAL_OPTIMIZATION_CANDIDATE: NONE`.
 Formal Core unchanged.
 
+
+
+## H01 intake — D09-13 vs D09-14
+
+Received from:
+07｜產業與供應鏈研究室
+
+Canonical packet:
+`research/h01_d09_13_d09_14_specialist_validation_20261003_v0_1.json`
+
+Supporting receipts:
+- `research/br051_taiwan_foundry_industry_structure_pit_v0_1.json`
+- `research/br052_issuer_competitive_action_pit_v0_1.json`
+- `research/br053_taiwan_steel_industry_structure_control_v0_1.json`
+- `research/br054_cross_industry_competitive_action_failure_control_v0_1.json`
+- `research/br055_taiwan_pcb_industry_structure_control_v0_1.json`
+- `research/br056_strategic_action_native_outcome_contract_v0_1.json`
+
+Intake result:
+**ROOM07_SPECIALIST_PACKET_COMPLETE / KEEP_SEPARATE_PROPOSED / 00_DEPENDENCY_AUDIT_AND OWNER REVIEW REQUIRED**
+
+What passed:
+- concept ownership matrix;
+- industry-level vs issuer-action unit separation;
+- shared vs unique observable families;
+- three divergent-state families;
+- unique D09-14 strategic-action PIT/replay lifecycle;
+- Taiwan foundry, steel and PCB industry controls;
+- non-semiconductor firm-action evidence;
+- failed/suspended strategic-action negative control;
+- native action-outcome states;
+- anti-double-count and capability-preservation rules;
+- Formal Core impact NONE.
+
+Specialist terminal recommendation:
+`KEEP_SEPARATE`
+
+Proposed ownership boundary:
+- D09-13: industry × product/geographic market definition × vintage.
+- D09-14: issuer × strategic action × implementation/outcome stage × vintage.
+
+Maturity:
+- D09-13 stays L3/60%.
+- D09-14 stays L3/60%.
+- Intake/overlap validation itself adds no maturity.
+
+Still required:
+1. 00 Dependency Audit;
+2. anti-orphan review;
+3. owner review of scope wording/routing;
+4. atomic governance update only if approved.
+
+Until then:
+- no merge/retirement;
+- no module-count change;
+- no Formal Core change;
+- `FORMAL_OPTIMIZATION_CANDIDATE: NONE`.
