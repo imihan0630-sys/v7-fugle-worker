@@ -1345,3 +1345,140 @@ Formal Core remains LOCKED.
 2. Divergence contract is frozen research-only; no runtime wiring.
 3. Future divergence outcome work comes only after TI-005 KD-vs-RSI and TI-006 MACD-vs-direct-trend once the primary source gate opens.
 4. Next outcome-blind specialist target is D03-13 multi-timeframe PIT feasibility: prove weekly/daily/15m causal boundary/partial-bar clocks can be replayed without treating aggregation agreement as independent votes.
+
+
+## TI-491 through TI-503 — multi-timeframe PIT feasibility / causal clock audit (2026-10-03)
+
+Durable evidence:
+- `research/D03_MULTITIMEFRAME_PIT_FEASIBILITY_V0_1.md`
+- `research/d03_multitimeframe_pit_contract_v0_1.json`
+- `research/test_d03_multitimeframe_pit_feasibility_v0_1.mjs`
+
+### TI-491 — three clocks are mandatory
+
+Every bar-derived multi-timeframe feature now distinguishes:
+- barStartAt = interval identity;
+- barEndAt = mathematical completion;
+- featureKnownAt = first valid system knowledge time after source fetch/provenance checks.
+
+The chart label time is not the evidence-availability time.
+
+### TI-492/TI-493 — M15 is PIT-feasible but current coverage is bounded
+
+Repository runtime already:
+- fetches Fugle timeframe=15 candles;
+- filters to completed bars only;
+- persists bar_start / bar_end / scheduled_time / source_fetched_at / source_family / completed_bar.
+
+Current configured slots are 09:00 through 13:00 start times = 17 slots.
+
+TWSE regular trading runs 09:00–13:30, so a full equal-interval regular session has 18 15m slots, with the final bar starting 13:15.
+
+Because current System 1 minute Cron ends 13:24, the zero-extra-call path cannot observe the 13:15-start bar after it completes at 13:30.
+
+Frozen state:
+`M15_CURRENT_RUNTIME_COVERAGE = PARTIAL_REGULAR_SESSION_17_OF_18_SLOTS`.
+
+A completed bar is eligible only after its end and actual source-known time. sourceFetchedAt is knowledge provenance, not semantic bar identity.
+
+### TI-494 — Daily provisional/final semantics are executable
+
+System 2 Daily Resonance already implements:
+- LIVE -> PROVISIONAL_DAILY_BAR;
+- FINAL + independent official-close confirmation -> CONFIRMED_DAILY_CLOSE;
+- missing current-date bar -> CURRENT_DAILY_BAR_MISSING.
+
+15m context cannot alter the daily EMA16/EMA64/Impulse-MACD state.
+
+### TI-495/TI-497 — Weekly completion is calendar-aware
+
+Weekly aggregation is deterministic from eligible daily OHLC, but completion is not “five bars”.
+
+A week becomes completed only when the versioned official exchange calendar proves there is no later session remaining in the calendar week and symbol-session/suspension state is reconciled.
+
+This correctly handles holiday-shortened weeks and prevents borrowing a next-week observation merely to reach five bars.
+
+Required weekly provenance includes calendarWeekId, marketSessionCalendarVersion, symbolSessionReceiptId, source daily bar IDs, completedThrough/partialAsOf and continuity state.
+
+### TI-496 — partial weekly direction can reverse
+
+Synthetic Monday-Wednesday aggregate:
+- O=100 H=104 L=98 C=99 -> down from open.
+
+Completed Friday aggregate:
+- O=100 H=106 L=97 C=105 -> up from open.
+
+A Wednesday partial weekly state is causally available but is not equivalent to a completed weekly state.
+
+### TI-498/TI-499 — Daily/M15 share information and current close-slot gap is explicit
+
+M15 contributes to the daily bar and is usually SHARED_COMPONENT / NESTED_HORIZON evidence.
+
+Intraday can still carry path information unavailable from daily OHLC, but it is execution/acceptance context rather than another daily-selection vote.
+
+Current zero-extra-call M15 path covers through 13:15 only. The 13:15–13:30 closing interval remains `UNOBSERVED_CURRENT_ZERO_EXTRA_CALL_PATH`; therefore no “M15 session-close state” claim is allowed from those 17 bars.
+
+### TI-500 — alignment is state, not vote count
+
+Cross-timeframe relation remains:
+ALIGNED / MIXED / CONFLICT / UNKNOWN.
+
+SAME_EVENT_DUPLICATE, NESTED_HORIZON and SHARED_COMPONENT do not become independent votes.
+
+Only DISTINCT_HORIZON_CONTEXT and DISTINCT_SESSION_INFORMATION begin with a plausible incremental-information prior, still requiring residual tests.
+
+### TI-501 — System 2 resonance already follows the correct hierarchy
+
+Existing Daily Resonance contract:
+- daily-only EMA16/EMA64/Impulse;
+- provisional live daily bar;
+- confirmed final daily close;
+- 15m = EXECUTION_AUXILIARY_ONLY;
+- intraday15mAffectsDailyResonance = false.
+
+D03 research therefore consumes this architecture rather than redesigning it.
+
+### TI-502/TI-503 — Taiwan PIT feasibility and maturity
+
+Weekly:
+- existing daily PIT lineage + official calendar + symbol-session provenance + deterministic aggregation.
+
+Daily:
+- existing live/final adapter and close-finality gate.
+
+M15:
+- Fugle M15 + completed-bar filter + persisted bar clocks/provenance with explicit 17/18 coverage.
+
+M5 is not required for v0.1 maturity.
+
+Therefore D03-13 advances:
+- L2 / 40% -> **L3 / 60% TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED_WITH_BOUNDED_INTRADAY_COVERAGE**.
+
+Current active D03 modules = 12.
+Aggregate:
+- 620 + 20 = 640 maturity points;
+- 640 / 1200 = **53.3%**.
+
+No alpha, timeframe optimization, full closing-M15 coverage, OOS/Shadow or Formal authority is claimed.
+
+### Current status
+
+`D03_13 = L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED_WITH_BOUNDED_INTRADAY_COVERAGE`  
+`WEEKLY_COMPLETION = CALENDAR_AWARE_CAUSAL`  
+`DAILY_FINALITY = PROVISIONAL_VS_CONFIRMED`  
+`M15_CURRENT_RUNTIME_COVERAGE = 17_OF_18_REGULAR_SLOTS`  
+`TIMEFRAME_AGREEMENT = HIERARCHICAL_CONTEXT_NOT_VOTE_COUNT`  
+`D03_MATURITY = 53.3_PERCENT`  
+`OUTCOME_INFERENCE = NO_GO`  
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Formal Core remains LOCKED.
+
+### Exact next continuation point
+
+1. Keep raw-byte prospective completed-session gate at 2/3 over the weekend.
+2. Do not add the missing 13:15 M15 bar from this research room; runtime extension is an engineering/governance question.
+3. Future M15 inference must use exact featureKnownAt, common-support slot coverage and daily-setup conditioning.
+4. Future weekly inference must beat equal-horizon daily controls and boundary-sensitivity controls.
+5. Primary efficacy queue remains TI-005 then TI-006 once the raw source gate opens.
+6. Next outcome-blind D03 specialist target: D03-04 momentum continuation vs D03-03 persistence and D03-02 direct-return family, focusing on construct separation and Taiwan PIT feasibility.
