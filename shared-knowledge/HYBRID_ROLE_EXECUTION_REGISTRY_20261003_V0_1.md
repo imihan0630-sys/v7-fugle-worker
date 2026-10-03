@@ -55,3 +55,14 @@ A role-conflict group is complete only when:
 
 R01-R08 specialist validation pending.
 Curriculum module count and maturity are unchanged.
+
+## System1 A2 intake
+
+System1 gate-role inventory is now complete at governance level:
+`shared-knowledge/SYSTEM1_A2_GATE_ROLE_INVENTORY_20261003_V0_1.md`
+
+Status:
+`A2_GATE_ROLE_AUDIT_COMPLETE / C5_ROLE_MAP_ALIGNMENT_PENDING / LIVE_PROSPECTIVE_ECONOMIC_EVIDENCE_PENDING`
+
+This does not complete R02/R03/R04/R05/R06/R07 specialist validation; it provides the actual System1 gate surface those packets must evaluate.
+
