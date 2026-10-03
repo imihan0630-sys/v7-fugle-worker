@@ -177,3 +177,49 @@ Room-05 H12 terminal recommendation:
 `KEEP_ALL / SCOPE_DEDUP_ONLY / COUNTERPART_VALIDATION_REQUIRED_FROM_ROOMS_10_AND_13`.
 
 LS-048 status remains blocked by the previously frozen authorized-source/cost gate. No paid subscription is authorized. Formal Core unchanged.
+
+## LS-047C / D06-18 — borrow-fee identifiability, order-persistence asymmetry and 2026 settlement-vintage guard
+
+### 1. 2026-06-01 payment/settlement rule break
+- TWSE adjusted lending-related fee payment mechanics effective 2026-06-01.
+- Outstanding positions moved to monthly fee calculation/payment; negotiated full/partial returns also moved to monthly centralized settlement.
+- Fixed-price/competitive-bid early returns keep next-business-day payment.
+- Therefore trade-time borrow rate, accrued fee, settlement date and payment date are separate objects.
+- A daily paid-fee cashflow series spanning 2026-06-01 is structurally confounded unless the rule vintage is preserved.
+- `DAILY_FEE_PAID = DAILY_SHORT_DEMAND` is rejected.
+
+### 2. Borrow fee is not a pure short-demand measure
+- Fee/rate can reflect demand, lendable supply, transaction type, search/friction, recall/tenor/collateral terms, benchmark ownership and market regime.
+- External evidence is a falsification prior only, not a Taiwan-2026 effect-size transplant: high fees can coexist with supply constraints/search costs, and benchmarked institutional holdings can affect both lending supply and shorting demand.
+- Historical Taiwan short-interest evidence remains relevant to actual short-position hypotheses, but it does not validate 2026 borrow-fee alpha by itself.
+
+### 3. Public TWSE displayed supply/demand has asymmetric quote clocks
+- Under TWSE SBL rules, borrowing quotes in fixed-price/competitive-bid transactions are valid only on the submission day.
+- Lending quotes remain valid until cancelled.
+- Therefore unexecuted borrowing quantity and unexecuted lending quantity do not share the same quote-age distribution.
+- A raw `unexecutedBorrowQty / unexecutedLendQty` ratio must not be called symmetric demand/supply pressure.
+- Recall-notification terms must also be preserved because matching requires compatible terms.
+
+### 4. Public prospective source contract
+- TWSE rules require Internet/computer disclosure of fixed-price rate, executed quantity, unexecuted lending quantity and unexecuted borrowing quantity.
+- Competitive-bid disclosure includes executed rate/quantity and best-five lending/borrowing rate/quantity plus totals.
+- Negotiated public disclosure is a loan-balance statement, not a comparable live rate book.
+- Exact current machine endpoint contract remains not yet verified; next valid trading-day capture is still required.
+
+Artifacts:
+- `research/d06_18_borrow_fee_identifiability_rule_vintage_v0_1.md`
+- `research/d06_18_public_sbl_rate_supply_contract_v0_1.json`
+- `research/d06_ic039_receipt_product_matrix_v0_2.json`
+
+Maturity decision:
+- D06-18 remains L2 / 40%.
+- This round improves semantic/PIT/rule-vintage quality but does not add prospective live receipts, verified total lendable inventory, TPEx parity or OOS evidence.
+- LS-048 historical backfill cost/access gate remains unchanged.
+- Formal Core unchanged.
+
+## Exact next continuation after LS-047C
+1. On the next valid trading day, capture an outcome-blind TWSE public rate/supply snapshot through an authorized public route.
+2. Preserve transaction type, recall term, capturedAt/firstKnownAt, quote-persistence vintage and 2026-06-01 fee-settlement vintage.
+3. Do not compute true utilization without verified total lendable inventory.
+4. Do not infer direction from borrow fee or thin displayed supply alone.
+5. Keep H12 counterpart validation pending Rooms 10/13.
