@@ -2108,3 +2108,63 @@ Durable artifacts:
 
 Exact continuation remains:
 PVE-228 after the genuine 2026-10-02 23:35/23:55 ordinary after-market window, followed by the 2026-10-03 00:10 collector. Gate 7 remains CLOSED.
+
+
+## Evidence progress — PVE-228 through PVE-239 (2026-10-03 Stage VIII long block)
+
+Durable details:
+- `research/d02_pve_228_239_after_market_h20_20261003.md`
+- `research/d02_20261002_after_market_h20_receipt_v0_1.json`
+
+### PVE-228~234 — 2026-10-02 generation failure and cross-midnight recovery diagnosis
+Frozen conclusions:
+1. After the genuine 2026-10-02 after-market windows, no verified 2026-10-02 Formal/C1 generation existed. The 00:24 readiness artifact still reported formalScanDate=2026-09-29 and formalPipelineComplete=false.
+2. The first late sync run 37028644283 / job 110909603962 failed in QUARTER_EPS source review after three HTTP 503 read-only attempts; recovery was not reached.
+3. The second late sync run 37030724117 / job 110916572288 ultimately reached institution-ready (1,865 symbols) and all official-quality families ready for 2026-10-02.
+4. When that second run reached `recover_after_market` at 00:01 Taipei, the old script recomputed “today” as 2026-10-03 and skipped the intended 10/02 recovery as outside the same-day window.
+5. Mirror run 37030841648 succeeded only as alreadyVerified old-plan continuity with scanDate=2026-09-29.
+6. Health run 37031042438 succeeded while business action was skipped after midnight; job green is not current-session Formal evidence.
+7. C1/C2 collector run 37033639328 / job 110926371872 produced artifact 11238851833 and failed closed with C1_GENERATION_NOT_FOUND / FORMAL_SCAN_NOT_CONFIRMED. The artifact explicitly has institutionReady=true, qualityReady=true, missingQuality=[], eligibleForResearch=false and mayCountAsZeroPick=false.
+8. Direct proven cause is the missed fully-ready late recovery through cross-midnight target-date drift. The exact original 23:35/23:55 Worker failure remains UNKNOWN_FROM_AVAILABLE_RECEIPTS.
+9. PR #318 repaired the future fallback date pinning under owner-approved Class B scope, merged/deployed on 2026-10-03, preserved Formal rules, and did not fabricate a retrospective 10/02 C1/WATCH generation.
+10. 2026-10-02 therefore remains RESEARCH_INELIGIBLE / DATA_QA_ONLY. Clean prospective selection-date count remains 0.
+
+### PVE-235~239 — H20 breakout anti-double-count specialist validation
+The 2026-10-03 H20 governance contract is now specialized for D02.
+
+Shared primitive:
+one breakout episode / one event anchor.
+
+Ownership boundary:
+- D01-05 owns price-structure breakout/failure event identity;
+- D02-03 attaches volume-confirmation transforms to that same event;
+- D04-07 attaches volatility/trend interaction as a dependency-owned transform.
+
+D02-03 does not mint a second breakout event merely because volume is abnormal.
+
+Frozen residual sequence:
+A = price-only breakout/failure baseline;
+B = A + existing local previous-five-bar volume ratio;
+C = B + same-slot historical RVOL;
+D = C + cumulative participation pace when common support is valid.
+
+Divergent/falsification states:
+- successful price breakout with normal volume -> strict volume necessity false for that case;
+- failed price breakout with high volume -> high volume not sufficient;
+- high volume + weak price response -> confirmation unresolved;
+- moderate abnormal volume + strong acceptance -> candidate constructive state, not assumed;
+- extreme volume + high-volatility/event state -> possible climax/confounding, requires dependency controls.
+
+Required controls:
+market/sector activity, D04 volatility state, liquidity, event context, Market Regime, cost/slippage and date clustering.
+
+D02-03 terminal specialist classification:
+`KEEP_SEPARATE / CONDITIONAL_INCREMENTAL_EVIDENCE / NO_INDEPENDENT_EVENT_VOTE`.
+
+Maturity remains L3 / 60% because PIT/data semantics are feasible but no clean prospective incremental-outcome evidence exists.
+
+Current Price-Volume evidence cursor: PVE-001 through PVE-239.
+Formal Core remains LOCKED.
+
+## Exact continuation after PVE-239
+PVE-240 starts on the first genuine completed market session after the approved cross-midnight repair. Require same-session Formal scanDate->planDate, pipeline complete/config verified, C1 save/readback verification and full hash/pagination/count proof, paired C2 exact-generation linkage, ordinary PV bootstrap/daily readiness, monitor/config generation linkage and cohort integrity. Only Gate 0->6 clean dates enter H001/H002/H20 denominators. Gate 7 remains closed until the preregistered sample/maturity floor is satisfied.
