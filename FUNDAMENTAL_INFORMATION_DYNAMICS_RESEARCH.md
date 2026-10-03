@@ -1887,3 +1887,48 @@ No merge, retirement, maturity transfer or Formal change is authorized by this p
 
 Exact next for H05:
 wait for Room-14 counterpart evidence, then 00-room dependency/anti-orphan review.
+
+
+## FD-065 — COV-04 dividend payout sustainability is a real D07 owner gap
+
+Research date: 2026-10-04 Asia/Taipei.
+
+Machine contract:
+research/dividend_payout_sustainability_pit_contract_v0_1.json.
+
+Specialist return:
+research/COV04_D07_SPECIALIST_RETURN_V0_1.md.
+
+COV-04 is not satisfied by existing earnings, cash-flow, balance-sheet, event or governance modules. Those modules provide primitives and clocks, but no owner combines:
+- ordinary vs special/reserve-funded distributions;
+- earnings/CFO/FCF coverage;
+- retention and distribution frequency;
+- payout cuts/omissions;
+- cyclicality and funding constraints;
+- proposal/final/payment vintage chronology.
+
+Ownership firewall:
+- D07 candidate owner = accounting/economic payout sustainability;
+- D11 = dividend event mechanics;
+- D21 = governance/capital-allocation process;
+- D08 = dividend-related valuation.
+
+The proposed new capability starts L0/0 if owner-approved. It inherits no maturity from D07-02/05/06.
+
+Status: COV04_RETURN_CONTRACT_COMPLETE / TERMINAL_RECOMMENDATION_ADD_MODULE / 00_INTAKE_REQUIRED / NO_CANONICAL_CHANGE.
+
+## FD-066 — High payout and high yield are explicitly non-directional
+
+Payout sustainability has no universal monotone direction.
+
+Countermechanisms:
+- high payout can represent maturity or weak reinvestment opportunities;
+- low payout can represent valuable growth investment, distress, or alternative shareholder payout;
+- stable DPS can be supported by reserve distributions or leverage rather than sustainable current earnings;
+- stock dividends are not cash payout;
+- parent legal distributable capacity is not identical to consolidated economic earnings;
+- financial institutions require regulatory-capital/solvency context.
+
+Therefore dividend yield, payout ratio and dividend stability are validation/context variables until incremental OOS/Shadow evidence exists.
+
+Status: UNIVERSAL_HIGH_DIVIDEND_RULE_REJECTED / STRATEGY_EVIDENCE_CLOSED / FORMAL_UNCHANGED.
