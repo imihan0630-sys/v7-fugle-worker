@@ -39,7 +39,7 @@ export function evaluateSystem1ZeroPickClassBCandidate(input={}){
 
   check(changedFunctions.every(allowedFunction),"UNEXPECTED_CHANGED_FUNCTION");
   check(!changedFiles.includes("Worker.js"),"DIRECT_WORKER_EDIT_FORBIDDEN");
-  check(changedFiles.some(x=>/^scripts\/apply_v8_\d+_\d+_\d+\.py$/.test(x)),"GUARDED_RUNTIME_PATCH_REQUIRED");
+  check(changedFiles.some(x=>/^scripts\/apply_v8_\d+_\d+\.py$/.test(x)),"GUARDED_RUNTIME_PATCH_REQUIRED");
 
   check(input.scoreCandidateChanged===false,"SCORE_CANDIDATE_CHANGED");
   check(input.applyMarketConsensusChanged===false,"APPLY_MARKET_CONSENSUS_CHANGED");
