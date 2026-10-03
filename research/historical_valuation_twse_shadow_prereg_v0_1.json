@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "HISTORICAL_VALUATION_TWSE_SHADOW_PREREG_V0_1",
+  "researchRoom": "06",
+  "domains": [
+    "D08",
+    "D07"
+  ],
+  "primaryModule": "D08-03",
+  "status": "PREREGISTERED_RESEARCH_ONLY / OUTCOME_JOIN_LOCKED_PENDING_REPLAY_PIPELINE",
+  "frozenAtAsiaTaipei": "2026-10-03T15:13:00+08:00",
+  "scope": {
+    "market": "TWSE_ONLY_INITIAL_PILOT",
+    "generalization": "No TPEx or full-Taiwan generalization is permitted from this pilot.",
+    "universe": "Existing research ordinary-stock universe intersected with PIT-eligible official TWSE historical PE/PB rows.",
+    "exclusions": "Use existing universe exclusions; do not add outcome-driven valuation exclusions."
+  },
+  "valuationInputs": {
+    "raw": [
+      "officialTrailingPE",
+      "officialPB"
+    ],
+    "history": [
+      "PE_percentile_252_valid",
+      "PE_percentile_756_valid",
+      "PE_percentile_1260_valid",
+      "PE_percentile_expanding",
+      "PB_percentile_252_valid",
+      "PB_percentile_756_valid",
+      "PB_percentile_1260_valid",
+      "PB_percentile_expanding"
+    ],
+    "missingStates": [
+      "NONPOSITIVE_EPS",
+      "SOURCE_NA_OTHER",
+      "UNKNOWN"
+    ],
+    "primaryRepresentation": "Continuous percentile; no buy/sell cutoff is preregistered.",
+    "descriptiveOnly": "Quartile/decile summaries may be shown for diagnostics but cannot define a production threshold."
+  },
+  "denominatorContext": {
+    "preserve": [
+      "fiscalReportPeriod",
+      "fiscalDenominatorChangedToday",
+      "daysSinceFiscalDenominatorChange",
+      "epsSignOrTurnaroundState",
+      "corporateActionBreakTag",
+      "listingAgeValidSessions"
+    ],
+    "rule": "A percentile jump coincident with fiscal denominator update is not classified as market repricing without decomposition."
+  },
+  "primaryQuestions": [
+    "Does self-history PE/PB percentile add incremental information beyond raw PE/PB?",
+    "Does historical cheapness behave differently under improving versus deteriorating fundamental quality?",
+    "Are apparent low-PE signals concentrated in peak-cycle earnings or denominator-transition states?",
+    "Does PB history remain useful when PE is unavailable, after sector/business-model controls?",
+    "Is any result robust across preregistered history windows rather than one chosen window?"
+  ],
+  "controls": [
+    "raw official PE/PB",
+    "sector/peer context",
+    "size and liquidity",
+    "price trend / relative strength",
+    "market regime",
+    "realized revenue and EPS growth where PIT-safe",
+    "profitability/margin state where PIT-safe",
+    "existing fundamentalScore only as a control, not ground-truth quality",
+    "fiscal denominator transition",
+    "corporate-action context",
+    "listing age"
+  ],
+  "qualityInteraction": {
+    "stage1": "Run valuation-history increment without requiring new CFO/balance-sheet receipt.",
+    "stage2": "When D07 prospective quality primitives become PIT-ready, add cash-support/accrual/leverage interactions under the existing frozen quality contract.",
+    "antiLeakage": "Never backfill future restated quality values into historical valuation dates."
+  },
+  "outcomes": {
+    "directional": [
+      "D1",
+      "D3",
+      "D5",
+      "D10",
+      "D20"
+    ],
+    "path": [
+      "MFE",
+      "MAE"
+    ],
+    "optionalWhenDefined": [
+      "false_breakout_or_no_follow_through"
+    ],
+    "transactionCosts": "Apply where portfolio/turnover interpretation is attempted; descriptive cross-sectional outcome tables remain cost-labeled."
+  },
+  "inference": {
+    "primaryUnit": "scanDate × symbol",
+    "clustering": "scanDate primary; company/sector dependence reported as robustness.",
+    "comparisons": [
+      "within-date",
+      "within-sector_or_coherent_peer_group"
+    ],
+    "robustness": [
+      "independent dates",
+      "leave-one-date-out",
+      "purged holdout",
+      "walk-forward",
+      "OOS",
+      "regime split",
+      "window consistency",
+      "coverage and zero-pick impact"
+    ]
+  },
+  "preregisteredHypotheses": [
+    "HVP_H1: Self-history percentile may add information beyond raw valuation level because firms have different normal valuation ranges.",
+    "HVP_H2: Low PE percentile with deteriorating or peak-cycle earnings is not equivalent to low PE percentile with stable/improving quality.",
+    "HVP_H3: Fiscal denominator updates can create discontinuous percentile changes with no equivalent price-information shock.",
+    "HVP_H4: PB percentile may retain context when PE is unavailable, but sector/business-model dependence can dominate.",
+    "HVP_H5: If evidence appears in only one history window, classify it WINDOW_FRAGILE rather than alpha."
+  ],
+  "falsification": [
+    "If historical percentile has no stable increment after raw PE/PB + controls, mark REDUNDANT.",
+    "If low-percentile performance disappears after denominator-transition/cycle controls, reject universal cheapness interpretation.",
+    "If apparent effect is driven by listing age or missing-PE selection, mark COVERAGE_CONFOUNDED.",
+    "If results are regime/sector/date-cluster specific without stable OOS replication, do not promote.",
+    "If TPEx later disagrees materially, TWSE-only conclusions cannot be promoted as full-market logic."
+  ],
+  "forbidden": [
+    "threshold sweep",
+    "selecting the best percentile window after returns",
+    "turning PE N/A into a numeric extreme",
+    "current-statement reconstruction of historical PE/PB",
+    "claiming TPEx/full-Taiwan coverage from TWSE-only evidence",
+    "Formal Core changes"
+  ],
+  "outcomeGate": {
+    "open": false,
+    "requires": [
+      "TWSE historical replay parser implementation/readback QA",
+      "representative replay cases including denominator-period transition",
+      "frozen cohort construction",
+      "outcome join implementation that preserves asOf eligibility"
+    ]
+  },
+  "promotionState": "NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+  "formalCoreChanged": false
+}
