@@ -1,0 +1,141 @@
+{
+  "version": "0.1",
+  "id": "H01_ROOM07_SPECIALIST_VALIDATION",
+  "capturedAt": "2026-10-03T18:43:22+08:00",
+  "targetModules": [
+    "D09-13",
+    "D09-14"
+  ],
+  "parentContract": "shared-knowledge/CURRICULUM_H01_H04_CONSOLIDATION_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
+  "formalCoreChanged": false,
+  "terminalClassification": "SCOPE_DEDUP_ONLY",
+  "conceptOwnership": [
+    {
+      "concept": "industry rivalry / competition intensity",
+      "owner": "D09-13",
+      "d0914Role": "CONSUMER_CONTEXT_ONLY"
+    },
+    {
+      "concept": "market-share level/distribution",
+      "owner": "D09-13",
+      "d0914Role": "FIRM_POSITION_CHILD / NO_SECOND_VOTE"
+    },
+    {
+      "concept": "entry barriers",
+      "owner": "D09-13",
+      "d0914Role": "CONSUMER_CONTEXT_ONLY"
+    },
+    {
+      "concept": "substitution threat",
+      "owner": "D09-13",
+      "d0914Role": "CONSUMER_CONTEXT_ONLY"
+    },
+    {
+      "concept": "supplier/customer bargaining power",
+      "owner": "D09-13",
+      "d0914Role": "CONSUMER_CONTEXT_ONLY"
+    },
+    {
+      "concept": "industry capacity/price/margin structure",
+      "owner": "D09-13",
+      "d0914Role": "CONSUMER_CONTEXT_ONLY"
+    },
+    {
+      "concept": "firm-specific strategic action",
+      "owner": "D09-14",
+      "d0913Role": "INDUSTRY_CONTEXT_ONLY"
+    },
+    {
+      "concept": "firm share-change / capacity preemption / product-node positioning / alliance-M&A / vertical integration action",
+      "owner": "D09-14",
+      "d0913Role": "STRUCTURAL_CONTEXT_ONLY"
+    }
+  ],
+  "unitOfAnalysis": {
+    "D0913": "industry × explicit product/geographic market definition × vintage",
+    "D0914": "issuer × industry × observable strategic action × implementation stage × vintage"
+  },
+  "sharedObservableFamilies": [
+    "market share/share change",
+    "capacity and utilization",
+    "price and margins",
+    "customer/supplier concentration",
+    "entry/qualification evidence",
+    "substitution evidence"
+  ],
+  "uniqueD0914Observables": [
+    "actionType",
+    "announcementAt",
+    "commitment/boardApprovalAt when observable",
+    "implementationStage",
+    "targetProduct/technology/geography",
+    "counterparty/partner/acquisition target when applicable",
+    "competitorResponseAt",
+    "post-action share/capacity/product-position change with separate clock"
+  ],
+  "sourceContract": {
+    "D0913": [
+      "industry association/regulator statistics",
+      "effective-dated market definitions",
+      "industry capacity/output/pricing/customer-supplier structure",
+      "issuer disclosures only as constituents, not sole industry truth"
+    ],
+    "D0914": [
+      "issuer filings/annual reports/press releases",
+      "regulator/MOPS material disclosures",
+      "transaction/alliance/capacity implementation receipts",
+      "industry association data for post-action share/position context"
+    ],
+    "note": "D09-14 has a distinct unit/action lifecycle, but most parent observations overlap D09-13/D10/D11. Therefore evidence must be lineage-linked and cannot create an independent vote merely by restating the same share/capacity observation."
+  },
+  "divergentStateCases": [
+    {
+      "case": "ATTRACTIVE_INDUSTRY_WEAK_FIRM",
+      "D0913": "industry barriers/pricing structure attractive",
+      "D0914": "issuer loses share or delays/abandons strategic investment",
+      "reasonDistinct": "industry structure favorable does not imply every issuer executes well"
+    },
+    {
+      "case": "UNATTRACTIVE_INDUSTRY_STRONG_FIRM",
+      "D0913": "industry rivalry/overcapacity/substitution pressure high",
+      "D0914": "issuer gains share through cost, technology, product mix or customer qualification",
+      "reasonDistinct": "firm competitive move can improve relative position without changing industry structure"
+    },
+    {
+      "case": "STRUCTURE_STABLE_ACTION_CHANGES",
+      "D0913": "industry force state broadly stable",
+      "D0914": "issuer announces/implements capacity preemption, alliance, acquisition, vertical integration or new product-node positioning",
+      "reasonDistinct": "dynamic strategic action can change before industry-level structure moves"
+    }
+  ],
+  "antiDoubleCountRules": [
+    "Market share, capacity, price, margin, customer and supplier observations have one parent evidence receipt; D09-13 and D09-14 may reference but never cast two independent Alpha votes.",
+    "D09-14 firm action is independent only if action lifecycle and actor-specific implementation fields add information beyond the D09-13 industry state.",
+    "D10 owns physical supply-chain/capacity transmission; D11/D17 own event/news timing. D09-14 may reference these receipts but cannot duplicate them.",
+    "If no firm-specific action field is present, the observation belongs only to D09-13.",
+    "Market-share level is D09-13 structure; market-share change attributable to a documented firm action may be a D09-14 outcome, not a separate simultaneous factor."
+  ],
+  "capabilityInventory": {
+    "standaloneD0914RuntimeDependencyFound": false,
+    "standaloneD0914ReplayApiUiDependencyFound": false,
+    "currentRepoEvidence": "Search found D09-14 only in curriculum/governance/research artifacts; no Production/runtime/API/UI consumer depends on the ID.",
+    "preservationIfLaterMerged": "BR-050 semantics and future firm-action receipts must remain addressable as named child capabilities under any surviving module."
+  },
+  "classificationRationale": [
+    "Current curriculum scopes overlap materially, so unrestricted KEEP_SEPARATE would duplicate evidence.",
+    "However three legitimate divergent states exist if D09-14 is narrowed to longitudinal issuer-specific strategic actions with its own action lifecycle and unit of analysis.",
+    "Most source families remain shared and D09-14 has no standalone runtime capability today, so full independent-factor treatment is not justified.",
+    "SCOPE_DEDUP_ONLY preserves the useful industry-vs-firm distinction while preventing duplicate evidence weighting."
+  ],
+  "maturityImplication": {
+    "D0913": "may mature on industry-level PIT receipts independently",
+    "D0914": "requires firm-action PIT/replay evidence; cannot inherit D09-13 maturity",
+    "mergeOrRetirement": "NOT_AUTHORIZED; owner approval required"
+  },
+  "exactNext": [
+    "BR-051 freeze first Taiwan industry-structure PIT receipt under D09-13.",
+    "BR-052 should be redesigned as a firm-action/competitive-position receipt under deduplicated D09-14 scope, not another static Five-Forces/share receipt.",
+    "00 room performs dependency audit and owner review before any formal curriculum scope change."
+  ],
+  "status": "SPECIALIST_PACKET_COMPLETE / SCOPE_DEDUP_ONLY_PROPOSED / OWNER_REVIEW_REQUIRED / FORMAL_UNCHANGED"
+}
