@@ -1,0 +1,83 @@
+name: System2 Fugle Raw Hot History Bootstrap
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/fugle_raw_daily_history_v0_1.mjs"
+      - "system2/runtime/daily_shadow_fugle_hot_history_bootstrap_v0_1.mjs"
+      - "system2/scripts/run_daily_shadow_fugle_hot_history_bootstrap.mjs"
+      - "system2/tests/fugle_raw_daily_history_v0_1.test.mjs"
+      - "system2/tests/daily_shadow_fugle_hot_history_bootstrap_v0_1.test.mjs"
+      - "system2/tests/daily_shadow_fugle_hot_history_workflow_guard.test.mjs"
+      - ".github/workflows/system2-fugle-raw-hot-history-bootstrap.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-isolated-d1-writer
+  cancel-in-progress: false
+
+jobs:
+  bootstrap:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: system2-research
+    env:
+      SYSTEM2_FUGLE_HOT_HISTORY_SYMBOL_LIMIT: "45"
+      SYSTEM2_FUGLE_HOT_HISTORY_PAUSE_MS: "1100"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Verify raw-history and authority boundaries
+        run: |
+          set -euo pipefail
+          node system2/tests/fugle_raw_daily_history_v0_1.test.mjs
+          node system2/tests/daily_shadow_fugle_hot_history_bootstrap_v0_1.test.mjs
+          node system2/tests/daily_shadow_fugle_hot_history_workflow_guard.test.mjs
+          node --check system2/scripts/run_daily_shadow_fugle_hot_history_bootstrap.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+
+      - name: Bootstrap bounded raw history into isolated D1
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+          SYSTEM2_CONFIRM: WRITE_SYSTEM2_FUGLE_RAW_HOT_HISTORY_ONLY
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test -n "$SYSTEM2_CLOUDFLARE_API_TOKEN"
+          test -n "$FUGLE_API_KEY"
+          node system2/scripts/run_daily_shadow_fugle_hot_history_bootstrap.mjs             | tee /tmp/system2-fugle-raw-hot-history.json
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          const r=JSON.parse(fs.readFileSync("/tmp/system2-fugle-raw-hot-history.json","utf8"));
+          if(r.result!=="PASS"||r.databaseName!=="system2-research"||r.d1SchemaVersion!=="1.1")throw new Error("wrong bootstrap/database");
+          if(r.plan.selectedSymbolCount>45)throw new Error("symbol cap exceeded");
+          if(r.sourceRateLimitSafety.pauseMs<1000)throw new Error("rate-limit spacing weakened");
+          if(r.rawPriceSpaceOnly!==true||r.availabilityBasis!=="PROSPECTIVE_OBSERVATION"||r.continuityState!=="UNVERIFIED"||r.continuityPromotionPerformed!==false)throw new Error("PIT/continuity boundary changed");
+          if(r.strategyEvaluationPerformed!==false||r.capacityRunProduced!==false||r.zeroPickClaimed!==false||r.selectionAuthority!==false)throw new Error("selection authority leak");
+          if(r.finalSelectionEnabled!==false||r.livePushEnabled!==false||r.orderImpact!==false||r.system1RuntimeUsed!==false)throw new Error("production boundary leak");
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+            "System2 Fugle raw hot-history bootstrap PASS\n\n"+
+            "Selected symbols: "+r.plan.selectedSymbolCount+
+            "; processed: "+r.processedSymbolCount+
+            "; inserted bars: "+r.insertedBarCount+
+            "; continuity remains UNVERIFIED.\n");
+          NODE
+
+      - name: Preserve bootstrap receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-fugle-raw-hot-history-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/system2-fugle-raw-hot-history.json
+          if-no-files-found: warn
+          retention-days: 90
