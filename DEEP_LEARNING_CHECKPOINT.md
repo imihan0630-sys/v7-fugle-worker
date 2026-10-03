@@ -1339,3 +1339,68 @@ Exact 00 cursor: `shared-knowledge/AOKD_00_CONTINUATION_CHECKPOINT_20261004_V0_2
 After A06, three meaningful follow-up rounds found no additional retained families; bounded sweep temporarily saturated, not universal literature completeness. Counterevidence, full owner scopes, data/clock/missingness/licensing limits and incremental-test gates are recorded. Mostly abstract/documentation-level evidence; no Taiwan alpha/OOS claim. Next: source receipts and existing-owner scope triage, not Coverage promotion.
 
 Baseline read: 22 domains / 354 modules / 41.5% maturity at ca844efda3809050238986acb1a160e2d439a428. Maturity movement belongs to parallel rooms; this docs-only checkpoint does not change tracker, owner, modules, domains, Formal behavior or runtime. Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE NONE. Research 07:20:54–07:40:28 Taipei; Git commit timestamps record checkpoint persistence.
+
+
+## DL-D21-20261004-B — accelerated governance deepening
+Run date: 2026-10-04 Asia/Taipei
+Scope: D21-04 / D21-05 / D21-07 / D21-09 / D21-10
+Status: RESEARCH_ONLY / MULTI_MODULE_MECHANISM_FROZEN / FORMAL_CORE_UNCHANGED
+
+### Questions studied
+1. Can pledge paths be reconstructed as state transitions rather than static ratios?
+2. Can Taiwan related-party transactions be separated into efficient contracting versus tunneling/propping mechanisms?
+3. Can executive incentives be linked to actual capital-allocation decisions without treating pay level as a governance score?
+4. Can succession/key-person events be classified without assuming family or professional succession has one universal sign?
+5. Can corrections, restatements and internal-control weaknesses be separated into PIT-safe event families without rewriting historical financial data?
+
+### New evidence / durable progress
+
+D21-04:
+- New Product Insurance 2850 / Shin Kong Textile provides a partial pledge path: 2024-12-19 +8,000 pledged lots -> balance 28,000; 2025-01-23 -4,000 release -> 24,000; 2025-02-03 -5,000 release -> 19,000, against a 51,548-lot holding.
+- The path shows pledge ratio changing from about 54.33% to 36.86%.
+- Original MOPS receipt/first-known remains missing, so D21-04 stays L2.
+
+D21-05:
+- Taiwan peer-reviewed evidence supports both opportunistic and efficient RPT mechanisms.
+- Related operating sales/processing and non-operating RPTs can have different implications for earnings informativeness.
+- Public-company rules explicitly govern RPT controls and impose approval/disclosure requirements for material related-party asset transactions, loans and guarantees.
+- D21-05 advances L0 -> L2 / 40%.
+
+D21-07:
+- Taiwan remuneration governance explicitly requires performance/remuneration structures to consider company performance, future risk and risk appetite.
+- Taiwan empirical evidence links managerial compensation with R&D and operating efficiency, but reverse causality remains material.
+- Repurchase evidence shows incentive design and managerial overconfidence can interact with capital-return decisions.
+- D21-07 advances L0 -> L2 / 40%.
+
+D21-09:
+- Taiwan succession evidence is heterogeneous by competition, family/control participation, successor type, heir background and post-succession strategy.
+- No universal family-successor or outside-manager sign is defensible.
+- D21-09 advances L0 -> L2 / 40%, role CONTEXT_ONLY / GOVERNANCE_TAIL_RISK / CONFIDENCE.
+
+D21-10:
+- Taiwan regulation distinguishes correction from formal restatement by quantitative thresholds and separate disclosure clocks.
+- Historical research must preserve original reported values and later restated values simultaneously; corrected values cannot be backfilled.
+- Taiwan evidence associates internal-control weaknesses and restatements with weaker performance/negative market response, with severity, earnings direction, regulator initiation and remediation affecting interpretation.
+- D21-10 advances L0 -> L2 / 40%.
+
+### Counter-evidence / alternative mechanisms
+- RPTs can be efficient internal supply-chain/capital-market arrangements.
+- Compensation can reflect talent/growth opportunities rather than cause superior investment.
+- Succession effects can be driven by pre-existing poor performance or strategy rather than successor identity.
+- Restatements can reflect complexity/detection quality rather than fraud.
+- Remediation changes the meaning of an internal-control weakness.
+- Pledging can be benign personal liquidity; margin-call thresholds remain unknowable without loan terms.
+
+### Redundancy / anti-inflation decision
+D21-11 Tunneling / Minority Shareholder Risk was NOT advanced in this run despite obvious thematic overlap. It may be an outcome/composite layer of D21-01 control wedge + D21-04 pledging + D21-05 RPT rather than an independent feature family. Before maturity promotion, its unique incremental information and ownership boundary must be defined to prevent double counting.
+
+### Candidate status
+- No FORMAL_OPTIMIZATION_CANDIDATE.
+- D21-04/05/07/09/10 remain research-only or context/tail-risk roles as specified.
+- Formal Core remains LOCKED.
+
+### Exact next continuation point
+1. Recover authoritative MOPS pledge setup/release receipts for D21-04; if source remains blocked, do not promote.
+2. Run two-family historical Taiwan RPT replay for D21-05 with relationship vintage and approval/disclosure clocks.
+3. Run dual-vintage correction/restatement replay for D21-10, preserving original and corrected financial values.
+4. Audit D21-11 for true incremental ownership versus D21-01/04/05 before any maturity increase.
