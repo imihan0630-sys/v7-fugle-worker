@@ -7,6 +7,15 @@ assert.match(workflow, /cancel-in-progress: false/);
 assert.match(workflow, /github.ref == 'refs\/heads\/main'/);
 assert.match(workflow, /environment: system2-research/);
 assert.match(workflow, /WRITE_SYSTEM2_DAILY_DIAGNOSTIC_ONLY/);
+for (const requiredSourceTrigger of [
+  "system2/runtime/daily_shadow_a1_source_v0_1.mjs",
+  "system2/runtime/a1_symbol_snapshot_adapter.mjs",
+  "system2/runtime/official_historical_a1_source_v0_1.mjs",
+  "system2/runtime/daily_shadow_input_preflight_v0_1.mjs",
+  "system2/runtime/daily_shadow_history_reader_v0_1.mjs",
+]) {
+  assert.equal(workflow.includes(requiredSourceTrigger), true, "missing physical diagnostic source trigger: " + requiredSourceTrigger);
+}
 assert.match(workflow, /IMMUTABLE_D1_READBACK_VERIFIED/);
 assert.match(workflow, /r.zeroPickDay!==null/);
 assert.doesNotMatch(workflow, /wrangler.*deploy|secret put|V7_ADMIN_TOKEN|FUGLE_API_KEY|SYSTEM2_CAPTURE_ENABLED/);
