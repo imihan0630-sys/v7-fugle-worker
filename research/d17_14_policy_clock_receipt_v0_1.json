@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-03T18:23:55+08:00",
+  "owner": "08｜事件與新聞研究室",
+  "module": "D17-14",
+  "status": "EVENT_CLOCK_SUBLANE_TAIWAN_PIT_FEASIBLE / SURPRISE_EXPECTATION_LANE_PENDING / KEEP_MODULE_L2 / OUTCOMES_CLOSED",
+  "formalCoreImpact": "NONE",
+  "sources": [
+    {
+      "name": "FSC 歷史法規草案",
+      "url": "https://law.fsc.gov.tw/DraftForum.aspx?Type=H",
+      "quality": "OFFICIAL_HISTORY / DATE_LEVEL"
+    },
+    {
+      "name": "FSC 法規內容與沿革",
+      "url": "https://law.fsc.gov.tw/",
+      "quality": "OFFICIAL_VERSION_HISTORY / DATE_LEVEL"
+    }
+  ],
+  "cases": [
+    {
+      "event": "金融控股公司合併資本適足性管理辦法",
+      "draftPublishedDate": "2026-05-29",
+      "consultationEndDate": "2026-06-29",
+      "finalRevisionPublishedDate": "2026-08-04",
+      "effectiveDate": "2026-01-01",
+      "state": "FINAL_WITH_RETROACTIVE_EFFECTIVE_DATE",
+      "falsification": "effectiveDate precedes final publication; it must never be used as firstKnownAt."
+    },
+    {
+      "event": "金融機構及提供虛擬資產服務之事業或人員防制詐欺犯罪危害應遵循事項辦法",
+      "draftPublishedDate": "2026-05-28",
+      "consultationEndDate": "2026-06-29",
+      "finalRevisionPublishedDate": "2026-07-20",
+      "effectiveDate": "2026-07-20",
+      "state": "FINAL_EFFECTIVE_ON_PUBLICATION",
+      "note": "Article 73 states the regulation takes effect on publication."
+    },
+    {
+      "event": "公開發行銀行財務報告編製準則",
+      "draftPublishedDate": "2026-06-23",
+      "consultationEndDate": "2026-07-23",
+      "finalRevisionPublishedDate": "2026-08-18",
+      "effectiveDate": "MIXED_BY_PROVISION",
+      "mixedEffectives": [
+        "2026-accounting-year Q2 for specified provisions",
+        "2028-01-01 for specified provisions",
+        "publication date for remaining amendments"
+      ],
+      "state": "FINAL_WITH_MIXED_EFFECTIVE_CLOCKS",
+      "falsification": "One document can contain multiple effective clocks; provision scope is required."
+    }
+  ],
+  "pitRules": [
+    "Draft publication, comment-end, final publication and effective date are separate clocks.",
+    "Retroactive legal effect never backdates market observability.",
+    "Later amendments append new policy vintages and do not overwrite earlier known state.",
+    "Surprise requires a compatible ex-ante expectation source captured before the decision; otherwise surprise=UNKNOWN.",
+    "Market reaction cannot be reverse-engineered into expectation or surprise."
+  ],
+  "counterevidence": [
+    "Final publication need not equal effective date.",
+    "Effective date can precede publication or vary by provision.",
+    "Draft language can change before final rule.",
+    "A draft-only item is not a final policy event.",
+    "No ex-ante expectation archive is validated here, so surprise remains UNKNOWN.",
+    "No market return outcome was inspected."
+  ],
+  "replayability": {
+    "policyClockDateLevel": "VALIDATED_BOUNDED_OFFICIAL_HISTORY",
+    "historicalIntradayFirstKnown": "UNKNOWN",
+    "surpriseExpectationLane": "SOURCE_NEEDED",
+    "rawImmutableBytesForAllVersions": "NOT_ARCHIVED_IN_THIS_RECEIPT"
+  },
+  "maturityDecision": {
+    "module": "KEEP_L2",
+    "clockSubLane": "L3_READY",
+    "blockedComponent": "EXPECTATION_VS_SURPRISE"
+  },
+  "outcomesOpened": false,
+  "formalOptimizationCandidate": false,
+  "exactNext": "Capture ex-ante expectation sources for independent Taiwan policy decisions before final publication, or preserve surprise UNKNOWN; prospectively archive raw draft/final/effective versions with capturedAt."
+}
