@@ -62,7 +62,9 @@ export function buildC3ResearchCaptureContract(c2Ledger,{
     tradingAuthority:false,signalAuthority:false,pushAuthority:false,allocationAuthority:false
   })).sort((a,b)=>a.captureSource.localeCompare(b.captureSource)||a.symbol.localeCompare(b.symbol));
 
-  const extraCandleCalls=sampledShadow.length*C3_CAPTURE_SLOTS.length;\n  const extraQuoteCalls=sampledShadow.length*C3_CAPTURE_SLOTS.length;\n  const extraCalls=extraCandleCalls+extraQuoteCalls;
+  const extraCandleCalls=sampledShadow.length*C3_CAPTURE_SLOTS.length;
+  const extraQuoteCalls=sampledShadow.length*C3_CAPTURE_SLOTS.length;
+  const extraCalls=extraCandleCalls+extraQuoteCalls;
   const budget=typeof providerBudgetCallsPerSession==="number"&&Number.isFinite(providerBudgetCallsPerSession)&&providerBudgetCallsPerSession>=0
     ? providerBudgetCallsPerSession
     : null;
@@ -77,7 +79,9 @@ export function buildC3ResearchCaptureContract(c2Ledger,{
     eligibleN:eligible.length,eligibleFormalReuseN:existingFormal.length,
     eligibleShadowOnlyN:shadowOnly.length,capturedShadowOnlyN:sampledShadow.length,
     shadowSamplingFraction:shadowOnly.length?sampledShadow.length/shadowOnly.length:null,
-    extraCandleCallsPerSession:extraCandleCalls,\n    extraQuoteCallsPerSession:extraQuoteCalls,\n    extraProviderCallsPerSession:extraCalls,
+    extraCandleCallsPerSession:extraCandleCalls,
+    extraQuoteCallsPerSession:extraQuoteCalls,
+    extraProviderCallsPerSession:extraCalls,
     providerBudgetCallsPerSession:budget,
     providerBudgetStatus:budgetStatus,
     cohort,
