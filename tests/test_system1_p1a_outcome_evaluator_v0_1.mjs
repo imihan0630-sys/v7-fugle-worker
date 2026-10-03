@@ -112,6 +112,29 @@ eq(immature.classification,"P1A_FUNNEL_MATERIAL_OUTCOME_UNKNOWN");
 eq(immature.dateCluster.independentDates,2);
 eq(immature.readiness.maturityReady,false);
 
+const zeroDate="2026-10-20";
+const zeroC1={
+  schemaVersion:"SYSTEM1_C1_ISOLATED_V0_1",sessionDate:zeroDate,populationN:1,
+  observations:[{symbol:"PZ",formalResult:{ok:false},gates:{}}]
+};
+const zeroC5={
+  schemaVersion:"SYSTEM1_C5_SEMANTIC_REPAIR_V0_2",sessionDate:zeroDate,generationId:"gz",
+  rows:[{symbol:"PZ",p1aBlockSet:["RS_CONTEXT"],reachStage:"F9_RANKABLE"}],
+  researchOnly:true,formalCoreLocked:true,economicSuperiority:"UNKNOWN"
+};
+const zeroPick=buildSystem1P1AOutcomeEvaluation({
+  c1Diagnoses:[zeroC1],c5Diagnostics:[zeroC5],
+  d5Receipts:[d5(zeroDate,"PZ","gz",1.2)],regimeReceipts:[regime(zeroDate,"TREND")],validation
+});
+eq(zeroPick.classification,"P1A_FUNNEL_MATERIAL_OUTCOME_UNKNOWN");
+eq(zeroPick.population.totalP1aRankableRows,1);
+eq(zeroPick.dateCluster.eligibleComparisonDates,1);
+eq(zeroPick.dateCluster.cleanComparableDates,0);
+eq(zeroPick.dateCluster.zeroFormalComparatorDates,1);
+eq(zeroPick.dates[0].blockReason,"FORMAL_COMPARATOR_EMPTY_ZERO_PICK_CONTRACT_REQUIRED");
+eq(zeroPick.readiness.completeOutcomeCoverage,false);
+eq(zeroPick.interpretation.zeroPickDatesRequireSeparateFrozenCashComparatorBeforeEconomicUse,true);
+
 assert.throws(()=>buildSystem1P1AOutcomeEvaluation({
   c1Diagnoses:[c1s[0],c1s[0]],c5Diagnostics:[c5s[0]]
 }),/DUPLICATE_C1_DATE/);n++;
