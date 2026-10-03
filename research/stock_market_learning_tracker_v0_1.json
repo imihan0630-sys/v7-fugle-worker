@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T07:11:00+08:00",
+  "updatedAt": "2026-10-04T07:36:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -3530,7 +3530,7 @@
         "CREDIT_CAPITAL_STRUCTURE_CHECKPOINT.md",
         "CREDIT_CAPITAL_STRUCTURE_RESEARCH.md"
       ],
-      "maturityPct": 13.3,
+      "maturityPct": 15,
       "modules": [
         {
           "id": "D22-01",
@@ -3555,12 +3555,12 @@
         {
           "id": "D22-03",
           "name": "Net Debt／Leverage Structure淨負債與槓桿結構",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Net Debt／Leverage Structure淨負債與槓桿結構」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / PIT_COMPONENT_CONTRACT_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-          "next": "建立至少三家台灣非金融發行人、至少兩產業、跨多個財報日期的 PIT component replay；驗證 unrestricted-cash 與 total-cash offset、lease-liability inclusion、gross-debt 與 net-debt views；先控制 D07、D22-01、D22-02、D13，股票 outcomes 維持 CLOSED。"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3 / TAIWAN_PIT_COMPONENT_REPLAY_VALIDATED / VERSION_LINEAGE_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "擴充 unrestricted／restricted／pledged cash 的 first-known source receipts，做 total-cash vs accessible-cash offset 敏感度；擴大 first-known→audited/restated append-only lineage；預註冊 lease／financing-like obligations variants 與 OOS／walk-forward／Prospective Shadow，控制 D07＋D22-01＋D22-02＋D13 後才評估增量價值。"
         },
         {
           "id": "D22-04",
@@ -3653,10 +3653,10 @@
           "next": "從理論與定義開始，建立 D22-12 的機制、反證與資料需求；不得直接進 Formal。"
         }
       ],
-      "status": "ACTIVE_RESEARCH / D22-01_L3_WAITING_PANEL / D22-02_L3_PIT_REPLAY_VALIDATED / D22-03_L2_COMPONENT_REPLAY_ACTIVE / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D22-03 主線深化：以中華電信 2023／2024 divergent state 驗證 negative net debt 不等於低再融資壓力，補 unrestricted/restricted cash source receipts 與第三個 exact-knownAt issuer；D22-02 已 L3，繼續擴大面板並保持 outcomes CLOSED；D22-01 同步累積多日期 maturity panel。",
-      "lastResearchUpdate": "2026-10-04T07:22:00+08:00",
-      "researchNote": "D22-02 promoted to L3 after cross-industry Taiwan PIT replay expanded to telecom with two independently timestamped Chunghwa Telecom annual states. D22-03 component replay added a divergent-state falsification: headline net cash improved while <1y contractual financing concentration increased sharply. Equity outcomes remain closed; no Formal change."
+      "status": "ACTIVE_RESEARCH / D22-01_L3_WAITING_PANEL / D22-02_L3_PIT_REPLAY_VALIDATED / D22-03_L3_COMPONENT_REPLAY_VALIDATED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D22-01～03 皆已達 L3 資料可行層；先擴大多公司×多日期獨立面板與 first-known version lineage，股票 outcomes 繼續 CLOSED。下一個可執行新模組為 D22-04 Cost of Debt／Refinancing Risk：建立無風險利率與 issuer-specific spread／effective debt cost 分解的機制、反證與 PIT 資料契約，避免與 D13-06、D07-18 重複計票。",
+      "lastResearchUpdate": "2026-10-04T07:36:00+08:00",
+      "researchNote": "D22-02 and D22-03 promoted to L3 using cross-industry/multi-date Taiwan PIT replay. Chunghwa Telecom provides a divergent state where net cash improves while near-term financing concentration rises; ASE provides a third exact-knownAt component receipt and a first-known vs later-restated lineage falsification. Outcomes remain closed; no Formal change."
     }
   ],
   "rules": {
