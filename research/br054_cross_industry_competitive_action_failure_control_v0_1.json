@@ -1,0 +1,126 @@
+{
+  "version": "0.1",
+  "id": "BR-054",
+  "capturedAt": "2026-10-03T23:20:00+08:00",
+  "module": "D09-14 Market Share／Entry Barrier／Substitution／Competitive Strategy市占、進入障礙、替代與競爭策略",
+  "mode": "CROSS_INDUSTRY_FIRM_ACTION_PLUS_FAILURE_CONTROL / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "purpose": "Extend the issuer-action lifecycle outside semiconductors and add an explicit failed/suspended strategic-action control.",
+  "receipts": [
+    {
+      "issuer": "Tung Ho Steel Enterprise",
+      "symbol": "2006",
+      "industry": "steel / construction steel",
+      "actionType": "PROCESS_DIGITALIZATION_AND_SCRAP_INPUT_OPTIMIZATION",
+      "actionClock": {
+        "projectStart": "2025-05-01",
+        "plannedEnd": "2027-10-31",
+        "capturedAt": "2026-10-03T23:20:00+08:00"
+      },
+      "source": "Tung Ho Steel 2025 sustainability/climate disclosure",
+      "action": "Smart Scrap Inspection System R&D project using image recognition to classify scrap and optimize EAF parameters; 2025 planned R&D investment NT$13.82m; project submitted for MOEA industrial-upgrading support.",
+      "implementationState": "R&D_IN_PROGRESS / COMMERCIAL_OR_FINANCIAL_OUTCOME_NOT_YET_PROVEN",
+      "competitivePositionHypothesis": "May improve scrap classification, energy efficiency, process stability and input handling.",
+      "falsification": "R&D spending or a government-support application is not evidence of realized cost advantage, margin improvement or durable market-share gain."
+    },
+    {
+      "issuer": "China Steel Corporation",
+      "symbol": "2002",
+      "industry": "integrated steel",
+      "actionType": "DIGITAL_PROCESS_OPTIMIZATION",
+      "actionClock": {
+        "capturedAt": "2026-10-03T23:20:00+08:00"
+      },
+      "source": "CSC official company news",
+      "action": "AI-based sinter-machine speed control deployed to No.2 sinter machine; company reports approximately 4% yield improvement and 22,000 tonnes annual carbon reduction.",
+      "implementationState": "DEPLOYED_OPERATIONAL_ACTION / ECONOMIC_INCREMENTAL_VALUE_NOT_YET_OOS_TESTED",
+      "competitivePositionHypothesis": "Operational digitalization may improve yield/cost/carbon efficiency inside the integrated-route constraint.",
+      "falsification": "Operational improvement at one process step does not prove industry-level pricing power, company-wide margin durability or stock alpha."
+    },
+    {
+      "issuer": "Hon Hai Precision Industry",
+      "symbol": "2317",
+      "industry": "electronics manufacturing / EV strategic expansion",
+      "actionType": "PARTNERSHIP_INVESTMENT_AND_NORTH_AMERICA_EV_MANUFACTURING",
+      "lifecycle": [
+        {
+          "at": "2021-10-01",
+          "state": "AGREEMENT_IN_PRINCIPLE",
+          "evidence": "Foxconn and Lordstown announced a non-binding framework including planned plant purchase, contract manufacturing and possible further vehicle programs."
+        },
+        {
+          "at": "2022-05-12",
+          "state": "PARTIAL_IMPLEMENTATION",
+          "evidence": "Foxconn completed acquisition of the Ohio manufacturing facility and signed manufacturing/joint-development agreements; Lordstown became first commercial-vehicle mass-production customer at the site."
+        },
+        {
+          "at": "2022-11-07",
+          "state": "ADDITIONAL_EQUITY_INVESTMENT_AGREEMENT",
+          "evidence": "Foxconn group agreed to additional common/preferred share investment subject to conditions; only part of the investment was funded."
+        },
+        {
+          "at": "2023-06-27",
+          "state": "COUNTERPARTY_BANKRUPTCY_AND_LITIGATION",
+          "evidence": "Lordstown filed for bankruptcy and sued Foxconn; Foxconn financial reporting records the dispute and suspension of remaining investment."
+        },
+        {
+          "at": "2023-06-28",
+          "state": "NEGOTIATION_SUSPENDED",
+          "evidence": "Foxconn officially stated it suspended subsequent good-faith negotiations."
+        }
+      ],
+      "implementationState": "PARTIAL_ASSET_AND_MANUFACTURING_IMPLEMENTATION / PARTNERSHIP_INVESTMENT_PATH_SUSPENDED",
+      "competitivePositionHypothesis": "The original partnership sought faster North American EV capacity and shared-scale economics.",
+      "falsification": "A signed partnership, acquired plant and partial implementation can still fail to deliver the intended partner/customer pathway. This does not imply Foxconn's entire EV strategy failed; it is a negative control for the specific Lordstown strategic-action chain."
+    }
+  ],
+  "lifecycleRules": [
+    "ANNOUNCED != APPROVED != FUNDED != CONSTRUCTION/IMPLEMENTATION != COMMERCIALIZED != SUCCESSFUL",
+    "A strategic action may enter PARTIAL_SUCCESS, DELAYED, SUSPENDED, CANCELLED, COUNTERPARTY_FAILURE or RESTRUCTURED states.",
+    "Company-wide strategy must not be declared failed because one partnership/action failed.",
+    "Post-action share, margin, revenue and stock outcomes are separate outcome clocks and remain closed in this receipt."
+  ],
+  "crossIndustryEvidence": [
+    "Steel digitalization actions show D09-14 is not semiconductor-specific.",
+    "Foxconn/Lordstown provides a true negative-control lifecycle in which intent and partial implementation do not guarantee the original strategic thesis completes.",
+    "The same industry structure can host issuers with different action states, and the same issuer can have simultaneous successful and failed strategic actions."
+  ],
+  "antiDoubleCountRules": [
+    "Tung Ho/CSC process changes are D09-14 action states; physical production/capacity effects link to D10 and are not duplicated.",
+    "Foxconn/Lordstown announcement clocks link to D11/D17 event research; D09-14 owns the longitudinal strategic-action implementation state.",
+    "No action receives a positive or negative stock score until OOS/prospective outcome evidence exists.",
+    "Failure/control labels apply to the specific action chain, not the entire issuer or industry."
+  ],
+  "pitSemantics": {
+    "sourceFamilies": [
+      "issuer official releases",
+      "issuer financial reports",
+      "issuer sustainability reports",
+      "partner/counterparty official releases"
+    ],
+    "clocks": [
+      "announcedAt",
+      "agreementAt",
+      "fundedAt",
+      "implementationAt",
+      "suspendedAt",
+      "cancelledAt",
+      "capturedAt",
+      "firstEligibleDecision"
+    ],
+    "missingRule": "UNKNOWN != no action / success / failure",
+    "revisionRule": "Lifecycle transitions append; prior states remain immutable."
+  },
+  "maturityDecision": {
+    "D09-14": "KEEP_L3_TAIWAN_PIT_DATA_FEASIBILITY"
+  },
+  "reasonNoL4": "Cross-industry and failed-action controls strengthen the unique replay contract, but no prospective/OOS test establishes incremental stock-selection or future-position value after controlling for industry structure, capacity, event and fundamentals.",
+  "h01Implication": "KEEP_SEPARATE evidence is strengthened: D09-14 has a dynamic issuer-action lifecycle and explicit failure states not represented by a static D09-13 industry-state receipt. Scope dedup remains mandatory.",
+  "exactNext": [
+    "BR-056 accumulate independent firm-action receipts with native post-action share/capacity/revenue outcomes, including at least one completed-success and one failed/delayed control on common support.",
+    "Preregister outcome windows before opening stock returns or margin/share outcomes.",
+    "Run redundancy/ablation versus D09-13, D10 capacity, D11/D17 event timing and D07 fundamentals before any System1/System2 role classification."
+  ],
+  "status": "NON_SEMICONDUCTOR_ACTIONS_FROZEN / FAILED_STRATEGIC_ACTION_CONTROL_FROZEN / H01_KEEP_SEPARATE_STRENGTHENED / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
