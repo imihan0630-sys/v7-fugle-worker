@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "pattern-anchor-ablation-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "design": "LEAVE_ONE_CONFIRMED_ANCHOR_OUT",
+  "fixedContext": [
+    "asOf",
+    "bars",
+    "sessionSet",
+    "semanticSpace",
+    "detectorVersion",
+    "detectorParameters"
+  ],
+  "rowFields": [
+    "removedAnchorId",
+    "ablationZoneExists",
+    "ablationCenter",
+    "ablationWidth",
+    "centerShiftAbs",
+    "centerShiftPct",
+    "centerShiftATR",
+    "widthShiftAbs",
+    "widthShiftPct"
+  ],
+  "aggregateFields": [
+    "eligibleAblationCount",
+    "survivingAblationCount",
+    "zoneLossCount",
+    "zoneLossFraction",
+    "maxAbsCenterShiftATR",
+    "medianAbsCenterShiftATR",
+    "maxAbsWidthShiftPct",
+    "anchorInfluenceVector"
+  ],
+  "rules": [
+    "OFFICIAL_ZONE_IMMUTABLE",
+    "NO_FUTURE_ANCHORS",
+    "MINIMUM_ANCHOR_DEPENDENCE_SEPARATE",
+    "NO_ROBUSTNESS_CUTOFF",
+    "NO_POST_OUTCOME_STABLE_SUBSET_MINING",
+    "ANCHOR_INFLUENCE_IS_MECHANICAL_NOT_BEHAVIORAL_SALIENCE"
+  ],
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
