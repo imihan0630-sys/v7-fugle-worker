@@ -159,3 +159,85 @@ Exact next continuation:
 Build a small historical Taiwan PIT replay prototype for D21-01 using at least two listed-company years with materially different ownership structures. Capture actual MOPS public-known timestamps, annual-report vintage, top-shareholder relationships and legal-person look-through chains; reconstruct cash-flow rights and classic weakest-link control rights, record UNKNOWN links, then verify that replay as of the decision date does not use later ownership information. Compare 10% and 20% control-threshold classifications and one direct-ownership baseline before considering L3.
 
 Formal Core impact: NONE.
+
+## D21-01 Historical Taiwan PIT replay prototype v0.1
+
+Date: 2026-10-03 Asia/Taipei
+Status: PARTIAL_REPLAY / EXACT_MOPS_KNOWN_AT_BLOCKED / NO_L3_PROMOTION
+
+### Sample A — TSMC 2330, 2024 annual report
+- Annual-report major-shareholder snapshot: ADR-Taiwan Semiconductor Manufacturing Company Ltd. 20.49%; National Development Fund 6.38%.
+- Official investor information identifies the ADR program as a depositary structure. The 20.49% ADR line must not be treated mechanically as one ultimate beneficial controller.
+- 2025 AGM date: 2025-06-03. The historical filing rule supplies a latest-required-publication bound for qualifying large listed companies, but not the exact first-known MOPS receipt.
+- Threshold falsification: a naive direct-holder >=20% controller rule can create a false positive from a depositary/omnibus line.
+- Exact original MOPS first-public timestamp remains UNKNOWN. No L3 promotion.
+
+### Sample B — Formosa Plastics 1301, 2024 annual report
+- Major-holder snapshot includes Chang Gung Medical Foundation 9.44%, Formosa Chemicals & Fibre 7.65%, a custody account 6.26%, Nan Ya Plastics 4.63%, Chindwell 4.16%, Vanson 3.05%, Formosa Petrochemical 2.07%, Ming Chi University of Technology 1.43%, plus other holders.
+- Relationship/look-through disclosures indicate a dense related group network even though each visible direct group holder is below 10%.
+- 2025 AGM date: 2025-06-11. Exact original MOPS first-public timestamp remains UNKNOWN.
+- Threshold falsification: a naive single-holder 10% rule can create a false negative for a network-controlled group.
+- Summing visibly related top-holder percentages produces about 32.43%, but this is only a network-concentration diagnostic, NOT ultimate control rights. The structure includes loops, foundations, related legal persons, foreign holding companies and incomplete ultimate-beneficial-owner paths.
+
+### Source-provenance falsification
+- A third-party mirror labels one 2024 Formosa Plastics annual-report artifact with a 2024-12-23 filing date while the rendered audited report contains a 2025-03-13 audit-report date.
+- That chronology is incompatible with interpreting the mirror date as the first-public time of the audited document. Third-party mirror metadata is therefore UNTRUSTED_FOR_KNOWN_AT unless reconciled to an original MOPS receipt/timestamp.
+- Document print date and statutory filing deadline are bounds/context, not substitutes for exact known_at.
+
+### Historical filing-rule vintage
+- In the relevant 2024/2025 regime, listed/OTC companies generally filed annual reports 7 days before AGM; companies with latest fiscal-year paid-in capital of NT$2 billion or more, or foreign/PRC ownership of at least 30%, filed 14 days before.
+- A later universal 14-day listed/OTC rule must not be backfilled into earlier years.
+
+### D21-01 maturity decision
+- Keep D21-01 at L2 / 40%.
+- Two structurally different company-year cases now freeze both false-positive and false-negative failure modes of naive ownership thresholds.
+- L3 remains blocked by missing authoritative historical first-known MOPS receipts.
+
+## D21-02 Board / Independent Directors — research contract v0.1
+
+Date: 2026-10-03 Asia/Taipei
+Status: L2 MECHANISM_AND_FALSIFICATION_DEFINED / PIT_BOARD_REPLAY_PENDING / CONTEXT_ONLY
+
+### Regulatory baseline
+- Taiwan Securities and Exchange Act Article 14-2: where independent directors are required, there must be at least two and at least one-fifth of total board seats; independence, professional qualification, shareholding and concurrent-post restrictions apply.
+- Article 14-4: an audit committee, where required, consists entirely of independent directors, at least three members, one convener, and at least one member with accounting or finance expertise.
+
+### Competing mechanisms
+- Monitoring/minority-protection: directors independent of controlling families may improve oversight, financial-report monitoring and challenge to controller-favoring decisions.
+- Expertise: accounting/finance or firm-relevant technical expertise may increase oversight quality.
+- Supply/displacement/compliance-cost: mandated independent seats may replace incumbent directors; a limited qualified-director pool can increase busyness and cost without adding superior firm-specific expertise.
+- Formal independence does not guarantee practical independence from controllers.
+
+### Taiwan evidence synthesis
+- Yeh and Woidtke (2005) associate controlling-family-affiliated boards with poorer governance and show board affiliation interacts with control-cashflow divergence.
+- Fan, Jiang, Kao and Liu (2020), using regulation-mandated board changes as a quasi-natural experiment, report a negative effect of increased board independence on firm value/profitability and document replacement, cost and busyness mechanisms.
+- Other Taiwan observational studies report positive associations for board independence or separation of CEO/chair roles, but selection/endogeneity remains a competing explanation.
+- Therefore 'more independent directors = better' is rejected as a monotonic scoring rule.
+
+### Candidate variables for future PIT testing
+- controller/family affiliation of each director;
+- voluntary versus regulation-forced appointment context;
+- board size and whether an independent seat replaced or added a director;
+- director busyness / concurrent positions;
+- accounting/finance expertise;
+- industry/technology expertise match;
+- tenure;
+- committee roles;
+- CEO-chair duality interaction;
+- attendance, dissent and recusal records where first-known historical data are reliable.
+
+### PIT / replay contract
+- Use election/appointment announcement known_at, shareholder-meeting/election vintage and actual term dates; do not reconstruct older boards from the current roster.
+- Preserve director identity mapping through name and legal-person-representative changes.
+- Controller affiliation must use contemporaneous ownership/relationship evidence, not current group membership.
+- Forced-versus-voluntary classification must use the regulation version then in force.
+- Missing expertise, busyness, affiliation, attendance or dissent evidence is UNKNOWN, not zero.
+
+### Role and maturity decision
+- Advance D21-02 L0 -> L2 / 40%: theory, competing mechanisms, Taiwan positive/negative evidence and falsification requirements are defined.
+- L3 remains closed until historical Taiwan board composition/election/replacement data can be replayed with reliable first-known timing.
+- Owner-approved role remains CONTEXT_ONLY / CONFIDENCE / GOVERNANCE_TAIL_RISK; no short-horizon hard gate and no Formal Core change.
+
+### Exact continuation
+- Build a two-company historical board PIT replay for D21-02: capture election/appointment known_at, terms, controller affiliation, committee roles, expertise, busyness and CEO-chair duality at the decision timestamp.
+- Keep D21-01 exact MOPS filing timestamp as an unresolved dependency; do not idle on it while D21-02 is executable.
