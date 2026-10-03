@@ -1,45 +1,30 @@
 # Credit / Capital Structure Checkpoint
 
-Updated: 2026-10-04 03:20 Asia/Taipei
+Updated: 2026-10-04 07:43 Asia/Taipei
 Scope: D22｜信用市場／資本結構／融資壓力／股債傳導
-Status: ACTIVE_RESEARCH / D22-01 L3_WAITING_PANEL / D22-02 L2_ACTIVE / D22-03 L2_MECHANISM_DEFINED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
+Status: ACTIVE_RESEARCH / D22-01 L3 / D22-02 L3 / D22-03 L3 / D22-04 L2_ACTIVE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - Canonical continuation checkpoint for D22.
-- Separate D07 accounting leverage/cash-flow information, D11 corporate-action events and D13 macro/rate context from D22 contractual/credit information.
-- Missing bond/rating/covenant/facility/source-time evidence remains UNKNOWN.
+- GitHub latest main + tracker + dedicated evidence files are authoritative.
 - Formal Core remains LOCKED.
-- No outcome opening, threshold tuning, sign flipping, synthetic bucket splitting, historical Shadow fabrication or silent UNKNOWN coercion.
+- Missing evidence remains UNKNOWN; never coerce missing bond/rating/covenant/facility/trade/source-time data to zero, bad or pass.
+- No equity-outcome opening, threshold search, sign flipping, synthetic maturity-bucket splitting, historical Shadow fabrication or latest-restatement backfill.
+- D07 accounting primitives, D13 risk-free rates, D22 maturity/coverage/net-debt/debt-cost transforms are dependency-linked and must not become duplicate votes.
 
 ## D22-01｜Debt Maturity Wall / Refinancing Schedule
 Level: L3 / 60%.
+Status: WAITING_MULTI_ISSUER_MULTI_DATE_PANEL / OUTCOMES_CLOSED.
 
-### Durable conclusion
-Taiwan historical PIT maturity disclosures are replayable, but predictive value is not yet established.
+Durable conclusion:
+- Taiwan issuer/date contractual maturity evidence is PIT-replayable.
+- Carrying current debt and contractual maturity cash flows are alternate representations, not additive.
+- Entity scope and accounting basis must be tagged.
+- Total contractual obligations are not the financing wall.
+- A maturity wall is exposure, not default prediction.
+- Equity outcomes remain closed because the independent-date panel is still too small for OOS/walk-forward/regime claims.
 
-### This-round falsification repairs
-1. Entity scope: primary cross-issuer comparison now requires consolidated-group receipts. Prior Taiwan Cement parent-only receipt was replaced by consolidated data.
-2. Accounting basis: each issuer/date must carry an explicit basis tag; D07 and D22 inputs cannot silently mix incompatible Taiwan-FSC vs IFRS-as-issued totals.
-3. Double count: balance-sheet current financing and contractual <1y financing cash flow are alternate representations, not additive.
-4. knownAt: audit/board authorization date is not automatically public first-known time.
-5. Macro timing: same-calendar-date U.S. Treasury data may be future information in Taiwan time. Use the latest completed U.S. session known before the decision point.
-
-### Revalidated issuer/date state
-- TSMC 2023: contractual <1y financing NT$54,552m; carrying current financing NT$36,583m; source timing 2024-04-18.
-- UMC 2023: contractual <1y financing NT$31,450,552k; carrying current financing NT$29,536,797k; official SEC-source availability no later than 2024-03-25; earlier public release UNKNOWN.
-- Taiwan Cement 2023 consolidated: contractual <1y financing NT$36,718,292k; carrying current financing NT$36,895,130k; undrawn facilities NT$185,440,051k; exact public knownAt UNKNOWN.
-
-### D07 / D13 prereg baseline status
-- Compatible-basis D07 descriptive baselines are available for TSMC, UMC and Taiwan Cement.
-- UMC D13: latest completed U.S. Treasury session 2024-03-22, 10Y 4.22%, 20-session change -4 bp; CBC 2.0%.
-- TSMC D13: latest completed U.S. Treasury session 2024-04-17, 10Y 4.59%, 20-session change +29 bp; CBC 2.0%.
-- Taiwan Cement remains outcome-timing blocked until public knownAt is proven.
-
-### Outcome gate
-OUTCOMES_CLOSED.
-TSMC and UMC pass the current technical pre-outcome gates, but only two issuer/date rows from one reporting period exist. This is insufficient for OOS, walk-forward, independent-date, industry or regime evidence. D22-01 therefore waits on panel expansion rather than opening equity returns early.
-
-### Durable files
+Durable files:
 - `research/d22_01_maturity_replay_v0_1.json`
 - `research/d22_01_incremental_value_prereg_v0_1.json`
 - `research/d22_01_scope_and_double_count_audit_v0_1.json`
@@ -48,52 +33,95 @@ TSMC and UMC pass the current technical pre-outcome gates, but only two issuer/d
 - `research/d22_01_pre_outcome_eligibility_v0_1.json`
 
 ## D22-02｜Interest Coverage / Debt Service
-Level: L2 / 40%.
+Level: L3 / 60%.
+Status: CROSS_INDUSTRY_MULTI_DATE_TAIWAN_PIT_REPLAY_VALIDATED / OUTCOMES_CLOSED.
 
-### Mechanism
-Interest coverage measures earnings capacity relative to financing cost. It complements D22-01: maturity timing and debt-service capacity are distinct.
+Durable conclusion:
+- Universal ICR distress thresholds such as 1.5x/2x/3x are prohibited without Taiwan cross-sector PIT evidence.
+- Numerator/denominator source taxonomy matters: debt interest, lease interest, other finance cost, total finance cost and cash interest are distinct.
+- Negative/near-zero EBIT or near-zero interest denominator requires explicit distress/undefined handling.
+- High ICR does not eliminate a near-term principal maturity wall.
 
-### Strong counterevidence
-- A universal ICR distress cutoff is prohibited; external evidence shows substantial firm/industry/time threshold heterogeneity.
-- Fixed-rate debt can delay market-rate pass-through into interest expense.
-- Reported finance costs can contain debt interest, lease interest and other finance costs; capitalized borrowing costs add another semantic layer.
-- High ICR does not eliminate principal maturity risk; low ICR alone does not prove default.
+New multi-date replay:
+- UMC 2023 and Taiwan Cement 2023 remain semantic cross-industry examples.
+- Chunghwa Telecom 2023 official 20-F accepted 2024-04-17T06:05:47Z: operating income NT$46,353m, accounting interest expense NT$319m, accounting coverage about 145.31x.
+- Chunghwa Telecom 2024 official 20-F accepted 2025-04-16T06:02:44Z: operating income NT$46,873m, accounting interest expense NT$339m, accounting coverage about 138.27x.
+- The same issuer retains very high accounting coverage while its <1y financing maturity wall grows materially, proving D22-02 does not subsume D22-01.
 
-### Taiwan PIT semantic examples
-- UMC 2023: operating income / debt+lease interest = 39.28x; operating income / total finance costs = 36.86x.
-- Taiwan Cement 2023 consolidated: operating income / debt+lease interest = 3.00x; operating income / total finance costs = 2.83x; capitalized interest NT$32,190k.
-
-The ratio changes materially from denominator definition alone, so source-line taxonomy must be frozen before cross-company comparison or outcome opening.
-
-### Durable file
+Durable files:
 - `research/d22_02_interest_coverage_contract_v0_1.json`
+- `research/d22_02_interest_coverage_replay_v0_1.json`
 
 ## D22-03｜Net Debt / Leverage Structure
-Level: L2 / 40%.
+Level: L3 / 60%.
+Status: TAIWAN_PIT_COMPONENT_REPLAY_VALIDATED / VERSION_LINEAGE_FROZEN / OUTCOMES_CLOSED.
 
-### Durable conclusion
-Mechanism, anti-double-count boundary and PIT component contract are frozen. D22-03 is not authorized to reuse D07 accounting leverage as an independent credit vote. Gross debt, unrestricted cash, restricted/pledged cash, lease liabilities and separately evidenced financing-like obligations are distinct components; derived net debt is not a source fact.
+Boundary:
+- D07-06 owns accounting balance-sheet/leverage primitives.
+- D22-03 owns credit/funding structure after liquidity-quality classification.
+- Gross debt + cash primitives are shared receipts; D22-03 cannot count the same ratio again as a new credit vote.
+- Net debt is derived, never a source fact.
+- Restricted/pledged/unavailable cash remains separate or UNKNOWN.
+- Carrying debt and D22-01 contractual maturity cash flow are not additive.
 
-### Falsification firewall
-- Missing restriction/accessibility evidence remains UNKNOWN.
-- Negative net debt is not automatically low risk.
-- Later financing actions are not backfilled into earlier statement states.
-- Restatements append versions; first-known eligible data drives historical replay.
-- If D22-03 adds no information after D07 + D22-01 + D22-02 + D13, classify REJECTED_OR_REDUNDANT.
-- Outcomes remain CLOSED; no threshold search, sign optimization or historical Shadow fabrication.
+Divergent-state falsification:
+- Chunghwa Telecom 2023: cash NT$33,824m; gross interest-bearing debt excl. lease about NT$32,685m; derived net debt about -NT$1,139m; contractual <1y financing about NT$2,200m; wall/cash about 6.5%.
+- Chunghwa Telecom 2024: cash NT$36,260m; gross interest-bearing debt excl. lease about NT$32,415m; derived net debt about -NT$3,845m; contractual <1y financing about NT$9,200m; wall/cash about 25.4%.
+- Headline net cash improved while near-term contractual financing concentration rose sharply. Therefore negative net debt is not sufficient evidence of low near-term refinancing pressure.
 
-### Durable file
+Third exact-known issuer:
+- ASE Technology Holding 2023 first-known consolidated full-year state was publicly filed on 2024-02-01.
+- First-known values include cash NT$67,284m; short-term borrowings NT$53,042m; current portion of bonds/long-term borrowings NT$28,616m; non-current bonds NT$20,489m; non-current long-term borrowings NT$81,365m; derived gross interest-bearing debt NT$183,512m and derived net debt NT$116,228m.
+- Reported net-debt/equity ratio was 0.38; unused credit lines were NT$373,763m, but commitment/drawability quality is not assumed.
+
+Version-lineage falsification:
+- A later comparative filing retrospectively adjusted ASE 2023 short-term borrowings to about NT$37,737m.
+- Historical replay preserves the 2024-02-01 first-known state and appends later revisions; it never backfills later restated values into the earlier state.
+
+Durable files:
 - `research/d22_03_net_debt_leverage_structure_contract_v0_1.json`
+- `research/d22_03_net_debt_component_replay_v0_1.json`
+- `research/d22_03_version_lineage_v0_1.json`
+
+## D22-04｜Cost of Debt / Refinancing Risk
+Level: L2 / 40%.
+Status: MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_SOURCE_ROUTE_FEASIBLE / OUTCOMES_CLOSED.
+
+Ownership boundary:
+- D13-06 owns sovereign/risk-free yield-curve state.
+- D22-04 owns issuer-specific debt cost, refinancing spread/premium and repricing interaction with actually exposed debt.
+- D07-18 owns the enterprise WACC composite and must not count the same rate/debt-cost shock again.
+
+Frozen semantics:
+- Legacy coupon != current market yield != prospective refinancing cost.
+- Accounting effective cost is backward-looking and can be distorted by mix/timing/capitalized interest/lease/fees/FX.
+- Market yield can embed credit, liquidity, option and technical effects; stale/no-trade observations remain UNKNOWN.
+- Issuer spread requires currency/duration-consistent benchmark matching.
+- Prospective refinancing cost is contingent on actual refinancing; cash repayment, pre-funding or channel changes can remove assumed rollover.
+
+Taiwan source route:
+- TPEx supports corporate-bond trade/quote data, yield/price files, reference rates, fair values and yield-curve files.
+- The source route is feasible, but issuer-security-date clean replay has not yet passed L3.
+
+Chunghwa Telecom mechanism example:
+- Existing bonds carried very low legacy coupons around 0.42%-0.69%, including an NT$8.8bn 0.50% tranche maturing in July 2025.
+- Low legacy coupon can keep historical interest expense low while saying little about the future replacement rate.
+- The actual future refinancing rate remains UNKNOWN until a replacement transaction or PIT market proxy is defined.
+
+Durable file:
+- `research/d22_04_cost_of_debt_refinancing_risk_contract_v0_1.json`
 
 ## System-use status
-- No D22-01 or D22-02 feature is authorized for System 1 or System 2 Formal use.
-- Candidate state: FALSIFICATION_IN_PROGRESS.
+- No D22-01 through D22-04 finding is authorized for System 1 or System 2 Formal use.
+- Current candidate state: FALSIFICATION_IN_PROGRESS.
 - FORMAL_OPTIMIZATION_CANDIDATE threshold has NOT been reached.
 
 ## Exact next continuation
-Primary active modules: D22-02 and D22-03.
-1. collect multiple Taiwan non-financial issuer/date PIT interest-coverage receipts, including at least one additional industry and multiple dates;
-2. freeze numerator/denominator taxonomy, negative EBIT, near-zero denominator, lease-interest, other-finance-cost and capitalized-interest handling;
-3. build machine-readable ICR replay and compare accounting ICR vs cash-interest coverage vs D22-01 principal-inclusive debt service with outcomes closed;
-4. promote D22-02 to L3 only after cross-industry Taiwan PIT replayability is demonstrated;
-5. in parallel expand D22-01 multi-issuer/multi-date Historical PIT panel; do not open equity outcomes until independent-date evidence design is defensible.
+Primary active module: D22-04.
+1. build Taiwan corporate-bond issuer-security-date PIT debt-cost receipts from TPEx, tagging actual trade / quote / reference / fair-value provenance;
+2. match each issuer/security yield to a currency- and remaining-maturity-consistent sovereign benchmark;
+3. preserve no-trade/stale states as UNKNOWN;
+4. construct research-only refinance-gap challengers: matched market yield minus legacy coupon/effective cost, interacted with D22-01 actually repricing principal;
+5. test divergent states: stable benchmark + wider issuer spread; rising benchmark + stable spread; high maturity wall + cash repayment/no refinancing;
+6. keep equity outcomes CLOSED until cross-issuer/multi-date replay and D13/D22-01/D22-02/D22-03 redundancy controls are ready;
+7. in parallel continue D22-01~03 multi-date/version-lineage panel expansion.
