@@ -1,6 +1,6 @@
 # Curriculum Retirement and Capability Ledger V0.1
 
-Updated: 2026-10-03 05:02 Asia/Taipei
+Updated: 2026-10-03 09:22 Asia/Taipei
 Status: OWNER_APPROVED / EXECUTED / CAPABILITY_PRESERVATION_REQUIRED
 Scope: Seven-item curriculum audit from the 366-module map
 Formal Core impact: NONE
@@ -137,3 +137,31 @@ Decision: **OBSERVATION / MERGE_CANDIDATE remains**
 - It must not double-count RVOL, turnover, direct volume or price-volume evidence.
 
 After this execution the canonical curriculum is **22 domains / 354 modules**.
+
+## Owner-approved 15-item Dependency Audit classification — 2026-10-03
+
+Canonical audit:
+`shared-knowledge/CURRICULUM_15_ITEM_DEPENDENCY_AUDIT_20261003_V0_1.md`
+
+The owner approved the remaining 15-item classification after Dependency Audit.
+
+No standalone module is retired in this batch.
+
+Classification:
+- **CURRICULUM_KEEP:** D05-13, D19-13.
+- **KEEP_ROLE_LIMITED / CONTEXT_OR_CAPABILITY:** D06-15, D14-16, D14-19, D21-02.
+- **OBSERVATION / RESEARCH_ONLY:** D02-07, D02-08, D12-08, D19-08, D19-12, D19-16, D20-03, D20-05.
+- **VALIDATION_THEN_STRONG_MERGE_CANDIDATE:** D15-19.
+- **IMMEDIATE_RETIREMENT:** NONE.
+
+Anti-orphan decisions:
+- D05-13 keeps queue/order-priority mechanics as an execution capability.
+- D14-16 keeps VWAP/TWAP/participation execution methods.
+- D14-19 remains separate from D06-18 and D20-13 so securities-lending economics, limits-to-arbitrage theory and actual short execution remain distinct owners.
+- D12-08 keeps its dealer-position identifiability firewall and remains separate from contract Greeks / expiry effects.
+- D19-13 remains the owner of the already-merged D19-14 residual-mean-reversion knowledge.
+- D21-02 retains board/independent-director context required by D21-01 control-structure research.
+- D15-19 may later retire as a standalone ID only if calibrated probabilistic sizing ownership fully absorbs its theory/evidence without loss.
+
+Curriculum remains 22 domains / 354 modules. No maturity promotion and no Formal Core change are authorized by this batch.
+
