@@ -1018,3 +1018,16 @@ Status: LIFECYCLE_REDUNDANCY_SPEC_FROZEN / TEST_EXECUTION_PENDING / OUTCOME_CLOS
 - predictive minimal basis does not authorize deletion of audit/provenance fields from prospective storage.
 
 Status: MINIMAL_PATH_BASIS_FROZEN / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / RUNTIME_NO_GO / FORMAL_CORE_LOCKED.
+
+### D01 shared handoff — DL-021 first-event clock PIT/censoring (2026-10-03)
+
+- decision-time Pattern predictors may use only event clocks occurred/available/observed by the parent cutoff;
+- not-yet-occurred is right-censored through asOf, not age=0 and not UNKNOWN;
+- future first-event dates are outcome-side information and never backfill earlier decision-time children;
+- age zero means event occurred on the current eligible session;
+- first-event timing can carry path-order memory beyond aggregate excursions but has no new source novelty;
+- same-bar reentry+failure remain nested and share one source-event group;
+- continuous eligible-session age is primary; arbitrary N-bar duration buckets are rejected by default;
+- D16/statistical validation owns future censored-event estimator choice.
+
+Status: FIRST_EVENT_PIT_SPEC_FROZEN / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / RUNTIME_NO_GO / FORMAL_CORE_LOCKED.
