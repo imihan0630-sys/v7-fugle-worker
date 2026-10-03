@@ -138,3 +138,82 @@ Decision:
 ### Shared implication
 Behavioral-finance evidence must add a genuinely new observable family or residual mechanism. Re-labeling existing price, volume, flow, leverage, news or volatility inputs with a psychological name cannot create additional evidence weight.
 
+## 2026-10-03｜D20-08 Underreaction / Post-event Drift and D20-09 Overreaction / Reversal
+
+### D20-08 Underreaction / Post-event Drift
+
+Mechanism:
+- Underreaction is a horizon-specific failure to incorporate information fully at the first decision-relevant price.
+- A valid behavioral claim requires an identified information event, a first-known timestamp, a pre-specified surprise or information-content baseline, an initial response window, and a later drift window.
+- Generic momentum is not sufficient evidence because continuation can arise from trend exposure, gradual fundamental information, risk compensation, liquidity, delayed institutional flow or market-state persistence.
+
+Taiwan evidence:
+- Lin, Ko, Chen and Chu (2016) find strong earnings momentum in Taiwan and stronger profits where information arrives more continuously; results are consistent with underreaction and attention mechanisms.
+- A 2026 study of record-high Taiwan monthly-revenue announcements finds next-day intraday reversal together with significant positive buy-and-hold returns over the following 20 trading days.
+- The coexistence of short-horizon reversal and medium-horizon drift around the same event shows that overreaction and underreaction labels must be tied to time horizon rather than applied to an entire price path.
+
+Required controls:
+- event first-known timestamp and after-hours publication;
+- surprise definition versus simple realized growth;
+- pre-event return and attention;
+- institutional net flow;
+- market/sector return and liquidity;
+- analyst revisions and common information;
+- price-limit regime;
+- transaction costs and short-sale feasibility.
+
+Research contract:
+- Separate event-day, next-day, 5-day, 20-day and 60-day outcomes.
+- Do not infer underreaction from generic momentum.
+- L3 requires a replayable Taiwan event ledger with first-known clocks and frozen outcome windows.
+
+Decision:
+- D20-08 -> L2.
+- No L3 promotion.
+- Formal Core unchanged.
+
+### D20-09 Overreaction / Reversal
+
+Mechanism:
+- Behavioral overreaction means price moves beyond what the information/economic state can justify because beliefs or demand respond excessively.
+- Reversal is an observable price outcome; it is not proof of overreaction.
+- D03-05 remains owner of pullback/short-term reversal as a price phenomenon. D20-09 must own an independently identifiable behavioral cause.
+
+Positive evidence:
+- De Bondt and Thaler (1985) provide classic long-horizon loser/winner reversal evidence consistent with overreaction.
+- Taiwan price-limit studies document overnight continuation and subsequent intraday reversal after limit moves, interpreted as delayed overreaction/correction under the historical price-limit regime.
+- Yang, Chu, Ko and Lee (2018) report Taiwan continuing-overreaction portfolios, formed using signed-volume information, show intermediate continuation followed by long-term reversal; price limits appear to restrain the measured effect.
+- Taiwan intraday-versus-overnight momentum research finds opposite continuation/reversal implications across return components, reinforcing horizon and market-structure dependence.
+- The 2026 record-high monthly-revenue study finds short-horizon reversal after salient announcements but medium-horizon positive drift, showing that a reversal does not characterize the entire event response.
+
+Structural counterfactuals:
+- bid-ask bounce;
+- liquidity provision and temporary price impact;
+- dealer/inventory effects;
+- forced liquidation or margin calls;
+- index/passive flow;
+- event correction as new information arrives;
+- volatility normalization;
+- price-limit mechanics;
+- stale-price/opening effects.
+
+H07 ownership firewall:
+- D03-05 owns observable reversal geometry and PIT replay.
+- D20-09 can remain separate only if it can detect behavioral/event-expectation evidence before or independently of the completed reversal.
+- Prior extreme return + later reversal alone is a narrative relabel and cannot become a second vote.
+- Shared return/volume rows are recorded once.
+
+Decision:
+- D20-09 -> L2.
+- No L3 promotion until a Taiwan PIT-valid causal proxy survives structural alternatives.
+- Formal Core unchanged.
+
+### Joint implication
+The same event can display:
+1. an immediate attention-driven overshoot;
+2. short-horizon reversal;
+3. incomplete medium-horizon information incorporation;
+4. later drift.
+
+Therefore D20-08 and D20-09 must be modeled as horizon-specific hypotheses with explicit event clocks, not opposite one-word labels assigned to a whole chart.
+
