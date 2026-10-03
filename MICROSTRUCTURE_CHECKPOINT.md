@@ -479,3 +479,74 @@ Durable artifacts:
 ### Exact next continuation
 This segment is closed. Do not reopen D05-11/12/13 theory unless new evidence falsifies the contract.
 Next fresh segment may start at D05-14 Market Integrity / Abnormal Trading Patterns, while empirical D05-11/12/13 work waits for prospective own-order/event-ledger evidence.
+
+
+## 2026-10-03 21:41 segment close — D05-14 Market Integrity / Abnormal Trading Patterns
+
+Status: SEGMENT_COMPLETE / D05_14_L2 / PIT_INTEGRITY_EVIDENCE_PENDING  
+Formal Core: LOCKED.
+
+### Core semantic firewall
+Four layers are frozen and non-interchangeable:
+1. observable market/statistical anomaly;
+2. official TWSE surveillance state (attention / disposition);
+3. non-accusatory research pattern candidate;
+4. authoritative legal/regulatory finding.
+
+Taiwan Securities and Exchange Act Article 155 contains intent-sensitive manipulation prohibitions. Public price/volume/top-five behavior does not prove actor intent.
+
+### Taiwan official surveillance state
+- Current TWSE attention/disposition rules (2026-08-03) use price, volume, turnover, broker/investor concentration, valuation, lending/short-related, day-trading and other abnormality dimensions.
+- The detailed standards include explicit exclusions/adjustments for IPO no-limit periods, corporate-action price adjustments and other special states.
+- Attention status is therefore a statistical/official surveillance state, NOT a manipulation verdict.
+- Disposition can alter matching cadence, advance collection of funds/securities, margin and other execution conditions. It is an execution-regime intervention and must be separated from untreated market sessions.
+
+### Pattern-family falsification
+- High cancellation / order-to-trade ratios alone do not identify spoofing.
+- Spoofing/layering requires non-bona-fide intent; without account/order-level lifecycle, only SPOOFING_LIKE / LAYERING_LIKE research tags are allowed.
+- Public top-five data cannot establish beneficial-owner identity, collusive matched orders, wash trading, exact spoof intent, coordinated accounts or trader motive.
+- Momentum ignition cannot be inferred from price acceleration alone.
+- Marking-open/close candidates must control legitimate auction/index/ETF/rebalance/expiry/hedging demand.
+
+### Anti-double-count boundary
+- D05-06 = canonical owner of auction mechanics / auction imbalance primitive.
+- D05-14 = integrity interpretation / false-positive controls.
+- Shared auction evidence cannot create two independent alpha votes.
+- TWSE attention/disposition labels also cannot duplicate D01/D02 primitive price-volume anomalies as free alpha.
+
+### Mandatory false-positive controls
+Corporate actions; earnings/news/regulatory events; index/ETF/passive flow; derivatives expiry/hedging; VI; price limit; disposition; opening/closing auction; odd-lot/special sessions; low float/small cap; spread/depth/tick tier; market/sector common shocks.
+
+### Non-accusatory state vocabulary
+Allowed:
+- NORMAL_NO_INTEGRITY_FLAG;
+- OFFICIAL_ATTENTION;
+- OFFICIAL_DISPOSITION;
+- OBSERVED_STATISTICAL_ANOMALY;
+- EXPLAINED_ABNORMALITY;
+- INTEGRITY_PATTERN_CANDIDATE;
+- DATA_INSUFFICIENT;
+- UNKNOWN.
+
+Prohibited without authoritative official legal evidence:
+- MANIPULATOR;
+- ILLEGAL_TRADING_CONFIRMED;
+- INFORMED_TRADER_CONFIRMED;
+- FRAUD_CONFIRMED.
+
+### Durable artifacts
+- `MICROSTRUCTURE_RESEARCH.md` MS-073..MS-084.
+- `research/d05_market_integrity_abnormal_trading_contract_v0_1.json`.
+
+### Maturity
+- D05-14: L0 -> L2 / 40%.
+- D05 aggregate: 44.3% across 14 modules.
+- Knowledge maturity only; no own Taiwan PIT integrity/event evidence, no L3.
+- No FORMAL_OPTIMIZATION_CANDIDATE.
+
+### Exact next continuation
+This D05-14 segment is closed.
+Before opening more theory, follow current total-control routing:
+1. COV-02 specialist validation — determine whether Closing Auction / Auction Imbalance should EXTEND D05-06, MERGE/ADD, NOT_A_GAP or remain evidence-insufficient.
+2. Priority-B overlap validation — D05-05 OFI vs D05-12 Adverse Selection/Toxicity; shared order-flow primitive must not produce duplicate alpha votes.
+3. D05-14 empirical stage remains blocked on PIT official label knownAt, versioned rules, replayable market data and false-positive controls.
