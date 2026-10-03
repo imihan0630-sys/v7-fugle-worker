@@ -145,3 +145,53 @@ Intake result:
 - No retirement/merge executed.
 - `FORMAL_OPTIMIZATION_CANDIDATE: NONE`.
 
+## D16-25 → D15-19 merge-governance intake
+
+Received from:
+11｜統計驗證與策略市場狀態研究室
+
+Canonical inputs:
+- `research/D16_D18_VALIDATION_CHECKPOINT.md`
+- `research/D16_25_D15_19_MERGE_DECISION_INPUT_V0_1.md`
+
+Intake result:
+**D16_SIDE_SPECIALIST_COMPLETE_AT_L2 / D15_SPECIALIST_RESEARCH_REQUIRED**
+
+What is now closed on the D16 side:
+- target/horizon/action-conditioning;
+- PIT outcome maturity semantics;
+- base-rate/prior;
+- Bayesian double-counting firewall;
+- probability calibration vs discrimination;
+- proper scoring/reliability;
+- uncertainty channels;
+- Regime/distribution shift;
+- ABSTAIN risk-coverage;
+- after-cost utility semantics;
+- population/selection-bias firewall;
+- date-clustering/pseudo-replication firewall;
+- PredictiveDecisionReceipt handoff;
+- sizing firewall.
+
+What remains:
+10｜投組風控與交易執行研究室 must independently research D15-19:
+- Kelly/log-growth objective;
+- full vs fractional Kelly;
+- parameter-estimation risk;
+- correlated multi-position Kelly;
+- drawdown/ruin constraints;
+- liquidity/cost/capacity;
+- comparison with fixed-risk, capped sizing, risk budgeting and D15-16 Portfolio Optimization;
+- anti-orphan capability mapping.
+
+Current structural view:
+- Option A: keep D16-25 and D15-19 separate.
+- Option B: absorb D15-19 into D15-16, keep D16-25 upstream.
+- Option C: direct merge into expanded D16-25 — currently least natural unless D16 is deliberately expanded into allocation.
+- Option D: split-transfer: predictive belief/calibration → D16-25; Kelly sizing mechanics → D15-16/D15 family.
+
+No final merge decision.
+D16-25 remains L2/40%.
+`FORMAL_OPTIMIZATION_CANDIDATE: NONE`.
+Formal Core unchanged.
+
