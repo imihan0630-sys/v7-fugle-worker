@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T21:40:00+08:00",
+  "updatedAt": "2026-10-03T21:41:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -484,7 +484,7 @@
         "MICROSTRUCTURE_CHECKPOINT.md",
         "MICROSTRUCTURE_RESEARCH.md"
       ],
-      "maturityPct": 41.4,
+      "maturityPct": 44.3,
       "modules": [
         {
           "id": "D05-01",
@@ -602,18 +602,19 @@
         {
           "id": "D05-14",
           "name": "Market Integrity／Abnormal Trading Patterns市場完整性與異常交易型態",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Market Integrity／Abnormal Trading Patterns市場完整性與異常交易型態」。研究異常交易型態與市場完整性風險。只能識別可觀測的異常模式或降低訊號可信度，不得由K線、成交量或委託簿直接斷言特定人具有操縱意圖；需保存撮合規則、委託事件、時間戳與替代的正常微結構解釋。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D05-14 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_PLUS_FALSIFICATION_DEFINED / PIT_INTEGRITY_EVIDENCE_PENDING",
+          "next": "下一實證階段需 PIT 官方注意／處置 knownAt、版本化規則、可重播市場資料與至少一種 pattern-family 的 reproducible inputs；先做 false-positive controls，禁止由公開五檔／價格量能推論操縱意圖。D05-06 保留 auction mechanics canonical ownership，D05-14 只擁有 integrity interpretation。",
+          "researchNote": "Four-layer semantics frozen: observable anomaly, TWSE attention/disposition surveillance state, non-accusatory research pattern candidate, and authoritative legal finding are distinct. Attention/disposition is not a manipulation verdict; disposition is an execution-regime intervention. High cancellation is not spoofing; public top5 cannot establish actor intent/account linkage. False-positive controls and non-accusatory machine vocabulary are mandatory."
         }
       ],
-      "status": "MECHANISM_EXPANDED / D05-11_12_13_L2 / EVENT_LEDGER_PENDING",
-      "exactNextContinuationPoint": "D05-NEXT-01: one completed segment is frozen. Next segment may begin with D05-14 Market Integrity / Abnormal Trading Patterns from L0, while legacy D05-HORIZON evidence gate remains unchanged: no true OFI, causal self-impact, toxicity inference or exact queue rank without prospective authenticated event/order-lifecycle evidence. D05-11/12/13 next empirical stage requires own order lifecycle + Books/Trades + replay/common-support controls; no Formal gate/action mapping.",
-      "lastResearchUpdate": "2026-10-03T18:26:00+08:00",
-      "researchNote": "D05 curriculum expanded to 14 modules. D05-11 Market Impact, D05-12 Adverse Selection/Order-flow Toxicity, and D05-13 Queue Position/Order Priority now have frozen mechanism, falsification, data requirements and anti-misuse contracts and advance L0->L2 only. No own Taiwan PIT order-lifecycle/event-ledger evidence yet, so no L3. Queue remains owner-approved execution-confidence capability, not alpha gate. Exact self-impact, informed-trader intent and exact public-top5 queue rank remain UNKNOWN."
+      "status": "D05_11_12_13_14_L2 / MARKET_INTEGRITY_CONTRACT_FROZEN / PIT_EVENT_EVIDENCE_PENDING",
+      "exactNextContinuationPoint": "D05-NEXT-02: D05-14 theory/mechanism segment is closed. Next room04 work should follow total-control routing before opening new research: COV-02 specialist validation asks whether Closing Auction / Auction Imbalance should EXTEND D05-06 versus ADD/MERGE/NOT_A_GAP, and Priority-B overlap validation requires D05-05 OFI vs D05-12 Adverse Selection/Toxicity anti-double-count evidence. D05-14 empirical stage waits for PIT official attention/disposition knownAt + versioned rules + replayable market data + false-positive controls. Formal Core locked.",
+      "lastResearchUpdate": "2026-10-03T21:41:00+08:00",
+      "researchNote": "D05-14 Market Integrity / Abnormal Trading Patterns completed L0->L2. TWSE 2026-08-03 attention/disposition rules, Securities and Exchange Act Article 155 intent boundary, spoofing/layering cancellation false positives, public-top5 identifiability limits, auction-integrity anti-double-counting and non-accusatory state vocabulary are frozen. D05 aggregate is 44.3% across 14 modules. No actor-intent finding, no alpha mapping, no L3 without own PIT/replay evidence."
     },
     {
       "id": "D06",
