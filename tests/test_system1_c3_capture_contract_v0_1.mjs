@@ -18,16 +18,18 @@ const pairs=[
 const c2={schemaVersion:"SYSTEM1_C2_PAIRED_LEDGER_V0_1",completeMatchedCohort:true,researchOnly:true,formalCoreLocked:true,
   generationId:"gen-20261003",sessionDate:"2026-10-03",fingerprint:"f".repeat(64),pairs,tally:{populationN:pairs.length}};
 
-const a=buildC3ResearchCaptureContract(c2,{formalSymbols:["1001"],maxShadowSymbols:2,providerBudgetCallsPerSession:34,sampleSeed:"fixture"});
-eq(a.schemaVersion,"SYSTEM1_C3_RESEARCH_CAPTURE_CONTRACT_V0_1");
+const a=buildC3ResearchCaptureContract(c2,{formalSymbols:["1001"],maxShadowSymbols:2,providerBudgetCallsPerSession:68,sampleSeed:"fixture"});
+eq(a.schemaVersion,"SYSTEM1_C3_RESEARCH_CAPTURE_CONTRACT_V0_2");
 eq(a.eligibleN,4);
 eq(a.eligibleFormalReuseN,1);
 eq(a.eligibleShadowOnlyN,3);
 eq(a.capturedShadowOnlyN,2);
 eq(a.extraCandleCallsPerSession,34);
+eq(a.extraQuoteCallsPerSession,34);
+eq(a.extraProviderCallsPerSession,68);
 eq(a.providerBudgetStatus,"PASS");
 eq(a.cohort.filter(x=>x.captureSource==="REUSE_FORMAL_PV_CAPTURE").map(x=>x.symbol),["1001"]);
-eq(a.cohort.filter(x=>x.captureSource==="EXTRA_RESEARCH_CANDLE_CAPTURE").length,2);
+eq(a.cohort.filter(x=>x.captureSource==="EXTRA_RESEARCH_CANDLE_QUOTE_CAPTURE").length,2);
 eq(a.excludedShadowSymbols.length,1);
 eq(a.noFormalTargetMutation,true);
 eq(a.noSignalPath,true);eq(a.noPushPath,true);eq(a.noOrderPath,true);eq(a.noCapitalPath,true);
@@ -37,11 +39,13 @@ eq(a.economicSuperiority,"UNKNOWN");
 eq(C3_CAPTURE_SLOTS.length,17);
 ok(a.cohort.filter(x=>x.classification==="CONDITIONAL_SAFETY_UNKNOWN").every(x=>x.tradingAuthority===false));
 
-const b=buildC3ResearchCaptureContract(c2,{formalSymbols:["1001"],maxShadowSymbols:3,providerBudgetCallsPerSession:16,includeConditionalSafetyUnknown:false});
+const b=buildC3ResearchCaptureContract(c2,{formalSymbols:["1001"],maxShadowSymbols:3,providerBudgetCallsPerSession:33,includeConditionalSafetyUnknown:false});
 eq(b.eligibleN,2);
 eq(b.eligibleShadowOnlyN,1);
 eq(b.capturedShadowOnlyN,1);
 eq(b.extraCandleCallsPerSession,17);
+eq(b.extraQuoteCallsPerSession,17);
+eq(b.extraProviderCallsPerSession,34);
 eq(b.providerBudgetStatus,"FAIL");
 eq(b.cohort.some(x=>x.classification==="CONDITIONAL_SAFETY_UNKNOWN"),false);
 
