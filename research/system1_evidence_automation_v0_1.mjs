@@ -136,7 +136,7 @@ export function auditC3LiveInputs(c2Ledger,{
     const pc=explicitPrior>0?explicitPrior:ctx?.close;
     if(!(pc>0)) blockers.push("PRIOR_CLOSE_UNVERIFIED");
     const selectionDepth=ctx?.depthScore;
-    if(!(selectionDepth>=0)) blockers.push("SELECTION_DEPTH_UNVERIFIED");
+    if(selectionDepth===null||selectionDepth===undefined||selectionDepth<0) blockers.push("SELECTION_DEPTH_UNVERIFIED");
     const selectionLateStage=ctx?.lateStage;
     if(typeof selectionLateStage!=="boolean") blockers.push("SELECTION_LATE_STAGE_UNVERIFIED");
     const fb=verifiedFormalBaseline(formal.get(symbol),c2);
