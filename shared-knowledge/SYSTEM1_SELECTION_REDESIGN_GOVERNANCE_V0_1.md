@@ -109,3 +109,17 @@ Result:
 
 Next research step: align the Class-A C5 role map with A2 semantics, then wait for a genuine complete C1/C2 prospective population before interpreting overfilter counts economically.
 
+## S1-S2 research contracts — 2026-10-03
+
+P1-A minimal-blocking/outcome contract:
+`shared-knowledge/SYSTEM1_P1A_MINIMAL_BLOCKING_AND_OUTCOME_CONTRACT_20261003_V0_1.md`
+
+TARGET four-state falsification:
+`shared-knowledge/SYSTEM1_TARGET_AVAILABLE_FOUR_STATE_FALSIFICATION_CONTRACT_20261003_V0_1.md`
+
+Execution registry:
+`shared-knowledge/SYSTEM1_S1_S2_SHADOW_EXECUTION_REGISTRY_20261003_V0_1.md`
+
+Order is frozen: S1 semantic repair -> S2 P1-A reach funnel -> mature matched outcomes -> P1-B only if warranted. TARGET four-state remains a separate P2 semantic study.
+No Formal change.
+
