@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T07:42:00+08:00",
+  "updatedAt": "2026-10-04T07:37:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1446,8 +1446,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Industry Structure／Porter Five Forces產業結構與波特五力」。研究產業結構、競爭強度、進入障礙、替代威脅與市占變化；需把敘事轉成可觀測的價格、產能、毛利、份額、客戶與供應商證據，並保留產業結構沒有轉化成股東報酬的反例。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "THREE_INDUSTRY_TAIWAN_PIT_CONTROLS / FOUNDRY_STEEL_PCB / DENOMINATOR_FIREWALL_PASS / OUTCOMES_CLOSED",
-          "next": "BR-057 freeze effective-dated PCB/ABF issuer product/application exposure denominators before issuer-level structure comparison; no composite Five-Forces score before prospective/OOS and redundancy tests."
+          "status": "THREE_INDUSTRY_TAIWAN_PIT_CONTROLS / PCB_ABF_DENOMINATOR_FIREWALL / PRODUCT_SCOPE_KNOWN_EXPOSURE_MAGNITUDE_UNKNOWN / OUTCOMES_CLOSED",
+          "next": "BR-059 capture issuer-native PCB/ABF product/application revenue numerators only when compatible disclosures appear; keep exposure magnitude UNKNOWN otherwise; no composite structure score before OOS/redundancy tests."
         },
         {
           "id": "D09-14",
@@ -1456,8 +1456,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Market Share／Entry Barrier／Substitution／Competitive Strategy市占、進入障礙、替代與競爭策略」。研究產業結構、競爭強度、進入障礙、替代威脅與市占變化；需把敘事轉成可觀測的價格、產能、毛利、份額、客戶與供應商證據，並保留產業結構沒有轉化成股東報酬的反例。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "DISTINCT_FIRM_ACTION_PIT_CONTRACT / NON_SEMICONDUCTOR_CONTROLS / FAILED_SUSPENDED_ACTION_CONTROL / NATIVE_OUTCOME_SEMANTICS / H01_KEEP_SEPARATE_PROPOSED / OUTCOMES_CLOSED",
-          "next": "BR-058 prospectively freeze new strategic actions before outcomes are known, then append native milestone/financial/share outcomes on later publication clocks; no scalar strategy-success score."
+          "status": "DISTINCT_FIRM_ACTION_PIT_CONTRACT / FIRST_TRUE_PROSPECTIVE_COHORT_FROZEN / FUTURE_OUTCOMES_CLOSED / H01_KEEP_SEPARATE_PROPOSED",
+          "next": "BR-060 append future native milestones for the prospectively frozen UMC and Foxconn actions and add at least two more pre-outcome actions; no stock outcome before D16 preregistration/common support."
         }
       ]
     },
