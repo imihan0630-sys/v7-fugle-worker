@@ -129,7 +129,7 @@ const c1={schemaVersion:"SYSTEM1_C1_ISOLATED_V0_1",sessionDate,populationN:3,obs
   {symbol:"CCC",pool:"GENERAL",formalResult:{ok:false},firstFailureReason:"ACCOUNT_RISK",gates:{...gates,ACCOUNT_RISK:unk}}
 ]};
 const c5=buildC5DailyReport(c1,c2);
-eq(c5.schemaVersion,"SYSTEM1_C5_DAILY_REPORT_V0_2");
+eq(c5.schemaVersion,"SYSTEM1_C5_DAILY_REPORT_V0_3");
 eq(c5.denominatorN,3);
 eq(c5.short.formalRejectedN,3);
 eq(c5.short.p1aRejectedN,0);
@@ -143,6 +143,11 @@ eq(c5.firstFailureIsNotCausalAttribution,true);
 eq(c5.unknownNeverPasses,true);
 eq(c5.p1aRankableIsNotCandidate,true);
 eq(c5.formalOptimizationCandidate,"NONE");
+eq(c5.conditionalShort.p1aConditionalRankableN,0);
+eq(c5.conditionalShort.materialityThresholdStatus,"NOT_FROZEN");
+eq(c5.conditionalRankableIsNotCandidate,true);
+eq(c5.conditionalUnknownToPassMutation,false);
+eq(c5.materialityThresholdInvented,false);
 
 const c4=buildC4DailyComparison([
   {symbol:"AAA",priorityScore:90,entry:100,stop:95},
