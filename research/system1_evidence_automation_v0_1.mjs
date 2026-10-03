@@ -67,9 +67,18 @@ function verifiedFormalBaseline(row,c2){
      !["TRIGGERED","NO_TRIGGER"].includes(row?.status)) return null;
   return row;
 }
-function verifiedBarState(row,barStart){
-  if(row?.verified!==true||row?.barStart!==barStart||typeof row.limitUp!=="boolean") return null;
-  return {limitUp:row.limitUp,marketState:typeof row.marketState==="string"?row.marketState:null};
+function barStateContext(row,barStart){
+  if(!row||row?.barStart!==barStart) return null;
+  const bidDepth5=finite(row?.bidDepth5),askDepth5=finite(row?.askDepth5),depthImbalance=finite(row?.depthImbalance),spreadPct=finite(row?.spreadPct);
+  const limitVerified=row?.verified===true&&typeof row?.limitUp==="boolean";
+  const rawDepthComplete=bidDepth5!==null&&bidDepth5>=0&&askDepth5!==null&&askDepth5>=0&&depthImbalance!==null;
+  return {
+    limitUp:limitVerified?row.limitUp:null,limitVerified,
+    marketState:typeof row?.marketState==="string"?row.marketState:null,
+    quoteTimestamp:typeof row?.quoteTimestamp==="string"?row.quoteTimestamp:null,
+    bidDepth5,askDepth5,depthImbalance,spreadPct,rawDepthComplete,
+    rawDepthOnly:row?.rawDepthOnly===true,depthScoreDerived:row?.depthScoreDerived===true
+  };
 }
 function verifiedSelectionContext(pair,c2){
   const x=pair?.selectionContext,p=x?.provenance;
@@ -155,17 +164,24 @@ export function auditC3LiveInputs(c2Ledger,{
 
     const adapted=[];
     for(const bar of bars){
-      const st=verifiedBarState(stateByKey.get(symbol+"|"+bar.start),bar.start);
+      const live=barStateContext(stateByKey.get(symbol+"|"+bar.start),bar.start);
       const missing=[];
       if(bar.volumeRatio===null) missing.push("VOLUME_RATIO");
-      if(!st) missing.push("LIVE_LIMIT_STATE");
+      if(!live?.limitVerified) missing.push("LIVE_LIMIT_STATE");
       if(missing.length) blockers.push("BAR_MICROSTRUCTURE_UNVERIFIED");
       adapted.push({
         endAt:bar.end,open:bar.open,high:bar.high,low:bar.low,close:bar.close,
-        volumeRatio:bar.volumeRatio,depthScore:selectionDepth??null,
+        volumeRatio:bar.volumeRatio,
+        depthScore:selectionDepth??null,
+        selectionDepthScore:selectionDepth??null,
+        depthScoreSemantics:"SELECTION_TIME_CONTEXT_REUSED_NOT_LIVE_ORDER_BOOK",
+        liveBidDepth5:live?.bidDepth5??null,liveAskDepth5:live?.askDepth5??null,
+        liveDepthImbalance:live?.depthImbalance??null,liveSpreadPct:live?.spreadPct??null,
+        liveDepthRawComplete:live?.rawDepthComplete===true,liveDepthScore:null,liveDepthScoreDerived:false,
         gapPct:pc>0?round((bars[0].open/pc-1)*100,6):null,
-        completed:true,limitUp:st?.limitUp??null,lateStage:selectionLateStage??null,
-        selectionContextSemantics:true,liveMarketState:st?.marketState??null,missingMicrostructure:missing
+        completed:true,limitUp:live?.limitVerified?live.limitUp:null,lateStage:selectionLateStage??null,
+        selectionContextSemantics:true,liveMarketState:live?.marketState??null,
+        liveQuoteTimestamp:live?.quoteTimestamp??null,missingMicrostructure:missing
       });
     }
     const uniqueBlockers=[...new Set(blockers)];
@@ -177,20 +193,27 @@ export function auditC3LiveInputs(c2Ledger,{
       readyReceipts.push({symbol,parentId:c2.generationId,sessionDate:c2.sessionDate,baseSetup,
         geometry:g,formalBaseline,bars:adapted});
     }
+    const liveDepthCompleteBars=adapted.filter(x=>x.liveDepthRawComplete===true).length;
     rows.push({symbol,status:finalStatus,barCount:bars.length,missingSlots,duplicateSlots,
       blockers:uniqueBlockers,selectionDepthVerified:selectionDepth!==null&&selectionDepth!==undefined,
       selectionLateStageVerified:typeof selectionLateStage==="boolean",
       liveLimitStateAvailableBars:adapted.filter(x=>typeof x.limitUp==="boolean").length,
+      liveDepthCompleteBars,liveDepthCoveragePct:bars.length?round(liveDepthCompleteBars/bars.length*100,4):null,
+      liveSpreadAvailableBars:adapted.filter(x=>x.liveSpreadPct!==null).length,
       volumeRatioAvailableBars:adapted.filter(x=>x.volumeRatio!==null).length,
+      depthGuardSource:"SELECTION_TIME_DEPTH_SCORE",depthGuardUsesLiveOrderBook:false,
       gapPctVerified:pc>0,geometryVerified:!!g,formalBaselineVerified:!!fb,
       researchOnly:true,decisionImpact:false});
   }
   const readyN=rows.filter(x=>x.status==="READY").length;
-  return {schemaVersion:"SYSTEM1_C3_LIVE_INPUT_AUDIT_V0_3",generationId:c2.generationId,sessionDate:c2.sessionDate,
+  return {schemaVersion:"SYSTEM1_C3_LIVE_INPUT_AUDIT_V0_4",generationId:c2.generationId,sessionDate:c2.sessionDate,
     fullEligibleN:allEligible.length,scope:"CAPTURE_COHORT_OR_FULL_ELIGIBLE",scopedSymbols:[...eligible].sort(),
     eligibleN:rows.length,readyN,blockedN:rows.length-readyN,coveragePct:rows.length?round(readyN/rows.length*100):null,
     rows,readyReceipts,missingMeansUnknown:true,formalBaselineMissingDoesNotBlockChallenger:true,
     formalBaselineUnknownNeverCountedAsNoTrigger:true,selectionDepthNeverImputed:true,selectionLateStageNeverImputed:true,limitStateNeverImputed:true,
+    depthGuardSource:"SELECTION_TIME_DEPTH_SCORE_REPLICATED_ACROSS_INTRADAY_BARS",
+    liveDepthCapturedForAuditOnly:true,liveDepthScoreMappingPreregistered:false,liveDepthUsedByTrigger:false,
+    depthGuardMustNotBeDescribedAsLiveOrderBook:true,
     economicSuperiority:"UNKNOWN",researchOnly:true,decisionImpact:false,formalCoreImpact:false,noTrade:true,noPush:true};
 }
 

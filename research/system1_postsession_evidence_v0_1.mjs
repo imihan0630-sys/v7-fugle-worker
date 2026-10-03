@@ -1,5 +1,6 @@
 import {collectVerifiedC1C2} from "./system1_c1_c2_collection_v0_1.mjs";
 import {auditC3LiveInputs,buildC4DailyComparison,buildC5DailyReport} from "./system1_evidence_automation_v0_1.mjs";
+import {buildC3DepthSemanticsAudit} from "./system1_c3_depth_semantics_v0_1.mjs";
 import {buildC3EntryExperiment} from "./system1_c3_c4_c5_shadow_v0_1.mjs";
 
 const DATE=/^\d{4}-\d{2}-\d{2}$/;
@@ -121,6 +122,7 @@ export function buildSystem1PostSessionPacket({
     captureRows:barRows,barStateReceipts,formalBaselineReceipts:[],scopeSymbols:cohort.symbols
   });
   const c3=buildC3EntryExperiment(c2Ledger,audit.readyReceipts,{costs});
+  const c3DepthSemantics=buildC3DepthSemanticsAudit(audit);
   const c5=buildC5DailyReport(c1Diagnosis,c2Ledger);
   const c4=buildC4ReadinessFromCohort(c2Ledger,cohort.symbols,capital);
   return {
@@ -128,11 +130,13 @@ export function buildSystem1PostSessionPacket({
     targetTradeDate,sourceSessionDate:cohort.sourceSessionDate,generationId:cohort.generationId,
     cohort:{symbols:cohort.symbols,cohortDigest:cohort.cohortDigest,n:cohort.symbols.length},
     capture:{barRows:barRows.length,quoteRows:quoteRows.length,audit},
-    c3,c4,c5,
+    c3,c3DepthSemantics,c4,c5,
     interpretation:{
       boundedC3SampleIsNotFullC2Denominator:true,
       formalNotAdmittedIsNotEquivalentToFormalNoTrigger:true,
       formalBaselineUnknownMustNotCountAsNoTrigger:true,
+      c3DepthGuardIsSelectionContextNotLiveOrderBook:true,
+      rawLiveDepthNotConvertedToScore:true,
       c4BlockedMustNotBeBackfilledWithAlternateScore:true
     },
     economicSuperiority:"UNKNOWN",formalCoreLocked:true,researchOnly:true,decisionImpact:false,

@@ -216,6 +216,7 @@ jobs:
           node tests/test_system1_c3_capture_contract_v0_1.mjs
           node tests/test_system1_evidence_automation_v0_1.mjs
           node tests/test_system1_postsession_evidence_v0_1.mjs
+          node tests/test_system1_c3_depth_semantics_v0_1.mjs
           node tests/test_system1_postsession_workflow_guard_v0_1.mjs
           node tests/test_system1_maturity_ledger_v0_1.mjs
           node --check tests/collect_system1_c1_evidence.mjs
