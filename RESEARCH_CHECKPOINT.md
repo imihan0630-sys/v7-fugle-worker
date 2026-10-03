@@ -2504,3 +2504,29 @@ Exact next Room08:
 3. D11-18/19 complete tender/deal success plus failure/extension/reprice paths.
 4. D17-14 obtain independent ex-ante expectation archives; otherwise Surprise remains UNKNOWN.
 5. D11-15 add prospective immutable bookbuilding-range/version capture and failed/cancelled underwriting controls before any L4 outcome cohort.
+
+
+## 09 derivatives/global-macro continuation — Oct-3 release vector + Delta/Surface/Parity (2026-10-03)
+
+- Fresh-read latest main before continuation; preserved concurrent research. Canonical tracker expanded again to 22 domains / 354 modules. D12 had 17 modules and D13 19.
+- BLS official September 2026 Employment Situation content verified after publication: payroll +29k, unemployment 4.2%, AHE +0.1% m/m / +3.0% y/y, Jul/Aug revisions combined -60k. Because the project observed this on Oct-3 rather than preserving native BLS response at Oct-2 20:30, classification is OFFICIAL_RELEASE_CONTENT_OBSERVED_AFTER_PUBLICATION, not release-time source attestation. Consensus/surprise remain UNKNOWN.
+- Frozen artifact: `research/d13_09_11_bls_employment_release_observed_20261003_v0_1.json`. The earlier pre-release QA remains unchanged.
+- TAIFEX official Daily Delta page establishes 06:45 same-day vs 14:30/16:30 next-business-day semantics. Current page lists the 2026-10-02 Delta download generated at 16:39:28, before 18:10. Historical retrieval still does not certify immutable first-known. Contract: `research/d12_13_taifex_daily_delta_clock_semantics_v0_1.json`.
+- TAIFEX Delta is treated as exchange-model theoretical hedge ratio, not probability or sentiment.
+- Surface Method V0.1 frozen in `research/d12_surface_method_v0_1_spec.json`: positive two-sided bid/ask primary quotes, no silent price-source fallback, no primary extrapolation, explicit fit/coverage/arbitrage state.
+- Implemented `research/d12_option_row_validator_v0_1.mjs` and 10-test synthetic adversarial harness; all tests PASS locally. Tests are data-quality evidence only.
+- D12-17 payoff/parity/synthetics contract frozen: `research/d12_17_option_payoff_parity_synthetics_spec_v0_1.json`.
+  - TXO European/cash-settled;
+  - Call-Put synthetic is forward-like payoff under matched strike/expiry/carry;
+  - executable parity residual requires synchronized bid/ask + costs/funding/size/session;
+  - no strategy name can create a stock-selection gate.
+- D12-17 advances L0 -> L2 / 40%. Expanded D12 recomputes to 40.0%. D13 stays 28.4%. Global 354-module tracker recomputes to 35.5%. Room-09 weighted D12+D13 ≈33.9%.
+- Router and learning map synchronized.
+- No L3 promotion for D12-13/16/17. No Formal change and no FORMAL_OPTIMIZATION_CANDIDATE.
+
+Exact next Room-09 continuation:
+1. Obtain one permitted official TAIFEX raw option-chain parent and freeze exact raw-header mapping/source identity for replay QA only.
+2. Run simple skew, Surface V0.1 and parity-quality diagnostics on the identical parent rows; quantify method disagreement before outcomes.
+3. Treat official Daily Delta as separate versioned exchange-model state and audit 14:30->16:30->next-day 06:45 revisions/new-series additions.
+4. Build no live MIS scraper; explicit source authorization remains mandatory.
+5. Continue next unblocked curriculum only after preserving these evidence boundaries; new D13-14..19 remain L0 and can be studied without waiting for prospective option data.
