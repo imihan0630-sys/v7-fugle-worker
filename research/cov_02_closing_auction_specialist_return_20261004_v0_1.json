@@ -1,0 +1,148 @@
+{
+  "candidateId": "COV-02",
+  "domain": "D05",
+  "specialistRoom": "04｜波動與市場微結構研究室",
+  "artifactPath": "research/COV_02_CLOSING_AUCTION_SPECIALIST_RETURN_20261004_V0_1.md",
+  "evidenceCutoff": "2026-10-04T07:45:00+08:00",
+  "currentCandidateClass": "SCOPE_EXTENSION_CANDIDATE",
+  "exactKnowledgeDefinition": {
+    "family": "Closing Auction / Auction Imbalance",
+    "is": "Call-auction market state plus causally observable pre-close trial/indicative price-volume/book state and final closing match.",
+    "isNot": [
+      "generic end-of-day volume",
+      "last continuous trade",
+      "retrospectively reconstructed imbalance",
+      "directional alpha by definition"
+    ],
+    "observableUnit": "symbol x closing-auction observation timestamp/state",
+    "timeHorizon": "13:25 through final close, including delayed close when applicable",
+    "decisionTimeMeaning": "Only trial/book state actually observed by timestamp may be used; final close cannot backfill prior trial states.",
+    "unknownSemantics": "Missing historical pre-close trial/imbalance remains UNKNOWN."
+  },
+  "overlapMatrix": [
+    {
+      "module": "D05-06",
+      "shared": "call-auction rules/trial state",
+      "distinct": "opening overnight information vs closing end-of-day information",
+      "doubleCountRisk": "HIGH",
+      "ownerBoundary": "D05-06 owns opening+closing auction primitive"
+    },
+    {
+      "module": "D05-03/04/05",
+      "shared": "quote/book/pressure data",
+      "distinct": "continuous microstructure vs auction mechanism",
+      "doubleCountRisk": "MEDIUM",
+      "ownerBoundary": "continuous primitives remain separate; D05-06 owns auction regime"
+    },
+    {
+      "module": "D05-14",
+      "shared": "closing-auction primitive",
+      "distinct": "integrity interpretation/false-positive controls",
+      "doubleCountRisk": "HIGH",
+      "ownerBoundary": "D05-14 consumes D05-06 primitive only"
+    },
+    {
+      "module": "D14",
+      "shared": "auction state may affect fills/cost",
+      "distinct": "execution consequence",
+      "doubleCountRisk": "MEDIUM",
+      "ownerBoundary": "D14 consumes mechanism state"
+    },
+    {
+      "module": "D11/D17",
+      "shared": "event timing may explain close flow",
+      "distinct": "event/news clock",
+      "doubleCountRisk": "LOW_MEDIUM",
+      "ownerBoundary": "event rooms own event clock"
+    },
+    {
+      "module": "D02",
+      "shared": "late-session/end-of-day volume",
+      "distinct": "pre-close auction imbalance path",
+      "doubleCountRisk": "HIGH",
+      "ownerBoundary": "generic volume is not auction imbalance"
+    }
+  ],
+  "whyCurrentScopeIsInsufficient": "D05-06 is named Opening Auction and does not explicitly own 13:25-13:30 close accumulation, delayed-close/trial semantics, closing benchmark context, or UNKNOWN rules for missing historical imbalance. The capability is best added as explicit closing substates rather than a new module.",
+  "taiwanDataFeasibility": {
+    "sources": [
+      {
+        "name": "TWSE Operating Rules Article 58-3",
+        "authority": "TWSE",
+        "granularity": "auction rule",
+        "history": "versioned rules",
+        "access": "public/free",
+        "replay": "RULE_REPLAYABLE"
+      },
+      {
+        "name": "TWSE Trading Mechanism / investor Q&A",
+        "authority": "TWSE",
+        "granularity": "closing mechanism/trial state",
+        "history": "current mechanism",
+        "access": "public/free",
+        "replay": "PROSPECTIVE_SOURCE_FEASIBLE"
+      },
+      {
+        "name": "TWSE final daily close/volume",
+        "authority": "TWSE",
+        "granularity": "symbol-session final state",
+        "history": "historical daily",
+        "access": "public/free",
+        "replay": "FINAL_OUTCOME_REPLAYABLE"
+      }
+    ],
+    "prospectiveTrialState": "SOURCE_FEASIBLE",
+    "historicalPreCloseImbalanceReplay": "PARTIAL_OR_UNKNOWN",
+    "revisionFinality": "Final close is final-session output; it is not a substitute for earlier indicative states.",
+    "missingness": "Missing pre-close state remains UNKNOWN.",
+    "reproducibilityLimit": "Current official pages cannot prove historical first-known trial snapshots."
+  },
+  "pitReplayImplication": {
+    "knownAt": "provider/source observation time for each trial/book state",
+    "effectiveAt": "auction mechanism state boundary, including 13:25 accumulation and actual final match",
+    "capturedAt": "must be retained for prospective evidence",
+    "sourceVintage": "rule/mechanism version + market-data source version",
+    "revisionHandling": "later/final values do not overwrite what was known earlier",
+    "corporateActionSessionAdjustments": "session/mechanism state preserved; generic end-of-day transformations cannot substitute auction path",
+    "historicalReplay": "Final close/volume replayable; pre-close imbalance replay only when timestamped source exists.",
+    "unknownBehavior": "No historical trial snapshot => UNKNOWN; no reconstruction from final close."
+  },
+  "decisionRole": {
+    "primary": "context",
+    "roles": [
+      "context",
+      "validation",
+      "supportive"
+    ]
+  },
+  "antiDoubleCountRule": {
+    "canonicalPrimitiveOwner": "D05-06",
+    "rules": [
+      "D05-14 may consume auction state for integrity interpretation but cannot create a second auction alpha vote.",
+      "D14 may consume auction state for execution quality but does not re-own exchange mechanics.",
+      "D02 end-of-day volume cannot be relabeled as closing imbalance without residual observable evidence.",
+      "Opening and closing substates share one call-auction owner."
+    ]
+  },
+  "proposedOwner": {
+    "domain": "D05",
+    "module": "D05-06",
+    "proposedName": "Opening / Closing Auction & Auction Imbalance",
+    "dependencies": [
+      "D05-03/04/05",
+      "D05-14",
+      "D14",
+      "D11/D17"
+    ],
+    "rationale": "One coherent exchange-mechanics owner preserves shared call-auction rules while explicit substates preserve opening/closing differences."
+  },
+  "maturityStartingPoint": {
+    "action": "scope_extension",
+    "maturityChangeFromThisReturn": "NONE",
+    "rule": "Do not inherit or increase maturity from naming/scope cleanup; expanded capability must satisfy normal maturity gates independently."
+  },
+  "terminalRecommendation": "EXTEND_EXISTING_SCOPE",
+  "strongestPositiveEvidence": "TWSE explicitly defines a five-minute closing call-auction accumulation/trial phase and final call-auction price formation, so closing auction is a real durable market-mechanics capability adjacent to D05-06.",
+  "strongestCounterevidence": "A complete historical timestamped pre-close imbalance/trial archive is not proven; final close and volume cannot reconstruct the path, so a standalone closing-imbalance historical factor would overclaim replayability.",
+  "unresolvedBlocker": "00-room intake, dependency/overlap/anti-orphan review and owner approval remain required before any canonical D05-06 scope/name change."
+}
