@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "SYSTEM1_ZERO_PICK_RUNTIME_SOURCE_TIME_PROVENANCE_V0_1",
+  "updatedAt": "2026-10-03T23:20:00+08:00",
+  "status": "CLASS_A_FROZEN / CLASS_B_RUNTIME_INTEGRATION_NOT_AUTHORIZED",
+  "knownAtSemantics": "REQUEST_LOCAL_KNOWN_BY_DECISION_AT_UPPER_BOUND",
+  "feature": {
+    "sourceEventTimestampAvailable": false,
+    "knownAt": "C1 decisionAt",
+    "provenance": "featureRows already exists in the selector request before buildC1PopulationReceipt stamps decisionAt",
+    "mustNotBeLabeledAs": "raw source event time"
+  },
+  "sector": {
+    "sourceEventTimestampAvailable": false,
+    "knownAt": "C1 decisionAt",
+    "provenance": "sectorStats already exists in the selector request before buildC1PopulationReceipt stamps decisionAt",
+    "mustNotBeLabeledAs": "raw source event time"
+  },
+  "consensus": {
+    "eligibility": "V7_MARKET_CONSENSUS.marketDate must equal scanDate",
+    "knownAt": "C1 decisionAt",
+    "referenceUpdatedAt": "preserve when present",
+    "futureUpdatedAt": "REJECT",
+    "wrongDateReference": "IGNORE_AND_USE_SOURCE_COUNT_ZERO",
+    "laterRepairAllowed": false
+  },
+  "rankingTupleKnownAt": "max(request-local known-by timestamps) = decisionAt",
+  "newProviderCalls": 0,
+  "historicalBackfillAsContemporaneousAllowed": false,
+  "actualFormalRank": false,
+  "formalCore": "LOCKED"
+}
