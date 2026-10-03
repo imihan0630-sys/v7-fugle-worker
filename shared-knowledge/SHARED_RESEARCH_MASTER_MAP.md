@@ -843,3 +843,17 @@ First received third-round packet:
 - H05 Room 14 counterpart remains required.
 - No terminal merge/retirement decision and no maturity change.
 
+## Research-to-Optimization bridge audit — 2026-10-03
+
+Canonical audit:
+`shared-knowledge/RESEARCH_TO_OPTIMIZATION_BRIDGE_AUDIT_20261003_V0_1.md`
+
+Machine-readable:
+`shared-knowledge/research_to_optimization_bridge_audit_20261003_v0_1.json`
+
+Control-plane conclusion:
+- no unsurfaced EVIDENCE_READY candidate was found;
+- one canonical candidate lineage remains, already owner-approved/merged/deployed;
+- 13 plausible future lanes remain explicitly blocked/watchlisted;
+- curriculum maturity and research infrastructure must not be mistaken for Formal optimization readiness.
+
