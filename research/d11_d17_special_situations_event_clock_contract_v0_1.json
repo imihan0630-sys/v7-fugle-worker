@@ -122,7 +122,8 @@
         "TERMS_REVISED",
         "UNKNOWN"
       ],
-      "status": "L2_MECHANISM_FALSIFICATION_FROZEN_PIT_CAPTURE_PENDING"
+      "status": "L3_TAIWAN_PIT_SOURCE_FEASIBILITY_VALIDATED_FAILURE_CONTROL_PENDING_BEFORE_OUTCOMES",
+      "receipt": "research/d11_18_tender_offer_pit_receipt_v0_1.json"
     },
     "D11-19": {
       "stages": [
@@ -181,12 +182,12 @@
     "D11-15": "L0_TO_L2",
     "D11-16": "KEEP_L2_SOURCE_REALIZATION_GAP",
     "D11-17": "L2_TO_L3",
-    "D11-18": "L0_TO_L2",
+    "D11-18": "L2_TO_L3",
     "D11-19": "L0_TO_L2",
     "D17-14": "L0_TO_L2",
-    "D11_maturityPct_after": 52.6,
+    "D11_maturityPct_after": 53.7,
     "D17_maturityPct_after": 41.4,
-    "Room08_moduleWeightedPct_after": 47.9
+    "Room08_moduleWeightedPct_after": 48.5
   },
   "optimization": {
     "formalOptimizationCandidate": false,
@@ -197,5 +198,5 @@
     "productionChange": false,
     "formalCoreLocked": true
   },
-  "exactNext": "D11-16 complete one issuer-level official custody-release-to-sale chain; D11-18/19 collect complete tender/deal success and failure/extension/reprice lifecycles; deepen D11-17 with immutable native MOPS receipts before L4."
+  "exactNext": "D11-16 complete issuer custody-release-to-sale realization; D11-19 collect merger/spin-off payoff and break/reprice lifecycles; D11-18 add a native failed-tender control before outcome/L4 research."
 }
