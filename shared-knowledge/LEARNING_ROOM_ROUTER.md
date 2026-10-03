@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 11:32 Asia/Taipei
+Updated: 2026-10-03 11:42 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -1480,4 +1480,20 @@ D12-14 vs D12-15。
 該註冊表列出每一組的 category（分類）、module（模組）、room（研究室）、acceptance contract（驗收契約）與 specialist packet（專科任務包）。
 
 第三輪目前狀態：20／20 組治理封裝完成，等待各專科研究室驗證；任何模組退休／合併仍須回到 00｜研究總控室做 Dependency Audit（依賴審查）、anti-orphan（防能力孤兒）與 owner（持有人）批准。
+
+## Hybrid 角色資格稽核 — 2026-10-03
+
+所有研究室在把研究結果送入 System 1／System 2 選擇決策前，必須先讀：
+- `shared-knowledge/HYBRID_ROLE_ELIGIBILITY_AUDIT_20261003_V0_1.md`
+- `shared-knowledge/HYBRID_ROLE_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md`
+
+固定規則：
+- Role Eligibility（角色資格）不等於 Actual Strategy Role（實際策略角色）。
+- 新知識預設 RESEARCH_ONLY（僅研究）。
+- HARD_INVALIDATION（硬否決）只允許事實性且策略相關的 PIT／來源／可重播失效、不可成交、公司行動連續性、退出不可行或明確風險授權違反。
+- Execution（執行）、Sizing（部位配置）、Validation（驗證）、Macro／Regime（總經／市場狀態）不得因存在就自動變成個股 Alpha（超額報酬）票。
+- 行為／治理解釋必須有獨立可觀測資料，不得只把價格／籌碼／財報現象換名。
+- 共享 primitive（基礎證據）不得重複計票。
+
+R01～R08 任務包由對應專科室驗證後回 00｜研究總控室驗收；不得自行改 Formal Core（正式核心）。
 
