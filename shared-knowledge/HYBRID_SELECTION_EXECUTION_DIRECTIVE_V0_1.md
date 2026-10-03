@@ -143,3 +143,16 @@ System 2 B1 may consume the overlay when building strategy-specific role maps.
 No universal 354-module vote/score is permitted.
 Formal Core remains unchanged.
 
+## System1 A2 role inventory completion — 2026-10-03
+
+A2 governance inventory:
+`shared-knowledge/SYSTEM1_A2_GATE_ROLE_INVENTORY_20261003_V0_1.md`
+
+System1 current fail-fast gates are now separated conceptually into:
+- true safety / owner-policy hard constraints;
+- confidence / missing-data states;
+- strategy-specific PRIMARY_ALPHA;
+- supportive/context evidence.
+
+Important: this is role classification only. It does not soften any production gate. Prospective matched-date evidence remains mandatory before any Class-C proposal.
+
