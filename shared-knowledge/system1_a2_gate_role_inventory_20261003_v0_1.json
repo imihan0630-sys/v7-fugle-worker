@@ -1,0 +1,332 @@
+{
+  "schemaVersion": "SYSTEM1_A2_GATE_ROLE_INVENTORY_V0_1",
+  "updatedAt": "2026-10-03T13:05:00+08:00",
+  "status": "A2_GATE_ROLE_AUDIT_COMPLETE_RESEARCH_CLASSIFICATION_ONLY_FORMAL_CORE_LOCKED",
+  "source": {
+    "preAuditMain": "18aedb1d13757bdefb43f2f0817b0185b3e88fa3",
+    "rawWorkerSha": "24fd61d7b8dfd5610c40cc67a2b6807dd622bd73",
+    "effectiveComparatorPatch": "scripts/apply_v7_5_30.py",
+    "effectiveComparatorPatchSha": "56938e1f49480d7b80d65a634f18e829e23212da",
+    "effectiveComparatorVersion": "PRIORITY_RR_CONSENSUS_SETUP_SECTOR_RS_7_5_30"
+  },
+  "formalRejectBranches": 21,
+  "roles": [
+    "HARD_INVALIDATION",
+    "PRIMARY_ALPHA",
+    "SUPPORTIVE",
+    "CONTEXT_ONLY",
+    "CONFIDENCE_UNCERTAINTY"
+  ],
+  "gates": [
+    {
+      "id": "PRICE_FLOOR",
+      "formalCondition": "股價 < 10",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "HARD_INVALIDATION",
+      "swingRole": "HARD_INVALIDATION",
+      "auditClass": "ALIGNED_OWNER_UNIVERSE_POLICY",
+      "rationale": "Owner-fixed tradable-universe rule; not Alpha."
+    },
+    {
+      "id": "HISTORY_60D",
+      "formalCondition": "historyDays < 60",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "CONFIDENCE_UNCERTAINTY",
+      "swingRole": "CONFIDENCE_UNCERTAINTY",
+      "auditClass": "ROLE_HARDENED_LOW_PRIORITY",
+      "rationale": "Insufficient lookback means current feature contract cannot be evaluated; it is not negative Alpha by itself."
+    },
+    {
+      "id": "RS_CONTEXT",
+      "formalCondition": "marketReturn20 / sectorReturn20 missing",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "CONFIDENCE_UNCERTAINTY",
+      "swingRole": "CONFIDENCE_UNCERTAINTY",
+      "auditClass": "ROLE_MAP_DEFECT",
+      "rationale": "Current gate checks availability only. Relative-strength value itself appears later in ranking; do not label the availability check PRIMARY_ALPHA."
+    },
+    {
+      "id": "MARKET_CAP_FLOOR",
+      "formalCondition": "marketCap missing or < 10億",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "CONTEXT_ONLY",
+      "swingRole": "PRIMARY_ALPHA",
+      "auditClass": "OVERHARD_P1",
+      "rationale": "Split missing-data state from economic size threshold. Missing is UNCERTAINTY; size is context for SHORT and may be primary for SWING."
+    },
+    {
+      "id": "DAILY_ABNORMALITY",
+      "formalCondition": "abs(changePercent) >= 9.8%",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "CONTEXT_ONLY",
+      "swingRole": "CONTEXT_ONLY",
+      "auditClass": "OVERHARD_P2",
+      "rationale": "A near-limit move is not factual non-executability by itself. Hard status requires actual orderability/price-limit/event evidence."
+    },
+    {
+      "id": "LIQUIDITY",
+      "formalCondition": "20日均量 < 1000張 / 千金 < 300張 unless exception",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "CONFIDENCE_UNCERTAINTY",
+      "swingRole": "CONFIDENCE_UNCERTAINTY",
+      "auditClass": "OVERHARD_P2",
+      "rationale": "Average-volume/depth/spread thresholds are execution proxies. HARD is reserved for factual non-executability; preserve owner liquidity policy in Formal until prospective counterfactual evidence."
+    },
+    {
+      "id": "SMALL_CAP_SPECIAL",
+      "formalCondition": "10–30億需 1.5x volume + institutionalScore>=70",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "CONTEXT_ONLY",
+      "swingRole": "PRIMARY_ALPHA",
+      "auditClass": "OVERHARD_P1",
+      "rationale": "Composite size/liquidity/institutional condition is strategy context/evidence, not safety invalidation."
+    },
+    {
+      "id": "MID_CAP_LIQUIDITY",
+      "formalCondition": "<100億需 1.2x volume or liquidity exception",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "CONTEXT_ONLY",
+      "swingRole": "PRIMARY_ALPHA",
+      "auditClass": "OVERHARD_P1",
+      "rationale": "Size-conditioned liquidity proxy; not factual non-executability."
+    },
+    {
+      "id": "CHIP_CONCENTRATION_PRESENT",
+      "formalCondition": "chipConcentration missing",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "CONFIDENCE_UNCERTAINTY",
+      "swingRole": "CONFIDENCE_UNCERTAINTY",
+      "auditClass": "ROLE_MAP_DEFECT_OVERHARD_P1",
+      "rationale": "The gate tests presence, not whether concentration is good/bad. Concentration value separately feeds institutionalScore."
+    },
+    {
+      "id": "FINANCIAL_SOURCE_COMPLETENESS",
+      "formalCondition": "quarter/valuation/announcement source bundle incomplete",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "CONFIDENCE_UNCERTAINTY",
+      "swingRole": "CONFIDENCE_UNCERTAINTY",
+      "auditClass": "OVERHARD_P1_SHORT",
+      "rationale": "Source completeness is confidence. SWING may require it as an input contract, but missing data is not negative Alpha."
+    },
+    {
+      "id": "ANNOUNCEMENT_RISK",
+      "formalCondition": "停止交易/重大損失/重整/退票/財報不實",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "HARD_INVALIDATION",
+      "swingRole": "HARD_INVALIDATION",
+      "auditClass": "ALIGNED_HARD",
+      "rationale": "Concrete severe official event risk is eligible for hard invalidation, subject to verified first-known/PIT semantics."
+    },
+    {
+      "id": "VALUATION_RELATIVE_RISK",
+      "formalCondition": "PE > 2.5x sector median without >25% growth exception",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "CONTEXT_ONLY",
+      "swingRole": "PRIMARY_ALPHA",
+      "auditClass": "OVERHARD_P1",
+      "rationale": "Valuation is horizon/strategy dependent; current short-horizon use is context, not generic hard invalidation."
+    },
+    {
+      "id": "SECTOR_GATE",
+      "formalCondition": "breadth<40 OR avgChange<-1 OR amountVs20d<0.5",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "CONTEXT_ONLY",
+      "swingRole": "CONTEXT_ONLY",
+      "auditClass": "OVERHARD_P2",
+      "rationale": "Industry state is context by default. May become strategy-specific primary evidence only after incremental validation; never generic hard by existence alone."
+    },
+    {
+      "id": "AB_SETUP",
+      "formalCondition": "neither A pullback nor B post-breakout",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "PRIMARY_ALPHA",
+      "swingRole": "PRIMARY_ALPHA",
+      "auditClass": "CORE_STRATEGY_ROLE_ALIGNED",
+      "rationale": "This is the current A/B strategy identity. Failure means not a current A/B setup, not that the stock is globally invalid."
+    },
+    {
+      "id": "FUNDAMENTAL_COMPONENT_COUNT",
+      "formalCondition": "financialDataCount < 3",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "CONFIDENCE_UNCERTAINTY",
+      "swingRole": "CONFIDENCE_UNCERTAINTY",
+      "auditClass": "ROLE_MAP_DEFECT_OVERHARD_P1",
+      "rationale": "Count measures evidence completeness, not economic quality."
+    },
+    {
+      "id": "FUNDAMENTAL_QUALITY",
+      "formalCondition": "fundamentalScore < 25 with count>=3",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "SUPPORTIVE",
+      "swingRole": "PRIMARY_ALPHA",
+      "auditClass": "OVERHARD_P1_SHORT",
+      "rationale": "Short-horizon strategy should test it as supportive; swing may validate it as primary. Not a universal hard gate."
+    },
+    {
+      "id": "ATR_QUALITY",
+      "formalCondition": "ATR% <1 or >10",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "CONTEXT_ONLY",
+      "swingRole": "CONTEXT_ONLY",
+      "auditClass": "OVERHARD_P2",
+      "rationale": "Volatility state is context/risk by default; strategy-specific primary role requires evidence."
+    },
+    {
+      "id": "TARGET_AVAILABLE",
+      "formalCondition": "nearest verifiable resistance == null",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "CONFIDENCE_UNCERTAINTY",
+      "swingRole": "CONFIDENCE_UNCERTAINTY",
+      "auditClass": "HIGH_PRIORITY_SEMANTIC_REVIEW",
+      "rationale": "This is risk-geometry availability, not negative Alpha. No nearby resistance may not mean the trade is bad; current algorithm instead rejects because RR cannot be computed."
+    },
+    {
+      "id": "REWARD_RISK",
+      "formalCondition": "RR < 2",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "PRIMARY_ALPHA",
+      "swingRole": "PRIMARY_ALPHA",
+      "auditClass": "PRIMARY_ROLE_HARDENED",
+      "rationale": "Legitimate strategy-specific payoff filter, but semantically PRIMARY_ALPHA/risk geometry rather than safety hard invalidation."
+    },
+    {
+      "id": "FINAL_SIGNAL_GRADE",
+      "formalCondition": "setupQuality < 65 (B)",
+      "formalBehavior": "FAIL_FAST_REJECT",
+      "shortRole": "PRIMARY_ALPHA",
+      "swingRole": "PRIMARY_ALPHA",
+      "auditClass": "CORE_PRIMARY_ROLE",
+      "rationale": "Strategy quality threshold; not safety hard invalidation."
+    }
+  ],
+  "outerSafety": [
+    {
+      "id": "SOURCE_AUTHENTICITY",
+      "role": "HARD_INVALIDATION",
+      "rule": "Verified source/PIT/replay failure may block."
+    },
+    {
+      "id": "SESSION_CONTINUITY",
+      "role": "HARD_INVALIDATION",
+      "rule": "Session identity/continuity failure may block."
+    },
+    {
+      "id": "CORPORATE_ACTION_CONTINUITY",
+      "role": "HARD_INVALIDATION",
+      "rule": "Unresolved corporate-action/reference continuity may block."
+    },
+    {
+      "id": "EXECUTION_FEASIBILITY",
+      "role": "HARD_INVALIDATION",
+      "rule": "Only factual non-executability/orderability state is hard."
+    },
+    {
+      "id": "ACCOUNT_RISK",
+      "role": "HARD_INVALIDATION",
+      "rule": "Explicit account/portfolio risk-authority breach may block."
+    }
+  ],
+  "componentRoles": [
+    {
+      "id": "SECTOR_BREADTH",
+      "condition": "sector breadth >=40",
+      "role": "CONTEXT_ONLY",
+      "rule": "Component of SECTOR_GATE; not a separate vote."
+    },
+    {
+      "id": "SECTOR_RETURN",
+      "condition": "sector avgChange >=-1",
+      "role": "CONTEXT_ONLY",
+      "rule": "Component of SECTOR_GATE; not a separate vote."
+    },
+    {
+      "id": "SECTOR_AMOUNT",
+      "condition": "sector amountVs20d >=0.5",
+      "role": "CONTEXT_ONLY",
+      "rule": "Component of SECTOR_GATE; not a separate vote."
+    },
+    {
+      "id": "SETUP_A",
+      "condition": "A pullback checks",
+      "role": "PRIMARY_ALPHA",
+      "rule": "Child of AB_SETUP; same setup family."
+    },
+    {
+      "id": "SETUP_B",
+      "condition": "B breakout/retest checks",
+      "role": "PRIMARY_ALPHA",
+      "rule": "Child of AB_SETUP; same setup family."
+    }
+  ],
+  "c5RoleMapDefects": [
+    "RS_CONTEXT_AVAILABILITY_MUST_NOT_BE_PRIMARY_ALPHA",
+    "CHIP_CONCENTRATION_PRESENT_IS_CONFIDENCE_NOT_VALUE_ROLE",
+    "FUNDAMENTAL_COMPONENT_COUNT_IS_CONFIDENCE_NOT_QUALITY",
+    "DAILY_ABNORMALITY_NOT_FACTUAL_HARD_BY_THRESHOLD_ALONE",
+    "LIQUIDITY_PROXY_NOT_FACTUAL_NON_EXECUTABILITY",
+    "SECTOR_GATE_CONTEXT_BY_DEFAULT_PENDING_INCREMENTAL_PROOF",
+    "TARGET_AVAILABLE_CONFIDENCE_PRIMARY_BOUNDARY_NEEDS_FALSIFICATION"
+  ],
+  "p1Review": [
+    "MARKET_CAP_FLOOR",
+    "SMALL_CAP_SPECIAL",
+    "MID_CAP_LIQUIDITY",
+    "CHIP_CONCENTRATION_PRESENT",
+    "FINANCIAL_SOURCE_COMPLETENESS",
+    "VALUATION_RELATIVE_RISK",
+    "FUNDAMENTAL_COMPONENT_COUNT",
+    "FUNDAMENTAL_QUALITY"
+  ],
+  "p2Review": [
+    "DAILY_ABNORMALITY",
+    "LIQUIDITY",
+    "SECTOR_GATE",
+    "ATR_QUALITY",
+    "TARGET_AVAILABLE",
+    "REWARD_RISK",
+    "FINAL_SIGNAL_GRADE"
+  ],
+  "p3PreservePrimary": [
+    "AB_SETUP",
+    "SETUP_A",
+    "SETUP_B"
+  ],
+  "ranking": {
+    "comparator": [
+      "priorityScore",
+      "rewardPerRisk",
+      "marketConsensusScore",
+      "setupQuality",
+      "sectorFlow",
+      "relativeStrength"
+    ],
+    "priorityScoreWeights": {
+      "setupQuality": 0.28,
+      "sectorScore": 0.14,
+      "institutionalScore": 0.16,
+      "fundamentalScore": 0.14,
+      "relativeStrength": 0.14,
+      "rewardRisk": 0.14
+    },
+    "marketConsensusBonusMax": 7,
+    "marketConsensusRole": "SUPPORTIVE"
+  },
+  "duplicateInfluenceFamilies": [
+    "SETUP",
+    "SECTOR",
+    "FUNDAMENTAL",
+    "REWARD_RISK",
+    "INSTITUTIONAL_CHIP",
+    "RELATIVE_STRENGTH"
+  ],
+  "quotaPolicy": {
+    "generalMax": 3,
+    "thousandMax": 3,
+    "totalMax": 6,
+    "crossPoolTransfer": false,
+    "role": "SELECTION_QUOTA_POLICY_NOT_EVIDENCE_ROLE"
+  },
+  "formalCoreImpact": "NONE",
+  "formalOptimizationCandidate": "NONE",
+  "next": "PATCH_RESEARCH_ONLY_C5_ROLE_MAP_THEN_RUN_P1_ON_FIRST_GENUINE_COMPLETE_C1_C2_PROSPECTIVE_POPULATION"
+}
