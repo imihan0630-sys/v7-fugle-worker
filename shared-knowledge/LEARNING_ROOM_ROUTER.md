@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 15:24 Asia/Taipei
+Updated: 2026-10-03 18:43 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -299,7 +299,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | 04｜波動與市場微結構研究室 | D04＋D05 | 24 | 36.7% | 波動率／市場微結構／市場完整性 |
 | 05｜法人與籌碼研究室 | D06 | 17 | 44.7% | 法人／籌碼／ETF mechanics／借券／擁擠 |
 | 06｜基本面與估值研究室 | D07＋D08 | 52 | 19.2% | 基本面／無形資本／進階會計／反向DCF／估值 |
-| 07｜產業與供應鏈研究室 | D09＋D10 | 27 | 46.7% | 產業結構／競爭／供應鏈／公司曝險映射／政策傳導 |
+| 07｜產業與供應鏈研究室 | D09＋D10 | 27 | 54.1% | 產業結構／競爭／供應鏈／公司曝險映射／政策傳導 |
 | 08｜事件與新聞研究室 | D11＋D17 | 33 | 39.4% | 公司事件／初級市場／新聞與政策事件 |
 | 09｜衍生品與國際總經研究室 | D12＋D13 | 36 | 37.2% | 衍生品損益結構／策略／景氣循環／資本市場預期 |
 | 10｜投組風控與交易執行研究室 | D14＋D15 | 39 | 34.9% | 交易執行／投組最佳化／績效歸因／避險／VaR |
@@ -537,13 +537,15 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 
 ## 07｜產業與供應鏈研究室
 
+> 2026-10-03 H01 專科驗證：BR-051 建立台灣晶圓代工產業結構 PIT receipt，BR-052 證明 D09-14 具獨立公司策略動作生命週期。專科結論為 KEEP_SEPARATE（維持分開）但必須 scope dedup（範圍去重）；D09-13／D09-14 均達 L3。未執行合併、退役或 Formal Core 變更。
+
 > 最新 durable progress（2026-10-02）：SC-040 已凍結 2026-07～09 三個 NDC/CIER PMI 月度訂單／交期 receipt；SC-041 已建立 8046／3189 的 bounded industry-to-issuer product-scope bridge；SC-042 建立缺貨／供需缺口 PIT 事件合約並以正反例驗證資料可行性，D10-08 升至 L3。缺失曝險權重、survey membership、issuer-native backlog 一律 UNKNOWN，Formal Core 不變。
 
 負責領域：**D09 產業／族群／市場廣度／輪動；D10 供應鏈／產能／庫存／原物料傳導**  
 必讀 checkpoint：`MARKET_BREADTH_ROTATION_CHECKPOINT.md`、`MARKET_BREADTH_ROTATION_RESEARCH.md`、`SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md`  
 禁止：不得把其他 Dxx 領域當成本聊天室主線；跨領域發現只能建立 dependency（依賴）或引用證據，不能雙重計算進度。
 
-### D09｜產業／族群／市場廣度／輪動 — 47.1%
+### D09｜產業／族群／市場廣度／輪動 — 55.7%
 
 | 模組 | 研究模組 | 學習範圍 | 等級 | 完成度 |
 |---|---|---|---|---:|
@@ -559,8 +561,8 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | D09-10 | 產業成交值／集中度 | 聚焦「產業成交值／集中度」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D09-11 | 題材股與正式產業分類橋接 | 聚焦「題材股與正式產業分類橋接」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D09-12 | Breadth×Regime交互作用 | 聚焦「Breadth×Regime交互作用」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
-| D09-13 | Industry Structure／Porter Five Forces產業結構與波特五力 | 聚焦「Industry Structure／Porter Five Forces產業結構與波特五力」。研究產業結構、競爭強度、進入障礙、替代威脅與市占變化；需把敘事轉成可觀測的價格、產能、毛利、份額、客戶與供應商證據，並保留產業結構沒有轉化成股東報酬的反例。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
-| D09-14 | Market Share／Entry Barrier／Substitution／Competitive Strategy市占、進入障礙、替代與競爭策略 | 聚焦「Market Share／Entry Barrier／Substitution／Competitive Strategy市占、進入障礙、替代與競爭策略」。研究產業結構、競爭強度、進入障礙、替代威脅與市占變化；需把敘事轉成可觀測的價格、產能、毛利、份額、客戶與供應商證據，並保留產業結構沒有轉化成股東報酬的反例。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
+| D09-13 | Industry Structure／Porter Five Forces產業結構與波特五力 | 聚焦「Industry Structure／Porter Five Forces產業結構與波特五力」。研究產業結構、競爭強度、進入障礙、替代威脅與市占變化；需把敘事轉成可觀測的價格、產能、毛利、份額、客戶與供應商證據，並保留產業結構沒有轉化成股東報酬的反例。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
+| D09-14 | Market Share／Entry Barrier／Substitution／Competitive Strategy市占、進入障礙、替代與競爭策略 | 聚焦「Market Share／Entry Barrier／Substitution／Competitive Strategy市占、進入障礙、替代與競爭策略」。研究產業結構、競爭強度、進入障礙、替代威脅與市占變化；需把敘事轉成可觀測的價格、產能、毛利、份額、客戶與供應商證據，並保留產業結構沒有轉化成股東報酬的反例。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 
 
 ### D10｜供應鏈／產能／庫存／原物料傳導 — 46.2%
