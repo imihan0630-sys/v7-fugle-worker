@@ -1,0 +1,133 @@
+{
+  "schemaVersion": "D03_MULTITIMEFRAME_PIT_CONTRACT_V0_1",
+  "updatedAt": "2026-10-03T18:48:00+08:00",
+  "classification": "CLASS_A_RESEARCH_ONLY",
+  "formalCoreImpact": "NONE_LOCKED",
+  "inherits": [
+    "research/technical_indicator_multitimeframe_contract_v0_1.json",
+    "research/pattern_multiscale_incrementality_contract_v0_1.json",
+    "system2/SYSTEM2_DAILY_RESONANCE_MONITOR_V0_1.md"
+  ],
+  "roleHierarchy": {
+    "WEEKLY": "MAJOR_TREND_STRUCTURE_CONTEXT",
+    "DAILY": "SELECTION_AND_PRINCIPAL_SETUP",
+    "M15": "TRANSITION_ACCEPTANCE_EXECUTION_CONTEXT",
+    "M5": "EXECUTION_DETAIL_NOT_REQUIRED_FOR_V0_1_L3"
+  },
+  "requiredClocks": [
+    "barStartAt",
+    "barEndAt",
+    "featureKnownAt",
+    "asOf",
+    "sourceFetchedAt",
+    "availableAt",
+    "sessionCalendarVersion"
+  ],
+  "weekly": {
+    "source": "CAUSAL_AGGREGATION_OF_ELIGIBLE_DAILY_BARS",
+    "completionRule": "NO_LATER_EXPECTED_EXCHANGE_SESSION_IN_CALENDAR_WEEK_AND_SYMBOL_SESSION_RECONCILED",
+    "fiveBarsRequired": false,
+    "partialState": "PARTIAL_ASOF_HIGHER_TIMEFRAME_BAR",
+    "completedState": "COMPLETED_HIGHER_TIMEFRAME_BAR",
+    "requiredFields": [
+      "calendarWeekId",
+      "marketSessionCalendarVersion",
+      "symbolSessionReceiptId",
+      "weeklySourceDailyBarIds",
+      "weeklyCompletedThrough",
+      "weeklyPartialAsOf",
+      "barCompletionState",
+      "semanticSpaceId",
+      "continuityState"
+    ]
+  },
+  "daily": {
+    "live": "PROVISIONAL_DAILY_BAR",
+    "final": "CONFIRMED_DAILY_CLOSE",
+    "missing": "CURRENT_DAILY_BAR_MISSING",
+    "confirmRequires": [
+      "CURRENT_DATE_DAILY_BAR",
+      "SOURCE_FINALITY_FINAL",
+      "INDEPENDENT_OFFICIAL_SESSION_CLOSE_CONFIRMED",
+      "CONTINUITY_ELIGIBLE"
+    ]
+  },
+  "m15": {
+    "sourceFamily": "FUGLE_INTRADAY_CANDLES_15M",
+    "providerTimeframe": "15",
+    "completedRule": "NOW_OR_SCHEDULED_TIME_GTE_BAR_START_PLUS_15_MIN",
+    "knownAtRule": "MAX_BAR_END_SOURCE_FETCHED_AT",
+    "configuredStartSlots": [
+      "09:00",
+      "09:15",
+      "09:30",
+      "09:45",
+      "10:00",
+      "10:15",
+      "10:30",
+      "10:45",
+      "11:00",
+      "11:15",
+      "11:30",
+      "11:45",
+      "12:00",
+      "12:15",
+      "12:30",
+      "12:45",
+      "13:00"
+    ],
+    "expectedRegularSlotsIfFull0900To1330": 18,
+    "configuredObservedSlots": 17,
+    "coverageThrough": "13:15",
+    "closingSlotStart": "13:15",
+    "closingSlotState": "UNOBSERVED_CURRENT_ZERO_EXTRA_CALL_PATH",
+    "fullSessionClaimAllowed": false
+  },
+  "alignmentStates": [
+    "ALIGNED",
+    "MIXED",
+    "CONFLICT",
+    "UNKNOWN"
+  ],
+  "overlapClasses": [
+    "SAME_EVENT_DUPLICATE",
+    "NESTED_HORIZON",
+    "SHARED_COMPONENT",
+    "DISTINCT_HORIZON_CONTEXT",
+    "DISTINCT_SESSION_INFORMATION",
+    "UNKNOWN"
+  ],
+  "antiDoubleCount": [
+    "TIMEFRAME_AGREEMENT_IS_NOT_VOTE_COUNT",
+    "DAILY_AND_M15_SHARED_SESSION_COMPONENTS_ARE_NOT_INDEPENDENT_BY_DEFAULT",
+    "WEEKLY_FROM_DAILY_IS_DETERMINISTIC_AGGREGATION_NOT_NEW_RAW_SOURCE",
+    "OVERLAPPING_WINDOWS_DO_NOT_INCREASE_EFFECTIVE_N"
+  ],
+  "system2Handoff": {
+    "dailyResonanceFamily": "DAILY_ONLY",
+    "intraday15mRole": "EXECUTION_AUXILIARY_ONLY",
+    "intraday15mAffectsDailyResonance": false,
+    "dailyLiveSignal": "PROVISIONAL",
+    "dailyFinalSignal": "CONFIRMED"
+  },
+  "sourceGates": [
+    "OFFICIAL_SESSION_CALENDAR_VERSIONED",
+    "SYMBOL_SESSION_PROVENANCE",
+    "TECHNICAL_CONTINUITY_OR_EXPLICIT_BLOCK",
+    "BAR_COMPLETION_PROVEN",
+    "FEATURE_KNOWN_AT_PROVEN",
+    "SOURCE_VERSION_IDENTITY",
+    "PARENT_ASOF_NOT_BEFORE_FEATURE_KNOWN_AT"
+  ],
+  "outcomePolicy": {
+    "current": "NO_GO",
+    "noHistoricalBackfill": true,
+    "noTimeframeOptimizationAfterOutcome": true,
+    "weeklyRequiresEqualHorizonControls": true,
+    "m15RequiresDailySetupConditioning": true,
+    "primaryQueueBeforeD03_13": [
+      "TI_005_KD_VS_RSI",
+      "TI_006_MACD_VS_DIRECT_TREND"
+    ]
+  }
+}
