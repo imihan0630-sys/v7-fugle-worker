@@ -241,3 +241,215 @@ Status: L2 MECHANISM_AND_FALSIFICATION_DEFINED / PIT_BOARD_REPLAY_PENDING / CONT
 ### Exact continuation
 - Build a two-company historical board PIT replay for D21-02: capture election/appointment known_at, terms, controller affiliation, committee roles, expertise, busyness and CEO-chair duality at the decision timestamp.
 - Keep D21-01 exact MOPS filing timestamp as an unresolved dependency; do not idle on it while D21-02 is executable.
+
+
+## D21-02 Historical Board PIT Replay v0.2
+
+Date: 2026-10-03 Asia/Taipei
+Status: L3 TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / CONTEXT_ONLY / FORMAL_CORE_UNCHANGED
+
+### Sample A — TSMC 2330, 2024 board reset
+
+Historical event chain:
+- 2024-02-06: the board approved that the 2024 AGM would elect 10 directors including 7 independent directors.
+- 2024-04-12: TSMC publicly announced the 10 board candidates: 3 regular directors, 4 incumbent independent directors, and 3 new independent-director candidates.
+- 2024-06-04: the AGM elected all 10 directors, including 7 independent directors. The term began on 2024-06-04 and ends on 2027-06-03.
+- Immediately after the AGM, the newly elected board elected C.C. Wei as both chairman and CEO.
+- The 2024 board therefore has 70% independent directors. The three new independent directors were Ursula M. Burns, Lynn L. Elsenhans and Chuan Lin.
+- The 2024 annual-report capital stock was approximately NT$259.35 billion.
+
+Regulatory-context reconstruction:
+- Securities and Exchange Act Article 14-2 provides the baseline minimum of at least 2 independent directors and at least one-fifth of total board seats.
+- The 2024 TWSE governance implementation additionally required listed companies with paid-in capital of at least NT$10 billion to reach at least one-third independent directors upon board re-election.
+- The TWSE board-establishment directions also required at least 4 independent directors where the chairperson and president/equivalent are the same person, unless an even larger-board rule applies.
+- For a 10-member TSMC board, the binding numerical floor after the 2024 election is therefore at least 4 independent directors. Actual independent seats = 7, leaving 3 seats above the reconstructed regulatory floor.
+- Classification: REGULATED_BASE + VOLUNTARY_EXCESS_INDEPENDENCE. Do not classify the entire 70% ratio as purely regulation-forced.
+
+PIT evidence:
+- Candidate identities are publicly observable before the election.
+- Election result, board size, independent-director count, term and chairman/CEO duality are date-stamped by issuer materials on the election date.
+- Professional background and concurrent positions are disclosed in candidate/annual-report material, making expertise and busyness variables reconstructable with document vintage controls.
+
+### Sample B — Formosa Plastics 1301, 2024 board reset
+
+Historical event chain:
+- 2024-05-08 board material identifies the candidate slate; the official AGM notice also discloses the 8 regular-director and 4 independent-director election structure and named independent-director candidates.
+- 2024-06-20: the AGM completed the full board election.
+- The first meeting of the new board on the same date unanimously elected Wen-Pi Kuo as chairman and appointed the four independent directors Wei Chi-Lin, Wu Ching-Ji, Shih Yen-Shiang and Yeh Ching-Tse to the remuneration committee.
+- The reconstructed board has 12 members, including 4 independent directors; term 2024-06-20 through 2027-06-19.
+- The AGM minutes identify Wen-Pi Kuo as general manager before he was elected chairman, creating chairperson-president duality at the board reset.
+- Formosa Plastics paid-in capital was approximately NT$63.657 billion in 2024, below the NT$100 billion large-cap threshold for the 2024 one-third rule.
+
+Regulatory-context reconstruction:
+- Because paid-in capital was below NT$100 billion, the 2024 large-cap one-third mandate was not the applicable trigger.
+- However, the TWSE rule for a chairperson and president/equivalent being the same person required at least 4 independent directors.
+- Actual independent seats = 4. The observed increase from 3 to 4 independent directors is therefore consistent with a binding duality-related regulatory floor.
+- Formosa Plastics describes the increase as strengthening supervision, but that issuer narrative cannot be treated as causal evidence of voluntary governance improvement when a binding rule points in the same direction.
+- Classification: REGULATION_BINDING / NO_IDENTIFIABLE_EXCESS_INDEPENDENCE at the 2024 board reset.
+
+Affiliation / expertise / busyness reconstruction:
+- The board includes representatives of related group companies, including Formosa Chemicals & Fibre, Nan Ya Plastics and Formosa Petrochemical, plus other group-linked directors.
+- Official candidate materials disclose current outside positions for independent-director candidates, making a historical busyness proxy feasible.
+- The four independent directors serve on audit and remuneration functions, providing a committee-role layer distinct from the raw independent-director count.
+
+### Cross-case falsification result
+
+A raw independent-director ratio mixes at least three mechanisms:
+1. minimum legal compliance;
+2. rule-specific incremental requirements such as chairperson-president duality;
+3. voluntary seats above the applicable floor.
+
+Therefore any future feature must decompose:
+- applicable_legal_floor;
+- actual_independent_seats;
+- excess_independent_seats = actual minus applicable floor;
+- regulatory_trigger_type;
+- independent_ratio;
+- controller_affiliation_ratio;
+- executive_board_ratio;
+- board_committee_independent_coverage;
+- expertise and busyness.
+
+A company-level binary FORCED/VOLUNTARY flag is too coarse. Classification must be marginal-seat / requirement-aware.
+
+### D21-02 maturity decision
+
+Advance D21-02 from L2 / 40% to L3 / 60%.
+
+Reason:
+- Two Taiwan listed-company board resets can be replayed with date-specific issuer evidence.
+- Core board fields are PIT-feasible: candidate slate, election date, effective term, board size, independent-director count, chairperson/president duality, major juristic-person affiliation and committee assignment.
+- Historical regulation vintage materially changes interpretation and can be linked to each board reset.
+- Remaining limitations do not block L3 but do block L4: historical dissent/recusal detail, exact public timestamp for every candidate-material field, and broader multi-company coverage remain incomplete.
+- No return prediction or Alpha claim has been established.
+
+System role remains CONTEXT_ONLY / CONFIDENCE / GOVERNANCE_TAIL_RISK.
+Formal Core impact: NONE.
+
+## D21-03 Insider Ownership / Trading — research contract v0.1
+
+Date: 2026-10-03 Asia/Taipei
+Status: L2 MECHANISM_AND_FALSIFICATION_DEFINED / HISTORICAL_MOPS_REPLAY_PENDING / RESEARCH_ONLY
+
+### Taiwan insider-event taxonomy
+
+Do not treat all insider holding changes as one event family.
+
+A. Ex-ante transfer filing under Securities and Exchange Act Article 22-2
+- Applies to directors, supervisors, managerial officers and shareholders holding more than 10%.
+- For exchange/OTC transfer under the filing route, transfer may occur at least 3 days after filing.
+- Daily transfer below 10,000 shares can be exempt from this filing route.
+- This is an intended transfer / sale signal, not proof that the announced shares were actually sold.
+
+B. Monthly holding-change filing under Article 25
+- Insiders report prior-month holding changes to the company by the 5th day of the following month.
+- The issuer compiles and files by the 15th day.
+- This is delayed net-holding evidence. The exact transaction date can be interval-censored inside the prior month unless another source provides transaction-level timing.
+- A monthly decrease may arise from market sale, specific-person transfer, gift, trust/estate planning or other non-directional mechanisms.
+
+C. Pledge creation / release
+- The pledgor must notify the company promptly and the issuer files/publicly announces the pledge status within 5 days.
+- Pledge is owned primarily by D21-04, but it is a mandatory confounder for D21-03 because financing stress can change the motive and informativeness of insider sales.
+
+D. Appointment / dismissal and related-person scope
+- Listed-company filing rules require new appointment/dismissal of insiders to be disclosed within 2 days.
+- Related-person holdings include spouses, minor children and shares held through nominee arrangements under the statutory definition.
+
+### Critical clock asymmetry
+
+Public insider-buy and insider-sell signals do NOT share the same event clock:
+- many material sale/transfer intentions are disclosed ex ante;
+- purchases are generally observed through later holding changes unless another reporting regime creates an earlier event;
+- monthly net changes are not exact transaction timestamps.
+
+Therefore:
+- never compare buy-versus-sell abnormal returns using the filing date as if both represent the same economic time;
+- never backfill a monthly holding change to a guessed trade date;
+- store event_clock_type and timing_precision explicitly.
+
+### Mechanisms to test
+
+Informational advantage:
+- insiders may possess superior information about future cash flow or earnings quality.
+
+Contrarian / valuation mechanism:
+- insider purchases can reflect perceived undervaluation after price weakness rather than unpublished fundamental information.
+
+Liquidity / diversification mechanism:
+- insider sales can reflect personal liquidity, diversification, tax, estate, gift or trust motives and therefore need not be bearish.
+
+Governance / financing-stress interaction:
+- Taiwan evidence indicates insider-sale timing and profitability can be stronger when cash-flow rights are lower, share pledging is higher, control-cash-flow divergence is larger, or the insider also serves in management.
+
+Accrual / reporting-quality interaction:
+- Taiwan evidence documents links between abnormal accrual behavior and abnormal insider trading, so an apparent insider signal can overlap with D07 accounting-quality evidence rather than provide independent Alpha.
+
+Attention / market-efficiency interaction:
+- later Taiwan evidence suggests insider-trading predictiveness can weaken as disclosure, enforcement and market efficiency improve. Any historical effect must be tested for time-decay and market-regime stability.
+
+### Falsification requirements
+
+Before treating an insider event as directional evidence, test:
+- event is intention versus actual completed holding change;
+- transfer method and stated purpose;
+- buy/sell timing-clock asymmetry;
+- event size relative to pre-event insider holdings, free float and market cap;
+- one insider versus multi-insider cluster;
+- executive insider versus non-executive director versus 10% shareholder;
+- spouse/minor/nominee aggregation;
+- pledge ratio and recent pledge changes;
+- prior returns and valuation;
+- liquidity / attention / firm size;
+- earnings, corporate actions and related news around the event;
+- gift, trust, inheritance, tax, estate planning or internal restructuring;
+- partial or non-execution of a pre-filed transfer;
+- repeated filings by the same insider;
+- small transfers excluded from ex-ante filing, creating selection bias.
+
+UNKNOWN motive or execution status must remain UNKNOWN.
+
+### Candidate research features
+
+- event_clock_type;
+- event_known_at;
+- timing_precision;
+- insider_role;
+- related_person_group;
+- transfer_method;
+- stated_reason;
+- intended_transfer_shares;
+- intended_transfer_to_preholding_ratio;
+- realized_monthly_holding_delta;
+- cluster_insider_count;
+- cluster_net_change_ratio;
+- pledge_ratio / pledge_change;
+- controller_cashflow_rights / control_cashflow_wedge dependency;
+- prior_return / valuation / attention / liquidity context;
+- completion_status: CONFIRMED / PARTIAL / UNCONFIRMED / UNKNOWN.
+
+No feature is approved as a hard gate.
+
+### Taiwan evidence synthesis
+
+- Taiwan studies using pre-filed insider sales find price run-up before filing and decline after filing, consistent with informative timing, while profitability is related to personal incentives and pledge/control structure.
+- Event studies of Taiwan insider transfer filings report negative abnormal returns around some transfer announcements, but the aggregate effect varies by transfer type and firm characteristics.
+- Other Taiwan evidence reports positive post-purchase abnormal returns and poorer long-horizon performance after insider sales, while later work also documents declining predictive power over time.
+- These findings reject both simplistic rules: insider buy = always bullish and insider sell = always bearish.
+
+### D21-03 maturity decision
+
+Advance D21-03 from L0 to L2 / 40%.
+
+L1 satisfied:
+- Taiwan legal/event taxonomy and economic mechanisms are defined.
+
+L2 satisfied:
+- competing explanations, timing asymmetry, selection-bias channels, pledge/accounting interactions and explicit falsification conditions are frozen.
+
+L3 remains closed:
+- no end-to-end historical MOPS replay has yet established event-level first-known timestamps, transfer type, monthly holding change and completion semantics on archived Taiwan cases.
+
+Exact next continuation:
+Build a historical D21-03 MOPS replay using at least one ex-ante transfer filing and one monthly holding-change case. Preserve original filing timestamp, event_clock_type, intended transfer amount/method, actual later holding delta when observable, related-person aggregation and pledge state. Demonstrate that the sale-intent event and monthly actual-change event are not merged into one timestamp. Then test whether multi-insider clustering adds information beyond event size and prior returns.
+
+Formal Core impact: NONE.
