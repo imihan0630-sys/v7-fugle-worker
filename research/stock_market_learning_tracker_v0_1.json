@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T14:00:00+08:00",
+  "updatedAt": "2026-10-03T14:05:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -263,11 +263,11 @@
         "TECHNICAL_INDICATOR_CHECKPOINT.md",
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
       ],
-      "maturityPct": 50,
-      "status": "TREND_PERSISTENCE_L3 / ROC_RETIRED_INTO_D03_02 / RAW_RECEIPT_GATE_ACCUMULATING_2_OF_3",
+      "maturityPct": 51.7,
+      "status": "TREND_PERSISTENCE_L3 / DIVERGENCE_PIT_L3 / RAW_RECEIPT_GATE_ACCUMULATING_2_OF_3",
       "lastResearchUpdate": "2026-10-03",
-      "researchNote": "TI-474~481 recover the exact own-path persistenceScoreResearch formula, prove same ret5/10/20/60 endpoints can still produce 100 vs 84.25 persistence from path sign frequency, and freeze a Taiwan-specific zero-return/tick/liquidity confound. Current TWSE price-tier ticks can mechanically change zero-return frequency; persistence is therefore a shared price-path quality state, not an independent cross-family vote or calibrated probability. Existing Taiwan daily-history capability is sufficient for the 61-close maximum ordinary requirement subject to official-session/TECHNICAL_CONTINUITY/corporate-action/parent-generation provenance. Prospective ret60 rank-persistence remains a distinct Chen-Hsieh-Lee-style construct with no historical backfill. D03-03 advances L2/40 to L3/60; after D03-11 ROC retirement the 12-module D03 aggregate becomes 50.0%. Raw receipt gate remains 2/3; outcomes and Formal Core remain closed.",
-      "exactNextContinuationPoint": "Saturday 2026-10-03 cannot add a completed Taiwan session; keep the frozen raw-byte receipt gate at 2/3. Freeze component-level persistence research snapshot semantics, then continue D03-12 repaint-safe divergence PIT feasibility by proving pivotAt/confirmedAt, indicator formula/state lineage and parent as-of causality. TI-005 KD-vs-RSI and TI-006 MACD-vs-direct-trend outcome inference remains blocked until the raw receipt gate genuinely closes.",
+      "researchNote": "TI-474~490 promote D03-03 trend persistence and D03-12 repaint-safe divergence to Taiwan PIT data-feasibility maturity. Persistence research recovers the exact weighted own-path formula, proves same ret5/10/20/60 endpoints can still score 100 vs 84.25 from path sign frequency, and freezes Taiwan zero-return/tick/liquidity confounding. Divergence research separates pivotAt from confirmedAt/firstObservableAt, freezes consecutive same-scale confirmed pivot pairing, charges confirmation lag, forbids historical episode repaint, and joins Pattern confirmed-swing provenance with D03 indicator formula/state lineage without a new market-data family. D03-11 ROC remains retired into D03-02. Active D03 modules=12; aggregate=51.7%. Raw-byte source gate remains 2/3 over the weekend; outcomes and Formal Core remain closed.",
+      "exactNextContinuationPoint": "Keep the raw-byte completed-session gate at 2/3 over the weekend. Keep persistence/divergence contracts research-only. Continue D03-13 multi-timeframe PIT feasibility by proving weekly/daily/15m causal aggregation-boundary and partial-bar clocks plus source lineage; do not count timeframe agreement as independent votes. TI-005 KD-vs-RSI and TI-006 MACD-vs-direct-trend efficacy remain blocked until the raw receipt gate genuinely closes.",
       "modules": [
         {
           "id": "D03-01",
@@ -356,10 +356,12 @@
         {
           "id": "D03-12",
           "name": "指標背離／repaint-safe確認",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「指標背離／repaint-safe確認」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / REPAINT_SAFE_CLOCKS_FROZEN / OUTCOME_UNKNOWN",
+          "next": "Use firstObservableAt/confirmedAt as signal clock, charge confirmation lag, use consecutive same-scale confirmed price pivots only, preserve immutable divergence episodes and indicator state lineage. Outcomes wait behind TI-005/TI-006 and prospective coverage."
         },
         {
           "id": "D03-13",
