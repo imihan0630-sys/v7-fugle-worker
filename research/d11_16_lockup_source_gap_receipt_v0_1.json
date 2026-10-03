@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-03T23:17:00+08:00",
+  "owner": "08｜事件與新聞研究室",
+  "module": "D11-16",
+  "title": "Lock-up Expiry／Insider Supply禁售期到期與內部人供給",
+  "status": "RULE_AND_SOURCE_LANES_IDENTIFIED / ISSUER_LEVEL_OFFICIAL_REALIZATION_LINK_INCOMPLETE / KEEP_L2 / OUTCOMES_CLOSED",
+  "formalCoreImpact": "NONE",
+  "purpose": "Freeze Taiwan lock-up release semantics and document the remaining issuer-level PIT blocker without coercing missing insider-sale evidence into NO_SALE.",
+  "officialSources": [
+    {
+      "name": "TWSE Listing Review Rules - Innovation Board custody/lock-up",
+      "url": "https://twse-regulation.twse.com.tw/TW/law/",
+      "finding": "Custody/release schedules vary by listing category and qualification; release eligibility is staged and shares under custody cannot be freely transferred.",
+      "quality": "OFFICIAL_RULE"
+    },
+    {
+      "name": "TWSE listing/applylisting archive",
+      "url": "https://www.twse.com.tw/rwd/zh/company/applylisting?response=html",
+      "finding": "6921 嘉雨思 is an Innovation Board listing, listed 2025-12-23 after reapplication.",
+      "quality": "OFFICIAL_DATE_LEVEL_ARCHIVE"
+    },
+    {
+      "name": "TWSE OpenAPI catalog",
+      "url": "https://openapi.twse.com.tw/",
+      "datasets": [
+        "t187ap11_L listed-company director/supervisor holding balances",
+        "t187ap12_L insider planned-transfer pre-declaration",
+        "t187ap13_L untransferred report"
+      ],
+      "finding": "Current listed-company feeds are available, but issuer 6921 was not present in the fetched _L snapshots; this is SOURCE_COVERAGE_UNKNOWN, not proof of no transfer.",
+      "quality": "OFFICIAL_CURRENT_API / COVERAGE_GAP_FOR_6921"
+    },
+    {
+      "name": "MOPS public site",
+      "url": "https://mops.twse.com.tw/mops/web/t120sb02_q10",
+      "finding": "Public MOPS exposes director holding and insider-holding-change report families, but direct issuer-level automation could not be completed in this research turn.",
+      "quality": "OFFICIAL_PUBLIC_SURFACE / DYNAMIC_QUERY"
+    }
+  ],
+  "secondaryNegativeControl": {
+    "issuer": "6921 嘉雨思",
+    "listingDate": "2025-12-23",
+    "note": "Secondary mirrors showed major-holder quantities broadly unchanged through 2026-08 after the first six-month point. This supports the hypothesis eligible-to-sell != realized-sale, but is not official enough for L3 promotion.",
+    "use": "FALSIFICATION_ONLY_NOT_MATURITY_EVIDENCE"
+  },
+  "frozenStateMachine": [
+    "LOCKUP_DEFINED",
+    "LOCKED",
+    "RELEASE_SCHEDULED",
+    "RELEASE_ELIGIBLE",
+    "ACTUAL_RELEASE_OR_WITHDRAWAL_FROM_CUSTODY",
+    "TRANSFER_PREDECLARED",
+    "REALIZED_HOLDING_CHANGE",
+    "UNTRANSFERRED_OR_CANCELLED",
+    "UNKNOWN"
+  ],
+  "criticalDistinctions": [
+    "release eligibility != withdrawal from custody",
+    "withdrawal from custody != sale",
+    "planned transfer != realized sale",
+    "absence from a source lane != NO_SALE",
+    "different listing categories can have different staged release fractions"
+  ],
+  "pitRules": [
+    "Use the listing-rule version effective for the issuer/listing date.",
+    "Do not infer exact release fraction until the issuer's applicable listing qualification is pinned.",
+    "Preserve custody-release, transfer declaration and realized holding-change clocks separately.",
+    "If the official source does not cover the issuer, status remains UNKNOWN."
+  ],
+  "maturityDecision": {
+    "module": "KEEP_L2",
+    "blockedBy": [
+      "issuer-specific applicable release schedule not fully pinned",
+      "official issuer-level custody release quantity not captured",
+      "official post-release transfer/holding realization chain not captured"
+    ]
+  },
+  "outcomesOpened": false,
+  "formalOptimizationCandidate": false,
+  "exactNext": "Obtain one issuer-level official chain from listing basis -> custody quantity -> release tranche/date -> MOPS transfer declaration -> subsequent official holdings/untransferred state; include an eligible-but-not-sold negative control before L3."
+}
