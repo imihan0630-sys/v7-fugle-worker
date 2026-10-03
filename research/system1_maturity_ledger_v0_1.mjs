@@ -9,7 +9,7 @@ function validPacket(p){
     p?.researchOnly===true&&p?.formalCoreLocked===true&&DATE.test(String(p?.sourceSessionDate||""))&&
     DATE.test(String(p?.targetTradeDate||""))&&typeof p?.generationId==="string"&&p.generationId.length>0&&
     p?.cohort?.n>=0&&Array.isArray(p?.cohort?.symbols)&&p.cohort.symbols.length===p.cohort.n&&
-    p?.capture?.audit?.schemaVersion==="SYSTEM1_C3_LIVE_INPUT_AUDIT_V0_3";
+    ["SYSTEM1_C3_LIVE_INPUT_AUDIT_V0_3","SYSTEM1_C3_LIVE_INPUT_AUDIT_V0_4"].includes(p?.capture?.audit?.schemaVersion);
 }
 function packetComplete(p){
   if(!validPacket(p)) return false;
