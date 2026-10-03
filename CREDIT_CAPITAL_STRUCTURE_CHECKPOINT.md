@@ -88,12 +88,16 @@ Baseline controls must be frozen before return labels are opened:
 - Candidate status: FALSIFICATION_IN_PROGRESS.
 - FORMAL_OPTIMIZATION_CANDIDATE threshold has NOT been reached.
 
+## Durable artifacts added this round
+- `research/d22_01_maturity_replay_v0_1.json`: machine-readable PIT replay seed created. TSMC 2023 and Taiwan Cement 2023 row-level amounts revalidated; UMC official historical source/version is revalidated but row values remain UNKNOWN pending row-level revalidation rather than being copied from memory.
+- `research/d22_01_incremental_value_prereg_v0_1.json`: D07 + D13 baseline controls, common-support exposure, primary/secondary outcome horizons, test order and falsification gates frozen before outcome opening.
+
 ## Exact next continuation
 Continue D22-01 from L3 toward L4:
-1. materialize a machine-readable mini replay dataset with TSMC 2023, UMC 2023 and Taiwan Cement 2023 receipts;
-2. validate issuer/date knownAt and source-version provenance;
+1. revalidate UMC 2023 row-level contractual maturity amounts from the official source and populate the replay seed without memory carry-forward;
+2. add capturedAt / immutable receipt hash semantics where supported;
 3. complete double-count reconciliation between balance-sheet current portions and contractual maturity tables;
-4. freeze common-support mapping and facility-quality semantics;
-5. freeze D07 + D13 baselines and outcome horizons before opening equity-return labels;
-6. run research-only OOS / walk-forward / prospective Shadow incremental-value tests;
-7. promote only if independent-date evidence survives redundancy, regime, cost and overfit controls.
+4. validate common-support <1y financing exposure and facility-quality UNKNOWN semantics across the three issuers;
+5. audit D07 baseline PIT field readiness; block rather than impute missing controls;
+6. only after the above gates pass, open outcomes once under the preregistered 60-trading-day max-drawdown primary horizon and run research-only OOS / walk-forward / prospective Shadow tests;
+7. promote only if independent-date evidence survives redundancy, regime, industry/date-cluster, coverage, cost and overfit controls.
