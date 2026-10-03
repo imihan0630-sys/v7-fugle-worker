@@ -36,6 +36,8 @@ eq(a.eligibleFormalReuseN,1);
 eq(a.eligibleShadowOnlyN,3);
 eq(a.extraShadowN,2);
 eq(a.requiredExtraCandleCalls,34);
+eq(a.requiredExtraQuoteCalls,34);
+eq(a.requiredExtraProviderCalls,68);
 eq(a.payload.targetTradeDate,undefined);
 eq(a.payload.symbols.length,2);
 eq(a.payload.symbols.some(x=>x.symbol==="2330"),false);
@@ -44,14 +46,14 @@ eq(a.payload.noSignalPath,true);eq(a.payload.noPushPath,true);eq(a.payload.noOrd
 eq(a.researchOnly,true);eq(a.noTrade,true);eq(a.noPush,true);
 
 const b=buildC3Registration(c1,c2,{stocks:[{symbol:"2330"},{symbol:"2317"},{symbol:"2454"},{symbol:"3008"}]},
-  {maxShadowSymbols:6,providerBudgetCallsPerSession:102});
+  {maxShadowSymbols:3,providerBudgetCallsPerSession:102});
 eq(b.status,"NO_SHADOW_ONLY_COHORT");
 eq(b.postRequired,false);
 eq(b.payload,null);
 eq(b.extraShadowN,0);
 
 assert.throws(()=>buildC3Registration(c1,c2,{stocks:[{symbol:"2330"}]},
-  {maxShadowSymbols:6,providerBudgetCallsPerSession:16}),/PROVIDER_BUDGET_NOT_PASS/);n++;
+  {maxShadowSymbols:3,providerBudgetCallsPerSession:16}),/PROVIDER_BUDGET_NOT_PASS/);n++;
 
 assert.throws(()=>buildC3Registration({...c1,summary:{coverageComplete:false}},c2,{stocks:[]}),/VERIFIED_C1_ARTIFACT_REQUIRED/);n++;
 assert.throws(()=>buildC3Registration(c1,{...c2,generationId:"other"},{stocks:[]}),/MATCHED_C2_ARTIFACT_REQUIRED/);n++;
@@ -61,7 +63,7 @@ const collector=await import("node:fs/promises").then(fs=>fs.readFile(new URL(".
 assert.match(collector,/C3_REGISTER/);n++;
 assert.match(collector,/buildC3Registration/);n++;
 assert.match(collector,/\/api\/research\/c3-capture-cohort/);n++;
-assert.match(collector,/maxShadowSymbols:6,providerBudgetCallsPerSession:102/);n++;
+assert.match(collector,/maxShadowSymbols:3,providerBudgetCallsPerSession:102/);n++;
 assert.match(collector,/body:JSON\.stringify\(registration\.payload\)/);n++;
 eq(a.payload.targetTradeDate,undefined);
 
@@ -70,4 +72,4 @@ assert.match(workflow,/C3_REGISTER: \$\{\{ github\.event_name == 'schedule' && '
 assert.match(workflow,/artifacts\/system1-c3-registration\.json/);n++;
 
 console.log(JSON.stringify({ok:true,assertions:n,scheduledOnlyRegistration:true,clientDoesNotGuessNextTradeDate:true,
-  formalReuseExcludedFromExtraCapture:true,maxShadowSymbols:6,maxSessionCalls:102,formalCoreImpact:false,system2Touched:false}));
+  formalReuseExcludedFromExtraCapture:true,maxShadowSymbols:3,maxSessionCalls:102,formalCoreImpact:false,system2Touched:false}));
