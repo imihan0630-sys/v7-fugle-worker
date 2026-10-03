@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 10:47 Asia/Taipei
+Updated: 2026-10-03 10:56 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -704,4 +704,22 @@ Highest structural-consolidation candidates:
 - D12-14 <-> D12-15.
 
 No module count/maturity/Formal Core change is authorized by this scan.
+
+## H01-H04 consolidation acceptance contract — 2026-10-03
+
+Canonical human-readable contract:
+`shared-knowledge/CURRICULUM_H01_H04_CONSOLIDATION_ACCEPTANCE_CONTRACT_20261003_V0_1.md`
+
+Machine-readable companion:
+`shared-knowledge/curriculum_h01_h04_consolidation_acceptance_contract_20261003_v0_1.json`
+
+Frozen candidate directions:
+- H01 D09-13 vs D09-14: likely merge into an expanded D09-13 Industry Structure / Competitive Dynamics owner if D09-14 cannot prove a distinct firm-strategy contract.
+- H02 D14-03 + D14-04 vs D14-17: possible consolidation into a broader Signal-to-Fill / Slippage / Implementation Shortfall family, but mature D14-03/D14-04 evidence may not automatically promote the broader merged umbrella.
+- H03 D15-13 vs D15-24: possible unified VaR / Expected Shortfall / Tail Risk Measures owner; VaR and ES semantics/failure modes must both survive.
+- H04 D12-14 vs D12-15: likely parent-child consolidation of IV-RV proxy under the Volatility Risk Premium economic concept if no independent decision contract survives.
+
+A Maturity Transfer Firewall is mandatory for all four candidates: no max(), average() or simple carry-forward maturity after a merge.
+
+No merge/retirement is executed by this contract. Specialist evidence + Dependency Audit + anti-orphan verification + owner approval remain mandatory.
 
