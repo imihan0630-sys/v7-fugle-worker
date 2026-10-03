@@ -3075,3 +3075,437 @@ Formal Core remains locked.
 
 Status:
 `D05_11_12_13_MECHANISM_AND_FALSIFICATION = FROZEN / OWN_PIT_EVIDENCE_PENDING`.
+
+
+## MS-073 — Four-layer integrity semantics: anomaly is not manipulation
+
+D05-14 starts with a mandatory semantic ladder.
+
+Layer A — Observable market anomaly:
+- unusual price move;
+- volume/turnover spike;
+- broker/investor concentration proxy where available;
+- abnormal order cancellation / book pressure pattern;
+- unusual opening/closing participation;
+- repeated limit/VI interaction.
+
+Layer B — Exchange surveillance state:
+- TWSE attention security;
+- TWSE disposition security;
+- broker/investor notice or other surveillance action.
+
+Layer C — Research pattern candidate:
+- spoofing/layering-like sequence;
+- wash/matched-order-like sequence;
+- marking-open/close-like sequence;
+- momentum-ignition-like sequence;
+- abnormal cancellation / quote stuffing-like state.
+
+Layer D — Legal / regulatory finding:
+- manipulation finding, sanction, judgment or other official disposition under the relevant legal process.
+
+These layers are NOT interchangeable.
+
+Current Taiwan Securities and Exchange Act Article 155 prohibits multiple manipulation forms and several clauses explicitly require intent to inflate/depress price, create an appearance of active trading, or affect price.
+
+Therefore:
+`PUBLIC_MARKET_PATTERN != PROOF_OF_INTENT`
+and:
+`TWSE_ATTENTION_OR_DISPOSITION != LEGAL_MANIPULATION_FINDING`.
+
+D05-14 may detect Layer A, ingest Layer B, and construct Layer-C research candidates.
+It must not infer Layer D unless an authoritative official legal/regulatory source establishes it.
+
+Status:
+`ANOMALY_SURVEILLANCE_PATTERN_LEGAL_FINDING = FOUR_SEPARATE_LAYERS`.
+
+
+## MS-074 — TWSE attention status is a statistical surveillance signal, not a guilt label
+
+Current TWSE attention/disposition rules, amended 2026-08-03, monitor multiple observable dimensions.
+
+Article 4 attention categories include, among others:
+- unusual cumulative price changes;
+- unusual endpoint price differences;
+- unusual price change with volume expansion;
+- unusual price change with high turnover;
+- broker-concentration conditions;
+- valuation/turnover/concentration combinations;
+- securities-lending / margin-related conditions;
+- abnormal volume;
+- abnormal cumulative turnover;
+- unusual absolute price differences;
+- high short-sale borrowing share;
+- unusually high day-trading share;
+- other abnormal trading approved by the surveillance committee.
+
+The detailed numerical standards also contain exclusions/adjustments for cases such as:
+- IPO no-price-limit periods;
+- ex-right / ex-dividend and other non-trading price adjustments;
+- low-price securities;
+- class-size constraints;
+- special instrument conditions.
+
+That official exception structure itself is strong evidence against a simplistic interpretation:
+`STATISTICAL_EXTREME = MANIPULATION`.
+
+A security can trigger attention because a legitimate information shock or structural market condition produced an extreme statistic.
+
+Status:
+`TWSE_ATTENTION = OFFICIAL_SURVEILLANCE_STATE / NOT_MANIPULATION_VERDICT`.
+
+Source:
+TWSE Directions for Announcement or Notice of Attention to Trading Information and Dispositions + detailed irregularity standards, current 2026-08-03 version.
+
+
+## MS-075 — TWSE disposition status changes execution mechanics and must be treated as a market-state confound
+
+Disposition is operationally more important to D05 than attention alone because TWSE may alter how the security trades.
+
+Under the current rule set, disposition can involve:
+- controlled matching cadence;
+- advance collection of purchase money / securities or margin-related requirements;
+- additional broker transaction limits;
+- suspension of margin trading in severe cases;
+- other measures required for market order / settlement safety.
+
+Therefore:
+`DISPOSITION_STATE`
+is a genuine execution-mechanism state.
+
+Research consequences:
+1. never pool disposition sessions with normal continuous-trading sessions in spread/depth/impact/queue studies;
+2. a reduction in volume or change in spread after disposition is not automatically "market healing" — the trading mechanism itself changed;
+3. post-disposition returns cannot be interpreted as the causal effect of the "abnormal behavior" without accounting for the intervention;
+4. a strategy backtest that ignores disposition status can fabricate fillability and cadence.
+
+Role boundary:
+- D05-14 owns integrity/surveillance state semantics;
+- D05-07 owns abnormal matching / VI mechanism state;
+- D05-09 owns liquidity-state classification;
+- execution simulator may consume the official disposition state later;
+- no stock-selection alpha vote is created.
+
+Status:
+`DISPOSITION = EXECUTION_REGIME_INTERVENTION / NOT_DIRECTIONAL_ALPHA`.
+
+Source:
+TWSE current disposition rule Article 6.
+
+
+## MS-076 — Cancellation intensity alone cannot identify spoofing
+
+Spoofing/layering enforcement examples commonly contain:
+- large non-bona-fide orders;
+- intent to cancel before execution;
+- opposite-side genuine execution;
+- cancellation after market participants react.
+
+But the key legal/economic object is **non-bona-fide intent**, not the cancellation count itself.
+
+Counter-evidence:
+Khomyn & Putniņš (2021) show extremely high order-to-trade/cancellation activity can arise legitimately from market making and market structure; high cancellation ratios are associated with volatility, tick size, volume and other trading-environment variables.
+
+Therefore D05-14 prohibits:
+`HIGH_CANCEL_RATE => SPOOFING`.
+
+Minimum research controls for cancellation-pattern work:
+- price/tick tier;
+- spread;
+- local volatility;
+- message/event intensity;
+- displayed depth;
+- time of day;
+- session mechanism;
+- order size percentile;
+- order lifetime distribution;
+- whether opposite-side execution occurred;
+- repeated pattern across independent windows/dates.
+
+Even after these controls, without trader/account/order-level evidence the output remains:
+`SPOOFING_LIKE_PATTERN_CANDIDATE`,
+not a manipulation finding.
+
+Sources:
+- SEC layering/spoofing enforcement description.
+- Khomyn & Putniņš, Journal of Banking & Finance (2021).
+
+Status:
+`CANCELLATION_RATE = NECESSARY_CONTEXT_NOT_INTENT_EVIDENCE`.
+
+
+## MS-077 — Public top-five data cannot support trader-intent attribution
+
+Current public/retail market data available to this project do not provide:
+- beneficial-owner identity;
+- broker account identity;
+- linked account relationships;
+- individual public order IDs in the top-five book;
+- complete per-order cancel/replace lifecycle;
+- trader motive / economic interest;
+- authoritative cross-account coordination evidence.
+
+Therefore public top-five + trades can study:
+- book pressure;
+- depth withdrawal;
+- price response;
+- short-horizon cancellation-like snapshot changes;
+- closing/opening anomalies.
+
+It cannot establish:
+- wash trading by the same beneficial owner;
+- collusive matched orders;
+- exact spoof intent;
+- coordinated multi-account manipulation;
+- motive behind a closing-price move.
+
+This boundary mirrors why regulators rely on richer audit-trail/account/order data for surveillance and investigation.
+
+Status:
+`PUBLIC_BOOK = MARKET_STATE_EVIDENCE / ACTOR_INTENT_UNKNOWN`.
+
+
+## MS-078 — Wash / matched-order research requires account-linkage evidence
+
+Taiwan Securities and Exchange Act Article 155 distinguishes manipulative conduct involving:
+- collusive corresponding trades;
+- transactions intended to create an appearance of active trading;
+- other conduct intended to affect prices.
+
+From public prints alone, two trades at the same/similar size or time do not prove common beneficial ownership or agreement.
+
+Required evidence to move beyond a research candidate:
+- account / beneficial-owner identifiers;
+- broker order lifecycle;
+- side/timestamp/price/quantity linkage;
+- repeated cross-account pattern;
+- regulatory/legal evidence of coordination where relevant.
+
+Without those data:
+- self-trade / wash-trade detection is UNKNOWN;
+- matched-order collusion is UNKNOWN;
+- same-price opposite-side executions remain ordinary market trades unless richer linkage exists.
+
+Status:
+`WASH_MATCHED_ORDER_ATTRIBUTION = ACCOUNT_LINKAGE_REQUIRED`.
+
+
+## MS-079 — Marking the open/close must be separated from legitimate auction demand
+
+A large order near an opening or closing reference price may be:
+- legitimate index/ETF rebalancing;
+- benchmark execution;
+- fund subscription/redemption flow;
+- portfolio risk reduction;
+- event/news response;
+- option/derivative hedging;
+- genuine investment demand.
+
+It may also be part of a manipulative attempt to influence a reference price.
+
+The observable order/trade alone does not prove which.
+
+The first D05-14 closing-integrity screen therefore requires:
+- closing auction participation share;
+- same-account / same-strategy repetition only if account data exist;
+- reference-date clustering (month-end, quarter-end, rebalance, expiry) as context, not guilt;
+- next-session reversal as descriptive evidence;
+- market/sector/news controls;
+- benchmark/index membership/rebalance controls;
+- auction imbalance / closing-liquidity controls.
+
+Critical anti-double-count boundary with curriculum Coverage COV-02:
+- D05-06 owns Closing Auction / Auction Imbalance mechanics and source reconstruction;
+- D05-14 owns abnormal-integrity interpretation and false-positive controls;
+- both must reference one canonical auction primitive rather than create two independent alpha votes.
+
+Status:
+`CLOSING_ANOMALY = INTEGRITY_CONTEXT / LEGITIMATE_AUCTION_FLOW_MUST_BE_CONTROLLED`.
+
+
+## MS-080 — Momentum ignition and rapid price moves are not identifiable from price acceleration alone
+
+A fast price move followed by increased trading can arise from:
+- genuine public news;
+- information diffusion;
+- stop/limit triggers;
+- liquidity vacuum;
+- short covering;
+- index/ETF flow;
+- correlated sector shock;
+- legitimate aggressive execution.
+
+A manipulation hypothesis such as momentum ignition requires evidence that a participant intentionally initiated activity to induce others to trade at artificial prices.
+
+Public price acceleration alone cannot establish that intent.
+
+Research candidate fields may include:
+- pre-move depth/spread state;
+- initiating trade pressure;
+- subsequent participant/message response;
+- price continuation/reversal;
+- external news/event timestamp;
+- market/sector contemporaneous move.
+
+But the label remains:
+`MOMENTUM_IGNITION_LIKE_SEQUENCE`
+until actor intent/economic purpose is independently established.
+
+Status:
+`PRICE_ACCELERATION != MOMENTUM_IGNITION_FINDING`.
+
+
+## MS-081 — Abnormal-trading detection must use false-positive controls before pattern labels
+
+Primary false-positive/control families:
+
+1. Corporate action:
+- ex-right / ex-dividend;
+- split/reverse split;
+- capital reduction;
+- merger/spin-off;
+- listing / relisting.
+
+2. Fundamental/news shock:
+- earnings;
+- guidance;
+- major order/customer news;
+- regulatory decision;
+- litigation/event disclosure.
+
+3. Mechanical/passive flow:
+- index inclusion/exclusion;
+- index rebalance;
+- ETF creation/redemption;
+- derivatives expiry/hedging.
+
+4. Market mechanism:
+- VI;
+- price limit;
+- disposition state;
+- opening/closing call auction;
+- odd lot / special session state.
+
+5. Cross-sectional liquidity:
+- low free float;
+- small capitalization;
+- wide spread;
+- shallow depth;
+- price/tick tier.
+
+6. Market/sector common shock:
+- broad index move;
+- industry-specific move;
+- macro shock.
+
+A candidate that disappears after these controls is classified as:
+`EXPLAINED_ABNORMALITY`,
+not retained as an integrity-pattern candidate.
+
+Status:
+`FALSE_POSITIVE_CONTROLS = MANDATORY_BEFORE_INTEGRITY_PATTERN_LABEL`.
+
+
+## MS-082 — Official attention/disposition labels are outcome/context variables, not free alpha labels
+
+Using TWSE attention or disposition status as a historical predictor creates multiple selection and causal problems:
+- the label is generated from recent price/volume behavior already present in technical/price-volume factors;
+- disposition is an intervention that changes subsequent trading mechanics;
+- threshold rules and exceptions change over time;
+- later official label publication time must not be backfilled to earlier bars;
+- repeated attention days are clustered observations, not independent events.
+
+Therefore any future study must separate:
+A. pre-label primitive abnormality;
+B. official label publication/knownAt;
+C. next-session mechanism/intervention state;
+D. subsequent outcomes.
+
+Do not:
+- score an attention label as bearish/bullish by assumption;
+- double-count the same price/volume anomaly through D01/D02/D05-14;
+- treat post-disposition liquidity changes as natural untreated outcomes.
+
+Potential roles:
+- execution/risk context;
+- data-quality / regime stratification;
+- event-study object.
+
+Stock-selection alpha requires residual incremental value over the primitive price/volume/volatility/liquidity inputs and independent OOS/Shadow evidence.
+
+Status:
+`OFFICIAL_SURVEILLANCE_LABEL = CONTEXT_OR_EVENT / NOT_FREE_ALPHA`.
+
+
+## MS-083 — D05-14 machine-state vocabulary must avoid accusations
+
+Allowed research states:
+- NORMAL_NO_INTEGRITY_FLAG;
+- OFFICIAL_ATTENTION;
+- OFFICIAL_DISPOSITION;
+- OBSERVED_STATISTICAL_ANOMALY;
+- EXPLAINED_ABNORMALITY;
+- INTEGRITY_PATTERN_CANDIDATE;
+- DATA_INSUFFICIENT;
+- UNKNOWN.
+
+Optional pattern-family tags, research-only:
+- SPOOFING_LIKE;
+- LAYERING_LIKE;
+- WASH_MATCHED_ORDER_LIKE;
+- MARKING_OPEN_LIKE;
+- MARKING_CLOSE_LIKE;
+- MOMENTUM_IGNITION_LIKE;
+- ABNORMAL_CANCELLATION_LIKE.
+
+Prohibited machine labels without authoritative legal evidence:
+- MANIPULATOR;
+- ILLEGAL_TRADING_CONFIRMED;
+- INFORMED_TRADER_CONFIRMED;
+- FRAUD_CONFIRMED.
+
+If an official final regulatory/court finding is ingested, store:
+- authority;
+- case/order identifier;
+- decision date;
+- covered period;
+- legal status;
+as a separate external legal-event object rather than rewriting the historical market-data state.
+
+Status:
+`NON_ACCUSATORY_MACHINE_VOCABULARY = FROZEN`.
+
+
+## MS-084 — D05-14 evidence ladder and promotion boundary
+
+L1:
+- definitions and Taiwan surveillance/legal sources identified.
+
+L2:
+- observable states, mechanism boundaries, false-positive controls, anti-intent-inference rules and data requirements frozen.
+
+L3 requires own Taiwan PIT feasibility/evidence:
+- exact official attention/disposition knownAt;
+- versioned rule thresholds;
+- market-data replay;
+- mechanism state;
+- at least one research pattern family with reproducible inputs;
+- false-positive controls;
+- UNKNOWN handling;
+- no historical label backfill.
+
+L4 requires:
+- multiple independent dates/events;
+- OOS/Shadow;
+- coverage/replay audit;
+- stability across liquidity/tick/session strata;
+- incremental value versus existing D01/D02/D04/D05 primitives;
+- cost/execution impact if used by a strategy.
+
+Formal candidate:
+- only if residual decision value survives all above gates;
+- any actor-accusation output remains prohibited;
+- owner approval required for any production role.
+
+Current status:
+`D05_14 = L2_MECHANISM_AND_FALSIFICATION_READY / PIT_EVIDENCE_PENDING`.
