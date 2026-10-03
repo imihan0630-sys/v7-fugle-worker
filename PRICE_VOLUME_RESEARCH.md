@@ -13709,3 +13709,30 @@ The universal slogan “breakouts need volume” is not the research target. Suc
 D02-03 remains L3 because the PIT feature semantics and comparison design are viable, but clean prospective evidence is still absent.
 
 No Formal behavior changed.
+
+
+# 2026-10-03 pre-PVE-240 — OBV is a compression, divergence is a relation
+
+A useful simplification now becomes exact.
+
+Raw OBV accumulates close-signed volume. Over any fixed interval, its endpoint change is exactly the sum of signed volumes in that interval. When that change is divided by total interval volume, the result is exactly the already-frozen signedVolumeBalance representation.
+
+This removes a false feature proliferation risk:
+raw OBV change, normalized OBV change and signed-volume balance must not be treated as three independent price-volume ideas.
+
+The generic label `obvSlope` is also unsafe until formula semantics are explicit. Endpoint slope is only a rescaling of signed-volume sum. An OLS slope introduces time-position weights but does not create a new data family and would add another discretionary design choice.
+
+The same decomposition removes raw OBV from classical pivot divergence. A higher price high with lower OBV is equivalent to saying the close-signed volume accumulated between those confirmed highs is negative. A lower price low with higher OBV is the symmetric positive signed-volume case. A normalized interval balance expresses the relation without arbitrary cumulative start.
+
+However a clean mathematical representation is not enough for D02-09 L3. The price-pivot clock can reuse D03/Pattern's repaint-safe confirmed chronology, but D02 daily volume continuity still has a known corporate-action/trading-unit blocker. Maturity therefore stays L2.
+
+The module boundary is also sharper:
+- D02-06 owns effort versus result at the observation;
+- D02-07 owns compact signed-volume compression;
+- D02-09 owns a relationship across price and volume paths;
+- D02-08 may interpret a latent mechanism only when independent microstructure evidence exists.
+
+The same episode cannot be counted four times simply because four labels can describe it.
+
+This block consumes no prospective date and no PVE number. PVE-240 remains the next live evidence hinge.
+Formal Core unchanged.
