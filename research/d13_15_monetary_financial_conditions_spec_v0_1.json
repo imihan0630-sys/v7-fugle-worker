@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D13-15",
+  "name": "Monetary transmission / financial conditions contract",
+  "status": "CONCEPT_AND_FALSIFICATION_FROZEN__VINTAGE_AND_INCREMENTAL_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-10-03T18:29:06+08:00",
+  "objectSeparation": {
+    "POLICY_STANCE": "policy-rate level, administered rates and balance-sheet stance; not identical to financial conditions",
+    "POLICY_SURPRISE": "difference between policy action/communication and pre-event expectation, requiring authentic expectation vintage",
+    "MARKET_REACTION": "post-announcement rates/equity/FX/credit moves; mediator/outcome for earlier decision clocks",
+    "FINANCIAL_CONDITIONS": "joint state of rates, credit spreads, equities, FX, housing and related financial variables",
+    "BANK_CREDIT_STANDARDS": "bank underwriting/terms from SLOOS; partly distinct from traded-market prices",
+    "GROWTH_IMPULSE": "estimated future-growth effect from a model such as FCI-G; model output, not directly observed condition"
+  },
+  "indices": {
+    "NFCI": {
+      "source": "Federal Reserve Bank of Chicago",
+      "semantics": "weekly broad statistical index of 105 money/debt-equity/banking measures; positive values indicate tighter-than-average conditions under its normalization",
+      "ANFCI": "adjusts financial conditions for prevailing economic activity/inflation",
+      "revisionGuard": "history can revise as underlying data revise and factor weights update"
+    },
+    "FCI_G": {
+      "source": "Federal Reserve Board",
+      "semantics": "model-based estimate of how changes in selected financial variables affect one-year-ahead GDP growth through dynamic multipliers",
+      "components": [
+        "policy rate",
+        "10Y Treasury",
+        "mortgage rate",
+        "BBB corporate rate",
+        "equity prices",
+        "house prices",
+        "broad dollar"
+      ],
+      "interpretation": "positive/headwind versus negative/tailwind under the published FCI-G convention",
+      "endogeneityGuard": "Fed note explicitly treats financial-variable changes as if exogenous for decomposition even though in reality they respond to macro/policy news",
+      "coverageGuard": "does not fully capture all credit channels such as bank lending standards"
+    },
+    "SLOOS": {
+      "source": "Federal Reserve Board",
+      "semantics": "survey of bank lending standards/terms and loan demand; credit-supply/demand context distinct from market-price FCI",
+      "frequencyGuard": "quarterly survey timing and reference period differ from daily/weekly market variables"
+    }
+  },
+  "transmissionChannels": [
+    "short-rate/expectations channel",
+    "long-rate/discount-rate channel",
+    "credit-spread/cost-of-capital channel",
+    "equity/wealth/risk-taking channel",
+    "FX channel",
+    "bank lending standards/credit-supply channel",
+    "housing/mortgage channel"
+  ],
+  "pitFields": [
+    "source",
+    "publishedAt",
+    "capturedAt",
+    "referencePeriod",
+    "vintage",
+    "revisionStatus",
+    "frequency",
+    "firstEligibleTaiwanDecision",
+    "componentDefinitionVersion"
+  ],
+  "redundancyFirewall": [
+    "NFCI/FCI-G composite must be tested after their own underlying rates/equity/USD/credit components.",
+    "A composite that adds no value beyond components is descriptive only.",
+    "Do not include composite plus identical components in one score without explicit collinearity/redundancy handling.",
+    "Policy surprise cannot be reconstructed from later market prices."
+  ],
+  "taiwanTransmission": [
+    "global discount-rate and valuation channel",
+    "USD/TWD and cross-border funding channel",
+    "U.S. semiconductor/growth-demand channel",
+    "global risk appetite/credit-spread channel",
+    "foreign capital-flow channel"
+  ],
+  "falsification": [
+    "policy rate unchanged but financial conditions materially move",
+    "financial conditions loosen/tighten before policy decision via expectations",
+    "NFCI vs ANFCI vs FCI-G disagreement treated as model/context evidence, not data error",
+    "component-only baseline before composite FCI",
+    "SLOOS added after traded-market financial conditions to test bank-credit increment",
+    "vintage/revision sensitivity",
+    "regime split for inflation/growth/financial-stress states",
+    "date-shift placebo and independent-date inference"
+  ],
+  "maturityDecision": {
+    "from": "L0",
+    "to": "L2",
+    "reason": "Policy/market/credit objects, official index semantics, revision/endogeneity limits, Taiwan transmission and redundancy/falsification are frozen; no prospective Taiwan incremental evidence for L3."
+  },
+  "exactNext": [
+    "Capture official NFCI/ANFCI and FCI-G vintages with publishedAt/capturedAt/revision semantics.",
+    "Build component-only baseline before any composite financial-conditions feature.",
+    "Preserve SLOOS as separate lower-frequency credit-state object.",
+    "Test risk/MAE/gap outcomes before direction once source-attested dates exist.",
+    "Formal Core remains locked."
+  ]
+}
