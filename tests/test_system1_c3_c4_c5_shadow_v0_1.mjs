@@ -152,5 +152,44 @@ eq(p1.rows.find(x=>x.symbol==="P2").reachStage,"F8_GRADE_PASS");
 eq(p1.rows.find(x=>x.symbol==="P3").minimalUnblockClass,"P1A_PLUS_PRIMARY");
 eq(p1.rows.find(x=>x.symbol==="P3").reachStage,"F4_AB_EVALUABLE");
 
+const conditionalPairs=[
+  mkPair("CND1",false,{shortGateStatus:"UNKNOWN",missingSafety:["CORPORATE_ACTION_CONTINUITY","EXECUTION_FEASIBILITY","ACCOUNT_RISK"]}),
+  mkPair("CND2",false,{shortGateStatus:"FAIL",missingSafety:[]}),
+  mkPair("CND3",false,{shortGateStatus:"UNKNOWN",missingSafety:["ACCOUNT_RISK"]}),
+  mkPair("CND4",true)
+];
+const c2Conditional={...c2,pairs:conditionalPairs,tally:{populationN:4,formalRejectedButConditionalShortGatesPassN:1}};
+const c1Conditional={schemaVersion:"SYSTEM1_C1_ISOLATED_V0_1",sessionDate,populationN:4,observations:[
+  obs("CND1","CHIP_CONCENTRATION_PRESENT",{CHIP_CONCENTRATION_PRESENT:unk,CORPORATE_ACTION_CONTINUITY:unk,EXECUTION_FEASIBILITY:unk,ACCOUNT_RISK:unk}),
+  obs("CND2","CORPORATE_ACTION_CONTINUITY",{CHIP_CONCENTRATION_PRESENT:unk,CORPORATE_ACTION_CONTINUITY:fail}),
+  obs("CND3","RS_CONTEXT",{RS_CONTEXT:unk,ACCOUNT_RISK:unk,AB_SETUP:fail}),
+  obs("CND4",null,{},true)
+]};
+const conditional=buildC5OverfilterDiagnostic(c1Conditional,c2Conditional,{strategy:"SHORT"});
+eq(conditional.p1aRejectedN,3);
+eq(conditional.p1aRankableN,0,"strict deployable reach must remain blocked by unresolved safety");
+eq(conditional.p1aConditionalSafetyUnknownN,2);
+eq(conditional.p1aConditionalReachABN,2);
+eq(conditional.p1aConditionalABPassN,1);
+eq(conditional.p1aConditionalReachRRN,1);
+eq(conditional.p1aConditionalRRPassN,1);
+eq(conditional.p1aConditionalGradePassN,1);
+eq(conditional.p1aConditionalRankableN,1);
+eq(conditional.conditionalP1aIsUpperBoundNotCandidate,true);
+const cnd1=conditional.rows.find(x=>x.symbol==="CND1");
+eq(cnd1.reachStage,"F0_FORMAL_PARENT");
+eq(cnd1.minimalUnblockClass,"HARD_BLOCKED");
+eq(cnd1.conditionalReachStage,"F9_RANKABLE");
+eq(cnd1.conditionalOnSafetyUnknown,true);
+eq(cnd1.conditionalP1aRankable,true);
+eq(cnd1.researchUpperBoundOnly,true);
+const cnd2=conditional.rows.find(x=>x.symbol==="CND2");
+eq(cnd2.conditionalReachStage,"F0_FORMAL_PARENT","verified hard FAIL must never be conditionally bypassed");
+eq(cnd2.conditionalP1aRankable,false);
+ok(cnd2.conditionalReachBlockedBy.includes("CORPORATE_ACTION_CONTINUITY"));
+const cnd3=conditional.rows.find(x=>x.symbol==="CND3");
+eq(cnd3.conditionalReachStage,"F4_AB_EVALUABLE");
+eq(cnd3.conditionalP1aRankable,false);
+
 console.log(JSON.stringify({ok:true,assertions:n,c3EntryShadow:true,c4AllocationShadow:true,c5Overfilter:true,
   prospectiveAlphaClaims:0,realOrders:0,formalCoreImpact:false,system2Touched:false}));
