@@ -1,0 +1,16 @@
+{
+  "id":"DL-028",
+  "status":"OUTCOME_BLIND_SPEC_FROZEN",
+  "question":"separate detector-selection salience from structural-memory mechanism",
+  "controls":["NONANCHOR","SALIENCE_MATCHED","OPPORTUNITY_MATCHED","DETECTOR_NEGATIVE_CONTROL"],
+  "salience":["roundness_tick_position","preconfirmation_touch_count","recency_since_touch","zone_width","distance_from_price","prior_extremum_status","observable_exposure"],
+  "firewalls":["PIT_ONLY","NO_FUTURE_DISCOVERED_CONTROL","UNKNOWN_NOT_ZERO","NO_OUTCOME_PRUNING","NO_N_BAR_TUNING","NO_HISTORICAL_SHADOW"],
+  "interpretation":{
+    "true_equals_salience_matched":"SALIENCE_ALTERNATIVE_EXPLANATION",
+    "true_beats_salience_and_opportunity_matched":"STRUCTURAL_REPRESENTATION_CANDIDATE_NOT_ALPHA"
+  },
+  "formalOptimizationCandidate":"NONE",
+  "patternAlpha":"UNKNOWN",
+  "outcomeJoin":"CLOSED",
+  "formalCore":"LOCKED"
+}
