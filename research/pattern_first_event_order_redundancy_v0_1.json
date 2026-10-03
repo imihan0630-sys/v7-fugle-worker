@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "pattern-first-event-order-redundancy-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "inputAuthority": [
+    "certifiedFirstEventClocks",
+    "sourceEventGroupKey",
+    "eventOccurredAt",
+    "eventAvailableAt",
+    "firstObservedAt",
+    "relationEpisodeKey"
+  ],
+  "canonicalization": [
+    "FILTER_TO_ASOF",
+    "GROUP_BY_SOURCE_EVENT_GROUP_KEY",
+    "REQUIRE_ONE_OCCURRED_AT_PER_GROUP",
+    "SORT_GROUPS_BY_OCCURRED_AT",
+    "PRESERVE_TIED_TIME_BLOCKS",
+    "SORT_LABELS_WITHIN_GROUP_FOR_SERIALIZATION_ONLY"
+  ],
+  "derivedOutputs": [
+    "orderedEventGroupKeys",
+    "orderedEventGroupTimes",
+    "eventLabelsByGroup",
+    "tiedTimeBlockCount",
+    "firstEventOrderSignature"
+  ],
+  "rules": [
+    "FIRST_EVENT_ORDER_IS_DERIVED_FROM_COMPLETE_CLOCKS",
+    "SAME_SOURCE_GROUP_LABELS_ARE_NOT_SEQUENTIAL_VOTES",
+    "DAILY_DATA_CANNOT_INVENT_INTRADAY_SUBORDER",
+    "ORDER_WITHOUT_CERTIFIED_CLOCKS_IS_NOT_PROMOTION_GRADE",
+    "REPEATED_CYCLES_ARE_OUTSIDE_FIRST_EVENT_ORDER"
+  ],
+  "predictiveIncrementality": "UNKNOWN",
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}

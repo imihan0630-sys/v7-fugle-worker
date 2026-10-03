@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T18:23:55+08:00",
+  "updatedAt": "2026-10-03T18:29:06+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 35.4
+    "maturityWeightedPct": 35.5
   },
   "domains": [
     {
@@ -1750,7 +1750,7 @@
         "DERIVATIVES_VOLATILITY_CHECKPOINT.md",
         "DERIVATIVES_VOLATILITY_RESEARCH.md"
       ],
-      "maturityPct": 37.6,
+      "maturityPct": 40,
       "modules": [
         {
           "id": "D12-01",
@@ -1863,9 +1863,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Greeks：Delta／Gamma／Vega／Theta」。學習範圍：衍生品研究必須凍結合約、到期、履約價、DTE、價格／IV時計與流動性語意；研究 Greeks、IV-RV、VRP與波動率曲面時必須包含正向機制、反證、PIT、可重播、交易成本、稀疏報價／插值風險、與既有VIX／Skew／Gamma資訊的冗餘及增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "CURRICULUM_RECONCILED / CONCEPT_AND_FALSIFICATION_FROZEN / TAIWAN_PIT_EVIDENCE_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "status": "L2 / OFFICIAL_TAIFEX_DAILY_DELTA_CLOCK_SEMANTICS_FROZEN / 1810_NEXT_SESSION_FEASIBILITY_IDENTIFIED / STRICT_RAW_PIT_RECEIPT_PENDING / OUTCOMES_CLOSED",
           "next": "Audit permitted TAIFEX historical/statistical option-chain source for parser/surface QA, freeze surface method/quality receipts, then accumulate source-attested independent dates before L3.",
-          "evidence": "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json plus DERIVATIVES_VOLATILITY_RESEARCH.md DR-051..DR-059 reconcile pre-existing Gamma/VIX/VRP/surface work into the expanded D12 curriculum. No L3: strict Taiwan option-chain/surface prospective receipts and OOS evidence remain absent."
+          "evidence": "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json plus DERIVATIVES_VOLATILITY_RESEARCH.md DR-051..DR-059 reconcile pre-existing Gamma/VIX/VRP/surface work into the expanded D12 curriculum. No L3: strict Taiwan option-chain/surface prospective receipts and OOS evidence remain absent.\n2026-10-03: research/d12_13_taifex_daily_delta_clock_semantics_v0_1.json freezes 06:45 same-day vs 14:30/16:30 next-business-day Delta semantics. 2026-10-02 official file generation 16:39:28 is pre-18:10 but historical retrieval is not strict source attestation."
         },
         {
           "id": "D12-14",
@@ -1896,19 +1896,20 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Volatility Surface／Smile波動率曲面與微笑」。學習範圍：衍生品研究必須凍結合約、到期、履約價、DTE、價格／IV時計與流動性語意；研究 Greeks、IV-RV、VRP與波動率曲面時必須包含正向機制、反證、PIT、可重播、交易成本、稀疏報價／插值風險、與既有VIX／Skew／Gamma資訊的冗餘及增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "CURRICULUM_RECONCILED / CONCEPT_AND_FALSIFICATION_FROZEN / TAIWAN_PIT_EVIDENCE_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "status": "L2 / SURFACE_METHOD_V0_1_FROZEN / NORMALIZED_ROW_VALIDATOR_10_TESTS_PASS / RAW_TAIFEX_PARENT_PENDING / OUTCOMES_CLOSED",
           "next": "Audit permitted TAIFEX historical/statistical option-chain source for parser/surface QA, freeze surface method/quality receipts, then accumulate source-attested independent dates before L3.",
-          "evidence": "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json plus DERIVATIVES_VOLATILITY_RESEARCH.md DR-051..DR-059 reconcile pre-existing Gamma/VIX/VRP/surface work into the expanded D12 curriculum. No L3: strict Taiwan option-chain/surface prospective receipts and OOS evidence remain absent."
+          "evidence": "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json plus DERIVATIVES_VOLATILITY_RESEARCH.md DR-051..DR-059 reconcile pre-existing Gamma/VIX/VRP/surface work into the expanded D12 curriculum. No L3: strict Taiwan option-chain/surface prospective receipts and OOS evidence remain absent.\n2026-10-03: research/d12_surface_method_v0_1_spec.json plus research/d12_option_row_validator_v0_1.mjs; isolated local Node tests PASS 10 assertions for quote admissibility, duplicates, monotonicity and convexity. Synthetic tests are method QA, not market evidence."
         },
         {
           "id": "D12-17",
           "name": "Option Payoff Structures／Put-Call Parity／Synthetic Positions／Strategies選擇權損益結構、買賣權平價、合成部位與策略",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦選擇權 payoff（損益結構）與價格一致性：Put-Call Parity（買賣權平價）、Synthetic Positions（合成部位）、Covered Call、Protective Put、Vertical／Calendar 等 spreads（價差策略）及其他基本策略結構。必須凍結履約價、到期、IV、Greeks、流動性、交易成本與保證金語意，區分方向、波動、時間價值與尾端曝險。原 D12-18 策略損益結構完整併入本模組；Portfolio overlay／hedging（投組避險）應用仍由 D15-23 負責。不得因策略名稱直接形成股票選股 Gate。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED / MERGED_SCOPE_OWNER",
-          "next": "建立整合後 option payoff／parity／synthetic／strategy 的研究契約，並與 D15-23 投組避險用途建立 dependency，不重複計算。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "CONCEPT_AND_FALSIFICATION_FROZEN / PARITY_EXECUTION_EQUIVALENCE_GUARD / TAIWAN_PIT_EXECUTION_EVIDENCE_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "next": "Use identical permitted TAIFEX parent quotes to test parity-quality/executable bands before outcomes; freeze regular vs after-hours forward convention; no strategy ranking from realized returns.",
+          "evidence": "research/d12_17_option_payoff_parity_synthetics_spec_v0_1.json + DERIVATIVES_VOLATILITY_RESEARCH.md DR-065..DR-066: TXO European/cash-settled parity semantics, forward-like synthetic payoff, executable-band/liquidity/funding/session falsification. No L3 without synchronized PIT executable-leg receipts."
         }
       ]
     },
@@ -2001,8 +2002,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「CPI／PPI／非農／失業率」。學習範圍：美股、日韓股、匯率、美元、利率、油價、原物料與總經數據；跨時區與休市對齊；公告時鐘與Surprise；全球Shock傳導；台股Residual反應與Regime用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "RESEARCH_ONLY / OCT02_EMPLOYMENT_SITUATION_PRE_EVENT_CLOCK_PREREGISTERED / CONSENSUS_FIRST_PRINT_UNKNOWN",
-          "evidence": "2026-10-02 audit: BLS event 2026-10-02 20:30 Taipei is FUTURE for Taiwan 18:10. Source-receipt strict gate plus weekend/Friday controls frozen; no release result inferred."
+          "status": "L2 / OCT02_OFFICIAL_RELEASE_CONTENT_VERIFIED_ON_OCT03 / RELEASE_TIME_NATIVE_ATTESTATION_MISSING / CONSENSUS_SURPRISE_UNKNOWN / OUTCOMES_CLOSED",
+          "evidence": "2026-10-02 audit: BLS event 2026-10-02 20:30 Taipei is FUTURE for Taiwan 18:10. Source-receipt strict gate plus weekend/Friday controls frozen; no release result inferred.\n2026-10-03: official BLS USDL-26-1549 content verified: Sep payroll +29k, unemployment 4.2%, AHE +0.1% m/m/+3.0% y/y, Jul/Aug combined revision -60k. Artifact research/d13_09_11_bls_employment_release_observed_20261003_v0_1.json. No authentic pre-release consensus => surprise UNKNOWN."
         },
         {
           "id": "D13-10",
@@ -2019,8 +2020,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Macro Surprise與公告時鐘」。學習範圍：美股、日韓股、匯率、美元、利率、油價、原物料與總經數據；跨時區與休市對齊；公告時鐘與Surprise；全球Shock傳導；台股Residual反應與Regime用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "PROSPECTIVE_SCHEDULE_VINTAGE_CAPTURE_ACTIVE / FIRST_PRE_NEXT_OPEN_EVENT_STATE_CAPTURED / REALIZATION_AND_CONSENSUS_VINTAGE_PENDING / OUTCOMES_CLOSED / OCT01_SCHEDULE_VINTAGE_SOURCE_RESPONSE_ATTESTATION_MISSING / OCT02_NFP_PREREGISTERED",
-          "evidence": "research/global_market_source_only_pilot_20260930.json plus research/d13_11_macro_schedule_vintage_receipt_20261001_1711.json. The 2026-10-01 pre-18:10 receipt preserves ISM Manufacturing PMI as SCHEDULED_POST_DECISION_PRE_NEXT_OPEN while keeping its realization unknown; BLS Employment/CPI reobservations remain schedule-only.\n2026-10-02 audit: 2026-10-01 five-item schedule-vintage and 2026-09-30 four-receipt pilot remain dated research manifests; not strict source-attested. research/d12_d13_20261002_nfp_event_clock_falsification_v0_1.md freezes known schedule vs future realization; outcome join CLOSED.",
+          "status": "L2 / PRE_RELEASE_CLOCK_PRESERVED / OCT02_RELEASE_VECTOR_OBSERVED_LATER / CONSENSUS_VINTAGE_UNKNOWN / SURPRISE_UNKNOWN / OUTCOMES_CLOSED",
+          "evidence": "research/global_market_source_only_pilot_20260930.json plus research/d13_11_macro_schedule_vintage_receipt_20261001_1711.json. The 2026-10-01 pre-18:10 receipt preserves ISM Manufacturing PMI as SCHEDULED_POST_DECISION_PRE_NEXT_OPEN while keeping its realization unknown; BLS Employment/CPI reobservations remain schedule-only.\n2026-10-02 audit: 2026-10-01 five-item schedule-vintage and 2026-09-30 four-receipt pilot remain dated research manifests; not strict source-attested. research/d12_d13_20261002_nfp_event_clock_falsification_v0_1.md freezes known schedule vs future realization; outcome join CLOSED.\n2026-10-03: pre-release QA remains immutable; separate later-observed official release vector created. Headline/revisions/wages/unemployment kept as separate dimensions; no standardized surprise without consensus vintage.",
           "exactNextContinuationPoint": "Preserve the 2026-10-01 18:10 schedule receipt unchanged; capture ISM Manufacturing PMI realization separately only when actually observed after publication, repeat append-only schedule vintages on independent Taiwan decision dates, and keep Taiwan outcomes closed until the preregistered coverage gate is met."
         },
         {

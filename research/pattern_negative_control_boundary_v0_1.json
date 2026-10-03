@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "pattern-negative-control-boundary-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "controlType": "MECHANISM_NEGATIVE_CONTROL_NOT_TRUE_NULL",
+  "candidateRule": "SAME_WIDTH_CENTERED_ON_UNIQUE_PRE_CONFIRMATION_ELIGIBLE_CLOSE",
+  "exclusions": [
+    "OVERLAPS_TRUE_PARENT",
+    "OVERLAPS_STRUCTURAL_ZONE_KNOWN_BY_PARENT_CONFIRMATION",
+    "INVALID_SESSION_OR_CONTINUITY"
+  ],
+  "futureSelection": "PROHIBITED",
+  "controlPoolAuthority": "PARENT_SPECIFIC_FROZEN_MANIFEST",
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}

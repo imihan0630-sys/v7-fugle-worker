@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "pattern-repeated-cycle-landmark-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "populations": [
+    "BASELINE_BREAK_COHORT",
+    "REPEAT_RISK_LANDMARK_COHORT"
+  ],
+  "repeatRiskStates": [
+    "NOT_YET_AT_REPEAT_RISK",
+    "AT_RISK_ZERO_EVENTS",
+    "AT_RISK_WITH_EVENTS",
+    "UNKNOWN"
+  ],
+  "eligibility": [
+    "FIRST_RECLAIM_OCCURRED_AVAILABLE_OBSERVED_BY_ASOF",
+    "RELATION_LINEAGE_VALID",
+    "PATH_COMPLETENESS_VALID",
+    "NO_FUTURE_EVENT_IN_SUMMARY"
+  ],
+  "rules": [
+    "NOT_YET_AT_RISK_IS_NOT_ZERO",
+    "OUTCOME_STARTS_AFTER_CURRENT_PARENT_CUTOFF",
+    "NO_EVENTUAL_CYCLE_COUNT_AS_BASELINE_FEATURE",
+    "NO_BACKFILL_TO_EARLIER_PARENT",
+    "REPEAT_RISK_RESULT_IS_CONDITIONAL_ON_FIRST_RECLAIM_POPULATION"
+  ],
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}

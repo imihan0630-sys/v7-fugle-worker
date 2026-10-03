@@ -1,7 +1,7 @@
 # Derivatives Information & Volatility Surface Checkpoint
 
 Updated: 2026-09-29 10:13 Asia/Taipei
-Current cursor: DR-001 through DR-059 complete.
+Current cursor: DR-001 through DR-066 complete.
 Next: D12-08 prospective Gamma evidence + D12-10 18:10 NIGHT_PRE_SCAN prospective receipts.
 
 ## Durable conclusions
@@ -226,3 +226,43 @@ Key frozen guards:
 4. Compare simple D12-07 skew/term structure against D12-16 level/slope/curvature on the same parent rows before any outcomes.
 5. Keep live TAIWAN VIX/TX automation blocked until an explicit authorized data path exists.
 6. Continue accumulating true source-attested decision dates; no L3/OOS/optimization before coverage/replay gates pass.
+
+
+## 2026-10-03 continuation — Delta publication clocks, Surface QA and D12-17 parity
+
+- DR-060..DR-063 freeze TAIFEX Daily Delta semantics:
+  - official page updates about 06:45 / 14:30 / 16:30;
+  - 06:45 = current business-day tradable series including newly listed;
+  - 14:30/16:30 = next-business-day Delta and exclude next-day newly listed series;
+  - publicationDate, publicationVersion and effectiveTradingDate must be separate.
+- Official TAIFEX page currently shows the 2026-10-02 Delta-file generation time as 16:39:28, before the 18:10 selector. This materially supports next-session 18:10 clock feasibility but a later retrieval is not strict first-known/raw-source attestation.
+- TAIFEX Delta is a theoretical hedge ratio/model state, not direction/probability/sentiment. Own-computed Greeks must first explain differences through model inputs/clock/source before any predictive interpretation.
+- Machine contract: `research/d12_13_taifex_daily_delta_clock_semantics_v0_1.json`.
+- DR-064 freezes Surface Method V0.1:
+  - primary two-sided positive bid/ask midpoint only;
+  - no silent settlement/last fallback;
+  - zero bid/one-sided/crossed quotes excluded/rejected from primary fit;
+  - no primary extrapolation beyond clean strike hull;
+  - method identity and static-arbitrage/coverage metrics required.
+- Implemented isolated normalized-row validator:
+  - `research/d12_option_row_validator_v0_1.mjs`
+  - `research/test_d12_option_row_validator_v0_1.mjs`
+  - local Node execution PASS: 10 adversarial assertions (clean quote, zero-bid exclusion, crossed quote, negative strike, Call monotonicity, monotonic violation, convexity violation, duplicate series, Put monotonicity, expired row).
+  - Synthetic tests = method/data-quality evidence only, not Taiwan market/OOS evidence.
+- DR-065..066 complete D12-17 parity/synthetics:
+  - TXO is European and cash-settled.
+  - Long Call - Long Put is forward-like expiry payoff under same strike/expiry/carry convention; it is not automatic economic equivalence to owning Taiwan cash equities.
+  - Mid-quote parity deviations are first data-quality/liquidity diagnostics, not free arbitrage.
+  - After-hours parity requires explicit futures/forward convention because cash index is not live.
+- D12-17 advances L0 -> L2 / 40% for mechanism+falsification only.
+- D12 across 17 modules recomputes to 40.0%.
+- D12-13 and D12-16 remain L2; no strict raw multi-date PIT option/surface evidence for L3.
+- Formal Core remains LOCKED. Outcomes remain CLOSED. No FORMAL_OPTIMIZATION_CANDIDATE.
+
+## Exact next continuation after DR-066
+
+1. Obtain one permitted official TAIFEX raw option-chain parent for replay QA and freeze its exact raw headers/source hash; do not call it historical 18:10 first-known.
+2. Parse the identical parent into simple skew/term structure, Surface Method V0.1 and parity-quality metrics.
+3. Preserve TAIFEX official Delta separately with publication/effective-date version lineage; compare own-computed Delta outcome-blind.
+4. Audit 14:30 -> 16:30 -> next-day 06:45 Delta universe/version changes, with new-series additions separated from numeric revisions.
+5. Only after source-attested independent dates exist, preregister outcomes and consider L3. Live MIS automation stays blocked unless explicitly authorized.

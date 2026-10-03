@@ -2,7 +2,7 @@
 
 Updated: 2026-09-28 20:35 Asia/Taipei
 Formal Core: LOCKED
-Current cursor: MC-001 through MC-092 complete.
+Current cursor: MC-001 through MC-096 complete.
 
 ## Durable conclusions
 
@@ -258,3 +258,30 @@ Formal Core LOCKED. No maturity promotion and no FORMAL_OPTIMIZATION_CANDIDATE.
 2. Preserve first print and consensus as separate clocks/sources. If no authentic pre-release consensus vintage exists, surprise remains UNKNOWN.
 3. Keep post-release TX/U.S.-market reaction as an outcome/mediator for the 18:10 study, not a predictor.
 4. Continue source-attested independent-date accumulation before D13-12 absorption-residual outcome tests.
+
+
+## 2026-10-03 Oct-2 Employment Situation release-vector continuation (MC-093–MC-096)
+
+- Official BLS September 2026 Employment Situation content is now observable and verified:
+  - release clock/embargo: 2026-10-02 08:30 ET = 20:30 Taipei;
+  - payroll +29,000;
+  - unemployment 4.2%;
+  - labor-force participation 61.8%;
+  - employment-population ratio 59.2%;
+  - AHE +0.1% m/m and +3.0% y/y;
+  - workweek 34.4 hours.
+- July was revised +21k -> -10k (-31k) and August +162k -> +133k (-29k), combined -60k. Revisions are a separate release dimension.
+- Project observation occurred on 2026-10-03, after publication. This verifies official release content but does **not** prove native project capture at the 20:30 release clock.
+- Authentic pre-release consensus vintage remains absent. Therefore payroll/unemployment/wage/revision surprise = UNKNOWN. Current actual-vs-consensus claims from later websites are not admitted.
+- The release's own prior-12-month payroll average (+45k) can be used only as internal historical context, not market surprise.
+- Pre-release QA `research/d12_d13_20261002_postdecision_prerelease_source_qa_v0_1.json` remains immutable. Post-release object is separate:
+  `research/d13_09_11_bls_employment_release_observed_20261003_v0_1.json`.
+- D13-09 and D13-11 remain L2 / 40%; one later-observed official release is not multi-event source-attested prospective evidence.
+- Formal Core LOCKED; outcomes still CLOSED for this macro-surprise lane.
+
+## Exact next continuation after MC-096
+
+1. Future BLS events: source-attest official first print at release time and preserve raw bytes/readback.
+2. Consensus stays UNKNOWN unless an approved pre-release timestamped vintage is preserved before release.
+3. Store headline payroll, unemployment, wage, workweek and revision vectors separately; no one-dimensional macro score.
+4. Accumulate independent events, then test scheduled-event risk before signed-surprise direction.
