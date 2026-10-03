@@ -1,103 +1,82 @@
 # Credit / Capital Structure Checkpoint
 
-Updated: 2026-10-03 14:04 Asia/Taipei
+Updated: 2026-10-03 19:04 Asia/Taipei
 Scope: D22｜信用市場／資本結構／融資壓力／股債傳導
-Status: ACTIVE_RESEARCH / D22-01 L3_EVIDENCE / FORMAL_CORE_UNCHANGED
+Status: ACTIVE_RESEARCH / D22-01 L3_WAITING_PANEL / D22-02 L2_ACTIVE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - Canonical continuation checkpoint for D22.
-- Separate accounting leverage (D07), corporate-action events (D11) and macro rates (D13) from market-implied / contractual credit risk.
-- Missing bond/rating/covenant/facility evidence remains UNKNOWN; do not infer safety from absence.
-- Contractual maturity is not expected maturity; disclosed buckets must be preserved as reported and must never be split into fabricated finer intervals.
-- Formal Core remains LOCKED. D22 evidence is research-only until PIT/OOS/Prospective Shadow/cost/redundancy/multi-regime gates pass.
+- Separate D07 accounting leverage/cash-flow information, D11 corporate-action events and D13 macro/rate context from D22 contractual/credit information.
+- Missing bond/rating/covenant/facility/source-time evidence remains UNKNOWN.
+- Formal Core remains LOCKED.
+- No outcome opening, threshold tuning, sign flipping, synthetic bucket splitting, historical Shadow fabrication or silent UNKNOWN coercion.
 
-## D22-01 evidence checkpoint — 2026-10-03
+## D22-01｜Debt Maturity Wall / Refinancing Schedule
+Level: L3 / 60%.
 
-### Maturity promotion
-Research evidence supports D22-01 at L3 = Taiwan PIT data feasibility validated.
-This promotion means only that historical issuer/date maturity evidence can be obtained, timestamped and replayed without look-ahead. It does NOT imply predictive alpha, trading value, or Formal eligibility.
+### Durable conclusion
+Taiwan historical PIT maturity disclosures are replayable, but predictive value is not yet established.
 
-### Mechanism frozen
-Refinancing risk is not equivalent to accounting leverage. The research object is the interaction of:
-1. financing maturity timing and concentration;
-2. actually available liquidity and verified facilities;
-3. refinancing channel availability;
-4. refinancing cost / rate exposure;
-5. contingent liquidity drains and supplier-finance concentration.
+### This-round falsification repairs
+1. Entity scope: primary cross-issuer comparison now requires consolidated-group receipts. Prior Taiwan Cement parent-only receipt was replaced by consolidated data.
+2. Accounting basis: each issuer/date must carry an explicit basis tag; D07 and D22 inputs cannot silently mix incompatible Taiwan-FSC vs IFRS-as-issued totals.
+3. Double count: balance-sheet current financing and contractual <1y financing cash flow are alternate representations, not additive.
+4. knownAt: audit/board authorization date is not automatically public first-known time.
+5. Macro timing: same-calendar-date U.S. Treasury data may be future information in Taiwan time. Use the latest completed U.S. session known before the decision point.
 
-A high-leverage issuer with long fixed-rate maturities and ample liquidity can have lower near-term refinancing risk than a lower-leverage issuer with a concentrated 6–12 month maturity wall.
+### Revalidated issuer/date state
+- TSMC 2023: contractual <1y financing NT$54,552m; carrying current financing NT$36,583m; source timing 2024-04-18.
+- UMC 2023: contractual <1y financing NT$31,450,552k; carrying current financing NT$29,536,797k; official SEC-source availability no later than 2024-03-25; earlier public release UNKNOWN.
+- Taiwan Cement 2023 consolidated: contractual <1y financing NT$36,718,292k; carrying current financing NT$36,895,130k; undrawn facilities NT$185,440,051k; exact public knownAt UNKNOWN.
 
-### PIT / replay evidence
-Historical issuer/date receipts now support replay feasibility across at least:
-- TSMC 2023: official 2023 Form 20-F, filed 2024-04-18; carrying long-term debt, current portion and contractual principal+interest maturity buckets differ materially. Long-term debt contractual payments: <1y NT$27,262m; 1-3y NT$227,952m; 3-5y NT$304,110m; >5y NT$583,364m. Total contractual cash obligations are dominated by non-financing purchase obligations, proving total contractual wall != financing maturity wall.
-- UMC 2023: official 2023 Form 20-F filing announced 2024-04-25 plus archived annual financial statements; balance-sheet current classification and contractual undiscounted maturity cash flows are distinct semantics. Historical official archive path is independently replayable.
-- Taiwan Cement 2023: official 2023 financial statements approved by the board 2024-02-27. Liquidity table uses earliest required repayment date and undiscounted cash flows including principal and estimated interest. Unused bank facilities at 2023-12-31 were NT$70,139,767k. Maturity rows separately disclose non-interest-bearing, lease, floating-rate and fixed-rate liabilities.
+### D07 / D13 prereg baseline status
+- Compatible-basis D07 descriptive baselines are available for TSMC, UMC and Taiwan Cement.
+- UMC D13: latest completed U.S. Treasury session 2024-03-22, 10Y 4.22%, 20-session change -4 bp; CBC 2.0%.
+- TSMC D13: latest completed U.S. Treasury session 2024-04-17, 10Y 4.59%, 20-session change +29 bp; CBC 2.0%.
+- Taiwan Cement remains outcome-timing blocked until public knownAt is proven.
 
-### Data semantics / anti-contamination rules
-- Carrying amount != current classification != principal repayment schedule != contractual undiscounted cash flow.
-- Total contractual obligations != financing maturity wall.
-- Financing wall must distinguish interest-bearing short-term borrowings, current maturities of long-term debt, bonds and other financing obligations.
-- Operating payables, purchase commitments, leases and contingent drains require separate classes; do not pool them into refinancing risk.
-- Preserve raw reported maturity buckets.
-- Common-support comparison may aggregate finer buckets upward; synthetic disaggregation of coarse buckets is forbidden.
-- Later refinancing, extension, exchange, redemption or early repayment creates a new PIT state and must never rewrite an older state.
-- Verified facility capacity must remain separate from cash. Facility amount without evidence on commitment, tenor, currency, covenant and draw conditions cannot be treated as fully cash-equivalent.
-- Supplier finance / reverse factoring and derecognized-but-contingent payment obligations can create hidden liquidity drains; missing evidence stays UNKNOWN.
+### Outcome gate
+OUTCOMES_CLOSED.
+TSMC and UMC pass the current technical pre-outcome gates, but only two issuer/date rows from one reporting period exist. This is insufficient for OOS, walk-forward, independent-date, industry or regime evidence. D22-01 therefore waits on panel expansion rather than opening equity returns early.
 
-### Minimum replay schema
-Per issuer/date receipt preserve:
-- periodEnd
-- publishedAt
-- capturedAt
-- knownAt
-- sourceUrl / sourceType / documentVersion
-- liabilityClass
-- financingFlag
-- amountSemantics
-- rawMaturityBucket
-- normalizedCommonSupportBucket
-- amount
-- currency / unit
-- fixedFloatingUnknown
-- verifiedFacilityAmount
-- facilityQuality fields if disclosed
-- contingentLiquidityDrain
-- dataQuality / UNKNOWN reasons
+### Durable files
+- `research/d22_01_maturity_replay_v0_1.json`
+- `research/d22_01_incremental_value_prereg_v0_1.json`
+- `research/d22_01_scope_and_double_count_audit_v0_1.json`
+- `research/d22_01_d07_baseline_readiness_v0_1.json`
+- `research/d22_01_d13_baseline_readiness_v0_1.json`
+- `research/d22_01_pre_outcome_eligibility_v0_1.json`
 
-### Falsification / failure conditions
-- A maturity wall is exposure, not default prediction.
-- Contractual maturity can differ materially from expected maturity.
-- Financial institutions and non-financial corporates require separate comparability treatment.
-- Apparent equity-credit lead/lag may be driven by common macro/rate/liquidity shocks rather than causal credit information.
-- Sparse bond trading / stale quotes can create false spread signals.
-- A facility headline may overstate usable liquidity.
-- If D22-01 adds no information after D07 leverage/liquidity controls and D13 rate context, classify it REJECTED_OR_REDUNDANT rather than promote it.
+## D22-02｜Interest Coverage / Debt Service
+Level: L2 / 40%.
 
-### Pre-registered next-stage baseline before opening equity outcomes
-No outcome optimization is authorized yet.
-Baseline controls must be frozen before return labels are opened:
-1. D07 baseline: net debt/leverage, interest coverage, cash/liquidity and operating cash flow controls available PIT.
-2. D13 baseline: risk-free rate level/change and rate-regime context available PIT.
-3. D22 challenger: financing maturity concentration, verified liquidity buffer quality, floating-rate repricing exposure, contingent liquidity drains.
-4. Compare incremental information over baseline, not raw standalone correlation.
-5. Use OOS / walk-forward / prospective Shadow only after replay table passes source/timestamp/reconciliation checks.
-6. No threshold search, sign flipping, bucket tuning or outcome-informed feature definition.
+### Mechanism
+Interest coverage measures earnings capacity relative to financing cost. It complements D22-01: maturity timing and debt-service capacity are distinct.
 
-### System-use status
-- No D22-01 feature is authorized for System 1 or System 2 Formal use.
-- Candidate status: FALSIFICATION_IN_PROGRESS.
+### Strong counterevidence
+- A universal ICR distress cutoff is prohibited; external evidence shows substantial firm/industry/time threshold heterogeneity.
+- Fixed-rate debt can delay market-rate pass-through into interest expense.
+- Reported finance costs can contain debt interest, lease interest and other finance costs; capitalized borrowing costs add another semantic layer.
+- High ICR does not eliminate principal maturity risk; low ICR alone does not prove default.
+
+### Taiwan PIT semantic examples
+- UMC 2023: operating income / debt+lease interest = 39.28x; operating income / total finance costs = 36.86x.
+- Taiwan Cement 2023 consolidated: operating income / debt+lease interest = 3.00x; operating income / total finance costs = 2.83x; capitalized interest NT$32,190k.
+
+The ratio changes materially from denominator definition alone, so source-line taxonomy must be frozen before cross-company comparison or outcome opening.
+
+### Durable file
+- `research/d22_02_interest_coverage_contract_v0_1.json`
+
+## System-use status
+- No D22-01 or D22-02 feature is authorized for System 1 or System 2 Formal use.
+- Candidate state: FALSIFICATION_IN_PROGRESS.
 - FORMAL_OPTIMIZATION_CANDIDATE threshold has NOT been reached.
 
-## Durable artifacts added this round
-- `research/d22_01_maturity_replay_v0_1.json`: machine-readable PIT replay seed created. TSMC 2023 and Taiwan Cement 2023 row-level amounts revalidated; UMC official historical source/version is revalidated but row values remain UNKNOWN pending row-level revalidation rather than being copied from memory.
-- `research/d22_01_incremental_value_prereg_v0_1.json`: D07 + D13 baseline controls, common-support exposure, primary/secondary outcome horizons, test order and falsification gates frozen before outcome opening.
-
 ## Exact next continuation
-Continue D22-01 from L3 toward L4:
-1. revalidate UMC 2023 row-level contractual maturity amounts from the official source and populate the replay seed without memory carry-forward;
-2. add capturedAt / immutable receipt hash semantics where supported;
-3. complete double-count reconciliation between balance-sheet current portions and contractual maturity tables;
-4. validate common-support <1y financing exposure and facility-quality UNKNOWN semantics across the three issuers;
-5. audit D07 baseline PIT field readiness; block rather than impute missing controls;
-6. only after the above gates pass, open outcomes once under the preregistered 60-trading-day max-drawdown primary horizon and run research-only OOS / walk-forward / prospective Shadow tests;
-7. promote only if independent-date evidence survives redundancy, regime, industry/date-cluster, coverage, cost and overfit controls.
+Primary active module: D22-02.
+1. collect multiple Taiwan non-financial issuer/date PIT interest-coverage receipts, including at least one additional industry and multiple dates;
+2. freeze numerator/denominator taxonomy, negative EBIT, near-zero denominator, lease-interest, other-finance-cost and capitalized-interest handling;
+3. build machine-readable ICR replay and compare accounting ICR vs cash-interest coverage vs D22-01 principal-inclusive debt service with outcomes closed;
+4. promote D22-02 to L3 only after cross-industry Taiwan PIT replayability is demonstrated;
+5. in parallel expand D22-01 multi-issuer/multi-date Historical PIT panel; do not open equity outcomes until independent-date evidence design is defensible.
