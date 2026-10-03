@@ -2493,3 +2493,107 @@ No threshold or Formal rule is changed.
 No FORMAL_OPTIMIZATION_CANDIDATE is created.
 Formal evidence cursor remains PVE-239.
 PVE-240 remains reserved for the first genuine completed post-repair market session.
+
+## Pre-PVE-240 continuation — D02-05 / 07 / 09 / 11 L3 PIT-readiness closure (2026-10-04)
+
+Status: OUTCOME_BLIND / PVE_CURSOR_REMAINS_239 / FORMAL_UNCHANGED.
+
+Durable artifacts:
+- `research/d02_05_climax_volume_pit_readiness_20261004_v0_1.md`
+- `research/d02_05_climax_volume_pit_readiness_v0_1.json`
+- `research/d02_11_liquidity_volume_pit_readiness_20261004_v0_1.md`
+- `research/d02_11_liquidity_volume_pit_readiness_v0_1.json`
+- `research/d02_daily_volume_continuity_adapter_v0_1.mjs`
+- `tests/test_d02_daily_volume_continuity_adapter_v0_1.mjs`
+- `research/d02_daily_volume_continuity_adapter_validation_20261004_v0_1.md`
+- `research/d02_daily_volume_continuity_adapter_validation_v0_1.json`
+
+### D02-05 — 爆量／高潮量／分配量
+
+The L3 observable construct is frozen as EXTREME_PARTICIPATION_STATE, not as direct distribution intent.
+
+Existing pre-outcome participation bands are reused:
+- LOW <=0.8;
+- NORMAL (0.8,1.3);
+- ELEVATED [1.3,2.5);
+- EXTREME >=2.5.
+
+The typed state joins EXTREME participation to contemporaneous price-response/Guard context only after the completed bar.
+No fixed bullish/bearish sign is assigned.
+DISTRIBUTION / ABSORPTION / SMART_MONEY remain latent/UNKNOWN without independent evidence.
+
+Maturity:
+D02-05 L2/40 -> L3/60.
+
+### D02-11 — 流動性量能門檻與例外
+
+The module is separated into:
+1. LONG_HORIZON_VOLUME_CAPACITY;
+2. CURRENT_EXECUTION_LIQUIDITY_CONTEXT;
+3. FORMAL_ADMISSION_RULE_REFERENCE.
+
+Source-ready deterministic fields include close, avgVolume20Lots, avgAmount20 and the current Formal price-tier minLots reference.
+Prospective quote/depth context is separately observable with its own timestamp.
+
+The current PV `pvIlliquidityWarning` is explicitly not research truth because its threshold direction and exception/missingness semantics differ from Formal.
+Missing exception/depth evidence remains UNKNOWN.
+
+Maturity:
+D02-11 L2/40 -> L3/60.
+
+### D02-07 / D02-09 — executable continuity blocker closure
+
+A research-only executable adapter now enforces:
+- explicit SHARES daily unit;
+- exact expected symbol-session membership;
+- no older-row substitution for missing expected sessions;
+- factual zero-volume preservation;
+- duplicate-date blocking;
+- verified suspension pseudo-bar blocking;
+- corporate-action knownAt firewall;
+- UNIT_SCALE vs SUPPLY_CHANGE split;
+- deterministic comparable-session hash;
+- pivot eligibility requiring both price and volume continuity.
+
+Independent local Node v22.16.0 execution:
+14 fixtures PASS after one first-run anti-look-ahead bug was detected and fixed.
+
+The first failure proved an important rule:
+a late-known corporate-action correction may not be used to classify the earlier decision-time path.
+It must remain UNKNOWN_BLOCKED at that earlier clock.
+
+This closes the explicit L3 data-feasibility/replay blocker for:
+- D02-07 signed-volume / bounded OBV-family comparator;
+- D02-09 typed price-volume divergence with repaint-safe confirmed-pivot dependency.
+
+Maturity:
+D02-07 L2/40 -> L3/60.
+D02-09 L2/40 -> L3/60.
+
+These promotions do NOT prove independent alpha.
+D02-07 remains comparator-only / merge-candidate.
+D02-09 still requires L4 prospective/OOS incremental evidence.
+
+### D02-08 remains L2
+
+D02-08 is not promoted.
+
+Reason:
+current D05 dependency evidence still cannot prove exhaustive dynamic side-pressure / replenishment / resiliency / true event-level OFI coverage.
+Upstream API capability is not equivalent to a complete PIT evidence family.
+
+### Aggregate implication
+
+Before this block D02 = 51.7% = 620/1200 module-points.
+Four L2->L3 promotions add 80 points:
+700/1200 = 58.333...%.
+
+Canonical target after tracker/router readback:
+D02 = 58.3%.
+
+No outcome gate is opened.
+Gate 7 remains CLOSED.
+No threshold is tuned.
+No FORMAL_OPTIMIZATION_CANDIDATE.
+Formal Core remains LOCKED.
+PVE-240 remains reserved for the first genuine completed post-repair market session.
