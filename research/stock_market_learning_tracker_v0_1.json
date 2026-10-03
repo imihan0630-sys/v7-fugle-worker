@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T20:19:26+08:00",
+  "updatedAt": "2026-10-03T21:40:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 36.3
+    "maturityWeightedPct": 37.3
   },
   "domains": [
     {
@@ -3246,7 +3246,7 @@
         "BEHAVIORAL_FINANCE_CHECKPOINT.md",
         "BEHAVIORAL_FINANCE_RESEARCH.md"
       ],
-      "maturityPct": 24.6,
+      "maturityPct": 30.8,
       "modules": [
         {
           "id": "D20-01",
@@ -3321,22 +3321,22 @@
         {
           "id": "D20-08",
           "name": "Underreaction／Post-event Drift反應不足與事件後漂移",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Underreaction／Post-event Drift反應不足與事件後漂移」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D20-08 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_UNDERREACTION_DRIFT_MECHANISM_DEFINED / EVENT_HORIZON_SEPARATION / PIT_EVENT_DATA_NEXT",
+          "next": "建立台股事件後漂移資料契約：以公告首次可知時間、驚喜定義、事件當下反應與後續 1/5/20/60 日路徑分開；優先月營收與盈餘公告。必須控制事件前走勢、法人流、流動性、產業共同資訊、分析師修正、價格限制與交易成本，不得從單純動能直接反推反應不足。"
         },
         {
           "id": "D20-09",
           "name": "Overreaction／Reversal過度反應與反轉",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Overreaction／Reversal過度反應與反轉」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D20-09 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_OVERREACTION_MECHANISM_DEFINED / H07_PHENOMENON_CAUSE_FIREWALL / PIT_CAUSAL_PROXY_NEXT",
+          "next": "依 H07 將 D20-09 與 D03-05 分離：價格反轉由 D03-05 擁有；D20-09 只有在事件/預期/交易行為證據能排除 bid-ask bounce、流動性提供、庫存效應、強迫交易、事件修正、波動正常化與價格限制後才可主張過度反應。建立可在反轉完成前觀測的行為/事件代理，否則維持 UNKNOWN。"
         },
         {
           "id": "D20-10",
@@ -3379,10 +3379,10 @@
           "next": "從理論、定義、機制與反證開始，建立 D20-13 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
         }
       ],
-      "status": "D20_01_02_03_04_06_07_10_12_L2 / IDENTIFICATION_FIREWALL_ACTIVE / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "先完成 D20-06 與 D20-10 的台股 PIT/replay 資料可行性稽核；D20-06 優先尋找投資人身分/時序或獨立社群行為資料，D20-10 優先驗證社群多空立場與隔夜報酬等非新聞文字代理。若資料不可重播，不升 L3。之後續接 D20-08 反應不足與事件後漂移。",
-      "lastResearchUpdate": "2026-10-03T18:12:00+08:00",
-      "researchNote": "Third deep block: D20-06 and D20-10 advanced to L2. Herding is separated from D06-06 crowding through behavior-specific residual/leader-follower/social evidence requirements; CSSD/CSAD and static concentration are non-identifying alone. Sentiment proxy taxonomy is separated from D17-08 news sentiment and from D12 VIX, D06 margin/crowding, and D02/D03 price-volume families. Taiwan literature supports heterogeneous herding and candidate sentiment proxies such as overnight returns and real-time public stance, but method/regime dependence and structural contamination prevent L3. Formal Core unchanged."
+      "status": "D20_01_02_03_04_06_07_08_09_10_12_L2 / IDENTIFICATION_FIREWALL_ACTIVE / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "先驗證 D20-08 的台股公告 first-known 時鐘、surprise 基準與 1/5/20/60 日路徑是否可 PIT/replay；同時完成 H07 D20-09 對 D03-05 的行為原因 vs 價格現象證據包。完成後續接 D20-05 代表性/近因偏誤，檢查是否能提供超越 D20-08/D20-09/D03 的獨立可觀測代理；否則準備合併提案。",
+      "lastResearchUpdate": "2026-10-03T21:40:00+08:00",
+      "researchNote": "Fourth deep block. D20-08 and D20-09 advanced L0→L2. Taiwan evidence shows event-horizon coexistence: record-high monthly-revenue announcements can exhibit next-day intraday reversal and subsequent 20-day positive drift, so short-horizon overreaction and medium-horizon underreaction can coexist around the same event. Taiwan earnings-momentum evidence supports underreaction under information-discreteness/attention conditions. Overreaction research must be separated from D03-05 price reversal; price reversal alone cannot identify behavioral cause. Price limits, liquidity, bid-ask bounce, forced flow, information correction and volatility normalization are mandatory counterfactuals. No L3 promotion because own PIT/replay event and causal-proxy data contracts are not yet validated. Formal Core unchanged."
     },
     {
       "id": "D21",
