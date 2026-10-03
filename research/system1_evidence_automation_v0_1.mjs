@@ -67,8 +67,8 @@ function verifiedFormalBaseline(row,c2){
   return row;
 }
 function verifiedBarState(row,barStart){
-  if(row?.verified!==true||row?.barStart!==barStart||typeof row.limitUp!=="boolean") return null;
-  return {limitUp:row.limitUp,marketState:typeof row.marketState==="string"?row.marketState:null};
+  if(row?.verified!==true||row?.barStart!==barStart||typeof row.limitUp!=="boolean"||row?.marketState!=="CONTINUOUS") return null;
+  return {limitUp:row.limitUp,marketState:"CONTINUOUS"};
 }
 function verifiedSelectionContext(pair,c2){
   const x=pair?.selectionContext,p=x?.provenance;
