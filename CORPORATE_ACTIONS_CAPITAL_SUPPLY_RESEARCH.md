@@ -4419,3 +4419,13 @@ D11-16 stays L2. TWSE custody rules and data-source families are known, but the 
 D11-17 advances L2 -> L3. New receipt: `research/d11_17_private_placement_pit_receipt_v0_1.json`. Official disclosure rules provide the required private-placement lifecycle fields and clocks; 6648 supplies a real proposal-to-payment witness, 2314 supplies failed/rescheduled rounds, and existing 2465 CA-114 artifacts provide a hard semantic counterexample against merging private-placement, registered, listed and tradable supply.
 
 The promotion is source/event-state feasibility only. Native historical MOPS version completeness, intraday availability and return outcomes remain pending. CA-113/114 exact listed-share archive gates are unchanged.
+
+## 2026-10-03 late continuation — D11-18 tender-offer L3
+
+D11-18 advances L2 -> L3 under `research/d11_18_tender_offer_pit_receipt_v0_1.json`.
+
+The promotion is based on observable Taiwan state transitions, not a merger-arbitrage return claim. Current bounded evidence covers completed success, oversubscription, regulatory-pending extension and post-expiry correction. The legal source contract also explicitly represents minimum-not-met and payment-failure branches.
+
+A realized failed tender remains required before any outcome/L4 study, but does not block L3 source feasibility because the reporting schema records condition achievement, tendered quantity, actual quantity and settlement state.
+
+No deal-spread sign, no Formal change.
