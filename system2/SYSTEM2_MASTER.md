@@ -375,3 +375,50 @@ The following remain deliberately false:
 
 System2 stage remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
 
+
+
+## 2026-10-03 S2-07 official empty-range semantics — PHYSICALLY CERTIFIED / NO_EVENT STILL LOCKED
+
+The endpoint-specific empty-response semantics gate is now physically verified on top of the existing official corporate-action source/parser lane.
+
+- PR #404 merged as `a1e2e2a065dce9f82f73d0f1b7e1681781a1666b`.
+- Final PR checks after evidence write-back:
+  - Official Continuity Empty Range Readonly `37133887169`: PASS;
+  - System2 Research CI `37133887214`: PASS;
+  - V8 Regression `37133887175`: PASS.
+- Frozen empty target: 2026-10-03.
+- Source-level result: `certifiedEmptySourceCount=6/6`.
+- `emptyRangeSemanticsCertified=true` is now valid for the six frozen official historical source contracts when their endpoint-specific signatures match.
+
+Certification is intentionally endpoint-specific:
+- TWSE par-value-change and all three TPEx historical lanes require exact requested-range identity + the frozen official success status + the expected row envelope + zero rows.
+- TWSE ex-right/ex-dividend actual and TWSE capital-reduction actual return only the official no-data status when empty, so they additionally require same-endpoint positive controls:
+  - ex-right/ex-dividend: 2026-04-08, exact range verified, 1 row;
+  - capital reduction: 2026-06-29, exact range verified, 1 row.
+- Any signature drift fails closed.
+
+This closes only the source-level empty-range semantics blocker. The following remain false:
+- `sourceCoverageComplete=false`;
+- `revisionCoverageComplete=false`;
+- `noEventMayBeClaimed=false`;
+- `suspensionCoverageComplete=false`;
+- `symbolSessionCompletenessCertified=false`;
+- `technicalContinuityCertified=false`;
+- `historyMutationPerformed=false`;
+- `strategyEvaluationPerformed=false`;
+- `capacityRunProduced=false`;
+- `selectionAuthority=false`;
+- `finalSelectionEnabled=false`;
+- `livePushEnabled=false`;
+- `capitalImpact=false`;
+- `orderImpact=false`;
+- `system1RuntimeUsed=false`.
+
+### Exact continuation
+1. establish revision/correction coverage for the required corporate-action lanes;
+2. add exchange-complete suspension/resumption evidence;
+3. design isolated append-only persistence only after the record/coverage contract is stable;
+4. bind event/suspension evidence to expected symbol sessions and RAW A1 lineage without mutating RAW bars;
+5. only after history + continuity are READY address the independent `ASSESSOR_POLICY_NOT_FROZEN` gate, then Strategy -> Ranking -> Capacity -> real `s2_capacity_runs`.
+
+System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
