@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-03 11:42 Asia/Taipei
+Updated: 2026-10-03 11:46 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -1496,4 +1496,12 @@ D12-14 vs D12-15。
 - 共享 primitive（基礎證據）不得重複計票。
 
 R01～R08 任務包由對應專科室驗證後回 00｜研究總控室驗收；不得自行改 Formal Core（正式核心）。
+
+## Hybrid R01～R08 執行註冊表 — 2026-10-03
+
+研究室執行角色驗證時，以：
+`shared-knowledge/HYBRID_ROLE_EXECUTION_REGISTRY_20261003_V0_1.md`
+作為 R01～R08 單一註冊表。
+
+完成角色驗證後只回傳 role eligibility（角色資格）、例外、UNKNOWN（未知）處理與防重複計票證據；不得自行宣告 production role（正式角色）或變更 Formal Core（正式核心）。
 
