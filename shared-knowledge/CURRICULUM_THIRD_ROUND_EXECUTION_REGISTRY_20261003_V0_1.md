@@ -77,4 +77,7 @@ Current:
 - H05 Room 06 packet accepted: `research/h05_d07_25_specialist_evidence_packet_v0_1.json`
 - H05 Room 14 counterpart: pending.
 - H05 terminal structural decision: not ready; current control decision = EVIDENCE_INSUFFICIENT_PENDING_COUNTERPART.
+- H20 Room 02 packet accepted: `research/D02_H20_BREAKOUT_SPECIALIST_RETURN_V0_1.md`
+- H20 Rooms 01 and 04 counterparts: pending.
+- H20 terminal structural decision: not ready; current control decision = EVIDENCE_INSUFFICIENT_PENDING_COUNTERPARTS.
 
