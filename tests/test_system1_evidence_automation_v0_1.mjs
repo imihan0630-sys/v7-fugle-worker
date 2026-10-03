@@ -46,17 +46,23 @@ const formalBaselineReceipts=[
   {symbol:"AAA",verified:true,parentId:generationId,sessionDate,knownAt:"2026-10-05T13:31:00+08:00",status:"NO_TRIGGER"},
   {symbol:"BBB",verified:true,parentId:generationId,sessionDate,knownAt:"2026-10-05T13:31:00+08:00",status:"NO_TRIGGER"}
 ];
-const statesAAA=C3_CAPTURE_SLOTS.map(slot=>{
+const statesAAA=C3_CAPTURE_SLOTS.map((slot,i)=>{
   const barStart=isoForSlot(slot);
-  return {symbol:"AAA",barStart,verified:true,limitUp:false,marketState:"CONTINUOUS"};
+  return {symbol:"AAA",barStart,verified:true,limitUp:false,marketState:"CONTINUOUS",
+    quoteTimestamp:new Date(Date.parse(barStart)+14*60000).toISOString(),
+    bidDepth5:1000+i,askDepth5:900+i,depthImbalance:.0526,spreadPct:.1,
+    rawDepthOnly:true,depthScoreDerived:false};
 });
-const statesBBB=C3_CAPTURE_SLOTS.slice(0,-1).map(slot=>{
+const statesBBB=C3_CAPTURE_SLOTS.slice(0,-1).map((slot,i)=>{
   const barStart=isoForSlot(slot);
-  return {symbol:"BBB",barStart,verified:true,limitUp:false,marketState:"CONTINUOUS"};
+  return {symbol:"BBB",barStart,verified:true,limitUp:false,marketState:"CONTINUOUS",
+    quoteTimestamp:new Date(Date.parse(barStart)+14*60000).toISOString(),
+    bidDepth5:800+i,askDepth5:850+i,depthImbalance:-.0303,spreadPct:.12,
+    rawDepthOnly:true,depthScoreDerived:false};
 });
 
 const audit=auditC3LiveInputs(c2,{captureRows,geometryReceipts,formalBaselineReceipts,priorCloseReceipts,barStateReceipts:[...statesAAA,...statesBBB]});
-eq(audit.schemaVersion,"SYSTEM1_C3_LIVE_INPUT_AUDIT_V0_3");
+eq(audit.schemaVersion,"SYSTEM1_C3_LIVE_INPUT_AUDIT_V0_4");
 eq(audit.eligibleN,2);
 eq(audit.readyN,1);
 eq(audit.blockedN,1);
@@ -74,7 +80,21 @@ eq(audit.readyReceipts[0].bars.length,17);
 ok(audit.readyReceipts[0].bars.every(x=>typeof x.limitUp==="boolean"&&typeof x.lateStage==="boolean"));
 eq(audit.rows.find(x=>x.symbol==="AAA").selectionDepthVerified,true);
 eq(audit.rows.find(x=>x.symbol==="AAA").selectionLateStageVerified,true);
+eq(audit.rows.find(x=>x.symbol==="AAA").liveDepthCompleteBars,17);
+eq(audit.rows.find(x=>x.symbol==="AAA").liveDepthCoveragePct,100);
+eq(audit.rows.find(x=>x.symbol==="AAA").depthGuardSource,"SELECTION_TIME_DEPTH_SCORE");
+eq(audit.rows.find(x=>x.symbol==="AAA").depthGuardUsesLiveOrderBook,false);
+eq(audit.depthGuardSource,"SELECTION_TIME_DEPTH_SCORE_REPLICATED_ACROSS_INTRADAY_BARS");
+eq(audit.liveDepthCapturedForAuditOnly,true);
+eq(audit.liveDepthScoreMappingPreregistered,false);
+eq(audit.liveDepthUsedByTrigger,false);
+eq(audit.depthGuardMustNotBeDescribedAsLiveOrderBook,true);
 ok(audit.readyReceipts[0].bars.every(x=>Number.isFinite(x.gapPct)));
+ok(audit.readyReceipts[0].bars.every(x=>x.selectionDepthScore===70));
+ok(audit.readyReceipts[0].bars.every(x=>x.depthScore===70));
+ok(audit.readyReceipts[0].bars.every(x=>x.depthScoreSemantics==="SELECTION_TIME_CONTEXT_REUSED_NOT_LIVE_ORDER_BOOK"));
+ok(audit.readyReceipts[0].bars.every(x=>Number.isFinite(x.liveBidDepth5)&&Number.isFinite(x.liveAskDepth5)));
+ok(audit.readyReceipts[0].bars.every(x=>x.liveDepthScore===null&&x.liveDepthScoreDerived===false));
 
 const c2NullDepth={...c2,pairs:c2.pairs.map(x=>x.symbol==="AAA"?{...x,selectionContext:{...x.selectionContext,depthScore:null}}:x)};
 const auditNullDepth=auditC3LiveInputs(c2NullDepth,{captureRows,geometryReceipts,formalBaselineReceipts,priorCloseReceipts,barStateReceipts:[...statesAAA,...statesBBB]});
