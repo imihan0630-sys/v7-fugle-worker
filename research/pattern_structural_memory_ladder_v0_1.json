@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "pattern-structural-memory-identification-ladder-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "gates": [
+    {
+      "id": "G0",
+      "name": "DATA_PIT_LEGITIMACY",
+      "fail": "INFERENCE_BLOCKED"
+    },
+    {
+      "id": "G1",
+      "name": "SIMPLE_PRICE_STRUCTURE_REDUNDANCY",
+      "fail": "SIMPLE_LONG_HORIZON_REDUNDANCY"
+    },
+    {
+      "id": "G2",
+      "name": "CROSSING_OPPORTUNITY",
+      "fail": "GENERIC_CROSSING_OPPORTUNITY_EXPLANATION"
+    },
+    {
+      "id": "G3",
+      "name": "REAL_HISTORY_NON_ANCHOR_CONTROL",
+      "fail": "GENERIC_HORIZONTAL_LEVEL_EXPLANATION"
+    },
+    {
+      "id": "G4",
+      "name": "MECHANICAL_DETECTOR_SELECTION",
+      "fail": "DETECTOR_SELECTION_EXPLANATION"
+    },
+    {
+      "id": "G5",
+      "name": "BEHAVIORAL_SALIENCE",
+      "fail": "SALIENCE_MEDIATED_MECHANISM_CANDIDATE"
+    },
+    {
+      "id": "G6",
+      "name": "DETECTOR_FRONTIER",
+      "fail": "MAJOR_CONFIRMATION_THRESHOLD_NOT_INCREMENTAL"
+    },
+    {
+      "id": "G7",
+      "name": "ANCHOR_ABLATION",
+      "fail": "ANCHOR_DEPENDENCE_FRAGILITY"
+    },
+    {
+      "id": "G8",
+      "name": "ALTERNATIVE_ORACLE_ROBUSTNESS",
+      "fail": "DETECTOR_DEFINITION_FRAGILITY"
+    },
+    {
+      "id": "G9",
+      "name": "STATISTICAL_OOS_VALIDATION",
+      "fail": "STATISTICAL_ROBUSTNESS_NOT_ESTABLISHED"
+    }
+  ],
+  "maxPassingInterpretation": "STRUCTURAL_SPECIFIC_REPRESENTATION_INCREMENTALITY_CANDIDATE",
+  "causalMemoryProofAuthorized": false,
+  "rules": [
+    "NO_GATE_SKIPPING",
+    "FAILED_GATES_RETAINED",
+    "COVERAGE_LOSS_REPORTED_EACH_GATE",
+    "NO_POST_OUTCOME_GATE_REORDERING",
+    "NO_SUBSET_GENERALIZATION_WITHOUT_SCOPE"
+  ],
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
