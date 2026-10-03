@@ -3,7 +3,7 @@ from pathlib import Path
 import os, re, subprocess, sys, json
 workflow=Path('.github/workflows/v7-regression.yml').read_text(encoding='utf-8')
 scripts=re.findall(r'python3 (scripts/\S+\.py)',workflow)
-tail={"scripts/apply_v8_15_1.py","scripts/apply_v8_15_2.py"}
+tail={"scripts/apply_v8_15_1.py","scripts/apply_v8_15_2.py","scripts/apply_v8_15_3.py"}
 for script in scripts:
     if script not in tail:
         subprocess.run([sys.executable,script],check=True)
@@ -11,6 +11,8 @@ baseline=Path('Worker.js').read_text(encoding='utf-8')
 subprocess.run([sys.executable,'scripts/apply_v8_15_1.py'],check=True)
 if "scripts/apply_v8_15_2.py" in scripts:
     subprocess.run([sys.executable,'scripts/apply_v8_15_2.py'],check=True)
+if "scripts/apply_v8_15_3.py" in scripts:
+    subprocess.run([sys.executable,'scripts/apply_v8_15_3.py'],check=True)
 candidate=Path('Worker.js').read_text(encoding='utf-8')
 def functions(source):
     matches=list(re.finditer(r'^(?:async )?function (\w+)\(',source,re.M))
@@ -24,8 +26,10 @@ before,after=functions(baseline),functions(candidate)
 changed=[name for name,body in before.items() if body!=after.get(name)]
 allowed={'c1ChunkRows','c1ImmutableDecision','persistC1PopulationReceipt','readC1PopulationReceipt',
          'runAfterMarketScanCore','selectTomorrowCandidates'}
-if "scripts/apply_v8_15_2.py" in scripts:
+if "scripts/apply_v8_15_2.py" in scripts or "scripts/apply_v8_15_3.py" in scripts:
     allowed.update({'ensureD1Schema','runBackgroundMonitor'})
+if "scripts/apply_v8_15_3.py" in scripts:
+    allowed.update({'c1ProjectFeature','c1DerivedState'})
 if set(changed)-allowed: raise SystemExit('Unexpected protected function changes: '+str(sorted(set(changed)-allowed)))
 selector=after['selectTomorrowCandidates'].replace(
     '  let c1PopulationReceipt=null,c1CaptureError=null;\n'
