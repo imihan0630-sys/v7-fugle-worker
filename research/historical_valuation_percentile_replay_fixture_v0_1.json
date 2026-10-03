@@ -1,0 +1,176 @@
+{
+  "schemaVersion": "HISTORICAL_VALUATION_PERCENTILE_REPLAY_FIXTURE_V0_1",
+  "status": "RESEARCH_ONLY_SOURCE_SEMANTICS_AND_MECHANICS_QA",
+  "formalCoreImpact": "NONE_LOCKED",
+  "frozenAtAsiaTaipei": "2026-10-03T11:16:00+08:00",
+  "parentContract": "research/historical_valuation_percentile_pit_contract_v0_1.json",
+  "percentilePolicy": {
+    "tieConvention": "AVERAGE_RANK_PERCENT_RANK",
+    "formula": "(countLess + 0.5*(countEqual-1)) / (N-1) for N>1",
+    "reason": "Maps sample minimum to 0, maximum to 1, and tied values to average rank without outcome tuning.",
+    "fixedWindows": {
+      "TRAILING_252_VALID_SESSIONS": {
+        "requiredValidObservations": 252
+      },
+      "TRAILING_756_VALID_SESSIONS": {
+        "requiredValidObservations": 756
+      },
+      "TRAILING_1260_VALID_SESSIONS": {
+        "requiredValidObservations": 1260
+      },
+      "EXPANDING_SINCE_AVAILABLE": {
+        "requiredValidObservations": 252
+      }
+    },
+    "missingPolicy": {
+      "NONPOSITIVE_EPS": "PE percentile UNKNOWN; retain explicit loss/nonpositive-EPS state.",
+      "SOURCE_NA_OTHER": "PE percentile UNKNOWN.",
+      "UNKNOWN": "PE percentile UNKNOWN; do not infer reason.",
+      "PB_MISSING": "PB percentile UNKNOWN only; PE may remain independently usable."
+    },
+    "structuralBreakPolicy": "Do not automatically reset history. Preserve break tags as context and test break-conditioned behavior later under preregistration."
+  },
+  "structuralBreakTags": [
+    "FISCAL_DENOMINATOR_UPDATE",
+    "EPS_SIGN_TRANSITION",
+    "EX_RIGHTS_OR_CAPITAL_CHANGE",
+    "PAR_VALUE_OR_SPLIT_EVENT",
+    "MAJOR_MA_OR_SCOPE_CHANGE",
+    "ACCOUNTING_POLICY_OR_STANDARD_CHANGE",
+    "LISTING_AGE_LIMITED_HISTORY",
+    "LONG_SUSPENSION_GAP"
+  ],
+  "officialSourceWitnesses": [
+    {
+      "market": "TWSE",
+      "tradeDate": "2026-10-02",
+      "source": "official BWIBBU_d page",
+      "symbol": "1102",
+      "name": "亞泥",
+      "pe": 9.83,
+      "pb": 0.68,
+      "reportPeriod": "115/2",
+      "purpose": "positive numeric parse witness only; no percentile/outcome claim"
+    },
+    {
+      "market": "TWSE",
+      "tradeDate": "2026-10-02",
+      "source": "official BWIBBU_d page",
+      "symbol": "1101",
+      "name": "台泥",
+      "peState": "SOURCE_NA_EXPLICIT",
+      "peRaw": "-",
+      "pb": 0.82,
+      "reportPeriod": "115/2",
+      "purpose": "PE-missing/PB-present independence witness; exact PE-missing reason requires denominator evidence"
+    },
+    {
+      "market": "TPEx",
+      "source": "official historical PE/PB inquiry",
+      "purpose": "source-family and historical-query witness; no unverified column mapping embedded in this fixture"
+    }
+  ],
+  "syntheticAdversarialCases": [
+    {
+      "id": "TIE_MIDRANK",
+      "values": [
+        10,
+        12,
+        12,
+        15
+      ],
+      "asOfValue": 12,
+      "expectedPercentile": 0.5,
+      "expectedState": "KNOWN"
+    },
+    {
+      "id": "ALL_EQUAL",
+      "values": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "asOfValue": 12,
+      "expectedPercentile": 0.5,
+      "expectedState": "KNOWN"
+    },
+    {
+      "id": "MIN_VALUE",
+      "values": [
+        10,
+        12,
+        12,
+        15
+      ],
+      "asOfValue": 10,
+      "expectedPercentile": 0,
+      "expectedState": "KNOWN"
+    },
+    {
+      "id": "MAX_VALUE",
+      "values": [
+        10,
+        12,
+        12,
+        15
+      ],
+      "asOfValue": 15,
+      "expectedPercentile": 1,
+      "expectedState": "KNOWN"
+    },
+    {
+      "id": "NONPOSITIVE_EPS",
+      "peState": "NONPOSITIVE_EPS",
+      "expectedPercentile": null,
+      "expectedState": "UNKNOWN",
+      "rule": "Do not insert zero/infinity into PE history."
+    },
+    {
+      "id": "NEW_LISTING_INSUFFICIENT_HISTORY",
+      "validObservationCount": 120,
+      "requestedWindow": "TRAILING_252_VALID_SESSIONS",
+      "expectedPercentile": null,
+      "expectedState": "UNKNOWN"
+    },
+    {
+      "id": "FUTURE_ROW_EXCLUDED",
+      "asOf": "2026-10-02T18:00:00+08:00",
+      "rows": [
+        {
+          "tradeDate": "2026-10-02",
+          "value": 20,
+          "eligible": true
+        },
+        {
+          "tradeDate": "2026-10-03",
+          "value": 5,
+          "eligible": false
+        }
+      ],
+      "rule": "Only records decision-time eligible at or before asOf may enter rank history."
+    },
+    {
+      "id": "LATE_CORRECTION_NO_BACKFILL",
+      "tradeDate": "2026-09-30",
+      "original": {
+        "value": 18,
+        "firstObservedAt": "2026-09-30T18:05:00+08:00"
+      },
+      "corrected": {
+        "value": 16,
+        "firstObservedAt": "2026-10-02T12:00:00+08:00"
+      },
+      "replayAsOf": "2026-10-01T13:30:00+08:00",
+      "expectedValue": 18,
+      "rule": "Later corrected value cannot overwrite an earlier replay state."
+    },
+    {
+      "id": "CAPITAL_ACTION_CONTEXT_NO_AUTO_RESET",
+      "structuralBreakTag": "EX_RIGHTS_OR_CAPITAL_CHANGE",
+      "expectedBehavior": "retain tag; percentile history is not silently reset or recomputed from current denominators"
+    }
+  ],
+  "outcomeJoin": "CLOSED",
+  "promotionState": "NO_MATURITY_CHANGE_FROM_MECHANICAL_QA_ALONE"
+}
