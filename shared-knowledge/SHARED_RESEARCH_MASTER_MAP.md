@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 14:00 Asia/Taipei
+Updated: 2026-10-03 14:05 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -981,3 +981,16 @@ Reusable rules from TI-474~481:
    - D03-03 is now L3/60 because Taiwan PIT data/source semantics are feasible and replay requirements are explicit.
    - System 1 / System 2 must preserve component provenance and avoid composite+component double counting.
    - No Formal change; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+
+### D03 repaint-safe divergence rule — 2026-10-03
+
+Status: **TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / OUTCOME_UNKNOWN**.
+
+- A divergence chart may anchor geometry to `pivotAt`, but the legal signal clock is `firstObservableAt` and cannot precede `confirmedAt`.
+- Primary v0.1 uses the two most recent consecutive confirmed same-type/same-scale Pattern pivots; no skipped-pivot or strongest-pair cherry-picking.
+- Confirmation lag and price movement between pivot and confirmation are explicit costs; pre-confirmation movement is never post-signal alpha.
+- Later pivots create new episodes; they cannot rewrite an earlier divergence episode's first-observed identity.
+- Divergence is Pattern × Indicator interaction evidence. Pattern pivot geometry, RSI/KD/MACD divergence labels and pivot confirmation cannot be multiplied into independent votes without redundancy accounting.
+- D03-12 is L3/60 because Pattern confirmed-swing clocks and D03 indicator state lineage are PIT-joinable under existing source/continuity/parent provenance.
+- No outcome authority or Formal change. `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
