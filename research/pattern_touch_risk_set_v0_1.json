@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "pattern-touch-risk-set-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "legalPredictors": [
+    "priorTouchCountThroughAsOf",
+    "priorBounceCountThroughAsOf",
+    "priorBreakCountThroughAsOf",
+    "lastTouchAtThroughAsOf",
+    "touchSpacingThroughAsOf",
+    "zoneAgeEligibleSessions",
+    "observableExposureThroughAsOf",
+    "currentLifecycleStateThroughAsOf"
+  ],
+  "prohibitedPredictors": [
+    "eventualTotalTouches",
+    "futureBounceCount",
+    "futureBreakCount",
+    "futureTimeToNextTouch"
+  ],
+  "ladder": [
+    "T0_RAW",
+    "T1_EXPOSURE",
+    "T2_OPPORTUNITY",
+    "T3_SELECTION_SALIENCE",
+    "T4_FRONTIER_ROBUSTNESS"
+  ],
+  "rules": [
+    "RISK_SET_MEMBERSHIP_DEFINED_BEFORE_FUTURE_RESPONSE",
+    "SURVIVAL_TO_K_IS_CONDITIONING_NOT_ALPHA",
+    "TERMINAL_ZONE_EXITS_RISK_SET",
+    "NEW_BOUNDARY_VERSION_NEW_LINEAGE",
+    "TOUCH_COUNT_UNSIGNED",
+    "NO_FUTURE_BOUNCE_USED_TO_DEFINE_PAST_TOUCH"
+  ],
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
