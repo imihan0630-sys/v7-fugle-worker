@@ -102,7 +102,7 @@ await assert.rejects(
   /HOT_HISTORY_EXISTING_CANONICAL_AMBIGUITY/,
 );
 
-// A later source transport failure must occur before phase-2 D1 mutations.
+// A fallback transport failure must occur before phase-2 D1 mutations.
 const counters = { batchCalls: 0 };
 const sourceCalls = [];
 await assert.rejects(
@@ -114,23 +114,21 @@ await assert.rejects(
     tradingDateResolver: async () => ({ tradingDates: dates }),
     historicalFetch: async (args) => {
       sourceCalls.push(args);
-      if (args.market === "TPEX") throw new Error("ECONNRESET fixture");
-      return {
-        state: "READY",
-        market: args.market,
-        marketDate: args.marketDate,
-        sourceDateEvidence: args.marketDate,
-        ordinarySymbolCount: 500,
-        sourceId: "FIXTURE",
-        sourceUrl: "https://example.invalid",
-        rows: [],
-      };
+      throw new Error("ECONNRESET fixture");
+    },
+    dailySourceFetch: async (args) => {
+      await args.exactDateFetch({
+        market: "TPEX",
+        marketDate: dates.at(-1),
+        observedAt: "2026-10-03T03:00:01.000Z",
+      });
+      throw new Error("unreachable");
     },
   }),
   /ECONNRESET fixture/,
 );
 assert.equal(counters.batchCalls, 0, "no D1 batch write may occur until all sources validate");
-assert.equal(sourceCalls.length, 2);
+assert.equal(sourceCalls.length, 1);
 assert.equal(sourceCalls[0].retryAttempts, 5);
 assert.equal(sourceCalls[0].retryDelayMs, 1000);
 

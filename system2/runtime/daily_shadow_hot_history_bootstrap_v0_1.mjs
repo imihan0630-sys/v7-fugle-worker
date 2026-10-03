@@ -2,6 +2,7 @@ import { deepFreeze } from "./factor_snapshot.mjs";
 import { sha256Hex } from "./decision_archive.mjs";
 import { buildOfficialTradingDatesV0_1 } from "./official_historical_backfill_source_v0_1.mjs";
 import { fetchOfficialHistoricalA1DateV0_1 } from "./official_historical_a1_source_v0_1.mjs";
+import { fetchDailyShadowA1SnapshotV0_1 } from "./daily_shadow_a1_source_v0_1.mjs";
 import {
   buildHistoricalStoreIngestBatch,
   toHistoricalA1BarRows,
@@ -212,6 +213,7 @@ export async function runDailyShadowHotHistoryBootstrapV0_1({
   fetchImpl = globalThis.fetch,
   tradingDateResolver = buildOfficialTradingDatesV0_1,
   historicalFetch = fetchOfficialHistoricalA1DateV0_1,
+  dailySourceFetch = fetchDailyShadowA1SnapshotV0_1,
 } = {}) {
   if (!db?.prepare || !db?.batch) throw new Error("SYSTEM2_DB adapter required");
   const id = safeRunId(runId);
@@ -220,37 +222,67 @@ export async function runDailyShadowHotHistoryBootstrapV0_1({
     db, asOf: clock, sessionCount, fetchImpl, tradingDateResolver,
   });
 
-  // Phase 1: fetch and validate every required market/date before any D1 mutation.
-  // This prevents a transient failure on the second market from creating a
-  // new half-populated date in this run. Existing rows from an interrupted
-  // earlier run are handled idempotently in phase 2.
+  // Phase 1: resolve the same PIT-safe Daily A1 source contract used by S2-07.
+  // For the latest completed session this can use the current official OpenAPI
+  // payload when its embedded date exactly matches the requested date. Only a
+  // stale/missing primary is allowed to fall back to an exact-date endpoint.
+  // Every market/date must validate before phase-2 D1 mutation begins.
   const sourcePlans = [];
   for (const marketDate of plan.targetDates) {
-    for (const market of ["TWSE", "TPEX"]) {
-      const source = await historicalFetch({
-        market,
-        marketDate,
-        observedAt: clock,
-        fetchImpl,
+    const bundle = await dailySourceFetch({
+      marketDate,
+      fetchImpl,
+      minimumByMarket: MINIMUM_SYMBOLS,
+      exactDateFetch: (args) => historicalFetch({
+        ...args,
         retryAttempts: 5,
         retryDelayMs: 1000,
-      });
-      if (!source || source.state !== "READY" || source.marketDate !== marketDate
-        || source.sourceDateEvidence !== marketDate) {
-        throw new Error("HOT_HISTORY_SOURCE_NOT_READY:" + market + ":" + marketDate);
+      }),
+    });
+    if (!bundle || bundle.state !== "READY" || bundle.marketDate !== marketDate
+      || bundle.snapshotBatch?.state !== "READY"
+      || bundle.snapshotBatch?.pointInTimeEligible !== true) {
+      throw new Error("HOT_HISTORY_DAILY_A1_NOT_READY:" + marketDate + ":" + String(bundle?.state || "MISSING"));
+    }
+    for (const market of ["TWSE", "TPEX"]) {
+      const part = bundle.snapshotBatch.markets?.[market];
+      if (!part || part.state !== "READY" || part.marketDate !== marketDate) {
+        throw new Error("HOT_HISTORY_MARKET_NOT_READY:" + market + ":" + marketDate);
       }
-      if (Number(source.ordinarySymbolCount || 0) < MINIMUM_SYMBOLS[market]) {
+      if (Number(part.normalizedSymbolCount || 0) < MINIMUM_SYMBOLS[market]) {
         throw new Error("HOT_HISTORY_SOURCE_COVERAGE_LOW:" + market + ":" + marketDate);
       }
-      if (Number(source.ordinarySymbolCount || 0) > HOT_HISTORY_MAX_SOURCE_ROWS_PER_MARKET_DATE) {
+      if (Number(part.normalizedSymbolCount || 0) > HOT_HISTORY_MAX_SOURCE_ROWS_PER_MARKET_DATE) {
         throw new Error("HOT_HISTORY_SOURCE_COVERAGE_UNEXPECTEDLY_HIGH:" + market + ":" + marketDate);
       }
-      sourcePlans.push(deepFreeze({ marketDate, market, source }));
+      if (Date.parse(part.observedAt) > Date.parse(bundle.decisionTimestamp)
+        || Date.parse(part.observedAt) > Date.now()) {
+        throw new Error("HOT_HISTORY_SOURCE_CLOCK_INVALID:" + market + ":" + marketDate);
+      }
+      sourcePlans.push(deepFreeze({
+        marketDate,
+        market,
+        source: {
+          sourceId: part.sourceId,
+          sourceName: part.sourceName,
+          sourceUrl: part.sourceUrl,
+          observedAt: part.observedAt,
+          sourceSelection: bundle.transports?.[market]?.selection || "UNKNOWN",
+          ordinarySymbolCount: part.normalizedSymbolCount,
+          rows: part.snapshots,
+        },
+      }));
     }
   }
 
-  // Phase 2: only after the full source set is valid do we inspect existing
-  // canonical rows and persist missing immutable bars.
+  // capturedAt is deliberately taken only after every source response has been
+  // observed and validated. New rows use the source's post-fetch observedAt as
+  // their first-known upper bound, never the run-start clock.
+  const persistenceClock = new Date().toISOString();
+  if (sourcePlans.some((x) => Date.parse(x.source.observedAt) > Date.parse(persistenceClock))) {
+    throw new Error("HOT_HISTORY_PERSISTENCE_CLOCK_PRECEDES_SOURCE");
+  }
+
   const receipts = [];
   let insertedBarCount = 0;
   let reusedExistingCount = 0;
@@ -267,7 +299,7 @@ export async function runDailyShadowHotHistoryBootstrapV0_1({
           throw new Error("HOT_HISTORY_EXISTING_ECONOMIC_CONFLICT:" + key);
         }
         if (Number(prior.pit_replay_eligible) !== 1 || !prior.available_at
-          || Date.parse(prior.available_at) > Date.parse(clock)) {
+          || Date.parse(prior.available_at) > Date.parse(persistenceClock)) {
           throw new Error("HOT_HISTORY_EXISTING_PIT_INELIGIBLE:" + key);
         }
         reused += 1;
@@ -288,8 +320,8 @@ export async function runDailyShadowHotHistoryBootstrapV0_1({
         transactions: row.transactions,
         change: row.change,
         continuityState: "UNVERIFIED",
-        observedAt: clock,
-        availableAt: clock,
+        observedAt: source.observedAt,
+        availableAt: source.observedAt,
         availabilityBasis: "PROSPECTIVE_OBSERVATION",
         sourceFields: row.sourceFields,
         sourceRowHash: row.sourceRowHash || await sha256Hex(row.sourceFields),
@@ -301,10 +333,10 @@ export async function runDailyShadowHotHistoryBootstrapV0_1({
       const batch = await buildHistoricalStoreIngestBatch({
         batchId: "S2-HOT-HISTORY:" + id + ":" + market + ":" + marketDate,
         datasetLane: "CORE_2017_PLUS",
-        sourceId: SOURCE_IDS[market],
-        sourceName: SOURCE_NAMES[market],
+        sourceId: source.sourceId,
+        sourceName: source.sourceName,
         sourceUrl: source.sourceUrl,
-        capturedAt: clock,
+        capturedAt: persistenceClock,
         rows: pending,
       });
       persisted = await executeHistoricalIngestBatchBulkV0_1({
@@ -321,7 +353,9 @@ export async function runDailyShadowHotHistoryBootstrapV0_1({
       marketDate,
       market,
       sourceId: source.sourceId,
-      sourceDateEvidence: source.sourceDateEvidence,
+      sourceSelection: source.sourceSelection,
+      sourceObservedAt: source.observedAt,
+      sourceDateEvidence: marketDate,
       sourceOrdinarySymbolCount: source.ordinarySymbolCount,
       pendingRowCount: pending.length,
       reusedExistingCount: reused,
@@ -336,9 +370,11 @@ export async function runDailyShadowHotHistoryBootstrapV0_1({
     version: DAILY_SHADOW_HOT_HISTORY_BOOTSTRAP_VERSION,
     runId: id,
     asOf: clock,
+    persistenceClock,
     plan,
     sourceSetValidatedBeforeMutation: true,
-    sourceRetryAttempts: 5,
+    sourceContract: "DAILY_A1_PRIMARY_THEN_EXACT_DATE_FALLBACK",
+    exactDateFallbackRetryAttempts: 5,
     state: plan.targetDates.length
       ? "BOUNDED_HOT_HISTORY_BOOTSTRAP_COMPLETE"
       : "HOT_HISTORY_ALREADY_SUFFICIENT_IN_WINDOW",
