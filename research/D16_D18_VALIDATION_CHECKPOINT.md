@@ -1199,3 +1199,73 @@ D16-25 is now sufficiently researched on the conceptual/validation side to suppo
 7. Measure Brier/log loss/reliability, after-cost utility, coverage/ABSTAIN and Regime drift.
 8. Only after those exist consider D16-25 L3/L4.
 9. D15 room must independently study Kelly/Fractional Kelly, then compare merge structures A/B/C/D under anti-orphan governance.
+
+
+## 2026-10-03 D16-25 L2 closure addendum — Regime calibration and risk-coverage validation
+
+Owner priority remains D16-25 until the D16 side is sufficiently complete for D15-19 merge governance.
+
+PR #333:
+- merged as `f93d41436291f1319f7ca402ff8cac55ff27d63d`;
+- final PR head `448afc26bd9164087120a21f51590d69d42a994f`;
+- V8 Repair CI `37090669475` PASS;
+- V8 Regression `37090669501` PASS;
+- System2 Research CI `37090669430` attempt 3 PASS;
+- System2 CI attempts 1/2 were cancelled by repository-wide `concurrency: system2-research-ci / cancel-in-progress: true`, not by test failure;
+- successful System2 job `111110654817` passed research tests, syntax checks, SQLite schema validation and Production isolation guard.
+
+Additional executable D16-25 closure:
+- per-prediction optional `regimeId` is preserved;
+- evaluation now reports per-Regime N, independent scan dates, empirical event rate, Brier score and log loss;
+- low-N Regime cells are explicitly descriptive, not stable calibration claims;
+- multiple preregistered ABSTAIN / selective policies can be evaluated side-by-side;
+- the evaluator never selects a winning policy from evaluation outcomes;
+- `bestPolicySelected=false` and `NO_OUTCOME_TUNED_POLICY_SELECTION` are explicit;
+- duplicate policy versions fail closed.
+
+Methodology boundary:
+- proper probabilistic scoring remains primary for probability quality;
+- ECE remains secondary;
+- calibration must be rechecked under chronological / Regime / distribution shift;
+- selective prediction must report risk/quality together with coverage/opportunity capture;
+- Fractional Kelly is a downstream sizing response to validated uncertainty/edge, not a calibration method.
+
+D16-25 maturity remains:
+`L2 / 40%`.
+
+Reason for no L3:
+- genuine complete Taiwan intended-population C1 generation still absent;
+- no immutable real D16-25 probability prediction series yet;
+- no causally matured Taiwan calibration/OOS series yet;
+- no promotion-grade replay/calibration receipt yet.
+
+D16-25-side merge governance is now sufficiently mature to state:
+- D16-25 = probability/distribution estimation + calibration + uncertainty + ABSTAIN + decision utility;
+- D15-19 = Kelly/log-growth + Fractional Kelly + validated belief/payoff -> capital fraction + portfolio constraints;
+- dependency is strong;
+- conceptual overlap is partial;
+- direct duplication is not established;
+- a direct D15-19 -> D16-25 merge would require an explicit D16 scope expansion into portfolio sizing and carries anti-orphan risk;
+- structurally, D15-19 -> D15-16 method-family absorption or split-transfer remains more natural than silently moving all Kelly allocation responsibility into D16, subject to D15 specialist validation.
+
+Current D15-19 merge action:
+`NO_MERGE_EXECUTION_YET`.
+
+D16-side readiness:
+`READY_FOR_D15_SPECIALIST_COMPARISON`.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+## Exact next priority handoff
+
+1. Keep D16-25 at L2 until genuine C1/PIT prediction-outcome evidence exists; do not manufacture L3.
+2. D15 specialist room should now study D15-19 Kelly/Fractional Kelly independently:
+   - log-growth objective;
+   - full vs fractional Kelly;
+   - parameter-estimation risk;
+   - correlated multi-position Kelly;
+   - drawdown/ruin constraints;
+   - transaction costs/capacity;
+   - comparison with fixed-risk, equal allocation, capped sizing, risk budgeting and D15-16 optimization family.
+3. After D15-19 reaches at least mechanism/falsification maturity, compare Options A/B/C/D in `research/D16_25_D15_19_MERGE_DECISION_INPUT_V0_1.md`.
+4. Any standalone module retirement still requires owner decision + anti-orphan verification.
