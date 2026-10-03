@@ -1,0 +1,117 @@
+{
+  "version": "0.1",
+  "id": "SC-043",
+  "capturedAt": "2026-10-03T14:00:00+08:00",
+  "module": "D10-13 Trade Policy／Export Controls／Sanctions Supply-chain Transmission貿易政策出口管制制裁供應鏈傳導",
+  "mode": "POLICY_EVENT_LIFECYCLE_AND_TRANSMISSION_CONTRACT / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "sources": [
+    {
+      "authority": "U.S. BIS",
+      "url": "https://www.bis.gov/regulations/ear/744",
+      "use": "Current EAR end-use/end-user and semiconductor manufacturing controls."
+    },
+    {
+      "authority": "U.S. BIS",
+      "url": "https://www.bis.gov/press-release/commerce-strengthens-restrictions-advanced-computing-semiconductors-enhance-foundry-due-diligence-prevent",
+      "use": "2025 advanced-computing/foundry due-diligence rule example."
+    },
+    {
+      "authority": "U.S. BIS",
+      "url": "https://media.bis.gov/press-release/department-commerce-rescinds-biden-era-artificial-intelligence-diffusion-rule-strengthens-chip-related",
+      "use": "Policy-announced-but-rescinded-before-enforcement negative control."
+    },
+    {
+      "authority": "IMF",
+      "url": "https://www.imf.org/en/topics/trade",
+      "use": "Geoeconomic fragmentation and trade-restriction transmission context."
+    }
+  ],
+  "eventLifecycle": [
+    "RUMOR_OR_PROPOSAL",
+    "OFFICIAL_ANNOUNCEMENT",
+    "RULE_TEXT_PUBLISHED",
+    "EFFECTIVE_DATE_SET",
+    "COMPLIANCE_OR_LICENSE_TRANSITION",
+    "ENFORCEMENT_ACTIVE",
+    "AMENDED_OR_CLARIFIED",
+    "EXEMPTION_OR_LICENSE_EXCEPTION",
+    "SUSPENDED_OR_RESCINDED",
+    "COMPANY_SPECIFIC_EXPOSURE_CONFIRMED"
+  ],
+  "scopeDimensions": [
+    "jurisdiction",
+    "controlledItem/ECCN_or_product_scope",
+    "destination",
+    "endUse",
+    "endUser/entity",
+    "ownership_or_parent_country",
+    "foreign_direct_product_or_de_minimis_scope",
+    "licensePolicy",
+    "exception",
+    "effectiveDate",
+    "transitionPeriod"
+  ],
+  "transmissionVector": [
+    "DIRECT_REVENUE_ACCESS",
+    "CUSTOMER_ORDER_REALLOCATION",
+    "SUPPLIER_INPUT_ACCESS",
+    "FOUNDRY_OR_PACKAGING_DUE_DILIGENCE",
+    "CAPACITY_LOCATION",
+    "LEAD_TIME",
+    "INVENTORY_BUFFER",
+    "COMPLIANCE_COST",
+    "SUBSTITUTION_LOCALIZATION",
+    "PRICING_POWER",
+    "RETALIATION_OR_SECOND_ORDER_POLICY"
+  ],
+  "mechanisms": [
+    "Export controls can alter who may buy, fabricate, package, service or expand controlled technology; impact depends on exact item/end-use/end-user and jurisdiction scope.",
+    "Rules can redirect demand/capacity toward compliant suppliers or locations, but can also reduce addressable market and increase compliance cost.",
+    "Policy uncertainty itself can cause pre-buying, inventory buffering or order rerouting before economic effects are realized."
+  ],
+  "falsification": [
+    "Official announcement is not equivalent to effective enforcement; the 2025 AI Diffusion Rule was issued with a future compliance date and then rescinded before enforcement.",
+    "A rule can contain exemptions, license exceptions, grandfathering or transition periods that materially alter issuer exposure.",
+    "A sector may have both beneficiaries and victims; domestic or allied suppliers may gain substitution demand while losing customers or facing higher compliance costs.",
+    "Company exposure cannot be inferred from headquarters nationality alone; product, customer, manufacturing location and EAR jurisdiction matter.",
+    "Market reaction to a policy headline is not evidence of realized revenue/capacity impact."
+  ],
+  "pitContract": {
+    "clocks": [
+      "announcementAt",
+      "rulePublishedAt",
+      "effectiveAt",
+      "transitionEndAt",
+      "amendedAt",
+      "rescindedAt",
+      "capturedAt",
+      "firstEligibleDecision"
+    ],
+    "requiredExposureEvidence": [
+      "issuerProductScope",
+      "customer/destinationScope",
+      "manufacturing/serviceLocation",
+      "controlledTechnologyLink"
+    ],
+    "missingRule": "UNKNOWN != unaffected; UNKNOWN != negative.",
+    "revisionRule": "Every amendment/rescission is a new policy vintage; prior state remains immutable.",
+    "outcomeFirewall": "No stock return or realized revenue outcome until event and issuer exposure are frozen."
+  },
+  "redundancyControls": [
+    "News/event timing belongs to D17/D11; D10-13 owns physical/economic supply-chain transmission.",
+    "Do not duplicate D10-08 shortage state; policy is a cause/context that may or may not create shortage.",
+    "Do not duplicate D13 macro trade-regime variables as issuer-specific exposure."
+  ],
+  "maturityDecision": {
+    "D10-13": "PROMOTE_L0_TO_L2_MECHANISM_AND_FALSIFICATION_DEFINED"
+  },
+  "reasonNoL3": "A Taiwan issuer-level effective-dated policy-exposure dataset has not yet been frozen across controlled products, destinations, end-users and transition clocks.",
+  "exactNext": [
+    "SC-045 freeze the first Taiwan semiconductor export-control exposure receipt using current rule text plus issuer-native product/location/customer evidence.",
+    "Include at least one exemption/rescission/low-exposure negative control.",
+    "No beneficiary/victim stock score until prospective/OOS transmission evidence exists."
+  ],
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / POLICY_LIFECYCLE_FROZEN / TAIWAN_EXPOSURE_RECEIPT_PENDING / FORMAL_UNCHANGED"
+}
