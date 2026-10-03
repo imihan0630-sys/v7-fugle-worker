@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T23:20:00+08:00",
+  "updatedAt": "2026-10-03T23:19:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 37.8
+    "maturityWeightedPct": 38.1
   },
   "domains": [
     {
@@ -1930,7 +1930,7 @@
         "MACRO_CROSS_MARKET_CHECKPOINT.md",
         "MACRO_CROSS_MARKET_RESEARCH.md"
       ],
-      "maturityPct": 34.7,
+      "maturityPct": 41.1,
       "modules": [
         {
           "id": "D13-01",
@@ -2087,32 +2087,35 @@
         {
           "id": "D13-17",
           "name": "Trade／Geopolitical Risk／Capital-flow Transmission貿易地緣風險與資金流傳導",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Trade／Geopolitical Risk／Capital-flow Transmission貿易地緣風險與資金流傳導」。研究財政、貨幣、金融條件、央行流動性與地緣／資金流傳導。需區分政策決策、預期差、實際流動性與市場價格反應，避免把單一宏觀指標當成機械式股價方向。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D13-17 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "CONCEPT_AND_FALSIFICATION_FROZEN / POLICY_LEGAL_FLOW_CLOCKS_SEPARATED / CAPITAL_FLOW_OBJECTS_SEPARATED / PIT_MULTI_EVENT_EVIDENCE_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "next": "Preserve one official policy-event lineage and one eligible TWSE 18:10 foreign-flow version source-only; keep CBC BOP/TIC structural and build D13->D10/D07 exposure bridge only with versioned provenance.",
+          "evidence": "research/d13_17_trade_geopolitical_capitalflow_spec_v0_1.json + research/d13_17_event_flow_clock_schema_v0_1.json + MACRO_CROSS_MARKET_RESEARCH.md MC-113..MC-123. Tariff/export-control/sanctions clocks, GPR threat/act, TWSE-vs-BOP-vs-TIC flow semantics, fragmentation/diversion and falsification frozen."
         },
         {
           "id": "D13-18",
           "name": "Business Cycle／Leading-Coincident-Lagging Indicators景氣循環與領先同時落後指標",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Business Cycle／Leading-Coincident-Lagging Indicators景氣循環與領先同時落後指標」。研究景氣循環、領先同時落後指標、資本市場預期與長期成長驅動；需區分實體經濟資料、政策預期與市場先行定價，禁止把單一總經指標機械映射成股價方向。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D13-18 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "CONCEPT_AND_FALSIFICATION_FROZEN / NDC_TAIEX_COMPONENT_CIRCULARITY_FIREWALL / REALTIME_VINTAGE_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "next": "Preserve first-known NDC release vintages and audit ex-TAIEX leading/monitoring reconstruction before any stock-return use; build outcome-blind cycle state only from vintage-complete components.",
+          "evidence": "research/d13_18_business_cycle_indicator_spec_v0_1.json + MACRO_CROSS_MARKET_RESEARCH.md MC-124..MC-132. NDC leading/coincident/lagging semantics, reference-vs-release clock, monthly revisions, TAIEX component leakage, OECD CLI and retrospective NBER labels frozen."
         },
         {
           "id": "D13-19",
           "name": "Capital Market Expectations／Long-run Growth Drivers資本市場預期與長期成長驅動",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Capital Market Expectations／Long-run Growth Drivers資本市場預期與長期成長驅動」。研究景氣循環、領先同時落後指標、資本市場預期與長期成長驅動；需區分實體經濟資料、政策預期與市場先行定價，禁止把單一總經指標機械映射成股價方向。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D13-19 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "CONCEPT_AND_FALSIFICATION_FROZEN / MARKET_EXPECTATION_PREMIUM_DECOMPOSITION / LONG_RUN_GROWTH_HORIZON_GUARD / PIT_VINTAGE_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "next": "Preserve SEP/CBO and market-implied decomposition vintages source-only; compare components before composite expectation states; no next-day use without matched-horizon incremental evidence.",
+          "evidence": "research/d13_19_capital_market_expectations_longrun_growth_spec_v0_1.json + MACRO_CROSS_MARKET_RESEARCH.md MC-133..MC-141. Structural growth vs expectations vs valuation, yield/term-premium, breakeven risk/liquidity, SEP/CBO projection and horizon transportability guards frozen."
         }
       ]
     },
