@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "pattern-minimal-continuous-basis-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "formalCore": "LOCKED",
+  "basis": {
+    "PB1_IMMUTABLE_BOUNDARY_GEOMETRY": {
+      "primitives": [
+        "localLower",
+        "localUpper",
+        "parentLower",
+        "parentUpper",
+        "currentClose",
+        "normalizationInputs"
+      ],
+      "derived": [
+        "parentCenter",
+        "availableAirToParentLowerPct",
+        "distanceLocalToParentCenterPct",
+        "availableAirToParentLowerATR",
+        "geometryRelationState"
+      ]
+    },
+    "PB2_PATH_EXCURSION_OCCUPANCY": {
+      "primitives": [
+        "maxFavorableExtensionPostBreak",
+        "maxAdverseExcursion",
+        "cumulativeSignedDistanceFromBoundary",
+        "currentSignedCloseDistanceFromBoundary"
+      ],
+      "derived": [
+        "meanSignedDistance_if_observable_count_known"
+      ]
+    },
+    "PB3_OBSERVABILITY_EXPOSURE": {
+      "primitives": [
+        "observableBarsSinceBreak",
+        "constrainedBarsSinceBreak",
+        "eligibleSessionDateSetCommitment",
+        "sourceBarsThrough"
+      ],
+      "derived": [
+        "eligibleBarsSinceBreak"
+      ]
+    },
+    "PB4_FIRST_EVENT_CLOCKS": {
+      "primitives": [
+        "localFirstBreakAt",
+        "firstParentZoneEntryAt",
+        "parentFirstBreakAt",
+        "parentFirstOrdinaryObservableAt",
+        "parentFirstPostBreakOutsideCloseAt",
+        "parentFirstReentryAt",
+        "parentFirstFailureAt",
+        "parentFirstReclaimAt"
+      ],
+      "derived": [
+        "barsToReentry",
+        "barsToFailure",
+        "barsToReclaim",
+        "timeAbove",
+        "eventAges"
+      ]
+    },
+    "PB5_STRUCTURAL_IDENTITY_AGE": {
+      "primitives": [
+        "relationEpisodeKey",
+        "localBoundaryIdVersion",
+        "parentZoneIdVersion",
+        "parentZoneAgeEligibleSessions"
+      ],
+      "derived": []
+    },
+    "PB6_DERIVED_LIFECYCLE_REPRESENTATION": {
+      "primitives": [],
+      "derived": [
+        "geometryRelationState",
+        "canonicalParentLifecycle",
+        "compoundLifecycleState",
+        "falseBreakoutState",
+        "transitionLabels"
+      ]
+    }
+  },
+  "deterministicRules": {
+    "D1": "eligibleBarsSinceBreak = observableBarsSinceBreak + constrainedBarsSinceBreak",
+    "D2": "parentCenter = (parentLower + parentUpper) / 2 when midpoint semantics apply",
+    "D3": "availableAirPct = (parentLower - localUpper) / localUpper",
+    "D4": "centerDistancePct = (parentCenter - localUpper) / localUpper",
+    "D5": "availableAirATR = (parentLower - localUpper) / ATR_asOf",
+    "D6": "geometryRelationState = thresholded function(local bounds,parent bounds)",
+    "D7": "event durations = certified session ordinal differences(first clocks)",
+    "D8": "compoundLifecycleState = derived representation(complete clocks,current location)",
+    "D9": "same-source reentry+failure labels are nested not independent",
+    "D10": "multiple normalizations of one geometric numerator are scaling alternatives not source multiplicity"
+  },
+  "minimalPredictiveBasis": "MCPB_V0_1",
+  "dualSensitivity": [
+    "FULL_C2",
+    "MINIMAL_C2"
+  ],
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
