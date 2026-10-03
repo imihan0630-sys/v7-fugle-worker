@@ -2453,3 +2453,34 @@ Current:
 3. Continue D03-05 pullback/short-term reversal construct separation and PIT feasibility.
 4. TI-005/TI-006 remain first actual efficacy tests after source-gate completion.
 5. Formal Core unchanged.
+
+
+## TI-516 through TI-525 — D03-05 pullback origin gate (2026-10-03)
+
+Durable artifacts:
+- `research/D03_PULLBACK_REVERSAL_OWNERSHIP_DATA_GATE_V0_1.md`
+- `research/d03_pullback_origin_contract_v0_1.json`
+- `research/test_d03_pullback_origin_gate_v0_1.mjs`
+
+Result:
+- generic short-term reversal factor remains REJECTED_OR_REDUNDANT;
+- pullback depth is not origin;
+- liquidity-pressure attribution requires valid D05 pressure/depth/response/persistence/capture receipts;
+- candle morphology cannot substitute for true pressure evidence;
+- owner-lane receipts are mandatory and multiple origins remain MULTIPLE;
+- confirmation cannot backdate from reclaim/15m turn-up to the pullback low.
+
+Maturity:
+- D03-05 remains **L2/40**.
+- D03 aggregate remains **55.0%** after D03-13 and D03-04 promotions.
+
+Current:
+`D03_05 = L2_REMAINS / ORIGIN_ATTRIBUTION_DATA_GATED`
+`LIQUIDITY_PRESSURE_ORIGIN = UNKNOWN_WITHOUT_D05_RECEIPT`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Exact next:
+- do not invent a generic reversal score;
+- wait for D05 promotion-grade pressure/replenishment evidence for the liquidity-origin branch;
+- keep primary TI-005/TI-006 efficacy queue unchanged;
+- Formal Core unchanged.
