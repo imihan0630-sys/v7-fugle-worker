@@ -168,7 +168,7 @@ export function buildC3RawQuoteEvidence(c2Ledger,{
     if(missingBarSlots.length) blockers.push("INCOMPLETE_15M_SESSION");
     if(missingQuoteSlots.length) blockers.push("INCOMPLETE_QUOTE_SESSION");
     if(!(ctx?.close>0)) blockers.push("SELECTION_CLOSE_UNVERIFIED");
-    if(!(ctx?.depthScore>=0)) blockers.push("SELECTION_DEPTH_UNVERIFIED");
+    if(ctx?.depthScore===null||ctx?.depthScore===undefined||ctx.depthScore<0) blockers.push("SELECTION_DEPTH_UNVERIFIED");
     if(typeof ctx?.lateStage!=="boolean") blockers.push("SELECTION_LATE_STAGE_UNVERIFIED");
     if(!ctx?.channel) blockers.push("BASE_SETUP_UNVERIFIED");
     if(!(ctx?.geometry?.stop>0&&ctx?.geometry?.target>0)) blockers.push("GEOMETRY_UNVERIFIED");
