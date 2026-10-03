@@ -318,3 +318,60 @@ No manual historical refresh is fabricated for the missed 2026-10-02 invocation.
 
 Evidence: `system2/evidence/resonance_cron_weekday_physical_acceptance_20261003.json`.
 
+## 2026-10-03 S2-07 official corporate-action continuity milestone — SOURCE/PARSER PHYSICALLY VERIFIED, CERTIFICATION STILL LOCKED
+
+S2-07 advanced from unknown corporate-action source transport to a physically verified official-source parser lane without changing System1 or enabling System2 selection authority.
+
+### Official source capability
+- PR #375 established keyless read-only TWSE / TPEx continuity-source capability.
+- PR #376 added defensive legacy TPEx HTML-envelope parsing after the legacy transport initially returned HTTP 200; a later physical HTTP 520 made that route unstable, so it was retired rather than hidden behind retries.
+- PR #378 replaced the active legacy TPEx reduction route with modern official range JSON endpoints and added strict response-range identity.
+- Physical run 37120129869: 8/8 active official source lanes STRUCTURE_READY; 6/6 historical actual-result range lanes matched the exact requested 2026-04-05..2026-10-02 interval. This proves transport/structure/range identity only, not event completeness or technical continuity.
+
+### Immutable continuity archive core
+- PR #393 merged as `9453279dfaf4141477fb312c7f3f31a37c0ead53`.
+- Added `corporate_action_continuity_archive_v0_1.mjs` with immutable source captures and event versions, append-only revision/cancellation semantics, duplicate-observation reconciliation, explicit prospective/verified/historical-UNKNOWN knowledge clocks, and fail-closed NO_EVENT rules.
+- Historical firstKnownAt / availableAt are never fabricated.
+- NO_EVENT requires complete PIT universe + every required exact-range source contract + parser completeness + revision coverage + no missing source dates + certified empty-range semantics where applicable + unambiguous event versions.
+- No D1 schema migration was introduced because existing generic tables are not semantically correct for raw corporate-action event archival.
+- PR System2 Research CI 37131834282 PASS; V8 Regression 37131834291 PASS.
+
+### Real official event parser
+- PR #396 merged as `71f95e08bbafedc5da8012f8ae4f23ae77d1bc95`.
+- Six historical official result lanes now normalize to immutable corporate-action event versions:
+  - TWSE TWT49U ex-right/ex-dividend actual;
+  - TWSE TWTAUU capital-reduction resume/reference;
+  - TWSE TWTB8U par-value-change resume/reference;
+  - TPEx exDailyQ ex-right/ex-dividend actual;
+  - TPEx revivt capital-reduction resume/reference;
+  - TPEx pvChgRslt par-value-change resume/reference.
+- PR checks: System2 Research CI 37132693815 PASS; V8 Regression 37132693770 PASS; Official Continuity Event Parser Readonly 37132693820 PASS.
+- Physical frozen-range result: 6/6 parsers ready, 0 parse failures, 1,465 normalized ordinary-equity events, and all 1,465 had usable official pre-action-close/reference-price pairs for continuity evidence.
+- Historical event-signal PIT remains protected: all 1,465 normalized historical events kept firstKnownAt=null / availableAt=null / pitEventReplayEligible=false.
+
+### Still not certified
+The following remain deliberately false:
+- revisionCoverageComplete;
+- emptyRangeSemanticsCertified;
+- noEventMayBeClaimed;
+- symbolSessionCompletenessCertified;
+- technicalContinuityCertified;
+- continuityTransformPerformed;
+- historyMutationPerformed;
+- strategyEvaluationPerformed;
+- capacityRunProduced;
+- zeroPickClaimed;
+- selectionAuthority / finalSelectionEnabled / livePushEnabled;
+- capitalImpact / orderImpact;
+- system1RuntimeUsed.
+
+### Exact continuation
+1. verify endpoint-specific empty-range semantics before any zero-event inference;
+2. establish revision/correction coverage;
+3. add exchange-complete suspension/resumption evidence;
+4. design isolated append-only persistence only after the immutable record contract is stable;
+5. bind verified event/suspension evidence to expected symbol sessions and RAW A1 lineage without mutating RAW bars;
+6. only after history + continuity are READY address the separate `ASSESSOR_POLICY_NOT_FROZEN` gate and then Strategy -> Ranking -> Capacity -> real `s2_capacity_runs`.
+
+System2 stage remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
+
