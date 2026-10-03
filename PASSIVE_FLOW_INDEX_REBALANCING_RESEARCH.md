@@ -1251,3 +1251,40 @@ Only the second necessarily changes outstanding ETF units. Secondary-market ETF 
 3. Search only official/authorized sources for historical immutable units/PCF vintages; absence remains UNKNOWN.
 4. Keep exact stock-level passive-flow NTD unobserved; modeled basket exposure remains contextual.
 5. Do not start PF outcome tests until clean prospective receipts and event-universe coverage exist.
+
+## PF-039 — ISSUES-DIFF（發行單位差異數）含作業調整，units delta（單位淨變化）語意再收窄
+
+Research cycle: 2026-10-03 Asia/Taipei
+Status: MECHANISM_FALSIFICATION_ADVANCED / PROSPECTIVE_RECEIPT_REQUIRED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+TWSE 115 年 ETF 申贖作業流程將 ISSUES-DIFF 明確拆成：
+- T-1 初審成功申購減 T-1 初審成功贖回；
+- 扣除 T-2 複審失敗申購、加回 T-2 複審失敗贖回；
+- 加入 T-1 雙幣 ETF 轉換合計增減股數。
+
+因此先前 `netUnitsDelta` 比 AUM delta 更乾淨的判斷仍成立，但不得把 ISSUES-DIFF 直接命名為 same-day gross 或 pure net creation/redemption（當日毛／純淨申贖）。
+
+新的安全語意：
+`REPORTED_OUTSTANDING_UNIT_CHANGE_WITH_OPERATIONAL_ADJUSTMENTS`。
+
+同一官方流程還顯示 PCF 可以在 T 日重新傳送與更新，因此 PCF 也必須保存 use-date、version、capturedAt、firstKnownAt 和 canonical hash（標準雜湊）；後來下載的 PCF 不能自動代表較早決策時點已知。
+
+Bounded issuer examples（發行人有界例子）:
+- 0050 元大台灣50，2026-10-01 units delta = 0，不能證明 gross creation/redemption 皆為 0。
+- 0056 元大高股息，2026-10-01 units delta = +27,500,000，creation unit = 500,000，等於 55 個 creation-unit-equivalent（申贖基數等值），但不能稱為 55 筆實際申購或實際個股買盤。
+
+新研究 artifact（研究證據包）:
+`research/d06_etf_mechanics_pf039_v0_1.md`。
+
+D06-16 與 D06-11 / D11-14 的防重複計票邊界亦已凍結：事件身份、被動基金實現流量、ETF 申贖／溢折價／追蹤／流動性機制是不同層；同一 index event（指數事件）或 units receipt（單位憑證）不得重複成為多張方向票。
+
+Promotion decision（成熟度判定）:
+D06-16 可達 L2「機制＋反證已定義」；尚不足 L3，因為多日期同世代 prospective units-delta + PCF receipt（前瞻單位變化＋申贖清單憑證）、公司行動對齊與版本穩定性仍未完成。
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+Exact next continuation — PF-040:
+1. 累積第二個以上獨立交易日的國內實物型 ETF units-delta + PCF 同世代 receipt。
+2. 保存 cash substitution（現金替代）、split/reverse-split（分割／反分割）與 PCF 更新版本。
+3. MODELED_PRIMARY_BASKET_EXPOSURE（模型化初級市場籃子曝險）保持 research-only；actual stock execution（實際個股執行）維持 UNKNOWN。
+4. 與 D11-14 共用 index-event receipt，不雙重計票。
