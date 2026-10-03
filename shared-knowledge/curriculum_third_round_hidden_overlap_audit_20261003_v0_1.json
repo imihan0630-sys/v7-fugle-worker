@@ -1,0 +1,269 @@
+{
+  "schemaVersion": "CURRICULUM_THIRD_ROUND_HIDDEN_OVERLAP_AUDIT_V0_1",
+  "updatedAt": "2026-10-03T10:45:00+08:00",
+  "scope": {
+    "activeModules": 354,
+    "hiddenOverlapClusters": 20,
+    "formalCoreImpact": "NONE",
+    "curriculumCountImpact": "NONE"
+  },
+  "summary": {
+    "immediateRetirement": 0,
+    "strongConsolidation": 4,
+    "semanticSplitOrMerge": 4,
+    "scopeDedup": 4,
+    "keepSeparateDependencyChains": 8
+  },
+  "clusters": [
+    {
+      "id": "H01",
+      "modules": [
+        "D09-13",
+        "D09-14"
+      ],
+      "classification": "STRONG_MERGE_CANDIDATE_AFTER_VALIDATION",
+      "rooms": [
+        "07"
+      ]
+    },
+    {
+      "id": "H02",
+      "modules": [
+        "D14-03",
+        "D14-04",
+        "D14-17"
+      ],
+      "classification": "STRONG_CONSOLIDATION_CANDIDATE_AFTER_VALIDATION",
+      "rooms": [
+        "10"
+      ]
+    },
+    {
+      "id": "H03",
+      "modules": [
+        "D15-13",
+        "D15-24"
+      ],
+      "classification": "STRONG_MERGE_CANDIDATE_AFTER_VALIDATION",
+      "rooms": [
+        "10"
+      ]
+    },
+    {
+      "id": "H04",
+      "modules": [
+        "D12-14",
+        "D12-15"
+      ],
+      "classification": "STRONG_SEMANTIC_CONSOLIDATION_CANDIDATE",
+      "rooms": [
+        "09"
+      ]
+    },
+    {
+      "id": "H05",
+      "modules": [
+        "D07-25",
+        "D21-10"
+      ],
+      "classification": "SEMANTIC_SPLIT_REQUIRED_MERGE_OR_NARROW_IF_SAME_EVIDENCE",
+      "rooms": [
+        "06",
+        "14"
+      ]
+    },
+    {
+      "id": "H06",
+      "modules": [
+        "D20-06",
+        "D06-06"
+      ],
+      "classification": "BEHAVIORAL_IDENTIFIABILITY_FIREWALL",
+      "rooms": [
+        "13",
+        "05"
+      ]
+    },
+    {
+      "id": "H07",
+      "modules": [
+        "D03-05",
+        "D20-09"
+      ],
+      "classification": "PHENOMENON_VS_CAUSE_SPLIT_REQUIRED",
+      "rooms": [
+        "03",
+        "13"
+      ]
+    },
+    {
+      "id": "H08",
+      "modules": [
+        "D17-11",
+        "D20-11",
+        "D09-11"
+      ],
+      "classification": "THREE_WAY_SEMANTIC_SPLIT_REQUIRED",
+      "rooms": [
+        "08",
+        "13",
+        "07"
+      ]
+    },
+    {
+      "id": "H09",
+      "modules": [
+        "D16-19",
+        "D16-25"
+      ],
+      "classification": "KEEP_BOTH_REMOVE_CALIBRATION_OWNERSHIP_DUPLICATION",
+      "rooms": [
+        "11"
+      ]
+    },
+    {
+      "id": "H10",
+      "modules": [
+        "D17-04",
+        "D17-05",
+        "D10-12"
+      ],
+      "classification": "KEEP_SCOPE_DEDUP_ONLY",
+      "rooms": [
+        "08",
+        "07"
+      ]
+    },
+    {
+      "id": "H11",
+      "modules": [
+        "D12-07",
+        "D12-16"
+      ],
+      "classification": "KEEP_SEPARATE_FOR_NOW_BASELINE_VS_COMPLEX_SURFACE",
+      "rooms": [
+        "09"
+      ]
+    },
+    {
+      "id": "H12",
+      "modules": [
+        "D06-09",
+        "D06-18",
+        "D14-19",
+        "D20-13"
+      ],
+      "classification": "KEEP_ALL_FOUR_LAYER_SHORTING_CHAIN_SCOPE_DEDUP",
+      "rooms": [
+        "05",
+        "10",
+        "13"
+      ]
+    },
+    {
+      "id": "H13",
+      "modules": [
+        "D07-06",
+        "D22-03"
+      ],
+      "classification": "KEEP_SEPARATE_ACCOUNTING_INPUT_TO_CREDIT_STRUCTURE",
+      "rooms": [
+        "06",
+        "15"
+      ]
+    },
+    {
+      "id": "H14",
+      "modules": [
+        "D06-11",
+        "D11-14"
+      ],
+      "classification": "KEEP_SEPARATE_EVENT_TO_FLOW_CHAIN",
+      "rooms": [
+        "05",
+        "08"
+      ]
+    },
+    {
+      "id": "H15",
+      "modules": [
+        "D11-10",
+        "D04-09",
+        "D17-12"
+      ],
+      "classification": "KEEP_SEPARATE_EVENT_RISK_TO_VOLATILITY_TO_POST_EVENT_PATH",
+      "rooms": [
+        "08",
+        "04"
+      ]
+    },
+    {
+      "id": "H16",
+      "modules": [
+        "D05-02",
+        "D11-11",
+        "D01-09",
+        "D04-10"
+      ],
+      "classification": "KEEP_SEPARATE_FOUR_LAYER_PRICE_LIMIT_CHAIN",
+      "rooms": [
+        "04",
+        "08",
+        "01"
+      ]
+    },
+    {
+      "id": "H17",
+      "modules": [
+        "D07-18",
+        "D22-04",
+        "D13-06"
+      ],
+      "classification": "KEEP_SEPARATE_COMPOSITIONAL_COST_OF_CAPITAL_CHAIN",
+      "rooms": [
+        "06",
+        "15",
+        "09"
+      ]
+    },
+    {
+      "id": "H18",
+      "modules": [
+        "D07-19",
+        "D21-07"
+      ],
+      "classification": "KEEP_SEPARATE_PROJECT_ECONOMICS_VS_MANAGEMENT_DECISION_QUALITY",
+      "rooms": [
+        "06",
+        "14"
+      ]
+    },
+    {
+      "id": "H19",
+      "modules": [
+        "D03-04",
+        "D19-04",
+        "D19-09"
+      ],
+      "classification": "KEEP_SEPARATE_MOMENTUM_FAMILY_ANTI_DOUBLE_COUNT",
+      "rooms": [
+        "03",
+        "12"
+      ]
+    },
+    {
+      "id": "H20",
+      "modules": [
+        "D02-03",
+        "D01-05",
+        "D04-07"
+      ],
+      "classification": "KEEP_SEPARATE_MULTI_EVIDENCE_BREAKOUT_FAMILY",
+      "rooms": [
+        "02",
+        "01",
+        "04"
+      ]
+    }
+  ]
+}
