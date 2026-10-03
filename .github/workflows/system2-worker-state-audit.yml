@@ -83,7 +83,7 @@ jobs:
             : schedulesEnvelope?.result?.schedules;
           if(!Array.isArray(schedules)) throw new Error("Cron schedule response shape is unexpected");
           const cronExpressions=schedules.map(x=>x.cron).sort();
-          const expected="*/5 0-5,11 * * 1-5";
+          const expected="*/5 0-5,11 * * MON-FRI";
           if(!cronExpressions.includes(expected)) throw new Error(`missing System2 resonance Cron: ${expected}`);
           if(schedules.length!==1) throw new Error(`expected exactly one resonance Cron schedule; found ${schedules.length}`);
 

@@ -13,7 +13,8 @@ preview_urls = false
 # account limit is respected without removing any System 1 production trigger.
 # Runtime admits 08:55-13:40 Asia/Taipei for monitoring and exactly 19:00 for
 # the next-session bounded-pool refresh; all other invocations exit without market calls.
-crons = ["*/5 0-5,11 * * 1-5"]
+# Use MON-FRI explicitly: Cloudflare Workers maps numeric weekdays as 1=SUN ... 7=SAT.
+crons = ["*/5 0-5,11 * * MON-FRI"]
 
 [[d1_databases]]
 binding = "SYSTEM2_DB"
