@@ -876,3 +876,27 @@ Machine-readable:
 Current finding:
 21 Formal fail-fast branches collapse safety, confidence, primary evidence and context/supportive evidence. P1 contains 8 likely short-horizon over-hardening candidates; P2 contains 7 secondary review gates. No Formal change is authorized.
 
+## Room 08 special-situations / policy-event long-block — 2026-10-03
+
+Reusable cross-system contract added:
+- `SPECIAL_SITUATIONS_POLICY_EVENT_RESEARCH.md`
+- `research/d11_d17_special_situations_event_clock_contract_v0_1.json`
+
+Scope:
+- D11-15 IPO / Listing / Bookbuilding
+- D11-16 Lock-up Expiry / Insider Supply
+- D11-17 Secondary Offering / Private Placement
+- D11-18 Tender Offer / Going Private / Delisting
+- D11-19 Spin-off / Merger Arbitrage / Deal-break Risk
+- D17-14 Policy / Regulatory Event Clock / Surprise
+
+Shared rule:
+A special-situation or policy label is never sufficient by itself. Proposal/authorization/publication/effective/tradable/settlement/failure/revision clocks remain separate; `capturedAt` is conservative replay availability until native availability is authenticated; missing evidence remains UNKNOWN; failed/withdrawn/repriced paths remain in the research denominator.
+
+Maturity after mechanism/falsification freeze:
+- D11 = 50.5% across 19 modules.
+- D17 = 41.4% across 14 modules.
+- Room 08 module-weighted aggregate = 46.7%.
+- Global tracker recomputes to 33.3% across 354 modules.
+
+No Formal Core impact. No FORMAL_OPTIMIZATION_CANDIDATE.
