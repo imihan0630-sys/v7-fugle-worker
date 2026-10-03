@@ -59,3 +59,12 @@ Status: FOUNDATION_CLUSTER_L2 / D20-01_02_04_07 / FORMAL_CORE_UNCHANGED
 - If the original clock remains unavailable, record the source blocker and rotate to D20-06 data feasibility.
 - Formal Core remains locked; no optimization candidate.
 
+## Canonical overlay 2026-10-04 03:05 Asia/Taipei — D20-06
+- Taiwan herding evidence confirms that investor-type, direction and timing data materially improve behavioral identification.
+- Public investor-category net flows are weak proxies because they cannot identify within-category imitation or leader/follower structure.
+- Intraday transaction/order-book data with investor classification are strong candidates, but system-accessible PIT/replay availability is not yet proven.
+- Social stance is also only a candidate unless first-known, edit/delete history, account deduplication and common-news controls are replayable.
+- D20-06 remains L2 / 40%; no L3 promotion.
+- Next: inventory actually accessible investor-type/high-frequency/social data. If no independent replayable source exists, retain UNKNOWN and do not create a duplicate crowding factor.
+- Formal Core remains locked; no optimization candidate.
+
