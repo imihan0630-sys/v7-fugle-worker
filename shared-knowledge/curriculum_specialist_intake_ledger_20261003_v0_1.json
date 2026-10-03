@@ -1,6 +1,6 @@
 {
   "schemaVersion": "CURRICULUM_SPECIALIST_INTAKE_LEDGER_V0_1",
-  "updatedAt": "2026-10-03T11:25:00+08:00",
+  "updatedAt": "2026-10-03T12:12:00+08:00",
   "status": "ACTIVE_INTAKE_LEDGER",
   "formalCoreImpact": "NONE",
   "clusters": [
@@ -143,10 +143,15 @@
     },
     {
       "id": "H20",
-      "status": "PENDING",
-      "receivedPackets": [],
-      "pendingRooms": [],
-      "controlDecision": "NOT_EVALUATED"
+      "status": "PARTIAL_EVIDENCE_RECEIVED",
+      "receivedPackets": [
+        "research/D02_H20_BREAKOUT_SPECIALIST_RETURN_V0_1.md"
+      ],
+      "pendingRooms": [
+        "01｜K線與型態研究室",
+        "04｜波動與市場微結構研究室"
+      ],
+      "controlDecision": "EVIDENCE_INSUFFICIENT_PENDING_COUNTERPARTS"
     }
   ],
   "h05": {
@@ -177,5 +182,48 @@
       "TERMINAL_RECOMMENDATION"
     ],
     "currentControlDecision": "EVIDENCE_INSUFFICIENT_PENDING_COUNTERPART"
-  }
+  },
+  "h20": {
+    "received": "research/D02_H20_BREAKOUT_SPECIALIST_RETURN_V0_1.md",
+    "sourceRoom": "02｜價量研究室",
+    "intakeResult": "ROOM02_PACKET_ACCEPTED_ROOMS01_04_COUNTERPARTS_REQUIRED_TERMINAL_DECISION_NOT_READY",
+    "passed": [
+      "ONE_BREAKOUT_PRIMITIVE_RECEIPT",
+      "D01_05_PRICE_STRUCTURE_OWNER_RECOGNIZED",
+      "D02_03_VOLUME_TRANSFORM_SCOPE_EXPLICIT",
+      "D04_07_DEPENDENCY_NOT_REOWNED",
+      "PIT_REPLAY_CLOCKS_DEFINED",
+      "DIVERGENT_STATE_EXAMPLES_PRESENT",
+      "INCREMENTAL_TEST_DESIGN_PRESENT",
+      "ANTI_DOUBLE_COUNT_PRESENT",
+      "NO_MATURITY_INFLATION",
+      "FORMAL_OPTIMIZATION_CANDIDATE_NONE"
+    ],
+    "remaining": [
+      "ROOM01_D01_05_PRICE_STRUCTURE_COUNTERPART",
+      "ROOM04_D04_07_VOLATILITY_INTERACTION_COUNTERPART",
+      "CROSS_ROOM_SHARED_RECEIPT_COMPATIBILITY",
+      "FINAL_DEPENDENCY_AUDIT"
+    ],
+    "currentControlDecision": "EVIDENCE_INSUFFICIENT_PENDING_COUNTERPARTS"
+  },
+  "otherReturns": [
+    {
+      "id": "15_ITEM_D02_07_D02_08",
+      "packet": "research/D02_15_ITEM_SPECIALIST_RETURN_D02_07_D02_08_V0_1.md",
+      "sourceRoom": "02｜價量研究室",
+      "status": "SPECIALIST_RETURN_ACCEPTED_RESEARCH_ONLY",
+      "modules": [
+        "D02-07",
+        "D02-08"
+      ],
+      "controlAssessment": {
+        "D02-07": "OBSERVATION_COMPARATOR_ONLY_MERGE_CANDIDATE_PENDING_RESIDUAL_TEST",
+        "D02-08": "STRONG_MERGE_CANDIDATE_IF_OHLCV_ONLY_HOLD_PENDING_INDEPENDENT_MICROSTRUCTURE_EVIDENCE"
+      },
+      "formalOptimizationCandidate": "NONE",
+      "maturityChange": "NONE",
+      "structuralChange": "NONE_PENDING_DEPENDENCY_AUDIT_AND_OWNER_APPROVAL"
+    }
+  ]
 }
