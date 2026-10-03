@@ -1516,3 +1516,15 @@ R01～R08 任務包由對應專科室驗證後回 00｜研究總控室驗收；�
 - 14｜公司治理與內部人研究室：counterpart（對側證據包）待回。
 - 在 14 室回件前，H05 維持 EVIDENCE_INSUFFICIENT_PENDING_COUNTERPART，不得合併、退休或升成熟度。
 
+## Research-to-Optimization Bridge 稽核 — 2026-10-03
+
+所有研究室在宣告 `FORMAL_OPTIMIZATION_CANDIDATE` 前，必須讀：
+`shared-knowledge/RESEARCH_TO_OPTIMIZATION_BRIDGE_AUDIT_20261003_V0_1.md`
+
+固定規則：
+- L3/L4/L5 知識成熟度不等於 optimization readiness（最佳化就緒）。
+- 完成 Shadow spec（影子規格）不等於有 outcome evidence（結果證據）。
+- Evidence infrastructure（證據基礎設施）不等於 Alpha（超額報酬）。
+- 只有在自己的適用 PIT/OOS、independent-date（獨立日期）、Regime（市場狀態）、redundancy（冗餘）、cost（成本）、coverage/zero-pick（覆蓋／零選股）與 overfit（過擬合）門檻全部關閉後，才可進 EVIDENCE_READY。
+- 00｜研究總控室發現第一個 EVIDENCE_READY 狀態時，必須立即做 candidate handoff（候選交接）或明確標成 REJECTED_OR_REDUNDANT，不得無限停留在研究。
+
