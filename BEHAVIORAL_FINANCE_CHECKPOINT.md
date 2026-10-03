@@ -68,3 +68,17 @@ Status: FOUNDATION_CLUSTER_L2 / D20-01_02_04_07 / FORMAL_CORE_UNCHANGED
 - Next: inventory actually accessible investor-type/high-frequency/social data. If no independent replayable source exists, retain UNKNOWN and do not create a duplicate crowding factor.
 - Formal Core remains locked; no optimization candidate.
 
+## Canonical overlay 2026-10-04 07:31 Asia/Taipei — D20 crossed 50%
+- D20 aggregate maturity: 50.8%.
+- L3 / 60%: D20-02, D20-04, D20-05, D20-07, D20-08, D20-10, D20-12.
+- L2 / 40% retained: D20-01, D20-03, D20-06, D20-09, D20-11, D20-13.
+- Promotion meaning is Taiwan PIT/replay data feasibility only; no alpha, OOS or Formal claim.
+- D20-02 promotion is bounded to the TWSE short-side disposition sublane; direct long-account PGR/PLR remains UNKNOWN.
+- D20-04/D20-05 use validated Taiwan daily history with corporate-action/session fail-closed guards.
+- D20-07 uses official exchange attention designation as a salience-event source with endogeneity controls.
+- D20-08 uses only valid D11-09/D17-13 event receipts; unresolved original monthly-revenue first-known rows stay UNKNOWN.
+- D20-10 uses dated monthly Taiwan investor-survey releases; no daily interpolation.
+- D20-12 freezes a common-cutoff falsification receipt linking behavioral proxy and structural counterfactuals without duplicate primitive votes.
+- Formal Core remains locked; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Exact next: accumulate outcome-blind replay/coverage receipts for the seven L3 lanes. Do not force the six remaining L2 modules upward unless their independent source/identifiability blockers are truly resolved.
+
