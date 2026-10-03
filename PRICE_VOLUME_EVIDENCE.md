@@ -5063,3 +5063,48 @@ latest-20 expected volumes `[0,100..118]` have median 108.5. If the zero is drop
 
 Classification:
 `CONTRACT_REPLAY_PASS / OUTCOMES_UNUSED / RUNTIME_COMPLIANCE_UNPROVEN / PVE_239 / FORMAL_UNCHANGED`.
+
+# Pre-PVE-240 addendum — D02-10 / D02-12 PIT readiness evidence (2026-10-04)
+
+No PVE number consumed. Forward outcomes remain unused.
+
+## D02-10
+Evidence establishes a legal PIT join:
+- prior eligible-session D03 trend parent;
+- current completed-slot D02 participation parent;
+- explicit max-known-at clock;
+- producer/consumer ownership and fail-closed missing-parent semantics.
+
+Negative controls prohibit:
+- same-bar price-response circularity;
+- treating uptrend+high-volume as universally bullish;
+- treating downtrend+high-volume as universally bearish;
+- duplicate trend + volume + interaction event votes.
+
+Classification:
+`D02_10_L3_PIT_FEASIBLE / ALPHA_UNKNOWN / FORMAL_UNCHANGED`.
+
+## D02-12
+Evidence establishes two distinct data families.
+
+TIME_OF_DAY_VOLUME_CURVE:
+- current + historical 15m Taiwan data;
+- same-slot/cumulative normalization;
+- completed-bar PIT clock;
+- bounded current-monitor coverage only through 13:00.
+
+PRICE_BY_VOLUME_PROFILE:
+- current-day prospective price-level volume source exists;
+- bid/ask classification coverage is explicitly incomplete at the opening by provider design;
+- no historical profile backfill is claimed.
+
+Negative controls prohibit:
+- interpreting ordinary midday seasonality as universal dry-up;
+- treating open/close concentration as directional proof;
+- claiming full-day curve completeness from the current 13:00 monitor ceiling;
+- assigning unclassified volume to buy/sell pressure.
+
+Classification:
+`D02_12_L3_PIT_FEASIBLE / ALPHA_UNKNOWN / FULL_CLOSE_AND_HISTORICAL_PROFILE_NOT_PROVEN / FORMAL_UNCHANGED`.
+
+D02 aggregate becomes 51.7% if and only if tracker/router canonical readback confirms both promotions.
