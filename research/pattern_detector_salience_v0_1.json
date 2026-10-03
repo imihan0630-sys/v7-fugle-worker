@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "pattern-detector-salience-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "layers": {
+    "O_CROSSING_OPPORTUNITY": [
+      "volatilityATR",
+      "zoneWidth",
+      "distancePath",
+      "tickRule",
+      "liquidity",
+      "constrainedSessionShare",
+      "priceVolumeAcceptance",
+      "marketSectorRegime",
+      "timeAtRisk"
+    ],
+    "M_MECHANICAL_SELECTION": [
+      "detectorScale",
+      "detectorK",
+      "detectorLookbackEligibleSessions",
+      "confirmedPivotCount",
+      "anchorAmplitudeATR",
+      "anchorSpacingEligibleSessions",
+      "zoneWidthATR",
+      "priceLevelExtremenessPercentile",
+      "zoneAgeEligibleSessions",
+      "simple260HighDistance",
+      "localToParentGeometry"
+    ],
+    "S_BEHAVIORAL_SALIENCE": [
+      "priorTouchCount",
+      "lastTouchRecencyEligibleSessions",
+      "priorRejectionMagnitude",
+      "rejectionCompressionProgression",
+      "timeSpentNearLevel",
+      "roundPriceTickProximity",
+      "preConfirmationParticipationNearLevel",
+      "visibleHistoricalExtremeness"
+    ]
+  },
+  "estimands": [
+    "E0_RAW_STRUCTURAL_LABEL",
+    "E1_OPPORTUNITY_ADJUSTED",
+    "E2_MECHANICAL_SELECTION_ADJUSTED",
+    "E3_OBSERVABLE_SALIENCE_ADJUSTED"
+  ],
+  "interpretation": {
+    "E1Null": "GENERIC_LEVEL_CROSSING",
+    "E2Null": "DETECTOR_MECHANICAL_SELECTION_EXPLANATION",
+    "E3Null": "SALIENCE_MEDIATED_MECHANISM_CANDIDATE",
+    "E3Residual": "RESIDUAL_STRUCTURAL_IDENTITY_CANDIDATE_NOT_CAUSAL_PROOF"
+  },
+  "rules": [
+    "ALL_CONTROL_FIELDS_PRE_CONFIRMATION_ONLY",
+    "NO_POST_OUTCOME_MATCHING",
+    "NO_DETECTOR_RETUNING",
+    "PSEUDO_POOL_RETAIN_ALL_CANDIDATES",
+    "E2_AND_E3_BOTH_REPORTED",
+    "SALIENCE_CONTROL_CHANGES_ESTIMAND",
+    "NO_CAUSAL_MEMORY_CLAIM_FROM_OBSERVATIONAL_RESIDUAL"
+  ],
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
