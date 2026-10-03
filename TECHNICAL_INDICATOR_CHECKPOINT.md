@@ -2595,3 +2595,52 @@ Current:
 
 Exact next:
 next completed Taiwan session -> third raw D03 receipt+repeat -> re-audit T1-T3 -> only then begin true prospective observer clock; outcomes remain closed until T5/T6 and D16 method receipt.
+
+
+## TI-551 through TI-554 — D03 -> D16 method handoff (2026-10-04)
+
+Durable handoff:
+- `research/D03_PRIMARY_QUEUE_D16_METHOD_HANDOFF_V0_1.md`
+- `research/d03_primary_queue_d16_method_handoff_v0_1.json`
+
+### TI-551 — ownership boundary
+D03 owns feature/alias semantics, nested K0-K4/M0-M3 comparisons, outcome family, multiple-testing family and TI-005 -> TI-006 order.
+D16 owns dependence-aware estimator, finite-sample uncertainty, clustering/resampling, purging/holdout implementation and inferential method.
+
+D16 must return METHOD_BLOCKED / POWER_INSUFFICIENT rather than change D03 formulas, periods, endpoints or experiment order after outcome inspection.
+
+### TI-552 — dependence graph
+Rows are not IID because they share scanDate shocks, repeated symbols/episodes, overlapping D5/D10/D20 outcomes, overlapping feature histories and sector shocks.
+Row count is not independent N.
+
+Required reporting includes row count, independent scanDate count, unique symbols, date cluster sizes, repeated-symbol share and outcome-window overlap.
+
+### TI-553 — method receipt requirement
+Before T5 outcomes, D16 must return a machine-readable method receipt freezing:
+- identity/version hashes;
+- parent/common-support population;
+- BLOCKED/UNKNOWN handling;
+- chronological train/purge/holdout dates;
+- dependence/small-cluster treatment;
+- exact estimands and weighting;
+- leave-one-date/non-overlap/date-balance/concentration/repeated-symbol/coverage sensitivities;
+- multiple-testing family/handling;
+- terminal method state.
+
+Allowed terminal method states include METHOD_READY, METHOD_BLOCKED, POWER_INSUFFICIENT, DEPENDENCE_TOO_STRONG_FOR_CURRENT_SAMPLE, COMMON_SUPPORT_INSUFFICIENT, COVERAGE_BIASED and VERSION_INCOMPATIBLE.
+
+### TI-554 — allowable research conclusions
+After a valid D16 method execution, D03 accepts only frozen research labels such as NO_INCREMENTAL_VALUE, MECHANISM_PRESENT_BUT_PREDICTIVE_VALUE_INCONCLUSIVE, SPEED_NOISE_TRADEOFF, CONTEXT_PROXY_RISK, COVERAGE_BIASED, FRAGILE_DATE_DEPENDENCE, REGIME_OR_INDUSTRY_CONCENTRATED, VERSION_INCOMPATIBLE or PREDICTIVE_INCREMENTALITY_CANDIDATE.
+
+Even PREDICTIVE_INCREMENTALITY_CANDIDATE remains research-only.
+
+Current:
+`D16_METHOD_HANDOFF = FROZEN_V0_1`
+`D16_METHOD_RECEIPT = NOT_YET_RETURNED`
+`OUTCOMES = CLOSED`
+`RAW_SOURCE_VERSION_GATE = 2_OF_3`
+`TECHNICAL_OBSERVER_R1 = BLOCKED`
+`D03_MATURITY = 56.7_PERCENT`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+No maturity increase is assigned for preregistration/method handoff alone.
