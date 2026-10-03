@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "pattern-repeated-test-mechanisms-v0.1",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "mechanisms": [
+    "SALIENT_REINFORCEMENT",
+    "DEPLETION_ABSORPTION",
+    "SELECTION_SURVIVORSHIP",
+    "CROSSING_OPPORTUNITY"
+  ],
+  "evidenceLevels": {
+    "L0_PRICE_HISTORY": "PATH_PATTERN_DESCRIPTION",
+    "L1_PRICE_VOLUME": "PRICE_VOLUME_MECHANISM_PROXY",
+    "L2_MICROSTRUCTURE": "ORDER_BOOK_MECHANISM_DIAGNOSTIC"
+  },
+  "ladder": [
+    "M0_TOUCH_COUNT",
+    "M1_EXPOSURE_SPACING_DWELL",
+    "M2_PATH_PROGRESSION",
+    "M3_D02_PRICE_VOLUME",
+    "M4_D04_MICROSTRUCTURE"
+  ],
+  "rules": [
+    "TOUCH_COUNT_HAS_NO_UNIVERSAL_SIGN",
+    "PRICE_ONLY_CANNOT_CLAIM_ORDER_DEPLETION",
+    "DEPLETION_PROXY_NOT_DIRECT_LIQUIDITY_DEPLETION",
+    "MECHANISM_DESCRIPTORS_NOT_INDEPENDENT_VOTES",
+    "D02_AND_D04_CANONICAL_OWNERSHIP_REQUIRED"
+  ],
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
