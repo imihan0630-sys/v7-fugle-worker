@@ -298,3 +298,53 @@ Still `PENDING_SPECIALIST_RETURN`:
 Accepted specialist returns remain: 0 / 12.
 Canonical curriculum remains: 22 domains / 354 active modules.
 Formal Core remains LOCKED.
+
+
+---
+
+## Third pre-intake harvest — COV-11
+
+### COV-11 — D21 — Shareholder Rights / Stewardship / Activism / Voting
+
+Room: 14｜公司治理與內部人研究室  
+Current pre-intake state: `PARTIAL_EVIDENCE_RECEIVED`
+
+Evidence found in `CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md`:
+- ultimate voting rights are explicitly separated from cash-flow rights and board/management control;
+- control-right measurement alternatives and falsification cases are frozen;
+- MOPS annual reports and shareholder-meeting documents are already identified as primary Taiwan sources;
+- historical regulation versions and first-known/PIT concerns are already part of the D21 governance contract;
+- minority-shareholder conflict, control-cashflow wedge and ownership complexity are treated as research mechanisms rather than one-direction scores.
+
+Contract assessment:
+- Exact Knowledge Definition: PARTIAL
+- Existing-module Overlap Matrix: PARTIAL
+- Why Current Scope Is Insufficient: PARTIAL
+- Taiwan Data Feasibility: STRONG_PARTIAL
+- PIT / Replay Implication: PARTIAL
+- Decision Role: STRONG_PARTIAL
+- Anti-double-count Rule: STRONG_PARTIAL
+- Proposed Owner: PARTIAL
+- Maturity Starting Point: N/A until structural recommendation
+- Terminal Recommendation: MISSING
+
+Required specialist delta:
+- define shareholder-rights, stewardship, activism and formal voting as one coherent family or explicitly split responsibilities;
+- distinguish recurring governance state from D11 event mechanics;
+- verify Taiwan historical stewardship/voting/proposal observability and first-known clocks;
+- define anti-double-count boundaries against D21 ownership/control modules;
+- provide exactly one terminal recommendation.
+
+No structural curriculum change is permitted yet.
+
+## Updated pre-intake state after third harvest
+
+`PARTIAL_EVIDENCE_RECEIVED`:
+`COV-01`, `COV-02`, `COV-07`, `COV-08`, `COV-09`, `COV-10`, `COV-11`.
+
+Still `PENDING_SPECIALIST_RETURN`:
+`COV-03`, `COV-04`, `COV-05`, `COV-06`, `COV-12`.
+
+Accepted specialist returns remain: 0 / 12.
+Canonical curriculum remains: 22 domains / 354 active modules.
+Formal Core remains LOCKED.
