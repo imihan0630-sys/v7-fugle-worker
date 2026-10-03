@@ -1654,3 +1654,68 @@ Current:
 `FORMAL_OPTIMIZATION_CANDIDATE = NONE`
 
 Formal Core remains LOCKED.
+
+
+## TI-526 through TI-533 — ADX / Bollinger L3 blocker audit (2026-10-03)
+
+Durable analysis:
+- `research/D03_ADX_BOLLINGER_L3_BLOCKER_AUDIT_V0_1.md`.
+
+### TI-526 — Formula-ready is not PIT-ready
+
+ADX14 and Bollinger20x2 both have frozen formula/mechanics semantics, but isolated R0 formula readiness is not R1 source/PIT readiness.
+
+### TI-527/TI-529 — ADX remains L2
+
+ADX is cascaded recursive state. Deeper history-fetch/cache capability exists, but promotion-grade ADX requires canonical TECHNICAL_CONTINUITY H/L/C history, formulaVersion, stateLineageId, canonical replay/trusted prior state, replay certification, source/transform hashes, immutable parent/capture generation and constrained-session provenance.
+
+Current shared observer/runtime status still has TECHNICAL_CONTINUITY and exact prospective parent lineage blocked.
+
+Therefore `DEEP_HISTORY_AVAILABLE != ADX_PIT_REPLAY_VALIDATED`.
+
+A 150/200-bar local recomputation today may be useful QA but cannot establish what an earlier parent knew.
+
+D03-09 remains **L2/40**.
+
+### TI-528 — arbitrary warm-up is not recursive-state repair
+
+Earlier 65-vs-150 ADX evidence proves initialization sensitivity but does not make 150 bars a universal certification threshold.
+
+Corporate-action/source revisions require replay from canonical/trusted lineage. Waiting an arbitrary number of bars does not restore provenance.
+
+### TI-530/TI-531 — Bollinger is finite-window but still R1 blocked
+
+Bollinger20x2 needs only an exact certified 20 eligible-session close window and no recursive state once that window is known.
+
+This makes L3 certification simpler than ADX.
+
+However current runtime still lacks the required promotion-grade TECHNICAL_CONTINUITY receipt + exact prospective parent lineage + price-limit/special-session provenance.
+
+Raw 20-bar availability is insufficient.
+
+D03-10 remains **L2/40**.
+
+### TI-532 — numerical observability != certified evidence
+
+A valid number can still be PIT-ineligible:
+- BBW across an unresolved corporate-action boundary;
+- ADX recomputed using a later history lineage;
+- technical state on a constrained price-limit path without constraint provenance;
+- indicator value attached to an unfrozen parent generation.
+
+Readiness remains hierarchical:
+R0 formula QA -> R1 source -> R2 prospective coverage -> R3 descriptive -> R4 outcome join -> R5 incremental inference.
+
+### TI-533 — no maturity inflation
+
+D03-09 remains L2/40.
+D03-10 remains L2/40.
+D03 remains **55.0%**.
+
+`D03_09 = L2_R1_SOURCE_BLOCKED`
+`D03_10 = L2_R1_SOURCE_BLOCKED`
+`ADX_RECURSIVE_LINEAGE = CANONICAL_REPLAY_REQUIRED`
+`BOLLINGER_FINITE_WINDOW_CERTIFICATION = SIMPLER_THAN_ADX_BUT_NOT_YET_PHYSICAL`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Formal Core remains LOCKED.
