@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "HISTORICAL_VALUATION_SOURCE_CASE_VALIDATION_RECEIPT_20261003_V0_2",
+  "status": "SOURCE_REPLAY_QA_PARTIAL_PASS / OUTCOMES_CLOSED",
+  "observedAtAsiaTaipei": "2026-10-03T15:13:00+08:00",
+  "contract": "research/historical_valuation_dual_market_source_schema_contract_v0_2.json",
+  "assertions": [
+    {
+      "id": "TWSE_SCHEMA_BY_HEADER",
+      "state": "PASS",
+      "evidence": "2026-10-02 official BWIBBU_d JSON exposes stat/date/title/fields/data and named headers including symbol, name, close, PE, PB and financial-report year/quarter.",
+      "implication": "Historical parser can fail closed on header drift and avoid positional guessing."
+    },
+    {
+      "id": "TWSE_PE_MISSING_PB_PRESENT",
+      "state": "PASS",
+      "evidence": "1101 台泥 on 2026-10-02 has PE '-' while PB=0.82.",
+      "implication": "PE and PB readiness are independent."
+    },
+    {
+      "id": "TWSE_DENOMINATOR_PERIOD_BREAK",
+      "state": "PASS",
+      "evidence": "9904 寶成 changed from fiscal 115/1 on 2026-08-12 (PE 6.60/PB 0.47) to fiscal 115/2 on 2026-08-13 (PE 5.06/PB 0.38).",
+      "implication": "Historical valuation percentile must carry fiscal denominator-period transitions as context; raw percentile movement is not pure repricing."
+    },
+    {
+      "id": "TPEX_CURRENT_SCHEMA",
+      "state": "PASS",
+      "evidence": "Official current OpenAPI exposes Date/SecuritiesCompanyCode/CompanyName/PriceEarningRatio/DividendPerShare/YieldRatio/PriceBookRatio.",
+      "implication": "Current TPEx valuation normalization is stable enough for spot validation, not historical reconstruction."
+    },
+    {
+      "id": "TPEX_PE_NA_PB_PRESENT",
+      "state": "PASS",
+      "evidence": "1569 濱川 on current 2026-10-02 OpenAPI has PriceEarningRatio='N/A' and PriceBookRatio='3.23'.",
+      "implication": "TPEx historical parser must preserve N/A PE state independently of PB."
+    },
+    {
+      "id": "TPEX_PUBLIC_HISTORICAL_UI",
+      "state": "PASS",
+      "evidence": "Official daily PE/PB page states availability from ROC 96/01 and links older ROC 92/08-95/12 history.",
+      "implication": "Historical source family exists."
+    },
+    {
+      "id": "TPEX_FREE_MACHINE_HISTORY_TRANSPORT",
+      "state": "UNRESOLVED",
+      "evidence": "Candidate peQryDate official URL was externally located, but direct official fetch in this environment returned HTTP 520 and no response envelope. Browser UI did not expose a stable query URL.",
+      "implication": "Do not freeze a public historical JSON schema or claim automated full-history replay."
+    },
+    {
+      "id": "TPEX_LICENSED_S17_SCHEMA",
+      "state": "PASS_SEMANTICS_ONLY_NOT_ACCESSED",
+      "evidence": "Official EDIS V1.33 documents S17 STKPEYIPBR.TXT record fields and YYYYMMDD/HHMM file header.",
+      "implication": "A licensed deterministic machine lane exists, but no purchase/access is authorized by this research."
+    },
+    {
+      "id": "NEW_LISTING_LONG_WINDOW_GUARD",
+      "state": "PASS",
+      "evidence": "TPEx official announcement states 1294 漢田生技 began main-board OTC trading 2024-09-26.",
+      "implication": "As of 2026-10-03, 756- and 1260-valid-session percentiles cannot be eligible; 252 still requires actual valid-row count."
+    }
+  ],
+  "cohortReadiness": {
+    "TWSE": "SOURCE_REPLAY_READY_FOR_PARSER_IMPLEMENTATION",
+    "TPEx": "PUBLIC_SOURCE_FAMILY_READY / AUTOMATED_HISTORICAL_TRANSPORT_PARTIAL",
+    "dualMarketShadow": "BLOCKED_UNTIL_TPEX_HISTORICAL_MACHINE_SOURCE_OR_AUTHORIZED_LICENSED_LANE_IS_VERIFIED"
+  },
+  "noOutcomeClaims": true,
+  "formalCoreChanged": false,
+  "maturityImpact": "No change: D08-03 stays L3/60. L4 requires independent Shadow/OOS evidence after source completeness."
+}
