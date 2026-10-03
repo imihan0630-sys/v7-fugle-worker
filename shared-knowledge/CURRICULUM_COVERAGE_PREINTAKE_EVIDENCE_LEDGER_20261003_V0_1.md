@@ -186,3 +186,115 @@ Likewise, generic topic references without a reproducible contract are not promo
 - No maturity promotion from this ledger
 - Formal Core: LOCKED
 - System1 impact: NONE
+
+
+---
+
+## Second pre-intake harvest — COV-01 / COV-09 / COV-10
+
+### COV-01 — D01 — Continuation / Base Pattern Family
+
+Room: 01｜K線與型態研究室  
+Current pre-intake state: `PARTIAL_EVIDENCE_RECEIVED`
+
+Evidence found in `KLINE_PATTERN_CHECKPOINT.md`:
+- Platform / Bull Flag / Triangle specification exists.
+- Pennant / triangle subclasses / wedges are explicitly covered.
+- High Tight Flag, VCP, Cup-with-Handle and cross-pattern de-duplication are already researched.
+- Latent geometry, confirmation timing, corporate-action handling and replay constraints are frozen.
+- Named patterns are explicitly treated as interpretation labels rather than independent votes.
+
+Contract assessment:
+- Exact Knowledge Definition: STRONG_PARTIAL
+- Existing-module Overlap Matrix: PARTIAL
+- Why Current Scope Is Insufficient: STRONG_PARTIAL
+- Taiwan Data Feasibility: STRONG_PARTIAL
+- PIT / Replay Implication: STRONG_PARTIAL
+- Decision Role: STRONG_PARTIAL
+- Anti-double-count Rule: STRONG_PARTIAL
+- Proposed Owner: PARTIAL
+- Maturity Starting Point: N/A until structural recommendation
+- Terminal Recommendation: MISSING
+
+Required specialist delta:
+- compare umbrella ownership explicitly against D01-05 / D01-07;
+- state whether this is an active-owner gap or an existing-scope extension;
+- give exactly one terminal recommendation.
+
+No structural curriculum change is permitted yet.
+
+### COV-09 — D19 — Multi-factor Benchmark Models
+
+Room: 12｜資產定價與因子研究室  
+Current pre-intake state: `PARTIAL_EVIDENCE_RECEIVED`
+
+Evidence found in `ASSET_PRICING_FACTOR_RESEARCH.md`:
+- benchmark-relative alpha and residual semantics are explicitly defined;
+- benchmark choice is recognized as model-relative;
+- Fama-French, profitability/investment and q-factor evidence is discussed;
+- factor redundancy, PIT universe construction, corporate actions, delistings, costs and multiple-testing controls are already part of the D19 contract;
+- Taiwan evidence is treated as heterogeneous rather than automatically imported from U.S. studies.
+
+Contract assessment:
+- Exact Knowledge Definition: STRONG_PARTIAL
+- Existing-module Overlap Matrix: PARTIAL
+- Why Current Scope Is Insufficient: PARTIAL
+- Taiwan Data Feasibility: PARTIAL
+- PIT / Replay Implication: STRONG_PARTIAL
+- Decision Role: STRONG_PARTIAL
+- Anti-double-count Rule: STRONG_PARTIAL
+- Proposed Owner: PARTIAL
+- Maturity Starting Point: N/A until structural recommendation
+- Terminal Recommendation: MISSING
+
+Required specialist delta:
+- compare directly with D19-01 and D19-10;
+- distinguish a benchmark-model construction capability from ordinary factor research;
+- specify whether Taiwan-reconstructed benchmark portfolios are required;
+- provide exactly one terminal recommendation.
+
+No structural curriculum change is permitted yet.
+
+### COV-10 — D20 — Confirmation Bias / Belief Perseverance / Conservatism
+
+Room: 13｜行為金融與市場心理研究室  
+Current pre-intake state: `PARTIAL_EVIDENCE_RECEIVED`
+
+Evidence found in `BEHAVIORAL_FINANCE_RESEARCH.md`:
+- conservatism and representativeness are explicitly linked to underreaction/overreaction mechanisms;
+- generic momentum/reversal is explicitly rejected as proof of a behavioral mechanism;
+- Taiwan evidence and structural counterfactuals are already part of the research design;
+- overlap with anchoring, attention, price momentum and crowding is recognized;
+- behavior-specific evidence is required before assigning motive.
+
+Contract assessment:
+- Exact Knowledge Definition: STRONG_PARTIAL
+- Existing-module Overlap Matrix: PARTIAL
+- Why Current Scope Is Insufficient: PARTIAL
+- Taiwan Data Feasibility: PARTIAL
+- PIT / Replay Implication: PARTIAL
+- Decision Role: STRONG_PARTIAL
+- Anti-double-count Rule: STRONG_PARTIAL
+- Proposed Owner: PARTIAL
+- Maturity Starting Point: N/A until structural recommendation
+- Terminal Recommendation: MISSING
+
+Required specialist delta:
+- explicitly compare confirmation bias, belief perseverance and conservatism against existing D20 owners;
+- decide whether one belief-updating-bias umbrella is the clean owner;
+- freeze observable proxies and UNKNOWN semantics;
+- provide exactly one terminal recommendation.
+
+No structural curriculum change is permitted yet.
+
+## Updated pre-intake state after second harvest
+
+`PARTIAL_EVIDENCE_RECEIVED`:
+`COV-01`, `COV-02`, `COV-07`, `COV-08`, `COV-09`, `COV-10`.
+
+Still `PENDING_SPECIALIST_RETURN`:
+`COV-03`, `COV-04`, `COV-05`, `COV-06`, `COV-11`, `COV-12`.
+
+Accepted specialist returns remain: 0 / 12.
+Canonical curriculum remains: 22 domains / 354 active modules.
+Formal Core remains LOCKED.
