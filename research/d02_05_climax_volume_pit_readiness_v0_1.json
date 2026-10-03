@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_PIT_READINESS_PASS",
+  "module": "D02-05",
+  "oldLevel": "L2",
+  "oldMaturityPct": 40,
+  "newLevel": "L3",
+  "newMaturityPct": 60,
+  "evidenceCursor": "PVE-239",
+  "formalCoreChanged": false,
+  "formalOptimizationCandidate": "NONE",
+  "observableConstruct": "EXTREME_PARTICIPATION_STATE",
+  "participationBands": {
+    "LOW": "<=0.8",
+    "NORMAL": "(0.8,1.3)",
+    "ELEVATED": "[1.3,2.5)",
+    "EXTREME": ">=2.5"
+  },
+  "typedStates": [
+    "EXTREME_EFFICIENT_UP",
+    "EXTREME_EFFICIENT_DOWN",
+    "EXTREME_LOW_PROGRESS",
+    "EXTREME_GUARDED",
+    "EXTREME_CONTEXT_UNKNOWN"
+  ],
+  "forbiddenLatentClaims": [
+    "DISTRIBUTION",
+    "ABSORPTION",
+    "SMART_MONEY"
+  ],
+  "firstKnownAt": "max(completedBarEnd, sourceFetchedAt, consumedDependencyKnownAt)",
+  "dependencies": [
+    "D04 volatility",
+    "D08/D11 event context",
+    "D05 microstructure only for directional mechanism"
+  ],
+  "alphaStatus": "UNKNOWN",
+  "l4Status": "NOT_REACHED"
+}
