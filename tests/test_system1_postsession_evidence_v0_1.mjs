@@ -108,6 +108,8 @@ eq(packet.capture.audit.rows[0].liveDepthCompleteBars,17);
 eq(packet.capture.audit.rows[0].liveDepthCoveragePct,100);
 eq(packet.capture.audit.rows[0].depthGuardUsesLiveOrderBook,false);
 ok(packet.capture.audit.readyReceipts[0].bars.every(x=>x.liveDepthRawComplete===true));
+ok(packet.capture.audit.readyReceipts[0].bars.every(x=>typeof x.startAt==="string"&&typeof x.slot==="string"));
+eq(packet.capture.audit.readyReceipts[0].bars[0].slot,"09:00");
 ok(packet.capture.audit.readyReceipts[0].bars.every(x=>x.liveDepthScore===null&&x.liveDepthScoreDerived===false));
 eq(packet.c3.tally.receiptN,1);
 eq(packet.c3.tally.formalBaselineUnknownN,1);
