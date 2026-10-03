@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "SYSTEM1_ZERO_PICK_COUNTERFACTUAL_DATA_GAP_V0_1",
+  "updatedAt": "2026-10-03T18:20:00+08:00",
+  "status": "ZERO_PICK_COMPARATOR_NOT_RECONSTRUCTABLE_DATA_GAP_FROZEN",
+  "formalCoreImpact": "NONE",
+  "effectiveComparator": {
+    "version": "PRIORITY_RR_CONSENSUS_SETUP_SECTOR_RS_7_5_30",
+    "orderedFields": [
+      "postConsensusPriorityScore",
+      "rewardPerRisk",
+      "marketConsensusScore",
+      "setupQuality",
+      "sectorFlow",
+      "relativeStrength"
+    ]
+  },
+  "poolPolicy": {
+    "generalMax": 3,
+    "thousandMax": 3,
+    "crossPoolTransfer": false,
+    "totalMax": 6
+  },
+  "currentEvidence": {
+    "c1": [
+      "priorityScore",
+      "priorityScoreProvenance",
+      "selected",
+      "selectedRank"
+    ],
+    "c2": [
+      "priorityScore",
+      "priorityScoreProvenance",
+      "pool",
+      "close",
+      "depthScore",
+      "spreadPercent",
+      "lateStage",
+      "ret20",
+      "maDistance20Pct",
+      "channel",
+      "entryGeometry"
+    ]
+  },
+  "missingForRejectedCounterfactual": [
+    "rewardPerRiskFormalTupleProvenance",
+    "marketConsensusScore",
+    "setupQualityFormalTupleProvenance",
+    "sectorFlow",
+    "relativeStrengthFormalTupleProvenance",
+    "preSortOrdinalOrDeterministicFinalTie",
+    "rankComparatorVersion",
+    "rankingTupleFingerprint"
+  ],
+  "forbidden": [
+    "PRIORITY_SCORE_ONLY_RANK",
+    "AVERAGE_ALL_F9_VS_CASH",
+    "CROSS_POOL_SLOT_TRANSFER",
+    "ASSUME_ALL_F9_SELECTED",
+    "CANDIDATE_COUNT_AS_ECONOMIC_EVIDENCE",
+    "CURRENT_COMPARATOR_ON_OLD_GENERATION",
+    "LATER_DATA_TO_FILL_MISSING_TUPLE"
+  ],
+  "requiredFutureReceipt": [
+    "symbol",
+    "pool",
+    "captureGeneration",
+    "decisionAt",
+    "rankComparatorVersion",
+    "postConsensusPriorityScore",
+    "rewardPerRisk",
+    "marketConsensusScore",
+    "setupQuality",
+    "sectorFlow",
+    "relativeStrength",
+    "preSortOrdinalOrTieIdentity",
+    "rankingTupleFingerprint"
+  ],
+  "futureOrder": [
+    "FULL_TUPLE",
+    "THREE_PLUS_THREE_SELECTION",
+    "ALLOCATION",
+    "EXECUTION_COST",
+    "OUTCOME"
+  ],
+  "implementationClass": {
+    "pureComparatorPrototype": "CLASS_A_ALLOWED",
+    "liveC1OrD1CaptureExtension": "CLASS_B_PROPOSAL_FIRST",
+    "formalBehaviorChange": "CLASS_C_OWNER_APPROVAL"
+  },
+  "formalOptimizationCandidate": "NONE"
+}
