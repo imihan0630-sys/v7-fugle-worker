@@ -174,7 +174,7 @@ export function auditC3LiveInputs(c2Ledger,{
       adapted.push({
         startAt:bar.start,endAt:bar.end,slot:bar.slot,
         open:bar.open,high:bar.high,low:bar.low,close:bar.close,
-        volumeRatio:bar.volumeRatio,
+        volume:bar.volume,volumeRatio:bar.volumeRatio,
         depthScore:selectionDepth??null,
         selectionDepthScore:selectionDepth??null,
         depthScoreSemantics:"SELECTION_TIME_CONTEXT_REUSED_NOT_LIVE_ORDER_BOOK",
