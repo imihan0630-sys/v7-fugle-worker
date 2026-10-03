@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "PASSIVE_FLOW_ETF_UNITS_PCF_CONTRACT_V0_2",
+  "supersedes": "research/passive_flow_etf_units_pcf_contract_v0_1.json",
+  "updated": "2026-10-03 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "question": "What can Taiwan ETF units/PCF data identify about primary-market fund-size change and basket obligations without falsely claiming same-day constituent executions?",
+  "semanticHierarchy": [
+    "FUND_UNIT_CHANGE",
+    "PRIMARY_MARKET_DELIVERY_OBLIGATION",
+    "AP_INVENTORY_FINANCING_PATH",
+    "ACTUAL_SECONDARY_MARKET_EXECUTION"
+  ],
+  "primaryFlowObject": {
+    "name": "reportedOutstandingUnitChangeWithOperationalAdjustments",
+    "sourceField": "ISSUES-DIFF / outstanding-unit difference",
+    "interpretation": "Reported ETF unit change after acknowledging initial-review success, second-review failure reversals and dual-currency conversions where applicable.",
+    "notEquivalentTo": [
+      "gross creations",
+      "gross redemptions",
+      "same-day net order count",
+      "actual stock trades",
+      "actual passive-flow NTD"
+    ]
+  },
+  "taiwanExecutionIdentifiabilityGuards": {
+    "existingInventory": "Applicants/APs may deliver pre-existing holdings; creation need not cause new market purchases.",
+    "collectiveInKindCreation": "Up to three applicants may pool existing holdings for an in-kind creation.",
+    "minimumInKindBasket": "With issuer approval, an AP may initially deliver at least 90% of the required stock-basket market value and later buy or borrow shortage shares by the next business day.",
+    "cashSubstitution": "Specific PCF constituents may be replaced by cash under allowed conditions.",
+    "pcfVersioning": "T-day PCF can be updated/retransmitted; same-generation version/use-date/hash must be preserved.",
+    "conclusion": "Units delta plus PCF can support MODELED_PRIMARY_BASKET_EXPOSURE, not ACTUAL_STOCK_PASSIVE_FLOW."
+  },
+  "modeledBasketExposure": {
+    "allowedName": "MODELED_PRIMARY_BASKET_EXPOSURE",
+    "approximateFormula": "reportedUnitsDelta / creationUnitSize * pcfBasketShares_i",
+    "mandatoryUncertainty": [
+      "operationalAdjustmentSemantics",
+      "existingInventoryPossible",
+      "collectiveCreationAllowed",
+      "minimumBasketAllowed",
+      "shortageStockBuyOrBorrowDeadline",
+      "cashSubstitutionByComponent",
+      "unitCorporateActionState",
+      "pcfGenerationId",
+      "modeledVsActualExecution"
+    ],
+    "forbiddenNames": [
+      "ACTUAL_PASSIVE_STOCK_BUY",
+      "ACTUAL_PASSIVE_STOCK_SELL",
+      "SAME_DAY_COMPONENT_EXECUTION",
+      "FULL_BASKET_MARKET_DEMAND"
+    ]
+  },
+  "requiredProspectiveReceipt": [
+    "fundCode",
+    "fundType",
+    "benchmark",
+    "creationRedemptionMode",
+    "dataDate",
+    "dataTime",
+    "capturedAt",
+    "firstKnownAt",
+    "sourceUrl",
+    "sourceHash",
+    "outstandingUnits",
+    "unitsDelta",
+    "unitsDeltaSemantic",
+    "pcfAsOfDate",
+    "pcfUseDate",
+    "pcfVersion",
+    "pcfGenerationId",
+    "pcfHash",
+    "creationUnitSize",
+    "basketRows",
+    "cashSubstitutionByComponent",
+    "existingInventoryPossible",
+    "collectiveCreationAllowed",
+    "minimumBasketAllowed",
+    "minimumBasketThresholdPct",
+    "shortageStockBuyOrBorrowDeadline",
+    "splitReverseSplitFlag",
+    "otherUnitCorporateActionFlag",
+    "modeledVsActualExecution",
+    "pointInTimeEligible",
+    "unknownReasons"
+  ],
+  "crossModuleOwnership": {
+    "D11_14": "index event identity, announcement/effective clocks and event lifecycle",
+    "D06_11": "observed passive/index fund flow",
+    "D06_16": "creation/redemption, AP, premium-discount, tracking and underlying-liquidity mechanics",
+    "antiDoubleCount": "One event/units primitive receipt is referenced downstream; it does not create multiple directional votes."
+  },
+  "falsification": [
+    "Zero units delta does not prove zero gross creation/redemption.",
+    "Positive units delta does not prove every constituent was bought in the secondary market that day.",
+    "In-kind creation can be sourced from existing inventory, pooled applicants, partial baskets, later purchases or borrowed shortage shares.",
+    "Cash substitution breaks one-to-one physical basket delivery.",
+    "Premium/discount creates an arbitrage opportunity but does not prove immediate full constituent execution.",
+    "Current interfaces prove prospective feasibility, not immutable historical first-known truth."
+  ],
+  "sourceReadiness": {
+    "currentUnitsDelta": "PROSPECTIVE_SOURCE_CONTRACT_VERIFIED",
+    "dailyPcfConcept": "PROSPECTIVE_SOURCE_CONTRACT_VERIFIED",
+    "taiwanExecutionMechanics": "OFFICIAL_MECHANISM_VERIFIED",
+    "historicalUnitsDeltaFirstKnownArchive": "NOT_YET_VERIFIED",
+    "historicalPcfFirstKnownArchive": "NOT_YET_VERIFIED",
+    "actualStockExecution": "UNOBSERVED"
+  },
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / EXECUTION_IDENTIFIABILITY_FIREWALL_FROZEN / PROSPECTIVE_RECEIPTS_REQUIRED / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "exactNext": "PF-040 remains reserved for the next genuine independent trading-day units-delta+PCF prospective receipt. Preserve same-generation PCF and execution-uncertainty fields; do not backfill weekend/current pages into historical firstKnownAt."
+}
