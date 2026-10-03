@@ -140,3 +140,14 @@ Remaining candidates without accepted partial evidence:
 - COV-12 / D22 → debt seniority/collateral/recovery taxonomy + Taiwan document feasibility.
 
 These are dispatch deltas only. States remain PENDING_SPECIALIST_RETURN until qualifying evidence arrives.
+
+
+## Coverage specialist return intake contract — 2026-10-03
+
+Canonical template:
+`shared-knowledge/CURRICULUM_COVERAGE_SPECIALIST_RETURN_INTAKE_TEMPLATE_20261003_V0_1.md`
+
+Machine-readable schema:
+`shared-knowledge/curriculum_coverage_specialist_return_schema_v0_1.json`
+
+A specialist return cannot become RETURN_ACCEPTED_FOR_INTAKE unless all fixed 10 fields, Taiwan data feasibility, PIT/replay, overlap, anti-double-count, owner and exactly one terminal recommendation are complete.
