@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-03T23:17:00+08:00",
+  "owner": "08｜事件與新聞研究室",
+  "module": "D11-18",
+  "title": "Tender Offer／Going Private／Delisting公開收購私有化與下市",
+  "status": "TAIWAN_PIT_SOURCE_FEASIBILITY_VALIDATED / SUCCESS_EXTENSION_CORRECTION_STATES_OBSERVED / FAILURE_CONTROL_PENDING_BEFORE_OUTCOMES",
+  "formalCoreImpact": "NONE",
+  "officialSourceContract": [
+    {
+      "name": "MOPS public tender-offer area",
+      "url": "https://mops.twse.com.tw/mops/web/t120sb02_q10",
+      "finding": "MOPS exposes public-tender-offer filing/statistical/data-query surfaces.",
+      "quality": "OFFICIAL_PUBLIC_SURFACE"
+    },
+    {
+      "name": "FSC Regulations Governing Public Tender Offers",
+      "url": "https://law.fsc.gov.tw/LawContent.aspx?id=FL007245&media=print",
+      "fieldsAndClocks": [
+        "offer filing/announcement",
+        "offer period",
+        "minimum and maximum quantity",
+        "regulatory approval/effectiveness",
+        "condition achievement",
+        "extension",
+        "payment funding state",
+        "period expiry",
+        "tendered quantity",
+        "actual transaction quantity",
+        "settlement/payment"
+      ],
+      "finding": "Offer period is 20-50 days; condition achievement depends on minimum quantity and required approvals; key state changes require announcement; period-end report records achievement/tendered/actual quantities.",
+      "quality": "OFFICIAL_RULE"
+    }
+  ],
+  "boundedCases": [
+    {
+      "case": "超恩公開收購博來科技",
+      "parentDisclosureIssuer": "6414 樺漢",
+      "offerPeriod": "2026-06-04..2026-07-08",
+      "minimumShares": 3000000,
+      "regulatoryApprovalDate": "2026-07-03",
+      "thresholdCrossDate": "2026-07-07",
+      "expiryDate": "2026-07-08",
+      "tenderedShares": 4190617,
+      "actualShares": 4190617,
+      "paymentDate": "2026-07-15",
+      "state": "SUCCESS_COMPLETE",
+      "sourceQuality": "MOPS announcement text preserved by multiple public transports; official legal fields match period-end schema"
+    },
+    {
+      "case": "台信電訊公開收購精誠資訊",
+      "parentDisclosureIssuer": "3045 台灣大",
+      "originalExpiry": "2026-10-06",
+      "extensionDecisionDate": "2026-09-29",
+      "extendedExpiry": "2026-11-05",
+      "minimumShares": 106174796,
+      "maximumShares": 157900979,
+      "statedReason": "FTC business-combination review timing",
+      "otherTermsChanged": false,
+      "state": "REGULATORY_PENDING_EXTENSION",
+      "sourceQuality": "issuer/CNA and MOPS-announcement transports; current event not yet closed in this receipt"
+    },
+    {
+      "case": "信立公開收購邁達康",
+      "acquirer": "4303 信立",
+      "filingDate": "2026-04-28",
+      "offerPeriod": "2026-04-30..2026-05-19",
+      "minimumAndMaximumShares": 10000000,
+      "conditionAchievementDate": "2026-05-04",
+      "tenderedAtAchievement": 10550524,
+      "stateAtAchievement": "SUCCESS_OVERSUBSCRIBED",
+      "expiryDate": "2026-05-19",
+      "correctionDate": "2026-05-21",
+      "correctionScope": "return method for deposited but unpurchased securities",
+      "state": "SUCCESS_WITH_POST_EXPIRY_CORRECTION",
+      "sourceQuality": "MOPS announcement text replicated by financial/news transports"
+    }
+  ],
+  "frozenStateMachine": [
+    "FILED_ANNOUNCED",
+    "TENDER_OPEN",
+    "CONDITION_PENDING",
+    "REGULATORY_PENDING",
+    "EXTENDED",
+    "CONDITION_MET",
+    "MAXIMUM_REACHED_OR_OVERSUBSCRIBED",
+    "TENDER_CLOSED",
+    "PAYMENT_SETTLEMENT",
+    "DELISTING_PROCESS_IF_APPLICABLE",
+    "DELISTED_IF_APPLICABLE",
+    "MINIMUM_NOT_MET",
+    "REGULATORY_FAILURE",
+    "WITHDRAWAL_OR_STOP_APPROVED",
+    "PAYMENT_FAILURE",
+    "TERMS_REVISED_OR_CORRECTED",
+    "UNKNOWN"
+  ],
+  "falsification": [
+    "offer announcement != condition achievement",
+    "minimum tender threshold != regulatory approval",
+    "condition achievement != period expiry",
+    "period expiry != payment/settlement",
+    "extension is a new event version, not a rewrite of the original expiry",
+    "oversubscription can create partial allocation/return mechanics",
+    "post-expiry corrections append and do not overwrite the original disclosure",
+    "offer spread is compensation for time, funding, approval, settlement and deal-break risk, not risk-free convergence"
+  ],
+  "pitRules": [
+    "Preserve original offer terms and each extension/correction version.",
+    "Do not use later regulatory approval or condition-achievement state before first-known.",
+    "Period-end actual quantities cannot be backfilled into the filing date.",
+    "A failed offer must remain in future outcome denominators when observed."
+  ],
+  "maturityDecision": {
+    "from": "L2",
+    "to": "L3",
+    "scope": "TAIWAN_PIT_SOURCE_AND_EVENT_STATE_FEASIBILITY",
+    "note": "Actual minimum-not-met failure control remains required before any L4/OOS spread-return cohort, but source schema and observed success/extension/correction states are sufficient for L3 data feasibility."
+  },
+  "outcomesOpened": false,
+  "formalOptimizationCandidate": false,
+  "exactNext": "Collect at least one native minimum-not-met/withdrawn/regulatory-failure tender case plus immutable MOPS versions; then preregister spread/deal-break outcome horizons and costs before L4."
+}
