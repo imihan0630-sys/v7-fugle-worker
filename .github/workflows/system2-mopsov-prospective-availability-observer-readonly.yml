@@ -1,0 +1,53 @@
+name: System2 MOPSOV Prospective Availability Observer Readonly
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/runtime/mopsov_prospective_availability_observer_v0_1.mjs"
+      - "system2/tests/mopsov_prospective_availability_observer_v0_1.test.mjs"
+      - "system2/scripts/probe_mopsov_prospective_availability_observer_readonly_v0_1.mjs"
+      - "system2/SYSTEM2_MOPSOV_PROSPECTIVE_AVAILABILITY_OBSERVATION_V0_1.md"
+      - ".github/workflows/system2-mopsov-prospective-availability-observer-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/mopsov_prospective_availability_observer_v0_1.mjs"
+      - "system2/tests/mopsov_prospective_availability_observer_v0_1.test.mjs"
+      - "system2/scripts/probe_mopsov_prospective_availability_observer_readonly_v0_1.mjs"
+      - "system2/SYSTEM2_MOPSOV_PROSPECTIVE_AVAILABILITY_OBSERVATION_V0_1.md"
+      - ".github/workflows/system2-mopsov-prospective-availability-observer-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-mopsov-prospective-availability-observer-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run availability observation unit tests
+        run: node system2/tests/mopsov_prospective_availability_observer_v0_1.test.mjs
+
+      - name: Verify retrospective readback fails closed
+        run: node system2/scripts/probe_mopsov_prospective_availability_observer_readonly_v0_1.mjs
+
+      - name: Confirm read-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_mopsov_prospective_availability_observer_readonly_v0_1.mjs
+          echo "Read-only MOPSOV prospective availability observer boundary PASS"
