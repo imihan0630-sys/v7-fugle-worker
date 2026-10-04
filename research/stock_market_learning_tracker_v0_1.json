@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T18:06:00+08:00",
+  "updatedAt": "2026-10-04T18:56:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -274,10 +274,10 @@
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
       ],
       "maturityPct": 56.7,
-      "status": "D03_56_7_PERCENT / PRE_PARENT_SOURCE_CUT_POLICY_PHYSICAL_PASS / EVENT_DRIVEN_SOURCE_CARDINALITY_MEASURED / OWNER_CUTOFF_SAFE_CONTINUITY_RECEIPT_PENDING / RAW_RECEIPT_GATE_2_OF_3 / OUTCOMES_CLOSED",
+      "status": "D03_56_7_PERCENT / DECISION_CUTOFF_STRICTNESS_PHYSICAL_PASS / EVIDENCE_CUTOFF_POST_PARENT_DERIVATION_PHYSICAL_PASS / TWO_POINT_NO_REVISION_GAP_CANDIDATE_PHYSICAL_PASS / EFFECTIVE_V817_FINAL_FORMAL_INPUT_AUDITED / OWNER_CUTOFF_RUNTIME_PENDING / RAW_RECEIPT_GATE_2_OF_3 / OUTCOMES_CLOSED",
       "lastResearchUpdate": "2026-10-04",
-      "researchNote": "TI-651~660 narrow the remaining D03-09/10 blocker without maturity inflation. Physical run 37190871367 measured six official continuity lanes over 2026-08-15..2026-10-02: 294 unique event rows across 31 event-bearing dates, mean ~9.48 events/date and max 33 on one date, supporting event-driven source engineering rather than full-market per-symbol revision polling. D03 freezes that exact MOPS version firstObservedAt<=parentKnownAt can establish conservative parent-time availability even when <=5-minute precisionEligible is false; the latter is latency precision, not intrinsic parent eligibility. Selected-only pre-parent capture is rejected because the C1 parent population does not exist until the normal scan. Physical run 37191199051 PASSes the new source-cut policy and blocks late cuts, selected-only scope, late/retrospective versions, incomplete version keysets and truncation. The hard unresolved owner claim is noRevisionGapThroughCut plus cutoff-safe market-wide/full-universe receipt production. Current Bollinger/ADX v0.2 capturedAt<=parentKnownAt semantics are not weakened. D03-10 and D03-09 remain L2/40; aggregate remains 56.7%; raw source gate 2/3; outcomes closed.",
-      "exactNextContinuationPoint": "Shared TECHNICAL_CONTINUITY owner must implement/execute one versioned pre-parent architecture and produce a genuine cutoff-safe market-wide/full-universe source cut, exact prospective MOPS version observations, owner-certified noRevisionGapThroughCut and symbol-session completeness. Bind resulting owner continuity receipts to the first genuine V8.17 parent keyset via bindingId. Execute Bollinger v0.2 for every expected parent and require COMPLETE reconciliation before any D03-10 L3 / aggregate 58.3 promotion. ADX follows only with canonical-anchor FULL_REPLAY for aggregate 60.0. Raw D03 source-version gate stays 2/3; TI-005/TI-006 outcomes remain closed.",
+      "researchNote": "TI-661~685 harden D03 continuity causality without maturity inflation. A versioned evidenceCutoffAt/receiptCreatedAt architecture physically passes: continuity may be materialized after the parent only from an immutable pre-decision-cut source set, with zero post-cut or unbound facts and separate market-cut vs symbol-transform provenance hashes. A two-point noRevisionGapThroughCut owner-certifier candidate physically passes fail-closed tests for late-discovered pre-cut versions, version-payload mutation, missing pre versions and incomplete post population; D03 self-certification remains forbidden. Pre-parent source-cut V0.2 physically proves decisionAt/parentKnownAt cannot substitute for decisionCutoffAt. Parent×evidence-cut×continuity binding V0.2 physically passes for post-parent-derived Bollinger and canonical FULL_REPLAY ADX synthetic receipts. Effective V8.17 build audit run 37196768178 passes after 95/95 C1/C2 regression tests and falsifies the older totalCapital anchor: the final Formal-affecting async input is the later STOCKS_KV V7_MARKET_CONSENSUS read; after that read and before synchronous selectTomorrowCandidates there are zero external/async reads. Physical C1 has decisionAt but no decisionCutoffAt. Correct owner insertion candidate is after market-consensus read and immediately before selector. D03-09/10 remain L2, raw source gate remains 2/3, outcomes/Formal closed.",
+      "exactNextContinuationPoint": "Shared immutable-parent owner must implement/version additive decisionCutoffAt provenance at the physically audited V8.17 boundary: after the final Formal-affecting V7_MARKET_CONSENSUS KV read and immediately before synchronous selectTomorrowCandidates; no historical backfill and no decisionAt substitution. Shared TECHNICAL_CONTINUITY owner then builds a genuine market-wide/full-eligible evidence cut with evidenceCutoffAt<=decisionCutoffAt, exact prospective version population, owner-certified noRevisionGapThroughCut and symbol-session completeness. If using post-parent transform materialization, receipt must derive exclusively from that immutable cut with zero post-cut/unbound facts and bind via parent/evidence-cut V0.2. On first genuine cutoff-bearing parent, execute Bollinger for every expected parent and require COMPLETE reconciliation before D03-10 L3 -> D03 58.3%. ADX follows only with canonical-anchor FULL_REPLAY for 60.0%. Raw D03 3-session gate remains 2/3; TI-005/TI-006 outcomes remain closed.",
       "modules": [
         {
           "id": "D03-01",
@@ -356,8 +356,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「ADX平均趨向指標」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2 / ADX_V0_2_AND_PARENT_BINDING_PHYSICAL_PASS / PRE_PARENT_SOURCE_CUT_POLICY_PASS / OWNER_NO_REVISION_GAP_AND_CUTOFF_SAFE_RECEIPT_PENDING / CANONICAL_ANCHOR_FULL_REPLAY_REQUIRED / OUTCOME_UNKNOWN",
-          "next": "Consume only owner-issued cutoff-safe continuity receipts bound to the genuine V8.17 parent. After owner noRevisionGapThroughCut and symbol-session completeness, run ADX v0.2 using canonical-anchor FULL_REPLAY for every expected parent; require COMPLETE reconciliation. PrecisionEligible/high-frequency polling is not intrinsically required if exact version firstObservedAt<=parentKnownAt is proven."
+          "status": "ADX_V0_2_FORMULA_SOURCE_AND_BINDING_GUARDS_PHYSICAL_PASS / DECISION_CUTOFF_AND_POST_PARENT_DERIVATION_CONTRACTS_PHYSICAL_PASS / GENUINE_CUTOFF_BEARING_PARENT_AND_OWNER_NO_REVISION_GAP_PENDING / CANONICAL_ANCHOR_FULL_REPLAY_REQUIRED / OUTCOME_UNKNOWN",
+          "next": "Require every Bollinger-class genuine-parent/continuity gate plus canonical-anchor FULL_REPLAY, exact Wilder state lineage, replay/prefix certification and complete expected-parent attempts. No trusted local bootstrap. Only after physical COMPLETE may L3/60 -> D03 60.0%."
         },
         {
           "id": "D03-10",
@@ -366,8 +366,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Bollinger Bands布林通道」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2 / BOLLINGER_V0_2_AND_PARENT_BINDING_PHYSICAL_PASS / PRE_PARENT_SOURCE_CUT_POLICY_PASS / OWNER_NO_REVISION_GAP_AND_CUTOFF_SAFE_RECEIPT_PENDING / OUTCOME_UNKNOWN",
-          "next": "First promotion target. After the shared owner physically produces cutoff-safe market-wide/full-universe source cut, noRevisionGapThroughCut, symbol-session completeness and exact owner continuity receipts for the genuine V8.17 parent, bind and run Bollinger v0.2 for all expected parents. COMPLETE eligible reconciliation is required for L3."
+          "status": "BOLLINGER_V0_2_FORMULA_AND_SOURCE_GUARDS_PHYSICAL_PASS / DECISION_CUTOFF_AND_POST_PARENT_DERIVATION_CONTRACTS_PHYSICAL_PASS / GENUINE_CUTOFF_BEARING_PARENT_AND_OWNER_NO_REVISION_GAP_PENDING / OUTCOME_UNKNOWN",
+          "next": "First promotion target. Require genuine parent with persisted decisionCutoffAt at the audited post-marketConsensus/pre-selector boundary; market-wide evidence cut <= cutoff; owner noRevisionGapThroughCut/symbol-session certification; derived continuity only from pre-cut facts; V0.2 parent binding; exact 20 eligible sessions; complete expected-parent attempts. Then and only then L3/60 -> D03 58.3%."
         },
         {
           "id": "D03-12",
