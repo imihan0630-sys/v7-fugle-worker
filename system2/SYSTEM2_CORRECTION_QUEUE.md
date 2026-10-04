@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-04 19:30 Asia/Taipei
+Updated: 2026-10-04 20:26 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -81,6 +81,53 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - 2017 TWSE disposition: `DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL`.
 - finalDisposition: PENDING
 - updatedAt: 2026-10-04T19:03:00+08:00
+
+### S2-CORR-20261004-003 — Correction routing governance contradiction can cause BUILD_LANE to seize work assigned to other lanes
+
+- createdAt: 2026-10-04T20:26:00+08:00
+- severity: UNKNOWN
+- status: FIX_IN_PROGRESS
+- routingClass: REMEDIATION_LANE
+- assignedLane: REMEDIATION_LANE
+- assignedRoom: System 2｜補強修復室
+- modificationOwner: SYSTEM2_REMEDIATION_ROOM
+- blockedBy: none
+- affectedScope: System 2 canonical correction-routing governance / SYSTEM2_MASTER / correction governance semantics / bootstrap-checkpoint-registry consistency / semantic regression guard
+- detectedBy: OWNER_HANDOFF_TO_REMEDIATION_LANE
+- canonicalRequirement: Execution Lane Governance is authoritative for implementation ownership. Severity is independent from routing. `routingClass / assignedLane / modificationOwner` determine the implementation owner. BUILD_LANE may execute only assigned `LOCAL_FIX / BUILD_LANE` corrections and may not seize DATA_LANE or REMEDIATION_LANE work because severity is HIGH/CRITICAL.
+- observedProblem: `SYSTEM2_MASTER.md` still states that CRITICAL/HIGH directives may be implemented by the build/control room. That conflicts with `SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`. `SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md` also retains generic “builder” wording that can blur the distinction between BUILD_LANE and the formally assigned implementation lane.
+- evidence:
+  - SYSTEM2_MASTER: “CRITICAL/HIGH directives may be implemented by the build/control room”.
+  - Execution Lane Governance: severity and routing are independent dimensions.
+  - Execution Lane Governance: BUILD executes only LOCAL_FIX / BUILD_LANE items assigned to it.
+  - Execution Lane Governance: BUILD must not seize DATA_LANE or REMEDIATION_LANE work merely because it is HIGH.
+  - SYSTEM2_CHECKPOINT and ROOM_BOOTSTRAP_REGISTRY already carry the newer assignment semantics.
+- riskIfUnfixed: A future BUILD_LANE session can cite the older Master sentence to take modification ownership from DATA_LANE or REMEDIATION_LANE, creating duplicate mutation, merge conflicts, lost evidence or false ownership/closure claims.
+- requiredCorrection:
+  1. Make Execution Lane Governance the explicit implementation-routing authority in SYSTEM2_MASTER.
+  2. Separate severity, routing/assignment and verification authority in canonical wording.
+  3. Clarify generic “builder” wording to mean the formally assigned implementation lane, not BUILD_LANE.
+  4. Require formal `routingClass / assignedLane / modificationOwner` update before ownership transfer.
+  5. Add a semantic regression guard preventing severity from implying BUILD ownership.
+  6. Audit canonical bootstrap/checkpoint/registry surfaces for equivalent stale wording.
+  7. Apply the separately authorized LOW/LOCAL_FIX documentation sync from “shared 18-domain research” to “22-domain / 354-module” without expanding runtime scope.
+- acceptanceCriteria:
+  - SYSTEM2_MASTER no longer states or implies CRITICAL/HIGH severity grants BUILD_LANE implementation ownership.
+  - Correction Governance distinguishes the assigned implementation lane from BUILD_LANE and preserves independent closure authority.
+  - Execution Lane Governance, Master, Checkpoint and ROOM_BOOTSTRAP_REGISTRY agree that BUILD executes only assigned LOCAL_FIX/BUILD_LANE corrections.
+  - Ownership transfer requires a formal routing/assignment/modification-owner change.
+  - CRITICAL/HIGH assigned implementation lanes may reach FIX_IMPLEMENTED, but the same implementation role cannot self-VERIFIED_CLOSED.
+  - Semantic regression guard detects future severity-implies-BUILD wording.
+  - SYSTEM2_BUILD_PROGRESS_MAP says 22-domain / 354-module rather than shared 18-domain research.
+  - Protected System 1/System 2 trading boundaries remain unchanged.
+- protectedBoundaries: System 1 Formal Core; System 2 strategy/ranking/final-selection; capital/order; production push; production runtime.
+- ownerDecisionRequired: false
+- implementationEvidence:
+  - Owner explicitly assigned S2-CORR-20261004-003 to REMEDIATION_LANE while latest main did not yet contain the directive; this record materializes that owner handoff without inventing a severity classification.
+- verificationEvidence: PENDING
+- finalDisposition: PENDING
+- updatedAt: 2026-10-04T20:26:00+08:00
+
 
 ## Closed directives
 
