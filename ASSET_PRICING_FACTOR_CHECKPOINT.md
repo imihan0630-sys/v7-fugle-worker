@@ -2,7 +2,7 @@
 
 Updated: 2026-10-04 Asia/Taipei
 Scope: D19｜資產定價／因子投資／市場異象
-Status: RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / FULL_TWSE_UNIVERSE_RECONCILED / TWSE_SESSION_STATE_DIAGNOSTICS_ADVANCED / TPEX_INDUSTRY_REDUNDANCY_COST_GATES_OPEN / FORMAL_CORE_UNCHANGED
+Status: RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / VALID_OBSERVATION_CONTRACT_FROZEN / DUAL_TWSE_SOURCE_NONPRICE_CONFIRMED / TPEX_INDUSTRY_REDUNDANCY_COST_GATES_OPEN / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - This file is the canonical continuation checkpoint for D19.
@@ -176,3 +176,33 @@ Status: RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / FULL_TWSE_UNIVERSE_RECONCIL
 7. Execute D03/D09 paired redundancy only after compatible PIT inputs exist.
 8. Freeze D14-compatible component-wise cost scenarios with explicit evidence quality.
 9. Only a zero-applicable-blocker deterministic full-Taiwan replay can trigger L3 readiness review; no automatic promotion.
+
+
+## Stage 10 completed on 2026-10-04
+- PR #489 merged as `81145020202f2806f754007062ae6a60d2979760`.
+- D19-04 valid-observation / symbol-session contract is now executable and fail-closed. No forward fill, previous-close substitution, UNKNOWN->0 or local suspension inference is authorized.
+- Preregistered comparators: `CALENDAR_20_STRICT_V0_1` and `VALID_OBSERVATION_20_V0_1`; valid-observation mode requires an explicit maximum calendar-span parameter and remains sensitivity research.
+- Shared TWSE monthly-history adapter was corrected for live ROC-calendar row dates and regression-tested.
+- Physical validation: System2 CI `37181597861` PASS; V8 Regression `37181597874` PASS; V8 Repair CI `37181597908` PASS; D19 real-source workflow `37181597868` PASS; production isolation PASS.
+- Primary TWSE full-market source reproduced 11 official zero-trade rows + 39 positive-activity/no-valid-close rows; evidence hash `37d7a2d4922ae857ac9c62ede85a98e8f9fcbe3c75f085d2d776e3d13b0111d4`.
+- Independent TWSE STOCK_DAY monthly cross-check found 0/39 alternate valid closes. All 50 non-price rows existed in the alternate official source and 50/50 matched volume/value/transaction-count fields exactly. Cross-source evidence hash `5e2670ceab44650e7609b604c12bd19fb57d2fb92f2857f7cc4355c3ead878e3`.
+- Therefore the 39 cases are no longer treated as a plausible single-endpoint recoverable omission. They remain non-price observations; exact transaction-mechanism cause remains UNKNOWN.
+- D19 maturity remains 40.0%; no L3 promotion.
+
+## Updated D19-04 L3 blocker state after Stage 10
+1. HISTORICAL_UNIVERSE = PARTIAL_PASS: TWSE date-vintaged denominator resolved; TPEx universe/replay remains unresolved.
+2. FACTOR_INPUT_OBSERVATION_SEMANTICS = PARTIAL_PASS_STRONGLY_NARROWED: explicit observation-state contract exists; 11 zero-trade and 39 activity/no-close rows are dual-source confirmed non-price observations; affected factor windows remain incomplete unless a preregistered valid-observation comparator can lawfully assemble sufficient prior valid observations.
+3. CORPORATE_ACTION_CONTINUITY = PARTIAL_PASS_SOURCE_PARSER_AND_BOUNDED_EVENT_PROVENANCE: full revision/NO_EVENT/exchange-complete certification and exact-window binding remain open.
+4. INDUSTRY_NEUTRALIZATION = BLOCKED: date-vintaged PIT industry classification unavailable.
+5. D03_D09_REDUNDANCY = BLOCKED_COMPATIBLE_PIT_INPUTS.
+6. COST_PROVENANCE = PARTIAL_PASS_TAX_ONLY: owner commission/slippage/turnover evidence incomplete.
+7. TPEX_HISTORICAL_SOURCE = BLOCKED_FULL_MARKET_TRANSPORT / ALTERNATE_MONTHLY_ROUTE_NOT_YET_PHYSICALLY_QUALIFIED.
+
+## Exact next continuation after Stage 10
+1. Physically qualify the existing TPEx individual-security monthly-history route on frozen August-2026 symbols; if readable, classify it as an alternate replay primitive only, not full-market completion.
+2. Build TPEx date-vintaged universe population/scale path independent of the currently failing full-market live route.
+3. Persist immutable receipt-equivalent evidence for six documented TWSE stop-trading/structural-event cases and bind shared continuity receipts to exact factor windows.
+4. Acquire date-vintaged PIT industry membership and run industry neutralization.
+5. Run paired D03/D09 redundancy on identical frozen PIT inputs.
+6. Freeze D14-compatible versioned component-wise cost scenarios with evidence quality; actual owner commission remains UNKNOWN absent direct evidence.
+7. Zero applicable blockers may trigger L3 readiness review only; no automatic promotion.
