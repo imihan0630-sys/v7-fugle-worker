@@ -22,7 +22,7 @@ This registry tracks routing and return state; it does not itself decide module 
 | Candidate | Domain | Room | Current class | Specialist state | Expected return path |
 |---|---|---|---|---|---|
 | COV-01 | D01 | 01｜K線與型態研究室 | ACTIVE_CURRICULUM_OWNER_GAP | PENDING_SPECIALIST_RETURN | `research/COV01_D01_SPECIALIST_RETURN_V0_1.md` |
-| COV-02 | D05 | 04｜波動與市場微結構研究室 | SCOPE_EXTENSION_CANDIDATE | OWNER_APPROVAL_REQUIRED | `research/COV_02_CLOSING_AUCTION_SPECIALIST_RETURN_20261004_V0_1.md` |
+| COV-02 | D05 | 04｜波動與市場微結構研究室 | SCOPE_EXTENSION_CANDIDATE | CANONICAL_UPDATE_COMPLETE | `research/COV_02_CLOSING_AUCTION_SPECIALIST_RETURN_20261004_V0_1.md` |
 | COV-04 | D07 | 06｜基本面與估值研究室 | TRUE_GAP_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV04_D07_SPECIALIST_RETURN_V0_1.md` |
 | COV-06 | D10 | 07｜產業與供應鏈研究室 | SCOPE_EXTENSION_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV06_D10_SPECIALIST_RETURN_V0_1.md` |
 | COV-07 | D12 | 09｜衍生品與國際總經研究室 | TRUE_GAP_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV07_D12_SPECIALIST_RETURN_V0_1.md` |
@@ -309,3 +309,21 @@ Current state:
 **OWNER_APPROVAL_REQUIRED**
 
 Formal Core remains LOCKED.
+
+
+## COV-02 owner approval + canonical update — 2026-10-04
+
+Owner decision: **APPROVED**.
+
+State transitions:
+- COV-02: OWNER_APPROVAL_REQUIRED → TERMINAL_DECISION_READY → CANONICAL_UPDATE_COMPLETE.
+
+Canonical execution:
+- D05-06 renamed/expanded to `Opening / Closing Auction & Auction Imbalance（開收盤集合競價與競價不平衡）`.
+- D05-06 remains L2 / 40%.
+- active module count unchanged.
+- historical pre-close trial/imbalance remains UNKNOWN when timestamped evidence is absent.
+- final close/volume and generic EOD volume are not accepted substitutes.
+- no independent auction directional Alpha vote.
+
+Formal Core remains LOCKED. No System1/System2 Formal change.
