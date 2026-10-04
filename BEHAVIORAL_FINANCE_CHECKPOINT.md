@@ -263,3 +263,17 @@ Do not repeat the ownership studies unless contradictory evidence appears.
 - D20-13 live source receipts = 0.
 - Exact next: first actually executed Room13 :10 scheduled social snapshot becomes the first candidate primary capture; next genuine Taiwan trading day separately executes D20-13 09:15 / 12:00 / 15:20 ±5m official-source capture.
 - Formal Core locked; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+
+## 00 control-plane receipt — H08 terminal closure
+
+00｜研究總控室 closed H08:
+KEEP_SEPARATE / MEMBERSHIP_VS_EVENT_PROPAGATION_VS_NARRATIVE_DIFFUSION / SHARED_LINEAGE_FIREWALL.
+
+D20-11 remains bounded behavioral narrative/social diffusion owner only when independent social-language/topic/stance evidence exists after controlling:
+- D09-11 static/effective-dated theme membership;
+- D17-11 dated event/news propagation.
+
+The same PTT/news/theme primitive cannot become independent attention/herding/narrative/event/membership votes by construction.
+
+D20-11 remains at its canonical maturity; H08 closure itself adds no maturity or Formal change.
