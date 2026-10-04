@@ -490,3 +490,69 @@ Exact next continuation point:
 
 Formal Core/runtime/selection/scoring/capital/signals remain unchanged.
 FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+
+## 2026-10-05 Room-06 D08-03 active archive continuation — PR #588
+
+This entry supersedes the operational branch/PR pointer in the earlier D08-03 archive section. Completed evidence remains valid; only the active execution pointer changes.
+
+Last durable milestone:
+- PR #584 merged at 2ee2cad90c74c2419afeebed335010cd5f96e484.
+- 2005-09-02 through 2005-12-31 earliest machine-readable archive boundary physically PASS.
+- 85 trading dates; 56,634 rows; PE known 40,845; PB known 56,497.
+- consecutive runs produced identical:
+  - sourceBundleHash = 501c7c1dc356ab70731e3839295c872a728a6c2784c0a8b874385b7ff111250a;
+  - packPayloadHash = e15068875b9615fba74148b21016d5e9791d6f129f2192b32d10795d47ed532a;
+  - objectSha256 = 03938cab114fb25ad0e0680ba261645c87d1d66abe9deb043647640ee73d5012.
+- R2 readback PASS; old object was reused rather than rewritten.
+- legacy BWIBBU_d ratio-only schema is now canonical research handling:
+  - PE/PB remain eligible;
+  - close and fiscal-report-period can be SOURCE_NOT_PROVIDED;
+  - no reconstruction/backfill from later sources.
+- D08 percentile implementation now separates:
+  - cohort effectiveFrom = whether the symbol belongs to the scan-date cohort;
+  - valuationHistoryStart = official listingDate when known, otherwise firstTradingDate fallback.
+  This prevents the 2023 research-universe clamp from incorrectly deleting valid pre-2023 valuation history.
+- 252/756/1260/EXPANDING_SINCE_AVAILABLE tests PASS; current scan-day PE/PB raw-snapshot cross-check PASS.
+- PR #584 exact-head checks:
+  - System2 Research CI 37223758899 PASS;
+  - D08 Raw Valuation R2 Capture 37223758840 PASS;
+  - D08 Daily Valuation Year Pack 37223758832 PASS;
+  - V8 Regression 37223758821 PASS.
+
+Current active execution:
+- branch: research/d08-full-daily-valuation-archive-v0-1
+- PR: #588
+- head at creation: bd890b77e83942adb4ff0880684dfa24192fdd04
+- full archive workflow run: 37224491439
+- System2 Research CI run: 37224491376
+- V8 Regression run: 37224491402
+- workflow policy:
+  - years 2005..2026; 2026 capped at 2026-08-31;
+  - max-parallel=1 across years;
+  - daily requests serialized;
+  - retryAttempts=7 / retryDelayMs=1000;
+  - existing R2 objects reused by putIfAbsent + exact readback verification;
+  - fail-fast=false so evidence from good years is retained even if another year has transport failure.
+
+Superseded pointer:
+- prior branch research/d08-daily-valuation-year-pack-v0-1 / PR #548 is historical context only and must not be resumed as the active lane.
+
+Exact next continuation point:
+1. finish/inspect PR #588 run 37224491439 and require all 22 yearly jobs PASS;
+2. retain for every year: tradingDateCount, totalRows, totalPeKnown, totalPbKnown, sourceBundleHash, packPayloadHash, objectSha256, objectKey, readbackVerified;
+3. build one durable 2005-2026 archive manifest + aggregate packBundleHash;
+4. only after full archive completeness, materialize the 44 frozen outcome-blind percentile snapshots:
+   - PE/PB 252 valid sessions;
+   - 756 valid sessions;
+   - 1260 valid sessions;
+   - true EXPANDING_SINCE_AVAILABLE;
+5. cross-check every scan-date current PE/PB against durable raw-v0.2 month-end snapshots; mismatch => DATA_BLOCKED;
+6. then freeze remaining preregistered control/coverage snapshots;
+7. return/outcome join remains CLOSED until all pre-outcome gates pass.
+
+Maturity:
+- D08-03 remains L3/60.
+- No L4 promotion from archive engineering alone.
+- Formal Core/runtime/selection/scoring/capital/signals unchanged.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
