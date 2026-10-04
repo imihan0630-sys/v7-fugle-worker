@@ -1674,3 +1674,42 @@ All three states:
 `CLOSED_NO_STRUCTURAL_CHANGE`.
 
 No maturity transfer, module-count change, Formal or runtime impact.
+
+
+## H17 / H18 / H19 partial dependency states — 2026-10-04
+
+### H17 — cost-of-capital chain
+State:
+`PARTIAL_EVIDENCE_RECEIVED / D07_18_AND_D22_04_REPLAY_GATES_PENDING`.
+
+Accepted:
+- D13-06 = sovereign/risk-free curve.
+- D22-04 = issuer debt-cost/refinancing spread.
+- D07-18 = enterprise WACC/cost-of-capital composite owner.
+
+Remaining:
+D07-18 own theory/contract, D22-04 issuer-security-date replay, D13-06 multidate strict source attestation, empirical divergent states.
+
+### H18 — project economics vs management allocation
+State:
+`PARTIAL_EVIDENCE_RECEIVED / ROOM06_D07_19_PROJECT_ECONOMICS_PENDING`.
+
+Accepted:
+D21-07 management incentives/capital-allocation-quality mechanism and falsification.
+
+Remaining:
+D07-19 project/capital-budget economics, PIT opportunity-set assumptions and project-quality-vs-management-allocation divergent states.
+
+### H19 — momentum family
+State:
+`PARTIAL_EVIDENCE_RECEIVED / COMMON_SUPPORT_REDUNDANCY_RESIDUAL_TESTS_PENDING`.
+
+Accepted:
+- D03-04 = time-series/within-security momentum.
+- D19-04 = cross-sectional momentum rank.
+- D19-09 = residual/factor-neutral momentum.
+
+Remaining:
+same-date/same-universe D03-vs-D19-04 comparison, fixed-factor/industry residualization for D19-09, provenance, costs and capacity.
+
+No maturity/count/Formal change from these governance states.
