@@ -73,6 +73,10 @@ assert.equal(unknown.missingBars,1);
 assert.equal(unknown.structuralCoverageState,"PASS");
 assert.equal(unknown.rawCoverageState,"PASS");
 assert.equal(unknown.symbolSessionReadiness,"PARTIAL_UNKNOWN_GAPS");
+assert.deepEqual(unknown.missingBySymbol,[{
+  symbol:"1102",missingCount:1,unknownCount:1,suspensionCount:0,
+  firstMissingDate:"2017-01-04",lastMissingDate:"2017-01-04",
+}]);
 assert.equal(unknown.overallState,"PARTIAL");
 
 console.log("historical_market_year_coverage_v0_1 tests passed");
