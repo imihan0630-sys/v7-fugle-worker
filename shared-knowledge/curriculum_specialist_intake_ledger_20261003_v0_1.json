@@ -48,14 +48,14 @@
     },
     {
       "id": "H05",
-      "status": "PARTIAL_EVIDENCE_RECEIVED",
+      "status": "CLOSED_NO_STRUCTURAL_CHANGE",
       "receivedPackets": [
-        "research/h05_d07_25_specialist_evidence_packet_v0_1.json"
+        "research/h05_d07_25_specialist_evidence_packet_v0_1.json",
+        "CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md",
+        "CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md"
       ],
-      "pendingRooms": [
-        "14｜公司治理與內部人研究室"
-      ],
-      "controlDecision": "EVIDENCE_INSUFFICIENT_PENDING_COUNTERPART"
+      "pendingRooms": [],
+      "controlDecision": "KEEP_SEPARATE_STATEMENT_ANOMALY_VS_GOVERNANCE_CONTROL_EVENT"
     },
     {
       "id": "H06",
@@ -219,7 +219,18 @@
       "SHARED_RECEIPT_COMPATIBILITY",
       "TERMINAL_RECOMMENDATION"
     ],
-    "currentControlDecision": "EVIDENCE_INSUFFICIENT_PENDING_COUNTERPART"
+    "currentControlDecision": "EVIDENCE_INSUFFICIENT_PENDING_COUNTERPART",
+    "counterpartMode": "EQUIVALENT_INDEPENDENT_ROOM14_D21_10_EVIDENCE",
+    "audit": "shared-knowledge/CURRICULUM_H05_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md",
+    "machineAudit": "shared-knowledge/curriculum_h05_dependency_anti_orphan_audit_20261004_v0_1.json",
+    "canonicalReceipt": "shared-knowledge/CURRICULUM_H05_CANONICAL_CLOSURE_RECEIPT_20261004_V0_1.md",
+    "canonicalReceiptJson": "shared-knowledge/curriculum_h05_canonical_closure_receipt_20261004_v0_1.json",
+    "terminalClassification": "KEEP_SEPARATE",
+    "governanceDisposition": "STATEMENT_ANOMALY_VS_GOVERNANCE_CONTROL_EVENT",
+    "state": "CLOSED_NO_STRUCTURAL_CHANGE",
+    "maturityChange": "NONE_D07_25_L0_0_D21_10_L3_60",
+    "structuralChange": "NONE",
+    "formalOptimizationCandidate": "NONE"
   },
   "h20": {
     "received": "research/D02_H20_BREAKOUT_SPECIALIST_RETURN_V0_1.md",
