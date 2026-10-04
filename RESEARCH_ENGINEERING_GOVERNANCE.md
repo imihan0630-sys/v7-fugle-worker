@@ -219,3 +219,17 @@ Research read order is now: Shared Master Map -> this governance -> system-speci
 New reusable market findings must be routed to Shared Knowledge while preserving their original detailed evidence files. System-specific implementation remains isolated. System 2 is defined under `system2/` and may consume shared evidence without changing V8 Formal behavior.
 
 This Shared Knowledge layer is Class A documentation/research infrastructure. It does not authorize any Formal Core, runtime, selection, monitoring, capital, signal or push change.
+
+
+## Mandatory Alpha lineage / anti-double-count guard (2026-10-05)
+
+Canonical engineering contract:
+`shared-knowledge/SYSTEM_ALPHA_LINEAGE_AND_DOUBLE_COUNT_GUARD_V0_1.md`.
+
+This contract is mandatory for System 1 and System 2 work touching stock-selection scoring, confluence, resonance, ranking, factor integration, or selection diagnostics.
+
+Key requirement: D01/D02/D03 and any other features that share deterministic or near-deterministic information ancestry MUST NOT be treated as multiple independent Alpha votes merely because they use different formulas or domain labels. Build lanes must preserve factor lineage, information roots, redundancy groups and an effective independent-evidence count.
+
+Research/shadow lineage metadata, overlap diagnostics, raw-vs-deduped scores and deterministic tests are Class A when they cannot change Formal outputs and should be implemented proactively. Any use of de-duplicated scoring to alter Formal A/B eligibility, ranking, Top6 composition, weights or thresholds remains Class C and requires explicit owner approval.
+
+Missing lineage fails closed to UNKNOWN for independence purposes. Different formula names, different research-room ownership, or correlation below one are not sufficient evidence of independent Alpha.
