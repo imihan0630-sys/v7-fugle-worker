@@ -22939,3 +22939,49 @@ New durable artifacts:
 - research/PATTERN_REGIME_SCALE_MIGRATION_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-033 — Structural aging vs absolute displacement / long excursion path (2026-10-04)
+
+DL-033 addresses a subtle age confound: time and distance traveled are different state variables.
+
+A sixty-session-old resistance that stayed nearby for most of its life is not the same object history as a sixty-session-old resistance from which price ran eight ATR away and later returned. A young structure can also experience a large excursion very quickly. Therefore "old" cannot stand in for "far away for a long time."
+
+The canonical boundary remains frozen. Price location is measured relative to that boundary:
+inside = zero distance;
+above = close minus upper;
+below = close minus lower.
+
+Location is then normalized descriptively by current ATR or reference price without moving the zone.
+
+Excursion path adds the history that current distance cannot capture. DL-033 keeps maximum absolute excursion, one-sided above/below excursion and cumulative absolute path separately. A root may be currently inside the zone after a very large round trip; current distance would be zero while path history is substantial.
+
+Long no-interaction duration is also separated from large displacement. These states can occur independently. No combined staleness score or arbitrary "two ATR means far" threshold is introduced.
+
+The future interaction estimand remains opportunity-based. A root sitting ten ATR away has not generated repeated failed support/resistance tests. At a later valid opportunity, freeze all state immediately beforehand: age, interaction history, current distance, causal excursion path, DL-032 scale/regime context and return direction.
+
+Path completeness is mandatory. The summary period from the previous valid interaction or chosen causal landmark through asOf must have verified eligible-session continuity. Missing sessions make the path summary DATA_BLOCKED rather than imputing the unseen maximum excursion or cumulative travel.
+
+Corporate actions remain excluded through TECHNICAL_CONTINUITY semantic space. A split/dividend raw jump is not an economic excursion.
+
+Future D16 analysis uses:
+P0 age + interaction history + scale/regime;
+P1 adds current location;
+P2 adds excursion path;
+P3 adds interaction-recency/return-trip descriptors.
+
+If age disappears at P1, current distance explains the apparent effect.
+If it disappears at P2, long excursion path explains it.
+If it disappears at P3, return recency explains it.
+If age remains after all path/context controls on common support, it remains a stronger age-representation candidate, not alpha proof.
+
+Fourteen adversarial cases are authored. They verify inside/above/below signed-distance semantics, current-distance versus max-excursion separation, cumulative path versus max excursion, directionality, continuity fail-closed behavior, no gap imputation, no arbitrary far threshold, normalization without boundary mutation, closed outcome join and common-support enforcement.
+
+New durable artifacts:
+- research/PATTERN_DISPLACEMENT_PATH_V0_1.md
+- research/pattern_displacement_path_v0_1.json
+- research/pattern_displacement_path_v0_1.mjs
+- research/test_pattern_displacement_path_v0_1.mjs
+- research/PATTERN_DISPLACEMENT_PATH_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
