@@ -22686,3 +22686,57 @@ Mechanism falsification was then strengthened. Recurrence frequency can be gener
 External methodology supports the governance: recurrent events require within-episode dependence/exposure handling; time-varying features require landmark or time-dependent treatment to avoid guarantee-time/immortal-time bias; Taiwan tick/price-clustering evidence supports microstructure controls around crossing frequency.
 
 All new tests are authored, not independently executed. Outcome joins remain closed. D01 remains 51.7%; Pattern alpha UNKNOWN; Formal Core LOCKED.
+
+
+# DL-028 — Detector-selection salience vs structural-memory firewall (2026-10-04)
+
+DL-027 answered only the first mechanism question: does a confirmed structural zone behave differently from generic nearby horizontal levels built without a structural anchor?
+
+That comparison is necessary but insufficient. The zone detector itself selects salient historical objects. Local extrema, large excursions, repeated turning regions, round/tick-concentrated prices, unusual range/volume and long-lived anchors can all make a level observable to both an algorithm and market participants. Therefore true-zone superiority over non-anchor pseudo-zones can still be a detector-selection effect rather than evidence that repeated interaction created structural memory.
+
+DL-028 freezes a second control layer.
+
+M0 is the existing non-anchor pseudo-zone family.
+
+M1 is a same-detector salience risk set. For each M2 true confirmed zone, the landmark is the true zone's confirmedAt. M1 contains only same-symbol, same-semantic-space, same-detector-version candidates that already existed causally and remained UNCONFIRMED_ACTIVE at that landmark. The true candidate, overlapping duplicates, future-created candidates, future state, already-confirmed/invalidated candidates and incomplete provenance are excluded.
+
+M2 is the actual confirmed structural zone.
+
+The mechanism interpretation is deliberately asymmetric:
+
+- M2 ~= M1 > M0 means candidate-selection salience can explain the apparent structure-specific effect.
+- M2 > M1 > M0 means confirmation history may add representation beyond salience, but the result is still observational.
+- M2 > M1 ~= M0 is the strongest confirmation-specific representation candidate, not proof of remembered supply/demand and not alpha proof.
+- M1 > M2 is falsification evidence against a simple "more confirmation is better" story.
+- M2 ~= M1 ~= M0 strengthens generic crossing/opportunity explanations.
+
+The risk-set definition is future-blind. A candidate that is unconfirmed at the landmark but confirms later stays in M1. NOT_YET_CONFIRMED is not NEVER_CONFIRMED. This avoids retroactive control cleaning and a new form of immortal-time leakage.
+
+No salience score is defined. The research schema stores pre-landmark anchor prominence, initial excursion, detector-native extremum rank where available, relative volume/range, round-price distance in ticks, tick size, candidate age, observable/constrained sessions, crossing opportunity, distance-path state, volatility, liquidity, D02 acceptance/persistence context and market/sector regime. These are covariates, not votes.
+
+D01 freezes the control universe and semantic contract only. Matching, weighting, few-cluster handling, dependence correction and estimator choice remain D16 responsibilities and must be preregistered before outcome access. No "best" control, caliper, number of matches or detector variant may be selected after returns are visible.
+
+The literature does not identify one unique mechanism. Lo, Mamaysky and Wang show why technical-pattern detection must be algorithmic rather than visually subjective. Osler's support/resistance evidence shows that published levels can predict interruptions, while her order-level work shows that clustered take-profit and stop-loss orders around round numbers can generate similar reversal/break dynamics. Tsinaslanidis and Zapranis show that local-extrema-derived support/resistance may predict interruptions without establishing superior abnormal returns. Recent path-dependent support/resistance modeling is useful as mechanism structure but remains theoretical for this D01 question.
+
+Therefore DL-028 adopts a strict firewall:
+
+TRUE > NON_ANCHOR is not enough.
+
+A future structural-memory claim must survive:
+1. DL-026 opportunity/microstructure controls;
+2. DL-027 M0 non-anchor controls;
+3. DL-028 M1 same-detector salience controls;
+4. detector-version and regime robustness;
+5. D16 preregistered inference.
+
+New durable files:
+- research/PATTERN_DETECTOR_SALIENCE_MEMORY_FIREWALL_V0_1.md
+- research/pattern_detector_salience_memory_v0_1.json
+- research/pattern_detector_salience_memory_v0_1.mjs
+- research/test_pattern_detector_salience_memory_v0_1.mjs
+
+Ten adversarial fixtures are authored. They enforce causal candidate creation, same-detector/version/semantic-space membership, future-state non-backfill, overlap/duplicate exclusion, provenance fail-closed behavior and retention of all eligible controls without D01 matching. TEST_EXECUTION_PENDING.
+
+Progress denominator reconciliation is also frozen here: current Router/Learning Map D01 = 52.7% because the curriculum now has 11 active modules. Historical checkpoint 51.7% used the prior 12-module denominator including separate D01-12 at L2/40%. No module maturity was promoted by this arithmetic change.
+
+No outcome data were inspected. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
