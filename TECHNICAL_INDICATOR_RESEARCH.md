@@ -2115,3 +2115,98 @@ Current:
 `FORMAL_OPTIMIZATION_CANDIDATE = NONE`
 
 Raw D03 source-version gate remains independently 2/3 and TI-005/TI-006 outcomes remain closed.
+
+## TI-564 through TI-574 — continuity source-contract advance (2026-10-04)
+
+Durable artifacts:
+- `research/D03_MOPS_VERSION_CLOCK_CONTRACT_V0_1.md`
+- `research/d03_mops_version_clock_contract_v0_1.json`
+- `research/D03_CONTINUITY_SOURCE_CONTRACT_ADVANCE_20261004_V0_2.md`
+- `research/d03_continuity_source_contract_advance_20261004_v0_2.json`
+
+### TI-564~566 — version-clock semantics
+- MOPS `發言日期/發言時間` are preserved as `sourceReportedAt`, not silently promoted to historical `firstKnownAt`.
+- `capturedAt` and append-only prospective `firstObservedAt` are separate clocks.
+- historical `firstKnownAt` remains UNKNOWN unless an authoritative publication-time contract is certified.
+- prospective `firstObservedAt` is a conservative no-lookahead research clock.
+- ORIGINAL/CORRECTION/SUPPLEMENT/CANCELLATION are separate immutable versions; later final state never overwrites earlier chronology.
+
+### TI-567 — empty-month source-local certification
+System2 MOPSOV Empty Month Certification V0.2 physically certifies the frozen empty signature:
+- empty controls 4/4 PASS;
+- positive controls 3/3 PASS;
+- transport/error/positive/empty states are distinguishable.
+This is endpoint-specific and does not authorize global NO_EVENT.
+
+### TI-568 — bounded month-shard reconciliation
+Existing physical evidence includes:
+- 2330 Jan-Sep company-year prefix = 151 rows;
+- exact union of nine monthly shards = 151;
+- multi-control correction/cancellation companies also reconcile exactly;
+- zero only-full-query / only-month-shard / duplicate-month keys.
+
+### TI-569 — high-row pagination/truncation stress
+Physical run `37174063094` = PASS.
+
+Top deterministic high-row controls:
+- 2891 = 391 rows;
+- 3711 = 383 rows;
+- 2881 = 300 rows.
+
+All three:
+- full Jan-Sep prefix keyset equals monthly-shard union exactly;
+- onlyAll=0;
+- onlyMonths=0;
+- duplicateMonthKey=0;
+- no visible next-page/page-number/step=3 hints.
+
+This materially falsifies a low fixed-row truncation concern, but universal no-truncation is not certified.
+
+### TI-570 — completeness remains scoped
+Stronger source-contract evidence now exists for:
+- correction/cancellation representational capability;
+- empty-month semantics;
+- company-year/month-shard reconciliation;
+- high-row reconciliation through 391 rows.
+
+Still false/unproven globally:
+- boundedIntervalCoverageComplete;
+- actionFamilyCoverageComplete;
+- revisionCoverageComplete;
+- knownAtVersionClockCertified;
+- technicalContinuityCertified.
+
+### TI-571~572 — exchange-side official document lane
+The official TWSE public `Official Document Announcement / 公文公告` surface visibly contains exchange-issued capital-action rows including:
+- capital-reduction exchange schedules;
+- suspension/resumption dates;
+- new-share listing/effective dates;
+- suspension of capital-reduction registration;
+- revocation of such suspension.
+
+Therefore:
+`EXCHANGE_OFFICIAL_DOCUMENT_PUBLIC_CAPABILITY = OBSERVED`.
+
+A stable machine/date-range/pagination/raw-artifact contract is not yet frozen:
+`EXCHANGE_OFFICIAL_DOCUMENT_MACHINE_CONTRACT = PARTIAL_UNKNOWN`.
+
+Absence from this lane may not be interpreted as NO_EVENT.
+
+### TI-573~574 — module decision
+D03-10 Bollinger remains L2/40 because it still needs physical immutable parent generation/readback and a symbol-window certified TECHNICAL_CONTINUITY receipt for its exact 20 eligible sessions.
+
+D03-09 ADX remains L2/40 because it needs all Bollinger-grade provenance plus canonical Wilder recursive replay/trusted-prior-state certification.
+
+No maturity inflation:
+`D03_MATURITY = 56.7_PERCENT`
+`BOLLINGER_L3_NEXT = 58.3_PERCENT`
+`ADX_L3_AFTER_THAT = 60.0_PERCENT`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Exact continuation:
+1. stop repeating generic MOPSOV row-count stress unless a new falsification target appears;
+2. freeze a reproducible TWSE official-document machine contract or retain PARTIAL/UNKNOWN;
+3. prospectively measure `firstObservedAt - sourceReportedAt` without outcomes;
+4. consume immutable parent only after the owner-approved Class-B implementation is physically merged/read back;
+5. re-review Bollinger before ADX;
+6. raw D03 source-version session gate remains independently 2/3 until a genuine next completed Taiwan session.
