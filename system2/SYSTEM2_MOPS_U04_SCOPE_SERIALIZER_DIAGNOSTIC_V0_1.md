@@ -64,3 +64,20 @@ Any final TWSE par-value control still requires:
 - preserved historical version semantics.
 
 All downstream trading authority remains false.
+
+
+## 2026-10-04 serializer correction before acceptance
+
+The first diagnostic run must **not** be accepted as evidence that the 4414 control is invalid.
+
+Two probe defects were found before merge:
+
+1. the response classifier treated a report-title row containing the word `公告` as a data row;
+2. the curl replay omitted the fixed `encodeURIComponent=1` prefix that the official `mops2.js::ajax1()` serializer always prepends before serializing the form.
+
+The probe is corrected before acceptance:
+- an actual data row now requires a company/security-code-like row or official detail-row markers;
+- every bounded POST now includes `encodeURIComponent=1`;
+- the physical probe asserts that the official `ajax1` source still contains that serializer prefix.
+
+Therefore the earlier `frozenControlLikelyInvalid=true` observation is rejected as a diagnostic false positive and must not enter the canonical evidence chain.
