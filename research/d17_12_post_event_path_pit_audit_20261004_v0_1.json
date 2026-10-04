@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04T19:18:00+08:00",
+  "owner": "08｜事件與新聞研究室",
+  "module": "D17-12",
+  "title": "Post-event gap continuation/reversal Taiwan PIT feasibility audit",
+  "status": "TAIWAN_PIT_POST_EVENT_PATH_FEASIBLE / OPENING_GAP_SHARED_PRIMITIVE / DAILY_HISTORICAL_INTRADAY_PROSPECTIVE / OUTCOMES_CLOSED",
+  "sourceDependencies": {
+    "eventClock": {
+      "owners": [
+        "D11 event clocks",
+        "D17-13",
+        "D17-14 where applicable"
+      ],
+      "requirement": "Use only event versions available by the replay cutoff; source publication time and capturedAt remain distinct."
+    },
+    "openingGap": {
+      "owner": "D11-10",
+      "requirement": "Opening gap is a shared primitive. D17-12 receives it as context but cannot count it again as new evidence."
+    },
+    "dailyPricePath": {
+      "source": "Validated TWSE MI_INDEX / TPEx dailyQuotes historical A1 family",
+      "evidence": "Requested-date/source-date equality and OHLC integrity already live-validated; prior close, open, high, low, close and eligible subsequent sessions are replayable.",
+      "use": "close and D1/D3/D5 post-event path states"
+    },
+    "intradayPath": {
+      "source": "Existing research-only timestamped quote/candle chain",
+      "use": "first 15m / 30m path only prospectively where exact bars and decision clocks are persisted",
+      "historicalLimitation": "Do not fabricate historical 15m/30m paths from daily OHLC."
+    },
+    "corporateActionFirewall": {
+      "owner": "D11-12",
+      "requirement": "Mechanical reference-price resets, unresolved actions and symbol-session continuity breaks => UNKNOWN/BLOCKED."
+    },
+    "limitAndSuspension": {
+      "owners": [
+        "D05-02",
+        "D04-10",
+        "D11-07",
+        "D11-11"
+      ],
+      "requirement": "Price-limit constrained or halted/resumption paths are separate states, not ordinary continuation/reversal."
+    }
+  },
+  "frozenPathStates": [
+    "GAP_CONTEXT_ONLY",
+    "POST_OPEN_CONTINUATION",
+    "POST_OPEN_PARTIAL_FILL",
+    "POST_OPEN_FULL_FILL",
+    "POST_OPEN_REVERSAL",
+    "LIMIT_CONSTRAINED",
+    "SUSPENSION_OR_RESUMPTION",
+    "CORPORATE_ACTION_BLOCKED",
+    "UNKNOWN"
+  ],
+  "replayRules": [
+    "The opening gap direction/magnitude belongs to the shared event-gap primitive and does not by itself create D17-12 evidence.",
+    "D17-12 begins only after the opening observation; additional evidence must come from later price evolution.",
+    "Daily historical path may use close and subsequent eligible-session D1/D3/D5 marks from validated official OHLC.",
+    "First-15m/30m classification requires exact intraday observations available prospectively; historical daily bars cannot reconstruct them.",
+    "Later corrections to event identity/timestamp append a version and cannot rewrite what an earlier replay knew.",
+    "Corporate-action, missing-session, halt/resumption and price-limit states fail closed or receive dedicated labels.",
+    "Market/sector context may control common movement but cannot become a duplicate D09/D13 directional vote."
+  ],
+  "antiDoubleCount": {
+    "contract": "H15",
+    "primitive": "opening gap",
+    "D11_10": "event-linked overnight discontinuity / stop-risk transformation",
+    "D04_09": "tail/gap volatility-state transformation",
+    "D17_12": "only the subsequent post-open path transformation",
+    "rule": "One opening gap is never three independent votes."
+  },
+  "falsification": [
+    "A positive opening gap that reverses by close is not continuation.",
+    "A negative gap that recovers to the prior close is not evidence of persistent negative news effect.",
+    "A corporate-action reset that mechanically changes reference price is not a news-driven gap path.",
+    "A limit-constrained session does not reveal the latent unconstrained continuation/reversal path.",
+    "One famous event/date cannot define thresholds; path definitions are frozen before return efficacy tests."
+  ],
+  "maturityDecision": {
+    "from": "L2",
+    "to": "L3",
+    "qualifier": "DAILY_HISTORICAL_PATH_FEASIBLE / 15M_30M_PROSPECTIVE_ONLY",
+    "basis": "Validated Taiwan official OHLC, PIT event clocks, corporate-action continuity guards and explicit price-limit/suspension states make causal replay of close and D1/D3/D5 post-event paths feasible. Intraday 15m/30m remains prospective-only. This is source/data feasibility, not evidence that continuation or reversal predicts returns.",
+    "notClaimed": [
+      "alpha",
+      "directional edge",
+      "universal gap-fill threshold",
+      "historical intraday reconstruction",
+      "L4/OOS"
+    ]
+  },
+  "outcomeJoin": false,
+  "formalCoreChanged": false,
+  "exactNext": [
+    "Build prospective event-cluster cohorts with opening gap as shared context and post-open path as the only D17-12 incremental evidence.",
+    "Preregister close/D1/D3/D5 and prospective 15m/30m path definitions before outcome evaluation.",
+    "Use market/sector controls and corporate-action/limit-state guards on common support.",
+    "Before L4, test whether post-open path adds value beyond D11-10 gap risk and D04-09 tail state."
+  ]
+}
