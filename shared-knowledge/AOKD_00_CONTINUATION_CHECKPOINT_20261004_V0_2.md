@@ -279,3 +279,30 @@ Exact next:
 2. H06 waits only for Room13 independent behavior-specific evidence.
 3. Continue scanning latest main for other hidden-overlap packets already complete but not reflected in intake ledgers.
 4. COV-12 and AOKD-05 retain their existing gates.
+
+
+## H09 governance milestone — 2026-10-04
+
+00-room accepted equivalent complete Room11 evidence for H09 (D16-19 vs D16-25) and completed Dependency / anti-double-count / anti-orphan review.
+
+Audit:
+- `shared-knowledge/CURRICULUM_H09_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`;
+- `shared-knowledge/curriculum_h09_dependency_anti_orphan_audit_20261004_v0_1.json`.
+
+Decision:
+- **KEEP_SEPARATE / SCOPE_DEDUP_ONLY**;
+- D16-19 owns model/calibrator fitting, calibration implementation/diagnostics and CalibrationReceipt production;
+- D16-25 consumes calibrated probabilities/distributions and owns prior/Bayesian update, uncertainty, utility, risk-coverage and ABSTAIN;
+- no second calibrator or probability authority;
+- both remain L2/40%;
+- names unchanged;
+- no module-count/maturity/Formal change before approval.
+
+Current state:
+**OWNER_APPROVAL_REQUIRED**.
+
+Exact next:
+1. obtain explicit owner approval/rejection for H09 scope-de-dup;
+2. if approved, re-read latest main and update only D16-19/D16-25 scope/status wording + Router/Shared Master/H09 registries;
+3. preserve both L2/40%, names, count and aggregate maturity;
+4. create canonical receipt; no System1/System2 Formal/runtime change.
