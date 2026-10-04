@@ -4,75 +4,83 @@ const sha=(x)=>createHash("sha256").update(String(x)).digest("hex");
 const base="https://www.tpex.org.tw";
 const pageUrl=base+"/zh-tw/mainboard/listed/delisted.html";
 const currentUrl=base+"/openapi/v1/mopsfin_t187ap03_O";
-const candidates=[
-  base+"/www/zh-tw/mainboard/listed/delisted?response=json",
-  base+"/www/zh-tw/mainboard/listed/delisted?code=&year=&reason=&response=json",
-  base+"/www/zh-tw/mainboard/listed/delisted?stockNo=&year=&reason=&response=json",
-  base+"/www/zh-tw/mainboard/listed/delisted?code=&year=115&reason=&response=json",
-  base+"/www/zh-tw/mainboard/listed/delisted?code=&year=2026&reason=&response=json",
-];
 
-async function fetchText(url){
+async function fetchRaw(url){
   try{
     const r=await fetch(url,{
       headers:{
-        accept:"application/json,text/html,text/plain,*/*",
-        "user-agent":"Mozilla/5.0 D19-TPEx-Universe-Research/0.1",
+        accept:"application/json,text/html,text/javascript,application/javascript,text/plain,*/*",
+        "user-agent":"Mozilla/5.0 D19-TPEx-Universe-Research/0.2",
         referer:pageUrl,
       },
       redirect:"follow",
       signal:AbortSignal.timeout(45000),
     });
     const text=await r.text();
-    let json=null;
-    try{json=JSON.parse(text);}catch{}
-    return {
-      url,status:r.status,ok:r.ok,contentType:r.headers.get("content-type"),
-      length:text.length,hash:sha(text),
-      jsonKeys:json&&typeof json==="object"&&!Array.isArray(json)?Object.keys(json):null,
-      jsonArrayLength:Array.isArray(json)?json.length:null,
-      jsonShape:json&&typeof json==="object"&&!Array.isArray(json)
-        ?Object.fromEntries(Object.entries(json).slice(0,20).map(([k,v])=>[
-          k,Array.isArray(v)?{type:"array",length:v.length}:typeof v==="object"&&v!==null?{type:"object",keys:Object.keys(v).slice(0,20)}:{type:typeof v,value:String(v).slice(0,120)}
-        ])):null,
-      prefix:text.slice(0,1600),
-    };
+    return {url,status:r.status,ok:r.ok,contentType:r.headers.get("content-type"),text};
   }catch(error){
-    return {url,error:String(error?.message||error)};
+    return {url,error:String(error?.message||error),text:""};
   }
 }
+function summarize(raw){
+  let json=null;
+  try{json=JSON.parse(raw.text);}catch{}
+  return {
+    url:raw.url,status:raw.status,ok:raw.ok,contentType:raw.contentType,
+    length:raw.text.length,hash:sha(raw.text),
+    jsonKeys:json&&typeof json==="object"&&!Array.isArray(json)?Object.keys(json):null,
+    jsonArrayLength:Array.isArray(json)?json.length:null,
+    prefix:raw.text.slice(0,1200),
+  };
+}
+function snippets(text,terms){
+  const out=[];
+  const lower=text.toLowerCase();
+  for(const term of terms){
+    let start=0;
+    const needle=term.toLowerCase();
+    while(true){
+      const i=lower.indexOf(needle,start);
+      if(i<0)break;
+      out.push({term,index:i,text:text.slice(Math.max(0,i-450),Math.min(text.length,i+1000))});
+      start=i+needle.length;
+      if(out.length>=80)return out;
+    }
+  }
+  return out;
+}
 
-const current=await fetchText(currentUrl);
-const page=await fetchText(pageUrl);
-const routeResults=[];
-for(const url of candidates)routeResults.push(await fetchText(url));
-
+const currentRaw=await fetchRaw(currentUrl);
+const pageRaw=await fetchRaw(pageUrl);
 const scriptUrls=[];
-if(page.prefix||page.length){
-  const raw=await (await fetch(pageUrl,{headers:{"user-agent":"Mozilla/5.0 D19-TPEx-Universe-Research/0.1"},signal:AbortSignal.timeout(45000)})).text();
-  for(const m of raw.matchAll(/<script[^>]+src=["']([^"']+)["']/gi)){
-    const u=new URL(m[1],pageUrl).href;
-    if(u.startsWith(base)&&!scriptUrls.includes(u))scriptUrls.push(u);
-  }
+for(const m of pageRaw.text.matchAll(/<script[^>]+src=["']([^"']+)["']/gi)){
+  const u=new URL(m[1],pageUrl).href;
+  if(u.startsWith(base)&&!scriptUrls.includes(u))scriptUrls.push(u);
 }
-const scriptHints=[];
-for(const url of scriptUrls.slice(0,30)){
-  const r=await fetchText(url);
-  const body=r.prefix||"";
-  const lower=body.toLowerCase();
-  if(lower.includes("delist")||lower.includes("終止上櫃")||lower.includes("listed/delisted")){
-    scriptHints.push({url,status:r.status,hash:r.hash,prefix:body});
-  }
+
+const pageHints=snippets(pageRaw.text,[
+  "delisted","終止上櫃","ajax","api","response","tables.js","listed/",
+]);
+
+const scripts=[];
+for(const url of scriptUrls){
+  const raw=await fetchRaw(url);
+  const hits=snippets(raw.text,[
+    "delisted","終止上櫃","mainboard/listed","api/","response=json","getjson","ajax",
+  ]);
+  scripts.push({
+    url,status:raw.status,contentType:raw.contentType,length:raw.text.length,
+    hash:sha(raw.text),hitCount:hits.length,hits:hits.slice(0,40),
+  });
 }
 
 console.log(JSON.stringify({
-  result:"TPEX_UNIVERSE_ROUTE_DISCOVERY_V0_1",
-  currentProfile:current,
-  delistedPage:page,
-  candidates:routeResults,
+  result:"TPEX_UNIVERSE_ROUTE_DISCOVERY_V0_2",
+  currentProfile:summarize(currentRaw),
+  delistedPage:summarize(pageRaw),
+  pageHints,
   scriptUrlCount:scriptUrls.length,
-  scriptUrls,
-  scriptHints,
+  scripts,
   formalCoreChanged:false,
   productionChanged:false,
 },null,2));
