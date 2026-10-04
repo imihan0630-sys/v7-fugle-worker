@@ -63,7 +63,14 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H01_H04_CONSOLIDATION_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H01_H04_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "SPECIALIST_VALIDATION_PENDING"
+      "status": "PARTIAL_EVIDENCE_RECEIVED_CHILDREN_COMPLETE_D14_17_PENDING",
+      "receivedPackets": [
+        "TRADING_FRICTIONS_CHECKPOINT.md",
+        "TRADING_FRICTIONS_RESEARCH.md",
+        "research/stock_market_learning_tracker_v0_1.json"
+      ],
+      "intakeDecision": "EVIDENCE_INSUFFICIENT_PENDING_D14_17_UMBRELLA_CONTRACT",
+      "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json"
     },
     {
       "id": "H03",
@@ -77,7 +84,14 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H01_H04_CONSOLIDATION_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H01_H04_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "SPECIALIST_VALIDATION_PENDING"
+      "status": "PARTIAL_EVIDENCE_RECEIVED_D15_13_COMPLETE_D15_24_PENDING",
+      "receivedPackets": [
+        "PORTFOLIO_RISK_CHECKPOINT.md",
+        "PORTFOLIO_RISK_RESEARCH.md",
+        "research/stock_market_learning_tracker_v0_1.json"
+      ],
+      "intakeDecision": "EVIDENCE_INSUFFICIENT_PENDING_D15_24_VAR_SUBSCOPE",
+      "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json"
     },
     {
       "id": "H04",
@@ -91,7 +105,20 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H01_H04_CONSOLIDATION_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H01_H04_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "SPECIALIST_VALIDATION_PENDING"
+      "status": "OWNER_APPROVAL_REQUIRED",
+      "terminalClassification": "MERGE_ELIGIBLE",
+      "governanceDisposition": "D12_15_SURVIVOR_D12_14_CHILD_PROXY_FAMILY",
+      "receivedPackets": [
+        "DERIVATIVES_VOLATILITY_RESEARCH.md",
+        "DERIVATIVES_VOLATILITY_CHECKPOINT.md",
+        "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json"
+      ],
+      "audit": "shared-knowledge/CURRICULUM_H04_CONSOLIDATION_AUDIT_20261004_V0_1.md",
+      "machineAudit": "shared-knowledge/curriculum_h04_consolidation_audit_20261004_v0_1.json",
+      "proposedSurvivor": "D12-15",
+      "proposedRetirement": "D12-14",
+      "maturityImpact": "NONE_BEFORE_APPROVAL",
+      "formalCoreImpact": "NONE"
     },
     {
       "id": "H05",
