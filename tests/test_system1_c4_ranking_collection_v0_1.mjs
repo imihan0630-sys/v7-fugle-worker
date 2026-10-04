@@ -52,6 +52,9 @@ assert.equal(good.audit.scoreAblations.length,7);
 assert.equal(good.saturationCarryover.schemaVersion,'SYSTEM1_C4_SATURATION_CARRYOVER_AUDIT_V0_1');
 assert.equal(good.saturationCarryover.economicSuperiority,'UNKNOWN');
 assert.equal(good.saturationCarryover.formalCoreImpact,false);
+assert.equal(good.priorityRoundingCollision.schemaVersion,'SYSTEM1_C4_PRIORITY_ROUNDING_COLLISION_AUDIT_V0_1');
+assert.equal(good.priorityRoundingCollision.economicSuperiority,'UNKNOWN');
+assert.equal(good.priorityRoundingCollision.formalCoreImpact,false);
 
 const corrupt=structuredClone(rows);corrupt[0].formalResult.actualRankingTuple.priorityScore+=.1;
 const blocked=collectC4RankingRedundancyEvidence({pages:pagesFor(corrupt)});
