@@ -1,0 +1,49 @@
+name: System2 MOPSOV Direct History Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-mopsov-direct-history-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-mopsov-direct-history-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify official mopsov TLS
+        shell: bash
+        run: |
+          set -euo pipefail
+          HOST="mopsov.twse.com.tw"
+          echo | openssl s_client -connect "${HOST}:443" -servername "${HOST}" -verify_return_error 2>/tmp/mopsov_tls.err             | openssl x509 -noout -subject -issuer -serial -dates -fingerprint -sha256
+          tail -n 20 /tmp/mopsov_tls.err || true
+
+      - name: Probe 2467 direct official MOPS historical list
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://mopsov.twse.com.tw/mops/web/ajax_t05st01"
+          curl --fail --silent --show-error --location             --max-time 30             --request POST             --header "Content-Type: application/x-www-form-urlencoded"             --header "Referer: https://mopsov.twse.com.tw/mops/web/t05st01"             --header "User-Agent: System2-MOPSOV-Direct-History/0.1"             --data-urlencode "firstin=1"             --data-urlencode "step=1"             --data-urlencode "TYPEK=all"             --data-urlencode "co_id=2467"             --data-urlencode "year=115"             --data-urlencode "month=5"             --data-urlencode "b_date="             --data-urlencode "e_date="             --output /tmp/mopsov_2467.html             --write-out "http_status=%{http_code}\ncontent_type=%{content_type}\nsize_download=%{size_download}\n"
+
+          echo "payload_sha256=$(sha256sum /tmp/mopsov_2467.html | awk '{print $1}')"
+          echo "payload_bytes=$(wc -c </tmp/mopsov_2467.html)"
+          echo "subject_hits=$(grep -o '公告本公司除息基準日等相關事宜' /tmp/mopsov_2467.html | wc -l)"
+          echo "correction_hits=$(grep -o '更正' /tmp/mopsov_2467.html | wc -l)"
+          echo "stock_hits=$(grep -o '2467' /tmp/mopsov_2467.html | wc -l)"
+
+          grep -q "公告本公司除息基準日等相關事宜" /tmp/mopsov_2467.html
+          grep -q "更正" /tmp/mopsov_2467.html
+
+          echo "direct_history_positive_control=PASS"
+          echo "tls_verification_bypassed=false"
+          echo "system1_runtime_used=false"
+          echo "selection_authority=false"
