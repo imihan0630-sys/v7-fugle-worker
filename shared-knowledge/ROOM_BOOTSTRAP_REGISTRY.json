@@ -1,0 +1,293 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-10-04T08:00:00+08:00",
+  "status": "CANONICAL_ROOM_BOOTSTRAP_REGISTRY_V0_1",
+  "repository": "imihan0630-sys/v7-fugle-worker",
+  "authoritativeBranch": "main",
+  "rules": {
+    "bootstrap": "shared-knowledge/ROOM_BOOTSTRAP.md",
+    "global": "AGENTS.md",
+    "researchOutput": "shared-knowledge/RESEARCH_OUTPUT_CONTRACT.md",
+    "tracker": "research/stock_market_learning_tracker_v0_1.json",
+    "router": "shared-knowledge/LEARNING_ROOM_ROUTER.md",
+    "sharedMap": "shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md"
+  },
+  "identities": [
+    {
+      "id": "00",
+      "title": "00｜研究總控室",
+      "aliases": [
+        "研究總控室",
+        "00 研究總控室"
+      ],
+      "type": "research_control",
+      "domains": [],
+      "defaultMode": "Chat",
+      "checkpoints": [
+        "RESEARCH_CHECKPOINT.md",
+        "RESEARCH_MASTER_MAP.md",
+        "shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md"
+      ],
+      "shortStart": "接手「00｜研究總控室」，依最新 GitHub main 自動恢復並從正式總控續接點繼續。"
+    },
+    {
+      "id": "01",
+      "title": "01｜K線與型態研究室",
+      "type": "learning_room",
+      "domains": [
+        "D01"
+      ],
+      "defaultMode": "Chat",
+      "checkpoints": [
+        "KLINE_PATTERN_CHECKPOINT.md",
+        "KLINE_PATTERN_RESEARCH.md",
+        "TARGET_RESISTANCE_RR_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "02",
+      "title": "02｜價量研究室",
+      "type": "learning_room",
+      "domains": [
+        "D02"
+      ],
+      "defaultMode": "Chat",
+      "checkpoints": [
+        "PRICE_VOLUME_CHECKPOINT.md",
+        "PRICE_VOLUME_RESEARCH.md",
+        "PRICE_VOLUME_EVIDENCE.md",
+        "PRICE_VOLUME_HYPOTHESIS_LEDGER.md"
+      ]
+    },
+    {
+      "id": "03",
+      "title": "03｜技術指標與趨勢動能研究室",
+      "type": "learning_room",
+      "domains": [
+        "D03"
+      ],
+      "defaultMode": "Chat",
+      "checkpoints": [
+        "TECHNICAL_INDICATOR_CHECKPOINT.md",
+        "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
+      ]
+    },
+    {
+      "id": "04",
+      "title": "04｜波動與市場微結構研究室",
+      "type": "learning_room",
+      "domains": [
+        "D04",
+        "D05"
+      ],
+      "defaultMode": "Chat",
+      "checkpoints": [
+        "VOLATILITY_REGIME_RESEARCH.md",
+        "MICROSTRUCTURE_CHECKPOINT.md",
+        "MICROSTRUCTURE_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "05",
+      "title": "05｜法人與籌碼研究室",
+      "type": "learning_room",
+      "domains": [
+        "D06"
+      ],
+      "defaultMode": "Chat",
+      "checkpoints": [
+        "INSTITUTIONAL_CROWDING_RESEARCH.md",
+        "LEVERAGE_SHORTING_CHECKPOINT.md",
+        "PASSIVE_FLOW_INDEX_REBALANCING_CHECKPOINT.md"
+      ]
+    },
+    {
+      "id": "06",
+      "title": "06｜基本面與估值研究室",
+      "type": "learning_room",
+      "domains": [
+        "D07",
+        "D08"
+      ],
+      "defaultMode": "Chat",
+      "checkpoints": [
+        "FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md",
+        "FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md",
+        "VALUATION_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "07",
+      "title": "07｜產業與供應鏈研究室",
+      "type": "learning_room",
+      "domains": [
+        "D09",
+        "D10"
+      ],
+      "defaultMode": "Chat",
+      "checkpoints": [
+        "MARKET_BREADTH_ROTATION_CHECKPOINT.md",
+        "MARKET_BREADTH_ROTATION_RESEARCH.md",
+        "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "08",
+      "title": "08｜事件與新聞研究室",
+      "type": "learning_room",
+      "domains": [
+        "D11",
+        "D17"
+      ],
+      "defaultMode": "Chat",
+      "checkpoints": [
+        "CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md",
+        "EVENT_RISK_CHECKPOINT.md",
+        "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "09",
+      "title": "09｜衍生品與國際總經研究室",
+      "type": "learning_room",
+      "domains": [
+        "D12",
+        "D13"
+      ],
+      "defaultMode": "Chat",
+      "checkpoints": [
+        "DERIVATIVES_VOLATILITY_CHECKPOINT.md",
+        "DERIVATIVES_VOLATILITY_RESEARCH.md",
+        "MACRO_CROSS_MARKET_CHECKPOINT.md",
+        "MACRO_CROSS_MARKET_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "10",
+      "title": "10｜投組風控與交易執行研究室",
+      "type": "learning_room",
+      "domains": [
+        "D14",
+        "D15"
+      ],
+      "defaultMode": "Chat",
+      "checkpoints": [
+        "TRADING_FRICTIONS_CHECKPOINT.md",
+        "EXECUTION_ALPHA_RESEARCH.md",
+        "PORTFOLIO_RISK_CHECKPOINT.md",
+        "PORTFOLIO_RISK_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "11",
+      "title": "11｜統計驗證與策略市場狀態研究室",
+      "type": "learning_room",
+      "domains": [
+        "D16",
+        "D18"
+      ],
+      "defaultMode": "Chat",
+      "checkpoints": [
+        "research/D16_D18_VALIDATION_CHECKPOINT.md",
+        "RESEARCH_WORKLIST.md",
+        "research/EXPERIMENT_REGISTRY.md",
+        "system2/SYSTEM2_MARKET_REGIME_V0.md",
+        "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md",
+        "MARKET_BREADTH_ROTATION_CHECKPOINT.md"
+      ]
+    },
+    {
+      "id": "12",
+      "title": "12｜資產定價與因子研究室",
+      "type": "learning_room",
+      "domains": [
+        "D19"
+      ],
+      "defaultMode": "Chat",
+      "checkpoints": [
+        "ASSET_PRICING_FACTOR_CHECKPOINT.md",
+        "ASSET_PRICING_FACTOR_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "13",
+      "title": "13｜行為金融與市場心理研究室",
+      "type": "learning_room",
+      "domains": [
+        "D20"
+      ],
+      "defaultMode": "Chat",
+      "checkpoints": [
+        "BEHAVIORAL_FINANCE_CHECKPOINT.md",
+        "BEHAVIORAL_FINANCE_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "14",
+      "title": "14｜公司治理與內部人研究室",
+      "type": "learning_room",
+      "domains": [
+        "D21"
+      ],
+      "defaultMode": "Chat",
+      "checkpoints": [
+        "CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md",
+        "CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "15",
+      "title": "15｜信用市場與資本結構研究室",
+      "type": "learning_room",
+      "domains": [
+        "D22"
+      ],
+      "defaultMode": "Chat",
+      "checkpoints": [
+        "CREDIT_CAPITAL_STRUCTURE_CHECKPOINT.md",
+        "CREDIT_CAPITAL_STRUCTURE_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "SYSTEM1",
+      "title": "System 1｜選股邏輯／正式系統",
+      "aliases": [
+        "System 1",
+        "System1"
+      ],
+      "type": "system",
+      "defaultMode": "Chat",
+      "engineeringMode": "Codex",
+      "checkpoints": [
+        "AGENTS.md",
+        "REQUIREMENTS_30.md",
+        "PROJECT_HISTORY.md",
+        "RESEARCH_CHECKPOINT.md",
+        "RESEARCH_ENGINEERING_GOVERNANCE.md"
+      ],
+      "shortStart": "接手 System 1，依 GitHub 最新 main 與正式 checkpoint 自動恢復；禁止重頭做。"
+    },
+    {
+      "id": "SYSTEM2",
+      "title": "System 2｜建置總控室",
+      "aliases": [
+        "System 2",
+        "System2",
+        "System 2 建置總控室"
+      ],
+      "type": "system",
+      "defaultMode": "Chat",
+      "engineeringMode": "Codex",
+      "checkpoints": [
+        "system2/CHATGPT_PROJECT_INSTRUCTIONS.md",
+        "system2/SYSTEM2_MASTER.md",
+        "system2/SYSTEM2_CHECKPOINT.md",
+        "system2/SYSTEM2_MVP_SHADOW_STATUS_V0_1.md",
+        "RESEARCH_ENGINEERING_GOVERNANCE.md"
+      ],
+      "shortStart": "接手「System 2｜建置總控室」，依 GitHub 最新 main 與 System 2 正式 checkpoint 自動恢復並續接。"
+    }
+  ],
+  "defaultLearningRoomShortStart": "接手「<聊天室名稱>」。依 GitHub 最新 main 與 ROOM_BOOTSTRAP 自動恢復，從正式 exact next continuation point 接續；禁止重頭研究、禁止重做、不要要求我重貼舊聊天。",
+  "fallback": "若聊天室身份無法唯一辨識，先用名稱搜尋本 Registry／Router；仍有歧義時只詢問最小辨識資訊。"
+}
