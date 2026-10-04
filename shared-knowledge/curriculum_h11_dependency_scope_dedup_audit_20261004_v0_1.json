@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "CURRICULUM_H11_DEPENDENCY_SCOPE_DEDUP_AUDIT_V0_1",
+  "date": "2026-10-04",
+  "auditBaseMain": "d94a75e990683c293246ed75be0e6da2368ae4ff",
+  "clusterId": "H11",
+  "modules": [
+    "D12-07",
+    "D12-16"
+  ],
+  "acceptedReturn": "research/d12_h11_common_parent_residual_return_20261004_v0_1.json",
+  "terminalSpecialistRecommendation": "SCOPE_DEDUP_ONLY",
+  "evidenceQuality": "PASS",
+  "dependencyAudit": "PASS_SIMPLE_BASELINE_TO_RESIDUAL_SURFACE_GRAPH",
+  "antiDoubleCount": "PASS_ONE_PARENT_ONE_SIMPLE_BASELINE_RESIDUAL_ONLY",
+  "antiOrphan": "PASS_NO_ORPHAN",
+  "proposedOwnership": {
+    "D12-07": "SIMPLE_SKEW_TERM_STRUCTURE_BASELINE_OWNER",
+    "D12-16": "RESIDUAL_CURVATURE_SURFACE_INTERACTION_AND_QUALITY_OWNER"
+  },
+  "maturity": {
+    "D12-07": {
+      "level": "L2",
+      "maturityPct": 40,
+      "change": "NONE"
+    },
+    "D12-16": {
+      "level": "L2",
+      "maturityPct": 40,
+      "change": "NONE"
+    }
+  },
+  "structuralScopeWordingChange": true,
+  "renameRequired": false,
+  "moduleCountChange": 0,
+  "ownerApprovalRequired": true,
+  "state": "OWNER_APPROVAL_REQUIRED",
+  "formalCoreImpact": "NONE_LOCKED"
+}
