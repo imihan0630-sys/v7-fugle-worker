@@ -1312,3 +1312,61 @@ Exact continuation:
 4. D06-05, D06-13/14/15, D06-11/16/18 and next-trading-day PIT capture lanes continue independently.
 5. H12 remains blocked by Room10 execution counterpart plus first genuine live TWSE rate/supply receipt.
 6. Formal Core remains LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+---
+
+## IC-060 — D06-19 aggregate retail-participation replay contract frozen without stock-flow promotion
+
+Research cycle: 2026-10-04 Asia/Taipei
+Status: AGGREGATE_RETAIL_PARTICIPATION_REPLAY_CONTRACT_FROZEN / PROXY_VALIDATION_READY / STOCK_DATE_DIRECTIONAL_FLOW_UNKNOWN / L2_REMAINS / FORMAL_CORE_LOCKED
+
+Machine contract:
+research/d06_19_retail_market_participation_pit_contract_v0_1.json
+
+TWSE historical statistical publications directly report market-level trading-value amount/share for Domestic Juridical, Foreign Juridical, Domestic Individual and Foreign Individual investors by month/year. This makes aggregate domestic-individual market-participation history replayable as a directly identified investor-class object.
+
+Supporting channel evidence is also direct but narrower:
+- TWSE 2026 market-structure analysis reports domestic individuals above 98% of margin trading at end-July 2026;
+- TWSE odd-lot studies directly report domestic-individual participation inside that channel.
+
+These channels are useful falsification controls but retain their original meanings.
+
+### New proxy-validation use
+The aggregate retail-participation receipt can be used as an outcome-blind benchmark to test whether common proxies actually track direct natural-person participation:
+- margin-trading market share/composition;
+- odd-lot natural-person participation;
+- day-trading aggregate participation where investor-class semantics are available;
+- broker/branch data only as execution context, never identity.
+
+First-stage diagnostics are restricted to coverage overlap, common-frequency correlation, directional disagreement, regime divergence and missingness. Return outcomes remain closed.
+
+### Critical maturity firewall
+RETAIL_MARKET_PARTICIPATION_HISTORY = AGGREGATE_REPLAY_FEASIBLE
+does NOT imply
+DIRECT_DOMESTIC_RETAIL_STOCK_DATE_FLOW = PIT_READY.
+
+The whole D06-19 module therefore remains L2/40%. The missing core capability is an authorized/reusable stock-date investor-type source contract, not aggregate participation history.
+
+---
+
+## IC-061 — Sunday promotion-ceiling audit
+
+After latest-main review, no additional D06 L2 module can be honestly promoted to L3 during the non-trading-day window.
+
+Blocked modules:
+- D06-05 Ownership: immutable same-generation TDCC lineage in the prospective research row is still missing; no historical reconstruction is allowed.
+- D06-07/08/09 leverage/shorting: TPEx official machine products exist but authorized/replayable historical access remains gated; source existence is not PIT readiness.
+- D06-11/16 ETF/passive mechanics: independent same-generation units-delta + PCF prospective receipts remain insufficient.
+- D06-13 broker/branch: free official BSR is current-day only; complete historical all-stock product is paid/not authorized, while selected products are biased universes.
+- D06-14 day trading: TPEx T_PRELIM -> T1_REVISED -> T2_FINAL prospective vintage receipt is still required.
+- D06-15 public/state-related flow: legal entity, broker execution, beneficial owner and policy/stabilization motive remain non-equivalent and source mapping is unresolved.
+- D06-18 lending economics: first genuine live TWSE rate/supply receipt plus verified utilization denominator remain missing.
+- D06-19 direct retail: restricted source exists historically, but current access/PIT/replay contract and TPEx parity remain unverified.
+
+Therefore further weekend percentage increases would require relaxing the frozen maturity definition and are rejected.
+
+Exact next:
+1. Next valid trading session: execute the already frozen prospective capture set rather than inventing retrospective receipts.
+2. D06-19: aggregate proxy-validation may proceed outcome-blind; special investor-type source pursuit requires owner authorization before contact/request/purchase.
+3. H12 remains partial until Room10 D14-19 counterpart and first genuine live TWSE rate/supply receipt arrive.
+4. Formal Core remains LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
