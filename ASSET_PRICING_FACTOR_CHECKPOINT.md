@@ -2,7 +2,7 @@
 
 Updated: 2026-10-04 Asia/Taipei
 Scope: D19｜資產定價／因子投資／市場異象
-Status: RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / TPEX_BOUNDED_SOURCE_FEASIBLE / D19_12_BOUNDED_L3_AUDIT_NEXT / FORMAL_CORE_UNCHANGED
+Status: RESEARCH_ACTIVE / D19_12_L3_BOUNDED_DATE_INTRINSIC / OTHER_14_ACTIVE_MODULES_L2 / D19_04_DATA_LANE_DEPENDENCIES_OPEN / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - This file is the canonical continuation checkpoint for D19.
@@ -33,7 +33,7 @@ Status: RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / TPEX_BOUNDED_SOURCE_FEASIBL
 ## Current maturity
 - All 15 active D19 modules: L2 / 40% each (D19-14 retired/merged into D19-13 and is not an active denominator item).
 - Current D19 curriculum denominator: 15 active modules.
-- D19 domain simple-average maturity: 40.0%.
+- D19 domain simple-average maturity: 41.3%.
 - Formal optimization candidate: NO.
 - Formal Core: unchanged.
 
@@ -261,3 +261,22 @@ No maturity or Formal change is authorized by this routing.
 - TPEx current individual-monthly route/schema/unit semantics are bounded-feasible; unattended transport and full-market historical-universe replay remain incomplete and owned by DATA_LANE.
 - D19 remains 40.0%; no L3 promotion.
 - Exact next: audit D19-12 weekday/month-of-year bounded L3 feasibility with the existing official historical TWSE calendar and durable 2017 session evidence. Holiday/pre-holiday/turn-of-month stay outside the promotable scope until historical known-at calendar-vintage semantics are proven.
+
+
+## Stage 12 completed on 2026-10-04
+- Receipt: `research/d19_12_date_intrinsic_calendar_pit_receipt_20261004_v0_1.json`.
+- D19-12 Seasonality／Calendar Anomalies advances L2 / 40% -> L3 / 60% for a strictly bounded scope only: WEEKDAY and MONTH_OF_YEAR on TWSE historical sessions.
+- Executable lineage is existing `system2/runtime/historical_twse_calendar_v0_1.mjs` plus its tests and 2017 physical market-year evidence.
+- Physical evidence year 2017: 246 official trading dates; 222,194 fresh-official rows exactly reconciled to 222,194 cold rows; zero missing/extra/source-row-hash mismatches.
+- Weekday/month states are intrinsic to the current ISO marketDate and do not require future trading-calendar knowledge. Historical replay is conservatively consumed after session-close finality.
+- Promotion explicitly excludes HOLIDAY / PRE_HOLIDAY / POST_HOLIDAY / TURN_OF_MONTH / LUNAR_CALENDAR / SETTLEMENT_OR_INDEX_REBALANCE until their separate historical known-at/vintage semantics are proven.
+- No return outcome, alpha sign, threshold, score or Formal rule is opened. High data-mining risk remains.
+- D19 simple-average maturity is now 41.3% (one active module at L3/60, fourteen at L2/40).
+- Formal Core unchanged; no FORMAL_OPTIMIZATION_CANDIDATE.
+
+## Exact next continuation after Stage 12
+1. D19-12: append at least one additional independent historical year for the same WEEKDAY/MONTH_OF_YEAR contract; do not broaden the promoted scope while doing so.
+2. D19-12: seek historical calendar-vintage/announcedAt evidence before any holiday/pre-holiday/post-holiday or turn-of-month L3 review; lunar/settlement/rebalance remain separately source-gated.
+3. D19-04: consume DATA_LANE TPEx universe/full-market/continuity artifacts when verified; do not duplicate their engineering.
+4. D19-04 research-owned gates remain PIT industry vintage, compatible D03/D09 paired redundancy and D14 component-wise cost provenance.
+5. No L4 without prospective/OOS outcome evidence, costs, multiple-testing control and robustness.
