@@ -406,5 +406,52 @@
     ],
     "maturityChange": "NONE",
     "formalCoreImpact": "NONE_LOCKED"
+  },
+  "cov10": {
+    "state": "PARTIAL_EVIDENCE_RECEIVED",
+    "readiness": "BELIEF_UPDATING_OWNER_AND_OBSERVABLE_PROXY_PENDING",
+    "candidate": "Belief-updating Bias umbrella",
+    "existingOwners": {
+      "D20-04": "Anchoring / Reference Dependence",
+      "D20-05": "Representativeness / Recency",
+      "D20-07": "Investor Attention / Salience",
+      "D20-08": "Underreaction / Post-event Drift",
+      "D20-12": "Behavioral-vs-Structural Falsification"
+    },
+    "remaining": [
+      "separate confirmation bias vs belief perseverance vs conservatism",
+      "prove one common belief-updating owner adds capability beyond D20-04/D20-05/D20-08",
+      "freeze at least one Taiwan-replayable observable proxy that is not price-action-only",
+      "define first-known/edit/revision/UNKNOWN semantics",
+      "falsify attention, anchoring, representativeness and structural information-diffusion alternatives",
+      "prevent three named biases from becoming three votes",
+      "choose exactly one terminal recommendation",
+      "commit research/COV10_D20_SPECIALIST_RETURN_V0_1.md"
+    ],
+    "maturityChange": "NONE",
+    "formalCoreImpact": "NONE_LOCKED"
+  },
+  "cov11": {
+    "state": "PARTIAL_EVIDENCE_RECEIVED",
+    "readiness": "RIGHTS_STEWARDSHIP_VOTING_FAMILY_AND_PIT_REPLAY_PENDING",
+    "candidate": "Shareholder Rights / Stewardship / Activism / Voting",
+    "existingOwners": {
+      "D21-01": "Ownership / Control Structure",
+      "D21-11": "Tunneling / Minority Shareholder Risk",
+      "D11": "one-off tender/proxy/corporate-event mechanics"
+    },
+    "remaining": [
+      "freeze recurring shareholder-rights/stewardship/voting family boundary",
+      "separate formal rights from ownership/control concentration and minority-risk outcomes",
+      "map MOPS meeting notice/material/minutes/proposal/voting-result first-known clocks",
+      "map stewardship-code / institutional-voting disclosure source/version clocks",
+      "produce historical Taiwan replay witness with agenda publication -> proposal/change -> voting result lifecycle",
+      "define activism/stewardship observable states without normative good/bad score",
+      "anti-double-count versus D06 ownership flows and D11 event mechanics",
+      "choose exactly one terminal recommendation",
+      "commit research/COV11_D21_SPECIALIST_RETURN_V0_1.md"
+    ],
+    "maturityChange": "NONE",
+    "formalCoreImpact": "NONE_LOCKED"
   }
 }
