@@ -613,5 +613,37 @@
     "MATURITY_RECOMPUTATION_PASS",
     "FORMAL_CORE_IMPACT_NONE_OR_SEPARATELY_APPROVED",
     "EXPLICIT_OWNER_APPROVAL"
-  ]
+  ],
+  "controlPlaneReconciliation": {
+    "asOf": "2026-10-04T19:31:00+08:00",
+    "genericPendingIds": [],
+    "genericPendingCount": 0,
+    "ownerApprovalRequiredIds": [
+      "H04",
+      "H10",
+      "H11"
+    ],
+    "partialEvidenceIds": [
+      "H02",
+      "H03",
+      "H12",
+      "H17",
+      "H18",
+      "H19"
+    ],
+    "completedIds": [
+      "H01",
+      "H05",
+      "H06",
+      "H07",
+      "H08",
+      "H09",
+      "H13",
+      "H14",
+      "H15",
+      "H16",
+      "H20"
+    ],
+    "note": "H01-H20 have no generic pending/NOT_EVALUATED states; every unresolved cluster is evidence-specific or owner-approval protected."
+  }
 }
