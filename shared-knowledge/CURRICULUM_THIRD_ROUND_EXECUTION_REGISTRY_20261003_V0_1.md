@@ -379,3 +379,23 @@ Remaining:
 - empirical divergent-state receipts.
 
 No maturity/count/Formal change.
+
+
+## H02 / H03 partial + H04 owner gate — 2026-10-04
+
+H02:
+`PARTIAL_EVIDENCE_RECEIVED / D14_17_UMBRELLA_CONTRACT_PENDING`.
+D14-03/D14-04 child evidence is accepted; D14-17 remains L0 and must establish the broader implementation-shortfall/market-impact ontology before any consolidation.
+
+H03:
+`PARTIAL_EVIDENCE_RECEIVED / D15_24_VAR_SUBSCOPE_PENDING`.
+D15-13 ES/tail-risk side is accepted; D15-24 remains L0 and must establish VaR semantics/falsification and the VaR-vs-ES/stress-test boundary.
+
+H04:
+00 audit result:
+`MERGE_ELIGIBLE / D12-15_SURVIVOR / D12-14_CHILD_PROXY_FAMILY`.
+State:
+`OWNER_APPROVAL_REQUIRED`.
+No canonical merge has occurred.
+
+No maturity/count/Formal change from these control-plane transitions.
