@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "D06_19_RETAIL_SOURCE_ACCESS_AUDIT_V0_1",
+  "updatedAt": "2026-10-04 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "module": "D06-19",
+  "question": "Does Taiwan possess direct individual-investor stock/order data, and if so is there an authorized public/replayable source contract suitable for D06-19 L3?",
+  "sourceClasses": [
+    {
+      "class": "PUBLIC_AGGREGATE",
+      "evidence": [
+        "TWSE Fact Book annual trading value by investor/shareholder structure",
+        "TWSE Fact Book domestic individual ownership by size",
+        "TWSE market-insights odd-lot investor-type statistics"
+      ],
+      "semantics": "direct natural-person identity at market/segment/ownership level",
+      "stockDateDirectional": false,
+      "replay": "AGGREGATE_REPLAY_FEASIBLE"
+    },
+    {
+      "class": "PUBLIC_FOREIGN_NATURAL_PERSON_PRODUCT",
+      "evidence": [
+        "TWSE Data E-Shop foreign professional/investor-category trading amount product"
+      ],
+      "semantics": "foreign natural-person aggregate trading values, not domestic natural-person stock-level directional flow",
+      "stockDateDirectional": false,
+      "replay": "PRODUCT_CONTRACT_EXISTS_BUT_WRONG_TARGET_IDENTITY"
+    },
+    {
+      "class": "PRIVATE_ACCOUNT_SCOPED",
+      "evidence": [
+        "TWSE investor personal-data inquiry procedures"
+      ],
+      "semantics": "an investor can retrieve their own account, transaction and order records",
+      "stockDateDirectional": true,
+      "marketWideResearchFeed": false,
+      "access": "PERSONAL_DATA_ONLY"
+    },
+    {
+      "class": "RESTRICTED_RESEARCH",
+      "evidence": [
+        "Chen et al. 2026 Journal of Banking & Finance acquired a unique TWSE limit-order-book dataset directly from TWSE for 2013-05-02 through 2018-03-31",
+        "dataset fields include stock identifier, buy/sell order direction, price/volume and investor type including individual investor, foreign investor, others and securities investment trust",
+        "earlier Taiwan studies also report complete trade-by-trade records of TWSE traders for historical research periods"
+      ],
+      "semantics": "direct stock/order-level investor-type data demonstrably exist inside TWSE/research-access channels",
+      "stockDateDirectional": true,
+      "replayPotential": true,
+      "access": "RESTRICTED_OR_RESEARCH_AGREEMENT / CURRENT_APPLICATION_CONTRACT_NOT_VERIFIED"
+    }
+  ],
+  "keyConclusion": {
+    "oldAmbiguity": "NO_PUBLIC_SOURCE_FOUND could be misread as DATA_DOES_NOT_EXIST",
+    "newState": "DIRECT_DOMESTIC_INDIVIDUAL_STOCK_ORDER_DATA_EXISTS_AT_TWSE / PUBLIC_PRODUCT_NOT_VERIFIED / RESTRICTED_RESEARCH_ACCESS_PATH_EXISTS_HISTORICALLY",
+    "l3Decision": "NOT_YET",
+    "reason": "No currently authorized/reproducible source contract for this project has been verified, including application eligibility, current coverage, production/publication clock, firstKnownAt semantics, revision/finality, TPEx parity, persistence rights and replay terms."
+  },
+  "pitRequirementsBeforeL3": [
+    "current authorized access path or research agreement class",
+    "covered markets and securities",
+    "investor-type classification definition and vintage",
+    "trade/order granularity",
+    "producedAt or extract availability contract",
+    "capturedAt and firstKnownAt",
+    "revision/finality semantics",
+    "historical replay rights and retention",
+    "source/version/content hash",
+    "privacy/de-identification and permitted-use constraints",
+    "TPEx parity or explicit TWSE-only scope"
+  ],
+  "falsification": [
+    "Existence of a historical academic dataset does not imply current public availability.",
+    "Access to one's own account history is not a market-wide research feed.",
+    "Foreign-natural-person aggregate data cannot substitute domestic natural-person stock flow.",
+    "Market-level retail share cannot be backfilled into stock-level directional flow.",
+    "A restricted dataset may support research feasibility only after its current access and PIT contract are independently verified."
+  ],
+  "status": "PUBLIC_PRODUCT_GAP / RESTRICTED_RESEARCH_SOURCE_EXISTS / DIRECT_STOCK_ORDER_INVESTOR_TYPE_DATA_EXISTENCE_VERIFIED / CURRENT_AUTHORIZED_PIT_CONTRACT_UNVERIFIED / L2_REMAINS",
+  "exactNext": "Identify the present TWSE research-data application/licensing route for investor-type stock/order data, including eligibility, cost/licence, allowed persistence, date coverage and delivery clock. Do not purchase or request restricted data autonomously. L3 remains closed until an authorized PIT/replay contract is verified."
+}
