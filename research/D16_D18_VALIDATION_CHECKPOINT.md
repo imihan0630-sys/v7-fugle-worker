@@ -1726,3 +1726,27 @@ Global tracker maturity after recompute: **44.8%**.
 No L4 / policy-alpha claim. FORMAL_OPTIMIZATION_CANDIDATE: NONE. Formal Core LOCKED.
 
 Exact next: collect prospective D18-08 activation frames and mature outcomes before policy-value evaluation. D18-09 dynamic weighting remains separate and stronger; do not inherit D18-08 evidence.
+
+
+## 00 routed COV-08 final specialist-return delta — 2026-10-04
+
+COV-08 is now:
+`SPECIALIST_RETURN_READY_PENDING_TERMINAL_RECOMMENDATION`.
+
+Do not redo D16 dependence research.
+
+Accepted:
+- iid inference failure under dependence;
+- stationary / moving-block bootstrap candidate methods;
+- HAC / cluster-robust alternatives;
+- block-length/bandwidth sensitivity and anti-outcome-tuning rule;
+- D16-06 as natural owner;
+- resampling variants are validation methods, not independent evidence votes.
+
+Exact remaining return delta:
+1. freeze when cluster-robust/HAC is sufficient versus when block bootstrap is required;
+2. freeze minimum sample/effective-sample/block-length reporting;
+3. choose exactly one terminal recommendation;
+4. commit `research/COV08_D16_SPECIALIST_RETURN_V0_1.md`.
+
+No maturity or Formal change is authorized by this routing.
