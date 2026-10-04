@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T15:02:00+08:00",
+  "updatedAt": "2026-10-04T14:59:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 45.1
+    "maturityWeightedPct": 45.2
   },
   "domains": [
     {
@@ -1641,7 +1641,7 @@
         "CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md",
         "EVENT_RISK_CHECKPOINT.md"
       ],
-      "maturityPct": 54.7,
+      "maturityPct": 56.8,
       "modules": [
         {
           "id": "D11-01",
@@ -1733,18 +1733,24 @@
         {
           "id": "D11-10",
           "name": "Overnight Gap跳空事件風險",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Overnight Gap跳空事件風險」。學習範圍：除權息、增減資、分割、CB、庫藏股、併購、停復牌、重大訊息與指數調整；公告／生效時鐘；歷史價格連續性；負面證據完整性；事件窗與退出風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_EVENT_LINKED_OVERNIGHT_GAP_FEASIBLE / CORPORATE_ACTION_FIREWALL_REQUIRED / OUTCOMES_CLOSED",
+          "evidence": "Validated Taiwan official daily OHLC source can reproduce prior eligible close -> next observed open. PIT-valid event clocks plus D11-12 corporate-action/reference-price firewall separate event exposure from mechanical resets. D04-09 owns tail/gap volatility; D17-12 owns post-gap path.",
+          "next": "Build prospective event-to-next-open receipts across scheduled and unscheduled event windows with corporate-action and market/sector controls. Preregister gap-through-stop outcomes before any L4 claim."
         },
         {
           "id": "D11-11",
           "name": "漲跌停造成多日退出風險",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「漲跌停造成多日退出風險」。學習範圍：除權息、增減資、分割、CB、庫藏股、併購、停復牌、重大訊息與指數調整；公告／生效時鐘；歷史價格連續性；負面證據完整性；事件窗與退出風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_EXIT_CONSTRAINT_FEASIBLE_PROSPECTIVE_ONLY / ACTUAL_FILL_REQUIRES_ORDER_RECEIPT / OUTCOMES_CLOSED",
+          "evidence": "Official price-limit rule/version evidence plus timestamped best bid/ask, top-five depth and limit/halt/trial/delayed quote states make prospective bounded exit-constraint observation feasible. A limit-down close does not prove no execution; historical queue/fill state is not backfilled.",
+          "next": "Accumulate prospective consecutive-session limit/bid-depth receipts and real order/fill evidence where available. Keep historical exact fillability UNKNOWN; test incremental value beyond D05 liquidity and ordinary stop-risk controls before L4."
         },
         {
           "id": "D11-12",
@@ -1824,10 +1830,10 @@
           "next": "Archive native immutable MOPS versions for one repriced stock deal and one public-target break/termination; add a listed-child or entitlement-bearing spin-off case if available; then preregister identical-parent spread, hedge, borrow, cost and break-loss outcomes before L4."
         }
       ],
-      "status": "D11_15_17_18_19_L3 / D11_16_TRANSITION_RULE_VALIDATED_RELEASE_REALIZATION_GAP / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D11-16 remains the only D11-15..19 special-situation module below L3: complete an issuer-level official custody/release-approval-to-transfer-to-realized-holdings chain with an eligible-but-no-net-reduction control. Deepen D11-18/19 native failure/break and borrow/cost evidence before L4.",
-      "lastResearchUpdate": "2026-10-04",
-      "researchNote": "D11-16 transition-rule replay semantics are strengthened by the TWSE 2026-01-09 amendment: rule version and transition applicability must precede release eligibility, and qualifying retrieval requires an issuer request plus TWSE-approved releasable quantity/date before TDCC withdrawal. The issuer-level release-to-realized-supply chain remains incomplete, so D11-16 stays L2."
+      "status": "D11_10_11_15_17_18_19_L3 / D11_16_RELEASE_REALIZATION_GAP / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D11-16 remains the only D11-15..19 special-situation module below L3: complete an issuer-level custody/release-to-transfer-to-realized-holdings chain. In parallel, accumulate prospective D11-10 event-to-open and D11-11 consecutive limit-exit receipts; D11-08/13 remain source-completeness blockers.",
+      "lastResearchUpdate": "2026-10-04T14:59:00+08:00",
+      "researchNote": "D11-10 and D11-11 advanced L2->L3 on Taiwan PIT/source feasibility only. Event-linked overnight gaps consume validated official OHLC plus event clocks and D11-12 continuity guards. Multi-day exit risk is prospectively observable from official limit rules plus timestamped quote/depth/mechanism states, but actual fill requires order receipts and historical queue state stays UNKNOWN."
     },
     {
       "id": "D12",
@@ -2858,7 +2864,7 @@
         "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md",
         "NEWS_EVENT_TRANSMISSION_RESEARCH.md"
       ],
-      "maturityPct": 42.9,
+      "maturityPct": 44.3,
       "modules": [
         {
           "id": "D17-01",
@@ -2933,13 +2939,13 @@
         {
           "id": "D17-09",
           "name": "重複新聞／同事件Cluster去重",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「重複新聞／同事件Cluster去重」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "RECURRING_DISCLOSURE_RISK_OBSERVED / DERIVED_IDENTITY_REPLAY_TESTED / NATIVE_REVISION_CHAIN_MISSING",
-          "evidence": "The bounded official sample contains multiple 07:00:04 rows whose fact dates predate the publication date by months and whose notices span announcement periods; these are duplicate/stale candidates, not automatically new events.",
-          "next": "Use multi-day immutable captures to distinguish republication, rolling-window eviction, update and correction; keep removals UNKNOWN until source window semantics are proven."
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_REPUBLICATION_CLUSTER_FEASIBLE / CROSS_DAY_OFFICIAL_RECURRENCE_PHYSICALLY_VALIDATED / NATIVE_CORRECTION_CHAIN_UNKNOWN / OUTCOMES_CLOSED",
+          "evidence": "Independent official captures on 2026-09-28 and 2026-10-04 physically show 2072, 6949, 4530 and 4747 recurring on later daily source dates with the same prior fact dates and explicit multi-month announcement periods. Daily row identity therefore cannot be equated with a new economic event.",
+          "next": "Add at least one further independent session plus after-hours coverage; preserve content-hash changes append-only and keep native correction lineage UNKNOWN unless authenticated. Preregister cluster-level OOS outcomes before L4."
         },
         {
           "id": "D17-10",
@@ -2988,10 +2994,10 @@
           "evidence": "Reuters pre-decision polls dated 2026-06-15 and 2026-09-14 preserve ex-ante Taiwan CBC rate expectation distributions; official CBC decisions on 2026-06-18 and 2026-09-17 provide compatible realizations. Preserve full distributions and never choose the surprise functional after seeing returns."
         }
       ],
-      "status": "D17_14_L3_EX_ANTE_EXPECTATION_SOURCE_FEASIBLE / EXISTING_D17_PROGRESS_PRESERVED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D17-14: prospectively capture future policy expectation distributions with capturedAt/version evidence and preregister the surprise functional before outcomes; D17-01/02/09: continue multi-day source/version coverage. D13 remains macro-state/control owner.",
-      "lastResearchUpdate": "2026-10-04",
-      "researchNote": "D17-14 advances L2->L3 for Taiwan PIT/source feasibility. Two independent 2026 CBC decisions have Reuters ex-ante expectation distributions published before the decision and compatible official CBC realizations. This is source feasibility only; both historical witnesses matched the modal expectation and no equity-return alpha/outcome evidence is opened."
+      "status": "D17_09_13_14_L3 / D17_01_02_SOURCE_AND_FIRST_AVAILABILITY_GAPS / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D17-01/02: obtain at least one additional independent official capture plus after-hours expected/observed polling and separately resolve licensed general-news / true first-availability gaps. D17-09 is L3; native correction lineage remains UNKNOWN and L4 outcomes stay closed.",
+      "lastResearchUpdate": "2026-10-04T14:59:00+08:00",
+      "researchNote": "D17-09 advanced L2->L3 after independent cross-day official captures physically demonstrated recurring notices for the same issuer/fact dates with explicit announcement periods. This validates republication-aware clustering feasibility, not general-news source readiness, native correction lineage, or alpha. D17-01/02 remain L2."
     },
     {
       "id": "D18",
