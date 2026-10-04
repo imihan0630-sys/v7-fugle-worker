@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "D20_09_EVENT_CONDITIONED_OVERREACTION_PIT_CONTRACT_V0_1",
+  "updatedAtAsiaTaipei": "2026-10-04",
+  "module": "D20-09",
+  "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / EVENT_CONDITIONED_OVERSHOOT_SUBLANE / PRICE_REVERSAL_OWNED_BY_D03_05 / BEHAVIORAL_CAUSE_UNPROVEN",
+  "researchOnly": true,
+  "formalCore": "LOCKED",
+  "dependencies": {
+    "eventClock": [
+      "D20-08",
+      "D17-13"
+    ],
+    "observableReversal": [
+      "D03-05"
+    ],
+    "optionalContext": [
+      "D20-07 attention",
+      "D20-10 sentiment",
+      "D06/D05/D04 liquidity-volatility context"
+    ]
+  },
+  "parentEligibility": [
+    "event has valid sourcePublishedAt/capturedAt and conservative firstEligibleSession",
+    "event has pre-registered surprise/information-content definition or remains UNKNOWN",
+    "daily parent history is continuity-certified",
+    "completed 15m bars are available with barStart/barEnd/sourceFetchedAt and exact expected-slot continuity"
+  ],
+  "parentFields": [
+    "eventId",
+    "symbol",
+    "eventClass",
+    "eventKnownAt",
+    "firstEligibleSession",
+    "surpriseDefinitionVersion",
+    "surpriseValue_or_UNKNOWN",
+    "preEventRet20",
+    "sector",
+    "liquidityState",
+    "priceLimitState",
+    "attentionState_or_UNKNOWN",
+    "sentimentState_or_UNKNOWN",
+    "first15mReturn",
+    "first30mReturn",
+    "marketSectorResidualInitialResponse",
+    "sourceReceiptHashes",
+    "formulaVersion"
+  ],
+  "coreDiagnostic": {
+    "name": "EVENT_CONDITIONED_INITIAL_RESPONSE_RESIDUAL",
+    "definition": "Continuous initial market/sector residual response conditional on event information content and decision-time controls.",
+    "noOutcomeTunedThreshold": true,
+    "reversalFieldsExcludedFromParent": true,
+    "behavioralLabel": "CANDIDATE_OVERREACTION_CONTEXT_ONLY"
+  },
+  "laterOutcomes": [
+    "same-session reversal path owned by D03-05",
+    "D1 residual return",
+    "D5 residual return",
+    "D20 residual return"
+  ],
+  "structuralCounterfactuals": [
+    "bid-ask bounce",
+    "temporary liquidity impact",
+    "opening auction imbalance",
+    "forced flow",
+    "price-limit mechanics",
+    "volatility normalization",
+    "new information after initial event",
+    "sector/market shock"
+  ],
+  "guardrails": [
+    "Prior extreme return plus later reversal alone is never sufficient.",
+    "Reversal is not stored in the decision-time parent.",
+    "If surpriseValue is UNKNOWN, behavioral overreaction identification remains UNKNOWN.",
+    "D20-09 receives no duplicate vote from D03-05 reversal geometry."
+  ],
+  "maturityDecision": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
+  "l4Requirement": "Post-preregistration event parents with frozen initial-response diagnostic and later outcomes; independent event dates; structural counterfactual tests.",
+  "formalOptimizationCandidate": "NONE"
+}
