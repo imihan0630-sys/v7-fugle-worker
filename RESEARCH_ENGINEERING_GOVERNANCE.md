@@ -1,6 +1,6 @@
 # Research Engineering Governance
 
-Updated: 2026-10-03
+Updated: 2026-10-04
 
 ## Purpose
 
@@ -179,6 +179,27 @@ If research or engineering stops before completion for any reason, do not fail s
 - the precise next continuation point.
 
 A normal completed research cycle with no material new evidence may remain quiet. An interrupted unfinished cycle may not.
+
+
+## Execution continuity / anti-silent-stop gate (2026-10-04)
+
+Execution continuity is a mandatory engineering-governance requirement, not merely a chat-style preference.
+
+Canonical detailed rules are defined in:
+`shared-knowledge/ROOM_BOOTSTRAP.md` → **「八、不中斷執行與防靜默停滯（MANDATORY）」**.
+
+All research/engineering lanes using this repository MUST follow those rules. In particular:
+
+1. Durable each independently verifiable milestone promptly; do not keep a long chain of completed work only in chat state.
+2. While work is still active, do not silently stall on CI/workflow/tool waits. Provide concise progress updates during long chains and use wait time for non-conflicting safe work where possible.
+3. If the agent has said it will continue but does not actually initiate the next required action, classify the event as `ABNORMAL_INTERRUPTION`. On recovery, report the last real durable milestone, actual stop point, any uncommitted/unmerged state, and the exact next continuation point.
+4. Never imply background/asynchronous work is still running when no actual tool/task execution exists.
+5. When `main` advances concurrently, re-read and reconcile the delta; do not redo completed research merely because the base SHA moved.
+6. Split long repository work into testable/rollbackable milestones. Large repository engineering should trigger a Codex suitability check; large cross-domain long-running analysis should trigger a Work suitability check. Before any mode handoff, durable current state and emit the required handoff.
+7. Before ending an unfinished execution turn, preserve enough state to recover latest observed main SHA, last merged/finished milestone, test status, blocker, outstanding uncommitted/unmerged work, and exact next continuation point.
+8. Normal tool errors, CI failures, merge drift, or recoverable workflow problems are not reasons to stop and hand work back to the owner. Continue diagnosis and safe remediation unless the Human-intervention boundary is reached.
+
+Violation of this gate is an execution-governance failure even when no Formal Core behavior was changed.
 
 ## Core principle
 
