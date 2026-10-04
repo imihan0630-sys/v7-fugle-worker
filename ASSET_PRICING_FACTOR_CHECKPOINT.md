@@ -2,7 +2,7 @@
 
 Updated: 2026-10-04 Asia/Taipei
 Scope: D19｜資產定價／因子投資／市場異象
-Status: RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / VALID_OBSERVATION_CONTRACT_FROZEN / DUAL_TWSE_SOURCE_NONPRICE_CONFIRMED / TPEX_INDUSTRY_REDUNDANCY_COST_GATES_OPEN / FORMAL_CORE_UNCHANGED
+Status: RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / TPEX_BOUNDED_SOURCE_FEASIBLE / D19_12_BOUNDED_L3_AUDIT_NEXT / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - This file is the canonical continuation checkpoint for D19.
@@ -254,3 +254,10 @@ Exact remaining return delta:
 4. commit `research/COV09_D19_SPECIALIST_RETURN_V0_1.md`.
 
 No maturity or Formal change is authorized by this routing.
+
+
+## Stage 11 durable pointer — 2026-10-04
+- Canonical receipt: `research/d19_stage11_tpex_source_and_calendar_path_20261004_v0_1.json`.
+- TPEx current individual-monthly route/schema/unit semantics are bounded-feasible; unattended transport and full-market historical-universe replay remain incomplete and owned by DATA_LANE.
+- D19 remains 40.0%; no L3 promotion.
+- Exact next: audit D19-12 weekday/month-of-year bounded L3 feasibility with the existing official historical TWSE calendar and durable 2017 session evidence. Holiday/pre-holiday/turn-of-month stay outside the promotable scope until historical known-at calendar-vintage semantics are proven.
