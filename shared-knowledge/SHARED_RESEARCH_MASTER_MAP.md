@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-04 08:46 Asia/Taipei
+Updated: 2026-10-04 11:09 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -356,7 +356,7 @@ Execution tracks:
 Owner-approved forward philosophy:
 minimal HARD_INVALIDATION + strategy-specific PRIMARY_ALPHA + SUPPORTIVE + CONTEXT_ONLY + separate CONFIDENCE／UNCERTAINTY + ABSTAIN when expected value is inadequate or uncertainty excessive.
 
-The learning curriculum (22 domains / 355 modules) is a knowledge universe, not an all-domain AND-gate checklist.
+The learning curriculum (22 domains / 356 modules) is a knowledge universe, not an all-domain AND-gate checklist.
 
 ## Seven-item curriculum audit and capability-preservation execution (2026-10-03)
 
@@ -396,7 +396,7 @@ All historical research evidence and required runtime/explanatory capabilities r
 ## Shared inventory
 
 - `shared-knowledge/SHARED_RESEARCH_INVENTORY.md` is the cross-system domain/tag inventory. It points to original evidence without relocating it.
-- `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 22-domain / 355-module learning curriculum and chatroom routing dashboard.
+- `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 22-domain / 356-module learning curriculum and chatroom routing dashboard.
 - `research/stock_market_learning_tracker_v0_1.json` is the machine-readable maturity tracker for that curriculum.
 - `shared-knowledge/LEARNING_ROOM_ROUTER.md` is the mandatory public routing file every learning chat reads to know its assigned domains, modules, learning scope, progress and checkpoints.
 
@@ -1367,3 +1367,24 @@ Canonical receipts:
 - `shared-knowledge/curriculum_cov04_cov05_canonical_update_receipt_20261004_v0_1.json`
 
 Formal Core remains LOCKED. No System 1 / System 2 Formal behavior change is authorized.
+
+
+## COV-03 owner-approved canonical execution — 2026-10-04
+
+Owner explicitly approved COV-03 after 00-room formal Intake, Dependency Audit, overlap recheck, anti-double-count and anti-orphan review.
+
+Executed:
+- **COV-03 → ADD_MODULE**: created **D06-19 Retail / Individual Investor Participation & Flow（散戶／自然人參與與流向）** at **L0 / 0%**, owned by D06 / 05｜法人與籌碼研究室.
+- D06-19 owns only directly identified natural-person participation / ownership / channel activity and future direct directional flow when a true source exists.
+- Margin financing, day trading, odd-lot activity, broker-branch activity and total-minus-institution residuals are forbidden substitutes for direct retail identity/flow.
+- Domestic natural-person stock×date directional flow remains UNKNOWN until a PIT-safe authoritative source contract exists.
+- D20 behavioral interpretations may consume the same primitive receipt but may not create a duplicate independent vote.
+- Retired ID D06-17 remains absorbed into D06-16 and was not reused.
+
+Canonical post-update curriculum:
+- domains: 22
+- active modules: **356**
+- weighted maturity: **43.4%**
+- D06: **18 modules / 45.6%**
+
+The maturity decrease is denominator expansion from a new L0 module, not loss of prior evidence. Formal Core, System1 Formal and System2 Formal remain unchanged.
