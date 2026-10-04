@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "CURRICULUM_H13_DEPENDENCY_ANTI_ORPHAN_AUDIT_V0_1",
+  "date": "2026-10-04",
+  "auditBaseMain": "c482e149a8ce6ab25c4ea0f6d8db88690a694eb5",
+  "clusterId": "H13",
+  "modules": [
+    "D07-06",
+    "D22-03"
+  ],
+  "acceptedEvidence": [
+    "FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md",
+    "CREDIT_CAPITAL_STRUCTURE_RESEARCH.md",
+    "CREDIT_CAPITAL_STRUCTURE_CHECKPOINT.md",
+    "research/d22_03_net_debt_leverage_structure_contract_v0_1.json",
+    "research/d22_03_net_debt_component_replay_v0_1.json",
+    "research/d22_03_version_lineage_v0_1.json"
+  ],
+  "terminalClassification": "KEEP_SEPARATE",
+  "governanceDisposition": "ACCOUNTING_PRIMITIVE_VS_CREDIT_FUNDING_TRANSFORM",
+  "dependencyAudit": "PASS_ACCOUNTING_TO_CREDIT_TRANSFORM_GRAPH",
+  "pitVersionAudit": "PASS",
+  "antiDoubleCount": "PASS_SINGLE_BALANCE_SHEET_RECEIPT",
+  "antiOrphan": "PASS_NO_ORPHAN",
+  "maturity": {
+    "D07-06": {
+      "level": "L2",
+      "maturityPct": 40,
+      "change": "NONE"
+    },
+    "D22-03": {
+      "level": "L3",
+      "maturityPct": 60,
+      "change": "NONE"
+    }
+  },
+  "state": "CLOSED_NO_STRUCTURAL_CHANGE",
+  "structuralChange": "NONE",
+  "ownerApprovalRequired": false,
+  "formalCoreImpact": "NONE_LOCKED"
+}
