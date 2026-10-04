@@ -1502,3 +1502,40 @@ Both modules remain L2/40%. Names, module count, aggregate maturity, System1/Sys
 
 Audit:
 `shared-knowledge/CURRICULUM_H09_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+
+### D03 TPEx continuity-source / Bollinger acceptance rule — 2026-10-04
+
+Status: **BOUNDED_PHYSICAL_SOURCE_PASS / ACCEPTANCE_LOGIC_PASS / GENUINE_PARENT_PENDING**.
+
+Reusable rules from TI-594~610:
+
+1. **TPEx halt/resumption machine source**
+   - official action `bulletin/sprcHis`;
+   - 2026 mainboard bounded JSON population = 30/30;
+   - official CSV has the identical 30-key population;
+   - valid source-local zero is HTTP/schema-valid `stat=ok` with zero rows/total, never a transport failure.
+
+2. **TPEx price-reset sources**
+   - `bulletin/exDailyQ`: ex-right/ex-dividend actual-result source, physically 587/587 rows in the frozen 2026-07-01..2026-10-04 interval with JSON/CSV equivalence;
+   - `bulletin/revivt`: capital-reduction resumption/reference source, physically 11/11 rows in the frozen 2026-01-01..2026-10-04 interval with JSON/CSV equivalence;
+   - these sources provide official reference-price/reset fields needed to avoid treating mechanical resets as ordinary price momentum.
+
+3. **Knowledge-time firewall**
+   - shared continuity archive may use `PROSPECTIVE_OBSERVED`;
+   - source `fetchedAt` is a conservative knowledge-time upper bound only when captured no later than parent cutoff;
+   - later capture never backfills prior parent truth.
+
+4. **Bollinger L3 acceptance rule**
+   - reuse the shared V8.17 immutable parent identity;
+   - require exactly 20 eligible TECHNICAL_CONTINUITY closes, population standard deviation, no missing/duplicate sessions, source-known-at <= parent-known-at, corporate-action resolution and explicit constrained-state provenance;
+   - every expected parent must have exactly one attempt; UNKNOWN/BLOCKED are persisted states, not missing rows;
+   - dedicated outcome-blind workflow `37182674404` physically passes the acceptance fixtures.
+
+5. **Maturity firewall**
+   - source capability + synthetic acceptance PASS do not substitute for the first genuine post-deployment parent generation;
+   - D03-10 remains L2/40 and D03 remains 56.7% until a genuine parent run is COMPLETE;
+   - if Bollinger reaches L3, D03 becomes 58.3%;
+   - ADX requires an additional canonical recursive replay/trusted-state gate and would move D03 to 60.0% only if that gate passes.
+
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`; Formal Core remains LOCKED.
