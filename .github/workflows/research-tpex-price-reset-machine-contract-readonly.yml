@@ -76,3 +76,71 @@ jobs:
           echo "system1_runtime_used=false"
           echo "selection_authority=false"
           echo "formal_core_changed=false"
+
+      - name: Reconcile price-reset JSON and CSV keysets
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,csv,io
+          specs=[
+              ("EX_DAILY_Q",21,21),
+              ("REDUCTION_REFERENCE",11,10),
+          ]
+          for ident,json_width,csv_width in specs:
+              j=json.load(open(f"/tmp/{ident}.json",encoding="utf-8"))
+              t=j["tables"][0]
+              jrows=t["data"]
+              raw=open(f"/tmp/{ident}.csv","rb").read()
+              text=None
+              for enc in ("utf-8-sig","big5","cp950","utf-8"):
+                  try:text=raw.decode(enc);break
+                  except UnicodeDecodeError:pass
+              assert text is not None
+              parsed=list(csv.reader(io.StringIO(text)))
+              # Keep data rows by exact expected CSV width and date-like first field.
+              crows=[row for row in parsed if len(row)==csv_width and row and any(ch.isdigit() for ch in row[0]) and "/" in row[0] or (len(row)==csv_width and row and row[0].isdigit() and len(row[0])==7)]
+              # Remove header if its first cell is non-date text.
+              def is_data(row):
+                  x=str(row[0]).strip()
+                  return ("/" in x and any(ch.isdigit() for ch in x)) or (x.isdigit() and len(x)==7)
+              crows=[row for row in crows if is_data(row)]
+              if ident=="REDUCTION_REFERENCE":
+                  jk={tuple(str(x).strip() for x in row[:10]) for row in jrows}
+              else:
+                  jk={tuple(str(x).strip() for x in row) for row in jrows}
+              ck={tuple(str(x).strip() for x in row) for row in crows}
+              print(f"{ident}_JSON_ROWS={len(jrows)}")
+              print(f"{ident}_CSV_DATA_ROWS={len(crows)}")
+              print(f"{ident}_JSON_UNIQUE={len(jk)}")
+              print(f"{ident}_CSV_UNIQUE={len(ck)}")
+              print(f"{ident}_JSON_ONLY={len(jk-ck)}")
+              print(f"{ident}_CSV_ONLY={len(ck-jk)}")
+              assert len(jrows)==t.get("totalCount")
+              assert jk==ck
+              print(f"{ident}_JSON_CSV_KEYSET_EQUIVALENCE=PASS")
+          PY
+
+      - name: Probe price-reset source-local empty controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/empty.tsv <<'EOF'
+          EX_EMPTY	bulletin/exDailyQ	2026/10/04	2026/10/04
+          REDUCTION_EMPTY	bulletin/revivt	2026/10/04	2026/10/04
+          EOF
+          while IFS=$'\t' read -r id action start end; do
+            endpoint="https://www.tpex.org.tw/www/zh-tw/${action}"
+            out="/tmp/${id}.json"
+            code=$(curl --silent --show-error --location --max-time 30               --request POST               --header "Content-Type: application/x-www-form-urlencoded; charset=UTF-8"               --data-urlencode "startDate=${start}"               --data-urlencode "endDate=${end}"               --data-urlencode "response=json"               --output "${out}"               --write-out "%{http_code}" "${endpoint}")
+            ID="${id}" CODE="${code}" FILE="${out}" python - <<'PY'
+          import json,os
+          j=json.load(open(os.environ["FILE"],encoding="utf-8"))
+          tables=j.get("tables") if isinstance(j.get("tables"),list) else []
+          rows=sum(len(t.get("data") or []) for t in tables)
+          total=sum(int(t.get("totalCount") or 0) for t in tables)
+          print(f"{os.environ['ID']}_HTTP={os.environ['CODE']} STAT={j.get('stat')} ROWS={rows} TOTAL={total}")
+          if os.environ["CODE"]=="200" and j.get("stat")=="ok" and rows==0 and total==0:
+              print(f"{os.environ['ID']}_SOURCE_LOCAL_EMPTY=PASS")
+          PY
+          done </tmp/empty.tsv
