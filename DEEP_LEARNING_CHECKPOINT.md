@@ -1786,3 +1786,38 @@ Status: D21-12_L3 / D21-13_L2 / RESEARCH_ONLY / FORMAL_CORE_UNCHANGED
 - Read-only run 37185849126 PASS for the clock classifier.
 - Latest owner lane already has source-reported clock semantics certified and a prospective observation adapter implemented, but prospectiveObservationCount remains 0 and no automatic high-frequency schedule exists.
 - D03 therefore consumes the shared observer rather than forking one; maturity remains 56.7%.
+
+## DL-D21-20261004-F — sector materiality / planned-vs-abrupt succession
+Run date: 2026-10-04 Asia/Taipei
+Scope: D21-13 / D21-09
+Status: D21-13_L3 / D21-09_L3 / RESEARCH_ONLY / FORMAL_CORE_UNCHANGED
+
+### D21-13 materiality replay
+- TSMC 2023 Sustainability Report became public on 2024-07-31. Report-specific 2023 metrics enter historical availability in 2024, not 2023.
+- TSMC 2023 unit water consumption = 176.4 L per 12-inch equivalent wafer mask layer, +25.2% versus 2010 base and missed target; issuer attributed the deterioration materially to lower utilization. Process-water recycling = 90.3%; reclaimed-water replacement = 12%, above its disclosed 2023 target.
+- Denominator effect is frozen: a worse intensity metric can coexist with improved resilience metrics and can be driven by lower production/utilization.
+- China Steel 2023 Sustainability Report was board-approved/publicly described 2024-08-13. 2023 carbon reduction about 358,000 tCO2e; process-water recycling 98.5%; total water intensity 5.04 versus 4.90 target; new-water intensity 2.16 versus 2.50 target.
+- China Steel explicitly links carbon fees, low-carbon energy/raw materials and carbon-neutral technology to operating/R&D costs.
+- Cross-sector mapping is mandatory. Semiconductor materiality centers on water/power/process/supplier-customer decarbonization; integrated steel centers on absolute carbon, carbon fees, low-carbon raw materials, technology/capex and process water.
+- D21-13 advances to L3 / 60%. Generic ESG composite remains rejected.
+
+### D21-09 succession replay
+- TSMC planned succession: 2023-12-19 public plan that Mark Liu would retire after 2024 AGM and C.C. Wei was recommended; effective chairman election 2024-06-04. Lead time 168 days.
+- Taiwan Cement abrupt event: 2017-01-22 incapacity led to acting chairman/president; MOPS-derived archive by 2017-01-23 07:20. Leslie Koo's death was publicly announced before market open; permanent chairman/president Chang An-Ping selected later 2017-01-23 with MOPS-derived archive at 17:23.
+- Succession state must preserve incapacity, acting appointment, death/retirement confirmation, permanent successor and effective date. Current roster cannot reconstruct this path.
+- D21-09 advances to L3 / 60%. Planned and abrupt transitions are not one event family.
+
+### Falsification / redundancy
+- Sustainability intensity metrics require denominator and methodology controls; report vintage cannot be backfilled.
+- Mandatory disclosure phase and methodology changes can create apparent ESG improvement/deterioration without economic change.
+- Planned succession may reflect ordinary retirement; abrupt succession may be mitigated by deep internal management continuity.
+- Company statements of no operational impact are claims, not causal proof.
+- D21-09 must control prior performance, governance, family/controller status and industry conditions.
+
+### Candidate status
+- No FORMAL_OPTIMIZATION_CANDIDATE.
+- D21-13 and D21-09 require OOS/prospective incremental validation before L4.
+- Formal Core remains LOCKED.
+
+### Exact next continuation
+D21-07 is the largest executable L2 module without PIT validation. Build a historical Taiwan compensation-policy to capital-allocation replay, covering at least one long-horizon investment decision and one capital-return/financing decision, with policy known_at, decision known_at and future realized outcomes separated. Keep D21-11/04/03/01 source blockers non-blocking.
