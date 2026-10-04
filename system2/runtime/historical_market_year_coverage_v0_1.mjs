@@ -2,6 +2,97 @@ import { deepFreeze } from "./factor_snapshot.mjs";
 
 export const HISTORICAL_MARKET_YEAR_COVERAGE_VERSION = "0.2-RESEARCH";
 
+
+export function buildObservedIntervalUniverseRegistryV0_1({
+  market,
+  rows = [],
+  currentListingByMarketSymbol = {},
+  fromDate,
+  toDate,
+} = {}) {
+  const mkt = String(market || "").trim();
+  if (!["TWSE","TPEX"].includes(mkt)) throw new Error("market must be TWSE or TPEX");
+  const from = requiredDate(fromDate, "fromDate");
+  const to = requiredDate(toDate, "toDate");
+  if (to < from) throw new Error("toDate cannot be earlier than fromDate");
+  if (!Array.isArray(rows)) throw new Error("rows must be an array");
+
+  const observed = new Map();
+  for (const row of rows) {
+    if (!row || row.market !== mkt) continue;
+    if (row.marketDate < from || row.marketDate > to) continue;
+    const symbol = String(row.symbol || "").trim();
+    if (!/^[1-9][0-9]{3}$/.test(symbol)) continue;
+    const prior = observed.get(symbol) || { symbol, firstObservedDate: row.marketDate, lastObservedDate: row.marketDate };
+    if (row.marketDate < prior.firstObservedDate) prior.firstObservedDate = row.marketDate;
+    if (row.marketDate > prior.lastObservedDate) prior.lastObservedDate = row.marketDate;
+    observed.set(symbol, prior);
+  }
+
+  const symbols = new Set(observed.keys());
+  for (const [key, meta] of Object.entries(currentListingByMarketSymbol || {})) {
+    if (!key.startsWith(mkt + "|")) continue;
+    const symbol = key.slice(mkt.length + 1);
+    if (!/^[1-9][0-9]{3}$/.test(symbol)) continue;
+    const listingDate = meta?.listingDate ? requiredDate(meta.listingDate, "listingDate") : null;
+    if (listingDate && listingDate <= to) symbols.add(symbol);
+  }
+
+  const memberships = [];
+  let officialCurrentCount = 0;
+  let observedHistoricalOnlyCount = 0;
+  let currentWithoutObservedRowsCount = 0;
+
+  for (const symbol of [...symbols].sort()) {
+    const obs = observed.get(symbol) || null;
+    const meta = currentListingByMarketSymbol?.[mkt + "|" + symbol] || null;
+    const listingDate = meta?.listingDate ? requiredDate(meta.listingDate, "listingDate") : null;
+    let effectiveFrom;
+    let effectiveTo;
+    let membershipBasis;
+    if (meta) {
+      officialCurrentCount += 1;
+      effectiveFrom = listingDate && listingDate > from ? listingDate : from;
+      effectiveTo = null;
+      membershipBasis = obs
+        ? "OFFICIAL_CURRENT_LISTING_DATE_PLUS_A1_OBSERVED"
+        : "OFFICIAL_CURRENT_LISTING_DATE_NO_A1_OBSERVATION";
+      if (!obs) currentWithoutObservedRowsCount += 1;
+    } else {
+      observedHistoricalOnlyCount += 1;
+      effectiveFrom = obs?.firstObservedDate || from;
+      effectiveTo = obs?.lastObservedDate || to;
+      membershipBasis = "A1_OBSERVED_INTERVAL_ONLY_NO_OFFICIAL_DELISTING_UNION";
+    }
+    memberships.push(deepFreeze({
+      market:mkt,
+      symbol,
+      replayEligible:true,
+      effectiveFrom,
+      effectiveTo,
+      listingDate:listingDate || null,
+      firstObservedDate:obs?.firstObservedDate || null,
+      lastObservedDate:obs?.lastObservedDate || null,
+      membershipBasis,
+    }));
+  }
+
+  return deepFreeze({
+    schemaVersion:"S2_OBSERVED_INTERVAL_UNIVERSE_REGISTRY_V0_1",
+    state:"PARTIAL_OBSERVED_INTERVAL_UNIVERSE",
+    market:mkt,
+    fromDate:from,
+    toDate:to,
+    membershipCount:memberships.length,
+    officialCurrentCount,
+    observedHistoricalOnlyCount,
+    currentWithoutObservedRowsCount,
+    survivorshipComplete:false,
+    officialDelistingUnionComplete:false,
+    memberships:Object.freeze(memberships),
+  });
+}
+
 function requiredDate(value, field) {
   const text = String(value || "").trim();
   if (!/^\d{4}-\d{2}-\d{2}$/.test(text)) throw new Error(field + " must be YYYY-MM-DD");
