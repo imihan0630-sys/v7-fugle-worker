@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T11:28:00+08:00",
+  "updatedAt": "2026-10-04T11:40:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -2369,7 +2369,7 @@
         "PORTFOLIO_RISK_CHECKPOINT.md",
         "PORTFOLIO_RISK_RESEARCH.md"
       ],
-      "maturityPct": 38.1,
+      "maturityPct": 40,
       "modules": [
         {
           "id": "D15-01",
@@ -2506,12 +2506,13 @@
         {
           "id": "D15-16",
           "name": "Portfolio Optimization：Mean-Variance／Efficient Frontier／Risk Budgeting／Risk Parity／Black-Litterman投組最佳化方法",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦 Portfolio Optimization（投組最佳化）方法族：Mean-Variance／Efficient Frontier（均值變異／效率前緣）、Risk Budgeting／Risk Parity（風險預算／風險平價）與 Black-Litterman（均衡＋主觀觀點）。比較各方法在估計誤差、集中度、流動性、成本、約束敏感度、基準選擇與 Regime 下的優缺點；禁止以未來報酬倒推最佳權重。原 D15-17、D15-18 完整知識範圍由本模組承接；不同方法是同一投組配置家族的替代／比較方法，不各自變成股票硬門檻。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED / MERGED_SCOPE_OWNER",
-          "next": "建立統一的投組最佳化比較框架，以簡單等權／風險上限為基準，逐一反證 Mean-Variance、Risk Parity、Black-Litterman 是否具有 after-cost 增量價值。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_SPECIALIST_CONTRACT / UNIFIED_M0_M5_COMPARISON / INPUT_ELIGIBILITY_MATRIX / KELLY_STRONG_MERGE_TARGET_PREPARED / REAL_TAIWAN_PIT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED",
+          "next": "建立 D15-16 M0-M5 common-support replay：先尋找 PIT covariance／expected-return／risk-budget／equilibrium-view receipts；各方法缺必要輸入即停用，不得補零。優先反證 Mean-Variance estimation error、Risk Parity dependence、Black-Litterman view-confidence hindsight；無真實台股 PIT replay 不升 L3。",
+          "evidence": "research/D15_16_PORTFOLIO_OPTIMIZATION_UNIFIED_CONTRACT_20261004_V0_1.md + research/d15_portfolio_optimizer_eligibility_v0_1.mjs + tests/test_d15_portfolio_optimizer_eligibility_v0_1.mjs + research/D15_19_ANTI_ORPHAN_STRONG_MERGE_VERDICT_20261004_V0_1.md. Mechanism/falsification and fail-closed input ownership are frozen; no Taiwan optimizer superiority claim."
         },
         {
           "id": "D15-19",
