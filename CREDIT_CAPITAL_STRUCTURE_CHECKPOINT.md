@@ -1,8 +1,8 @@
 # Credit / Capital Structure Checkpoint
 
-Updated: 2026-10-04 13:45 Asia/Taipei
+Updated: 2026-10-04 15:12 Asia/Taipei
 Scope: D22｜信用市場／資本結構／融資壓力／股債傳導
-Status: ACTIVE_RESEARCH / D22_MATURITY_50PCT / D22-01_02_03_05_08_10_L3 / D22-04_06_SOURCE_BLOCKED_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
+Status: ACTIVE_RESEARCH / D22_MATURITY_51_7PCT / D22-01_02_03_05_07_08_10_L3 / D22-04_06_SOURCE_BLOCKED_L2 / D22-09_DEPENDENCY_BLOCKED_L2 / D22-11_12_HOLD_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - Canonical continuation checkpoint for D22.
@@ -321,3 +321,114 @@ D22-03 remains L3/60%. No maturity, count or Formal change.
 
 Audit:
 shared-knowledge/CURRICULUM_H13_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
+
+## 2026-10-04 15:12 continuation｜D22-07 L3 + D22-11/D22-12 falsification holds + L4 Stage-A prereg
+
+### Domain maturity
+D22 = 51.7%.
+
+L3 / 60%:
+- D22-01 Debt Maturity Wall / Refinancing Schedule
+- D22-02 Interest Coverage / Debt Service
+- D22-03 Net Debt / Leverage Structure
+- D22-05 Credit Rating / Rating Migration
+- D22-07 Liquidity / Covenant / Default Risk
+- D22-08 Fixed / Floating Rate Exposure
+- D22-10 Capital Structure / Funding Mix
+
+L2 / 40%:
+- D22-04 Cost of Debt / Refinancing Risk — historical TPEx security-level source blocked
+- D22-06 Credit Spread / Bond Yield — historical TPEx security-level source blocked
+- D22-09 Equity-Credit Divergence — downstream dependency on D22-06
+- D22-11 Credit Cycle / Bank Lending Conditions — supply/demand identification blocked
+- D22-12 Distress / Recovery / Equity Tail Risk — issuer-level default/recovery panel incomplete
+
+Equity outcomes remain CLOSED. Formal Core remains LOCKED.
+
+### D22-07｜Liquidity / Covenant / Default Risk — promoted to L3
+Durable files:
+- `research/d22_07_liquidity_covenant_default_contract_v0_1.json`
+- `research/d22_07_liquidity_covenant_replay_v0_1.json`
+
+PIT replay now spans:
+- Chunghwa Telecom 2023 and 2024 unused secured/unsecured bank-line states;
+- ASE 2024 cash/current-financial-assets/unused-credit-line state plus restrictive-covenant and cross-default semantics;
+- UMC revolving-credit headroom plus a guarantee exposure that remained positive in Sep. 2025 and fell to zero after USC Xiamen prepaid the syndicated loan in Oct. 2025.
+
+Falsification:
+- Facility headline size is not cash and is not assumed committed/drawable without contract evidence.
+- Covenant presence is not breach; breach is not default.
+- Guarantee/covenant exposure can resolve through repayment or renegotiation.
+- Later resolution must not backfill the earlier historical exposure state.
+- Missing covenant threshold/cushion remains UNKNOWN.
+
+### D22-11｜Credit Cycle / Bank Lending Conditions — HOLD L2
+Durable file:
+- `research/d22_11_credit_cycle_replay_readiness_v0_1.json`
+
+Validated:
+- CBC release-vintage five-major-bank new-loan pricing is PIT replayable across years;
+- CBC private-enterprise funding surveys are release-vintage aggregate/industry context;
+- issuer bank-dependence exposure can be replayed from first-known funding statements.
+
+Not validated:
+- a clean modern public Taiwan lending-standard / approval / collateral / quantity-supply shock series;
+- separation of bank credit supply from borrower credit demand.
+
+Therefore:
+- loan growth alone cannot be called a supply shock;
+- aggregate new-loan rates cannot be called issuer-specific credit spread;
+- CBC context remains CONTEXT_ONLY unless interacted with independently known issuer exposure;
+- D22-11 remains L2.
+
+### D22-12｜Distress / Recovery / Equity Tail Risk — HOLD L2
+Durable file:
+- `research/d22_12_distress_recovery_replay_readiness_v0_1.json`
+
+Validated:
+- Taiwan Ratings publishes annual Taiwan corporate default/transition studies with long historical series;
+- Taiwan default events are rare within the rated universe and many annual observations contain zero corporate defaults;
+- TPEx exposes a public default-notice route from 2019-02;
+- TWSE rules provide formal bankruptcy/restructuring delisting semantics.
+
+Not validated:
+- a reproducible issuer-level Taiwan default/restructuring/recovery panel with security seniority/collateral and dated recoveries;
+- a complete historical universe including defaulted, delisted and unrated firms.
+
+Therefore:
+- default-event rarity and class imbalance are explicit;
+- rated/surviving firms cannot define the whole sample;
+- TPEx market-default notices cannot be mechanically relabeled issuer credit defaults;
+- distance-to-default remains a model output, not observed PD;
+- D22-12 remains L2.
+
+### D22-04 / D22-06 source block
+Official TPEx archive/data product schemas support the required transaction/rate/fair-value/curve fields, but the needed historical security-level dataset is a separate acquisition path. This room did not purchase or fabricate that history. D22-04 and D22-06 remain L2 and D22-09 remains downstream-blocked.
+
+### L4 Stage-A preregistration
+Durable file:
+- `research/d22_l4_stage_a_incremental_value_prereg_v0_1.json`
+
+Eligible L3 lanes:
+D22-01 / 02 / 03 / 05 / 07 / 08 / 10.
+
+Frozen rules before outcomes:
+- exact common-support issuer-date comparison;
+- one deterioration/refinancing episode cannot become multiple votes;
+- fewer than 20 mature independent paired dates = ACCUMULATING only;
+- frozen primary horizons D+5 / D+10 / D+20, later D+40 / D+60 after sufficient elapsed time;
+- MFE / MAE path outcomes;
+- one-time historical outcome opening after the population is frozen;
+- leave-one-date-out / walk-forward, independent later dates or Prospective Shadow;
+- UNKNOWN remains missing;
+- every new threshold/window/classification is a new experiment;
+- redundancy testing versus D07, D13, D11 and upstream D22 primitives;
+- no Formal optimization from L4 evidence alone.
+
+## Exact next continuation
+1. Build an outcome-blind frozen common-support inventory for D22-01/02/03/05/07/08/10.
+2. Count independent issuer-date/episode clusters; <20 remains ACCUMULATING.
+3. Expand independent-date PIT receipts without opening equity returns.
+4. Once a lane satisfies the pre-outcome gate, freeze the population/hash and open the preregistered outcomes once.
+5. D22-04/06 remain source-blocked; D22-09 remains dependent on D22-06; D22-11/12 remain L2 until their identification/sample gates close.
+
