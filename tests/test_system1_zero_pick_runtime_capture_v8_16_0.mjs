@@ -3,6 +3,8 @@ import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 import {DatabaseSync} from 'node:sqlite';
 import {canonicalJcsJson} from '../research/canonical_receipt_hash_v0_1.mjs';
+import {adaptC1PopulationPages} from '../research/system1_selection_isolated_v0_1.mjs';
+import {verifyC1ZeroPickProspectiveEvidence} from '../research/system1_zero_pick_evidence_collector_v0_1.mjs';
 import {buildSystem1ZeroPickObserverSourceFromRuntime} from '../research/system1_zero_pick_runtime_source_adapter_v0_1.mjs';
 import {buildSystem1ZeroPickRankObservation} from '../research/system1_zero_pick_rank_input_observer_v0_1.mjs';
 import {buildSystem1ZeroPickCounterfactualSelection} from '../research/system1_zero_pick_counterfactual_comparator_v0_1.mjs';
@@ -135,6 +137,17 @@ const now=Date.parse(draft.decisionAt);
 const retrospective=await api.persistCompletedC1Safe(env,draft,day,{selectionVerified:true,now});
 assert.equal(retrospective.reason,'NON_PROSPECTIVE_SESSION_CAPTURE');
 const liveDay=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
+// Offline D1 readback from the actual guarded runtime must satisfy the collector contract.
+const collectorDraft=api.buildC1PopulationReceipt(features,features.slice().reverse(),{stocks:{}},sector,new Map(),[],liveDay,
+  {ordinals:api.c1ZeroPickOrdinals(features,features),consensusReference:null});
+const collectorEnv=env; // Reuse initialized offline D1, matching the runtime schema cache.
+await api.persistC1PopulationReceipt(collectorEnv,collectorDraft);
+const collectorPage=await api.readC1PopulationReceipt(collectorEnv,{generationId:collectorDraft.generationId});
+const collectorEvidence=verifyC1ZeroPickProspectiveEvidence({pages:[collectorPage],adapted:adaptC1PopulationPages([collectorPage])});
+assert.equal(collectorEvidence.status,'CAPTURE_INTEGRITY_VERIFIED',JSON.stringify(collectorEvidence));
+assert.equal(collectorEvidence.completeTupleN,features.length);
+assert.equal(collectorEvidence.cashEconomicComparisonAllowed,false);
+
 const legacy={...api.buildC1PopulationReceipt([], [{symbol:'9999',close:10}], {stocks:{}},{},new Map(),[],liveDay)};
 assert.equal(await api.finalizeC1ZeroPickReceipt(legacy),legacy,'no backfill of legacy receipts');
 

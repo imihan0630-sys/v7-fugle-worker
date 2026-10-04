@@ -348,6 +348,7 @@ jobs:
           node tests/test_system1_zero_pick_runtime_capture_v8_16_0.mjs
           node tests/test_system1_c3_registration_v0_1.mjs
           node tests/test_system1_c1_c2_collection_v0_1.mjs
+          node tests/test_system1_zero_pick_evidence_collector_v0_1.mjs
           node --check tests/collect_system1_c1_evidence.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs

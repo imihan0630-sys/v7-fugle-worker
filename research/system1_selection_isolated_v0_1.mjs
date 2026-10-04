@@ -63,6 +63,8 @@ export function adaptC1PopulationPages(pages) {
       selected:typeof raw.formalResult.selected==='boolean'?raw.formalResult.selected:null,selectedRank:raw.formalResult.selectedRank??null
     }:null,
     historyAdmission:raw.historyAdmission||null,
+    ...(Object.hasOwn(raw,'zeroPickRankObservation')
+      ? {zeroPickRankObservation:structuredClone(raw.zeroPickRankObservation)} : {}),
     gateEvidence:Object.fromEntries(C1_GATE_IDS.map(id=>[id,{...point}])),
     safety:Object.fromEntries(SAFETY.map(id=>[id,{...point,...(raw.safety?.[id]||{status:'UNKNOWN',reason:'SAFETY_NOT_CAPTURED'})}])),
     thesis:null,structuralStop:null,entryGeometry:raw.derived?.entryGeometry||null
