@@ -12,7 +12,12 @@ import {
 
 const H=c=>String(c).repeat(64).slice(0,64);
 function dateFrom(start,i){const d=new Date(start+"T00:00:00Z");d.setUTCDate(d.getUTCDate()+i);return d.toISOString().slice(0,10);}
-const parent={scanDate:"2026-10-05",captureGeneration:"GEN-1",symbol:"2330",parentSnapshotHash:H("a"),knownAt:"2026-10-05T10:10:00.000Z"};
+const parent={
+ scanDate:"2026-10-05",captureGeneration:"GEN-1",symbol:"2330",parentSnapshotHash:H("a"),
+ decisionCutoffAt:"2026-10-05T10:09:00.000Z",
+ decisionAt:"2026-10-05T10:10:00.000Z",
+ knownAt:"2026-10-05T10:10:00.000Z"
+};
 const cut={
   evidenceCutId:"CUT-20261005-A",
   evidenceCutoffAt:"2026-10-05T10:05:00.000Z",
@@ -63,6 +68,8 @@ const timing=evaluateEvidenceCutoffReceiptSplitV0_1({parent,evidenceCut:cut,cont
 assert.equal(timing.status,"VALID_EVIDENCE_CUTOFF_SPLIT");
 assert.equal(timing.eligible,true);
 assert.equal(timing.receiptCreatedAfterParent,true);
+assert.equal(timing.receiptCreatedAfterDecision,true);
+assert.equal(timing.parentEligibilityClock,"DECISION_CUTOFF_AT");
 
 const bb=evaluateCutoffDerivedBollingerL3V0_3({parent,evidenceCut:cut,continuityReceipt:bbReceipt()});
 assert.equal(bb.status,"VALID");
@@ -70,7 +77,7 @@ assert.equal(bb.l3EvidenceEligible,true);
 assert.equal(bb.timing.receiptCreatedAfterParent,true);
 
 for(const [name,evidencePatch,receiptPatch,reason] of [
- ["late cut",{evidenceCutoffAt:"2026-10-05T10:11:00.000Z"},{}, "EVIDENCE_CUT_AFTER_PARENT"],
+ ["late cut",{evidenceCutoffAt:"2026-10-05T10:09:30.000Z"},{}, "EVIDENCE_CUT_AFTER_PARENT"],
  ["revision gap",{noRevisionGapThroughCut:false},{}, "NO_REVISION_GAP_THROUGH_CUT_UNPROVEN"],
  ["late discovered",{lateDiscoveredPreCutVersionCount:1},{}, "LATE_DISCOVERED_PRE_CUT_VERSION"],
  ["wrong cut",{}, {evidenceCutId:"OTHER"}, "RECEIPT_EVIDENCE_CUT_ID_MISMATCH"],
