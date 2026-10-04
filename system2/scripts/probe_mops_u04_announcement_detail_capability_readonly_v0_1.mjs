@@ -48,6 +48,8 @@ function inspect({id,host,method,response}){
     symbolObserved && companyObserved && subjectObserved && correctionObserved;
   return {
     id,host,method,httpStatus:response.status,
+    transportExit:response.transportExit,
+    transportError:response.transportError,
     payloadBytes:Buffer.byteLength(response.body),
     payloadSha256:sha256(response.body),
     normalizedTextPrefix:text.slice(0,900),
@@ -91,8 +93,12 @@ function warmSession(host,cookieJar){
   ]);
   return {
     rootStatus:root.status,
+    rootTransportExit:root.transportExit,
+    rootTransportError:root.transportError,
     rootSecurityBlocked:/安全性考量|FOR SECURITY REASONS/.test(stripHtml(root.body)),
     queryStatus:query.status,
+    queryTransportExit:query.transportExit,
+    queryTransportError:query.transportError,
     querySecurityBlocked:/安全性考量|FOR SECURITY REASONS/.test(stripHtml(query.body)),
     queryPayloadBytes:Buffer.byteLength(query.body),
     queryPayloadSha256:sha256(query.body),
@@ -166,7 +172,7 @@ console.log(JSON.stringify({
 },null,2));
 
 assert.equal(attempts.length,4);
-assert.ok(attempts.every((x)=>Number.isInteger(x.httpStatus)));
+assert.ok(attempts.every((x)=>Number.isInteger(x.httpStatus) || x.transportError));
 assert.equal(result.historicalListQueryDiscovered,false);
 assert.equal(result.revisionCoverageComplete,false);
 assert.equal(result.selectionAuthority,false);
