@@ -298,3 +298,47 @@ Exact remaining delta:
 If no independent observable family survives, return NOT_A_GAP / MERGE_INTO_EXISTING / EVIDENCE_INSUFFICIENT rather than inventing psychology from price action.
 
 No maturity or Formal change is authorized by this routing.
+
+## Canonical overlay 2026-10-04 20:20 Asia/Taipei — COV-10 specialist return complete
+
+COV-10（belief-updating biases / 信念更新偏誤）Room13 specialist delta is complete.
+
+Durable artifacts:
+- `research/COV10_D20_BELIEF_UPDATE_OBSERVABLE_CONTRACT_V0_1.json`
+- `research/COV10_D20_SPECIALIST_RETURN_V0_1.md`
+- `research/COV10_D20_SPECIALIST_RETURN_VALIDATION_V0_1.json`
+
+Specialist conclusion:
+- confirmation bias, belief perseverance and conservatism remain distinct mechanisms but belong to one umbrella belief-updating family;
+- the residual capability is prior belief -> evidence congruence -> verified exposure -> update direction/magnitude;
+- Taiwan-replayable non-price route is prospectively feasible through scheduled public-forum snapshots plus owner-certified official event/correction receipts;
+- unresolved exposure => confirmation/perseverance UNKNOWN;
+- price underreaction alone cannot identify conservatism;
+- the three labels cannot become three independent votes;
+- specialist terminal recommendation = ADD_MODULE;
+- proposed canonical slot, only if 00-room intake/dependency/owner gates approve = D20-14, starting L0 / 0%.
+
+Governance:
+- return validator-equivalent checks PASS: all required headers, ten sections, identity checks, exactly one terminal recommendation, no UNKNOWN coercion.
+- status is RETURN_CONTRACT_COMPLETE, not RETURN_ACCEPTED_FOR_INTAKE.
+- Room13 does not mutate curriculum/module count/maturity from this return.
+- Formal Core remains LOCKED.
+
+Prospective social clock:
+- Room13 automation was disabled by rotation at the 2026-10-04 20:10 slot.
+- Therefore no primary social snapshot is eligible for that slot.
+- No manual backfill is allowed; interval coverage remains UNKNOWN / NO_SCHEDULED_CAPTURE.
+- Primary D20-03/D20-06/D20-11 social L4 counts remain zero.
+
+H12 recheck:
+- Room13 D20-13 semantic/anti-double-count counterpart is already complete in `research/d20_h12_limits_to_arbitrage_room13_packet_v0_1.md`.
+- Do not repeat H12 ownership research.
+- D20-13 remains L2 pending first genuine trading-day live TWSE rate/supply receipt under the frozen capture slots and any remaining Room10 counterpart governance.
+
+Exact next continuation:
+1. Await 00-room formal intake/dependency decision for COV-10; do not self-promote D20-14.
+2. First actually executed post-freeze Room13 fixed :10 scheduled social snapshot becomes the first primary L4 social-capture candidate.
+3. On next genuine Taiwan trading day execute D20-13 TWSE live source attempts at 09:15 / 12:00 / 15:20 ±5 minutes.
+4. If neither future-data condition is available, continue only newly routed D20 governance/research deltas rather than fabricating prospective evidence.
+
+D20 maturity remains 58.5%. No Formal Core change.
