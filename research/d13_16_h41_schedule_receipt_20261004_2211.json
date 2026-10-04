@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "0.1",
+  "id": "D13_16_H41_SCHEDULE_RECEIPT_20261004_2211",
+  "capturedAt": "2026-10-04T22:11:00+08:00",
+  "sourceUrl": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+  "scheduledSourceDate": "2026-10-08",
+  "scheduledSourceTime": "16:30",
+  "sourceTimezone": "America/New_York",
+  "scheduledAtTaipei": "2026-10-09T04:30:00+08:00",
+  "firstEligibleTaiwanDecision": "2026-10-09T18:10:00+08:00",
+  "realization": "UNKNOWN",
+  "realizationKnownAtCapture": false,
+  "sourceRawHash": "UNKNOWN_NOT_YET_RELEASED",
+  "outcomesOpened": false,
+  "formalCoreChanged": false,
+  "maturityPromotion": false
+}
