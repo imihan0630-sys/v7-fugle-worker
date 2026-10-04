@@ -225,3 +225,13 @@ Formal Core remains LOCKED.
 - L2 / 40% unchanged; no module-count or aggregate-maturity effect.
 - Missing historical pre-close auction imbalance remains UNKNOWN; no final-close backfill.
 - No Formal/System1/System2 behavior change.
+
+
+## 2026-10-04 H09 canonical scope de-dup completion
+
+- H09 terminal classification: `KEEP_SEPARATE / SCOPE_DEDUP_ONLY`.
+- D16-19 = model/calibration producer; immutable CalibrationReceipt owner.
+- D16-25 = calibrated-belief decision consumer; prior/Bayesian update, uncertainty, utility, risk-coverage, ABSTAIN.
+- no second calibrator or probability authority under D16-25.
+- D16-19 and D16-25 both remain L2/40%.
+- names, module count, aggregate maturity and Formal behavior unchanged.
