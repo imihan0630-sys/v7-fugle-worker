@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "0.2",
+  "generatedAt": "2026-10-04 Asia/Taipei",
+  "owner": "08｜事件與新聞研究室",
+  "module": "D11-16",
+  "title": "Lock-up Expiry／Insider Supply禁售期到期與內部人供給 — transition-rule deepening",
+  "status": "RULE_VERSION_AND_TRANSITION_CLAUSE_VALIDATED / ISSUER_RELEASE_TO_REALIZED_SUPPLY_CHAIN_INCOMPLETE / KEEP_L2 / OUTCOMES_CLOSED",
+  "formalCoreImpact": "NONE",
+  "purpose": "Deepen Taiwan lock-up replay semantics by freezing the 2026 transition rule while preserving the unresolved issuer-level realization blocker.",
+  "officialSources": [
+    {
+      "provider": "TWSE",
+      "publishedDate": "2026-01-09",
+      "documentNo": "臺證上二字第1150000306號",
+      "url": "https://wwwc.twse.com.tw/staticFiles/announcement/official/R-11500003061-1.pdf",
+      "finding": "The amendment shortens the mandatory custody period for domestic Taiwan Innovation Board companies and explicitly applies the transition to domestic TIB companies already listed before the amendment. Qualifying companies must submit requested release quantity, original custody certificate, custody detail and release calculation; only after TWSE replies with approved release quantity/date may shares be retrieved through TDCC."
+    },
+    {
+      "provider": "TWSE Regulation",
+      "effectiveVersion": "2026-01-09",
+      "url": "https://twse-regulation.twse.com.tw/tw/law/DOC01.aspx?FLCODE=FL007326&FLNO=35",
+      "finding": "Current Article 35 defines covered holders and custody obligation. Release eligibility and actual custody withdrawal remain separate events."
+    },
+    {
+      "provider": "TWSE TIB",
+      "url": "https://www.twse.com.tw/TIB/zh/requirement.html",
+      "finding": "Current TIB guidance distinguishes the general staged release path from the shorter path for domestic issuers meeting the Article 4 profitability criterion."
+    },
+    {
+      "provider": "TWSE listing archive",
+      "issuer": "6921 嘉雨思",
+      "finding": "Official listing records establish the issuer as a domestic TIB case with a prior withdrawal/reapplication history; the existing research still lacks an issuer-specific official TWSE release approval/custody quantity chain."
+    }
+  ],
+  "newReplayFirewall": [
+    "RULE_VERSION_EFFECTIVE_AT must be stored separately from issuer LISTING_DATE.",
+    "TRANSITION_APPLIES must be explicitly evaluated; do not assume the rule visible today governed all historical release clocks identically.",
+    "RELEASE_ELIGIBLE is not ACTUAL_RELEASE_OR_WITHDRAWAL_FROM_CUSTODY.",
+    "TWSE approval of release quantity/date, when required, is an event version between legal eligibility and TDCC withdrawal.",
+    "ACTUAL_RELEASE_OR_WITHDRAWAL_FROM_CUSTODY is not TRANSFER_PREDECLARED and is not REALIZED_SALE.",
+    "Failure to retrieve a current OpenAPI row or failure of a research fetch path is SOURCE_ACCESS_UNKNOWN, never NO_TRANSFER."
+  ],
+  "currentRunSourceAccess": {
+    "attempted": [
+      "t187ap11_L",
+      "t187ap12_L",
+      "t187ap13_L"
+    ],
+    "result": "Independent fetch path returned target_unreachable for all three endpoints in this run.",
+    "interpretation": "Tool/source-path availability failure only. It is not evidence that the issuer had no filing or no transfer."
+  },
+  "maturityDecision": {
+    "module": "KEEP_L2",
+    "strengthenedBy": "Rule-version and transition-clause semantics are now source-proven.",
+    "blockedBy": [
+      "issuer-specific applicable profitability/transition qualification not pinned for the chosen witness",
+      "official issuer-level custody quantity and TWSE release approval not captured",
+      "official transfer declaration plus subsequent holdings/untransferred realization chain not captured",
+      "eligible-but-not-sold negative control still lacks a complete official chain"
+    ]
+  },
+  "outcomesOpened": false,
+  "formalOptimizationCandidate": false,
+  "exactNext": "Obtain one issuer-level official chain spanning listing basis/custody quantity -> applicable rule version and transition qualification -> TWSE release approval quantity/date or equivalent custody withdrawal proof -> transfer pre-declaration -> subsequent official holdings/untransferred state. Preserve an eligible-but-no-net-reduction control; never label NO_SALE from missing source coverage."
+}
