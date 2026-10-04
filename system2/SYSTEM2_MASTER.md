@@ -640,3 +640,21 @@ PR #487 physically confirmed all six official final-result lanes are READY and i
 Corrected discovery PR #497 found one valid new representative control, 3152 璟德. PR #502 physically verified its cross-month MOPS original/correction chain and exact TPEx capital-reduction effective date 2026-06-30, advancing representative exchange coverage to three lanes. PR #503 then versioned the canonical six-lane receipt to representativeAuthorityReadyCount=3.
 
 The remaining representative gaps are TWSE par-value change, TPEx ex-right/dividend and TPEx par-value change. Exact knownAt, bounded revision completeness, session/technical continuity and all trading authorities remain locked.
+
+
+## Independent correction / audit governance
+
+System 2 uses an independent correction loop to detect and remediate goal drift, design contradictions, false completion, silent abandonment, validation gaps, cross-module disconnects, provenance defects and authority leaks.
+
+Canonical governance:
+- `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
+- `system2/SYSTEM2_CORRECTION_QUEUE.md`
+- `system2/SYSTEM2_CORRECTION_QUEUE.json`
+
+Before substantive System 2 build continuation, the build/control room must inspect the correction governance and all active directives affecting the current task.
+
+CRITICAL/HIGH directives may be implemented by the build/control room but are not self-closed by the implementation role. They require independent verification or an explicit owner override.
+
+`FIX_IMPLEMENTED` is not equivalent to `VERIFIED_CLOSED`.
+
+This governance is process-only and does not authorize any System 1 Formal Core change, System 2 live selection authority, production push, capital or order impact.
