@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "pattern-structural-object-persistence-v0.1",
+  "updated": "2026-10-04 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "identityLayers": [
+    "STRUCTURAL_OBJECT_ROOT",
+    "STRUCTURAL_OBJECT_VERSION",
+    "STRUCTURAL_OBJECT_EPISODE",
+    "OBSERVATION_SNAPSHOT"
+  ],
+  "scanDateIsStructuralIdentity": false,
+  "absenceStates": [
+    "UNKNOWN_COVERAGE_GAP",
+    "WINDOW_CENSORED",
+    "DETECTOR_ABSENT_COMPLETE_SCAN",
+    "MARKET_INVALIDATED"
+  ],
+  "rediscoveryIsNewIndependentEvent": false,
+  "replayRunCountIncreasesN": false,
+  "timeframeInRootIdentity": true,
+  "fuzzyPostOutcomeMatching": "PROHIBITED",
+  "outcomeJoin": "CLOSED",
+  "inferenceOwner": "D16",
+  "formalOptimizationCandidate": "NONE"
+}
