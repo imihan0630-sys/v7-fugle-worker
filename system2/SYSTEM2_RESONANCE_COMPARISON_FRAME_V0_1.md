@@ -30,3 +30,16 @@ Next units: reviewed real Challenger preregistration and implementation; adapter
 PR #313 merged `22baa1dbe0ad45da99072c784e524994f45f693c`. Final PR head `3181c43652de9c060866db7e7311c6f31ef195ae`: System2 Research CI 36985165883 and V8 Regression 36985165926 PASS. Main System2 Research CI 36985338857 PASS. Common input/version/PIT/finality gates and immutable mock persistence/readback are repository-verified. Evidence: `system2/evidence/resonance_comparison_core_acceptance_20261002.json`.
 
 This is a technical comparison kernel, not deployed paired capture: no real Challenger formula/parameters/preregistration, no verified Challenger execution, no physical comparison persistence and zero actual paired samples. Baseline and System1 unchanged; all authorities and promotion evidence flags remain false. Continue with a reviewed real Challenger contract/implementation and same-cache capture adapter before physical paired persistence; do not relabel synthetic transport fixtures as research results. S2-07 current-source/assessor/continuity gates remain separate. The 19:00 audit has not yet occurred at this acceptance.
+
+
+## Upstream denominator provenance
+
+The common-input frame must preserve the bounded pool's upstream capacity denominator provenance:
+- source capacity run ID/hash;
+- denominator state `COMPLETE / PARTIAL / UNKNOWN`;
+- denominator provenance hash when available;
+- contributing Shadow run/accounting identities carried by the pool provenance.
+
+This makes COMPLETE-vs-PARTIAL selection coverage visible to later comparison/performance/promotion evidence. A legacy pool/capacity path without the V0.2 payload remains `UNKNOWN / LEGACY_PROVENANCE_INCOMPLETE`; absence is never interpreted as COMPLETE.
+
+This provenance is contextual evidence only. It does not itself change the unchanged Baseline formula, monitoring eligibility, strategy thresholds, or promotion authority.
