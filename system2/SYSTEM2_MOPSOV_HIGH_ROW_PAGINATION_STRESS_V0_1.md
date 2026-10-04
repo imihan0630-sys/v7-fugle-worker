@@ -55,3 +55,39 @@ After physical PASS:
 3. assemble supplemental revision-history completeness only after all required lanes are covered.
 
 Read-only only; no D1/R2 mutation and no System 1 runtime use.
+
+## 2026-10-04 physical high-row stress acceptance
+
+PR #455 physically verified high-row MOPSOV query integrity against bounded month shards.
+
+- Merge commit: `3772f6332465a5912d1ca32314c322b455685d18`.
+- High Row Pagination Stress Readonly run `37169619727`: PASS.
+- System2 Research CI `37169619744`: PASS.
+- V8 Regression `37169619690`: PASS.
+- Frozen discovery universe: 11 ordinary equities.
+- Deterministic Top 3 by source row count:
+  - 2891 / prefix rows 391;
+  - 3711 / prefix rows 383;
+  - 2881 / prefix rows 300.
+- `maxPrefixRowCount=391`.
+- `highRowStressObserved=true`.
+- `passCount=3`.
+- `exactKeysetReconciliation=true`.
+- For all three controls:
+  - full-query prefix row count == Jan-Sep month-shard union;
+  - `onlyAllCount=0`;
+  - `onlyMonthShardCount=0`;
+  - `duplicateMonthKeyCount=0`.
+- `anyPaginationHint=false`.
+- The largest individual month observed in the Top 3 sample contained 81 rows.
+- Read-only boundary PASS.
+
+This materially narrows silent truncation/pagination risk for the frozen 2026 high-row sample. It does not prove whole-market historical revision completeness or certify historical version knownAt clocks.
+
+Still false:
+- `boundedIntervalCoverageComplete=false`;
+- `knownAtVersionClockCertified=false`;
+- `revisionCoverageComplete=false`;
+- `noEventMayBeClaimed=false`;
+- `technicalContinuityCertified=false`;
+- all selection/push/capital/order/System1 runtime authority.
