@@ -3,7 +3,7 @@ import {
   parseOfficialHistoricalA6ValuationPayloadV0_1,
   buildOfficialHistoricalA6ValuationUrlV0_1,
 } from "../runtime/official_historical_a6_valuation_v0_1.mjs";
-import { d08TwseTableObjectsV0_1,parseD08TwseDateV0_1 } from "../runtime/d08_twse_historical_universe_source_v0_1.mjs";
+import { d08TwseTableObjectsV0_1,parseD08TwseDateV0_1,buildD08SemanticUniverseIdentityV0_1 } from "../runtime/d08_twse_historical_universe_source_v0_1.mjs";
 
 const fields=["證券代號","證券名稱","收盤價","殖利率(%)","股利年度","本益比","股價淨值比","財報年/季"];
 const p=parseOfficialHistoricalA6ValuationPayloadV0_1({
@@ -41,3 +41,23 @@ assert.deepEqual(
 );
 assert.equal(parseD08TwseDateV0_1("115/09/01"),"2026-09-01");
 console.log(JSON.stringify({ok:true,guard:"D08_A6_AND_UNIVERSE_SOURCE_CORE",formalCoreImpact:false}));
+
+
+const semanticFixture={
+  registryId:"D08-TEST",
+  datasetStartDate:"2023-01-01",
+  memberships:[{
+    registryId:"D08-TEST",market:"TWSE",symbol:"2330",memberState:"CURRENT",
+    datasetStartDate:"2023-01-01",listingDate:"1994-09-05",delistingDate:null,
+    firstTradingDate:null,effectiveFrom:"2023-01-01",effectiveTo:null,
+    startBasis:"DATASET_START_CLAMP",endBasis:"OPEN_ENDED_CURRENT",replayEligible:true,
+    observedAt:"2026-10-04T01:00:00Z",membershipHash:"VOLATILE-A",membershipId:"A",
+  }],
+};
+const semanticA=buildD08SemanticUniverseIdentityV0_1(semanticFixture);
+const semanticB=buildD08SemanticUniverseIdentityV0_1({
+  ...semanticFixture,
+  memberships:[{...semanticFixture.memberships[0],observedAt:"2026-10-04T02:00:00Z",membershipHash:"VOLATILE-B",membershipId:"B"}],
+});
+assert.equal(semanticA.semanticRegistryHash,semanticB.semanticRegistryHash,
+  "semantic universe hash must ignore capture clock and volatile generic membership hash");
