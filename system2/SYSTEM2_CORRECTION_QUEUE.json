@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T15:13:33+08:00",
+  "updatedAt": "2026-10-04T15:28:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -8,7 +8,7 @@
       "directiveId": "S2-CORR-20261004-001",
       "createdAt": "2026-10-04T15:13:33+08:00",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "ACKNOWLEDGED",
       "title": "Historical daily-market backfill stalled after first 2017 TWSE annual attempt",
       "affectedScope": [
         "S2-03 Historical infrastructure",
@@ -48,10 +48,16 @@
         "historical evidence must not be relabeled prospective"
       ],
       "ownerDecisionRequired": false,
-      "implementationEvidence": [],
+      "implementationEvidence": [
+        "Latest main confirms repaired manual-only 2017 annual backfill workflow and TWSE-first/TPEX-second ordering",
+        "Annual backfill script verifies COMPLETE receipt/R2 objects on rerun and otherwise persists immutable external-cold packs/manifests/receipt",
+        "Current GitHub connector cannot create a new workflow_dispatch; rerunning old failed run would use the obsolete run SHA and is not acceptable",
+        "Controlled browser has no recorded GitHub sign-in, so owner login authorization is the remaining execution blocker",
+        "After GitHub browser sign-in, dispatch latest-main system2-historical-pack-2017-backfill.yml with market=TWSE and verify receipt/manifests/R2/coverage before TPEX"
+      ],
       "verificationEvidence": [],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-04T15:13:33+08:00"
+      "updatedAt": "2026-10-04T15:28:00+08:00"
     }
   ]
 }
