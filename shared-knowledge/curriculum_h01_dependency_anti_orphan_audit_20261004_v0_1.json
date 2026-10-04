@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "CURRICULUM_H01_DEPENDENCY_ANTI_ORPHAN_AUDIT_V0_1",
+  "clusterId": "H01",
+  "modules": [
+    "D09-13",
+    "D09-14"
+  ],
+  "specialistRoom": "07｜產業與供應鏈研究室",
+  "status": "OWNER_APPROVAL_REQUIRED",
+  "specialistTerminalClassification": "KEEP_SEPARATE",
+  "governanceDisposition": "KEEP_SEPARATE_PLUS_SCOPE_DEDUP_ONLY",
+  "formalCoreImpact": "NONE",
+  "curriculumCountImpact": "NONE",
+  "maturityImpact": "NONE",
+  "currentMaturity": {
+    "D09-13": "L3/60%",
+    "D09-14": "L3/60%"
+  },
+  "ownership": {
+    "D09-13": "industry × explicit product/geographic market definition × vintage",
+    "D09-14": "issuer × observable strategic action × implementation stage × vintage"
+  },
+  "dependencyAudit": {
+    "result": "PASS",
+    "dependencies": [
+      "D10",
+      "D11",
+      "D17",
+      "D07"
+    ],
+    "missingCounterpartRequired": false
+  },
+  "overlapRecheck": {
+    "result": "KEEP_SEPARATE_CURRENT_WORDING_DUPLICATIVE",
+    "proposedNames": {
+      "D09-13": "Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）",
+      "D09-14": "Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）"
+    }
+  },
+  "antiDoubleCount": {
+    "result": "PASS_WITH_SHARED_PARENT_FIREWALL",
+    "rules": [
+      "shared market-share/capacity/price/margin/customer/supplier observation has one parent receipt",
+      "D09-14 independent only with actor-specific action lifecycle fields",
+      "no firm-specific action field => D09-13 only",
+      "post-action share change may be linked D09-14 outcome, not second simultaneous factor",
+      "D10 and D11/D17 dependencies are referenced, not duplicated"
+    ]
+  },
+  "antiOrphan": {
+    "result": "PASS",
+    "standaloneRuntimeDependencyFound": false,
+    "standaloneApiUiReplayDependencyFound": false,
+    "capabilitiesPreserved": true
+  },
+  "nextAction": "EXPLICIT_OWNER_APPROVAL_FOR_H01_KEEP_SEPARATE_SCOPE_DEDUP",
+  "formalCore": "LOCKED"
+}
