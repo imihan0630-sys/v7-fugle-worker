@@ -3,7 +3,7 @@
   "room": "07｜產業與供應鏈研究室",
   "domain": "D09",
   "module": "D09-13",
-  "capturedAt": "2026-10-04T23:18:00+08:00",
+  "capturedAt": "2026-10-04T23:17:51+08:00",
   "observedMainBeforeWrite": "ac3e96b473a9ae5c9db7dcb1fe5ef25610f4a22c",
   "status": "FIRST_COMPATIBLE_PCB_APPLICATION_REVENUE_NUMERATOR / ABF_AI_MAGNITUDE_STILL_UNKNOWN / OUTCOMES_CLOSED",
   "objective": "Test whether issuer-native PCB/product/application disclosures can provide a denominator-compatible revenue numerator without importing third-party industry shares or relabeling qualitative product presence as exposure magnitude.",
@@ -39,7 +39,7 @@
       "https://www.compeq.com.tw/doc/conference/235724ee-c6af-11f0-a762-005056a9c86d/20251121_155406_cn.pdf"
     ],
     "pdfPage": 9,
-    "capturedAt": "2026-10-04T23:18:00+08:00"
+    "capturedAt": "2026-10-04T23:17:51+08:00"
   },
   "interpretation": {
     "validInference": "Compeq disclosed that Data Center / Networking represented approximately 5% of 2025Q3 operation revenue under the issuer's own application taxonomy.",
