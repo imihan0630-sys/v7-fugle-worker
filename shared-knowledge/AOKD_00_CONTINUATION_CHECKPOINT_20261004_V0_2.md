@@ -171,3 +171,8 @@ Exact next continuation point for 00:
 2. COV-12 still has no formal specialist return; do not infer one.
 3. Continue checking newly arrived complete specialist packets/counterparts on latest main, prioritizing items that can legally advance without duplicating specialist research.
 4. AOKD-05 remains routed to 06 for corpus feasibility; broad AOKD sweep remains saturated absent a new trigger.
+
+
+H01 canonical receipts:
+- `shared-knowledge/CURRICULUM_H01_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md`
+- `shared-knowledge/curriculum_h01_canonical_update_receipt_20261004_v0_1.json`
