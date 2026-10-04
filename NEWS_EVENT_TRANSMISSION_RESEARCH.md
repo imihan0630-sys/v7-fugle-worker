@@ -784,3 +784,32 @@ Counterevidence:
 The clock sublane is L3-ready, but the full D17-14 module stays **L2** because no ex-ante expectation source has been validated. Surprise remains UNKNOWN rather than inferred from returns or narrative.
 
 Formal Core unchanged; outcomes closed.
+
+## 2026-10-04 continuation — cross-day official republication physically validated
+
+New durable receipt: `research/d17_official_disclosure_crossday_receipt_20261004_v0_1.json`.
+Read-only capture workflow: `.github/workflows/research-d17-official-disclosure-capture-readonly.yml`.
+Successful run: `37183990727`; artifact: `11295807935`.
+
+A second independent official-source observation date now exists after the 2026-09-28 pilot. The successful 2026-10-04 GitHub-hosted run fetched both official daily datasets twice about 66 seconds apart. TWSE returned five rows and TPEx four rows; each source had identical raw hashes across the two same-run polls and no added/removed/content-changed derived identities inside that short interval. This proves bounded same-run stability only.
+
+The more important cross-day result is physical republication evidence:
+- TWSE 2072 reappeared from publication date ROC 1150927 to 1151003 with the same fact date 1150824; the current notice explicitly carries an announcement period through 115/11/25.
+- TWSE 6949 reappeared across the same publication dates with fact date 1150713; the par-value-change notice explicitly runs through 115/11/05.
+- TPEx 4530 reappeared with fact date 1150708 and a multi-month rename announcement period.
+- TPEx 4747 reappeared with fact date 1150624 and a multi-month par-value-change announcement period.
+
+Therefore `daily row != new economic event` is no longer only a conceptual warning. It is physically observed across independent source dates. A new daily publication date can be a republication/recurring notice of the same economic primitive.
+
+Prior-only rows such as 1721, 2509, 5904 and 8472 are not interpreted as cancelled. Their disappearance remains `UNKNOWN_WINDOW_EVICTION_OR_SOURCE_REMOVAL_OR_CORRECTION` because native rolling-window and correction semantics are still unproven.
+
+Maturity decision:
+- D17-09 advances L2 -> L3 for Taiwan PIT/source feasibility of republication-aware event clustering.
+- D17-01 remains L2 because a licensed production general-news lane and full source/version governance remain unresolved.
+- D17-02 remains L2 because displayed source time is not authenticated API first-availability time; capturedAt remains the conservative replay bound.
+- D11-08 remains L2 for the same native revision/completeness reason.
+
+No article count, duplicate count, sentiment or event count becomes a Formal vote. No price/return outcome was opened. Formal Core unchanged.
+
+Exact next:
+collect at least one additional independent official session plus after-hours expected/observed polling; preserve any content-hash changes append-only; search for native MOPS correction linkage; keep general-news licensing and first-availability gaps explicit.
