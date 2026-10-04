@@ -1,0 +1,57 @@
+name: System2 D19 Factor Receipt Real-Source Smoke
+
+on:
+  push:
+    paths:
+      - ".github/workflows/system2-d19-factor-receipt-real-source-smoke.yml"
+      - "system2/runtime/d19_factor_receipt_adapter_v0_1.mjs"
+      - "system2/scripts/d19_factor_receipt_real_source_smoke_v0_1.mjs"
+      - "system2/runtime/official_historical_backfill_source_v0_1.mjs"
+      - "system2/runtime/official_historical_a1_source_v0_1.mjs"
+      - "system2/runtime/historical_twse_calendar_v0_1.mjs"
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-d19-factor-receipt-real-source-smoke.yml"
+      - "system2/runtime/d19_factor_receipt_adapter_v0_1.mjs"
+      - "system2/scripts/d19_factor_receipt_real_source_smoke_v0_1.mjs"
+      - "system2/runtime/official_historical_backfill_source_v0_1.mjs"
+      - "system2/runtime/official_historical_a1_source_v0_1.mjs"
+      - "system2/runtime/historical_twse_calendar_v0_1.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-d19-factor-receipt-real-source-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run D19 real-source factor receipt smoke
+        env:
+          D19_SMOKE_FROM: "2026-08-03"
+          D19_SMOKE_TO: "2026-08-31"
+          D19_SMOKE_DECISION: "2026-08-31T05:40:00Z"
+          D19_SMOKE_TWSE: "2330,2454"
+          D19_SMOKE_TPEX: "3105,6488"
+        run: node system2/scripts/d19_factor_receipt_real_source_smoke_v0_1.mjs
+
+      - name: Confirm System1 production files untouched
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          git diff --exit-code -- wrangler.toml Worker.js
+          echo "Production isolation PASS"
