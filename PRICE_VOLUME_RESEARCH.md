@@ -13909,3 +13909,25 @@ This closes a governance gap without creating prospective evidence.
 D02 remains 60.0%.
 PVE cursor remains 239.
 Gate 7 remains CLOSED.
+
+# Pre-PVE-240 — exact effect targets become the final preregistration blocker before promotion-grade outcome use (2026-10-04)
+
+D02 already has executable evidence admission for all 12 modules and a D16-owned statistical adequacy interface.
+
+A new audit identified that the first D16 receipt contract still allowed an under-specified effectTarget.
+
+That gap is now closed with V0.2:
+promotion-grade validation requires a complete numerical EffectTargetReceipt and exact target ID/version/hash binding.
+
+The research deliberately does not invent target numbers.
+Repository search found no formal numerical D02 MDE/precision/materiality thresholds.
+
+Therefore the honest state is:
+TARGET_VALUE_PENDING_FREEZE for all 14 evidence keys.
+
+This is now the highest-priority pre-outcome research task.
+PVE-240 data collection may proceed, but promotion-grade outcome interpretation must not open until the relevant target receipt is frozen.
+
+D02 remains 60.0%.
+PVE cursor remains 239.
+Gate 7 remains CLOSED.
