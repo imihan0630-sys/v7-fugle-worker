@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-04 08:00 Asia/Taipei
+Updated: 2026-10-04 08:46 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -546,7 +546,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 8. 送出前必須再次讀取 `shared-knowledge/RESEARCH_OUTPUT_CONTRACT.md`（研究輸出強制契約）並做結構＋語言雙檢。
 9. 缺少上述任一強制區塊時，該輪標記為 `ROOM06_OUTPUT_NONCOMPLIANT`（06 室輸出不合規），不得宣稱完全遵守總控規則。
 
-### D07｜基本面／財報／資訊動態 — 14.5%
+### D07｜基本面／財報／資訊動態 — 14.1%
 
 | 模組 | 研究模組 | 學習範圍 | 等級 | 完成度 |
 |---|---|---|---|---:|
@@ -583,6 +583,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | D07-31 | Business Combination／Goodwill／Impairment企業合併商譽與減損 | 聚焦「Business Combination／Goodwill／Impairment企業合併商譽與減損」。研究進階財報會計及金融機構營運語意；需凍結會計準則、揭露版本、first-known時間與調整前後口徑，並驗證對EPS、FCF、ROIC、槓桿與估值的實質影響，禁止事後回填。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
 | D07-32 | Financial Institutions Operating Metrics銀行保險等金融機構營運與資產負債指標 | 聚焦「Financial Institutions Operating Metrics銀行保險等金融機構營運與資產負債指標」。研究進階財報會計及金融機構營運語意；需凍結會計準則、揭露版本、first-known時間與調整前後口徑，並驗證對EPS、FCF、ROIC、槓桿與估值的實質影響，禁止事後回填。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
 | D07-33 | Intangible Capital／R&D／Innovation Accounting無形資本、研發與創新會計 | 聚焦「Intangible Capital／R&D／Innovation Accounting無形資本、研發與創新會計」。研究研發、軟體、專利、品牌、資料、人才等未完整資本化的經濟性無形資產，辨識會計費用化造成的獲利、資產、ROIC與估值偏差。不得把所有R&D自動資本化或視為品質加分；需對攤銷期、失敗率、產業差異與實際商業化結果做敏感度及反證。主要用途是校正基本面與估值解讀，不作單一硬門檻。 每個結論都必須記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、交易成本，以及對 System 1／System 2 的可驗證增量價值；未取得證據不得升級成熟度或進入 Formal（正式核心）。 | L0 未研究 | 0% |
+| D07-34 | Dividend / Payout Policy & Sustainability股利／配發政策與永續性 | 聚焦「Dividend / Payout Policy & Sustainability股利／配發政策與永續性」。研究普通現金股利的配發來源、payout ratio（配發率）、earnings／CFO／FCF coverage（盈餘／營業現金流／自由現金流覆蓋）、retention（保留）、配發頻率、削減／停發與跨期永續性；proposal／final approval／ex-date／payment clock 必須分離，盈餘來源與資本／法定盈餘公積來源分開，股票股利不得視為現金流出。D07-02／05／06保留原始盈餘、現金流與槓桿主責，D11主責股利事件時鐘，D21主責資本配置治理，金融機構另依賴D07-32監理資本語意。高股息殖利率、高payout或穩定DPS不得直接推論品質或買進；主要角色為validation／context／supportive，先建立台灣PIT／Replay、來源版本鏈、反證與增量價值，再評估策略用途。每個結論都必須記錄正向機制、反證／失效條件、PIT（時點一致性）、可重播性、資料品質、冗餘、交易成本，以及對System 1／System 2的可驗證增量價值；未取得證據不得升級成熟度或進入Formal（正式核心）。 | L0 未研究 | 0% |
 
 
 ### D08｜估值 — 27.4%
@@ -594,7 +595,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | D08-03 | 歷史PE／PB百分位 | 聚焦「歷史PE／PB百分位」。學習範圍：PE、PB、Forward PE、PEG、EV/EBITDA、FCF Yield等估值方法；歷史與同業正規化；負EPS與週期股例外；公司行動分母調整；成長×估值×Regime互動。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D08-04 | Forward PE預估本益比 | 聚焦「Forward PE預估本益比」。學習範圍：PE、PB、Forward PE、PEG、EV/EBITDA、FCF Yield等估值方法；歷史與同業正規化；負EPS與週期股例外；公司行動分母調整；成長×估值×Regime互動。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 | D08-05 | PEG本益成長比 | 聚焦「PEG本益成長比」。學習範圍：PE、PB、Forward PE、PEG、EV/EBITDA、FCF Yield等估值方法；歷史與同業正規化；負EPS與週期股例外；公司行動分母調整；成長×估值×Regime互動。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
-| D08-06 | EV/EBITDA | 聚焦「EV/EBITDA」。學習範圍：PE、PB、Forward PE、PEG、EV/EBITDA、FCF Yield等估值方法；歷史與同業正規化；負EPS與週期股例外；公司行動分母調整；成長×估值×Regime互動。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
+| D08-06 | EV/EBITDA／EV/Sales／P/S Enterprise & Sales Multiples企業價值與營收倍數 | 聚焦「EV/EBITDA／EV/Sales／P/S Enterprise & Sales Multiples企業價值與營收倍數」。將EV/EBITDA、EV/Sales與P/S視為同一 coordinated valuation family（協調式估值家族）：凍結decision-time equity value／enterprise value、debt／cash／NCI／non-common claims、PIT-safe IFRS TTM revenue與必要的share denominator；台灣月營收不得未經reconciliation直接替代IFRS TTM revenue。P/S與EV/Sales共用sales denominator，不得成為兩張獨立投票；EV/Sales與EV/EBITDA共用EV numerator，也不得機械重複計分。D07-01主責營收、D07-03／14主責margin與unit economics、D08-09主責peer normalization、D08-12主責公司行動／股數分母、D08-18主責金融機構例外。低P/S或低EV/Sales不等於便宜，必須控制margin、growth、capital intensity、capital structure、sector、cycle與Regime；Forward Sales在沒有authorized PIT forecast history時維持UNKNOWN。現有D08-06維持L2/40%，但新增P/S／EV-Sales子能力不得自動繼承成熟度，必須另做來源／Replay／PIT／Shadow／OOS與增量價值驗證。 | L2 機制＋反證已定義 | 40% |
 | D08-07 | FCF Yield自由現金流殖利率 | 聚焦「FCF Yield自由現金流殖利率」。學習範圍：PE、PB、Forward PE、PEG、EV/EBITDA、FCF Yield等估值方法；歷史與同業正規化；負EPS與週期股例外；公司行動分母調整；成長×估值×Regime互動。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 | D08-08 | 成長×估值聯合判斷 | 聚焦「成長×估值聯合判斷」。學習範圍：PE、PB、Forward PE、PEG、EV/EBITDA、FCF Yield等估值方法；歷史與同業正規化；負EPS與週期股例外；公司行動分母調整；成長×估值×Regime互動。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 | D08-09 | 同業／產業Peer正規化 | 聚焦「同業／產業Peer正規化」。學習範圍：PE、PB、Forward PE、PEG、EV/EBITDA、FCF Yield等估值方法；歷史與同業正規化；負EPS與週期股例外；公司行動分母調整；成長×估值×Regime互動。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
