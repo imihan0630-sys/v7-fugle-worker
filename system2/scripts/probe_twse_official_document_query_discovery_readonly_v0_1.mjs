@@ -56,6 +56,13 @@ const pageResponse=await fetch(PAGE,{
 });
 const pageHtml=await pageResponse.text();
 assert.equal(pageResponse.ok,true,"TWSE official-document page HTTP "+pageResponse.status);
+const pageSetCookies=typeof pageResponse.headers.getSetCookie==="function"
+  ? pageResponse.headers.getSetCookie()
+  : [];
+const publicSessionCookieHeader=pageSetCookies
+  .map(x=>String(x).split(";")[0])
+  .filter(Boolean)
+  .join("; ");
 
 const assets=scriptSrcs(pageHtml);
 const inspected=[];
@@ -138,8 +145,17 @@ async function validatePositiveControl(endpoint){
   u.searchParams.set("keyword","1140010257");
   u.searchParams.set("response","json");
   try{
+    const headers={
+      accept:"application/json,text/plain,*/*",
+      "accept-language":"zh-TW,zh;q=0.9,en;q=0.7",
+      referer:PAGE,
+      "x-requested-with":"XMLHttpRequest",
+      "user-agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36",
+    };
+    if(publicSessionCookieHeader) headers.cookie=publicSessionCookieHeader;
     const response=await fetch(u,{
-      headers:{accept:"application/json,text/plain,*/*","user-agent":"System2-TWSE-Official-Document-Discovery/0.1"},
+      headers,
+      redirect:"follow",
       signal:AbortSignal.timeout(30000),
     });
     const raw=await response.text();
@@ -175,6 +191,7 @@ const result={
   observedAt:new Date().toISOString(),
   page:{
     url:PAGE,
+    publicSessionCookieObserved:pageSetCookies.length>0,
     httpStatus:pageResponse.status,
     bytes:Buffer.byteLength(pageHtml),
     hash:sha256(pageHtml),
