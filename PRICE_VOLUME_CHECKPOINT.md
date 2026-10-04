@@ -2778,3 +2778,24 @@ CLEAN_DATE_ZERO / PVE-239 / Gate 7 CLOSED.
 D02 remains 60.0%.
 Formal Core remains LOCKED.
 FORMAL_OPTIMIZATION_CANDIDATE remains NONE.
+
+
+## 00 control-plane receipt — H20 terminal closure
+
+00｜研究總控室 accepted the Room02 specialist return and equivalent Room01/Room04 evidence.
+
+H20 terminal:
+`KEEP_SEPARATE / MULTI_EVIDENCE_BREAKOUT_FAMILY / NO_INDEPENDENT_COMPONENT_VOTE_UNTIL_RESIDUAL_VALUE`.
+
+Canonical:
+- D01-05 = breakout/failure event identity.
+- D02-03 = volume-confirmation transform.
+- D04-07 = volatility interaction/context.
+- one breakout event receipt.
+- D02 volume and D04 volatility remain conditional/supportive until preregistered residual incremental value passes.
+
+D02-03 remains L3/60%.
+No maturity/count/Formal/runtime change.
+
+Audit:
+shared-knowledge/CURRICULUM_H20_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
