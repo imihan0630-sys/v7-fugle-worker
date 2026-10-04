@@ -1,0 +1,746 @@
+{
+  "schemaVersion": "D22_05_STAGE_A_PAIRING_MANIFEST_V0_1",
+  "generatedAt": "2026-10-04T21:07:00+08:00",
+  "status": "OUTCOME_BLIND / CHALLENGER_EPISODE_GATE_PASSED / BASELINE_PAIRING_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "sourceCluster": {
+    "path": "research/d22_05_rating_episode_cluster_v0_1.json",
+    "sha": "1b3ddb92204c715c74f5e389ae2d392f559dc13b"
+  },
+  "rules": {
+    "minimumMatureIndependentPairs": 20,
+    "episodeAnchor": "Use the first directional event date of each frozen episode as the only independent challenger anchor. Later same-direction events update the episode state but do not create new samples.",
+    "baselineClock": "Every B0/B1 control must be public/known before the anchor decision cutoff. Later financial statements, revised macro vintages or later rating actions cannot backfill.",
+    "exactPopulation": "Baseline and challenger must share the exact issuer-anchorDate population; missing controls remain UNKNOWN and block that row.",
+    "outcomeBlind": "No equity returns, MFE or MAE are joined while baselineStatus is NOT_FROZEN."
+  },
+  "counts": {
+    "independentEpisodeAnchors": 22,
+    "baselineFrozenAnchors": 0,
+    "maturePairedAnchors": 0,
+    "challengerSideGatePassed": true
+  },
+  "anchors": [
+    {
+      "pairAnchorId": "D22-05-A01",
+      "issuer": "Formosa Chemicals & Fibre",
+      "direction": "NEGATIVE",
+      "anchorDate": "2023-10-30",
+      "episodeEndDate": "2025-07-03",
+      "eventCount": 2,
+      "sourceEvents": [
+        {
+          "date": "2023-10-30",
+          "eventType": "OUTLOOK_DOWN",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4921"
+        },
+        {
+          "date": "2025-07-03",
+          "eventType": "DOWNGRADE",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4921"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A02",
+      "issuer": "Wan Hai Lines",
+      "direction": "NEGATIVE",
+      "anchorDate": "2020-04-14",
+      "episodeEndDate": "2020-04-14",
+      "eventCount": 1,
+      "sourceEvents": [
+        {
+          "date": "2020-04-14",
+          "eventType": "OUTLOOK_DOWN",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/viewMemberProfileArticle/23341"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A03",
+      "issuer": "Wan Hai Lines",
+      "direction": "POSITIVE",
+      "anchorDate": "2021-04-29",
+      "episodeEndDate": "2022-04-26",
+      "eventCount": 3,
+      "sourceEvents": [
+        {
+          "date": "2021-04-29",
+          "eventType": "OUTLOOK_UP",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/viewMemberProfileArticle/25130"
+        },
+        {
+          "date": "2021-09-16",
+          "eventType": "OUTLOOK_UP",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/viewMemberProfileArticle/25872"
+        },
+        {
+          "date": "2022-04-26",
+          "eventType": "UPGRADE",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5491"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A04",
+      "issuer": "TCC Group Holdings",
+      "direction": "NEGATIVE",
+      "anchorDate": "2022-04-21",
+      "episodeEndDate": "2022-04-21",
+      "eventCount": 1,
+      "sourceEvents": [
+        {
+          "date": "2022-04-21",
+          "eventType": "OUTLOOK_DOWN",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4816"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A05",
+      "issuer": "TCC Group Holdings",
+      "direction": "POSITIVE",
+      "anchorDate": "2024-04-29",
+      "episodeEndDate": "2024-04-29",
+      "eventCount": 1,
+      "sourceEvents": [
+        {
+          "date": "2024-04-29",
+          "eventType": "OUTLOOK_UP",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4816"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A06",
+      "issuer": "Walsin Lihwa",
+      "direction": "POSITIVE",
+      "anchorDate": "2022-08-09",
+      "episodeEndDate": "2022-08-09",
+      "eventCount": 1,
+      "sourceEvents": [
+        {
+          "date": "2022-08-09",
+          "eventType": "OUTLOOK_UP",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5134"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A07",
+      "issuer": "Walsin Lihwa",
+      "direction": "NEGATIVE",
+      "anchorDate": "2023-08-24",
+      "episodeEndDate": "2024-08-29",
+      "eventCount": 2,
+      "sourceEvents": [
+        {
+          "date": "2023-08-24",
+          "eventType": "OUTLOOK_DOWN",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5134"
+        },
+        {
+          "date": "2024-08-29",
+          "eventType": "OUTLOOK_DOWN",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5134"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A08",
+      "issuer": "Sinyi Realty",
+      "direction": "POSITIVE",
+      "anchorDate": "2021-03-25",
+      "episodeEndDate": "2021-03-25",
+      "eventCount": 1,
+      "sourceEvents": [
+        {
+          "date": "2021-03-25",
+          "eventType": "OUTLOOK_UP",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5468"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A09",
+      "issuer": "Sinyi Realty",
+      "direction": "NEGATIVE",
+      "anchorDate": "2023-03-29",
+      "episodeEndDate": "2023-03-29",
+      "eventCount": 1,
+      "sourceEvents": [
+        {
+          "date": "2023-03-29",
+          "eventType": "OUTLOOK_DOWN",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5468"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A10",
+      "issuer": "Sinyi Realty",
+      "direction": "POSITIVE",
+      "anchorDate": "2024-03-19",
+      "episodeEndDate": "2024-03-19",
+      "eventCount": 1,
+      "sourceEvents": [
+        {
+          "date": "2024-03-19",
+          "eventType": "OUTLOOK_UP",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5468"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A11",
+      "issuer": "TECO Electric & Machinery",
+      "direction": "POSITIVE",
+      "anchorDate": "2024-02-27",
+      "episodeEndDate": "2024-02-27",
+      "eventCount": 1,
+      "sourceEvents": [
+        {
+          "date": "2024-02-27",
+          "eventType": "OUTLOOK_UP",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5458"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A12",
+      "issuer": "TECO Electric & Machinery",
+      "direction": "NEGATIVE",
+      "anchorDate": "2026-02-23",
+      "episodeEndDate": "2026-02-23",
+      "eventCount": 1,
+      "sourceEvents": [
+        {
+          "date": "2026-02-23",
+          "eventType": "OUTLOOK_DOWN",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5458"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A13",
+      "issuer": "China Steel",
+      "direction": "NEGATIVE",
+      "anchorDate": "2020-04-16",
+      "episodeEndDate": "2020-04-16",
+      "eventCount": 1,
+      "sourceEvents": [
+        {
+          "date": "2020-04-16",
+          "eventType": "OUTLOOK_DOWN",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A14",
+      "issuer": "China Steel",
+      "direction": "POSITIVE",
+      "anchorDate": "2021-04-23",
+      "episodeEndDate": "2022-04-28",
+      "eventCount": 2,
+      "sourceEvents": [
+        {
+          "date": "2021-04-23",
+          "eventType": "OUTLOOK_UP",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064"
+        },
+        {
+          "date": "2022-04-28",
+          "eventType": "OUTLOOK_UP",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A15",
+      "issuer": "China Steel",
+      "direction": "NEGATIVE",
+      "anchorDate": "2023-04-28",
+      "episodeEndDate": "2025-04-24",
+      "eventCount": 2,
+      "sourceEvents": [
+        {
+          "date": "2023-04-28",
+          "eventType": "OUTLOOK_DOWN",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064"
+        },
+        {
+          "date": "2025-04-24",
+          "eventType": "OUTLOOK_DOWN",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A16",
+      "issuer": "Asia Cement",
+      "direction": "POSITIVE",
+      "anchorDate": "2020-09-28",
+      "episodeEndDate": "2021-09-28",
+      "eventCount": 2,
+      "sourceEvents": [
+        {
+          "date": "2020-09-28",
+          "eventType": "OUTLOOK_UP",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585"
+        },
+        {
+          "date": "2021-09-28",
+          "eventType": "UPGRADE",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A17",
+      "issuer": "Asia Cement",
+      "direction": "NEGATIVE",
+      "anchorDate": "2023-09-26",
+      "episodeEndDate": "2023-09-26",
+      "eventCount": 1,
+      "sourceEvents": [
+        {
+          "date": "2023-09-26",
+          "eventType": "OUTLOOK_DOWN",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A18",
+      "issuer": "Asia Cement",
+      "direction": "POSITIVE",
+      "anchorDate": "2024-09-23",
+      "episodeEndDate": "2024-09-23",
+      "eventCount": 1,
+      "sourceEvents": [
+        {
+          "date": "2024-09-23",
+          "eventType": "OUTLOOK_UP",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A19",
+      "issuer": "Pegatron",
+      "direction": "POSITIVE",
+      "anchorDate": "2021-01-21",
+      "episodeEndDate": "2021-01-21",
+      "eventCount": 1,
+      "sourceEvents": [
+        {
+          "date": "2021-01-21",
+          "eventType": "OUTLOOK_UP",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5248"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A20",
+      "issuer": "Pegatron",
+      "direction": "NEGATIVE",
+      "anchorDate": "2026-01-29",
+      "episodeEndDate": "2026-01-29",
+      "eventCount": 1,
+      "sourceEvents": [
+        {
+          "date": "2026-01-29",
+          "eventType": "OUTLOOK_DOWN",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5248"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A21",
+      "issuer": "Wiwynn",
+      "direction": "NEGATIVE",
+      "anchorDate": "2021-08-24",
+      "episodeEndDate": "2021-08-24",
+      "eventCount": 1,
+      "sourceEvents": [
+        {
+          "date": "2021-08-24",
+          "eventType": "OUTLOOK_DOWN",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5141"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    },
+    {
+      "pairAnchorId": "D22-05-A22",
+      "issuer": "Wiwynn",
+      "direction": "POSITIVE",
+      "anchorDate": "2023-08-22",
+      "episodeEndDate": "2023-08-22",
+      "eventCount": 1,
+      "sourceEvents": [
+        {
+          "date": "2023-08-22",
+          "eventType": "OUTLOOK_UP",
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5141"
+        }
+      ],
+      "anchorRule": "FIRST_DIRECTIONAL_EVENT_DATE",
+      "b0Required": [
+        "D07 pre-event PIT profitability/leverage/liquidity primitives",
+        "D13 pre-event risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "D11 known event clocks if applicable"
+      ],
+      "b1Required": [
+        "prior rating/outlook/watch state",
+        "pre-event fundamentals",
+        "D22-06 pre-event market-credit state when available"
+      ],
+      "baselineStatus": "NOT_FROZEN",
+      "maturePair": false,
+      "outcomeOpened": false
+    }
+  ],
+  "next": [
+    "Materialize B0/B1 PIT controls for the 22 frozen anchors.",
+    "Exclude any anchor whose baseline cannot be reconstructed at exact first-known time; do not substitute later vintages.",
+    "Only if at least 20 anchors remain mature after baseline pairing may historical outcomes be opened once under the Stage-A preregistration."
+  ]
+}
