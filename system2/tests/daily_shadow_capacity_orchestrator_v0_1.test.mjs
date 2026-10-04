@@ -263,7 +263,9 @@ const revalidated = await buildDailyShadowCapacityOrchestrationV0_1({
   ],
 });
 
-assert.equal(revalidated.state, "CAPACITY_READY");
+assert.equal(revalidated.state, "CAPACITY_READY_PARTIAL_COVERAGE");
+assert.equal(revalidated.zeroPickDay, false);
+assert.equal(revalidated.selectionDenominator.complete, false);
 assert.deepEqual(
   revalidated.capacityReceipt.globalPool.map((x) => x.symbol).sort(),
   ["2330", "3008"],
