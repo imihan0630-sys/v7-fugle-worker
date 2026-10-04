@@ -1574,3 +1574,19 @@ Room05 + Room13 semantic evidence accepted, but cluster remains partial.
 Remaining:
 - Room10 D14-19 short execution lifecycle;
 - first genuine live TWSE rate/supply receipt for D20-13.
+
+
+## H05 canonical no-structural-change closure — 2026-10-04
+
+H05 closed as:
+`KEEP_SEPARATE / STATEMENT_ANOMALY_VS_GOVERNANCE_CONTROL_EVENT / SHARED_RESTATEMENT_EVENT_RECEIPT`.
+
+- D07-25 owns statement-level forensic anomaly combinations and PIT statement-vintage replay.
+- D21-10 owns audit/restatement/internal-control governance/control event chronology and remediation.
+- raw accruals remain D07-07; accounting-policy semantics remain D07-24.
+- one restatement/control event has one parent receipt; child views do not become independent duplicate votes.
+- original financial values remain historical truth until correction/restatement known_at.
+- D07-25 remains L0/0%; D21-10 remains L3/60%.
+
+Audit:
+`shared-knowledge/CURRICULUM_H05_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
