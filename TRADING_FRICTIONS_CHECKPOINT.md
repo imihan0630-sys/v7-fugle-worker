@@ -292,3 +292,25 @@ Status:
 `MECHANISM_FALSIFICATION_CONTRACT_FROZEN / TAIWAN_PIT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED`.
 
 D14-15 is L2 / 40%. Exact next continuation: collect at least three independent prospective Taiwan sessions with executed plus unexecuted/cancelled/rejected opportunities, mechanism-state provenance, deterministic replay and broker-confirmed fills. Three dates trigger readiness review only; no automatic L3 promotion.
+
+
+## 00 routed H12 Room10 counterpart delta — 2026-10-04
+
+H12 state:
+`PARTIAL_EVIDENCE_RECEIVED / ROOM05_COMPLETE / ROOMS10_13_PENDING`.
+
+Accepted Room05 evidence:
+- `research/d06_securities_lending_economics_h12_v0_1.md`;
+- `research/d06_18_borrow_fee_identifiability_rule_vintage_v0_1.md`.
+
+Do not redo D06 borrowing/fee semantics.
+
+Room10 remaining D14-19 delta:
+- freeze short establish / maintain / recall / forced-buy-in / exit feasibility state machine;
+- distinguish factual non-orderability from expensive/undesirable execution;
+- only a strategy that requires a short may use factual inability to establish/maintain as strategy-specific HARD_INVALIDATION;
+- borrow scarcity/fee cannot be re-scored as another Alpha vote;
+- define PIT/replay clocks and divergent states;
+- confirm capability boundary with ordinary long-only stock selection.
+
+No Formal change is authorized by H12 research.
