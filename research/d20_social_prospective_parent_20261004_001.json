@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "D20_SOCIAL_PROSPECTIVE_PARENT_V0_1",
+  "parentDecisionReceiptId": "D20SOC-20261004-001",
+  "captureGeneration": 1,
+  "capturedAtAsiaTaipei": "2026-10-04T16:34:04+08:00",
+  "asOf": "2026-10-04",
+  "sourceArticleId": "M.1791102403.A.CB9",
+  "sourcePublishedAt": "2026-10-04T16:26:43+08:00",
+  "sourceUpdatedAtObserved": "2026-10-04T16:31:42+08:00",
+  "firstKnownRule": "system capture after classifier freeze; source timestamps retained as provenance",
+  "sourceReceiptFingerprintFNV1A64": "d38f5316a1ed5a4f",
+  "feedReceiptFingerprintFNV1A64": "ad30b2e2f538bcd9",
+  "classifierVersion": "D20_SOCIAL_TOPIC_STANCE_CLASSIFIER_V0_1",
+  "topicState": [
+    "TSMC",
+    "ETF",
+    "LEVERAGE",
+    "AI",
+    "MARKET_OUTLOOK"
+  ],
+  "stanceState": "MIXED_BULLISH_UNCERTAIN",
+  "distinctActorCountAtCapture": 1,
+  "replyCountAtCapture": 0,
+  "stanceHistogramAtCapture": {
+    "MIXED_BULLISH_UNCERTAIN": 1,
+    "BULLISH": 0,
+    "BEARISH": 0,
+    "UNCERTAIN": 0,
+    "NEUTRAL_OR_UNKNOWN": 0
+  },
+  "sequenceTransitionCountsAtCapture": {
+    "available": false,
+    "reason": "NO_MULTI_ACTOR_SEQUENCE_AT_CAPTURE"
+  },
+  "diffusionTransitionCountsAtCapture": {
+    "available": false,
+    "reason": "NO_MULTI_ACTOR_SEQUENCE_AT_CAPTURE"
+  },
+  "narrativeHalfLifeAtCapture": "UNKNOWN",
+  "underlyingNewsEventReceiptIds": [],
+  "outcomeFieldsPresent": false,
+  "eligibility": {
+    "D20-06": "ELIGIBLE_PROSPECTIVE_PARENT / ZERO_HERDING_SEQUENCE_AT_CAPTURE",
+    "D20-11": "ELIGIBLE_PROSPECTIVE_PARENT / INITIAL_NARRATIVE_STATE",
+    "D20-03": "INELIGIBLE_UNDER_PREEXISTING_CONFIDENCE_TAXONOMY / EXPLICIT_UNCERTAINTY_NOT_REPRESENTABLE_AT_FIRST_OBSERVATION"
+  },
+  "privacyGuard": "No source handle is persisted in this derived parent.",
+  "formalCore": "LOCKED"
+}
