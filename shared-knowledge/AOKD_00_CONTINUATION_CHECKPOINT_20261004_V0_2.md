@@ -306,3 +306,49 @@ Exact next:
 2. if approved, re-read latest main and update only D16-19/D16-25 scope/status wording + Router/Shared Master/H09 registries;
 3. preserve both L2/40%, names, count and aggregate maturity;
 4. create canonical receipt; no System1/System2 Formal/runtime change.
+
+
+## H07 / H12 partial-intake reconciliation — 2026-10-04
+
+00-room full-repo scan found two additional specialist sides already mature enough for intake but still marked PENDING.
+
+### H07
+Accepted:
+`research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md`.
+
+Closed Room03 side:
+- D03-05 observable pullback/reversal phenomenon;
+- PIT-safe parent/15m episode sequence;
+- confirmation clock;
+- failed reversal;
+- origin/behavior UNKNOWN allowed.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / ROOM13_COUNTERPART_REQUIRED`.
+
+Remaining:
+D20-09 must prove behavioral overreaction beyond the price phenomenon and falsify microstructure/liquidity/forced-flow/event-correction alternatives.
+
+### H12
+Accepted Room05 evidence:
+- `research/d06_securities_lending_economics_h12_v0_1.md`;
+- `research/d06_18_borrow_fee_identifiability_rule_vintage_v0_1.md`.
+
+Closed Room05 side:
+- D06-09 observed borrowing/short quantities;
+- D06-18 borrow economics;
+- single primitive receipt / no duplicate bearish vote;
+- utilization denominator firewall;
+- 2026-06-01 settlement/payment rule-vintage guard.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / ROOMS10_13_COUNTERPARTS_REQUIRED`.
+
+Remaining:
+- Room10 D14-19 short execution lifecycle;
+- Room13 D20-13 limits-to-arbitrage context.
+
+Cross-room checkpoint deltas were routed. No maturity, module-count or Formal change from these intake updates.
+
+Current 00 approval blocker:
+H09 is `OWNER_APPROVAL_REQUIRED` for KEEP_SEPARATE / SCOPE_DEDUP_ONLY between D16-19 and D16-25.
