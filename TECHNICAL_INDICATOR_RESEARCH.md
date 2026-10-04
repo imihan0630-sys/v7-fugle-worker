@@ -2915,3 +2915,73 @@ Exact next:
 1. Investigate whether official sourceReportedAt semantics can be certified as a public disclosure clock without fabricating exact availability.
 2. If not, shared owner needs prospective pre-parent version observation.
 3. First genuine parent alone does not promote D03-09/10.
+
+
+## TI-644 through TI-650 — official MOPS clock semantic corroboration (2026-10-04)
+
+Durable artifacts:
+- `research/d03_mops_source_clock_semantics_v0_1.mjs`
+- `tests/test_d03_mops_source_clock_semantics_v0_1.mjs`
+- `research/D03_MOPS_SOURCE_CLOCK_SEMANTIC_AUDIT_V0_1.md`
+
+This tranche independently corroborates the already-frozen D03 MOPS version-clock contract and the System2 source-clock work; it does not replace or weaken them.
+
+### TI-644 — official disclosure semantics are strong
+Official TWSE material establishes that MOPS is the public disclosure platform designed for information symmetry/timeliness, its front page exposes real-time material information with spokesperson date/time columns, and listed companies must input material information into the designated internet reporting system under defined deadlines.
+
+This strongly supports `sourceReportedAt` as an issuer disclosure/reporting-clock field rather than an arbitrary scraper timestamp.
+
+### TI-645 — exact public availability still not proven by the field alone
+Official material does not provide a frozen zero-latency or bounded-latency guarantee from issuer input/spokesperson time to public retrievability.
+
+Therefore:
+`SOURCE_REPORTED_AT != CERTIFIED_EXACT_PUBLIC_AVAILABLE_AT`.
+
+This remains aligned with the existing System2 physical clock certification:
+source-reported clock semantics are certified, but public-availability latency and exact knownAt remain uncertified.
+
+### TI-646 — asymmetric safe use
+If sourceReportedAt > parentKnownAt:
+the version is safely excluded from that parent.
+
+If sourceReportedAt <= parentKnownAt:
+historical sourceReportedAt alone still cannot prove PIT availability.
+
+Thus historical use is an asymmetric exclusion rule, not a positive availability rule.
+
+### TI-647 — prospective exact-version observation remains the safe positive path
+A certified prospective exact-version observation with firstObservedAt <= parentKnownAt can safely establish that exact version was publicly observable by the parent cutoff.
+
+This does not require pretending sourceReportedAt == firstObservedAt.
+
+### TI-648 — active-push service is contextual, not historical latency proof
+TWSE provides a MOPS proactive data-delivery service for users needing timely information delivery. This supports MOPS as an actively distributed disclosure product but does not backfill exact free-web historical availability.
+
+### TI-649 — physical semantic classifier test
+Read-only workflow run `37185849126` PASS:
+- sourceReportedAt after parent -> EXCLUDED;
+- sourceReportedAt before parent without prospective observation -> HISTORICAL_REPORTED_CLOCK_ONLY;
+- certified prospective firstObservedAt before parent -> VALID_OBSERVED_BY_PARENT;
+- firstObservedAt after parent -> OBSERVED_AFTER_PARENT.
+
+### TI-650 — maturity
+No maturity promotion.
+
+Existing owner work already has:
+- certified source-reported clock semantics;
+- implemented prospective availability observation adapter;
+- prospectiveObservationCount=0;
+- no automatic high-frequency schedule.
+
+D03 consumes that owner result rather than creating a duplicate observer.
+
+Current:
+`MOPS_SOURCE_REPORTED_CLOCK_SEMANTICS = CERTIFIED_BY_OWNER / OFFICIAL_CORROBORATION`
+`HISTORICAL_REPORTED_CLOCK_AS_EXACT_AVAILABLE_AT = REJECTED`
+`PROSPECTIVE_FIRST_OBSERVED_PATH = IMPLEMENTED_BUT_ZERO_SAMPLES`
+`PRE_PARENT_CERTIFIED_CONTINUITY_CAPTURE = ABSENT`
+`D03_MATURITY = 56.7_PERCENT`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Exact next:
+the shared source owner must freeze/execute genuine prospective sampling and produce exact-version observations that are causal relative to the System1 parent cutoff. D03 does not duplicate that source observer.
