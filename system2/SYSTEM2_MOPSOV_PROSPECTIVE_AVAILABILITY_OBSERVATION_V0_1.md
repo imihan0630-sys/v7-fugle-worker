@@ -100,3 +100,29 @@ Until then:
 - `pitReplayUseAsAvailableAtAuthorized=false`;
 - `revisionCoverageComplete=false`;
 - all trading authority remains false.
+
+## 2026-10-04 physical observer implementation acceptance
+
+PR #480 merged as `4fd9e3fa0cbb8f0cb20193d74ebb09035d58085d`.
+
+Physical checks:
+- MOPSOV Prospective Availability Observer Readonly `37180439893`: PASS.
+- System2 Research CI `37180439874`: PASS.
+- V8 Regression `37180439841`: PASS.
+- unit fail-closed tests PASS.
+- official MOPS readback covered 9 historical version rows from all five frozen revision controls.
+- all 9 historical versions were classified `RETROSPECTIVE_SOURCE_CLOCK_ONLY`.
+- `prospectiveObservationCount=0`.
+- no historical row received fabricated `firstObservedAvailableAt`;
+- no historical row received fabricated publication-latency upper bound.
+
+Engineering status:
+- prospective availability observation adapter implemented;
+- a genuine prospective poll can preserve `sourceReportedAt`, actual `observedAt`, first-observed availability upper bound and an optional prior-NOT_OBSERVED <=5-minute precision window.
+
+Evidence status remains:
+- `publicAvailabilityLatencyCertified=false`;
+- `knownAtVersionClockCertified=false`;
+- `pitReplayUseAsAvailableAtAuthorized=false`.
+
+No high-frequency schedule, Worker Cron, D1 writer or notification was added.
