@@ -20,8 +20,8 @@ export const MOPS_REVISION_CONTROLS_V0_2 = deepFreeze([
     stockCode: "1459",
     rocYear: 115,
     month: 6,
-    expectedDate: "2026-06-24",
-    baseSubject: "本公司董事長訂定現金減資換股基準日暨換發股票作業計畫等相關事宜",
+    expectedDate: null,
+    baseSubject: "本公司董事長訂定現金減資換股基準日",
   },
   {
     id: "CAPITAL_REDUCTION_DECISION_CORRECTION_2321_2026_03",
@@ -31,7 +31,7 @@ export const MOPS_REVISION_CONTROLS_V0_2 = deepFreeze([
     rocYear: 115,
     month: 3,
     expectedDate: null,
-    baseSubject: "公告本公司董事會決議減資彌補虧損暨召開重大訊息記者會",
+    baseSubject: "公告本公司董事會決議減資彌補虧損",
   },
   {
     id: "CASH_CAPITAL_INCREASE_CORRECTION_1342_2026_06",
@@ -51,7 +51,7 @@ export const MOPS_REVISION_CONTROLS_V0_2 = deepFreeze([
     rocYear: 115,
     month: 7,
     expectedDate: "2026-07-01",
-    baseSubject: "公告本公司接獲金融監督管理委員會核准撤銷115年現金增資發行普通股案",
+    baseSubject: "公告本公司接獲金融監督管理委員會核准撤銷115年",
   },
 ]);
 
