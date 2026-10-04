@@ -1021,3 +1021,35 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 4. Next D01 science after merge: separate detector-selection salience from true structural-memory mechanism if confirmed zones outperform non-anchor controls.
 5. Preserve pseudo-zone manifests and failed controls; no outcome-based pruning.
 6. No outcome join / no Formal change.
+
+
+## Continuation update — DL-028 salience behavior falsification (2026-10-04)
+
+- Continued from the durable DL-027 exact next science question: separate detector-selection salience from true structural-memory mechanism.
+- New outcome-blind artifact:
+  - research/pattern_detector_salience_behavior_fixtures_v0_1.json
+- Seven frozen adversarial behavior fixtures now cover:
+  1. round/tick salience mismatch;
+  2. pre-confirmation touch-count mismatch;
+  3. future-discovered control look-ahead;
+  4. missing salience provenance -> UNKNOWN, never 0/BAD;
+  5. post-outcome control pruning;
+  6. salience matched but crossing-opportunity mismatched;
+  7. crossing-opportunity matched but salience mismatched.
+- Parent/control eligibility remains frozen at parent confirmation. Future-discovered controls cannot retroactively enter an earlier manifest.
+- Salience matching and crossing-opportunity matching remain separate families. No opaque composite score is introduced.
+- True-zone superiority after only one matching family is insufficient for a structural-memory claim.
+- Even after both families are matched, any residual difference is only a structural-specific representation candidate, never alpha proof.
+- PIT/OOS/walk-forward, selection bias, look-ahead, data snooping, multiple testing, overfitting, factor redundancy, small-sample, date clustering, transaction cost, liquidity and market-regime checks remain mandatory before any promotion claim.
+- Attempted executable validator write was blocked before repository mutation; therefore research-specific execution remains TEST_EXECUTION_PENDING.
+- No outcomes inspected; no historical Shadow fabrication; no N-bar optimization; no runtime wiring; no Formal change.
+- D01 formal maturity remains 52.7% from the latest tracker; Pattern alpha UNKNOWN; FORMAL_OPTIMIZATION_CANDIDATE=NONE; Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-028 behavior fixtures
+
+1. Re-read latest main and reconcile this branch before any further write because parallel rooms remain active.
+2. Persist a minimal research-only executable validator for the seven fixtures and obtain an independent reproducible execution receipt; do not call source presence a passing test.
+3. After execution evidence exists, freeze the parent/control manifest hash and failure-reason retention receipt needed to prove no post-outcome pruning.
+4. Hand the two-family matching contract to D16 for future statistical estimation; D01 does not choose matching tolerances from outcomes.
+5. Keep outcome join CLOSED and all missing evidence UNKNOWN.
+6. No Formal change / no autonomous promotion.
