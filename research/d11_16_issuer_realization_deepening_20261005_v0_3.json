@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.3",
-  "generatedAt": "2026-10-05T07:31:00+08:00",
+  "generatedAt": "2026-10-05T07:26:16+08:00",
   "owner": "08｜事件與新聞研究室",
   "module": "D11-16",
   "title": "6921 issuer-level lock-up and insider-supply realization deepening",
@@ -116,5 +116,9 @@
     "Join any actual custody withdrawal to official transfer pre-declaration and later holdings/untransferred state.",
     "Authenticate completeness of the post-eligibility transfer/untransferred lanes before labeling an eligible-but-not-sold control.",
     "Keep the 2025-12-16 over-allotment chain as supply-realization semantics only, never as lock-up expiry evidence."
-  ]
+  ],
+  "timestampCorrection": {
+    "correctedAt": "2026-10-05T07:29:11+08:00",
+    "reason": "Align generatedAt with the actual GitHub commit creation time; remove manually projected future timestamp."
+  }
 }
