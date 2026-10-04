@@ -314,3 +314,26 @@ Room10 remaining D14-19 delta:
 - confirm capability boundary with ordinary long-only stock selection.
 
 No Formal change is authorized by H12 research.
+
+
+## 00 routed H02 exact remaining delta — 2026-10-04
+
+H02 state:
+`PARTIAL_EVIDENCE_RECEIVED / D14_17_UMBRELLA_CONTRACT_PENDING`.
+
+Accepted:
+- D14-03 Signal Price vs Fill Price measurement identity, L3/60%;
+- D14-04 Slippage child metric family, L2/40%.
+
+Do not repeat those child studies.
+
+Room10 remaining D14-17 work:
+1. define the full implementation-shortfall / market-impact ontology;
+2. freeze decision/signal/arrival/benchmark/fill/VWAP identities;
+3. decompose explicit cost, spread/slippage, market impact, delay, partial-fill and opportunity cost;
+4. preserve ACTUAL / PARTIAL_ACTUAL / MODELED / UNKNOWN provenance;
+5. define replay/schema ownership and D14-12 Execution Alpha downstream interface;
+6. show whether D14-03/D14-04 are fully representable as child capabilities without semantic loss;
+7. return MERGE_ELIGIBLE / KEEP_SEPARATE / EVIDENCE_INSUFFICIENT plus maturity map.
+
+D14-17 remains L0/0 until its own mechanism/falsification contract is completed.
