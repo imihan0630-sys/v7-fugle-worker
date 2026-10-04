@@ -2277,3 +2277,36 @@ Exact next:
 BR-063 must persist the first genuine same-clock D18 observable-regime context + official breadth receipt on a future completed Taiwan session, with identical marketDate/decisionTimestamp and immutable source hashes.
 
 Formal Core unchanged.
+
+
+## BR-060 — Strategic-action cohort expanded to four actions; original milestone lanes remain pending
+
+Artifact:
+`research/br060_strategic_action_cohort_expansion_v0_1.json`
+
+Outcome-blind milestone surveillance and cohort expansion were completed on 2026-10-04.
+
+Original BR-058 actions:
+- UMC 2026-07-29 phased Singapore P4 cleanroom expansion plus Tainan P7/P8 fab-shell construction: no same-action post-freeze issuer-native milestone was found in the bounded official-newsroom scan through the latest visible 2026-08-17 item. This is not evidence of no progress; implementation outcomes remain closed.
+- Hon Hai / Mitsubishi Electric 2026-04-24 automotive-equipment MOU: no same-case definitive-agreement or closing milestone was found in the bounded Hon Hai official-news scan through the latest visible 2026-09-05 item. Mitsubishi Electric's official case page remains at MOU/discussion stage and states that material future matters will be disclosed. Absence of a new press release is not treated as a negative outcome.
+
+Two additional pre-outcome strategic actions are now frozen:
+1. TSMC / Sony, 2026-08-11: legally binding definitive JV agreement for Advanced Vision Semiconductor Manufacturing Corporation in Kumamoto; TSMC planned cash investment up to JPY 282 billion; mass production is expected in 2029. Current state = DEFINITIVE_AGREEMENT / PRE_IMPLEMENTATION. Incorporation, facility execution, production readiness and 2029 mass production remain future milestones.
+2. TSMC / ASML, 2026-09-08: joint industry initiative to transition High-NA EUV photomasks from 6-inch to 12-inch format; pilot-line target by 2031, full lithography-system readiness by 2033, and TSMC stated intent to introduce High-NA technology into advanced-process mass production from 2030. Current state = INITIATIVE_ANNOUNCED / PRE_PILOT.
+
+Cohort state:
+- action count: 2 -> 4;
+- issuer count: 3;
+- the two TSMC actions are not two independent issuer observations. Any future statistical inference must cluster by issuer and action date and must not inflate independent sample size.
+
+No stock return, revenue, margin, market-share or realized implementation outcome was opened. D10 physical-capacity facts remain dependencies, not duplicate D09-14 votes.
+
+Maturity decision: `D09-14 L3 / 60% KEEP`. This round improves cohort breadth and anti-leakage discipline, not predictive-efficacy evidence.
+
+Exact next:
+- continue native milestone surveillance for all four frozen actions;
+- add issuer-diverse pre-outcome actions when clean native evidence appears;
+- freeze each implementation milestone before any outcome join;
+- no stock outcome before D16 preregistration/common support; no L4 before prospective/OOS evidence.
+
+Formal Core unchanged.
