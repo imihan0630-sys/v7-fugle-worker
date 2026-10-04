@@ -2311,3 +2311,134 @@ Exact next continuation:
 1. All currently executable non-blocked D21 modules have now reached at least L3 except source-blocked modules.
 2. Prioritize recovery / alternative-case construction for D21-11 contemporaneous tunneling evidence, then D21-04 authoritative pledge receipts, D21-03 original monthly insider known_at, and D21-01 original ownership-report known_at.
 3. For L3 modules, no L4 promotion without OOS / prospective validation.
+
+
+## D21-11 Decision-time Tunneling State Replay v0.3
+
+Date: 2026-10-04 Asia/Taipei
+Status: D21-11 L3 DECISION_TIME_STATE_REPLAY_VALIDATED / DATE_ONLY_CLOCK_CONSERVATIVE / FORMAL_CORE_UNCHANGED
+
+### Case — Formosa Oilseed Processing 1225 / 2019 related-party stock transactions
+
+#### Underlying transactions
+
+The issuer later disclosed that:
+- on 2019-08-12 and 2019-08-14 it purchased 1,523 thousand shares of Hsin Tai Industry through after-hours block trades;
+- acquisition cost totaled NT$43.338m;
+- the counterparty, Wu Hsiao-Yuan, was a first-degree relative of the issuer's then vice chairman;
+- these related-party details had not been disclosed in the original 2019 Q3 financial statements.
+
+These underlying transaction dates are NOT themselves sufficient to infer what the market knew on those dates.
+
+#### State transition A — issuer correction
+
+Public issuer disclosure date: 2020-02-07.
+
+The company formally corrected its 2019 and 2018 Q3 financial-report notes to add the omitted related-party relationship and transaction details.
+
+Decision-time state:
+- relationship evidence: PUBLIC;
+- transaction amount / dates: PUBLIC;
+- omission from original disclosure: PUBLIC;
+- non-arm's-length motive / extraction intent: NOT YET ESTABLISHED.
+
+Classification:
+- AMBIGUOUS / ELEVATED_GOVERNANCE_CONCERN.
+- Do NOT classify CONFIRMED_TUNNELING at this point.
+
+Timing precision:
+- public date is known, but exact first-publication time is not recovered here.
+- for a daily replay, safe_effective_from = next trading day unless an exact timestamp is later recovered.
+
+#### State transition B — prosecutor indictment
+
+Public prosecutor release date: 2020-11-05.
+
+The Taichung District Prosecutors Office alleged that:
+- Wu Chin-Chuan had obtained control of the listed oil company and installed his sister as chairperson;
+- company funds were directed to purchase Hsin Tai shares from nominee accounts linked to Wu to avoid his own market losses and extract cash;
+- another NT$49m transaction was also described as an irregular transaction;
+- total alleged extraction across the identified transactions was NT$92.32935m;
+- after the prior management regained control and sold the shares, the company suffered about NT$20.175m loss;
+- the related-party nature had been concealed from company personnel / the new auditor, contributing to a false financial report;
+- prosecutors indicted for insider trading, false financial reporting and irregular transactions.
+
+Decision-time state after public indictment:
+- beneficiary/controller linkage: PUBLIC;
+- transfer direction: PUBLICLY ALLEGED;
+- irregular-transaction theory: PUBLICLY ALLEGED;
+- company-loss amount: PUBLICLY ALLEGED / quantified;
+- concealment / reporting failure: PUBLICLY ALLEGED;
+- judicial conviction: NOT YET FINAL at this state.
+
+Classification:
+- HIGH_SUSPICION, not CONFIRMED_TUNNELING.
+
+Timing precision:
+- prosecutor publication date is authoritative at day precision;
+- if publication time is unavailable, use the next trading day as the first safe daily decision point.
+
+### State-machine implication
+
+The same historical conduct generates different valid research labels through time:
+
+1. transaction date in 2019:
+   UNKNOWN unless contemporaneous evidence is independently recovered;
+2. 2020-02-07 issuer correction:
+   AMBIGUOUS / ELEVATED_GOVERNANCE_CONCERN;
+3. 2020-11-05 public indictment:
+   HIGH_SUSPICION;
+4. later final adjudication, if/when publicly available:
+   may transition to CONFIRMED_TUNNELING;
+5. recovery / restitution:
+   separate REMEDIATION / RECOVERY state.
+
+Later evidence never backfills earlier states.
+
+### Clock-precision rule frozen
+
+Store:
+- public_known_at_date;
+- public_known_at_timestamp if available;
+- known_at_precision = TIMESTAMP / DATE_ONLY;
+- safe_daily_effective_from;
+- source_class;
+- legal_state.
+
+If only DATE_ONLY:
+- same-day intraday use = PROHIBITED;
+- same-day after-market use = UNKNOWN unless publication-before-decision is independently proven;
+- next-trading-day use = SAFE.
+
+### Cross-case role with prior controls
+
+Combined with prior D21-11 evidence:
+- a later-adjudicated confirmed extraction case establishes the CONFIRMED label semantics;
+- the Formosa Oilseed case establishes AMBIGUOUS -> HIGH_SUSPICION decision-time transitions from contemporaneous public evidence;
+- the Yuanta related-party control case shows that a large related transaction with disclosed economic purpose, valuation/governance support and no demonstrated extraction beneficiary should remain INSUFFICIENT / NO_TUNNELING_CLASSIFICATION.
+
+This is sufficient to demonstrate that the derived classifier can produce different states without mechanically copying D21-05 RPT size or D21-01 control variables.
+
+### D21-11 maturity decision
+
+Advance D21-11 from L2 / 40% to L3 / 60%.
+
+L3 rationale:
+- Taiwan decision-time public evidence can be replayed into a multi-state tunneling/minority-risk classifier;
+- relationship, beneficiary, transaction amount, reporting omission, prosecutor allegation and quantified loss can be introduced only when public;
+- day-only timestamps have a conservative next-trading-day eligibility rule;
+- positive/high-suspicion and non-tunneling control states are both represented.
+
+L4 remains closed:
+- no OOS/prospective evidence that AMBIGUOUS or HIGH_SUSPICION states improve portfolio outcomes;
+- high-suspicion events may arrive after substantial price discovery;
+- redundancy versus D21-01/04/05, D07 and D11 must be measured explicitly.
+
+Role: GOVERNANCE_TAIL_RISK / CONFIDENCE / RESEARCH_ONLY.
+Formal Core impact: NONE.
+
+Exact next continuation:
+1. D21-04: recover authoritative pledge setup/release receipts or construct another original-source pledge pair.
+2. D21-03: recover authoritative monthly insider known_at and a second transfer-motive case.
+3. D21-01: recover authoritative ownership-report known_at / receipt.
+4. All L3 modules require OOS / prospective validation before L4.
