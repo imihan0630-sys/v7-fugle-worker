@@ -379,3 +379,50 @@ Exact next 00 continuation:
 3. H12 remains Room10 + Room13-counterpart gated.
 4. H14 remains closed no-structural-change.
 5. Continue scanning latest main for complete-but-unregistered H/COV packets; COV-12 and AOKD-05 retain their existing gates.
+
+
+## H06 / H07 terminal closure + H12 Room13 intake — 2026-10-04
+
+H06 and H07 received their previously missing Room13 counterparts on latest main.
+
+### H06
+Accepted:
+- Room05 crowding packet;
+- Room13 herding counterpart;
+- live PTT source receipt;
+- D20-06 social-herding PIT contract.
+
+00 audit result:
+`KEEP_SEPARATE / BOUNDED_SOCIAL_HERDING_SUBLANE / SHARED_SOCIAL_RECEIPT_FIREWALL`.
+
+State:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+### H07
+Accepted:
+- Room03 observable pullback/reversal packet;
+- Room13 event-conditioned overreaction counterpart.
+
+00 audit result:
+`KEEP_SEPARATE / EVENT_CONDITIONED_OVERREACTION_PARENT_VS_REVERSAL_OUTCOME / BEHAVIORAL_CAUSE_FAIL_CLOSED`.
+
+State:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+### H12
+Room13 semantic packet accepted:
+`research/d20_h12_limits_to_arbitrage_room13_packet_v0_1.md`.
+
+Still blocked by:
+1. Room10 D14-19 execution-lifecycle counterpart;
+2. first genuine live TWSE rate/supply receipt for D20-13.
+
+H12 remains PARTIAL_EVIDENCE_RECEIVED.
+
+No structural, module-count, maturity, Formal or runtime change from these governance actions.
+
+Exact next:
+1. do not reopen H06/H07 without contradictory evidence;
+2. continue detecting complete-but-unregistered H clusters;
+3. H12 waits only on the explicit remaining blockers above;
+4. H05, COV-12 and AOKD-05 remain candidates for next evidence reconciliation.
