@@ -3747,3 +3747,77 @@ Artifacts:
 
 Status:
 `D05_L4_WAVE1 = PREREGISTERED / SNAPSHOT_FIRST / EVENT_CAUSALITY_STILL_GATED`.
+
+
+## MS-089 — D05-06 reaches L3 only on a prospective auction-replay contract
+
+COV-02 scope ownership is already canonical:
+D05-06 owns opening + closing auction mechanics and bounded auction-imbalance semantics.
+
+Current Taiwan/Fugle source semantics now satisfy a bounded L3 feasibility contract:
+- trial/continuous state;
+- closing/delayed-close state;
+- provider timestamps;
+- stock top-five Books during trial where natively exposed;
+- final close/final-auction trade state;
+- capturedAt + source receipt.
+
+This supports prospective replay of:
+- OPEN_TRIAL / OPEN_CALL;
+- CLOSE_TRIAL / CLOSE_CALL_ACCUMULATION;
+- CLOSE_DELAYED;
+- CLOSE_FINAL;
+- displayed trial-depth imbalance where genuinely observed.
+
+It does NOT support retrospective reconstruction of a missing historical pre-close imbalance.
+
+Therefore:
+- historical trial/imbalance not captured natively = UNKNOWN;
+- final close/volume cannot backfill pre-close imbalance;
+- generic end-of-day volume is not auction imbalance;
+- full hidden-book imbalance is not inferred from top-five displayed depth.
+
+Decision:
+`D05-06 = L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED_PROSPECTIVE_ONLY`.
+
+L4 remains pending real post-freeze prospective/OOS evidence.
+
+## MS-090 — D05-14 reaches bounded L3 through official surveillance replay, not actor attribution
+
+TWSE public official databases provide historical Attention and Disposition records by announcement date from January 2001 with CSV export.
+
+The Attention database documents a daily 17:00 update boundary.
+Current surveillance rules are versioned by amendment date / legislative history.
+
+A conservative PIT replay can therefore freeze:
+- announcementDate;
+- securityCode;
+- officialAttentionState;
+- officialDispositionState;
+- disposition measure/reason/period where present;
+- ruleVersionEffectiveDate;
+- capturedAt;
+- source hash;
+- after-market knownAt boundary.
+
+If exact historical intraday publication time is not independently proven:
+`INTRADAY_KNOWN_AT = UNKNOWN`
+and the record becomes eligible only after the conservative after-market boundary.
+
+This validates the official-surveillance-state branch of D05-14 plus public observable anomaly context.
+
+It does NOT identify:
+- beneficial owner;
+- account linkage;
+- collusive agreement;
+- spoof intent;
+- manipulation intent;
+- wash trading;
+- coordinated multi-account conduct.
+
+Those remain UNKNOWN unless richer authoritative order/account/legal evidence exists.
+
+Decision:
+`D05-14 = L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED_BOUNDED / ACTOR_INTENT_UNKNOWN`.
+
+No legal accusation, alpha mapping or L4 claim is authorized.
