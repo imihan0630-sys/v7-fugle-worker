@@ -89,6 +89,33 @@ jobs:
                       hints.append({"url":u,"line":line_no,"text":line.strip()[:1000]})
           print("SCRIPT_HINTS_JSON="+json.dumps(hints[:500],ensure_ascii=False))
 
+      - name: Inspect report framework request construction
+        shell: python
+        run: |
+          import re, subprocess
+          url="https://wwwc.twse.com.tw/res/js/web-report.js"
+          p=subprocess.run(["curl","--fail","--silent","--show-error","--location","--max-time","30",url],text=True,capture_output=True,check=True)
+          js=p.stdout
+          print("WEB_REPORT_BYTES="+str(len(js.encode("utf-8"))))
+          needles=[
+              'data("api")', "data('api')", "dataset.api", "cfg.api", "cfg.root",
+              "$.ajax", "$.getJSON", "$.get(", "fetch(", "URLSearchParams",
+              "startDate", "endDate", "keyword", "csv", "download"
+          ]
+          for needle in needles:
+              pos=0; n=0
+              while True:
+                  i=js.find(needle,pos)
+                  if i<0: break
+                  n+=1
+                  lo=max(0,i-700); hi=min(len(js),i+1400)
+                  print("\nREQUEST_CONTEXT needle="+needle+" hit="+str(n))
+                  print(js[lo:hi])
+                  pos=i+len(needle)
+                  if n>=8: break
+          for m in list(re.finditer(r'/[A-Za-z0-9_./{}?-]*(?:announcement|report)[A-Za-z0-9_./{}?=&-]*',js,re.I))[:80]:
+              print("PATH_HINT="+m.group(0))
+
       - name: Bounded raw-page grep
         shell: bash
         run: |
