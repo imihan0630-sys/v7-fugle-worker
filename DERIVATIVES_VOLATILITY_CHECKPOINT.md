@@ -298,3 +298,11 @@ Durable evidence: `research/d12_d13_source_clock_continuation_20261004_v0_1.md`.
 2. Parse the identical parent into simple skew/term, Surface Method V0.1 and parity-quality metrics.
 3. Keep historical replay QA separate from prospective 18:10 first-known receipts.
 4. Pursue authorized prospective 18:10 source-attested receipts; no L3 before independent PIT-clean dates and replay verification.
+
+
+## 2026-10-04 DR-070..DR-071
+- DR-070: TAIFEX Delta 06:45 is current-day; 14:30/16:30 is next-business-day effective. Publication time and effective trading date remain separate.
+- DR-071: series Greeks plus participant aggregate Call/Put positions do not identify strike-expiry-position-side dealer inventory. Signed dealer GEX remains UNKNOWN.
+- Evidence: `research/d12_d13_vintage_regime_audit_20261004_v0_1.md`.
+- Maturity unchanged: D12 40.0%, L2. Outcomes CLOSED; Formal Core LOCKED.
+- Exact next: permitted raw TAIFEX option-chain parent with publication/effective/session identities; independent source-attested PIT dates required before L3.
