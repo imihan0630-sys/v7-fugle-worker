@@ -1,6 +1,6 @@
 # System 2 — 台股多策略智慧選股平台
 
-Updated: 2026-09-29 Asia/Taipei
+Updated: 2026-10-04 Asia/Taipei
 Status: BOOTSTRAP / DESIGN_AND_RESEARCH
 System ID: SYSTEM2
 Production trading: NOT ENABLED
@@ -59,6 +59,31 @@ System 2 的設計目的明確是 **提升可交易決策品質、追求長期�
 **提高高品質機會辨識率 + 改善進出場與持倉管理 + 及時風險警示 + 快速共振提醒 + 嚴格成本後績效驗證 + 持續淘汰失效策略。**
 
 它不能被簡化成回測勝率、漂亮報酬曲線或事後挑選成功案例。
+
+## Contextual decision synthesis
+
+System 2 must convert accumulated research knowledge into **scenario-dependent judgment**, not a universal checklist.
+
+For each candidate, the engine identifies the current setup / strategy context, routes the relevant evidence families, separates HARD_GATE from PRIMARY / SUPPORTIVE / CONTRADICTORY evidence, preserves UNKNOWN / NOT_APPLICABLE semantics, evaluates interactions and redundancy, then produces an actionable decision.
+
+A new research finding must not automatically become a new required condition. Over-constraint and opportunity starvation are measurable model defects and must be studied through near-miss / bottleneck / missed-opportunity diagnostics.
+
+A legitimate zero-pick day remains allowed. The system must never loosen rules merely to fill a quota.
+
+Canonical contract:
+`system2/SYSTEM2_CONTEXTUAL_DECISION_SYNTHESIS_V0_1.md`.
+
+## Institutional monitoring interface North Star
+
+The final System 2 monitoring interface must operate as a professional institutional trading decision terminal: clear, fast, easy to understand, low-friction to operate and visually premium.
+
+It must prioritize actionability:
+market Regime -> capital / sector rotation -> candidate / holding priority -> recommended action -> entry / trigger / stop / target -> warnings / resonance -> drill-down evidence -> frozen history / performance.
+
+The professional visual direction is dark graphite / navy with restrained premium gold / amber accents, Taiwan-market red-up / green-down semantics, high-contrast typography and minimal decorative noise. The desired "wealth / success" atmosphere must come from precision and confidence, not casino-like presentation.
+
+Canonical contract:
+`system2/SYSTEM2_INSTITUTIONAL_MONITORING_UI_V0_1.md`.
 
 ## Core design
 
@@ -131,6 +156,8 @@ V8 A/B, Top6/3+3, capital rules and live-state machine are never prerequisites f
 ## Canonical files
 
 - `system2/SYSTEM2_ARCHITECTURE.md`
+- `system2/SYSTEM2_CONTEXTUAL_DECISION_SYNTHESIS_V0_1.md`
+- `system2/SYSTEM2_INSTITUTIONAL_MONITORING_UI_V0_1.md`
 - `system2/SYSTEM2_FACTOR_LIBRARY.md`
 - `system2/SYSTEM2_STRATEGY_LIBRARY.md`
 - `system2/SYSTEM2_PERFORMANCE_SPEC.md`
