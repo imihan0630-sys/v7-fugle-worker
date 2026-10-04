@@ -11,6 +11,8 @@ import {
 } from "../runtime/official_historical_backfill_source_v0_1.mjs";
 import { fetchOfficialHistoricalA1DateV0_1 } from "../runtime/official_historical_a1_source_v0_1.mjs";
 import { sha256Hex } from "../runtime/decision_archive.mjs";
+import { buildOfficialContinuitySourceUrlsV0_1 } from "../runtime/official_continuity_source_capability_v0_1.mjs";
+import { parseOfficialHistoricalContinuityPayloadV0_1 } from "../runtime/official_continuity_event_parser_v0_1.mjs";
 import {
   buildD19UniverseReceiptV0_1,
   buildD19ReturnReceiptV0_1,
@@ -175,7 +177,8 @@ for(const member of snapshot.members){
   );
   const auditMembership=membershipBySymbol.get(member.symbol);
   const missingSourceHashCount=eligibleRows.filter(x=>!x.sourceRowHash).length;
-  const invalidCloseCount=eligibleRows.filter(x=>!Number.isFinite(x.close)||x.close<=0).length;
+  const invalidCloseRows=eligibleRows.filter(x=>!Number.isFinite(x.close)||x.close<=0);
+  const invalidCloseCount=invalidCloseRows.length;
   const complete=eligibleRows.length===21 && missingSourceHashCount===0 && invalidCloseCount===0;
   const value=complete?momentum(eligibleRows):null;
   const observationState=complete&&Number.isFinite(value)?"KNOWN":"UNKNOWN";
@@ -224,7 +227,9 @@ for(const member of snapshot.members){
   factorInputs.push(input);
   coverage.push({
     symbol:member.symbol,rowCount:eligibleRows.length,state:observationState,reason,
-    invalidCloseCount,missingSourceHashCount,
+    invalidCloseCount,
+    invalidCloseDates:invalidCloseRows.map(x=>x.marketDate),
+    missingSourceHashCount,
     effectiveFromAudit:auditMembership?.effectiveFrom||null,
     startBasisAudit:auditMembership?.startBasis||null,
   });
@@ -289,6 +294,45 @@ const unknownReasonCounts=Object.fromEntries(
   [...new Set(coverage.filter(x=>x.state!=="KNOWN").map(x=>x.reason))].sort()
     .map(reason=>[reason,coverage.filter(x=>x.reason===reason).length])
 );
+
+const unknownSymbols=new Set(coverage.filter(x=>x.state!=="KNOWN").map(x=>x.symbol));
+const continuitySources=buildOfficialContinuitySourceUrlsV0_1({startDate:fromDate,endDate:toDate});
+const continuityEventDiagnostics=[];
+for(const [sourceId,source] of Object.entries(continuitySources)){
+  if(source.exchange!=="TWSE" || source.sourceClass!=="HISTORICAL_ACTUAL_RESULT_RANGE")continue;
+  try{
+    const response=await fetch(source.url,{
+      method:"GET",redirect:"follow",
+      headers:{accept:"application/json,text/plain,*/*","user-agent":"D19-TWSE-continuity-diagnostic/0.1"},
+      signal:AbortSignal.timeout(30000),
+    });
+    const rawText=await response.text();
+    if(!response.ok){
+      continuityEventDiagnostics.push({sourceId,state:"HTTP_ERROR",httpStatus:response.status,eventCount:null,unknownSymbolEvents:[]});
+      continue;
+    }
+    const parsed=await parseOfficialHistoricalContinuityPayloadV0_1({
+      sourceId,sourceUrl:source.url,rawText,fetchedAt:observedAt,
+      requestedStartDate:fromDate,requestedEndDate:toDate,
+    });
+    continuityEventDiagnostics.push({
+      sourceId,state:parsed.state,responseRangeVerified:parsed.responseRangeVerified,
+      parserComplete:parsed.parserComplete,eventCount:parsed.eventCount,
+      unknownSymbolEvents:parsed.events
+        .filter(event=>unknownSymbols.has(event.symbol))
+        .map(event=>({
+          symbol:event.symbol,actionFamilyId:event.actionFamilyId,
+          effectiveDate:event.effectiveDate,eventStage:event.eventStage,
+          continuityEffectState:event.continuityEffectState,
+          technicalContinuityEvidenceEligible:event.technicalContinuityEvidenceEligible,
+        })),
+      noEventMayBeClaimed:parsed.noEventMayBeClaimed,
+      revisionCoverageComplete:parsed.revisionCoverageComplete,
+    });
+  }catch(error){
+    continuityEventDiagnostics.push({sourceId,state:"DIAGNOSTIC_ERROR",error:String(error?.message||error),eventCount:null,unknownSymbolEvents:[]});
+  }
+}
 console.log(JSON.stringify({
   result:"PASS_TWSE_FULL_UNIVERSE_COVERAGE_NEGATIVE_L3_GATE",
   smokeVersion:"S2_D19_TWSE_FULL_UNIVERSE_COVERAGE_V0_1",
@@ -308,6 +352,7 @@ console.log(JSON.stringify({
     unknownReasonCounts,
     unknownSample:coverage.filter(x=>x.state!=="KNOWN").slice(0,30),
   },
+  continuityEventDiagnostics,
   receipts:{
     universeReceiptHash:d19Universe.receiptHash,
     returnReceiptCount:returnReceipts.length,
