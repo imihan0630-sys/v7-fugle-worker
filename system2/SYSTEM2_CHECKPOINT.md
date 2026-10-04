@@ -1568,3 +1568,25 @@ Still authoritative:
 all trading authority false.
 
 System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
+
+
+## 2026-10-04 System 2 independent correction governance — ACTIVATED
+
+Owner approved a durable independent correction / troubleshooting / audit role for System 2.
+
+New canonical artifacts:
+- `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
+- `system2/SYSTEM2_CORRECTION_QUEUE.md`
+- `system2/SYSTEM2_CORRECTION_QUEUE.json`
+
+Governance semantics:
+- severity = CRITICAL / HIGH / MEDIUM / LOW;
+- lifecycle = OPEN -> ACKNOWLEDGED -> FIX_IN_PROGRESS -> FIX_IMPLEMENTED -> VERIFYING -> VERIFIED_CLOSED, with OWNER_DECISION_REQUIRED / REJECTED_WITH_EVIDENCE branches;
+- CRITICAL/HIGH cannot be self-closed by the implementation role;
+- false completion, silent abandonment, validation omissions, cross-module orphaning, authority leaks and North-Star drift are explicit correction classes;
+- active blocking directives must be read before affected System 2 milestones are declared complete;
+- owner approval remains mandatory for protected Class B/Class C, Formal Core, production, capital, order or push changes.
+
+Initial correction queue contains no fabricated issues; directives will be added only when supported by evidence.
+
+This is governance/process infrastructure only. System 2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. No trading authority was enabled. System 1 Formal Core remains untouched.
