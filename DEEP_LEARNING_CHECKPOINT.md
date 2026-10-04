@@ -2010,3 +2010,15 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
 6. Execute PF-040 units-delta + same-generation PCF.
 7. Capture D06-18 TWSE borrow-rate/displayed-supply receipt.
 8. Do not reopen D06-19 public data-existence search; special data pursuit requires owner authorization.
+
+
+## 2026-10-05 D03 — TI-693~700 V8.18 decision-cutoff engineering gate
+
+- Draft PR #600 exact head `f030f04c1a807a23fe19072b96407f1436d09da8`.
+- Candidate `8.18.0-decision-cutoff-provenance` adds only the audited cutoff stamp/propagation/header provenance.
+- V8 Repair run 37237843589 SUCCESS.
+- C1/C2 isolated review run 37237843572 SUCCESS, 100/100; V8.18 delta limited to runAfterMarketScanCore / buildC1PopulationReceipt / selectTomorrowCandidates; Formal impact false.
+- V8 Regression run 37237843517 SUCCESS; dedicated cutoff fixture PASS, exact header readback and same-generation cutoff mutation conflict verified.
+- No Production deploy; PR remains draft/open/unmerged.
+- D03 remains 56.7%; Bollinger/ADX stay L2 until post-deploy genuine parent/continuity evidence.
+- Protected next action: explicit owner Production approval for concrete PR #600 merge/deploy.
