@@ -348,12 +348,27 @@ One immutable capacity-allocation receipt per candidate-pool decision clock.
 - active_assignments_json
 - active_non_assignments_json
 - counts_json
+  - globalCount / vacancyCount / activeCountByStrategy / symbolStrategyCounts
+  - selectionDenominator provenance for V0.2 receipts:
+    - version = `S2_SELECTION_DENOMINATOR_PROVENANCE_V0_1`
+    - denominatorState = `COMPLETE / PARTIAL / UNKNOWN`
+    - unresolvedCount
+    - unresolvedByState
+    - blockerCodes
+    - contributingShadowRuns[] with strategyId/version + runId + shadowAccountingHash (+ runFingerprintHash when available)
+    - provenanceHash
 - capacity_hash
 - captured_at
 - schema_version
 
+Capacity receipt V0.2 rule:
+- `capacity_hash` commits to the selection-denominator provenance as part of the immutable receipt identity.
+- New daily Shadow capacity rows persist the provenance inside the existing `counts_json`; isolated D1 physical schema remains V1.1 and no table migration is required.
+- A legacy V0.1 row whose `counts_json` lacks `selectionDenominator` must be read as `UNKNOWN / LEGACY_PROVENANCE_INCOMPLETE`, never COMPLETE.
+- Denominator provenance is linked to contributing Shadow accounting by immutable `runId + shadowAccountingHash`; market date / decision timestamp alone is not an acceptable join.
+
 Purpose:
-audit the max-12 global pool, max-3 per-strategy active-monitor rules, multi-strategy overlap handling, and valid-but-overflow state without introducing a universal cross-strategy score.
+audit the max-12 global pool, max-3 per-strategy active-monitor rules, multi-strategy overlap handling, valid-but-overflow state, and the denominator provenance behind the allocation without introducing a universal cross-strategy score.
 
 ### s2_decisions
 - decision_id
