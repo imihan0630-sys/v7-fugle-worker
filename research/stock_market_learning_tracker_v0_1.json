@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-05T05:55:00+08:00",
+  "updatedAt": "2026-10-05T07:18:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -3693,8 +3693,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Cost of Debt／Refinancing Risk債務成本與再融資風險」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2 / FREE_TPEX_SECURITY_LEVEL_FAIR_VALUE_LANE_VERIFIED / MULTI_DATE_TRANSACTION_OR_MARKET_REPLAY_BLOCKED / PROVENANCE_SEPARATION_REQUIRED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-          "next": "免費 TPEx 逐券公平價格/reference lane 已驗證；續建立多日期 issuer-security replay，並與 actual trade/quote lane 嚴格分離。只有多日期可重播且 benchmark matching 完成後才升 L3；公平價格不得冒充成交。"
+          "status": "L2 / FREE_TPEX_SECURITY_LEVEL_FAIR_VALUE_LANE_VERIFIED / MULTI_DATE_MARKET_REPLAY_BLOCKED / TRANSACTION_HISTORY_UNAVAILABLE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "TPEx 免費逐券 fair-value/reference 日報已證明可行，但目前只有單日可直接驗證；續找可重複多日期 public transport，並將 model/reference 與 actual trade/quote 永久分流。完成多發行人×多日期 replay 及 benchmark matching 前維持 L2。"
         },
         {
           "id": "D22-05",
@@ -3703,8 +3703,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Credit Rating／Rating Migration信用評等與遷移」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "L3 / TAIWAN_PIT_RATING_EVENT_REPLAY_VALIDATED / 22_INDEPENDENT_EPISODE_ANCHORS / CHALLENGER_SIDE_GATE_PASSED / BASELINE_PAIRING_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-          "next": "22 個獨立方向 episode anchor 已凍結；下一步逐錨點建立 exact B0/B1 PIT baseline（D07 pre-event fundamentals、D13 pre-event macro/rates、industry、size/liquidity、D11 event clocks、prior rating state；D22-06 market-credit 待可用）。baseline 未凍結前 mature paired dates=0、不得開 outcomes。"
+          "status": "L3 / TAIWAN_PIT_RATING_EVENT_REPLAY_VALIDATED / STAGE_A_CHALLENGER_EPISODE_GATE_PASSED_22 / BASELINE_PAIRING_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "22 個獨立 rating episode anchor 已凍結並通過 challenger-side count gate；下一步建立同一 22 錨點的 exact B0/B1 baseline table。D07 pre-event PIT fundamentals、D13 rate/macro、size/liquidity、D11 event clocks 未凍結前 mature paired dates 維持 0；不得開 returns/MFE/MAE。"
         },
         {
           "id": "D22-06",
@@ -3713,8 +3713,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Credit Spread／Bond Yield信用利差與債券殖利率」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2 / FREE_TPEX_SECURITY_LEVEL_FAIR_VALUE_LANE_VERIFIED / MULTI_DATE_TRANSACTION_OR_MARKET_REPLAY_BLOCKED / PROVENANCE_SEPARATION_REQUIRED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-          "next": "免費 TPEx 逐券公平價格/reference lane 已驗證；續建立多日期 issuer-security yield/reference replay，嚴格分 fair value／reference／trade／quote，完成 maturity/currency/optionality matching 後才評估 L3 spread lane。"
+          "status": "L2 / FREE_TPEX_SECURITY_LEVEL_FAIR_VALUE_LANE_VERIFIED / MULTI_DATE_MARKET_REPLAY_BLOCKED / TRANSACTION_HISTORY_UNAVAILABLE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "與 D22-04 共用 TPEx fair-value/reference lane；公平價格不得冒充成交。需取得多日期逐券 replay、staleness／optionality／benchmark matching 後才可建 issuer spread；actual transaction history 未取得前維持 L2。"
         },
         {
           "id": "D22-07",
@@ -3777,10 +3777,10 @@
           "next": "建立 issuer-level default/restructuring/recovery event ledger，納入 delisted/defaulted cases 並分離 bankruptcy、restructuring、bond-payment default、covenant breach、market default 與非信用下市；未形成可重播回收面板前維持 L2。"
         }
       ],
-      "status": "ACTIVE_RESEARCH / D22_01_02_03_05_07_08_10_L3 / D22_05_STAGE_A_CHALLENGER_GATE_PASSED / D22_04_06_PARTIAL_SOURCE_UNBLOCK_L2 / D22_09_DEPENDENCY_BLOCKED_L2 / D22_11_12_HOLD_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D22 L4 Stage-A：D22-05 已有 22 個獨立 episode anchor 並通過 challenger-side count gate；現在只做這 22 錨點的 exact B0/B1 baseline pairing，mature paired dates 目前仍 0，outcomes CLOSED。其餘 L3 lanes 繼續 common-support inventory 累積。D22-04/06 免費 TPEx security-level fair-value lane 已證明，但多日期 market replay 尚未完成，維持 L2。",
-      "lastResearchUpdate": "2026-10-04T21:09:00+08:00",
-      "researchNote": "Stage-A common-support inventory now has 58 receipts, 52 exact challenger receipts and 44 global unique issuer-dates, but zero mature paired dates because B0/B1 baselines are not frozen. D22-05 expanded to 29 rating events, conservatively clustered into 22 independent directional episodes; challenger-side count gate passed, baseline pairing pending. D22-04/06 blocker narrowed: free TPEx security-level fair-value/reference reports are verified, while multi-date transaction/market replay remains blocked. No outcomes opened; no maturity promotion; Formal Core unchanged."
+      "status": "ACTIVE_RESEARCH / D22_01_02_03_05_07_08_10_L3 / D22_05_STAGE_A_CHALLENGER_GATE_PASSED_BASELINE_BLOCKED / D22_04_06_FAIR_VALUE_LANE_PARTIAL_UNBLOCK_L2 / D22_09_DEPENDENCY_BLOCKED_L2 / D22_11_12_HOLD_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D22 L4 Stage-A：優先建立 D22-05 的 22-anchor exact B0/B1 baseline table；目前 challenger episode=22、baseline frozen=0、mature paired=0，outcomes CLOSED。依賴 D07 general-industry PIT fundamentals 尚未形成同人口 baseline，不得用後來財報回填。若 D07 依賴持續阻塞，並行續攻 D22-04/06 TPEx 免費 fair-value 多日期 transport；成交資料與公平價格永久分流。",
+      "lastResearchUpdate": "2026-10-05T07:18:00+08:00",
+      "researchNote": "D22-05 rating panel expanded to 29 exact events and frozen into 22 independent directional episodes; challenger-side count gate passed, but no B0/B1 baseline anchor is frozen yet, so mature paired dates remain 0 and L4/outcomes remain closed. Repository audit confirms no canonical same-population D07/D13/size-liquidity/D11 baseline table for these anchors. D22-04/06 source blocker narrowed: TPEx public security-level fair-value/reference lane is verified, but reproducible multi-date transport and actual transaction history remain unavailable."
     }
   ],
   "rules": {
