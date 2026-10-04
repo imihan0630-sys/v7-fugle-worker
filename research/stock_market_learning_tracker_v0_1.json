@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T08:50:00+08:00",
+  "updatedAt": "2026-10-04T08:52:19+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -3336,7 +3336,7 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Disposition Effect處分效果」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / TWSE_SHORT_SIDE_DISPOSITION_SUBLANE / LONG_ACCOUNT_PGR_PLR_UNKNOWN / ALPHA_UNKNOWN",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / TWSE_SHORT_SIDE_DISPOSITION_SUBLANE / LONG_ACCOUNT_PGR_PLR_UNKNOWN / ALPHA_UNKNOWN / L4_PREREG_FROZEN / PROSPECTIVE_EVIDENCE_PENDING",
           "next": "以臺灣證券交易所借券賣出歷史欄位建立空方處分效果研究資料鏈：保存前日/當日借券賣出餘額、賣出、還券、調整、價格與制度版本；凍結空方參考價格與資本利得懸置公式。上市空方子線可重播；上櫃對等性與一般多方帳戶 PGR/PLR 維持 UNKNOWN。下一步只做結果盲資料覆蓋與公式重播，不宣稱選股效果。"
         },
         {
@@ -3356,7 +3356,7 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Anchoring／Reference Dependence錨定與參考點依賴」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / 52W_REFERENCE_PROXY / CONTINUITY_FAIL_CLOSED / ALPHA_UNKNOWN",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / 52W_REFERENCE_PROXY / CONTINUITY_FAIL_CLOSED / ALPHA_UNKNOWN / L4_PREREG_FROZEN / PROSPECTIVE_EVIDENCE_PENDING",
           "next": "用已驗證的上市/上櫃歷史日線來源建立 252 個合格交易日參考點：52週高價、目前價格距高點比例、高點發生日與距今天數。跨未解公司行動或缺漏交易日一律 BLOCKED/UNKNOWN。下一步做與動能、突破、均線距離、波動的冗餘檢查。"
         },
         {
@@ -3366,7 +3366,7 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Representativeness／Recency代表性與近因偏誤」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / OVERLAP_D20_08_D20_09_D03. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / RECENCY_EXPECTATION_DIAGNOSTIC / OBSERVATION_RESEARCH_ONLY / IDENTIFIABILITY_NOT_PROVEN",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / RECENCY_EXPECTATION_DIAGNOSTIC / OBSERVATION_RESEARCH_ONLY / IDENTIFIABILITY_NOT_PROVEN / L4_PREREG_FROZEN / PROSPECTIVE_EVIDENCE_PENDING",
           "next": "以因果可重播的52週高點發生日/距今天數做近因代理，並以有公布日期的月度投資人預期/情緒調查作獨立預期資料候選。共用調查憑證不得與 D20-10 重複計票。下一步檢驗控制 D03 動能、D20-04 錨定、D20-08/09 反應路徑後是否仍有殘差增量；若沒有，準備合併提案。"
         },
         {
@@ -3386,7 +3386,7 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Investor Attention／Salience投資人注意力與顯著性」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / EXCHANGE_SALIENCE_EVENT_SUBLANE / ENDOGENEITY_CONTROL_REQUIRED / ALPHA_UNKNOWN",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / EXCHANGE_SALIENCE_EVENT_SUBLANE / ENDOGENEITY_CONTROL_REQUIRED / ALPHA_UNKNOWN / L4_PREREG_FROZEN / PROSPECTIVE_EVIDENCE_PENDING",
           "next": "以臺灣證券交易所/櫃買中心注意股票官方公告作顯著性事件來源，保存公告日、捕捉時間、觸發規則版本與來源雜湊；沒有精確盤中可知時間時採保守的下一交易日可用時鐘。下一步做近門檻/配對控制，扣除公告前異常價量，不把注意股票標籤直接視為看多/看空。"
         },
         {
@@ -3396,7 +3396,7 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Underreaction／Post-event Drift反應不足與事件後漂移」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / EVENT_CLOCK_SUBLANE / MONTHLY_REVENUE_ORIGINAL_CLOCK_PARTIAL_UNKNOWN / ALPHA_UNKNOWN",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / EVENT_CLOCK_SUBLANE / MONTHLY_REVENUE_ORIGINAL_CLOCK_PARTIAL_UNKNOWN / ALPHA_UNKNOWN / L4_PREREG_FROZEN / PROSPECTIVE_EVIDENCE_PENDING",
           "next": "重用 D11-09 與 D17-13 已驗證的台灣事件時鐘，只納入具有有效 sourcePublishedAt/capturedAt 的事件；建立事件日與 D1/D5/D20 非重疊路徑。月營收原始首次可知時間無法重建的歷史列維持 UNKNOWN/排除，不得用法定期限倒填。下一步前瞻累積真實事件憑證並凍結驚喜基準。"
         },
         {
@@ -3416,7 +3416,7 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Investor Sentiment情緒測量與代理變數」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / MONTHLY_SURVEY_SENTIMENT_SOURCE / MARKET_CONTEXT_ONLY / OOS_PENDING",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / MONTHLY_SURVEY_SENTIMENT_SOURCE / MARKET_CONTEXT_ONLY / OOS_PENDING / L4_PREREG_FROZEN / PROSPECTIVE_EVIDENCE_PENDING",
           "next": "建立國泰金控月度國民經濟信心調查版本帳：保存公布日期、調查期間、有效樣本數、台股樂觀指數、風險偏好指數與來源雜湊；若無精確公布時間，保守從下一交易日生效。禁止日頻插值冒充新資訊。下一步檢驗與台股報酬、VIX、融資、新聞情緒及市場狀態的增量/冗餘。"
         },
         {
@@ -3436,7 +3436,7 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Behavioral-vs-Structural Falsification行為解釋與結構性反證」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / IDENTIFICATION_RECEIPT_CONTRACT / UNKNOWN_PRESERVED / OUTCOMES_CLOSED",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / IDENTIFICATION_RECEIPT_CONTRACT / UNKNOWN_PRESERVED / OUTCOMES_CLOSED / L4_PREREG_FROZEN / PROSPECTIVE_EVIDENCE_PENDING",
           "next": "把已達 L3 的 D20-02/04/05/07/08/10 套入統一反證憑證：同一決策時鐘保存目標代理、結構/微結構替代解釋、共用來源憑證、缺值狀態與來源版本；任何缺少必要對照的主張維持 UNKNOWN。下一步前瞻累積獨立日期後才開啟 L4 結果驗證。"
         },
         {
@@ -3450,10 +3450,10 @@
           "next": "依 H12 四層放空鏈建立台股套利限制資料契約：D06-09 實際借券/放空流量、D06-18 借券供給/費率/利用率、D14-19 建倉/維持/回補/召回執行風險、D20-13 理論層的資本限制/雜訊交易者風險。驗證錯價是否在高分歧且高放空限制/高成本/低供給條件下更持久；不得把高融資、高借券或高波動單獨叫套利限制。"
         }
       ],
-      "status": "D20_L3_7_OF_13 / MATURITY_ABOVE_50 / PIT_REPLAY_FEASIBILITY_PHASE / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D20 已達 50.8%。下一階段不再為進度硬升級：優先為已達 L3 的 D20-10 月度投資人情緒、D20-07 交易所顯著性事件、D20-04/05 52週參考點與近因、D20-02 上市空方處分效果、D20-08 事件後漂移建立結果盲 replay/coverage 憑證；D20-12 統一保存反證矩陣。仍為 L2 的 D20-01/03/06/09/11/13 僅在獨立代理或上游資料門檻真正解除時再升 L3。",
-      "lastResearchUpdate": "2026-10-04T07:31:00+08:00",
-      "researchNote": "PIT-feasibility promotion audit advanced seven D20 modules from L2 to L3 without claiming alpha. D20-02 is bounded to TWSE short-side disposition using observable short-sale balances/covering and a frozen reference-price contract; direct long-account PGR/PLR and TPEx parity remain UNKNOWN. D20-04/05 use causally replayable 52-week reference/high-date primitives from validated Taiwan daily history, with continuity fail-closed and no independent-vote assumption. D20-07 uses official exchange attention-designation as a salience-event sublane with endogeneity controls. D20-08 reuses validated Taiwan event-clock contracts while unresolved original monthly-revenue first-known rows remain UNKNOWN. D20-10 uses a dated monthly Taiwan investor survey source distinct from news/price/volume. D20-12 now has a replayable identification-receipt contract across these source families. Formal Core unchanged; no L4/OOS or optimization claim."
+      "status": "D20_L3_7_OF_13 / L4_PROSPECTIVE_PREREG_FROZEN / NO_L4_PROMOTION / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "L4 前瞻規則已於 2026-10-04 08:52 台北時間凍結。下一步只收集凍結後的真實 parent receipt：D20-04/05 與 D20-02 從 2026-10-05 起的第一個有效台股交易/週末親本；D20-07 從凍結後第一批官方注意股票事件；D20-08 從凍結後具合法 first-known/capturedAt 的月營收/盈餘事件；D20-10 從凍結後第一份國泰月度調查。任何 2025-12～2026-09 國泰×0050 資料僅為 DEVELOPMENT_ONLY_CONTAMINATED，不得升格為 OOS/Prospective。累積達各 lane 預註冊的獨立日期門檻前，D20 維持 50.8%。",
+      "lastResearchUpdate": "2026-10-04T08:52:19+08:00",
+      "researchNote": "L4 advancement moved from retrospective study to preregistered prospective evidence collection. A D20-wide prospective Shadow preregistration is frozen for D20-02/04/05/07/08/10/12 with parent identity, clocks, controls, fixed outcomes, sample-count gates and anti-double-count rules. A Cathay monthly sentiment × adjusted 0050 development pilot (2025-12 through 2026-09 releases) was explicitly quarantined as contaminated because feature and future outcomes were inspected before preregistration. Its tiny descriptive sample rejects a naive unconditional high-sentiment=bullish assumption but cannot count as L4/OOS evidence. No maturity increase; Formal Core unchanged."
     },
     {
       "id": "D21",
