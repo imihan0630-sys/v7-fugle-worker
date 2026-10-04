@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T13:36:00+08:00",
+  "updatedAt": "2026-10-04T13:45:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -3740,7 +3740,7 @@
       ],
       "status": "ACTIVE_RESEARCH / D22_01_02_03_05_08_10_L3 / D22_04_06_SOURCE_BLOCKED_L2 / D22_07_09_11_12_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
       "exactNextContinuationPoint": "D22 正式達 50%。下一階段優先突破 D22-04／D22-06 的 TPEx 逐券歷史重播資料阻塞；並行擴充 D22-07 covenant/facility PIT replay。D22-05／08／10 已完成 L3 資料可行層，股票 outcomes 仍維持 CLOSED。",
-      "lastResearchUpdate": "2026-10-04T13:53:00+08:00",
+      "lastResearchUpdate": "2026-10-04T13:45:00+08:00",
       "researchNote": "D22-05, D22-08 and D22-10 promoted to L3 after multi-issuer/multi-date first-known Taiwan replay was materialized. D22-04 and D22-06 remain L2 because clean historical TPEx issuer-security-date replay is not yet independently validated; no proxy or synthetic spread history was used. Formal Core unchanged."
     }
   ],
