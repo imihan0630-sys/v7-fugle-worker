@@ -1,5 +1,6 @@
 import {canonicalJcsJson} from './canonical_receipt_hash_v0_1.mjs';
 import {buildSystem1C4RankingRedundancyAudit} from './system1_c4_ranking_redundancy_v0_1.mjs';
+import {buildSystem1C4SaturationCarryoverAudit} from './system1_c4_saturation_carryover_v0_1.mjs';
 
 const flags={researchOnly:true,decisionImpact:false,formalCoreImpact:false,noPlanChanges:true,noTrade:true,noPush:true,
   economicSuperiority:'UNKNOWN',formalOptimizationCandidate:'NONE'};
@@ -28,11 +29,13 @@ export function collectC4RankingRedundancyEvidence({pages}={}){
       throw new Error('C4_RANKING_CAPTURE_HEADER_CHANGED');
     const chunks=pages.flatMap(p=>Array.isArray(p?.chunks)?p.chunks:[]).sort((a,b)=>a.chunkIndex-b.chunkIndex);
     const rows=chunks.flatMap(c=>c.rows||[]);
-    const audit=buildSystem1C4RankingRedundancyAudit({...structuredClone(header),rows:structuredClone(rows)});
+    const receipt={...structuredClone(header),rows:structuredClone(rows)};
+    const audit=buildSystem1C4RankingRedundancyAudit(receipt);
+    const saturationCarryover=buildSystem1C4SaturationCarryoverAudit(receipt,{baseAudit:audit});
     return {status:audit.qualifiedN?'VERIFIED':'NO_QUALIFIED_RANKING_POPULATION',
       generationId:audit.generationId,sessionDate:audit.sessionDate,qualifiedN:audit.qualifiedN,selectedN:audit.selectedN,
       eligibleForDecisionIncidence:audit.qualifiedN>0,eligibleForInference:false,historicalBackfillPerformed:false,
-      audit,...flags};
+      audit,saturationCarryover,...flags};
   }catch(error){
     return {status:'DATA_QUALITY_BLOCKED',generationId:header.generationId??null,sessionDate:header.sessionDate??null,
       error:String(error?.message||error).slice(0,240),eligibleForDecisionIncidence:false,eligibleForInference:false,
