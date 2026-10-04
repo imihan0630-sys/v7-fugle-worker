@@ -74,3 +74,34 @@ Month-shard reconciliation is one source-contract guard against silently treatin
 ## Authority firewall
 
 This gate is read-only. It does not mutate D1/R2, does not run strategy evaluation, does not create capacity, does not enable selection, push, capital, orders, or System 1 runtime behavior.
+
+
+## 2026-10-04 physical acceptance
+
+PR #446 physically verified the frozen MOPSOV month-shard reconciliation control.
+
+- PR merge commit: `636305f79ecde412b27177dc677578d6116bc7d6`.
+- MOPSOV Month Shard Reconciliation Readonly run `37168363208`: PASS.
+- System2 Research CI run `37168363156`: PASS.
+- V8 Regression run `37168363125`: PASS.
+- Source: `mopsov.twse.com.tw`.
+- Control: 2330 / ROC year 115 / months 1–9 / cutoff 2026-09-30.
+- `month=all` total/prefix row count: 151 / 151.
+- Bounded month-shard union count: 151.
+- `onlyAllCount=0`.
+- `onlyMonthShardCount=0`.
+- `duplicateMonthKeyCount=0`.
+- `exactKeysetReconciliation=true`.
+- No visible next-page, page-number or step=3 pagination hints were observed in the frozen control response.
+- Read-only boundary: PASS.
+
+This narrows the source-contract risk for the frozen 2330 control. It does not certify complete MOPS revision history.
+
+Still false:
+- `boundedIntervalCoverageComplete=false`;
+- `revisionCoverageComplete=false`;
+- `knownAtVersionClockCertified=false`;
+- `technicalContinuityCertified=false`;
+- `selectionAuthority=false`.
+
+Next: repeat bounded reconciliation on the frozen multi-company correction/cancellation controls, then characterize empty-month and higher-row-count pagination semantics before any completeness claim.
