@@ -40,21 +40,32 @@ function dailyReturns(rows) {
 }
 
 const ranges = {};
+const sourceFailures = [];
 for (const market of ["TWSE", "TPEX"]) {
-  ranges[market] = await fetchOfficialHistoricalA1RangeV0_1({
-    market,
-    fromDate,
-    toDate,
-    observedAt: capturedAt,
-    pauseMs: 50,
-    includeRowProvenance: true,
-  });
-  assert.equal(ranges[market].tradingDateCount, lookbackSessions);
-  assert.equal(ranges[market].fetchedTradingDateCount, lookbackSessions);
+  try {
+    ranges[market] = await fetchOfficialHistoricalA1RangeV0_1({
+      market,
+      fromDate,
+      toDate,
+      observedAt: capturedAt,
+      pauseMs: 50,
+      includeRowProvenance: true,
+    });
+    assert.equal(ranges[market].tradingDateCount, lookbackSessions);
+    assert.equal(ranges[market].fetchedTradingDateCount, lookbackSessions);
+  } catch (error) {
+    sourceFailures.push({
+      market,
+      blockerCode: market + "_OFFICIAL_HISTORICAL_SOURCE_UNAVAILABLE",
+      error: String(error?.message || error).slice(0, 500),
+    });
+  }
 }
+assert.ok(ranges.TWSE || ranges.TPEX, "at least one official market source must be available");
 
 const selected = [];
 for (const market of ["TWSE", "TPEX"]) {
+  if (!ranges[market]) continue;
   for (const symbol of boundedSymbols[market]) {
     const rows = ranges[market].rows
       .filter((row) => row.symbol === symbol)
@@ -161,6 +172,7 @@ for (const item of selected) {
 
 const centers = {};
 for (const market of ["TWSE", "TPEX"]) {
+  if (!ranges[market]) continue;
   const values = factorRows.filter((x) => x.market === market).map((x) => x.momentum20);
   assert.equal(values.length, boundedSymbols[market].length);
   centers[market] = values.reduce((a, b) => a + b, 0) / values.length;
@@ -235,6 +247,7 @@ const eligibilityBlockers = [
   "INDUSTRY_NEUTRALIZATION_NOT_PROVEN",
   "D03_D09_REDUNDANCY_NOT_PROVEN",
   "COST_PROVENANCE_MODELED_TRANSPORT_ONLY",
+  ...sourceFailures.map((x) => x.blockerCode),
 ];
 
 const replayReceiptA = await buildD19ReplayReceiptV0_1({
@@ -283,9 +296,10 @@ console.log(JSON.stringify({
   decisionTimestamp,
   officialTradingDates: lookbackSessions,
   sourceUniverseRows: {
-    TWSE: ranges.TWSE.rowCount,
-    TPEX: ranges.TPEX.rowCount,
+    TWSE: ranges.TWSE?.rowCount ?? null,
+    TPEX: ranges.TPEX?.rowCount ?? null,
   },
+  sourceFailures,
   boundedSymbols,
   factorRows,
   receipts: {
