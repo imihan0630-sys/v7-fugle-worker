@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "D03_TWSE_OFFICIAL_DOCUMENT_MACHINE_CONTRACT_V0_1",
+  "updatedAt": "2026-10-04T11:55:00+08:00",
+  "classification": "RESEARCH_ONLY_OUTCOME_BLIND",
+  "workflowRunId": 37175322616,
+  "state": "BOUNDED_MACHINE_CONTRACT_PHYSICAL_PASS",
+  "listEndpoint": "https://wwwc.twse.com.tw/rwd/zh/announcement/announcement",
+  "detailEndpoint": "https://wwwc.twse.com.tw/rwd/zh/announcement/announcement_detail",
+  "listFields": [
+    "項次",
+    "發文日期",
+    "發文字號",
+    "主旨",
+    "id"
+  ],
+  "detailFields": [
+    "發文機關",
+    "發文日期",
+    "發文字號",
+    "主旨",
+    "依據",
+    "公告事項"
+  ],
+  "positiveControl": {
+    "interval": [
+      "2026-07-01",
+      "2026-08-10"
+    ],
+    "keyword": "減資",
+    "total": 3,
+    "lanFa1459Observed": true
+  },
+  "paginationControl": {
+    "interval": [
+      "2026-07-01",
+      "2026-08-10"
+    ],
+    "total": 56,
+    "paging": 15,
+    "fetched": 56,
+    "uniqueIds": 56,
+    "duplicateIds": 0,
+    "unpagedKeysetEquivalent": true
+  },
+  "reversalControl": {
+    "stockCode": "1516",
+    "company": "川飛能源",
+    "stopDate": "2026-07-31",
+    "stopReferenceNo": "臺證上一字第1151803156號",
+    "stopId": "0DE33D5F8CB111F19A80005056BE3760",
+    "releaseDate": "2026-08-06",
+    "releaseReferenceNo": "臺證上一字第1151803255號",
+    "releaseId": "B5A4A6C3917911F19A80005056BE3760",
+    "state": "STOP_THEN_RELEASE_PAIR_OBSERVED"
+  },
+  "emptyControl": "SOURCE_LOCAL_EMPTY_SEMANTICS_OBSERVED",
+  "globalArchiveCompletenessCertified": false,
+  "crossExchangeCoverageComplete": false,
+  "knownAtVersionClockCertified": false,
+  "revisionCoverageComplete": false,
+  "technicalContinuityCertified": false,
+  "formalCore": "LOCKED",
+  "outcomes": "CLOSED"
+}
