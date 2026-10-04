@@ -1459,3 +1459,57 @@ Therefore the following remain authoritative:
 6. only after history + continuity are READY address `ASSESSOR_POLICY_NOT_FROZEN`, then Strategy -> Ranking -> Capacity -> real `s2_capacity_runs`.
 
 System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
+
+## 2026-10-04 S2-07 supplemental revision receipt — SIX-LANE BLOCKERS PHYSICALLY DECOMPOSED
+
+PR #487 merged as `b75376bb4741ea6ca7eec6c7f09bd32056dcf162`.
+
+Physical workflow receipts:
+- Supplemental Revision Provenance Receipt Readonly `37181058446`: PASS;
+- System2 Research CI `37181058355`: PASS;
+- V8 Regression `37181058477`: PASS.
+
+Six required historical final-result lanes are all physically READY for 2026-04-05..2026-10-02:
+- TWSE EX_RIGHT_DIVIDEND = 831 events;
+- TWSE CAPITAL_REDUCTION = 9;
+- TWSE PAR_VALUE_CHANGE = 1;
+- TPEx EX_RIGHT_DIVIDEND = 611;
+- TPEx CAPITAL_REDUCTION = 9;
+- TPEx PAR_VALUE_CHANGE = 4.
+
+The receipt proves the remaining revision blocker is no longer transport/final-result readability.
+
+Current blocker counts:
+- 6/6 lanes: public availability latency not certified;
+- 6/6 lanes: exact knownAt / PIT availability not certified;
+- 6/6 lanes: bounded authority revision coverage incomplete;
+- 6/6 lanes: bounded revision-history coverage incomplete;
+- 4/6 lanes: representative authority routing not observed.
+
+Representative authority routing is already physically observed for:
+- TWSE ex-right/dividend;
+- TWSE capital reduction.
+
+Still missing representative authority routing:
+- TWSE par-value change;
+- TPEx ex-right/dividend;
+- TPEx capital reduction;
+- TPEx par-value change.
+
+### Exact continuation
+1. close representative authority-routing controls for the four missing lanes using official issuer/regulator/exchange evidence;
+2. define bounded revision-history coverage separately from representative-control success;
+3. keep `knownAtVersionClockCertified=false` until genuine prospective MOPS availability samples exist;
+4. integrate TWSE and TPEx suspension/resumption into shared session completeness;
+5. bind event/revision/suspension evidence to expected symbol sessions and RAW A1 lineage;
+6. only then reconsider technical continuity and later assessor/ranking/capacity work.
+
+Still authoritative:
+`revisionCoverageComplete=false`,
+`noEventMayBeClaimed=false`,
+`suspensionCoverageComplete=false`,
+`symbolSessionCompletenessCertified=false`,
+`technicalContinuityCertified=false`,
+all trading authority false.
+
+System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.

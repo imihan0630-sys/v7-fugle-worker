@@ -568,3 +568,15 @@ Still false:
 - all trading authority.
 
 Next engineering target: bounded supplemental revision provenance receipt with explicit blocker decomposition, followed by shared suspension/session integration.
+
+## 2026-10-04 S2-07 six-lane revision blocker receipt
+
+PR #487 / `b75376bb4741ea6ca7eec6c7f09bd32056dcf162` converted revision incompleteness into a machine-readable six-lane blocker receipt.
+
+All 6 final-result lanes are ready. MOPS query integrity and source-reported clock semantics are ready. The remaining work is now explicitly:
+- prospective public-availability / exact knownAt evidence: 6 lanes;
+- bounded authority revision coverage: 6 lanes;
+- bounded revision-history coverage: 6 lanes;
+- representative authority routing: 4 lanes.
+
+Next target: representative authority routing for TWSE par-value and the three TPEx lanes, then shared suspension/session coverage.
