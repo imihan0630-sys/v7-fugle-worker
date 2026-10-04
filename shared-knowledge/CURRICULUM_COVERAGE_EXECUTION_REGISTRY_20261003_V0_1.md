@@ -490,3 +490,54 @@ Still required:
 9. commit `research/COV06_D10_SPECIALIST_RETURN_V0_1.md`.
 
 No maturity or Formal change.
+
+
+## COV-10 / COV-11 blocker refinement — 2026-10-04
+
+### COV-10 — Belief-updating Bias umbrella
+
+State remains:
+`PARTIAL_EVIDENCE_RECEIVED`.
+
+Existing D20 owners are already mature enough that a new umbrella cannot be justified by labels alone:
+- D20-04 Anchoring / Reference Dependence;
+- D20-05 Representativeness / Recency;
+- D20-07 Attention / Salience;
+- D20-08 Underreaction / Post-event Drift;
+- D20-12 Behavioral-vs-Structural Falsification.
+
+Exact blocker:
+`BELIEF_UPDATING_OWNER_AND_OBSERVABLE_PROXY_PENDING`.
+
+Still required:
+1. separate confirmation bias / belief perseverance / conservatism;
+2. prove one common belief-updating capability exists beyond existing owners;
+3. freeze at least one Taiwan-replayable non-price-only observable proxy;
+4. define first-known/revision/UNKNOWN;
+5. falsify attention/anchoring/representativeness/structural alternatives;
+6. prevent three named biases from becoming three votes;
+7. give exactly one terminal recommendation;
+8. commit `research/COV10_D20_SPECIALIST_RETURN_V0_1.md`.
+
+### COV-11 — Shareholder Rights / Stewardship / Activism / Voting
+
+State remains:
+`PARTIAL_EVIDENCE_RECEIVED`.
+
+Existing D21 research already separates ownership/control, minority-shareholder risk and governance events, but recurring rights/stewardship/voting is not yet a durable owner family.
+
+Exact blocker:
+`RIGHTS_STEWARDSHIP_VOTING_FAMILY_AND_PIT_REPLAY_PENDING`.
+
+Still required:
+1. define recurring shareholder-rights/stewardship/voting family;
+2. separate formal rights from ownership/control concentration and minority-risk outcomes;
+3. freeze MOPS meeting agenda/proposal/minutes/voting-result first-known clocks;
+4. freeze stewardship/institutional-voting source/version clocks;
+5. produce one historical Taiwan lifecycle replay;
+6. avoid normative good/bad scoring;
+7. anti-double-count versus D06 ownership flows and D11 event mechanics;
+8. give exactly one terminal recommendation;
+9. commit `research/COV11_D21_SPECIALIST_RETURN_V0_1.md`.
+
+No maturity or Formal change.
