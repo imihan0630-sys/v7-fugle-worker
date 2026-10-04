@@ -1,8 +1,8 @@
 # Corporate Governance / Insider Checkpoint
 
-Updated: 2026-10-04 15:02 Asia/Taipei
+Updated: 2026-10-04 16:37 Asia/Taipei
 Scope: D21｜公司治理／經營者／內部人／控制權品質
-Status: D21-01 L2 / D21-02 L3 / D21-03 L2 / D21-04 L2 / D21-05 L3 / D21-07 L2 / D21-09 L2 / D21-10 L3 / D21-11 L2 PARTIAL_REPLAY / D21-12 L3 / D21-13 L2 / FORMAL_CORE_UNCHANGED
+Status: D21-01 L2 / D21-02 L3 / D21-03 L2 / D21-04 L2 / D21-05 L3 / D21-07 L2 / D21-09 L3 / D21-10 L3 / D21-11 L2 PARTIAL_REPLAY / D21-12 L3 / D21-13 L3 / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - Canonical continuation checkpoint for D21.
@@ -262,5 +262,34 @@ Formal Core impact: NONE.
 2. Build D21-13 historical multi-sector materiality replay, preferably semiconductor water/energy/carbon exposure versus a high-emission or labor/product-safety-sensitive sector.
 3. Preserve disclosure regime, methodology vintage, target-versus-realized state and first-known timing.
 4. Continue D21-11 contemporaneous-evidence recovery opportunistically; do not promote from ex-post adjudication alone.
+
+Formal Core impact: NONE.
+
+
+## 2026-10-04 late-afternoon durable continuation
+
+### D21-13 materiality replay
+- TSMC 2023 sustainability metrics became conservatively public on 2024-07-31 through the issuer's sustainability-report release. Do not backfill them into 2023.
+- TSMC 2023 unit water consumption was 176.4 L per 12-inch equivalent wafer mask layer, +25.2% versus the 2010 base and a missed target; issuer attribution linked the deterioration to lower capacity utilization. At the same time, process-water recycling reached 90.3% and reclaimed-water replacement reached 12%, above its disclosed target.
+- This freezes the denominator-effect falsification: worsening environmental intensity can reflect production/utilization changes while resilience metrics improve.
+- China Steel's 2023 Sustainability Report was board-approved/publicly described on 2024-08-13. 2023 carbon reduction was about 358,000 tCO2e, process-water recycling 98.5%, total water intensity 5.04 t/tCS versus 4.90 target, and new-water intensity 2.16 t/tCS versus 2.50 target.
+- China Steel explicitly identifies low-carbon raw-material transition, carbon fees, low-carbon energy and carbon-neutral technology as operating/R&D-cost channels. Carbon risk is therefore much more direct to cost/capex than a generic ESG score.
+- Cross-sector result: semiconductor and integrated steel require different materiality maps and denominators. Generic ESG composite and unscaled cross-sector metric comparison remain rejected.
+- D21-13 advances L2 -> L3 / 60%.
+- L4 remains closed pending OOS/prospective incremental tests controlling sector, size, capex cycle, profitability, valuation and regulation phase.
+
+### D21-09 succession replay
+- TSMC planned succession: 2023-12-19 public announcement that Mark Liu would retire after the 2024 AGM and C.C. Wei was recommended as successor; 2024-06-04 the new board elected C.C. Wei chairman. Lead time = 168 days.
+- Taiwan Cement abrupt succession: 2017-01-22 incapacitation triggered acting chairman/president appointment; MOPS-derived archive observed by 2017-01-23 07:20. Leslie Koo's death was announced before market open on 2017-01-23; later the same day the board selected Chang An-Ping as permanent chairman/president, observed in a MOPS-derived archive at 17:23. The 2017 annual report later confirmed the sequence.
+- Succession is frozen as a state machine: incapacity/death/retirement -> acting state -> successor selection -> effective role, with planned lead time and board/election dependency preserved.
+- Current roster must never replace historical state transitions.
+- D21-09 advances L2 -> L3 / 60%.
+- L4 remains closed pending broader samples and OOS/prospective tests.
+- Role remains CONTEXT_ONLY / GOVERNANCE_TAIL_RISK / CONFIDENCE.
+
+## Exact next continuation
+1. D21-07 is now the largest executable L2 module without PIT validation. Build a historical Taiwan compensation-policy -> capital-allocation replay using at least one long-horizon investment decision and one capital-return/financing decision, separating policy known_at, decision known_at and future realized outcome.
+2. Keep blocked source dependencies active but non-blocking: D21-11 contemporaneous tunneling evidence, D21-04 original pledge receipts, D21-03 original monthly insider known_at, D21-01 original ownership-report known_at.
+3. D21-09 and D21-13 require OOS/prospective evidence before L4.
 
 Formal Core impact: NONE.
