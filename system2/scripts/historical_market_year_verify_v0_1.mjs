@@ -11,7 +11,11 @@ import { materializeHistoricalA1PackRowsV0_1 } from "../runtime/historical_pack_
 import { fetchOfficialHistoricalA1RangeV0_1 } from "../runtime/official_historical_backfill_source_v0_1.mjs";
 import { buildD08TwseHistoricalUniverseSourceV0_1 } from "../runtime/d08_twse_historical_universe_source_v0_1.mjs";
 import { buildHistoricalUniverseRegistryV0_1 } from "../runtime/historical_universe_registry_v0_1.mjs";
-import { buildHistoricalMarketYearCoverageV0_1 } from "../runtime/historical_market_year_coverage_v0_1.mjs";
+import {
+  buildHistoricalMarketYearCoverageV0_1,
+  buildObservedIntervalUniverseRegistryV0_1,
+} from "../runtime/historical_market_year_coverage_v0_1.mjs";
+import { fetchCurrentListingMetadataV0_1 } from "../runtime/current_listing_metadata_v0_1.mjs";
 
 const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
 const apiToken=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN;
@@ -27,7 +31,7 @@ assert.ok(accountId,"CLOUDFLARE_ACCOUNT_ID is required");
 assert.ok(apiToken,"SYSTEM2_CLOUDFLARE_API_TOKEN is required");
 assert.ok(r2AccessKeyId,"SYSTEM2_R2_ACCESS_KEY_ID is required");
 assert.ok(r2SecretAccessKey,"SYSTEM2_R2_SECRET_ACCESS_KEY is required");
-assert.equal(market,"TWSE","V0.1 physical market-year verifier currently supports TWSE only");
+assert.ok(["TWSE","TPEX"].includes(market),"SYSTEM2_HISTORY_YEAR_MARKET must be TWSE or TPEX");
 assert.ok(Number.isInteger(year)&&year>=2017&&year<=2100,"SYSTEM2_HISTORY_YEAR must be >=2017");
 
 const fromDate=`${year}-01-01`;
@@ -210,27 +214,90 @@ for(const key of coldByKey.keys()){
   if(!officialByKey.has(key))absentFromFreshOfficial.push(key);
 }
 
-const upstreamUniverse=await buildD08TwseHistoricalUniverseSourceV0_1({
-  datasetStartDate:fromDate,observedAt,
-});
-const sourceRows=upstreamUniverse.registry.memberships.map((m)=>({
-  market:m.market,symbol:m.symbol,companyName:m.companyName,industry:m.industry,
-  memberState:m.memberState,listingDate:m.listingDate,delistingDate:m.delistingDate,
-  sourceId:m.sourceId,sourceName:m.sourceName,sourceUrl:m.sourceUrl,sourceRowHash:m.sourceRowHash,
-}));
-const firstTradingDateByMarketSymbol=Object.fromEntries(
-  upstreamUniverse.registry.memberships
-    .filter((m)=>m.firstTradingDate)
-    .map((m)=>[m.market+"|"+m.symbol,m.firstTradingDate]),
-);
-const registry=await buildHistoricalUniverseRegistryV0_1({
-  registryId:`S2-DATA-TWSE-${year}-OFFICIAL-UNION-V0.1`,
-  sourceRows,firstTradingDateByMarketSymbol,datasetStartDate:fromDate,observedAt,
-});
-assert.equal(registry.unknownStartCount,0,"TWSE historical universe contains unknown starts");
-assert.equal(registry.replayEligibleCount,registry.membershipCount,"TWSE historical universe replay eligibility incomplete");
+let registry;
+let historicalUniverseEvidence;
+let suspension;
 
-const suspension=await fetchTwseSuspensionIntervals();
+if(market==="TWSE"){
+  const upstreamUniverse=await buildD08TwseHistoricalUniverseSourceV0_1({
+    datasetStartDate:fromDate,observedAt,
+  });
+  const sourceRows=upstreamUniverse.registry.memberships.map((m)=>({
+    market:m.market,symbol:m.symbol,companyName:m.companyName,industry:m.industry,
+    memberState:m.memberState,listingDate:m.listingDate,delistingDate:m.delistingDate,
+    sourceId:m.sourceId,sourceName:m.sourceName,sourceUrl:m.sourceUrl,sourceRowHash:m.sourceRowHash,
+  }));
+  const firstTradingDateByMarketSymbol=Object.fromEntries(
+    upstreamUniverse.registry.memberships
+      .filter((m)=>m.firstTradingDate)
+      .map((m)=>[m.market+"|"+m.symbol,m.firstTradingDate]),
+  );
+  registry=await buildHistoricalUniverseRegistryV0_1({
+    registryId:`S2-DATA-TWSE-${year}-OFFICIAL-UNION-V0.1`,
+    sourceRows,firstTradingDateByMarketSymbol,datasetStartDate:fromDate,observedAt,
+  });
+  assert.equal(registry.unknownStartCount,0,"TWSE historical universe contains unknown starts");
+  assert.equal(registry.replayEligibleCount,registry.membershipCount,"TWSE historical universe replay eligibility incomplete");
+  historicalUniverseEvidence={
+    readiness:"PASS_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION",
+    registryId:registry.registryId,
+    registryHash:registry.registryHash,
+    membershipCount:registry.membershipCount,
+    replayEligibleCount:registry.replayEligibleCount,
+    currentCount:registry.currentCount,
+    delistedCount:registry.delistedCount,
+    unknownStartCount:registry.unknownStartCount,
+    sourceReceipt:upstreamUniverse.sourceReceipt,
+    survivorshipCompleteForDataCoverage:true,
+  };
+  suspension=await fetchTwseSuspensionIntervals();
+}else{
+  const currentListing=await fetchCurrentListingMetadataV0_1({
+    observedAt,
+    minimumByMarket:{TWSE:500,TPEX:400},
+  });
+  assert.equal(currentListing.state,"READY","current listing metadata must be READY");
+  registry=buildObservedIntervalUniverseRegistryV0_1({
+    market,
+    rows:coldRows,
+    currentListingByMarketSymbol:currentListing.byMarketSymbol,
+    fromDate,
+    toDate,
+  });
+  historicalUniverseEvidence={
+    readiness:"PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION",
+    registryId:`S2-DATA-TPEX-${year}-OBSERVED-INTERVAL-V0.1`,
+    registryHash:sha256Text(JSON.stringify(registry.memberships)),
+    membershipCount:registry.membershipCount,
+    replayEligibleCount:registry.membershipCount,
+    currentCount:registry.officialCurrentCount,
+    delistedCount:null,
+    unknownStartCount:null,
+    observedHistoricalOnlyCount:registry.observedHistoricalOnlyCount,
+    currentWithoutObservedRowsCount:registry.currentWithoutObservedRowsCount,
+    sourceReceipt:{
+      currentListingMetadataHash:currentListing.metadataHash,
+      currentListingCount:currentListing.counts.TPEX,
+      currentListingSourceId:"MOPS_T187AP03_O_CURRENT_LISTED_COMPANY",
+      observedIntervalUniverseState:registry.state,
+      officialDelistingUnionComplete:false,
+    },
+    survivorshipCompleteForDataCoverage:false,
+  };
+  suspension={
+    state:"PARTIAL_2017_TPEX_HALT_HISTORY_NOT_CERTIFIED",
+    sourceUrl:"https://www.tpex.org.tw/www/zh-tw/bulletin/sprcHis",
+    sourceHash:null,
+    upstreamStatus:null,
+    fields:[],
+    intervalCount:0,
+    intervals:[],
+    absenceCertifiesNoSuspension:false,
+    sourceHistoryStart:null,
+    limitation:"Official machine route is bounded-verified for modern controls, but 2017 all-history completeness is not certified.",
+  };
+}
+
 const coverage=buildHistoricalMarketYearCoverageV0_1({
   market,year,fromDate,toDate,
   tradingDates:officialRange.dateReceipts.map((x)=>x.marketDate),
@@ -273,9 +340,10 @@ const dataCoverageState = storageVerification.state==="PASS"
   && coverage.structuralCoverageState==="PASS"
     ? "PASS"
     : "BLOCKED";
+const universeReplayPartial = historicalUniverseEvidence.readiness.startsWith("PARTIAL");
 const replayReadinessState = dataCoverageState==="BLOCKED"
   ? "BLOCKED"
-  : coverage.overallState;
+  : (universeReplayPartial || coverage.overallState==="PARTIAL" ? "PARTIAL" : coverage.overallState);
 const overallState = dataCoverageState==="BLOCKED"
   ? "BLOCKED"
   : replayReadinessState;
@@ -286,21 +354,13 @@ const output={
     :(replayReadinessState==="PASS"
       ?"PASS_MARKET_YEAR_DATA_AND_REPLAY_READINESS"
       :"PASS_MARKET_YEAR_DATA_PARTIAL_REPLAY_READINESS"),
-  verifierVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_2",
+  verifierVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_3",
   market,year,fromDate,toDate,
   storageVerification,
   sourceReconciliation,
-  historicalUniverse:{
-    registryId:registry.registryId,
-    registryHash:registry.registryHash,
-    membershipCount:registry.membershipCount,
-    replayEligibleCount:registry.replayEligibleCount,
-    currentCount:registry.currentCount,
-    delistedCount:registry.delistedCount,
-    unknownStartCount:registry.unknownStartCount,
-    sourceReceipt:upstreamUniverse.sourceReceipt,
-  },
+  historicalUniverse:historicalUniverseEvidence,
   suspensionEvidence:{
+    state:suspension.state || "OBSERVED",
     sourceUrl:suspension.sourceUrl,
     sourceHash:suspension.sourceHash,
     upstreamStatus:suspension.upstreamStatus,
@@ -309,11 +369,13 @@ const output={
     intervalSample:suspension.intervals.slice(0,50),
     absenceCertifiesNoSuspension:false,
     sourceHistoryStart:suspension.sourceHistoryStart,
+    limitation:suspension.limitation || null,
   },
   coverage,
   dataCoverageState,
   replayReadinessState,
   pitContinuityReadiness:{
+    universe:historicalUniverseEvidence.readiness,
     symbolSession:coverage.symbolSessionReadiness,
     pit:coverage.pitReadiness,
     continuity:coverage.continuityReadiness,
@@ -325,7 +387,7 @@ const output={
   finalSelectionAuthorityChanged:false,
   capitalOrderAuthorityChanged:false,
   observedAt,
-  schemaVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_2",
+  schemaVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_3",
 };
 
 const json=JSON.stringify(output,null,2);
