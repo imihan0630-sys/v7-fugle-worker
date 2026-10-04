@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "D08_TWSE_DAILY_VALUATION_ARCHIVE_BOUNDARY_RECEIPT_20261004_V0_1",
+  "researchRoom": "06",
+  "module": "D08-03",
+  "observedAtAsiaTaipei": "2026-10-04T19:47:00+08:00",
+  "status": "EARLIEST_MACHINE_BOUNDARY_VERIFIED / LEGACY_RATIO_ONLY_SCHEMA_SUPPORTED / OUTCOMES_CLOSED",
+  "officialSource": "TWSE BWIBBU_d historical daily valuation",
+  "machineBoundary": {
+    "claimedPageStart": "2005-09-01",
+    "verifiedMachineStart": "2005-09-02",
+    "dayBeforeVerifiedStart": "OFFICIAL_ENDPOINT_REJECTED_AS_TOO_EARLY"
+  },
+  "legacySchema": {
+    "fields": [
+      "證券代號",
+      "證券名稱",
+      "本益比",
+      "殖利率(%)",
+      "股價淨值比"
+    ],
+    "profile": "LEGACY_RATIO_ONLY",
+    "closeFieldProvided": false,
+    "fiscalReportPeriodFieldProvided": false
+  },
+  "pilot": {
+    "year": 2005,
+    "fromDate": "2005-09-02",
+    "toDate": "2005-12-31",
+    "workflowRun": 37199772416,
+    "result": "PASS",
+    "tradingDateCount": 85,
+    "totalRows": 56634,
+    "totalPeKnown": 40845,
+    "totalPbKnown": 56497,
+    "sourceBundleHash": "501c7c1dc356ab70731e3839295c872a728a6c2784c0a8b874385b7ff111250a",
+    "packPayloadHash": "e15068875b9615fba74148b21016d5e9791d6f129f2192b32d10795d47ed532a",
+    "objectSha256": "03938cab114fb25ad0e0680ba261645c87d1d66abe9deb043647640ee73d5012",
+    "physicalIdempotency": "PASS_TWO_CONSECUTIVE_EXECUTIONS_IDENTICAL",
+    "readbackVerified": true
+  },
+  "frozenRules": [
+    "EXPANDING_SINCE_AVAILABLE uses 2005-09-02 as the verified machine-replay boundary unless a stronger official machine source proves an earlier date.",
+    "Legacy ratio-only dates may contribute PE/PB percentile observations.",
+    "Missing legacy close/fiscal-period fields remain SOURCE_NOT_PROVIDED and are never reconstructed.",
+    "No outcome access or return-based source/window selection."
+  ],
+  "maturityImpact": "NONE_BY_ITSELF",
+  "formalCoreChanged": false,
+  "formalOptimizationCandidate": "NONE"
+}
