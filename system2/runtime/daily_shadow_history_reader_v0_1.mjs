@@ -1,6 +1,6 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 
-export const DAILY_SHADOW_HISTORY_READER_VERSION = "0.2-RESEARCH";
+export const DAILY_SHADOW_HISTORY_READER_VERSION = "0.3-RESEARCH";
 
 function requiredText(value, field) {
   if (typeof value !== "string" || !value.trim()) throw new Error(`${field} is required`);
@@ -252,6 +252,13 @@ export async function probePitHistoryCoverageV0_1({
     if (historyReady) historyReadyCount += 1;
     if (continuityReady) continuityReadyCount += 1;
     if (ambiguousDateCount > 0) ambiguousCount += 1;
+
+    const blockerCodes = [];
+    if (!market) blockerCodes.push("CURRENT_SYMBOL_MARKET_IDENTITY_MISSING");
+    if (ambiguousDateCount > 0) blockerCodes.push("SYMBOL_LOCAL_REVISION_AMBIGUITY");
+    if (!historyReady) blockerCodes.push("INSUFFICIENT_PIT_HISTORY");
+    if (historyReady && !continuityReady) blockerCodes.push("SYMBOL_LOCAL_CONTINUITY_NOT_VERIFIED");
+
     diagnostics.push({
       symbol,
       market,
@@ -270,21 +277,45 @@ export async function probePitHistoryCoverageV0_1({
       expectedLastDate,
       historyReady,
       continuityReady,
+      evaluationInputReady: continuityReady,
+      readinessState: continuityReady ? "READY" : "INCOMPLETE",
+      blockerCodes: Object.freeze(blockerCodes),
+      denominatorAccounted: true,
     });
   }
 
   const currentCount = Number(snapshotBatch.ordinarySymbolCount || diagnostics.length);
+  const accountedSymbolCount = diagnostics.length;
+  const accountingComplete = currentCount > 0 && accountedSymbolCount === currentCount;
   const historyCoverage = currentCount > 0 ? historyReadyCount / currentCount : 0;
   const continuityCoverage = currentCount > 0 ? continuityReadyCount / currentCount : 0;
+
+  // Aggregate coverage state remains descriptive. It is NOT the global fail-closed gate.
+  // Symbol-local history/continuity/revision gaps stay in diagnostics; only source-wide
+  // integrity failures, clock failures or universe-accounting failures may globally block.
   const state = currentCount === 0
     ? "NO_CURRENT_UNIVERSE"
-    : ambiguousCount > 0
-      ? "REVISION_AMBIGUITY_PRESENT"
-      : historyReadyCount < currentCount
-        ? "HISTORY_COVERAGE_INCOMPLETE"
-        : continuityReadyCount < currentCount
-          ? "CONTINUITY_NOT_VERIFIED"
-          : "READY";
+    : !accountingComplete
+      ? "UNIVERSE_ACCOUNTING_INCOMPLETE"
+      : ambiguousCount > 0
+        ? "REVISION_AMBIGUITY_PRESENT"
+        : historyReadyCount < currentCount
+          ? "HISTORY_COVERAGE_INCOMPLETE"
+          : continuityReadyCount < currentCount
+            ? "CONTINUITY_NOT_VERIFIED"
+            : "READY";
+  const globalIntegrityState =
+    currentCount > 0 && accountingComplete ? "READY" : "BLOCKED";
+  const globalBlockerCodes = globalIntegrityState === "READY"
+    ? []
+    : currentCount === 0
+      ? ["NO_CURRENT_UNIVERSE"]
+      : ["UNIVERSE_ACCOUNTING_INCOMPLETE"];
+  const symbolLocalIncompleteCount = Math.max(0, currentCount - continuityReadyCount);
+  const selectionDenominatorComplete =
+    globalIntegrityState === "READY"
+    && symbolLocalIncompleteCount === 0
+    && ambiguousCount === 0;
 
   return deepFreeze({
     version: DAILY_SHADOW_HISTORY_READER_VERSION,
@@ -296,11 +327,17 @@ export async function probePitHistoryCoverageV0_1({
     listingMetadataState: listingMetadata?.state || "NOT_PROVIDED",
     priorTradingDateCount: tradingDates?.length || 0,
     currentUniverseCount: currentCount,
+    accountedSymbolCount,
+    accountingComplete,
+    globalIntegrityState,
+    globalBlockerCodes: Object.freeze(globalBlockerCodes),
     historyReadyCount,
     continuityReadyCount,
+    symbolLocalIncompleteCount,
     ambiguousSymbolCount: ambiguousCount,
     historyCoverage,
     continuityCoverage,
+    selectionDenominatorComplete,
     diagnostics: Object.freeze(diagnostics),
     readOnly: true,
     externalMutationPerformed: false,
