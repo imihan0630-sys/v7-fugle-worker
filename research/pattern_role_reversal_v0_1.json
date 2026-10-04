@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "0.1",
+  "stage": "DL-034",
+  "owner": "D01",
+  "status": "RESEARCH_ONLY_OUTCOMES_CLOSED",
+  "question": "structural persistence vs role reversal polarity flip",
+  "identity": {
+    "sameRootAcrossPolarity": true,
+    "polarityCreatesNewRoot": false,
+    "flipResetsRootAge": false,
+    "polarityMutatesGeometry": false
+  },
+  "requiredEventOrder": [
+    "PRE_CROSS_ORIENTATION",
+    "VALID_CROSSING",
+    "OPPOSITE_SIDE_RETEST_OPPORTUNITY",
+    "RETEST_RESPONSE"
+  ],
+  "invariants": {
+    "crossingAloneConfirmsFlip": false,
+    "noRetestIsFailure": false,
+    "missingEvidence": "UNKNOWN",
+    "corporateActionJumpEligible": false,
+    "outcomeJoin": "CLOSED",
+    "formalCore": "LOCKED"
+  },
+  "adversarialCaseCount": 14,
+  "confoundFamilies": [
+    "AGE",
+    "INTERACTION_HISTORY",
+    "SCALE_REGIME",
+    "CURRENT_LOCATION",
+    "EXCURSION_PATH",
+    "INTERACTION_RECENCY",
+    "DETECTOR_SALIENCE",
+    "CROSSING_OPPORTUNITY",
+    "OWNER_CONTEXT"
+  ],
+  "d16Nested": [
+    "R0",
+    "R1",
+    "R2",
+    "R3"
+  ],
+  "formalOptimizationCandidate": "NONE"
+}
