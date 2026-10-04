@@ -203,3 +203,22 @@ The opening gap remains a shared primitive owned by D11-10 for event-risk transf
 Official daily OHLC plus PIT-valid event clocks and D11-12 continuity guards support historical close/D1/D3/D5 replay. Exact 15m/30m evolution requires prospective intraday receipts. Price-limit, halt/resumption and unresolved corporate-action states remain dedicated constrained/UNKNOWN states.
 
 No alpha or directional effect claimed. Formal Core unchanged. Outcome joins closed.
+
+## Late-evening D17 exposure/propagation continuation — 2026-10-04
+
+Connected material-disclosure semantics now prove item-level replay and correction coexistence through `FCNT000004`, but do not prove incremental query behavior or first API availability. D11-08 and D17-01/02 remain L2.
+
+D17-04 advances L2 -> L3:
+Taiwan structured disclosures support event -> economic primitive -> direct firm exposure -> financial transmission -> timing with explicit MIXED/CONFLICTED/UNKNOWN outcomes. 2537 fire, 7827 HCB303 IND approval and 6461 restricted employee shares provide divergent witnesses. Direct exposure never forces a bullish/bearish stock sign.
+
+D17-11 advances L2 -> L3:
+D09 point-in-time classification plus D17 event identity and validated later price-path sources make event-specific peer propagation measurable after the peer set is frozen. D09 owns persistent sector state; D10 owns causal economic edges; D17 owns only event-specific propagation. Same-industry membership and peer co-movement are not causal proof.
+
+D17-05 stays L2 because D10-01 supply-chain graph remains below L3.
+
+Evidence:
+`research/d17_material_disclosure_connected_source_audit_20261004_v0_1.json`
+`research/d17_04_direct_exposure_pit_audit_20261004_v0_1.json`
+`research/d17_11_sector_propagation_pit_audit_20261004_v0_1.json`
+
+Formal Core unchanged. Outcome joins closed.
