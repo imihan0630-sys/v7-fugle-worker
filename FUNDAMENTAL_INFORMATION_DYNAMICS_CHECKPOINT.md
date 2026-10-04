@@ -273,3 +273,58 @@ Exact next:
 3. add baseline/control variables while outcomes stay closed;
 4. then open the preregistered TWSE-only Shadow outcome join;
 5. TPEx remains excluded until historical machine replay is verified.
+
+
+## 2026-10-04 Room-06 continuation — COV-04/COV-05 returns + D08-03 survivorship-safe cohort
+
+- Re-read latest main and reconciled Curriculum Coverage governance before continuing D08-03.
+- COV-04 D07 Dividend / Payout Policy & Sustainability:
+  - machine contract: research/dividend_payout_sustainability_pit_contract_v0_1.json;
+  - specialist return: research/COV04_D07_SPECIALIST_RETURN_V0_1.md;
+  - repository intake preflight PASS as RETURN_CONTRACT_COMPLETE;
+  - terminal specialist recommendation = ADD_MODULE;
+  - proposed owner = D07, starting L0/0 if 00-room owner approval occurs;
+  - no canonical curriculum/maturity/Formal change yet.
+- COV-05 D08 P/S / EV-Sales:
+  - machine contract: research/sales_enterprise_multiples_pit_contract_v0_1.json;
+  - specialist return: research/COV05_D08_SPECIALIST_RETURN_V0_1.md;
+  - after explicit anti-double-count wording, repository intake preflight PASS with errors=0/warnings=0;
+  - terminal specialist recommendation = EXTEND_EXISTING_SCOPE into D08-06 rather than add a parallel module;
+  - D08-06 current canonical L2/40 is not changed by this return; the new sales-multiple sub-capability starts evidence-wise at L0;
+  - no Formal change.
+- D08-03 cohort/scan progression:
+  - executable cohort/scan contract: research/historical_valuation_twse_cohort_scan_contract_v0_1.json;
+  - parent/newer cohort preregistrations reconciled in research/d08_twse_cohort_contract_reconciliation_20261004_v0_1.json;
+  - 44 monthly scan dates from 2023-01 through 2026-08 frozen before outcomes;
+  - scan-date receipt: research/d08_twse_month_end_scan_date_receipt_20261004_v0_1.json;
+  - scanDateListHash = e4475abd9fe2ab867bf20e5a8ee2f1a000bdb78365afe6083e6433c2b5abc490.
+- D1 historical-universe read-only audit:
+  - temporary PR #430 closed without merge;
+  - read-only guard passed, but isolated D1 had zero historical-universe registry receipts;
+  - this is negative evidence: architecture exists but registry was not physically materialized;
+  - current-list-only history reconstruction remained prohibited.
+- Official TWSE survivorship-safe alternative:
+  - current company source = TWSE OpenAPI t187ap03_L;
+  - new-listing source = TWSE company/newlisting;
+  - delisting source = TWSE company/suspendListing;
+  - old delisted names missing from the new-listing history use official 2023-01-03 MI_INDEX presence under the already-existing HISTORY_FIRST_TRADING_DATE fallback;
+  - fallback symbols: 1701, 2358, 2809.
+- Durable universe receipt: research/d08_twse_official_universe_source_receipt_20261004_v0_1.json.
+- Final validation:
+  - System2 Research CI 37165989414 PASS;
+  - V8 Regression 37165989421 PASS;
+  - registry membershipCount=1101, replayEligible=1101, unknownStart=0;
+  - current=1089, delisted=12;
+  - 44 snapshots, min/max active members=975/1089;
+  - registryHash=0b7b587b7962b9782570a3b9fc679be8440d0c4c2e75fc06d155bf95641041a7;
+  - snapshotBundleHash=97d1b5324b388753b09236cb3a731361aed1f009a775e868c305c30d8189844a.
+- No return outcomes opened. D08-03 remains L3/60. FORMAL_OPTIMIZATION_CANDIDATE=NO. Formal Core/runtime/selection/scoring unchanged.
+
+Exact next:
+1. materialize 44 date-specific TWSE valuation/control snapshots while return outcomes remain closed;
+2. every survivorship-safe cohort member must be represented as KNOWN or explicit UNKNOWN;
+3. freeze per-date coverage/missingness receipts and immutable source/readback hashes;
+4. include raw PE/PB, 252/756/1260/expanding percentile states, denominator transition, corporate-action/listing-age context, peer/sector if PIT-safe, size/liquidity, trend/RS and regime controls;
+5. only after all coverage/readback gates pass may the preregistered Historical-Valuation Shadow outcome join open;
+6. TPEx remains outside inference until public historical machine replay or an authorized licensed history lane is verified;
+7. COV-04/COV-05 wait for 00-room formal intake/owner audit before any canonical module/scope change.
