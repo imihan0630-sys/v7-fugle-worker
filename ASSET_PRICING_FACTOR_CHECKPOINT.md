@@ -139,3 +139,9 @@ Status: RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / FULL_TWSE_UNIVERSE_COVERAGE
 5. Execute D03/D09 paired redundancy controls on identical frozen date/universe.
 6. Freeze D14-compatible research cost scenarios with explicit quality; actual owner commission remains UNKNOWN until directly evidenced.
 7. Zero applicable blockers may trigger L3 readiness review only; no automatic promotion.
+
+
+### Stage 8 symbol-session addendum
+- Shared System2 continuity state explicitly reports `suspensionCoverageComplete=false` and `symbolSessionCompletenessCertified=false`.
+- Therefore the 23 non-recent-listing TWSE UNKNOWN names cannot be promoted to known suspension/no-trade solely from null closes or missing rows.
+- D19 must consume the shared exchange-complete symbol-session receipt when certified; a D19-local suspension inference/engine is prohibited.
