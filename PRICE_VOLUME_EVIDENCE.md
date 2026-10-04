@@ -5203,3 +5203,31 @@ Classification:
 
 Target aggregate after canonical sync:
 60.0%.
+
+# Pre-PVE-240 addendum — executable Wave-1 L4 admission gate (2026-10-04)
+
+No PVE number consumed.
+No predictive return outcome inspected.
+
+Executable validator result:
+19/19 PASS.
+
+Key boundary now machine-enforced:
+- DESCRIPTIVE_ONLY at >=20 CLEAN scan dates;
+- L4_EVIDENCE_ELIGIBLE only at >=30 CLEAN scan dates AND >=100 completed eligible events.
+
+Independent-date protection:
+same-day multi-symbol observations count as one scanDate.
+
+Outcome protection:
+- H003 outcome must begin strictly after feature firstKnownAt / completed feature bar;
+- CENSORED / UNKNOWN is never a completed event;
+- duplicate event identity is a fatal-integrity condition.
+
+Hypothesis-specific protections:
+- H001 slot <10:15 is ineligible;
+- H20 primitive D01 event identity mismatch is ineligible;
+- common-support mismatch is ineligible.
+
+No maturity promotion is authorized by this evaluator.
+Current D02 evidence remains prospective-data blocked, not design blocked.
