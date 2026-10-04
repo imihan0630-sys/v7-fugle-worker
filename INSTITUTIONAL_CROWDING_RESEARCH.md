@@ -994,3 +994,77 @@ Exact next:
 5. Next valid trading date still owns IC-043, PF-040, D06-18 prospective borrow-economics and D06-14 T/T+1/T+2 vintage capture.
 6. H06/H12/H14 remain counterpart-pending under total-control intake.
 7. Formal Core remains LOCKED and `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+---
+
+## IC-051 — D06-06 Crowding reaches L3 through a minimum PIT-feasible core vector, not by waiting for every optional axis
+
+Research cycle: 2026-10-04 Asia/Taipei
+Status: CORE_CROWDING_PIT_DATA_FEASIBILITY_VALIDATED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Research receipt:
+`research/d06_06_core_crowding_pit_contract_v0_1.json`.
+
+### Why the previous L2 blocker no longer applies to the whole module
+Earlier D06-06 work correctly refused promotion while the concept was implicitly tied to leverage, shorting, ownership, passive flow and institutional flow all at once. That would require every source family to mature simultaneously.
+
+The module is now split into:
+- CORE_CROWDING: institutional actor flow/persistence + liquidity normalization + identity-agnostic large-holder ownership + price-flow reaction;
+- EXTENDED_CROWDING: optional margin-long, margin-short, securities borrowing, actual SBL shorting, day trading, passive/index context and borrow-economics axes.
+
+Missing extension axes remain UNKNOWN and do not become zero.
+
+### Operational Taiwan evidence
+The core vector is not merely theoretical.
+
+`research/institutional_score_decomposition_observer_readback_20260929_v0_2.json` proves bounded row-level co-presence on 62 real prospective Shadow rows:
+- institutional-flow/streak parents reconstruct 62/62;
+- `avgVolume20Lots` liquidity denominator is preserved;
+- large-holder concentration is present on every decomposition-ready row;
+- actor divergence is observed on 36/62 rows;
+- no outcome interpretation was used.
+
+`research/d02_20261002_after_market_h20_receipt_v0_1.json` separately proves production data-QA co-availability on 2026-10-02:
+- institution ready = 1,865 stocks;
+- TDCC ready = 2,957 securities;
+- TDCC as-of date = 2026-09-24.
+
+The 2026-10-02 Formal generation was not confirmed and is ineligible as an outcome cohort. It is used only as source/coverage feasibility evidence.
+
+Current Worker runtime also joins institutional persistence/net-flow/liquidity and `chipConcentration` in one stock feature object. This is operational join evidence only; the current Formal `institutionalScore` is NOT adopted as the crowding definition.
+
+### Core vector semantics
+The canonical core is a non-scalar state vector:
+- actor direction and persistence;
+- actor divergence/alignment;
+- aggregate flow normalized by contemporaneous liquidity;
+- weekly TDCC large-holder concentration with `chipAsOfDate`;
+- same-date price/volume response.
+
+Allowed descriptive states include `FLOW_CONCENTRATION`, `FLOW_OWNERSHIP_CONCENTRATION`, `BUY_ABSORBED`, `SELL_RESILIENT`, and `ACTOR_DIVERGENCE`.
+
+None maps directly to BUY/SELL.
+
+### Strong falsification boundary
+Taiwan evidence rejects a universal sign.
+- Hsieh (2013) finds institutional and individual herding differ in stock characteristics, market-pressure response and subsequent returns.
+- Lee/Lin/Xia (2025) finds institutional-herding effects vary across downturns/booms and by intensity.
+
+Therefore even if the data vector is PIT-feasible, economic sign remains state-dependent and outcome-closed.
+
+### Why D06-07/08/09/11/14/18 do not inherit this promotion
+They remain separate source modules. Their unresolved TPEx clocks, paid-access gates, revision vintages, utilization denominators or passive-flow coverage are not bypassed.
+
+Promotion:
+`D06-06 L2/40% -> L3/60%`.
+
+---
+
+## IC-052 — exact next after core-crowding promotion
+1. Build immutable prospective CORE_CROWDING receipts with source hash and firstKnownAt for institutional, TDCC and price/volume parents.
+2. Same `chipAsOfDate` reused across multiple scanDates is one ownership vintage, not repeated independent evidence.
+3. Extension axes are attached only when their own PIT contracts are ready; missing means UNKNOWN.
+4. Do not build or tune a scalar crowding score.
+5. L4 requires independent dates, D5+ outcomes, date clustering, regime/sector/liquidity controls, passive-event stratification, and incremental tests against simpler institutional/price-volume baselines.
+6. D06-07/08/09 remain L2 until authorized/replayable TPEx evidence is actually captured; source existence or paid product availability is insufficient.
+7. Formal Core remains LOCKED; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
