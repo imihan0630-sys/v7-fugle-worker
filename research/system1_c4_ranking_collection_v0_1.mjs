@@ -13,9 +13,14 @@ const versionAtLeast817=v=>{
 export function collectC4RankingRedundancyEvidence({pages}={}){
   if(!Array.isArray(pages)||!pages.length)return {status:'DATA_QUALITY_BLOCKED',error:'C4_RANKING_C1_PAGES_REQUIRED',eligibleForInference:false,...flags};
   const header=pages[0]?.header||{};
-  if(!versionAtLeast817(header.effectiveRuntimeVersion)||!header.shadowMembershipCapture){
+  if(!versionAtLeast817(header.effectiveRuntimeVersion)){
     return {status:'LEGACY_NO_C4_RANKING_INPUT',generationId:header.generationId??null,
       sessionDate:header.sessionDate??null,eligibleForInference:false,historicalBackfillPerformed:false,...flags};
+  }
+  if(!header.shadowMembershipCapture){
+    return {status:'DATA_QUALITY_BLOCKED',generationId:header.generationId??null,sessionDate:header.sessionDate??null,
+      error:'C4_RANKING_CAPTURE_MISSING_ON_V8_17_PLUS',eligibleForDecisionIncidence:false,eligibleForInference:false,
+      historicalBackfillPerformed:false,...flags};
   }
   try{
     const capture=canonicalJcsJson(header.shadowMembershipCapture);
