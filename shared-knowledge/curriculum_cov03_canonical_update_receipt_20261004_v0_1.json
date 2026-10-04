@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "CURRICULUM_COV03_CANONICAL_UPDATE_RECEIPT_V0_1",
+  "candidateId": "COV-03",
+  "status": "CANONICAL_UPDATE_COMPLETE",
+  "ownerApprovedAt": "2026-10-04T11:09:00+08:00",
+  "reconciledFromMain": "3772f6332465a5912d1ca32314c322b455685d18",
+  "canonicalFilesExecutedThrough": "7e150fa155bfdc8b6903f4a117f77029900f4f51",
+  "action": "ADD_MODULE",
+  "module": {
+    "id": "D06-19",
+    "domain": "D06",
+    "room": "05｜法人與籌碼研究室",
+    "name": "Retail / Individual Investor Participation & Flow（散戶／自然人參與與流向）",
+    "level": "L0",
+    "maturityPct": 0
+  },
+  "maturityConflictResolution": "CANONICAL_L0_0_SUPERSEDES_SUPPORTING_L1_20_FOR_STRUCTURAL_EXECUTION",
+  "before": {
+    "domains": 22,
+    "activeModules": 355,
+    "maturityWeightedPct": 43.5,
+    "d06Modules": 17,
+    "d06MaturityPct": 48.2
+  },
+  "after": {
+    "domains": 22,
+    "activeModules": 356,
+    "maturityWeightedPct": 43.4,
+    "d06Modules": 18,
+    "d06MaturityPct": 45.6
+  },
+  "dataBoundary": {
+    "verified": [
+      "market-level direct natural-person observability",
+      "selected-channel direct natural-person observability",
+      "natural-person ownership observability"
+    ],
+    "unknown": [
+      "domestic natural-person stock-date directional flow",
+      "broad historical firstKnownAt",
+      "OOS/Shadow alpha"
+    ]
+  },
+  "antiDoubleCount": {
+    "forbidden": [
+      "margin-as-direct-retail",
+      "daytrade-as-direct-retail",
+      "oddlot-as-whole-market-retail",
+      "broker-branch-as-beneficial-owner",
+      "total-minus-institutions-as-retail",
+      "duplicate D06 primitive plus D20 independent vote"
+    ]
+  },
+  "formalCore": "LOCKED",
+  "system1Formal": "UNCHANGED",
+  "system2Formal": "UNCHANGED",
+  "runtimeImpact": "NONE",
+  "next": "D06-19_SOURCE_TAXONOMY_AND_PIT_REPLAY_CONTRACT"
+}
