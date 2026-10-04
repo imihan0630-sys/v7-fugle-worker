@@ -360,6 +360,7 @@ jobs:
           node tests/test_system1_setup_channel_scale_audit_v0_1.mjs
           node tests/test_system1_market_cap_conditional_admission_v0_1.mjs
           node tests/test_system1_first_failure_masking_audit_v0_1.mjs
+          node tests/test_system1_sector_gate_component_audit_v0_1.mjs
           node --check tests/collect_system1_c1_evidence.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs
