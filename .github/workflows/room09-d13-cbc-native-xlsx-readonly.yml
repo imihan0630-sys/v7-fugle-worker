@@ -1,0 +1,156 @@
+name: Room09 D13 CBC native XLSX readonly
+
+on:
+  push:
+    branches:
+      - research-room09-d12-taifex-source-smoke-20261004
+    paths:
+      - .github/workflows/room09-d13-cbc-native-xlsx-readonly.yml
+
+permissions:
+  contents: read
+
+jobs:
+  native-xlsx-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Fetch official CBC native XLSX files and emit targeted lossless cell audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/cbc
+          curl --fail --silent --show-error --location --retry 2 \
+            "https://www.cbc.gov.tw/tw/dl-221111-6c79246bfe494155ba64f83bdb2dc4c9.html" \
+            -o /tmp/cbc/20251120.xlsx
+          curl --fail --silent --show-error --location --retry 2 \
+            "https://www.cbc.gov.tw/tw/dl-224948-5cb3dfea5e384af2b166d07cd4550d28.html" \
+            -o /tmp/cbc/20260226.xlsx
+          curl --fail --silent --show-error --location --retry 2 \
+            "https://www.cbc.gov.tw/tw/dl-225493-64ee6143a2174c58ada73a0c19b33318.html" \
+            -o /tmp/cbc/20260520.xlsx
+
+          python - <<'PY'
+          import hashlib, json, re, zipfile
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          NS_MAIN="{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+          NS_REL="{http://schemas.openxmlformats.org/officeDocument/2006/relationships}"
+          NS_PKG="{http://schemas.openxmlformats.org/package/2006/relationships}"
+
+          def col_num(ref):
+              m=re.match(r"([A-Z]+)", ref)
+              n=0
+              for ch in m.group(1):
+                  n=n*26+ord(ch)-64
+              return n
+
+          def shared_strings(z):
+              try:
+                  root=ET.fromstring(z.read("xl/sharedStrings.xml"))
+              except KeyError:
+                  return []
+              out=[]
+              for si in root.findall(NS_MAIN+"si"):
+                  parts=[]
+                  for t in si.iter(NS_MAIN+"t"):
+                      parts.append(t.text or "")
+                  out.append("".join(parts))
+              return out
+
+          def workbook_sheets(z):
+              wb=ET.fromstring(z.read("xl/workbook.xml"))
+              rel=ET.fromstring(z.read("xl/_rels/workbook.xml.rels"))
+              targets={x.attrib["Id"]:x.attrib["Target"] for x in rel.findall(NS_PKG+"Relationship")}
+              out=[]
+              for s in wb.find(NS_MAIN+"sheets"):
+                  rid=s.attrib.get(NS_REL+"id")
+                  target=targets[rid]
+                  if not target.startswith("/"):
+                      target="xl/"+target.lstrip("/")
+                  else:
+                      target=target.lstrip("/")
+                  out.append((s.attrib["name"],target))
+              return out
+
+          def parse_sheet(z,target,ss):
+              root=ET.fromstring(z.read(target))
+              rows={}
+              for row in root.iter(NS_MAIN+"row"):
+                  rnum=int(row.attrib["r"])
+                  vals=[]
+                  for c in row.findall(NS_MAIN+"c"):
+                      ref=c.attrib.get("r","")
+                      typ=c.attrib.get("t")
+                      v=c.find(NS_MAIN+"v")
+                      val=""
+                      if typ=="inlineStr":
+                          parts=[t.text or "" for t in c.iter(NS_MAIN+"t")]
+                          val="".join(parts)
+                      elif v is not None and v.text is not None:
+                          raw=v.text
+                          if typ=="s":
+                              try: val=ss[int(raw)]
+                              except Exception: val=raw
+                          elif typ=="b":
+                              val="TRUE" if raw=="1" else "FALSE"
+                          else:
+                              val=raw
+                      vals.append((ref,val,col_num(ref)))
+                  rows[rnum]=vals
+              return rows
+
+          def normalize_numeric(s):
+              try:
+                  return float(str(s).replace(",",""))
+              except Exception:
+                  return None
+
+          targets_numeric=[362.29,372.01,659.9,664.0,297.6,296.9,302.3,1811.4,1122.4,1112.1]
+          files=[
+              ("2025-11-20","/tmp/cbc/20251120.xlsx"),
+              ("2026-02-26","/tmp/cbc/20260226.xlsx"),
+              ("2026-05-20","/tmp/cbc/20260520.xlsx"),
+          ]
+          out=[]
+          for label,path in files:
+              raw=Path(path).read_bytes()
+              item={
+                  "release":label,
+                  "byteCount":len(raw),
+                  "sha256":hashlib.sha256(raw).hexdigest(),
+                  "sheets":[],
+                  "numericMatches":[],
+                  "revisionMarkerRows":[],
+                  "rows25to36":[]
+              }
+              with zipfile.ZipFile(path) as z:
+                  ss=shared_strings(z)
+                  for sname,target in workbook_sheets(z):
+                      rows=parse_sheet(z,target,ss)
+                      item["sheets"].append(sname)
+                      for rnum,cells in rows.items():
+                          printable=[f"{ref}={val}" for ref,val,_ in cells if str(val)!=""]
+                          if not printable:
+                              continue
+                          for ref,val,_ in cells:
+                              n=normalize_numeric(val)
+                              if n is not None:
+                                  for t in targets_numeric:
+                                      if abs(n-t)<0.011:
+                                          item["numericMatches"].append({
+                                              "sheet":sname,"row":rnum,"cell":ref,"value":val,
+                                              "target":t,"rowCells":printable
+                                          })
+                              sv=str(val).strip()
+                              if re.fullmatch(r"[1-4][pr]",sv,re.I):
+                                  item["revisionMarkerRows"].append({
+                                      "sheet":sname,"row":rnum,"markerCell":ref,"marker":sv,
+                                      "rowCells":printable
+                                  })
+                          if 25 <= rnum <= 36:
+                              item["rows25to36"].append({"sheet":sname,"row":rnum,"cells":printable})
+              out.append(item)
+          print("ROOM09_CBC_NATIVE_JSON="+json.dumps(out,ensure_ascii=False,separators=(",",":")))
+          PY
