@@ -34,7 +34,7 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 | D02 | 價量關係 | 12 | 60.0% | 02｜價量研究室 |
 | D03 | 趨勢／動能／反轉／技術指標 | 12 | 56.7% | 03｜技術指標與趨勢動能研究室 |
 | D04 | 波動率／波動狀態 | 10 | 58% | 04｜波動與市場微結構研究室 |
-| D05 | 市場微結構／撮合／流動性 | 14 | 51.4% | 04｜波動與市場微結構研究室 |
+| D05 | 市場微結構／撮合／流動性 | 14 | 54.3% | 04｜波動與市場微結構研究室 |
 | D06 | 法人／籌碼／槓桿／擁擠／被動資金 | 18 | 47.8% | 05｜法人與籌碼研究室 |
 | D07 | 基本面／財報／資訊動態 | 34 | 14.1% | 06｜基本面與估值研究室 |
 | D08 | 估值 | 19 | 27.4% | 06｜基本面與估值研究室 |
@@ -195,7 +195,7 @@ GitHub專屬checkpoint：
 | D04-09 | 尾端／跳空波動風險 | L3 台股PIT資料可行 | 60% |
 | D04-10 | 漲跌停對波動估計污染 | L3 台股PIT資料可行 | 60% |
 
-### D05｜市場微結構／撮合／流動性 — 51.4%
+### D05｜市場微結構／撮合／流動性 — 54.3%
 
 專責：04｜波動與市場微結構研究室  
 證據錨點：`MICROSTRUCTURE_CHECKPOINT.md`、`MICROSTRUCTURE_RESEARCH.md`
@@ -207,7 +207,7 @@ GitHub專屬checkpoint：
 | D05-03 | Bid-Ask Spread買賣價差 | L3 台股PIT資料可行 | 60% |
 | D05-04 | Order-book Depth委買賣深度 | L3 台股PIT資料可行 | 60% |
 | D05-05 | Order Flow Imbalance訂單流失衡 | L2 機制＋反證 | 40% |
-| D05-06 | 開盤集合競價 | L2 機制＋反證 | 40% |
+| D05-06 | Opening / Closing Auction & Auction Imbalance（開收盤集合競價與競價不平衡） | L3 台股PIT資料可行 | 60% |
 | D05-07 | 盤中撮合／VI與異常撮合狀態 | L3 台股PIT資料可行 | 60% |
 | D05-08 | 零股與整股執行差異 | L3 台股PIT資料可行 | 60% |
 | D05-09 | 流動性狀態分類 | L3 台股PIT資料可行 | 60% |
@@ -215,7 +215,7 @@ GitHub專屬checkpoint：
 | D05-11 | Market Impact市場衝擊機制 | L2 機制＋反證 | 40% |
 | D05-12 | Adverse Selection／Order-flow Toxicity逆向選擇與訂單流毒性 | L2 機制＋反證 | 40% |
 | D05-13 | Queue Position／Order Priority委託排隊位置與優先權 | L2 機制＋反證 | 40% |
-| D05-14 | Market Integrity／Abnormal Trading Patterns市場完整性與異常交易型態 | L2 機制＋反證 | 40% |
+| D05-14 | Market Integrity／Abnormal Trading Patterns市場完整性與異常交易型態 | L3 台股PIT資料可行 | 60% |
 
 
 ### D06｜法人／籌碼／槓桿／擁擠／被動資金 — 47.8%
