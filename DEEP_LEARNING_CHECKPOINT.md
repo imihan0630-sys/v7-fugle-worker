@@ -1765,3 +1765,14 @@ Status: D21-12_L3 / D21-13_L2 / RESEARCH_ONLY / FORMAL_CORE_UNCHANGED
 - Physical read-only run 37185221432 PASS: cross-generation identity differs; wrong asOf, late capture, date-set mismatch and future-bar contamination all fail closed; correctly bound Bollinger/ADX v0.2 remain VALID.
 - This closes join-identity design risk only. D03 stays 56.7%; D03-09/10 stay L2; first genuine post-V8.17 parent pending.
 - Exact next: audit the real pre-parent clock envelope; continuity capture must exist no later than parent knownAt, and parent availability alone is insufficient.
+
+
+## 2026-10-04 D03 — TI-636~643 pre-parent clock audit
+
+- Physical read-only run 37185635335 PASS.
+- First genuine V8.17 parent is necessary but not sufficient: Technical continuity source/version evidence must be legitimately known no later than C1 decisionAt.
+- Current 16:30 System2 recent A1 warmup is raw history only and explicitly continuity UNVERIFIED.
+- Current 18:35 daily diagnostic is after the normal 18:10 parent and cannot backfill decision-time Technical evidence.
+- Continuity/MOPS capability workflows currently have no recurring pre-parent promotion-grade capture schedule.
+- Therefore PRE_PARENT_CERTIFIED_CONTINUITY_CAPTURE_NOT_PRESENT is a new explicit blocker; Bollinger/ADX first-parent promotion readiness is false under the current clock envelope.
+- D03 remains 56.7%; next research target is whether official MOPS sourceReportedAt can be certified as a public disclosure clock or must remain a prospective-observation debt.
