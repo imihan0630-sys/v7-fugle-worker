@@ -15,7 +15,7 @@ for(const path of ['.github/workflows/v7-regression.yml','.github/workflows/v7-r
 }
 
 const baseline=fs.readFileSync('artifacts/Worker-before-v8_17_0.mjs','utf8');
-const source=fs.readFileSync(process.env.V7_TEST_WORKER_PATH||'Worker.js','utf8');
+const source=fs.readFileSync(fs.existsSync('artifacts/Worker-before-v8_18_0.mjs')?'artifacts/Worker-before-v8_18_0.mjs':process.env.V7_TEST_WORKER_PATH||'Worker.js','utf8');
 function body(s,name){const start=s.indexOf('function '+name+'('),end=s.indexOf('\n}',start)+2;assert.ok(start>=0&&end>start);return s.slice(start,end);}
 let normalized=source.replace('8.17.0-shadow-cohort-membership','8.16.0-zero-pick-prospective-capture')
  .replace(/\n\/\/ BEGIN V8\.17 SHADOW COHORT MODULES[\s\S]*?\/\/ END V8\.17 SHADOW COHORT MODULES\n/,'')
