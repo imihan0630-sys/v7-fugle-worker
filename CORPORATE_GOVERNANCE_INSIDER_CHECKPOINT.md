@@ -1,8 +1,8 @@
 # Corporate Governance / Insider Checkpoint
 
-Updated: 2026-10-04 13:36 Asia/Taipei
+Updated: 2026-10-04 15:02 Asia/Taipei
 Scope: D21｜公司治理／經營者／內部人／控制權品質
-Status: D21-01 L2 / D21-02 L3 / D21-03 L2 / D21-04 L2 / D21-05 L3 / D21-07 L2 / D21-09 L2 / D21-10 L3 / D21-11 L2 PARTIAL_REPLAY / D21-12 L2 / FORMAL_CORE_UNCHANGED
+Status: D21-01 L2 / D21-02 L3 / D21-03 L2 / D21-04 L2 / D21-05 L3 / D21-07 L2 / D21-09 L2 / D21-10 L3 / D21-11 L2 PARTIAL_REPLAY / D21-12 L3 / D21-13 L2 / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - Canonical continuation checkpoint for D21.
@@ -225,5 +225,42 @@ Formal Core impact: NONE.
 3. Test incremental value versus analyst coverage, earnings revisions, fundamental quality and event/news controls.
 4. In parallel when source access permits, continue D21-11 contemporaneous-receipt recovery; do not promote D21-11 from later adjudication alone.
 5. After D21-12 replay, begin D21-13 materiality-focused ESG/climate/social risk contract without importing generic ESG scores.
+
+Formal Core impact: NONE.
+
+
+## 2026-10-04 guidance-materiality durable continuation
+
+### D21-12 guidance replay
+- TSMC 2024 provides three clean numeric quarterly revenue-guidance observations:
+  - 2Q24 guide US$19.6-20.4bn -> actual US$20.82bn, above upper bound;
+  - 3Q24 guide US$22.4-23.2bn -> actual US$23.50bn, above upper bound;
+  - 4Q24 guide US$26.1-26.9bn -> actual US$26.88bn, within range near upper bound.
+- MediaTek provides multiple numeric quarterly revenue-guidance observations with event times in its investor calendar:
+  - 3Q24 guide NT$123.5-132.4bn -> actual NT$131.813bn, within range;
+  - 4Q24 guide NT$126.5-134.5bn -> actual NT$138.043bn, above upper bound;
+  - 2Q25 guide NT$147.2-159.4bn -> actual NT$150.369bn, within range.
+- Critical clock result: outcome known_at is metric-specific. MediaTek quarterly revenue becomes reconstructable after the final monthly-sales filing, before the earnings conference; margin metrics remain later. TSMC US-dollar revenue guidance should use the later official quarterly US-dollar actual rather than mixing monthly NT-dollar revenue without FX treatment.
+- Small samples indicate conservative / under-guidance tendencies in both examples, but no permanent management-trait classification is allowed from this alone.
+- Current TWSE forecast rules make revision / “forecast no longer applicable” disclosures first-class credibility events when applicable.
+- D21-12 advances L2 -> L3 / 60%.
+- L4 remains closed pending OOS / prospective evidence and redundancy tests versus analysts, fundamentals and earnings revisions.
+
+### D21-13 ESG / climate / social materiality
+- Advance D21-13 L0 -> L2 / 40%.
+- Scope is limited to financially material environmental/climate/social exposures linked to cash flow, cost, assets, financing, regulation, supply chain, customers or workforce.
+- Generic ESG scores are explicitly rejected as primary signals.
+- Taiwan begins phased IFRS sustainability disclosure adoption from FY2026, starting with >=NT$10bn paid-in-capital listed/OTC firms, followed by NT$5-10bn firms in FY2027 and the remainder in FY2028.
+- Disclosure-regime phase and methodology vintage are mandatory controls. Increased disclosure after mandatory adoption is not itself higher risk.
+- Freeze transition, physical, supply-chain/customer-access, workforce/social and opportunity mechanisms.
+- Freeze rating-divergence falsification: provider composite scores are provenance objects, not ground truth.
+- Candidate metrics emphasize industry-material emissions/energy/water, transition capex, target-versus-realized progress, safety/labor/product events and disclosure quality.
+- L3 remains closed pending multi-sector Taiwan PIT replay across changing disclosure standards and methodology vintages.
+
+## Exact next continuation
+1. D21-12 next promotion requires OOS/prospective testing of rolling guidance credibility after controlling analyst coverage, earnings revisions, fundamentals and industry/macro shocks.
+2. Build D21-13 historical multi-sector materiality replay, preferably semiconductor water/energy/carbon exposure versus a high-emission or labor/product-safety-sensitive sector.
+3. Preserve disclosure regime, methodology vintage, target-versus-realized state and first-known timing.
+4. Continue D21-11 contemporaneous-evidence recovery opportunistically; do not promote from ex-post adjudication alone.
 
 Formal Core impact: NONE.
