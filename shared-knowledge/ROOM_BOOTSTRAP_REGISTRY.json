@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T08:05:00+08:00",
+  "updatedAt": "2026-10-04T15:20:00+08:00",
   "status": "CANONICAL_ROOM_BOOTSTRAP_REGISTRY_V0_1",
   "repository": "imihan0630-sys/v7-fugle-worker",
   "authoritativeBranch": "main",
@@ -382,9 +382,12 @@
         "system2/SYSTEM2_MASTER.md",
         "system2/SYSTEM2_CHECKPOINT.md",
         "system2/SYSTEM2_MVP_SHADOW_STATUS_V0_1.md",
-        "RESEARCH_ENGINEERING_GOVERNANCE.md"
+        "RESEARCH_ENGINEERING_GOVERNANCE.md",
+        "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
+        "system2/SYSTEM2_CORRECTION_QUEUE.md",
+        "system2/SYSTEM2_CORRECTION_QUEUE.json"
       ],
-      "shortStart": "接手「System 2｜建置總控室」，依 GitHub 最新 main 與 System 2 正式 checkpoint 自動恢復並續接。"
+      "shortStart": "接手「System 2｜建置總控室」，依 GitHub 最新 main 與 System 2 正式 checkpoint 自動恢復；先讀 Correction Governance／Correction Queue，優先執行所有 OPEN/HIGH 糾錯項目，禁止重頭做。"
     }
   ],
   "defaultLearningRoomShortStart": "接手「<聊天室名稱>」。依 GitHub 最新 main 與 ROOM_BOOTSTRAP 自動恢復，從正式 exact next continuation point 接續；禁止重頭研究、禁止重做、不要要求我重貼舊聊天。",
