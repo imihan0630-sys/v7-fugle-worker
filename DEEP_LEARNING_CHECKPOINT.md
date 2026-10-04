@@ -1658,3 +1658,37 @@ Status: D21-11_L2_PARTIAL_REPLAY / D21-12_L2_MECHANISM_DEFINED / RESEARCH_ONLY /
 
 ### Exact next continuation
 Build a two-issuer Taiwan D21-12 numeric-guidance replay from original public known_at through any revision/withdrawal to actual-outcome known_at. Prefer one relatively accurate guidance history and one repeated optimistic/revision-heavy history. Compute forecast error only after outcome publication and test incremental value beyond analyst coverage, earnings revisions and fundamentals. Continue D21-11 contemporaneous-evidence recovery opportunistically; after D21-12 replay, begin D21-13 materiality-focused ESG/climate/social risk.
+
+
+## 2026-10-04 D03 — TI-594~610 TPEx source closure / Bollinger first-parent acceptance
+
+- Official TPEx machine-route discovery is now physical rather than inferred.
+- Halt/resumption:
+  - route `/www/zh-tw/bulletin/sprcHis`;
+  - physical bounded 2026 mainboard JSON = 30 rows / totalCount 30;
+  - official CSV = same 30 unique keys; no duplicates;
+  - source-local zero controls PASS.
+- Ex-right/ex-dividend actual results:
+  - route `/www/zh-tw/bulletin/exDailyQ`;
+  - 2026-07-01..2026-10-04 physical JSON = 587/587;
+  - JSON/CSV keyset equivalence PASS;
+  - official fields include prior close, reference price, rights/dividend values, limits and trading-base price.
+- Capital reduction:
+  - route `/www/zh-tw/bulletin/revivt`;
+  - 2026-01-01..2026-10-04 physical JSON = 11/11;
+  - JSON/CSV non-detail keyset equivalence PASS;
+  - detail exposes suspension/resumption and share-replacement/cash-return data.
+- Shared continuity archive supports `PROSPECTIVE_OBSERVED`: pre-parent source capture can be a causal observed availability upper bound; post-parent capture cannot backfill.
+- Bollinger first-parent acceptance evaluator is frozen and physically tested in workflow run `37182674404`:
+  - exact 20-session valid path PASS;
+  - late capture, missing bar and duplicate date fail closed;
+  - constrained valid state remains visible;
+  - incomplete expected-parent attempts remain INCOMPLETE;
+  - complete attempt set including UNKNOWN can be COMPLETE.
+- No maturity inflation:
+  - D03-10 Bollinger remains L2/40;
+  - D03-09 ADX remains L2/40;
+  - D03 remains 56.7%;
+  - first genuine post-V8.17 Taiwan parent generation is still pending because 2026-10-04 is Sunday.
+- Raw D03 source-version gate remains separately 2/3; TI-005/TI-006 outcomes remain CLOSED; Formal Core LOCKED.
+- Exact next: first genuine parent readback -> cutoff-safe continuity attempts for every expected parent -> Bollinger COMPLETE-run L3 review -> ADX canonical recursive replay review.
