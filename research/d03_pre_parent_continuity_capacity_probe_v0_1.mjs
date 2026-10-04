@@ -7,6 +7,10 @@ const END="2026-10-02";
 const fetchedAt=new Date().toISOString();
 const urls=buildOfficialContinuitySourceUrlsV0_1({startDate:START,endDate:END});
 const rows=[];
+const allEventKeys=new Set();
+const allSymbolMonths=new Set();
+const eventsByDate=new Map();
+const symbolsByDate=new Map();
 for(const [sourceId,source] of Object.entries(urls)){
   if(source.sourceClass!=="HISTORICAL_ACTUAL_RESULT_RANGE") continue;
   const response=await fetch(source.url,{
@@ -26,8 +30,15 @@ for(const [sourceId,source] of Object.entries(urls)){
   for(const e of parsed.events||[]){
     if(e?.symbol) symbols.add(String(e.symbol));
     const date=String(e?.effectiveDate||"");
-    if(e?.symbol && /^\d{4}-\d{2}-\d{2}$/.test(date)){
-      symbolMonths.add(String(e.symbol)+"|"+date.slice(0,7));
+    const symbol=String(e?.symbol||"");
+    if(symbol && /^\d{4}-\d{2}-\d{2}$/.test(date)){
+      symbolMonths.add(symbol+"|"+date.slice(0,7));
+      allSymbolMonths.add(symbol+"|"+date.slice(0,7));
+      const eventKey=[sourceId,symbol,String(e?.actionFamilyId||""),date].join("|");
+      allEventKeys.add(eventKey);
+      eventsByDate.set(date,(eventsByDate.get(date)||0)+1);
+      if(!symbolsByDate.has(date)) symbolsByDate.set(date,new Set());
+      symbolsByDate.get(date).add(symbol);
     }
   }
   rows.push({
@@ -39,15 +50,27 @@ for(const [sourceId,source] of Object.entries(urls)){
   });
 }
 assert.equal(rows.length,6);
+const dateRows=[...eventsByDate.entries()].map(([date,eventCount])=>({
+  date,
+  eventCount,
+  uniqueSymbolCount:symbolsByDate.get(date)?.size||0,
+})).sort((a,b)=>a.date.localeCompare(b.date));
 const summary={
-  schemaVersion:"D03_PRE_PARENT_CONTINUITY_CAPACITY_PROBE_V0_1",
+  schemaVersion:"D03_PRE_PARENT_CONTINUITY_CAPACITY_PROBE_V0_2",
   interval:{startDate:START,endDate:END},
   fetchedAt,
   lanes:rows,
   totalEventCount:rows.reduce((a,b)=>a+b.eventCount,0),
+  uniqueEventKeyCount:allEventKeys.size,
+  uniqueSymbolMonthCountCrossLane:allSymbolMonths.size,
   sumUniqueSymbolMonthCountAcrossLanes:rows.reduce((a,b)=>a+b.uniqueSymbolMonthCount,0),
   maxLaneUniqueSymbolMonthCount:Math.max(...rows.map(x=>x.uniqueSymbolMonthCount)),
-  note:"Counts estimate event-driven query cardinality only; cross-lane symbol-month duplicates are not deduplicated in the sum and no completeness/promotion claim is made.",
+  eventDateCount:dateRows.length,
+  maxEventsOnOneEffectiveDate:dateRows.length?Math.max(...dateRows.map(x=>x.eventCount)):0,
+  maxUniqueSymbolsOnOneEffectiveDate:dateRows.length?Math.max(...dateRows.map(x=>x.uniqueSymbolCount)):0,
+  meanEventsPerEventDate:dateRows.length?rows.reduce((a,b)=>a+b.eventCount,0)/dateRows.length:0,
+  busiestDates:[...dateRows].sort((a,b)=>b.eventCount-a.eventCount||a.date.localeCompare(b.date)).slice(0,10),
+  note:"Counts estimate event-driven source-cardinality only. They do not certify disclosure completeness, MOPS query volume, first-known clocks, or promotion eligibility.",
   outcomesAccessed:false,
   formalCoreImpact:"NONE",
 };
