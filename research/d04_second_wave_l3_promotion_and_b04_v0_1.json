@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "D04_SECOND_WAVE_L3_PROMOTION_AND_B04_V0_1",
+  "updatedAt": "2026-10-04T15:15:00+08:00",
+  "room": "04｜波動與市場微結構研究室",
+  "status": "OUTCOME_BLIND_L3_FEASIBILITY_AUDIT_COMPLETE",
+  "formalCoreImpact": "NONE",
+  "alphaClaim": false,
+  "promoted": [
+    {
+      "id": "D04-02",
+      "from": "L2",
+      "to": "L3",
+      "maturityPct": 60,
+      "basis": [
+        "A2_TAIEX_SOURCE_PROBE_RECEIPT",
+        "OFFICIAL_SESSION_CALENDAR_RECEIPT",
+        "D18_TAIEX_CONTEXT_EXECUTABLE_BUILDER",
+        "HISTORY_AND_SESSION_HASH_REPLAY",
+        "UNKNOWN_ON_LATE_OR_MISMATCH"
+      ],
+      "boundary": "ROLLING_CLOSE_TO_CLOSE_DISPERSION_ONLY / ECONOMIC_VALUE_UNKNOWN"
+    },
+    {
+      "id": "D04-05",
+      "from": "L2",
+      "to": "L3",
+      "maturityPct": 60,
+      "basis": [
+        "PIT_ELIGIBLE_PRIOR_AND_CURRENT_VECTORS",
+        "ADJACENT_OFFICIAL_SESSIONS",
+        "IMMUTABLE_RECEIPT_HASHES",
+        "DETERMINISTIC_TRANSITION_REPLAY"
+      ],
+      "boundary": "NO_HYSTERESIS_OR_POLICY / TRANSITION_ALPHA_UNKNOWN"
+    },
+    {
+      "id": "D04-06",
+      "from": "L2",
+      "to": "L3",
+      "maturityPct": 60,
+      "basis": [
+        "A2_MARKET_VOLATILITY_PARENT",
+        "A1_STOCK_DAILY_PARENT",
+        "COMMON_MARKET_DATE",
+        "COMMON_PARENT_DECISION_CUTOFF",
+        "TECHNICAL_CONTINUITY",
+        "SOURCE_HISTORY_HASH_LINEAGE"
+      ],
+      "boundary": "MISSING_EITHER_SIDE=>UNKNOWN / INTERACTION_ALPHA_UNKNOWN"
+    }
+  ],
+  "heldAtL2": [
+    {
+      "id": "D04-08",
+      "reason": "POSITION_SIZING_IS_POLICY_TRANSFORM_REQUIRING_PORTFOLIO_RISK_EXECUTION_EVIDENCE"
+    }
+  ],
+  "b04": {
+    "pair": [
+      "D04-05",
+      "D18-11"
+    ],
+    "terminalRecommendation": "KEEP_SEPARATE",
+    "relationship": "COMPONENT_TO_COMPOSITE_DEPENDENCY",
+    "scopeDedupOnly": true,
+    "sharedPrimitive": "VOLATILITY_DIRECTION_TRANSITION",
+    "antiDoubleCount": "D18-11_CONSUMES_SHARED_VOLATILITY_TRANSITION_ONCE",
+    "divergentExamples": [
+      "VOLATILITY_CHANGES_WHILE_TREND_UNCHANGED",
+      "TREND_CHANGES_WHILE_VOLATILITY_UNCHANGED"
+    ],
+    "moduleCountChange": false,
+    "maturityTransfer": false
+  },
+  "maturity": {
+    "D04": {
+      "before": 52,
+      "after": 58,
+      "points": "580/1000"
+    },
+    "D05": {
+      "before": 51.4,
+      "after": 51.4,
+      "points": "720/1400"
+    },
+    "room04": {
+      "before": 51.7,
+      "after": 54.2,
+      "exactAfter": 54.1666666667,
+      "points": "1300/2400"
+    }
+  },
+  "evidenceAnchors": [
+    "system2/runtime/d18_taiex_context_v0_1.mjs",
+    "system2/tests/d18_taiex_context_v0_1.test.mjs",
+    "system2/runtime/d18_regime_transition_v0_1.mjs",
+    "system2/tests/d18_regime_transition_v0_1.test.mjs",
+    "system2/runtime/a1_history_primitives_v0_1.mjs",
+    "research/D18_02_03_05_PIT_BUILDER_L3_ACCEPTANCE_20261004_V0_1.md",
+    "research/D04_D05_PIT_FEASIBILITY_PROMOTION_AUDIT_20261004_V0_1.md",
+    "shared-knowledge/CURRICULUM_PRIORITY_B_OVERLAP_ACCEPTANCE_CONTRACT_20261003_V0_1.md"
+  ],
+  "governance": {
+    "formalOptimizationCandidate": "NONE",
+    "L4Claim": false,
+    "ownerApprovalForFormalChange": "REQUIRED"
+  }
+}
