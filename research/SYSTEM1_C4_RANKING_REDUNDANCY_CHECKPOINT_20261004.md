@@ -1,7 +1,7 @@
 # System 1 C4 ranking redundancy audit V0.1
 
 Date: 2026-10-04 Asia/Taipei
-Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_PENDING / FORMAL_CORE_LOCKED
+Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_GREEN_MERGED / FORMAL_CORE_LOCKED
 
 ## Purpose
 
@@ -157,3 +157,11 @@ Dedicated collector test:
 `tests/test_system1_c4_ranking_collection_v0_1.mjs`.
 
 The exact next genuine-session action is now automatic: after the next successful normal V8.17+ trading-session scan, the existing evidence workflow will preserve C1/C2, zero-pick, Shadow Cohort, and C4 ranking-redundancy evidence from the same immutable generation.
+
+## Merge acceptance
+
+- Analyzer PR #462 merged at `54d844c5ef9f00b11137057fa80d9170731833fc` after exact-head Regression, Repair CI and isolated review passed.
+- Daily collector PR #465 merged at `1a8544f29a5ccb72806085e03e0d4929d94610ec`.
+- PR #465 exact head `e6604135505f7ccaa2d870493ce770806f3f9216`: Regression `37173571813` PASS; Repair CI `37173571816` PASS; isolated review `37173571861` PASS.
+- No Worker/runtime/D1/Production/System2 change or Cloudflare deployment was introduced by these Class-A tranches.
+- First genuine V8.17+ C4 ranking readout remains prospective and will be produced by the existing C1 evidence workflow.

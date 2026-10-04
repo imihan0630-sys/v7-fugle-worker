@@ -1,7 +1,7 @@
 # System 1 A/B setup channel scale audit V0.1
 
 Date: 2026-10-04 Asia/Taipei
-Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_PENDING / FORMAL_CORE_LOCKED
+Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_GREEN_MERGED / FORMAL_CORE_LOCKED
 
 ## Why this matters
 
@@ -116,3 +116,10 @@ Formal Core: LOCKED
 3. Accumulate independent dates before any cross-channel calibration claim.
 4. If A grade-fail incidence is materially non-zero prospectively, join future outcomes before considering whether the common 65 threshold is economically over-restrictive.
 5. If B setupQuality ever violates its theoretical floor or A/B mutual exclusivity fails, treat it as data/definition regression, not market evidence.
+
+## Merge acceptance
+
+- PR #466 merged at `d180f1d04ccb1f2b15955b8a9b448c3480072335`.
+- Exact head `12033a944c12e681609b8b9e284d995be4ad9988`: Regression `37173897709` PASS; Repair CI `37173897747` PASS; isolated review `37173897703` PASS.
+- No Worker/runtime/D1/Production/System2 change or Cloudflare deployment was introduced.
+- The first genuine A/B grade-exposure observation remains prospective and will be emitted automatically by the existing C1 evidence workflow.
