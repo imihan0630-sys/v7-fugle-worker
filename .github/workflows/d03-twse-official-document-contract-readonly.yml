@@ -280,6 +280,51 @@ jobs:
           if not exact:
               raise SystemExit("server-side pagination reconciliation failed")
 
+      - name: Probe exchange-side suspension and revocation chronology
+        shell: python
+        run: |
+          import json, subprocess, urllib.parse, re, hashlib
+
+          base="https://wwwc.twse.com.tw/rwd/zh/announcement/announcement"
+          params={
+            "startDate":"20260701","endDate":"20260810",
+            "keyword":"川飛能源","response":"json"
+          }
+          url=base+"?"+urllib.parse.urlencode(params)
+          p=subprocess.run(["curl","--fail","--silent","--show-error","--location","--max-time","30",url],
+                           text=True,capture_output=True,check=True)
+          obj=json.loads(p.stdout)
+          rows=obj.get("data") or []
+          print("REVERSAL_QUERY_URL="+url)
+          print("REVERSAL_TOTAL="+str(obj.get("total")))
+          print("REVERSAL_ROWS="+json.dumps(rows,ensure_ascii=False))
+          stop=[r for r in rows if "停止申報生效" in str(r[3]) and "解除停止申報生效" not in str(r[3])]
+          release=[r for r in rows if "解除停止申報生效" in str(r[3])]
+          print("STOP_COUNT="+str(len(stop)))
+          print("RELEASE_COUNT="+str(len(release)))
+          chronology_pass=bool(stop and release)
+          print("REVERSAL_CHRONOLOGY_PAIR="+("PASS" if chronology_pass else "NOT_PROVEN"))
+
+          # Characterize detail pages for every pair row. Do not execute browser JS.
+          for tag,group in (("STOP",stop),("RELEASE",release)):
+              for idx,row in enumerate(group,1):
+                  token=str(row[-1]).replace("-","")
+                  page="https://wwwc.twse.com.tw/zh/announcement/announcement/detail.html?"+token
+                  q=subprocess.run(["curl","--fail","--silent","--show-error","--location","--max-time","30",page],
+                                   text=True,capture_output=True,check=True)
+                  html=q.stdout
+                  api=re.findall(r'data-api=["\']([^"\']+)["\']',html,re.I)
+                  fields=re.findall(r'(?:name|data-[a-z-]+)=["\']([^"\']+)["\']',html,re.I)
+                  print(tag+"_DETAIL_"+str(idx)+"_URL="+page)
+                  print(tag+"_DETAIL_"+str(idx)+"_BYTES="+str(len(html.encode("utf-8"))))
+                  print(tag+"_DETAIL_"+str(idx)+"_SHA256="+hashlib.sha256(html.encode("utf-8")).hexdigest())
+                  print(tag+"_DETAIL_"+str(idx)+"_DATA_API="+json.dumps(api,ensure_ascii=False))
+                  print(tag+"_DETAIL_"+str(idx)+"_TOKEN_PRESENT="+str(token.lower() in html.lower()).lower())
+                  for needle in ("announcement","api","id","token","query"):
+                      pos=html.lower().find(needle.lower())
+                      if pos>=0:
+                          print(tag+"_DETAIL_CONTEXT_"+needle+"="+html[max(0,pos-300):min(len(html),pos+900)].replace("\n"," ")[:1300])
+
       - name: Bounded raw-page grep
         shell: bash
         run: |
