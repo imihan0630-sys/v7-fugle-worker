@@ -1821,3 +1821,36 @@ Reusable cross-lane rules:
 D03 current maturity = 56.7%.
 Next honest thresholds: Bollinger L3 -> 58.3%; ADX L3 -> 60.0%.
 FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+### D17 shared handoff — source lineage and post-event path (2026-10-04 evening)
+
+Room 08 added two reusable L3 feasibility results.
+
+1. D17-10 source-lineage cross-validation:
+- field-level independence matters more than URL count;
+- 2537 construction-fire case separates independently corroborated event occurrence from issuer-origin insurance/materiality statements later redistributed by media;
+- 7827 HCB303 shows copied MOPS disclosure pages remain one primary lineage;
+- historical page publication clocks cannot be backdated into strategy firstKnownAt; conservative capture clocks remain required;
+- D17-01 production licensing and D17-02 true first-availability remain separate blockers.
+
+2. D17-12 post-event path:
+- H15 boundary is enforced: opening gap is one shared primitive;
+- D11-10 owns event-linked gap/stop-risk transformation;
+- D04-09 owns tail/gap volatility transformation;
+- D17-12 owns only subsequent post-open continuation/fill/reversal path;
+- validated Taiwan official daily OHLC supports historical close/D1/D3/D5 replay with corporate-action/limit/suspension guards;
+- 15m/30m path remains prospective-only and cannot be fabricated from daily OHLC.
+
+Weekend after-hours source coverage also completed in workflow run `37197636375`: TWSE and TPEx each expected 2 polls and observed 2 polls, with stable payload hashes. This improves coverage receipts but does not authenticate API first-availability time or justify D17-01/02 promotion.
+
+Evidence:
+- `research/d17_after_hours_coverage_receipt_20261004_v0_1.json`
+- `research/d17_10_cross_source_lineage_receipt_20261004_v0_1.json`
+- `research/d17_12_post_event_path_pit_audit_20261004_v0_1.json`
+
+Current Room 08 maturity after this continuation:
+- D11 = 56.8%.
+- D17 = 47.1%.
+- Room 08 = 52.7% across 33 modules.
+
+Formal Core unchanged. Outcome joins remain closed.
