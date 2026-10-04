@@ -83,7 +83,7 @@ Until that packet arrives:
 | H08 | PENDING | — | specialist packet(s) |
 | H09 | CANONICAL_UPDATE_COMPLETE | equivalent complete Room11 evidence | — |
 | H10 | PENDING | — | specialist packet(s) |
-| H11 | PENDING | — | specialist packet(s) |
+| H11 | PARTIAL_EVIDENCE_RECEIVED | Room09 D12 surface/skew research + method QA | 09｜衍生品與國際總經研究室 residual common-parent comparison |
 | H12 | PARTIAL_EVIDENCE_RECEIVED | Room05 + Room13 semantic packet | 10｜投組風控與交易執行研究室 + Room13 first live TWSE source receipt |
 | H13 | PENDING | — | specialist packet(s) |
 | H14 | CLOSED_NO_STRUCTURAL_CHANGE | Room05 packet + Room08 equivalent PIT evidence | — |
@@ -544,3 +544,33 @@ State:
 
 Closure receipt:
 `shared-knowledge/CURRICULUM_H05_CANONICAL_CLOSURE_RECEIPT_20261004_V0_1.md`.
+
+
+## H11 partial intake — D12-07 vs D12-16
+
+Accepted equivalent Room09 evidence:
+- `DERIVATIVES_VOLATILITY_RESEARCH.md`;
+- `DERIVATIVES_VOLATILITY_CHECKPOINT.md`;
+- `research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json`;
+- `research/d12_surface_method_v0_1_spec.json`;
+- option-row validator/adversarial QA.
+
+What is already frozen:
+- D12-07 = simple interpretable skew/slope + term-structure summaries;
+- D12-16 = curvature/smile/richer cross-strike-cross-maturity structure + surface-fit/quality controls;
+- one option-chain parent, not duplicate ingestion;
+- quote filters, method identity, no-static-arbitrage/interpolation guards;
+- complexity must beat D12-07 simple summaries;
+- no independent Alpha claim from method complexity.
+
+Still missing for terminal H11:
+1. one permitted raw TAIFEX option-chain parent with source identity/hash;
+2. parse D12-07 and D12-16 from identical parent rows/common-support;
+3. actual residual comparison after D12-07 controls;
+4. divergent-state examples from source-attested data;
+5. residual/incremental evidence sufficient for terminal KEEP_SEPARATE vs narrowing/merge judgment.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / ROOM09_COMMON_PARENT_RESIDUAL_TEST_PENDING`.
+
+No maturity/count/Formal change from intake.
