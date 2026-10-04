@@ -1,7 +1,7 @@
 {
   "schemaVersion": "CURRICULUM_COVERAGE_EXECUTION_REGISTRY_V0_1",
-  "updatedAt": "2026-10-04T11:09:00+08:00",
-  "status": "COVERAGE_COV03_COV04_COV05_CANONICAL_UPDATE_COMPLETE",
+  "updatedAt": "2026-10-04T11:53:00+08:00",
+  "status": "COV02_OWNER_APPROVAL_REQUIRED / COV03_COV04_COV05_CANONICAL_UPDATE_COMPLETE",
   "formalCoreImpact": "NONE_LOCKED",
   "canonicalSnapshot": {
     "domains": 22,
@@ -31,8 +31,8 @@
       "domain": "D05",
       "room": "04｜波動與市場微結構研究室",
       "class": "SCOPE_EXTENSION_CANDIDATE",
-      "state": "PARTIAL_EVIDENCE_RECEIVED",
-      "returnPath": "research/COV02_D05_SPECIALIST_RETURN_V0_1.md"
+      "state": "OWNER_APPROVAL_REQUIRED",
+      "returnPath": "research/COV_02_CLOSING_AUCTION_SPECIALIST_RETURN_20261004_V0_1.md"
     },
     {
       "id": "COV-04",
@@ -155,7 +155,6 @@
   "preIntakeSummary": {
     "partialEvidenceReceived": [
       "COV-01",
-      "COV-02",
       "COV-06",
       "COV-07",
       "COV-08",
@@ -166,13 +165,16 @@
     "pendingSpecialistReturn": [
       "COV-12"
     ],
-    "acceptedSpecialistReturns": 3,
+    "acceptedSpecialistReturns": 4,
     "acceptedSpecialistReturnIds": [
       "COV-03",
       "COV-04",
-      "COV-05"
+      "COV-05",
+      "COV-02"
     ],
-    "ownerApprovalRequired": [],
+    "ownerApprovalRequired": [
+      "COV-02"
+    ],
     "canonicalUpdateComplete": [
       "COV-03",
       "COV-04",
@@ -204,8 +206,8 @@
   "coverageReturnValidatorCheckpoint": "research/CURRICULUM_COVERAGE_RETURN_VALIDATOR_CHECKPOINT_20261003.md",
   "coverageReturnValidatorWorkflow": ".github/workflows/curriculum-coverage-validator.yml",
   "coverageReturnValidatorStatus": "MERGED_MAIN_PR_407_CI_PASS",
-  "latestIntakeAudit": "shared-knowledge/CURRICULUM_COVERAGE_COV03_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md",
-  "latestIntakeAuditJson": "shared-knowledge/curriculum_coverage_cov03_intake_dependency_audit_20261004_v0_1.json",
+  "latestIntakeAudit": "shared-knowledge/CURRICULUM_COVERAGE_COV02_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md",
+  "latestIntakeAuditJson": "shared-knowledge/curriculum_coverage_cov02_intake_dependency_audit_20261004_v0_1.json",
   "latestPreflightReceipt": "research/curriculum_coverage_intake_preflight_receipt_20261004_v0_2.json",
   "canonicalSnapshotNote": "Owner-approved COV-03 canonical update completed; tracker remains authoritative.",
   "canonicalUpdateReceipt": "shared-knowledge/CURRICULUM_COV03_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md",
@@ -230,5 +232,16 @@
   "canonicalUpdateReceipts": [
     "shared-knowledge/CURRICULUM_COV04_COV05_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md",
     "shared-knowledge/CURRICULUM_COV03_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md"
-  ]
+  ],
+  "cov02": {
+    "state": "OWNER_APPROVAL_REQUIRED",
+    "terminalRecommendation": "EXTEND_EXISTING_SCOPE",
+    "targetModule": "D05-06",
+    "proposedName": "Opening / Closing Auction & Auction Imbalance（開收盤集合競價與競價不平衡）",
+    "audit": "shared-knowledge/CURRICULUM_COVERAGE_COV02_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md",
+    "machineAudit": "shared-knowledge/curriculum_coverage_cov02_intake_dependency_audit_20261004_v0_1.json",
+    "maturityChange": "NONE",
+    "historicalPreCloseImbalance": "UNKNOWN_WHERE_NOT_TIMESTAMPED",
+    "formalCoreImpact": "NONE_LOCKED"
+  }
 }
