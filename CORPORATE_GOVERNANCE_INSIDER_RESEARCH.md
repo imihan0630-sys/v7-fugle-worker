@@ -1077,3 +1077,296 @@ Role: GOVERNANCE_TAIL_RISK / CONFIDENCE / RESEARCH_ONLY until predictive evidenc
 L3 remains closed pending historical Taiwan correction/restatement and internal-control event replay with original first-known timestamps and dual-vintage financial data.
 
 Formal Core impact: NONE.
+
+
+## D21 historical replay promotion block — 2026-10-04 late morning
+
+Date: 2026-10-04 Asia/Taipei
+Status: D21-05 L3 / D21-10 L3 / D21-11 L2 / FORMAL_CORE_UNCHANGED
+
+## D21-05 Historical Related-party Transaction Replay v0.2
+
+### Decision-time replay rule
+
+For the formal daily after-market research clock, historical replay does not require pretending to know an unknowable first internet appearance. It requires a conservative public-availability proof before the decision timestamp.
+
+Store:
+- event_date;
+- observed_public_at;
+- source_class;
+- issuer_archive_date;
+- exact_first_known_status;
+- safe_for_after_market_replay flag.
+
+If an independently archived MOPS-fed announcement has a timestamp before the daily decision time and the issuer's official archive matches the event date/content, the event is safely known by the later decision timestamp even if the original MOPS receipt is unavailable. This supports daily PIT replay but not intraday first-minute event studies.
+
+### Replay A — Yuanta Financial 2885 / related-party real-estate disposal
+
+Issuer: Yuanta Financial Holding / subsidiary Yuanta International Asset Management.
+Event: disposal of Taipei Nangang real estate to EirGenix, explicitly identified as a related party.
+Event date: 2024-04-29.
+Observed public timestamp from MOPS-fed market archive: 2024-04-29 16:46:05.
+Issuer official archive date: 2024-04-29.
+Transaction amount: NT$133,000,000.
+Counterparty relation: related party; stated reason for choosing the party was that it was the existing tenant.
+Professional appraisal: NT$124,102,144.
+Expected disposal gain: about NT$47,237,651.
+Decision unit: board.
+Board approval: 2024-04-29.
+Audit committee / supervisor approval: 2024-04-29.
+Stated purpose: realize investment value and strengthen financial structure.
+RPT family: asset disposal / real estate.
+
+Interpretation:
+- this is not an operating-sales RPT and should not be mixed with related sales/purchases;
+- disclosed appraisal and same-day board/audit approval are governance-process fields, not proof that pricing is automatically fair;
+- the transaction must be evaluated versus appraisal range, alternative counterparties, recurring relationship concentration and later cash realization if used for any substantive inference.
+
+PIT result:
+- safe for same-day after-market replay because the observed public archive timestamp precedes the formal after-market decision time;
+- exact original MOPS first-known second remains UNKNOWN but is not required for a later daily decision clock.
+
+### Replay B — Yuanta Financial 2885 / capital injection into 100%-owned related subsidiary
+
+Event: subscription of Yuanta Life Insurance cash capital increase.
+Event date: 2024-07-26.
+Observed public timestamp from MOPS-fed market archive: 2024-07-26 16:26:47.
+Issuer official archive date: 2024-07-26.
+Amount: NT$3,000,000,000.
+Counterparty: Yuanta Life Insurance, 100%-owned subsidiary.
+Post-transaction disclosed holding: 100%.
+Board approval: 2024-07-26.
+Audit committee consent: 2024-07-16.
+Stated purpose: strengthen operating funds, financial structure, capital adequacy and net-worth ratio.
+RPT family: equity investment / internal capital allocation.
+
+Interpretation:
+- this event illustrates an internal-capital-market mechanism rather than an obvious tunneling transaction;
+- a large RPT can be economically rational and regulatory-capital driven;
+- any future score that mechanically penalizes related-party transaction size would misclassify this type of event.
+
+PIT result:
+- safe for same-day after-market replay because observed public timestamp precedes the decision time;
+- event clock and approval clocks are independently reconstructable.
+
+### Cross-case conclusion
+
+The two cases demonstrate that Taiwan historical RPT events are daily-PIT replayable across at least two economically different transaction families:
+1. related-party real-estate disposal;
+2. capital injection into a wholly-owned related subsidiary.
+
+Mandatory future classification fields:
+- transaction_family;
+- observed_public_at;
+- exact_first_known_status;
+- board_approval_date;
+- audit_committee_approval_date;
+- related_party_relationship;
+- stated_purpose;
+- valuation_support;
+- transaction_amount and scale ratios;
+- recurring_counterparty flag;
+- transaction_direction / beneficiary;
+- consolidated-group flag.
+
+### D21-05 maturity decision
+
+Advance D21-05 from L2 / 40% to L3 / 60%.
+
+L3 rationale:
+- historical Taiwan event-level data are demonstrably replayable for two RPT families;
+- event and approval clocks can be separated;
+- relationship and transaction purpose are preserved;
+- conservative observed-public timestamps support daily after-market PIT use.
+
+L4 remains closed:
+- no OOS/prospective return-risk evidence;
+- no cross-sectional proof that abnormal RPT measures add value beyond D21-01, D07, D11 or industry/size controls.
+
+Role: RESEARCH_ONLY / CONTEXT / GOVERNANCE_TAIL_RISK.
+Formal Core impact: NONE.
+
+## D21-10 Historical Dual-vintage Restatement Replay v0.2
+
+### Replay A — ACON-Holding / TAI-TWAN? Taiwan Terminal 3432 (台端)
+
+Public announcement:
+- event date: 2024-04-23;
+- MOPS-fed archive timestamp: 2024-04-23 16:39:54;
+- event type: formal restatement of 2022 annual through 2023 annual/interim reports.
+
+Reason:
+- reassessment of deferred tax asset related to investment loss and recoverability, with NT$170,010 thousand adjustment rooted in the 2022 accounting estimate.
+
+Dual-vintage examples:
+2022 consolidated:
+- deferred tax asset: 170,409 -> 399 thousand;
+- total assets: 488,262 -> 318,252 thousand;
+- total equity: 442,802 -> 272,792 thousand;
+- net loss: -1,170,230 -> -1,340,240 thousand;
+- basic EPS: -17.57 -> -20.13.
+
+2023 annual:
+- net loss: -191,629 -> -21,619 thousand;
+- basic EPS: -5.32 -> -0.60,
+because the later-period reversal interacted with the earlier restatement.
+
+Key falsification:
+- a restatement is not directionally equivalent to “earnings became worse in every affected period.”
+- one correction can worsen an earlier period while improving a later period because accounting reversals propagate across vintages.
+- backtesting must preserve original values until public restatement known_at, then create a new corrected vintage.
+
+PIT result:
+- the restatement was publicly observable before the same day's after-market decision time;
+- original and corrected values are explicitly disclosed in the announcement, enabling deterministic dual-vintage replay.
+
+### Replay B — Leader Electronics 3058 (立德)
+
+Observed public archive:
+- 2025-05-15 09:10 for the announcement covering 2023 Q3 / annual 2023 / 2024 Q2-Q4 corrections and restatements;
+- fact date stated as 2025-05-14.
+
+Cause:
+- senior manager violated internal-control rules;
+- an unlisted investee's stock dividend was not properly recorded;
+- 5 million shares were privately disposed without recording the transaction or collecting funds;
+- 2024 dispositions totaled 9.5 million shares with NT$100,198 thousand receivable, later collected before the 2024 annual report was approved.
+
+Interpretation:
+- this is not a mere estimation-change case; it combines restatement with control-environment failure and management override risk;
+- event severity must preserve cause category and remediation/cash-recovery status;
+- “restatement” alone is too coarse.
+
+PIT result:
+- by the 2025-05-15 after-market decision point the event was unquestionably public;
+- the case demonstrates replay of a materially different cause class from the 3432 case.
+
+### D21-10 maturity decision
+
+Advance D21-10 from L2 / 40% to L3 / 60%.
+
+L3 rationale:
+- two Taiwan cases with materially different causes are historically replayable;
+- one case exposes original-versus-corrected financial values directly;
+- event date, observed public availability, affected periods, cause, correction/restatement type and remediation context can be preserved.
+
+L4 remains closed:
+- no prospective/OOS validation of severity classes;
+- no proof yet that a restatement-risk feature adds incremental stock-selection value beyond D07 accounting quality and D11 event-risk variables.
+
+Role remains GOVERNANCE_TAIL_RISK / CONFIDENCE / RESEARCH_ONLY.
+Formal Core impact: NONE.
+
+## D21-11 Tunneling / Minority Shareholder Risk — ownership-boundary contract v0.1
+
+Status: L2 MECHANISM_FALSIFICATION_AND_OWNER_BOUNDARY_FROZEN / DERIVED_RISK_LAYER / RESEARCH_ONLY
+
+### 1. Ownership boundary
+
+D21-11 does NOT own the raw inputs already owned elsewhere:
+- ownership/control wedge -> D21-01;
+- pledge -> D21-04;
+- related-party transaction classification -> D21-05;
+- accounting quality -> D07;
+- event announcement clocks -> D11.
+
+D21-11 owns the higher-order question:
+Is there credible evidence that value is being transferred away from the listed issuer / non-controlling shareholders toward a controller-related beneficiary on terms inconsistent with ordinary economic exchange?
+
+This makes D21-11 a derived risk-classification layer, not another raw factor family.
+
+### 2. Evidence states
+
+CONFIRMED_TUNNELING:
+- legal/regulatory/court finding or sufficiently explicit issuer disclosure confirms non-arm's-length extraction or misappropriation.
+
+HIGH_SUSPICION:
+- multiple independent channels jointly indicate directional value extraction, with beneficiary linkage and weak economic justification.
+
+AMBIGUOUS:
+- suspicious RPT/control pattern exists but efficient-contracting/propping explanations remain plausible.
+
+INSUFFICIENT:
+- only one generic risk input such as high RPT ratio, high pledge or control wedge is present.
+
+UNKNOWN:
+- necessary beneficiary/pricing/relationship evidence is unavailable.
+
+No risk state is inferred merely from a single RPT or a high control wedge.
+
+### 3. Positive mechanism
+
+Controlling shareholders can transfer value through:
+- non-arm's-length asset transfers;
+- preferential loans or guarantees;
+- related sales/purchases with distorted terms;
+- diversion of corporate opportunities;
+- selective capital injections / withdrawals;
+- misappropriation or management override;
+- structures where voting control materially exceeds economic ownership.
+
+Taiwan evidence documents RPTs as one possible tunneling/propping channel and shows governance quality conditions their use.
+
+### 4. Counter-mechanisms / falsification
+
+- group internal capital markets can allocate resources efficiently;
+- related transactions can reduce contracting costs;
+- financial support can be propping rather than extraction;
+- vertical integration creates high related sales/purchases without abuse;
+- distressed affiliates can be supported for strategic network reasons;
+- controller ownership can align incentives when cash-flow rights are high;
+- a transaction that appears unfavorable ex ante can be justified by independent valuation or long-horizon synergies.
+
+Therefore tunneling classification requires direction, beneficiary, economic terms and control context.
+
+### 5. Proposed derived evidence fields
+
+- beneficiary_controller_linkage;
+- transfer_direction;
+- abnormal_pricing_or_terms;
+- repayment_quality;
+- guarantee_loss_realization;
+- asset_value_gap;
+- repeated_related_counterparty_pattern;
+- control_cashflow_wedge_dependency;
+- pledge_pressure_dependency;
+- management_override_or_fraud_flag;
+- independent_valuation_support;
+- board/audit dissent or override;
+- legal_or_regulatory_finding;
+- remediation/recovery_status.
+
+### 6. Anti-double-counting rule
+
+D21-11 must not independently add another point for each raw governance risk already scored elsewhere.
+If used in future research, it must either:
+- serve as a categorical tail-risk state; or
+- test incremental value after conditioning on D21-01/04/05 and D07 inputs.
+
+No additive composite is approved.
+
+### 7. Taiwan evidence / monitoring relevance
+
+- Taiwan empirical literature supports both tunneling and propping/internal-capital-market explanations for RPTs.
+- TWSE's 2024 financial-report review explicitly checked reasonableness/necessity, arm's-length pricing, approval processes, information disclosure and recoverability of major related receivables/prepayments; the review found some companies had failed to properly disclose substantive related-party relationships.
+- This supports a process/relationship/beneficiary lens rather than a raw RPT-size lens.
+
+### 8. Maturity decision
+
+Advance D21-11 from L0 to L2 / 40%.
+
+Reason:
+- unique ownership boundary is defined;
+- derived evidence states are specified;
+- mechanisms, counter-mechanisms and anti-double-counting rules are frozen.
+
+L3 remains closed:
+- no historical Taiwan tunneling classification replay has yet demonstrated reproducible CONFIRMED / HIGH_SUSPICION / AMBIGUOUS labeling from contemporaneous evidence.
+
+Role: GOVERNANCE_TAIL_RISK / CONFIDENCE / RESEARCH_ONLY.
+Formal Core impact: NONE.
+
+Exact continuation:
+1. Build a historical D21-11 case set containing at least one confirmed/near-confirmed value-extraction case and one economically justified RPT control case.
+2. Require contemporaneous beneficiary, pricing/terms, control and approval evidence.
+3. Test whether D21-11 classification adds information beyond D21-01/04/05 instead of double counting them.
