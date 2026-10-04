@@ -1,0 +1,91 @@
+name: D08 TWSE Valuation Percentile History R2
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/d08-twse-valuation-percentile-history-r2.yml"
+      - "system2/scripts/d08_twse_valuation_history_year_r2_v0_1.mjs"
+      - "system2/scripts/d08_twse_valuation_percentile_r2_build_v0_1.mjs"
+      - "system2/tests/d08_valuation_percentile_history_r2_guard.test.mjs"
+      - "system2/runtime/official_historical_a6_valuation_v0_1.mjs"
+      - "research/d08_twse_raw_valuation_r2_capture_receipt_20261004_v0_1.json"
+      - "research/d08_twse_month_end_scan_date_receipt_20261004_v0_1.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: d08-valuation-percentile-history-r2-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: |
+          set -euo pipefail
+          node system2/tests/d08_valuation_percentile_history_r2_guard.test.mjs
+          node --check system2/scripts/d08_twse_valuation_history_year_r2_v0_1.mjs
+          node --check system2/scripts/d08_twse_valuation_percentile_r2_build_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+
+  capture-history:
+    needs: guard
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        year: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Capture immutable annual TWSE valuation history
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+          D08_VALUATION_HISTORY_YEAR: ${{ matrix.year }}
+        run: |
+          set -euo pipefail
+          node system2/scripts/d08_twse_valuation_history_year_r2_v0_1.mjs
+
+  build-percentiles:
+    needs: capture-history
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Build immutable 44-date historical percentile snapshots
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+        run: |
+          set -euo pipefail
+          node system2/scripts/d08_twse_valuation_percentile_r2_build_v0_1.mjs
+
+  production-isolation:
+    needs: build-percentiles
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          set -euo pipefail
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "D08 valuation percentile history production isolation PASS"
