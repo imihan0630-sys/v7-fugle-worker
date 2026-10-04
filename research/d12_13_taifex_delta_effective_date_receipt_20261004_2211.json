@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "0.1",
+  "id": "D12_13_TAIFEX_DELTA_EFFECTIVE_DATE_RECEIPT_20261004_2211",
+  "capturedAt": "2026-10-04T22:11:00+08:00",
+  "sourceUrl": "https://www.taifex.com.tw/enl/eng3/optDailyDelta",
+  "observedPublicationText": "2026/10/02 16:39:21 PM",
+  "inferredEffectiveTradingDate": "2026-10-05",
+  "effectiveDateBasis": "Official afternoon Delta versions pre-disclose the next business day; 2026-10-02 was Friday.",
+  "strictRawHash": "UNKNOWN_NOT_CAPTURED_IN_THIS_RECEIPT",
+  "prospectiveRelation": "CAPTURED_BEFORE_EFFECTIVE_TRADING_DATE",
+  "outcomesOpened": false,
+  "formalCoreChanged": false,
+  "maturityPromotion": false
+}
