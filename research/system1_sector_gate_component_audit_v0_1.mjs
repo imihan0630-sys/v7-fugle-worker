@@ -15,6 +15,7 @@ const inc=(o,k)=>o[k]=(o[k]||0)+1;
 
 function expectedCombined(g){
   const ss=['SECTOR_BREADTH','SECTOR_RETURN','SECTOR_AMOUNT'].map(id=>g?.[id]?.status||'UNKNOWN');
+  if(ss.includes('UNKNOWN'))return 'UNKNOWN';
   if(ss.includes('FAIL'))return 'FAIL';
   if(ss.every(x=>x==='PASS'))return 'PASS';
   return 'UNKNOWN';
@@ -49,8 +50,9 @@ export function buildSystem1SectorGateComponentAudit({adapted,diagnosis,firstFai
     const fails=['SECTOR_BREADTH','SECTOR_RETURN','SECTOR_AMOUNT'].filter(id=>gates[id]?.status==='FAIL');
     const unknowns=['SECTOR_BREADTH','SECTOR_RETURN','SECTOR_AMOUNT'].filter(id=>gates[id]?.status==='UNKNOWN');
     let pattern;
-    if(fails.length)pattern='FAIL:'+fails.map(x=>x.replace('SECTOR_','')).join('+');
+    if(unknowns.length&&fails.length)pattern='MIXED_FAIL_UNKNOWN:'+fails.map(x=>x.replace('SECTOR_','')).join('+')+'|'+unknowns.map(x=>x.replace('SECTOR_','')).join('+');
     else if(unknowns.length)pattern='UNKNOWN:'+unknowns.map(x=>x.replace('SECTOR_','')).join('+');
+    else if(fails.length)pattern='FAIL:'+fails.map(x=>x.replace('SECTOR_','')).join('+');
     else pattern='PASS_ALL';
     inc(patternCounts,pattern);
     if(fails.length===1&&unknowns.length===0){singleComponentFailN++;uniqueFailCounts[fails[0]]++;}
