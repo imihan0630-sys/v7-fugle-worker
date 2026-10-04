@@ -3,7 +3,7 @@ import {buildSystem1MarketCapFloorEconomicAudit as audit} from '../research/syst
 
 const base={sessionDate:'2026-10-05',generationId:'C1:g',decisionAt:'2026-10-05T08:00:00Z',researchOnly:true,decisionImpact:false,formalCoreImpact:false};
 const upstream=['PRICE_FLOOR','HISTORY_60D','RS_CONTEXT'];
-const downstream=['DAILY_ABNORMALITY','LIQUIDITY','SMALL_CAP_SPECIAL','MID_CAP_LIQUIDITY','ANNOUNCEMENT_RISK','VALUATION_RELATIVE_RISK','SECTOR_GATE','AB_SETUP','FUNDAMENTAL_QUALITY','ATR_QUALITY','TARGET_AVAILABLE','REWARD_RISK','FINAL_SIGNAL_GRADE'];
+const downstream=['DAILY_ABNORMALITY','LIQUIDITY','SMALL_CAP_SPECIAL','MID_CAP_LIQUIDITY','CHIP_CONCENTRATION_PRESENT','FINANCIAL_SOURCE_COMPLETENESS','ANNOUNCEMENT_RISK','VALUATION_RELATIVE_RISK','SECTOR_GATE','AB_SETUP','FUNDAMENTAL_COMPONENT_COUNT','FUNDAMENTAL_QUALITY','ATR_QUALITY','TARGET_AVAILABLE','REWARD_RISK','FINAL_SIGNAL_GRADE'];
 const mk=(symbol,{mcap,reach='PASS',pool='GENERAL',first=null,nextFail=null}={})=>{
   const gates=Object.fromEntries(upstream.map(id=>[id,{status:reach}]));
   gates.MARKET_CAP_FLOOR={status:mcap===null?'UNKNOWN':mcap<10?'FAIL':'PASS'};
