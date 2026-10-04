@@ -1932,3 +1932,54 @@ Countermechanisms:
 Therefore dividend yield, payout ratio and dividend stability are validation/context variables until incremental OOS/Shadow evidence exists.
 
 Status: UNIVERSAL_HIGH_DIVIDEND_RULE_REJECTED / STRATEGY_EVIDENCE_CLOSED / FORMAL_UNCHANGED.
+
+
+## FD-067 — D07-34 payout sustainability is non-monotone and lifecycle-conditioned
+
+Research date: 2026-10-04 Asia/Taipei.
+
+Formal foundation:
+research/d07_34_dividend_payout_sustainability_foundation_v0_1.json.
+
+The newly canonical D07-34 module is not a high-yield or high-payout factor.
+
+Mechanism:
+- mature profitable firms with accumulated earned equity and fewer high-return reinvestment opportunities can rationally distribute more cash;
+- younger/growth firms can rationally retain more or use different distribution forms;
+- earnings coverage, cash-flow coverage, leverage/liquidity and distribution source determine sustainability rather than payout level alone.
+
+Taiwan-specific mechanism evidence is consistent with life-cycle and institutional/clientele effects:
+- Taiwan-listed dividend payers and cash-vs-stock payout forms differ across profitability/growth/lifecycle states;
+- dividend tax regime changes altered payout behavior and investor preferences;
+- reserve-funded cash distributions are economically distinct from current-earnings-funded ordinary dividends.
+
+No historical coefficient or foreign/Taiwan paper result is imported directly as current alpha.
+
+Status: MECHANISM_DEFINED / NON_MONOTONE / HIGH_YIELD_IS_NOT_QUALITY.
+
+## FD-068 — D07-34 falsification and ownership firewall support L2 only
+
+Frozen falsification:
+- high payout loses quality interpretation if the effect disappears after profitability, growth-opportunity, retained-earnings maturity, leverage and sector controls;
+- stable DPS is not sustainable if maintained through reserve draw, rising leverage or deteriorating cash coverage;
+- low payout is not shareholder-hostile when retained capital is followed by high incremental ROIC or profitable growth;
+- dividend yield is D08 valuation context and can rise mechanically from price decline.
+
+Ownership:
+- D07-02 raw earnings;
+- D07-05 CFO/FCF quality;
+- D07-06 leverage/liquidity;
+- D07-34 payout coverage/sustainability;
+- D08 dividend valuation;
+- D11 event clocks;
+- D21 governance/capital-allocation process.
+
+Decision role:
+VALIDATION primary; CONTEXT_ONLY / EXPLANATORY / SUPPORTIVE secondary. No PRIMARY_ALPHA authorization.
+
+Maturity:
+D07-34 L0/0 -> L2/40.
+
+L3 remains blocked until a real Taiwan PIT/replay receipt proves proposal/final/correction lineage, distribution source, compatible financial-statement denominator and payment chronology.
+
+Formal Core unchanged. Outcomes closed. FORMAL_OPTIMIZATION_CANDIDATE = NONE.
