@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import {
   parseOfficialHistoricalA6ValuationPayloadV0_1,
   buildOfficialHistoricalA6ValuationUrlV0_1,
+  buildOfficialHistoricalA6ValuationUrlsV0_1,
+  fetchOfficialHistoricalA6ValuationDateV0_1,
 } from "../runtime/official_historical_a6_valuation_v0_1.mjs";
 import { d08TwseTableObjectsV0_1,parseD08TwseDateV0_1,buildD08SemanticUniverseIdentityV0_1 } from "../runtime/d08_twse_historical_universe_source_v0_1.mjs";
 
@@ -81,3 +83,50 @@ assert.equal(legacy.rows[0].fiscalReportPeriodState,"SOURCE_NOT_PROVIDED");
 assert.equal(legacy.rows[0].pe,16.92);
 assert.equal(legacy.rows[1].pe,null);
 assert.equal(legacy.rows[1].pb,0.99);
+
+
+const routeUrls=buildOfficialHistoricalA6ValuationUrlsV0_1("2006-08-08");
+assert.equal(routeUrls.length,2);
+assert.match(routeUrls[0],/exchangeReport\/BWIBBU_d/);
+assert.match(routeUrls[1],/rwd\/zh\/afterTrading\/BWIBBU_d/);
+
+let fallbackCalls=0;
+const fallbackPayload=JSON.stringify({
+  stat:"OK",date:"20060808",
+  fields:["證券代號","證券名稱","本益比","殖利率(%)","股價淨值比"],
+  data:[["1101","台泥","12.04","5.01","1.23"]]
+});
+const fallbackFetch=async (url)=>{
+  fallbackCalls++;
+  if(String(url).includes("/exchangeReport/")) throw new TypeError("simulated primary transport failure");
+  return new Response(fallbackPayload,{status:200,headers:{"content-type":"application/json"}});
+};
+const fallbackResult=await fetchOfficialHistoricalA6ValuationDateV0_1({
+  marketDate:"2006-08-08",
+  observedAt:"2026-10-05T02:00:00+08:00",
+  fetchImpl:fallbackFetch,
+  retryAttempts:2,
+  retryDelayMs:0,
+});
+assert.equal(fallbackResult.state,"READY");
+assert.equal(fallbackResult.marketDate,"2006-08-08");
+assert.equal(fallbackResult.rows[0].pe,12.04);
+assert.match(fallbackResult.sourceUrl,/rwd\/zh\/afterTrading\/BWIBBU_d/);
+assert.equal(fallbackCalls,2,"fallback should use alternate route immediately before consuming another retry round");
+
+let semanticCalls=0;
+const wrongDateFetch=async ()=>{
+  semanticCalls++;
+  return new Response(JSON.stringify({
+    stat:"OK",date:"20060809",
+    fields:["證券代號","證券名稱","本益比","殖利率(%)","股價淨值比"],
+    data:[["1101","台泥","12.04","5.01","1.23"]]
+  }),{status:200,headers:{"content-type":"application/json"}});
+};
+await assert.rejects(
+  fetchOfficialHistoricalA6ValuationDateV0_1({
+    marketDate:"2006-08-08",fetchImpl:wrongDateFetch,retryAttempts:3,retryDelayMs:0
+  }),
+  /SOURCE_DATE_MISMATCH/
+);
+assert.equal(semanticCalls,1,"semantic/source-date failure must not fall through to alternate route");
