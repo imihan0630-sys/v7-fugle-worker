@@ -225,3 +225,16 @@ Audits:
 - shared-knowledge/CURRICULUM_H07_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
 
 Do not repeat the ownership studies unless contradictory evidence appears.
+
+## Canonical overlay 2026-10-04 16:35 Asia/Taipei — first genuine L4 prospective parents
+- D20 maturity remains 58.5%; no L4 promotion.
+- First genuine post-freeze social parent: `research/d20_social_prospective_parent_20261004_001.json`.
+- Parent `D20SOC-20261004-001`: one participant, zero replies at capture; retained as a zero-herding / initial-narrative observation rather than selected away.
+- D20-06 coverage: 1 / 50 aggregate parents, 1 / 20 independent dates, 0 multi-actor sequence parents.
+- D20-11 coverage: 1 / 50 narrative parents, 1 / 20 independent dates.
+- D20-03 coverage: 0 / 100 qualifying parents, 0 / 20 independent dates.
+- First observed post exposed an unmodeled explicit-uncertainty state. It remains ineligible under the prior taxonomy. `research/d20_03_confidence_taxonomy_amendment_v0_2.json` adds explicit uncertainty prospectively only after 2026-10-04 16:34:04.
+- Social topic/stance classifier frozen in `research/d20_social_topic_stance_classifier_v0_1.json`; no named-user psychology/influence profile.
+- D20-13 weekend dry-run: official TWSE informational source accessible; generic dynamic MIS extraction returned no content; exact free live rate/depth machine route remains unresolved. Weekend evidence is not promotion-grade.
+- Next: continue post-freeze parent collection; on the next genuine Taiwan trading day execute D20-13 official-source attempts at 09:15 / 12:00 / 15:20 ±5 minutes.
+- Formal Core locked; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
