@@ -87,12 +87,14 @@ assert.equal(
 );
 assert.equal(
   buildOfficialHistoricalA1UrlV0_1("TPEX", "2017-01-03"),
-  "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=2017%2F01%2F03",
+  "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?l=zh-tw&s=0%2Casc%2C0&o=json&date=2017%2F01%2F03",
 );
 const tpexFallbackUrls = buildOfficialHistoricalA1FallbackUrlsV0_1("TPEX", "2017-01-03");
-assert.equal(tpexFallbackUrls.length, 1);
-assert.match(tpexFallbackUrls[0], /otc_quotes_no1430\/stk_wn1430_result\.php/);
-assert.match(tpexFallbackUrls[0], /d=106%2F01%2F03/);
+assert.equal(tpexFallbackUrls.length, 2);
+assert.match(tpexFallbackUrls[0], /dailyQuotes\?response=json/);
+assert.match(tpexFallbackUrls[0], /date=2017%2F01%2F03/);
+assert.match(tpexFallbackUrls[1], /otc_quotes_no1430\/stk_wn1430_result\.php/);
+assert.match(tpexFallbackUrls[1], /d=106%2F01%2F03/);
 assert.deepEqual(buildOfficialHistoricalA1FallbackUrlsV0_1("TWSE", "2017-01-03"), []);
 
 assert.equal(
@@ -150,7 +152,7 @@ assert.equal(retried.ordinarySymbolCount, 1);
 assert.equal(retried.transportMode, "PRIMARY");
 
 let tpexTransportAttempts = [];
-const tpexFallback = await fetchOfficialHistoricalA1DateV0_1({
+const tpexResponseFallback = await fetchOfficialHistoricalA1DateV0_1({
   market: "TPEX",
   marketDate: "2017-01-03",
   observedAt,
@@ -158,18 +160,44 @@ const tpexFallback = await fetchOfficialHistoricalA1DateV0_1({
   retryDelayMs: 0,
   fetchImpl: async (url) => {
     tpexTransportAttempts.push(url);
-    if (String(url).includes("/www/zh-tw/afterTrading/dailyQuotes")) {
+    const text = String(url);
+    if (text.includes("o=json")) {
       return { ok: false, status: 520, json: async () => ({}) };
     }
-    assert.match(String(url), /otc_quotes_no1430\/stk_wn1430_result\.php/);
+    if (text.includes("dailyQuotes?response=json")) {
+      return { ok: true, status: 200, json: async () => tpexPayload2017 };
+    }
+    throw new Error("unexpected TPEx transport in response-json fallback test: " + text);
+  },
+});
+assert.equal(tpexTransportAttempts.length, 3, "primary retries twice, then response-json fallback succeeds");
+assert.equal(tpexResponseFallback.transportMode, "RESPONSE_JSON_FALLBACK");
+assert.match(tpexResponseFallback.sourceUrl, /dailyQuotes\?response=json/);
+assert.equal(tpexResponseFallback.sourceDateEvidence, "2017-01-03");
+assert.equal(tpexResponseFallback.ordinarySymbolCount, 1);
+
+tpexTransportAttempts = [];
+const tpexLegacyFallback = await fetchOfficialHistoricalA1DateV0_1({
+  market: "TPEX",
+  marketDate: "2017-01-03",
+  observedAt,
+  retryAttempts: 1,
+  retryDelayMs: 0,
+  fetchImpl: async (url) => {
+    tpexTransportAttempts.push(url);
+    const text = String(url);
+    if (text.includes("/www/zh-tw/afterTrading/dailyQuotes")) {
+      return { ok: false, status: 520, json: async () => ({}) };
+    }
+    assert.match(text, /otc_quotes_no1430\/stk_wn1430_result\.php/);
     return { ok: true, status: 200, json: async () => tpexPayload2017 };
   },
 });
-assert.equal(tpexTransportAttempts.length, 3, "primary retries twice, then fallback succeeds");
-assert.equal(tpexFallback.transportMode, "LEGACY_JSON_FALLBACK");
-assert.match(tpexFallback.sourceUrl, /otc_quotes_no1430\/stk_wn1430_result\.php/);
-assert.equal(tpexFallback.sourceDateEvidence, "2017-01-03");
-assert.equal(tpexFallback.ordinarySymbolCount, 1);
+assert.equal(tpexTransportAttempts.length, 3, "primary + response-json fallback fail, then legacy succeeds");
+assert.equal(tpexLegacyFallback.transportMode, "LEGACY_JSON_FALLBACK");
+assert.match(tpexLegacyFallback.sourceUrl, /otc_quotes_no1430\/stk_wn1430_result\.php/);
+assert.equal(tpexLegacyFallback.sourceDateEvidence, "2017-01-03");
+assert.equal(tpexLegacyFallback.ordinarySymbolCount, 1);
 
 let integrityAttempts = 0;
 await assert.rejects(
