@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T20:08:00+08:00",
+  "updatedAt": "2026-10-04T20:20:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -3505,10 +3505,10 @@
           "next": "TWSE 官方費率、揭示供給/需求與競價最佳五檔語意已足夠凍結 D20-13 上市子線，但遵守 D06-18 上游成熟度：待下一有效交易日取得第一筆 outcome-blind、含 capturedAt/sourceHash/rule vintage 的真實費率/供需 receipt 後再評估 L3。不得把 displayed supply 稱為全市場可借庫存或 true utilization。"
         }
       ],
-      "status": "D20_L3_12_OF_13 / MATURITY_58_5 / PRIMARY_L4_SOCIAL_SAMPLING_CLOCK_FROZEN / SECONDARY_PROCESS_SAMPLE_1 / ONLY_D20_13_REMAINS_L2 / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D20 社群第四級主要樣本時鐘已凍結：只有 `research/d20_social_sampling_coverage_contract_v0_1.json` 規定的「13室固定 :10 排程實際成功執行」快照可計 primary L4 coverage；輪動停用/漏跑時段維持 UNKNOWN，不補抓。有限 Atom feed 必須以相鄰快照 article-id overlap 或其他已凍結 continuity proof 證明區間覆蓋，且有效快照內所有 first-observed 文章一律納入，包含零留言。手動 `D20SOC-20261004-002` 降為 secondary prospective process sample，不計正式 L4 門檻。D20-03/06/11 primary coverage 現皆 0 日期；下一個實際 :10 Room13 排程成功快照才是第一個 primary social capture。下一有效台股交易日另依 09:15/12:00/15:20 ±5 分鐘執行 D20-13 TWSE live receipt。",
-      "lastResearchUpdate": "2026-10-04T16:47:00+08:00",
-      "researchNote": "A final selection-bias audit tightened D20 social L4 evidence. Although D20SOC-20261004-002 is genuinely prospective and has a stable content-only SHA-256 receipt, its capture time was ad hoc/manual. It is therefore downgraded to a SECONDARY_PROSPECTIVE_PROCESS_SAMPLE and excluded from primary L4 sample-size gates. A deterministic primary sampling contract is now frozen: only social snapshots taken during actually executed Room13 fixed :10 scheduled research runs may count; central rotation-disabled/missed slots remain UNKNOWN; finite Atom-feed windows require overlap continuity; all newly first-observed entries from valid snapshots are included regardless of engagement/topic/stance/outcome; zero-engagement observations remain. Primary D20-03/06/11 coverage is reset to zero. This improves evidence quality without maturity inflation. D20 remains 58.5%; Formal Core unchanged."
+      "status": "D20_L3_12_OF_13 / MATURITY_58_5 / COV10_SPECIALIST_RETURN_CONTRACT_COMPLETE / PRIMARY_L4_SOCIAL_COUNTS_ZERO / ONLY_D20_13_REMAINS_L2 / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "COV-10 Room13 specialist return is complete and validated: `research/COV10_D20_SPECIALIST_RETURN_V0_1.md` + observable contract + validation receipt. Recommendation is ADD_MODULE as one umbrella belief-updating family with proposed D20-14 L0/0% only if 00-room intake/dependency/owner gates approve; Room13 must not self-add it. Primary D20-03/D20-06/D20-11 L4 social counts remain zero because the 2026-10-04 20:10 Room13 fixed :10 slot was rotation-disabled; no manual backfill. First actually executed post-freeze fixed :10 Room13 snapshot is the next primary social capture candidate. D20-13 remains L2; next genuine Taiwan trading day execute frozen TWSE live attempts at 09:15/12:00/15:20 ±5m. H12 ownership semantics are already complete; do not repeat.",
+      "lastResearchUpdate": "2026-10-04T20:20:00+08:00",
+      "researchNote": "COV-10 belief-updating gap specialist return is now contract-complete. One residual observable family survives beyond anchoring/recency/attention/herding/event-drift/narrative/falsification: prior belief -> evidence congruence -> verified exposure -> update direction/magnitude. Confirmation, belief perseverance and conservatism remain submechanisms of one umbrella family, never three votes. Taiwan non-price prospective replay is feasible via deterministic scheduled social snapshots plus owner-certified official event/correction receipts; non-exposure/ambiguous information keeps the behavioral label UNKNOWN. Proposed D20-14 starts L0/0% only after 00-room formal intake/dependency/owner approval. No curriculum or maturity change now. Social primary counts remain zero because Room13 was disabled at 20:10 and backfill is forbidden. D20-13 still waits for live trading-day TWSE source receipt."
     },
     {
       "id": "D21",
