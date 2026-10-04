@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T16:35:35+08:00",
+  "updatedAt": "2026-10-04T16:48:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 45.3
+    "maturityWeightedPct": 45.6
   },
   "domains": [
     {
@@ -3505,7 +3505,7 @@
         "CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md",
         "CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md"
       ],
-      "maturityPct": 47.3,
+      "maturityPct": 50.9,
       "modules": [
         {
           "id": "D21-01",
@@ -3570,12 +3570,12 @@
         {
           "id": "D21-09",
           "name": "Succession／Key-person Risk接班與關鍵人風險",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Succession／Key-person Risk接班與關鍵人風險」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_FALSIFICATION_FROZEN / HISTORICAL_SUCCESSION_REPLAY_PENDING / CONTEXT_ONLY / GOVERNANCE_TAIL_RISK / CONFIDENCE",
-          "next": "建立至少兩筆不同型態的台灣接班／關鍵人事件 PIT replay，優先一筆規劃式接班與一筆突發／非規劃異動；鎖定首次公告、董事會決議、實際生效、接班人家族／內外部身分、創辦人是否續留控制、同期財務與治理背景。"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_SUCCESSION_PIT_FEASIBILITY_VALIDATED / PLANNED_VS_ABRUPT_STATE_MACHINE_FROZEN / CONTEXT_ONLY / GOVERNANCE_TAIL_RISK / CONFIDENCE",
+          "next": "擴大台灣規劃式／突發式接班樣本，做 OOS／前瞻驗證；控制前期績效、產業、控制家族、接班人內外部身分、代理期間、董總角色與創辦人是否續留控制。無 OOS/Shadow 證據前不得升 L4。"
         },
         {
           "id": "D21-10",
@@ -3610,18 +3610,18 @@
         {
           "id": "D21-13",
           "name": "ESG／Climate／Social Materiality環境氣候社會重大性風險",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「ESG／Climate／Social Materiality環境氣候社會重大性風險」。研究環境、氣候與社會議題在具財務重大性時對公司現金流、成本、資產負債、供應鏈與治理風險的影響；不得把泛用 ESG（環境社會治理）分數直接當買賣訊號。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 原 D21-08 退休後，本模組承接 Governance／ESG（治理／環境社會治理）分數中真正具財務重大性的內容；只研究可連結現金流、成本、資產負債、供應鏈、監管或治理風險的 materiality（重大性），不得把泛用 ESG score（ESG分數）直接當買賣訊號。資料來源／版本治理由 D16-11 承接。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "MATERIALITY_SCOPE_FROZEN / GENERIC_ESG_SCORE_REJECTED / HISTORICAL_MULTI_SECTOR_REPLAY_PENDING / RESEARCH_ONLY",
-          "next": "建立至少兩個不同產業的台灣重大性風險 PIT replay，優先半導體水／電／碳暴露對照高排放工業或勞安／產品安全敏感產業；鎖定 disclosure regime、methodology vintage、target vs realized、known_at 與財務傳導路徑。不得用泛用 ESG score 當主要因子。"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_MULTI_SECTOR_MATERIALITY_PIT_VALIDATED / SECTOR_MAPPING_FROZEN / GENERIC_ESG_SCORE_REJECTED / RESEARCH_ONLY",
+          "next": "擴大多年度、多產業重大性樣本並做 OOS／前瞻驗證；至少控制產業、規模、資本支出循環、獲利、估值、法規導入階段與量測方法版本。無 OOS/Shadow 證據前不得升 L4。"
         }
       ],
-      "status": "D21_01_L2 / D21_02_L3 / D21_03_L2 / D21_04_L2 / D21_05_L3 / D21_07_L2 / D21_09_L2 / D21_10_L3 / D21_11_L2_PARTIAL_REPLAY / D21_12_L3 / D21_13_L2 / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D21-13 建立兩產業重大性風險歷史 PIT replay；D21-12 後續只接受 OOS／前瞻證據升 L4。D21-11 同時期公開證據缺口維持待補。",
-      "lastResearchUpdate": "2026-10-04T15:02:00+08:00",
-      "researchNote": "D21-12 advanced to L3 after multi-observation historical numeric-guidance replay for TSMC and MediaTek established issuer/metric-specific known_at and outcome clocks; small samples show conservative-bias tendencies but do not justify permanent manager labels. D21-13 advances to L2 after financially-material environmental/climate/social scope, Taiwan 2026 IFRS sustainability phase-in, rating-divergence falsification, PIT/methodology-vintage controls and candidate transmission channels were frozen. Formal Core unchanged."
+      "status": "D21_01_L2 / D21_02_L3 / D21_03_L2 / D21_04_L2 / D21_05_L3 / D21_07_L2 / D21_09_L3 / D21_10_L3 / D21_11_L2_PARTIAL_REPLAY / D21_12_L3 / D21_13_L3 / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D21-07 建立台灣歷史薪酬政策→資本配置 PIT replay；D21-09、D21-13 後續只接受 OOS／前瞻證據升 L4。D21-11／04／03／01 的來源缺口維持待補但不阻塞。",
+      "lastResearchUpdate": "2026-10-04T16:48:00+08:00",
+      "researchNote": "D21-13 advanced to L3 using TSMC semiconductor water/energy materiality and China Steel carbon/raw-material/water transition channels, with conservative report known-at, denominator/methodology controls and sector-specific financial transmission. D21-09 advanced to L3 using TSMC planned succession and Taiwan Cement abrupt incapacity/death succession, preserving acting/permanent states and public event clocks. Formal Core unchanged."
     },
     {
       "id": "D22",
