@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04T19:10:00+08:00",
+  "owner": "08｜事件與新聞研究室",
+  "modules": [
+    "D17-01",
+    "D17-02",
+    "D17-09",
+    "D11-08",
+    "D11-13"
+  ],
+  "title": "D17 official disclosure weekend after-hours coverage receipt",
+  "status": "WEEKEND_AFTER_HOURS_CAPTURE_COMPLETE / EXPECTED_OBSERVED_POLLS_COMPLETE / PAYLOAD_STABLE / FIRST_AVAILABILITY_UNPROVEN / OUTCOMES_CLOSED",
+  "workflow": {
+    "path": ".github/workflows/research-d17-official-disclosure-capture-readonly.yml",
+    "commit": "1e8a0e8da537f436afe085203abb995a1d7b2e44",
+    "runId": 37197636375,
+    "jobId": 111422676477,
+    "artifactId": 11301419229,
+    "artifactZipSha256": "e764be0144c049edd2af0aacb324cb0f024aae8bc95fdfe44cebe346f52d664d",
+    "conclusion": "success"
+  },
+  "coverage": {
+    "taipeiSessionClass": "WEEKEND_NON_TRADING",
+    "capture1Utc": "2026-10-04T11:07:17Z",
+    "capture2Utc": "2026-10-04T11:08:23Z",
+    "capture1Taipei": "2026-10-04T19:07:17+08:00",
+    "capture2Taipei": "2026-10-04T19:08:23+08:00",
+    "expectedPollsPerSource": 2,
+    "observedPollsPerSource": 2,
+    "expectedObservedComplete": true
+  },
+  "sourceResults": {
+    "TWSE": {
+      "rowCount": 5,
+      "rawSha256": "572da8f65e84d7cf0f5dfd21da49080979bfd02164b544fe3b6c767d8da30c2d",
+      "poll1EqualsPoll2": true,
+      "changeCounts": {
+        "added": 0,
+        "removed": 0,
+        "contentChanged": 0
+      }
+    },
+    "TPEX": {
+      "rowCount": 4,
+      "rawSha256": "31ff35f5bfb439faff1b2dc731fd7213517251844ab9e5fcb558631513a3d4ca",
+      "poll1EqualsPoll2": true,
+      "changeCounts": {
+        "added": 0,
+        "removed": 0,
+        "contentChanged": 0
+      }
+    }
+  },
+  "comparisonToEarlier20261004Run": {
+    "priorRunId": 37183990727,
+    "priorCapturedAtApprox": "2026-10-04T14:51+08:00",
+    "TWSErawHashSame": true,
+    "TPEXrawHashSame": true,
+    "interpretation": "The observed daily payload remained stable between the afternoon and weekend-evening runs. This is bounded stability only and does not prove immutable source history or authenticated first availability."
+  },
+  "maturityDecision": {
+    "D17_01": "KEEP_L2: official truth-lane coverage deepened, but licensed production general-news source and complete source/version governance remain unresolved.",
+    "D17_02": "KEEP_L2: capturedAt replay and expected/observed poll accounting improved, but the source publication clock still does not authenticate API first-availability time or latency distribution.",
+    "D17_09": "KEEP_L3: cross-day republication feasibility remains validated; no new maturity gate crossed.",
+    "D11_08": "KEEP_L2: native correction/supersession and authenticated intraday availability remain incomplete.",
+    "D11_13": "KEEP_L2: this receipt proves bounded source polling completeness for one lane/window, not completeness across all event/news lanes, so NO_KNOWN_EVENT cannot be generalized."
+  },
+  "exactNext": [
+    "Preserve additional trading-session captures rather than only weekend stability.",
+    "Measure sourcePublishedAt-to-capturedAt as observed capture delay only; do not relabel it API latency.",
+    "Use lane-specific expected/observed coverage receipts when forming negative evidence; cross-lane absence remains UNKNOWN.",
+    "Keep general-news licensing/source-version work separate from official-disclosure truth-lane coverage."
+  ],
+  "formalCoreChanged": false,
+  "outcomeJoin": false
+}
