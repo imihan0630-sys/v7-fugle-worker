@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 354,
-    "maturityWeightedPct": 42.3
+    "maturityWeightedPct": 42.4
   },
   "domains": [
     {
@@ -658,7 +658,7 @@
         "research/day_trading_chip_crowding_semantic_guard_v0_1.json",
         "system2/SYSTEM2_STATE_OWNED_BANK_FLOW_RESEARCH.md"
       ],
-      "maturityPct": 44.7,
+      "maturityPct": 47.1,
       "modules": [
         {
           "id": "D06-01",
@@ -679,10 +679,12 @@
         {
           "id": "D06-03",
           "name": "自營商自營／避險拆分",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「自營商自營／避險拆分」。學習範圍：外資、投信、自營商、融資融券、借券、集保與被動資金的資料語意；Flow與Stock差異；擁擠與反向風險；流動性正規化；事件時點與因果混淆。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / DEALER_PROP_HEDGE_SOURCE_REPLAY_READY / FORMAL_AGGREGATION_UNCHANGED / OUTCOMES_CLOSED",
+          "next": "前瞻保存 TWSE／TPEx 自營商自行買賣與避險拆分欄位、來源 schema fingerprint（結構指紋）、capturedAt／firstKnownAt；L4 前只做 Shadow／OOS（影子／樣本外）增量研究，不改 current Formal dealerNet（目前正式自營商合計）。"
         },
         {
           "id": "D06-04",
@@ -698,7 +700,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「持股集中度／Ownership」。學習範圍：外資、投信、自營商、融資融券、借券、集保與被動資金的資料語意；Flow與Stock差異；擁擠與反向風險；流動性正規化；事件時點與因果混淆。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_FROZEN / SOURCE_MODULE_D06_10_L3_DOES_NOT_TRANSFER / SAME_GENERATION_LINEAGE_MISSING / HOLDER_IDENTITY_UNKNOWN / OUTCOMES_CLOSED",
+          "next": "等待 prospective（前瞻）研究列保存 immutable（不可變）chipAsOfDate／chipDefinition／generation hash，並按 ownership vintage（持股版本）去重；持有人身分與 passive share（被動持股占比）仍為 UNKNOWN，不得因 D06-10 升 L3 而繼承成熟度。"
         },
         {
           "id": "D06-06",
@@ -735,10 +739,12 @@
         {
           "id": "D06-10",
           "name": "TDCC集保股權分散",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「TDCC集保股權分散」。學習範圍：外資、投信、自營商、融資融券、借券、集保與被動資金的資料語意；Flow與Stock差異；擁擠與反向風險；流動性正規化；事件時點與因果混淆。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / WEEKLY_VINTAGE_REPLAY_READY_FOR_CAPTURED_RECEIPTS / HOLDER_IDENTITY_UNKNOWN / D06_05_LINEAGE_STILL_BLOCKED / OUTCOMES_CLOSED",
+          "next": "前瞻把 chipAsOfDate／chipDefinition／TDCC generation hash（集保世代雜湊）保存到同世代研究憑證；同一 chipAsOfDate 的多個 scanDate 不算獨立 Ownership（持股）觀測，L4 前不開報酬結論。"
         },
         {
           "id": "D06-11",
@@ -810,7 +816,7 @@
       "status": "IC048_050_TWO_L3_PROMOTIONS / D06_03_DEALER_SPLIT_L3 / D06_10_TDCC_SOURCE_L3 / D06_05_OWNERSHIP_L2_FIREWALL / COV03_SPECIALIST_RETURN_SUBMITTED_ADD_MODULE_L1_PROPOSED / D06_13_18_GUARDS_ACTIVE / H06_H12_H14_COUNTERPART_PENDING / NEXT_TRADING_DAY_PROSPECTIVE_GATES / INSTITUTIONAL_D5_WAITING",
       "exactNextContinuationPoint": "00-ROOM: COV-03 specialist return is contract-complete but has NO curriculum impact until Intake/dependency/overlap/owner approval. NEXT_VALID_TRADING_DAY: (1) D06-03 dealer proprietary/hedge split receipt; (2) IC-043 TPEx 20:30 EARLY + 22:30 LATE; (3) PF-040 ETF units-delta + same-generation PCF; (4) D06-18 borrow-rate/displayed-supply receipt; (5) D06-14 TPEx T_PRELIM then T1_REVISED/T2_FINAL; (6) immutable TDCC vintage/hash receipt; (7) outcomes remain closed until Shadow/OOS gates pass.",
       "lastResearchUpdate": "2026-10-04",
-      "researchNote": "PF-039 narrows ETF units-delta semantics: TWSE ISSUES-DIFF includes T-1 initial-review net creations/redemptions, T-2 second-review failure reversals and dual-currency conversions; PCF is versioned and may be updated T-day. D06-16 therefore has mechanism+falsification+PIT+H14 anti-double-count defined and advances L0->L2. D06-18 separates lending activity from borrow economics: fee, displayed supply/demand and availability are distinct from borrow/short quantities; true utilization remains UNKNOWN without verified lendable-inventory denominator. H12 Room-05 side freezes single-receipt producer/consumer ownership and advances D06-18 L0->L2. No outcomes, no Formal change. H06 Room-05 packet freezes D06-06 as observable crowding owner and requires independent residual/behavior-specific evidence before D20-06 herding can survive separately. H14 Room-05 packet freezes D11-14 index-event identity versus D06-11 realized passive-flow producer/consumer boundary and single-event-receipt rule. Both are governance/scope evidence only and do not raise maturity. Weekend deepening: D06-16 Taiwan rules show in-kind creation may use existing holdings, collective creation, >=90% minimum basket plus next-day buy/borrow of shortage shares, and cash substitution; units+PCF therefore identify modeled delivery exposure rather than same-day actual constituent execution. D06-18 adds borrow-fee identifiability and rule-vintage guards: 2026-06-01 fee payment timing changed, and TWSE borrow quotes expire daily while lend quotes persist until cancellation, so raw displayed borrow/lend ratios are clock-asymmetric. Cross-mechanism firewall freezes ETF creation-related borrowing as a possible mechanical fulfillment path, preventing ETF flow and borrowing from becoming independent votes by default. Maturity remains 44.7%; no outcomes and no Formal change. 2026-10-04 weekend deepening: D06-13 source tiers are now explicit—full all-stock broker data are complete-universe but paid and mix proprietary/brokerage flow, while the cheaper most-active product removes proprietary flow but selects on turnover and is unsuitable for full-market inference. D06-14 now separates TWSE ~20:00 day-trading contract from TPEx T/T+1/T+2 revision vintages; TWSE's >60% day-trading attention condition is a surveillance threshold, not alpha. D06-15 now separates the Ministry of Finance public-financial-institution entity set from vendor 'eight-bank' trading proxies, broker execution identity, beneficial owner and policy/stabilization mandate. D06-13/14/15 remain L2; no maturity inflation, outcomes or Formal change. COV-03 specialist return is complete with terminal recommendation ADD_MODULE and proposed L1/20% start, but no module-count/maturity change is made here. Official Taiwan evidence directly identifies natural persons at market/channel level (market trading share, odd-lot, credit and ownership), while authoritative replayable domestic-natural-person stock×date directional flow remains unverified. Margin/day-trade/broker/residual proxies are prohibited as direct retail identity."
+      "researchNote": "PF-039 narrows ETF units-delta semantics: TWSE ISSUES-DIFF includes T-1 initial-review net creations/redemptions, T-2 second-review failure reversals and dual-currency conversions; PCF is versioned and may be updated T-day. D06-16 therefore has mechanism+falsification+PIT+H14 anti-double-count defined and advances L0->L2. D06-18 separates lending activity from borrow economics: fee, displayed supply/demand and availability are distinct from borrow/short quantities; true utilization remains UNKNOWN without verified lendable-inventory denominator. H12 Room-05 side freezes single-receipt producer/consumer ownership and advances D06-18 L0->L2. No outcomes, no Formal change. H06 Room-05 packet freezes D06-06 as observable crowding owner and requires independent residual/behavior-specific evidence before D20-06 herding can survive separately. H14 Room-05 packet freezes D11-14 index-event identity versus D06-11 realized passive-flow producer/consumer boundary and single-event-receipt rule. Both are governance/scope evidence only and do not raise maturity. Weekend deepening: D06-16 Taiwan rules show in-kind creation may use existing holdings, collective creation, >=90% minimum basket plus next-day buy/borrow of shortage shares, and cash substitution; units+PCF therefore identify modeled delivery exposure rather than same-day actual constituent execution. D06-18 adds borrow-fee identifiability and rule-vintage guards: 2026-06-01 fee payment timing changed, and TWSE borrow quotes expire daily while lend quotes persist until cancellation, so raw displayed borrow/lend ratios are clock-asymmetric. Cross-mechanism firewall freezes ETF creation-related borrowing as a possible mechanical fulfillment path, preventing ETF flow and borrowing from becoming independent votes by default. Maturity remains 44.7%; no outcomes and no Formal change. 2026-10-04 weekend deepening: D06-13 source tiers are now explicit—full all-stock broker data are complete-universe but paid and mix proprietary/brokerage flow, while the cheaper most-active product removes proprietary flow but selects on turnover and is unsuitable for full-market inference. D06-14 now separates TWSE ~20:00 day-trading contract from TPEx T/T+1/T+2 revision vintages; TWSE's >60% day-trading attention condition is a surveillance threshold, not alpha. D06-15 now separates the Ministry of Finance public-financial-institution entity set from vendor 'eight-bank' trading proxies, broker execution identity, beneficial owner and policy/stabilization mandate. D06-13/14/15 remain L2; no maturity inflation, outcomes or Formal change. COV-03 specialist return is complete with terminal recommendation ADD_MODULE and proposed L1/20% start, but no module-count/maturity change is made here. Official Taiwan evidence directly identifies natural persons at market/channel level (market trading share, odd-lot, credit and ownership), while authoritative replayable domestic-natural-person stock×date directional flow remains unverified. Margin/day-trade/broker/residual proxies are prohibited as direct retail identity. IC-048~050: D06-03 dealer proprietary/hedge split advances L2->L3; D06-10 TDCC distribution advances L2->L3; D06-05 Ownership remains L2 due same-generation lineage and holder-identity gaps. No outcomes or Formal change."
     },
     {
       "id": "D07",
