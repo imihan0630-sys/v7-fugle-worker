@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-05T05:38:00+08:00",
+  "updatedAt": "2026-10-05T05:55:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -274,10 +274,10 @@
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
       ],
       "maturityPct": 56.7,
-      "status": "D03_56_7_PERCENT / DECISION_CUTOFF_MINIMAL_PERSISTENCE_PATH_FROZEN / OWNER_RUNTIME_IMPLEMENTATION_PENDING / BOLLINGER_FIRST_PROMOTION_TARGET / ADX_FULL_REPLAY_SECOND / RAW_RECEIPT_GATE_2_OF_3 / OUTCOMES_CLOSED",
-      "lastResearchUpdate": "2026-10-04",
-      "researchNote": "TI-661~685 harden D03 continuity causality without maturity inflation. A versioned evidenceCutoffAt/receiptCreatedAt architecture physically passes: continuity may be materialized after the parent only from an immutable pre-decision-cut source set, with zero post-cut or unbound facts and separate market-cut vs symbol-transform provenance hashes. A two-point noRevisionGapThroughCut owner-certifier candidate physically passes fail-closed tests for late-discovered pre-cut versions, version-payload mutation, missing pre versions and incomplete post population; D03 self-certification remains forbidden. Pre-parent source-cut V0.2 physically proves decisionAt/parentKnownAt cannot substitute for decisionCutoffAt. Parent×evidence-cut×continuity binding V0.2 physically passes for post-parent-derived Bollinger and canonical FULL_REPLAY ADX synthetic receipts. Effective V8.17 build audit run 37196768178 passes after 95/95 C1/C2 regression tests and falsifies the older totalCapital anchor: the final Formal-affecting async input is the later STOCKS_KV V7_MARKET_CONSENSUS read; after that read and before synchronous selectTomorrowCandidates there are zero external/async reads. Physical C1 has decisionAt but no decisionCutoffAt. Correct owner insertion candidate is after market-consensus read and immediately before selector. D03-09/10 remain L2, raw source gate remains 2/3, outcomes/Formal closed. TI-686~692 reduce the System1 parent implementation surface without maturity inflation. Current C1 persistence already stores the full immutable receipt header in trade_research_c1_generations.header_json and reparses it on readback, so decisionCutoffAt does not intrinsically require a D1 schema migration. Existing same-generation header conflict protection can make the cutoff immutable once included. D03 does not need cutoff duplicated into each Shadow membership row; exact captureGeneration -> immutable C1 header remains the preferred single-owner chain. Minimum owner patch is additive provenance only: stamp real cutoff after the final V7_MARKET_CONSENSUS read and before synchronous selector, pass exact value through selector/C1 builder, validate cutoff<=decisionAt, persist/read back via existing header, add no provider call and preserve Formal parity. No genuine cutoff-bearing parent exists yet, so D03 remains 56.7%.",
-      "exactNextContinuationPoint": "Shared System1 immutable-parent owner implements/version-controls additive decisionCutoffAt provenance at the audited V8.17 boundary: immediately after the final V7_MARKET_CONSENSUS read and before synchronous selectTomorrowCandidates. Dedicated D1 column is not a semantic requirement; existing immutable C1 header_json path is sufficient if owner tests exact readback/conflict semantics. No historical backfill. After deploy, first genuine Taiwan session must produce a cutoff-bearing immutable C1 generation; shared continuity owner binds market-wide evidenceCut<=decisionCutoffAt with noRevisionGapThroughCut/symbol-session certification; execute Bollinger v0.2 for every expected parent and require COMPLETE reconciliation before D03-10 L3 -> D03 58.3%. ADX follows only with canonical FULL_REPLAY for 60.0%. Raw D03 gate remains 2/3; TI-005/TI-006 outcomes remain closed.",
+      "status": "D03_56_7_PERCENT / V8_18_PR600_THREE_CI_GATES_PASS / PRODUCTION_APPROVAL_PENDING / BOLLINGER_FIRST_POST_DEPLOY_PROMOTION_TARGET / ADX_FULL_REPLAY_SECOND / RAW_RECEIPT_GATE_2_OF_3 / OUTCOMES_CLOSED",
+      "lastResearchUpdate": "2026-10-05",
+      "researchNote": "TI-693~700 convert the audited decision-cutoff handoff into a concrete non-Production V8.18.0 candidate. Draft PR #600 exact head f030f04c1a807a23fe19072b96407f1436d09da8 stamps decisionCutoffAt immediately after the final V7_MARKET_CONSENSUS read and before synchronous selection, propagates it into the immutable C1 header, uses no new D1 scalar column, adds no provider calls and forbids historical backfill. V8 Repair run 37237843589 PASS; System1 C1/C2 isolated review run 37237843572 PASS 100/100 with V8.18 delta limited to runAfterMarketScanCore/buildC1PopulationReceipt/selectTomorrowCandidates, selector parity true, runAfter parity except cutoff true, formalCoreImpact false; V8 Regression run 37237843517 PASS including dedicated cutoff placement/header roundtrip/same-generation conflict fixture. PR remains DRAFT/OPEN/UNMERGED and no Cloudflare deploy was triggered. Engineering evidence does not raise D03 maturity.",
+      "exactNextContinuationPoint": "Protected boundary: obtain explicit owner Production approval for concrete draft PR #600 before merge/deploy. If approved and deployed, do not promote maturity immediately. Wait for the first genuine post-deploy Taiwan trading session and normal scan to produce a decisionCutoffAt-bearing immutable C1 generation with exact protected readback. Bind cutoff-safe owner continuity evidence and execute Bollinger v0.2 over all expected parents with COMPLETE reconciliation; only then may D03-10 advance L2/40->L3/60 and D03 56.7->58.3. D03-09 ADX follows only after canonical FULL_REPLAY/trusted-state certification and would move D03 to 60.0. Raw D03 source-version gate remains independently 2/3; TI-005/TI-006 outcomes remain closed; Formal Core locked.",
       "modules": [
         {
           "id": "D03-01",
@@ -356,8 +356,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「ADX平均趨向指標」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "ADX_V0_2_FORMULA_SOURCE_AND_BINDING_GUARDS_PHYSICAL_PASS / DECISION_CUTOFF_AND_POST_PARENT_DERIVATION_CONTRACTS_PHYSICAL_PASS / GENUINE_CUTOFF_BEARING_PARENT_AND_OWNER_NO_REVISION_GAP_PENDING / CANONICAL_ANCHOR_FULL_REPLAY_REQUIRED / OUTCOME_UNKNOWN",
-          "next": "Require every Bollinger-class genuine-parent/continuity gate plus canonical-anchor FULL_REPLAY, exact Wilder state lineage, replay/prefix certification and complete expected-parent attempts. No trusted local bootstrap. Only after physical COMPLETE may L3/60 -> D03 60.0%."
+          "status": "V8_18_CUTOFF_ENGINEERING_CI_PASS / PRODUCTION_APPROVAL_AND_GENUINE_CUTOFF_PARENT_PENDING / CANONICAL_FULL_REPLAY_REQUIRED / OUTCOME_UNKNOWN",
+          "next": "After the same genuine cutoff-bearing parent/continuity prerequisites as Bollinger, additionally require canonical Wilder H/L/C FULL_REPLAY or replay-certified trusted prior state, state/source lineage and complete expected-parent reconciliation. Engineering CI alone does not promote L3."
         },
         {
           "id": "D03-10",
@@ -366,8 +366,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Bollinger Bands布林通道」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "BOLLINGER_V0_2_FORMULA_AND_SOURCE_GUARDS_PHYSICAL_PASS / DECISION_CUTOFF_AND_POST_PARENT_DERIVATION_CONTRACTS_PHYSICAL_PASS / GENUINE_CUTOFF_BEARING_PARENT_AND_OWNER_NO_REVISION_GAP_PENDING / OUTCOME_UNKNOWN",
-          "next": "First promotion target. Require genuine parent with persisted decisionCutoffAt at the audited post-marketConsensus/pre-selector boundary; market-wide evidence cut <= cutoff; owner noRevisionGapThroughCut/symbol-session certification; derived continuity only from pre-cut facts; V0.2 parent binding; exact 20 eligible sessions; complete expected-parent attempts. Then and only then L3/60 -> D03 58.3%."
+          "status": "V8_18_CUTOFF_ENGINEERING_CI_PASS / PRODUCTION_APPROVAL_AND_GENUINE_CUTOFF_PARENT_PENDING / BOUNDED_CONTINUITY_BINDING_REQUIRED / OUTCOME_UNKNOWN",
+          "next": "First post-approval target. After PR #600 approved/merged/deployed, require a genuine cutoff-bearing immutable C1 generation, exact readback, cutoff-safe continuity binding, exact 20 eligible-session closes, formula/source guards and COMPLETE expected-parent attempt reconciliation. Engineering CI alone does not promote L3."
         },
         {
           "id": "D03-12",
