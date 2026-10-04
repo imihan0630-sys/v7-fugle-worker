@@ -1,0 +1,389 @@
+{
+  "schemaVersion": "D08_TWSE_OFFICIAL_UNIVERSE_SOURCE_RECEIPT_V0_1",
+  "result": "PASS",
+  "generatedAt": "2026-10-04T00:47:02.858Z",
+  "researchOnly": true,
+  "outcomeJoin": false,
+  "sources": {
+    "current": {
+      "source": "TWSE_OPENAPI_T187AP03_L",
+      "count": 1089,
+      "sourceHash": "c9028b40687aca3e9c0b733f75c67ff19baa2785d6341977c9936a9daa20b63c",
+      "sourceUrl": "https://openapi.twse.com.tw/v1/opendata/t187ap03_L"
+    },
+    "newlisting": {
+      "source": "https://www.twse.com.tw/rwd/zh/company/newlisting?response=json",
+      "rowCount": 793,
+      "sourceHash": "bb70678fc001770c7e86ef9471e0ff96b8fe87b6852545a485ab18d1610f7b91"
+    },
+    "delisting": {
+      "source": "https://www.twse.com.tw/rwd/zh/company/suspendListing?response=json",
+      "rowCount2023Plus": 12,
+      "sourceHash": "a80693f2ab3c94b024ed830c73e64f2a0d122fdba806148edce38bf1570fc143"
+    }
+  },
+  "matching": {
+    "delistedTotalCount": 12,
+    "delistedListingDateMatchedCount": 9,
+    "delistedDatasetStartFallbackCount": 3,
+    "datasetFirstTradingDate": "2023-01-03",
+    "datasetStartOrdinarySymbolCount": 972,
+    "datasetStartFallbackSymbols": [
+      "1701",
+      "2358",
+      "2809"
+    ]
+  },
+  "registry": {
+    "registryId": "D08-TWSE-2023-2026-OFFICIAL-UNION-V0.1",
+    "registryHash": "0b7b587b7962b9782570a3b9fc679be8440d0c4c2e75fc06d155bf95641041a7",
+    "membershipCount": 1101,
+    "symbolMarketCount": 1101,
+    "replayEligibleCount": 1101,
+    "unknownStartCount": 0,
+    "currentCount": 1089,
+    "delistedCount": 12
+  },
+  "scanClock": {
+    "scanDateListHash": "e4475abd9fe2ab867bf20e5a8ee2f1a000bdb78365afe6083e6433c2b5abc490",
+    "snapshotCount": 44,
+    "minMemberCount": 975,
+    "maxMemberCount": 1089,
+    "snapshotBundleHash": "97d1b5324b388753b09236cb3a731361aed1f009a775e868c305c30d8189844a",
+    "snapshots": [
+      {
+        "scanDate": "2023-01-31",
+        "memberCount": 975,
+        "snapshotHash": "0d393fa213600a46c459a0bf89091041cbfffd02d27e794eac7d7109e2d3d790",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2023-02-24",
+        "memberCount": 975,
+        "snapshotHash": "4a95cd8daeae0f87eb1cc1e5771dabc5e56d555b511cda5977daf8dad187e9c0",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2023-03-31",
+        "memberCount": 981,
+        "snapshotHash": "a0add2d54a022947b9d8a7a15f40cc280c9faeabb06013d9a9d7ecc12f4b2a45",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2023-04-28",
+        "memberCount": 981,
+        "snapshotHash": "d73c86e7ba9b2a7e23de7fa51aa54690352a524563b7a7ad14ee08718f18d6c4",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2023-05-31",
+        "memberCount": 982,
+        "snapshotHash": "dcb0d099b73d1bb820ab47239d12921b956e792c41fff99abb1f78244d30f0c3",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2023-06-30",
+        "memberCount": 982,
+        "snapshotHash": "5f1bdc58809372b0afb2fa33d12ccc390dd4ffa51f7b35ec55cc71783e787f2d",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2023-07-31",
+        "memberCount": 984,
+        "snapshotHash": "36a1fc9f82bfc8b6fc4d474c8f05099cf0679f92a2de0b8f3706cdfb01553080",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2023-08-31",
+        "memberCount": 985,
+        "snapshotHash": "0bcd42f312bab0808e8aeb27e56905f826b06a6fc07c05537a6d6d42413f89ad",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2023-09-28",
+        "memberCount": 986,
+        "snapshotHash": "b381cd21946e2396609866fda0a9d0e9d4eeb7908ba21721c5d89d3a78d48e9e",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2023-10-31",
+        "memberCount": 989,
+        "snapshotHash": "ef5dc10fee9487bcdcd953fc8856e6026195c8759e1980b454db2daef83701f3",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2023-11-30",
+        "memberCount": 994,
+        "snapshotHash": "58e143557a3a2bb1a2f10fb434e671e16ea7c3eb62d255f5d40930544b0cbdc6",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2023-12-29",
+        "memberCount": 1000,
+        "snapshotHash": "5ca0c96912b134cbd9a1315e55d811a70b460d9bac8d6633abfeb4b22e83dafa",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2024-01-31",
+        "memberCount": 1004,
+        "snapshotHash": "38751777c3061ff4c62348654c2486a420966c846a5d74f485cc0f0aeeeb557b",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2024-02-29",
+        "memberCount": 1004,
+        "snapshotHash": "36dab686618c72cc7c964c30ec7783b2b885e9d54d4bec8a5af8acf99b3ae400",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2024-03-29",
+        "memberCount": 1009,
+        "snapshotHash": "3725e005dd8492eba637017c7384fe93d0b161a06d0f614fb0593019c7c367d6",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2024-04-30",
+        "memberCount": 1009,
+        "snapshotHash": "289f8ca2e4f38dc25373852676f1753d5c20cf37096e21333b6af4ad4930a2ca",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2024-05-31",
+        "memberCount": 1016,
+        "snapshotHash": "5f3bfe19b01b648e8ec92dad92e8daafa2753976c860d2008031883f9e3918ec",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2024-06-28",
+        "memberCount": 1021,
+        "snapshotHash": "bc79709d354a62b292fa44895b385f8743acb9c84e7ee3742a891ae8fe837f98",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2024-07-31",
+        "memberCount": 1021,
+        "snapshotHash": "9ac3621d09f323d4bc65fb557e01154f1833fc8d984d21adcba8b018ed1ec7da",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2024-08-30",
+        "memberCount": 1023,
+        "snapshotHash": "cb40f9c0ddf49e018db9531157c922cc9c13348d969a3a8b9585f1077fad7bf5",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2024-09-30",
+        "memberCount": 1026,
+        "snapshotHash": "bdecedbf6c9cd8751376a2b62f40e74df782d05d52375f9ce85ac5a7bdf4692a",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2024-10-30",
+        "memberCount": 1030,
+        "snapshotHash": "56d28b4f1ea906c7228f043d9fe17f8a1a487381dd59652fea0eef503e19497b",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2024-11-29",
+        "memberCount": 1030,
+        "snapshotHash": "8bb4687223937acd5888afbf98a8a9bd46decdd941c4db4f13c2ca6db5725522",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2024-12-31",
+        "memberCount": 1035,
+        "snapshotHash": "66ffb2aa9ab069fa14ef6b14c84c135936056436901a7faa2de402c664e14e1b",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2025-01-22",
+        "memberCount": 1038,
+        "snapshotHash": "ad491f267bf42f678cb3163753136a43b75ba4513b323827b44ca8dcc0e22522",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2025-02-27",
+        "memberCount": 1038,
+        "snapshotHash": "e590e031f8887bbe2f0d00b340fd82df4a124b0c1900120f8d0567f04c8eb230",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2025-03-31",
+        "memberCount": 1043,
+        "snapshotHash": "910f28316b92b1e0ae2ad0ffc6e99ad2e278e081053081d186760628ebf0c24d",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2025-04-30",
+        "memberCount": 1044,
+        "snapshotHash": "1d2d41999054d1116c40382a1aa268ce4cb2e0f7cd8efff96a76c25702bdb0c8",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2025-05-29",
+        "memberCount": 1046,
+        "snapshotHash": "1d509d590efaf3fa181cae9af526661eeda4d8bd30feef2a99bb684396a4d09a",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2025-06-30",
+        "memberCount": 1049,
+        "snapshotHash": "2ee3f5a13ab68bc77c6d21cc08f6381acef10004025a8e652e6762fea31bc713",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2025-07-31",
+        "memberCount": 1050,
+        "snapshotHash": "42f641b1f0238249d22c7ab031ddf022395d53a3f0a2fc148a05b9f378285bde",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2025-08-29",
+        "memberCount": 1051,
+        "snapshotHash": "e45eefefe29db0cbe8af8209dd3c00522721b6855c163d003dd445179acd2077",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2025-09-30",
+        "memberCount": 1058,
+        "snapshotHash": "f7ad55ce1e8162d3cfa38cc3f979b4919d688927879dafd45275e76a47439556",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2025-10-31",
+        "memberCount": 1059,
+        "snapshotHash": "0eecaa090e46ac7d24def1b366c3112e39f73066c0942a0f5d1bf2b2abaa835e",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2025-11-28",
+        "memberCount": 1065,
+        "snapshotHash": "ca454fdebbc8546ad998fd715f0b774e8de598182e3c59270d0b2a0113e40f45",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2025-12-31",
+        "memberCount": 1067,
+        "snapshotHash": "d07fde576ebca5a7c3f752fb1c5ca079ecc7e2dd9cb63d28017de637262be537",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2026-01-30",
+        "memberCount": 1070,
+        "snapshotHash": "1729fe21194a6c90c88984c176fa68659c871ea14b65d046af72bd935870ccac",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2026-02-26",
+        "memberCount": 1072,
+        "snapshotHash": "dc3e6edb9248f5281802a81bdb2aa2d7a6a8f75ab455780db755030cf62a5ece",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2026-03-31",
+        "memberCount": 1074,
+        "snapshotHash": "7ecc1fa3d9336a27c5ebab3b33ccb705abf860c473e4b0225fb417686e3df49e",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2026-04-30",
+        "memberCount": 1078,
+        "snapshotHash": "5d518da93dfbc46f6330216de10c28f8b65b3918d0a98fb8f35a3502f13537e1",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2026-05-29",
+        "memberCount": 1084,
+        "snapshotHash": "1522649ac3be1a9d1dfd16a6e87ce28e790b989891fe17565da6d83383419328",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2026-06-30",
+        "memberCount": 1083,
+        "snapshotHash": "89d3962da58700c3709f0592c6b41be10e7172ec3b4c2ca41791b4ba4ee56a10",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2026-07-31",
+        "memberCount": 1087,
+        "snapshotHash": "8bd4dce8456690f7e7783027c7f77ca5b8de7f479f9a2c9419447e02406ed0b5",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      },
+      {
+        "scanDate": "2026-08-31",
+        "memberCount": 1089,
+        "snapshotHash": "9fd6b6d97ccbf918e7d3386123998d03869d2ef53a668c6d60462a4baa5c6e69",
+        "firstSymbol": "1101",
+        "lastSymbol": "9958"
+      }
+    ]
+  },
+  "guards": {
+    "currentListOnly": false,
+    "delistedIncluded": true,
+    "listingStartRequiredForDelisted": true,
+    "futureDelistingExposedToStrategy": false,
+    "noReturns": true,
+    "noFormalCoreImpact": true,
+    "noD1Writes": true
+  },
+  "executionEvidence": {
+    "temporaryPr": 431,
+    "branch": "research/d08-twse-universe-source-capture-temp",
+    "finalCaptureCommit": "0a5334b81a266d598290ea6a95b85bc8eabac957",
+    "system2ResearchCiRun": 37165989414,
+    "system2ResearchCiResult": "PASS",
+    "v8RegressionRun": 37165989421,
+    "v8RegressionResult": "PASS",
+    "disposition": "TEMPORARY_SOURCE_CAPTURE_ONLY_DO_NOT_MERGE"
+  },
+  "interpretation": [
+    "Survivorship-controlled TWSE ordinary-stock membership is source-replayable for all 44 preregistered scan dates from 2023-01 through 2026-08.",
+    "Twelve 2023+ delisted ordinary stocks are preserved; nine use official listing dates and three use official dataset-start trading presence under the existing HISTORY_FIRST_TRADING_DATE fallback semantics.",
+    "No current-list-only reconstruction was used.",
+    "This receipt does not open outcome access. Valuation/control snapshots and per-date coverage receipts remain required."
+  ]
+}
