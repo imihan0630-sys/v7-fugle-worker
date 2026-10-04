@@ -322,3 +322,24 @@ Exact remaining H11 delta:
 5. return terminal KEEP_SEPARATE / SCOPE_DEDUP_ONLY / MERGE_ELIGIBLE / EVIDENCE_INSUFFICIENT.
 
 This routed governance delta does not override the room's existing active source-acquisition sequence; it is aligned with that sequence.
+
+
+## 2026-10-04 Room09 continuation — DR-074..DR-078 official public route / H11 evidence-object firewall
+
+Status: RESEARCH_ONLY / SOURCE_QA / OUTCOMES_CLOSED / NO_PROMOTION.
+Durable evidence: `research/d12_d13_public_source_lineage_20261004_v0_1.md`.
+
+- DR-074: TAIFEX official option time-and-sales offers RPT/CSV, but current official English and Chinese page crawls disagree on the displayed 2026-10-02 issued time. Do not select a timestamp by convenience; bind issuedAt to page/language/version/observedAt/source receipt before using it as a PIT clock.
+- DR-075: TAIFEX OpenAPI Swagger confirms GET `/OptionsTimeAndSalesData`. Direct public access is reachable but the current extraction path stops at CONTENT_TOO_LARGE, so source route is confirmed while raw rows/schema/history semantics remain NOT_MATERIALIZED in this run.
+- DR-076: time-and-sales and quote/surface parents are distinct evidence objects. Trade rows can validate contract/date/time/price/size/session replay but cannot silently replace contemporaneous bid/ask/common-support evidence required by D12-07/D12-16.
+- DR-077: H11 raw-parent preservation must respect redistribution/license boundaries. Default durable pattern: public source identity + retrieval clock + hash + schema summary + parser version in GitHub; raw bytes only in authorized storage if permitted. Degraded/reconstructed bytes cannot be labeled original.
+- DR-078: H11 remains PARTIAL_EVIDENCE_RECEIVED. Raw quote-chain parent, identical-parent skew-vs-surface residual comparison, real divergent states and prospective 18:10 source-attested dates remain pending.
+- Tooling note: interactive CSV click automation did not start because the external automation wallet lacked balance. No retry was made; this is TOOLING_BLOCKED, not SOURCE_ABSENT.
+- Maturity unchanged: D12 40.0%; no L3. Outcomes CLOSED; Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+
+### Exact next continuation after DR-078
+1. Audit TAIFEX OpenAPI `/OptionsTimeAndSalesData` through a bounded authorized route and preserve one raw parent/hash without public redistribution.
+2. Freeze actual row schema/date/session semantics from the materialized parent.
+3. Obtain a permitted quote-chain parent and run H11 identical-parent/common-support D12-07 vs D12-16 comparison.
+4. Record divergent states, fit/coverage/interpolation quality and return KEEP_SEPARATE / SCOPE_DEDUP_ONLY / MERGE_ELIGIBLE / EVIDENCE_INSUFFICIENT.
+5. Keep historical replay separate from prospective 18:10 first-known evidence.
