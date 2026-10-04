@@ -1,0 +1,154 @@
+{
+  "version": "0.1",
+  "id": "SC-052",
+  "capturedAt": "2026-10-04T11:40:00+08:00",
+  "module": "D10-04 產能／擴產／稼動率",
+  "mode": "BOUNDED_CROSS_INDUSTRY_TAIWAN_CAPACITY_SOURCE_CONTRACT / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "purpose": "建立可重用的台灣公司產能生命週期來源契約，跨半導體與鋼鐵驗證名目產能、實際產出、出貨、合格產能、高量產與稼動率不可混用。",
+  "sourceContract": {
+    "unit": "issuer × facility/product × capacity-vintage",
+    "requiredFields": [
+      "issuer",
+      "facilityOrScope",
+      "productOrProcess",
+      "capacityValue",
+      "capacityUnit",
+      "capacityType",
+      "sourcePublishedAtOrPeriod",
+      "capturedAt",
+      "effectiveAtOrUNKNOWN",
+      "productionOrShipmentValueOrUNKNOWN",
+      "productionOrShipmentUnitOrUNKNOWN",
+      "qualificationOrHvmState",
+      "utilizationValueOrUNKNOWN",
+      "revisionState"
+    ],
+    "capacityTypes": [
+      "NAMEPLATE_CAPACITY",
+      "AVAILABLE_CAPACITY",
+      "QUALIFIED_CAPACITY",
+      "ECONOMIC_CAPACITY",
+      "ACTUAL_PRODUCTION",
+      "SHIPMENT_THROUGHPUT"
+    ],
+    "hardRules": [
+      "CapEx != capacity",
+      "nameplate capacity != available capacity",
+      "available capacity != qualified capacity",
+      "qualified capacity != actual production",
+      "shipment != production",
+      "production/capacity proxy != official utilization",
+      "missing utilization remains UNKNOWN"
+    ]
+  },
+  "cases": [
+    {
+      "symbol": "2330",
+      "issuer": "台積電",
+      "industry": "半導體／晶圓代工",
+      "source": "TSMC 2025 Annual Report / official fab-capacity page",
+      "sourceUrl": "https://investor.tsmc.com/static/annualReports/2025/english/index.html",
+      "period": "2025",
+      "capacity": {
+        "value": ">17",
+        "unit": "million 12-inch-equivalent wafers/year",
+        "type": "NAMEPLATE_OR_MANAGED_ANNUAL_CAPACITY",
+        "evidence": "Annual capacity of TSMC-managed manufacturing facilities exceeded 17 million 12-inch equivalent wafers."
+      },
+      "actualThroughput": {
+        "value": 15,
+        "unit": "million 12-inch-equivalent wafers shipped",
+        "type": "SHIPMENT_THROUGHPUT",
+        "evidence": "Total wafer shipments were 15.0 million 12-inch equivalent wafers in 2025."
+      },
+      "boundedProxy": {
+        "statement": "15.0 / >17 implies shipment-throughput-to-capacity ratio is below 88.24%.",
+        "valueType": "UPPER_BOUND_ONLY",
+        "utilizationClaimAuthorized": false
+      },
+      "lifecycleEvidence": [
+        "Arizona Fab 1 HVM confirmed in 4Q24",
+        "later Arizona fabs remain installation/construction/future-HVM states"
+      ],
+      "utilization": "UNKNOWN",
+      "falsification": "Shipment throughput can differ from production because of inventory/WIP/product mix; ratio is not official fab utilization."
+    },
+    {
+      "symbol": "2002",
+      "issuer": "中鋼",
+      "industry": "一貫鋼鐵／高爐轉爐",
+      "source": "CSC 2026 annual report and 2025-06-24 investor presentation",
+      "sourceUrls": [
+        "https://www.csc.com.tw/csc/ss/bd/pdf/stock115_03.pdf",
+        "https://www.csc.com.tw/csc/ss/pst/pdf/2025Jun24.pdf"
+      ],
+      "capacity": {
+        "value": 9.9,
+        "unit": "million metric tons crude steel/year",
+        "scope": "China Steel four blast furnaces",
+        "type": "NAMEPLATE_ANNUAL_CRUDE_STEEL_CAPACITY"
+      },
+      "groupCapacityContext": {
+        "value": 16,
+        "unit": "million metric tons crude steel/year",
+        "scope": "China Steel group, approximately; CSC ~9.9 + Dragon Steel ~6.0"
+      },
+      "actualProduction": {
+        "period": "2025Q1",
+        "value": 1.993,
+        "unit": "million metric tons crude steel/quarter",
+        "type": "ACTUAL_PRODUCTION"
+      },
+      "boundedProxy": {
+        "calculation": "1.993 * 4 / 9.90",
+        "valueApproxPct": 80.5,
+        "label": "ANNUALIZED_Q1_OUTPUT_TO_NOMINAL_CAPACITY_PROXY",
+        "utilizationClaimAuthorized": false,
+        "caveats": [
+          "seasonality",
+          "maintenance",
+          "mix",
+          "quarter annualization"
+        ]
+      },
+      "lifecycleEvidence": [
+        "Company states low-utilization and aged lines are being consolidated/sealed/retired.",
+        "No.1 blast furnace is planned to retire no later than 2029Q1.",
+        "Capacity optimization is an intentional supply response, not automatically a negative shock."
+      ],
+      "utilization": "UNKNOWN_OFFICIAL_RATE",
+      "falsification": "A derived annualized quarterly proxy is not the company's reported utilization and cannot be compared numerically with TSMC shipment/capacity ratio as one common factor."
+    },
+    {
+      "symbol": "6488",
+      "issuer": "環球晶",
+      "industry": "半導體材料／矽晶圓",
+      "source": "GlobalWafers official location pages + U.S. Commerce award record",
+      "capacityState": "FACILITY_AND_PROGRAM_IDENTIFIED",
+      "exactCurrentQualifiedCapacity": "UNKNOWN",
+      "currentHvm": "UNKNOWN",
+      "utilization": "UNKNOWN",
+      "role": "NEGATIVE_CONTROL_FOR_SOURCE_FRESHNESS_AND_MISSING_DENOMINATOR",
+      "falsification": "Named facility, capital commitment and public subsidy do not identify current qualified/HVM capacity when the issuer page is stale."
+    }
+  ],
+  "crossIndustryConclusion": [
+    "同一生命週期契約可跨半導體與鋼鐵使用，但數值分母必須保留產品、單位與產能類型。",
+    "台積電與中鋼都能提供 issuer-native capacity + realized throughput/production evidence，解除『只有單一著名公司案例』阻塞。",
+    "環球晶證明來源過期或缺少實際產能時，正確輸出是 UNKNOWN，而不是用投資額或補助額代替。",
+    "跨產業只能比較生命週期狀態與資料品質，不能把不同產能比值直接做一個共同分數。"
+  ],
+  "maturityDecision": {
+    "D10-04": "PROMOTE_L2_TO_L3_BOUNDED_TAIWAN_PIT_DATA_FEASIBILITY_ONLY"
+  },
+  "promotionReason": "已建立可重用、跨公司且跨半導體／鋼鐵的 issuer-native 產能來源契約；至少兩個產業可同時觀察名目產能與實際出貨/產量，且第三家公司保留缺失分母負向控制。這足以證明台股 PIT／可重播資料可行，但不代表稼動率因子有效。",
+  "reasonNoL4": "沒有前瞻/OOS產能狀態對營收、毛利、市占或股票報酬的驗證；官方稼動率、qualified/economic capacity 仍不完整，且不同產業分母不可直接數值合併。",
+  "exactNext": [
+    "SC-053 前瞻追加下一個公司原生產能/產量/高量產版本，不回填 first-known 時鐘。",
+    "尋找至少一個官方揭露真正 utilization rate 的台灣 issuer/product 案例，驗證 derived proxy 與官方率差異。",
+    "建立延遲、取消、低稼動率或主動縮產的正式負向控制，再考慮任何 L4 outcome test。"
+  ],
+  "status": "CROSS_INDUSTRY_CAPACITY_SOURCE_CONTRACT_PIT_FEASIBLE / TSMC_CSC_POSITIVE_CASES / GLOBALWAFERS_UNKNOWN_CONTROL / UTILIZATION_NOT_SYNTHESIZED / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
