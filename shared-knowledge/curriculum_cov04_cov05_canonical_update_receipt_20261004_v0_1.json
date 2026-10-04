@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "CURRICULUM_COV04_COV05_CANONICAL_UPDATE_RECEIPT_V0_1",
+  "ownerApprovedAt": "2026-10-04T08:42:13+08:00",
+  "canonicalExecutedAt": "2026-10-04T08:46:58+08:00",
+  "ownerDecision": "APPROVED_BOTH",
+  "latestMainUsed": "139ab1f6a0f10de04b363cfdd38fbaa8853cd793",
+  "sourceAudit": "shared-knowledge/CURRICULUM_COVERAGE_COV04_COV05_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md",
+  "sourceReturns": [
+    "research/COV04_D07_SPECIALIST_RETURN_V0_1.md",
+    "research/COV05_D08_SPECIALIST_RETURN_V0_1.md"
+  ],
+  "preUpdateSnapshot": {
+    "domains": 22,
+    "activeModules": 354,
+    "maturityWeightedPct": 42.4
+  },
+  "transitions": [
+    {
+      "candidateId": "COV-04",
+      "from": "OWNER_APPROVAL_REQUIRED",
+      "via": "TERMINAL_DECISION_READY",
+      "to": "CANONICAL_UPDATE_COMPLETE"
+    },
+    {
+      "candidateId": "COV-05",
+      "from": "OWNER_APPROVAL_REQUIRED",
+      "via": "TERMINAL_DECISION_READY",
+      "to": "CANONICAL_UPDATE_COMPLETE"
+    }
+  ],
+  "actions": [
+    {
+      "candidateId": "COV-04",
+      "action": "ADD_MODULE",
+      "moduleId": "D07-34",
+      "name": "Dividend / Payout Policy & Sustainability股利／配發政策與永續性",
+      "level": "L0",
+      "maturityPct": 0,
+      "ownerDomain": "D07",
+      "ownerRoom": "06｜基本面與估值研究室"
+    },
+    {
+      "candidateId": "COV-05",
+      "action": "EXTEND_EXISTING_SCOPE",
+      "moduleId": "D08-06",
+      "newName": "EV/EBITDA／EV/Sales／P/S Enterprise & Sales Multiples企業價值與營收倍數",
+      "maturityChange": "NONE",
+      "canonicalLevel": "L2",
+      "canonicalMaturityPct": 40,
+      "subCapabilityMaturityInheritance": false
+    }
+  ],
+  "postUpdateSnapshot": {
+    "domains": 22,
+    "activeModules": 355,
+    "maturityWeightedPct": 42.3,
+    "D07": {
+      "moduleCount": 34,
+      "maturityPct": 14.1
+    },
+    "D08": {
+      "moduleCount": 19,
+      "maturityPct": 27.4
+    }
+  },
+  "formalCoreImpact": "NONE_LOCKED",
+  "system1FormalImpact": "NONE",
+  "system2FormalImpact": "NONE",
+  "note": "Aggregate maturity can decrease mechanically when a newly approved L0 module expands the denominator; this is not loss of prior evidence."
+}

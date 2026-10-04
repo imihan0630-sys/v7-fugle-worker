@@ -108,7 +108,7 @@ For each strategy:
 - maintain CONFIDENCE/UNCERTAINTY separately,
 - permit **ABSTAIN（不交易）** when expected value is insufficient or uncertainty is excessive.
 
-The 22 domains / 354 modules are a knowledge universe, not 354 required conditions and not 354 independent votes.
+The 22 domains / 355 modules are a knowledge universe, not 354 required conditions and not 354 independent votes.
 
 ## Promotion gate
 
