@@ -301,3 +301,24 @@ State:
 
 Audit:
 `shared-knowledge/CURRICULUM_H13_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+
+## H11 partial-intake update — 2026-10-04
+
+Equivalent Room09 evidence accepted for the ownership/method side of H11:
+- D12-07 = simple skew/term summaries;
+- D12-16 = residual curvature/smile/complex surface + fit/quality controls;
+- one common option-chain parent;
+- method identity / quote-quality / no-static-arbitrage guards.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / COMMON_PARENT_RESIDUAL_TEST_PENDING`.
+
+Remaining:
+- permitted raw TAIFEX parent with identity/hash;
+- identical-parent D12-07 vs D12-16 build;
+- D12-16 residual after D12-07;
+- source-attested divergent states;
+- terminal classification.
+
+No maturity/count/Formal change.
