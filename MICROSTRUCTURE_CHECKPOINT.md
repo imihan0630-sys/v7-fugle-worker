@@ -690,3 +690,52 @@ This room does NOT self-assign:
 
 Only 00｜研究總控室 may perform intake acceptance and the later Dependency Audit / overlap / anti-orphan / owner-approval transition.
 No COV-02 structural recommendation was used to inflate maturity; the separate L3 promotions came from the independent PIT-feasibility audit.
+
+
+## 2026-10-04 09:08 — COV-02 / B14 specialist return + >50% maturity audit
+
+Status: SPECIALIST_RETURN_COMMITTED / NO_ARTIFICIAL_PROMOTION / FORMAL_CORE_LOCKED
+
+### COV-02 terminal specialist recommendation
+- Closing Auction / Auction Imbalance is a SCOPE_EXTENSION_CANDIDATE, not a new module.
+- Terminal recommendation: `EXTEND_EXISTING_SCOPE -> D05-06`.
+- D05-06 should own Opening / Closing Auction & Auction Imbalance with explicit phase state.
+- Current Taiwan evidence supports the closing call-auction mechanism, final close/volume and current indicative/trial states where exposed.
+- Historical PIT replay of a full pre-close imbalance time series is NOT proven; missing indicative imbalance remains UNKNOWN.
+- No module-count change and no maturity promotion from this scope recommendation.
+- D05-14 retains integrity interpretation; D14 retains execution-cost consequences; one auction primitive cannot become multiple alpha votes.
+
+### Priority-B B14 terminal specialist recommendation
+- Pair: D05-05 OFI vs D05-12 Adverse Selection / Toxicity.
+- Terminal recommendation: `KEEP_SEPARATE / OBSERVABLE_INPUT_VS_LATENT_MECHANISM`.
+- D05-05 owns observable pressure/imbalance.
+- D05-12 must add fill-conditioned signed markout and controls beyond OFI; informed-trader intent remains unobserved.
+- Same-OFI / different-markout states establish a valid semantic divergence.
+- OFI may enter D05-12 once as an input/control; the same transform cannot become a second toxicity vote.
+- If future D05-12 research cannot demonstrate distinct observable/falsifiable evidence beyond OFI, narrowing/merge becomes eligible.
+
+Specialist artifact:
+- `shared-knowledge/ROOM04_COV02_B14_SPECIALIST_RETURN_20261004.md`.
+
+### Honest >50% audit
+Current room aggregate:
+- D04 = 42.0% / 10 modules.
+- D05 = 44.3% / 14 modules.
+- Combined room04 = 43.3% / 24 modules.
+
+One L2 -> L3 promotion contributes 20/24 = ~0.83 room percentage points.
+To exceed 50%, at least 9 L2 modules would need valid L3 promotion.
+
+Current hard blockers:
+- D05 checkpoint: no L3 until own prospective PIT event capture proves coverage/replay/missing-event semantics.
+- D04 multi-session stock volatility: official TWSE/TPEx A1 historical adapters are validated, but corporate-action TECHNICAL_CONTINUITY is still UNVERIFIED.
+- D04 market RV: builder and PIT acceptance gate exist, but live decision-clock persistence/readback/replay remains pending.
+
+Therefore no L3 upgrades are made merely to cross 50%.
+
+### Fastest legitimate path above 50%
+1. Complete corporate-action TECHNICAL_CONTINUITY for A1 daily history; re-audit D04-03/04/07/09/10 and any other daily-only volatility modules.
+2. Accumulate real D04 market-RV prospective persisted dates for D04-02/05/06 where applicable.
+3. Only after owner-authorized D05 Books+Trades capture proves replay/coverage may D05-03/04/05/07/09 or related modules be reconsidered for L3.
+
+No FORMAL_OPTIMIZATION_CANDIDATE.
