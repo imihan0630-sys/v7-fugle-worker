@@ -76,6 +76,11 @@ const built=await buildShadowCohort(parent),small=await buildShadowCohort(parent
 const symbols=(x,type)=>x.memberships.filter(m=>m.membershipType===type).map(m=>m.symbol).sort();
 assert.deepEqual(symbols(built,'INDEPENDENT_BROAD_MARKET_CONTROL'),symbols(small,'INDEPENDENT_BROAD_MARKET_CONTROL'));
 assert.deepEqual(built.parent.firstFailureCounts,small.parent.firstFailureCounts);
+for(const [key,count] of Object.entries(small.parent.firstFailureCounts))if(count>0){
+ const [pool,...parts]=key.split('|'),reason=parts.join('|');
+ assert.equal(small.memberships.filter(m=>m.pool===pool&&m.membershipType==='FIRST_FAILURE'&&m.firstFailureReason===reason).length,1,'every non-empty reason x pool survives independently');
+}
+await assert.rejects(()=>buildShadowCohort({...parent,effectiveRuntimeVersion:'8.16.0-zero-pick-prospective-capture'}),/LEGACY_RUNTIME_NO_BACKFILL/);
 assert.ok(built.memberships.some(m=>m.membershipType==='SELECTED'&&symbols(built,'INDEPENDENT_BROAD_MARKET_CONTROL').includes(m.symbol)));
 assert.ok(symbols(built,'RESIDUAL_CONTROL').length>0);
 assert.ok(symbols(built,'RESIDUAL_CONTROL').every(s=>parent.rows.find(r=>r.symbol===s).formalResult.firstFailure==='市值資料不足'));

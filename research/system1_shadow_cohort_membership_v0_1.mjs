@@ -49,7 +49,10 @@ function liquidityContext(raw){
 export async function buildShadowCohort(receipt,{capPerStratum=6,broadCap=6}={}){
  const rows=receipt?.rows;
  shadowAssert(receipt?.shadowMembershipCapture?.schemaVersion===SHADOW_CAPTURE_VERSION,'CAPTURE_REQUIRED_NO_BACKFILL');
- shadowAssert(receipt.shadowMembershipCapture.rankComparatorVersion===SHADOW_COMPARATOR&&receipt.shadowMembershipCapture.providerCallDelta===0,'COMPARATOR');
+ shadowAssert(receipt.shadowMembershipCapture.rankComparatorVersion===SHADOW_COMPARATOR&&receipt.shadowMembershipCapture.providerCallDelta===0&&
+   receipt.shadowMembershipCapture.selectionRuleVersion==='FORMAL_UNCHANGED_FROM_V8_16_0','COMPARATOR_OR_FORMAL_LINEAGE');
+ const version=/^(\d+)\.(\d+)\./.exec(receipt.effectiveRuntimeVersion||'');
+ shadowAssert(version&&(Number(version[1])>8||(Number(version[1])===8&&Number(version[2])>=17)),'LEGACY_RUNTIME_NO_BACKFILL');
  shadowAssert(receipt.readbackVerified===true&&/^[0-9a-f]{40}$/i.test(receipt.sourceMainSha||''),'VERIFIED_PARENT_REQUIRED');
  shadowAssert(receipt.researchOnly===true&&receipt.decisionImpact===false&&receipt.formalCoreImpact===false,'FIREWALL');
  shadowAssert(/^\d{4}-\d{2}-\d{2}$/.test(receipt.sessionDate)&&receipt.generationId&&Number.isFinite(Date.parse(receipt.decisionAt)),'IDENTITY');
@@ -134,7 +137,7 @@ export async function buildShadowCohort(receipt,{capPerStratum=6,broadCap=6}={})
  }
  const parent={schemaVersion:SHADOW_MEMBERSHIP_VERSION,scanDate:receipt.sessionDate,captureGeneration:receipt.generationId,
    decisionAt:receipt.decisionAt,parentContentDigest:contentDigest,parentUniverseDigest:receipt.universeDigest,
-   runtimeVersion:receipt.effectiveRuntimeVersion,sourceMainSha:receipt.sourceMainSha,rankComparatorVersion:SHADOW_COMPARATOR,
+   runtimeVersion:receipt.effectiveRuntimeVersion,selectionRuleVersion:receipt.shadowMembershipCapture.selectionRuleVersion,sourceMainSha:receipt.sourceMainSha,rankComparatorVersion:SHADOW_COMPARATOR,
    populationN:rows.length,poolCounts:Object.fromEntries(pools.map(p=>[p,states.filter(r=>r.pool===p).length])),
    firstFailureCounts,firstFailureSemantics:'DESCRIPTIVE_ORDERED_FIRST_FAILURE_NOT_MARGINAL_GATE_EFFECT',
    sampling:{capPerStratum,broadCap,ruleVersion:SHADOW_MEMBERSHIP_VERSION,outcomeBlind:true},frameCounts,expectedCounts,

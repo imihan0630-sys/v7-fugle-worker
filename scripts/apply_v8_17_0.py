@@ -17,7 +17,7 @@ helpers+='const SHADOW_CANONICAL='+module('canonical_receipt_hash_v0_1.mjs','can
 helpers+='const SHADOW_CLASSIFIER='+module('shadow_semantic_classifier_v0_1.mjs','classifyShadowSemanticPopulation,sampleMembershipV2',digest='c6b5fb0917babdcaa0874f5dba294f00a2090f9dc60bbc20375d4aa46dbe82ef')
 helpers+='const SHADOW_MEMBERSHIP='+module('system1_shadow_cohort_membership_v0_1.mjs',
     'SHADOW_MEMBERSHIP_VERSION,SHADOW_CAPTURE_VERSION,SHADOW_COMPARATOR,SHADOW_QUALITY_STATES,buildShadowCohort,shadowHash,shadowAssert,captureShadowFormalRanking',
-    'const {canonicalJcsJson,sha256HexUtf8}=SHADOW_CANONICAL; const {classifyShadowSemanticPopulation,sampleMembershipV2}=SHADOW_CLASSIFIER;',digest='0956286887c1c5af40899ef5c3624ee8e1cee87255629aff78b82d9ffa3c400d')
+    'const {canonicalJcsJson,sha256HexUtf8}=SHADOW_CANONICAL; const {classifyShadowSemanticPopulation,sampleMembershipV2}=SHADOW_CLASSIFIER;',digest='f9ca9ddbe4ffba540b163ca68275ab787cba9f48ee07b0b2ac4457829b9dfcf4')
 helpers+='const SHADOW_STORAGE='+module('system1_shadow_cohort_storage_v0_1.mjs','persistShadowCohort,readShadowCohort,appendShadowQuality',
     'const {canonicalJcsJson,sha256HexUtf8}=SHADOW_CANONICAL; const {SHADOW_MEMBERSHIP_VERSION,SHADOW_QUALITY_STATES,buildShadowCohort,shadowHash,shadowAssert}=SHADOW_MEMBERSHIP;',digest='f9d14bf2e5769b21f32c59b594c1ab19811bb4d2e9567c2e342570d011af4417')
 helpers+='// END V8.17 SHADOW COHORT MODULES\n'
@@ -42,6 +42,7 @@ replace_once('''    populationN:rows.length,featureN:featureRows?.length||0,rows
     ...(zeroPickContext?''','''    populationN:rows.length,featureN:featureRows?.length||0,rows,
     shadowMembershipCapture:{schemaVersion:SHADOW_MEMBERSHIP.SHADOW_CAPTURE_VERSION,
       rankComparatorVersion:SHADOW_MEMBERSHIP.SHADOW_COMPARATOR,providerCallDelta:0,
+      selectionRuleVersion:"FORMAL_UNCHANGED_FROM_V8_16_0",
       knownAtSemantics:"REQUEST_LOCAL_KNOWN_BY_DECISION_AT_UPPER_BOUND"},
     ...(zeroPickContext?''','C1 shadow capture identity')
 replace_once('''  let save={ok:false,saved:0,readbackVerified:false,reason:null};

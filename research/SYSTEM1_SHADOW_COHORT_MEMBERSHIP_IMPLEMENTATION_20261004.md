@@ -1,6 +1,6 @@
 # System 1 Shadow Cohort Membership V8.17.0 candidate
 
-Status: IMPLEMENTED_LOCAL_REVIEW_86_OF_86_PASS / REMOTE_CI_PENDING / PRODUCTION_APPROVAL_REQUIRED
+Status: IMPLEMENTED / LOCAL_REVIEW_86_OF_86_PASS / PRODUCTION_APPROVAL_REQUIRED
 Branch: `codex/system1-shadow-cohort-membership`
 PR: https://github.com/imihan0630-sys/v7-fugle-worker/pull/454 (open; do not merge without owner Production approval).
 Fresh implementation baseline: `0aab87e2295385ab325ba8e3a30dc40184a42219`.
@@ -12,6 +12,8 @@ Owner explicitly approved Shadow Cohort Membership Class-B implementation in the
 The immutable C1 generation is the only full-population decision parent. No duplicate candidate snapshot table, new scoring path or qualified-list/cutline owner is introduced. PVE-156 retains qualified-list/cutline ownership.
 
 The guarded `apply_v8_17_0.py` appends to V8.16.0 and never edits the repository's baseline Worker directly. This additive research capability uses feature version V8.17.0 under VERSIONING.md. Changes to existing functions are restricted to `buildC1PopulationReceipt` and `persistCompletedC1Safe`.
+
+C1 explicitly freezes `selectionRuleVersion=FORMAL_UNCHANGED_FROM_V8_16_0`; the builder rejects pre-V8.17 lineage even if someone supplies a new capture marker.
 
 C1 adds the actual `applyMarketConsensus` result tuple for qualified rows (six comparator fields, consensus sources/bonus, pool insertion ordinal). Rejected zero-pick tuples keep their separate V8.16 counterfactual semantics. Setup first-failure rows retain full A/B check patterns and raw setup metrics before research sample truncation. Liquidity rejected/low-volume rows retain additional same-request institutional inputs and ret60/volatility20 when available. Missing fields stay null/UNKNOWN. No source-event timestamp is invented.
 
@@ -60,9 +62,9 @@ The existing C1/C2 collector appends a `shadowCohort` artifact section, independ
 
 | Full C1 rows | C1 UTF-8 bytes | Maximum C1 chunk | New memberships | Overlay bytes |
 |---|---:|---:|---:|---:|
-| 500 | 2,294,828 | 87,165 | 30 | 47,856 |
-| 1,000 | 4,588,581 | 87,165 | 30 | 47,886 |
-| 2,000 | 9,176,082 | 87,165 | 30 | 47,824 |
+| 500 | 2,294,883 | 87,165 | 30 | 47,911 |
+| 1,000 | 4,588,636 | 87,165 | 30 | 47,941 |
+| 2,000 | 9,176,137 | 87,165 | 30 | 47,879 |
 
 Scale fixtures contain COMPLETE zero-pick tuples plus qualified actual tuples and Chinese names; actual D1 persistence/readback is exercised. Separate mixed-population fixtures exercise larger overlapping membership counts. Counts/timings above are fixtures, never prospective market samples.
 
@@ -83,6 +85,8 @@ Rollback: use the existing code-only deployment backup/rollback path to the veri
 ## Exact next action
 
 Implementation, full local 86/86 review, branch publication and PR #454 are complete. Initial remote Regression (37169555932) and isolated review (37169555837) passed. Repair CI (37169555830) exposed a missing V8.17 apply step in its separately enumerated build chain (ENOENT pre-V8.17 artifact); the workflow step is repaired and a three-workflow lineage guard now covers Regression/Repair/Deploy.
+
+Repair-chain head `accf80189387a0cf064126ec0b77e2ffece02df7` passed all three remote gates: Regression 37169703145, Repair 37169703079, isolated review 37169703059. The final explicit Formal-lineage/no-legacy guard and reason-stratum assertions also pass the dedicated local runtime/D1/scale test.
 
 Continue by checking all three CI workflows on the current exact PR #454 head; diagnose/retry any failure, then stop for explicit owner Production approval. The PR description is the durable final CI/head approval packet, so read it and the current head rather than rerunning already-passing local work. No merge, deploy, genuine capture or economic result has been claimed. Concurrent main changes through `65f39d47881d12d7b5a191f253c0247f8f71c7bf` were research/System2 changes with no System1 runtime conflict.
 
