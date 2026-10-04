@@ -593,3 +593,15 @@ Remaining representative gaps:
 - TPEx par-value.
 
 All six lanes still retain knownAt and bounded-completeness blockers.
+
+## 2026-10-04 representative authority breadth advanced to 4/6
+
+- PR #518: expanded official-event discovery found one new valid candidate, 6548 長科*, for TPEx par-value change; TWSE par-value remained negative and the first 24 TPEx ex-right/dividend candidates remained negative.
+- PR #520: 6548 physically promoted with MOPS 7/7, source clock 7/7, authority 7/7, exact TPEx effective date 2022-09-05.
+- Supplemental revision receipt V0.3 now records representativeAuthorityReadyCount=4.
+
+Remaining representative gaps:
+- TWSE par-value change;
+- TPEx ex-right/dividend.
+
+All six lanes still retain knownAt and bounded-completeness blockers.
