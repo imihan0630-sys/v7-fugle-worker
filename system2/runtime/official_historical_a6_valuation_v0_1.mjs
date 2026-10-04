@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { deepFreeze } from "./factor_snapshot.mjs";
 
 export const OFFICIAL_HISTORICAL_A6_VALUATION_VERSION="0.1-RESEARCH";
@@ -31,7 +32,7 @@ function payloadDate(v){
 function indexMap(fields){return Object.fromEntries(fields.map((x,i)=>[String(x).trim(),i]));}
 
 export function parseOfficialHistoricalA6ValuationPayloadV0_1({
-  marketDate,payload,observedAt,sourceUrl=null,
+  marketDate,payload,observedAt,sourceUrl=null,sourcePayloadHash=null,sourcePayloadBytes=null,
 }={}){
   const date=isoDate(marketDate);
   if(!payload||typeof payload!=="object"||Array.isArray(payload)) throw new Error("A6 payload must be object");
@@ -76,6 +77,8 @@ export function parseOfficialHistoricalA6ValuationPayloadV0_1({
     sourceUrl:sourceUrl||buildOfficialHistoricalA6ValuationUrlV0_1(date),
     sourceDateEvidence:evidence,
     fieldFingerprint:payload.fields.join("|"),
+    sourcePayloadHash:sourcePayloadHash||null,
+    sourcePayloadBytes:Number.isInteger(sourcePayloadBytes)?sourcePayloadBytes:null,
     ordinarySymbolCount:rows.length,
     rows:Object.freeze(rows),
     schemaVersion:"S2_OFFICIAL_HISTORICAL_A6_VALUATION_DATE_V0_1",
@@ -102,9 +105,12 @@ export async function fetchOfficialHistoricalA6ValuationDateV0_1({
         signal:AbortSignal.timeout(45000),
       });
       if(!res.ok) throw new Error("A6 transport HTTP "+res.status);
-      const payload=await res.json();
+      const text=await res.text();
+      const payload=JSON.parse(text);
+      const bytes=Buffer.byteLength(text,"utf8");
+      const hash=createHash("sha256").update(text).digest("hex");
       return parseOfficialHistoricalA6ValuationPayloadV0_1({
-        marketDate,payload,observedAt,sourceUrl:url,
+        marketDate,payload,observedAt,sourceUrl:url,sourcePayloadHash:hash,sourcePayloadBytes:bytes,
       });
     }catch(e){
       const msg=String(e?.message||e);
