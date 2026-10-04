@@ -28,6 +28,25 @@ It may:
 
 It may not independently close a CRITICAL or HIGH directive.
 
+### SYSTEM2_HISTORICAL_DATA_ROOM
+Historical-data engineering owner for System 2.
+
+Responsibilities:
+- execute DATA_LANE corrections and planned historical-data work;
+- preserve source/PIT/coverage/storage evidence;
+- maintain `system2/SYSTEM2_HISTORICAL_DATA_CHECKPOINT.md`;
+- avoid strategy/ranking/final-selection scope.
+
+### SYSTEM2_REMEDIATION_ROOM
+Focused remediation/SWAT owner.
+
+Responsibilities:
+- execute corrections routed to REMEDIATION_LANE;
+- repair cross-module, recurrent, orphaned or false-completion defects;
+- minimize touched conflict units;
+- maintain `system2/SYSTEM2_REMEDIATION_CHECKPOINT.md`;
+- not absorb every ordinary local bug.
+
 ### SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 Independent correction / troubleshooting / question-answering role.
 
@@ -134,6 +153,24 @@ Rules:
 
 CRITICAL and HIGH directives cannot move directly from `FIX_IMPLEMENTED` to `VERIFIED_CLOSED` by the same implementation role.
 
+## Execution routing
+
+Canonical lane governance:
+`system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
+
+Routing classes:
+- `LOCAL_FIX`
+- `BUILD_LANE`
+- `DATA_LANE`
+- `REMEDIATION_LANE`
+- `OWNER_DECISION_REQUIRED`
+
+Severity does not determine routing by itself. A HIGH data-backfill defect can belong to DATA_LANE; a small local UI defect can remain LOCAL_FIX.
+
+The build/control room must not automatically take every OPEN/HIGH correction. It executes only LOCAL_FIX/BUILD_LANE work assigned to it, while respecting blockers from other lanes.
+
+One conflict unit may have only one active modification owner at a time.
+
 ## Mandatory directive fields
 
 Every directive must preserve:
@@ -153,6 +190,11 @@ Every directive must preserve:
 - acceptanceCriteria;
 - protectedBoundaries;
 - ownerDecisionRequired;
+- routingClass;
+- assignedLane;
+- assignedRoom;
+- modificationOwner;
+- blockedBy;
 - implementationEvidence;
 - verificationEvidence;
 - finalDisposition;
@@ -183,7 +225,8 @@ Before substantive System 2 build continuation, the control room must read:
 5. `system2/SYSTEM2_CHECKPOINT.md`
 6. `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 7. `system2/SYSTEM2_CORRECTION_QUEUE.md`
-8. task-specific evidence/checkpoint files.
+8. `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
+9. task-specific evidence/checkpoint files.
 
 The room must inspect all OPEN / ACKNOWLEDGED / FIX_IN_PROGRESS / FIX_IMPLEMENTED / VERIFYING / OWNER_DECISION_REQUIRED directives affecting the current task before declaring a milestone complete.
 
