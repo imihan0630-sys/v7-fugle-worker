@@ -31,13 +31,17 @@ jobs:
 
           fetch_one TWSE1 "https://openapi.twse.com.tw/v1/opendata/t187ap04_L" /tmp/d17/twse1.json
           fetch_one TPEX1 "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap04_O" /tmp/d17/tpex1.json
-          date -u +"CAPTURE1_UTC=%Y-%m-%dT%H:%M:%SZ"
+          CAPTURE1_UTC="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+          printf 'CAPTURE1_UTC=%s\n' "$CAPTURE1_UTC" > /tmp/d17/capture_meta.env
+          printf 'CAPTURE1_UTC=%s\n' "$CAPTURE1_UTC"
 
           sleep 65
 
           fetch_one TWSE2 "https://openapi.twse.com.tw/v1/opendata/t187ap04_L" /tmp/d17/twse2.json
           fetch_one TPEX2 "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap04_O" /tmp/d17/tpex2.json
-          date -u +"CAPTURE2_UTC=%Y-%m-%dT%H:%M:%SZ"
+          CAPTURE2_UTC="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+          printf 'CAPTURE2_UTC=%s\n' "$CAPTURE2_UTC" >> /tmp/d17/capture_meta.env
+          printf 'CAPTURE2_UTC=%s\n' "$CAPTURE2_UTC"
 
       - name: Normalize and compare without outcomes
         shell: bash
@@ -57,7 +61,25 @@ jobs:
           };
           const sha=s=>crypto.createHash("sha256").update(String(s),"utf8").digest("hex");
           const clean=v=>String(v??"").normalize("NFKC").replace(/\r\n?/g,"\n").replace(/[ \t]+/g," ").trim();
-          const out={schemaVersion:"0.1", generatedAt:new Date().toISOString(), outcomeJoin:false, sources:{}};
+          const meta=Object.fromEntries(fs.readFileSync("/tmp/d17/capture_meta.env","utf8").trim().split("\n").map(line=>line.split("=",2)));
+          const generatedAt=new Date();
+          const taipei=new Date(generatedAt.getTime()+8*60*60*1000);
+          const dow=taipei.getUTCDay();
+          const hh=taipei.getUTCHours();
+          const sessionClass=(dow===0||dow===6)?"WEEKEND_NON_TRADING":
+            (hh<9?"PREOPEN_TIME_ONLY_HOLIDAY_UNKNOWN":hh<14?"REGULAR_SESSION_TIME_ONLY_HOLIDAY_UNKNOWN":"AFTER_HOURS_TIME_ONLY_HOLIDAY_UNKNOWN");
+          const out={
+            schemaVersion:"0.2",
+            generatedAt:generatedAt.toISOString(),
+            taipeiSessionClass:sessionClass,
+            expectedPollsPerSource:2,
+            observedPollsPerSource:2,
+            expectedObservedComplete:true,
+            capture1Utc:meta.CAPTURE1_UTC,
+            capture2Utc:meta.CAPTURE2_UTC,
+            outcomeJoin:false,
+            sources:{}
+          };
           for (const [sourceId,cfg] of Object.entries(sources)) {
             const snaps=cfg.files.map((file,idx)=>{
               const raw=fs.readFileSync(file,"utf8");
@@ -118,4 +140,5 @@ jobs:
             /tmp/d17/tpex1.json
             /tmp/d17/tpex2.json
             /tmp/d17/summary.json
+            /tmp/d17/capture_meta.env
           retention-days: 7
