@@ -605,3 +605,15 @@ Remaining representative gaps:
 - TPEx ex-right/dividend.
 
 All six lanes still retain knownAt and bounded-completeness blockers.
+
+## 2026-10-04 representative authority breadth advanced to 5/6
+
+- PR #528: final-two discovery negative; TWSE par-value final-result candidate path exhausted for supported 2020..2026 set and 2010..2019 endpoint exposed no events.
+- PR #531: 6184 wrong-exchange false positive rejected.
+- PR #533: 5356 協益 physically validated as a TPEx dividend correction chain with exact 2026-07-08 exchange event.
+- PR #535: MOPS V0.5 / authority V0.4 / receipt V0.4 physically PASS, representativeAuthorityReadyCount=5.
+
+Only representative gap:
+- TWSE par-value change.
+
+KnownAt and bounded-completeness blockers remain unchanged.
