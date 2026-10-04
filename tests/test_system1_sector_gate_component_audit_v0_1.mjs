@@ -17,22 +17,24 @@ const cases=[
   mk('R',{breadth:60,ret:-1.2,amount:1,fail:['SECTOR_RETURN']}),
   mk('A',{breadth:60,ret:.2,amount:.4,fail:['SECTOR_AMOUNT']}),
   mk('BR',{breadth:35,ret:-1.2,amount:1,fail:['SECTOR_BREADTH','SECTOR_RETURN']}),
-  mk('U',{breadth:60,ret:.2,amount:.8,unknown:['SECTOR_AMOUNT']})
+  mk('U',{breadth:60,ret:.2,amount:.8,unknown:['SECTOR_AMOUNT']}),
+  mk('UF',{breadth:35,ret:.2,amount:.8,fail:['SECTOR_BREADTH'],unknown:['SECTOR_AMOUNT']})
 ];
 const adapted={...base,rows:cases.map(x=>x.raw)};
 const diagnosis={...base,schemaVersion:'SYSTEM1_C1_ISOLATED_V0_1',observations:cases.map(x=>x.obs)};
 const ff={perGate:{SECTOR_GATE:{firstFailureN:2,observedFailN:4,hiddenBehindOtherFirstFailureN:2}}};
 const x=audit({adapted,diagnosis,firstFailureMasking:ff});
-assert.equal(x.observedN,6);
+assert.equal(x.observedN,7);
 assert.equal(x.combinedFailN,4);
-assert.equal(x.combinedUnknownN,1);
+assert.equal(x.combinedUnknownN,2);
 assert.equal(x.singleComponentFailN,3);
 assert.equal(x.multiComponentFailN,1);
 assert.equal(x.uniqueFailCounts.SECTOR_BREADTH,1);
 assert.equal(x.uniqueFailCounts.SECTOR_RETURN,1);
 assert.equal(x.uniqueFailCounts.SECTOR_AMOUNT,1);
 assert.equal(x.patternCounts['FAIL:BREADTH+RETURN'],1);
-assert.equal(x.componentCounts.breadth.FAIL,2);
+assert.equal(x.patternCounts['MIXED_FAIL_UNKNOWN:BREADTH|AMOUNT'],1);
+assert.equal(x.componentCounts.breadth.FAIL,3);
 assert.equal(x.componentCounts.avgChange.FAIL,2);
 assert.equal(x.componentCounts.amountVs20DayAverage.FAIL,1);
 assert.equal(x.firstFailureMasking.hiddenBehindEarlierFirstFailureN,2);
