@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-04 07:37 Asia/Taipei
+Updated: 2026-10-04 08:00 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -9,17 +9,37 @@ Formal Core impact: NONE
 
 這是所有學習聊天室共同讀取的公用檔案。使用者不需要逐一告知每個聊天室該學什麼；聊天室必須先依本檔辨識自己的專線，再讀對應 checkpoint 與模組範圍後續接研究。
 
-## 強制讀取順序
+## 輕量強制讀取順序
 
-1. **`AGENTS.md`（全專案跨聊天室治理；包含模式＋模型＋思考強度主動路由規則）**
-2. **`shared-knowledge/RESEARCH_OUTPUT_CONTRACT.md`（研究輸出強制契約；每輪開始研究前必讀，送出研究回覆前必須再讀一次）**
-3. `shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md`
-4. **本檔 `shared-knowledge/LEARNING_ROOM_ROUTER.md`**
-5. `shared-knowledge/PROBABILISTIC_SELECTION_GOVERNANCE_V0_1.md`（跨系統選股決策角色與防過度過濾治理）
-6. `shared-knowledge/CURRICULUM_RETIREMENT_AND_CAPABILITY_LEDGER_V0_1.md`（模組退役、合併與功能責任移轉）
-7. `research/stock_market_learning_tracker_v0_1.json`（正式總模組數以檔內最新值為準；learningScope、L0-L5與完成度的機器權威）
-8. 自己專線的 dedicated checkpoint / research files
-9. `RESEARCH_ENGINEERING_GOVERNANCE.md`、`RESEARCH_CHECKPOINT.md` 與需要的 System 1 / System 2 bridge
+一般新聊天室／續接不再全文載入巨大 Router／Master Map。依下列順序恢復：
+
+1. **`AGENTS.md`（全專案跨聊天室治理）**
+2. **`shared-knowledge/ROOM_BOOTSTRAP.md`（新聊天室輕量續接協定）**
+3. **`shared-knowledge/ROOM_BOOTSTRAP_REGISTRY.json`（聊天室身份、主責領域與 checkpoint 索引）**
+4. **自己專線的 dedicated checkpoint / research files**，先取得 durable state 與 exact next continuation point
+5. **`shared-knowledge/RESEARCH_OUTPUT_CONTRACT.md`**（01～15 實際研究前必讀；送出研究回覆前再讀一次）
+6. `research/stock_market_learning_tracker_v0_1.json` 的 aggregate 與本室主責 Dxx（正式總模組數、Level、maturityPct、status 的機器權威）
+7. 只有遇到 owner／模組路由不明、課綱變更、跨研究室整合或治理衝突時，才讀本檔完整相關區段、`shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md`、`PROBABILISTIC_SELECTION_GOVERNANCE_V0_1.md`、`CURRICULUM_RETIREMENT_AND_CAPABILITY_LEDGER_V0_1.md`
+8. 需要工程／System 1／System 2 銜接時，再讀 `RESEARCH_ENGINEERING_GOVERNANCE.md`、`RESEARCH_CHECKPOINT.md` 與對應 bridge
+
+**禁止為了一般續接而把整份 Router、Master Map、舊聊天摘要與模組表當成啟動提示詞重新灌入。**
+
+## 聊天室滿載／移轉新聊天室規則
+
+本節適用於 00、01～15、System 1、System 2 與其他使用本 repository 的長期聊天室。
+
+- 正常 Chat → Chat 移轉使用 `shared-knowledge/ROOM_BOOTSTRAP.md`；預設只給 1～3 行短啟動詞，不再產生數千字 handoff。
+- 舊聊天室可操作時，先把尚未 durable 的進度與 exact next continuation point 寫回正式 checkpoint；新聊天室從 GitHub latest `main` 自動恢復。
+- 新聊天室不得要求韓哥重貼舊聊天、重新提供 repo、重新貼完整規則、百分比或模組清單。
+- `shared-knowledge/ROOM_BOOTSTRAP_REGISTRY.json` 是聊天室身份與 checkpoint 的輕量索引；一般續接優先讀 Registry＋專屬 checkpoint，不必全文載入本 Router。
+- Work／Codex 移轉仍需完整語意，但完整內容優先 durable 到 task-specific checkpoint；給韓哥的 paste-ready prompt 維持精簡，只放身份、模式、checkpoint、單一句目標、exact next action 與批准邊界。
+- 只有 GitHub／checkpoint 無法存取或無法安全寫回時，才退回 self-contained 長 handoff。
+- 短啟動詞不得把舊 SHA、成熟度、模組數或 status 寫死成未來權威；新聊天室每次重新讀 latest `main`。
+
+標準短啟動詞：
+
+> 接手「<聊天室名稱>」。依 GitHub 最新 main 與 ROOM_BOOTSTRAP 自動恢復，從正式 exact next continuation point 接續；禁止重頭研究、禁止重做、不要要求我重貼舊聊天。
+
 
 ## 全域學習聊天室強制運作規則
 
@@ -591,6 +611,10 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 
 
 ## 07｜產業與供應鏈研究室
+
+負責領域：**D09 產業／族群／市場廣度／輪動；D10 供應鏈／產能／庫存／原物料／政策傳導**  
+必讀 checkpoint：`MARKET_BREADTH_ROTATION_CHECKPOINT.md`、`MARKET_BREADTH_ROTATION_RESEARCH.md`、`SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md`  
+禁止：不得把其他 Dxx 領域當成本聊天室主線；跨領域發現只能建立 dependency（依賴）或引用證據，不能雙重計算進度。Formal Core 維持 LOCKED。
 
 > 2026-10-04 durable progress：SC-045／SC-046 使 D10-13 與 D10-14 由 L2 升至 L3；BR-057 建立 PCB／ABF 公司曝險分母防火牆，BR-058 凍結第一批真正前瞻公司策略動作 cohort，但 D09-13／D09-14 維持 L3。D09=55.7%、D10=55.4%、本室加權約55.6%；Formal Core 不變。
 
