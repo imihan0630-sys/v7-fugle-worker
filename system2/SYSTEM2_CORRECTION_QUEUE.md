@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-04 18:52 Asia/Taipei
+Updated: 2026-10-04 19:00 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -79,7 +79,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
 - createdAt: 2026-10-04T16:30:15+08:00
 - severity: MEDIUM
-- status: FIX_IN_PROGRESS
+- status: FIX_IMPLEMENTED
 - routingClass: REMEDIATION_LANE
 - assignedLane: REMEDIATION_LANE
 - assignedRoom: System 2｜補強修復室
@@ -111,14 +111,21 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - protectedBoundaries: System 1 Formal Core; System 1 holdings/runtime; System 2 capital/order authority; production push; no inferred fills/holdings.
 - ownerDecisionRequired: false for semantic reconciliation and research-only readiness contract; true later if a protected shared/live holdings integration is proposed.
 - implementationEvidence:
-  - REMEDIATION_LANE accepted ownership on latest main and corrected its stale idle checkpoint before semantic mutation.
-  - Bounded System 2 audit confirms the physically implemented path is simulated only: candidate lifecycle enforces SIM_FILLED -> POSITION_MONITOR, daily resonance persistence reads open s2_positions, and s2_positions is canonically virtual-only.
-  - No complete authorized System 2 actual-holdings source/reconciliation/runtime/readback chain was found; no broker holdings adapter or verified actual quantity/cost/fill/ownership provenance was found in System 2.
-  - Existing MVP status already states simulated open positions provide HOLD semantics and no real position/order is created.
-  - Current repair will separate TARGET_ONLY / DESIGN_APPROVED / VIRTUAL_POSITION_READY / ACTUAL_HOLDINGS_SOURCE_NOT_WIRED / ACTUAL_POSITION_MONITOR_VERIFIED semantics and fail closed on any future actual-holding label without provenance/reconciliation evidence.
-- verificationEvidence: PENDING
+  - REMEDIATION_LANE accepted ownership on latest main, corrected the stale idle remediation checkpoint, and restricted conflict ownership to canonical position-readiness surfaces plus one semantic regression test.
+  - Bounded repository audit found no complete authorized System 2 actual-holdings adapter/reconciliation/readback chain. Current runtime evidence is virtual-only: candidate lifecycle enforces `SIM_FILLED -> POSITION_MONITOR`; daily resonance persistence reads open `s2_positions`; MVP status explicitly says simulated open positions supply HOLD semantics and no real position/order is created.
+  - Canonical readiness is now separated across MASTER / ARCHITECTURE / POSITION_MANAGEMENT / STORAGE_SCHEMA / BUILD_PROGRESS / CHECKPOINT / UI / candidate lifecycle/capacity / strategy identity: `TARGET_ONLY`, `DESIGN_APPROVED`, `VIRTUAL_POSITION_READY`, `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`, `ACTUAL_POSITION_MONITOR_VERIFIED=false`.
+  - `s2_positions` is explicitly guarded as virtual/simulated only. Quantity/cost in that table are simulation accounting, not broker ownership evidence. The schema forbids overloading it with actual holdings.
+  - Actual-holding labels are fail-closed: a future authorized integration must preserve source/account scope, as-of time, reconciled quantity, cost only when sourced, confirmed-fill provenance where used, ownership provenance, reconciliation/UNKNOWN state, and durable persistence/readback.
+  - Signal/trigger prices, suggested/requested shares, plan snapshots, candidate state and simulated fills are explicitly insufficient to establish actual ownership. System 1/V8 holdings cannot be silently imported.
+  - Institutional UI contract now requires virtual positions to be labeled SIMULATED / VIRTUAL and forbids populating an owner actual-holdings board while `ACTUAL_POSITION_MONITOR_VERIFIED=false`.
+  - Added `system2/tests/position_monitor_capability_semantics.test.mjs` to prevent regression back to false operational claims and to bind docs to current runtime/storage evidence.
+  - First System2 Research CI attempt failed only because the new test regex incorrectly flagged the explicit prohibition sentence itself; the guard was corrected to assert required fail-closed wording rather than word proximity.
+  - Corrected PR head `67151b901029b17b567cf1f29b4a74c349460996`: System2 Research CI run `37197332296` PASS; V8 Regression run `37197332187` PASS.
+  - Changed-file scope contains only System 2 canonical documentation, correction/checkpoint state and the new System 2 semantic test; no System 1 Formal Core, System 1 holdings/runtime, capital/order logic or production push file is modified.
+  - Remaining UNKNOWN / future gate: no actual-holdings source is wired or physically verified. Any broker-holdings or System 1 shared-holdings integration remains `OWNER_DECISION_REQUIRED` and is not implemented by this correction.
+- verificationEvidence: PENDING_INDEPENDENT_AUDIT
 - finalDisposition: PENDING
-- updatedAt: 2026-10-04T18:52:00+08:00
+- updatedAt: 2026-10-04T19:00:00+08:00
 
 
 ## Closed directives
