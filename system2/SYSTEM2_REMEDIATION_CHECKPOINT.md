@@ -1,7 +1,7 @@
 # System 2 Remediation Checkpoint
 
-Updated: 2026-10-04 20:52 Asia/Taipei
-Status: ACTIVE / REMEDIATION_LANE / NO_ACTIVE_CORRECTION
+Updated: 2026-10-05 02:07 Asia/Taipei
+Status: ACTIVE / REMEDIATION_LANE / FIX_IN_PROGRESS
 Room: System 2｜補強修復室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
@@ -9,41 +9,103 @@ Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
 Serve as System 2's focused remediation/SWAT lane for cross-module, recurrent, orphaned, false-completion and explicitly routed remediation work. This room is not a generic bug inbox.
 
-## Current queue state
+## Active correction
 
-No correction is currently assigned to REMEDIATION_LANE for active implementation.
+`S2-CORR-20261004-004` — Whole-universe history/continuity gate can block all Shadow evaluation because of symbol-local UNKNOWNs.
 
-- `S2-CORR-20261004-002` = `VERIFIED_CLOSED`.
-- `S2-CORR-20261004-003` = `VERIFIED_CLOSED` after independent AUDIT_LANE verification.
-- `S2-CORR-20261004-001` remains `DATA_LANE` ownership and was not touched.
+Routing:
+- severity: `HIGH`
+- status: `FIX_IN_PROGRESS`
+- routingClass: `REMEDIATION_LANE`
+- assignedLane: `REMEDIATION_LANE`
+- assignedRoom: `System 2｜補強修復室`
+- modificationOwner: `SYSTEM2_REMEDIATION_ROOM`
+- blockedBy: none
 
-## CORR-003 closure
+Other corrections:
+- `S2-CORR-20261004-001` remains `DATA_LANE` ownership and is not touched.
+- `S2-CORR-20261004-002` and `S2-CORR-20261004-003` are independently `VERIFIED_CLOSED` and are not reopened.
 
-Independent audit verified:
-- severity no longer grants BUILD_LANE implementation ownership;
-- `routingClass / assignedLane / modificationOwner` determine mutation ownership;
-- BUILD_LANE executes only assigned `LOCAL_FIX / BUILD_LANE` corrections;
-- BUILD_LANE cannot seize DATA_LANE / REMEDIATION_LANE work merely because severity is HIGH/CRITICAL;
-- ownership transfer requires a formal Correction Queue update before mutation;
-- CRITICAL/HIGH independent closure semantics remain intact;
-- semantic regression guard is present;
-- Build Progress Map now reflects the formal 22-domain / 354-module research universe;
-- protected System 1/System 2 trading/runtime boundaries remain unchanged.
+## Canonical problem statement
 
-Independent receipt:
-`system2/evidence/s2_corr_20261004_003_independent_verification.json`
+The current S2-07 upstream gate collapses symbol-local missingness into a whole-universe failure:
 
-Superseded audit-opening PR #554 was never merged and has been closed to prevent stale duplicate queue mutation.
+1. `daily_shadow_history_reader_v0_1.mjs` reports READY only when every current-universe symbol is history-ready and continuity-ready.
+2. `daily_shadow_input_preflight_v0_1.mjs` then requires whole-universe history state READY before any authorized strategy evaluation/capacity path can continue.
+3. One new listing, one symbol-local history gap, one local continuity/provenance UNKNOWN, or one symbol-local required-evidence gap can therefore starve otherwise clean symbols.
+4. Downstream semantics already support symbol-local `INCOMPLETE / BLOCKED` without converting UNKNOWN into negative evidence.
+
+## Required correction boundary
+
+Separate **global observation integrity** from **symbol-local evaluation readiness**.
+
+Global fail-closed remains mandatory for whole-universe/source/clock defects such as:
+- wrong source date / decision clock;
+- market-wide source corruption;
+- whole-batch provenance failure;
+- source-wide revision ambiguity;
+- missing mandatory market-wide source identity.
+
+Symbol-local missingness must remain local:
+- insufficient history / new listing;
+- continuity not verified;
+- symbol-local PIT/provenance gap;
+- symbol-local REQUIRED evidence UNKNOWN.
+
+Ready symbols may continue through authorized Shadow evaluation / Frozen Decision / Ranking / Capacity.
+Incomplete symbols must remain explicitly accounted, `INCOMPLETE / BLOCKED`, never BUY_ELIGIBLE / ACTIVE_ENTRY_MONITOR / capacity-admitted.
+
+No arbitrary whole-market coverage threshold may be introduced.
+
+## Zero-pick boundary
+
+Partial denominator coverage must never be promoted to a clean zero-pick truth.
+
+The corrected path must distinguish a fully-accounted clean no-selection result from a partial-coverage no-selection state such as `PARTIAL_COVERAGE_NO_SELECTION` (or equivalent fail-safe semantics).
+
+## Protected boundaries
+
+Do not change:
+- System 1 Formal Core or runtime;
+- System 2 live/final-selection authority;
+- production push/runtime;
+- capital/order behavior;
+- strategy weights;
+- formal entry/exit thresholds;
+- assessor policy itself;
+- PIT/UNKNOWN semantics.
+
+## Active conflict units
+
+Initial owned conflict units:
+- `system2/runtime/daily_shadow_history_reader_v0_1.mjs`
+- `system2/runtime/daily_shadow_input_preflight_v0_1.mjs`
+- downstream accounting/capacity glue only where required to distinguish partial denominator vs clean zero-pick;
+- associated System 2 tests;
+- correction queue MD/JSON;
+- this remediation checkpoint;
+- canonical docs only if runtime semantics require corresponding truth updates.
+
+## Tests / evidence required
+
+Pending:
+- mixed-universe test: A ready; B insufficient history; C continuity UNKNOWN; D required evidence UNKNOWN;
+- A continues through evaluation while B/C/D remain INCOMPLETE/BLOCKED;
+- all current-universe symbols denominator-accounted;
+- INCOMPLETE never becomes BUY_ELIGIBLE / ACTIVE_ENTRY_MONITOR / capacity admission;
+- partial denominator no-selection is not CLEAN zero-pick;
+- source-wide/global corruption still blocks globally;
+- PIT/availableAt/firstKnownAt/revision/continuity/provenance UNKNOWN semantics preserved;
+- System2 Research CI;
+- V8 Regression;
+- latest-main drift/readback.
 
 ## Exact next continuation point
 
-Read latest Correction Queue before starting work.
-
-If no correction is routed to `REMEDIATION_LANE`, remain idle and do not manufacture remediation work.
-
-If a new correction is routed here:
-1. re-read latest main;
-2. verify `routingClass / assignedLane / modificationOwner`;
-3. confirm no other lane owns the same conflict unit;
-4. implement only the routed correction;
-5. stop at `FIX_IMPLEMENTED` when independent verification is required.
+1. Read the exact history-reader/preflight/capacity contracts and existing tests.
+2. Implement the minimum state-shape change that separates global blockers from per-symbol readiness without inventing coverage thresholds.
+3. Add mixed-universe and global-corruption regression coverage.
+4. Run targeted tests, then full System2 Research CI and V8 Regression.
+5. Re-read latest main and reconcile shared Queue/checkpoint drift without overwriting DATA_LANE/AUDIT_LANE work.
+6. Update CORR-004 to `FIX_IMPLEMENTED` with durable evidence only after all checks pass.
+7. Merge and hand back to AUDIT_LANE; do not self-mark `VERIFIED_CLOSED`.
