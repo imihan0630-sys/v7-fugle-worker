@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "D03_EVIDENCE_CUTOFF_RECEIPT_SPLIT_CONTRACT_V0_1",
+  "updatedAt": "2026-10-04T18:24:00+08:00",
+  "classification": "CLASS_A_RESEARCH_ONLY",
+  "formalCoreImpact": "NONE_LOCKED",
+  "purpose": "Allow post-parent deterministic continuity materialization only when every admitted source fact was immutably frozen before the parent cutoff.",
+  "clocks": {
+    "evidenceCutoffAt": "LATEST_ADMITTED_SOURCE_FACT_TIME_IN_IMMUTABLE_MARKET_WIDE_CUT",
+    "parentKnownAt": "IMMUTABLE_PARENT_CAUSAL_CUTOFF",
+    "receiptCreatedAt": "DERIVED_CONTINUITY_RECEIPT_MATERIALIZATION_TIME",
+    "requiredOrdering": [
+      "SOURCE_FACTS_LE_EVIDENCE_CUTOFF",
+      "EVIDENCE_CUTOFF_LE_PARENT_KNOWN_AT",
+      "RECEIPT_CREATED_AT_GE_EVIDENCE_CUTOFF"
+    ],
+    "receiptCreatedAfterParentAllowed": true
+  },
+  "evidenceCut": {
+    "scope": "MARKET_WIDE_OR_FULL_ELIGIBLE_UNIVERSE",
+    "required": [
+      "evidenceCutId",
+      "evidenceCutoffAt",
+      "sourceCutManifestHash",
+      "expectedVersionKeys",
+      "observedVersionKeys",
+      "noRevisionGapThroughCut",
+      "symbolSessionCompletenessCertified",
+      "queryTruncated",
+      "budgetExceeded",
+      "unknownRequiredLaneCount",
+      "lateDiscoveredPreCutVersionCount"
+    ],
+    "invariants": [
+      "EXPECTED_VERSION_KEYS_EQUAL_OBSERVED_VERSION_KEYS",
+      "NO_QUERY_TRUNCATION",
+      "NO_BUDGET_TRUNCATION",
+      "ZERO_UNKNOWN_REQUIRED_LANES",
+      "ZERO_LATE_DISCOVERED_PRE_CUT_VERSIONS",
+      "NO_REVISION_GAP_THROUGH_CUT_TRUE",
+      "SYMBOL_SESSION_COMPLETENESS_TRUE"
+    ]
+  },
+  "derivedReceipt": {
+    "required": [
+      "receiptCreatedAt",
+      "evidenceCutId",
+      "evidenceCutManifestHash",
+      "derivedOnlyFromEvidenceCut",
+      "postCutSourceFactCount",
+      "transformInputManifestHash",
+      "sourceFactRefSetHash",
+      "unboundSourceFactCount"
+    ],
+    "invariants": [
+      "EVIDENCE_CUT_ID_MATCH",
+      "EVIDENCE_CUT_MANIFEST_REFERENCE_MATCH",
+      "DERIVED_ONLY_FROM_EVIDENCE_CUT_TRUE",
+      "POST_CUT_SOURCE_FACT_COUNT_ZERO",
+      "UNBOUND_SOURCE_FACT_COUNT_ZERO",
+      "EVERY_BAR_SOURCE_FETCHED_AT_LE_EVIDENCE_CUTOFF"
+    ]
+  },
+  "provenanceLayers": {
+    "marketWideSourceCut": "sourceCutManifestHash",
+    "symbolSpecificTransformInputs": "transformInputManifestHash",
+    "symbolSourceFactReferences": "sourceFactRefSetHash",
+    "note": "These hashes bind different provenance layers and must not be forced equal."
+  },
+  "indicatorReuse": {
+    "bollinger": "Existing v0.2 formula/source-lineage guards remain mandatory after timing envelope validation.",
+    "adx": "Existing v0.2 canonical-anchor FULL_REPLAY guards remain mandatory after timing envelope validation."
+  },
+  "forbidden": [
+    "POST_PARENT_SOURCE_REFRESH",
+    "RETROSPECTIVE_SOURCE_FACT_BACKFILL",
+    "SELECTED_ONLY_PRE_PARENT_CUT",
+    "LATE_DISCOVERED_PRE_CUT_VERSION_IGNORED",
+    "SELF_CERTIFIED_NO_REVISION_GAP",
+    "SELF_CERTIFIED_SYMBOL_SESSION_COMPLETENESS",
+    "FORMAL_RUNTIME_CHANGE"
+  ],
+  "promotion": {
+    "currentStatus": "NOT_PROMOTION_EVIDENCE",
+    "d03_10": "L2_REMAINS",
+    "d03_09": "L2_REMAINS",
+    "d03MaturityPct": 56.7,
+    "nextHonestTargets": [
+      58.3,
+      60
+    ]
+  }
+}
