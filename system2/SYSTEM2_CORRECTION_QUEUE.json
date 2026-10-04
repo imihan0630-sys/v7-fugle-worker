@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-04T15:40:00+08:00",
+  "updatedAt": "2026-10-04T15:58:20+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -16,10 +16,13 @@
       ],
       "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "canonicalRequirement": "Physically populate and verify staged official 2017-present Taiwan-equity daily history before claiming complete full-market historical coverage/replay.",
-      "observedProblem": "The first 2017 TWSE annual cold-backfill attempt failed before annual ingest. The calendar source was repaired and the checkpoint required a rerun, but no later canonical annual completion receipt is recorded; current build progress still marks full 2017-present completion as pending.",
+      "observedProblem": "The first 2017 TWSE annual cold-backfill attempt failed at historical calendar resolution. After the calendar repair, manual run 36574839220 on head df3c680d94f5b8ec06d474ba1d120e3c2ed60d58 advanced into cold-object persistence, then failed closed on R2 HEAD HTTP 502. No canonical 2017 TWSE completion receipt is recorded. DATA_LANE has hardened the transient R2 transport path, but the annual backfill still requires a fresh latest-main execution and verification.",
       "evidence": [
         "SYSTEM2_CHECKPOINT run 36545375167 failed before annual ingest",
         "SYSTEM2_CHECKPOINT requires repaired 2017 TWSE rerun before TPEx",
+        "GitHub Actions run 36574839220 reached R2 cold-object persistence and failed on R2 HEAD HTTP 502 without a completion receipt",
+        "PR #522 / merge 7d35e8693d8ecfefd2f43fabbdde8b501f585857 added bounded R2 retry/backoff while preserving fail-closed integrity and authorization semantics",
+        "System2 Research CI 37187368126 and V8 Regression 37187368095 succeeded",
         "SYSTEM2_BUILD_PROGRESS_MAP S2-03 remains yellow; full 2017-present cold history remains separate work",
         "SYSTEM2_MVP_SHADOW_STATUS_V0_1 does not claim 2017 full-market cold backfill complete"
       ],
@@ -51,13 +54,16 @@
       "implementationEvidence": [
         "Latest main confirms repaired manual-only 2017 annual backfill workflow and TWSE-first/TPEX-second ordering",
         "Annual backfill script verifies COMPLETE receipt/R2 objects on rerun and otherwise persists immutable external-cold packs/manifests/receipt",
-        "Current GitHub connector cannot create a new workflow_dispatch; rerunning old failed run would use the obsolete run SHA and is not acceptable",
+        "Manual run 36574839220 proved the repaired calendar path reaches R2 persistence; its terminal defect was transient R2 HEAD HTTP 502",
+        "PR #522 merged as 7d35e8693d8ecfefd2f43fabbdde8b501f585857; R2 requests now re-sign and use bounded retry/backoff for 408/425/429/5xx and transient timeout/network failures while preserving 404/412/non-retryable 4xx semantics",
+        "System2 Research CI 37187368126 and V8 Regression 37187368095 both passed",
+        "Current GitHub connector cannot create a new workflow_dispatch; rerunning run 36574839220 would use obsolete head df3c680d94f5b8ec06d474ba1d120e3c2ed60d58 and is not acceptable",
         "Controlled browser has no recorded GitHub sign-in, so owner login authorization is the remaining execution blocker",
         "After GitHub browser sign-in, dispatch latest-main system2-historical-pack-2017-backfill.yml with market=TWSE and verify receipt/manifests/R2/coverage before TPEX"
       ],
       "verificationEvidence": [],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-04T15:28:00+08:00",
+      "updatedAt": "2026-10-04T15:58:20+08:00",
       "routingClass": "DATA_LANE",
       "assignedLane": "DATA_LANE",
       "assignedRoom": "System 2｜歷史資料工程室",
