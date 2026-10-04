@@ -238,3 +238,14 @@ Do not repeat the ownership studies unless contradictory evidence appears.
 - D20-13 weekend dry-run: official TWSE informational source accessible; generic dynamic MIS extraction returned no content; exact free live rate/depth machine route remains unresolved. Weekend evidence is not promotion-grade.
 - Next: continue post-freeze parent collection; on the next genuine Taiwan trading day execute D20-13 official-source attempts at 09:15 / 12:00 / 15:20 ±5 minutes.
 - Formal Core locked; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+## Canonical overlay 2026-10-04 16:43 Asia/Taipei — first stable promotion-grade social parent
+- D20 remains 58.5%; no L4 promotion.
+- Parent `D20SOC-20261004-001` is preserved but invalidated for promotion because V0.1 source fingerprint included transport/tool-wrapper metadata.
+- Stable fingerprint contract: `research/d20_social_content_fingerprint_contract_v0_2.json`.
+- Promotion-grade replacement parent: `D20SOC-20261004-002` at 16:43:58.
+- V0.2 canonical page-text SHA-256 immediate repeatability = PASS.
+- Coverage: D20-06 = 1/50 parents, 1/20 dates, 0 multi-actor sequences; D20-11 = 1/50 parents, 1/20 dates; D20-03 = 0/100 parents, 0/20 dates.
+- D20-13 weekend dry-run remains non-promotion-grade; live official rate/depth receipt = 0.
+- Exact next: continue only new prospective social parents/outcomes; next genuine Taiwan trading day execute D20-13 frozen live-capture slots.
+- Formal Core locked.
