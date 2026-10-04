@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "CURRICULUM_COV07_RETURN_CONTRACT_VALIDATION_V0_1",
+  "date": "2026-10-05",
+  "candidateId": "COV-07",
+  "domain": "D12",
+  "specialistRoom": "09｜衍生品與國際總經研究室",
+  "status": "PARTIAL_EVIDENCE_RECEIVED",
+  "readiness": "SPECIALIST_CONTENT_COMPLETE_RETURN_CONTRACT_REPAIR_REQUIRED",
+  "specialistReturn": "research/COV07_D12_SPECIALIST_RETURN_V0_1.md",
+  "evidence": "research/cov07_d12_tx_curve_replay_20261004_v0_1.json",
+  "validator": "research/curriculum_coverage_return_validator_v0_1.mjs",
+  "substantiveDelta": {
+    "contractLevelReplay": "COMPLETE",
+    "expiryAndContractProvenance": "COMPLETE",
+    "curveObject": "COMPLETE",
+    "rollYieldConvention": "COMPLETE",
+    "noLookaheadContinuousContract": "COMPLETE",
+    "residualVsBasisAndOi": "COMPLETE",
+    "outcomeJoin": "CLOSED",
+    "terminalRecommendationToken": "ADD_MODULE"
+  },
+  "returnContract": {
+    "complete": false,
+    "missingHeaders": [
+      "Candidate ID",
+      "Domain",
+      "Specialist room",
+      "Return artifact path",
+      "Evidence cutoff",
+      "Current candidate class",
+      "Proposed terminal recommendation"
+    ],
+    "missingCanonicalSections": [
+      "Existing-module Overlap Matrix",
+      "Why Current Scope Is Insufficient",
+      "Taiwan Data Feasibility",
+      "PIT / Replay Implication",
+      "Decision Role",
+      "Proposed Owner",
+      "Maturity Starting Point"
+    ],
+    "reason": "Executable validator requires canonical headers/section headings; semantic equivalents are insufficient."
+  },
+  "stateTransition": "NO_STATE_PROMOTION",
+  "proposedFutureId": {
+    "candidate": "D12-19",
+    "canonical": false,
+    "reason": "D12-01..17 active; D12-18 retired/absorbed and not reusable; no current D12-19 collision found."
+  },
+  "formalCore": "LOCKED",
+  "canonicalMutation": "NONE",
+  "nextAction": "ROOM09_FORMAT_ONLY_REPAIR_THEN_00_REINTAKE"
+}
