@@ -1411,3 +1411,25 @@ Anti-double-count:
 
 Both modules remain L3/60%.
 This section supersedes earlier H01 language that treated merger into D09-13 as the likely outcome.
+
+### D11/D17 shared handoff — lock-up transition replay + policy expectation source (2026-10-04)
+
+Reusable cross-system findings:
+- D11-16: the TWSE 2026-01-09 Taiwan Innovation Board amendment creates a mandatory rule-version/transition boundary for historical replay. For qualifying already-listed domestic TIB issuers, legal release eligibility still does not equal actual custody withdrawal; issuer application and TWSE-approved releasable quantity/date can be an intervening official state.
+- D11-16 remains L2. Required chain remains issuer qualification/custody quantity -> transition applicability -> release approval/withdrawal -> transfer pre-declaration -> subsequent official holdings/untransferred state. Missing API/source coverage is UNKNOWN, never NO_SALE.
+- D17-14: two independent 2026 CBC decisions now have dated Reuters ex-ante forecast distributions before the decision and compatible official CBC realization records. The missing expectation-source feasibility blocker is closed.
+- Preserve the full expectation distribution. Do not choose mean/median/mode or a scalar surprise functional after observing the policy decision or equity returns.
+- CBC macro-policy state and controls remain D13-owned; D17 owns event identity, expectation/surprise clock and transmission evidence. No double factor vote.
+- D17-14 advances L2 -> L3 for Taiwan PIT/source feasibility only. Both historical witnesses matched the modal expectation; no policy-event alpha or equity-return outcome is claimed.
+- Future L4 work requires prospective capturedAt/version archives, preregistered surprise functional/event-zero/horizons, common-support controls, costs and OOS/Shadow evidence.
+
+Room 08 current formal maturity after this handoff:
+- D11 = 54.7% across 19 modules.
+- D17 = 42.9% across 14 modules.
+- Room 08 module-weighted aggregate = 49.7% across 33 modules.
+
+Evidence:
+- `research/d11_16_lockup_transition_deepening_receipt_v0_2.json`
+- `research/d17_14_expectation_source_receipt_v0_1.json`
+
+Formal Core unchanged. Outcome joins remain closed.
