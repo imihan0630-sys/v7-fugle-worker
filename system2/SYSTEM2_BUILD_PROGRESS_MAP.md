@@ -1,6 +1,6 @@
 # System 2 Build Progress Map
 
-Updated: 2026-10-02 Asia/Taipei  
+Updated: 2026-10-04 Asia/Taipei  
 Status: CANONICAL_BUILD_PROGRESS_MAP  
 Scope: System 2 engineering/research build sequence  
 System 1 / V8 Formal Core impact: NONE
@@ -32,7 +32,7 @@ GitHub `main` remains authoritative. Chat summaries are context only.
 | S2-02 | Data-source contracts / PIT clocks | 🟡 | Core source contracts exist; additional sources continue through PIT/availability verification. |
 | S2-03 | Historical infrastructure | 🟡 | D1/R2, manifests, checkpoints, receipts, PIT Replay/Bulk Backtest primitives exist; full 2017-present cold history completion remains separate work. |
 | S2-04 | Market Regime / shared 18-domain research | 🟡 | Shared research network active; not every research finding is a production factor. |
-| S2-05 | Factor Engine / family assessments / UNKNOWN semantics | 🟡 | Core contracts and research plumbing exist; richer validated factors remain incremental. |
+| S2-05 | Factor Engine / family assessments / UNKNOWN semantics | 🟡 | Core contracts and research plumbing exist; richer validated factors remain incremental. Contextual Evidence Router North-Star contract now defines scenario-dependent knowledge routing and over-constraint diagnostics; runtime synthesis is not yet complete. |
 | S2-06 | Multi-strategy contracts | 🟡 | Strategy families and Shadow contracts exist; exact live weights/thresholds remain evidence-gated. |
 | S2-07 | Daily PIT-safe Shadow Orchestrator | 🟡 | Strategy-run -> RANK-01 -> revalidation -> capacity assembler is built; official A1 current-source + isolated D1 PIT-history read-only preflight is now repository-implemented. Daily source/history/factor diagnostic D1 writes and read API are physically verified via PR #303. Exact strategy assessor policies and scheduled physical daily `s2_capacity_runs` remain pending; diagnostic receipts cannot seed the pool. |
 | S2-08 | Frozen Daily Decision / immutable archive | 🟡 | Schema/runtime primitives exist; depends on S2-07 for real daily prospective cohorts. |
@@ -43,7 +43,7 @@ GitHub `main` remains authoritative. Chat summaries are context only.
 | S2-13 | Fugle live bounded monitor | ✅ | Worker secret configured; Ticker/adjusted history/Quote path deployed; no intraday full-market scan. |
 | S2-14 | Resonance D1 persistence / episodes / operations audit | ✅ | Schema V1.1, 46 isolated `s2_` tables; snapshots/latest/runs/episode events and 19:00 operations audit deployed. |
 | S2-15 | System 2 Worker / Cron | ✅ | `system2-shadow-research`; one consolidated Cron; four System 1 Cron triggers untouched. |
-| S2-16 | UI / read API | 🟡 | Resonance UI, pool API, operations API, health live; full multi-strategy/performance/backtest dashboard still pending. |
+| S2-16 | UI / read API | 🟡 | Resonance UI, pool API, operations API, health live. Institutional Monitoring UI/UX North-Star contract now defines the final professional command-center experience; full multi-strategy candidate/holdings/performance interface remains pending. |
 | S2-17 | Execution simulation / position lifecycle | 🟡 | Minimum research runtime exists; automated future-session outcome loop remains incomplete. |
 | S2-18 | Strategy performance engine | 🟡 | Metrics/spec/storage concepts exist; trustworthy prospective sample population depends on S2-07 and downstream outcomes. |
 | S2-19 | PIT Replay / Bulk Backtest | 🟡 | Engines exist; broad historical dataset and multi-strategy evidence expansion remain incomplete. |
@@ -433,3 +433,39 @@ It does **not** yet satisfy the supplemental revision-history completeness contr
 5. only after the supplemental contract is complete may the six-lane revision coverage receipt be reconsidered.
 
 System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
+
+
+## Owner North-Star additions — contextual synthesis and institutional UI
+
+### Contextual synthesis
+Canonical contract:
+`system2/SYSTEM2_CONTEXTUAL_DECISION_SYNTHESIS_V0_1.md`
+
+Required future build behavior:
+- scenario/setup detection;
+- dynamic evidence-family routing;
+- HARD_GATE vs PRIMARY / SUPPORTIVE / CONTRADICTORY role separation;
+- interaction and redundancy handling;
+- over-constraint / opportunity-starvation diagnostics;
+- actionable decision output with entry/stop/target/add/reduce/exit/warning semantics.
+
+This is not authority to invent thresholds. Assessor and strategy policies remain evidence/version gated.
+
+### Institutional monitoring UI
+Canonical contract:
+`system2/SYSTEM2_INSTITUTIONAL_MONITORING_UI_V0_1.md`
+
+Required final experience:
+- market command center;
+- candidate board;
+- holdings board;
+- central decision chart workspace;
+- action card;
+- resonance center;
+- alert center;
+- performance center;
+- professional dark terminal visual language with Taiwan red-up / green-down semantics;
+- desktop-first plus compact mobile monitoring;
+- visible source freshness / PIT / frozen-version provenance.
+
+Current deployed resonance UI is an operational research surface, not the finished institutional terminal.
