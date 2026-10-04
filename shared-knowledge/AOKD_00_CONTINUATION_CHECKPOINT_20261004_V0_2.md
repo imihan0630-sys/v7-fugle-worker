@@ -949,3 +949,42 @@ A generic `繼續` is not treated as approval for these structural actions.
 - AOKD-05: Room06 corpus-feasibility return pending.
 
 Formal Core remains LOCKED.
+
+
+## 2026-10-05 new-chat handoff marker
+
+Identity:
+`00｜研究總控室`.
+
+New chat must recover from latest GitHub main, not from this SHA or chat memory.
+
+Recovery order:
+1. `AGENTS.md`
+2. `shared-knowledge/ROOM_BOOTSTRAP.md`
+3. `shared-knowledge/ROOM_BOOTSTRAP_REGISTRY.json`
+4. this 00 checkpoint
+5. current research master / tracker / intake and third-round registries.
+
+Protected owner-approval gates currently known:
+- H04;
+- H10;
+- H11;
+- COV-06;
+- COV-08;
+- COV-10.
+
+Do not treat generic `繼續` as approval for those structural actions.
+
+Non-owner-gate continuation remains automatic:
+- H02/H03/H12/H17/H18/H19 evidence-specific blockers;
+- COV-07/COV-09/COV-11/COV-12 formal/source blockers;
+- AOKD-05 Room06 corpus-feasibility return;
+- any newly arrived formal specialist/source receipt on latest main.
+
+Exact new-chat behavior:
+- re-read latest main;
+- preserve all completed closures and partials;
+- do not restart research;
+- intake any newly arrived complete return immediately;
+- continue non-protected governance work without waiting for approval;
+- ask owner only when a protected structural mutation reaches OWNER_APPROVAL_REQUIRED.
