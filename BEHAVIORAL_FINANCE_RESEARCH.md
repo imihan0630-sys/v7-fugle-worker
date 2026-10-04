@@ -839,3 +839,53 @@ Current D20 maturity: 56.9%.
 Formal Core unchanged.
 FORMAL_OPTIMIZATION_CANDIDATE = NONE.
 
+## 2026-10-04｜D20-03 explicit-confidence calibration -> L3
+
+A narrower direct-expression route resolves the data-feasibility blocker without inferring psychology from market activity.
+
+### Source-feasible observations
+PTT Stock structured target posts can expose:
+- explicit long/short classification;
+- target price;
+- stop price;
+- forecast horizon when stated;
+- explicit certainty language;
+- explicit probability/percentage language;
+- explicit self-reported hit-rate or skill claims.
+
+These are captured under the same append-only PTT source contract used by D20-06/D20-11.
+
+### Valid interpretation
+The L3 lane measures public expressed-confidence calibration at article/aggregate level.
+
+It does NOT establish:
+- private psychological trait overconfidence;
+- actual brokerage trading;
+- account-level risk-taking;
+- general Taiwan-investor overconfidence.
+
+Forecast error alone is not overconfidence.
+A qualifying confidence row requires explicit confidence/uncertainty evidence; turnover, margin, recent return, posting frequency and target error are forbidden substitutes.
+
+### Falsification
+Public statements may be strategic, performative, selective or sarcastic.
+Self-reported hit rates may be incomplete or unverifiable.
+Published forecasts are selected rather than a representative sample of all beliefs.
+Therefore the lane remains OBSERVATION / RESEARCH_ONLY.
+
+### Privacy
+No named-user confidence, psychology, skill or influence score is produced.
+Derived evidence is aggregate by confidence class, date/topic/regime and frozen forecast horizon.
+
+### Decision
+D20-03 -> L3 Taiwan PIT data feasibility for the bounded public explicit-confidence calibration sublane.
+No L4, alpha or Formal claim.
+
+### L4 extension
+Prospective preregistration extended at 2026-10-04 14:12:14 Asia/Taipei.
+Only qualifying forecasts first captured after that extension are promotion-eligible.
+Previously inspected posts are L3 source examples only.
+
+Current D20 maturity: 58.5%.
+Only D20-13 remains L2.
+
