@@ -1,7 +1,7 @@
 # System 1 valuation source-vintage capture Class-B proposal V0.1
 
 Date: 2026-10-05 Asia/Taipei
-Status: DESIGN_READY / CLASS_B_PROPOSAL_ONLY / OWNER_APPROVAL_REQUIRED / FORMAL_CORE_LOCKED
+Status: DESIGN_READY / CLASS_B_IMPLEMENTATION_OWNER_APPROVED / PRODUCTION_DEPLOY_NOT_AUTHORIZED / FORMAL_CORE_LOCKED
 
 ## Purpose
 
@@ -310,3 +310,44 @@ Until that explicit approval exists:
 `formalOptimizationCandidate=NONE`
 
 Formal Core: LOCKED
+
+
+## Owner approval receipt
+
+- Owner approval received in ChatGPT on 2026-10-05 Asia/Taipei:
+  `批准 Valuation Source Vintage Class-B 實裝。`
+- This approval authorizes repository engineering implementation of the additive research provenance capture defined in this proposal.
+- It does not authorize:
+  - Formal valuation-rule changes;
+  - PE/sector-median threshold changes;
+  - growth-exception threshold changes;
+  - ranking/comparator/Top6/3+3/capital/trading changes;
+  - live trading;
+  - Production deployment unless separately permitted by current governance after concrete PR/CI/runtime review.
+
+Implementation state now:
+
+`implementationAuthorized=true`
+
+`deploymentAuthorized=false`
+
+`formalChangeAuthorized=false`
+
+`economicSuperiority=UNKNOWN`
+
+`formalOptimizationCandidate=NONE`
+
+Formal Core: LOCKED
+
+## Exact implementation handoff
+
+Use Codex + GPT-6 Astra + High (or strongest current coding equivalent).
+
+First action:
+1. fetch latest `main`;
+2. read `AGENTS.md`, `VERSIONING.md`, `REQUIREMENTS_30.md`, this proposal, and the R2 checkpoint;
+3. inspect current patch-chain/runtime version before assigning any version;
+4. implement only the minimum additive source-vintage capture;
+5. use guarded patch-chain engineering, not ad-hoc direct Worker.js edits;
+6. open a PR and run exact-head Regression, Repair CI, and isolated review;
+7. do not deploy Production unless current governance separately authorizes it after the concrete implementation is reviewed.
