@@ -492,3 +492,52 @@ Maturity firewall:
 2. D12 active research moves from H11 historical residual proof to independent prospective source-attested option-surface dates; do not backfill 18:10 first-known from daily files.
 3. D12-13 next high-value lane: compare own-computed contract Greeks with official TAIFEX Delta only after publication/effective-date, model input and quote-clock alignment.
 4. Keep weekly-expiry forward governance separate from monthly futures-forward replay.
+
+
+## 2026-10-04 Room09 continuation — DR-096..DR-098 official Delta effective-date alignment firewall
+
+Status: RESEARCH_ONLY / SOURCE_VERSION_ALIGNMENT / OUTCOMES_CLOSED / NO_PROMOTION.
+Durable evidence: `research/d12_13_official_delta_version_alignment_20261004_v0_1.json`.
+
+### DR-096 — official afternoon Delta version raw identity verified
+A read-only isolated workflow later retrieved the official TXO Delta file/page:
+- source: `https://www.taifex.com.tw/cht/3/optDailyDeltaExcel?scd_kind_id=TXO`;
+- later-retrieved raw SHA-256: `a5a91485b332c246e451494550b389d9c629746b650e15645f93e4fec8307e10`;
+- bytes: 1,261,436;
+- publication text embedded in the official content: `2026-10-02 04:39:21 PM`;
+- TXO occurrences: 2,872;
+- the same content contains the frozen 06:45 / 14:30 / 16:30 clock notes;
+- raw bytes were not committed.
+
+### DR-097 — 2026-10-02 16:39 version is not a 2026-10-02 same-day Delta baseline
+Per the already-frozen official clock contract `research/d12_13_taifex_daily_delta_clock_semantics_v0_1.json`:
+- the 06:45 version is same-business-day;
+- the 14:30/16:30 afternoon versions are for the next business day and exclude next-day newly listed series.
+2026-10-02 was Friday, so the 16:39:21 version maps to the next business day 2026-10-05. It is therefore not directly comparable to the 2026-10-02 regular-session option parent as a same-date model-error baseline.
+
+### DR-098 — own-vs-official Delta error remains UNKNOWN until effective dates align
+A numerical comparison between own-computed Delta from 2026-10-02 option quotes and the 16:39 official next-session Delta would confound:
+- model/input differences;
+- option quote timing;
+- effective trading date;
+- next-session reference-price state;
+- new-series universe coverage.
+
+Therefore:
+`DIRECT_20261002_OWN_VS_OFFICIAL_DELTA = BLOCKED_BY_EFFECTIVE_DATE_VERSION_MISMATCH`.
+
+Allowed continuations:
+1. if an immutable 2026-10-02 06:45 same-day official version is recovered with source identity, compare it with aligned 2026-10-02 inputs;
+2. otherwise, after 2026-10-05 inputs exist, compare the preserved 2026-10-02 16:39 next-session official Delta with aligned 2026-10-05 inputs, explicitly flagging next-day new-series coverage.
+
+Maturity firewall:
+- D12-13 remains L2/40%;
+- D12 remains 40.0%;
+- no outcome join;
+- Formal Core LOCKED;
+- FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+
+### Exact next continuation after DR-098
+1. Do not spend this closed-market period fabricating a same-day Delta comparison.
+2. Resume aligned official-vs-own Delta only when a valid same-effective-date pair exists.
+3. In the meantime continue D13 source-vintage work whose evidence does not depend on the next Taiwan trading session.
