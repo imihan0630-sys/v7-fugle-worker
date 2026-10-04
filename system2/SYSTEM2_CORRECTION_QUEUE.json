@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-04T20:52:58+08:00",
+  "updatedAt": "2026-10-04T21:14:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -16,7 +16,7 @@
       ],
       "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "canonicalRequirement": "Physically populate and verify staged official 2017-present Taiwan-equity daily history before claiming complete full-market historical coverage/replay.",
-      "observedProblem": "Initial 2017 TWSE attempts failed first at calendar resolution and then at transient R2 HEAD HTTP 502. Those transport defects are now repaired. Fresh latest-main run 37197090867 physically verifies 2017 TWSE raw A1 storage/source coverage as accepted, while 651 historical-universe symbol-session gaps and technical continuity remain explicit PARTIAL replay debt. The correction remains open because 2017 TPEx and later market-years are still pending.",
+      "observedProblem": "Initial 2017 backfill defects (calendar resolution and transient R2 HEAD 502) are repaired. Fresh physical verification now accepts raw A1 data coverage for both 2017 TWSE and 2017 TPEx. Replay readiness remains PARTIAL because explicit symbol-session UNKNOWNs, RAW continuity debt, and incomplete TPEx historical delisting-union remain. The correction stays open because 2018-present market-years and the final full-market PIT replay are still pending.",
       "evidence": [
         "SYSTEM2_CHECKPOINT run 36545375167 failed before annual ingest",
         "SYSTEM2_CHECKPOINT requires repaired 2017 TWSE rerun before TPEx",
@@ -29,7 +29,12 @@
         "2017 TWSE storage verification PASS: 920 packs, 222194 bars, 920/920 R2 HEAD and byte-GET SHA checks",
         "Fresh official TWSE 2017 reconciliation PASS: 246 trading dates, 222194 official rows, 0 missing from cold, 0 extra versus fresh official, 0 source-row-hash mismatch",
         "Historical-universe denominator 222845 versus 222194 source rows leaves 651 explicit UNKNOWN symbol-session gaps across 44 symbols; data coverage PASS but replay readiness PARTIAL",
-        "Coverage artifact 11301298928 digest sha256:6b535e6d32a7f768ca55bb5fe98b504efb6a7d770a3b5a11071760d673bc6618"
+        "Coverage artifact 11301298928 digest sha256:6b535e6d32a7f768ca55bb5fe98b504efb6a7d770a3b5a11071760d673bc6618",
+        "GitHub Actions run 37201834701 (#8) completed SUCCESS on head b0a445e0cff7a4a9035cf706cc1fc8da139bd9f9",
+        "2017 TPEx storage verification PASS: 753 packs, 180806 bars, 753/753 R2 HEAD and byte-GET SHA checks",
+        "Fresh official TPEx 2017 reconciliation PASS: 246 trading dates, 180806 official rows, 0 missing from cold, 0 extra versus fresh official, 0 source-row-hash mismatch",
+        "TPEx 2017 conservative universe denominator 181264 versus 180806 source rows leaves 458 explicit UNKNOWN symbol-session gaps; data coverage PASS but replay readiness PARTIAL",
+        "TPEx 2017 coverage artifact 11304212419 digest sha256:48d2cac27deaacc95bb5a03ea6072dff76d39ca60804943dc6948c76fa2be20d"
       ],
       "riskIfUnfixed": "Creates false-completion/evidence-coverage risk for multi-year replay, factor validation, regime robustness and strategy backtesting.",
       "requiredCorrection": [
@@ -66,17 +71,25 @@
         "Controlled browser has no recorded GitHub sign-in, so owner login authorization is the remaining execution blocker",
         "After GitHub browser sign-in, dispatch latest-main system2-historical-pack-2017-backfill.yml with market=TWSE and verify receipt/manifests/R2/coverage before TPEX",
         "Physical verifier V0.2 separates raw data coverage from replay readiness; unknown symbol-session gaps remain PARTIAL rather than being relabeled as raw-source loss",
-        "Machine-readable market-year coverage matrix and durable 2017 TWSE evidence receipt are now being committed under DATA_LANE"
+        "Machine-readable market-year coverage matrix and durable 2017 TWSE evidence receipt are now being committed under DATA_LANE",
+        "Physical verifier V0.3 supports TWSE/TPEx and preserves TPEx historical-universe incompleteness as PARTIAL rather than fabricating survivorship completeness",
+        "2017 TPEx durable evidence receipt and market-year matrix row are committed under DATA_LANE",
+        "2017 TWSE and TPEx raw A1 data coverage are both physically accepted; next population target is 2018"
       ],
       "verificationEvidence": [
         "Run 37197090867 migrate/backfill/physical verify/artifact upload/System1 isolation all SUCCESS",
         "Completion receipt S2HCR-98d7cf6888e3069a2a170c20dbe8acee1cd7d5cb9bc7d9afa33319eb816fe97a COMPLETE",
         "Manifest rolling hash 98d7cf6888e3069a2a170c20dbe8acee1cd7d5cb9bc7d9afa33319eb816fe97a",
         "Storage/source equality: 222194 cold rows == 222194 fresh official rows with zero row-hash mismatches",
-        "2017 TWSE disposition DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL"
+        "2017 TWSE disposition DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL",
+        "Run 37201834701 migrate/backfill/physical verify/artifact upload/System1 isolation all SUCCESS",
+        "2017 TPEx completion receipt S2HCR-40d43653b2c456de9aa195cc20850121822292e84a1917d3a1e97b1c0965d710 COMPLETE",
+        "2017 TPEx manifest rolling hash 40d43653b2c456de9aa195cc20850121822292e84a1917d3a1e97b1c0965d710",
+        "2017 TPEx storage/source equality: 180806 cold rows == 180806 fresh official rows with zero row-hash mismatches",
+        "2017 TPEx disposition DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL"
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-04T19:03:00+08:00",
+      "updatedAt": "2026-10-04T21:14:00+08:00",
       "routingClass": "DATA_LANE",
       "assignedLane": "DATA_LANE",
       "assignedRoom": "System 2｜歷史資料工程室",
