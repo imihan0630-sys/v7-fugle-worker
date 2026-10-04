@@ -1,7 +1,7 @@
 # System 1 LIQUIDITY_REJECTED_CONTROL consumer V0.1
 
 Date: 2026-10-04 Asia/Taipei
-Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_PENDING / FORMAL_CORE_LOCKED
+Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_GREEN_MERGED / FORMAL_CORE_LOCKED
 
 ## Purpose
 
@@ -197,3 +197,13 @@ Formal Core: LOCKED
 4. Accumulate independent dates.
 5. Join D1/D3/D5/MFE/MAE and executable-liquidity evidence only under the frozen controls.
 6. Any change to 1000/300/1.2x/1.5x or exception semantics is Class-C and requires explicit owner approval.
+
+## Merge acceptance
+
+- PR #563 merged at `1f0af54b80f396126b7f548fc553e1bbd5edfd52`.
+- Exact head `a67f5dc8df0ed1cf0a8f0adfe42dc2efd0765e8c`:
+  - V8 Regression Tests run `37204289102` PASS;
+  - V8 Repair CI run `37204289065` PASS;
+  - System1 C1 C2 isolated offline repair review run `37204289048` PASS.
+- No Worker/runtime/D1/Production/Formal/System2 behavior change or Cloudflare deployment was introduced.
+- The first genuine V8.17+ liquidity rejected-control receipt remains prospective and will be emitted by the existing daily C1/Shadow workflow.
