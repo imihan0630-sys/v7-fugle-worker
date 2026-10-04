@@ -1086,3 +1086,72 @@ Promotion:
 D06-19 exact next：先做直接自然人來源 taxonomy＋PIT/replay 契約與 market/channel source receipts；方向性與選股增量研究要等 stock×date direct source 成立後才開。
 
 Formal Core unchanged / FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+---
+
+## IC-053 — D06-19 direct-retail module advances from L0 to L2 after independent post-creation research
+
+Research cycle: 2026-10-04 Asia/Taipei
+Status: MECHANISM_AND_FALSIFICATION_DEFINED / STOCK_DATE_DIRECTIONAL_SOURCE_GAP / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Canonical artifact:
+`research/d06_19_retail_individual_participation_flow_v0_1.md`.
+
+COV-03 has already completed total-control Intake, owner approval and canonical creation as D06-19 at L0/0%. This round does not inherit pre-creation maturity; it performs a separate post-creation research pass against the canonical module.
+
+### Direct Taiwan observability is real but multi-granular
+Official TWSE evidence directly identifies domestic individual investors at several levels:
+- annual market trading-value share by shareholder structure;
+- domestic-individual ownership distribution by holding size;
+- investor-type composition inside the intraday odd-lot channel;
+- investor self-query of personal account/order/trade records.
+
+These establish that natural-person identity is a real observable category, not merely a residual inferred from institutional flow.
+
+### The core source gap remains stock-date direction
+No verified authorized research contract currently supplies domestic-natural-person × stock × date buy/sell/net-flow with replayable first-known/revision semantics.
+
+Therefore:
+`DOMESTIC_NATURAL_PERSON_STOCK_DATE_DIRECTIONAL_FLOW = UNKNOWN / SOURCE_GAP`.
+
+### Positive mechanism families
+- retail attention/speculative participation;
+- contrarian/mean-reversion demand;
+- disposition effect;
+- overconfidence/turnover response;
+- channel-specific microstructure effects.
+
+Taiwan literature supports treating these as distinct, state-dependent hypotheses rather than one universal retail sign. Historical studies using identified investor datasets find individual/institutional herding differs; Taiwan individual investors show disposition-effect and overconfidence-related trading patterns. These results are hypothesis priors only and are not imported as 2026 effect sizes.
+
+### Falsification guard
+The following equivalences are rejected:
+- margin financing = retail flow;
+- day trading = retail flow;
+- odd-lot = all retail;
+- broker branch = retail/main-force identity;
+- total market minus institutions = direct retail net flow;
+- high retail participation = universally bullish or bearish.
+
+### Owner boundary
+D06-19 owns direct investor-class evidence and market/channel/ownership/directional semantics only. D06-07/10/13/14 retain leverage, TDCC, branch and day-trade primitives. D20 may consume the same receipt only through an independently identified behavioral transform; no duplicate directional vote.
+
+Promotion:
+`D06-19 L0/0% -> L2/40%`.
+
+Why not L3:
+stock-date domestic natural-person directional flow remains source-gated; market/channel aggregates cannot substitute it; no prospective immutable replay receipt exists.
+
+---
+
+## IC-054 — weekend promotion audit after D06-19
+
+D06-13 broker/branch remains L2: full-universe TWSE report has a documented 16:10 production contract and history from 2012-10-25, but access is paid/not authorized; public current-day query is not historical bulk replay, while selected active-stock products have selection bias.
+
+D06-15 state-owned-bank/specific-fund flow remains L2: legal public-financial-institution identity, broker execution, beneficial owner and policy/stabilization mandate remain distinct layers; no canonical replayable source resolves them.
+
+D06-11 passive flow remains L2: bounded MSCI membership methodology and ETF units/PCF contracts are advanced, but source authorization/history and the next independent prospective units+PCF receipt remain incomplete.
+
+No maturity promotion is granted to D06-05, D06-07/08/09, D06-11, D06-13/14/15/16/18 in this weekend pass.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core remains LOCKED.
