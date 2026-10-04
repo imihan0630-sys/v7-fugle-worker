@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-05T02:54:16+08:00",
+  "updatedAt": "2026-10-05T05:58:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -400,7 +400,7 @@
       "directiveId": "S2-CORR-20261005-001",
       "createdAt": "2026-10-05T02:54:16+08:00",
       "severity": "MEDIUM",
-      "status": "OPEN",
+      "status": "FIX_IMPLEMENTED",
       "title": "Capacity persistence loses partial-denominator provenance before downstream resonance/performance",
       "affectedScope": [
         "S2-09 capacity persistence",
@@ -455,10 +455,30 @@
       "assignedRoom": "System 2｜補強修復室",
       "modificationOwner": "SYSTEM2_REMEDIATION_ROOM",
       "blockedBy": [],
-      "implementationEvidence": [],
-      "verificationEvidence": [],
+      "implementationEvidence": [
+        "PR #601 implemented S2-CORR-20261005-001 and squash-merged to main as 1aa5bc86a4e4b47178b890e70c5542562202e752.",
+        "Capacity receipt schema advanced to S2_CAPACITY_V0_2; denominator provenance schema is S2_SELECTION_DENOMINATOR_PROVENANCE_V0_1.",
+        "New capacity receipts preserve denominatorState COMPLETE/PARTIAL/UNKNOWN, unresolvedCount, unresolvedByState, blockerCodes, contributing Shadow run IDs/strategy versions, canonical shadowAccountingHash values, optional runFingerprintHash values, and a dedicated provenanceHash.",
+        "capacityHash is computed after the selectionDenominator provenance object is added to the receipt base, so identical admitted symbols under different denominator provenance cannot share capacity identity.",
+        "daily_shadow_capacity_orchestrator_v0_1.mjs computes canonical shadowAccountingHash = sha256(shadowRunReceipt), verifies it against an existing fingerprint accounting hash when available, and passes the immutable contributing-run linkage into capacity construction.",
+        "s2_capacity_runs persistence remains backward-compatible with physical D1 schema 1.1: the new provenance payload is stored inside the existing counts_json field; no D1 migration or production schema deployment was required.",
+        "Legacy capacity rows whose counts_json lacks selectionDenominator normalize to denominatorState=UNKNOWN with LEGACY_PROVENANCE_INCOMPLETE; absence is never interpreted as COMPLETE.",
+        "daily_resonance_persistence_v0_1.mjs now reads capacity counts_json/schema_version and resolves active pool provenance by exact source_capacity_run_id + source_capacity_hash linkage, not by marketDate/decisionTimestamp heuristic matching.",
+        "daily_resonance_integration_v0_1.mjs carries sourceDenominatorState, sourceDenominatorProvenanceHash and the full sourceDenominatorProvenance into the watch-pool object; poolHash therefore commits to upstream denominator provenance.",
+        "Resonance refresh audit diagnostics record sourceDenominatorState and sourceDenominatorProvenanceHash; operations API exposes upstreamCapacity.denominatorProvenance and activePoolDenominatorProvenance; the read-only UI surfaces COMPLETE/PARTIAL/UNKNOWN coverage state.",
+        "resonance_comparison_frame_v0_1.mjs binds upstream denominator state/provenance/hash into the immutable comparison frame, making it available to future performance/comparison/promotion evidence without changing comparison formula or promotion authority.",
+        "Regression tests verify same admitted symbols with COMPLETE vs PARTIAL denominator produce distinct provenanceHash/capacityHash and resonance pool provenance, and legacy rows read UNKNOWN / LEGACY_PROVENANCE_INCOMPLETE.",
+        "CORR-004 invariants remain intact: PARTIAL + clean ready admissions remains monitorable; INCOMPLETE symbols remain non-admitted; PARTIAL + no ready selection keeps zeroPickDay=null, capacityReceipt=null and no s2_capacity_runs persistence.",
+        "No 80/90/95 percent or other coverage threshold was added. Denominator provenance remains contextual evidence only and is not a new trading/admission threshold.",
+        "System2 Research CI 37238471951 PASS and V8 Regression 37238471968 PASS on implementation head b0e8f0b29c8c2d6a23d863d30091252abc519c6d; latest-main drift was zero immediately before merge.",
+        "Merged-main readback on 1aa5bc86a4e4b47178b890e70c5542562202e752 confirmed capacity V0.2, denominator provenance V0.1, persisted counts_json provenance, canonical Shadow accounting linkage, exact capacity ID+hash downstream resolution, pool/operations/comparison/UI propagation, legacy UNKNOWN semantics and partial-no-selection no-capacity behavior.",
+        "Protected boundaries unchanged: no System1 Formal Core/runtime, System2 final/live selection authority, production push/runtime, capital/order, strategy weights/thresholds or assessor-policy change."
+      ],
+      "verificationEvidence": [
+        "PENDING_INDEPENDENT_AUDIT"
+      ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-05T02:54:16+08:00"
+      "updatedAt": "2026-10-05T05:58:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"

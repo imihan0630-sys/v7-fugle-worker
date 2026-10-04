@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-05 02:54 Asia/Taipei
+Updated: 2026-10-05 05:58 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -104,7 +104,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
 - createdAt: 2026-10-05T02:54:16+08:00
 - severity: MEDIUM
-- status: OPEN
+- status: FIX_IMPLEMENTED
 - routingClass: REMEDIATION_LANE
 - assignedLane: REMEDIATION_LANE
 - assignedRoom: System 2｜補強修復室
@@ -144,10 +144,21 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - No arbitrary coverage threshold or protected trading authority change is introduced.
 - protectedBoundaries: System 1 Formal Core; System 2 final/live selection authority; production push/runtime; capital/order; strategy weights/thresholds; assessor policy; CORR-004 UNKNOWN semantics.
 - ownerDecisionRequired: false for additive research/provenance hardening; any later use of coverage state as a live admission threshold requires separate evidence/owner decision.
-- implementationEvidence: PENDING
-- verificationEvidence: PENDING
+- implementationEvidence:
+  - PR #601 implemented this correction and squash-merged to main as `1aa5bc86a4e4b47178b890e70c5542562202e752`.
+  - Capacity receipt schema is now `S2_CAPACITY_V0_2`; denominator provenance schema is `S2_SELECTION_DENOMINATOR_PROVENANCE_V0_1`.
+  - Capacity provenance preserves `COMPLETE / PARTIAL / UNKNOWN`, unresolved counts/states, blocker codes, contributing Shadow run IDs/strategy versions, canonical `shadowAccountingHash`, optional fingerprint hash and a dedicated provenance hash.
+  - `capacityHash` commits to the full denominator provenance. Identical admitted symbols with COMPLETE vs PARTIAL provenance produce distinct immutable capacity identities.
+  - New provenance persists inside existing `s2_capacity_runs.counts_json`; physical isolated D1 schema remains V1.1, so no migration/deployment is required.
+  - Legacy rows lacking `selectionDenominator` normalize to `UNKNOWN / LEGACY_PROVENANCE_INCOMPLETE`, never COMPLETE.
+  - Resonance resolves provenance by exact `source_capacity_run_id + source_capacity_hash` linkage and carries it into pool hash, refresh audit diagnostics, operations API, UI and immutable comparison frames.
+  - Regression covers same admissions under COMPLETE vs PARTIAL, legacy UNKNOWN, and unchanged CORR-004 partial-no-selection (`zeroPickDay=null`, `capacityReceipt=null`, no `s2_capacity_runs`).
+  - No 80/90/95% coverage threshold or other new admission/trading threshold was introduced.
+  - System2 Research CI `37238471951` PASS; V8 Regression `37238471968` PASS on head `b0e8f0b29c8c2d6a23d863d30091252abc519c6d`; latest-main drift was zero before merge.
+  - Merged-main readback on `1aa5bc86a4e4b47178b890e70c5542562202e752` confirmed all capacity/resonance/comparison/UI provenance guards and protected boundaries.
+- verificationEvidence: PENDING_INDEPENDENT_AUDIT
 - finalDisposition: PENDING
-- updatedAt: 2026-10-05T02:54:16+08:00
+- updatedAt: 2026-10-05T05:58:00+08:00
 
 
 ## Closed directives
