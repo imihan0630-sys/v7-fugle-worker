@@ -658,3 +658,21 @@ CRITICAL/HIGH directives may be implemented by the build/control room but are no
 `FIX_IMPLEMENTED` is not equivalent to `VERIFIED_CLOSED`.
 
 This governance is process-only and does not authorize any System 1 Formal Core change, System 2 live selection authority, production push, capital or order impact.
+
+
+## Parallel execution lanes
+
+Canonical ownership:
+`system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
+
+Permanent execution/audit structure:
+- BUILD_LANE — `System 2｜建置總控室`: architecture, strategy/integration/UI/API/performance construction and tightly coupled local fixes.
+- DATA_LANE — `System 2｜歷史資料工程室`: historical TWSE/TPEx ingestion, R2/D1 cold history, coverage, PIT/continuity and replay-input qualification.
+- REMEDIATION_LANE — `System 2｜補強修復室`: cross-module, recurrent, orphaned, false-completion and explicitly routed remediation work.
+- AUDIT_LANE — independent correction adviser: issue/routing classification and CRITICAL/HIGH closure verification.
+
+Severity does not imply assignment. HIGH/CRITICAL corrections are routed to the lowest-risk owner rather than automatically to remediation.
+
+Parallel work must preserve one active modification owner per conflict unit. Upstream incomplete data must never be treated as complete by downstream build work.
+
+Current historical-backfill correction `S2-CORR-20261004-001` is assigned to DATA_LANE.
