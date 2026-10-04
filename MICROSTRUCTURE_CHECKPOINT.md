@@ -925,3 +925,46 @@ Observed volatility alone does not validate a sizing policy. A separate portfoli
 4. Freeze D16 MDE/dependence review before promotion-grade statistical interpretation.
 5. No historical backfill as Prospective Shadow.
 6. No L4 promotion until actual prospective/OOS evidence exists.
+
+
+## 2026-10-04 21:12 — D05-06 / D05-14 L3 PIT promotion
+
+Status: L3_PROMOTION_COMPLETE / D05_06_14_BOUNDED / NO_L4_CREDIT  
+Formal Core: LOCKED.
+
+### D05-06 Opening / Closing Auction & Auction Imbalance
+- COV-02 ownership remains D05-06; no new module.
+- Current Taiwan/Fugle trial/continuous/close/delayed-close timestamped source semantics make prospective auction-state replay feasible.
+- Trial top-five displayed book can support bounded displayed imbalance descriptors where natively observed.
+- Missing historical pre-close trial/imbalance remains UNKNOWN.
+- Final close/final volume/general EOD volume cannot backfill a missing pre-close imbalance.
+- D05-06 promotes L2 -> L3 / 60%, prospective-only; no auction alpha claim.
+
+### D05-14 Market Integrity / Abnormal Trading Patterns
+- TWSE official Attention and Disposition databases provide date-range historical queries/CSV records from January 2001.
+- Attention public page documents daily 17:00 update; current surveillance rules are versioned with amendment/legislative history.
+- Conservative replay therefore supports official Attention/Disposition state and public observable anomaly context after the official after-market publication boundary.
+- If exact historical intraday publication time is not independently known, intraday knownAt remains UNKNOWN.
+- Public data still cannot identify beneficial-owner/account linkage, collusive agreement, spoof intent, manipulation intent or wash trading.
+- D05-14 promotes L2 -> L3 / 60% only for bounded non-accusatory replay semantics; no legal finding or alpha claim.
+
+Durable evidence:
+- `research/D05_AUCTION_INTEGRITY_PIT_PROMOTION_AUDIT_20261004_V0_1.md`
+- `MICROSTRUCTURE_RESEARCH.md` MS-089 / MS-090.
+
+### Maturity
+- D04 remains 58.0%.
+- D05 = 54.3%.
+- Room04 weighted = (58.0*10 + 54.3*14)/24 = 55.8% rounded.
+- No L4 promotion.
+- No FORMAL_OPTIMIZATION_CANDIDATE.
+
+### Exact continuation
+1. Primary L4 Wave-1 remains coverage-only on the first genuine Taiwan trading session after the 2026-10-04 19:16 freeze:
+   - D04-03 / D04-04 / D04-07;
+   - D05-03 / D05-04 / D05-09.
+2. Freeze parent counts, clean dates, state/episode occupancy, UNKNOWN/exclusions and exact common support before opening economic outcomes.
+3. D05-06 / D05-14 may begin prospective parent accumulation as secondary L3 lanes; they do not inherit Wave-1 L4 credit.
+4. D05-05 true OFI remains blocked by event-sequence completeness.
+5. D05-11/12/13 remain blocked by own-order/fill/queue evidence.
+6. No historical Prospective Shadow backfill and no actor-intent inference.
