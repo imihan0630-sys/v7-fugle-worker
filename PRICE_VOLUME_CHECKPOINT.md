@@ -2799,3 +2799,63 @@ No maturity/count/Formal/runtime change.
 
 Audit:
 shared-knowledge/CURRICULUM_H20_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
+
+## Pre-PVE-240 continuation — Wave-1 isolation fix + Wave-2 executable admission (2026-10-04)
+
+Status: OUTCOME_BLIND / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+### Wave-1 governance correction
+
+The first Wave-1 evaluator aggregated evidence counts across H001 / H20 / H003.
+That created a cross-hypothesis sample-borrowing risk:
+one mature hypothesis could make the program-level gate appear evidence-eligible while another hypothesis had almost no evidence.
+
+This is now corrected before any genuine prospective outcome evidence existed.
+
+Current Wave-1 gate revision:
+- D02_L4_WAVE1_GATE_V0_1_1;
+- 23/23 executable tests PASS;
+- dates/events are counted separately by hypothesis;
+- promotion-review receipts are hypothesis-specific;
+- crossHypothesisSampleBorrowingAllowed=false;
+- allWave1L4EvidenceEligible is true only if H001, H20 and H003 each independently satisfy their own floor.
+
+No hypothesis status or maturity changed.
+
+### Wave-2 executable admission
+
+New artifacts:
+- `research/d02_l4_wave2_admission_evaluator_v0_1.mjs`;
+- `tests/test_d02_l4_wave2_admission_evaluator_v0_1.mjs`;
+- `research/d02_l4_wave2_admission_validation_20261004_v0_1.md`;
+- `research/d02_l4_wave2_admission_validation_v0_1.json`.
+
+Independent Node.js v22.16.0 execution:
+32/32 tests PASS.
+
+Wave-2 covers:
+D02-04 / 05 / 07 / 08 / 09 / 10 / 11 / 12.
+
+The evaluator is intentionally admission-only.
+It can determine whether an observation is structurally eligible to become future L4 evidence.
+It cannot:
+- establish sample adequacy;
+- promote maturity;
+- authorize Formal change.
+
+Hard boundaries include:
+- D02-04 no hindsight demand-reexpansion leakage;
+- D02-05 no distribution/absorption motive inference;
+- D02-07 no raw-OBV duplicate vote;
+- D02-08 true OFI / dynamic absorption / participant intent must remain false;
+- D02-09 only PIVOT_SIGNED_VOLUME or PARTICIPATION_TRAJECTORY, with no visual/all-pair/best-window search;
+- D02-10 parent-clock legality, no triple vote, 09:00 cum-pace structural redundancy blocked;
+- D02-11 reason-stratified rejected-control lane required and threshold sweep forbidden;
+- D02-12 09:00~13:00 bounded time curve, prospective-only price-by-volume profile and no unsupported closing-auction completeness.
+
+Current evidence remains:
+CLEAN_DATE_ZERO / PVE-239 / Gate 7 CLOSED.
+
+D02 remains 60.0%.
+No FORMAL_OPTIMIZATION_CANDIDATE.
+Formal Core remains LOCKED.
