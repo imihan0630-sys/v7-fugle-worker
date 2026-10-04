@@ -1,8 +1,8 @@
 # Corporate Governance / Insider Checkpoint
 
-Updated: 2026-10-04 10:05 Asia/Taipei
+Updated: 2026-10-04 13:36 Asia/Taipei
 Scope: D21｜公司治理／經營者／內部人／控制權品質
-Status: D21-01 L2 / D21-02 L3 / D21-03 L2 / D21-04 L2 / D21-05 L3 / D21-07 L2 / D21-09 L2 / D21-10 L3 / D21-11 L2 / FORMAL_CORE_UNCHANGED
+Status: D21-01 L2 / D21-02 L3 / D21-03 L2 / D21-04 L2 / D21-05 L3 / D21-07 L2 / D21-09 L2 / D21-10 L3 / D21-11 L2 PARTIAL_REPLAY / D21-12 L2 / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - Canonical continuation checkpoint for D21.
@@ -194,5 +194,36 @@ Exact next continuation:
 2. Continue D21-04 original MOPS pledge receipt recovery when source access allows; do not promote from secondary dates alone.
 3. After D21-11 replay, move to D21-12 management-guidance credibility rather than mechanically extending overlapping governance composites.
 4. D21-05 and D21-10 next promotion requires OOS/prospective evidence; no theory-only L4.
+
+Formal Core impact: NONE.
+
+
+## 2026-10-04 afternoon durable continuation
+
+### D21-11 replay result
+- A confirmed adverse case and a justified-RPT control case are now durable in the research file.
+- Positive case: historical Ful-Hwa/Loyalty Founder Enterprise 5465 transaction later received judicial findings of non-arm's-length / special breach-of-trust conduct with quantified company loss and beneficiary linkage.
+- Control case: Yuanta Financial related-party transaction with explicit economic purpose, valuation/governance process and no established extraction beneficiary.
+- Critical anti-look-ahead rule: later court findings are ex-post labels only from adjudication/publication known_at onward. They cannot be backfilled to the original transaction date.
+- D21-11 remains L2 / 40%, because a contemporaneous original transaction-date public receipt for the confirmed extraction case has not yet been recovered. The classifier logic is validated, but full historical decision-time reproducibility is not.
+- Next for D21-11: recover contemporaneous public evidence or find a second high-suspicion case with public beneficiary/terms/control evidence available at the decision time.
+
+### D21-12 management-guidance credibility
+- Advance D21-12 L0 -> L2 / 40%.
+- Freeze separate guidance channels: formal financial forecast, investor-conference guidance, material-announcement forward statements, and non-scorable generic optimism.
+- Taiwan source framework is replayable in principle through MOPS, issuer IR archives, TWSE/WebPro and formal forecast filings.
+- Freeze mechanisms: credibility history, information-efficiency benefit, strategic optimism/self-selection, meet-or-beat/earnings-management behavior, and genuine external uncertainty.
+- Credibility must be rolling and based only on outcomes already public at the decision timestamp.
+- Candidate fields include signed/absolute error, range hit, optimistic/pessimistic bias, revision frequency/magnitude/timing, withdrawal, assumption attribution, guidance continuity and manager identity.
+- Management turnover requires identity-version handling; predecessor credibility does not automatically transfer.
+- Qualitative statements with no machine-codable falsifiable proposition remain NON_SCORABLE.
+- Role remains RESEARCH_ONLY / CONFIDENCE / GOVERNANCE_TAIL_RISK until historical replay and OOS evidence exist.
+
+## Exact next continuation
+1. Build D21-12 two-issuer numeric-guidance historical replay from original guidance known_at through revision history to actual-outcome known_at.
+2. Prefer one relatively accurate guidance history and one repeated optimistic/revision-heavy history.
+3. Test incremental value versus analyst coverage, earnings revisions, fundamental quality and event/news controls.
+4. In parallel when source access permits, continue D21-11 contemporaneous-receipt recovery; do not promote D21-11 from later adjudication alone.
+5. After D21-12 replay, begin D21-13 materiality-focused ESG/climate/social risk contract without importing generic ESG scores.
 
 Formal Core impact: NONE.
