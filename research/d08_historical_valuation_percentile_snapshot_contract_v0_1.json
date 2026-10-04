@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "D08_HISTORICAL_VALUATION_PERCENTILE_SNAPSHOT_CONTRACT_V0_1",
+  "researchRoom": "06",
+  "domain": "D08",
+  "module": "D08-03",
+  "frozenAtAsiaTaipei": "2026-10-05T02:30:00+08:00",
+  "status": "OUTCOME_BLIND_PERCENTILE_MATERIALIZATION_CONTRACT",
+  "prerequisites": [
+    "research/d08_twse_daily_valuation_archive_manifest_contract_v0_1.json PASS manifest",
+    "research/d08_twse_month_end_scan_date_receipt_20261004_v0_1.json",
+    "research/d08_twse_official_universe_source_receipt_20261004_v0_1.json",
+    "research/d08_twse_raw_valuation_r2_capture_receipt_20261004_v0_2.json",
+    "historical valuation percentile PIT/replay contracts"
+  ],
+  "scanDates": {
+    "count": 44,
+    "startMonth": "2023-01",
+    "endMonth": "2026-08",
+    "rule": "use the already frozen last actual TWSE session for each month"
+  },
+  "historyBoundary": {
+    "cohortEffectiveFrom": "Controls whether a membership episode belongs to a scan-date cohort only.",
+    "valuationHistoryStart": "Use official listingDate when known; otherwise firstTradingDate fallback; never clamp old-company valuation history to the 2023 research cohort start.",
+    "archiveFloor": "2005-09-02 official machine-readable floor.",
+    "symbolReuse": "History must stay inside the active listing episode; pre-episode observations cannot leak across reused symbols."
+  },
+  "percentileWindows": {
+    "PE": [
+      "TRAILING_252_VALID_SESSIONS",
+      "TRAILING_756_VALID_SESSIONS",
+      "TRAILING_1260_VALID_SESSIONS",
+      "EXPANDING_SINCE_AVAILABLE"
+    ],
+    "PB": [
+      "TRAILING_252_VALID_SESSIONS",
+      "TRAILING_756_VALID_SESSIONS",
+      "TRAILING_1260_VALID_SESSIONS",
+      "EXPANDING_SINCE_AVAILABLE"
+    ],
+    "tieRule": "AVERAGE_RANK_PERCENT_RANK",
+    "currentObservation": "The scan-date value is included in the valid history sample when known.",
+    "minimumHistory": "252/756/1260 exact valid counts; expanding requires at least 252 valid observations.",
+    "insufficient": "UNKNOWN"
+  },
+  "currentValueCrosscheck": {
+    "authority": "durable raw-v0.2 month-end snapshot",
+    "rule": "Daily archive scan-date PE/PB observation presence and numeric value must exactly match raw-v0.2 for every cohort symbol.",
+    "mismatch": "DATA_BLOCKED"
+  },
+  "requiredPerMember": [
+    "symbol",
+    "membership episode identity",
+    "valuationHistoryStart",
+    "valuationObserved",
+    "PE/PB raw states",
+    "PE/PB current values",
+    "PE/PB 252/756/1260/expanding percentile states and values",
+    "valid-observation counts",
+    "fiscal-transition state where source provides it",
+    "pre-valuation-history excluded row count"
+  ],
+  "coverage": [
+    "memberCount",
+    "rawValuationObservedCount",
+    "peKnownCount",
+    "pbKnownCount",
+    "pe252KnownCount",
+    "pe756KnownCount",
+    "pe1260KnownCount",
+    "peExpandingKnownCount",
+    "pb252KnownCount",
+    "pb756KnownCount",
+    "pb1260KnownCount",
+    "pbExpandingKnownCount",
+    "fiscalTransitionKnownCount"
+  ],
+  "invariants": [
+    "every cohort member appears exactly once per scan date",
+    "no silent row drops",
+    "PE UNKNOWN does not suppress PB",
+    "future history rows are excluded",
+    "later corrections/current values cannot backfill earlier replay states",
+    "structural breaks are context tags, not automatic history resets",
+    "true expanding requires complete archive manifest; truncated expanding is prohibited"
+  ],
+  "snapshotBundleHash": {
+    "algorithm": "SHA-256",
+    "canonicalOrder": "ascending scanDate",
+    "canonicalLine": "scanDate|snapshotPayloadHash|memberCount|PE/PB window coverage counts"
+  },
+  "outcomeGate": "CLOSED",
+  "nextGate": "CONTROL_SNAPSHOT_FREEZE_THEN_PREREGISTERED_SHADOW_OUTCOME_JOIN",
+  "formalCoreChanged": false,
+  "promotionState": "NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
