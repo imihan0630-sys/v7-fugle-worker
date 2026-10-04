@@ -1902,3 +1902,18 @@ Current Room 08 maturity:
 - Room 08 = 53.9% across 33 modules.
 
 Formal Core unchanged. Outcome joins remain closed.
+
+
+### D03 decision-cutoff provenance engineering rule — 2026-10-05
+
+Status: **ENGINEERING_CANDIDATE_CI_PASS / PRODUCTION_NOT_AUTHORIZED**.
+
+Reusable rule:
+- decision cutoff belongs to the immutable Formal decision parent, not to a research child or membership copy;
+- current audited boundary is after the final `V7_MARKET_CONSENSUS` read and before synchronous selection;
+- additive cutoff provenance may persist through immutable C1 `header_json` with no dedicated D1 scalar column;
+- same-generation changed cutoff must conflict;
+- historical cutoff backfill is prohibited;
+- CI/fixture success does not equal a genuine prospective parent generation;
+- promotion remains blocked until a real post-deploy session has cutoff-bearing parent + certified cutoff-safe continuity + complete observer reconciliation;
+- PR #600 is draft/open/unmerged; Formal Core remains locked.
