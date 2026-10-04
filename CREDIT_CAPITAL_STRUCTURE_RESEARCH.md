@@ -1,6 +1,6 @@
 # Credit / Capital Structure Research
 
-Updated: 2026-10-04 07:22 Asia/Taipei
+Updated: 2026-10-04 08:51 Asia/Taipei
 Scope: D22
 Status: ACTIVE_RESEARCH / D22-01 L3_WAITING_PANEL / D22-02 L2_ACTIVE / D22-03 L2_MECHANISM_DEFINED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
@@ -211,4 +211,72 @@ No FORMAL_OPTIMIZATION_CANDIDATE exists yet.
 3. Construct research-only refinancing-gap challengers and interact only with D22-01 principal actually exposed to repricing.
 4. Test benchmark-vs-spread divergent states and no-refinancing/cash-repayment counterfactuals.
 5. Continue D22-01~03 multi-date/version-lineage panel expansion while outcomes stay closed.
+
+## 2026-10-04 08:51 continuation｜Full D22 mechanism/falsification map through D22-12
+
+This continuation completed the first full mechanism/falsification pass for every canonical D22 module. The resulting domain maturity is 45.0%, with D22-01~03 at L3 and D22-04~12 at L2. The advance reflects research evidence and frozen failure conditions, not implementation work or outcome mining.
+
+### Cross-module architecture
+
+The D22 credit stack is now decomposed into non-additive layers:
+
+1. D22-01: when financing cash flows mature.
+2. D22-02: whether earnings/cash generation can service financing cost.
+3. D22-03: how gross debt and accessible liquidity form funding structure.
+4. D22-04: what exposed financing may cost when repriced/refinanced.
+5. D22-05: what rating agencies publicly change and when.
+6. D22-06: what market credit prices/spreads imply, including non-default components.
+7. D22-07: what contractual liquidity/covenant triggers can change lender rights or funding access.
+8. D22-08: how quickly benchmark-rate changes transmit through fixed/floating/reset/hedged debt.
+9. D22-09: whether equity and credit markets disagree and which market actually leads in a given state.
+10. D22-10: how financing sources, seniority and sequencing form capital structure.
+11. D22-11: whether bank-credit supply/terms tighten beyond pure policy-rate moves.
+12. D22-12: how distress probability, recovery severity and equity-tail risk differ.
+
+The same primitive cannot create multiple votes across these layers.
+
+### D22-05 research finding
+Rating events have multiple clocks and meanings. Issue rating, issuer rating, outlook, watch/review and formal notch changes are separate. Evidence supports negative responses to some downgrades, but anticipation matters: equity, CDS/bond prices and short positioning can move before formal action. Therefore the research design must compare a rating action against pre-event market/fundamental information. A downgrade is neither automatically new information nor automatically a future bearish equity signal.
+
+### D22-06 research finding
+Observed corporate spread is not identical to expected default loss. Research shows meaningful non-default/liquidity components in investment-grade spreads and systematic risk-premium variation. Taiwan TPEx trade/quote/reference/fair-value series must therefore carry provenance labels. A stale or model-based mark cannot be silently treated as a fresh transaction. Credit-curve slope is a candidate only after security/maturity matching and liquidity controls.
+
+### D22-07 research finding
+Contractual rights create nonlinear states that accounting ratios alone cannot capture. Maintenance covenants, incurrence covenants, cross-default clauses, facility commitment and waiver/renegotiation are distinct. A breach can lead to renegotiation rather than default; facility headline size can overstate usable liquidity. D22-07 therefore owns contractual trigger/cushion semantics, not another copy of D22-02 ICR or D22-03 cash.
+
+### D22-08 research finding
+Rate exposure is a transmission problem, not simply a debt label. Floating-rate bank debt can pass benchmark changes into cash interest rapidly, while fixed-rate bonds delay pass-through until refinancing. Floors, caps, reset dates and hedges change effective exposure. This separates D13 rate state, D22-08 repricing exposure, D22-04 replacement cost and D22-01 maturity timing.
+
+### D22-09 research finding
+The intuitive claim "credit leads equity" is explicitly rejected as a universal rule. Literature includes strong equity-to-bond/CDS information flow as well as credit-to-equity or bidirectional cases. Any Taiwan divergence signal must therefore preregister timing, freshness and direction hypotheses, and must survive shared macro/liquidity controls.
+
+### D22-10 research finding
+Capital structure cannot be reduced to "high leverage bad." Trade-off, pecking-order, market-timing and agency/debt-overhang explanations can coexist. A useful D22 representation is a PIT funding vector plus financing-event sequence, while D07 remains owner of accounting leverage and D11 owner of financing-event identity. Convertibles/hybrids require contract-specific treatment.
+
+### D22-11 research finding
+Loan quantity is not a clean credit-supply signal. Weak loan growth can reflect weak demand; higher loan rates can reflect risk-free policy transmission. Credit-supply identification therefore needs standards/pricing/terms or substitution evidence and issuer-level bank dependence. Macro bank-credit conditions are context until a reproducible issuer exposure map exists.
+
+### D22-12 research finding
+Distress, PD, LGD/recovery and equity tail risk are separate. Structural/Merton distance-to-default relies on market equity value/volatility, liabilities, rate and horizon/barrier assumptions. Reduced-form hazard models impose different semantics. Recovery is conditional, state- and seniority-dependent. Distress-return evidence is mixed, so a distress score cannot be promoted merely because it predicts creditor risk.
+
+### Promotion implications
+- D22-05~12: L2 / 40% each.
+- No D22-05~12 module qualifies for L3 yet because Taiwan first-known replay has not been independently validated at the required module-specific level.
+- D22-04 remains L2 because the dynamic historical TPEx security-level replay could not be completed; no synthetic or incompatible proxy was used.
+- D22-01~03 remain L3 and outcomes CLOSED.
+- No System 1/System 2 Formal rule changed.
+- No FORMAL_OPTIMIZATION_CANDIDATE was created.
+
+### Durable contracts
+- `research/d22_05_credit_rating_migration_contract_v0_1.json`
+- `research/d22_06_credit_spread_bond_yield_contract_v0_1.json`
+- `research/d22_07_liquidity_covenant_default_contract_v0_1.json`
+- `research/d22_08_fixed_floating_rate_exposure_contract_v0_1.json`
+- `research/d22_09_equity_credit_divergence_contract_v0_1.json`
+- `research/d22_10_capital_structure_funding_mix_contract_v0_1.json`
+- `research/d22_11_credit_cycle_bank_lending_contract_v0_1.json`
+- `research/d22_12_distress_recovery_tail_risk_contract_v0_1.json`
+
+### Exact next continuation
+Prioritize D22-04/D22-06 TPEx market-credit replay, then D22-05 rating-event replay, then D22-07/D22-08 contractual/repricing panels. These upstream data families are prerequisites for defensible D22-09~12 PIT replay and later L4 incremental-value tests.
 
