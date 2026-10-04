@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-04T16:30:15+08:00",
+  "updatedAt": "2026-10-04T18:52:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -76,7 +76,7 @@
       "directiveId": "S2-CORR-20261004-002",
       "createdAt": "2026-10-04T16:30:15+08:00",
       "severity": "MEDIUM",
-      "status": "OPEN",
+      "status": "FIX_IN_PROGRESS",
       "title": "POSITION_MONITOR target behavior is presented as current operational capability",
       "affectedScope": [
         "System2 position-management documentation",
@@ -121,10 +121,16 @@
       "assignedRoom": "System 2｜補強修復室",
       "modificationOwner": "SYSTEM2_REMEDIATION_ROOM",
       "blockedBy": [],
-      "implementationEvidence": [],
+      "implementationEvidence": [
+        "REMEDIATION_LANE accepted ownership on latest main and corrected its stale idle checkpoint before semantic mutation.",
+        "Bounded System2 audit confirms the physically implemented path is simulated only: candidate lifecycle enforces SIM_FILLED -> POSITION_MONITOR, daily resonance persistence reads open s2_positions, and s2_positions is canonically virtual-only.",
+        "No complete authorized System2 actual-holdings source/reconciliation/runtime/readback chain was found; no broker holdings adapter or verified actual quantity/cost/fill/ownership provenance was found in System2.",
+        "Existing MVP status already states simulated open positions provide HOLD semantics and no real position/order is created.",
+        "Current repair will separate TARGET_ONLY / DESIGN_APPROVED / VIRTUAL_POSITION_READY / ACTUAL_HOLDINGS_SOURCE_NOT_WIRED / ACTUAL_POSITION_MONITOR_VERIFIED semantics and fail closed on any future actual-holding label without provenance/reconciliation evidence."
+      ],
       "verificationEvidence": [],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-04T16:30:15+08:00"
+      "updatedAt": "2026-10-04T18:52:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
