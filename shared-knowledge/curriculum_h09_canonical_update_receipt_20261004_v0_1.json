@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "CURRICULUM_H09_CANONICAL_UPDATE_RECEIPT_V0_1",
+  "date": "2026-10-04",
+  "verificationMainAtReceiptCreation": "995544929a4375cb29b47150290f71ad478412d2",
+  "clusterId": "H09",
+  "ownerDecision": "APPROVED",
+  "state": "CANONICAL_UPDATE_COMPLETE",
+  "terminalClassification": "KEEP_SEPARATE",
+  "governanceDisposition": "SCOPE_DEDUP_ONLY",
+  "ownership": {
+    "D16-19": "MODEL_ESTIMATION_CALIBRATION_IMPLEMENTATION_AND_DIAGNOSTICS_PRODUCER",
+    "D16-25": "CALIBRATED_BELIEF_DECISION_POLICY_UNCERTAINTY_UTILITY_ABSTAIN_CONSUMER"
+  },
+  "sharedInterface": "CalibrationReceipt -> PredictiveDecisionReceipt",
+  "maturity": {
+    "D16-19": {
+      "level": "L2",
+      "maturityPct": 40
+    },
+    "D16-25": {
+      "level": "L2",
+      "maturityPct": 40
+    },
+    "D16DomainPct": 60,
+    "weightedCurriculumPct": 44,
+    "changeFromH09": "NONE"
+  },
+  "domainCount": 22,
+  "activeModuleCount": 356,
+  "renameRequired": false,
+  "moduleCountChange": 0,
+  "mirrorCorrection": "D16-19 Learning Map/Router stale L0/0 synchronized to canonical Tracker L2/40; not a promotion",
+  "formalCoreImpact": "NONE_LOCKED",
+  "system1FormalImpact": "NONE",
+  "system2FormalImpact": "NONE",
+  "runtimeImpact": "NONE"
+}
