@@ -32,7 +32,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - affectedScope: S2-03 Historical infrastructure / P0 2017-present TWSE+TPEx daily A1 cold history
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement: System 2 historical infrastructure must physically populate and verify the staged official 2017-present Taiwan-equity daily history before it can be described as complete or used as complete full-market replay evidence.
-- observedProblem: The first manual 2017 TWSE external-cold annual backfill failed closed at historical calendar resolution. After the calendar repair, manual run `36574839220` on head `df3c680d94f5b8ec06d474ba1d120e3c2ed60d58` advanced through annual source loading into cold-object persistence, then failed closed on `R2 HEAD failed: HTTP 502`. No canonical 2017 TWSE completion receipt is recorded. The R2 adapter on that run had no bounded retry for transient 5xx/transport failures; DATA_LANE has now hardened that transport path, but the annual backfill still requires a fresh latest-main execution and verification.
+- observedProblem: Initial 2017 TWSE attempts failed first at calendar resolution and then at transient R2 HEAD HTTP 502. Those defects are repaired. Fresh latest-main run `37197090867` physically verifies 2017 TWSE raw A1 storage/source coverage as accepted; 651 historical-universe symbol-session gaps and technical continuity remain explicit PARTIAL replay debt. The correction remains open because 2017 TPEx and later market-years are still pending.
 - evidence:
   - SYSTEM2_CHECKPOINT: run 36545375167 failed before annual ingest.
   - SYSTEM2_CHECKPOINT: repaired continuation required manual 2017 TWSE rerun, then TPEx only after TWSE coverage/hash/manifest/receipt verification.
@@ -41,6 +41,11 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - System2 Research CI `37187368126` and V8 Regression `37187368095`: SUCCESS.
   - SYSTEM2_BUILD_PROGRESS_MAP: S2-03 remains 🟡; full 2017-present cold history completion remains separate work.
   - SYSTEM2_MVP_SHADOW_STATUS_V0_1: 2017 full-market cold backfill is not claimed complete and staged annual population remains pending.
+  - GitHub Actions run `37197090867` (#7): SUCCESS on head `7f7eda36b1de31caa01817ce3b9570af8826fe15`.
+  - 2017 TWSE storage verification: 920 packs / 222,194 bars / 920 HEAD + 920 byte-GET SHA checks PASS.
+  - Fresh official TWSE 2017 reconciliation: 246 sessions / 222,194 rows / 0 missing-from-cold / 0 extra / 0 row-hash mismatch.
+  - Historical-universe expected membership sessions 222,845; 651 UNKNOWN gaps across 44 symbols retained fail-closed; data coverage PASS, replay readiness PARTIAL.
+  - Artifact `11301298928`, digest `sha256:6b535e6d32a7f768ca55bb5fe98b504efb6a7d770a3b5a11071760d673bc6618`.
 - riskIfUnfixed: Historical replay, factor validation, multi-year backtests, regime robustness and strategy comparison can be mistaken for being backed by a complete market history when only bounded/smoke datasets exist. This creates a false-completion and evidence-coverage risk on a P0 dependency.
 - requiredCorrection:
   1. Resume from the repaired historical-calendar implementation; do not restart architecture design.
@@ -69,9 +74,13 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - GitHub connector available to this room has read/rerun actions but no new `workflow_dispatch` action. Re-running run `36574839220` is rejected because it is bound to old head SHA `df3c680d94f5b8ec06d474ba1d120e3c2ed60d58`, before the R2 retry hardening and later schema changes.
   - Controlled browser profiles currently have no recorded GitHub sign-in, so a fresh latest-main web dispatch still requires owner login authorization.
   - Exact next executable action after GitHub browser sign-in: run `.github/workflows/system2-historical-pack-2017-backfill.yml` from latest `main` with `market=TWSE`, then independently verify receipt/manifests/R2 hashes/coverage before allowing TPEX.
-- verificationEvidence: PENDING
+- verificationEvidence:
+  - Run `37197090867` migrate/backfill/physical verify/artifact upload/System1 isolation: SUCCESS.
+  - Completion receipt `S2HCR-98d7cf6888e3069a2a170c20dbe8acee1cd7d5cb9bc7d9afa33319eb816fe97a`: COMPLETE.
+  - Manifest rolling hash `98d7cf6888e3069a2a170c20dbe8acee1cd7d5cb9bc7d9afa33319eb816fe97a`.
+  - 2017 TWSE disposition: `DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL`.
 - finalDisposition: PENDING
-- updatedAt: 2026-10-04T15:58:20+08:00
+- updatedAt: 2026-10-04T19:03:00+08:00
 
 
 

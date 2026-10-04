@@ -1,6 +1,6 @@
 # System 2 Historical Data Checkpoint
 
-Updated: 2026-10-04 15:58 Asia/Taipei
+Updated: 2026-10-04 19:03 Asia/Taipei
 Status: ACTIVE / DATA_LANE
 Room: System 2｜歷史資料工程室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
@@ -26,30 +26,40 @@ Assigned correction:
 Routing:
 `DATA_LANE`
 
-Current known continuation:
-1. the repaired historical-calendar path is already on main;
-2. manual run `36574839220` on 2026-09-29 proved the 2017 TWSE path now advances beyond calendar resolution and into cold-object persistence;
-3. that run failed closed on a transient `R2 HEAD failed: HTTP 502` before a canonical annual completion receipt existed;
-4. PR #522 merged as `7d35e8693d8ecfefd2f43fabbdde8b501f585857`, adding bounded retry/backoff for retryable R2 HTTP/transport failures while preserving 404/412/non-retryable 4xx and immutable-object semantics;
-5. execute a fresh 2017 TWSE annual external-cold backfill from latest main;
-6. verify completion receipt, D1 manifests/checkpoints, R2 object hashes, universe/session/bar coverage and UNKNOWN/continuity states;
-7. only after TWSE 2017 acceptance, execute 2017 TPEx;
-8. continue staged market-year population to present;
-9. maintain a machine-readable aggregate coverage matrix;
-10. do not claim complete history until all required market-years are complete or explicitly blocked.
+2017 TWSE physical acceptance is now durable:
+1. fresh latest-main workflow run `37197090867` / run #7 completed SUCCESS on head `7f7eda36b1de31caa01817ce3b9570af8826fe15`;
+2. annual backfill fast-path verified the existing COMPLETE receipt without rewriting data;
+3. R2/D1 storage verification PASS: 920 packs, 222,194 bars, 920/920 HEAD checks and 920/920 byte GET SHA-256 checks;
+4. fresh official TWSE 2017 refetch returned 246 trading dates and 222,194 rows;
+5. cold history reconciled exactly to fresh official source: missing-from-cold=0, absent-from-fresh-official=0, source-row-hash-mismatch=0;
+6. historical universe registry materialized 1,151 memberships (1,089 current + 62 delisted), 0 unknown starts, with 920 symbols active during 2017;
+7. membership-session denominator is 222,845, leaving 651 explicit UNKNOWN symbol-session gaps across 44 symbols; these are not raw-source losses and remain fail-closed replay debt;
+8. observation semantics remain explicit: VALID_OHLC 220,948; OFFICIAL_ZERO_TRADE_NO_PRICE 711; POSITIVE_ACTIVITY_NO_VALID_CLOSE 535;
+9. continuity remains UNVERIFIED on 222,194 rows; PIT admission is conservative-session-finality PASS, but replay readiness is PARTIAL;
+10. artifact `system2-historical-coverage-TWSE-2017` id `11301298928`, digest `sha256:6b535e6d32a7f768ca55bb5fe98b504efb6a7d770a3b5a11071760d673bc6618`, was uploaded successfully;
+11. System1 production isolation PASS.
 
-Latest DATA_LANE validation:
-- System2 Research CI run `37187368126`: SUCCESS;
-- V8 Regression run `37187368095`: SUCCESS;
-- the 502 transport defect is hardened, but the 2017 TWSE annual backfill itself remains incomplete until a fresh latest-main run produces and verifies its durable receipt.
+Durable evidence:
+- `system2/evidence/S2_HISTORICAL_TWSE_2017_PHYSICAL_VERIFICATION_V0_1.json`
+- `system2/SYSTEM2_HISTORICAL_MARKET_YEAR_COVERAGE_MATRIX.json`
+
+2017 TWSE disposition:
+`DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL`
+
+This does **not** mean 2017→present history is complete and does **not** promote continuity/replay readiness to PASS.
 
 ## Important current blocker
 
-The connected GitHub interface can inspect/rerun Actions but still has no action for creating a new `workflow_dispatch` run. Re-running run `36574839220` is not acceptable because it is bound to old head SHA `df3c680d94f5b8ec06d474ba1d120e3c2ed60d58`, before the R2 retry hardening and later schema changes.
+No remaining execution blocker exists for 2017 TWSE raw A1 population/physical data coverage.
 
-The controlled browser profiles currently have no recorded GitHub sign-in. A fresh latest-main manual dispatch therefore remains the execution-channel blocker.
+The remaining TWSE 2017 debt is semantic/replay debt:
+- 651 UNKNOWN symbol-session gaps require further cause classification where authoritative evidence exists;
+- RAW technical continuity remains UNVERIFIED;
+- non-price official observations remain explicit and are not fabricated into OHLC.
 
-This is not permission to redesign the historical pipeline or to mark the backfill complete.
+These debts do not justify rewriting or refetching already reconciled raw A1 storage.
+
+The next DATA_LANE population target is 2017 TPEx under the same physical standard.
 
 ## Protected boundaries
 
@@ -75,4 +85,4 @@ Require, as applicable:
 
 ## Exact next action
 
-Resume `S2-CORR-20261004-001` by dispatching `.github/workflows/system2-historical-pack-2017-backfill.yml` from latest main with `market=TWSE`. Verify the complete annual receipt/manifests/R2 hashes/coverage before TPEX. Do not restart source/storage architecture research.
+Execute 2017 TPEx annual official A1 cold backfill from latest main, then require the same receipt/manifest/R2/source/universe/coverage verification before moving to 2018. Preserve the 2017 TWSE 651 UNKNOWN symbol-session gaps and continuity debt as explicit PARTIAL replay readiness; do not coerce them to zero/pass and do not restart TWSE raw backfill.
