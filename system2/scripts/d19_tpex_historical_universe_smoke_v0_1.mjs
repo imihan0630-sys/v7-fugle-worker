@@ -32,7 +32,9 @@ const snapshot=await buildD19TpexUniverseSnapshotV0_1({
 assert.ok(snapshot.memberCount>800);
 assert.equal(snapshot.futureMembershipEndExposed,false);
 assert.ok(snapshot.members.every((x)=>x.market==="TPEX"));
-assert.ok(snapshot.members.every((x)=>x.replayEligible===true));
+assert.ok(snapshot.members.every((x)=>x.membershipStateAtReplay==="ACTIVE"));
+assert.ok(snapshot.strategyVisibleFields.includes("membershipStateAtReplay"));
+assert.equal(snapshot.strategyVisibleFields.includes("replayEligible"),false);
 assert.ok(snapshot.members.every((x)=>x.industry===null));
 assert.ok(snapshot.members.every((x)=>!Object.hasOwn(x,"effectiveTo")));
 
