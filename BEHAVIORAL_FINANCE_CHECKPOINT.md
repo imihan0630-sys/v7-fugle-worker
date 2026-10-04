@@ -177,3 +177,18 @@ Room13 remaining delta:
 - provide divergent states and falsification.
 
 These routed tasks do not override the room's active prospective L4 sequence; service at the next safe governance slot.
+
+## Canonical overlay 2026-10-04 14:06 Asia/Taipei — D20 56.9%
+- D20 aggregate maturity: 56.9%.
+- L3 / 60%: D20-01, D20-02, D20-04, D20-05, D20-06, D20-07, D20-08, D20-09, D20-10, D20-11, D20-12.
+- L2 / 40%: D20-03, D20-13.
+- D20-06 L3 is bounded to aggregate public-forum social-herding / stance-convergence. PTT handles are not brokerage investor identities.
+- D20-11 L3 is bounded to prospective PTT Stock narrative/topic/stance diffusion with append-only captured versions.
+- Shared PTT primitive cannot create independent votes across D20-06 / D20-07 / D20-11.
+- Derived social research is aggregate-only; no named-user psychology, persuasion or influence profile.
+- D20-03 remains L2: public forecast error does not identify overconfidence without stated confidence/uncertainty or a near-direct proxy.
+- D20-13 remains L3-ready / L2 pending first genuine TWSE borrow-rate/displayed-supply live receipt.
+- D20-06/D20-11 L4 prospective extension frozen at 2026-10-04 14:06:56 Asia/Taipei; earlier inspected social pages are L3 source evidence only.
+- Exact next: next valid Taiwan trading day first attempt D20-13 live receipt. In parallel collect only post-extension aggregate PTT parents for D20-06/D20-11 and post-freeze parents for all other L3 lanes. No historical Shadow fabrication.
+- Formal Core locked; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
