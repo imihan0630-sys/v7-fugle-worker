@@ -1,0 +1,157 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04T14:56:00+08:00",
+  "owner": "08｜事件與新聞研究室",
+  "modules": [
+    "D17-01",
+    "D17-02",
+    "D17-09",
+    "D11-08"
+  ],
+  "title": "Official Disclosure Cross-day Republication and Version-semantics Receipt",
+  "status": "CROSS_DAY_REPUBLICATION_PHYSICALLY_VALIDATED / D17_09_L3_FEASIBLE / NATIVE_CORRECTION_CHAIN_UNKNOWN / OUTCOMES_CLOSED",
+  "formalCoreImpact": "NONE",
+  "outcomeJoin": false,
+  "priorCapture": {
+    "path": "research/d17_official_disclosure_capture_pilot_v0_1.json",
+    "blobSha": "b485631ac99bfef227e252f33db7e53798fd351f",
+    "observedAt": "2026-09-28T21:34:02+08:00 to 2026-09-28T21:35:16+08:00",
+    "publicationDateObservedRoc": "1150927"
+  },
+  "currentCapture": {
+    "workflowPath": ".github/workflows/research-d17-official-disclosure-capture-readonly.yml",
+    "workflowFixCommit": "be1a7932902d15f50e7fb73db10228ae57ddad02",
+    "runId": 37183990727,
+    "conclusion": "success",
+    "artifactId": 11295807935,
+    "artifactZipSha256": "50752056aba376e0db976ff3ef035ef1dab7c09214c338e7503ad8a2cb6abdd8",
+    "generatedAtUtc": "2026-10-04T06:51:52.715Z",
+    "TWSE": {
+      "rawSha256": "572da8f65e84d7cf0f5dfd21da49080979bfd02164b544fe3b6c767d8da30c2d",
+      "rowCount": 5,
+      "twoPollStable": true
+    },
+    "TPEX": {
+      "rawSha256": "31ff35f5bfb439faff1b2dc731fd7213517251844ab9e5fcb558631513a3d4ca",
+      "rowCount": 4,
+      "twoPollStable": true
+    },
+    "pollSpacingSecondsApprox": 66,
+    "withinRunChanges": {
+      "TWSE": {
+        "added": 0,
+        "removed": 0,
+        "contentChanged": 0
+      },
+      "TPEX": {
+        "added": 0,
+        "removed": 0,
+        "contentChanged": 0
+      }
+    }
+  },
+  "physicallyObservedCrossDayRepublication": [
+    {
+      "sourceId": "TWSE",
+      "symbol": "2072",
+      "priorPublishedDateRoc": "1150927",
+      "currentPublishedDateRoc": "1151003",
+      "factDateRoc": "1150824",
+      "currentSubject": "公司更名公告，公告期間自115年8月26日至115年11月25日",
+      "interpretation": "Same issuer/fact date recurs on a later daily publication date inside an explicitly multi-month announcement period."
+    },
+    {
+      "sourceId": "TWSE",
+      "symbol": "6949",
+      "priorPublishedDateRoc": "1150927",
+      "currentPublishedDateRoc": "1151003",
+      "factDateRoc": "1150713",
+      "currentSubject": "股票面額10元變更為0.5元，公告期間115年8月6日至115年11月5日",
+      "interpretation": "Same underlying par-value event recurs across daily source dates; row recurrence is not a new economic event."
+    },
+    {
+      "sourceId": "TPEX",
+      "symbol": "4530",
+      "priorPublishedDateRoc": "1150927",
+      "currentPublishedDateRoc": "1151003",
+      "factDateRoc": "1150708",
+      "currentSubject": "公司更名公告，公告期間115年7月9日至115年10月8日",
+      "interpretation": "Cross-day recurring notice physically validates periodic republication risk."
+    },
+    {
+      "sourceId": "TPEX",
+      "symbol": "4747",
+      "priorPublishedDateRoc": "1150927",
+      "currentPublishedDateRoc": "1151003",
+      "factDateRoc": "1150624",
+      "currentSubject": "股票面額10元變更為5元，公告期間115年7月22日至115年10月21日",
+      "interpretation": "Same economic primitive reappears on a later daily source date."
+    }
+  ],
+  "priorOnlyRowsNotPresentInCurrentSample": [
+    {
+      "sourceId": "TWSE",
+      "symbol": "1721",
+      "priorFactDateRoc": "1150629"
+    },
+    {
+      "sourceId": "TWSE",
+      "symbol": "2509",
+      "priorFactDateRoc": "1150926"
+    },
+    {
+      "sourceId": "TPEX",
+      "symbol": "5904",
+      "priorFactDateRoc": "1150624"
+    },
+    {
+      "sourceId": "TPEX",
+      "symbol": "8472",
+      "priorFactDateRoc": "1150629"
+    }
+  ],
+  "removalInterpretation": "UNKNOWN_WINDOW_EVICTION_OR_SOURCE_REMOVAL_OR_CORRECTION. Absence in a later daily snapshot is not cancellation evidence.",
+  "semanticFindings": [
+    "daily source row identity != economic event identity",
+    "new source publication date != new economic primitive",
+    "article/disclosure count cannot be used as independent confirmation count without event clustering",
+    "explicit announcement periods are direct evidence that some official rows are designed to recur across dates",
+    "same-day short-interval stability does not authenticate publisher-native revision history",
+    "no native provider item/version/supersession identifier has been proven",
+    "capturedAt remains the conservative replay availability bound until API availability timing is authenticated"
+  ],
+  "biasAndFalsification": [
+    "No price, return, sentiment, rank, threshold or outcome was inspected.",
+    "All physically observed recurring examples came from source-only snapshots rather than outcome-selected names.",
+    "Old-only rows are not labeled cancelled or resolved.",
+    "Cross-day recurrence is not evidence that all repeated rows are identical versions; content hashes/version semantics must still be preserved.",
+    "Official disclosure clustering does not validate general-news syndication clustering or commercial news licensing."
+  ],
+  "maturityDecision": {
+    "D17_09": {
+      "from": "L2",
+      "to": "L3",
+      "basis": "Two independent cross-day official snapshots physically demonstrate recurring/republication rows for the same issuer and fact date, with explicit multi-month announcement periods. Derived event clustering and republication detection are therefore Taiwan PIT/source-feasible while native correction lineage remains UNKNOWN.",
+      "status": "TAIWAN_PIT_REPUBLICATION_CLUSTER_FEASIBLE / NATIVE_CORRECTION_CHAIN_UNKNOWN / OUTCOMES_CLOSED"
+    },
+    "D17_01": {
+      "decision": "KEEP_L2",
+      "reason": "Official truth lane is stronger, but licensed production general-news coverage and complete source/version governance remain unresolved."
+    },
+    "D17_02": {
+      "decision": "KEEP_L2",
+      "reason": "Source publication clock is visible and capturedAt replay is safe, but true API first-availability latency/completeness remains unauthenticated."
+    },
+    "D11_08": {
+      "decision": "KEEP_L2",
+      "reason": "Material-disclosure clock is observable, but publisher-native revision/completeness and authenticated intraday first-known availability are still incomplete."
+    }
+  },
+  "exactNext": [
+    "Acquire at least one additional independent official capture session plus after-hours coverage with expected/observed poll accounting.",
+    "Classify future content-hash changes separately from republication and preserve all versions append-only.",
+    "Continue search for native MOPS correction/supersession linkage; if absent, derived lineage stays explicitly non-authoritative.",
+    "Keep D17-01/02 and D11-08 L2 until their distinct missing gates close.",
+    "Do not open D17-09 return/alpha outcomes until a prospective/OOS cluster-level study is preregistered."
+  ]
+}
