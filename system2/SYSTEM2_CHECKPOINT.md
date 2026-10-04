@@ -1622,3 +1622,54 @@ Current correction routing:
 The System 2 build room no longer owns every OPEN/HIGH correction by default. It must read the queue, respect blockers, execute only BUILD_LANE/LOCAL_FIX work assigned to it, and continue non-conflicting construction.
 
 No System 1 Formal Core, System 2 final-selection authority, capital/order behavior, production push or live trading authority is changed by this governance.
+
+## 2026-10-04 S2-07 representative authority breadth — 4 OF 6 PHYSICALLY VERIFIED
+
+Two linked milestones advanced the representative revision-source coverage.
+
+### Expanded discovery — PR #518
+- TWSE par-value official candidates 2020..2026: 9 queried, no revision-chain positive.
+- TPEx ex-right/dividend 2026: 621 unique official candidates existed; bounded first 24 queried, no positive chain.
+- TPEx par-value official candidates 2020..2026: 11 queried; 6548 長科* was the sole positive.
+- 6548 had three exact-stem original/correction chains; the direct換發基準日 chain was selected for promotion.
+
+### TPEx 6548 representative control — PR #520
+- MOPS revision control matrix V0.4: 7/7 PASS.
+- 6548 original 2022-08-05 17:17:38 / seqNo=2.
+- 6548 correction 2022-08-08 17:26:39 / seqNo=2.
+- source-reported clock controls: 7/7 PASS.
+- official TPEx par-value effective date: 2022-09-05 exact match.
+- authority provenance matrix V0.3: 7/7 PASS.
+- representative exchange lane count advanced 3 -> 4.
+- supplemental revision receipt V0.3: representativeAuthorityReadyCount=4.
+
+Current representative-routing gaps:
+1. TWSE par-value change;
+2. TPEx ex-right/dividend.
+
+Common blockers on all six lanes remain:
+- public-availability latency not certified;
+- exact knownAt not certified;
+- bounded authority revision coverage incomplete;
+- bounded revision-history coverage incomplete.
+
+### Exact continuation
+1. continue bounded search for a true TWSE par-value revision/cancellation representative control; current 2020..2026 official candidate set is negative;
+2. expand TPEx ex-right/dividend candidate discovery beyond the first 24 of the 621 unique 2026 official candidates, preserving deterministic ordering and strict action-family filtering;
+3. promote only exact issuer revision chain + exact exchange operational event pairs;
+4. version the six-lane receipt only if representative breadth advances;
+5. separately keep the prospective knownAt debt open;
+6. after representative routing, continue bounded revision completeness and shared suspension/session integration.
+
+HIGH correction `S2-CORR-20261004-001` remains separately ACKNOWLEDGED and blocks historical-backfill completion claims until the repaired 2017 TWSE manual workflow is physically rerun and verified. It does not invalidate this read-only S2-07 evidence lane.
+
+Still authoritative:
+`knownAtVersionClockCertified=false`,
+`revisionCoverageComplete=false`,
+`noEventMayBeClaimed=false`,
+`suspensionCoverageComplete=false`,
+`symbolSessionCompletenessCertified=false`,
+`technicalContinuityCertified=false`,
+all trading authority false.
+
+System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.

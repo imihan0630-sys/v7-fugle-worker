@@ -76,3 +76,30 @@ Always false:
 - NO_EVENT;
 - technical continuity;
 - all trading authority.
+
+## 2026-10-04 physical expanded-discovery acceptance
+
+PR #518 merged as `5cbe141dd0b0091b0bb4f23d5a27b22696c921d4`.
+
+Checks:
+- Expanded Missing Revision Control Discovery Readonly `37186550916`: PASS.
+- System2 Research CI `37186550796`: PASS.
+- V8 Regression `37186550821`: PASS.
+
+Expanded official-event-derived search:
+- TWSE par-value: 2020..2026; 9 unique official candidates queried; 0 positive revision-chain candidates.
+- TPEx ex-right/dividend: 2026; 621 unique official candidates existed, bounded first 24 queried; 0 positive revision-chain candidates.
+- TPEx par-value: 2020..2026; 11 unique official candidates queried; 1 positive revision-chain candidate.
+
+Accepted positive:
+- 6548 長科* / TPEx par-value / official effective date 2022-09-05.
+- Three exact-stem original -> correction chains were observed.
+- The promotion path selected the direct換發基準日 chain:
+  - original 2022-08-05 17:17:38 / seqNo=2;
+  - correction 2022-08-08 17:26:39 / seqNo=2.
+
+Valid negative results remain for:
+- TWSE par-value in the complete 2020..2026 official candidate set examined by this pass;
+- the first bounded 24 TPEx ex-right/dividend 2026 candidates.
+
+Discovery alone did not promote authority; promotion occurred in PR #520.

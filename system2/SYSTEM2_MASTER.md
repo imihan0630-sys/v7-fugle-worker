@@ -676,3 +676,9 @@ Severity does not imply assignment. HIGH/CRITICAL corrections are routed to the 
 Parallel work must preserve one active modification owner per conflict unit. Upstream incomplete data must never be treated as complete by downstream build work.
 
 Current historical-backfill correction `S2-CORR-20261004-001` is assigned to DATA_LANE.
+
+## 2026-10-04 S2-07 representative authority 4/6 milestone
+
+Expanded discovery PR #518 found one new valid representative candidate: 6548 長科* for TPEx par-value change. PR #520 physically verified its exact MOPS original/correction chain and TPEx effective date 2022-09-05, advancing representative exchange coverage from 3/6 to 4/6.
+
+Remaining representative-routing gaps are TWSE par-value change and TPEx ex-right/dividend. Exact knownAt, bounded revision completeness, session/technical continuity and all trading authorities remain locked. HIGH correction S2-CORR-20261004-001 separately remains ACKNOWLEDGED for the 2017 historical cold-backfill resumption and is not considered resolved by this S2-07 progress.
