@@ -34,9 +34,20 @@ jobs:
           curl --fail --silent --show-error --location --retry 2 \
             "https://www.twse.com.tw/rwd/zh/afterTrading/MI_5MINS_HIST?date=20260901&response=json" \
             -o /tmp/twse-202609.json
+          if ! python -c 'import json,sys; j=json.load(open(sys.argv[1],encoding="utf-8")); assert j.get("data")' /tmp/twse-202609.json; then
+            curl --fail --silent --show-error --location --retry 2 \
+              "https://www.twse.com.tw/indicesReport/MI_5MINS_HIST?response=json&date=20260901" \
+              -o /tmp/twse-202609.json
+          fi
+
           curl --fail --silent --show-error --location --retry 2 \
             "https://www.twse.com.tw/rwd/zh/afterTrading/MI_5MINS_HIST?date=20261001&response=json" \
             -o /tmp/twse-202610.json
+          if ! python -c 'import json,sys; j=json.load(open(sys.argv[1],encoding="utf-8")); assert j.get("data")' /tmp/twse-202610.json; then
+            curl --fail --silent --show-error --location --retry 2 \
+              "https://www.twse.com.tw/indicesReport/MI_5MINS_HIST?response=json&date=20261001" \
+              -o /tmp/twse-202610.json
+          fi
 
           python - <<'PY'
           import csv,datetime as dt,hashlib,io,json,math,re,statistics
