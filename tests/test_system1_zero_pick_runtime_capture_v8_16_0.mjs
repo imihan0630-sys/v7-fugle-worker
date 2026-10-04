@@ -9,7 +9,7 @@ import {buildSystem1ZeroPickObserverSourceFromRuntime} from '../research/system1
 import {buildSystem1ZeroPickRankObservation} from '../research/system1_zero_pick_rank_input_observer_v0_1.mjs';
 import {buildSystem1ZeroPickCounterfactualSelection} from '../research/system1_zero_pick_counterfactual_comparator_v0_1.mjs';
 
-const source=fs.readFileSync(process.env.V7_TEST_WORKER_PATH||'Worker.js','utf8');
+const source=fs.readFileSync(fs.existsSync('artifacts/Worker-before-v8_17_0.mjs')?'artifacts/Worker-before-v8_17_0.mjs':process.env.V7_TEST_WORKER_PATH||'Worker.js','utf8');
 const baseline=fs.readFileSync('artifacts/Worker-before-v8_16_0.mjs','utf8');
 const hash=s=>createHash('sha256').update(s).digest('hex');
 const body=(s,name)=>{

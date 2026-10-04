@@ -143,3 +143,10 @@
 - 新增 immutable C1 research child 前瞻擷取功能，不改選股架構、Formal Core、資金或推播，依功能版本規則使用 V8.16.0。
 - Owner 已明確批准實裝；merge/deploy 仍須針對具體 PR 完成 production review。
 - 實裝與驗證說明：`research/SYSTEM1_ZERO_PICK_CLASS_B_IMPLEMENTATION_20261004.md`。
+
+## 16. V8.17.0｜Shadow Cohort Membership（Class-B candidate）
+
+- Runtime candidate: `8.17.0-shadow-cohort-membership`.
+- 新增共用 C1 parent 的 immutable population/membership 與 append-only quality overlay；屬新增研究功能，不改選股架構或 Formal Core，因此採功能版本。
+- Owner 已批准實裝；具體 PR merge／Production deploy 仍須獨立批准。
+- 實裝 checkpoint：`research/SYSTEM1_SHADOW_COHORT_MEMBERSHIP_IMPLEMENTATION_20261004.md`。
