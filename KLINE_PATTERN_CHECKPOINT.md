@@ -1445,3 +1445,41 @@ No maturity/count/Formal/runtime change from closure.
 Audits:
 - shared-knowledge/CURRICULUM_H16_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
 - shared-knowledge/CURRICULUM_H20_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
+
+
+## Continuation update — DL-034 (2026-10-04)
+
+### DL-034 — Structural persistence vs role reversal / polarity flip
+- DL-033 separated structural age from current displacement and long excursion path.
+- DL-034 freezes role reversal as a state transition of the same structural root, not a fresh independent structure.
+- Resistance crossed upward and later tested from above may enter a support-oriented state; support crossed downward and later tested from below may enter a resistance-oriented state.
+- Crossing alone never confirms role reversal. A later opposite-side retest opportunity is required.
+- No retest is pending/censored, not failure. Missing event-order evidence remains UNKNOWN / NOT_EVALUABLE.
+- Polarity transition does not reset ROOT_AGE, does not mutate frozen geometry and does not create an independent vote/sample.
+- Same root may undergo sequential polarity transitions while remaining one root lineage.
+- Corporate-action discontinuity cannot create a crossing or polarity flip.
+- Detector gaps and window censoring remain observability states, not inferred market events.
+- Role reversal remains separate from DL-031 age, DL-032 scale/regime, DL-033 displacement/path, interaction recency/history, detector salience and crossing opportunity.
+- D02 owns acceptance/persistence context; D04/D05 own volatility/microstructure context; D18 owns market-regime context.
+- Future D16 nested comparison: R0 age/history/scale/path; R1 + pre-cross/crossing state; R2 + retest-side/polarity descriptors; R3 + owner context.
+- Common support and date/outcome-window dependence remain mandatory.
+- Literature supports support/resistance memory and path dependence, but does not establish polarity-flip alpha by itself.
+- New durable artifacts:
+  - research/PATTERN_ROLE_REVERSAL_V0_1.md
+  - research/pattern_role_reversal_v0_1.json
+- Adversarial executable fixture/test write was attempted but blocked before repository mutation; TEST_EXECUTION_PENDING.
+- No outcomes inspected; no historical Shadow fabrication; no runtime wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-034
+
+1. Reconcile the DL-034 Class-A branch against then-latest main because parallel rooms remain active.
+2. Persist the 14 role-reversal adversarial fixtures and research-only executable validator; obtain an independent replayable execution receipt before claiming test PASS.
+3. Preserve one root lineage across polarity transitions; do not reset age or multiply votes.
+4. Separate crossing, opposite-side retest opportunity and retest response clocks; never back-label crossing using a future retest.
+5. Keep DL-031 age, DL-032 scale/regime and DL-033 displacement/path controls in common support; hand nested inference to D16.
+6. Next D01 science after execution closure: distinguish polarity persistence from repeated whipsaw / multi-flip churn so frequent side switching is not misread as repeated independent confirmation.
+7. No outcome join / no runtime wiring / no Formal change.
