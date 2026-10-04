@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/d19-tpex-monthly-source-smoke.yml"
       - "system2/scripts/d19_tpex_monthly_source_smoke_v0_1.mjs"
+      - "system2/scripts/d19_tpex_monthly_route_probe_v0_1.mjs"
       - "system2/runtime/official_monthly_history_adapter_v0_1.mjs"
   workflow_dispatch:
 
@@ -24,6 +25,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+
+      - name: Diagnose current TPEx individual-history routes
+        env:
+          D19_TPEX_ROUTE_SYMBOL: "6488"
+          D19_TPEX_ROUTE_DATE: "2026/08/01"
+        run: node system2/scripts/d19_tpex_monthly_route_probe_v0_1.mjs
 
       - name: Probe official TPEx individual monthly history
         env:
