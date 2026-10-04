@@ -78,6 +78,11 @@ function strategyRun(strategyId, rankingInputs, exclusions = {}) {
       strategyId,
       strategyVersion: "V0.1-CONTRACT",
       runReceipt: {
+        runId: `RUN-${strategyId}`,
+        marketDate,
+        decisionTimestamp,
+        strategyId,
+        strategyVersion: "V0.1-CONTRACT",
         runState: "COMPLETE",
         stateCounts,
       },
@@ -105,6 +110,10 @@ const first = await buildDailyShadowCapacityOrchestrationV0_1({
 
 assert.equal(first.state, "CAPACITY_READY");
 assert.equal(first.capacityReceipt.globalMax, SYSTEM2_GLOBAL_CANDIDATE_MAX_V0_1);
+assert.equal(first.capacityReceipt.schemaVersion, "S2_CAPACITY_V0_2");
+assert.equal(first.capacityReceipt.selectionDenominator.denominatorState, "COMPLETE");
+assert.equal(first.capacityReceipt.selectionDenominator.contributingShadowRuns.length, 2);
+assert.match(first.capacityReceipt.selectionDenominator.provenanceHash, /^[a-f0-9]{64}$/);
 assert.equal(first.capacityReceipt.perStrategyMax, SYSTEM2_PER_STRATEGY_ACTIVE_MAX_V0_1);
 assert.equal(first.capacityReceipt.globalCount, 2, "overlap must consume one global slot");
 assert.deepEqual(
@@ -174,6 +183,8 @@ assert.equal(mixedPartial.zeroPickDay, false);
 assert.equal(mixedPartial.zeroPickState, "PARTIAL_COVERAGE_WITH_READY_ADMISSIONS");
 assert.equal(mixedPartial.selectionDenominator.complete, false);
 assert.equal(mixedPartial.selectionDenominator.unresolvedByState.INCOMPLETE, 3);
+assert.equal(mixedPartial.capacityReceipt.selectionDenominator.denominatorState, "PARTIAL");
+assert.equal(mixedPartial.capacityReceipt.selectionDenominator.unresolvedCount, 3);
 assert.deepEqual(mixedPartial.capacityReceipt.globalPool.map((x) => x.symbol), ["A"]);
 assert.deepEqual(mixedPartial.capacityReceipt.activeAssignments.SHORT_MOMENTUM.map((x) => x.symbol), ["A"]);
 assert.equal(mixedPartial.newCandidateDiagnostics.length, 3);
