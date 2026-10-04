@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "D20_REMAINING_L2_BLOCKER_AUDIT_20261004_V0_1",
+  "generatedAtAsiaTaipei": "2026-10-04T11:40:09+08:00",
+  "domain": "D20",
+  "status": "THREE_HARD_DATA_IDENTIFIABILITY_BLOCKERS_PLUS_ONE_L3_READY",
+  "modules": {
+    "D20-03": {
+      "level": "L2",
+      "blocker": "No independent direct/near-direct Taiwan overconfidence observable with replayable first-known lineage.",
+      "rejectedSubstitutes": [
+        "turnover",
+        "abnormal volume",
+        "margin balance",
+        "recent return",
+        "volatility",
+        "day trading"
+      ],
+      "dependency": "Could consume future directly identified investor-level behavior or survey-linked trading data. Current monthly market sentiment survey is not a personal overconfidence measure.",
+      "unlock": "Replayable investor-level self-assessment/forecast-calibration linked to behavior, or exogenous luck/confidence design with Taiwan trading data.",
+      "action": "KEEP_L2 / OBSERVATION_RESEARCH_ONLY"
+    },
+    "D20-06": {
+      "level": "L2",
+      "blocker": "No PIT-safe stock×date natural-person directional flow or investor-identity/leader-follower stream.",
+      "rejectedSubstitutes": [
+        "margin as retail",
+        "day trading as retail",
+        "odd lot as retail",
+        "broker branch as investor identity",
+        "total minus institutions residual"
+      ],
+      "dependency": "D06-19 now canonically owns future directly identified natural-person primitives but starts L0 and currently states Taiwan stock×date natural-person direction is UNKNOWN.",
+      "unlock": "Authoritative direct-retail/investor-identity source with timestamps, revisions and replay, or independently replayable social/network leader-follower data.",
+      "action": "KEEP_L2 / NO_DUPLICATE_CROWDING_VOTE"
+    },
+    "D20-11": {
+      "level": "L2",
+      "blocker": "No canonical replayable Taiwan social-language/topic diffusion stream with edit/delete/version history and first-known timestamps.",
+      "rejectedSubstitutes": [
+        "theme taxonomy",
+        "news headline propagation",
+        "price co-movement",
+        "sector membership"
+      ],
+      "dependency": "D09-11 owns taxonomy; D17-11 owns dated news/event propagation. D20-11 needs independent social/narrative propagation.",
+      "unlock": "Versioned social/community text stream with source identity, first-known, edit/delete lineage, deduplication and topic/network diffusion semantics.",
+      "action": "KEEP_L2 / H08_FIREWALL"
+    },
+    "D20-13": {
+      "level": "L2",
+      "status": "L3_READY_PENDING_FIRST_VERIFIED_LIVE_TWSE_RATE_SUPPLY_RECEIPT",
+      "blocker": "Frozen official semantics exist, but no verified live post-contract trading-day TWSE rate/depth receipt yet; upstream D06-18 remains L2.",
+      "unlock": "First genuine trading-day outcome-blind TWSE rate/supply receipt satisfying frozen schema and provenance.",
+      "action": "DO_NOT_PROMOTE_BEFORE_LIVE_RECEIPT"
+    }
+  },
+  "governance": [
+    "No module may be promoted by replacing a missing behavioral primitive with OHLCV, margin, broker or news proxies.",
+    "UNKNOWN remains UNKNOWN.",
+    "D20 may consume D06-19 future direct-retail receipts but cannot count the same primitive as a second independent vote.",
+    "Formal Core remains LOCKED."
+  ]
+}
