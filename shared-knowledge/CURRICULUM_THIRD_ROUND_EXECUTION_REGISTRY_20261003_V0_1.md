@@ -322,3 +322,60 @@ Remaining:
 - terminal classification.
 
 No maturity/count/Formal change.
+
+
+## H15 / H16 / H20 terminal closures — 2026-10-04
+
+### H15
+`KEEP_SEPARATE / EVENT_RISK_TO_VOLATILITY_TO_POST_EVENT_PATH / ONE_OPENING_GAP_RECEIPT`
+→ `CLOSED_NO_STRUCTURAL_CHANGE`.
+
+### H16
+`KEEP_SEPARATE / FOUR_LAYER_PRICE_LIMIT_CHAIN / ONE_LIMIT_EVENT_RECEIPT`
+→ `CLOSED_NO_STRUCTURAL_CHANGE`.
+
+### H20
+`KEEP_SEPARATE / MULTI_EVIDENCE_BREAKOUT_FAMILY / NO_INDEPENDENT_COMPONENT_VOTE_UNTIL_RESIDUAL_VALUE`
+→ `CLOSED_NO_STRUCTURAL_CHANGE`.
+
+Governance firewalls:
+- one opening gap is not three votes;
+- one price-limit event is not four votes;
+- one breakout event is not automatic price + volume + volatility voting;
+- D02 volume and D04 volatility become independent only after preregistered residual incremental evidence passes.
+
+No module-count, maturity, Formal or runtime change.
+
+
+## H18 / H19 partial-intake update — 2026-10-04
+
+H18:
+- Room14 D21-07 mechanism/falsification side accepted.
+- D07-19 remains L0/0 and is the blocking counterpart.
+- state: `PARTIAL_EVIDENCE_RECEIVED / D07_19_PROJECT_ECONOMICS_PENDING`.
+
+H19:
+- D03-04 time-series momentum, D19-04 cross-sectional momentum and D19-09 residual-momentum semantics are all accepted at their current maturity.
+- terminal closure remains blocked by same-date/same-universe D03-vs-D19-04 redundancy testing and D19-09 fixed-factor residual neutralization with provenance/cost/capacity controls.
+- state: `PARTIAL_EVIDENCE_RECEIVED / COMMON_SUPPORT_REDUNDANCY_RESIDUAL_TESTS_PENDING`.
+
+No maturity/count/Formal change.
+
+
+## H17 partial-intake update — 2026-10-04
+
+H17 compositional cost-of-capital chain is no longer empty:
+- D13-06 = sovereign/risk-free curve owner;
+- D22-04 = issuer debt-cost/refinancing-spread owner;
+- D07-18 = WACC/cost-of-capital composite owner.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / D07_18_AND_D22_04_REPLAY_GATES_PENDING`.
+
+Remaining:
+- D07-18 WACC/COE/COD ownership and falsification contract;
+- D22-04 issuer-security-date historical replay with benchmark matching;
+- D13-06 multidate strict source attestation;
+- empirical divergent-state receipts.
+
+No maturity/count/Formal change.

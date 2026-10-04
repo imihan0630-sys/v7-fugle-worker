@@ -3622,3 +3622,16 @@ Current:
 
 Exact next:
 the shared source owner must freeze/execute genuine prospective sampling and produce exact-version observations that are causal relative to the System1 parent cutoff. D03 does not duplicate that source observer.
+
+
+## 00 control-plane receipt — H19 D03-04 side accepted
+
+00｜研究總控室 accepted D03-04 as H19's within-security/time-series momentum owner.
+
+D03-04 remains L3/60% and owns causal within-security momentum continuation under its existing PIT/forward-outcome contract.
+
+H19 remains partial because Room12 still must prove:
+- D19-04 cross-sectional rank adds information beyond D03-04 on identical common support;
+- D19-09 residual/factor-neutral momentum survives fixed factor/industry neutralization with provenance and cost/capacity controls.
+
+Do not duplicate D03 momentum research as a second factor-layer study.

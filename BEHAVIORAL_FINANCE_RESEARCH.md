@@ -959,3 +959,26 @@ PASS — identical canonical page content produced identical SHA-256.
 
 This is a pipeline-quality result, not an alpha result.
 D20 maturity remains 58.5%.
+
+## 2026-10-04｜Primary social sampling-clock selection-bias audit
+
+A prospective sample can still be biased if the researcher chooses the capture time opportunistically.
+
+Therefore the manual post-freeze parent D20SOC-20261004-002 is retained as valid source/process evidence but removed from PRIMARY L4 sample-size counts.
+
+A deterministic primary sampling contract is now frozen:
+- primary social capture occurs only in an actually executed Room13 fixed :10 scheduled research run;
+- if central rotation disables Room13 or a scheduled capture does not execute, that interval is UNKNOWN and is not backfilled;
+- because the Atom feed is a finite latest-entry window, adjacent valid snapshots require overlap continuity or another pre-frozen continuity proof;
+- every first-observed entry in a valid snapshot is included regardless of engagement, topic, stance or future outcome;
+- zero-reply / zero-adoption observations remain in the cohort.
+
+Artifact:
+`research/d20_social_sampling_coverage_contract_v0_1.json`
+
+Primary coverage is reset to zero for D20-03, D20-06 and D20-11.
+Secondary process evidence remains one source-valid parent for D20-06/D20-11.
+
+This is a stricter evidence decision, not lost research progress.
+D20 maturity remains 58.5%.
+Formal Core unchanged.

@@ -206,3 +206,27 @@ Status: RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / VALID_OBSERVATION_CONTRACT_
 5. Run paired D03/D09 redundancy on identical frozen PIT inputs.
 6. Freeze D14-compatible versioned component-wise cost scenarios with evidence quality; actual owner commission remains UNKNOWN absent direct evidence.
 7. Zero applicable blockers may trigger L3 readiness review only; no automatic promotion.
+
+
+## 00 routed H19 exact remaining delta — 2026-10-04
+
+H19 state:
+`PARTIAL_EVIDENCE_RECEIVED / COMMON_SUPPORT_REDUNDANCY_RESIDUAL_TESTS_PENDING`.
+
+Accepted ownership:
+- D03-04 = within-security / time-series momentum continuation;
+- D19-04 = cross-sectional momentum rank/factor;
+- D19-09 = residual/factor-neutral momentum after neutralization.
+
+Do not repeat theory/definitions.
+
+Room12 exact remaining work:
+1. run D03-04 vs D19-04 on the same date, same survivorship-safe universe and same valid-observation denominator;
+2. test whether cross-sectional rank adds information beyond each security's own raw momentum state;
+3. freeze one factor-set/version and date-vintaged industry map before D19-09 residualization;
+4. preserve estimation window, coefficients, factor-set/version, industry vintage and residual hash;
+5. compare raw D19-04 vs D19-09 residual momentum under identical common support;
+6. include turnover/cost/capacity and UNKNOWN rows;
+7. until residual incremental value passes, one return history cannot become three independent Alpha votes.
+
+This is aligned with the room's existing D03/D09 redundancy blocker and does not alter the active research order.

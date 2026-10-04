@@ -343,3 +343,21 @@ Durable evidence: `research/d12_d13_public_source_lineage_20261004_v0_1.md`.
 3. Obtain a permitted quote-chain parent and run H11 identical-parent/common-support D12-07 vs D12-16 comparison.
 4. Record divergent states, fit/coverage/interpolation quality and return KEEP_SEPARATE / SCOPE_DEDUP_ONLY / MERGE_ELIGIBLE / EVIDENCE_INSUFFICIENT.
 5. Keep historical replay separate from prospective 18:10 first-known evidence.
+
+
+## 2026-10-04 Room09 continuation — DR-079..DR-081 real TXO parent/hash and session-quality evidence
+
+Status: RESEARCH_ONLY / CLASS_A_SOURCE_QA / OUTCOMES_CLOSED / NO_PROMOTION.
+Durable evidence: `research/d12_d13_native_parent_revision_lineage_20261004_v0_1.md`.
+
+- DR-079: A real official TAIFEX TXO daily historical parent for 2026-10-02 was fetched through an isolated read-only GitHub Actions workflow. Source=`https://www.taifex.com.tw/cht/3/optDataDown`, raw bytes=567,774, SHA-256=`61574590f9c8a1c882616f89090d39cbd44e00a91bd93055ff046ff4ab287c2a`, strict CP950 decode PASS. 6,086 rows were observed, all TXO/2026-10-02. Raw bytes were not committed.
+- DR-080: Under frozen Surface Method V0.1 midpoint eligibility, 3,337/6,086 rows are usable two-sided quotes (54.8308%). Regular session has 2,957 eligible midpoint rows and 247 missing-side rows; after-hours has only 380 eligible midpoint rows and 2,502 missing-side rows. Same strike/expiry/session eligible Call-Put common support totals 1,411 pairs, of which 1,355 are regular and 56 after-hours. This falsifies treating regular and after-hours quote quality as interchangeable.
+- DR-081: The real raw-parent/hash gate for replay QA is now materially passed, but H11 is not terminal. The identical-parent simple-skew/term vs complex-surface residual comparison, parity/forward identity and real divergent-state audit remain pending. This historical parent is later-retrieved EOD evidence and does not satisfy prospective 18:10 PIT evidence.
+- Formal Core LOCKED; outcomes CLOSED; D12 remains 40.0%; no L3; FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+
+### Exact next continuation after DR-081
+1. On the same 2026-10-02 parent, run a source-only Put-Call parity/common-support audit.
+2. Freeze a separately versioned parity-derived forward/discount-factor QA method before any IV surface computation.
+3. If parity identity/coverage is defensible, compute D12-07 simple skew/term and D12-16 surface features from identical eligible rows/common support and record disagreement/coverage sensitivity.
+4. Return the routed H11 terminal status only after real divergent states and quality diagnostics exist.
+5. Keep historical replay separate from prospective 18:10 first-known evidence.

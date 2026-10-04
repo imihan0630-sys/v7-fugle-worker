@@ -453,3 +453,90 @@ Exact next 00 continuation:
 4. H12 waits on the two explicit blockers above;
 5. H17 is not terminal-ready because D07-18 remains L0 and D22-04 is still historical security-level replay blocked;
 6. COV-12 and AOKD-05 retain their existing gates.
+
+
+## H15 / H16 / H20 terminal closure sweep — 2026-10-04
+
+00-room complete-but-unregistered scan closed three additional dependency/anti-double-count clusters:
+
+- H15 → KEEP_SEPARATE / event-risk → volatility → post-event path / one opening-gap receipt.
+- H16 → KEEP_SEPARATE / four-layer price-limit chain / one limit-event receipt.
+- H20 → KEEP_SEPARATE / multi-evidence breakout family / no independent component vote until residual value.
+
+All three:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+Audits:
+- `shared-knowledge/CURRICULUM_H15_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`
+- `shared-knowledge/CURRICULUM_H16_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`
+- `shared-knowledge/CURRICULUM_H20_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`
+
+No maturity/count/Formal/runtime change from these closures.
+
+Exact next:
+1. H15/H16/H20 are closed; do not reopen absent contradictory evidence.
+2. H17 remains non-terminal because D07-18 WACC is L0 and D22-04 historical security-level debt-cost replay is still blocked.
+3. scan H18 and H19 for equivalent complete evidence already present under room-specific filenames.
+4. H11 and H12 retain their explicit remaining evidence gates.
+5. COV-12 and AOKD-05 retain their source/data gates.
+
+
+## H17 / H18 / H19 partial-intake reconciliation — 2026-10-04
+
+00-room reclassified three non-empty dependency clusters from generic PENDING to evidence-specific PARTIAL states.
+
+### H17
+Accepted boundary:
+D13-06 risk-free curve → D22-04 issuer debt cost/refinancing spread → D07-18 WACC composite.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / D07_18_AND_D22_04_REPLAY_GATES_PENDING`.
+
+Remaining:
+- D07-18 own WACC/COE/COD contract;
+- D22-04 issuer-security-date historical replay;
+- D13-06 multidate strict source attestation;
+- empirical divergent-state receipts.
+
+### H18
+Room14 D21-07 mechanism/falsification side accepted.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / ROOM06_D07_19_PROJECT_ECONOMICS_PENDING`.
+
+Remaining:
+D07-19 project/capital-budget economics, PIT opportunity-set assumptions and project-quality-vs-management-allocation divergent states.
+
+### H19
+Semantic owners accepted:
+- D03-04 time-series momentum;
+- D19-04 cross-sectional momentum;
+- D19-09 residual/factor-neutral momentum.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / ROOM12_COMMON_SUPPORT_REDUNDANCY_RESIDUAL_TESTS_PENDING`.
+
+Remaining:
+same-date/same-universe D03-vs-D19-04 comparison, D19-09 fixed-factor/industry residualization, provenance, cost and capacity.
+
+Cross-room checkpoint deltas were routed. No maturity/count/Formal change.
+
+Exact next:
+1. re-scan H11/H12 for newly arrived evidence;
+2. re-scan COV-12 formal-return/source readiness;
+3. re-scan AOKD-05 corpus-feasibility response from Room06;
+4. preserve closed H05/H06/H07/H09/H13/H14/H15/H16/H20;
+5. do not reopen closed clusters unless contradictory evidence appears.
+
+
+## Remaining-gate re-scan — 2026-10-04 late afternoon
+
+Latest-main re-scan after H15/H16/H20 closure and H17/H18/H19 partial routing:
+
+- H11: unchanged PARTIAL; no new common-parent D12-07 vs D12-16 residual test receipt.
+- H12: Room13 semantic side remains accepted, but D20-13 readiness still explicitly says first genuine live post-contract TWSE rate/supply receipt is missing; Room10 D14-19 counterpart is also still absent.
+- COV-12: still PENDING_SPECIALIST_RETURN; no `research/COV12_D22_SPECIALIST_RETURN_V0_1.md` exists.
+- AOKD-05: still waiting for Room06 corpus-feasibility execution. Search hits for FEASIBLE/PROSPECTIVE_ONLY_FEASIBLE are the allowed return-state text in the routing contract, not a returned result.
+- AOKD-06: remains data-feasibility blocked.
+
+Do not promote any of these states until an actual receipt appears on latest main.

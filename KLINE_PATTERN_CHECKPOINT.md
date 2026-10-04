@@ -1425,3 +1425,23 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 5. Hand P0-P3 common-support inference semantics to D16.
 6. Next D01 science: separate structural persistence from role reversal / polarity flip so an old resistance becoming support is not misclassified as either decay or fresh independent structure.
 7. No outcome join / no runtime wiring / no Formal change.
+
+
+## 00 control-plane receipt — H16 / H20 terminal closures
+
+H16 is CLOSED_NO_STRUCTURAL_CHANGE:
+- D01-09 remains chart/pattern semantics owner under gap/price-limit constraints.
+- D05-02 owns exchange mechanics; D11-11 exit/orderability; D04-10 volatility contamination.
+- one limit event cannot become multiple independent votes.
+
+H20 is CLOSED_NO_STRUCTURAL_CHANGE:
+- D01-05 remains breakout/failure lifecycle and event-identity owner.
+- D02-03 volume and D04-07 volatility are transforms on the same breakout parent.
+- price + volume + volatility cannot be counted as three independent votes unless residual incremental evidence later passes.
+
+D01-09 remains L2/40%; D01-05 remains L3/60%.
+No maturity/count/Formal/runtime change from closure.
+
+Audits:
+- shared-knowledge/CURRICULUM_H16_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
+- shared-knowledge/CURRICULUM_H20_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md

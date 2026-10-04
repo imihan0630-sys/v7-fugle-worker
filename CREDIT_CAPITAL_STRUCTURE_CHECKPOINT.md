@@ -432,3 +432,24 @@ Frozen rules before outcomes:
 4. Once a lane satisfies the pre-outcome gate, freeze the population/hash and open the preregistered outcomes once.
 5. D22-04/06 remain source-blocked; D22-09 remains dependent on D22-06; D22-11/12 remain L2 until their identification/sample gates close.
 
+
+
+## 00 routed H17 exact remaining D22-04 delta — 2026-10-04
+
+H17 cost-of-capital chain is PARTIAL_EVIDENCE_RECEIVED.
+
+Accepted boundary:
+- D13-06 = risk-free/sovereign yield curve.
+- D22-04 = issuer debt-cost/refinancing spread.
+- D07-18 = enterprise WACC composite.
+
+Room15 remaining D22-04 gate:
+- issuer-security-date historical replay;
+- actual trade / quote / reference / fair-value provenance class;
+- currency- and remaining-maturity-consistent sovereign benchmark matching;
+- stale/no-trade remains UNKNOWN;
+- separate legacy coupon, accounting effective cost, current market yield and prospective refinancing cost;
+- interact only with actually repricing/refinancing principal, not all debt mechanically;
+- provide divergent states such as stable risk-free + widening issuer spread and rising risk-free + stable issuer spread.
+
+No WACC/COE ownership transfers to D22-04. No Formal change.

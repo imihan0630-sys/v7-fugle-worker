@@ -2325,3 +2325,70 @@ SC-055:
 - require effective-dated product/exposure semantics and compatible monthly source clocks;
 - continue future steel vintages with the unchanged 1M/2M/3M set;
 - if no chain-specific relation survives inventory, seasonality, contract-reset and common-shock controls, reject the generic fixed-lag hypothesis rather than endlessly adding data.
+
+## SC-055 — Physical non-steel chain falsifies a generic fixed monthly lead-lag
+
+Artifact:
+`research/sc055_physical_nonsteel_three_layer_chain_replay_v0_1.json`
+
+### Why this closes the SC-054 physical-graph gap
+
+SC-055 replaces the prior aggregate electronics demand candidate with a genuinely physical Taiwan product-family chain:
+
+copper foil (2433-020)
+-> copper-clad laminate / CCL (2630-010)
+-> printed circuit board / PCB excluding IC substrate (2630-040).
+
+TPCA member descriptions identify copper foil as a principal CCL raw material and CCL as material supplied to PCB manufacturers; ITRI independently describes CCL as a principal PCB material. This clears a bounded product-family physical-flow gate, not issuer-level supplier/customer identity.
+
+All three monthly series are available from the MOEA Industrial Production, Shipment & Inventory Statistics Survey. The 2025 annual report provides production, shipment and inventory histories, but is an ex-post historical replay: native first-known publication clocks for each 2025 month are not frozen by the annual report.
+
+### Prefrozen replay rule
+
+SC-049 had already frozen 1M / 2M / 3M lag candidates. SC-055 keeps that set unchanged and uses month-over-month production direction as the primary edge-wise metric. The two physical edges must be reported separately; a lag may not be promoted because it looks best on only one edge.
+
+### 2025 primary replay
+
+Copper foil -> CCL production-direction concordance:
+- 1M: 4/10 = 40.0%.
+- 2M: 6/9 = 66.7%.
+- 3M: 4/8 = 50.0%.
+
+CCL -> PCB production-direction concordance:
+- 1M: 5/10 = 50.0%.
+- 2M: 4/9 = 44.4%.
+- 3M: 5/8 = 62.5%.
+
+No single prefrozen lag is stable across both physical edges. The 2M candidate looks strongest only on copper foil -> CCL while weakening on CCL -> PCB; the 3M candidate looks stronger on CCL -> PCB while copper foil -> CCL is only 50%.
+
+A secondary upstream-shipment -> downstream-production sensitivity check also flips the best-looking lag across edges, so it does not rescue a generic fixed-lag interpretation.
+
+### Falsification / controls
+
+- Cross-layer levels are not ratio-comparable because copper foil uses metric tons while CCL/PCB use square feet.
+- Inventory can absorb or release upstream production before downstream production changes.
+- Common end-demand can move multiple layers together; monthly concordance is not causal proof.
+- Product-family data do not establish issuer-matched supplier/customer quantities.
+- Adjacent monthly pairs are serially dependent and the 2025 window remains small.
+- The annual report is ex-post; prospective PIT use still requires native sourcePublishedAt/capturedAt.
+- No stock return, revenue, margin or company-score outcome is opened.
+
+### Maturity decision
+
+D10-02 remains L2.
+
+SC-055 removes the prior physical-graph blocker, but the relation itself still fails the promotion gate: no common stable 1M/2M/3M lag survives both physical edges, native monthly PIT clocks are not frozen, and inventory/common-demand alternatives remain material.
+
+D10-09 remains L3. The physical cross-chain falsification strengthens the asymmetric-transmission research contract but does not create L4 prospective/OOS outcome evidence.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core unchanged.
+
+### Exact next
+
+SC-056:
+- prospectively append the same copper-foil -> CCL -> PCB chain from native monthly MOEA releases with sourcePublishedAt/capturedAt frozen before later outcomes;
+- keep 1M/2M/3M and production-direction primary semantics unchanged;
+- continue future steel-chain vintages under the same frozen lag set;
+- if independent future physical chains continue to show edge-specific or unstable lag behavior, reject generic fixed-lag supply-chain timing and retain only chain-specific contextual states.
+

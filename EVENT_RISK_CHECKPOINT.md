@@ -140,3 +140,25 @@ Exact next:
 - D11-11: collect actual consecutive constrained-session quote/depth states and join real order/fill receipts only when available.
 - D17-01/02/09: obtain a third independent official capture plus after-hours coverage and continue version/correction semantics.
 - D11-16: complete one issuer-level custody-release-to-transfer-to-realized-holdings chain.
+
+
+## 00 control-plane receipt — H15 / H16 terminal closures
+
+H15 is CLOSED_NO_STRUCTURAL_CHANGE:
+- D11-10 = event-linked overnight-gap risk.
+- D04-09 = tail/gap volatility state.
+- D17-12 = post-gap continuation/fill/reversal only after the opening observation.
+- one opening gap cannot become three time-zero votes.
+
+H16 is CLOSED_NO_STRUCTURAL_CHANGE:
+- D05-02 = price-limit mechanics.
+- D11-11 = exit/orderability transformation.
+- D01-09 = chart/pattern semantics.
+- D04-10 = volatility-estimator contamination.
+- one limit event cannot become four independent signals.
+
+No maturity or Formal/runtime change from either closure.
+
+Audits:
+- shared-knowledge/CURRICULUM_H15_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
+- shared-knowledge/CURRICULUM_H16_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md

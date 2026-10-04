@@ -398,3 +398,36 @@ Audits:
 - shared-knowledge/CURRICULUM_H13_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
 
 These receipts do not override Room06 active research order.
+
+
+## 00 routed H17 / H18 exact remaining deltas — 2026-10-04
+
+### H17 — D13-06 → D22-04 → D07-18
+
+Accepted upstream boundary:
+- D13-06 owns risk-free/sovereign yield curve.
+- D22-04 owns issuer debt-cost/refinancing spread.
+- D07-18 must own enterprise WACC / cost-of-capital composite.
+
+Room06 exact remaining D07-18 delta:
+- freeze cost-of-equity, cost-of-debt and capital-structure weight semantics;
+- distinguish WACC from discount-rate use cases and project-specific hurdle rates;
+- preserve risk-free rate, beta/equity-risk-premium assumptions, issuer debt spread/cost, tax shield and capital-structure vintages;
+- prohibit counting the same Treasury/risk-free shock again as debt-cost evidence and again as WACC alpha;
+- include sensitivity/falsification for leverage, beta/ERP model choice, target-vs-current capital structure, negative/unstable cash flow and sector applicability;
+- provide divergent state where WACC changes via equity-risk/capital-structure channel while issuer debt cost does not move identically.
+
+D07-18 remains L0/0 until its own theory/mechanism contract exists.
+
+### H18 — D07-19 vs D21-07
+
+Room14 D21-07 mechanism/falsification side is accepted.
+
+Room06 exact remaining D07-19 delta:
+- project/capital-budget economics: project cash-flow forecast, hurdle/discount rate, NPV, IRR limitations, mutually exclusive project ranking, real-option states, sunk-cost/abandon/defer/expand semantics;
+- project opportunity-set assumptions must have PIT/vintage lineage;
+- separate project economics from management's choice/implementation quality;
+- divergent states: attractive projects + poor allocation; weak opportunity set + improved governance/incentives;
+- no duplicate vote from the same NPV/project economics under D21 governance.
+
+These routed governance deltas do not override Room06 active research sequence; service at the next safe slot.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T16:43:58+08:00",
+  "updatedAt": "2026-10-04T16:47:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1527,8 +1527,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「供應鏈Lead-Lag領先落後」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "SIX_STEEL_VINTAGES / PREFROZEN_1M_2M_3M_REPLAY / 1M_3_OF_5 / 2M_2_OF_4 / 3M_1_OF_3 / ELECTRONICS_CROSS_CHAIN_FALSIFICATION / GENERIC_FIXED_LAG_NOT_VALIDATED / KEEP_L2",
-          "next": "SC-055 build a genuinely physical non-steel three-layer chain with effective-dated product/exposure semantics and compatible source clocks; continue steel vintages without changing the frozen 1M/2M/3M lag set; reject generic fixed lag if no chain-specific relation survives controls."
+          "status": "SIX_STEEL_VINTAGES / PREFROZEN_1M_2M_3M / PHYSICAL_PCB_CHAIN_REPLAY / CU_TO_CCL_1M40_2M66.7_3M50 / CCL_TO_PCB_1M50_2M44.4_3M62.5 / NO_COMMON_STABLE_LAG / NATIVE_MONTHLY_PIT_CLOCK_PENDING / KEEP_L2",
+          "next": "SC-056 prospectively append the same copper-foil→CCL→PCB physical chain from native monthly MOEA releases with sourcePublishedAt/capturedAt frozen; keep the prefrozen 1M/2M/3M set and production-direction primary metric unchanged; continue steel vintages and reject generic fixed-lag timing if independent physical chains remain edge-specific/unstable."
         },
         {
           "id": "D10-03",
@@ -1593,8 +1593,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「上游與下游不對稱傳導」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "THREE_PLUS_VINTAGE_ASYMMETRIC_TRANSMISSION_PIT_FEASIBLE / SIX_MONTH_STEEL_REPLAY / DOWNSTREAM_PRICE_STICKINESS_CONFIRMED / CROSS_CHAIN_FALSIFICATION_ADDED / OUTCOMES_CLOSED",
-          "next": "Continue independent chain vintages and add one non-steel physical three-layer control; L4 still requires prospective/OOS economic outcomes, common-shock controls and stable source clocks."
+          "status": "THREE_PLUS_VINTAGE_ASYMMETRIC_TRANSMISSION_PIT_FEASIBLE / SIX_MONTH_STEEL_REPLAY / DOWNSTREAM_PRICE_STICKINESS / PHYSICAL_PCB_CHAIN_CONTROL / NO_COMMON_FIXED_LAG / OUTCOMES_CLOSED",
+          "next": "SC-056 prospectively append the copper-foil→CCL→PCB physical chain with native monthly clocks and unchanged lag semantics; continue independent physical-chain vintages and inventory/common-shock controls; L4 still requires prospective/OOS economic outcomes."
         },
         {
           "id": "D10-10",
@@ -3492,10 +3492,10 @@
           "next": "TWSE 官方費率、揭示供給/需求與競價最佳五檔語意已足夠凍結 D20-13 上市子線，但遵守 D06-18 上游成熟度：待下一有效交易日取得第一筆 outcome-blind、含 capturedAt/sourceHash/rule vintage 的真實費率/供需 receipt 後再評估 L3。不得把 displayed supply 稱為全市場可借庫存或 true utilization。"
         }
       ],
-      "status": "D20_L3_12_OF_13 / MATURITY_58_5 / L4_PROSPECTIVE_COLLECTION_STARTED / FIRST_STABLE_SOCIAL_PARENT_VALIDATED / ONLY_D20_13_REMAINS_L2 / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D20-06/D20-11 第一筆 promotion-grade 前瞻親本已改為 `D20SOC-20261004-002`（16:43:58），使用只雜湊正文的 SHA-256 V0.2，立即重抓穩定性 PASS；目前各 1/50 親本、1/20 獨立日期、D20-06 多參與者序列仍 0。`D20SOC-20261004-001` 因舊指紋混入傳輸中繼資料已失效，不得計數。D20-03 仍 0 個合格 parent。下一有效台股交易日仍優先執行 D20-13 09:15/12:00/15:20 ±5 分鐘 live receipt；社群端繼續只收新親本與親本後結果。",
-      "lastResearchUpdate": "2026-10-04T16:43:58+08:00",
-      "researchNote": "First L4 social collection tranche self-falsified and repaired its source-identity layer. Parent 001 used a wrapper-level FNV fingerprint contaminated by transport metadata; the resulting 16:42 DIFF was non-interpretable. Parent 001 is preserved but invalidated for promotion. A V0.2 contract now parses the connector payload, normalizes only canonical page text, and hashes UTF-8 content with SHA-256. Rebased parent D20SOC-20261004-002 passed immediate repeatability with identical content hashes. Promotion-grade coverage therefore remains 1 parent / 1 independent date for D20-06 and D20-11, zero qualifying D20-03 parents, and zero D20-13 live receipts. Maturity stays 58.5%; Formal Core unchanged."
+      "status": "D20_L3_12_OF_13 / MATURITY_58_5 / PRIMARY_L4_SOCIAL_SAMPLING_CLOCK_FROZEN / SECONDARY_PROCESS_SAMPLE_1 / ONLY_D20_13_REMAINS_L2 / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D20 社群第四級主要樣本時鐘已凍結：只有 `research/d20_social_sampling_coverage_contract_v0_1.json` 規定的「13室固定 :10 排程實際成功執行」快照可計 primary L4 coverage；輪動停用/漏跑時段維持 UNKNOWN，不補抓。有限 Atom feed 必須以相鄰快照 article-id overlap 或其他已凍結 continuity proof 證明區間覆蓋，且有效快照內所有 first-observed 文章一律納入，包含零留言。手動 `D20SOC-20261004-002` 降為 secondary prospective process sample，不計正式 L4 門檻。D20-03/06/11 primary coverage 現皆 0 日期；下一個實際 :10 Room13 排程成功快照才是第一個 primary social capture。下一有效台股交易日另依 09:15/12:00/15:20 ±5 分鐘執行 D20-13 TWSE live receipt。",
+      "lastResearchUpdate": "2026-10-04T16:47:00+08:00",
+      "researchNote": "A final selection-bias audit tightened D20 social L4 evidence. Although D20SOC-20261004-002 is genuinely prospective and has a stable content-only SHA-256 receipt, its capture time was ad hoc/manual. It is therefore downgraded to a SECONDARY_PROSPECTIVE_PROCESS_SAMPLE and excluded from primary L4 sample-size gates. A deterministic primary sampling contract is now frozen: only social snapshots taken during actually executed Room13 fixed :10 scheduled research runs may count; central rotation-disabled/missed slots remain UNKNOWN; finite Atom-feed windows require overlap continuity; all newly first-observed entries from valid snapshots are included regardless of engagement/topic/stance/outcome; zero-engagement observations remain. Primary D20-03/06/11 coverage is reset to zero. This improves evidence quality without maturity inflation. D20 remains 58.5%; Formal Core unchanged."
     },
     {
       "id": "D21",

@@ -842,3 +842,26 @@ Durable artifacts:
 2. D04-08: next research must join D04 volatility measurement with D15/D14 portfolio-risk and execution-cost evidence before any L3 promotion.
 3. D05: preserve D05-NEXT-L4-01; do not infer true OFI, causal self-impact, toxicity, exact queue or integrity intent from snapshot data.
 4. If continuing progress-focused research, prioritize L4-ready prospective/OOS evidence paths rather than inventing more D04/D05 factors.
+
+
+## 00 control-plane receipt — H15 / H16 / H20 closures
+
+00｜研究總控室 closed three Room04 dependency clusters without structural change.
+
+H15:
+- D04-09 remains tail/gap volatility owner.
+- D11-10 owns event linkage; D17-12 owns later post-gap path.
+- one opening gap receipt, no triple count.
+
+H16:
+- D05-02 remains price-limit mechanics owner.
+- D04-10 remains volatility-contamination owner.
+- D11-11 owns exit/orderability; D01-09 chart semantics.
+- one limit-event receipt, no four-vote multiplication.
+
+H20:
+- D04-07 remains volatility × breakout interaction/context.
+- D01-05 owns breakout event identity; D02-03 volume transform.
+- D04-07 is not an independent Alpha vote until residual incremental value after price+volume controls is proven.
+
+No maturity/count/Formal/runtime change from governance closure.

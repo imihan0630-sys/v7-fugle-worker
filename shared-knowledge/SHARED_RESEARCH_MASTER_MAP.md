@@ -1640,3 +1640,76 @@ Current Room 08 formal maturity after these promotions:
 - Room 08 module-weighted aggregate = 51.5% across 33 modules.
 
 D11-16, D17-01, D17-02 and D11-08 remain below L3 for their distinct unresolved source/realization/completeness gates. Formal Core unchanged. Outcome joins remain closed.
+
+
+## H15 / H16 / H20 canonical no-structural-change closures — 2026-10-04
+
+### H15
+`KEEP_SEPARATE / EVENT_RISK_TO_VOLATILITY_TO_POST_EVENT_PATH / ONE_OPENING_GAP_RECEIPT`.
+
+- D11-10 owns event-linked overnight-gap risk.
+- D04-09 owns tail/gap volatility state.
+- D17-12 owns only post-gap continuation/fill/reversal path.
+- one opening gap cannot become three time-zero votes.
+
+### H16
+`KEEP_SEPARATE / FOUR_LAYER_PRICE_LIMIT_CHAIN / ONE_LIMIT_EVENT_RECEIPT`.
+
+- D05-02 owns exchange mechanics.
+- D11-11 owns exit/orderability.
+- D01-09 owns chart/pattern semantics.
+- D04-10 owns volatility-estimator contamination.
+- only factual strategy-specific orderability may support a hard execution constraint.
+
+### H20
+`KEEP_SEPARATE / MULTI_EVIDENCE_BREAKOUT_FAMILY / NO_INDEPENDENT_COMPONENT_VOTE_UNTIL_RESIDUAL_VALUE`.
+
+- D01-05 owns breakout/failure price-structure event identity.
+- D02-03 owns volume-confirmation transform.
+- D04-07 owns volatility interaction/context.
+- one breakout episode has one parent receipt.
+- volume/volatility do not become independent votes until preregistered residual incremental value passes.
+
+All three states:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+No maturity transfer, module-count change, Formal or runtime impact.
+
+
+## H17 / H18 / H19 partial dependency states — 2026-10-04
+
+### H17 — cost-of-capital chain
+State:
+`PARTIAL_EVIDENCE_RECEIVED / D07_18_AND_D22_04_REPLAY_GATES_PENDING`.
+
+Accepted:
+- D13-06 = sovereign/risk-free curve.
+- D22-04 = issuer debt-cost/refinancing spread.
+- D07-18 = enterprise WACC/cost-of-capital composite owner.
+
+Remaining:
+D07-18 own theory/contract, D22-04 issuer-security-date replay, D13-06 multidate strict source attestation, empirical divergent states.
+
+### H18 — project economics vs management allocation
+State:
+`PARTIAL_EVIDENCE_RECEIVED / ROOM06_D07_19_PROJECT_ECONOMICS_PENDING`.
+
+Accepted:
+D21-07 management incentives/capital-allocation-quality mechanism and falsification.
+
+Remaining:
+D07-19 project/capital-budget economics, PIT opportunity-set assumptions and project-quality-vs-management-allocation divergent states.
+
+### H19 — momentum family
+State:
+`PARTIAL_EVIDENCE_RECEIVED / COMMON_SUPPORT_REDUNDANCY_RESIDUAL_TESTS_PENDING`.
+
+Accepted:
+- D03-04 = time-series/within-security momentum.
+- D19-04 = cross-sectional momentum rank.
+- D19-09 = residual/factor-neutral momentum.
+
+Remaining:
+same-date/same-universe D03-vs-D19-04 comparison, fixed-factor/industry residualization for D19-09, provenance, costs and capacity.
+
+No maturity/count/Formal change from these governance states.
