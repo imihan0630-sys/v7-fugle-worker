@@ -38,9 +38,13 @@ jobs:
       - name: Discover official TPEx halt/resumption data route
         run: node system2/scripts/probe_tpex_halt_source_discovery_readonly_v0_1.mjs
 
+      - name: Probe official sprcHis route candidate
+        run: node system2/scripts/probe_tpex_halt_route_candidate_readonly_v0_1.mjs
+
       - name: Confirm read-only boundary
         shell: bash
         run: |
           set -euo pipefail
           ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_tpex_halt_source_discovery_readonly_v0_1.mjs
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_tpex_halt_route_candidate_readonly_v0_1.mjs
           echo "Read-only TPEx halt source discovery boundary PASS"
