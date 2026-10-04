@@ -2700,3 +2700,23 @@ Exact next:
 1. SC-053 prospectively append issuer-native capacity/production/HVM vintages and seek one true issuer-reported utilization-rate case plus one delay/cancellation/low-utilization control.
 2. BR-063 persist the first genuine same-clock D18 observable-regime + official breadth receipt on a future completed Taiwan session.
 3. BR-035 remains waiting for a genuinely clean post-repair System1 live lineage.
+
+
+## Room 07 SC-050 / SC-054 lead-lag falsification — 2026-10-04
+
+- SC-049 had already frozen 1M/2M/3M lag candidates before this continuation.
+- SC-050 added the July steel vintage and an MOEA electronics demand-transmission cross-chain falsification.
+- SC-054 then added previously uninspected April-June steel vintages, producing six consecutive 2026-04..09 steel states.
+- Prefrozen scrap -> later billet directional concordance:
+  - 1M = 3/5;
+  - 2M = 2/4;
+  - 3M = 1/3.
+- The attractive July->August + August->September 1M 2/2 pattern therefore fails robustness once the held-back April-June vintages are included.
+- H-beam moved UP through June but stayed FLAT July-September, preserving contract/posting stickiness as a material alternative explanation.
+- MOEA June-August electronic-product export orders rose every month while electronic-components and computer/electronic/optical production directions flipped. MOEA narratives identify common AI/HPC/cloud demand, so common-shock confounding is explicit rather than hypothetical.
+- Electronic export orders are not a clean Taiwan physical supply-chain graph because overseas production is material and taxonomies are not one-to-one.
+- D10-02 remains L2/40. D10-09 remains L3/60. No maturity gain is recorded for this stage.
+- Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+Exact next:
+SC-055 build a genuinely physical non-steel three-layer chain with effective-dated product/exposure semantics and compatible monthly source clocks. Continue new steel vintages under the unchanged 1M/2M/3M lag set. If no chain-specific lag survives inventory/seasonality/contract-reset/common-shock controls, reject the generic fixed-lag hypothesis instead of expanding the search.
