@@ -488,3 +488,11 @@ adds overlapping membership and append-only quality overlays, and preserves Form
 Shadow behavior. Guarded patch only; no direct Worker edit. The concrete deploying PR must
 stop for Production approval. Durable state and exact next action:
 `research/SYSTEM1_SHADOW_COHORT_MEMBERSHIP_IMPLEMENTATION_20261004.md`.
+
+## 2026-10-04 — PR #454 approved merge and V8.17.0 Production deployment
+
+- Owner explicitly approved PR #454 merge and Production deployment; expected head `99ad42feb229bfe8fbacb160d4940faffe558f9f`, merge `f92c5e6a6ec6c63d9ae7999b2b1208d03aa9f81f`.
+- All three PR CI gates, main Regression 37171810855 and Cloudflare Deploy 37171810825 succeeded. Independent version readback: `8.17.0-shadow-cohort-membership`, TEST_MODE=false, KV/D1=true.
+- Actual V8.16.0 backup verified; original monitoring targets/configuration and four Cron preserved; authenticated research dashboard readback passed. New cohort unauthenticated GET returns 401; this does not establish authenticated generation readback.
+- No business scan, backfill, synthetic sample, push resend or rollback. First genuine-session C1/cohort readback remains PENDING; economicSuperiority UNKNOWN, formalOptimizationCandidate NONE, Formal Core LOCKED.
+- Receipt: `research/system1_shadow_cohort_deployment_20261004_v0_1.json`; exact continuation: implementation checkpoint. Monitor https://fugle-test.imihan0630.workers.dev/ .

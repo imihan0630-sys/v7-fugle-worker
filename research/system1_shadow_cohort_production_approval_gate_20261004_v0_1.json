@@ -51,5 +51,7 @@
   "FIRST_PROSPECTIVE_SHADOW_COHORT_READBACK": "PENDING_PRODUCTION_APPROVAL_AND_GENUINE_TRADING_SESSION",
   "economicSuperiority": "UNKNOWN",
   "formalOptimizationCandidate": "NONE",
-  "exactNextAction": "Obtain explicit owner approval of PR #454 merge/Production deployment; then re-fetch main, verify the current expected head and all CI, protected parity and no conflicting runtime lineage before expected-head merge and existing deployment/readback. Do not reimplement or manufacture prospective samples."
+  "exactNextAction": "Obtain explicit owner approval of PR #454 merge/Production deployment; then re-fetch main, verify the current expected head and all CI, protected parity and no conflicting runtime lineage before expected-head merge and existing deployment/readback. Do not reimplement or manufacture prospective samples.",
+  "historicalCheckpoint": true,
+  "supersededBy": "research/system1_shadow_cohort_deployment_20261004_v0_1.json"
 }

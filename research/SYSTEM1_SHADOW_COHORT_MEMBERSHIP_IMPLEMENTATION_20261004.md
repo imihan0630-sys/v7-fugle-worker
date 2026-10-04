@@ -1,11 +1,11 @@
-# System 1 Shadow Cohort Membership V8.17.0 candidate
+# System 1 Shadow Cohort Membership V8.17.0 deployment
 
-Status: IMPLEMENTED / LOCAL_REVIEW_86_OF_86_PASS / PRODUCTION_APPROVAL_REQUIRED
+Status: DEPLOYED_AND_VERSION_VERIFIED / FIRST_GENUINE_SESSION_READBACK_PENDING / FORMAL_CORE_LOCKED
 Branch: `codex/system1-shadow-cohort-membership`
-PR: https://github.com/imihan0630-sys/v7-fugle-worker/pull/454 (open; do not merge without owner Production approval).
+PR: https://github.com/imihan0630-sys/v7-fugle-worker/pull/454 (merged after explicit owner Production approval).
 Fresh implementation baseline: `0aab87e2295385ab325ba8e3a30dc40184a42219`.
 Production baseline independently read: `8.16.0-zero-pick-prospective-capture`, TEST_MODE=false, KV/D1=true.
-Owner explicitly approved Shadow Cohort Membership Class-B implementation in the controlling handoff and current Codex session. The owner explicitly requires stopping at the concrete PR's Production approval gate.
+Owner explicitly approved Shadow Cohort Membership Class-B implementation in the controlling handoff and current Codex session. The owner subsequently explicitly approved: 「批准 PR #454 合併與 Production 部署」.
 
 ## First tranche implemented
 
@@ -74,20 +74,50 @@ Local complete isolated review: 86/86 PASS, including all Regression test comman
 
 No standalone ATR/target/fundamental study, historical migration, external provider capture, forward-outcome join, new outcome schedule, or inference/promotion is added. Legacy Shadow remains explicitly LEGACY_MUTABLE_ARCHIVE and is not repaired retrospectively. Independent source authenticity/CA/execution/account gaps remain UNKNOWN. Formal Core and System 2 are untouched.
 
-The concrete PR changes the guarded runtime and deploy workflow, so merging main would trigger Production deployment. **Do not merge or dispatch deployment without explicit approval of this PR.**
+The concrete PR changes the guarded runtime and deploy workflow, so merging main would trigger Production deployment. That gate was satisfied by the explicit owner approval of PR #454 recorded below; it does not authorize future runtime changes.
 
 Rollback: use the existing code-only deployment backup/rollback path to the verified pre-change V8.16.0 artifact, preserving KV, D1, targets, configuration and all four Cron expressions. Additive cohort tables may remain unused; do not delete captured evidence or downgrade by re-scanning. C1 and legacy Shadow continue on the prior code. Backup/version/readback verification remains mandatory on any approved deployment.
 
-`FIRST_PROSPECTIVE_SHADOW_COHORT_READBACK=PENDING_PRODUCTION_APPROVAL_AND_GENUINE_TRADING_SESSION`
+`FIRST_PROSPECTIVE_SHADOW_COHORT_READBACK=PENDING_NEXT_GENUINE_TRADING_SESSION`
 `FIRST_PROSPECTIVE_C1_CHILD_READBACK=PENDING_NEXT_GENUINE_TRADING_SESSION`
 `economicSuperiority=UNKNOWN`; `formalOptimizationCandidate=NONE`; Formal Core LOCKED.
 
+## Deployment receipt — 2026-10-04 Asia/Taipei
+
+Owner explicitly approved PR #454 merge and Production deployment. Expected-head merge of
+`99ad42feb229bfe8fbacb160d4940faffe558f9f` produced `f92c5e6a6ec6c63d9ae7999b2b1208d03aa9f81f`.
+All three PR gates passed (Regression 37169887789, Repair 37169887765, isolated review 37169887775).
+[Production deploy 37171810825](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37171810825)
+and [main Regression 37171810855](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37171810855) succeeded.
+
+Independent public version readback confirmed `8.17.0-shadow-cohort-membership`, TEST_MODE=false,
+KV/D1=true. Deployment verified preserved monitoring configuration/targets and unchanged four Cron
+expressions. Authenticated existing research dashboard readback passed on the expected version.
+The new cohort GET rejected unauthenticated access with HTTP 401. This is an authorization check,
+not a successful authenticated new-cohort generation readback.
+
+Actual pre-deploy V8.16.0 code and four Cron were verified and preserved in artifact
+`v7-predeploy-37171810825` (30-day retention). No rollback, business scan, history backfill,
+quality overlay append, synthetic prospective sample or push resend was performed for acceptance.
+The deployment workflow's optional business/backfill steps were all skipped.
+
+Machine-readable receipt: `research/system1_shadow_cohort_deployment_20261004_v0_1.json`.
+The earlier approval-gate receipt is historical and superseded by this deployment receipt.
+Deployment success does not prove first cohort D1 persistence, production resource acceptance,
+prospective sample validity, or economic superiority.
+
 ## Exact next action
 
-Implementation, full local 86/86 review, branch publication and PR #454 are complete. Initial remote Regression (37169555932) and isolated review (37169555837) passed. Repair CI (37169555830) exposed a missing V8.17 apply step in its separately enumerated build chain (ENOENT pre-V8.17 artifact); the workflow step is repaired and a three-workflow lineage guard now covers Regression/Repair/Deploy.
+Wait for the first genuine post-deployment trading session and successful normal scan. Reuse
+`.github/workflows/system1-c1-evidence.yml` to verify the immutable C1 generation plus its
+cohort frames, exact denominators, memberships, fingerprints and pinned quality watermark.
+Keep generation/readback failures and unavailable source inputs explicit; never reconstruct
+historical memberships or trigger a synthetic scan to obtain a PASS. Observe D1/storage/CPU
+behavior on the genuine generation. Do not reimplement, redeploy or rerun completed engineering
+merely to resume this checkpoint.
 
-Repair-chain head `accf80189387a0cf064126ec0b77e2ffece02df7` passed all three remote gates: Regression 37169703145, Repair 37169703079, isolated review 37169703059. The final explicit Formal-lineage/no-legacy guard and reason-stratum assertions also pass the dedicated local runtime/D1/scale test.
-
-Continue by checking all three CI workflows on the current exact PR #454 head; diagnose/retry any failure, then stop for explicit owner Production approval. The PR description is the durable final CI/head approval packet, so read it and the current head rather than rerunning already-passing local work. No merge, deploy, genuine capture or economic result has been claimed. Concurrent main changes through `65f39d47881d12d7b5a191f253c0247f8f71c7bf` were research/System2 changes with no System1 runtime conflict.
+`FIRST_PROSPECTIVE_SHADOW_COHORT_READBACK=PENDING_NEXT_GENUINE_TRADING_SESSION`
+`FIRST_PROSPECTIVE_C1_CHILD_READBACK=PENDING_NEXT_GENUINE_TRADING_SESSION`
+`economicSuperiority=UNKNOWN`; `formalOptimizationCandidate=NONE`; Formal Core LOCKED.
 
 Monitor: https://fugle-test.imihan0630.workers.dev/

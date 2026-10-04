@@ -1,7 +1,7 @@
 # System 1 Shadow Cohort Membership Class-B handoff
 
 Date: 2026-10-04 Asia/Taipei
-Status: OWNER_APPROVED_CLASS_B / IMPLEMENTATION_CANDIDATE_PR_454 / PRODUCTION_APPROVAL_PENDING / FORMAL_CORE_LOCKED
+Status: OWNER_APPROVED_CLASS_B_AND_PR_454_PRODUCTION / V8_17_0_DEPLOYED / FIRST_GENUINE_SESSION_READBACK_PENDING / FORMAL_CORE_LOCKED
 Mode: Codex
 Model: GPT-6 Astra
 Reasoning: High
@@ -173,30 +173,17 @@ If the final implementation changes the guarded runtime / D1 production schema o
 
 and obtain explicit owner production approval before merge/deploy unless current repository governance explicitly states that this exact approved Class-B scope includes deployment.
 
-## Exact next action
+## Exact next action — deployment completed 2026-10-04
 
-1. Re-fetch latest `main`.
-2. Compare current V8.16/C1 research persistence with the proposal and membership spec.
-3. Identify the smallest non-duplicative shared parent/overlay implementation.
-4. Create an implementation branch.
-5. Implement + test in small durable milestones.
-6. Continue through CI/debug/PR.
-7. Stop for owner production approval if the concrete PR crosses the deployment boundary.
-8. Write the resulting implementation checkpoint back to GitHub.
+Owner subsequently explicitly approved: 「批准 PR #454 合併與 Production 部署」.
+PR #454 is merged and V8.17.0 Production deployment plus version/configuration/research-dashboard
+readback succeeded. The implementation and deployment stages are complete; do not restart them.
 
-Do not restart the proposal or ask the owner to restate the approval.
+Canonical current checkpoint: `research/SYSTEM1_SHADOW_COHORT_MEMBERSHIP_IMPLEMENTATION_20261004.md`.
+Deployment evidence: `research/system1_shadow_cohort_deployment_20261004_v0_1.json`.
+Next: after the first genuine post-deployment trading session and successful normal scan,
+verify the same immutable C1 generation and cohort membership/quality pagination using the
+existing evidence workflow. No historical backfill, business scan for testing or fake weekend sample.
 
-## Active implementation continuation — Codex, 2026-10-04
-
-Implementation is underway on `codex/system1-shadow-cohort-membership` from refreshed main
-`0aab87e2295385ab325ba8e3a30dc40184a42219`. The shared parent is the existing immutable C1,
-with additive membership/quality tables and guarded V8.17.0 candidate plumbing.
-Core runtime/SQLite-D1/collector/scale tests and full local 86/86 isolated review pass. Do not restart the proposal.
-
-Canonical implementation checkpoint and current exact next action:
-`research/SYSTEM1_SHADOW_COHORT_MEMBERSHIP_IMPLEMENTATION_20261004.md`.
-Production approval remains pending; this authorization does not permit merging a deploying PR.
-
-PR #454 is now open: https://github.com/imihan0630-sys/v7-fugle-worker/pull/454 .
-Implementation and full local 86/86 review are complete. Continue from the current PR's
-CI/Production approval packet, not the original first implementation target.
+`FIRST_PROSPECTIVE_SHADOW_COHORT_READBACK=PENDING_NEXT_GENUINE_TRADING_SESSION`
+Formal Core LOCKED; economicSuperiority UNKNOWN; formalOptimizationCandidate NONE.
