@@ -647,3 +647,34 @@ Result:
 - state = `OWNER_APPROVAL_REQUIRED`.
 
 Formal Core remains LOCKED for all three.
+
+
+## COV-07 return-contract validation — 2026-10-05
+
+COV-07 remains `PARTIAL_EVIDENCE_RECEIVED`.
+
+New substantive evidence is now present:
+- `research/COV07_D12_SPECIALIST_RETURN_V0_1.md`;
+- `research/cov07_d12_tx_curve_replay_20261004_v0_1.json`.
+
+The previously open contract-level TX futures-curve replay delta is materially complete: official contract-level price/OI/volume replay, expiry/version provenance, front/next/far curve, calendar-spread / roll-yield convention, no-look-ahead continuous-contract rule and residual comparison versus D12-01 basis / D12-02 OI are all present. Outcomes remain closed.
+
+However the committed specialist Markdown does not pass the executable Coverage return contract because it omits the canonical seven header labels and seven required standard section headings. Semantic equivalents are not sufficient under `research/curriculum_coverage_return_validator_v0_1.mjs`.
+
+Readiness:
+`SPECIALIST_CONTENT_COMPLETE_RETURN_CONTRACT_REPAIR_REQUIRED`.
+
+Exact remaining delta:
+1. Room09 performs format-only repair using the canonical Coverage Specialist Return template.
+2. Do not repeat TX replay, source discovery, overlap research or inspect outcomes.
+3. Preserve the existing evidence/hash/provenance and UNKNOWN semantics.
+4. Run validator + intake preflight and commit the compliant return.
+5. 00 performs formal Intake only after `RETURN_CONTRACT_COMPLETE`.
+
+Validation receipt:
+- `shared-knowledge/CURRICULUM_COVERAGE_COV07_RETURN_CONTRACT_VALIDATION_20261005_V0_1.md`
+- `shared-knowledge/curriculum_coverage_cov07_return_contract_validation_20261005_v0_1.json`
+
+D12-18 is retired/absorbed into D12-17 and is not reusable. D12-19 is only a collision-free future candidate ID observed by 00; it is not reserved or canonical before validator-complete Intake, Dependency/overlap/anti-orphan audit and explicit owner approval.
+
+No tracker/module/maturity/Router/Shared Master/System1/System2/Formal mutation occurs from this validation.
