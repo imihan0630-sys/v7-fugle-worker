@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "0.1",
+  "name": "D12 TAIFEX option-surface input clock/rate/forward contract",
+  "status": "SOURCE_INPUT_CONVENTION_PARTIALLY_FROZEN__PRIMARY_RATE_PENDING__OUTCOMES_CLOSED",
+  "parent": {
+    "sourceDate": "2026-10-02",
+    "optionSha256": "61574590f9c8a1c882616f89090d39cbd44e00a91bd93055ff046ff4ab287c2a",
+    "futuresSha256": "d41cc8c279d805a0ebb13c29f3ff757cdc78a35d7a2e13fc06be4b3f3aeb1834",
+    "session": "REGULAR_ONLY_FOR_PRIMARY_REPLAY",
+    "historicalFirstKnown18_10": false
+  },
+  "quoteClock": {
+    "state": "EOD_ENDPOINT_WITHOUT_PER_QUOTE_TIMESTAMP",
+    "rule": "The daily file's last best bid/ask values do not carry synchronized quote timestamps. Treat them as end-state replay observations, not simultaneous executable quotes.",
+    "pitUse": "REPLAY_QA_ONLY"
+  },
+  "expiryClock": {
+    "ruleSource": "TAIFEX final-settlement formula",
+    "payoffWindow": "13:00(exclusive)-13:25(inclusive) index observations plus final closing index on final settlement day",
+    "nominalModelExpiryClock": "13:30 Asia/Taipei on ordinary final trading/settlement day",
+    "settlementPublicationClock": "final settlement price announced before 14:00 under ordinary domestic-index workflow",
+    "exceptionRule": "Market interruption/closing-delay exceptions require explicit source state; otherwise UNKNOWN rather than silent nominal-clock substitution.",
+    "calendarVsTradingDay": "VERSIONED_SEPARATELY"
+  },
+  "forwardConvention": {
+    "monthlyPrimary": "Same-expiry TX regular-session final best-bid/ask midpoint from the same source date.",
+    "parityCrossCheck": "Parity-derived F from eligible TXO Call/Put midpoint pairs may be used as QA only.",
+    "observedMonthlyParityVsTxMidBps": {
+      "202610": 1.72,
+      "202611": -0.73,
+      "202612": -0.35,
+      "202703": 2.01,
+      "202706": 2.79
+    },
+    "weeklyState": "UNKNOWN_PRIMARY_FORWARD_PENDING",
+    "prohibited": "Do not use the rejected joint parity F+D estimator as the default weekly forward/discount method."
+  },
+  "discountRateConvention": {
+    "taifexGuidance": "TAIFEX theoretical-price guidance requires an explicit annual risk-free rate and notes bank time-deposit or commercial-paper rates as common examples.",
+    "primaryState": "PENDING_OFFICIAL_DECISION_TIME_SOURCE_AND_TENOR_MAPPING",
+    "officialSensitivityProxy": {
+      "name": "CBC central-bank CD issue-rate term points",
+      "role": "SENSITIVITY_ONLY_NOT_PRIMARY",
+      "knownBeforeSourceDate": true,
+      "pointsPct": [
+        {
+          "tenorDays": 7,
+          "ratePct": 0.825,
+          "publicationDate": "2026-09-30"
+        },
+        {
+          "tenorDays": 28,
+          "ratePct": 1.215,
+          "publicationDate": "2026-09-30"
+        },
+        {
+          "tenorDays": 91,
+          "ratePct": 1.275,
+          "publicationDate": "2026-09-18"
+        },
+        {
+          "tenorDays": 182,
+          "ratePct": 1.395,
+          "publicationDate": "2026-09-23"
+        },
+        {
+          "tenorDays": 364,
+          "ratePct": 1.643,
+          "publicationDate": "2026-09-04"
+        }
+      ],
+      "guard": "CBC CD rates are not silently relabeled as the unique true risk-free curve. They are an official PIT-known sensitivity proxy until bank-deposit/commercial-paper or another justified primary convention is frozen."
+    }
+  },
+  "modelState": {
+    "preferredForwardForm": "FORWARD_BASED_EUROPEAN_OPTION_INVERSION",
+    "taifexReferenceModel": "Black-Scholes European option framework",
+    "dividendCarry": "When a futures forward is used, carry/dividend semantics must be explicit and must not be double-counted.",
+    "ivExecution": "BLOCKED_FOR_PRIMARY_FEATURES_UNTIL_PRIMARY_RATE_AND_CLOCK_VERSION_ARE_FROZEN",
+    "sensitivityRunAllowed": true
+  },
+  "h11Rule": "D12-07 simple skew/term baseline must be built before D12-16 residual surface factors on identical eligible rows/common support.",
+  "formalCoreImpact": "NONE",
+  "maturityImpact": "NONE",
+  "exactNext": [
+    "Resolve an official decision-time-valid primary rate/discount convention and tenor mapping.",
+    "Then run IV inversion on the same monthly parent under frozen forward/rate/clock inputs.",
+    "Run the official CBC-CD curve only as a predeclared sensitivity comparator, not as a post-hoc winner.",
+    "Compare D12-07 simple skew/term against D12-16 residual level/slope/curvature before outcomes."
+  ]
+}
