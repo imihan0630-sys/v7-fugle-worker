@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "D18_08_ACTIVATION_PREREG_V0_1",
+  "policyId": "D18-08-SHORT-MOMENTUM-DOWN-TREND-DISABLE-V0_1",
+  "policyVersion": "0.1-RESEARCH",
+  "policyClass": "BINARY_ACTIVATION_DEACTIVATION",
+  "strategyId": "SHORT_MOMENTUM",
+  "strategyVersion": "V0.1-CONTRACT",
+  "state": "PREREGISTERED_SHADOW",
+  "registeredAt": "2026-10-04T14:31:00+08:00",
+  "availableAt": "2026-10-04T14:31:00+08:00",
+  "parameters": {
+    "regimeDimension": "trendContext",
+    "disabledValues": [
+      "DOWN_TREND_CONTEXT"
+    ],
+    "unknownAction": "DATA_UNKNOWN",
+    "nonDisabledAction": "KEEP_STATIC_BASELINE"
+  },
+  "parameterHash": "56df13695b41b3f96f61f8add6bddd8b150230e7eb8220a3a09975e3c71b87f0",
+  "hypothesis": "A simple preregistered strategy-date challenger may reduce adverse short-momentum exposure in known down-trend context, but policy value is unproven.",
+  "falsification": [
+    "No after-cost improvement versus the same frozen static strategy.",
+    "Missed rebound/opportunity cost offsets avoided losses.",
+    "Effect is concentrated in one date, sector, or regime episode.",
+    "Unknown/blocked dates are selectively excluded.",
+    "Apparent benefit disappears under exposure-matched control.",
+    "Turnover/churn or delayed reactivation consumes the gross effect."
+  ],
+  "formalImpact": "NONE"
+}
