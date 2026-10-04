@@ -1605,3 +1605,38 @@ H13 closed as:
 
 Audit:
 `shared-knowledge/CURRICULUM_H13_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+### D11/D17 shared handoff — event gap, exit constraint and cross-day republication (2026-10-04)
+
+Reusable cross-system findings from 08｜事件與新聞研究室:
+
+1. D11-10 event-linked overnight gap risk
+- Taiwan official daily OHLC replay plus PIT-valid event clocks and the D11-12 corporate-action/reference-price firewall make event-to-next-open gap construction source-feasible.
+- D04-09 remains owner of tail/gap volatility state; D17-12 owns post-gap continuation/reversal. The opening gap is one shared primitive observation, not multiple directional votes.
+- Mechanical corporate-action resets, unresolved action/reference continuity, missing/synthetic Open and unresolved suspension provenance fail closed to UNKNOWN/BLOCKED.
+- D11-10 = L3 Taiwan PIT/source feasible; alpha and L4/OOS remain unknown/closed.
+
+2. D11-11 price-limit multi-day exit constraint
+- D05-02 owns exchange price-limit mechanics; D04-10 owns volatility-estimator contamination; D11-11 owns only the executability/exit-constraint transformation.
+- Timestamped best bid/ask, top-five depth and limit/halt/trial/delayed state make prospective bounded exit-constraint observation feasible.
+- A lower-limit close does not prove that a sell order could not execute. Actual fill requires order/fill evidence. Historical OHLC does not reconstruct historical queue/fill state.
+- D11-11 = L3 Taiwan PIT/source feasible with prospective-only executability qualification; no generic bearish gate.
+
+3. D17-09 duplicate/same-event clustering
+- Independent official source captures on 2026-09-28 and 2026-10-04 physically show 2072, 6949, 4530 and 4747 recurring on later daily publication dates with the same prior fact dates and explicit multi-month announcement periods.
+- Therefore daily source row identity != economic event identity, and row/article counts cannot become independent confirmation counts without clustering.
+- Prior-only rows that disappear from a later daily snapshot remain UNKNOWN_WINDOW_EVICTION_OR_SOURCE_REMOVAL_OR_CORRECTION, not cancellation evidence.
+- D17-09 = L3 Taiwan PIT/source feasible for republication-aware clustering; native publisher correction/supersession lineage remains UNKNOWN.
+
+Evidence:
+- `research/d11_10_11_event_gap_exit_pit_audit_20261004_v0_1.json`
+- `research/d17_official_disclosure_crossday_receipt_20261004_v0_1.json`
+- successful read-only capture run `37183990727`, artifact `11295807935`
+- `.github/workflows/research-d17-official-disclosure-capture-readonly.yml`
+
+Current Room 08 formal maturity after these promotions:
+- D11 = 56.8% across 19 modules.
+- D17 = 44.3% across 14 modules.
+- Room 08 module-weighted aggregate = 51.5% across 33 modules.
+
+D11-16, D17-01, D17-02 and D11-08 remain below L3 for their distinct unresolved source/realization/completeness gates. Formal Core unchanged. Outcome joins remain closed.
