@@ -1,0 +1,185 @@
+{
+  "schemaVersion": "D19_04_L3_BLOCKER_RECONCILIATION_V0_1",
+  "observedAt": "2026-10-04T11:00:59+08:00",
+  "researchOnly": true,
+  "formalCore": "LOCKED",
+  "maturityDecision": {
+    "module": "D19-04",
+    "currentLevel": "L2",
+    "currentMaturityPct": 40,
+    "promoted": false,
+    "reason": "Executable receipt and full-TWSE coverage evidence improved, but full-Taiwan universe, session/continuity, industry, redundancy and cost gates remain."
+  },
+  "upstreamEvidence": {
+    "factorReceiptAdapter": {
+      "mergeCommit": "76f5ef80dbf0654a033a0a780b065ebfabbf0e30",
+      "system2CiRun": 37165603677,
+      "v8RegressionRun": 37165603710,
+      "realSourceSmokeRun": 37165603790
+    },
+    "twseUniverseSourceReceipt": {
+      "path": "research/d08_twse_official_universe_source_receipt_20261004_v0_1.json",
+      "upstreamSnapshotDate": "2026-08-31",
+      "upstreamMemberCount": 1089,
+      "includesDelisted": true,
+      "currentListOnly": false
+    },
+    "twseFullUniverseCoverage": {
+      "mergeCommit": "1a7b6e7e8d8552953f909f4ee1448733a1daf643",
+      "workflowRun": 37172684933,
+      "system2CiRun": 37172684904,
+      "v8RegressionRun": 37172684903,
+      "result": "PASS_TWSE_FULL_UNIVERSE_COVERAGE_NEGATIVE_L3_GATE",
+      "period": [
+        "2026-08-03",
+        "2026-08-31"
+      ],
+      "officialTradingDates": 21,
+      "sourceRowCount": 22810,
+      "registry": {
+        "membershipCount": 1101,
+        "replayEligibleCount": 1101,
+        "currentCount": 1089,
+        "delistedCount": 12,
+        "unknownStartCount": 0
+      },
+      "snapshot": {
+        "marketDate": "2026-08-31",
+        "memberCount": 1089
+      },
+      "factorCoverage": {
+        "denominator": 1089,
+        "known": 1064,
+        "unknown": 25,
+        "knownPct": 97.7043,
+        "unknownReasonCounts": {
+          "INCOMPLETE_SESSION_ROWS_REQUIRES_SESSION_PROVENANCE": 6,
+          "NULL_OR_INVALID_CLOSE_REQUIRES_TRADING_STATE_PROVENANCE": 17,
+          "RECENT_LISTING_INSUFFICIENT_LOOKBACK": 2
+        },
+        "missingSourceHashCountAcrossUnknownSample": 0
+      }
+    },
+    "tpexTransportNegativeExperiment": {
+      "pullRequest": 459,
+      "merged": false,
+      "closed": true,
+      "head": "59ec1316c2b18dd14f09e483cef7b34f717b680a",
+      "d19SmokeRun": 37172219750,
+      "system2CiRun": 37172219759,
+      "v8RegressionRun": 37172219828,
+      "currentPrimary": "HTTP_520",
+      "formerResponseJsonFallback": "HTTP_520",
+      "legacyFallback": "HTTP_520",
+      "conclusion": "FAIL_CLOSED_SOURCE_NOT_RECOVERED"
+    },
+    "priorTpexFeasibility": {
+      "period": [
+        "2026-08-03",
+        "2026-08-31"
+      ],
+      "priorFullMarketRows": 18646,
+      "averageRowsPerTradingDate": 887.9,
+      "source": "System2 Historical Pack Full-Market Benchmark",
+      "interpretation": "Historical source/schema previously worked, but the full-market benchmark was read-only and did not persist a replayable full-market TPEx pack."
+    },
+    "corporateActionContinuity": {
+      "sourceParserPhysicalEvidence": "PASS",
+      "sourceParserRun": 37120129869,
+      "immutableArchiveCoreCommit": "9453279dfaf4141477fb312c7f3f31a37c0ead53",
+      "certification": "LOCKED",
+      "reason": "NO_EVENT requires complete PIT universe, exact-range source contracts, parser completeness, revision coverage, no missing source dates, certified empty-range semantics and unambiguous event versions."
+    },
+    "costEvidence": {
+      "ordinaryStockSellTaxRate": 0.003,
+      "dayTradeEligibleSellTaxRate": 0.0015,
+      "dayTradeReducedRateThrough": "2027-12-31",
+      "officialSource": "https://www.twse.com.tw/zh/about/company/guide.html",
+      "commissionState": "UNKNOWN_FOR_OWNER_ACCOUNT",
+      "commissionReason": "Broker-specific rate, minimum, calculation, rounding, execution channel and schedule provenance are not established for the owner's account.",
+      "conclusion": "Tax-rate provenance can be frozen, but commission/slippage/turnover remain insufficient for a D14-compatible executable net-cost claim."
+    }
+  },
+  "blockerReconciliation": [
+    {
+      "gate": "HISTORICAL_UNIVERSE",
+      "previous": "BOUNDED_UNIVERSE_NOT_HISTORICAL_REGISTRY",
+      "current": "PARTIAL_PASS",
+      "resolved": [
+        "TWSE date-vintaged survivorship-controlled universe source and 2026-08-31 snapshot",
+        "TWSE full denominator reconciliation"
+      ],
+      "remaining": [
+        "TPEx date-vintaged historical-universe registry and replayable source coverage"
+      ]
+    },
+    {
+      "gate": "FACTOR_INPUT_COVERAGE",
+      "current": "PARTIAL_PASS",
+      "resolved": [
+        "1089 TWSE members explicitly accounted; 1064 KNOWN and 25 explicit UNKNOWN; no silent omission"
+      ],
+      "remaining": [
+        "6 incomplete-session names require symbol-session provenance",
+        "17 null/invalid-close names require trading-state provenance",
+        "2 recent listings are legitimate insufficient-lookback cases"
+      ]
+    },
+    {
+      "gate": "CORPORATE_ACTION_CONTINUITY",
+      "previous": "CORPORATE_ACTION_CONTINUITY_UNVERIFIED",
+      "current": "PARTIAL_PASS_SOURCE_PARSER_ONLY",
+      "remaining": [
+        "full certification",
+        "revision/correction coverage",
+        "symbol-session suspension/resumption completeness",
+        "NO_EVENT completeness"
+      ]
+    },
+    {
+      "gate": "INDUSTRY_NEUTRALIZATION",
+      "current": "BLOCKED",
+      "remaining": [
+        "date-vintaged industry membership/classification provenance"
+      ]
+    },
+    {
+      "gate": "D03_D09_REDUNDANCY",
+      "current": "BLOCKED",
+      "remaining": [
+        "paired same-date same-universe residual/incremental comparison"
+      ]
+    },
+    {
+      "gate": "COST_PROVENANCE",
+      "previous": "COST_PROVENANCE_MODELED_TRANSPORT_ONLY",
+      "current": "PARTIAL_PASS_TAX_ONLY",
+      "resolved": [
+        "date-valid statutory stock transaction-tax source"
+      ],
+      "remaining": [
+        "broker-specific commission schedule provenance",
+        "slippage scenario provenance",
+        "turnover/execution semantics"
+      ]
+    },
+    {
+      "gate": "TPEX_HISTORICAL_SOURCE",
+      "previous": "TPEX_OFFICIAL_HISTORICAL_SOURCE_UNAVAILABLE",
+      "current": "BLOCKED_CURRENT_TRANSPORT",
+      "remaining": [
+        "replayable persisted official TPEx history or newly physically validated official transport"
+      ]
+    }
+  ],
+  "next": [
+    "Reuse the TWSE full-universe coverage lane instead of bounded witnesses.",
+    "Attach symbol-session provenance so the 23 non-recent-listing TWSE UNKNOWN cases can be classified without imputation.",
+    "Build a TPEx date-vintaged universe source receipt and source-independent replay path from immutable persisted history; do not depend on live refetch if cold evidence exists.",
+    "Bind corporate-action continuity receipt to each factor lookback window.",
+    "Acquire date-vintaged industry classification before industry neutralization.",
+    "Run D03/D09 paired redundancy control on identical PIT universe/date.",
+    "Freeze a D14-compatible versioned cost scenario; owner-account actual commission remains UNKNOWN unless directly evidenced.",
+    "Only a zero-applicable-blocker deterministic full-Taiwan replay triggers L3 readiness review; no automatic promotion."
+  ]
+}
