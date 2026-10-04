@@ -1,7 +1,7 @@
 # System 1 valuation-relative-risk audit V0.1
 
 Date: 2026-10-04 Asia/Taipei
-Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / SOURCE_VINTAGE_BLOCKED / CI_PENDING / FORMAL_CORE_LOCKED
+Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_GREEN_MERGED / SOURCE_VINTAGE_BLOCKED / FORMAL_CORE_LOCKED
 
 ## Purpose
 
@@ -196,3 +196,14 @@ Formal Core: LOCKED
 3. Keep NO_POSITIVE_PE and missing-growth/source states separate from economic FAIL.
 4. Do not perform promotion-grade outcome join until first-known valuation/source-vintage provenance is frozen prospectively.
 5. After that source contract exists, use same-parent matched controls and independent-date/OOS evidence before any Class-C valuation-rule proposal.
+
+## Merge acceptance
+
+- PR #575 merged at `3cce49300fa47a060882c813b3ac993a308ce910`.
+- Exact head `39668a9ca37e77306910b9ec9299151d4c942446`:
+  - V8 Regression Tests run `37205360630` PASS;
+  - V8 Repair CI run `37205360709` PASS;
+  - System1 C1 C2 isolated offline repair review run `37205360706` PASS.
+- No Worker/runtime/D1/Production/Formal/System2 behavior change or Cloudflare deployment was introduced.
+- R2 structural gate audit is complete. Promotion-grade outcome attribution remains blocked only by valuation/financial source-vintage provenance, not by missing gate-incidence instrumentation.
+- Canonical next proposal: `research/SYSTEM1_VALUATION_SOURCE_VINTAGE_CLASS_B_PROPOSAL_20261005_V0_1.md`.
