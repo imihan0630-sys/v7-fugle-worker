@@ -122,3 +122,20 @@ Status: physically deployed and readback verified; upstream daily frozen capacit
 - New physical `/api/system2/resonance/operations` confirms `state=UPSTREAM_CAPACITY_RECEIPT_MISSING`, `upstreamCapacity=null`, `latestPool=null`, and `activeSymbolCount=0` at the 2026-10-02 early-morning readback. This is positive evidence of missing upstream capacity data, not a UI or Fugle secret defect.
 - A 19:00 refresh is now durably audited even when there is no capacity receipt; no such **new-format** refresh audit has yet been observed at this readback, so the first real post-deployment 19:00 outcome still requires observation.
 - Next global-control-room engineering unit: integrate a PIT-qualified, preregistered daily System 2 Shadow source/orchestration pipeline that can produce immutable strategy ordering and `s2_capacity_runs` receipts without inventing score weights or activating final selection. Existing decision-clock/capture owner gates remain intact.
+
+
+## Capacity denominator provenance hardening
+
+CORR-20261005-001 preserves the upstream selection-denominator truth through the bounded resonance lane without changing monitoring eligibility:
+
+- current V0.2 capacity rows expose `COMPLETE / PARTIAL / UNKNOWN` denominator provenance from `counts_json`;
+- legacy capacity rows with no denominator payload resolve to `UNKNOWN / LEGACY_PROVENANCE_INCOMPLETE`;
+- the 19:00 capacity reader carries provenance into the watch-pool object;
+- pool hash commits to the source denominator state/provenance;
+- persisted pool readback resolves the authoritative capacity row through exact `source_capacity_run_id + source_capacity_hash` linkage;
+- pool-refresh audit diagnostics record source denominator state/provenance hash;
+- operations API and UI expose the coverage state;
+- clean symbols from PARTIAL capacity remain monitorable exactly as under CORR-004;
+- partial denominator with no ready admission still produces no capacity row and therefore cannot become a false zero-pick pool.
+
+No coverage percentage threshold, strategy threshold, final selection, live push, capital or order authority is introduced.
