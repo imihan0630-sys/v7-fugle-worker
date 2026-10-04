@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-04 20:52 Asia/Taipei
+Updated: 2026-10-04 22:51 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -87,6 +87,56 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - 2017 TWSE disposition: `DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL`.
 - finalDisposition: PENDING
 - updatedAt: 2026-10-04T21:14:00+08:00
+
+
+### S2-CORR-20261004-004 — Whole-universe history/continuity gate can block all Shadow evaluation because of symbol-local UNKNOWNs
+
+- createdAt: 2026-10-04T22:51:00+08:00
+- severity: HIGH
+- status: OPEN
+- routingClass: REMEDIATION_LANE
+- assignedLane: REMEDIATION_LANE
+- assignedRoom: System 2｜補強修復室
+- modificationOwner: SYSTEM2_REMEDIATION_ROOM
+- blockedBy: none
+- affectedScope: S2-07 Daily Shadow preflight / PIT-history readiness / per-symbol UNKNOWN semantics / strategy evaluation / capacity generation
+- detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- canonicalRequirement: Symbol-local missing history, continuity or required evidence must remain symbol-local INCOMPLETE/UNKNOWN when the source itself is valid. Global fail-closed blocking is reserved for defects that invalidate the whole observation universe or decision clock. System 2 must not turn one symbol's missing data into a universal no-evaluation gate.
+- observedProblem: `probePitHistoryCoverageV0_1` reports READY only when historyReadyCount equals the entire current universe and continuityReadyCount equals the entire current universe. `buildDailyShadowInputPreflightV0_1` then requires historyCoverage.state=READY before any strategy evaluation or capacity write is authorized. Therefore one symbol-local history/continuity gap can block all otherwise evaluable symbols. This conflicts with the downstream strategy runtime, which already maps missing required evidence to per-symbol `INCOMPLETE/BLOCKED`, freezes incomplete decisions, and preserves incomplete prior memberships without treating UNKNOWN as negative evidence.
+- evidence:
+  - `daily_shadow_history_reader_v0_1.mjs`: state becomes HISTORY_COVERAGE_INCOMPLETE when historyReadyCount < currentCount and CONTINUITY_NOT_VERIFIED when continuityReadyCount < currentCount.
+  - `daily_shadow_input_preflight_v0_1.mjs`: sourceAndHistoryReady requires historyCoverage.state === READY; otherwise all assessor evaluation/capacity is globally blocked.
+  - `strategy_evaluator.mjs`: missing required evidence maps that symbol to strategyValidity=INCOMPLETE and entryReadiness=BLOCKED.
+  - `limited_shadow_v0_1.mjs`: INCOMPLETE is a valid frozen decision state rather than a system-wide failure.
+  - `SYSTEM2_LIMITED_SHADOW_PREREGISTRY_V0_1.md`: INCOMPLETE / WATCH / REJECTED / QUALIFIED_NOT_SELECTED records must all be frozen; missing REQUIRED evidence is INCOMPLETE + BLOCKED.
+  - `daily_shadow_capacity_orchestrator_v0_1.mjs`: prior memberships with INCOMPLETE are preserved but are not active-monitor eligible; non-qualified new candidates are diagnosed rather than globally crashing capacity.
+- riskIfUnfixed: A newly listed stock, a symbol-specific missing bar, unresolved corporate-action continuity, or one local provenance gap can indefinitely prevent all S2-07 strategy evaluation and physical `s2_capacity_runs`, producing opportunity starvation and preventing prospective Shadow evidence from accumulating even for clean symbols. This is a critical-path design contradiction rather than a legitimate zero-pick day.
+- requiredCorrection:
+  1. Separate global infrastructure/source integrity from symbol-level evaluation readiness.
+  2. Keep global fail-closed blocking for whole-universe defects such as invalid source date, broken decision clock, source-wide corruption, unreconciled global revision ambiguity, or missing mandatory market-wide source identity.
+  3. Convert symbol-local history/continuity/missing-evidence gaps into per-symbol readiness states that flow to `INCOMPLETE/BLOCKED` decisions instead of globally blocking every symbol.
+  4. Allow otherwise-ready symbols to proceed through authorized assessor -> frozen decision -> ranking/capacity when their own required evidence is valid.
+  5. Preserve complete accounting for every current-universe symbol: evaluated, INCOMPLETE, invalidated, excluded, or otherwise explicitly classified.
+  6. Do not invent a new arbitrary market-wide coverage percentage threshold merely to make the pipeline run.
+  7. Separate capacity readiness from zero-pick truth. If some symbols remain INCOMPLETE and no ready symbol is selected, do not falsely claim a clean zero-pick day; record partial/incomplete denominator semantics explicitly.
+  8. Preserve per-symbol PIT, availableAt, continuity and revision guards. This correction must not downgrade evidence quality or turn UNKNOWN into PASS/0.
+  9. Add regression tests for mixed universes: clean symbols + one newly listed/incomplete symbol + one continuity-blocked symbol, proving clean symbols can evaluate while incomplete symbols remain blocked and fully accounted.
+- acceptanceCriteria:
+  - A symbol-local history/continuity gap no longer forces all otherwise-ready symbols into INPUTS_NOT_READY.
+  - Whole-universe/source-integrity failures still fail closed globally.
+  - Every symbol remains denominator-accounted with explicit readiness/reason provenance.
+  - INCOMPLETE symbols cannot become BUY_ELIGIBLE, ACTIVE_ENTRY_MONITOR, or capacity admissions.
+  - Ready symbols can reach authorized Shadow evaluation/capacity without imputing missing evidence for blocked symbols.
+  - zeroPickDay is not asserted when denominator completeness required for that claim is unresolved; partial coverage is explicit.
+  - No arbitrary coverage threshold is introduced without separate preregistration/evidence.
+  - System 1 Formal Core, System 2 production selection authority, live push, capital and orders remain unchanged.
+- protectedBoundaries: System 1 Formal Core; System 2 live/final-selection authority; production push/runtime; capital/order; PIT/UNKNOWN semantics; no invented thresholds.
+- ownerDecisionRequired: false for restoring canonical per-symbol UNKNOWN semantics in research/shadow; any later production minimum-coverage policy remains separately owner/evidence gated.
+- implementationEvidence: PENDING
+- verificationEvidence: PENDING
+- finalDisposition: PENDING
+- updatedAt: 2026-10-04T22:51:00+08:00
+
 
 ## Closed directives
 
