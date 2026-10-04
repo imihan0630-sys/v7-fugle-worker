@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T11:42:00+08:00",
+  "updatedAt": "2026-10-04T11:40:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 43.8
+    "maturityWeightedPct": 43.9
   },
   "domains": [
     {
@@ -1467,7 +1467,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「Breadth×Regime交互作用」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "DEPENDENCY_BUILDER_READY / GENUINE_SAME_CLOCK_JOINT_RECEIPT_MISSING / KEEP_L2",
+          "next": "BR-063 persist the first genuine same-clock D18 observable-regime context plus official breadth receipt on a future completed Taiwan session; no historical backfill or fixture substitution."
         },
         {
           "id": "D09-13",
@@ -1498,7 +1500,7 @@
       "anchors": [
         "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md"
       ],
-      "maturityPct": 55.4,
+      "maturityPct": 56.9,
       "modules": [
         {
           "id": "D10-01",
@@ -1529,10 +1531,12 @@
         {
           "id": "D10-04",
           "name": "產能／擴產／稼動率",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「產能／擴產／稼動率」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "CROSS_INDUSTRY_CAPACITY_SOURCE_CONTRACT_PIT_FEASIBLE / TSMC_CSC_POSITIVE_CASES / GLOBALWAFERS_UNKNOWN_CONTROL / UTILIZATION_NOT_SYNTHESIZED / OUTCOMES_CLOSED",
+          "next": "SC-053 prospectively append issuer-native capacity/production/HVM vintages; seek an issuer-disclosed true utilization-rate case and a delay/cancellation/low-utilization control before any L4 outcome test."
         },
         {
           "id": "D10-05",
