@@ -1459,3 +1459,44 @@ Therefore the following remain authoritative:
 6. only after history + continuity are READY address `ASSESSOR_POLICY_NOT_FROZEN`, then Strategy -> Ranking -> Capacity -> real `s2_capacity_runs`.
 
 System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
+
+## 2026-10-04 S2-07 supplemental revision blocker receipt — PHYSICALLY VERIFIED
+
+PR #488 merged as `fd3a6ecd128508b9deb0a07ff67e6c658c95b00d`.
+
+Physical result:
+- 6/6 final-result continuity lanes READY;
+- only 2/6 lanes currently have representative issuer revision controls;
+- only 2/6 lanes currently have representative authority-route controls;
+- 0/6 lanes satisfy complete supplemental revision history.
+
+Common blockers on all six lanes:
+- prospective public availability not certified;
+- exact knownAt not certified;
+- bounded supplemental revision history not proven;
+- cancellation history not complete.
+
+Additional representative-control blockers remain on four lanes:
+- TWSE par-value change;
+- TPEx ex-right/dividend;
+- TPEx capital reduction;
+- TPEx par-value change.
+
+### Exact continuation
+1. mine real representative controls from official final-result events for the four missing lanes;
+2. verify MOPS original/correction/cancellation chains for candidate symbols before freezing controls;
+3. join the selected controls to the correct exchange authority records;
+4. update the blocker receipt only after physical representative-control PASS;
+5. keep prospective knownAt as a separate evidence debt requiring future real observations;
+6. after revision representative coverage, continue bounded completeness and suspension/session integration.
+
+Authoritative flags remain:
+`knownAtVersionClockCertified=false`,
+`revisionCoverageComplete=false`,
+`noEventMayBeClaimed=false`,
+`suspensionCoverageComplete=false`,
+`symbolSessionCompletenessCertified=false`,
+`technicalContinuityCertified=false`,
+all trading authority false.
+
+System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
