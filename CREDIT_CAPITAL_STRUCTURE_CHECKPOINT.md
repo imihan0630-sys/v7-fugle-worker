@@ -1,8 +1,8 @@
 # Credit / Capital Structure Checkpoint
 
-Updated: 2026-10-04 07:22 Asia/Taipei
+Updated: 2026-10-04 08:50 Asia/Taipei
 Scope: D22｜信用市場／資本結構／融資壓力／股債傳導
-Status: ACTIVE_RESEARCH / D22-01 L3 / D22-02 L3 / D22-03 L3 / D22-04 L2_ACTIVE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
+Status: ACTIVE_RESEARCH / D22-01_TO_03_L3 / D22-04_TO_12_L2_OR_HIGHER / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - Canonical continuation checkpoint for D22.
@@ -125,3 +125,86 @@ Primary active module: D22-04.
 5. test divergent states: stable benchmark + wider issuer spread; rising benchmark + stable spread; high maturity wall + cash repayment/no refinancing;
 6. keep equity outcomes CLOSED until cross-issuer/multi-date replay and D13/D22-01/D22-02/D22-03 redundancy controls are ready;
 7. in parallel continue D22-01~03 multi-date/version-lineage panel expansion.
+
+## 2026-10-04 08:50 continuation｜D22-05 through D22-12 mechanism/falsification phase complete
+
+### Domain maturity
+D22 = 45.0%.
+- D22-01: L3 / 60%
+- D22-02: L3 / 60%
+- D22-03: L3 / 60%
+- D22-04: L2 / 40%
+- D22-05: L2 / 40%
+- D22-06: L2 / 40%
+- D22-07: L2 / 40%
+- D22-08: L2 / 40%
+- D22-09: L2 / 40%
+- D22-10: L2 / 40%
+- D22-11: L2 / 40%
+- D22-12: L2 / 40%
+
+This promotion is a completed mechanism-and-falsification stage, not a predictive-alpha claim. Equity outcomes remain CLOSED.
+
+### D22-05｜Credit Rating / Rating Migration
+- Freeze issuer rating, issue rating, outlook, watch/review, upgrade/downgrade and withdrawal as separate event types.
+- A downgrade may be anticipated by equity/credit prices or prior watch/outlook. Downgrade is not automatically a new bearish signal.
+- Rating-agency/event publication timestamp is the PIT clock; later rating-history tables cannot backfill earlier states.
+- Durable file: `research/d22_05_credit_rating_migration_contract_v0_1.json`.
+
+### D22-06｜Credit Spread / Bond Yield
+- Corporate spread is not pure PD. It can contain expected loss, systematic risk premium, liquidity, option/technical/tax effects and noise.
+- Actual trade, quote, reference rate and fair value are distinct provenance classes.
+- No-trade/stale observations remain UNKNOWN; benchmark currency/duration mismatch blocks clean spread construction.
+- TPEx provides a feasible Taiwan source route, but issuer-security-date replay is still pending.
+- Durable file: `research/d22_06_credit_spread_bond_yield_contract_v0_1.json`.
+
+### D22-07｜Liquidity / Covenant / Default Risk
+- Cash availability, committed facility drawability, covenant type/cushion, breach, waiver and cross-default are separate states.
+- Covenant breach is not equivalent to default; waiver/renegotiation is a competing path.
+- If ICR is itself a covenant metric, D22-02 owns the primitive ratio and D22-07 owns only the contractual trigger/cushion transformation.
+- Durable file: `research/d22_07_liquidity_covenant_default_contract_v0_1.json`.
+
+### D22-08｜Fixed / Floating Rate Exposure
+- Floating debt transmits benchmark changes faster; fixed debt delays current cash-flow pass-through but can create a rollover cliff.
+- Reset index/frequency, floor/cap, maturity and hedge notional/maturity are required; fixed/floating share alone is insufficient.
+- D13 owns the rate move, D22-08 owns exposure/transmission, D22-04 owns replacement cost, D22-01 owns maturity amount/timing.
+- Durable file: `research/d22_08_fixed_floating_rate_exposure_contract_v0_1.json`.
+
+### D22-09｜Equity-Credit Divergence
+- No default assumption that credit leads equity. Literature supports equity-leading, credit-leading and bidirectional states depending on liquidity/information regime.
+- Divergence requires session-aligned fresh equity and credit observations; a stale bond mark cannot be compared naively with a live equity close.
+- Lead/lag windows must be preregistered before outcomes are opened.
+- Durable file: `research/d22_09_equity_credit_divergence_contract_v0_1.json`.
+
+### D22-10｜Capital Structure / Funding Mix
+- Trade-off, pecking-order, market-timing and agency/debt-overhang mechanisms can coexist; no single theory gets default authority.
+- Funding mix is a vector: internal cash, bank debt, bonds, private debt, convertibles, equity, seniority/security, currency, maturity and rate type.
+- More debt is not automatically worse; more equity is not automatically safer.
+- D07 owns accounting leverage; D11 owns financing event identity; D22-10 owns financing-structure transformation/sequencing.
+- Durable file: `research/d22_10_capital_structure_funding_mix_contract_v0_1.json`.
+
+### D22-11｜Credit Cycle / Bank Lending Conditions
+- Loan growth alone cannot identify credit supply because demand and supply are confounded.
+- Bank standards/pricing/terms and bank-to-bond substitution are candidate supply-state evidence.
+- D13 owns policy/risk-free rates; D22-11 owns incremental bank-credit availability/terms.
+- Aggregate credit state only maps to issuer risk when pre-known bank dependence/funding mix is evidenced.
+- Durable file: `research/d22_11_credit_cycle_bank_lending_contract_v0_1.json`.
+
+### D22-12｜Distress / Recovery / Equity Tail Risk
+- PD, LGD/recovery, distress state and equity tail risk are distinct objects.
+- Merton/distance-to-default is a structural model-dependent proxy, not true observed PD.
+- Recovery is state/seniority/collateral dependent; one universal recovery percentage is prohibited.
+- Distress does not guarantee future stock underperformance; literature is mixed and primitive-input/issuance redundancy must be tested.
+- Inputs shared with D07/D22-02/03/06 are one primitive family, not multiple independent votes.
+- Durable file: `research/d22_12_distress_recovery_tail_risk_contract_v0_1.json`.
+
+### Second-stage blocker and continuation
+D22-04 is deliberately held at L2 because a clean Taiwan issuer-security-date historical market-yield replay has not yet been validated. The dynamic TPEx query route was unavailable in this run, so no synthetic market-yield history was fabricated.
+
+Exact continuation:
+1. D22-04 + D22-06: security-level TPEx multi-date replay with actual-trade/quote/reference/fair-value provenance and benchmark matching.
+2. D22-05: rating-event PIT replay with prior watch/outlook and market-anticipation controls.
+3. D22-07 + D22-08: covenant/facility and fixed-floating/reset/hedge PIT issuer panels.
+4. D22-09~12: move to L3 only after their required upstream data families become independently replayable.
+5. Equity outcomes stay CLOSED; Formal Core stays LOCKED.
+
