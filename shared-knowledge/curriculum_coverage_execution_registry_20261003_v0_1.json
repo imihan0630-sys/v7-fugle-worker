@@ -1,6 +1,6 @@
 {
   "schemaVersion": "CURRICULUM_COVERAGE_EXECUTION_REGISTRY_V0_1",
-  "updatedAt": "2026-10-04T19:31:00+08:00",
+  "updatedAt": "2026-10-04T21:31:00+08:00",
   "status": "COV02_COV03_COV04_COV05_CANONICAL_UPDATE_COMPLETE / COV01_06_07_08_09_10_11_12_PARTIAL / NO_GENERIC_PENDING",
   "formalCoreImpact": "NONE_LOCKED",
   "canonicalSnapshot": {
@@ -47,7 +47,7 @@
       "domain": "D10",
       "room": "07｜產業與供應鏈研究室",
       "class": "SCOPE_EXTENSION_CANDIDATE",
-      "state": "PARTIAL_EVIDENCE_RECEIVED",
+      "state": "OWNER_APPROVAL_REQUIRED",
       "returnPath": "research/COV06_D10_SPECIALIST_RETURN_V0_1.md"
     },
     {
@@ -63,7 +63,7 @@
       "domain": "D20",
       "room": "13｜行為金融與市場心理研究室",
       "class": "TRUE_GAP_CANDIDATE",
-      "state": "PARTIAL_EVIDENCE_RECEIVED",
+      "state": "OWNER_APPROVAL_REQUIRED",
       "returnPath": "research/COV10_D20_SPECIALIST_RETURN_V0_1.md"
     },
     {
@@ -139,7 +139,7 @@
       "domain": "D16",
       "room": "11｜統計驗證與策略市場狀態研究室",
       "class": "SCOPE_EXTENSION_CANDIDATE",
-      "state": "PARTIAL_EVIDENCE_RECEIVED",
+      "state": "OWNER_APPROVAL_REQUIRED",
       "returnPath": "research/COV08_D16_SPECIALIST_RETURN_V0_1.md"
     },
     {
@@ -268,30 +268,13 @@
     "canonicalReceiptJson": "shared-knowledge/curriculum_cov02_canonical_update_receipt_20261004_v0_1.json"
   },
   "cov08": {
-    "state": "PARTIAL_EVIDENCE_RECEIVED",
-    "readiness": "SPECIALIST_RETURN_READY_PENDING_TERMINAL_RECOMMENDATION",
-    "candidate": "Dependence-aware Resampling / Block Bootstrap",
-    "likelyOwner": "D16-06",
-    "likelyDisposition": "EXTEND_EXISTING_SCOPE_OR_MERGE_INTO_EXISTING",
-    "acceptedEvidence": [
-      "research/D16_D18_PROMOTION_GATE_V0_1.md",
-      "research/D16_D18_VALIDATION_CHECKPOINT.md",
-      "research/stock_market_learning_tracker_v0_1.json"
-    ],
-    "closedQuestions": [
-      "IID inference failure under serial dependence",
-      "stationary/moving block bootstrap as dependence-aware candidates",
-      "block length/bandwidth must be documented and sensitivity-tested",
-      "resampling variants are validation methods, not independent votes",
-      "D16-06 is the natural module-level owner"
-    ],
-    "remaining": [
-      "freeze when cluster-robust/HAC is sufficient versus block bootstrap required",
-      "freeze minimum sample/effective-sample/block-length reporting",
-      "submit exactly one terminal recommendation",
-      "commit research/COV08_D16_SPECIALIST_RETURN_V0_1.md"
-    ],
+    "state": "OWNER_APPROVAL_REQUIRED",
+    "terminalRecommendation": "EXTEND_EXISTING_SCOPE",
+    "targetModule": "D16-06",
+    "audit": "shared-knowledge/CURRICULUM_COVERAGE_COV08_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md",
+    "machineAudit": "shared-knowledge/curriculum_coverage_cov08_intake_dependency_audit_20261004_v0_1.json",
     "maturityChange": "NONE",
+    "moduleCountChange": 0,
     "formalCoreImpact": "NONE_LOCKED"
   },
   "cov09": {
@@ -382,54 +365,26 @@
     "formalCoreImpact": "NONE_LOCKED"
   },
   "cov06": {
-    "state": "PARTIAL_EVIDENCE_RECEIVED",
-    "readiness": "GRAPH_TOPOLOGY_OWNER_EVIDENCE_PENDING",
-    "candidate": "Supply-chain Network Centrality / Single-point Failure / Resilience",
-    "acceptedEvidence": [
-      "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md",
-      "research/stock_market_learning_tracker_v0_1.json"
-    ],
-    "closedQuestions": [
-      "D10-01 owns supply-chain mapping",
-      "D10-12 owns issuer exposure mapping",
-      "effective-dated PIT source-vintage semantics exist",
-      "UNKNOWN and exposure/substitution cautions exist",
-      "lead-lag and transmission cannot substitute for topology"
-    ],
-    "remaining": [
-      "define graph node/edge/direction/weight schema for topology use",
-      "define articulation/single-point-failure and alternate-path redundancy metrics",
-      "define substitution/qualification constraints and incomplete-graph UNKNOWN",
-      "provide at least one Taiwan effective-dated topology witness with alternate-path semantics",
-      "compare incremental information versus D10-01 mapping, D07 concentration and D17 propagation",
-      "choose exactly one terminal recommendation",
-      "commit research/COV06_D10_SPECIALIST_RETURN_V0_1.md"
-    ],
+    "state": "OWNER_APPROVAL_REQUIRED",
+    "terminalRecommendation": "EXTEND_EXISTING_SCOPE",
+    "targetModule": "D10-01",
+    "audit": "shared-knowledge/CURRICULUM_COVERAGE_COV06_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md",
+    "machineAudit": "shared-knowledge/curriculum_coverage_cov06_intake_dependency_audit_20261004_v0_1.json",
     "maturityChange": "NONE",
+    "moduleCountChange": 0,
     "formalCoreImpact": "NONE_LOCKED"
   },
   "cov10": {
-    "state": "PARTIAL_EVIDENCE_RECEIVED",
-    "readiness": "BELIEF_UPDATING_OWNER_AND_OBSERVABLE_PROXY_PENDING",
-    "candidate": "Belief-updating Bias umbrella",
-    "existingOwners": {
-      "D20-04": "Anchoring / Reference Dependence",
-      "D20-05": "Representativeness / Recency",
-      "D20-07": "Investor Attention / Salience",
-      "D20-08": "Underreaction / Post-event Drift",
-      "D20-12": "Behavioral-vs-Structural Falsification"
-    },
-    "remaining": [
-      "separate confirmation bias vs belief perseverance vs conservatism",
-      "prove one common belief-updating owner adds capability beyond D20-04/D20-05/D20-08",
-      "freeze at least one Taiwan-replayable observable proxy that is not price-action-only",
-      "define first-known/edit/revision/UNKNOWN semantics",
-      "falsify attention, anchoring, representativeness and structural information-diffusion alternatives",
-      "prevent three named biases from becoming three votes",
-      "choose exactly one terminal recommendation",
-      "commit research/COV10_D20_SPECIALIST_RETURN_V0_1.md"
-    ],
-    "maturityChange": "NONE",
+    "state": "OWNER_APPROVAL_REQUIRED",
+    "terminalRecommendation": "ADD_MODULE",
+    "proposedModuleId": "D20-14",
+    "proposedName": "Belief Updating Biases / Confirmation–Perseverance–Conservatism（信念更新偏誤／確認偏誤－信念固著－保守更新）",
+    "proposedStartingLevel": "L0",
+    "proposedStartingMaturityPct": 0,
+    "audit": "shared-knowledge/CURRICULUM_COVERAGE_COV10_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md",
+    "machineAudit": "shared-knowledge/curriculum_coverage_cov10_intake_dependency_audit_20261004_v0_1.json",
+    "maturityInheritance": false,
+    "moduleCountChangeIfApproved": 1,
     "formalCoreImpact": "NONE_LOCKED"
   },
   "cov11": {
