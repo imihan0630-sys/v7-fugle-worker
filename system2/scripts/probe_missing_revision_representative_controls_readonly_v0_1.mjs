@@ -17,7 +17,7 @@ const CANDIDATES=Object.freeze([
 ]);
 
 const FAMILY_PATTERNS=Object.freeze({
-  EX_RIGHT_DIVIDEND:/除權|除息|除權息|配息|股利|盈餘分配|基準日/,
+  EX_RIGHT_DIVIDEND:/除權|除息|除權息|配息|現金股利|股票股利|股利分派|盈餘分配/,
   CAPITAL_REDUCTION:/減資|減資換股|彌補虧損/,
   PAR_VALUE_CHANGE:/每股面額|面額變更|變更面額|票面金額|換發股票|新股票換發/,
 });
