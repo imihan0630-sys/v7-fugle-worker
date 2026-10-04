@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-04 15:13 Asia/Taipei
+Updated: 2026-10-04 15:28 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -20,7 +20,7 @@ Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
 
 - createdAt: 2026-10-04T15:13:33+08:00
 - severity: HIGH
-- status: OPEN
+- status: ACKNOWLEDGED
 - affectedScope: S2-03 Historical infrastructure / P0 2017-present TWSE+TPEx daily A1 cold history
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement: System 2 historical infrastructure must physically populate and verify the staged official 2017-present Taiwan-equity daily history before it can be described as complete or used as complete full-market replay evidence.
@@ -49,10 +49,15 @@ Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
   - System 1 Formal Core and production runtime remain unchanged.
 - protectedBoundaries: System 1 Formal Core; System 2 live selection authority; production push; capital/order impact; no retrospective data relabeled as prospective evidence.
 - ownerDecisionRequired: false for the currently authorized isolated research backfill/resumption; any new paid source, new permissions, secrets, production/runtime change or protected Class B/C change requires owner approval.
-- implementationEvidence: PENDING
+- implementationEvidence:
+  - Latest main re-read confirms repaired `system2-historical-pack-2017-backfill.yml` remains manual `workflow_dispatch`, isolated to `system2-research`, with TWSE-first/TPEX-second ordering.
+  - Current annual script fast-path verifies an existing COMPLETE receipt and referenced R2 objects before accepting `ALREADY_COMPLETE`; otherwise it fetches official historical A1, builds external cold packs, writes immutable R2 objects/D1 manifests, and issues receipt-last completion.
+  - GitHub connector available to this control room has read/rerun actions but no new `workflow_dispatch` action. Re-running historical run `36545375167` is rejected because it would bind the old run SHA rather than the repaired current main.
+  - Controlled browser profiles currently have no recorded GitHub sign-in, so web dispatch cannot be executed without owner login authorization.
+  - Exact next executable action after GitHub browser sign-in: run `.github/workflows/system2-historical-pack-2017-backfill.yml` from latest `main` with `market=TWSE`, then independently verify receipt/manifests/R2 hashes/coverage before allowing TPEX.
 - verificationEvidence: PENDING
 - finalDisposition: PENDING
-- updatedAt: 2026-10-04T15:13:33+08:00
+- updatedAt: 2026-10-04T15:28:00+08:00
 
 
 ## Closed directives
