@@ -1,0 +1,296 @@
+name: Room09 D12 IV surface replay readonly
+
+on:
+  push:
+    branches:
+      - research-room09-d12-taifex-source-smoke-20261004
+    paths:
+      - .github/workflows/room09-d12-iv-surface-replay-readonly.yml
+
+permissions:
+  contents: read
+
+jobs:
+  iv-surface-replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Fetch frozen official parents and compute outcome-blind IV/skew/surface diagnostics
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          curl --fail --silent --show-error --location --retry 2 \
+            --data-urlencode "queryStartDate=2026/10/02" \
+            --data-urlencode "queryEndDate=2026/10/02" \
+            --data-urlencode "down_type=1" \
+            --data-urlencode "commodity_id=TXO" \
+            --data-urlencode "commodity_id2=" \
+            "https://www.taifex.com.tw/cht/3/optDataDown" -o /tmp/txo.csv
+
+          curl --fail --silent --show-error --location --retry 2 \
+            --data-urlencode "queryStartDate=2026/10/02" \
+            --data-urlencode "queryEndDate=2026/10/02" \
+            --data-urlencode "down_type=1" \
+            --data-urlencode "commodity_id=TX" \
+            --data-urlencode "commodity_id2=" \
+            "https://www.taifex.com.tw/cht/3/futDataDown" -o /tmp/tx.csv
+
+          curl --fail --silent --show-error --location --retry 2 \
+            -D /tmp/rate.headers \
+            "https://www.cbc.gov.tw/tw/public/data/a13rate.xls" -o /tmp/a13rate.xls
+
+          python - <<'PY'
+          import csv, datetime as dt, hashlib, io, json, math, re, statistics
+
+          EXPECTED={
+              "/tmp/txo.csv":"61574590f9c8a1c882616f89090d39cbd44e00a91bd93055ff046ff4ab287c2a",
+              "/tmp/tx.csv":"d41cc8c279d805a0ebb13c29f3ff757cdc78a35d7a2e13fc06be4b3f3aeb1834",
+              "/tmp/a13rate.xls":"4530cbe4fda52f124bb7bc0cb621bce374f4d8a9607b3ce72021d836038e2d16"
+          }
+          for p,expected in EXPECTED.items():
+              got=hashlib.sha256(open(p,"rb").read()).hexdigest()
+              if got != expected:
+                  raise SystemExit(f"HASH_MISMATCH {p} {got}")
+
+          hdr=open("/tmp/rate.headers","r",encoding="utf-8",errors="replace").read()
+          m=re.search(r"(?im)^Last-Modified:\s*(.+)$",hdr)
+          last_modified=m.group(1).strip() if m else None
+
+          # Frozen from official CBC 11509 rows for current five banks, source hash above.
+          # Fixed time-deposit annual quoted rates, percent.
+          banks={
+              "台銀":{30:1.225,90:1.290,180:1.465,270:1.580,365:1.700},
+              "土銀":{30:1.225,90:1.285,180:1.460,270:1.575,365:1.700},
+              "合庫":{30:1.225,90:1.285,180:1.465,270:1.580,365:1.700},
+              "一銀":{30:1.225,90:1.285,180:1.435,270:1.545,365:1.700},
+              "華銀":{30:1.225,90:1.285,180:1.435,270:1.545,365:1.700}
+          }
+          knots={d:sum(b[d] for b in banks.values())/len(banks) for d in [30,90,180,270,365]}
+
+          def rate_for(days):
+              ds=sorted(knots)
+              if days <= ds[0]: return knots[ds[0]]/100
+              if days >= ds[-1]: return knots[ds[-1]]/100
+              for a,b in zip(ds,ds[1:]):
+                  if a <= days <= b:
+                      w=(days-a)/(b-a)
+                      return (knots[a]+w*(knots[b]-knots[a]))/100
+              raise RuntimeError("rate interp")
+
+          def norm_cdf(x):
+              return 0.5*(1+math.erf(x/math.sqrt(2)))
+
+          def black76(F,K,T,r,sigma,cp):
+              if T<=0 or sigma<=0 or F<=0 or K<=0: return None
+              s=sigma*math.sqrt(T)
+              d1=(math.log(F/K)+0.5*sigma*sigma*T)/s
+              d2=d1-s
+              D=math.exp(-r*T)
+              if cp=="買權":
+                  return D*(F*norm_cdf(d1)-K*norm_cdf(d2))
+              return D*(K*norm_cdf(-d2)-F*norm_cdf(-d1))
+
+          def implied_vol(price,F,K,T,r,cp):
+              D=math.exp(-r*T)
+              lo=D*max(F-K,0) if cp=="買權" else D*max(K-F,0)
+              hi=D*F if cp=="買權" else D*K
+              if not (price >= lo-1e-8 and price <= hi+1e-8):
+                  return None,"PRICE_BOUND_FAIL"
+              a,b=1e-6,5.0
+              fa=black76(F,K,T,r,a,cp)-price
+              fb=black76(F,K,T,r,b,cp)-price
+              if fa>0 or fb<0:
+                  return None,"ROOT_BRACKET_FAIL"
+              for _ in range(100):
+                  mid=(a+b)/2
+                  fm=black76(F,K,T,r,mid,cp)-price
+                  if abs(fm)<1e-8: return mid,"PASS"
+                  if fm>0: b=mid
+                  else: a=mid
+              return (a+b)/2,"PASS"
+
+          def solve(A,b):
+              n=len(b)
+              M=[list(map(float,A[i]))+[float(b[i])] for i in range(n)]
+              for i in range(n):
+                  piv=max(range(i,n),key=lambda k:abs(M[k][i]))
+                  if abs(M[piv][i])<1e-12: return None
+                  M[i],M[piv]=M[piv],M[i]
+                  v=M[i][i]
+                  M[i]=[x/v for x in M[i]]
+                  for k in range(n):
+                      if k==i: continue
+                      f=M[k][i]
+                      M[k]=[M[k][j]-f*M[i][j] for j in range(n+1)]
+              return [M[i][-1] for i in range(n)]
+
+          def polyfit(points,degree):
+              xs=[p[0] for p in points]; ys=[p[1] for p in points]
+              n=degree+1
+              A=[[sum((x**(i+j)) for x in xs) for j in range(n)] for i in range(n)]
+              b=[sum(y*(x**i) for x,y in zip(xs,ys)) for i in range(n)]
+              return solve(A,b)
+
+          def pred(coef,x):
+              return sum(c*(x**i) for i,c in enumerate(coef))
+
+          def rmse(points,coef):
+              return math.sqrt(sum((y-pred(coef,x))**2 for x,y in points)/len(points))
+
+          def loo_rmse(points,degree):
+              if len(points) <= degree+2: return None
+              se=[]
+              for i,p in enumerate(points):
+                  train=points[:i]+points[i+1:]
+                  c=polyfit(train,degree)
+                  if c is None: return None
+                  se.append((p[1]-pred(c,p[0]))**2)
+              return math.sqrt(sum(se)/len(se))
+
+          def med(vals):
+              return None if not vals else statistics.median(vals)
+
+          def read_csv(path):
+              return list(csv.reader(io.StringIO(open(path,"rb").read().decode("cp950"))))
+
+          opt=read_csv("/tmp/txo.csv")
+          oh=opt[0]
+          oi={h.strip():i for i,h in enumerate(oh)}
+          def ov(row,name):
+              i=oi[name]
+              return row[i].strip() if i<len(row) else ""
+          def num(s):
+              s=(s or "").replace(",","").strip()
+              if not s or s=="-": return None
+              try:return float(s)
+              except:return None
+
+          fut=read_csv("/tmp/tx.csv")
+          fh=fut[0]; fi={h.strip():i for i,h in enumerate(fh)}
+          def fv(row,name):
+              i=fi[name]
+              return row[i].strip() if i<len(row) else ""
+
+          forwards={}
+          for row in fut[1:]:
+              if not row or fv(row,"契約")!="TX" or fv(row,"交易時段")!="一般": continue
+              exp=fv(row,"到期月份(週別)")
+              if not re.fullmatch(r"\d{6}",exp): continue
+              bid=num(fv(row,"最後最佳買價")); ask=num(fv(row,"最後最佳賣價"))
+              if bid and ask and ask>=bid:
+                  forwards[exp]=(bid+ask)/2
+
+          source_clock=dt.datetime(2026,10,2,13,45,0)
+          expiries={}
+          fails={}
+          for row in opt[1:]:
+              if not row or ov(row,"契約")!="TXO" or ov(row,"交易時段")!="一般": continue
+              exp=ov(row,"到期月份(週別)")
+              if exp not in forwards or not re.fullmatch(r"\d{6}",exp): continue
+              expiry_date=ov(row,"契約到期日")
+              if not re.fullmatch(r"\d{8}",expiry_date): continue
+              bid=num(ov(row,"最後最佳買價")); ask=num(ov(row,"最後最佳賣價"))
+              K=num(ov(row,"履約價")); cp=ov(row,"買賣權")
+              if bid is None or ask is None or bid<=0 or ask<bid or K is None: continue
+              exdt=dt.datetime.strptime(expiry_date,"%Y%m%d").replace(hour=13,minute=30)
+              seconds=(exdt-source_clock).total_seconds()
+              if seconds<=0: continue
+              days=seconds/86400
+              T=days/365
+              r=rate_for(days)
+              F=forwards[exp]
+              mid=(bid+ask)/2
+              iv,state=implied_vol(mid,F,K,T,r,cp)
+              if iv is None:
+                  fails[state]=fails.get(state,0)+1
+                  continue
+              x=math.log(K/F)
+              rel=(ask-bid)/mid if mid>0 else None
+              expiries.setdefault(exp,{"expiryDate":expiry_date,"F":F,"days":days,"T":T,"r":r,"points":[]})["points"].append({
+                  "K":K,"cp":cp,"mid":mid,"bid":bid,"ask":ask,"relSpread":rel,"iv":iv,"x":x
+              })
+
+          def features(e,spread_cap=None):
+              pts=e["points"]
+              chosen=[]
+              byk={}
+              for p in pts:
+                  if abs(p["x"])>0.10: continue
+                  if spread_cap is not None and (p["relSpread"] is None or p["relSpread"]>spread_cap): continue
+                  byk.setdefault(p["K"],[]).append(p)
+              for K,rows in sorted(byk.items()):
+                  x=math.log(K/e["F"])
+                  desired="賣權" if x<0 else "買權"
+                  cand=[p for p in rows if p["cp"]==desired]
+                  if abs(x)<=0.005:
+                      cand=rows
+                  if not cand: continue
+                  iv=statistics.median([p["iv"] for p in cand])
+                  rel=statistics.median([p["relSpread"] for p in cand])
+                  chosen.append((x,iv,rel,K))
+              xy=[(x,iv) for x,iv,_,_ in chosen]
+              if len(xy)<8: return {"n":len(xy),"state":"INSUFFICIENT"}
+              atm=[iv for x,iv in xy if abs(x)<=0.01]
+              if len(atm)<2:
+                  atm=[iv for x,iv in sorted(xy,key=lambda z:abs(z[0]))[:3]]
+              atm_iv=med(atm)
+              dn=med([iv for x,iv in xy if -0.08<=x<=-0.02])
+              up=med([iv for x,iv in xy if 0.02<=x<=0.08])
+              lin=polyfit(xy,1)
+              quad=polyfit(xy,2)
+              lcv=loo_rmse(xy,1)
+              qcv=loo_rmse(xy,2)
+              return {
+                  "state":"PASS","n":len(xy),
+                  "xMin":min(x for x,_ in xy),"xMax":max(x for x,_ in xy),
+                  "medianRelSpread":med([r for _,_,r,_ in chosen]),
+                  "atmIv":atm_iv,
+                  "downsideMinusAtm":None if dn is None else dn-atm_iv,
+                  "upsideMinusAtm":None if up is None else up-atm_iv,
+                  "downsideMinusUpside":None if dn is None or up is None else dn-up,
+                  "linearCoef":lin,
+                  "quadraticCoef":quad,
+                  "linearRmse":rmse(xy,lin) if lin else None,
+                  "quadraticRmse":rmse(xy,quad) if quad else None,
+                  "linearLooRmse":lcv,"quadraticLooRmse":qcv,
+                  "quadraticLooGainPct":None if not lcv or qcv is None else (lcv-qcv)/lcv*100
+              }
+
+          output={
+              "methodVersion":"ROOM09_D12_IV_SURFACE_REPLAY_V0_1",
+              "sourceDate":"2026-10-02",
+              "sourceClockProxy":"13:45 Asia/Taipei regular-session close; daily last-best quotes have no synchronized per-row timestamps",
+              "expiryClock":"13:30 Asia/Taipei on contract expiry/last-trading day",
+              "optionSha256":EXPECTED["/tmp/txo.csv"],
+              "futuresSha256":EXPECTED["/tmp/tx.csv"],
+              "rateSourceSha256":EXPECTED["/tmp/a13rate.xls"],
+              "rateSourceLastModified":last_modified,
+              "rateSourceMonth":"11509",
+              "primaryRateConvention":{
+                  "source":"CBC five current major-bank posted fixed time-deposit rates",
+                  "banks":list(banks),
+                  "crossBankMeanPctByCalendarTenorDays":knots,
+                  "interpolation":"piecewise linear in quoted annual percent by calendar days; <=30d flat 1m; >=365d flat 1y",
+                  "discount":"exp(-r*T), ACT/365 research proxy"
+              },
+              "forwardConvention":"same-expiry TX regular-session final best-bid/ask midpoint",
+              "ivModel":"Black-76 European option on futures forward",
+              "surfaceWindow":"combined OTM smile, abs(log(K/F))<=0.10; ATM abs(log(K/F))<=0.01",
+              "simpleSkewBands":"downside [-0.08,-0.02], upside [0.02,0.08]",
+              "fitComparison":"unweighted linear IV(x) vs quadratic IV(x); leave-one-strike-out RMSE; outcome-blind",
+              "ivFailures":fails,
+              "expiries":{}
+          }
+          for exp,e in sorted(expiries.items()):
+              output["expiries"][exp]={
+                  "expiryDate":e["expiryDate"],"forward":e["F"],
+                  "calendarDays":e["days"],"ratePct":e["r"]*100,
+                  "rawSolvedPointCount":len(e["points"]),
+                  "allEligible":features(e,None),
+                  "spreadLe25pct":features(e,0.25),
+                  "spreadLe10pct":features(e,0.10)
+              }
+
+          print("ROOM09_D12_IV_SURFACE_JSON="+json.dumps(output,ensure_ascii=False,separators=(",",":")))
+          PY
