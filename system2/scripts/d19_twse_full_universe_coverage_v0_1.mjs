@@ -162,6 +162,7 @@ const d19Universe=await buildD19UniverseReceiptV0_1({
   capturedAt:observedAt,
 });
 
+const membershipBySymbol=new Map(registry.memberships.map(x=>[x.symbol,x]));
 const returnReceipts=[];
 const factorInputs=[];
 const factorRows=[];
@@ -172,12 +173,26 @@ for(const member of snapshot.members){
     x.marketDate>=fromDate&&x.marketDate<=toDate&&
     x.availableAt&&Date.parse(x.availableAt)<=Date.parse(decisionTimestamp)
   );
-  const complete=eligibleRows.length===21 && eligibleRows.every(x=>Number.isFinite(x.close)&&x.close>0&&x.sourceRowHash);
+  const auditMembership=membershipBySymbol.get(member.symbol);
+  const missingSourceHashCount=eligibleRows.filter(x=>!x.sourceRowHash).length;
+  const invalidCloseCount=eligibleRows.filter(x=>!Number.isFinite(x.close)||x.close<=0).length;
+  const complete=eligibleRows.length===21 && missingSourceHashCount===0 && invalidCloseCount===0;
   const value=complete?momentum(eligibleRows):null;
   const observationState=complete&&Number.isFinite(value)?"KNOWN":"UNKNOWN";
-  const reason=observationState==="KNOWN"?null:
-    eligibleRows.length<21?"INSUFFICIENT_21_SESSION_HISTORY_OR_NONTRADING":
-    "INVALID_CLOSE_OR_PROVENANCE";
+  let reason=null;
+  if(observationState!=="KNOWN"){
+    if(eligibleRows.length<21){
+      reason=auditMembership?.effectiveFrom>fromDate
+        ?"RECENT_LISTING_INSUFFICIENT_LOOKBACK"
+        :"INCOMPLETE_SESSION_ROWS_REQUIRES_SESSION_PROVENANCE";
+    }else if(missingSourceHashCount>0){
+      reason="MISSING_SOURCE_ROW_HASH";
+    }else if(invalidCloseCount>0){
+      reason="NULL_OR_INVALID_CLOSE_REQUIRES_TRADING_STATE_PROVENANCE";
+    }else{
+      reason="UNCLASSIFIED_FACTOR_INPUT_UNKNOWN";
+    }
+  }
 
   const ret=await buildD19ReturnReceiptV0_1({
     runId:"D19-TWSE-FULL-UNIVERSE|"+toDate,
@@ -207,7 +222,12 @@ for(const member of snapshot.members){
     capturedAt:observedAt,
   });
   factorInputs.push(input);
-  coverage.push({symbol:member.symbol,rowCount:eligibleRows.length,state:observationState,reason});
+  coverage.push({
+    symbol:member.symbol,rowCount:eligibleRows.length,state:observationState,reason,
+    invalidCloseCount,missingSourceHashCount,
+    effectiveFromAudit:auditMembership?.effectiveFrom||null,
+    startBasisAudit:auditMembership?.startBasis||null,
+  });
   if(observationState==="KNOWN")factorRows.push({symbol:member.symbol,momentum20:value});
 }
 
@@ -265,6 +285,10 @@ const rowCountHistogram=Object.fromEntries(
   [...new Set(coverage.map(x=>x.rowCount))].sort((a,b)=>a-b)
     .map(count=>[String(count),coverage.filter(x=>x.rowCount===count).length])
 );
+const unknownReasonCounts=Object.fromEntries(
+  [...new Set(coverage.filter(x=>x.state!=="KNOWN").map(x=>x.reason))].sort()
+    .map(reason=>[reason,coverage.filter(x=>x.reason===reason).length])
+);
 console.log(JSON.stringify({
   result:"PASS_TWSE_FULL_UNIVERSE_COVERAGE_NEGATIVE_L3_GATE",
   smokeVersion:"S2_D19_TWSE_FULL_UNIVERSE_COVERAGE_V0_1",
@@ -281,6 +305,7 @@ console.log(JSON.stringify({
     denominator:snapshot.memberCount,known,unknown,
     knownPct:Number((known/snapshot.memberCount*100).toFixed(4)),
     rowCountHistogram,
+    unknownReasonCounts,
     unknownSample:coverage.filter(x=>x.state!=="KNOWN").slice(0,30),
   },
   receipts:{
