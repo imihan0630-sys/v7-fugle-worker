@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "D22_12_DISTRESS_RECOVERY_REPLAY_READINESS_V0_1",
+  "generatedAt": "2026-10-04T15:08:00+08:00",
+  "status": "RESEARCH_ONLY / DEFAULT_EVENT_SOURCE_ROUTES_VALIDATED / ISSUER_LEVEL_RECOVERY_PANEL_INCOMPLETE / HOLD_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "governance": {
+    "pdSeparateFromLgd": true,
+    "recoverySeparateFromPd": true,
+    "distressStateSeparateFromDefault": true,
+    "equityTailRiskSeparateFromCreditorLoss": true,
+    "ratedSurvivorsOnlyProhibited": true,
+    "delistedDefaultedIssuersMustRemainInUniverse": true,
+    "laterRecoveryDoesNotBackfillDefaultDate": true,
+    "missingRecoveryIsUnknown": true
+  },
+  "evidenceRoutes": [
+    {
+      "source": "Taiwan Ratings corporate default and transition studies",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/service/articles/C18",
+      "coverage": "annual rating transition/default research with historical Taiwan corporate series",
+      "finding": "The 1999-2023 table shows many zero-default years and a long-run weighted average default rate around 0.3%, confirming rare-event sparsity within the rated universe.",
+      "limitation": "Rated-universe defaults are not a complete Taiwan listed-company distress universe; coverage and rating selection create selection bias."
+    },
+    {
+      "source": "Taiwan Ratings 2023 corporate default and transition study",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/viewArticle/30704",
+      "coverage": "1999-2023 annual transition/default table",
+      "finding": "Recent years in the displayed table frequently record zero corporate defaults while downgrade frequencies vary.",
+      "limitation": "Annual summary is not an issuer-level recovery cash-flow panel."
+    },
+    {
+      "source": "TPEx default announcement area",
+      "sourceUrl": "https://www.tpex.org.tw/zh-tw/announce/market/default.html",
+      "coverage": "public default notices available from 2019-02",
+      "finding": "A historical default-notice route exists.",
+      "limitation": "Notice type must be classified before use; it cannot be automatically equated with corporate-bond issuer credit default."
+    },
+    {
+      "source": "TWSE listing termination rules",
+      "sourceUrl": "https://twse-regulation.twse.com.tw/tw/law/DAT06.aspx?FLCODE=FL007304&FLDATE=20251224&LSER=001",
+      "coverage": "formal delisting conditions",
+      "finding": "Bankruptcy and court-confirmed restructuring are among formal listing-termination conditions.",
+      "limitation": "Rules define event semantics but do not by themselves supply a historical issuer-event/recovery panel."
+    }
+  ],
+  "rarityAudit": {
+    "ratedUniverseObservation": "Corporate default is a rare event in Taiwan Ratings annual history; many years show zero defaults.",
+    "modelingImplication": "Naive classification accuracy can look high by predicting no default. Calibration, rare-event metrics and explicit class imbalance handling are mandatory.",
+    "selectionImplication": "Using only currently listed or currently rated firms creates survivorship/coverage bias.",
+    "recoveryImplication": "Recovery/LGD needs creditor seniority, collateral, restructuring/liquidation process and realized recovery timing; rating default counts alone are insufficient."
+  },
+  "prohibitedShortcuts": [
+    "Do not label every delisting as credit default.",
+    "Do not label every TPEx market default notice as issuer default without event-type classification.",
+    "Do not infer recovery from post-default equity price.",
+    "Do not set a universal recovery percentage and call it Taiwan evidence.",
+    "Do not train only on surviving/rated firms and call the result a Taiwan default model.",
+    "Do not treat distance-to-default output as observed PD."
+  ],
+  "maturityDecision": {
+    "level": "L2",
+    "maturityPct": 40,
+    "decision": "HOLD",
+    "rationale": "Official source routes and rare-event/selection-bias semantics are established, but a reproducible issuer-level Taiwan default/restructuring/recovery panel including delisted/defaulted cases has not yet been built. L3 data-feasibility is therefore not proven."
+  },
+  "next": [
+    "Build a classified issuer-level event ledger separating bankruptcy, restructuring, bond-payment default, delayed payment, covenant breach, trading default and non-credit delisting.",
+    "For genuine issuer credit events, source recovery by security seniority/collateral and preserve recovery-date lineage.",
+    "Add contemporaneous first-known accounting/market inputs for both defaulted/delisted and surviving controls.",
+    "Preregister rare-event metrics, horizon/default-barrier choices and censoring treatment before any model/outcome test.",
+    "Keep D22-12 L2 until the issuer-level default/recovery replay panel is independently reproducible."
+  ]
+}
