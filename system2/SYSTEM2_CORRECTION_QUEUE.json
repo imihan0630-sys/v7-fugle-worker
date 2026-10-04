@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T15:28:00+08:00",
+  "schemaVersion": "0.2",
+  "updatedAt": "2026-10-04T15:40:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -57,7 +57,15 @@
       ],
       "verificationEvidence": [],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-04T15:28:00+08:00"
+      "updatedAt": "2026-10-04T15:28:00+08:00",
+      "routingClass": "DATA_LANE",
+      "assignedLane": "DATA_LANE",
+      "assignedRoom": "System 2｜歷史資料工程室",
+      "modificationOwner": "SYSTEM2_HISTORICAL_DATA_ROOM",
+      "blockedBy": [
+        "GitHub workflow_dispatch execution channel / owner login authorization if still required"
+      ]
     }
-  ]
+  ],
+  "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
 }
