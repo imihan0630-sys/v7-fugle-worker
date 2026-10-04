@@ -1,0 +1,156 @@
+{
+  "schemaVersion": "D08_TWSE_VALUATION_SCHEMA_ERA_AND_REPLAY_FAILURE_RECEIPT_20261004_V0_1",
+  "researchRoom": "06",
+  "module": "D08-03",
+  "status": "SCHEMA_ERA_CONFIRMED / TRANSPORT_PRESSURE_DIAGNOSED / OUTCOMES_CLOSED",
+  "observedAtAsiaTaipei": "2026-10-04T13:58:00+08:00",
+  "officialSchemaWitnesses": [
+    {
+      "date": "2017-01-03",
+      "fields": [
+        "證券代號",
+        "證券名稱",
+        "本益比",
+        "殖利率(%)",
+        "股價淨值比"
+      ],
+      "classification": "LEGACY_PE_PB_ONLY",
+      "implication": "PE/PB history is usable; close and fiscal-report-period context are structurally unavailable and must remain explicit FIELD_NOT_AVAILABLE_IN_SOURCE_SCHEMA."
+    },
+    {
+      "date": "2017-02-02",
+      "fields": [
+        "證券代號",
+        "證券名稱",
+        "本益比",
+        "殖利率(%)",
+        "股價淨值比"
+      ],
+      "classification": "LEGACY_PE_PB_ONLY"
+    },
+    {
+      "date": "2017-03-31",
+      "fields": [
+        "證券代號",
+        "證券名稱",
+        "本益比",
+        "殖利率(%)",
+        "股價淨值比"
+      ],
+      "classification": "LEGACY_PE_PB_ONLY"
+    },
+    {
+      "date": "2017-04-28",
+      "fields": [
+        "證券代號",
+        "證券名稱",
+        "收盤價",
+        "殖利率(%)",
+        "股利年度",
+        "本益比",
+        "股價淨值比",
+        "財報年/季"
+      ],
+      "classification": "MODERN_CLOSE_AND_FISCAL_PERIOD"
+    },
+    {
+      "date": "2018-06-01",
+      "fields": [
+        "證券代號",
+        "證券名稱",
+        "收盤價",
+        "殖利率(%)",
+        "股利年度",
+        "本益比",
+        "股價淨值比",
+        "財報年/季"
+      ],
+      "classification": "MODERN_CLOSE_AND_FISCAL_PERIOD"
+    },
+    {
+      "date": "2019-01-02",
+      "fields": [
+        "證券代號",
+        "證券名稱",
+        "收盤價",
+        "殖利率(%)",
+        "股利年度",
+        "本益比",
+        "股價淨值比",
+        "財報年/季"
+      ],
+      "classification": "MODERN_CLOSE_AND_FISCAL_PERIOD"
+    }
+  ],
+  "parserRule": {
+    "alwaysRequired": [
+      "證券代號",
+      "證券名稱",
+      "本益比",
+      "股價淨值比"
+    ],
+    "optionalHistoricalFields": [
+      "收盤價",
+      "財報年/季"
+    ],
+    "legacyMissingSemantics": "FIELD_NOT_AVAILABLE_IN_SOURCE_SCHEMA",
+    "valueMissingSemantics": "SOURCE_NA_OR_UNKNOWN",
+    "prohibition": "Schema-level historical absence may not be encoded as numeric zero or inferred fiscal context."
+  },
+  "firstAnnualRun": {
+    "workflowRun": 37180955122,
+    "successes": [
+      2019,
+      2022,
+      2024,
+      2025
+    ],
+    "failures": [
+      {
+        "year": 2017,
+        "class": "SCHEMA_ERA_MISMATCH",
+        "detail": "Parser incorrectly required close and fiscal report period for legacy PE/PB-only source."
+      },
+      {
+        "year": 2018,
+        "class": "TRANSPORT_FAILURE",
+        "detail": "Fetch failed on 2018-06-01 during concurrent source pressure."
+      },
+      {
+        "year": 2020,
+        "class": "TRANSPORT_FAILURE",
+        "detail": "Fetch failed on 2020-06-08 during concurrent source pressure."
+      },
+      {
+        "year": 2021,
+        "class": "TRANSPORT_FAILURE",
+        "detail": "Fetch failed on 2021-06-08 during concurrent source pressure."
+      },
+      {
+        "year": 2023,
+        "class": "TRANSPORT_FAILURE",
+        "detail": "Fetch failed on 2023-06-20 during concurrent source pressure."
+      },
+      {
+        "year": 2026,
+        "class": "NON_OK_SOURCE_STATUS_UNDER_PRESSURE",
+        "detail": "Official endpoint later returned normal OK for representative early-2026 sessions; non-OK state is retried but never silently accepted."
+      }
+    ]
+  },
+  "remediation": [
+    "Version parser semantics by returned fields rather than assuming modern schema for all history.",
+    "Keep PE/PB core fields hard-required.",
+    "Serialize annual workflow max-parallel from 2 to 1.",
+    "Reduce within-year request batch from 6 dates to 2 dates.",
+    "Use up to five bounded transport/status retries with backoff.",
+    "Keep source-date mismatch, core schema drift and duplicate-symbol failures non-retryable."
+  ],
+  "positiveCounterevidence": [
+    "2019/2022/2024/2025 completed under the original lane, proving annual R2 architecture itself is viable.",
+    "The same new parser reran all 44 modern raw snapshots successfully, proving legacy support did not weaken modern-source integrity."
+  ],
+  "outcomeAccessed": false,
+  "formalCoreChanged": false,
+  "formalOptimizationCandidate": "NONE"
+}
