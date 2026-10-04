@@ -3277,3 +3277,129 @@ No Formal/runtime change.
 
 Audit:
 shared-knowledge/CURRICULUM_H07_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
+
+
+## TI-611 through TI-630 — ADX / Bollinger first-parent acceptance hardening (2026-10-04)
+
+Durable artifacts:
+- `research/d03_adx_l3_acceptance_v0_1.mjs`
+- `tests/test_d03_adx_l3_acceptance_v0_1.mjs`
+- `research/D03_ADX_FIRST_PARENT_ACCEPTANCE_V0_1.md`
+- `research/d03_adx_l3_acceptance_v0_2.mjs`
+- `tests/test_d03_adx_l3_acceptance_v0_2.mjs`
+- `research/D03_ADX_FIRST_PARENT_ACCEPTANCE_V0_2.md`
+- `research/d03_bollinger_l3_acceptance_v0_2.mjs`
+- `tests/test_d03_bollinger_l3_acceptance_v0_2.mjs`
+- `research/D03_BOLLINGER_FIRST_PARENT_ACCEPTANCE_V0_2.md`
+
+### TI-611~618 — ADX full-replay acceptance logic
+The first ADX acceptance layer consumes the deployed shared parent identity and the already-frozen core formula. It requires FULL_REPLAY, exact continuity/session provenance, prefix invariance and complete expected-parent attempt accounting.
+
+Read-only workflow run `37184682026` physically passed:
+- clean full replay -> VALID;
+- constrained path -> VALID_BUT_CONSTRAINED;
+- too-short/local-bootstrap/trusted-prior-without-certifier/late capture/missing session/unresolved event/state-hash mismatch -> blocked;
+- explicit UNKNOWN plus VALID can still form a COMPLETE expected-parent run.
+
+### TI-619 — self-falsification of ADX v0.1
+V0.1 was then rejected for promotion-grade use because a caller could self-declare FULL_REPLAY and supply merely nonempty lineage/hash strings.
+
+This violates the prior D03 rule that self-issued assertions/hashes do not authenticate source lineage.
+
+### TI-620~624 — ADX v0.2 canonical lineage hardening
+V0.2 additionally requires:
+- sourceFamilyVersion;
+- 64-hex sourceHistoryHash;
+- rawHistoryAdmissionReceiptId;
+- symbolSessionContractVersion;
+- sessionCalendarVersion;
+- continuityEngineVersion;
+- corporateActionRegistryVersion;
+- 64-hex continuityTransformHash;
+- receiptVersion;
+- 64-hex stateLineageId;
+- cleanHistoryStartDate;
+- initializationAnchorDate;
+- anchorCertificationState = CANONICAL_LINEAGE_ANCHOR_CERTIFIED;
+- cleanHistoryStartDate == initializationAnchorDate for FULL_REPLAY;
+- first replay bar == certified anchor;
+- eligibleBarsFromAnchorToAsOf == delivered bars;
+- per-bar observedRawBarIdentity + 64-hex sourceBarHash.
+
+`TRUSTED_PRIOR_STATE` is intentionally not accepted by v0.2 until a separate certifier exists.
+
+Read-only workflow run `37184852267` physically passed. It specifically proved:
+- fake full-replay lineage -> DATA_BLOCKED;
+- uncertified anchor -> DATA_BLOCKED;
+- shifted/arbitrary anchor -> DATA_BLOCKED;
+- trusted-prior path without certifier -> DATA_BLOCKED;
+- valid canonical full replay remains VALID;
+- complete expected-parent accounting still accepts explicit UNKNOWN attempts.
+
+### TI-625 — Bollinger v0.1 source-lineage gap
+The earlier Bollinger acceptance logic had the same class of weakness: it could consume a self-asserted `technicalContinuity=true` object without the complete upstream continuity identity.
+
+V0.1 therefore remains useful formula/flow QA but is superseded for promotion-grade source/PIT acceptance.
+
+### TI-626~630 — Bollinger v0.2 lineage hardening
+V0.2 requires:
+- sourceFamilyVersion;
+- 64-hex sourceHistoryHash;
+- rawHistoryAdmissionReceiptId;
+- symbolSessionContractVersion;
+- sessionCalendarVersion;
+- continuityEngineVersion;
+- corporateActionRegistryVersion;
+- 64-hex continuityTransformHash;
+- receiptVersion;
+- cleanHistoryStartDate;
+- exact 20 expected eligible symbol sessions;
+- expectedEligibleSymbolSessionCount = 20;
+- observedRawBars = 20;
+- continuityBars = 20;
+- zero unresolved missing sessions/events;
+- zero delivered pseudo bars;
+- each bar binds observedRawBarIdentity + 64-hex sourceBarHash.
+
+The evaluator now calls the frozen core `computeBollingerBands` rather than reimplementing the formula.
+
+Read-only workflow run `37184976280` physically passed:
+- valid 20-session lineage -> VALID;
+- constrained path -> VALID_BUT_CONSTRAINED;
+- fake source-history hash -> DATA_BLOCKED;
+- missing raw-history receipt -> DATA_BLOCKED;
+- late continuity capture -> DATA_BLOCKED;
+- 19-session window -> DATA_BLOCKED;
+- unresolved relevant event -> DATA_BLOCKED;
+- sample-SD semantics -> DATA_BLOCKED;
+- explicit UNKNOWN still participates in COMPLETE parent reconciliation.
+
+### Maturity decision
+These tranches close acceptance-design/source-lineage loopholes but do not create the first genuine post-V8.17 Taiwan parent generation.
+
+Therefore:
+- D03-10 Bollinger remains L2/40;
+- D03-09 ADX remains L2/40;
+- D03 aggregate remains **56.7%**.
+
+This is deliberate anti-inflation.
+
+### Current status
+`ADX_L3_ACCEPTANCE_V0_2 = PHYSICAL_TEST_PASS`
+`ADX_FULL_REPLAY_SELF_ATTESTATION = REJECTED`
+`TRUSTED_PRIOR_STATE_CERTIFIER = NOT_IMPLEMENTED`
+`BOLLINGER_L3_ACCEPTANCE_V0_2 = PHYSICAL_TEST_PASS`
+`BOLLINGER_SELF_ATTESTED_CONTINUITY = REJECTED`
+`FIRST_GENUINE_V8_17_PARENT = PENDING`
+`RAW_SOURCE_VERSION_GATE = 2_OF_3`
+`D03_MATURITY = 56.7_PERCENT`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+### Exact next continuation
+1. Keep both v0.2 evaluators as the promotion-grade research acceptance contracts; do not use v0.1 to promote.
+2. On the first genuine Taiwan session after V8.17, read exact shared parent generation/keyset and parent knownAt.
+3. Bind only owner-issued, cutoff-safe continuity receipts carrying the complete upstream identity fields required by v0.2.
+4. Execute Bollinger v0.2 for every expected parent first; only COMPLETE reconciliation may support D03-10 L3 -> D03 58.3%.
+5. Execute ADX v0.2 only with canonical-anchor FULL_REPLAY for every expected parent; only COMPLETE reconciliation may support D03-09 L3 -> D03 60.0%.
+6. Do not accept TRUSTED_PRIOR_STATE until a separate replay-equivalence certifier exists.
+7. Raw 3-session gate remains independently 2/3; TI-005/TI-006 outcomes remain closed.
