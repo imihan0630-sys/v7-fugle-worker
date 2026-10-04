@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "D20_01_SHORT_REFERENCE_DEPENDENCE_PIT_CONTRACT_V0_1",
+  "updatedAtAsiaTaipei": "2026-10-04",
+  "module": "D20-01",
+  "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / TWSE_SHORT_SIDE_REFERENCE_SUBLANE / LOSS_AVERSION_NOT_IDENTIFIED / SHARED_RECEIPT_NO_DOUBLE_VOTE",
+  "researchOnly": true,
+  "formalCore": "LOCKED",
+  "sourceDependency": {
+    "upstreamModule": "D20-02",
+    "receipt": "TWSE short-side disposition receipt",
+    "fields": [
+      "asOf",
+      "symbol",
+      "referencePriceShort",
+      "shortCapitalGainsOverhang",
+      "priorShortBalance",
+      "currentShortBalance",
+      "newShortSales",
+      "returnsOrCovering",
+      "adjustments",
+      "sourceHash",
+      "ruleVintage"
+    ],
+    "ownershipRule": "Reuse the same canonical receipt. D20-01 may not create an additional directional vote from the same short-side state."
+  },
+  "estimand": {
+    "name": "REFERENCE_DEPENDENT_ASYMMETRY_AROUND_ZERO_SHORT_PNL",
+    "question": "Conditional on controls, does covering / risk-taking behavior change asymmetrically around the reconstructed zero-gain reference point?",
+    "notEquivalentTo": [
+      "PURE_LOSS_AVERSION",
+      "GENERAL_INVESTOR_PSYCHOLOGY",
+      "LONG_ACCOUNT_REFERENCE_POINT"
+    ],
+    "primaryBehavioralOutcome": "covering hazard / close ratio",
+    "priceOutcomeOptional": "future residual return is a later validation outcome, not part of PIT promotion"
+  },
+  "pitRules": [
+    "referencePriceShort must be constructed only from short-position vintages known by the cutoff",
+    "gain/loss sign is evaluated using decision-time price and frozen reference price",
+    "position adjustments append; later corrections never rewrite historical state",
+    "missing cost-basis lineage => UNKNOWN",
+    "no OHLCV-only substitute is allowed"
+  ],
+  "controls": [
+    "size",
+    "liquidity",
+    "volatility",
+    "institutional ownership when valid",
+    "new short sales",
+    "market regime",
+    "borrow economics when valid"
+  ],
+  "falsification": [
+    "A covering asymmetry does not by itself prove loss aversion; realization utility, taxes, risk controls, recalls and information can create similar behavior.",
+    "Disposition effect and prospect-theory loss aversion are not interchangeable.",
+    "This sublane is bounded to observable TWSE short positions; long-account PGR/PLR remains UNKNOWN."
+  ],
+  "maturityDecision": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
+  "l4Requirement": "Prospective/OOS asymmetry evidence on immutable post-freeze parents; no literature-only promotion.",
+  "formalOptimizationCandidate": "NONE"
+}
