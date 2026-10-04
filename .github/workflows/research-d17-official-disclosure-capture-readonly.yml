@@ -1,0 +1,119 @@
+name: D17 Official Disclosure Capture Readonly
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/research-d17-official-disclosure-capture-readonly.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Capture two bounded official snapshots
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/d17
+          fetch_one() {
+            local src="$1" url="$2" out="$3"
+            curl --fail --silent --show-error --location --max-time 30               --header "User-Agent: room08-d17-official-disclosure-research/0.1"               "$url" -o "$out"
+            printf '%s_BYTES=%s\n' "$src" "$(wc -c < "$out")"
+            printf '%s_SHA256=%s\n' "$src" "$(sha256sum "$out" | awk '{print $1}')"
+          }
+
+          fetch_one TWSE1 "https://openapi.twse.com.tw/v1/opendata/t187ap04_L" /tmp/d17/twse1.json
+          fetch_one TPEX1 "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap04_O" /tmp/d17/tpex1.json
+          date -u +"CAPTURE1_UTC=%Y-%m-%dT%H:%M:%SZ"
+
+          sleep 65
+
+          fetch_one TWSE2 "https://openapi.twse.com.tw/v1/opendata/t187ap04_L" /tmp/d17/twse2.json
+          fetch_one TPEX2 "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap04_O" /tmp/d17/tpex2.json
+          date -u +"CAPTURE2_UTC=%Y-%m-%dT%H:%M:%SZ"
+
+      - name: Normalize and compare without outcomes
+        shell: node
+        run: |
+          const fs = require("fs");
+          const crypto = require("crypto");
+          const sources = {
+            TWSE: {
+              files:["/tmp/d17/twse1.json","/tmp/d17/twse2.json"],
+              symbol:"公司代號", name:"公司名稱", subject:"主旨 ", report:"出表日期"
+            },
+            TPEX: {
+              files:["/tmp/d17/tpex1.json","/tmp/d17/tpex2.json"],
+              symbol:"SecuritiesCompanyCode", name:"CompanyName", subject:"主旨", report:"Date"
+            }
+          };
+          const sha=s=>crypto.createHash("sha256").update(String(s),"utf8").digest("hex");
+          const clean=v=>String(v??"").normalize("NFKC").replace(/\r\n?/g,"\n").replace(/[ \t]+/g," ").trim();
+          const out={schemaVersion:"0.1", generatedAt:new Date().toISOString(), outcomeJoin:false, sources:{}};
+          for (const [sourceId,cfg] of Object.entries(sources)) {
+            const snaps=cfg.files.map((file,idx)=>{
+              const raw=fs.readFileSync(file,"utf8");
+              const rows=JSON.parse(raw);
+              const items=rows.map(r=>{
+                const x={
+                  reportDate:clean(r[cfg.report]),
+                  publishedDate:clean(r["發言日期"]),
+                  publishedTime:clean(r["發言時間"]),
+                  symbol:clean(r[cfg.symbol]),
+                  companyName:clean(r[cfg.name]),
+                  subject:clean(r[cfg.subject]),
+                  clause:clean(r["符合條款"]),
+                  factDate:clean(r["事實發生日"]),
+                  description:clean(r["說明"])
+                };
+                x.identity=sha([sourceId,x.symbol,x.publishedDate,x.publishedTime,x.clause,x.factDate,x.subject].join("|"));
+                x.content=sha([x.reportDate,x.publishedDate,x.publishedTime,x.symbol,x.companyName,x.subject,x.clause,x.factDate,x.description].join("|"));
+                return x;
+              });
+              return {poll:idx+1,rawSha256:sha(raw),rowCount:items.length,items};
+            });
+            const b=new Map(snaps[0].items.map(x=>[x.identity,x]));
+            const a=new Map(snaps[1].items.map(x=>[x.identity,x]));
+            const added=[],removed=[],changed=[];
+            for(const [id,x] of a){
+              if(!b.has(id)) added.push(id);
+              else if(b.get(id).content!==x.content) changed.push(id);
+            }
+            for(const id of b.keys()) if(!a.has(id)) removed.push(id);
+            const sample=snaps[1].items.slice(0,12).map(x=>({
+              symbol:x.symbol,publishedDate:x.publishedDate,publishedTime:x.publishedTime,
+              factDate:x.factDate,subject:x.subject,identity:x.identity,content:x.content
+            }));
+            out.sources[sourceId]={
+              poll1:{rawSha256:snaps[0].rawSha256,rowCount:snaps[0].rowCount},
+              poll2:{rawSha256:snaps[1].rawSha256,rowCount:snaps[1].rowCount},
+              comparison:{addedCount:added.length,removedCount:removed.length,contentChangedCount:changed.length,added,removed,changed},
+              sample
+            };
+          }
+          fs.writeFileSync("/tmp/d17/summary.json",JSON.stringify(out,null,2)+"\n");
+          console.log("D17_CAPTURE_SUMMARY_BEGIN");
+          console.log(JSON.stringify(out,null,2));
+          console.log("D17_CAPTURE_SUMMARY_END");
+
+      - name: Run observer regression
+        run: node tests/test_d17_disclosure_snapshot_observer_v0_1.mjs
+
+      - name: Upload research-only capture
+        uses: actions/upload-artifact@v4
+        with:
+          name: d17-official-disclosure-capture
+          path: |
+            /tmp/d17/twse1.json
+            /tmp/d17/twse2.json
+            /tmp/d17/tpex1.json
+            /tmp/d17/tpex2.json
+            /tmp/d17/summary.json
+          retention-days: 7
