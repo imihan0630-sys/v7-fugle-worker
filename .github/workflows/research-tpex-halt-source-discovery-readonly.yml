@@ -75,3 +75,22 @@ jobs:
           echo "history_mutation=false"
           echo "system1_runtime_used=false"
           echo "selection_authority=false"
+
+      - name: Print TPEx table loader request construction
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --max-time 30             --output /tmp/main.js "https://www.tpex.org.tw/rsrc/js/main.js"
+          curl --fail --silent --show-error --location --max-time 30             --output /tmp/tables.js "https://www.tpex.org.tw/rsrc/js/tables.js"
+
+          echo "----- API pattern context -----"
+          grep -n -C 3 'API_PATTERN="/www/{LANG}/{ACTION}"' /tmp/main.js || true
+
+          echo "----- action/url construction context -----"
+          grep -n -C 8 -E 'API_PATTERN|replace\(/\\\{ACTION\\\}/|this\.action|op\.action|let act|const act|url:' /tmp/tables.js             | head -n 260 || true
+
+          echo "----- AJAX/request context -----"
+          grep -n -C 12 -E '\$\.ajax|ajax\(|method:|type:|dataType:|paging-offset|paging-size|paging-table' /tmp/tables.js             | head -n 420 || true
+
+          echo "----- download/export context -----"
+          grep -n -C 10 -E 'download|CSV|csv|response' /tmp/tables.js             | head -n 260 || true
