@@ -1,0 +1,248 @@
+name: Room09 COV07 TX curve readonly
+
+on:
+  push:
+    branches:
+      - research-room09-cov07-tx-curve-20261004
+    paths:
+      - .github/workflows/room09-cov07-tx-curve-readonly.yml
+
+permissions:
+  contents: read
+
+jobs:
+  tx-curve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Fetch official TX/TWSE parents and build outcome-blind curve replay
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          curl --fail --silent --show-error --location --retry 2 \
+            --data-urlencode "queryStartDate=2026/09/14" \
+            --data-urlencode "queryEndDate=2026/10/02" \
+            --data-urlencode "down_type=1" \
+            --data-urlencode "commodity_id=TX" \
+            --data-urlencode "commodity_id2=" \
+            "https://www.taifex.com.tw/cht/3/futDataDown" -o /tmp/tx.csv
+
+          curl --fail --silent --show-error --location --retry 2 \
+            "https://www.taifex.com.tw/cht/2/tX?menuid1=12" -o /tmp/tx-spec.html
+
+          get_twse () {
+            month="$1"
+            out="$2"
+            u1="https://www.twse.com.tw/rwd/zh/afterTrading/MI_5MINS_HIST?date=${month}01&response=json"
+            u2="https://www.twse.com.tw/indicesReport/MI_5MINS_HIST?date=${month}01&response=json"
+            if curl --fail --silent --show-error --location --retry 2 "$u1" -o "$out"; then
+              if python - "$out" <<'PY'
+import json,sys
+j=json.load(open(sys.argv[1],encoding="utf-8"))
+assert j.get("data")
+PY
+              then return 0; fi
+            fi
+            curl --fail --silent --show-error --location --retry 2 "$u2" -o "$out"
+          }
+
+          get_twse 202609 /tmp/twse-202609.json
+          get_twse 202610 /tmp/twse-202610.json
+
+          python - <<'PY'
+          import csv,datetime as dt,hashlib,io,json,math,re,statistics
+          from pathlib import Path
+
+          def sha(path):
+              return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+          def num(s):
+              s=str(s or "").replace(",","").strip()
+              if not s or s in {"-","--"}: return None
+              try:return float(s)
+              except:return None
+
+          def roc_to_iso(s):
+              s=s.strip()
+              m=re.fullmatch(r"(\d{3})/(\d{2})/(\d{2})",s)
+              if m:
+                  return f"{int(m.group(1))+1911:04d}-{m.group(2)}-{m.group(3)}"
+              m=re.fullmatch(r"(\d{4})/(\d{2})/(\d{2})",s)
+              if m:
+                  return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
+              m=re.fullmatch(r"(\d{8})",s)
+              if m:
+                  return f"{s[:4]}-{s[4:6]}-{s[6:8]}"
+              return s
+
+          # TWSE spot close map
+          spot={}
+          twse_meta={}
+          for p in ["/tmp/twse-202609.json","/tmp/twse-202610.json"]:
+              raw=Path(p).read_bytes()
+              j=json.loads(raw.decode("utf-8"))
+              fields=[str(x).strip() for x in j.get("fields",[])]
+              twse_meta[p]={"sha256":hashlib.sha256(raw).hexdigest(),"fields":fields,"stat":j.get("stat"),"date":j.get("date")}
+              data=j.get("data",[])
+              date_i=0
+              close_i=None
+              for i,f in enumerate(fields):
+                  if "日期" in f: date_i=i
+                  if "收盤" in f and "指數" in f: close_i=i
+              if close_i is None and len(fields)>=5: close_i=4
+              for row in data:
+                  if len(row)<=close_i: continue
+                  d=roc_to_iso(str(row[date_i]))
+                  c=num(row[close_i])
+                  if c is not None: spot[d]=c
+
+          # TX rows
+          raw=Path("/tmp/tx.csv").read_bytes()
+          text=raw.decode("cp950")
+          rows=list(csv.reader(io.StringIO(text)))
+          header=[h.strip() for h in rows[0]]
+          idx={h:i for i,h in enumerate(header)}
+          def get(r,*names):
+              for n in names:
+                  if n in idx and idx[n]<len(r): return r[idx[n]].strip()
+              return ""
+          def find_field(parts):
+              for h in header:
+                  if all(x in h for x in parts): return h
+              return None
+          f_date=find_field(["交易日期"])
+          f_contract=find_field(["契約"])
+          f_exp=find_field(["到期月份"])
+          f_close=find_field(["收盤價"])
+          f_vol=find_field(["成交量"])
+          f_settle=find_field(["結算價"])
+          f_oi=find_field(["未沖銷"])
+          f_sess=find_field(["交易時段"])
+          needed=[f_date,f_contract,f_exp,f_close,f_vol,f_settle,f_oi,f_sess]
+          if any(x is None for x in needed):
+              raise SystemExit("HEADER_MAPPING_FAIL "+repr({"header":header,"mapped":needed}))
+
+          obs={}
+          for r in rows[1:]:
+              if not r: continue
+              if get(r,f_contract)!="TX" or get(r,f_sess)!="一般": continue
+              exp=get(r,f_exp)
+              if not re.fullmatch(r"\d{6}",exp): continue
+              d=roc_to_iso(get(r,f_date))
+              close=num(get(r,f_close)); settle=num(get(r,f_settle))
+              vol=num(get(r,f_vol)); oi=num(get(r,f_oi))
+              px=settle if settle is not None else close
+              if px is None: continue
+              obs.setdefault(d,[]).append({"expiry":exp,"close":close,"settlement":settle,"price":px,"volume":vol,"oi":oi})
+
+          def third_wed(yyyymm):
+              y=int(yyyymm[:4]); m=int(yyyymm[4:])
+              d=dt.date(y,m,1)
+              while d.weekday()!=2: d+=dt.timedelta(days=1)
+              d+=dt.timedelta(days=14)
+              return d
+
+          def curve_for(d, contracts):
+              date=dt.date.fromisoformat(d)
+              cs=[]
+              for x in contracts:
+                  expiry=third_wed(x["expiry"])
+                  if expiry<date: continue
+                  y=dict(x); y["expiryDate"]=expiry.isoformat(); y["calendarDte"]=(expiry-date).days
+                  cs.append(y)
+              cs.sort(key=lambda z:z["expiryDate"])
+              if len(cs)<3: return None
+              front,nextc,far=cs[:3]
+              def ann_roll(a,b):
+                  dd=b["calendarDte"]-a["calendarDte"]
+                  if dd<=0: return None
+                  return (a["price"]-b["price"])/a["price"]*365/dd
+              front_basis=None if d not in spot else front["price"]-spot[d]
+              front_basis_bps=None if front_basis is None else front_basis/spot[d]*10000
+              total_oi=sum((x["oi"] or 0) for x in cs)
+              return {
+                  "date":d,
+                  "spotClose":spot.get(d),
+                  "contracts":cs,
+                  "front":front["expiry"],
+                  "next":nextc["expiry"],
+                  "far":far["expiry"],
+                  "frontBasisPoints":front_basis,
+                  "frontBasisBps":front_basis_bps,
+                  "frontNextSpreadPoints":front["price"]-nextc["price"],
+                  "nextFarSpreadPoints":nextc["price"]-far["price"],
+                  "frontNextAnnualizedRollYield":ann_roll(front,nextc),
+                  "nextFarAnnualizedRollYield":ann_roll(nextc,far),
+                  "frontOiShare":None if total_oi<=0 else (front["oi"] or 0)/total_oi,
+                  "nextOiShare":None if total_oi<=0 else (nextc["oi"] or 0)/total_oi,
+                  "farOiShare":None if total_oi<=0 else (far["oi"] or 0)/total_oi,
+                  "frontVolume":front["volume"],
+                  "nextVolume":nextc["volume"],
+                  "farVolume":far["volume"]
+              }
+
+          target_dates=["2026-09-14","2026-09-15","2026-09-16","2026-09-17","2026-09-18","2026-10-02"]
+          curves=[]
+          for d in target_dates:
+              c=curve_for(d,obs.get(d,[]))
+              if c: curves.append(c)
+
+          # Deterministic continuous-contract rule: decide at close t for t+1.
+          # Roll next session if front DTE<=5 calendar days OR next OI > front OI.
+          roll_decisions=[]
+          for c in curves:
+              front=next(x for x in c["contracts"] if x["expiry"]==c["front"])
+              nxt=next(x for x in c["contracts"] if x["expiry"]==c["next"])
+              trigger=(front["calendarDte"]<=5) or ((nxt["oi"] or 0)>(front["oi"] or 0))
+              reason=[]
+              if front["calendarDte"]<=5: reason.append("DTE_LE_5")
+              if (nxt["oi"] or 0)>(front["oi"] or 0): reason.append("NEXT_OI_GT_FRONT_OI")
+              roll_decisions.append({
+                  "observationDate":c["date"],
+                  "effectiveRule":"NEXT_TRADING_SESSION_ONLY",
+                  "currentFront":c["front"],"candidateNext":c["next"],
+                  "frontDte":front["calendarDte"],"frontOi":front["oi"],"nextOi":nxt["oi"],
+                  "rollForNextSession":trigger,"reason":reason or ["HOLD"]
+              })
+
+          spec_raw=Path("/tmp/tx-spec.html").read_bytes()
+          spec_text=spec_raw.decode("utf-8",errors="replace")
+          out={
+              "methodVersion":"COV07_TX_CURVE_REPLAY_V0_1",
+              "source":{
+                  "taifexFuturesUrl":"https://www.taifex.com.tw/cht/3/futDataDown",
+                  "taifexFuturesQuery":{"start":"2026/09/14","end":"2026/10/02","contract":"TX","downType":"1"},
+                  "taifexFuturesSha256":sha("/tmp/tx.csv"),
+                  "taifexFuturesBytes":len(raw),
+                  "taifexHeader":header,
+                  "taifexSpecUrl":"https://www.taifex.com.tw/cht/2/tX?menuid1=12",
+                  "taifexSpecSha256":hashlib.sha256(spec_raw).hexdigest(),
+                  "specContainsThirdWednesday":("第三個星期三" in spec_text or "第3個星期三" in spec_text),
+                  "twseSep":twse_meta["/tmp/twse-202609.json"],
+                  "twseOct":twse_meta["/tmp/twse-202610.json"],
+                  "rawPersisted":False
+              },
+              "priceConvention":"official TX daily settlement when present; close only if settlement missing",
+              "expiryConvention":"monthly contract nominal expiry = third Wednesday; holiday/disruption exception must use official calendar rather than arithmetic",
+              "spreadSign":"near-minus-far; positive means backwardation, negative means contango",
+              "annualizedRollYield":"(nearPrice-farPrice)/nearPrice * 365/(farDTE-nearDTE); positive approximates favorable long roll from backwardation; descriptive, not realized return",
+              "curves":curves,
+              "continuousContract":{
+                  "rule":"At close t, keep current front for t. For next trading session only, roll to next if front calendar DTE<=5 OR next OI>front OI. No same-close retroactive switch.",
+                  "backAdjustment":"NONE_FOR_FEATURE_REPLAY. Preserve raw contract prices and explicit contract ID; if a chart series is needed, maintain separate stitched-return index with roll jump isolated, never rewrite historical prices using future gaps.",
+                  "decisions":roll_decisions
+              },
+              "guards":[
+                  "regular session only for primary curve",
+                  "monthly TX contracts only",
+                  "weekly/flexible contracts excluded",
+                  "settlement and close are not silently mixed when settlement exists",
+                  "front basis uses same-date TAIEX close only",
+                  "OI and volume remain separate liquidity/position dimensions",
+                  "expiry-day and near-expiry states are explicitly flagged by DTE",
+                  "no Taiwan forward-return outcomes inspected"
+              ]
+          }
+          print("ROOM09_COV07_JSON="+json.dumps(out,ensure_ascii=False,separators=(",",":")))
+          PY
