@@ -36,11 +36,17 @@ export function parseOfficialHistoricalA6ValuationPayloadV0_1({
 }={}){
   const date=isoDate(marketDate);
   if(!payload||typeof payload!=="object"||Array.isArray(payload)) throw new Error("A6 payload must be object");
-  if(payload.stat!=="OK") throw new Error("A6 source stat not OK");
+  if(payload.stat!=="OK") {
+    throw new Error("A6 source stat not OK for "+date+": "+String(payload.stat??"MISSING"));
+  }
   if(!Array.isArray(payload.fields)||!Array.isArray(payload.data)) throw new Error("A6 fields/data invalid");
-  const required=["證券代號","證券名稱","收盤價","本益比","股價淨值比","財報年/季"];
-  const missing=required.filter(h=>!payload.fields.includes(h));
-  if(missing.length) throw new Error("A6 schema drift missing: "+missing.join(","));
+  const coreRequired=["證券代號","證券名稱","本益比","股價淨值比"];
+  const missing=coreRequired.filter(h=>!payload.fields.includes(h));
+  if(missing.length) throw new Error("A6 core schema drift missing: "+missing.join(","));
+  const hasClose=payload.fields.includes("收盤價");
+  const hasFiscal=payload.fields.includes("財報年/季");
+  const schemaEra=hasClose&&hasFiscal?"MODERN_CLOSE_AND_FISCAL_PERIOD":
+    (!hasClose&&!hasFiscal?"LEGACY_PE_PB_ONLY":"PARTIAL_OPTIONAL_FIELDS");
   const evidence=payloadDate(payload.date);
   if(!evidence) throw new Error("A6 source date evidence missing");
   if(evidence!==date) throw new Error("SOURCE_DATE_MISMATCH:A6:requested="+date+":received="+evidence);
@@ -60,11 +66,13 @@ export function parseOfficialHistoricalA6ValuationPayloadV0_1({
       marketDate:date,
       symbol,
       companyName:String(raw[idx["證券名稱"]]??"").trim()||null,
-      close:numberOrNull(raw[idx["收盤價"]]),
+      close:hasClose?numberOrNull(raw[idx["收盤價"]]):null,
+      closeState:hasClose?"FIELD_PRESENT":"FIELD_NOT_AVAILABLE_IN_SOURCE_SCHEMA",
       pe,pb,
       peState:pe===null?"SOURCE_NA_OR_UNKNOWN":"KNOWN",
       pbState:pb===null?"SOURCE_NA_OR_UNKNOWN":"KNOWN",
-      fiscalReportPeriod:String(raw[idx["財報年/季"]]??"").trim()||null,
+      fiscalReportPeriod:hasFiscal?(String(raw[idx["財報年/季"]]??"").trim()||null):null,
+      fiscalReportPeriodState:hasFiscal?"FIELD_PRESENT":"FIELD_NOT_AVAILABLE_IN_SOURCE_SCHEMA",
       sourceFields:deepFreeze({fields:payload.fields,row:raw}),
       observedAt:String(observedAt||new Date().toISOString()),
       sourceId:OFFICIAL_HISTORICAL_A6_VALUATION_SOURCE.sourceId,
@@ -77,6 +85,8 @@ export function parseOfficialHistoricalA6ValuationPayloadV0_1({
     sourceUrl:sourceUrl||buildOfficialHistoricalA6ValuationUrlV0_1(date),
     sourceDateEvidence:evidence,
     fieldFingerprint:payload.fields.join("|"),
+    schemaEra,
+    optionalFieldAvailability:deepFreeze({close:hasClose,fiscalReportPeriod:hasFiscal}),
     sourcePayloadHash:sourcePayloadHash||null,
     sourcePayloadBytes:Number.isInteger(sourcePayloadBytes)?sourcePayloadBytes:null,
     ordinarySymbolCount:rows.length,
@@ -114,8 +124,8 @@ export async function fetchOfficialHistoricalA6ValuationDateV0_1({
       });
     }catch(e){
       const msg=String(e?.message||e);
-      if(msg.includes("SOURCE_DATE_MISMATCH")||msg.includes("schema drift")||
-         msg.includes("source stat")||msg.includes("duplicate A6")||msg.includes("date evidence")){
+      if(msg.includes("SOURCE_DATE_MISMATCH")||msg.includes("core schema drift")||
+         msg.includes("duplicate A6")||msg.includes("date evidence")){
         throw e;
       }
       last=e;
