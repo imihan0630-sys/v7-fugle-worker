@@ -114,12 +114,19 @@ export async function probeMopsovDirectHistoryV0_1({
   const html = await response.text();
   const payloadHash = await sha256Hex(html);
   let parsed = null;
+  let monthly = null;
   try {
     parsed = parseMopsHistoricalMaterialInformationHtmlV0_1({
       html,
       stockCode,
       expectedDate,
       baseSubject,
+    });
+    monthly = parseMopsHistoricalMaterialInformationHtmlV0_1({
+      html,
+      stockCode,
+      expectedDate: null,
+      baseSubject: null,
     });
   } catch (error) {
     return deepFreeze({
@@ -137,6 +144,13 @@ export async function probeMopsovDirectHistoryV0_1({
     response.ok &&
     Number(parsed.rowCount) >= 1;
 
+  const revisionHistoryCapabilityObserved =
+    response.ok &&
+    Number(parsed.matchingSubjectRowCount) >= 2 &&
+    Number(parsed.originalRowCount) >= 1 &&
+    Number(parsed.correctionOrCancellationRowCount) >= 1 &&
+    Number(parsed.distinctVersionKeyCount) >= 2;
+
   return deepFreeze({
     ...common,
     state: readable ? "MOPSOV_DIRECT_HISTORY_READABLE" : "MOPSOV_DIRECT_HISTORY_NOT_READY",
@@ -151,6 +165,8 @@ export async function probeMopsovDirectHistoryV0_1({
     historyContentType: response.headers?.get?.("content-type") || null,
     historyPayloadHash: payloadHash,
     parsed,
+    monthlyRows: monthly?.rows || Object.freeze([]),
     directHistoryCapabilityObserved: readable,
+    revisionHistoryCapabilityObserved,
   });
 }
