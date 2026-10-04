@@ -480,3 +480,11 @@
 - authenticated research dashboard readback 通過；未觸發 rollback、業務掃描、歷史回填或重送推播。這不等於新 C1 child 已有真實交易日讀回。
 - 部署時為週末，第一個正常交易日 prospective C1 child 與 fingerprint readback 仍 PENDING。economicSuperiority=UNKNOWN、formalOptimizationCandidate=NONE，Formal Core LOCKED。
 - 接續：`research/SYSTEM1_ZERO_PICK_CLASS_B_IMPLEMENTATION_20261004.md` 第 5 步；監控 https://fugle-test.imihan0630.workers.dev/ 。
+
+## 2026-10-04 — V8.17.0 Shadow cohort membership candidate（尚未部署）
+
+Owner-approved Class-B implementation reuses immutable C1 as the shared decision parent,
+adds overlapping membership and append-only quality overlays, and preserves Formal/legacy
+Shadow behavior. Guarded patch only; no direct Worker edit. The concrete deploying PR must
+stop for Production approval. Durable state and exact next action:
+`research/SYSTEM1_SHADOW_COHORT_MEMBERSHIP_IMPLEMENTATION_20261004.md`.

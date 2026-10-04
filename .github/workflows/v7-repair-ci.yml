@@ -64,6 +64,7 @@ on:
       - "scripts/apply_v8_15_3.py"
       - "scripts/apply_v8_15_4.py"
       - "scripts/apply_v8_16_0.py"
+      - "scripts/apply_v8_17_0.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -349,6 +350,7 @@ jobs:
           node tests/test_system1_c3_registration_v0_1.mjs
           node tests/test_system1_c1_c2_collection_v0_1.mjs
           node tests/test_system1_zero_pick_evidence_collector_v0_1.mjs
+          node tests/test_system1_shadow_cohort_v8_17_0.mjs
           node --check tests/collect_system1_c1_evidence.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs
@@ -356,7 +358,7 @@ jobs:
 
       - name: Verify expected version
         run: |
-          grep -F 'const VERSION = "8.16.0-zero-pick-prospective-capture";' Worker.js
+          grep -F 'const VERSION = "8.17.0-shadow-cohort-membership";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c1_generations' Worker.js
           grep -F 'url.pathname === "/api/research/c1-population"' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c3_cohorts' Worker.js

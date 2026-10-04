@@ -185,3 +185,14 @@ and obtain explicit owner production approval before merge/deploy unless current
 8. Write the resulting implementation checkpoint back to GitHub.
 
 Do not restart the proposal or ask the owner to restate the approval.
+
+## Active implementation continuation — Codex, 2026-10-04
+
+Implementation is underway on `codex/system1-shadow-cohort-membership` from refreshed main
+`0aab87e2295385ab325ba8e3a30dc40184a42219`. The shared parent is the existing immutable C1,
+with additive membership/quality tables and guarded V8.17.0 candidate plumbing.
+Core runtime/SQLite-D1/collector/scale tests and full local 86/86 isolated review pass. Do not restart the proposal.
+
+Canonical implementation checkpoint and current exact next action:
+`research/SYSTEM1_SHADOW_COHORT_MEMBERSHIP_IMPLEMENTATION_20261004.md`.
+Production approval remains pending; this authorization does not permit merging a deploying PR.
