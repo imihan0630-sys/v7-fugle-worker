@@ -47,7 +47,9 @@ const result = await probeMopsovDirectHistoryV0_1({
 });
 assert.equal(result.state, "MOPSOV_DIRECT_HISTORY_READABLE");
 assert.equal(result.directHistoryCapabilityObserved, true);
+assert.equal(result.revisionHistoryCapabilityObserved, true);
 assert.equal(result.parsed.matchingSubjectRowCount, 2);
+assert.equal(result.monthlyRows.length, 2);
 assert.equal(result.parsed.correctionOrCancellationRowCount, 1);
 assert.equal(result.revisionCoverageComplete, false);
 assert.equal(result.technicalContinuityCertified, false);
