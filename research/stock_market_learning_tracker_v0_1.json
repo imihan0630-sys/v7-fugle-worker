@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T14:05:00+08:00",
+  "updatedAt": "2026-10-04T13:59:48+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 44.6
+    "maturityWeightedPct": 44.7
   },
   "domains": [
     {
@@ -3347,7 +3347,7 @@
         "BEHAVIORAL_FINANCE_CHECKPOINT.md",
         "BEHAVIORAL_FINANCE_RESEARCH.md"
       ],
-      "maturityPct": 53.8,
+      "maturityPct": 56.9,
       "modules": [
         {
           "id": "D20-01",
@@ -3376,8 +3376,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Overconfidence過度自信」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / BEHAVIORAL_PROXY_IDENTIFIABILITY_REQUIRED. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / OBSERVATION_RESEARCH_ONLY / IDENTIFIABILITY_NOT_PROVEN / CONTEXT_CONFIDENCE_ROLE",
-          "next": "建立過度自信代理可辨識性稽核：優先直接/近直接證據（投資人自我評估對實際能力、投資人層級過去績效後的交易與風險承擔、外生幸運事件）；公開市場層級的 lagged return→turnover、volatility、margin/turnover 只能作弱代理並須控制資訊到達、意見分歧、財富/風險承擔、流動性、交易制度、注意力與情緒。若找不到獨立可觀測 proxy 與增量價值，依 owner-approved audit 提案併入 D20-07/D20-10/D20-12，而非保留獨立選股因子。"
+          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / OBSERVATION_RESEARCH_ONLY / PUBLIC_FORECAST_SOURCE_CANDIDATE / OVERCONFIDENCE_IDENTIFIABILITY_NOT_PROVEN / KEEP_L2",
+          "next": "PTT 前瞻資料可保存公開數值預測/目標與後續校準誤差，但預測誤差不是過度自信；若沒有明示主觀機率、信賴區間、自我能力評估或近直接 confidence proxy，D20-03 維持 L2。禁止用成交量、融資、近期報酬或目標價誤差直接命名 overconfidence。"
         },
         {
           "id": "D20-04",
@@ -3402,12 +3402,12 @@
         {
           "id": "D20-06",
           "name": "Herding／Social Proof從眾與社會證明",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Herding／Social Proof從眾與社會證明」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / H06_BEHAVIOR_IDENTIFIABILITY_FIREWALL / L3_DATA_NOT_READY",
-          "next": "完成 H06 13室對照證據包：以殘差同步交易、領先/跟隨時序、獨立社群立場/網路擴散作為行為特定候選；排除共同資訊、因子曝險、被動再平衡、流動性衝擊、共同委託與市場制度。下一步驗證是否存在可 PIT/replay 的獨立行為資料；否則維持 UNKNOWN 或提案縮限，不得把 D06-06 擁擠再加一票。"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / PTT_FORUM_ACTOR_SOCIAL_HERDING_SUBLANE / NOT_BROKERAGE_INVESTOR_IDENTITY / SHARED_SOCIAL_RECEIPT_NO_DOUBLE_VOTE / L4_PREREG_NEXT",
+          "next": "使用 PTT Stock 公開 Atom＋文章頁的前瞻版本鏈，建立 forum-actor 領先/跟隨與立場收斂研究。PTT 帳號只能稱公開論壇 actor，不得稱投資帳戶；推/噓/箭頭不是股票多空立場。只有在控制共同新聞、題材、注意力、市場/產業後的時序殘差才可稱 social-herding evidence；同一社群 receipt 不得與 D20-11/D20-07 重複計票。"
         },
         {
           "id": "D20-07",
@@ -3452,12 +3452,12 @@
         {
           "id": "D20-11",
           "name": "Narrative／Theme Diffusion敘事與題材擴散",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Narrative／Theme Diffusion敘事與題材擴散」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "L2_NARRATIVE_DIFFUSION_MECHANISM_DEFINED / H08_THREE_LAYER_FIREWALL / PIT_SOCIAL_TEXT_DATA_NOT_READY",
-          "next": "依 H08 完成三層證據契約：D09-11 只擁有題材/產業成員映射；D17-11 擁有有日期事件/新聞傳導；D20-11 只有在社群/語言/注意力敘事具有獨立傳播、時間先後與事件基本面控制後仍有殘差效果時才成立。建立 topic/stance/narrative first-known、來源修訂、去重與網路擴散 replay 契約；若只有題材標籤或新聞擴散，準備縮限/合併提案。"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / PTT_STOCK_PROSPECTIVE_NARRATIVE_SUBLANE / VERSION_CHAIN_FEASIBLE / HISTORICAL_COMPLETENESS_NOT_CLAIMED / L4_PREREG_NEXT",
+          "next": "使用已驗證的 PTT Stock Atom＋文章頁保存 article URL、作者、發文時間、編輯時間、推文 actor/time 與逐次 snapshot fingerprint；capturedAt 為保守 first-known。D20-11 只研究跨文章/帳號的 topic/phrase/stance 傳播；新聞複製歸 D17、題材成員歸 D09、單純聲量歸 D20-07。下一步凍結 topic/stance 分類版本與 L4 prospective parent 規則。"
         },
         {
           "id": "D20-12",
@@ -3480,10 +3480,10 @@
           "next": "TWSE 官方費率、揭示供給/需求與競價最佳五檔語意已足夠凍結 D20-13 上市子線，但遵守 D06-18 上游成熟度：待下一有效交易日取得第一筆 outcome-blind、含 capturedAt/sourceHash/rule vintage 的真實費率/供需 receipt 後再評估 L3。不得把 displayed supply 稱為全市場可借庫存或 true utilization。"
         }
       ],
-      "status": "D20_L3_9_OF_13 / MATURITY_53_8 / L4_PROSPECTIVE_PREREG_EXPANDING / D20_13_L3_READY / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "先把新升 L3 的 D20-01 與 D20-09 納入 2026-10-04 凍結後的 L4 前瞻契約；下一有效交易日優先取得 D20-13 所需第一筆 TWSE 借券費率/揭示供需 receipt，若 receipt 完整才可從 L2 升 L3。其餘 D20-03 過度自信、D20-06 從眾、D20-11 敘事擴散仍因獨立可辨識資料源不足維持 L2。所有 L4 只接受凍結後 parent/outcome，不補造歷史 Shadow。",
-      "lastResearchUpdate": "2026-10-04T11:36:00+08:00",
-      "researchNote": "Two bounded L3 promotions: D20-01 reuses the already-L3 TWSE short-side reference-price/capital-gains-overhang receipt from D20-02 to study reference-dependent asymmetry around zero short PnL; this does not identify pure loss aversion and cannot create a duplicate vote. D20-09 now has a source-feasible event-conditioned initial-response lane using valid event first-known/surprise receipts plus completed Fugle 15m bars; observable reversal remains D03-05 property and is excluded from the decision-time parent. D20-13 is deliberately held at L2 despite verified official TWSE public rate/depth semantics, because the upstream D06-18 live fee/supply receipt has not yet been captured on a genuine trading day; true utilization and cross-market parity remain UNKNOWN. Formal Core unchanged."
+      "status": "D20_L3_11_OF_13 / MATURITY_56_9 / SOCIAL_PIT_SUBLANES_VALIDATED / D20_13_L3_READY / D20_03_IDENTIFIABILITY_BLOCKED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "先把新升 L3 的 D20-06 與 D20-11 納入 2026-10-04 凍結後的 L4 前瞻契約，且只有延伸凍結時間之後的新 PTT parent 才能算 prospective evidence；今天已讀過的即時文章只算 L3 source receipt。下一有效交易日仍優先執行 D20-13 TWSE 借券費率/揭示供需首次實測；若完整可升 L3。D20-03 維持 L2，除非取得可重播的明示信心/不確定性或近直接 overconfidence proxy。",
+      "lastResearchUpdate": "2026-10-04T13:59:48+08:00",
+      "researchNote": "Live source feasibility breakthrough. PTT Stock Atom feed was successfully fetched live and exposed article URLs, publication/update clocks, authors and content previews. A live article page exposed public author handle, second-level post time, minute-level push/boo/arrow actor clocks and explicit edit markers with second-level edit times. A durable source receipt freezes capturedAt as conservative first-known and append-only snapshots for later edits/deletions. D20-11 advances L2→L3 for a bounded prospective public-forum narrative-diffusion sublane. D20-06 advances L2→L3 only for public forum-actor social-herding/leader-follower transforms; it does not identify brokerage investors or natural-person order flow. The same PTT primitive cannot create multiple independent votes across D20-06/07/11. D20-03 remains L2 because public forecast errors do not identify overconfidence without stated confidence/uncertainty or another near-direct proxy. Formal Core unchanged."
     },
     {
       "id": "D21",
