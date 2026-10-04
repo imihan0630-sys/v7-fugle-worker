@@ -68,7 +68,7 @@ These are navigation anchors, not final maturity scores:
 - Volatility-regime: level/change/shock and market×stock-vol interaction falsification are frozen; realized-vol evidence is gated by continuity-proven PIT history and implied-vol by separate TAIFEX provenance.
 - Microstructure: concept/evidence work exists; recorder completeness and historical observability constraints remain relevant.
 - Fundamentals: information-dynamics research exists; PIT vintage semantics remain mandatory.
-- Supply-chain: SC-036 adds two independent monthly Taiwan EAF steel-chain vintages and proves replayable upstream/intermediate/downstream asymmetric transmission states, moving D10-09 to L3. SC-039 uses dated NDC/CIER Taiwan PMI industry data to separate new orders, unfinished orders, supplier delivery, inventory, customer inventory, input prices and outlook; the electronics counterexample shows longer delivery can coexist with slowing order momentum/high inventory, moving D10-07 to L3. D10-01 graph and D10-04 capacity/utilization deliberately remain L2 because complete effective-dated graph coverage and compatible utilization denominators are still incomplete.
+- Supply-chain: SC-036 adds two independent monthly Taiwan EAF steel-chain vintages and proves replayable upstream/intermediate/downstream asymmetric transmission states, moving D10-09 to L3. SC-039 uses dated NDC/CIER Taiwan PMI industry data to separate new orders, unfinished orders, supplier delivery, inventory, customer inventory, input prices and outlook; the electronics counterexample shows longer delivery can coexist with slowing order momentum/high inventory, moving D10-07 to L3. D10-01 graph remains L2 because complete effective-dated graph coverage is still incomplete. D10-04's former capacity/utilization denominator blocker was superseded by SC-052, which established a bounded cross-industry issuer-native capacity contract and promoted D10-04 to L3; official utilization remains partially UNKNOWN and is not synthesized.
 - Corporate actions: extensive CA program exists; denominator/vintage provenance gates remain authoritative.
 - Derivatives: concept research exists; source/session/contract/tenor/DTE provenance required before outcome claims.
 - Trading frictions: explicit/implicit cost decomposition exists; missing decision/fill/quote context remains UNKNOWN.
@@ -197,7 +197,7 @@ Formal Core remains LOCKED.
 - SC-046 freezes TSMC Arizona industrial-policy award -> facility-milestone clocks and the firewall AWARDED_MAX != DISBURSED != SPENT != QUALIFIED_CAPACITY != HVM_OUTPUT. D10-14 advances L2 -> L3 data feasibility only.
 - BR-057 freezes 8046/3189 PCB/ABF product-scope plus total-revenue denominators while leaving unavailable ABF/AI revenue numerators UNKNOWN.
 - BR-058 freezes the first true prospective D09-14 issuer-action cohort before outcomes: UMC phased expansion and Foxconn/Mitsubishi Electric MOU. D09-14 remains L3 until future prospective outcomes exist.
-- D10-01, D10-04 and D09-12 are not promoted because their explicit evidence blockers remain. The prior D09-07 repeated-snapshot blocker is superseded by BR-045.
+- D10-01 and D09-12 remain blocked. The prior D09-07 repeated-snapshot blocker is superseded by BR-045, and the prior D10-04 cross-company/cross-industry capacity-source blocker is superseded by SC-052.
 - No Production or Formal Core behavior changed.
 
 
@@ -205,4 +205,14 @@ Formal Core remains LOCKED.
 - BR-045 freezes five independent official TWSE close snapshots across all 34 industry total-return indices and demonstrates replayable sector-leadership persistence, churn and participation-state transitions. D09-07 advances L2 -> L3 for bounded sector-level PIT feasibility only; individual-stock leadership and predictive efficacy remain unproven.
 - SC-047 appends current BIS parentage/entity-authorization policy semantics but is explicitly not labeled prospective because those vintages predate capture. D10-13 stays L3.
 - SC-048 adds 6488 GlobalWafers as a second Taiwan issuer policy-to-capacity control. Final award and private capital commitment are known, while actual disbursement/current HVM remain UNKNOWN under a source-freshness conflict. D10-14 stays L3.
+- No L4 claim, no Production behavior and no Formal Core change.
+
+
+### Room 07 SC-052 + BR-062 — 2026-10-04
+- SC-052 establishes a reusable Taiwan issuer-native capacity contract across semiconductors and steel using TSMC, China Steel and GlobalWafers controls.
+- TSMC: >17m 12-inch-equivalent annual capacity and 15.0m 2025 wafer shipments are preserved as different semantics; shipment/capacity is not official utilization.
+- China Steel: ~9.9m tonnes annual crude-steel capacity and 1.993m tonnes 2025Q1 crude-steel production provide a bounded nominal output/capacity proxy; annualization is synthetic and not official utilization.
+- GlobalWafers remains the source-freshness/missing-denominator negative control.
+- D10-04 advances L2 -> L3 for bounded Taiwan PIT/source feasibility only.
+- BR-062 records that D18 dependencies are executable, but D09-12 still lacks one genuine same-clock breadth + regime receipt; historical reconstruction and test fixtures are prohibited substitutes.
 - No L4 claim, no Production behavior and no Formal Core change.
