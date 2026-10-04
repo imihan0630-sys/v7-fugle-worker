@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T14:06:56+08:00",
+  "updatedAt": "2026-10-04T14:12:14+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -3347,7 +3347,7 @@
         "BEHAVIORAL_FINANCE_CHECKPOINT.md",
         "BEHAVIORAL_FINANCE_RESEARCH.md"
       ],
-      "maturityPct": 56.9,
+      "maturityPct": 58.5,
       "modules": [
         {
           "id": "D20-01",
@@ -3372,12 +3372,12 @@
         {
           "id": "D20-03",
           "name": "Overconfidence過度自信",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Overconfidence過度自信」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / BEHAVIORAL_PROXY_IDENTIFIABILITY_REQUIRED. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / OBSERVATION_RESEARCH_ONLY / PUBLIC_FORECAST_SOURCE_CANDIDATE / OVERCONFIDENCE_IDENTIFIABILITY_NOT_PROVEN / KEEP_L2",
-          "next": "PTT 前瞻資料可保存公開數值預測/目標與後續校準誤差，但預測誤差不是過度自信；若沒有明示主觀機率、信賴區間、自我能力評估或近直接 confidence proxy，D20-03 維持 L2。禁止用成交量、融資、近期報酬或目標價誤差直接命名 overconfidence。"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / PUBLIC_EXPLICIT_CONFIDENCE_CALIBRATION_SUBLANE / OBSERVATION_RESEARCH_ONLY / PSYCHOLOGICAL_TRAIT_NOT_IDENTIFIED / L4_PREREG_NEXT",
+          "next": "使用前瞻 PTT Stock [標的] 或等價公開貼文，只在明示多/空與明示 confidence/skill claim 存在時建立文章層級 calibration parent；分類包含明示機率/百分比、明示確定語言、自報勝率/能力宣稱、無明示信心。禁止從成交量、融資、報酬、發文頻率或目標價誤差反推 overconfidence。只做聚合校準，不建立個人心理分數。"
         },
         {
           "id": "D20-04",
@@ -3480,10 +3480,10 @@
           "next": "TWSE 官方費率、揭示供給/需求與競價最佳五檔語意已足夠凍結 D20-13 上市子線，但遵守 D06-18 上游成熟度：待下一有效交易日取得第一筆 outcome-blind、含 capturedAt/sourceHash/rule vintage 的真實費率/供需 receipt 後再評估 L3。不得把 displayed supply 稱為全市場可借庫存或 true utilization。"
         }
       ],
-      "status": "D20_L3_11_OF_13 / MATURITY_56_9 / SOCIAL_PIT_SUBLANES_VALIDATED / D20_13_L3_READY / D20_03_IDENTIFIABILITY_BLOCKED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D20 現為 11 個 L3、2 個 L2。D20-06/D20-11 的 L4 前瞻規則已於 2026-10-04 14:06:56 台北時間延伸凍結；只有之後新抓到的 PTT 聚合 parent 才能算 prospective evidence，個別帳號不建立心理/影響力輪廓。下一有效交易日仍先驗證 D20-13 TWSE 借券費率/揭示供需首次 live receipt；若完整可評估 L3。D20-03 維持 L2，等待明示信心/不確定性或其他近直接 overconfidence proxy。",
-      "lastResearchUpdate": "2026-10-04T14:06:56+08:00",
-      "researchNote": "Live source feasibility breakthrough. PTT Stock Atom feed was successfully fetched live and exposed article URLs, publication/update clocks, authors and content previews. A live article page exposed public author handle, second-level post time, minute-level push/boo/arrow actor clocks and explicit edit markers with second-level edit times. A durable source receipt freezes capturedAt as conservative first-known and append-only snapshots for later edits/deletions. D20-11 advances L2→L3 for a bounded prospective public-forum narrative-diffusion sublane. D20-06 advances L2→L3 only for public forum-actor social-herding/leader-follower transforms; it does not identify brokerage investors or natural-person order flow. The same PTT primitive cannot create multiple independent votes across D20-06/07/11. D20-03 remains L2 because public forecast errors do not identify overconfidence without stated confidence/uncertainty or another near-direct proxy. Formal Core unchanged."
+      "status": "D20_L3_12_OF_13 / MATURITY_58_5 / ONLY_D20_13_REMAINS_L2 / SOCIAL_AND_CONFIDENCE_PIT_SUBLANES_VALIDATED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "先把 D20-03 的公開明示信心校準子線納入 2026-10-04 14:12 後的 L4 前瞻契約；今天已讀過的歷史/即時 PTT 文章只算 L3 source evidence。D20 現僅剩 D20-13 為 L2，下一有效交易日優先按已凍結的 09:15/12:00/15:20 時槽取得 TWSE 借券費率/揭示供需 live receipt；若至少一筆完整通過 source/timestamp/schema/fingerprint/UNKNOWN 檢查，再評估 D20-13 L3。",
+      "lastResearchUpdate": "2026-10-04T14:12:14+08:00",
+      "researchNote": "D20-03 advances L2→L3 only for a bounded public explicit-confidence calibration sublane. PTT Stock structured target posts expose explicit direction/target/stop and some posts contain explicit certainty or self-reported performance language, making point-in-time capture of expressed confidence feasible. The lane remains observation/research-only and does not identify a psychological trait, actual trading, or general investor overconfidence. Forecast error alone is not overconfidence; explicit confidence evidence is required. Derived evaluation is aggregate-only with no named-user psychology or influence profile. D20-13 remains the only L2 module pending a genuine live TWSE borrow-rate/displayed-supply receipt. Formal Core unchanged."
     },
     {
       "id": "D21",
