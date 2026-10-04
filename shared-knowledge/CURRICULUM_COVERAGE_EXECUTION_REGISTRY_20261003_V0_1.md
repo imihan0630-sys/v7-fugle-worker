@@ -433,3 +433,30 @@ Exact remaining specialist delta:
 5. commit `research/COV01_D01_SPECIALIST_RETURN_V0_1.md`.
 
 No maturity, module-count or Formal change.
+
+
+## COV-07 blocker refinement — 2026-10-04
+
+COV-07 remains `PARTIAL_EVIDENCE_RECEIVED`.
+
+Accepted Room09 work:
+- front vs next contract and calendar-spread semantics;
+- roll states: NORMAL_FRONT / PRE_ROLL / EXPIRY_DAY / POST_ROLL_RESET;
+- raw basis separated from inter-contract curve shape;
+- carry/dividend and expiry-mechanics guards;
+- official TAIFEX futures source feasibility.
+
+Current exact blocker:
+`CONTRACT_LEVEL_FUTURES_CURVE_REPLAY_PENDING`.
+
+Still required:
+1. immutable historical TX contract-level price/OI/volume receipt with hashes;
+2. expiry calendar/version provenance;
+3. front/next/far curve object on identical historical support;
+4. annualized roll-yield/carry sign convention;
+5. continuous-contract construction without look-ahead or back-adjustment leakage;
+6. residual comparison versus D12-01 basis and D12-02 OI;
+7. exactly one terminal recommendation;
+8. commit `research/COV07_D12_SPECIALIST_RETURN_V0_1.md`.
+
+No maturity or Formal change.
