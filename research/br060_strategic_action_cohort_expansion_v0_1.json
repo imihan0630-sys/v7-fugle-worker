@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "BR060_STRATEGIC_ACTION_COHORT_EXPANSION_V0_1",
+  "room": "07｜產業與供應鏈研究室",
+  "domain": "D09",
+  "module": "D09-14",
+  "capturedAt": "2026-10-04T23:11:40+08:00",
+  "observedMainBeforeWrite": "121d11370268df00e790e119f7c3b3b1f200da0a",
+  "status": "COHORT_EXPANDED_OUTCOME_BLIND / ORIGINAL_ACTIONS_PENDING_NATIVE_MILESTONE",
+  "priorCohortArtifact": "research/br058_prospective_strategic_action_cohort_v0_1.json",
+  "milestoneSurveillance": [
+    {
+      "issuer": "UMC",
+      "symbol": "2303",
+      "priorActionAt": "2026-07-29",
+      "action": "Phased Singapore P4 cleanroom expansion plus Tainan P7/P8 fab-shell construction",
+      "scanResult": "NO_NEW_NATIVE_MILESTONE_OBSERVED_IN_BOUNDED_SOURCE_SCAN",
+      "interpretation": "No same-action post-2026-07-29 issuer-native milestone was found in the official UMC newsroom through the latest visible 2026-08-17 item. This is not evidence of no progress.",
+      "sourceUrls": [
+        "https://www.umc.com/en/News/press_release/Content/corporate/20260729-1",
+        "https://www.umc.com/en/News/press_release"
+      ],
+      "futureOutcomeState": "CLOSED"
+    },
+    {
+      "issuer": "Hon Hai Precision Industry",
+      "symbol": "2317",
+      "priorActionAt": "2026-04-24",
+      "action": "MOU with Mitsubishi Electric to explore joint operation of automotive equipment business, including possible 50% share transfer of Mitsubishi Electric Mobility",
+      "scanResult": "NO_NEW_SAME_CASE_NATIVE_MILESTONE_OBSERVED_IN_BOUNDED_SOURCE_SCAN",
+      "interpretation": "No same-case definitive agreement/closing milestone was found in Hon Hai official latest-news results through the latest visible 2026-09-05 item; Mitsubishi Electric's official case page remains the 2026-04-24 MOU and promises future disclosure if required. This is not evidence that negotiations stopped.",
+      "sourceUrls": [
+        "https://www.honhai.com/en-us/press-center/press-releases/latest-news/2004",
+        "https://www.honhai.com/en-us/press-center/press-releases/latest-news",
+        "https://www.mitsubishielectric.com/en/pr/2026/0424_am/"
+      ],
+      "futureOutcomeState": "CLOSED"
+    }
+  ],
+  "newPreOutcomeActions": [
+    {
+      "cohortId": "BR060-TSMC-SONY-JV-20260811",
+      "issuer": "TSMC",
+      "symbol": "2330",
+      "partner": "Sony Semiconductor Solutions",
+      "announcementAt": "2026-08-11",
+      "actionType": "JOINT_VENTURE",
+      "implementationStage": "DEFINITIVE_AGREEMENT / PRE_IMPLEMENTATION",
+      "observableCommitment": {
+        "description": "Legally binding definitive agreement to establish Advanced Vision Semiconductor Manufacturing Corporation in Koshi City, Kumamoto, Japan for next-generation smartphone image-sensor R&D and manufacturing.",
+        "tsmcPlannedCashInvestmentJPY": "282000000000",
+        "expectedMassProduction": "2029"
+      },
+      "futureMilestones": [
+        "JV establishment/closing",
+        "facility and equipment implementation",
+        "volume-production readiness",
+        "2029 mass-production start"
+      ],
+      "outcomeState": "CLOSED",
+      "sourceUrls": [
+        "https://pr.tsmc.com/chinese/news/3333",
+        "https://pr.cld.tsmc.com/chinese/news/3332"
+      ]
+    },
+    {
+      "cohortId": "BR060-TSMC-ASML-LARGE-MASK-20260908",
+      "issuer": "TSMC",
+      "symbol": "2330",
+      "partner": "ASML",
+      "announcementAt": "2026-09-08",
+      "actionType": "INDUSTRY_TECHNOLOGY_PLATFORM",
+      "implementationStage": "INITIATIVE_ANNOUNCED / PRE_PILOT",
+      "observableCommitment": {
+        "description": "Joint industry initiative to transition High-NA EUV photomasks from 6-inch to 12-inch format.",
+        "pilotLineTarget": "by 2031",
+        "fullLithographyReadinessTarget": "by 2033",
+        "tsmcHighNaAdoptionIntent": "from 2030 in advanced-process mass production"
+      },
+      "futureMilestones": [
+        "12-inch mask pilot-line build",
+        "supplier/ecosystem participation",
+        "TSMC production introduction",
+        "2033 system readiness"
+      ],
+      "outcomeState": "CLOSED",
+      "sourceUrls": [
+        "https://pr.tsmc.com/chinese/news/3338"
+      ]
+    }
+  ],
+  "cohortState": {
+    "priorActionCount": 2,
+    "addedActionCount": 2,
+    "totalFrozenActionCount": 4,
+    "issuerCount": 3,
+    "issuerClusteringRequired": true,
+    "clusteringReason": "TSMC contributes two distinct strategic actions. Future inference must not treat action count as independent issuer count."
+  },
+  "antiLeakage": [
+    "No stock returns, revenue outcomes, margins, market-share outcomes or later implementation outcomes were joined.",
+    "Bounded absence of a press-release milestone is not interpreted as operational failure.",
+    "Shared physical-capacity facts remain D10 dependencies and cannot be double-counted as a second D09-14 vote.",
+    "Future stock-market outcomes remain closed until D16 preregistration/common-support approval."
+  ],
+  "maturityDecision": {
+    "D09_14": "L3_60_KEEP",
+    "D09": "57.1_KEEP",
+    "reason": "The cohort is broader and cleaner, but no preregistered prospective/OOS outcome evidence has been opened."
+  },
+  "exactNext": "Continue BR-060 milestone surveillance on the four frozen actions using native publication clocks; add issuer-diverse pre-outcome actions when clean native evidence appears; freeze implementation milestones before outcome joins; no D09-14 L4 or stock-outcome opening before D16 preregistration/common support."
+}
