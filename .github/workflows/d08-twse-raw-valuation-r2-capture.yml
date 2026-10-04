@@ -1,0 +1,53 @@
+name: D08 TWSE Raw Valuation R2 Capture
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/d08-twse-raw-valuation-r2-capture.yml"
+      - "system2/scripts/d08_twse_raw_valuation_r2_capture_v0_1.mjs"
+      - "system2/runtime/official_historical_a6_valuation_v0_1.mjs"
+      - "system2/runtime/d08_twse_historical_universe_source_v0_1.mjs"
+      - "system2/tests/d08_historical_valuation_source_core.test.mjs"
+      - "system2/tests/d08_raw_valuation_r2_capture_guard.test.mjs"
+      - "research/d08_twse_month_end_scan_date_receipt_20261004_v0_1.json"
+      - "research/d08_twse_official_universe_source_receipt_20261004_v0_1.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: d08-twse-raw-valuation-r2-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Guard D08 research-only boundary
+        run: |
+          set -euo pipefail
+          node system2/tests/d08_historical_valuation_source_core.test.mjs
+          node system2/tests/d08_raw_valuation_r2_capture_guard.test.mjs
+          node --check system2/scripts/d08_twse_raw_valuation_r2_capture_v0_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Capture 44 immutable TWSE valuation snapshots to isolated R2
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+        run: |
+          set -euo pipefail
+          node system2/scripts/d08_twse_raw_valuation_r2_capture_v0_1.mjs | tee /tmp/d08-raw-valuation-r2.jsonl
+      - name: Production isolation guard
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "D08 research-only R2 capture isolation PASS"
