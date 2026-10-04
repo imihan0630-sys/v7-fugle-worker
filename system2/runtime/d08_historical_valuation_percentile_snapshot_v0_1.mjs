@@ -48,7 +48,19 @@ export function buildD08HistoricalValuationPercentileSnapshotV0_1({
     seen.add(symbol);
     const raw=rawBySymbol.get(symbol);
     if(!raw) throw new Error("RAW_SNAPSHOT_COHORT_ROW_MISSING:"+symbol);
-    const history=historyBySymbol.get(symbol)||[];
+    const effectiveFrom=String(m.effectiveFrom??"");
+    const effectiveTo=m.effectiveTo===null||m.effectiveTo===undefined?null:String(m.effectiveTo);
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(effectiveFrom)) {
+      throw new Error("MEMBERSHIP_EFFECTIVE_FROM_REQUIRED:"+symbol);
+    }
+    if(effectiveFrom>scanDate || (effectiveTo!==null&&effectiveTo<scanDate)) {
+      throw new Error("MEMBERSHIP_NOT_ACTIVE_AT_SCAN:"+symbol);
+    }
+    const allSymbolHistory=historyBySymbol.get(symbol)||[];
+    const preMembershipHistoryRowsExcluded=allSymbolHistory.filter(r=>dateOf(r)<effectiveFrom).length;
+    const history=allSymbolHistory.filter(r=>
+      dateOf(r)>=effectiveFrom && (effectiveTo===null||dateOf(r)<=effectiveTo)
+    );
     const daily=history.find(r=>dateOf(r)===scanDate)||null;
     const cross=validateD08ScanDateAgainstRawSnapshotV0_1({symbol,scanDate,dailyRow:daily,rawRow:raw});
     if(!cross.ok) throw new Error("raw crosscheck failed "+symbol);
@@ -56,6 +68,11 @@ export function buildD08HistoricalValuationPercentileSnapshotV0_1({
     const pb=computeD08HistoricalValuationPercentilesV0_1({historyRows:history,metric:"pb",scanDate});
     rows.push({
       market:"TWSE",scanDate,symbol,
+      membershipEpisode:{
+        effectiveFrom,
+        effectiveTo,
+        semanticMembershipHash:m.semanticMembershipHash??null,
+      },
       valuationObserved:raw.valuationObserved===true,
       pe:raw.pe??null,pb:raw.pb??null,
       peState:raw.peState??(raw.pe===null?"UNKNOWN":"KNOWN"),
@@ -69,6 +86,7 @@ export function buildD08HistoricalValuationPercentileSnapshotV0_1({
         pbValidThroughScanDate:pb.validObservationCountThroughScanDate,
         peFutureRowsExcluded:pe.futureRowsExcluded,
         pbFutureRowsExcluded:pb.futureRowsExcluded,
+        preMembershipHistoryRowsExcluded,
       },
     });
   }
