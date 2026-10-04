@@ -417,3 +417,78 @@ Do not remove D12-14 yet.
 1. Freeze one primary research-only discount convention plus an alternative sensitivity convention.
 2. Materialize the existing 2026-10-02 TXO parent through the authorized isolated path and run monthly IV/skew/surface on identical common support.
 3. Keep weekly-expiry forward governance separate and historical replay separate from prospective 18:10 evidence.
+
+
+## 2026-10-04 Room09 continuation — DR-090..DR-095 real IV/skew/surface residual return
+
+Status: RESEARCH_ONLY / HISTORICAL_REPLAY_QA / H11_TERMINAL_SPECIALIST_RETURN / OUTCOMES_CLOSED / NO_PROMOTION.
+Durable evidence: `research/d12_h11_common_parent_residual_return_20261004_v0_1.json`.
+
+### DR-090 — primary discount convention is now frozen for this replay
+- CBC official five-bank posted-rate artifact hash: `4530cbe4fda52f124bb7bc0cb621bce374f4d8a9607b3ce72021d836038e2d16`.
+- HTTP `Last-Modified`: 2026-10-01 11:00:50 UTC = 2026-10-01 19:00:50 Asia/Taipei, before the 2026-10-02 option parent date.
+- The replay therefore uses CBC 11509 posted fixed time-deposit rates from 台銀/土銀/合庫/一銀/華銀, equal-weighted across banks.
+- Frozen mean annual quoted rates by calendar tenor: 30d 1.225%, 90d 1.286%, 180d 1.452%, 270d 1.565%, 365d 1.700%.
+- Piecewise-linear tenor interpolation plus `exp(-r*T)` ACT/365 is a research proxy, not a claim of an exact tradable zero curve.
+- Monthly forward identity remains same-expiry TX regular-session final best-bid/ask midpoint.
+
+### DR-091 — real monthly IV replay passes
+Using the unchanged official 2026-10-02 TXO parent hash `61574590f9c8a1c882616f89090d39cbd44e00a91bd93055ff046ff4ab287c2a`, unchanged TX parent hash `d41cc8c279d805a0ebb13c29f3ff757cdc78a35d7a2e13fc06be4b3f3aeb1834`, Black-76 on futures forward, regular-session quote eligibility, 13:45 source-clock proxy and 13:30 expiry clock:
+- only 3 rows failed option-price bounds before the monthly smile build;
+- 202610 / 202611 / 202612 / 202703 / 202706 ATM IV = 18.8658% / 21.9993% / 23.2198% / 23.7758% / 24.6326%;
+- observed monthly ATM term structure is upward on this parent;
+- this is later-retrieved historical replay QA, not a 2026-10-02 18:10 first-known receipt.
+
+### DR-092 — simple D12-07 skew is stable but nonzero
+On identical OTM common-support rows within `abs(log(K/F))<=0.10`, downside-minus-upside IV is:
+- 202610: 1.0934 vol points;
+- 202611: 0.9504;
+- 202612: 1.0524;
+- 202703: 1.0253;
+- 202706: 0.9522.
+All five monthly expiries show the same downside-richer sign. The range is relatively narrow.
+
+### DR-093 — D12-16 residual curvature is real on identical parent rows
+Compare an unweighted linear IV-vs-log-moneyness fit (simple skew baseline) with a quadratic fit on the exact same strike support, evaluated by leave-one-strike-out RMSE:
+- 202610: quadratic RMSE improvement 76.32%;
+- 202611: 79.67%;
+- 202612: 55.84%;
+- 202703: 47.05%;
+- 202706: 42.02%.
+Quadratic curvature coefficients fall from 3.6123 (202610) to 0.1607 (202706), more than an order-of-magnitude variation, while simple downside-minus-upside skew stays around 0.95–1.09 vol points. This is a real source-hash-attested divergent state: simple skew and residual curvature do not collapse to the same object.
+
+### DR-094 — alternative-rate falsification does not remove the residual
+Re-run the identical rows using the previously frozen CBC central-bank CD issuance-rate anchors as sensitivity-only discount inputs:
+- maximum ATM-IV change versus the primary rate convention = about 0.009 vol points;
+- maximum downside-minus-upside skew change = about 0.00036 vol points;
+- quadratic leave-one-out improvement remains 76.34%, 79.68%, 55.86%, 47.37%, 42.81%.
+Therefore the H11 residual-curvature finding is not an artifact of choosing the five-bank posted-rate proxy.
+
+### DR-095 — H11 terminal specialist classification
+Room09 terminal specialist return:
+`SCOPE_DEDUP_ONLY`.
+
+Ownership boundary:
+- D12-07 owns simple skew level/asymmetry and ATM / near-far term-structure baseline summaries.
+- D12-16 owns residual curvature/smile, cross-expiry surface interaction, construction-method sensitivity, fit/coverage/static-arbitrage quality and only information not already represented by the D12-07 primitives.
+- D12-16 must not create a second independent vote from the same linear skew or ATM term primitive already owned by D12-07.
+
+Why not MERGE_ELIGIBLE:
+real common-parent curvature survives the simple skew baseline with large outcome-blind cross-validated fit gains and materially different tenor behavior.
+
+Why not KEEP_SEPARATE without de-duplication:
+the D12-16 slope/skew and level portions overlap directly with D12-07 baseline semantics.
+
+Maturity firewall:
+- D12-06 remains L2/40%.
+- D12-07 remains L2/40%.
+- D12-16 remains L2/40%.
+- D12 aggregate remains 40.0%.
+- No L3 because this is one later-retrieved historical parent, not independent source-attested prospective decision-time dates.
+- Outcomes CLOSED; Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+
+### Exact next continuation after DR-095
+1. Return `research/d12_h11_common_parent_residual_return_20261004_v0_1.json` to 00 control-plane intake; structural execution/owner approval remains a control-plane action.
+2. D12 active research moves from H11 historical residual proof to independent prospective source-attested option-surface dates; do not backfill 18:10 first-known from daily files.
+3. D12-13 next high-value lane: compare own-computed contract Greeks with official TAIFEX Delta only after publication/effective-date, model input and quote-clock alignment.
+4. Keep weekly-expiry forward governance separate from monthly futures-forward replay.
