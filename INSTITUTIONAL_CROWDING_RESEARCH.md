@@ -1155,3 +1155,31 @@ No maturity promotion is granted to D06-05, D06-07/08/09, D06-11, D06-13/14/15/1
 
 FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 Formal Core remains LOCKED.
+
+---
+
+## IC-055 — next-trading-day D06 capture plan is pre-registered outcome-blind
+
+Research artifact:
+`research/d06_next_trading_day_outcome_blind_capture_plan_v0_1.json`.
+
+The weekend research phase now closes the design loop for the next valid trading day without reading any future outcomes.
+
+Frozen lanes:
+- D06-03 dealer proprietary/hedge split;
+- D06-05 same-generation TDCC ownership lineage;
+- D06-06 CORE_CROWDING immutable child receipt;
+- D06-07/08/09 TPEx leverage/shorting EARLY/LATE vintage capture;
+- D06-14 TPEx T_PRELIM -> T1_REVISED -> T2_FINAL day-trade vintage chain;
+- D06-16 / PF-040 independent-date units-delta + PCF receipt;
+- D06-18 securities-lending rate/displayed-supply receipt;
+- D06-19 direct-retail source discovery with proxy-substitution forbidden.
+
+All lanes preserve source date/version, capturedAt, firstKnownAt, content hash, coverage, revision/finality and UNKNOWN reasons. Derived states are decision-time eligible only after the latest required-parent firstKnownAt.
+
+Outcomes remain CLOSED. No D1/D3/D5/D10/D20, MFE, MAE, return, hit-rate or selection result may be joined during readiness capture.
+
+No additional maturity promotion is granted from this pre-registration. It only prevents outcome-guided definition drift and makes the next trading-day work executable immediately.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core remains LOCKED.
