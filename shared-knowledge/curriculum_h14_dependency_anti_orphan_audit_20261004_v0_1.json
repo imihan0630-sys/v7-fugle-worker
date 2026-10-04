@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "CURRICULUM_H14_DEPENDENCY_ANTI_ORPHAN_AUDIT_V0_1",
+  "date": "2026-10-04",
+  "auditBaseMain": "a09d03b8f9c57d1955b4a502de3912c490c57b12",
+  "clusterId": "H14",
+  "modules": [
+    "D06-11",
+    "D11-14"
+  ],
+  "sourceRooms": [
+    "05",
+    "08"
+  ],
+  "acceptedEvidence": [
+    "research/d06_h14_index_event_vs_passive_flow_room05_packet_v0_1.md",
+    "INDEX_ADJUSTMENT_PASSIVE_FLOW_RESEARCH.md",
+    "research/d11_index_adjustment_pit_receipt_v0_1.json"
+  ],
+  "counterpartMode": "EQUIVALENT_INDEPENDENT_ROOM08_EVIDENCE",
+  "dependencyAudit": "PASS_PRODUCER_CONSUMER_GRAPH",
+  "divergentStateAudit": "PASS",
+  "antiDoubleCount": "PASS_SINGLE_EVENT_RECEIPT_PLUS_RESIDUAL_FLOW",
+  "antiOrphan": "PASS_NO_ORPHAN",
+  "terminalClassification": "KEEP_SEPARATE",
+  "governanceDisposition": "PRODUCER_CONSUMER_EVENT_FLOW_BOUNDARY",
+  "state": "CLOSED_NO_STRUCTURAL_CHANGE",
+  "maturity": {
+    "D06-11": {
+      "level": "L2",
+      "maturityPct": 40,
+      "change": "NONE"
+    },
+    "D11-14": {
+      "level": "L3",
+      "maturityPct": 60,
+      "change": "NONE"
+    }
+  },
+  "structuralChange": "NONE",
+  "ownerApprovalRequired": false,
+  "formalCoreImpact": "NONE_LOCKED"
+}
