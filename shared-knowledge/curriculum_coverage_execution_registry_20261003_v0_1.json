@@ -1,7 +1,7 @@
 {
   "schemaVersion": "CURRICULUM_COVERAGE_EXECUTION_REGISTRY_V0_1",
   "updatedAt": "2026-10-04T19:31:00+08:00",
-  "status": "COV02_COV03_COV04_COV05_CANONICAL_UPDATE_COMPLETE / COV01_06_07_08_09_10_11_PARTIAL / COV12_PENDING",
+  "status": "COV02_COV03_COV04_COV05_CANONICAL_UPDATE_COMPLETE / COV01_06_07_08_09_10_11_12_PARTIAL / NO_GENERIC_PENDING",
   "formalCoreImpact": "NONE_LOCKED",
   "canonicalSnapshot": {
     "domains": 22,
@@ -160,11 +160,10 @@
       "COV-08",
       "COV-09",
       "COV-10",
-      "COV-11"
-    ],
-    "pendingSpecialistReturn": [
+      "COV-11",
       "COV-12"
     ],
+    "pendingSpecialistReturn": [],
     "acceptedSpecialistReturns": 4,
     "acceptedSpecialistReturnIds": [
       "COV-03",
@@ -179,7 +178,9 @@
       "COV-05",
       "COV-02"
     ],
-    "canonicalImpact": "COV02_EXTENDED_D05_06_COV03_ADDED_D06_19_COV04_ADDED_D07_34_COV05_EXTENDED_D08_06"
+    "canonicalImpact": "COV02_EXTENDED_D05_06_COV03_ADDED_D06_19_COV04_ADDED_D07_34_COV05_EXTENDED_D08_06",
+    "genericPendingCount": 0,
+    "note": "All non-canonical Coverage candidates are now evidence-specific PARTIAL; none remains generic PENDING_SPECIALIST_RETURN."
   },
   "pendingEvidenceDeficitMatrix": "shared-knowledge/CURRICULUM_COVERAGE_PENDING_EVIDENCE_DEFICIT_MATRIX_20261003_V0_1.md",
   "pendingDeficitSummary": {
