@@ -273,7 +273,15 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H09_H12_SCOPE_DEDUP_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H09_H12_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "SPECIALIST_VALIDATION_PENDING"
+      "status": "PARTIAL_EVIDENCE_RECEIVED_ROOM09_METHOD_BOUNDARY_COMPLETE_COMMON_PARENT_RESIDUAL_PENDING",
+      "receivedPackets": [
+        "DERIVATIVES_VOLATILITY_RESEARCH.md",
+        "DERIVATIVES_VOLATILITY_CHECKPOINT.md",
+        "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json",
+        "research/d12_surface_method_v0_1_spec.json"
+      ],
+      "intakeDecision": "EVIDENCE_INSUFFICIENT_PENDING_COMMON_PARENT_RESIDUAL_TEST",
+      "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json"
     },
     {
       "id": "H12",
