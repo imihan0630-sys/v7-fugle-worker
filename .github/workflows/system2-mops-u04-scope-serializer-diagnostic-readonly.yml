@@ -1,0 +1,48 @@
+name: System2 MOPS U04 Scope Serializer Diagnostic Readonly
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_mops_u04_scope_serializer_diagnostic_readonly_v0_1.mjs"
+      - "system2/SYSTEM2_MOPS_U04_SCOPE_SERIALIZER_DIAGNOSTIC_V0_1.md"
+      - ".github/workflows/system2-mops-u04-scope-serializer-diagnostic-readonly.yml"
+      - "system2/scripts/probe_mops_u04_bounded_list_query_readonly_v0_2.mjs"
+      - "system2/SYSTEM2_MOPS_U04_BOUNDED_LIST_QUERY_V0_2.md"
+      - ".github/workflows/system2-mops-u04-bounded-list-query-v0-2-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_mops_u04_scope_serializer_diagnostic_readonly_v0_1.mjs"
+      - "system2/SYSTEM2_MOPS_U04_SCOPE_SERIALIZER_DIAGNOSTIC_V0_1.md"
+      - ".github/workflows/system2-mops-u04-scope-serializer-diagnostic-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-mops-u04-scope-serializer-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Reverify refined bounded U04 query
+        run: node system2/scripts/probe_mops_u04_bounded_list_query_readonly_v0_2.mjs
+      - name: Diagnose scope and serializer semantics
+        run: node system2/scripts/probe_mops_u04_scope_serializer_diagnostic_readonly_v0_1.mjs
+      - name: Confirm read-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_mops_u04_scope_serializer_diagnostic_readonly_v0_1.mjs
+          echo "MOPS U04 scope/serializer diagnostic read-only boundary PASS"
