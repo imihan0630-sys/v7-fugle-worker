@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ALPHA_ORIENTED_KNOWLEDGE_DISCOVERY_EXECUTION_REGISTRY_V0_1",
   "date": "2026-10-04",
-  "status": "AOKD01_CLOSED_ALREADY_OWNED_AOKD05_SCOPE_TRIAGE_AOKD06_DATA_BLOCKED",
+  "status": "AOKD01_CLOSED_ALREADY_OWNED_AOKD05_OWNER_TRIAGE_CLOSED_CORPUS_GATE_AOKD06_DATA_BLOCKED",
   "audit": "shared-knowledge/ALPHA_ORIENTED_KNOWLEDGE_DISCOVERY_AUDIT_20261004_V0_1.md",
   "candidates": [
     {
@@ -40,13 +40,24 @@
     },
     {
       "id": "AOKD-05",
-      "state": "CORPUS_FEASIBILITY_AND_OWNER_TRIAGE_REQUIRED",
-      "classification": "SCOPE_EXTENSION_CANDIDATE",
+      "state": "CORPUS_FEASIBILITY_REQUIRED",
+      "classification": "EXISTING_MULTI_OWNER_SCOPE_DERIVED_DISCLOSURE_DELTA_LANE",
       "layer": "C",
-      "room": "00 triage; proposed D07 consultation only",
-      "domain": "D07 proposed only",
+      "room": "06｜基本面與估值研究室 source-feasibility execution; 00 governance only",
+      "domain": "D07 multi-owner content routing / D16-22 method validation / D20 behavioral consumers",
       "evidencePack": "shared-knowledge/AOKD_NEW_CANDIDATE_EVIDENCE_PACKS_20261004_V0_2.md",
-      "covId": null
+      "covId": null,
+      "ownerTriage": "CLOSED",
+      "ownerReconciliation": "shared-knowledge/AOKD05_OWNER_SCOPE_RECONCILIATION_20261004_V0_1.md",
+      "corpusFeasibilityContract": "shared-knowledge/AOKD05_CORPUS_FEASIBILITY_CONTRACT_20261004_V0_1.md",
+      "allowedReturnStates": [
+        "FEASIBLE",
+        "PROSPECTIVE_ONLY_FEASIBLE",
+        "DATA_BLOCKED",
+        "EVIDENCE_INSUFFICIENT"
+      ],
+      "curriculumImpact": "NONE_UNTIL_NEW_EVIDENCE",
+      "formalCoreImpact": "NONE_LOCKED"
     },
     {
       "id": "AOKD-06",
@@ -67,6 +78,23 @@
     "newSpecialistReady": 0,
     "curriculumImpact": "NONE"
   },
-  "updatedAt": "2026-10-04T07:52:57+08:00",
-  "ownerReconciliation": "shared-knowledge/AOKD01_OWNER_RECONCILIATION_20261004_V0_1.md"
+  "updatedAt": "2026-10-04T21:21:00+08:00",
+  "ownerReconciliation": "shared-knowledge/AOKD01_OWNER_RECONCILIATION_20261004_V0_1.md",
+  "aokd05": {
+    "state": "CORPUS_FEASIBILITY_REQUIRED",
+    "ownerTriage": "CLOSED",
+    "classification": "EXISTING_MULTI_OWNER_SCOPE_DERIVED_DISCLOSURE_DELTA_LANE",
+    "ownerReconciliation": "shared-knowledge/AOKD05_OWNER_SCOPE_RECONCILIATION_20261004_V0_1.md",
+    "corpusFeasibilityContract": "shared-knowledge/AOKD05_CORPUS_FEASIBILITY_CONTRACT_20261004_V0_1.md",
+    "permittedTerminalStates": [
+      "FEASIBLE",
+      "PROSPECTIVE_ONLY_FEASIBLE",
+      "DATA_BLOCKED",
+      "EVIDENCE_INSUFFICIENT"
+    ],
+    "outcomeJoinAuthorized": false,
+    "maturityPromotionAuthorized": false,
+    "newModuleAuthorized": false,
+    "formalCoreImpact": "NONE_LOCKED"
+  }
 }
