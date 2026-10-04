@@ -630,3 +630,7 @@ The next S2-07 revision-source blocker is historical version knownAt semantics. 
 S2-07 now has physically verified MOPS source-reported clock semantics (PR #471), direct SFB/FSC regulator revocation evidence for the frozen 1342 control (PR #475), a fail-closed prospective availability observer that refuses retrospective knownAt fabrication (PR #480), and a 5/5 cross-authority issuer/regulator/exchange routing matrix (PR #483).
 
 This materially narrows the revision-source blocker but does not certify exact public availability or bounded revision completeness. `knownAtVersionClockCertified=false`, `revisionCoverageComplete=false`, session/technical continuity and all trading authorities remain locked.
+
+## 2026-10-04 S2-07 six-lane blocker decomposition milestone
+
+PR #487 physically confirmed all six official final-result lanes are READY and isolated the real remaining revision blockers: prospective availability/knownAt on 6/6 lanes, bounded authority/revision-history coverage on 6/6 lanes, and missing representative authority routing on 4/6 lanes. Revision completeness, NO_EVENT, session/technical continuity and all trading authorities remain false.
