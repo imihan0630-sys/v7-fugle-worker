@@ -1,0 +1,349 @@
+{
+  "version": "0.1",
+  "id": "SC-055",
+  "capturedAt": "2026-10-04T16:45:00+08:00",
+  "module": "D10-02 供應鏈Lead-Lag領先落後",
+  "secondaryModule": "D10-09 上游→中游→下游不對稱傳導",
+  "mode": "PHYSICAL_NON_STEEL_THREE_LAYER_HISTORICAL_REPLAY / PREFROZEN_LAGS / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "purpose": "完成 SC-054 指定的第二條真正實體非鋼鐵三層鏈，沿用已事前凍結的 1M/2M/3M lag 候選，不事後挑 lag；以官方台灣月度產銷存資料檢查 generic fixed-lag 是否可重播。",
+  "preregistration": {
+    "lagSetParent": "research/sc049_supply_chain_lead_lag_identifiability_audit_v0_1.json",
+    "expandedSteelReplayParent": "research/sc054_steel_prefrozen_lag_six_vintage_falsification_v0_1.json",
+    "lagCandidatesMonths": [
+      1,
+      2,
+      3
+    ],
+    "primaryMetric": "monthly production direction, edge-wise",
+    "interpretationRule": "Report both physical edges separately. No lag may be selected because it looks best on one edge. No composite success score.",
+    "postHocBestLagSelectionForbidden": true
+  },
+  "physicalChain": {
+    "chainId": "TAIWAN_COPPER_FOIL_TO_CCL_TO_PCB",
+    "layers": [
+      {
+        "role": "UPSTREAM_INPUT",
+        "productCode": "2433-020",
+        "productName": "銅箔",
+        "unit": "metric ton"
+      },
+      {
+        "role": "INTERMEDIATE",
+        "productCode": "2630-010",
+        "productName": "銅箔基板",
+        "unit": "square foot"
+      },
+      {
+        "role": "DOWNSTREAM",
+        "productCode": "2630-040",
+        "productName": "印刷電路板",
+        "unit": "square foot"
+      }
+    ],
+    "physicalEvidence": [
+      {
+        "authority": "TPCA 台灣電路板協會會員資料",
+        "url": "https://www.tpca.org.tw/web/company_infor.php?no=568",
+        "evidence": "會員公司說明銅箔、樹脂等為 CCL 主要原物料，且產品應用於 PCB。"
+      },
+      {
+        "authority": "TPCA 台灣電路板協會會員資料",
+        "url": "https://www.tpca.org.tw/web/company_infor.php?no=329",
+        "evidence": "銅箔基板可供 PCB 廠加工製成單、雙面及多層印刷電路板。"
+      },
+      {
+        "authority": "工業技術研究院",
+        "url": "https://www.itri.org.tw/ListStyle.aspx?DisplayStyle=18_content&MGID=1126246632337721374&MmmID=1036452026061075714&SiteID=1",
+        "evidence": "銅箔基板是電路板主要材料。"
+      }
+    ],
+    "taxonomyBoundary": "The chain is physical at product-family level, not an issuer-specific bill of materials. Product-code identity does not prove every Taiwan copper-foil unit is consumed by the observed CCL universe or every CCL unit by the observed PCB universe."
+  },
+  "sourceFamily": {
+    "authority": "經濟部統計處",
+    "dataset": "主要產品產銷存量值",
+    "annualReport": "114年工業生產統計年報",
+    "reportUrl": "https://mnscdn.moea.gov.tw/Mns/DOS/content/wHandMenuFile.ashx?file_id=38725",
+    "reportUpdatedAt": "2026-07-16",
+    "copperFoilTablePage": 55,
+    "cclPcbTablePage": 60,
+    "commonSurveyFields": [
+      "Production",
+      "Shipment",
+      "Inventory"
+    ],
+    "clockAssessment": "COMMON_SURVEY_FAMILY_BUT_ANNUAL_REPORT_IS_EX_POST",
+    "pitCaveat": "The 2025 annual report is historical replay evidence. It does not preserve each 2025 month's native first-known publication timestamp, so it cannot by itself establish prospective PIT timing. Future monthly receipts must freeze sourcePublishedAt/capturedAt."
+  },
+  "observations2025": {
+    "months": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
+    "copperFoil": {
+      "production": [
+        6843,
+        6769,
+        7615,
+        8107,
+        7823,
+        7043,
+        7524,
+        7411,
+        6828,
+        7055,
+        6459,
+        7130
+      ],
+      "shipment": [
+        6396,
+        7044,
+        7338,
+        7914,
+        7609,
+        7770,
+        7328,
+        7336,
+        7123,
+        6993,
+        6531,
+        7082
+      ],
+      "inventory": [
+        6028,
+        5611,
+        5862,
+        6010,
+        6155,
+        5388,
+        5559,
+        5646,
+        5331,
+        5119,
+        5121,
+        5116
+      ],
+      "unit": "metric ton"
+    },
+    "ccl": {
+      "production": [
+        26780035,
+        30368176,
+        33868843,
+        33734240,
+        32529119,
+        32852348,
+        31328069,
+        30279637,
+        31153393,
+        30967110,
+        32080023,
+        31950694
+      ],
+      "shipment": [
+        28774040,
+        30562002,
+        32006611,
+        32976207,
+        33137323,
+        31990548,
+        32286655,
+        31708105,
+        34532079,
+        33627994,
+        32900522,
+        32628720
+      ],
+      "inventory": [
+        26171314,
+        27048926,
+        29292850,
+        29106172,
+        29001755,
+        31523206,
+        30624163,
+        29954336,
+        27981493,
+        26760342,
+        26814665,
+        27634053
+      ],
+      "unit": "square foot"
+    },
+    "pcb": {
+      "production": [
+        26489128,
+        25643284,
+        32243642,
+        29536943,
+        34659583,
+        34482022,
+        40573412,
+        38600829,
+        40400938,
+        37160762,
+        36450978,
+        35715297
+      ],
+      "shipment": [
+        28958731,
+        26858378,
+        34492232,
+        31583116,
+        35247546,
+        35465729,
+        42267591,
+        39417527,
+        42712296,
+        38563282,
+        37331982,
+        37084959
+      ],
+      "inventory": [
+        21208038,
+        20757255,
+        20816941,
+        21244549,
+        21980698,
+        22299056,
+        22320409,
+        22797076,
+        21751805,
+        21611941,
+        21951359,
+        21936819
+      ],
+      "unit": "square foot"
+    }
+  },
+  "primaryReplay": {
+    "metric": "month-over-month production direction",
+    "copperFoilToCcl": [
+      {
+        "lagMonths": 1,
+        "maturedPairN": 10,
+        "concordantN": 4,
+        "concordanceRate": 0.4,
+        "decision": "NOT_STABLE"
+      },
+      {
+        "lagMonths": 2,
+        "maturedPairN": 9,
+        "concordantN": 6,
+        "concordanceRate": 0.6666666667,
+        "decision": "EDGE_LOCAL_ONLY_NOT_CHAIN_STABLE"
+      },
+      {
+        "lagMonths": 3,
+        "maturedPairN": 8,
+        "concordantN": 4,
+        "concordanceRate": 0.5,
+        "decision": "NOT_STABLE"
+      }
+    ],
+    "cclToPcb": [
+      {
+        "lagMonths": 1,
+        "maturedPairN": 10,
+        "concordantN": 5,
+        "concordanceRate": 0.5,
+        "decision": "NOT_STABLE"
+      },
+      {
+        "lagMonths": 2,
+        "maturedPairN": 9,
+        "concordantN": 4,
+        "concordanceRate": 0.4444444444,
+        "decision": "NOT_STABLE"
+      },
+      {
+        "lagMonths": 3,
+        "maturedPairN": 8,
+        "concordantN": 5,
+        "concordanceRate": 0.625,
+        "decision": "EDGE_LOCAL_ONLY_NOT_CHAIN_STABLE"
+      }
+    ],
+    "chainDecision": "NO_SINGLE_PREFROZEN_LAG_IS_STABLE_ACROSS_BOTH_PHYSICAL_EDGES",
+    "keyFalsification": "The 2M lag is strongest on copper-foil→CCL but weak on CCL→PCB; the 3M lag is stronger on CCL→PCB but only 50% on copper-foil→CCL. A generic fixed lag cannot be selected without cherry-picking the edge."
+  },
+  "sensitivityReplay": {
+    "metric": "upstream shipment direction -> downstream production direction",
+    "copperFoilShipmentToCclProduction": [
+      {
+        "lagMonths": 1,
+        "rate": 0.5
+      },
+      {
+        "lagMonths": 2,
+        "rate": 0.3333333333
+      },
+      {
+        "lagMonths": 3,
+        "rate": 0.75
+      }
+    ],
+    "cclShipmentToPcbProduction": [
+      {
+        "lagMonths": 1,
+        "rate": 0.4
+      },
+      {
+        "lagMonths": 2,
+        "rate": 0.6666666667
+      },
+      {
+        "lagMonths": 3,
+        "rate": 0.375
+      }
+    ],
+    "interpretation": "Sensitivity also flips the best-looking lag across edges. It is not a promotion test and cannot replace the preregistered primary metric."
+  },
+  "controlsAndCounterevidence": [
+    "Layer units differ, so level ratios across copper foil, CCL and PCB are invalid; only within-series changes may be compared.",
+    "Inventory can absorb or release upstream production before downstream production changes.",
+    "Monthly production can share common end-demand shocks, especially electronics/AI demand, so concordance is not causal evidence.",
+    "Product-family data are not issuer-matched supplier-customer quantities.",
+    "Adjacent monthly pairs are serially dependent and the 2025 sample is small.",
+    "Historical annual-report replay is ex-post; native monthly first-known clocks are not frozen.",
+    "No stock-return, revenue, margin or issuer score outcome is opened."
+  ],
+  "identifiabilityDecision": {
+    "physicalGraphRequirement": "PASS_BOUNDED_PRODUCT_FAMILY_LEVEL",
+    "compatibleMeasurementFamily": "PASS_SAME_MOEA_SURVEY_FAMILY",
+    "nativeMonthlyPITClock": "FAIL_NOT_FROZEN_IN_ANNUAL_REPLAY",
+    "fixedLagStability": "FAIL_ACROSS_TWO_EDGES",
+    "commonShockControlled": "PARTIAL_ONLY",
+    "conclusion": "PHYSICAL_CHAIN_ESTABLISHED_BUT_GENERIC_FIXED_LAG_NOT_VALIDATED",
+    "causalClaimAuthorized": false
+  },
+  "maturityDecision": {
+    "D10-02": "KEEP_L2_MECHANISM_AND_FALSIFICATION_DEFINED",
+    "D10-09": "KEEP_L3_PHYSICAL_CROSS_CHAIN_FALSIFICATION_ADDED"
+  },
+  "reasonNoD10_02L3": "SC-055 removes the prior physical-graph blocker but the relation itself remains unstable: no one preregistered lag works consistently across both physical edges, native monthly PIT clocks are not preserved by the annual replay, common-demand/inventory alternatives remain material, and there is no prospective/OOS confirmation.",
+  "formalOptimizationCandidate": "NONE",
+  "systemImplications": {
+    "system1": "Do not add a generic supply-chain fixed-lag score, bonus or timing rule.",
+    "system2": "Research context may store chain-specific state plus UNKNOWN/confidence, but no timing vote is authorized."
+  },
+  "exactNext": [
+    "SC-056 prospectively append the same copper-foil→CCL→PCB chain from native monthly MOEA releases with sourcePublishedAt/capturedAt frozen before later outcomes.",
+    "Keep the 1M/2M/3M lag set and the production-direction primary metric unchanged; do not select a different lag or metric after seeing new months.",
+    "Continue steel-chain future vintages under the same frozen lag set.",
+    "If independent future physical chains continue to show edge-specific or unstable lag behavior, classify generic fixed-lag supply-chain timing as rejected and retain only chain-specific contextual state."
+  ],
+  "status": "PHYSICAL_NON_STEEL_CHAIN_PASS / 2025_MOEA_REPLAY / PREFROZEN_1M_2M_3M / NO_COMMON_STABLE_LAG / NATIVE_MONTHLY_PIT_CLOCK_PENDING / D10_02_KEEP_L2 / FORMAL_UNCHANGED"
+}
