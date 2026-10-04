@@ -49,6 +49,8 @@ if not (budget_i < capital_i < select_i):
 between=core[capital_end:select_i]
 for forbidden in ["await ","fetch(","STOCKS_KV.get","V7_DB.","fetchWithDeadline("]:
     if forbidden in between:
+        print("----- BETWEEN FINAL CAPITAL INPUT AND SELECTOR -----")
+        print(between)
         raise SystemExit("external/async read between final capital input and selector: "+forbidden)
 
 if selector.lstrip().startswith("async function"):
