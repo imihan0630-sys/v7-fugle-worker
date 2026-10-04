@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "generatedAt": "2026-10-05T07:22:00+08:00",
+  "generatedAt": "2026-10-05T07:17:41+08:00",
   "owner": "08｜事件與新聞研究室",
   "modules": [
     "D17-01",
@@ -82,5 +82,9 @@
     "Continue licensed general-news source discovery separately."
   ],
   "outcomeJoin": false,
-  "formalCoreChanged": false
+  "formalCoreChanged": false,
+  "timestampCorrection": {
+    "correctedAt": "2026-10-05T07:29:11+08:00",
+    "reason": "Align generatedAt with the actual GitHub commit creation time; remove manually projected future timestamp."
+  }
 }
