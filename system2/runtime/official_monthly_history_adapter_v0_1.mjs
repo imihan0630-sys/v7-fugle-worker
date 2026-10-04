@@ -185,8 +185,10 @@ function rowsFromTpexPayload(payload) {
     if (Number(payload.iTotalRecords) === 0) return [];
     throw new Error("TPEx payload tables/aaData/data must contain an array");
   }
-  if (currentTable && payload.flagField && payload.flagField !== "張數") {
-    throw new Error("unsupported TPEx tradingStock volume unit: " + payload.flagField);
+  const rawVolumeUnitLabel = currentTable ? String(payload.flagField || "").trim() : "";
+  const supportedThousandShareLabels = new Set(["張數", "仟股"]);
+  if (currentTable && rawVolumeUnitLabel && !supportedThousandShareLabels.has(rawVolumeUnitLabel)) {
+    throw new Error("unsupported TPEx tradingStock volume unit: " + rawVolumeUnitLabel);
   }
   return rows.map((r, i) => {
     if (!Array.isArray(r) || r.length < 9) throw new Error("TPEx data row " + i + " is malformed");
@@ -205,6 +207,7 @@ function rowsFromTpexPayload(payload) {
       sourceFields: {
         row: r,
         sourceVolumeUnit: "LOT_1000_SHARES",
+        sourceVolumeUnitLabel: rawVolumeUnitLabel || null,
         sourceTradeValueUnit: "THOUSAND_NTD",
         volumeToSharesMultiplier: 1000,
         tradeValueToNtdMultiplier: 1000,
