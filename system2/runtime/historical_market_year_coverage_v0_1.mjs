@@ -163,6 +163,7 @@ export function buildHistoricalMarketYearCoverageV0_1({
 
   const missingReasonCounts = {};
   const missingSample = [];
+  const missingBySymbolMap = new Map();
   let unknownMissingBars = 0;
   let suspensionMissingBars = 0;
   for (const key of expectedKeys) {
@@ -173,11 +174,22 @@ export function buildHistoricalMarketYearCoverageV0_1({
     missingReasonCounts[reason] = (missingReasonCounts[reason] || 0) + 1;
     if (matched) suspensionMissingBars += 1;
     else unknownMissingBars += 1;
+    const grouped = missingBySymbolMap.get(symbol) || {
+      symbol,missingCount:0,unknownCount:0,suspensionCount:0,firstMissingDate:null,lastMissingDate:null,
+    };
+    grouped.missingCount += 1;
+    if (matched) grouped.suspensionCount += 1;
+    else grouped.unknownCount += 1;
+    if (!grouped.firstMissingDate || date < grouped.firstMissingDate) grouped.firstMissingDate = date;
+    if (!grouped.lastMissingDate || date > grouped.lastMissingDate) grouped.lastMissingDate = date;
+    missingBySymbolMap.set(symbol, grouped);
     if (missingSample.length < 100) {
       missingSample.push({ marketDate:date,symbol,reason,sourceRowHash:matched?.sourceRowHash || null });
     }
   }
 
+  const missingBySymbol = [...missingBySymbolMap.values()]
+    .sort((a,b) => b.missingCount - a.missingCount || a.symbol.localeCompare(b.symbol));
   const missingTradingDates = tradingDates.filter((d) => !actualDateSet.has(d));
   const continuityUnverified = Object.entries(continuityStateCounts)
     .filter(([state]) => state === "UNVERIFIED" || state === "UNKNOWN")
@@ -186,18 +198,24 @@ export function buildHistoricalMarketYearCoverageV0_1({
     .filter(([state]) => state !== "VALID_OHLC")
     .reduce((sum,[,count]) => sum + count, 0);
 
-  const rawCoverageState = unknownMissingBars === 0
-      && unexpectedBars.length === 0
-      && nonTradingDateBars.length === 0
-      && missingTradingDates.length === 0
-      && provenanceIssues.length === 0
-    ? "PASS" : "BLOCKED";
+  const integrityBlocked = unexpectedBars.length > 0
+    || nonTradingDateBars.length > 0
+    || missingTradingDates.length > 0
+    || provenanceIssues.length > 0;
+  const rawCoverageState = integrityBlocked ? "BLOCKED" : "PASS";
+  const symbolSessionCoverageState = unknownMissingBars === 0
+    ? "PASS"
+    : "PARTIAL_UNKNOWN_SYMBOL_SESSIONS";
   const pitReadiness = provenanceIssues.length === 0 ? "PASS_CONSERVATIVE_SESSION_FINALITY" : "BLOCKED";
   const continuityReadiness = continuityUnverified === 0 ? "PASS" : "PARTIAL_UNVERIFIED";
   const technicalPriceReadiness = nonPriceRows === 0 ? "PASS" : "PARTIAL_NONPRICE_OBSERVATIONS";
   const overallState = rawCoverageState === "BLOCKED" || pitReadiness === "BLOCKED"
     ? "BLOCKED"
-    : (continuityReadiness === "PASS" && technicalPriceReadiness === "PASS" ? "PASS" : "PARTIAL");
+    : (symbolSessionCoverageState === "PASS"
+      && continuityReadiness === "PASS"
+      && technicalPriceReadiness === "PASS"
+        ? "PASS"
+        : "PARTIAL");
 
   return deepFreeze({
     market:mkt,year:yr,fromDate:from,toDate:to,
@@ -214,13 +232,14 @@ export function buildHistoricalMarketYearCoverageV0_1({
     nonTradingDateBars:nonTradingDateBars.length,
     missingTradingDates:Object.freeze(missingTradingDates),
     missingReasonCounts:deepFreeze(missingReasonCounts),
+    missingBySymbol:Object.freeze(missingBySymbol.map((x)=>deepFreeze(x))),
     observationStateCounts:deepFreeze(observationStateCounts),
     continuityStateCounts:deepFreeze(continuityStateCounts),
     provenanceIssueCount:provenanceIssues.length,
     provenanceIssueSample:Object.freeze(provenanceIssues.slice(0,100)),
     unexpectedBarSample:Object.freeze(unexpectedBars.slice(0,100)),
     missingSample:Object.freeze(missingSample),
-    rawCoverageState,pitReadiness,continuityReadiness,technicalPriceReadiness,overallState,
+    rawCoverageState,symbolSessionCoverageState,pitReadiness,continuityReadiness,technicalPriceReadiness,overallState,
     schemaVersion:"S2_HISTORICAL_MARKET_YEAR_COVERAGE_V0_1",
   });
 }
