@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-05T07:19:00+08:00",
+  "owner": "08｜事件與新聞研究室",
+  "module": "D17-07",
+  "title": "Priced-in evidence-state Taiwan PIT feasibility audit",
+  "status": "TAIWAN_PIT_PRE_EVENT_EXPECTATION_EVIDENCE_STATE_FEASIBLE / TRUE_PRICED_IN_LATENT / OUTCOMES_CLOSED",
+  "principle": "The market's true incorporation fraction is latent. The observable research object is only the pre-event evidence state available before realization.",
+  "witnesses": [
+    {
+      "event": "7827 HCB303 IND realization",
+      "preEventEvidence": [
+        "2026-09-03 issuer disclosure: IND submitted.",
+        "Prior disclosure stated the conditional FDA review path and possible clinical-hold branch.",
+        "Realization date arrived about one month later inside the disclosed procedural window."
+      ],
+      "state": "HIGH_EXPECTATION_EVIDENCE_FOR_EVENT_FAMILY / OUTCOME_BRANCH_NOT_CERTAIN",
+      "prohibitedInference": "Do not say the October approval was fully priced in; only that investors had official prior evidence that an IND decision/process realization was pending."
+    },
+    {
+      "event": "6461 first restricted-share issuance",
+      "preEventEvidence": [
+        "Shareholder authorization for up to 2,000,000 restricted shares existed before the first issuance.",
+        "Regulatory effectiveness preceded the 2026-10-02 board decision.",
+        "Exact first-issuance quantity and record date were not frozen ex ante in the evidence used here."
+      ],
+      "state": "PARTIAL_EXPECTATION_EVIDENCE",
+      "prohibitedInference": "Do not equate authorized ceiling with expected issuance magnitude."
+    },
+    {
+      "event": "2537 construction fire",
+      "preEventEvidence": [
+        "Physical fire was unscheduled.",
+        "No prior issuer schedule/authorization evidence makes the occurrence an anticipated corporate event under the covered lane."
+      ],
+      "state": "LOW_EXPECTATION_EVIDENCE_FOR_OCCURRENCE",
+      "prohibitedInference": "Unscheduled does not prove zero market rumor/leakage; absent covered prior evidence remains lane-bounded."
+    }
+  ],
+  "frozenStates": [
+    "LOW_EXPECTATION_EVIDENCE",
+    "PARTIAL_EXPECTATION_EVIDENCE",
+    "HIGH_EXPECTATION_EVIDENCE",
+    "CONFLICTED",
+    "UNKNOWN"
+  ],
+  "evidenceVector": [
+    "ex-ante expectation source class from D17-06",
+    "scheduled/deadline/unscheduled state from D17-13",
+    "novelty/republication state from D17-09",
+    "prior official guidance/authorization",
+    "pre-event price/volume/attention only when PIT-valid and strictly before realization"
+  ],
+  "antiLeakage": [
+    "Post-event returns cannot relabel the pre-event state.",
+    "A prior price rise cannot by itself prove full incorporation.",
+    "Repeated article count cannot by itself prove high expectation because D17-09 may classify republication.",
+    "LOW_EXPECTATION_EVIDENCE means little verified prior evidence in covered lanes, not metaphysical proof that nobody expected the event.",
+    "The state vector is not a probability of market awareness and not a direct trading sign."
+  ],
+  "maturityDecision": {
+    "from": "L2",
+    "to": "L3",
+    "qualifier": "EVIDENCE_STATE_ONLY / TRUE_PRICED_IN_FRACTION_UNOBSERVABLE",
+    "basis": "Taiwan PIT event sources now provide divergent pre-event evidence states—officially anticipated conditional realization, partially authorized but unquantified realization, and unscheduled event—with clocks and versioned event evidence separable before outcomes. This makes the evidence-state construct replayable while preserving the latent nature of actual price incorporation.",
+    "notClaimed": [
+      "true priced-in percentage",
+      "causal price incorporation",
+      "alpha",
+      "L4/OOS"
+    ]
+  },
+  "outcomeJoin": false,
+  "formalCoreChanged": false,
+  "exactNext": [
+    "Prospectively freeze expectation-evidence states before independent realizations.",
+    "Add PIT-valid pre-event price/volume/attention only as additional evidence, never as proof of incorporation.",
+    "Collect cases where high expectation evidence still produces large reactions and low expectation evidence produces little reaction as falsification controls.",
+    "Before L4, test whether this pre-event evidence state adds value beyond D17-06 surprise class, D17-09 novelty and D17-13 schedule state."
+  ]
+}
