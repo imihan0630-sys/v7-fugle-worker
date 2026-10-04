@@ -1,0 +1,43 @@
+name: System2 Strict TPEx Ex-Right Dividend Revision Discovery V0.4
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_strict_tpex_exright_dividend_revision_discovery_v0_4.mjs"
+      - "system2/SYSTEM2_STRICT_TPEX_EXRIGHT_DIVIDEND_REVISION_DISCOVERY_V0_4.md"
+      - ".github/workflows/system2-strict-tpex-exright-dividend-revision-discovery-v0-4.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_strict_tpex_exright_dividend_revision_discovery_v0_4.mjs"
+      - "system2/SYSTEM2_STRICT_TPEX_EXRIGHT_DIVIDEND_REVISION_DISCOVERY_V0_4.md"
+      - ".github/workflows/system2-strict-tpex-exright-dividend-revision-discovery-v0-4.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-strict-tpex-exright-dividend-revision-v0-4-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run strict TPEx ex-right/dividend discovery
+        run: node system2/scripts/probe_strict_tpex_exright_dividend_revision_discovery_v0_4.mjs
+      - name: Confirm read-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_strict_tpex_exright_dividend_revision_discovery_v0_4.mjs
+          echo "Strict TPEx ex-right/dividend revision discovery V0.4 read-only boundary PASS"
