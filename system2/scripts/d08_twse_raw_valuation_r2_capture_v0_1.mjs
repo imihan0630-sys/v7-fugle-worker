@@ -4,7 +4,7 @@ import { createHash } from "node:crypto";
 import { gzipSync, gunzipSync } from "node:zlib";
 import { createRemoteR2S3Adapter } from "../deploy/remote_r2_s3_adapter.mjs";
 import { buildHistoricalUniverseSnapshotV0_1 } from "../runtime/historical_universe_registry_v0_1.mjs";
-import { buildD08TwseHistoricalUniverseSourceV0_1 } from "../runtime/d08_twse_historical_universe_source_v0_1.mjs";
+import { buildD08TwseHistoricalUniverseSourceV0_1, buildD08SemanticUniverseIdentityV0_1 } from "../runtime/d08_twse_historical_universe_source_v0_1.mjs";
 import { fetchOfficialHistoricalA6ValuationDateV0_1 } from "../runtime/official_historical_a6_valuation_v0_1.mjs";
 
 const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
@@ -27,6 +27,8 @@ assert.equal(universeReceipt.scanClock.snapshotCount,44);
 const expectedByDate=new Map(universeReceipt.scanClock.snapshots.map(x=>[x.scanDate,x]));
 const built=await buildD08TwseHistoricalUniverseSourceV0_1({observedAt});
 const registry=built.registry;
+const semanticUniverse=buildD08SemanticUniverseIdentityV0_1(registry);
+const semanticBySymbol=new Map(semanticUniverse.memberships.map(x=>[x.market+"|"+x.symbol,x]));
 const objectStore=createRemoteR2S3Adapter({
   accountId,accessKeyId,secretAccessKey,bucketName,
 });
@@ -50,15 +52,20 @@ async function processDate(entry){
   assert.equal(bySymbol.size,source.rows.length,"A6 duplicate escaped parser");
 
   const rows=membership.members.map(member=>{
+    const semantic=semanticBySymbol.get(member.market+"|"+member.symbol);
+    assert.ok(semantic,"semantic membership missing "+member.symbol);
+    assert.ok(
+      semantic.effectiveFrom<=date && (semantic.effectiveTo===null||semantic.effectiveTo>=date),
+      "semantic membership inactive "+member.symbol+" "+date
+    );
+    const semanticMembershipHash=shaText(JSON.stringify(semantic));
     const v=bySymbol.get(member.symbol)||null;
     const sourceRowHash=v?shaText(JSON.stringify(v.sourceFields)):null;
     return {
       marketDate:date,
       market:"TWSE",
       symbol:member.symbol,
-      companyName:member.companyName,
-      membershipId:member.membershipId,
-      membershipHash:member.membershipHash,
+      semanticMembershipHash,
       valuationObserved:!!v,
       close:v?.close??null,
       pe:v?.pe??null,
@@ -99,20 +106,24 @@ async function processDate(entry){
     pbKnownRatio:Number((pbKnown/rows.length).toFixed(6)),
   };
 
+  const semanticSnapshotHash=shaText(JSON.stringify({
+    marketDate:date,
+    semanticRegistryHash:semanticUniverse.semanticRegistryHash,
+    members:rows.map(x=>({symbol:x.symbol,semanticMembershipHash:x.semanticMembershipHash})),
+    schemaVersion:"D08_TWSE_SEMANTIC_MEMBERSHIP_SNAPSHOT_V0_1",
+  }));
   const payload={
-    schemaVersion:"D08_TWSE_RAW_VALUATION_SNAPSHOT_V0_1",
+    schemaVersion:"D08_TWSE_RAW_VALUATION_SNAPSHOT_V0_2",
     researchOnly:true,outcomeJoin:false,
     marketDate:date,
-    capturedAt:observedAt,
     universe:{
-      registryId:registry.registryId,
-      registryHash:registry.registryHash,
+      registryId:semanticUniverse.registryId,
+      semanticRegistryHash:semanticUniverse.semanticRegistryHash,
       memberCount:membership.memberCount,
-      membershipSnapshotHash:membership.snapshotHash,
+      semanticMembershipSnapshotHash:semanticSnapshotHash,
     },
     source:{
       sourceId:source.sourceId,
-      sourceUrl:source.sourceUrl,
       sourceDateEvidence:source.sourceDateEvidence,
       sourcePayloadHash:source.sourcePayloadHash,
       sourcePayloadBytes:source.sourcePayloadBytes,
@@ -126,7 +137,7 @@ async function processDate(entry){
   const payloadHash=shaText(json);
   const bytes=gzipSync(Buffer.from(json,"utf8"),{level:9});
   const objectSha256=shaBytes(bytes);
-  const objectKey=["research","d08","twse-raw-valuation-snapshot-v0.1",date,payloadHash+".json.gz"].join("/");
+  const objectKey=["research","d08","twse-raw-valuation-snapshot-v0.2",date,payloadHash+".json.gz"].join("/");
 
   const prior=await objectStore.head(objectKey);
   if(prior){
@@ -140,7 +151,7 @@ async function processDate(entry){
       customMetadata:{
         "payload-hash":payloadHash,
         "object-sha256":objectSha256,
-        "schema-version":"d08-twse-raw-valuation-v0-1",
+        "schema-version":"d08-twse-raw-valuation-v0-2",
         "market-date":date,
       },
     });
@@ -159,6 +170,8 @@ async function processDate(entry){
     coverage,
     sourcePayloadHash:source.sourcePayloadHash,
     sourcePayloadBytes:source.sourcePayloadBytes,
+    semanticRegistryHash:semanticUniverse.semanticRegistryHash,
+    semanticMembershipSnapshotHash:payload.universe.semanticMembershipSnapshotHash,
     payloadHash,objectSha256,objectKey,
     gzipBytes:bytes.byteLength,
     readbackVerified:true,
@@ -194,17 +207,20 @@ const summary={
 };
 
 console.log("D08_RAW_VALUATION_R2_RECEIPT="+JSON.stringify({
-  schemaVersion:"D08_TWSE_RAW_VALUATION_R2_CAPTURE_RECEIPT_V0_1",
+  schemaVersion:"D08_TWSE_RAW_VALUATION_R2_CAPTURE_RECEIPT_V0_2",
   result:"PASS",researchOnly:true,outcomeJoin:false,
   capturedAt:observedAt,bucketName,
   scanDateListHash:scanReceipt.scanDateListHash,
   sourceUniverseReceipt:"research/d08_twse_official_universe_source_receipt_20261004_v0_1.json",
-  currentRegistryHash:registry.registryHash,
+  volatileRegistryHash:registry.registryHash,
+  semanticRegistryHash:semanticUniverse.semanticRegistryHash,
   universeSourceReceipt:built.sourceReceipt,
   summary,receipts,
   guards:{
     allMembersAccounted:true,
     missingRowsRemainExplicitUnknown:true,
+    canonicalPayloadExcludesCaptureClock:true,
+    semanticUniverseIdentityExcludesObserverClock:true,
     noReturns:true,noD1Writes:true,noSystem1Runtime:true,noFormalCoreImpact:true,
   },
 }));
