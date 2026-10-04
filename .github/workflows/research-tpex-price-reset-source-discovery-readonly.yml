@@ -1,0 +1,74 @@
+name: Research TPEx Price Reset Source Discovery Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/research-tpex-price-reset-source-discovery-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Inspect official TPEx ex-right ex-dividend and capital-reduction pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/pages.tsv <<'EOF'
+          EX_CAL	https://www.tpex.org.tw/zh-tw/announce/market/ex/cal.html
+          EX_ANNOUNCE	https://www.tpex.org.tw/zh-tw/announce/market/ex/announce.html
+          REDUCTION_REFERENCE	https://www.tpex.org.tw/zh-tw/announce/market/reduction/reference.html
+          EOF
+
+          while IFS=$'\t' read -r id url; do
+            html="/tmp/${id}.html"
+            headers="/tmp/${id}.headers"
+            code=$(curl --silent --show-error --location --max-time 30               --dump-header "${headers}" --output "${html}"               --write-out "%{http_code}" "${url}" || true)
+            echo "===== ${id} HTTP=${code} URL=${url} ====="
+            echo "SHA256=$(sha256sum "${html}" | awk '{print $1}') BYTES=$(wc -c <"${html}")"
+            sed -n '1,30p' "${headers}"
+            ID="${id}" FILE="${html}" python - <<'PY'
+          from html.parser import HTMLParser
+          import json,os,re
+          class P(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.inputs=[]; self.select=None; self.selects={}; self.option=None
+              def handle_starttag(self,tag,attrs):
+                  a=dict(attrs)
+                  if tag=="input" and a.get("name"):
+                      self.inputs.append({k:a.get(k) for k in ("name","type","value","data-value","data-initial","data-format")})
+                  elif tag=="select" and a.get("name"):
+                      self.select=a["name"]; self.selects.setdefault(self.select,[])
+                  elif tag=="option" and self.select:
+                      self.option={"value":a.get("value"),"selected":"selected" in a,"text":""}
+              def handle_data(self,data):
+                  if self.option is not None:self.option["text"]+=data
+              def handle_endtag(self,tag):
+                  if tag=="option" and self.option is not None and self.select:
+                      self.option["text"]=self.option["text"].strip()
+                      self.selects[self.select].append(self.option); self.option=None
+                  elif tag=="select":self.select=None
+          s=open(os.environ["FILE"],encoding="utf-8",errors="replace").read()
+          p=P(); p.feed(s)
+          actions=sorted(set(re.findall(r'action\s*:\s*["\']([^"\']+)["\']',s)))
+          inits=re.findall(r'new\s+[^;]{0,3000}',s)
+          print("PAGE_ID="+os.environ["ID"])
+          print("ACTIONS="+json.dumps(actions,ensure_ascii=False))
+          print("INPUTS="+json.dumps(p.inputs,ensure_ascii=False))
+          print("SELECTS="+json.dumps(p.selects,ensure_ascii=False))
+          for a in actions:
+              i=s.find(a)
+              print("ACTION_CONTEXT="+s[max(0,i-500):i+1000].replace("\n"," ")[:1500])
+          PY
+          done </tmp/pages.tsv
+
+          echo "research_only=true"
+          echo "history_mutation=false"
+          echo "system1_runtime_used=false"
+          echo "selection_authority=false"
+          echo "formal_core_changed=false"
