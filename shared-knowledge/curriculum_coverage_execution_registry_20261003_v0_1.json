@@ -1,12 +1,12 @@
 {
   "schemaVersion": "CURRICULUM_COVERAGE_EXECUTION_REGISTRY_V0_1",
-  "updatedAt": "2026-10-04T07:52:57+08:00",
-  "status": "COVERAGE_COV04_COV05_OWNER_APPROVAL_REQUIRED",
+  "updatedAt": "2026-10-04T08:42:13+08:00",
+  "status": "COVERAGE_COV04_COV05_CANONICAL_UPDATE_COMPLETE",
   "formalCoreImpact": "NONE_LOCKED",
   "canonicalSnapshot": {
     "domains": 22,
-    "activeModules": 354,
-    "maturityWeightedPct": 42.1
+    "activeModules": 355,
+    "maturityWeightedPct": 42.3
   },
   "parentAudit": "shared-knowledge/CURRICULUM_COVERAGE_AUDIT_20261003_V0_1.md",
   "specialistPacket": "shared-knowledge/CURRICULUM_COVERAGE_A_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
@@ -39,7 +39,7 @@
       "domain": "D07",
       "room": "06｜基本面與估值研究室",
       "class": "TRUE_GAP_CANDIDATE",
-      "state": "OWNER_APPROVAL_REQUIRED",
+      "state": "CANONICAL_UPDATE_COMPLETE",
       "returnPath": "research/COV04_D07_SPECIALIST_RETURN_V0_1.md"
     },
     {
@@ -92,7 +92,7 @@
     {
       "id": "COV-05",
       "room": "06｜基本面與估值研究室",
-      "state": "OWNER_APPROVAL_REQUIRED"
+      "state": "CANONICAL_UPDATE_COMPLETE"
     },
     {
       "id": "COV-08",
@@ -131,7 +131,7 @@
       "domain": "D08",
       "room": "06｜基本面與估值研究室",
       "class": "SCOPE_EXTENSION_CANDIDATE",
-      "state": "OWNER_APPROVAL_REQUIRED",
+      "state": "CANONICAL_UPDATE_COMPLETE",
       "returnPath": "research/COV05_D08_SPECIALIST_RETURN_V0_1.md"
     },
     {
@@ -172,11 +172,12 @@
       "COV-04",
       "COV-05"
     ],
-    "ownerApprovalRequired": [
+    "ownerApprovalRequired": [],
+    "canonicalUpdateComplete": [
       "COV-04",
       "COV-05"
     ],
-    "canonicalImpact": "NONE_PENDING_OWNER_APPROVAL"
+    "canonicalImpact": "COV04_ADDED_D07_34_COV05_EXTENDED_D08_06"
   },
   "pendingEvidenceDeficitMatrix": "shared-knowledge/CURRICULUM_COVERAGE_PENDING_EVIDENCE_DEFICIT_MATRIX_20261003_V0_1.md",
   "pendingDeficitSummary": {
@@ -197,7 +198,7 @@
   "governanceStateMachineJson": "shared-knowledge/curriculum_coverage_governance_state_machine_v0_1.json",
   "governanceStateMachineVersion": "CURRICULUM_COVERAGE_STATE_MACHINE_V0_1",
   "canonicalSnapshotSource": "research/stock_market_learning_tracker_v0_1.json",
-  "canonicalSnapshotSourceUpdatedAt": "2026-10-04T08:00:00+08:00",
+  "canonicalSnapshotSourceUpdatedAt": "2026-10-04T08:42:13+08:00",
   "canonicalSnapshotReconciliation": "shared-knowledge/CURRICULUM_COVERAGE_CANONICAL_SNAPSHOT_RECONCILIATION_20261003_V0_1.md",
   "coverageReturnValidator": "research/curriculum_coverage_return_validator_v0_1.mjs",
   "coverageReturnValidatorTest": "tests/test_curriculum_coverage_return_validator_v0_1.mjs",
@@ -207,5 +208,7 @@
   "latestIntakeAudit": "shared-knowledge/CURRICULUM_COVERAGE_COV04_COV05_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md",
   "latestIntakeAuditJson": "shared-knowledge/curriculum_coverage_cov04_cov05_intake_dependency_audit_20261004_v0_1.json",
   "latestPreflightReceipt": "research/curriculum_coverage_intake_preflight_receipt_20261004_v0_2.json",
-  "canonicalSnapshotNote": "Audit-time snapshot only; research/stock_market_learning_tracker_v0_1.json remains authoritative and may advance independently."
+  "canonicalSnapshotNote": "Post owner-approved atomic canonical update for COV-04/COV-05; tracker remains authoritative.",
+  "canonicalUpdateReceipt": "shared-knowledge/CURRICULUM_COV04_COV05_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md",
+  "canonicalUpdateReceiptJson": "shared-knowledge/curriculum_cov04_cov05_canonical_update_receipt_20261004_v0_1.json"
 }

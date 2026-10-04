@@ -205,3 +205,29 @@ Results:
 - COV-03 and COV-12 remain PENDING_SPECIALIST_RETURN.
 - Accepted formal specialist returns: 2 / 12.
 - Audit-time tracker snapshot: 22 domains / 354 active modules / 42.1% weighted maturity. The tracker remains authoritative and may advance independently.
+
+
+## COV-04 / COV-05 owner approval + canonical update — 2026-10-04
+
+Owner decision: **APPROVED BOTH**.
+
+State transitions:
+- COV-04: OWNER_APPROVAL_REQUIRED → TERMINAL_DECISION_READY → CANONICAL_UPDATE_COMPLETE.
+- COV-05: OWNER_APPROVAL_REQUIRED → TERMINAL_DECISION_READY → CANONICAL_UPDATE_COMPLETE.
+
+Canonical execution:
+- COV-04 created D07-34 `Dividend / Payout Policy & Sustainability股利／配發政策與永續性` at L0 / 0%.
+- COV-05 extended D08-06 to `EV/EBITDA／EV/Sales／P/S Enterprise & Sales Multiples企業價值與營收倍數`; D08-06 remains L2 / 40%, and the new sales-multiple sub-capabilities do not inherit validated maturity.
+
+Post-update canonical tracker:
+- 22 domains
+- 355 active modules
+- 42.3% weighted maturity
+- D07 = 34 modules / 14.1%
+- D08 = 19 modules / 27.4%
+
+Receipts:
+- `shared-knowledge/CURRICULUM_COV04_COV05_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md`
+- `shared-knowledge/curriculum_cov04_cov05_canonical_update_receipt_20261004_v0_1.json`
+
+No System1/System2 Formal change. Formal Core remains LOCKED.

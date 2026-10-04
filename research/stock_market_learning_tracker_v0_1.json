@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T08:38:00+08:00",
+  "updatedAt": "2026-10-04T08:42:13+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -32,8 +32,8 @@
   },
   "aggregate": {
     "domainCount": 22,
-    "moduleCount": 354,
-    "maturityWeightedPct": 42.4
+    "moduleCount": 355,
+    "maturityWeightedPct": 42.3
   },
   "domains": [
     {
@@ -826,7 +826,7 @@
         "FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md",
         "FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md"
       ],
-      "maturityPct": 14.5,
+      "maturityPct": 14.1,
       "modules": [
         {
           "id": "D07-01",
@@ -1141,6 +1141,16 @@
           "levelMeaning": "未研究",
           "status": "UNSTUDIED / CURRICULUM_APPROVED",
           "next": "從理論、機制、反證與資料契約開始建立 D07-33；先研究與Shadow驗證，不直接修改正式選股規則。"
+        },
+        {
+          "id": "D07-34",
+          "name": "Dividend / Payout Policy & Sustainability股利／配發政策與永續性",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Dividend / Payout Policy & Sustainability股利／配發政策與永續性」。研究普通現金股利的配發來源、payout ratio（配發率）、earnings／CFO／FCF coverage（盈餘／營業現金流／自由現金流覆蓋）、retention（保留）、配發頻率、削減／停發與跨期永續性；proposal／final approval／ex-date／payment clock 必須分離，盈餘來源與資本／法定盈餘公積來源分開，股票股利不得視為現金流出。D07-02／05／06保留原始盈餘、現金流與槓桿主責，D11主責股利事件時鐘，D21主責資本配置治理，金融機構另依賴D07-32監理資本語意。高股息殖利率、高payout或穩定DPS不得直接推論品質或買進；主要角色為validation／context／supportive，先建立台灣PIT／Replay、來源版本鏈、反證與增量價值，再評估策略用途。每個結論都必須記錄正向機制、反證／失效條件、PIT（時點一致性）、可重播性、資料品質、冗餘、交易成本，以及對System 1／System 2的可驗證增量價值；未取得證據不得升級成熟度或進入Formal（正式核心）。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "先凍結MOPS／TWSE股利決議、分派來源、財報denominator與proposal→final→payment時鐘契約；完成PIT／Replay與反證後再進Shadow，不直接修改正式選股規則。"
         }
       ]
     },
@@ -1201,10 +1211,10 @@
         },
         {
           "id": "D08-06",
-          "name": "EV/EBITDA",
+          "name": "EV/EBITDA／EV/Sales／P/S Enterprise & Sales Multiples企業價值與營收倍數",
           "level": "L2",
           "maturityPct": 40,
-          "learningScope": "聚焦「EV/EBITDA」。學習範圍：PE、PB、Forward PE、PEG、EV/EBITDA、FCF Yield等估值方法；歷史與同業正規化；負EPS與週期股例外；公司行動分母調整；成長×估值×Regime互動。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「EV/EBITDA／EV/Sales／P/S Enterprise & Sales Multiples企業價值與營收倍數」。將EV/EBITDA、EV/Sales與P/S視為同一 coordinated valuation family（協調式估值家族）：凍結decision-time equity value／enterprise value、debt／cash／NCI／non-common claims、PIT-safe IFRS TTM revenue與必要的share denominator；台灣月營收不得未經reconciliation直接替代IFRS TTM revenue。P/S與EV/Sales共用sales denominator，不得成為兩張獨立投票；EV/Sales與EV/EBITDA共用EV numerator，也不得機械重複計分。D07-01主責營收、D07-03／14主責margin與unit economics、D08-09主責peer normalization、D08-12主責公司行動／股數分母、D08-18主責金融機構例外。低P/S或低EV/Sales不等於便宜，必須控制margin、growth、capital intensity、capital structure、sector、cycle與Regime；Forward Sales在沒有authorized PIT forecast history時維持UNKNOWN。現有D08-06維持L2/40%，但新增P/S／EV-Sales子能力不得自動繼承成熟度，必須另做來源／Replay／PIT／Shadow／OOS與增量價值驗證。",
           "levelMeaning": "機制＋反證已定義"
         },
         {
@@ -3761,6 +3771,8 @@
     "research/SYSTEM1_S1_OBSERVATION_AWARE_ROLE_CHECKPOINT_20261003.md",
     "research/SYSTEM1_TARGET_FOUR_STATE_CHECKPOINT_20261003.md",
     "shared-knowledge/CURRICULUM_COVERAGE_AUDIT_20261003_V0_1.md",
-    "shared-knowledge/curriculum_coverage_audit_20261003_v0_1.json"
+    "shared-knowledge/curriculum_coverage_audit_20261003_v0_1.json",
+    "shared-knowledge/CURRICULUM_COV04_COV05_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md",
+    "shared-knowledge/curriculum_cov04_cov05_canonical_update_receipt_20261004_v0_1.json"
   ]
 }

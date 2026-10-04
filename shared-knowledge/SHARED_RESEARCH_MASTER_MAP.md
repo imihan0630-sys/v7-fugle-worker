@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-04 07:30 Asia/Taipei
+Updated: 2026-10-04 08:42 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -356,7 +356,7 @@ Execution tracks:
 Owner-approved forward philosophy:
 minimal HARD_INVALIDATION + strategy-specific PRIMARY_ALPHA + SUPPORTIVE + CONTEXT_ONLY + separate CONFIDENCE／UNCERTAINTY + ABSTAIN when expected value is inadequate or uncertainty excessive.
 
-The learning curriculum (22 domains / 354 modules) is a knowledge universe, not an all-domain AND-gate checklist.
+The learning curriculum (22 domains / 355 modules) is a knowledge universe, not an all-domain AND-gate checklist.
 
 ## Seven-item curriculum audit and capability-preservation execution (2026-10-03)
 
@@ -396,7 +396,7 @@ All historical research evidence and required runtime/explanatory capabilities r
 ## Shared inventory
 
 - `shared-knowledge/SHARED_RESEARCH_INVENTORY.md` is the cross-system domain/tag inventory. It points to original evidence without relocating it.
-- `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 22-domain / 354-module learning curriculum and chatroom routing dashboard.
+- `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 22-domain / 355-module learning curriculum and chatroom routing dashboard.
 - `research/stock_market_learning_tracker_v0_1.json` is the machine-readable maturity tracker for that curriculum.
 - `shared-knowledge/LEARNING_ROOM_ROUTER.md` is the mandatory public routing file every learning chat reads to know its assigned domains, modules, learning scope, progress and checkpoints.
 
@@ -1339,3 +1339,27 @@ Reusable rules:
 D11-19 = L3 Taiwan PIT/source feasibility.
 Room08 after this update: D11=54.7%, D17=41.4%, module-weighted=49.1%.
 Formal Core unchanged.
+
+
+## COV-04 / COV-05 owner-approved canonical execution — 2026-10-04
+
+Owner explicitly approved both structural dispositions after 00-room specialist-return Intake, Dependency Audit, overlap recheck, anti-double-count and anti-orphan review.
+
+Executed:
+- **COV-04 → ADD_MODULE**: created **D07-34 Dividend / Payout Policy & Sustainability（股利／配發政策與永續性）**, starting at **L0 / 0%**. It owns payout source / earnings-CFO-FCF coverage / retention / frequency / cut-suspension / sustainability semantics, while raw earnings/cash flow/leverage stay with D07-02/05/06, dividend event clocks stay with D11, and capital-allocation governance stays with D21.
+- **COV-05 → EXTEND_EXISTING_SCOPE**: expanded **D08-06** into the coordinated **EV/EBITDA / EV/Sales / P/S** enterprise-and-sales multiple family. D08-06 remains **L2 / 40%**; P/S and EV/Sales sub-capabilities do **not** inherit L2 evidence and still require their own PIT/replay/Shadow/OOS validation.
+
+Canonical post-update curriculum:
+- domains: 22
+- active modules: 355
+- weighted maturity: 42.3%
+- D07: 34 modules / 14.1%
+- D08: 19 modules / 27.4%
+
+The small aggregate maturity decrease versus the immediately prior 354-module tracker is denominator expansion from the new L0 module, not research regression.
+
+Canonical receipts:
+- `shared-knowledge/CURRICULUM_COV04_COV05_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md`
+- `shared-knowledge/curriculum_cov04_cov05_canonical_update_receipt_20261004_v0_1.json`
+
+Formal Core remains LOCKED. No System 1 / System 2 Formal behavior change is authorized.

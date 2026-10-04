@@ -1,4 +1,4 @@
-# 股市知識學習大地圖 — 22領域 / 354模組
+# 股市知識學習大地圖 — 22領域 / 355模組
 
 Updated: 2026-10-04 Asia/Taipei
 Status: CANONICAL_LEARNING_CURRICULUM_V0_1 / CROSS_SYSTEM  
@@ -22,8 +22,8 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 ## 目前總覽
 
 - 大領域：22
-- 二級研究模組：354
-- 新完整課綱成熟度：**42.1%**
+- 二級研究模組：355
+- 新完整課綱成熟度：**42.3%**
 - 注意：這個百分比與 System 1 現行21模組的46.7%不是同一分母；本表分母更大、更細。
 - 100%不是「世界上再也沒有新知識」，而是本版課綱全部達L5；新增新知識時可版本化擴充分母。
 - 七項汰留與能力移轉紀錄：`shared-knowledge/CURRICULUM_RETIREMENT_AND_CAPABILITY_LEDGER_V0_1.md`。退休模組不代表刪除其必要工程／研究能力。
@@ -36,7 +36,7 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 | D04 | 波動率／波動狀態 | 10 | 52% | 04｜波動與市場微結構研究室 |
 | D05 | 市場微結構／撮合／流動性 | 14 | 51.4% | 04｜波動與市場微結構研究室 |
 | D06 | 法人／籌碼／槓桿／擁擠／被動資金 | 17 | 47.1% | 05｜法人與籌碼研究室 |
-| D07 | 基本面／財報／資訊動態 | 33 | 14.5% | 06｜基本面與估值研究室 |
+| D07 | 基本面／財報／資訊動態 | 34 | 14.1% | 06｜基本面與估值研究室 |
 | D08 | 估值 | 19 | 27.4% | 06｜基本面與估值研究室 |
 | D09 | 產業／族群／市場廣度／輪動 | 14 | 55.7% | 07｜產業與供應鏈研究室 |
 | D10 | 供應鏈／產能／庫存／原物料傳導 | 13 | 55.4% | 07｜產業與供應鏈研究室 |
@@ -242,7 +242,7 @@ GitHub專屬checkpoint：
 | D06-18 | Securities Lending Economics／Borrow Fee／Availability／Utilization借券經濟、費率、可借量與使用率 | L0 未研究 | 0% |
 
 
-### D07｜基本面／財報／資訊動態 — 14.5%
+### D07｜基本面／財報／資訊動態 — 14.1%
 
 專責：06｜基本面與估值研究室  
 證據錨點：`FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md`、`FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md`
@@ -282,6 +282,7 @@ GitHub專屬checkpoint：
 | D07-31 | Business Combination／Goodwill／Impairment企業合併商譽與減損 | L0 未研究 | 0% |
 | D07-32 | Financial Institutions Operating Metrics銀行保險等金融機構營運與資產負債指標 | L0 未研究 | 0% |
 | D07-33 | Intangible Capital／R&D／Innovation Accounting無形資本、研發與創新會計 | L0 未研究 | 0% |
+| D07-34 | Dividend / Payout Policy & Sustainability股利／配發政策與永續性 | L0 未研究 | 0% |
 
 
 ### D08｜估值 — 27.4%
@@ -296,7 +297,7 @@ GitHub專屬checkpoint：
 | D08-03 | 歷史PE／PB百分位 | L3 台股PIT資料可行 | 60% |
 | D08-04 | Forward PE預估本益比 | L2 機制＋反證 | 40% |
 | D08-05 | PEG本益成長比 | L2 機制＋反證 | 40% |
-| D08-06 | EV/EBITDA | L2 機制＋反證 | 40% |
+| D08-06 | EV/EBITDA／EV/Sales／P/S Enterprise & Sales Multiples企業價值與營收倍數 | L2 機制＋反證 | 40% |
 | D08-07 | FCF Yield自由現金流殖利率 | L2 機制＋反證 | 40% |
 | D08-08 | 成長×估值聯合判斷 | L2 機制＋反證 | 40% |
 | D08-09 | 同業／產業Peer正規化 | L2 機制＋反證 | 40% |
@@ -685,14 +686,14 @@ GitHub專屬checkpoint：
 - L2→L3主要受台股資料來源、PIT語意與可重播性影響。
 - L3→L4受前瞻樣本與OOS累積速度影響，不能靠多開聊天室縮短市場日曆時間。
 - L4→L5受獨立日期、多Regime、成本、冗餘與必要時跨年度證據影響。
-- 因此「全354模組達L5」不能承諾一個短固定日期；未來應同時報告（A）可主動研究剩餘量與（B）等待市場資料累積量。
+- 因此「全355模組達L5」不能承諾一個短固定日期；未來應同時報告（A）可主動研究剩餘量與（B）等待市場資料累積量。
 
 ## 下一步
 
 1. 對現有研究聊天室逐一掛上專線編號。
 2. 各專線只領取自己尚未達L3的模組，先把可主動完成的知識補齊。
 3. 對已到L3但等待前瞻資料的模組，切換成「等待證據」，不要浪費聊天室反覆讀同一主題。
-4. 研究總控室每次匯總 GitHub 最新main後重新計算22領域與354模組進度。
+4. 研究總控室每次匯總 GitHub 最新main後重新計算22領域與355模組進度。
 
 ## 15項候選治理分類 — 韓哥批准 2026-10-03
 
