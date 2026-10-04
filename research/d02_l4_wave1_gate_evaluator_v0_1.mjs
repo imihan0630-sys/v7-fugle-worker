@@ -9,15 +9,16 @@ function uniq(xs){ return [...new Set(xs)]; }
 function fail(reasons=[]){ return {pass:false,reasons:[...new Set(reasons)]}; }
 function pass(extra={}){ return {pass:true,reasons:[],...extra}; }
 
-export const D02_L4_WAVE1_GATE_VERSION='D02_L4_WAVE1_GATE_V0_1';
+export const D02_L4_WAVE1_GATE_VERSION='D02_L4_WAVE1_GATE_V0_1_1';
 export const DESCRIPTIVE_CLEAN_DATES=20;
 export const L4_MIN_CLEAN_DATES=30;
 export const L4_MIN_COMPLETED_EVENTS=100;
+export const WAVE1_HYPOTHESES=['H001','H20','H003'];
 
 export function evaluateWave1Row(row={}){
   const reasons=[];
   const h=String(row.hypothesis||'');
-  if(!['H001','H20','H003'].includes(h)) reasons.push('UNSUPPORTED_HYPOTHESIS');
+  if(!WAVE1_HYPOTHESES.includes(h)) reasons.push('UNSUPPORTED_HYPOTHESIS');
   if(!row.scanDate) reasons.push('MISSING_SCAN_DATE');
   if(!row.eventId) reasons.push('MISSING_EVENT_ID');
   if(row.gate0to6Pass!==true) reasons.push('GATE_0_6_NOT_PASS');
@@ -92,45 +93,62 @@ export function evaluateWave1Dataset(rows=[], opts={}){
     return {eventId:row?.eventId??null,scanDate:row?.scanDate??null,hypothesis:row?.hypothesis??null,preOutcome:pre,outcome:out};
   });
 
-  const preRows=rowReceipts.filter(x=>x.preOutcome.pass);
-  const cleanDates=uniq(preRows.map(x=>x.scanDate).filter(Boolean));
-  const completedRows=rowReceipts.filter(x=>x.outcome.pass);
   const fatalIntegrity=duplicateReasons.length>0;
+  const summarizeHypothesis=(hypothesis)=>{
+    const rows=rowReceipts.filter(x=>x.hypothesis===hypothesis);
+    const preRows=rows.filter(x=>x.preOutcome.pass);
+    const completedRows=rows.filter(x=>x.outcome.pass);
+    const cleanDates=uniq(preRows.map(x=>x.scanDate).filter(Boolean));
+    let outcomeAccessState='OUTCOME_ACCESS_CLOSED';
+    if(!fatalIntegrity && cleanDates.length>=DESCRIPTIVE_CLEAN_DATES) outcomeAccessState='DESCRIPTIVE_ONLY';
+    if(!fatalIntegrity && cleanDates.length>=L4_MIN_CLEAN_DATES && completedRows.length>=L4_MIN_COMPLETED_EVENTS) outcomeAccessState='L4_EVIDENCE_ELIGIBLE';
+    const review=opts?.reviewByHypothesis?.[hypothesis]||{};
+    const promotionReviewEligible=outcomeAccessState==='L4_EVIDENCE_ELIGIBLE' &&
+      review.prospectiveOrOosEvidencePresent===true &&
+      review.d16DependenceAwareMethodPass===true &&
+      review.negativeControlsReported===true &&
+      review.redundancyChecksReported===true &&
+      review.concentrationPass===true;
+    return {
+      hypothesis,
+      rowCount:rows.length,
+      preOutcomeEligibleEvents:preRows.length,
+      completedEligibleEvents:completedRows.length,
+      distinctCleanScanDates:cleanDates.length,
+      descriptiveReady:!fatalIntegrity && cleanDates.length>=DESCRIPTIVE_CLEAN_DATES,
+      l4EvidenceEligible:outcomeAccessState==='L4_EVIDENCE_ELIGIBLE',
+      promotionReviewEligible,
+      outcomeAccessState,
+      maturityPromotionAuthorized:false
+    };
+  };
+  const byHypothesis=Object.fromEntries(WAVE1_HYPOTHESES.map(h=>[h,summarizeHypothesis(h)]));
+  const eligibleHypotheses=WAVE1_HYPOTHESES.filter(h=>byHypothesis[h].l4EvidenceEligible);
+  const descriptiveHypotheses=WAVE1_HYPOTHESES.filter(h=>byHypothesis[h].descriptiveReady);
+  const reviewEligibleHypotheses=WAVE1_HYPOTHESES.filter(h=>byHypothesis[h].promotionReviewEligible);
 
-  let outcomeAccessState='OUTCOME_ACCESS_CLOSED';
-  if(!fatalIntegrity && cleanDates.length>=DESCRIPTIVE_CLEAN_DATES){
-    outcomeAccessState='DESCRIPTIVE_ONLY';
-  }
-  if(!fatalIntegrity && cleanDates.length>=L4_MIN_CLEAN_DATES && completedRows.length>=L4_MIN_COMPLETED_EVENTS){
-    outcomeAccessState='L4_EVIDENCE_ELIGIBLE';
-  }
-
-  let promotionReviewEligible=false;
-  if(outcomeAccessState==='L4_EVIDENCE_ELIGIBLE' &&
-     opts.prospectiveOrOosEvidencePresent===true &&
-     opts.d16DependenceAwareMethodPass===true &&
-     opts.negativeControlsReported===true &&
-     opts.redundancyChecksReported===true &&
-     opts.concentrationPass===true){
-    promotionReviewEligible=true;
-  }
+  let programState='OUTCOME_ACCESS_CLOSED';
+  if(!fatalIntegrity && descriptiveHypotheses.length>0) programState='DESCRIPTIVE_ONLY_PARTIAL';
+  if(!fatalIntegrity && eligibleHypotheses.length>0) programState='L4_EVIDENCE_ELIGIBLE_PARTIAL';
+  if(!fatalIntegrity && eligibleHypotheses.length===WAVE1_HYPOTHESES.length) programState='L4_EVIDENCE_ELIGIBLE_ALL_WAVE1';
 
   return {
-    schemaVersion:'0.1',
+    schemaVersion:'0.1.1',
     gateVersion:D02_L4_WAVE1_GATE_VERSION,
     outcomeBlind:true,
     rowCount:arr.length,
-    preOutcomeEligibleEvents:preRows.length,
-    completedEligibleEvents:completedRows.length,
-    distinctCleanScanDates:cleanDates.length,
-    descriptiveReady:!fatalIntegrity && cleanDates.length>=DESCRIPTIVE_CLEAN_DATES,
-    l4EvidenceEligible:outcomeAccessState==='L4_EVIDENCE_ELIGIBLE',
-    promotionReviewEligible,
-    outcomeAccessState,
+    programState,
+    byHypothesis,
+    descriptiveHypotheses,
+    eligibleHypotheses,
+    reviewEligibleHypotheses,
+    allWave1L4EvidenceEligible:eligibleHypotheses.length===WAVE1_HYPOTHESES.length,
+    anyHypothesisL4EvidenceEligible:eligibleHypotheses.length>0,
     fatalIntegrity,
     datasetReasons:[...new Set(duplicateReasons)],
     rowReceipts,
     maturityPromotionAuthorized:false,
-    formalCoreChangeAuthorized:false
+    formalCoreChangeAuthorized:false,
+    crossHypothesisSampleBorrowingAllowed:false
   };
 }
