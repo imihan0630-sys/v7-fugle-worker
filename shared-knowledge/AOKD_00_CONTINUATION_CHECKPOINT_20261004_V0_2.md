@@ -98,3 +98,27 @@ Exact next continuation point:
 2. if approved, re-read latest main and atomically update tracker + Shared Master + Router + Coverage registries, then recompute maturity denominator and verify no Formal/runtime change;
 3. if rejected, preserve the audit and close with no structural change or requested scope revision;
 4. COV-12 remains pending; do not infer a return that does not exist.
+
+
+## COV-03 canonical completion — 2026-10-04 Asia/Taipei
+
+Owner approved COV-03. Canonical update is complete.
+
+Executed:
+- D06-19 `Retail / Individual Investor Participation & Flow（散戶／自然人參與與流向）`
+- L0 / 0%
+- D06 now 18 modules / 45.6%
+- overall curriculum now 22 domains / 356 modules / 43.4%
+
+Canonical receipts:
+- `shared-knowledge/CURRICULUM_COV03_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md`
+- `shared-knowledge/curriculum_cov03_canonical_update_receipt_20261004_v0_1.json`
+
+Scope firewall: direct natural-person identity only; margin/day-trade/odd-lot/broker/residual proxies cannot substitute for direct retail flow. Domestic stock×date natural-person direction remains UNKNOWN until a PIT-safe source exists. No Formal/runtime change.
+
+Exact next continuation point for 00:
+1. COV-03 is closed structurally; do not reopen it as a gap.
+2. D06-19 research now belongs to 05｜法人與籌碼研究室, starting from source taxonomy + PIT/replay contract.
+3. AOKD-05 remains routed to 06 for corpus feasibility.
+4. COV-12 remains PENDING_SPECIALIST_RETURN; no formal return exists yet.
+5. Continue 00 governance by checking unresolved specialist/overlap items that have newly arrived on latest main; do not restart the saturated broad AOKD sweep without a new observable/mechanism/source trigger.
