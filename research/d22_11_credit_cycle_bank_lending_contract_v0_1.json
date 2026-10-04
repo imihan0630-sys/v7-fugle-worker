@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "D22_11_CREDIT_CYCLE_BANK_LENDING_CONTRACT_V0_1",
+  "generatedAt": "2026-10-04T08:49:00+08:00",
+  "module": "D22-11",
+  "level": "L2",
+  "maturityPct": 40,
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / CREDIT_SUPPLY_DEMAND_SEPARATION_REQUIRED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "researchQuestion": "Can aggregate and issuer-facing credit-supply conditions improve Taiwan stock selection after separating loan demand, policy rates and issuer fundamentals?",
+  "stateVector": [
+    "lending_standards",
+    "loan_pricing",
+    "loan_growth",
+    "approval_or_rejection_if_observable",
+    "maturity_and_collateral_terms",
+    "bank_to_bond_substitution",
+    "bank_health",
+    "policy_rate",
+    "corporate_bond_conditions",
+    "issuer_bank_dependence"
+  ],
+  "mechanism": [
+    "Bank credit supply can tighten through lending standards, pricing, collateral, maturity or quantity even before defaults rise.",
+    "Bank-dependent firms may be more sensitive to credit-supply contractions than firms able to substitute into public bond/equity markets.",
+    "Bank-to-bond substitution can help identify credit-supply stress when external financing demand is positive."
+  ],
+  "evidenceAndCounterevidence": [
+    {
+      "support": "Research using lending standards finds credit-supply shocks affect loan growth and real activity.",
+      "counter": "Observed loan growth alone confounds demand and supply."
+    },
+    {
+      "support": "Bank-to-bond substitution rises in episodes of tight standards, bank distress and monetary tightening in some evidence.",
+      "counter": "Bond issuance may reflect issuer quality/size selection and favorable market timing, not only bank stress."
+    },
+    {
+      "support": "Corporate debt booms can precede weak future growth/crisis outcomes at macro level.",
+      "counter": "Macro credit-cycle evidence does not automatically provide issuer-level stock-selection alpha."
+    }
+  ],
+  "taiwanSourceRoute": [
+    "Taiwan central-bank publications provide bank lending rates and credit aggregates; five-major-bank new-loan weighted-average rates are one aggregate financing-cost input.",
+    "Issuer-level loan approvals/standards are often non-public; missing bank-supply state remains UNKNOWN.",
+    "Policy/risk-free rate level is owned by D13; D22-11 owns incremental bank-credit availability/terms."
+  ],
+  "pitContract": [
+    "Use release-date vintage for macro/bank data; later revisions never backfill.",
+    "Separate credit demand proxies from supply proxies before causal interpretation.",
+    "Map aggregate lending conditions to issuer exposure only with pre-known bank dependence/funding mix from D22-10.",
+    "Loan volume changes without standards/pricing/demand controls are context-only, not supply shocks.",
+    "Countrywide conditions cannot be mechanically converted into identical issuer scores."
+  ],
+  "falsificationGates": [
+    "Falling loan growth != tighter supply by itself; demand may have collapsed.",
+    "Rising loan rates != issuer credit spread by itself; risk-free policy transmission belongs to D13.",
+    "Tight standards can coexist with strong bond markets, reducing effects for market-access firms.",
+    "Bank stress can be offset by government/central-bank facilities or alternative finance.",
+    "If issuer-level interaction adds no incremental information after D13 + D22-10 + fundamentals, classify REJECTED_OR_REDUNDANT."
+  ],
+  "outcomeGate": "CLOSED",
+  "formalCore": "LOCKED",
+  "next": [
+    "Build Taiwan release-vintage aggregate credit-condition receipts and map only to issuers with evidenced bank dependence.",
+    "Define demand-vs-supply identification challengers before using loan growth.",
+    "Test bank-dependent versus bond-access issuers across tightening/easing regimes before L3/L4."
+  ]
+}
