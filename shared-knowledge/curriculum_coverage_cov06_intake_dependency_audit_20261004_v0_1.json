@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "CURRICULUM_COVERAGE_COV06_INTAKE_DEPENDENCY_AUDIT_V0_1",
+  "date": "2026-10-04",
+  "auditBaseMain": "7e9048604d78bf52153f74c22ffdaef959154a6e",
+  "candidateId": "COV-06",
+  "domain": "D10",
+  "acceptedReturn": "research/COV06_D10_SPECIALIST_RETURN_V0_1.md",
+  "terminalRecommendation": "EXTEND_EXISTING_SCOPE",
+  "targetModule": "D10-01",
+  "dependencyAudit": "PASS_D10_01_TOPOLOGY_OWNER_D10_12_CONSUMER",
+  "antiDoubleCount": "PASS_ONE_TOPOLOGY_PARENT",
+  "antiOrphan": "PASS_NO_ORPHAN",
+  "maturity": {
+    "D10-01": {
+      "level": "L2",
+      "maturityPct": 40,
+      "change": "NONE"
+    },
+    "D10-12": {
+      "level": "L3",
+      "maturityPct": 60,
+      "change": "NONE"
+    }
+  },
+  "renameRequired": false,
+  "moduleCountChange": 0,
+  "maturityChange": "NONE",
+  "ownerApprovalRequired": true,
+  "state": "OWNER_APPROVAL_REQUIRED",
+  "formalCoreImpact": "NONE_LOCKED"
+}
