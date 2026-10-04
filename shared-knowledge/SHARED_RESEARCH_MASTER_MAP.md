@@ -1640,3 +1640,37 @@ Current Room 08 formal maturity after these promotions:
 - Room 08 module-weighted aggregate = 51.5% across 33 modules.
 
 D11-16, D17-01, D17-02 and D11-08 remain below L3 for their distinct unresolved source/realization/completeness gates. Formal Core unchanged. Outcome joins remain closed.
+
+
+## H15 / H16 / H20 canonical no-structural-change closures — 2026-10-04
+
+### H15
+`KEEP_SEPARATE / EVENT_RISK_TO_VOLATILITY_TO_POST_EVENT_PATH / ONE_OPENING_GAP_RECEIPT`.
+
+- D11-10 owns event-linked overnight-gap risk.
+- D04-09 owns tail/gap volatility state.
+- D17-12 owns only post-gap continuation/fill/reversal path.
+- one opening gap cannot become three time-zero votes.
+
+### H16
+`KEEP_SEPARATE / FOUR_LAYER_PRICE_LIMIT_CHAIN / ONE_LIMIT_EVENT_RECEIPT`.
+
+- D05-02 owns exchange mechanics.
+- D11-11 owns exit/orderability.
+- D01-09 owns chart/pattern semantics.
+- D04-10 owns volatility-estimator contamination.
+- only factual strategy-specific orderability may support a hard execution constraint.
+
+### H20
+`KEEP_SEPARATE / MULTI_EVIDENCE_BREAKOUT_FAMILY / NO_INDEPENDENT_COMPONENT_VOTE_UNTIL_RESIDUAL_VALUE`.
+
+- D01-05 owns breakout/failure price-structure event identity.
+- D02-03 owns volume-confirmation transform.
+- D04-07 owns volatility interaction/context.
+- one breakout episode has one parent receipt.
+- volume/volatility do not become independent votes until preregistered residual incremental value passes.
+
+All three states:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+No maturity transfer, module-count change, Formal or runtime impact.
