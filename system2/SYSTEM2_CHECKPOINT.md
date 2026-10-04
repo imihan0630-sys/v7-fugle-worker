@@ -1293,3 +1293,37 @@ This narrows the transport ambiguity, but `emptyMonthSemanticsCertified=false` d
 7. after history + continuity READY, address `ASSESSOR_POLICY_NOT_FROZEN`, then Strategy -> Ranking -> Capacity -> real `s2_capacity_runs`.
 
 System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
+
+## 2026-10-04 S2-07 MOPSOV empty-month semantics — PHYSICALLY CERTIFIED V0.2
+
+PR #452 merged as `35c7448baf7ef5790b0d5798e23d0ee4653207d1`.
+
+Checks:
+- MOPSOV Empty Month Certification Readonly `37169332743`: PASS.
+- System2 Research CI `37169332659`: PASS.
+- V8 Regression `37169332638`: PASS.
+
+Physical certification:
+- state=`MOPSOV_EMPTY_MONTH_SEMANTICS_CERTIFIED`;
+- 4/4 frozen empty controls PASS;
+- 3/3 same-endpoint positive controls PASS;
+- fail-closed drift/error tests PASS;
+- `emptyMonthSemanticsCertified=true`.
+
+This is a narrow MOPSOV source-contract promotion only. It does not make a whole bounded historical interval complete and does not allow `noEventMayBeClaimed=true`.
+
+### Exact continuation
+1. stress high-row-count MOPSOV query/pagination/truncation semantics beyond the frozen correction/cancellation sample;
+2. validate MOPS source-reported date/time/sequence as historical version knownAt candidates;
+3. add exchange-side official-document cancellation/revocation evidence;
+4. assemble the supplemental revision-history completeness receipt only after those gates are satisfied;
+5. then suspension/resumption -> expected symbol sessions -> RAW A1 lineage -> technical continuity;
+6. only after history + continuity READY address `ASSESSOR_POLICY_NOT_FROZEN`, then Strategy -> Ranking -> Capacity -> real `s2_capacity_runs`.
+
+Still authoritative:
+`revisionCoverageComplete=false`,
+`noEventMayBeClaimed=false`,
+`technicalContinuityCertified=false`,
+all trading authority false.
+
+System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
