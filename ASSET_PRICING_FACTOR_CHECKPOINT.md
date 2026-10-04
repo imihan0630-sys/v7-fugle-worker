@@ -280,3 +280,21 @@ No maturity or Formal change is authorized by this routing.
 3. D19-04: consume DATA_LANE TPEx universe/full-market/continuity artifacts when verified; do not duplicate their engineering.
 4. D19-04 research-owned gates remain PIT industry vintage, compatible D03/D09 paired redundancy and D14 component-wise cost provenance.
 5. No L4 without prospective/OOS outcome evidence, costs, multiple-testing control and robustness.
+
+
+## Stage 13 completed on 2026-10-05
+- Receipt: `research/d19_12_date_intrinsic_calendar_pit_receipt_20261005_v0_2.json`.
+- D19-12 WEEKDAY/MONTH_OF_YEAR PIT feasibility is now physically replayed under identical semantics across independent TWSE years 2017 and 2018.
+- 2017: 246 sessions, 222,194 fresh/cold rows, zero reconciliation mismatch.
+- 2018: 247 sessions, 227,381 fresh/cold rows, zero reconciliation mismatch.
+- 2017 includes 3 Saturday trading sessions and 2018 includes 2, proving that Taiwan weekday-state research must use the weekday of actual official trading dates rather than assume Monday-Friday.
+- System2 CI `37243300685`, V8 Regression `37243300702`, D19 smoke `37243300721`: PASS.
+- D19-12 remains L3 / 60%; D19 aggregate remains 41.3%.
+- No L4 promotion; outcomes, costs and multiple-testing-controlled efficacy remain closed.
+
+## Exact next continuation after Stage 13
+1. D19-12: establish bounded historical annual-calendar knownAt/announcement evidence before HOLIDAY/PRE_HOLIDAY/POST_HOLIDAY or TURN_OF_MONTH L3 scope review.
+2. Separate scheduled annual holidays from emergency/typhoon closures; the latter require event-specific announcement clocks.
+3. D19-04: consume DATA_LANE TPEx universe/full-market/continuity artifacts when verified; do not duplicate their engineering.
+4. D19-04 research-owned gates remain PIT industry vintage, compatible D03/D09 paired redundancy and D14 component-wise cost provenance.
+5. No L4 without prospective/OOS outcome evidence, costs, multiple-testing control and robustness.
