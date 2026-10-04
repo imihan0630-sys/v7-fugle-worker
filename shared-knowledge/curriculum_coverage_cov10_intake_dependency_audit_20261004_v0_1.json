@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "CURRICULUM_COVERAGE_COV10_INTAKE_DEPENDENCY_AUDIT_V0_1",
+  "date": "2026-10-04",
+  "auditBaseMain": "95a1fa11a1ca39a5318f53add59b3e26df9483be",
+  "candidateId": "COV-10",
+  "domain": "D20",
+  "acceptedReturn": "research/COV10_D20_SPECIALIST_RETURN_V0_1.md",
+  "terminalRecommendation": "ADD_MODULE",
+  "proposedModule": {
+    "id": "D20-14",
+    "name": "Belief Updating Biases / Confirmation–Perseverance–Conservatism（信念更新偏誤／確認偏誤－信念固著－保守更新）",
+    "startingLevel": "L0",
+    "startingMaturityPct": 0,
+    "primaryRole": "VALIDATION",
+    "independentDirectionalVoteAuthorized": false
+  },
+  "dependencyAudit": "PASS_BELIEF_UPDATE_CHILD_TRANSFORM_GRAPH",
+  "overlapAudit": "PASS_TRUE_OWNER_GAP",
+  "antiDoubleCount": "PASS_ONE_BELIEF_UPDATE_FAMILY_ONE_VOTE_MAX",
+  "antiOrphan": "PASS_NO_ORPHAN",
+  "moduleCountChangeIfApproved": 1,
+  "maturityInheritance": false,
+  "ownerApprovalRequired": true,
+  "state": "OWNER_APPROVAL_REQUIRED",
+  "formalCoreImpact": "NONE_LOCKED"
+}
