@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "CURRICULUM_H01_CANONICAL_SCOPE_DEDUP_UPDATE_RECEIPT_V0_1",
+  "clusterId": "H01",
+  "status": "CANONICAL_UPDATE_COMPLETE",
+  "ownerApprovedAt": "2026-10-04T11:46:32+08:00",
+  "latestMainVerifiedBeforeReceipt": "376fb8166b0698679f1664becc869322a0e2317c",
+  "terminalClassification": "KEEP_SEPARATE",
+  "governanceDisposition": "SCOPE_DEDUP_ONLY",
+  "modules": {
+    "D09-13": {
+      "name": "Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）",
+      "level": "L3",
+      "maturityPct": 60,
+      "ownerUnit": "industry × explicit product/geographic market definition × vintage"
+    },
+    "D09-14": {
+      "name": "Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）",
+      "level": "L3",
+      "maturityPct": 60,
+      "ownerUnit": "issuer × observable strategic action × implementation stage × vintage"
+    }
+  },
+  "snapshot": {
+    "domains": 22,
+    "activeModules": 356,
+    "weightedMaturityPct": 43.9,
+    "d09MaturityPct": 57.1
+  },
+  "curriculumImpact": {
+    "moduleCountChange": 0,
+    "maturityChangeFromH01": 0
+  },
+  "formalCore": "LOCKED",
+  "system1Formal": "UNCHANGED",
+  "system2Formal": "UNCHANGED",
+  "runtimeImpact": "NONE",
+  "next": {
+    "D0913": "BR-059 compatible issuer-native PCB/ABF product/application revenue numerator evidence",
+    "D0914": "BR-060 prospective strategic-action milestone appends before outcomes"
+  }
+}
