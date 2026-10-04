@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "S2_CORRECTION_INDEPENDENT_VERIFICATION_V0_1",
+  "directiveId": "S2-CORR-20261004-004",
+  "verifiedAt": "2026-10-05T02:45:47+08:00",
+  "verifiedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "auditBaseMainSha": "ea8f264de30051c3e0eaaf1a68d865ed2845fa10",
+  "result": "VERIFIED_CLOSED",
+  "acceptance": {
+    "symbolLocalGapsNoLongerGloballyBlock": true,
+    "globalIntegrityStillFailsClosed": true,
+    "denominatorAccountingExplicit": true,
+    "incompleteCannotEnterCapacityOrActiveMonitor": true,
+    "readySymbolsCanProceedUnderPartialCoverage": true,
+    "zeroPickRequiresCompleteDenominator": true,
+    "noArbitraryCoverageThreshold": true,
+    "protectedBoundariesUnchanged": true
+  },
+  "implementation": {
+    "remediationPr": 585,
+    "remediationMergeSha": "b6dd5bff357d6c678825ca212afae6a533da68c8",
+    "evidenceFinalizationPr": 586,
+    "evidenceFinalizationMergeSha": "73f284c937dd2fd626cbfe406df3fe5e8951a590",
+    "checkpointFinalizationCommit": "4733500310c77d62da29bd6a370a60f906ff2522"
+  },
+  "ci": [
+    {
+      "pr": 585,
+      "workflow": "System2 Research CI",
+      "runId": 37224012433,
+      "result": "PASS"
+    },
+    {
+      "pr": 585,
+      "workflow": "V8 Regression Tests",
+      "runId": 37224012419,
+      "result": "PASS"
+    },
+    {
+      "pr": 586,
+      "workflow": "System2 Research CI",
+      "runId": 37224314880,
+      "result": "PASS"
+    },
+    {
+      "pr": 586,
+      "workflow": "V8 Regression Tests",
+      "runId": 37224314865,
+      "result": "PASS"
+    }
+  ],
+  "verificationEvidence": [
+    "Independent audit re-read latest main and CORR-004 runtime/tests rather than relying on remediation-room claims.",
+    "PR #585 is merged as b6dd5bff357d6c678825ca212afae6a533da68c8 and changed only System2 Shadow research runtime/contracts/tests plus remediation checkpoint; no System1 Formal Core/runtime or trading authority file was changed.",
+    "daily_shadow_history_reader_v0_1.mjs now separates descriptive aggregate coverage from globalIntegrityState and emits per-symbol readinessState, blockerCodes, evaluationInputReady and denominatorAccounted.",
+    "daily_shadow_input_preflight_v0_1.mjs uses global source/history integrity for global blocking while exposing symbol-local eligible/blocked lists; symbol-local HISTORY/CONTINUITY gaps no longer create PIT_HISTORY_GLOBAL blockers.",
+    "Mixed-universe regression proves A=ready can proceed while B=insufficient history, C=continuity unverified and D=required evidence UNKNOWN remain INCOMPLETE/BLOCKED, non-admitted and individually accounted.",
+    "strategy_evaluator missing-required-evidence semantics remain unchanged: symbol-local UNKNOWN cannot become BUY_ELIGIBLE and maps to INCOMPLETE/BLOCKED.",
+    "Global fail-closed behavior remains present for current-source errors, calendar/clock failures, history-probe/query failures, universe-accounting failures and explicit source-wide/global integrity BLOCKED states.",
+    "No 95%/90%/80% or other arbitrary market-wide coverage threshold was introduced; readiness remains categorical and provenance-based.",
+    "daily_shadow_capacity_orchestrator_v0_1.mjs emits CAPACITY_READY_PARTIAL_COVERAGE only when at least one clean symbol is legitimately admitted; INCOMPLETE symbols are not in capacity/active-monitor assignments.",
+    "Partial denominator with no ready admission returns CAPACITY_PARTIAL_COVERAGE_NO_SELECTION with zeroPickDay=null, capacityReceipt=null and no s2_capacity_runs persistence, preventing a false downstream ZERO_PICK_ACTIVE.",
+    "Prediction Snapshot independently distinguishes CLEAN_ZERO_PICK, PARTIAL_COVERAGE_NO_SELECTION and DENOMINATOR_UNKNOWN_NO_SELECTION and leaves zeroPickDay=null when denominator completeness is unresolved.",
+    "Denominator truth is durably preserved in s2_shadow_runs via eligible_count/accounted_count/completion_rate/state_counts_json/unaccounted_symbols_json/symbol_accounts_json and in frozen decisions. The capacity row itself is not self-describing for partial coverage, but this is a non-blocking observability hardening opportunity because denominator evidence is separately immutable at the same decision clock and partial-no-selection writes no capacity row.",
+    "Final implementation head 7ee02cc98913e79fc981da4d21e39b54b48b4983 passed System2 Research CI 37224012433 and V8 Regression 37224012419.",
+    "From PR #585 merge through audit time, 23 later main commits did not touch any CORR-004 runtime/test conflict unit; no concurrent drift invalidated the verification."
+  ],
+  "residuals": [
+    "Actual strategy assessors remain separately owner/preregistration gated; CORR-004 does not authorize or freeze them.",
+    "Individual continuity/provenance gaps remain UNKNOWN/INCOMPLETE by design.",
+    "s2_capacity_runs does not itself persist a partial-denominator flag; denominator evidence is preserved in immutable s2_shadow_runs/frozen decisions at the same decision clock. Consider direct capacity-to-denominator linkage as future observability hardening, not a CORR-004 blocker."
+  ],
+  "closureMeaning": "Closes the all-or-nothing readiness defect. Symbol-local UNKNOWN/INCOMPLETE no longer starves clean symbols, while global integrity failures and zero-pick denominator safeguards remain fail-closed."
+}
