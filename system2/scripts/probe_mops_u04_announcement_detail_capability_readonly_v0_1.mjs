@@ -24,17 +24,30 @@ function stripHtml(value){
     .replace(/\s+/g," ").trim();
 }
 function curl(args){
-  const p=spawnSync("curl",[
-    "--silent","--show-error","--location","--max-time","30",
-    ...args,
-    "--write-out","\n__HTTP_STATUS__:%{http_code}\n",
-  ],{encoding:"utf8",maxBuffer:16*1024*1024});
-  if(p.error) throw p.error;
-  assert.equal(p.status,0,"curl failed: "+String(p.stderr||"").slice(0,1000));
   const marker="\n__HTTP_STATUS__:";
-  const i=p.stdout.lastIndexOf(marker);
-  assert.ok(i>=0,"HTTP status marker missing");
-  return {body:p.stdout.slice(0,i),status:Number(p.stdout.slice(i+marker.length).trim())};
+  let last=null;
+  for(let attempt=1;attempt<=3;attempt+=1){
+    const p=spawnSync("curl",[
+      "--silent","--show-error","--location","--http1.1","--compressed",
+      "--connect-timeout","10","--max-time","30",
+      "--retry","2","--retry-delay","1","--retry-all-errors",
+      ...args,
+      "--write-out","\n__HTTP_STATUS__:%{http_code}\n",
+    ],{encoding:"utf8",maxBuffer:16*1024*1024});
+    if(p.error) throw p.error;
+    const stdout=String(p.stdout||"");
+    const i=stdout.lastIndexOf(marker);
+    const response={
+      body:i>=0?stdout.slice(0,i):stdout,
+      status:i>=0?Number(stdout.slice(i+marker.length).trim()):null,
+      transportExit:Number.isInteger(p.status)?p.status:null,
+      transportError:p.status===0?null:String(p.stderr||"").slice(0,1000),
+      transportAttempt:attempt,
+    };
+    last=response;
+    if(p.status===0 && Number.isInteger(response.status)) return response;
+  }
+  return last||{body:"",status:null,transportExit:null,transportError:"NO_TRANSPORT_RESULT",transportAttempt:3};
 }
 function inspect({id,host,method,response}){
   const text=stripHtml(response.body);
@@ -64,7 +77,9 @@ function detailArgs({host,cookieJar=null}){
     "--header","Content-Type: application/x-www-form-urlencoded",
     "--header","Origin: "+host,
     "--header","Referer: "+host+"/mops/web/t146sb10",
-    "--header","User-Agent: System2-MOPS-U04-Detail-Capability/0.2",
+    "--header","User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36",
+    "--header","Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "--header","Accept-Language: zh-TW,zh;q=0.9,en;q=0.6",
   ];
   if(cookieJar) args.push("--cookie",cookieJar,"--cookie-jar",cookieJar);
   args.push(
@@ -81,12 +96,16 @@ function detailArgs({host,cookieJar=null}){
 function warmSession(host,cookieJar){
   rmSync(cookieJar,{force:true});
   const root=curl([
-    "--header","User-Agent: System2-MOPS-U04-Detail-Capability/0.2",
+    "--header","User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36",
+    "--header","Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "--header","Accept-Language: zh-TW,zh;q=0.9,en;q=0.6",
     "--cookie-jar",cookieJar,"--cookie",cookieJar,
     host+"/mops/",
   ]);
   const query=curl([
-    "--header","User-Agent: System2-MOPS-U04-Detail-Capability/0.2",
+    "--header","User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36",
+    "--header","Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "--header","Accept-Language: zh-TW,zh;q=0.9,en;q=0.6",
     "--header","Referer: "+host+"/mops/",
     "--cookie-jar",cookieJar,"--cookie",cookieJar,
     host+"/mops/web/t146sb10",
