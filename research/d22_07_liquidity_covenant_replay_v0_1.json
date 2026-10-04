@@ -1,0 +1,157 @@
+{
+  "schemaVersion": "D22_07_LIQUIDITY_COVENANT_REPLAY_V0_1",
+  "generatedAt": "2026-10-04T15:03:00+08:00",
+  "status": "RESEARCH_ONLY / MULTI_ISSUER_MULTI_DATE_PIT_REPLAY / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "governance": {
+    "covenantPresenceIsNotBreach": true,
+    "breachIsNotDefault": true,
+    "facilityHeadlineIsNotCash": true,
+    "commitmentDrawabilityUnknownIsNotCommitted": true,
+    "crossDefaultRequiresContractLink": true,
+    "waiverAndRepaymentAreNewStates": true,
+    "laterResolutionDoesNotBackfillEarlierRisk": true,
+    "unknownIsNotZero": true
+  },
+  "receipts": [
+    {
+      "issuer": "Chunghwa Telecom",
+      "twseSymbol": "2412",
+      "industry": "telecom",
+      "periodEnd": "2023-12-31",
+      "sourceKnownAt": "2024-04-17T06:05:47Z",
+      "sourceType": "official SEC Form 20-F",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000095017024044919/cht-20231231.htm",
+      "liquidityState": {
+        "unusedUnsecuredBankLinesTWDmillion": 56800,
+        "unusedSecuredBankLinesTWDmillion": 1600,
+        "totalUnusedBankLinesTWDmillion": 58400
+      },
+      "covenantState": {
+        "threshold": null,
+        "cushion": null,
+        "breach": null,
+        "waiver": null,
+        "crossDefault": null
+      },
+      "quality": "EXACT_PUBLIC_TIMESTAMP / FACILITY_HEADLINE_REPLAYABLE / COMMITMENT_AND_DRAWABILITY_UNKNOWN"
+    },
+    {
+      "issuer": "Chunghwa Telecom",
+      "twseSymbol": "2412",
+      "industry": "telecom",
+      "periodEnd": "2024-12-31",
+      "sourceKnownAt": "2025-04-16T06:02:44Z",
+      "sourceType": "official SEC Form 20-F",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000095017025054474/cht-20241231.htm",
+      "liquidityState": {
+        "unusedUnsecuredBankLinesTWDmillion": 56400,
+        "unusedSecuredBankLinesTWDmillion": 15,
+        "totalUnusedBankLinesTWDmillion": 56415
+      },
+      "covenantState": {
+        "threshold": null,
+        "cushion": null,
+        "breach": null,
+        "waiver": null,
+        "crossDefault": null
+      },
+      "quality": "EXACT_PUBLIC_TIMESTAMP / SAME_ISSUER_MULTI_DATE_REPLAY / COMMITMENT_AND_DRAWABILITY_UNKNOWN"
+    },
+    {
+      "issuer": "ASE Technology Holding",
+      "twseSymbol": "3711",
+      "industry": "semiconductor_packaging_ems",
+      "periodEnd": "2024-12-31",
+      "sourceKnownAt": "2025-03-27T06:11:10Z",
+      "sourceType": "official SEC Form 20-F",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1122411/000119312525064603/d889608d20f.htm",
+      "liquidityState": {
+        "cashAndCashEquivalentsTWDmillion": 76492.8,
+        "currentFinancialAssetsTWDmillion": 8390.6,
+        "unusedCreditLinesTWDmillion": 375733.9,
+        "workingCapitalTWDmillion": 40861.4
+      },
+      "covenantState": {
+        "restrictiveCovenantsDisclosed": true,
+        "broadDefaultProvisionsDisclosed": true,
+        "potentialCrossDefaultDisclosed": true,
+        "threshold": null,
+        "cushion": null,
+        "breach": null,
+        "waiver": null
+      },
+      "quality": "EXACT_PUBLIC_TIMESTAMP / FACILITY_AND_CONTRACT_RISK_REPLAYABLE / NUMERIC_COVENANT_THRESHOLDS_UNKNOWN"
+    },
+    {
+      "issuer": "UMC",
+      "twseSymbol": "2303",
+      "industry": "semiconductor",
+      "periodEnd": "2025-12-31",
+      "sourceKnownAt": "2026-04-30T06:04:15Z",
+      "sourceType": "official SEC Form 20-F",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1033767/000119312526193757/d91630d20f.htm",
+      "liquidityState": {
+        "availableRevolvingCreditTWDmillion": 54800,
+        "unusedRevolvingCreditTWDmillion": 51400
+      },
+      "contingentState": {
+        "uscXiamenGuaranteeMaximumTWDmillion": 8753,
+        "uscXiamenGuaranteeActualTWDmillion": 0,
+        "collateralizedLongTermLoanAssets": "DISCLOSED_BY_NOTE_REFERENCE"
+      },
+      "quality": "EXACT_PUBLIC_TIMESTAMP / REVOLVING_HEADROOM_AND_CONTINGENT_STATE_REPLAYABLE"
+    },
+    {
+      "issuer": "UMC",
+      "twseSymbol": "2303",
+      "industry": "semiconductor",
+      "periodEnd": "2025-09-30",
+      "sourceKnownAt": "2025-10-07",
+      "sourceType": "official SEC 6-K monthly disclosure",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1033767/000119312525232535/umc-ex99_1.htm",
+      "contingentState": {
+        "guaranteeActualTWDthousand": 3632040,
+        "priorMonthGuaranteeActualTWDthousand": 3645720,
+        "guaranteeLimitTWDthousand": 151592175,
+        "boardApprovedGuaranteeCapCNYmillion": 855,
+        "underlyingObligation": "USC Xiamen syndicated bank loan"
+      },
+      "quality": "DATE_ATTESTED_MONTHLY_EVENT_STATE"
+    },
+    {
+      "issuer": "UMC",
+      "twseSymbol": "2303",
+      "industry": "semiconductor",
+      "periodEnd": "2025-10-31",
+      "sourceKnownAt": "2025-11-06",
+      "sourceType": "official SEC 6-K monthly disclosure",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1033767/000119312525267954/umc-ex99_1.htm",
+      "contingentState": {
+        "guaranteeActualTWDthousand": 0,
+        "priorMonthGuaranteeActualTWDthousand": 3632040,
+        "guaranteeLimitTWDthousand": 162477099,
+        "resolution": "USC Xiamen syndicated bank loan prepaid early; UMC endorsement released"
+      },
+      "quality": "DATE_ATTESTED_RESOLUTION_STATE / NO_BACKFILL"
+    }
+  ],
+  "falsificationFindings": [
+    "Chunghwa Telecom demonstrates that large unused bank lines can be replayed, but line size alone does not prove committed or immediately drawable liquidity.",
+    "ASE demonstrates that restrictive covenants and cross-default risk may be disclosed while numeric covenant thresholds/cushions remain unavailable; missing thresholds stay UNKNOWN.",
+    "UMC demonstrates a contingent guarantee can move from a material positive balance to zero after early loan repayment. Covenant/guarantee presence is therefore not equivalent to inevitable default.",
+    "The UMC resolution event must not be backfilled into earlier months; the pre-repayment guarantee state remains historically real.",
+    "Headline facility capacity, covenant trigger, actual breach, waiver and eventual resolution are distinct states and must not be collapsed into one risk flag."
+  ],
+  "maturityDecision": {
+    "proposedLevel": "L3",
+    "maturityPct": 60,
+    "rationale": "Taiwan PIT replayability is demonstrated across multiple non-financial issuers, industries and dates for unused facilities, restrictive/cross-default semantics, contingent guarantees and resolution events. Missing threshold/drawability details remain explicit UNKNOWN. This validates data feasibility only."
+  },
+  "next": [
+    "Add source-attested numeric maintenance/incurrence covenant thresholds and cushions where public.",
+    "Add committed-vs-uncommitted and drawable-vs-conditional facility classification where contract terms permit.",
+    "Build breach→waiver/renegotiation and breach→acceleration counterexample pairs before L4.",
+    "Control D22-02 ratio primitives and D22-03 liquidity primitives so D22-07 only owns contractual trigger/cushion transformations.",
+    "Keep equity outcomes closed until OOS/walk-forward/prospective design is preregistered."
+  ]
+}
