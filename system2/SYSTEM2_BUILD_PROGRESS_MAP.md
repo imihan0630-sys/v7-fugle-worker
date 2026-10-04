@@ -543,3 +543,28 @@ Top 3 by pre-cutoff row count:
 All three reconciled exactly to Jan-Sep month shards with no one-sided or duplicate keys. No visible pagination hint was observed. This closes the currently planned frozen-sample high-row transport integrity gate, not revision completeness.
 
 Next engineering target: historical version knownAt semantics.
+
+## 2026-10-04 S2-07 revision provenance / clock integration milestone
+
+Physical gates now available:
+- PR #471: MOPS source-reported version clock semantics 5/5 PASS; exact public knownAt still blocked.
+- PR #475: direct SFB/FSC 1342 cash-capital-increase revocation evidence observed.
+- PR #480: prospective availability observation adapter implemented; retrospective leakage rejection physically PASS on 9 rows; no schedule added.
+- PR #483: frozen cross-authority routing matrix 5/5 PASS; issuer/regulator/exchange roles kept separate.
+
+Narrow true flags:
+- `sourceReportedVersionClockSemanticsCertified=true`;
+- `historicalKnownAtCandidateClockAvailable=true`;
+- `frozenAuthorityRoutingCoverageComplete=true`.
+
+Still false:
+- public availability latency;
+- exact knownAt;
+- authority revision completeness;
+- revision completeness;
+- NO_EVENT;
+- suspension/session completeness;
+- technical continuity;
+- all trading authority.
+
+Next engineering target: bounded supplemental revision provenance receipt with explicit blocker decomposition, followed by shared suspension/session integration.
