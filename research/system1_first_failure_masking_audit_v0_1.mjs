@@ -31,6 +31,7 @@ export const FORMAL_REASON_TO_GATE_V0_1=Object.freeze({
   '策略品質低於B級，不列入推薦':'FINAL_SIGNAL_GRADE'
 });
 
+const OUT_OF_SCOPE_REASONS=new Set(['HISTORY_OR_FEATURE_ADMISSION_BLOCKED']);
 const inc=(obj,k,n=1)=>obj[k]=(obj[k]||0)+n;
 const round=(x,d=4)=>Math.round(x*10**d)/10**d;
 const ratio=(n,d)=>d?round(n/d):null;
@@ -44,7 +45,8 @@ export function buildSystem1FirstFailureMaskingAudit(diagnosis){
 
   const firstFailureCounts={},observedFailCounts={},hiddenFailCounts={},uniqueFailCounts={},coFailCounts={};
   const unmappedReasons={},rows=[];
-  let formalRejectedN=0,mappedFirstFailureN=0,unmappedFirstFailureN=0,
+  let formalRejectedN=0,scoreCandidateReasonScopeN=0,outsideScoreCandidateReasonScopeN=0,
+      mappedFirstFailureN=0,unmappedFirstFailureN=0,
       multiFailRejectedN=0,singleFailRejectedN=0,zeroObservedFailRejectedN=0,
       mappedGateMismatchN=0,totalHiddenObservedFails=0;
 
@@ -52,8 +54,22 @@ export function buildSystem1FirstFailureMaskingAudit(diagnosis){
     if(o?.formalResult?.ok!==false)continue;
     formalRejectedN++;
     const reason=String(o.firstFailureReason||'');
-    const firstGate=FORMAL_REASON_TO_GATE_V0_1[reason]||null;
+    const outOfScope=OUT_OF_SCOPE_REASONS.has(reason);
+    const firstGate=outOfScope?null:(FORMAL_REASON_TO_GATE_V0_1[reason]||null);
     const fails=failSet(o);
+    if(outOfScope){
+      outsideScoreCandidateReasonScopeN++;
+      rows.push({
+        symbol:String(o.symbol),pool:o.pool||'UNKNOWN',
+        reasonScope:'OUTSIDE_SCORECANDIDATE_REASON_SCOPE',
+        firstFailureReason:reason||null,firstFailureGate:null,
+        observedFailSet:fails,observedFailN:fails.length,
+        hiddenObservedFailSet:[],hiddenObservedFailN:0,
+        firstFailureGateObservedFail:null
+      });
+      continue;
+    }
+    scoreCandidateReasonScopeN++;
     for(const g of fails)inc(observedFailCounts,g);
     if(fails.length===0)zeroObservedFailRejectedN++;
     if(fails.length===1){singleFailRejectedN++;inc(uniqueFailCounts,fails[0]);}
@@ -69,6 +85,7 @@ export function buildSystem1FirstFailureMaskingAudit(diagnosis){
     for(const g of hidden)inc(hiddenFailCounts,g);
     rows.push({
       symbol:String(o.symbol),pool:o.pool||'UNKNOWN',
+      reasonScope:'SCORECANDIDATE_FIRST_FAILURE',
       firstFailureReason:reason||null,firstFailureGate:firstGate,
       observedFailSet:fails,observedFailN:fails.length,
       hiddenObservedFailSet:hidden,hiddenObservedFailN:hidden.length,
@@ -96,8 +113,9 @@ export function buildSystem1FirstFailureMaskingAudit(diagnosis){
     schemaVersion:FIRST_FAILURE_MASKING_V0_1.schemaVersion,
     reasonMapVersion:FIRST_FAILURE_MASKING_V0_1.reasonMapVersion,
     sessionDate:diagnosis.sessionDate,
-    formalRejectedN,mappedFirstFailureN,unmappedFirstFailureN,
-    mappingCoverageRate:ratio(mappedFirstFailureN,formalRejectedN),
+    formalRejectedN,scoreCandidateReasonScopeN,outsideScoreCandidateReasonScopeN,
+    mappedFirstFailureN,unmappedFirstFailureN,
+    mappingCoverageRate:ratio(mappedFirstFailureN,scoreCandidateReasonScopeN),
     multiFailRejectedN,singleFailRejectedN,zeroObservedFailRejectedN,
     multiFailRateAmongRejected:ratio(multiFailRejectedN,formalRejectedN),
     mappedGateMismatchN,totalHiddenObservedFails,
