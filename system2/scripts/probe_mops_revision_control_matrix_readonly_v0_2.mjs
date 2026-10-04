@@ -1,23 +1,90 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { probeMopsRevisionSourceCapabilityV0_1 } from "../runtime/mops_revision_source_capability_v0_1.mjs";
 import {
   MOPS_REVISION_CONTROLS_V0_2,
   summarizeMopsRevisionControlMatrixV0_2,
 } from "../runtime/mops_revision_control_matrix_v0_2.mjs";
 
+function curlFetch(url, options = {}) {
+  const method = String(options.method || "GET").toUpperCase();
+  const args = [
+    "--silent", "--show-error", "--location",
+    "--max-time", "30",
+    "--request", method,
+  ];
+  for (const [name, value] of Object.entries(options.headers || {})) {
+    args.push("--header", name + ": " + value);
+  }
+  if (options.body != null) args.push("--data-binary", String(options.body));
+  args.push(
+    "--write-out",
+    "\n__MOPS_HTTP_STATUS__:%{http_code}\n__MOPS_CONTENT_TYPE__:%{content_type}\n",
+    String(url),
+  );
+
+  const p = spawnSync("curl", args, {
+    encoding: "utf8",
+    maxBuffer: 24 * 1024 * 1024,
+  });
+  if (p.error) throw p.error;
+  if (p.status !== 0) throw new Error("curl exit " + p.status + ": " + String(p.stderr || "").slice(0, 500));
+
+  const marker = "\n__MOPS_HTTP_STATUS__:";
+  const pos = p.stdout.lastIndexOf(marker);
+  if (pos < 0) throw new Error("curl response metadata marker missing");
+  const body = p.stdout.slice(0, pos);
+  const meta = p.stdout.slice(pos + 1);
+  const status = Number(meta.match(/__MOPS_HTTP_STATUS__:(\d+)/)?.[1] || 0);
+  const contentType = meta.match(/__MOPS_CONTENT_TYPE__:(.*)/)?.[1]?.trim() || null;
+
+  return Promise.resolve({
+    ok: status >= 200 && status < 300,
+    status,
+    headers: {
+      get(name) {
+        return String(name || "").toLowerCase() === "content-type" ? contentType : null;
+      },
+    },
+    text: async () => body,
+  });
+}
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const results = [];
-for (const control of MOPS_REVISION_CONTROLS_V0_2) {
-  const result = await probeMopsRevisionSourceCapabilityV0_1({
+for (let index = 0; index < MOPS_REVISION_CONTROLS_V0_2.length; index += 1) {
+  const control = MOPS_REVISION_CONTROLS_V0_2[index];
+  const args = {
     stockCode: control.stockCode,
     rocYear: control.rocYear,
     month: control.month,
     expectedDate: control.expectedDate,
     baseSubject: control.baseSubject,
-  });
+  };
+
+  const primary = await probeMopsRevisionSourceCapabilityV0_1(args);
+  let result = primary;
+  let transportUsed = "NODE_FETCH";
+
+  if (primary.state === "GATEWAY_TRANSPORT_ERROR" || primary.state === "HISTORY_TRANSPORT_ERROR") {
+    await sleep(750);
+    result = await probeMopsRevisionSourceCapabilityV0_1({
+      ...args,
+      fetchImpl: curlFetch,
+    });
+    transportUsed = "CURL_FALLBACK";
+  }
+
   results.push({
     controlId: control.id,
+    primaryTransportState: primary.state,
+    primaryTransportError: primary.error || null,
+    transportUsed,
     ...result,
   });
+
+  if (index < MOPS_REVISION_CONTROLS_V0_2.length - 1) await sleep(750);
 }
 
 const summary = summarizeMopsRevisionControlMatrixV0_2(results);
@@ -36,7 +103,12 @@ console.log(JSON.stringify({
   summary,
   rawControls: results.map((x) => ({
     controlId: x.controlId,
+    primaryTransportState: x.primaryTransportState,
+    primaryTransportError: x.primaryTransportError,
+    transportUsed: x.transportUsed,
     state: x.state,
+    error: x.error || null,
+    gatewayHttpStatus: x.gatewayHttpStatus ?? null,
     historyHttpStatus: x.historyHttpStatus ?? null,
     parsed: x.parsed,
   })),
