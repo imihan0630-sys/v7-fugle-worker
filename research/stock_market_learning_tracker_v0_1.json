@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T15:09:00+08:00",
+  "updatedAt": "2026-10-04T15:12:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -274,10 +274,10 @@
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
       ],
       "maturityPct": 56.7,
-      "status": "D03_56_7_PERCENT / TPEX_CONTINUITY_MACHINE_SOURCES_BOUNDED_PHYSICAL_PASS / BOLLINGER_L3_ACCEPTANCE_LOGIC_PHYSICAL_PASS / FIRST_GENUINE_V8_17_PARENT_PENDING / RAW_RECEIPT_GATE_2_OF_3 / OUTCOMES_CLOSED",
+      "status": "D03_56_7_PERCENT / ADX_BOLLINGER_V0_2_ACCEPTANCE_PHYSICAL_PASS / FIRST_GENUINE_V8_17_PARENT_PENDING / RAW_RECEIPT_GATE_2_OF_3 / OUTCOMES_CLOSED",
       "lastResearchUpdate": "2026-10-04",
-      "researchNote": "TI-594~610 physically close the TPEx machine-source discovery gap and the Bollinger L3 acceptance-logic gap without maturity inflation. Official TPEx halt/resumption machine endpoint /www/zh-tw/bulletin/sprcHis returns a bounded 2026 mainboard population of 30/30 rows with exact JSON/CSV keyset equivalence and source-local empty controls. Official ex-right/ex-dividend actual-result endpoint /bulletin/exDailyQ returns 587/587 rows for 2026-07-01..2026-10-04 with JSON/CSV equivalence; official capital-reduction endpoint /bulletin/revivt returns 11/11 rows for 2026-01-01..2026-10-04 with exact non-detail keyset equivalence and detailed suspension/resumption/replacement-share fields. PROSPECTIVE_OBSERVED continuity knowledge time can use source fetchedAt as a conservative upper bound when captured no later than the parent cutoff. A dedicated Bollinger acceptance evaluator and read-only workflow run 37182674404 pass exact-20-session, population-SD, late-capture, missing/duplicate, constrained-state and complete expected-parent accounting fixtures. But Sunday cannot produce the first genuine post-V8.17 Taiwan parent/captureGeneration required by TI-531, so D03-10 remains L2/40, D03 remains 56.7%, raw gate 2/3 and outcomes closed.",
-      "exactNextContinuationPoint": "First genuine Taiwan trading session after V8.17: read back the immutable parent/captureGeneration and exact expected keyset. For every parent, attach a source capture/TECHNICAL_CONTINUITY receipt known no later than parent knownAt, then execute the frozen Bollinger L3 evaluator and persist exactly one VALID/VALID_BUT_CONSTRAINED/DATA_BLOCKED/UNKNOWN attempt per expected parent. Only COMPLETE parent reconciliation can promote D03-10 to L3 and D03 to 58.3%. Then D03-09 ADX requires the same parent/continuity layer plus canonical Wilder FULL_REPLAY or replay-certified TRUSTED_PRIOR_STATE to reach L3 and D03 60.0%. Raw D03 source gate stays separately 2/3; TI-005/TI-006 outcomes stay closed.",
+      "researchNote": "TI-594~610 physically close the TPEx machine-source discovery gap and the Bollinger L3 acceptance-logic gap without maturity inflation. Official TPEx halt/resumption machine endpoint /www/zh-tw/bulletin/sprcHis returns a bounded 2026 mainboard population of 30/30 rows with exact JSON/CSV keyset equivalence and source-local empty controls. Official ex-right/ex-dividend actual-result endpoint /bulletin/exDailyQ returns 587/587 rows for 2026-07-01..2026-10-04 with JSON/CSV equivalence; official capital-reduction endpoint /bulletin/revivt returns 11/11 rows for 2026-01-01..2026-10-04 with exact non-detail keyset equivalence and detailed suspension/resumption/replacement-share fields. PROSPECTIVE_OBSERVED continuity knowledge time can use source fetchedAt as a conservative upper bound when captured no later than the parent cutoff. A dedicated Bollinger acceptance evaluator and read-only workflow run 37182674404 pass exact-20-session, population-SD, late-capture, missing/duplicate, constrained-state and complete expected-parent accounting fixtures. But Sunday cannot produce the first genuine post-V8.17 Taiwan parent/captureGeneration required by TI-531, so D03-10 remains L2/40, D03 remains 56.7%, raw gate 2/3 and outcomes closed. TI-611~630 harden first-parent acceptance without maturity inflation. ADX v0.1 self-falsified because FULL_REPLAY plus nonempty labels could self-attest lineage; v0.2 requires owner-chain receipt identity, 64-hex source/transform/state hashes, canonical clean-history anchor certification, exact bars-from-anchor count, per-bar raw identity/hash and prefix invariance. Read-only run 37184852267 PASS. Bollinger v0.1 had the same self-attested continuity gap; v0.2 requires full upstream continuity identity, exact 20 eligible-session counts, per-bar raw identity/hash and uses the frozen core formula. Read-only run 37184976280 PASS. Both modules remain L2 until the first genuine post-V8.17 parent and owner-issued cutoff-safe receipts physically reconcile COMPLETE.",
+      "exactNextContinuationPoint": "On the first genuine Taiwan session after V8.17, read the exact shared parent generation/keyset and parent knownAt. Bind only owner-issued cutoff-safe continuity receipts carrying the v0.2 upstream identity chain. Run Bollinger v0.2 for every expected parent first; COMPLETE reconciliation is required for D03-10 L3 and aggregate 58.3%. Then run ADX v0.2 with canonical-anchor FULL_REPLAY for every expected parent; COMPLETE reconciliation is required for D03-09 L3 and aggregate 60.0%. TRUSTED_PRIOR_STATE remains blocked until a separate certifier exists. Raw source gate stays 2/3 and TI-005/TI-006 outcomes stay closed.",
       "modules": [
         {
           "id": "D03-01",
@@ -356,8 +356,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「ADX平均趨向指標」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "FORMULA_MECHANICS_FROZEN / TPEx_HALT_EXDIV_REDUCTION_SOURCES_BOUNDED_PHYSICAL_PASS / FIRST_GENUINE_PARENT_PENDING / CANONICAL_RECURSIVE_REPLAY_REQUIRED / OUTCOME_UNKNOWN",
-          "next": "After first genuine V8.17 parent readback, bind cutoff-safe continuity sources and certify canonical H/L/C Wilder replay or replay-certified trusted prior state with complete expected-parent accounting. Source endpoint discovery alone is insufficient."
+          "status": "L2 / ADX_V0_2_ACCEPTANCE_PHYSICAL_PASS / CANONICAL_ANCHOR_FULL_REPLAY_REQUIRED / FIRST_GENUINE_PARENT_PENDING / OUTCOME_UNKNOWN",
+          "next": "Use d03_adx_l3_acceptance_v0_2 only. Require owner-issued source lineage, canonical clean-history anchor certification, exact FULL_REPLAY, prefix invariance and complete expected-parent attempts. V0.1 is superseded for promotion."
         },
         {
           "id": "D03-10",
@@ -366,8 +366,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Bollinger Bands布林通道」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "FORMULA_MECHANICS_FROZEN / TPEX_MACHINE_SOURCES_BOUNDED_PHYSICAL_PASS / L3_ACCEPTANCE_LOGIC_PHYSICAL_TEST_PASS / FINITE_WINDOW / FIRST_GENUINE_PARENT_PENDING / OUTCOME_UNKNOWN",
-          "next": "On first genuine post-V8.17 Taiwan parent generation, run research/d03_bollinger_l3_acceptance_v0_1.mjs against all expected parents with cutoff-safe TECHNICAL_CONTINUITY receipts. Require exact 20 eligible closes, POPULATION std, price-limit/special-session provenance and COMPLETE expected-parent attempts. Do not promote from synthetic fixture alone."
+          "status": "L2 / BOLLINGER_V0_2_ACCEPTANCE_PHYSICAL_PASS / OWNER_CONTINUITY_LINEAGE_REQUIRED / FIRST_GENUINE_PARENT_PENDING / OUTCOME_UNKNOWN",
+          "next": "Use d03_bollinger_l3_acceptance_v0_2 only. Require owner-issued source lineage, exact 20 eligible sessions, raw/history/transform binding and complete expected-parent attempts. V0.1 is superseded for promotion."
         },
         {
           "id": "D03-12",
