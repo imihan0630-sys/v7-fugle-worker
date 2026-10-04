@@ -80,9 +80,9 @@ Until that packet arrives:
 | H05 | CLOSED_NO_STRUCTURAL_CHANGE | Room06 + equivalent Room14 D21-10 evidence | — |
 | H06 | CLOSED_NO_STRUCTURAL_CHANGE | Room05 + Room13 complete | — |
 | H07 | CLOSED_NO_STRUCTURAL_CHANGE | Room03 + Room13 complete | — |
-| H08 | PENDING | — | specialist packet(s) |
+| H08 | CLOSED_NO_STRUCTURAL_CHANGE | Room07 + Room08 + Room13 equivalent complete evidence | — |
 | H09 | CANONICAL_UPDATE_COMPLETE | equivalent complete Room11 evidence | — |
-| H10 | PENDING | — | specialist packet(s) |
+| H10 | OWNER_APPROVAL_REQUIRED | Room07 + Room08 equivalent complete evidence | owner approval for SCOPE_DEDUP_ONLY |
 | H11 | PARTIAL_EVIDENCE_RECEIVED | Room09 D12 surface/skew research + method QA | 09｜衍生品與國際總經研究室 residual common-parent comparison |
 | H12 | PARTIAL_EVIDENCE_RECEIVED | Room05 + Room13 semantic packet | 10｜投組風控與交易執行研究室 + Room13 first live TWSE source receipt |
 | H13 | CLOSED_NO_STRUCTURAL_CHANGE | equivalent Room06 + Room15 evidence | — |
@@ -751,3 +751,39 @@ Current state:
 `OWNER_APPROVAL_REQUIRED`.
 
 No canonical retirement, count, maturity or Formal change has occurred yet.
+
+
+## H08 closure + H10 scope-de-dup audit — 2026-10-04
+
+### H08
+Audit:
+`shared-knowledge/CURRICULUM_H08_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+Terminal:
+**KEEP_SEPARATE / MEMBERSHIP_VS_EVENT_PROPAGATION_VS_NARRATIVE_DIFFUSION / SHARED_LINEAGE_FIREWALL**
+
+State:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+- D09-11 = effective-dated theme/industry/issuer membership bridge.
+- D17-11 = event/news propagation with first-known and event half-life.
+- D20-11 = independent social-language/topic/stance narrative diffusion.
+- one theme/headline/social parent cannot become three independent votes.
+- maturity unchanged.
+
+### H10
+Audit:
+`shared-knowledge/CURRICULUM_H10_SCOPE_DEDUP_AUDIT_20261004_V0_1.md`.
+
+Recommendation:
+**KEEP_SEPARATE / SCOPE_DEDUP_ONLY / STRUCTURAL_EXPOSURE_PRODUCER_TO_EVENT_ATTRIBUTION_CONSUMERS**
+
+Proposed canonical ownership:
+- D10-12 = structural exposure graph producer.
+- D17-04 = event-specific direct-attribution consumer.
+- D17-05 = event-specific second-order path consumer.
+
+Current state:
+`OWNER_APPROVAL_REQUIRED`.
+
+No rename, module-count, maturity, Formal or runtime change before approval.
