@@ -453,3 +453,31 @@ Room15 remaining D22-04 gate:
 - provide divergent states such as stable risk-free + widening issuer spread and rising risk-free + stable issuer spread.
 
 No WACC/COE ownership transfers to D22-04. No Formal change.
+
+
+## 00 routed COV-12 exact remaining delta — 2026-10-04
+
+COV-12 has advanced from generic PENDING to:
+`PARTIAL_EVIDENCE_RECEIVED / INSTRUMENT_LEVEL_SENIORITY_COLLATERAL_RECOVERY_WATERFALL_REPLAY_PENDING`.
+
+Do not repeat D22-07 covenant/default or D22-12 generic distress/recovery theory.
+
+Accepted:
+- covenant/default/liquidity state-machine ownership under D22-07;
+- PD / LGD-recovery / distress / equity-tail-risk separation under D22-12;
+- Taiwan default/delisting source routes;
+- rare-event, survivorship and recovery-missingness safeguards.
+
+Exact remaining specialist delta:
+1. freeze secured / unsecured / subordinated claim ranking;
+2. freeze collateral package, guarantees and structural subordination;
+3. define recovery waterfall as post-default claim allocation, separate from D22-07 default trigger;
+4. produce at least one Taiwan issuer/security historical document-vintage replay with knownAt;
+5. attach claim priority/collateral/guarantee to an actual default/restructuring/recovery lineage;
+6. preserve private bank-loan ranking/collateral as UNKNOWN when undisclosed;
+7. compare D22-12 vs D22-07 absorption boundary;
+8. freeze anti-double-count versus D07 leverage and D21 pledging/control;
+9. choose exactly one terminal recommendation;
+10. commit `research/COV12_D22_SPECIALIST_RETURN_V0_1.md`.
+
+No maturity or Formal change is authorized by this routing.
