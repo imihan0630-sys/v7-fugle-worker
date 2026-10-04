@@ -406,3 +406,30 @@ Exact remaining specialist delta:
 4. commit `research/COV09_D19_SPECIALIST_RETURN_V0_1.md`.
 
 No maturity or Formal change.
+
+
+## COV-01 return-readiness reconciliation — 2026-10-04
+
+COV-01 remains formally `PARTIAL_EVIDENCE_RECEIVED` because Coverage governance requires a committed specialist return before 00 Intake.
+
+Readiness:
+`SPECIALIST_RETURN_READY_PENDING_TERMINAL_RECOMMENDATION`.
+
+Already established by Room01:
+- Platform / Bull Flag / Triangle / Pennant / Wedge / High Tight Flag / Cup / VCP families;
+- latent-geometry and cross-pattern de-duplication;
+- named patterns are interpretation labels, not independent votes;
+- causal confirmation/failure lifecycle and repaint-safe clocks;
+- D01-05 owns breakout/failure lifecycle;
+- D01-08 retains VCP specialization;
+- morphology, breakout, volume confirmation and volatility contraction are separate layers;
+- no hindsight visual labeling or current-data backfill.
+
+Exact remaining specialist delta:
+1. explicitly compare D01-07 as umbrella continuation/base morphology owner versus a distinct umbrella owner;
+2. prove whether D01-07 can absorb platform/flag/triangle/wedge/base families without semantic incoherence;
+3. state whether any unique data/replay/decision contract justifies a new module;
+4. give exactly one terminal recommendation;
+5. commit `research/COV01_D01_SPECIALIST_RETURN_V0_1.md`.
+
+No maturity, module-count or Formal change.
