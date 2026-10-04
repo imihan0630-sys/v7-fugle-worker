@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T14:28:00+08:00",
+  "updatedAt": "2026-10-04T14:40:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 44.7
+    "maturityWeightedPct": 44.8
   },
   "domains": [
     {
@@ -3009,7 +3009,7 @@
         "research/D16_D18_SOURCE_CLOCK_REVALIDATION_V0_1.md",
         "research/D18_U2_TRUE_RETURN_DISTRIBUTION_CONTRACT_V0_1.md"
       ],
-      "maturityPct": 50.7,
+      "maturityPct": 52,
       "modules": [
         {
           "id": "D18-01",
@@ -3089,12 +3089,13 @@
         {
           "id": "D18-08",
           "name": "策略啟用／停用規則",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「策略啟用／停用規則」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WAITING_PIT_OOS",
-          "next": "Pre-register one simple activation/deactivation challenger against the same frozen static strategy with identical costs."
+          "levelMeaning": "台股PIT資料可行性已驗證",
+          "status": "L3 / TAIWAN_PIT_ACTIVATION_FEASIBILITY_VALIDATED / SHADOW_RUN_FINGERPRINT_REGIME_PREREG_COST_BINDING_PASS / NATURAL_ZERO_POLICY_DISABLED_DATA_UNKNOWN_SEPARATED / WAITING_PROSPECTIVE_POLICY_VALUE",
+          "next": "維持 L3/60%。前瞻累積 strategy-date activation frames；結果成熟後才做 paired static-vs-challenger outcome join。L4 前需 multiple Regime episodes、POLICY_DISABLED opportunity-cost accounting、NATURAL_ZERO_PICK/DATA_UNKNOWN coverage、identical costs、exposure-matched control 與 single-episode domination 檢查。",
+          "evidence": "research/D18_08_STRATEGY_ACTIVATION_L3_ACCEPTANCE_20261004_V0_1.md + system2/runtime/d18_strategy_activation_frame_v0_1.mjs + system2/tests/d18_strategy_activation_frame_v0_1.test.mjs + research/d18_08_activation_prereg_v0_1.json + CI 37183405942 + Repair 37183405955 + V8 37183405929"
         },
         {
           "id": "D18-09",
