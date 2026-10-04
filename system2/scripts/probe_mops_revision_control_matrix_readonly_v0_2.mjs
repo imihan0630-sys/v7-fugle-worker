@@ -114,5 +114,6 @@ console.log(JSON.stringify({
     gatewayHttpStatus: x.gatewayHttpStatus ?? null,
     historyHttpStatus: x.historyHttpStatus ?? null,
     parsed: x.parsed,
+    monthlyRows: x.monthlyRows || [],
   })),
 }, null, 2));
