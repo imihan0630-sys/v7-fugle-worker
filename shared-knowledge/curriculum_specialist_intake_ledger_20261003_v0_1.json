@@ -70,10 +70,14 @@
     },
     {
       "id": "H07",
-      "status": "PENDING",
-      "receivedPackets": [],
-      "pendingRooms": [],
-      "controlDecision": "NOT_EVALUATED"
+      "status": "PARTIAL_EVIDENCE_RECEIVED",
+      "receivedPackets": [
+        "research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md"
+      ],
+      "pendingRooms": [
+        "13｜行為金融與市場心理研究室"
+      ],
+      "controlDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOM13_COUNTERPART"
     },
     {
       "id": "H08",
@@ -109,10 +113,16 @@
     },
     {
       "id": "H12",
-      "status": "PENDING",
-      "receivedPackets": [],
-      "pendingRooms": [],
-      "controlDecision": "NOT_EVALUATED"
+      "status": "PARTIAL_EVIDENCE_RECEIVED",
+      "receivedPackets": [
+        "research/d06_securities_lending_economics_h12_v0_1.md",
+        "research/d06_18_borrow_fee_identifiability_rule_vintage_v0_1.md"
+      ],
+      "pendingRooms": [
+        "10｜投組風控與交易執行研究室",
+        "13｜行為金融與市場心理研究室"
+      ],
+      "controlDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOMS10_13_COUNTERPARTS"
     },
     {
       "id": "H13",
@@ -377,5 +387,27 @@
     "renameRequired": false,
     "moduleCountChange": 0,
     "formalOptimizationCandidate": "NONE"
+  },
+  "h07": {
+    "sourceRoom": "03｜技術指標與趨勢動能研究室",
+    "received": "research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md",
+    "state": "PARTIAL_EVIDENCE_RECEIVED",
+    "closedSide": "D03_05_OBSERVABLE_PRICE_PHENOMENON",
+    "pending": "ROOM13_D20_09_BEHAVIORAL_IDENTIFIABILITY",
+    "maturityChange": "NONE_FROM_GOVERNANCE"
+  },
+  "h12": {
+    "sourceRoom": "05｜法人與籌碼研究室",
+    "received": [
+      "research/d06_securities_lending_economics_h12_v0_1.md",
+      "research/d06_18_borrow_fee_identifiability_rule_vintage_v0_1.md"
+    ],
+    "state": "PARTIAL_EVIDENCE_RECEIVED",
+    "closedSide": "D06_09_D06_18_PRIMITIVE_AND_BORROW_ECONOMICS_BOUNDARY",
+    "pending": [
+      "ROOM10_D14_19_EXECUTION_LIFECYCLE",
+      "ROOM13_D20_13_LIMITS_TO_ARBITRAGE_CONTEXT"
+    ],
+    "maturityChange": "NONE_FROM_GOVERNANCE"
   }
 }
