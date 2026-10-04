@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "D19_12_DATE_INTRINSIC_CALENDAR_PIT_RECEIPT_V0_1",
+  "capturedAt": "2026-10-04T21:17:00+08:00",
+  "module": "D19-12",
+  "mode": "BOUNDED_TWSE_DATE_INTRINSIC_PIT_FEASIBILITY / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "scope": {
+    "market": "TWSE",
+    "physicalEvidenceYear": 2017,
+    "validatedStates": [
+      "WEEKDAY",
+      "MONTH_OF_YEAR"
+    ],
+    "excludedStatesUntilSeparateKnownAtProof": [
+      "HOLIDAY",
+      "PRE_HOLIDAY",
+      "POST_HOLIDAY",
+      "TURN_OF_MONTH",
+      "LUNAR_CALENDAR",
+      "SETTLEMENT_OR_INDEX_REBALANCE"
+    ]
+  },
+  "executableLineage": {
+    "calendarRuntimePath": "system2/runtime/historical_twse_calendar_v0_1.mjs",
+    "calendarRuntimeContentSha": "e004951f35b3e15d096cbbbcc1a44e25763f167d",
+    "calendarTestPath": "system2/tests/historical_twse_calendar_v0_1.test.mjs",
+    "calendarTestContentSha": "31d58b1a84e7588f16706a22f0a2a100bd85a0f3",
+    "physicalEvidencePath": "system2/evidence/S2_HISTORICAL_TWSE_2017_PHYSICAL_VERIFICATION_V0_1.json",
+    "physicalEvidenceContentSha": "b0232b6ae173475576b16ca655a791e12b063d12",
+    "physicalWorkflowRun": 37197090867,
+    "physicalArtifactId": 11301298928,
+    "physicalArtifactDigest": "sha256:6b535e6d32a7f768ca55bb5fe98b504efb6a7d770a3b5a11071760d673bc6618",
+    "officialTradingDateCount": 246,
+    "coldOfficialRowCount": 222194,
+    "freshOfficialRowCount": 222194,
+    "missingFromColdCount": 0,
+    "extraVsFreshOfficialCount": 0,
+    "sourceRowHashMismatchCount": 0
+  },
+  "featureSemantics": {
+    "WEEKDAY": {
+      "definition": "ISO marketDate Gregorian weekday",
+      "futureInformationRequired": false,
+      "decisionClock": "same marketDate; conservative historical replay eligibility after session-close finality",
+      "revisionRisk": "NONE_FOR_DATE_INTRINSIC_LABEL"
+    },
+    "MONTH_OF_YEAR": {
+      "definition": "Gregorian month extracted from ISO marketDate",
+      "futureInformationRequired": false,
+      "decisionClock": "same marketDate; conservative historical replay eligibility after session-close finality",
+      "revisionRisk": "NONE_FOR_DATE_INTRINSIC_LABEL"
+    }
+  },
+  "witnesses": [
+    {
+      "marketDate": "2017-01-03",
+      "weekday": "Tuesday",
+      "monthOfYear": 1
+    },
+    {
+      "marketDate": "2017-01-04",
+      "weekday": "Wednesday",
+      "monthOfYear": 1
+    },
+    {
+      "marketDate": "2017-02-02",
+      "weekday": "Thursday",
+      "monthOfYear": 2
+    }
+  ],
+  "pitFirewall": [
+    "No current holiday calendar is backfilled to historical dates for the promoted states.",
+    "No future trading date is needed to compute WEEKDAY or MONTH_OF_YEAR.",
+    "The promotion does not cover holiday/pre-holiday/post-holiday/turn-of-month/lunar/rebalance states.",
+    "No return outcome, alpha sign, trading threshold or score is opened at L3.",
+    "Any later calendar-return study must preregister hypotheses and apply multiple-testing controls."
+  ],
+  "falsification": [
+    "Replayable calendar-state data does not prove a calendar anomaly exists.",
+    "Published Taiwan calendar effects can decay, reverse or depend on market structure and sample period.",
+    "Testing many weekdays/months/windows creates severe false-discovery risk.",
+    "A bounded TWSE 2017 feasibility receipt is not full-Taiwan, multi-decade or TPEx coverage."
+  ],
+  "maturityDecision": {
+    "D19-12": "PROMOTE_L2_TO_L3_BOUNDED_DATE_INTRINSIC_TAIWAN_PIT_FEASIBILITY",
+    "fromPct": 40,
+    "toPct": 60,
+    "reason": "Existing executable official historical TWSE calendar logic plus physically verified 2017 official-session coverage makes weekday/month-of-year state replay deterministic and PIT-safe within the bounded scope; outcomes remain closed."
+  },
+  "exactNext": [
+    "Append at least one additional independent historical year before any robustness inference.",
+    "Seek historical calendar-vintage/announcedAt evidence before adding holiday/pre-holiday/post-holiday or turn-of-month states.",
+    "Keep lunar/settlement/rebalance subfamilies separately preregistered and source-gated.",
+    "No L4 until prospective/OOS cost-adjusted multiple-testing-controlled outcome evidence exists."
+  ],
+  "receiptHash": "ca36d2422d4124b0e32117af80623255620964adf2515cda23811df38816ef19",
+  "status": "BOUNDED_DATE_INTRINSIC_TWSE_PIT_FEASIBLE / OUTCOMES_CLOSED / HIGH_DATA_MINING_RISK / FORMAL_UNCHANGED"
+}
