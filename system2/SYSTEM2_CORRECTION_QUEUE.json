@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-05T02:45:47+08:00",
+  "updatedAt": "2026-10-05T02:54:16+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -395,6 +395,70 @@
       "updatedAt": "2026-10-05T02:45:47+08:00",
       "verifiedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "verifiedAt": "2026-10-05T02:45:47+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261005-001",
+      "createdAt": "2026-10-05T02:54:16+08:00",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "title": "Capacity persistence loses partial-denominator provenance before downstream resonance/performance",
+      "affectedScope": [
+        "S2-09 capacity persistence",
+        "S2-10 resonance pool provenance",
+        "future performance and promotion evidence"
+      ],
+      "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "canonicalRequirement": "A persisted capacity decision must preserve whether its selection denominator was COMPLETE, PARTIAL or UNKNOWN and must be auditably linked to the Shadow run accounting that justified that state.",
+      "observedProblem": "CORR-004 introduced in-memory partial-coverage states and selectionDenominator accounting, but the capacity receipt/hash and s2_capacity_runs row do not persist denominator state or contributing Shadow-run provenance. The 19:00 resonance path reads only s2_capacity_runs and therefore cannot know whether its source pool came from complete or partial selection coverage.",
+      "evidence": [
+        "candidate_capacity_receipt.mjs capacity receipt/hash excludes selectionDenominator and contributing Shadow-run provenance",
+        "storage_rows.mjs toCapacityRunRow persists allocation/count data but no denominator/provenance link",
+        "s2_shadow_runs separately preserves complete denominator accounting",
+        "daily_shadow_capacity_orchestrator_v0_1.mjs can persist a capacity row under CAPACITY_READY_PARTIAL_COVERAGE",
+        "daily_resonance_persistence_v0_1.mjs reads only the capacity row and does not join Shadow run accounting",
+        "daily_resonance_integration_v0_1.mjs and resonance_comparison_frame_v0_1.mjs carry capacity identity/hash but no denominator provenance"
+      ],
+      "riskIfUnfixed": "Downstream UI/performance/replay/comparison/promotion evidence may treat a partial-coverage pool as complete, creating false completeness and selection-bias blindness even though the original Shadow accounting exists elsewhere.",
+      "requiredCorrection": [
+        "Persist explicit COMPLETE/PARTIAL/UNKNOWN selection-denominator state and unresolved accounting for new capacity runs",
+        "Bind capacity identity/hash to denominator provenance directly or through an immutable linked receipt",
+        "Persist immutable linkage to contributing Shadow run receipt(s)/accounting hash(es)",
+        "Propagate upstream denominator state/provenance into resonance pool provenance",
+        "Preserve CORR-004 ability to monitor clean admissions under partial coverage",
+        "Keep partial no-selection as zeroPickDay=null with no capacity row",
+        "Treat legacy rows without denominator provenance as UNKNOWN rather than COMPLETE",
+        "Add complete-vs-partial same-admissions provenance regression tests",
+        "Do not add arbitrary coverage thresholds or protected authority changes"
+      ],
+      "acceptanceCriteria": [
+        "new capacity persistence self-describes denominator state or resolves it through immutable explicit linkage",
+        "capacity identity/hash commits to denominator provenance",
+        "resonance pool provenance preserves upstream denominator state/link",
+        "partial clean admissions remain monitorable and visibly partial",
+        "partial no-selection still writes no s2_capacity_runs",
+        "legacy capacity rows read UNKNOWN not COMPLETE",
+        "performance/comparison consumers can distinguish complete vs partial persisted provenance",
+        "no arbitrary coverage threshold or protected trading authority change"
+      ],
+      "protectedBoundaries": [
+        "System1 Formal Core",
+        "System2 final/live selection authority",
+        "production push/runtime",
+        "capital/order",
+        "strategy weights/thresholds",
+        "assessor policy",
+        "CORR-004 UNKNOWN semantics"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "REMEDIATION_LANE",
+      "assignedLane": "REMEDIATION_LANE",
+      "assignedRoom": "System 2｜補強修復室",
+      "modificationOwner": "SYSTEM2_REMEDIATION_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-05T02:54:16+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
