@@ -449,7 +449,14 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H13_H20_ANTI_DOUBLE_COUNT_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H13_H20_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "SPECIALIST_VALIDATION_PENDING"
+      "status": "PARTIAL_EVIDENCE_RECEIVED_COST_OF_CAPITAL_BOUNDARY_COMPLETE_REPLAY_GATES_PENDING",
+      "receivedPackets": [
+        "MACRO_CROSS_MARKET_CHECKPOINT.md",
+        "CREDIT_CAPITAL_STRUCTURE_CHECKPOINT.md",
+        "research/stock_market_learning_tracker_v0_1.json"
+      ],
+      "intakeDecision": "EVIDENCE_INSUFFICIENT_PENDING_D07_18_AND_D22_04_REPLAY_GATES",
+      "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json"
     },
     {
       "id": "H18",
