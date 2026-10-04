@@ -404,3 +404,16 @@ D12-14 child capabilities to preserve:
 
 Both remain L2/40 until explicit owner approval and canonical execution.
 Do not remove D12-14 yet.
+
+
+## 2026-10-04 Room09 continuation — DR-086..DR-089 discount-source and expiry-clock firewall
+- DR-086: TAIFEX pricing guidance requires an explicit risk-free-rate input but does not mandate one unique official series. Rate-source choice is a versioned research convention.
+- DR-087: CBC CD observations around 2026-10-02 are official but not synchronous across tenors/issuance mechanisms; stitching 7d/28d/91d/182d/364d issuance rates into one contemporaneous zero curve is rejected. Use only as sensitivity anchors.
+- DR-088: TXO time-to-expiry must terminate at the contract settlement clock; generic midnight expiry is invalid, especially same-day expiry.
+- DR-089: monthly TX futures remain the preferred monthly forward candidate. Discount source/time/tenor/day-count/interpolation/settlement/sensitivity must be frozen before IV replay.
+- Maturity unchanged: D12 40.0%; outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation after DR-089
+1. Freeze one primary research-only discount convention plus an alternative sensitivity convention.
+2. Materialize the existing 2026-10-02 TXO parent through the authorized isolated path and run monthly IV/skew/surface on identical common support.
+3. Keep weekly-expiry forward governance separate and historical replay separate from prospective 18:10 evidence.
