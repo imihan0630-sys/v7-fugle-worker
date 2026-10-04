@@ -889,3 +889,42 @@ Previously inspected posts are L3 source examples only.
 Current D20 maturity: 58.5%.
 Only D20-13 remains L2.
 
+## 2026-10-04｜First genuine D20 L4 prospective parent collection
+
+The first post-freeze social parent was captured after the D20-06/D20-11 preregistration cutoff and before any future market outcome.
+
+Evidence receipt:
+- `research/d20_social_prospective_parent_20261004_001.json`
+- one participant;
+- zero replies at capture;
+- explicit market-bullish language coexisting with explicit uncertainty;
+- no future price or engagement outcome stored.
+
+Bias control:
+The zero-engagement parent is retained. Selecting only active/high-reply threads would create attention-conditioned selection bias.
+
+D20-03 taxonomy falsification:
+The first observed post contained explicit uncertainty not representable in the prior frozen confidence classes. The observed post is permanently ineligible for retrospective reclassification. A new explicit-uncertainty class is effective only for later first-observed posts:
+- `research/d20_03_confidence_taxonomy_amendment_v0_2.json`
+
+Aggregate-only classifier:
+- `research/d20_social_topic_stance_classifier_v0_1.json`
+- no named-user psychology, skill, influence or leader/follower score.
+
+Prospective coverage:
+- D20-06 = 1/50 parents, 1/20 independent dates;
+- D20-11 = 1/50 parents, 1/20 independent dates;
+- D20-03 = 0/100 qualifying parents, 0/20 independent dates.
+
+D20-13 weekend source dry-run:
+- official TWSE securities-borrowing information source is accessible;
+- dynamic MIS generic extraction returned empty content;
+- exact free live rate/depth machine endpoint remains unresolved;
+- no weekend snapshot is eligible for L3.
+
+Artifact:
+- `research/d20_13_weekend_source_dry_run_20261004_v0_1.json`
+
+Maturity decision:
+D20 remains 58.5%. The run adds genuine prospective evidence collection, not enough independent dates/parents for L4.
+Formal Core unchanged.
