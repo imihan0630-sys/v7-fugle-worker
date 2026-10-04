@@ -47,11 +47,22 @@ if not (budget_i < capital_i < select_i):
     raise SystemExit("unexpected budget/capital/selection ordering")
 
 between=core[capital_end:select_i]
+consensus_matches=list(re.finditer(
+    r'const\s+marketConsensus\s*=\s*await\s+env\.STOCKS_KV\.get\(\s*[^\n]*V7_MARKET_CONSENSUS[^\n]*\)',
+    between
+))
+if len(consensus_matches)!=1:
+    print("----- BETWEEN FINAL CAPITAL INPUT AND SELECTOR -----")
+    print(between)
+    raise SystemExit("expected exactly one Formal market-consensus KV read: "+str(len(consensus_matches)))
+
+consensus_end=consensus_matches[0].end()
+after_consensus=between[consensus_end:]
 for forbidden in ["await ","fetch(","STOCKS_KV.get","V7_DB.","fetchWithDeadline("]:
-    if forbidden in between:
-        print("----- BETWEEN FINAL CAPITAL INPUT AND SELECTOR -----")
-        print(between)
-        raise SystemExit("external/async read between final capital input and selector: "+forbidden)
+    if forbidden in after_consensus:
+        print("----- AFTER FINAL FORMAL CONSENSUS INPUT -----")
+        print(after_consensus)
+        raise SystemExit("external/async read after final Formal consensus input: "+forbidden)
 
 if selector.lstrip().startswith("async function"):
     raise SystemExit("selector unexpectedly async")
@@ -76,9 +87,10 @@ receipt={
   "schemaVersion":"D03_EFFECTIVE_WORKER_DECISION_CUTOFF_AUDIT_V0_1",
   "status":"PASS",
   "effectiveWorkerVersion":re.search(r'const VERSION = "([^"]+)";',text).group(1),
-  "finalFormalAsyncInput":"STOCKS_KV total-capital read",
-  "candidateCutoffAnchor":"immediately after totalCapital resolution and immediately before selectTomorrowCandidates call",
-  "asyncOrExternalReadsBetweenAnchorAndSelector":0,
+  "finalFormalAsyncInput":"STOCKS_KV V7_MARKET_CONSENSUS read",
+  "candidateCutoffAnchor":"immediately after marketConsensus read and immediately before selectTomorrowCandidates call",
+  "marketConsensusReadAfterCapital":True,
+  "asyncOrExternalReadsAfterFinalFormalInputAndBeforeSelector":0,
   "selectorIsSynchronous":True,
   "selectorExternalReadsObserved":False,
   "c1DecisionAtExists":True,
