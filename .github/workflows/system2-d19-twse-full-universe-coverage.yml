@@ -1,0 +1,48 @@
+name: System2 D19 TWSE Full-Universe Coverage
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-d19-twse-full-universe-coverage.yml"
+      - "system2/scripts/d19_twse_full_universe_coverage_v0_1.mjs"
+      - "system2/runtime/d19_factor_receipt_adapter_v0_1.mjs"
+      - "system2/runtime/historical_universe_registry_v0_1.mjs"
+      - "system2/runtime/current_listing_metadata_v0_1.mjs"
+      - "system2/runtime/official_historical_a1_source_v0_1.mjs"
+      - "system2/runtime/official_historical_backfill_source_v0_1.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-d19-twse-full-universe-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run D19 TWSE full-universe coverage smoke
+        env:
+          D19_TWSE_FROM: "2026-08-03"
+          D19_TWSE_TO: "2026-08-31"
+          D19_TWSE_DECISION: "2026-08-31T05:40:00Z"
+        run: node system2/scripts/d19_twse_full_universe_coverage_v0_1.mjs
+
+      - name: Confirm production isolation
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          git diff --exit-code -- wrangler.toml Worker.js
+          echo "Production isolation PASS"
