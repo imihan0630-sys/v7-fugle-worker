@@ -17,16 +17,15 @@ This governance does not authorize any change to System 1 Formal Core, System 2 
 ## Roles
 
 ### SYSTEM2_BUILD_CONTROL_ROOM
-The System 2 build/control room implements approved architecture, data, research, engineering and integration work.
+The System 2 build/control room implements approved architecture, research, engineering and integration work within BUILD_LANE ownership.
 
 It may:
-- acknowledge correction directives;
-- investigate;
-- implement fixes within existing authority;
-- attach evidence;
-- mark a directive `FIX_IMPLEMENTED`.
+- read, acknowledge and investigate correction directives relevant to its dependencies;
+- implement/mutate only corrections formally assigned to `LOCAL_FIX` or `BUILD_LANE`;
+- attach implementation evidence for corrections it owns;
+- mark an owned correction `FIX_IMPLEMENTED` when acceptance evidence is actually present.
 
-It may not independently close a CRITICAL or HIGH directive.
+It may not seize `DATA_LANE` or `REMEDIATION_LANE` correction ownership because severity is CRITICAL/HIGH, and it may not independently close a CRITICAL or HIGH directive.
 
 ### SYSTEM2_HISTORICAL_DATA_ROOM
 Historical-data engineering owner for System 2.
@@ -107,7 +106,7 @@ Use for:
 Default effect:
 - block the affected milestone/lane;
 - non-conflicting unrelated work may continue;
-- builder may implement but may not self-close.
+- the formally assigned implementation lane may implement and reach `FIX_IMPLEMENTED`, but severity alone grants no BUILD_LANE ownership and the implementing role may not self-close.
 
 ### MEDIUM
 Use for:
@@ -143,9 +142,9 @@ Allowed statuses:
 Rules:
 
 1. `OPEN` means the auditor has created a correction with evidence and acceptance criteria.
-2. `ACKNOWLEDGED` means the build/control room has read it and recorded the intended response.
+2. `ACKNOWLEDGED` means the formally assigned lane/owner has read it and recorded the intended response.
 3. `FIX_IN_PROGRESS` means actual corrective work has started.
-4. `FIX_IMPLEMENTED` means the builder has durable implementation evidence, but the issue is not yet independently closed.
+4. `FIX_IMPLEMENTED` means the formally assigned implementation lane has durable implementation evidence, but the issue is not yet independently closed.
 5. `VERIFYING` means the independent auditor is checking the fix against the acceptance criteria.
 6. `VERIFIED_CLOSED` requires explicit independent verification evidence.
 7. `OWNER_DECISION_REQUIRED` pauses only the decision-dependent portion. Safe diagnostic work may continue.
@@ -167,7 +166,14 @@ Routing classes:
 
 Severity does not determine routing by itself. A HIGH data-backfill defect can belong to DATA_LANE; a small local UI defect can remain LOCAL_FIX.
 
+Three independent dimensions must remain separate:
+- **severity**: how serious/blocking the issue is;
+- **implementation ownership**: `routingClass / assignedLane / modificationOwner`;
+- **verification authority**: who may independently advance the directive to `VERIFIED_CLOSED`.
+
 The build/control room must not automatically take every OPEN/HIGH correction. It executes only LOCAL_FIX/BUILD_LANE work assigned to it, while respecting blockers from other lanes.
+
+A correction may move between implementation lanes only after the Correction Queue formally updates `routingClass / assignedLane / modificationOwner`. A chat room may not self-seize another lane's conflict unit.
 
 One conflict unit may have only one active modification owner at a time.
 
@@ -247,7 +253,7 @@ A correction is not complete because:
 - a workflow passed;
 - one frozen sample passed;
 - a document was updated;
-- the builder says it is fixed.
+- the assigned implementation lane says it is fixed.
 
 Closure evidence must match the original acceptance criteria and must distinguish:
 - implemented;
