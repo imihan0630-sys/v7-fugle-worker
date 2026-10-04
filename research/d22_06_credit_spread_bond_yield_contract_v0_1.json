@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "D22_06_CREDIT_SPREAD_BOND_YIELD_CONTRACT_V0_1",
+  "generatedAt": "2026-10-04T08:44:00+08:00",
+  "module": "D22-06",
+  "level": "L2",
+  "maturityPct": 40,
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_TPEX_SOURCE_ROUTE_FEASIBLE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "researchQuestion": "Can issuer-specific bond spread/curve information add timely credit information beyond the sovereign curve, accounting distress and liquidity/technical effects?",
+  "definition": {
+    "rawYield": "Yield of a specific corporate bond/security observation.",
+    "matchedBenchmark": "Same-currency sovereign/reference yield matched as closely as possible on remaining maturity/duration.",
+    "observedSpread": "corporate yield - matched benchmark yield",
+    "economicDecomposition": "expected default loss + systematic risk premium + liquidity premium + option/technical/tax effects + measurement noise"
+  },
+  "mechanism": [
+    "Spread widening can reflect higher expected credit loss and/or required risk compensation.",
+    "Credit curve level/slope can contain information about near-term versus longer-term perceived risk.",
+    "Issuer spread can move while the risk-free curve is stable, providing a divergent state distinct from D13."
+  ],
+  "evidenceAndCounterevidence": [
+    {
+      "support": "Research finds default-risk and expected-excess-return components both explain substantial cross-sectional spread variation.",
+      "counter": "Investment-grade spreads contain statistically meaningful non-default/liquidity components."
+    },
+    {
+      "support": "CDS/bond curve slope can predict some future firm fundamentals/returns in specific research designs.",
+      "counter": "Bond-equity lead-lag is not universal; equity often leads bonds and CDS in firm-specific information."
+    },
+    {
+      "support": "Wider spreads can signal tighter financing conditions.",
+      "counter": "Callable structure, liquidity, stale trading, tax and index composition can mechanically alter spread indexes."
+    }
+  ],
+  "taiwanSourceRoute": [
+    "TPEx provides corporate-bond trade/quote information, yield-price files, fair values and daily reference/yield-curve data.",
+    "TPEx fair-value methodology uses dealer reference curves and issuer/bond rating inputs for eligible fixed-rate bonds; fair value is model/reference evidence, not an actual trade."
+  ],
+  "pitContract": [
+    "Label source as actual_trade, executable_or_indicative_quote, reference_rate, fair_value or model_implied; never mix them silently.",
+    "Preserve timestamp, price/yield, accrued-interest convention, maturity, coupon, currency, optionality and trade freshness.",
+    "Duration/maturity mismatch with the sovereign benchmark must be quantified or the spread remains UNKNOWN.",
+    "No trade/stale trade is UNKNOWN for transaction-based measures; do not forward-fill without a preregistered stale policy.",
+    "Surviving-bond bias must be controlled by retaining matured/called/defaulted securities in historical universes."
+  ],
+  "falsificationGates": [
+    "Spread widening != pure default probability increase.",
+    "Issuer-level spread signal must survive liquidity/option/benchmark controls.",
+    "Same macro rate shock is owned by D13 and cannot become a second D22-06 vote.",
+    "Rating change information is D22-05; do not count an agency action and the spread response as independent evidence without residual testing.",
+    "If liquidity/technical controls explain the apparent signal, classify credit-alpha claim as rejected."
+  ],
+  "outcomeGate": "CLOSED",
+  "formalCore": "LOCKED",
+  "next": [
+    "Build multi-issuer/multi-date TPEx security-level replay with provenance labels and stale/no-trade states.",
+    "Construct matched spread and curve-slope challengers only where benchmark matching is defensible.",
+    "Compare market spread against D22-04 refinancing-cost, D22-05 rating and D22-07 liquidity states before L3/L4."
+  ]
+}
