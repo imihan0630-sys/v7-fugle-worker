@@ -1,0 +1,31 @@
+name: D03 Parent Evidence Cut Binding V0.2 Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d03_parent_continuity_binding_v0_2.mjs"
+      - "tests/test_d03_parent_continuity_binding_v0_2.mjs"
+      - "research/D03_PARENT_CONTINUITY_BINDING_V0_2.md"
+      - ".github/workflows/research-d03-parent-continuity-binding-v0-2-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tests/test_d03_parent_continuity_binding_v0_2.mjs
+      - name: Confirm research-only isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE|BUY|SELL' research/d03_parent_continuity_binding_v0_2.mjs
+          echo "D03 binding v0.2 isolation PASS"
