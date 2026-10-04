@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "CURRICULUM_COVERAGE_COV08_INTAKE_DEPENDENCY_AUDIT_V0_1",
+  "date": "2026-10-04",
+  "auditBaseMain": "767c83775661cf41f66f0a122d234dd24f236cd0",
+  "candidateId": "COV-08",
+  "domain": "D16",
+  "acceptedReturn": "research/COV08_D16_SPECIALIST_RETURN_V0_1.md",
+  "terminalRecommendation": "EXTEND_EXISTING_SCOPE",
+  "targetModule": "D16-06",
+  "dependencyAudit": "PASS_D16_06_DEPENDENCE_INFERENCE_OWNER",
+  "antiDoubleCount": "PASS_ONE_ESTIMAND_ONE_INFERENCE_FAMILY",
+  "antiOrphan": "PASS_NO_ORPHAN",
+  "maturity": {
+    "D16-06": {
+      "level": "L4",
+      "maturityPct": 80,
+      "change": "NONE"
+    }
+  },
+  "renameRequired": false,
+  "moduleCountChange": 0,
+  "maturityChange": "NONE",
+  "ownerApprovalRequired": true,
+  "state": "OWNER_APPROVAL_REQUIRED",
+  "formalCoreImpact": "NONE_LOCKED"
+}
