@@ -365,6 +365,7 @@ jobs:
           node tests/test_system1_extreme_move_proxy_denominator_audit_v0_1.mjs
           node tests/test_system1_liquidity_rejected_control_v0_1.mjs
           node tests/test_system1_market_cap_floor_economic_audit_v0_1.mjs
+          node tests/test_system1_valuation_relative_risk_audit_v0_1.mjs
           node --check tests/collect_system1_c1_evidence.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs
