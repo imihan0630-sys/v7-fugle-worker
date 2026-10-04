@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-05T07:33:00+08:00",
+  "updatedAt": "2026-10-05T07:29:50+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1836,7 +1836,7 @@
       ],
       "status": "D11_10_11_15_17_18_19_L3 / D11_16_STANDARD_PATH_BOUNDED_ACTUAL_RELEASE_GAP / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
       "exactNextContinuationPoint": "D11-16: 6921 standard release schedule and pre-listing supply-realization back-half are bounded; next obtain issuer-specific original custody quantity plus actual TWSE-approved release/TDCC withdrawal and authenticated post-eligibility transfer/untransferred chain. D11-08/13 remain first-known/completeness blockers.",
-      "lastResearchUpdate": "2026-10-05T07:33:00+08:00",
+      "lastResearchUpdate": "2026-10-05T07:29:50+08:00",
       "researchNote": "D11-16 stays L2. 6921 is now bounded to the standard theoretical release path with first eligibility 2026-06-23, and a separate pre-listing over-allotment declaration -> later holding reduction chain validates back-half supply semantics. Actual custody withdrawal after eligibility remains unproven."
     },
     {
