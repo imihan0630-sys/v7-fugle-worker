@@ -48,3 +48,30 @@ Even after 6/6 frozen controls PASS:
 - `noEventMayBeClaimed=false`;
 - session/technical continuity remain false;
 - all selection/push/capital/order/System1 authority remains false.
+
+## 2026-10-04 physical V0.2 acceptance
+
+PR #502 merged as `13bd801a6eeb06aa81f8ffde9ce00d794c629247`.
+
+Physical authority matrix:
+- frozenControlCount=6;
+- frozenControlPassCount=6;
+- `frozenAuthorityRoutingCoverageComplete=true`;
+- `representativeExchangeLaneCount=3`.
+
+Representative exchange lanes:
+1. TWSE ex-right/dividend;
+2. TWSE capital reduction;
+3. TPEx capital reduction.
+
+3152 authority join:
+- issuer: MOPS original + correction chain PASS;
+- exchange: official `TPEX_CAPITAL_REDUCTION_REFERENCE` PASS;
+- exact effective/resume date: 2026-06-30.
+
+Still false:
+- `authorityRevisionCoverageComplete=false`;
+- `publicAvailabilityLatencyCertified=false`;
+- `knownAtVersionClockCertified=false`;
+- `revisionCoverageComplete=false`;
+- downstream session/technical/trading authority.

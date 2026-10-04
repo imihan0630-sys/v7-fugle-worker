@@ -634,3 +634,9 @@ This materially narrows the revision-source blocker but does not certify exact p
 ## 2026-10-04 S2-07 six-lane blocker decomposition milestone
 
 PR #487 physically confirmed all six official final-result lanes are READY and isolated the real remaining revision blockers: prospective availability/knownAt on 6/6 lanes, bounded authority/revision-history coverage on 6/6 lanes, and missing representative authority routing on 4/6 lanes. Revision completeness, NO_EVENT, session/technical continuity and all trading authorities remain false.
+
+## 2026-10-04 S2-07 representative authority 3/6 milestone
+
+Corrected discovery PR #497 found one valid new representative control, 3152 璟德. PR #502 physically verified its cross-month MOPS original/correction chain and exact TPEx capital-reduction effective date 2026-06-30, advancing representative exchange coverage to three lanes. PR #503 then versioned the canonical six-lane receipt to representativeAuthorityReadyCount=3.
+
+The remaining representative gaps are TWSE par-value change, TPEx ex-right/dividend and TPEx par-value change. Exact knownAt, bounded revision completeness, session/technical continuity and all trading authorities remain locked.

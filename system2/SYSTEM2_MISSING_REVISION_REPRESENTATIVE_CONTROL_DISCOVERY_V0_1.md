@@ -66,3 +66,29 @@ Always false:
 - noEventMayBeClaimed;
 - technicalContinuityCertified;
 - all selection/push/capital/order/System1 authority.
+
+## 2026-10-04 physical discovery acceptance
+
+PR #497 merged as `e49ed821312fd20d5f281e25e8aadc9198751d84`.
+
+Physical checks:
+- Missing Revision Control Discovery Readonly `37181691409`: PASS.
+- System2 Research CI `37181691404`: PASS.
+- V8 Regression `37181691374`: PASS.
+
+Frozen candidate count=7 across four missing representative lanes.
+
+A first-pass false positive on 4207 was detected and removed before acceptance because a capital-reduction revision chain had contaminated the TPEx ex-right/dividend filter through generic `基準日` wording.
+
+Accepted corrected result:
+- representativeCandidateCount=1;
+- only 3152 璟德 / TPEx capital reduction produced a valid original + correction exact-stem chain;
+- TWSE par-value 6949: negative;
+- TPEx ex-right/dividend 8102/4207: negative;
+- TPEx par-value 8937/3086: negative.
+
+3152 chain:
+- original: 2026-01-20 17:14:53 / seqNo=2;
+- correction: 2026-05-28 17:20:08 / seqNo=1.
+
+The discovery itself did not freeze a representative control; that promotion occurred separately in PR #502.

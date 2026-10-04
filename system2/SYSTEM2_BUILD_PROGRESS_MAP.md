@@ -580,3 +580,16 @@ All 6 final-result lanes are ready. MOPS query integrity and source-reported clo
 - representative authority routing: 4 lanes.
 
 Next target: representative authority routing for TWSE par-value and the three TPEx lanes, then shared suspension/session coverage.
+
+## 2026-10-04 representative authority breadth advanced to 3/6
+
+- PR #497: corrected bounded discovery; only 3152 was a valid new representative revision-chain candidate.
+- PR #502: MOPS V0.3 + authority V0.2 physically promoted 3152; 6/6 frozen controls PASS; TPEx effective date exactly 2026-06-30.
+- PR #503: canonical supplemental receipt V0.2 physically advanced representative authority coverage from 2/6 to 3/6.
+
+Remaining representative gaps:
+- TWSE par-value;
+- TPEx ex-right/dividend;
+- TPEx par-value.
+
+All six lanes still retain knownAt and bounded-completeness blockers.
