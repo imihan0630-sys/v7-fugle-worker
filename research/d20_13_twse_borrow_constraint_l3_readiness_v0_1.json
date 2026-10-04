@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "D20_13_TWSE_BORROW_CONSTRAINT_L3_READINESS_V0_1",
+  "updatedAtAsiaTaipei": "2026-10-04",
+  "module": "D20-13",
+  "status": "L3_READY_PENDING_FIRST_VERIFIED_LIVE_TWSE_RATE_SUPPLY_RECEIPT / NO_PROMOTION_YET",
+  "researchOnly": true,
+  "formalCore": "LOCKED",
+  "officialSemantics": {
+    "fixedPrice": [
+      "fixedRate",
+      "executedTotalQty",
+      "unexecutedLendTotalQty",
+      "unexecutedBorrowTotalQty"
+    ],
+    "competitiveBid": [
+      "executedRate",
+      "executedQty",
+      "best5LendQtyRate",
+      "totalLendQty",
+      "best5BorrowQtyRate",
+      "totalBorrowQty"
+    ],
+    "negotiated": [
+      "loanBalanceStatement_only_publicly_comparable"
+    ]
+  },
+  "candidateConstraintState": {
+    "allowedName": "TWSE_DISPLAYED_BORROW_SCARCITY_AND_COST_STATE",
+    "prohibitedNames": [
+      "TRUE_UTILIZATION",
+      "TOTAL_LENDABLE_INVENTORY",
+      "MARKET_WIDE_SHORTING_CONSTRAINT"
+    ],
+    "components": [
+      "matched/fixed borrowing rate",
+      "displayed lending depth",
+      "displayed borrowing depth",
+      "actual short-sale state when joined",
+      "rule vintage"
+    ]
+  },
+  "requiredFirstLiveReceipt": [
+    "security",
+    "transactionType",
+    "recallNotificationTerm",
+    "sourceDate",
+    "requestedAt",
+    "capturedAt",
+    "firstKnownAt",
+    "rate/depth fields",
+    "quote-persistence rule vintage",
+    "sourceUrl",
+    "contentHash",
+    "schemaVersion",
+    "pointInTimeEligible"
+  ],
+  "blocker": "No verified live post-contract TWSE fee/supply receipt yet; upstream D06-18 remains L2. TPEx parity and true lendable-inventory denominator also remain incomplete.",
+  "promotionRule": "Promote only after first verified live TWSE rate/supply receipt proves the frozen source contract on a genuine trading day. Do not require TPEx parity for a clearly bounded TWSE-only sublane, but keep cross-market/general claims UNKNOWN.",
+  "formalOptimizationCandidate": "NONE"
+}
