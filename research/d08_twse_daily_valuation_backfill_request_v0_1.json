@@ -25,12 +25,20 @@
   "maxParallel": 2,
   "outcomes": "CLOSED",
   "formalCoreImpact": "NONE",
-  "attempt": 2,
+  "attempt": 3,
   "previousAttempt": {
-    "commit": "58497d00763f95a3e03a652944be4dc6a687aa6b",
-    "result": "WORKFLOW_SCHEDULING_FAILURE_NO_JOBS",
-    "cause": "job-level if referenced matrix.year before matrix expansion",
-    "dataFetchStarted": false
+    "commit": "12e195efe588f8bb120655d1d54f5e1ca6708b77",
+    "result": "PARTIAL",
+    "successYears": [
+      2018,
+      2019,
+      2020
+    ],
+    "failedYears": {
+      "2017": "OFFICIAL_LEGACY_SCHEMA_NO_CLOSE_OR_FISCAL_PERIOD",
+      "2021": "TRANSIENT_TRANSPORT_EXHAUSTED_ON_2021-06-07"
+    },
+    "remainingYears": "some jobs still executing when repair lineage was prepared"
   },
-  "retriggerReason": "workflow matrix scheduling semantics repaired and all repository CI gates passed"
+  "retriggerReason": "legacy TWSE A6 schema now keeps PE/PB required while close/fiscal controls remain explicit UNKNOWN; yearly transport reduced to 2-day batches with six bounded retries and backoff"
 }
