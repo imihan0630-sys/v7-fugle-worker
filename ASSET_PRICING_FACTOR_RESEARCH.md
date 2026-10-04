@@ -868,3 +868,87 @@ D19-04 remains L2 / 40%. No L3 promotion. The evidence improved the precision an
 A repository-wide source audit after the full-universe smoke found the shared continuity lane still declares `suspensionCoverageComplete=false` and `symbolSessionCompletenessCertified=false`. Consequently, the 23 non-recent-listing TWSE UNKNOWN observations are not evidence of suspension by themselves. Missing or null daily values may reflect suspension/no-trade, source semantics or another constrained state; D19 may not infer the cause locally. The correct dependency is the shared exchange-complete symbol-session receipt. Until that owner certifies the lane, these observations remain UNKNOWN.
 
 This is a useful falsification: 97.7043% KNOWN factor coverage is not equivalent to 100% classified tradability coverage.
+
+
+## 2026-10-04 Long-block Stage 9 — TWSE symbol-session diagnostics + invalid-close falsification
+
+### Authoritative temporary-suspension evidence
+Research-only PR #463 merged as `67ff5fca7544954ed12cb59449b6dae046c012b6`.
+
+Physical workflow `37173192811` queried the official TWSE historical suspended-trading report for 2026-08-03 through 2026-08-31 and returned HTTP 200 / upstream OK with raw payload hash `072e88890972ebbfed3d64a82ec0bbeee22044ec21a3146aaac3ca989d50f7c0`.
+
+The official result contained two ordinary-equity rows, both already present in the D19-04 UNKNOWN set:
+- 1218: suspended 2026-08-13 08:00 and resumed 2026-08-14 08:00.
+- 1909: suspended 2026-08-12 08:00 and resumed 2026-08-13 08:00.
+
+This is positive symbol-session provenance for those exact dates. It does not certify that a non-match is NO_SUSPENSION and does not make the shared exchange-complete symbol-session gate complete.
+
+### Six incomplete-row names are no longer an undifferentiated source-loss bucket
+The six Stage-8 cases with fewer than 21 daily rows were separately matched during this research round to official TWSE stop-trading / capital-reduction / share-transfer / par-value-change notices:
+- 1563, 1589, 2867, 6176, 6949, 8105.
+
+Their missing daily rows are therefore consistent with documented non-trading/event windows rather than silent omission from the official market history source. However this classification evidence is not yet a single immutable D19 raw-byte receipt with complete revision/version lineage, so D19 does not promote these names to fully certified continuity states.
+
+### Remaining invalid-close cohort: source presence is not valid price formation
+Research-only PR #464 merged as `c8945c76e2cc4cd72faecaa4cd6d09a0b7077eb1`.
+
+Physical workflow `37173376110` re-read the official 2026-08-03 through 2026-08-31 TWSE history for the remaining 15 invalid-close symbols:
+1213, 1341, 1443, 1472, 1516, 1538, 2254, 2321, 2712, 4190, 5906, 6955, 8101, 8482, 9110.
+
+Across those 15 names:
+- invalid-close rows = 50;
+- OFFICIAL_ZERO_TRADE_ROW = 11;
+- UNRESOLVED_INVALID_CLOSE_ROW = 39.
+
+The 11 zero-trade rows have zero volume, zero trade value, zero transactions and null OHLC. They are observed official rows, not missing-source rows.
+
+The 39 unresolved rows are more important counterevidence: official rows contain positive volume / trade value / transaction counts while OHLC is null. Positive trading activity therefore cannot be used as a substitute for a valid official close, and these observations cannot be forward-filled or reconstructed from turnover.
+
+### D19-04 observation-semantics falsification
+The Stage-8 assumption that every factor member should have one valid close on each of the 21 market sessions is too coarse.
+
+A cross-sectional momentum replay needs an explicit symbol-session / observation-state contract separating at least:
+1. ELIGIBLE_VALID_PRICE_SESSION — valid PIT close with source provenance;
+2. VERIFIED_NONTRADING_OR_EXCLUDED_SESSION — official suspension, stop-trading, listing-age or other positively evidenced non-tradability;
+3. OFFICIAL_ZERO_TRADE_ROW — source row exists but no trade/price formation;
+4. UNRESOLVED_TRADING_ACTIVITY_WITHOUT_VALID_CLOSE — activity fields are positive but no admissible close exists;
+5. SOURCE_UNKNOWN — required evidence itself unavailable.
+
+The lookback must be defined in terms of predeclared valid observations and causal symbol-session semantics, not by silently forward-filling a fixed number of market-calendar sessions. Any change from a 20-session calendar-return convention to a valid-observation convention must itself be preregistered and sensitivity-tested because it changes factor economics for illiquid/suspended names.
+
+### Liquidity / stale-price falsification
+This stage materially strengthens the D19-04 and D19-16 dependency:
+- low activity / stale prices can manufacture apparent momentum or suppress volatility;
+- no-trade and invalid-close states are not interchangeable with zero return;
+- treating previous close as today's observed close would inject a synthetic return path;
+- excluding these names without a frozen eligibility rule can create selection bias.
+
+Therefore D19-04 L3 must preserve the full denominator, publish eligibility/exclusion/UNKNOWN counts, and show sensitivity to stale-price / minimum-valid-observation rules.
+
+### Redundancy and cost gates remain genuine
+A current repository audit found no compatible same-date full-universe PIT D03/D09 evidence lane that can yet support the required D19-04 paired redundancy test without classification/look-back contamination. D03/D09 redundancy therefore remains BLOCKED rather than being approximated with current labels.
+
+D14 cost evidence still supports date-valid statutory transaction-tax provenance, but owner-specific commission, slippage and turnover/execution semantics remain insufficient for a true net factor-return receipt. A zero-cost engineering placeholder remains prohibited as performance evidence.
+
+### Stage 9 maturity decision
+D19-04 remains L2 / 40%. D19 aggregate remains 40.0%.
+
+This stage did not earn L3 because:
+- TPEx date-vintaged universe + replayable history is still unresolved;
+- the 39 positive-activity/no-OHLC rows remain unresolved price/session semantics;
+- shared corporate-action/symbol-session completeness is not globally certified;
+- PIT industry vintage is unavailable;
+- D03/D09 paired redundancy is not executable on compatible PIT inputs;
+- D14-compatible cost provenance is incomplete.
+
+Formal Core remains LOCKED. No FORMAL_OPTIMIZATION_CANDIDATE.
+
+### Exact next after Stage 9
+1. Freeze a D19-04 valid-observation / symbol-session contract without forward fill and with explicit stale-price handling.
+2. Reconcile the 39 positive-activity/no-OHLC rows against authoritative price/session-type semantics; unresolved observations stay UNKNOWN.
+3. Archive immutable receipt-equivalent source evidence for the six documented stop-trading/event cases.
+4. Build a TPEx date-vintaged universe receipt and source-independent replay from immutable persisted official history or a newly physically validated official source.
+5. Acquire PIT industry classification and run industry neutralization.
+6. Execute D03/D09 paired redundancy controls on the identical frozen universe/date once compatible PIT inputs exist.
+7. Freeze a D14-compatible cost scenario with explicit component quality; owner-account actual commission stays UNKNOWN unless directly evidenced.
+8. Only a deterministic full-Taiwan replay with zero applicable L3 blockers triggers readiness review; no automatic promotion.
