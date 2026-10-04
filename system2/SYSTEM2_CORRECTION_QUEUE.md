@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-04 15:40 Asia/Taipei
+Updated: 2026-10-04 15:58 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -32,10 +32,13 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - affectedScope: S2-03 Historical infrastructure / P0 2017-present TWSE+TPEx daily A1 cold history
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement: System 2 historical infrastructure must physically populate and verify the staged official 2017-present Taiwan-equity daily history before it can be described as complete or used as complete full-market replay evidence.
-- observedProblem: The first manual 2017 TWSE external-cold annual backfill failed closed at historical calendar resolution before annual market-data ingest. The calendar source was subsequently repaired/revalidated, and the checkpoint explicitly required a manual TWSE-only rerun. No later canonical completion receipt is recorded, while subsequent System 2 work continued on other lanes. Current build progress still marks S2-03 yellow and states that full 2017-present cold-history completion remains separate work.
+- observedProblem: The first manual 2017 TWSE external-cold annual backfill failed closed at historical calendar resolution. After the calendar repair, manual run `36574839220` on head `df3c680d94f5b8ec06d474ba1d120e3c2ed60d58` advanced through annual source loading into cold-object persistence, then failed closed on `R2 HEAD failed: HTTP 502`. No canonical 2017 TWSE completion receipt is recorded. The R2 adapter on that run had no bounded retry for transient 5xx/transport failures; DATA_LANE has now hardened that transport path, but the annual backfill still requires a fresh latest-main execution and verification.
 - evidence:
   - SYSTEM2_CHECKPOINT: run 36545375167 failed before annual ingest.
   - SYSTEM2_CHECKPOINT: repaired continuation required manual 2017 TWSE rerun, then TPEx only after TWSE coverage/hash/manifest/receipt verification.
+  - GitHub Actions run `36574839220`: 2017 TWSE reached the cold-object write path and failed on `R2 HEAD failed: HTTP 502`; migrate job passed and no completion receipt was produced.
+  - PR #522 / merge `7d35e8693d8ecfefd2f43fabbdde8b501f585857`: DATA_LANE added bounded R2 retry/backoff for 408/425/429/5xx and transient timeout/network failures while retaining fail-closed integrity and authorization semantics.
+  - System2 Research CI `37187368126` and V8 Regression `37187368095`: SUCCESS.
   - SYSTEM2_BUILD_PROGRESS_MAP: S2-03 remains 🟡; full 2017-present cold history completion remains separate work.
   - SYSTEM2_MVP_SHADOW_STATUS_V0_1: 2017 full-market cold backfill is not claimed complete and staged annual population remains pending.
 - riskIfUnfixed: Historical replay, factor validation, multi-year backtests, regime robustness and strategy comparison can be mistaken for being backed by a complete market history when only bounded/smoke datasets exist. This creates a false-completion and evidence-coverage risk on a P0 dependency.
@@ -60,12 +63,15 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - implementationEvidence:
   - Latest main re-read confirms repaired `system2-historical-pack-2017-backfill.yml` remains manual `workflow_dispatch`, isolated to `system2-research`, with TWSE-first/TPEX-second ordering.
   - Current annual script fast-path verifies an existing COMPLETE receipt and referenced R2 objects before accepting `ALREADY_COMPLETE`; otherwise it fetches official historical A1, builds external cold packs, writes immutable R2 objects/D1 manifests, and issues receipt-last completion.
-  - GitHub connector available to this control room has read/rerun actions but no new `workflow_dispatch` action. Re-running historical run `36545375167` is rejected because it would bind the old run SHA rather than the repaired current main.
-  - Controlled browser profiles currently have no recorded GitHub sign-in, so web dispatch cannot be executed without owner login authorization.
+  - Manual run `36574839220` proved the repaired calendar path reaches R2 persistence; its terminal defect was transient `R2 HEAD failed: HTTP 502`, not calendar/source-schema failure.
+  - PR #522 merged as `7d35e8693d8ecfefd2f43fabbdde8b501f585857`: the R2 adapter now re-signs and performs bounded retries for 408/425/429/5xx and transient fetch timeout/network failures; 404 missing-object, 412 put-if-absent, non-retryable 4xx and immutable hash/manifest checks retain prior semantics.
+  - System2 Research CI run `37187368126` and V8 Regression run `37187368095` both passed.
+  - GitHub connector available to this room has read/rerun actions but no new `workflow_dispatch` action. Re-running run `36574839220` is rejected because it is bound to old head SHA `df3c680d94f5b8ec06d474ba1d120e3c2ed60d58`, before the R2 retry hardening and later schema changes.
+  - Controlled browser profiles currently have no recorded GitHub sign-in, so a fresh latest-main web dispatch still requires owner login authorization.
   - Exact next executable action after GitHub browser sign-in: run `.github/workflows/system2-historical-pack-2017-backfill.yml` from latest `main` with `market=TWSE`, then independently verify receipt/manifests/R2 hashes/coverage before allowing TPEX.
 - verificationEvidence: PENDING
 - finalDisposition: PENDING
-- updatedAt: 2026-10-04T15:28:00+08:00
+- updatedAt: 2026-10-04T15:58:20+08:00
 
 
 ## Closed directives
