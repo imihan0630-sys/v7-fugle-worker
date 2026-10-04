@@ -67,16 +67,23 @@ jobs:
               "華銀":{30:1.225,90:1.285,180:1.435,270:1.545,365:1.700}
           }
           knots={d:sum(b[d] for b in banks.values())/len(banks) for d in [30,90,180,270,365]}
+          cd_knots={7:0.825,28:1.215,91:1.275,182:1.395,364:1.643}
 
-          def rate_for(days):
-              ds=sorted(knots)
-              if days <= ds[0]: return knots[ds[0]]/100
-              if days >= ds[-1]: return knots[ds[-1]]/100
+          def interp_rate(days,curve):
+              ds=sorted(curve)
+              if days <= ds[0]: return curve[ds[0]]/100
+              if days >= ds[-1]: return curve[ds[-1]]/100
               for a,b in zip(ds,ds[1:]):
                   if a <= days <= b:
                       w=(days-a)/(b-a)
-                      return (knots[a]+w*(knots[b]-knots[a]))/100
+                      return (curve[a]+w*(curve[b]-curve[a]))/100
               raise RuntimeError("rate interp")
+
+          def rate_for(days):
+              return interp_rate(days,knots)
+
+          def cd_rate_for(days):
+              return interp_rate(days,cd_knots)
 
           def norm_cdf(x):
               return 0.5*(1+math.erf(x/math.sqrt(2)))
@@ -199,19 +206,24 @@ jobs:
               days=seconds/86400
               T=days/365
               r=rate_for(days)
+              r_cd=cd_rate_for(days)
               F=forwards[exp]
               mid=(bid+ask)/2
               iv,state=implied_vol(mid,F,K,T,r,cp)
+              iv_cd,state_cd=implied_vol(mid,F,K,T,r_cd,cp)
               if iv is None:
                   fails[state]=fails.get(state,0)+1
                   continue
+              if iv_cd is None:
+                  fails["CD_"+state_cd]=fails.get("CD_"+state_cd,0)+1
+                  continue
               x=math.log(K/F)
               rel=(ask-bid)/mid if mid>0 else None
-              expiries.setdefault(exp,{"expiryDate":expiry_date,"F":F,"days":days,"T":T,"r":r,"points":[]})["points"].append({
-                  "K":K,"cp":cp,"mid":mid,"bid":bid,"ask":ask,"relSpread":rel,"iv":iv,"x":x
+              expiries.setdefault(exp,{"expiryDate":expiry_date,"F":F,"days":days,"T":T,"r":r,"rCd":r_cd,"points":[]})["points"].append({
+                  "K":K,"cp":cp,"mid":mid,"bid":bid,"ask":ask,"relSpread":rel,"iv":iv,"ivCd":iv_cd,"x":x
               })
 
-          def features(e,spread_cap=None):
+          def features(e,spread_cap=None,iv_field="iv"):
               pts=e["points"]
               chosen=[]
               byk={}
@@ -226,7 +238,7 @@ jobs:
                   if abs(x)<=0.005:
                       cand=rows
                   if not cand: continue
-                  iv=statistics.median([p["iv"] for p in cand])
+                  iv=statistics.median([p[iv_field] for p in cand])
                   rel=statistics.median([p["relSpread"] for p in cand])
                   chosen.append((x,iv,rel,K))
               xy=[(x,iv) for x,iv,_,_ in chosen]
@@ -274,6 +286,12 @@ jobs:
                   "interpolation":"piecewise linear in quoted annual percent by calendar days; <=30d flat 1m; >=365d flat 1y",
                   "discount":"exp(-r*T), ACT/365 research proxy"
               },
+              "sensitivityRateConvention":{
+                  "source":"CBC central-bank CD issuance-rate tenor anchors published before 2026-10-02",
+                  "pctByCalendarTenorDays":cd_knots,
+                  "role":"SENSITIVITY_ONLY because issuance dates/mechanisms are asynchronous across tenors",
+                  "interpolation":"piecewise linear in quoted annual percent by calendar days"
+              },
               "forwardConvention":"same-expiry TX regular-session final best-bid/ask midpoint",
               "ivModel":"Black-76 European option on futures forward",
               "surfaceWindow":"combined OTM smile, abs(log(K/F))<=0.10; ATM abs(log(K/F))<=0.01",
@@ -285,11 +303,13 @@ jobs:
           for exp,e in sorted(expiries.items()):
               output["expiries"][exp]={
                   "expiryDate":e["expiryDate"],"forward":e["F"],
-                  "calendarDays":e["days"],"ratePct":e["r"]*100,
+                  "calendarDays":e["days"],"ratePct":e["r"]*100,"sensitivityCdRatePct":e["rCd"]*100,
                   "rawSolvedPointCount":len(e["points"]),
                   "allEligible":features(e,None),
                   "spreadLe25pct":features(e,0.25),
-                  "spreadLe10pct":features(e,0.10)
+                  "spreadLe10pct":features(e,0.10),
+                  "cdSensitivityAllEligible":features(e,None,"ivCd"),
+                  "cdSensitivitySpreadLe10pct":features(e,0.10,"ivCd")
               }
 
           print("ROOM09_D12_IV_SURFACE_JSON="+json.dumps(output,ensure_ascii=False,separators=(",",":")))
