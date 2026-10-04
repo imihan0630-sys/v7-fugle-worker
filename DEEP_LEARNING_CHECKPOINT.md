@@ -1756,3 +1756,12 @@ Status: D21-12_L3 / D21-13_L2 / RESEARCH_ONLY / FORMAL_CORE_UNCHANGED
 - First genuine post-V8.17 Taiwan parent remains pending because 2026-10-04 is Sunday.
 - D03-10 Bollinger stays L2/40; D03-09 ADX stays L2/40; raw source-version gate stays 2/3; TI-005/TI-006 outcomes remain closed.
 - Exact next: inspect and freeze the parent-to-continuity receipt binding envelope so Monday cannot substitute a continuity receipt from another parent/generation/symbol/window; then use the first genuine parent for Bollinger v0.2, followed by ADX v0.2 FULL_REPLAY.
+
+
+## 2026-10-04 D03 — TI-631~635 parent continuity binding
+
+- Added immutable parent×continuity binding instead of duplicating shared continuity facts into each parent.
+- Binding hashes the exact scanDate/captureGeneration/symbol/parentSnapshotHash/parent knownAt plus continuity identity/version/asOf/capturedAt/source and transform hashes/date-set hashes/sourceBarsThrough.
+- Physical read-only run 37185221432 PASS: cross-generation identity differs; wrong asOf, late capture, date-set mismatch and future-bar contamination all fail closed; correctly bound Bollinger/ADX v0.2 remain VALID.
+- This closes join-identity design risk only. D03 stays 56.7%; D03-09/10 stay L2; first genuine post-V8.17 parent pending.
+- Exact next: audit the real pre-parent clock envelope; continuity capture must exist no later than parent knownAt, and parent availability alone is insufficient.
