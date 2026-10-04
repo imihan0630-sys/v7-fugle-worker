@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "D20_13_FIRST_LIVE_TWSE_BORROW_CONSTRAINT_CAPTURE_V0_1",
+  "frozenAtAsiaTaipei": "2026-10-04T11:40:09+08:00",
+  "module": "D20-13",
+  "status": "OUTCOME_BLIND_SOURCE_CAPTURE_PROTOCOL_FROZEN / NO_L3_PROMOTION_YET",
+  "sourceSession": {
+    "authority": "TWSE",
+    "securitiesLendingServiceHours": "09:00-15:30 Asia/Taipei",
+    "firstEligibleDate": "NEXT_GENUINE_TAIWAN_TRADING_DAY_AFTER_FREEZE"
+  },
+  "fixedCaptureSlots": [
+    {
+      "target": "09:15",
+      "toleranceMinutes": 5,
+      "label": "EARLY_SBL_SESSION"
+    },
+    {
+      "target": "12:00",
+      "toleranceMinutes": 5,
+      "label": "MID_SBL_SESSION"
+    },
+    {
+      "target": "15:20",
+      "toleranceMinutes": 5,
+      "label": "LATE_SBL_SESSION"
+    }
+  ],
+  "missingRule": "If an authorized official-source capture cannot be obtained inside a frozen slot window, record MISSING/UNKNOWN for that slot. Do not substitute a later snapshot.",
+  "securityPopulation": {
+    "rule": "Pre-freeze deterministic broad eligible common-stock population or exact parent keyset from the canonical Taiwan universe; no symbol selection after viewing rate/depth.",
+    "exclude": [
+      "ETF",
+      "warrant",
+      "preferred/non-common unless separately specified",
+      "ineligible/suspended SBL securities"
+    ]
+  },
+  "requiredFields": [
+    "captureSlot",
+    "security",
+    "transactionType",
+    "recallNotificationTerm_or_UNKNOWN",
+    "fixedRate_or_NULL",
+    "executedRate_or_NULL",
+    "executedQty_or_NULL",
+    "executedTotalQty_or_NULL",
+    "unexecutedLendQty_or_NULL",
+    "unexecutedBorrowQty_or_NULL",
+    "best5LendQtyRate_or_NULL",
+    "best5BorrowQtyRate_or_NULL",
+    "totalLendQty_or_NULL",
+    "totalBorrowQty_or_NULL",
+    "requestedAt",
+    "capturedAt",
+    "sourceDate",
+    "sourceUrl",
+    "contentHash",
+    "ruleVintage",
+    "schemaVersion"
+  ],
+  "interpretation": {
+    "allowed": "DISPLAYED_TWSE_BORROW_SCARCITY_AND_COST_STATE",
+    "forbidden": [
+      "TRUE_UTILIZATION",
+      "TOTAL_LENDABLE_INVENTORY",
+      "BEARISH_SIGNAL",
+      "WHOLE_TAIWAN_LENDING_MARKET"
+    ]
+  },
+  "firstReceiptPassCriteria": [
+    "official source authority proven",
+    "capture timestamp within frozen slot tolerance",
+    "transaction type preserved",
+    "rate/depth semantics match official rule contract",
+    "content hash/source provenance stored",
+    "missing values remain UNKNOWN",
+    "no future return/outcome field in source receipt"
+  ],
+  "l3DecisionRule": "After at least one genuine trading-day slot yields a receipt meeting all pass criteria, Room13 may reassess a bounded TWSE-only D20-13 L3 promotion. Upstream D06-18 ownership and anti-double-count remain binding.",
+  "outcomesLocked": true,
+  "formalCore": "LOCKED"
+}
