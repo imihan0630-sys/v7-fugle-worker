@@ -866,3 +866,27 @@ Current clean prospective date count is zero and Gate 7 is CLOSED.
 
 No economic hypothesis is SUPPORTED or REJECTED from this round.
 No FORMAL_OPTIMIZATION_CANDIDATE.
+
+## Pre-PVE-240 Wave-1 executable gate overlay — 2026-10-04
+
+H001 / D02-02:
+primary C-vs-B admission is now machine-checkable.
+No outcome status change.
+
+H20 / D02-03:
+D01-05 remains the only primitive breakout-event owner.
+Event-identity mismatch fails closed.
+No outcome status change.
+
+H003 / D02-06:
+PRICE_PLUS_VOLUME_RESPONSE vs PRICE_ONLY_RESPONSE remains the primary contrast.
+Outcome must begin strictly after the feature bar/first-known clock.
+PRE_EVENT_ONLY_EXPIRY remains QA-only.
+No outcome status change.
+
+Maturity rule:
+DESCRIPTIVE_ONLY != L4_EVIDENCE_ELIGIBLE != L4_PROMOTION_REVIEW.
+
+No hypothesis is supported/rejected from economic outcomes in this stage.
+Gate 7 remains CLOSED.
+No FORMAL_OPTIMIZATION_CANDIDATE.
