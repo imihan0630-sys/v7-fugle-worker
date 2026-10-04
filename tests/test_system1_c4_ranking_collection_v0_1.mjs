@@ -63,6 +63,10 @@ assert.equal(collectC4RankingRedundancyEvidence({pages:pagesFor(incomplete)}).st
 const changed=pagesFor();changed[1].header.shadowMembershipCapture={...marker,selectionRuleVersion:'changed'};
 assert.equal(collectC4RankingRedundancyEvidence({pages:changed}).status,'DATA_QUALITY_BLOCKED');
 
+const modernMissing=collectC4RankingRedundancyEvidence({pages:pagesFor(rows,{shadowMembershipCapture:null})});
+assert.equal(modernMissing.status,'DATA_QUALITY_BLOCKED');
+assert.equal(modernMissing.error,'C4_RANKING_CAPTURE_MISSING_ON_V8_17_PLUS');
+
 const legacy=pagesFor(rows,{effectiveRuntimeVersion:'8.16.0-zero-pick-prospective-capture',shadowMembershipCapture:null});
 const old=collectC4RankingRedundancyEvidence({pages:legacy});
 assert.equal(old.status,'LEGACY_NO_C4_RANKING_INPUT');
