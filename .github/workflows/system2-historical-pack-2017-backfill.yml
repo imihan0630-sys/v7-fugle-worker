@@ -74,14 +74,15 @@ jobs:
           set -euo pipefail
           node system2/scripts/historical_market_year_verify_v0_1.mjs | tee /tmp/system2-historical-coverage-TWSE-2017.log
       - name: Upload 2017 TWSE physical coverage evidence
-        if: ${{ inputs.market == 'TWSE' }}
+        if: ${{ always() && inputs.market == 'TWSE' }}
         uses: actions/upload-artifact@v4
         with:
           name: system2-historical-coverage-TWSE-2017
           path: /tmp/system2-historical-coverage-TWSE-2017.json
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 30
       - name: Confirm System1 production files untouched
+        if: ${{ always() }}
         run: |
           set -euo pipefail
           test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
