@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T09:54:00+08:00",
+  "updatedAt": "2026-10-04T10:14:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1928,9 +1928,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Greeks：Delta／Gamma／Vega／Theta」。學習範圍：衍生品研究必須凍結合約、到期、履約價、DTE、價格／IV時計與流動性語意；研究 Greeks、IV-RV、VRP與波動率曲面時必須包含正向機制、反證、PIT、可重播、交易成本、稀疏報價／插值風險、與既有VIX／Skew／Gamma資訊的冗餘及增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2 / OFFICIAL_TAIFEX_DAILY_DELTA_CLOCK_SEMANTICS_FROZEN / 1810_NEXT_SESSION_FEASIBILITY_IDENTIFIED / STRICT_RAW_PIT_RECEIPT_PENDING / OUTCOMES_CLOSED",
-          "next": "Audit permitted TAIFEX historical/statistical option-chain source for parser/surface QA, freeze surface method/quality receipts, then accumulate source-attested independent dates before L3.",
-          "evidence": "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json plus DERIVATIVES_VOLATILITY_RESEARCH.md DR-051..DR-059 reconcile pre-existing Gamma/VIX/VRP/surface work into the expanded D12 curriculum. No L3: strict Taiwan option-chain/surface prospective receipts and OOS evidence remain absent.\n2026-10-03: research/d12_13_taifex_daily_delta_clock_semantics_v0_1.json freezes 06:45 same-day vs 14:30/16:30 next-business-day Delta semantics. 2026-10-02 official file generation 16:39:28 is pre-18:10 but historical retrieval is not strict source attestation."
+          "status": "L2 / OFFICIAL_TAIFEX_DAILY_DELTA_CLOCK_SEMANTICS_FROZEN / AFTERNOON_VERSION_NEXT_BUSINESS_DAY / DEALER_GEX_NOT_IDENTIFIED / STRICT_RAW_PIT_RECEIPT_PENDING / OUTCOMES_CLOSED",
+          "next": "Acquire permitted raw TAIFEX option-chain parent for parser/schema replay QA; keep historical replay separate from live first-known; do not infer signed dealer GEX from aggregate participant OI.",
+          "evidence": "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json plus DERIVATIVES_VOLATILITY_RESEARCH.md DR-051..DR-059 reconcile pre-existing Gamma/VIX/VRP/surface work into the expanded D12 curriculum. No L3: strict Taiwan option-chain/surface prospective receipts and OOS evidence remain absent.\n2026-10-03: research/d12_13_taifex_daily_delta_clock_semantics_v0_1.json freezes 06:45 same-day vs 14:30/16:30 next-business-day Delta semantics. 2026-10-02 official file generation 16:39:28 is pre-18:10 but historical retrieval is not strict source attestation.\n2026-10-04: research/d12_d13_source_lineage_deepening_20261004_v0_1.md MC-149..151 confirms afternoon Delta effective-date firewall, dealer-GEX identifiability boundary and historical replay-vs-first-known separation."
         },
         {
           "id": "D12-14",
@@ -2136,9 +2136,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Central-bank Balance Sheet／System Liquidity央行資產負債表與系統流動性」。研究財政、貨幣、金融條件、央行流動性與地緣／資金流傳導。需區分政策決策、預期差、實際流動性與市場價格反應，避免把單一宏觀指標當成機械式股價方向。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "CONCEPT_AND_FALSIFICATION_FROZEN / BALANCE_SHEET_RESERVE_TGA_RRP_SEPARATION / NET_LIQUIDITY_HEURISTIC_FIREWALL / TAIWAN_PIT_INCREMENTAL_EVIDENCE_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
-          "next": "Capture official H.4.1 vintages source-only and decompose reserve/TGA/RRP/currency flows; continue D13-17 after exact event/flow clocks; no net-liquidity score.",
-          "evidence": "research/d13_16_central_bank_liquidity_spec_v0_1.json + MACRO_CROSS_MARKET_RESEARCH.md MC-107..MC-112: Fed asset stock != reserve balances; TGA/RRP/currency liability mechanics, ample-reserves regime, H.4.1 decomposition, Taiwan transmission and redundancy gates frozen."
+          "status": "CONCEPT_AND_FALSIFICATION_FROZEN / H41_WEEK_AVERAGE_VS_WEDNESDAY_STOCK_IDENTITY / BALANCE_SHEET_RESERVE_TGA_RRP_SEPARATION / TAIWAN_PIT_INCREMENTAL_EVIDENCE_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "next": "Archive future H.4.1 series-specific vintages with series ID, statistic/frequency, reference date and release date; compare component vector after UST/USD/volatility baselines; no net-liquidity score.",
+          "evidence": "research/d13_16_central_bank_liquidity_spec_v0_1.json + MACRO_CROSS_MARKET_RESEARCH.md MC-107..MC-112: Fed asset stock != reserve balances; TGA/RRP/currency liability mechanics, ample-reserves regime, H.4.1 decomposition, Taiwan transmission and redundancy gates frozen.\n2026-10-04: research/d12_d13_source_lineage_deepening_20261004_v0_1.md MC-154 strengthens week-average vs Wednesday-level firewall using official H.4.1/DDP identities."
         },
         {
           "id": "D13-17",
@@ -2147,9 +2147,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Trade／Geopolitical Risk／Capital-flow Transmission貿易地緣風險與資金流傳導」。研究財政、貨幣、金融條件、央行流動性與地緣／資金流傳導。需區分政策決策、預期差、實際流動性與市場價格反應，避免把單一宏觀指標當成機械式股價方向。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "CONCEPT_AND_FALSIFICATION_FROZEN / POLICY_LEGAL_FLOW_CLOCKS_SEPARATED / CAPITAL_FLOW_OBJECTS_SEPARATED / PIT_MULTI_EVENT_EVIDENCE_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
-          "next": "Preserve one official policy-event lineage and one eligible TWSE 18:10 foreign-flow version source-only; keep CBC BOP/TIC structural and build D13->D10/D07 exposure bridge only with versioned provenance.",
-          "evidence": "research/d13_17_trade_geopolitical_capitalflow_spec_v0_1.json + research/d13_17_event_flow_clock_schema_v0_1.json + MACRO_CROSS_MARKET_RESEARCH.md MC-113..MC-123. Tariff/export-control/sanctions clocks, GPR threat/act, TWSE-vs-BOP-vs-TIC flow semantics, fragmentation/diversion and falsification frozen."
+          "status": "CONCEPT_AND_FALSIFICATION_FROZEN / POLICY_DECISION_EFFECTIVE_CLOCKS_SEPARATED / BOP_VS_TWSE_FLOW_POPULATION_SEPARATED / PIT_MULTI_EVENT_EVIDENCE_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "next": "Prospectively preserve CBC 2026-11-20 16:20 BOP vintage if available; build CBC announcement/decision/effective lineage; capture eligible TWSE foreign-flow response by 18:10 with raw source provenance.",
+          "evidence": "research/d13_17_trade_geopolitical_capitalflow_spec_v0_1.json + research/d13_17_event_flow_clock_schema_v0_1.json + MACRO_CROSS_MARKET_RESEARCH.md MC-113..MC-123. Tariff/export-control/sanctions clocks, GPR threat/act, TWSE-vs-BOP-vs-TIC flow semantics, fragmentation/diversion and falsification frozen.\n2026-10-04: research/d12_d13_source_lineage_deepening_20261004_v0_1.md MC-152/153/156 freezes quarterly BOP vs daily TWSE population boundary and CBC decision-vs-effective clocks."
         },
         {
           "id": "D13-18",
