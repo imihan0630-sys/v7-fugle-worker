@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "generatedAt": "2026-10-05T07:18:00+08:00",
+  "generatedAt": "2026-10-05T07:16:47+08:00",
   "owner": "08｜事件與新聞研究室",
   "module": "D17-06",
   "title": "Expectation versus Surprise Taiwan PIT feasibility across expectation-source classes",
@@ -82,5 +82,9 @@
     "Preregister any numeric surprise function by event family.",
     "Collect genuinely unexpected realizations and failed/delayed/cancelled scenarios rather than only modal-success cases.",
     "Test incremental value only after common-support controls for event class, D17-07 expectation evidence state and D11 event identity."
-  ]
+  ],
+  "timestampCorrection": {
+    "correctedAt": "2026-10-05T07:29:11+08:00",
+    "reason": "Align generatedAt with the actual GitHub commit creation time; remove manually projected future timestamp."
+  }
 }
