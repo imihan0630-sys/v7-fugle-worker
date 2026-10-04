@@ -127,3 +127,18 @@
 - 外部證據擴充（如 V8.7.11 的 TPEx 月營收、TWSE 實際 SBL 賣出）不自動形成新 experiment；若未來要測 5/20/60 日 shorting-flow 或營收 persistence 門檻，必須另行預註冊，不能從 raw metadata 直接挑窗口。
 - Shadow 標的不監控、不配資金、不推播、不交易。
 - 研究結果不得自動修改 Formal core；正式核心升級仍需獨立版本、OOS、purged holdout、冗餘檢查與人工策略審查。
+
+
+## D16-CAL-01｜C1 前瞻機率校準：基準率 vs 優先分數
+- 狀態：PREREGISTERED_BEFORE_FIRST_GENUINE_C1_OUTCOME / RESEARCH_ONLY。
+- 正式詳細規格：`research/D16_19_25_C1_PROBABILITY_PREREG_20261005_V0_1.md`。
+- 母體：真正前瞻、不可變 C1 完整母體中的正式 qualified rows；必須有 `actualRankingTuple.priorityScore`。不得只用 SELECTED／Top6 或 bounded Shadow 樣本。
+- 主要目標：`D16_C1_D5_REFERENCE_CLOSE_POSITIVE_V0_1`；精確第五個後續官方交易日收盤高於決策日 reference close 為 1，否則為 0；交易日／symbol continuity／corporate-action 語意不能證明則 UNKNOWN。
+- 基準臂：`C1_D5_BASE_RATE_BETA11_V0_1`，Beta(1,1) 起始，只用當次決策前已成熟標籤。
+- 挑戰臂：`C1_D5_PRIORITY_LOGISTIC_MONOTONE_V0_1`，唯一 predictor 是 `actualRankingTuple.priorityScore`；training-only 標準化，一維 logistic，斜率非負，不搜尋其他排名欄位、Regime 或窗口。
+- 冷啟動：少於 20 個獨立成熟 scan dates 僅允許 base-rate；20～39 日可進 exploratory prospective score fitting；primary validation 需至少 40 個有效獨立日期並通過 D16-06 dependence / episode / dominance gates。
+- Primary OOS estimand：每個 scanDate 內先算 Brier／log-loss，再以等日期權重比較 challenger−base-rate；row-weighted 指標只作描述。
+- 雙分母：完整 C1 母體 coverage、prediction-frozen coverage、matured-label coverage 必須分開；結果成熟不得改寫 frozen prediction。
+- 反證：挑戰臂在 untouched chronological OOS 無法優於 base-rate、斜率反覆歸零、效果只存在 row-weighted 或單一日期／episode、或需事後換 target／score／window，皆不得宣稱校準增益。
+- 禁止：在 V0.1 加入 rewardPerRisk、marketConsensusScore、setupQuality、sectorFlow、relativeStrength、Regime、isotonic／Beta／多特徵模型；任何新增皆另立 experiment/version 並計入 multiple-testing family。
+- Formal Core：LOCKED；System 1／System 2 決策不受影響；D16-19、D16-25 成熟度不因預註冊而提高。
