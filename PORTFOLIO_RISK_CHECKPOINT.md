@@ -336,3 +336,23 @@ Status:
 `POOL_IDENTITY_PIT_VALIDATED / BOTH_POOLS_SAMPLE_ZERO / CROSS_POOL_DIVERSIFICATION_UNKNOWN / D15_15_L3`.
 
 Formal Core unchanged. No `FORMAL_OPTIMIZATION_CANDIDATE`.
+
+
+## 00 routed H03 exact remaining delta — 2026-10-04
+
+H03 state:
+`PARTIAL_EVIDENCE_RECEIVED / D15_24_VAR_SUBSCOPE_PENDING`.
+
+Accepted:
+- D15-13 Expected Shortfall / Tail Risk semantic side, L2/40%.
+
+Room10 remaining D15-24 work:
+1. freeze portfolio, horizon, confidence-level and P/L-distribution identity;
+2. define parametric VaR, historical VaR and any simulation assumptions;
+3. preserve VaR tail-blindness, model/distribution sensitivity and non-subadditivity counterexamples where applicable;
+4. distinguish VaR quantile from ES tail conditional loss;
+5. keep D16-23 stress testing separate;
+6. decide whether VaR is only a child method under D15-13 or owns a distinct policy/runtime contract;
+7. return MERGE_ELIGIBLE / KEEP_SEPARATE / EVIDENCE_INSUFFICIENT plus merged maturity map.
+
+D15-24 remains L0/0 until its own mechanism/falsification contract exists.
