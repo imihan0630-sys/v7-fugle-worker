@@ -7,7 +7,7 @@ function row({symbol,pool='GENERAL',ord,setup,sector,inst,fund,rs,rr,bonus=0,con
  const rsComp=clamp(50+rs*2,0,100),rrComp=clamp(rr*20,0,100);
  const pre=round(clamp(setup*.28+sector*.14+inst*.16+fund*.14+rsComp*.14+rrComp*.14,0,100),1);
  const post=round(clamp(pre+bonus,0,100),1);
- const tuple={priorityScore:post,rewardPerRisk:rr,marketConsensusScore:consensusScore,setupQuality:setup,sectorFlow:sector,relativeStrength:rs,preSortOrdinal:ord};
+ const tuple={priorityScore:post,rewardPerRisk:rr,marketConsensusScore:consensusScore,setupQuality:setup,sectorFlow:round(sector,1),relativeStrength:round(rs,1),preSortOrdinal:ord};
  const rankInput={schemaVersion:'SYSTEM1_ZERO_PICK_COUNTERFACTUAL_RANK_INPUT_V0_1',scanDate:day,symbol,pool,captureGeneration:gen,decisionAt,
    rankingTupleKnownAt:decisionAt,rankComparatorVersion:'PRIORITY_RR_CONSENSUS_SETUP_SECTOR_RS_7_5_30',preSortOrdinal:ord,
    postConsensusPriorityScore:post,rewardPerRisk:rr,marketConsensusScore:consensusScore,setupQuality:setup,sectorFlow:sector,relativeStrength:rs,
@@ -60,6 +60,16 @@ const poolRows=[
 ];
 let c=buildSystem1C4RankingRedundancyAudit(receipt(poolRows));
 assert.deepEqual(c.baselineSelectedSymbols.sort(),['G1','G2','G3','K1'].sort());
+
+
+// Raw decomposition inputs may carry more precision than the one-decimal deployed comparator fields.
+const roundingRows=[
+ row({symbol:'R1',ord:0,setup:91.25,sector:80.04,inst:77.3,fund:66.2,rs:3.27,rr:3.14,selected:true}),
+ row({symbol:'R2',ord:1,setup:88.15,sector:79.96,inst:76.1,fund:65.7,rs:2.84,rr:3.05,selected:true})
+];
+let roundingAudit=buildSystem1C4RankingRedundancyAudit(receipt(roundingRows));
+assert.equal(roundingAudit.baselineSelectionParity,true);
+assert.equal(roundingAudit.qualifiedN,2);
 
 const bad=structuredClone(receipt(baseRows));bad.rows[0].formalResult.actualRankingTuple.priorityScore+=0.1;
 assert.throws(()=>buildSystem1C4RankingRedundancyAudit(bad),/ACTUAL_COUNTERFACTUAL_TUPLE_DIVERGENCE_PRIORITYSCORE/);
