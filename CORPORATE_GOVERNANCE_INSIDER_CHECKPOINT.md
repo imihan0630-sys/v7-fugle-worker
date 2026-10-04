@@ -1,8 +1,8 @@
 # Corporate Governance / Insider Checkpoint
 
-Updated: 2026-10-04 19:18 Asia/Taipei
+Updated: 2026-10-04 19:24 Asia/Taipei
 Scope: D21｜公司治理／經營者／內部人／控制權品質
-Status: D21-01 L2 / D21-02 L3 / D21-03 L2 / D21-04 L2 / D21-05 L3 / D21-07 L3 / D21-09 L3 / D21-10 L3 / D21-11 L2 PARTIAL_REPLAY / D21-12 L3 / D21-13 L3 / FORMAL_CORE_UNCHANGED
+Status: D21-01 L2 / D21-02 L3 / D21-03 L2 / D21-04 L2 / D21-05 L3 / D21-07 L3 / D21-09 L3 / D21-10 L3 / D21-11 L3 / D21-12 L3 / D21-13 L3 / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - Canonical continuation checkpoint for D21.
@@ -330,5 +330,28 @@ Do not repeat D21-07 ownership work unless contradictory evidence appears.
 2. Then D21-04 authoritative pledge setup/release receipts.
 3. Then D21-03 original monthly insider known_at and D21-01 original ownership-report known_at.
 4. All L3 modules require OOS/prospective evidence before L4; no theory-only promotion.
+
+Formal Core impact: NONE.
+
+
+## 2026-10-04 evening D21-11 durable continuation
+
+### D21-11 decision-time state replay
+- Formosa Oilseed Processing 1225 provides a reproducible public-evidence state transition.
+- 2020-02-07 issuer correction disclosed that the 2019 Q3 financial statements had omitted a related-party relationship and stock transactions: 1.523m Hsin Tai shares bought on 2019-08-12/14 for NT$43.338m from a first-degree relative of the then vice chairman.
+- At that date the correct state is AMBIGUOUS / ELEVATED_GOVERNANCE_CONCERN, not confirmed tunneling.
+- 2020-11-05 Taichung District Prosecutors Office publicly alleged controller/beneficiary linkage, use of company funds to purchase nominee-held related shares, irregular transactions totaling NT$92.32935m, concealment of the related-party nature, false financial reporting and about NT$20.175m company loss.
+- At that date the correct state becomes HIGH_SUSPICION, not yet CONFIRMED_TUNNELING.
+- Later final adjudication may create CONFIRMED_TUNNELING only from its own public known_at onward.
+- Date-only public evidence is not treated as an intraday timestamp. If exact publication time is unavailable, first safe daily eligibility is the next trading day unless same-day-before-decision publication is independently proven.
+- Combined with the prior confirmed-case semantics and the Yuanta justified-RPT control case, the classifier now supports UNKNOWN / AMBIGUOUS / HIGH_SUSPICION / CONFIRMED and non-tunneling control outcomes without mechanically copying RPT size.
+- D21-11 advances L2 -> L3 / 60%.
+- L4 remains closed pending OOS/prospective incremental validation and redundancy tests versus D21-01/04/05, D07 and D11.
+
+## Exact next continuation
+1. D21-04 authoritative pledge setup/release receipts or another original-source pledge pair.
+2. D21-03 authoritative monthly insider known_at plus a second transfer-motive case.
+3. D21-01 authoritative ownership-report receipt / first-known time.
+4. All L3 modules remain locked below L4 without OOS/prospective evidence.
 
 Formal Core impact: NONE.
