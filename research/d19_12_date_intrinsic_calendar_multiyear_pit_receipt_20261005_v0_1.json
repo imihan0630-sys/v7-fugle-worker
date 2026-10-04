@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "D19_12_DATE_INTRINSIC_CALENDAR_MULTIYEAR_PIT_RECEIPT_V0_1",
+  "capturedAt": "2026-10-05T05:37:00+08:00",
+  "module": "D19-12",
+  "mode": "BOUNDED_TWSE_DATE_INTRINSIC_MULTIYEAR_PIT_ROBUSTNESS / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "scope": {
+    "market": "TWSE",
+    "physicalEvidenceYears": [2017, 2018],
+    "validatedStates": ["WEEKDAY", "MONTH_OF_YEAR"]
+  },
+  "evidence": [
+    {"year": 2017, "officialTradingDates": 246, "freshOfficialRowCount": 222194, "coldRowCount": 222194, "sourceRowHashMismatchCount": 0},
+    {"year": 2018, "path": "system2/evidence/S2_HISTORICAL_TWSE_2018_PHYSICAL_VERIFICATION_V0_1.json", "contentSha": "8c8df27ba9efb73dc4dea7c172c9e318f4fe265c", "workflowRun": 37211022004, "artifactId": 11307491716, "officialTradingDates": 247, "freshOfficialRowCount": 227381, "coldRowCount": 227381, "missingFromColdCount": 0, "extraVsFreshOfficialCount": 0, "sourceRowHashMismatchCount": 0}
+  ],
+  "pitFirewall": [
+    "No future trading date is required for WEEKDAY or MONTH_OF_YEAR.",
+    "No return outcome, alpha sign, threshold or score is opened.",
+    "2018 symbol-session UNKNOWN gaps do not alter the official trading-date set used for date-intrinsic labels."
+  ],
+  "falsification": [
+    "Two replayable calendar years prove state reproducibility, not anomaly profitability.",
+    "Calendar-return effects may decay, reverse or be sample-dependent.",
+    "Multiple weekday/month hypotheses create false-discovery risk."
+  ],
+  "maturityDecision": {
+    "D19-12": "KEEP_L3_60_STRENGTHEN_ROBUSTNESS_NO_PROMOTION",
+    "reason": "Independent 2018 official physical evidence strengthens deterministic date-intrinsic replay, but no OOS/prospective cost-adjusted outcome evidence exists for L4."
+  },
+  "status": "MULTIYEAR_DATE_INTRINSIC_TWSE_PIT_ROBUSTNESS_PASS / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
