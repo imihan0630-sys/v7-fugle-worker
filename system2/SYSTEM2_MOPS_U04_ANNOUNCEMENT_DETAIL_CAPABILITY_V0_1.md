@@ -47,6 +47,8 @@ The first direct-current-host attempt returned HTTP 200 but the 800-byte MOPS se
 
 This failure is preserved rather than hidden. The revised probe now treats a complete all-transport block as valid negative transport characterization while keeping every downstream authority flag false.
 
+Transport handling is fail-closed and non-crashing: curl exit errors are retained as evidence, each transport gets bounded retries, and browser-like request headers are used only to test ordinary public-page reachability. A transport retry never upgrades evidence by itself; only an official response containing the frozen symbol/company/subject/revision semantics can set `detailCapabilityObserved=true`.
+
 ## What a PASS would prove
 
 A PASS proves only that:
