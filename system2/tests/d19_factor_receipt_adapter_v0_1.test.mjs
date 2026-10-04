@@ -256,6 +256,7 @@ const replayA = await buildD19ReplayReceiptV0_1({
   costReceipt: modeledCost,
   outputHash: "D19-04-SMOKE-OUTPUT",
   codeVersion: D19_FACTOR_RECEIPT_VERSION_V0_1,
+  eligibilityBlockers: ["SYNTHETIC_FIXTURE_NOT_L3_EVIDENCE"],
   capturedAt: capturedAtA,
 });
 const replayB = await buildD19ReplayReceiptV0_1({
@@ -271,10 +272,13 @@ const replayB = await buildD19ReplayReceiptV0_1({
   costReceipt: modeledCost,
   outputHash: "D19-04-SMOKE-OUTPUT",
   codeVersion: D19_FACTOR_RECEIPT_VERSION_V0_1,
+  eligibilityBlockers: ["SYNTHETIC_FIXTURE_NOT_L3_EVIDENCE"],
   capturedAt: capturedAtB,
 });
 assert.equal(replayA.state, "READY");
-assert.equal(replayA.l3DataFeasibilityEligible, true);
+assert.equal(replayA.receiptChainComplete, true);
+assert.equal(replayA.l3DataFeasibilityEligible, false);
+assert.deepEqual(replayA.eligibilityBlockers, ["SYNTHETIC_FIXTURE_NOT_L3_EVIDENCE"]);
 assert.equal(replayA.receiptHash, replayB.receiptHash);
 assert.equal(replayA.formalSelectionAuthorized, false);
 assert.equal(replayA.productionImpact, false);
@@ -306,6 +310,7 @@ const changedReplay = await buildD19ReplayReceiptV0_1({
   costReceipt: modeledCost,
   outputHash: "D19-04-SMOKE-OUTPUT",
   codeVersion: D19_FACTOR_RECEIPT_VERSION_V0_1,
+  eligibilityBlockers: ["SYNTHETIC_FIXTURE_NOT_L3_EVIDENCE"],
   capturedAt: capturedAtA,
 });
 assert.notEqual(changedReplay.receiptHash, replayA.receiptHash);
