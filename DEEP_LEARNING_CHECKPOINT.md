@@ -1934,3 +1934,33 @@ Do not idle if one source remains blocked; try the next executable source path. 
 - Minimum owner runtime patch: stamp cutoff after the final `V7_MARKET_CONSENSUS` read and before synchronous selector; pass exact value into selector/C1 builder; enforce cutoff <= decisionAt; persist/read back via existing header; no provider call; no Formal behavior change; no historical backfill.
 - This narrows implementation risk but does not create genuine session evidence, so D03 maturity remains 56.7%.
 - Exact next: shared System1 parent owner implements under Production governance, then first genuine post-deploy session readback + cutoff-safe continuity binding + complete Bollinger v0.2 parent reconciliation; ADX only after canonical FULL_REPLAY.
+
+
+## DL-D21-20261004-H — conservative PIT bound / source-gate audit
+Run date: 2026-10-04 Asia/Taipei
+Scope: D21-01 / D21-03 / D21-04
+Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
+
+### D21-01 conservative daily PIT
+- Exact first-public timestamp is preferred but not required for daily replay when regulation provides an authoritative latest-publication bound.
+- Historical 2024-08-01 annual-report rule: listed/OTC issuers with paid-in capital >=NT$2bn or foreign/PRC holdings >=30% had to file annual report 14 days before AGM.
+- TSMC 2025 AGM 2025-06-03 -> latest filing 2025-05-20 -> safe daily use 2025-05-21.
+- Formosa Plastics 2025 AGM 2025-06-11 -> latest filing 2025-05-28 -> safe daily use 2025-05-29.
+- Statutory-bound timing is a conservative lower-freshness fallback, not exact known_at; intraday use is prohibited.
+- D21-01 advances L2 -> L3 / 60%.
+
+### D21-04 source-gate audit
+- Official rules confirm pledge setup/release filing within 5 days and monthly aggregation.
+- This can support conservative daily known-at only after an authoritative underlying pledge-event date is established.
+- Current 2850/Shinkong Textile individual pledge event dates remain secondary-source only; no L3 promotion.
+
+### D21-03 motive-diversity audit
+- Hon Hai 2019 trust-transfer rows establish a clear non-directional event family.
+- FSC official publication corroborates the 2019-04-19 holder/date/amount; secondary market archives supply the trust method and receiving trust account.
+- Pre-transfer trust evidence does not solve the monthly actual-holding-change known_at requirement.
+- D21-03 remains L2 / 40%.
+
+### Exact next continuation
+1. D21-03: recover authoritative monthly holding-change content or another official source allowing a conservative next-day safe bound.
+2. D21-04: recover authoritative historical pledge event dates/receipts or switch to an issuer with official pledge event archives.
+3. No L4 promotion for any L3 module without OOS/prospective evidence.
