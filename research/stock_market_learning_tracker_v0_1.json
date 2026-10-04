@@ -1527,8 +1527,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「供應鏈Lead-Lag領先落後」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "SIX_STEEL_VINTAGES / PREFROZEN_1M_2M_3M_REPLAY / 1M_3_OF_5 / 2M_2_OF_4 / 3M_1_OF_3 / ELECTRONICS_CROSS_CHAIN_FALSIFICATION / GENERIC_FIXED_LAG_NOT_VALIDATED / KEEP_L2",
-          "next": "SC-055 build a genuinely physical non-steel three-layer chain with effective-dated product/exposure semantics and compatible source clocks; continue steel vintages without changing the frozen 1M/2M/3M lag set; reject generic fixed lag if no chain-specific relation survives controls."
+          "status": "SIX_STEEL_VINTAGES / PREFROZEN_1M_2M_3M / PHYSICAL_PCB_CHAIN_REPLAY / CU_TO_CCL_1M40_2M66.7_3M50 / CCL_TO_PCB_1M50_2M44.4_3M62.5 / NO_COMMON_STABLE_LAG / NATIVE_MONTHLY_PIT_CLOCK_PENDING / KEEP_L2",
+          "next": "SC-056 prospectively append the same copper-foil→CCL→PCB physical chain from native monthly MOEA releases with sourcePublishedAt/capturedAt frozen; keep the prefrozen 1M/2M/3M set and production-direction primary metric unchanged; continue steel vintages and reject generic fixed-lag timing if independent physical chains remain edge-specific/unstable."
         },
         {
           "id": "D10-03",
@@ -1593,8 +1593,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「上游與下游不對稱傳導」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "THREE_PLUS_VINTAGE_ASYMMETRIC_TRANSMISSION_PIT_FEASIBLE / SIX_MONTH_STEEL_REPLAY / DOWNSTREAM_PRICE_STICKINESS_CONFIRMED / CROSS_CHAIN_FALSIFICATION_ADDED / OUTCOMES_CLOSED",
-          "next": "Continue independent chain vintages and add one non-steel physical three-layer control; L4 still requires prospective/OOS economic outcomes, common-shock controls and stable source clocks."
+          "status": "THREE_PLUS_VINTAGE_ASYMMETRIC_TRANSMISSION_PIT_FEASIBLE / SIX_MONTH_STEEL_REPLAY / DOWNSTREAM_PRICE_STICKINESS / PHYSICAL_PCB_CHAIN_CONTROL / NO_COMMON_FIXED_LAG / OUTCOMES_CLOSED",
+          "next": "SC-056 prospectively append the copper-foil→CCL→PCB physical chain with native monthly clocks and unchanged lag semantics; continue independent physical-chain vintages and inventory/common-shock controls; L4 still requires prospective/OOS economic outcomes."
         },
         {
           "id": "D10-10",
