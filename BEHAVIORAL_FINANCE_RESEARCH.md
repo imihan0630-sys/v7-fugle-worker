@@ -658,3 +658,91 @@ D20 remains 50.8%.
 Formal Core unchanged.
 FORMAL_OPTIMIZATION_CANDIDATE = NONE.
 
+## 2026-10-04｜D20-01 and D20-09 bounded PIT promotions; D20-13 held at L2
+
+### D20-01 Prospect Theory / Loss Aversion — bounded short-side reference dependence
+
+The original blocker was the absence of a replayable investor reference point or cost basis.
+
+That blocker is now partially resolved by the already-validated D20-02 TWSE short-side receipt:
+- referencePriceShort;
+- shortCapitalGainsOverhang;
+- new short sales;
+- covering/returns;
+- prior/current short balance;
+- source/rule lineage.
+
+This supports a bounded, causal test of reference-dependent behavior around zero short PnL:
+- compare covering behavior on the gain side versus the loss side of the same reconstructed reference;
+- preserve the full continuous distance from the reference point;
+- control size, liquidity, volatility, new shorting, institutional ownership, borrow economics and regime.
+
+Important falsification:
+- asymmetric covering does not uniquely identify pure loss aversion;
+- realization utility, risk controls, recalls, information and transaction frictions can create similar asymmetry;
+- the same primitive is shared with D20-02 and cannot become an extra directional vote;
+- long-account PGR/PLR remains UNKNOWN.
+
+Decision:
+D20-01 -> L3 for the TWSE short-side reference-dependence sublane only.
+Pure loss aversion remains UNIDENTIFIED.
+Formal Core unchanged.
+
+### D20-09 Overreaction / Reversal — event-conditioned initial-response sublane
+
+The H07 firewall remains:
+- D03-05 owns observable pullback/reversal;
+- D20-09 can own only a behavioral/event-conditioned cause.
+
+Existing source families now jointly make a bounded PIT lane feasible:
+1. D20-08 / D17-13 provide event first-known and replay clocks;
+2. event information content/surprise can be frozen before price outcomes, otherwise UNKNOWN;
+3. D03-05 provides completed Fugle 15m bar clocks with exact slot-continuity rules;
+4. D20-07 attention and D20-10 sentiment may enter as optional context, never mandatory backfilled inputs.
+
+Decision-time diagnostic:
+EVENT_CONDITIONED_INITIAL_RESPONSE_RESIDUAL.
+
+The parent stores only:
+- event clock;
+- frozen surprise value/version;
+- pre-event path;
+- first 15m/30m market-sector residual response;
+- liquidity/volatility/price-limit/context state.
+
+Later reversal is excluded from the parent and joins only after the horizon closes.
+
+Structural falsifiers remain:
+bid-ask bounce, opening imbalance, temporary liquidity impact, forced flow, price-limit mechanics, volatility normalization, sector/market shock and later new information.
+
+Taiwan evidence is consistent with this decomposition: 2026 record-high monthly-revenue research documents next-day intraday reversal alongside later positive drift, so a single reversal label cannot identify the full behavioral path.
+
+Decision:
+D20-09 -> L3 for the event-conditioned initial-response data-feasibility lane.
+Behavioral overreaction cause remains unproven until prospective structural discrimination.
+Formal Core unchanged.
+
+### D20-13 Limits to Arbitrage — no promotion
+
+Official TWSE rules verify that public securities-lending information can include:
+- fixed rate;
+- executed quantities;
+- unexecuted lending/borrowing quantities;
+- competitive-bid execution rates;
+- best-five lending and borrowing rate/quantity depth.
+
+This is sufficient to define a bounded TWSE displayed borrowing-scarcity/cost state.
+
+However, D20-13 remains L2 because:
+- upstream D06-18 has not yet captured the first verified live post-contract rate/supply receipt on a genuine trading day;
+- displayed lending supply is not total lendable inventory;
+- borrowing and lending quote persistence differ;
+- negotiated lending dominates total market activity, so public competitive/fixed books are not whole-market supply;
+- true utilization remains UNKNOWN;
+- TPEx parity remains incomplete.
+
+Status:
+L3_READY_PENDING_FIRST_VERIFIED_LIVE_TWSE_RATE_SUPPLY_RECEIPT.
+
+No outcome, alpha, L4 or Formal claim.
+
