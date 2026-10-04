@@ -29,6 +29,7 @@ eq(good.paired.generationId,header.generationId);eq(good.paired.sourceContentDig
 eq(good.diagnosis.populationN,good.paired.tally.populationN);eq(good.paired.tally.shortGateCounts.UNKNOWN,2);
 eq(good.paired.pairs.every(p=>p.buyAuthorized===false&&p.allocation===0),true);
 eq(good.paired.economicSuperiority,'UNKNOWN');eq(JSON.stringify(good).includes('SECRET'),false);
+eq(good.c4RankingRedundancy.status,'LEGACY_NO_C4_RANKING_INPUT');
 eq(new URL(calls[1]).searchParams.get('generationId'),generationId);
 async function reject(request,pattern){await assert.rejects(()=>collect(request),pattern);n++;}
 await reject(requestWith({scanChange:x=>({...x,pipeline:{complete:false}})}),/PIPELINE_UNVERIFIED/);
