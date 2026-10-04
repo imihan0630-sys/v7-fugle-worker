@@ -856,3 +856,16 @@ BR-057 product/application exposure denominators; BR-058 prospective action rece
 
 Exact next:
 BR-059 compatible issuer product/application revenue numerator evidence; BR-060 prospective action milestone appends. Earlier BR-035/040/043/045 lanes remain open under their original gates.
+
+
+## BR-045 bounded D09-07 PIT promotion
+
+- Five official TWSE close snapshots across all 34 industry total-return indices now provide repeated PIT leadership states.
+- Participation moved MIXED -> NARROW -> BROAD -> MIXED -> MIXED across 2026-09-23, 09-24, 09-30, 10-01, 10-02.
+- Top3 overlap fell to zero on 10-01 and again on 10-02, proving leader identity can turn over independently from aggregate participation.
+- D09-07 advances L2 -> L3 for bounded mainstream-sector lifecycle data feasibility only.
+- Individual-stock leadership lifecycle, predictive efficacy and member-level causal interpretation remain open.
+- D09-12 remains L2; no Breadth×Regime promotion.
+- Formal Core unchanged.
+
+Exact next: BR-061 prospective snapshot append with unchanged semantics and later member-level common-clock joins.
