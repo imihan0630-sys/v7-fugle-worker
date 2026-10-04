@@ -17,6 +17,11 @@ const r2Bucket=String(process.env.SYSTEM2_R2_BUCKET||"system2-historical-researc
 const market=String(process.env.SYSTEM2_HISTORY_YEAR_MARKET||"").trim();
 const year=Number(process.env.SYSTEM2_HISTORY_YEAR||2017);
 const capturedAt=new Date().toISOString();
+const taipeiCalendarYear=Number(new Intl.DateTimeFormat("en-US",{
+  timeZone:"Asia/Taipei",
+  year:"numeric",
+}).format(new Date(capturedAt)));
+const latestCompletedCalendarYear=taipeiCalendarYear-1;
 
 assert.ok(accountId,"CLOUDFLARE_ACCOUNT_ID is required");
 assert.ok(apiToken,"SYSTEM2_CLOUDFLARE_API_TOKEN is required");
@@ -25,6 +30,10 @@ assert.ok(r2SecretAccessKey,"SYSTEM2_R2_SECRET_ACCESS_KEY is required");
 assert.ok(r2Bucket,"SYSTEM2_R2_BUCKET is required");
 assert.ok(["TWSE","TPEX"].includes(market),"SYSTEM2_HISTORY_YEAR_MARKET must be TWSE or TPEX");
 assert.ok(Number.isInteger(year)&&year>=2017&&year<=2100,"SYSTEM2_HISTORY_YEAR must be >=2017");
+assert.ok(
+  year<=latestCompletedCalendarYear,
+  "annual cold-pack workflow accepts completed calendar years only; current-year history requires a separate incremental receipt path"
+);
 
 const fromDate=`${year}-01-01`;
 const toDate=`${year}-12-31`;
@@ -57,7 +66,7 @@ if(existingReceipt){
     state:"ALREADY_COMPLETE",
     databaseName:"system2-research",
     schemaVersion:"1.1",
-    market,year,batchId,
+    market,year,batchId,latestCompletedCalendarYear,
     receipt:existingReceipt,
     verification:verified,
     aggregate:aggregate[0]||null,
@@ -112,7 +121,7 @@ console.log(JSON.stringify({
   schemaVersion:"1.1",
   objectBackend:objectStore.backend,
   objectBucket:objectStore.bucketName,
-  market,year,batchId,fromDate,toDate,
+  market,year,batchId,fromDate,toDate,latestCompletedCalendarYear,
   tradingDateCount:range.tradingDateCount,
   officialRowCount:range.rowCount,
   packCount:packSet.packCount,
