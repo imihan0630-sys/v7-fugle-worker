@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04T21:06:00+08:00",
+  "owner": "08｜事件與新聞研究室",
+  "module": "D17-11",
+  "title": "Sector propagation Taiwan PIT feasibility audit",
+  "status": "TAIWAN_PIT_EVENT_SPECIFIC_SECTOR_PROPAGATION_FEASIBLE / PEER_SET_PREFREEZE_REQUIRED / SIGN_NOT_ASSUMED / OUTCOMES_CLOSED",
+  "authorityBoundary": {
+    "D09": "owns point-in-time industry classification, persistent sector relative strength/breadth and peer-universe state",
+    "D10": "owns supply-chain/economic relationship edges when a causal industrial transmission mechanism is claimed",
+    "D17": "owns only event-specific propagation state from the event anchor into a pre-frozen peer set"
+  },
+  "boundedWitness": {
+    "anchorEvent": {
+      "symbol": "7827",
+      "company": "漢康-KY創",
+      "event": "HCB303 IND獲准進行臨床試驗",
+      "sourceClock": "2026-10-03 17:00:54",
+      "industryAtCurrentCapture": "生技醫療業"
+    },
+    "sameIndustryCurrentSourceWitness": [
+      {
+        "symbol": "6461",
+        "name": "益得",
+        "industry": "生技醫療業",
+        "operations": "藥品研發、製造及銷售"
+      },
+      {
+        "symbol": "1795",
+        "name": "美時",
+        "industry": "生技醫療業",
+        "operations": "西藥製造、零售"
+      },
+      {
+        "symbol": "6472",
+        "name": "保瑞",
+        "industry": "生技醫療業",
+        "operations": "藥品製造、西藥及保健保養品代理及銷售"
+      },
+      {
+        "symbol": "4162",
+        "name": "智擎",
+        "industry": "生技醫療業",
+        "operations": "新藥開發"
+      }
+    ],
+    "interpretation": "This current-source witness demonstrates that a bounded same-industry peer set can be constructed. Prospective studies must use the D09 point-in-time classification vintage at or before the event decision clock rather than backfill today's classification."
+  },
+  "frozenPropagationStates": [
+    "COMMON_DEMAND_CONTAGION",
+    "COMMON_COST_CONTAGION",
+    "SUPPLY_CHAIN_TRANSMISSION",
+    "COMPETITIVE_SHARE_SHIFT",
+    "SUBSTITUTION",
+    "REGULATORY_COMMON_SHOCK",
+    "ATTENTION_ONLY",
+    "NO_VERIFIED_PROPAGATION_MECHANISM",
+    "UNKNOWN"
+  ],
+  "replayContract": [
+    "Freeze peer membership before reading peer returns/outcomes.",
+    "Anchor the event to D17/D11 PIT event receipt and use D17-12 post-open path only after the anchor opening observation.",
+    "A same-industry label establishes a candidate peer set, not a same-sign causal mechanism.",
+    "If a supply-chain/customer relation is invoked, consume D10's effective-dated economic edge rather than recreating one in D17.",
+    "Market/sector common movement and persistent sector RS remain controls/owners in D09; they are not duplicate D17 votes.",
+    "Competition and substitution can invert sign; absence of a verified mechanism remains UNKNOWN/ATTENTION_ONLY rather than forced contagion."
+  ],
+  "falsification": [
+    "An issuer-specific clinical milestone may have no effect on unrelated same-industry firms.",
+    "A competitor success can be negative for a rival through substitution even when both share an industry code.",
+    "A common regulatory shock can move peers together without the anchor firm causing the peer move.",
+    "Post-event peer co-movement alone cannot prove the transmission edge."
+  ],
+  "maturityDecision": {
+    "from": "L2",
+    "to": "L3",
+    "basis": "D09 already provides Taiwan PIT-feasible classification/sector state, D17 provides PIT event identity, and validated price-path sources support later peer-path measurement. A bounded current peer witness confirms operational source construction. Explicit mechanism/UNKNOWN states and owner boundaries prevent same-industry co-movement from becoming an assumed causal sign.",
+    "notClaimed": [
+      "sector alpha",
+      "causal propagation from co-movement",
+      "historical classification backfill from current source",
+      "L4/OOS"
+    ]
+  },
+  "outcomeJoin": false,
+  "formalCoreChanged": false,
+  "exactNext": [
+    "Prospectively freeze peer sets on independent events using D09 classification vintages before outcomes.",
+    "Collect divergent cases: contagion, competition/substitution, and no propagation.",
+    "Use D10 economic edges only where a causal supply-chain transmission claim is made.",
+    "Before L4, test event-specific propagation incremental value beyond persistent D09 sector RS/breadth and market controls."
+  ]
+}
