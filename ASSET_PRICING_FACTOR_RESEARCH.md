@@ -1046,3 +1046,15 @@ Bounded TPEx August-2026 witnesses:
 4. Continue shared continuity-window receipt binding for TWSE/TPEx.
 5. Acquire PIT industry vintage, run D03/D09 paired redundancy, and freeze D14-compatible component-wise cost evidence.
 6. Only a zero-applicable-blocker full-Taiwan deterministic replay may trigger L3 readiness review; no automatic promotion.
+
+
+## 2026-10-04 Long-block Stage 12 — D19-12 bounded date-intrinsic calendar PIT promotion
+- Canonical receipt: `research/d19_12_date_intrinsic_calendar_pit_receipt_20261004_v0_1.json`.
+- D19-12 advances from L2/40 to L3/60 for bounded TWSE date-intrinsic states only: WEEKDAY and MONTH_OF_YEAR.
+- Executable lineage reuses the existing official historical TWSE calendar runtime/tests and the physically verified 2017 market-year evidence: 246 official sessions, 222,194 official rows, exact cold/fresh reconciliation, zero source-row-hash mismatch.
+- WEEKDAY and MONTH_OF_YEAR are determined by the same marketDate and require no future-session knowledge. Historical replay remains conservatively consumed after session-close finality.
+- Excluded from the promoted scope: HOLIDAY, PRE_HOLIDAY, POST_HOLIDAY, TURN_OF_MONTH, LUNAR_CALENDAR, SETTLEMENT_OR_INDEX_REBALANCE. These still require their own historical calendar-vintage / announcement or event-source clocks.
+- No return outcomes were opened. No bullish/bearish sign, calendar threshold, score or Formal rule is authorized.
+- Counterevidence remains binding: calendar effects can decay/reverse and the family has severe multiple-testing/data-mining risk.
+- D19 aggregate becomes 41.3%; one active module is L3/60 and fourteen remain L2/40.
+- Exact next: add at least one independent historical year under identical WEEKDAY/MONTH_OF_YEAR semantics; separately seek historical known-at evidence for holiday/turn-of-month states; no L4 without prospective/OOS, costs, multiple-testing and robustness.
