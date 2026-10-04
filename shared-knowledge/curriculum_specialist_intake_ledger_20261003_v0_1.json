@@ -107,10 +107,17 @@
     },
     {
       "id": "H11",
-      "status": "PENDING",
-      "receivedPackets": [],
-      "pendingRooms": [],
-      "controlDecision": "NOT_EVALUATED"
+      "status": "PARTIAL_EVIDENCE_RECEIVED",
+      "receivedPackets": [
+        "DERIVATIVES_VOLATILITY_RESEARCH.md",
+        "DERIVATIVES_VOLATILITY_CHECKPOINT.md",
+        "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json",
+        "research/d12_surface_method_v0_1_spec.json"
+      ],
+      "pendingRooms": [
+        "09｜衍生品與國際總經研究室 — common-parent residual comparison"
+      ],
+      "controlDecision": "EVIDENCE_INSUFFICIENT_PENDING_COMMON_PARENT_RESIDUAL_TEST"
     },
     {
       "id": "H12",
@@ -451,6 +458,24 @@
     "room13SourceGate": "FIRST_GENUINE_LIVE_TWSE_RATE_SUPPLY_RECEIPT_PENDING",
     "room10Gate": "D14_19_EXECUTION_LIFECYCLE_PENDING",
     "currentControlDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOM10_AND_LIVE_SOURCE_RECEIPT",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "h11": {
+    "sourceRoom": "09｜衍生品與國際總經研究室",
+    "state": "PARTIAL_EVIDENCE_RECEIVED",
+    "acceptedBoundary": {
+      "D12-07": "SIMPLE_SKEW_TERM_STRUCTURE_SUMMARIES",
+      "D12-16": "RESIDUAL_CURVATURE_SMILE_COMPLEX_SURFACE_AND_QUALITY"
+    },
+    "remaining": [
+      "PERMITTED_RAW_TAIFEX_PARENT_WITH_IDENTITY_HASH",
+      "IDENTICAL_PARENT_COMMON_SUPPORT_FEATURE_BUILD",
+      "D12_16_RESIDUAL_AFTER_D12_07",
+      "SOURCE_ATTESTED_DIVERGENT_STATES",
+      "TERMINAL_CLASSIFICATION"
+    ],
+    "currentControlDecision": "EVIDENCE_INSUFFICIENT_PENDING_COMMON_PARENT_RESIDUAL_TEST",
+    "maturityChange": "NONE",
     "formalOptimizationCandidate": "NONE"
   }
 }
