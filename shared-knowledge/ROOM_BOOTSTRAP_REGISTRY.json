@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T15:20:00+08:00",
+  "updatedAt": "2026-10-04T15:40:00+08:00",
   "status": "CANONICAL_ROOM_BOOTSTRAP_REGISTRY_V0_1",
   "repository": "imihan0630-sys/v7-fugle-worker",
   "authoritativeBranch": "main",
@@ -385,9 +385,57 @@
         "RESEARCH_ENGINEERING_GOVERNANCE.md",
         "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
         "system2/SYSTEM2_CORRECTION_QUEUE.md",
-        "system2/SYSTEM2_CORRECTION_QUEUE.json"
+        "system2/SYSTEM2_CORRECTION_QUEUE.json",
+        "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
       ],
-      "shortStart": "接手「System 2｜建置總控室」，依 GitHub 最新 main 與 System 2 正式 checkpoint 自動恢復；先讀 Correction Governance／Correction Queue，優先執行所有 OPEN/HIGH 糾錯項目，禁止重頭做。"
+      "shortStart": "接手「System 2｜建置總控室」，依 GitHub 最新 main 與正式 checkpoint 自動恢復；讀 Correction Queue 與 Execution Lane Governance，執行分派給 BUILD_LANE／LOCAL_FIX 的工作，尊重其他 lane 的 blocking，禁止搶做 DATA_LANE／REMEDIATION_LANE，禁止重頭做。"
+    },
+    {
+      "id": "SYSTEM2_DATA",
+      "title": "System 2｜歷史資料工程室",
+      "aliases": [
+        "System 2 歷史資料工程室",
+        "System2 Data",
+        "System 2 Data",
+        "歷史資料工程室"
+      ],
+      "type": "system_execution_lane",
+      "lane": "DATA_LANE",
+      "defaultMode": "Chat",
+      "engineeringMode": "Codex",
+      "checkpoints": [
+        "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md",
+        "system2/SYSTEM2_HISTORICAL_DATA_CHECKPOINT.md",
+        "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
+        "system2/SYSTEM2_CORRECTION_QUEUE.md",
+        "system2/SYSTEM2_CORRECTION_QUEUE.json",
+        "system2/SYSTEM2_MASTER.md",
+        "RESEARCH_ENGINEERING_GOVERNANCE.md"
+      ],
+      "shortStart": "接手「System 2｜歷史資料工程室」，依最新 GitHub main 自動恢復；讀 DATA_LANE checkpoint 與 Correction Queue，只執行分派給 DATA_LANE 的資料工程／回補工作，禁止重頭設計。"
+    },
+    {
+      "id": "SYSTEM2_REMEDIATION",
+      "title": "System 2｜補強修復室",
+      "aliases": [
+        "System 2 補強修復室",
+        "System2 Remediation",
+        "補強修復室"
+      ],
+      "type": "system_execution_lane",
+      "lane": "REMEDIATION_LANE",
+      "defaultMode": "Chat",
+      "engineeringMode": "Codex",
+      "checkpoints": [
+        "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md",
+        "system2/SYSTEM2_REMEDIATION_CHECKPOINT.md",
+        "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
+        "system2/SYSTEM2_CORRECTION_QUEUE.md",
+        "system2/SYSTEM2_CORRECTION_QUEUE.json",
+        "system2/SYSTEM2_MASTER.md",
+        "RESEARCH_ENGINEERING_GOVERNANCE.md"
+      ],
+      "shortStart": "接手「System 2｜補強修復室」，依最新 GitHub main 自動恢復；讀 REMEDIATION_LANE checkpoint 與 Correction Queue，只處理分派給 REMEDIATION_LANE 的跨模組／重複／遺留修復，不接管一般 local bug。"
     }
   ],
   "defaultLearningRoomShortStart": "接手「<聊天室名稱>」。依 GitHub 最新 main 與 ROOM_BOOTSTRAP 自動恢復，從正式 exact next continuation point 接續；禁止重頭研究、禁止重做、不要要求我重貼舊聊天。",
