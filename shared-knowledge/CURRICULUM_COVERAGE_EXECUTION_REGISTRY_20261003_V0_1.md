@@ -327,3 +327,8 @@ Canonical execution:
 - no independent auction directional Alpha vote.
 
 Formal Core remains LOCKED. No System1/System2 Formal change.
+
+
+Canonical receipt:
+- `shared-knowledge/CURRICULUM_COV02_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md`
+- `shared-knowledge/curriculum_cov02_canonical_update_receipt_20261004_v0_1.json`
