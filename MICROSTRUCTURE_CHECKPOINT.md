@@ -739,3 +739,22 @@ Therefore no L3 upgrades are made merely to cross 50%.
 3. Only after owner-authorized D05 Books+Trades capture proves replay/coverage may D05-03/04/05/07/09 or related modules be reconsidered for L3.
 
 No FORMAL_OPTIMIZATION_CANDIDATE.
+
+
+### 00 control-plane receipt — COV-02 Intake passed
+
+00｜研究總控室 accepted the formal COV-02 return and completed Dependency / overlap / PIT-replay / anti-double-count / anti-orphan review.
+
+State:
+`OWNER_APPROVAL_REQUIRED`.
+
+Proposed structural action:
+`EXTEND_EXISTING_SCOPE → D05-06`.
+
+Proposed name:
+`Opening / Closing Auction & Auction Imbalance（開收盤集合競價與競價不平衡）`.
+
+Audit:
+`shared-knowledge/CURRICULUM_COVERAGE_COV02_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md`.
+
+This receipt does not alter Room04's active empirical research order and does not promote D05-06 maturity. Wait for explicit owner approval before canonical scope/name mutation.
