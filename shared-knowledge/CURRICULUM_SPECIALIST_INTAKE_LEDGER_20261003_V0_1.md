@@ -74,9 +74,9 @@ Until that packet arrives:
 | Cluster | Status | Received packet | Remaining |
 |---|---|---|---|
 | H01 | SPECIALIST_EVIDENCE_RECEIVED | `research/h01_d09_13_d09_14_specialist_validation_20261003_v0_1.json` + BR-051..056 | 00｜研究總控室 Dependency Audit／owner review |
-| H02 | PENDING | — | specialist packet(s) |
-| H03 | PENDING | — | specialist packet(s) |
-| H04 | PENDING | — | specialist packet(s) |
+| H02 | PARTIAL_EVIDENCE_RECEIVED | D14-03/D14-04 execution-cost child evidence | 10｜投組風控與交易執行研究室 D14-17 umbrella contract |
+| H03 | PARTIAL_EVIDENCE_RECEIVED | D15-13 ES/tail-risk evidence | 10｜投組風控與交易執行研究室 D15-24 VaR sub-scope |
+| H04 | OWNER_APPROVAL_REQUIRED | equivalent complete Room09 evidence | owner approval for MERGE_ELIGIBLE D12-14 → D12-15 |
 | H05 | CLOSED_NO_STRUCTURAL_CHANGE | Room06 + equivalent Room14 D21-10 evidence | — |
 | H06 | CLOSED_NO_STRUCTURAL_CHANGE | Room05 + Room13 complete | — |
 | H07 | CLOSED_NO_STRUCTURAL_CHANGE | Room03 + Room13 complete | — |
@@ -700,3 +700,54 @@ State:
 `PARTIAL_EVIDENCE_RECEIVED / D07_18_AND_D22_04_REPLAY_GATES_PENDING`.
 
 No maturity/count/Formal change.
+
+
+## H02 / H03 partial intake + H04 consolidation audit — 2026-10-04
+
+### H02 — D14-03 + D14-04 vs D14-17
+Accepted:
+- D14-03 signal-price vs fill-price measurement identity = L3/60%;
+- D14-04 slippage child metric family = L2/40%;
+- current execution-cost ontology already separates explicit, implicit and opportunity costs.
+
+Still missing:
+- D14-17 is L0/0 and needs the broader implementation-shortfall / market-impact umbrella contract;
+- benchmark taxonomy, cost decomposition tree, partial fill/delay/opportunity cost, replay/schema ownership and D14-12 downstream interface must be explicit;
+- no consolidation until D14-17 itself proves capability preservation.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / D14_17_UMBRELLA_CONTRACT_PENDING`.
+
+### H03 — D15-13 vs D15-24
+Accepted:
+- D15-13 Expected Shortfall / Tail Risk = L2/40%;
+- ES semantic firewall and historical-source prerequisites are frozen.
+
+Still missing:
+- D15-24 VaR = L0/0;
+- common portfolio/horizon/confidence contract;
+- parametric vs historical VaR assumptions;
+- VaR tail-blindness / subadditivity / model-risk counterexamples;
+- explicit relationship to ES and D16-23 stress testing;
+- merged maturity map.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / D15_24_VAR_SUBSCOPE_PENDING`.
+
+### H04 — D12-14 vs D12-15
+Equivalent complete Room09 evidence accepted.
+
+00 audit:
+`shared-knowledge/CURRICULUM_H04_CONSOLIDATION_AUDIT_20261004_V0_1.md`.
+
+Recommendation:
+**MERGE_ELIGIBLE / D12-15 survivor / D12-14 child proxy family**.
+
+Proposed survivor name:
+`Volatility Risk Premium／IV-RV Proxies 波動率風險溢酬與 IV-RV 代理`.
+
+Both remain L2/40 until approval and canonical execution.
+Current state:
+`OWNER_APPROVAL_REQUIRED`.
+
+No canonical retirement, count, maturity or Formal change has occurred yet.
