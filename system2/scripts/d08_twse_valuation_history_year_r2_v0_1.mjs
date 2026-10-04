@@ -48,10 +48,12 @@ const trading=await buildOfficialTradingDatesV0_1({fromDate,toDate});
 assert.ok(trading.tradingDateCount>(year===2026?150:200),"trading date count unexpectedly low "+year);
 
 const days=[];
-for(let i=0;i<trading.tradingDates.length;i+=6){
-  const batch=trading.tradingDates.slice(i,i+6);
+for(let i=0;i<trading.tradingDates.length;i+=2){
+  const batch=trading.tradingDates.slice(i,i+2);
   const got=await Promise.all(batch.map(async marketDate=>{
-    const src=await fetchOfficialHistoricalA6ValuationDateV0_1({marketDate,observedAt});
+    const src=await fetchOfficialHistoricalA6ValuationDateV0_1({
+      marketDate,observedAt,retryAttempts:5,retryDelayMs:1000,
+    });
     assert.equal(src.state,"READY","A6 history not READY "+marketDate);
     assert.equal(src.sourceDateEvidence,marketDate,"A6 history date mismatch "+marketDate);
     const rows=src.rows.map(r=>({
@@ -70,7 +72,7 @@ for(let i=0;i<trading.tradingDates.length;i+=6){
     };
   }));
   days.push(...got);
-  await new Promise(r=>setTimeout(r,100));
+  await new Promise(r=>setTimeout(r,250));
 }
 days.sort((a,b)=>a.marketDate.localeCompare(b.marketDate));
 assert.equal(days.length,trading.tradingDateCount);
