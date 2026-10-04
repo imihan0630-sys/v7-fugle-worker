@@ -22,7 +22,7 @@
     "snapshotFingerprint"
   ],
   "behavioralTransforms": {
-    "leaderFollower": "Sequential stance convergence among distinct public forum actors after a prior actor/post state; ties within the same minute remain order-UNKNOWN unless page order and capture semantics are explicitly frozen.",
+    "leaderFollower": "Estimate aggregate sequence-transition / stance-convergence patterns across distinct forum participants; do not produce persistent individual leader/follower profiles.",
     "adoptionHazard": "Probability/rate that later forum actors adopt a previously observed stance/topic under frozen windows.",
     "residualHerding": "Only the portion remaining after common-news, topic, market, sector and attention controls may be called social-herding evidence.",
     "reactionTypeGuard": "Push/boo/arrow is reaction to the post, not automatically bullish/bearish stock stance."
@@ -54,5 +54,22 @@
   "maturityDecision": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
   "l4Requirement": "Prospective independent-date actor-sequence parents with frozen stance rules and common-news/topic controls; no retrospective reconstruction as Shadow evidence.",
   "formalOptimizationCandidate": "NONE",
-  "formalCore": "LOCKED"
+  "formalCore": "LOCKED",
+  "privacyGuard": {
+    "rule": "Public handles may be used transiently only to deduplicate distinct participants within a capture window. Derived research receipts must not retain named-user psychological, persuasion, or leader/follower scores.",
+    "durableDerivedFields": [
+      "distinctActorCount",
+      "stanceHistogram",
+      "sequenceTransitionCounts",
+      "topicState",
+      "timeBucket",
+      "snapshotFingerprint"
+    ],
+    "prohibitedDerivedFields": [
+      "namedUserPsychologyScore",
+      "namedUserHerdingScore",
+      "namedUserInfluenceRank",
+      "cross-day_personality_profile"
+    ]
+  }
 }
