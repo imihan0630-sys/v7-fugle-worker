@@ -83,3 +83,39 @@ Synthetic tests explicitly reject:
 4. only after all supplemental revision-history requirements are complete may `revisionCoverageComplete` be reconsidered.
 
 No D1/R2 mutation or trading authority is authorized by this source-level certification.
+
+## 2026-10-04 physical certification acceptance
+
+PR #452 physically certified the frozen MOPSOV empty company-month semantics.
+
+- Merge commit: `35c7448baf7ef5790b0d5798e23d0ee4653207d1`.
+- Empty Month Certification Readonly run `37169332743`: PASS.
+- System2 Research CI `37169332659`: PASS.
+- V8 Regression `37169332638`: PASS.
+- fail-closed certification tests: PASS.
+- physical result: `MOPSOV_EMPTY_MONTH_SEMANTICS_CERTIFIED`.
+- emptyCount=4 / emptyPassCount=4.
+- positiveCount=3 / positivePassCount=3.
+- every empty control passed HTTP/content-type/zero-row/bytes/hash/text/structure/no-error checks.
+- every positive control passed HTTP/content-type/nonzero-row/company-form/company-code/not-empty-signature/no-error checks.
+- `emptyMonthSemanticsCertified=true`.
+
+This flag is deliberately source-local and narrow. It means the frozen MOPSOV company-month empty signature is certified under V0.2. It does not authorize a global NO_EVENT claim.
+
+Still false:
+- `boundedIntervalCoverageComplete=false`;
+- `actionFamilyCoverageComplete=false`;
+- `cancellationHistoryComplete=false`;
+- `knownAtVersionClockCertified=false`;
+- `revisionCoverageComplete=false`;
+- `noEventMayBeClaimed=false`;
+- `symbolSessionCompletenessCertified=false`;
+- `technicalContinuityCertified=false`;
+- `selectionAuthority=false`;
+- `finalSelectionEnabled=false`;
+- `livePushEnabled=false`;
+- `capitalImpact=false`;
+- `orderImpact=false`;
+- `system1RuntimeUsed=false`.
+
+Next: stress high-row-count pagination/truncation, validate historical knownAt semantics, then add exchange-side cancellation/revocation evidence.

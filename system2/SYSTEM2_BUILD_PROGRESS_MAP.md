@@ -517,3 +517,16 @@ Observed across four frozen empty controls:
 Three same-endpoint positive controls remained non-empty and structurally distinct. Characterization PASS does not yet equal certification; `emptyMonthSemanticsCertified=false` remains authoritative.
 
 Next engineering target: endpoint-specific certification with exact signature + positive controls + fail-closed drift behavior.
+
+## 2026-10-04 MOPSOV empty-month certification V0.2
+
+PR #452 / `35c7448baf7ef5790b0d5798e23d0ee4653207d1` promoted only the endpoint-specific empty-company-month semantics from characterized to physically certified.
+
+Physical result:
+- `MOPSOV_EMPTY_MONTH_SEMANTICS_CERTIFIED`;
+- 4/4 empty controls PASS;
+- 3/3 positive controls PASS;
+- fail-closed drift/error tests PASS;
+- `emptyMonthSemanticsCertified=true`.
+
+The broader revision/continuity gates remain blocked. Next: higher-row-count truncation stress -> historical knownAt semantics -> exchange-side cancellation/revocation coverage.
