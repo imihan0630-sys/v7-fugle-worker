@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "D06_19_RETAIL_MARKET_PARTICIPATION_PIT_CONTRACT_V0_1",
+  "updatedAt": "2026-10-04 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "module": "D06-19",
+  "object": "MARKET_LEVEL_DIRECT_RETAIL_PARTICIPATION_REGIME",
+  "purpose": "Create a directly identified domestic-individual market-participation baseline for falsifying retail proxies without pretending it is stock-level directional flow.",
+  "directOfficialSource": {
+    "provider": "TWSE",
+    "family": "集中市場成交值投資人類別比例表",
+    "granularity": "market × month/year × investor class",
+    "investorClasses": [
+      "Domestic Juridical Investors",
+      "Foreign Juridical Investors",
+      "Domestic Individual Investors",
+      "Foreign Individual Investors"
+    ],
+    "fields": [
+      "period",
+      "investorClass",
+      "tradingValueNtdBillion",
+      "tradingValueSharePct"
+    ],
+    "replay": "HISTORICAL_AGGREGATE_REPLAY_FEASIBLE",
+    "evidence": "Official historical TWSE statistical publications expose monthly/yearly amount and percentage by investor class."
+  },
+  "supportingDirectChannels": [
+    {
+      "channel": "margin trading",
+      "evidence": "TWSE 2026 market-structure analysis reports domestic individuals account for more than 98% of margin trading as of end-July 2026.",
+      "use": "IDENTITY_COMPOSITION_CONTROL_ONLY",
+      "guard": "Does not convert margin financing into direct retail flow."
+    },
+    {
+      "channel": "intraday odd-lot",
+      "evidence": "TWSE market-insights statistics directly report domestic-individual share of odd-lot trading value.",
+      "use": "CHANNEL_PARTICIPATION_CONTROL_ONLY",
+      "guard": "Does not generalize odd-lot participation to all retail trading."
+    }
+  ],
+  "receiptSchema": [
+    "market",
+    "periodStart",
+    "periodEnd",
+    "frequency",
+    "investorClassDefinition",
+    "domesticIndividualTradingValue",
+    "domesticIndividualTradingValueSharePct",
+    "otherInvestorClassValuesAndShares",
+    "sourcePublicationIdOrUrl",
+    "sourcePublicationDateIfKnown",
+    "capturedAt",
+    "firstKnownAtIfProspectivelyObserved",
+    "finality",
+    "sourceVersion",
+    "contentHash",
+    "unknownReasons"
+  ],
+  "stateTaxonomy": [
+    "RETAIL_MARKET_PARTICIPATION_LOW",
+    "RETAIL_MARKET_PARTICIPATION_MID",
+    "RETAIL_MARKET_PARTICIPATION_HIGH",
+    "RETAIL_MARKET_PARTICIPATION_CHANGE",
+    "RETAIL_MARKET_PARTICIPATION_UNKNOWN"
+  ],
+  "thresholdGuard": "Do not optimize or assign fixed high/low cutoffs before preregistered distributional analysis. States are descriptive until validated.",
+  "proxyValidationPlan": {
+    "goal": "Measure how well common Taiwan retail proxies track directly identified aggregate natural-person participation.",
+    "candidateProxies": [
+      "margin-trading market share/composition",
+      "odd-lot natural-person participation",
+      "day-trading market participation where investor-class semantics permit",
+      "broker-branch aggregates only as execution context, never identity"
+    ],
+    "requiredAlignment": [
+      "same market",
+      "same period/frequency",
+      "same finality/vintage",
+      "no stock-level extrapolation"
+    ],
+    "firstStageMetrics": [
+      "coverage overlap",
+      "correlation",
+      "directional disagreement rate",
+      "regime divergence",
+      "missingness"
+    ],
+    "outcomes": "CLOSED; no return join in proxy-validation stage"
+  },
+  "forbidden": [
+    "market-level retail share -> stock-level retail buy/sell/net",
+    "annual/monthly retail share -> daily stock feature without explicit temporal hold rule",
+    "margin financing -> direct retail flow",
+    "odd-lot share -> all retail share",
+    "broker branch -> beneficial-owner identity",
+    "total market minus institutions -> direct retail net flow",
+    "fixed bullish/bearish interpretation of high retail participation"
+  ],
+  "l3Boundary": {
+    "aggregateSublane": "PIT/REPLAY FEASIBLE AT HISTORICAL AGGREGATE LEVEL",
+    "wholeModule": "L2 remains because core stock-date directional direct-retail source is restricted-access gated and current authorized PIT contract is unverified.",
+    "noMaturityInheritance": true
+  },
+  "status": "AGGREGATE_RETAIL_PARTICIPATION_REPLAY_CONTRACT_FROZEN / PROXY_VALIDATION_READY / STOCK_DATE_DIRECTIONAL_FLOW_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "exactNext": "Build outcome-blind aligned aggregate receipts when publication generations are captured; compare margin/odd-lot/day-trade proxies against direct market-level individual participation at common frequency. No stock-level inference and no maturity promotion from aggregate replay alone."
+}
