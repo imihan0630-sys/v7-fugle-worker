@@ -1,9 +1,10 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-04 15:28 Asia/Taipei
+Updated: 2026-10-04 15:40 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
+Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
 ## Queue rules
 
@@ -13,6 +14,8 @@ Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
 - `FIX_IMPLEMENTED` is not equivalent to `VERIFIED_CLOSED`.
 - Original evidence is never deleted when status changes.
 - Protected Class B/Class C or Formal-Core decisions require owner approval.
+- Severity and routing are separate. Do not send every HIGH item to remediation.
+- One conflict unit has one active modification owner.
 
 ## Open directives
 
@@ -21,6 +24,11 @@ Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
 - createdAt: 2026-10-04T15:13:33+08:00
 - severity: HIGH
 - status: ACKNOWLEDGED
+- routingClass: DATA_LANE
+- assignedLane: DATA_LANE
+- assignedRoom: System 2｜歷史資料工程室
+- modificationOwner: SYSTEM2_HISTORICAL_DATA_ROOM
+- blockedBy: GitHub workflow_dispatch execution channel / owner login authorization if still required
 - affectedScope: S2-03 Historical infrastructure / P0 2017-present TWSE+TPEx daily A1 cold history
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement: System 2 historical infrastructure must physically populate and verify the staged official 2017-present Taiwan-equity daily history before it can be described as complete or used as complete full-market replay evidence.
