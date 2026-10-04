@@ -89,7 +89,7 @@ Until that packet arrives:
 | H14 | CLOSED_NO_STRUCTURAL_CHANGE | Room05 packet + Room08 equivalent PIT evidence | — |
 | H15 | CLOSED_NO_STRUCTURAL_CHANGE | equivalent Room08 + Room04 evidence | — |
 | H16 | CLOSED_NO_STRUCTURAL_CHANGE | equivalent Room04 + Room08 + Room01 evidence | — |
-| H17 | PENDING | — | specialist packet(s) |
+| H17 | PARTIAL_EVIDENCE_RECEIVED | Room09 D13-06 + Room15 D22-04 mechanism/source-boundary evidence | 06｜D07-18 WACC owner + 15｜D22-04 security-level replay |
 | H18 | PARTIAL_EVIDENCE_RECEIVED | Room14 D21-07 mechanism/falsification evidence | 06｜基本面與估值研究室 D07-19 project-economics counterpart |
 | H19 | PARTIAL_EVIDENCE_RECEIVED | Room03 D03-04 + Room12 D19-04/D19-09 mechanism evidence | 12｜資產定價與因子研究室 paired common-support redundancy/residual tests |
 | H20 | CLOSED_NO_STRUCTURAL_CHANGE | Room02 formal return + equivalent Room01/04 evidence | — |
@@ -675,3 +675,28 @@ State:
 `PARTIAL_EVIDENCE_RECEIVED / ROOM12_COMMON_SUPPORT_REDUNDANCY_RESIDUAL_TESTS_PENDING`.
 
 No maturity/count/Formal change from either intake.
+
+
+## H17 partial intake — D13-06 → D22-04 → D07-18 cost-of-capital chain
+
+Accepted boundary:
+- D13-06 = sovereign/risk-free yield-curve state;
+- D22-04 = issuer-specific debt cost / refinancing spread and repricing interaction;
+- D07-18 = enterprise WACC / cost-of-capital composite.
+
+Accepted safeguards:
+- legacy coupon != current market yield != prospective refinancing cost;
+- issuer spread requires currency/duration-consistent benchmark matching;
+- one risk-free shock cannot be counted again as issuer credit spread and again as WACC;
+- WACC must combine distinct debt/equity/capital-structure inputs rather than copy the Treasury move.
+
+Still missing:
+1. D07-18 is L0/0 and needs its own WACC/discount-rate/COE/COD ownership contract;
+2. D22-04 needs issuer-security-date historical replay with trade/quote/reference/fair-value provenance and matched benchmark;
+3. D13-06 still lacks multidate strict clean source-attested coverage;
+4. divergent-state empirical receipts must show stable risk-free + widening issuer spread, rising risk-free + stable spread, and WACC change through equity/capital-structure channel.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / D07_18_AND_D22_04_REPLAY_GATES_PENDING`.
+
+No maturity/count/Formal change.
