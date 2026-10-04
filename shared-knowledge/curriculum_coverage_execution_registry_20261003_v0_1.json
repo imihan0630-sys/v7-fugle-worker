@@ -1,12 +1,12 @@
 {
   "schemaVersion": "CURRICULUM_COVERAGE_EXECUTION_REGISTRY_V0_1",
   "updatedAt": "2026-10-04T11:09:00+08:00",
-  "status": "COVERAGE_COV03_OWNER_APPROVAL_REQUIRED_COV04_COV05_CANONICAL_COMPLETE",
+  "status": "COVERAGE_COV03_COV04_COV05_CANONICAL_UPDATE_COMPLETE",
   "formalCoreImpact": "NONE_LOCKED",
   "canonicalSnapshot": {
     "domains": 22,
-    "activeModules": 355,
-    "maturityWeightedPct": 43.5
+    "activeModules": 356,
+    "maturityWeightedPct": 43.4
   },
   "parentAudit": "shared-knowledge/CURRICULUM_COVERAGE_AUDIT_20261003_V0_1.md",
   "specialistPacket": "shared-knowledge/CURRICULUM_COVERAGE_A_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
@@ -87,7 +87,7 @@
     {
       "id": "COV-03",
       "room": "05｜法人與籌碼研究室",
-      "state": "OWNER_APPROVAL_REQUIRED"
+      "state": "CANONICAL_UPDATE_COMPLETE"
     },
     {
       "id": "COV-05",
@@ -123,7 +123,7 @@
       "domain": "D06",
       "room": "05｜法人與籌碼研究室",
       "class": "TRUE_GAP_CANDIDATE",
-      "state": "OWNER_APPROVAL_REQUIRED",
+      "state": "CANONICAL_UPDATE_COMPLETE",
       "returnPath": "research/COV03_D06_SPECIALIST_RETURN_V0_1.md"
     },
     {
@@ -172,14 +172,13 @@
       "COV-04",
       "COV-05"
     ],
-    "ownerApprovalRequired": [
-      "COV-03"
-    ],
+    "ownerApprovalRequired": [],
     "canonicalUpdateComplete": [
+      "COV-03",
       "COV-04",
       "COV-05"
     ],
-    "canonicalImpact": "COV04_ADDED_D07_34_COV05_EXTENDED_D08_06"
+    "canonicalImpact": "COV03_ADDED_D06_19_COV04_ADDED_D07_34_COV05_EXTENDED_D08_06"
   },
   "pendingEvidenceDeficitMatrix": "shared-knowledge/CURRICULUM_COVERAGE_PENDING_EVIDENCE_DEFICIT_MATRIX_20261003_V0_1.md",
   "pendingDeficitSummary": {
@@ -198,7 +197,7 @@
   "governanceStateMachineJson": "shared-knowledge/curriculum_coverage_governance_state_machine_v0_1.json",
   "governanceStateMachineVersion": "CURRICULUM_COVERAGE_STATE_MACHINE_V0_1",
   "canonicalSnapshotSource": "research/stock_market_learning_tracker_v0_1.json",
-  "canonicalSnapshotSourceUpdatedAt": "2026-10-04T10:14:00+08:00",
+  "canonicalSnapshotSourceUpdatedAt": "2026-10-04T11:09:00+08:00",
   "canonicalSnapshotReconciliation": "shared-knowledge/CURRICULUM_COVERAGE_CANONICAL_SNAPSHOT_RECONCILIATION_20261003_V0_1.md",
   "coverageReturnValidator": "research/curriculum_coverage_return_validator_v0_1.mjs",
   "coverageReturnValidatorTest": "tests/test_curriculum_coverage_return_validator_v0_1.mjs",
@@ -208,11 +207,11 @@
   "latestIntakeAudit": "shared-knowledge/CURRICULUM_COVERAGE_COV03_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md",
   "latestIntakeAuditJson": "shared-knowledge/curriculum_coverage_cov03_intake_dependency_audit_20261004_v0_1.json",
   "latestPreflightReceipt": "research/curriculum_coverage_intake_preflight_receipt_20261004_v0_2.json",
-  "canonicalSnapshotNote": "Latest tracker snapshot read during COV-03 governance audit. COV-03 has no canonical structural impact until explicit owner approval.",
-  "canonicalUpdateReceipt": "shared-knowledge/CURRICULUM_COV04_COV05_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md",
-  "canonicalUpdateReceiptJson": "shared-knowledge/curriculum_cov04_cov05_canonical_update_receipt_20261004_v0_1.json",
+  "canonicalSnapshotNote": "Owner-approved COV-03 canonical update completed; tracker remains authoritative.",
+  "canonicalUpdateReceipt": "shared-knowledge/CURRICULUM_COV03_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md",
+  "canonicalUpdateReceiptJson": "shared-knowledge/curriculum_cov03_canonical_update_receipt_20261004_v0_1.json",
   "cov03": {
-    "state": "OWNER_APPROVAL_REQUIRED",
+    "state": "CANONICAL_UPDATE_COMPLETE",
     "terminalRecommendation": "ADD_MODULE",
     "proposedModuleId": "D06-19",
     "proposedName": "Retail / Individual Investor Participation & Flow（散戶／自然人參與與流向）",
@@ -221,6 +220,15 @@
     "audit": "shared-knowledge/CURRICULUM_COVERAGE_COV03_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md",
     "machineAudit": "shared-knowledge/curriculum_coverage_cov03_intake_dependency_audit_20261004_v0_1.json",
     "maturityConflictResolution": "CANONICAL_L0_0_SUPERSEDES_SUPPORTING_L1_20_FOR_STRUCTURAL_EXECUTION",
-    "formalCoreImpact": "NONE_LOCKED"
-  }
+    "formalCoreImpact": "NONE_LOCKED",
+    "canonicalModuleId": "D06-19",
+    "canonicalStartingLevel": "L0",
+    "canonicalStartingMaturityPct": 0,
+    "ownerApprovalAt": "2026-10-04T11:09:00+08:00",
+    "canonicalUpdateAt": "2026-10-04T11:09:00+08:00"
+  },
+  "canonicalUpdateReceipts": [
+    "shared-knowledge/CURRICULUM_COV04_COV05_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md",
+    "shared-knowledge/CURRICULUM_COV03_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md"
+  ]
 }
