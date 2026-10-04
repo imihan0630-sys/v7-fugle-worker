@@ -48,5 +48,21 @@
   "maturityDecision": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
   "l4Requirement": "Post-freeze prospective narrative parents across independent dates with frozen topic/stance model, event/news controls, actor de-duplication and later outcome joins.",
   "formalOptimizationCandidate": "NONE",
-  "formalCore": "LOCKED"
+  "formalCore": "LOCKED",
+  "privacyGuard": {
+    "rule": "Narrative diffusion is evaluated at aggregate topic/thread/time-bucket level. Public handles may be used transiently for distinct-participant deduplication only; no persistent individual influence or psychology profile is produced.",
+    "durableDerivedFields": [
+      "distinctActorCount",
+      "topicState",
+      "stanceHistogram",
+      "diffusionTransitionCounts",
+      "narrativeHalfLife",
+      "snapshotFingerprint"
+    ],
+    "prohibitedDerivedFields": [
+      "namedUserInfluenceRank",
+      "namedUserPersuasionScore",
+      "namedUserPsychologyProfile"
+    ]
+  }
 }
