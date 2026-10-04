@@ -176,3 +176,34 @@ Exact next continuation point for 00:
 H01 canonical receipts:
 - `shared-knowledge/CURRICULUM_H01_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md`
 - `shared-knowledge/curriculum_h01_canonical_update_receipt_20261004_v0_1.json`
+
+
+## COV-02 governance milestone — 2026-10-04 Asia/Taipei
+
+00-room found the formal Room04 return at:
+- `research/COV_02_CLOSING_AUCTION_SPECIALIST_RETURN_20261004_V0_1.md`
+- `research/cov_02_closing_auction_specialist_return_20261004_v0_1.json`
+
+The older registry path was stale; the formal return itself is complete.
+
+Canonical audit:
+- `shared-knowledge/CURRICULUM_COVERAGE_COV02_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md`
+- `shared-knowledge/curriculum_coverage_cov02_intake_dependency_audit_20261004_v0_1.json`
+
+Decision:
+- `EXTEND_EXISTING_SCOPE → D05-06` survives formal Intake, Dependency Audit, overlap recheck, PIT/replay recheck, anti-double-count and anti-orphan review;
+- proposed canonical name = **Opening / Closing Auction & Auction Imbalance（開收盤集合競價與競價不平衡）**;
+- no new module;
+- no maturity promotion;
+- missing historical pre-close imbalance remains UNKNOWN;
+- no independent auction directional vote;
+- Formal Core remains LOCKED.
+
+Current state: **OWNER_APPROVAL_REQUIRED**.
+
+Exact next continuation point:
+1. obtain explicit owner approval or rejection for the D05-06 scope/name extension;
+2. if approved, re-read latest main and atomically update tracker + Learning Map/Router + Shared Master + Coverage registries;
+3. preserve D05-06 maturity unchanged by the structural action;
+4. record a canonical update receipt and verify no System1/System2 Formal/runtime change;
+5. if rejected, preserve the audit and close or revise scope without canonical mutation.
