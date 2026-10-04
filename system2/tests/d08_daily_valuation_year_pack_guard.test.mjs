@@ -11,7 +11,7 @@ assert.doesNotMatch(s,/createRemoteD1RestAdapter|s2_outcome|Worker\.js|return ou
 assert.match(w,/environment: system2-research/);
 assert.match(w,/year: \[2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026\]/);
 assert.match(w,/max-parallel: 2/);
-assert.match(w,/D08_YEAR: "\\$\{\{ matrix\.year \}\}"/);
+assert.match(w,/D08_YEAR: "\$\{\{ matrix\.year \}\}"/);
 assert.match(w,/SYSTEM2_R2_ACCESS_KEY_ID/);
 assert.doesNotMatch(w,/wrangler.*deploy|V7_DB|STOCKS_KV|PUSH_WEBHOOK_URL|FUGLE_API_KEY/i);
 console.log(JSON.stringify({ok:true,guard:"D08_DAILY_VALUATION_YEAR_PACK_CAPTURE",fullArchiveYears:"2005-2026"}));
