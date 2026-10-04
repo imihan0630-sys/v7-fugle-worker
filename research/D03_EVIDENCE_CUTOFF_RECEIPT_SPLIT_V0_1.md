@@ -56,7 +56,12 @@ The transform receipt must bind:
 - the exact same `evidenceCutId`;
 - `derivedOnlyFromEvidenceCut=true`;
 - `postCutSourceFactCount=0`;
-- transform-input manifest hash exactly equal to the source-cut manifest hash.
+- an explicit evidence-cut manifest reference equal to the market-wide source-cut manifest hash;
+- a separate symbol-transform input manifest hash;
+- a hashed set of source-fact references;
+- zero unbound source facts.
+
+The market-wide source-cut manifest and the symbol-specific transform-input manifest are intentionally **not** required to be equal. They live at different provenance layers.
 
 ## TI-663 — every delivered bar remains bounded by the evidence cut
 
@@ -94,7 +99,8 @@ The fixture must prove:
 - wrong evidence-cut identity blocks;
 - post-cut source fact blocks;
 - source bar fetched after evidence cutoff blocks;
-- manifest mismatch blocks;
+- wrong evidence-cut manifest reference blocks;
+- unbound source facts block;
 - valid Bollinger v0.2 remains valid;
 - valid canonical ADX v0.2 remains valid.
 
