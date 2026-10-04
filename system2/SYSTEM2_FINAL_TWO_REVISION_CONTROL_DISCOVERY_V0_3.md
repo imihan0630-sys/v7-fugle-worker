@@ -60,3 +60,22 @@ Always false:
 - noEventMayBeClaimed;
 - technicalContinuityCertified;
 - all trading authority.
+
+## 2026-10-04 physical V0.3 acceptance
+
+PR #528 merged as `a0b0fbb26a4038e1f986a106ef92422a946ecfd2`.
+
+Checks:
+- Final Two Representative Revision Control Discovery Readonly `37196151989`: PASS.
+- System2 Research CI `37196151886`: PASS.
+- V8 Regression `37196151868`: PASS.
+
+Result:
+- TWSE par-value 2010..2019 official endpoint returned 0 events / 0 candidates;
+- prior TWSE par-value 2020..2026 complete official candidate set had already been negative;
+- TPEx ex-right/dividend deterministic 48-candidate year-wide sample after the prior first 24 was also negative;
+- positiveCandidateCount=0.
+
+This negative result changed the research path:
+- TWSE par-value should use alternate official issuer/regulator/exchange evidence discovery rather than repeating the same final-result candidate scan;
+- TPEx ex-right/dividend moved to targeted correction-event discovery, which later found 5356.
