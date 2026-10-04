@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "CURRICULUM_H09_DEPENDENCY_ANTI_ORPHAN_AUDIT_V0_1",
+  "date": "2026-10-04",
+  "auditBaseMain": "22ec18c06bd0926c2e174a6fc5700f995d3cd13c",
+  "clusterId": "H09",
+  "modules": [
+    "D16-19",
+    "D16-25"
+  ],
+  "sourceRoom": "11｜統計驗證與策略市場狀態研究室",
+  "acceptedEvidence": [
+    "research/D16_16_19_MODEL_VALIDATION_CLUSTER_20261004_V0_1.md",
+    "research/D16_D18_VALIDATION_CHECKPOINT.md",
+    "research/D16_25_D15_19_MERGE_DECISION_INPUT_V0_1.md"
+  ],
+  "specialistEvidenceMode": "EQUIVALENT_COMPLETE_ROOM11_EVIDENCE",
+  "terminalClassification": "KEEP_SEPARATE",
+  "governanceDisposition": "SCOPE_DEDUP_ONLY",
+  "dependencyAudit": "PASS_PRODUCER_CONSUMER_INTERFACE",
+  "antiDoubleCount": "PASS_SINGLE_CALIBRATION_AUTHORITY",
+  "antiOrphan": "PASS_NO_ORPHAN",
+  "proposedOwnership": {
+    "D16-19": "MODEL_ESTIMATION_CALIBRATION_IMPLEMENTATION_AND_DIAGNOSTICS_PRODUCER",
+    "D16-25": "CALIBRATED_BELIEF_DECISION_POLICY_UNCERTAINTY_UTILITY_ABSTAIN_CONSUMER"
+  },
+  "maturity": {
+    "D16-19": {
+      "level": "L2",
+      "maturityPct": 40,
+      "change": "NONE"
+    },
+    "D16-25": {
+      "level": "L2",
+      "maturityPct": 40,
+      "change": "NONE"
+    }
+  },
+  "renameRequired": false,
+  "moduleCountChange": 0,
+  "structuralScopeWordingChange": true,
+  "ownerApprovalRequired": true,
+  "state": "OWNER_APPROVAL_REQUIRED",
+  "formalCoreImpact": "NONE_LOCKED"
+}
