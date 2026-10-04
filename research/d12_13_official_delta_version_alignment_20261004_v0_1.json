@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "0.1",
+  "id": "D12_13_OFFICIAL_DELTA_VERSION_ALIGNMENT_20261004",
+  "room": "09｜衍生品與國際總經研究室",
+  "module": "D12-13",
+  "status": "OFFICIAL_DELTA_RAW_VERSION_IDENTITY_VERIFIED__DIRECT_20261002_COMPARISON_BLOCKED_BY_EFFECTIVE_DATE_MISMATCH__OUTCOMES_CLOSED",
+  "observedAt": "2026-10-04T19:25:03+08:00",
+  "source": {
+    "url": "https://www.taifex.com.tw/cht/3/optDailyDeltaExcel?scd_kind_id=TXO",
+    "laterRetrievedRawSha256": "a5a91485b332c246e451494550b389d9c629746b650e15645f93e4fec8307e10",
+    "byteCount": 1261436,
+    "publicationText": "2026-10-02 04:39:21 PM",
+    "txoOccurrenceCount": 2872,
+    "containsClockNotes": true,
+    "rawPersisted": false,
+    "workflowRunId": 37198661765,
+    "workflowJobId": 111425401634
+  },
+  "frozenClockContractRef": "research/d12_13_taifex_daily_delta_clock_semantics_v0_1.json",
+  "effectiveDateAssessment": {
+    "publicationVersion": "AFTERNOON_NEXT_SESSION_V2",
+    "publicationDate": "2026-10-02",
+    "publicationTimeAsiaTaipei": "16:39:21",
+    "officialSemantic": "NEXT_BUSINESS_DAY",
+    "nextBusinessDay": "2026-10-05",
+    "sameDayOptionParentDate": "2026-10-02",
+    "directSameSeriesComparisonState": "BLOCKED_BY_EFFECTIVE_DATE_VERSION_MISMATCH"
+  },
+  "falsification": [
+    "A later-retrieved page hash can identify the current historical afternoon file but does not reconstruct the overwritten 06:45 same-day version.",
+    "Comparing 2026-10-02 regular-session option quotes with the 16:39 next-business-day Delta would confound model/input differences with an effective-date mismatch.",
+    "A numerical own-vs-official Delta error must remain UNKNOWN until both series share effective trading date, contract identity, quote/model clock and source version."
+  ],
+  "permittedNextComparisons": [
+    "If an immutable 2026-10-02 06:45 same-day Delta version is recovered with source identity, compare against appropriately aligned 2026-10-02 option inputs.",
+    "Otherwise after 2026-10-05 data exist, compare the preserved 2026-10-02 16:39 next-session official Delta against aligned 2026-10-05 inputs, with new-series coverage flagged."
+  ],
+  "maturityDecision": "D12-13 remains L2/40; source/version semantics improved but aligned multi-date PIT comparison is not yet available.",
+  "formalCoreImpact": "NONE",
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
