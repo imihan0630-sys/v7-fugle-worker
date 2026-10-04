@@ -7,6 +7,12 @@ const newListedPageUrl=base+"/zh-tw/mainboard/applying/status/new-listed.html";
 const currentUrl=base+"/openapi/v1/mopsfin_t187ap03_O";
 const delistedApiBase=base+"/www/zh-tw/company/deListed";
 const applicantApiBase=base+"/www/zh-tw/company/applicantStat";
+const applicantDownloadCandidates=[
+  base+"/www/zh-tw/company/applicantStatDl?type=list&date=2026",
+  base+"/www/zh-tw/company/applicantStatDl?type=list&date=2025",
+  base+"/www/zh-tw/company/applicantStatDl?type=list&date=2024",
+  base+"/www/zh-tw/company/applicantStatDl?type=list&date=2023",
+];
 const applicantApiCandidates=[
   applicantApiBase,
   applicantApiBase+"?date=2026",
@@ -68,6 +74,8 @@ function snippets(text,terms){
 }
 
 const currentRaw=await fetchRaw(currentUrl);
+const applicantDownloadResults=[];
+for(const url of applicantDownloadCandidates)applicantDownloadResults.push(summarize(await fetchRaw(url)));
 const applicantApiResults=[];
 for(const url of applicantApiCandidates)applicantApiResults.push(summarize(await fetchRaw(url)));
 const delistedApiResults=[];
@@ -104,6 +112,7 @@ console.log(JSON.stringify({
   currentProfile:summarize(currentRaw),
   delistedApiResults,
   applicantApiResults,
+  applicantDownloadResults,
   delistedPage:summarize(pageRaw),
   newListedPage:summarize(newListedPageRaw),
   newListedPageHints,
