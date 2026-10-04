@@ -719,3 +719,38 @@ Exact next continuation:
 3. accept COV01/08/09 formal specialist returns immediately when they appear;
 4. keep COV07/H12/COV12/AOKD05 fail-closed at their exact evidence gates;
 5. never promote maturity from governance bookkeeping alone.
+
+
+## Coverage generic-pending elimination — 2026-10-04 evening
+
+00-room completed the Coverage evidence-specific reconciliation.
+
+COV-12 moved:
+`PENDING_SPECIALIST_RETURN → PARTIAL_EVIDENCE_RECEIVED`.
+
+Accepted COV-12 evidence:
+- D22-07 covenant/default/liquidity replay;
+- D22-12 distress/recovery contract;
+- D22-12 default/recovery source-route readiness.
+
+Exact COV-12 blocker:
+`INSTRUMENT_LEVEL_SENIORITY_COLLATERAL_RECOVERY_WATERFALL_REPLAY_PENDING`.
+
+Coverage now has **zero generic pending candidates**:
+- canonical complete: COV-02/03/04/05;
+- evidence-specific partial: COV-01/06/07/08/09/10/11/12.
+
+Return-ready partials:
+- COV-01;
+- COV-08;
+- COV-09.
+
+Other partials have exact source/owner blockers and are routed to their specialist rooms.
+
+No bookkeeping action changed maturity, module count or Formal Core.
+
+Exact next non-blocking continuation:
+1. watch latest main for COV01/08/09 formal specialist returns and intake immediately when committed;
+2. watch H12 / COV07 / COV12 / AOKD05 source receipts;
+3. continue only evidence-specific specialist routing; do not re-expand generic research;
+4. owner-approval gates H04 / H10 / H11 remain protected until explicit owner decision.
