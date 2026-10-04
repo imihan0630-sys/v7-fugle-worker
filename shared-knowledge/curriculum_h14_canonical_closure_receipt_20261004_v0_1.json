@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "CURRICULUM_H14_CANONICAL_CLOSURE_RECEIPT_V0_1",
+  "date": "2026-10-04",
+  "clusterId": "H14",
+  "state": "CLOSED_NO_STRUCTURAL_CHANGE",
+  "terminalClassification": "KEEP_SEPARATE",
+  "governanceDisposition": "PRODUCER_CONSUMER_EVENT_FLOW_BOUNDARY",
+  "eventOwner": "D11-14",
+  "realizedFlowOwner": "D06-11",
+  "mechanicsDependency": "D06-16",
+  "antiDoubleCount": "ONE_EVENT_RECEIPT_PLUS_RESIDUAL_REALIZED_FLOW_ONLY",
+  "maturityChange": "NONE",
+  "moduleCountChange": 0,
+  "ownerApprovalRequired": false,
+  "formalCoreImpact": "NONE_LOCKED"
+}
