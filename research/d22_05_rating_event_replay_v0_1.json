@@ -1,6 +1,6 @@
 {
   "schemaVersion": "D22_05_RATING_EVENT_REPLAY_V0_1",
-  "generatedAt": "2026-10-04T21:01:00+08:00",
+  "generatedAt": "2026-10-04T21:11:00+08:00",
   "status": "RESEARCH_ONLY / EXPANDED_MULTI_ISSUER_MULTI_DATE_RATING_EVENT_REPLAY / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "governance": {
     "issuerRatingSeparateFromIssueRating": true,
@@ -536,6 +536,90 @@
       "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585",
       "eventEvidence": "Outlook revised to Stable from Negative on improving leverage; ratings affirmed.",
       "informationContent": "Outlook normalization."
+    },
+    {
+      "issuer": "Pegatron",
+      "twseSymbol": "4938",
+      "industry": "electronics_manufacturing",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2021-01-21",
+      "priorState": {
+        "longTerm": "twAA-",
+        "outlook": "Negative",
+        "shortTerm": "twA-1+"
+      },
+      "newState": {
+        "longTerm": "twAA-",
+        "outlook": "Stable",
+        "shortTerm": "twA-1+"
+      },
+      "eventType": "OUTLOOK_UP",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5248",
+      "eventEvidence": "Issuer rating history moved from Negative to Stable outlook with unchanged ratings.",
+      "informationContent": "Outlook normalization without notch change."
+    },
+    {
+      "issuer": "Pegatron",
+      "twseSymbol": "4938",
+      "industry": "electronics_manufacturing",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2026-01-29",
+      "priorState": {
+        "longTerm": "twAA-",
+        "outlook": "Stable",
+        "shortTerm": "twA-1+"
+      },
+      "newState": {
+        "longTerm": "twAA-",
+        "outlook": "Negative",
+        "shortTerm": "twA-1+"
+      },
+      "eventType": "OUTLOOK_DOWN",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5248",
+      "eventEvidence": "Outlook revised to Negative on weaker profitability; ratings affirmed.",
+      "informationContent": "New negative episode after prior stable state."
+    },
+    {
+      "issuer": "Wiwynn",
+      "twseSymbol": "6669",
+      "industry": "server_electronics",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2021-08-24",
+      "priorState": {
+        "longTerm": "twA",
+        "outlook": "Stable",
+        "shortTerm": "twA-1"
+      },
+      "newState": {
+        "longTerm": "twA",
+        "outlook": "Negative",
+        "shortTerm": "twA-1"
+      },
+      "eventType": "OUTLOOK_DOWN",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5141",
+      "eventEvidence": "Outlook revised to Negative from Stable on rising debt leverage at parent; ratings affirmed.",
+      "informationContent": "Negative outlook without notch change."
+    },
+    {
+      "issuer": "Wiwynn",
+      "twseSymbol": "6669",
+      "industry": "server_electronics",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2023-08-22",
+      "priorState": {
+        "longTerm": "twA",
+        "outlook": "Negative",
+        "shortTerm": "twA-1"
+      },
+      "newState": {
+        "longTerm": "twA",
+        "outlook": "Stable",
+        "shortTerm": "twA-1"
+      },
+      "eventType": "OUTLOOK_UP",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5141",
+      "eventEvidence": "Outlook revised to Stable from Negative on deleveraging; ratings affirmed.",
+      "informationContent": "Outlook normalization."
     }
   ],
   "falsificationFindings": [
@@ -556,9 +640,9 @@
     "Do not open equity outcomes until >=20 mature independent paired dates remain after baseline pairing and event clustering."
   ],
   "panelExpansion": {
-    "appendedThisRound": 17,
-    "totalEventReceipts": 25,
-    "eventIndependence": "EPISODE_CLUSTER_REVIEW_PENDING",
+    "appendedThisRound": 21,
+    "totalEventReceipts": 29,
+    "eventIndependence": "EPISODE_CLUSTER_REVIEW_REQUIRED_AFTER_APPEND",
     "baselinePairing": "NOT_YET_FROZEN",
     "outcomes": "CLOSED"
   }
