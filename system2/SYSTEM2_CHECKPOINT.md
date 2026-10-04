@@ -1166,3 +1166,13 @@ It does **not** yet satisfy the supplemental revision-history completeness contr
 5. only after the supplemental contract is complete may the six-lane revision coverage receipt be reconsidered.
 
 System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
+
+
+## 2026-10-04 D19 factor-layer receipt adapter V0.1
+- Research-only PR #439 merged as `76f5ef80dbf0654a033a0a780b065ebfabbf0e30`.
+- Added deterministic D19 factor-layer receipt builders: universe -> return -> factorInput -> neutralization -> cost -> replay.
+- Receipt-chain completeness is explicitly separate from D19 L3 research eligibility; explicit blockers prevent engineering completeness from becoming an automatic maturity promotion.
+- System2 Research CI `37165603677` PASS and V8 Regression `37165603710` PASS.
+- Real official-source smoke `37165603790` PASS_NEGATIVE_L3_GATE with production isolation PASS. TWSE 2026-08-03..2026-08-31 produced a complete bounded 2330/2454 receipt chain; TPEx primary and legacy historical transports both returned HTTP 520 and were preserved as source-unavailable rather than imputed.
+- Remaining D19 L3 blockers: historical-registry universe denominator, corporate-action continuity, industry neutralization, D03/D09 redundancy, cost provenance, and current TPEx source availability.
+- No selection authority, Formal Core, System1 runtime, production, capital, push, Cron or live behavior changed.
