@@ -611,3 +611,33 @@ Exact next 00 continuation:
 4. COV-01/06/07/08/09/10/11 retain their existing specialist deltas; do not invent formal returns.
 5. AOKD-05 remains corpus-feasibility gated; H11/H12 remain at their explicit data gates.
 6. Closed clusters remain closed absent contradictory evidence.
+
+
+## H11 terminal return reconciliation — 2026-10-04 evening
+
+Latest main contains the previously missing H11 terminal specialist return:
+`research/d12_h11_common_parent_residual_return_20261004_v0_1.json`.
+
+The common-parent residual test is complete:
+- one official TAIFEX option-chain parent with preserved hashes;
+- identical strike support;
+- D12-07 simple skew/term baseline;
+- D12-16 residual curvature/surface fit;
+- rate sensitivity;
+- source-hash-attested divergent states;
+- outcomes remain closed.
+
+00 audit:
+`shared-knowledge/CURRICULUM_H11_DEPENDENCY_SCOPE_DEDUP_AUDIT_20261004_V0_1.md`.
+
+Decision:
+`KEEP_SEPARATE / SCOPE_DEDUP_ONLY`.
+
+Current state:
+`OWNER_APPROVAL_REQUIRED`.
+
+If approved:
+- D12-07 owns simple skew/term baselines;
+- D12-16 owns residual curvature/surface-quality semantics;
+- both remain L2/40%;
+- names/count/aggregate maturity/Formal/runtime unchanged.
