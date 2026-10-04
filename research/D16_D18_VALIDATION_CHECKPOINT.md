@@ -1776,3 +1776,40 @@ FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 Formal Core: LOCKED.
 
 Exact next: return COV-08 to 00 control-plane intake as specialist-complete; Room 11 then resumes the active empirical sequence without redoing COV-08. Highest-value evidence path is the first genuine complete C1 Taiwan PIT decision population for D16-19/D16-25 calibration validation, while continuing prospective D18 observable-regime / D18-08 activation-frame accumulation. No D16 L3 or D18 L4 is permitted from methodology alone.
+
+
+## 2026-10-05 D16-19 / D16-25 first genuine C1 probability experiment — preregistered
+
+Canonical evidence:
+- `research/D16_19_25_C1_PROBABILITY_PREREG_20261005_V0_1.md`;
+- `research/EXPERIMENT_REGISTRY.md` entry `D16-CAL-01`.
+
+Status:
+`PREREGISTERED_BEFORE_FIRST_GENUINE_C1_OUTCOME / RESEARCH_ONLY / NO_MATURITY_CHANGE`.
+
+Frozen first experiment:
+- parent population is the genuine immutable complete C1 generation, not selected-only and not bounded Shadow;
+- prediction-eligible rows are all Formal-qualified C1 rows with finite post-consensus `actualRankingTuple.priorityScore`;
+- first binary target is exact official-session D+5 reference-close positive price return, with symbol/session/corporate-action ambiguity -> UNKNOWN;
+- first baseline is Beta(1,1) historical base-rate, updated only with labels matured before the current decision;
+- first challenger is a one-dimensional non-negative-slope logistic mapping of `priorityScore`; the other five formal rank fields and Regime inputs are excluded from V0.1;
+- fewer than 20 independent matured dates => base-rate-only cold start;
+- 20–39 independent matured dates => exploratory prospective score fitting only;
+- primary validation eligibility requires at least 40 effective independent dates plus dependence/episode/dominance/coverage gates;
+- primary OOS comparison is same-date mean Brier/log-loss difference with equal date weighting;
+- full-population prediction coverage and matured-label coverage are separate denominators;
+- immutable predict-then-update timing is mandatory; later labels cannot mutate earlier predictions.
+
+Research rationale:
+- proper scores combine calibration and discrimination, so lower Brier alone is not a pure calibration proof;
+- post-hoc calibrators can worsen probability quality, therefore V0.1 does not search Platt/isotonic/Beta variants;
+- temporal distribution shift requires predict-then-update timing, not future-aware recalibration;
+- no universal stock-row sample threshold is accepted as a substitute for independent dates / episodes.
+
+D16-19 remains L2/40.
+D16-25 remains L2/40.
+D16 domain maturity remains 60%.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core: LOCKED.
+
+Exact next: do not invent historical C1 predictions. On the first genuine post-V8.17 trading-session C1 generation, verify the immutable parent plus complete qualified priorityScore coverage, then freeze the first prospective base-rate PredictionReceipt before any D+5 outcome. Continue daily receipts; fit the score challenger only after the preregistered support gate is genuinely reached. In parallel, D18 prospective context/activation receipts may continue accumulating, but no D18 L4 follows from this D16 preregistration.
