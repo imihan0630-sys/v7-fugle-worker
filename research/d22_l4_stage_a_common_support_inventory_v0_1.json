@@ -1,7 +1,7 @@
 {
   "schemaVersion": "D22_L4_STAGE_A_COMMON_SUPPORT_INVENTORY_V0_1",
-  "generatedAt": "2026-10-04T20:55:00+08:00",
-  "status": "OUTCOME_BLIND / COMMON_SUPPORT_INVENTORY / BASELINES_NOT_YET_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "generatedAt": "2026-10-04T21:03:00+08:00",
+  "status": "OUTCOME_BLIND / D22-05_CHALLENGER_GATE_PASSED / BASELINE_PAIRING_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "preregFile": "research/d22_l4_stage_a_incremental_value_prereg_v0_1.json",
   "rules": {
     "moduleSpecificMinimum": "Minimum 20 mature independent paired issuer-dates is evaluated per module lane; dates cannot be pooled across modules to satisfy the threshold.",
@@ -12,60 +12,74 @@
     "outcomes": "No return/MFE/MAE labels are joined in this inventory."
   },
   "counts": {
-    "rawReceipts": 37,
-    "exactChallengerReceipts": 31,
-    "globalUniqueExactIssuerDates": 23,
+    "rawReceipts": 58,
+    "exactChallengerReceipts": 52,
+    "globalUniqueExactIssuerDates": 44,
     "maturePairedDatesAcrossAllLanes": 0,
-    "note": "Global unique dates are descriptive only and cannot satisfy a per-module minimum."
+    "note": "Global unique dates are descriptive only and cannot satisfy a per-module minimum. D22-05 has passed the challenger-side episode count gate but has zero mature paired dates until B0/B1 baseline pairing is frozen."
   },
   "byModule": {
     "D22-01": {
       "totalReceipts": 3,
       "exactChallengerDates": 1,
-      "maturePairedDates": 0,
+      "independentEpisodes": null,
+      "challengerSideGatePassed": false,
       "baselineFrozenDates": 0,
+      "maturePairedDates": 0,
       "status": "ACCUMULATING_BASELINE_PAIRING"
     },
     "D22-02": {
       "totalReceipts": 4,
       "exactChallengerDates": 2,
-      "maturePairedDates": 0,
+      "independentEpisodes": null,
+      "challengerSideGatePassed": false,
       "baselineFrozenDates": 0,
+      "maturePairedDates": 0,
       "status": "ACCUMULATING_BASELINE_PAIRING"
     },
     "D22-03": {
       "totalReceipts": 5,
       "exactChallengerDates": 4,
-      "maturePairedDates": 0,
+      "independentEpisodes": null,
+      "challengerSideGatePassed": false,
       "baselineFrozenDates": 0,
+      "maturePairedDates": 0,
       "status": "ACCUMULATING_BASELINE_PAIRING"
     },
     "D22-05": {
-      "totalReceipts": 8,
-      "exactChallengerDates": 8,
-      "maturePairedDates": 0,
+      "totalReceipts": 29,
+      "exactChallengerDates": 29,
+      "independentEpisodes": 22,
+      "challengerSideGatePassed": true,
       "baselineFrozenDates": 0,
-      "status": "ACCUMULATING_BASELINE_PAIRING"
+      "maturePairedDates": 0,
+      "status": "CHALLENGER_SIDE_GATE_PASSED / BASELINE_PAIRING_PENDING"
     },
     "D22-07": {
       "totalReceipts": 6,
       "exactChallengerDates": 6,
-      "maturePairedDates": 0,
+      "independentEpisodes": null,
+      "challengerSideGatePassed": false,
       "baselineFrozenDates": 0,
+      "maturePairedDates": 0,
       "status": "ACCUMULATING_BASELINE_PAIRING"
     },
     "D22-08": {
       "totalReceipts": 5,
       "exactChallengerDates": 4,
-      "maturePairedDates": 0,
+      "independentEpisodes": null,
+      "challengerSideGatePassed": false,
       "baselineFrozenDates": 0,
+      "maturePairedDates": 0,
       "status": "ACCUMULATING_BASELINE_PAIRING"
     },
     "D22-10": {
       "totalReceipts": 6,
       "exactChallengerDates": 6,
-      "maturePairedDates": 0,
+      "independentEpisodes": null,
+      "challengerSideGatePassed": false,
       "baselineFrozenDates": 0,
+      "maturePairedDates": 0,
       "status": "ACCUMULATING_BASELINE_PAIRING"
     }
   },
@@ -88,7 +102,7 @@
       "accountingBasis": "IFRS_ISSUED_BY_IASB_20F",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -120,7 +134,7 @@
       "accountingBasis": "TAIWAN_FSC_ENDORSED_IFRS",
       "exactKnownAt": false,
       "sourceEligibility": "EXCLUDE_FROM_MATURE_PAIR_UNTIL_FIRST_PUBLIC_TIME_PROVEN",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -152,7 +166,7 @@
       "accountingBasis": "TAIWAN_FSC_ENDORSED_IFRS",
       "exactKnownAt": false,
       "sourceEligibility": "EXCLUDE_FROM_MATURE_PAIR_UNTIL_FIRST_PUBLIC_TIME_PROVEN",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -184,7 +198,7 @@
       "accountingBasis": "TAIWAN_FSC_ENDORSED_IFRS",
       "exactKnownAt": false,
       "sourceEligibility": "EXCLUDE_FROM_MATURE_PAIR_UNTIL_FIRST_PUBLIC_TIME_PROVEN",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -216,7 +230,7 @@
       "accountingBasis": "TAIWAN_FSC_ENDORSED_IFRS",
       "exactKnownAt": false,
       "sourceEligibility": "EXCLUDE_FROM_MATURE_PAIR_UNTIL_FIRST_PUBLIC_TIME_PROVEN",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -248,7 +262,7 @@
       "accountingBasis": "IFRS_ISSUED_BY_IASB_20F",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -280,7 +294,7 @@
       "accountingBasis": "IFRS_ISSUED_BY_IASB_20F",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -312,7 +326,7 @@
       "accountingBasis": "IFRS_ISSUED_BY_IASB_20F",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -345,7 +359,7 @@
       "accountingBasis": "TAIWAN_FSC_ENDORSED_IFRS",
       "exactKnownAt": false,
       "sourceEligibility": "EXCLUDE_FROM_MATURE_PAIR_UNTIL_FIRST_PUBLIC_TIME_PROVEN",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -378,7 +392,7 @@
       "accountingBasis": "IFRS_ISSUED_BY_IASB_20F",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -411,7 +425,7 @@
       "accountingBasis": "IFRS_ISSUED_BY_IASB_20F",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -444,7 +458,7 @@
       "accountingBasis": "TAIWAN_FSC_ENDORSED_IFRS_UNAUDITED_6K",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -470,14 +484,14 @@
       "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4921",
       "sourceVersion": {
         "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
-        "replaySha": "e56d1bdf4f78dc6e799d8dcc20f05fd631c36903",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
         "receiptIndex": 0
       },
       "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
       "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -503,14 +517,14 @@
       "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4921",
       "sourceVersion": {
         "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
-        "replaySha": "e56d1bdf4f78dc6e799d8dcc20f05fd631c36903",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
         "receiptIndex": 1
       },
       "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
       "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -536,14 +550,14 @@
       "sourceUrl": "https://www.taiwanratings.com/portal/front/viewMemberProfileArticle/23341",
       "sourceVersion": {
         "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
-        "replaySha": "e56d1bdf4f78dc6e799d8dcc20f05fd631c36903",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
         "receiptIndex": 2
       },
       "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
       "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -569,14 +583,14 @@
       "sourceUrl": "https://www.taiwanratings.com/portal/front/viewMemberProfileArticle/25130",
       "sourceVersion": {
         "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
-        "replaySha": "e56d1bdf4f78dc6e799d8dcc20f05fd631c36903",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
         "receiptIndex": 3
       },
       "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
       "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -602,14 +616,14 @@
       "sourceUrl": "https://www.taiwanratings.com/portal/front/viewMemberProfileArticle/25872",
       "sourceVersion": {
         "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
-        "replaySha": "e56d1bdf4f78dc6e799d8dcc20f05fd631c36903",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
         "receiptIndex": 4
       },
       "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
       "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -635,14 +649,14 @@
       "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5491",
       "sourceVersion": {
         "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
-        "replaySha": "e56d1bdf4f78dc6e799d8dcc20f05fd631c36903",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
         "receiptIndex": 5
       },
       "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
       "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -668,14 +682,14 @@
       "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4816",
       "sourceVersion": {
         "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
-        "replaySha": "e56d1bdf4f78dc6e799d8dcc20f05fd631c36903",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
         "receiptIndex": 6
       },
       "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
       "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -701,14 +715,707 @@
       "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4816",
       "sourceVersion": {
         "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
-        "replaySha": "e56d1bdf4f78dc6e799d8dcc20f05fd631c36903",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
         "receiptIndex": 7
       },
       "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
       "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Walsin Lihwa",
+      "symbol": "1605",
+      "decisionDate": "2022-08-09",
+      "periodEnd": null,
+      "industry": "industrial_materials",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5134",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 8
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Walsin Lihwa",
+      "symbol": "1605",
+      "decisionDate": "2023-08-24",
+      "periodEnd": null,
+      "industry": "industrial_materials",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5134",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 9
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Walsin Lihwa",
+      "symbol": "1605",
+      "decisionDate": "2024-08-29",
+      "periodEnd": null,
+      "industry": "industrial_materials",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5134",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 10
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Sinyi Realty",
+      "symbol": "9940",
+      "decisionDate": "2021-03-25",
+      "periodEnd": null,
+      "industry": "real_estate_services",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5468",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 11
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Sinyi Realty",
+      "symbol": "9940",
+      "decisionDate": "2023-03-29",
+      "periodEnd": null,
+      "industry": "real_estate_services",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5468",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 12
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Sinyi Realty",
+      "symbol": "9940",
+      "decisionDate": "2024-03-19",
+      "periodEnd": null,
+      "industry": "real_estate_services",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5468",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 13
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "TECO Electric & Machinery",
+      "symbol": "1504",
+      "decisionDate": "2024-02-27",
+      "periodEnd": null,
+      "industry": "electrical_machinery",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5458",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 14
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "TECO Electric & Machinery",
+      "symbol": "1504",
+      "decisionDate": "2026-02-23",
+      "periodEnd": null,
+      "industry": "electrical_machinery",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5458",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 15
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "China Steel",
+      "symbol": "2002",
+      "decisionDate": "2020-04-16",
+      "periodEnd": null,
+      "industry": "steel",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 16
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "China Steel",
+      "symbol": "2002",
+      "decisionDate": "2021-04-23",
+      "periodEnd": null,
+      "industry": "steel",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 17
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "China Steel",
+      "symbol": "2002",
+      "decisionDate": "2022-04-28",
+      "periodEnd": null,
+      "industry": "steel",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 18
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "China Steel",
+      "symbol": "2002",
+      "decisionDate": "2023-04-28",
+      "periodEnd": null,
+      "industry": "steel",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 19
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "China Steel",
+      "symbol": "2002",
+      "decisionDate": "2025-04-24",
+      "periodEnd": null,
+      "industry": "steel",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 20
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Asia Cement",
+      "symbol": "1102",
+      "decisionDate": "2020-09-28",
+      "periodEnd": null,
+      "industry": "cement_materials",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 21
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Asia Cement",
+      "symbol": "1102",
+      "decisionDate": "2021-09-28",
+      "periodEnd": null,
+      "industry": "cement_materials",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 22
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Asia Cement",
+      "symbol": "1102",
+      "decisionDate": "2023-09-26",
+      "periodEnd": null,
+      "industry": "cement_materials",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 23
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Asia Cement",
+      "symbol": "1102",
+      "decisionDate": "2024-09-23",
+      "periodEnd": null,
+      "industry": "cement_materials",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 24
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Pegatron",
+      "symbol": "4938",
+      "decisionDate": "2021-01-21",
+      "periodEnd": null,
+      "industry": "electronics_manufacturing",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5248",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 25
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Pegatron",
+      "symbol": "4938",
+      "decisionDate": "2026-01-29",
+      "periodEnd": null,
+      "industry": "electronics_manufacturing",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5248",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 26
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Wiwynn",
+      "symbol": "6669",
+      "decisionDate": "2021-08-24",
+      "periodEnd": null,
+      "industry": "server_electronics",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5141",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 27
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Wiwynn",
+      "symbol": "6669",
+      "decisionDate": "2023-08-22",
+      "periodEnd": null,
+      "industry": "server_electronics",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5141",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "08fcc0e620573a9ed70e17a30eda010c8949e946",
+        "receiptIndex": 28
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -741,7 +1448,7 @@
       "accountingBasis": null,
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -773,7 +1480,7 @@
       "accountingBasis": null,
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -805,7 +1512,7 @@
       "accountingBasis": null,
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -837,7 +1544,7 @@
       "accountingBasis": null,
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -869,7 +1576,7 @@
       "accountingBasis": null,
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -901,7 +1608,7 @@
       "accountingBasis": null,
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -933,7 +1640,7 @@
       "accountingBasis": null,
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -966,7 +1673,7 @@
       "accountingBasis": null,
       "exactKnownAt": false,
       "sourceEligibility": "EXCLUDE_FROM_MATURE_PAIR_UNTIL_FIRST_PUBLIC_TIME_PROVEN",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -999,7 +1706,7 @@
       "accountingBasis": null,
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -1032,7 +1739,7 @@
       "accountingBasis": null,
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -1065,7 +1772,7 @@
       "accountingBasis": null,
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -1098,7 +1805,7 @@
       "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -1132,7 +1839,7 @@
       "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -1166,7 +1873,7 @@
       "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -1200,7 +1907,7 @@
       "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -1234,7 +1941,7 @@
       "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -1268,7 +1975,7 @@
       "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
       "exactKnownAt": true,
       "sourceEligibility": "SOURCE_EXACT",
-      "baselineNeeds": [
+      "b0Needs": [
         "B0_D07_PIT",
         "B0_D13_PIT",
         "B0_INDUSTRY",
@@ -1284,5 +1991,13 @@
       "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
       "outcomeOpened": false
     }
-  ]
+  ],
+  "d22_05EpisodeCluster": {
+    "file": "research/d22_05_rating_episode_cluster_v0_1.json",
+    "sha": "1b3ddb92204c715c74f5e389ae2d392f559dc13b",
+    "rawEvents": 29,
+    "independentDirectionalEpisodes": 22,
+    "challengerSidePassed": true,
+    "maturePairedDates": 0
+  }
 }
