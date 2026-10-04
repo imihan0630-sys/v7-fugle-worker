@@ -1590,3 +1590,35 @@ Governance semantics:
 Initial correction queue contains no fabricated issues; directives will be added only when supported by evidence.
 
 This is governance/process infrastructure only. System 2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. No trading authority was enabled. System 1 Formal Core remains untouched.
+
+
+## 2026-10-04 parallel execution lane governance — ACTIVATED
+
+Owner approved a four-role System 2 operating structure to increase parallel throughput without over-fragmenting ownership:
+
+- BUILD_LANE — System 2｜建置總控室.
+- DATA_LANE — System 2｜歷史資料工程室.
+- REMEDIATION_LANE — System 2｜補強修復室.
+- AUDIT_LANE — independent correction/adviser room.
+
+Canonical lane governance:
+`system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
+
+Dedicated durable cursors:
+- `system2/SYSTEM2_HISTORICAL_DATA_CHECKPOINT.md`
+- `system2/SYSTEM2_REMEDIATION_CHECKPOINT.md`
+
+Routing classes:
+`LOCAL_FIX / BUILD_LANE / DATA_LANE / REMEDIATION_LANE / OWNER_DECISION_REQUIRED`.
+
+Key rule: severity and routing are separate. HIGH/CRITICAL does not automatically mean REMEDIATION_LANE. Ordinary local defects remain with the active module owner when handoff would increase context/merge cost.
+
+Concurrency rule:
+one conflict unit -> one active modification owner.
+
+Current correction routing:
+`S2-CORR-20261004-001` -> `DATA_LANE` -> `System 2｜歷史資料工程室`.
+
+The System 2 build room no longer owns every OPEN/HIGH correction by default. It must read the queue, respect blockers, execute only BUILD_LANE/LOCAL_FIX work assigned to it, and continue non-conflicting construction.
+
+No System 1 Formal Core, System 2 final-selection authority, capital/order behavior, production push or live trading authority is changed by this governance.
