@@ -79,12 +79,12 @@ Until that packet arrives:
 | H04 | PENDING | — | specialist packet(s) |
 | H05 | PARTIAL_EVIDENCE_RECEIVED | `research/h05_d07_25_specialist_evidence_packet_v0_1.json` | 14｜公司治理與內部人研究室 |
 | H06 | PARTIAL_EVIDENCE_RECEIVED | `research/d06_h06_crowding_vs_herding_room05_packet_v0_1.md` | 13｜行為金融與市場心理研究室 |
-| H07 | PENDING | — | specialist packet(s) |
+| H07 | PARTIAL_EVIDENCE_RECEIVED | `research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md` | 13｜行為金融與市場心理研究室 |
 | H08 | PENDING | — | specialist packet(s) |
 | H09 | OWNER_APPROVAL_REQUIRED | equivalent complete Room11 evidence | owner approval for SCOPE_DEDUP_ONLY |
 | H10 | PENDING | — | specialist packet(s) |
 | H11 | PENDING | — | specialist packet(s) |
-| H12 | PENDING | — | specialist packet(s) |
+| H12 | PARTIAL_EVIDENCE_RECEIVED | `research/d06_securities_lending_economics_h12_v0_1.md` + rule-vintage receipt | 10｜投組風控與交易執行研究室、13｜行為金融與市場心理研究室 |
 | H13 | PENDING | — | specialist packet(s) |
 | H14 | CLOSED_NO_STRUCTURAL_CHANGE | Room05 packet + Room08 equivalent PIT evidence | — |
 | H15 | PENDING | — | specialist packet(s) |
@@ -385,3 +385,47 @@ Maturity remains:
 - D16-25 L2/40%.
 
 No rename, count, maturity or Formal change before approval.
+
+
+## H07 intake — D03-05 Pullback/Reversal vs D20-09 Behavioral Overreaction
+
+Accepted Room03 evidence:
+`research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md`.
+
+What is closed on the D03 side:
+- observable pullback/reversal episode ownership;
+- PIT-safe daily parent + 15m causal state sequence;
+- confirmation clock;
+- failed-reversal states;
+- UNKNOWN origin allowed;
+- D03 does not infer behavioral overreaction from the price episode.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / ROOM13_COUNTERPART_REQUIRED`.
+
+Room13 must still prove D20-09 adds independent behavioral/event-expectation evidence beyond price reversal and falsifies microstructure/liquidity/forced-flow/event-correction alternatives. Without that, D20-09 remains narrowing/merge-eligible rather than a second vote.
+
+
+## H12 intake — four-layer shorting ontology
+
+Accepted Room05 evidence:
+- `research/d06_securities_lending_economics_h12_v0_1.md`;
+- `research/d06_18_borrow_fee_identifiability_rule_vintage_v0_1.md`.
+
+Room05 side establishes:
+- D06-09 observed borrowing/short quantities as primitive owner;
+- D06-18 fee / displayed supply-demand / availability / scarcity economics;
+- utilization requires a verified lendable-inventory denominator;
+- borrowing != shorting;
+- one linked lending receipt / no duplicate bearish votes;
+- 2026-06-01 rule-vintage guard for fee settlement/payment clocks;
+- divergent D06-09 vs D06-18 states.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / ROOMS10_13_COUNTERPARTS_REQUIRED`.
+
+Still required:
+- Room10: D14-19 establish/maintain/recall/forced-buy-in/exit feasibility state machine and strategy-specific factual HARD_INVALIDATION boundary;
+- Room13: D20-13 limits-to-arbitrage context that consumes D06/D14 constraints without becoming another directional vote.
+
+No maturity/count/Formal change from intake.
