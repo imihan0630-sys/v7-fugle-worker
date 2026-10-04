@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-04T23:31:27+08:00",
+  "updatedAt": "2026-10-05T02:21:47+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -288,7 +288,7 @@
       "directiveId": "S2-CORR-20261004-004",
       "createdAt": "2026-10-04T22:51:00+08:00",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "FIX_IMPLEMENTED",
       "title": "Whole-universe history/continuity gate can block all Shadow evaluation because of symbol-local UNKNOWNs",
       "affectedScope": [
         "S2-07 Daily Shadow preflight",
@@ -344,10 +344,28 @@
       "assignedRoom": "System 2｜補強修復室",
       "modificationOwner": "SYSTEM2_REMEDIATION_ROOM",
       "blockedBy": [],
-      "implementationEvidence": [],
-      "verificationEvidence": [],
+      "implementationEvidence": [
+        "PR #585 implemented CORR-004 on the S2-07 Shadow readiness path and squash-merged to main as b6dd5bff357d6c678825ca212afae6a533da68c8.",
+        "daily_shadow_history_reader_v0_1.mjs now separates descriptive aggregate coverage from globalIntegrityState; every current-universe symbol receives explicit readinessState/blockerCodes/denominatorAccounted diagnostics. Symbol-local insufficient history, continuity UNKNOWN and local revision ambiguity no longer become the global readiness gate.",
+        "daily_shadow_input_preflight_v0_1.mjs now gates globally only on current A1/global history integrity and exposes symbolAccounts/symbolLocalBlockers/evaluationInputEligibleSymbols/evaluationInputBlockedSymbols. Local missingness no longer creates PIT_HISTORY_GLOBAL blockers.",
+        "No arbitrary whole-market coverage percentage threshold was added. Readiness is categorical/provenance-based; UNKNOWN remains UNKNOWN and missing data are not converted to neutral/zero/pass or forward-filled.",
+        "Prediction Snapshot now derives selectionDenominator from complete Shadow run accounting and distinguishes CLEAN_ZERO_PICK, PARTIAL_COVERAGE_NO_SELECTION and DENOMINATOR_UNKNOWN_NO_SELECTION. zeroPickDay is null when a no-selection claim lacks a complete required denominator.",
+        "Daily Shadow capacity orchestration now allows legitimate ready admissions under partial denominator as CAPACITY_READY_PARTIAL_COVERAGE while keeping INCOMPLETE symbols blocked and non-admitted.",
+        "If partial denominator has no ready admission, capacity returns CAPACITY_PARTIAL_COVERAGE_NO_SELECTION with zeroPickDay=null, capacityReceipt=null and no s2_capacity_runs persistence. This prevents downstream resonance from turning partial coverage into ZERO_PICK_ACTIVE.",
+        "Mixed-universe regression system2/tests/mixed_universe_shadow_readiness_v0_1.test.mjs covers A=ready, B=insufficient history, C=continuity unverified, D=required evidence UNKNOWN. A reaches capacity; B/C/D remain INCOMPLETE/BLOCKED and are individually denominator-accounted/non-admitted.",
+        "Global fail-closed regression explicitly sets source-wide revision ambiguity/globalIntegrityState=BLOCKED and verifies INPUTS_NOT_READY, capacityWriteAuthorized=false and zeroPickMayBeClaimed=false.",
+        "Existing strategy_evaluator semantics remain unchanged: missing REQUIRED evidence maps per symbol to strategyValidity=INCOMPLETE and entryReadiness=BLOCKED; assessor policy and strategy thresholds were not changed.",
+        "Initial System2 Research CI run 37223831928 failed because an existing capacity test still expected the old CAPACITY_READY label for a run containing an INCOMPLETE prior membership; the test expectation was corrected to CAPACITY_READY_PARTIAL_COVERAGE without weakening runtime semantics.",
+        "Second System2 Research CI run 37223878523 failed because the new regression attempted to sort a frozen output array in place; the test was corrected to copy before sorting, preserving immutable runtime contracts.",
+        "Final implementation head 7ee02cc98913e79fc981da4d21e39b54b48b4983: System2 Research CI 37224012433 PASS; V8 Regression 37224012419 PASS; PR #585 mergeable=true and latest-main drift was zero immediately before merge.",
+        "Merged-main readback on b6dd5bff357d6c678825ca212afae6a533da68c8 confirmed globalIntegrityState/symbol-local accounting, denominator-aware zero-pick states, no-capacity-receipt partial no-selection behavior, mixed-universe regression presence, and absence of 95/90/80 percent threshold logic.",
+        "PR #585 changed only System2 Shadow research runtime/contracts/tests and the remediation checkpoint. No System1 Formal Core/runtime, System2 live/final-selection authority, production push/runtime, capital/order, strategy weights, formal entry/exit thresholds or assessor policy was modified."
+      ],
+      "verificationEvidence": [
+        "PENDING_INDEPENDENT_AUDIT"
+      ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-04T22:51:00+08:00"
+      "updatedAt": "2026-10-05T02:21:47+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
