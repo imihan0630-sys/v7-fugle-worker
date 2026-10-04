@@ -2909,3 +2909,97 @@ CLEAN_DATE_ZERO / PVE-239 / Gate 7 CLOSED.
 D02 remains 60.0%.
 No FORMAL_OPTIMIZATION_CANDIDATE.
 Formal Core remains LOCKED.
+
+## Pre-PVE-240 continuation — D02→D16 L4 validation receipt ownership (2026-10-04)
+
+Status: OUTCOME_BLIND / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+New durable artifacts:
+- `research/D02_D16_L4_VALIDATION_HANDOFF_V0_1.md`;
+- `research/d02_d16_l4_validation_receipt_guard_v0_1.mjs`;
+- `tests/test_d02_d16_l4_validation_receipt_guard_v0_1.mjs`;
+- `research/d02_d16_l4_validation_receipt_guard_validation_20261004_v0_1.md`;
+- `research/d02_d16_l4_validation_receipt_guard_validation_v0_1.json`.
+
+Independent Node.js v22.16.0 execution:
+24/24 tests PASS.
+
+### Ownership conclusion
+
+D02 owns:
+- feature/event/family semantics;
+- PIT/source continuity;
+- common-support admission;
+- anti-double-counting;
+- module-specific falsifiers.
+
+D16 owns:
+- dependence-aware inference;
+- finite-sample uncertainty;
+- effective-sample assessment;
+- date/issuer/episode clustering;
+- overlapping-outcome purge;
+- sample adequacy;
+- multiple-testing/search-risk review;
+- concentration/fragility review.
+
+D02 cannot self-certify sample adequacy.
+
+### No universal fixed-N for Wave-2
+
+Canonical D16 research explicitly rejects one universal row-count threshold.
+100/200 event heuristics are descriptive unless tied to the actual estimand.
+
+Wave-1 H001/H20/H003 keeps its already-preregistered 20-date descriptive floor and 30-date + 100-event evidence-eligibility checkpoint.
+
+For D02-01 and Wave-2:
+sample adequacy must come from a D16-owned receipt tied to a preregistered:
+- MDE;
+- precision target; or
+- semantic-materiality target.
+
+Relevant inputs include:
+- independent dates;
+- effective sample;
+- serial/cross-sectional dependence;
+- overlapping horizons;
+- regime/episode concentration;
+- multiple-testing family size;
+- missingness/coverage;
+- cost/liquidity uncertainty where economic.
+
+### Evidence-key isolation
+
+A frozen D02 evidence-key registry now isolates:
+- D02-01 semantic governance;
+- H001;
+- H20;
+- DRYUP;
+- EXTREME_PARTICIPATION;
+- H003;
+- SVB20;
+- PROVIDER_PRESSURE;
+- D02-09 PIVOT_SIGNED_VOLUME;
+- D02-09 PARTICIPATION_TRAJECTORY;
+- D02-10 TREND_VOLUME_INTERACTION;
+- D02-11 LIQUIDITY_COUNTERFACTUAL;
+- D02-12 TIME_OF_DAY_VOLUME_CURVE;
+- D02-12 PRICE_BY_VOLUME_PROFILE.
+
+One D16 receipt cannot be reused across another evidence key.
+
+### Promotion review firewall
+
+Even a valid positive D16 receipt yields only:
+`promotionReviewEligible=true`.
+
+The guard always retains:
+- `maturityPromotionAuthorized=false`;
+- `formalCoreChangeAuthorized=false`.
+
+Current evidence state:
+CLEAN_DATE_ZERO / PVE-239 / Gate 7 CLOSED.
+
+D02 remains 60.0%.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core remains LOCKED.
