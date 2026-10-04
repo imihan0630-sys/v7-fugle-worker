@@ -275,7 +275,7 @@ async function fetchTpexSuspensionIntervals(){
     sourceHistoryStart:null,
     boundedMachineContract:"D03_TPEX_HALT_RESUMPTION_MACHINE_CONTRACT_V0_2",
     allHistoryCompletenessCertified:false,
-    limitation:"Positive rows may classify matching gaps; absence outside observed rows does not certify no suspension for 2017.",
+    limitation:`Positive rows may classify matching gaps; absence outside observed rows does not certify no suspension for ${year}.`,
   };
 }
 
