@@ -1732,3 +1732,13 @@ Status: D21-12_L3 / D21-13_L2 / RESEARCH_ONLY / FORMAL_CORE_UNCHANGED
 2. Preserve disclosure regime, methodology version, assurance, target baseline/revision, target-versus-realized state, known_at and financial transmission channel.
 3. D21-12 requires rolling multi-year OOS/prospective validation before L4.
 4. Continue D21-11 contemporaneous-evidence recovery opportunistically.
+
+
+## 2026-10-04 Room09 D12/D13 source-lineage continuation
+
+- Dedicated evidence: `research/d12_d13_public_source_lineage_20261004_v0_1.md`.
+- D12: TAIFEX official option time-and-sales RPT/CSV and OpenAPI `/OptionsTimeAndSalesData` routes are confirmed. Trade-parent evidence is explicitly separated from quote/surface-parent evidence. Conflicting current crawl issued-times require receipt/version identity rather than timestamp selection by convenience. H11 remains PARTIAL_EVIDENCE_RECEIVED; no raw quote-chain parent/common-support surface residual evidence yet.
+- D13: CBC cross-release arithmetic proves repeated historical BOP revisions. Same-vintage subtraction is now mandatory; cross-release cumulative subtraction is prohibited. The 2025Q2 exact first-public revision to the later 372.01 endpoint remains UNKNOWN pending lossless native intermediate-annex inspection.
+- Counterevidence/quality: source-route existence is not raw-parent attestation; aggregate cumulative changes do not identify which prior quarter changed; later revised history cannot be backfilled to original decision dates; tool/access failure is not source absence.
+- Maturity unchanged: D12 40.0%, D13 41.1%. Outcomes CLOSED. Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+- Exact next: D12 materialize one permitted OpenAPI/time-and-sales parent plus a permitted quote-chain parent for H11 identical-parent/common-support comparison; D13 losslessly inspect CBC 2025-11-20 native XLSX first, then 2026-02-26 and 2026-05-20 only if needed to establish the first-public 2025Q2 revision.
