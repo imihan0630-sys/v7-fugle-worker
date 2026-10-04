@@ -1574,3 +1574,13 @@ Build a D21-11 historical one-positive/one-control case set using contemporaneou
 - Corporate-action source/parser PASS does not equal continuity certification; industry vintage, D03/D09 redundancy and D14-compatible cost evidence remain open.
 - Machine blocker reconciliation: `research/d19_04_l3_blocker_reconciliation_20261004_v0_1.json`.
 - D19 remains 40.0% / all 15 active modules L2. Formal Core unchanged.
+
+
+## 2026-10-04 D19 Stage 9 — symbol-session / invalid-close evidence
+- D19-04 remains L2 / 40%; no maturity promotion.
+- PR #463 / commit `67ff5fca7544954ed12cb59449b6dae046c012b6` physically captured official TWSE historical temporary-suspension evidence for 1218 and 1909 in the frozen 2026-08 interval; non-matches remain UNKNOWN rather than NO_SUSPENSION.
+- Six fewer-than-21-row TWSE names were separately matched to official stop-trading / structural-event windows; immutable D19 source bundling remains pending.
+- PR #464 / commit `c8945c76e2cc4cd72faecaa4cd6d09a0b7077eb1` decomposed the remaining 15 invalid-close names into 50 rows: 11 official zero-trade rows and 39 positive-activity/no-OHLC unresolved rows.
+- Forward fill, previous-close substitution, and volume-to-price substitution are prohibited. The 20-session momentum lane requires a preregistered valid-observation / symbol-session / stale-price contract before L3 replay.
+- Remaining hard gates: TPEx replayable history/universe, full continuity certification, PIT industry vintage, compatible D03/D09 paired redundancy, and D14-compatible cost provenance.
+- Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
