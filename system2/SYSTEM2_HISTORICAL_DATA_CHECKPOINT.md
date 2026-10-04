@@ -1,6 +1,6 @@
 # System 2 Historical Data Checkpoint
 
-Updated: 2026-10-04 23:31 Asia/Taipei
+Updated: 2026-10-05 02:33 Asia/Taipei
 Status: ACTIVE / DATA_LANE
 Room: System 2｜歷史資料工程室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
@@ -29,43 +29,50 @@ Routing:
 Physically accepted raw A1 market-years:
 - 2017 TWSE: data coverage PASS / replay readiness PARTIAL;
 - 2017 TPEx: data coverage PASS / replay readiness PARTIAL;
-- 2018 TWSE: data coverage PASS / replay readiness PARTIAL.
+- 2018 TWSE: data coverage PASS / replay readiness PARTIAL;
+- 2018 TPEx: data coverage PASS / replay readiness PARTIAL.
 
-2018 TWSE durable state from run `37211022004` / #9:
-- workflow SUCCESS on head `7ad031675605d5b276a7b1d8dda244bb57048759`;
+2018 TPEx durable state from run `37223028925` / #10:
+- workflow SUCCESS on head `b1ed6a60a0792ebd57bcf4c7f24bb22f893d12d0`;
 - 247/247 official sessions;
-- 943 R2 packs / 227,381 bars;
-- 943/943 R2 HEAD and byte-GET SHA-256 checks;
-- fresh official reconciliation: 227,381 cold == 227,381 fresh official, with 0 missing, 0 extra, 0 source-row-hash mismatch;
-- official current/new-listing/delisting historical-universe union readiness PASS for data coverage;
-- 944 symbols active during the 2018 denominator; 227,950 expected membership-sessions;
-- 569 UNKNOWN symbol-session gaps retained fail-closed;
-- observation semantics: VALID_OHLC 226,017; OFFICIAL_ZERO_TRADE_NO_PRICE 792; POSITIVE_ACTIVITY_NO_VALID_CLOSE 572;
-- continuity remains UNVERIFIED on 227,381 rows;
-- artifact `system2-historical-coverage-TWSE-2018` id `11307491716`, digest `sha256:d788354ab68f9005a7b758aab36912eef9e9104b3f81df06ef7585a3e92d00ff`;
-- System1 production isolation PASS.
+- 773 R2 packs / 186,350 bars;
+- 773/773 R2 HEAD and byte-GET SHA-256 checks;
+- fresh official reconciliation: 186,350 cold == 186,350 fresh official, with 0 missing, 0 extra, 0 source-row-hash mismatch;
+- conservative observed-interval universe: 773 memberships, 704 official-current-in-2018 members, 69 historical-observed-only members;
+- TPEx official delisting-union remains incomplete, so survivorship/replay readiness remains PARTIAL;
+- 186,729 expected membership-sessions versus 186,350 source rows leaves 379 UNKNOWN symbol-session gaps retained fail-closed;
+- observation semantics: VALID_OHLC 180,685; OFFICIAL_ZERO_TRADE_NO_PRICE 4,077; POSITIVE_ACTIVITY_NO_VALID_CLOSE 1,588;
+- continuity remains UNVERIFIED on 186,350 rows;
+- artifact `system2-historical-coverage-TPEX-2018` id `11311721304`, digest `sha256:84f33f09df6a04ab1980ca60b1ddaf5d11025940a3cbe3cb1e55ac62631981dd`;
+- System1 production isolation PASS;
+- run #10 contained a text-only TPEx suspension limitation label saying `for 2017`; merge `c7e8156c96b82a252510b3fc8f07cfd93425acd6` corrected future runs to bind the selected year. Data, hashes and readiness states were unaffected.
 
 Durable evidence:
 - `system2/evidence/S2_HISTORICAL_TWSE_2017_PHYSICAL_VERIFICATION_V0_1.json`
 - `system2/evidence/S2_HISTORICAL_TPEX_2017_PHYSICAL_VERIFICATION_V0_1.json`
 - `system2/evidence/S2_HISTORICAL_TWSE_2018_PHYSICAL_VERIFICATION_V0_1.json`
+- `system2/evidence/S2_HISTORICAL_TPEX_2018_PHYSICAL_VERIFICATION_V0_1.json`
 - `system2/SYSTEM2_HISTORICAL_MARKET_YEAR_COVERAGE_MATRIX.json`
+
+2018 aggregate disposition:
+`TWSE_DATA_PASS_PARTIAL_REPLAY / TPEX_DATA_PASS_PARTIAL_REPLAY`
 
 No 2017→present completeness claim is permitted yet.
 
 ## Important current blocker
 
-No remaining raw A1 population blocker exists for 2017 TWSE, 2017 TPEx, or 2018 TWSE.
+No remaining raw A1 population blocker exists for 2017 or 2018 TWSE/TPEx.
 
 Remaining accepted-year replay debt is explicit:
 - 2017 TWSE: 651 UNKNOWN symbol-session gaps; RAW technical continuity UNVERIFIED;
 - 2017 TPEx: 458 UNKNOWN symbol-session gaps; historical delisting-union incomplete; RAW technical continuity UNVERIFIED;
 - 2018 TWSE: 569 UNKNOWN symbol-session gaps; RAW technical continuity UNVERIFIED;
+- 2018 TPEx: 379 UNKNOWN symbol-session gaps; historical delisting-union incomplete; RAW technical continuity UNVERIFIED;
 - non-price official observations remain explicit and are never fabricated into OHLC.
 
 These debts are replay/readiness debt, not evidence of raw-source loss, and do not justify rewriting source-reconciled cold history.
 
-The next DATA_LANE population target is 2018 TPEx under the same physical standard.
+The next DATA_LANE population target is 2019 TWSE followed by 2019 TPEx under the same physical standard.
 
 ## Protected boundaries
 
@@ -91,4 +98,4 @@ Require, as applicable:
 
 ## Exact next action
 
-Dispatch 2018 TPEx through the completed-year annual workflow, physically verify R2/D1/source/universe/coverage evidence, durable-write the result, and only then advance to 2019 TWSE. Preserve all existing UNKNOWN/continuity/survivorship debt in the coverage matrix. The 2026 current year remains excluded from annual COMPLETE receipts and requires a separate incremental/current-year path.
+Dispatch 2019 TWSE through the completed-year annual workflow, physically verify R2/D1/source/universe/coverage evidence, durable-write the result, then dispatch 2019 TPEx under the same standard. Preserve all existing UNKNOWN/continuity/survivorship debt in the coverage matrix. Continue year-by-year through 2025; keep 2026 excluded from annual COMPLETE receipts and handle it through the separate incremental/current-year path.
