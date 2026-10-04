@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "CURRICULUM_H04_CONSOLIDATION_AUDIT_V0_1",
+  "date": "2026-10-04",
+  "auditBaseMain": "e602ced99219f2684fca342109d91b2267859e91",
+  "clusterId": "H04",
+  "modules": [
+    "D12-14",
+    "D12-15"
+  ],
+  "sourceRoom": "09｜衍生品與國際總經研究室",
+  "acceptedEvidence": [
+    "DERIVATIVES_VOLATILITY_RESEARCH.md",
+    "DERIVATIVES_VOLATILITY_CHECKPOINT.md",
+    "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json"
+  ],
+  "sameParentAudit": "PASS",
+  "antiDoubleCount": "PASS_PROXY_AS_CHILD_METRIC_NO_SECOND_VOTE",
+  "antiOrphan": "PASS_CAPABILITIES_PRESERVED_UNDER_D12_15",
+  "terminalClassification": "MERGE_ELIGIBLE",
+  "proposedSurvivor": "D12-15",
+  "proposedRetirement": "D12-14",
+  "proposedName": "Volatility Risk Premium／IV-RV Proxies波動率風險溢酬與IV-RV代理",
+  "maturity": {
+    "D12-14": {
+      "level": "L2",
+      "maturityPct": 40
+    },
+    "D12-15": {
+      "level": "L2",
+      "maturityPct": 40
+    },
+    "postMergeRule": "KEEP_SURVIVOR_L2_40_NO_AUTOMATIC_INHERITANCE"
+  },
+  "ownerApprovalRequired": true,
+  "state": "OWNER_APPROVAL_REQUIRED",
+  "formalCoreImpact": "NONE_LOCKED"
+}
