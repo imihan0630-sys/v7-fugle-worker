@@ -1,0 +1,31 @@
+name: D03 Two Point No Revision Gap Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d03_two_point_no_revision_gap_v0_1.mjs"
+      - "tests/test_d03_two_point_no_revision_gap_v0_1.mjs"
+      - "research/D03_TWO_POINT_NO_REVISION_GAP_V0_1.md"
+      - ".github/workflows/research-d03-two-point-no-revision-gap-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tests/test_d03_two_point_no_revision_gap_v0_1.mjs
+      - name: Confirm research-only isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE|BUY|SELL' research/d03_two_point_no_revision_gap_v0_1.mjs
+          echo "D03 no-revision-gap candidate isolation PASS"
