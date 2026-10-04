@@ -966,3 +966,26 @@ They are not automatic maturity promotions.
 
 No hypothesis status changes.
 No FORMAL_OPTIMIZATION_CANDIDATE.
+
+## Pre-PVE-240 effect-target binding overlay — 2026-10-04
+
+The D02→D16 handoff now separates three objects:
+
+1. D02 admission receipt:
+   Is the observation legal and PIT-safe?
+
+2. D02 EffectTargetReceipt:
+   What exact effect/precision/materiality target was frozen before outcomes?
+
+3. D16 validation receipt:
+   Is the evidence statistically adequate relative to that exact frozen target?
+
+No object may substitute for another.
+
+Current target state:
+all 14 evidence keys are TARGET_VALUE_PENDING_FREEZE.
+
+No fixture value is a research threshold.
+No economic hypothesis changes support status.
+No L4 promotion.
+No FORMAL_OPTIMIZATION_CANDIDATE.
