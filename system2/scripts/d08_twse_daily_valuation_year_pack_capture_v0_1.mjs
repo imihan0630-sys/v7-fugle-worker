@@ -22,17 +22,15 @@ const trading=await buildOfficialTradingDatesV0_1({fromDate,toDate});
 assert.ok(trading.tradingDateCount>0,"no trading dates "+year);
 
 const receipts=[];
-for(let i=0;i<trading.tradingDates.length;i+=4){
-  const batch=trading.tradingDates.slice(i,i+4);
-  const part=await Promise.all(batch.map(date=>fetchOfficialHistoricalA6ValuationDateV0_1({
-    marketDate:date,observedAt,retryAttempts:4,retryDelayMs:500,
-  })));
-  for(const r of part){
-    assert.equal(r.state,"READY","A6 not READY "+r.marketDate);
-    assert.equal(r.sourceDateEvidence,r.marketDate);
-    receipts.push(r);
-  }
-  if(i+4<trading.tradingDates.length) await new Promise(r=>setTimeout(r,160));
+for(let i=0;i<trading.tradingDates.length;i+=1){
+  const date=trading.tradingDates[i];
+  const r=await fetchOfficialHistoricalA6ValuationDateV0_1({
+    marketDate:date,observedAt,retryAttempts:7,retryDelayMs:1000,
+  });
+  assert.equal(r.state,"READY","A6 not READY "+r.marketDate);
+  assert.equal(r.sourceDateEvidence,r.marketDate);
+  receipts.push(r);
+  if(i+1<trading.tradingDates.length) await new Promise(resolve=>setTimeout(resolve,120));
 }
 
 const pack=buildD08ValuationYearPackV0_1({
