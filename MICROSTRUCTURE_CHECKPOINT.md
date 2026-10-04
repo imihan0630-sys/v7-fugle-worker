@@ -758,3 +758,23 @@ Audit:
 `shared-knowledge/CURRICULUM_COVERAGE_COV02_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md`.
 
 This receipt does not alter Room04's active empirical research order and does not promote D05-06 maturity. Wait for explicit owner approval before canonical scope/name mutation.
+
+
+### 00 control-plane receipt — COV-02 canonical update complete
+
+Owner approved the 00-room COV-02 structural recommendation.
+
+Canonical D05-06 is now:
+`Opening / Closing Auction & Auction Imbalance（開收盤集合競價與競價不平衡）`.
+
+Governance effect:
+- L2 / 40% unchanged;
+- D05 aggregate maturity unchanged by this scope action;
+- no module-count change;
+- historical pre-close imbalance remains UNKNOWN where timestamped source evidence is absent;
+- final close / final volume / generic EOD volume cannot backfill the pre-close path;
+- D05-14 remains integrity consumer; D14 execution consumer; D11/D17 event-clock context;
+- no independent directional auction Alpha vote;
+- Formal Core unchanged.
+
+Room04 should continue its existing empirical sequence; do not re-study COV-02 ownership unless new evidence falsifies this boundary.
