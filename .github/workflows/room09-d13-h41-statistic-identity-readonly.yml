@@ -1,0 +1,69 @@
+name: Room09 D13 H41 statistic identity readonly
+
+on:
+  push:
+    branches:
+      - research-room09-d12-taifex-source-smoke-20261004
+    paths:
+      - .github/workflows/room09-d13-h41-statistic-identity-readonly.yml
+
+permissions:
+  contents: read
+
+jobs:
+  h41-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Fetch two official H41 releases and emit source-only row identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --retry 2 "https://www.federalreserve.gov/releases/h41/20261001/" -o /tmp/h41-20261001.html
+          curl --fail --silent --show-error --location --retry 2 "https://www.federalreserve.gov/releases/h41/20260924/" -o /tmp/h41-20260924.html
+          python - <<'PY'
+          import hashlib,json,re
+          from html.parser import HTMLParser
+
+          class P(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.in_row=False; self.in_cell=False; self.cell=[]; self.row=[]; self.rows=[]
+              def handle_starttag(self,tag,attrs):
+                  if tag=="tr":
+                      self.in_row=True; self.row=[]
+                  elif tag in ("td","th") and self.in_row:
+                      self.in_cell=True; self.cell=[]
+              def handle_data(self,data):
+                  if self.in_cell: self.cell.append(data)
+              def handle_endtag(self,tag):
+                  if tag in ("td","th") and self.in_cell:
+                      self.row.append(re.sub(r"\s+"," ","".join(self.cell)).strip()); self.in_cell=False
+                  elif tag=="tr" and self.in_row:
+                      if self.row: self.rows.append(self.row)
+                      self.in_row=False
+
+          out=[]
+          for date,path in [("2026-10-01","/tmp/h41-20261001.html"),("2026-09-24","/tmp/h41-20260924.html")]:
+              raw=open(path,"rb").read()
+              txt=raw.decode("utf-8",errors="replace")
+              p=P(); p.feed(txt)
+              wanted=[]
+              for row in p.rows:
+                  joined=" | ".join(row)
+                  if any(k in joined for k in [
+                      "U.S. Treasury, General Account",
+                      "Reverse repurchase agreements",
+                      "Reserve balances with Federal Reserve Banks",
+                      "Other deposits held by depository institutions"
+                  ]):
+                      wanted.append(row)
+              out.append({
+                  "releaseDate":date,
+                  "sha256":hashlib.sha256(raw).hexdigest(),
+                  "byteCount":len(raw),
+                  "rows":wanted,
+                  "lastUpdateFound":re.findall(r"Last Update:\s*([^<]+)",txt)[:5],
+                  "rawPersisted":False
+              })
+          print("ROOM09_H41_JSON="+json.dumps(out,ensure_ascii=False,separators=(",",":")))
+          PY
