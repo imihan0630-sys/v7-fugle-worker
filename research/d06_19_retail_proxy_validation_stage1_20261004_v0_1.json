@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "D06_19_RETAIL_PROXY_VALIDATION_STAGE1_20261004_V0_1",
+  "updatedAt": "2026-10-04 Asia/Taipei",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "module": "D06-19",
+  "question": "How well do common Taiwan retail proxies represent directly identified domestic-individual market participation at aggregate frequency, before any return/outcome analysis?",
+  "directBaseline": {
+    "source": "TWSE Fact Book annual trading value by shareholder structure",
+    "market": "TWSE",
+    "frequency": "annual",
+    "years": [
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "domesticIndividualTradingValueSharePct": [
+      62.07,
+      67.99,
+      58.3,
+      57.91,
+      54.07,
+      52.11
+    ],
+    "semantics": "directly identified domestic-individual share of market trading value",
+    "firstKnownGuard": "historical annual publication can support finalized aggregate replay but not exact historical intrayear firstKnownAt unless separately preserved"
+  },
+  "proxy1_marginPurchase": {
+    "source": "TWSE Fact Book Margin Trading",
+    "years": [
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "marketSharePct": [
+      7.16,
+      7.17,
+      5.5,
+      6.22,
+      5.97,
+      5.33
+    ],
+    "levelCorrelationWithRetailShare": 0.8499,
+    "firstDifferenceCorrelationWithRetailShare": 0.7287,
+    "annualDirectionDisagreementTransitions": 1,
+    "annualTransitions": 5,
+    "annualDirectionDisagreementRatePct": 20,
+    "interpretation": "aggregate margin-purchase activity co-moves materially with direct retail participation over this six-year window, but does not identify the full retail universe and diverges in some years"
+  },
+  "proxy2_totalCreditTrading": {
+    "source": "TWSE Fact Book Margin Trading",
+    "years": [
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "marketSharePct": [
+      8.16,
+      7.92,
+      6.53,
+      6.89,
+      6.45,
+      5.78
+    ],
+    "levelCorrelationWithRetailShare": 0.8904,
+    "firstDifferenceCorrelationWithRetailShare": 0.7047,
+    "annualDirectionDisagreementTransitions": 2,
+    "annualTransitions": 5,
+    "annualDirectionDisagreementRatePct": 40,
+    "interpretation": "high annual correlation exists, but 40% of year-to-year direction changes disagree in this tiny sample and the level relation may be driven partly by shared secular decline"
+  },
+  "channelPurityCoverage": {
+    "creditTrading": {
+      "officialEvidence": "TWSE reports domestic individuals exceed 98% of margin trading participants at end-July 2026 while credit trading is about 6.09% of overall market trading value in 2026 Jan-Jul",
+      "identityPurity": "VERY_HIGH",
+      "marketCoverage": "NARROW",
+      "conclusion": "high identity purity does not imply broad coverage of retail trading"
+    },
+    "intradayOddLot": {
+      "officialEvidence": "TWSE reports domestic individuals are 82.5% of intraday odd-lot trading value for 2020-10-26 through 2024-10-30, while all odd-lot trading is about 0.91% of centralized-market trading value in that period",
+      "identityPurity": "HIGH",
+      "marketCoverage": "VERY_NARROW",
+      "conclusion": "odd-lot is a strong retail-heavy channel but a poor stand-alone proxy for total retail participation"
+    }
+  },
+  "falsification": [
+    "High investor-identity purity is not the same as high coverage of the retail universe.",
+    "A high level correlation over six annual points does not validate causal equivalence or stock-level use.",
+    "Shared secular decline can inflate level correlation; first-difference correlation is lower and direction disagreements occur.",
+    "Margin purchasing and total credit trading have different mechanics and should not be collapsed into one retail proxy.",
+    "Odd-lot statistics describe a special trading channel and cannot be generalized to all retail trading.",
+    "Aggregate market participation cannot be backfilled into stock-date retail direction.",
+    "No return, MFE, MAE or stock-selection outcomes are used in this stage."
+  ],
+  "proxyEvaluationFramework": {
+    "dimensions": [
+      "identityPurity",
+      "retailUniverseCoverage",
+      "temporalAlignment",
+      "marketScope",
+      "directionality",
+      "revisionVintage",
+      "firstKnownAt",
+      "stockLevelIdentifiability"
+    ],
+    "rule": "A proxy may be high-purity but low-coverage, or broad-coverage but identity-weak. No single proxy may be promoted to direct retail flow without passing all relevant dimensions."
+  },
+  "result": {
+    "marginTrading": "USEFUL_AGGREGATE_RETAIL_PARTICIPATION_PROXY_WITH_LIMITED_COVERAGE / NOT_DIRECT_RETAIL_FLOW",
+    "oddLot": "HIGH_PURITY_CHANNEL_CONTROL / VERY_LOW_TOTAL_MARKET_COVERAGE / NOT_ALL_RETAIL",
+    "brokerBranch": "EXECUTION_CONTEXT_ONLY / IDENTITY_NOT_IDENTIFIED",
+    "stockDateRetailFlow": "UNKNOWN",
+    "maturityDecision": "D06-19 stays L2/40; this stage strengthens falsification and proxy-validation design but does not solve stock-date PIT source access."
+  },
+  "exactNext": [
+    "Extend aggregate comparison to additional annual/monthly finalized TWSE investor-share publications where common-frequency proxy history is available.",
+    "If day-trading investor-class aggregate data become directly available, evaluate identity purity and coverage separately before correlation.",
+    "Do not use returns or stock-level outcomes until the stock-date investor-class source contract is authorized and PIT-safe.",
+    "Special TWSE investor-type data pursuit still requires owner authorization before contact/request/purchase."
+  ],
+  "sources": [
+    "https://www.twse.com.tw/downloads/zh/about/company/factbook/2025/3.04.html",
+    "https://www.twse.com.tw/downloads/zh/about/company/factbook/2026/3.04.html",
+    "https://www.twse.com.tw/downloads/zh/about/company/factbook/2025/3.07.html",
+    "https://www.twse.com.tw/downloads/zh/about/company/factbook/2026/3.07.html",
+    "https://www.twse.com.tw/market_insights/zh/detail/8a8216d6a0bdcc0001a0d2cd2fce0075",
+    "https://www.twse.com.tw/market_insights/zh/detail/8a8216d6933460a401936c53f6d9018e"
+  ],
+  "status": "OUTCOME_BLIND_PROXY_VALIDATION_STAGE1_COMPLETE / PURITY_COVERAGE_DECOMPOSITION_FROZEN / STOCK_DATE_FLOW_UNKNOWN / L2_REMAINS / FORMAL_UNCHANGED"
+}
