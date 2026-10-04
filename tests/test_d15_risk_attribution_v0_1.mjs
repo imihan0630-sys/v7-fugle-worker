@@ -1,0 +1,13 @@
+import assert from "node:assert/strict";
+import {plannedStopRiskAttribution,sizingRiskDelta,covarianceRiskAttribution,informationRatio} from "../research/d15_risk_attribution_v0_1.mjs";
+let p=plannedStopRiskAttribution({allocations:{A:50,B:50},stopRiskFractions:{A:.02,B:.04}});
+assert.equal(p.status,"READY");assert.ok(Math.abs(p.totalPlannedStopRisk-3)<1e-12);assert.ok(p.rows[1].riskShare>p.rows[0].riskShare);
+let d=sizingRiskDelta({currentAllocation:{A:60,B:40},comparatorAllocation:{A:50,B:50},stopRiskFractions:{A:.04,B:.02}});
+assert.equal(d.status,"READY");assert.ok(d.sizingRiskDelta>0);
+let c=covarianceRiskAttribution({weights:[.5,.5],covariance:[[.04,.01],[.01,.09]]});
+assert.equal(c.status,"READY");assert.ok(Math.abs(c.componentVariance.reduce((a,b)=>a+b,0)-c.variance)<1e-12);
+let ir=informationRatio({portfolioReturns:[.01,.02,-.01,.03],benchmarkReturns:[.005,.01,-.005,.01]});
+assert.equal(ir.status,"READY");
+assert.equal(informationRatio({portfolioReturns:[.01,.01],benchmarkReturns:[0,0]}).status,"UNKNOWN");
+console.log(JSON.stringify({plan:p,sizingDelta:d,covariance:c,informationRatio:ir},null,2));
+console.log("D15-22 risk attribution tests PASS");
