@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T11:23:00+08:00",
+  "updatedAt": "2026-10-04T11:36:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 43.7
+    "maturityWeightedPct": 43.8
   },
   "domains": [
     {
@@ -3333,17 +3333,17 @@
         "BEHAVIORAL_FINANCE_CHECKPOINT.md",
         "BEHAVIORAL_FINANCE_RESEARCH.md"
       ],
-      "maturityPct": 50.8,
+      "maturityPct": 53.8,
       "modules": [
         {
           "id": "D20-01",
           "name": "Prospect Theory／Loss Aversion展望理論與損失趨避",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Prospect Theory／Loss Aversion展望理論與損失趨避」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "L2_MECHANISM_FALSIFICATION_DEFINED / PIT_DATA_CONTRACT_NEXT",
-          "next": "建立台股 PIT/replay 資料合約：明確定義 reference point、持有成本/期望參考點、更新頻率與可觀測代理；未取得投資人層級或可重建成本基礎前不得把 OHLCV 當心理證據。"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / TWSE_SHORT_SIDE_REFERENCE_DEPENDENCE_SUBLANE / LOSS_AVERSION_NOT_IDENTIFIED / SHARED_D20_02_RECEIPT_NO_DOUBLE_VOTE / L4_PREREG_NEXT",
+          "next": "重用 D20-02 上市空方 referencePriceShort／shortCapitalGainsOverhang／cover ratio 憑證，研究損益零點兩側的回補行為不對稱。此子線只證明參考點依賴資料可行，不等於已識別純粹 Loss Aversion（損失趨避）；須控制召回、風控、資訊、流動性、波動與借券經濟。同一 D20-02 receipt 不得再成為第二張選股票。"
         },
         {
           "id": "D20-02",
@@ -3418,12 +3418,12 @@
         {
           "id": "D20-09",
           "name": "Overreaction／Reversal過度反應與反轉",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Overreaction／Reversal過度反應與反轉」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "L2_OVERREACTION_MECHANISM_DEFINED / H07_PHENOMENON_CAUSE_FIREWALL / PIT_CAUSAL_PROXY_NEXT",
-          "next": "依 H07 將 D20-09 與 D03-05 分離：價格反轉由 D03-05 擁有；D20-09 只有在事件/預期/交易行為證據能排除 bid-ask bounce、流動性提供、庫存效應、強迫交易、事件修正、波動正常化與價格限制後才可主張過度反應。建立可在反轉完成前觀測的行為/事件代理，否則維持 UNKNOWN。"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / EVENT_CONDITIONED_INITIAL_RESPONSE_SUBLANE / D03_05_REVERSAL_OWNERSHIP_PRESERVED / BEHAVIORAL_CAUSE_UNPROVEN / L4_PREREG_NEXT",
+          "next": "以 D20-08/D17-13 合法事件時鐘＋預先定義資訊 surprise，再接 D03-05 可因果重播的完成 15 分K，形成 event-conditioned initial response residual。反轉結果不得進 parent；D03-05 仍擁有價格反轉現象。若 surprise 或結構反證資料缺失，behavioral overreaction 維持 UNKNOWN。"
         },
         {
           "id": "D20-10",
@@ -3462,14 +3462,14 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Limits to Arbitrage／Noise-trader Risk套利限制與雜訊交易者風險」。研究錯價為何可能因資本限制、借券限制、雜訊交易者風險與融資壓力而持續；其用途是反證市場異象的經濟可行性，不直接當作買賣訊號。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2_LIMITS_TO_ARBITRAGE_MECHANISM_DEFINED / FOUR_LAYER_SHORTING_CHAIN / PIT_COST_CAPACITY_DATA_NEXT",
-          "next": "依 H12 四層放空鏈建立台股套利限制資料契約：D06-09 實際借券/放空流量、D06-18 借券供給/費率/利用率、D14-19 建倉/維持/回補/召回執行風險、D20-13 理論層的資本限制/雜訊交易者風險。驗證錯價是否在高分歧且高放空限制/高成本/低供給條件下更持久；不得把高融資、高借券或高波動單獨叫套利限制。"
+          "status": "L2_L3_READY_PENDING_FIRST_VERIFIED_LIVE_TWSE_RATE_SUPPLY_RECEIPT / FOUR_LAYER_SHORTING_CHAIN / TRUE_UTILIZATION_UNKNOWN / FORMAL_CORE_UNCHANGED",
+          "next": "TWSE 官方費率、揭示供給/需求與競價最佳五檔語意已足夠凍結 D20-13 上市子線，但遵守 D06-18 上游成熟度：待下一有效交易日取得第一筆 outcome-blind、含 capturedAt/sourceHash/rule vintage 的真實費率/供需 receipt 後再評估 L3。不得把 displayed supply 稱為全市場可借庫存或 true utilization。"
         }
       ],
-      "status": "D20_L3_7_OF_13 / L4_PROSPECTIVE_PREREG_FROZEN / NO_L4_PROMOTION / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "L4 前瞻規則已於 2026-10-04 08:52 台北時間凍結。下一步只收集凍結後的真實 parent receipt：D20-04/05 與 D20-02 從 2026-10-05 起的第一個有效台股交易/週末親本；D20-07 從凍結後第一批官方注意股票事件；D20-08 從凍結後具合法 first-known/capturedAt 的月營收/盈餘事件；D20-10 從凍結後第一份國泰月度調查。任何 2025-12～2026-09 國泰×0050 資料僅為 DEVELOPMENT_ONLY_CONTAMINATED，不得升格為 OOS/Prospective。累積達各 lane 預註冊的獨立日期門檻前，D20 維持 50.8%。",
-      "lastResearchUpdate": "2026-10-04T08:52:19+08:00",
-      "researchNote": "L4 advancement moved from retrospective study to preregistered prospective evidence collection. A D20-wide prospective Shadow preregistration is frozen for D20-02/04/05/07/08/10/12 with parent identity, clocks, controls, fixed outcomes, sample-count gates and anti-double-count rules. A Cathay monthly sentiment × adjusted 0050 development pilot (2025-12 through 2026-09 releases) was explicitly quarantined as contaminated because feature and future outcomes were inspected before preregistration. Its tiny descriptive sample rejects a naive unconditional high-sentiment=bullish assumption but cannot count as L4/OOS evidence. No maturity increase; Formal Core unchanged."
+      "status": "D20_L3_9_OF_13 / MATURITY_53_8 / L4_PROSPECTIVE_PREREG_EXPANDING / D20_13_L3_READY / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "先把新升 L3 的 D20-01 與 D20-09 納入 2026-10-04 凍結後的 L4 前瞻契約；下一有效交易日優先取得 D20-13 所需第一筆 TWSE 借券費率/揭示供需 receipt，若 receipt 完整才可從 L2 升 L3。其餘 D20-03 過度自信、D20-06 從眾、D20-11 敘事擴散仍因獨立可辨識資料源不足維持 L2。所有 L4 只接受凍結後 parent/outcome，不補造歷史 Shadow。",
+      "lastResearchUpdate": "2026-10-04T11:36:00+08:00",
+      "researchNote": "Two bounded L3 promotions: D20-01 reuses the already-L3 TWSE short-side reference-price/capital-gains-overhang receipt from D20-02 to study reference-dependent asymmetry around zero short PnL; this does not identify pure loss aversion and cannot create a duplicate vote. D20-09 now has a source-feasible event-conditioned initial-response lane using valid event first-known/surprise receipts plus completed Fugle 15m bars; observable reversal remains D03-05 property and is excluded from the decision-time parent. D20-13 is deliberately held at L2 despite verified official TWSE public rate/depth semantics, because the upstream D06-18 live fee/supply receipt has not yet been captured on a genuine trading day; true utilization and cross-market parity remain UNKNOWN. Formal Core unchanged."
     },
     {
       "id": "D21",
