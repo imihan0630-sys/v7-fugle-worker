@@ -45,7 +45,8 @@ function bbReceipt(custom={}){
    formulaVersion:D03_BOLLINGER_FORMULA_VERSION,stdDefinition:"POPULATION",
    continuityReceiptId:"CONT-BB-1",receiptCreatedAt:"2026-10-05T10:20:00.000Z",
    evidenceCutId:cut.evidenceCutId,derivedOnlyFromEvidenceCut:true,postCutSourceFactCount:0,
-   transformInputManifestHash:cut.sourceCutManifestHash,
+   evidenceCutManifestHash:cut.sourceCutManifestHash,
+   transformInputManifestHash:H("9"),sourceFactRefSetHash:H("8"),unboundSourceFactCount:0,
    sourceFamilyVersion:"OFFICIAL_TW_CONTINUITY_V1",sourceHistoryHash:H("d"),
    rawHistoryAdmissionReceiptId:"RAW-1",symbolSessionContractVersion:"SYMBOL_SESSION_V1",
    sessionCalendarVersion:"TW_CAL_V1",continuityEngineVersion:"CONT_ENGINE_V1",
@@ -74,7 +75,8 @@ for(const [name,evidencePatch,receiptPatch,reason] of [
  ["late discovered",{lateDiscoveredPreCutVersionCount:1},{}, "LATE_DISCOVERED_PRE_CUT_VERSION"],
  ["wrong cut",{}, {evidenceCutId:"OTHER"}, "RECEIPT_EVIDENCE_CUT_ID_MISMATCH"],
  ["post cut fact",{}, {postCutSourceFactCount:1}, "POST_CUT_SOURCE_FACT_PRESENT"],
- ["wrong manifest",{}, {transformInputManifestHash:H("f")}, "TRANSFORM_INPUT_MANIFEST_CUT_MISMATCH"],
+ ["wrong cut manifest ref",{}, {evidenceCutManifestHash:H("f")}, "EVIDENCE_CUT_MANIFEST_REF_MISMATCH"],
+ ["unbound source fact",{}, {unboundSourceFactCount:1}, "UNBOUND_SOURCE_FACT_PRESENT"],
 ]){
  const out=evaluateEvidenceCutoffReceiptSplitV0_1({
    parent,evidenceCut:{...cut,...evidencePatch},continuityReceipt:bbReceipt(receiptPatch)
@@ -110,7 +112,9 @@ function adxReceipt(){
    symbol:"2330",status:"VALID",continuitySpace:"TECHNICAL_CONTINUITY",
    formulaVersion:D03_ADX_FORMULA_VERSION,continuityReceiptId:"CONT-ADX-1",
    receiptCreatedAt:"2026-10-05T10:21:00.000Z",evidenceCutId:cut.evidenceCutId,
-   derivedOnlyFromEvidenceCut:true,postCutSourceFactCount:0,transformInputManifestHash:cut.sourceCutManifestHash,
+   derivedOnlyFromEvidenceCut:true,postCutSourceFactCount:0,
+   evidenceCutManifestHash:cut.sourceCutManifestHash,
+   transformInputManifestHash:H("7"),sourceFactRefSetHash:H("6"),unboundSourceFactCount:0,
    sourceFamilyVersion:"OFFICIAL_TW_CONTINUITY_V1",sourceHistoryHash:H("1"),
    rawHistoryAdmissionReceiptId:"RAW-ADX-1",symbolSessionContractVersion:"SYMBOL_SESSION_V1",
    sessionCalendarVersion:"TW_CAL_V1",continuityEngineVersion:"CONT_ENGINE_V1",
@@ -132,5 +136,5 @@ console.log(JSON.stringify({
  validPostParentDerivedBollinger:bb.status,
  validPostParentDerivedAdx:adx.status,
  timingIdentityHash:timing.timingIdentityHash,
- blocked:["late cut","revision gap","late discovered pre-cut version","wrong cut id","post-cut fact","manifest mismatch","bar after cut"],
+ blocked:["late cut","revision gap","late discovered pre-cut version","wrong cut id","post-cut fact","wrong cut manifest ref","unbound source fact","bar after cut"],
 },null,2));
