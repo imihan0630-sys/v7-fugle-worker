@@ -234,13 +234,25 @@ async function datasetStartWitness({
   fetchImpl,
 }) {
   const yearMonth = monthKey(datasetStartDate);
-  const payload = await fetchOfficialMonthlyHistoryPayloadV0_1({
-    market: "TPEX",
-    symbol,
-    yearMonth,
-    fetchImpl,
-    timeoutMs: 45000,
-  });
+  let payload = null;
+  let lastError = null;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      payload = await fetchOfficialMonthlyHistoryPayloadV0_1({
+        market: "TPEX",
+        symbol,
+        yearMonth,
+        fetchImpl,
+        timeoutMs: 45000,
+      });
+      lastError = null;
+      break;
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, 300 * attempt));
+    }
+  }
+  if (lastError) throw lastError;
   const normalized = await normalizeOfficialMonthlyHistoryPayloadV0_1({
     market: "TPEX",
     symbol,
