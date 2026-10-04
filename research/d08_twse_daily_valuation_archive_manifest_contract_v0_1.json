@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "D08_TWSE_DAILY_VALUATION_ARCHIVE_MANIFEST_CONTRACT_V0_1",
+  "researchRoom": "06",
+  "domain": "D08",
+  "module": "D08-03",
+  "frozenAtAsiaTaipei": "2026-10-05T02:30:00+08:00",
+  "status": "OUTCOME_BLIND_ARCHIVE_COMPLETENESS_CONTRACT",
+  "archive": {
+    "market": "TWSE",
+    "sourceFamily": "official BWIBBU_d historical daily PE/PB",
+    "firstMachineReadableDate": "2005-09-02",
+    "finalDate": "2026-08-31",
+    "requiredYears": [
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "requiredYearCount": 22,
+    "yearRange": {
+      "2005": {
+        "from": "2005-09-02",
+        "to": "2005-12-31"
+      },
+      "2026": {
+        "from": "2026-01-01",
+        "to": "2026-08-31"
+      },
+      "intermediate": "calendar year"
+    }
+  },
+  "requiredPerYearFields": [
+    "year",
+    "fromDate",
+    "toDate",
+    "tradingDateCount",
+    "totalRows",
+    "totalPeKnown",
+    "totalPbKnown",
+    "sourceBundleHash",
+    "packPayloadHash",
+    "objectSha256",
+    "objectKey",
+    "readbackVerified"
+  ],
+  "acceptance": [
+    "exactly one receipt for every required year",
+    "readbackVerified=true for every year",
+    "packPayloadHash/objectSha256/objectKey all non-empty",
+    "no duplicate year",
+    "tradingDateCount > 0 and totalRows > 0",
+    "totalPeKnown <= totalRows and totalPbKnown <= totalRows",
+    "2005 begins at 2005-09-02; 2026 ends at 2026-08-31",
+    "transport exhaustion is not SOURCE_ABSENCE; failed year remains DATA_BLOCKED until successfully replayed",
+    "later rerun with same official content must resolve to same canonical packPayloadHash"
+  ],
+  "packBundleHash": {
+    "algorithm": "SHA-256",
+    "canonicalOrder": "ascending year",
+    "canonicalLine": "year|fromDate|toDate|tradingDateCount|totalRows|totalPeKnown|totalPbKnown|sourceBundleHash|packPayloadHash|objectSha256|objectKey",
+    "rule": "Join canonical lines with newline and SHA-256 exact UTF-8 bytes."
+  },
+  "sourceSchemaPolicy": {
+    "legacy": "Ratio-only official years remain valid for PE/PB; missing close/fiscal-period context is SOURCE_NOT_PROVIDED.",
+    "modern": "Ratio+context fields retained when provided.",
+    "prohibited": "Never reconstruct absent historical context from later/current sources."
+  },
+  "outcomeGate": "CLOSED",
+  "nextGate": "PERCENTILE_SNAPSHOT_MATERIALIZATION_ONLY_AFTER_MANIFEST_PASS",
+  "formalCoreChanged": false,
+  "promotionState": "NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
