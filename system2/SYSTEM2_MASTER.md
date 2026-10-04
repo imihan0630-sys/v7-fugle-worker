@@ -133,10 +133,14 @@ V8 A/B, Top6/3+3, capital rules and live-state machine are never prerequisites f
 
 ## Position-management rules
 
-- Actual holdings are continuously monitored in a dedicated POSITION_MONITOR and do not consume candidate/entry-monitor caps.
-- Position decisions are symmetric: HOLD / REDUCE / EXIT and ADD / RE-ADD / RESTORE are all first-class actions.
-- Re-add after a prior reduction is not rejected solely because current price is above the reduce price.
-- Exact sizing/re-add thresholds remain research hypotheses until prospective validation.
+Capability/readiness must be explicit:
+
+- `TARGET_ONLY` / `DESIGN_APPROVED`: once an owner-authorized actual-holdings source and reconciliation path exist, verified actual holdings belong to a dedicated POSITION_MONITOR layer outside candidate/entry-monitor caps, with symmetric HOLD / REDUCE / EXIT and ADD / RE-ADD / RESTORE decisions.
+- `VIRTUAL_POSITION_READY`: the current implemented System 2 position lifecycle is simulated/virtual. `SIM_FILLED -> POSITION_MONITOR` and open `s2_positions` represent System 2 simulated positions, not owner actual holdings.
+- `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`: System 2 currently has no authorized actual-holdings ingestion/reconciliation contract or physically verified quantity/cost/fill/ownership readback.
+- `ACTUAL_POSITION_MONITOR_VERIFIED=false`: actual holdings must not be presented as continuously monitored today.
+- Signal prices, suggested shares, plan snapshots and simulated fills must never be promoted into actual holdings. System 1/V8 holdings must not be imported without explicit owner authorization.
+- Re-add after a prior reduction is not rejected solely because current price is above the reduce price; this remains an approved design rule whose exact sizing/re-add thresholds require prospective validation.
 
 ## Capacity rules
 
