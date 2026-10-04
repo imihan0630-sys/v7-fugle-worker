@@ -1691,3 +1691,58 @@ Still authoritative:
 all trading authority false.
 
 System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
+
+## 2026-10-04 S2-07 representative authority breadth — 5 OF 6 PHYSICALLY VERIFIED
+
+S2-07 advanced from 4/6 to 5/6.
+
+### Final-two discovery — PR #528
+- TWSE par-value 2010..2019 endpoint: 0 official events;
+- TWSE par-value 2020..2026 had already been fully negative;
+- TPEx ex-right/dividend additional deterministic 48-candidate year-wide sample: negative;
+- no criteria were weakened.
+
+### Wrong-exchange rejection — PR #531
+- 6184 大豐電 had a valid issuer-side dividend correction chain;
+- exchange join failed because 6184 is TWSE-listed rather than TPEx;
+- candidate was rejected and PR closed unmerged.
+
+### TPEx dividend candidate validation — PR #533
+5356 協益 physically verified:
+- original 2026-06-02 17:51:32 / seqNo=1;
+- correction 2026-06-18 18:55:49 / seqNo=2;
+- second correction 2026-06-18 19:17:38 / seqNo=3;
+- TPEx actual ex-dividend date exactly 2026-07-08.
+
+### 5/6 promotion — PR #535
+- MOPS revision control matrix V0.5: 8/8 PASS;
+- source-reported clock: 8/8 PASS;
+- authority provenance matrix V0.4: 8/8 PASS;
+- representative exchange lane count=5;
+- supplemental revision receipt V0.4: representativeAuthorityReadyCount=5;
+- supplementalRevisionReadyCount remains 0.
+
+Only representative-routing gap:
+1. TWSE par-value change.
+
+### Exact continuation
+1. stop blind repetition of the exhausted TWSE par-value final-result candidate path;
+2. discover alternate official issuer/regulator/exchange evidence for a true TWSE par-value correction/cancellation chain;
+3. if no representative historical revision event can be established, document structural unavailability rather than weakening evidence rules;
+4. keep prospective knownAt debt separate;
+5. after representative-routing disposition, continue bounded revision completeness and shared suspension/session integration.
+
+Still authoritative:
+`publicAvailabilityLatencyCertified=false`,
+`knownAtVersionClockCertified=false`,
+`authorityRevisionCoverageComplete=false`,
+`revisionCoverageComplete=false`,
+`noEventMayBeClaimed=false`,
+`suspensionCoverageComplete=false`,
+`symbolSessionCompletenessCertified=false`,
+`technicalContinuityCertified=false`,
+all trading authority false.
+
+HIGH correction `S2-CORR-20261004-001` remains assigned to DATA_LANE and is not closed by this S2-07 milestone.
+
+System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
