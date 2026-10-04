@@ -1470,3 +1470,71 @@ Exact remaining return delta:
 5. commit `research/COV01_D01_SPECIALIST_RETURN_V0_1.md`.
 
 No maturity or Formal change is authorized by this routing.
+
+
+## Continuation update — DL-034 (2026-10-04)
+
+### DL-034 — Structural persistence vs role reversal / polarity flip
+- DL-034 freezes role-reversal semantics without assuming the polarity claim is already proven.
+- External evidence is asymmetric:
+  Osler (2000/2003) supports trend interruption at technical levels and acceleration through crossed levels via order clustering;
+  Zapranis/Tsinaslanidis (2012) supports some horizontal support/resistance trend-interruption ability but not abnormal-return superiority;
+  Chung/Bellotti (2021) supports temporary barrier memory with bounce-count and time effects;
+  Henderson/Jacka/Liu/Maeda (2026) explicitly model support/resistance role reversal as a path-dependent state, but that is theoretical mechanism structure rather than direct empirical proof of incremental polarity memory.
+- The same persisted price zone remains the same STRUCTURAL_OBJECT_ROOT by default.
+  A polarity change creates a ROLE_EPISODE, not a new independent root.
+- Root age continues.
+  Structural-version age continues unless geometry actually changes.
+  Role-episode age starts at canonical breakoutConfirmedAt.
+- Only two directional mappings are eligible:
+  RESISTANCE + confirmed UP breakout -> SUPPORT candidate;
+  SUPPORT + confirmed DOWN breakdown -> RESISTANCE candidate.
+- D01-05 remains breakout/failure lifecycle owner.
+  DL-034 consumes its breakoutEventId/direction/confirmedAt/lifecycle state and does not invent new breakout thresholds.
+- Wick-only or unconfirmed crossings do not create flip eligibility.
+- Outcome-leakage firewall:
+  canonical confirmed crossing creates CROSS_CONFIRMED_FLIP_ELIGIBLE only.
+  The first valid opposite-side retest is FIRST_FLIP_TEST_OPPORTUNITY.
+  The first retest result cannot be used in eligibility.
+- This avoids circular reasoning where a bounce first defines the role flip and the same bounce is then reported as proof that the flip worked.
+- Candidate cancellation before first test is explicit:
+  failed/reclaimed breakout lifecycle;
+  market invalidation;
+  semantic-continuity failure;
+  unresolved constraints.
+  Cancellation is not a failed retest because no valid test opportunity occurred.
+- Central falsification comparator:
+  G0 = generic confirmed breakout/retest without certified prior opposite-role structural history;
+  G1 = matched breakout/retest context with certified former support/resistance role.
+- If G1 does not improve on G0, a generic breakout/retest mechanism is sufficient and polarity-memory interpretation weakens.
+- Future D16 nested comparison:
+  F0 generic breakout/retest controls;
+  F1 + certified prior opposite role;
+  F2 + original-role history/salience/age;
+  F3 + DL-031/DL-032/DL-033 age/scale/regime/path controls.
+- Prior-role interaction history is stored but not converted into an automatic strength score.
+- Behavioral stories such as trapped traders or breakeven exits are plausible mechanisms, not identifiable from OHLC alone; D20 owns behavioral mechanism research.
+- Gap/price-limit constrained crossings/retests remain explicit and are not silently pooled with unconstrained cases.
+- Original support/resistance, breakout, first retest, volume confirmation and volatility confirmation are linked observations inside one causal lineage; they do not multiply independent N.
+- New files:
+  - research/PATTERN_ROLE_REVERSAL_V0_1.md
+  - research/pattern_role_reversal_v0_1.json
+  - research/pattern_role_reversal_v0_1.mjs
+  - research/test_pattern_role_reversal_v0_1.mjs
+  - research/PATTERN_ROLE_REVERSAL_D16_HANDOFF_V0_1.md
+- 16 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcomes inspected; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-034
+
+1. Reconcile the DL-034 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-034 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve same-root role episodes, first-retest opportunity identity and candidate cancellation states.
+4. Freeze G0/G1 generic-retest comparator semantics before outcomes.
+5. Hand F0-F3 parent/root/role-episode inference semantics to D16.
+6. Next D01 science: distinguish genuine polarity memory from simple breakout displacement/momentum and from boundary salience under matched first-retest opportunity.
+7. No outcome join / no runtime wiring / no Formal change.
