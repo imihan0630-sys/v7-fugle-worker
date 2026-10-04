@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "CURRICULUM_H15_CANONICAL_CLOSURE_RECEIPT_V0_1",
+  "date": "2026-10-04",
+  "clusterId": "H15",
+  "state": "CLOSED_NO_STRUCTURAL_CHANGE",
+  "terminalClassification": "KEEP_SEPARATE",
+  "governanceDisposition": "EVENT_RISK_TO_VOLATILITY_TO_POST_EVENT_PATH",
+  "primitive": "ONE_OPENING_GAP_RECEIPT",
+  "maturityChange": "NONE",
+  "moduleCountChange": 0,
+  "formalCoreImpact": "NONE_LOCKED",
+  "runtimeImpact": "NONE"
+}
