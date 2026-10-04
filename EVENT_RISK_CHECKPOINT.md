@@ -193,3 +193,13 @@ Evidence receipts:
 `research/d17_10_cross_source_lineage_receipt_20261004_v0_1.json`
 
 Formal Core unchanged. Outcome joins remain closed.
+
+## D17-12 post-event path feasibility — 2026-10-04 evening
+
+D17-12 advances L2 -> L3 with qualifier `DAILY_HISTORICAL_PATH_FEASIBLE / 15M_30M_PROSPECTIVE_ONLY`.
+
+The opening gap remains a shared primitive owned by D11-10 for event-risk transformation and D04-09 for volatility transformation. D17-12 contributes no additional evidence at time zero; only later price evolution can become its independent state.
+
+Official daily OHLC plus PIT-valid event clocks and D11-12 continuity guards support historical close/D1/D3/D5 replay. Exact 15m/30m evolution requires prospective intraday receipts. Price-limit, halt/resumption and unresolved corporate-action states remain dedicated constrained/UNKNOWN states.
+
+No alpha or directional effect claimed. Formal Core unchanged. Outcome joins closed.
