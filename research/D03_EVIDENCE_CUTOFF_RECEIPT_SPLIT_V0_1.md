@@ -30,11 +30,13 @@ The candidate split is:
 
 Required causal ordering:
 
-`source facts <= evidenceCutoffAt <= parentKnownAt`
+`source facts <= evidenceCutoffAt <= decisionCutoffAt <= decisionAt/parentKnownAt`
 
 while:
 
-`receiptCreatedAt` may be after `parentKnownAt`.
+`receiptCreatedAt` may be after `decisionAt` / `parentKnownAt`.
+
+The parent must carry a physically persisted `decisionCutoffAt`. A later `decisionAt` or receipt stamp may not substitute for it.
 
 This does not make post-parent facts legal.
 
