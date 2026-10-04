@@ -18,7 +18,11 @@ assert.match(workflow,/max-parallel:\s*2/);
 assert.match(workflow,/environment: system2-research/);
 assert.match(workflow,/D08_VALUATION_HISTORY_YEAR/);
 assert.match(workflow,/SYSTEM2_R2_ACCESS_KEY_ID/);
-assert.doesNotMatch(workflow,/wrangler.*deploy|Worker\.js|V7_DB|STOCKS_KV|PUSH_WEBHOOK_URL|FUGLE_API_KEY/i);
+assert.match(workflow,/git diff --exit-code -- Worker\.js wrangler\.toml/);
+assert.doesNotMatch(
+  workflow,
+  /wrangler\s+deploy|node\s+Worker\.js|V7_DB|STOCKS_KV|PUSH_WEBHOOK_URL|FUGLE_API_KEY/i,
+);
 
 console.log(JSON.stringify({
   ok:true,
