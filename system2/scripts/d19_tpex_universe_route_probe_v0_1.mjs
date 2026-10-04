@@ -66,7 +66,7 @@ const scripts=[];
 for(const url of scriptUrls){
   const raw=await fetchRaw(url);
   const hits=snippets(raw.text,[
-    "delisted","終止上櫃","mainboard/listed","api/","response=json","getjson","ajax",
+    "delisted","終止上櫃","mainboard/listed","api/","response=json","getjson","ajax","api_pattern","company/delisted","pattern:",
   ]);
   scripts.push({
     url,status:raw.status,contentType:raw.contentType,length:raw.text.length,
