@@ -1,8 +1,8 @@
 # Credit / Capital Structure Checkpoint
 
-Updated: 2026-10-04 21:09 Asia/Taipei
+Updated: 2026-10-05 07:18 Asia/Taipei
 Scope: D22｜信用市場／資本結構／融資壓力／股債傳導
-Status: ACTIVE_RESEARCH / D22_MATURITY_51_7PCT / D22-01_02_03_05_07_08_10_L3 / D22-04_06_SOURCE_BLOCKED_L2 / D22-09_DEPENDENCY_BLOCKED_L2 / D22-11_12_HOLD_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
+Status: ACTIVE_RESEARCH / D22 51.7% / D22-05_STAGE_A_CHALLENGER_GATE_PASSED_BASELINE_BLOCKED / D22-04_06_FAIR_VALUE_LANE_PARTIAL_UNBLOCK_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - Canonical continuation checkpoint for D22.
@@ -536,4 +536,63 @@ Therefore D22-04 and D22-06 remain L2. The blocker is narrower, not removed:
 3. D22-04/D22-06: materialize multiple independent-date TPEx free fair-value/reference reports through a reproducible transport path; keep provenance separate from trade/quote.
 4. Continue common-support inventory expansion for D22-01/02/03/07/08/10.
 5. No L4 or Formal promotion from challenger count alone.
+
+## 2026-10-05 07:18 continuation｜Stage-A challenger gate passed; baseline blocker isolated
+
+### D22-05｜Credit Rating / Rating Migration
+Current level: L3 / 60%.
+Stage-A challenger-side event pool:
+- raw exact rating events: 29;
+- frozen independent directional episodes: 22;
+- issuer count: 10;
+- challenger-side minimum 20: PASSED;
+- baseline-frozen anchors: 0;
+- mature paired anchors: 0;
+- equity outcomes: CLOSED.
+
+Durable files:
+- `research/d22_05_rating_event_replay_v0_1.json`
+- `research/d22_05_rating_episode_cluster_v0_1.json`
+- `research/d22_05_stage_a_pairing_manifest_v0_1.json`
+- `research/d22_05_stage_a_baseline_gap_audit_v0_1.json`
+- `research/d22_l4_stage_a_common_support_inventory_v0_1.json`
+
+Frozen episode rule:
+- within one issuer, consecutive same-direction outlook/watch/notch changes remain one deterioration or recovery episode until direction reverses;
+- only the first directional event date is the independent Stage-A anchor;
+- later same-direction agency actions update the state but do not create additional independent samples;
+- no return data were used to cluster events.
+
+Baseline blocker:
+- the repository does not yet contain one canonical exact-common-support B0/B1 baseline table covering the 22 frozen D22-05 anchors;
+- D07 pre-event PIT fundamentals, D13 pre-event rate/macro context, size/liquidity and D11 event clocks must be frozen on the exact same issuer-anchorDate population;
+- prior rating/outlook/watch states are ready;
+- D22-06 market-credit baseline remains unavailable and is included only when available under the preregistration;
+- existing D22-01-specific D07/D13 baseline receipts demonstrate architecture only and cannot be generalized/backfilled to the D22-05 event population.
+
+Decision:
+- HOLD L3;
+- mature paired dates remain 0;
+- do not open returns/MFE/MAE;
+- do not call 22 challenger episodes 22 mature pairs.
+
+### D22-04 / D22-06｜TPEx source blocker narrowed
+TPEx official public evidence verifies a free security-level corporate-bond fair-value/reference report lane. A 2022-12-30 official report exposes bond code, maturity, coupon, reference curve, clean fair value and yield for multiple corporate bonds.
+
+However:
+- fair value/reference is model/reference evidence, not an actual transaction;
+- reproducible multi-date public transport was not completed;
+- historical actual trade/quote data remain unavailable in the current research packet;
+- direct guessed URLs for additional dates could not be verified and are not treated as evidence of absence;
+- no stale-price forward fill;
+- no duration/currency/optionality-mismatched issuer spread.
+
+Therefore D22-04 and D22-06 remain L2 / 40%.
+
+### Exact next continuation
+1. Build the D22-05 22-anchor exact B0/B1 baseline table without outcome labels.
+2. Treat D07 general-industry PIT fundamentals as a live dependency; missing exact historical first-known values remain UNKNOWN and block the affected anchor.
+3. Freeze D13 rate/macro, industry, size/liquidity and D11 event-clock controls on the exact same population.
+4. Only if >=20 anchors remain mature after baseline pairing may the historical outcome join open once under the frozen Stage-A preregistration.
+5. While D07 baseline dependency is blocked, continue the nonconflicting D22-04/D22-06 public TPEx fair-value multi-date transport search; never substitute fair value for actual trade.
 
