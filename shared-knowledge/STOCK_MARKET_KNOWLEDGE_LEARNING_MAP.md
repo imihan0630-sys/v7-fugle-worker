@@ -154,6 +154,8 @@ GitHub專屬checkpoint：
 
 ### D03｜趨勢／動能／反轉／技術指標 — 56.7%
 
+> D03 source/acceptance latest 2026-10-04: TI-594~610 physically resolve TPEx halt/resumption, ex-right/ex-dividend and capital-reduction machine sources with bounded JSON/CSV reconciliation, and physically PASS the frozen Bollinger first-parent acceptance logic. D03-10 remains L2/40 because the first genuine post-V8.17 Taiwan parent generation has not yet occurred; D03 stays 56.7%. Tracker is authoritative.
+
 專責：03｜技術指標與趨勢動能研究室  
 證據錨點：`TECHNICAL_INDICATOR_CHECKPOINT.md`、`TREND_MOMENTUM_REVERSAL_CHECKPOINT.md`
 
@@ -161,7 +163,7 @@ GitHub專屬checkpoint：
 |---|---|---|---:|
 | D03-01 | 均線排列／斜率／趨勢狀態 | L3 台股PIT資料可行 | 60% |
 | D03-02 | ret5／ret20／ret60直接報酬動能 | L3 台股PIT資料可行 | 60% |
-| D03-03 | 趨勢持續性與Persistence | L2 機制＋反證 | 40% |
+| D03-03 | 趨勢持續性與Persistence | L3 台股PIT資料可行 | 60% |
 | D03-04 | 動能延續 | L3 台股PIT資料可行 | 60% |
 | D03-05 | Pullback回檔與短期反轉 | L3 台股PIT資料可行 | 60% |
 | D03-06 | KD隨機指標 | L3 台股PIT資料可行 | 60% |
@@ -169,7 +171,7 @@ GitHub專屬checkpoint：
 | D03-08 | MACD指數平滑異同移動平均 | L3 台股PIT資料可行 | 60% |
 | D03-09 | ADX平均趨向指標 | L2 機制＋反證 | 40% |
 | D03-10 | Bollinger Bands布林通道 | L2 機制＋反證 | 40% |
-| D03-12 | 指標背離／repaint-safe確認 | L2 機制＋反證 | 40% |
+| D03-12 | 指標背離／repaint-safe確認 | L3 台股PIT資料可行 | 60% |
 | D03-13 | 多時間框架趨勢／動能衝突 | L3 台股PIT資料可行 | 60% |
 
 > **D03-01 正式子題補充：均線扣抵** — 納入扣抵價、扣高／扣低、SMA 5／10／20／60／120 日未來 1／3／5 日扣抵序列、均線斜率轉正／轉負與翻揚／走平／下彎預判；EMA 另按遞迴權重語意研究。此子題須與 MA slope、MA alignment、retN、trend persistence、price-vs-MA 做冗餘驗證，不得重複加分。
