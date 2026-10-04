@@ -22985,3 +22985,55 @@ New durable artifacts:
 - research/PATTERN_DISPLACEMENT_PATH_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-034 — Structural persistence vs role reversal / polarity flip (2026-10-04)
+
+Technical-analysis manuals commonly state that broken resistance becomes support and broken support becomes resistance. DL-034 refuses to treat that statement as an already-proven market law.
+
+The scientific evidence is more limited than the practitioner slogan. Osler documents that technical levels can predict trend interruptions and that price movement often accelerates after those levels are crossed, with clustered stop-loss and take-profit orders providing a microstructure explanation. Zapranis and Tsinaslanidis find horizontal support/resistance can help predict trend interruption but do not establish abnormal-return superiority. Chung and Bellotti find temporary barrier effects with both bounce-history reinforcement and time decay. Henderson, Jacka, Liu and Maeda explicitly model role reversal in a 2026 path-dependent support/resistance framework, but their polarity transition is a model feature motivated by technical-analysis practice rather than direct empirical identification of incremental polarity memory.
+
+Therefore DL-034 changes the question.
+
+A confirmed crossing does not mean a role flip has already worked.
+
+Instead, the same persisted structural root becomes POLARITY-FLIP ELIGIBLE at the canonical breakout confirmation. Resistance crossed upward creates a candidate support role; support crossed downward creates a candidate resistance role. The structural root remains the same object and only a new role episode begins. Root age continues. Structural-version age continues unless geometry changes under the existing version rules. Role-episode age begins at breakout confirmation, not at a later successful bounce.
+
+The first opposite-side retest is deliberately reserved as a future test opportunity.
+
+For a former resistance crossed upward, the first valid revisit must approach from above. For a former support crossed downward, the first valid revisit must approach from below. The retest result is not allowed into eligibility. This prevents the circular design in which a successful bounce is used to label a level as "flipped" and then the same bounce is counted as evidence that flipped levels work.
+
+Breakout semantics remain owned by D01-05. DL-034 consumes the existing canonical breakout/failure lifecycle and does not define a new close threshold, volume threshold, acceptance rule or number of bars. Wick-only crossings and unconfirmed breaks are insufficient.
+
+A candidate may be cancelled before its first test if the canonical breakout is reclaimed/failed, the structural object is market-invalidated, continuity is broken or constraints make the test unevaluable. Such cancellation is not a failed retest because no valid first-test opportunity occurred.
+
+The most important falsification is incremental, not descriptive.
+
+A first retest can hold simply because the breakout itself was strong, D02 acceptance persisted, volatility/liquidity favored continuation, the boundary was salient, or momentum remained favorable. Therefore the polarity hypothesis must beat a generic breakout/retest baseline.
+
+G0 contains comparable confirmed breakout/retest cases without certified prior opposite-role structural history.
+
+G1 contains comparable cases where the crossed boundary was already a certified support/resistance root in the opposite role.
+
+If G1 does not improve on G0 after breakout quality, retest latency, opportunity geometry, volatility/liquidity, salience, age, scale/regime and path controls, the former-role memory story is unnecessary.
+
+Future D16 inference is nested:
+F0 generic breakout/retest controls;
+F1 adds certified former-role history;
+F2 adds original-role age/interaction/salience history;
+F3 adds DL-031/DL-032/DL-033 aging, scale/regime and path controls.
+
+Later retests remain within the same role episode. They are not extra independent polarity events and the best later retest cannot be selected after outcomes.
+
+Behavioral explanations such as trapped holders selling near breakeven or missed breakout traders buying a retest are plausible, but chart data do not identify those motives. D01 therefore records only structural and lifecycle evidence; D20 remains the owner for behavioral-mechanism research.
+
+Sixteen adversarial cases are authored. They cover both valid polarity directions, wrong-direction rejection, unconfirmed crossing rejection, same-root preservation, role-episode clocking, first-retest outcome exclusion, correct approach side, no-opportunity non-failure, pre-test cancellation, constrained crossings/retests, generic-retest control identity and non-independent vote semantics.
+
+New durable artifacts:
+- research/PATTERN_ROLE_REVERSAL_V0_1.md
+- research/pattern_role_reversal_v0_1.json
+- research/pattern_role_reversal_v0_1.mjs
+- research/test_pattern_role_reversal_v0_1.mjs
+- research/PATTERN_ROLE_REVERSAL_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
