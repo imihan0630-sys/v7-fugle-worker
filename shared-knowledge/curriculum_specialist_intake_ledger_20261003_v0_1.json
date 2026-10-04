@@ -182,10 +182,18 @@
     },
     {
       "id": "H17",
-      "status": "PENDING",
-      "receivedPackets": [],
-      "pendingRooms": [],
-      "controlDecision": "NOT_EVALUATED"
+      "status": "PARTIAL_EVIDENCE_RECEIVED",
+      "receivedPackets": [
+        "MACRO_CROSS_MARKET_CHECKPOINT.md",
+        "CREDIT_CAPITAL_STRUCTURE_CHECKPOINT.md",
+        "research/stock_market_learning_tracker_v0_1.json"
+      ],
+      "pendingRooms": [
+        "06｜基本面與估值研究室 — D07-18 WACC/COE/COD composite ownership",
+        "15｜信用市場與資本結構研究室 — D22-04 issuer-security-date replay",
+        "09｜衍生品與國際總經研究室 — D13-06 multidate strict source attestation"
+      ],
+      "controlDecision": "EVIDENCE_INSUFFICIENT_PENDING_D07_18_AND_D22_04_REPLAY_GATES"
     },
     {
       "id": "H18",
@@ -588,6 +596,23 @@
       "COMMON_SUPPORT_COST_CAPACITY"
     ],
     "currentControlDecision": "EVIDENCE_INSUFFICIENT_PENDING_COMMON_SUPPORT_REDUNDANCY_RESIDUAL_TESTS",
+    "maturityChange": "NONE",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "h17": {
+    "state": "PARTIAL_EVIDENCE_RECEIVED",
+    "acceptedBoundary": {
+      "D13-06": "SOVEREIGN_RISK_FREE_YIELD_CURVE",
+      "D22-04": "ISSUER_DEBT_COST_REFINANCING_SPREAD",
+      "D07-18": "ENTERPRISE_WACC_COST_OF_CAPITAL_COMPOSITE"
+    },
+    "remaining": [
+      "D07_18_WACC_COE_COD_OWNER_CONTRACT",
+      "D22_04_SECURITY_LEVEL_HISTORICAL_REPLAY",
+      "D13_06_MULTIDATE_STRICT_SOURCE_ATTESTATION",
+      "EMPIRICAL_DIVERGENT_STATE_RECEIPTS"
+    ],
+    "currentControlDecision": "EVIDENCE_INSUFFICIENT_PENDING_D07_18_AND_D22_04_REPLAY_GATES",
     "maturityChange": "NONE",
     "formalOptimizationCandidate": "NONE"
   }
