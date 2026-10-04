@@ -807,3 +807,15 @@ Therefore:
 2. Keep week-average and Wednesday state as separate candidate features; never choose between them after seeing returns.
 3. Before any "liquidity" composite, compare the component vector against rates/USD/volatility baselines and preserve all other material supplying/draining factors.
 4. Continue D13-17 prospective CBC BOP schedule receipt and D13-19 CBO vector-vintage work independently.
+
+
+## 2026-10-04 MC-198..MC-200 prospective source-clock delta
+- MC-198: Treasury 3:30 p.m. Eastern is the market-input/reference clock; official methodology says curve rates are usually available by 6:00 p.m. Eastern and may be delayed. Strict Taiwan PIT must use actual publication/capture evidence, not 3:30 as knownAt.
+- MC-199: prospective H.4.1 schedule receipt frozen at `research/d13_16_h41_schedule_receipt_20261004_2211.json` for the official 2026-10-08 16:30 Eastern schedule, mapping to 2026-10-09 04:30 Taipei.
+- MC-200: schedule knowledge is separate from realization knowledge. Realization remains UNKNOWN until observed after publication; future source receipt must append rather than overwrite this schedule receipt.
+- D13-16 remains L2/40%; D13 remains 41.1%. Outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation after MC-200
+1. On/after the scheduled 2026-10-08 H.4.1 release, append actual publication/capture/source identity and keep week-average vs Wednesday statistics separate.
+2. Future Treasury curve receipts preserve market-reference time separately from actual published/captured time.
+3. Continue CBC BOP prospective receipt plan independently.
