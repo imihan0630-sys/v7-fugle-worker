@@ -197,5 +197,12 @@ Formal Core remains LOCKED.
 - SC-046 freezes TSMC Arizona industrial-policy award -> facility-milestone clocks and the firewall AWARDED_MAX != DISBURSED != SPENT != QUALIFIED_CAPACITY != HVM_OUTPUT. D10-14 advances L2 -> L3 data feasibility only.
 - BR-057 freezes 8046/3189 PCB/ABF product-scope plus total-revenue denominators while leaving unavailable ABF/AI revenue numerators UNKNOWN.
 - BR-058 freezes the first true prospective D09-14 issuer-action cohort before outcomes: UMC phased expansion and Foxconn/Mitsubishi Electric MOU. D09-14 remains L3 until future prospective outcomes exist.
-- D10-01, D10-04, D09-07 and D09-12 are not promoted because their explicit evidence blockers remain.
+- D10-01, D10-04 and D09-12 are not promoted because their explicit evidence blockers remain. The prior D09-07 repeated-snapshot blocker is superseded by BR-045.
 - No Production or Formal Core behavior changed.
+
+
+### Room 07 BR-045 + SC-047/048 — 2026-10-04
+- BR-045 freezes five independent official TWSE close snapshots across all 34 industry total-return indices and demonstrates replayable sector-leadership persistence, churn and participation-state transitions. D09-07 advances L2 -> L3 for bounded sector-level PIT feasibility only; individual-stock leadership and predictive efficacy remain unproven.
+- SC-047 appends current BIS parentage/entity-authorization policy semantics but is explicitly not labeled prospective because those vintages predate capture. D10-13 stays L3.
+- SC-048 adds 6488 GlobalWafers as a second Taiwan issuer policy-to-capacity control. Final award and private capital commitment are known, while actual disbursement/current HVM remain UNKNOWN under a source-freshness conflict. D10-14 stays L3.
+- No L4 claim, no Production behavior and no Formal Core change.
