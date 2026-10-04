@@ -487,3 +487,18 @@ Physical control:
 This reduces query truncation/fragmentation uncertainty for the frozen control only. Revision completeness, knownAt clocks, suspension completeness and technical continuity remain blocked.
 
 Next engineering target: multi-control month-shard reconciliation on the frozen correction/cancellation matrix, followed by empty-month/pagination semantics and historical knownAt validation.
+
+
+## 2026-10-04 MOPSOV multi-control reconciliation acceptance
+
+PR #448 / `8c1f9746ffe0593797403a5bc45c1cfbd68e0a35` expanded the month-shard source-contract guard to all four companies / five controls in the frozen MOPS correction/cancellation matrix.
+
+Physical result:
+- 4/4 companies exact-keyset PASS;
+- 5/5 frozen controls covered;
+- no only-full-query keys;
+- no only-month-shard keys;
+- no duplicate month-shard keys;
+- read-only boundary PASS.
+
+Remaining S2-07 continuity blockers are unchanged: empty-month semantics, higher-row-count truncation, knownAt certification, exchange-side cancellation/revocation coverage, suspension/resumption completeness, symbol-session completeness and technical continuity.
