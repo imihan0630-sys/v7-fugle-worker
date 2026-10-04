@@ -23,7 +23,7 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 
 - 大領域：22
 - 二級研究模組：356
-- 新完整課綱成熟度：**45.9%**
+- 新完整課綱成熟度：**46.2%**
 - 注意：這個百分比與 System 1 現行21模組的46.7%不是同一分母；本表分母更大、更細。
 - 100%不是「世界上再也沒有新知識」，而是本版課綱全部達L5；新增新知識時可版本化擴充分母。
 - 七項汰留與能力移轉紀錄：`shared-knowledge/CURRICULUM_RETIREMENT_AND_CAPABILITY_LEDGER_V0_1.md`。退休模組不代表刪除其必要工程／研究能力。
@@ -48,7 +48,7 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 | D16 | 統計驗證／PIT／Shadow／OOS／防過擬合 | 25 | 45.6% | 11｜統計驗證與策略市場狀態研究室 |
 | D17 | 新聞／事件半衰期／受益受害傳導 | 14 | 50.0% | 08｜事件與新聞研究室 |
 | D18 | 市場Regime×策略互動 | 15 | 37.3% | 11｜統計驗證與策略市場狀態研究室 |
-| D19 | 資產定價／因子投資／市場異象 | 15 | 40% | 12｜資產定價與因子研究室 |
+| D19 | 資產定價／因子投資／市場異象 | 15 | 41.3% | 12｜資產定價與因子研究室 |
 | D20 | 行為金融／投資人注意力／市場心理 | 13 | 12.3% | 13｜行為金融與市場心理研究室 |
 | D21 | 公司治理／經營者／內部人／控制權品質 | 11 | 33.8% | 14｜公司治理與內部人研究室 |
 | D22 | 信用市場／資本結構／融資壓力／股債傳導 | 12 | 0% | 15｜信用市場與資本結構研究室 |
@@ -597,7 +597,7 @@ GitHub專屬checkpoint：
 | D18-15 | Business／Credit Cycle × Strategy Regime景氣信用循環與策略市場狀態互動 | L0 未研究 | 0% |
 
 
-### D19｜資產定價／因子投資／市場異象 — 40%
+### D19｜資產定價／因子投資／市場異象 — 41.3%
 
 專責：12｜資產定價與因子研究室  
 證據錨點：`ASSET_PRICING_FACTOR_CHECKPOINT.md`、`ASSET_PRICING_FACTOR_RESEARCH.md`
@@ -615,7 +615,7 @@ GitHub專屬checkpoint：
 | D19-09 | Residual Momentum／Factor Neutralization殘差動能與因子中性化 | L2 機制＋反證 | 40% |
 | D19-10 | Factor Exposure／Multicollinearity因子曝險與共線性 | L2 機制＋反證 | 40% |
 | D19-11 | Factor Crowding／Capacity／Turnover因子擁擠容量與換手 | L2 機制＋反證 | 40% |
-| D19-12 | Seasonality／Calendar Anomalies季節性與日曆異象 | L2 機制＋反證 | 40% |
+| D19-12 | Seasonality／Calendar Anomalies季節性與日曆異象 | L3 台股PIT資料可行性（有限範圍） | 60% |
 | D19-13 | Relative Value／Pairs Trading／Cointegration／Residual Mean Reversion相對價值、配對交易、共整合與殘差均值回歸 | L2 機制＋反證 | 40% |
 | D19-15 | Index／Benchmark Construction／Methodology指數與基準建構方法 | L2 機制＋反證 | 40% |
 | D19-16 | Liquidity Premium／Illiquidity Factor流動性溢酬與非流動性因子 | L2 機制＋反證 | 40% |
