@@ -4,6 +4,14 @@ const sha=(x)=>createHash("sha256").update(String(x)).digest("hex");
 const base="https://www.tpex.org.tw";
 const pageUrl=base+"/zh-tw/mainboard/listed/delisted.html";
 const currentUrl=base+"/openapi/v1/mopsfin_t187ap03_O";
+const delistedApiBase=base+"/www/zh-tw/company/deListed";
+const delistedApiCandidates=[
+  delistedApiBase,
+  delistedApiBase+"?code=&date=&reason=-1",
+  delistedApiBase+"?code=&date=2026&reason=-1",
+  delistedApiBase+"?code=&date=115&reason=-1",
+  delistedApiBase+"?code=&date=&reason=-1&response=json",
+];
 
 async function fetchRaw(url){
   try{
@@ -51,6 +59,8 @@ function snippets(text,terms){
 }
 
 const currentRaw=await fetchRaw(currentUrl);
+const delistedApiResults=[];
+for(const url of delistedApiCandidates)delistedApiResults.push(summarize(await fetchRaw(url)));
 const pageRaw=await fetchRaw(pageUrl);
 const scriptUrls=[];
 for(const m of pageRaw.text.matchAll(/<script[^>]+src=["']([^"']+)["']/gi)){
@@ -77,6 +87,7 @@ for(const url of scriptUrls){
 console.log(JSON.stringify({
   result:"TPEX_UNIVERSE_ROUTE_DISCOVERY_V0_2",
   currentProfile:summarize(currentRaw),
+  delistedApiResults,
   delistedPage:summarize(pageRaw),
   pageHints,
   scriptUrlCount:scriptUrls.length,
