@@ -207,3 +207,32 @@ Exact next continuation point:
 3. preserve D05-06 maturity unchanged by the structural action;
 4. record a canonical update receipt and verify no System1/System2 Formal/runtime change;
 5. if rejected, preserve the audit and close or revise scope without canonical mutation.
+
+
+## COV-02 canonical completion — owner approved 2026-10-04
+
+Owner approved COV-02.
+
+Executed canonical action:
+- `D05-06 → Opening / Closing Auction & Auction Imbalance（開收盤集合競價與競價不平衡）`;
+- scope extension only;
+- L2 / 40% unchanged;
+- module count unchanged;
+- aggregate maturity unchanged by this action;
+- historical pre-close imbalance without timestamped evidence remains UNKNOWN;
+- final close/volume cannot backfill the pre-close path;
+- one D05-06 parent auction receipt; downstream interpretations cannot duplicate the vote;
+- no System1/System2 Formal or runtime change.
+
+COV-02 state: **CANONICAL_UPDATE_COMPLETE**.
+
+Canonical receipt:
+- `shared-knowledge/CURRICULUM_COV02_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md`
+- `shared-knowledge/curriculum_cov02_canonical_update_receipt_20261004_v0_1.json`
+
+Exact next 00 continuation:
+1. COV-02 is closed structurally; do not reopen unless new evidence invalidates the ownership boundary.
+2. Continue checking newly arrived complete specialist packets/counterparts on latest main.
+3. COV-12 remains pending unless a real formal return has since appeared.
+4. AOKD-05 remains routed to 06 for corpus feasibility.
+5. Broad AOKD sweep remains saturated absent a new observable/mechanism/source trigger.
