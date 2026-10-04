@@ -59,3 +59,19 @@ If V0.1 does not reveal a stable route, the TPEx suspension blocker remains expl
 ## Authority firewall
 
 No secret, D1/R2 write, deployment, schedule, selection, push, capital, order or System1 runtime use.
+
+## Discovery correction after first physical run
+
+The first discovery run exposed a useful official inline configuration even though the generic URL-token detector reported no stable route:
+
+`tables.init({ pattern: API_PATTERN, action: "bulletin/sprcHis", ... })`
+
+The same official page also exposes form inputs named `date` and `cate`.
+
+Therefore the branch now contains a second, narrower physical candidate probe for:
+
+`https://www.tpex.org.tw/www/zh-tw/bulletin/sprcHis`
+
+with the page-derived `date` / `cate` parameters and `response=json`.
+
+This is not endpoint promotion by analogy: the `bulletin/sprcHis` action string is taken directly from the official TPEx page source. A separate capability contract is still required after physical JSON behavior is observed.
