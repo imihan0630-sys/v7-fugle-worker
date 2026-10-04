@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "D06_03_DEALER_PROP_HEDGE_PIT_CONTRACT_V0_1",
+  "updated": "2026-10-04 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "module": "D06-03",
+  "question": "Can Taiwan dealer proprietary versus hedge trading be replayed with official stock-level semantics and point-in-time-safe provenance for research without changing current Formal dealerNet?",
+  "sourceEvidence": {
+    "TWSE": {
+      "officialDailyReport": "T86 three-institution stock-level report",
+      "stockLevelFields": [
+        "dealerPropBuyShares",
+        "dealerPropSellShares",
+        "dealerPropNetShares",
+        "dealerHedgeBuyShares",
+        "dealerHedgeSellShares",
+        "dealerHedgeNetShares",
+        "dealerAggregateNetShares"
+      ],
+      "historicalReplay": "OFFICIAL_DATE_QUERY_AVAILABLE",
+      "publicExampleDates": [
+        "2026-10-02",
+        "2026-09-11"
+      ],
+      "paidProduct": {
+        "product": "TWT86UC/TWTAIUC",
+        "startDate": "2004-09-09",
+        "frequency": "DAILY",
+        "productionTimes": [
+          "18:00 excluding block trades",
+          "20:00 including block trades"
+        ],
+        "semantics": "prop and hedge buy/sell fields separately defined"
+      }
+    },
+    "TPEx": {
+      "officialDailyDetail": "three-institution daily stock-level detail",
+      "stockLevelFields": [
+        "dealerPropBuyShares",
+        "dealerPropSellShares",
+        "dealerPropNetShares",
+        "dealerHedgeBuyShares",
+        "dealerHedgeSellShares",
+        "dealerHedgeNetShares",
+        "dealerAggregateBuyShares",
+        "dealerAggregateSellShares",
+        "dealerAggregateNetShares"
+      ],
+      "currentPublicDetail": "VERIFIED",
+      "historicalReplay": "OFFICIAL_DATE/YEAR/MONTH_QUERY_FAMILY_AVAILABLE",
+      "publicHistory": "detail data available since ROC 96/04/20 with older historical query routes",
+      "system2RetrospectiveReplay": {
+        "requestedDate": "2026-09-24",
+        "returnedTargetDate": true,
+        "coverageRows": 775,
+        "note": "retrospective schema/coverage proof only; not publication-latency evidence"
+      }
+    }
+  },
+  "sourceSemanticsGuard": [
+    "dealer proprietary and dealer hedge are economically distinct source fields and must remain separate in research receipts",
+    "foreign dealer is also a separate official source field and must not be silently relabeled as ordinary foreign investor flow",
+    "historical replay proves finalized date-specific values, not the exact historical firstKnownAt",
+    "future decision-time PIT uses actual capturedAt and official production clock where verified",
+    "unknown field order/schema fingerprint fails closed rather than guessing indexes"
+  ],
+  "formalCompressionBoundary": {
+    "currentFormalState": "Current Formal institutional snapshot persists only aggregate dealerNet; TWSE/TPEx prop+hedge detail is collapsed before scoring.",
+    "implication": "D06-03 research maturity may advance independently of Formal runtime field preservation.",
+    "classB": "Preserving prop/hedge split in shared runtime/research persistence requires proposal-first if shared source path changes.",
+    "classC": "Any change to institutionalScore weights/signs/thresholds remains owner-approved Formal work only."
+  },
+  "requiredResearchReceipt": [
+    "market",
+    "tradeDate",
+    "symbol",
+    "dealerPropBuyShares",
+    "dealerPropSellShares",
+    "dealerPropNetShares",
+    "dealerHedgeBuyShares",
+    "dealerHedgeSellShares",
+    "dealerHedgeNetShares",
+    "dealerAggregateNetShares",
+    "sourceUrl",
+    "sourceProduct",
+    "sourceSchemaFingerprint",
+    "sourceDate",
+    "producedAtContract",
+    "requestedAt",
+    "capturedAt",
+    "firstKnownAt",
+    "contentHash",
+    "parserVersion",
+    "coverageCount",
+    "unknownReasons"
+  ],
+  "falsification": [
+    "A replayable source does not prove prop flow or hedge flow is predictive.",
+    "Hedge activity is not automatically noise; proprietary activity is not automatically informed conviction.",
+    "Historical finalized pages cannot fabricate historical publication timestamps.",
+    "The current Formal aggregate dealerNet cannot be decomposed retrospectively from persisted rows if the split was not saved.",
+    "TPEx schema drift remains a fail-closed risk; research receipts must preserve source field semantics/fingerprint."
+  ],
+  "maturityDecision": {
+    "previous": "L2 / 40%",
+    "new": "L3 / 60%",
+    "basis": "Taiwan official TWSE and TPEx stock-level source semantics are separately defined and date-specific replay feasibility has been validated; research can preserve PIT-safe provenance prospectively. No outcome claim and no Formal adoption is implied."
+  },
+  "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / DEALER_PROP_HEDGE_SOURCE_REPLAY_READY / FORMAL_AGGREGATION_UNCHANGED / OUTCOMES_CLOSED",
+  "exactNext": "Prospectively preserve dealer-proprietary and dealer-hedge split receipts on independent trading dates, then only at L4 test incremental value versus aggregate dealerNet, price-volume, derivatives/passive context and market regime. No Formal score change."
+}
