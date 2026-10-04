@@ -60,8 +60,11 @@ export function evaluateEvidenceCutoffReceiptSplitV0_1({parent,evidenceCut,conti
   if(continuityReceipt.evidenceCutId!==evidenceCut.evidenceCutId) reasons.push("RECEIPT_EVIDENCE_CUT_ID_MISMATCH");
   if(continuityReceipt.derivedOnlyFromEvidenceCut!==true) reasons.push("DERIVED_ONLY_FROM_EVIDENCE_CUT_FALSE");
   if(Number(continuityReceipt.postCutSourceFactCount||0)!==0) reasons.push("POST_CUT_SOURCE_FACT_PRESENT");
+  if(!hash64(continuityReceipt.evidenceCutManifestHash)) reasons.push("EVIDENCE_CUT_MANIFEST_REF_INVALID");
+  if(continuityReceipt.evidenceCutManifestHash!==evidenceCut.sourceCutManifestHash) reasons.push("EVIDENCE_CUT_MANIFEST_REF_MISMATCH");
   if(!hash64(continuityReceipt.transformInputManifestHash)) reasons.push("TRANSFORM_INPUT_MANIFEST_HASH_INVALID");
-  if(continuityReceipt.transformInputManifestHash!==evidenceCut.sourceCutManifestHash) reasons.push("TRANSFORM_INPUT_MANIFEST_CUT_MISMATCH");
+  if(!hash64(continuityReceipt.sourceFactRefSetHash)) reasons.push("SOURCE_FACT_REF_SET_HASH_INVALID");
+  if(Number(continuityReceipt.unboundSourceFactCount||0)!==0) reasons.push("UNBOUND_SOURCE_FACT_PRESENT");
 
   const bars=Array.isArray(continuityReceipt.bars)?continuityReceipt.bars:[];
   for(const bar of bars){
@@ -83,7 +86,9 @@ export function evaluateEvidenceCutoffReceiptSplitV0_1({parent,evidenceCut,conti
     parentKnownAt:new Date(parent.knownAt).toISOString(),
     receiptCreatedAt:new Date(continuityReceipt.receiptCreatedAt).toISOString(),
     sourceCutManifestHash:evidenceCut.sourceCutManifestHash,
+    evidenceCutManifestHash:continuityReceipt.evidenceCutManifestHash,
     transformInputManifestHash:continuityReceipt.transformInputManifestHash,
+    sourceFactRefSetHash:continuityReceipt.sourceFactRefSetHash,
   };
 
   return {
