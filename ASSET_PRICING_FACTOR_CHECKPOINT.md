@@ -2,7 +2,7 @@
 
 Updated: 2026-10-04 Asia/Taipei
 Scope: D19｜資產定價／因子投資／市場異象
-Status: RESEARCH_ACTIVE / D19-01_TO_D19-16_ACTIVE_L2 / FACTOR_LAYER_PIT_ADAPTER_SPEC_DEFINED / EXECUTABLE_RECEIPTS_REQUIRED / FORMAL_CORE_UNCHANGED
+Status: RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / FACTOR_LAYER_RECEIPT_ADAPTER_IMPLEMENTED / REAL_TWSE_SMOKE_PASS_NEGATIVE_L3_GATE / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - This file is the canonical continuation checkpoint for D19.
@@ -80,10 +80,30 @@ Status: RESEARCH_ACTIVE / D19-01_TO_D19-16_ACTIVE_L2 / FACTOR_LAYER_PIT_ADAPTER_
 - Repository audit confirms the six D19 receipt types are not yet implemented in code.
 - No L3 promotion in Stage 6.
 
+## Stage 7 completed on 2026-10-04
+- PR #439 merged to main as `76f5ef80dbf0654a033a0a780b065ebfabbf0e30`.
+- Research-only D19 factor-layer receipt adapter is implemented with deterministic six-layer receipts and fail-closed tests.
+- System2 Research CI `37165603677`: PASS.
+- V8 Regression `37165603710`: PASS.
+- Real official-source D19 smoke `37165603790`: PASS_NEGATIVE_L3_GATE; System1 production isolation PASS.
+- TWSE physical witness covered 2026-08-03..2026-08-31, 21 official sessions, full-market source rows=22,810; bounded 2330/2454 receipt chain complete.
+- TPEx physical source failed closed: both primary and legacy transports returned HTTP 520 on 2026-08-03; no data were fabricated.
+- D19 maturity remains 40.0%. No L3 promotion.
+
+## Current L3 blockers for first D19-04 replay
+1. BOUNDED_UNIVERSE_NOT_HISTORICAL_REGISTRY.
+2. CORPORATE_ACTION_CONTINUITY_UNVERIFIED.
+3. INDUSTRY_NEUTRALIZATION_NOT_PROVEN.
+4. D03_D09_REDUNDANCY_NOT_PROVEN.
+5. COST_PROVENANCE_MODELED_TRANSPORT_ONLY.
+6. TPEX_OFFICIAL_HISTORICAL_SOURCE_UNAVAILABLE.
+
 ## Exact next continuation
-1. Implement a research-only D19 factor-layer PIT receipt adapter above the existing System2 cold loaders/PIT replay; do not fork existing PIT/universe logic.
-2. First executable smoke slice: D19-04 cross-sectional momentum + D19-07 low-volatility/low-beta using existing PIT daily bars/universe membership.
-3. Minimum deterministic chain: universeReceipt -> returnReceipt -> factorInputReceipt -> neutralizationReceipt -> costReceipt -> replayReceipt.
-4. Add fail-closed tests for missing availableAt/firstKnownAt, revision ambiguity, overlapping membership, benchmark-vintage conflicts, UNKNOWN required inputs, non-borrowable/UNKNOWN short legs, and identical-input rerun hashes.
-5. Do not promote any D19 module to L3 until an executable Taiwan replay on at least one frozen historical date/universe produces verified deterministic receipts.
-6. Accounting-heavy D19-03/05/06 remain after first-known financial ingestion is available.
+1. Replace bounded witness membership with an actual date-vintaged historical-universe registry snapshot/receipt.
+2. Bind corporate-action continuity evidence to the exact replay bars without rewriting raw history.
+3. Diagnose and physically revalidate an official TPEx historical transport; remain UNKNOWN/SOURCE_UNAVAILABLE until successful.
+4. Add date-vintaged industry membership and industry neutralization.
+5. Run paired D03/D09 redundancy controls on the same PIT dates/universe.
+6. Replace engineering cost placeholder with a versioned D14-compatible research cost scenario and explicit provenance quality.
+7. Re-run D19-04. Only a zero-blocker deterministic Taiwan PIT replay can trigger an L3 readiness review; no automatic promotion.
+8. D19-07 remains L2 until benchmark/beta-estimation semantics are executable; raw volatility alone is insufficient.
