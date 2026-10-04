@@ -1,7 +1,7 @@
 {
   "schemaVersion": "D22_05_RATING_EVENT_REPLAY_V0_1",
-  "generatedAt": "2026-10-04T13:44:00+08:00",
-  "status": "RESEARCH_ONLY / MULTI_ISSUER_MULTI_DATE_RATING_EVENT_REPLAY / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "generatedAt": "2026-10-04T21:01:00+08:00",
+  "status": "RESEARCH_ONLY / EXPANDED_MULTI_ISSUER_MULTI_DATE_RATING_EVENT_REPLAY / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "governance": {
     "issuerRatingSeparateFromIssueRating": true,
     "outlookSeparateFromRating": true,
@@ -179,6 +179,363 @@
       "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4816",
       "eventEvidence": "Outlook revised to Stable from Negative on improving profitability; ratings affirmed.",
       "informationContent": "Outlook normalization without notch change."
+    },
+    {
+      "issuer": "Walsin Lihwa",
+      "twseSymbol": "1605",
+      "industry": "industrial_materials",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2022-08-09",
+      "priorState": {
+        "longTerm": "twA-",
+        "outlook": "Stable",
+        "shortTerm": "twA-2"
+      },
+      "newState": {
+        "longTerm": "twA-",
+        "outlook": "Positive",
+        "shortTerm": "twA-2"
+      },
+      "eventType": "OUTLOOK_UP",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5134",
+      "eventEvidence": "Outlook revised to Positive from Stable; ratings affirmed.",
+      "informationContent": "Positive outlook without notch change."
+    },
+    {
+      "issuer": "Walsin Lihwa",
+      "twseSymbol": "1605",
+      "industry": "industrial_materials",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2023-08-24",
+      "priorState": {
+        "longTerm": "twA-",
+        "outlook": "Positive",
+        "shortTerm": "twA-2"
+      },
+      "newState": {
+        "longTerm": "twA-",
+        "outlook": "Stable",
+        "shortTerm": "twA-2"
+      },
+      "eventType": "OUTLOOK_DOWN",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5134",
+      "eventEvidence": "Outlook revised to Stable from Positive; ratings affirmed.",
+      "informationContent": "Normalization from positive outlook without notch change."
+    },
+    {
+      "issuer": "Walsin Lihwa",
+      "twseSymbol": "1605",
+      "industry": "industrial_materials",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2024-08-29",
+      "priorState": {
+        "longTerm": "twA-",
+        "outlook": "Stable",
+        "shortTerm": "twA-2"
+      },
+      "newState": {
+        "longTerm": "twA-",
+        "outlook": "Negative",
+        "shortTerm": "twA-2"
+      },
+      "eventType": "OUTLOOK_DOWN",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5134",
+      "eventEvidence": "Outlook revised to Negative on higher debt leverage; ratings affirmed.",
+      "informationContent": "Negative outlook without notch downgrade."
+    },
+    {
+      "issuer": "Sinyi Realty",
+      "twseSymbol": "9940",
+      "industry": "real_estate_services",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2021-03-25",
+      "priorState": {
+        "longTerm": "twA",
+        "outlook": "Negative",
+        "shortTerm": "twA-1"
+      },
+      "newState": {
+        "longTerm": "twA",
+        "outlook": "Stable",
+        "shortTerm": "twA-1"
+      },
+      "eventType": "OUTLOOK_UP",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5468",
+      "eventEvidence": "Outlook revised to Stable from Negative; ratings affirmed.",
+      "informationContent": "Outlook normalization."
+    },
+    {
+      "issuer": "Sinyi Realty",
+      "twseSymbol": "9940",
+      "industry": "real_estate_services",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2023-03-29",
+      "priorState": {
+        "longTerm": "twA",
+        "outlook": "Stable",
+        "shortTerm": "twA-1"
+      },
+      "newState": {
+        "longTerm": "twA",
+        "outlook": "Negative",
+        "shortTerm": "twA-1"
+      },
+      "eventType": "OUTLOOK_DOWN",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5468",
+      "eventEvidence": "Outlook revised to Negative on leverage risk; ratings affirmed.",
+      "informationContent": "Outlook deterioration without notch change."
+    },
+    {
+      "issuer": "Sinyi Realty",
+      "twseSymbol": "9940",
+      "industry": "real_estate_services",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2024-03-19",
+      "priorState": {
+        "longTerm": "twA",
+        "outlook": "Negative",
+        "shortTerm": "twA-1"
+      },
+      "newState": {
+        "longTerm": "twA",
+        "outlook": "Stable",
+        "shortTerm": "twA-1"
+      },
+      "eventType": "OUTLOOK_UP",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5468",
+      "eventEvidence": "Outlook revised to Stable on resilient brokerage business; ratings affirmed.",
+      "informationContent": "Outlook normalization."
+    },
+    {
+      "issuer": "TECO Electric & Machinery",
+      "twseSymbol": "1504",
+      "industry": "electrical_machinery",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2024-02-27",
+      "priorState": {
+        "longTerm": "twA+",
+        "outlook": "Stable",
+        "shortTerm": "twA-1"
+      },
+      "newState": {
+        "longTerm": "twA+",
+        "outlook": "Positive",
+        "shortTerm": "twA-1"
+      },
+      "eventType": "OUTLOOK_UP",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5458",
+      "eventEvidence": "Outlook revised to Positive from Stable on improved profitability; ratings affirmed.",
+      "informationContent": "Positive outlook without notch change."
+    },
+    {
+      "issuer": "TECO Electric & Machinery",
+      "twseSymbol": "1504",
+      "industry": "electrical_machinery",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2026-02-23",
+      "priorState": {
+        "longTerm": "twA+",
+        "outlook": "Positive",
+        "shortTerm": "twA-1"
+      },
+      "newState": {
+        "longTerm": "twA+",
+        "outlook": "Stable",
+        "shortTerm": "twA-1"
+      },
+      "eventType": "OUTLOOK_DOWN",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5458",
+      "eventEvidence": "Outlook revised to Stable from Positive on weaker EBITDA growth; ratings affirmed.",
+      "informationContent": "Normalization from positive outlook."
+    },
+    {
+      "issuer": "China Steel",
+      "twseSymbol": "2002",
+      "industry": "steel",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2020-04-16",
+      "priorState": {
+        "longTerm": "twAA-",
+        "outlook": "Stable",
+        "shortTerm": "twA-1+"
+      },
+      "newState": {
+        "longTerm": "twAA-",
+        "outlook": "Negative",
+        "shortTerm": "twA-1+"
+      },
+      "eventType": "OUTLOOK_DOWN",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064",
+      "eventEvidence": "Outlook moved to Negative while rating was unchanged.",
+      "informationContent": "Outlook deterioration without notch change."
+    },
+    {
+      "issuer": "China Steel",
+      "twseSymbol": "2002",
+      "industry": "steel",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2021-04-23",
+      "priorState": {
+        "longTerm": "twAA-",
+        "outlook": "Negative",
+        "shortTerm": "twA-1+"
+      },
+      "newState": {
+        "longTerm": "twAA-",
+        "outlook": "Stable",
+        "shortTerm": "twA-1+"
+      },
+      "eventType": "OUTLOOK_UP",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064",
+      "eventEvidence": "Outlook revised to Stable from Negative on demand recovery; ratings affirmed.",
+      "informationContent": "Outlook normalization."
+    },
+    {
+      "issuer": "China Steel",
+      "twseSymbol": "2002",
+      "industry": "steel",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2022-04-28",
+      "priorState": {
+        "longTerm": "twAA-",
+        "outlook": "Stable",
+        "shortTerm": "twA-1+"
+      },
+      "newState": {
+        "longTerm": "twAA-",
+        "outlook": "Positive",
+        "shortTerm": "twA-1+"
+      },
+      "eventType": "OUTLOOK_UP",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064",
+      "eventEvidence": "Outlook revised to Positive from Stable on accelerated deleveraging.",
+      "informationContent": "Positive outlook without notch change."
+    },
+    {
+      "issuer": "China Steel",
+      "twseSymbol": "2002",
+      "industry": "steel",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2023-04-28",
+      "priorState": {
+        "longTerm": "twAA-",
+        "outlook": "Positive",
+        "shortTerm": "twA-1+"
+      },
+      "newState": {
+        "longTerm": "twAA-",
+        "outlook": "Stable",
+        "shortTerm": "twA-1+"
+      },
+      "eventType": "OUTLOOK_DOWN",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064",
+      "eventEvidence": "Outlook revised to Stable on weaker demand and capex; ratings affirmed.",
+      "informationContent": "Normalization from positive outlook."
+    },
+    {
+      "issuer": "China Steel",
+      "twseSymbol": "2002",
+      "industry": "steel",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2025-04-24",
+      "priorState": {
+        "longTerm": "twAA-",
+        "outlook": "Stable",
+        "shortTerm": "twA-1+"
+      },
+      "newState": {
+        "longTerm": "twAA-",
+        "outlook": "Negative",
+        "shortTerm": "twA-1+"
+      },
+      "eventType": "OUTLOOK_DOWN",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064",
+      "eventEvidence": "Outlook revised to Negative on prolonged weak demand; ratings affirmed.",
+      "informationContent": "Outlook deterioration without notch change."
+    },
+    {
+      "issuer": "Asia Cement",
+      "twseSymbol": "1102",
+      "industry": "cement_materials",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2020-09-28",
+      "priorState": {
+        "longTerm": "twA+",
+        "outlook": "Stable",
+        "shortTerm": "twA-1"
+      },
+      "newState": {
+        "longTerm": "twA+",
+        "outlook": "Positive",
+        "shortTerm": "twA-1"
+      },
+      "eventType": "OUTLOOK_UP",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585",
+      "eventEvidence": "Outlook revised to Positive while rating was unchanged.",
+      "informationContent": "Positive outlook before later upgrade."
+    },
+    {
+      "issuer": "Asia Cement",
+      "twseSymbol": "1102",
+      "industry": "cement_materials",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2021-09-28",
+      "priorState": {
+        "longTerm": "twA+",
+        "outlook": "Positive",
+        "shortTerm": "twA-1"
+      },
+      "newState": {
+        "longTerm": "twAA-",
+        "outlook": "Stable",
+        "shortTerm": "twA-1+"
+      },
+      "eventType": "UPGRADE",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585",
+      "eventEvidence": "Issuer upgraded to twAA-/twA-1+ on low debt leverage; outlook Stable.",
+      "informationContent": "Formal upgrade following prior positive-outlook state."
+    },
+    {
+      "issuer": "Asia Cement",
+      "twseSymbol": "1102",
+      "industry": "cement_materials",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2023-09-26",
+      "priorState": {
+        "longTerm": "twAA-",
+        "outlook": "Stable",
+        "shortTerm": "twA-1+"
+      },
+      "newState": {
+        "longTerm": "twAA-",
+        "outlook": "Negative",
+        "shortTerm": "twA-1+"
+      },
+      "eventType": "OUTLOOK_DOWN",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585",
+      "eventEvidence": "Outlook revised to Negative on weak profitability; ratings affirmed.",
+      "informationContent": "Outlook deterioration without notch change."
+    },
+    {
+      "issuer": "Asia Cement",
+      "twseSymbol": "1102",
+      "industry": "cement_materials",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2024-09-23",
+      "priorState": {
+        "longTerm": "twAA-",
+        "outlook": "Negative",
+        "shortTerm": "twA-1+"
+      },
+      "newState": {
+        "longTerm": "twAA-",
+        "outlook": "Stable",
+        "shortTerm": "twA-1+"
+      },
+      "eventType": "OUTLOOK_UP",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585",
+      "eventEvidence": "Outlook revised to Stable from Negative on improving leverage; ratings affirmed.",
+      "informationContent": "Outlook normalization."
     }
   ],
   "falsificationFindings": [
@@ -193,9 +550,16 @@
     "rationale": "Exact-dated issuer-rating/outlook events are independently replayable across multiple Taiwan non-financial industries and multiple dates, with event type and prior/new state preserved. L3 validates PIT data feasibility only."
   },
   "next": [
-    "Add issue-rating events and CreditWatch/review events to separate issuer and instrument information.",
-    "Join pre-event D22-06 credit pricing and equity/fundamental state without opening outcomes until anticipation controls are preregistered.",
-    "Build event clustering rules so outlook, watch and downgrade within one deterioration episode do not become multiple independent votes.",
-    "Proceed to L4 only with OOS/walk-forward/prospective evidence."
-  ]
+    "Run episode clustering so outlook/watch/notch changes in one continuous deterioration or recovery episode do not become multiple independent dates.",
+    "Freeze exact B0/B1 common-support baselines for each event date; challenger count alone does not satisfy the >=20 mature paired-date gate.",
+    "Add issue-rating and CreditWatch/review events where source-attested.",
+    "Do not open equity outcomes until >=20 mature independent paired dates remain after baseline pairing and event clustering."
+  ],
+  "panelExpansion": {
+    "appendedThisRound": 17,
+    "totalEventReceipts": 25,
+    "eventIndependence": "EPISODE_CLUSTER_REVIEW_PENDING",
+    "baselinePairing": "NOT_YET_FROZEN",
+    "outcomes": "CLOSED"
+  }
 }
