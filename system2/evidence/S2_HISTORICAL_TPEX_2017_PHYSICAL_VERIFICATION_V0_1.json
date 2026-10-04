@@ -1,0 +1,986 @@
+{
+  "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_DURABLE_EVIDENCE_V0_1",
+  "market": "TPEX",
+  "year": 2017,
+  "disposition": "DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL",
+  "githubRun": {
+    "runId": 37201834701,
+    "runNumber": 8,
+    "headSha": "b0a445e0cff7a4a9035cf706cc1fc8da139bd9f9",
+    "event": "workflow_dispatch",
+    "conclusion": "success",
+    "completedAt": "2026-10-04T13:12:51Z",
+    "artifactId": 11304212419,
+    "artifactName": "system2-historical-coverage-TPEX-2017",
+    "artifactDigest": "sha256:48d2cac27deaacc95bb5a03ea6072dff76d39ca60804943dc6948c76fa2be20d",
+    "artifactSizeBytes": 3129,
+    "artifactCreatedAt": "2026-10-04T13:12:48Z",
+    "artifactExpiresAt": "2026-11-03T13:12:47Z"
+  },
+  "verifierOutput": {
+    "result": "PASS_MARKET_YEAR_DATA_PARTIAL_REPLAY_READINESS",
+    "verifierVersion": "S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_3",
+    "market": "TPEX",
+    "year": 2017,
+    "fromDate": "2017-01-01",
+    "toDate": "2017-12-31",
+    "storageVerification": {
+      "receiptId": "S2HCR-40d43653b2c456de9aa195cc20850121822292e84a1917d3a1e97b1c0965d710",
+      "batchId": "S2-HIST-PACK-YEAR|TPEX|2017",
+      "completionReceiptState": "COMPLETE",
+      "packCount": 753,
+      "barCount": 180806,
+      "manifestRollingHash": "40d43653b2c456de9aa195cc20850121822292e84a1917d3a1e97b1c0965d710",
+      "checkpointState": "COMPLETE",
+      "checkpointObjectReadyCount": 753,
+      "checkpointManifestCommittedCount": 753,
+      "headObjectCountVerified": 753,
+      "byteGetObjectCountVerified": 753,
+      "r2Bucket": "system2-historical-research",
+      "state": "PASS"
+    },
+    "sourceReconciliation": {
+      "officialTradingDates": 246,
+      "freshOfficialRowCount": 180806,
+      "coldRowCount": 180806,
+      "missingFromColdCount": 0,
+      "absentFromFreshOfficialCount": 0,
+      "sourceRowHashMismatchCount": 0,
+      "missingFromColdSample": [],
+      "absentFromFreshOfficialSample": [],
+      "sourceRowHashMismatchSample": [],
+      "state": "PASS"
+    },
+    "historicalUniverse": {
+      "readiness": "PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION",
+      "registryId": "S2-DATA-TPEX-2017-OBSERVED-INTERVAL-V0.1",
+      "registryHash": "3b75351eedcf4c4012820d00573968314837813d9201dfa69edb437eb3a44e5a",
+      "membershipCount": 753,
+      "replayEligibleCount": 753,
+      "currentCount": 673,
+      "delistedCount": null,
+      "unknownStartCount": null,
+      "observedHistoricalOnlyCount": 80,
+      "currentWithoutObservedRowsCount": 0,
+      "sourceReceipt": {
+        "currentListingMetadataHash": "c8438702c84dd390e0c6396b15d839722cceed5efdd4d99c3437512dbfabf7d9",
+        "currentListingCount": 892,
+        "currentListingSourceId": "MOPS_T187AP03_O_CURRENT_LISTED_COMPANY",
+        "observedIntervalUniverseState": "PARTIAL_OBSERVED_INTERVAL_UNIVERSE",
+        "officialDelistingUnionComplete": false
+      },
+      "survivorshipCompleteForDataCoverage": false
+    },
+    "suspensionEvidence": {
+      "state": "OBSERVED_POSITIVE_INTERVALS_UNCERTIFIED_HISTORY",
+      "sourceUrl": "https://www.tpex.org.tw/www/zh-tw/bulletin/sprcHis",
+      "sourceHash": "148479fdae4106a49565684528aaacbeb63ca31a472efb70837d05df0321b40a",
+      "upstreamStatus": "ok",
+      "fields": [
+        "編號",
+        "有價證券代號",
+        "有價證券名稱",
+        "暫停交易日期",
+        "暫停交易時間",
+        "恢復交易日期",
+        "恢復交易時間"
+      ],
+      "intervalCount": 0,
+      "intervalSample": [],
+      "absenceCertifiesNoSuspension": false,
+      "sourceHistoryStart": null,
+      "limitation": "Positive rows may classify matching gaps; absence outside observed rows does not certify no suspension for 2017."
+    },
+    "coverage": {
+      "market": "TPEX",
+      "year": 2017,
+      "fromDate": "2017-01-01",
+      "toDate": "2017-12-31",
+      "expectedSessions": 246,
+      "actualSessions": 246,
+      "historicalUniverseSize": 753,
+      "membershipSessionDenominator": 181264,
+      "actualBars": 180806,
+      "totalStoredRowsInRange": 180806,
+      "missingBars": 458,
+      "unknownBars": 458,
+      "suspensionClassifiedMissingBars": 0,
+      "unexpectedBars": 0,
+      "nonTradingDateBars": 0,
+      "missingTradingDates": [],
+      "missingReasonCounts": {
+        "UNKNOWN_SYMBOL_SESSION_GAP": 458
+      },
+      "missingBySymbol": [
+        {
+          "symbol": "3219",
+          "missingCount": 128,
+          "unknownCount": 128,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-05-26",
+          "lastMissingDate": "2017-11-24"
+        },
+        {
+          "symbol": "2724",
+          "missingCount": 125,
+          "unknownCount": 125,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-07-06",
+          "lastMissingDate": "2017-12-29"
+        },
+        {
+          "symbol": "3071",
+          "missingCount": 16,
+          "unknownCount": 16,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-08-17",
+          "lastMissingDate": "2017-11-24"
+        },
+        {
+          "symbol": "1785",
+          "missingCount": 10,
+          "unknownCount": 10,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-09-14",
+          "lastMissingDate": "2017-09-27"
+        },
+        {
+          "symbol": "3615",
+          "missingCount": 10,
+          "unknownCount": 10,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-09-21",
+          "lastMissingDate": "2017-10-03"
+        },
+        {
+          "symbol": "4303",
+          "missingCount": 10,
+          "unknownCount": 10,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-09-22",
+          "lastMissingDate": "2017-10-05"
+        },
+        {
+          "symbol": "6121",
+          "missingCount": 10,
+          "unknownCount": 10,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-09-14",
+          "lastMissingDate": "2017-09-27"
+        },
+        {
+          "symbol": "6219",
+          "missingCount": 10,
+          "unknownCount": 10,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-08-18",
+          "lastMissingDate": "2017-08-31"
+        },
+        {
+          "symbol": "5353",
+          "missingCount": 9,
+          "unknownCount": 9,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-10-05",
+          "lastMissingDate": "2017-10-19"
+        },
+        {
+          "symbol": "5511",
+          "missingCount": 9,
+          "unknownCount": 9,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-08-24",
+          "lastMissingDate": "2017-09-05"
+        },
+        {
+          "symbol": "6291",
+          "missingCount": 9,
+          "unknownCount": 9,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-09-04",
+          "lastMissingDate": "2017-09-14"
+        },
+        {
+          "symbol": "8107",
+          "missingCount": 9,
+          "unknownCount": 9,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-09-25",
+          "lastMissingDate": "2017-10-05"
+        },
+        {
+          "symbol": "8935",
+          "missingCount": 9,
+          "unknownCount": 9,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-10-24",
+          "lastMissingDate": "2017-11-03"
+        },
+        {
+          "symbol": "5213",
+          "missingCount": 8,
+          "unknownCount": 8,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-10-19",
+          "lastMissingDate": "2017-10-30"
+        },
+        {
+          "symbol": "5475",
+          "missingCount": 8,
+          "unknownCount": 8,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-04-13",
+          "lastMissingDate": "2017-04-24"
+        },
+        {
+          "symbol": "6173",
+          "missingCount": 8,
+          "unknownCount": 8,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-09-07",
+          "lastMissingDate": "2017-09-18"
+        },
+        {
+          "symbol": "8913",
+          "missingCount": 8,
+          "unknownCount": 8,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-09-06",
+          "lastMissingDate": "2017-09-15"
+        },
+        {
+          "symbol": "3086",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-03-21",
+          "lastMissingDate": "2017-03-29"
+        },
+        {
+          "symbol": "3516",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-11-02",
+          "lastMissingDate": "2017-11-10"
+        },
+        {
+          "symbol": "3580",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-10-19",
+          "lastMissingDate": "2017-10-27"
+        },
+        {
+          "symbol": "3623",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-10-26",
+          "lastMissingDate": "2017-11-03"
+        },
+        {
+          "symbol": "3664",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-10-19",
+          "lastMissingDate": "2017-10-27"
+        },
+        {
+          "symbol": "4506",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-09-29",
+          "lastMissingDate": "2017-10-11"
+        },
+        {
+          "symbol": "8091",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-12-07",
+          "lastMissingDate": "2017-12-14"
+        },
+        {
+          "symbol": "3310",
+          "missingCount": 5,
+          "unknownCount": 5,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-11-07",
+          "lastMissingDate": "2017-11-13"
+        },
+        {
+          "symbol": "8067",
+          "missingCount": 5,
+          "unknownCount": 5,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-11-29",
+          "lastMissingDate": "2017-12-05"
+        },
+        {
+          "symbol": "6222",
+          "missingCount": 4,
+          "unknownCount": 4,
+          "suspensionCount": 0,
+          "firstMissingDate": "2017-01-03",
+          "lastMissingDate": "2017-01-06"
+        }
+      ],
+      "observationStateCounts": {
+        "VALID_OHLC": 176518,
+        "POSITIVE_ACTIVITY_NO_VALID_CLOSE": 1409,
+        "OFFICIAL_ZERO_TRADE_NO_PRICE": 2879
+      },
+      "continuityStateCounts": {
+        "UNVERIFIED": 180806
+      },
+      "provenanceIssueCount": 0,
+      "provenanceIssueSample": [],
+      "unexpectedBarSample": [],
+      "missingSample": [
+        {
+          "marketDate": "2017-01-03",
+          "symbol": "6222",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-01-04",
+          "symbol": "6222",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-01-05",
+          "symbol": "6222",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-01-06",
+          "symbol": "6222",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-03-21",
+          "symbol": "3086",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-03-22",
+          "symbol": "3086",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-03-23",
+          "symbol": "3086",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-03-24",
+          "symbol": "3086",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-03-27",
+          "symbol": "3086",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-03-28",
+          "symbol": "3086",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-03-29",
+          "symbol": "3086",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-04-13",
+          "symbol": "5475",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-04-14",
+          "symbol": "5475",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-04-17",
+          "symbol": "5475",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-04-18",
+          "symbol": "5475",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-04-19",
+          "symbol": "5475",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-04-20",
+          "symbol": "5475",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-04-21",
+          "symbol": "5475",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-04-24",
+          "symbol": "5475",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-05-26",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-05-31",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-01",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-02",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-03",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-05",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-06",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-07",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-08",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-09",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-12",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-13",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-14",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-15",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-16",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-19",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-20",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-21",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-22",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-23",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-26",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-27",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-28",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-29",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-06-30",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-03",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-04",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-05",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-06",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-06",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-07",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-07",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-10",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-10",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-11",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-11",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-12",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-12",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-13",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-13",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-14",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-14",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-17",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-17",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-18",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-18",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-19",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-19",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-20",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-20",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-21",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-21",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-24",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-24",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-25",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-25",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-26",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-26",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-27",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-27",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-28",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-28",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-31",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-07-31",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-08-01",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-08-01",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-08-02",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-08-02",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-08-03",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-08-03",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-08-04",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-08-04",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-08-07",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-08-07",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-08-08",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-08-08",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-08-09",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-08-09",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-08-10",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-08-10",
+          "symbol": "3219",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2017-08-11",
+          "symbol": "2724",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        }
+      ],
+      "expectedBars": 181264,
+      "classifiedGapBars": 0,
+      "structuralCoverageState": "PASS",
+      "rawCoverageState": "PASS",
+      "symbolSessionReadiness": "PARTIAL_UNKNOWN_GAPS",
+      "pitReadiness": "PASS_CONSERVATIVE_SESSION_FINALITY",
+      "continuityReadiness": "PARTIAL_UNVERIFIED",
+      "technicalPriceReadiness": "PARTIAL_NONPRICE_OBSERVATIONS",
+      "overallState": "PARTIAL",
+      "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_COVERAGE_V0_2"
+    },
+    "dataCoverageState": "PASS",
+    "replayReadinessState": "PARTIAL",
+    "pitContinuityReadiness": {
+      "universe": "PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION",
+      "symbolSession": "PARTIAL_UNKNOWN_GAPS",
+      "pit": "PASS_CONSERVATIVE_SESSION_FINALITY",
+      "continuity": "PARTIAL_UNVERIFIED",
+      "technicalPrice": "PARTIAL_NONPRICE_OBSERVATIONS"
+    },
+    "overallState": "PARTIAL",
+    "system1RuntimeChanged": false,
+    "system2StrategyAuthorityChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "capitalOrderAuthorityChanged": false,
+    "observedAt": "2026-10-04T12:54:24.569Z",
+    "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_3"
+  },
+  "correctionDirective": "S2-CORR-20261004-001",
+  "correctionStatusAfterEvidence": "ACKNOWLEDGED",
+  "closureAuthority": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "nextMarketYear": {
+    "market": "TWSE",
+    "year": 2018
+  },
+  "protectedBoundaries": {
+    "system1RuntimeChanged": false,
+    "system2StrategyAuthorityChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "capitalOrderAuthorityChanged": false
+  }
+}
