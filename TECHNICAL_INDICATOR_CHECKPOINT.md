@@ -3972,3 +3972,64 @@ Raw D03 source-version gate remains independently 2/3.
 TI-005/TI-006 outcomes remain CLOSED.
 `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
 Formal Core remains LOCKED.
+
+
+## TI-686 through TI-692 — minimal decision-cutoff implementation surface audit (2026-10-04)
+
+Durable artifacts:
+- `research/D03_DECISION_CUTOFF_MINIMAL_IMPLEMENTATION_AUDIT_V0_1.md`
+- `research/d03_decision_cutoff_minimal_implementation_audit_v0_1.json`
+
+### TI-686 — dedicated D1 column is not semantically required
+Current C1 persistence writes the entire receipt header to `trade_research_c1_generations.header_json` and current readback reparses that header. Therefore an additive `decisionCutoffAt` field can be persisted/read back through the existing immutable header path without a required D1 schema migration.
+
+### TI-687 — existing immutable-header conflict guard protects cutoff
+Same-generation writes already conflict when incoming `header_json` differs. Once cutoff is part of the header, a changed cutoff for the same generation is naturally rejected. Historical backfill remains forbidden.
+
+### TI-688 — cutoff remains a C1 parent fact
+Shadow memberships already bind to exact `captureGeneration` and parent hashes. D03 can resolve cutoff from the immutable C1 header through that generation. Duplicating cutoff into every membership row is unnecessary and would create a second timestamp authority.
+
+### TI-689 — minimum owner patch surface
+Minimum semantically complete patch:
+1. stamp real cutoff after final `V7_MARKET_CONSENSUS` read and before selector;
+2. pass the exact value into selector and C1 builder;
+3. validate same-session and `decisionCutoffAt <= decisionAt`;
+4. include cutoff in C1 receipt/header;
+5. persist/read back via existing `header_json`;
+6. no new provider call and no Formal behavior change.
+
+### TI-690 — cutoff and receipt clock remain distinct
+`decisionCutoffAt` is the Formal-input freeze boundary. `decisionAt` is the later C1 receipt-materialization clock. The owner may not copy one into the other or infer historical cutoff from schedule/capture time.
+
+### TI-691 — pre-deploy acceptance requirements
+Owner implementation must prove:
+- exact cutoff location after final Formal external input;
+- zero later external/async Formal input before selector;
+- selector remains synchronous;
+- exact cutoff propagation into C1;
+- immutable header readback;
+- same-generation changed cutoff conflicts;
+- Formal selection/ranking/quota/capital/signal/push parity;
+- legacy generations remain readable but cutoff-ineligible, with no backfill.
+
+### TI-692 — shadow cohort schema need not change for D03
+D03 can use the exact C1 generation as cutoff owner. The existing shadow cohort semantic fingerprint need not include cutoff merely to satisfy D03. Adding cutoff to the cohort parent itself would be a separate schema/version decision and is not required by this lane.
+
+### Maturity
+No maturity promotion:
+- D03-10 remains L2/40;
+- D03-09 remains L2/40;
+- D03 remains 56.7%.
+
+This tranche materially reduces implementation scope/risk but creates no genuine cutoff-bearing parent.
+
+Current:
+`DECISION_CUTOFF_MINIMAL_PERSISTENCE_PATH = HEADER_JSON_NO_D1_MIGRATION_REQUIRED`
+`DECISION_CUTOFF_DUPLICATE_MEMBERSHIP_FIELD = NOT_REQUIRED`
+`DECISION_CUTOFF_RUNTIME_IMPLEMENTATION = OWNER_PENDING`
+`HISTORICAL_BACKFILL = FORBIDDEN`
+`D03_MATURITY = 56.7_PERCENT`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Exact next:
+shared System1 parent owner implements/version-controls the additive provenance patch under Production governance; re-audit effective runtime boundary; first genuine trading session after deploy must produce one cutoff-bearing immutable C1 generation; continuity owner then binds a cutoff-safe evidence cut; D03 executes Bollinger v0.2 across the complete expected parent population before any 58.3% promotion. ADX remains behind canonical FULL_REPLAY.
