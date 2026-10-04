@@ -1,0 +1,164 @@
+{
+  "schemaVersion": "D07_34_DIVIDEND_PAYOUT_SUSTAINABILITY_FOUNDATION_V0_1",
+  "researchRoom": "06",
+  "domain": "D07",
+  "module": "D07-34",
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / PIT_REPLAY_NOT_YET_COMPLETE",
+  "frozenAtAsiaTaipei": "2026-10-04T14:05:00+08:00",
+  "purpose": "Formalize dividend/payout sustainability as a non-monotone fundamental validation state rather than a high-yield or high-payout buy signal.",
+  "mechanism": {
+    "lifecycle": {
+      "positiveMechanism": "Mature profitable firms with accumulated earned equity and fewer high-return reinvestment opportunities can rationally distribute a larger fraction of internally generated capital.",
+      "countermechanisms": [
+        "high payout can reflect weak growth opportunities rather than superior quality",
+        "low payout can reflect valuable reinvestment rather than shareholder hostility",
+        "young/high-growth firms may prefer stock distributions or retention",
+        "mature firms can overdistribute if governance incentives or investor demand dominate fundamentals"
+      ],
+      "observableControls": [
+        "profitability",
+        "retained earnings / equity",
+        "asset/revenue growth",
+        "ROIC",
+        "CAPEX/reinvestment intensity",
+        "cash balance",
+        "leverage"
+      ]
+    },
+    "earningsCoverage": {
+      "positiveMechanism": "A cash dividend funded by repeatable earnings has stronger economic support than an equal dividend funded by temporary gains or reserves.",
+      "countermechanisms": [
+        "accounting earnings can be non-cash or low quality",
+        "near-zero earnings create unstable payout ratios",
+        "cyclical peak earnings can make payout coverage appear safe immediately before normalization"
+      ],
+      "primaryStates": [
+        "EARNINGS_COVERED",
+        "EARNINGS_STRETCHED",
+        "NEGATIVE_OR_NEAR_ZERO_EARNINGS",
+        "UNKNOWN"
+      ]
+    },
+    "cashCoverage": {
+      "positiveMechanism": "CFO/FCF coverage tests whether cash distributions are supported by operating cash generation after investment needs.",
+      "countermechanisms": [
+        "one-year working-capital release can temporarily inflate CFO",
+        "CAPEX can be discretionary/timed and FCF definitions vary",
+        "financial institutions do not fit generic industrial FCF semantics"
+      ],
+      "primaryStates": [
+        "CFO_COVERED",
+        "FCF_COVERED_WHEN_PIT_READY",
+        "CASH_FLOW_STRETCHED",
+        "UNKNOWN"
+      ]
+    },
+    "distributionSource": {
+      "positiveMechanism": "Separating current/retained earnings from legal/capital reserve distributions prevents stable cash payout from being mistaken for stable current earning power.",
+      "countermechanisms": [
+        "reserve-funded cash can be legally valid and economically sensible",
+        "reserve distribution may support payout stability through a temporary downturn",
+        "the same nominal DPS can have very different sustainability depending on source"
+      ]
+    },
+    "payoutAlternatives": {
+      "positiveMechanism": "Dividends are only one shareholder-payout mechanism; repurchases and cash capital reductions can substitute for dividends.",
+      "countermechanisms": [
+        "comparing dividend payout alone can misclassify firms using alternative payout methods",
+        "tax/clientele effects can change the chosen payout form without changing core operating quality"
+      ],
+      "antiDoubleCount": "Alternative payout events are dependent context from their canonical owners and cannot become duplicate independent votes."
+    }
+  },
+  "taiwanSpecificEvidence": {
+    "lifecycleStudy": {
+      "citation": "Wang, Ke, Liu & Huang (2011), Dividend Policy and the Life Cycle Hypothesis: Evidence from Taiwan",
+      "sample": "6031 dividend-payment observations, 1992-2007, Taiwan Stock Exchange firms",
+      "relevance": "Supports heterogeneous cash-vs-stock dividend behavior across profitability/growth/lifecycle states.",
+      "importRule": "Mechanism evidence only; historical coefficients are not imported as current Taiwan alpha."
+    },
+    "taxImputationStudy": {
+      "citation": "Chan & Lin (2017), Imputation tax system, dividend payout, and investor behavior: Evidence from the Taiwan stock exchange",
+      "relevance": "Taiwan tax regime changed cash-dividend payout and investor behavior, demonstrating that payout policy is partly institutional/clientele-driven rather than pure operating quality.",
+      "importRule": "Tax-era findings are context evidence; current strategy requires current-law/PIT treatment."
+    },
+    "dividendClienteleStudy": {
+      "citation": "Lee, Liu, Roll & Subrahmanyam (2006), Taxes and dividend clientele: Evidence from trading and ownership structure",
+      "relevance": "Investor tax heterogeneity affected dividend holdings/trading and later repurchase propensity in Taiwan.",
+      "importRule": "Confirms clientele mechanism; does not imply direction for future stock returns."
+    },
+    "capitalReserveEvidence": {
+      "citation": "Pacific Accounting Review (2022), cash dividends from capital reserves and governance in Taiwan",
+      "relevance": "Shows Taiwan reserve-funded cash distributions are economically distinct from earnings-funded ordinary dividends.",
+      "importRule": "Distribution source must be preserved; reserve-funded cash is not automatically bad or ordinary earnings payout."
+    }
+  },
+  "falsification": {
+    "universalHighPayout": [
+      "Reject if apparent quality disappears after controlling for profitability, growth opportunities, retained-earnings maturity, leverage and sector.",
+      "Reject if high payout is concentrated in declining-growth or weak-reinvestment firms without superior future operating quality."
+    ],
+    "stableDividendEqualsSustainable": [
+      "Reject if stable DPS is maintained through reserve distributions, rising leverage or declining cash coverage.",
+      "Reject if ordinary payout sequence becomes unstable once special/reserve-funded cash is removed."
+    ],
+    "lowPayoutEqualsBadShareholderPolicy": [
+      "Reject if retained cash is followed by high incremental ROIC, profitable growth or value-creating investment.",
+      "Treat buybacks/cash-capital-reductions as alternative payout context rather than dividend omission."
+    ],
+    "highYieldEqualsSafety": [
+      "Reject as a fundamental rule because dividend yield can rise mechanically when price collapses.",
+      "Dividend yield remains D08 valuation context and is not a D07-34 sustainability score."
+    ]
+  },
+  "decisionRole": {
+    "primary": "VALIDATION",
+    "secondary": [
+      "CONTEXT_ONLY",
+      "EXPLANATORY",
+      "SUPPORTIVE"
+    ],
+    "hardInvalidation": "NONE by default; only source/identity invalidity may hard-block the metric itself.",
+    "primaryAlpha": "NOT_AUTHORIZED",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "antiDoubleCount": [
+    "D07-02 owns raw earnings; D07-34 uses earnings only as payout coverage denominator.",
+    "D07-05 owns CFO/FCF quality; D07-34 uses it only for payout funding coverage.",
+    "D07-06 owns leverage/liquidity; D07-34 uses it only as sustainability constraint.",
+    "D08 owns dividend yield/valuation; D07-34 never converts price yield into fundamental quality.",
+    "D11 owns ex-date/payment mechanics; D07-34 consumes event clocks for PIT alignment only.",
+    "D21 owns governance/capital-allocation process; D07-34 owns economic/accounting capacity."
+  ],
+  "pitRequirements": [
+    "financialStatementKnownAt",
+    "boardProposalKnownAt",
+    "finalDistributionDecisionKnownAt",
+    "exDate",
+    "paymentDate",
+    "capturedAt",
+    "append-only proposal/final/correction lineage",
+    "distribution source classification",
+    "ordinary vs special classification",
+    "compatible earnings/cash-flow period identity"
+  ],
+  "sourceStatus": {
+    "officialSourceFamilies": [
+      "MOPS dividend distribution/decision disclosures",
+      "MOPS financial statements",
+      "MOPS material information/shareholder resolutions",
+      "TWSE dividend/corporate-action event sources"
+    ],
+    "historicalMachineReplay": "NOT_YET_COMPLETE",
+    "fcfCoverage": "SOURCE_AND_DEFINITION_GATED",
+    "financialInstitutionSustainability": "SPECIALIST_REGULATORY_CAPITAL_DEPENDENCY",
+    "l3Gate": "Requires a clean Taiwan PIT/replay receipt with proposal/final/version chronology and denominator alignment."
+  },
+  "maturityAssessment": {
+    "prior": "L0/0",
+    "supportedNow": "L2/40",
+    "reason": "Mechanism, countermechanisms, falsification, decision role and anti-double-count ownership are now explicitly defined with Taiwan-specific evidence. L3 remains blocked because historical PIT replay of dividend decision/source/vintage chronology is not yet physically validated."
+  },
+  "outcomeAccessed": false,
+  "formalCoreChanged": false
+}
