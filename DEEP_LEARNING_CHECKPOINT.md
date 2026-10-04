@@ -1622,3 +1622,39 @@ Possible incremental signal is revision composition/known legal phase conditiona
 D12=40.0%; D13=41.1%; room09=40.6%,36 modules unchanged. D13-11/16/17 stay L2/40%; strict clean prospective dates added0. FORMAL_OPTIMIZATION_CANDIDATE=NONE; Formal Core LOCKED. No runtime, selection, ranking, signal, push, capital/holdings change. Latest global tracker read43.7%/356 modules; concurrent other-room work is not credited to this run.
 
 Exact next: MC-173. Bound CBC intermediate release lineage to identify when2025Q2 revisions became public; preserve future2026-11-20 scheduled BOP raw receipt only upon actual release and authorized archive/readback. For BIS, audit amendment/supersession chain before any current legal-state claim; resolve authoritative public-inspection availability and timezone only from direct evidence. D12 next remains permitted raw TAIFEX option-chain metadata/date/strike/bid-ask/settlement coverage and first-known receipts; later replay alone is not L3. CBO native403 remains blocked; no bypass. Do not repeat MC-165..172.
+
+## DL-D21-20261004-D — tunneling timing firewall / management guidance credibility
+Run date: 2026-10-04 Asia/Taipei
+Scope: D21-11 / D21-12
+Status: D21-11_L2_PARTIAL_REPLAY / D21-12_L2_MECHANISM_DEFINED / RESEARCH_ONLY / FORMAL_CORE_UNCHANGED
+
+### D21-11 durable result
+- A later-adjudicated Taiwan extraction case and a justified related-party control case now exist.
+- The key anti-look-ahead finding is temporal: later judicial truth is an ex-post label and cannot be backfilled to the original transaction date.
+- D21-11 must preserve underlying_transaction_date, decision_time_public_state, adjudication_known_at and remediation/recovery state separately.
+- The confirmed case lacks recovered contemporaneous public transaction-date evidence in this run, so D21-11 remains L2 / 40%.
+- Promotion to L3 requires a decision-time reproducible case: either contemporaneous evidence for the confirmed case or another high-suspicion case whose beneficiary/terms/control evidence was publicly available at the relevant decision timestamp.
+
+### D21-12 management-guidance credibility
+- D21-12 advances L0 -> L2 / 40%.
+- Guidance channels are separated into formal financial forecasts, investor-conference guidance, material-announcement forward statements and non-scorable generic optimism.
+- Taiwan source families include MOPS / issuer IR / TWSE conference materials, formal forecast filings, revisions and later actual results.
+- Competing mechanisms retained: management credibility history, information-efficiency benefit, strategic optimism/self-selection, meet-or-beat / earnings-management behavior and genuine external uncertainty.
+- Credibility is a rolling realized-history construct. Forecast error may only be computed after the actual outcome became public.
+- Management identity is versioned; predecessor credibility does not automatically transfer to a successor.
+- Qualitative statements without a pre-defined falsifiable proposition remain NON_SCORABLE.
+
+### Bias / redundancy
+- Control analyst coverage, disclosure frequency, firm size, institutional ownership, operating volatility, industry uncertainty, macro/FX/commodity shocks, management turnover, analyst consensus/dispersion, D07 fundamentals and D11 event/news evidence.
+- Do not reward frequent guidance mechanically.
+- Do not punish a single miss mechanically.
+- A credibility factor that only proxies firm quality or analyst coverage is redundant.
+
+### Candidate status
+- D21-11: FALSIFICATION_IN_PROGRESS / no L3 promotion.
+- D21-12: FALSIFICATION_DEFINED / L2 only.
+- No FORMAL_OPTIMIZATION_CANDIDATE.
+- Formal Core remains LOCKED.
+
+### Exact next continuation
+Build a two-issuer Taiwan D21-12 numeric-guidance replay from original public known_at through any revision/withdrawal to actual-outcome known_at. Prefer one relatively accurate guidance history and one repeated optimistic/revision-heavy history. Compute forecast error only after outcome publication and test incremental value beyond analyst coverage, earnings revisions and fundamentals. Continue D21-11 contemporaneous-evidence recovery opportunistically; after D21-12 replay, begin D21-13 materiality-focused ESG/climate/social risk.
