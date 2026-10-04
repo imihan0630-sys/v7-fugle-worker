@@ -1756,3 +1756,29 @@ Coverage control plane:
 - pending formal specialist return: COV-12 only.
 
 This reconciliation changes no System1/System2 Formal behavior and creates no maturity by bookkeeping.
+
+
+### D03 pre-parent source-cut reusable rule — 2026-10-04
+
+Reusable cross-system rule:
+
+1. **Observed-by-cutoff vs latency precision are different questions.**
+   - An exact prospectively observed version with `firstObservedAt <= decisionKnownAt` can be used as a conservative availability-by-cutoff fact.
+   - A prior NOT_OBSERVED observation within five minutes improves publication-latency precision but is not inherently required merely to prove availability before the decision.
+
+2. **Selected-only pre-decision source capture is invalid when the selected population is created by the decision run itself.**
+   - Required source evidence must be market-wide/exchange-wide or full eligible-universe before the decision.
+   - Post-selection querying may not be backdated.
+
+3. **Source-cut eligibility is fail-closed.**
+   - Required market-wide lanes, payload hashes, parser/range identity, exact prospective version keyset, cutoff clock, no truncation/budget loss, no UNKNOWN required lane and owner-certified no-revision-gap must all reconcile.
+
+4. **Event-driven source engineering is empirically plausible but not yet authorized.**
+   - Physical D03 capacity run `37190871367` observed 294 official corporate-action events over 31 event-bearing dates, max 33 events on one effective date, for 2026-08-15..2026-10-02.
+   - This is a capacity clue, not a request-budget or completeness certificate.
+
+5. **D03 does not fork shared continuity ownership.**
+   - Shared owner must implement/certify the cutoff-safe source cut.
+   - Current Bollinger/ADX acceptance semantics remain unchanged until a separately versioned owner contract says otherwise.
+
+No Formal, runtime or maturity change is granted by this reusable rule.
