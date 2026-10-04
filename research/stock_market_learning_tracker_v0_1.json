@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T11:40:00+08:00",
+  "updatedAt": "2026-10-04T11:46:32+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1473,22 +1473,22 @@
         },
         {
           "id": "D09-13",
-          "name": "Industry Structure／Porter Five Forces產業結構與波特五力",
+          "name": "Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）",
           "level": "L3",
           "maturityPct": 60,
-          "learningScope": "聚焦「Industry Structure／Porter Five Forces產業結構與波特五力」。研究產業結構、競爭強度、進入障礙、替代威脅與市占變化；需把敘事轉成可觀測的價格、產能、毛利、份額、客戶與供應商證據，並保留產業結構沒有轉化成股東報酬的反例。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）」。正式主責為 industry × explicit product/geographic market definition × vintage（產業×明確產品／地理市場定義×版本）的產業結構狀態：競爭強度、市占水準／分布、進入障礙、替代威脅、供應商／客戶議價力、產業產能／價格／毛利結構。公司特定策略行動與其 announcement→commitment→implementation→outcome（公告→承諾→執行→結果）生命週期由 D09-14 主責。共享的市占、產能、價格、毛利、客戶與供應商觀測只建立一份 parent evidence receipt（母證據憑證），不得因 D09-13／D09-14 同時引用而重複算票；D10 實體供應鏈／產能傳導與 D11／D17 事件時鐘維持各自主責。每個結論必須保存 PIT（時點一致性）、市場定義版本、反證／失效條件、資料品質、冗餘、成本與對 System 1／System 2 的可驗證增量價值。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "THREE_INDUSTRY_TAIWAN_PIT_CONTROLS / PCB_ABF_DENOMINATOR_FIREWALL / PRODUCT_SCOPE_KNOWN_EXPOSURE_MAGNITUDE_UNKNOWN / OUTCOMES_CLOSED",
+          "status": "THREE_INDUSTRY_TAIWAN_PIT_CONTROLS / PCB_ABF_DENOMINATOR_FIREWALL / PRODUCT_SCOPE_KNOWN_EXPOSURE_MAGNITUDE_UNKNOWN / OUTCOMES_CLOSED / H01_KEEP_SEPARATE_SCOPE_DEDUP_CANONICAL",
           "next": "BR-059 capture issuer-native PCB/ABF product/application revenue numerators only when compatible disclosures appear; keep exposure magnitude UNKNOWN otherwise; no composite structure score before OOS/redundancy tests."
         },
         {
           "id": "D09-14",
-          "name": "Market Share／Entry Barrier／Substitution／Competitive Strategy市占、進入障礙、替代與競爭策略",
+          "name": "Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）",
           "level": "L3",
           "maturityPct": 60,
-          "learningScope": "聚焦「Market Share／Entry Barrier／Substitution／Competitive Strategy市占、進入障礙、替代與競爭策略」。研究產業結構、競爭強度、進入障礙、替代威脅與市占變化；需把敘事轉成可觀測的價格、產能、毛利、份額、客戶與供應商證據，並保留產業結構沒有轉化成股東報酬的反例。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）」。正式主責為 issuer × observable strategic action × implementation stage × vintage（公司×可觀測策略行動×執行階段×版本）的公司特定策略行動生命週期，包括 actionType、announcementAt、可觀測的 commitment／boardApprovalAt、implementationStage、目標產品／技術／地理、聯盟／M&A／垂直整合／擴產卡位、競爭者反應，以及可歸因於已記錄策略行動的後續市占／產能／產品定位變化。靜態市占水準、進入障礙、替代威脅與產業結構屬 D09-13；若沒有 firm-specific action（公司特定行動）欄位，觀測不得歸為 D09-14。D10 實體產能／供應鏈、D11／D17 事件／新聞時鐘只能作依賴來源，不得複製成第二張票。共享母資料只保留一份 parent receipt；D09-14 只有 actor-specific action lifecycle（行動者特定策略生命週期）提供增量資訊時才形成獨立研究狀態。每個結論必須保存 PIT、行動階段版本、反證、資料品質、冗餘、成本與 System 1／System 2 增量價值。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "DISTINCT_FIRM_ACTION_PIT_CONTRACT / FIRST_TRUE_PROSPECTIVE_COHORT_FROZEN / FUTURE_OUTCOMES_CLOSED / H01_KEEP_SEPARATE_PROPOSED",
+          "status": "DISTINCT_FIRM_ACTION_PIT_CONTRACT / FIRST_TRUE_PROSPECTIVE_COHORT_FROZEN / FUTURE_OUTCOMES_CLOSED / H01_KEEP_SEPARATE_SCOPE_DEDUP_CANONICAL",
           "next": "BR-060 append future native milestones for the prospectively frozen UMC and Foxconn actions and add at least two more pre-outcome actions; no stock outcome before D16 preregistration/common support."
         }
       ]
