@@ -1,6 +1,6 @@
 # Credit / Capital Structure Checkpoint
 
-Updated: 2026-10-04 13:54 Asia/Taipei
+Updated: 2026-10-04 13:45 Asia/Taipei
 Scope: D22｜信用市場／資本結構／融資壓力／股債傳導
 Status: ACTIVE_RESEARCH / D22_MATURITY_50PCT / D22-01_02_03_05_08_10_L3 / D22-04_06_SOURCE_BLOCKED_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
@@ -208,7 +208,7 @@ Exact continuation:
 4. D22-09~12: move to L3 only after their required upstream data families become independently replayable.
 5. Equity outcomes stay CLOSED; Formal Core stays LOCKED.
 
-## 2026-10-04 13:54 continuation｜D22 reaches 50% via three new L3 PIT replay validations
+## 2026-10-04 13:45 continuation｜D22 reaches 50% via three new L3 PIT replay validations
 
 ### Domain maturity
 D22 = 50.0%.
