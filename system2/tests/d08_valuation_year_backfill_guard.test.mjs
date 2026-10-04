@@ -6,7 +6,8 @@ const workflow=await readFile(new URL("../../.github/workflows/d08-twse-valuatio
 assert.match(script,/fetchOfficialHistoricalA6ValuationDateV0_1/);
 assert.match(script,/buildOfficialTradingDatesV0_1/);
 assert.match(script,/createRemoteR2S3Adapter/);
-assert.match(script,/D08_VALUATION_YEAR_RECEIPT/);\nassert.match(script,/outcomeJoin:false/);
+assert.match(script,/D08_VALUATION_YEAR_RECEIPT/);
+assert.match(script,/outcomeJoin:false/);
 assert.doesNotMatch(script,/createRemoteD1RestAdapter|INSERT\s+INTO|UPDATE\s+s2_|DELETE\s+FROM|outcome/i);
 assert.match(workflow,/max-parallel:\s*2/);
 assert.match(workflow,/environment: system2-research/);
