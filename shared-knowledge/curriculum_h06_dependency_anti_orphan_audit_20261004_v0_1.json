@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "CURRICULUM_H06_DEPENDENCY_ANTI_ORPHAN_AUDIT_V0_1",
+  "date": "2026-10-04",
+  "auditBaseMain": "ed0256d3f300ec976103446deb81b44add0c6152",
+  "clusterId": "H06",
+  "modules": [
+    "D06-06",
+    "D20-06"
+  ],
+  "acceptedEvidence": [
+    "research/d06_h06_crowding_vs_herding_room05_packet_v0_1.md",
+    "research/d20_h06_herding_vs_crowding_room13_packet_v0_2.md",
+    "research/d20_06_ptt_social_herding_pit_contract_v0_1.json",
+    "research/d20_ptt_social_source_live_receipt_20261004_v0_1.json"
+  ],
+  "terminalClassification": "KEEP_SEPARATE",
+  "governanceDisposition": "BOUNDED_SOCIAL_HERDING_SUBLANE",
+  "dependencyAudit": "PASS_DISTINCT_BEHAVIORAL_CHILD_ON_SHARED_CONTEXT",
+  "antiDoubleCount": "PASS_SHARED_SOCIAL_RECEIPT_FIREWALL",
+  "antiOrphan": "PASS_NO_ORPHAN",
+  "privacyGuard": "NO_DURABLE_NAMED_USER_PSYCHOLOGY_OR_INFLUENCE_SCORES",
+  "maturity": {
+    "D06-06": {
+      "level": "L3",
+      "maturityPct": 60,
+      "change": "NONE"
+    },
+    "D20-06": {
+      "level": "L3",
+      "maturityPct": 60,
+      "change": "NONE"
+    }
+  },
+  "state": "CLOSED_NO_STRUCTURAL_CHANGE",
+  "structuralChange": "NONE",
+  "ownerApprovalRequired": false,
+  "formalCoreImpact": "NONE_LOCKED"
+}
