@@ -1,0 +1,43 @@
+name: System2 MOPS U04 Bounded List Query Readonly
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_mops_u04_bounded_list_query_readonly_v0_1.mjs"
+      - "system2/SYSTEM2_MOPS_U04_BOUNDED_LIST_QUERY_V0_1.md"
+      - ".github/workflows/system2-mops-u04-bounded-list-query-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_mops_u04_bounded_list_query_readonly_v0_1.mjs"
+      - "system2/SYSTEM2_MOPS_U04_BOUNDED_LIST_QUERY_V0_1.md"
+      - ".github/workflows/system2-mops-u04-bounded-list-query-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-mops-u04-bounded-list-query-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Probe bounded U04 list query
+        run: node system2/scripts/probe_mops_u04_bounded_list_query_readonly_v0_1.mjs
+      - name: Confirm read-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_mops_u04_bounded_list_query_readonly_v0_1.mjs
+          echo "MOPS U04 bounded list query read-only boundary PASS"
