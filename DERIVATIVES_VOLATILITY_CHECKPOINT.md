@@ -361,3 +361,23 @@ Durable evidence: `research/d12_d13_native_parent_revision_lineage_20261004_v0_1
 3. If parity identity/coverage is defensible, compute D12-07 simple skew/term and D12-16 surface features from identical eligible rows/common support and record disagreement/coverage sensitivity.
 4. Return the routed H11 terminal status only after real divergent states and quality diagnostics exist.
 5. Keep historical replay separate from prospective 18:10 first-known evidence.
+
+
+## 2026-10-04 Room09 continuation — DR-082..DR-085 real-parent parity falsification and futures cross-check
+
+Status: RESEARCH_ONLY / SOURCE_QA / OUTCOMES_CLOSED / H11_PARTIAL.
+Durable evidence: `research/d12_put_call_parity_real_parent_audit_20261004_v0_1.md`.
+
+- DR-082: On the identical 2026-10-02 TXO parent, regular-session eligible Call/Put midpoint pairs were fit by expiry under `C-P=D*(F-K)`. Ten expiries had >=5 pairs; R2 values were very high (about 0.99795 to 0.9999996), but this alone is not economic validation.
+- DR-083: Jointly estimated discount factors are internally inconsistent across nearby tenors. Same-day 202610F1 gives D=0.998404; five-day 202610W1 gives D=0.992995 with a simple calendar-day annualized diagnostic near 51%; 202610F2 also implies a much larger short-tenor rate than adjacent expiries. Exact annualization is not promoted because settlement-clock identity remains separately versioned. The robust conclusion is that asynchronous/stale daily last-best quotes make joint F+D estimation too fragile. `JOINT_PARITY_F_AND_D_PRIMARY=REJECTED_FOR_THIS_PARENT`.
+- DR-084: A same-date official TX futures parent was fetched from `futDataDown`, bytes=2,128, SHA-256=`d41cc8c279d805a0ebb13c29f3ff757cdc78a35d7a2e13fc06be4b3f3aeb1834`. Monthly regular-session futures best-bid/ask midpoints align closely with parity-derived forward levels: 202610 +1.72 bp, 202611 -0.73 bp, 202612 -0.35 bp, 202703 +2.01 bp, 202706 +2.79 bp (parity F minus TX midpoint). Thus forward level is much more stable than the jointly inferred discount factor.
+- DR-085: H11 method consequence: monthly-expiry replay should prefer same-expiry TX futures as the primary forward candidate, while the discount/risk-free convention must be independently frozen from an official source. Weekly expiries without same-expiry futures require a separately validated convention; do not reuse the rejected joint F+D estimator by default. High R2 cannot override source-clock/quote-synchronization diagnostics.
+- TAIFEX official calculator states that European-option IV/theoretical pricing requires explicit spot, strike, risk-free rate, cash-dividend yield and maturity; it notes bank time-deposit or commercial-paper rates as examples of a risk-free-rate input. No rate source has yet been selected merely to complete the surface.
+- D12 remains 40.0%; no L3. Formal Core LOCKED; outcomes CLOSED; FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+
+### Exact next continuation after DR-085
+1. Freeze an official, decision-time-valid discount/risk-free-rate convention and exact expiry/settlement clock before solving IV.
+2. Prefer same-expiry TX futures for monthly forward identity; retain parity F as QA cross-check.
+3. Run the frozen IV solver on identical eligible 2026-10-02 monthly rows, preserving quote-quality flags.
+4. Compute D12-07 simple skew/term first, then D12-16 surface level/slope/curvature on identical common support.
+5. Record real divergent states and residual information before returning H11 terminal KEEP_SEPARATE / SCOPE_DEDUP_ONLY / MERGE_ELIGIBLE / EVIDENCE_INSUFFICIENT.
