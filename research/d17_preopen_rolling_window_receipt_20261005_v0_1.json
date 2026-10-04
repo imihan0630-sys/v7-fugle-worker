@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-05T07:22:00+08:00",
+  "owner": "08｜事件與新聞研究室",
+  "modules": [
+    "D17-01",
+    "D17-02",
+    "D17-09",
+    "D11-08",
+    "D11-13"
+  ],
+  "title": "Preopen official disclosure capture and rolling-window falsification receipt",
+  "status": "PREOPEN_CAPTURE_COMPLETE / TWSE_WINDOW_TURNOVER_OBSERVED / TPEX_STABLE / FIRST_NEW_ARRIVAL_NOT_OBSERVED / OUTCOMES_CLOSED",
+  "workflow": {
+    "runId": 37243049741,
+    "artifactId": 11318460615,
+    "artifactZipSha256": "2dad51374c342154142df74f4c15274e6e21f50b886dac5223fc8ca98cd43d2e",
+    "conclusion": "success"
+  },
+  "coverage": {
+    "capture1Utc": "2026-10-04T23:14:52Z",
+    "capture2Utc": "2026-10-04T23:15:59Z",
+    "capture1Taipei": "2026-10-05T07:14:52+08:00",
+    "capture2Taipei": "2026-10-05T07:15:59+08:00",
+    "sessionClass": "PREOPEN_TIME_ONLY_HOLIDAY_UNKNOWN",
+    "expectedPollsPerSource": 2,
+    "observedPollsPerSource": 2,
+    "expectedObservedComplete": true
+  },
+  "TWSE": {
+    "rowCount": 3,
+    "rawSha256": "79bb8da431f5104a2db6a2b66106612b70c3d4f360228c29d9926d9d0bf74cba",
+    "withinRunStable": true,
+    "examples": [
+      {
+        "symbol": "6949",
+        "publishedDateRoc": "1151004",
+        "publishedTime": "70003",
+        "factDateRoc": "1150713",
+        "class": "REPUBLICATION"
+      },
+      {
+        "symbol": "2072",
+        "publishedDateRoc": "1151004",
+        "publishedTime": "70003",
+        "factDateRoc": "1150824",
+        "class": "REPUBLICATION"
+      },
+      {
+        "symbol": "2891",
+        "publishedDateRoc": "1151004",
+        "publishedTime": "180441",
+        "factDateRoc": "1151003",
+        "class": "NEWER_SOURCE_ROW_RELATIVE_TO_PRIOR_CAPTURE"
+      }
+    ],
+    "comparisonTo20261004": "Prior afternoon/evening capture had 5 TWSE rows and a different raw hash. The preopen snapshot has 3 rows, demonstrating current-feed window turnover/removal behavior."
+  },
+  "TPEX": {
+    "rowCount": 4,
+    "rawSha256": "31ff35f5bfb439faff1b2dc731fd7213517251844ab9e5fcb558631513a3d4ca",
+    "withinRunStable": true,
+    "comparisonTo20261004": "Raw hash and four-row payload remained unchanged from prior 2026-10-04 captures."
+  },
+  "falsification": [
+    "Absence from a later current snapshot cannot be interpreted as event cancellation or proof that no event existed.",
+    "A complete two-poll capture of one source lane proves bounded lane observation only, not completeness across all news/event lanes.",
+    "Displayed publication time still does not prove first API availability time.",
+    "No newly arriving row was observed between the two 67-second polls, so this run does not estimate first-arrival latency."
+  ],
+  "maturityDecision": {
+    "D17_01": "KEEP_L2",
+    "D17_02": "KEEP_L2",
+    "D17_09": "KEEP_L3_STRENGTHENED",
+    "D11_08": "KEEP_L2",
+    "D11_13": "KEEP_L2_STRENGTHENED_NEGATIVE_EVIDENCE_FIREWALL"
+  },
+  "exactNext": [
+    "Capture a truly newly arriving official disclosure with fixed-cadence polling and connector/workflow capturedAt on the first successful appearance.",
+    "For D11-13, define lane-by-lane expected/observed source coverage over a complete decision window before allowing NO_KNOWN_EVENT.",
+    "Preserve rolling-window removal as SOURCE_WINDOW_EVICTION_OR_UNKNOWN, never cancellation.",
+    "Continue licensed general-news source discovery separately."
+  ],
+  "outcomeJoin": false,
+  "formalCoreChanged": false
+}
