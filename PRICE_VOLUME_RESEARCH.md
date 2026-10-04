@@ -13853,3 +13853,21 @@ This prevents:
 - pre-10:15 H001 rows from entering primary common support.
 
 D02 remains 60.0%.
+
+# Pre-PVE-240 — D02 L4 admission becomes module-isolated and coverage-complete (2026-10-04)
+
+Two research-governance improvements are now executable.
+
+First, Wave-1 evidence accounting is no longer pooled across H001, H20 and H003.
+Each hypothesis owns its own date/event count and review receipt.
+This prevents a mature participation-normalization test from lending evidence to breakout or Effort-vs-Result.
+
+Second, Wave-2 now has a fail-closed evidence-admission layer for the remaining eight L3 modules.
+The layer focuses on observability, timing, common support, anti-double-counting and forbidden semantic upgrades before any performance inference.
+
+The main remaining bottleneck is no longer missing admission specification.
+It is real prospective/OOS data.
+
+D02 remains 60.0%.
+PVE cursor remains 239.
+Gate 7 remains CLOSED.
