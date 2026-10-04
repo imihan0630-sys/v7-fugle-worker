@@ -189,3 +189,18 @@ Work／Codex 短移交範本：
 
 **工作可以因工具或回合邊界暫停，但不得無聲失聯、不得假裝仍在背景執行、不得遺失續接點、不得因中斷而重做已 durable 的成果。**
 
+
+
+## 九、選股自欺／盲點稽核（MANDATORY）
+
+Canonical audit map:
+`shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md`.
+
+適用：00、01～15、System 1、System 2 與相關 execution lane。
+
+規則：
+- 01～15 研究室恢復後，若本室主責 Dxx 在 audit map 有未關閉項，必須在既有 exact next continuation point 不被破壞的前提下，把該 audit row 當成持續反證／語意防線；不得只追成熟度百分比。
+- System 1 / System 2 涉及選股、排名、共振、因子、Regime、事件、資料 vintage、執行或策略整合時，必須讀取 audit map 與 `SYSTEM_ALPHA_LINEAGE_AND_DOUBLE_COUNT_GUARD_V0_1.md`，實作可機器驗證的防堵，而不是只靠研究文字提醒。
+- 學習室負責語意、機制、反證、代理變數邊界；D16 負責 common-support、incrementality、OOS/Shadow、多重檢定；00 負責跨領域稽核與關閉；工程聊天室負責 lineage/clock/provenance/receipt/test 等執行層防線。
+- blind spot 不得因文件寫了就視為 CLOSED；需有對應研究修正、工程 guard/test 或 D16 evidence，再由 00 readback 關閉。
+- 此稽核不授權 Formal Core 變更；任何會改 A/B、ranking、Top6、weight、threshold 或交易行為的動作仍須明確 owner approval。
