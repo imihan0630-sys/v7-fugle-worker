@@ -275,7 +275,11 @@ const overallState = storageVerification.state==="PASS"
     : "BLOCKED";
 
 const output={
-  result:overallState==="BLOCKED"?"BLOCKED_MARKET_YEAR_VERIFICATION":"PASS_MARKET_YEAR_VERIFICATION_WITH_READINESS_STATE",
+  result:overallState==="BLOCKED"
+    ?"BLOCKED_MARKET_YEAR_VERIFICATION"
+    :overallState==="PARTIAL"
+      ?"PARTIAL_MARKET_YEAR_VERIFICATION"
+      :"PASS_MARKET_YEAR_VERIFICATION",
   verifierVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_1",
   market,year,fromDate,toDate,
   storageVerification,
@@ -294,7 +298,9 @@ const output={
     sourceUrl:suspension.sourceUrl,
     sourceHash:suspension.sourceHash,
     upstreamStatus:suspension.upstreamStatus,
+    fields:suspension.fields,
     intervalCount:suspension.intervalCount,
+    intervalSample:suspension.intervals.slice(0,50),
     absenceCertifiesNoSuspension:false,
     sourceHistoryStart:suspension.sourceHistoryStart,
   },
