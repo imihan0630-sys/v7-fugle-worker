@@ -862,3 +862,9 @@ D19-04 remains L2 / 40%. No L3 promotion. The evidence improved the precision an
 5. Run D03/D09 paired redundancy controls on the identical frozen universe/date.
 6. Freeze D14-compatible explicit cost scenarios; actual account commission stays UNKNOWN unless directly evidenced.
 7. Only a full-Taiwan zero-applicable-blocker deterministic replay triggers L3 readiness review; no automatic promotion.
+
+
+### Stage 8 addendum — TWSE UNKNOWN cannot be self-resolved inside D19
+A repository-wide source audit after the full-universe smoke found the shared continuity lane still declares `suspensionCoverageComplete=false` and `symbolSessionCompletenessCertified=false`. Consequently, the 23 non-recent-listing TWSE UNKNOWN observations are not evidence of suspension by themselves. Missing or null daily values may reflect suspension/no-trade, source semantics or another constrained state; D19 may not infer the cause locally. The correct dependency is the shared exchange-complete symbol-session receipt. Until that owner certifies the lane, these observations remain UNKNOWN.
+
+This is a useful falsification: 97.7043% KNOWN factor coverage is not equivalent to 100% classified tradability coverage.
