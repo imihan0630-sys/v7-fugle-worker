@@ -472,3 +472,44 @@ Frozen payoff guards:
 D11-19 advances **L2 -> L3** for Taiwan PIT/source and event-state feasibility only. No spread-return, hedge-return, borrow-cost or deal-break outcome cohort was opened.
 
 Formal Core unchanged.
+
+## 2026-10-04 continuation — D11-16 transition-rule deepening + D17-14 ex-ante expectation lane
+
+### D11-16 — rule-version / transition semantics strengthened, issuer realization still blocked
+
+New receipt: `research/d11_16_lockup_transition_deepening_receipt_v0_2.json`.
+
+The 2026-01-09 TWSE amendment adds a material historical-replay guard. The shortened Innovation Board custody rule is not merely a current rule: the TWSE announcement explicitly applies the transition to domestic TIB companies already listed before the amendment. For qualifying already-listed issuers, actual retrieval is not automatic at the legal eligibility date. The issuer must submit the requested release quantity, original custody certificate, custody details and release calculation; TWSE then replies with the quantity/date that may be retrieved through TDCC.
+
+The frozen state machine is therefore refined to:
+`RULE_VERSION_EFFECTIVE -> TRANSITION_APPLICABILITY -> RELEASE_ELIGIBLE -> TWSE_RELEASE_APPROVAL_OR_EQUIVALENT -> ACTUAL_CUSTODY_WITHDRAWAL -> TRANSFER_PREDECLARED -> REALIZED_HOLDING_CHANGE / UNTRANSFERRED / UNKNOWN`.
+
+This further falsifies the shortcut `lock-up expiry = realized insider supply`.
+
+The current research run could not independently retrieve the three TWSE OpenAPI current feeds through the alternate fetch path. That is recorded only as `SOURCE_ACCESS_UNKNOWN`; it is not evidence of no declaration or no transfer.
+
+D11-16 remains **L2**. The remaining L3 blocker is still issuer-level official realization: applicable qualification, custody quantity, release approval/withdrawal, transfer declaration, and subsequent official holdings/untransferred state, including an eligible-but-no-net-reduction control.
+
+### D17-14 — ex-ante expectation source lane validated on two independent CBC decisions
+
+New receipt: `research/d17_14_expectation_source_receipt_v0_1.json`.
+
+Two independent Taiwan CBC policy decisions now have a source-paired expectation/realization chain:
+- 2026-06-15 Reuters poll -> 2026-06-18 CBC decision. 27/30 economists expected the discount rate to remain 2.0%; 3 expected 2.125%. CBC realized 2.0%.
+- 2026-09-14 Reuters poll -> 2026-09-17 CBC decision. 28/31 economists expected 2.0%; 3 expected 2.125%. CBC realized 2.0%.
+
+The expectation observations are published before each decision and share a compatible policy-rate object/unit with the official realization. This closes the prior source-feasibility blocker for the Surprise lane.
+
+Hard anti-overfit guard:
+- preserve the complete ex-ante forecast distribution;
+- do not choose mean/median/mode after observing the policy decision or equity returns;
+- post-decision commentary is not an expectation;
+- market reaction cannot back-solve a missing expectation;
+- categorical policies keep scenario distributions rather than a fabricated scalar;
+- future captures must preserve capturedAt and immutable versions.
+
+Both witnesses realize the modal expectation. They prove source/PIT feasibility only and provide **no** policy-event alpha, direction, half-life, sector-return or trading evidence.
+
+Maturity decision: **D17-14 L2 -> L3** for Taiwan PIT/source feasibility. L4 remains closed until prospective/OOS expectation captures, preregistered surprise functional/event zero/horizons, D13 macro controls, costs and outcome tests exist.
+
+Formal Core unchanged. Equity outcomes remain closed.
