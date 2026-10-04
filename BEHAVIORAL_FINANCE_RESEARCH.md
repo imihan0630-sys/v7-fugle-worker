@@ -746,3 +746,96 @@ L3_READY_PENDING_FIRST_VERIFIED_LIVE_TWSE_RATE_SUPPLY_RECEIPT.
 
 No outcome, alpha, L4 or Formal claim.
 
+## 2026-10-04｜D20-06 / D20-11 public-forum PIT promotion
+
+### Live source verification
+A live PTT Stock-board Atom feed was successfully fetched and exposed current article URLs, article publication/update clocks, author identifiers and content previews.
+A live article page exposed:
+- public author handle;
+- original post time to second;
+- push / boo / arrow participant handles;
+- comment time to minute;
+- explicit article edit markers with edit time to second.
+
+Durable source receipt:
+research/d20_ptt_social_source_live_receipt_20261004_v0_1.json
+
+Conservative replay rule:
+capturedAt is the system-observable first-known clock. Source-stated post/comment/edit times remain provenance and may not backdate observability before the first successful capture.
+Snapshots append; later edit/deletion states do not rewrite prior captured versions.
+Historical completeness before the first verified capture is not claimed.
+
+### D20-11 Narrative / Theme Diffusion -> L3
+Bounded scope:
+PTT Stock public-forum narrative diffusion only.
+
+Valid observables:
+- topic / phrase state;
+- stance distribution;
+- distinct-participant count;
+- diffusion transition counts;
+- narrative persistence / half-life when source coverage permits.
+
+Ownership firewall:
+- D09-11 owns theme / company / industry membership.
+- D17-11 owns underlying dated news/event propagation.
+- D20-07 owns attention/salience volume context.
+- D20-11 owns only residual social-language narrative diffusion beyond those controls.
+
+Copied headlines, raw post volume, static theme membership and price co-movement are not independent narrative evidence.
+
+Privacy guard:
+public handles may be used transiently for within-window de-duplication only. Derived research receipts retain aggregate counts/transitions and do not create named-user psychology or influence profiles.
+
+Decision:
+D20-11 -> L3 Taiwan PIT data feasibility.
+No L4, alpha or Formal claim.
+
+### D20-06 Herding / Social Proof -> L3
+Bounded scope:
+aggregate social-herding / stance-convergence in the PTT Stock public-forum stream.
+
+PTT handles are public forum actors only, not verified brokerage investors or natural-person trading accounts.
+Push / boo / arrow is reaction to the post, not stock stance.
+
+The behavioral transform must be aggregate:
+- stance histogram;
+- distinct participant count;
+- sequence transition counts;
+- adoption/convergence statistics.
+
+Only residual convergence after common-news, topic, attention, market and sector controls may be interpreted as bounded social-herding evidence.
+
+Taiwan literature support:
+2025 Taiwan research using real-time, high-frequency public sentiment/stance plus intraday transaction data reports that public sentiment and stance significantly relate to herding, with heterogeneous effects across investor types and industries. This supports the data family but does not validate our PTT effect size or direction.
+
+Counterevidence:
+older PTT Stock studies report inconsistent return-prediction signs across stocks/horizons. Forum discussion volume or stance therefore has no assumed directional alpha.
+
+Privacy guard:
+no persistent named-user leader/follower, persuasion or psychology score.
+
+Decision:
+D20-06 -> L3 Taiwan PIT data feasibility for the bounded public-forum aggregate sublane.
+No claim of brokerage-account herding.
+No L4, alpha or Formal claim.
+
+### D20-03 Overconfidence remains L2
+The same PTT source can prospectively preserve explicit numerical forecasts/targets.
+However:
+- forecast error is not overconfidence;
+- most posts do not expose subjective probability or confidence intervals;
+- public posting is not verified trading behavior;
+- selection, reputation incentives, sarcasm and edits can confound calibration.
+
+Therefore D20-03 remains L2 until a near-direct confidence/uncertainty observable with replayable lineage exists.
+
+### L4 prospective extension
+D20-06 and D20-11 were added to the prospective preregistration at 2026-10-04 14:06:56 Asia/Taipei.
+Only social aggregate parents first captured after that extension are promotion-eligible.
+Pages inspected before the extension are source-feasibility evidence only.
+
+Current D20 maturity: 56.9%.
+Formal Core unchanged.
+FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
