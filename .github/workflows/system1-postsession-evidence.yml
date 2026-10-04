@@ -7,6 +7,8 @@ on:
         description: Taiwan target trade date whose C3 cohort/bars/quotes should be evaluated (YYYY-MM-DD)
         required: true
         type: string
+  schedule:
+    - cron: "45 6 * * 1-5"
 
 permissions:
   contents: read
@@ -24,10 +26,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - id: resolve
+        name: Resolve official Taiwan trading date
+        env:
+          C3_REQUESTED_TRADE_DATE: ${{ inputs.target_trade_date }}
+        run: node tests/resolve_system1_postsession_target_date.mjs
+      - name: Record non-trading-day skip
+        if: steps.resolve.outputs.should_run != 'true'
+        run: echo "Post-session evidence skipped - ${{ steps.resolve.outputs.decision_status }} - ${{ steps.resolve.outputs.target_trade_date }}"
       - name: Collect read-only C3/C4/C5 post-session evidence
+        if: steps.resolve.outputs.should_run == 'true'
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
-          C3_TARGET_TRADE_DATE: ${{ inputs.target_trade_date }}
+          C3_TARGET_TRADE_DATE: ${{ steps.resolve.outputs.target_trade_date }}
           C3_POSTSESSION_OUTPUT: artifacts/system1-postsession-evidence.json
           C3_ENTRY_OUTPUT: artifacts/system1-c3-entry.json
           C4_ALLOCATION_OUTPUT: artifacts/system1-c4-allocation.json
@@ -35,7 +46,7 @@ jobs:
           C3_POSTSESSION_BLOCKER_OUTPUT: artifacts/system1-postsession-blocker.json
         run: node tests/collect_system1_postsession_evidence.mjs
       - name: Preserve evidence or explicit blocker
-        if: always()
+        if: always() && steps.resolve.outputs.should_run == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: system1-postsession-evidence-${{ github.run_id }}
