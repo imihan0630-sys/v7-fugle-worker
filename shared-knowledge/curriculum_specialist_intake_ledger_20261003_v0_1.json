@@ -1,6 +1,6 @@
 {
   "schemaVersion": "CURRICULUM_SPECIALIST_INTAKE_LEDGER_V0_1",
-  "updatedAt": "2026-10-04T11:46:32+08:00",
+  "updatedAt": "2026-10-04T13:08:00+08:00",
   "status": "ACTIVE_INTAKE_LEDGER",
   "formalCoreImpact": "NONE",
   "clusters": [
@@ -59,10 +59,14 @@
     },
     {
       "id": "H06",
-      "status": "PENDING",
-      "receivedPackets": [],
-      "pendingRooms": [],
-      "controlDecision": "NOT_EVALUATED"
+      "status": "PARTIAL_EVIDENCE_RECEIVED",
+      "receivedPackets": [
+        "research/d06_h06_crowding_vs_herding_room05_packet_v0_1.md"
+      ],
+      "pendingRooms": [
+        "13｜行為金融與市場心理研究室"
+      ],
+      "controlDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOM13_COUNTERPART"
     },
     {
       "id": "H07",
@@ -115,10 +119,14 @@
     },
     {
       "id": "H14",
-      "status": "PENDING",
-      "receivedPackets": [],
+      "status": "CLOSED_NO_STRUCTURAL_CHANGE",
+      "receivedPackets": [
+        "research/d06_h14_index_event_vs_passive_flow_room05_packet_v0_1.md",
+        "INDEX_ADJUSTMENT_PASSIVE_FLOW_RESEARCH.md",
+        "research/d11_index_adjustment_pit_receipt_v0_1.json"
+      ],
       "pendingRooms": [],
-      "controlDecision": "NOT_EVALUATED"
+      "controlDecision": "KEEP_SEPARATE_PRODUCER_CONSUMER_EVENT_FLOW_BOUNDARY"
     },
     {
       "id": "H15",
@@ -322,5 +330,31 @@
     },
     "canonicalReceipt": "shared-knowledge/CURRICULUM_H01_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md",
     "canonicalReceiptJson": "shared-knowledge/curriculum_h01_canonical_update_receipt_20261004_v0_1.json"
+  },
+  "h06": {
+    "received": "research/d06_h06_crowding_vs_herding_room05_packet_v0_1.md",
+    "sourceRoom": "05｜法人與籌碼研究室",
+    "intakeResult": "ROOM05_PACKET_ACCEPTED_ROOM13_COUNTERPART_REQUIRED",
+    "currentControlDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOM13_COUNTERPART",
+    "maturityChange": "NONE",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "h14": {
+    "sourceEvidence": [
+      "research/d06_h14_index_event_vs_passive_flow_room05_packet_v0_1.md",
+      "INDEX_ADJUSTMENT_PASSIVE_FLOW_RESEARCH.md",
+      "research/d11_index_adjustment_pit_receipt_v0_1.json"
+    ],
+    "counterpartMode": "EQUIVALENT_INDEPENDENT_ROOM08_EVIDENCE",
+    "audit": "shared-knowledge/CURRICULUM_H14_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md",
+    "machineAudit": "shared-knowledge/curriculum_h14_dependency_anti_orphan_audit_20261004_v0_1.json",
+    "canonicalReceipt": "shared-knowledge/CURRICULUM_H14_CANONICAL_CLOSURE_RECEIPT_20261004_V0_1.md",
+    "canonicalReceiptJson": "shared-knowledge/curriculum_h14_canonical_closure_receipt_20261004_v0_1.json",
+    "terminalClassification": "KEEP_SEPARATE",
+    "governanceDisposition": "PRODUCER_CONSUMER_EVENT_FLOW_BOUNDARY",
+    "state": "CLOSED_NO_STRUCTURAL_CHANGE",
+    "maturityChange": "NONE",
+    "structuralChange": "NONE",
+    "formalOptimizationCandidate": "NONE"
   }
 }
