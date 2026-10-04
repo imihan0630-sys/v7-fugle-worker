@@ -1,12 +1,12 @@
 {
   "schemaVersion": "CURRICULUM_COVERAGE_EXECUTION_REGISTRY_V0_1",
-  "updatedAt": "2026-10-04T11:53:00+08:00",
-  "status": "COV02_COV03_COV04_COV05_CANONICAL_UPDATE_COMPLETE",
+  "updatedAt": "2026-10-04T16:47:00+08:00",
+  "status": "COV02_COV03_COV04_COV05_CANONICAL_UPDATE_COMPLETE / COV01_06_07_08_09_10_11_PARTIAL / COV12_PENDING",
   "formalCoreImpact": "NONE_LOCKED",
   "canonicalSnapshot": {
     "domains": 22,
     "activeModules": 356,
-    "maturityWeightedPct": 44
+    "maturityWeightedPct": 45.6
   },
   "parentAudit": "shared-knowledge/CURRICULUM_COVERAGE_AUDIT_20261003_V0_1.md",
   "specialistPacket": "shared-knowledge/CURRICULUM_COVERAGE_A_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
@@ -198,7 +198,7 @@
   "governanceStateMachineJson": "shared-knowledge/curriculum_coverage_governance_state_machine_v0_1.json",
   "governanceStateMachineVersion": "CURRICULUM_COVERAGE_STATE_MACHINE_V0_1",
   "canonicalSnapshotSource": "research/stock_market_learning_tracker_v0_1.json",
-  "canonicalSnapshotSourceUpdatedAt": "2026-10-04T12:17:00+08:00",
+  "canonicalSnapshotSourceUpdatedAt": "2026-10-04T16:47:00+08:00",
   "canonicalSnapshotReconciliation": "shared-knowledge/CURRICULUM_COVERAGE_CANONICAL_SNAPSHOT_RECONCILIATION_20261003_V0_1.md",
   "coverageReturnValidator": "research/curriculum_coverage_return_validator_v0_1.mjs",
   "coverageReturnValidatorTest": "tests/test_curriculum_coverage_return_validator_v0_1.mjs",
@@ -208,7 +208,7 @@
   "latestIntakeAudit": "shared-knowledge/CURRICULUM_COVERAGE_COV02_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md",
   "latestIntakeAuditJson": "shared-knowledge/curriculum_coverage_cov02_intake_dependency_audit_20261004_v0_1.json",
   "latestPreflightReceipt": "research/curriculum_coverage_intake_preflight_receipt_20261004_v0_2.json",
-  "canonicalSnapshotNote": "Owner-approved COV-03 canonical update completed; tracker remains authoritative.",
+  "canonicalSnapshotNote": "Late-afternoon reconciliation: states unchanged; snapshot synchronized to latest canonical tracker. Formal returns exist only for COV-02/03/04/05; COV-12 remains sole PENDING_SPECIALIST_RETURN.",
   "canonicalUpdateReceipt": "shared-knowledge/CURRICULUM_COV03_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md",
   "canonicalUpdateReceiptJson": "shared-knowledge/curriculum_cov03_canonical_update_receipt_20261004_v0_1.json",
   "cov03": {
