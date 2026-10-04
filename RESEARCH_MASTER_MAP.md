@@ -235,3 +235,13 @@ Formal Core remains LOCKED.
 - no second calibrator or probability authority under D16-25.
 - D16-19 and D16-25 both remain L2/40%.
 - names, module count, aggregate maturity and Formal behavior unchanged.
+
+
+### Room 07 SC-050 / SC-054 lead-lag falsification — 2026-10-04
+- SC-049 froze 1M/2M/3M lag candidates before the added vintages were inspected.
+- Six consecutive Taiwan EAF-steel monthly states (2026-04..09) reduce the initially attractive 1M scrap->billet 2/2 short-window match to 3/5; 2M=2/4; 3M=1/3.
+- H-beam becomes flat from July through September despite upstream/intermediate changes, reinforcing downstream price/contract stickiness.
+- MOEA June-August electronics demand/production lanes provide a cross-chain falsification: export orders rise each month while component and computer/electronic/optical monthly production directions flip; common AI/HPC/cloud demand and overseas-production share confound a simple causal lag.
+- D10-02 remains L2. D10-09 remains L3. No maturity is awarded for data volume alone.
+- Exact next SC-055: one genuinely physical non-steel three-layer chain with compatible source clocks; otherwise reject the generic fixed-lag hypothesis if repeated controlled tests fail.
+- Formal Core unchanged; no new optimization candidate.
