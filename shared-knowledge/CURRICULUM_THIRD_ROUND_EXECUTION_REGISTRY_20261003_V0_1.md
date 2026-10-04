@@ -197,3 +197,19 @@ H12:
 - Room10 must close D14-19 short execution lifecycle; Room13 must close D20-13 limits-to-arbitrage context.
 
 No terminal classification, maturity transfer, module-count or Formal change from these partial intakes.
+
+
+## H09 canonical completion — owner approved 2026-10-04
+
+Owner approved H09:
+`KEEP_SEPARATE / SCOPE_DEDUP_ONLY`.
+
+Canonical producer-consumer boundary:
+- D16-19 = model/calibrator fitting + probability-quality diagnostics + calibration/model drift + CalibrationReceipt producer.
+- D16-25 = calibrated-belief decision consumer + prior/Bayesian update + uncertainty + utility + risk-coverage + ABSTAIN.
+- one probability authority; D16-25 cannot fit a second calibrator.
+
+Both remain L2/40%. Names, module count and aggregate maturity are unchanged. Formal Core remains LOCKED.
+
+Status:
+**CANONICAL_UPDATE_COMPLETE**.
