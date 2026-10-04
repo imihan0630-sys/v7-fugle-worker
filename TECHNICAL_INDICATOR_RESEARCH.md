@@ -2210,3 +2210,44 @@ Exact continuation:
 4. consume immutable parent only after the owner-approved Class-B implementation is physically merged/read back;
 5. re-review Bollinger before ADX;
 6. raw D03 source-version session gate remains independently 2/3 until a genuine next completed Taiwan session.
+
+## TI-575 through TI-579 — immutable parent deployment reassessment (2026-10-04)
+
+Durable artifacts:
+- `research/D03_IMMUTABLE_PARENT_DEPLOYMENT_REASSESSMENT_20261004_V0_1.md`
+- `research/d03_immutable_parent_deployment_reassessment_20261004_v0_1.json`
+
+### TI-575
+The prior D03 state `IMMUTABLE_PARENT_RUNTIME=IMPLEMENTATION_PENDING` is superseded.
+System 1 V8.17.0 Shadow Cohort Membership was owner-approved, PR #454 merged and Production deployed.
+Deploy run `37171810825` succeeded and runtime version readback verified `8.17.0-shadow-cohort-membership`, TEST_MODE=false, KV/D1=true, Formal Core unchanged.
+
+### TI-576
+Deployment is not a prospective market generation.
+Canonical implementation status remains:
+`FIRST_PROSPECTIVE_SHADOW_COHORT_READBACK=PENDING_NEXT_GENUINE_TRADING_SESSION`
+`FIRST_PROSPECTIVE_C1_CHILD_READBACK=PENDING_NEXT_GENUINE_TRADING_SESSION`.
+
+2026-10-04 is non-trading, so no synthetic/historical reconstruction may be used to manufacture a PASS.
+
+### TI-577
+The shared engineering substrate now physically exists: immutable C1 parent generation, population receipts, overlapping candidate memberships, append-only quality overlays, atomic D1 persistence, immutable conflict guards and whole-generation readback verification.
+
+### TI-578
+D03 R1/R2 still requires one genuine post-deployment normal-scan generation with exact parent/keyset/count/readback/quality-watermark verification.
+
+Current:
+`IMMUTABLE_PARENT_RUNTIME=DEPLOYED_AND_VERSION_VERIFIED`
+`GENUINE_PARENT_GENERATION=NOT_YET_OBSERVED`
+`TECHNICAL_OBSERVER_PARENT_READY=PENDING_GENUINE_READBACK`.
+
+### TI-579
+No maturity inflation:
+`D03_10=L2_REMAINS`
+`D03_09=L2_REMAINS`
+`D03_MATURITY=56.7_PERCENT`
+
+Parent deployment removes one design/engineering blocker, but Bollinger still needs genuine parent readback + certified 20-session TECHNICAL_CONTINUITY; ADX additionally needs recursive replay authority.
+
+Next genuine Taiwan trading session:
+normal scan -> existing C1 evidence workflow -> immutable parent/cohort readback -> D03 re-audits Bollinger source/continuity gate first.
