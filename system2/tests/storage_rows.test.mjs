@@ -93,14 +93,25 @@ const capacityRow = toCapacityRunRow({
   activeNonAssignments: {},
   activeCountByStrategy: { SHORT_MOMENTUM: 1 },
   symbolStrategyCounts: { "2330": 1 },
+  selectionDenominator: {
+    version: "S2_SELECTION_DENOMINATOR_PROVENANCE_V0_1",
+    denominatorState: "PARTIAL",
+    unresolvedCount: 1,
+    unresolvedByState: { INCOMPLETE: 1 },
+    blockerCodes: [],
+    contributingShadowRuns: [{ strategyId: "SHORT_MOMENTUM", strategyVersion: "V0.1-CONTRACT", runId: "RUN1", shadowAccountingHash: "a".repeat(64), runFingerprintHash: null }],
+    provenanceHash: "b".repeat(64),
+  },
   capacityHash: "cap-hash",
-  schemaVersion: "S2_CAPACITY_V0_1",
+  schemaVersion: "S2_CAPACITY_V0_2",
 });
 
 assert.equal(capacityRow.global_max, 12);
 assert.equal(capacityRow.per_strategy_max, 3);
 assert.equal(capacityRow.capacity_hash, "cap-hash");
 assert.equal(JSON.parse(capacityRow.counts_json).globalCount, 1);
+assert.equal(JSON.parse(capacityRow.counts_json).selectionDenominator.denominatorState, "PARTIAL");
+assert.equal(JSON.parse(capacityRow.counts_json).selectionDenominator.contributingShadowRuns[0].runId, "RUN1");
 
 const orderingRow = toStrategyOrderingRow({
   orderingReceiptId: "ORD1",
