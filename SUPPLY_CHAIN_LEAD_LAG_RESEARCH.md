@@ -2143,3 +2143,37 @@ Exact next:
 SC-050 append another steel-chain vintage and pre-freeze 1M/2M/3M lag candidates; add a second non-steel three-layer chain.
 
 Formal Core unchanged.
+
+
+## SC-047 — Current BIS policy vintages add parentage and entity-authorization semantics
+
+Artifact:
+`research/sc047_bis_policy_vintage_append_20261004_v0_1.json`
+
+Current 2026 BIS vintages add two important exposure dimensions:
+- May guidance confirms certain advanced-computing controls follow headquarters / ultimate-parent identity, not only physical destination.
+- July EAR changes provide favorable treatment to specified UAE entities and named U.S.-headquartered AI companies, showing that restriction intensity can loosen selectively.
+
+This receipt is explicitly NOT prospective because these policy vintages predate the current research capture. Future policy changes from this point must be appended prospectively.
+
+D10-13 remains L3.
+
+## SC-048 — GlobalWafers is the second Taiwan policy-to-capacity issuer control
+
+Artifact:
+`research/sc048_globalwafers_policy_to_capacity_control_v0_1.json`
+
+GlobalWafers provides an independent issuer case:
+- 2024 preliminary CHIPS terms: up to US$400m direct funding.
+- 2024 final award: up to US$406m, milestone-based disbursement, supporting Texas/Missouri wafer projects.
+- 2026 U.S. Commerce summary: company U.S. capital commitment reported at US$7.94bn versus US$3.94bn previously.
+
+Critical negative control:
+the current official GlobalWafers locations page still carries stale "Coming in 2024" wording for the Sherman 300mm facility. That page can verify facility/product identity, but it cannot authenticate current HVM timing.
+
+Therefore:
+capital commitment increase != direct award increase != actual disbursement != qualified/HVM capacity.
+
+D10-14 remains L3; second-issuer robustness improves but L4 is not justified.
+
+Formal Core unchanged.
