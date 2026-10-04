@@ -560,3 +560,22 @@ Audit:
 `shared-knowledge/CURRICULUM_H11_DEPENDENCY_SCOPE_DEDUP_AUDIT_20261004_V0_1.md`.
 
 Do not mutate canonical wording until explicit owner approval.
+
+
+## 00 routed COV-07 exact remaining delta — 2026-10-04
+
+COV-07 remains PARTIAL, but the missing work is now narrow.
+
+Do not repeat DR-020/DR-023 theory/source mapping.
+
+Exact remaining delta:
+1. produce one immutable historical TAIFEX TX contract-level price/OI/volume replay receipt;
+2. preserve expiry calendar and contract-version provenance;
+3. build front/next/far curve on identical support;
+4. freeze calendar-spread and annualized roll-yield/carry formulas/sign convention;
+5. define continuous-contract construction without look-ahead/back-adjustment leakage;
+6. compare residual information versus D12-01 basis and D12-02 OI;
+7. choose exactly one terminal recommendation;
+8. commit `research/COV07_D12_SPECIALIST_RETURN_V0_1.md`.
+
+No maturity or Formal change is authorized by this routing.
