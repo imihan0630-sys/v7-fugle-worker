@@ -1,0 +1,33 @@
+name: D03 Effective Worker Decision Cutoff Audit Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "tests/test_d03_effective_worker_decision_cutoff_audit.py"
+      - "research/D03_EFFECTIVE_WORKER_DECISION_CUTOFF_AUDIT_V0_1.md"
+      - ".github/workflows/research-d03-effective-worker-decision-cutoff-audit-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Build and review effective V8.17 Worker
+        run: python3 tests/run_system1_c1_c2_repair_review.py
+      - name: Audit decision-cutoff insertion boundary
+        run: python3 tests/test_d03_effective_worker_decision_cutoff_audit.py
+      - name: Confirm research-only workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'wrangler|deploy|CLOUDFLARE|SYSTEM2_DB|INSERT INTO|UPDATE |DELETE ' tests/test_d03_effective_worker_decision_cutoff_audit.py
+          echo "D03 effective Worker cutoff audit isolation PASS"
