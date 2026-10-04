@@ -630,3 +630,84 @@ Counterevidence:
 Taiwan monthly revenue is a separate timely series. It may not silently substitute for IFRS TTM revenue without a frozen reconciliation/scope contract.
 
 Status: SALES_MULTIPLE_PIT_SEMANTICS_FROZEN / FORWARD_SOURCE_BLOCKED / NO_RETURN_OUTCOME / FORMAL_UNCHANGED.
+
+
+## VAL-037 — Monthly TWSE scan clock is frozen before outcomes
+
+Research date: 2026-10-04 Asia/Taipei.
+
+Contracts and receipts:
+- research/historical_valuation_twse_cohort_scan_contract_v0_1.json
+- research/d08_twse_month_end_scan_date_receipt_20261004_v0_1.json
+- research/d08_twse_cohort_contract_reconciliation_20261004_v0_1.json
+
+The D08-03 empirical clock is now fixed at the last actual TWSE trading session of each month from 2023-01 through 2026-08, for 44 scan dates total.
+
+The date list was resolved from official TWSE monthly history before return outcomes. It is not calendar-month-end substitution; for example, 2025-01 resolves to 2025-01-22.
+
+Immutable scan-date list hash:
+e4475abd9fe2ab867bf20e5a8ee2f1a000bdb78365afe6083e6433c2b5abc490.
+
+The parent preregistration and the later executable cohort contract were reconciled as non-conflicting. The later contract adds explicit survivorship, UNKNOWN accounting, per-date coverage and outcome-unlock gates.
+
+Status: 44_SCAN_DATES_FROZEN / OUTCOMES_CLOSED / FORMAL_UNCHANGED.
+
+## VAL-038 — Empty D1 universe receipt is negative evidence, not permission to use today's list
+
+A research-only D1 audit in temporary PR #430 passed its read-only/production-isolation guard but failed because `s2_historical_universe_registry_receipts` contained zero durable registry receipts.
+
+Interpretation:
+- the historical-universe schema and runtime exist;
+- no durable registry version had been materialized in isolated D1;
+- therefore D1 could not serve as the D08-03 historical universe authority at that moment;
+- current-list-only reconstruction remained prohibited.
+
+The PR was closed without merge. This failure is retained as evidence.
+
+Status: D1_REGISTRY_NOT_MATERIALIZED / SURVIVORSHIP_SHORTCUT_REJECTED / SHADOW_STILL_CLOSED.
+
+## VAL-039 — Official TWSE current+delisted union now yields a survivorship-safe 44-date universe receipt
+
+Durable receipt:
+research/d08_twse_official_universe_source_receipt_20261004_v0_1.json.
+
+Source-only disposable PR #431 was closed without merge after:
+- System2 Research CI run 37165989414 PASS;
+- V8 Regression run 37165989421 PASS.
+
+Official source construction:
+- current listed-company profile: TWSE OpenAPI `t187ap03_L`;
+- historical new-listing dates: TWSE `company/newlisting`;
+- historical delisting dates: TWSE `company/suspendListing`;
+- for old delisted names whose original listing date is outside the new-listing table, the existing registry contract uses official dataset-start trading presence as `HISTORY_FIRST_TRADING_DATE` rather than inventing a listing date.
+
+Observed source counts:
+- current ordinary listed TWSE rows: 1,089;
+- 2023+ delisted ordinary rows: 12;
+- delisted rows with official listing-date match: 9;
+- dataset-start history fallback: 3 symbols = 1701, 2358, 2809;
+- official first dataset trading date: 2023-01-03 with 972 ordinary symbols.
+
+Normalized historical registry:
+- membershipCount = 1,101;
+- replayEligibleCount = 1,101;
+- unknownStartCount = 0;
+- currentCount = 1,089;
+- delistedCount = 12;
+- registryHash = 0b7b587b7962b9782570a3b9fc679be8440d0c4c2e75fc06d155bf95641041a7.
+
+All 44 preregistered snapshots were generated with deterministic hashes:
+- min memberCount = 975;
+- max memberCount = 1,089;
+- snapshotBundleHash = 97d1b5324b388753b09236cb3a731361aed1f009a775e868c305c30d8189844a.
+
+This closes the cohort-membership gate only. It does not open returns.
+
+Exact remaining pre-outcome gate:
+1. materialize source-only valuation/control snapshots for all 44 dates;
+2. account for every cohort member as KNOWN or explicit UNKNOWN;
+3. emit per-date coverage/missingness receipts and immutable readback hashes;
+4. retain raw PE/PB, 252/756/1260/expanding percentile states, denominator-transition/corporate-action/listing-age context, and preregistered control variables;
+5. only then unlock the Historical-Valuation Shadow outcome join.
+
+D08-03 remains L3/60. FORMAL_OPTIMIZATION_CANDIDATE = NO. Formal Core unchanged.
