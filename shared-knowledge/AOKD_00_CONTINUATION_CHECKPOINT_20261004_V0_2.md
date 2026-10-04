@@ -151,3 +151,23 @@ Exact next continuation point:
 2. if approved, re-read latest main and atomically update tracker + Learning Map + Router + Shared Master + H01 registries, with no maturity/count change;
 3. COV-12 remains PENDING_SPECIALIST_RETURN and must not be invented;
 4. other H-clusters stay on their actual counterpart/specialist gates.
+
+
+## H01 canonical completion — 2026-10-04 Asia/Taipei
+
+Owner approved H01 KEEP_SEPARATE / SCOPE_DEDUP_ONLY. Canonical scope cleanup is complete.
+
+Executed:
+- D09-13 → `Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）`;
+- D09-14 → `Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）`;
+- both stay L3/60%;
+- no module-count change;
+- no overall maturity change from H01;
+- anti-double-count shared-parent receipt firewall is canonical;
+- Formal Core remains LOCKED.
+
+Exact next continuation point for 00:
+1. H01 is closed; do not reopen merger unless new evidence invalidates the distinct firm-action lifecycle.
+2. COV-12 still has no formal specialist return; do not infer one.
+3. Continue checking newly arrived complete specialist packets/counterparts on latest main, prioritizing items that can legally advance without duplicating specialist research.
+4. AOKD-05 remains routed to 06 for corpus feasibility; broad AOKD sweep remains saturated absent a new trigger.
