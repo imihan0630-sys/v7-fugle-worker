@@ -82,3 +82,22 @@ Status: FOUNDATION_CLUSTER_L2 / D20-01_02_04_07 / FORMAL_CORE_UNCHANGED
 - Formal Core remains locked; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
 - Exact next: accumulate outcome-blind replay/coverage receipts for the seven L3 lanes. Do not force the six remaining L2 modules upward unless their independent source/identifiability blockers are truly resolved.
 
+## Canonical overlay 2026-10-04 08:52 Asia/Taipei — L4 prospective phase frozen
+- D20 maturity remains 50.8%; no L4 promotion.
+- Canonical L4 prerequisite: genuine post-preregistration Prospective Shadow or valid OOS evidence.
+- New preregistration:
+  - research/d20_l4_prospective_shadow_prereg_v0_1.json
+  - research/D20_L4_PROSPECTIVE_SHADOW_PREREG_20261004_V0_1.md
+- 2025-12 through 2026-09 Cathay monthly sentiment × adjusted-0050 pilot is permanently quarantined:
+  DEVELOPMENT_ONLY_CONTAMINATED / NOT_PROMOTION_GRADE.
+- Development pilot is useful only as falsification/design evidence: sentiment LEVEL and CHANGE are separated; no bullish sign is assumed; prior market return/volatility become mandatory controls.
+- Promotion-grade parent collection starts only after the 2026-10-04 08:52 freeze.
+- D20-10 minimum L4 gate: 6 independent post-freeze monthly releases and >=2 regimes.
+- D20-07: >=20 independent dates and >=100 treated events with matched controls.
+- D20-04/05: >=12 independent weekly dates; D20-05 must survive D20-04/D03 residual controls.
+- D20-02: >=12 independent weekly TWSE short-side dates; TPEx/long-account gaps remain UNKNOWN.
+- D20-08: >=12 independent event dates with valid first-known/capture clocks and frozen D1/D5/D20 windows.
+- D20-12: >=20 prospective discriminating cases with common-cutoff structural counterfactuals.
+- Exact next: collect immutable post-freeze parent receipts only. Do not open each parent’s outcome until the parent/specification fingerprint is frozen. No historical Shadow fabrication.
+- Formal Core locked; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
