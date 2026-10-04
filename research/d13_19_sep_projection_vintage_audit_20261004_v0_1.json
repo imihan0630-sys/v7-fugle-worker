@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D13-19",
+  "status": "INDEPENDENT_OFFICIAL_PROJECTION_VINTAGES_LATER_OBSERVED__NATIVE_ATTESTATION_PENDING",
+  "formalCoreImpact": "NONE",
+  "observedDateTaipei": "2026-10-04",
+  "sources": [
+    {
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20260617.htm",
+      "publishedAt": "2026-06-17T14:00:00-04:00",
+      "publishedAtTaipei": "2026-06-18T02:00:00+08:00"
+    },
+    {
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20260916.htm",
+      "publishedAt": "2026-09-16T14:00:00-04:00",
+      "publishedAtTaipei": "2026-09-17T02:00:00+08:00"
+    }
+  ],
+  "projectionObjects": {
+    "June": {
+      "horizons": [
+        2026,
+        2027,
+        2028,
+        "longerRun"
+      ],
+      "medianGDP": [
+        2.2,
+        2.3,
+        2.2,
+        2
+      ],
+      "medianUnemployment": [
+        4.3,
+        4.3,
+        4.2,
+        4.2
+      ],
+      "medianPCE": [
+        3.6,
+        2.3,
+        2,
+        2
+      ],
+      "medianCorePCE": [
+        3.3,
+        2.5,
+        2.1,
+        null
+      ],
+      "medianPolicyRate": [
+        3.8,
+        3.6,
+        3.4,
+        3.1
+      ]
+    },
+    "September": {
+      "horizons": [
+        2026,
+        2027,
+        2028,
+        2029,
+        "longerRun"
+      ],
+      "medianGDP": [
+        2.3,
+        2.4,
+        2.2,
+        2.1,
+        2
+      ],
+      "medianUnemployment": [
+        4.1,
+        4.1,
+        4.1,
+        4.1,
+        4.2
+      ],
+      "medianPCE": [
+        3.7,
+        2.3,
+        2.1,
+        2,
+        2
+      ],
+      "medianCorePCE": [
+        3.4,
+        2.5,
+        2.2,
+        2,
+        null
+      ],
+      "medianPolicyRate": [
+        4.1,
+        4.1,
+        3.9,
+        3.6,
+        3.2
+      ]
+    }
+  },
+  "matchedCalendar2026RevisionPercentagePoints": {
+    "GDP": 0.1,
+    "unemployment": -0.2,
+    "PCE": 0.1,
+    "corePCE": 0.1,
+    "policyRate": 0.3
+  },
+  "horizonSemantics": {
+    "GDPAndInflation": "Q4 over prior-year Q4, not annual-average growth",
+    "unemployment": "Q4 average, not September monthly rate",
+    "policy": "year-end midpoint of appropriate target range, not annual average",
+    "longerRun": "conditional convergence absent further shocks, not a dated terminal forecast",
+    "corePCELongerRun": "NOT_COLLECTED; null is structural missingness, never 0",
+    "new2029Column": "NO_COMPARABLE_PRIOR_HORIZON; no zero-filled June revision"
+  },
+  "comparisonGuards": [
+    "compare June original page with September June-comparator row for same object; comparator row is cross-check not independent vintage capture",
+    "join by variable + calendar year + statistic + unit + horizon definition, not column offset",
+    "median revision is not same-person revision; participant identity/continuity not recoverable from anonymous aggregate",
+    "GDP longer-run median unchanged at 2.0 does not imply distributions unchanged; GDP central tendency June 1.8–2.0 versus September 2.0–2.2",
+    "18 participants both meetings; one lacks 2028 projections, and September one lacks 2028/2029; preserve variable/horizon coverage",
+    "policy-rate upward revision is not market surprise absent authentic pre-release consensus"
+  ],
+  "PIT": {
+    "earliestOfficialReleaseDateEligibleScan": "June 18 and September 17 at 18:10 conceptually; no historical eligibility claim without first-known attestation",
+    "observedAtReleaseTime": false,
+    "rawNativeArchive": null,
+    "strictSourceAttestation": false,
+    "strictProspectiveDatesAdded": 0
+  },
+  "positiveMechanism": "Joint growth/inflation/policy revision can separate demand/growth versus discount-rate context for Taiwan duration-sensitive sectors.",
+  "counterevidence": "Policymakers update to public macro information already in rates/USD/equities; equity direction can differ because both growth and discount rates rise.",
+  "redundancy": "Taiwan price/sector baseline, UST expected-rate/term-premium state, USD/TWD, prior US broad/tech, event calendar, then projection revision; no composite duplicate voting.",
+  "evaluation": "Fixed calendar-year and matched remaining horizon; preregister release-event unit, gap/open-close separation, leave-one-SEP-event-out, overlapping purged walk-forward, no returns-driven variable/model choice, costs and prospective Shadow before alpha claim.",
+  "maturity": "L2 / 40% unchanged",
+  "outcomes": "CLOSED",
+  "formalOptimizationCandidate": "NONE",
+  "exactNext": "Add CBO dated original projection vintages with assumptions/horizon; capture authorized native SEP source bytes and readback across independent releases before L3."
+}
