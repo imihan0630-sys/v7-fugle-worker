@@ -1639,3 +1639,318 @@ Exact next continuation:
 Build a D21-12 historical guidance replay using at least two issuers with numeric guidance. Preserve original guidance, public timestamp, metric/range, assumptions, any revision/withdrawal, actual outcome publication timestamp and only then compute forecast error. Prefer one relatively accurate guidance history and one repeated optimistic/revision-heavy history. Test whether rolling management credibility adds information beyond analyst coverage, earnings revisions and firm fundamentals.
 
 Formal Core impact: NONE.
+
+
+## D21-12 Historical Guidance Replay v0.2 / D21-13 Materiality Contract v0.1
+
+Date: 2026-10-04 Asia/Taipei
+Status: D21-12 L3 TAIWAN_PIT_GUIDANCE_FEASIBILITY_VALIDATED / D21-13 L2 MATERIALITY_MECHANISM_FROZEN / FORMAL_CORE_UNCHANGED
+
+## D21-12 Historical Guidance Replay v0.2
+
+### Issuer A — TSMC 2330
+
+Source structure:
+- official TSMC financial calendar and quarterly-results archive;
+- investor-conference transcript / presentation;
+- later official quarterly actual results.
+
+Replay observations:
+
+1. 2024-04-18 guidance for 2Q24:
+- revenue guidance: US$19.6bn-20.4bn;
+- actual 2Q24 revenue announced 2024-07-18: US$20.82bn;
+- actual exceeded upper bound by about 2.06%;
+- actual versus midpoint = about +4.10%.
+
+2. 2024-07-18 guidance for 3Q24:
+- revenue guidance: US$22.4bn-23.2bn;
+- actual 3Q24 revenue announced 2024-10-17: US$23.50bn;
+- actual exceeded upper bound by about 1.29%;
+- actual versus midpoint = about +3.07%.
+
+3. 2024-10-17 guidance for 4Q24:
+- revenue guidance: US$26.1bn-26.9bn;
+- actual 4Q24 revenue announced 2025-01-16: US$26.88bn;
+- actual remained inside range near the upper bound;
+- actual versus midpoint = about +1.43%.
+
+Three-event descriptive inference:
+- midpoint signed errors are consistently positive in this small sample;
+- 2 of 3 quarters exceeded the upper end and 1 ended near the upper end;
+- this is consistent with conservative / under-guidance behavior for this sample, NOT proof of managerial superior information or integrity.
+
+PIT handling:
+- guidance enters the history only on the investor-conference disclosure date;
+- each forecast error becomes available only when the corresponding official actual metric is public;
+- later guidance cannot be used to rewrite earlier error history.
+
+### Issuer B — MediaTek 2454
+
+Source structure:
+- official MediaTek investor-event calendar;
+- official investor-conference presentations;
+- official monthly revenue and quarterly financial results.
+
+Replay observations:
+
+1. 2024-07-31 guidance for 3Q24:
+- revenue guidance: NT$123.5bn-132.4bn;
+- actual 3Q24 revenue: NT$131.813bn;
+- actual remained within range near the upper end;
+- actual versus midpoint = about +3.02%.
+- because monthly revenue is officially disclosed, the quarter revenue total becomes reconstructable once September monthly revenue is public, before the later quarterly earnings conference.
+
+2. 2024-10-30 guidance for 4Q24:
+- revenue guidance: NT$126.5bn-134.5bn;
+- actual 4Q24 revenue: NT$138.043bn;
+- actual exceeded upper bound by about 2.63%;
+- actual versus midpoint = about +5.78%.
+- December monthly sales published 2025-01-10 make full-quarter revenue reconstructable before 2025-02-07 quarterly results.
+
+3. 2025-04-30 guidance for 2Q25:
+- revenue guidance: NT$147.2bn-159.4bn;
+- actual 2Q25 revenue: NT$150.369bn;
+- actual remained within range;
+- actual versus midpoint = about -1.91%.
+- June monthly sales published 2025-07-10 make quarter revenue reconstructable before the 2Q25 earnings conference.
+
+Small-sample descriptive inference:
+- MediaTek shows a mixed but generally conservative sample: one upper-bound beat and two in-range observations;
+- this is not enough to classify persistent optimism/pessimism as a permanent management trait.
+
+### Critical outcome-clock finding
+
+The actual-outcome known_at is metric-specific.
+
+For quarterly revenue:
+- where issuer monthly revenue is available in the same accounting basis, the quarter revenue outcome can become knowable after the final monthly revenue filing, before quarterly financial results;
+- for metrics such as gross margin / operating margin, outcome known_at may remain the quarterly earnings-release date;
+- for TSMC US-dollar revenue guidance, monthly NT-dollar revenue does not directly reproduce the same guided metric without additional FX treatment, so use the official quarterly US-dollar actual.
+
+Therefore a guidance record needs:
+- guidance_known_at;
+- metric-specific actual_outcome_known_at;
+- source path proving the outcome;
+- forecast_error_available_at.
+
+Do not assign one quarter-end timestamp to all metrics.
+
+### Taiwan forecast-regulation implication
+
+Current TWSE forecast-identification rules provide a useful governance signal:
+- listed companies may disclose revenue / gross-margin / operating-margin forecast information in qualifying investor conferences when fully disclosed through MOPS;
+- companies must continually assess attainability;
+- if the forecast is likely unachievable, they must promptly disclose that the forecast information is no longer applicable;
+- later update/correction requires an appropriate public disclosure route.
+
+Research implication:
+- revision timeliness / no-longer-applicable announcement is a first-class credibility event;
+- missing such a required update, if demonstrably required and public evidence exists, may be more informative than one normal forecast miss;
+- regulation version must be stored because standards changed over time.
+
+### Credibility-feature freeze
+
+Recommended research features:
+- range_hit_flag;
+- midpoint_signed_error;
+- normalized_upper_lower_bound_error;
+- conservative_bias_rate;
+- optimistic_bias_rate;
+- revision_count;
+- revision_magnitude;
+- revision_lead_time;
+- no_longer_applicable_flag;
+- withdrawal_flag;
+- manager_identity_version;
+- metric-specific outcome_known_at.
+
+Rules:
+1. sample size must be explicit;
+2. one quarter cannot create a permanent credibility label;
+3. conservative bias is not automatically positive;
+4. a narrow range can be less calibrated than a wider but statistically appropriate range;
+5. genuine macro/FX/product-cycle shocks require attribution context;
+6. management credibility is not a substitute for D07 fundamentals or analyst revisions.
+
+### D21-12 maturity decision
+
+Advance D21-12 from L2 / 40% to L3 / 60%.
+
+L3 rationale:
+- two Taiwan issuers with multiple numeric guidance observations are historically replayable;
+- guidance and actual-outcome clocks can be separated;
+- metric-specific outcome timing is demonstrably important;
+- rolling bias / revision history can be built without using future outcomes early.
+
+L4 remains closed:
+- no OOS/prospective evidence that rolling credibility improves selection, event weighting or downside-risk prediction after controlling analyst coverage, earnings revisions and fundamentals.
+
+Role: RESEARCH_ONLY / CONFIDENCE / GOVERNANCE_TAIL_RISK.
+Formal Core impact: NONE.
+
+## D21-13 ESG / Climate / Social Materiality — research contract v0.1
+
+Status: L2 MECHANISM_AND_FALSIFICATION_DEFINED / HISTORICAL_MATERIALITY_REPLAY_PENDING / RESEARCH_ONLY
+
+### 1. Scope boundary
+
+D21-13 does NOT own generic ESG scores.
+
+It owns financially material environmental, climate and social exposures only when a plausible channel connects the issue to:
+- revenue / demand;
+- operating cost;
+- capex;
+- asset value / impairment;
+- financing / insurance cost;
+- regulatory cost;
+- supply-chain continuity;
+- customer qualification / market access;
+- workforce continuity / safety;
+- litigation / remediation;
+- governance / disclosure credibility.
+
+Generic “high ESG = good company” is rejected.
+
+### 2. Taiwan 2026 disclosure regime
+
+Taiwan began phased adoption of IFRS Sustainability Disclosure Standards from FY2026:
+- phase 1: listed/OTC companies with paid-in capital >= NT$10bn apply to FY2026 information and report beginning 2027;
+- phase 2: paid-in capital >= NT$5bn and < NT$10bn apply to FY2027 information;
+- phase 3: remaining listed/OTC companies apply to FY2028 information.
+
+The first adoption includes IFRS S1 and IFRS S2.
+Sustainability-related financial information is being moved into the annual-report framework and aligned more closely with financial-report timing.
+TWSE 2026 implementation support includes practical guidance, industry examples and climate-scenario-analysis support.
+
+Research implication:
+- disclosure regime / phase is itself a coverage variable;
+- pre- and post-adoption data are not directly comparable without disclosure-vintage controls;
+- more disclosure after mandatory adoption is not automatically a deterioration in risk.
+
+### 3. Materiality mechanism
+
+Financial-materiality hypothesis:
+- sustainability issues linked to financially material industry exposures may contain more decision-relevant information than broad non-material scores.
+- classic evidence finds stronger performance association for material sustainability issues than immaterial issues.
+
+Transition-risk channel:
+- carbon pricing, emissions rules, customer decarbonization requirements, energy transition and product standards can alter cost structure / demand / capex.
+
+Physical-risk channel:
+- heat, flood, drought, typhoon, water stress or other physical hazards can affect assets, production, insurance, logistics and suppliers.
+
+Supply-chain / customer-access channel:
+- customer ESG / carbon requirements can influence supplier qualification and order allocation.
+
+Social / workforce channel:
+- labor safety, turnover, human-rights / supply-chain controversies or product safety can affect production continuity, legal cost, brand/customer access and hiring.
+
+Opportunity channel:
+- low-carbon products, energy efficiency, recycling, circular materials or adaptation capability can create demand or reduce long-run cost.
+
+### 4. Why generic ESG scores are not acceptable
+
+Academic rating-divergence evidence shows:
+- major ESG rating providers disagree substantially;
+- divergence comes primarily from measurement and scope differences, not only weighting.
+
+Therefore:
+- vendor aggregate score is a provenance object, not ground truth;
+- if multiple provider scores are used, provider/version/methodology must be stored;
+- preferably research specific material metrics rather than a single composite.
+
+### 5. PIT / vintage contract
+
+Required fields:
+- issuer;
+- materiality_topic;
+- industry_materiality_basis;
+- disclosure_standard / regulation_version;
+- public_known_at;
+- measurement_period;
+- metric_name / unit;
+- measured_vs_estimated;
+- assurance_status;
+- methodology_version;
+- scope_1 / scope_2 / scope_3 boundary where relevant;
+- target_baseline;
+- target_horizon;
+- target_revision_known_at;
+- realized_progress_known_at;
+- controversy/event known_at;
+- financial_channel;
+- expected financial magnitude / UNKNOWN;
+- source_quality;
+- restatement / recalculation flag.
+
+Rules:
+1. current emissions / targets cannot be backfilled;
+2. methodology changes and base-year recalculations must create new vintages;
+3. mandatory-disclosure phase must be explicit;
+4. missing scope 3 is UNKNOWN, not zero;
+5. target announcement is not realized decarbonization;
+6. company-reported scenario results are estimates, not deterministic loss forecasts;
+7. generic ESG score changes are not events unless underlying metric/source change is known.
+
+### 6. Candidate research feature families
+
+Climate:
+- emissions intensity relative to industry;
+- emissions-intensity trend;
+- energy / renewable mix;
+- transition capex;
+- carbon-price / carbon-fee exposure;
+- climate-risk asset concentration;
+- water / energy dependency where financially material;
+- target-versus-realized progress.
+
+Social:
+- safety incidents / lost-time rates;
+- material labor disruption;
+- critical-skill turnover where disclosed;
+- supply-chain human-rights / customer-qualification events;
+- product-safety / recall / regulatory events.
+
+Disclosure quality:
+- measured-versus-estimated share;
+- assurance coverage;
+- material restatement/recalculation;
+- target revision;
+- missingness;
+- cross-document consistency.
+
+### 7. Falsification / redundancy
+
+Any future predictive claim must survive:
+- industry composition;
+- firm size / reporting resources;
+- export/global-customer exposure;
+- regulation phase;
+- energy intensity;
+- capex cycle;
+- profitability / quality;
+- valuation;
+- D09/D10 supply-chain and industry exposures;
+- D13 macro / policy shocks;
+- D21-10 disclosure / control quality;
+- rating-provider methodology changes;
+- selection bias: firms with better disclosure can look riskier simply because more is observed.
+
+### 8. Maturity decision
+
+Advance D21-13 from L0 to L2 / 40%.
+
+L1 satisfied:
+- financially material environmental/climate/social scope and Taiwan 2026 disclosure architecture are defined.
+
+L2 satisfied:
+- transition, physical, supply-chain/customer, social/workforce and opportunity mechanisms are defined together with generic-score falsification, rating-divergence risk and PIT/version rules.
+
+L3 remains closed:
+- no multi-sector Taiwan historical replay yet demonstrates stable first-known materiality metrics across changing disclosure regimes and methodology vintages.
+
+Exact next continuation:
+Build D21-13 historical materiality replay across at least two sectors with different material risk channels, e.g. semiconductor water/energy/carbon exposure versus a high-emission industrial sector or labor/product-safety-sensitive sector. Preserve disclosure vintage, mandatory-adoption phase, metric methodology, target-versus-realized distinction and financial transmission channel. Do not use aggregate ESG ratings as the primary feature.
+
+Formal Core impact: NONE.
