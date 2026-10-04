@@ -2180,3 +2180,134 @@ Exact next continuation:
 2. D21-09 requires broader planned/unplanned succession samples and OOS/prospective testing before L4.
 3. Return to blocked L2 modules in priority order: D21-11 contemporaneous tunneling evidence, D21-04 authoritative pledge receipts, D21-03 original monthly insider-known-at, D21-01 original ownership-report known-at.
 4. D21-07 remains the largest executable L2 module without PIT validation; build compensation-policy to capital-allocation historical replay next.
+
+
+## D21-07 Historical Incentive-to-Capital-Allocation PIT Replay v0.2
+
+Date: 2026-10-04 Asia/Taipei
+Status: D21-07 L3 TAIWAN_PIT_FEASIBILITY_VALIDATED / CAUSALITY_NOT_ESTABLISHED / FORMAL_CORE_UNCHANGED
+
+### Replay issuer — TSMC 2330
+
+#### 1. Incentive-design / award clock
+
+2024-02-06 Board resolution:
+- approved 2023 employee restricted stock awards of 2,960 thousand shares;
+- approved a proposal for up to 4,185 thousand common shares of 2024 restricted stock awards, subject to the 2024 AGM;
+- the issuer explicitly stated the purpose was to attract and retain executives / critical talent and link compensation with shareholder interests and ESG achievements;
+- the same meeting approved 2023 employee performance bonuses and profit sharing totaling about NT$100.18106bn.
+
+Historical state:
+- incentive_event_known_at = 2024-02-06;
+- award_type = restricted stock award;
+- stated_alignment_objective = retention + shareholder-interest alignment + ESG linkage;
+- this is a disclosed design/intention event, not proof that subsequent capital-allocation choices were caused by the incentive.
+
+#### 2. Long-horizon investment decision clock
+
+2024-06-05 Board resolution:
+- approved capital appropriations of about US$17.3562bn;
+- stated purpose: long-term capacity plans based on market-demand forecasts and technology-development roadmap;
+- uses included advanced technology capacity, advanced packaging / mature / specialty capacity, fab construction and facility systems;
+- separately approved up to US$5bn capital injection into TSMC Global to reduce FX-hedging cost.
+
+2024-08-13 Board resolution:
+- approved further capital appropriations of about US$29.61547bn for long-term capacity;
+- approved up to US$7.5bn capital injection into TSMC Arizona;
+- approved issuance of 2,353 thousand 2024 restricted stock award shares to attract/retain executives and critical talent and link rewards to shareholder interests and ESG achievements.
+
+Important accounting / research semantic:
+- Board-approved capital appropriations are authorization batches, not a single annual capex forecast.
+- Do NOT divide annual realized capex by one Board authorization and call the ratio “execution rate.”
+- Each authorization needs its own project/use mapping if project-level realization is evaluated.
+
+#### 3. Capital-return / dilution-management decision clock
+
+2024-06-05 Board resolution:
+- explicitly approved repurchase of 3,249,000 common shares on TWSE;
+- stated purpose was to offset dilution caused by employee restricted stock award issuance.
+
+This is the cleanest direct mechanism link in the replay:
+employee equity compensation -> dilution -> share repurchase response.
+
+This link is issuer-stated and therefore historically observable.
+It does NOT prove that the repurchase improved shareholder value or that equity compensation itself was optimal.
+
+#### 4. Later realized outcomes
+
+Later 2024 annual-report / result evidence:
+- TSMC's consolidated 2024 capital expenditures were about US$29.76bn;
+- the annual report states production capacity increased by about 0.9 million 12-inch-equivalent wafers in 2024 based on capital expenditures;
+- the 3,249,000-share buyback approved to offset RSA dilution was completed and the repurchased shares were subsequently cancelled.
+
+Outcome firewall:
+- these realized outcomes become usable only after their later public disclosure;
+- they are outcome labels for evaluating an earlier allocation decision, not variables available at the original decision date.
+
+#### 5. Falsification control — MediaTek 2454
+
+Historical governance reconstruction from issuer disclosures:
+- the Board adopted executive officer stock-ownership guidelines in 2022 requiring executive officers to hold MediaTek common shares equivalent to a multiple of annual base salary within three years;
+- 2024 remuneration-committee records show repeated key-manager remuneration and restricted-stock-award decisions;
+- MediaTek's shareholder-return policy since 2021 raised regular cash-dividend payout to 80%-85% of annual after-tax earnings and added a NT$16 annual special cash dividend for 2021-2024, subject to Board approval;
+- MediaTek also reports a 2024 R&D investment of about NT$132bn and an innovation commitment of at least NT$80bn annual R&D spending.
+
+Falsification lesson:
+- strong shareholder payout and large long-horizon R&D investment can coexist;
+- therefore “high payout = underinvestment” is not a valid monotonic rule;
+- executive stock ownership / stock awards do not mechanically imply buybacks;
+- the TSMC dilution-offset buyback is a specific disclosed mechanism, not a universal incentive effect.
+
+### Required research fields frozen
+
+- compensation_policy_known_at;
+- incentive_award_known_at;
+- incentive_type;
+- vesting_horizon;
+- performance_metric_basis;
+- dilution_estimate;
+- capital_allocation_decision_known_at;
+- allocation_family;
+- authorized_amount;
+- authorization_basis;
+- stated_purpose;
+- financing_source;
+- related_buyback_or_dividend_decision;
+- realized_outcome_known_at;
+- realized_capex / R&D / capacity / cash-return outcome;
+- outcome_horizon;
+- causal_link_status: ISSUER_STATED / ASSOCIATION_ONLY / UNKNOWN;
+- reverse_causality_controls.
+
+### Anti-causality / reverse-causality rules
+
+1. Incentive policy known before capex is necessary for causal research but not sufficient to establish causality.
+2. A same-board-meeting incentive and investment approval is co-occurrence, not proof of motive.
+3. Only issuer-explicit links such as “buyback to offset RSA dilution” may be recorded as ISSUER_STATED direct mechanism.
+4. Future operating success cannot validate an incentive policy at the original decision date.
+5. Capex quality requires later return / utilization / cash-flow / impairment evidence, not capex growth alone.
+6. High payout may coexist with strong investment when cash generation is sufficient.
+7. Compensation variables must be tested incrementally after controlling growth opportunities, cash flow, lifecycle, industry capex intensity, valuation, leverage and prior performance.
+
+### D21-07 maturity decision
+
+Advance D21-07 from L2 / 40% to L3 / 60%.
+
+L3 rationale:
+- a Taiwan-listed issuer provides an end-to-end historically replayable chain from incentive disclosure to long-horizon investment and capital-return/dilution decisions;
+- decision timestamps and later outcome timestamps can be separated;
+- a direct issuer-stated incentive-to-buyback mechanism is observable;
+- a separate control issuer falsifies simplistic payout-versus-investment and stock-incentive-versus-buyback rules.
+
+L4 remains closed:
+- no OOS / prospective evidence that incentive-allocation features add predictive value;
+- no causal evidence that TSMC's compensation design caused its capex program;
+- capital-allocation “quality” is not established from spending or capacity expansion alone.
+
+Role: RESEARCH_ONLY / CONTEXT / CONFIDENCE.
+Formal Core impact: NONE.
+
+Exact next continuation:
+1. All currently executable non-blocked D21 modules have now reached at least L3 except source-blocked modules.
+2. Prioritize recovery / alternative-case construction for D21-11 contemporaneous tunneling evidence, then D21-04 authoritative pledge receipts, D21-03 original monthly insider known_at, and D21-01 original ownership-report known_at.
+3. For L3 modules, no L4 promotion without OOS / prospective validation.
