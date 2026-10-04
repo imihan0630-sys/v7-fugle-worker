@@ -262,3 +262,27 @@ Audit-time authoritative tracker:
 
 COV-12 remains PENDING_SPECIALIST_RETURN.
 No tracker/module/router/master/Formal mutation was performed by this audit.
+
+
+## COV-03 owner approval + canonical update — 2026-10-04
+
+Owner decision: **APPROVED**.
+
+State transitions:
+- COV-03: OWNER_APPROVAL_REQUIRED → TERMINAL_DECISION_READY → CANONICAL_UPDATE_COMPLETE.
+
+Canonical execution:
+- Created D06-19 `Retail / Individual Investor Participation & Flow（散戶／自然人參與與流向）` at L0 / 0%.
+- Canonical maturity firewall: earlier supporting L1/20% is not used; new module starts L0/0%.
+- Direct-retail identity is separated from margin/day-trade/odd-lot/broker/residual proxies.
+- Domestic natural-person stock×date directional flow remains UNKNOWN/source-gated.
+- Initial decision role is context / validation / supportive; no independent directional Alpha vote.
+
+Post-update canonical tracker snapshot:
+- 22 domains
+- 356 active modules
+- 43.4% weighted maturity
+- D06 = 18 modules / 45.6%
+
+COV-12 remains PENDING_SPECIALIST_RETURN.
+No System1/System2 Formal change. Formal Core remains LOCKED.
