@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "D22_12_DISTRESS_RECOVERY_TAIL_RISK_CONTRACT_V0_1",
+  "generatedAt": "2026-10-04T08:50:00+08:00",
+  "module": "D22-12",
+  "level": "L2",
+  "maturityPct": 40,
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / PD_LGD_EQUITY_TAIL_SEPARATED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "researchQuestion": "Can structural/market/accounting distress measures and recovery-state information identify equity tail risk without conflating default probability, loss severity and already-priced distress?",
+  "decomposition": {
+    "PD": "Probability/intensity of default over a defined horizon; model- and horizon-specific.",
+    "LGD": "Loss given default conditional on default; not equal to PD.",
+    "Recovery": "Value recovered by creditors conditional on default/restructuring; depends on seniority, collateral, cycle and process.",
+    "DistressState": "A broader pre-default condition inferred from accounting/market/funding variables; not proof of default.",
+    "EquityTailRisk": "Conditional downside/crash/near-zero equity outcome; linked to but not identical to creditor loss."
+  },
+  "modelFamilies": [
+    {
+      "model": "structural_Merton",
+      "semantics": "Equity is treated as an option on firm assets; distance-to-default depends on market equity value/volatility, liabilities, rate and horizon assumptions."
+    },
+    {
+      "model": "reduced_form",
+      "semantics": "Default is modeled as a hazard/intensity process from market/state variables; recovery must be specified separately."
+    },
+    {
+      "model": "accounting_or_hybrid",
+      "semantics": "Coverage, leverage, profitability, liquidity and market variables can form distress scores but require PIT vintages and redundancy controls."
+    }
+  ],
+  "evidenceAndCounterevidence": [
+    {
+      "support": "Structural distance-to-default measures capture leverage and equity volatility and are linked to financial vulnerability.",
+      "counter": "Model assumptions about asset value/volatility, liability horizon and barrier can materially change estimates."
+    },
+    {
+      "support": "Recovery rates vary with market frictions and macro states.",
+      "counter": "Constant recovery assumptions can materially distort defaultable-debt valuation."
+    },
+    {
+      "support": "Some studies find high distress risk predicts weak stock returns.",
+      "counter": "The distress-return literature is mixed; issuance, mispricing, risk shifting and sample definition can subsume or reverse apparent effects."
+    },
+    {
+      "support": "Default clusters and credit spreads co-move with cycles.",
+      "counter": "Credit spreads often exceed realized expected default losses because liquidity/risk premia matter."
+    }
+  ],
+  "pitContract": [
+    "Distance-to-default inputs must use contemporaneously known equity market cap, equity volatility, liabilities and risk-free rate; no later restated balance sheets.",
+    "Define horizon, default barrier and liability mapping before outcomes are opened.",
+    "PD and recovery/LGD are separate outputs; never infer one mechanically from the other.",
+    "Actual default/restructuring/recovery events require event-time lineage and delisted/defaulted firms must remain in historical universes.",
+    "Censored/no-default observations and missing recoveries must be handled explicitly; surviving firms cannot define the whole sample."
+  ],
+  "falsificationGates": [
+    "Low distance-to-default != certain default and high distance-to-default != safety.",
+    "Distress risk != guaranteed negative future stock return; pricing, optionality and risk-shifting can alter equity payoff.",
+    "Recovery is state/seniority/collateral dependent and cannot be fixed at one universal percentage.",
+    "Do not count D07 leverage, D22-02 coverage, D22-03 net debt and D22-06 spread again as separate votes if they are inputs to one distress model.",
+    "If the distress transform adds no incremental value beyond its primitive inputs, classify REJECTED_OR_REDUNDANT."
+  ],
+  "outcomeGate": "CLOSED",
+  "formalCore": "LOCKED",
+  "next": [
+    "Build Taiwan PIT structural/accounting distress input receipts including delisted/defaulted cases where source history is available.",
+    "Pre-register distance-to-default barrier/horizon and recovery assumptions before any equity tail outcome join.",
+    "Test distress model against primitive-input baseline and issuance/corporate-action controls before L3/L4."
+  ]
+}
