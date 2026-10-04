@@ -1,0 +1,17 @@
+{
+  "schemaVersion":"pattern-displacement-path-v0.1",
+  "updated":"2026-10-04 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "ageEqualsDistance":false,
+  "ageEqualsExcursion":false,
+  "nonApproachDayIsFailure":false,
+  "arbitraryFarThreshold":null,
+  "pathGapImputation":"PROHIBITED",
+  "zoneReanchorToCurrentPrice":"PROHIBITED",
+  "futureComparisonLadder":["P0","P1","P2","P3"],
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}

@@ -1346,3 +1346,82 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 5. Hand common-support and C0-C3 nested inference semantics to D16.
 6. Next D01 science: separate structural aging from absolute price displacement / long excursion path so "far away for a long time" is not conflated with "old."
 7. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-033 (2026-10-04)
+
+### DL-033 — Structural aging vs absolute displacement / long excursion path
+- DL-031 separated age from observability and interaction history.
+- DL-032 separated age from volatility/regime scale migration.
+- DL-033 freezes another confound: an old structural object may differ because price spent a long time far away and later returned, not because elapsed age itself changed structural memory.
+- Age, current location and excursion path are separate families:
+  AGE = root/version eligible-session age;
+  CURRENT LOCATION = signed/absolute distance to frozen zone;
+  PATH = max excursion, cumulative path, one-sided excursions, time since last interaction and return-trip state.
+- Same-age counterexample is explicit:
+  one root may remain near its zone;
+  another may travel many ATR away and return.
+  Both cannot be represented by age alone.
+- Frozen distance semantics:
+  inside zone -> distance 0;
+  above zone -> close - upper;
+  below zone -> close - lower.
+- Continuous descriptors include:
+  signedDistancePrice;
+  absoluteDistancePrice;
+  currentDistanceAtr;
+  currentDistancePct;
+  maxAbsExcursionPrice;
+  maxAbsExcursionAtr;
+  maxAboveExcursionPrice;
+  maxBelowExcursionPrice;
+  cumulativeAbsPathPrice;
+  cumulativeAbsPathAtr.
+- No arbitrary near/far threshold or staleness score is defined.
+- Long time without interaction and large excursion are not the same:
+  a root may have long no-interaction time with modest distance;
+  short no-interaction time with large distance;
+  both;
+  neither.
+- Return from above vs below remains explicit through excursionSide / returnApproachSide / orientation.
+- Path summaries require complete eligible-session continuity from the last valid interaction/causal landmark through asOf.
+  Unresolved gaps -> PATH_SUMMARY_DATA_BLOCKED.
+  Missing excursion/path values are not imputed.
+- All path prices must remain in canonical TECHNICAL_CONTINUITY semantic space; corporate-action raw jumps cannot become excursion.
+- Far-away current state is location only, not a failed structural test.
+  Response inference begins only at a valid interaction opportunity.
+- Future D16 nested comparison:
+  P0 age + interaction history + DL-032 scale/regime;
+  P1 + current distance/location;
+  P2 + max/cumulative excursion path;
+  P3 + time-since-last-interaction / return-trip descriptors.
+- Future interpretation:
+  D0_AGE_SURVIVES_PATH;
+  D1_CURRENT_DISTANCE_CONFOUND;
+  D2_EXCURSION_PATH_CONFOUND;
+  D3_RETURN_RECENCY_CONFOUND;
+  D4_NOT_EVALUABLE.
+- Common support must include current distance, excursion magnitude, interaction recency/history and DL-032 scale/regime context.
+- Support/resistance literature is path-dependent by construction; Chung/Bellotti separate elapsed time from prior bounce history, and Henderson et al. (2026) explicitly model path-dependent regime transitions. This motivates the firewall but does not prove D01 alpha.
+- New files:
+  - research/PATTERN_DISPLACEMENT_PATH_V0_1.md
+  - research/pattern_displacement_path_v0_1.json
+  - research/pattern_displacement_path_v0_1.mjs
+  - research/test_pattern_displacement_path_v0_1.mjs
+  - research/PATTERN_DISPLACEMENT_PATH_D16_HANDOFF_V0_1.md
+- 14 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcomes inspected; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-033
+
+1. Reconcile the DL-033 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-033 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve age, current location, excursion path and interaction recency as separate fields; do not create a staleness score.
+4. Keep path summaries fail-closed under continuity gaps and never re-anchor the zone toward current price.
+5. Hand P0-P3 common-support inference semantics to D16.
+6. Next D01 science: separate structural persistence from role reversal / polarity flip so an old resistance becoming support is not misclassified as either decay or fresh independent structure.
+7. No outcome join / no runtime wiring / no Formal change.
