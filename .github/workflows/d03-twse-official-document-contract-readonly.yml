@@ -141,6 +141,78 @@ jobs:
                       pos=i+len(needle)
                       if hits>=6: break
 
+      - name: Probe reconstructed official announcement API
+        shell: python
+        run: |
+          import json, subprocess, urllib.parse, hashlib
+
+          base="https://wwwc.twse.com.tw/rwd/zh/announcement/announcement"
+          params={
+            "startDate":"20260701",
+            "endDate":"20260810",
+            "keyword":"減資",
+            "response":"json",
+          }
+          url=base+"?"+urllib.parse.urlencode(params)
+          p=subprocess.run(
+            ["curl","--fail","--silent","--show-error","--location","--max-time","30",
+             "--header","User-Agent: D03-TWSE-Official-Document-Contract/0.1",url],
+            text=True,capture_output=True
+          )
+          print("API_URL="+url)
+          print("API_CURL_EXIT="+str(p.returncode))
+          if p.returncode!=0:
+              print("API_CURL_ERROR="+p.stderr[:1000])
+              raise SystemExit(1)
+          raw=p.stdout
+          print("API_BYTES="+str(len(raw.encode("utf-8"))))
+          print("API_SHA256="+hashlib.sha256(raw.encode("utf-8")).hexdigest())
+          obj=json.loads(raw)
+          print("API_TOP_LEVEL="+json.dumps({k:obj.get(k) for k in obj.keys() if k not in ("data","tables")},ensure_ascii=False))
+          print("API_FIELDS="+json.dumps(obj.get("fields"),ensure_ascii=False))
+          data=obj.get("data") or []
+          print("API_DATA_COUNT="+str(len(data)))
+          print("API_DATA_SAMPLE="+json.dumps(data[:20],ensure_ascii=False))
+
+          # The same front-end exposes CSV from the same endpoint/arguments.
+          csv_params=dict(params); csv_params["response"]="csv"
+          csv_url=base+"?"+urllib.parse.urlencode(csv_params)
+          q=subprocess.run(
+            ["curl","--fail","--silent","--show-error","--location","--max-time","30",
+             "--header","User-Agent: D03-TWSE-Official-Document-Contract/0.1",csv_url],
+            text=True,capture_output=True
+          )
+          print("CSV_URL="+csv_url)
+          print("CSV_CURL_EXIT="+str(q.returncode))
+          if q.returncode==0:
+              print("CSV_BYTES="+str(len(q.stdout.encode("utf-8"))))
+              print("CSV_SHA256="+hashlib.sha256(q.stdout.encode("utf-8")).hexdigest())
+              print("CSV_HEAD="+json.dumps(q.stdout.splitlines()[:20],ensure_ascii=False))
+          else:
+              print("CSV_CURL_ERROR="+q.stderr[:1000])
+
+      - name: Inspect result table paging attributes
+        shell: python
+        run: |
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import json
+          html=Path("/tmp/twse_announcement.html").read_text(encoding="utf-8",errors="replace")
+          class P(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.tables=[]; self.divs=[]
+              def handle_starttag(self,tag,attrs):
+                  d=dict(attrs)
+                  if tag=="table": self.tables.append(d)
+                  if tag=="div" and ("class" in d or any(k.startswith("data-") for k in d)): self.divs.append(d)
+          p=P(); p.feed(html)
+          interesting=[]
+          for d in p.tables+p.divs:
+              s=json.dumps(d,ensure_ascii=False)
+              if "rwd-table" in s or "paging" in s or "server-side" in s or "reports" in s:
+                  interesting.append(d)
+          print("PAGING_ATTRS_JSON="+json.dumps(interesting,ensure_ascii=False))
+
       - name: Bounded raw-page grep
         shell: bash
         run: |
