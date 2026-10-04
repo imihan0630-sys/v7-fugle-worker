@@ -29,6 +29,9 @@ jobs:
           curl --fail --silent --show-error --location --retry 2 \
             "https://www.cbc.gov.tw/tw/dl-225493-64ee6143a2174c58ada73a0c19b33318.html" \
             -o /tmp/cbc/20260520.xlsx
+          curl --fail --silent --show-error --location --retry 2 \
+            "https://www.cbc.gov.tw/tw/dl-227448-9f14a6738d8f498c9ab6453040260445.html" \
+            -o /tmp/cbc/20260820.xlsx
 
           python - <<'PY'
           import hashlib, json, re, zipfile
@@ -112,6 +115,7 @@ jobs:
               ("2025-11-20","/tmp/cbc/20251120.xlsx"),
               ("2026-02-26","/tmp/cbc/20260226.xlsx"),
               ("2026-05-20","/tmp/cbc/20260520.xlsx"),
+              ("2026-08-20","/tmp/cbc/20260820.xlsx"),
           ]
           out=[]
           for label,path in files:
