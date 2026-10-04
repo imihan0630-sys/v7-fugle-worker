@@ -24,5 +24,13 @@
   ],
   "maxParallel": 2,
   "outcomes": "CLOSED",
-  "formalCoreImpact": "NONE"
+  "formalCoreImpact": "NONE",
+  "attempt": 2,
+  "previousAttempt": {
+    "commit": "58497d00763f95a3e03a652944be4dc6a687aa6b",
+    "result": "WORKFLOW_SCHEDULING_FAILURE_NO_JOBS",
+    "cause": "job-level if referenced matrix.year before matrix expansion",
+    "dataFetchStarted": false
+  },
+  "retriggerReason": "workflow matrix scheduling semantics repaired and all repository CI gates passed"
 }
