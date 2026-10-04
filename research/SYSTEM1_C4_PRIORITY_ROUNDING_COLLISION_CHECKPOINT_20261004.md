@@ -1,7 +1,7 @@
 # System 1 C4 PriorityScore rounding collision audit V0.1
 
 Date: 2026-10-04 Asia/Taipei
-Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_PENDING / FORMAL_CORE_LOCKED
+Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_GREEN_MERGED / FORMAL_CORE_LOCKED
 
 ## Purpose
 
@@ -151,3 +151,13 @@ Formal Core: LOCKED
 3. Accumulate independent dates before interpreting practical materiality.
 4. If cutline reversal is materially non-zero, join future outcomes under the existing validation maturity gates.
 5. Only then may score precision become a Class-C optimization candidate.
+
+## Merge acceptance
+
+- PR #482 merged at `e4acbf2b9095793c1ea1462e91db2b1f443b9e47`.
+- Exact head `5149437ebfcee3c90d13cb9896f212a688f7869f`:
+  - V8 Regression Tests run `37180594940` PASS;
+  - V8 Repair CI run `37180594937` PASS;
+  - System1 C1 C2 isolated offline repair review run `37180594992` PASS.
+- No Worker/runtime/D1/Production/Formal/System2 behavior change or Cloudflare deployment was introduced.
+- The next required evidence is prospective: let the existing daily C1/C4 workflow collect genuine trading-session observations before any Class-C proposal.
