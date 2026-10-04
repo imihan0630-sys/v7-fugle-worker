@@ -121,3 +121,22 @@ Validate ex-ante expectation archives for independent Taiwan policy decisions an
 
 Exact next:
 Prospectively capture future independent Taiwan policy expectation distributions with capturedAt/version evidence, including non-modal realization if naturally observed; preregister the surprise functional, event-zero and outcome horizons before any L4 test. Continue D17-01/02/09 multi-day source/version coverage.
+
+## Room 08 continuation — D11-10/11 and D17-09 L3 feasibility — 2026-10-04
+
+New D11 receipt: `research/d11_10_11_event_gap_exit_pit_audit_20261004_v0_1.json`.
+New D17 receipt: `research/d17_official_disclosure_crossday_receipt_20261004_v0_1.json`.
+
+D11-10 event-linked overnight gap risk advances L2 -> L3 for Taiwan PIT/source feasibility. It consumes the already validated official daily OHLC gap primitive, PIT-valid event clocks and the D11-12 corporate-action firewall. Mechanical reference-price resets, unresolved corporate actions, missing/synthetic open and unresolved suspension provenance fail closed. D04-09 remains owner of tail/gap volatility state; D17-12 remains owner of post-gap continuation/reversal. The opening gap is one primitive observation, never three votes.
+
+D11-11 multi-day price-limit exit risk advances L2 -> L3 with a prospective-only executability qualifier. Existing official price-limit rule/version evidence plus timestamped best bid/ask, top-five depth, limit/halt/trial/delayed states make bounded prospective exit-constraint observation feasible. A lower-limit close does not prove a sell order was impossible to execute. Actual fill requires order/fill evidence, and historical OHLC cannot reconstruct historical queue/fill state. D05-02 remains owner of price-limit mechanics; D04-10 owns volatility contamination.
+
+D17-09 duplicate/same-event clustering advances L2 -> L3 after cross-day official capture physically observed 2072, 6949, 4530 and 4747 recurring on later daily source dates with the same historical fact dates and explicit multi-month announcement periods. New daily row does not equal new economic primitive. Old-only rows remain UNKNOWN rather than cancellation evidence.
+
+D11-16 remains L2. D17-01/02 and D11-08 remain L2. No outcome join, alpha claim, risk penalty, Formal selection/ranking change or production behavior change.
+
+Exact next:
+- D11-10: build prospective event-to-next-open receipts and preregister gap-through-stop outcomes.
+- D11-11: collect actual consecutive constrained-session quote/depth states and join real order/fill receipts only when available.
+- D17-01/02/09: obtain a third independent official capture plus after-hours coverage and continue version/correction semantics.
+- D11-16: complete one issuer-level custody-release-to-transfer-to-realized-holdings chain.
