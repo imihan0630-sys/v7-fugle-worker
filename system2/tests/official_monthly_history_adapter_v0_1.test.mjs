@@ -92,7 +92,7 @@ assert.equal(tpex.rows[0].volumeShares, 1500000);
 assert.equal(tpex.rows[0].tradeValue, 765000000);
 assert.equal(tpex.rows[0].high, 512);
 assert.equal(tpex.rows[0].low, 498);
-assert.equal(tpex.rows[0].sourceId, "TPEX_ST43_MONTHLY");
+assert.equal(tpex.rows[0].sourceId, "TPEX_TRADING_STOCK_MONTHLY");
 assert.equal(tpex.rows[0].sourceFields.sourceVolumeUnit, "LOT_1000_SHARES");
 assert.equal(tpex.rows[0].sourceFields.sourceTradeValueUnit, "THOUSAND_NTD");
 
