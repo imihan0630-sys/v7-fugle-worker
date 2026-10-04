@@ -614,3 +614,18 @@ CBC 2026-05-20 Q1 2026 current account 625.3 with YoY increase 328.4 implies pri
 3. Preserve publication/reference/version/observedAt clocks separately; never infer knownAt from quarter-end or a later database value.
 4. Continue future CBC/H.4.1/TWSE source-attested prospective receipts. No outcome join or L3 promotion before applicable gates.
 5. D12 continuation is DR-079 and H11 permitted raw-parent/common-support comparison.
+
+
+## 00 routed H17 D13-06 source-attestation delta — 2026-10-04
+
+H17 accepted D13-06 as the sovereign/risk-free yield-curve owner.
+
+Do not repeat rate-mechanism research.
+
+Remaining Room09 contribution for terminal H17:
+- accumulate multidate strict source-attested PIT receipts for eligible U.S. Treasury curve observations;
+- preserve source date, published/captured time, firstEligibleTaiwanDecision, raw/version provenance and UNKNOWN;
+- do not let future same-U.S.-day curve data leak into Taiwan 18:10 decisions;
+- provide clean common-support rate states that Room15 D22-04 can benchmark against.
+
+D13-06 remains separate from issuer spread and enterprise WACC.
