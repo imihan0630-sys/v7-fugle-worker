@@ -321,5 +321,34 @@
     ],
     "maturityChange": "NONE",
     "formalCoreImpact": "NONE_LOCKED"
+  },
+  "cov01": {
+    "state": "PARTIAL_EVIDENCE_RECEIVED",
+    "readiness": "SPECIALIST_RETURN_READY_PENDING_TERMINAL_RECOMMENDATION",
+    "candidate": "Continuation / Base Pattern Family",
+    "likelyOwner": "D01-07_WITH_D01_05_BREAKOUT_AND_D01_08_VCP_BOUNDARIES",
+    "acceptedEvidence": [
+      "KLINE_PATTERN_CHECKPOINT.md",
+      "research/PATTERN_DL007_IMPLEMENTATION_AND_COUNTEREVIDENCE_V0_1.md",
+      "research/stock_market_learning_tracker_v0_1.json"
+    ],
+    "closedQuestions": [
+      "platform/bull-flag/triangle/pennant/wedge/high-tight-flag/cup/VCP families specified",
+      "latent geometry and cross-pattern de-dup frozen",
+      "named patterns are labels, not independent votes",
+      "confirmation/failure lifecycle separated from morphology",
+      "breakout lifecycle belongs D01-05",
+      "VCP specialization remains D01-08",
+      "hindsight visual recognition and repainting prohibited"
+    ],
+    "remaining": [
+      "explicitly compare umbrella ownership between D01-07 and a distinct umbrella owner",
+      "state whether D01-07 can absorb continuation/base morphology without incoherence",
+      "state whether any unique data/replay/decision contract requires a new module",
+      "submit exactly one terminal recommendation",
+      "commit research/COV01_D01_SPECIALIST_RETURN_V0_1.md"
+    ],
+    "maturityChange": "NONE",
+    "formalCoreImpact": "NONE_LOCKED"
   }
 }
