@@ -2410,3 +2410,131 @@ Exact continuation:
 5. preserve halt/resumption separately from capital-action cause/effective-date evidence;
 6. on the next genuine Taiwan trading session, prioritize the already deployed V8.17 C1 immutable parent/cohort readback; never synthesize or backfill a generation;
 7. after parent readback, re-audit Bollinger against exact 20-session symbol-window TECHNICAL_CONTINUITY; ADX still additionally requires canonical Wilder recursive replay.
+
+
+## TI-594 through TI-605 — TPEx machine transport and price-reset source closure (2026-10-04)
+
+Durable artifacts:
+- `research/D03_TPEX_HALT_RESUMPTION_MACHINE_CONTRACT_V0_2.md`
+- `research/d03_tpex_halt_resumption_machine_contract_v0_2.json`
+- `research/D03_TPEX_PRICE_RESET_MACHINE_CONTRACT_V0_1.md`
+- `research/d03_tpex_price_reset_machine_contract_v0_1.json`
+
+### TI-594 — exact TPEx machine route recovered from official executable source
+Official `main.js` physically freezes `API_PATTERN=/www/{LANG}/{ACTION}`. The halt page freezes `action=bulletin/sprcHis`, so the machine route is `/www/zh-tw/bulletin/sprcHis`.
+
+The table loader uses POST + `response=json`. The page does not enable server paging; its visible page size 10 is client presentation.
+
+### TI-595/TI-596 — halt/resumption bounded physical population and export equivalence
+Workflow run `37182021741`, frozen 2026 / 上櫃股票:
+- HTTP 200 / `stat=ok`;
+- JSON 30 rows / `totalCount=30`;
+- JSON SHA-256 `184c07e8cfd61f20a8cbf65ab49d2ab86ddac276da450eeed3938ec08c2ffe18`;
+- CSV 30 data rows;
+- CSV SHA-256 `e0c325a2968ef26ffbb75af495f17949c02ffaa0109ad89c3fd26684d701e76b`;
+- unique keysets exactly equal, no duplicates.
+
+The visible 10-row page size is not backend truncation for this bounded control.
+
+### TI-597 — halt source-local zero semantics
+Three frozen controls physically returned HTTP 200, `stat=ok`, row/total 0:
+- 2026 category 5;
+- 2026 category 6;
+- 2020 category 5.
+
+Transport/parser failure remains distinct from source-local empty.
+
+### TI-598 — TPEx symbol-session source advances
+For the bounded contract:
+`TPEX_HALT_MACHINE = BOUNDED_PHYSICAL_PASS`.
+It can support verified TPEx halt/resumption chronology and reject pseudo-bar substitution.
+It does not alone certify corporate-action price continuity.
+
+### TI-599 — TPEx price-reset machine routes discovered
+Official pages freeze:
+- ex-right/ex-dividend actual results: `bulletin/exDailyQ`;
+- ex-right/ex-dividend announcement: `bulletin/prePost`;
+- capital-reduction resumption/reference: `bulletin/revivt`.
+
+Promotion-grade actual-result probes use `exDailyQ` and `revivt`.
+
+### TI-600 — ex-right/ex-dividend actual-result source physically passes
+Workflow run `37182282950`, 2026-07-01 through 2026-10-04:
+- `exDailyQ` HTTP 200 / `stat=ok`;
+- 587 rows / `totalCount=587`;
+- JSON SHA-256 `7fe0627f0da66c146b6cd076b72aed8a841bd37e804461602d33f9c8c2768538`;
+- CSV 587 data rows;
+- JSON/CSV keyset exact equivalence.
+
+Fields include prior close, ex-right/ex-dividend reference price, rights/dividend values, limit prices, trading-base price and allocation fields.
+
+### TI-601 — capital-reduction actual-result source physically passes
+Same run, 2026-01-01 through 2026-10-04:
+- `revivt` HTTP 200 / `stat=ok`;
+- 11 rows / `totalCount=11`;
+- JSON SHA-256 `0b0f9aaa0d0e4c3e396078f0d4ce04964bb90d3e2059326734148d0b4ddaff4d`;
+- CSV 11 data rows;
+- JSON first 10 non-detail columns exactly match CSV keyset.
+
+JSON detail physically includes suspension/resumption dates, replacement shares per 1,000 old shares, cash returned per share and applicable capital-increase fields.
+
+### TI-602 — price-reset source-local empty semantics
+On the bounded 2026-10-04 single-day control:
+- `exDailyQ`: HTTP 200, `stat=ok`, 0;
+- `revivt`: HTTP 200, `stat=ok`, 0.
+
+No transport failure is normalized to NO_EVENT.
+
+### TI-603 — prospective knowledge clock can use observed capture
+The shared continuity archive already supports `PROSPECTIVE_OBSERVED`:
+source `fetchedAt` becomes a conservative knowledge-time upper bound and is PIT-replay eligible only if captured no later than the parent cutoff.
+
+Therefore unknown historical publication latency does not prevent future prospective evidence, but a post-parent capture may not backfill that parent.
+
+### TI-604 — remaining blocker is no longer endpoint discovery
+For TPEx, bounded official machine capability now exists for:
+- halt/resumption;
+- ex-right/ex-dividend actual price resets;
+- capital-reduction resumption/reference price;
+- MOPSOV correction/cancellation chronology from TI-555~563.
+
+D03-10 still requires the first genuine post-V8.17 immutable parent/capture generation plus an exact parent-cutoff-safe continuity receipt and complete parent attempts.
+D03-09 adds recursive replay/state lineage.
+
+### TI-605 — anti-inflation maturity decision
+The explicit TI-531 requirement remains first promotion-grade outcome-blind prospective parent evidence.
+
+Sunday 2026-10-04 cannot create the first genuine post-deployment trading parent.
+
+Therefore:
+- D03-10 Bollinger remains L2/40;
+- D03-09 ADX remains L2/40;
+- D03 remains **56.7%**.
+
+No source-discovery percentage is awarded.
+
+Next honest transitions:
+- Bollinger L3 => D03 58.3%;
+- then ADX L3 => D03 60.0%.
+
+Current:
+`TPEX_HALT_MACHINE = BOUNDED_PHYSICAL_PASS`
+`TPEX_EX_DAILY_Q = BOUNDED_PHYSICAL_PASS`
+`TPEX_REDUCTION_REFERENCE = BOUNDED_PHYSICAL_PASS`
+`TPEX_JSON_CSV_EQUIVALENCE = PASS`
+`TPEX_SOURCE_LOCAL_EMPTY = PASS`
+`FIRST_GENUINE_V8_17_PARENT_READBACK = PENDING`
+`RAW_D03_SOURCE_VERSION_GATE = 2_OF_3`
+`OUTCOMES = CLOSED`
+`D03_MATURITY = 56.7_PERCENT`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Formal Core remains LOCKED.
+
+Exact next continuation:
+1. first genuine Taiwan trading session after V8.17 deployment: read back immutable parent/captureGeneration and expected keyset;
+2. bind pre-parent or parent-cutoff-safe prospective official source captures to exact parent symbols/windows;
+3. attempt every expected parent and preserve VALID/BLOCKED/UNKNOWN;
+4. re-review Bollinger first for an exact 20 eligible-session certified continuity window;
+5. ADX only after canonical Wilder recursive replay/trusted-state certification;
+6. raw 3-session source gate remains separate and TI-005/TI-006 outcomes remain closed.
