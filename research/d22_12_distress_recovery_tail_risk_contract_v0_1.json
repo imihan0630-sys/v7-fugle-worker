@@ -1,10 +1,10 @@
 {
   "schemaVersion": "D22_12_DISTRESS_RECOVERY_TAIL_RISK_CONTRACT_V0_1",
-  "generatedAt": "2026-10-04T08:50:00+08:00",
+  "generatedAt": "2026-10-04T15:09:00+08:00",
   "module": "D22-12",
   "level": "L2",
   "maturityPct": 40,
-  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / PD_LGD_EQUITY_TAIL_SEPARATED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "status": "L2 / DEFAULT_EVENT_SOURCE_ROUTES_VALIDATED / ISSUER_LEVEL_RECOVERY_PANEL_INCOMPLETE / RARE_EVENT_SELECTION_BIAS_GUARD / HOLD_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "researchQuestion": "Can structural/market/accounting distress measures and recovery-state information identify equity tail risk without conflating default probability, loss severity and already-priced distress?",
   "decomposition": {
     "PD": "Probability/intensity of default over a defined horizon; model- and horizon-specific.",
@@ -62,8 +62,17 @@
   "outcomeGate": "CLOSED",
   "formalCore": "LOCKED",
   "next": [
-    "Build Taiwan PIT structural/accounting distress input receipts including delisted/defaulted cases where source history is available.",
-    "Pre-register distance-to-default barrier/horizon and recovery assumptions before any equity tail outcome join.",
-    "Test distress model against primitive-input baseline and issuance/corporate-action controls before L3/L4."
-  ]
+    "Build a classified issuer-level Taiwan event ledger separating bankruptcy, restructuring, bond-payment default, delayed payment, covenant breach, market/trading default and non-credit delisting.",
+    "For genuine issuer credit events, attach security seniority/collateral and dated recovery evidence.",
+    "Add first-known pre-event accounting/market inputs for defaulted/delisted firms and matched surviving controls.",
+    "Preregister class-imbalance metrics, censoring, distance-to-default horizon/barrier and recovery assumptions before any outcome test.",
+    "Keep D22-12 at L2 until issuer-level default/recovery replay is independently reproducible."
+  ],
+  "readinessEvidence": "research/d22_12_distress_recovery_replay_readiness_v0_1.json",
+  "maturityDecision": {
+    "level": "L2",
+    "maturityPct": 40,
+    "decision": "HOLD",
+    "reason": "Taiwan corporate default/transition and delisting/default-notice source routes are identified, but an issuer-level PIT default/restructuring/recovery panel including delisted/defaulted cases is not yet reproducible. Rare-event and survivorship/coverage bias would be severe if L3 were claimed from surviving/rated firms alone."
+  }
 }
