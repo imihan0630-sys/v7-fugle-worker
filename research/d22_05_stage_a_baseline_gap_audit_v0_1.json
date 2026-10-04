@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "D22_05_STAGE_A_BASELINE_GAP_AUDIT_V0_1",
+  "generatedAt": "2026-10-05T07:16:00+08:00",
+  "status": "OUTCOME_BLIND / CHALLENGER_GATE_PASSED / BASELINE_GAPS_MAPPED / MATURE_PAIRS_ZERO / FORMAL_CORE_UNCHANGED",
+  "sourceManifest": {
+    "path": "research/d22_05_stage_a_pairing_manifest_v0_1.json",
+    "sha": "5873ba376562e6d4d98422d83a1aa09aae9ce6d6"
+  },
+  "finding": "The D22-05 challenger-side event pool is large enough, but the repository does not yet contain a canonical exact-common-support B0/B1 baseline table covering the 22 frozen rating-episode anchors. Therefore mature paired dates remain zero.",
+  "requiredBaselines": {
+    "B0": [
+      "D07 pre-event PIT profitability/leverage/liquidity primitives",
+      "D13 pre-event risk-free/rate/macro context",
+      "industry",
+      "size/liquidity",
+      "D11 known event clocks if applicable"
+    ],
+    "B1": [
+      "prior rating/outlook/watch state",
+      "pre-event fundamentals",
+      "D22-06 pre-event market-credit state when available"
+    ]
+  },
+  "repositoryAudit": {
+    "canonicalSamePopulationBaselineTableFound": false,
+    "D07SamePopulationReady": false,
+    "D13SamePopulationReady": false,
+    "sizeLiquiditySamePopulationReady": false,
+    "D11EventClockSamePopulationReady": false,
+    "priorRatingStateReady": true,
+    "d22_06MarketCreditReady": false,
+    "note": "Existing D22-01-specific D07/D13 baseline files prove the architecture is feasible for selected issuer-dates, but they do not cover the D22-05 22-anchor population and cannot be backfilled or generalized."
+  },
+  "counts": {
+    "challengerEpisodeAnchors": 22,
+    "baselineFrozenAnchors": 0,
+    "maturePairedAnchors": 0,
+    "minimumRequiredMaturePairs": 20
+  },
+  "blockers": [
+    "No exact-common-support D07 PIT fundamentals table for the 22 rating anchors.",
+    "No exact-common-support D13 rate/macro table frozen for the same 22 anchors.",
+    "No exact-common-support size/liquidity baseline frozen for the same 22 anchors.",
+    "D11 event-clock controls are not frozen on the same population.",
+    "D22-06 market-credit control remains source-blocked and is included only when available under the preregistration."
+  ],
+  "nonBlockers": [
+    "Rating-event knownAt and prior/new rating/outlook state are already frozen.",
+    "Episode clustering is frozen outcome-blind.",
+    "The challenger-side minimum count has been passed with 22 independent directional episodes."
+  ],
+  "decision": "HOLD_L3_ACCUMULATING_BASELINES",
+  "outcomeGate": "CLOSED",
+  "next": [
+    "Build a shared B0 issuer-date baseline table for the 22 D22-05 anchors without return labels.",
+    "Start with D07 PIT primitives, D13 timing-aligned macro/rate context, industry, size/liquidity and D11 event clocks.",
+    "Drop/UNKNOWN any anchor whose exact first-known baseline cannot be reconstructed; never use later statements or revised vintages.",
+    "Only after >=20 anchors remain fully paired may outcomes be opened once under the frozen Stage-A contract."
+  ]
+}
