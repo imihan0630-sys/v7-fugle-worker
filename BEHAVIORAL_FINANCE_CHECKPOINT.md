@@ -124,3 +124,24 @@ Status: FOUNDATION_CLUSTER_L2 / D20-01_02_04_07 / FORMAL_CORE_UNCHANGED
 - Purpose is source/PIT certification only. Outcomes remain locked.
 - D20-13 remains L2 until at least one genuine slot receipt passes source/timestamp/schema/hash/UNKNOWN checks.
 
+
+
+## 00 routed H06 counterpart delta — 2026-10-04
+
+H06 control-plane status:
+`PARTIAL_EVIDENCE_RECEIVED / ROOM05_COMPLETE / ROOM13_COUNTERPART_REQUIRED`.
+
+Accepted Room05 packet:
+`research/d06_h06_crowding_vs_herding_room05_packet_v0_1.md`.
+
+Do not repeat D06 crowding research. Room13 only needs to close the behavioral-identifiability delta for D20-06:
+- at least one independent behavior-specific observable or replayable residual-herding construct beyond holdings/flow/financing/ownership crowding primitives;
+- PIT/first-known/replay semantics;
+- common-information, market/sector/factor, passive-flow and liquidity controls;
+- leader/follower or social/network evidence if used;
+- a divergent case where D20-06 is active while D06-06 crowding is not simply high;
+- confirmation that the same D06 primitive cannot become a second behavioral vote.
+
+If no such independent PIT-capable source exists, return EVIDENCE_INSUFFICIENT / narrowing-or-merge-eligible. Do not invent behavioral intent.
+
+This routed task does not override the room's active L4 prospective sequence; service it at the next safe governance/research slot.
