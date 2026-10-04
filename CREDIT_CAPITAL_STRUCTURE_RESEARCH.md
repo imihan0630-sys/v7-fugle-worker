@@ -1,6 +1,6 @@
 # Credit / Capital Structure Research
 
-Updated: 2026-10-04 21:09 Asia/Taipei
+Updated: 2026-10-05 07:18 Asia/Taipei
 Scope: D22
 Status: ACTIVE_RESEARCH / D22_01_02_03_05_07_08_10_L3 / D22_04_06_SOURCE_BLOCKED_L2 / D22_09_DEPENDENCY_BLOCKED_L2 / D22_11_12_HOLD_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
@@ -467,4 +467,55 @@ Exact next:
 3. Recount mature paired anchors after baseline pairing.
 4. Only if >=20 remain may the preregistered historical outcomes be opened once.
 5. Continue free fair-value multi-date transport research for D22-04/D22-06 without conflating reference values with transactions.
+
+## 2026-10-05 07:18 continuation｜D22-05 challenger-side count gate passed, exact-baseline blocker isolated
+
+D22-05 remains L3 / 60%; this continuation does not claim L4 evidence.
+
+### Expanded rating panel
+The rating-event replay now contains 29 exact-dated directional events across 10 Taiwan listed non-financial issuers and multiple industries. Outcome-blind episode clustering compresses the raw events into 22 independent directional episodes.
+
+Important examples:
+- Formosa Chemicals: negative outlook followed later by a formal downgrade remains one negative episode unless direction reverses.
+- Wan Hai: negative outlook, later normalization/positive outlook and upgrade are split by direction, but consecutive positive actions are one recovery episode.
+- China Steel and Asia Cement show repeated direction reversals, creating independent deterioration/recovery episodes only when the sign changes.
+
+The Stage-A challenger-side minimum of 20 independent episodes is therefore passed.
+
+### What did NOT pass
+The common-support baseline gate did not pass.
+
+The exact 22 rating anchors still lack one canonical same-population B0/B1 table covering:
+- pre-event D07 PIT profitability/leverage/liquidity primitives;
+- pre-event D13 rate/macro state;
+- industry;
+- size/liquidity;
+- D11 event clocks where applicable;
+- prior rating/outlook/watch state;
+- D22-06 market-credit state when available.
+
+Repository audit finds no existing canonical table that can be safely generalized to these 22 anchors. D22-01-specific D07/D13 baseline receipts demonstrate the method but cover a different issuer-date population. Reusing them would violate exact common-support.
+
+Therefore:
+- baseline frozen anchors = 0;
+- mature paired anchors = 0;
+- outcomes remain CLOSED;
+- D22-05 stays L3 / 60%.
+
+### TPEx fair-value source refinement
+TPEx public corporate-bond fair-value reporting is verified at security level. The official 2022-12-30 report exposes bond code, maturity, coupon, reference curve, fair value and yield for multiple corporate bonds.
+
+This narrows the D22-04/D22-06 source blocker:
+- fair-value/reference lane: publicly verified;
+- multi-date replay transport: not yet reproducibly materialized;
+- actual transaction/quote history: unavailable in the current packet;
+- fair value is never labeled actual trade;
+- guessed additional-date URLs that cannot be opened are not treated as proof of missing files.
+
+D22-04 and D22-06 therefore remain L2 / 40%.
+
+### Research implication
+The next material maturity increase cannot be earned by adding more rating events alone. The bottleneck is exact baseline reconstruction for D22-05 and/or reproducible multi-date market-credit replay for D22-04/D22-06.
+
+Formal Core remains LOCKED. No FORMAL_OPTIMIZATION_CANDIDATE exists.
 
