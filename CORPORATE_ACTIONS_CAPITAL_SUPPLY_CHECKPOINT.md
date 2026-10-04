@@ -423,3 +423,21 @@ D11-16 is now the only D11-15..19 module below L3. Complete one official issuer-
 
 Exact next:
 Pin one issuer's applicable qualification and original custody quantity; capture TWSE release approval/date or equivalent custody-withdrawal proof; join any transfer pre-declaration to subsequent official holdings/untransferred state; include an eligible-but-no-net-reduction control. Do not label NO_SALE from source absence.
+
+## D11-16 6921 issuer realization deepening — 2026-10-05 morning
+
+New receipt: `research/d11_16_issuer_realization_deepening_20261005_v0_3.json`.
+
+6921 listing and profitability evidence now bound the issuer to the standard Article 35 replay path rather than the special profitable-issuer path. The first theoretical 1/4 release-eligibility date is 2026-06-23, but actual release remains unproven.
+
+Connected source evidence also closes a separate pre-listing supply chain:
+- 2025-12-16 嘉澤端子工業 over-allotment transfer declaration: 10,000 shares from holding 4,732,059;
+- 2026-09 holding: 4,722,059;
+- exact 10,000-share reduction.
+
+This proves declaration-to-later-holding semantics for that over-allotment event only. It is not lock-up expiry evidence because the declaration predates listing.
+
+D11-16 remains L2. Required remaining evidence:
+issuer original custody quantity -> TWSE-approved release/date or equivalent actual TDCC withdrawal -> any post-eligibility transfer declaration -> later holding/untransferred state.
+
+No absence in the connected transfer lane may be labeled NO_SALE until lane completeness is authenticated. Formal Core unchanged; outcomes closed.
