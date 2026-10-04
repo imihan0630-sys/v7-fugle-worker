@@ -192,3 +192,14 @@ These routed tasks do not override the room's active prospective L4 sequence; se
 - Exact next: next valid Taiwan trading day first attempt D20-13 live receipt. In parallel collect only post-extension aggregate PTT parents for D20-06/D20-11 and post-freeze parents for all other L3 lanes. No historical Shadow fabrication.
 - Formal Core locked; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
 
+## Canonical overlay 2026-10-04 14:12 Asia/Taipei — D20 58.5%
+- D20 aggregate maturity: 58.5%.
+- L3 / 60%: D20-01, D20-02, D20-03, D20-04, D20-05, D20-06, D20-07, D20-08, D20-09, D20-10, D20-11, D20-12.
+- L2 / 40%: D20-13 only.
+- D20-03 L3 is bounded to public explicit-confidence calibration in structured public forecasts. Psychological trait overconfidence and actual trading remain unproven.
+- No named-user psychology/skill/influence profile is permitted; derived evidence is aggregate only.
+- D20-03 L4 prospective extension frozen at 2026-10-04 14:12:14 Asia/Taipei.
+- D20-06/D20-11 aggregate social L4 extension remains frozen at 2026-10-04 14:06:56 Asia/Taipei.
+- Exact next: next valid Taiwan trading day execute D20-13 first-live TWSE borrow-rate/displayed-supply source capture under frozen 09:15 / 12:00 / 15:20 slots. If at least one slot receipt passes all source/PIT/schema/fingerprint/UNKNOWN gates, reassess bounded TWSE-only L3 promotion.
+- Formal Core locked; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
