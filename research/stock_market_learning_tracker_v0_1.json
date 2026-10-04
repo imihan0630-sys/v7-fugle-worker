@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T14:40:00+08:00",
+  "updatedAt": "2026-10-04T15:02:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -2381,7 +2381,7 @@
         "PORTFOLIO_RISK_CHECKPOINT.md",
         "PORTFOLIO_RISK_RESEARCH.md"
       ],
-      "maturityPct": 40,
+      "maturityPct": 41.9,
       "modules": [
         {
           "id": "D15-01",
@@ -2540,12 +2540,13 @@
         {
           "id": "D15-21",
           "name": "Active Portfolio Diagnostics／Tracking Error／Active Share／Performance Attribution主動投組診斷與績效歸因",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦主動投組 Diagnostics（診斷）與 Attribution（歸因）：Tracking Error（追蹤誤差）、Active Share（主動持股比率），以及 Allocation／Selection／Timing（配置／選股／擇時）績效歸因。其角色是解釋投組相對基準與策略來源，不是股票是否可買的硬門檻。原 D15-20 完整範圍由本模組承接；需控制 benchmark 選擇、現金、交易成本、產業／因子曝險與時間聚合。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED / MERGED_SCOPE_OWNER",
-          "next": "建立統一投組診斷／歸因契約，先確認基準與現金語意，再檢驗選股、配置、擇時與主動曝險對實際績效的貢獻。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2_SPECIALIST_CONTRACT / SELECTION_SIZING_CASH_EXECUTION_LAYERS / BENCHMARK_FIREWALL / ACTIVE_SHARE_TRACKING_ERROR_SEMANTICS / REAL_TAIWAN_ATTRIBUTION_REPLAY_PENDING / FORMAL_CORE_UNCHANGED",
+          "next": "建立第一個 Taiwan PIT common-support attribution witness：優先用同一 selected set 比較 current PriorityScore sizing vs equal-capital／planned-stop-risk sizing，嚴格凍結 benchmark；若成熟 forward outcome 可合法 join，計算 sizing contribution。Tracking Error／broad-market Active Share 等待完整同步投組與 benchmark 時序／權重。",
+          "evidence": "research/D15_21_ACTIVE_PORTFOLIO_DIAGNOSTICS_CONTRACT_20261004_V0_1.md + research/d15_active_portfolio_diagnostics_v0_1.mjs + tests/test_d15_active_portfolio_diagnostics_v0_1.mjs. Existing D15-07/08/15 and D14 boundaries reused; no realized attribution claim yet."
         },
         {
           "id": "D15-22",
