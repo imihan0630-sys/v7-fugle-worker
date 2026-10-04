@@ -1,7 +1,7 @@
 # System 1 C4 saturation carryover audit V0.1
 
 Date: 2026-10-04 Asia/Taipei
-Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_PENDING / FORMAL_CORE_LOCKED
+Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_GREEN_MERGED / FORMAL_CORE_LOCKED
 
 ## Purpose
 
@@ -135,3 +135,13 @@ Formal Core: LOCKED
 3. Accumulate independent dates before making practical-materiality claims.
 4. Join forward outcomes only after sufficient prospective observations exist.
 5. Any proposal to remove a tie-break, change saturation, change score weights or change comparator order is Class-C and requires explicit owner approval.
+
+## Merge acceptance
+
+- PR #479 merged at `20caae8df3348914ecd03bc3f90ab763b44dcf10`.
+- Exact head `1a692d52035fa71caf35edb49d00608f02c8e603`:
+  - V8 Regression Tests run `37180318539` PASS;
+  - V8 Repair CI run `37180318493` PASS;
+  - System1 C1 C2 isolated offline repair review run `37180318470` PASS.
+- No Worker/runtime/D1/Production/Formal/System2 behavior change or Cloudflare deployment was introduced.
+- The next required evidence is prospective: let the existing daily C1/C4 workflow collect genuine trading-session observations before any Class-C proposal.
