@@ -177,3 +177,23 @@ Result:
 - state: **OWNER_APPROVAL_REQUIRED**.
 
 Approval would authorize canonical learningScope/status cleanup only.
+
+
+## H07 / H12 partial-intake update — 2026-10-04
+
+H07:
+- Room03 evidence accepted: `research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md`.
+- D03-05 observable pullback/reversal ownership, PIT sequence, confirmation clock and failed-reversal states are closed on the Room03 side.
+- state: `PARTIAL_EVIDENCE_RECEIVED / ROOM13_COUNTERPART_REQUIRED`.
+- D20-09 still must prove behavioral overreaction beyond the observable price phenomenon.
+
+H12:
+- Room05 evidence accepted:
+  - `research/d06_securities_lending_economics_h12_v0_1.md`;
+  - `research/d06_18_borrow_fee_identifiability_rule_vintage_v0_1.md`.
+- D06-09 primitive quantities vs D06-18 borrow-economics boundary is closed on the Room05 side.
+- true utilization remains UNKNOWN without verified lendable-inventory denominator.
+- state: `PARTIAL_EVIDENCE_RECEIVED / ROOMS10_13_COUNTERPARTS_REQUIRED`.
+- Room10 must close D14-19 short execution lifecycle; Room13 must close D20-13 limits-to-arbitrage context.
+
+No terminal classification, maturity transfer, module-count or Formal change from these partial intakes.
