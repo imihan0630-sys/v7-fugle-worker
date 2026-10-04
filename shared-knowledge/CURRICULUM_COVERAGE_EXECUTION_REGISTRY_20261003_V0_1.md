@@ -231,3 +231,34 @@ Receipts:
 - `shared-knowledge/curriculum_cov04_cov05_canonical_update_receipt_20261004_v0_1.json`
 
 No System1/System2 Formal change. Formal Core remains LOCKED.
+
+
+## COV-03 formal Intake + Dependency Audit — 2026-10-04
+
+Canonical audit:
+`shared-knowledge/CURRICULUM_COVERAGE_COV03_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md`
+
+Machine audit:
+`shared-knowledge/curriculum_coverage_cov03_intake_dependency_audit_20261004_v0_1.json`
+
+Result:
+- COV-03 formal return is accepted for Intake.
+- `ADD_MODULE` survives Dependency Audit, overlap recheck, anti-double-count and anti-orphan review.
+- Proposed module: **D06-19 Retail / Individual Investor Participation & Flow（散戶／自然人參與與流向）**.
+- Proposed starting maturity: **L0 / 0%**.
+- The supporting L1/20% artifact is explicitly superseded for structural execution by the canonical return plus the new-module maturity firewall.
+- D06-17 is retired history absorbed into D06-16 and is not reusable.
+- Domestic natural-person stock×date directional flow remains UNKNOWN / source-gated.
+- No independent directional vote is authorized; initial role is context / validation / supportive.
+
+State:
+**OWNER_APPROVAL_REQUIRED**
+
+Audit-time authoritative tracker:
+- domains: 22
+- active modules: 355
+- weighted maturity: 43.5%
+- D06 remains unchanged until approval.
+
+COV-12 remains PENDING_SPECIALIST_RETURN.
+No tracker/module/router/master/Formal mutation was performed by this audit.
