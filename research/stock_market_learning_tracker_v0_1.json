@@ -3752,9 +3752,9 @@
         }
       ],
       "status": "ACTIVE_RESEARCH / D22_01_02_03_05_07_08_10_L3 / D22_04_06_SOURCE_BLOCKED_L2 / D22_11_12_IDENTIFICATION_BLOCKED_L2 / D22_09_DEPENDENCY_BLOCKED_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D22=51.7%。先建立 D22 L4 共用 preregistration：對已達 L3 的 D22-01/02/03/05/07/08/10 做 exact common-support、independent-date、OOS/walk-forward、Prospective Shadow、冗餘與成本比較；股票 outcomes 在預註冊與樣本門檻完成前維持 CLOSED。D22-04/06 等待合法 TPEx 歷史逐券資料；D22-09 依賴 D22-06；D22-11/12 保留識別／樣本阻塞。",
-      "lastResearchUpdate": "2026-10-04T15:09:00+08:00",
-      "researchNote": "D22-07 promoted to L3 after multi-issuer PIT liquidity/covenant/guarantee replay. D22-11 remains L2 because public Taiwan data replay aggregate bank-pricing context but do not identify supply separately from demand. D22-12 remains L2 because issuer-level default/recovery panel is incomplete and rated/default events are rare, creating selection/survivorship risk."
+      "exactNextContinuationPoint": "D22 L4 Stage-A preregistration 已凍結（research/d22_l4_stage_a_incremental_value_prereg_v0_1.json）。下一步不開 outcomes：先對 D22-01/02/03/05/07/08/10 建 frozen exact-common-support inventory，累積至少 20 個成熟獨立配對日期前僅記 ACCUMULATING；之後才依凍結 D+5/D+10/D+20、後續 D+40/D+60 與 MFE/MAE 一次開啟歷史 outcomes，接 OOS/walk-forward/Prospective Shadow。D22-04/06 source-blocked；D22-09 dependency-blocked；D22-11/12 hold L2。",
+      "lastResearchUpdate": "2026-10-04T15:12:00+08:00",
+      "researchNote": "D22-07 is L3. D22-11 and D22-12 remain L2 after explicit identification/rare-event falsification audits. A shared outcome-blind L4 Stage-A preregistration is now frozen for the seven L3 modules with exact common-support, independent-date, frozen horizon, OOS/walk-forward, Prospective Shadow, multiple-testing and redundancy gates."
     }
   ],
   "rules": {
