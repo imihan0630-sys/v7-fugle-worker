@@ -744,3 +744,66 @@ These directions conflict inside one vintage transition. A scalar `macroRevision
 2. Only origin release-time receipts may establish strict first-known bytes/timestamps.
 3. Freeze any future CBO revision feature as a component vector by horizon/definition before Taiwan outcomes.
 4. Continue D13-16 H.4.1 source-vintage decomposition and D13-17 prospective CBC BOP receipts independently.
+
+
+## 2026-10-04 Room09 continuation — MC-193..MC-197 H.4.1 statistic-identity divergence
+
+Status: RESEARCH_ONLY / SOURCE-ONLY H41 DECOMPOSITION / OUTCOMES_CLOSED / NO_PROMOTION.
+Durable evidence: `research/d13_16_h41_statistic_identity_divergence_20261004_v0_1.json`.
+
+### MC-193 — two official raw release identities preserved
+Later read-only capture of official Federal Reserve H.4.1 release pages:
+- 2026-09-24 raw SHA-256 = `9c585ead7d5d38f62817f26ed6608b566a39430360ee51e398a7ad39b52fd3f2`, 702,175 bytes;
+- 2026-10-01 raw SHA-256 = `ac4f4da1920ca3fe75d7040eb81443a8b763fbb7e259f55ad21eee86805e5888`, 702,026 bytes.
+Raw bytes were not committed. Later retrieval does not become strict first-observed evidence.
+
+### MC-194 — 2026-09-24 week-average vs Wednesday state has opposite sign
+Millions of dollars:
+- week-average TGA change = +100,056;
+- week-average reverse repo change = -21,899;
+- week-average reserve balances change = -83,601.
+The same release's Wednesday state:
+- TGA change since prior Wednesday = -44,391;
+- reverse repo change = -3,078;
+- other deposits held by depository institutions change = +48,388.
+
+A diagnostic TGA+RRP absorber sum is +78,157 on week-average changes but -47,469 on Wednesday changes. This diagnostic is not a complete liquidity identity, yet the sign reversal demonstrates the statistic-clock problem.
+
+### MC-195 — 2026-10-01 repeats the opposite-sign divergence
+Millions of dollars:
+- week-average TGA change = -28,410;
+- week-average reverse repo change = +13,117;
+- week-average reserve balances change = +17,897.
+Wednesday:
+- TGA change = +36,729;
+- reverse repo change = +41,158;
+- other deposits held by depository institutions change = -88,234.
+
+The same diagnostic TGA+RRP absorber sum is -15,293 for the week-average change versus +77,887 for the Wednesday change. This is the second consecutive official release with opposite week-average versus Wednesday direction.
+
+### MC-196 — statistic identity is part of the factor identity
+The two releases falsify any design that treats:
+- week-average TGA as interchangeable with Wednesday TGA;
+- week-average RRP as interchangeable with Wednesday RRP;
+- week-average reserve balances as interchangeable with a Wednesday deposit snapshot;
+or mixes different statistic identities inside one unversioned "Fed liquidity" scalar.
+
+Each observation must preserve:
+`seriesId + statisticType + referenceDate + releaseDate + unit + sourceVersion`.
+
+### MC-197 — maturity and PIT firewall
+The Federal Reserve states H.4.1 is released Thursdays generally at 4:30 p.m. U.S. Eastern time, with holiday shifts possible. That establishes source schedule semantics, but these two pages were captured later rather than contemporaneously at Taiwan decision time.
+
+Therefore:
+- D13-16 remains L2/40%;
+- strict prospective Taiwan-decision-time clean dates added = 0;
+- no L3 promotion;
+- no outcome join;
+- Formal Core LOCKED;
+- FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+
+### Exact next continuation after MC-197
+1. Freeze a prospective H.4.1 receipt that records release timestamp, statistic identity and raw/source hash before the applicable Taiwan 18:10 decision.
+2. Keep week-average and Wednesday state as separate candidate features; never choose between them after seeing returns.
+3. Before any "liquidity" composite, compare the component vector against rates/USD/volatility baselines and preserve all other material supplying/draining factors.
+4. Continue D13-17 prospective CBC BOP schedule receipt and D13-19 CBO vector-vintage work independently.
