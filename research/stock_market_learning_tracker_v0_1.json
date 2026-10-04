@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T20:29:00+08:00",
+  "updatedAt": "2026-10-04T21:12:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -507,7 +507,7 @@
         "MICROSTRUCTURE_CHECKPOINT.md",
         "MICROSTRUCTURE_RESEARCH.md"
       ],
-      "maturityPct": 51.4,
+      "maturityPct": 54.3,
       "modules": [
         {
           "id": "D05-01",
@@ -556,12 +556,13 @@
         {
           "id": "D05-06",
           "name": "Opening / Closing Auction & Auction Imbalance（開收盤集合競價與競價不平衡）",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「開收盤集合競價與競價不平衡」。學習範圍：OPEN_CALL／OPEN_TRIAL／CLOSE_CALL_ACCUMULATION／CLOSE_TRIAL／CLOSE_DELAYED／CLOSE_FINAL 等集合競價狀態；開盤與收盤集合競價價格形成、試撮／indicative state、最終競價價量、benchmark／end-of-day execution context；歷史 pre-close trial／imbalance 未有 timestamped source 時必須維持 UNKNOWN，禁止由 final close／final volume／一般 EOD volume 回填；D05-03／04／05、D05-14、D14、D11／D17 僅依 shared-parent receipt 消費同一 auction primitive，不得形成重複獨立投票。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "COV02_OWNER_APPROVED_SCOPE_EXTENSION / HISTORICAL_PRE_CLOSE_IMBALANCE_UNKNOWN / NO_MATURITY_CHANGE",
-          "researchNote": "COV-02 canonical scope extension completed 2026-10-04: D05-06 owns opening + closing auction mechanics and auction-imbalance semantics with explicit phase states. L2/40% is unchanged; missing historical pre-close trial/imbalance remains UNKNOWN; no independent directional Alpha vote is authorized."
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED_PROSPECTIVE_ONLY / HISTORICAL_PRE_CLOSE_IMBALANCE_UNKNOWN",
+          "researchNote": "COV-02 scope extension is now L3-feasible prospectively: trial/continuous/close/delayed-close states and timestamped trial/final quote-book context can be captured/replayed from now forward. Missing historical pre-close imbalance stays UNKNOWN; final close/volume cannot backfill it.",
+          "next": "Accumulate genuine prospective auction parents after the L3 freeze; report trial/final coverage and UNKNOWN share before any auction-outcome study. No historical imbalance backfill."
         },
         {
           "id": "D05-07",
@@ -637,19 +638,19 @@
         {
           "id": "D05-14",
           "name": "Market Integrity／Abnormal Trading Patterns市場完整性與異常交易型態",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Market Integrity／Abnormal Trading Patterns市場完整性與異常交易型態」。研究異常交易型態與市場完整性風險。只能識別可觀測的異常模式或降低訊號可信度，不得由K線、成交量或委託簿直接斷言特定人具有操縱意圖；需保存撮合規則、委託事件、時間戳與替代的正常微結構解釋。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_PLUS_FALSIFICATION_DEFINED / PIT_INTEGRITY_EVIDENCE_PENDING",
-          "next": "下一實證階段需 PIT 官方注意／處置 knownAt、版本化規則、可重播市場資料與至少一種 pattern-family 的 reproducible inputs；先做 false-positive controls，禁止由公開五檔／價格量能推論操縱意圖。D05-06 保留 auction mechanics canonical ownership，D05-14 只擁有 integrity interpretation。",
-          "researchNote": "Four-layer semantics frozen: observable anomaly, TWSE attention/disposition surveillance state, non-accusatory research pattern candidate, and authoritative legal finding are distinct. Attention/disposition is not a manipulation verdict; disposition is an execution-regime intervention. High cancellation is not spoofing; public top5 cannot establish actor intent/account linkage. False-positive controls and non-accusatory machine vocabulary are mandatory."
+          "levelMeaning": "台股PIT資料可行",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED_BOUNDED / ACTOR_INTENT_UNKNOWN",
+          "next": "Future L4 requires preregistered post-freeze official-surveillance/anomaly parents, false-positive controls and independent dates. Do not infer actor intent or legal findings from public market data.",
+          "researchNote": "TWSE official Attention/Disposition databases provide historical date-query/CSV records from 2001 with conservative after-market availability semantics and versioned surveillance rules. Official surveillance state/public anomaly replay is feasible; actor identity/intent/wash/spoof/manipulation attribution remains UNKNOWN."
         }
       ],
-      "status": "PIT_FEASIBILITY_ABOVE_50 / L4_WAVE1_PREREGISTERED / EVENT_CAUSALITY_GATED",
-      "exactNextContinuationPoint": "D05-L4-W1-01: count only genuine post-freeze D05-03/04/09 quote/depth parents. First checkpoint reports timestamp/freshness, quote-age/reconnect missingness, mechanism-state exclusions, exact common-support retention and nested marketDate/date-cluster counts before any economic outcome interpretation. No true OFI or scalar liquidity threshold. D05 stays 51.4% until actual prospective/OOS evidence qualifies.",
-      "lastResearchUpdate": "2026-10-04T19:16:02+08:00",
-      "researchNote": "D05 remains 51.4%. L4 Wave-1 is frozen for D05-03 spread, D05-04 top-five displayed depth, and D05-09 liquidity component state. Snapshot-level evidence first; true OFI/event completeness, own-order impact, toxicity intent and exact queue remain separate blockers. System2 2026-10-02 INPUTS_NOT_READY and engineering/CI receive zero L4 credit."
+      "status": "PIT_FEASIBILITY_54_3 / D05_06_14_L3_BOUNDED / L4_WAVE1_PREREGISTERED",
+      "exactNextContinuationPoint": "D05-L4-W1-01 remains primary: wait for first genuine post-freeze Taiwan trading session, then run coverage-only audit for D05-03/04/09 before outcomes. Separately, D05-06/14 are now L3 and may begin prospective parent accumulation only; no historical imbalance backfill, no legal/intent attribution. D05-05 true OFI and D05-11/12/13 own-order/fill/queue blockers remain unchanged.",
+      "lastResearchUpdate": "2026-10-04T21:12:00+08:00",
+      "researchNote": "D05-06 and D05-14 advanced L2->L3 after outcome-blind PIT feasibility audit. D05-06 is prospective-only for trial/closing-auction replay; uncaptured historical pre-close imbalance remains UNKNOWN. D05-14 can replay official TWSE Attention/Disposition and public anomaly states conservatively after the official after-market publication boundary; actor/account intent remains UNKNOWN. D05 aggregate = 54.3%."
     },
     {
       "id": "D06",
