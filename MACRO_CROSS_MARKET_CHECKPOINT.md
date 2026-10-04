@@ -539,3 +539,32 @@ Possible incremental signal is revision composition/known legal phase conditiona
 D12=40.0%; D13=41.1%; room09=40.6%,36 modules unchanged. D13-11/16/17 stay L2/40%; strict clean prospective dates added0. FORMAL_OPTIMIZATION_CANDIDATE=NONE; Formal Core LOCKED. No runtime, selection, ranking, signal, push, capital/holdings change. Latest global tracker read43.7%/356 modules; concurrent other-room work is not credited to this run.
 
 Exact next: MC-173. Bound CBC intermediate release lineage to identify when2025Q2 revisions became public; preserve future2026-11-20 scheduled BOP raw receipt only upon actual release and authorized archive/readback. For BIS, audit amendment/supersession chain before any current legal-state claim; resolve authoritative public-inspection availability and timezone only from direct evidence. D12 next remains permitted raw TAIFEX option-chain metadata/date/strike/bid-ask/settlement coverage and first-known receipts; later replay alone is not L3. CBO native403 remains blocked; no bypass. Do not repeat MC-165..172.
+
+
+## 2026-10-04 Room09 continuation — MC-173..176 BIS current legal state, filing clock and CBC revision bound
+
+Status: RESEARCH_ONLY / SOURCE_QA / OUTCOMES_CLOSED / NO_PROMOTION.
+Durable evidence: `research/d12_d13_source_clock_continuation_20261004_v0_1.md`.
+
+### MC-173 — current BIS codified state preserves the stay
+Current BIS EAR pages retain explicit Effective Date Notes that the November 2025 action stays the relevant Affiliates Rule changes through 2026-11-09. Rule text can remain visible while its application is stayed; textual presence is not current legal effect. At the 2026-10-04 research date, the stay is the defensible current state. Reimposition beginning 2026-11-10 remains scheduled subject to further agency action. Targeted official-source search did not surface a later superseding action, but search absence is not exhaustive proof; the current codified BIS note is the stronger witness.
+
+### MC-174 — Federal Register public-inspection clock timezone resolved
+National Archives Federal Register documentation states that regular-filing documents are placed on public inspection at 8:45 a.m. Eastern Time. This resolves the timezone ambiguity for the 2025-19846 footer “Filed 11/10/2025 at 8:45 am” in the regular-filing lane. Keep agency announcement, public-inspection availability, formal publication, legal effective date, transition/stay expiry and local observedAt as distinct clocks.
+
+### MC-175 — 2026-11-10 phase remains future
+The 2025-19846 rule schedules reimposition beginning 2026-11-10 absent further action. On 2026-10-04 this is not a realized state. Any event study must label it SCHEDULED_SUBJECT_TO_AMENDMENT and re-read the authoritative legal state on/after the date. No company exposure, direction, eligibility, score or trading signal is inferred.
+
+### MC-176 — CBC 2025Q2 revision first-public date remains unresolved
+Known endpoints remain 2025-08-20 original Q2 current-account evidence approximately 362.29 USD100m (headline 362.3) and the later 2026-08-20 native annex revision to 372.01. The first-public revision date is still unproven. The chronological intermediate native annexes to inspect are 2025-11-20 Q3, 2026-02-26 Q4 and 2026-05-20 Q1. The 2025-11-20 official page/attachment route was identified, but native XLSX bytes could not be retrieved in this execution environment; classify ACCESS/TOOLING_UNRESOLVED, not source absence. Never backfill a later revised value to quarter-end or an earlier decision clock.
+
+Mechanism/counterevidence: legal-state and revision-composition information may condition Taiwan risk only after domestic price/sector/flow/rates/USD/global baselines. Public information may already be priced; revision timing can be materially later than the reference quarter; legal announcement/public-inspection/effective clocks can differ. No outcome join was opened.
+
+Maturity unchanged: D13 41.1%; D13-17 stays L2. Strict clean prospective dates added=0. FORMAL_OPTIMIZATION_CANDIDATE=NONE. Formal Core LOCKED.
+
+### Exact next continuation after MC-176
+1. Inspect CBC native annexes for 2025-11-20, 2026-02-26 and 2026-05-20 in chronological order and identify the earliest release in which 2025Q2=372.01 (or another revised value) is actually present with revision marker/version context.
+2. If an intermediate annex remains inaccessible, preserve ACCESS/TOOLING_UNRESOLVED; do not infer no revision or source absence.
+3. Re-check authoritative BIS/Federal Register state on/after 2026-11-10 before calling the scheduled reimposition realized.
+4. Continue H.4.1/CBC/TWSE prospective source-attested receipts under existing PIT clocks; no L3/OOS/optimization before independent clean dates and applicable gates.
+5. D12 continuation is DR-074: permitted raw TAIFEX parent + same-parent replay QA, while prospective 18:10 evidence remains separate.
