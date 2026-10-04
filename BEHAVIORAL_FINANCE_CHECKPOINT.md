@@ -249,3 +249,17 @@ Do not repeat the ownership studies unless contradictory evidence appears.
 - D20-13 weekend dry-run remains non-promotion-grade; live official rate/depth receipt = 0.
 - Exact next: continue only new prospective social parents/outcomes; next genuine Taiwan trading day execute D20-13 frozen live-capture slots.
 - Formal Core locked.
+
+## Canonical overlay 2026-10-04 16:47 Asia/Taipei — deterministic primary social sampling
+- D20 maturity remains 58.5%; no L4 promotion.
+- Final selection-bias audit reclassifies `D20SOC-20261004-002` as SECONDARY_PROSPECTIVE_PROCESS_SAMPLE. Its source/hash validity remains PASS, but its ad hoc manual capture time is not a primary L4 sampling clock.
+- Primary social sampling contract: `research/d20_social_sampling_coverage_contract_v0_1.json`.
+- Primary eligibility begins only with an actually executed Room13 fixed :10 scheduled research-run snapshot after the 16:47 freeze.
+- Central rotation-disabled/missed hours remain UNKNOWN; no backfill.
+- Finite Atom-feed windows require adjacent article-ID overlap or another frozen continuity proof.
+- Every newly first-observed entry from a valid primary snapshot is included regardless of topic/stance/engagement/outcome; zero-engagement observations stay in the cohort.
+- Current PRIMARY coverage: D20-03 = 0; D20-06 = 0; D20-11 = 0.
+- Current SECONDARY process coverage: D20-06 = 1; D20-11 = 1.
+- D20-13 live source receipts = 0.
+- Exact next: first actually executed Room13 :10 scheduled social snapshot becomes the first candidate primary capture; next genuine Taiwan trading day separately executes D20-13 09:15 / 12:00 / 15:20 ±5m official-source capture.
+- Formal Core locked; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
