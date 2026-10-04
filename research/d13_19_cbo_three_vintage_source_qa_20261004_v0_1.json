@@ -1,0 +1,449 @@
+{
+  "summary": [
+    {
+      "vintage": "2025-01",
+      "freq": "calendar",
+      "rows": 1918,
+      "columns": [
+        "date",
+        "variable",
+        "value",
+        "estimate_type"
+      ],
+      "variables": 137,
+      "dateFirst": "2022",
+      "dateLast": "2035",
+      "duplicates": 0,
+      "blank": 0,
+      "unknownSchema": []
+    },
+    {
+      "vintage": "2025-01",
+      "freq": "fiscal",
+      "rows": 1932,
+      "columns": [
+        "date",
+        "variable",
+        "value",
+        "estimate_type"
+      ],
+      "variables": 138,
+      "dateFirst": "2022",
+      "dateLast": "2035",
+      "duplicates": 0,
+      "blank": 0,
+      "unknownSchema": []
+    },
+    {
+      "vintage": "2025-01",
+      "freq": "quarterly",
+      "rows": 7728,
+      "columns": [
+        "date",
+        "variable",
+        "value",
+        "estimate_type"
+      ],
+      "variables": 138,
+      "dateFirst": "2022q1",
+      "dateLast": "2035q4",
+      "duplicates": 0,
+      "blank": 0,
+      "unknownSchema": []
+    },
+    {
+      "vintage": "2025-09",
+      "freq": "calendar",
+      "rows": 273,
+      "columns": [
+        "date",
+        "variable",
+        "value",
+        "estimate_type"
+      ],
+      "variables": 39,
+      "dateFirst": "2022",
+      "dateLast": "2028",
+      "duplicates": 0,
+      "blank": 0,
+      "unknownSchema": []
+    },
+    {
+      "vintage": "2025-09",
+      "freq": "fiscal",
+      "rows": 273,
+      "columns": [
+        "date",
+        "variable",
+        "value",
+        "estimate_type"
+      ],
+      "variables": 39,
+      "dateFirst": "2022",
+      "dateLast": "2028",
+      "duplicates": 0,
+      "blank": 0,
+      "unknownSchema": []
+    },
+    {
+      "vintage": "2025-09",
+      "freq": "quarterly",
+      "rows": 1092,
+      "columns": [
+        "date",
+        "variable",
+        "value",
+        "estimate_type"
+      ],
+      "variables": 39,
+      "dateFirst": "2022q1",
+      "dateLast": "2028q4",
+      "duplicates": 0,
+      "blank": 0,
+      "unknownSchema": []
+    },
+    {
+      "vintage": "2026-02",
+      "freq": "calendar",
+      "rows": 2044,
+      "columns": [
+        "date",
+        "variable",
+        "value",
+        "estimate_type"
+      ],
+      "variables": 146,
+      "dateFirst": "2023",
+      "dateLast": "2036",
+      "duplicates": 0,
+      "blank": 0,
+      "unknownSchema": []
+    },
+    {
+      "vintage": "2026-02",
+      "freq": "fiscal",
+      "rows": 2044,
+      "columns": [
+        "date",
+        "variable",
+        "value",
+        "estimate_type"
+      ],
+      "variables": 146,
+      "dateFirst": "2023",
+      "dateLast": "2036",
+      "duplicates": 0,
+      "blank": 0,
+      "unknownSchema": []
+    },
+    {
+      "vintage": "2026-02",
+      "freq": "quarterly",
+      "rows": 8176,
+      "columns": [
+        "date",
+        "variable",
+        "value",
+        "estimate_type"
+      ],
+      "variables": 146,
+      "dateFirst": "2023q1",
+      "dateLast": "2036q4",
+      "duplicates": 0,
+      "blank": 0,
+      "unknownSchema": []
+    }
+  ],
+  "manifest": {
+    "commit": "284a95665f9f2f74ed1f482feb629b43fce323da",
+    "files": [
+      {
+        "path": "data/economic/economic_projections/calendar_2025-01.csv",
+        "bytes": 82652,
+        "sha256": "dfe6699335b84dfaaca1ae92ee2671b4e1ed766cf0e7eedfc780897c1ee653e4"
+      },
+      {
+        "path": "data/economic/economic_projections/calendar_2025-09.csv",
+        "bytes": 11269,
+        "sha256": "43fc2e319349a4a8e9007f5f79ae2d1f72aebb189ca6c44794657623ca262f66"
+      },
+      {
+        "path": "data/economic/economic_projections/calendar_2026-02.csv",
+        "bytes": 88093,
+        "sha256": "6b54df40058d206247e78fadfe5ebd11e02ae29efd2f0e1a4a86b6767c9ca559"
+      },
+      {
+        "path": "data/economic/economic_projections/fiscal_2025-01.csv",
+        "bytes": 82832,
+        "sha256": "2776f4abe4de5582ba1baf626f0ac6efa2ad897967a1009b465d732fa1a5d391"
+      },
+      {
+        "path": "data/economic/economic_projections/fiscal_2025-09.csv",
+        "bytes": 11266,
+        "sha256": "d19af01f57d845c9273135976aabae99357a41c48b070f2922f02f3e41f0d1d8"
+      },
+      {
+        "path": "data/economic/economic_projections/fiscal_2026-02.csv",
+        "bytes": 88078,
+        "sha256": "b157c22a34225d153c4182e701163db837bc5129850b4375b2b01015a1833d87"
+      },
+      {
+        "path": "data/economic/economic_projections/quarterly_2025-01.csv",
+        "bytes": 347098,
+        "sha256": "d62a6138d19d14d9fec117742683edb716f3810de302950d20592384b92523ea"
+      },
+      {
+        "path": "data/economic/economic_projections/quarterly_2025-09.csv",
+        "bytes": 46908,
+        "sha256": "31c2986c194dd83ea188399961dfc87c6c694adbde13e6a102c934bef439591c"
+      },
+      {
+        "path": "data/economic/economic_projections/quarterly_2026-02.csv",
+        "bytes": 367739,
+        "sha256": "eda9f9eb6607461621504a973ff7609ef627ccfd02d8096219843efccf55ca7f"
+      },
+      {
+        "path": "data/economic/economic_projections/schema.json",
+        "bytes": 20853,
+        "sha256": "87bef053e25289001d152b396307fdc49b3c5eb81cc7913190823ef199d16a51"
+      },
+      {
+        "path": "catalog.json",
+        "bytes": 36934,
+        "sha256": "fb1b44afcf9d6c23c0a4ed91db15d2861eac04c66320a165783cc409aefeb02d"
+      },
+      {
+        "path": "etl/transform_economic_projections.py",
+        "error": "HTTP Error 404: Not Found"
+      }
+    ]
+  },
+  "nativeAttempts": [
+    {
+      "vintage": "2025-01",
+      "url": "https://www.cbo.gov/system/files/2025-01/51135-2025-01-Economic-Projections.xlsx",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "vintage": "2025-09",
+      "url": "https://www.cbo.gov/system/files/2025-09/51135-2025-09-Economic-Projections.xlsx",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "vintage": "2026-02",
+      "url": "https://www.cbo.gov/system/files/2026-02/51135-2026-02-Economic-Projections.xlsx",
+      "error": "HTTP Error 403: Forbidden"
+    }
+  ],
+  "commonHorizonValues": [
+    {
+      "vintage": "2025-01",
+      "date": "2026",
+      "variable": "real_gdp_pct_change",
+      "value": 1.827,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2025-01",
+      "date": "2026",
+      "variable": "real_potential_gdp_pct_change",
+      "value": 2.286,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2025-01",
+      "date": "2026",
+      "variable": "potential_lf_pct_change",
+      "value": 1.098,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2025-01",
+      "date": "2026",
+      "variable": "potential_lf_prod_pct_change",
+      "value": 1.174,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2025-01",
+      "date": "2026",
+      "variable": "fed_funds_rate",
+      "value": 3.484,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2025-01",
+      "date": "2026",
+      "variable": "treasury_note_rate_10yr",
+      "value": 3.935,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2025-01",
+      "date": "2026",
+      "variable": "unemployment_rate",
+      "value": 4.364,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2025-01",
+      "date": "2026",
+      "variable": "pce_price_index_pct_change",
+      "value": 2.12,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2025-09",
+      "date": "2026",
+      "variable": "real_gdp_pct_change",
+      "value": 2.034,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2025-09",
+      "date": "2026",
+      "variable": "real_potential_gdp_pct_change",
+      "value": null,
+      "estimate_type": "NOT_IN_VINTAGE"
+    },
+    {
+      "vintage": "2025-09",
+      "date": "2026",
+      "variable": "potential_lf_pct_change",
+      "value": null,
+      "estimate_type": "NOT_IN_VINTAGE"
+    },
+    {
+      "vintage": "2025-09",
+      "date": "2026",
+      "variable": "potential_lf_prod_pct_change",
+      "value": null,
+      "estimate_type": "NOT_IN_VINTAGE"
+    },
+    {
+      "vintage": "2025-09",
+      "date": "2026",
+      "variable": "fed_funds_rate",
+      "value": 3.6,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2025-09",
+      "date": "2026",
+      "variable": "treasury_note_rate_10yr",
+      "value": 4.191,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2025-09",
+      "date": "2026",
+      "variable": "unemployment_rate",
+      "value": 4.392,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2025-09",
+      "date": "2026",
+      "variable": "pce_price_index_pct_change",
+      "value": 2.725,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2026-02",
+      "date": "2026",
+      "variable": "real_gdp_pct_change",
+      "value": 2.364,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2026-02",
+      "date": "2026",
+      "variable": "real_potential_gdp_pct_change",
+      "value": 2.215,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2026-02",
+      "date": "2026",
+      "variable": "potential_lf_pct_change",
+      "value": 0.557,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2026-02",
+      "date": "2026",
+      "variable": "potential_lf_prod_pct_change",
+      "value": 1.648,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2026-02",
+      "date": "2026",
+      "variable": "fed_funds_rate",
+      "value": 3.452,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2026-02",
+      "date": "2026",
+      "variable": "treasury_note_rate_10yr",
+      "value": 4.127,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2026-02",
+      "date": "2026",
+      "variable": "unemployment_rate",
+      "value": 4.556,
+      "estimate_type": "projected"
+    },
+    {
+      "vintage": "2026-02",
+      "date": "2026",
+      "variable": "pce_price_index_pct_change",
+      "value": 2.748,
+      "estimate_type": "projected"
+    }
+  ],
+  "crosschecks": [
+    {
+      "vintage": "2025-01",
+      "q4OverQ4RealGdpPct2026": 1.8059887840788935,
+      "annualMeanRealGdpPct2026": 1.8279852432653954,
+      "allNumericFinite": true,
+      "estimateTypeCounts": {
+        "actual": 2206,
+        "projected": 9372
+      }
+    },
+    {
+      "vintage": "2025-09",
+      "q4OverQ4RealGdpPct2026": 2.16152815013404,
+      "annualMeanRealGdpPct2026": 2.0342253432023893,
+      "allNumericFinite": true,
+      "estimateTypeCounts": {
+        "actual": 780,
+        "projected": 858
+      }
+    },
+    {
+      "vintage": "2026-02",
+      "q4OverQ4RealGdpPct2026": 2.228175857822756,
+      "annualMeanRealGdpPct2026": 2.3644243206922377,
+      "allNumericFinite": true,
+      "estimateTypeCounts": {
+        "actual": 2044,
+        "projected": 10220
+      }
+    }
+  ],
+  "status": "LATER_OBSERVED_OFFICIAL_TRANSFORMED_DATA_QA",
+  "researchOnly": true,
+  "sourceNativeXlsxVerified": false,
+  "historicalFirstKnownVerified": false,
+  "strictProspectiveDatesAdded": 0,
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE",
+  "maturityPromotion": false,
+  "unitSemantics": "Calendar annual growth is annual mean level YoY, not Q4/Q4; values are percent units. Bare annual date requires frequency-file identity. CSV estimate_type is upstream fill-style derived, not verified native first-known proof."
+}
