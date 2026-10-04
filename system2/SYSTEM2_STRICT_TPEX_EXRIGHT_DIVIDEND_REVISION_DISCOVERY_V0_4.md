@@ -56,3 +56,14 @@ If no strict positive is found:
 - do not fall back to the 2947 broad dividend-allocation chain;
 - preserve the negative candidate interval;
 - continue with another bounded candidate interval or alternate official evidence source.
+
+## Transport retry boundary
+
+MOPS company-year reads use bounded retry/backoff only for transient transport conditions:
+- HTTP 429;
+- HTTP 500/502/503/504;
+- curl timeout/connect/network/TLS-reset style transient exits.
+
+Maximum attempts: 4.
+
+Non-retryable 4xx, parser/integrity failures, and exhausted transient retries remain fail-closed and are never converted into negative discovery evidence.
