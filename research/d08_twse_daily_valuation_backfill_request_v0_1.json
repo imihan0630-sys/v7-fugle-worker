@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "D08_TWSE_DAILY_VALUATION_BACKFILL_REQUEST_V0_1",
+  "researchRoom": "06",
+  "module": "D08-03",
+  "requestedAtAsiaTaipei": "2026-10-04T14:47:00+08:00",
+  "market": "TWSE",
+  "years": [
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "year2026End": "2026-08-31",
+  "purpose": [
+    "Materialize official daily PE/PB history needed for preregistered 252/756/1260 valid-session percentiles.",
+    "Preserve source-bundle hashes and immutable R2 readback evidence before any return/outcome join.",
+    "Keep expanding-history interpretation bounded from 2017 until full 2005-09-01+ replay is separately proven."
+  ],
+  "maxParallel": 2,
+  "outcomes": "CLOSED",
+  "formalCoreImpact": "NONE"
+}
