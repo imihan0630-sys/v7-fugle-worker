@@ -1,0 +1,9 @@
+{
+  "status": "FAIL",
+  "error": "SC056_DRIFT: source navigation failed/redirected",
+  "referenceMonth": "2025-01",
+  "startedAt": "2026-10-04T19:40:02.207+08:00",
+  "completedAt": "2026-10-04T19:40:03.365+08:00",
+  "runs": [],
+  "productionChanged": false
+}

@@ -88,6 +88,15 @@ versioned directory. Never replace an older receipt; later revisions are new
 captures. The first verified CI artifact will be recorded in the handoff and
 committed here before this engineering task is accepted.
 
+Current evidence: `evidence/local-20261004/` contains two verified captures from
+commit `8024f60d557c57b969a5f0a361b17da58bc3894a`. Both manual GitHub CI attempts
+failed at source navigation; the diagnostic attempt 37199605968 proves an MOEA
+Cloudflare HTTP 403 block, not a parser failure. Their exact artifact JSON and
+GitHub artifact digests are preserved under `evidence/ci-37199450918-1/` and
+`evidence/ci-37199605968-1/`. Local success does **not** satisfy the CI gate.
+PR #547 remains draft/unmerged until source-approved CI access and live readback
+are proven. See the canonical handoff for the exact next action.
+
 ## Tests / boundaries
 
 The HTML fixture is the original MOEA result table obtained with Chromium on

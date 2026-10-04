@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "historicalReplay": "MATCH_SC055_ANNUAL_REPORT",
+  "semanticRepeatability": true,
+  "archiveReadback": true,
+  "referenceMonth": "2025-01",
+  "startedAt": "2026-10-04T19:42:10.351+08:00",
+  "completedAt": "2026-10-04T19:42:33.979+08:00",
+  "runs": [
+    {
+      "directory": "2026-10-04/v0.1.0/2026-10-04T19-42-22-168-08-00-78d2701f-9895-4629-abc3-6dc9a733a036",
+      "semanticFingerprint": "70eecad5784520d865ea42f15627fb9c4117797692f97f0d4074fc7505545232",
+      "rawResultSha256": "0fdb61785aa18a581aa1e7eebeb97210ecef91ef2c9a6da42a76871dbc8a3c74",
+      "capturedAt": "2026-10-04T19:42:22.168+08:00"
+    },
+    {
+      "directory": "2026-10-04/v0.1.0/2026-10-04T19-42-33-916-08-00-afc22c5c-4113-450e-bcea-9408a1ab0c4c",
+      "semanticFingerprint": "70eecad5784520d865ea42f15627fb9c4117797692f97f0d4074fc7505545232",
+      "rawResultSha256": "0fdb61785aa18a581aa1e7eebeb97210ecef91ef2c9a6da42a76871dbc8a3c74",
+      "capturedAt": "2026-10-04T19:42:33.916+08:00"
+    }
+  ],
+  "productionChanged": false
+}

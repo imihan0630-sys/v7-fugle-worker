@@ -1,0 +1,477 @@
+{
+  "schemaVersion": "0.1.0",
+  "collectorVersion": "0.1.0",
+  "parserVersion": "0.1.0",
+  "status": "CAPTURED",
+  "sourceUrl": "https://service.moea.gov.tw/EE520/investigate/InvestigateDA.aspx",
+  "referenceMonth": "2025-01",
+  "selectedControls": {
+    "ddlPeriod": {
+      "value": "M",
+      "label": "月"
+    },
+    "ddlDateKind": {
+      "value": "民國",
+      "label": "民國"
+    },
+    "ddlValueKind": {
+      "value": "V",
+      "label": "統計值"
+    },
+    "ddlQueryKind": {
+      "value": "R",
+      "label": "統計表"
+    },
+    "ddlDateBeg": {
+      "value": "11401",
+      "label": "114年1月"
+    },
+    "ddlDateEnd": {
+      "value": "11401",
+      "label": "114年1月"
+    }
+  },
+  "selectedItems": [
+    "生產量",
+    "存貨量",
+    "(2433020)銅箔",
+    "(2630010)銅箔基板",
+    "(2630040)印刷電路板(不含IC載板)"
+  ],
+  "reportControls": {
+    "Period": {
+      "value": "M",
+      "label": "月"
+    },
+    "DateKind": {
+      "value": "民國",
+      "label": "民國"
+    },
+    "DateBeg": {
+      "value": "11401",
+      "label": "114年1月"
+    },
+    "DateEnd": {
+      "value": "11401",
+      "label": "114年1月"
+    },
+    "ValueKind": {
+      "value": "V",
+      "label": "統計值"
+    }
+  },
+  "records": [
+    {
+      "productCode": "2433-020",
+      "sourceProductCode": "2433020",
+      "productName": "銅箔",
+      "referenceMonth": "2025-01",
+      "displayedUnit": "公噸",
+      "productionValue": "6,843",
+      "inventoryValue": "6,028",
+      "production": {
+        "value": "6,843",
+        "raw": "6,843",
+        "status": "REPORTED",
+        "reason": null
+      },
+      "inventory": {
+        "value": "6,028",
+        "raw": "6,028",
+        "status": "REPORTED",
+        "reason": null
+      },
+      "sourcePublishedAt": "UNKNOWN",
+      "sourcePublishedAtReason": "NO_RECORD_PUBLICATION_CLOCK_EXPOSED_IN_VERIFIED_QUERY"
+    },
+    {
+      "productCode": "2630-010",
+      "sourceProductCode": "2630010",
+      "productName": "銅箔基板",
+      "referenceMonth": "2025-01",
+      "displayedUnit": "平方呎",
+      "productionValue": "26,780,035",
+      "inventoryValue": "26,171,314",
+      "production": {
+        "value": "26,780,035",
+        "raw": "26,780,035",
+        "status": "REPORTED",
+        "reason": null
+      },
+      "inventory": {
+        "value": "26,171,314",
+        "raw": "26,171,314",
+        "status": "REPORTED",
+        "reason": null
+      },
+      "sourcePublishedAt": "UNKNOWN",
+      "sourcePublishedAtReason": "NO_RECORD_PUBLICATION_CLOCK_EXPOSED_IN_VERIFIED_QUERY"
+    },
+    {
+      "productCode": "2630-040",
+      "sourceProductCode": "2630040",
+      "productName": "印刷電路板(不含IC載板)",
+      "referenceMonth": "2025-01",
+      "displayedUnit": "平方呎",
+      "productionValue": "26,489,128",
+      "inventoryValue": "21,208,038",
+      "production": {
+        "value": "26,489,128",
+        "raw": "26,489,128",
+        "status": "REPORTED",
+        "reason": null
+      },
+      "inventory": {
+        "value": "21,208,038",
+        "raw": "21,208,038",
+        "status": "REPORTED",
+        "reason": null
+      },
+      "sourcePublishedAt": "UNKNOWN",
+      "sourcePublishedAtReason": "NO_RECORD_PUBLICATION_CLOCK_EXPOSED_IN_VERIFIED_QUERY"
+    }
+  ],
+  "semanticFingerprint": "70eecad5784520d865ea42f15627fb9c4117797692f97f0d4074fc7505545232",
+  "sourceIndexUrl": "https://www.moea.gov.tw/MNS/dos/content/Content.aspx?menu_id=6819",
+  "sourceLineage": "OFFICIAL_SURVEY_INDEX_PRODUCT_STATISTICS_LINK_TO_VISIBLE_FORM_AND_RESULT",
+  "startedAt": "2026-10-04T19:42:22.240+08:00",
+  "capturedAt": "2026-10-04T19:42:33.916+08:00",
+  "capturedAtTimezone": "Asia/Taipei",
+  "sourcePublishedAt": "UNKNOWN",
+  "sourcePublishedAtReason": "NO_RECORD_PUBLICATION_CLOCK_EXPOSED_IN_VERIFIED_QUERY",
+  "knownAt": "2026-10-04T19:42:33.916+08:00",
+  "historicalFirstPublicationProven": false,
+  "clockPolicy": "CAPTURE_TIME_ONLY; NEVER_BACKDATE_TO_REFERENCE_MONTH_OR_ANNUAL_REPORT",
+  "rawResultSha256": "0fdb61785aa18a581aa1e7eebeb97210ecef91ef2c9a6da42a76871dbc8a3c74",
+  "rawPageTextSha256": "535d5e1c9462b4185e3e6df8c47283c86238249da1edf6194229e5314816fb2d",
+  "playwrightVersion": "1.63.0",
+  "chromiumVersion": "153.0.8010.12",
+  "gitCommit": "8024f60d557c57b969a5f0a361b17da58bc3894a",
+  "readOnlyAudit": {
+    "queryPosts": 1,
+    "selectedCheckboxes": [
+      {
+        "label": "生產量",
+        "name": "ContentPlaceHolder1_tvItem1n0CheckBox"
+      },
+      {
+        "label": "存貨量",
+        "name": "ContentPlaceHolder1_tvItem1n8CheckBox"
+      },
+      {
+        "label": "(2433020)銅箔",
+        "name": "ContentPlaceHolder1_tvItem2n477CheckBox"
+      },
+      {
+        "label": "(2630010)銅箔基板",
+        "name": "ContentPlaceHolder1_tvItem2n580CheckBox"
+      },
+      {
+        "label": "(2630040)印刷電路板(不含IC載板)",
+        "name": "ContentPlaceHolder1_tvItem2n581CheckBox"
+      }
+    ],
+    "requests": [
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/investigate/InvestigateDA.aspx"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/library/GMWeb.css"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/library/jquery-ui/jquery-ui.min.css"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/library/jquery-3.5.1.min.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/library/jquery-ui/jquery-ui.min.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/library/GMWeb.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/library/InquireAdvanceTable.css"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/GMWeb/WebResource.axd?d=pynGkmcFUV13He1Qd6_TZEohDRVUO3DrIV_t1CCAFArFVmgJSkSqocSdVK6WjmgA-1M1kFtGHU4zs6rwT06V1A2&t=638901824248157332"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/GMWeb/ScriptResource.axd?d=agSMDUXPN-pREW5QhKjBzGeCpFRG8c1eO6eAWRNd-JUnHtL8J53Rr8i5Kst-cCzBtbyBQAkTv6GWCDAs_qa8zDc0FK5xVH1O9wq6v_3omXtwsEmJnntqZIin3btr4skl1wwzPyw64wUrxkzhPrQ7tQ2&t=ffffffff93d1c106"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/GMWeb/ScriptResource.axd?d=0y8MEsr3ao3EJ7P-lfA9ZxhBiSfPnl8x3qfHehgckF9W_oW9o9Q6LddglRiSwbz6CuPf4NACd0k0K8P8N_kumGfGpUnXb8J6xN3ZkPk7Je7LXzc5pFxgQrgqXZ97axcB6yCu_CPz39JZkxQmQpMfug4QMfZWyHp6T6L16nc1dYg1&t=5c0e0825"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/GMWeb/ScriptResource.axd?d=qdfquaqc-_X8PA8h7-s-STMG3HD-TPz798n1zIUUASuqrZNcRHFrmczXensgBD2Vop4sK9_9Wl2GcLOhCgnCVIqDQzmdNwTgcHHTa9XOH6eFHavZN8lfIBLNjZxBflukU3MCv7IX0JCa_3oN0sPgfx2_SED98RmzCSYrxRuoAUzUyknTOa4Rw_E_lH-PS7RP0&t=5c0e0825"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/investigate/DA/home_header_01.jpg"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/bt_back.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/investigate/DA/home_header_03.jpg"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/TreeLineImages/r.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/TreeLineImages/t.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/TreeLineImages/l.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/TreeLineImages/dashminus.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/TreeLineImages/tminus.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/TreeLineImages/i.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/TreeLineImages/lminus.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/selectAll.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/investigate/DA/home_header_02.jpg"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/icon_doc.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/icon_01.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/bt_r_right.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/bt_r_left.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/bt_y_right.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/bt_y_left.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/investigate/DA/home_footer.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/TreeLineImages/noexpand.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/TreeLineImages/plus.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/TreeLineImages/minus.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/TreeLineImages/rplus.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/TreeLineImages/rminus.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/TreeLineImages/tplus.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/TreeLineImages/lplus.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/TreeLineImages/dash.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/TreeLineImages/dashplus.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/bt_gr_right.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/bt_gr_left2.gif"
+      },
+      {
+        "method": "POST",
+        "url": "https://service.moea.gov.tw/EE520/investigate/InvestigateDA.aspx"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/library/GMWeb.css"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/library/jquery-ui/jquery-ui.min.css"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/library/jquery-3.5.1.min.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/library/jquery-ui/jquery-ui.min.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/library/GMWeb.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/library/InquireAdvanceTable.css"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/GMWeb/WebResource.axd?d=pynGkmcFUV13He1Qd6_TZEohDRVUO3DrIV_t1CCAFArFVmgJSkSqocSdVK6WjmgA-1M1kFtGHU4zs6rwT06V1A2&t=638901824248157332"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/GMWeb/ScriptResource.axd?d=0y8MEsr3ao3EJ7P-lfA9ZxhBiSfPnl8x3qfHehgckF9W_oW9o9Q6LddglRiSwbz6CuPf4NACd0k0K8P8N_kumGfGpUnXb8J6xN3ZkPk7Je7LXzc5pFxgQrgqXZ97axcB6yCu_CPz39JZkxQmQpMfug4QMfZWyHp6T6L16nc1dYg1&t=5c0e0825"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/GMWeb/ScriptResource.axd?d=qdfquaqc-_X8PA8h7-s-STMG3HD-TPz798n1zIUUASuqrZNcRHFrmczXensgBD2Vop4sK9_9Wl2GcLOhCgnCVIqDQzmdNwTgcHHTa9XOH6eFHavZN8lfIBLNjZxBflukU3MCv7IX0JCa_3oN0sPgfx2_SED98RmzCSYrxRuoAUzUyknTOa4Rw_E_lH-PS7RP0&t=5c0e0825"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/investigate/DA/home_header_01.jpg"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/bt_back.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/investigate/DA/home_header_03.jpg"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/library/freeze-table.min.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/library/ExtendedTable.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/investigate/DA/home_header_02.jpg"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/icon_doc.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/table_top_left.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/table_top.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/table_top_right.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/table_left.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/icon_01.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/bt_r_right.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/bt_r_left.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/bt_y_right.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/bt_y_left.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/table_right.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/table_down_left.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/table_down.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/table_down_right.gif"
+      },
+      {
+        "method": "GET",
+        "url": "https://service.moea.gov.tw/EE520/images/investigate/DA/home_footer.gif"
+      }
+    ],
+    "violations": []
+  },
+  "researchOnly": true,
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false
+}

@@ -1,0 +1,9 @@
+{
+  "runId": 37199450918,
+  "attempt": 1,
+  "artifactId": 11302287749,
+  "artifactSha256": "402c2be5a762e32b3c0432dc1e7d7ab6023c3af3a0e4de705ce29a1ac30301bf",
+  "collectorCommit": "878ea020c800c8474159aae7fccf7c687a2897d8",
+  "result": "FAIL_SOURCE_NAVIGATION",
+  "acceptancePassed": false
+}

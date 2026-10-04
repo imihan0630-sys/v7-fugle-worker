@@ -1,0 +1,13 @@
+{
+  "runId": 37199605968,
+  "attempt": 1,
+  "artifactId": 11302507659,
+  "artifactSha256": "d80a89b96256116bc1a78b73f9aef2a8b4567d851257f2d3e410881b0205ccb4",
+  "collectorCommit": "8024f60d557c57b969a5f0a361b17da58bc3894a",
+  "result": "SOURCE_ACCESS_BLOCKED",
+  "httpStatus": 403,
+  "sourceSecurityService": "Cloudflare",
+  "rayId": "a453ed505cc8284e",
+  "guardViolations": [],
+  "acceptancePassed": false
+}

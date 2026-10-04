@@ -1,0 +1,9 @@
+{
+  "status": "FAIL",
+  "error": "SC056_DRIFT: source navigation failed/redirected: {\"status\":403,\"finalUrl\":\"https://service.moea.gov.tw/EE520/investigate/InvestigateDA.aspx\",\"title\":\"Attention Required! | Cloudflare\",\"pageExcerpt\":\"Sorry, you have been blocked\\nYou are unable to access moea.gov.tw\\nWhy have I been blocked?\\n\\nThis website is using a security service to protect itself from online attacks. The action you just performed triggered the security solution. There are several actions that could trigger this block including submitting a certain word or phrase, a SQL command or malformed data.\\n\\nWhat can I do to resolve this?\\n\\nYou can email the site owner to let them know you were blocked. Please include what you were doing when this page came up and the Cloudflare Ray ID found at the bottom of this page.\\n\\nCloudflare Ray ID: a453ed505cc8284e • Your IP: Click to reveal • Performance & security by Cloudflare\",\"violations\":[]}",
+  "referenceMonth": "2025-01",
+  "startedAt": "2026-10-04T19:43:05.275+08:00",
+  "completedAt": "2026-10-04T19:43:06.916+08:00",
+  "runs": [],
+  "productionChanged": false
+}
