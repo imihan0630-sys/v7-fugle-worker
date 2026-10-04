@@ -62,6 +62,14 @@ export function buildD08HistoricalValuationYearPackV0_1({
       sourcePayloadHash:String(source.sourcePayloadHash),
       sourcePayloadBytes:Number(source.sourcePayloadBytes||0),
       fieldFingerprint:String(source.fieldFingerprint||""),
+      schemaCapabilities:{
+        pe:source.schemaCapabilities?.pe===true,
+        pb:source.schemaCapabilities?.pb===true,
+        close:source.schemaCapabilities?.close===true,
+        fiscalReportPeriod:source.schemaCapabilities?.fiscalReportPeriod===true,
+        fiscalDenominatorTransitionDirectlyObservable:
+          source.schemaCapabilities?.fiscalDenominatorTransitionDirectlyObservable===true,
+      },
       ordinarySymbolCount:rows.length,
       rows,
     });
@@ -73,6 +81,9 @@ export function buildD08HistoricalValuationYearPackV0_1({
   const minDailyRows=Math.min(...days.map(d=>d.rows.length));
   const maxDailyRows=Math.max(...days.map(d=>d.rows.length));
   const fieldFingerprints=[...new Set(days.map(d=>d.fieldFingerprint))].sort();
+  const schemaCapabilityVariants=[...new Set(days.map(d=>JSON.stringify(d.schemaCapabilities)))].sort().map(JSON.parse);
+  const fiscalPeriodObservableDateCount=days.filter(d=>d.schemaCapabilities.fiscalReportPeriod).length;
+  const closeObservableDateCount=days.filter(d=>d.schemaCapabilities.close).length;
   const sourceBundleHash=sha(days.map(d=>[
     d.marketDate,d.sourcePayloadHash,d.sourcePayloadBytes,d.fieldFingerprint,d.ordinarySymbolCount
   ].join("|")).join("\n"));
@@ -93,6 +104,9 @@ export function buildD08HistoricalValuationYearPackV0_1({
     minDailyRows,
     maxDailyRows,
     fieldFingerprints,
+    schemaCapabilityVariants,
+    fiscalPeriodObservableDateCount,
+    closeObservableDateCount,
     sourceBundleHash,
     days,
   };
