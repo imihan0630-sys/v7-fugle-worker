@@ -570,3 +570,91 @@ Aggregate D20 maturity = 50.8%.
 Formal Core unchanged.
 FORMAL_OPTIMIZATION_CANDIDATE = NONE.
 
+## 2026-10-04｜D20 L4 Prospective Evidence Phase
+
+### Maturity decision
+No module advances to L4 in this tranche.
+
+Canonical rule:
+L4 requires genuine Prospective Shadow or OOS evidence. Preregistration, source feasibility, historical reconstruction or retrospective literature are not sufficient.
+
+### Contamination firewall
+A development pilot combined dated Cathay monthly Taiwan sentiment releases from 2025-12 through 2026-09 with adjusted 0050 price paths.
+
+Because both predictor values and future outcomes were inspected before the prospective design was frozen, this cohort is permanently classified:
+DEVELOPMENT_ONLY_CONTAMINATED / NOT_PROMOTION_GRADE.
+
+It cannot later be relabeled as OOS or Prospective Shadow.
+
+### Development-pilot falsification
+Using a conservative first-trading-session-after-release anchor:
+- sentiment LEVEL and month-over-month CHANGE behave as empirically distinct objects;
+- the tiny contaminated sample does not support a naive unconditional "higher sentiment => higher subsequent return" interpretation;
+- sentiment levels show moderate negative descriptive correlations with D5/D20 adjusted-0050 returns in this small sample, while month-to-month changes show weak/mixed forward associations;
+- no statistical, causal or alpha claim is allowed because the sample is tiny, regime concentrated, proxy-specific and contaminated.
+
+This result is useful only for design:
+1. test LEVEL and CHANGE separately;
+2. do not preregister a bullish sign;
+3. control prior market return and volatility;
+4. use TAIEX as the primary broad-market outcome once prospectively captured;
+5. keep adjusted 0050 as a secondary tradable-market proxy.
+
+Machine evidence:
+- research/d20_10_contaminated_development_pilot_v0_1.json
+
+### Prospective preregistration
+Frozen before future eligible outcomes:
+- research/d20_l4_prospective_shadow_prereg_v0_1.json
+- research/D20_L4_PROSPECTIVE_SHADOW_PREREG_20261004_V0_1.md
+
+Eligible lanes:
+- D20-02 TWSE short-side disposition;
+- D20-04 52-week reference point;
+- D20-05 recency conditional on reference point/momentum;
+- D20-07 exchange salience designation;
+- D20-08 valid first-known event drift;
+- D20-10 monthly investor sentiment;
+- D20-12 structural falsification.
+
+### Frozen minimum evidence gates
+D20-10:
+- 6 independent post-freeze monthly releases;
+- at least two materially different market regimes;
+- immutable parent receipts;
+- D5/D20 primary broad-market outcomes.
+
+D20-07:
+- 20 independent dates;
+- 100 treated designation events;
+- matched common-support controls;
+- pre-designation return/turnover/volatility controls.
+
+D20-04 / D20-05:
+- 12 independent weekly parent dates;
+- continuous/rank primary specification;
+- no outcome-tuned bucket search;
+- D20-05 must add residual information beyond D20-04 and D03 or become narrowing/merge eligible.
+
+D20-02:
+- 12 independent weekly TWSE parents;
+- short capital-gains-overhang and covering states frozen before outcomes;
+- long-account PGR/PLR and TPEx parity remain UNKNOWN.
+
+D20-08:
+- 12 independent event dates;
+- first-known/capturedAt required;
+- D1/D5/D20 windows fixed before outcomes;
+- unresolved historical event clocks remain excluded/UNKNOWN.
+
+D20-12:
+- at least 20 independent prospective discriminating cases;
+- target behavioral proxy and structural counterfactual receipts must share a common cutoff.
+
+### Governance consequence
+The next valid evidence comes only from post-freeze observations. More theory or retrospective outcome inspection cannot increase D20 maturity.
+
+D20 remains 50.8%.
+Formal Core unchanged.
+FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
