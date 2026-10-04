@@ -50,7 +50,7 @@ Authoritative branch: latest `main`
 7. 只有在跨研究室整合、課綱／owner 變更、模組路由不明或治理衝突時，才讀完整 `shared-knowledge/LEARNING_ROOM_ROUTER.md`／`SHARED_RESEARCH_MASTER_MAP.md`。一般續接不得把巨大 Router／Master Map 當成每次啟動的必要全文讀取。
 8. 重新確認 latest `main`；舊提示詞中的 SHA、百分比、模組數、Level、status 只能當歷史線索，不能蓋過最新正式檔。
 
-## 三之一、恢復確認
+## 三、恢復確認
 
 新聊天室完成恢復後，先用極短格式回報，不重述歷史：
 
@@ -64,7 +64,7 @@ Authoritative branch: latest `main`
 
 確認後直接工作；除非韓哥要求，不得再輸出長篇舊進度摘要。
 
-## 三、恢復完成後的行為
+## 四、恢復完成後的行為
 
 - 從 checkpoint 的 exact next continuation point 直接接續，不得重新總結已完成研究當作新進度。
 - 不得要求韓哥搬運舊聊天室、重新提供 repo、重貼規則或手工重建百分比。
@@ -72,7 +72,7 @@ Authoritative branch: latest `main`
 - 若真正缺少且無法從 GitHub 恢復的資訊，僅詢問「缺失的最小資訊」，不得退回要求整份舊提示詞。
 - 一般移轉不把 observed SHA 寫死成未來權威；新聊天室永遠重新讀 latest main。
 
-## 四、Work／Codex 模式切換
+## 五、Work／Codex 模式切換
 
 Work／Codex 仍需要完整交接「語意」，但**完整不等於冗長貼文**。
 
@@ -96,7 +96,7 @@ Work／Codex 短移交範本：
 > 先讀 GitHub 最新 main、`shared-knowledge/ROOM_BOOTSTRAP.md` 與 `<task checkpoint>`；以 checkpoint 的 exact next action 接續，禁止重頭做。  
 > 目標：<一句話>。批准邊界：<一句話；若無額外邊界則寫依既有治理>。
 
-## 五、例外與失敗保護
+## 六、例外與失敗保護
 
 若舊聊天室已無法操作，直接由新聊天室依 GitHub 恢復；不得因缺少舊聊天室而自行重頭研究。
 
@@ -104,7 +104,7 @@ Work／Codex 短移交範本：
 
 若新聊天室無 GitHub 權限／工具可讀，才使用長版 self-contained handoff 作為 fallback；不得把 fallback 當預設。
 
-## 六、資源原則
+## 七、資源原則
 
 - **狀態存 GitHub，不存提示詞。**
 - **提示詞只識別身份與目標，不複製歷史。**
