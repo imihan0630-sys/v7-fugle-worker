@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "D20_10_CONTAMINATED_DEVELOPMENT_PILOT_V0_1",
+  "generatedAtAsiaTaipei": "2026-10-04T08:52:19+08:00",
+  "module": "D20-10",
+  "status": "DEVELOPMENT_ONLY_CONTAMINATED / NOT_L4_EVIDENCE / NOT_OOS / NOT_PROSPECTIVE",
+  "contaminationReason": "Both Cathay monthly sentiment values and adjusted 0050 future outcomes through 2026-10-02 were inspected before the D20 L4 preregistration freeze.",
+  "marketProxy": {
+    "symbol": "0050",
+    "source": "Fugle Stock accessible adjusted historical close",
+    "semantics": "Secondary tradable broad-market proxy; NOT TAIEX",
+    "adjusted": true
+  },
+  "conservativeAnchorRule": "First trading session strictly after the dated survey release",
+  "observations": [
+    {
+      "release": "2025-12-22",
+      "optimism": 25.1,
+      "riskPreference": 18.1,
+      "anchorDate": "2025-12-23",
+      "prior20Pct": 4.4323,
+      "d5Pct": 2.9954,
+      "d20Pct": 14.32
+    },
+    {
+      "release": "2026-01-20",
+      "optimism": 37,
+      "riskPreference": 23.9,
+      "anchorDate": "2026-01-21",
+      "prior20Pct": 17.2903,
+      "d5Pct": 4.7288,
+      "d20Pct": 13.4053
+    },
+    {
+      "release": "2026-02-24",
+      "optimism": 31.5,
+      "riskPreference": 25.4,
+      "anchorDate": "2026-02-25",
+      "prior20Pct": 11.0903,
+      "d5Pct": -4.5652,
+      "d20Pct": -6.5377
+    },
+    {
+      "release": "2026-03-20",
+      "optimism": 35.3,
+      "riskPreference": 31.7,
+      "anchorDate": "2026-03-23",
+      "prior20Pct": 2.7755,
+      "d5Pct": -0.4743,
+      "d20Pct": 16.3008
+    },
+    {
+      "release": "2026-04-20",
+      "optimism": 17.2,
+      "riskPreference": 23.1,
+      "anchorDate": "2026-04-21",
+      "prior20Pct": 8.1598,
+      "d5Pct": 6.9724,
+      "d20Pct": 7.5573
+    },
+    {
+      "release": "2026-05-20",
+      "optimism": 45.5,
+      "riskPreference": 34.4,
+      "anchorDate": "2026-05-21",
+      "prior20Pct": 10.1142,
+      "d5Pct": 4.8494,
+      "d20Pct": 11.945
+    },
+    {
+      "release": "2026-06-22",
+      "optimism": 54.5,
+      "riskPreference": 40.6,
+      "anchorDate": "2026-06-23",
+      "prior20Pct": 11.945,
+      "d5Pct": -2.0835,
+      "d20Pct": -5.0992
+    },
+    {
+      "release": "2026-07-20",
+      "optimism": 53.5,
+      "riskPreference": 39,
+      "anchorDate": "2026-07-21",
+      "prior20Pct": -5.5239,
+      "d5Pct": -5.2195,
+      "d20Pct": 2.3415
+    },
+    {
+      "release": "2026-08-20",
+      "optimism": 36.2,
+      "riskPreference": 29.1,
+      "anchorDate": "2026-08-21",
+      "prior20Pct": -0.7222,
+      "d5Pct": 2.1978,
+      "d20Pct": 4.9689
+    },
+    {
+      "release": "2026-09-21",
+      "optimism": 49.1,
+      "riskPreference": 32.9,
+      "anchorDate": "2026-09-22",
+      "prior20Pct": 4.9689,
+      "d5Pct": 0.9388,
+      "d20Pct": null
+    }
+  ],
+  "descriptiveCorrelations": {
+    "optimismLevel_vs_prior20": {
+      "n": 10,
+      "r": -0.1523
+    },
+    "riskPreferenceLevel_vs_prior20": {
+      "n": 10,
+      "r": -0.2594
+    },
+    "optimismChange_vs_prior20": {
+      "n": 9,
+      "r": 0.3832
+    },
+    "riskPreferenceChange_vs_prior20": {
+      "n": 9,
+      "r": 0.4704
+    },
+    "optimismLevel_vs_d5": {
+      "n": 10,
+      "r": -0.5216
+    },
+    "riskPreferenceLevel_vs_d5": {
+      "n": 10,
+      "r": -0.5149
+    },
+    "optimismChange_vs_d5": {
+      "n": 9,
+      "r": 0.0615
+    },
+    "riskPreferenceChange_vs_d5": {
+      "n": 9,
+      "r": -0.0917
+    },
+    "optimismLevel_vs_d20": {
+      "n": 9,
+      "r": -0.3431
+    },
+    "riskPreferenceLevel_vs_d20": {
+      "n": 9,
+      "r": -0.3945
+    },
+    "optimismChange_vs_d20": {
+      "n": 8,
+      "r": 0.2883
+    },
+    "riskPreferenceChange_vs_d20": {
+      "n": 8,
+      "r": 0.2123
+    }
+  },
+  "interpretation": [
+    "Tiny contaminated sample does not support a naive unconditional 'higher sentiment => higher subsequent return' rule.",
+    "Level and month-over-month change appear empirically different objects and must remain separate in prospective testing.",
+    "The sample is too small, one broad-market proxy only, regime concentrated, and already inspected; no significance/alpha claim is permitted.",
+    "These results are a falsification/design diagnostic only and may not be reused for L4 promotion."
+  ],
+  "next": "Use only post-preregistration survey releases for promotion-grade parents under d20_l4_prospective_shadow_prereg_v0_1.json."
+}
