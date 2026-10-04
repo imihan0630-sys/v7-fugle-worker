@@ -162,3 +162,20 @@ No maturity or Formal/runtime change from either closure.
 Audits:
 - shared-knowledge/CURRICULUM_H15_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
 - shared-knowledge/CURRICULUM_H16_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
+
+
+## 00 control-plane receipt — H08 closure / H10 owner gate
+
+H08 closed:
+KEEP_SEPARATE / MEMBERSHIP_VS_EVENT_PROPAGATION_VS_NARRATIVE_DIFFUSION.
+D17-11 remains event/news propagation owner and stays L2/40%; D09/D20 maturity does not transfer into it.
+
+H10 reached owner gate:
+KEEP_SEPARATE / SCOPE_DEDUP_ONLY.
+Proposed canonical boundary:
+- D10-12 owns persistent structural issuer/supply-chain exposure.
+- D17-04 consumes D10 exposure and owns event-specific direct attribution.
+- D17-05 consumes D10 graph edges and owns event-specific second-order transmission.
+- D17 may not reconstruct a second supply-chain graph from headlines.
+
+D17-04 and D17-05 remain L2/40%. No canonical wording mutation before owner approval.
