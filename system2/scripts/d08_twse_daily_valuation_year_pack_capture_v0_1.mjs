@@ -8,7 +8,7 @@ import { createRemoteR2S3Adapter } from "../deploy/remote_r2_s3_adapter.mjs";
 
 const year=Number(process.env.D08_YEAR||"2005");
 assert.ok(Number.isInteger(year)&&year>=2005&&year<=2026,"D08_YEAR must be 2005..2026");
-const fromDate=year===2005?"2005-09-01":String(year)+"-01-01";
+const fromDate=year===2005?"2005-09-02":String(year)+"-01-01";
 const toDate=year===2026?"2026-08-31":String(year)+"-12-31";
 const observedAt=new Date().toISOString();
 
