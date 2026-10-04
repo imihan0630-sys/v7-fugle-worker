@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T16:42:00+08:00",
+  "updatedAt": "2026-10-04T16:35:35+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -3492,10 +3492,10 @@
           "next": "TWSE 官方費率、揭示供給/需求與競價最佳五檔語意已足夠凍結 D20-13 上市子線，但遵守 D06-18 上游成熟度：待下一有效交易日取得第一筆 outcome-blind、含 capturedAt/sourceHash/rule vintage 的真實費率/供需 receipt 後再評估 L3。不得把 displayed supply 稱為全市場可借庫存或 true utilization。"
         }
       ],
-      "status": "D20_L3_12_OF_13 / MATURITY_58_5 / ONLY_D20_13_REMAINS_L2 / SOCIAL_AND_CONFIDENCE_PIT_SUBLANES_VALIDATED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D20 現為 12 個 L3、1 個 L2。D20-03 公開明示信心校準子線的 L4 規則已於 2026-10-04 14:12:14 台北時間凍結；只有之後新抓到的 qualifying forecast parent 才能算 prospective evidence，個別帳號不建立信心/心理/技能分數。D20-06/D20-11 同樣只接受 14:06:56 後的新聚合社群 parent。下一有效交易日唯一剩餘的 L2 主線是 D20-13：按既定 09:15/12:00/15:20 時槽取得 TWSE 借券費率/揭示供需 live receipt，完整通過後再評估 L3。",
-      "lastResearchUpdate": "2026-10-04T14:12:14+08:00",
-      "researchNote": "D20-03 advances L2→L3 only for a bounded public explicit-confidence calibration sublane. PTT Stock structured target posts expose explicit direction/target/stop and some posts contain explicit certainty or self-reported performance language, making point-in-time capture of expressed confidence feasible. The lane remains observation/research-only and does not identify a psychological trait, actual trading, or general investor overconfidence. Forecast error alone is not overconfidence; explicit confidence evidence is required. Derived evaluation is aggregate-only with no named-user psychology or influence profile. D20-13 remains the only L2 module pending a genuine live TWSE borrow-rate/displayed-supply receipt. Formal Core unchanged."
+      "status": "D20_L3_12_OF_13 / MATURITY_58_5 / L4_PROSPECTIVE_COLLECTION_STARTED / ONLY_D20_13_REMAINS_L2 / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "L4 真正前瞻收集已開始：D20-06/D20-11 已有第一筆凍結後 parent `D20SOC-20261004-001`，目前各 1/50 親本、1/20 獨立日期；該 parent 為 1 人、0 回覆的零從眾樣本，仍保留避免選擇偏誤。D20-03 目前 0 個合格 prospective parent；明示不確定語言分類只對 2026-10-04 16:34:04 後首次觀測文章生效，不回溯重分類。D20-13 週末 dry-run 不合格升級，下一有效交易日仍按 09:15/12:00/15:20 ±5 分鐘正式抓 TWSE live receipt。",
+      "lastResearchUpdate": "2026-10-04T16:35:35+08:00",
+      "researchNote": "Prospective L4 collection has genuinely started without maturity inflation. The first post-freeze PTT social parent was captured after the social preregistration and before any future market outcome. It has one participant and zero replies, so it is retained as a zero-herding/initial-narrative parent rather than selected away. D20-03 exposed a preregistration taxonomy gap: explicit uncertainty was not represented. The already-observed post remains ineligible; a new EXPLICIT_UNCERTAINTY_LANGUAGE class is effective prospectively only after 16:34:04. D20-13 weekend source dry-run verified official TWSE informational source access but not a free live machine rate/depth receipt; dynamic MIS generic extraction returned empty content, so the exact free live route remains unresolved and D20-13 stays L2. Formal Core unchanged."
     },
     {
       "id": "D21",
