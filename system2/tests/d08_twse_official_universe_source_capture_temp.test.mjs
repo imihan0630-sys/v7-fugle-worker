@@ -137,7 +137,6 @@ const datasetStartWitness=await fetchOfficialHistoricalA1DateV0_1({
   market:"TWSE",
   marketDate:datasetFirstTradingDate,
   observedAt,
-  firstTradingDateByMarketSymbol,
 });
 assert.equal(datasetStartWitness.state,"READY");
 const firstDateSymbols=new Set(datasetStartWitness.rows.map(x=>x.symbol));
@@ -180,9 +179,9 @@ const currentSourceRows=currentTwse.map(x=>({
   listingDate:x.listingDate,
   delistingDate:null,
   industry:x.industry,
-  sourceId:"MOPS_T187AP03_L_CURRENT_LISTED_COMPANY",
-  sourceName:"MOPS/TWSE listed-company basic data",
-  sourceUrl:"https://mopsfin.twse.com.tw/opendata/t187ap03_L.csv",
+  sourceId:current.source,
+  sourceName:"TWSE current listed-company basic data",
+  sourceUrl:current.sourceUrl,
   sourceRowHash:sha({symbol:x.symbol,companyName:x.companyName,industry:x.industry,listingDate:x.listingDate}),
 }));
 
@@ -191,6 +190,7 @@ const registry=await buildHistoricalUniverseRegistryV0_1({
   sourceRows:[...currentSourceRows,...delistedSourceRows],
   datasetStartDate:"2023-01-01",
   observedAt,
+  firstTradingDateByMarketSymbol,
 });
 assert.equal(registry.unknownStartCount,0);
 assert.equal(registry.replayEligibleCount,registry.membershipCount);
