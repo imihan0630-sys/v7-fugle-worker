@@ -3131,3 +3131,194 @@ Exact next:
 5. execute Bollinger v0.2 for every expected parent and require COMPLETE reconciliation before any 58.3% promotion;
 6. ADX follows only with canonical FULL_REPLAY;
 7. raw D03 3-session gate remains 2/3 and TI-005/TI-006 outcomes remain closed.
+
+
+## TI-661 through TI-685 — cutoff-safe continuity architecture / effective-build clock audit (2026-10-04)
+
+Durable artifacts:
+- `research/D03_EVIDENCE_CUTOFF_RECEIPT_SPLIT_V0_1.md`
+- `research/d03_evidence_cutoff_receipt_split_v0_1.mjs`
+- `research/d03_evidence_cutoff_receipt_split_contract_v0_1.json`
+- `research/D03_TWO_POINT_NO_REVISION_GAP_V0_1.md`
+- `research/d03_two_point_no_revision_gap_v0_1.mjs`
+- `research/D03_PRE_PARENT_SOURCE_CUT_V0_2.md`
+- `research/d03_pre_parent_source_cut_v0_2.mjs`
+- `research/D03_PARENT_CONTINUITY_BINDING_V0_2.md`
+- `research/d03_parent_continuity_binding_v0_2.mjs`
+- `research/D03_EFFECTIVE_WORKER_DECISION_CUTOFF_AUDIT_V0_1.md`
+- `research/D03_PARENT_DECISION_CUTOFF_OWNER_HANDOFF_V0_2.md`
+
+### TI-661/TI-666 — source availability clock is separable from transform-computation clock
+
+The previously open architecture from TI-659 is now physically falsified as a versioned research candidate.
+
+A continuity transform may be materialized after the immutable parent only if:
+- every admitted source fact was frozen in an immutable market-wide/full-eligible evidence cut before the true Formal input cutoff;
+- the derived receipt references the exact evidenceCutId and market-wide cut manifest;
+- postCutSourceFactCount = 0;
+- unboundSourceFactCount = 0;
+- every delivered raw bar has sourceFetchedAt <= evidenceCutoffAt.
+
+The market-wide source-cut manifest hash and the symbol-specific transform-input manifest hash are different provenance layers and must not be forced equal. The receipt instead carries an exact cut-manifest reference plus its own symbol-transform manifest and source-fact-reference set hash.
+
+Physical workflow `37195966922` PASS under the stricter decision-cutoff semantics.
+
+The candidate retains all existing Bollinger v0.2 and ADX v0.2 formula/source/replay guards.
+
+No maturity promotion.
+
+### TI-667/TI-673 — two-point noRevisionGapThroughCut candidate
+
+A fail-closed two-point owner-certifier candidate is now executable.
+
+Pre-cut population establishes the exact versions prospectively observed by the cutoff.
+
+Post-parent bounded complete reconciliation asks whether:
+- any pre-cut version disappeared;
+- any same versionKey changed payload;
+- any newly discovered row has sourceReportedAt <= the original cutoff.
+
+A genuinely later revision with sourceReportedAt > cutoff is allowed and recorded as later information; it does not invalidate the earlier cut.
+
+Blocking witnesses:
+- LATE_DISCOVERED_PRE_CUT_VERSION;
+- VERSION_PAYLOAD_MUTATION;
+- PRE_VERSION_MISSING_FROM_POST;
+- incomplete/truncated post population;
+- pre version firstObservedAt after cutoff.
+
+Physical workflow `37195789302` PASS.
+
+Authority remains:
+- ownerCertificationRequired = true;
+- d03SelfCertificationAuthority = false.
+
+D03 does not self-certify source completeness.
+
+### TI-674/TI-676 — parent receipt stamp cannot substitute for Formal input cutoff
+
+The newer source-cut work initially used parent knownAt as the upper bound. This is superseded for promotion-grade causality.
+
+Required ordering is now:
+
+`source fact <= evidenceCutoffAt <= decisionCutoffAt <= decisionAt/parentKnownAt`.
+
+A later decisionAt/capturedAt receipt may not be substituted for decisionCutoffAt.
+
+Pre-parent source-cut V0.2 reuses all V0.1 market-wide scope, exact-version, completeness, no-truncation and no-revision-gap rules under the stricter decisionCutoffAt clock.
+
+Physical workflow `37195982487` PASS:
+- valid strict cutoff -> PASS;
+- missing decisionCutoffAt -> blocked;
+- source fact visible after cutoff but before later receipt stamp -> blocked;
+- cutoff after decisionAt -> blocked.
+
+No maturity promotion.
+
+### TI-677/TI-681 — parent × evidence-cut × derived continuity binding V0.2
+
+A post-parent derived continuity receipt can bind to a parent only after the strict cutoff timing envelope passes.
+
+Binding identity now commits to:
+- scanDate / captureGeneration / symbol / parentSnapshotHash;
+- decisionCutoffAt / decisionAt / parent knownAt;
+- evidenceCutId / evidenceCutoffAt / source-cut manifest;
+- timing identity;
+- continuity receipt id/version/createdAt;
+- transform-input manifest;
+- source-fact-reference set;
+- sourceHistoryHash / continuityTransformHash;
+- exact expected and actual eligible-date-set hashes;
+- sourceBarsThrough.
+
+Changing parent generation changes bindingId.
+
+The binding still delegates indicator validity to the hardened v0.2 Bollinger/ADX evaluators.
+
+Physical workflow `37196089575` PASS:
+- valid post-parent-derived Bollinger -> VALID;
+- valid canonical FULL_REPLAY ADX -> VALID;
+- missing cutoff / late cut / wrong symbol / date-set mismatch / binding-before-receipt -> blocked.
+
+No maturity promotion because these remain synthetic/outcome-blind contract witnesses.
+
+### TI-682 — raw-source boundary assumption was falsified by the effective build
+
+A first effective-build audit intentionally failed the earlier recommendation "after totalCapital read".
+
+Reason:
+the V7.5.30 patch chain performs an additional Formal-affecting asynchronous input read after total capital:
+
+`V7_MARKET_CONSENSUS` from STOCKS_KV.
+
+Market consensus is consumed by `applyMarketConsensus` and can affect candidate priority/ranking.
+
+Therefore stamping decisionCutoffAt before this read would exclude a true Formal input and is causally wrong.
+
+The failure is retained as useful falsification, not hidden.
+
+### TI-683/TI-684 — effective V8.17 final Formal input boundary is physically source-audited
+
+The corrected read-only audit builds the effective Worker through the same patch/review chain used by the current V8.17 architecture.
+
+Physical workflow `37196768178` PASS after the C1/C2 review reports 95/95 tests PASS.
+
+Observed effective build:
+- runtime source version = `8.17.0-shadow-cohort-membership`;
+- final Formal async input = STOCKS_KV `V7_MARKET_CONSENSUS` read;
+- market-consensus read occurs after total-capital input;
+- async/external reads after that final input and before selector = 0;
+- `selectTomorrowCandidates` is synchronous;
+- selector external reads observed = false;
+- C1 decisionAt exists;
+- C1 decisionCutoffAt does not exist;
+- C1 build is downstream of Formal-result capture;
+- Production mutation performed = false.
+
+The current effective-build candidate cutoff anchor is therefore:
+
+> immediately after the V7_MARKET_CONSENSUS read and immediately before selectTomorrowCandidates(...).
+
+Any newer runtime must be re-audited; this is not a forever-static line-number rule.
+
+### TI-685 — owner handoff V0.2 / anti-inflation decision
+
+The corrected source-audited boundary is now handed to the shared immutable-C1 parent owner in:
+- `research/D03_PARENT_DECISION_CUTOFF_OWNER_HANDOFF_V0_2.md`;
+- `research/d03_parent_decision_cutoff_owner_handoff_v0_2.json`.
+
+Owner implementation must be additive provenance only:
+- persist real decisionCutoffAt under exact immutable generation identity;
+- no historical backfill;
+- no copy of decisionAt/capturedAt;
+- no new market-data call merely to stamp time;
+- no selection/ranking/capital/signal/push change;
+- physical genuine-session readback required after owner deployment.
+
+D03 does not implement/deploy this Production provenance change from the research lane.
+
+### Current maturity / next honest gates
+
+No maturity promotion:
+- D03-10 Bollinger = L2/40;
+- D03-09 ADX = L2/40;
+- D03 aggregate = **56.7%**.
+
+The next genuine Bollinger L3 gate now requires all of:
+1. owner-persisted decisionCutoffAt on a genuine parent;
+2. market-wide evidence cut <= decisionCutoffAt;
+3. owner-certified noRevisionGapThroughCut and symbol-session completeness;
+4. derived receipt uses only pre-cut facts;
+5. V0.2 parent/evidence-cut binding;
+6. complete expected-parent attempt reconciliation;
+7. Bollinger v0.2 finite-window acceptance.
+
+Only then may D03-10 advance L3 and D03 reach 58.3%.
+
+ADX remains one gate harder:
+all of the above + canonical-anchor FULL_REPLAY / exact recursive lineage before any 60.0% transition.
+
+Raw D03 source-version gate remains independently 2/3.
+TI-005/TI-006 outcomes remain CLOSED.
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+Formal Core remains LOCKED.
