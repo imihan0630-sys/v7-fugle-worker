@@ -702,3 +702,22 @@ Representative authority coverage is now 5/6. The only remaining representative-
 PR #577 physically validated the MOPS U04 transport/serializer route and queried company plus listed-market scopes for the four frozen 2025 TWSE par-value events. No qualifying issuer revision/par-value row was observed, so the sole representative-routing gap remains TWSE par-value change.
 
 This negative result is preserved. The system must not repeat the same path or weaken evidence criteria merely to force 6/6. Next work is alternate official-source discovery or a formal structural-unavailability disposition. Exact knownAt, bounded revision completeness, session/technical continuity and all trading authorities remain locked.
+
+## 2026-10-05 S2-07 representative-routing search disposition milestone
+
+S2-07 has formally ended blind representative-control discovery at an honest 5/6 rather than weakening evidence criteria to fill the sixth lane.
+
+Final TWSE par-value evidence added:
+- PR #594: TWTB7U does not expose historical-date content despite echoing the requested date;
+- PR #596: TWSE official 公文公告 historical machine endpoint physically established with a known positive control;
+- PR #597: complete bounded 2025 search recovered all frozen operational controls and found zero par-value revision rows;
+- PR #598: machine-readable final-gap disposition PASS.
+
+Authoritative state:
+- representativeAuthorityReadyCount=5;
+- representativeRoutingResearchDispositionComplete=true;
+- remaining TWSE par-value gap is dispositioned, not promoted;
+- representativeRoutingCoverageComplete=false;
+- new official evidence may reopen the search.
+
+Next S2-07 focus is bounded revision completeness plus shared suspension/session integration. Exact knownAt and all trading authority remain locked.
