@@ -1,0 +1,52 @@
+name: Room09 D12 official Delta version readonly v2
+
+on:
+  push:
+    branches:
+      - research-room09-d12-taifex-source-smoke-20261004
+    paths:
+      - .github/workflows/room09-d12-official-delta-version-readonly-v2.yml
+
+permissions:
+  contents: read
+
+jobs:
+  delta-version:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Fetch official TXO Delta page and emit version identity only
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --retry 2 \
+            -D /tmp/delta.headers \
+            "https://www.taifex.com.tw/cht/3/optDailyDeltaExcel?scd_kind_id=TXO" \
+            -o /tmp/delta.html
+          python - <<'PY'
+          import hashlib, html, json, re
+          raw=open("/tmp/delta.html","rb").read()
+          text=raw.decode("utf-8",errors="replace")
+          plain=html.unescape(re.sub(r"<[^>]+>"," ",text))
+          plain=re.sub(r"\s+"," ",plain)
+          pub=None
+          m=re.search(r"公布日期時間[:：]\s*([^\n]{0,100}?)(?=商品|$)",plain)
+          if m:
+              pub=m.group(1).strip()
+          if not pub:
+              m=re.search(r"公布日期時間[:：]\s*([0-9/ :APMapm]+)",plain)
+              if m:
+                  pub=m.group(1).strip()
+          result={
+              "url":"https://www.taifex.com.tw/cht/3/optDailyDeltaExcel?scd_kind_id=TXO",
+              "sha256":hashlib.sha256(raw).hexdigest(),
+              "byteCount":len(raw),
+              "publicationText":pub,
+              "txoOccurrenceCount":plain.count("TXO"),
+              "dateTokens":sorted(set(re.findall(r"2026\d{4}",plain)))[:30],
+              "expiryTokens":sorted(set(re.findall(r"2026\d{2}(?:W\d+|F\d+)?",plain)))[:100],
+              "containsClockNotes":("6:45" in plain and "14:30" in plain and "16:30" in plain),
+              "rawPersisted":False
+          }
+          print("ROOM09_DELTA_VERSION_JSON="+json.dumps(result,ensure_ascii=False,separators=(",",":")))
+          PY
