@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "D22_08_RATE_EXPOSURE_REPLAY_V0_1",
+  "generatedAt": "2026-10-04T13:43:00+08:00",
+  "status": "RESEARCH_ONLY / MULTI_ISSUER_MULTI_DATE_PIT_REPLAY / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "governance": {
+    "benchmarkRateOwnedBy": "D13",
+    "maturityAmountOwnedBy": "D22-01",
+    "replacementCostOwnedBy": "D22-04",
+    "exposureTransmissionOwnedBy": "D22-08",
+    "unknownIsNotZero": true,
+    "fixedFloatingShareAloneInsufficient": true,
+    "hedgeRequiresNotionalAndMaturityMatch": true
+  },
+  "receipts": [
+    {
+      "issuer": "TSMC",
+      "twseSymbol": "2330",
+      "industry": "semiconductor",
+      "periodEnd": "2023-09-30",
+      "sourceKnownAt": "2023-11-14T06:15:28Z",
+      "sourceType": "official SEC 6-K exhibit consolidated financial statements",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1046179/000104617923000023/tsmc2023q3consolidatdfinan.htm",
+      "exposureState": {
+        "debtRateMix": "MAJORITY_FIXED_RATE",
+        "shortTermFloatingPrincipal": null,
+        "longTermFixedPrincipal": null,
+        "resetIndex": null,
+        "resetFrequency": null,
+        "hedgeNotional": null
+      },
+      "evidence": "The filing states that the majority of debt is fixed-rate and carried at amortized cost.",
+      "unknowns": [
+        "exact fixed/floating principal split",
+        "reset terms",
+        "debt hedge notional"
+      ],
+      "pitQuality": "EXACT_SEC_ACCEPTANCE_TIMESTAMP / SOURCE_ATTESTED_SEMANTIC_STATE"
+    },
+    {
+      "issuer": "TSMC",
+      "twseSymbol": "2330",
+      "industry": "semiconductor",
+      "periodEnd": "2023-03-31",
+      "sourceKnownAt": null,
+      "sourceKnownAtStatus": "SEC_SOURCE_EXISTS_BUT_EXACT_ACCEPTANCE_TIMESTAMP_NOT_FROZEN_IN_THIS_RECEIPT",
+      "sourceType": "official SEC quarterly consolidated financial statements",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1046179/000162828023017752/tsmc2023q1.htm",
+      "exposureState": {
+        "shortTermDebtRateMix": "ALL_FLOATING_RATE",
+        "longTermDebtRateMix": "MAJORITY_FIXED_RATE",
+        "hedgeUse": "INTEREST_RATE_DERIVATIVES_MAY_PARTIALLY_HEDGE_INVESTMENTS_AND_ANTICIPATED_DEBT_ISSUANCE"
+      },
+      "evidence": "The filing states all short-term debt was floating-rate and the majority of long-term debt was fixed-rate.",
+      "unknowns": [
+        "exact source acceptance timestamp in this receipt",
+        "exact principal split",
+        "next reset dates"
+      ],
+      "pitQuality": "SEMANTIC_REPLAY_READY / TIMESTAMP_REFINEMENT_PENDING"
+    },
+    {
+      "issuer": "UMC",
+      "twseSymbol": "2303",
+      "industry": "semiconductor",
+      "eventDate": "2023-09-06",
+      "sourceKnownAt": "2023-09-06",
+      "sourceType": "official SEC 6-K corporate-bond issuance announcement",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1033767/000095017023049514/umc-ex99.htm",
+      "exposureState": {
+        "instrument": "2023 first unsecured straight corporate bond",
+        "principalTWDmillion": 10000,
+        "tenorYears": 5,
+        "rateType": "FIXED",
+        "couponPct": 1.62,
+        "collateral": "NONE",
+        "put": "NONE",
+        "call": "NONE"
+      },
+      "evidence": "The first 2023 unsecured straight corporate bond was priced at a fixed 1.62% for five years.",
+      "unknowns": [
+        "bank-loan floating principal at the same timestamp",
+        "bank-loan reset terms"
+      ],
+      "pitQuality": "EXACT_EVENT_DATE / CONTRACT_TERMS_REPLAYABLE"
+    },
+    {
+      "issuer": "Chunghwa Telecom",
+      "twseSymbol": "2412",
+      "industry": "telecom",
+      "periodEnd": "2023-12-31",
+      "sourceKnownAt": "2024-04-17T06:05:47Z",
+      "sourceType": "official SEC Form 20-F",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000095017024044919/cht-20231231.htm",
+      "exposureState": {
+        "nonFixedLoans": "BENCHMARK_LINKED",
+        "shockBps": 25,
+        "pretaxSensitivityTWDmillion": 17.4,
+        "interestRateDerivativeHedge": "NONE"
+      },
+      "evidence": "A +/-25 bp change in non-fixed-rate financial assets and loans would change 2023 pretax profit by about NT$17.4m; no interest-rate derivatives were used.",
+      "unknowns": [
+        "non-fixed loan principal split",
+        "benchmark identity",
+        "reset frequency"
+      ],
+      "pitQuality": "EXACT_SEC_ACCEPTANCE_TIMESTAMP / SENSITIVITY_REPLAYABLE"
+    },
+    {
+      "issuer": "Chunghwa Telecom",
+      "twseSymbol": "2412",
+      "industry": "telecom",
+      "periodEnd": "2024-12-31",
+      "sourceKnownAt": "2025-04-16T06:02:44Z",
+      "sourceType": "official SEC Form 20-F",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000095017025054474/cht-20241231.htm",
+      "exposureState": {
+        "nonFixedLoans": "BENCHMARK_LINKED",
+        "shockBps": 25,
+        "pretaxSensitivityTWDmillion": 27.9,
+        "interestRateDerivativeHedge": "NONE"
+      },
+      "evidence": "A +/-25 bp change in non-fixed-rate financial assets and loans would change 2024 pretax profit by about NT$27.9m; no interest-rate derivatives were used.",
+      "unknowns": [
+        "non-fixed loan principal split",
+        "benchmark identity",
+        "reset frequency"
+      ],
+      "pitQuality": "EXACT_SEC_ACCEPTANCE_TIMESTAMP / MULTI_DATE_SAME_ISSUER_REPLAY"
+    }
+  ],
+  "falsificationFindings": [
+    "TSMC demonstrates that fixed long-term debt can coexist with floating short-term debt; one fixed/floating percentage cannot describe transmission timing.",
+    "Chunghwa Telecom shows rate sensitivity can rise across years even while management still describes the overall exposure as immaterial.",
+    "UMC's fixed-rate bond receipt proves issue-level rate type is directly timestampable, while missing bank-loan reset detail remains UNKNOWN.",
+    "The replay supports exposure feasibility, not a directional stock signal."
+  ],
+  "maturityDecision": {
+    "proposedLevel": "L3",
+    "maturityPct": 60,
+    "rationale": "Source-attested PIT rate-exposure states are replayable across multiple Taiwan non-financial issuers, industries and dates, including exact event/filing times and explicit UNKNOWN fields. L3 means data feasibility only; no equity outcome has been opened."
+  },
+  "next": [
+    "Expand exact fixed/floating principal amounts and reset terms where disclosed.",
+    "Add hedge notional/maturity receipts and compute unhedged repricing principal only where source-attested.",
+    "Preregister rate-rise and rate-fall exposure tests controlling D13, D22-01 and D22-04 before L4.",
+    "Do not infer missing floating principal from sensitivity amounts."
+  ]
+}
