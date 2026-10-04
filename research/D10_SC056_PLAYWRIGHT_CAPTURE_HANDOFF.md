@@ -1,7 +1,7 @@
 # D10 SC-056 Playwright Capture Engineering Handoff
 
-Status: READY_FOR_CODEX
-Updated: 2026-10-04 19:13 Asia/Taipei
+Status: IMPLEMENTED_LOCAL_VERIFIED / CI_SOURCE_ACCESS_BLOCKED / ACCEPTANCE_INCOMPLETE
+Updated: 2026-10-04 19:45 Asia/Taipei
 Repository: `imihan0630-sys/v7-fugle-worker`
 Authoritative branch: latest `main`
 Observed main at handoff creation: `222398b54a10d4075ec4f0c06b823d438561f9aa`
@@ -72,7 +72,80 @@ A first implementation is acceptable only when all of the following are proven:
 
 ## Exact next action
 
-Create a task branch from latest main, inspect the MOEA page/DOM with Playwright, implement the smallest read-only collector + fixture test + manual GitHub Actions smoke workflow, run it, save the first verified capture artifact, then update this handoff with branch/PR/commit/tests/readback and the next continuation point.
+Resume **draft PR #547**, branch `research/sc056-playwright-capture`; do not
+reimplement the collector or repeat source discovery. GitHub-hosted live CI is
+blocked by MOEA's Cloudflare security service (HTTP 403). Restore source-approved
+access for the CI execution environment through the normal authorized path,
+then manually dispatch `sc056-moea-playwright-smoke.yml` on that branch with
+`month=2025-01`. Do not rotate/spoof clients or bypass the source security block.
+After two successful CI captures, download the exact run/attempt artifact,
+verify its SHA-256 manifests and semantic replay, append it under `evidence/`,
+and only then mark the implementation acceptance complete / ready for merge.
+No recurring schedule, production deployment, or research promotion is authorized.
+
+## 2026-10-04 implementation milestone
+
+- Started from latest main `3c28637ff2ac833b7d08f1b9bd623a5354334d30`.
+- Branch: `research/sc056-playwright-capture`; Class A, research only.
+- Source discovery: official survey index menu 6819 exposes `InvestigateDA.aspx`
+  for products; `InvestigateDB.aspx` is industry statistics and is not this chain.
+- Browser-resolved exact source codes: 2433020 / 2630010 / 2630040. Production
+  and inventory controls both verified. Units: 公噸 / 平方呎 / 平方呎.
+- Standalone implementation: `research/data-capture/sc056/`; Playwright 1.63.0,
+  Chromium headless. Workflow: `.github/workflows/sc056-moea-playwright-smoke.yml`.
+- Local targeted tests: 19/19 PASS. Local live smoke 2025-01: PASS, two fresh
+  contexts; all six values match SC-055; archives read back with verified hashes.
+- Local semantic fingerprint:
+  `70eecad5784520d865ea42f15627fb9c4117797692f97f0d4074fc7505545232`.
+- Local raw-result hash (both runs):
+  `0fdb61785aa18a581aa1e7eebeb97210ecef91ef2c9a6da42a76871dbc8a3c74`.
+- Capture clocks: 2026-10-04 19:34:46 / 19:34:56 Asia/Taipei. Native record
+  `sourcePublishedAt` remains UNKNOWN; historical first-publication/PIT proof is
+  not supplied by a current historical replay.
+- Existing Worker regression command fails its previous-quarter EPS expected
+  exception on unchanged Worker.js. No production/system2 files are changed;
+  that unrelated baseline failure is not counted as collector acceptance.
+- CI and permanent first-CI-artifact acceptance are pending. No recurring schedule.
+- D10-02 remains L2; engineering completion cannot promote research maturity.
+
+## 2026-10-04 durable execution checkpoint — source blocker identified
+
+- PR: https://github.com/imihan0630-sys/v7-fugle-worker/pull/547 (draft, unmerged).
+- Implementation commits: `878ea020c800c8474159aae7fccf7c687a2897d8`
+  (collector/tests/workflow), `8024f60d557c57b969a5f0a361b17da58bc3894a`
+  (source-navigation diagnostics). Read latest PR head for appended evidence/docs.
+- Branch was synchronized with main `6c4bcdaa` before the implementation commit;
+  later unrelated main progress must be synchronized, not replayed as new work.
+- Permanent verified **local**, not CI, receipts are on the PR branch at
+  `research/data-capture/sc056/evidence/local-20261004/`. Two fresh Chromium
+  contexts at 19:42:22 / 19:42:33 Asia/Taipei match all six 2025-01 baseline values,
+  the semantic fingerprint and raw-result hash above. Both capture receipts name
+  exact collector commit `8024f60d557c57b969a5f0a361b17da58bc3894a`; manifests
+  were independently read back after capture. No native publication clock is inferred.
+- CI targeted tests: 19/19 PASS on Node 22 / pinned Playwright 1.63.0.
+- PR checks on implementation commit 8024f60d:
+  - collector fixture workflow 37199608797 PASS;
+  - V8 Regression Tests 37199608723 PASS;
+  - V8 Repair CI 37199608681 PASS.
+  The separate legacy local command against raw Worker.js still fails as noted
+  above; the repository's standard CI workflows pass. These are distinct checks.
+- Live manual run 37199450918: FAIL at source navigation, zero captures.
+- Diagnostic live manual run 37199605968: FAIL, source HTTP 403, title
+  `Attention Required! | Cloudflare`, body `Sorry, you have been blocked / You
+  are unable to access moea.gov.tw`, Ray ID `a453ed505cc8284e`. Browser request
+  guard violations: none. No query POST or fabricated data resulted from that run.
+- Both failed CI artifacts were downloaded through the GitHub connector and
+  verified against GitHub's artifact SHA-256, then preserved on the PR branch:
+  `evidence/ci-37199450918-1/` and `evidence/ci-37199605968-1/` beneath the collector.
+- All unaffected implementation work is durable; no source-access workaround,
+  self-hosted runner, secret, recurring task or deployment was introduced.
+- Acceptance result: exact products / historical replay / JSON / units / missing
+  semantics / repeatability / drift tests / isolation are proven locally; **CI
+  opening the official page remains NOT PROVEN, so the full gate is NOT PASS**.
+- Last actual execution stopped at the identified source-access boundary. There
+  is no background continuation. The exact next action above is the only remaining
+  implementation acceptance step; publication-clock enrichment is a separate
+  UNKNOWN-capable future source-evidence task.
 
 ## Approval boundary
 
