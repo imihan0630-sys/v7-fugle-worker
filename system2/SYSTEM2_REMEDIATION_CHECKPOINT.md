@@ -1,7 +1,7 @@
 # System 2 Remediation Checkpoint
 
-Updated: 2026-10-04 20:26 Asia/Taipei
-Status: ACTIVE / REMEDIATION_LANE / FIX_IN_PROGRESS
+Updated: 2026-10-04 20:33 Asia/Taipei
+Status: ACTIVE / REMEDIATION_LANE / FIX_IMPLEMENTED / PENDING_INDEPENDENT_AUDIT
 Room: System 2｜補強修復室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
@@ -18,55 +18,55 @@ Routing:
 - assignedLane: `REMEDIATION_LANE`
 - assignedRoom: `System 2｜補強修復室`
 - modificationOwner: `SYSTEM2_REMEDIATION_ROOM`
-- severity: `UNKNOWN` — owner handoff did not supply a severity classification; do not invent one
-- implementation status: `FIX_IN_PROGRESS`
+- severity: `UNKNOWN` — the owner handoff did not provide a severity classification, so none was invented
+- implementation status: `FIX_IMPLEMENTED`
+- independent verification: `PENDING_INDEPENDENT_AUDIT`
 - blockedBy: none
 
-Prior correction:
-- `S2-CORR-20261004-002` is `VERIFIED_CLOSED` in the latest canonical Correction Queue and is not reopened by this work.
-- `S2-CORR-20261004-001` remains DATA_LANE ownership and must not be touched.
+Other corrections:
+- `S2-CORR-20261004-002` is `VERIFIED_CLOSED` in the latest canonical Correction Queue and was not reopened.
+- `S2-CORR-20261004-001` remains DATA_LANE ownership and was not touched.
 
-## Canonical diagnosis
+## Implemented semantic model
 
-The contradiction is documentary/governance-only:
+The canonical correction model now keeps three independent axes:
 
-1. `SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md` is the canonical implementation-routing authority.
-2. It states that severity and routing are independent dimensions.
-3. BUILD_LANE may execute correction work only when the correction is assigned as `LOCAL_FIX` or `BUILD_LANE`.
-4. BUILD_LANE must not seize `DATA_LANE` or `REMEDIATION_LANE` work merely because severity is HIGH/CRITICAL.
-5. `SYSTEM2_MASTER.md` still contains the obsolete sentence:
-   `CRITICAL/HIGH directives may be implemented by the build/control room`.
-6. `SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md` also uses generic `builder` wording in a few lifecycle/severity descriptions; although later routing text is correct, the generic wording is ambiguous enough to reintroduce the same ownership mistake.
-7. `SYSTEM2_CHECKPOINT.md` and `shared-knowledge/ROOM_BOOTSTRAP_REGISTRY.json` already contain the correct lane-assignment semantics and should be protected by regression tests rather than gratuitously rewritten.
-8. `SYSTEM2_BUILD_PROGRESS_MAP.md` has an unrelated LOW/LOCAL_FIX documentation drift: `shared 18-domain research` should be `22-domain / 354-module`.
+1. **severity**
+   - CRITICAL / HIGH / MEDIUM / LOW;
+   - expresses seriousness/blocking effect only;
+   - does not grant implementation ownership.
 
-## Required semantic model
+2. **implementation ownership**
+   - determined by `routingClass / assignedLane / modificationOwner`;
+   - BUILD_LANE may implement only formally assigned `LOCAL_FIX / BUILD_LANE` corrections;
+   - BUILD_LANE may not seize DATA_LANE or REMEDIATION_LANE work merely because severity is HIGH/CRITICAL;
+   - ownership transfer requires a formal Correction Queue routing/assignment/modification-owner update before mutation.
 
-Three axes must remain separate:
+3. **verification authority**
+   - separate from implementation ownership;
+   - for CRITICAL/HIGH, the assigned implementation lane may reach `FIX_IMPLEMENTED`;
+   - the same implementation role cannot advance directly to `VERIFIED_CLOSED`;
+   - independent audit / explicit owner override semantics remain unchanged.
 
-- **severity** = CRITICAL / HIGH / MEDIUM / LOW: how serious/blocking the defect is.
-- **routing/assignment** = `routingClass / assignedLane / modificationOwner`: who is authorized to implement/mutate the correction conflict unit.
-- **verification authority** = who may independently close the correction.
+## Canonical files corrected
 
-For CRITICAL/HIGH:
-- the **assigned implementation lane** may progress through `FIX_IMPLEMENTED`;
-- the implementing role does not gain `VERIFIED_CLOSED` authority merely by implementing;
-- independent audit/owner override rules remain unchanged.
-
-Ownership transfer requires a formal queue update to `routingClass / assignedLane / modificationOwner`; a chat room cannot self-seize another lane's correction.
-
-## Active conflict units
-
-This correction may modify only:
 - `system2/SYSTEM2_MASTER.md`
-- `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
-- `system2/SYSTEM2_BUILD_PROGRESS_MAP.md` for the authorized LOW documentation sync
-- `system2/SYSTEM2_CORRECTION_QUEUE.md`
-- `system2/SYSTEM2_CORRECTION_QUEUE.json`
-- this remediation checkpoint
-- one semantic regression test under `system2/tests/`
+  - removed the stale “CRITICAL/HIGH directives may be implemented by the build/control room” rule;
+  - now explicitly states that severity does not grant implementation ownership;
+  - formally gates ownership to queue routing fields.
 
-Read-only consistency surfaces:
+- `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
+  - replaced ambiguous generic `builder` ownership wording with `formally assigned implementation lane`;
+  - made severity / implementation ownership / verification authority explicit;
+  - prohibits chat-based self-seizure of another lane's conflict unit.
+
+- `system2/SYSTEM2_BUILD_PROGRESS_MAP.md`
+  - LOW / LOCAL_FIX documentation-only sync:
+    `shared 18-domain research` -> `shared 22-domain / 354-module research`.
+
+## Read-only consistency surfaces verified
+
+These were already correct and were not gratuitously rewritten:
 - `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - `system2/SYSTEM2_CHECKPOINT.md`
 - `shared-knowledge/ROOM_BOOTSTRAP.md`
@@ -74,38 +74,68 @@ Read-only consistency surfaces:
 - `AGENTS.md`
 - `system2/CHATGPT_PROJECT_INSTRUCTIONS.md`
 
-## Protected boundaries
+Key readback:
+- Execution Lane Governance: BUILD executes only assigned LOCAL_FIX / BUILD_LANE items and must not seize DATA/REMEDIATION work because it is HIGH.
+- System2 Checkpoint: build room executes only BUILD_LANE/LOCAL_FIX work assigned to it.
+- Room Bootstrap Registry: SYSTEM2 shortStart explicitly says to execute assigned BUILD_LANE/LOCAL_FIX work and forbids seizing DATA_LANE/REMEDIATION_LANE.
 
-No changes are authorized to:
-- System 1 Formal Core;
-- System 2 strategy/ranking/final-selection;
-- capital/order behavior;
-- production push;
-- production runtime.
+## Semantic guard
 
-## Tests / evidence
+Added:
+`system2/tests/correction_routing_governance_semantics.test.mjs`
 
-Completed:
-- repo-wide search isolated the direct contradictory Master sentence;
-- Correction Governance generic `builder` wording identified for semantic tightening;
-- System2 Checkpoint and Room Bootstrap Registry verified already consistent with lane routing;
-- only one `shared 18-domain research` drift found in Build Progress Map.
+The guard fails if:
+- the obsolete Master CRITICAL/HIGH -> BUILD sentence returns;
+- Master stops separating severity from implementation ownership;
+- Correction Governance returns to ambiguous builder ownership wording;
+- BUILD assignment/anti-seizure rules disappear from Execution Lane Governance or Checkpoint;
+- SYSTEM2 bootstrap stops enforcing assigned BUILD/LOCAL-only execution;
+- Build Progress Map regresses to `shared 18-domain research`.
 
-Pending:
-- minimal canonical wording fixes;
-- semantic regression test;
-- System2 Research CI;
-- V8 Regression;
-- latest-main drift reconciliation;
-- Correction Queue implementation evidence;
-- final merged-main readback.
+## CI / physical evidence
+
+PR: `#556` — `System2 CORR-003: align correction routing ownership governance`.
+
+Initial implementation head:
+`5fc3b9c43ea0f79fe6fa5b714dae53d868ab69f2`
+
+- System2 Research CI `37202451095`: PASS.
+  - all research-only tests PASS;
+  - runtime/deployment syntax checks PASS;
+  - SQL validation PASS;
+  - production isolation guard PASS.
+- V8 Regression `37202451081`: PASS.
+  - production Worker guarded build PASS;
+  - syntax/offline regression PASS;
+  - read-only production authorization preflight PASS;
+  - latest after-market read-only diagnostic PASS.
+
+Changed-file scope before final evidence:
+- SYSTEM2_MASTER
+- SYSTEM2_CORRECTION_GOVERNANCE
+- SYSTEM2_BUILD_PROGRESS_MAP
+- Correction Queue MD/JSON
+- Remediation Checkpoint
+- one semantic regression test
+
+No System 1 Formal Core, System 2 strategy/ranking/final-selection, capital/order, production push or production runtime file was changed.
+
+Latest-main drift check before final evidence:
+- main = `d199a70b14dc56374a5f51433ee5648b5ae6ce7d`;
+- no concurrent drift from the branch base.
+
+## Remaining UNKNOWN / residual
+
+- `severity` for CORR-003 remains `UNKNOWN` because the explicit owner handoff supplied routing/ownership but did not supply a severity classification.
+- This does not block implementation because routing ownership is explicit.
+- Independent auditor may classify severity during verification without changing the already-fixed routing semantics.
+- No remaining canonical severity-implies-BUILD contradiction was found in the scanned System 2 governance/bootstrap/checkpoint surfaces.
+- No runtime/trading residual is introduced because this correction is documentation/governance/test only.
 
 ## Exact next continuation point
 
-1. Correct Master and Correction Governance so severity never implies BUILD ownership.
-2. Change Build Progress Map `18-domain` -> `22-domain / 354-module` only.
-3. Add semantic regression coverage across Master / Correction Governance / Execution Lane Governance / Checkpoint / Room Bootstrap Registry / Build Progress Map.
-4. Run System2 Research CI and V8 Regression.
-5. Re-read latest main and reconcile shared queue drift without overwriting DATA_LANE/AUDIT_LANE work.
-6. Set `S2-CORR-20261004-003` to `FIX_IMPLEMENTED` with durable evidence, not `VERIFIED_CLOSED`.
-7. Merge and hand back to the independent correction auditor.
+1. Require the final PR #556 head, including queue/checkpoint evidence commits, to pass System2 Research CI and V8 Regression again.
+2. Re-read latest main immediately before merge and reconcile any shared Correction Queue drift without overwriting DATA_LANE/AUDIT_LANE evidence.
+3. Merge only if PR remains mergeable and protected boundaries remain unchanged.
+4. Re-read merged main for canonical wording and CORR-003 = `FIX_IMPLEMENTED`.
+5. Hand CORR-003 to `SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR` for independent verification; do not self-mark `VERIFIED_CLOSED`.
