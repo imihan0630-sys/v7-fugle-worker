@@ -7,17 +7,12 @@ on:
     paths:
       - "research/d08_twse_daily_valuation_backfill_request_v0_1.json"
   workflow_dispatch:
-    inputs:
-      year:
-        description: "Single year 2017..2026; blank means matrix"
-        required: false
-        type: string
 
 permissions:
   contents: read
 
 concurrency:
-  group: d08-twse-valuation-year-backfill-${{ github.ref }}-${{ inputs.year || 'matrix' }}
+  group: d08-twse-valuation-year-backfill-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -27,7 +22,6 @@ jobs:
       max-parallel: 2
       matrix:
         year: [2017,2018,2019,2020,2021,2022,2023,2024,2025,2026]
-    if: ${{ inputs.year == '' || inputs.year == null || inputs.year == format('{0}', matrix.year) }}
     runs-on: ubuntu-latest
     timeout-minutes: 25
     environment: system2-research
