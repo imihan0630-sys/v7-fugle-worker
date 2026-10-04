@@ -131,7 +131,7 @@ jobs:
               d=roc_to_iso(get(r,f_date))
               close=num(get(r,f_close)); settle=num(get(r,f_settle))
               vol=num(get(r,f_vol)); oi=num(get(r,f_oi))
-              px=settle if settle is not None else close
+              px=settle if settle is not None and settle>0 else (close if close is not None and close>0 else None)
               if px is None: continue
               obs.setdefault(d,[]).append({"expiry":exp,"close":close,"settlement":settle,"price":px,"volume":vol,"oi":oi})
 
@@ -155,7 +155,7 @@ jobs:
               front,nextc,far=cs[:3]
               def ann_roll(a,b):
                   dd=b["calendarDte"]-a["calendarDte"]
-                  if dd<=0: return None
+                  if dd<=0 or not a["price"] or a["price"]<=0: return None
                   return (a["price"]-b["price"])/a["price"]*365/dd
               front_basis=None if d not in spot else front["price"]-spot[d]
               front_basis_bps=None if front_basis is None else front_basis/spot[d]*10000
@@ -236,7 +236,7 @@ jobs:
                   "regular session only for primary curve",
                   "monthly TX contracts only",
                   "weekly/flexible contracts excluded",
-                  "settlement and close are not silently mixed when settlement exists",
+                  "use settlement only when >0; otherwise use positive close; if neither is positive the row is UNKNOWN/excluded",
                   "front basis uses same-date TAIEX close only",
                   "OI and volume remain separate liquidity/position dimensions",
                   "expiry-day and near-expiry states are explicitly flagged by DTE",
