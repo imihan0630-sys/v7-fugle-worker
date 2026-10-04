@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "S2_CORRECTION_INDEPENDENT_VERIFICATION_V0_1",
+  "directiveId": "S2-CORR-20261004-002",
+  "verifiedAt": "2026-10-04T19:30:03+08:00",
+  "verifiedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "auditBaseMainSha": "4b988fbb762bc5ada1b1c7d6651ad6bcc217e549",
+  "result": "VERIFIED_CLOSED",
+  "acceptance": {
+    "canonicalCapabilityStateConsistent": true,
+    "virtualVsActualSeparated": true,
+    "noOperationalActualHoldingsClaimWithoutEvidence": true,
+    "futureActualHoldingsProvenanceGatePresent": true,
+    "system1AndProductionBoundariesUnchanged": true
+  },
+  "implementation": {
+    "primaryPr": 536,
+    "primaryMergeSha": "0774a356377efc6892e72bf60c202561d227e47b",
+    "evidenceCloseoutPr": 540,
+    "evidenceCloseoutMergeSha": "1614911f3d7922dc506fae20334a053eb77bc3d1"
+  },
+  "ci": [
+    {
+      "pr": 536,
+      "workflow": "System2 Research CI",
+      "runId": 37197495890,
+      "result": "PASS"
+    },
+    {
+      "pr": 536,
+      "workflow": "V8 Regression Tests",
+      "runId": 37197495893,
+      "result": "PASS"
+    },
+    {
+      "pr": 540,
+      "workflow": "System2 Research CI",
+      "runId": 37197938887,
+      "result": "PASS"
+    },
+    {
+      "pr": 540,
+      "workflow": "V8 Regression Tests",
+      "runId": 37197938899,
+      "result": "PASS"
+    }
+  ],
+  "verificationEvidence": [
+    "Independent audit re-read latest main before closure (audit branch base 4b988fbb762bc5ada1b1c7d6651ad6bcc217e549) rather than relying on the remediation-room completion claim.",
+    "Canonical Master/Architecture/Position Management/Storage/Build Progress/Checkpoint/UI/candidate lifecycle/capacity/strategy identity surfaces consistently separate TARGET_ONLY / DESIGN_APPROVED / VIRTUAL_POSITION_READY / ACTUAL_HOLDINGS_SOURCE_NOT_WIRED / ACTUAL_POSITION_MONITOR_VERIFIED=false.",
+    "Latest-main search confirms the former misleading present-tense operational claims are absent from live capability statements. Remaining exact phrase occurrences are confined to correction history, explicit prohibitions/negative assertions, or the semantic regression test.",
+    "SYSTEM2_STORAGE_SCHEMA explicitly keeps s2_positions virtual/simulated only, forbids overloading it with actual holdings, and requires owner-authorized provenance/reconciliation before any future actual-holdings store/adapter.",
+    "Candidate lifecycle and current runtime evidence remain virtual-only: SIM_FILLED -> POSITION_MONITOR and resonance persistence reads s2_positions; this is not relabeled as owner actual holdings.",
+    "Institutional UI contract requires SIMULATED / VIRTUAL labels and forbids populating an owner actual-holdings board while ACTUAL_POSITION_MONITOR_VERIFIED=false.",
+    "PR #536 changed only System 2 canonical docs/state plus system2/tests/position_monitor_capability_semantics.test.mjs; no System 1 file was changed. PR #540 changed only the correction queue MD/JSON and remediation checkpoint.",
+    "PR #536 System2 Research CI 37197495890 PASS and V8 Regression 37197495893 PASS. PR #540 System2 Research CI 37197938887 PASS and V8 Regression 37197938899 PASS.",
+    "Protected boundaries remain intact: no System1 Formal Core/holdings/runtime mutation, no capital/order authority, no production push, and no inferred actual fills/holdings.",
+    "Residual limitation is explicit and acceptable for this correction: no actual-holdings source/reconciliation/runtime is wired or physically verified. Any future broker or System1 shared-holdings integration remains OWNER_DECISION_REQUIRED."
+  ],
+  "residuals": [
+    "ACTUAL_HOLDINGS_SOURCE_NOT_WIRED",
+    "ACTUAL_POSITION_MONITOR_VERIFIED=false",
+    "Future broker/System1 shared-holdings integration requires separate owner decision and evidence."
+  ],
+  "closureMeaning": "Closes the false-current-capability/documentation-runtime mismatch only. It does not assert that owner actual holdings are operationally monitored."
+}
