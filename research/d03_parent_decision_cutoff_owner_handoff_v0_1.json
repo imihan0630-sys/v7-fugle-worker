@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "D03_PARENT_DECISION_CUTOFF_OWNER_HANDOFF_V0_1",
+  "updatedAt": "2026-10-04T16:50:00+08:00",
+  "classification": "CLASS_B_PROPOSAL_ONLY",
+  "producer": "D03",
+  "owner": "SYSTEM1_SHARED_IMMUTABLE_C1_PARENT",
+  "formalCore": "LOCKED",
+  "currentGap": {
+    "canonicalDecisionCutoffRequired": true,
+    "deployedC1DecisionAtPresent": true,
+    "deployedDecisionCutoffAtPresent": false,
+    "decisionAtMaySubstituteForCutoff": false,
+    "historicalBackfillAllowed": false
+  },
+  "clocks": {
+    "required": [
+      "decisionCutoffAt",
+      "decisionAt"
+    ],
+    "preferred": [
+      "formalFrozenAt",
+      "captureCompletedAt"
+    ],
+    "ordering": "decisionCutoffAt <= formalFrozenAt <= decisionAt_or_captureCompletedAt"
+  },
+  "recommendedBoundary": {
+    "location": "runAfterMarketScanCore immediately before first Formal selection/scoring computation",
+    "currentAnchor": "selectTomorrowCandidates(marketState, rows, ...)",
+    "condition": "all Formal-affecting external/source reads complete before cutoff",
+    "ownerMustReauditCurrentBuiltWorker": true
+  },
+  "generationBinding": [
+    "generationId_or_captureGeneration",
+    "scanDate",
+    "decisionCutoffAt",
+    "runtimeVersion",
+    "selectionRuleVersion",
+    "populationContentDigest_or_parentKeysetDigest",
+    "sourceSemanticFingerprint",
+    "formalResultFingerprint_if_owner_contract_requires"
+  ],
+  "forbiddenBackfill": [
+    "SCHEDULED_1810_AS_RETROSPECTIVE_CUTOFF",
+    "COPY_DECISION_AT",
+    "COPY_CAPTURED_AT",
+    "DERIVE_FROM_CHILD",
+    "DERIVE_FROM_SOURCE_REPORTED_TIME",
+    "RECOMPUTE_OLD_GENERATION"
+  ],
+  "firstAcceptance": [
+    "GENUINE_TRADING_SESSION_ONLY",
+    "PHYSICAL_C1_READBACK",
+    "DECISION_CUTOFF_PERSISTED",
+    "CUTOFF_LE_DECISION_AT",
+    "GENERATION_AND_KEYSET_INTEGRITY",
+    "FORMAL_PARITY",
+    "NO_SYNTHETIC_BACKFILL"
+  ],
+  "d03UseAfterAcceptance": [
+    "PRE_CUTOFF_EXACT_VERSION_SNAPSHOT",
+    "POST_PARENT_BOUNDED_REVISION_RECONCILIATION",
+    "NO_GAP_THROUGH_CUTOFF",
+    "BOLLINGER_L3_REVIEW_FIRST",
+    "ADX_RECURSIVE_REPLAY_SEPARATE"
+  ],
+  "currentD03MaturityPct": 56.7,
+  "maturityChangeFromHandoff": 0,
+  "formalOptimizationCandidate": "NONE"
+}
