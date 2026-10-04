@@ -277,3 +277,24 @@ D20-11 remains bounded behavioral narrative/social diffusion owner only when ind
 The same PTT/news/theme primitive cannot become independent attention/herding/narrative/event/membership votes by construction.
 
 D20-11 remains at its canonical maturity; H08 closure itself adds no maturity or Formal change.
+
+
+## 00 routed COV-10 exact remaining delta — 2026-10-04
+
+COV-10 remains PARTIAL.
+
+Do not redo the existing D20-04 / D20-05 / D20-07 / D20-08 / D20-12 foundation.
+
+Exact remaining delta:
+1. define confirmation bias, belief perseverance and conservatism as separate mechanisms under one possible belief-updating family;
+2. prove that a common owner adds capability beyond Anchoring/Reference, Representativeness/Recency and Underreaction/Post-event Drift;
+3. freeze at least one Taiwan-replayable non-price-only observable proxy;
+4. define first-known, edit/revision/version and UNKNOWN semantics;
+5. falsify attention, anchoring, representativeness and structural information-diffusion alternatives;
+6. prohibit three named biases from becoming three correlated votes;
+7. choose exactly one terminal recommendation;
+8. commit `research/COV10_D20_SPECIALIST_RETURN_V0_1.md`.
+
+If no independent observable family survives, return NOT_A_GAP / MERGE_INTO_EXISTING / EVIDENCE_INSUFFICIENT rather than inventing psychology from price action.
+
+No maturity or Formal change is authorized by this routing.
