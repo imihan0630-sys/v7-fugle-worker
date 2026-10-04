@@ -1,0 +1,77 @@
+{
+  "contractId": "D03_TPEX_PRICE_RESET_MACHINE_CONTRACT_V0_1",
+  "updatedAt": "2026-10-04T14:16:00+08:00",
+  "status": "BOUNDED_PHYSICAL_PASS",
+  "formalCore": "LOCKED",
+  "workflowRunId": 37182282950,
+  "endpoints": {
+    "exDailyQ": "https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ",
+    "reductionReference": "https://www.tpex.org.tw/www/zh-tw/bulletin/revivt",
+    "exAnnouncementDiscovered": "https://www.tpex.org.tw/www/zh-tw/bulletin/prePost"
+  },
+  "exDailyQ": {
+    "interval": [
+      "2026-07-01",
+      "2026-10-04"
+    ],
+    "httpStatus": 200,
+    "stat": "ok",
+    "rowCount": 587,
+    "totalCount": 587,
+    "sha256": "7fe0627f0da66c146b6cd076b72aed8a841bd37e804461602d33f9c8c2768538",
+    "csvSha256": "214e116e9b50793a25ad8530eef29f55c7bcbd78e8589e79f3cc0f0bc3287443",
+    "jsonCsvKeysetEquivalent": true
+  },
+  "reductionReference": {
+    "interval": [
+      "2026-01-01",
+      "2026-10-04"
+    ],
+    "httpStatus": 200,
+    "stat": "ok",
+    "rowCount": 11,
+    "totalCount": 11,
+    "sha256": "0b0f9aaa0d0e4c3e396078f0d4ce04964bb90d3e2059326734148d0b4ddaff4d",
+    "csvSha256": "305f837ce6fb1b23f8494c97bb337d061eb808d285db01426091260dbbcb912d",
+    "jsonCsvKeysetEquivalent": true
+  },
+  "sourceLocalEmpty": [
+    {
+      "endpoint": "exDailyQ",
+      "date": "2026-10-04",
+      "httpStatus": 200,
+      "stat": "ok",
+      "rowCount": 0,
+      "totalCount": 0
+    },
+    {
+      "endpoint": "revivt",
+      "date": "2026-10-04",
+      "httpStatus": 200,
+      "stat": "ok",
+      "rowCount": 0,
+      "totalCount": 0
+    }
+  ],
+  "prospectiveKnowledgeClock": {
+    "mode": "PROSPECTIVE_OBSERVED",
+    "historicalBackfillAllowed": false,
+    "requiresCaptureNoLaterThanParentCutoff": true
+  },
+  "d03": {
+    "maturityPct": 56.7,
+    "bollingerLevel": "L2",
+    "adxLevel": "L2",
+    "nextBollingerMaturityPct": 58.3,
+    "nextAdxMaturityPct": 60
+  },
+  "notYetSatisfied": [
+    "FIRST_GENUINE_V8_17_PARENT_READBACK",
+    "PARENT_CUTOFF_SAFE_CONTINUITY_RECEIPT",
+    "COMPLETE_PARENT_ATTEMPT_ACCOUNTING",
+    "PRICE_LIMIT_SPECIAL_SESSION_PROVENANCE",
+    "ADX_RECURSIVE_REPLAY"
+  ],
+  "outcomes": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
