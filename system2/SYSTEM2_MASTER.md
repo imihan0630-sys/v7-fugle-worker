@@ -618,3 +618,9 @@ This is characterization, not certification. `emptyMonthSemanticsCertified`, rev
 PR #452 physically certified the frozen official MOPSOV empty-company-month signature with four empty controls, three same-endpoint positive controls and fail-closed drift tests. `emptyMonthSemanticsCertified=true` is now valid only for this narrow source contract.
 
 Global revision completeness, no-event authority, technical continuity, selection, push, capital and order authority remain false.
+
+## 2026-10-04 MOPSOV high-row transport milestone
+
+PR #455 physically verified exact full-query versus month-shard reconciliation for the three highest-row companies in a frozen 11-company MOPSOV sample: 2891 (391 rows), 3711 (383) and 2881 (300). No one-sided/duplicate keys or pagination hints were observed.
+
+The next S2-07 revision-source blocker is historical version knownAt semantics. Revision completeness and all trading authorities remain false.
