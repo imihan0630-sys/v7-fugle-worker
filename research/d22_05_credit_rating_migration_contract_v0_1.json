@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "D22_05_CREDIT_RATING_MIGRATION_CONTRACT_V0_1",
+  "generatedAt": "2026-10-04T08:43:00+08:00",
+  "module": "D22-05",
+  "level": "L2",
+  "maturityPct": 40,
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_DISCLOSURE_ROUTE_FEASIBLE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "researchQuestion": "Do PIT rating-state changes add information beyond contemporaneous market credit pricing, accounting distress and already-known public information?",
+  "eventTaxonomy": [
+    "issuer_rating",
+    "issue_rating",
+    "outlook_change",
+    "watch_or_review",
+    "upgrade",
+    "downgrade",
+    "notching_or_instrument_specific_change",
+    "withdrawal_or_no_rating"
+  ],
+  "mechanism": [
+    "Ratings aggregate agency assessment of default/credit quality and can affect mandates, collateral eligibility, funding access and refinancing terms.",
+    "Outlook/watch/review can carry information before a formal notch change; the formal downgrade may therefore be partly or fully anticipated.",
+    "Issuer rating and issue rating are not interchangeable because seniority, security, guarantee and structural subordination can change instrument risk."
+  ],
+  "evidenceAndCounterevidence": [
+    {
+      "support": "Classic event studies find negative equity reactions around some downgrades, especially when the news is less anticipated.",
+      "counter": "Equity, CDS and bond markets often anticipate downgrades; short sellers and credit prices can move before the agency action."
+    },
+    {
+      "support": "Rating reviews/watch actions can contain information before the final rating decision.",
+      "counter": "Through-the-cycle rating philosophy can intentionally smooth/transmit information with delay, creating cliff or stale-signal risk."
+    },
+    {
+      "support": "Low ratings can constrain funding or trigger mandate/covenant effects.",
+      "counter": "A downgrade is not universally followed by worse future stock returns; some evidence finds lower subsequent crash risk after negative information is released."
+    }
+  ],
+  "taiwanSourceRoute": [
+    "Taiwan prospectus/annual-report disclosure rules require outstanding bond information including rating agency, rating date and rating result when rated.",
+    "Issuer-vs-issue rating must be preserved separately; rating absence is UNKNOWN/UNRATED, never a low-rating proxy."
+  ],
+  "pitContract": [
+    "Use agency/public release timestamp as knownAt; statement-year labels or later annual-report summaries cannot backfill earlier rating states.",
+    "Store rating agency and native scale; do not merge scales without an explicit mapping table and version.",
+    "Separate outlook/watch/review from notch changes and separate issuer from issue ratings.",
+    "A later rating history table is not historical PIT evidence unless each event timestamp is independently source-attested.",
+    "Corporate actions, guarantees, security changes and debt exchanges create new states and must be linked to D11 event clocks."
+  ],
+  "falsificationGates": [
+    "Downgrade != automatically bearish; measure surprise relative to pre-event equity/credit prices and prior watch/outlook state.",
+    "Do not count rating deterioration as an independent vote if D22-06 spread widening already contains the same information unless residual value is proven.",
+    "Rating changes can be endogenous responses to deteriorating fundamentals already captured by D07/D22-02/D22-03.",
+    "Agency timing/coverage selection can create survivorship and selection bias.",
+    "If rating information adds no incremental value after market credit + fundamentals + event controls, classify REJECTED_OR_REDUNDANT."
+  ],
+  "outcomeGate": "CLOSED",
+  "formalCore": "LOCKED",
+  "next": [
+    "Build Taiwan issuer/issue rating-event PIT receipts with agency/date/action/old/new rating and watch/outlook state.",
+    "Construct anticipated-vs-unanticipated event labels using only pre-known credit/equity information.",
+    "Test rating action separately from pre-event spread/fundamental deterioration before L3/L4."
+  ]
+}
