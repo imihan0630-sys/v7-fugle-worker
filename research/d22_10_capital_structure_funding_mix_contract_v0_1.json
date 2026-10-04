@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "D22_10_CAPITAL_STRUCTURE_FUNDING_MIX_CONTRACT_V0_1",
+  "generatedAt": "2026-10-04T08:48:00+08:00",
+  "module": "D22-10",
+  "level": "L2",
+  "maturityPct": 40,
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / FINANCING_CHOICE_NOT_MONOTONIC / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "researchQuestion": "Does the composition and sequencing of financing sources add information beyond simple leverage, and when do financing choices signal constraint versus opportunity?",
+  "fundingVector": [
+    "internal_cash",
+    "bank_debt",
+    "public_bonds",
+    "private_debt",
+    "secured_debt",
+    "unsecured_debt",
+    "convertible_bonds",
+    "common_equity",
+    "preferred_or_hybrid_if_applicable",
+    "lease_financing",
+    "supplier_finance_if_evidenced",
+    "currency",
+    "seniority",
+    "maturity",
+    "rate_type"
+  ],
+  "theoryMap": [
+    {
+      "theory": "trade_off",
+      "mechanism": "Debt provides tax/discipline benefits but raises distress/agency costs; optimal leverage is state-dependent rather than universally low."
+    },
+    {
+      "theory": "pecking_order",
+      "mechanism": "Information asymmetry can make firms prefer internal funds, then debt, then equity; financing choice can reflect funding deficit rather than valuation signal."
+    },
+    {
+      "theory": "market_timing",
+      "mechanism": "Firms may issue equity/debt when relative financing conditions appear favorable; observed leverage may retain historical financing-market effects."
+    },
+    {
+      "theory": "agency_and_debt_overhang",
+      "mechanism": "Seniority and existing debt can distort investment/financing incentives, especially near distress."
+    }
+  ],
+  "evidenceAndCounterevidence": [
+    {
+      "support": "Research supports dynamic target/trade-off behavior in some firms.",
+      "counter": "Pecking-order and market-timing evidence also exists; no single theory explains all issuers/states."
+    },
+    {
+      "support": "Access to public bond markets is associated with different leverage/funding structures.",
+      "counter": "Access itself is endogenous to size, quality and disclosure."
+    },
+    {
+      "support": "Debt can discipline or tax-shield.",
+      "counter": "Debt can also reduce liquidity, amplify refinancing risk and create debt-overhang/underinvestment."
+    }
+  ],
+  "taiwanSourceRoute": [
+    "Prospectus/annual-report rules disclose funding source, debt issuance terms, repayment funding plan and use of proceeds.",
+    "MOPS/company filings can identify equity/bond issuance events; bank/private debt detail may be incomplete and remains UNKNOWN."
+  ],
+  "pitContract": [
+    "Every financing event has announcement/approval/pricing/issuance/settlement timestamps; use only information public at the decision cutoff.",
+    "Separate stock variables at statement date from flow events between statements.",
+    "Convertible debt remains hybrid until conversion/put/call terms are modeled; do not classify mechanically as straight debt or equity.",
+    "Refinancing, early repayment and debt exchange create new states; later capital actions do not backfill prior structure.",
+    "Financial firms require a separate lane because regulatory capital/deposits make industrial funding semantics non-comparable."
+  ],
+  "falsificationGates": [
+    "More debt != automatically worse and more equity != automatically safer.",
+    "Equity issuance can reflect growth funding, distress, acquisition financing or market timing; sign cannot be assumed.",
+    "High cash + low debt can reflect weak investment opportunity rather than superior quality.",
+    "Do not duplicate D07 leverage or D11 issuance-event evidence; D22-10 owns the funding-structure transformation and sequencing.",
+    "If funding mix adds no information after profitability/growth/leverage/maturity/cost controls, classify REJECTED_OR_REDUNDANT."
+  ],
+  "outcomeGate": "CLOSED",
+  "formalCore": "LOCKED",
+  "next": [
+    "Build Taiwan PIT funding-mix event/state receipts across issuers and industries.",
+    "Create divergent-state examples: high leverage with long cheap debt vs low leverage with near-term funding need; equity issuance for growth vs distress.",
+    "Test incremental value after D07, D11, D22-01/03/04 controls before L3/L4."
+  ]
+}
