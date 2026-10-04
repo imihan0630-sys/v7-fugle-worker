@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "D19_STAGE11_TPEX_SOURCE_AND_CALENDAR_PATH_V0_1",
+  "observedAt": "2026-10-04T21:17:00+08:00",
+  "room": "12",
+  "domain": "D19",
+  "researchOnly": true,
+  "formalCore": "LOCKED",
+  "maturity": {
+    "before": 40,
+    "after": 40,
+    "promoted": false
+  },
+  "tpex": {
+    "mergeCommit": "26688826553ef20212a5341d766f9666d3f19890",
+    "readableRun": 37182305258,
+    "routeState": "CURRENT_INDIVIDUAL_MONTHLY_ROUTE_BOUNDED_READABLE",
+    "sourceId": "TPEX_TRADING_STOCK_MONTHLY",
+    "boundedSymbols": [
+      "3105",
+      "6488"
+    ],
+    "tradingSessionsPerSymbol": 21,
+    "unitNormalization": {
+      "volume": "LOT_1000_SHARES_TO_SHARES",
+      "tradeValue": "THOUSAND_NTD_TO_NTD"
+    },
+    "contentEvidenceHash": "ce1a0c5665fdd9f3ceb7d12a5d72d8337b61e03de3e39e3ba1c2a3698e0aa160",
+    "transportReliabilityCertified": false,
+    "intermittentHostedRunner403Observed": true,
+    "fullMarketPopulationProven": false,
+    "historicalUniverseComplete": false
+  },
+  "dataLane2017": {
+    "TWSE": {
+      "sessions": 246,
+      "packs": 920,
+      "bars": 222194,
+      "replayReadiness": "PARTIAL"
+    },
+    "TPEX": {
+      "sessions": 246,
+      "packs": 753,
+      "bars": 180806,
+      "replayReadiness": "PARTIAL"
+    },
+    "ownership": "DATA_LANE",
+    "doNotDuplicate": true
+  },
+  "d19_04": {
+    "tpexGate": "PARTIAL_PASS_SOURCE_SCHEMA_AND_BOUNDED_ROUTE",
+    "remaining": [
+      "FULL_MARKET_POPULATION_AND_REPLAY",
+      "DATE_VINTAGED_HISTORICAL_UNIVERSE",
+      "SYMBOL_SESSION_AND_CONTINUITY",
+      "PIT_INDUSTRY_VINTAGE",
+      "D03_D09_PAIRED_REDUNDANCY",
+      "D14_COMPATIBLE_COST_PROVENANCE"
+    ]
+  },
+  "d19_12": {
+    "nextCandidate": true,
+    "candidateScope": [
+      "WEEKDAY",
+      "MONTH_OF_YEAR"
+    ],
+    "excludedUntilKnownAtProven": [
+      "HOLIDAY",
+      "PRE_HOLIDAY",
+      "TURN_OF_MONTH"
+    ],
+    "rationale": "Existing executable official historical TWSE calendar plus durable 2017 session evidence may support bounded PIT data-feasibility without depending on D19-04 blockers."
+  },
+  "exactNext": [
+    "Audit D19-12 bounded L3 feasibility for date-intrinsic weekday/month-of-year states.",
+    "Do not duplicate DATA_LANE annual history/universe engineering.",
+    "Keep D19-04 research-side redundancy/industry/cost gates open.",
+    "No automatic maturity promotion."
+  ]
+}
