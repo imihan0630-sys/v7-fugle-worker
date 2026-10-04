@@ -1,0 +1,43 @@
+name: System2 MOPS Realtime Transport Diagnostic Readonly
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_mops_realtime_transport_diagnostic_readonly_v0_1.py"
+      - "system2/SYSTEM2_MOPS_REALTIME_TRANSPORT_DIAGNOSTIC_V0_1.md"
+      - ".github/workflows/system2-mops-realtime-transport-diagnostic-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_mops_realtime_transport_diagnostic_readonly_v0_1.py"
+      - "system2/SYSTEM2_MOPS_REALTIME_TRANSPORT_DIAGNOSTIC_V0_1.md"
+      - ".github/workflows/system2-mops-realtime-transport-diagnostic-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-mops-realtime-transport-diagnostic-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Inspect official MOPS real-time page transport/schema
+        run: python system2/scripts/probe_mops_realtime_transport_diagnostic_readonly_v0_1.py
+      - name: Confirm read-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_mops_realtime_transport_diagnostic_readonly_v0_1.py
+          echo "Read-only MOPS real-time diagnostic boundary PASS"
