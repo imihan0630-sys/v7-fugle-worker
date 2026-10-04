@@ -6,6 +6,14 @@ const pageUrl=base+"/zh-tw/mainboard/listed/delisted.html";
 const newListedPageUrl=base+"/zh-tw/mainboard/applying/status/new-listed.html";
 const currentUrl=base+"/openapi/v1/mopsfin_t187ap03_O";
 const delistedApiBase=base+"/www/zh-tw/company/deListed";
+const applicantApiBase=base+"/www/zh-tw/company/applicantStat";
+const applicantApiCandidates=[
+  applicantApiBase,
+  applicantApiBase+"?date=2026",
+  applicantApiBase+"?date=2025",
+  applicantApiBase+"?date=2024",
+  applicantApiBase+"?date=2023",
+];
 const delistedApiCandidates=[
   delistedApiBase,
   delistedApiBase+"?code=&date=&reason=-1",
@@ -60,6 +68,8 @@ function snippets(text,terms){
 }
 
 const currentRaw=await fetchRaw(currentUrl);
+const applicantApiResults=[];
+for(const url of applicantApiCandidates)applicantApiResults.push(summarize(await fetchRaw(url)));
 const delistedApiResults=[];
 for(const url of delistedApiCandidates)delistedApiResults.push(summarize(await fetchRaw(url)));
 const pageRaw=await fetchRaw(pageUrl);
@@ -93,6 +103,7 @@ console.log(JSON.stringify({
   result:"TPEX_UNIVERSE_ROUTE_DISCOVERY_V0_2",
   currentProfile:summarize(currentRaw),
   delistedApiResults,
+  applicantApiResults,
   delistedPage:summarize(pageRaw),
   newListedPage:summarize(newListedPageRaw),
   newListedPageHints,
