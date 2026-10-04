@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "D20_SOCIAL_PARENT_CORRECTION_V0_1",
+  "parentDecisionReceiptId": "D20SOC-20261004-001",
+  "appendedAtAsiaTaipei": "2026-10-04T16:42:40+08:00",
+  "correctionType": "SOURCE_UPDATE_METADATA_CORRECTION",
+  "originalField": "sourceUpdatedAtObserved",
+  "originalValue": "2026-10-04T16:31:42+08:00",
+  "correctedEvidence": {
+    "articleEditMarker": "2026-10-04T16:32:41+08:00",
+    "atomEntryUpdatedObserved": "2026-10-04T16:32:42+08:00"
+  },
+  "reason": "The parent content was captured after the edit, but the stored update metadata used an earlier observed Atom timestamp. Append correction only; do not rewrite the immutable parent.",
+  "parentContentStateImpact": "NONE_EXPECTED / correction concerns metadata timestamp, not outcome",
+  "rule": "APPEND_ONLY_NEVER_REWRITE_PARENT",
+  "formalCore": "LOCKED"
+}
