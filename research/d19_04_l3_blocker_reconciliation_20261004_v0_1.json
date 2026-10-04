@@ -185,19 +185,21 @@
     },
     {
       "gate": "FACTOR_INPUT_COVERAGE",
-      "current": "PARTIAL_PASS_SESSION_STATES_NARROWED",
+      "current": "PARTIAL_PASS_VALID_OBSERVATION_CONTRACT_AND_DUAL_SOURCE_NONPRICE_CONFIRMED",
       "resolved": [
         "1089 TWSE members explicitly accounted; 1064 KNOWN and 25 explicit UNKNOWN; no silent omission",
         "2 recent listings are legitimate insufficient-lookback states",
         "1218 and 1909 have physically captured official temporary-suspension/resumption provenance",
         "six fewer-than-21-row cases have official event/stop-trading explanations; immutable D19 evidence bundling remains pending",
-        "remaining 15 invalid-close symbols were decomposed into 50 rows: 11 official zero-trade rows and 39 positive-activity/no-OHLC unresolved rows"
+        "remaining 15 invalid-close symbols were decomposed into 50 rows: 11 official zero-trade rows and 39 positive-activity/no-OHLC unresolved rows",
+        "D19-04 executable valid-observation contract and two preregistered lookback comparators",
+        "39 positive-activity/no-valid-close rows cross-checked against TWSE STOCK_DAY: 0 alternate valid closes",
+        "all 50 non-price rows matched volume/value/transaction-count fields exactly across official interfaces"
       ],
       "remaining": [
-        "freeze valid-observation / symbol-session semantics for factor lookback",
-        "reconcile 39 positive-activity/no-OHLC rows using authoritative price/session semantics",
-        "archive immutable receipt-equivalent evidence for the six documented stop-trading/event cases",
-        "shared exchange-complete certification remains required; D19-local NO_EVENT inference prohibited"
+        "archive immutable receipt-equivalent evidence for six documented stop-trading/event cases",
+        "bind shared exchange-complete symbol-session/continuity certification to exact lookback windows",
+        "affected rows remain non-price observations; any valid-observation clock requires preregistered max calendar span and sensitivity analysis"
       ]
     },
     {
@@ -254,14 +256,35 @@
     }
   ],
   "next": [
-    "Freeze D19-04 valid-observation / symbol-session semantics with explicit stale-price and no-forward-fill rules.",
-    "Reconcile the 39 positive-activity/no-OHLC TWSE rows against authoritative price/session-type semantics; unresolved observations remain UNKNOWN.",
-    "Archive immutable receipt-equivalent evidence for the six documented stop-trading/event cases.",
-    "Build a TPEx date-vintaged universe source receipt and source-independent replay from immutable persisted history; do not depend on a currently failing live refetch.",
-    "Bind shared corporate-action continuity receipts to exact D19 formation windows.",
-    "Acquire date-vintaged industry classification before industry neutralization.",
-    "Run D03/D09 paired redundancy control only on compatible identical PIT universe/date inputs.",
-    "Freeze a D14-compatible versioned cost scenario; actual owner-account commission remains UNKNOWN unless directly evidenced.",
+    "Physically qualify TPEx individual-security monthly history as an alternate replay primitive; bounded feasibility is not full-market completion.",
+    "Build TPEx date-vintaged universe and scalable replay path independent of failing full-market live refetch.",
+    "Archive immutable receipt-equivalent evidence for six TWSE stop-trading/event cases and bind shared continuity receipts to exact factor windows.",
+    "Acquire date-vintaged PIT industry classification before industry neutralization.",
+    "Run D03/D09 paired redundancy only on compatible identical PIT universe/date inputs.",
+    "Freeze a D14-compatible versioned component-wise cost scenario; owner-account commission remains UNKNOWN unless directly evidenced.",
     "Only a zero-applicable-blocker deterministic full-Taiwan replay triggers L3 readiness review; no automatic promotion."
-  ]
+  ],
+  "latestStage": "STAGE_10_VALID_OBSERVATION_DUAL_OFFICIAL_SOURCE_RECONCILIATION",
+  "stage10": {
+    "mergeCommit": "81145020202f2806f754007062ae6a60d2979760",
+    "system2CiRun": 37181597861,
+    "v8RegressionRun": 37181597874,
+    "v8RepairRun": 37181597908,
+    "d19RealSourceRun": 37181597868,
+    "validObservationContract": "research/d19_04_valid_observation_contract_v0_1.json",
+    "primaryEvidenceHash": "37d7a2d4922ae857ac9c62ede85a98e8f9fcbe3c75f085d2d776e3d13b0111d4",
+    "crossSourceEvidenceHash": "5e2670ceab44650e7609b604c12bd19fb57d2fb92f2857f7cc4355c3ead878e3",
+    "primaryNonPriceRows": 50,
+    "officialZeroTradeRows": 11,
+    "positiveActivityNoValidCloseRows": 39,
+    "alternateOfficialRowsWithoutValidClose": 50,
+    "positiveActivityResolvedByAlternateOfficialClose": 0,
+    "activityFieldExactMatchCount": 50,
+    "interpretation": [
+      "The 39 positive-activity/no-close cases are not treated as a recoverable single-endpoint omission.",
+      "Two TWSE official source interfaces agree on activity fields and absence of an admissible close.",
+      "Exact transaction-mechanism cause remains UNKNOWN; do not invent one.",
+      "No forward fill, previous-close substitution, zero-return conversion or local suspension inference is allowed."
+    ]
+  }
 }
