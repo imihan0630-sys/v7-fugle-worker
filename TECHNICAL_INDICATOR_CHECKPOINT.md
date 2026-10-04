@@ -3403,3 +3403,82 @@ This is deliberate anti-inflation.
 5. Execute ADX v0.2 only with canonical-anchor FULL_REPLAY for every expected parent; only COMPLETE reconciliation may support D03-09 L3 -> D03 60.0%.
 6. Do not accept TRUSTED_PRIOR_STATE until a separate replay-equivalence certifier exists.
 7. Raw 3-session gate remains independently 2/3; TI-005/TI-006 outcomes remain closed.
+
+
+## TI-631 through TI-635 — immutable parent × continuity binding (2026-10-04)
+
+Durable artifacts:
+- `research/d03_parent_continuity_binding_v0_1.mjs`
+- `tests/test_d03_parent_continuity_binding_v0_1.mjs`
+- `research/D03_PARENT_CONTINUITY_BINDING_V0_1.md`
+
+### TI-631 — source receipt and parent remain separate immutable facts
+The continuity receipt remains a shared source fact and may be reused where semantically valid. The Shadow parent remains a decision-state fact. D03 does not duplicate the whole continuity payload into each parent.
+
+Instead, promotion-grade evidence creates one immutable binding receipt between the exact parent identity and exact continuity receipt identity.
+
+### TI-632 — binding identity prevents cross-generation substitution
+Binding identity includes:
+- scanDate;
+- captureGeneration;
+- symbol;
+- parentSnapshotHash;
+- parent knownAt;
+- continuityReceiptId/version;
+- continuity asOf/capturedAt;
+- sourceHistoryHash;
+- continuityTransformHash;
+- expected eligible date-set hash;
+- actual continuity-bar date-set hash;
+- sourceBarsThrough.
+
+The complete payload hashes to bindingId. A different captureGeneration or parentSnapshotHash therefore produces a different binding identity even for the same symbol and continuity payload.
+
+### TI-633 — temporal/population invariants
+Binding is VALID only when:
+- continuity symbol == parent symbol;
+- continuity asOf == parent scanDate;
+- continuity capturedAt <= parent knownAt;
+- expected eligible session dates == delivered continuity-bar dates;
+- sourceBarsThrough == final delivered bar date;
+- final delivered bar date <= parent scanDate.
+
+Wrong date, late receipt, date-set mismatch and future-bar contamination fail closed.
+
+### TI-634 — bound promotion-grade wrappers
+Promotion-grade research calls now use:
+- `evaluateBoundBollingerL3V0_1`;
+- `evaluateBoundAdxL3V0_1`.
+
+The binding is validated before the hardened v0.2 indicator evaluator executes.
+
+A numerically/source-valid indicator calculation attached to the wrong immutable parent is not L3 evidence.
+
+### TI-635 — physical deterministic acceptance
+Read-only workflow run `37185221432` PASS:
+- cross-generation binding identity changes;
+- wrong asOf -> DATA_BLOCKED;
+- late continuity capture -> DATA_BLOCKED;
+- expected/delivered date-set mismatch -> DATA_BLOCKED;
+- future bar -> DATA_BLOCKED;
+- correctly bound Bollinger v0.2 -> VALID;
+- correctly bound ADX v0.2 -> VALID.
+
+This closes the parent-receipt join-identity design gap only.
+
+No genuine post-V8.17 Taiwan parent was created on Sunday, so D03 remains 56.7%.
+
+Current:
+`PARENT_CONTINUITY_BINDING_V0_1 = PHYSICAL_TEST_PASS`
+`CROSS_GENERATION_RECEIPT_SUBSTITUTION = BLOCKED_BY_IDENTITY`
+`FIRST_GENUINE_V8_17_PARENT = PENDING`
+`D03_10 = L2_REMAINS`
+`D03_09 = L2_REMAINS`
+`D03_MATURITY = 56.7_PERCENT`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Exact next:
+1. Audit the real clock envelope for the first genuine parent: continuity source capture must be known/captured no later than parent knownAt.
+2. Do not assume parent availability alone makes a continuity receipt cutoff-safe.
+3. Freeze any missing pre-parent capture/scheduling requirement outcome-blind.
+4. On the first genuine parent, persist bindingId with every Bollinger/ADX attempt and require complete expected-parent reconciliation.
