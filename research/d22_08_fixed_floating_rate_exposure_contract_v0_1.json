@@ -1,10 +1,10 @@
 {
   "schemaVersion": "D22_08_FIXED_FLOATING_RATE_EXPOSURE_CONTRACT_V0_1",
-  "generatedAt": "2026-10-04T08:46:00+08:00",
+  "generatedAt": "2026-10-04T13:50:00+08:00",
   "module": "D22-08",
-  "level": "L2",
-  "maturityPct": 40,
-  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_ISSUER_SEMANTIC_EXAMPLES_AVAILABLE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "level": "L3",
+  "maturityPct": 60,
+  "status": "TAIWAN_PIT_RATE_EXPOSURE_REPLAY_VALIDATED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "researchQuestion": "Does unhedged repricing structure explain when rate shocks transmit into debt-service pressure beyond the level of policy/risk-free rates?",
   "stateVector": [
     "fixed_principal",
@@ -57,8 +57,15 @@
   "outcomeGate": "CLOSED",
   "formalCore": "LOCKED",
   "next": [
-    "Build Taiwan PIT fixed/floating/reset/hedge receipts across multiple non-financial issuers and dates.",
-    "Construct unhedged repricing-principal measures with explicit UNKNOWN handling.",
-    "Test rate-rise and rate-fall regimes separately before any L4 claim."
-  ]
+    "Expand exact fixed/floating principal amounts and reset terms where source-attested.",
+    "Add hedge notional/maturity receipts and compute unhedged repricing principal only when evidence supports the mapping.",
+    "Pre-register rate-rise and rate-fall tests controlling D13, D22-01 and D22-04 before L4.",
+    "Do not infer missing floating principal or hedge effectiveness from sensitivity amounts alone."
+  ],
+  "maturityDecision": {
+    "level": "L3",
+    "maturityPct": 60,
+    "reason": "Source-attested fixed/floating/rate-sensitivity states are replayable across multiple Taiwan non-financial issuers, industries and dates, with exact UNKNOWN fields retained. This validates PIT data feasibility only."
+  },
+  "replayEvidence": "research/d22_08_rate_exposure_replay_v0_1.json"
 }
