@@ -42,3 +42,32 @@ Concurrent owner-approved COV04/COV05 canonical execution is already complete: D
 A05 and A06 remain NOT_SPECIALIST_READY. No newly established corpus, Taiwan vendor entitlement, scope-owner decision or stock-outcome evidence in this recovery. Exact next: inspect existing D07/D20 scope receipts for A05 before proposing an owner consultation; retain historical upload/revision/corpus gate UNKNOWN until source receipts prove it. A06 stays DATA_BLOCKED/watchlist without country/product/PIT/licensing proof; no contact or purchase authorized. No new broad literature sweep while bounded saturation conditions remain unchanged.
 
 Only this continuation document is updated. No tracker/module/owner/maturity/runtime/Formal change; no scan, push, deployment or outcome test. Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE NONE.
+
+
+## AOKD-05 scope reconciliation — 2026-10-04 Asia/Taipei
+
+00-room inspected the latest D07/D20/D16 owner scopes and existing H05/D07-25 receipts. This closes the owner-triage portion of AOKD-05 without creating a curriculum object.
+
+Canonical receipt:
+- `shared-knowledge/AOKD05_OWNER_SCOPE_RECONCILIATION_20261004_V0_1.md`
+
+Outcome:
+- AOKD-05 is **EXISTING_MULTI_OWNER_SCOPE / DERIVED_DISCLOSURE_DELTA_LANE / DATA_FEASIBILITY_REQUIRED**.
+- No new module, domain, owner reassignment, COV ID, maturity promotion or Formal change.
+- D07-08 owns filing/document vintage and first-known semantics, not economic meaning.
+- Economic disclosure changes route to their existing D07 content owners (including D07-12/13/15/16/17/24/25 as applicable).
+- D16-22 owns text-method validation/replay controls only.
+- D20-07/D20-08 may consume attention/underreaction moderators but cannot re-count the same filing as independent evidence.
+- One filing may expose many descriptive representations, but they remain one source-event family for anti-double-count purposes.
+
+The remaining blocker is now purely the Taiwan corpus/source gate. Frozen execution contract:
+- `shared-knowledge/AOKD05_CORPUS_FEASIBILITY_CONTRACT_20261004_V0_1.md`
+
+Exact next continuation point:
+1. Route the corpus feasibility contract to 06｜基本面與估值研究室 for outcome-blind source execution.
+2. Require historical raw-vintage retrievability, clock semantics, append-only revision chain, cross-period section comparability, explicit missingness denominator, content-owner routing and representation-redundancy checks.
+3. Return only FEASIBLE / PROSPECTIVE_ONLY_FEASIBLE / DATA_BLOCKED / EVIDENCE_INSUFFICIENT to 00.
+4. Only FEASIBLE or PROSPECTIVE_ONLY_FEASIBLE may proceed to a new preregistration design; neither state proves alpha.
+5. A06 remains DATA_BLOCKED/watchlist. Bounded broad sweep remains saturated; do not restart it absent a new mechanism/source/clock trigger.
+
+No outcome test was opened. No tracker, runtime, System1, System2 or Formal Core file was changed.
