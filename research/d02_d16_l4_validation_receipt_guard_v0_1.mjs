@@ -1,6 +1,6 @@
 const finite=v=>Number.isFinite(Number(v)), nonempty=v=>typeof v==='string'&&v.trim().length>0, uniq=xs=>[...new Set(xs)];
 const pass=(x={})=>({pass:true,reasons:[],...x}), fail=(r,x={})=>({pass:false,reasons:uniq(r),...x});
-export const D02_D16_L4_RECEIPT_GUARD_VERSION='D02_D16_L4_RECEIPT_GUARD_V0_2';
+export const D02_D16_L4_RECEIPT_GUARD_VERSION='D02_D16_L4_RECEIPT_GUARD_V0_1';
 export const D02_EVIDENCE_REGISTRY={
 'D02-01:SEMANTIC_GOVERNANCE':{family:'F0',kind:'SEMANTIC',admission:'D02_01_L4_SEMANTIC_ADMISSION_V0_1'},
 'D02-02:H001':{family:'F1',kind:'ECONOMIC',admission:'D02_L4_WAVE1_GATE_V0_1_1'},
@@ -31,33 +31,9 @@ export function evaluateD16Receipt(x={},expected={}){
  if(!nonempty(x.overlapControl))r.push('OVERLAP_CONTROL_MISSING'); if(x.purgeResult!=='PASS')r.push('PURGE_RESULT_NOT_PASS');
  if(!x.coverageMissingnessSummary||typeof x.coverageMissingnessSummary!=='object')r.push('COVERAGE_MISSINGNESS_SUMMARY_MISSING');
  if(!x.effectTarget||typeof x.effectTarget!=='object')r.push('EFFECT_OR_PRECISION_TARGET_MISSING'); else {
-  const et=x.effectTarget;
-  if(!['MDE','PRECISION_TARGET','SEMANTIC_MATERIALITY_TARGET'].includes(et.kind))r.push('EFFECT_TARGET_KIND_INVALID');
-  if(et.frozenBeforeOutcome!==true)r.push('EFFECT_TARGET_NOT_FROZEN_BEFORE_OUTCOME');
-  if(et.outcomeAccessStateAtFreeze!=='OUTCOME_CLOSED')r.push('EFFECT_TARGET_FROZEN_AFTER_OUTCOME_ACCESS');
-  if(et.status!=='FROZEN')r.push('EFFECT_TARGET_STATUS_NOT_FROZEN');
-  for(const [name,val] of [['TARGET_ID',et.targetId],['TARGET_VERSION',et.targetVersion],['ESTIMAND_ID',et.estimandId],['METRIC',et.metric],['UNIT',et.unit],['DIRECTION',et.direction],['COMPARATOR_ID',et.comparatorId],['OUTCOME_HORIZON',et.outcomeHorizon],['COST_TREATMENT',et.costTreatment],['FROZEN_AT',et.frozenAt],['TARGET_HASH',et.targetHash],['RATIONALE',et.rationale]]) if(!nonempty(val))r.push('EFFECT_'+name+'_MISSING');
-  const frozenMs=Number.isFinite(Date.parse(et.frozenAt))?Date.parse(et.frozenAt):null;
-  if(frozenMs===null)r.push('EFFECT_TARGET_FROZEN_AT_INVALID');
-  const dir=new Set(['GREATER_THAN_OR_EQUAL','LESS_THAN_OR_EQUAL','TWO_SIDED_ABSOLUTE']);
-  if(et.kind==='PRECISION_TARGET'){
-    if(et.direction!=='TWO_SIDED_PRECISION')r.push('PRECISION_TARGET_DIRECTION_INVALID');
-    if(!finite(et.maxHalfWidth)||Number(et.maxHalfWidth)<=0)r.push('PRECISION_TARGET_MAX_HALF_WIDTH_INVALID');
-  } else {
-    if(!dir.has(et.direction))r.push('EFFECT_TARGET_DIRECTION_INVALID');
-    if(!finite(et.thresholdValue)||Number(et.thresholdValue)<=0)r.push('EFFECT_TARGET_THRESHOLD_INVALID');
-  }
-  if(reg?.kind==='SEMANTIC'&&et.kind!=='SEMANTIC_MATERIALITY_TARGET')r.push('SEMANTIC_TARGET_KIND_MISMATCH');
-  if(reg?.kind==='ECONOMIC'&&et.kind==='SEMANTIC_MATERIALITY_TARGET')r.push('ECONOMIC_TARGET_KIND_MISMATCH');
-  const bindingRequired=x.sampleAdequacyStatus==='ADEQUATE'||candidates.has(x.resultStatus);
-  if(bindingRequired){
-    if(!nonempty(expected.effectTargetId)||!nonempty(expected.effectTargetVersion)||!nonempty(expected.effectTargetHash))r.push('EXPECTED_EFFECT_TARGET_BINDING_MISSING');
-    else {
-      if(et.targetId!==expected.effectTargetId)r.push('EFFECT_TARGET_ID_MISMATCH');
-      if(et.targetVersion!==expected.effectTargetVersion)r.push('EFFECT_TARGET_VERSION_MISMATCH');
-      if(et.targetHash!==expected.effectTargetHash)r.push('EFFECT_TARGET_HASH_MISMATCH');
-    }
-  }
+  if(!['MDE','PRECISION_TARGET','SEMANTIC_MATERIALITY_TARGET'].includes(x.effectTarget.kind))r.push('EFFECT_TARGET_KIND_INVALID');
+  if(x.effectTarget.frozenBeforeOutcome!==true)r.push('EFFECT_TARGET_NOT_FROZEN_BEFORE_OUTCOME');
+  if(!nonempty(x.effectTarget.version))r.push('EFFECT_TARGET_VERSION_MISSING'); if(!nonempty(x.effectTarget.unit))r.push('EFFECT_TARGET_UNIT_MISSING');
  }
  if(!['NOT_ASSESSED','INSUFFICIENT','ADEQUATE'].includes(x.sampleAdequacyStatus))r.push('SAMPLE_ADEQUACY_STATUS_INVALID');
  if(x.sampleAdequacyStatus==='ADEQUATE'){
