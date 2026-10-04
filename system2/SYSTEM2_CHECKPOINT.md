@@ -1336,3 +1336,12 @@ System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOC
 - D19-04 20-session input coverage = 1,064 KNOWN / 25 explicit UNKNOWN; UNKNOWN causes are preserved rather than imputed.
 - PR #459 TPEx live-transport experiment closed unmerged after all three routes returned HTTP 520; historical benchmark evidence remains read-only and does not substitute for persisted replay.
 - This improves research infrastructure only. No System1/Formal/selection/capital/push/production behavior changed.
+
+
+## 2026-10-04 D19 Stage 9 — TWSE session-state research diagnostics
+- Research-only D19 evidence advanced without changing System2 selection authority or System1 Production.
+- PR #463 merged as `67ff5fca7544954ed12cb59449b6dae046c012b6`; official TWSE historical suspended-trading query for 2026-08-03..2026-08-31 physically captured 1218 and 1909 suspension/resumption states. Raw payload hash `072e88890972ebbfed3d64a82ec0bbeee22044ec21a3146aaac3ca989d50f7c0`.
+- PR #464 merged as `c8945c76e2cc4cd72faecaa4cd6d09a0b7077eb1`; 50 invalid-close rows across 15 D19 names split into 11 OFFICIAL_ZERO_TRADE_ROW and 39 UNRESOLVED_INVALID_CLOSE_ROW with positive activity but no OHLC.
+- This falsifies a naive one-price-per-market-session assumption. Any future factor replay must distinguish valid price observations, verified non-trading sessions, zero-trade rows and unresolved active/no-OHLC states.
+- Forward fill / previous-close substitution is not authorized. Shared symbol-session and continuity semantics remain the authority; D19 must not fork a local adjustment engine.
+- Full L3 remains blocked by TPEx replayable history/universe, complete continuity certification, PIT industry vintage, D03/D09 compatible redundancy inputs and D14-compatible cost evidence.
