@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "D20_SOCIAL_PRIMARY_SNAPSHOT_PARENT_V0_1",
+  "parentDecisionReceiptId": "D20SOC-PRIMARY-20261004-2311-001",
+  "capturedAtAsiaTaipei": "2026-10-04T23:11:43+08:00",
+  "eligibility": "PRIMARY_CANDIDATE_FIXED_10_SCHEDULED_RUN / CAPTURE_STARTED_23_11_43",
+  "samplingContract": "research/d20_social_sampling_coverage_contract_v0_1.json",
+  "source": "PTT Stock public web pages discovered/fetched prospectively",
+  "selectionRule": "All entries returned by the fixed-run latest-board search were retained for source inspection; no engagement, stance, topic or future outcome filter was used.",
+  "observedArticleIds": [
+    "M.1791091020.A.271",
+    "M.1791092032.A.64C",
+    "M.1791037420.A.799",
+    "M.1791051867.A.94C",
+    "M.1791091460.A.C72",
+    "M.1790732717.A.9DD",
+    "M.1791075687.A.556",
+    "M.1791092713.A.649",
+    "M.1782611694.A.576",
+    "M.1791118496.A.F05"
+  ],
+  "fetchedArticleIds": [
+    "M.1791091020.A.271",
+    "M.1791092032.A.64C",
+    "M.1791051867.A.94C",
+    "M.1791091460.A.C72",
+    "M.1791075687.A.556",
+    "M.1791092713.A.649",
+    "M.1791118496.A.F05"
+  ],
+  "continuity": {
+    "priorPrimaryParent": null,
+    "intervalCompleteness": "UNKNOWN",
+    "reason": "No earlier eligible primary fixed-run parent exists after the 16:47 sampling-contract freeze; this first primary candidate cannot prove preceding interval completeness."
+  },
+  "moduleEligibility": {
+    "D20-03": "PARENT_POOL_CAPTURE_ONLY / per-article explicit-confidence qualification not yet frozen into this receipt",
+    "D20-06": "PRIMARY_AGGREGATE_PARENT_CANDIDATE / multi-actor sequences visible in fetched pages / common-information controls still required",
+    "D20-11": "PRIMARY_NARRATIVE_PARENT_CANDIDATE / topic-stance classification remains child transform"
+  },
+  "guards": [
+    "No future price or later engagement outcome joined.",
+    "Public handles are not brokerage investor identities.",
+    "Push/boo/arrow reactions are not automatically stock stance.",
+    "No named-user psychology, persuasion, skill or influence profile.",
+    "Finite-window completeness remains UNKNOWN until overlap with a later eligible primary snapshot."
+  ],
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE"
+}
