@@ -460,3 +460,33 @@ Still required:
 8. commit `research/COV07_D12_SPECIALIST_RETURN_V0_1.md`.
 
 No maturity or Formal change.
+
+
+## COV-06 blocker refinement — 2026-10-04
+
+COV-06 remains `PARTIAL_EVIDENCE_RECEIVED`.
+
+Accepted Room07 work:
+- D10-01 supply-chain map ownership;
+- D10-12 issuer-exposure mapping;
+- PIT source-vintage clocks;
+- substitution/qualification/UNKNOWN discipline;
+- lead-lag and transmission research.
+
+But generic mapping/lead-lag is not network topology.
+
+Current exact blocker:
+`GRAPH_TOPOLOGY_OWNER_EVIDENCE_PENDING`.
+
+Still required:
+1. graph node/edge/direction/weight schema for topology;
+2. articulation / single-point-failure definition;
+3. alternate-path redundancy / resilience metric;
+4. substitution and qualification constraints;
+5. incomplete-graph UNKNOWN semantics;
+6. at least one Taiwan effective-dated topology witness with alternate-path semantics;
+7. incremental comparison versus D10-01, D07 concentration and D17 propagation;
+8. exactly one terminal recommendation;
+9. commit `research/COV06_D10_SPECIALIST_RETURN_V0_1.md`.
+
+No maturity or Formal change.
