@@ -890,3 +890,40 @@ DESCRIPTIVE_ONLY != L4_EVIDENCE_ELIGIBLE != L4_PROMOTION_REVIEW.
 No hypothesis is supported/rejected from economic outcomes in this stage.
 Gate 7 remains CLOSED.
 No FORMAL_OPTIMIZATION_CANDIDATE.
+
+## Pre-PVE-240 Wave-1 isolation fix + Wave-2 admission overlay — 2026-10-04
+
+### Wave-1
+The previous program-level evidence counter was too permissive because H001/H20/H003 could share a pooled count.
+Corrected rule:
+each hypothesis must satisfy its own evidence floor.
+Cross-hypothesis sample borrowing is forbidden.
+
+### Wave-2
+D02-04:
+dry-up candidate identity must be frozen before later demand re-expansion.
+
+D02-05:
+EXTREME participation is observable; distribution/absorption motive remains UNKNOWN.
+
+D02-07:
+signedVolumeBalance20 remains the sole primary compact OBV-family comparator; no raw-OBV duplicate vote.
+
+D02-08:
+provider pressure remains proxy-only; true OFI/intent labels remain forbidden.
+
+D02-09:
+only PIVOT_SIGNED_VOLUME and PARTICIPATION_TRAJECTORY are admissible.
+
+D02-10:
+only residual interaction beyond direct trend + participation may count.
+
+D02-11:
+no threshold optimization; reason-stratified rejected controls are mandatory.
+
+D02-12:
+time curve and price-by-volume profile remain separate; price profile is prospective-only.
+
+No economic hypothesis changes status.
+No L4 promotion.
+No FORMAL_OPTIMIZATION_CANDIDATE.
