@@ -1,51 +1,102 @@
 # System 2 Remediation Checkpoint
 
-Updated: 2026-10-05 02:45 Asia/Taipei
-Status: ACTIVE / REMEDIATION_LANE / NO_ACTIVE_CORRECTION
+Updated: 2026-10-05 05:52 Asia/Taipei
+Status: ACTIVE / REMEDIATION_LANE / FIX_IN_PROGRESS
 Room: System 2｜補強修復室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
-## Mission
+## Active correction
 
-Serve as System 2's focused remediation/SWAT lane for cross-module, recurrent, orphaned, false-completion and explicitly routed remediation work. This room is not a generic bug inbox.
+`S2-CORR-20261005-001` — Capacity persistence loses partial-denominator provenance before downstream resonance/performance.
 
-## Current queue state
+Routing:
+- severity: `MEDIUM`
+- status: `FIX_IN_PROGRESS`
+- routingClass: `REMEDIATION_LANE`
+- assignedLane: `REMEDIATION_LANE`
+- assignedRoom: `System 2｜補強修復室`
+- modificationOwner: `SYSTEM2_REMEDIATION_ROOM`
+- blockedBy: none
 
-No correction is currently assigned to REMEDIATION_LANE for active implementation.
+## Canonical problem statement
 
-- `S2-CORR-20261004-002` = `VERIFIED_CLOSED`.
-- `S2-CORR-20261004-003` = `VERIFIED_CLOSED`.
-- `S2-CORR-20261004-004` = `VERIFIED_CLOSED` after independent AUDIT_LANE verification.
-- `S2-CORR-20261004-001` remains DATA_LANE ownership and is outside this room.
+CORR-004 correctly allows clean admissions to continue under a PARTIAL selection denominator and keeps partial-no-selection fail-safe. The remaining defect is persistence/provenance loss:
 
-## CORR-004 closure
+- `candidate_capacity_receipt.mjs` does not commit denominator state/accounting provenance into the capacity identity/hash.
+- `toCapacityRunRow` therefore persists no denominator state, unresolved accounting, Shadow-run identity or accounting hash.
+- the 19:00 resonance path reads only the persisted capacity row, so COMPLETE vs PARTIAL vs legacy UNKNOWN cannot be recovered from the capacity artifact itself.
+- downstream pool/comparison/UI/performance evidence can therefore lose the coverage context even when the original Shadow runs still exist.
 
-Independent audit verified:
-- symbol-local history/continuity/required-evidence gaps remain symbol-local `INCOMPLETE/BLOCKED`;
-- clean symbols can continue through authorized Shadow evaluation/ranking/capacity under partial coverage;
-- global source/clock/history-integrity failures remain fail-closed;
-- every symbol remains denominator-accounted in immutable Shadow run/decision evidence;
-- incomplete symbols cannot enter BUY_ELIGIBLE / ACTIVE_ENTRY_MONITOR / capacity admissions;
-- clean zero-pick requires a complete denominator;
-- partial no-selection produces `zeroPickDay=null`, no capacity receipt and no `s2_capacity_runs`;
-- no arbitrary coverage percentage threshold was introduced;
-- PIT/UNKNOWN semantics and all protected trading boundaries remain intact.
+## Required correction boundary
 
-Independent receipt:
-`system2/evidence/s2_corr_20261004_004_independent_verification.json`
+New capacity persistence must preserve:
+- denominator state: `COMPLETE / PARTIAL / UNKNOWN`;
+- unresolved count;
+- unresolved-by-state;
+- denominator blocker codes;
+- immutable contributing Shadow-run provenance;
+- Shadow accounting hash / equivalent immutable receipt identity;
+- explicit backward-compatible legacy semantics: missing provenance = `UNKNOWN / LEGACY_PROVENANCE_INCOMPLETE`.
 
-Non-blocking residual:
-`s2_capacity_runs` itself does not carry a self-contained partial-denominator flag. Denominator truth remains durably reconstructable from `s2_shadow_runs` / frozen decisions at the same decision clock. Treat direct linkage as future observability hardening, not as permission to reopen CORR-004 without new evidence.
+Capacity identity/hash must commit to this provenance.
+
+Resonance pool provenance must carry the upstream denominator state/link so downstream comparison/UI/performance/promotion evidence can distinguish COMPLETE, PARTIAL and legacy UNKNOWN.
+
+## CORR-004 invariants that must not regress
+
+- PARTIAL denominator + clean ready admissions may continue to Shadow/capacity/bounded monitoring.
+- INCOMPLETE symbols remain BLOCKED and cannot become BUY_ELIGIBLE / ACTIVE_ENTRY_MONITOR / capacity admissions.
+- PARTIAL denominator + no ready selection remains:
+  - `zeroPickDay=null`;
+  - `capacityReceipt=null`;
+  - no `s2_capacity_runs`.
+- no arbitrary 95%/90%/80% or other coverage threshold.
+- PIT/UNKNOWN semantics remain unchanged.
+
+## Protected boundaries
+
+Do not modify:
+- System 1 Formal Core;
+- System 1 runtime;
+- System 2 final/live selection authority;
+- production push/runtime;
+- capital/order behavior;
+- strategy weights;
+- strategy thresholds;
+- assessor policy.
+
+## Initial conflict units
+
+Owned for this correction:
+- capacity receipt/provenance construction;
+- `s2_capacity_runs` schema/persistence/readback semantics;
+- resonance capacity reader / pool provenance persistence;
+- resonance comparison/read models/UI exposure only as needed to preserve provenance;
+- related System 2 tests/contracts/docs;
+- Correction Queue evidence and this checkpoint.
+
+## Required regression evidence
+
+Pending:
+- same admitted symbols + COMPLETE denominator vs PARTIAL denominator persist distinguishable provenance;
+- capacity hash/identity differs or otherwise cryptographically commits to denominator provenance;
+- explicit immutable Shadow-run IDs/accounting hashes persisted;
+- resonance pool reads COMPLETE vs PARTIAL distinction;
+- legacy capacity row without provenance reads `UNKNOWN / LEGACY_PROVENANCE_INCOMPLETE`;
+- partial denominator + no selection still writes no `s2_capacity_runs`;
+- no protected authority change;
+- targeted tests;
+- System2 Research CI;
+- V8 Regression;
+- latest-main drift/readback.
 
 ## Exact next continuation point
 
-Read the latest Correction Queue before starting any remediation work.
-
-If no correction is routed to `REMEDIATION_LANE`, remain idle and do not manufacture work.
-
-If a new correction is routed here:
-1. re-read latest main;
-2. verify routing/assignment/modification ownership;
-3. confirm no other lane owns the same conflict unit;
-4. implement only the routed scope;
-5. stop at `FIX_IMPLEMENTED` when independent verification is required.
+1. Read current `s2_capacity_runs` / resonance-pool schema and migrations.
+2. Trace capacity row whitelist/persistence batch, capacity readback, pool row persistence, comparison frame and UI/read models.
+3. Implement the smallest backward-compatible provenance extension that commits denominator provenance into capacity identity and propagates it downstream.
+4. Add complete-vs-partial same-admission and legacy-row regression tests.
+5. Run targeted tests -> System2 Research CI -> V8 Regression.
+6. Re-read latest main and reconcile concurrent Queue/checkpoint changes without overwriting other lanes.
+7. Update CORR-001 to `FIX_IMPLEMENTED` only after durable evidence is merged.
+8. Hand back to AUDIT_LANE; do not self-mark `VERIFIED_CLOSED`.
