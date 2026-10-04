@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T13:45:00+08:00",
+  "updatedAt": "2026-10-04T14:05:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 44.4
+    "maturityWeightedPct": 44.6
   },
   "domains": [
     {
@@ -840,7 +840,7 @@
         "FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md",
         "FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md"
       ],
-      "maturityPct": 14.1,
+      "maturityPct": 15.3,
       "modules": [
         {
           "id": "D07-01",
@@ -1159,14 +1159,18 @@
         {
           "id": "D07-34",
           "name": "Dividend / Payout Policy & Sustainability股利／配發政策與永續性",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Dividend / Payout Policy & Sustainability股利／配發政策與永續性」。研究普通現金股利的配發來源、payout ratio（配發率）、earnings／CFO／FCF coverage（盈餘／營業現金流／自由現金流覆蓋）、retention（保留）、配發頻率、削減／停發與跨期永續性；proposal／final approval／ex-date／payment clock 必須分離，盈餘來源與資本／法定盈餘公積來源分開，股票股利不得視為現金流出。D07-02／05／06保留原始盈餘、現金流與槓桿主責，D11主責股利事件時鐘，D21主責資本配置治理，金融機構另依賴D07-32監理資本語意。高股息殖利率、高payout或穩定DPS不得直接推論品質或買進；主要角色為validation／context／supportive，先建立台灣PIT／Replay、來源版本鏈、反證與增量價值，再評估策略用途。每個結論都必須記錄正向機制、反證／失效條件、PIT（時點一致性）、可重播性、資料品質、冗餘、交易成本，以及對System 1／System 2的可驗證增量價值；未取得證據不得升級成熟度或進入Formal（正式核心）。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "先凍結MOPS／TWSE股利決議、分派來源、財報denominator與proposal→final→payment時鐘契約；完成PIT／Replay與反證後再進Shadow，不直接修改正式選股規則。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_EVIDENCE_CONTEXT_FROZEN / PIT_REPLAY_NOT_YET_COMPLETE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "建立MOPS/TWSE proposal→final→ex-date→payment append-only PIT replay，分離盈餘／保留盈餘／公積來源，驗證earnings/CFO coverage與削減／停發狀態；L3前必須有乾淨台灣PIT實體收據，金融機構另接D07-32。"
         }
-      ]
+      ],
+      "status": "ACTIVE_RESEARCH / D07_01_08_L3 / D07_02_07_09_11_34_L2 / ADVANCED_SUBMODULES_MIXED / D07_34_PAYOUT_SUSTAINABILITY_MECHANISM_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D07-34: build Taiwan MOPS/TWSE dividend-decision/source PIT replay before L3; D07 general-industry CFO/balance-sheet receipt remains WAITING_PROSPECTIVE; D07-11 analyst forecast source remains blocked. D08-03 historical valuation percentile history remains the active parallel Room-06 execution lane.",
+      "lastResearchUpdate": "2026-10-04T14:05:00+08:00",
+      "researchNote": "D07-34 advanced L0→L2 after mechanism, countermechanism, falsification, Taiwan-specific evidence context, decision role and anti-double-count ownership were frozen. No Taiwan historical proposal/final/source PIT replay yet, so L3 is not claimed."
     },
     {
       "id": "D08",
