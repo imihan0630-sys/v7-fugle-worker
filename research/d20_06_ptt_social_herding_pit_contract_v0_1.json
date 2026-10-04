@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "D20_06_PTT_SOCIAL_HERDING_PIT_CONTRACT_V0_1",
+  "frozenAtAsiaTaipei": "2026-10-04T13:59:48+08:00",
+  "module": "D20-06",
+  "sourceReceipt": "research/d20_ptt_social_source_live_receipt_20261004_v0_1.json",
+  "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / PTT_FORUM_ACTOR_SOCIAL_HERDING_SUBLANE / NOT_BROKERAGE_INVESTOR_IDENTITY / OUTCOMES_CLOSED",
+  "sourceScope": "Public PTT Stock-board actor/post/reply sequence, prospectively captured from the first verified live receipt onward.",
+  "actorSemantics": "Public forum handle only. Never call a PTT handle a verified brokerage investor or natural-person trading account.",
+  "parentFields": [
+    "captureId",
+    "capturedAt",
+    "articleId",
+    "articleAuthorHandle",
+    "articlePublishedAt",
+    "commentActorHandle",
+    "commentType_push_boo_arrow",
+    "commentMinute",
+    "commentText",
+    "articleTopicState_or_UNKNOWN",
+    "stanceState_or_UNKNOWN",
+    "underlyingNewsEventReceiptId_or_UNKNOWN",
+    "snapshotFingerprint"
+  ],
+  "behavioralTransforms": {
+    "leaderFollower": "Sequential stance convergence among distinct public forum actors after a prior actor/post state; ties within the same minute remain order-UNKNOWN unless page order and capture semantics are explicitly frozen.",
+    "adoptionHazard": "Probability/rate that later forum actors adopt a previously observed stance/topic under frozen windows.",
+    "residualHerding": "Only the portion remaining after common-news, topic, market, sector and attention controls may be called social-herding evidence.",
+    "reactionTypeGuard": "Push/boo/arrow is reaction to the post, not automatically bullish/bearish stock stance."
+  },
+  "structuralControls": [
+    "common public news/event",
+    "same theme/topic",
+    "market/sector move",
+    "attention shock",
+    "author popularity",
+    "thread age",
+    "posting-time seasonality",
+    "market regime"
+  ],
+  "ownershipFirewall": {
+    "D06-06": "observable crowding/position concentration",
+    "D06-19": "future directly identified natural-person market primitives",
+    "D20-11": "narrative/topic propagation transform",
+    "D20-06": "social-herding/leader-follower transform on public forum actors",
+    "sharedPrimitiveRule": "One PTT receipt cannot become multiple independent selection votes."
+  },
+  "falsification": [
+    "Same-topic discussion caused by a common headline is not imitation.",
+    "PTT users are a selected subset and cannot represent all Taiwan investors.",
+    "High reply count is attention, not herding.",
+    "Forum stance may be performative, sarcastic or non-trading; classifier uncertainty stays UNKNOWN.",
+    "No claim of stock-market investor identity or actual order-flow herding."
+  ],
+  "maturityDecision": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
+  "l4Requirement": "Prospective independent-date actor-sequence parents with frozen stance rules and common-news/topic controls; no retrospective reconstruction as Shadow evidence.",
+  "formalOptimizationCandidate": "NONE",
+  "formalCore": "LOCKED"
+}
