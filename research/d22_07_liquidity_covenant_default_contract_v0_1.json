@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "D22_07_LIQUIDITY_COVENANT_DEFAULT_CONTRACT_V0_1",
+  "generatedAt": "2026-10-04T08:45:00+08:00",
+  "module": "D22-07",
+  "level": "L2",
+  "maturityPct": 40,
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_DISCLOSURE_ROUTE_FEASIBLE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "researchQuestion": "Do liquidity quality and covenant-trigger states identify nonlinear funding/default pressure beyond leverage, maturity and interest coverage?",
+  "stateVector": [
+    "cash_accessibility",
+    "committed_vs_uncommitted_facilities",
+    "facility_headroom",
+    "maintenance_covenant",
+    "incurrence_covenant",
+    "threshold_and_cushion",
+    "breach",
+    "waiver_or_renegotiation",
+    "cross_default_or_cross_acceleration",
+    "collateral_or_security",
+    "drawability_conditions"
+  ],
+  "mechanism": [
+    "Liquidity risk is inability to meet cash obligations when due, not simply low accounting cash.",
+    "Maintenance covenants can transfer bargaining/control rights to lenders before formal default; incurrence covenants constrain actions when a transaction is attempted.",
+    "A covenant breach can lead to waiver, repricing, collateral demands, commitment reduction, acceleration or restructuring; severity depends on contract and lender condition.",
+    "Committed facilities can buffer maturity pressure only when legally/operationally drawable."
+  ],
+  "evidenceAndCounterevidence": [
+    {
+      "support": "Research shows covenant violations can trigger renegotiation, deleveraging and credit-commitment changes.",
+      "counter": "Violation consequences vary; waivers and lender relationships can materially soften outcomes."
+    },
+    {
+      "support": "Liquidity and default risk interact in observed credit spreads.",
+      "counter": "High cash can be trapped/pledged/operationally required; headline liquidity is not necessarily available funding."
+    },
+    {
+      "support": "Tighter monetary conditions can amplify covenant channels.",
+      "counter": "Credit-demand weakness can mimic supply tightening, so causality requires separate controls."
+    }
+  ],
+  "taiwanSourceRoute": [
+    "Taiwan annual-report/prospectus bond tables disclose restrictive covenants/redemption terms where applicable.",
+    "Bank-loan covenant detail may be non-public; missing terms remain UNKNOWN rather than assumed absent.",
+    "Facility headline amount without commitment/drawability terms is not equivalent to cash."
+  ],
+  "pitContract": [
+    "Record covenant text/type, threshold, measurement date, actual metric, cushion and first-public knownAt separately.",
+    "Breach, waiver, amendment and renegotiation are distinct events with their own timestamps.",
+    "Cross-default/cross-acceleration clauses must identify linked obligations; do not assume one breach accelerates all debt.",
+    "Facility availability must distinguish committed/uncommitted, secured/unsecured and undrawn/drawable.",
+    "Later waiver knowledge cannot rewrite the pre-waiver historical state."
+  ],
+  "falsificationGates": [
+    "Covenant presence != distress; covenant design can be routine lender protection.",
+    "Covenant breach != inevitable default; waiver/renegotiation is a competing path.",
+    "Low liquidity != low solvency and high liquidity != safety.",
+    "Do not double-count D22-02 interest coverage if the same ICR is literally the covenant metric; D22-07 owns the contractual trigger/cushion transformation.",
+    "If covenant/liquidity states cannot be reproduced at first-known time, affected observations remain UNKNOWN."
+  ],
+  "outcomeGate": "CLOSED",
+  "formalCore": "LOCKED",
+  "next": [
+    "Collect Taiwan issuer covenant/facility PIT receipts with threshold/cushion/waiver lineage.",
+    "Build divergent examples: weak accounting ratio but large covenant cushion; healthy ratio but near covenant trigger; breach with waiver vs breach without waiver.",
+    "Test incremental value beyond D22-01/02/03/04/06 before L4."
+  ]
+}
