@@ -156,3 +156,24 @@ State:
 `CLOSED_NO_STRUCTURAL_CHANGE`.
 
 D06-11 remains L2/40%; D11-14 remains L3/60%. No merge, retirement, rename, module-count or Formal Core change.
+
+
+## H09 00-room audit result — 2026-10-04
+
+Canonical audit:
+`shared-knowledge/CURRICULUM_H09_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`
+
+Result:
+- terminal classification: **KEEP_SEPARATE**;
+- implementation disposition: **SCOPE_DEDUP_ONLY**;
+- D16-19 = model/calibration producer;
+- D16-25 = calibrated-belief decision consumer;
+- one CalibrationReceipt / one probability authority;
+- Dependency Audit: PASS;
+- anti-double-count: PASS;
+- anti-orphan: PASS;
+- D16-19 and D16-25 remain L2/40%;
+- no rename, module-count, maturity or Formal change yet;
+- state: **OWNER_APPROVAL_REQUIRED**.
+
+Approval would authorize canonical learningScope/status cleanup only.
