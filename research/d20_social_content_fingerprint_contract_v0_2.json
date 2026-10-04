@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "D20_SOCIAL_CONTENT_FINGERPRINT_CONTRACT_V0_2",
+  "effectiveAtAsiaTaipei": "2026-10-04T16:43:58+08:00",
+  "status": "FROZEN / PROMOTION_GRADE_FOR_FUTURE_CAPTURES",
+  "problemFixed": "V0.1 fingerprint hashed transport/tool wrapper metadata, so repeated fetches could differ without page-content change.",
+  "canonicalExtraction": "Parse connector response; use results[0].text only. Exclude latency, tool envelope, fetch duration, cache metadata and unrelated transport fields.",
+  "normalization": [
+    "CRLF/CR -> LF",
+    "strip trailing spaces/tabs per line",
+    "trim leading/trailing blank boundary"
+  ],
+  "contentHash": "SHA-256 over UTF-8 bytes of normalized canonical page text",
+  "receiptHash": "SHA-256 over canonical URL + capturedAt + contentSha256 + schemaVersion",
+  "appendOnly": true,
+  "invalidatesForPromotion": [
+    "D20SOC-20261004-001 content fingerprint field",
+    "16:42 outcome fingerprint comparison derived from V0.1 wrapper hash"
+  ],
+  "formalCore": "LOCKED"
+}
