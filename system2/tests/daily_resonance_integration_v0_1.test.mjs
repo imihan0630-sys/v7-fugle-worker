@@ -28,7 +28,58 @@ const pool = await buildResonanceWatchPoolFromCapacityRowV0_1({
 });
 assert.equal(pool.symbolCount, 2);
 assert.equal(pool.fullMarketScan, false);
+assert.equal(pool.sourceDenominatorState, "UNKNOWN");
+assert.equal(pool.sourceDenominatorProvenance.legacyProvenanceIncomplete, true);
+assert.ok(pool.sourceDenominatorProvenance.blockerCodes.includes("LEGACY_PROVENANCE_INCOMPLETE"));
 assert.equal(pool.symbols.find((row) => row.symbol === "2330").strategyMemberships.length, 2);
+
+const sharedAssignments = {
+  SHORT_MOMENTUM: [{ symbol: "2330", strategyVersion: "V0.1", entryReadiness: "BUY_ELIGIBLE" }],
+};
+const denominator = (state, unresolvedCount, hashChar) => ({
+  version: "S2_SELECTION_DENOMINATOR_PROVENANCE_V0_1",
+  denominatorState: state,
+  unresolvedCount,
+  unresolvedByState: { INCOMPLETE: unresolvedCount || 0, SOURCE_BLOCKED: 0, SESSION_INVALID: 0, ERROR: 0 },
+  blockerCodes: [],
+  contributingShadowRuns: [{
+    strategyId: "SHORT_MOMENTUM",
+    strategyVersion: "V0.1-CONTRACT",
+    runId: `RUN-${state}`,
+    shadowAccountingHash: hashChar.repeat(64),
+    runFingerprintHash: null,
+  }],
+  provenanceHash: (state === "COMPLETE" ? "e" : "f").repeat(64),
+});
+const completePool = await buildResonanceWatchPoolFromCapacityRowV0_1({
+  capacityRow: {
+    capacity_run_id: "CAP-COMPLETE",
+    capacity_hash: "1".repeat(64),
+    market_date: "2026-09-29",
+    decision_timestamp: "2026-09-29T10:00:00.000Z",
+    active_assignments_json: JSON.stringify(sharedAssignments),
+    counts_json: JSON.stringify({ selectionDenominator: denominator("COMPLETE", 0, "a") }),
+    schema_version: "S2_CAPACITY_V0_2",
+  },
+  activatedAt: "2026-09-29T11:00:00.000Z",
+});
+const partialPool = await buildResonanceWatchPoolFromCapacityRowV0_1({
+  capacityRow: {
+    capacity_run_id: "CAP-PARTIAL",
+    capacity_hash: "2".repeat(64),
+    market_date: "2026-09-29",
+    decision_timestamp: "2026-09-29T10:00:00.000Z",
+    active_assignments_json: JSON.stringify(sharedAssignments),
+    counts_json: JSON.stringify({ selectionDenominator: denominator("PARTIAL", 1, "b") }),
+    schema_version: "S2_CAPACITY_V0_2",
+  },
+  activatedAt: "2026-09-29T11:00:00.000Z",
+});
+assert.deepEqual(completePool.symbols.map((row) => row.symbol), partialPool.symbols.map((row) => row.symbol));
+assert.equal(completePool.sourceDenominatorState, "COMPLETE");
+assert.equal(partialPool.sourceDenominatorState, "PARTIAL");
+assert.notEqual(completePool.sourceDenominatorProvenanceHash, partialPool.sourceDenominatorProvenanceHash);
+assert.notEqual(completePool.poolHash, partialPool.poolHash);
 
 await assert.rejects(
   buildResonanceWatchPoolFromCapacityRowV0_1({
