@@ -1,0 +1,53 @@
+name: System2 TWSE Par Value Representative Disposition Readonly
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/runtime/twse_par_value_representative_disposition_v0_1.mjs"
+      - "system2/runtime/supplemental_revision_provenance_receipt_v0_5.mjs"
+      - "system2/tests/twse_par_value_representative_disposition_v0_1.test.mjs"
+      - "system2/scripts/probe_twse_par_value_representative_disposition_readonly_v0_1.mjs"
+      - "system2/SYSTEM2_TWSE_PAR_VALUE_REPRESENTATIVE_DISPOSITION_V0_1.md"
+      - "system2/SYSTEM2_SUPPLEMENTAL_REVISION_PROVENANCE_RECEIPT_V0_5.md"
+      - ".github/workflows/system2-twse-par-value-representative-disposition-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/twse_par_value_representative_disposition_v0_1.mjs"
+      - "system2/runtime/supplemental_revision_provenance_receipt_v0_5.mjs"
+      - "system2/tests/twse_par_value_representative_disposition_v0_1.test.mjs"
+      - "system2/scripts/probe_twse_par_value_representative_disposition_readonly_v0_1.mjs"
+      - "system2/SYSTEM2_TWSE_PAR_VALUE_REPRESENTATIVE_DISPOSITION_V0_1.md"
+      - "system2/SYSTEM2_SUPPLEMENTAL_REVISION_PROVENANCE_RECEIPT_V0_5.md"
+      - ".github/workflows/system2-twse-par-value-representative-disposition-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-twse-par-value-representative-disposition-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run disposition tests
+        run: node system2/tests/twse_par_value_representative_disposition_v0_1.test.mjs
+      - name: Build physical disposition receipt
+        run: node system2/scripts/probe_twse_par_value_representative_disposition_readonly_v0_1.mjs
+      - name: Confirm read-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_twse_par_value_representative_disposition_readonly_v0_1.mjs
+          echo "Read-only TWSE par-value disposition boundary PASS"
