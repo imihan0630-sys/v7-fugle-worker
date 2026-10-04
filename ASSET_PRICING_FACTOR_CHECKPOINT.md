@@ -2,7 +2,7 @@
 
 Updated: 2026-10-04 Asia/Taipei
 Scope: D19｜資產定價／因子投資／市場異象
-Status: RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / FULL_TWSE_UNIVERSE_COVERAGE_PASS / TPEx_AND_CONTINUITY_GATES_OPEN / FORMAL_CORE_UNCHANGED
+Status: RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / FULL_TWSE_UNIVERSE_RECONCILED / TWSE_SESSION_STATE_DIAGNOSTICS_ADVANCED / TPEX_INDUSTRY_REDUNDANCY_COST_GATES_OPEN / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - This file is the canonical continuation checkpoint for D19.
@@ -145,3 +145,34 @@ Status: RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / FULL_TWSE_UNIVERSE_COVERAGE
 - Shared System2 continuity state explicitly reports `suspensionCoverageComplete=false` and `symbolSessionCompletenessCertified=false`.
 - Therefore the 23 non-recent-listing TWSE UNKNOWN names cannot be promoted to known suspension/no-trade solely from null closes or missing rows.
 - D19 must consume the shared exchange-complete symbol-session receipt when certified; a D19-local suspension inference/engine is prohibited.
+
+
+## Stage 9 completed on 2026-10-04
+- PR #461 merged as `a6bbbbffd4d1de62306f3515ba7ad3562adb82e0`: official continuity range sources cross-checked against Stage-8 UNKNOWN names; bounded verified events observed for 4190, 6955 and 6176.
+- PR #463 merged as `67ff5fca7544954ed12cb59449b6dae046c012b6`: official TWSE historical suspended-trading payload physically captured for 2026-08-03..2026-08-31. 1218 suspended 2026-08-13 and resumed 2026-08-14; 1909 suspended 2026-08-12 and resumed 2026-08-13. Raw payload hash `072e88890972ebbfed3d64a82ec0bbeee22044ec21a3146aaac3ca989d50f7c0`.
+- Six fewer-than-21-row cases (1563, 1589, 2867, 6176, 6949, 8105) were individually matched to official TWSE stop-trading / structural-event windows during this research round. Their missing rows are not treated as silent source loss; immutable D19 raw-byte/revision bundling remains pending.
+- PR #464 merged as `c8945c76e2cc4cd72faecaa4cd6d09a0b7077eb1`: remaining 15 invalid-close symbols produced 50 invalid-close rows, decomposed into 11 official zero-trade rows and 39 rows with positive trading activity but unavailable OHLC.
+- Positive volume/value/transactions do not authorize reconstruction of a missing official close. Forward-fill and UNKNOWN->0 remain prohibited.
+- The fixed-21-market-session assumption is falsified as a sufficient symbol-level data rule. D19-04 now requires a preregistered valid-observation / symbol-session contract with explicit stale-price handling and complete denominator accounting.
+- D03/D09 paired redundancy remains blocked by compatible same-date full-universe PIT input readiness; current-vintage industry labels must not be used as a substitute.
+- D19 maturity remains 40.0%; no L3 promotion.
+
+## Updated D19-04 L3 blocker state after Stage 9
+1. HISTORICAL_UNIVERSE = PARTIAL_PASS: TWSE denominator resolved; TPEx date-vintaged universe/replay unresolved.
+2. FACTOR_INPUT_COVERAGE = PARTIAL_PASS_SESSION_STATES_NARROWED: 1,064 KNOWN / 25 explicit UNKNOWN; 2 recent listings, 6 documented non-trading/event-window cases, 2 physically captured temporary suspensions, and 15 remaining invalid-close names with 11 zero-trade + 39 unresolved active/no-OHLC rows.
+3. CORPORATE_ACTION_CONTINUITY = PARTIAL_PASS_SOURCE_PARSER_AND_BOUNDED_EVENT_PROVENANCE: bounded event/session evidence improved; full revision/NO_EVENT/exchange-complete certification remains open.
+4. INDUSTRY_NEUTRALIZATION = BLOCKED: no date-vintaged PIT industry classification.
+5. D03_D09_REDUNDANCY = BLOCKED_COMPATIBLE_PIT_INPUTS.
+6. COST_PROVENANCE = PARTIAL_PASS_TAX_ONLY: statutory tax source available; account-specific commission/slippage/turnover semantics unresolved.
+7. TPEX_HISTORICAL_SOURCE = BLOCKED_CURRENT_TRANSPORT: current official refetch paths remain unavailable; prior read-only feasibility is not persisted replay evidence.
+
+## Exact next continuation after Stage 9
+1. Freeze D19-04 valid-observation / symbol-session semantics and stale-price policy before recomputing momentum.
+2. Reconcile the 39 positive-activity/no-OHLC rows against authoritative price/session-type semantics; unresolved stays UNKNOWN.
+3. Archive immutable receipt-equivalent evidence for the six documented stop-trading/event cases.
+4. Build TPEx date-vintaged universe + source-independent replayable history.
+5. Bind shared continuity receipts to exact factor lookback windows.
+6. Acquire PIT industry vintage and run industry neutralization.
+7. Execute D03/D09 paired redundancy only after compatible PIT inputs exist.
+8. Freeze D14-compatible component-wise cost scenarios with explicit evidence quality.
+9. Only a zero-applicable-blocker deterministic full-Taiwan replay can trigger L3 readiness review; no automatic promotion.
