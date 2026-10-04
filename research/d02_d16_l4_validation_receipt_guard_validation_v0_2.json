@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "0.2",
+  "generatedAt": "2026-10-04 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_COMPLETE_EFFECT_TARGET_BINDING_PASS",
+  "evidenceCursor": "PVE-239",
+  "formalCore": "LOCKED",
+  "d02MaturityPct": 60,
+  "maturityImpact": "NONE",
+  "historicalV01": {
+    "tests": 24,
+    "status": "PASS",
+    "immutableReplayRestored": true
+  },
+  "v02": {
+    "guard": "research/d02_d16_l4_validation_receipt_guard_v0_2.mjs",
+    "test": "tests/test_d02_d16_l4_validation_receipt_guard_v0_2.mjs",
+    "tests": 39,
+    "status": "PASS",
+    "fixtureTargetsAreResearchThresholds": false
+  },
+  "targetContract": "research/D02_L4_EFFECT_TARGET_CONTRACT_V0_1.md",
+  "targetRegistry": "research/d02_l4_effect_target_registry_v0_1.json",
+  "targetRegistryStatus": "TARGET_VALUE_PENDING_FREEZE",
+  "evidenceKeyCount": 14,
+  "guarantees": {
+    "completeNumericalTargetRequired": true,
+    "targetIdVersionHashBindingRequired": true,
+    "postOutcomeTargetFreezeAllowed": false,
+    "crossEvidenceKeyTargetBorrowingAllowed": false,
+    "d02CanSelfCertifySampleAdequacy": false,
+    "maturityPromotionAuthorized": false,
+    "formalCoreChangeAuthorized": false
+  },
+  "remainingBlockers": [
+    "CLEAN_DATE_ZERO",
+    "PVE-240_PENDING",
+    "GATE_7_CLOSED",
+    "14_EFFECT_TARGET_VALUES_PENDING_FREEZE",
+    "NO_GENUINE_D16_VALIDATION_RECEIPT"
+  ]
+}
