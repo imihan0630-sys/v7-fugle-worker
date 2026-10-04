@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import {activeShare,trackingError,sameSupportSizingAttribution,attributionEligibility} from "../research/d15_active_portfolio_diagnostics_v0_1.mjs";
+let a=activeShare({portfolioWeights:{A:.6,B:.4},benchmarkWeights:{A:.5,B:.5}});
+assert.equal(a.status,"READY");assert.ok(Math.abs(a.activeShare-.1)<1e-12);
+assert.equal(activeShare({portfolioWeights:{A:1},benchmarkWeights:{A:.5,B:.5}}).status,"UNKNOWN");
+let t=trackingError({portfolioReturns:[.01,.02,-.01],benchmarkReturns:[.005,.01,-.005]});
+assert.equal(t.status,"READY");assert.equal(t.n,3);
+assert.equal(trackingError({portfolioReturns:[.01],benchmarkReturns:[.005]}).status,"UNKNOWN");
+let s=sameSupportSizingAttribution({returns:{A:.1,B:-.05},currentWeights:{A:.7,B:.3},comparatorWeights:{A:.5,B:.5}});
+assert.equal(s.status,"READY");assert.ok(s.sizingContribution>0);
+assert.equal(sameSupportSizingAttribution({returns:{A:.1,B:-.05},currentWeights:{A:1},comparatorWeights:{A:.5,B:.5}}).status,"UNKNOWN");
+assert.equal(attributionEligibility({decisionAt:"2026-01-02T09:00:00Z",benchmarkId:"EQ",benchmarkKnownAt:"2026-01-01T09:00:00Z",commonSupportId:"S1"}).eligible,true);
+assert.equal(attributionEligibility({decisionAt:"2026-01-02T09:00:00Z",benchmarkId:"EQ",benchmarkKnownAt:"2026-01-03T09:00:00Z",commonSupportId:"S1"}).eligible,false);
+console.log(JSON.stringify({a,t,s},null,2));console.log("D15-21 diagnostics tests PASS");
