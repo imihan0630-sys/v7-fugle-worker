@@ -865,3 +865,87 @@ No outcome join, maturity promotion, new module or Formal change is authorized b
 3. COV-12 waits for the actual formal specialist return file.
 4. AOKD-05 waits for Room06 corpus-feasibility return only.
 5. Continue scanning other non-blocked governance items rather than idling on these four gates.
+
+
+## 2026-10-04 21:31 owner-gate consolidation
+
+00-room completed formal Intake + Dependency/Overlap/Anti-double-count/Anti-orphan review for three newly complete Coverage returns.
+
+### COV-06
+State:
+`OWNER_APPROVAL_REQUIRED`.
+
+Action:
+`EXTEND_EXISTING_SCOPE → D10-01`.
+
+Scope:
+effective-dated supply-network topology / critical-node / single-point-failure / qualified alternate-path / substitution-constraint / resilience semantics.
+
+No new module.
+D10-01 remains L2/40%.
+D10-12 remains downstream issuer-exposure/transmission consumer.
+
+Audit:
+`shared-knowledge/CURRICULUM_COVERAGE_COV06_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md`.
+
+### COV-08
+State:
+`OWNER_APPROVAL_REQUIRED`.
+
+Action:
+`EXTEND_EXISTING_SCOPE → D16-06`.
+
+Scope:
+dependence-aware inference hierarchy: cluster-robust / HAC / temporal block bootstrap / effective-support / sensitivity / nonstationarity fail-closed rules.
+
+No new module.
+D16-06 remains L4/80%.
+
+Audit:
+`shared-knowledge/CURRICULUM_COVERAGE_COV08_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md`.
+
+### COV-10
+State:
+`OWNER_APPROVAL_REQUIRED`.
+
+Action:
+`ADD_MODULE → D20-14`.
+
+Proposed:
+`D20-14｜Belief Updating Biases / Confirmation–Perseverance–Conservatism（信念更新偏誤／確認偏誤－信念固著－保守更新）`.
+
+Starting maturity:
+L0/0%.
+
+Role:
+VALIDATION primary; EXPLANATORY/CONTEXT secondary; no independent directional vote.
+
+No maturity inheritance from existing D20 modules.
+
+Audit:
+`shared-knowledge/CURRICULUM_COVERAGE_COV10_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md`.
+
+### Consolidated owner-approval queue
+
+Currently awaiting explicit owner approval before canonical structural mutation:
+- H04;
+- H10;
+- H11;
+- COV-06;
+- COV-08;
+- COV-10.
+
+A generic `繼續` is not treated as approval for these structural actions.
+
+### Non-owner-gate blockers remain separate
+
+- H02: D14-17 umbrella contract pending.
+- H03: D15-24 VaR sub-scope pending.
+- H12: Room10 D14-19 + first live TWSE rate/supply receipt pending.
+- H17: D07-18 + D22-04 replay gates pending.
+- H18: D07-19 project economics pending.
+- H19: common-support redundancy/residual tests pending.
+- COV-07 / COV-09 / COV-11 / COV-12: formal specialist return files still absent.
+- AOKD-05: Room06 corpus-feasibility return pending.
+
+Formal Core remains LOCKED.
