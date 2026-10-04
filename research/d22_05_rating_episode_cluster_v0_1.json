@@ -1,10 +1,10 @@
 {
   "schemaVersion": "D22_05_RATING_EPISODE_CLUSTER_V0_1",
-  "generatedAt": "2026-10-04T21:13:00+08:00",
+  "generatedAt": "2026-10-04T21:03:00+08:00",
   "status": "OUTCOME_BLIND / CHALLENGER_EPISODE_GATE_PASSED / BASELINE_PAIRING_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "sourceReplay": {
     "path": "research/d22_05_rating_event_replay_v0_1.json",
-    "sha": "ff54c75ce54f473aeecb54bf1d35726d032f3913"
+    "sha": "08fcc0e620573a9ed70e17a30eda010c8949e946"
   },
   "rules": {
     "signMap": {
