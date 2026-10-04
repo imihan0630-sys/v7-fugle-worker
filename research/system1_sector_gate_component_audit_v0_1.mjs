@@ -60,6 +60,7 @@ export function buildSystem1SectorGateComponentAudit({adapted,diagnosis,firstFai
     rows.push({
       symbol:String(o.symbol),pool:o.pool||'UNKNOWN',combinedSectorGate:combined,expectedCombined:expected,
       componentFailSet:fails,componentUnknownSet:unknowns,pattern,
+      gates,
       sector:raw?.sector||{},
       formalFirstFailure:o.firstFailureReason||null
     });
