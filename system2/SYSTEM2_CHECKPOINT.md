@@ -1220,3 +1220,32 @@ Still false:
 7. only after history + continuity are READY address `ASSESSOR_POLICY_NOT_FROZEN`, then Strategy -> Ranking -> Capacity -> real `s2_capacity_runs`.
 
 System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
+
+
+## 2026-10-04 S2-07 MOPSOV multi-control reconciliation — PHYSICALLY VERIFIED
+
+S2-07 expanded the MOPSOV query-integrity check from one high-volume company to every company in the frozen correction/cancellation control matrix.
+
+- PR #448 merged as `8c1f9746ffe0593797403a5bc45c1cfbd68e0a35`.
+- Multi Control Reconciliation Readonly `37168654471`: PASS.
+- System2 Research CI `37168654454`: PASS.
+- V8 Regression `37168654514`: PASS.
+- companyCount=4; controlCount=5; allControlsCovered=true.
+- passCompanyCount=4.
+- exactKeysetReconciliation=true.
+- every company: onlyAll=0, onlyMonthShard=0, duplicateMonthKey=0.
+- correction/cancellation control companies: 2467, 1459, 2321, 1342.
+- no D1/R2 mutation, no strategy evaluation, no capacity, no selection/push/capital/order authority, no System1 runtime use.
+
+This proves bounded query-shape consistency across the frozen multi-control sample. It does not prove whole-market or revision-history completeness.
+
+### Exact continuation
+1. certify empty company-month semantics so an empty shard can be distinguished from missing/invalid transport;
+2. stress higher-row-count pagination/truncation semantics;
+3. validate MOPS source-reported date/time/sequence as historical version knownAt candidates;
+4. add exchange official-document cancellation/revocation evidence where MOPS alone is insufficient;
+5. only after the supplemental revision-history contract is complete reconsider the six-lane revision coverage receipt;
+6. then complete suspension/resumption -> symbol sessions -> RAW A1 lineage -> technical continuity;
+7. after history + continuity are READY, address `ASSESSOR_POLICY_NOT_FROZEN`, then Strategy -> Ranking -> Capacity -> real `s2_capacity_runs`.
+
+System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
