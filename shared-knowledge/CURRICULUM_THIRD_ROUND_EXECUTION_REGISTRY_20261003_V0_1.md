@@ -218,3 +218,39 @@ Status:
 H09 canonical receipts:
 - `shared-knowledge/CURRICULUM_H09_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md`
 - `shared-knowledge/curriculum_h09_canonical_update_receipt_20261004_v0_1.json`
+
+
+## H06 / H07 terminal closure + H12 partial advance — 2026-10-04
+
+### H06
+Terminal:
+`KEEP_SEPARATE / BOUNDED_SOCIAL_HERDING_SUBLANE / SHARED_SOCIAL_RECEIPT_FIREWALL`.
+
+State:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+Audit:
+`shared-knowledge/CURRICULUM_H06_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+### H07
+Terminal:
+`KEEP_SEPARATE / EVENT_CONDITIONED_OVERREACTION_PARENT_VS_REVERSAL_OUTCOME / BEHAVIORAL_CAUSE_FAIL_CLOSED`.
+
+State:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+Audit:
+`shared-knowledge/CURRICULUM_H07_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+### H12
+Room13 semantic counterpart accepted:
+`research/d20_h12_limits_to_arbitrage_room13_packet_v0_1.md`.
+
+State remains:
+`PARTIAL_EVIDENCE_RECEIVED / EVIDENCE_INSUFFICIENT_PENDING_ROOM10_AND_LIVE_SOURCE_RECEIPT`.
+
+Remaining blockers:
+- Room10 D14-19 execution-lifecycle packet;
+- first genuine live TWSE rate/supply receipt for D20-13 under frozen source/PIT contract.
+
+No module-count, maturity or Formal Core change from these governance transitions.
