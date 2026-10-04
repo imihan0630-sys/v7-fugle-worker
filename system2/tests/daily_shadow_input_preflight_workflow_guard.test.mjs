@@ -38,7 +38,9 @@ assert.match(history, /REVISION_AMBIGUITY/);
 assert.match(assessor, /ASSESSOR_POLICY_NOT_FROZEN/);
 assert.match(assessor, /NO_PREREGISTERED_SETUP_LEVEL_THRESHOLDS/);
 assert.match(preflight, /ASSESSOR_POLICY_BLOCKED/);
-assert.match(preflight, /zeroPickMayBeClaimed: sourceAndHistoryReady && assessorReady/);
+assert.match(preflight, /zeroPickMayBeClaimed: globalInputsReady && assessorReady && selectionDenominatorComplete/);
+assert.match(preflight, /symbolLocalIncompleteCount/);
+assert.match(preflight, /PIT_HISTORY_GLOBAL/);
 assert.match(preflight, /scheduledCaptureAuthorized: false/);
 assert.match(preflight, /system1RuntimeUsed: false/);
 

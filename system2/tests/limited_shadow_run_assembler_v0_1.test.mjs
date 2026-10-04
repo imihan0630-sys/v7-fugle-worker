@@ -216,7 +216,10 @@ assert.ok(
 
 assert.equal(bundle.fingerprint.runFingerprintState, "RUN_FINGERPRINT_COMPLETE");
 assert.equal(bundle.fingerprint.outcomeJoinEligible, true);
-assert.equal(bundle.predictionSnapshot.zeroPickDay, true);
+assert.equal(bundle.predictionSnapshot.zeroPickDay, null);
+assert.equal(bundle.predictionSnapshot.zeroPickState, "PARTIAL_COVERAGE_NO_SELECTION");
+assert.equal(bundle.predictionSnapshot.selectionDenominator.complete, false);
+assert.equal(bundle.predictionSnapshot.selectionDenominator.unresolvedByState.INCOMPLETE, 1);
 assert.equal(bundle.predictionSnapshot.cohortCounts.NEAR_MISS, 1);
 assert.equal(bundle.predictionSnapshot.cohortCounts.SELECTED, 0);
 assert.equal(bundle.predictionSnapshot.outcomeJoinEligible, true);

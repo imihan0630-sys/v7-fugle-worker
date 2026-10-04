@@ -117,6 +117,56 @@ function normalizeSupportingReceipt(receipt, marketDate, decisionTimestamp, fiel
   return receipt;
 }
 
+function summarizeSelectionDenominator(runReceipts) {
+  if (!runReceipts.length) {
+    return Object.freeze({
+      state: "UNKNOWN",
+      complete: false,
+      unresolvedCount: null,
+      unresolvedByState: Object.freeze({}),
+      blockerCodes: Object.freeze(["SHADOW_RUN_RECEIPT_NOT_PROVIDED"]),
+    });
+  }
+
+  const unresolvedStates = ["INCOMPLETE", "SOURCE_BLOCKED", "SESSION_INVALID", "ERROR"];
+  const unresolvedByState = Object.fromEntries(unresolvedStates.map((state) => [state, 0]));
+  const blockerCodes = [];
+  let stateCountsComplete = true;
+
+  for (const receipt of runReceipts) {
+    if (receipt.runState !== "COMPLETE") {
+      blockerCodes.push(`SHADOW_RUN_ACCOUNTING_${receipt.runState || "UNKNOWN"}`);
+    }
+    if (!receipt.stateCounts || typeof receipt.stateCounts !== "object") {
+      stateCountsComplete = false;
+      blockerCodes.push("SHADOW_RUN_STATE_COUNTS_MISSING");
+      continue;
+    }
+    for (const state of unresolvedStates) {
+      unresolvedByState[state] += Number(receipt.stateCounts[state] || 0);
+    }
+  }
+
+  const unresolvedCount = Object.values(unresolvedByState)
+    .reduce((sum, value) => sum + value, 0);
+  const complete =
+    blockerCodes.length === 0
+    && stateCountsComplete
+    && unresolvedCount === 0;
+
+  return Object.freeze({
+    state: complete
+      ? "COMPLETE"
+      : stateCountsComplete
+        ? "PARTIAL"
+        : "UNKNOWN",
+    complete,
+    unresolvedCount,
+    unresolvedByState: Object.freeze(unresolvedByState),
+    blockerCodes: Object.freeze([...new Set(blockerCodes)]),
+  });
+}
+
 export async function buildPredictionSnapshotBundleV0_1({
   predictionSnapshotId,
   marketDate,
@@ -228,6 +278,20 @@ export async function buildPredictionSnapshotBundleV0_1({
       (candidateStateCounts[row.candidateState] || 0) + 1;
   }
 
+  const selectionDenominator = summarizeSelectionDenominator(normalizedRunReceipts);
+  const zeroPickState = cohortCounts.SELECTED > 0
+    ? "SELECTION_PRESENT"
+    : selectionDenominator.complete
+      ? "CLEAN_ZERO_PICK"
+      : selectionDenominator.state === "PARTIAL"
+        ? "PARTIAL_COVERAGE_NO_SELECTION"
+        : "DENOMINATOR_UNKNOWN_NO_SELECTION";
+  const zeroPickDay = cohortCounts.SELECTED > 0
+    ? false
+    : selectionDenominator.complete
+      ? true
+      : null;
+
   const outcomeJoinBlockers = [];
   if (!normalizedFingerprints.length) {
     outcomeJoinBlockers.push("RUN_FINGERPRINT_NOT_PROVIDED");
@@ -258,7 +322,9 @@ export async function buildPredictionSnapshotBundleV0_1({
     runFingerprints: Object.freeze(normalizedFingerprints),
     outcomeJoinEligible: outcomeJoinBlockers.length === 0,
     outcomeJoinBlockers: Object.freeze([...new Set(outcomeJoinBlockers)]),
-    zeroPickDay: cohortCounts.SELECTED === 0,
+    selectionDenominator,
+    zeroPickState,
+    zeroPickDay,
     invariants: Object.freeze({
       decisionRecordsImmutable: true,
       normalizedFactorsRelabeledAsScores: false,

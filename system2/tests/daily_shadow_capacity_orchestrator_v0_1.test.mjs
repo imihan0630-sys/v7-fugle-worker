@@ -61,6 +61,12 @@ function sgInput(symbol, entryReadiness, {
 }
 
 function strategyRun(strategyId, rankingInputs, exclusions = {}) {
+  const stateCounts = {
+    INCOMPLETE: rankingInputs.filter((x) => x.strategyValidity === "INCOMPLETE").length,
+    SOURCE_BLOCKED: 0,
+    SESSION_INVALID: 0,
+    ERROR: 0,
+  };
   return {
     marketDate,
     decisionTimestamp,
@@ -71,7 +77,10 @@ function strategyRun(strategyId, rankingInputs, exclusions = {}) {
     bundle: {
       strategyId,
       strategyVersion: "V0.1-CONTRACT",
-      runReceipt: { runState: "COMPLETE" },
+      runReceipt: {
+        runState: "COMPLETE",
+        stateCounts,
+      },
     },
   };
 }
@@ -139,8 +148,62 @@ const zero = await buildDailyShadowCapacityOrchestrationV0_1({
 });
 assert.equal(zero.state, "CAPACITY_ZERO_PICK_READY");
 assert.equal(zero.capacityReceipt.globalCount, 0);
+assert.equal(zero.zeroPickDay, true);
+assert.equal(zero.zeroPickState, "CLEAN_ZERO_PICK");
+assert.equal(zero.selectionDenominator.complete, true);
 assert.deepEqual(zero.capacityReceipt.activeAssignments.SHORT_MOMENTUM, []);
 assert.deepEqual(zero.capacityReceipt.activeAssignments.SWING_GROWTH, []);
+
+const mixedPartial = await buildDailyShadowCapacityOrchestrationV0_1({
+  capacityRunId: "CAP-2026-10-02-MIXED",
+  persistenceBatchId: "PB-CAP-2026-10-02-MIXED",
+  marketDate,
+  decisionTimestamp,
+  capturedAt,
+  strategyRuns: [
+    strategyRun("SHORT_MOMENTUM", [
+      smInput("A", "BUY_ELIGIBLE"),
+      smInput("B", "BLOCKED", { validity: "INCOMPLETE" }),
+      smInput("C", "BLOCKED", { validity: "INCOMPLETE" }),
+      smInput("D", "BLOCKED", { validity: "INCOMPLETE" }),
+    ]),
+  ],
+});
+assert.equal(mixedPartial.state, "CAPACITY_READY_PARTIAL_COVERAGE");
+assert.equal(mixedPartial.zeroPickDay, false);
+assert.equal(mixedPartial.zeroPickState, "PARTIAL_COVERAGE_WITH_READY_ADMISSIONS");
+assert.equal(mixedPartial.selectionDenominator.complete, false);
+assert.equal(mixedPartial.selectionDenominator.unresolvedByState.INCOMPLETE, 3);
+assert.deepEqual(mixedPartial.capacityReceipt.globalPool.map((x) => x.symbol), ["A"]);
+assert.deepEqual(mixedPartial.capacityReceipt.activeAssignments.SHORT_MOMENTUM.map((x) => x.symbol), ["A"]);
+assert.equal(mixedPartial.newCandidateDiagnostics.length, 3);
+assert.equal(mixedPartial.persistenceBatch.operations.some((x) => x.table === "s2_capacity_runs"), true);
+
+const partialNoSelection = await buildDailyShadowCapacityOrchestrationV0_1({
+  capacityRunId: "CAP-2026-10-02-PARTIAL-NONE",
+  persistenceBatchId: "PB-CAP-2026-10-02-PARTIAL-NONE",
+  marketDate,
+  decisionTimestamp,
+  capturedAt,
+  strategyRuns: [
+    strategyRun("SHORT_MOMENTUM", [
+      smInput("A", "WATCH"),
+      smInput("B", "BLOCKED", { validity: "INCOMPLETE" }),
+      smInput("C", "BLOCKED", { validity: "INCOMPLETE" }),
+      smInput("D", "BLOCKED", { validity: "INCOMPLETE" }),
+    ]),
+  ],
+});
+assert.equal(partialNoSelection.state, "CAPACITY_PARTIAL_COVERAGE_NO_SELECTION");
+assert.equal(partialNoSelection.zeroPickDay, null);
+assert.equal(partialNoSelection.zeroPickState, "PARTIAL_COVERAGE_NO_SELECTION");
+assert.equal(partialNoSelection.capacityReceipt, null);
+assert.equal(partialNoSelection.selectionDenominator.complete, false);
+assert.equal(partialNoSelection.newCandidateDiagnostics.length, 4);
+assert.equal(
+  partialNoSelection.persistenceBatch.operations.some((x) => x.table === "s2_capacity_runs"),
+  false,
+);
 
 const priorCapacityRow = {
   market_date: "2026-10-01",
@@ -200,7 +263,9 @@ const revalidated = await buildDailyShadowCapacityOrchestrationV0_1({
   ],
 });
 
-assert.equal(revalidated.state, "CAPACITY_READY");
+assert.equal(revalidated.state, "CAPACITY_READY_PARTIAL_COVERAGE");
+assert.equal(revalidated.zeroPickDay, false);
+assert.equal(revalidated.selectionDenominator.complete, false);
 assert.deepEqual(
   revalidated.capacityReceipt.globalPool.map((x) => x.symbol).sort(),
   ["2330", "3008"],

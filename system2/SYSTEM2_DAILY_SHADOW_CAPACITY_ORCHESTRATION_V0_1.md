@@ -93,14 +93,30 @@ If eligible new unique symbols exceed available vacancies:
 
 ## Zero-pick semantics
 
-A complete same-clock strategy set with no qualified new candidates and no surviving prior candidates creates a legitimate zero-pick capacity receipt.
+A clean zero-pick requires both:
+- a complete same-clock strategy set with no qualified new candidates and no surviving prior candidates; and
+- a complete selection denominator with no unresolved `INCOMPLETE / SOURCE_BLOCKED / SESSION_INVALID / ERROR` symbol states.
+
+If the denominator is partial and there are no ready admissions:
+- state = `CAPACITY_PARTIAL_COVERAGE_NO_SELECTION`;
+- `zeroPickDay = null`;
+- no `s2_capacity_runs` row is emitted, preventing the downstream 19:00 resonance lane from converting partial coverage into `ZERO_PICK_ACTIVE`.
+
+If the denominator is partial but one or more ready symbols are legitimately admitted:
+- state = `CAPACITY_READY_PARTIAL_COVERAGE`;
+- the ready symbols may continue to capacity;
+- incomplete symbols remain blocked and are not admitted;
+- `zeroPickDay = false`.
 
 This is different from:
-- missing source data;
-- incomplete strategy revalidation;
+- missing/global-corrupt source data (global block);
+- symbol-local missingness (partial denominator);
+- incomplete prior revalidation;
 - unresolved scarcity.
 
-The later 19:00 resonance lane may therefore distinguish a truthful zero-pick day from a missing upstream run.
+No arbitrary market-wide percentage coverage threshold is used.
+
+The later 19:00 resonance lane may therefore receive a capacity receipt only when it cannot falsely infer a clean zero-pick from unresolved symbol-local UNKNOWNs.
 
 ## Persistence boundary
 
@@ -116,7 +132,9 @@ Tests must cover:
 - multi-strategy overlap dedupe;
 - max-12 / max-3 invariants;
 - no forced fill;
-- zero-pick capacity receipt;
+- clean zero-pick capacity receipt;
+- partial-denominator no-selection -> no capacity receipt / no downstream false zero-pick;
+- partial-denominator with ready admissions -> ready symbols proceed while INCOMPLETE remains blocked;
 - prior INCOMPLETE retention without active-monitor eligibility;
 - invalidated prior membership removal;
 - missing prior revalidation fail-closed;

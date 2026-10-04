@@ -168,6 +168,9 @@ const coverage = await probePitHistoryCoverageV0_1({
   requiredPriorSessions: 60,
 });
 assert.equal(coverage.state, "CONTINUITY_NOT_VERIFIED");
+assert.equal(coverage.globalIntegrityState, "READY");
+assert.equal(coverage.selectionDenominatorComplete, false);
+assert.equal(coverage.symbolLocalIncompleteCount, 1);
 assert.equal(coverage.historyReadyCount, 2);
 assert.equal(coverage.continuityReadyCount, 1);
 assert.equal(coverage.historyCoverage, 1);
@@ -208,6 +211,8 @@ assert.equal(ageAware.diagnostics[0].requiredPriorSessionsForSymbol, 3);
 assert.equal(ageAware.diagnostics[0].listingAgeLimited, true);
 assert.equal(ageAware.diagnostics[0].listingAgeBasis, "OFFICIAL_CURRENT_LISTING_DATE_PLUS_OFFICIAL_TRADING_DATES");
 assert.equal(ageAware.state, "CONTINUITY_NOT_VERIFIED");
+assert.equal(ageAware.globalIntegrityState, "READY");
+assert.equal(ageAware.selectionDenominatorComplete, false);
 
 const ageAwareMissing = await probePitHistoryCoverageV0_1({
   db: fakeDb({ coverageRows: [{
@@ -223,6 +228,8 @@ const ageAwareMissing = await probePitHistoryCoverageV0_1({
 });
 assert.equal(ageAwareMissing.historyReadyCount, 0);
 assert.equal(ageAwareMissing.state, "HISTORY_COVERAGE_INCOMPLETE");
+assert.equal(ageAwareMissing.globalIntegrityState, "READY");
+assert.equal(ageAwareMissing.diagnostics[0].readinessState, "INCOMPLETE");
 
 const sm = resolveDailyShadowAssessorReadinessV0_1("SHORT_MOMENTUM");
 assert.equal(sm.state, "ASSESSOR_POLICY_NOT_FROZEN");
@@ -258,7 +265,31 @@ const incompletePreflight = buildDailyShadowInputPreflightV0_1({
   a1Source: source,
   historyCoverage: coverage,
 });
-assert.equal(incompletePreflight.state, "INPUTS_NOT_READY");
-assert.equal(incompletePreflight.blockers.some((x) => x.layer === "PIT_HISTORY"), true);
+assert.equal(incompletePreflight.state, "ASSESSOR_POLICY_BLOCKED");
+assert.equal(incompletePreflight.globalInputsReady, true);
+assert.equal(incompletePreflight.sourceAndHistoryReady, true);
+assert.equal(incompletePreflight.symbolLocalIncompleteCount, 1);
+assert.equal(incompletePreflight.selectionDenominatorComplete, false);
+assert.equal(incompletePreflight.zeroPickMayBeClaimed, false);
+assert.equal(incompletePreflight.blockers.some((x) => x.layer === "PIT_HISTORY_GLOBAL"), false);
+assert.equal(incompletePreflight.symbolLocalBlockers.length, 1);
+assert.deepEqual(incompletePreflight.evaluationInputEligibleSymbols, ["2330"]);
+assert.deepEqual(incompletePreflight.evaluationInputBlockedSymbols, ["6488"]);
+
+const globalCorruption = buildDailyShadowInputPreflightV0_1({
+  marketDate,
+  decisionTimestamp: source.decisionTimestamp,
+  a1Source: source,
+  historyCoverage: {
+    ...coverage,
+    state: "SOURCE_WIDE_REVISION_AMBIGUITY",
+    globalIntegrityState: "BLOCKED",
+    globalBlockerCodes: ["SOURCE_WIDE_REVISION_AMBIGUITY"],
+  },
+});
+assert.equal(globalCorruption.state, "INPUTS_NOT_READY");
+assert.equal(globalCorruption.globalInputsReady, false);
+assert.equal(globalCorruption.blockers.some((x) => x.layer === "PIT_HISTORY_GLOBAL"), true);
+assert.equal(globalCorruption.zeroPickMayBeClaimed, false);
 
 console.log("System2 daily Shadow input preflight v0.1 tests passed");

@@ -12,10 +12,10 @@ Provide a truthful bridge between the already-built System 2 daily Shadow orches
 The preflight answers three separate questions without creating picks:
 
 1. Is the current official A1 daily market snapshot available and structurally valid?
-2. Does isolated System 2 D1 contain enough PIT-eligible prior A1 history with verified continuity?
+2. Does isolated System 2 D1 have globally trustworthy PIT-history infrastructure, and which individual symbols have enough PIT-eligible prior A1 history with verified continuity?
 3. Is a preregistered / owner-authorized strategy assessor policy available to convert observations into strategy family states and EntryReadiness?
 
-A failure at any layer must remain explicit. It must never be converted into a fake zero-pick day.
+A failure at any layer must remain explicit. Global source/infrastructure failures block the whole run; symbol-local history/continuity/PIT gaps remain symbol-local INCOMPLETE/BLOCKED and must not starve clean symbols. Neither case may be converted into a fake zero-pick day.
 
 ## Modules
 
@@ -30,7 +30,9 @@ A failure at any layer must remain explicit. It must never be converted into a f
   - requires `pit_replay_eligible=1` and `available_at <= decisionTimestamp`;
   - provides a per-symbol prior-bar loader compatible with PIT Replay;
   - fails closed on eligible revision ambiguity;
-  - measures last-60-session history and continuity coverage for the current universe.
+  - measures last-60-session history and continuity coverage for the current universe;
+  - separates `globalIntegrityState` from per-symbol readiness diagnostics;
+  - local history/continuity/revision gaps remain `INCOMPLETE` for that symbol, while source-wide/clock/universe-integrity failures remain global blockers.
 
 - `runtime/daily_shadow_assessor_readiness_v0_1.mjs`
   - explicit firewall against invented strategy thresholds;
@@ -38,9 +40,10 @@ A failure at any layer must remain explicit. It must never be converted into a f
   - no default MA/volume/fundamental threshold is allowed to create SUPPORTIVE/ADVERSE or BUY_ELIGIBLE.
 
 - `runtime/daily_shadow_input_preflight_v0_1.mjs`
-  - combines current source, PIT history and assessor readiness;
-  - returns `INPUTS_NOT_READY`, `ASSESSOR_POLICY_BLOCKED`, or later `READY_FOR_AUTHORIZED_SHADOW_EVALUATION`;
-  - capacity writes and zero-pick claims remain unauthorized until both data and assessor policy are genuinely ready.
+  - combines current source, global PIT-history integrity, symbol-local readiness and assessor readiness;
+  - returns global `INPUTS_NOT_READY` only for global source/integrity failure; local gaps are exposed through `symbolAccounts` / `symbolLocalBlockers`;
+  - once an assessor is authorized, ready symbols may continue even when other symbols remain INCOMPLETE/BLOCKED;
+  - `zeroPickMayBeClaimed` additionally requires complete selection denominator coverage, so partial coverage cannot be mislabeled as clean zero-pick.
 
 - `scripts/run_daily_shadow_input_preflight_readonly.mjs`
   - uses the isolated `system2-research` D1 through the existing remote read adapter;
@@ -71,12 +74,17 @@ This is a deliberate safety state, not an engineering failure.
 
 ## Zero-pick firewall
 
-A truthful zero-pick capacity receipt is allowed only when:
-- current required sources are ready;
-- PIT history / continuity requirements are ready;
+A truthful **CLEAN_ZERO_PICK** claim is allowed only when:
+- current required global sources are ready;
+- global PIT-history/source integrity is ready;
+- the required selection denominator is complete (no symbol-local INCOMPLETE/SOURCE_BLOCKED/SESSION_INVALID/ERROR debt for the claim);
 - all required strategy assessor policies are authorized;
 - all strategy runs complete accounting;
 - capacity is resolvable.
+
+Symbol-local history/continuity/provenance gaps do **not** globally block ready symbols, but they make the selection denominator partial. If no ready symbol is selected under partial coverage, the state must remain `PARTIAL_COVERAGE_NO_SELECTION` (or equivalent) with `zeroPickDay=null`, never a clean zero-pick.
+
+No whole-market coverage percentage threshold (95%, 90%, 80%, etc.) is introduced by this rule.
 
 If assessor policy is missing, the state is **BLOCKED**, never "0 stocks selected".
 

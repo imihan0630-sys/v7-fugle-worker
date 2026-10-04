@@ -67,6 +67,73 @@ function decisionMapForRun(run) {
   return map;
 }
 
+function summarizeSelectionDenominator(strategyRuns) {
+  const unresolvedStates = ["INCOMPLETE", "SOURCE_BLOCKED", "SESSION_INVALID", "ERROR"];
+  const unresolvedByState = Object.fromEntries(unresolvedStates.map((state) => [state, 0]));
+  const blockerCodes = [];
+  const strategies = [];
+
+  for (const run of strategyRuns) {
+    const strategyId = requiredText(
+      run.bundle?.strategyId ?? run.strategyId,
+      "strategyRun.strategyId",
+    );
+    const receipt = run.bundle?.runReceipt || {};
+    const counts = receipt.stateCounts;
+    if (!counts || typeof counts !== "object") {
+      blockerCodes.push(`STATE_COUNTS_MISSING:${strategyId}`);
+      strategies.push(Object.freeze({
+        strategyId,
+        state: "UNKNOWN",
+        unresolvedCount: null,
+      }));
+      continue;
+    }
+
+    let unresolvedCount = 0;
+    for (const state of unresolvedStates) {
+      const count = Number(counts[state] || 0);
+      unresolvedByState[state] += count;
+      unresolvedCount += count;
+    }
+    if (receipt.runState !== "COMPLETE") {
+      blockerCodes.push(`RUN_ACCOUNTING_${receipt.runState || "UNKNOWN"}:${strategyId}`);
+    }
+    strategies.push(Object.freeze({
+      strategyId,
+      state: receipt.runState === "COMPLETE" && unresolvedCount === 0
+        ? "COMPLETE"
+        : "PARTIAL",
+      unresolvedCount,
+    }));
+  }
+
+  const unresolvedCount = Object.values(unresolvedByState)
+    .reduce((sum, value) => sum + value, 0);
+  const complete = blockerCodes.length === 0 && unresolvedCount === 0;
+
+  return Object.freeze({
+    state: complete
+      ? "COMPLETE"
+      : blockerCodes.some((code) => code.startsWith("STATE_COUNTS_MISSING"))
+        ? "UNKNOWN"
+        : "PARTIAL",
+    complete,
+    unresolvedCount,
+    unresolvedByState: Object.freeze(unresolvedByState),
+    blockerCodes: Object.freeze([...new Set(blockerCodes)]),
+    strategies: Object.freeze(strategies),
+  });
+}
+
+function activeSymbolCount(activeAllocation) {
+  const symbols = new Set();
+  for (const rows of Object.values(activeAllocation?.assignments || {})) {
+    for (const row of rows || []) symbols.add(String(row.symbol));
+  }
+  return symbols.size;
+}
+
 function priorPoolFromCapacity(priorCapacityRow) {
   if (!priorCapacityRow) return [];
   const raw = priorCapacityRow.globalPool ?? priorCapacityRow.global_pool_json;
@@ -311,6 +378,7 @@ export async function buildDailyShadowCapacityOrchestrationV0_1({
   const identities = strategyRuns.map((run, index) =>
     strategyRunIdentity(run, index, date, clock),
   );
+  const selectionDenominator = summarizeSelectionDenominator(strategyRuns);
   const seenStrategies = new Set();
   const runByStrategy = new Map();
   const decisionMaps = new Map();
@@ -453,6 +521,43 @@ export async function buildDailyShadowCapacityOrchestrationV0_1({
     strategyOrders,
     perStrategyMax: SYSTEM2_PER_STRATEGY_ACTIVE_MAX_V0_1,
   });
+  const activeReadySymbolCount = activeSymbolCount(activeAllocation);
+
+  if (!selectionDenominator.complete && activeReadySymbolCount === 0) {
+    const persistenceBatch = await buildSystem2PersistenceBatch({
+      batchId: requiredText(persistenceBatchId, "persistenceBatchId"),
+      marketDate: date,
+      decisionTimestamp: clock,
+      records: orderingRecords,
+      createdAt: captured,
+    });
+    return deepFreeze({
+      state: "CAPACITY_PARTIAL_COVERAGE_NO_SELECTION",
+      marketDate: date,
+      decisionTimestamp: clock,
+      strategyCount: strategyRuns.length,
+      orderingReceipts: Object.freeze(orderingReceipts),
+      newCandidateDiagnostics: next.diagnostics,
+      priorPoolRevalidatedCount: priorRevalidation.priorPool.length,
+      allocationState: gated.allocationState,
+      selectionDenominator,
+      zeroPickState: "PARTIAL_COVERAGE_NO_SELECTION",
+      zeroPickDay: null,
+      activeReadySymbolCount,
+      blockers: Object.freeze([{
+        code: "SELECTION_DENOMINATOR_INCOMPLETE",
+        unresolvedCount: selectionDenominator.unresolvedCount,
+        unresolvedByState: selectionDenominator.unresolvedByState,
+      }]),
+      capacityReceipt: null,
+      persistenceBatch,
+      finalSelectionEnabled: false,
+      crossStrategyGlobalPriorityAuthorized: false,
+      livePushEnabled: false,
+      orderImpact: false,
+      schemaVersion: "S2_DAILY_SHADOW_CAPACITY_ORCHESTRATION_V0_1",
+    });
+  }
 
   const capacityReceipt = await buildCandidateCapacityReceipt({
     capacityRunId: requiredText(capacityRunId, "capacityRunId"),
@@ -474,10 +579,16 @@ export async function buildDailyShadowCapacityOrchestrationV0_1({
     createdAt: captured,
   });
 
+  const cleanZeroPick = capacityReceipt.globalCount === 0 && selectionDenominator.complete;
+  const partialCoverageWithReadyAdmissions =
+    !selectionDenominator.complete && activeReadySymbolCount > 0;
+
   return deepFreeze({
-    state: capacityReceipt.globalCount === 0
+    state: cleanZeroPick
       ? "CAPACITY_ZERO_PICK_READY"
-      : "CAPACITY_READY",
+      : partialCoverageWithReadyAdmissions
+        ? "CAPACITY_READY_PARTIAL_COVERAGE"
+        : "CAPACITY_READY",
     marketDate: date,
     decisionTimestamp: clock,
     strategyCount: strategyRuns.length,
@@ -485,6 +596,14 @@ export async function buildDailyShadowCapacityOrchestrationV0_1({
     newCandidateDiagnostics: next.diagnostics,
     priorPoolRevalidatedCount: priorRevalidation.priorPool.length,
     allocationState: gated.allocationState,
+    selectionDenominator,
+    zeroPickState: cleanZeroPick
+      ? "CLEAN_ZERO_PICK"
+      : partialCoverageWithReadyAdmissions
+        ? "PARTIAL_COVERAGE_WITH_READY_ADMISSIONS"
+        : "CAPACITY_NONEMPTY",
+    zeroPickDay: cleanZeroPick ? true : false,
+    activeReadySymbolCount,
     capacityReceipt,
     persistenceBatch,
     finalSelectionEnabled: false,
