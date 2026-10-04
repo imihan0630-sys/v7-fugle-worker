@@ -44,7 +44,7 @@ function compatibleStem(a,b){
   return longer.includes(shorter) && shorter.length/longer.length>=0.72;
 }
 
-function fetchMopsYear(stockCode){
+async function fetchMopsYear(stockCode){
   const args=[
     "--fail","--silent","--show-error","--location","--max-time","30",
     "--request","POST",
@@ -61,10 +61,33 @@ function fetchMopsYear(stockCode){
     "--data-urlencode","e_date=",
     MOPS_URL,
   ];
-  const p=spawnSync("curl",args,{encoding:"utf8",maxBuffer:32*1024*1024});
-  if(p.error) throw p.error;
-  if(p.status!==0) throw new Error("curl exit "+p.status+" for "+stockCode+": "+String(p.stderr||"").slice(0,500));
-  return p.stdout;
+
+  const maxAttempts=4;
+  for(let attempt=1;attempt<=maxAttempts;attempt+=1){
+    const p=spawnSync("curl",args,{encoding:"utf8",maxBuffer:32*1024*1024});
+    if(p.error){
+      if(attempt<maxAttempts){
+        await sleep(600*attempt);
+        continue;
+      }
+      throw p.error;
+    }
+    if(p.status===0) return p.stdout;
+
+    const stderr=String(p.stderr||"");
+    const retryable=
+      /(?:429|500|502|503|504)\b/.test(stderr) ||
+      [5,6,7,18,28,35,52,55,56,92].includes(Number(p.status));
+    if(retryable && attempt<maxAttempts){
+      await sleep(700*attempt);
+      continue;
+    }
+    throw new Error(
+      "curl exit "+p.status+" for "+stockCode+
+      " after "+attempt+" attempt(s): "+stderr.slice(0,500)
+    );
+  }
+  throw new Error("unreachable MOPS retry state for "+stockCode);
 }
 
 async function officialCandidates(){
@@ -183,7 +206,7 @@ const inspected=[];
 let stoppedEarly=false;
 for(let i=0;i<official.candidates.length;i+=1){
   const candidate=official.candidates[i];
-  const row={...candidate,...inspectCandidate(candidate,fetchMopsYear(candidate.symbol))};
+  const row={...candidate,...inspectCandidate(candidate,await fetchMopsYear(candidate.symbol))};
   inspected.push(row);
   if(row.strictRepresentativeCandidateObserved){
     stoppedEarly=true;
