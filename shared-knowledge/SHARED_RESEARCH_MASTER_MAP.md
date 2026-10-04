@@ -1917,3 +1917,53 @@ Reusable rule:
 - CI/fixture success does not equal a genuine prospective parent generation;
 - promotion remains blocked until a real post-deploy session has cutoff-bearing parent + certified cutoff-safe continuity + complete observer reconciliation;
 - PR #600 is draft/open/unmerged; Formal Core remains locked.
+
+### D11/D17 shared handoff — expectation states, preopen window turnover and 6921 lock-up deepening (2026-10-05 morning)
+
+Room 08 reusable findings:
+
+1. D17-06 expectation/surprise:
+- preserve four source classes separately: full ex-ante distribution, categorical conditional scenario set, authorization-with-unquantified-magnitude, and no-valid-expectation UNKNOWN;
+- numeric surprise is permitted only when expected/realized objects are compatible and the functional is preregistered;
+- 7827 HCB303 demonstrates categorical scenario realization;
+- 6461 restricted shares demonstrate that an authorization ceiling is not an expected magnitude;
+- D17-06 = L3 Taiwan PIT/source feasible; no cross-family surprise score or alpha claim.
+
+2. D17-07 priced-in:
+- true incorporation fraction is latent;
+- replay only the pre-event expectation-evidence state: LOW / PARTIAL / HIGH / CONFLICTED / UNKNOWN;
+- 7827 = high verified expectation evidence with uncertain branch;
+- 6461 = partial expectation evidence;
+- 2537 fire = low covered-lane prior expectation evidence for an unscheduled occurrence;
+- post-event returns, prior price rise and repeated article counts cannot backfill the state;
+- D17-07 = L3 Taiwan PIT/source feasible for evidence-state construction only.
+
+3. Preopen official-disclosure capture:
+- workflow run `37243049741` completed at 2026-10-05 07:14-07:16 Asia/Taipei with 2/2 expected polls per source;
+- TWSE current feed rolled from the prior five-row payload to three rows with a different raw hash;
+- TPEx remained stable at four rows;
+- later absence from a current snapshot therefore cannot mean cancellation/no event;
+- no newly arriving row was observed inside the fixed-cadence window, so D17-02 and D11-08 remain L2;
+- one fully observed source lane is insufficient for D11-13 NO_KNOWN_EVENT.
+
+4. D11-16 6921 issuer deepening:
+- 6921 listed on 2025-12-23;
+- pre-listing 2023/2024 connected financial ratios do not support the Article 4 profitable-issuer shortcut, so the bounded theoretical replay uses the standard Article 35 schedule;
+- first theoretical 1/4 release eligibility = 2026-06-23;
+- actual custody withdrawal remains unproven;
+- a separate 2025-12-16 over-allotment declaration by 嘉澤端子工業 for 10,000 shares is exactly consistent with later holding reduction from 4,732,059 to 4,722,059;
+- that declaration predates listing and is supply-realization evidence only, never lock-up-expiry evidence;
+- D11-16 stays L2 until original custody quantity plus actual TWSE-approved release/TDCC withdrawal and authenticated post-eligibility transfer/untransferred chain are captured.
+
+Evidence:
+- `research/d17_06_expectation_surprise_pit_audit_20261005_v0_1.json`
+- `research/d17_07_priced_in_evidence_state_audit_20261005_v0_1.json`
+- `research/d17_preopen_rolling_window_receipt_20261005_v0_1.json`
+- `research/d11_16_issuer_realization_deepening_20261005_v0_3.json`
+
+Current Room 08 maturity:
+- D11 = 56.8%.
+- D17 = 52.9%.
+- Room 08 = 55.2% across 33 modules.
+
+Formal Core unchanged. Outcome joins remain closed.
