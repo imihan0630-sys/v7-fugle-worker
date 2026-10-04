@@ -914,3 +914,70 @@ Same-industry membership does not imply same-sign effect. A leader return cannot
 Maturity decision: D17-11 L2 -> L3 for Taiwan PIT/source feasibility only.
 
 D17-05 remains L2 because its graph authority still depends on D10-01, which is not yet L3. Formal Core unchanged; outcome joins closed.
+
+## 2026-10-05 morning continuation — expectation/surprise and priced-in evidence-state PIT feasibility
+
+New receipts:
+- `research/d17_06_expectation_surprise_pit_audit_20261005_v0_1.json`
+- `research/d17_07_priced_in_evidence_state_audit_20261005_v0_1.json`
+- `research/d17_preopen_rolling_window_receipt_20261005_v0_1.json`
+
+### D17-06 — expectation versus surprise
+
+The Taiwan evidence now supports four distinct pre-event expectation classes:
+
+1. full ex-ante distribution:
+   - CBC decisions already have Reuters pre-decision distributions plus compatible official realization records;
+   - numeric/distributional surprise is allowed only under a preregistered functional.
+
+2. categorical conditional scenario set:
+   - 7827 HCB303 disclosure on 2026-09-03 stated IND submission, conditional FDA review/clinical-hold paths and a roughly 30-day process;
+   - 2026-10-03 realization allowed the trial to proceed;
+   - this supports categorical realization against a frozen scenario set, not a fabricated scalar probability.
+
+3. authorized but magnitude unquantified:
+   - 6461 disclosed prior authorization for up to 2,000,000 restricted shares;
+   - first issuance later realized at 516,000 shares;
+   - the authorization ceiling is not an expectation denominator, therefore magnitude surprise stays UNKNOWN.
+
+4. no valid expectation source:
+   - surprise = UNKNOWN;
+   - price reaction, media tone and realized outcome cannot back-solve an expectation.
+
+Maturity decision:
+D17-06 advances L2 -> L3 for Taiwan PIT/source feasibility. Cross-family surprise normalization, alpha and trading direction remain unproven and closed.
+
+### D17-07 — priced-in evidence state
+
+True market incorporation is latent and cannot be observed directly. The replayable object is only the pre-event expectation-evidence state.
+
+Divergent Taiwan cases:
+- 7827 HCB303: high verified expectation evidence that a regulatory realization was pending, while the exact outcome branch remained uncertain;
+- 6461 restricted shares: partial expectation evidence because the program was authorized but first-issuance quantity/timing was not pre-frozen;
+- 2537 construction fire: low verified prior expectation evidence in the covered official lanes because the physical event was unscheduled.
+
+The allowed states remain:
+`LOW_EXPECTATION_EVIDENCE`, `PARTIAL_EXPECTATION_EVIDENCE`, `HIGH_EXPECTATION_EVIDENCE`, `CONFLICTED`, `UNKNOWN`.
+
+Hard guard:
+these states are not probabilities of market awareness, not percentages already incorporated, and not trading signs. Post-event return cannot relabel the pre-event state. Prior price rise and repeated article count are insufficient proof.
+
+Maturity decision:
+D17-07 advances L2 -> L3 with qualifier `EVIDENCE_STATE_ONLY / TRUE_PRICED_IN_FRACTION_UNOBSERVABLE`.
+
+### Preopen source-window falsification
+
+Run `37243049741` completed successfully at about 07:14-07:16 Asia/Taipei. Both sources completed 2/2 expected polls.
+
+TWSE changed from the prior five-row afternoon/evening payload to a three-row preopen payload with a new raw hash; TPEx remained four rows with the same raw hash.
+
+This physically strengthens the rolling-window guard:
+absence from a later current snapshot cannot mean cancellation, no event, or no prior disclosure.
+
+No newly arriving item appeared between the two fixed-cadence polls, so D17-02 and D11-08 remain L2. D11-13 also remains L2 because one fully observed lane/window is not complete negative-event coverage across all required lanes.
+
+D17-03 remains L2 until a trustworthy start clock and prospective path cohort exist.
+D17-05 remains L2 because D10-01 economic graph authority is still below L3.
+D17-08 remains L2 because canonical licensed general-news source readiness is unresolved.
+
+Formal Core unchanged. Outcome joins closed.
