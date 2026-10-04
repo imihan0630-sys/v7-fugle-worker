@@ -1885,3 +1885,41 @@ D21-07 is the largest executable L2 module without PIT validation. Build a histo
   6. ADX only canonical FULL_REPLAY -> possible 60.0%;
   7. raw D03 source-version gate remains 2/3; TI-005/TI-006 outcomes CLOSED.
 - FORMAL_OPTIMIZATION_CANDIDATE = NONE; Formal Core LOCKED.
+
+
+## DL-D21-20261004-G — incentive allocation / tunneling decision-time state
+Run date: 2026-10-04 Asia/Taipei
+Scope: D21-07 / D21-11
+Status: D21-07_L3 / D21-11_L3 / RESEARCH_ONLY / FORMAL_CORE_UNCHANGED
+
+### D21-07 incentive -> capital allocation replay
+- TSMC 2024-02-06 disclosed RSA design intended to retain executives/key talent and link compensation with shareholder interests and ESG.
+- TSMC 2024-06-05 approved about US$17.3562bn long-horizon capital appropriations and a 3.249m-share buyback explicitly to offset dilution from employee restricted stock awards.
+- The dilution-offset buyback is an issuer-stated direct mechanism. The capex approval is NOT treated as caused by the incentive plan.
+- Later outcome evidence records about US$29.76bn 2024 consolidated capex, about 0.9m additional 12-inch-equivalent wafer capacity, and completed/cancelled 3.249m-share buyback.
+- Board capital appropriations are authorization batches and cannot be compared mechanically with annual capex as an execution ratio.
+- MediaTek is retained as a falsification control: stock-ownership incentives, high shareholder payout and large R&D investment can coexist.
+- D21-07 advances to L3 / 60%; no L4 without OOS/prospective incremental evidence.
+
+### D21-11 decision-time tunneling state replay
+- Formosa Oilseed Processing 1225 on 2020-02-07 corrected prior financial-report notes to disclose omitted related-party stock purchases: 1.523m shares, NT$43.338m, counterparty a first-degree relative of the then vice chairman.
+- At that public state the correct classification is AMBIGUOUS / ELEVATED_GOVERNANCE_CONCERN, not confirmed tunneling.
+- On 2020-11-05 the Taichung District Prosecutors Office publicly alleged controller/beneficiary linkage, irregular transactions totaling NT$92.32935m, concealment of related-party status, false financial reporting and about NT$20.175m company loss.
+- That public state supports HIGH_SUSPICION, not yet confirmed conviction.
+- Later adjudication can create CONFIRMED_TUNNELING only from its later known_at.
+- When source timing is DATE_ONLY, intraday use is prohibited and daily eligibility begins on the next trading day unless same-day-before-decision timing is independently proven.
+- D21-11 advances to L3 / 60%.
+
+### Anti-look-ahead / causal controls
+- Ex-post court truth never backfills an earlier feature state.
+- Incentive-policy timing preceding an allocation decision does not establish causality.
+- Same-board-meeting approvals are co-occurrence unless the issuer explicitly states a mechanism.
+- Outcome data enter only after later public disclosure.
+- All L3 modules remain below L4 without OOS/prospective evidence.
+
+### Exact next continuation
+D21 remaining L2 source-blocked priorities:
+1. D21-04 authoritative pledge setup/release receipts or another original-source pledge pair.
+2. D21-03 authoritative monthly insider known_at plus a second transfer-motive case.
+3. D21-01 authoritative ownership-report first-known receipt/time.
+Do not idle if one source remains blocked; try the next executable source path. No Formal Core change.
