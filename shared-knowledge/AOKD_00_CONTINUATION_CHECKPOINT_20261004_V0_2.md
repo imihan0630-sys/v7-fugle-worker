@@ -540,3 +540,45 @@ Latest-main re-scan after H15/H16/H20 closure and H17/H18/H19 partial routing:
 - AOKD-06: remains data-feasibility blocked.
 
 Do not promote any of these states until an actual receipt appears on latest main.
+
+
+## H02/H03/H04/H08/H10 reconciliation — 2026-10-04
+
+Third-round generic-pending sweep completed.
+
+H02:
+PARTIAL_EVIDENCE_RECEIVED / D14-17 umbrella contract pending.
+D14-03/D14-04 child evidence accepted.
+
+H03:
+PARTIAL_EVIDENCE_RECEIVED / D15-24 VaR sub-scope pending.
+D15-13 ES/tail-risk side accepted.
+
+H04:
+MERGE_ELIGIBLE / D12-15 survivor / D12-14 child proxy family.
+State = OWNER_APPROVAL_REQUIRED.
+Audit:
+shared-knowledge/CURRICULUM_H04_CONSOLIDATION_AUDIT_20261004_V0_1.md
+
+H08:
+KEEP_SEPARATE / membership vs event propagation vs narrative diffusion.
+State = CLOSED_NO_STRUCTURAL_CHANGE.
+Audit:
+shared-knowledge/CURRICULUM_H08_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
+
+H10:
+KEEP_SEPARATE / SCOPE_DEDUP_ONLY / structural exposure producer to event-attribution consumers.
+State = OWNER_APPROVAL_REQUIRED.
+Audit:
+shared-knowledge/CURRICULUM_H10_SCOPE_DEDUP_AUDIT_20261004_V0_1.md
+
+Result:
+H01-H20 now have no generic PENDING state in the 00 control plane. Every hidden-overlap cluster is classified as canonical complete, closed no-structural-change, owner-approval gate, or evidence-specific partial with exact blocker.
+
+No maturity/count/Formal/runtime change from H02/H03/H08/H10 governance actions. H04 has not been canonically merged pending approval.
+
+Exact next:
+1. obtain owner decision for H04 and H10;
+2. continue Coverage/COV stale-state reconciliation;
+3. keep H11/H12/COV-12/AOKD-05 at their explicit gates until actual new receipts appear;
+4. preserve all closed H clusters absent contradictory evidence.
