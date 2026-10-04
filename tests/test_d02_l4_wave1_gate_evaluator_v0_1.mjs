@@ -24,18 +24,18 @@ function rowsByDates(n,perDate=1,builder=h001){
 }
 
 let r=evaluateWave1Dataset(rowsByDates(19,1));
-assert.equal(r.distinctCleanScanDates,19); assert.equal(r.outcomeAccessState,'OUTCOME_ACCESS_CLOSED');
+assert.equal(r.byHypothesis.H001.distinctCleanScanDates,19); assert.equal(r.byHypothesis.H001.outcomeAccessState,'OUTCOME_ACCESS_CLOSED');
 
-r=evaluateWave1Dataset(rowsByDates(20,1)); assert.equal(r.outcomeAccessState,'DESCRIPTIVE_ONLY');
+r=evaluateWave1Dataset(rowsByDates(20,1)); assert.equal(r.byHypothesis.H001.outcomeAccessState,'DESCRIPTIVE_ONLY');
 
-r=evaluateWave1Dataset(rowsByDates(29,4)); assert.equal(r.completedEligibleEvents,116); assert.equal(r.outcomeAccessState,'DESCRIPTIVE_ONLY');
+r=evaluateWave1Dataset(rowsByDates(29,4)); assert.equal(r.byHypothesis.H001.completedEligibleEvents,116); assert.equal(r.byHypothesis.H001.outcomeAccessState,'DESCRIPTIVE_ONLY');
 
 let a=[]; for(const [i,d] of dates(30).entries()){ const k=i<9?4:3; for(let j=0;j<k;j++) a.push(h001(d,{symbol:String(2300+j)})); }
-assert.equal(a.length,99); r=evaluateWave1Dataset(a); assert.equal(r.outcomeAccessState,'DESCRIPTIVE_ONLY');
+assert.equal(a.length,99); r=evaluateWave1Dataset(a); assert.equal(r.byHypothesis.H001.outcomeAccessState,'DESCRIPTIVE_ONLY');
 
-a.push(h001(dates(30)[29],{symbol:'9999'})); r=evaluateWave1Dataset(a); assert.equal(r.completedEligibleEvents,100); assert.equal(r.outcomeAccessState,'L4_EVIDENCE_ELIGIBLE'); assert.equal(r.maturityPromotionAuthorized,false);
+a.push(h001(dates(30)[29],{symbol:'9999'})); r=evaluateWave1Dataset(a); assert.equal(r.byHypothesis.H001.completedEligibleEvents,100); assert.equal(r.byHypothesis.H001.outcomeAccessState,'L4_EVIDENCE_ELIGIBLE'); assert.equal(r.maturityPromotionAuthorized,false);
 
-a=rowsByDates(20,1); a[0].commonSupportPass=false; r=evaluateWave1Dataset(a); assert.equal(r.distinctCleanScanDates,19); assert.equal(r.outcomeAccessState,'OUTCOME_ACCESS_CLOSED');
+a=rowsByDates(20,1); a[0].commonSupportPass=false; r=evaluateWave1Dataset(a); assert.equal(r.byHypothesis.H001.distinctCleanScanDates,19); assert.equal(r.byHypothesis.H001.outcomeAccessState,'OUTCOME_ACCESS_CLOSED');
 
 assert.ok(evaluateWave1Row(h001(date(0),{gate0to6Pass:false})).reasons.includes('GATE_0_6_NOT_PASS'));
 assert.ok(evaluateWave1Row(h001(date(0),{formalIsolationPass:false})).reasons.includes('FORMAL_ISOLATION_NOT_PASS'));
@@ -52,11 +52,33 @@ row=h001(date(0)); r=evaluateWave1Dataset([row,{...row}]); assert.equal(r.fatalI
 
 row=h001(date(0)); r=evaluateWave1Dataset([row,{...row,scanDate:date(1)}]); assert.equal(r.fatalIntegrity,true); assert.ok(r.datasetReasons.includes('DUPLICATE_EVENT_ID_CROSS_DATE'));
 
-a=[]; for(let j=0;j<8;j++) a.push(h001(date(0),{symbol:String(2300+j)})); r=evaluateWave1Dataset(a); assert.equal(r.preOutcomeEligibleEvents,8); assert.equal(r.distinctCleanScanDates,1);
+a=[]; for(let j=0;j<8;j++) a.push(h001(date(0),{symbol:String(2300+j)})); r=evaluateWave1Dataset(a); assert.equal(r.byHypothesis.H001.preOutcomeEligibleEvents,8); assert.equal(r.byHypothesis.H001.distinctCleanScanDates,1);
 
 assert.ok(evaluateWave1Row(h20(date(0),{eventId:`H20_BREAKOUT:${date(1)}:2330:X`})).reasons.includes('H20_EVENT_DATE_MISMATCH'));
 assert.ok(evaluateWave1Row(h003(date(0),{preEventOnlyExpiry:true})).reasons.includes('H003_PRE_EVENT_ONLY_EXPIRY_QA_ONLY'));
 
-a=rowsByDates(30,4); r=evaluateWave1Dataset(a,{prospectiveOrOosEvidencePresent:true,d16DependenceAwareMethodPass:true,negativeControlsReported:true,redundancyChecksReported:true,concentrationPass:true}); assert.equal(r.promotionReviewEligible,true); assert.equal(r.maturityPromotionAuthorized,false);
+function hundred(builder){ const out=[]; for(const [i,d] of dates(30).entries()){ const k=i<10?4:3; for(let j=0;j<k;j++) out.push(builder(d,{symbol:String(2300+j)})); } return out.slice(0,100); }
 
-console.log(JSON.stringify({status:'PASS',tests:19,contract:'D02_L4_WAVE1_GATE_V0_1'}));
+a=hundred(h001); r=evaluateWave1Dataset(a);
+assert.equal(r.byHypothesis.H001.l4EvidenceEligible,true);
+assert.equal(r.byHypothesis.H20.l4EvidenceEligible,false);
+assert.equal(r.byHypothesis.H003.l4EvidenceEligible,false);
+assert.deepEqual(r.eligibleHypotheses,['H001']);
+assert.equal(r.allWave1L4EvidenceEligible,false);
+assert.equal(r.crossHypothesisSampleBorrowingAllowed,false);
+
+a=hundred(h20).slice(0,99); a.push(h001(date(0))); r=evaluateWave1Dataset(a);
+assert.equal(r.byHypothesis.H20.completedEligibleEvents,99);
+assert.equal(r.byHypothesis.H20.l4EvidenceEligible,false);
+
+a=[...hundred(h001),...hundred(h20),...hundred(h003)]; r=evaluateWave1Dataset(a);
+assert.deepEqual(r.eligibleHypotheses,['H001','H20','H003']);
+assert.equal(r.allWave1L4EvidenceEligible,true);
+
+r=evaluateWave1Dataset(a,{reviewByHypothesis:{H001:{prospectiveOrOosEvidencePresent:true,d16DependenceAwareMethodPass:true,negativeControlsReported:true,redundancyChecksReported:true,concentrationPass:true}}});
+assert.equal(r.byHypothesis.H001.promotionReviewEligible,true);
+assert.equal(r.byHypothesis.H20.promotionReviewEligible,false);
+assert.deepEqual(r.reviewEligibleHypotheses,['H001']);
+assert.equal(r.maturityPromotionAuthorized,false);
+
+console.log(JSON.stringify({status:'PASS',tests:23,contract:'D02_L4_WAVE1_GATE_V0_1_1'}));
