@@ -582,3 +582,32 @@ Exact next:
 2. continue Coverage/COV stale-state reconciliation;
 3. keep H11/H12/COV-12/AOKD-05 at their explicit gates until actual new receipts appear;
 4. preserve all closed H clusters absent contradictory evidence.
+
+
+## Coverage registry late-afternoon reconciliation — 2026-10-04
+
+Coverage human/machine control-plane states were reconciled against latest main and canonical Tracker.
+
+Canonical Tracker snapshot at reconciliation:
+- 22 domains;
+- 356 active modules;
+- 45.6% weighted maturity;
+- tracker updatedAt 2026-10-04T16:47:00+08:00.
+
+Coverage states:
+- CANONICAL_UPDATE_COMPLETE: COV-02, COV-03, COV-04, COV-05.
+- PARTIAL_EVIDENCE_RECEIVED: COV-01, COV-06, COV-07, COV-08, COV-09, COV-10, COV-11.
+- PENDING_SPECIALIST_RETURN: COV-12 only.
+
+Formal specialist returns physically present:
+- COV-02 / COV-03 / COV-04 / COV-05.
+
+No formal specialist return exists yet for COV-01/06/07/08/09/10/11/12; partial evidence remains partial and is not promoted by bookkeeping.
+
+Exact next 00 continuation:
+1. H04 and H10 are the only current owner-decision gates created in this sweep.
+2. H02/H03/H11/H12/H17/H18/H19 remain evidence-specific partials.
+3. COV-12 remains the only Coverage candidate with no accepted partial evidence/formal return.
+4. COV-01/06/07/08/09/10/11 retain their existing specialist deltas; do not invent formal returns.
+5. AOKD-05 remains corpus-feasibility gated; H11/H12 remain at their explicit data gates.
+6. Closed clusters remain closed absent contradictory evidence.
