@@ -351,3 +351,25 @@ Control-plane reconciliation only; this does not replace Room-06's active D08-03
   - return one of FEASIBLE / PROSPECTIVE_ONLY_FEASIBLE / DATA_BLOCKED / EVIDENCE_INSUFFICIENT;
   - no return outcome, maturity promotion, new module, or Formal change.
 - This routing entry is a queued control-plane request. Preserve any already-active Room-06 experiment sequence and service this task at the next safe source-research slot.
+
+
+## 2026-10-04 Room-06 D07-34 foundation promotion
+
+- Canonical D07-34 Dividend / Payout Policy & Sustainability was taken from L0 foundation after 00-room curriculum approval.
+- Added research/d07_34_dividend_payout_sustainability_foundation_v0_1.json.
+- Mechanism, countermechanisms, falsification, anti-double-count ownership and decision role are now frozen.
+- Taiwan-specific evidence supports lifecycle and tax/clientele heterogeneity but is not imported as current alpha.
+- Universal high-payout/high-yield/stable-DPS rules are rejected.
+- Primary role = VALIDATION; secondary = CONTEXT_ONLY / EXPLANATORY / SUPPORTIVE.
+- D07-34 promoted L0/0 -> L2/40 only.
+- D07 formal aggregate moved 14.1% -> 15.3%; tracker overall at this write recalculated to 44.6% across 356 modules.
+- L3 remains blocked pending physical Taiwan PIT replay of proposal -> final/correction -> ex-date -> payment plus distribution-source and statement-denominator alignment.
+- No Formal Core/runtime/scoring/selection change. Outcomes closed. FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+
+Exact next D07-34:
+1. freeze official MOPS/TWSE dividend decision/version source parser;
+2. preserve earnings/retained-earnings/reserve-funded source separately;
+3. build proposal/final/correction append-only event identity;
+4. join compatible earnings/CFO denominators only after their knownAt;
+5. validate ordinary/special/stock/cash classification and financial-institution exception;
+6. only a clean PIT receipt can justify L3.
