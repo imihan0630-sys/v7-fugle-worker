@@ -1,0 +1,31 @@
+name: System2 D19 TWSE Invalid-Close State
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-d19-twse-invalid-close-state.yml"
+      - "system2/scripts/d19_twse_invalid_close_state_probe_v0_1.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Probe official invalid-close rows
+        run: node system2/scripts/d19_twse_invalid_close_state_probe_v0_1.mjs
+      - name: Confirm production isolation
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- wrangler.toml Worker.js
+          echo "Production isolation PASS"
