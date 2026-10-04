@@ -1,6 +1,6 @@
 # System 2 Remediation Checkpoint
 
-Updated: 2026-10-05 02:21 Asia/Taipei
+Updated: 2026-10-05 02:25 Asia/Taipei
 Status: ACTIVE / REMEDIATION_LANE / FIX_IMPLEMENTED / PENDING_INDEPENDENT_AUDIT
 Room: System 2｜補強修復室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
@@ -249,6 +249,15 @@ Final implementation head:
 
 Merged-main readback confirmed all key runtime guards and no arbitrary coverage-threshold logic.
 
+## Evidence-finalization PR
+
+PR #586 — `System2 CORR-004: finalize remediation evidence`
+
+- changed only Correction Queue MD/JSON + Remediation Checkpoint;
+- System2 Research CI `37224314880`: **PASS**;
+- V8 Regression `37224314865`: **PASS**;
+- squash-merged to main as `73f284c937dd2fd626cbfe406df3fe5e8951a590`;
+- merged-main Queue readback: `HIGH / FIX_IMPLEMENTED / REMEDIATION_LANE / PENDING_INDEPENDENT_AUDIT`.
 ## Protected boundaries
 
 Unchanged:
@@ -271,9 +280,8 @@ Unchanged:
 
 ## Exact next continuation point
 
-1. Require the evidence-finalization PR head to pass System2 Research CI and V8 Regression.
-2. Re-read latest main before merge and reconcile any concurrent Correction Queue / checkpoint updates without overwriting DATA_LANE or AUDIT_LANE evidence.
-3. Merge the evidence-only PR if checks are green and conflict units are clean.
-4. Re-read merged main and verify `S2-CORR-20261004-004 = FIX_IMPLEMENTED`, `PENDING_INDEPENDENT_AUDIT`.
-5. Hand `S2-CORR-20261004-004` to `SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR`.
-6. Because CORR-004 is HIGH, REMEDIATION_LANE must not self-mark `VERIFIED_CLOSED`.
+1. Hand `S2-CORR-20261004-004` to `SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR` for independent acceptance-criteria verification.
+2. AUDIT_LANE must independently verify mixed-universe continuation, symbol-local INCOMPLETE accounting, global fail-closed behavior, and denominator-aware zero-pick semantics against merged main.
+3. If acceptance criteria pass, AUDIT_LANE may advance `FIX_IMPLEMENTED -> VERIFYING -> VERIFIED_CLOSED` under correction governance.
+4. If a residual defect is found, reopen only the affected conflict unit and formally route it; do not weaken PIT/UNKNOWN or introduce percentage coverage thresholds.
+5. REMEDIATION_LANE must not self-mark this HIGH correction `VERIFIED_CLOSED`.
