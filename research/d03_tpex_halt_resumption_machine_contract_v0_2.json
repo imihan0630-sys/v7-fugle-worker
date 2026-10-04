@@ -1,0 +1,76 @@
+{
+  "contractId": "D03_TPEX_HALT_RESUMPTION_MACHINE_CONTRACT_V0_2",
+  "updatedAt": "2026-10-04T14:16:00+08:00",
+  "status": "BOUNDED_PHYSICAL_PASS",
+  "formalCore": "LOCKED",
+  "officialPage": "https://www.tpex.org.tw/zh-tw/announce/market/halt/historical.html",
+  "machineEndpoint": "https://www.tpex.org.tw/www/zh-tw/bulletin/sprcHis",
+  "transport": {
+    "jsonMethod": "POST",
+    "csvMethod": "GET",
+    "serverPaging": false,
+    "clientDisplayPageSize": 10
+  },
+  "control": {
+    "year": 2026,
+    "category": "1_MAINBOARD_STOCK",
+    "workflowRunId": 37182021741,
+    "json": {
+      "httpStatus": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "bytes": 2169,
+      "sha256": "184c07e8cfd61f20a8cbf65ab49d2ab86ddac276da450eeed3938ec08c2ffe18",
+      "stat": "ok",
+      "totalCount": 30,
+      "rowCount": 30,
+      "uniqueKeyCount": 30
+    },
+    "csv": {
+      "httpStatus": 200,
+      "contentType": "application/csv;charset=MS950",
+      "bytes": 1880,
+      "sha256": "e0c325a2968ef26ffbb75af495f17949c02ffaa0109ad89c3fd26684d701e76b",
+      "rowCount": 30,
+      "uniqueKeyCount": 30
+    },
+    "jsonCsvKeysetEquivalent": true
+  },
+  "emptyControls": [
+    {
+      "year": 2026,
+      "category": 5,
+      "stat": "ok",
+      "totalCount": 0,
+      "rowCount": 0
+    },
+    {
+      "year": 2026,
+      "category": 6,
+      "stat": "ok",
+      "totalCount": 0,
+      "rowCount": 0
+    },
+    {
+      "year": 2020,
+      "category": 5,
+      "stat": "ok",
+      "totalCount": 0,
+      "rowCount": 0
+    }
+  ],
+  "certified": {
+    "route": true,
+    "boundedPopulation": true,
+    "jsonCsvKeyset": true,
+    "sourceLocalEmpty": true
+  },
+  "notCertified": {
+    "allYearsAllCategories": true,
+    "revisionChronology": true,
+    "corporateActionPriceContinuity": true,
+    "technicalContinuity": true
+  },
+  "system1RuntimeUsed": false,
+  "selectionAuthority": false,
+  "historyMutation": false
+}
