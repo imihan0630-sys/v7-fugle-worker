@@ -1,0 +1,54 @@
+name: Room09 D12 CBC five-bank rate readonly
+
+on:
+  push:
+    branches:
+      - research-room09-d12-taifex-source-smoke-20261004
+    paths:
+      - .github/workflows/room09-d12-cbc-fivebank-rate-readonly.yml
+
+permissions:
+  contents: read
+
+jobs:
+  fivebank-rate-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Fetch official CBC five-bank historical rate XLS and emit metadata only
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="/tmp/a13rate.xls"
+          curl --fail --silent --show-error --location --retry 2 \
+            "https://www.cbc.gov.tw/tw/public/data/a13rate.xls" -o "$out"
+          python -m pip install --quiet xlrd==2.0.1
+          python - <<'PY'
+          import hashlib, json, re
+          import xlrd
+
+          p="/tmp/a13rate.xls"
+          raw=open(p,"rb").read()
+          book=xlrd.open_workbook(file_contents=raw)
+          result={
+              "sourceUrl":"https://www.cbc.gov.tw/tw/public/data/a13rate.xls",
+              "rawByteCount":len(raw),
+              "rawSha256":hashlib.sha256(raw).hexdigest(),
+              "sheets":book.sheet_names(),
+              "matches":[],
+              "tailRows":[],
+              "rawPersisted":False
+          }
+          for sname in book.sheet_names():
+              sh=book.sheet_by_name(sname)
+              for r in range(sh.nrows):
+                  vals=[sh.cell_value(r,c) for c in range(sh.ncols)]
+                  txt=[str(v).strip() for v in vals]
+                  joined="|".join(txt)
+                  if re.search(r"2026|115",joined) and re.search(r"9|09",joined):
+                      result["matches"].append({"sheet":sname,"row":r+1,"values":txt})
+              start=max(0,sh.nrows-12)
+              for r in range(start,sh.nrows):
+                  result["tailRows"].append({"sheet":sname,"row":r+1,"values":[str(sh.cell_value(r,c)).strip() for c in range(sh.ncols)]})
+          print("ROOM09_CBC_RATE_JSON="+json.dumps(result,ensure_ascii=False,separators=(",",":")))
+          PY
