@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 
 const workflow=await readFile(".github/workflows/system2-historical-pack-2017-backfill.yml","utf8");
 const script=await readFile("system2/scripts/historical_pack_year_backfill_v0_1.mjs","utf8");
+const verifier=await readFile("system2/scripts/historical_market_year_verify_v0_1.mjs","utf8");
 
 assert.match(workflow,/name:\s+System2 Historical Pack Annual Backfill/);
 assert.match(workflow,/year:\s*\n\s+description:/);
@@ -17,5 +18,7 @@ assert.ok(workflow.includes("system2-historical-coverage-${{ inputs.market }}-${
 assert.match(script,/latestCompletedCalendarYear=taipeiCalendarYear-1/);
 assert.match(script,/annual cold-pack workflow accepts completed calendar years only/);
 assert.match(script,/S2-HIST-PACK-YEAR\|\$\{market\}\|\$\{year\}/);
+assert.ok(!verifier.includes("no suspension for 2017."),"TPEx suspension limitation must not hard-code 2017");
+assert.ok(verifier.includes("no suspension for ${year}."),"TPEx suspension limitation must bind the selected year");
 
 console.log("historical annual workflow semantics tests passed");
