@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "D20_SOCIAL_PARENT_INVALIDATION_V0_1",
+  "parentDecisionReceiptId": "D20SOC-20261004-001",
+  "appendedAtAsiaTaipei": "2026-10-04T16:43:58+08:00",
+  "status": "NOT_PROMOTION_GRADE / PRESERVE_AS_PROCESS_TEST_ONLY",
+  "reason": "Source fingerprint V0.1 included transport/tool-wrapper metadata and is not stable under identical page content.",
+  "invalidatedFields": [
+    "sourceReceiptFingerprintFNV1A64",
+    "feedReceiptFingerprintFNV1A64"
+  ],
+  "priorOutcomeCorrection": "research/d20_social_prospective_outcome_20261004_001_t1642.json fingerprint DIFF is non-interpretable and superseded for content-continuity purposes.",
+  "preservedFacts": [
+    "source article existed after preregistration",
+    "parent workflow ran before market outcomes",
+    "one participant / zero replies observed at the recorded parent snapshot"
+  ],
+  "coverageImpact": "Remove D20SOC-20261004-001 from promotion-grade parent counts.",
+  "parentRewrite": false,
+  "formalCore": "LOCKED"
+}
