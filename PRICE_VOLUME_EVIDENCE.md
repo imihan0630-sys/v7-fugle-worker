@@ -5257,3 +5257,26 @@ without both ADMITTED and reason-stratified LIQUIDITY_REJECTED_CONTROL observati
 D02-09 and D02-12 preserve separate typed subfamilies rather than collapsing them into one generic flag.
 
 No L4 promotion occurs from this engineering/research stage.
+
+# Pre-PVE-240 addendum — D02-01 semantic admission + 12/12 L4 admission coverage (2026-10-04)
+
+No PVE number consumed.
+No economic outcome inspected.
+
+D02-01:
+18/18 executable semantic-governance tests PASS.
+
+The research object is prospective classification integrity, not alpha.
+A valid future receipt may show whether frozen semantic governance changes eligibility/classification relative to an ungoverned frozen counterfactual.
+It may not be translated into a return claim.
+
+With this artifact:
+all 12 D02 modules now have executable next-level evidence-admission rules.
+
+This does not create:
+- one clean prospective date;
+- one L4 module;
+- one Formal optimization candidate.
+
+PVE remains 239.
+Gate 7 remains CLOSED.
