@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "D03_CONTINUITY_SOURCE_CONTRACT_ADVANCE_20261004_V0_2",
+  "updatedAt": "2026-10-04T11:40:00+08:00",
+  "classification": "RESEARCH_ONLY_OUTCOME_BLIND",
+  "formalCore": "LOCKED",
+  "mopsov": {
+    "revisionCancellationMatrix": "5_OF_5_PHYSICAL_PASS",
+    "emptyMonthSemantics": "CERTIFIED_SOURCE_LOCAL",
+    "highRowStress": {
+      "workflowRunId": 37174063094,
+      "state": "PASS",
+      "maxObservedPrefixRows": 391,
+      "topThree": [
+        {
+          "stockCode": "2891",
+          "rows": 391,
+          "reconciliation": "EXACT"
+        },
+        {
+          "stockCode": "3711",
+          "rows": 383,
+          "reconciliation": "EXACT"
+        },
+        {
+          "stockCode": "2881",
+          "rows": 300,
+          "reconciliation": "EXACT"
+        }
+      ],
+      "anyVisiblePaginationHint": false
+    }
+  },
+  "clocks": {
+    "sourceReportedAt": "DEFINED_OFFICIAL_FIELD_CANDIDATE",
+    "prospectiveFirstObservedAt": "SAFE_CONSERVATIVE_RESEARCH_CLOCK",
+    "historicalFirstKnownAt": "UNKNOWN",
+    "knownAtVersionClockCertified": false
+  },
+  "exchangeOfficialDocument": {
+    "publicSemanticCapability": "OBSERVED",
+    "machineContract": "PARTIAL_UNKNOWN",
+    "absenceClaimAllowed": false
+  },
+  "gates": {
+    "boundedIntervalCoverageComplete": false,
+    "actionFamilyCoverageComplete": false,
+    "revisionCoverageComplete": false,
+    "technicalContinuityCertified": false,
+    "immutableParentRuntime": "IMPLEMENTATION_PENDING"
+  },
+  "d03": {
+    "maturityPct": 56.7,
+    "d03_09": {
+      "level": "L2",
+      "maturityPct": 40
+    },
+    "d03_10": {
+      "level": "L2",
+      "maturityPct": 40
+    },
+    "nextAfterBollingerL3": 58.3,
+    "nextAfterAdxL3": 60
+  },
+  "outcomes": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
