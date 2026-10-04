@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "0.1",
+  "id": "D13_16_H41_STATISTIC_IDENTITY_DIVERGENCE_20261004",
+  "module": "D13-16",
+  "status": "TWO_OFFICIAL_RELEASES_RAW_HASHED__WEEK_AVERAGE_VS_WEDNESDAY_DIRECTION_DIVERGENCE_VERIFIED__STRICT_PROSPECTIVE_CAPTURE_PENDING",
+  "releases": [
+    {
+      "releaseDate": "2026-09-24",
+      "rawSha256": "9c585ead7d5d38f62817f26ed6608b566a39430360ee51e398a7ad39b52fd3f2",
+      "bytes": 702175,
+      "weekAverageChangeMillions": {
+        "tga": 100056,
+        "rrp": -21899,
+        "reserveBalances": -83601
+      },
+      "wednesdayChangeMillions": {
+        "tga": -44391,
+        "rrp": -3078,
+        "otherDepositsDepositoryInstitutions": 48388
+      },
+      "combinedTgaRrpAbsorberChangeMillions": {
+        "weekAverage": 78157,
+        "wednesday": -47469
+      },
+      "direction": "OPPOSITE"
+    },
+    {
+      "releaseDate": "2026-10-01",
+      "rawSha256": "ac4f4da1920ca3fe75d7040eb81443a8b763fbb7e259f55ad21eee86805e5888",
+      "bytes": 702026,
+      "weekAverageChangeMillions": {
+        "tga": -28410,
+        "rrp": 13117,
+        "reserveBalances": 17897
+      },
+      "wednesdayChangeMillions": {
+        "tga": 36729,
+        "rrp": 41158,
+        "otherDepositsDepositoryInstitutions": -88234
+      },
+      "combinedTgaRrpAbsorberChangeMillions": {
+        "weekAverage": -15293,
+        "wednesday": 77887
+      },
+      "direction": "OPPOSITE"
+    }
+  ],
+  "sourceClock": {
+    "officialSchedule": "Thursday, generally 4:30 p.m. U.S. Eastern time; holiday shifts possible",
+    "sourcePages": "official dated Federal Reserve H.4.1 release pages",
+    "strictFirstObservedAt": "UNKNOWN_LATER_RETRIEVAL",
+    "taiwanDecisionUse": "Do not count as strict clean 18:10 receipts without contemporaneous source-attestation/capture."
+  },
+  "identityRules": [
+    "week average and Wednesday level are separate statistics even for the same named balance-sheet component",
+    "do not mix week-average TGA with Wednesday RRP or vice versa inside one liquidity proxy",
+    "do not infer liquidity direction from one component without preserving other reserve-supplying/draining factors",
+    "other deposits held by depository institutions is not silently renamed reserve balances; preserve exact series identity",
+    "combined TGA+RRP arithmetic is a diagnostic only, not a complete Federal Reserve liquidity identity"
+  ],
+  "falsification": "Two consecutive official releases show opposite directions between week-average and Wednesday snapshots, falsifying any rule that treats the two statistic identities as interchangeable.",
+  "maturityDecision": "D13-16 remains L2/40 because the pages were captured retrospectively and strict prospective Taiwan decision-time receipts remain absent.",
+  "formalCoreImpact": "NONE",
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE",
+  "workflow": {
+    "runId": 37199082189,
+    "jobId": 111426644900
+  }
+}
