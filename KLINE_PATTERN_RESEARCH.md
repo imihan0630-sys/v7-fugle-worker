@@ -22882,3 +22882,60 @@ New durable artifacts:
 - research/PATTERN_STRUCTURAL_AGING_OBSERVABILITY_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-032 — Structural aging vs regime / volatility-scale migration (2026-10-04)
+
+DL-031 established that age, observability and interaction history are separate. DL-032 adds the next confound: the market around an old structure can change scale.
+
+A frozen support/resistance zone is a causal object in TECHNICAL_CONTINUITY price space. It cannot be widened later merely because ATR increased. Doing so would move the goalposts and make a failed old boundary look successful under a newly chosen width. Therefore structural geometry and context are separated.
+
+The immutable object keeps the persisted lower/upper boundaries and anchor lineage.
+
+Formation context stores the volatility/liquidity/regime state when the root or current version became available.
+
+Current opportunity context stores the same context families immediately before a later structural interaction.
+
+The same absolute zone may have very different normalized meaning across time. A four-unit zone can equal two ATR at formation and only half an ATR later. In the latter state, ordinary price noise can traverse it much more easily. A lower bounce rate could therefore be volatility-scale migration rather than clock-time decay.
+
+DL-032 freezes the key descriptors without creating a score: zone width in price units, ATR units and percent-of-price units at formation/current time; normalized-volatility ratio; relative-tick ratio; liquidity and owner-supplied regime states.
+
+Scale normalization is descriptive only. It never mutates structural identity.
+
+Corporate actions remain a hard semantic boundary. Formation and current contexts must share the canonical TECHNICAL_CONTINUITY semantic space. Unresolved continuity is DATA_BLOCKED, not an invitation to infer a scale shift from raw price jumps.
+
+Owner boundaries are explicit. D04/D05 own volatility/microstructure semantics; D18 owns market regime; D02 owns acceptance/persistence. D01 consumes only versioned as-of receipts and does not invent replacement taxonomies or fallback thresholds.
+
+A regime transition does not reset root age, version age or structural identity. Only an actual causal structural-version event can reset version age.
+
+Dynamic ATR rescue is prohibited. A sensitivity comparison based on a formation-ATR or current-ATR band may be studied only as a separately identified preregistered challenger. It cannot replace the canonical boundary after outcomes are visible.
+
+Future D16 analysis uses a nested comparison:
+C0 age + interaction history;
+C1 add current scale/context;
+C2 add formation-to-current migration descriptors;
+C3 add canonical owner regime context.
+
+If an apparent age effect vanishes at C1, classify SCALE_CONFOUND.
+If it vanishes at C2, classify MIGRATION_CONFOUND.
+If it exists only in a preregistered regime/common-support stratum, classify REGIME_SPECIFIC.
+If it survives all layers on common support, it remains an age representation candidate, not causal proof and not alpha proof.
+
+Common-support governance is mandatory. Very old high-volatility structures cannot be compared mechanically with young low-volatility structures if their context distributions do not overlap. Age, volatility, liquidity, relative tick, regime and interaction-history overlap must all be reported; explicit lack of overlap prohibits extrapolation.
+
+No arbitrary "volatility doubled," "ATR above 2%," high/low migration bucket or age-by-regime threshold is frozen. Continuous descriptors remain continuous unless D16 preregisters an analysis representation; canonical owner regime labels can be used as delivered.
+
+Taiwan research supports the need for this context firewall: technical-analysis behavior has been studied jointly with volatility effects, and recent Taiwan volatility research shows that volatility-model specification and sector context can materially change strategy behavior. These findings justify treating scale/regime as nonstationary context but do not identify Pattern alpha.
+
+Henderson et al. (2026) explicitly state that their support/resistance model fixes its levels for tractability even though real path dependencies can be more complex. DL-032 preserves fixed causal geometry while letting the market context evolve around it.
+
+Fourteen adversarial cases are authored. They verify immutable boundary identity, changing ATR/percent/tick interpretation, age non-reset under regime migration, continuity blocking, owner-receipt/version fail-closed behavior, common-support enforcement and the absence of any adaptive rescue boundary or outcome join.
+
+New durable artifacts:
+- research/PATTERN_REGIME_SCALE_MIGRATION_V0_1.md
+- research/pattern_regime_scale_migration_v0_1.json
+- research/pattern_regime_scale_migration_v0_1.mjs
+- research/test_pattern_regime_scale_migration_v0_1.mjs
+- research/PATTERN_REGIME_SCALE_MIGRATION_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.

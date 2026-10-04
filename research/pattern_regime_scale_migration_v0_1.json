@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "pattern-regime-scale-migration-v0.1",
+  "updated": "2026-10-04 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "geometryMutationAllowed": false,
+  "regimeChangeResetsRootAge": false,
+  "regimeChangeResetsVersionAge": false,
+  "scaleNormalizationMutatesIdentity": false,
+  "owners": {
+    "volatilityContext": "D04_D05_CANONICAL_OWNER",
+    "marketRegime": "D18_CANONICAL_OWNER",
+    "acceptancePersistence": "D02_CANONICAL_OWNER"
+  },
+  "futureComparisonLadder": ["C0","C1","C2","C3"],
+  "commonSupportRequired": true,
+  "outcomeJoin": "CLOSED",
+  "inferenceOwner": "D16",
+  "formalOptimizationCandidate": "NONE"
+}
