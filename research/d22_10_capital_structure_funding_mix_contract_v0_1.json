@@ -1,10 +1,10 @@
 {
   "schemaVersion": "D22_10_CAPITAL_STRUCTURE_FUNDING_MIX_CONTRACT_V0_1",
-  "generatedAt": "2026-10-04T08:48:00+08:00",
+  "generatedAt": "2026-10-04T13:51:00+08:00",
   "module": "D22-10",
-  "level": "L2",
-  "maturityPct": 40,
-  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / FINANCING_CHOICE_NOT_MONOTONIC / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "level": "L3",
+  "maturityPct": 60,
+  "status": "TAIWAN_PIT_FUNDING_EVENT_REPLAY_VALIDATED / D11_EVENT_IDENTITY_LINKED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "researchQuestion": "Does the composition and sequencing of financing sources add information beyond simple leverage, and when do financing choices signal constraint versus opportunity?",
   "fundingVector": [
     "internal_cash",
@@ -76,8 +76,15 @@
   "outcomeGate": "CLOSED",
   "formalCore": "LOCKED",
   "next": [
-    "Build Taiwan PIT funding-mix event/state receipts across issuers and industries.",
-    "Create divergent-state examples: high leverage with long cheap debt vs low leverage with near-term funding need; equity issuance for growth vs distress.",
-    "Test incremental value after D07, D11, D22-01/03/04 controls before L3/L4."
-  ]
+    "Add bank/private-debt and convertible/hybrid receipts where first-known contract terms are public.",
+    "Build statement-state funding vectors between financing events without overwriting event lineage.",
+    "Pre-register incremental comparisons controlling D07 leverage, D11 event identity, D22-01 maturity and D22-04 cost before L4.",
+    "Keep financial institutions in a separate lane."
+  ],
+  "maturityDecision": {
+    "level": "L3",
+    "maturityPct": 60,
+    "reason": "First-known financing approval/pricing/issuance terms are replayable across multiple Taiwan non-financial issuers, industries and dates, with event lineage, tenor, coupon, security and use-of-proceeds semantics preserved. This validates PIT data feasibility only."
+  },
+  "replayEvidence": "research/d22_10_funding_mix_event_replay_v0_1.json"
 }
