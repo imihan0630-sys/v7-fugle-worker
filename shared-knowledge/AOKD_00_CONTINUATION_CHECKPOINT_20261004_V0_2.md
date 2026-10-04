@@ -236,3 +236,46 @@ Exact next 00 continuation:
 3. COV-12 remains pending unless a real formal return has since appeared.
 4. AOKD-05 remains routed to 06 for corpus feasibility.
 5. Broad AOKD sweep remains saturated absent a new observable/mechanism/source trigger.
+
+
+## H06/H14 control-plane reconciliation — 2026-10-04
+
+00-room full-repo return detection found two previously unregistered Room05 specialist packets:
+- `research/d06_h06_crowding_vs_herding_room05_packet_v0_1.md`;
+- `research/d06_h14_index_event_vs_passive_flow_room05_packet_v0_1.md`.
+
+### H06
+Room05 side accepted.
+State:
+`PARTIAL_EVIDENCE_RECEIVED / ROOM13_COUNTERPART_REQUIRED`.
+
+Existing D20-06 behavioral research defines residual-herding logic but still states that replayable independent behavior-specific data is not proven. Do not close H06 or preserve D20-06 as a separate vote solely from theory. Exact missing gate: Room13 must prove a PIT-capable independent behavioral observable or residual construct beyond D06 crowding primitives.
+
+### H14
+Room08 already had equivalent independent counterpart evidence:
+- `INDEX_ADJUSTMENT_PASSIVE_FLOW_RESEARCH.md`;
+- `research/d11_index_adjustment_pit_receipt_v0_1.json`.
+
+00 completed Dependency Audit, divergent-state, anti-double-count and anti-orphan review.
+
+Terminal:
+`KEEP_SEPARATE / PRODUCER_CONSUMER_EVENT_FLOW_BOUNDARY / SINGLE_EVENT_RECEIPT`.
+
+State:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+Canonical audit:
+- `shared-knowledge/CURRICULUM_H14_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`;
+- `shared-knowledge/curriculum_h14_dependency_anti_orphan_audit_20261004_v0_1.json`.
+
+Closure receipt:
+- `shared-knowledge/CURRICULUM_H14_CANONICAL_CLOSURE_RECEIPT_20261004_V0_1.md`;
+- `shared-knowledge/curriculum_h14_canonical_closure_receipt_20261004_v0_1.json`.
+
+No tracker/module/maturity/Formal/runtime change from H14 closure.
+
+Exact next:
+1. H14 is closed; do not reopen absent contradictory evidence.
+2. H06 waits only for Room13 independent behavior-specific evidence.
+3. Continue scanning latest main for other hidden-overlap packets already complete but not reflected in intake ledgers.
+4. COV-12 and AOKD-05 retain their existing gates.
