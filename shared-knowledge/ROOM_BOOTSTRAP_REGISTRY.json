@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T15:40:00+08:00",
+  "updatedAt": "2026-10-05T07:40:00+08:00",
   "status": "CANONICAL_ROOM_BOOTSTRAP_REGISTRY_V0_1",
   "repository": "imihan0630-sys/v7-fugle-worker",
   "authoritativeBranch": "main",
@@ -362,7 +362,8 @@
         "REQUIREMENTS_30.md",
         "PROJECT_HISTORY.md",
         "RESEARCH_CHECKPOINT.md",
-        "RESEARCH_ENGINEERING_GOVERNANCE.md"
+        "RESEARCH_ENGINEERING_GOVERNANCE.md",
+        "shared-knowledge/SYSTEM_ALPHA_LINEAGE_AND_DOUBLE_COUNT_GUARD_V0_1.md"
       ],
       "shortStart": "接手 System 1，依 GitHub 最新 main 與正式 checkpoint 自動恢復；禁止重頭做。"
     },
@@ -386,7 +387,8 @@
         "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
         "system2/SYSTEM2_CORRECTION_QUEUE.md",
         "system2/SYSTEM2_CORRECTION_QUEUE.json",
-        "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
+        "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md",
+        "shared-knowledge/SYSTEM_ALPHA_LINEAGE_AND_DOUBLE_COUNT_GUARD_V0_1.md"
       ],
       "shortStart": "接手「System 2｜建置總控室」，依 GitHub 最新 main 與正式 checkpoint 自動恢復；讀 Correction Queue 與 Execution Lane Governance，執行分派給 BUILD_LANE／LOCAL_FIX 的工作，尊重其他 lane 的 blocking，禁止搶做 DATA_LANE／REMEDIATION_LANE，禁止重頭做。"
     },
