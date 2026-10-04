@@ -1973,3 +1973,40 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
 - Holiday/pre-holiday/post-holiday/turn-of-month/lunar/settlement-rebalance remain outside the promoted scope until their own historical known-at/vintage semantics are proven.
 - D19 aggregate maturity becomes 41.3%; Formal Core unchanged; no optimization candidate.
 - Exact next: add an independent historical year under identical date-intrinsic semantics, then separately pursue holiday/turn-of-month source clocks; continue D19-04 research-owned industry/redundancy/cost gates while DATA_LANE owns full-market historical population work.
+
+## 2026-10-04 D06 — IC-062~063 retail proxy validation Stage 1
+
+- Room/domain: 05｜法人與籌碼研究室 / D06.
+- D06 maturity remains 47.8%; D06-19 remains L2 / 40%.
+- New durable receipt: `research/d06_19_retail_proxy_validation_stage1_20261004_v0_1.json`.
+- Outcome gate stayed closed: no return, MFE, MAE, hit-rate or stock-selection data were joined.
+- Direct baseline: TWSE annual domestic-individual trading-value share for 2020-2025 = 62.07%, 67.99%, 58.30%, 57.91%, 54.07%, 52.11%.
+- Common-frequency proxy comparison:
+  - margin-purchase market share correlation with direct retail share = 0.8499; first-difference correlation = 0.7287; annual direction disagreement = 1/5 = 20%.
+  - total credit-trading share correlation with direct retail share = 0.8904; first-difference correlation = 0.7047; annual direction disagreement = 2/5 = 40%.
+- Interpretation: margin/credit trading is a useful aggregate retail-participation proxy/control, not direct retail flow. Small N and shared secular decline prohibit predictive inference.
+- New mandatory proxy-quality split:
+  - identity purity;
+  - retail-universe coverage.
+- Official 2026 TWSE evidence: natural persons exceed 98% of credit trading, while credit trading itself is only around 6% of market trading value -> high purity, narrow coverage.
+- Official odd-lot evidence: domestic individuals are 82.5% of intraday odd-lot trading value, while odd-lot trading is around 0.91% of centralized-market value -> high purity, very narrow coverage.
+- Frozen falsifications:
+  - HIGH_PURITY != HIGH_COVERAGE;
+  - margin != direct retail flow;
+  - odd-lot != all retail;
+  - broker branch remains execution context, not owner identity;
+  - market-level retail participation cannot be backfilled into stock-date retail direction.
+- D06-19 direct TWSE stock/order investor-type existence remains verified only through restricted historical research access; current authorized PIT/replay contract and TPEx parity remain unverified.
+- H12 remains partial pending Room10 D14-19 counterpart and the first live TWSE rate/supply receipt.
+- Sunday L3 promotion ceiling remains in force; no maturity inflation.
+- `FORMAL_OPTIMIZATION_CANDIDATE: NONE`; Formal Core remains LOCKED.
+
+### Exact next continuation
+1. Next valid trading day: capture immutable CORE_CROWDING parent receipts.
+2. Capture D06-03 dealer proprietary/hedge split receipt.
+3. Capture D06-05 same-generation TDCC lineage.
+4. Execute IC-043 TPEx EARLY/LATE paired leverage vintage.
+5. Capture D06-14 T_PRELIM then follow T1_REVISED/T2_FINAL.
+6. Execute PF-040 units-delta + same-generation PCF.
+7. Capture D06-18 TWSE borrow-rate/displayed-supply receipt.
+8. Do not reopen D06-19 public data-existence search; special data pursuit requires owner authorization.
