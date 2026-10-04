@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "0.1",
+  "researchId": "SC-058",
+  "ownerModule": "D10-01",
+  "capturedAt": "2026-10-04T21:12:42+08:00",
+  "purpose": "Outcome-blind effective-dated company-level supply-chain edge validation.",
+  "evidence": [
+    {
+      "edge": "TSMC<-Unimicron",
+      "relationship": "supplier-recognition only",
+      "sourceDate": "2025",
+      "productScope": "UNKNOWN",
+      "effectiveFrom": "UNKNOWN",
+      "effectiveTo": "UNKNOWN",
+      "quantity": "UNKNOWN",
+      "admission": "PARTIAL_EDGE_ONLY"
+    },
+    {
+      "edge": "TSMC<-named 2025 award suppliers",
+      "relationship": "supplier partner",
+      "sourceDate": "2025-11-28",
+      "productScope": "award-category-bounded",
+      "effectiveFrom": "2025",
+      "effectiveTo": "UNKNOWN",
+      "quantity": "UNKNOWN",
+      "admission": "CURRENT_NAMED_RELATIONSHIP_NO_QUANTITY"
+    },
+    {
+      "edge": "TSMC<-top procurement suppliers",
+      "relationship": "procurement concentration",
+      "sourceDate": "2025 annual report",
+      "supplierIdentity": "ANONYMIZED",
+      "sharesPct": [
+        26,
+        19,
+        10
+      ],
+      "admission": "MAGNITUDE_KNOWN_IDENTITY_UNKNOWN"
+    }
+  ],
+  "falsification": [
+    "Supplier award does not prove procurement share, exclusivity, product volume, or current continuity beyond the stated vintage.",
+    "Anonymous procurement concentration does not authorize identity inference from historical named suppliers or award lists.",
+    "Product/material relevance alone does not create a bilateral issuer edge."
+  ],
+  "requiredForL3": [
+    "At least two issuer-native named bilateral edges with bounded product scope and effective-date semantics.",
+    "At least one issuer-native replacement/termination/expiry negative-control edge.",
+    "Replayable knownAt/capturedAt lineage."
+  ],
+  "outcomeState": "CLOSED",
+  "formalCore": "LOCKED",
+  "maturityDecision": "KEEP_L2"
+}
