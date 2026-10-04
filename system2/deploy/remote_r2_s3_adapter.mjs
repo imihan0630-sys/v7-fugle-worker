@@ -1,7 +1,7 @@
 import { createHash, createHmac } from "node:crypto";
 import { deepFreeze } from "../runtime/factor_snapshot.mjs";
 
-export const REMOTE_R2_S3_ADAPTER_VERSION = "0.1-RESEARCH";
+export const REMOTE_R2_S3_ADAPTER_VERSION = "0.2-RESEARCH";
 
 function requiredText(value, field) {
   if (typeof value !== "string" || !value.trim()) throw new Error(field + " is required");
@@ -64,6 +64,17 @@ function signRequest({ method, host, path, headers, payloadHash, accessKeyId, se
   return headers;
 }
 
+function retryableR2Status(status) {
+  const value = Number(status);
+  return value === 408 || value === 425 || value === 429 || (value >= 500 && value <= 599);
+}
+
+function retryableR2TransportError(error) {
+  return error?.name === "TimeoutError"
+    || error?.name === "AbortError"
+    || error instanceof TypeError;
+}
+
 function metadataFromHeaders(key, headers) {
   const customMetadata = {};
   for (const [name, value] of headers.entries()) {
@@ -89,6 +100,9 @@ export function createRemoteR2S3Adapter({
   bucketName,
   fetchImpl = globalThis.fetch,
   now = () => new Date(),
+  retryAttempts = 4,
+  retryDelayMs = 500,
+  sleepImpl = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
 } = {}) {
   const account = requiredText(accountId, "accountId");
   const access = requiredText(accessKeyId, "accessKeyId");
@@ -96,6 +110,13 @@ export function createRemoteR2S3Adapter({
   const bucket = requiredText(bucketName, "bucketName");
   if (!/^[a-z0-9][a-z0-9.-]*[a-z0-9]$/.test(bucket)) throw new Error("bucketName is invalid");
   if (typeof fetchImpl !== "function") throw new Error("fetchImpl is required");
+  if (!Number.isInteger(retryAttempts) || retryAttempts < 1 || retryAttempts > 8) {
+    throw new Error("retryAttempts must be 1..8");
+  }
+  if (!Number.isInteger(retryDelayMs) || retryDelayMs < 0 || retryDelayMs > 10000) {
+    throw new Error("retryDelayMs must be 0..10000");
+  }
+  if (typeof sleepImpl !== "function") throw new Error("sleepImpl is required");
   const host = `${account}.r2.cloudflarestorage.com`;
   const emptyHash = sha256Hex("");
 
@@ -104,18 +125,33 @@ export function createRemoteR2S3Adapter({
     const path = "/" + encodeURIComponent(bucket) + objectPath;
     const body = bytes === null ? undefined : Buffer.from(bytes);
     const payloadHash = body ? sha256Hex(body) : emptyHash;
-    const headers = new Headers(extraHeaders);
-    signRequest({
-      method, host, path, headers, payloadHash,
-      accessKeyId: access, secretAccessKey: secret, now: now(),
-    });
-    const response = await fetchImpl(`https://${host}${path}`, {
-      method,
-      headers,
-      body,
-      signal: AbortSignal.timeout(60000),
-    });
-    return { response, objectPath: key, payloadHash };
+    let lastError = null;
+
+    for (let attempt = 1; attempt <= retryAttempts; attempt += 1) {
+      const headers = new Headers(extraHeaders);
+      signRequest({
+        method, host, path, headers, payloadHash,
+        accessKeyId: access, secretAccessKey: secret, now: now(),
+      });
+      try {
+        const response = await fetchImpl(`https://${host}${path}`, {
+          method,
+          headers,
+          body,
+          signal: AbortSignal.timeout(60000),
+        });
+        if (retryableR2Status(response.status) && attempt < retryAttempts) {
+          if (retryDelayMs > 0) await sleepImpl(retryDelayMs * attempt);
+          continue;
+        }
+        return { response, objectPath: key, payloadHash };
+      } catch (error) {
+        lastError = error;
+        if (!retryableR2TransportError(error) || attempt >= retryAttempts) throw error;
+        if (retryDelayMs > 0) await sleepImpl(retryDelayMs * attempt);
+      }
+    }
+    throw lastError || new Error("R2 request retry budget exhausted");
   }
 
   async function head(key) {
