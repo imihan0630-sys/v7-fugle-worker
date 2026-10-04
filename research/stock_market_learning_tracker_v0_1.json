@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T19:14:00+08:00",
+  "updatedAt": "2026-10-04T19:20:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 45.6
+    "maturityWeightedPct": 45.7
   },
   "domains": [
     {
@@ -2867,7 +2867,7 @@
         "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md",
         "NEWS_EVENT_TRANSMISSION_RESEARCH.md"
       ],
-      "maturityPct": 45.7,
+      "maturityPct": 47.1,
       "modules": [
         {
           "id": "D17-01",
@@ -2972,10 +2972,13 @@
         {
           "id": "D17-12",
           "name": "事件後Gap／延續／反轉",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「事件後Gap／延續／反轉」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_POST_EVENT_PATH_FEASIBLE / OPENING_GAP_SHARED_PRIMITIVE / DAILY_HISTORICAL_INTRADAY_PROSPECTIVE / OUTCOMES_CLOSED",
+          "evidence": "Validated official daily OHLC plus PIT event clocks, D11-12 continuity guards and explicit price-limit/suspension states make close/D1/D3/D5 post-event path replay feasible. Opening gap is shared context only; D17-12 independent evidence begins after open. 15m/30m remains prospective-only.",
+          "next": "Build prospective cluster-level cohorts; preregister close/D1/D3/D5 and prospective 15m/30m path definitions, and test incremental value beyond D11-10 gap risk and D04-09 tail state before L4."
         },
         {
           "id": "D17-13",
@@ -3000,10 +3003,10 @@
           "evidence": "Reuters pre-decision polls dated 2026-06-15 and 2026-09-14 preserve ex-ante Taiwan CBC rate expectation distributions; official CBC decisions on 2026-06-18 and 2026-09-17 provide compatible realizations. Preserve full distributions and never choose the surprise functional after seeing returns."
         }
       ],
-      "status": "D17_09_10_13_14_L3 / D17_01_02_SOURCE_AND_FIRST_AVAILABILITY_GAPS / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D17-01/02 remain source/first-availability blockers. Prospectively capture an independent-media + official-disclosure pair with capture timestamps on both lanes; preserve field-level conflict/version states. D17-09/10 are L3; L4 outcomes stay closed.",
-      "lastResearchUpdate": "2026-10-04T19:14:00+08:00",
-      "researchNote": "D17-10 advanced L2->L3 on Taiwan PIT/source feasibility after field-level lineage cases demonstrated independent occurrence corroboration versus issuer-derived media redistribution. Weekend expected/observed polling deepened D17-01/02 but did not promote them."
+      "status": "D17_09_10_12_13_14_L3 / D17_01_02_SOURCE_AND_FIRST_AVAILABILITY_GAPS / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D17-01/02 remain source/first-availability blockers. Prospectively capture independent-media + official-disclosure pairs with capture timestamps, while D17-12 accumulates post-open path cohorts. D17-09/10/12 are L3; L4 outcomes remain closed.",
+      "lastResearchUpdate": "2026-10-04T19:20:00+08:00",
+      "researchNote": "D17-12 advanced L2->L3 for Taiwan PIT/source feasibility: historical daily close/D1/D3/D5 replay is supported by validated OHLC and event/continuity guards, while 15m/30m stays prospective-only. Opening gap is shared context and cannot be double counted."
     },
     {
       "id": "D18",
