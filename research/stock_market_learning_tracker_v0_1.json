@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T22:11:00+08:00",
+  "updatedAt": "2026-10-04T23:15:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -2397,7 +2397,7 @@
         "PORTFOLIO_RISK_CHECKPOINT.md",
         "PORTFOLIO_RISK_RESEARCH.md"
       ],
-      "maturityPct": 43.8,
+      "maturityPct": 44.8,
       "modules": [
         {
           "id": "D15-01",
@@ -2567,13 +2567,13 @@
         {
           "id": "D15-22",
           "name": "Risk Attribution／Information Ratio風險歸因與資訊比率",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Risk Attribution／Information Ratio風險歸因與資訊比率」。研究投組最佳化、風險預算、配置約束與績效／風險歸因。任何最佳化都必須控制估計誤差、集中度、流動性、成本、約束敏感度與基準選擇，且不得用未來報酬倒推最佳權重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "L2_SPECIALIST_CONTRACT / PLAN_STOP_RISK_ATTRIBUTION / CAPITAL_VS_STOP_GEOMETRY_DECOMPOSITION / COVARIANCE_COMPONENT_RISK_FIREWALL / INFORMATION_RATIO_SEMANTICS / TAIWAN_PLAN_WITNESS_AVAILABLE / LAYER_B_C_DATA_BLOCKED / FORMAL_CORE_UNCHANGED",
-          "next": "優先用既有 2026-09-18 durable plan receipts 執行 Layer A Taiwan PIT risk-attribution replay：量化 2006/3105/6133 planned stop-risk share，並在相同 stop geometry 下比較 current PriorityScore allocation vs equal-capital／risk-budget comparator 的 sizingRiskDelta。Layer B covariance risk attribution 等待 PIT synchronized covariance；Layer C Information Ratio 等待同步 portfolio/benchmark return series。",
-          "evidence": "research/D15_22_RISK_ATTRIBUTION_INFORMATION_RATIO_CONTRACT_20261004_V0_1.md + research/d15_risk_attribution_v0_1.mjs + tests/test_d15_risk_attribution_v0_1.mjs. D15-07/06/21/16 evidence boundaries inherited; Layer A has existing Taiwan plan-time source foundation, Layer B/C remain UNKNOWN."
+          "levelMeaning": "台股真實資料可用性已驗證",
+          "status": "L3_LAYER_A_TAIWAN_PIT_VALIDATED / 20260918_PLAN_RISK_ATTRIBUTION_REPLAY / CURRENT_VS_EQUAL_CAPITAL_SIZING_RISK_DELTA_QUANTIFIED / CAPITAL_VS_STOP_GEOMETRY_SEPARATED / LAYER_B_C_UNKNOWN / FORMAL_CORE_UNCHANGED",
+          "next": "擴增獨立 multi-name plan dates，檢驗 PriorityScore sizingRiskDelta 的跨日期方向與 channel/regime sensitivity；Layer B 等 PIT synchronized covariance 後做 component risk attribution；Layer C 等同步 portfolio/benchmark returns 後做 Tracking Error/Information Ratio。不得把單一 2026-09-18 witness 當 population proof。",
+          "evidence": "research/D15_22_RISK_ATTRIBUTION_INFORMATION_RATIO_CONTRACT_20261004_V0_1.md + research/d15_risk_attribution_v0_1.mjs + tests/test_d15_risk_attribution_v0_1.mjs. D15-07/06/21/16 evidence boundaries inherited; Layer A has existing Taiwan plan-time source foundation, Layer B/C remain UNKNOWN. + research/D15_22_TAIWAN_PLAN_RISK_ATTRIBUTION_REPLAY_20260918_V0_1.md. Existing Production read-only plan geometry supports Taiwan PIT Layer A replay: current projected stop risk ~6483.41 using displayed rates; equal-capital ~6313.27; sizing-risk delta ~+170.14 NTD. Layer B/C remain unvalidated."
         },
         {
           "id": "D15-23",
