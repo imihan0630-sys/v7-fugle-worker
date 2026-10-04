@@ -4,15 +4,17 @@ Project name: 台股多策略智慧選股平台
 
 ## Continuity
 
-GitHub is authoritative. At the start of substantive System 2 work, read:
-1. shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md
-2. shared-knowledge/SHARED_KNOWLEDGE_GOVERNANCE.md
-3. RESEARCH_ENGINEERING_GOVERNANCE.md
+GitHub is authoritative. For a new/replacement chat, use the lightweight bootstrap protocol first:
+1. shared-knowledge/ROOM_BOOTSTRAP.md
+2. shared-knowledge/ROOM_BOOTSTRAP_REGISTRY.json
+3. system2/SYSTEM2_CHECKPOINT.md
 4. system2/SYSTEM2_MASTER.md
-5. system2/SYSTEM2_CHECKPOINT.md
-6. the dedicated evidence/checkpoint files relevant to the task
+5. system2/SYSTEM2_MVP_SHADOW_STATUS_V0_1.md
+6. RESEARCH_ENGINEERING_GOVERNANCE.md
+7. the dedicated evidence/checkpoint files relevant to the task
+8. shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md and shared-knowledge/SHARED_KNOWLEDGE_GOVERNANCE.md only when cross-system/shared-knowledge context is actually needed
 
-Do not restart research that already exists.
+Do not restart research that already exists. Do not require the owner to paste the old chat. Routine Chat -> Chat migration uses the 1-3 line short seed from ROOM_BOOTSTRAP; Work/Codex migration stores the full durable state in a checkpoint and keeps the paste-ready seed compact.
 
 ## Relationship to System 1
 
