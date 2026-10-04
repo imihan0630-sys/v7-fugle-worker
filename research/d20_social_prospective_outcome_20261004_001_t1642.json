@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "D20_SOCIAL_PROSPECTIVE_OUTCOME_V0_1",
+  "parentDecisionReceiptId": "D20SOC-20261004-001",
+  "observedAtAsiaTaipei": "2026-10-04T16:42:40+08:00",
+  "parentCapturedAtAsiaTaipei": "2026-10-04T16:34:04+08:00",
+  "elapsedMinutes": 8.6,
+  "sourceArticleId": "M.1791102403.A.CB9",
+  "currentSourceFingerprintFNV1A64": "2c6e20e6e1f927f1",
+  "parentSourceFingerprintFNV1A64": "d38f5316a1ed5a4f",
+  "contentFingerprintComparison": "DIFF",
+  "postParentRepliesObserved": 0,
+  "postParentEditsObserved": 0,
+  "aggregateStanceTransitionOutcome": "NO_MULTI_ACTOR_ADOPTION_OBSERVED",
+  "narrativeDiffusionOutcome": "NO_NEW_DISTINCT_ACTOR_ADOPTION_OBSERVED",
+  "note": "The visible edit marker is 16:32:41, which precedes the 16:34:04 parent freeze and therefore belongs to the parent state, not the outcome.",
+  "marketPriceOutcomeJoined": false,
+  "maturityImpact": "NONE / single parent and one date far below L4 thresholds",
+  "formalCore": "LOCKED"
+}
