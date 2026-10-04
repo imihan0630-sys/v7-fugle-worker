@@ -1964,3 +1964,12 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
 1. D21-03: recover authoritative monthly holding-change content or another official source allowing a conservative next-day safe bound.
 2. D21-04: recover authoritative historical pledge event dates/receipts or switch to an issuer with official pledge event archives.
 3. No L4 promotion for any L3 module without OOS/prospective evidence.
+
+
+## 2026-10-04 D19 Stage 12 — bounded calendar PIT promotion
+- `research/d19_12_date_intrinsic_calendar_pit_receipt_20261004_v0_1.json` is the durable receipt.
+- D19-12 Seasonality／Calendar Anomalies promotes L2/40 -> L3/60 only for bounded TWSE WEEKDAY and MONTH_OF_YEAR states.
+- Existing executable official historical TWSE calendar code/tests plus 2017 physical market-year evidence establish replayable date-intrinsic state feasibility; outcomes remain closed.
+- Holiday/pre-holiday/post-holiday/turn-of-month/lunar/settlement-rebalance remain outside the promoted scope until their own historical known-at/vintage semantics are proven.
+- D19 aggregate maturity becomes 41.3%; Formal Core unchanged; no optimization candidate.
+- Exact next: add an independent historical year under identical date-intrinsic semantics, then separately pursue holiday/turn-of-month source clocks; continue D19-04 research-owned industry/redundancy/cost gates while DATA_LANE owns full-market historical population work.
