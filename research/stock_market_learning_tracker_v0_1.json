@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T18:56:00+08:00",
+  "updatedAt": "2026-10-04T19:14:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -2867,7 +2867,7 @@
         "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md",
         "NEWS_EVENT_TRANSMISSION_RESEARCH.md"
       ],
-      "maturityPct": 44.3,
+      "maturityPct": 45.7,
       "modules": [
         {
           "id": "D17-01",
@@ -2953,10 +2953,13 @@
         {
           "id": "D17-10",
           "name": "消息來源交叉驗證",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「消息來源交叉驗證」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_SOURCE_LINEAGE_CROSS_VALIDATION_FEASIBLE / FIELD_LEVEL_INDEPENDENCE_VALIDATED / FIRST_KNOWN_BACKDATING_FORBIDDEN / OUTCOMES_CLOSED",
+          "evidence": "2537 fire case separates independently corroborated event occurrence from issuer-only materiality/insurance claims redistributed by later media; 7827 HCB303 demonstrates copied MOPS disclosures are one primary lineage, not multiple confirmations. Conservative capturedAt rules preserve PIT integrity.",
+          "next": "Prospectively capture at least one independent-media plus official-disclosure pair with capture timestamps on both lanes; retain field-level conflicts/resolution and preregister incremental-value testing before L4."
         },
         {
           "id": "D17-11",
@@ -2997,10 +3000,10 @@
           "evidence": "Reuters pre-decision polls dated 2026-06-15 and 2026-09-14 preserve ex-ante Taiwan CBC rate expectation distributions; official CBC decisions on 2026-06-18 and 2026-09-17 provide compatible realizations. Preserve full distributions and never choose the surprise functional after seeing returns."
         }
       ],
-      "status": "D17_09_13_14_L3 / D17_01_02_SOURCE_AND_FIRST_AVAILABILITY_GAPS / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D17-01/02: obtain at least one additional independent official capture plus after-hours expected/observed polling and separately resolve licensed general-news / true first-availability gaps. D17-09 is L3; native correction lineage remains UNKNOWN and L4 outcomes stay closed.",
-      "lastResearchUpdate": "2026-10-04T14:59:00+08:00",
-      "researchNote": "D17-09 advanced L2->L3 after independent cross-day official captures physically demonstrated recurring notices for the same issuer/fact dates with explicit announcement periods. This validates republication-aware clustering feasibility, not general-news source readiness, native correction lineage, or alpha. D17-01/02 remain L2."
+      "status": "D17_09_10_13_14_L3 / D17_01_02_SOURCE_AND_FIRST_AVAILABILITY_GAPS / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D17-01/02 remain source/first-availability blockers. Prospectively capture an independent-media + official-disclosure pair with capture timestamps on both lanes; preserve field-level conflict/version states. D17-09/10 are L3; L4 outcomes stay closed.",
+      "lastResearchUpdate": "2026-10-04T19:14:00+08:00",
+      "researchNote": "D17-10 advanced L2->L3 on Taiwan PIT/source feasibility after field-level lineage cases demonstrated independent occurrence corroboration versus issuer-derived media redistribution. Weekend expected/observed polling deepened D17-01/02 but did not promote them."
     },
     {
       "id": "D18",
