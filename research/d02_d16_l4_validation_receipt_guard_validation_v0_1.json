@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_EXECUTABLE_D16_CONSUMER_GUARD_PASS",
+  "evidenceCursor": "PVE-239",
+  "formalCore": "LOCKED",
+  "d02MaturityPct": 60,
+  "maturityImpact": "NONE",
+  "runtime": {
+    "name": "Node.js",
+    "version": "v22.16.0",
+    "tests": 24,
+    "status": "PASS"
+  },
+  "artifacts": [
+    "research/D02_D16_L4_VALIDATION_HANDOFF_V0_1.md",
+    "research/d02_d16_l4_validation_receipt_guard_v0_1.mjs",
+    "tests/test_d02_d16_l4_validation_receipt_guard_v0_1.mjs"
+  ],
+  "ownership": {
+    "D02": "feature semantics/event family/PIT/common support/admission",
+    "D16": "dependence-aware inference/effective sample/sample adequacy/multiple testing/concentration"
+  },
+  "universalFixedNForWave2": false,
+  "guarantees": {
+    "evidenceKeyIsolation": true,
+    "crossModuleSampleBorrowingAllowed": false,
+    "d02CanSelfCertifySampleAdequacy": false,
+    "maturityPromotionAuthorized": false,
+    "formalCoreChangeAuthorized": false
+  },
+  "remainingBlockers": [
+    "CLEAN_DATE_ZERO",
+    "PVE-240_PENDING",
+    "GATE_7_CLOSED",
+    "NO_GENUINE_D16_VALIDATION_RECEIPT"
+  ]
+}
