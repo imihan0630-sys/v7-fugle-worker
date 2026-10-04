@@ -2335,3 +2335,78 @@ Exact next:
 3. next genuine trading session -> V8.17 C1 parent/cohort readback;
 4. then symbol-window TECHNICAL_CONTINUITY for Bollinger;
 5. ADX only after recursive replay certification.
+
+
+## TI-588 through TI-593 — TPEx halt/resumption machine-contract discovery (2026-10-04)
+
+Durable artifacts:
+- `research/D03_TPEX_HALT_RESUMPTION_MACHINE_CONTRACT_V0_1.md`
+- `research/d03_tpex_halt_resumption_machine_contract_v0_1.json`
+
+### TI-588 — official exchange surface and query dimensions physically observed
+The official TPEx page `https://www.tpex.org.tw/zh-tw/announce/market/halt/historical.html` physically exposes the historical halt/resumption surface.
+
+Observed query controls:
+- year input `date`, with public UI coverage 2020 through 2026 plus ALL;
+- security category `cate`;
+- category values 1 mainboard stock, 2 emerging stock, 6 strategic board, 3 warrant, 4 convertible/exchangeable bond, 5 TDR;
+- HTML export and CSV download controls.
+
+This is exchange-owned evidence for symbol-session trading halts/resumptions. It is not a complete corporate-action archive.
+
+### TI-589 — front-end action is physically visible, resolved transport is not
+The page's own executable initialization physically declares:
+- `action="bulletin/sprcHis"`;
+- `autoLoad=true`;
+- `autoChange=false`;
+- sortable table;
+- page size 10.
+
+However the runtime `API_PATTERN` value was not exposed by the observable page scope. Therefore only the action/argument surface is verified; the exact stable public endpoint is not yet frozen.
+
+### TI-590 — candidate transport falsification
+A read-only candidate request using the common TPEx `/www/zh-tw/` route shape and the physically observed action/arguments returned `HTTP 520` in this research environment. The public page also rendered no result rows during the same bounded observation.
+
+This does not prove that the official dataset is absent. It disproves promotion from front-end discovery alone to a physical machine-payload PASS.
+
+State:
+`TPEX_OFFICIAL_HALT_SURFACE=OBSERVED`
+`TPEX_FRONTEND_ACTION_AND_PARAMETERS=PHYSICALLY_OBSERVED`
+`TPEX_MACHINE_RESPONSE_CONTRACT=PARTIAL_UNKNOWN`.
+
+### TI-591 — missing acceptance controls remain UNKNOWN
+Not yet physically certified:
+- one bounded positive response with headers/schema/row count;
+- stable row key and duplicate semantics;
+- pagination or unpaged equivalence;
+- CSV/API equivalence;
+- source-local empty semantics;
+- correction/cancellation/version chronology;
+- detail-row contract;
+- first-known publication latency;
+- all-action-family coverage.
+
+No zero rows, NO_EVENT state, or historical continuity may be inferred from the failed response.
+
+### TI-592 — D03 implication and falsification boundary
+This evidence narrows the next TPEx task from broad discovery to transport resolution and physical response capture. It can eventually support symbol-session TECHNICAL_CONTINUITY for halt/resumption, but cannot by itself certify capital-reduction price continuity, share replacement, par-value change, ex-right/ex-dividend, delisting or cross-exchange completeness.
+
+TWSE and TPEx remain separate source families:
+`TWSE_OFFICIAL_DOCUMENT_MACHINE_CONTRACT=BOUNDED_PHYSICAL_PASS`
+`TPEX_HALT_RESUMPTION_MACHINE_CONTRACT=PARTIAL_UNKNOWN`.
+
+### TI-593 — maturity and exact continuation
+No maturity inflation:
+`D03_10=L2_REMAINS`
+`D03_09=L2_REMAINS`
+`D03_MATURITY=56.7_PERCENT`
+`FORMAL_OPTIMIZATION_CANDIDATE=NONE`.
+
+Exact continuation:
+1. resolve `API_PATTERN` from a successful official TPEx session or archive an official CSV artifact; do not guess endpoint stability from the route shape;
+2. freeze one bounded year/category positive control with raw bytes, response headers, schema, row count, stable key and checksum;
+3. reconcile HTML/CSV/API keysets and page-size-10 pagination behavior;
+4. add a source-local empty control without converting transport failure into empty data;
+5. preserve halt/resumption separately from capital-action cause/effective-date evidence;
+6. on the next genuine Taiwan trading session, prioritize the already deployed V8.17 C1 immutable parent/cohort readback; never synthesize or backfill a generation;
+7. after parent readback, re-audit Bollinger against exact 20-session symbol-window TECHNICAL_CONTINUITY; ADX still additionally requires canonical Wilder recursive replay.

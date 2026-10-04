@@ -1,0 +1,78 @@
+{
+  "contractId": "D03_TPEX_HALT_RESUMPTION_MACHINE_CONTRACT_V0_1",
+  "capturedAt": "2026-10-04T12:15:38+08:00",
+  "status": "FRONTEND_ACTION_OBSERVED_MACHINE_PAYLOAD_PARTIAL_UNKNOWN",
+  "formalCore": "LOCKED",
+  "officialPage": "https://www.tpex.org.tw/zh-tw/announce/market/halt/historical.html",
+  "observed": {
+    "form": {
+      "date": {
+        "values": [
+          "ALL",
+          "2026",
+          "2025",
+          "2024",
+          "2023",
+          "2022",
+          "2021",
+          "2020"
+        ],
+        "dataStart": "20201201"
+      },
+      "cate": {
+        "1": "MAINBOARD_STOCK",
+        "2": "EMERGING_STOCK",
+        "3": "WARRANT",
+        "4": "CONVERTIBLE_OR_EXCHANGEABLE_BOND",
+        "5": "TDR",
+        "6": "STRATEGIC_BOARD",
+        "": "ALL"
+      },
+      "exports": [
+        "HTML",
+        "CSV"
+      ]
+    },
+    "tableInit": {
+      "action": "bulletin/sprcHis",
+      "autoLoad": true,
+      "autoChange": false,
+      "sortable": true,
+      "pageSize": 10
+    }
+  },
+  "candidateTransport": {
+    "routeShape": "/www/zh-tw/bulletin/sprcHis",
+    "arguments": {
+      "date": "2025",
+      "cate": "",
+      "response": "json"
+    },
+    "result": "HTTP_520",
+    "acceptance": false,
+    "interpretation": "TRANSPORT_FAILURE_IS_NOT_EMPTY_DATA_AND_DOES_NOT_FREEZE_ENDPOINT"
+  },
+  "certified": {
+    "officialSurface": true,
+    "frontendAction": true,
+    "frontendArguments": true,
+    "machinePayload": false,
+    "stableEndpoint": false,
+    "rowSchema": false,
+    "rowKey": false,
+    "pagination": false,
+    "csvEquivalence": false,
+    "emptySemantics": false,
+    "revisionChronology": false,
+    "knownAtClock": false,
+    "technicalContinuity": false
+  },
+  "next": [
+    "resolve API_PATTERN from successful official session or archive official CSV",
+    "capture bounded positive raw artifact with headers/schema/count/key/checksum",
+    "reconcile HTML_CSV_API keysets and page-size-10 pagination",
+    "capture source-local empty control",
+    "keep halt/resumption separate from corporate-action cause/effective-date evidence",
+    "prioritize genuine V8.17 C1 parent readback on next completed Taiwan session"
+  ]
+}
