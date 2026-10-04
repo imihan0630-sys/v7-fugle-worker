@@ -1,7 +1,7 @@
 # System 1 market-cap floor economic audit V0.1
 
 Date: 2026-10-04 Asia/Taipei
-Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_PENDING / FORMAL_CORE_LOCKED
+Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_GREEN_MERGED / PROSPECTIVE_OUTCOME_PENDING / FORMAL_CORE_LOCKED
 
 ## Purpose
 
@@ -194,3 +194,13 @@ Formal Core: LOCKED
 3. Keep missing-market-cap P1-A rows separate from known-below-10 rows on every date.
 4. Accumulate independent dates and quality-complete outcomes.
 5. Only after matched execution/downside/OOS evidence may the known 10bn threshold become a Class-C optimization candidate.
+
+## Merge acceptance
+
+- PR #569 merged at `e9205794ec1a8352661ef2dec30c1e51f9bc344b`.
+- Exact head `f23b6761c4e48b3b76fe22022ee1b2aab75f8f38`:
+  - V8 Regression Tests run `37204926790` PASS;
+  - V8 Repair CI run `37204926786` PASS;
+  - System1 C1 C2 isolated offline repair review run `37204926783` PASS.
+- No Worker/runtime/D1/Production/Formal/System2 behavior change or Cloudflare deployment was introduced.
+- Structural instrumentation is complete. The next evidence requirement is genuine V8.17+ prospective dates and matched execution/downside outcomes; no additional market-cap threshold audit is authorized by scarcity alone.
