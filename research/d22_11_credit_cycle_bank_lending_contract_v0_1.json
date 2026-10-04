@@ -1,10 +1,10 @@
 {
   "schemaVersion": "D22_11_CREDIT_CYCLE_BANK_LENDING_CONTRACT_V0_1",
-  "generatedAt": "2026-10-04T08:49:00+08:00",
+  "generatedAt": "2026-10-04T15:07:00+08:00",
   "module": "D22-11",
   "level": "L2",
   "maturityPct": 40,
-  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / CREDIT_SUPPLY_DEMAND_SEPARATION_REQUIRED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "status": "L2 / PIT_CONTEXT_AND_ISSUER_EXPOSURE_REPLAY_VALIDATED / CREDIT_SUPPLY_SHOCK_UNIDENTIFIED / HOLD_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "researchQuestion": "Can aggregate and issuer-facing credit-supply conditions improve Taiwan stock selection after separating loan demand, policy rates and issuer fundamentals?",
   "stateVector": [
     "lending_standards",
@@ -59,8 +59,16 @@
   "outcomeGate": "CLOSED",
   "formalCore": "LOCKED",
   "next": [
-    "Build Taiwan release-vintage aggregate credit-condition receipts and map only to issuers with evidenced bank dependence.",
-    "Define demand-vs-supply identification challengers before using loan growth.",
-    "Test bank-dependent versus bond-access issuers across tightening/easing regimes before L3/L4."
-  ]
+    "Search for source-attested lending-standard, approval/rejection, collateral, maturity-term or natural-experiment evidence that can separate supply from demand.",
+    "Extend issuer bank-dependence PIT receipts from D22-10 funding states.",
+    "Treat CBC aggregate loan rates and enterprise funding surveys as CONTEXT_ONLY until supply identification is proven.",
+    "Keep D22-11 L2 unless the identification gate is satisfied; do not infer supply shocks from loan growth or rates alone."
+  ],
+  "readinessEvidence": "research/d22_11_credit_cycle_replay_readiness_v0_1.json",
+  "maturityDecision": {
+    "level": "L2",
+    "maturityPct": 40,
+    "decision": "HOLD",
+    "reason": "Release-vintage Taiwan bank-pricing and enterprise-funding context plus issuer bank-dependence exposure are replayable, but the distinctive bank-credit-supply shock cannot yet be separated from borrower demand using public modern Taiwan data. Promoting on loan rate/volume alone would violate the module's own falsification gate."
+  }
 }
