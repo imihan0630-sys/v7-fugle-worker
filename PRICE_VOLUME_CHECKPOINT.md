@@ -3003,3 +3003,84 @@ CLEAN_DATE_ZERO / PVE-239 / Gate 7 CLOSED.
 D02 remains 60.0%.
 FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 Formal Core remains LOCKED.
+
+## Pre-PVE-240 continuation — complete effect-target binding firewall (2026-10-04)
+
+Status: OUTCOME_BLIND / TARGET_VALUE_FREEZE_PENDING / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+New durable artifacts:
+- `research/D02_L4_EFFECT_TARGET_CONTRACT_V0_1.md`;
+- `research/d02_l4_effect_target_registry_v0_1.json`;
+- `research/D02_D16_L4_VALIDATION_HANDOFF_V0_2.md`;
+- `research/d02_d16_l4_validation_receipt_guard_v0_2.mjs`;
+- `tests/test_d02_d16_l4_validation_receipt_guard_v0_2.mjs`;
+- `research/d02_d16_l4_validation_receipt_guard_validation_20261004_v0_2.md`;
+- `research/d02_d16_l4_validation_receipt_guard_validation_v0_2.json`.
+
+### Defect found
+
+D16 receipt guard V0.1 required an effectTarget object but did not require:
+- exact metric;
+- direction;
+- numerical threshold/precision;
+- comparator;
+- horizon;
+- cost treatment;
+- freeze timestamp;
+- target hash binding.
+
+Therefore a superficially valid target could theoretically be completed or weakened after outcomes.
+
+The defect was discovered before any clean prospective D02 outcome existed.
+
+### Version-safe correction
+
+Historical V0.1 was restored from Git history and remains replayable:
+- 24/24 tests PASS.
+
+New V0.2 is a separate version:
+- 39/39 executable tests PASS;
+- fixtureTargetsAreResearchThresholds=false.
+
+V0.2 requires a complete EffectTargetReceipt plus exact:
+- targetId;
+- targetVersion;
+- targetHash.
+
+MDE / semantic-materiality target:
+- finite thresholdValue > 0.
+
+Precision target:
+- finite maxHalfWidth > 0.
+
+Target must also freeze:
+- estimandId;
+- metric;
+- unit;
+- direction;
+- comparatorId;
+- outcomeHorizon;
+- costTreatment;
+- frozenAt;
+- outcomeAccessStateAtFreeze=OUTCOME_CLOSED;
+- rationale;
+- status=FROZEN.
+
+### Target registry state
+
+Repository audit found no formal numerical D02 MDE / precision / semantic-materiality threshold.
+
+Test fixture values are not research thresholds.
+
+All 14 D02 evidence keys are therefore explicitly:
+`TARGET_VALUE_PENDING_FREEZE`.
+
+PVE-240 may collect feature/provenance/admission evidence.
+Promotion-grade outcome interpretation and D16 ADEQUATE receipt consumption must remain blocked until the relevant target is frozen.
+
+Current evidence:
+PVE-239 / CLEAN_DATE_ZERO / Gate 7 CLOSED.
+
+D02 remains 60.0%.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core remains LOCKED.
