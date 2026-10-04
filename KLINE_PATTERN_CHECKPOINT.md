@@ -1445,3 +1445,28 @@ No maturity/count/Formal/runtime change from closure.
 Audits:
 - shared-knowledge/CURRICULUM_H16_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
 - shared-knowledge/CURRICULUM_H20_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
+
+
+## 00 routed COV-01 final specialist-return delta — 2026-10-04
+
+COV-01 is now:
+`SPECIALIST_RETURN_READY_PENDING_TERMINAL_RECOMMENDATION`.
+
+Do not redo the Pattern ontology.
+
+Accepted:
+- Platform / Flag / Triangle / Pennant / Wedge / HTF / Cup / VCP specifications;
+- latent geometry and cross-pattern de-dup;
+- repaint-safe confirmation/failure timing;
+- D01-05 breakout lifecycle boundary;
+- D01-08 VCP specialization;
+- named labels are not independent votes.
+
+Exact remaining return delta:
+1. compare D01-07 as umbrella continuation/base morphology owner versus a distinct umbrella owner;
+2. decide whether D01-07 can absorb platform/flag/triangle/wedge/base families cleanly;
+3. identify any unique replay/data/decision contract that would justify a new module;
+4. choose exactly one terminal recommendation;
+5. commit `research/COV01_D01_SPECIALIST_RETURN_V0_1.md`.
+
+No maturity or Formal change is authorized by this routing.
