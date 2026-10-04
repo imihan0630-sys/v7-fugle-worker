@@ -106,12 +106,24 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H05_H08_SEMANTIC_SPLIT_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H05_H08_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "PARTIAL_EVIDENCE_RECEIVED_ROOM06_COMPLETE_ROOM14_PENDING",
+      "status": "CLOSED_NO_STRUCTURAL_CHANGE",
       "receivedPackets": [
-        "research/h05_d07_25_specialist_evidence_packet_v0_1.json"
+        "research/h05_d07_25_specialist_evidence_packet_v0_1.json",
+        "CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md",
+        "CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md"
       ],
       "intakeDecision": "EVIDENCE_INSUFFICIENT_PENDING_COUNTERPART",
-      "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json"
+      "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json",
+      "terminalClassification": "KEEP_SEPARATE",
+      "governanceDisposition": "STATEMENT_ANOMALY_VS_GOVERNANCE_CONTROL_EVENT",
+      "audit": "shared-knowledge/CURRICULUM_H05_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md",
+      "machineAudit": "shared-knowledge/curriculum_h05_dependency_anti_orphan_audit_20261004_v0_1.json",
+      "dependencyAudit": "PASS",
+      "antiDoubleCount": "PASS_SHARED_RESTATEMENT_EVENT_RECEIPT",
+      "antiOrphan": "PASS",
+      "maturityImpact": "NONE_D07_25_L0_0_D21_10_L3_60",
+      "structuralChange": "NONE",
+      "formalCoreImpact": "NONE"
     },
     {
       "id": "H06",
