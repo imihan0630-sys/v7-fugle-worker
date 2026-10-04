@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "BR059_COMPEQ_PCB_APPLICATION_REVENUE_NUMERATOR_V0_1",
+  "room": "07｜產業與供應鏈研究室",
+  "domain": "D09",
+  "module": "D09-13",
+  "capturedAt": "2026-10-04T23:18:00+08:00",
+  "observedMainBeforeWrite": "ac3e96b473a9ae5c9db7dcb1fe5ef25610f4a22c",
+  "status": "FIRST_COMPATIBLE_PCB_APPLICATION_REVENUE_NUMERATOR / ABF_AI_MAGNITUDE_STILL_UNKNOWN / OUTCOMES_CLOSED",
+  "objective": "Test whether issuer-native PCB/product/application disclosures can provide a denominator-compatible revenue numerator without importing third-party industry shares or relabeling qualitative product presence as exposure magnitude.",
+  "issuer": {
+    "name": "Compeq Manufacturing Co., Ltd.",
+    "symbol": "2313",
+    "issuerRole": "PCB manufacturer",
+    "issuerNativeProductScope": "One-stop PCB service provider; hard board, flexible board, rigid-flex board and SMT service; issuer material explicitly maps products to data-center and networking applications."
+  },
+  "receipt": {
+    "referencePeriod": "2025Q3",
+    "disclosedDimension": "APPLICATION_REVENUE_MIX",
+    "numeratorLabel": "Data Center / Networking",
+    "numeratorSharePct": 5,
+    "denominatorLabel": "Operation Revenue",
+    "denominatorCompatibility": "SAME_ISSUER_SAME_TABLE_SAME_PERIOD",
+    "otherSharesPct": {
+      "MobilePhone": 18,
+      "PC": 13,
+      "RF_FPC": 28,
+      "SMT": 16,
+      "Aerospace": 17,
+      "Consumer_Others": 4
+    },
+    "displayedRowSumPct": 101,
+    "roundingState": "ROUNDING_PRESENT_DO_NOT_RENORMALIZE",
+    "sourcePublishedAt": "2025-11-25T14:00:00+08:00",
+    "sourcePublishedAtBasis": "Official Compeq investor-conference list shows a 2025-11-25 14:00 Uni-President Securities winter forum; the issuer-hosted PDF filename contains 20251121 but filename timestamp is not promoted to first-known publication time.",
+    "sourceDocumentPreparedAtCandidate": "2025-11-21T15:54:06+08:00",
+    "sourceDocumentPreparedAtCandidateUse": "NON_AUTHORITATIVE_METADATA_ONLY",
+    "sourceUrls": [
+      "https://www.compeq.com.tw/accomplishments01_4_2.php",
+      "https://www.compeq.com.tw/doc/conference/235724ee-c6af-11f0-a762-005056a9c86d/20251121_155406_cn.pdf"
+    ],
+    "pdfPage": 9,
+    "capturedAt": "2026-10-04T23:18:00+08:00"
+  },
+  "interpretation": {
+    "validInference": "Compeq disclosed that Data Center / Networking represented approximately 5% of 2025Q3 operation revenue under the issuer's own application taxonomy.",
+    "prohibitedInferences": [
+      "Do not relabel the 5% as AI revenue.",
+      "Do not relabel the 5% as ABF-substrate revenue.",
+      "Do not transfer the 5% to Kinsus, Nan Ya PCB or any other issuer.",
+      "Do not infer product-level margin, customer exposure or stock-selection alpha from this mix.",
+      "Do not normalize the row from 101% to 100%; preserve issuer rounding."
+    ]
+  },
+  "positiveControlWhyItMatters": "Unlike product-presence evidence, this receipt contains an issuer-native same-period revenue-share numerator and an explicit total-operation-revenue denominator, proving that compatible application exposure numerators are observable in Taiwan PCB issuers when companies choose to disclose them.",
+  "existingFirewall": {
+    "nanYaPCB_8046": "ABF/AI product-revenue numerator remains UNKNOWN unless a same-company denominator-compatible disclosure appears.",
+    "kinsus_3189": "ABF/AI product-revenue numerator remains UNKNOWN unless a same-company denominator-compatible disclosure appears.",
+    "thirdPartyMarketShare": "PROHIBITED_AS_ISSUER_NUMERATOR"
+  },
+  "maturityDecision": {
+    "D09_13": "L3_60_KEEP",
+    "D09": "57.1_KEEP",
+    "reason": "A first compatible application-revenue numerator improves Taiwan data feasibility and the denominator contract, but it is one issuer/application observation, not ABF-specific exposure and not prospective/OOS predictive evidence."
+  },
+  "formalOptimizationCandidate": "NONE",
+  "exactNext": "BR-059 add independent issuer-native product/application revenue numerators, prioritizing ABF/substrate-specific numerator evidence for 3189 and 8046 only when same-company same-period denominator compatibility is explicit; preserve broader Data Center / Networking as its own taxonomy and keep AI/ABF magnitude UNKNOWN otherwise; no composite structure score before OOS/redundancy tests."
+}
