@@ -67,7 +67,10 @@ for (let index = 0; index < MOPS_REVISION_CONTROLS_V0_2.length; index += 1) {
   let result = primary;
   let transportUsed = "MOPSOV_NODE_FETCH";
 
-  if (primary.state === "DIRECT_HISTORY_TRANSPORT_ERROR") {
+  if (
+    primary.state === "DIRECT_HISTORY_TRANSPORT_ERROR" ||
+    (primary.state === "MOPSOV_DIRECT_HISTORY_NOT_READY" && primary.historyHttpStatus === 307)
+  ) {
     await sleep(750);
     result = await probeMopsovDirectHistoryV0_1({
       ...args,
