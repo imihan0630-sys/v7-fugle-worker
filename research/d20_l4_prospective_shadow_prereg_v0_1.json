@@ -1,0 +1,274 @@
+{
+  "schemaVersion": "D20_L4_PROSPECTIVE_SHADOW_PREREG_V0_1",
+  "frozenAtAsiaTaipei": "2026-10-04T08:52:19+08:00",
+  "researchRoom": "13",
+  "domain": "D20",
+  "status": "PREREGISTERED_RESEARCH_ONLY / OUTCOME_JOIN_LOCKED_UNTIL_PARENT_FROZEN / NO_L4_PROMOTION_YET",
+  "maturityRule": {
+    "L3": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
+    "L4": "PROSPECTIVE_SHADOW_OR_OOS_EVIDENCE",
+    "noHistoricalShadowFabrication": true,
+    "formalCore": "LOCKED"
+  },
+  "contaminationRegister": [
+    {
+      "cohort": "CATHAY_SURVEY_X_0050_2025_12_TO_2026_09",
+      "status": "DEVELOPMENT_ONLY_CONTAMINATED / NOT_PROMOTION_GRADE",
+      "reason": "Survey values and adjusted 0050 outcomes were both inspected before this preregistration. May be used only for descriptive method diagnostics and falsification, never as OOS/prospective evidence."
+    }
+  ],
+  "commonRules": {
+    "earliestEligibleParentDate": "2026-10-05",
+    "eligibilityMeaning": "First genuine Taiwan trading/event observation after preregistration; if 2026-10-05 is not an eligible session, use the next valid session.",
+    "immutableParentRequired": true,
+    "requiredIdentity": [
+      "parentDecisionReceiptId",
+      "captureGeneration",
+      "asOf",
+      "sourceReceiptHash",
+      "ruleVersion"
+    ],
+    "unknownIsNotZero": true,
+    "laterCorrectionsAppendNeverRewrite": true,
+    "outcomeFieldsForbiddenAtParentCapture": true,
+    "thresholdSearchAfterOutcomesForbidden": true,
+    "samePrimitiveDoubleVoteForbidden": true,
+    "dateBalancedInferenceRequired": true,
+    "costsAndCoverageReportedSeparately": true
+  },
+  "lanes": {
+    "D20-10": {
+      "role": "MARKET_CONTEXT_ONLY",
+      "firstEligibleParent": "First official Cathay monthly Taiwan economic-confidence survey release after freeze",
+      "parentFields": [
+        "releaseDate",
+        "sourcePublishedAt_if_authenticated",
+        "capturedAt",
+        "surveyStart",
+        "surveyEnd",
+        "validSampleN",
+        "stockOptimismIndex",
+        "riskPreferenceIndex",
+        "deltaStockOptimism",
+        "deltaRiskPreference",
+        "sourceHash"
+      ],
+      "conservativeKnownAt": "If exact source publication time is not authenticated, first eligible Taiwan session after the dated public release",
+      "noDailyInterpolation": true,
+      "primaryQuestion": "Do sentiment LEVEL and CHANGE add incremental context beyond prior Taiwan-market return and volatility? No directional sign is assumed ex ante.",
+      "primaryOutcomes": [
+        "TAIEX_D5_RETURN",
+        "TAIEX_D20_RETURN"
+      ],
+      "secondaryOutcomes": [
+        "0050_ADJUSTED_D5_RETURN",
+        "0050_ADJUSTED_D20_RETURN"
+      ],
+      "mandatoryControls": [
+        "prior20_market_return",
+        "market_volatility",
+        "Taiwan_VIX_when_PIT_valid",
+        "margin_context_when_PIT_valid",
+        "news_sentiment_when_PIT_valid",
+        "market_regime"
+      ],
+      "minimumIndependentParentsForL4": 6,
+      "minimumRegimeDiversity": "at least 2 materially different market regimes",
+      "promotionMeaning": "Prospective evidence exists; not production eligibility"
+    },
+    "D20-07": {
+      "role": "SALIENCE_EVENT_RESEARCH",
+      "firstEligibleParent": "First official TWSE/TPEx attention designation with valid parent receipt on/after earliest eligible date",
+      "parentFields": [
+        "market",
+        "symbol",
+        "designationDate",
+        "sourcePublishedAt_if_authenticated",
+        "capturedAt",
+        "ruleVintage",
+        "sourceHash",
+        "preDesignationRet5",
+        "preDesignationRet20",
+        "preDesignationTurnover",
+        "preDesignationVolatility",
+        "sector",
+        "liquidityState"
+      ],
+      "conservativeKnownAt": "Next eligible session unless exact same-day availability clock is authenticated",
+      "primaryQuestion": "After controlling the variables that trigger designation, does exchange salience add residual changes in attention/liquidity or subsequent price path? No bullish/bearish sign is assumed.",
+      "primaryOutcomes": [
+        "D1_MARKET_SECTOR_RESIDUAL_RETURN",
+        "D5_MARKET_SECTOR_RESIDUAL_RETURN",
+        "D1_VOLUME_PERSISTENCE",
+        "D5_VOLUME_PERSISTENCE"
+      ],
+      "mandatoryControls": [
+        "ret5",
+        "ret20",
+        "turnover",
+        "volatility",
+        "size",
+        "liquidity",
+        "sector",
+        "price_limit_state",
+        "market_regime"
+      ],
+      "minimumIndependentDatesForL4": 20,
+      "minimumTreatedEventsForL4": 100,
+      "matchedControlRequired": true
+    },
+    "D20-04": {
+      "role": "REFERENCE_POINT_RESEARCH",
+      "cadence": "Last eligible Taiwan session of each week",
+      "firstEligibleParent": "First weekly parent after freeze",
+      "parentFields": [
+        "symbol",
+        "asOf",
+        "high252",
+        "distanceToHigh252",
+        "high252Date",
+        "eligibleSessionsSinceHigh",
+        "historyReceiptHash",
+        "continuityState"
+      ],
+      "primaryQuestion": "Does 52-week reference position add residual information beyond direct momentum/breakout/MA-distance/volatility?",
+      "primaryOutcome": "D5_MARKET_SECTOR_RESIDUAL_RETURN",
+      "secondaryOutcome": "D20_MARKET_SECTOR_RESIDUAL_RETURN",
+      "mandatoryControls": [
+        "ret20",
+        "ret60",
+        "breakout_state",
+        "ma_distance",
+        "volatility",
+        "liquidity",
+        "size",
+        "sector",
+        "market_regime"
+      ],
+      "primarySpecification": "Continuous/rank specification; no post-outcome threshold or quintile search",
+      "minimumIndependentWeeklyDatesForL4": 12
+    },
+    "D20-05": {
+      "role": "OBSERVATION_RESEARCH_ONLY",
+      "cadence": "Same frozen weekly parents as D20-04",
+      "parentFields": [
+        "symbol",
+        "asOf",
+        "eligibleSessionsSinceHigh",
+        "distanceToHigh252",
+        "historyReceiptHash",
+        "continuityState"
+      ],
+      "primaryQuestion": "Conditional on D20-04 reference position and D03 momentum, does recency of the reference event retain residual information?",
+      "primaryOutcome": "D5_MARKET_SECTOR_RESIDUAL_RETURN",
+      "secondaryOutcome": "D20_MARKET_SECTOR_RESIDUAL_RETURN",
+      "mandatoryControls": [
+        "D20-04_distanceToHigh252",
+        "ret20",
+        "ret60",
+        "breakout_state",
+        "volatility",
+        "liquidity",
+        "sector",
+        "market_regime"
+      ],
+      "primarySpecification": "Continuous residual test only; same parent dates as D20-04",
+      "minimumIndependentWeeklyDatesForL4": 12,
+      "killRule": "If recency adds no stable residual information beyond D20-04/D03, prepare merge/narrowing proposal instead of preserving a duplicate factor."
+    },
+    "D20-02": {
+      "role": "TWSE_SHORT_SIDE_DISPOSITION_RESEARCH",
+      "cadence": "Last eligible Taiwan session of each week",
+      "firstEligibleParent": "First complete TWSE short-side weekly receipt after freeze",
+      "parentFields": [
+        "symbol",
+        "asOf",
+        "priorShortBalance",
+        "currentShortBalance",
+        "newShortSales",
+        "returnsOrCovering",
+        "adjustments",
+        "referencePriceShort",
+        "shortCapitalGainsOverhang",
+        "closeRatio",
+        "sourceHash",
+        "ruleVintage"
+      ],
+      "primaryQuestion": "Conditional on price performance and short-side information variables, does gain/loss state explain covering asymmetry and does that state add subsequent-return information?",
+      "primaryOutcomes": [
+        "NEXT_WEEK_COVER_RATIO",
+        "D5_MARKET_SECTOR_RESIDUAL_RETURN"
+      ],
+      "mandatoryControls": [
+        "size",
+        "liquidity",
+        "volatility",
+        "institutionalOwnership_when_valid",
+        "newShortSales",
+        "borrowEconomics_when_valid",
+        "market_regime"
+      ],
+      "marketScope": "TWSE_ONLY_UNTIL_TPEX_PARITY_PROVEN",
+      "minimumIndependentWeeklyDatesForL4": 12
+    },
+    "D20-08": {
+      "role": "EVENT_DRIFT_RESEARCH",
+      "firstEligibleParent": "First event after freeze with valid sourcePublishedAt/capturedAt and preregistered surprise semantics",
+      "eventFamilies": [
+        "MONTHLY_REVENUE_WITH_VALID_FIRST_KNOWN",
+        "EARNINGS_WITH_VALID_FIRST_KNOWN"
+      ],
+      "parentFields": [
+        "eventId",
+        "symbol",
+        "eventClass",
+        "sourcePublishedAt",
+        "capturedAt",
+        "surpriseDefinitionVersion",
+        "surpriseValue_or_UNKNOWN",
+        "preEventRet20",
+        "sector",
+        "liquidity",
+        "sourceHash"
+      ],
+      "primaryOutcomes": [
+        "D1_RESIDUAL_RETURN",
+        "D5_RESIDUAL_RETURN",
+        "D20_RESIDUAL_RETURN"
+      ],
+      "horizonsFrozenBeforeOutcomes": true,
+      "mandatoryControls": [
+        "preEventRet20",
+        "institutionalFlow_when_valid",
+        "liquidity",
+        "sector",
+        "analystRevision_when_valid",
+        "price_limit_state",
+        "market_regime"
+      ],
+      "clusteringUnit": "event-date cluster",
+      "minimumIndependentEventDatesForL4": 12,
+      "rule": "Historical rows with unresolved original first-known clocks remain UNKNOWN/excluded."
+    },
+    "D20-12": {
+      "role": "IDENTIFICATION_FIREWALL",
+      "parentFields": [
+        "targetProxyReceiptId",
+        "structuralCounterfactualReceiptIds",
+        "commonCutoff",
+        "missingnessState",
+        "sourceVersions",
+        "sharedPrimitiveLinks"
+      ],
+      "primaryQuestion": "Can the behavioral hypothesis discriminate against at least one plausible structural explanation on prospective common-support parents?",
+      "minimumIndependentCasesForL4": 20,
+      "promotionRule": "May reach L4 only from prospective/OOS discriminating evidence, not merely because upstream modules have outcome data."
+    }
+  },
+  "l4Decision": {
+    "currentPromotionCount": 0,
+    "currentD20MaturityPct": 50.8,
+    "formalOptimizationCandidate": "NONE",
+    "nextAction": "Begin immutable prospective parent capture; do not open an outcome until its parent receipt and preregistered specification are frozen."
+  }
+}
