@@ -328,3 +328,26 @@ Exact next:
 5. only after all coverage/readback gates pass may the preregistered Historical-Valuation Shadow outcome join open;
 6. TPEx remains outside inference until public historical machine replay or an authorized licensed history lane is verified;
 7. COV-04/COV-05 wait for 00-room formal intake/owner audit before any canonical module/scope change.
+
+
+## 2026-10-04 00-room routing reconciliation — AOKD-05 source gate
+
+Control-plane reconciliation only; this does not replace Room-06's active D08-03 execution order unless the owner/room chooses to service the routed source task.
+
+- COV-04/COV-05 are no longer waiting for 00 intake: both were owner-approved and canonically executed by 00.
+  - D07-34 now exists at L0/0.
+  - D08-06 scope is extended to EV/EBITDA / EV-Sales / P/S; the sales-multiple sub-capabilities did not inherit L2 evidence.
+- AOKD-05 owner triage is closed by:
+  - `shared-knowledge/AOKD05_OWNER_SCOPE_RECONCILIATION_20261004_V0_1.md`
+- 00 conclusion:
+  - no new module and no owner reassignment;
+  - D07-08 owns filing/document vintage clock;
+  - economic content routes to existing D07 content owners;
+  - D16-22 owns text-method validation only;
+  - D20-07/D20-08 are dependent attention/underreaction consumers, not duplicate votes.
+- Pending Room-06 source task:
+  - `shared-knowledge/AOKD05_CORPUS_FEASIBILITY_CONTRACT_20261004_V0_1.md`
+  - outcome-blind only;
+  - return one of FEASIBLE / PROSPECTIVE_ONLY_FEASIBLE / DATA_BLOCKED / EVIDENCE_INSUFFICIENT;
+  - no return outcome, maturity promotion, new module, or Formal change.
+- This routing entry is a queued control-plane request. Preserve any already-active Room-06 experiment sequence and service this task at the next safe source-research slot.
