@@ -22,7 +22,7 @@ This registry tracks routing and return state; it does not itself decide module 
 | Candidate | Domain | Room | Current class | Specialist state | Expected return path |
 |---|---|---|---|---|---|
 | COV-01 | D01 | 01｜K線與型態研究室 | ACTIVE_CURRICULUM_OWNER_GAP | PENDING_SPECIALIST_RETURN | `research/COV01_D01_SPECIALIST_RETURN_V0_1.md` |
-| COV-02 | D05 | 04｜波動與市場微結構研究室 | SCOPE_EXTENSION_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV02_D05_SPECIALIST_RETURN_V0_1.md` |
+| COV-02 | D05 | 04｜波動與市場微結構研究室 | SCOPE_EXTENSION_CANDIDATE | OWNER_APPROVAL_REQUIRED | `research/COV_02_CLOSING_AUCTION_SPECIALIST_RETURN_20261004_V0_1.md` |
 | COV-04 | D07 | 06｜基本面與估值研究室 | TRUE_GAP_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV04_D07_SPECIALIST_RETURN_V0_1.md` |
 | COV-06 | D10 | 07｜產業與供應鏈研究室 | SCOPE_EXTENSION_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV06_D10_SPECIALIST_RETURN_V0_1.md` |
 | COV-07 | D12 | 09｜衍生品與國際總經研究室 | TRUE_GAP_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV07_D12_SPECIALIST_RETURN_V0_1.md` |
@@ -286,3 +286,26 @@ Post-update canonical tracker snapshot:
 
 COV-12 remains PENDING_SPECIALIST_RETURN.
 No System1/System2 Formal change. Formal Core remains LOCKED.
+
+
+## COV-02 formal Intake + Dependency Audit — 2026-10-04
+
+Canonical audit:
+`shared-knowledge/CURRICULUM_COVERAGE_COV02_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md`
+
+Machine audit:
+`shared-knowledge/curriculum_coverage_cov02_intake_dependency_audit_20261004_v0_1.json`
+
+Result:
+- formal 10-field specialist return accepted for Intake;
+- `EXTEND_EXISTING_SCOPE → D05-06` survives Dependency Audit, overlap recheck, PIT/replay recheck, anti-double-count and anti-orphan review;
+- proposed name: `Opening / Closing Auction & Auction Imbalance（開收盤集合競價與競價不平衡）`;
+- module count unchanged;
+- D05-06 maturity unchanged by this governance action;
+- historical pre-close imbalance remains UNKNOWN where timestamped observations do not exist;
+- no independent auction alpha vote is authorized.
+
+Current state:
+**OWNER_APPROVAL_REQUIRED**
+
+Formal Core remains LOCKED.
