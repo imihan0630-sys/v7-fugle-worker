@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "D19_04_VALID_OBSERVATION_CONTRACT_V0_1",
+  "updatedAt": "2026-10-04T13:48:00+08:00",
+  "researchOnly": true,
+  "ownerDomain": "D19",
+  "module": "D19-04",
+  "formalCore": "LOCKED",
+  "purpose": "Freeze symbol-session observation semantics before any D19-04 L3 replay. This contract classifies observed price/session evidence without inferring missing suspension or continuity facts.",
+  "invariants": {
+    "unknownIsZero": false,
+    "forwardFillAllowed": false,
+    "previousCloseSubstitutionAllowed": false,
+    "positiveActivityCreatesPrice": false,
+    "zeroTradeCreatesZeroReturn": false,
+    "localSuspensionInferenceAllowed": false,
+    "currentDecisionSessionRequiresValidPrice": true,
+    "sharedSymbolSessionAuthorityRequired": true,
+    "corporateActionContinuityIsSeparateGate": true
+  },
+  "observationStates": {
+    "ELIGIBLE_VALID_PRICE_SESSION": {
+      "meaning": "Official source row has an admissible positive close with source provenance. This is a price observation only; it does not by itself certify corporate-action continuity.",
+      "countsAsValidPriceObservation": true,
+      "factorReturnValueMayUseClose": true,
+      "blocksFactorWindow": false
+    },
+    "VERIFIED_NONTRADING_OR_EXCLUDED_SESSION": {
+      "meaning": "Non-trading or out-of-scope status is positively evidenced by an authoritative external symbol-session or listing/event receipt. D19 may consume but not infer this state locally.",
+      "countsAsValidPriceObservation": false,
+      "factorReturnValueMayUseClose": false,
+      "blocksFactorWindow": false
+    },
+    "OFFICIAL_ZERO_TRADE_ROW": {
+      "meaning": "Official row exists with zero volume, zero trade value, zero transactions and null OHLC. It is known absence of price formation, not missing source and not zero return.",
+      "countsAsValidPriceObservation": false,
+      "factorReturnValueMayUseClose": false,
+      "blocksFactorWindow": false
+    },
+    "UNRESOLVED_TRADING_ACTIVITY_WITHOUT_VALID_CLOSE": {
+      "meaning": "Official row reports positive trading activity but no admissible close. Price cannot be reconstructed from volume, value, transactions or prior close.",
+      "countsAsValidPriceObservation": false,
+      "factorReturnValueMayUseClose": false,
+      "blocksFactorWindow": true
+    },
+    "SOURCE_UNKNOWN": {
+      "meaning": "Required source/session evidence is absent, malformed, conflicting or otherwise not classifiable without inference.",
+      "countsAsValidPriceObservation": false,
+      "factorReturnValueMayUseClose": false,
+      "blocksFactorWindow": true
+    }
+  },
+  "researchWindowPolicies": {
+    "CALENDAR_20_STRICT_V0_1": {
+      "role": "Strict benchmark comparator, not automatically the preferred production definition.",
+      "requiredOfficialMarketSessions": 21,
+      "decisionSessionMustBeValidPrice": true,
+      "allWindowSessionsMustBeValidPrice": true,
+      "nonTradingOrZeroTradeHandling": "INCOMPLETE_FOR_FACTOR_WINDOW",
+      "unresolvedOrSourceUnknownHandling": "BLOCKED_UNKNOWN",
+      "returnDefinition": "close_t / close_t_minus_20_official_market_sessions - 1",
+      "rationale": "Provides a conservative no-imputation baseline and exposes the sample loss created by requiring one valid price per market session."
+    },
+    "VALID_OBSERVATION_20_V0_1": {
+      "role": "Preregistered sensitivity comparator for suspensions/zero-trade sessions; not automatically preferred.",
+      "requiredValidPriceObservations": 21,
+      "decisionSessionMustBeValidPrice": true,
+      "verifiedNonTradingOrZeroTradeHandling": "SKIP_FROM_VALID_PRICE_COUNT_BUT_RETAIN_IN_RECEIPT",
+      "unresolvedOrSourceUnknownHandling": "BLOCKED_UNKNOWN",
+      "maxCalendarSpanSessions": "REQUIRED_EXPLICIT_PARAMETER_NO_DEFAULT",
+      "returnDefinition": "close_latest_valid / close_21st_valid_observation - 1",
+      "rationale": "Tests whether a valid-observation clock is more robust than a fixed market-calendar clock without forward filling. Longer calendar spans create stale-information risk and must be sensitivity-tested."
+    }
+  },
+  "requiredReceiptFields": [
+    "symbol",
+    "market",
+    "decisionMarketDate",
+    "policyId",
+    "stateCounts",
+    "validObservationCount",
+    "marketSessionCountScanned",
+    "firstValidMarketDate",
+    "lastValidMarketDate",
+    "returnValue",
+    "inputSourceHashes",
+    "sessionEvidenceHashes",
+    "blockerCodes",
+    "policyParameters",
+    "receiptHash"
+  ],
+  "l3Boundary": {
+    "thisContractAlonePromotesL3": false,
+    "requiredAdditionalGates": [
+      "TPEx date-vintaged universe and replayable history",
+      "shared corporate-action and symbol-session completeness",
+      "date-vintaged industry neutralization",
+      "paired D03/D09 redundancy on identical PIT inputs",
+      "D14-compatible cost provenance",
+      "deterministic full-Taiwan replay with zero applicable blockers"
+    ]
+  }
+}
