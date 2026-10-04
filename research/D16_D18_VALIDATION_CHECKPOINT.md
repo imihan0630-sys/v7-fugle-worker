@@ -1613,3 +1613,30 @@ Global tracker maturity after recompute: **43.9%**.
 No L4 is claimed. Real prospective/OOS folds require multiple relevant Regime episodes and preregistered policy/MDE.
 
 FORMAL_OPTIMIZATION_CANDIDATE: NONE. Formal Core LOCKED.
+
+
+## 2026-10-04 D18-10 strategy dependence common-support panel — L3
+
+Canonical evidence: `research/D18_10_STRATEGY_DEPENDENCE_L3_ACCEPTANCE_20261004_V0_1.md`.
+
+D18-10 -> L3/60.
+
+Validated:
+- strategy×date common-support panel;
+- same-date stock rows collapsed before cross-strategy comparison;
+- missing strategy-days remain MISSING/null, never zero;
+- pairwise common dates explicit;
+- duplicate decisionId / mixed horizon / UNKNOWN attribution fail closed;
+- no correlation estimate, Ensemble weights or diversification claim at L3.
+
+Prior validation:
+- System2 Research CI 37175227542 SUCCESS;
+- V8 Regression 37175227545 SUCCESS;
+- V8 Repair CI 37175227537 SUCCESS.
+
+Concurrent D18 progress from latest main is preserved and not claimed as part of D18-10.
+
+D18 domain maturity after D18-10 promotion: **50.7%**.
+Global tracker maturity: **44%**.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE. Formal Core LOCKED.
