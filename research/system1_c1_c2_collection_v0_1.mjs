@@ -4,6 +4,7 @@ import {buildC2ProspectivePairedLedger} from './system1_c2_paired_ledger_v0_1.mj
 import {verifyC1ZeroPickProspectiveEvidence} from './system1_zero_pick_evidence_collector_v0_1.mjs';
 import {collectC4RankingRedundancyEvidence} from './system1_c4_ranking_collection_v0_1.mjs';
 import {buildSystem1SetupChannelScaleAudit} from './system1_setup_channel_scale_audit_v0_1.mjs';
+import {buildSystem1MarketCapConditionalAdmissionAudit} from './system1_market_cap_conditional_admission_v0_1.mjs';
 function blocked(code,httpStatus=200){const e=new Error(code);e.code=code;e.httpStatus=httpStatus;return e;}
 
 // Authorized GETs only. Both artifacts use these exact verified page objects.
@@ -57,5 +58,6 @@ export async function collectVerifiedC1C2({origin,token,scanDate,request=fetch,t
   const shadowCohort=await collectShadowCohortEvidence({pages,diagnosis,origin,headers,request,timeoutMs});
   const c4RankingRedundancy=collectC4RankingRedundancyEvidence({pages});
   const setupChannelScale=buildSystem1SetupChannelScaleAudit(adapted);
-  return {pages,adapted,diagnosis,paired,scanProof,zeroPickProspective,shadowCohort,c4RankingRedundancy,setupChannelScale};
+  const marketCapConditionalAdmission=buildSystem1MarketCapConditionalAdmissionAudit({adapted,diagnosis});
+  return {pages,adapted,diagnosis,paired,scanProof,zeroPickProspective,shadowCohort,c4RankingRedundancy,setupChannelScale,marketCapConditionalAdmission};
 }
