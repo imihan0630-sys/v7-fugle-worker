@@ -1176,3 +1176,47 @@ System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOC
 - Real official-source smoke `37165603790` PASS_NEGATIVE_L3_GATE with production isolation PASS. TWSE 2026-08-03..2026-08-31 produced a complete bounded 2330/2454 receipt chain; TPEx primary and legacy historical transports both returned HTTP 520 and were preserved as source-unavailable rather than imputed.
 - Remaining D19 L3 blockers: historical-registry universe denominator, corporate-action continuity, industry neutralization, D03/D09 redundancy, cost provenance, and current TPEx source availability.
 - No selection authority, Formal Core, System1 runtime, production, capital, push, Cron or live behavior changed.
+
+
+## 2026-10-04 S2-07 MOPSOV month-shard reconciliation — PHYSICALLY VERIFIED
+
+The next MOPS supplemental revision-source transport/completeness guard is physically verified for a frozen high-volume company control.
+
+- PR #446 merged as `636305f79ecde412b27177dc677578d6116bc7d6`.
+- MOPSOV Month Shard Reconciliation Readonly `37168363208`: PASS.
+- System2 Research CI `37168363156`: PASS.
+- V8 Regression `37168363125`: PASS.
+- Frozen control: 2330 / ROC 115 / month shards 1–9 / cutoff 2026-09-30.
+- Full-query prefix rows = 151.
+- Monthly-shard union rows = 151.
+- only-full-query keys = 0.
+- only-month-shard keys = 0.
+- duplicate month-shard keys = 0.
+- exactKeysetReconciliation=true.
+- No visible pagination hints were observed for this frozen control.
+- Read-only boundary PASS; no D1/R2 mutation, strategy evaluation, capacity, selection, push, capital, order or System1 runtime use.
+
+This proves exact keyset reconciliation only for the frozen company/year window. It does not prove global completeness or safe historical knownAt semantics.
+
+Still false:
+- boundedIntervalCoverageComplete;
+- actionFamilyCoverageComplete;
+- cancellationHistoryComplete;
+- knownAtVersionClockCertified;
+- revisionCoverageComplete;
+- noEventMayBeClaimed;
+- symbolSessionCompletenessCertified;
+- technicalContinuityCertified;
+- selectionAuthority / finalSelectionEnabled / livePushEnabled;
+- capitalImpact / orderImpact / system1RuntimeUsed.
+
+### Exact continuation
+1. repeat bounded full-query vs month-shard reconciliation on the frozen multi-company/multi-action correction and cancellation controls;
+2. characterize empty company-month semantics and higher-row-count pagination/truncation behavior;
+3. validate source-reported date/time/sequence semantics before using them as version knownAt clocks;
+4. add exchange-side official document cancellation/revocation evidence;
+5. only after the supplemental revision-history contract is complete reconsider the six-lane `revisionCoverageComplete` receipt;
+6. then continue suspension/resumption completeness -> expected symbol sessions -> RAW A1 lineage -> technical continuity;
+7. only after history + continuity are READY address `ASSESSOR_POLICY_NOT_FROZEN`, then Strategy -> Ranking -> Capacity -> real `s2_capacity_runs`.
+
+System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.

@@ -594,3 +594,10 @@ It does **not** yet satisfy the supplemental revision-history completeness contr
 5. only after the supplemental contract is complete may the six-lane revision coverage receipt be reconsidered.
 
 System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
+
+
+## 2026-10-04 MOPSOV month-shard source-contract milestone
+
+PR #446 physically verified exact 2330/2026 Jan–Sep reconciliation between the official MOPSOV company-year query and bounded month shards: 151 vs 151 keys, no only-one-side keys and no duplicate shard keys. System2 CI, V8 regression and the dedicated read-only probe all PASS.
+
+This is source-contract evidence only. It does not promote revision completeness, knownAt certification, technical continuity, selection authority, live push, capital or order authority.

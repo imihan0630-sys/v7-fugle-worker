@@ -469,3 +469,21 @@ Required final experience:
 - visible source freshness / PIT / frozen-version provenance.
 
 Current deployed resonance UI is an operational research surface, not the finished institutional terminal.
+
+
+## 2026-10-04 MOPSOV month-shard reconciliation acceptance
+
+S2-07 source-contract evidence advanced through PR #446 / merge `636305f79ecde412b27177dc677578d6116bc7d6`.
+
+Physical control:
+- 2330 / ROC 115 / months 1–9;
+- full-query prefix = 151 rows;
+- monthly union = 151 rows;
+- no keyset differences;
+- no duplicate month-shard keys;
+- exactKeysetReconciliation=true;
+- read-only boundary PASS.
+
+This reduces query truncation/fragmentation uncertainty for the frozen control only. Revision completeness, knownAt clocks, suspension completeness and technical continuity remain blocked.
+
+Next engineering target: multi-control month-shard reconciliation on the frozen correction/cancellation matrix, followed by empty-month/pagination semantics and historical knownAt validation.
