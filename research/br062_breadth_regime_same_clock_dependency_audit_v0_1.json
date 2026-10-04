@@ -1,0 +1,30 @@
+{
+  "version": "0.1",
+  "id": "BR-062",
+  "capturedAt": "2026-10-04T11:40:00+08:00",
+  "module": "D09-12 市場廣度×市場狀態交互作用",
+  "mode": "SAME_CLOCK_DEPENDENCY_AUDIT / NON_PROMOTION",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "dependencyState": {
+    "D18_01": "L3 observable regime vector builder now executable and fail-closed",
+    "D18_02": "L3 TAIEX trend builder",
+    "D18_03": "L3 volatility-direction builder",
+    "D09_04": "L3 official TWSE stock breadth receipt exists for 2026-10-02"
+  },
+  "blockingFact": "Repository audit found no genuine persisted 2026-10-02 A2_TAIEX_CLOSE 25-session D18 context receipt with same decision clock as the official breadth receipt. Test fixtures are not market evidence.",
+  "whyHistoricalRebuildIsInsufficient": [
+    "Current official history can reconstruct closes but cannot prove the 2026-10-02 first-known D18 context receipt existed at the same decision clock.",
+    "Backfilling a present-day reconstruction into a past decision state would violate PIT semantics.",
+    "D18 test file values are synthetic fixtures and cannot be joined to BR-039."
+  ],
+  "maturityDecision": {
+    "D09-12": "KEEP_L2"
+  },
+  "exactNext": [
+    "BR-063 persist the first genuine same-clock D18 observable-regime context plus official breadth receipt on a future completed Taiwan session.",
+    "Require marketDate and decisionTimestamp identity, immutable source hashes, and no outcome fields.",
+    "Only after at least one genuine joint receipt consider L3; L4 still requires prospective multi-episode interaction evidence."
+  ],
+  "status": "DEPENDENCY_BUILDER_READY / GENUINE_SAME_CLOCK_JOINT_RECEIPT_MISSING / KEEP_L2 / FORMAL_UNCHANGED"
+}
