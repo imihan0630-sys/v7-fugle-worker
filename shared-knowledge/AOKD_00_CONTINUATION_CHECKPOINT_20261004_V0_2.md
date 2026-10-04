@@ -790,3 +790,78 @@ Still queued at Room06 corpus-feasibility source gate; no actual FEASIBLE / PROS
 No maturity, module-count or Formal change results from this reconciliation.
 
 00-room next protected action requires explicit owner decision for H04/H10/H11. Non-protected continuation resumes automatically when any specialist/source receipt lands.
+
+
+## 2026-10-04 21:21 control-plane blocker reconciliation
+
+Latest-main readback:
+
+### H11
+State:
+`OWNER_APPROVAL_REQUIRED`.
+
+Accepted return:
+`research/d12_h11_common_parent_residual_return_20261004_v0_1.json`.
+
+00 audit:
+`shared-knowledge/CURRICULUM_H11_DEPENDENCY_SCOPE_DEDUP_AUDIT_20261004_V0_1.md`.
+
+Recommended structural action:
+`KEEP_SEPARATE / SCOPE_DEDUP_ONLY`.
+
+If owner approves:
+- D12-07 remains simple skew/term baseline owner;
+- D12-16 becomes residual curvature/surface-interaction/quality owner after D12-07;
+- both remain L2/40%;
+- no rename, count, maturity, Formal or runtime change.
+
+### H12
+No new terminal evidence found.
+
+Still blocked by:
+1. Room10 D14-19 short establish/maintain/recall/forced-buy-in/exit lifecycle counterpart;
+2. first genuine live TWSE rate/supply receipt for D20-13.
+
+State remains:
+`PARTIAL_EVIDENCE_RECEIVED / EVIDENCE_INSUFFICIENT_PENDING_ROOM10_AND_LIVE_SOURCE_RECEIPT`.
+
+### COV-12
+Expected formal return path:
+`research/COV12_D22_SPECIALIST_RETURN_V0_1.md`.
+
+Latest-main fetch = NOT_FOUND.
+
+State remains:
+`PARTIAL_EVIDENCE_RECEIVED`.
+
+Room15 exact remaining delta is already frozen in its checkpoint:
+instrument-level seniority/collateral/guarantee/structural-subordination/recovery-waterfall replay + one Taiwan issuer/security historical document-vintage lineage + terminal recommendation.
+
+Do not infer RETURN_ACCEPTED_FOR_INTAKE until the formal return actually exists.
+
+### AOKD-05
+Owner triage was already closed, but the execution registry was stale.
+
+Registry is now reconciled to:
+`CORPUS_FEASIBILITY_REQUIRED`.
+
+Canonical classification:
+`EXISTING_MULTI_OWNER_SCOPE / DERIVED_DISCLOSURE_DELTA_LANE`.
+
+Only remaining gate:
+`shared-knowledge/AOKD05_CORPUS_FEASIBILITY_CONTRACT_20261004_V0_1.md`.
+
+Allowed return states:
+- FEASIBLE;
+- PROSPECTIVE_ONLY_FEASIBLE;
+- DATA_BLOCKED;
+- EVIDENCE_INSUFFICIENT.
+
+No outcome join, maturity promotion, new module or Formal change is authorized by this reconciliation.
+
+### Exact next 00 continuation
+1. H11 requires explicit owner approval/rejection before canonical scope wording changes.
+2. H12 remains blocked; do not duplicate Room05/13 completed evidence.
+3. COV-12 waits for the actual formal specialist return file.
+4. AOKD-05 waits for Room06 corpus-feasibility return only.
+5. Continue scanning other non-blocked governance items rather than idling on these four gates.
