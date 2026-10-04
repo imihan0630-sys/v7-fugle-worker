@@ -223,3 +223,21 @@ Maturity decision:
 3. Do not compute true utilization without verified total lendable inventory.
 4. Do not infer direction from borrow fee or thin displayed supply alone.
 5. Keep H12 counterpart validation pending Rooms 10/13.
+
+
+## 00 control-plane receipt — H12 Room05 side accepted
+
+00｜研究總控室 accepted the Room05 H12 evidence:
+- `research/d06_securities_lending_economics_h12_v0_1.md`;
+- `research/d06_18_borrow_fee_identifiability_rule_vintage_v0_1.md`.
+
+Closed on the Room05 side:
+- D06-09 primitive observed borrowing/short quantities;
+- D06-18 fee / availability / supply-demand / scarcity economics;
+- borrowing != shorting;
+- one primitive receipt / no duplicate bearish votes;
+- utilization requires verified lendable-inventory denominator;
+- 2026-06-01 fee settlement/payment rule-vintage guard.
+
+H12 remains partial pending Room10 D14-19 and Room13 D20-13.
+Do not repeat the Room05 ownership research.
