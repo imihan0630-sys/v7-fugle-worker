@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "D03_IMMUTABLE_PARENT_DEPLOYMENT_REASSESSMENT_20261004_V0_1",
+  "updatedAt": "2026-10-04T11:50:00+08:00",
+  "formalCore": "LOCKED",
+  "deployment": {
+    "pr": 454,
+    "runtimeVersion": "8.17.0-shadow-cohort-membership",
+    "deployRun": 37171810825,
+    "conclusion": "success",
+    "versionReadbackVerified": true,
+    "testMode": false,
+    "kv": true,
+    "d1": true
+  },
+  "state": {
+    "immutableParentRuntime": "DEPLOYED_AND_VERSION_VERIFIED",
+    "firstProspectiveShadowCohortReadback": "PENDING_NEXT_GENUINE_TRADING_SESSION",
+    "firstProspectiveC1ChildReadback": "PENDING_NEXT_GENUINE_TRADING_SESSION",
+    "genuineParentGenerationObserved": false
+  },
+  "d03": {
+    "maturityPct": 56.7,
+    "d03_10": "L2_REMAINS",
+    "d03_09": "L2_REMAINS",
+    "nextAfterBollingerL3": 58.3,
+    "nextAfterAdxL3": 60
+  },
+  "outcomes": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
