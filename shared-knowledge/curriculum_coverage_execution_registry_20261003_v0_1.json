@@ -230,7 +230,9 @@
   },
   "canonicalUpdateReceipts": [
     "shared-knowledge/CURRICULUM_COV04_COV05_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md",
-    "shared-knowledge/CURRICULUM_COV03_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md"
+    "shared-knowledge/CURRICULUM_COV03_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md",
+    "shared-knowledge/CURRICULUM_COV02_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md",
+    "shared-knowledge/curriculum_cov02_canonical_update_receipt_20261004_v0_1.json"
   ],
   "cov02": {
     "state": "CANONICAL_UPDATE_COMPLETE",
@@ -247,6 +249,21 @@
     "historicalPreCloseImbalance": "UNKNOWN_WHERE_NOT_TIMESTAMPED",
     "finalCloseBackfillAllowed": false,
     "independentDirectionalAlphaVote": false,
-    "formalCoreImpact": "NONE_LOCKED"
+    "formalCoreImpact": "NONE_LOCKED",
+    "canonicalUpdateMethod": "BLOB_SHA_COMPARE_AND_SWAP",
+    "canonicalUpdateCommits": [
+      "058bfd3ba9ee8adb833129fcf4f269ddcb825f21",
+      "1a372541fde927839b5dac44abdc015eeeef0f24",
+      "2ab00f9b79730e974f8a40d08b1ea0ad005de2d5",
+      "cb46c09cbdaf0df5b3911f77cc72245530132856",
+      "203a759af13938a9fef492afff26c8c7b89872db",
+      "c96986a88bb8c26f6345e33748b4a9abbce147ec",
+      "a8652e7b12ee46c85d796d83eaf54facc82b0ef5",
+      "d156b038e6a427928ce5dad30d664370d7d86539",
+      "886602d932a323b407b251190bbf2b4e2bb12373",
+      "4781aed956472af3b881c8cd8e05b5b8c67eafdb"
+    ],
+    "canonicalReceipt": "shared-knowledge/CURRICULUM_COV02_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md",
+    "canonicalReceiptJson": "shared-knowledge/curriculum_cov02_canonical_update_receipt_20261004_v0_1.json"
   }
 }
