@@ -1,8 +1,8 @@
 # Corporate Governance / Insider Checkpoint
 
-Updated: 2026-10-04 19:24 Asia/Taipei
+Updated: 2026-10-04 21:25 Asia/Taipei
 Scope: D21｜公司治理／經營者／內部人／控制權品質
-Status: D21-01 L2 / D21-02 L3 / D21-03 L2 / D21-04 L2 / D21-05 L3 / D21-07 L3 / D21-09 L3 / D21-10 L3 / D21-11 L3 / D21-12 L3 / D21-13 L3 / FORMAL_CORE_UNCHANGED
+Status: D21-01 L3 / D21-02 L3 / D21-03 L2 / D21-04 L2 / D21-05 L3 / D21-07 L3 / D21-09 L3 / D21-10 L3 / D21-11 L3 / D21-12 L3 / D21-13 L3 / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - Canonical continuation checkpoint for D21.
@@ -375,3 +375,36 @@ Exact remaining delta:
 9. commit `research/COV11_D21_SPECIALIST_RETURN_V0_1.md`.
 
 No maturity or Formal change is authorized by this routing.
+
+
+## 2026-10-04 night D21-01 durable continuation
+
+### D21-01 conservative daily PIT unlock
+- Exact MOPS first-public timestamp remains preferred but is no longer mandatory for DAILY PIT if an authoritative statutory latest-public bound exists.
+- Freeze precision hierarchy: AUTHORITATIVE_EXACT_TIMESTAMP > AUTHORITATIVE_OBSERVED_DATE > STATUTORY_LATEST_PUBLIC_BOUND > PRINT/MIRROR_ONLY.
+- Under the 2024-08-01 annual-report rule, listed/OTC issuers with year-end paid-in capital >=NT$2bn or foreign/PRC holdings >=30% had to file annual reports 14 days before AGM.
+- TSMC 2025 AGM = 2025-06-03 -> statutory latest filing 2025-05-20 -> conservative daily safe use from 2025-05-21.
+- Formosa Plastics 2025 AGM = 2025-06-11 -> statutory latest filing 2025-05-28 -> conservative daily safe use from 2025-05-29.
+- The prior threshold falsifications remain: TSMC ADR depositary 20.49% can create a false controller positive under naive >=20% direct-holder logic; Formosa Plastics related-group network can evade naive single-holder >=10% logic.
+- Category C statutory-bound timing must never be labeled exact known_at and is prohibited for intraday research.
+- If a late-filing violation is documented, statutory-bound eligibility is invalid.
+- D21-01 advances L2 -> L3 / 60%.
+- L4 remains closed pending OOS/prospective incremental evidence and robust controller-reconstruction tests.
+
+### D21-04 source gate
+- Official rules confirm pledge setup/release must be filed to MOPS within 5 days and monthly pledge changes by the monthly deadline.
+- This supports a future conservative safe-known-at method once an authoritative event date exists.
+- Current 2850/Shinkong Textile individual event dates remain secondary-source only; D21-04 stays L2 / 40%.
+
+### D21-03 motive diversity
+- Hon Hai 2019 trust-transfer observations provide a clear non-directional transfer family.
+- FSC official publication corroborates the holder/date/amount for the 2019-04-19 filing; secondary market archives identify trust method / trust account.
+- Trust rows must not be interpreted as bearish sales.
+- Monthly post-change known_at remains unresolved; D21-03 stays L2 / 40%.
+
+## Exact next continuation
+1. D21-03: obtain authoritative monthly holding-change content or a conservative monthly safe-known-at supported by authoritative data.
+2. D21-04: obtain authoritative pledge event dates/receipts or another issuer with official pledge setup/release archive.
+3. All L3 modules remain below L4 without OOS/prospective evidence.
+
+Formal Core impact: NONE.
