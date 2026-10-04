@@ -8,6 +8,8 @@ on:
       - "research/d19_04_valid_observation_contract_v0_1.json"
       - "system2/runtime/d19_valid_observation_adapter_v0_1.mjs"
       - "system2/scripts/d19_valid_observation_real_source_smoke_v0_1.mjs"
+      - "system2/scripts/d19_twse_invalid_close_monthly_reconcile_v0_1.mjs"
+      - "system2/runtime/official_monthly_history_adapter_v0_1.mjs"
       - "system2/runtime/official_historical_backfill_source_v0_1.mjs"
       - "system2/runtime/official_historical_a1_source_v0_1.mjs"
   workflow_dispatch:
@@ -30,6 +32,9 @@ jobs:
 
       - name: Reproduce D19 official invalid-close state split
         run: node system2/scripts/d19_valid_observation_real_source_smoke_v0_1.mjs
+
+      - name: Cross-check invalid closes with official monthly history
+        run: node system2/scripts/d19_twse_invalid_close_monthly_reconcile_v0_1.mjs
 
       - name: Confirm production isolation
         run: |
