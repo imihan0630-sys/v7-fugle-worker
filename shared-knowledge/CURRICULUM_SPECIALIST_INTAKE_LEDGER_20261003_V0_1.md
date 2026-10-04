@@ -77,7 +77,7 @@ Until that packet arrives:
 | H02 | PENDING | — | specialist packet(s) |
 | H03 | PENDING | — | specialist packet(s) |
 | H04 | PENDING | — | specialist packet(s) |
-| H05 | PARTIAL_EVIDENCE_RECEIVED | `research/h05_d07_25_specialist_evidence_packet_v0_1.json` | 14｜公司治理與內部人研究室 |
+| H05 | CLOSED_NO_STRUCTURAL_CHANGE | Room06 + equivalent Room14 D21-10 evidence | — |
 | H06 | CLOSED_NO_STRUCTURAL_CHANGE | Room05 + Room13 complete | — |
 | H07 | CLOSED_NO_STRUCTURAL_CHANGE | Room03 + Room13 complete | — |
 | H08 | PENDING | — | specialist packet(s) |
@@ -519,3 +519,28 @@ Therefore H12 remains:
 `PARTIAL_EVIDENCE_RECEIVED / EVIDENCE_INSUFFICIENT_PENDING_ROOM10_AND_LIVE_SOURCE_RECEIPT`.
 
 No maturity/count/Formal change from intake.
+
+
+## H05 00-room terminal closure — 2026-10-04
+
+Accepted:
+- Room06 specialist packet: `research/h05_d07_25_specialist_evidence_packet_v0_1.json`;
+- equivalent independent Room14 D21-10 evidence from `CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md` and checkpoint.
+
+Audit:
+`shared-knowledge/CURRICULUM_H05_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+Terminal:
+**KEEP_SEPARATE / STATEMENT_ANOMALY_VS_GOVERNANCE_CONTROL_EVENT / SHARED_RESTATEMENT_EVENT_RECEIPT**
+
+State:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+- D07-25 remains L0/0%; overlap closure does not substitute for its own forensic research.
+- D21-10 remains L3/60%.
+- original financial vintage remains valid until correction/restatement known_at; corrected values never backfill.
+- one restatement/control event has one parent receipt.
+- no merge, rename, count, maturity or Formal change.
+
+Closure receipt:
+`shared-knowledge/CURRICULUM_H05_CANONICAL_CLOSURE_RECEIPT_20261004_V0_1.md`.
