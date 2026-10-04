@@ -580,3 +580,37 @@ Maturity unchanged: D13 41.1%; D13-17 stays L2. Strict clean prospective dates a
 - Evidence: `research/d12_d13_vintage_regime_audit_20261004_v0_1.md`; `research/d13_17_cbc_bop_schedule_receipt_20261004_1305.json`.
 - Maturity unchanged: D13 41.1%. Outcomes CLOSED; Formal Core LOCKED.
 - Exact next: preserve future H.4.1 series vintages; append BOP schedule changes only if observed; capture BOP realization separately on/after publication; continue CBO assumption-cutoff lineage and eligible TWSE 18:10 foreign-flow receipts.
+
+
+## 2026-10-04 Room09 continuation — MC-177..MC-181 CBC same-vintage revision arithmetic firewall
+
+Status: RESEARCH_ONLY / SOURCE_QA / OUTCOMES_CLOSED / NO_PROMOTION.
+Durable evidence: `research/d12_d13_public_source_lineage_20261004_v0_1.md`.
+
+### MC-177 — Q1 revision already visible by the Q2 publication vintage
+CBC 2025-05-20 Q1 headline current-account surplus was 302.3 USD100m. CBC 2025-08-20 Q2 headline was 362.3 and same-release H1 cumulative was 659.9. Same-vintage subtraction gives approximately 297.6 for Q1 at headline precision. Therefore prior-quarter history had already been revised by the Q2 publication. Cross-release addition 302.3+362.3=664.6 is not the August-vintage H1 and is invalid for PIT reconstruction.
+
+### MC-178 — Q3 release proves another H1 revision but not Q2 attribution
+CBC 2025-11-20 Q3 current-account surplus was 458.4 and Q1-Q3 cumulative was 1122.4. Same-vintage subtraction gives H1=664.0, about +4.1 versus the August H1=659.9. At least one H1 quarter changed again, but without the native historical-quarter table the delta cannot be uniquely assigned to Q1, Q2 or both. This does not prove that Q2 had already reached 372.01.
+
+### MC-179 — full-year release proves further prior-quarter revision
+CBC 2026-02-26 Q4 current-account surplus was 699.3 and full-year 2025 current-account surplus was 1811.4. Same-vintage subtraction gives Q1-Q3=1112.1, about -10.3 versus the November cumulative 1122.4. Prior-quarter history changed again; aggregate arithmetic cannot identify the specific quarter(s).
+
+### MC-180 — later YoY headlines bound prior-quarter revised values
+CBC 2026-05-20 Q1 2026 current account 625.3 with YoY increase 328.4 implies prior-year Q1 near 296.9 at headline precision. CBC 2026-08-20 Q2 2026 current account 584.9 with YoY increase 212.9 implies prior-year Q2 near 372.0, consistent with the previously verified native endpoint 372.01. Exact first-public Q2 revision date remains unresolved.
+
+### MC-181 — frozen same-vintage rule
+- Arithmetic is valid within one publication vintage unless explicit native revision lineage is available.
+- Cross-release cumulative subtraction is prohibited because it mixes revised and unrevised quarter states.
+- A cumulative change proves at least one prior component changed but cannot attribute the revision without native/component evidence.
+- Revised history cannot be backfilled to the reference quarter's original decision date.
+- Native intermediate XLSX is required to establish first-public 2025Q2 revision timing.
+- Q3/Q4/Q1 native attachment routes are identified, but the static extraction path exposes XLSX bytes non-losslessly and cannot be treated as a valid workbook parse.
+- Maturity unchanged: D13 41.1%; D13-17 remains L2. Strict clean prospective dates added=0. Outcomes CLOSED; Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+
+### Exact next continuation after MC-181
+1. Acquire/read the 2025-11-20 CBC native XLSX losslessly and inspect historical-quarter values/revision markers.
+2. If Q2 has not yet reached the later revised state, continue chronologically to 2026-02-26 then 2026-05-20; stop when the first-public revised Q2 value is proven.
+3. Preserve publication/reference/version/observedAt clocks separately; never infer knownAt from quarter-end or a later database value.
+4. Continue future CBC/H.4.1/TWSE source-attested prospective receipts. No outcome join or L3 promotion before applicable gates.
+5. D12 continuation is DR-079 and H11 permitted raw-parent/common-support comparison.
