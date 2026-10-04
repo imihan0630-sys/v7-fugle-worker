@@ -865,3 +865,63 @@ H20:
 - D04-07 is not an independent Alpha vote until residual incremental value after price+volume controls is proven.
 
 No maturity/count/Formal/runtime change from governance closure.
+
+
+## 2026-10-04 19:16 segment close — Room04 L4 Wave-1 preregistration
+
+Status: SEGMENT_COMPLETE / L4_WAVE1_PREREGISTERED / NO_L4_PROMOTION
+Formal Core: LOCKED.
+
+### Canonical state recovered
+- latest formal D04 maturity: 58.0%.
+- latest formal D05 maturity: 51.4%.
+- weighted Room04 maturity: 54.2%.
+- COV-02 is canonically approved as EXTEND_EXISTING_SCOPE -> D05-06.
+- Priority-B B14 is complete: D05-05 OFI and D05-12 Adverse Selection/Toxicity KEEP_SEPARATE with shared primitive de-duplication.
+
+### L4 readiness audit
+No current module receives L4 from engineering/source feasibility alone.
+
+Explicit zero-credit evidence:
+- synthetic/unit fixtures;
+- CI success;
+- historical current-page reconstruction;
+- System2 2026-10-02 daily diagnostic INPUTS_NOT_READY;
+- code availability without a clean post-freeze outcome block.
+
+### D04 Wave-1
+Frozen:
+- D04-03 Volatility Contraction;
+- D04-04 Volatility Expansion / Shock;
+- D04-07 Volatility × Trend / Breakout Interaction.
+
+Primary principle:
+future volatility/path outcomes only; no post-outcome threshold/horizon tuning; exact common support; D01 remains primitive breakout owner.
+
+### D05 Wave-1
+Frozen:
+- D05-03 Bid-Ask Spread;
+- D05-04 Order-book Depth;
+- D05-09 Liquidity State Classification.
+
+Primary principle:
+snapshot-level evidence first. Top-five snapshot is not a complete exchange-event ledger. True OFI, exact queue, toxicity intent and own-order impact remain separately blocked.
+
+### D04-08
+Remains L2.
+Observed volatility alone does not validate a sizing policy. A separate portfolio-risk/execution feasibility contract is required.
+
+### Durable artifacts
+- `research/D04_D05_L4_WAVE1_PREREGISTRATION_20261004_V0_1.md`
+- `research/D04_D05_L4_READINESS_AUDIT_20261004_V0_1.md`
+- `research/d04_d05_l4_wave1_preregistration_v0_1.json`
+- `VOLATILITY_REGIME_RESEARCH.md` VR-043
+- `MICROSTRUCTURE_RESEARCH.md` MS-088
+
+### Exact next continuation
+1. Count only genuine post-freeze eligible D04/D05 parent receipts.
+2. First D04 checkpoint: D04-03/04/07 parent coverage, state occupancy, episode counts and UNKNOWN reasons before outcome interpretation.
+3. First D05 checkpoint: D05-03/04/09 quote/depth parent coverage, quote-age/reconnect missingness and exact common support.
+4. Freeze D16 MDE/dependence review before promotion-grade statistical interpretation.
+5. No historical backfill as Prospective Shadow.
+6. No L4 promotion until actual prospective/OOS evidence exists.
