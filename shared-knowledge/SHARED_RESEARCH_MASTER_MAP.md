@@ -1713,3 +1713,25 @@ Remaining:
 same-date/same-universe D03-vs-D19-04 comparison, fixed-factor/industry residualization for D19-09, provenance, costs and capacity.
 
 No maturity/count/Formal change from these governance states.
+
+
+## H08 canonical closure + H10 scope-de-dup gate — 2026-10-04
+
+H08 closed:
+`KEEP_SEPARATE / MEMBERSHIP_VS_EVENT_PROPAGATION_VS_NARRATIVE_DIFFUSION / SHARED_LINEAGE_FIREWALL`.
+
+- D09-11 = effective-dated theme/industry/issuer membership bridge.
+- D17-11 = event/news propagation with first-known/half-life.
+- D20-11 = independent social-language/topic/stance diffusion.
+- one theme/headline/social lineage cannot become three independent votes.
+
+H10 audit:
+`KEEP_SEPARATE / SCOPE_DEDUP_ONLY / STRUCTURAL_EXPOSURE_PRODUCER_TO_EVENT_ATTRIBUTION_CONSUMERS`.
+
+Proposed canonical boundary pending owner approval:
+- D10-12 = structural exposure graph producer.
+- D17-04 = event-specific direct-attribution consumer.
+- D17-05 = event-specific second-order event-path consumer.
+- D17 must reference D10 exposure edges rather than rebuild a second graph from headlines.
+
+No maturity/count/Formal change before H10 approval.
