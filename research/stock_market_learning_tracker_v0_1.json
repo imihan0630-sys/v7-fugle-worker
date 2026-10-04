@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T19:20:00+08:00",
+  "updatedAt": "2026-10-04T19:18:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -3511,7 +3511,7 @@
         "CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md",
         "CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md"
       ],
-      "maturityPct": 50.9,
+      "maturityPct": 52.7,
       "modules": [
         {
           "id": "D21-01",
@@ -3566,12 +3566,12 @@
         {
           "id": "D21-07",
           "name": "Management Incentives／Capital Allocation Quality管理層誘因與資本配置品質",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦 Management Incentives（管理層誘因）如何影響 Capital Allocation（資本配置）品質：薪酬結構、股權／選擇權誘因、短期／長期績效目標、回購、投資、併購、股利、負債與資本支出決策。原 D21-06 Compensation／Incentive Alignment 完整範圍由本模組承接；需區分『制度看似一致』與實際資本配置結果，並以 first-known／vintage、財務結果及反例驗證，不得把高薪酬或股權獎酬機械視為好／壞公司。D21-12 仍獨立負責 Management Guidance Credibility（管理層展望可信度）。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_FALSIFICATION_FROZEN / PIT_COMPENSATION_ALLOCATION_REPLAY_PENDING / RESEARCH_ONLY",
-          "next": "建立台灣歷史薪酬政策／獎酬條件到資本配置決策的 PIT replay；至少覆蓋一項長期投資與一項資本返還／融資決策，分離政策、決策與未來結果時間，並控制反向因果。可靠重播前不得升 L3。"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_INCENTIVE_ALLOCATION_PIT_FEASIBILITY_VALIDATED / DIRECT_DILUTION_OFFSET_LINK_FROZEN / CAUSALITY_NOT_ESTABLISHED / RESEARCH_ONLY / CONTEXT / CONFIDENCE",
+          "next": "擴大不同公司／年度的薪酬制度→投資／股利／回購／融資歷史樣本並做 OOS／前瞻驗證；只有 issuer-stated 直接機制可標 direct link，其餘同時發生或時間先後僅能標 association。無 OOS/Shadow 證據前不得升 L4。"
         },
         {
           "id": "D21-09",
@@ -3624,10 +3624,10 @@
           "next": "擴大多年度、多產業重大性樣本並做 OOS／前瞻驗證；至少控制產業、規模、資本支出循環、獲利、估值、法規導入階段與量測方法版本。無 OOS/Shadow 證據前不得升 L4。"
         }
       ],
-      "status": "D21_01_L2 / D21_02_L3 / D21_03_L2 / D21_04_L2 / D21_05_L3 / D21_07_L2 / D21_09_L3 / D21_10_L3 / D21_11_L2_PARTIAL_REPLAY / D21_12_L3 / D21_13_L3 / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D21-07 建立台灣歷史薪酬政策→資本配置 PIT replay；D21-09、D21-13 後續只接受 OOS／前瞻證據升 L4。D21-11／04／03／01 的來源缺口維持待補但不阻塞。",
-      "lastResearchUpdate": "2026-10-04T16:48:00+08:00",
-      "researchNote": "D21-13 advanced to L3 using TSMC semiconductor water/energy materiality and China Steel carbon/raw-material/water transition channels, with conservative report known-at, denominator/methodology controls and sector-specific financial transmission. D21-09 advanced to L3 using TSMC planned succession and Taiwan Cement abrupt incapacity/death succession, preserving acting/permanent states and public event clocks. Formal Core unchanged."
+      "status": "D21_01_L2 / D21_02_L3 / D21_03_L2 / D21_04_L2 / D21_05_L3 / D21_07_L3 / D21_09_L3 / D21_10_L3 / D21_11_L2_PARTIAL_REPLAY / D21_12_L3 / D21_13_L3 / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "優先補 D21-11 決策時點可取得之利益輸送證據／替代高疑似案例，再補 D21-04 原始質押 receipt、D21-03 月度內部人 known_at、D21-01 所有權報告 known_at。所有 L3 模組後續只接受 OOS／前瞻證據升 L4。",
+      "lastResearchUpdate": "2026-10-04T19:18:00+08:00",
+      "researchNote": "D21-07 advanced to L3 with a replayable TSMC incentive-to-capital-allocation chain. The direct issuer-stated link is employee RSA dilution -> 3.249m-share buyback; capex and incentive approvals are not treated as causal merely because they co-occur. Later capex/capacity and completed buyback outcomes are kept behind an outcome-time firewall. MediaTek provides a falsification control that high payout and high R&D can coexist. Formal Core unchanged."
     },
     {
       "id": "D22",
