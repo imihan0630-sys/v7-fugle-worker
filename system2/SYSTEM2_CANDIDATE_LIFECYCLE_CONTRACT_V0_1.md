@@ -19,13 +19,13 @@ A candidate is not recreated from zero every evening.
 - ENTRY_ZONE（進場區）
 - TRIGGER_READY（觸發準備）
 - SIM_FILLED（模擬成交）
-- POSITION_MONITOR（持股監控）
+- POSITION_MONITOR（目前實裝語意：模擬／虛擬部位監控）
 - THESIS_WEAKENING（投資邏輯轉弱）
 - INVALIDATED（失效）
 - EXPIRED（到期）
 - REMOVED（移出候選池）
 
-POSITION_MONITOR is outside candidate/entry-monitor capacity.
+POSITION_MONITOR is outside candidate/entry-monitor capacity. In the current implemented lifecycle it is entered from `SIM_FILLED` and therefore denotes a System 2 simulated/virtual position. It must not be interpreted as proof of owner actual holdings. A future actual-holdings lane requires an owner-authorized source/reconciliation contract and provenance/readback evidence.
 
 ## Daily revalidation rules
 
@@ -38,7 +38,7 @@ POSITION_MONITOR is outside candidate/entry-monitor capacity.
 7. UNKNOWN（未知） is not bearish; source failure must not become a fake thesis failure.
 8. A material validated negative event can invalidate a membership intraday.
 9. Every removal/retention/transition freezes reason codes and evidence references.
-10. A filled simulated position moves to POSITION_MONITOR and no longer consumes candidate/active-entry capacity.
+10. A filled simulated position moves to POSITION_MONITOR and no longer consumes candidate/active-entry capacity. This transition is `VIRTUAL_POSITION_READY` only and does not create or infer an actual holding.
 
 ## Candidate Episode（候選事件段）
 

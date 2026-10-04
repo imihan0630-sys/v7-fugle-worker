@@ -165,7 +165,7 @@ Switchable panels:
 - news / event timeline;
 - strategy evidence;
 - frozen decision history;
-- simulated / actual position lifecycle;
+- simulated position lifecycle; actual-position lifecycle only after `ACTUAL_POSITION_MONITOR_VERIFIED=true`;
 - performance / MFE / MAE;
 - alert log.
 
@@ -204,10 +204,18 @@ Do not expose a fake universal score when strategy meanings differ.
 
 ## Holdings board
 
-Actual holdings must be visually separate from candidates.
+This board is a target UI surface with a strict provenance split.
 
-For each holding show:
-- cost;
+Current readiness:
+- `VIRTUAL_POSITION_READY`: System 2 may display simulated/virtual positions sourced from `s2_positions`, clearly labeled **SIMULATED / VIRTUAL**.
+- `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`: no owner actual-holdings board may be populated from current System 2 runtime.
+- `ACTUAL_POSITION_MONITOR_VERIFIED=false`: the UI must not relabel virtual positions, signals, suggested shares, plans or simulated fills as actual holdings.
+
+When a future owner-authorized actual-holdings source + reconciliation path is physically verified, actual holdings must be visually separate from both candidates and simulated positions. The actual board must expose source/as-of/reconciliation provenance and distinguish UNKNOWN/conflict states.
+
+For a verified actual holding, the target board may show:
+- reconciled quantity;
+- cost only when actually sourced/reconciled;
 - current P/L;
 - desired action;
 - current thesis;
@@ -218,7 +226,8 @@ For each holding show:
 - risk warning;
 - time in trade;
 - MFE / MAE;
-- strategy attribution.
+- strategy attribution;
+- holdings source / as-of / reconciliation state.
 
 Warnings should prioritize action, not generate alert fatigue.
 

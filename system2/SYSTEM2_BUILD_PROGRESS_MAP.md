@@ -43,12 +43,24 @@ GitHub `main` remains authoritative. Chat summaries are context only.
 | S2-13 | Fugle live bounded monitor | ✅ | Worker secret configured; Ticker/adjusted history/Quote path deployed; no intraday full-market scan. |
 | S2-14 | Resonance D1 persistence / episodes / operations audit | ✅ | Schema V1.1, 46 isolated `s2_` tables; snapshots/latest/runs/episode events and 19:00 operations audit deployed. |
 | S2-15 | System 2 Worker / Cron | ✅ | `system2-shadow-research`; one consolidated Cron; four System 1 Cron triggers untouched. |
-| S2-16 | UI / read API | 🟡 | Resonance UI, pool API, operations API, health live. Institutional Monitoring UI/UX North-Star contract now defines the final professional command-center experience; full multi-strategy candidate/holdings/performance interface remains pending. |
-| S2-17 | Execution simulation / position lifecycle | 🟡 | Minimum research runtime exists; automated future-session outcome loop remains incomplete. |
+| S2-16 | UI / read API | 🟡 | Resonance UI, pool API, operations API, health live. Institutional Monitoring UI/UX North-Star contract defines the final command-center target; full multi-strategy candidate/holdings/performance interface remains pending. Current surfaces must label System 2 virtual/simulated positions as virtual and must not present owner actual holdings until an authorized holdings source + reconciliation + provenance/readback path is verified. |
+| S2-17 | Execution simulation / position lifecycle | 🟡 | `VIRTUAL_POSITION_READY`: minimum simulated execution runtime and virtual `s2_positions` lifecycle exist, including `SIM_FILLED -> POSITION_MONITOR`. `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`; `ACTUAL_POSITION_MONITOR_VERIFIED=false`. Automated future-session outcome loop also remains incomplete. |
 | S2-18 | Strategy performance engine | 🟡 | Metrics/spec/storage concepts exist; trustworthy prospective sample population depends on S2-07 and downstream outcomes. |
 | S2-19 | PIT Replay / Bulk Backtest | 🟡 | Engines exist; broad historical dataset and multi-strategy evidence expansion remain incomplete. |
 | S2-20 | OOS / Forward / Prospective Shadow promotion evidence | ⏳ | Requires independent dates/regimes, cost/slippage, redundancy, overfit/multiple-testing and date-clustering checks. |
 | S2-21 | Strategy version promotion / live capital / real order | 🔒 | Not authorized; requires evidence packet + explicit owner approval. |
+
+## Position Monitor readiness boundary
+
+Current capability state for `S2-CORR-20261004-002`:
+
+- `TARGET_ONLY`: continuous monitoring of owner actual holdings.
+- `DESIGN_APPROVED`: actual-vs-desired exposure and actual-holdings-outside-candidate-capacity architecture.
+- `VIRTUAL_POSITION_READY`: simulated fills / virtual `s2_positions` / virtual `POSITION_MONITOR` lifecycle.
+- `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`: no authorized System 2 holdings source/reconciliation adapter is physically verified.
+- `ACTUAL_POSITION_MONITOR_VERIFIED=false`.
+
+No actual-holdings UI/API label is authorized from signal, suggested-share, plan, candidate or simulated-fill records. Any broker-holdings or System 1/V8 shared-holdings integration is a future `OWNER_DECISION_REQUIRED` gate.
 
 ## Resonance comparison lane — Baseline vs Challenger
 

@@ -62,7 +62,12 @@ Each strategy defines:
 Candidate, watch, entry-zone, trigger, hold, reduce/exit, thesis weakening/invalidated. This is separate from System 1's live state machine.
 
 ### L8 Position / Exposure Management
-Dedicated monitoring for actual and simulated holdings. Actual holdings do not consume candidate/active-entry capacities. The engine compares actual exposure with desired exposure and supports symmetric HOLD / REDUCE / EXIT / ADD / RE-ADD / RESTORE paths. Re-add is evaluated from current thesis, structure and reward/risk rather than prior reduce price.
+The owner-approved target architecture supports both actual and simulated position monitoring, but current physical readiness is not symmetric across those sources.
+
+- `DESIGN_APPROVED`: verified actual holdings, once an authorized source/reconciliation path is wired, remain outside candidate/active-entry capacities and may be compared with desired exposure for symmetric HOLD / REDUCE / EXIT / ADD / RE-ADD / RESTORE decisions.
+- `VIRTUAL_POSITION_READY`: current System 2 runtime supports simulated fills and virtual `s2_positions`; the literal `POSITION_MONITOR` lifecycle state currently refers to that simulated/virtual lane.
+- `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`: no authorized System 2 actual-holdings ingestion/reconciliation runtime is currently proven.
+- `ACTUAL_POSITION_MONITOR_VERIFIED=false`: no UI/API/runtime may claim owner actual holdings are continuously monitored until source, reconciliation, provenance and physical readback evidence exist.
 
 Detailed contract: `system2/SYSTEM2_POSITION_MANAGEMENT_ARCHITECTURE.md`.
 
@@ -172,8 +177,11 @@ Daily revalidation must preserve the prior day's state and the exact RETAIN / RE
 
 ## Actual-holdings monitoring rule
 
-- Actual holdings are outside the 12-symbol candidate/watch capacity.
-- Actual holdings are outside the per-strategy 3-symbol ACTIVE_ENTRY_MONITOR capacity.
-- Existing positions are continuously monitored in POSITION_MONITOR until ownership is reconciled to zero.
-- Every holding cycle evaluates both downside reduction risk and upside ADD/RE-ADD opportunity.
+This is an owner-approved **target invariant**, not a statement of current operational actual-holdings capability.
+
+- Once an owner-authorized actual-holdings source and reconciliation path are wired, verified actual holdings are outside the 12-symbol candidate/watch capacity and outside the per-strategy 3-symbol ACTIVE_ENTRY_MONITOR capacity.
+- Until then, existing implemented `POSITION_MONITOR` runtime state is virtual/simulated only.
+- Actual ownership may be called reconciled only from authorized holding/fill provenance with quantity/as-of/reconciliation evidence; signal, suggested-share, plan or simulated-fill records are insufficient.
+- Every verified holding cycle is intended to evaluate both downside reduction risk and upside ADD/RE-ADD opportunity.
 - A stock rising after reduction is not automatically classified as chasing; re-add uses current structure/thesis/RR and recovery evidence.
+- Any System 1/V8 shared-holdings or broker-holdings integration is `OWNER_DECISION_REQUIRED` before implementation.

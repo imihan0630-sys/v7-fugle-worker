@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-04T16:30:15+08:00",
+  "updatedAt": "2026-10-04T19:00:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -76,7 +76,7 @@
       "directiveId": "S2-CORR-20261004-002",
       "createdAt": "2026-10-04T16:30:15+08:00",
       "severity": "MEDIUM",
-      "status": "OPEN",
+      "status": "FIX_IMPLEMENTED",
       "title": "POSITION_MONITOR target behavior is presented as current operational capability",
       "affectedScope": [
         "System2 position-management documentation",
@@ -121,10 +121,25 @@
       "assignedRoom": "System 2｜補強修復室",
       "modificationOwner": "SYSTEM2_REMEDIATION_ROOM",
       "blockedBy": [],
-      "implementationEvidence": [],
-      "verificationEvidence": [],
+      "implementationEvidence": [
+        "REMEDIATION_LANE accepted ownership on latest main, corrected the stale idle remediation checkpoint, and restricted conflict ownership to canonical position-readiness surfaces plus one semantic regression test.",
+        "Bounded repository audit found no complete authorized System2 actual-holdings adapter/reconciliation/readback chain. Current runtime evidence is virtual-only: candidate lifecycle enforces SIM_FILLED -> POSITION_MONITOR; daily resonance persistence reads open s2_positions; MVP status explicitly says simulated open positions supply HOLD semantics and no real position/order is created.",
+        "Canonical readiness is now separated across MASTER / ARCHITECTURE / POSITION_MANAGEMENT / STORAGE_SCHEMA / BUILD_PROGRESS / CHECKPOINT / UI / candidate lifecycle/capacity / strategy identity: TARGET_ONLY, DESIGN_APPROVED, VIRTUAL_POSITION_READY, ACTUAL_HOLDINGS_SOURCE_NOT_WIRED, ACTUAL_POSITION_MONITOR_VERIFIED=false.",
+        "s2_positions is explicitly guarded as virtual/simulated only. Quantity/cost in that table are simulation accounting, not broker ownership evidence. The schema forbids overloading it with actual holdings.",
+        "Actual-holding labels are fail-closed: a future authorized integration must preserve source/account scope, as-of time, reconciled quantity, cost only when sourced, confirmed-fill provenance where used, ownership provenance, reconciliation/UNKNOWN state, and durable persistence/readback.",
+        "Signal/trigger prices, suggested/requested shares, plan snapshots, candidate state and simulated fills are explicitly insufficient to establish actual ownership. System1/V8 holdings cannot be silently imported.",
+        "Institutional UI contract requires virtual positions to be labeled SIMULATED / VIRTUAL and forbids populating an owner actual-holdings board while ACTUAL_POSITION_MONITOR_VERIFIED=false.",
+        "Added system2/tests/position_monitor_capability_semantics.test.mjs to prevent regression back to false operational claims and bind docs to current runtime/storage evidence.",
+        "First System2 Research CI attempt failed only because the new test regex incorrectly flagged the explicit prohibition sentence itself; the guard was corrected to assert required fail-closed wording rather than word proximity.",
+        "Corrected PR head 67151b901029b17b567cf1f29b4a74c349460996: System2 Research CI 37197332296 PASS; V8 Regression 37197332187 PASS.",
+        "Changed-file scope contains only System2 canonical documentation, correction/checkpoint state and the new System2 semantic test; no System1 Formal Core, System1 holdings/runtime, capital/order logic or production push file is modified.",
+        "Remaining UNKNOWN / future gate: no actual-holdings source is wired or physically verified. Any broker-holdings or System1 shared-holdings integration remains OWNER_DECISION_REQUIRED and is not implemented by this correction."
+      ],
+      "verificationEvidence": [
+        "PENDING_INDEPENDENT_AUDIT"
+      ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-04T16:30:15+08:00"
+      "updatedAt": "2026-10-04T19:00:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
