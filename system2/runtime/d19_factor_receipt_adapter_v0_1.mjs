@@ -422,6 +422,7 @@ export async function buildD19ReplayReceiptV0_1({
   costReceipt,
   outputHash,
   codeVersion,
+  eligibilityBlockers = [],
   capturedAt,
 } = {}) {
   if (!universeReceipt?.receiptHash) throw new Error("universeReceipt is required");
@@ -433,6 +434,7 @@ export async function buildD19ReplayReceiptV0_1({
   }
   if (!neutralizationReceipt?.receiptHash) throw new Error("neutralizationReceipt is required");
   if (!costReceipt?.receiptHash) throw new Error("costReceipt is required");
+  if (!Array.isArray(eligibilityBlockers)) throw new Error("eligibilityBlockers must be an array");
 
   const returnHashes = returnReceipts.map((x) => requiredText(x.receiptHash, "returnReceipt.receiptHash")).sort();
   const factorInputHashes = factorInputReceipts
@@ -441,11 +443,13 @@ export async function buildD19ReplayReceiptV0_1({
 
   const upstreamStates = [
     universeReceipt.state,
+    ...returnReceipts.map((x) => x.observationState === "KNOWN" ? "READY" : "INCOMPLETE"),
     ...factorInputReceipts.map((x) => x.state),
     neutralizationReceipt.state,
     costReceipt.state,
   ];
   const state = upstreamStates.every((x) => x === "READY") ? "READY" : "INCOMPLETE";
+  const blockers = [...new Set(eligibilityBlockers.map(String))].sort();
 
   const base = {
     receiptType: "replayReceipt",
@@ -462,8 +466,10 @@ export async function buildD19ReplayReceiptV0_1({
     costReceiptHash: costReceipt.receiptHash,
     outputHash: requiredText(outputHash, "outputHash"),
     codeVersion: requiredText(codeVersion, "codeVersion"),
+    eligibilityBlockers: Object.freeze(blockers),
     state,
-    l3DataFeasibilityEligible: state === "READY",
+    receiptChainComplete: state === "READY",
+    l3DataFeasibilityEligible: state === "READY" && blockers.length === 0,
     formalSelectionAuthorized: false,
     productionImpact: false,
     schemaVersion: "S2_D19_REPLAY_RECEIPT_V0_1",
