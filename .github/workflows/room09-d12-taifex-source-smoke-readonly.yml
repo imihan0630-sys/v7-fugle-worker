@@ -80,7 +80,10 @@ jobs:
           missing_side=0
           crossed=0
           pair_map=defaultdict(dict)
+          expiry_date_by_key={}
           session_quality=defaultdict(lambda: Counter())
+          header_index={h.strip():i for i,h in enumerate(header)}
+          expiry_date_idx=header_index.get("契約到期日")
 
           for r in rows:
               bid=px(field(r,12))
@@ -103,6 +106,8 @@ jobs:
               key=(field(r,0),field(r,2),field(r,3),sess)
               cp=field(r,4)
               pair_map[key][cp]=(bid+ask)/2
+              if expiry_date_idx is not None:
+                  expiry_date_by_key[key]=field(r,expiry_date_idx)
 
           paired=0
           pair_by_session=Counter()
@@ -113,6 +118,55 @@ jobs:
                   paired += 1
                   pair_by_session[key[3]] += 1
                   pair_by_month[key[1]] += 1
+
+          parity_groups=defaultdict(list)
+          for key,sides in pair_map.items():
+              date,month,strike_text,sess=key
+              if sess!="一般":
+                  continue
+              call=sides.get("買權",sides.get("Call",sides.get("C")))
+              put=sides.get("賣權",sides.get("Put",sides.get("P")))
+              strike=px(strike_text)
+              if call is None or put is None or strike is None:
+                  continue
+              parity_groups[(month,expiry_date_by_key.get(key,""))].append((strike,call-put))
+
+          parity_fit=[]
+          for (month,expiry_date),pts in sorted(parity_groups.items()):
+              pts=sorted(pts)
+              n=len(pts)
+              if n<5:
+                  continue
+              xs=[x for x,_ in pts]
+              ys=[y for _,y in pts]
+              xbar=sum(xs)/n
+              ybar=sum(ys)/n
+              sxx=sum((x-xbar)**2 for x in xs)
+              if sxx<=0:
+                  continue
+              beta=sum((x-xbar)*(y-ybar) for x,y in pts)/sxx
+              alpha=ybar-beta*xbar
+              fitted=[alpha+beta*x for x in xs]
+              ss_res=sum((y-f)**2 for y,f in zip(ys,fitted))
+              ss_tot=sum((y-ybar)**2 for y in ys)
+              r2=None if ss_tot<=0 else 1-ss_res/ss_tot
+              rmse=(ss_res/n)**0.5
+              discount=-beta
+              forward=None if discount<=0 else alpha/discount
+              parity_fit.append({
+                  "expiry":month,
+                  "expiryDate":expiry_date,
+                  "pairCount":n,
+                  "strikeMin":min(xs),
+                  "strikeMax":max(xs),
+                  "olsAlpha":round(alpha,8),
+                  "olsBeta":round(beta,10),
+                  "impliedDiscountFactor":round(discount,10),
+                  "parityDerivedForward":None if forward is None else round(forward,6),
+                  "r2":None if r2 is None else round(r2,8),
+                  "rmseIndexPoints":round(rmse,6),
+                  "economicallyAdmissibleDiscount":bool(discount>0 and discount<=1.01)
+              })
 
           header_trim=[h.strip() for h in header if h.strip()]
           summary={
@@ -141,6 +195,8 @@ jobs:
               "pairedCallPutCommonSupportCount":paired,
               "pairedBySession":dict(pair_by_session),
               "pairedByExpiryTop20":pair_by_month.most_common(20),
+              "regularSessionPutCallParityOLS":parity_fit,
+              "parityMethodNote":"Source-only QA: C-P = D*(F-K) OLS on eligible regular-session last-best-bid/ask midpoints; quote timestamps within the daily file are not synchronized, so residuals are data-quality diagnostics rather than executable arbitrage.",
               "rawPersisted":False,
               "formalDecisionImpact":False
           }
