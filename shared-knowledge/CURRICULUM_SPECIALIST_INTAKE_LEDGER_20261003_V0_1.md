@@ -90,8 +90,8 @@ Until that packet arrives:
 | H15 | CLOSED_NO_STRUCTURAL_CHANGE | equivalent Room08 + Room04 evidence | — |
 | H16 | CLOSED_NO_STRUCTURAL_CHANGE | equivalent Room04 + Room08 + Room01 evidence | — |
 | H17 | PENDING | — | specialist packet(s) |
-| H18 | PENDING | — | specialist packet(s) |
-| H19 | PENDING | — | specialist packet(s) |
+| H18 | PARTIAL_EVIDENCE_RECEIVED | Room14 D21-07 mechanism/falsification evidence | 06｜基本面與估值研究室 D07-19 project-economics counterpart |
+| H19 | PARTIAL_EVIDENCE_RECEIVED | Room03 D03-04 + Room12 D19-04/D19-09 mechanism evidence | 12｜資產定價與因子研究室 paired common-support redundancy/residual tests |
 | H20 | CLOSED_NO_STRUCTURAL_CHANGE | Room02 formal return + equivalent Room01/04 evidence | — |
 
 ## Intake rules
@@ -635,3 +635,43 @@ Terminal:
 State: `CLOSED_NO_STRUCTURAL_CHANGE`.
 
 No module-count, maturity, Formal or runtime change from these governance closures.
+
+
+## H18 / H19 partial-intake reconciliation — 2026-10-04
+
+### H18 — D07-19 vs D21-07
+
+Accepted Room14 side:
+- D21-07 management incentives / capital-allocation quality = L2/40%;
+- compensation/incentive mechanism, short-termism/metric-gaming, alignment, overconfidence/control and reverse-causality falsifiers are frozen;
+- capital-allocation outcomes include R&D, capex, M&A, repurchases, dividends, financing and cash;
+- raw project economics is not owned by D21-07.
+
+Remaining Room06 delta:
+- D07-19 must define project/capital-budget economics: cash-flow forecast, hurdle/discount rate, NPV, IRR limitations, mutually exclusive project ranking, real-option states, sunk-cost/abandonment/deferral/expansion semantics;
+- preserve project opportunity set and first-known assumptions independently of management selection;
+- demonstrate divergent states: attractive project set + poor allocation; weak project opportunity set + improved governance/incentives;
+- shared project economics cannot be counted once as NPV and again as governance quality.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / ROOM06_D07_19_PROJECT_ECONOMICS_PENDING`.
+
+### H19 — D03-04 vs D19-04 vs D19-09
+
+Accepted:
+- D03-04 = within-security/time-series momentum continuation, L3/60%;
+- D19-04 = cross-sectional momentum rank/factor semantics, L2/40%;
+- D19-09 = residual/factor-neutral momentum semantics, L2/40%;
+- Room12 has frozen model-relative residualization, factor-set/version sensitivity, industry-neutralization requirements and anti-double-count governance.
+
+Still missing:
+1. same-date / same-universe D03-04 vs D19-04 paired comparison;
+2. proof that cross-sectional ranking adds information beyond raw within-security momentum;
+3. D19-09 residual after fixed factor/market/industry neutralization;
+4. factor-set/version, estimation-window, industry-vintage and residual-hash provenance;
+5. costs/capacity/common-support before any independent third vote.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / ROOM12_COMMON_SUPPORT_REDUNDANCY_RESIDUAL_TESTS_PENDING`.
+
+No maturity/count/Formal change from either intake.
