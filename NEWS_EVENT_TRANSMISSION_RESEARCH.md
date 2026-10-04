@@ -847,3 +847,20 @@ D17-10 advances L2 -> L3 for Taiwan PIT/source feasibility of field-level lineag
 
 Exact next:
 prospectively capture one independent-media + official-disclosure pair with capture timestamps on both lanes; retain field conflicts/version resolution; test cross-validation incremental value only after preregistration.
+
+## 2026-10-04 evening continuation — D17-12 post-event path PIT feasibility
+
+New receipt: `research/d17_12_post_event_path_pit_audit_20261004_v0_1.json`.
+
+D17-12 advances L2 -> L3 for Taiwan PIT/source feasibility with a strict anti-double-count boundary.
+
+The opening gap is one shared primitive:
+- D11-10 owns event-linked overnight discontinuity / stop-risk semantics;
+- D04-09 owns tail/gap volatility-state transformation;
+- D17-12 begins only after the opening observation and owns subsequent continuation/fill/reversal path.
+
+Validated official daily OHLC makes close and subsequent D1/D3/D5 states historically replayable when event-clock, corporate-action continuity and eligible-session guards pass. First-15m/30m path remains prospective-only; it may not be reconstructed from daily bars.
+
+Frozen post-open states include continuation, partial fill, full fill, reversal, limit-constrained, suspension/resumption, corporate-action-blocked and UNKNOWN.
+
+No claim is made that any path state predicts returns. No universal gap-fill threshold is introduced. Price-limit-constrained sessions do not reveal latent unconstrained price paths. Formal Core unchanged; outcomes closed.
