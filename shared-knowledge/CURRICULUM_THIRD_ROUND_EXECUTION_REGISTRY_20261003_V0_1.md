@@ -322,3 +322,26 @@ Remaining:
 - terminal classification.
 
 No maturity/count/Formal change.
+
+
+## H15 / H16 / H20 terminal closures — 2026-10-04
+
+### H15
+`KEEP_SEPARATE / EVENT_RISK_TO_VOLATILITY_TO_POST_EVENT_PATH / ONE_OPENING_GAP_RECEIPT`
+→ `CLOSED_NO_STRUCTURAL_CHANGE`.
+
+### H16
+`KEEP_SEPARATE / FOUR_LAYER_PRICE_LIMIT_CHAIN / ONE_LIMIT_EVENT_RECEIPT`
+→ `CLOSED_NO_STRUCTURAL_CHANGE`.
+
+### H20
+`KEEP_SEPARATE / MULTI_EVIDENCE_BREAKOUT_FAMILY / NO_INDEPENDENT_COMPONENT_VOTE_UNTIL_RESIDUAL_VALUE`
+→ `CLOSED_NO_STRUCTURAL_CHANGE`.
+
+Governance firewalls:
+- one opening gap is not three votes;
+- one price-limit event is not four votes;
+- one breakout event is not automatic price + volume + volatility voting;
+- D02 volume and D04 volatility become independent only after preregistered residual incremental evidence passes.
+
+No module-count, maturity, Formal or runtime change.
