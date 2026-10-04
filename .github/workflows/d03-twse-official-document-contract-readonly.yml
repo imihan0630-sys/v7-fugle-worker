@@ -116,6 +116,31 @@ jobs:
           for m in list(re.finditer(r'/[A-Za-z0-9_./{}?-]*(?:announcement|report)[A-Za-z0-9_./{}?=&-]*',js,re.I))[:80]:
               print("PATH_HINT="+m.group(0))
 
+      - name: Resolve apiHost and language configuration
+        shell: python
+        run: |
+          import subprocess
+          urls=[
+            "https://wwwc.twse.com.tw/zh/announcement/announcement/list.html",
+            "https://wwwc.twse.com.tw/res/js/web.js",
+            "https://wwwc.twse.com.tw/res/js/main.js",
+          ]
+          needles=["apiHost","cfg.lan","lan:","rwd:","api.twse","www.twse","wwwc.twse","config"]
+          for url in urls:
+              p=subprocess.run(["curl","--fail","--silent","--show-error","--location","--max-time","30",url],text=True,capture_output=True,check=True)
+              s=p.stdout
+              print("\nURL="+url+" bytes="+str(len(s.encode("utf-8"))))
+              for needle in needles:
+                  pos=0; hits=0
+                  while True:
+                      i=s.find(needle,pos)
+                      if i<0: break
+                      hits+=1
+                      print("CFG_CONTEXT needle="+needle+" hit="+str(hits))
+                      print(s[max(0,i-900):min(len(s),i+1700)])
+                      pos=i+len(needle)
+                      if hits>=6: break
+
       - name: Bounded raw-page grep
         shell: bash
         run: |
