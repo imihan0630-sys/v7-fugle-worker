@@ -1539,3 +1539,38 @@ Reusable rules from TI-594~610:
    - ADX requires an additional canonical recursive replay/trusted-state gate and would move D03 to 60.0% only if that gate passes.
 
 `FORMAL_OPTIMIZATION_CANDIDATE = NONE`; Formal Core remains LOCKED.
+
+
+## H06 / H07 canonical no-structural-change closures — 2026-10-04
+
+### H06
+`KEEP_SEPARATE / BOUNDED_SOCIAL_HERDING_SUBLANE / SHARED_SOCIAL_RECEIPT_FIREWALL`.
+
+- D06-06 owns observable crowding.
+- D20-06 owns bounded public-forum social-herding only when independent PIT-capable behavior evidence survives common-news/topic/attention/market-sector controls.
+- PTT handles are public forum actors, not brokerage investors.
+- one social receipt cannot generate independent D20-06/D20-11/D20-07 votes.
+- both D06-06 and D20-06 remain L3/60%.
+- state = CLOSED_NO_STRUCTURAL_CHANGE.
+
+Audit:
+`shared-knowledge/CURRICULUM_H06_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+### H07
+`KEEP_SEPARATE / EVENT_CONDITIONED_OVERREACTION_PARENT_VS_REVERSAL_OUTCOME / BEHAVIORAL_CAUSE_FAIL_CLOSED`.
+
+- D03-05 owns observable pullback/reversal price path.
+- D20-09 owns only the event-conditioned initial-response parent when valid event/expectation evidence exists.
+- later reversal is excluded from the D20 parent and joins only as D03-owned outcome/path evidence.
+- structural alternatives unresolved => behavioral cause UNKNOWN.
+- D03-05 and D20-09 remain L3/60%.
+- state = CLOSED_NO_STRUCTURAL_CHANGE.
+
+Audit:
+`shared-knowledge/CURRICULUM_H07_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+### H12 current state
+Room05 + Room13 semantic evidence accepted, but cluster remains partial.
+Remaining:
+- Room10 D14-19 short execution lifecycle;
+- first genuine live TWSE rate/supply receipt for D20-13.
