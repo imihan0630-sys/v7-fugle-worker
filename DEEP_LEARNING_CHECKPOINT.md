@@ -1692,3 +1692,43 @@ Build a two-issuer Taiwan D21-12 numeric-guidance replay from original public kn
   - first genuine post-V8.17 Taiwan parent generation is still pending because 2026-10-04 is Sunday.
 - Raw D03 source-version gate remains separately 2/3; TI-005/TI-006 outcomes remain CLOSED; Formal Core LOCKED.
 - Exact next: first genuine parent readback -> cutoff-safe continuity attempts for every expected parent -> Bollinger COMPLETE-run L3 review -> ADX canonical recursive replay review.
+
+
+## DL-D21-20261004-E — guidance PIT and material ESG scope
+Run date: 2026-10-04 Asia/Taipei
+Scope: D21-12 / D21-13
+Status: D21-12_L3 / D21-13_L2 / RESEARCH_ONLY / FORMAL_CORE_UNCHANGED
+
+### D21-12 guidance replay
+- TSMC 2024 numeric revenue guidance is replayable across 2Q/3Q/4Q:
+  - 2Q guide 19.6-20.4 USD bn -> actual 20.82;
+  - 3Q guide 22.4-23.2 -> actual 23.50;
+  - 4Q guide 26.1-26.9 -> actual 26.88.
+- MediaTek numeric revenue guidance is replayable across several quarters:
+  - 3Q24 guide NT$123.5-132.4bn -> actual NT$131.813bn;
+  - 4Q24 guide NT$126.5-134.5bn -> actual NT$138.043bn;
+  - 2Q25 guide NT$147.2-159.4bn -> actual NT$150.369bn.
+- Both small samples lean conservative rather than optimistic; this is a descriptive sample property, not a permanent management trait.
+- Critical PIT finding: actual_outcome_known_at is metric-specific. MediaTek quarter revenue becomes reconstructable after the final monthly-sales report; margin metrics remain later. TSMC USD-revenue guidance requires the matching official USD quarterly actual unless an FX-consistent reconstruction is pre-registered.
+- Current TWSE rules require listed companies to continuously assess qualifying forecast attainability and promptly disclose when such forecast information is no longer applicable. Revision / no-longer-applicable timing is therefore a first-class credibility feature.
+- D21-12 advances to L3 / 60%. No L4 without OOS/prospective incremental evidence.
+
+### D21-13 financially material ESG/climate/social scope
+- D21-13 advances L0 -> L2 / 40%.
+- Generic ESG score is rejected as a primary signal.
+- Only financially material channels are owned: revenue/demand, cost, capex, asset value, financing/insurance, regulation, supply chain/customer qualification, workforce/safety, litigation/remediation and disclosure credibility.
+- Taiwan phased IFRS sustainability adoption begins from FY2026 for >=NT$10bn paid-in-capital listed/OTC companies, FY2027 for NT$5-10bn, and FY2028 for the remainder.
+- Disclosure-phase and methodology-vintage controls are mandatory; post-mandate disclosure increases cannot be interpreted as risk deterioration mechanically.
+- Academic evidence supports distinguishing material versus immaterial sustainability topics, while ESG-rating divergence literature rejects treating one vendor composite as ground truth.
+- Candidate metrics emphasize sector-specific emissions/energy/water, transition capex, target-versus-realized progress, safety/labor/product events and disclosure quality.
+
+### Falsification / redundancy
+- D21-12 must control analyst coverage, earnings revisions, firm fundamentals, industry and macro shocks, manager turnover and self-selection into guidance.
+- D21-13 must control industry, size/reporting resources, export/customer exposure, regulation phase, energy intensity, capex cycle, profitability/valuation, D09/D10 supply chain, D13 macro/policy and D21-10 disclosure quality.
+- Neither module has a Formal optimization candidate.
+
+### Exact next continuation
+1. Build D21-13 multi-sector Taiwan historical PIT replay using at least two materially different channels, preferably semiconductor water/energy/carbon versus high-emission industry or labor/product-safety-sensitive industry.
+2. Preserve disclosure regime, methodology version, assurance, target baseline/revision, target-versus-realized state, known_at and financial transmission channel.
+3. D21-12 requires rolling multi-year OOS/prospective validation before L4.
+4. Continue D21-11 contemporaneous-evidence recovery opportunistically.
