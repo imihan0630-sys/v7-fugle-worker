@@ -69,7 +69,11 @@ export async function captureMonth(month) {
     page.on('dialog', async d => { violations.push(`source dialog: ${d.message()}`); await d.dismiss(); });
     page.on('popup', async p => { violations.push('unexpected popup'); await p.close(); });
     const response = await page.goto(SOURCE_URL, { waitUntil: 'networkidle', timeout: 90000 });
-    invariant(response?.ok() && page.url() === SOURCE_URL, 'source navigation failed/redirected');
+    invariant(response?.ok() && page.url() === SOURCE_URL,
+      `source navigation failed/redirected: ${JSON.stringify({
+        status: response?.status(), finalUrl: page.url(), title: await page.title(),
+        pageExcerpt: (await page.locator('body').innerText()).slice(0, 1200), violations,
+      })}`);
     invariant(await page.locator('input[type=checkbox]:checked').count() === 0, 'unexpected default selections');
 
     const controls = await selected(page, '', [...Object.keys(fields), 'ddlDateBeg', 'ddlDateEnd']);
