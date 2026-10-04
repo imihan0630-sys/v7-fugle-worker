@@ -1,10 +1,10 @@
 {
   "schemaVersion": "D22_07_LIQUIDITY_COVENANT_DEFAULT_CONTRACT_V0_1",
-  "generatedAt": "2026-10-04T08:45:00+08:00",
+  "generatedAt": "2026-10-04T14:59:00+08:00",
   "module": "D22-07",
-  "level": "L2",
-  "maturityPct": 40,
-  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_DISCLOSURE_ROUTE_FEASIBLE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "level": "L3",
+  "maturityPct": 60,
+  "status": "TAIWAN_PIT_LIQUIDITY_COVENANT_REPLAY_VALIDATED / NUMERIC_THRESHOLD_MISSINGNESS_PRESERVED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "researchQuestion": "Do liquidity quality and covenant-trigger states identify nonlinear funding/default pressure beyond leverage, maturity and interest coverage?",
   "stateVector": [
     "cash_accessibility",
@@ -61,8 +61,16 @@
   "outcomeGate": "CLOSED",
   "formalCore": "LOCKED",
   "next": [
-    "Collect Taiwan issuer covenant/facility PIT receipts with threshold/cushion/waiver lineage.",
-    "Build divergent examples: weak accounting ratio but large covenant cushion; healthy ratio but near covenant trigger; breach with waiver vs breach without waiver.",
-    "Test incremental value beyond D22-01/02/03/04/06 before L4."
-  ]
+    "Add source-attested maintenance/incurrence covenant thresholds and cushion calculations where public.",
+    "Classify committed/uncommitted and drawable/conditional facilities only when contract terms support the classification.",
+    "Collect breach→waiver/renegotiation and breach→acceleration examples before L4.",
+    "Control D22-02 ratio primitives and D22-03 liquidity primitives so D22-07 only owns contractual trigger/cushion transformations.",
+    "Keep equity outcomes closed until preregistered OOS/walk-forward/prospective validation."
+  ],
+  "maturityDecision": {
+    "level": "L3",
+    "maturityPct": 60,
+    "reason": "Taiwan PIT replayability is demonstrated across multiple non-financial issuers, industries and dates for unused facilities, restrictive/cross-default semantics, contingent guarantees and resolution events. Numeric covenant thresholds and commitment/drawability details remain explicit UNKNOWN rather than imputed. This is data-feasibility maturity only."
+  },
+  "replayEvidence": "research/d22_07_liquidity_covenant_replay_v0_1.json"
 }
