@@ -29,3 +29,16 @@ A06後三輪meaningful follow-ups沒有新增保留家族；本輪暫時飽和�
 ## Paste-ready續接
 
 你接手00｜研究總控室的AOKD V0.2。Repository imihan0630-sys/v7-fugle-worker；先讀最新main，再读AGENTS、Shared Master/Governance、AOKD_EXTERNAL_SWEEP_20261004_V0_2.md、aokd_external_sweep_registry_20261004_v0_2.json及本checkpoint。Work模式持續資料/治理整合；推薦目前可用Work強推理模型，高推理，不宣稱自動切換。不得重做A01～04/COV/H/354終審。新專科shortlist0；A05 scope/corpus gate、A06 vendorTaiwanPITgate。核對D07-33與A01回件來源。FormalLOCKED；不得改domain/module/maturity/owner/Formal或新COV。僅在資料、去重、增量及專科門檻通過後回00決策。
+
+
+## 00 bootstrap reconciliation — 2026-10-04 09:37 Asia/Taipei
+
+Latest main observed: `2b9ede37177b1df0574cc750bdf9994faafdfd40`; re-read after initial `636305f79ecde412b27177dc677578d6116bc7d6` advanced. This is a recovery receipt, not new financial research or maturity evidence.
+
+Supersedes the earlier A01 next-action and inherited-ready language above: `AOKD01_OWNER_RECONCILIATION_20261004_V0_1.md` establishes `CLOSED_ALREADY_OWNED_D07_33`, from the owner-approved probabilistic curriculum. The missing original A01 return is not a gap-classification blocker. Do not reopen A01, create COV13, or infer research completion; D07-33 remains L0/0.
+
+Concurrent owner-approved COV04/COV05 canonical execution is already complete: D07-34 exists at L0/0; D08-06 is extended to EV/EBITDA/EV/Sales/P/S at L2/40 without automatically conferring that evidence on its new sub-capabilities. Do not repeat those structural changes. Latest tracker reads 22 domains / 355 modules / 43.3%; aggregate movement is other rooms' work, not this recovery's contribution.
+
+A05 and A06 remain NOT_SPECIALIST_READY. No newly established corpus, Taiwan vendor entitlement, scope-owner decision or stock-outcome evidence in this recovery. Exact next: inspect existing D07/D20 scope receipts for A05 before proposing an owner consultation; retain historical upload/revision/corpus gate UNKNOWN until source receipts prove it. A06 stays DATA_BLOCKED/watchlist without country/product/PIT/licensing proof; no contact or purchase authorized. No new broad literature sweep while bounded saturation conditions remain unchanged.
+
+Only this continuation document is updated. No tracker/module/owner/maturity/runtime/Formal change; no scan, push, deployment or outcome test. Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE NONE.
