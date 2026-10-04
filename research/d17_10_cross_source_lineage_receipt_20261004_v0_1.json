@@ -1,0 +1,157 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04T19:12:00+08:00",
+  "owner": "08｜事件與新聞研究室",
+  "module": "D17-10",
+  "title": "Taiwan field-level source-lineage cross-validation receipt",
+  "status": "TAIWAN_PIT_SOURCE_LINEAGE_CROSS_VALIDATION_FEASIBLE / FIELD_LEVEL_INDEPENDENCE_VALIDATED / FIRST_KNOWN_BACKDATING_FORBIDDEN / OUTCOMES_CLOSED",
+  "caseStudies": [
+    {
+      "eventId": "TWSE-2537-20261003-CONSTRUCTION-FIRE",
+      "entity": "2537 聯上發",
+      "event": "聯上澐朗工地火災",
+      "sourceLineages": [
+        {
+          "sourceClass": "INDEPENDENT_LOCAL_MEDIA",
+          "source": "Lai傳媒／記者爆料網",
+          "url": "https://www.thehubnews.net/archives/671403",
+          "displayedPublishedAt": "2026-10-03T03:18:00+08:00",
+          "observedFields": [
+            "工地發生火災",
+            "地點為聯上澐朗建案",
+            "消防人員到場"
+          ],
+          "unknownAtThatVersion": [
+            "確切起火原因",
+            "傷亡最終狀態"
+          ],
+          "lineage": "independent reporting / field observation",
+          "replayRule": "Displayed article time is descriptive historical metadata in this audit; it is not retroactively promoted to authenticated strategy firstKnownAt."
+        },
+        {
+          "sourceClass": "PRIMARY_ISSUER_DISCLOSURE",
+          "source": "TWSE official daily material disclosure capture",
+          "sourcePublishedAt": "2026-10-03T12:12:13+08:00",
+          "capturedAtConservative": "2026-10-04T14:51:52+08:00",
+          "derivedIdentity": "3c6c93d41148ecb75c8e739dc6e64c59341711758fcfde6ae8db0c8eb48d9db7",
+          "observedFields": [
+            "工地火災事件",
+            "公司正式說明"
+          ],
+          "lineage": "issuer regulatory disclosure",
+          "replayRule": "capturedAt remains the conservative authenticated replay availability bound for the official API path."
+        },
+        {
+          "sourceClass": "FINANCIAL_MEDIA",
+          "source": "鉅亨網",
+          "url": "https://news.cnyes.com/news/id/6620973",
+          "displayedPublishedAt": "2026-10-03T17:25:00+08:00",
+          "observedFields": [
+            "火警已撲滅",
+            "無人員傷亡",
+            "已投保相關保險",
+            "公司初估整體營運及財務無重大影響"
+          ],
+          "lineage": "later media report materially quoting/relying on issuer statement for company-impact fields"
+        }
+      ],
+      "fieldLevelValidation": {
+        "eventOccurrence": {
+          "state": "INDEPENDENTLY_CORROBORATED",
+          "evidenceLineages": [
+            "independent local media",
+            "issuer regulatory disclosure"
+          ],
+          "note": "The physical fire occurrence has at least two distinct evidence lineages."
+        },
+        "noInjury": {
+          "state": "ONE_PRIMARY_LINEAGE_PLUS_MEDIA_DISTRIBUTION",
+          "evidenceLineages": [
+            "issuer statement via official disclosure/media redistribution"
+          ],
+          "note": "The early independent report left casualty status unresolved; later media repeating the issuer is not an independent second confirmation."
+        },
+        "insuranceCoverage": {
+          "state": "ISSUER_LINEAGE_ONLY",
+          "evidenceLineages": [
+            "issuer statement redistributed by financial media"
+          ]
+        },
+        "noMaterialFinancialImpact": {
+          "state": "ISSUER_ASSESSMENT_ONLY",
+          "evidenceLineages": [
+            "issuer statement redistributed by financial media"
+          ],
+          "note": "A management materiality assessment is not independently validated merely because a media article repeats it."
+        },
+        "fireCause": {
+          "state": "UNKNOWN_PENDING_INVESTIGATION",
+          "note": "No source count or majority vote may convert unresolved cause into fact."
+        }
+      }
+    },
+    {
+      "eventId": "TWSE-7827-20261003-HCB303-IND",
+      "entity": "7827 漢康-KY創",
+      "event": "HCB303 IND獲准進行臨床試驗",
+      "sourceLineages": [
+        {
+          "sourceClass": "PRIMARY_ISSUER_DISCLOSURE",
+          "sourcePublishedAt": "2026-10-03T17:00:54+08:00",
+          "capturedAtConservative": "2026-10-04T14:51:52+08:00",
+          "derivedIdentity": "16352d3e67cc46908599cd43bd8ec4530a981ef6fc2921f1570cb8fff90e3df3"
+        },
+        {
+          "sourceClass": "REDISTRIBUTED_DISCLOSURE",
+          "source": "PChome Online 股市",
+          "url": "https://pchome.megatime.com.tw/m/news/cat2/20261003/9700007827202610031.html",
+          "displayedPublishedAt": "2026-10-03T17:00:54+08:00",
+          "lineage": "explicitly labeled 公開資訊觀測站 and reproduces the disclosure",
+          "independence": "NOT_INDEPENDENT_CONFIRMATION"
+        }
+      ],
+      "validation": "Multiple URLs carrying the same regulatory disclosure are one evidence lineage, not multiple confirmations."
+    }
+  ],
+  "frozenContract": {
+    "validateByField": [
+      "entity identity",
+      "event occurrence",
+      "magnitude",
+      "publication/first-known clock",
+      "effective time",
+      "scope",
+      "economic mechanism"
+    ],
+    "evidenceCountUnit": "independent evidence lineage at field level, not URL count",
+    "conflictState": "CONFLICT with both values, timestamps and lineage retained until resolution",
+    "firstKnownRule": "Do not backdate strategy availability from retrospective webpage publication clocks; use capturedAt/verified prospective first-known receipts.",
+    "duplicateRule": "Issuer release -> media copies remain one primary lineage plus dissemination unless independent sourcing is evidenced."
+  },
+  "falsification": [
+    "A media article repeating the issuer's materiality statement does not independently verify that statement.",
+    "An earlier local report can independently validate event occurrence while leaving cause, casualty or financial impact UNKNOWN.",
+    "Two sites showing the exact same MOPS timestamp/text do not create two confirmations.",
+    "Cross-validation confidence cannot be converted into bullish/bearish direction without a separate causal/outcome study."
+  ],
+  "maturityDecision": {
+    "from": "L2",
+    "to": "L3",
+    "basis": "Taiwan official disclosure capture plus time-stamped independent/redistributed media examples physically demonstrate field-level lineage classification, independent corroboration, derivative duplication and UNKNOWN handling. The construction is PIT-feasible with conservative capturedAt rules even though production general-news licensing and true historical firstKnownAt remain unresolved.",
+    "notClaimed": [
+      "general-news production readiness",
+      "authenticated historical first-known latency",
+      "alpha",
+      "directional return effect",
+      "L4/OOS"
+    ]
+  },
+  "formalCoreChanged": false,
+  "outcomeJoin": false,
+  "exactNext": [
+    "Prospectively capture at least one independent media + official disclosure pair with capture timestamps on both lanes, not retrospective publication clocks.",
+    "Persist field-level conflict/resolution examples when they occur.",
+    "Keep D17-01 production licensing and D17-02 first-availability gates separate.",
+    "Before L4, preregister whether lineage-aware cross-validation improves truth/error control or trading outcomes beyond source class alone."
+  ]
+}
