@@ -1,0 +1,39 @@
+name: D19 Valid Observation Real-Source Smoke
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/d19-valid-observation-real-source-smoke.yml"
+      - "research/d19_04_valid_observation_contract_v0_1.json"
+      - "system2/runtime/d19_valid_observation_adapter_v0_1.mjs"
+      - "system2/scripts/d19_valid_observation_real_source_smoke_v0_1.mjs"
+      - "system2/runtime/official_historical_backfill_source_v0_1.mjs"
+      - "system2/runtime/official_historical_a1_source_v0_1.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Reproduce D19 official invalid-close state split
+        run: node system2/scripts/d19_valid_observation_real_source_smoke_v0_1.mjs
+
+      - name: Confirm production isolation
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          git diff --exit-code -- wrangler.toml Worker.js
+          echo "Production isolation PASS"
