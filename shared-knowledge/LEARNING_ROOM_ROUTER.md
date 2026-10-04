@@ -467,7 +467,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | D05-03 | Bid-Ask Spread買賣價差 | 聚焦「Bid-Ask Spread買賣價差」。學習範圍：台股撮合制度、Tick、限價與集合競價；買賣價差、深度、委託流、流動性狀態；零股／整股差異；資料可觀測性限制；對可成交性、滑價與訊號品質的影響。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D05-04 | Order-book Depth委買賣深度 | 聚焦「Order-book Depth委買賣深度」。學習範圍：台股撮合制度、Tick、限價與集合競價；買賣價差、深度、委託流、流動性狀態；零股／整股差異；資料可觀測性限制；對可成交性、滑價與訊號品質的影響。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D05-05 | Order Flow Imbalance訂單流失衡 | 聚焦「Order Flow Imbalance訂單流失衡」。學習範圍：台股撮合制度、Tick、限價與集合競價；買賣價差、深度、委託流、流動性狀態；零股／整股差異；資料可觀測性限制；對可成交性、滑價與訊號品質的影響。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
-| D05-06 | 開盤集合競價 | 聚焦「開盤集合競價」。學習範圍：台股撮合制度、Tick、限價與集合競價；買賣價差、深度、委託流、流動性狀態；零股／整股差異；資料可觀測性限制；對可成交性、滑價與訊號品質的影響。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
+| D05-06 | Opening / Closing Auction & Auction Imbalance（開收盤集合競價與競價不平衡） | 聚焦「開收盤集合競價與競價不平衡」。學習範圍：OPEN_CALL／OPEN_TRIAL／CLOSE_CALL_ACCUMULATION／CLOSE_TRIAL／CLOSE_DELAYED／CLOSE_FINAL 等集合競價狀態；開盤與收盤集合競價價格形成、試撮／indicative state、最終競價價量、benchmark／end-of-day execution context；歷史 pre-close trial／imbalance 未有 timestamped source 時必須維持 UNKNOWN，禁止由 final close／final volume／一般 EOD volume 回填；D05-03／04／05、D05-14、D14、D11／D17 僅依 shared-parent receipt 消費同一 auction primitive，不得形成重複獨立投票。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 | D05-07 | 盤中撮合／VI與異常撮合狀態 | 聚焦「盤中撮合／VI與異常撮合狀態」。學習範圍：台股撮合制度、Tick、限價與集合競價；買賣價差、深度、委託流、流動性狀態；零股／整股差異；資料可觀測性限制；對可成交性、滑價與訊號品質的影響。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D05-08 | 零股與整股執行差異 | 聚焦「零股與整股執行差異」。學習範圍：台股撮合制度、Tick、限價與集合競價；買賣價差、深度、委託流、流動性狀態；零股／整股差異；資料可觀測性限制；對可成交性、滑價與訊號品質的影響。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D05-09 | 流動性狀態分類 | 聚焦「流動性狀態分類」。學習範圍：台股撮合制度、Tick、限價與集合競價；買賣價差、深度、委託流、流動性狀態；零股／整股差異；資料可觀測性限制；對可成交性、滑價與訊號品質的影響。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
@@ -1325,3 +1325,20 @@ Forbidden:
 - PARTIAL_EVIDENCE_RECEIVED -> curriculum structural change;
 - specialist recommendation -> direct canonical mutation;
 - skipping Dependency Audit / overlap / anti-orphan / owner approval for structural changes.
+
+
+## COV-02 canonical completion — 2026-10-04
+
+Owner approved `EXTEND_EXISTING_SCOPE → D05-06`.
+
+Canonical D05-06:
+- name = `Opening / Closing Auction & Auction Imbalance（開收盤集合競價與競價不平衡）`;
+- maturity = L2 / 40% unchanged;
+- owner = D05-06 for OPEN_CALL / OPEN_TRIAL / CLOSE_CALL_ACCUMULATION / CLOSE_TRIAL / CLOSE_DELAYED / CLOSE_FINAL;
+- historical pre-close imbalance without timestamped observations = UNKNOWN;
+- final close/volume and generic EOD volume cannot backfill pre-close imbalance;
+- downstream consumers do not create duplicate auction votes;
+- no independent auction Alpha vote;
+- Formal Core unchanged.
+
+COV-02 state: `CANONICAL_UPDATE_COMPLETE`.
