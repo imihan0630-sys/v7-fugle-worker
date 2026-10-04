@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-04T19:30:03+08:00",
+  "updatedAt": "2026-10-04T20:19:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -165,6 +165,56 @@
       "updatedAt": "2026-10-04T19:30:03+08:00",
       "verifiedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "verifiedAt": "2026-10-04T19:30:03+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261004-003",
+      "createdAt": "2026-10-04T20:19:00+08:00",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "title": "Correction routing governance contradiction can cause BUILD_LANE to seize work assigned to other lanes",
+      "affectedScope": [
+        "System2 correction governance",
+        "execution-lane routing",
+        "room bootstrap semantics"
+      ],
+      "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "canonicalRequirement": "Execution routing must have one unambiguous authority. BUILD_LANE may execute only LOCAL_FIX / BUILD_LANE items assigned to it and must not seize DATA_LANE or REMEDIATION_LANE work merely because severity is HIGH or CRITICAL.",
+      "observedProblem": "SYSTEM2_MASTER says CRITICAL/HIGH directives may be implemented by the build/control room, while SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1 says the build room executes only assigned LOCAL_FIX/BUILD_LANE items and must not seize DATA_LANE/REMEDIATION_LANE work merely because severity is HIGH.",
+      "evidence": [
+        "SYSTEM2_MASTER stale wording allows build/control room implementation of CRITICAL/HIGH directives",
+        "SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1 requires assigned-lane execution and forbids severity-based lane seizure",
+        "ROOM_BOOTSTRAP_REGISTRY already follows the newer routing rule"
+      ],
+      "riskIfUnfixed": "A restarted/new build room may duplicate or seize DATA_LANE/REMEDIATION_LANE corrections, causing branch conflicts, ownership violations and false accountability.",
+      "requiredCorrection": [
+        "Reconcile SYSTEM2_MASTER to assigned-lane routing",
+        "Search canonical governance/bootstrap/checkpoint surfaces for equivalent stale wording",
+        "Preserve independent CRITICAL/HIGH closure rules while separating severity from implementation assignment",
+        "Add or extend semantic regression protection against severity-implies-BUILD ownership",
+        "Handle stale shared 18-domain label separately as LOW/LOCAL_FIX documentation drift"
+      ],
+      "acceptanceCriteria": [
+        "Master/Correction Governance/Execution Lane Governance/Bootstrap Registry/Queue agree routingClass and assignedLane determine implementation ownership",
+        "BUILD_LANE cannot claim DATA_LANE/REMEDIATION_LANE work absent explicit reassignment",
+        "CRITICAL/HIGH independent closure requirements unchanged",
+        "System1 Formal Core and System2 strategy/ranking/capital/order/production behavior unchanged"
+      ],
+      "protectedBoundaries": [
+        "System1 Formal Core",
+        "System2 strategy/ranking/final-selection",
+        "capital/order",
+        "production push/runtime"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "REMEDIATION_LANE",
+      "assignedLane": "REMEDIATION_LANE",
+      "assignedRoom": "System 2｜補強修復室",
+      "modificationOwner": "SYSTEM2_REMEDIATION_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-04T20:19:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
