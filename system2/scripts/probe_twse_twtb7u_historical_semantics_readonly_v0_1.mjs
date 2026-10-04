@@ -31,6 +31,20 @@ function dateTokens(text){
 function normalizeForCompare(text){
   return String(text).replace(/\s+/g," ").trim();
 }
+function semanticDataView(parsed,raw){
+  if(parsed && typeof parsed==="object" && !Array.isArray(parsed)){
+    const view={
+      title:parsed.title??null,
+      fields:parsed.fields??null,
+      data:parsed.data??null,
+      tables:parsed.tables??null,
+      notes:parsed.notes??null,
+      stat:parsed.stat??parsed.status??null,
+    };
+    return JSON.stringify(view);
+  }
+  return normalizeForCompare(raw);
+}
 
 async function fetchOne(control,format){
   const url=BASE+"?date="+encodeURIComponent(control.date)+"&response="+format+"&selectType=";
@@ -62,6 +76,7 @@ async function fetchOne(control,format){
     contentType:response.headers.get("content-type")||null,
     payloadBytes:Buffer.byteLength(raw),
     payloadHash:sha256(raw),
+    semanticDataHash:sha256(semanticDataView(parsed,raw)),
     parseReady:format==="json"?parsed!==null:true,
     parseError,
     responseDate:responseDate==null?null:String(responseDate),
@@ -97,24 +112,25 @@ const historical=jsonResults.filter(x=>x.requestDate.startsWith("2025"));
 const positive=jsonResults.find(x=>x.controlId==="TWSE_PV_6949_2026_POSITIVE_CONTROL");
 
 const uniqueHistoricalHashes=new Set(historical.map(x=>x.payloadHash).filter(Boolean));
+const uniqueHistoricalSemanticDataHashes=new Set(historical.map(x=>x.semanticDataHash).filter(Boolean));
 const historicalCandidateHits=historical.filter(x=>x.candidateSymbolObserved).length;
-const allHistoricalSameAsPositive=
-  positive?.payloadHash &&
+const allHistoricalSemanticDataSameAsPositive=
+  positive?.semanticDataHash &&
   historical.length>0 &&
-  historical.every(x=>x.payloadHash===positive.payloadHash);
-const anyRequestIdentityEvidence=historical.some(x=>{
+  historical.every(x=>x.semanticDataHash===positive.semanticDataHash);
+const responseParamEchoesRequest=historical.every(x=>String(x.responseDate||"")===x.requestDate);
+const actualHistoricalContentIdentityObserved=historical.some(x=>{
   const token=x.requestDate;
-  const y=token.slice(0,4),m=String(Number(token.slice(4,6))),d=String(Number(token.slice(6,8)));
-  const roc=String(Number(y)-1911);
-  const sample=(x.dateTokenSample||[]).join("|");
-  return sample.includes(token) || sample.includes(y+"/"+m+"/"+d) || sample.includes(roc+"/"+m+"/"+d)
-    || String(x.responseDate||"").includes(token) || String(x.responseDate||"").includes(y);
+  const y=token.slice(0,4),m=String(Number(token.slice(4,6))).padStart(2,"0"),d=String(Number(token.slice(6,8))).padStart(2,"0");
+  const roc=String(Number(y)-1911).padStart(3,"0");
+  const sample=(x.dateTokenSample||[]).filter(t=>t!==token).join("|");
+  return sample.includes(y+"/"+m+"/"+d) || sample.includes(roc+"/"+m+"/"+d);
 });
 
 let state="TWTB7U_HISTORICAL_SEMANTICS_UNRESOLVED";
-if(historicalCandidateHits>0 && anyRequestIdentityEvidence){
+if(historicalCandidateHits>0 && actualHistoricalContentIdentityObserved){
   state="TWTB7U_HISTORICAL_DATE_CAPABILITY_OBSERVED";
-}else if(allHistoricalSameAsPositive || (uniqueHistoricalHashes.size===1 && historicalCandidateHits===0)){
+}else if(allHistoricalSemanticDataSameAsPositive && historicalCandidateHits===0){
   state="TWTB7U_HISTORICAL_DATE_NOT_OBSERVED";
 }
 
@@ -127,10 +143,12 @@ const result={
   jsonHttpReadyCount:jsonResults.filter(x=>x.ok).length,
   htmlHttpReadyCount:htmlResults.filter(x=>x.ok).length,
   historicalJsonUniquePayloadHashCount:uniqueHistoricalHashes.size,
+  historicalJsonUniqueSemanticDataHashCount:uniqueHistoricalSemanticDataHashes.size,
   historicalCandidateHitCount:historicalCandidateHits,
   positiveControlCandidateObserved:positive?.candidateSymbolObserved===true,
-  allHistoricalSameAsPositive:Boolean(allHistoricalSameAsPositive),
-  anyRequestIdentityEvidence,
+  allHistoricalSemanticDataSameAsPositive:Boolean(allHistoricalSemanticDataSameAsPositive),
+  responseParamEchoesRequest,
+  actualHistoricalContentIdentityObserved,
   results,
   representativeControlPromoted:false,
   representativeAuthorityReadyCount:5,
