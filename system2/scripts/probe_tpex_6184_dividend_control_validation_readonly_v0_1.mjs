@@ -49,10 +49,22 @@ const parsed=await parseOfficialHistoricalContinuityPayloadV0_1({
 assert.equal(parsed.responseRangeVerified,true);
 assert.equal(parsed.parserComplete,true);
 
-const matches=parsed.events.filter((x)=>
-  x.symbol==="6184" &&
-  x.effectiveDate==="2024-06-20"
-);
+const symbolEvents=parsed.events.filter((x)=>x.symbol==="6184");
+const rawMentions=String(rawText||"").split(/\\r?\\n/)
+  .filter((line)=>line.includes("6184"))
+  .slice(0,40);
+const matches=symbolEvents.filter((x)=>x.effectiveDate==="2024-06-20");
+
+if(matches.length<1){
+  console.log(JSON.stringify({
+    result:"TPEX_6184_EXCHANGE_MATCH_DIAGNOSTIC",
+    requestedRange:{startDate,endDate},
+    parsedState:parsed.state,
+    parsedEventCount:parsed.eventCount,
+    symbolEvents,
+    rawMentions,
+  },null,2));
+}
 assert.ok(matches.length>=1,"missing TPEx 6184 effective date 2024-06-20");
 
 console.log(JSON.stringify({
