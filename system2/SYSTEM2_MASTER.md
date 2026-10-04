@@ -696,3 +696,9 @@ Remaining representative-routing gaps are TWSE par-value change and TPEx ex-righ
 PR #528 established another valid negative discovery pass. Wrong-exchange candidate 6184 was rejected in closed PR #531. PR #533 physically validated 5356 協益 as a true TPEx ex-right/dividend issuer-correction + exchange-event pair, and PR #535 promoted it into MOPS V0.5 / authority V0.4 / supplemental receipt V0.4.
 
 Representative authority coverage is now 5/6. The only remaining representative-routing gap is TWSE par-value change. Exact knownAt, bounded revision completeness, session/technical continuity and all trading authorities remain locked.
+
+## 2026-10-04 S2-07 TWSE par-value U04 negative milestone
+
+PR #577 physically validated the MOPS U04 transport/serializer route and queried company plus listed-market scopes for the four frozen 2025 TWSE par-value events. No qualifying issuer revision/par-value row was observed, so the sole representative-routing gap remains TWSE par-value change.
+
+This negative result is preserved. The system must not repeat the same path or weaken evidence criteria merely to force 6/6. Next work is alternate official-source discovery or a formal structural-unavailability disposition. Exact knownAt, bounded revision completeness, session/technical continuity and all trading authorities remain locked.
