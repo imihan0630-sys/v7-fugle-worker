@@ -13827,3 +13827,29 @@ clean prospective selection dates remain 0, Gate 7 is closed and module-specific
 
 Therefore 60.0% is the current evidence-based ceiling.
 Further progress requires new prospective/OOS evidence rather than more specification.
+
+# Pre-PVE-240 — Wave-1 L4 evidence gate becomes executable (2026-10-04)
+
+The L4 bottleneck is now cleanly separated into design versus evidence.
+
+Design side:
+PASS.
+The first Wave-1 admission rules for D02-02/H001, D02-03/H20 and D02-06/H003 are executable and pass 19 falsification/edge fixtures.
+
+Evidence side:
+BLOCKED.
+There are still zero clean prospective dates and no PVE-240 market receipt.
+
+The evaluator deliberately refuses to promote maturity.
+Its highest automatic output is eligibility for later evidence review.
+
+This prevents:
+- 20 descriptive dates from being mislabeled L4;
+- many rows on one date from inflating independence;
+- censored outcomes from becoming zeros;
+- duplicate events from inflating counts;
+- same-bar response geometry from leaking into H003 outcomes;
+- event mismatch from contaminating H20;
+- pre-10:15 H001 rows from entering primary common support.
+
+D02 remains 60.0%.
