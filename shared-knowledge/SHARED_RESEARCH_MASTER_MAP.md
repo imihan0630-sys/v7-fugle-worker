@@ -1590,3 +1590,18 @@ H05 closed as:
 
 Audit:
 `shared-knowledge/CURRICULUM_H05_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+
+## H13 canonical no-structural-change closure — 2026-10-04
+
+H13 closed as:
+`KEEP_SEPARATE / ACCOUNTING_PRIMITIVE_VS_CREDIT_FUNDING_TRANSFORM / SINGLE_BALANCE_SHEET_RECEIPT`.
+
+- D07-06 owns accounting balance-sheet/leverage primitives and industry applicability.
+- D22-03 owns credit/funding transformations after liquidity-quality classification, including derived net debt and maturity/funding context.
+- one accounting receipt; no duplicate credit vote from the same debt/equity/cash fields.
+- later financial-statement revisions append new vintages and never backfill earlier known states.
+- D07-06 remains L2/40%; D22-03 remains L3/60%.
+
+Audit:
+`shared-knowledge/CURRICULUM_H13_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
