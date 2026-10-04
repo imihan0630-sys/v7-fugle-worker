@@ -141,3 +141,22 @@ D21-07 and D21-09 remain L2 until date-specific Taiwan replay is completed.
 No Formal optimization candidate exists.
 
 Formal Core impact: NONE.
+
+
+## 2026-10-04 08:38 D21-05 RPT replay continuation
+
+- D21-05 remains L2 / 40%; no maturity promotion.
+- Taiwan official disclosure architecture confirms RPT evidence has multiple clocks: periodic financial-statement notes, monthly loan/guarantee filings, event-driven asset transactions, and threshold-triggered material information.
+- Concrete financing-family replay: 2760 巨宇翔's 2026-10-01 material information records subsidiary Ding Tea Corporation guaranteeing its parent. Board approval for facility renewal was 2026-09-29; original guarantee balance NTD70m, new guarantee NTD70m, post-event balance NTD140m, actual drawdown NTD56m, with the stated purpose being renewal of a parent financing facility.
+- Semantic guard: guarantee balance != actual cash drawdown; renewal != automatically new extraction; parent/subsidiary direction and collateral/capacity must be retained.
+- TWSE 2024 annual-report/financial-statement review explicitly checks RPT necessity, arm's-length terms, decision/publication process, accounting disclosure, receivable recoverability and possible disguised financing. Some firms had deficient substantive-related-party disclosure or asset-transaction approval/valuation procedures.
+- Research implication: abnormal terms/process failures/overdue balances are more specific governance-risk states than raw RPT intensity.
+- Counterevidence retained: efficient internal contracting, treasury support and vertical integration.
+- D21-11 may not duplicate D21-05 raw RPT variables as a second negative vote.
+- L3 remains blocked until a second economically different Taiwan RPT family (operating or asset transaction) has native historical relationship/approval/public-known-at replay.
+- No return outcomes, OOS, walk-forward or prospective Shadow inspected. Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+
+Exact next continuation:
+1. Find and replay one native Taiwan operating RPT or related-party asset transaction with historical relationship status, approval clock and public filing clock.
+2. Then reassess D21-05 L3 source/PIT feasibility only.
+3. If source route blocks, move to D21-10 dual-vintage correction/restatement replay without changing D21-05 maturity.
