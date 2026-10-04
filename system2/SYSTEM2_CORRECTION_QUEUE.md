@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-05 02:45 Asia/Taipei
+Updated: 2026-10-05 02:54 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -98,6 +98,57 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - 2017 TWSE disposition: `DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL`.
 - finalDisposition: PENDING
 - updatedAt: 2026-10-05T02:33:00+08:00
+
+
+### S2-CORR-20261005-001 — Capacity persistence loses partial-denominator provenance before downstream resonance/performance
+
+- createdAt: 2026-10-05T02:54:16+08:00
+- severity: MEDIUM
+- status: OPEN
+- routingClass: REMEDIATION_LANE
+- assignedLane: REMEDIATION_LANE
+- assignedRoom: System 2｜補強修復室
+- modificationOwner: SYSTEM2_REMEDIATION_ROOM
+- blockedBy: none
+- affectedScope: S2-09 capacity persistence / S2-10 resonance pool provenance / future performance and promotion evidence
+- detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- canonicalRequirement: A persisted capacity decision must preserve whether its selection denominator was COMPLETE, PARTIAL or UNKNOWN and must be cryptographically/auditably linked to the Shadow run accounting that justified that state. Downstream consumers may monitor clean admissions under partial coverage, but they must not lose the fact that the pool was produced from partial coverage.
+- observedProblem: CORR-004 introduced in-memory states such as `CAPACITY_READY_PARTIAL_COVERAGE` and a `selectionDenominator` summary, but `buildCandidateCapacityReceipt` does not include denominator state or contributing Shadow-run provenance in the capacity receipt/hash, and `toCapacityRunRow` therefore does not persist it in `s2_capacity_runs`. The 19:00 resonance path loads only `s2_capacity_runs` and binds its `capacity_hash`; it does not formally join back to `s2_shadow_runs`. Consequently a downstream pool cannot determine from its authoritative source capacity receipt whether it came from complete or partial selection coverage.
+- evidence:
+  - `candidate_capacity_receipt.mjs`: capacity receipt/hash contains allocation/pool fields but no `selectionDenominator`, coverage state, contributing Shadow run IDs or Shadow accounting hashes.
+  - `storage_rows.mjs::toCapacityRunRow`: persists pool/allocation/count fields and `capacity_hash`, but no denominator/provenance link.
+  - `s2_shadow_runs` separately persists `eligible_count`, `accounted_count`, `completion_rate`, `state_counts_json`, `unaccounted_symbols_json`, and `symbol_accounts_json`.
+  - `daily_shadow_capacity_orchestrator_v0_1.mjs`: partial coverage state exists only in the orchestration return value; a capacity row is still persisted when at least one clean admission exists.
+  - `daily_resonance_persistence_v0_1.mjs`: 19:00 reads capacity_run_id / market_date / decision_timestamp / active_assignments_json / capacity_hash / captured_at only.
+  - `daily_resonance_integration_v0_1.mjs`: watch-pool identity carries sourceCapacityRunId/sourceCapacityHash but no upstream selection-denominator state or Shadow-accounting linkage.
+  - `resonance_comparison_frame_v0_1.mjs`: comparison provenance binds only pool/capacity IDs/hashes, so partial-vs-complete upstream evidence is not visible there either.
+- riskIfUnfixed: Ready symbols can be monitored correctly, but downstream UI, performance attribution, replay, comparison and future promotion evidence can treat a partial-coverage capacity pool as if it were based on a complete denominator. This can create false completeness, selection-bias blindness and unverifiable promotion evidence even though the original Shadow run accounting was preserved elsewhere.
+- requiredCorrection:
+  1. Make capacity persistence explicitly commit to selection-denominator state and provenance.
+  2. Persist at least COMPLETE/PARTIAL/UNKNOWN, unresolved counts/states, and immutable linkage to the contributing Shadow run receipt(s) or accounting hash(es).
+  3. Include the denominator/provenance payload in the capacity receipt/hash or in an equally immutable linked receipt whose identity is carried by the capacity row.
+  4. Propagate the upstream coverage/provenance state into resonance watch-pool provenance so downstream audit/UI/comparison can distinguish COMPLETE from PARTIAL without heuristic clock-only joins.
+  5. Preserve CORR-004 behavior: partial coverage with clean admissions remains allowed; INCOMPLETE symbols remain blocked; partial coverage with no selection still must not create a capacity row.
+  6. Legacy V0.1 capacity rows that lack denominator provenance must read as UNKNOWN / LEGACY_PROVENANCE_INCOMPLETE, never silently COMPLETE.
+  7. Do not introduce a new minimum-coverage percentage or use denominator provenance as an unapproved trading threshold.
+  8. Add regression tests showing identical admitted symbols under COMPLETE vs PARTIAL denominator produce distinguishable persisted provenance and downstream pool provenance.
+  9. Keep System 1 Formal Core, System 2 live/final-selection authority, production push, capital/order, strategy thresholds and assessor policy unchanged.
+- acceptanceCriteria:
+  - A persisted new-version capacity run self-describes COMPLETE/PARTIAL/UNKNOWN denominator state or carries an immutable explicit link that resolves it without heuristic joins.
+  - Capacity identity/hash commits to denominator provenance directly or through a hash-bound linked receipt.
+  - Downstream resonance pool provenance preserves the upstream denominator state/link.
+  - PARTIAL capacity with clean admissions remains monitorable and is visibly PARTIAL.
+  - PARTIAL no-selection continues to produce zeroPickDay=null and no `s2_capacity_runs`.
+  - Legacy rows are UNKNOWN, not assumed COMPLETE.
+  - Performance/comparison consumers can distinguish complete vs partial denominator provenance from persisted evidence.
+  - No arbitrary coverage threshold or protected trading authority change is introduced.
+- protectedBoundaries: System 1 Formal Core; System 2 final/live selection authority; production push/runtime; capital/order; strategy weights/thresholds; assessor policy; CORR-004 UNKNOWN semantics.
+- ownerDecisionRequired: false for additive research/provenance hardening; any later use of coverage state as a live admission threshold requires separate evidence/owner decision.
+- implementationEvidence: PENDING
+- verificationEvidence: PENDING
+- finalDisposition: PENDING
+- updatedAt: 2026-10-05T02:54:16+08:00
+
 
 ## Closed directives
 
