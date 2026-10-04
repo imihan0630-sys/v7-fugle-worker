@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "D22_09_EQUITY_CREDIT_DIVERGENCE_CONTRACT_V0_1",
+  "generatedAt": "2026-10-04T08:47:00+08:00",
+  "module": "D22-09",
+  "level": "L2",
+  "maturityPct": 40,
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / LEAD_LAG_DIRECTION_NOT_ASSUMED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "researchQuestion": "Do time-aligned disagreements between equity and credit markets contain incremental information, and which market leads under which information/liquidity state?",
+  "stateTaxonomy": [
+    "equity_deteriorates_credit_stable",
+    "credit_deteriorates_equity_stable",
+    "co_deterioration",
+    "co_improvement",
+    "equity_improves_credit_stable",
+    "credit_improves_equity_stable",
+    "opposite_direction_divergence"
+  ],
+  "mechanism": [
+    "Equity and debt are claims on the same enterprise but differ in payoff convexity, seniority, liquidity and investor base; the same news can therefore transmit at different speed and magnitude.",
+    "Credit can react to downside/default information that has limited effect on equity during normal states, while equity can lead when bond trading is sparse or rating/credit data update slowly.",
+    "Divergence is a relational state, not a standalone directional prediction."
+  ],
+  "evidenceAndCounterevidence": [
+    {
+      "support": "Some credit-curve research finds CDS/bond term-structure information predicts future firm outcomes or equity returns.",
+      "counter": "Multiple studies find stock returns lead corporate bond/CDS returns in firm-specific information, especially where bond trading is less liquid."
+    },
+    {
+      "support": "CDS and bond markets can contribute unique information around rating events.",
+      "counter": "Post-crisis information flow can be bidirectional and regime-dependent."
+    },
+    {
+      "support": "Credit deterioration with stable equity can be an early-warning hypothesis.",
+      "counter": "It can also be a liquidity/technical artifact or a duration/benchmark-matching error rather than true credit leadership."
+    }
+  ],
+  "timingContract": [
+    "Align equity, bond/CDS/reference observations to the same information cutoff; after-hours rating or overseas-market closes require session-aware knownAt handling.",
+    "Do not compare a stale bond mark with a live equity close without carrying staleness explicitly.",
+    "Corporate actions, dividends, equity issuance, buybacks and conversions require D11-adjusted event clocks.",
+    "Bond optionality/duration/currency and equity corporate-action adjustments must be harmonized before divergence is computed."
+  ],
+  "falsificationGates": [
+    "Credit leads equity is not a default assumption; direction must be estimated by state/market and can reverse.",
+    "Common macro/liquidity shocks can create apparent lead-lag without issuer-specific information.",
+    "Sparse bond trading can manufacture false credit stability or sudden catch-up moves.",
+    "Rating lag can make agency-based credit variables appear to follow equity mechanically.",
+    "Equity leverage/optionality can create asymmetric reactions unrelated to new credit information.",
+    "If divergence adds no residual information after D22-06 spread, D22-05 rating, D13 macro and D04/D05 liquidity controls, classify REJECTED_OR_REDUNDANT."
+  ],
+  "pitDataNeeds": [
+    "equity total-return or adjusted-price timestamped series",
+    "security-level bond trade/quote/reference series with staleness",
+    "matched risk-free benchmark",
+    "rating/watch timestamps",
+    "corporate-action event lineage",
+    "market/session calendar"
+  ],
+  "outcomeGate": "CLOSED",
+  "formalCore": "LOCKED",
+  "next": [
+    "Construct Taiwan PIT divergence states only after D22-06 security-level credit replay exists.",
+    "Pre-register lead/lag windows and avoid selecting them after seeing returns.",
+    "Test equity-leading, credit-leading and no-lead nulls across liquidity/regime strata before L3/L4."
+  ]
+}
