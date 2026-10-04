@@ -612,3 +612,9 @@ PR #448 physically verified exact full-query vs Jan–Sep month-shard reconcilia
 PR #450 physically established the official MOPSOV zero-row company-month signature on four frozen empty controls: HTTP 200 HTML, 2540-byte identical payload, zero parsed rows and the visible official message `資料庫中查無需求資料`. Three positive controls remained non-empty and distinct.
 
 This is characterization, not certification. `emptyMonthSemanticsCertified`, revision completeness, knownAt certification, technical continuity and all trading authorities remain false.
+
+## 2026-10-04 MOPSOV empty-month certification V0.2 milestone
+
+PR #452 physically certified the frozen official MOPSOV empty-company-month signature with four empty controls, three same-endpoint positive controls and fail-closed drift tests. `emptyMonthSemanticsCertified=true` is now valid only for this narrow source contract.
+
+Global revision completeness, no-event authority, technical continuity, selection, push, capital and order authority remain false.
