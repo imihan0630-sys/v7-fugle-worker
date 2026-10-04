@@ -280,3 +280,21 @@ Key frozen guards:
 2. Keep historical replay QA separate from live first-known evidence.
 3. Pursue actual authorized 18:10 parent receipts prospectively; missing stays UNKNOWN.
 4. No dealer-GEX sign claim without strike-expiry-position-side identification.
+
+
+## 2026-10-04 Room09 continuation — DR-070..DR-073 TAIFEX historical schema / 18:10 firewall
+
+Status: RESEARCH_ONLY / SOURCE_QA / OUTCOMES_CLOSED / NO_PROMOTION.
+Durable evidence: `research/d12_d13_source_clock_continuation_20261004_v0_1.md`.
+
+- DR-070: Official TAIFEX option daily market data materially covers contract, expiry month/week, contract-expiration-date under the post-2025-12-08 schema, strike, Call/Put, OHLC/last, settlement, after-hours/regular/total volume, OI, last best bid/ask and historical high/low. This is sufficient to freeze parser/schema and same-parent replay-QA contracts.
+- DR-071: TAIFEX historical download semantics require date-versioned parsing. Historical daily download supports bounded ranges and annual archives, after-hours belongs to the following regular-session date, price-change fields changed historically, and contract-expiration-date was added from 2025-12-08. Older-schema field absence is not BAD/zero.
+- DR-072: Historical daily/end-state rows cannot reconstruct a historical 18:10 option state. Last-best-bid/ask is not an intraday quote path/depth book and settlement is not an 18:10 contemporaneous value. Historical replay QA stays separate from first-known PIT evidence; D12 intraday surface/microstructure remains UNKNOWN without contemporaneous authorized raw receipts.
+- DR-073: Simple skew/term, Surface Method V0.1, parity diagnostics and own-computed Greeks must use the identical parent rows/session/date/version for outcome-blind comparison. Official TAIFEX Delta remains a separate publication/effective-date object.
+- Maturity unchanged: D12 40.0%; no L3 promotion. Outcomes CLOSED; Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+
+### Exact next continuation after DR-073
+1. Acquire one permitted raw TAIFEX option-chain parent and preserve exact source identity/hash for parser/schema replay QA.
+2. Parse the identical parent into simple skew/term, Surface Method V0.1 and parity-quality metrics.
+3. Keep historical replay QA separate from prospective 18:10 first-known receipts.
+4. Pursue authorized prospective 18:10 source-attested receipts; no L3 before independent PIT-clean dates and replay verification.
