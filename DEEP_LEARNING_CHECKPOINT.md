@@ -1465,3 +1465,13 @@ Status: RESEARCH_ONLY / D21-05_L2_UNCHANGED / FINANCING_RPT_REPLAY_PARTIAL / FOR
 - No outcomes, OOS, walk-forward or prospective Shadow inspected. FORMAL_OPTIMIZATION_CANDIDATE=NONE.
 
 Exact next: replay one operating or asset RPT family; if blocked, proceed to D21-10 dual-vintage restatement/correction replay.
+
+
+## 2026-10-04 D19 Stage 7 — executable receipts, real-source negative L3 gate
+- PR #439 merged as `76f5ef80dbf0654a033a0a780b065ebfabbf0e30`; research-only D19 six-layer factor receipts now exist in code.
+- Validation: System2 Research CI `37165603677` PASS; V8 Regression `37165603710` PASS; D19 real-source smoke `37165603790` PASS_NEGATIVE_L3_GATE with production-isolation PASS.
+- Real TWSE witness: 2026-08-03..2026-08-31, 21 official sessions, 22,810 source rows, bounded symbols 2330/2454; deterministic receipt chain completed.
+- Physical TPEx source failure was preserved, not imputed: both primary and legacy official historical transports returned HTTP 520 for 2026-08-03.
+- L3 blockers frozen: bounded universe not historical registry; corporate-action continuity unverified; industry neutralization not proven; D03/D09 redundancy not proven; cost provenance modeled transport-only; TPEx official historical source unavailable.
+- D19 remains 40.0% / all 15 active modules L2. Engineering completion is not maturity promotion. Formal Core unchanged.
+- Exact next: close D19-04 blockers on a frozen date-vintaged historical universe and rerun deterministic six-receipt chain; zero blockers trigger L3 readiness review only, not automatic promotion. D19-07 remains L2 until executable benchmark/beta semantics exist.
