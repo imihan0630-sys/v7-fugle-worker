@@ -13890,3 +13890,22 @@ real prospective/OOS observations.
 D02 remains 60.0%.
 PVE cursor remains 239.
 Gate 7 remains CLOSED.
+
+# Pre-PVE-240 — D02 stops at admission; D16 owns statistical adequacy (2026-10-04)
+
+The next-level evidence pipeline is now split at the correct disciplinary boundary.
+
+D02 can say whether a price-volume observation is semantically legal, PIT-safe, on common support and free of known double-counting.
+
+D02 cannot infer that 100 rows, 200 rows or any other universal count is statistically adequate for every module.
+
+D16 canonical work already shows why:
+same-date stocks are not independent replications, overlapping outcomes create dependence, small cluster counts remain fragile, and adequacy depends on effect target, date/episode variability, search family and desired precision.
+
+A machine guard now requires a D16-owned receipt before D02 may enter L4 promotion review.
+
+This closes a governance gap without creating prospective evidence.
+
+D02 remains 60.0%.
+PVE cursor remains 239.
+Gate 7 remains CLOSED.
