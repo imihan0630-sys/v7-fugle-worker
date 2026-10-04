@@ -91,3 +91,46 @@ This diagnostic receipt cannot itself authorize:
 - capital;
 - orders;
 - System 1 runtime.
+
+## 2026-10-04 physical six-lane blocker decomposition
+
+PR #487 merged as `b75376bb4741ea6ca7eec6c7f09bd32056dcf162`.
+
+Physical checks:
+- Supplemental Revision Provenance Receipt Readonly `37181058446`: PASS.
+- System2 Research CI `37181058355`: PASS.
+- V8 Regression `37181058477`: PASS.
+- result=`PASS_BLOCKER_DECOMPOSITION`.
+
+Final-result physical readiness for 2026-04-05..2026-10-02:
+- TWSE ex-right/dividend: 831 events, READY;
+- TWSE capital reduction: 9 events, READY;
+- TWSE par-value change: 1 event, READY;
+- TPEx ex-right/dividend: 611 events, READY;
+- TPEx capital reduction: 9 events, READY;
+- TPEx par-value change: 4 events, READY.
+
+Receipt totals:
+- requiredLaneCount=6;
+- finalResultReadyCount=6;
+- representativeAuthorityReadyCount=2;
+- supplementalRevisionReadyCount=0;
+- queryIntegrityReady=true;
+- sourceReportedClockReady=true;
+- frozenAuthorityRoutingCoverageComplete=true;
+- revisionCoverageComplete=false.
+
+Blocker counts:
+- `PUBLIC_AVAILABILITY_LATENCY_NOT_CERTIFIED`: 6;
+- `KNOWN_AT_VERSION_CLOCK_NOT_CERTIFIED`: 6;
+- `AUTHORITY_REVISION_BOUNDED_COVERAGE_INCOMPLETE`: 6;
+- `BOUNDED_REVISION_HISTORY_COVERAGE_INCOMPLETE`: 6;
+- `LANE_REPRESENTATIVE_AUTHORITY_ROUTING_NOT_OBSERVED`: 4.
+
+The 4 representative-routing gaps are:
+- TWSE par-value change;
+- TPEx ex-right/dividend;
+- TPEx capital reduction;
+- TPEx par-value change.
+
+This closes the question of whether the six final-result endpoints are the current blocker: they are not. Future work must target the explicit gaps above.
