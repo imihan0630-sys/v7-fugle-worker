@@ -21,19 +21,19 @@ jobs:
           set -euo pipefail
           mkdir -p /tmp/room09
 
-          curl --fail --silent --show-error --location --retry 2 \
+          curl --fail --silent --show-error --location --retry 2 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/141.0 Safari/537.36" \
             "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?field_tdr_date_value=2026&type=daily_treasury_yield_curve" \
             -o /tmp/room09/treasury.html
 
-          curl --fail --silent --show-error --location --retry 2 \
+          curl --fail --silent --show-error --location --retry 2 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/141.0 Safari/537.36" \
             "https://www.bls.gov/news.release/archives/empsit_10022026.htm" \
             -o /tmp/room09/bls.html
 
-          curl --fail --silent --show-error --location --retry 2 \
+          curl --fail --silent --show-error --location --retry 2 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/141.0 Safari/537.36" \
             "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm" \
             -o /tmp/room09/fed.html
 
-          curl --fail --silent --show-error --location --retry 2 \
+          curl --fail --silent --show-error --location --retry 2 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/141.0 Safari/537.36" \
             "https://www.cbc.gov.tw/tw/cp-302-192864-4319f-1.html" \
             -o /tmp/room09/cbc.html
 
