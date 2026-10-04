@@ -44,6 +44,7 @@ for(const symbol of targetSymbols){
     symbol,
     yearMonth,
   });
+  const sourcePayloadContentHash=await sha256Hex(payload);
   const normalized=await normalizeOfficialMonthlyHistoryPayloadV0_1({
     market:"TWSE",
     symbol,
@@ -81,7 +82,7 @@ for(const symbol of targetSymbols){
         tradeValue:monthly.tradeValue,
         transactions:monthly.transactions,
         sourceId:monthly.sourceId,
-        payloadHash:normalized.payloadHash,
+        sourcePayloadContentHash,
         activityPositive:monthlyActivityPositive,
         zeroActivity:monthlyZeroActivity,
       }:null,
@@ -101,6 +102,14 @@ const stateCounts=Object.fromEntries(
     .map((state)=>[state,reconciled.filter((x)=>x.reconciliationState===state).length]),
 );
 
+const activityFieldExactMatchCount=reconciled.filter((x)=>
+  x.monthly
+  && x.primary.volumeShares===x.monthly.volumeShares
+  && x.primary.tradeValue===x.monthly.tradeValue
+  && x.primary.transactions===x.monthly.transactions
+).length;
+assert.equal(activityFieldExactMatchCount,50);
+
 const positivePrimary=reconciled.filter((x)=>x.primary.activityPositive);
 assert.equal(positivePrimary.length,39);
 
@@ -117,7 +126,7 @@ const evidenceHash=await sha256Hex(
       symbol:x.symbol,
       marketDate:x.marketDate,
       primarySourceRowHash:x.primary.sourceRowHash,
-      monthlyPayloadHash:x.monthly?.payloadHash??null,
+      monthlySourcePayloadContentHash:x.monthly?.sourcePayloadContentHash??null,
       monthlyClose:x.monthly?.close??null,
       reconciliationState:x.reconciliationState,
     }))
@@ -135,11 +144,16 @@ console.log(JSON.stringify({
   reconciliationStateCounts:stateCounts,
   positiveActivityResolvedWithAlternateOfficialClose:positiveResolved.length,
   positiveActivityStillWithoutOfficialClose:positiveStillNoClose.length,
+  activityFieldExactMatchCount,
+  crossSourceNoValidCloseCount:reconciled.filter(
+    (x)=>x.reconciliationState==="ALTERNATE_OFFICIAL_ROW_WITHOUT_VALID_CLOSE"
+  ).length,
   evidenceHash,
   positiveResolved,
   positiveStillNoClose,
   interpretation:{
     alternateOfficialSourceIsIndependentCrossCheck:true,
+    allFiftyActivityFieldsMatchAcrossOfficialSources:activityFieldExactMatchCount===50,
     alternateCloseMayBeUsedOnlyIfSourceSemanticsAreCompatible:true,
     noAlternateCloseRemainsNonPriceObservation:true,
     noForwardFill:true,
