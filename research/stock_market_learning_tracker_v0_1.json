@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 44.8
+    "maturityWeightedPct": 45.1
   },
   "domains": [
     {
@@ -3496,7 +3496,7 @@
         "CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md",
         "CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md"
       ],
-      "maturityPct": 41.8,
+      "maturityPct": 47.3,
       "modules": [
         {
           "id": "D21-01",
@@ -3591,28 +3591,28 @@
         {
           "id": "D21-12",
           "name": "Management Guidance Credibility管理層展望可信度",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Management Guidance Credibility管理層展望可信度」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_FALSIFICATION_FROZEN / HISTORICAL_GUIDANCE_REPLAY_PENDING / RESEARCH_ONLY / CONFIDENCE / GOVERNANCE_TAIL_RISK",
-          "next": "建立至少兩家公司數字型展望歷史 PIT replay：保存原始 guidance known_at、指標／區間／假設、修正或撤回、實際結果 known_at，僅在結果已公開後計算預測誤差；優先一個較準確歷史與一個反覆樂觀／修正頻繁歷史，並控制分析師覆蓋、盈餘修正與基本面冗餘。"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_GUIDANCE_PIT_FEASIBILITY_VALIDATED / METRIC_SPECIFIC_OUTCOME_CLOCK_FROZEN / RESEARCH_ONLY / CONFIDENCE / GOVERNANCE_TAIL_RISK",
+          "next": "擴大多年度／多公司數字型展望樣本，建立 rolling credibility 並做 OOS／前瞻驗證；控制分析師覆蓋、盈餘修正、基本面、產業與總經衝擊。無 OOS/Shadow 證據前不得升 L4。"
         },
         {
           "id": "D21-13",
           "name": "ESG／Climate／Social Materiality環境氣候社會重大性風險",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「ESG／Climate／Social Materiality環境氣候社會重大性風險」。研究環境、氣候與社會議題在具財務重大性時對公司現金流、成本、資產負債、供應鏈與治理風險的影響；不得把泛用 ESG（環境社會治理）分數直接當買賣訊號。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 原 D21-08 退休後，本模組承接 Governance／ESG（治理／環境社會治理）分數中真正具財務重大性的內容；只研究可連結現金流、成本、資產負債、供應鏈、監管或治理風險的 materiality（重大性），不得把泛用 ESG score（ESG分數）直接當買賣訊號。資料來源／版本治理由 D16-11 承接。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D21-13 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MATERIALITY_SCOPE_FROZEN / GENERIC_ESG_SCORE_REJECTED / HISTORICAL_MULTI_SECTOR_REPLAY_PENDING / RESEARCH_ONLY",
+          "next": "建立至少兩個不同產業的台灣重大性風險 PIT replay，優先半導體水／電／碳暴露對照高排放工業或勞安／產品安全敏感產業；鎖定 disclosure regime、methodology vintage、target vs realized、known_at 與財務傳導路徑。不得用泛用 ESG score 當主要因子。"
         }
       ],
-      "status": "D21_01_L2 / D21_02_L3 / D21_03_L2 / D21_04_L2 / D21_05_L3 / D21_07_L2 / D21_09_L2 / D21_10_L3 / D21_11_L2_PARTIAL_REPLAY / D21_12_L2 / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "建立至少兩家公司數字型展望歷史 PIT replay：保存原始 guidance known_at、指標／區間／假設、修正或撤回、實際結果 known_at，僅在結果已公開後計算預測誤差；優先一個較準確歷史與一個反覆樂觀／修正頻繁歷史，並控制分析師覆蓋、盈餘修正與基本面冗餘。 D21-11 同時期公開證據缺口維持待補，不以事後判決倒灌。",
-      "lastResearchUpdate": "2026-10-04T13:36:00+08:00",
-      "researchNote": "D21-11 now has a later-adjudicated extraction case and an economically justified RPT control case, but remains L2 because contemporaneous public decision-time evidence for the confirmed case is incomplete; later court truth must not be backfilled. D21-12 advances to L2 after Taiwan guidance channels, disclosure framework, credibility/optimism/earnings-management/uncertainty mechanisms, PIT outcome-realization firewall, manager identity handling and falsification controls were frozen. Formal Core unchanged."
+      "status": "D21_01_L2 / D21_02_L3 / D21_03_L2 / D21_04_L2 / D21_05_L3 / D21_07_L2 / D21_09_L2 / D21_10_L3 / D21_11_L2_PARTIAL_REPLAY / D21_12_L3 / D21_13_L2 / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D21-13 建立兩產業重大性風險歷史 PIT replay；D21-12 後續只接受 OOS／前瞻證據升 L4。D21-11 同時期公開證據缺口維持待補。",
+      "lastResearchUpdate": "2026-10-04T15:02:00+08:00",
+      "researchNote": "D21-12 advanced to L3 after multi-observation historical numeric-guidance replay for TSMC and MediaTek established issuer/metric-specific known_at and outcome clocks; small samples show conservative-bias tendencies but do not justify permanent manager labels. D21-13 advances to L2 after financially-material environmental/climate/social scope, Taiwan 2026 IFRS sustainability phase-in, rating-divergence falsification, PIT/methodology-vintage controls and candidate transmission channels were frozen. Formal Core unchanged."
     },
     {
       "id": "D22",
