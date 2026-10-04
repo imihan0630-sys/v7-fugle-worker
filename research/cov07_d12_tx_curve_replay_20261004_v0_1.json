@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "0.1",
+  "id": "COV07_D12_TX_CURVE_REPLAY_20261004",
+  "room": "09｜衍生品與國際總經研究室",
+  "status": "HISTORICAL_OFFICIAL_REPLAY_VALIDATED__OUTCOMES_CLOSED__FORMAL_UNCHANGED",
+  "source": {
+    "taifexFutures": {
+      "url": "https://www.taifex.com.tw/cht/3/futDataDown",
+      "query": {
+        "start": "2026/09/14",
+        "end": "2026/10/02",
+        "contract": "TX",
+        "downType": "1"
+      },
+      "sha256": "6465a86fadde57abe16a9db63cdf20702c7aa2c3420452f61503660b7d111701",
+      "byteCount": 29219
+    },
+    "taifexSpec": {
+      "url": "https://www.taifex.com.tw/cht/2/tX?menuid1=12",
+      "sha256": "3a84e988f3ada407a331d0e2c47a31f1b600b0bf91798637e9f0dcaf0d87185c",
+      "thirdWednesdayRuleVerified": true
+    },
+    "twseIndex": {
+      "sep2026": {
+        "sha256": "b6f8cf1552ff55338934e646ca846b54d1b18c0b82919ca78f440174bb605404",
+        "date": "20260901"
+      },
+      "oct2026": {
+        "sha256": "0bf01255d772a79508da8e30c195ddcfb2be1f8a8c151866181f555ca61a2e53",
+        "date": "20261001"
+      }
+    },
+    "workflow": {
+      "runId": 37205618005,
+      "jobId": 111446077602
+    },
+    "rawPersisted": false
+  },
+  "definitions": {
+    "curve": "Monthly TX contract settlement-price vector ordered by expiry on the same regular-session date.",
+    "calendarSpread": "nearPrice - fartherPrice. Positive=backwardation; negative=contango.",
+    "annualizedRollYield": "(nearPrice-farPrice)/nearPrice * 365/(farDTE-nearDTE). Descriptive carry/roll proxy only; not realized return.",
+    "basis": "front monthly TX settlement price - same-date TAIEX cash close.",
+    "oi": "contract-level end-of-day open interest, preserved separately from price curve."
+  },
+  "keyReplayStates": [
+    {
+      "date": "2026-09-14",
+      "front": "202609",
+      "next": "202610",
+      "far": "202611",
+      "basisBps": -18.647,
+      "frontNextSpread": -126,
+      "frontNextRollYield": -0.0287044,
+      "frontOi": 47416,
+      "nextOi": 59870,
+      "frontOiShare": 0.437381,
+      "nextOiShare": 0.55226
+    },
+    {
+      "date": "2026-09-15",
+      "front": "202609",
+      "next": "202610",
+      "far": "202611",
+      "basisBps": 17.69,
+      "frontNextSpread": -135,
+      "frontNextRollYield": -0.0308795,
+      "frontOi": 18797,
+      "nextOi": 89861,
+      "frontOiShare": 0.171098,
+      "nextOiShare": 0.817952
+    },
+    {
+      "date": "2026-09-16",
+      "front": "202609",
+      "next": "202610",
+      "far": "202611",
+      "basisBps": -19.6079,
+      "frontNextSpread": -301,
+      "frontNextRollYield": -0.0685985,
+      "frontOi": 9684,
+      "nextOi": 95896,
+      "frontOiShare": 0.090577,
+      "nextOiShare": 0.896937,
+      "expiryDay": true,
+      "frontSettlementRaw": 0,
+      "frontPriceFallbackClose": 45759
+    },
+    {
+      "date": "2026-09-17",
+      "front": "202610",
+      "next": "202611",
+      "far": "202612",
+      "basisBps": 36.9426,
+      "frontNextSpread": -157,
+      "frontNextRollYield": -0.0440519,
+      "frontOi": 99476,
+      "nextOi": 527,
+      "frontOiShare": 0.985975,
+      "nextOiShare": 0.005223
+    },
+    {
+      "date": "2026-09-18",
+      "front": "202610",
+      "next": "202611",
+      "far": "202612",
+      "basisBps": 52.4048,
+      "frontNextSpread": -153,
+      "frontNextRollYield": -0.0420525,
+      "frontOi": 101893,
+      "nextOi": 597,
+      "frontOiShare": 0.985549,
+      "nextOiShare": 0.005774
+    },
+    {
+      "date": "2026-10-02",
+      "front": "202610",
+      "next": "202611",
+      "far": "202612",
+      "basisBps": 39.8674,
+      "frontNextSpread": -171,
+      "frontNextRollYield": -0.0458014,
+      "frontOi": 106691,
+      "nextOi": 1445,
+      "frontOiShare": 0.977301,
+      "nextOiShare": 0.013236
+    }
+  ],
+  "residualEvidence": {
+    "versusBasis": [
+      "2026-09-14 and 2026-09-16 have nearly identical negative front basis (-18.65 vs -19.61 bps), but front-next spread changes from -126 to -301 points.",
+      "2026-09-15 basis flips positive (+17.69 bps) while front-next spread remains contango at -135 points."
+    ],
+    "versusOi": [
+      "Open-interest migration identifies which contract becomes dominant but does not determine the price slope across expiries.",
+      "After the September expiry, front OI share stays near 98% on 2026-09-17, 2026-09-18 and 2026-10-02 while front-next spreads still vary -157, -153 and -171 points."
+    ],
+    "conclusion": "Futures curve shape contains a distinct contract-price dimension that is neither spot-futures basis nor open-interest concentration."
+  },
+  "continuousContract": {
+    "decisionRule": "At close t, any roll decision applies only from the next trading session. Roll from current selected contract to next monthly contract when front calendar DTE<=5 OR next-contract OI exceeds front OI.",
+    "priceHistoryRule": "Never retroactively back-adjust historical raw contract prices for feature replay.",
+    "chartRule": "If a stitched chart is needed, create a separate return/index object with explicit roll event and gap; do not overwrite source prices.",
+    "rollDayReturnRule": "Without an explicit executable roll-price convention, cross-contract return over the switch is UNKNOWN rather than calculated from two different contract closes.",
+    "observedTransition": "On 2026-09-14 both DTE<=5 and next OI>front OI trigger a next-session roll; therefore a PIT-safe synthetic contract would select 202610 from 2026-09-15 onward rather than waiting for 202609 expiry."
+  },
+  "contaminationGuards": [
+    "regular session only",
+    "monthly TX only; weekly/flexible contracts excluded",
+    "settlement price must be positive; otherwise use positive close only as an explicitly flagged fallback; neither valid => UNKNOWN",
+    "expiry-day front contract is a special state and not a normal curve observation",
+    "price limit/session identity must be preserved",
+    "OI and volume are quality/position dimensions, not substitutes for curve slope",
+    "cash basis and inter-contract curve are separate primitives",
+    "no return outcomes inspected"
+  ],
+  "overlapBoundary": {
+    "D12_01": "owns cash-index versus one futures-contract basis",
+    "D12_02": "owns contract/open-interest level and migration",
+    "D12_09": "owns expiry/settlement-event effects",
+    "D12_07": "owns option IV skew/term structure, not futures-price term structure",
+    "COV07": "owns multi-expiry futures price curve, calendar spreads, roll-yield/carry and continuous-contract roll semantics"
+  },
+  "terminalRecommendation": "ADD_MODULE",
+  "rationale": "Official Taiwan contract-level historical prices/OI/volume and expiry semantics are replay-feasible, and real same-parent states demonstrate residual curve information distinct from D12-01 basis and D12-02 OI.",
+  "maturityImpact": "NONE_BY_SPECIALIST_RETURN",
+  "formalCoreImpact": "NONE",
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
