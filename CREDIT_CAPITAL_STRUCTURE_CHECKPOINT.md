@@ -1,8 +1,8 @@
 # Credit / Capital Structure Checkpoint
 
-Updated: 2026-10-04 08:50 Asia/Taipei
+Updated: 2026-10-04 13:54 Asia/Taipei
 Scope: D22｜信用市場／資本結構／融資壓力／股債傳導
-Status: ACTIVE_RESEARCH / D22-01_TO_03_L3 / D22-04_TO_12_L2_OR_HIGHER / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
+Status: ACTIVE_RESEARCH / D22_MATURITY_50PCT / D22-01_02_03_05_08_10_L3 / D22-04_06_SOURCE_BLOCKED_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - Canonical continuation checkpoint for D22.
@@ -207,4 +207,99 @@ Exact continuation:
 3. D22-07 + D22-08: covenant/facility and fixed-floating/reset/hedge PIT issuer panels.
 4. D22-09~12: move to L3 only after their required upstream data families become independently replayable.
 5. Equity outcomes stay CLOSED; Formal Core stays LOCKED.
+
+## 2026-10-04 13:54 continuation｜D22 reaches 50% via three new L3 PIT replay validations
+
+### Domain maturity
+D22 = 50.0%.
+
+L3 / 60%:
+- D22-01 Debt Maturity Wall / Refinancing Schedule
+- D22-02 Interest Coverage / Debt Service
+- D22-03 Net Debt / Leverage Structure
+- D22-05 Credit Rating / Rating Migration
+- D22-08 Fixed / Floating Rate Exposure
+- D22-10 Capital Structure / Funding Mix
+
+L2 / 40%:
+- D22-04 Cost of Debt / Refinancing Risk
+- D22-06 Credit Spread / Bond Yield
+- D22-07 Liquidity / Covenant / Default Risk
+- D22-09 Equity-Credit Divergence
+- D22-11 Credit Cycle / Bank Lending Conditions
+- D22-12 Distress / Recovery / Equity Tail Risk
+
+Equity outcomes remain CLOSED. Formal Core remains unchanged.
+
+### D22-05｜rating-event PIT replay validated
+Durable file:
+- `research/d22_05_rating_event_replay_v0_1.json`
+
+Evidence family:
+- Formosa Chemicals & Fibre: 2023 outlook Stable→Negative, then 2025 formal downgrade twAA→twAA-.
+- Wan Hai: 2020 Negative outlook, 2021 Stable, 2021 Positive, then 2022 formal upgrade.
+- TCC: 2022 Stable→Negative outlook and 2024 Negative→Stable with the same issuer rating.
+
+Key falsification:
+- Outlook/watch/formal downgrade within one deterioration episode cannot be counted as independent repeated negative votes without anticipation/event-clustering controls.
+- A rating action is not a stock-direction signal by itself.
+- Issuer and issue ratings remain separate evidence classes.
+
+Status:
+L3 / TAIWAN_PIT_RATING_EVENT_REPLAY_VALIDATED / ANTICIPATION_CONTROL_REQUIRED / OUTCOMES_CLOSED.
+
+### D22-08｜fixed/floating/repricing PIT replay validated
+Durable file:
+- `research/d22_08_rate_exposure_replay_v0_1.json`
+
+Evidence family:
+- TSMC official quarterly filings: all short-term debt floating at one historical state; majority of long-term debt fixed; later filing independently confirms majority fixed-rate debt.
+- UMC 2023 first unsecured straight corporate bond: NT$10bn, five-year, fixed 1.62%, no collateral/put/call.
+- Chunghwa Telecom 2023/2024 filings: non-fixed loan exposure sensitivity to +/-25 bp changes and no interest-rate derivatives; two independently timestamped annual states.
+
+Key falsification:
+- Fixed/floating share alone does not determine risk. Reset timing, maturity, floors/caps, hedges and principal actually exposed to repricing matter.
+- Benchmark rate movement belongs to D13; D22-08 owns exposure/transmission only.
+- Missing principal/reset/hedge details remain UNKNOWN.
+
+Status:
+L3 / TAIWAN_PIT_RATE_EXPOSURE_REPLAY_VALIDATED / OUTCOMES_CLOSED.
+
+### D22-10｜funding-mix event PIT replay validated
+Durable file:
+- `research/d22_10_funding_mix_event_replay_v0_1.json`
+
+Evidence family:
+- TSMC multiple 2023 domestic unsecured bond issuances with tranche amount, tenor, coupon and use-of-proceeds states.
+- UMC 2023 NT$10bn five-year 1.62% unsecured green bond state.
+- Chunghwa Telecom 2022 board-approval→pricing lineage and later 2025 sustainability-bond pricing, preserving separate approval/pricing states.
+
+Key falsification:
+- Financing event identity belongs to D11; D22-10 owns funding-source/tenor/seniority/cost/use-of-proceeds transformation.
+- Debt issuance is not automatically bad; equity issuance is not automatically safe.
+- Approval, pricing and issuance are separate PIT states; later terms cannot backfill earlier approval states.
+
+Status:
+L3 / TAIWAN_PIT_FUNDING_EVENT_REPLAY_VALIDATED / D11_EVENT_IDENTITY_LINKED / OUTCOMES_CLOSED.
+
+### D22-04 + D22-06｜held at L2 by design
+Durable blocker file:
+- `research/d22_04_06_tpex_market_data_access_audit_v0_1.json`
+
+TPEx source route is validated for trade/quote/rate/fair-value/curve data, but a clean cross-issuer multi-date security-level historical replay was not independently extracted in this round.
+
+Therefore:
+- D22-04 stays L2.
+- D22-06 stays L2.
+- No synthetic yield/spread history.
+- No stale-price forward fill.
+- No fair value treated as an actual transaction.
+- No duration/currency-mismatched spread promoted as clean credit spread.
+
+### Exact next continuation
+1. Break D22-04/D22-06 source blocker by acquiring/querying historical TPEx issuer-security-date observations with actual-trade/quote/reference/fair-value provenance.
+2. Match corporate observations to currency- and duration-consistent sovereign benchmarks; keep no-trade/stale states UNKNOWN.
+3. In parallel build D22-07 covenant/facility PIT replay, preserving maintenance/incurrence/cushion/breach/waiver/cross-default semantics.
+4. D22-05/D22-08/D22-10 are now L3; expand their independent-date panels but do not open equity outcomes.
+5. D22-09 remains downstream of D22-06; D22-11/D22-12 remain L2 until their own Taiwan PIT replay gates are satisfied.
 
