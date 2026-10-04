@@ -1842,3 +1842,46 @@ D21-07 is the largest executable L2 module without PIT validation. Build a histo
 - No maturity inflation: D03-10 remains L2/40, D03-09 remains L2/40, D03 = 56.7%.
 - Next honest path: owner source cut -> genuine V8.17 parent -> bound Bollinger COMPLETE run -> 58.3%; ADX canonical FULL_REPLAY COMPLETE run -> 60.0%.
 - Raw D03 3-session gate remains 2/3; TI-005/TI-006 outcomes CLOSED; Formal Core LOCKED.
+
+
+## 2026-10-04 D03 — TI-661~685 cutoff-safe continuity architecture
+
+- Room/domain: 03｜技術指標與趨勢動能研究室 / D03.
+- Maturity remains 56.7%; this tranche deliberately does not convert contract quality into L3 evidence.
+- New timing architecture:
+  - immutable market-wide evidence cut must precede true Formal decisionCutoffAt;
+  - continuity computation may occur after the parent only when derived exclusively from the pre-cut immutable facts;
+  - post-cut or unbound source facts block;
+  - market-wide cut hash and symbol-specific transform manifest remain separate provenance layers.
+- Physical workflow 37195966922 PASS under strict decision-cutoff semantics.
+- Two-point noRevisionGapThroughCut candidate:
+  - late-discovered pre-cut version, version mutation, missing pre version, truncation/incomplete post population all block;
+  - later genuinely post-cut revisions are allowed;
+  - workflow 37195789302 PASS;
+  - owner certification required; D03 self-certification forbidden.
+- Strict pre-parent source-cut V0.2:
+  - decisionAt/parentKnownAt may not substitute for decisionCutoffAt;
+  - workflow 37195982487 PASS.
+- Parent × evidence-cut × continuity binding V0.2:
+  - post-parent-derived Bollinger and canonical FULL_REPLAY ADX synthetic receipts remain valid only after strict cut timing passes;
+  - generation/cut/lineage identities are bound;
+  - workflow 37196089575 PASS.
+- Effective V8.17 build audit:
+  - first assumption that totalCapital was the last async Formal input was falsified;
+  - V7.5.30 adds a later Formal-affecting V7_MARKET_CONSENSUS KV read;
+  - corrected workflow 37196768178 PASS after C1/C2 review 95/95;
+  - after market-consensus read and before synchronous selectTomorrowCandidates there are zero external/async reads;
+  - C1 decisionAt exists, decisionCutoffAt absent;
+  - current source-audited owner insertion point = immediately after market-consensus read, before selector.
+- Owner handoff V0.2:
+  - research/D03_PARENT_DECISION_CUTOFF_OWNER_HANDOFF_V0_2.md
+  - no Production change authorized by D03.
+- Exact next:
+  1. shared parent owner implements/version additive decisionCutoffAt at audited boundary under applicable Production governance;
+  2. first genuine trading-session C1 generation must physically read back cutoff; no historical backfill;
+  3. shared continuity owner creates market-wide evidence cut <= cutoff and certifies noRevisionGapThroughCut + symbol-session completeness;
+  4. derived continuity may be post-parent only from that cut;
+  5. bind every expected parent; Bollinger COMPLETE first -> possible 58.3%;
+  6. ADX only canonical FULL_REPLAY -> possible 60.0%;
+  7. raw D03 source-version gate remains 2/3; TI-005/TI-006 outcomes CLOSED.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE; Formal Core LOCKED.
