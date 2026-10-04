@@ -167,7 +167,6 @@ const returnReceipts=[];
 const factorInputs=[];
 const factorRows=[];
 const coverage=[];
-const membershipBySymbol=new Map(registry.memberships.filter(x=>x.market==="TWSE").map(x=>[x.symbol,x]));
 for(const member of snapshot.members){
   const rows=rowsBySymbol.get(member.symbol)||[];
   const eligibleRows=rows.filter(x=>
