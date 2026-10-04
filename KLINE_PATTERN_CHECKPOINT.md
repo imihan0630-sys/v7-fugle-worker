@@ -1260,3 +1260,89 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 5. Hand left-truncation/right-censoring/opportunity-based inference semantics to D16.
 6. Next D01 science: separate structural aging from regime migration / volatility-scale migration so a level does not look old merely because the price process changed scale.
 7. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-032 (2026-10-04)
+
+### DL-032 — Structural aging vs regime / volatility-scale migration
+- DL-031 separated structural age from detector observability and interaction history.
+- DL-032 freezes another confound: an old level may appear weaker because volatility, price scale, liquidity or market regime changed rather than because structural memory decayed.
+- Canonical structural geometry remains immutable. Current ATR/volatility/liquidity/regime may change normalized interpretation but cannot retroactively widen/narrow the persisted boundary.
+- Three objects are kept separate:
+  IMMUTABLE_STRUCTURAL_GEOMETRY;
+  FORMATION_CONTEXT;
+  CURRENT_OPPORTUNITY_CONTEXT.
+- Formation/current scale descriptors include:
+  reference price;
+  ATR;
+  normalized volatility;
+  relative tick;
+  liquidity state;
+  volatility regime;
+  market regime;
+  sector regime.
+- Derived descriptors are outcome-blind and descriptive:
+  ZONE_WIDTH_PRICE;
+  FORMATION_ZONE_WIDTH_ATR;
+  CURRENT_ZONE_WIDTH_ATR;
+  FORMATION_ZONE_WIDTH_PCT;
+  CURRENT_ZONE_WIDTH_PCT;
+  VOLATILITY_SCALE_RATIO;
+  RELATIVE_TICK_RATIO.
+- Scale normalization never mutates structural identity.
+- Corporate-action discontinuity may not masquerade as scale migration. Formation/current states must share canonical TECHNICAL_CONTINUITY semantic space or the analysis is DATA_BLOCKED.
+- D01 does not create new volatility/regime taxonomies:
+  D04/D05 own volatility/microstructure context;
+  D18 owns market-regime context;
+  D02 owns acceptance/persistence context.
+  Missing/incompatible owner receipts remain UNKNOWN.
+- Regime migration does not reset ROOT_AGE or VERSION_AGE by itself and does not create a new root.
+- Same frozen zone may shift dramatically in ATR/percent/tick units. Example:
+  4 price units may be 2 ATR at formation but 0.5 ATR later.
+  This can alter crossing/bounce behavior without any structural-memory decay.
+- Dynamic ATR widening/tightening is prohibited as a rescue operation.
+  Any adaptive-width sensitivity view is a separate preregistered challenger with separate identity.
+- Future D16 nested comparison ladder:
+  C0 age + interaction history;
+  C1 C0 + current scale/context;
+  C2 C1 + formation-to-current migration descriptors;
+  C3 C2 + canonical owner regime context.
+- Future interpretation states:
+  M0_AGE_SURVIVES;
+  M1_SCALE_CONFOUND;
+  M2_MIGRATION_CONFOUND;
+  M3_REGIME_SPECIFIC;
+  M4_NOT_EVALUABLE.
+- Common support is mandatory across:
+  age;
+  normalized volatility;
+  liquidity;
+  relative tick;
+  regime;
+  interaction history.
+  Explicit support failure -> EXTRAPOLATION_PROHIBITED.
+- No arbitrary migration buckets or hard-coded ATR thresholds are defined.
+- Taiwan evidence supports treating technical-rule behavior and volatility as interacting context; recent Taiwan volatility research also shows model specification and sector context materially affect volatility-targeting behavior. This is context evidence, not D01 alpha proof.
+- Henderson et al. (2026) explicitly note their tractable model fixes support/resistance levels despite real-world path dependencies being more complex; DL-032 therefore preserves causal fixed geometry while allowing context to migrate around it.
+- New files:
+  - research/PATTERN_REGIME_SCALE_MIGRATION_V0_1.md
+  - research/pattern_regime_scale_migration_v0_1.json
+  - research/pattern_regime_scale_migration_v0_1.mjs
+  - research/test_pattern_regime_scale_migration_v0_1.mjs
+  - research/PATTERN_REGIME_SCALE_MIGRATION_D16_HANDOFF_V0_1.md
+- 14 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcomes inspected; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-032
+
+1. Reconcile the DL-032 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-032 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve the frozen structural boundary while formation/current scale and regime descriptors evolve; never rescue old geometry by ATR widening.
+4. Consume D04/D05/D18/D02 owner receipts without duplicating their taxonomies.
+5. Hand common-support and C0-C3 nested inference semantics to D16.
+6. Next D01 science: separate structural aging from absolute price displacement / long excursion path so "far away for a long time" is not conflated with "old."
+7. No outcome join / no runtime wiring / no Formal change.
