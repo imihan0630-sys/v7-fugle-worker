@@ -1538,3 +1538,97 @@ No maturity or Formal change is authorized by this routing.
 5. Hand F0-F3 parent/root/role-episode inference semantics to D16.
 6. Next D01 science: distinguish genuine polarity memory from simple breakout displacement/momentum and from boundary salience under matched first-retest opportunity.
 7. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-035 (2026-10-04)
+
+### DL-035 — Polarity memory vs breakout momentum, boundary salience and retest selection
+- DL-034 established causal role-reversal eligibility and kept the first opposite-side retest outcome outside eligibility.
+- DL-035 adds three alternative explanations that must be separated before any polarity-memory claim:
+  generic breakout continuation/momentum;
+  boundary salience/price clustering/reference-point effects;
+  selection into the subset that later produces a first retest.
+- External evidence strengthens these controls:
+  Osler shows acceleration through technical levels can arise from clustered order flow;
+  George/Hwang show salient price-reference proximity can dominate past-return momentum information;
+  Hao/Chu/Ho/Ko find mixed anchoring/recency evidence for 52-week-high momentum in Taiwan;
+  Chiao finds Taiwan limit-order prices cluster at integer/even prices and that clustering creates price barriers;
+  modern technical-rule studies treat support/resistance/channel breakouts as a broad rule family distinct from polarity memory.
+- Two future estimands are frozen:
+  E1 FIRST_RETEST_ARRIVAL = among all eligible breakouts, whether/when a valid first opposite-side retest occurs;
+  E2 FIRST_RETEST_RESPONSE = conditional on FIRST_RETEST_ARRIVED, what happens at/after that first valid opportunity.
+- E2 may not be described as an unconditional polarity effect because it conditions on retest selection.
+- Pre-break context is frozen no later than breakoutConfirmedAt and may contain:
+  breakout quality/excess;
+  D02 acceptance/persistence;
+  volatility/liquidity/regime;
+  relative tick and constraints;
+  boundary salience / detector prominence / reference-level proximity.
+- Post-break/pre-retest descriptors are a different causal-timing family:
+  maximum directional displacement;
+  cumulative path;
+  time to retest;
+  retracement/return-path descriptors;
+  intervening scale/liquidity migration.
+- Those post-break descriptors are MEDIATOR_OR_SELECTION_VARIABLE, not ordinary baseline confounders.
+- Future D16 must distinguish:
+  TOTAL_POLARITY_INCREMENT = S1 vs S0 with pre-break adjustment only;
+  PATH_CONDITIONAL_POLARITY_INCREMENT = conditional E2 comparison after explicit post-break path adjustment.
+- Removing an effect after post-break adjustment does not automatically mean "no polarity effect"; it can mean the effect is mediated/explained through the breakout path and the estimand changed.
+- Primary comparator family is frozen:
+  S0_SALIENT_NON_ROLE_BREAKOUT = causally salient breakout boundary without certified prior opposite support/resistance role;
+  S1_CERTIFIED_FORMER_ROLE_BREAKOUT = comparable boundary with certified former opposite role.
+- Random horizontal breakout lines are rejected as the primary control.
+- Preferred S0 sources include same-detector salient/unconfirmed structural candidates from DL-028 or preregistered salient range/channel/reference boundaries.
+- Do not exact-match away the full treatment definition:
+  presence of certified former role and intensity of role history are separate estimands.
+- E1 selection reporting must include S0/S1:
+  eligible breakout N;
+  first-retest arrival rate;
+  time-to-retest distribution;
+  cancellation rate;
+  right-censoring rate;
+  data-block / constraint rate.
+- States remain separate:
+  FIRST_RETEST_ARRIVED;
+  RIGHT_CENSORED_NO_RETEST;
+  CANCELLED_BEFORE_RETEST;
+  DATA_BLOCKED.
+  They may not be pooled into "failed flip."
+- Future nested interpretation:
+  I0 generic salient breakout/retest;
+  I1 pre-break matched context;
+  I2 + certified former role;
+  I3 + explicit post-break path for conditional interpretation.
+- Future labels:
+  Q0_GENERIC_BREAKOUT_SUFFICIENT;
+  Q1_POLARITY_INCREMENT;
+  Q2_PATH_MEDIATED;
+  Q3_SALIENCE_EXPLANATION;
+  Q4_SELECTION_SENSITIVE;
+  Q5_NOT_EVALUABLE.
+- Common support for the total estimand is evaluated in pre-break context.
+  Path-conditional E2 additionally requires post-break path common support.
+- One breakout candidate remains one causal unit even when it contributes an E1 record, E2 snapshot and many descriptors.
+- New files:
+  - research/PATTERN_POLARITY_INCREMENTALITY_V0_1.md
+  - research/pattern_polarity_incrementality_v0_1.json
+  - research/pattern_polarity_incrementality_v0_1.mjs
+  - research/test_pattern_polarity_incrementality_v0_1.mjs
+  - research/PATTERN_POLARITY_INCREMENTALITY_D16_HANDOFF_V0_1.md
+- 18 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcomes inspected; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-035
+
+1. Reconcile the DL-035 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-035 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve E1 first-retest arrival and E2 conditional response as distinct estimands.
+4. Keep post-break/pre-retest path variables marked as mediators/selection variables, not baseline confounders.
+5. Hand total-vs-path-conditional inference and S0/S1 common-support handling to D16.
+6. Next D01 science: distinguish inherited old-role polarity memory from NEW post-break structure formed after the crossing near the same price zone.
+7. No outcome join / no runtime wiring / no Formal change.

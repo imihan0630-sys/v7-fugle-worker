@@ -1,0 +1,19 @@
+{
+  "schemaVersion":"pattern-polarity-incrementality-v0.1",
+  "updated":"2026-10-04 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "estimands":["E1_FIRST_RETEST_ARRIVAL","E2_FIRST_RETEST_RESPONSE"],
+  "comparators":["S0_SALIENT_NON_ROLE_BREAKOUT","S1_CERTIFIED_FORMER_ROLE_BREAKOUT"],
+  "retestArrivalEqualsRetestResponse":false,
+  "conditionOnRetestWithoutSelectionReport":"PROHIBITED",
+  "postBreakPathAsBaselineConfounder":"PROHIBITED",
+  "salienceMatchRequired":true,
+  "randomBreakoutLineAsPrimaryControl":"REJECTED",
+  "formerRoleHistoryIncrementalityRequired":true,
+  "postBreakDescriptors":"MEDIATOR_OR_SELECTION_VARIABLE",
+  "futureInferenceOwner":"D16",
+  "outcomeJoin":"CLOSED",
+  "formalOptimizationCandidate":"NONE"
+}
