@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "D07_34_DIVIDEND_SOURCE_PARSER_CONTRACT_V0_1",
+  "researchRoom": "06",
+  "domain": "D07",
+  "module": "D07-34",
+  "frozenAtAsiaTaipei": "2026-10-04T17:38:00+08:00",
+  "purpose": "Freeze the official Taiwan listed-company dividend source schema and fail-closed PIT semantics before any historical replay or outcome join.",
+  "officialSources": {
+    "twseOpenApi": {
+      "endpoint": "https://openapi.twse.com.tw/v1/opendata/t187ap45_L",
+      "swagger": "https://openapi.twse.com.tw/",
+      "verifiedAt": "2026-10-04",
+      "transport": "PUBLIC_JSON",
+      "observedFields": [
+        "出表日期",
+        "公司代號",
+        "公司名稱",
+        "決議（擬議）進度",
+        "股利年度",
+        "股利所屬年(季)度",
+        "股利所屬期間",
+        "期別",
+        "董事會（擬議）股利分派日",
+        "股東會日期",
+        "期初未分配盈餘/待彌補虧損(元)",
+        "本期淨利(淨損)(元)",
+        "可分配盈餘(元)",
+        "分配後期末未分配盈餘(元)",
+        "股東配發-盈餘分配之現金股利(元/股)",
+        "股東配發-法定盈餘公積發放之現金(元/股)",
+        "股東配發-資本公積發放之現金(元/股)",
+        "股東配發-股東配發之現金(股利)總金額(元)",
+        "股東配發-盈餘轉增資配股(元/股)",
+        "股東配發-法定盈餘公積轉增資配股(元/股)",
+        "股東配發-資本公積轉增資配股(元/股)",
+        "股東配發-股東配股總股數(股)",
+        "摘錄公司章程-股利分派部分",
+        "備註"
+      ],
+      "semantics": {
+        "decisionProgress": "Observed values include 董事會擬議, 董事會決議, 股東會確認; parse as state, not as one universal finality flag.",
+        "distributionSource": "Cash and stock distributions are source-separated across earnings, legal reserve and capital reserve fields.",
+        "boardDate": "董事會（擬議）股利分派日 is a decision/proposal date candidate, not an exact publication timestamp.",
+        "shareholderDate": "股東會日期 is a governance/finality date when present, not ex-date or payment date.",
+        "reportDate": "出表日期 is current dataset generation date and must not be backfilled as historical first-known."
+      },
+      "currentSnapshotLimitation": "The public OpenAPI endpoint is verified as a current snapshot. This run did not prove immutable historical vintages of the same row, so it cannot by itself establish historical proposal-to-final correction lineage."
+    },
+    "mops": {
+      "landing": "https://mops.twse.com.tw/mops/web/t120sb02_q10",
+      "verifiedCapabilities": [
+        "股利分派情形",
+        "股利分派頻率與決議層級",
+        "除權息公告",
+        "歷史重大訊息"
+      ],
+      "role": "Candidate canonical event/version source for proposal/final/correction chronology; exact historical machine replay and immutable first-known timestamps remain to be physically validated."
+    },
+    "twseCorporateAction": {
+      "productPage": "https://eshop.twse.com.tw/zh/product/detail/000000006e0bbe8d016f182105d90328",
+      "observedContract": "T48 ex-right/ex-dividend and listing information file; daily; source page states production at 23:00 on each announcement day; data start 2019-12-23; licensed product.",
+      "authorization": "NOT_AUTHORIZED_FOR_PURCHASE_OR_USE",
+      "role": "Documents that a deterministic licensed corporate-action lane exists; public research must not silently inherit this licensed history."
+    }
+  },
+  "witnessedStates": [
+    {
+      "symbol": "1101",
+      "observedProgress": "股東會確認",
+      "cashFromEarningsPerShare": "0.0",
+      "cashFromCapitalReservePerShare": "0.80000000",
+      "inference": "A positive cash distribution can be capital-reserve-funded even when current net income is negative; nominal DPS alone is not earnings-supported payout."
+    },
+    {
+      "symbol": "1102",
+      "observedProgress": "董事會決議",
+      "period": "1141001~1141231",
+      "cashFromEarningsPerShare": "2.30000000",
+      "note": "Board-authorized future adjustment of per-share cash rate if shares outstanding change before the ex-dividend record date.",
+      "inference": "Decision amount/rate and later ex-date share denominator require lineage; a single current row is insufficient for immutable PIT replay."
+    },
+    {
+      "symbol": "1108",
+      "observedProgress": "董事會擬議",
+      "inference": "The source explicitly distinguishes a proposal state from confirmed/final states."
+    }
+  ],
+  "parserContract": {
+    "identityKey": [
+      "公司代號",
+      "股利年度",
+      "股利所屬期間",
+      "期別"
+    ],
+    "stateFields": [
+      "決議（擬議）進度",
+      "董事會（擬議）股利分派日",
+      "股東會日期"
+    ],
+    "sourceFields": [
+      "股東配發-盈餘分配之現金股利(元/股)",
+      "股東配發-法定盈餘公積發放之現金(元/股)",
+      "股東配發-資本公積發放之現金(元/股)",
+      "股東配發-盈餘轉增資配股(元/股)",
+      "股東配發-法定盈餘公積轉增資配股(元/股)",
+      "股東配發-資本公積轉增資配股(元/股)"
+    ],
+    "failClosed": [
+      "Unknown progress labels remain UNKNOWN and never map to FINAL.",
+      "Blank shareholder-meeting date does not imply missing or invalid dividend; quarterly board-only distributions can be legitimate.",
+      "Zero current-period net income does not imply zero distributable capacity; retained earnings/reserve sources must remain separate.",
+      "Current OpenAPI rows may not be used to reconstruct earlier first-known values without archived raw receipts.",
+      "Stock dividends are not cash outflows.",
+      "Ex-date/payment clocks must come from their canonical event sources and cannot be inferred from board/shareholder dates."
+    ]
+  },
+  "pitAssessment": {
+    "transport": "PASS",
+    "currentSchema": "PASS",
+    "distributionSourceSeparation": "PASS",
+    "decisionProgressSemantics": "PASS",
+    "historicalImmutableVintage": "UNKNOWN",
+    "exactPublicationTimestamp": "UNKNOWN",
+    "correctionSupersessionLineage": "UNKNOWN",
+    "exDatePaymentJoin": "PENDING",
+    "historicalReplay": "NOT_YET_COMPLETE",
+    "l3Gate": "NOT_MET"
+  },
+  "falsification": [
+    "If historical MOPS/TWSE retrieval cannot preserve proposal/final/correction vintages without overwrite, historical replay remains blocked and only prospective receipts are valid.",
+    "If decision-progress labels are not stable across eras, parser versions must be date-bounded rather than silently normalized.",
+    "If distribution-source fields are revised after first publication, the pre-revision receipt remains the only valid earlier PIT state.",
+    "If source coverage systematically excludes special distributions or financial institutions, D07-34 cannot generalize without a separate lane."
+  ],
+  "outcomeAccessed": false,
+  "formalCoreChanged": false,
+  "formalOptimizationCandidate": "NONE",
+  "exactNext": [
+    "Capture raw MOPS dividend-distribution and related material-information receipts for at least one proposal-to-final or correction lineage.",
+    "Preserve raw bytes/hash, firstObservedAt, capturedAt, company, fiscal period, decision state and source classification append-only.",
+    "Join ex-date/payment only from canonical event sources.",
+    "Validate ordinary cash, reserve-funded cash, stock dividend and financial-institution exception before any L3 claim."
+  ]
+}
