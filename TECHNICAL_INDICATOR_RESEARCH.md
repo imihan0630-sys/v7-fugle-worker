@@ -3383,3 +3383,148 @@ Current:
 
 Exact next:
 shared System1 parent owner implements/version-controls the additive provenance patch under Production governance; re-audit effective runtime boundary; first genuine trading session after deploy must produce one cutoff-bearing immutable C1 generation; continuity owner then binds a cutoff-safe evidence cut; D03 executes Bollinger v0.2 across the complete expected parent population before any 58.3% promotion. ADX remains behind canonical FULL_REPLAY.
+
+
+## TI-693 through TI-700 — V8.18 decision-cutoff provenance engineering gate (2026-10-05)
+
+Durable engineering evidence:
+- draft PR `#600`;
+- exact CI head `f030f04c1a807a23fe19072b96407f1436d09da8`;
+- candidate runtime label `8.18.0-decision-cutoff-provenance`;
+- branch checkpoint `research/SYSTEM1_DECISION_CUTOFF_PROVENANCE_IMPLEMENTATION_20261005.md`.
+
+### TI-693 — additive provenance implementation exists on a non-Production branch
+
+The owner-handoff ambiguity from TI-686~692 has been reduced to executable code.
+
+The V8.18 candidate:
+1. stamps `decisionCutoffAt` immediately after the audited final Formal-affecting `V7_MARKET_CONSENSUS` KV read;
+2. passes the exact timestamp into the synchronous Formal selector as research provenance only;
+3. passes it into `buildC1PopulationReceipt`;
+4. validates finite ordering against the later `decisionAt`;
+5. persists it in the existing immutable C1 `header_json`;
+6. exposes it automatically through existing C1 generation readback;
+7. adds no provider call and no D1 schema column;
+8. never backfills historical generations.
+
+The candidate does not alter the Formal scoring/ranking/quota/capital/signal/push/order definitions.
+
+### TI-694 — exact runtime placement is mechanically frozen
+
+Dedicated V8.18 fixture verifies:
+
+`V7_MARKET_CONSENSUS read -> decisionCutoffAt stamp -> selectTomorrowCandidates`.
+
+Between the cutoff stamp and selector call:
+- no `await`;
+- no `fetch`;
+- no `STOCKS_KV.get`;
+- no `V7_DB` read.
+
+The selector remains synchronous and external-read-free.
+
+Result:
+`DECISION_CUTOFF_PLACEMENT = POST_V7_MARKET_CONSENSUS_PRE_SELECTOR`.
+
+### TI-695 — existing immutable header is sufficient
+
+A dedicated D1 scalar column is still not required.
+
+The candidate writes cutoff provenance into the existing C1 immutable header and reads it back through the existing protected generation reader.
+
+Fixture:
+`headerRoundTrip=true`.
+
+Therefore:
+`DECISION_CUTOFF_PERSISTENCE = EXISTING_HEADER_JSON_PATH`.
+
+### TI-696 — same-generation cutoff mutation is physically rejected
+
+The dedicated fixture persists one C1 generation, then attempts the same generation identity with a changed cutoff.
+
+Observed:
+`sameGenerationCutoffMutation=CONFLICT`.
+
+The existing V8.15.1 immutable-header guard raises:
+`C1_IMMUTABLE_GENERATION_CONFLICT`.
+
+Therefore the cutoff inherits the existing generation immutability contract without a second persistence mechanism.
+
+### TI-697 — V8 Repair CI passes
+
+PR #600 exact head:
+`f030f04c1a807a23fe19072b96407f1436d09da8`.
+
+V8 Repair CI:
+- run `37237843589`;
+- conclusion: SUCCESS.
+
+The candidate build chain applies V8.18 after V8.17 and the expected effective version is present.
+
+### TI-698 — isolated C1/C2 repair review passes 100/100
+
+System1 C1 C2 isolated offline repair review:
+- run `37237843572`;
+- conclusion: SUCCESS;
+- tests: 100 / 100 PASS.
+
+Observed V8.18 changed functions relative to V8.17:
+- `runAfterMarketScanCore`;
+- `buildC1PopulationReceipt`;
+- `selectTomorrowCandidates`.
+
+Frozen review fields:
+- `selectorUnchangedExceptCaptureFirewall=true`;
+- `runAfterMarketScanCoreUnchangedExceptCutoffStamp=true`;
+- `decisionCutoffProvenanceOnly=true`;
+- `formalCoreImpact=false`.
+
+Protected function count reported by the isolated review: 451.
+
+### TI-699 — full regression passes
+
+V8 Regression Tests:
+- run `37237843517`;
+- conclusion: SUCCESS.
+
+The dedicated V8.18 fixture executes inside the full regression chain and reports:
+- `status=PASS`;
+- `version=8.18.0-decision-cutoff-provenance`;
+- `decisionCutoffPlacement=POST_V7_MARKET_CONSENSUS_PRE_SELECTOR`;
+- `headerRoundTrip=true`;
+- `sameGenerationCutoffMutation=CONFLICT`;
+- `historicalBackfill=false`;
+- `formalCoreImpact=false`.
+
+No Cloudflare Production deployment was triggered by the draft PR.
+
+### TI-700 — maturity and authority decision
+
+This tranche is engineering evidence, not a genuine Taiwan trading-session parent receipt.
+
+Therefore:
+- D03-10 Bollinger remains L2/40;
+- D03-09 ADX remains L2/40;
+- D03 aggregate remains **56.7%**;
+- raw D03 source-version gate remains 2/3;
+- TI-005/TI-006 outcomes remain CLOSED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+PR #600 remains:
+- OPEN;
+- DRAFT;
+- MERGEABLE;
+- NOT MERGED.
+
+The next action crosses the protected Production boundary:
+owner approval is required before merge/deploy of the concrete PR.
+
+After an approved deploy, maturity still does not rise immediately.
+The next genuine Taiwan trading session must produce:
+1. a cutoff-bearing immutable C1 generation;
+2. exact protected readback;
+3. cutoff-safe owner continuity receipt/evidence cut;
+4. complete expected-parent Bollinger v0.2 reconciliation.
+
+Only then may D03-10 be considered for L3 and D03 58.3%.
+ADX remains second and additionally requires canonical FULL_REPLAY.
