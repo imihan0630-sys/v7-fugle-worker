@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "D03_CONTINUITY_REVISION_SOURCE_PROGRESS_20261004_V0_1",
+  "updatedAt": "2026-10-04T09:15:00+08:00",
+  "classification": "OUTCOME_BLIND_PHYSICAL_SOURCE_CAPABILITY",
+  "formalCore": "LOCKED",
+  "gatewayTls": {
+    "host": "mops.twse.com.tw",
+    "physicalState": "CERTIFICATE_EXPIRED",
+    "leafNotAfter": "2026-05-31T15:59:59Z",
+    "opensslVerifyCode": 10,
+    "tlsBypassAllowed": false
+  },
+  "directHistory": {
+    "host": "mopsov.twse.com.tw",
+    "path": "/mops/web/ajax_t05st01",
+    "tlsState": "VALID_PHYSICAL_PASS",
+    "leafNotAfter": "2026-11-28T15:59:59Z",
+    "positiveControlHttpStatus": 200,
+    "standardTlsVerification": true
+  },
+  "controlMatrix": {
+    "workflowRunId": 37167344795,
+    "state": "MULTI_FAMILY_CORRECTION_AND_CANCELLATION_CAPABILITY_OBSERVED",
+    "controlCount": 5,
+    "passCount": 5,
+    "correctionControls": "4_OF_4_PASS",
+    "cancellationControls": "1_OF_1_PASS",
+    "actionFamilies": [
+      "DIVIDEND_EX_DATE",
+      "CAPITAL_REDUCTION_SCHEDULE",
+      "CAPITAL_REDUCTION_DECISION",
+      "CASH_CAPITAL_INCREASE"
+    ]
+  },
+  "completeness": {
+    "boundedIntervalCoverageComplete": false,
+    "actionFamilyCoverageComplete": false,
+    "cancellationHistoryComplete": false,
+    "knownAtVersionClockCertified": false,
+    "revisionCoverageComplete": false,
+    "symbolSessionCompletenessCertified": false,
+    "technicalContinuityCertified": false
+  },
+  "immutableParent": {
+    "ownerApprovedClassB": true,
+    "handoff": "research/SYSTEM1_SHADOW_COHORT_MEMBERSHIP_CLASS_B_HANDOFF_20261004.md",
+    "implementationPending": true,
+    "currentProductionImmutableParent": "NOT_IMPLEMENTED",
+    "d1SchemaImplementation": "NOT_IMPLEMENTED"
+  },
+  "d03": {
+    "maturityPct": 56.7,
+    "moduleCount": 12,
+    "d03_09": {
+      "level": "L2",
+      "maturityPct": 40,
+      "state": "RECURSIVE_REPLAY_AND_PHYSICAL_PARENT_CONTINUITY_BLOCKED"
+    },
+    "d03_10": {
+      "level": "L2",
+      "maturityPct": 40,
+      "state": "FINITE_WINDOW_PHYSICAL_PARENT_CONTINUITY_BLOCKED"
+    },
+    "nextHonestMaturityPctAfterBollingerL3": 58.3,
+    "nextHonestMaturityPctAfterAdxL3": 60
+  },
+  "outcomes": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
