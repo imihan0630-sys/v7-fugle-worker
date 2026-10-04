@@ -38,9 +38,16 @@ export function parseOfficialHistoricalA6ValuationPayloadV0_1({
   if(!payload||typeof payload!=="object"||Array.isArray(payload)) throw new Error("A6 payload must be object");
   if(payload.stat!=="OK") throw new Error("A6 source stat not OK");
   if(!Array.isArray(payload.fields)||!Array.isArray(payload.data)) throw new Error("A6 fields/data invalid");
-  const required=["證券代號","證券名稱","收盤價","本益比","股價淨值比","財報年/季"];
+  const required=["證券代號","證券名稱","本益比","股價淨值比"];
   const missing=required.filter(h=>!payload.fields.includes(h));
-  if(missing.length) throw new Error("A6 schema drift missing: "+missing.join(","));
+  if(missing.length) throw new Error("A6 schema drift missing core: "+missing.join(","));
+  const closeFieldProvided=payload.fields.includes("收盤價");
+  const fiscalReportPeriodFieldProvided=payload.fields.includes("財報年/季");
+  const sourceSchemaProfile=closeFieldProvided&&fiscalReportPeriodFieldProvided
+    ?"MODERN_RATIO_PLUS_CONTEXT"
+    :(!closeFieldProvided&&!fiscalReportPeriodFieldProvided
+      ?"LEGACY_RATIO_ONLY"
+      :"PARTIAL_RATIO_CONTEXT");
   const evidence=payloadDate(payload.date);
   if(!evidence) throw new Error("A6 source date evidence missing");
   if(evidence!==date) throw new Error("SOURCE_DATE_MISMATCH:A6:requested="+date+":received="+evidence);
@@ -60,11 +67,13 @@ export function parseOfficialHistoricalA6ValuationPayloadV0_1({
       marketDate:date,
       symbol,
       companyName:String(raw[idx["證券名稱"]]??"").trim()||null,
-      close:numberOrNull(raw[idx["收盤價"]]),
+      close:closeFieldProvided?numberOrNull(raw[idx["收盤價"]]):null,
+      closeState:closeFieldProvided?"SOURCE_FIELD_PRESENT":"SOURCE_NOT_PROVIDED",
       pe,pb,
       peState:pe===null?"SOURCE_NA_OR_UNKNOWN":"KNOWN",
       pbState:pb===null?"SOURCE_NA_OR_UNKNOWN":"KNOWN",
-      fiscalReportPeriod:String(raw[idx["財報年/季"]]??"").trim()||null,
+      fiscalReportPeriod:fiscalReportPeriodFieldProvided?(String(raw[idx["財報年/季"]]??"").trim()||null):null,
+      fiscalReportPeriodState:fiscalReportPeriodFieldProvided?"SOURCE_FIELD_PRESENT":"SOURCE_NOT_PROVIDED",
       sourceFields:deepFreeze({fields:payload.fields,row:raw}),
       observedAt:String(observedAt||new Date().toISOString()),
       sourceId:OFFICIAL_HISTORICAL_A6_VALUATION_SOURCE.sourceId,
@@ -77,6 +86,9 @@ export function parseOfficialHistoricalA6ValuationPayloadV0_1({
     sourceUrl:sourceUrl||buildOfficialHistoricalA6ValuationUrlV0_1(date),
     sourceDateEvidence:evidence,
     fieldFingerprint:payload.fields.join("|"),
+    sourceSchemaProfile,
+    closeFieldProvided,
+    fiscalReportPeriodFieldProvided,
     sourcePayloadHash:sourcePayloadHash||null,
     sourcePayloadBytes:Number.isInteger(sourcePayloadBytes)?sourcePayloadBytes:null,
     ordinarySymbolCount:rows.length,
