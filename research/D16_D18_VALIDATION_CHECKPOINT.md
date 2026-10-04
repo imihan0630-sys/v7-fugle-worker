@@ -1726,3 +1726,49 @@ Global tracker maturity after recompute: **44.8%**.
 No L4 / policy-alpha claim. FORMAL_OPTIMIZATION_CANDIDATE: NONE. Formal Core LOCKED.
 
 Exact next: collect prospective D18-08 activation frames and mature outcomes before policy-value evaluation. D18-09 dynamic weighting remains separate and stronger; do not inherit D18-08 evidence.
+
+
+## 2026-10-04 D18-09 Dynamic Strategy Weighting — L3
+
+Canonical evidence: `research/D18_09_DYNAMIC_WEIGHT_L3_ACCEPTANCE_20261004_V0_1.md`.
+
+D18-09 -> L3/60.
+
+Validated artifacts:
+- `system2/runtime/d18_strategy_weight_frame_v0_1.mjs`;
+- `system2/tests/d18_strategy_weight_frame_v0_1.test.mjs`;
+- `research/d18_09_weight_prereg_v0_1.json`.
+
+First preregistered map:
+- SHORT_MOMENTUM V0.1-CONTRACT;
+- UP_TREND_CONTEXT=1.0;
+- RANGE_OR_MIXED=1.0;
+- DOWN_TREND_CONTEXT=0.5;
+- UNKNOWN=DATA_UNKNOWN;
+- leverage disabled; max research weight 1.0.
+
+Acceptance:
+- immutable Shadow run fingerprint/accounting binding;
+- PIT regime identity;
+- preregistered tiny discrete map;
+- adjacent official-session prior-weight lineage;
+- warmup/unknown turnover explicit;
+- incremental policy-turnover cost charged;
+- no capital/share/position-size assignment;
+- no outcome optimization / threshold sweep / continuous optimizer;
+- no Formal/runtime impact.
+
+Final validated head:
+- System2 Research CI 37183844832 SUCCESS;
+- V8 Repair CI 37183844868 SUCCESS;
+- V8 Regression 37183844915 SUCCESS.
+
+Initial CI 37183792148 failed only on a test-fixture async syntax error and is not acceptance evidence.
+
+D18 domain maturity after D18-09 promotion: **53.3%**.
+Room D16+D18 module-weighted maturity: **57.5%**.
+Global tracker maturity after recompute: **44.8%**.
+
+No L4 / policy-alpha claim. FORMAL_OPTIMIZATION_CANDIDATE: NONE. Formal Core LOCKED.
+
+Exact next: accumulate prospective D18-09 frames/outcomes. D18-12 remains L2 until a valid strategy-level equity/drawdown path exists; do not fabricate drawdown from pooled stock rows.
