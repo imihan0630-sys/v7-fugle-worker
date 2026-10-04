@@ -952,3 +952,49 @@ Formal Core remains LOCKED. No FORMAL_OPTIMIZATION_CANDIDATE.
 6. Execute D03/D09 paired redundancy controls on the identical frozen universe/date once compatible PIT inputs exist.
 7. Freeze a D14-compatible cost scenario with explicit component quality; owner-account actual commission stays UNKNOWN unless directly evidenced.
 8. Only a deterministic full-Taiwan replay with zero applicable L3 blockers triggers readiness review; no automatic promotion.
+
+
+## 2026-10-04 Long-block Stage 10 — valid-observation contract + dual-official-source price-absence reconciliation
+
+### Durable implementation
+- PR #489 merged as `81145020202f2806f754007062ae6a60d2979760`.
+- Added `research/d19_04_valid_observation_contract_v0_1.json` and `system2/runtime/d19_valid_observation_adapter_v0_1.mjs`.
+- D19-04 symbol-session observations are now explicit states rather than implicit missing-value handling: ELIGIBLE_VALID_PRICE_SESSION, VERIFIED_NONTRADING_OR_EXCLUDED_SESSION, OFFICIAL_ZERO_TRADE_ROW, UNRESOLVED_TRADING_ACTIVITY_WITHOUT_VALID_CLOSE and SOURCE_UNKNOWN.
+- Forward fill, previous-close substitution, positive-activity-to-price reconstruction and zero-trade-to-zero-return conversion are prohibited.
+- D19 cannot infer suspension locally. VERIFIED_NONTRADING_OR_EXCLUDED_SESSION requires an external authoritative evidence receipt with source hash and reason code.
+- Two preregistered research comparators are frozen: `CALENDAR_20_STRICT_V0_1` and `VALID_OBSERVATION_20_V0_1`. The latter requires an explicit maximum calendar-span parameter and is sensitivity research, not a silent redefinition of momentum.
+
+### Shared source-adapter defect found and repaired
+- The live TWSE STOCK_DAY individual-security monthly history uses ROC-calendar row dates such as 115/08/03, while the existing shared monthly-history adapter test had only exercised Gregorian 2026/09/01 fixtures.
+- PR #489 therefore also extends the TWSE monthly-history date parser to accept both Gregorian and ROC formats and adds a regression fixture. This is source compatibility only; it does not change factor semantics.
+
+### Physical validation
+- System2 Research CI `37181597861`: PASS.
+- V8 Regression `37181597874`: PASS.
+- V8 Repair CI `37181597908`: PASS.
+- D19 real-source valid-observation workflow `37181597868`: PASS; production isolation PASS.
+- Primary full-market TWSE replay again reproduced exactly 50 non-price observations across the 15 targeted symbols: 11 OFFICIAL_ZERO_TRADE_ROW and 39 UNRESOLVED_TRADING_ACTIVITY_WITHOUT_VALID_CLOSE. Deterministic primary evidence hash: `37d7a2d4922ae857ac9c62ede85a98e8f9fcbe3c75f085d2d776e3d13b0111d4`.
+
+### Second official-source falsification of the single-endpoint-missing-data hypothesis
+- The same 50 dates/symbols were independently queried through TWSE STOCK_DAY monthly individual-security history.
+- All 50 had a corresponding alternate official row but still no admissible close: ALTERNATE_OFFICIAL_ROW_WITHOUT_VALID_CLOSE = 50.
+- The 39 primary rows with positive trading activity yielded zero alternate-source valid closes: resolvedWithAlternateClose = 0; stillWithoutOfficialClose = 39.
+- Volume shares, trade value and transaction count matched exactly across the two official source interfaces for 50/50 rows.
+- Deterministic cross-source evidence hash: `5e2670ceab44650e7609b604c12bd19fb57d2fb92f2857f7cc4355c3ead878e3`.
+- This materially falsifies the hypothesis that the 39 rows are merely a MI_INDEX single-endpoint omission recoverable from STOCK_DAY. The price-availability question is now stronger: two official source interfaces agree that activity exists while no admissible daily close is present. The exact transaction-mechanism cause remains unresolved and must not be invented.
+
+### Scientific consequence
+- The 39 rows remain unusable as price observations. They are not zero returns and they must not receive stale prior closes.
+- A strict 21-market-session momentum clock will intentionally classify affected windows as incomplete.
+- A valid-price-observation clock is permitted only as a preregistered comparator with an explicit maximum calendar span; its potential stale-information selection bias must be reported rather than hidden.
+- The Stage-9 factor-input coverage blocker is therefore narrowed from ambiguous missing-price semantics to explicit official non-price observations plus shared symbol-session/continuity requirements.
+- No D19 module is promoted to L3 from this result. D19 remains 40.0% because TPEx replay, full shared continuity certification, PIT industry neutralization, D03/D09 redundancy and D14-compatible cost evidence remain open.
+
+### Exact next evidence program
+1. Physically test the existing official TPEx individual-security monthly-history route as an alternate source-independent replay primitive; current full-market daily routes remain HTTP 520.
+2. If the TPEx monthly route is physically readable, separate source feasibility from population/scale completeness: do not call a bounded smoke a full-market replay.
+3. Archive immutable receipt-equivalent source evidence for the six documented TWSE stop-trading/structural-event cases and bind shared continuity receipts to exact formation windows.
+4. Acquire date-vintaged PIT industry membership before neutralization.
+5. Execute paired D03/D09 redundancy only on identical PIT date/universe inputs.
+6. Freeze a D14-compatible component-wise cost scenario; owner-account commission remains UNKNOWN unless directly evidenced.
+7. Only a deterministic full-Taiwan replay with zero applicable blockers triggers an L3 readiness review; no automatic promotion.
