@@ -39,7 +39,13 @@ The first physical probe uses a publicly indexed announcement that is expected t
 - expected subject family: `減資換發股票作業相關事項公告`;
 - expected revision semantic: 更正/修正.
 
-The probe POSTs directly to the official MOPS host and passes only if the official response itself contains the expected company/symbol/subject/revision semantics and is not the MOPS security-error page.
+Probe revision 0.2 characterizes four transports: current MOPS direct POST, current MOPS root/query-page cookie warm-up then POST, legacy MOPSOV direct POST, and legacy MOPSOV root/query-page cookie warm-up then POST. A transport is capability-positive only when the official response itself contains the expected company/symbol/subject/revision semantics and is not the MOPS security-error page.
+
+## First physical attempt
+
+The first direct-current-host attempt returned HTTP 200 but the 800-byte MOPS security page, so direct POST without a session is explicitly rejected.
+
+This failure is preserved rather than hidden. The revised probe now treats a complete all-transport block as valid negative transport characterization while keeping every downstream authority flag false.
 
 ## What a PASS would prove
 
