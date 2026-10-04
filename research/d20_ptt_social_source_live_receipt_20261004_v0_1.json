@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "D20_PTT_SOCIAL_SOURCE_LIVE_RECEIPT_V0_1",
+  "capturedAtAsiaTaipei": "2026-10-04T13:59:48+08:00",
+  "sourceAuthority": "PTT_PUBLIC_WEB",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCore": "LOCKED",
+  "sources": [
+    {
+      "kind": "ATOM_FEED",
+      "url": "https://www.ptt.cc/atom/Stock.xml",
+      "fetchStatus": "SUCCESS",
+      "normalizedCaptureFingerprintFNV1A64": "ea925ab62247e5ea",
+      "observedCapabilities": [
+        "article URL discovery",
+        "article publication timestamp",
+        "feed update timestamp",
+        "author identifier",
+        "title/body preview"
+      ],
+      "rawByteEquivalence": "NOT_CLAIMED / normalized extracted capture only"
+    },
+    {
+      "kind": "ARTICLE_PAGE",
+      "url": "https://www.ptt.cc/bbs/Stock/M.1791092713.A.649.html",
+      "fetchStatus": "SUCCESS",
+      "normalizedCaptureFingerprintFNV1A64": "eb9c39d8f45c31b9",
+      "observedCapabilities": [
+        "public author handle",
+        "board",
+        "title",
+        "original post time to second",
+        "push/boo/arrow commenter handles",
+        "comment time to minute",
+        "explicit edit markers with editor handle and edit time to second"
+      ],
+      "rawByteEquivalence": "NOT_CLAIMED / normalized extracted capture only"
+    }
+  ],
+  "pitSemantics": {
+    "firstKnownRule": "Use capturedAt as conservative system-observable time. Source-stated post/comment/edit times are provenance and may not backdate system observability before the first successful capture.",
+    "versionRule": "Each later snapshot is append-only with capture fingerprint. Never rewrite a prior snapshot; disappearance or modification after an earlier snapshot becomes a new version state.",
+    "deletionRule": "If content disappears before first capture, historical state is UNKNOWN. If it disappears after a captured version, preserve prior version and append deletion/unavailable state.",
+    "actorIdentityRule": "PTT handle is a public forum actor identifier only, not verified brokerage investor identity.",
+    "commentClockPrecision": "Observed comment clock is minute-level on article pages; do not invent seconds.",
+    "articleClockPrecision": "Observed article publication and edit markers can be second-level where exposed."
+  },
+  "ownershipFirewall": {
+    "D20-11": "Owns topic/phrase/stance/narrative diffusion across posts, replies, authors and time.",
+    "D20-06": "Owns social-herding/leader-follower transforms only when sequential stance convergence is identified after common-news/topic controls.",
+    "sharedPrimitiveRule": "One PTT source receipt may feed both transforms but cannot create two independent selection votes.",
+    "D20-07": "Attention/salience controls may consume post/reply volume, but raw volume cannot be counted again as an independent behavioral vote.",
+    "D17": "News/event source remains canonical owner of underlying news/event facts; copied headlines are not independent narrative evidence."
+  },
+  "status": "LIVE_SOURCE_AND_CLOCK_FEASIBILITY_VERIFIED / PROSPECTIVE_VERSION_CHAIN_FEASIBLE / HISTORICAL_COMPLETENESS_NOT_CLAIMED / OUTCOMES_CLOSED"
+}
