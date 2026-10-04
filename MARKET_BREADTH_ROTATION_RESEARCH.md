@@ -2222,3 +2222,32 @@ D09-14 remains L3 by design. BR-058 is the first true prospective cohort freeze;
 - D09-07, D09-12 remain L2 until their explicit evidence blockers are cleared.
 
 Formal Core unchanged.
+
+
+## BR-045 — Five official TWSE snapshots clear the bounded sector-leadership PIT gate
+
+Artifact:
+`research/br045_twse_sector_leadership_lifecycle_pit_v0_1.json`
+
+Five independent official TWSE close snapshots across all 34 industry total-return indices are frozen:
+- 2026-09-23: 18/34 positive = MIXED_PARTICIPATION.
+- 2026-09-24: 12/34 positive = NARROW_PARTICIPATION.
+- 2026-09-30: 31/34 positive = BROAD_PARTICIPATION.
+- 2026-10-01: 15/34 positive = MIXED_PARTICIPATION; top3 had zero overlap with 9/30.
+- 2026-10-02: 16/34 positive = MIXED_PARTICIPATION; top3 again had zero overlap with 10/01.
+
+Frozen descriptive semantics:
+- leader set = same-date top quartile of official industry daily total-return percentage;
+- broad participation >=75% positive industries;
+- mixed = 40% to <75%;
+- narrow <40%;
+- thresholds are research descriptors only and were not tuned to forward returns.
+
+The sequence demonstrates replayable leadership persistence, churn, widening and narrowing at the mainstream-sector level. It does not prove stock-level leader lifecycle or predictive value.
+
+Maturity: `D09-07 L2 -> L3` bounded Taiwan PIT/source feasibility only.
+
+Exact next:
+BR-061 append future official snapshots under unchanged semantics; add member-level concentration/breadth only with effective-dated membership; no L4 before preregistered persistence/reversal outcomes and redundancy tests.
+
+Formal Core unchanged.
