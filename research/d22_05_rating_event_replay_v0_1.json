@@ -1,6 +1,6 @@
 {
   "schemaVersion": "D22_05_RATING_EVENT_REPLAY_V0_1",
-  "generatedAt": "2026-10-04T13:48:00+08:00",
+  "generatedAt": "2026-10-04T13:44:00+08:00",
   "status": "RESEARCH_ONLY / MULTI_ISSUER_MULTI_DATE_RATING_EVENT_REPLAY / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "governance": {
     "issuerRatingSeparateFromIssueRating": true,
