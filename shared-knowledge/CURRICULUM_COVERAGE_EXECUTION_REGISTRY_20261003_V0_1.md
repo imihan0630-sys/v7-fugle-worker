@@ -21,13 +21,13 @@ This registry tracks routing and return state; it does not itself decide module 
 
 | Candidate | Domain | Room | Current class | Specialist state | Expected return path |
 |---|---|---|---|---|---|
-| COV-01 | D01 | 01｜K線與型態研究室 | ACTIVE_CURRICULUM_OWNER_GAP | PENDING_SPECIALIST_RETURN | `research/COV01_D01_SPECIALIST_RETURN_V0_1.md` |
+| COV-01 | D01 | 01｜K線與型態研究室 | ACTIVE_CURRICULUM_OWNER_GAP | PARTIAL_EVIDENCE_RECEIVED | `research/COV01_D01_SPECIALIST_RETURN_V0_1.md` |
 | COV-02 | D05 | 04｜波動與市場微結構研究室 | SCOPE_EXTENSION_CANDIDATE | CANONICAL_UPDATE_COMPLETE | `research/COV_02_CLOSING_AUCTION_SPECIALIST_RETURN_20261004_V0_1.md` |
-| COV-04 | D07 | 06｜基本面與估值研究室 | TRUE_GAP_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV04_D07_SPECIALIST_RETURN_V0_1.md` |
-| COV-06 | D10 | 07｜產業與供應鏈研究室 | SCOPE_EXTENSION_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV06_D10_SPECIALIST_RETURN_V0_1.md` |
-| COV-07 | D12 | 09｜衍生品與國際總經研究室 | TRUE_GAP_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV07_D12_SPECIALIST_RETURN_V0_1.md` |
-| COV-10 | D20 | 13｜行為金融與市場心理研究室 | TRUE_GAP_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV10_D20_SPECIALIST_RETURN_V0_1.md` |
-| COV-11 | D21 | 14｜公司治理與內部人研究室 | TRUE_GAP_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV11_D21_SPECIALIST_RETURN_V0_1.md` |
+| COV-04 | D07 | 06｜基本面與估值研究室 | TRUE_GAP_CANDIDATE | CANONICAL_UPDATE_COMPLETE | `research/COV04_D07_SPECIALIST_RETURN_V0_1.md` |
+| COV-06 | D10 | 07｜產業與供應鏈研究室 | SCOPE_EXTENSION_CANDIDATE | PARTIAL_EVIDENCE_RECEIVED | `research/COV06_D10_SPECIALIST_RETURN_V0_1.md` |
+| COV-07 | D12 | 09｜衍生品與國際總經研究室 | TRUE_GAP_CANDIDATE | PARTIAL_EVIDENCE_RECEIVED | `research/COV07_D12_SPECIALIST_RETURN_V0_1.md` |
+| COV-10 | D20 | 13｜行為金融與市場心理研究室 | TRUE_GAP_CANDIDATE | PARTIAL_EVIDENCE_RECEIVED | `research/COV10_D20_SPECIALIST_RETURN_V0_1.md` |
+| COV-11 | D21 | 14｜公司治理與內部人研究室 | TRUE_GAP_CANDIDATE | PARTIAL_EVIDENCE_RECEIVED | `research/COV11_D21_SPECIALIST_RETURN_V0_1.md` |
 | COV-12 | D22 | 15｜信用市場與資本結構研究室 | SCOPE_EXTENSION_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV12_D22_SPECIALIST_RETURN_V0_1.md` |
 
 ## Coverage-B registry
@@ -37,10 +37,10 @@ Packet:
 
 | Candidate | Domain | Room | Current class | Specialist state | Expected return path |
 |---|---|---|---|---|---|
-| COV-03 | D06 | 05｜法人與籌碼研究室 | TRUE_GAP_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV03_D06_SPECIALIST_RETURN_V0_1.md` |
-| COV-05 | D08 | 06｜基本面與估值研究室 | SCOPE_EXTENSION_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV05_D08_SPECIALIST_RETURN_V0_1.md` |
-| COV-08 | D16 | 11｜統計驗證與策略市場狀態研究室 | SCOPE_EXTENSION_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV08_D16_SPECIALIST_RETURN_V0_1.md` |
-| COV-09 | D19 | 12｜資產定價與因子研究室 | SCOPE_EXTENSION_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV09_D19_SPECIALIST_RETURN_V0_1.md` |
+| COV-03 | D06 | 05｜法人與籌碼研究室 | TRUE_GAP_CANDIDATE | CANONICAL_UPDATE_COMPLETE | `research/COV03_D06_SPECIALIST_RETURN_V0_1.md` |
+| COV-05 | D08 | 06｜基本面與估值研究室 | SCOPE_EXTENSION_CANDIDATE | CANONICAL_UPDATE_COMPLETE | `research/COV05_D08_SPECIALIST_RETURN_V0_1.md` |
+| COV-08 | D16 | 11｜統計驗證與策略市場狀態研究室 | SCOPE_EXTENSION_CANDIDATE | PARTIAL_EVIDENCE_RECEIVED | `research/COV08_D16_SPECIALIST_RETURN_V0_1.md` |
+| COV-09 | D19 | 12｜資產定價與因子研究室 | SCOPE_EXTENSION_CANDIDATE | PARTIAL_EVIDENCE_RECEIVED | `research/COV09_D19_SPECIALIST_RETURN_V0_1.md` |
 
 Coverage-B packet readiness is not a structural curriculum decision.
 
@@ -332,3 +332,30 @@ Formal Core remains LOCKED. No System1/System2 Formal change.
 Canonical receipt:
 - `shared-knowledge/CURRICULUM_COV02_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md`
 - `shared-knowledge/curriculum_cov02_canonical_update_receipt_20261004_v0_1.json`
+
+
+## Late-afternoon Coverage registry reconciliation — 2026-10-04
+
+Latest canonical Tracker snapshot:
+- 22 domains;
+- 356 active modules;
+- 45.6% weighted maturity;
+- tracker updatedAt = 2026-10-04T16:47:00+08:00.
+
+This reconciliation corrects stale summary/table fields only. It does not change any specialist recommendation or curriculum structure.
+
+Canonical COV execution states:
+- CANONICAL_UPDATE_COMPLETE: COV-02, COV-03, COV-04, COV-05.
+- PARTIAL_EVIDENCE_RECEIVED: COV-01, COV-06, COV-07, COV-08, COV-09, COV-10, COV-11.
+- PENDING_SPECIALIST_RETURN: COV-12 only.
+
+Formal specialist returns physically present on main:
+- COV-02;
+- COV-03;
+- COV-04;
+- COV-05.
+
+No formal specialist return exists yet for COV-01, COV-06, COV-07, COV-08, COV-09, COV-10, COV-11 or COV-12.
+Partial evidence must not be mislabeled as a specialist return.
+
+Formal Core remains LOCKED.
