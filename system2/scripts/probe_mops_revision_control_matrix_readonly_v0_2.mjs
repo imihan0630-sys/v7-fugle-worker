@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { probeMopsRevisionSourceCapabilityV0_1 } from "../runtime/mops_revision_source_capability_v0_1.mjs";
+import { probeMopsovDirectHistoryV0_1 } from "../runtime/mopsov_direct_history_source_v0_1.mjs";
 import {
   MOPS_REVISION_CONTROLS_V0_2,
   summarizeMopsRevisionControlMatrixV0_2,
@@ -63,17 +63,17 @@ for (let index = 0; index < MOPS_REVISION_CONTROLS_V0_2.length; index += 1) {
     baseSubject: control.baseSubject,
   };
 
-  const primary = await probeMopsRevisionSourceCapabilityV0_1(args);
+  const primary = await probeMopsovDirectHistoryV0_1(args);
   let result = primary;
-  let transportUsed = "NODE_FETCH";
+  let transportUsed = "MOPSOV_NODE_FETCH";
 
-  if (primary.state === "GATEWAY_TRANSPORT_ERROR" || primary.state === "HISTORY_TRANSPORT_ERROR") {
+  if (primary.state === "DIRECT_HISTORY_TRANSPORT_ERROR") {
     await sleep(750);
-    result = await probeMopsRevisionSourceCapabilityV0_1({
+    result = await probeMopsovDirectHistoryV0_1({
       ...args,
       fetchImpl: curlFetch,
     });
-    transportUsed = "CURL_FALLBACK";
+    transportUsed = "MOPSOV_CURL_FALLBACK";
   }
 
   results.push({
