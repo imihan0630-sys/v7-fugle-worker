@@ -1640,3 +1640,23 @@ D18 domain maturity after D18-10 promotion: **50.7%**.
 Global tracker maturity: **44%**.
 
 FORMAL_OPTIMIZATION_CANDIDATE: NONE. Formal Core LOCKED.
+
+
+## 00 control-plane receipt — H09 audit complete
+
+00｜研究總控室 accepted the existing Room11 evidence as complete H09 specialist input.
+
+Result:
+`KEEP_SEPARATE / SCOPE_DEDUP_ONLY / OWNER_APPROVAL_REQUIRED`.
+
+Proposed ownership:
+- D16-19 = calibration implementation/diagnostics producer + immutable CalibrationReceipt;
+- D16-25 = calibrated-belief decision consumer: prior/Bayesian update, uncertainty, utility, risk-coverage, ABSTAIN;
+- D16-25 cannot fit a second calibrator or create a second probability authority.
+
+Both remain L2/40%. No rename or maturity change.
+
+Audit:
+`shared-knowledge/CURRICULUM_H09_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+Do not mutate canonical wording until explicit owner approval. This governance item does not override the room's active empirical sequence.
