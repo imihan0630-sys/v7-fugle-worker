@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-04 11:09 Asia/Taipei
+Updated: 2026-10-04 11:46 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -1388,3 +1388,26 @@ Canonical post-update curriculum:
 - D06: **18 modules / 45.6%**
 
 The maturity decrease is denominator expansion from a new L0 module, not loss of prior evidence. Formal Core, System1 Formal and System2 Formal remain unchanged.
+
+
+## H01 owner-approved canonical scope cleanup — 2026-10-04
+
+Owner approved the 00-room H01 Dependency / anti-orphan audit.
+
+Terminal governance result:
+- **KEEP_SEPARATE**;
+- implementation = **SCOPE_DEDUP_ONLY**;
+- no retirement, module-count change, maturity change or Formal Core change.
+
+Canonical ownership:
+- **D09-13 Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）** — industry × explicit product/geographic market definition × vintage; owns market-share level/distribution, rivalry, entry barriers, substitution, bargaining power and industry capacity/price/margin structure.
+- **D09-14 Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）** — issuer × observable strategic action × implementation stage × vintage; owns firm-specific action lifecycle, including capacity preemption, product/technology/geography positioning, alliance/M&A/vertical integration, competitor response and attributable post-action position change.
+
+Anti-double-count:
+- market-share, capacity, price, margin, customer and supplier observations have one parent evidence receipt;
+- without firm-specific action fields, the observation belongs only to D09-13;
+- D09-14 may link attributable post-action change as an outcome, not cast a duplicate simultaneous factor;
+- D10 physical-capacity evidence and D11/D17 event clocks remain dependencies, not duplicated ownership.
+
+Both modules remain L3/60%.
+This section supersedes earlier H01 language that treated merger into D09-13 as the likely outcome.
