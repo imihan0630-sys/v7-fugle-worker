@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { parseCsvRowsV0_1, parseListingDateV0_1 } from "../runtime/current_listing_metadata_v0_1.mjs";
 import { buildHistoricalUniverseRegistryV0_1, buildHistoricalUniverseSnapshotV0_1 } from "../runtime/historical_universe_registry_v0_1.mjs";
+import { buildOfficialTradingDatesV0_1 } from "../runtime/official_historical_backfill_source_v0_1.mjs";
+import { fetchOfficialHistoricalA1DateV0_1 } from "../runtime/official_historical_a1_source_v0_1.mjs";
 import fs from "node:fs";
 
 const sha=s=>createHash("sha256").update(typeof s==="string"?s:JSON.stringify(s)).digest("hex");
@@ -117,29 +119,58 @@ for(const row of newRows){
 for(const arr of listingsBySymbol.values()) arr.sort((a,b)=>a.listingDate.localeCompare(b.listingDate));
 
 const unmatched=[];
-const delistedSourceRows=[];
+const delistedCandidates=[];
 for(const d of delRows){
   const candidates=(listingsBySymbol.get(d.symbol)||[]).filter(x=>x.listingDate<=d.delistingDate);
   const chosen=candidates.at(-1)||null;
-  if(!chosen){
-    unmatched.push({symbol:d.symbol,companyName:d.companyName,delistingDate:d.delistingDate});
-    continue;
-  }
-  delistedSourceRows.push({
-    market:"TWSE",
-    symbol:d.symbol,
-    companyName:d.companyName||chosen.companyName,
-    memberState:"DELISTED",
-    listingDate:chosen.listingDate,
-    delistingDate:d.delistingDate,
-    industry:null,
-    sourceId:"TWSE_NEWLISTING_PLUS_DELISTING",
-    sourceName:"TWSE newlisting + suspendListing",
-    sourceUrl:"https://www.twse.com.tw/rwd/zh/company/newlisting?response=json | https://www.twse.com.tw/rwd/zh/company/suspendListing?response=json",
-    sourceRowHash:sha({newlisting:chosen.raw,delisting:d.raw}),
-  });
+  if(!chosen) unmatched.push({symbol:d.symbol,companyName:d.companyName,delistingDate:d.delistingDate});
+  delistedCandidates.push({d,chosen});
 }
-assert.deepEqual(unmatched,[],"2023+ delisted ordinary symbols missing official listing start");
+
+const trading=await buildOfficialTradingDatesV0_1({
+  fromDate:"2023-01-01",
+  toDate:"2023-01-06",
+});
+assert.ok(trading.tradingDates.length>0,"no official TWSE trading date at dataset start");
+const datasetFirstTradingDate=trading.tradingDates[0];
+const datasetStartWitness=await fetchOfficialHistoricalA1DateV0_1({
+  market:"TWSE",
+  marketDate:datasetFirstTradingDate,
+  observedAt,
+  firstTradingDateByMarketSymbol,
+});
+assert.equal(datasetStartWitness.state,"READY");
+const firstDateSymbols=new Set(datasetStartWitness.rows.map(x=>x.symbol));
+
+const firstTradingDateByMarketSymbol={};
+for(const u of unmatched){
+  assert.ok(firstDateSymbols.has(u.symbol),
+    "delisted symbol lacks listing date and is absent from dataset first trading session: "+u.symbol);
+  firstTradingDateByMarketSymbol["TWSE|"+u.symbol]=datasetFirstTradingDate;
+}
+
+const delistedSourceRows=delistedCandidates.map(({d,chosen})=>({
+  market:"TWSE",
+  symbol:d.symbol,
+  companyName:d.companyName||chosen?.companyName||null,
+  memberState:"DELISTED",
+  listingDate:chosen?.listingDate||null,
+  delistingDate:d.delistingDate,
+  industry:null,
+  sourceId:chosen?"TWSE_NEWLISTING_PLUS_DELISTING":"TWSE_DATASET_START_HISTORY_PLUS_DELISTING",
+  sourceName:chosen
+    ?"TWSE newlisting + suspendListing"
+    :"TWSE MI_INDEX dataset-start presence + suspendListing",
+  sourceUrl:chosen
+    ?"https://www.twse.com.tw/rwd/zh/company/newlisting?response=json | https://www.twse.com.tw/rwd/zh/company/suspendListing?response=json"
+    :datasetStartWitness.sourceUrl+" | https://www.twse.com.tw/rwd/zh/company/suspendListing?response=json",
+  sourceRowHash:sha({
+    newlisting:chosen?.raw||null,
+    datasetFirstTradingDate:chosen?null:datasetFirstTradingDate,
+    datasetStartSource:chosen?null:datasetStartWitness.sourceId,
+    delisting:d.raw,
+  }),
+}));
 
 const currentSourceRows=currentTwse.map(x=>({
   market:"TWSE",
@@ -199,9 +230,12 @@ const result={
     delisting:{source:delistedRaw.url,rowCount2023Plus:delRows.length,sourceHash:delistedRaw.hash},
   },
   matching:{
-    delistedMatchedCount:delistedSourceRows.length,
-    delistedUnmatchedCount:unmatched.length,
-    unmatched,
+    delistedTotalCount:delistedSourceRows.length,
+    delistedListingDateMatchedCount:delistedSourceRows.length-unmatched.length,
+    delistedDatasetStartFallbackCount:unmatched.length,
+    datasetFirstTradingDate,
+    datasetStartOrdinarySymbolCount:datasetStartWitness.ordinarySymbolCount,
+    datasetStartFallbackSymbols:unmatched.map(x=>x.symbol).sort(),
   },
   registry:{
     registryId:registry.registryId,
