@@ -1,0 +1,358 @@
+{
+  "version": "0.1",
+  "id": "SC-050",
+  "capturedAt": "2026-10-04T14:18:20+08:00",
+  "module": "D10-02 供應鏈Lead-Lag領先落後",
+  "secondaryModule": "D10-09 上游→中游→下游不對稱傳導",
+  "mode": "THREE_VINTAGE_STEEL_LAG_REPLAY_PLUS_NON_STEEL_CROSS_CHAIN_FALSIFICATION / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "purpose": "依 SC-049 事前凍結的 1M/2M/3M 候選落後期，加入第三個台灣鋼鐵鏈版本並建立第二條非鋼鐵三層月度候選鏈，檢查是否存在可重播且不靠事後挑 lag 的供應鏈 Lead-Lag。",
+  "preregistration": {
+    "parentReceipt": "research/sc049_supply_chain_lead_lag_identifiability_audit_v0_1.json",
+    "parentCapturedAt": "2026-10-04T07:37:00+08:00",
+    "lagCandidatesMonths": [
+      1,
+      2,
+      3
+    ],
+    "postHocBestLagSelectionForbidden": true,
+    "promotionGate": [
+      "multiple sequential independent vintages",
+      "lag candidates frozen before interpretation",
+      "compatible source/knownAt clocks",
+      "common-shock controls",
+      "inventory/contract-reset controls",
+      "negative controls",
+      "no causal wording before alternatives are falsified"
+    ]
+  },
+  "steelChain": {
+    "chainId": "TAIWAN_EAF_STEEL_SCRAP_TO_BILLET_TO_H_BEAM",
+    "physicalInterpretation": "scrap input -> EAF billet intermediate -> H-beam downstream reference price",
+    "issuerAnchor": {
+      "symbol": "2006",
+      "issuer": "東和鋼鐵",
+      "process": "EAF",
+      "priorEvidence": "issuer disclosure in prior receipts reports scrap at approximately 98% of 2025 main raw material"
+    },
+    "sourceLineage": {
+      "july": {
+        "referenceMonth": "2026-07",
+        "nativeReport": "2026 August Basic Metals Supply-Demand Situation Assessment Report, issue 60",
+        "publishedAt": "2026-08-18",
+        "publishers": [
+          "財團法人金屬工業研究發展中心",
+          "MII金屬情報網"
+        ],
+        "mirror": "TPCA 台灣電路板協會",
+        "sourceUrl": "https://www.tpca.org.tw/web/news_detail.php?menu_no=188&mod_no=10&news_no=500346",
+        "pitRule": "July monthly averages were published after July; they are not usable for a July decision state."
+      },
+      "augustSeptember": {
+        "parentReceipt": "research/sc036_steel_asymmetric_transmission_two_vintage_v0_1.json",
+        "sourceClockRule": "Use capturedAt conservatively for prospective replay unless native publication timestamp is separately frozen.",
+        "parentCapturedAt": "2026-10-02T16:23:00+08:00"
+      }
+    },
+    "vintages": [
+      {
+        "month": "2026-07",
+        "input": {
+          "metric": "北部廢鋼大盤收購價",
+          "value": 9.6,
+          "unit": "NTD/kg",
+          "momPct": -4,
+          "yoyPct": 23.1,
+          "state": "DOWN"
+        },
+        "intermediate": {
+          "metric": "小鋼胚中級出廠價",
+          "value": 16025,
+          "unit": "NTD/t",
+          "momPct": 1.2,
+          "yoyPct": 14.8,
+          "state": "UP"
+        },
+        "downstream": {
+          "metric": "東鋼H型鋼流通價",
+          "value": 37500,
+          "unit": "NTD/t",
+          "momPct": 0,
+          "yoyPct": 12.9,
+          "state": "FLAT"
+        },
+        "vector": "INPUT_DOWN / INTERMEDIATE_UP / DOWNSTREAM_FLAT"
+      },
+      {
+        "month": "2026-08",
+        "input": {
+          "metric": "北部廢鋼大盤收購價",
+          "value": 9.8,
+          "unit": "NTD/kg",
+          "momPct": 2.1,
+          "state": "UP"
+        },
+        "intermediate": {
+          "metric": "小鋼胚中級出廠價",
+          "value": 15460,
+          "unit": "NTD/t",
+          "momPct": -3.5,
+          "state": "DOWN"
+        },
+        "downstream": {
+          "metric": "東鋼H型鋼流通價",
+          "value": 37500,
+          "unit": "NTD/t",
+          "momPct": 0,
+          "state": "FLAT"
+        },
+        "vector": "INPUT_UP / INTERMEDIATE_DOWN / DOWNSTREAM_FLAT"
+      },
+      {
+        "month": "2026-09",
+        "input": {
+          "metric": "北部廢鋼大盤收購價",
+          "value": 10.2,
+          "unit": "NTD/kg",
+          "momPct": 4.1,
+          "yoyPct": 32.5,
+          "state": "UP"
+        },
+        "intermediate": {
+          "metric": "小鋼胚中級出廠價",
+          "value": 16050,
+          "unit": "NTD/t",
+          "momPct": 3.8,
+          "yoyPct": 15.6,
+          "state": "UP"
+        },
+        "downstream": {
+          "metric": "東鋼H型鋼流通價",
+          "value": 37500,
+          "unit": "NTD/t",
+          "momPct": 0,
+          "yoyPct": 12.9,
+          "state": "FLAT"
+        },
+        "vector": "INPUT_UP / INTERMEDIATE_UP / DOWNSTREAM_FLAT"
+      }
+    ],
+    "frozenLagReplay": [
+      {
+        "lagMonths": 1,
+        "relation": "scrap(t) direction -> billet(t+1) direction",
+        "pairs": [
+          {
+            "from": "2026-07",
+            "to": "2026-08",
+            "inputDirection": "DOWN",
+            "nextIntermediateDirection": "DOWN",
+            "concordant": true
+          },
+          {
+            "from": "2026-08",
+            "to": "2026-09",
+            "inputDirection": "UP",
+            "nextIntermediateDirection": "UP",
+            "concordant": true
+          }
+        ],
+        "maturedPairN": 2,
+        "concordantN": 2,
+        "interpretation": "SUGGESTIVE_ONLY",
+        "reasonInsufficient": "Two pairs are too few for a stable lag claim and can be generated by common demand, inventory or repricing cycles."
+      },
+      {
+        "lagMonths": 2,
+        "relation": "scrap(t) direction -> billet(t+2) direction",
+        "pairs": [
+          {
+            "from": "2026-07",
+            "to": "2026-09",
+            "inputDirection": "DOWN",
+            "nextIntermediateDirection": "UP",
+            "concordant": false
+          }
+        ],
+        "maturedPairN": 1,
+        "concordantN": 0,
+        "interpretation": "COUNTEREXAMPLE_PRESENT"
+      },
+      {
+        "lagMonths": 3,
+        "maturedPairN": 0,
+        "interpretation": "NOT_MATURED"
+      }
+    ],
+    "downstreamPassThrough": {
+      "hBeamMonthlyStates": [
+        "FLAT",
+        "FLAT",
+        "FLAT"
+      ],
+      "result": "NO_OBSERVED_MONTHLY_DOWNSTREAM_DIRECTIONAL_PASS_THROUGH_IN_THIS_WINDOW",
+      "implication": "A possible scrap-to-billet lag does not imply the same lag continues to H-beam."
+    },
+    "commonShockAndAlternativeExplanations": [
+      "The August report states replenishment support faded and Q3 traditional low season weakened terminal procurement.",
+      "Manufacturers were consuming inventory and controlling purchasing cadence.",
+      "EU quota/trade restrictions and weak export conditions affected downstream demand and market competition.",
+      "Raw-material price decline and major-mill price cuts can move several chain layers together.",
+      "Billet can respond to independent billet demand, electricity, freight, yield and inventory rather than only scrap.",
+      "H-beam price stickiness can reflect posted-price/contract reset cadence rather than absence of cost pressure.",
+      "Monthly averages hide within-month ordering and repricing timing."
+    ]
+  },
+  "nonSteelChain": {
+    "chainId": "TAIWAN_ELECTRONICS_EXPORT_ORDER_TO_COMPONENTS_TO_COMPUTER_ELECTRONIC_OPTICAL_PRODUCTION",
+    "classification": "DEMAND_TRANSMISSION_CANDIDATE / NOT_PHYSICAL_GRAPH_PROVEN",
+    "layers": [
+      "電子產品外銷訂單",
+      "電子零組件業生產指數",
+      "電腦、電子產品及光學製品業生產指數"
+    ],
+    "sourceAuthority": "經濟部統計處",
+    "sourceClocks": [
+      {
+        "month": "2026-06",
+        "ordersPublishedAt": "2026-07-21T16:00:00+08:00",
+        "productionPublishedAt": "2026-07-23T16:00:00+08:00"
+      },
+      {
+        "month": "2026-07",
+        "ordersPublishedAt": "2026-08-20T16:00:00+08:00",
+        "productionPublishedAt": "2026-08-25T16:00:00+08:00"
+      },
+      {
+        "month": "2026-08",
+        "ordersPublishedAt": "2026-09-22T16:00:00+08:00",
+        "productionPublishedAt": "2026-09-23T16:00:00+08:00"
+      }
+    ],
+    "months": [
+      {
+        "month": "2026-06",
+        "orders": {
+          "value": 405,
+          "unit": "USD 100 million",
+          "momPct": 8.7,
+          "yoyPct": 79.9,
+          "state": "UP"
+        },
+        "componentsProduction": {
+          "index": 152.73,
+          "momPct": 1.08,
+          "yoyPct": 30.37,
+          "state": "UP"
+        },
+        "computerElectronicOpticalProduction": {
+          "index": 397.03,
+          "momPct": 5.88,
+          "yoyPct": 45.05,
+          "state": "UP"
+        }
+      },
+      {
+        "month": "2026-07",
+        "orders": {
+          "value": 413.2,
+          "unit": "USD 100 million",
+          "momPct": 2,
+          "yoyPct": 71.7,
+          "state": "UP"
+        },
+        "componentsProduction": {
+          "index": 151.18,
+          "momPct": -0.73,
+          "yoyPct": 20.9,
+          "state": "DOWN"
+        },
+        "computerElectronicOpticalProduction": {
+          "index": 444.88,
+          "momPct": 12.79,
+          "yoyPct": 90.14,
+          "state": "UP"
+        }
+      },
+      {
+        "month": "2026-08",
+        "orders": {
+          "value": 457.5,
+          "unit": "USD 100 million",
+          "momPct": 10.7,
+          "yoyPct": 83.9,
+          "state": "UP"
+        },
+        "componentsProduction": {
+          "index": 166.84,
+          "momPct": 10.36,
+          "yoyPct": 21.68,
+          "state": "UP"
+        },
+        "computerElectronicOpticalProduction": {
+          "index": 385.02,
+          "momPct": -13.46,
+          "yoyPct": 95.72,
+          "state": "DOWN"
+        }
+      }
+    ],
+    "result": {
+      "sameMonth": "NO_STABLE_THREE_LAYER_DIRECTIONAL_PROPAGATION",
+      "simpleOneMonthNarrative": "NOT_ESTABLISHED",
+      "keyCounterexample": "Orders rose in all three months while middle/downstream monthly production directions flipped.",
+      "commonShock": "MOEA narratives for all three months directly cite AI/HPC/cloud-related demand as a major driver of multiple layers.",
+      "overseasProductionFirewall": "Export orders are not equivalent to Taiwan domestic production; overseas production is material. MOEA survey evidence reports electronic-product orders have a substantial but not 100% domestic-production share.",
+      "taxonomyFirewall": "Product-order categories and production-industry classifications are not a one-to-one physical supplier graph."
+    }
+  },
+  "negativeControls": [
+    {
+      "control": "August basic-metals production",
+      "momPct": -8.16,
+      "yoyPct": -0.36,
+      "role": "weak nonlinked/control lane showing broad manufacturing strength did not lift all industries"
+    },
+    {
+      "control": "August motor vehicles and parts production",
+      "momPct": -16.19,
+      "yoyPct": -4.23,
+      "role": "weak nonlinked/control lane; not exposure-matched enough for causal estimation"
+    }
+  ],
+  "identifiabilityDecision": {
+    "positiveEvidence": [
+      "The steel chain now has three sequential monthly vintages.",
+      "The 1M lag candidate was frozen before the third-vintage interpretation and produces 2/2 directional scrap-to-billet matches.",
+      "A second non-steel monthly three-layer candidate with official release clocks was constructed."
+    ],
+    "counterevidence": [
+      "The prefrozen 2M steel lag already has a contradiction.",
+      "H-beam stayed flat across all three steel months.",
+      "The electronics candidate does not show stable three-layer directional propagation.",
+      "Common AI demand is explicitly identified by MOEA as a simultaneous driver across electronics layers.",
+      "Electronic export orders include overseas production and do not prove a Taiwan physical supplier graph.",
+      "Steel native first-known publication clocks are not uniformly frozen across all three monthly vintages."
+    ],
+    "conclusion": "LEAD_LAG_HYPOTHESIS_NARROWED_NOT_VALIDATED",
+    "causalClaimAuthorized": false
+  },
+  "maturityDecision": {
+    "D10-02": "KEEP_L2_MECHANISM_AND_FALSIFICATION_DEFINED",
+    "D10-09": "KEEP_L3_THIRD_STEEL_VINTAGE_AND_CROSS_CHAIN_FALSIFICATION_ADDED"
+  },
+  "reasonNoD10_02L3": "SC-049's local promotion gate is not yet satisfied. The apparent 1M scrap-to-billet relation has only two matured pairs, the 2M candidate already contradicts, downstream H-beam does not propagate, the second electronics chain falsifies a universal fixed-lag story, and fully compatible first-known clocks/physical graph semantics remain incomplete.",
+  "formalOptimizationCandidate": "NONE",
+  "systemImplications": {
+    "system1": "Do not add a fixed supply-chain lag score or positive bonus. Current evidence supports only research context and future preregistered testing.",
+    "system2": "A future context lane may preserve chain-specific lag hypotheses and confidence/UNKNOWN states, but no timing action or vote is authorized."
+  },
+  "exactNext": [
+    "SC-054 append at least three additional independent steel vintages so 1M/2M/3M candidates have enough matured pairs without changing the frozen lag set.",
+    "Build one second non-steel physical issuer/product chain with effective-dated supplier/customer or product-flow evidence rather than only aggregate demand categories.",
+    "Freeze comparable first-known/source publication clocks for every monthly node before any L3 promotion.",
+    "Test lag stability after inventory, contract repricing, seasonality and common-demand controls; preserve contradictions instead of selecting the best-looking lag."
+  ],
+  "status": "THREE_STEEL_VINTAGES / PREFROZEN_1M_2M_3M_REPLAY / ONE_MONTH_SUGGESTIVE_TWO_PAIRS / TWO_MONTH_COUNTEREXAMPLE / HBEAM_STICKY / ELECTRONICS_CROSS_CHAIN_FALSIFICATION / KEEP_D10_02_L2 / FORMAL_UNCHANGED"
+}
