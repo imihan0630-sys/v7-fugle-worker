@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-05T07:18:00+08:00",
+  "owner": "08｜事件與新聞研究室",
+  "module": "D17-06",
+  "title": "Expectation versus Surprise Taiwan PIT feasibility across expectation-source classes",
+  "status": "TAIWAN_PIT_EXPECTATION_SURPRISE_STATE_FEASIBLE / NUMERIC_CATEGORICAL_UNKNOWN_SEPARATED / OUTCOMES_CLOSED",
+  "sourceClasses": [
+    {
+      "class": "FULL_EX_ANTE_DISTRIBUTION",
+      "witness": "Taiwan CBC policy decisions 2026-06-18 and 2026-09-17",
+      "evidencePath": "research/d17_14_expectation_source_receipt_v0_1.json",
+      "expectation": "Reuters pre-decision forecast distributions",
+      "realization": "official CBC policy decision",
+      "allowedSurprise": "NUMERIC_OR_DISTRIBUTIONAL_IF_FUNCTION_PREREGISTERED",
+      "guard": "Preserve complete distribution; do not choose mean/median/mode after seeing realization or returns."
+    },
+    {
+      "class": "CATEGORICAL_CONDITIONAL_SCENARIO_SET",
+      "witness": "7827 漢康-KY創 HCB303 IND",
+      "priorItem": {
+        "id": "6a9948c79e92b0f4062cfb37",
+        "timestamp": "2026-09-03 18:14:34",
+        "fact": "Issuer disclosed IND submission; stated FDA review process, default 30-day activation unless clinical hold, and conditional next-step scenarios."
+      },
+      "realizationItem": {
+        "id": "6ac0c5459e92b0f4067cc560",
+        "timestamp": "2026-10-03 17:00:54",
+        "fact": "Issuer confirmed HCB303 IND allowed to proceed to human clinical trial."
+      },
+      "allowedSurprise": "CATEGORICAL_REALIZATION_WITHIN_FROZEN_SCENARIO_SET",
+      "guard": "No scalar probability or surprise magnitude is fabricated because the prior disclosure did not provide probabilities."
+    },
+    {
+      "class": "AUTHORIZED_BUT_MAGNITUDE_UNQUANTIFIED",
+      "witness": "6461 益得 restricted employee shares",
+      "priorState": "2026-05-27 shareholder approval authorized up to 2,000,000 restricted shares; regulatory effectiveness disclosed as 2026-08-13.",
+      "realizationItem": {
+        "id": "6ac0d5ae9e92b0f4069a0269",
+        "timestamp": "2026-10-03 18:14:46",
+        "fact": "First issuance set at 516,000 shares with 2026-10-05 capital-increase record date."
+      },
+      "allowedSurprise": "EVENT_FAMILY_ANTICIPATED / MAGNITUDE_SURPRISE_UNKNOWN",
+      "guard": "Authorization ceiling is not an expected issuance quantity and cannot be treated as a consensus denominator."
+    },
+    {
+      "class": "NO_VALID_EXPECTATION_SOURCE",
+      "allowedSurprise": "UNKNOWN",
+      "guard": "Market price reaction, media tone or realized outcome cannot back-solve a missing expectation."
+    }
+  ],
+  "frozenContract": [
+    "Expectation evidence must be captured before realization.",
+    "Expected and realized objects must use compatible definitions and units for numeric surprise.",
+    "Full distributions are retained when available.",
+    "Categorical scenario sets remain categorical unless ex-ante probabilities exist.",
+    "Authorization/range/opportunity-set evidence does not equal expected magnitude.",
+    "No expectation source => surprise UNKNOWN.",
+    "Post-event return is never used to infer surprise."
+  ],
+  "falsification": [
+    "A fully anticipated event can still move prices; source-feasible surprise does not guarantee zero market reaction.",
+    "A positive corporate milestone may be inside the prior scenario set and still have unknown numeric surprise.",
+    "A realized issuance below an authorization ceiling is not automatically a positive surprise because the ceiling is not an expectation.",
+    "Different event families cannot share one surprise scale without an explicit cross-family normalization contract."
+  ],
+  "maturityDecision": {
+    "from": "L2",
+    "to": "L3",
+    "basis": "Taiwan PIT sources now demonstrate three distinct ex-ante expectation classes—full distributions, categorical conditional scenarios, and authorization-with-unknown-magnitude—plus an explicit no-source UNKNOWN state. Realization objects are independently sourceable without reading equity outcomes.",
+    "notClaimed": [
+      "cross-family comparable surprise score",
+      "alpha",
+      "directional trading sign",
+      "L4/OOS"
+    ]
+  },
+  "outcomeJoin": false,
+  "formalCoreChanged": false,
+  "exactNext": [
+    "Prospectively capture new expectation/realization pairs across additional event families before outcomes.",
+    "Preregister any numeric surprise function by event family.",
+    "Collect genuinely unexpected realizations and failed/delayed/cancelled scenarios rather than only modal-success cases.",
+    "Test incremental value only after common-support controls for event class, D17-07 expectation evidence state and D11 event identity."
+  ]
+}
