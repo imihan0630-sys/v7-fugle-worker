@@ -1750,3 +1750,29 @@ Exact remaining return delta:
 4. commit `research/COV08_D16_SPECIALIST_RETURN_V0_1.md`.
 
 No maturity or Formal change is authorized by this routing.
+
+
+## 2026-10-04 COV-08 dependence-aware resampling specialist return — terminal
+
+Canonical evidence: `research/COV08_D16_SPECIALIST_RETURN_V0_1.md`.
+
+Terminal recommendation:
+`SCOPE_EXTENSION_ACCEPT / ABSORB_INTO_D16_06 / NO_NEW_MODULE / NO_MATURITY_CHANGE`.
+
+Frozen specialist result:
+- Cluster-robust inference is primary only when the substantive cluster contract is credible, cross-cluster score dependence is negligible, leverage / influence is not dominated by a few clusters, and no ignored serial dependence remains across date clusters.
+- HAC is primary for smooth / asymptotically linear decision-date estimands under weak short-memory dependence, with frozen/dependence-only bandwidth and no unresolved structural break.
+- Temporal block bootstrap is mandatory co-primary / primary when chronological path dependence is part of the estimand or pipeline: drawdown, turnover/churn/hysteresis, activation/deactivation sequences, regime transitions, threshold/path statistics, or nonlinear re-estimation pipelines.
+- Resampling must move whole date panels / paired strategy arms, never independent stock rows when same-date shocks matter.
+- Small/unbalanced cross-sectional cluster problems route to cluster-specific remedies (small-sample correction / cluster jackknife / wild cluster bootstrap / valid randomization); they do not automatically imply temporal block bootstrap.
+- Nonstationarity is fail-closed. HAC or stationary/moving-block bootstrap cannot be used to wash over known source, strategy-version or structural-break boundaries.
+- Mandatory support reporting now includes raw decision dates, contiguous session segments/gaps, regime episodes, raw/effective cluster count, leverage/influence, HAC bandwidth and long-run variance inflation/effective-date diagnostic, bootstrap family/block length/selector/replications/effective-block count, and block-length sensitivity.
+- Conservative governance floors are frozen in the specialist return: effective cluster count below 20 is not standalone conventional cluster evidence; HAC effective-date diagnostic below 20 is not standalone asymptotic promotion evidence; block-bootstrap effective non-overlapping blocks below 10 are insufficient and 10–19 remain sensitivity/exploratory only. These are governance floors, not universal mathematical theorems.
+- D16-06 remains L4/80. This return adds no prospective/OOS market evidence, so maturity does not increase.
+
+External evidence anchors include Newey-West HAC consistency, Künsch moving-block bootstrap, Politis-Romano stationary bootstrap, Politis-White block-length selection with the Patton-Politis-White correction, and modern MacKinnon/Nielsen/Webb cluster diagnostics.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core: LOCKED.
+
+Exact next: return COV-08 to 00 control-plane intake as specialist-complete; Room 11 then resumes the active empirical sequence without redoing COV-08. Highest-value evidence path is the first genuine complete C1 Taiwan PIT decision population for D16-19/D16-25 calibration validation, while continuing prospective D18 observable-regime / D18-08 activation-frame accumulation. No D16 L3 or D18 L4 is permitted from methodology alone.
