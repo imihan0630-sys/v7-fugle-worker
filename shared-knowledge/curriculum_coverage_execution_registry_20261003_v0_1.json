@@ -379,5 +379,32 @@
     ],
     "maturityChange": "NONE",
     "formalCoreImpact": "NONE_LOCKED"
+  },
+  "cov06": {
+    "state": "PARTIAL_EVIDENCE_RECEIVED",
+    "readiness": "GRAPH_TOPOLOGY_OWNER_EVIDENCE_PENDING",
+    "candidate": "Supply-chain Network Centrality / Single-point Failure / Resilience",
+    "acceptedEvidence": [
+      "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md",
+      "research/stock_market_learning_tracker_v0_1.json"
+    ],
+    "closedQuestions": [
+      "D10-01 owns supply-chain mapping",
+      "D10-12 owns issuer exposure mapping",
+      "effective-dated PIT source-vintage semantics exist",
+      "UNKNOWN and exposure/substitution cautions exist",
+      "lead-lag and transmission cannot substitute for topology"
+    ],
+    "remaining": [
+      "define graph node/edge/direction/weight schema for topology use",
+      "define articulation/single-point-failure and alternate-path redundancy metrics",
+      "define substitution/qualification constraints and incomplete-graph UNKNOWN",
+      "provide at least one Taiwan effective-dated topology witness with alternate-path semantics",
+      "compare incremental information versus D10-01 mapping, D07 concentration and D17 propagation",
+      "choose exactly one terminal recommendation",
+      "commit research/COV06_D10_SPECIALIST_RETURN_V0_1.md"
+    ],
+    "maturityChange": "NONE",
+    "formalCoreImpact": "NONE_LOCKED"
   }
 }
