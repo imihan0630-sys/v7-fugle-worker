@@ -669,3 +669,19 @@ The native publication-vintage path is therefore:
 3. Use revision lineage first as data-quality/vintage state, not a directional Taiwan-stock factor.
 4. Continue prospective CBC/H.4.1/TWSE source-attested dates; no L3/OOS/optimization before applicable gates.
 5. D12 continuation is DR-082 parity/common-support QA on the real 2026-10-02 TXO parent.
+
+
+## 2026-10-04 Room09 continuation — MC-187 append-only CBC BOP revision receipt contract
+
+- Frozen machine-readable contract: `research/d13_bop_revision_receipt_spec_v0_1.json`.
+- Every CBC BOP observation is keyed by series + reference period + publication vintage + source-artifact hash. Later revisions append; they never overwrite historical receipts.
+- Required identity includes publication/reference clocks, source page/annex, native hash/byte count, sheet/row identity, p/r marker, unit, capturedAt/observedAt/knownAt and predecessor receipt.
+- The proven 2025Q2 path 362.29 -> 367.59 -> 363.27 -> 363.50 -> 372.01 is stored as the current witness. The exact first-public 372.01 interval remains (2026-05-20, 2026-08-20] unless finer official vintage evidence becomes decision-relevant.
+- Research priority changes: do not spend cycles narrowing historical timing merely for completeness. Future value comes from prospectively preserving new BOP vintages under this schema, then testing revision-state hypotheses only after enough independent publication dates exist and after Taiwan/rates/USD/global baselines.
+- No outcome join; D13 remains 41.1%; Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+
+### Exact next continuation after MC-187
+1. Prospectively apply the append-only receipt schema to the scheduled 2026-11-20 16:20 CBC BOP release if available.
+2. Continue D13 source-attested H.4.1/TWSE/global-control dates while outcomes remain closed.
+3. Historical CBC first-public narrowing is secondary unless a validation design needs it.
+4. D12 remains the active immediate lane at DR-086: official rate/discount convention and real-parent IV replay.
