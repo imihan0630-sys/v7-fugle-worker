@@ -2251,3 +2251,87 @@ Parent deployment removes one design/engineering blocker, but Bollinger still ne
 
 Next genuine Taiwan trading session:
 normal scan -> existing C1 evidence workflow -> immutable parent/cohort readback -> D03 re-audits Bollinger source/continuity gate first.
+
+## TI-580 through TI-587 — TWSE official-document bounded machine contract (2026-10-04)
+
+Durable artifacts:
+- `research/D03_TWSE_OFFICIAL_DOCUMENT_MACHINE_CONTRACT_V0_1.md`
+- `research/d03_twse_official_document_machine_contract_v0_1.json`
+- `research/d03_twse_official_document_machine_contract_v0_1.mjs`
+
+### TI-580~581 — list machine endpoint + positive control
+Official TWSE page physically resolves a machine endpoint:
+`https://wwwc.twse.com.tw/rwd/zh/announcement/announcement`
+with `startDate/endDate/keyword/response` and server-side paging arguments.
+
+Frozen 2026-07-01~2026-08-10 keyword `減資` query returns stat=ok, total=3 and fields:
+項次 / 發文日期 / 發文字號 / 主旨 / id.
+
+1459 聯發 2026-07-02 capital-reduction exchange schedule is physically present.
+
+### TI-582 — pagination reconciliation
+On the same interval with keyword blank:
+- total=56;
+- paging=15;
+- page counts 15+15+15+11;
+- fetched=56;
+- unique ids=56;
+- duplicate ids=0;
+- unpaged result also returns the same 56-id keyset.
+
+`SERVER_SIDE_PAGINATION_RECONCILIATION=PASS`
+`UNPAGED_EQUIVALENCE=PASS`.
+
+### TI-583 — exchange-side reversal chronology
+For 川飛能源:
+- 2026-07-31 `臺證上一字第1151803156號` = 停止申報生效;
+- 2026-08-06 `臺證上一字第1151803255號` = 解除停止申報生效.
+
+Each has an independent row id.
+`STOP_THEN_RELEASE_PAIR_OBSERVED=PASS`.
+
+### TI-584 — detail API
+Frozen detail endpoint:
+`https://wwwc.twse.com.tw/rwd/zh/announcement/announcement_detail?id=<token>&response=json`
+
+Fields:
+發文機關 / 發文日期 / 發文字號 / 主旨 / 依據 / 公告事項.
+
+Both STOP and RELEASE details reproduce their list reference/subject.
+Wrong parameter aliases ID/uuid/keyword return no data.
+
+### TI-585 — source-local empty control
+A frozen impossible keyword returns total=0 and dataCount=0.
+`SOURCE_LOCAL_EMPTY_SEMANTICS_OBSERVED`.
+
+### TI-586 — frozen acceptance
+Workflow run `37175322616` physically passes the frozen executable contract:
+`D03_TWSE_OFFICIAL_DOCUMENT_MACHINE_CONTRACT_V0_1`
+`BOUNDED_MACHINE_CONTRACT_PHYSICAL_PASS`.
+
+### TI-587 — maturity / authority boundary
+The old state:
+`EXCHANGE_OFFICIAL_DOCUMENT_MACHINE_CONTRACT=PARTIAL_UNKNOWN`
+
+is superseded on TWSE by:
+`TWSE_OFFICIAL_DOCUMENT_MACHINE_CONTRACT=BOUNDED_PHYSICAL_PASS`.
+
+Still false/unproven:
+- globalArchiveCompletenessCertified;
+- crossExchangeCoverageComplete;
+- knownAtVersionClockCertified;
+- revisionCoverageComplete;
+- technicalContinuityCertified.
+
+Therefore:
+`D03_10=L2_REMAINS`
+`D03_09=L2_REMAINS`
+`D03_MATURITY=56.7_PERCENT`
+`FORMAL_OPTIMIZATION_CANDIDATE=NONE`.
+
+Exact next:
+1. characterize TPEx equivalent exchange-side machine source;
+2. keep TWSE/TPEx source families separate;
+3. next genuine trading session -> V8.17 C1 parent/cohort readback;
+4. then symbol-window TECHNICAL_CONTINUITY for Bollinger;
+5. ADX only after recursive replay certification.
