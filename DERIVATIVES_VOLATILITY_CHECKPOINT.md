@@ -381,3 +381,26 @@ Durable evidence: `research/d12_put_call_parity_real_parent_audit_20261004_v0_1.
 3. Run the frozen IV solver on identical eligible 2026-10-02 monthly rows, preserving quote-quality flags.
 4. Compute D12-07 simple skew/term first, then D12-16 surface level/slope/curvature on identical common support.
 5. Record real divergent states and residual information before returning H11 terminal KEEP_SEPARATE / SCOPE_DEDUP_ONLY / MERGE_ELIGIBLE / EVIDENCE_INSUFFICIENT.
+
+
+## 00 control-plane receipt — H04 merge-eligible owner gate
+
+00｜研究總控室 accepted existing Room09 evidence as complete H04 specialist input.
+
+Audit:
+`shared-knowledge/CURRICULUM_H04_CONSOLIDATION_AUDIT_20261004_V0_1.md`.
+
+Recommendation:
+`MERGE_ELIGIBLE / D12-15_SURVIVOR / D12-14_CHILD_PROXY_FAMILY`.
+
+Proposed survivor:
+D12-15 Volatility Risk Premium／IV-RV Proxies.
+
+D12-14 child capabilities to preserve:
+- trailing IV-RV descriptive state;
+- forecast-based implied-minus-physical variance live proxy;
+- ex-post implied-minus-future-realized outcome measure;
+- horizon/unit/estimator/look-ahead guards.
+
+Both remain L2/40 until explicit owner approval and canonical execution.
+Do not remove D12-14 yet.
