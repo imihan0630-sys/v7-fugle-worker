@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_EXECUTABLE_GATE_PASS",
+  "evidenceCursor": "PVE-239",
+  "formalCore": "LOCKED",
+  "d02MaturityPct": 60,
+  "maturityImpact": "NONE",
+  "runtime": {
+    "name": "Node.js",
+    "version": "v22.16.0",
+    "tests": 19,
+    "status": "PASS"
+  },
+  "artifacts": [
+    "research/d02_l4_wave1_gate_evaluator_v0_1.mjs",
+    "tests/test_d02_l4_wave1_gate_evaluator_v0_1.mjs"
+  ],
+  "floors": {
+    "descriptiveOnly": {
+      "cleanScanDates": 20
+    },
+    "l4EvidenceEligible": {
+      "cleanScanDates": 30,
+      "completedEligibleEvents": 100
+    }
+  },
+  "hypotheses": [
+    "H001/D02-02",
+    "H20/D02-03",
+    "H003/D02-06"
+  ],
+  "guarantees": {
+    "outcomeBlind": true,
+    "scanDateIsDependenceUnit": true,
+    "sameDayMultiSymbolCountsAsOneDate": true,
+    "exactCommonSupportRequired": true,
+    "censoredOutcomeCountsAsCompleted": false,
+    "duplicateEventIdFatalIntegrity": true,
+    "maturityPromotionAuthorized": false,
+    "formalCoreChangeAuthorized": false
+  },
+  "remainingBlockers": [
+    "CLEAN_DATE_ZERO",
+    "PVE-240_PENDING",
+    "GATE_7_CLOSED",
+    "NO_GENUINE_PROSPECTIVE_OR_OOS_EVIDENCE"
+  ]
+}
