@@ -109,3 +109,22 @@ The probe:
 6. reports direct regulator-side evidence if present, otherwise retains a valid negative/partial result.
 
 No D1/R2 mutation or trading authority is involved.
+
+## 2026-10-04 physical regulator-side provenance acceptance
+
+PR #475 merged as `a9dc408e1303f0470359f77dff6f833379862355`.
+
+Physical checks:
+- SFB Authority Revision Provenance Readonly `37175107437`: PASS.
+- System2 Research CI `37175107386`: PASS.
+- V8 Regression `37175107447`: PASS.
+- official SFB/FSC 115-year case workbook was directly read and parsed;
+- 1342 八貫現金增資 had a direct regulator-side row with status `廢止/撤銷`;
+- `targetAuthorityEvidenceDirectlyObserved=true`.
+
+This proves representative regulator provenance for the frozen 1342 control. It does not establish bounded-market regulator revision completeness.
+
+Still false:
+- `authorityRevisionCoverageComplete=false`;
+- `revisionCoverageComplete=false`;
+- `knownAtVersionClockCertified=false`.
