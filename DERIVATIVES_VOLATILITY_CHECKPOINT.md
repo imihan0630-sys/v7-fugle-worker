@@ -541,3 +541,22 @@ Maturity firewall:
 1. Do not spend this closed-market period fabricating a same-day Delta comparison.
 2. Resume aligned official-vs-own Delta only when a valid same-effective-date pair exists.
 3. In the meantime continue D13 source-vintage work whose evidence does not depend on the next Taiwan trading session.
+
+
+## 00 control-plane receipt — H11 audit complete
+
+00｜研究總控室 accepted the H11 terminal specialist return.
+
+State:
+`KEEP_SEPARATE / SCOPE_DEDUP_ONLY / OWNER_APPROVAL_REQUIRED`.
+
+Proposed canonical ownership:
+- D12-07 = simple skew/term baseline owner;
+- D12-16 = residual curvature/surface interaction + method/fit/coverage/static-arbitrage quality owner.
+
+Both remain L2/40%. No rename or maturity change before approval.
+
+Audit:
+`shared-knowledge/CURRICULUM_H11_DEPENDENCY_SCOPE_DEDUP_AUDIT_20261004_V0_1.md`.
+
+Do not mutate canonical wording until explicit owner approval.
