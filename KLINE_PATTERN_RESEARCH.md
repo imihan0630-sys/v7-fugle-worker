@@ -22740,3 +22740,53 @@ Ten adversarial fixtures are authored. They enforce causal candidate creation, s
 Progress denominator reconciliation is also frozen here: current Router/Learning Map D01 = 52.7% because the curriculum now has 11 active modules. Historical checkpoint 51.7% used the prior 12-module denominator including separate D01-12 at L2/40%. No module maturity was promoted by this arithmetic change.
 
 No outcome data were inspected. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-029 — Boundary identity and detector-version perturbation robustness (2026-10-04)
+
+DL-028 established that a confirmed structural zone must outperform both generic non-anchor controls and same-detector unconfirmed salience controls before the structural-memory story is even interesting.
+
+DL-029 adds a stricter falsification layer: exact-line dependence.
+
+A future result is weak if it appears only when the zone is drawn at one exact pair of numerical boundaries. In Taiwan this is especially important because a mechanically small decimal perturbation is not economically uniform across the price grid. Therefore D01 does not define a fixed decimal shift. It consumes the as-of legal price neighbors from the canonical microstructure owner and generates exactly four minimal grid perturbations: shift down one legal step, shift up one legal step, expand by one legal step on each side, and contract by one legal step on each side. If the historical grid receipt is missing or future-dated, the perturbation family is DATA_BLOCKED.
+
+Boundary localization is only one source of fragility. Structural identity can also depend on one anchor. D01 therefore freezes a full leave-one-anchor-out family. Each causal source anchor is omitted once and the same detector is recomputed from information available by the original landmark. Every variant must survive in the manifest. If a zone disappears when one anchor is removed, that is explicit identity-fragility evidence. It cannot be dropped as an inconvenient case.
+
+Detector changes require a second firewall. A version declared semantically equivalent to the canonical detector is not a scientific challenger; it is a replay contract. Any unexplained difference in candidate identity, anchor set, confirmation clock, boundary, lifecycle state or provenance is a SEMANTIC_REGRESSION. By contrast, a genuinely alternative detector/parameterization may be used as a robustness challenger only when its specification and version/hash were frozen before outcomes. A detector invented after seeing returns cannot rescue a failed result and must start a new prospective generation.
+
+The identity taxonomy is frozen outcome-blind:
+I0 same identity with the same anchors;
+I1 same lineage after one anchor is removed;
+I2 a materially different structure;
+I3 structure disappears;
+I4 not evaluable because provenance is incomplete.
+
+This allows future analysis to separate two questions that are often conflated:
+1. did the average effect survive another detector?
+2. did the same structural object survive another detector?
+
+An apparently stable aggregate effect with unstable object identity is not strong evidence that a specific support/resistance memory object exists.
+
+The future robustness ladder is:
+R0 exact-only fragility;
+R1 boundary-stable but detector-specific;
+R2 detector-version-stable but object identity fragile;
+R3 structural robustness candidate;
+R4 not evaluable.
+
+No level of this ladder is alpha by itself.
+
+A critical sample-size firewall is also frozen: perturbation variants are nested sensitivity views of one immutable parent. Four boundary variants do not turn one parent into four samples. Leave-one-anchor-out variants do not multiply N. Alternative detectors do not vote. D16 owns future parent/date dependence, common-support inference, OOS/purged holdout and multiple-testing control.
+
+External evidence supports the need for the firewall but does not settle the result. Lo, Mamaysky and Wang formalized pattern recognition precisely because chart-pattern definitions are subjective. Osler showed that clustered stop-loss/take-profit orders near round numbers can create support/resistance-like behavior without requiring a unique latent structural boundary. Chen, Huang and Lai showed that data snooping and market frictions materially affect technical-rule conclusions in Asian equity markets. Henderson, Jacka, Liu and Maeda formalized support/resistance as a path-dependent state process in 2026 while acknowledging the tractability simplification of fixed levels relative to more complex real structure.
+
+New durable artifacts:
+- research/PATTERN_BOUNDARY_DETECTOR_ROBUSTNESS_V0_1.md
+- research/pattern_boundary_detector_robustness_v0_1.json
+- research/pattern_boundary_detector_robustness_v0_1.mjs
+- research/test_pattern_boundary_detector_robustness_v0_1.mjs
+- research/PATTERN_BOUNDARY_DETECTOR_ROBUSTNESS_D16_HANDOFF_V0_1.md
+
+Twelve adversarial cases are authored and remain TEST_EXECUTION_PENDING. They cover legal-grid consumption, future tick-rule rejection, invalid contraction retention, non-independent variant semantics, complete anchor jackknife coverage, structure disappearance, identity change, future-state prohibition, semantic-equivalent version replay, preregistered detector challenges and post-outcome detector prohibition.
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.

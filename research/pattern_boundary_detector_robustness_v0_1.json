@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "pattern-boundary-detector-robustness-v0.1",
+  "updated": "2026-10-04 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "boundaryFamily": [
+    "CANONICAL",
+    "SHIFT_DOWN_ONE_GRID_STEP",
+    "SHIFT_UP_ONE_GRID_STEP",
+    "EXPAND_ONE_GRID_STEP",
+    "CONTRACT_ONE_GRID_STEP"
+  ],
+  "anchorFamily": "LEAVE_ONE_ANCHOR_OUT_ALL_VARIANTS",
+  "detectorVersionRelations": [
+    "SEMANTIC_EQUIVALENT",
+    "PREDECLARED_VARIANT",
+    "POST_OUTCOME_VERSION_PROHIBITED"
+  ],
+  "identityClasses": [
+    "I0_SAME_IDENTITY_SAME_ANCHORS",
+    "I1_SAME_IDENTITY_REDUCED_ANCHORS",
+    "I2_IDENTITY_CHANGED",
+    "I3_IDENTITY_DISAPPEARED",
+    "I4_NOT_EVALUABLE"
+  ],
+  "variantIndependentSample": false,
+  "bestVariantSelection": "PROHIBITED",
+  "outcomeJoin": "CLOSED",
+  "inferenceOwner": "D16",
+  "formalOptimizationCandidate": "NONE"
+}
