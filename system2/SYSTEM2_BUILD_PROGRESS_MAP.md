@@ -568,3 +568,14 @@ Still false:
 - all trading authority.
 
 Next engineering target: bounded supplemental revision provenance receipt with explicit blocker decomposition, followed by shared suspension/session integration.
+
+## 2026-10-04 supplemental revision blocker decomposition
+
+PR #488 / `fd3a6ecd128508b9deb0a07ff67e6c658c95b00d` converted the revision blocker into six lane-level machine-readable diagnoses.
+
+Current state:
+- final result ready: 6/6;
+- representative issuer/authority coverage: 2/6;
+- supplemental revision complete: 0/6.
+
+Next target: physically discover and validate representative controls for TWSE par-value change and all three TPEx lanes.
