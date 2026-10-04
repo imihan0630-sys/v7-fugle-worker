@@ -152,7 +152,9 @@ async function officialCandidates(config){
   return {
     diagnostics,
     candidates:[...unique.values()].slice(config.offset,config.offset+config.cap),
-    totalUniqueCandidateCount:unique.size,\n    candidateOffset:config.offset,\n    candidateCap:config.cap,
+    totalUniqueCandidateCount:unique.size,
+    candidateOffset:config.offset,
+    candidateCap:config.cap,
   };
 }
 
