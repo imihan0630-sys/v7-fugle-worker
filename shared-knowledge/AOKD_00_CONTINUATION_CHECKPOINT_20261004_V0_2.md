@@ -122,3 +122,32 @@ Exact next continuation point for 00:
 3. AOKD-05 remains routed to 06 for corpus feasibility.
 4. COV-12 remains PENDING_SPECIALIST_RETURN; no formal return exists yet.
 5. Continue 00 governance by checking unresolved specialist/overlap items that have newly arrived on latest main; do not restart the saturated broad AOKD sweep without a new observable/mechanism/source trigger.
+
+
+## H01 governance milestone — 2026-10-04 Asia/Taipei
+
+00-room completed H01 Dependency Audit, overlap recheck and anti-orphan review for D09-13 vs D09-14.
+
+Canonical audit:
+- `shared-knowledge/CURRICULUM_H01_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`
+- `shared-knowledge/curriculum_h01_dependency_anti_orphan_audit_20261004_v0_1.json`
+
+Decision:
+- **KEEP_SEPARATE** survives;
+- canonical implementation proposal = **SCOPE_DEDUP_ONLY**;
+- D09-13 remains industry structural owner;
+- D09-14 remains issuer strategic-action lifecycle owner;
+- shared market-share/capacity/price/margin data use one parent receipt;
+- both remain L3/60%; no count/maturity/Formal change.
+
+Proposed names:
+- D09-13: `Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）`;
+- D09-14: `Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）`.
+
+Current state: **OWNER_APPROVAL_REQUIRED**.
+
+Exact next continuation point:
+1. obtain explicit owner approval/rejection for the H01 scope-dedup naming/routing cleanup;
+2. if approved, re-read latest main and atomically update tracker + Learning Map + Router + Shared Master + H01 registries, with no maturity/count change;
+3. COV-12 remains PENDING_SPECIALIST_RETURN and must not be invented;
+4. other H-clusters stay on their actual counterpart/specialist gates.
