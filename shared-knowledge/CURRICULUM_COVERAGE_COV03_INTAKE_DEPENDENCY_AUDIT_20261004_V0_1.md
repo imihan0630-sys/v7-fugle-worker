@@ -196,3 +196,19 @@ Wait for explicit owner approval of **COV-03 ADD_MODULE as D06-19 at L0/0**.
 If approved, perform the atomic canonical update and verify all cross-files against latest main before and after write.
 
 COV-12 remains pending without a formal specialist return and must not be inferred or advanced from this audit.
+
+
+## Owner approval closure
+
+Owner explicitly approved COV-03 on 2026-10-04.
+
+Executed canonical result:
+- D06-19 Retail / Individual Investor Participation & Flow（散戶／自然人參與與流向）
+- starting state L0 / 0%
+- state → CANONICAL_UPDATE_COMPLETE
+
+Canonical receipt:
+- `shared-knowledge/CURRICULUM_COV03_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md`
+- `shared-knowledge/curriculum_cov03_canonical_update_receipt_20261004_v0_1.json`
+
+Formal Core remains LOCKED.
