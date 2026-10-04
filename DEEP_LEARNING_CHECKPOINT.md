@@ -1514,3 +1514,52 @@ Freeze Taiwan price/sector -> domestic institution flow -> rates/USD/global -> c
 D13-16/17/19 remain L2/40%; D12=40.0%, D13=41.1%, room09=40.6%. Strict clean prospective dates added=0. Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE=NONE; outcomes CLOSED. No Worker/runtime, rankings, signals, push, capital or holdings changes. Global tracker observed42.4%/354 modules, not this run's promotion.
 
 Exact next: obtain permitted CBO native XLSX (or explicitly validated official original archive) and verify projection shading/definition against pinned transformed rows; do not bypass 403. Read CBC May/August/2025 annex vintages to reconcile the -5.3/+9.7 discrepancies; keep UNKNOWN until complete signs/rows are verified. Then audit one USTR/BIS/OFAC announcement/legal/effective policy lineage and TWSE 18:10 foreign-flow version receipts. For H.4.1, preserve a future authorized raw receipt at actual publication; independently matched NYFed ONRRP before heuristic comparisons. NDC ex-TAIEX remains UNKNOWN pending standardized vintage inputs. Do not repeat MC-153..164.
+
+## DL-D21-20261004-C — RPT / dual-vintage restatement / tunneling boundary
+Run date: 2026-10-04 Asia/Taipei
+Scope: D21-05 / D21-10 / D21-11
+Status: D21-05_L3 / D21-10_L3 / D21-11_L2 / RESEARCH_ONLY / FORMAL_CORE_UNCHANGED
+
+### Research questions
+- Can Taiwan related-party transactions be replayed safely at the daily after-market decision clock across economically distinct transaction families?
+- Can financial restatements be reconstructed with original-versus-corrected vintages without look-ahead?
+- Can tunneling/minority-shareholder risk be defined as an independent derived layer rather than double-counting ownership, pledge and RPT raw inputs?
+
+### Evidence
+D21-05:
+- Yuanta Financial 2024-04-29 related-party real-estate disposal: MOPS-fed archive observed at 16:46:05; issuer archive matches same-day transaction; NT$133m amount; EirGenix related-party counterparty; appraisal, board and audit approval disclosed.
+- Yuanta Financial 2024-07-26 NT$3bn capital injection into 100%-owned Yuanta Life: MOPS-fed archive observed at 16:26:47; board and audit approval clocks disclosed; stated capital-adequacy / financial-structure purpose.
+- These demonstrate two RPT families and conservative daily-PIT availability before the formal after-market decision clock.
+
+D21-10:
+- Taiwan Terminal 3432, 2024-04-23 16:39:54 observed public restatement announcement directly discloses original / impact / restated values across multiple periods. 2022 EPS moved -17.57 -> -20.13, while 2023 annual EPS moved -5.32 -> -0.60 due reversal effects.
+- Leader Electronics 3058 2025-05 case links restatement/correction to a senior-manager internal-control breach, unrecorded private stock dispositions and temporarily uncollected proceeds, a distinct cause family from the 3432 accounting-estimate case.
+- Historical research must store original_vintage and corrected_vintage side by side; later values cannot be backfilled.
+
+D21-11:
+- Taiwan literature and TWSE review practice confirm that RPTs can represent tunneling/propping/internal-capital-market behavior depending on terms, beneficiary and governance context.
+- The unique D21-11 ownership boundary is therefore a derived classification of directional value extraction from the listed issuer/minority shareholders to controller-related beneficiaries.
+- D21-11 does not own raw wedge, pledge, RPT or accounting variables.
+
+### Counter-evidence / falsification
+- Large RPTs can be legitimate internal capital allocation.
+- An RPT with related-party status is not proof of tunneling.
+- Restatements can improve some later-period numbers because corrections propagate through accounting reversals.
+- Detection/remediation may indicate functioning governance rather than only deterioration.
+- Tunneling classification must preserve efficient-contracting/propping alternatives and cannot be created from one raw governance risk input.
+
+### Bias / redundancy
+- observed_public_at is safe for a later daily decision clock; it is not automatically the first publication second.
+- Intraday first-minute studies still require original authoritative timestamp precision.
+- D21-11 must test incremental value conditional on D21-01/04/05 rather than add duplicate points.
+- D21-10 must test redundancy versus D07 accounting quality and D11 event-risk evidence.
+
+### Maturity / candidate status
+- D21-05 -> L3 / 60%.
+- D21-10 -> L3 / 60%.
+- D21-11 -> L2 / 40%.
+- No FORMAL_OPTIMIZATION_CANDIDATE.
+- Formal Core remains LOCKED.
+
+### Exact next continuation
+Build a D21-11 historical one-positive/one-control case set using contemporaneous beneficiary, transaction terms/pricing, control linkage and approval evidence. Continue D21-04 original pledge-receipt recovery when authoritative source access permits. D21-05 and D21-10 require prospective/OOS evidence before any L4 promotion.
