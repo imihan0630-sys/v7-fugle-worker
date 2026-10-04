@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04T21:05:00+08:00",
+  "owner": "08｜事件與新聞研究室",
+  "module": "D17-04",
+  "title": "Direct beneficiary/victim Taiwan PIT exposure feasibility audit",
+  "status": "TAIWAN_PIT_DIRECT_EXPOSURE_CHAIN_FEASIBLE / FINANCIAL_SIGN_CAN_REMAIN_UNKNOWN / OUTCOMES_CLOSED",
+  "frozenChain": [
+    "EVENT",
+    "ECONOMIC_PRIMITIVE",
+    "FIRM_EXPOSURE",
+    "FINANCIAL_TRANSMISSION",
+    "EFFECTIVE_TIMING"
+  ],
+  "witnesses": [
+    {
+      "symbol": "2537",
+      "company": "聯上發",
+      "sourceId": "6ac0814f9e92b0f406eceda0",
+      "sourceClock": "2026-10-03 12:12:13",
+      "event": "聯上澐朗工地火災",
+      "economicPrimitive": "physical project damage / interruption risk",
+      "firmExposure": "issuer-owned development project under construction",
+      "financialTransmission": "insurance exists and issuer preliminarily assesses no material operating/financial impact; exact loss and insurance recovery remain unknown",
+      "effectiveTiming": "fire occurred 2026-10-03 before the issuer disclosure",
+      "classification": "DIRECT_ADVERSE_PHYSICAL_EXPOSURE / NET_FINANCIAL_IMPACT_UNKNOWN",
+      "tradingSign": "UNKNOWN",
+      "falsification": "Physical adverse event does not imply bearish stock direction when insurance, duration, demand, replacement cost and market expectation are unresolved."
+    },
+    {
+      "symbol": "7827",
+      "company": "漢康-KY創",
+      "sourceId": "6ac0c5459e92b0f4067cc560",
+      "sourceClock": "2026-10-03 17:00:54",
+      "event": "HCB303 美國新藥臨床試驗申請獲准",
+      "economicPrimitive": "regulatory permission to begin human clinical trial",
+      "firmExposure": "issuer/subsidiary directly owns the HCB303 development program",
+      "financialTransmission": "development option set advances but future clinical costs continue; no product approval, safety or efficacy validation exists; cash-flow magnitude is unknown",
+      "effectiveTiming": "issuer states confirmation on 2026-10-03",
+      "classification": "DIRECT_REGULATORY_PROGRESS / FINANCIAL_MAGNITUDE_AND_SIGN_UNKNOWN",
+      "tradingSign": "UNKNOWN",
+      "falsification": "IND permission is not product approval, commercial revenue or validated efficacy and therefore cannot be mapped directly to a bullish stock vote."
+    },
+    {
+      "symbol": "6461",
+      "company": "益得",
+      "sourceId": "6ac0d5ae9e92b0f4069a0269",
+      "sourceClock": "2026-10-03 18:14:46",
+      "event": "限制員工權利新股第一次發行",
+      "economicPrimitive": "employee equity compensation / share issuance",
+      "firmExposure": "issuer directly issues 516,000 restricted shares under the approved plan",
+      "financialTransmission": "retention/incentive benefit and dilution/compensation cost coexist; net financial effect is not identified by event label alone",
+      "effectiveTiming": "board decision 2026-10-02; capital-increase record date 2026-10-05",
+      "classification": "DIRECT_CAPITAL_COMPENSATION_EVENT / NET_DIRECTION_CONFLICTED",
+      "tradingSign": "UNKNOWN",
+      "falsification": "A direct issuer event can have economically offsetting channels and therefore requires a conflicted/unknown state."
+    }
+  ],
+  "pitContract": [
+    "Freeze the event item/version and capture clock before outcome use.",
+    "Store source clock separately from connector capturedAt.",
+    "Direct exposure requires issuer/subsidiary/asset linkage in source evidence; thematic proximity is insufficient.",
+    "Issuer self-assessed materiality is a claim field, not independently verified financial truth.",
+    "Financial transmission may be POSITIVE, NEGATIVE, MIXED, CONFLICTED or UNKNOWN; direct exposure does not force a stock sign."
+  ],
+  "maturityDecision": {
+    "from": "L2",
+    "to": "L3",
+    "basis": "Taiwan structured material disclosures physically expose entity, event, timing, detailed mechanism and issuer-specific impact fields sufficient to build the frozen direct-exposure chain with explicit UNKNOWN/conflicted states. Multiple divergent cases demonstrate the construction is not a one-direction narrative.",
+    "notClaimed": [
+      "alpha",
+      "stock direction",
+      "independent verification of issuer materiality",
+      "L4/OOS"
+    ]
+  },
+  "outcomeJoin": false,
+  "formalCoreChanged": false,
+  "exactNext": [
+    "Prospectively capture new direct events before outcomes under the same state vector.",
+    "Add independent evidence where issuer impact claims can be cross-validated.",
+    "Before L4, test whether the direct-exposure state adds value beyond event category, D07 fundamentals and D11 event identity on common support."
+  ]
+}
