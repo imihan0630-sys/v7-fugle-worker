@@ -2221,3 +2221,107 @@ Exact next:
 SC-053 prospectively append issuer-native capacity/production/HVM vintages; obtain at least one issuer-reported true utilization-rate case and one delay/cancellation/low-utilization control before any L4 test.
 
 Formal Core unchanged.
+
+
+## SC-050 / SC-054 — Prefrozen lag replay falsifies the attractive short-window steel lead-lag
+
+Artifacts:
+- `research/sc050_supply_chain_lead_lag_three_vintage_cross_chain_falsification_v0_1.json`
+- `research/sc054_steel_prefrozen_lag_six_vintage_falsification_v0_1.json`
+
+### Why this stage matters
+
+SC-049 froze 1M / 2M / 3M lag candidates before this stage. The new evidence therefore cannot choose a prettier lag after seeing the result.
+
+SC-050 first added:
+- a third Taiwan EAF steel-chain vintage (2026-07) from MIRDC Basic Metals report issue 60;
+- a second non-steel monthly demand-transmission candidate using MOEA export orders and industrial production;
+- explicit common-shock, inventory and publication-clock controls.
+
+The initial three-month steel view looked tempting:
+- July scrap DOWN -> August billet DOWN;
+- August scrap UP -> September billet UP.
+
+That was 2/2 concordance at 1M, but it was explicitly kept as suggestive only.
+
+SC-054 then read previously unused April-June steel vintages without changing the frozen lag set.
+
+### Six-vintage steel chain
+
+| Month | North-Taiwan scrap MoM | Billet MoM | Tung Ho H-beam MoM |
+|---|---:|---:|---:|
+| 2026-04 | +5.2% | -2.5% | +2.3% |
+| 2026-05 | +2.0% | +1.7% | +2.2% |
+| 2026-06 | -3.9% | -1.4% | +2.2% |
+| 2026-07 | -4.0% | +1.2% | 0.0% |
+| 2026-08 | +2.1% | -3.5% | 0.0% |
+| 2026-09 | +4.1% | +3.8% | 0.0% |
+
+Frozen scrap -> later billet direction replay:
+- 1M: 3/5 concordant = 60%;
+- 2M: 2/4 concordant = 50%;
+- 3M: 1/3 concordant = 33.3%.
+
+The original 2/2 one-month pattern therefore fails robustness immediately once the earlier held-back vintages are added.
+
+This is not a failed research round. It is a successful falsification of short-window pattern seduction.
+
+### Downstream stickiness is material
+
+H-beam:
+- UP in April, May and June;
+- FLAT in July, August and September.
+
+A scrap/billet move therefore does not mechanically propagate into the downstream monthly H-beam price. Contract/posting cadence, inventory, demand and price discipline remain necessary explanations.
+
+### Second non-steel candidate: electronics demand transmission
+
+MOEA monthly chain candidate:
+electronic-product export orders
+-> electronic-components production
+-> computer/electronic/optical production.
+
+June / July / August export-order MoM:
++8.7% / +2.0% / +10.7%.
+
+Electronic-components production MoM:
++1.08% / -0.73% / +10.36%.
+
+Computer/electronic/optical production MoM:
++5.88% / +12.79% / -13.46%.
+
+Therefore a simple same-month or obvious fixed one-month direction is not present.
+
+More importantly, MOEA narratives explicitly identify AI/HPC/cloud demand as a common driver across several electronics layers. Export orders also include overseas production and product-order taxonomies are not a one-to-one physical supplier graph.
+
+This candidate is useful as falsification/common-shock evidence, but is not accepted as the required second physical three-layer chain.
+
+### PIT / source-clock rule
+
+MOEA order and production releases are separately timestamped. A production release published after an order release may not be backfilled into the earlier order-decision state.
+
+MIRDC monthly steel reports are available after their reference months. Existing SC-036 remains conservative where native first-publication time is not frozen: use capturedAt unless a native knownAt/publication clock is separately preserved.
+
+### Maturity decision
+
+D10-02 remains L2.
+
+Why no L3:
+- all three prefrozen steel lags are unstable in six-vintage replay;
+- adjacent monthly pairs are serially dependent, not independent episodes;
+- the second electronics candidate falsifies a universal fixed-lag story but is not a clean physical supplier graph;
+- comparable first-known clocks are not uniformly frozen across all steel vintages;
+- common-demand, inventory, seasonality and contract-reset alternatives remain material.
+
+D10-09 remains L3. The new data strengthen asymmetric-transmission/data-feasibility evidence but do not create L4 prospective outcome evidence.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core unchanged.
+
+### Exact next
+
+SC-055:
+- build a genuinely physical non-steel three-layer chain;
+- require effective-dated product/exposure semantics and compatible monthly source clocks;
+- continue future steel vintages with the unchanged 1M/2M/3M set;
+- if no chain-specific relation survives inventory, seasonality, contract-reset and common-shock controls, reject the generic fixed-lag hypothesis rather than endlessly adding data.
