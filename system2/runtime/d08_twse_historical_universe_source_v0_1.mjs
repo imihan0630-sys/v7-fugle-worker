@@ -34,6 +34,50 @@ async function getJson(url,fetchImpl){
   return {url,text,payload:JSON.parse(text),hash:sha(text)};
 }
 
+
+export function d08SemanticMembershipCoreV0_1(m){
+  if(!m||typeof m!=="object") throw new Error("membership is required");
+  return deepFreeze({
+    registryId:String(m.registryId),
+    market:String(m.market),
+    symbol:String(m.symbol),
+    memberState:String(m.memberState),
+    datasetStartDate:m.datasetStartDate||null,
+    listingDate:m.listingDate||null,
+    delistingDate:m.delistingDate||null,
+    firstTradingDate:m.firstTradingDate||null,
+    effectiveFrom:m.effectiveFrom||null,
+    effectiveTo:m.effectiveTo||null,
+    startBasis:m.startBasis||null,
+    endBasis:m.endBasis||null,
+    replayEligible:m.replayEligible===true,
+    schemaVersion:"D08_TWSE_SEMANTIC_MEMBERSHIP_V0_1",
+  });
+}
+
+export function buildD08SemanticUniverseIdentityV0_1(registry){
+  if(!registry||!Array.isArray(registry.memberships)) throw new Error("registry.memberships is required");
+  const memberships=registry.memberships.map(d08SemanticMembershipCoreV0_1).sort((a,b)=>
+    a.market.localeCompare(b.market)||a.symbol.localeCompare(b.symbol)||
+    String(a.effectiveFrom||"").localeCompare(String(b.effectiveFrom||""))||
+    String(a.effectiveTo||"").localeCompare(String(b.effectiveTo||""))
+  );
+  const text=JSON.stringify({
+    registryId:registry.registryId,
+    datasetStartDate:registry.datasetStartDate,
+    memberships,
+    schemaVersion:"D08_TWSE_SEMANTIC_UNIVERSE_V0_1",
+  });
+  return deepFreeze({
+    registryId:registry.registryId,
+    datasetStartDate:registry.datasetStartDate,
+    membershipCount:memberships.length,
+    memberships:Object.freeze(memberships),
+    semanticRegistryHash:sha(text),
+    schemaVersion:"D08_TWSE_SEMANTIC_UNIVERSE_IDENTITY_V0_1",
+  });
+}
+
 export async function buildD08TwseHistoricalUniverseSourceV0_1({
   datasetStartDate="2023-01-01",observedAt=new Date().toISOString(),fetchImpl=globalThis.fetch,
 }={}){
