@@ -624,3 +624,9 @@ Global revision completeness, no-event authority, technical continuity, selectio
 PR #455 physically verified exact full-query versus month-shard reconciliation for the three highest-row companies in a frozen 11-company MOPSOV sample: 2891 (391 rows), 3711 (383) and 2881 (300). No one-sided/duplicate keys or pagination hints were observed.
 
 The next S2-07 revision-source blocker is historical version knownAt semantics. Revision completeness and all trading authorities remain false.
+
+## 2026-10-04 S2-07 revision provenance and clock milestone
+
+S2-07 now has physically verified MOPS source-reported clock semantics (PR #471), direct SFB/FSC regulator revocation evidence for the frozen 1342 control (PR #475), a fail-closed prospective availability observer that refuses retrospective knownAt fabrication (PR #480), and a 5/5 cross-authority issuer/regulator/exchange routing matrix (PR #483).
+
+This materially narrows the revision-source blocker but does not certify exact public availability or bounded revision completeness. `knownAtVersionClockCertified=false`, `revisionCoverageComplete=false`, session/technical continuity and all trading authorities remain locked.

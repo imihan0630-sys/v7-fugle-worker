@@ -80,3 +80,28 @@ This gate is read-only and does not change:
 - technicalContinuityCertified;
 - selection/push/capital/order authority;
 - System 1 runtime.
+
+## 2026-10-04 physical source-reported clock acceptance
+
+PR #471 merged as `07aac29e0bc239feb8c756c88095837722512fa8`.
+
+Physical checks:
+- MOPSOV Source Reported Clock Readonly `37174539570`: PASS.
+- System2 Research CI `37174539542`: PASS.
+- V8 Regression `37174539543`: PASS.
+- 5/5 frozen correction/cancellation controls PASS.
+- every matched historical version had visible date/time equal to hidden `spoke_date/spoke_time`;
+- version identity `date|time|seqNo` was unique within each chain;
+- correction clocks followed original clocks;
+- the 1342 cancellation row had consistent source-reported clock semantics.
+
+Promoted narrowly:
+- `sourceReportedVersionClockSemanticsCertified=true`;
+- `historicalKnownAtCandidateClockAvailable=true`.
+
+Still false:
+- `publicAvailabilityLatencyCertified=false`;
+- `knownAtVersionClockCertified=false`;
+- `pitReplayUseAsAvailableAtAuthorized=false`.
+
+Historical MOPS display time is therefore archived as `sourceReportedAt`, not silently relabeled as exact public `availableAt`.
