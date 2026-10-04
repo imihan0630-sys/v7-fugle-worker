@@ -98,10 +98,16 @@
     },
     {
       "id": "H08",
-      "status": "PENDING",
-      "receivedPackets": [],
+      "status": "CLOSED_NO_STRUCTURAL_CHANGE",
+      "receivedPackets": [
+        "MARKET_BREADTH_ROTATION_RESEARCH.md",
+        "NEWS_EVENT_TRANSMISSION_RESEARCH.md",
+        "research/news_event_transmission_contract_v0_2.json",
+        "BEHAVIORAL_FINANCE_RESEARCH.md",
+        "BEHAVIORAL_FINANCE_CHECKPOINT.md"
+      ],
       "pendingRooms": [],
-      "controlDecision": "NOT_EVALUATED"
+      "controlDecision": "KEEP_SEPARATE_MEMBERSHIP_EVENT_PROPAGATION_NARRATIVE_DIFFUSION"
     },
     {
       "id": "H09",
@@ -116,10 +122,14 @@
     },
     {
       "id": "H10",
-      "status": "PENDING",
-      "receivedPackets": [],
+      "status": "OWNER_APPROVAL_REQUIRED",
+      "receivedPackets": [
+        "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md",
+        "NEWS_EVENT_TRANSMISSION_RESEARCH.md",
+        "research/news_event_transmission_contract_v0_2.json"
+      ],
       "pendingRooms": [],
-      "controlDecision": "NOT_EVALUATED"
+      "controlDecision": "KEEP_SEPARATE_SCOPE_DEDUP_ONLY_OWNER_APPROVAL_REQUIRED"
     },
     {
       "id": "H11",
@@ -675,6 +685,34 @@
     "proposedName": "Volatility Risk Premium／IV-RV Proxies波動率風險溢酬與IV-RV代理",
     "state": "OWNER_APPROVAL_REQUIRED",
     "maturityChange": "NONE_BEFORE_APPROVAL",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "h08": {
+    "audit": "shared-knowledge/CURRICULUM_H08_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md",
+    "machineAudit": "shared-knowledge/curriculum_h08_dependency_anti_orphan_audit_20261004_v0_1.json",
+    "canonicalReceipt": "shared-knowledge/CURRICULUM_H08_CANONICAL_CLOSURE_RECEIPT_20261004_V0_1.md",
+    "canonicalReceiptJson": "shared-knowledge/curriculum_h08_canonical_closure_receipt_20261004_v0_1.json",
+    "terminalClassification": "KEEP_SEPARATE",
+    "governanceDisposition": "MEMBERSHIP_VS_EVENT_PROPAGATION_VS_NARRATIVE_DIFFUSION",
+    "state": "CLOSED_NO_STRUCTURAL_CHANGE",
+    "maturityChange": "NONE",
+    "structuralChange": "NONE",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "h10": {
+    "audit": "shared-knowledge/CURRICULUM_H10_SCOPE_DEDUP_AUDIT_20261004_V0_1.md",
+    "machineAudit": "shared-knowledge/curriculum_h10_scope_dedup_audit_20261004_v0_1.json",
+    "terminalClassification": "KEEP_SEPARATE",
+    "governanceDisposition": "SCOPE_DEDUP_ONLY_STRUCTURAL_EXPOSURE_TO_EVENT_OVERLAY",
+    "proposedOwnership": {
+      "D10-12": "STRUCTURAL_EXPOSURE_GRAPH_PRODUCER",
+      "D17-04": "EVENT_SPECIFIC_DIRECT_ATTRIBUTION_CONSUMER",
+      "D17-05": "EVENT_SPECIFIC_SECOND_ORDER_PATH_CONSUMER"
+    },
+    "state": "OWNER_APPROVAL_REQUIRED",
+    "maturityChange": "NONE",
+    "renameRequired": false,
+    "moduleCountChange": 0,
     "formalOptimizationCandidate": "NONE"
   }
 }
