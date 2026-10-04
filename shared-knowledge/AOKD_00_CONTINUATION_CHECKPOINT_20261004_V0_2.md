@@ -479,3 +479,51 @@ Exact next:
 3. scan H18 and H19 for equivalent complete evidence already present under room-specific filenames.
 4. H11 and H12 retain their explicit remaining evidence gates.
 5. COV-12 and AOKD-05 retain their source/data gates.
+
+
+## H17 / H18 / H19 partial-intake reconciliation — 2026-10-04
+
+00-room reclassified three non-empty dependency clusters from generic PENDING to evidence-specific PARTIAL states.
+
+### H17
+Accepted boundary:
+D13-06 risk-free curve → D22-04 issuer debt cost/refinancing spread → D07-18 WACC composite.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / D07_18_AND_D22_04_REPLAY_GATES_PENDING`.
+
+Remaining:
+- D07-18 own WACC/COE/COD contract;
+- D22-04 issuer-security-date historical replay;
+- D13-06 multidate strict source attestation;
+- empirical divergent-state receipts.
+
+### H18
+Room14 D21-07 mechanism/falsification side accepted.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / ROOM06_D07_19_PROJECT_ECONOMICS_PENDING`.
+
+Remaining:
+D07-19 project/capital-budget economics, PIT opportunity-set assumptions and project-quality-vs-management-allocation divergent states.
+
+### H19
+Semantic owners accepted:
+- D03-04 time-series momentum;
+- D19-04 cross-sectional momentum;
+- D19-09 residual/factor-neutral momentum.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / ROOM12_COMMON_SUPPORT_REDUNDANCY_RESIDUAL_TESTS_PENDING`.
+
+Remaining:
+same-date/same-universe D03-vs-D19-04 comparison, D19-09 fixed-factor/industry residualization, provenance, cost and capacity.
+
+Cross-room checkpoint deltas were routed. No maturity/count/Formal change.
+
+Exact next:
+1. re-scan H11/H12 for newly arrived evidence;
+2. re-scan COV-12 formal-return/source readiness;
+3. re-scan AOKD-05 corpus-feasibility response from Room06;
+4. preserve closed H05/H06/H07/H09/H13/H14/H15/H16/H20;
+5. do not reopen closed clusters unless contradictory evidence appears.
