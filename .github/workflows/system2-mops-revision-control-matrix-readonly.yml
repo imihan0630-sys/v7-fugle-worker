@@ -1,0 +1,45 @@
+name: System2 MOPS Revision Control Matrix Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/mops_revision_control_matrix_v0_2.mjs"
+      - "system2/tests/mops_revision_control_matrix_v0_2.test.mjs"
+      - "system2/scripts/probe_mops_revision_control_matrix_readonly_v0_2.mjs"
+      - "system2/SYSTEM2_MOPS_REVISION_CONTROL_MATRIX_V0_2.md"
+      - ".github/workflows/system2-mops-revision-control-matrix-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-mops-revision-control-matrix-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run deterministic matrix tests
+        run: node system2/tests/mops_revision_control_matrix_v0_2.test.mjs
+
+      - name: Probe MOPS multi-family correction and cancellation controls
+        run: node system2/scripts/probe_mops_revision_control_matrix_readonly_v0_2.mjs
+
+      - name: Confirm read-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy' system2/scripts/probe_mops_revision_control_matrix_readonly_v0_2.mjs
+          echo "Read-only MOPS revision control matrix boundary PASS"
