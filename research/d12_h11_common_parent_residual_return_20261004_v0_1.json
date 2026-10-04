@@ -1,0 +1,192 @@
+{
+  "schemaVersion": "0.1",
+  "id": "D12_H11_COMMON_PARENT_RESIDUAL_RETURN_20261004",
+  "room": "09｜衍生品與國際總經研究室",
+  "modules": [
+    "D12-07",
+    "D12-16"
+  ],
+  "status": "H11_TERMINAL_SPECIALIST_RETURN__SCOPE_DEDUP_ONLY__HISTORICAL_REPLAY_QA__OUTCOMES_CLOSED",
+  "classification": "SCOPE_DEDUP_ONLY",
+  "sourceDate": "2026-10-02",
+  "parentIdentity": {
+    "optionSource": "https://www.taifex.com.tw/cht/3/optDataDown",
+    "optionSha256": "61574590f9c8a1c882616f89090d39cbd44e00a91bd93055ff046ff4ab287c2a",
+    "optionBytes": 567774,
+    "futuresSource": "https://www.taifex.com.tw/cht/3/futDataDown",
+    "futuresSha256": "d41cc8c279d805a0ebb13c29f3ff757cdc78a35d7a2e13fc06be4b3f3aeb1834",
+    "rateSource": "https://www.cbc.gov.tw/tw/public/data/a13rate.xls",
+    "rateSha256": "4530cbe4fda52f124bb7bc0cb621bce374f4d8a9607b3ce72021d836038e2d16",
+    "rateLastModifiedUtc": "2026-10-01T11:00:50Z",
+    "rateKnownBeforeSourceDate": true,
+    "session": "TAIFEX_REGULAR_SESSION",
+    "strictDecisionTime1810Attestation": false
+  },
+  "primaryInputConvention": {
+    "forward": "same-expiry TX final best-bid/ask midpoint for monthly expiries",
+    "rate": "equal-weight mean of posted fixed time-deposit rates across 台銀/土銀/合庫/一銀/華銀 from CBC 11509 source",
+    "ratePctByCalendarTenorDays": {
+      "30": 1.225,
+      "90": 1.286,
+      "180": 1.452,
+      "270": 1.565,
+      "365": 1.7
+    },
+    "interpolation": "piecewise-linear quoted annual rate by calendar days; <=30d flat 1m; >=365d flat 1y",
+    "discount": "exp(-r*T), ACT/365 research proxy",
+    "observationClockProxy": "2026-10-02 13:45 Asia/Taipei",
+    "expiryClock": "13:30 Asia/Taipei on contract final trading/settlement day",
+    "ivModel": "Black-76 European option on futures forward"
+  },
+  "alternativeSensitivity": {
+    "source": "CBC central-bank CD issuance-rate tenor anchors published before 2026-10-02",
+    "role": "SENSITIVITY_ONLY",
+    "ratePctByCalendarTenorDays": {
+      "7": 0.825,
+      "28": 1.215,
+      "91": 1.275,
+      "182": 1.395,
+      "364": 1.643
+    },
+    "guard": "asynchronous issuance dates/mechanisms across tenor; not promoted as exact contemporaneous zero curve"
+  },
+  "commonSupportMethod": {
+    "quoteEligibility": "bid>0, ask>0, ask>=bid",
+    "smileLeg": "OTM Put below forward; OTM Call above forward; median available legs very near ATM",
+    "logMoneynessWindow": "abs(log(K/F))<=0.10",
+    "atmBand": "abs(log(K/F))<=0.01",
+    "downsideBand": "[-0.08,-0.02]",
+    "upsideBand": "[0.02,0.08]",
+    "simpleBaseline": "unweighted linear IV versus log-moneyness plus ATM/wing medians",
+    "complexCandidate": "quadratic IV versus log-moneyness on identical strike support",
+    "incrementalDiagnostic": "leave-one-strike-out RMSE reduction; no market outcomes"
+  },
+  "monthlyResults": [
+    {
+      "expiry": "202610",
+      "days": 18.989583,
+      "forward": 48667.5,
+      "ratePct": 1.225,
+      "n": 97,
+      "atmIv": 0.188658156,
+      "downsideMinusUpside": 0.010934027,
+      "curvature": 3.612316267,
+      "linearLooRmse": 0.011289324,
+      "quadraticLooRmse": 0.002673336,
+      "quadraticLooGainPct": 76.3198,
+      "cdGainPct": 76.3371
+    },
+    {
+      "expiry": "202611",
+      "days": 46.989583,
+      "forward": 48845,
+      "ratePct": 1.242273,
+      "n": 98,
+      "atmIv": 0.219992708,
+      "downsideMinusUpside": 0.00950415,
+      "curvature": 0.805847008,
+      "linearLooRmse": 0.002532399,
+      "quadraticLooRmse": 0.000514761,
+      "quadraticLooGainPct": 79.673,
+      "cdGainPct": 79.6802
+    },
+    {
+      "expiry": "202612",
+      "days": 74.989583,
+      "forward": 48987,
+      "ratePct": 1.270739,
+      "n": 98,
+      "atmIv": 0.232197542,
+      "downsideMinusUpside": 0.010524089,
+      "curvature": 0.448855154,
+      "linearLooRmse": 0.001520337,
+      "quadraticLooRmse": 0.000671363,
+      "quadraticLooGainPct": 55.8412,
+      "cdGainPct": 55.8613
+    },
+    {
+      "expiry": "202703",
+      "days": 165.989583,
+      "forward": 49468,
+      "ratePct": 1.426159,
+      "n": 50,
+      "atmIv": 0.237757952,
+      "downsideMinusUpside": 0.010253471,
+      "curvature": 0.285722952,
+      "linearLooRmse": 0.001063626,
+      "quadraticLooRmse": 0.000563149,
+      "quadraticLooGainPct": 47.0539,
+      "cdGainPct": 47.3689
+    },
+    {
+      "expiry": "202706",
+      "days": 256.989583,
+      "forward": 49977,
+      "ratePct": 1.548665,
+      "n": 50,
+      "atmIv": 0.246325784,
+      "downsideMinusUpside": 0.009521984,
+      "curvature": 0.160680791,
+      "linearLooRmse": 0.000607998,
+      "quadraticLooRmse": 0.000352495,
+      "quadraticLooGainPct": 42.0237,
+      "cdGainPct": 42.8133
+    }
+  ],
+  "rateSensitivitySummary": {
+    "maxAbsAtmIvDifferenceVolPctPoints": 0.008958795,
+    "maxAbsDownsideMinusUpsideDifferenceVolPctPoints": 0.000356135,
+    "conclusion": "Residual curvature/fit improvement is not explained by the selected primary rate proxy."
+  },
+  "divergentStateEvidence": {
+    "simpleSkewRange": [
+      0.00950415,
+      0.010934027
+    ],
+    "curvatureRange": [
+      0.160680791,
+      3.612316267
+    ],
+    "observation": "Simple downside-vs-upside skew stays relatively narrow across monthly tenors while curvature changes by more than an order of magnitude and remains strongly useful for cross-sectional fit. This is a real same-parent residual structure not represented by one linear skew summary.",
+    "sourceAttestation": "Official historical source identity and hashes preserved; this is later-retrieved replay evidence, not proof of 18:10 first-known availability."
+  },
+  "h11Resolution": {
+    "completedRemaining": [
+      "PERMITTED_RAW_TAIFEX_PARENT_WITH_IDENTITY_HASH",
+      "IDENTICAL_PARENT_COMMON_SUPPORT_FEATURE_BUILD",
+      "D12_16_RESIDUAL_AFTER_D12_07",
+      "SOURCE_HASH_ATTESTED_HISTORICAL_DIVERGENT_STATES",
+      "TERMINAL_CLASSIFICATION"
+    ],
+    "D12_07Owner": "Simple skew level/asymmetry and ATM/near-far term-structure baseline summaries.",
+    "D12_16Owner": "Residual curvature/smile, cross-expiry surface interaction, construction-method sensitivity, fit/coverage/static-arbitrage quality.",
+    "antiDoubleCount": "D12-16 must not create a second independent vote from the same linear skew/ATM term primitive already owned by D12-07.",
+    "recommendation": "SCOPE_DEDUP_ONLY"
+  },
+  "maturityDecision": {
+    "D12_07": "L2_40_UNCHANGED",
+    "D12_16": "L2_40_UNCHANGED",
+    "reason": "One later-retrieved historical parent validates method/residual structure but does not provide independent prospective decision-time PIT dates required for L3."
+  },
+  "formalCoreImpact": "NONE",
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE",
+  "workflowEvidence": [
+    {
+      "runId": 37198118437,
+      "jobId": 111424079562,
+      "role": "PRIMARY_IV_SURFACE_REPLAY"
+    },
+    {
+      "runId": 37198185375,
+      "jobId": 111424278448,
+      "role": "ALTERNATIVE_RATE_SENSITIVITY"
+    }
+  ],
+  "exactNext": [
+    "Return H11 terminal SCOPE_DEDUP_ONLY to 00 control plane.",
+    "Accumulate independent source-attested prospective option-surface dates before any L3 promotion.",
+    "On future dates preserve exact quote/source clocks; historical daily last-best quotes must not be labeled simultaneous executable quotes.",
+    "Continue D12-13 own-computed Greeks versus official TAIFEX Delta comparison only after model/input clocks are aligned."
+  ]
+}
