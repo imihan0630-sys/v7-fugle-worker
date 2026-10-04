@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T08:00:00+08:00",
+  "updatedAt": "2026-10-04T08:05:00+08:00",
   "status": "CANONICAL_ROOM_BOOTSTRAP_REGISTRY_V0_1",
   "repository": "imihan0630-sys/v7-fugle-worker",
   "authoritativeBranch": "main",
@@ -42,6 +42,13 @@
         "KLINE_PATTERN_CHECKPOINT.md",
         "KLINE_PATTERN_RESEARCH.md",
         "TARGET_RESISTANCE_RR_RESEARCH.md"
+      ],
+      "aliases": [
+        "01",
+        "1",
+        "01研究室",
+        "1號研究室",
+        "第1號研究室"
       ]
     },
     {
@@ -57,6 +64,13 @@
         "PRICE_VOLUME_RESEARCH.md",
         "PRICE_VOLUME_EVIDENCE.md",
         "PRICE_VOLUME_HYPOTHESIS_LEDGER.md"
+      ],
+      "aliases": [
+        "02",
+        "2",
+        "02研究室",
+        "2號研究室",
+        "第2號研究室"
       ]
     },
     {
@@ -70,6 +84,13 @@
       "checkpoints": [
         "TECHNICAL_INDICATOR_CHECKPOINT.md",
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
+      ],
+      "aliases": [
+        "03",
+        "3",
+        "03研究室",
+        "3號研究室",
+        "第3號研究室"
       ]
     },
     {
@@ -85,6 +106,13 @@
         "VOLATILITY_REGIME_RESEARCH.md",
         "MICROSTRUCTURE_CHECKPOINT.md",
         "MICROSTRUCTURE_RESEARCH.md"
+      ],
+      "aliases": [
+        "04",
+        "4",
+        "04研究室",
+        "4號研究室",
+        "第4號研究室"
       ]
     },
     {
@@ -99,6 +127,13 @@
         "INSTITUTIONAL_CROWDING_RESEARCH.md",
         "LEVERAGE_SHORTING_CHECKPOINT.md",
         "PASSIVE_FLOW_INDEX_REBALANCING_CHECKPOINT.md"
+      ],
+      "aliases": [
+        "05",
+        "5",
+        "05研究室",
+        "5號研究室",
+        "第5號研究室"
       ]
     },
     {
@@ -114,6 +149,13 @@
         "FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md",
         "FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md",
         "VALUATION_RESEARCH.md"
+      ],
+      "aliases": [
+        "06",
+        "6",
+        "06研究室",
+        "6號研究室",
+        "第6號研究室"
       ]
     },
     {
@@ -129,6 +171,13 @@
         "MARKET_BREADTH_ROTATION_CHECKPOINT.md",
         "MARKET_BREADTH_ROTATION_RESEARCH.md",
         "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md"
+      ],
+      "aliases": [
+        "07",
+        "7",
+        "07研究室",
+        "7號研究室",
+        "第7號研究室"
       ]
     },
     {
@@ -144,6 +193,13 @@
         "CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md",
         "EVENT_RISK_CHECKPOINT.md",
         "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md"
+      ],
+      "aliases": [
+        "08",
+        "8",
+        "08研究室",
+        "8號研究室",
+        "第8號研究室"
       ]
     },
     {
@@ -160,6 +216,13 @@
         "DERIVATIVES_VOLATILITY_RESEARCH.md",
         "MACRO_CROSS_MARKET_CHECKPOINT.md",
         "MACRO_CROSS_MARKET_RESEARCH.md"
+      ],
+      "aliases": [
+        "09",
+        "9",
+        "09研究室",
+        "9號研究室",
+        "第9號研究室"
       ]
     },
     {
@@ -176,6 +239,12 @@
         "EXECUTION_ALPHA_RESEARCH.md",
         "PORTFOLIO_RISK_CHECKPOINT.md",
         "PORTFOLIO_RISK_RESEARCH.md"
+      ],
+      "aliases": [
+        "10",
+        "10研究室",
+        "10號研究室",
+        "第10號研究室"
       ]
     },
     {
@@ -194,6 +263,12 @@
         "system2/SYSTEM2_MARKET_REGIME_V0.md",
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md",
         "MARKET_BREADTH_ROTATION_CHECKPOINT.md"
+      ],
+      "aliases": [
+        "11",
+        "11研究室",
+        "11號研究室",
+        "第11號研究室"
       ]
     },
     {
@@ -207,6 +282,12 @@
       "checkpoints": [
         "ASSET_PRICING_FACTOR_CHECKPOINT.md",
         "ASSET_PRICING_FACTOR_RESEARCH.md"
+      ],
+      "aliases": [
+        "12",
+        "12研究室",
+        "12號研究室",
+        "第12號研究室"
       ]
     },
     {
@@ -220,6 +301,12 @@
       "checkpoints": [
         "BEHAVIORAL_FINANCE_CHECKPOINT.md",
         "BEHAVIORAL_FINANCE_RESEARCH.md"
+      ],
+      "aliases": [
+        "13",
+        "13研究室",
+        "13號研究室",
+        "第13號研究室"
       ]
     },
     {
@@ -233,6 +320,12 @@
       "checkpoints": [
         "CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md",
         "CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md"
+      ],
+      "aliases": [
+        "14",
+        "14研究室",
+        "14號研究室",
+        "第14號研究室"
       ]
     },
     {
@@ -246,6 +339,12 @@
       "checkpoints": [
         "CREDIT_CAPITAL_STRUCTURE_CHECKPOINT.md",
         "CREDIT_CAPITAL_STRUCTURE_RESEARCH.md"
+      ],
+      "aliases": [
+        "15",
+        "15研究室",
+        "15號研究室",
+        "第15號研究室"
       ]
     },
     {
@@ -289,5 +388,27 @@
     }
   ],
   "defaultLearningRoomShortStart": "接手「<聊天室名稱>」。依 GitHub 最新 main 與 ROOM_BOOTSTRAP 自動恢復，從正式 exact next continuation point 接續；禁止重頭研究、禁止重做、不要要求我重貼舊聊天。",
-  "fallback": "若聊天室身份無法唯一辨識，先用名稱搜尋本 Registry／Router；仍有歧義時只詢問最小辨識資訊。"
+  "fallback": "若聊天室身份無法唯一辨識，先用名稱搜尋本 Registry／Router；仍有歧義時只詢問最小辨識資訊。",
+  "defaults": {
+    "learningRoom": {
+      "mode": "Chat",
+      "model": "GPT-5.6 Sol",
+      "reasoning": "High"
+    },
+    "researchControl": {
+      "mode": "Chat",
+      "model": "GPT-5.6 Sol",
+      "reasoning": "High"
+    },
+    "repositoryEngineering": {
+      "mode": "Codex",
+      "model": "GPT-6 Astra",
+      "reasoning": "High"
+    },
+    "longCrossDomainIntegration": {
+      "mode": "Work",
+      "model": "GPT-6 Astra",
+      "reasoning": "High"
+    }
+  }
 }
