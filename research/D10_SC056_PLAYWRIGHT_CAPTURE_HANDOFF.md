@@ -1,6 +1,6 @@
 # D10 SC-056 Playwright Capture Engineering Handoff
 
-Status: READY_FOR_CODEX
+Status: LOCAL_CAPTURE_VERIFIED_CI_PENDING
 Updated: 2026-10-04 19:13 Asia/Taipei
 Repository: `imihan0630-sys/v7-fugle-worker`
 Authoritative branch: latest `main`
@@ -72,7 +72,36 @@ A first implementation is acceptable only when all of the following are proven:
 
 ## Exact next action
 
-Create a task branch from latest main, inspect the MOEA page/DOM with Playwright, implement the smallest read-only collector + fixture test + manual GitHub Actions smoke workflow, run it, save the first verified capture artifact, then update this handoff with branch/PR/commit/tests/readback and the next continuation point.
+Implementation exists on `research/sc056-playwright-capture`. Run the new manual
+GitHub Actions smoke, verify two independent captures and artifact readback,
+commit the first verified CI evidence under `research/data-capture/sc056/evidence/`,
+then update this checkpoint with PR/commit/run and final acceptance. Do not redo
+source discovery or parser implementation.
+
+## 2026-10-04 implementation milestone
+
+- Started from latest main `3c28637ff2ac833b7d08f1b9bd623a5354334d30`.
+- Branch: `research/sc056-playwright-capture`; Class A, research only.
+- Source discovery: official survey index menu 6819 exposes `InvestigateDA.aspx`
+  for products; `InvestigateDB.aspx` is industry statistics and is not this chain.
+- Browser-resolved exact source codes: 2433020 / 2630010 / 2630040. Production
+  and inventory controls both verified. Units: 公噸 / 平方呎 / 平方呎.
+- Standalone implementation: `research/data-capture/sc056/`; Playwright 1.63.0,
+  Chromium headless. Workflow: `.github/workflows/sc056-moea-playwright-smoke.yml`.
+- Local targeted tests: 19/19 PASS. Local live smoke 2025-01: PASS, two fresh
+  contexts; all six values match SC-055; archives read back with verified hashes.
+- Local semantic fingerprint:
+  `70eecad5784520d865ea42f15627fb9c4117797692f97f0d4074fc7505545232`.
+- Local raw-result hash (both runs):
+  `0fdb61785aa18a581aa1e7eebeb97210ecef91ef2c9a6da42a76871dbc8a3c74`.
+- Capture clocks: 2026-10-04 19:34:46 / 19:34:56 Asia/Taipei. Native record
+  `sourcePublishedAt` remains UNKNOWN; historical first-publication/PIT proof is
+  not supplied by a current historical replay.
+- Existing Worker regression command fails its previous-quarter EPS expected
+  exception on unchanged Worker.js. No production/system2 files are changed;
+  that unrelated baseline failure is not counted as collector acceptance.
+- CI and permanent first-CI-artifact acceptance are pending. No recurring schedule.
+- D10-02 remains L2; engineering completion cannot promote research maturity.
 
 ## Approval boundary
 
