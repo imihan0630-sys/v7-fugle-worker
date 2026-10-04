@@ -1,0 +1,272 @@
+{
+  "schemaVersion": "D06_NEXT_TRADING_DAY_OUTCOME_BLIND_CAPTURE_PLAN_V0_1",
+  "updated": "2026-10-04 Asia/Taipei",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "objective": "Pre-register the next valid trading-day D06 evidence capture so data-quality and PIT gates are frozen before any return/outcome inspection.",
+  "globalGuards": [
+    "Capture raw parent receipts before creating derived research states.",
+    "Every source family keeps sourceDate, producedAtContract when documented, requestAt, capturedAt, firstKnownAt, sourceVersion/schemaFingerprint, contentHash, parseStatus, coverage and unknownReasons.",
+    "UNKNOWN is never coerced to zero, BAD, no-event or no-flow.",
+    "Later finalized/revised data never overwrite an earlier vintage; append vintages.",
+    "A derived state becomes decision-time eligible only after the maximum firstKnownAt of all required parents.",
+    "No D1/D3/D5/D10/D20, MFE, MAE, return, hit-rate or selection outcome is joined during capture/readiness validation.",
+    "No Formal score, weight, threshold, rank, Top6, BUY/ADD/REDUCE/SELL or capital behavior changes."
+  ],
+  "lanes": [
+    {
+      "laneId": "D06_03_DEALER_SPLIT",
+      "module": "D06-03",
+      "purpose": "Prospectively preserve dealer proprietary versus hedge split rather than only aggregate dealerNet.",
+      "parents": [
+        "TWSE dealer proprietary buy/sell/net",
+        "TWSE dealer hedge buy/sell/net",
+        "TPEx equivalent split fields when source semantics verify",
+        "tradeDate",
+        "symbol",
+        "market"
+      ],
+      "receipt": [
+        "sourceDate",
+        "producedAtContract",
+        "capturedAt",
+        "firstKnownAt",
+        "schemaFingerprint",
+        "contentHash",
+        "dealerPropBuy",
+        "dealerPropSell",
+        "dealerPropNet",
+        "dealerHedgeBuy",
+        "dealerHedgeSell",
+        "dealerHedgeNet",
+        "aggregateDealerNet",
+        "invariantStatus",
+        "coverage",
+        "unknownReasons"
+      ],
+      "passGate": "At least one genuine prospective trading date with actor/desk split preserved, source schema verified and aggregate reconciliation passing.",
+      "maturityEffect": "No automatic L4; this only opens prospective Shadow accumulation."
+    },
+    {
+      "laneId": "D06_05_OWNERSHIP_LINEAGE",
+      "module": "D06-05",
+      "purpose": "Attach TDCC ownership vintage lineage to the same research generation that consumes chip concentration.",
+      "parents": [
+        "TDCC raw weekly distribution",
+        "canonical TDCC parsed snapshot",
+        "research generation id"
+      ],
+      "receipt": [
+        "scanDate",
+        "generationId",
+        "symbol",
+        "chipConcentration",
+        "chipAsOfDate",
+        "chipDefinition",
+        "tdccSourceDate",
+        "tdccCapturedAt",
+        "tdccFirstKnownAt",
+        "tdccContentHash",
+        "tdccParserVersion",
+        "unknownReasons"
+      ],
+      "passGate": "Same-generation immutable chipAsOfDate/chipDefinition/hash preserved for prospective rows; repeated scan dates sharing one chipAsOfDate are deduplicated as one ownership vintage.",
+      "maturityEffect": "Necessary for D06-05 L3/L4 path; holder identity and passive share remain UNKNOWN."
+    },
+    {
+      "laneId": "D06_06_CORE_CROWDING",
+      "module": "D06-06",
+      "purpose": "Build immutable CORE_CROWDING child only from PIT-eligible parent receipts.",
+      "parents": [
+        "institutional actor flow/persistence receipt",
+        "ADV/liquidity receipt",
+        "TDCC ownership lineage receipt",
+        "same-date price/volume receipt"
+      ],
+      "receipt": [
+        "scanDate",
+        "generationId",
+        "symbol",
+        "institutionParentHash",
+        "liquidityParentHash",
+        "tdccParentHash",
+        "priceVolumeParentHash",
+        "latestParentFirstKnownAt",
+        "actorSignState",
+        "persistenceState",
+        "normalizedFlowState",
+        "ownershipVintage",
+        "priceFlowReactionState",
+        "unknownAxes",
+        "childHash"
+      ],
+      "passGate": "All mandatory core parents PIT-eligible; optional leverage/day-trade/SBL/passive axes remain UNKNOWN when unavailable.",
+      "maturityEffect": "Accumulates independent prospective evidence toward L4; no scalar crowding score."
+    },
+    {
+      "laneId": "D06_07_08_09_TPEX_VINTAGE",
+      "modules": [
+        "D06-07",
+        "D06-08",
+        "D06-09"
+      ],
+      "purpose": "Measure TPEx leverage/shorting source readiness and revision/finality rather than assuming one after-market timestamp.",
+      "captures": [
+        {
+          "label": "EARLY",
+          "targetTaipei": "20:30",
+          "note": "Attempt only through an authorized/free official route actually available on the trading date; record NOT_READY/UNKNOWN without retry-imputing values."
+        },
+        {
+          "label": "LATE",
+          "targetTaipei": "22:30",
+          "note": "Repeat same source family to measure readiness/revision; do not treat later data as historically known at EARLY."
+        }
+      ],
+      "receipt": [
+        "tradeDate",
+        "market",
+        "sourceProduct",
+        "captureLabel",
+        "requestAt",
+        "capturedAt",
+        "firstKnownAt",
+        "sourceVersion",
+        "contentHash",
+        "coverage",
+        "finalityLabel",
+        "marginLongRaw",
+        "marginShortRaw",
+        "securitiesBorrowingRaw",
+        "actualSblShortRaw",
+        "parseStatus",
+        "unknownReasons"
+      ],
+      "passGate": "Product-specific TPEx official semantics and prospective readiness/revision demonstrated through an authorized route; paid source existence alone is insufficient.",
+      "maturityEffect": "Can support L3 only when the specific source/semantics/replay gate for each module clears."
+    },
+    {
+      "laneId": "D06_14_DAY_TRADING_VINTAGE",
+      "module": "D06-14",
+      "purpose": "Preserve TPEx day-trading preliminary/revised/final vintages instead of backfilling final history.",
+      "vintages": [
+        "T_PRELIM actual T-day captured state",
+        "T1_REVISED same trade date observed on T+1",
+        "T2_FINAL same trade date observed on T+2"
+      ],
+      "receipt": [
+        "tradeDate",
+        "symbol",
+        "market",
+        "vintageLabel",
+        "capturedAt",
+        "firstKnownAt",
+        "contentHash",
+        "dayTradingShares",
+        "dayTradingValue",
+        "totalShares",
+        "totalValue",
+        "derivedRatios",
+        "revisionDeltaVsPriorVintage",
+        "unknownReasons"
+      ],
+      "passGate": "At least one trade date followed through T/T+1/T+2 with append-only revision lineage and product-specific source semantics.",
+      "maturityEffect": "Supports L3 readiness; 60% surveillance threshold remains regulatory context, not alpha threshold."
+    },
+    {
+      "laneId": "D06_16_PF040_ETF_UNITS_PCF",
+      "module": "D06-16",
+      "relatedModule": "D06-11",
+      "purpose": "Capture a genuine independent-date ETF outstanding-unit change and same-generation PCF version.",
+      "sampleRule": "Bounded domestic Taiwan-equity in-kind ETFs with provenance-complete issuer/TWSE source.",
+      "receipt": [
+        "tradeDate",
+        "etfCode",
+        "benchmark",
+        "unitsOutstanding",
+        "reportedUnitsDifference",
+        "unitsDataTime",
+        "creationUnit",
+        "pcfUseDate",
+        "pcfVersion",
+        "pcfCapturedAt",
+        "pcfFirstKnownAt",
+        "pcfHash",
+        "cashSubstitutionState",
+        "splitReverseSplitState",
+        "operationalAdjustmentState",
+        "unknownReasons"
+      ],
+      "passGate": "Second or later independent genuine trading date with units-delta and same-generation PCF provenance; operational adjustments/corporate actions explicitly handled.",
+      "maturityEffect": "Supports D06-16 L3 readiness; does not prove actual same-day constituent execution or exact passive stock flow."
+    },
+    {
+      "laneId": "D06_18_BORROW_ECONOMICS",
+      "module": "D06-18",
+      "purpose": "Prospectively capture TWSE public securities-lending rate/displayed-supply state with quote-persistence and rule-vintage metadata.",
+      "receipt": [
+        "tradeDate",
+        "symbol",
+        "transactionType",
+        "borrowRateOrExecutedRate",
+        "executedQty",
+        "displayedUnexecutedBorrowQty",
+        "displayedUnexecutedLendQty",
+        "bestFiveIfApplicable",
+        "recallTerms",
+        "quotePersistenceRule",
+        "settlementFeeRuleVintage",
+        "capturedAt",
+        "firstKnownAt",
+        "sourceVersion",
+        "contentHash",
+        "unknownReasons"
+      ],
+      "hardGuards": [
+        "Borrowing is not short sale.",
+        "Displayed lend quantity is not verified total lendable inventory.",
+        "Do not compute true utilization without a verified lendable-inventory denominator.",
+        "Daily paid fee is not daily short demand.",
+        "Borrow and lend displayed quantities have asymmetric quote-age semantics."
+      ],
+      "passGate": "One genuine prospective source receipt with transaction type and rule vintage preserved; L3 still requires sufficient replay/source parity rather than one isolated observation."
+    },
+    {
+      "laneId": "D06_19_RETAIL",
+      "module": "D06-19",
+      "purpose": "Continue source discovery without proxy substitution.",
+      "receiptIfFound": [
+        "investorClassDefinition",
+        "market",
+        "segment",
+        "tradeDate",
+        "symbol if available",
+        "buySharesOrValue",
+        "sellSharesOrValue",
+        "netFlow if directly supplied",
+        "producedAtContract",
+        "capturedAt",
+        "firstKnownAt",
+        "revisionFinality",
+        "sourceVersion",
+        "contentHash",
+        "coverageUniverse",
+        "unknownReasons"
+      ],
+      "fallback": "If no direct stock-date domestic-natural-person flow source exists, preserve only market/channel/ownership retail context and keep stock directional flow UNKNOWN.",
+      "passGate": "L3 requires an authorized replayable Taiwan source contract for the declared core capability; academic historical access or private individual self-query does not equal a reusable research feed."
+    }
+  ],
+  "inferenceUnits": {
+    "primary": "independent scan/trade date for fast data; ownership-vintage cluster for TDCC",
+    "noPseudoReplication": [
+      "multiple symbols on one date are not independent market-regime evidence",
+      "multiple scan dates sharing one TDCC as-of date are not independent ownership updates",
+      "multiple ETFs tracking one benchmark do not create independent benchmark events"
+    ]
+  },
+  "status": "PRE_REGISTERED / OUTCOME_BLIND / NEXT_VALID_TRADING_DAY_READY / FORMAL_UNCHANGED",
+  "exactNext": "On the next valid Taiwan trading date, execute only the source/readiness captures whose authorized routes are available. Record unavailable lanes as UNKNOWN with blocker codes. Do not join outcomes until each lane's predefined readiness gate is evaluated."
+}
