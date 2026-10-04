@@ -640,3 +640,21 @@ KnownAt and bounded-completeness blockers remain unchanged.
 - exact U04 path is now an exhausted negative route unless new source evidence changes the premise.
 
 Next: distinct official-source family inventory -> bounded alternate-source probes -> structural-unavailability disposition if all materially distinct historical routes remain negative.
+
+## 2026-10-05 representative-routing research dispositioned at 5/6
+
+- PR #594: TWTB7U historical-date semantics negative.
+- PR #596: TWSE 公文公告 historical query contract physically established.
+- PR #597: bounded 2025 official-document search negative after all frozen operational references were recovered and query completeness checked.
+- PR #598: six-route final-gap disposition physically PASS.
+
+Result:
+- representative authority remains 5/6;
+- one TWSE par-value representative gap remains but its current historical search program is dispositioned;
+- blind repetition of exhausted routes is disabled;
+- new official evidence may reopen the search.
+
+Next BUILD_LANE target:
+bounded authority/revision-history completeness -> shared suspension/session integration -> expected-session/RAW A1 lineage -> technical continuity.
+
+KnownAt, revision completeness, NO_EVENT, session completeness and all trading authority remain false.

@@ -1788,3 +1788,71 @@ Still authoritative:
 all trading authority false.
 
 HIGH correction `S2-CORR-20261004-001` remains assigned to DATA_LANE and is not affected by this S2-07 result.
+
+## 2026-10-05 S2-07 representative-routing research — DISPOSITIONED AT 5 OF 6
+
+The representative-routing search phase is now formally dispositioned without weakening evidence criteria.
+
+### Additional final-gap evidence
+
+PR #594 / `8270b254f1232df98d97792d4fba4b5b27b00882`:
+- TWSE TWTB7U explicit historical date requests physically returned current 6949/2026-09-07 semantic data;
+- request `params.date` echo was rejected as historical evidence;
+- state=`TWTB7U_HISTORICAL_DATE_NOT_OBSERVED`.
+
+PR #596 / `c631eb5519d432b7d2659499d4ea34b94d44633d`:
+- mechanically derived the TWSE 公文公告 machine query contract from official page/runtime configuration;
+- stable endpoint=`/rwd/zh/announcement/announcement`;
+- known positive control 2025-06-06 / document 1140010257 / symbol 4763 physically returned HTTP 200 JSON.
+
+PR #597 / `b0926c880ae8fb8900a3d8f0a62cc0591d568e60`:
+- full 2025 bounded official-document search for 4763, 6919, 2327, 8422;
+- all known normal operational document references physically recovered;
+- all query responses reconciled by `data.length == total`;
+- additional full-year keyword searches included 股票面額 / 換發新股 / 更正 / 修正 / 撤銷 / 取消 / 改期 / 調整;
+- all four frozen candidates had `revisionParValueRowCount=0`;
+- state=`OFFICIAL_DOCUMENT_BOUNDED_NEGATIVE`.
+
+PR #598 / `1ec7e3be4581b722ef5cbc2ab66e8d8d163365e2`:
+- six required evidence routes PASS;
+- final TWSE par-value representative search formally dispositioned;
+- representative coverage intentionally remains 5/6;
+- sixth control was not fabricated.
+
+### Authoritative semantic state
+
+`representativeAuthorityReadyCount=5`.
+`representativeRoutingResearchDispositionComplete=true`.
+`representativeRoutingCoverageComplete=false`.
+Remaining gap:
+`TWSE_PAR_VALUE_CHANGE_REFERENCE`.
+Disposition:
+`HISTORICAL_CONTROL_NOT_ESTABLISHED_WITHIN_EXHAUSTED_OFFICIAL_PATHS`.
+
+Do not blindly repeat exhausted routes. Reopen only when a genuinely new official source, changed source semantics, or newly verified historical revision event appears.
+
+This does not claim absolute historical nonexistence.
+
+### Exact continuation
+
+Representative-routing discovery is no longer the active S2-07 search loop.
+
+Next BUILD_LANE targets:
+1. bounded authority/revision-history completeness;
+2. shared suspension/resumption + symbol-session integration;
+3. bind expected sessions to RAW A1 lineage without mutating RAW bars;
+4. only after revision/session evidence is READY reconsider technical continuity;
+5. exact public knownAt remains separate prospective evidence debt.
+
+Still false:
+`publicAvailabilityLatencyCertified=false`,
+`knownAtVersionClockCertified=false`,
+`authorityRevisionCoverageComplete=false`,
+`revisionCoverageComplete=false`,
+`noEventMayBeClaimed=false`,
+`suspensionCoverageComplete=false`,
+`symbolSessionCompletenessCertified=false`,
+`technicalContinuityCertified=false`,
+all trading authority false.
+
+DATA_LANE / REMEDIATION_LANE corrections remain independently owned under execution-lane governance. System 1 Formal Core remains LOCKED.

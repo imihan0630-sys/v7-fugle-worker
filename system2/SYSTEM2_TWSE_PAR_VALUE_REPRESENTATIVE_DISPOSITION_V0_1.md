@@ -86,3 +86,35 @@ Still false:
 - technicalContinuityCertified;
 - all selection/push/capital/order authority;
 - System1 runtime use.
+
+## 2026-10-05 physical disposition acceptance
+
+PR #598 merged as `1ec7e3be4581b722ef5cbc2ab66e8d8d163365e2`.
+
+Physical workflow evidence:
+- TWSE Par Value Representative Disposition Readonly `37227331881`: PASS.
+- System2 Research CI `37227331792`: PASS.
+- V8 Regression `37227331865`: PASS.
+- result=`TWSE_PAR_VALUE_REPRESENTATIVE_SEARCH_DISPOSITIONED_AT_5_OF_6`.
+
+Required evidence routes: 6 / passed: 6.
+
+Materially distinct source families: 5:
+- TWSE final-result + MOPS t05st01;
+- independent pre-2020 starred-universe MOPS t05st01;
+- MOPS U04 company-law announcements;
+- TWSE TWTB7U;
+- TWSE official-document archive.
+
+Final state:
+- `researchDispositionComplete=true`;
+- `representativeControlEstablished=false`;
+- `representativeAuthorityReadyCount=5`;
+- `representativeRoutingCoverageComplete=false`;
+- remaining gap=`TWSE_PAR_VALUE_CHANGE_REFERENCE`;
+- `blindRepeatAuthorized=false`;
+- `reopenOnNewOfficialEvidence=true`;
+- `absoluteHistoricalNonExistenceClaimed=false`;
+- `structuralHistoricalUnavailabilityProven=false`.
+
+This is bounded negative evidence and a research-search disposition, not a 6/6 promotion.
