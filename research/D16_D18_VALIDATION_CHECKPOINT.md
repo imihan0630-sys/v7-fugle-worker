@@ -1685,3 +1685,44 @@ Audit:
 `shared-knowledge/CURRICULUM_H09_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
 
 This governance closure does not replace Room11's active empirical sequence.
+
+
+## 2026-10-04 D18-08 Strategy Activation / Deactivation — L3
+
+Canonical evidence: `research/D18_08_STRATEGY_ACTIVATION_L3_ACCEPTANCE_20261004_V0_1.md`.
+
+D18-08 -> L3/60.
+
+Validated research-only artifacts:
+- `system2/runtime/d18_strategy_activation_frame_v0_1.mjs`;
+- `system2/tests/d18_strategy_activation_frame_v0_1.test.mjs`;
+- `research/d18_08_activation_prereg_v0_1.json`.
+
+First preregistered challenger:
+- SHORT_MOMENTUM V0.1-CONTRACT;
+- trendContext only;
+- DOWN_TREND_CONTEXT -> DISABLE;
+- other KNOWN trend context -> KEEP_STATIC_BASELINE;
+- UNKNOWN -> DATA_UNKNOWN.
+
+Acceptance:
+- immutable Shadow run fingerprint/accounting binding;
+- PIT regime-vector identity;
+- preregistration time/parameter hash guard;
+- same cost contract for static baseline/challenger;
+- NATURAL_ZERO_PICK / POLICY_DISABLED / DATA_UNKNOWN separated;
+- no outcome at decision time;
+- no selection/ranking/capital/monitoring/notification impact.
+
+Validated head checks:
+- System2 Research CI 37183405942 SUCCESS;
+- V8 Repair CI 37183405955 SUCCESS;
+- V8 Regression 37183405929 SUCCESS.
+
+D18 domain maturity after D18-08 promotion: **52%**.
+Room D16+D18 module-weighted maturity: **57%**.
+Global tracker maturity after recompute: **44.8%**.
+
+No L4 / policy-alpha claim. FORMAL_OPTIMIZATION_CANDIDATE: NONE. Formal Core LOCKED.
+
+Exact next: collect prospective D18-08 activation frames and mature outcomes before policy-value evaluation. D18-09 dynamic weighting remains separate and stronger; do not inherit D18-08 evidence.
