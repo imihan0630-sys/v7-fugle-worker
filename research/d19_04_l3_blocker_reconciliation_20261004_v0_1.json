@@ -98,6 +98,12 @@
       "commissionState": "UNKNOWN_FOR_OWNER_ACCOUNT",
       "commissionReason": "Broker-specific rate, minimum, calculation, rounding, execution channel and schedule provenance are not established for the owner's account.",
       "conclusion": "Tax-rate provenance can be frozen, but commission/slippage/turnover remain insufficient for a D14-compatible executable net-cost claim."
+    },
+    "symbolSessionSharedGate": {
+      "suspensionCoverageComplete": false,
+      "symbolSessionCompletenessCertified": false,
+      "evidenceSource": "system2/SYSTEM2_CHECKPOINT.md + shared TECHNICAL_CONTINUITY handoff",
+      "implication": "The 23 non-recent-listing TWSE UNKNOWN names cannot yet be relabeled as known suspension/no-trade states. D19 must consume the shared certified symbol-session lane and must not create a local inference."
     }
   },
   "blockerReconciliation": [
@@ -120,9 +126,9 @@
         "1089 TWSE members explicitly accounted; 1064 KNOWN and 25 explicit UNKNOWN; no silent omission"
       ],
       "remaining": [
-        "6 incomplete-session names require symbol-session provenance",
-        "17 null/invalid-close names require trading-state provenance",
-        "2 recent listings are legitimate insufficient-lookback cases"
+        "2 recent listings remain legitimate insufficient-lookback states",
+        "23 non-recent-listing names require shared certified symbol-session/trading-state provenance",
+        "shared suspensionCoverageComplete=false and symbolSessionCompletenessCertified=false; D19-local inference prohibited"
       ]
     },
     {
@@ -174,7 +180,7 @@
   ],
   "next": [
     "Reuse the TWSE full-universe coverage lane instead of bounded witnesses.",
-    "Attach symbol-session provenance so the 23 non-recent-listing TWSE UNKNOWN cases can be classified without imputation.",
+    "Wait for or contribute to the shared exchange-complete symbol-session/suspension-resumption certification; D19 must consume that receipt rather than infer suspension from missing/null prices.",
     "Build a TPEx date-vintaged universe source receipt and source-independent replay path from immutable persisted history; do not depend on live refetch if cold evidence exists.",
     "Bind corporate-action continuity receipt to each factor lookback window.",
     "Acquire date-vintaged industry classification before industry neutralization.",
