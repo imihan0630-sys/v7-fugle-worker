@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T21:12:00+08:00",
+  "updatedAt": "2026-10-04T21:14:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 45.9
+    "maturityWeightedPct": 46.1
   },
   "domains": [
     {
@@ -2875,7 +2875,7 @@
         "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md",
         "NEWS_EVENT_TRANSMISSION_RESEARCH.md"
       ],
-      "maturityPct": 47.1,
+      "maturityPct": 50,
       "modules": [
         {
           "id": "D17-01",
@@ -2910,10 +2910,13 @@
         {
           "id": "D17-04",
           "name": "直接受益／直接受害辨識",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「直接受益／直接受害辨識」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_DIRECT_EXPOSURE_CHAIN_FEASIBLE / FINANCIAL_SIGN_CAN_REMAIN_UNKNOWN / OUTCOMES_CLOSED",
+          "evidence": "Structured Taiwan material disclosures preserve event, entity, timing, mechanism and issuer-impact fields. Divergent 2537 fire, 7827 HCB303 IND approval and 6461 restricted-share cases demonstrate direct exposure can be reconstructed while net financial/trading direction remains mixed, conflicted or UNKNOWN.",
+          "next": "Prospectively capture new direct events under the frozen event->primitive->exposure->financial-transmission->timing chain; add independent validation of issuer impact claims where possible and test incremental value only before L4."
         },
         {
           "id": "D17-05",
@@ -2972,10 +2975,13 @@
         {
           "id": "D17-11",
           "name": "Sector Propagation族群擴散",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Sector Propagation族群擴散」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_EVENT_SPECIFIC_SECTOR_PROPAGATION_FEASIBLE / PEER_SET_PREFREEZE_REQUIRED / SIGN_NOT_ASSUMED / OUTCOMES_CLOSED",
+          "evidence": "D09 already provides PIT-feasible industry classification/sector state; D17 provides PIT event identity and later path sources. A bounded same-source biotechnology witness confirms operational peer-set construction while explicit contagion/competition/substitution/UNKNOWN states prevent same-industry co-movement from being treated as causal same-sign evidence.",
+          "next": "Prospectively freeze D09 peer sets before outcomes on independent events; collect contagion, competition/substitution and no-propagation controls; use D10 edges only for causal supply-chain claims and test incremental value beyond persistent sector state before L4."
         },
         {
           "id": "D17-12",
@@ -3011,10 +3017,10 @@
           "evidence": "Reuters pre-decision polls dated 2026-06-15 and 2026-09-14 preserve ex-ante Taiwan CBC rate expectation distributions; official CBC decisions on 2026-06-18 and 2026-09-17 provide compatible realizations. Preserve full distributions and never choose the surprise functional after seeing returns."
         }
       ],
-      "status": "D17_09_10_12_13_14_L3 / D17_01_02_SOURCE_AND_FIRST_AVAILABILITY_GAPS / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D17-01/02 remain source/first-availability blockers. Prospectively capture independent-media + official-disclosure pairs with capture timestamps, while D17-12 accumulates post-open path cohorts. D17-09/10/12 are L3; L4 outcomes remain closed.",
-      "lastResearchUpdate": "2026-10-04T19:20:00+08:00",
-      "researchNote": "D17-12 advanced L2->L3 for Taiwan PIT/source feasibility: historical daily close/D1/D3/D5 replay is supported by validated OHLC and event/continuity guards, while 15m/30m stays prospective-only. Opening gap is shared context and cannot be double counted."
+      "status": "D17_04_09_10_11_12_13_14_L3 / D17_01_02_SOURCE_AND_FIRST_AVAILABILITY_GAPS / D17_05_SUPPLY_GRAPH_DEPENDENCY / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D17-01/02 remain source/first-availability blockers; use prospective connector capturedAt on newly arriving disclosures and continue licensed general-news source discovery. D17-05 remains blocked by D10-01 graph maturity. D17-03/06/07/08 require source/outcome-ready contracts before promotion.",
+      "lastResearchUpdate": "2026-10-04T21:14:00+08:00",
+      "researchNote": "D17-04 and D17-11 advanced L2->L3 for Taiwan PIT/source feasibility. Direct exposure is reconstructible from structured disclosure fields without forcing a stock sign; event-specific sector propagation is measurable using D09 PIT peer sets while same-industry membership remains non-causal. Connected material-disclosure item replay improved D17-02/D11-08 evidence but did not clear first-availability/incremental-query blockers."
     },
     {
       "id": "D18",
