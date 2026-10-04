@@ -1,0 +1,153 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04 Asia/Taipei",
+  "owner": "08｜事件與新聞研究室",
+  "modules": [
+    "D11-10",
+    "D11-11"
+  ],
+  "title": "Event-linked Overnight Gap and Multi-day Price-limit Exit PIT Feasibility Audit",
+  "status": "OUTCOME_BLIND_L3_FEASIBILITY_AUDIT / FORMAL_CORE_UNCHANGED",
+  "formalCoreImpact": "NONE",
+  "purpose": "Validate Taiwan PIT/source feasibility for event-linked overnight gap risk and price-limit-constrained multi-day exit risk without duplicating D04/D05/D17 evidence or opening return outcomes.",
+  "maturityRule": {
+    "L2": "MECHANISM_AND_FALSIFICATION_DEFINED",
+    "L3": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
+    "L4": "PROSPECTIVE_SHADOW_OR_OOS_EVIDENCE"
+  },
+  "sharedEvidence": {
+    "dailyA1": {
+      "owners": [
+        "D04",
+        "shared System2 A1 source contract"
+      ],
+      "evidence": "TWSE MI_INDEX and TPEx dailyQuotes historical sources have live-validated requested-date/source-date equality and OHLC integrity across old and recent sessions.",
+      "inheritedUse": "D11 may consume the same observed opening-gap primitive but may not count it as an independent second alpha vote."
+    },
+    "corporateActionFirewall": {
+      "owner": "D11-12",
+      "rule": "Known mechanical reference-price resets must be separated from residual market gap. Unresolved action/reference continuity => UNKNOWN/BLOCKED."
+    },
+    "eventClock": {
+      "owners": [
+        "D11 event-state modules",
+        "D17-13",
+        "D17-14 where applicable"
+      ],
+      "rule": "Event identity, sourcePublishedAt/capturedAt, scheduled/exact/deadline/unscheduled state and effective clocks remain distinct. capturedAt is conservative where native availability is unproven."
+    },
+    "priceLimitMechanics": {
+      "owners": [
+        "D05-02",
+        "D04-10"
+      ],
+      "evidence": "Current TWSE Article 63 uses ±10% around the session opening auction reference price for stocks, subject to explicit exceptions including newly listed common-stock no-limit periods. Existing research quote chain physically preserves limit flags, best bid/ask, top-five depth, timestamps, halt/trial/delayed states.",
+      "boundary": "D11-11 owns only the exit/executability transformation, not the exchange mechanics or volatility contamination."
+    }
+  },
+  "D11_10": {
+    "module": "D11-10",
+    "name": "Overnight Gap跳空事件風險",
+    "primitiveOwner": "The opening gap is one shared primitive observation also used by D04-09 and later D17-12 path analysis.",
+    "transformationOwner": "D11-10 owns whether a PIT-valid event exposure window is linked to the next observed opening discontinuity and whether continuous-price stop assumptions are unsafe.",
+    "frozenStateContract": [
+      "EVENT_WINDOW_SCHEDULED_REALIZATION_AFTER_DECISION",
+      "EVENT_WINDOW_UNSCHEDULED_FIRST_KNOWN_AFTER_DECISION",
+      "NEXT_SESSION_OPEN_OBSERVED",
+      "CORPORATE_ACTION_MECHANICAL_RESET",
+      "SUSPENSION_RESUMPTION_GAP",
+      "MARKET_OR_SECTOR_COMMON_SHOCK_CONTEXT",
+      "EVENT_LINKED_RESIDUAL_GAP_CANDIDATE",
+      "UNKNOWN"
+    ],
+    "pitContract": [
+      "Use only prior eligible close and next observed official open; synthetic open is prohibited.",
+      "Event first-known clock must be available before the next-opening analysis cutoff and after the relevant prior decision cutoff for an overnight realization classification.",
+      "A pre-announced event may be known before close while its realization arrives after close; schedule knowledge and realization knowledge remain separate.",
+      "Known corporate-action reference reset is tagged MECHANICAL and cannot become event-gap evidence.",
+      "Unresolved corporate action, missing open, unexplained missing session or unresolved suspension provenance => UNKNOWN/BLOCKED.",
+      "Market/sector overnight context is a control, not a duplicate directional vote."
+    ],
+    "divergentStates": [
+      "Large observed gap with no verified event in a covered lane: market gap exists, D11 event linkage remains UNKNOWN/NO_VERIFIED_LINK rather than event evidence.",
+      "Small gap after a major event: event exposure exists but realized gap risk is small.",
+      "Large corporate-action mechanical reset: D04 raw gap may exist while D11-10 event-risk gap is blocked from economic-event interpretation.",
+      "Large global market gap with same-direction stock gap: common-shock control may explain most of the opening move."
+    ],
+    "maturityDecision": {
+      "from": "L2",
+      "to": "L3",
+      "basis": "Taiwan official daily OHLC replay, PIT-capable event clocks and the D11-12 corporate-action firewall jointly make event-linked overnight gap construction causally reproducible with explicit UNKNOWN states.",
+      "notClaimed": [
+        "event causality",
+        "alpha",
+        "gap continuation",
+        "optimal stop policy",
+        "L4/OOS"
+      ]
+    }
+  },
+  "D11_11": {
+    "module": "D11-11",
+    "name": "漲跌停造成多日退出風險",
+    "primitiveOwner": "D05-02 owns price-limit mechanics; D04-10 owns volatility-estimator contamination from limit constraints.",
+    "transformationOwner": "D11-11 owns only whether a position's exit is observably constrained across one or more sessions.",
+    "frozenStateContract": [
+      "LIMIT_REFERENCE_PROVEN",
+      "AT_LIMIT_WITH_EXECUTABLE_BID_OBSERVED",
+      "AT_LIMIT_NO_EXECUTABLE_BID_OBSERVED",
+      "DISPLAYED_BID_DEPTH_BELOW_POSITION_SIZE",
+      "LIMIT_TOUCHED_NOT_CLOSED",
+      "HALTED_OR_NONCONTINUOUS_STATE",
+      "MULTIDAY_CONSTRAINT_SEQUENCE",
+      "ACTUAL_ORDER_FILL_KNOWN",
+      "ACTUAL_ORDER_FILL_UNKNOWN",
+      "UNKNOWN"
+    ],
+    "pitContract": [
+      "A close at the lower price limit does not prove that a sell order was impossible to execute.",
+      "Prospective quote evidence may classify immediate displayed executability using timestamped best bid and displayed depth; it does not prove queue position or full-session fillability.",
+      "Actual realized fill requires order/fill evidence; absent order evidence remains ACTUAL_ORDER_FILL_UNKNOWN.",
+      "MULTIDAY_CONSTRAINT_SEQUENCE requires consecutive session-level source receipts under the same frozen definition; one limit-hit day cannot be multiplied into a hypothetical multi-day lock.",
+      "No-limit IPO periods, reference-price exceptions, halts, delayed opens/closes and trial states remain separate rule/mechanism states.",
+      "Historical daily OHLC alone cannot reconstruct historical order-book/queue state; such fillability remains UNKNOWN rather than backfilled."
+    ],
+    "divergentStates": [
+      "Limit-down price with positive executable bid depth: limit event exists but immediate exit may still be possible for some quantity.",
+      "Limit-down price with no displayed executable bid at the observation timestamp: bounded market-exit constraint is observed, but full-day impossibility still requires broader coverage.",
+      "Large position exceeds displayed bid depth: partial executability differs from zero executability.",
+      "Halt/suspension prevents execution for a different mechanism and must not be relabeled as price-limit trapping.",
+      "New listing in a no-price-limit period invalidates the ordinary ±10% assumption."
+    ],
+    "maturityDecision": {
+      "from": "L2",
+      "to": "L3",
+      "qualifier": "PROSPECTIVE_ONLY_FOR_EXECUTABILITY",
+      "basis": "Current official price-limit rule/version evidence plus physically validated timestamped quote/depth/limit/mechanism states make prospective exit-constraint observation and multi-session sequencing feasible. Historical exact queue/fill replay is not claimed.",
+      "notClaimed": [
+        "historical full-day fillability",
+        "queue priority",
+        "actual fill without order receipt",
+        "generic bearish signal",
+        "L4/OOS"
+      ]
+    }
+  },
+  "antiDoubleCount": {
+    "H15": "D11-10 event-linked overnight risk, D04-09 tail/gap volatility state and D17-12 post-gap path share one opening-gap primitive. They are not three votes at event time zero.",
+    "H16": "D05-02 price-limit mechanics, D11-11 exit constraint, D01-09 chart semantics and D04-10 volatility contamination share one limit-hit primitive. Only downstream transformations differ.",
+    "formalVoting": "NONE"
+  },
+  "incrementalValueTestBeforeL4": [
+    "D11-10 must show event-timing context adds information beyond raw gap magnitude, market/sector gap controls and D04-09 tail state.",
+    "D11-11 must show verified exit-constraint state adds decision value beyond simple limit-hit flags, liquidity/spread/depth states and ordinary stop-distance risk.",
+    "Use common-support prospective dates and freeze definitions before outcomes."
+  ],
+  "outcomeJoin": false,
+  "formalOptimizationCandidate": false,
+  "exactNext": [
+    "D11-10: build prospective event->next-open receipts across scheduled and unscheduled events, with corporate-action and market/sector controls, then preregister gap-through-stop outcomes.",
+    "D11-11: accumulate prospective timestamped limit/bid-depth states across actual consecutive constrained sessions; join real order/fill evidence only where available; keep historical exact fillability UNKNOWN.",
+    "D11-16 remains blocked on issuer-level custody-release-to-realized-supply chain."
+  ]
+}
