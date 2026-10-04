@@ -70,3 +70,42 @@ It does not prove:
 ## Authority firewall
 
 Read-only only. No D1/R2 mutation, strategy evaluation, capacity, selection, push, capital, orders or System 1 runtime use.
+
+
+## 2026-10-04 physical acceptance
+
+PR #448 physically verified the frozen four-company / five-control MOPSOV reconciliation gate.
+
+- Merge commit: `8c1f9746ffe0593797403a5bc45c1cfbd68e0a35`.
+- Multi Control Reconciliation Readonly run `37168654471`: PASS.
+- System2 Research CI `37168654454`: PASS.
+- V8 Regression `37168654514`: PASS.
+- `companyCount=4`.
+- `controlCount=5`.
+- `allControlsCovered=true`.
+- `passCompanyCount=4`.
+- `exactKeysetReconciliation=true`.
+- Every company had:
+  - `onlyAllCount=0`;
+  - `onlyMonthShardCount=0`;
+  - `duplicateMonthKeyCount=0`.
+- Read-only boundary PASS.
+
+Observed company/year controls covered:
+- 2467 / dividend correction;
+- 1459 / capital-reduction schedule correction;
+- 2321 / capital-reduction decision correction;
+- 1342 / cash-capital-increase correction + cancellation.
+
+This materially reduces query-shape / shard-fragmentation uncertainty for the frozen correction/cancellation sample, but it does not certify the supplemental revision-history channel.
+
+Still false:
+- `boundedIntervalCoverageComplete=false`;
+- `actionFamilyCoverageComplete=false`;
+- `cancellationHistoryComplete=false`;
+- `knownAtVersionClockCertified=false`;
+- `revisionCoverageComplete=false`;
+- `technicalContinuityCertified=false`;
+- `selectionAuthority=false`.
+
+Next: certify empty company-month semantics, stress higher-row-count pagination/truncation, validate historical knownAt semantics, then add exchange-side cancellation/revocation evidence.

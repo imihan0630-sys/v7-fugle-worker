@@ -601,3 +601,8 @@ System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOC
 PR #446 physically verified exact 2330/2026 Jan–Sep reconciliation between the official MOPSOV company-year query and bounded month shards: 151 vs 151 keys, no only-one-side keys and no duplicate shard keys. System2 CI, V8 regression and the dedicated read-only probe all PASS.
 
 This is source-contract evidence only. It does not promote revision completeness, knownAt certification, technical continuity, selection authority, live push, capital or order authority.
+
+
+## 2026-10-04 MOPSOV multi-control reconciliation milestone
+
+PR #448 physically verified exact full-query vs Jan–Sep month-shard reconciliation across all four companies represented by the five frozen MOPS correction/cancellation controls. 4/4 companies passed with no one-sided or duplicate keys. This remains source-contract evidence only; revision completeness and all trading authorities remain locked.
