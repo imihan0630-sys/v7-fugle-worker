@@ -1660,3 +1660,28 @@ Audit:
 `shared-knowledge/CURRICULUM_H09_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
 
 Do not mutate canonical wording until explicit owner approval. This governance item does not override the room's active empirical sequence.
+
+
+## 00 control-plane receipt — H09 canonical update complete
+
+Owner approved H09.
+
+Canonical state:
+`KEEP_SEPARATE / SCOPE_DEDUP_ONLY / CANONICAL_UPDATE_COMPLETE`.
+
+D16-19:
+- owns model/calibrator fitting and selection;
+- owns probability-quality diagnostics and calibration/model drift;
+- produces immutable CalibrationReceipt.
+
+D16-25:
+- consumes calibrated probabilities/distributions and calibration-quality metadata;
+- owns prior/Bayesian update, uncertainty, utility, risk-coverage and ABSTAIN;
+- cannot fit a second calibrator or create a second probability authority.
+
+Both remain L2/40%. Names unchanged. No Formal/runtime change.
+
+Audit:
+`shared-knowledge/CURRICULUM_H09_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+This governance closure does not replace Room11's active empirical sequence.
