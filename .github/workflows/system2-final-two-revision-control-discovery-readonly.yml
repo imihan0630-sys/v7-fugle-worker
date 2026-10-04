@@ -1,0 +1,43 @@
+name: System2 Final Two Representative Revision Control Discovery Readonly
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_final_two_revision_controls_readonly_v0_3.mjs"
+      - "system2/SYSTEM2_FINAL_TWO_REVISION_CONTROL_DISCOVERY_V0_3.md"
+      - ".github/workflows/system2-final-two-revision-control-discovery-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_final_two_revision_controls_readonly_v0_3.mjs"
+      - "system2/SYSTEM2_FINAL_TWO_REVISION_CONTROL_DISCOVERY_V0_3.md"
+      - ".github/workflows/system2-final-two-revision-control-discovery-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-final-two-revision-control-discovery-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run final-two representative-control discovery
+        run: node system2/scripts/probe_final_two_revision_controls_readonly_v0_3.mjs
+      - name: Confirm read-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_final_two_revision_controls_readonly_v0_3.mjs
+          echo "Final-two revision-control discovery read-only boundary PASS"
