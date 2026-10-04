@@ -58,16 +58,20 @@ function snippets(text,token,radius=700,max=12){
   }
   return [...new Set(out)];
 }
-function rowTexts(html){
+function rowBlocks(html){
   return [...String(html).matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)]
-    .map(x=>strip(x[1]))
-    .filter(x=>x.length>=3);
+    .map(x=>({raw:x[1],text:strip(x[1])}))
+    .filter(x=>x.text.length>=3);
 }
 function responseDiagnostics(response){
   const body=String(response.body||"");
   const text=strip(body);
-  const rows=rowTexts(body);
-  const dataLikeRows=rows.filter(x=>/\b\d{4,6}\b/.test(x)||/如興|長華|愛普|公告/.test(x));
+  const blocks=rowBlocks(body);
+  const rows=blocks.map(x=>x.text);
+  const actualDataRows=blocks.filter(x=>
+    /ajax_t67sb02|t67sb02|SKEY|seq_no|co_id/i.test(x.raw) ||
+    /(?:^|\s)\d{4,6}(?:\s|$)/.test(x.text)
+  );
   const detailHints=[...new Set([
     ...[...body.matchAll(/ajax_t67sb02[^"'\s<]*/gi)].map(x=>compact(x[0])),
     ...[...body.matchAll(/t67sb02[^"'\s<]*/gi)].map(x=>compact(x[0])),
@@ -85,8 +89,8 @@ function responseDiagnostics(response){
     tableCount:(body.match(/<table\b/gi)||[]).length,
     rowCount:rows.length,
     rowSamples:rows.slice(0,30),
-    dataLikeRowCount:dataLikeRows.length,
-    dataLikeRowSamples:dataLikeRows.slice(0,30),
+    actualDataRowCount:actualDataRows.length,
+    actualDataRowSamples:actualDataRows.slice(0,30).map(x=>x.text),
     detailHints,
     has4414:text.includes("4414"),
     hasRuentex:text.includes("如興"),
@@ -108,6 +112,7 @@ function postQuery({id,scope,companyFields={},compatFields={}}){
   const jar="/tmp/s2-u04-scope-"+id+".cookies";
   const warmup=warm(jar);
   const fields={
+    encodeURIComponent:"1",
     step:"1",firstin:"ture",off:"1",
     keyword4:"",code1:"",TYPEK2:"",checkbtn:"",
     queryName:"co_id_1",inpuType:"co_id",
@@ -147,11 +152,14 @@ assert.equal(outer.status,200);
 assert.equal(outer.transportExit,0);
 const mops2=get(MOPS2,"application/javascript,text/javascript,*/*;q=0.8");
 
-const serializerTokens=["function ajax1","ajax1","autoComplete","chkKeyDown","code1","TYPEK2","checkbtn","serialize","FormData","co_id_2"];
+const serializerTokens=["function ajax1","var str='encodeURIComponent=1'","ajax1","autoComplete","chkKeyDown","code1","TYPEK2","checkbtn","serialize","FormData","co_id_2"];
 const mops2Evidence={};
 for(const token of serializerTokens){
   mops2Evidence[token]=snippets(mops2.body,token,900,10);
 }
+const ajaxSerializerPrefixObserved=/var\s+str\s*=\s*['"]encodeURIComponent=1['"]/.test(mops2.body);
+assert.equal(ajaxSerializerPrefixObserved,true,"official ajax1 serializer prefix drifted");
+
 const pageEvidence={
   queryButtonSnippets:[
     ...snippets(page.body,"ajax1",900,20),
@@ -185,9 +193,9 @@ const controlVisibleInMarket=
   market.response.has4414 || market.response.hasRuentex || market.response.hasExpectedSubject;
 const companyFilterLikelyIssue=
   controlVisibleInMarket && !(company.response.has4414||company.response.hasRuentex);
+const marketHasActualRows=market.response.actualDataRowCount>0;
 const frozenControlLikelyInvalid=
-  market.response.rowCount>0 &&
-  market.response.dataLikeRowCount>0 &&
+  marketHasActualRows &&
   !controlVisibleInMarket &&
   !market.response.securityBlocked;
 
@@ -203,8 +211,13 @@ const result={
       transportError:mops2.transportError,
     },
   },
-  serializerEvidence:{mops2:mops2Evidence,page:pageEvidence},
+  serializerEvidence:{
+    ajaxSerializerPrefixObserved,
+    mops2:mops2Evidence,
+    page:pageEvidence,
+  },
   attempts,
+  marketHasActualRows,
   controlVisibleInMarket,
   companyFilterLikelyIssue,
   frozenControlLikelyInvalid,
