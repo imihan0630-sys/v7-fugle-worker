@@ -13871,3 +13871,22 @@ It is real prospective/OOS data.
 D02 remains 60.0%.
 PVE cursor remains 239.
 Gate 7 remains CLOSED.
+
+# Pre-PVE-240 — all D02 modules now have executable next-level evidence admission (2026-10-04)
+
+D02-01 closes the final admission-design gap.
+
+Its purpose differs from the alpha-oriented modules:
+it tests whether unit/session/corporate-action governance prevents semantic misclassification in genuine prospective data.
+
+The implementation preserves the core distinction:
+data-governance value is not alpha.
+
+Together with the corrected Wave-1 hypothesis-specific gate and Wave-2 module-specific admission gate, all 12 D02 modules now have executable fail-closed rules for what may count as future next-level evidence.
+
+The remaining bottleneck is entirely empirical:
+real prospective/OOS observations.
+
+D02 remains 60.0%.
+PVE cursor remains 239.
+Gate 7 remains CLOSED.
