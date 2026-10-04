@@ -1,0 +1,1288 @@
+{
+  "schemaVersion": "D22_L4_STAGE_A_COMMON_SUPPORT_INVENTORY_V0_1",
+  "generatedAt": "2026-10-04T20:55:00+08:00",
+  "status": "OUTCOME_BLIND / COMMON_SUPPORT_INVENTORY / BASELINES_NOT_YET_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "preregFile": "research/d22_l4_stage_a_incremental_value_prereg_v0_1.json",
+  "rules": {
+    "moduleSpecificMinimum": "Minimum 20 mature independent paired issuer-dates is evaluated per module lane; dates cannot be pooled across modules to satisfy the threshold.",
+    "exactPair": "A mature pair requires exact challenger knownAt plus frozen B0/B1 controls on the exact same issuer-decisionDate population.",
+    "crossModuleDedup": "The same issuer-decisionDate can appear in multiple module inventories but is one global information cluster for cross-module aggregation; it does not become multiple independent dates.",
+    "episodeClustering": "Related outlook/watch/downgrade or approval/pricing/issuance events require episode-cluster review before independence is claimed.",
+    "unknown": "Missing baseline, source time, scope, accounting basis or dependency remains UNKNOWN/blocked, never neutral.",
+    "outcomes": "No return/MFE/MAE labels are joined in this inventory."
+  },
+  "counts": {
+    "rawReceipts": 37,
+    "exactChallengerReceipts": 31,
+    "globalUniqueExactIssuerDates": 23,
+    "maturePairedDatesAcrossAllLanes": 0,
+    "note": "Global unique dates are descriptive only and cannot satisfy a per-module minimum."
+  },
+  "byModule": {
+    "D22-01": {
+      "totalReceipts": 3,
+      "exactChallengerDates": 1,
+      "maturePairedDates": 0,
+      "baselineFrozenDates": 0,
+      "status": "ACCUMULATING_BASELINE_PAIRING"
+    },
+    "D22-02": {
+      "totalReceipts": 4,
+      "exactChallengerDates": 2,
+      "maturePairedDates": 0,
+      "baselineFrozenDates": 0,
+      "status": "ACCUMULATING_BASELINE_PAIRING"
+    },
+    "D22-03": {
+      "totalReceipts": 5,
+      "exactChallengerDates": 4,
+      "maturePairedDates": 0,
+      "baselineFrozenDates": 0,
+      "status": "ACCUMULATING_BASELINE_PAIRING"
+    },
+    "D22-05": {
+      "totalReceipts": 8,
+      "exactChallengerDates": 8,
+      "maturePairedDates": 0,
+      "baselineFrozenDates": 0,
+      "status": "ACCUMULATING_BASELINE_PAIRING"
+    },
+    "D22-07": {
+      "totalReceipts": 6,
+      "exactChallengerDates": 6,
+      "maturePairedDates": 0,
+      "baselineFrozenDates": 0,
+      "status": "ACCUMULATING_BASELINE_PAIRING"
+    },
+    "D22-08": {
+      "totalReceipts": 5,
+      "exactChallengerDates": 4,
+      "maturePairedDates": 0,
+      "baselineFrozenDates": 0,
+      "status": "ACCUMULATING_BASELINE_PAIRING"
+    },
+    "D22-10": {
+      "totalReceipts": 6,
+      "exactChallengerDates": 6,
+      "maturePairedDates": 0,
+      "baselineFrozenDates": 0,
+      "status": "ACCUMULATING_BASELINE_PAIRING"
+    }
+  },
+  "rows": [
+    {
+      "module": "D22-01",
+      "issuer": "TSMC",
+      "symbol": "2330",
+      "decisionDate": "2024-04-18",
+      "periodEnd": "2023-12-31",
+      "industry": null,
+      "sourceType": "official Form 20-F",
+      "sourceUrl": "https://investor.tsmc.com/sites/ir/sec-filings/2023%2020F.pdf",
+      "sourceVersion": {
+        "replayFile": "research/d22_01_maturity_replay_v0_1.json",
+        "replaySha": "b29acc5fb047287bae4f5b4fb2182a9235c0b990",
+        "receiptIndex": 0
+      },
+      "entityScope": "consolidated",
+      "accountingBasis": "IFRS_ISSUED_BY_IASB_20F",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_CARRYING_LEVERAGE_LIQUIDITY",
+        "D13_RATE_CONTEXT"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-01",
+      "issuer": "UMC",
+      "symbol": "2303",
+      "decisionDate": "2024-03-25",
+      "periodEnd": "2023-12-31",
+      "industry": null,
+      "sourceType": "official SEC exhibit consolidated financial statements",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1033767/000129281424000982/ex99-1.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_01_maturity_replay_v0_1.json",
+        "replaySha": "b29acc5fb047287bae4f5b4fb2182a9235c0b990",
+        "receiptIndex": 1
+      },
+      "entityScope": "consolidated",
+      "accountingBasis": "TAIWAN_FSC_ENDORSED_IFRS",
+      "exactKnownAt": false,
+      "sourceEligibility": "EXCLUDE_FROM_MATURE_PAIR_UNTIL_FIRST_PUBLIC_TIME_PROVEN",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_CARRYING_LEVERAGE_LIQUIDITY",
+        "D13_RATE_CONTEXT"
+      ],
+      "pairStatus": "EXCLUDED_TIMING",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-01",
+      "issuer": "Taiwan Cement",
+      "symbol": "1101",
+      "decisionDate": null,
+      "periodEnd": "2023-12-31",
+      "industry": null,
+      "sourceType": "official consolidated financial statements",
+      "sourceUrl": "https://www.tccgroupholdings.com/uploads/files/shares/report/2023/2023%204Q%20Consolidated%20Financial%20Statements.pdf",
+      "sourceVersion": {
+        "replayFile": "research/d22_01_maturity_replay_v0_1.json",
+        "replaySha": "b29acc5fb047287bae4f5b4fb2182a9235c0b990",
+        "receiptIndex": 2
+      },
+      "entityScope": "consolidated",
+      "accountingBasis": "TAIWAN_FSC_ENDORSED_IFRS",
+      "exactKnownAt": false,
+      "sourceEligibility": "EXCLUDE_FROM_MATURE_PAIR_UNTIL_FIRST_PUBLIC_TIME_PROVEN",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_CARRYING_LEVERAGE_LIQUIDITY",
+        "D13_RATE_CONTEXT"
+      ],
+      "pairStatus": "EXCLUDED_TIMING",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-02",
+      "issuer": "UMC",
+      "symbol": "2303",
+      "decisionDate": "2024-03-25",
+      "periodEnd": "2023-12-31",
+      "industry": "semiconductor",
+      "sourceType": "official SEC exhibit consolidated financial statements",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1033767/000129281424000982/ex99-1.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_02_interest_coverage_replay_v0_1.json",
+        "replaySha": "41acefd8cb7cc9a4c0150368701c98c849a6d632",
+        "receiptIndex": 0
+      },
+      "entityScope": "consolidated",
+      "accountingBasis": "TAIWAN_FSC_ENDORSED_IFRS",
+      "exactKnownAt": false,
+      "sourceEligibility": "EXCLUDE_FROM_MATURE_PAIR_UNTIL_FIRST_PUBLIC_TIME_PROVEN",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_OCF_PROFITABILITY_LEVERAGE",
+        "D22-01_MATURITY_TIMING"
+      ],
+      "pairStatus": "EXCLUDED_TIMING",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-02",
+      "issuer": "Taiwan Cement",
+      "symbol": "1101",
+      "decisionDate": null,
+      "periodEnd": "2023-12-31",
+      "industry": "cement_materials",
+      "sourceType": "official consolidated financial statements",
+      "sourceUrl": "https://www.tccgroupholdings.com/uploads/files/shares/report/2023/2023%204Q%20Consolidated%20Financial%20Statements.pdf",
+      "sourceVersion": {
+        "replayFile": "research/d22_02_interest_coverage_replay_v0_1.json",
+        "replaySha": "41acefd8cb7cc9a4c0150368701c98c849a6d632",
+        "receiptIndex": 1
+      },
+      "entityScope": "consolidated",
+      "accountingBasis": "TAIWAN_FSC_ENDORSED_IFRS",
+      "exactKnownAt": false,
+      "sourceEligibility": "EXCLUDE_FROM_MATURE_PAIR_UNTIL_FIRST_PUBLIC_TIME_PROVEN",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_OCF_PROFITABILITY_LEVERAGE",
+        "D22-01_MATURITY_TIMING"
+      ],
+      "pairStatus": "EXCLUDED_TIMING",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-02",
+      "issuer": "Chunghwa Telecom",
+      "symbol": "2412",
+      "decisionDate": "2024-04-17",
+      "periodEnd": "2023-12-31",
+      "industry": "telecom",
+      "sourceType": "official SEC Form 20-F",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000095017024044919/cht-20231231.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_02_interest_coverage_replay_v0_1.json",
+        "replaySha": "41acefd8cb7cc9a4c0150368701c98c849a6d632",
+        "receiptIndex": 2
+      },
+      "entityScope": "consolidated",
+      "accountingBasis": "IFRS_ISSUED_BY_IASB_20F",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_OCF_PROFITABILITY_LEVERAGE",
+        "D22-01_MATURITY_TIMING"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-02",
+      "issuer": "Chunghwa Telecom",
+      "symbol": "2412",
+      "decisionDate": "2025-04-16",
+      "periodEnd": "2024-12-31",
+      "industry": "telecom",
+      "sourceType": "official SEC Form 20-F",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000095017025054474/cht-20241231.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_02_interest_coverage_replay_v0_1.json",
+        "replaySha": "41acefd8cb7cc9a4c0150368701c98c849a6d632",
+        "receiptIndex": 3
+      },
+      "entityScope": "consolidated",
+      "accountingBasis": "IFRS_ISSUED_BY_IASB_20F",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_OCF_PROFITABILITY_LEVERAGE",
+        "D22-01_MATURITY_TIMING"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-03",
+      "issuer": "TSMC",
+      "symbol": "2330",
+      "decisionDate": "2024-04-18",
+      "periodEnd": "2023-12-31",
+      "industry": "semiconductor",
+      "sourceType": "official Form 20-F",
+      "sourceUrl": null,
+      "sourceVersion": {
+        "replayFile": "research/d22_03_net_debt_component_replay_v0_1.json",
+        "replaySha": "888d19db7679f5d75e8737b6905b7363bd203c7b",
+        "receiptIndex": 0
+      },
+      "entityScope": "consolidated",
+      "accountingBasis": "IFRS_ISSUED_BY_IASB_20F",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_GROSS_DEBT_CASH",
+        "D22-01_MATURITY",
+        "D22-02_COVERAGE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-03",
+      "issuer": "UMC",
+      "symbol": "2303",
+      "decisionDate": "2024-03-25",
+      "periodEnd": "2023-12-31",
+      "industry": "semiconductor",
+      "sourceType": null,
+      "sourceUrl": null,
+      "sourceVersion": {
+        "replayFile": "research/d22_03_net_debt_component_replay_v0_1.json",
+        "replaySha": "888d19db7679f5d75e8737b6905b7363bd203c7b",
+        "receiptIndex": 1
+      },
+      "entityScope": "consolidated",
+      "accountingBasis": "TAIWAN_FSC_ENDORSED_IFRS",
+      "exactKnownAt": false,
+      "sourceEligibility": "EXCLUDE_FROM_MATURE_PAIR_UNTIL_FIRST_PUBLIC_TIME_PROVEN",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_GROSS_DEBT_CASH",
+        "D22-01_MATURITY",
+        "D22-02_COVERAGE"
+      ],
+      "pairStatus": "EXCLUDED_TIMING",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-03",
+      "issuer": "Chunghwa Telecom",
+      "symbol": "2412",
+      "decisionDate": "2024-04-17",
+      "periodEnd": "2023-12-31",
+      "industry": "telecom",
+      "sourceType": "official SEC Form 20-F",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000095017024044919/cht-20231231.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_03_net_debt_component_replay_v0_1.json",
+        "replaySha": "888d19db7679f5d75e8737b6905b7363bd203c7b",
+        "receiptIndex": 2
+      },
+      "entityScope": "consolidated",
+      "accountingBasis": "IFRS_ISSUED_BY_IASB_20F",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_GROSS_DEBT_CASH",
+        "D22-01_MATURITY",
+        "D22-02_COVERAGE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-03",
+      "issuer": "Chunghwa Telecom",
+      "symbol": "2412",
+      "decisionDate": "2025-04-16",
+      "periodEnd": "2024-12-31",
+      "industry": "telecom",
+      "sourceType": "official SEC Form 20-F",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000095017025054474/cht-20241231.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_03_net_debt_component_replay_v0_1.json",
+        "replaySha": "888d19db7679f5d75e8737b6905b7363bd203c7b",
+        "receiptIndex": 3
+      },
+      "entityScope": "consolidated",
+      "accountingBasis": "IFRS_ISSUED_BY_IASB_20F",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_GROSS_DEBT_CASH",
+        "D22-01_MATURITY",
+        "D22-02_COVERAGE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-03",
+      "issuer": "ASE Technology Holding",
+      "symbol": "3711",
+      "decisionDate": "2024-02-01",
+      "periodEnd": "2023-12-31",
+      "industry": "semiconductor_packaging_ems",
+      "sourceType": "official SEC Form 6-K full-year 2023 results",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1122411/000095010324001549/dp206173_6k.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_03_net_debt_component_replay_v0_1.json",
+        "replaySha": "888d19db7679f5d75e8737b6905b7363bd203c7b",
+        "receiptIndex": 4
+      },
+      "entityScope": "consolidated",
+      "accountingBasis": "TAIWAN_FSC_ENDORSED_IFRS_UNAUDITED_6K",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_GROSS_DEBT_CASH",
+        "D22-01_MATURITY",
+        "D22-02_COVERAGE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Formosa Chemicals & Fibre",
+      "symbol": "1326",
+      "decisionDate": "2023-10-30",
+      "periodEnd": null,
+      "industry": "petrochemical",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4921",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "e56d1bdf4f78dc6e799d8dcc20f05fd631c36903",
+        "receiptIndex": 0
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Formosa Chemicals & Fibre",
+      "symbol": "1326",
+      "decisionDate": "2025-07-03",
+      "periodEnd": null,
+      "industry": "petrochemical",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4921",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "e56d1bdf4f78dc6e799d8dcc20f05fd631c36903",
+        "receiptIndex": 1
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Wan Hai Lines",
+      "symbol": "2615",
+      "decisionDate": "2020-04-14",
+      "periodEnd": null,
+      "industry": "shipping",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/viewMemberProfileArticle/23341",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "e56d1bdf4f78dc6e799d8dcc20f05fd631c36903",
+        "receiptIndex": 2
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Wan Hai Lines",
+      "symbol": "2615",
+      "decisionDate": "2021-04-29",
+      "periodEnd": null,
+      "industry": "shipping",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/viewMemberProfileArticle/25130",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "e56d1bdf4f78dc6e799d8dcc20f05fd631c36903",
+        "receiptIndex": 3
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Wan Hai Lines",
+      "symbol": "2615",
+      "decisionDate": "2021-09-16",
+      "periodEnd": null,
+      "industry": "shipping",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/viewMemberProfileArticle/25872",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "e56d1bdf4f78dc6e799d8dcc20f05fd631c36903",
+        "receiptIndex": 4
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "Wan Hai Lines",
+      "symbol": "2615",
+      "decisionDate": "2022-04-26",
+      "periodEnd": null,
+      "industry": "shipping",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5491",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "e56d1bdf4f78dc6e799d8dcc20f05fd631c36903",
+        "receiptIndex": 5
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "TCC Group Holdings",
+      "symbol": "1101",
+      "decisionDate": "2022-04-21",
+      "periodEnd": null,
+      "industry": "cement_materials",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4816",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "e56d1bdf4f78dc6e799d8dcc20f05fd631c36903",
+        "receiptIndex": 6
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-05",
+      "issuer": "TCC Group Holdings",
+      "symbol": "1101",
+      "decisionDate": "2024-04-29",
+      "periodEnd": null,
+      "industry": "cement_materials",
+      "sourceType": null,
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4816",
+      "sourceVersion": {
+        "replayFile": "research/d22_05_rating_event_replay_v0_1.json",
+        "replaySha": "e56d1bdf4f78dc6e799d8dcc20f05fd631c36903",
+        "receiptIndex": 7
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "PRE_EVENT_FUNDAMENTALS",
+        "D22-06_MARKET_CREDIT_WHEN_AVAILABLE",
+        "PRIOR_RATING_OUTLOOK_WATCH"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-07",
+      "issuer": "Chunghwa Telecom",
+      "symbol": "2412",
+      "decisionDate": "2024-04-17",
+      "periodEnd": "2023-12-31",
+      "industry": "telecom",
+      "sourceType": "official SEC Form 20-F",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000095017024044919/cht-20231231.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_07_liquidity_covenant_replay_v0_1.json",
+        "replaySha": "8293a4ef19e9d3532f52c393679ad1d82a13e25a",
+        "receiptIndex": 0
+      },
+      "entityScope": null,
+      "accountingBasis": null,
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D22-02_RATIO_PRIMITIVE",
+        "D22-03_LIQUIDITY_PRIMITIVE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-07",
+      "issuer": "Chunghwa Telecom",
+      "symbol": "2412",
+      "decisionDate": "2025-04-16",
+      "periodEnd": "2024-12-31",
+      "industry": "telecom",
+      "sourceType": "official SEC Form 20-F",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000095017025054474/cht-20241231.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_07_liquidity_covenant_replay_v0_1.json",
+        "replaySha": "8293a4ef19e9d3532f52c393679ad1d82a13e25a",
+        "receiptIndex": 1
+      },
+      "entityScope": null,
+      "accountingBasis": null,
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D22-02_RATIO_PRIMITIVE",
+        "D22-03_LIQUIDITY_PRIMITIVE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-07",
+      "issuer": "ASE Technology Holding",
+      "symbol": "3711",
+      "decisionDate": "2025-03-27",
+      "periodEnd": "2024-12-31",
+      "industry": "semiconductor_packaging_ems",
+      "sourceType": "official SEC Form 20-F",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1122411/000119312525064603/d889608d20f.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_07_liquidity_covenant_replay_v0_1.json",
+        "replaySha": "8293a4ef19e9d3532f52c393679ad1d82a13e25a",
+        "receiptIndex": 2
+      },
+      "entityScope": null,
+      "accountingBasis": null,
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D22-02_RATIO_PRIMITIVE",
+        "D22-03_LIQUIDITY_PRIMITIVE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-07",
+      "issuer": "UMC",
+      "symbol": "2303",
+      "decisionDate": "2026-04-30",
+      "periodEnd": "2025-12-31",
+      "industry": "semiconductor",
+      "sourceType": "official SEC Form 20-F",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1033767/000119312526193757/d91630d20f.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_07_liquidity_covenant_replay_v0_1.json",
+        "replaySha": "8293a4ef19e9d3532f52c393679ad1d82a13e25a",
+        "receiptIndex": 3
+      },
+      "entityScope": null,
+      "accountingBasis": null,
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D22-02_RATIO_PRIMITIVE",
+        "D22-03_LIQUIDITY_PRIMITIVE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-07",
+      "issuer": "UMC",
+      "symbol": "2303",
+      "decisionDate": "2025-10-07",
+      "periodEnd": "2025-09-30",
+      "industry": "semiconductor",
+      "sourceType": "official SEC 6-K monthly disclosure",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1033767/000119312525232535/umc-ex99_1.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_07_liquidity_covenant_replay_v0_1.json",
+        "replaySha": "8293a4ef19e9d3532f52c393679ad1d82a13e25a",
+        "receiptIndex": 4
+      },
+      "entityScope": null,
+      "accountingBasis": null,
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D22-02_RATIO_PRIMITIVE",
+        "D22-03_LIQUIDITY_PRIMITIVE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-07",
+      "issuer": "UMC",
+      "symbol": "2303",
+      "decisionDate": "2025-11-06",
+      "periodEnd": "2025-10-31",
+      "industry": "semiconductor",
+      "sourceType": "official SEC 6-K monthly disclosure",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1033767/000119312525267954/umc-ex99_1.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_07_liquidity_covenant_replay_v0_1.json",
+        "replaySha": "8293a4ef19e9d3532f52c393679ad1d82a13e25a",
+        "receiptIndex": 5
+      },
+      "entityScope": null,
+      "accountingBasis": null,
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D22-02_RATIO_PRIMITIVE",
+        "D22-03_LIQUIDITY_PRIMITIVE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-08",
+      "issuer": "TSMC",
+      "symbol": "2330",
+      "decisionDate": "2023-11-14",
+      "periodEnd": "2023-09-30",
+      "industry": "semiconductor",
+      "sourceType": "official SEC 6-K exhibit consolidated financial statements",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1046179/000104617923000023/tsmc2023q3consolidatdfinan.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_08_rate_exposure_replay_v0_1.json",
+        "replaySha": "b1a7d3367f4a5876fa8bd8e555ddd1f022c0e368",
+        "receiptIndex": 0
+      },
+      "entityScope": null,
+      "accountingBasis": null,
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D13_RATE_MOVE",
+        "D22-01_MATURITY",
+        "D22-04_REPLACEMENT_COST_WHEN_AVAILABLE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-08",
+      "issuer": "TSMC",
+      "symbol": "2330",
+      "decisionDate": null,
+      "periodEnd": "2023-03-31",
+      "industry": "semiconductor",
+      "sourceType": "official SEC quarterly consolidated financial statements",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1046179/000162828023017752/tsmc2023q1.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_08_rate_exposure_replay_v0_1.json",
+        "replaySha": "b1a7d3367f4a5876fa8bd8e555ddd1f022c0e368",
+        "receiptIndex": 1
+      },
+      "entityScope": null,
+      "accountingBasis": null,
+      "exactKnownAt": false,
+      "sourceEligibility": "EXCLUDE_FROM_MATURE_PAIR_UNTIL_FIRST_PUBLIC_TIME_PROVEN",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D13_RATE_MOVE",
+        "D22-01_MATURITY",
+        "D22-04_REPLACEMENT_COST_WHEN_AVAILABLE"
+      ],
+      "pairStatus": "EXCLUDED_TIMING",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-08",
+      "issuer": "UMC",
+      "symbol": "2303",
+      "decisionDate": "2023-09-06",
+      "periodEnd": null,
+      "industry": "semiconductor",
+      "sourceType": "official SEC 6-K corporate-bond issuance announcement",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1033767/000095017023049514/umc-ex99.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_08_rate_exposure_replay_v0_1.json",
+        "replaySha": "b1a7d3367f4a5876fa8bd8e555ddd1f022c0e368",
+        "receiptIndex": 2
+      },
+      "entityScope": null,
+      "accountingBasis": null,
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D13_RATE_MOVE",
+        "D22-01_MATURITY",
+        "D22-04_REPLACEMENT_COST_WHEN_AVAILABLE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-08",
+      "issuer": "Chunghwa Telecom",
+      "symbol": "2412",
+      "decisionDate": "2024-04-17",
+      "periodEnd": "2023-12-31",
+      "industry": "telecom",
+      "sourceType": "official SEC Form 20-F",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000095017024044919/cht-20231231.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_08_rate_exposure_replay_v0_1.json",
+        "replaySha": "b1a7d3367f4a5876fa8bd8e555ddd1f022c0e368",
+        "receiptIndex": 3
+      },
+      "entityScope": null,
+      "accountingBasis": null,
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D13_RATE_MOVE",
+        "D22-01_MATURITY",
+        "D22-04_REPLACEMENT_COST_WHEN_AVAILABLE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-08",
+      "issuer": "Chunghwa Telecom",
+      "symbol": "2412",
+      "decisionDate": "2025-04-16",
+      "periodEnd": "2024-12-31",
+      "industry": "telecom",
+      "sourceType": "official SEC Form 20-F",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000095017025054474/cht-20241231.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_08_rate_exposure_replay_v0_1.json",
+        "replaySha": "b1a7d3367f4a5876fa8bd8e555ddd1f022c0e368",
+        "receiptIndex": 4
+      },
+      "entityScope": null,
+      "accountingBasis": null,
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D13_RATE_MOVE",
+        "D22-01_MATURITY",
+        "D22-04_REPLACEMENT_COST_WHEN_AVAILABLE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-10",
+      "issuer": "TSMC",
+      "symbol": "2330",
+      "decisionDate": "2023-04-25",
+      "periodEnd": null,
+      "industry": "semiconductor",
+      "sourceType": "official SEC 6-K monthly filing",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1046179/000162828023012636/tsm-monthend6kx20230425.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_10_funding_mix_event_replay_v0_1.json",
+        "replaySha": "8355a2b30607867978425aeea04888baa810e322",
+        "receiptIndex": 0
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_LEVERAGE",
+        "D11_EVENT_IDENTITY",
+        "D22-01_MATURITY",
+        "D22-04_COST_WHEN_AVAILABLE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-10",
+      "issuer": "TSMC",
+      "symbol": "2330",
+      "decisionDate": "2023-09-25",
+      "periodEnd": null,
+      "industry": "semiconductor",
+      "sourceType": "official SEC 6-K monthly filing",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1046179/000104617923000010/tsm-monthend6kx20230925.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_10_funding_mix_event_replay_v0_1.json",
+        "replaySha": "8355a2b30607867978425aeea04888baa810e322",
+        "receiptIndex": 1
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_LEVERAGE",
+        "D11_EVENT_IDENTITY",
+        "D22-01_MATURITY",
+        "D22-04_COST_WHEN_AVAILABLE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-10",
+      "issuer": "UMC",
+      "symbol": "2303",
+      "decisionDate": "2023-09-06",
+      "periodEnd": null,
+      "industry": "semiconductor",
+      "sourceType": "official SEC 6-K corporate-bond issuance announcement",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1033767/000095017023049514/umc-ex99.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_10_funding_mix_event_replay_v0_1.json",
+        "replaySha": "8355a2b30607867978425aeea04888baa810e322",
+        "receiptIndex": 2
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_LEVERAGE",
+        "D11_EVENT_IDENTITY",
+        "D22-01_MATURITY",
+        "D22-04_COST_WHEN_AVAILABLE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-10",
+      "issuer": "Chunghwa Telecom",
+      "symbol": "2412",
+      "decisionDate": "2022-01-25",
+      "periodEnd": null,
+      "industry": "telecom",
+      "sourceType": "official SEC 6-K board approval",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000156459022004849/cht-6k_20220214.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_10_funding_mix_event_replay_v0_1.json",
+        "replaySha": "8355a2b30607867978425aeea04888baa810e322",
+        "receiptIndex": 3
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_LEVERAGE",
+        "D11_EVENT_IDENTITY",
+        "D22-01_MATURITY",
+        "D22-04_COST_WHEN_AVAILABLE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-10",
+      "issuer": "Chunghwa Telecom",
+      "symbol": "2412",
+      "decisionDate": "2022-03-10",
+      "periodEnd": null,
+      "industry": "telecom",
+      "sourceType": "official SEC 6-K priced issuance",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000156459022009447/cht-6k_20220310.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_10_funding_mix_event_replay_v0_1.json",
+        "replaySha": "8355a2b30607867978425aeea04888baa810e322",
+        "receiptIndex": 4
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_LEVERAGE",
+        "D11_EVENT_IDENTITY",
+        "D22-01_MATURITY",
+        "D22-04_COST_WHEN_AVAILABLE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    },
+    {
+      "module": "D22-10",
+      "issuer": "Chunghwa Telecom",
+      "symbol": "2412",
+      "decisionDate": "2025-07-28",
+      "periodEnd": null,
+      "industry": "telecom",
+      "sourceType": "official SEC 6-K priced issuance",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000095017025099330/cht_6k_20250728.htm",
+      "sourceVersion": {
+        "replayFile": "research/d22_10_funding_mix_event_replay_v0_1.json",
+        "replaySha": "8355a2b30607867978425aeea04888baa810e322",
+        "receiptIndex": 5
+      },
+      "entityScope": "NOT_APPLICABLE_EVENT_LEVEL",
+      "accountingBasis": "NOT_APPLICABLE_EVENT_LEVEL",
+      "exactKnownAt": true,
+      "sourceEligibility": "SOURCE_EXACT",
+      "baselineNeeds": [
+        "B0_D07_PIT",
+        "B0_D13_PIT",
+        "B0_INDUSTRY",
+        "B0_SIZE_LIQUIDITY",
+        "B0_D11_EVENT_CLOCK_IF_APPLICABLE"
+      ],
+      "b1Needs": [
+        "D07_LEVERAGE",
+        "D11_EVENT_IDENTITY",
+        "D22-01_MATURITY",
+        "D22-04_COST_WHEN_AVAILABLE"
+      ],
+      "pairStatus": "CHALLENGER_EXACT_BASELINE_NOT_FROZEN",
+      "outcomeOpened": false
+    }
+  ]
+}
