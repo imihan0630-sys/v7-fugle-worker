@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "0.1",
+  "name": "CBC BOP append-only publication-vintage revision receipt",
+  "room": "09",
+  "domains": [
+    "D13"
+  ],
+  "modules": [
+    "D13-11",
+    "D13-17"
+  ],
+  "status": "SOURCE_LINEAGE_SPEC_FROZEN__OUTCOMES_CLOSED__FORMAL_UNCHANGED",
+  "purpose": "Preserve each published CBC balance-of-payments value as a versioned observation instead of overwriting history with the latest revised value.",
+  "identityKey": [
+    "series",
+    "referencePeriod",
+    "publicationDate",
+    "publicationVersion",
+    "sourceArtifactSha256"
+  ],
+  "requiredFields": [
+    "series",
+    "referencePeriod",
+    "publicationDate",
+    "publicationTimeAsiaTaipei",
+    "sourcePageUrl",
+    "sourceAnnexUrl",
+    "sourceArtifactSha256",
+    "sourceArtifactByteCount",
+    "sheetIdentity",
+    "rowIdentity",
+    "revisionMarker",
+    "value",
+    "unit",
+    "capturedAt",
+    "observedAt",
+    "knownAtState",
+    "predecessorReceiptId"
+  ],
+  "valueStates": {
+    "p": "PRELIMINARY_AS_PUBLISHED",
+    "r": "REVISED_AS_PUBLISHED",
+    "missing": "UNKNOWN_NOT_ZERO"
+  },
+  "lineageRules": [
+    "Append a new receipt for every distinct publication vintage; never overwrite a prior value.",
+    "Reference period is not knownAt.",
+    "A later revised value cannot be backfilled into any earlier selection or event timestamp.",
+    "Revision delta is computed only between two explicit receipts for the same series/reference period.",
+    "Revision direction need not be monotonic; preserve the full path.",
+    "A current database value without immutable vintage identity cannot establish historical first-known timing.",
+    "Aggregate/cumulative differences cannot allocate a revision to a component quarter without native component evidence.",
+    "Missing or inaccessible native evidence remains UNKNOWN."
+  ],
+  "currentWitness": {
+    "series": "current_account",
+    "referencePeriod": "2025Q2",
+    "unit": "USD_100M",
+    "path": [
+      {
+        "publicationDate": "2025-08-20",
+        "value": 362.29,
+        "marker": "p/original native previously verified"
+      },
+      {
+        "publicationDate": "2025-11-20",
+        "value": 367.59,
+        "marker": "2r",
+        "sha256": "0b81830e6fb5b24c7acb1bfa5b7d90f6eaa02a13980e67bf06bef4a0c02f064a"
+      },
+      {
+        "publicationDate": "2026-02-26",
+        "value": 363.27,
+        "marker": "2r",
+        "sha256": "b06555d1f3c3bcfa6caf324ab06cf0708939e9f053aed57852ce12f3dd89f0cf"
+      },
+      {
+        "publicationDate": "2026-05-20",
+        "value": 363.5,
+        "marker": "2r",
+        "sha256": "2161dcb4bc08c43de3a3cec5bccc3dc2810ed77c30f75bc63da59296f47673eb"
+      },
+      {
+        "publicationDate": "2026-08-20",
+        "value": 372.01,
+        "marker": "2r",
+        "sha256": "989a9a5f322577097696bea6ff5826ba76d0fb179cccfeb1c3f0b6ed59544263"
+      }
+    ],
+    "exact37201FirstPublicBound": "(2026-05-20, 2026-08-20] unless more granular official vintage evidence is obtained"
+  },
+  "outcomePolicy": "CLOSED",
+  "formalCoreImpact": "NONE",
+  "maturityImpact": "NONE",
+  "exactNext": [
+    "Use this schema for future CBC BOP prospective receipts.",
+    "Do not spend research effort narrowing historical first-public time unless it changes a planned validation design.",
+    "Test any future revision-state hypothesis only after enough independent publication dates exist and after rates/USD/global/Taiwan baselines."
+  ]
+}
