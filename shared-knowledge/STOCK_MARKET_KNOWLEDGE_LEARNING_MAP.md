@@ -23,7 +23,7 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 
 - 大領域：22
 - 二級研究模組：356
-- 新完整課綱成熟度：**43.9%**
+- 新完整課綱成熟度：**44.2%**
 - 注意：這個百分比與 System 1 現行21模組的46.7%不是同一分母；本表分母更大、更細。
 - 100%不是「世界上再也沒有新知識」，而是本版課綱全部達L5；新增新知識時可版本化擴充分母。
 - 七項汰留與能力移轉紀錄：`shared-knowledge/CURRICULUM_RETIREMENT_AND_CAPABILITY_LEDGER_V0_1.md`。退休模組不代表刪除其必要工程／研究能力。
@@ -35,7 +35,7 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 | D03 | 趨勢／動能／反轉／技術指標 | 12 | 56.7% | 03｜技術指標與趨勢動能研究室 |
 | D04 | 波動率／波動狀態 | 10 | 52% | 04｜波動與市場微結構研究室 |
 | D05 | 市場微結構／撮合／流動性 | 14 | 51.4% | 04｜波動與市場微結構研究室 |
-| D06 | 法人／籌碼／槓桿／擁擠／被動資金 | 18 | 45.6% | 05｜法人與籌碼研究室 |
+| D06 | 法人／籌碼／槓桿／擁擠／被動資金 | 18 | 47.8% | 05｜法人與籌碼研究室 |
 | D07 | 基本面／財報／資訊動態 | 34 | 14.1% | 06｜基本面與估值研究室 |
 | D08 | 估值 | 19 | 27.4% | 06｜基本面與估值研究室 |
 | D09 | 產業／族群／市場廣度／輪動 | 14 | 57.1% | 07｜產業與供應鏈研究室 |
@@ -216,7 +216,7 @@ GitHub專屬checkpoint：
 | D05-14 | Market Integrity／Abnormal Trading Patterns市場完整性與異常交易型態 | L2 機制＋反證 | 40% |
 
 
-### D06｜法人／籌碼／槓桿／擁擠／被動資金 — 45.6%
+### D06｜法人／籌碼／槓桿／擁擠／被動資金 — 47.8%
 
 專責：05｜法人與籌碼研究室  
 證據錨點：`INSTITUTIONAL_CROWDING_RESEARCH.md`、`LEVERAGE_SHORTING_CHECKPOINT.md`、`PASSIVE_FLOW_INDEX_REBALANCING_CHECKPOINT.md`
@@ -240,7 +240,7 @@ GitHub專屬checkpoint：
 | D06-15 | 官股行庫／特定資金流 | L2 機制＋反證 | 40% |
 | D06-16 | ETF Mechanics：Creation／Redemption／AP／Premium-Discount／Tracking／Liquidity ETF申贖、參與券商、溢折價、追蹤與流動性 | L2 機制＋反證 | 40% |
 | D06-18 | Securities Lending Economics／Borrow Fee／Availability／Utilization借券經濟、費率、可借量與使用率 | L2 機制＋反證 | 40% |
-| D06-19 | Retail / Individual Investor Participation & Flow（散戶／自然人參與與流向） | L0 未研究 | 0% |
+| D06-19 | Retail / Individual Investor Participation & Flow（散戶／自然人參與與流向） | L2 機制＋反證已定義 | 40% |
 
 
 ### D07｜基本面／財報／資訊動態 — 14.1%
