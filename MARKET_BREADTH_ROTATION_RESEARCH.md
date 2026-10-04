@@ -2251,3 +2251,29 @@ Exact next:
 BR-061 append future official snapshots under unchanged semantics; add member-level concentration/breadth only with effective-dated membership; no L4 before preregistered persistence/reversal outcomes and redundancy tests.
 
 Formal Core unchanged.
+
+
+## BR-062 — D18 dependency is ready, but same-clock joint breadth-regime evidence is not
+
+Artifact:
+`research/br062_breadth_regime_same_clock_dependency_audit_v0_1.json`
+
+The prior D09-12 blocker has narrowed:
+- D18-01 observable-regime taxonomy is now L3 and executable;
+- D18-02 TAIEX trend and D18-03 volatility-direction builders are L3;
+- D09-04 has a genuine official TWSE stock-breadth receipt for 2026-10-02.
+
+However, repository audit found no genuine persisted 2026-10-02 A2_TAIEX_CLOSE 25-session D18 context receipt sharing the exact decision clock with the breadth receipt.
+
+Prohibited shortcuts:
+- D18 test fixtures are not market evidence;
+- today's historical reconstruction cannot be backfilled into the 2026-10-02 decision state;
+- source existence does not authenticate first-known timing.
+
+Decision:
+`D09-12 KEEP L2`.
+
+Exact next:
+BR-063 must persist the first genuine same-clock D18 observable-regime context + official breadth receipt on a future completed Taiwan session, with identical marketDate/decisionTimestamp and immutable source hashes.
+
+Formal Core unchanged.
