@@ -754,3 +754,39 @@ Exact next non-blocking continuation:
 2. watch H12 / COV07 / COV12 / AOKD05 source receipts;
 3. continue only evidence-specific specialist routing; do not re-expand generic research;
 4. owner-approval gates H04 / H10 / H11 remain protected until explicit owner decision.
+
+
+## 00 control-plane generic-pending elimination complete — 2026-10-04 evening
+
+Two control-plane backlogs are now normalized:
+
+### H01-H20
+Generic pending / NOT_EVALUATED = **0**.
+
+Protected owner-decision queue:
+- H04 — MERGE_ELIGIBLE / D12-15 survivor / D12-14 child proxy family.
+- H10 — KEEP_SEPARATE / SCOPE_DEDUP_ONLY / D10 structural exposure → D17 event consumers.
+- H11 — KEEP_SEPARATE / SCOPE_DEDUP_ONLY / D12-07 simple baseline → D12-16 residual surface.
+
+Evidence-specific partials remain H02/H03/H12/H17/H18/H19 only.
+
+### Coverage COV01-COV12
+Generic PENDING_SPECIALIST_RETURN = **0**.
+
+Canonical complete:
+COV-02/03/04/05.
+
+Evidence-specific partial:
+COV-01/06/07/08/09/10/11/12.
+
+Return-ready partials:
+COV-01/08/09.
+
+Exact source/owner blockers are already routed for COV-06/07/10/11/12.
+
+### AOKD-05
+Still queued at Room06 corpus-feasibility source gate; no actual FEASIBLE / PROSPECTIVE_ONLY_FEASIBLE / DATA_BLOCKED / EVIDENCE_INSUFFICIENT return exists on latest checked main.
+
+No maturity, module-count or Formal change results from this reconciliation.
+
+00-room next protected action requires explicit owner decision for H04/H10/H11. Non-protected continuation resumes automatically when any specialist/source receipt lands.
