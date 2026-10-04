@@ -527,3 +527,16 @@ Exact next:
 3. re-scan AOKD-05 corpus-feasibility response from Room06;
 4. preserve closed H05/H06/H07/H09/H13/H14/H15/H16/H20;
 5. do not reopen closed clusters unless contradictory evidence appears.
+
+
+## Remaining-gate re-scan — 2026-10-04 late afternoon
+
+Latest-main re-scan after H15/H16/H20 closure and H17/H18/H19 partial routing:
+
+- H11: unchanged PARTIAL; no new common-parent D12-07 vs D12-16 residual test receipt.
+- H12: Room13 semantic side remains accepted, but D20-13 readiness still explicitly says first genuine live post-contract TWSE rate/supply receipt is missing; Room10 D14-19 counterpart is also still absent.
+- COV-12: still PENDING_SPECIALIST_RETURN; no `research/COV12_D22_SPECIALIST_RETURN_V0_1.md` exists.
+- AOKD-05: still waiting for Room06 corpus-feasibility execution. Search hits for FEASIBLE/PROSPECTIVE_ONLY_FEASIBLE are the allowed return-state text in the routing contract, not a returned result.
+- AOKD-06: remains data-feasibility blocked.
+
+Do not promote any of these states until an actual receipt appears on latest main.
