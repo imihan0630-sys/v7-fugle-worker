@@ -53,11 +53,13 @@ For each frozen control:
 
 ## Fail-closed interpretation
 
-Historical capability is not accepted merely because HTTP 200 occurs.
+Historical capability is not accepted merely because HTTP 200 occurs. It is also not accepted because the JSON response echoes the caller's requested date inside `params.date`; request-parameter echo is not historical content identity.
 
 `TWTB7U_HISTORICAL_DATE_CAPABILITY_OBSERVED` requires:
 - at least one 2025 frozen candidate symbol to appear; and
-- evidence that the returned content actually respects the requested historical date.
+- historical date evidence inside the actual returned data/table content, excluding request-parameter echo.
+
+The probe computes a semantic-data hash from title/fields/data/tables/notes/status while excluding request params. If historical requests have the same semantic-data hash as the positive current control, the date parameter is treated as non-historical even when `params.date` echoes the request.
 
 `TWTB7U_HISTORICAL_DATE_NOT_OBSERVED` is valid when explicit historical requests collapse to one/current payload or otherwise provide no historical candidate evidence.
 
