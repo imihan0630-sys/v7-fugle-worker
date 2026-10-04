@@ -1443,3 +1443,199 @@ Exact next continuation:
 4. Then begin D21-12 management-guidance credibility mechanism/falsification contract.
 
 Formal Core impact: NONE.
+
+
+## D21-12 Management Guidance Credibility — research contract v0.1
+
+Date: 2026-10-04 Asia/Taipei
+Status: L2 MECHANISM_AND_FALSIFICATION_DEFINED / HISTORICAL_GUIDANCE_REPLAY_PENDING / RESEARCH_ONLY / FORMAL_CORE_UNCHANGED
+
+### 1. Guidance taxonomy
+
+Do not merge all forward-looking management communication.
+
+A. Formal financial forecast under Taiwan forecast rules
+- simplified or full-form forecasts;
+- board approval;
+- explicit forecast horizon;
+- forecast revenue/profit/EPS or ranges;
+- assumptions and estimation basis;
+- revisions / corrections and attainment disclosures.
+
+B. Investor-conference guidance
+- numerical ranges for revenue, margin, capex, shipment, utilization, inventory, demand or other operating metrics;
+- qualitative directional language;
+- management Q&A;
+- conference materials filed before / around the event under the applicable disclosure rules.
+
+C. Material-announcement forward statements
+- expected transaction impact;
+- production / capacity / launch timelines;
+- financing / capital-allocation expectations.
+
+D. Non-guidance communication
+- generic optimism, slogans or strategy descriptions with no verifiable forward proposition.
+These statements are NON_SCORABLE for forecast accuracy.
+
+### 2. Taiwan disclosure architecture
+
+Formal financial forecasts:
+- Taiwan's public-company forecast framework allows simplified and full financial forecasts;
+- forecasts are board-approved;
+- disclosed items include forecast period, key forecast numbers, assumptions and estimation bases;
+- forecasts can be revised/corrected;
+- applicable rules require attainment / difference reporting for specified forecast formats and periods.
+
+Investor conferences:
+- listed companies must announce conference date/time/location by the preceding day under the applicable TWSE rule;
+- conference financial/business information may not exceed the information filed for the conference;
+- listed companies are generally required to hold or attend at least one domestic investor conference annually under the applicable rule vintage;
+- MOPS and issuer IR archives therefore provide a historical source path for presentations and event dates.
+
+This creates a replayable source stack:
+- MOPS investor-conference announcement/material;
+- issuer IR presentation archive;
+- TWSE/WebPro video where available;
+- formal financial forecast filings and revisions;
+- later actual financial reports.
+
+### 3. Competing mechanisms
+
+Credibility-stock mechanism:
+- a history of accurate, timely and well-calibrated guidance can build a management-specific disclosure reputation;
+- investors may rationally place more weight on new guidance from managers with a strong prior record.
+
+Information-efficiency mechanism:
+- Taiwan evidence shows conference calls are associated with reduced delayed price reaction to earnings information and improved analyst forecast accuracy.
+
+Strategic-disclosure / optimism mechanism:
+- managers self-select whether and when to disclose;
+- conference-call richness or voluntary forecasting can coexist with optimism;
+- disclosure frequency is therefore not itself a credibility score.
+
+Meet-or-beat / earnings-management mechanism:
+- managers can revise guidance or use accounting flexibility after issuing forecasts;
+- ex-post accuracy can therefore partly reflect forecast management rather than superior ex-ante information.
+
+Genuine-uncertainty mechanism:
+- macro, FX, commodity, customer-order, regulatory or supply shocks can produce large forecast misses without low managerial integrity.
+
+### 4. Credibility must be a rolling realized-history measure
+
+Candidate history variables:
+- signed forecast error;
+- absolute forecast error;
+- range hit / miss;
+- optimistic-bias rate;
+- pessimistic-bias rate;
+- revision frequency;
+- revision magnitude;
+- revision timeliness;
+- last-minute revision flag;
+- withdrawal / cancellation;
+- assumption-specific miss attribution;
+- guidance coverage continuity;
+- manager identity / tenure;
+- formal-forecast versus conference-guidance channel;
+- realized outcome horizon.
+
+A credibility measure may use only guidance items whose actual outcomes were already public by the decision timestamp.
+
+### 5. PIT / known-at contract
+
+Required per guidance item:
+- issuer;
+- manager / speaker identity;
+- guidance_channel;
+- public_known_at;
+- guidance_horizon_start;
+- guidance_horizon_end;
+- metric;
+- direction / point / range;
+- unit / currency / accounting basis;
+- assumptions;
+- board_approval_date when formal;
+- revision_known_at;
+- withdrawal_flag;
+- actual_outcome_known_at;
+- realized_value;
+- forecast_error_available_at;
+- management_identity_version.
+
+Rules:
+1. never compute historical credibility using outcomes not yet public at the decision timestamp;
+2. a future revision cannot be used to reinterpret earlier guidance before the revision became public;
+3. predecessor-manager credibility does not automatically transfer fully to a successor;
+4. qualitative statements require a pre-defined machine-codable proposition or remain NON_SCORABLE;
+5. exogenous shocks remain attribution context rather than retroactive deletion of the forecast miss;
+6. formal forecasts, investor-conference guidance and casual media comments carry different evidence weights;
+7. if guidance precision is insufficient to define a falsifiable outcome, quality_status = UNKNOWN / NON_SCORABLE.
+
+### 6. Taiwan evidence synthesis
+
+Conference-call information benefit:
+- Taiwan listed-firm evidence from 2001-2014 finds conference calls associated with less delayed reaction to earnings information and improved analyst forecast accuracy.
+- The same literature explicitly treats self-selection into conference calls as a major identification concern.
+
+Voluntary forecast bias / strategic response:
+- Taiwan voluntary-forecast research reports that voluntary forecasters can be better-performing firms while forecasts still tend to be optimistic.
+- Forecast revision and accounting flexibility can affect how managers meet previously disclosed forecasts.
+- Therefore realized accuracy alone is not a clean honesty measure.
+
+Management-reputation mechanism:
+- Taiwan accounting research explicitly studies management reputation and the information content of voluntary earnings forecasts, supporting the idea that prior disclosure history can influence how later forecasts are received.
+
+Assurance conflict:
+- historical Taiwan evidence finds higher non-audit-service exposure associated with more optimistic and less accurate voluntary forecasts in that institutional setting, demonstrating that formal review does not eliminate incentive conflicts.
+
+### 7. Falsification and redundancy
+
+Before any predictive use, control:
+- firm size;
+- analyst following;
+- institutional ownership;
+- disclosure frequency;
+- industry uncertainty;
+- macro regime;
+- FX / commodity exposure;
+- operating volatility;
+- management turnover;
+- analyst consensus / dispersion;
+- D07 fundamental revisions / earnings surprise;
+- D11 event/news shock;
+- D09/D13 macro/industry shocks;
+- selective-disclosure / self-selection bias;
+- survivorship and only-scoring-guidance issuers.
+
+A credibility factor is redundant if it simply proxies analyst coverage, firm quality or recent earnings surprise.
+
+### 8. Candidate role
+
+Potential future use:
+- confidence modifier on management-provided forward evidence;
+- governance-tail-risk flag for repeated optimistic misses / late revisions;
+- context variable for event interpretation.
+
+Not approved:
+- hard exclusion solely for one miss;
+- additive score rewarding frequent guidance;
+- using qualitative optimism as a direct buy signal.
+
+### 9. Maturity decision
+
+Advance D21-12 from L0 to L2 / 40%.
+
+L1 satisfied:
+- guidance channels, Taiwan disclosure architecture and source families are defined.
+
+L2 satisfied:
+- credibility, information-efficiency, strategic optimism, earnings-management and genuine-uncertainty mechanisms are all retained;
+- historical outcome-realization firewall, management-identity handling and falsification controls are frozen.
+
+L3 remains closed:
+- no two-issuer historical Taiwan guidance replay has yet linked original guidance known_at -> revision history -> actual outcome known_at end-to-end.
+
+Exact next continuation:
+Build a D21-12 historical guidance replay using at least two issuers with numeric guidance. Preserve original guidance, public timestamp, metric/range, assumptions, any revision/withdrawal, actual outcome publication timestamp and only then compute forecast error. Prefer one relatively accurate guidance history and one repeated optimistic/revision-heavy history. Test whether rolling management credibility adds information beyond analyst coverage, earnings revisions and firm fundamentals.
+
+Formal Core impact: NONE.
