@@ -1,8 +1,8 @@
 # Corporate Governance / Insider Checkpoint
 
-Updated: 2026-10-04 08:00 Asia/Taipei
+Updated: 2026-10-04 10:05 Asia/Taipei
 Scope: D21｜公司治理／經營者／內部人／控制權品質
-Status: D21-01 L2 / D21-02 L3 / D21-03 L2 / D21-04 L2 / D21-05 L2 / D21-07 L2 / D21-09 L2 / D21-10 L2 / FORMAL_CORE_UNCHANGED
+Status: D21-01 L2 / D21-02 L3 / D21-03 L2 / D21-04 L2 / D21-05 L3 / D21-07 L2 / D21-09 L2 / D21-10 L3 / D21-11 L2 / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - Canonical continuation checkpoint for D21.
@@ -160,3 +160,39 @@ Exact next continuation:
 1. Find and replay one native Taiwan operating RPT or related-party asset transaction with historical relationship status, approval clock and public filing clock.
 2. Then reassess D21-05 L3 source/PIT feasibility only.
 3. If source route blocks, move to D21-10 dual-vintage correction/restatement replay without changing D21-05 maturity.
+
+
+## 2026-10-04 late-morning durable continuation
+
+### D21-05 historical RPT replay
+- Yuanta Financial 2885 provides two economically different related-party event families with conservative daily-PIT replay:
+  1. 2024-04-29 related-party real-estate disposal, observed in a MOPS-fed archive at 16:46:05 and cross-checked against Yuanta's official same-day archive. Amount NT$133m; counterparty EirGenix identified as related party; existing tenant was stated reason; professional appraisal NT$124.102m; expected gain about NT$47.238m; board and audit approval same day.
+  2. 2024-07-26 NT$3bn capital injection into 100%-owned Yuanta Life, observed in a MOPS-fed archive at 16:26:47; board approval 2024-07-26 and audit committee consent 2024-07-16; stated purpose was operating funds / financial structure / capital adequacy.
+- These two cases prove daily after-market PIT feasibility across asset-disposal and internal-capital-allocation RPT families.
+- Use observed_public_at for conservative daily replay; original MOPS first-known second can remain UNKNOWN unless intraday event-study precision is required.
+- D21-05 advances L2 -> L3 / 60%.
+- L4 remains closed pending OOS/prospective evidence and redundancy tests.
+
+### D21-10 dual-vintage restatement replay
+- Taiwan Terminal 3432: 2024-04-23 announcement observed at 16:39:54 restated 2022 annual through 2023 periods. 2022 consolidated equity moved from NT$442.802m to NT$272.792m and EPS from -17.57 to -20.13; 2023 annual EPS moved from -5.32 to -0.60 because the later-period reversal interacts with the earlier restatement.
+- This proves why original financial values must remain the historical vintage until restatement known_at, with corrected values entering only afterward.
+- Leader Electronics 3058: 2025-05-15 public archive described restatement/corrections caused by senior-manager internal-control violations, unrecorded stock dispositions and uncollected proceeds, providing a materially different cause class from an accounting-estimate restatement.
+- D21-10 advances L2 -> L3 / 60%.
+- L4 remains closed pending prospective/OOS severity validation and redundancy tests versus D07/D11.
+
+### D21-11 ownership boundary
+- Advance D21-11 L0 -> L2 / 40%.
+- D21-11 is frozen as a derived tunneling/minority-risk classification layer, not a duplicate raw-factor family.
+- Raw ownership wedge remains D21-01; pledge D21-04; RPT classification D21-05; accounting quality D07; event clock D11.
+- Tunneling requires directional value transfer, controller-related beneficiary, terms/pricing evidence and control context.
+- Evidence states: CONFIRMED_TUNNELING / HIGH_SUSPICION / AMBIGUOUS / INSUFFICIENT / UNKNOWN.
+- A single high RPT ratio, pledge ratio or control wedge is never enough to classify tunneling.
+- No additive composite or Formal gate is approved.
+
+## Exact next continuation
+1. Build D21-11 historical case-set replay with at least one confirmed/near-confirmed extraction case and one economically justified RPT control case, using contemporaneous beneficiary/terms/control evidence.
+2. Continue D21-04 original MOPS pledge receipt recovery when source access allows; do not promote from secondary dates alone.
+3. After D21-11 replay, move to D21-12 management-guidance credibility rather than mechanically extending overlapping governance composites.
+4. D21-05 and D21-10 next promotion requires OOS/prospective evidence; no theory-only L4.
+
+Formal Core impact: NONE.
