@@ -502,3 +502,18 @@ Physical result:
 - read-only boundary PASS.
 
 Remaining S2-07 continuity blockers are unchanged: empty-month semantics, higher-row-count truncation, knownAt certification, exchange-side cancellation/revocation coverage, suspension/resumption completeness, symbol-session completeness and technical continuity.
+
+## 2026-10-04 MOPSOV empty-month characterization
+
+PR #450 / `af1d526cb628ecaba64375a15e99ba0fbaaa6831` physically characterized the official zero-row company-month response.
+
+Observed across four frozen empty controls:
+- HTTP 200 / HTML;
+- 2540-byte identical payload;
+- SHA-256 `9d2e63bf800085e3953d9e675f72cd95131758de64546ad898a5beee56a39e5d`;
+- rowCount=0;
+- normalized text `公開資訊觀測站 資料庫中查無需求資料`.
+
+Three same-endpoint positive controls remained non-empty and structurally distinct. Characterization PASS does not yet equal certification; `emptyMonthSemanticsCertified=false` remains authoritative.
+
+Next engineering target: endpoint-specific certification with exact signature + positive controls + fail-closed drift behavior.

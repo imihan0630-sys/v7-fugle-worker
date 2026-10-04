@@ -606,3 +606,9 @@ This is source-contract evidence only. It does not promote revision completeness
 ## 2026-10-04 MOPSOV multi-control reconciliation milestone
 
 PR #448 physically verified exact full-query vs Jan–Sep month-shard reconciliation across all four companies represented by the five frozen MOPS correction/cancellation controls. 4/4 companies passed with no one-sided or duplicate keys. This remains source-contract evidence only; revision completeness and all trading authorities remain locked.
+
+## 2026-10-04 MOPSOV empty-month characterization milestone
+
+PR #450 physically established the official MOPSOV zero-row company-month signature on four frozen empty controls: HTTP 200 HTML, 2540-byte identical payload, zero parsed rows and the visible official message `資料庫中查無需求資料`. Three positive controls remained non-empty and distinct.
+
+This is characterization, not certification. `emptyMonthSemanticsCertified`, revision completeness, knownAt certification, technical continuity and all trading authorities remain false.

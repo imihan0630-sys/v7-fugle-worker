@@ -1249,3 +1249,47 @@ This proves bounded query-shape consistency across the frozen multi-control samp
 7. after history + continuity are READY, address `ASSESSOR_POLICY_NOT_FROZEN`, then Strategy -> Ranking -> Capacity -> real `s2_capacity_runs`.
 
 System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
+
+## 2026-10-04 S2-07 MOPSOV empty company-month semantics — PHYSICALLY CHARACTERIZED
+
+PR #450 merged as `af1d526cb628ecaba64375a15e99ba0fbaaa6831`.
+
+Physical checks:
+- Empty Month Characterization Readonly `37169012904`: PASS.
+- System2 Research CI `37169012900`: PASS.
+- V8 Regression `37169012896`: PASS.
+
+Frozen empty controls:
+- 1459 / 2026-01;
+- 1342 / 2026-03;
+- 1342 / 2026-08;
+- 1342 / 2026-09.
+
+Positive controls:
+- 2467 / 2026-05;
+- 1459 / 2026-06;
+- 1342 / 2026-07.
+
+Observed empty signature across all four controls:
+- HTTP 200;
+- content-type `text/html; charset=UTF-8`;
+- 2540 bytes;
+- parsed rowCount=0;
+- identical SHA-256 `9d2e63bf800085e3953d9e675f72cd95131758de64546ad898a5beee56a39e5d`;
+- normalized visible text `公開資訊觀測站 資料庫中查無需求資料`;
+- no observed access/error signature.
+
+All positive controls had non-zero rows and distinct payload hashes.
+
+This narrows the transport ambiguity, but `emptyMonthSemanticsCertified=false` deliberately remains false until a separate frozen certification contract verifies the discovered signature and same-endpoint positive controls.
+
+### Exact continuation
+1. implement and physically verify MOPSOV empty-month certification V0.2 using the observed official signature and fail-closed drift rules;
+2. stress higher-row-count pagination/truncation behavior;
+3. validate source date/time/sequence as historical version knownAt candidates;
+4. add exchange-side official-document cancellation/revocation evidence;
+5. only after complete supplemental revision-history coverage may `revisionCoverageComplete` be reconsidered;
+6. then suspension/resumption -> expected symbol sessions -> RAW A1 lineage -> technical continuity;
+7. after history + continuity READY, address `ASSESSOR_POLICY_NOT_FROZEN`, then Strategy -> Ranking -> Capacity -> real `s2_capacity_runs`.
+
+System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
