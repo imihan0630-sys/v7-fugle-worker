@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "D06_10_TDCC_DISTRIBUTION_PIT_SOURCE_CONTRACT_V0_1",
+  "updated": "2026-10-04 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "module": "D06-10",
+  "question": "Is Taiwan TDCC shareholding-distribution data source/semantic/replay feasibility sufficient for L3 while keeping ownership identity and same-generation research lineage as separate unresolved questions?",
+  "officialSemantics": {
+    "provider": "Taiwan Depository & Clearing Corporation",
+    "dataset": "集保戶股權分散表",
+    "grain": "security × weekly data date × holding bracket",
+    "fields": [
+      "資料日期",
+      "證券代號",
+      "持股分級",
+      "人數",
+      "股數",
+      "占集保庫存數比例%"
+    ],
+    "cadence": "weekly ownership stock based on the last business day of the week",
+    "identity": "holding brackets do not identify institutional/passive/main-force beneficial owners",
+    "openApi": "/v1/opendata/1-5",
+    "existingProductionSource": "https://opendata.tdcc.com.tw/getOD.ashx?id=1-5",
+    "license": "government open-data route/free access; source-specific reuse terms remain provenance metadata"
+  },
+  "parserReconciliation": {
+    "grades": "1-17",
+    "adjustmentGrade": 16,
+    "totalGrade": 17,
+    "exactShareIdentity": "sum grades 1-15 minus grade16 adjustment equals grade17 total shares",
+    "concentration400Plus": "grades 12-15 share sum / grade17 total",
+    "holdersOver1000Lots": "grade15 shares / grade17 total",
+    "minimumOrdinaryStockCoverage": 1500,
+    "storedFields": [
+      "chipConcentration",
+      "holdersOver1000LotsRatio",
+      "chipAsOfDate",
+      "chipDefinition"
+    ]
+  },
+  "verifiedOperationalEvidence": [
+    {
+      "observedContext": "Production quality data",
+      "observedDate": "2026-09-17",
+      "count": 2955,
+      "chipAsOfDate": "2026-09-11"
+    },
+    {
+      "observedContext": "Official quality acceptance",
+      "observedDate": "2026-09-18",
+      "count": 2956,
+      "chipAsOfDate": "weekly source vintage"
+    },
+    {
+      "observedContext": "Production quality readback",
+      "observedDate": "2026-10-02",
+      "count": 2957,
+      "chipAsOfDate": "2026-09-24"
+    }
+  ],
+  "pitRules": [
+    "chipAsOfDate is the ownership observation date, not firstKnownAt.",
+    "For prospective PIT use, firstKnownAt is the actual successful capture time unless an authoritative publication clock is separately proven.",
+    "Multiple market scan dates sharing the same chipAsOfDate are one ownership vintage for ownership-inference independence.",
+    "Official historical/finalized pages may validate values but cannot fabricate an earlier historical firstKnownAt.",
+    "Preserved captured snapshots with asOfDate/content hash are replayable; mutable current snapshots are not substitutes for immutable generation receipts."
+  ],
+  "scopeBoundary": {
+    "D06_10": "owns TDCC source semantics, brackets, cadence, parser/reconciliation and replayable captured vintages",
+    "D06_05": "owns economic interpretation of ownership concentration and still requires same-generation lineage/identity-aware research for outcomes",
+    "noMaturityInheritance": true
+  },
+  "remainingLimits": [
+    "Official online historical retention is limited relative to deep backtests.",
+    "TDCC bracket data do not reveal holder identity or passive/institutional share.",
+    "Prospective research rows currently do not self-carry immutable chipAsOfDate/chipDefinition lineage.",
+    "No outcome/OOS evidence is opened by this source-feasibility promotion."
+  ],
+  "maturityDecision": {
+    "previous": "L2 / 40%",
+    "new": "L3 / 60%",
+    "basis": "Official Taiwan TDCC source fields/cadence are frozen, production parser reconciliation and coverage are validated, chipAsOfDate is preserved upstream, and actual captured vintages have been read back in production. This validates Taiwan PIT source/semantic/replay feasibility for the data module itself."
+  },
+  "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / WEEKLY_VINTAGE_REPLAY_READY_FOR_CAPTURED_RECEIPTS / HOLDER_IDENTITY_UNKNOWN / D06_05_LINEAGE_STILL_BLOCKED / OUTCOMES_CLOSED",
+  "exactNext": "Preserve immutable same-generation chipAsOfDate/chipDefinition/hash into prospective research receipts. At L4, evaluate weekly ownership changes with vintage-deduplicated inference; do not count repeated daily reuse as independent samples and do not infer institution/passive identity from brackets."
+}
