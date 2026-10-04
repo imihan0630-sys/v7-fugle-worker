@@ -79,7 +79,7 @@
       "domain": "D22",
       "room": "15｜信用市場與資本結構研究室",
       "class": "SCOPE_EXTENSION_CANDIDATE",
-      "state": "PENDING_SPECIALIST_RETURN",
+      "state": "PARTIAL_EVIDENCE_RECEIVED",
       "returnPath": "research/COV12_D22_SPECIALIST_RETURN_V0_1.md"
     }
   ],
@@ -450,6 +450,40 @@
       "anti-double-count versus D06 ownership flows and D11 event mechanics",
       "choose exactly one terminal recommendation",
       "commit research/COV11_D21_SPECIALIST_RETURN_V0_1.md"
+    ],
+    "maturityChange": "NONE",
+    "formalCoreImpact": "NONE_LOCKED"
+  },
+  "cov12": {
+    "state": "PARTIAL_EVIDENCE_RECEIVED",
+    "readiness": "INSTRUMENT_LEVEL_SENIORITY_COLLATERAL_RECOVERY_WATERFALL_REPLAY_PENDING",
+    "candidate": "Debt Seniority / Collateral / Recovery Waterfall",
+    "acceptedEvidence": [
+      "research/d22_12_distress_recovery_tail_risk_contract_v0_1.json",
+      "research/d22_12_distress_recovery_replay_readiness_v0_1.json",
+      "CREDIT_CAPITAL_STRUCTURE_CHECKPOINT.md",
+      "research/stock_market_learning_tracker_v0_1.json"
+    ],
+    "closedQuestions": [
+      "D22-07 owns covenant/default trigger and liquidity-state semantics",
+      "D22-12 owns distress/recovery/equity-tail-risk family",
+      "PD, LGD/recovery, distress state and equity tail risk are distinct",
+      "recovery is seniority/collateral/process dependent",
+      "universal recovery percentage is prohibited",
+      "defaulted/delisted/unrated cases must remain in universe",
+      "missing recovery remains UNKNOWN"
+    ],
+    "remaining": [
+      "define secured/unsecured/subordinated claim ranking",
+      "define collateral package, guarantees and structural subordination",
+      "define post-default recovery waterfall distinct from D22-07 default trigger",
+      "produce at least one Taiwan issuer/security historical document-vintage replay with knownAt",
+      "bind actual claim priority/collateral/guarantee to restructuring/default/recovery lineage",
+      "preserve private bank-loan ranking/collateral as UNKNOWN where undisclosed",
+      "compare extension into D22-12 versus D22-07 and reject duplicate ownership",
+      "freeze anti-double-count versus D07 balance-sheet leverage and D21 pledging/control",
+      "choose exactly one terminal recommendation",
+      "commit research/COV12_D22_SPECIALIST_RETURN_V0_1.md"
     ],
     "maturityChange": "NONE",
     "formalCoreImpact": "NONE_LOCKED"
