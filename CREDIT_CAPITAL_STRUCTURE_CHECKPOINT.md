@@ -303,3 +303,21 @@ Therefore:
 4. D22-05/D22-08/D22-10 are now L3; expand their independent-date panels but do not open equity outcomes.
 5. D22-09 remains downstream of D22-06; D22-11/D22-12 remain L2 until their own Taiwan PIT replay gates are satisfied.
 
+
+
+## 00 control-plane receipt — H13 closure
+
+00｜研究總控室 closed H13 as:
+KEEP_SEPARATE / ACCOUNTING_PRIMITIVE_VS_CREDIT_FUNDING_TRANSFORM / SINGLE_BALANCE_SHEET_RECEIPT.
+
+Canonical boundary:
+- D07-06 = accounting balance-sheet/leverage primitive owner.
+- D22-03 = credit/funding transform owner after liquidity-quality classification.
+- net debt is derived, not source fact.
+- contractual maturity wall is linked but not additive to carrying debt.
+- later statement revisions append new vintages and never backfill earlier known states.
+
+D22-03 remains L3/60%. No maturity, count or Formal change.
+
+Audit:
+shared-knowledge/CURRICULUM_H13_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
