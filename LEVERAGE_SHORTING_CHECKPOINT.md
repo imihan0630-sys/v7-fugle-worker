@@ -241,3 +241,19 @@ Closed on the Room05 side:
 
 H12 remains partial pending Room10 D14-19 and Room13 D20-13.
 Do not repeat the Room05 ownership research.
+
+
+## 00 control-plane receipt — H06 closure
+
+00｜研究總控室 closed H06:
+KEEP_SEPARATE / BOUNDED_SOCIAL_HERDING_SUBLANE / SHARED_SOCIAL_RECEIPT_FIREWALL.
+
+D06-06 remains canonical observable crowding owner.
+D20-06 may own only independent behavior-specific social-herding evidence after structural controls.
+Crowding cannot be relabeled as social proof.
+
+D06-06 remains L3/60%.
+No maturity/count/Formal change.
+
+Audit:
+shared-knowledge/CURRICULUM_H06_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
