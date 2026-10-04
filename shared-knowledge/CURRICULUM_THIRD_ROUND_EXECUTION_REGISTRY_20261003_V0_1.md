@@ -345,3 +345,18 @@ Governance firewalls:
 - D02 volume and D04 volatility become independent only after preregistered residual incremental evidence passes.
 
 No module-count, maturity, Formal or runtime change.
+
+
+## H18 / H19 partial-intake update — 2026-10-04
+
+H18:
+- Room14 D21-07 mechanism/falsification side accepted.
+- D07-19 remains L0/0 and is the blocking counterpart.
+- state: `PARTIAL_EVIDENCE_RECEIVED / D07_19_PROJECT_ECONOMICS_PENDING`.
+
+H19:
+- D03-04 time-series momentum, D19-04 cross-sectional momentum and D19-09 residual-momentum semantics are all accepted at their current maturity.
+- terminal closure remains blocked by same-date/same-universe D03-vs-D19-04 redundancy testing and D19-09 fixed-factor residual neutralization with provenance/cost/capacity controls.
+- state: `PARTIAL_EVIDENCE_RECEIVED / COMMON_SUPPORT_REDUNDANCY_RESIDUAL_TESTS_PENDING`.
+
+No maturity/count/Formal change.
