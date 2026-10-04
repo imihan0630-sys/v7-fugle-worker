@@ -1563,3 +1563,14 @@ D21-11:
 
 ### Exact next continuation
 Build a D21-11 historical one-positive/one-control case set using contemporaneous beneficiary, transaction terms/pricing, control linkage and approval evidence. Continue D21-04 original pledge-receipt recovery when authoritative source access permits. D21-05 and D21-10 require prospective/OOS evidence before any L4 promotion.
+
+
+## 2026-10-04 D19 Stage 8 — full TWSE denominator physically reconciled
+- PR #460 merged as `1a7b6e7e8d8552953f909f4ee1448733a1daf643`.
+- D19 TWSE full-universe workflow `37172684933`, System2 CI `37172684904`, V8 Regression `37172684903`: PASS.
+- 2026-08-31 historical snapshot denominator 1,089; 2026-08-03..08-31 official rows 22,810; D19-04 input 1,064 KNOWN / 25 explicit UNKNOWN = 97.7043%.
+- UNKNOWN: 2 recent listing insufficient-lookback; 6 incomplete-session rows; 17 null/invalid-close requiring trading-state provenance. No silent drop / no UNKNOWN->0.
+- TPEx PR #459 negative experiment closed unmerged: all three current/fallback official transports HTTP 520; prior full-market benchmark had 18,646 rows but did not persist them.
+- Corporate-action source/parser PASS does not equal continuity certification; industry vintage, D03/D09 redundancy and D14-compatible cost evidence remain open.
+- Machine blocker reconciliation: `research/d19_04_l3_blocker_reconciliation_20261004_v0_1.json`.
+- D19 remains 40.0% / all 15 active modules L2. Formal Core unchanged.
