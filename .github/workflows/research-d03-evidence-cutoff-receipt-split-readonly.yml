@@ -1,0 +1,31 @@
+name: D03 Evidence Cutoff Receipt Split Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d03_evidence_cutoff_receipt_split_v0_1.mjs"
+      - "tests/test_d03_evidence_cutoff_receipt_split_v0_1.mjs"
+      - "research/D03_EVIDENCE_CUTOFF_RECEIPT_SPLIT_V0_1.md"
+      - ".github/workflows/research-d03-evidence-cutoff-receipt-split-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tests/test_d03_evidence_cutoff_receipt_split_v0_1.mjs
+      - name: Confirm research-only isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE|BUY|SELL' research/d03_evidence_cutoff_receipt_split_v0_1.mjs
+          echo "D03 evidence-cutoff split isolation PASS"
