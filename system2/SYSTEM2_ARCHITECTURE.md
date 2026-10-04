@@ -1,6 +1,6 @@
 # System 2 Architecture
 
-Updated: 2026-09-26
+Updated: 2026-10-04
 Status: DESIGN V0.1
 
 ## Separation and decision autonomy
@@ -68,6 +68,32 @@ Detailed contract: `system2/SYSTEM2_POSITION_MANAGEMENT_ARCHITECTURE.md`.
 
 ### L9 Performance/Research
 Frozen decision snapshots, simulated fills, costs/slippage, outcomes, attribution, OOS and version comparison.
+
+## Contextual Evidence Router
+
+Between raw factor families and the strategy decision layer, System 2 uses a context-routing step.
+
+The router must:
+- diagnose the active setup / scenario;
+- identify relevant strategy families;
+- choose which evidence families are economically relevant;
+- distinguish HARD_GATE from PRIMARY / SUPPORTIVE / CONTRADICTORY evidence;
+- preserve UNKNOWN and NOT_APPLICABLE;
+- detect interaction / confluence and factor redundancy;
+- surface both positive evidence and counterevidence;
+- avoid universal condition stacking;
+- record why a factor was considered, ignored or treated as non-applicable.
+
+Examples:
+- a prior-high breakout should route into technical structure, price-volume quality, trapped-supply context, chips/ownership, sector capital flow, market Regime, catalyst/industry support and execution geometry;
+- a trend pullback should emphasize trend intactness, support, volume contraction, selling/chip deterioration, Regime and reward/risk;
+- an accumulation setup should emphasize institutional persistence, ownership concentration, absorption/controlled volume, price extension and industry/fundamental support;
+- an event setup should emphasize source timing, economic transmission, price-in degree, half-life and reaction structure.
+
+The router is governed by:
+`system2/SYSTEM2_CONTEXTUAL_DECISION_SYNTHESIS_V0_1.md`.
+
+It does not eliminate strategy-specific contracts; it decides which knowledge should inform them in the current context.
 
 ## Key principle: context-dependent interpretation
 
