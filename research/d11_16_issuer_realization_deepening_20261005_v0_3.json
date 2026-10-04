@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "0.3",
+  "generatedAt": "2026-10-05T07:31:00+08:00",
+  "owner": "08｜事件與新聞研究室",
+  "module": "D11-16",
+  "title": "6921 issuer-level lock-up and insider-supply realization deepening",
+  "status": "ISSUER_STANDARD_RELEASE_SCHEDULE_BOUNDED / TRANSFER_TO_LATER_HOLDING_REDUCTION_PHYSICALLY_CONSISTENT / ACTUAL_CUSTODY_WITHDRAWAL_UNPROVEN / KEEP_L2 / OUTCOMES_CLOSED",
+  "issuer": {
+    "symbol": "6921",
+    "name": "嘉雨思-創",
+    "listingDate": "2025-12-23",
+    "listingBoard": "Taiwan Innovation Board"
+  },
+  "profitabilityQualificationAudit": {
+    "decisionCutoff": "listing application/review in 2025; use pre-listing annual accounting evidence",
+    "rule": "Article 4 profitability requires one of: both last two years >=6%; last-two-year average >=6% with latest better; or each of last five years >=3%, plus the rule's other conditions.",
+    "connectedFinancialEvidence": [
+      {
+        "year": 2023,
+        "preTaxProfit": 7,
+        "yearEndCapital": 300.68,
+        "ratioPct": 2.3281
+      },
+      {
+        "year": 2024,
+        "preTaxProfit": 22.86,
+        "yearEndCapital": 300.68,
+        "ratioPct": 7.6028
+      }
+    ],
+    "twoYearAveragePct": 4.9654,
+    "conclusion": "DOES_NOT_MEET_ARTICLE4_PROFITABILITY_THRESHOLD_ON_OBSERVED_2023_2024_RATIOS",
+    "falsification": "2023 alone is below both 6% and 3%; the two-year average is below 6%. Therefore the special shorter profitable-issuer path is not supported by these pre-listing figures.",
+    "qualificationCaveat": "This is a bounded source-based qualification reconstruction, not a substitute for TWSE's issuer-specific review adjudication."
+  },
+  "theoreticalReleaseSchedule": {
+    "applicablePath": "STANDARD_NON_PROFITABILITY_PATH",
+    "rule": "1/4 eligible after 6 months, another 1/4 each 6 months, full after 2 years, absent a separate TWSE exception.",
+    "firstEligibilityDate": "2026-06-23",
+    "laterEligibilityDates": [
+      "2026-12-23",
+      "2027-06-23",
+      "2027-12-23"
+    ],
+    "criticalGuard": "Eligibility dates are theoretical legal/replay states. They do not prove actual TWSE-approved release quantity or TDCC withdrawal."
+  },
+  "connectedTransferAndHoldingEvidence": {
+    "transferDeclarations": [
+      {
+        "date": "2025-12-16",
+        "declarant": "嘉澤端子工業股份有限公司",
+        "title": "董事本人",
+        "declarationType": "辦理過額配售",
+        "declaredShares": 10000,
+        "holdingAtDeclaration": 4732059
+      },
+      {
+        "date": "2025-12-16",
+        "declarant": "陳月卿",
+        "title": "經理人本人",
+        "declarationType": "辦理過額配售",
+        "declaredShares": 21000,
+        "holdingAtDeclaration": 40000
+      }
+    ],
+    "latestDirectorHolding": {
+      "vintage": "2026-09",
+      "declarant": "嘉澤端子工業股份有限公司",
+      "shares": 4722059
+    },
+    "arithmeticConsistency": {
+      "priorHolding": 4732059,
+      "declaredOverAllotment": 10000,
+      "laterHolding": 4722059,
+      "exactDifference": 10000,
+      "interpretation": "The connected source physically closes a declaration -> later holding-reduction consistency check for this pre-listing over-allotment supply event."
+    },
+    "strictBoundary": "The 2025-12-16 declaration predates the 2025-12-23 listing and is explicitly over-allotment. It is NOT evidence of post-lock-up release or sale."
+  },
+  "tdccDistributionContext": {
+    "source": "FCNT000022 connected TDCC distribution",
+    "latestDate": "2026-10-02",
+    "totalShares": 32061941,
+    "holders": 880,
+    "over1mBucketShares": 24103764,
+    "priorDate": "2026-09-24",
+    "priorOver1mBucketShares": 24103764,
+    "interpretation": "Aggregate distribution is useful as a control but cannot identify issuer-specific custody release or individual insider sale."
+  },
+  "newStateMachineEvidence": [
+    "LISTING_AND_RULE_PATH now bounded for 6921",
+    "FIRST_RELEASE_ELIGIBLE date now bounded",
+    "TRANSFER_PREDECLARED -> later holding-reduction semantics physically demonstrated on a separate pre-listing over-allotment event",
+    "ACTUAL_RELEASE_OR_WITHDRAWAL_FROM_CUSTODY remains UNKNOWN",
+    "POST_LOCKUP_TRANSFER_PREDECLARED remains not observed in the connected 5-year transfer lane but lane completeness is not authenticated",
+    "NO_POSTLOCKUP_SALE remains prohibited"
+  ],
+  "maturityDecision": {
+    "module": "KEEP_L2",
+    "strengthenedBy": [
+      "issuer-specific listing date and standard-vs-profitable release path materially narrowed",
+      "theoretical first eligibility date can now be replayed",
+      "transfer declaration -> later holding-reduction back-half semantics physically consistent"
+    ],
+    "blockedBy": [
+      "issuer-specific original custody quantity not captured",
+      "TWSE-approved release quantity/date or equivalent actual TDCC custody withdrawal not captured",
+      "no authenticated post-eligibility transfer declaration / untransferred report coverage chain",
+      "eligible-but-not-sold negative control remains source-bounded rather than fully official"
+    ]
+  },
+  "outcomeJoin": false,
+  "formalCoreChanged": false,
+  "exactNext": [
+    "Obtain 6921 issuer-specific original custody certificate/detail or TWSE-approved releasable quantity/date after 2026-06-23.",
+    "Join any actual custody withdrawal to official transfer pre-declaration and later holdings/untransferred state.",
+    "Authenticate completeness of the post-eligibility transfer/untransferred lanes before labeling an eligible-but-not-sold control.",
+    "Keep the 2025-12-16 over-allotment chain as supply-realization semantics only, never as lock-up expiry evidence."
+  ]
+}
