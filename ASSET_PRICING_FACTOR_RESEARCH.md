@@ -998,3 +998,51 @@ Formal Core remains LOCKED. No FORMAL_OPTIMIZATION_CANDIDATE.
 5. Execute paired D03/D09 redundancy only on identical PIT date/universe inputs.
 6. Freeze a D14-compatible component-wise cost scenario; owner-account commission remains UNKNOWN unless directly evidenced.
 7. Only a deterministic full-Taiwan replay with zero applicable blockers triggers an L3 readiness review; no automatic promotion.
+
+
+## 2026-10-04 Long-block Stage 11 — TPEx current-route recovery + source-unit correction
+
+### What changed
+- PR #500 merged as `26688826553ef20212a5341d766f9666d3f19890`.
+- The retired TPEx `st43_result.php` route is no longer used by the shared monthly-history adapter.
+- The current official individual-security history route is `/www/zh-tw/afterTrading/tradingStock` with JSON response.
+- Shared adapter provenance now uses `TPEX_TRADING_STOCK_MONTHLY`.
+- A hidden unit-semantics defect was corrected: TPEx source fields are 成交張數 and 成交仟元, so source volume is multiplied by 1,000 into shares and source trade value is multiplied by 1,000 into NTD before entering normalized fields.
+- Unit lineage is preserved in sourceFields as LOT_1000_SHARES / THOUSAND_NTD plus explicit multipliers.
+
+### Physical evidence
+- Final TPEx smoke run `37182305258`: PASS.
+- System2 Research CI `37182305255`: PASS.
+- V8 Regression `37182305271`: PASS.
+- TWSE dual-source regression `37182305264`: PASS, confirming the shared-adapter repair did not break Stage-10 TWSE evidence.
+- Production isolation: PASS.
+
+Bounded TPEx August-2026 witnesses:
+- 3105: 21 rows, 21 valid closes, 2026-08-03..2026-08-31, first close 311, last close 447.5; first normalized volume 18,433,000 shares and trade value NT$5,750,298,000.
+- 6488: 21 rows, 21 valid closes, 2026-08-03..2026-08-31, first close 866, last close 912; first normalized volume 15,388,000 shares and trade value NT$13,694,380,000.
+- Content evidence hash: `ce1a0c5665fdd9f3ceb7d12a5d72d8337b61e03de3e39e3ba1c2a3698e0aa160`.
+
+### Counterevidence and reliability boundary
+- The same current route was physically observed returning HTTP 200 JSON on one run and HTTP 403 Cloudflare blocking on another hosted-runner attempt.
+- Therefore source route/schema/unit feasibility is established, but hosted-runner transport reliability is NOT certified.
+- A live transport failure must never be interpreted as an empty historical month.
+- The current monthly route is a bounded alternate replay primitive candidate; it is not evidence that the full TPEx date-vintaged universe has been populated, persisted or replayed.
+- Historical endpoint publication timestamps remain unproven; conservative session-close availability is a research convention rather than evidence of historical endpoint publication time.
+
+### D19-04 blocker consequence
+- The old blocker phrase “TPEx historical source unavailable” is now too broad.
+- Correct decomposition:
+  1. TPEx source route/schema/unit semantics = PARTIAL_PASS / physically readable on bounded witnesses.
+  2. TPEx hosted-runner transport reliability = BLOCKED_INTERMITTENT_403.
+  3. TPEx date-vintaged historical-universe denominator = BLOCKED.
+  4. TPEx scalable persisted full-market replay = BLOCKED.
+- D19-04 remains L2 / 40%; D19 aggregate remains 40.0%.
+- No Formal Core, production runtime, ranking, threshold, capital, push or live-trading behavior changed.
+
+### Exact next evidence program
+1. Build TPEx date-vintaged historical-universe membership from authoritative current+delisted provenance.
+2. Use source-independent immutable persistence so replay does not depend on the live TPEx endpoint being healthy on every run.
+3. Scale beyond bounded 3105/6488 only after rate/transport behavior is made rerun-safe and missing transport is preserved as UNKNOWN, never empty history.
+4. Continue shared continuity-window receipt binding for TWSE/TPEx.
+5. Acquire PIT industry vintage, run D03/D09 paired redundancy, and freeze D14-compatible component-wise cost evidence.
+6. Only a zero-applicable-blocker full-Taiwan deterministic replay may trigger L3 readiness review; no automatic promotion.
