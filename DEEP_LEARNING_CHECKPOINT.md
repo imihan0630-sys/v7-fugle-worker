@@ -1821,3 +1821,24 @@ Status: D21-13_L3 / D21-09_L3 / RESEARCH_ONLY / FORMAL_CORE_UNCHANGED
 
 ### Exact next continuation
 D21-07 is the largest executable L2 module without PIT validation. Build a historical Taiwan compensation-policy to capital-allocation replay, covering at least one long-horizon investment decision and one capital-return/financing decision, with policy known_at, decision known_at and future realized outcomes separated. Keep D21-11/04/03/01 source blockers non-blocking.
+
+
+## 2026-10-04 D03 — TI-651~660 pre-parent source-cut acceptance
+
+- Durable handoff: `research/D03_PRE_PARENT_CONTINUITY_SOURCE_CUT_HANDOFF_V0_1.md`.
+- Physical source-capacity run `37190871367` PASS over 2026-08-15..2026-10-02:
+  - 294 official actual-result events;
+  - 31 event-bearing dates;
+  - mean ~9.48 events per event-bearing date;
+  - max 33 events/symbols on one effective date;
+  - 149 TWSE ex-right/dividend, 129 TPEx ex-right/dividend, 7+7 capital-reduction, 1+1 par-value-change events.
+- This supports event-driven revision-source engineering as materially smaller than full-market per-symbol polling, but proves no production budget or completeness.
+- Critical clock refinement: exact prospective MOPS version `firstObservedAt <= parentKnownAt` is sufficient conservative parent-cutoff availability evidence even when latency `precisionEligible=false`. Prior NOT_OBSERVED <=5 minutes is latency precision, not intrinsic D03 parent eligibility.
+- Selected-only pre-parent capture is rejected because C1 parent/keyset is produced by the normal scan; source cut must be market-wide/exchange-wide or full eligible-universe before parent.
+- Physical source-cut policy run `37191199051` PASS:
+  valid market-wide cut passes; late cut, selected-only scope, late/retrospective MOPS version, incomplete version keyset and truncated query all fail closed.
+- Current v0.2 Bollinger/ADX `capturedAt <= parentKnownAt` requirement remains intact; no evidenceCutoffAt/receiptCreatedAt reinterpretation was made.
+- Hard shared-owner debt: `noRevisionGapThroughCut`, cutoff-safe source-cut runtime, symbol-session completeness and genuine parent-bound continuity receipts.
+- No maturity inflation: D03-10 remains L2/40, D03-09 remains L2/40, D03 = 56.7%.
+- Next honest path: owner source cut -> genuine V8.17 parent -> bound Bollinger COMPLETE run -> 58.3%; ADX canonical FULL_REPLAY COMPLETE run -> 60.0%.
+- Raw D03 3-session gate remains 2/3; TI-005/TI-006 outcomes CLOSED; Formal Core LOCKED.
