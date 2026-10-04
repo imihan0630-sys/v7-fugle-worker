@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "D03_MOPS_VERSION_CLOCK_CONTRACT_V0_1",
+  "updatedAt": "2026-10-04T11:30:00+08:00",
+  "classification": "RESEARCH_ONLY_OUTCOME_BLIND",
+  "formalCore": "LOCKED",
+  "clocks": {
+    "sourceReportedAt": {
+      "sourceFields": [
+        "spoke_date",
+        "spoke_time"
+      ],
+      "semantics": "OFFICIAL_SOURCE_REPORTED_DISCLOSURE_TIME_CANDIDATE",
+      "firstKnownAtCertified": false
+    },
+    "capturedAt": {
+      "semantics": "OBSERVER_FETCH_COMPLETED_AT"
+    },
+    "firstObservedAt": {
+      "semantics": "EARLIEST_APPEND_ONLY_EXACT_VERSION_OBSERVATION",
+      "prospectiveOnly": true,
+      "safeConservativeResearchClock": true
+    },
+    "firstKnownAt": {
+      "historicalBackfillFromSourceReportedAtAllowed": false,
+      "currentHistoricalState": "UNKNOWN",
+      "certificationRequired": true
+    }
+  },
+  "versionIdentity": [
+    "sourceHost",
+    "stockCode",
+    "sourceReportedAt",
+    "seqNo",
+    "contentHash"
+  ],
+  "correctionSemantics": "APPEND_NEW_VERSION_NEVER_OVERWRITE",
+  "historicalReplay": {
+    "uncertifiedHistoricalVersion": "UNKNOWN_OR_BLOCKED",
+    "finalTodayMayBackfillPast": false
+  },
+  "gates": {
+    "knownAtVersionClockCertified": false,
+    "revisionCoverageComplete": false,
+    "technicalContinuityCertified": false
+  },
+  "outcomes": "CLOSED",
+  "selectionAuthority": false,
+  "system1RuntimeUsed": false
+}
