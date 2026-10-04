@@ -146,7 +146,12 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H05_H08_SEMANTIC_SPLIT_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H05_H08_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "SPECIALIST_VALIDATION_PENDING"
+      "status": "PARTIAL_EVIDENCE_RECEIVED_ROOM03_COMPLETE_ROOM13_PENDING",
+      "receivedPackets": [
+        "research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md"
+      ],
+      "intakeDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOM13_COUNTERPART",
+      "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json"
     },
     {
       "id": "H08",
@@ -241,7 +246,13 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H09_H12_SCOPE_DEDUP_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H09_H12_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "SPECIALIST_VALIDATION_PENDING"
+      "status": "PARTIAL_EVIDENCE_RECEIVED_ROOM05_COMPLETE_ROOMS10_13_PENDING",
+      "receivedPackets": [
+        "research/d06_securities_lending_economics_h12_v0_1.md",
+        "research/d06_18_borrow_fee_identifiability_rule_vintage_v0_1.md"
+      ],
+      "intakeDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOMS10_13_COUNTERPARTS",
+      "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json"
     },
     {
       "id": "H13",
