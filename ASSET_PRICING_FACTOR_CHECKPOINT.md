@@ -230,3 +230,27 @@ Room12 exact remaining work:
 7. until residual incremental value passes, one return history cannot become three independent Alpha votes.
 
 This is aligned with the room's existing D03/D09 redundancy blocker and does not alter the active research order.
+
+
+## 00 routed COV-09 final specialist-return delta — 2026-10-04
+
+COV-09 is now:
+`SPECIALIST_RETURN_READY_PENDING_TERMINAL_RECOMMENDATION`.
+
+Do not redo generic factor research.
+
+Accepted:
+- D19-15 = benchmark construction/methodology owner;
+- D19-01 = benchmark-relative alpha/residual interpretation;
+- D19-10 = exposure/multicollinearity/spanning diagnostics;
+- benchmark vintage and PIT universe/corporate-action/delisting semantics;
+- Fama-French / profitability-investment / q-style contextual evidence;
+- benchmark models are not automatic strategy votes.
+
+Exact remaining return delta:
+1. freeze D19-15 as the benchmark-model construction owner versus D19-01/D19-10 consumers;
+2. state whether Taiwan inference requires Taiwan-reconstructed benchmark portfolios rather than imported U.S. factors;
+3. choose exactly one terminal recommendation;
+4. commit `research/COV09_D19_SPECIALIST_RETURN_V0_1.md`.
+
+No maturity or Formal change is authorized by this routing.
