@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T11:48:00+08:00",
+  "updatedAt": "2026-10-04T11:53:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 43.9
+    "maturityWeightedPct": 44
   },
   "domains": [
     {
@@ -1782,8 +1782,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Lock-up Expiry／Insider Supply禁售期到期與內部人供給」。研究初級市場與特殊公司事件。需凍結事件條款、公告時間、生效日期、可交易日與失敗／撤案情境，並計入供給衝擊、鎖定期、交易限制與套利破局風險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "RULE_AND_SOURCE_LANES_IDENTIFIED / ISSUER_LEVEL_OFFICIAL_REALIZATION_LINK_INCOMPLETE / KEEP_L2 / OUTCOMES_CLOSED",
-          "next": "Obtain one issuer-level official chain from listing basis -> custody quantity -> release tranche/date -> MOPS transfer declaration -> subsequent official holdings/untransferred state. Include an eligible-but-not-sold negative control before L3."
+          "status": "RULE_VERSION_AND_TRANSITION_CLAUSE_VALIDATED / ISSUER_RELEASE_TO_REALIZED_SUPPLY_CHAIN_INCOMPLETE / KEEP_L2 / OUTCOMES_CLOSED",
+          "next": "Complete one issuer-level official chain: applicable qualification and original custody quantity -> rule-version/transition applicability -> TWSE release approval/date or equivalent withdrawal proof -> transfer pre-declaration -> later official holdings/untransferred state. Include an eligible-but-no-net-reduction control; missing source coverage is never NO_SALE.",
+          "evidence": "TWSE 2026-01-09 transition rule proves already-listed domestic TIB issuers may fall under shortened custody treatment, but actual retrieval requires issuer application and TWSE-approved releasable quantity/date. Release eligibility remains distinct from custody withdrawal, transfer declaration and realized holding change."
         },
         {
           "id": "D11-17",
@@ -1816,10 +1817,10 @@
           "next": "Archive native immutable MOPS versions for one repriced stock deal and one public-target break/termination; add a listed-child or entitlement-bearing spin-off case if available; then preregister identical-parent spread, hedge, borrow, cost and break-loss outcomes before L4."
         }
       ],
-      "status": "D11_15_17_18_19_L3 / D11_16_SOURCE_GAP_EXPLICIT / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D11-16 remains the only new special-situation module below L3: complete an issuer-level official custody-release-to-realized-sale chain with an eligible-but-not-sold control. Deepen D11-18/19 native failure/break and borrow/cost evidence before L4.",
+      "status": "D11_15_17_18_19_L3 / D11_16_TRANSITION_RULE_VALIDATED_RELEASE_REALIZATION_GAP / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D11-16 remains the only D11-15..19 special-situation module below L3: complete an issuer-level official custody/release-approval-to-transfer-to-realized-holdings chain with an eligible-but-no-net-reduction control. Deepen D11-18/19 native failure/break and borrow/cost evidence before L4.",
       "lastResearchUpdate": "2026-10-04",
-      "researchNote": "D11-19 advanced L2->L3 for Taiwan PIT/source feasibility. Official Taiwan merger/demerger/share-conversion rules plus a real revised-consideration successful merger, transaction-structure rewrite/cancellation witnesses and an issuer-official demerger clock demonstrate replayable special-situation states. Borrow/cost/spread outcomes remain closed."
+      "researchNote": "D11-16 transition-rule replay semantics are strengthened by the TWSE 2026-01-09 amendment: rule version and transition applicability must precede release eligibility, and qualifying retrieval requires an issuer request plus TWSE-approved releasable quantity/date before TDCC withdrawal. The issuer-level release-to-realized-supply chain remains incomplete, so D11-16 stays L2."
     },
     {
       "id": "D12",
@@ -2849,7 +2850,7 @@
         "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md",
         "NEWS_EVENT_TRANSMISSION_RESEARCH.md"
       ],
-      "maturityPct": 41.4,
+      "maturityPct": 42.9,
       "modules": [
         {
           "id": "D17-01",
@@ -2970,18 +2971,19 @@
         {
           "id": "D17-14",
           "name": "Policy／Regulatory Event Clock／Surprise政策法規事件時鐘與預期差",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Policy／Regulatory Event Clock／Surprise政策法規事件時鐘與預期差」。研究政策與法規事件的首次已知時間、預期差、受益受害與半衰期；必須與 D10（供應鏈）及 D13（總經／地緣）分工，事件本身不等於方向性交易訊號。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "POLICY_CLOCK_SUBLANE_TAIWAN_PIT_FEASIBLE / SURPRISE_EXPECTATION_SOURCE_NEEDED / KEEP_L2 / OUTCOMES_CLOSED",
-          "next": "Archive ex-ante expectation sources before independent Taiwan policy decisions; otherwise keep surprise UNKNOWN. Prospectively preserve raw draft/final/effective versions with capturedAt. Do not infer surprise from market reaction."
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_CLOCK_AND_EX_ANTE_EXPECTATION_SOURCE_FEASIBLE / TWO_INDEPENDENT_CBC_DECISION_WITNESSES / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "Prospectively archive future independent Taiwan policy expectation distributions with capturedAt/version evidence. Preregister the surprise functional, event-zero, horizons and D13 macro controls before any equity-return join or L4 claim.",
+          "evidence": "Reuters pre-decision polls dated 2026-06-15 and 2026-09-14 preserve ex-ante Taiwan CBC rate expectation distributions; official CBC decisions on 2026-06-18 and 2026-09-17 provide compatible realizations. Preserve full distributions and never choose the surprise functional after seeing returns."
         }
       ],
-      "status": "D17_14_CLOCK_SUBLANE_FEASIBLE_SURPRISE_BLOCKED / EXISTING_D17_PROGRESS_PRESERVED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D17-14: validate an ex-ante expectation source lane on independent policy events; D17-01/02/09: continue multi-day source/version coverage. Policy effective dates never backdate first-known.",
-      "lastResearchUpdate": "2026-10-03",
-      "researchNote": "D17-14 official draft/final/effective history is date-level PIT-feasible, including retroactive and mixed-effective counterexamples, but the full module stays L2 because no ex-ante expectation archive supports Surprise."
+      "status": "D17_14_L3_EX_ANTE_EXPECTATION_SOURCE_FEASIBLE / EXISTING_D17_PROGRESS_PRESERVED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D17-14: prospectively capture future policy expectation distributions with capturedAt/version evidence and preregister the surprise functional before outcomes; D17-01/02/09: continue multi-day source/version coverage. D13 remains macro-state/control owner.",
+      "lastResearchUpdate": "2026-10-04",
+      "researchNote": "D17-14 advances L2->L3 for Taiwan PIT/source feasibility. Two independent 2026 CBC decisions have Reuters ex-ante expectation distributions published before the decision and compatible official CBC realizations. This is source feasibility only; both historical witnesses matched the modal expectation and no equity-return alpha/outcome evidence is opened."
     },
     {
       "id": "D18",
