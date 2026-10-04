@@ -982,3 +982,40 @@ Secondary process evidence remains one source-valid parent for D20-06/D20-11.
 This is a stricter evidence decision, not lost research progress.
 D20 maturity remains 58.5%.
 Formal Core unchanged.
+
+## 2026-10-04｜COV-10 belief-updating specialist closure
+
+COV-10 was tested as a possible gap beyond anchoring/reference dependence, representativeness/recency, attention, herding, event underreaction, narrative diffusion and the behavioral-vs-structural falsification firewall.
+
+Result:
+- a distinct observable object survives: prior belief/stance -> evidence congruence -> verified exposure -> post-evidence update;
+- confirmation bias = asymmetric weighting conditional on prior belief and verified exposure;
+- belief perseverance = persistence after the original evidentiary basis is explicitly corrected/withdrawn/invalidated, with verified exposure;
+- conservatism = update in the correct direction but by less than a pre-specified benchmark; price underreaction alone is rejected.
+
+Taiwan data route:
+- scheduled primary PTT Stock snapshots under the existing deterministic social sampling clock;
+- official event/correction receipts owned by D11/D17/D20-08;
+- optional D20-03 explicit-confidence state as context;
+- derived outputs are aggregate event-window transition statistics only, never named-user psychology profiles.
+
+Countermechanisms that keep the behavioral label UNKNOWN unless controlled:
+- non-exposure / attention failure;
+- ambiguous information quality;
+- anchoring/reference dependence;
+- representativeness/recency;
+- common information diffusion;
+- herding/social proof;
+- analyst incentives/private information where analyst forecasts are used.
+
+Specialist terminal recommendation:
+ADD_MODULE as one umbrella family only, proposed D20-14 if and only if 00-room intake/dependency/owner approval passes.
+Starting maturity if approved: L0 / 0%.
+No current curriculum, maturity, Formal Core or directional-vote change.
+
+Contract validation:
+`research/COV10_D20_SPECIALIST_RETURN_VALIDATION_V0_1.json` = RETURN_CONTRACT_COMPLETE.
+This is not an intake acceptance.
+
+Prospective-clock control:
+The 20:10 Room13 slot was rotation-disabled, so no primary social capture exists for that slot and no backfill is allowed.
