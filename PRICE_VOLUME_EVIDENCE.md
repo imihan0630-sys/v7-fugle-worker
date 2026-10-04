@@ -5231,3 +5231,29 @@ Hypothesis-specific protections:
 
 No maturity promotion is authorized by this evaluator.
 Current D02 evidence remains prospective-data blocked, not design blocked.
+
+# Pre-PVE-240 addendum — Wave-1 isolation correction + Wave-2 admission (2026-10-04)
+
+No PVE number consumed.
+No economic outcome inspected.
+
+Wave-1 correction:
+- 23/23 tests PASS;
+- hypothesis-specific evidence accounting;
+- H001 evidence cannot promote H20/H003 eligibility;
+- 99 H20 events + 1 H001 event remains 99 H20 events;
+- review receipts are hypothesis-specific.
+
+Wave-2:
+- 32/32 tests PASS;
+- D02-04/05/07/08/09/10/11/12 structural admission is machine-checkable;
+- maturityPromotionAuthorized=false;
+- l4SampleAdequacyAuthorized=false;
+- formalCoreChangeAuthorized=false.
+
+D02-11 receives a specific dataset-level blocker:
+without both ADMITTED and reason-stratified LIQUIDITY_REJECTED_CONTROL observations, its source-admission lane remains blocked.
+
+D02-09 and D02-12 preserve separate typed subfamilies rather than collapsing them into one generic flag.
+
+No L4 promotion occurs from this engineering/research stage.
