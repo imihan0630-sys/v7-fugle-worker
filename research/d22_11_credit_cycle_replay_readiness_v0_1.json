@@ -1,0 +1,166 @@
+{
+  "schemaVersion": "D22_11_CREDIT_CYCLE_REPLAY_READINESS_V0_1",
+  "generatedAt": "2026-10-04T15:06:00+08:00",
+  "status": "RESEARCH_ONLY / PIT_CONTEXT_AND_ISSUER_EXPOSURE_REPLAY_VALIDATED / CREDIT_SUPPLY_SHOCK_UNIDENTIFIED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "governance": {
+    "policyRateOwner": "D13",
+    "fundingMixOwner": "D22-10",
+    "bankCreditContextOwner": "D22-11",
+    "loanGrowthAloneIsNotSupplyShock": true,
+    "loanRateAloneIsNotIssuerSpread": true,
+    "aggregateContextRequiresIssuerExposureMapping": true,
+    "individualSurveyDataConfidential": true,
+    "unknownSupplyShockIsNotZero": true
+  },
+  "aggregateReleaseVintage": [
+    {
+      "series": "Taiwan five major banks weighted average rate on new loans",
+      "observationPeriod": "2024-03",
+      "releaseKnownAt": "2024-04-23",
+      "weightedAveragePct": 2.017,
+      "exTreasuryPct": 2.061,
+      "sourceType": "Central Bank of the Republic of China official release",
+      "sourceUrl": "https://www.cbc.gov.tw/tw/cp-302-168617-a53eb-1.html",
+      "interpretation": "Pricing context only; not a clean bank-supply shock."
+    },
+    {
+      "series": "Taiwan five major banks weighted average rate on new loans",
+      "observationPeriod": "2024-04",
+      "releaseKnownAt": "2024-05-23",
+      "weightedAveragePct": 2.155,
+      "exTreasuryPct": 2.17,
+      "monthChangePctPoint": 0.138,
+      "statedDrivers": [
+        "working-capital loan rates",
+        "housing loan rates"
+      ],
+      "sourceType": "Central Bank of the Republic of China official release",
+      "sourceUrl": "https://www.cbc.gov.tw/tw/cp-302-169741-5012d-1.html",
+      "interpretation": "Observed financing-price tightening, but demand/composition and policy transmission are not separated."
+    },
+    {
+      "series": "Taiwan five major banks weighted average rate on new loans",
+      "observationPeriod": "2025-04",
+      "releaseKnownAt": "2025-05-22",
+      "weightedAveragePct": 2.214,
+      "exTreasuryPct": 2.216,
+      "monthChangePctPoint": 0.103,
+      "statedDrivers": [
+        "working-capital loan rates"
+      ],
+      "sourceType": "Central Bank of the Republic of China official release",
+      "sourceUrl": "https://www.cbc.gov.tw/tw/cp-302-181504-34602-1.html",
+      "interpretation": "Release-vintage bank pricing state is replayable."
+    },
+    {
+      "series": "Taiwan five major banks weighted average rate on new loans",
+      "observationPeriod": "2026-04",
+      "releaseKnownAt": "2026-05-21",
+      "weightedAveragePct": 2.206,
+      "exTreasuryPct": 2.206,
+      "monthChangePctPoint": 0.101,
+      "statedDrivers": [
+        "all loan categories",
+        "especially working-capital loans"
+      ],
+      "sourceType": "Central Bank of the Republic of China official release",
+      "sourceUrl": "https://www.cbc.gov.tw/tw/cp-302-191285-24a32-1.html",
+      "interpretation": "Multi-year release-vintage pricing context is directly replayable."
+    },
+    {
+      "series": "Private enterprise funding survey",
+      "observationPeriod": "2023 year-end",
+      "releaseKnownAt": "2025-01-10",
+      "sourceType": "Central Bank of the Republic of China annual report",
+      "sourceUrl": "https://www.cbc.gov.tw/tw/cp-727-179878-f2aed-1.html",
+      "granularity": "aggregate_and_industry",
+      "individualIssuerData": "CONFIDENTIAL_NOT_PUBLIC",
+      "interpretation": "Useful industry/funding-context evidence, not issuer-level credit supply."
+    },
+    {
+      "series": "Private enterprise funding survey",
+      "observationPeriod": "2024 year-end",
+      "releaseKnownAt": "2026-01-09",
+      "sourceType": "Central Bank of the Republic of China annual report",
+      "sourceUrl": "https://www.cbc.gov.tw/tw/cp-727-189630-5510a-1.html",
+      "granularity": "aggregate_and_industry",
+      "individualIssuerData": "CONFIDENTIAL_NOT_PUBLIC",
+      "interpretation": "Industry-level funding structure is replayable with publication vintage."
+    }
+  ],
+  "issuerExposureReceipts": [
+    {
+      "issuer": "Chunghwa Telecom",
+      "twseSymbol": "2412",
+      "periodEnd": "2023-12-31",
+      "sourceKnownAt": "2024-04-17T06:05:47Z",
+      "bankLoansTWDmillion": 2185,
+      "bondsTWDmillion": 30500,
+      "bankShareOfBankPlusBondDebt": 0.06685024,
+      "sourceBasis": "official SEC Form 20-F",
+      "interpretation": "Relatively low bank-dependence proxy among disclosed bank loans + bonds; this does not prove bank credit is irrelevant."
+    },
+    {
+      "issuer": "Chunghwa Telecom",
+      "twseSymbol": "2412",
+      "periodEnd": "2024-12-31",
+      "sourceKnownAt": "2025-04-16T06:02:44Z",
+      "bankLoansTWDmillion": 1915,
+      "bondsTWDmillion": 30500,
+      "bankShareOfBankPlusBondDebt": 0.05907759,
+      "sourceBasis": "official SEC Form 20-F",
+      "interpretation": "Same-issuer multi-date bank-dependence exposure replay."
+    },
+    {
+      "issuer": "UMC",
+      "twseSymbol": "2303",
+      "periodEnd": "2025-12-31",
+      "sourceKnownAt": "2026-04-30T06:04:15Z",
+      "shortTermBankLoansTWDmillion": 8408.772,
+      "longTermBankLoansTWDmillion": 14331.79,
+      "bondsTWDmillion": 50228.305,
+      "bankShareOfBankPlusBondDebt": 0.311579,
+      "availableRevolvingCreditTWDmillion": 54800,
+      "unusedRevolvingCreditTWDmillion": 51400,
+      "sourceBasis": "official SEC Form 20-F",
+      "interpretation": "Higher disclosed bank-dependence exposure than Chunghwa in this bounded comparison; revolving headroom is separate from actual supply-shock identification."
+    }
+  ],
+  "identificationAudit": {
+    "directModernLendingStandardsSeriesFound": false,
+    "cleanIssuerApprovalRejectionSeriesFound": false,
+    "creditSupplyShock": null,
+    "creditSupplyShockStatus": "UNKNOWN_NOT_IDENTIFIED",
+    "reason": "Public CBC rate/credit aggregates and enterprise funding surveys are release-vintage replayable, but they do not by themselves separate bank supply from borrower demand. Individual enterprise survey data are confidential, and issuer-specific approvals/standards are generally non-public.",
+    "permittedUses": [
+      "aggregate financing-price context",
+      "industry funding context",
+      "interaction with independently known issuer bank-dependence exposure",
+      "falsification of simplistic loan-growth-equals-credit-supply claims"
+    ],
+    "prohibitedUses": [
+      "labeling a change in loan growth as a bank-supply shock without identification",
+      "using aggregate new-loan rates as issuer-specific credit spread",
+      "assigning the same aggregate credit score to all issuers",
+      "imputing missing standards/approval evidence"
+    ]
+  },
+  "falsificationFindings": [
+    "Official loan-rate releases explicitly attribute monthly changes to composition-specific categories such as working-capital or housing loans; aggregate rate changes are not pure lender-risk-pricing shocks.",
+    "The private-enterprise funding survey is designed for aggregate/industry analysis and keeps individual company data confidential, so it cannot become an issuer-level hidden-data proxy.",
+    "Issuer bank dependence is heterogeneous: a common aggregate bank-credit state should have different relevance for bond-access and bank-dependent firms.",
+    "A reproducible aggregate context plus issuer exposure map is feasible, but causal credit-supply shock identification remains unresolved."
+  ],
+  "maturityDecision": {
+    "level": "L2",
+    "maturityPct": 40,
+    "decision": "HOLD",
+    "rationale": "PIT context and issuer-exposure replayability are validated, but the module's distinctive bank-credit-supply state is not cleanly identified from public modern Taiwan data. Promoting on loan rates/volumes alone would violate the contract's demand-vs-supply firewall."
+  },
+  "next": [
+    "Search for source-attested bank lending standards/approval/collateral/maturity-term series or natural experiments that distinguish supply from demand.",
+    "Extend issuer bank-dependence receipts using D22-10 first-known funding states.",
+    "Pre-register a context-only interaction design before any return outcome join.",
+    "Keep D22-11 at L2 unless the supply-identification gate is satisfied or the canonical module scope is formally revised."
+  ]
+}
