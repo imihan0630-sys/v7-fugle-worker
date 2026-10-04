@@ -2720,3 +2720,61 @@ Formal next evidence remains PVE-240.
 Gate 7 CLOSED.
 FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 Formal Core LOCKED.
+
+## Pre-PVE-240 continuation — Wave-1 L4 executable evidence-admission gate (2026-10-04)
+
+Status: OUTCOME_BLIND / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+Durable artifacts:
+- `research/d02_l4_wave1_gate_evaluator_v0_1.mjs`
+- `tests/test_d02_l4_wave1_gate_evaluator_v0_1.mjs`
+- `research/d02_l4_wave1_gate_evaluator_validation_20261004_v0_1.md`
+- `research/d02_l4_wave1_gate_evaluator_validation_v0_1.json`
+
+Independent Node.js v22.16.0 execution:
+19/19 tests PASS.
+
+The evaluator machine-enforces Wave-1 admission for H001 / H20 / H003 without reading predictive return values.
+
+Frozen thresholds:
+- 20 distinct CLEAN scan dates => DESCRIPTIVE_ONLY;
+- 30 distinct CLEAN scan dates + 100 completed eligible events => L4_EVIDENCE_ELIGIBLE.
+
+These states are intentionally different.
+20 CLEAN dates never imply L4.
+100 events on <30 dates never imply L4 evidence eligibility.
+30 dates with <100 completed events never imply L4 evidence eligibility.
+
+scanDate is the dependence unit:
+multiple symbols/events on one date do not create multiple independent dates.
+
+Additional hard guards:
+- exact common support;
+- Gate 0→6;
+- DATA_QA;
+- clean cohort provenance;
+- generation alignment;
+- Formal isolation;
+- source continuity;
+- H001 slot >=10:15;
+- H20 D01-05 primitive-event identity;
+- H003 future-only outcome clock;
+- censored/UNKNOWN outcome excluded from completed-event count;
+- duplicate event identity is fatal integrity.
+
+Even after L4_EVIDENCE_ELIGIBLE:
+`maturityPromotionAuthorized=false`.
+
+Promotion review still needs:
+- actual Prospective Shadow or genuine OOS evidence;
+- D16 dependence-aware method;
+- negative controls;
+- redundancy checks;
+- concentration control.
+
+Current evidence state remains:
+CLEAN_DATE_ZERO / PVE-239 / Gate 7 CLOSED.
+
+D02 remains 60.0%.
+Formal Core remains LOCKED.
+FORMAL_OPTIMIZATION_CANDIDATE remains NONE.
