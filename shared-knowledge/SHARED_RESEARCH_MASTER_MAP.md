@@ -1478,3 +1478,27 @@ Audit:
 `shared-knowledge/CURRICULUM_H14_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
 
 H06 is separately PARTIAL_EVIDENCE_RECEIVED from Room05; Room13 independent behavioral counterpart remains required.
+
+
+## H09 owner-approved canonical scope de-dup — 2026-10-04
+
+H09 is structurally closed as:
+`KEEP_SEPARATE / SCOPE_DEDUP_ONLY`.
+
+Canonical ownership:
+- D16-19 = model estimation / calibration implementation and diagnostics producer;
+- D16-25 = calibrated-belief decision-policy consumer.
+
+Shared interface:
+`CalibrationReceipt → PredictiveDecisionReceipt`.
+
+Anti-double-count:
+- one calibrated probability/distribution authority per modelVersion × calibrationVersion × target × horizon × population;
+- D16-25 may consume calibration-quality metadata and abstain, but cannot fit a second calibrator or count Brier/log-loss/reliability twice;
+- ranking discrimination, probability calibration and trading utility remain separate estimands;
+- D15 sizing cannot invent a downstream probability authority.
+
+Both modules remain L2/40%. Names, module count, aggregate maturity, System1/System2 Formal behavior and production runtime are unchanged.
+
+Audit:
+`shared-knowledge/CURRICULUM_H09_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
