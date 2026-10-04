@@ -2538,3 +2538,105 @@ Exact next continuation:
 4. re-review Bollinger first for an exact 20 eligible-session certified continuity window;
 5. ADX only after canonical Wilder recursive replay/trusted-state certification;
 6. raw 3-session source gate remains separate and TI-005/TI-006 outcomes remain closed.
+
+
+## TI-606 through TI-610 — Bollinger first-genuine-parent acceptance logic (2026-10-04)
+
+Durable artifacts:
+- `research/D03_BOLLINGER_FIRST_PARENT_ACCEPTANCE_V0_1.md`
+- `research/d03_bollinger_l3_acceptance_v0_1.mjs`
+- `tests/test_d03_bollinger_l3_acceptance_v0_1.mjs`
+- read-only workflow `.github/workflows/research-d03-bollinger-acceptance-readonly.yml`.
+
+Physical workflow run:
+- `37182674404` = SUCCESS.
+
+### TI-606 — exact shared parent identity, no D03-specific parent
+
+The acceptance evaluator consumes the deployed shared Shadow parent identity:
+- scanDate;
+- captureGeneration;
+- symbol;
+- parentSnapshotHash;
+- parent knownAt.
+
+D03 does not create a second parent universe.
+
+### TI-607 — finite-window input gate is executable and fail-closed
+
+A Bollinger L3 attempt requires:
+- continuity status VALID or VALID_BUT_CONSTRAINED;
+- semantic space TECHNICAL_CONTINUITY;
+- formulaVersion `BBANDS_CLOSE_SMA20_POPSTD20_K2_V0_1`;
+- stdDefinition POPULATION;
+- continuityReceiptId;
+- receipt/capture time <= parent knownAt;
+- exactly 20 expected eligible symbol sessions;
+- exactly 20 bars with identical date set;
+- no duplicate date;
+- finite positive Close;
+- each bar symbolSessionVerified=true;
+- technicalContinuity=true;
+- corporateActionContinuityResolved=true;
+- bar sourceFetchedAt <= parent knownAt;
+- zero unresolved missing sessions/events.
+
+Any missing, late or mismatched evidence fails closed.
+
+### TI-608 — constrained sessions remain visible
+
+A continuity-valid exact window containing price-limit-constrained sessions may be:
+`VALID_BUT_CONSTRAINED`.
+
+It remains L3 data-feasibility eligible while ordinary unconstrained interpretation remains false.
+
+Constraint evidence is preserved rather than dropped or silently treated as ordinary.
+
+### TI-609 — complete parent attempt accounting
+
+A run is COMPLETE only when every expected parent has exactly one persisted attempt.
+
+Physical deterministic fixture proves:
+- two expected / one attempt => INCOMPLETE;
+- two expected / two attempts including one UNKNOWN => COMPLETE;
+- missing, orphan or duplicate attempts invalidate completeness.
+
+UNKNOWN/BLOCKED are explicit evidence states, not missing rows.
+
+### TI-610 — acceptance logic passes, maturity stays parent-gated
+
+Read-only run `37182674404` physically passes:
+- clean exact 20-session window -> VALID;
+- SMA20=109.5 in the frozen fixture;
+- population SD20≈5.7662812973;
+- capture after parent -> DATA_BLOCKED;
+- missing bar -> DATA_BLOCKED;
+- duplicate date -> DATA_BLOCKED;
+- constrained bar -> VALID_BUT_CONSTRAINED;
+- incomplete parent attempt set -> INCOMPLETE;
+- full explicit attempt set including UNKNOWN -> COMPLETE.
+
+This closes the acceptance-logic design gap.
+
+It does NOT provide the first genuine post-V8.17 Taiwan parent generation.
+
+Therefore:
+- D03-10 Bollinger stays L2/40;
+- D03 overall stays **56.7%**.
+
+The first genuine parent remains the promotion trigger.
+
+Current:
+`BOLLINGER_L3_ACCEPTANCE_LOGIC = PHYSICAL_TEST_PASS`
+`FIRST_GENUINE_V8_17_PARENT = PENDING`
+`D03_10 = L2_REMAINS`
+`D03_MATURITY = 56.7_PERCENT`
+`OUTCOMES = CLOSED`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Exact next continuation:
+1. On the first genuine Taiwan session after V8.17, read back immutable parent/captureGeneration and the exact expected keyset.
+2. Attach a parent-cutoff-safe TECHNICAL_CONTINUITY receipt to every expected parent.
+3. Execute this acceptance evaluator for all expected parents and persist VALID/BLOCKED/UNKNOWN.
+4. Only a COMPLETE run may support Bollinger L3 review.
+5. If D03-10 reaches L3, D03 becomes 58.3%; ADX remains separate until canonical recursive replay passes.
