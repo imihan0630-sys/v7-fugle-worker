@@ -373,6 +373,9 @@ jobs:
               else:
                   print("DETAIL_API_ERROR="+z.stderr[:600])
 
+      - name: Run frozen machine-contract acceptance
+        run: node research/d03_twse_official_document_machine_contract_v0_1.mjs
+
       - name: Bounded raw-page grep
         shell: bash
         run: |
