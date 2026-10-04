@@ -232,7 +232,24 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H05_H08_SEMANTIC_SPLIT_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H05_H08_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "SPECIALIST_VALIDATION_PENDING"
+      "status": "CLOSED_NO_STRUCTURAL_CHANGE",
+      "terminalClassification": "KEEP_SEPARATE",
+      "governanceDisposition": "MEMBERSHIP_VS_EVENT_PROPAGATION_VS_NARRATIVE_DIFFUSION",
+      "receivedPackets": [
+        "MARKET_BREADTH_ROTATION_RESEARCH.md",
+        "NEWS_EVENT_TRANSMISSION_RESEARCH.md",
+        "research/news_event_transmission_contract_v0_2.json",
+        "BEHAVIORAL_FINANCE_RESEARCH.md",
+        "BEHAVIORAL_FINANCE_CHECKPOINT.md"
+      ],
+      "audit": "shared-knowledge/CURRICULUM_H08_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md",
+      "machineAudit": "shared-knowledge/curriculum_h08_dependency_anti_orphan_audit_20261004_v0_1.json",
+      "dependencyAudit": "PASS",
+      "antiDoubleCount": "PASS_SHARED_THEME_EVENT_SOCIAL_RECEIPT_FIREWALL",
+      "antiOrphan": "PASS",
+      "structuralChange": "NONE",
+      "formalCoreImpact": "NONE",
+      "intakeDecision": "TERMINAL_KEEP_SEPARATE_CLOSED_NO_STRUCTURAL_CHANGE"
     },
     {
       "id": "H09",
@@ -286,7 +303,22 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H09_H12_SCOPE_DEDUP_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H09_H12_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "SPECIALIST_VALIDATION_PENDING"
+      "status": "OWNER_APPROVAL_REQUIRED",
+      "terminalClassification": "KEEP_SEPARATE",
+      "governanceDisposition": "SCOPE_DEDUP_ONLY_STRUCTURAL_EXPOSURE_TO_EVENT_OVERLAY",
+      "receivedPackets": [
+        "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md",
+        "NEWS_EVENT_TRANSMISSION_RESEARCH.md",
+        "research/news_event_transmission_contract_v0_2.json"
+      ],
+      "audit": "shared-knowledge/CURRICULUM_H10_SCOPE_DEDUP_AUDIT_20261004_V0_1.md",
+      "machineAudit": "shared-knowledge/curriculum_h10_scope_dedup_audit_20261004_v0_1.json",
+      "dependencyAudit": "PASS",
+      "antiDoubleCount": "PASS_STRUCTURAL_EDGE_PLUS_EVENT_OVERLAY_FIREWALL",
+      "antiOrphan": "PASS",
+      "maturityImpact": "NONE",
+      "proposedScopeChange": true,
+      "formalCoreImpact": "NONE"
     },
     {
       "id": "H11",
