@@ -1370,3 +1370,72 @@ Exact next:
 2. D06-19: aggregate proxy-validation may proceed outcome-blind; special investor-type source pursuit requires owner authorization before contact/request/purchase.
 3. H12 remains partial until Room10 D14-19 counterpart and first genuine live TWSE rate/supply receipt arrive.
 4. Formal Core remains LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+---
+
+## IC-062 — D06-19 first outcome-blind proxy validation: retail identity purity must be separated from retail-universe coverage
+
+Research cycle: 2026-10-04 Asia/Taipei
+Status: OUTCOME_BLIND_PROXY_VALIDATION_STAGE1_COMPLETE / L2_REMAINS / FORMAL_CORE_LOCKED
+
+Machine receipt:
+`research/d06_19_retail_proxy_validation_stage1_20261004_v0_1.json`.
+
+### Direct baseline
+TWSE annual trading-value statistics directly identify domestic individual participation. For 2020-2025 the domestic-individual share is:
+`62.07%, 67.99%, 58.30%, 57.91%, 54.07%, 52.11%`.
+
+### Margin / credit proxy comparison
+At the same annual TWSE market frequency:
+- margin-purchase market share = `7.16%, 7.17%, 5.50%, 6.22%, 5.97%, 5.33%`;
+- total credit-trading share = `8.16%, 7.92%, 6.53%, 6.89%, 6.45%, 5.78%`.
+
+Descriptive correlations, with outcomes closed:
+- retail share vs margin-purchase share: Pearson r = 0.8499;
+- retail share vs total credit-trading share: Pearson r = 0.8904;
+- first-difference correlations fall to 0.7287 and 0.7047 respectively.
+
+Direction-change disagreement also exists:
+- margin-purchase proxy disagrees with direct retail-share change in 1/5 annual transitions = 20%;
+- total credit-trading proxy disagrees in 2/5 annual transitions = 40%.
+
+These six annual observations are far too small for predictive inference. The purpose is falsification of proxy identity, not alpha estimation.
+
+### Purity-versus-coverage decomposition
+Official 2026 market-structure evidence reports natural persons above 98% of credit trading, while credit trading itself is only about 6% of total market trading value. This is high identity purity but narrow market coverage.
+
+Official odd-lot evidence reports domestic individuals at 82.5% of intraday odd-lot trading value, while total odd-lot trading is only about 0.91% of centralized-market trading value over the study period. This is again high identity purity but very narrow total-market coverage.
+
+Therefore a retail proxy must be evaluated on at least two independent dimensions:
+1. identity purity: how much of the proxy channel is directly attributable to natural persons;
+2. retail-universe coverage: how much of total natural-person activity the proxy channel can plausibly represent.
+
+`HIGH_PURITY != HIGH_COVERAGE`.
+
+### Research decision
+Margin/credit trading is useful as a market-level retail-participation proxy/control, not direct retail flow.
+Odd-lot participation is a high-purity channel control, not a complete retail proxy.
+Broker/branch remains execution context only.
+Stock-date direct-retail direction remains UNKNOWN.
+
+D06-19 remains L2/40%. No maturity promotion, outcome join or Formal change.
+
+---
+
+## IC-063 — Sunday continuation ceiling after proxy validation
+
+New information gained:
+- D06-19 no longer treats proxies as a single quality dimension; identity purity and universe coverage are frozen separately.
+- Aggregate proxy validation now has a first bounded empirical receipt rather than only a conceptual plan.
+- Shared-trend inflation is explicitly recognized: level correlations exceed first-difference correlations.
+- Two annual transition disagreements materially falsify deterministic proxy equivalence.
+
+Still blocked:
+- current authorized TWSE stock/order investor-type contract;
+- TPEx marketwide investor-type parity;
+- stock-date firstKnownAt/revision semantics;
+- prospective immutable direct-retail stock-flow receipts.
+
+Therefore Sunday L3 promotion remains rejected. Exact next remains the next genuine trading-day prospective capture set plus owner-authorized special-data pursuit only if explicitly approved.
+
+Formal Core remains LOCKED; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
