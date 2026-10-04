@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-04 20:26 Asia/Taipei
+Updated: 2026-10-04 20:33 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -86,7 +86,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
 - createdAt: 2026-10-04T20:26:00+08:00
 - severity: UNKNOWN
-- status: FIX_IN_PROGRESS
+- status: FIX_IMPLEMENTED
 - routingClass: REMEDIATION_LANE
 - assignedLane: REMEDIATION_LANE
 - assignedRoom: System 2｜補強修復室
@@ -123,10 +123,20 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - protectedBoundaries: System 1 Formal Core; System 2 strategy/ranking/final-selection; capital/order; production push; production runtime.
 - ownerDecisionRequired: false
 - implementationEvidence:
-  - Owner explicitly assigned S2-CORR-20261004-003 to REMEDIATION_LANE while latest main did not yet contain the directive; this record materializes that owner handoff without inventing a severity classification.
-- verificationEvidence: PENDING
+  - Owner explicitly assigned S2-CORR-20261004-003 to REMEDIATION_LANE while latest main did not yet contain the directive; the queue record materializes that owner handoff without inventing a severity classification.
+  - Repo-wide canonical scan found the direct contradiction only in SYSTEM2_MASTER and ambiguous generic “builder” wording in SYSTEM2_CORRECTION_GOVERNANCE_V0_1; SYSTEM2_CHECKPOINT and ROOM_BOOTSTRAP_REGISTRY already carried the correct assignment-gated semantics.
+  - SYSTEM2_MASTER now states that severity does not grant implementation ownership; `routingClass / assignedLane / modificationOwner` determine the mutation owner; BUILD_LANE may implement only formally assigned `LOCAL_FIX / BUILD_LANE` corrections.
+  - SYSTEM2_MASTER now requires a formal Correction Queue routing/assignment/modification-owner update before implementation ownership can transfer between rooms.
+  - SYSTEM2_CORRECTION_GOVERNANCE_V0_1 now uses “formally assigned implementation lane” for HIGH implementation and FIX_IMPLEMENTED semantics, separates severity / implementation ownership / verification authority, and prohibits chat-based self-seizure of another lane's conflict unit.
+  - CRITICAL/HIGH independent closure semantics remain intact: an assigned implementation lane may reach FIX_IMPLEMENTED, but the same implementation role cannot advance directly to VERIFIED_CLOSED.
+  - SYSTEM2_BUILD_PROGRESS_MAP LOW/LOCAL_FIX drift corrected from `shared 18-domain research` to `shared 22-domain / 354-module research` only; no research/runtime authority changed.
+  - Added `system2/tests/correction_routing_governance_semantics.test.mjs` to guard Master, Correction Governance, Execution Lane Governance, System2 Checkpoint, Room Bootstrap Registry and Build Progress Map against future severity-implies-BUILD drift.
+  - PR #556 initial implementation head `5fc3b9c43ea0f79fe6fa5b714dae53d868ab69f2`: System2 Research CI `37202451095` PASS (20:32:36 Asia/Taipei); V8 Regression `37202451081` PASS (20:33:00 Asia/Taipei).
+  - PR #556 changed-file scope is governance/documentation/test only; no production/runtime/trading logic file is changed.
+  - Latest-main drift check before evidence finalization: base `d199a70b14dc56374a5f51433ee5648b5ae6ce7d` remained current; no concurrent conflict-unit drift was present.
+- verificationEvidence: PENDING_INDEPENDENT_AUDIT
 - finalDisposition: PENDING
-- updatedAt: 2026-10-04T20:26:00+08:00
+- updatedAt: 2026-10-04T20:33:01+08:00
 
 
 ## Closed directives
