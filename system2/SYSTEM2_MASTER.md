@@ -11,6 +11,55 @@ Build a separate multi-strategy Taiwan-equity selection and monitoring platform 
 
 System 2 is not a loosened copy of V8.
 
+
+## Owner North Star — 操盤決策角色
+
+System 2 的終局角色不是單純的選股器、因子排名器或研究儀表板，而是成為一套 **以台股為核心、可驗證、可持續學習的多策略操盤決策系統**。
+
+它應在不同市場 Regime、不同持有週期與不同策略條件下，盡可能提高「可實際交易後仍具正期望值」的選股與持倉決策品質，並主動回答以下問題：
+
+- **選誰**：從全市場或授權候選宇宙中找出最值得交易的個股，不強迫湊數；短線、波段與其他策略分開判斷，不用單一總分硬塞所有股票。
+- **為什麼選**：說明市場／產業／基本面／估值／技術／價量／籌碼／事件／供需／Regime 與多因子共振，並保留反證、風險與 invalidation。
+- **何時進場**：提供 strategy-specific entry zone、trigger、不得追價條件、stop、targets、max holding period 與進場失效條件；不得把訊號價等同成交價。
+- **持有中怎麼做**：對每一個已持有標的持續輸出 HOLD / ADD / RE-ADD / RESTORE / REDUCE / EXIT / WARNING 等可行動狀態，而不是只有買進訊號。
+- **何時改變看法**：偵測趨勢轉弱、價量背離、籌碼惡化、產業循環反轉、事件 half-life 衰退、估值過熱、Regime 切換、流動性與風險異常，並在 thesis 失效前後給出明確警示。
+- **共振何時發生**：對 owner-approved 共振模型持續盤中監控；一旦達到有效訊號條件，應在資料與 finality 條件允許下儘快產生可追溯的提醒／推播事件，不得因研究架構而任意延遲。
+- **事後是否真的有效**：所有 daily pick、signal、trigger、fill、加減碼、退出、警示與未觸發結果都必須 frozen、可回放、可歸因，並用真實可成交條件、成本、滑價、稅費、gap、漲跌停與 AMBIGUOUS sequencing 評估績效。
+
+### Optimization objective
+
+Owner 的實際目標是：**讓 System 2 儘可能選出成功機率高、風險報酬合理、成本後仍有正期望值的交易機會，並在持有期間持續改善進出場與風險管理決策。**
+
+因此，系統不得把「勝率最高」理解成單一最佳化目標。高勝率若伴隨巨大尾部虧損、過度追價、低 payoff、過度交易、成本侵蝕、Regime 脆弱或過度擬合，不能視為成功。正式研究與版本比較至少共同考慮：
+
+- calibrated hit / win rate；
+- expectancy；
+- payoff ratio；
+- profit factor；
+- max drawdown；
+- MAE / MFE；
+- realized slippage / fees / tax；
+- turnover 與 capital utilization；
+- trigger-to-fill 與 fill feasibility；
+- holding-period efficiency；
+- regime / industry / date robustness；
+- false-positive / missed-opportunity rate；
+- entry / add / reduce / exit decision quality；
+- warning lead time；
+- resonance alert latency 與 missed-alert rate。
+
+### Profit-seeking, not profit-guaranteeing
+
+System 2 的設計目的明確是 **提升可交易決策品質、追求長期正期望值與更好的實際資金結果**。
+
+但任何策略都不得宣稱保證獲利、固定月收益或必然選中上漲股票；不確定性、虧損期、零選股日與策略失效都必須如實保留。
+
+「帶著 owner 賺錢」在工程語意上，應被落實為：
+
+**提高高品質機會辨識率 + 改善進出場與持倉管理 + 及時風險警示 + 快速共振提醒 + 嚴格成本後績效驗證 + 持續淘汰失效策略。**
+
+它不能被簡化成回測勝率、漂亮報酬曲線或事後挑選成功案例。
+
 ## Core design
 
 Market environment -> strategy activation -> factor engines -> independent candidate ranking -> strategy-specific entry/exit plan -> intraday monitoring/notification -> simulated execution/position state -> performance attribution -> validated strategy versioning.
