@@ -81,7 +81,7 @@ Until that packet arrives:
 | H06 | PARTIAL_EVIDENCE_RECEIVED | `research/d06_h06_crowding_vs_herding_room05_packet_v0_1.md` | 13｜行為金融與市場心理研究室 |
 | H07 | PENDING | — | specialist packet(s) |
 | H08 | PENDING | — | specialist packet(s) |
-| H09 | PENDING | — | specialist packet(s) |
+| H09 | OWNER_APPROVAL_REQUIRED | equivalent complete Room11 evidence | owner approval for SCOPE_DEDUP_ONLY |
 | H10 | PENDING | — | specialist packet(s) |
 | H11 | PENDING | — | specialist packet(s) |
 | H12 | PENDING | — | specialist packet(s) |
@@ -359,3 +359,29 @@ Terminal result:
 
 State:
 `CLOSED_NO_STRUCTURAL_CHANGE`.
+
+
+## H09 00-room audit — D16-19 vs D16-25
+
+Equivalent Room11 specialist evidence accepted:
+- `research/D16_16_19_MODEL_VALIDATION_CLUSTER_20261004_V0_1.md`;
+- `research/D16_D18_VALIDATION_CHECKPOINT.md`;
+- `research/D16_25_D15_19_MERGE_DECISION_INPUT_V0_1.md`.
+
+Canonical audit:
+- `shared-knowledge/CURRICULUM_H09_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`;
+- `shared-knowledge/curriculum_h09_dependency_anti_orphan_audit_20261004_v0_1.json`.
+
+00-room result:
+**KEEP_SEPARATE / SCOPE_DEDUP_ONLY / OWNER_APPROVAL_REQUIRED**
+
+Ownership proposal:
+- D16-19 owns model/calibrator fitting, calibration implementation, probability-quality diagnostics, model/calibration drift and immutable CalibrationReceipt production.
+- D16-25 consumes calibrated probabilities/distributions + calibration-quality metadata and owns prior/Bayesian decision update, uncertainty, expected utility, risk-coverage and ABSTAIN.
+- D16-25 may require calibration quality but cannot fit a second calibrator or create a second probability authority.
+
+Maturity remains:
+- D16-19 L2/40%;
+- D16-25 L2/40%.
+
+No rename, count, maturity or Formal change before approval.
