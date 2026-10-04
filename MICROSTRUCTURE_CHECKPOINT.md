@@ -778,3 +778,67 @@ Governance effect:
 - Formal Core unchanged.
 
 Room04 should continue its existing empirical sequence; do not re-study COV-02 ownership unless new evidence falsifies this boundary.
+
+
+## 2026-10-04 15:15 second-wave L3 promotion — D04 to 58% / room04 to 54.2%
+
+Status: L3_FEASIBILITY_SECOND_WAVE_COMPLETE / NO_L4_CLAIM  
+Formal Core: LOCKED.
+
+### New shared evidence consumed
+Room04 did not duplicate a new market-volatility engine. It consumed merged shared evidence:
+- `system2/runtime/d18_taiex_context_v0_1.mjs`;
+- `system2/tests/d18_taiex_context_v0_1.test.mjs`;
+- `system2/runtime/d18_regime_transition_v0_1.mjs`;
+- `system2/tests/d18_regime_transition_v0_1.test.mjs`;
+- `research/D18_02_03_05_PIT_BUILDER_L3_ACCEPTANCE_20261004_V0_1.md`.
+
+That shared parent proves A2 official TAIEX source receipt, official-session calendar, decision-clock eligibility, history/session hashes, UNKNOWN fail-closed behavior and deterministic replay.
+
+### D04 promotions
+- D04-02 RV5/RV20: L2 -> L3 / 60%.
+  - Same frozen close-to-close SIMPLE-return population-dispersion semantics.
+  - Late A2, session mismatch, future rows and missing windows fail closed.
+  - Economic/alpha value remains UNKNOWN.
+- D04-05 Volatility Regime Transition: L2 -> L3 / 60%.
+  - Uses adjacent official-session PIT vectors + immutable receipt hashes.
+  - Transition receipt explicitly separates CHANGED / UNCHANGED / UNKNOWN and forbids retrospective relabel/smoothing.
+  - No transition policy or alpha claim.
+- D04-06 Market Volatility × Stock Volatility: L2 -> L3 / 60%.
+  - Market parent = A2/D18 TAIEX context.
+  - Stock parent = A1 official daily history + technical-continuity lineage.
+  - Exact common marketDate/decision support required; missing either side => UNKNOWN.
+  - No scalar risk score or duplicate volatility vote.
+
+### D04 held at L2
+- D04-08 Volatility Scaling / Position Sizing remains L2 / 40%.
+- Reason: it is a portfolio/risk policy transformation. Observable PIT volatility does not prove that a sizing policy is valid, executable, robust or cost-aware.
+
+### Priority-B B04 specialist result
+D04-05 vs D18-11:
+`KEEP_SEPARATE / COMPONENT_TO_COMPOSITE_DEPENDENCY / SCOPE_DEDUP_ONLY`.
+
+- D04-05 owns the volatility transition primitive.
+- D18-11 owns transitions in the multi-dimensional composite regime vector.
+- D18 consumes the volatility transition once; it cannot recreate the same raw volatility transition as a second independent vote.
+- Divergent-state proof:
+  - volatility can change while trend stays unchanged;
+  - trend can change while volatility stays unchanged.
+- No merge, retirement, maturity transfer or module-count change.
+
+Durable artifacts:
+- `research/D04_SECOND_WAVE_L3_PROMOTION_AND_B04_RETURN_20261004_V0_1.md`;
+- `research/d04_second_wave_l3_promotion_and_b04_v0_1.json`.
+
+### Maturity
+- D04: 52.0% -> 58.0%.
+- D05: 51.4% unchanged.
+- Room04 combined: (580 + 720) / 24 = 54.1667% -> 54.2%.
+- No L4 / prospective efficacy promotion.
+- No FORMAL_OPTIMIZATION_CANDIDATE.
+
+### Exact next continuation
+1. D04: all modules except D04-08 are now L3. Next maturity increase requires genuine prospective Shadow/OOS, not more feasibility documents.
+2. D04-08: next research must join D04 volatility measurement with D15/D14 portfolio-risk and execution-cost evidence before any L3 promotion.
+3. D05: preserve D05-NEXT-L4-01; do not infer true OFI, causal self-impact, toxicity, exact queue or integrity intent from snapshot data.
+4. If continuing progress-focused research, prioritize L4-ready prospective/OOS evidence paths rather than inventing more D04/D05 factors.
