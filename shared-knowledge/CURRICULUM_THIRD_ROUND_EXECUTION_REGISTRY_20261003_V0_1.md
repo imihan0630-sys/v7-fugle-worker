@@ -118,3 +118,41 @@ Canonical outcome:
 - Formal Core remains LOCKED.
 
 Status: **CANONICAL_UPDATE_COMPLETE**.
+
+
+## H06 intake update — 2026-10-04
+
+Room05 packet accepted:
+`research/d06_h06_crowding_vs_herding_room05_packet_v0_1.md`.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / ROOM13_COUNTERPART_REQUIRED`.
+
+D06-06 crowding ownership, residual-test design, divergent states and anti-double-count are accepted. H06 cannot close until Room13 proves at least one independent/replayable behavior-specific observable or residual herding construct beyond the same crowding primitives. Existing D20-06 research still leaves this data source unresolved.
+
+No maturity, count or Formal change.
+
+## H14 terminal governance closure — 2026-10-04
+
+Accepted evidence:
+- `research/d06_h14_index_event_vs_passive_flow_room05_packet_v0_1.md`;
+- `INDEX_ADJUSTMENT_PASSIVE_FLOW_RESEARCH.md`;
+- `research/d11_index_adjustment_pit_receipt_v0_1.json`.
+
+Canonical audit:
+`shared-knowledge/CURRICULUM_H14_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+Terminal classification:
+**KEEP_SEPARATE / PRODUCER_CONSUMER_EVENT_FLOW_BOUNDARY / SINGLE_EVENT_RECEIPT**.
+
+Canonical boundary:
+- D11-14 = index-event identity + announcement/effective lifecycle;
+- D06-11 = realized passive/index fund flow;
+- D06-16 = ETF mechanics.
+
+One event receipt may have realized-flow children, but event-imputed flow is not an independent vote. Missing realized flow stays UNKNOWN.
+
+State:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+D06-11 remains L2/40%; D11-14 remains L3/60%. No merge, retirement, rename, module-count or Formal Core change.
