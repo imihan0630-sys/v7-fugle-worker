@@ -1,6 +1,6 @@
 {
   "schemaVersion": "D22_08_FIXED_FLOATING_RATE_EXPOSURE_CONTRACT_V0_1",
-  "generatedAt": "2026-10-04T13:50:00+08:00",
+  "generatedAt": "2026-10-04T13:44:00+08:00",
   "module": "D22-08",
   "level": "L3",
   "maturityPct": 60,
