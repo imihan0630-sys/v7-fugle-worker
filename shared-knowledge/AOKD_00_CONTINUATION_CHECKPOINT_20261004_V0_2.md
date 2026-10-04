@@ -641,3 +641,81 @@ If approved:
 - D12-16 owns residual curvature/surface-quality semantics;
 - both remain L2/40%;
 - names/count/aggregate maturity/Formal/runtime unchanged.
+
+
+## 19:31 continuation — H11 + Coverage return-readiness reconciliation
+
+00-room resumed from latest main and performed real repo reconciliation.
+
+### H11
+New terminal specialist return found:
+`research/d12_h11_common_parent_residual_return_20261004_v0_1.json`.
+
+00 audit completed:
+`shared-knowledge/CURRICULUM_H11_DEPENDENCY_SCOPE_DEDUP_AUDIT_20261004_V0_1.md`.
+
+Result:
+`KEEP_SEPARATE / SCOPE_DEDUP_ONLY / OWNER_APPROVAL_REQUIRED`.
+
+Proposed canonical boundary:
+- D12-07 = simple skew level/asymmetry + ATM/near-far term-structure baseline.
+- D12-16 = residual curvature/smile + cross-expiry surface interaction + construction/fit/coverage/static-arbitrage quality.
+
+Both remain L2/40%; no rename/count/maturity/Formal/runtime change before approval.
+
+### COV-01
+State remains formally PARTIAL, but readiness advanced to:
+`SPECIALIST_RETURN_READY_PENDING_TERMINAL_RECOMMENDATION`.
+
+Room01 already completed pattern-family ontology, latent geometry, cross-pattern de-dup, causal confirmation/failure lifecycle and named-label firewall.
+Remaining: explicit D01-07 umbrella ownership decision + exactly one terminal recommendation + formal return.
+
+### COV-08
+State remains formally PARTIAL, but readiness advanced to:
+`SPECIALIST_RETURN_READY_PENDING_TERMINAL_RECOMMENDATION`.
+
+D16 dependence-aware uncertainty work already covers iid failure, stationary/moving-block bootstrap, HAC/cluster alternatives and block-length sensitivity.
+Remaining: freeze when simpler cluster/HAC is enough vs block bootstrap required + exactly one terminal recommendation + formal return.
+
+### COV-09
+State remains formally PARTIAL, but readiness advanced to:
+`SPECIALIST_RETURN_READY_PENDING_TERMINAL_RECOMMENDATION`.
+
+D19 evidence already supports:
+- D19-15 benchmark construction/methodology;
+- D19-01 benchmark residual/alpha interpretation;
+- D19-10 spanning/multicollinearity diagnostics.
+
+Remaining: freeze D19-15 benchmark-model owner boundary, Taiwan-reconstructed benchmark requirement, exactly one terminal recommendation + formal return.
+
+### COV-07
+State remains PARTIAL.
+Exact blocker refined to:
+`CONTRACT_LEVEL_FUTURES_CURVE_REPLAY_PENDING`.
+
+Accepted:
+front/next curve, roll-state, basis-vs-curve and TAIFEX source-feasibility semantics.
+
+Still required:
+historical contract-level TX price/OI/volume replay + expiry/version provenance + continuous-contract no-lookahead contract + residual comparison vs D12-01/D12-02 + terminal recommendation.
+
+### Unchanged source/data gates
+- H12: Room10 D14-19 + first genuine live TWSE rate/supply receipt.
+- COV-12: formal specialist return absent.
+- AOKD-05: Room06 corpus-feasibility return absent.
+- H02/H03: specialist owner modules D14-17 / D15-24 still unstudied.
+- COV-06/COV-10/COV-11: remain partial; no new specialist return found in this pass.
+
+### Current owner-decision gates known to 00
+- H04
+- H10
+- H11
+
+No canonical structural mutation is allowed for these until explicit owner approval.
+
+Exact next continuation:
+1. obtain owner decisions for H04/H10/H11 when user chooses;
+2. continue non-blocking Coverage work without waiting;
+3. accept COV01/08/09 formal specialist returns immediately when they appear;
+4. keep COV07/H12/COV12/AOKD05 fail-closed at their exact evidence gates;
+5. never promote maturity from governance bookkeeping alone.
