@@ -1327,3 +1327,12 @@ Still authoritative:
 all trading authority false.
 
 System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
+
+
+## 2026-10-04 D19 full-TWSE universe coverage qualification
+- Research PR #460 merged as `1a7b6e7e8d8552953f909f4ee1448733a1daf643`.
+- Full-TWSE coverage workflow `37172684933` PASS; System2 Research CI `37172684904` PASS; V8 Regression `37172684903` PASS.
+- Frozen 2026-08-31 survivorship-controlled TWSE denominator = 1,089; August official daily rows = 22,810.
+- D19-04 20-session input coverage = 1,064 KNOWN / 25 explicit UNKNOWN; UNKNOWN causes are preserved rather than imputed.
+- PR #459 TPEx live-transport experiment closed unmerged after all three routes returned HTTP 520; historical benchmark evidence remains read-only and does not substitute for persisted replay.
+- This improves research infrastructure only. No System1/Formal/selection/capital/push/production behavior changed.
