@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "CURRICULUM_H05_DEPENDENCY_ANTI_ORPHAN_AUDIT_V0_1",
+  "date": "2026-10-04",
+  "auditBaseMain": "da9a209176f67502103fade23b19f194c0e7ca98",
+  "clusterId": "H05",
+  "modules": [
+    "D07-25",
+    "D21-10"
+  ],
+  "acceptedEvidence": [
+    "research/h05_d07_25_specialist_evidence_packet_v0_1.json",
+    "CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md",
+    "CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md"
+  ],
+  "counterpartMode": "EQUIVALENT_INDEPENDENT_ROOM14_D21_10_EVIDENCE",
+  "terminalClassification": "KEEP_SEPARATE",
+  "governanceDisposition": "STATEMENT_ANOMALY_VS_GOVERNANCE_CONTROL_EVENT",
+  "dependencyAudit": "PASS_STATEMENT_VS_GOVERNANCE_EVENT_GRAPH",
+  "pitDualVintageAudit": "PASS",
+  "antiDoubleCount": "PASS_SHARED_RESTATEMENT_EVENT_RECEIPT",
+  "antiOrphan": "PASS_NO_ORPHAN",
+  "maturity": {
+    "D07-25": {
+      "level": "L0",
+      "maturityPct": 0,
+      "change": "NONE"
+    },
+    "D21-10": {
+      "level": "L3",
+      "maturityPct": 60,
+      "change": "NONE"
+    }
+  },
+  "state": "CLOSED_NO_STRUCTURAL_CHANGE",
+  "structuralChange": "NONE",
+  "ownerApprovalRequired": false,
+  "formalCoreImpact": "NONE_LOCKED"
+}
