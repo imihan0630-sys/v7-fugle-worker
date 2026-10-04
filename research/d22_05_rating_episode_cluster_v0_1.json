@@ -1,0 +1,577 @@
+{
+  "schemaVersion": "D22_05_RATING_EPISODE_CLUSTER_V0_1",
+  "generatedAt": "2026-10-04T21:06:00+08:00",
+  "status": "OUTCOME_BLIND / EPISODE_CLUSTERING_FROZEN / BASELINE_PAIRING_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "sourceReplay": {
+    "path": "research/d22_05_rating_event_replay_v0_1.json",
+    "sha": "705404d83053d26b62a033b44458c47322d6f901"
+  },
+  "rules": {
+    "signMap": {
+      "NEGATIVE": [
+        "OUTLOOK_DOWN",
+        "DOWNGRADE",
+        "WATCH_NEG"
+      ],
+      "POSITIVE": [
+        "OUTLOOK_UP",
+        "UPGRADE",
+        "WATCH_POS"
+      ],
+      "OTHER": [
+        "WITHDRAWAL",
+        "AFFIRMATION",
+        "INITIAL_ASSIGNMENT",
+        "OTHER"
+      ]
+    },
+    "clusterRule": "Within one issuer, consecutive directional events with the same sign belong to one episode until a sign reversal or non-directional event starts a new state. No return data are consulted.",
+    "duplicateWeighting": "Each episode contributes at most one independent event cluster to the Stage-A candidate count before baseline pairing.",
+    "note": "This is conservative. Long same-direction sequences remain one episode unless a recorded sign reversal occurs."
+  },
+  "counts": {
+    "rawEventReceipts": 25,
+    "directionalEventReceipts": 25,
+    "independentDirectionalEpisodes": 18,
+    "issuerCount": 8
+  },
+  "clusters": [
+    {
+      "clusterId": "Formosa_Chemicals_Fibre_1",
+      "issuer": "Formosa Chemicals & Fibre",
+      "direction": "NEGATIVE",
+      "startDate": "2023-10-30",
+      "endDate": "2025-07-03",
+      "events": [
+        {
+          "date": "2023-10-30",
+          "eventType": "OUTLOOK_DOWN",
+          "priorState": {
+            "longTerm": "twAA",
+            "outlook": "Stable",
+            "shortTerm": "twA-1+"
+          },
+          "newState": {
+            "longTerm": "twAA",
+            "outlook": "Negative",
+            "shortTerm": "twA-1+"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4921"
+        },
+        {
+          "date": "2025-07-03",
+          "eventType": "DOWNGRADE",
+          "priorState": {
+            "longTerm": "twAA",
+            "outlook": "Negative",
+            "shortTerm": "twA-1+"
+          },
+          "newState": {
+            "longTerm": "twAA-",
+            "outlook": "Negative",
+            "shortTerm": "twA-1+"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4921"
+        }
+      ]
+    },
+    {
+      "clusterId": "Wan_Hai_Lines_1",
+      "issuer": "Wan Hai Lines",
+      "direction": "NEGATIVE",
+      "startDate": "2020-04-14",
+      "endDate": "2020-04-14",
+      "events": [
+        {
+          "date": "2020-04-14",
+          "eventType": "OUTLOOK_DOWN",
+          "priorState": {
+            "longTerm": "twA-",
+            "outlook": "Stable",
+            "shortTerm": "twA-2"
+          },
+          "newState": {
+            "longTerm": "twA-",
+            "outlook": "Negative",
+            "shortTerm": "twA-2"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/viewMemberProfileArticle/23341"
+        }
+      ]
+    },
+    {
+      "clusterId": "Wan_Hai_Lines_2",
+      "issuer": "Wan Hai Lines",
+      "direction": "POSITIVE",
+      "startDate": "2021-04-29",
+      "endDate": "2022-04-26",
+      "events": [
+        {
+          "date": "2021-04-29",
+          "eventType": "OUTLOOK_UP",
+          "priorState": {
+            "longTerm": "twA-",
+            "outlook": "Negative",
+            "shortTerm": "twA-2"
+          },
+          "newState": {
+            "longTerm": "twA-",
+            "outlook": "Stable",
+            "shortTerm": "twA-2"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/viewMemberProfileArticle/25130"
+        },
+        {
+          "date": "2021-09-16",
+          "eventType": "OUTLOOK_UP",
+          "priorState": {
+            "longTerm": "twA-",
+            "outlook": "Stable",
+            "shortTerm": "twA-2"
+          },
+          "newState": {
+            "longTerm": "twA-",
+            "outlook": "Positive",
+            "shortTerm": "twA-2"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/viewMemberProfileArticle/25872"
+        },
+        {
+          "date": "2022-04-26",
+          "eventType": "UPGRADE",
+          "priorState": {
+            "longTerm": "twA-",
+            "outlook": "Positive",
+            "shortTerm": "twA-2"
+          },
+          "newState": {
+            "longTerm": "twA",
+            "outlook": "Stable",
+            "shortTerm": "twA-1"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5491"
+        }
+      ]
+    },
+    {
+      "clusterId": "TCC_Group_Holdings_1",
+      "issuer": "TCC Group Holdings",
+      "direction": "NEGATIVE",
+      "startDate": "2022-04-21",
+      "endDate": "2022-04-21",
+      "events": [
+        {
+          "date": "2022-04-21",
+          "eventType": "OUTLOOK_DOWN",
+          "priorState": {
+            "longTerm": "twA+",
+            "outlook": "Stable",
+            "shortTerm": "twA-1"
+          },
+          "newState": {
+            "longTerm": "twA+",
+            "outlook": "Negative",
+            "shortTerm": "twA-1"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4816"
+        }
+      ]
+    },
+    {
+      "clusterId": "TCC_Group_Holdings_2",
+      "issuer": "TCC Group Holdings",
+      "direction": "POSITIVE",
+      "startDate": "2024-04-29",
+      "endDate": "2024-04-29",
+      "events": [
+        {
+          "date": "2024-04-29",
+          "eventType": "OUTLOOK_UP",
+          "priorState": {
+            "longTerm": "twA+",
+            "outlook": "Negative",
+            "shortTerm": "twA-1"
+          },
+          "newState": {
+            "longTerm": "twA+",
+            "outlook": "Stable",
+            "shortTerm": "twA-1"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4816"
+        }
+      ]
+    },
+    {
+      "clusterId": "Walsin_Lihwa_1",
+      "issuer": "Walsin Lihwa",
+      "direction": "POSITIVE",
+      "startDate": "2022-08-09",
+      "endDate": "2022-08-09",
+      "events": [
+        {
+          "date": "2022-08-09",
+          "eventType": "OUTLOOK_UP",
+          "priorState": {
+            "longTerm": "twA-",
+            "outlook": "Stable",
+            "shortTerm": "twA-2"
+          },
+          "newState": {
+            "longTerm": "twA-",
+            "outlook": "Positive",
+            "shortTerm": "twA-2"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5134"
+        }
+      ]
+    },
+    {
+      "clusterId": "Walsin_Lihwa_2",
+      "issuer": "Walsin Lihwa",
+      "direction": "NEGATIVE",
+      "startDate": "2023-08-24",
+      "endDate": "2024-08-29",
+      "events": [
+        {
+          "date": "2023-08-24",
+          "eventType": "OUTLOOK_DOWN",
+          "priorState": {
+            "longTerm": "twA-",
+            "outlook": "Positive",
+            "shortTerm": "twA-2"
+          },
+          "newState": {
+            "longTerm": "twA-",
+            "outlook": "Stable",
+            "shortTerm": "twA-2"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5134"
+        },
+        {
+          "date": "2024-08-29",
+          "eventType": "OUTLOOK_DOWN",
+          "priorState": {
+            "longTerm": "twA-",
+            "outlook": "Stable",
+            "shortTerm": "twA-2"
+          },
+          "newState": {
+            "longTerm": "twA-",
+            "outlook": "Negative",
+            "shortTerm": "twA-2"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5134"
+        }
+      ]
+    },
+    {
+      "clusterId": "Sinyi_Realty_1",
+      "issuer": "Sinyi Realty",
+      "direction": "POSITIVE",
+      "startDate": "2021-03-25",
+      "endDate": "2021-03-25",
+      "events": [
+        {
+          "date": "2021-03-25",
+          "eventType": "OUTLOOK_UP",
+          "priorState": {
+            "longTerm": "twA",
+            "outlook": "Negative",
+            "shortTerm": "twA-1"
+          },
+          "newState": {
+            "longTerm": "twA",
+            "outlook": "Stable",
+            "shortTerm": "twA-1"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5468"
+        }
+      ]
+    },
+    {
+      "clusterId": "Sinyi_Realty_2",
+      "issuer": "Sinyi Realty",
+      "direction": "NEGATIVE",
+      "startDate": "2023-03-29",
+      "endDate": "2023-03-29",
+      "events": [
+        {
+          "date": "2023-03-29",
+          "eventType": "OUTLOOK_DOWN",
+          "priorState": {
+            "longTerm": "twA",
+            "outlook": "Stable",
+            "shortTerm": "twA-1"
+          },
+          "newState": {
+            "longTerm": "twA",
+            "outlook": "Negative",
+            "shortTerm": "twA-1"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5468"
+        }
+      ]
+    },
+    {
+      "clusterId": "Sinyi_Realty_3",
+      "issuer": "Sinyi Realty",
+      "direction": "POSITIVE",
+      "startDate": "2024-03-19",
+      "endDate": "2024-03-19",
+      "events": [
+        {
+          "date": "2024-03-19",
+          "eventType": "OUTLOOK_UP",
+          "priorState": {
+            "longTerm": "twA",
+            "outlook": "Negative",
+            "shortTerm": "twA-1"
+          },
+          "newState": {
+            "longTerm": "twA",
+            "outlook": "Stable",
+            "shortTerm": "twA-1"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5468"
+        }
+      ]
+    },
+    {
+      "clusterId": "TECO_Electric_Machinery_1",
+      "issuer": "TECO Electric & Machinery",
+      "direction": "POSITIVE",
+      "startDate": "2024-02-27",
+      "endDate": "2024-02-27",
+      "events": [
+        {
+          "date": "2024-02-27",
+          "eventType": "OUTLOOK_UP",
+          "priorState": {
+            "longTerm": "twA+",
+            "outlook": "Stable",
+            "shortTerm": "twA-1"
+          },
+          "newState": {
+            "longTerm": "twA+",
+            "outlook": "Positive",
+            "shortTerm": "twA-1"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5458"
+        }
+      ]
+    },
+    {
+      "clusterId": "TECO_Electric_Machinery_2",
+      "issuer": "TECO Electric & Machinery",
+      "direction": "NEGATIVE",
+      "startDate": "2026-02-23",
+      "endDate": "2026-02-23",
+      "events": [
+        {
+          "date": "2026-02-23",
+          "eventType": "OUTLOOK_DOWN",
+          "priorState": {
+            "longTerm": "twA+",
+            "outlook": "Positive",
+            "shortTerm": "twA-1"
+          },
+          "newState": {
+            "longTerm": "twA+",
+            "outlook": "Stable",
+            "shortTerm": "twA-1"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5458"
+        }
+      ]
+    },
+    {
+      "clusterId": "China_Steel_1",
+      "issuer": "China Steel",
+      "direction": "NEGATIVE",
+      "startDate": "2020-04-16",
+      "endDate": "2020-04-16",
+      "events": [
+        {
+          "date": "2020-04-16",
+          "eventType": "OUTLOOK_DOWN",
+          "priorState": {
+            "longTerm": "twAA-",
+            "outlook": "Stable",
+            "shortTerm": "twA-1+"
+          },
+          "newState": {
+            "longTerm": "twAA-",
+            "outlook": "Negative",
+            "shortTerm": "twA-1+"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064"
+        }
+      ]
+    },
+    {
+      "clusterId": "China_Steel_2",
+      "issuer": "China Steel",
+      "direction": "POSITIVE",
+      "startDate": "2021-04-23",
+      "endDate": "2022-04-28",
+      "events": [
+        {
+          "date": "2021-04-23",
+          "eventType": "OUTLOOK_UP",
+          "priorState": {
+            "longTerm": "twAA-",
+            "outlook": "Negative",
+            "shortTerm": "twA-1+"
+          },
+          "newState": {
+            "longTerm": "twAA-",
+            "outlook": "Stable",
+            "shortTerm": "twA-1+"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064"
+        },
+        {
+          "date": "2022-04-28",
+          "eventType": "OUTLOOK_UP",
+          "priorState": {
+            "longTerm": "twAA-",
+            "outlook": "Stable",
+            "shortTerm": "twA-1+"
+          },
+          "newState": {
+            "longTerm": "twAA-",
+            "outlook": "Positive",
+            "shortTerm": "twA-1+"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064"
+        }
+      ]
+    },
+    {
+      "clusterId": "China_Steel_3",
+      "issuer": "China Steel",
+      "direction": "NEGATIVE",
+      "startDate": "2023-04-28",
+      "endDate": "2025-04-24",
+      "events": [
+        {
+          "date": "2023-04-28",
+          "eventType": "OUTLOOK_DOWN",
+          "priorState": {
+            "longTerm": "twAA-",
+            "outlook": "Positive",
+            "shortTerm": "twA-1+"
+          },
+          "newState": {
+            "longTerm": "twAA-",
+            "outlook": "Stable",
+            "shortTerm": "twA-1+"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064"
+        },
+        {
+          "date": "2025-04-24",
+          "eventType": "OUTLOOK_DOWN",
+          "priorState": {
+            "longTerm": "twAA-",
+            "outlook": "Stable",
+            "shortTerm": "twA-1+"
+          },
+          "newState": {
+            "longTerm": "twAA-",
+            "outlook": "Negative",
+            "shortTerm": "twA-1+"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5064"
+        }
+      ]
+    },
+    {
+      "clusterId": "Asia_Cement_1",
+      "issuer": "Asia Cement",
+      "direction": "POSITIVE",
+      "startDate": "2020-09-28",
+      "endDate": "2021-09-28",
+      "events": [
+        {
+          "date": "2020-09-28",
+          "eventType": "OUTLOOK_UP",
+          "priorState": {
+            "longTerm": "twA+",
+            "outlook": "Stable",
+            "shortTerm": "twA-1"
+          },
+          "newState": {
+            "longTerm": "twA+",
+            "outlook": "Positive",
+            "shortTerm": "twA-1"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585"
+        },
+        {
+          "date": "2021-09-28",
+          "eventType": "UPGRADE",
+          "priorState": {
+            "longTerm": "twA+",
+            "outlook": "Positive",
+            "shortTerm": "twA-1"
+          },
+          "newState": {
+            "longTerm": "twAA-",
+            "outlook": "Stable",
+            "shortTerm": "twA-1+"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585"
+        }
+      ]
+    },
+    {
+      "clusterId": "Asia_Cement_2",
+      "issuer": "Asia Cement",
+      "direction": "NEGATIVE",
+      "startDate": "2023-09-26",
+      "endDate": "2023-09-26",
+      "events": [
+        {
+          "date": "2023-09-26",
+          "eventType": "OUTLOOK_DOWN",
+          "priorState": {
+            "longTerm": "twAA-",
+            "outlook": "Stable",
+            "shortTerm": "twA-1+"
+          },
+          "newState": {
+            "longTerm": "twAA-",
+            "outlook": "Negative",
+            "shortTerm": "twA-1+"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585"
+        }
+      ]
+    },
+    {
+      "clusterId": "Asia_Cement_3",
+      "issuer": "Asia Cement",
+      "direction": "POSITIVE",
+      "startDate": "2024-09-23",
+      "endDate": "2024-09-23",
+      "events": [
+        {
+          "date": "2024-09-23",
+          "eventType": "OUTLOOK_UP",
+          "priorState": {
+            "longTerm": "twAA-",
+            "outlook": "Negative",
+            "shortTerm": "twA-1+"
+          },
+          "newState": {
+            "longTerm": "twAA-",
+            "outlook": "Stable",
+            "shortTerm": "twA-1+"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585"
+        }
+      ]
+    }
+  ]
+}
