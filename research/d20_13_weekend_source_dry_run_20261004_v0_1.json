@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "D20_13_WEEKEND_SOURCE_DRY_RUN_20261004_V0_1",
+  "generatedAtAsiaTaipei": "2026-10-04T16:35:35+08:00",
+  "module": "D20-13",
+  "status": "WEEKEND_DRY_RUN_ONLY / NOT_PROMOTION_GRADE / EXACT_FREE_LIVE_MACHINE_ENDPOINT_STILL_UNRESOLVED",
+  "tradingDay": false,
+  "officialSourceChecks": [
+    {
+      "source": "TWSE securities borrowing information page",
+      "url": "https://www.twse.com.tw/zh/clearing/borrowing.html",
+      "result": "ACCESSIBLE",
+      "verifies": [
+        "official securities-borrowing system context",
+        "lending procedures and rate semantics at public authority level"
+      ],
+      "liveRateDepthReceipt": false
+    },
+    {
+      "source": "TWSE Basic Market Information dynamic site",
+      "url": "https://mis.twse.com.tw/stock/index",
+      "result": "GENERIC_CONTENT_EXTRACTOR_EMPTY",
+      "interpretation": "Dynamic-site extraction failure is not evidence that data are absent; exact authorized machine route remains unresolved.",
+      "liveRateDepthReceipt": false
+    }
+  ],
+  "repoReconciliation": {
+    "room05LatestState": "Official paid machine products / official public semantics verified, but free stable live/programmatic rate-depth endpoint contract remains unresolved.",
+    "noConflictWithD20": "D20-13 still requires a genuine trading-day source receipt under the frozen 09:15/12:00/15:20 slots.",
+    "paidSourceGuard": "No paid S23/S47 subscription or purchase authorized or attempted."
+  },
+  "decision": "KEEP_D20_13_L2",
+  "next": "On next genuine Taiwan trading day, execute the pre-frozen official-source capture attempts at 09:15, 12:00 and 15:20 ±5 minutes. Missing/failed slots remain UNKNOWN and cannot be replaced by a later snapshot.",
+  "formalCore": "LOCKED"
+}
