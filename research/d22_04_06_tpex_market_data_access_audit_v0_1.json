@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "D22_04_06_TPEX_MARKET_DATA_ACCESS_AUDIT_V0_1",
+  "generatedAt": "2026-10-04T13:52:00+08:00",
+  "status": "SOURCE_ROUTE_VALIDATED / HISTORICAL_SECURITY_LEVEL_REPLAY_BLOCKED / NO_PROXY_SUBSTITUTION / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "modules": [
+    "D22-04",
+    "D22-06"
+  ],
+  "finding": "Taiwan TPEx provides the required source families for company-bond trades/quotes, rates, fair values and corporate-bond curves, but a clean multi-date issuer-security historical replay was not independently extracted in this round. The dynamic historical route was unavailable and historical bulk data access is a separate acquisition path. No synthetic yield/spread history was fabricated.",
+  "sourceRoute": {
+    "provider": "TPEx",
+    "dataFamilies": [
+      "company-bond transaction/quote files",
+      "yield/price files",
+      "daily fair-value files",
+      "corporate-bond reference/yield-curve files",
+      "government benchmark/yield-curve files"
+    ],
+    "semantics": "Trade, quote, reference and fair-value observations remain distinct provenance classes."
+  },
+  "blockers": [
+    "No validated cross-issuer/multi-date security-level transaction replay in this round.",
+    "A model/reference fair value is not an actual trade.",
+    "No-trade/stale observations cannot be silently forward-filled.",
+    "Duration/currency mismatch blocks clean spread construction."
+  ],
+  "decision": {
+    "D22_04": "HOLD_L2",
+    "D22_06": "HOLD_L2",
+    "reason": "L3 requires Taiwan PIT replay at issuer-security-date level, not merely a known data-source route."
+  },
+  "next": [
+    "Acquire or query historical TPEx security-level observations with date/security/provenance labels.",
+    "Validate at least multiple issuers and dates with maturity/currency-matched sovereign benchmarks.",
+    "Keep no-trade/stale states UNKNOWN.",
+    "Only then promote D22-04/D22-06 to L3."
+  ]
+}
