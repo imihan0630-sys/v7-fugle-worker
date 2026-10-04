@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "D08_TWSE_DAILY_VALUATION_BACKFILL_REQUEST_V0_1",
+  "researchRoom": "06",
+  "module": "D08-03",
+  "requestedAtAsiaTaipei": "2026-10-04T14:47:00+08:00",
+  "market": "TWSE",
+  "years": [
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "year2026End": "2026-08-31",
+  "purpose": [
+    "Materialize official daily PE/PB history needed for preregistered 252/756/1260 valid-session percentiles.",
+    "Preserve source-bundle hashes and immutable R2 readback evidence before any return/outcome join.",
+    "Keep expanding-history interpretation bounded from 2017 until full 2005-09-01+ replay is separately proven."
+  ],
+  "maxParallel": 2,
+  "outcomes": "CLOSED",
+  "formalCoreImpact": "NONE",
+  "attempt": 3,
+  "previousAttempt": {
+    "commit": "12e195efe588f8bb120655d1d54f5e1ca6708b77",
+    "result": "PARTIAL",
+    "successYears": [
+      2018,
+      2019,
+      2020
+    ],
+    "failedYears": {
+      "2017": "OFFICIAL_LEGACY_SCHEMA_NO_CLOSE_OR_FISCAL_PERIOD",
+      "2021": "TRANSIENT_TRANSPORT_EXHAUSTED_ON_2021-06-07"
+    },
+    "remainingYears": "some jobs still executing when repair lineage was prepared"
+  },
+  "retriggerReason": "legacy TWSE A6 schema now keeps PE/PB required while close/fiscal controls remain explicit UNKNOWN; yearly transport reduced to 2-day batches with six bounded retries and backoff"
+}
