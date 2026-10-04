@@ -2310,3 +2310,38 @@ Exact next:
 - no stock outcome before D16 preregistration/common support; no L4 before prospective/OOS evidence.
 
 Formal Core unchanged.
+
+
+## BR-059 — First compatible issuer-native PCB application-revenue numerator
+
+Artifact:
+`research/br059_compeq_pcb_application_revenue_numerator_v0_1.json`
+
+Compeq 2313 provides the first clean positive control for the BR-057 denominator firewall. Its issuer-hosted investor presentation discloses application revenue mix under one same-company, same-table, same-period denominator. For 2025Q3, Data Center / Networking is 5% of Operation Revenue.
+
+The receipt is usable because:
+- numerator and denominator are issuer-native and period-compatible;
+- the category is explicitly application revenue mix, not a third-party market-size proxy;
+- product presence is no longer being substituted for a numeric exposure share.
+
+The 2025Q3 displayed categories sum to 101%, consistent with rounded presentation percentages. The row is preserved as disclosed and is not re-normalized.
+
+First-known handling is conservative. The issuer conference list shows a 2025-11-25 14:00 investor forum near the document release. The PDF filename contains a 2025-11-21 timestamp, but filename metadata is not treated as authoritative public first-known time. The receipt therefore uses the verified 2025-11-25 conference clock and preserves the earlier filename timestamp only as non-authoritative document metadata.
+
+Critical taxonomy firewall:
+- Data Center / Networking 5% is **not** relabeled as AI revenue;
+- it is **not** relabeled as ABF-substrate revenue;
+- it cannot be transferred to 3189 Kinsus or 8046 Nan Ya PCB;
+- those issuers' ABF/AI numeric exposure magnitude remains UNKNOWN until a same-company, same-period compatible numerator is disclosed.
+
+This positive control proves that issuer-native application-revenue numerators are observable in Taiwan PCB issuers when disclosed, while simultaneously reinforcing that missing ABF numerators cannot be filled from industry growth, material share, roadmap or qualitative product presence.
+
+Maturity decision: `D09-13 L3 / 60% KEEP`. One compatible application numerator is data-feasibility evidence, not prospective/OOS predictive efficacy.
+
+Exact next:
+- add independent issuer-native product/application revenue numerators;
+- prioritize ABF/substrate-specific numerator evidence for 3189/8046 only when denominator compatibility is explicit;
+- preserve broader application taxonomies without AI/ABF relabeling;
+- no composite industry-structure score before OOS/redundancy validation.
+
+Formal Core unchanged.
