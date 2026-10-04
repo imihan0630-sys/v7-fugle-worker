@@ -283,6 +283,8 @@ jobs:
         run: python3 scripts/apply_v8_15_4.py
       - name: Apply V8.16.0 Class-B prospective rank capture
         run: python3 scripts/apply_v8_16_0.py
+      - name: Apply V8.17.0 Class-B Shadow cohort membership
+        run: python3 scripts/apply_v8_17_0.py
 
       - name: Syntax check Worker.js
         run: |

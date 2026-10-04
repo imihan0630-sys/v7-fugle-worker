@@ -2,6 +2,7 @@
 
 Status: IMPLEMENTED_LOCAL_REVIEW_86_OF_86_PASS / REMOTE_CI_PENDING / PRODUCTION_APPROVAL_REQUIRED
 Branch: `codex/system1-shadow-cohort-membership`
+PR: https://github.com/imihan0630-sys/v7-fugle-worker/pull/454 (open; do not merge without owner Production approval).
 Fresh implementation baseline: `0aab87e2295385ab325ba8e3a30dc40184a42219`.
 Production baseline independently read: `8.16.0-zero-pick-prospective-capture`, TEST_MODE=false, KV/D1=true.
 Owner explicitly approved Shadow Cohort Membership Class-B implementation in the controlling handoff and current Codex session. The owner explicitly requires stopping at the concrete PR's Production approval gate.
@@ -81,6 +82,8 @@ Rollback: use the existing code-only deployment backup/rollback path to the veri
 
 ## Exact next action
 
-Run full guarded regression/repair/isolated review, fix any failures, re-fetch/reconcile main, push branch and open PR, wait for all required CI at the exact head. Write results here or in the PR's durable approval packet. Stop before merge/deploy and present PR/head, CI, protected parity, resource budget, version diff and rollback to the owner.
+Implementation, full local 86/86 review, branch publication and PR #454 are complete. Initial remote Regression (37169555932) and isolated review (37169555837) passed. Repair CI (37169555830) exposed a missing V8.17 apply step in its separately enumerated build chain (ENOENT pre-V8.17 artifact); the workflow step is repaired and a three-workflow lineage guard now covers Regression/Repair/Deploy.
+
+Continue by checking all three CI workflows on the current exact PR #454 head; diagnose/retry any failure, then stop for explicit owner Production approval. The PR description is the durable final CI/head approval packet, so read it and the current head rather than rerunning already-passing local work. No merge, deploy, genuine capture or economic result has been claimed. Concurrent main changes through `65f39d47881d12d7b5a191f253c0247f8f71c7bf` were research/System2 changes with no System1 runtime conflict.
 
 Monitor: https://fugle-test.imihan0630.workers.dev/

@@ -8,6 +8,12 @@ import {collectShadowCohortEvidence} from '../research/system1_shadow_cohort_col
 import {adaptC1PopulationPages,diagnosePopulation} from '../research/system1_selection_isolated_v0_1.mjs';
 
 const sha=s=>createHash('sha256').update(s).digest('hex');
+for(const path of ['.github/workflows/v7-regression.yml','.github/workflows/v7-repair-ci.yml','.github/workflows/v7-cloudflare.yml']){
+ const workflow=fs.readFileSync(path,'utf8'),chain=[...workflow.matchAll(/python3 (scripts\/apply_v8_[\d_]+\.py)/g)].map(m=>m[1]);
+ assert.equal(chain.filter(s=>s==='scripts/apply_v8_17_0.py').length,1,path+' must build the candidate exactly once');
+ assert.equal(chain.indexOf('scripts/apply_v8_17_0.py'),chain.indexOf('scripts/apply_v8_16_0.py')+1,path+' must preserve lineage order');
+}
+
 const baseline=fs.readFileSync('artifacts/Worker-before-v8_17_0.mjs','utf8');
 const source=fs.readFileSync(process.env.V7_TEST_WORKER_PATH||'Worker.js','utf8');
 function body(s,name){const start=s.indexOf('function '+name+'('),end=s.indexOf('\n}',start)+2;assert.ok(start>=0&&end>start);return s.slice(start,end);}

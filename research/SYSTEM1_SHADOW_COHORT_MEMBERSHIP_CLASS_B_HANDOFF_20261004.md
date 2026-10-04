@@ -196,3 +196,7 @@ Core runtime/SQLite-D1/collector/scale tests and full local 86/86 isolated revie
 Canonical implementation checkpoint and current exact next action:
 `research/SYSTEM1_SHADOW_COHORT_MEMBERSHIP_IMPLEMENTATION_20261004.md`.
 Production approval remains pending; this authorization does not permit merging a deploying PR.
+
+PR #454 is now open: https://github.com/imihan0630-sys/v7-fugle-worker/pull/454 .
+Implementation and full local 86/86 review are complete. Continue from the current PR's
+CI/Production approval packet, not the original first implementation target.
