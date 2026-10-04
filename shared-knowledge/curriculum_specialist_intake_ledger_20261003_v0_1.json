@@ -1,6 +1,6 @@
 {
   "schemaVersion": "CURRICULUM_SPECIALIST_INTAKE_LEDGER_V0_1",
-  "updatedAt": "2026-10-04T13:08:00+08:00",
+  "updatedAt": "2026-10-04T14:45:00+08:00",
   "status": "ACTIVE_INTAKE_LEDGER",
   "formalCoreImpact": "NONE",
   "clusters": [
@@ -59,25 +59,26 @@
     },
     {
       "id": "H06",
-      "status": "PARTIAL_EVIDENCE_RECEIVED",
+      "status": "CLOSED_NO_STRUCTURAL_CHANGE",
       "receivedPackets": [
-        "research/d06_h06_crowding_vs_herding_room05_packet_v0_1.md"
+        "research/d06_h06_crowding_vs_herding_room05_packet_v0_1.md",
+        "research/d20_h06_herding_vs_crowding_room13_packet_v0_2.md",
+        "research/d20_06_ptt_social_herding_pit_contract_v0_1.json",
+        "research/d20_ptt_social_source_live_receipt_20261004_v0_1.json"
       ],
-      "pendingRooms": [
-        "13｜行為金融與市場心理研究室"
-      ],
-      "controlDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOM13_COUNTERPART"
+      "pendingRooms": [],
+      "controlDecision": "KEEP_SEPARATE_BOUNDED_SOCIAL_HERDING_SUBLANE"
     },
     {
       "id": "H07",
-      "status": "PARTIAL_EVIDENCE_RECEIVED",
+      "status": "CLOSED_NO_STRUCTURAL_CHANGE",
       "receivedPackets": [
-        "research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md"
+        "research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md",
+        "research/d20_h07_overreaction_vs_reversal_room13_packet_v0_1.md",
+        "research/d20_09_event_conditioned_overreaction_pit_contract_v0_1.json"
       ],
-      "pendingRooms": [
-        "13｜行為金融與市場心理研究室"
-      ],
-      "controlDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOM13_COUNTERPART"
+      "pendingRooms": [],
+      "controlDecision": "KEEP_SEPARATE_EVENT_PARENT_VS_REVERSAL_OUTCOME"
     },
     {
       "id": "H08",
@@ -116,13 +117,14 @@
       "status": "PARTIAL_EVIDENCE_RECEIVED",
       "receivedPackets": [
         "research/d06_securities_lending_economics_h12_v0_1.md",
-        "research/d06_18_borrow_fee_identifiability_rule_vintage_v0_1.md"
+        "research/d06_18_borrow_fee_identifiability_rule_vintage_v0_1.md",
+        "research/d20_h12_limits_to_arbitrage_room13_packet_v0_1.md"
       ],
       "pendingRooms": [
         "10｜投組風控與交易執行研究室",
-        "13｜行為金融與市場心理研究室"
+        "13｜行為金融與市場心理研究室 — first live TWSE rate/supply receipt"
       ],
-      "controlDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOMS10_13_COUNTERPARTS"
+      "controlDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOM10_AND_LIVE_SOURCE_RECEIPT"
     },
     {
       "id": "H13",
@@ -351,7 +353,15 @@
     "intakeResult": "ROOM05_PACKET_ACCEPTED_ROOM13_COUNTERPART_REQUIRED",
     "currentControlDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOM13_COUNTERPART",
     "maturityChange": "NONE",
-    "formalOptimizationCandidate": "NONE"
+    "formalOptimizationCandidate": "NONE",
+    "audit": "shared-knowledge/CURRICULUM_H06_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md",
+    "machineAudit": "shared-knowledge/curriculum_h06_dependency_anti_orphan_audit_20261004_v0_1.json",
+    "canonicalReceipt": "shared-knowledge/CURRICULUM_H06_CANONICAL_CLOSURE_RECEIPT_20261004_V0_1.md",
+    "canonicalReceiptJson": "shared-knowledge/curriculum_h06_canonical_closure_receipt_20261004_v0_1.json",
+    "terminalClassification": "KEEP_SEPARATE",
+    "governanceDisposition": "BOUNDED_SOCIAL_HERDING_SUBLANE",
+    "state": "CLOSED_NO_STRUCTURAL_CHANGE",
+    "structuralChange": "NONE"
   },
   "h14": {
     "sourceEvidence": [
@@ -399,10 +409,18 @@
   "h07": {
     "sourceRoom": "03｜技術指標與趨勢動能研究室",
     "received": "research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md",
-    "state": "PARTIAL_EVIDENCE_RECEIVED",
+    "state": "CLOSED_NO_STRUCTURAL_CHANGE",
     "closedSide": "D03_05_OBSERVABLE_PRICE_PHENOMENON",
     "pending": "ROOM13_D20_09_BEHAVIORAL_IDENTIFIABILITY",
-    "maturityChange": "NONE_FROM_GOVERNANCE"
+    "maturityChange": "NONE",
+    "audit": "shared-knowledge/CURRICULUM_H07_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md",
+    "machineAudit": "shared-knowledge/curriculum_h07_dependency_anti_orphan_audit_20261004_v0_1.json",
+    "canonicalReceipt": "shared-knowledge/CURRICULUM_H07_CANONICAL_CLOSURE_RECEIPT_20261004_V0_1.md",
+    "canonicalReceiptJson": "shared-knowledge/curriculum_h07_canonical_closure_receipt_20261004_v0_1.json",
+    "terminalClassification": "KEEP_SEPARATE",
+    "governanceDisposition": "EVENT_CONDITIONED_OVERREACTION_PARENT_VS_REVERSAL_OUTCOME",
+    "structuralChange": "NONE",
+    "formalOptimizationCandidate": "NONE"
   },
   "h12": {
     "sourceRoom": "05｜法人與籌碼研究室",
@@ -416,6 +434,12 @@
       "ROOM10_D14_19_EXECUTION_LIFECYCLE",
       "ROOM13_D20_13_LIMITS_TO_ARBITRAGE_CONTEXT"
     ],
-    "maturityChange": "NONE_FROM_GOVERNANCE"
+    "maturityChange": "NONE",
+    "room13SemanticPacket": "research/d20_h12_limits_to_arbitrage_room13_packet_v0_1.md",
+    "room13SemanticStatus": "ACCEPTED_CONTEXT_ONLY",
+    "room13SourceGate": "FIRST_GENUINE_LIVE_TWSE_RATE_SUPPLY_RECEIPT_PENDING",
+    "room10Gate": "D14_19_EXECUTION_LIFECYCLE_PENDING",
+    "currentControlDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOM10_AND_LIVE_SOURCE_RECEIPT",
+    "formalOptimizationCandidate": "NONE"
   }
 }
