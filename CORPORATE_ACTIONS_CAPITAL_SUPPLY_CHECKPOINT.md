@@ -410,3 +410,16 @@ D11-16 official release-to-sale chain; D11-19 merger/spin-off terms + break/repr
 
 Exact next:
 D11-16 is now the only D11-15..19 module below L3. Complete one official issuer-level custody release -> transfer declaration -> realized holdings/untransferred chain with an eligible-but-not-sold negative control. Before D11-19 L4, archive native MOPS versions plus borrow/cost/break-loss evidence.
+
+## D11-16 transition-rule deepening — 2026-10-04
+
+- New receipt: `research/d11_16_lockup_transition_deepening_receipt_v0_2.json`.
+- The TWSE 2026-01-09 amendment is now a mandatory historical replay boundary. Its shortened domestic TIB custody rule explicitly has transition treatment for already-listed domestic TIB issuers.
+- For a qualifying already-listed issuer, legal eligibility is not automatic custody withdrawal. The issuer must submit requested release quantity plus custody certificate/details/calculation, and TWSE replies with the releasable quantity/date before TDCC retrieval.
+- Freeze separate states: rule version -> transition applicability -> release eligibility -> TWSE release approval/equivalent -> custody withdrawal -> transfer pre-declaration -> realized holding change/untransferred/UNKNOWN.
+- Alternate live retrieval of current `t187ap11_L`, `t187ap12_L`, and `t187ap13_L` failed in this research run. This is SOURCE_ACCESS_UNKNOWN only and never NO_TRANSFER.
+- D11-16 stays L2 because the issuer-level official custody/release-to-realized-supply chain is not complete.
+- No supply-direction score, no return outcome, no Formal Core change.
+
+Exact next:
+Pin one issuer's applicable qualification and original custody quantity; capture TWSE release approval/date or equivalent custody-withdrawal proof; join any transfer pre-declaration to subsequent official holdings/untransferred state; include an eligible-but-no-net-reduction control. Do not label NO_SALE from source absence.
