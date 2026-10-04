@@ -1,7 +1,7 @@
 # System 2 Remediation Checkpoint
 
 Updated: 2026-10-04 19:00 Asia/Taipei
-Status: ACTIVE / REMEDIATION_LANE / FIX_IMPLEMENTED_PENDING_AUDIT
+Status: ACTIVE / REMEDIATION_LANE / FIX_IMPLEMENTED / PENDING_INDEPENDENT_AUDIT
 Room: System 2｜補強修復室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
@@ -86,7 +86,7 @@ No System 1 Formal Core, System 1 holdings/runtime, capital/order logic, product
 
 ## Tests / physical evidence
 
-PR: `#536` — `System2 CORR-002: separate virtual positions from actual holdings readiness`.
+PR: `#536` — `System2 CORR-002: separate virtual positions from actual holdings readiness` — merged to `main` as `0774a356377efc6892e72bf60c202561d227e47b`.
 
 Semantic readback:
 - all five readiness states present;
@@ -104,7 +104,13 @@ Corrected semantic head `67151b901029b17b567cf1f29b4a74c349460996`:
 - System2 Research CI `37197332296`: PASS.
 - V8 Regression `37197332187`: PASS.
 
-Queue/checkpoint evidence-only commits followed those PASS runs. The final PR head must still retain green required checks before merge.
+Final PR head `d0f97bded1e88965d75b9db804cc5264e1220ebe` after queue/checkpoint evidence updates:
+- System2 Research CI `37197495890`: PASS.
+- V8 Regression `37197495893`: PASS.
+- PR #536 mergeability: true before merge.
+- Squash merge to main: `0774a356377efc6892e72bf60c202561d227e47b`.
+
+Merged-main readback confirms `S2-CORR-20261004-002` = `FIX_IMPLEMENTED`, assignedLane=`REMEDIATION_LANE`, verificationEvidence=`PENDING_INDEPENDENT_AUDIT`, and all canonical readiness guards remain present.
 
 ## Closure / owner gate
 
@@ -120,8 +126,7 @@ Future actual-holdings integration remains `OWNER_DECISION_REQUIRED`.
 
 ## Exact next continuation point
 
-1. Require final PR #536 head System2 Research CI + V8 Regression to remain PASS.
-2. Merge PR #536 to latest main only if mergeable and checks are green.
-3. Re-read merged main canonical queue/checkpoint/readiness state.
-4. Hand `S2-CORR-20261004-002` back to `SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR` with status `FIX_IMPLEMENTED` for independent verification.
-5. Do not start any broker/System1 holdings integration without a separate owner decision.
+1. Hand `S2-CORR-20261004-002` to `SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR` for independent acceptance-criteria verification.
+2. If the auditor confirms the implementation evidence, it may advance through `VERIFYING` to `VERIFIED_CLOSED` under correction governance.
+3. If the auditor finds a semantic/runtime gap, reopen only the affected conflict unit and return it to REMEDIATION_LANE; do not broaden into a new holdings integration.
+4. Do not start any broker/System1 holdings integration without a separate owner decision; that future work remains `OWNER_DECISION_REQUIRED`.
