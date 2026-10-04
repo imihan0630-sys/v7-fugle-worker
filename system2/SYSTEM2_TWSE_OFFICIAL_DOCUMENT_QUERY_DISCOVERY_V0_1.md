@@ -29,7 +29,10 @@ Read-only:
 2. enumerate same-host script assets;
 3. scan page/scripts for announcement/query/date/keyword route hints;
 4. extract same-host URL candidates;
-5. do not perform the final bounded historical query until a stable contract is physically identified.
+5. read the page's `data-api` and the official runtime `cfg.apiHost.rwd` value rather than hard-coding an assumed host/path;
+6. mechanically derive the candidate RWD endpoint;
+7. validate it against known official document `1140010257` for symbol 4763 on 2025-06-06;
+8. do not perform the final four-company bounded correction search unless this positive control physically passes.
 
 ## Frozen downstream candidates
 
@@ -51,3 +54,10 @@ This artifact does not establish:
 - revision completeness;
 - exact knownAt;
 - any selection/push/capital/order authority.
+
+
+## Positive-control acceptance
+
+A stable query endpoint is established only if the endpoint is mechanically derived from official page/runtime configuration and a 2025-06-06 bounded query returns both known TWSE document number `1140010257` and symbol `4763`.
+
+HTTP 200 alone is insufficient.
