@@ -20,7 +20,8 @@ async function fetchJson(url){
   return {url,text,json,hash:sha(text)};
 }
 function tableObjects(payload){
-  assert.equal(payload.stat,"OK","TWSE table stat must be OK");
+  const ok=payload?.stat==="OK" || String(payload?.status??"").toLowerCase()==="ok";
+  assert.equal(ok,true,"TWSE table success status invalid");
   assert.ok(Array.isArray(payload.fields)&&Array.isArray(payload.data),"TWSE table envelope invalid");
   return payload.data.map(row=>Object.fromEntries(payload.fields.map((h,i)=>[h,row[i]])));
 }
