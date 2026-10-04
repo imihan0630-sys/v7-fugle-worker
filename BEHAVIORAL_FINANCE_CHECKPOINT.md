@@ -101,3 +101,18 @@ Status: FOUNDATION_CLUSTER_L2 / D20-01_02_04_07 / FORMAL_CORE_UNCHANGED
 - Exact next: collect immutable post-freeze parent receipts only. Do not open each parent’s outcome until the parent/specification fingerprint is frozen. No historical Shadow fabrication.
 - Formal Core locked; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
 
+## Canonical overlay 2026-10-04 11:40 Asia/Taipei — D20 53.8%
+- D20 aggregate maturity: 53.8%.
+- L3 / 60%: D20-01, D20-02, D20-04, D20-05, D20-07, D20-08, D20-09, D20-10, D20-12.
+- L2 / 40%: D20-03, D20-06, D20-11, D20-13.
+- D20-01 promotion is bounded to TWSE short-side reference dependence using the exact D20-02 short-position/reference-price receipt. Pure loss aversion is NOT identified; no duplicate vote.
+- D20-09 promotion is bounded to event-conditioned initial-response residuals using valid event clocks/surprise plus completed causal 15m bars. D03-05 still owns observable reversal; later reversal is forbidden from the parent.
+- D20-13 is L3-ready but remains L2 until the first genuine trading-day TWSE rate/displayed-supply receipt validates the frozen source contract. True utilization remains UNKNOWN.
+- D20-03 stays L2 because turnover/margin/volume cannot identify overconfidence.
+- D20-06 stays L2; new D06-19 owns any future direct natural-person primitive, but stock×date natural-person directional flow is currently UNKNOWN.
+- D20-11 stays L2 because no versioned replayable social-language narrative-diffusion stream is validated.
+- L4 preregistration was extended at 2026-10-04 11:40 to cover D20-01 and D20-09 prospectively. No L4 promotion.
+- Remaining blocker audit: research/d20_remaining_l2_blocker_audit_20261004_v0_1.json
+- Exact next: on the next valid Taiwan trading day, first try to close D20-13 L3 with the frozen live TWSE borrow-rate/displayed-supply receipt. In parallel begin post-freeze parent capture for all nine L3 lanes. No historical Shadow fabrication.
+- Formal Core locked; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
