@@ -1,10 +1,10 @@
 {
   "schemaVersion": "D22_05_CREDIT_RATING_MIGRATION_CONTRACT_V0_1",
-  "generatedAt": "2026-10-04T08:43:00+08:00",
+  "generatedAt": "2026-10-04T13:49:00+08:00",
   "module": "D22-05",
-  "level": "L2",
-  "maturityPct": 40,
-  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_DISCLOSURE_ROUTE_FEASIBLE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "level": "L3",
+  "maturityPct": 60,
+  "status": "TAIWAN_PIT_RATING_EVENT_REPLAY_VALIDATED / ANTICIPATION_CONTROL_REQUIRED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "researchQuestion": "Do PIT rating-state changes add information beyond contemporaneous market credit pricing, accounting distress and already-known public information?",
   "eventTaxonomy": [
     "issuer_rating",
@@ -56,8 +56,15 @@
   "outcomeGate": "CLOSED",
   "formalCore": "LOCKED",
   "next": [
-    "Build Taiwan issuer/issue rating-event PIT receipts with agency/date/action/old/new rating and watch/outlook state.",
-    "Construct anticipated-vs-unanticipated event labels using only pre-known credit/equity information.",
-    "Test rating action separately from pre-event spread/fundamental deterioration before L3/L4."
-  ]
+    "Add issue-rating and watch/review event receipts so issuer and instrument information remain distinct.",
+    "Build event-clustering rules so outlook, watch and later downgrade within one deterioration episode do not become multiple independent votes.",
+    "Join pre-event D22-06 market-credit state only after security-level replay is available; preserve anticipation controls.",
+    "Proceed to L4 only with preregistered OOS/walk-forward/prospective evidence."
+  ],
+  "maturityDecision": {
+    "level": "L3",
+    "maturityPct": 60,
+    "reason": "Exact-dated issuer rating/outlook events are replayable across multiple Taiwan non-financial industries and dates, with prior/new state and event type preserved. This validates PIT data feasibility only; no equity-direction or alpha claim."
+  },
+  "replayEvidence": "research/d22_05_rating_event_replay_v0_1.json"
 }
