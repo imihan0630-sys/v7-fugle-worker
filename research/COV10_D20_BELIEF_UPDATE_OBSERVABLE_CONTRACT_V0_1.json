@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "COV10_D20_BELIEF_UPDATE_OBSERVABLE_CONTRACT_V0_1",
+  "frozenAtAsiaTaipei": "2026-10-04T20:17:05+08:00",
+  "candidateId": "COV-10",
+  "domain": "D20",
+  "status": "FROZEN_RESEARCH_ONLY_NO_CURRICULUM_MUTATION",
+  "mechanisms": {
+    "confirmationBias": "Asymmetric weighting of new information conditional on an observable prior stance. Evidence exposure must be verified; persistence alone is insufficient.",
+    "beliefPerseverance": "Observable prior stance persists after the original evidentiary basis is explicitly corrected, withdrawn, or invalidated, with verified exposure to that correction.",
+    "conservatism": "Belief moves in the direction of valid new information but by less than a pre-specified update benchmark. Price underreaction alone is insufficient."
+  },
+  "taiwanReplayableProxy": {
+    "name": "EVENT_EXPOSED_AGGREGATE_BELIEF_UPDATE_ASYMMETRY",
+    "sourceFamilies": [
+      "PTT Stock scheduled primary snapshots under existing D20 social contract",
+      "official event/correction receipts already owned by D11/D17/D20-08",
+      "optional D20-03 explicit-confidence state"
+    ],
+    "requiredSequence": [
+      "preEventStanceKnownAt",
+      "eventKnownAt",
+      "eventDirectionRelativeToPriorBelief",
+      "exposureEvidence",
+      "postEventStanceKnownAt"
+    ],
+    "persistence": "Aggregate transition counts only. No named-person behavioral profile is stored.",
+    "noPriceOnlyInference": true
+  },
+  "unknownRules": [
+    "No verified exposure => confirmation/perseverance UNKNOWN",
+    "Ambiguous event direction => congruence UNKNOWN",
+    "No prior stance => belief-update family UNKNOWN",
+    "Price/volume only => behavioral mechanism UNKNOWN",
+    "No pre-specified update benchmark => conservatism magnitude UNKNOWN"
+  ],
+  "overlapFirewall": {
+    "D20-03": "expressed-confidence calibration only",
+    "D20-04": "reference-point/anchoring only",
+    "D20-05": "representativeness/recency only",
+    "D20-06": "cross-participant social convergence only",
+    "D20-07": "attention/exposure only",
+    "D20-08": "event underreaction/drift outcome only",
+    "D20-11": "narrative diffusion only",
+    "D20-12": "identification/falsification firewall"
+  },
+  "antiDoubleCount": [
+    "Confirmation, perseverance, and conservatism are one family and never three independent votes.",
+    "A shared social or event receipt may support child analyses but contributes at most one behavioral vote.",
+    "Generic price underreaction/reversal without a belief-update sequence remains with existing owners.",
+    "Unresolved attention/exposure remains UNKNOWN, not confirmation evidence."
+  ],
+  "pitReplay": {
+    "appendOnly": true,
+    "parentBeforeOutcome": true,
+    "noHistoricalShadowFabrication": true,
+    "unknownIsNotZero": true,
+    "primarySocialClock": "Actually executed Room13 fixed :10 scheduled snapshot only"
+  },
+  "decisionRole": {
+    "primary": "validation",
+    "secondary": [
+      "explanatory",
+      "context"
+    ],
+    "independentStrategyVote": false
+  },
+  "proposedNewModule": "D20-14 Belief Updating Biases / Confirmation-Perseverance-Conservatism",
+  "startingMaturityIfApproved": "L0 / 0%",
+  "terminalRecommendation": "ADD_MODULE",
+  "formalCore": "LOCKED"
+}
