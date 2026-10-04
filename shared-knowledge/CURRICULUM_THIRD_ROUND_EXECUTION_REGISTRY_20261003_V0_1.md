@@ -399,3 +399,16 @@ State:
 No canonical merge has occurred.
 
 No maturity/count/Formal change from these control-plane transitions.
+
+
+## H08 closure + H10 owner gate — 2026-10-04
+
+H08:
+`KEEP_SEPARATE / MEMBERSHIP_VS_EVENT_PROPAGATION_VS_NARRATIVE_DIFFUSION / SHARED_LINEAGE_FIREWALL`
+→ `CLOSED_NO_STRUCTURAL_CHANGE`.
+
+H10:
+`KEEP_SEPARATE / SCOPE_DEDUP_ONLY / STRUCTURAL_EXPOSURE_PRODUCER_TO_EVENT_ATTRIBUTION_CONSUMERS`
+→ `OWNER_APPROVAL_REQUIRED`.
+
+No maturity/count/Formal change.
