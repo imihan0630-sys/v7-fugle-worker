@@ -1,12 +1,12 @@
 {
   "schemaVersion": "CURRICULUM_SPECIALIST_INTAKE_LEDGER_V0_1",
-  "updatedAt": "2026-10-04T11:09:00+08:00",
+  "updatedAt": "2026-10-04T11:46:32+08:00",
   "status": "ACTIVE_INTAKE_LEDGER",
   "formalCoreImpact": "NONE",
   "clusters": [
     {
       "id": "H01",
-      "status": "OWNER_APPROVAL_REQUIRED",
+      "status": "CANONICAL_UPDATE_COMPLETE",
       "receivedPackets": [
         "research/h01_d09_13_d09_14_specialist_validation_20261003_v0_1.json",
         "research/br051_taiwan_foundry_industry_structure_pit_v0_1.json",
@@ -17,9 +17,11 @@
         "research/br056_strategic_action_native_outcome_contract_v0_1.json"
       ],
       "pendingRooms": [],
-      "controlDecision": "KEEP_SEPARATE_SCOPE_DEDUP_ONLY_OWNER_APPROVAL_REQUIRED",
+      "controlDecision": "KEEP_SEPARATE_SCOPE_DEDUP_ONLY_CANONICAL",
       "audit": "shared-knowledge/CURRICULUM_H01_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md",
-      "machineAudit": "shared-knowledge/curriculum_h01_dependency_anti_orphan_audit_20261004_v0_1.json"
+      "machineAudit": "shared-knowledge/curriculum_h01_dependency_anti_orphan_audit_20261004_v0_1.json",
+      "ownerApprovedAt": "2026-10-04T11:46:32+08:00",
+      "canonicalUpdateAt": "2026-10-04T11:46:32+08:00"
     },
     {
       "id": "H02",
@@ -277,7 +279,7 @@
   ],
   "h01": {
     "sourceRoom": "07｜產業與供應鏈研究室",
-    "intakeResult": "ROOM07_SPECIALIST_PACKET_COMPLETE / 00_DEPENDENCY_AUDIT_PASS / ANTI_ORPHAN_PASS / KEEP_SEPARATE_SCOPE_DEDUP_ONLY / OWNER_APPROVAL_REQUIRED",
+    "intakeResult": "KEEP_SEPARATE_SCOPE_DEDUP_ONLY_CANONICAL_UPDATE_COMPLETE",
     "passed": [
       "CONCEPT_OWNERSHIP_MATRIX",
       "INDUSTRY_VS_FIRM_UNIT_MAP",
@@ -299,14 +301,20 @@
       "D09_13": "industry × product/geographic market definition × vintage",
       "D09_14": "issuer × strategic action × implementation/outcome stage × vintage"
     },
-    "remaining": [
-      "OWNER_APPROVAL_OF_SCOPE_WORDING_AND_ROUTING"
-    ],
+    "remaining": [],
     "maturityImpact": "NONE; D09-13 and D09-14 remain L3/60%.",
     "formalOptimizationCandidate": "NONE",
     "audit": "shared-knowledge/CURRICULUM_H01_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md",
     "machineAudit": "shared-knowledge/curriculum_h01_dependency_anti_orphan_audit_20261004_v0_1.json",
     "proposedCanonicalNames": {
+      "D09_13": "Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）",
+      "D09_14": "Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）"
+    },
+    "ownerApprovedAt": "2026-10-04T11:46:32+08:00",
+    "canonicalUpdateAt": "2026-10-04T11:46:32+08:00",
+    "finalClassification": "KEEP_SEPARATE",
+    "canonicalDisposition": "SCOPE_DEDUP_ONLY",
+    "canonicalNames": {
       "D09_13": "Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）",
       "D09_14": "Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）"
     }
