@@ -1,6 +1,6 @@
-# 股市知識學習大地圖 — 22領域 / 355模組
+# 股市知識學習大地圖 — 22領域 / 356模組
 
-Updated: 2026-10-04 09:54 Asia/Taipei
+Updated: 2026-10-04 11:09 Asia/Taipei
 Status: CANONICAL_LEARNING_CURRICULUM_V0_1 / CROSS_SYSTEM  
 Formal Core impact: NONE  
 Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 正式研究成熟度仍由 `RESEARCH_MASTER_MAP.md` 與 `research/research_master_map.json` 管理。
@@ -22,8 +22,8 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 ## 目前總覽
 
 - 大領域：22
-- 二級研究模組：355
-- 新完整課綱成熟度：**43.5%**
+- 二級研究模組：356
+- 新完整課綱成熟度：**43.4%**
 - 注意：這個百分比與 System 1 現行21模組的46.7%不是同一分母；本表分母更大、更細。
 - 100%不是「世界上再也沒有新知識」，而是本版課綱全部達L5；新增新知識時可版本化擴充分母。
 - 七項汰留與能力移轉紀錄：`shared-knowledge/CURRICULUM_RETIREMENT_AND_CAPABILITY_LEDGER_V0_1.md`。退休模組不代表刪除其必要工程／研究能力。
@@ -35,7 +35,7 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 | D03 | 趨勢／動能／反轉／技術指標 | 12 | 56.7% | 03｜技術指標與趨勢動能研究室 |
 | D04 | 波動率／波動狀態 | 10 | 52% | 04｜波動與市場微結構研究室 |
 | D05 | 市場微結構／撮合／流動性 | 14 | 51.4% | 04｜波動與市場微結構研究室 |
-| D06 | 法人／籌碼／槓桿／擁擠／被動資金 | 17 | 48.2% | 05｜法人與籌碼研究室 |
+| D06 | 法人／籌碼／槓桿／擁擠／被動資金 | 18 | 45.6% | 05｜法人與籌碼研究室 |
 | D07 | 基本面／財報／資訊動態 | 34 | 14.1% | 06｜基本面與估值研究室 |
 | D08 | 估值 | 19 | 27.4% | 06｜基本面與估值研究室 |
 | D09 | 產業／族群／市場廣度／輪動 | 14 | 57.1% | 07｜產業與供應鏈研究室 |
@@ -216,7 +216,7 @@ GitHub專屬checkpoint：
 | D05-14 | Market Integrity／Abnormal Trading Patterns市場完整性與異常交易型態 | L2 機制＋反證 | 40% |
 
 
-### D06｜法人／籌碼／槓桿／擁擠／被動資金 — 48.2%
+### D06｜法人／籌碼／槓桿／擁擠／被動資金 — 45.6%
 
 專責：05｜法人與籌碼研究室  
 證據錨點：`INSTITUTIONAL_CROWDING_RESEARCH.md`、`LEVERAGE_SHORTING_CHECKPOINT.md`、`PASSIVE_FLOW_INDEX_REBALANCING_CHECKPOINT.md`
@@ -238,8 +238,9 @@ GitHub專屬checkpoint：
 | D06-13 | 券商分點／主力代理變數 | L2 機制＋反證 | 40% |
 | D06-14 | 當沖率／短線換手 | L2 機制＋反證 | 40% |
 | D06-15 | 官股行庫／特定資金流 | L2 機制＋反證 | 40% |
-| D06-16 | ETF Mechanics：Creation／Redemption／AP／Premium-Discount／Tracking／Liquidity ETF申贖、參與券商、溢折價、追蹤與流動性 | L0 未研究 | 0% |
-| D06-18 | Securities Lending Economics／Borrow Fee／Availability／Utilization借券經濟、費率、可借量與使用率 | L0 未研究 | 0% |
+| D06-16 | ETF Mechanics：Creation／Redemption／AP／Premium-Discount／Tracking／Liquidity ETF申贖、參與券商、溢折價、追蹤與流動性 | L2 機制＋反證 | 40% |
+| D06-18 | Securities Lending Economics／Borrow Fee／Availability／Utilization借券經濟、費率、可借量與使用率 | L2 機制＋反證 | 40% |
+| D06-19 | Retail / Individual Investor Participation & Flow（散戶／自然人參與與流向） | L0 未研究 | 0% |
 
 
 ### D07｜基本面／財報／資訊動態 — 14.1%
@@ -690,14 +691,14 @@ GitHub專屬checkpoint：
 - L2→L3主要受台股資料來源、PIT語意與可重播性影響。
 - L3→L4受前瞻樣本與OOS累積速度影響，不能靠多開聊天室縮短市場日曆時間。
 - L4→L5受獨立日期、多Regime、成本、冗餘與必要時跨年度證據影響。
-- 因此「全355模組達L5」不能承諾一個短固定日期；未來應同時報告（A）可主動研究剩餘量與（B）等待市場資料累積量。
+- 因此「全356模組達L5」不能承諾一個短固定日期；未來應同時報告（A）可主動研究剩餘量與（B）等待市場資料累積量。
 
 ## 下一步
 
 1. 對現有研究聊天室逐一掛上專線編號。
 2. 各專線只領取自己尚未達L3的模組，先把可主動完成的知識補齊。
 3. 對已到L3但等待前瞻資料的模組，切換成「等待證據」，不要浪費聊天室反覆讀同一主題。
-4. 研究總控室每次匯總 GitHub 最新main後重新計算22領域與355模組進度。
+4. 研究總控室每次匯總 GitHub 最新main後重新計算22領域與356模組進度。
 
 ## 15項候選治理分類 — 韓哥批准 2026-10-03
 
