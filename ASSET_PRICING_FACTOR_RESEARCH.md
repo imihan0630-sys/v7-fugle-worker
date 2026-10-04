@@ -783,3 +783,82 @@ The physical smoke deliberately returned l3DataFeasibilityEligible=false. The re
 5. Run paired D03/D09 redundancy controls on identical PIT dates/universe.
 6. Replace transport-only cost placeholder with a versioned D14-compatible research cost scenario whose provenance quality is explicit.
 7. Re-run D19-04. Only a zero-blocker deterministic replay receipt can trigger an L3 readiness review; no automatic promotion.
+
+
+## 2026-10-04 Long-block Stage 8 — full TWSE universe reconciliation + TPEx negative transport experiment
+
+### D19-04 full-universe evidence materially advanced without maturity inflation
+PR #460 merged to main as `1a7b6e7e8d8552953f909f4ee1448733a1daf643`.
+
+The research-only coverage lane reconstructs a survivorship-controlled TWSE historical registry from official current-list, new-listing and delisting sources, freezes the 2026-08-31 snapshot, joins every member to the official 2026-08-03..2026-08-31 daily-history range, and forces each member into KNOWN or explicit UNKNOWN rather than silently dropping incomplete names.
+
+Physical evidence:
+- D19 TWSE full-universe workflow `37172684933`: PASS_TWSE_FULL_UNIVERSE_COVERAGE_NEGATIVE_L3_GATE.
+- System2 Research CI `37172684904`: PASS.
+- V8 Regression `37172684903`: PASS.
+- official trading dates: 21.
+- TWSE historical daily source rows: 22,810.
+- registry membership: 1,101; replay-eligible: 1,101; current: 1,089; delisted: 12; unknownStart: 0.
+- 2026-08-31 snapshot denominator: 1,089.
+- D19-04 20-session momentum input: 1,064 KNOWN / 25 explicit UNKNOWN = 97.7043% KNOWN coverage.
+
+UNKNOWN decomposition:
+- 2 recent listings: RECENT_LISTING_INSUFFICIENT_LOOKBACK.
+- 6 names: INCOMPLETE_SESSION_ROWS_REQUIRES_SESSION_PROVENANCE.
+- 17 names: NULL_OR_INVALID_CLOSE_REQUIRES_TRADING_STATE_PROVENANCE.
+- missing source-row hash was not observed in the UNKNOWN sample.
+
+Interpretation:
+- the old generic BOUNDED_UNIVERSE_NOT_HISTORICAL_REGISTRY blocker is no longer accurate for TWSE;
+- TWSE historical membership and denominator reconciliation are physically demonstrated;
+- this does NOT prove full-Taiwan D19 coverage because TPEx historical-universe/source replay remains unresolved;
+- the 23 non-recent-listing UNKNOWN names now define a precise symbol-session/trading-state evidence target rather than an unstructured missing-data problem;
+- no forward fill, pseudo-bar or UNKNOWN->0 conversion is authorized.
+
+### TPEx transport revalidation was a negative experiment
+PR #459 tested three official historical-quote transports:
+1. current o=json query shape;
+2. former response=json same-endpoint fallback;
+3. legacy JSON fallback.
+
+D19 real-source smoke `37172219750` preserved HTTP 520 on all three. System2 Research CI `37172219759` and V8 Regression `37172219828` passed, proving fail-closed behavior and isolation but not source recovery. PR #459 was therefore closed without merge.
+
+Counterevidence prevents an incorrect conclusion that TPEx historical data never existed: the earlier read-only full-market benchmark successfully read 18,646 TPEx stock-day rows over the same 2026-08-03..2026-08-31 period, average 887.90 names/day. However that benchmark did not persist the full-market rows into replayable cold history. Historical success is feasibility evidence, not a substitute for current immutable replay evidence.
+
+### Corporate-action continuity blocker narrowed, not cleared
+System2 S2-07 has physically verified TWSE/TPEx official corporate-action source/parser structure and exact requested-range identity, and the immutable continuity archive core exists. But certification remains locked. NO_EVENT cannot be inferred from an empty query until PIT universe completeness, revision/correction coverage, exact-range source coverage, missing-date accounting, empty-range semantics and symbol-session suspension/resumption completeness are all established.
+
+Therefore D19 must not relabel RAW history as TECHNICAL_CONTINUITY or interpret missing action evidence as no action.
+
+### Cost blocker narrowed only on statutory tax semantics
+Current official Taiwan guidance confirms ordinary stock sale tax at 0.3% and eligible same-day offset stock sale tax at 0.15% through 2027-12-31. Broker commissions remain broker-specific. D14 governance requires rate, minimum, calculation method, rounding policy, execution channel, executed notional and verified schedule provenance before a commission can be labeled MODELED; actual owner-account commission remains UNKNOWN. A market-reference rate alone is insufficient.
+
+Thus the D19 engineering zero-cost placeholder can now be rejected more precisely:
+- statutory tax-rate provenance: available;
+- owner-specific commission: UNKNOWN;
+- slippage/turnover/execution scenario: still must be frozen;
+- no actual-net claim is allowed.
+
+### Current blocker reconciliation
+Machine-readable reconciliation:
+`research/d19_04_l3_blocker_reconciliation_20261004_v0_1.json`.
+
+Current gate state:
+- Historical universe: PARTIAL_PASS — TWSE resolved; TPEx unresolved.
+- Factor-input coverage: PARTIAL_PASS — 1,064/1,089 KNOWN; 25 explicit UNKNOWN; no silent omission.
+- Corporate-action continuity: PARTIAL_PASS_SOURCE_PARSER_ONLY — certification blocked.
+- PIT industry neutralization: BLOCKED.
+- D03/D09 redundancy: BLOCKED.
+- Cost provenance: PARTIAL_PASS_TAX_ONLY.
+- TPEx historical replay source: BLOCKED_CURRENT_TRANSPORT.
+
+D19-04 remains L2 / 40%. No L3 promotion. The evidence improved the precision and executability of the blockers, not the maturity tier.
+
+### Exact next
+1. Attach authoritative symbol-session/trading-state evidence to the 23 non-recent-listing TWSE UNKNOWN names and preserve the two recent listings as legitimate insufficient-lookback states.
+2. Build a TPEx date-vintaged historical-universe receipt and a replay path that can consume immutable persisted official history without requiring today's live endpoint to be healthy.
+3. Bind corporate-action continuity receipts to exact D19 formation windows.
+4. Add PIT industry-vintage membership.
+5. Run D03/D09 paired redundancy controls on the identical frozen universe/date.
+6. Freeze D14-compatible explicit cost scenarios; actual account commission stays UNKNOWN unless directly evidenced.
+7. Only a full-Taiwan zero-applicable-blocker deterministic replay triggers L3 readiness review; no automatic promotion.
