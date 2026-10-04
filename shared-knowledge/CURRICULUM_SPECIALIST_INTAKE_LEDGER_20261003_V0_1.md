@@ -17,7 +17,10 @@ A cluster does not become decided merely because one participating room submits 
 - H01: **CANONICAL_UPDATE_COMPLETE / KEEP_SEPARATE + SCOPE_DEDUP_ONLY**.
 - H02-H04: pending.
 - H05: **PARTIAL_EVIDENCE_RECEIVED**.
-- H06-H19: pending.
+- H06: **PARTIAL_EVIDENCE_RECEIVED**（05 室完成；13 室待件）。
+- H07-H13: pending.
+- H14: **CLOSED_NO_STRUCTURAL_CHANGE / KEEP_SEPARATE**.
+- H15-H19: pending.
 - H20: **PARTIAL_EVIDENCE_RECEIVED**（02 室完成；01／04 待件）。
 - Actual merge/retirement decisions from returned packets: **0**.
 - Formal Core changes: **0**.
@@ -75,7 +78,7 @@ Until that packet arrives:
 | H03 | PENDING | — | specialist packet(s) |
 | H04 | PENDING | — | specialist packet(s) |
 | H05 | PARTIAL_EVIDENCE_RECEIVED | `research/h05_d07_25_specialist_evidence_packet_v0_1.json` | 14｜公司治理與內部人研究室 |
-| H06 | PENDING | — | specialist packet(s) |
+| H06 | PARTIAL_EVIDENCE_RECEIVED | `research/d06_h06_crowding_vs_herding_room05_packet_v0_1.md` | 13｜行為金融與市場心理研究室 |
 | H07 | PENDING | — | specialist packet(s) |
 | H08 | PENDING | — | specialist packet(s) |
 | H09 | PENDING | — | specialist packet(s) |
@@ -83,7 +86,7 @@ Until that packet arrives:
 | H11 | PENDING | — | specialist packet(s) |
 | H12 | PENDING | — | specialist packet(s) |
 | H13 | PENDING | — | specialist packet(s) |
-| H14 | PENDING | — | specialist packet(s) |
+| H14 | CLOSED_NO_STRUCTURAL_CHANGE | Room05 packet + Room08 equivalent PIT evidence | — |
 | H15 | PENDING | — | specialist packet(s) |
 | H16 | PENDING | — | specialist packet(s) |
 | H17 | PENDING | — | specialist packet(s) |
@@ -300,3 +303,59 @@ Executed:
 - shared parent evidence cannot generate two independent votes.
 
 Both remain L3/60%. No module-count or Formal Core change.
+
+
+## H06 intake — D06-06 Crowding vs D20-06 Herding / Social Proof
+
+Received:
+`research/d06_h06_crowding_vs_herding_room05_packet_v0_1.md`
+
+Source:
+05｜法人與籌碼研究室
+
+Intake result:
+**ROOM05_PACKET_ACCEPTED / ROOM13_COUNTERPART_REQUIRED / TERMINAL_DECISION_NOT_READY**
+
+What passed:
+- D06-06 observable crowding ownership;
+- structural controls and counterfactuals;
+- divergent-state examples;
+- anti-double-count rule;
+- no intent inference from crowding;
+- no maturity promotion;
+- Formal Core unchanged.
+
+Still required from 13｜行為金融與市場心理研究室:
+- independent behavior-specific observable or replayable residual-herding design;
+- common-information / factor / passive-flow / liquidity controls;
+- leader/follower or social/network evidence when PIT-capable;
+- proof that D20-06 is not merely a narrative relabel of D06-06.
+
+Existing D20-06 research is useful but still states that replayable independent behavioral data is not proven. Therefore H06 remains:
+`EVIDENCE_INSUFFICIENT_PENDING_ROOM13_COUNTERPART`.
+
+
+## H14 00-room closure — D06-11 vs D11-14
+
+Accepted:
+- Room05 packet: `research/d06_h14_index_event_vs_passive_flow_room05_packet_v0_1.md`;
+- equivalent independent Room08 evidence: `INDEX_ADJUSTMENT_PASSIVE_FLOW_RESEARCH.md` + `research/d11_index_adjustment_pit_receipt_v0_1.json`.
+
+00-room audit:
+- `shared-knowledge/CURRICULUM_H14_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`;
+- `shared-knowledge/curriculum_h14_dependency_anti_orphan_audit_20261004_v0_1.json`.
+
+Terminal result:
+**KEEP_SEPARATE / PRODUCER_CONSUMER_EVENT_FLOW_BOUNDARY / SINGLE_EVENT_RECEIPT**
+
+- D11-14 owns index-event identity and announcement/effective lifecycle.
+- D06-11 owns realized passive/index fund flow.
+- D06-16 owns ETF mechanics.
+- event-imputed flow is not an independent vote;
+- missing realized flow remains UNKNOWN;
+- D06-11 stays L2/40%;
+- D11-14 stays L3/60%;
+- no merge, retirement, rename, count or Formal change.
+
+State:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
