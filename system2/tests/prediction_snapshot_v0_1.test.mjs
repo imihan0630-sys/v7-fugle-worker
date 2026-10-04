@@ -144,6 +144,12 @@ const shadowRunReceipt = {
   marketDate,
   decisionTimestamp,
   runState: "COMPLETE",
+  stateCounts: {
+    INCOMPLETE: 0,
+    SOURCE_BLOCKED: 0,
+    SESSION_INVALID: 0,
+    ERROR: 0,
+  },
 };
 
 const runFingerprint = {
@@ -222,6 +228,33 @@ const zeroPick = await buildPredictionSnapshotBundleV0_1({
 });
 assert.equal(zeroPick.decisionCount, 0);
 assert.equal(zeroPick.zeroPickDay, true);
+assert.equal(zeroPick.zeroPickState, "CLEAN_ZERO_PICK");
+assert.equal(zeroPick.selectionDenominator.complete, true);
+
+const partialZero = await buildPredictionSnapshotBundleV0_1({
+  predictionSnapshotId: "PS-20260929-PARTIAL",
+  marketDate,
+  decisionTimestamp,
+  decisionSnapshots: [],
+  importantRejectedDecisionIds: [],
+  sourceSessionReceipt,
+  shadowRunReceipts: [{
+    ...shadowRunReceipt,
+    runId: "RUN-PARTIAL",
+    stateCounts: {
+      INCOMPLETE: 1,
+      SOURCE_BLOCKED: 0,
+      SESSION_INVALID: 0,
+      ERROR: 0,
+    },
+  }],
+  runFingerprints: [runFingerprint],
+  capturedAt,
+});
+assert.equal(partialZero.zeroPickDay, null);
+assert.equal(partialZero.zeroPickState, "PARTIAL_COVERAGE_NO_SELECTION");
+assert.equal(partialZero.selectionDenominator.complete, false);
+assert.equal(partialZero.selectionDenominator.unresolvedByState.INCOMPLETE, 1);
 
 await assert.rejects(
   () => buildPredictionSnapshotBundleV0_1({
