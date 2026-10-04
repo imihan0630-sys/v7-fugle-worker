@@ -1,0 +1,201 @@
+{
+  "schemaVersion": "D22_05_RATING_EVENT_REPLAY_V0_1",
+  "generatedAt": "2026-10-04T13:48:00+08:00",
+  "status": "RESEARCH_ONLY / MULTI_ISSUER_MULTI_DATE_RATING_EVENT_REPLAY / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "governance": {
+    "issuerRatingSeparateFromIssueRating": true,
+    "outlookSeparateFromRating": true,
+    "watchSeparateFromOutlook": true,
+    "affirmationIsEventButNotNotchMigration": true,
+    "ratingAgencyScalePreserved": true,
+    "laterHistoryDoesNotReplaceEventKnownAt": true,
+    "missingRatingIsUnratedOrUnknownNotBad": true
+  },
+  "receipts": [
+    {
+      "issuer": "Formosa Chemicals & Fibre",
+      "twseSymbol": "1326",
+      "industry": "petrochemical",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2023-10-30",
+      "priorState": {
+        "longTerm": "twAA",
+        "outlook": "Stable",
+        "shortTerm": "twA-1+"
+      },
+      "newState": {
+        "longTerm": "twAA",
+        "outlook": "Negative",
+        "shortTerm": "twA-1+"
+      },
+      "eventType": "OUTLOOK_DOWN",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4921",
+      "eventEvidence": "Outlook revised to Negative from Stable on weak profitability while ratings were affirmed.",
+      "informationContent": "Outlook deterioration without notch downgrade."
+    },
+    {
+      "issuer": "Formosa Chemicals & Fibre",
+      "twseSymbol": "1326",
+      "industry": "petrochemical",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2025-07-03",
+      "priorState": {
+        "longTerm": "twAA",
+        "outlook": "Negative",
+        "shortTerm": "twA-1+"
+      },
+      "newState": {
+        "longTerm": "twAA-",
+        "outlook": "Negative",
+        "shortTerm": "twA-1+"
+      },
+      "eventType": "DOWNGRADE",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4921",
+      "eventEvidence": "Long-term rating downgraded to twAA- on weakened leverage and profitability.",
+      "informationContent": "Formal notch downgrade after an earlier negative-outlook state."
+    },
+    {
+      "issuer": "Wan Hai Lines",
+      "twseSymbol": "2615",
+      "industry": "shipping",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2020-04-14",
+      "priorState": {
+        "longTerm": "twA-",
+        "outlook": "Stable",
+        "shortTerm": "twA-2"
+      },
+      "newState": {
+        "longTerm": "twA-",
+        "outlook": "Negative",
+        "shortTerm": "twA-2"
+      },
+      "eventType": "OUTLOOK_DOWN",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/viewMemberProfileArticle/23341",
+      "eventEvidence": "Outlook revised to Negative from Stable while issuer ratings were affirmed.",
+      "informationContent": "Negative outlook can precede later improvement without a downgrade."
+    },
+    {
+      "issuer": "Wan Hai Lines",
+      "twseSymbol": "2615",
+      "industry": "shipping",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2021-04-29",
+      "priorState": {
+        "longTerm": "twA-",
+        "outlook": "Negative",
+        "shortTerm": "twA-2"
+      },
+      "newState": {
+        "longTerm": "twA-",
+        "outlook": "Stable",
+        "shortTerm": "twA-2"
+      },
+      "eventType": "OUTLOOK_UP",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/viewMemberProfileArticle/25130",
+      "eventEvidence": "Outlook revised to Stable from Negative while ratings were affirmed.",
+      "informationContent": "Outlook can improve before any notch change."
+    },
+    {
+      "issuer": "Wan Hai Lines",
+      "twseSymbol": "2615",
+      "industry": "shipping",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2021-09-16",
+      "priorState": {
+        "longTerm": "twA-",
+        "outlook": "Stable",
+        "shortTerm": "twA-2"
+      },
+      "newState": {
+        "longTerm": "twA-",
+        "outlook": "Positive",
+        "shortTerm": "twA-2"
+      },
+      "eventType": "OUTLOOK_UP",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/viewMemberProfileArticle/25872",
+      "eventEvidence": "Outlook revised to Positive from Stable; ratings affirmed.",
+      "informationContent": "Second-stage positive migration before formal upgrade."
+    },
+    {
+      "issuer": "Wan Hai Lines",
+      "twseSymbol": "2615",
+      "industry": "shipping",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2022-04-26",
+      "priorState": {
+        "longTerm": "twA-",
+        "outlook": "Positive",
+        "shortTerm": "twA-2"
+      },
+      "newState": {
+        "longTerm": "twA",
+        "outlook": "Stable",
+        "shortTerm": "twA-1"
+      },
+      "eventType": "UPGRADE",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5491",
+      "eventEvidence": "Issuer ratings upgraded to twA/twA-1 with Stable outlook.",
+      "informationContent": "Formal upgrade follows prior positive-outlook state."
+    },
+    {
+      "issuer": "TCC Group Holdings",
+      "twseSymbol": "1101",
+      "industry": "cement_materials",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2022-04-21",
+      "priorState": {
+        "longTerm": "twA+",
+        "outlook": "Stable",
+        "shortTerm": "twA-1"
+      },
+      "newState": {
+        "longTerm": "twA+",
+        "outlook": "Negative",
+        "shortTerm": "twA-1"
+      },
+      "eventType": "OUTLOOK_DOWN",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4816",
+      "eventEvidence": "Outlook revised to Negative from Stable; ratings affirmed.",
+      "informationContent": "Outlook deterioration without notch migration."
+    },
+    {
+      "issuer": "TCC Group Holdings",
+      "twseSymbol": "1101",
+      "industry": "cement_materials",
+      "agency": "Taiwan Ratings",
+      "eventDate": "2024-04-29",
+      "priorState": {
+        "longTerm": "twA+",
+        "outlook": "Negative",
+        "shortTerm": "twA-1"
+      },
+      "newState": {
+        "longTerm": "twA+",
+        "outlook": "Stable",
+        "shortTerm": "twA-1"
+      },
+      "eventType": "OUTLOOK_UP",
+      "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=4816",
+      "eventEvidence": "Outlook revised to Stable from Negative on improving profitability; ratings affirmed.",
+      "informationContent": "Outlook normalization without notch change."
+    }
+  ],
+  "falsificationFindings": [
+    "Formosa Chemicals shows an outlook downgrade can precede a formal notch downgrade by a long interval; counting both as independent fresh negative shocks without anticipation controls would double count.",
+    "Wan Hai demonstrates a sequence Negative→Stable→Positive→Upgrade, proving outlook/watch states are economically distinct from notch migration.",
+    "TCC demonstrates outlook deterioration and later normalization with the same rating, so binary upgrade/downgrade data discards relevant state changes.",
+    "No event above is treated as a stock-direction signal; market anticipation and fundamentals must be controlled before any outcome test."
+  ],
+  "maturityDecision": {
+    "proposedLevel": "L3",
+    "maturityPct": 60,
+    "rationale": "Exact-dated issuer-rating/outlook events are independently replayable across multiple Taiwan non-financial industries and multiple dates, with event type and prior/new state preserved. L3 validates PIT data feasibility only."
+  },
+  "next": [
+    "Add issue-rating events and CreditWatch/review events to separate issuer and instrument information.",
+    "Join pre-event D22-06 credit pricing and equity/fundamental state without opening outcomes until anticipation controls are preregistered.",
+    "Build event clustering rules so outlook, watch and downgrade within one deterioration episode do not become multiple independent votes.",
+    "Proceed to L4 only with OOS/walk-forward/prospective evidence."
+  ]
+}
