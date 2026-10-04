@@ -1,6 +1,6 @@
 import { sha256Hex } from "./decision_archive.mjs";
 
-export const DAILY_RESONANCE_PERSISTENCE_VERSION = "0.1-RESEARCH";
+export const DAILY_RESONANCE_PERSISTENCE_VERSION = "0.2-RESEARCH";
 
 function assertDb(db) {
   if (!db || typeof db.prepare !== "function") throw new Error("SYSTEM2_DB binding is required");
@@ -13,19 +13,64 @@ function parseJson(value, fallback = null) {
   return JSON.parse(String(value));
 }
 
+export function normalizeCapacityDenominatorProvenanceV0_1(row) {
+  const counts = parseJson(
+    row?.counts_json ?? row?.countsJson ?? row?.source_capacity_counts_json ?? row?.sourceCapacityCountsJson,
+    {},
+  ) || {};
+  const raw = counts.selectionDenominator;
+  if (!raw || typeof raw !== "object") {
+    return Object.freeze({
+      version: null,
+      denominatorState: "UNKNOWN",
+      unresolvedCount: null,
+      unresolvedByState: Object.freeze({}),
+      blockerCodes: Object.freeze(["LEGACY_PROVENANCE_INCOMPLETE"]),
+      contributingShadowRuns: Object.freeze([]),
+      provenanceHash: null,
+      legacyProvenanceIncomplete: true,
+    });
+  }
+  if (!["COMPLETE", "PARTIAL", "UNKNOWN"].includes(raw.denominatorState)) {
+    throw new Error("CAPACITY_DENOMINATOR_PROVENANCE_INVALID_STATE");
+  }
+  if (typeof raw.provenanceHash !== "string" || !/^[a-f0-9]{64}$/.test(raw.provenanceHash)) {
+    throw new Error("CAPACITY_DENOMINATOR_PROVENANCE_INVALID_HASH");
+  }
+  return Object.freeze({
+    version: raw.version || null,
+    denominatorState: raw.denominatorState,
+    unresolvedCount: raw.unresolvedCount === null || raw.unresolvedCount === undefined
+      ? null
+      : Number(raw.unresolvedCount),
+    unresolvedByState: Object.freeze({ ...(raw.unresolvedByState || {}) }),
+    blockerCodes: Object.freeze([...(raw.blockerCodes || [])].map(String)),
+    contributingShadowRuns: Object.freeze(
+      [...(raw.contributingShadowRuns || [])].map((item) => Object.freeze({ ...item })),
+    ),
+    provenanceHash: raw.provenanceHash,
+    legacyProvenanceIncomplete: false,
+  });
+}
+
 export async function loadLatestCapacityRunForResonanceV0_1(db, marketDate, asOf) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(String(marketDate || ""))) {
     throw new Error("a current refresh marketDate is required");
   }
   if (!Number.isFinite(Date.parse(asOf))) throw new Error("refresh asOf is required");
-  return assertDb(db).prepare(
+  const row = await assertDb(db).prepare(
     `SELECT capacity_run_id, market_date, decision_timestamp, active_assignments_json,
-            capacity_hash, captured_at
+            counts_json, capacity_hash, captured_at, schema_version
        FROM s2_capacity_runs
       WHERE market_date = ? AND decision_timestamp <= ? AND captured_at <= ?
       ORDER BY decision_timestamp DESC, captured_at DESC
       LIMIT 1`,
   ).bind(marketDate, asOf, asOf).first();
+  if (!row) return null;
+  return Object.freeze({
+    ...row,
+    denominatorProvenance: normalizeCapacityDenominatorProvenanceV0_1(row),
+  });
 }
 
 export async function persistResonanceWatchPoolV0_1(db, pool) {
@@ -71,9 +116,15 @@ export async function loadActiveResonanceWatchPoolV0_1(db, marketDate) {
   ).bind(marketDate).first();
   if (!audit || audit.run_state === "POOL_REFRESH_NO_CAPACITY_RECEIPT" || !audit.pool_id) return null;
   const row = await db.prepare(
-    `SELECT * FROM s2_resonance_watch_pools
-      WHERE pool_id = ? AND source_market_date = ?
-        AND state IN ('ACTIVE', 'ZERO_PICK_ACTIVE')
+    `SELECT p.*,
+            c.counts_json AS source_capacity_counts_json,
+            c.schema_version AS source_capacity_schema_version
+       FROM s2_resonance_watch_pools p
+       LEFT JOIN s2_capacity_runs c
+         ON c.capacity_run_id = p.source_capacity_run_id
+        AND c.capacity_hash = p.source_capacity_hash
+      WHERE p.pool_id = ? AND p.source_market_date = ?
+        AND p.state IN ('ACTIVE', 'ZERO_PICK_ACTIVE')
       LIMIT 1`,
   ).bind(audit.pool_id, audit.market_date).first();
   if (!row) return null;
@@ -84,6 +135,9 @@ export async function loadActiveResonanceWatchPoolV0_1(db, marketDate) {
     sourceCapacityHash: row.source_capacity_hash,
     sourceMarketDate: row.source_market_date,
     sourceDecisionTimestamp: row.source_decision_timestamp,
+    sourceDenominatorProvenance: normalizeCapacityDenominatorProvenanceV0_1({
+      source_capacity_counts_json: row.source_capacity_counts_json,
+    }),
     activatedAt: row.activated_at,
     state: row.state,
     symbolCount: Number(row.symbol_count),
