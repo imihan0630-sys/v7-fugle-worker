@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "D19_12_DATE_INTRINSIC_MULTI_YEAR_PIT_RECEIPT_V0_2",
+  "capturedAt": "2026-10-05T07:15:00+08:00",
+  "module": "D19-12",
+  "mode": "MULTI_YEAR_TWSE_DATE_INTRINSIC_PIT_ROBUSTNESS / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "validatedStates": [
+    "WEEKDAY",
+    "MONTH_OF_YEAR"
+  ],
+  "years": [
+    {
+      "year": 2017,
+      "officialTradingDateCount": 246,
+      "firstTradingDate": "2017-01-03",
+      "lastTradingDate": "2017-12-29",
+      "weekdayCounts": {
+        "Monday": 45,
+        "Tuesday": 47,
+        "Wednesday": 49,
+        "Thursday": 51,
+        "Friday": 51,
+        "Saturday": 3
+      },
+      "monthCounts": {
+        "1": 16,
+        "2": 18,
+        "3": 23,
+        "4": 18,
+        "5": 20,
+        "6": 23,
+        "7": 21,
+        "8": 23,
+        "9": 22,
+        "10": 19,
+        "11": 22,
+        "12": 21
+      },
+      "stateHash": "856342c9806eb3464d21ad76821c46ec3c08c7f2841791f9dfe8e4e346212cc6",
+      "physicalEvidencePath": "system2/evidence/S2_HISTORICAL_TWSE_2017_PHYSICAL_VERIFICATION_V0_1.json",
+      "physicalEvidenceContentSha": "b0232b6ae173475576b16ca655a791e12b063d12",
+      "physicalWorkflowRun": 37197090867,
+      "artifactDigest": "sha256:6b535e6d32a7f768ca55bb5fe98b504efb6a7d770a3b5a11071760d673bc6618",
+      "freshOfficialRowCount": 222194,
+      "coldRowCount": 222194,
+      "missingFromColdCount": 0,
+      "absentFromFreshOfficialCount": 0,
+      "sourceRowHashMismatchCount": 0
+    },
+    {
+      "year": 2018,
+      "officialTradingDateCount": 247,
+      "firstTradingDate": "2018-01-02",
+      "lastTradingDate": "2018-12-28",
+      "weekdayCounts": {
+        "Monday": 48,
+        "Tuesday": 49,
+        "Wednesday": 48,
+        "Thursday": 50,
+        "Friday": 50,
+        "Saturday": 2
+      },
+      "monthCounts": {
+        "1": 22,
+        "2": 13,
+        "3": 23,
+        "4": 18,
+        "5": 22,
+        "6": 20,
+        "7": 22,
+        "8": 23,
+        "9": 19,
+        "10": 22,
+        "11": 22,
+        "12": 21
+      },
+      "stateHash": "18d7af407780ddaf8c3e597c7b8e55dfeeee1beafa54454d5fabc7861d9b6db0",
+      "physicalEvidencePath": "system2/evidence/S2_HISTORICAL_TWSE_2018_PHYSICAL_VERIFICATION_V0_1.json",
+      "physicalEvidenceContentSha": "8c8df27ba9efb73dc4dea7c172c9e318f4fe265c",
+      "physicalWorkflowRun": 37211022004,
+      "artifactDigest": "sha256:d788354ab68f9005a7b758aab36912eef9e9104b3f81df06ef7585a3e92d00ff",
+      "freshOfficialRowCount": 227381,
+      "coldRowCount": 227381,
+      "missingFromColdCount": 0,
+      "absentFromFreshOfficialCount": 0,
+      "sourceRowHashMismatchCount": 0
+    }
+  ],
+  "multiYearStateHash": "fed1ca6c7f9e9edd1d3a366c1de3c1ecf0618578f1d80ff317e0409bde590557",
+  "implementation": {
+    "mergeCommit": "32a6adc155eda8c1a500baf73346c55170de4a7b",
+    "scriptPath": "system2/scripts/d19_12_date_intrinsic_multiyear_smoke_v0_1.mjs",
+    "workflowPath": ".github/workflows/d19-12-date-intrinsic-multiyear-smoke.yml",
+    "system2CiRun": 37243300685,
+    "v8RegressionRun": 37243300702,
+    "d19SmokeRun": 37243300721
+  },
+  "featureSemantics": {
+    "WEEKDAY": {
+      "definition": "Gregorian weekday of the actual official trading marketDate; Saturday trading sessions are preserved rather than forced into a Monday-Friday assumption.",
+      "futureInformationRequired": false
+    },
+    "MONTH_OF_YEAR": {
+      "definition": "Gregorian month extracted from the same official trading marketDate.",
+      "futureInformationRequired": false
+    }
+  },
+  "robustnessFindings": [
+    "Identical feature semantics replayed across two independent TWSE historical years.",
+    "2017 includes three Saturday trading sessions and 2018 includes two; weekday research must use actual official trading dates rather than assume Monday-Friday only.",
+    "Fresh official rows exactly reconcile to cold rows for both years with zero missing, extra, or source-row-hash mismatch.",
+    "No return outcome, anomaly sign, threshold, score, or Formal rule is opened."
+  ],
+  "scopeExclusions": [
+    "HOLIDAY",
+    "PRE_HOLIDAY",
+    "POST_HOLIDAY",
+    "TURN_OF_MONTH",
+    "LUNAR_CALENDAR",
+    "SETTLEMENT_OR_INDEX_REBALANCE"
+  ],
+  "maturityDecision": {
+    "level": "L3",
+    "maturityPct": 60,
+    "changed": false,
+    "reason": "Independent-year robustness strengthens the existing bounded PIT data-feasibility claim but does not provide prospective/OOS return evidence required for L4."
+  },
+  "exactNext": [
+    "Seek historical calendar-vintage / announcedAt evidence before holiday, pre-holiday, post-holiday or turn-of-month L3 scope review.",
+    "Preserve lunar-calendar and settlement/index-rebalance subfamilies as separately source-gated.",
+    "No L4 without prospective/OOS outcomes, transaction costs, multiple-testing controls and robustness."
+  ],
+  "status": "MULTI_YEAR_DATE_INTRINSIC_TWSE_PIT_ROBUSTNESS_PASS / OUTCOMES_CLOSED / L3_UNCHANGED / FORMAL_UNCHANGED",
+  "receiptHash": "5b9124396eb9d93e5af31e2ff8aede322d7a7b5fab328043066d69f6dc0320b7"
+}
