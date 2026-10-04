@@ -135,10 +135,17 @@
     },
     {
       "id": "H13",
-      "status": "PENDING",
-      "receivedPackets": [],
+      "status": "CLOSED_NO_STRUCTURAL_CHANGE",
+      "receivedPackets": [
+        "FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md",
+        "CREDIT_CAPITAL_STRUCTURE_RESEARCH.md",
+        "CREDIT_CAPITAL_STRUCTURE_CHECKPOINT.md",
+        "research/d22_03_net_debt_leverage_structure_contract_v0_1.json",
+        "research/d22_03_net_debt_component_replay_v0_1.json",
+        "research/d22_03_version_lineage_v0_1.json"
+      ],
       "pendingRooms": [],
-      "controlDecision": "NOT_EVALUATED"
+      "controlDecision": "KEEP_SEPARATE_ACCOUNTING_PRIMITIVE_VS_CREDIT_FUNDING_TRANSFORM"
     },
     {
       "id": "H14",
@@ -476,6 +483,23 @@
     ],
     "currentControlDecision": "EVIDENCE_INSUFFICIENT_PENDING_COMMON_PARENT_RESIDUAL_TEST",
     "maturityChange": "NONE",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "h13": {
+    "sourceRooms": [
+      "06｜基本面與估值研究室",
+      "15｜信用市場與資本結構研究室"
+    ],
+    "evidenceMode": "EQUIVALENT_COMPLETE_CROSS_ROOM_EVIDENCE",
+    "audit": "shared-knowledge/CURRICULUM_H13_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md",
+    "machineAudit": "shared-knowledge/curriculum_h13_dependency_anti_orphan_audit_20261004_v0_1.json",
+    "canonicalReceipt": "shared-knowledge/CURRICULUM_H13_CANONICAL_CLOSURE_RECEIPT_20261004_V0_1.md",
+    "canonicalReceiptJson": "shared-knowledge/curriculum_h13_canonical_closure_receipt_20261004_v0_1.json",
+    "terminalClassification": "KEEP_SEPARATE",
+    "governanceDisposition": "ACCOUNTING_PRIMITIVE_VS_CREDIT_FUNDING_TRANSFORM",
+    "state": "CLOSED_NO_STRUCTURAL_CHANGE",
+    "maturityChange": "NONE_D07_06_L2_40_D22_03_L3_60",
+    "structuralChange": "NONE",
     "formalOptimizationCandidate": "NONE"
   }
 }
