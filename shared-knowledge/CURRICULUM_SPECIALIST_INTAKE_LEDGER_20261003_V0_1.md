@@ -83,7 +83,7 @@ Until that packet arrives:
 | H08 | CLOSED_NO_STRUCTURAL_CHANGE | Room07 + Room08 + Room13 equivalent complete evidence | — |
 | H09 | CANONICAL_UPDATE_COMPLETE | equivalent complete Room11 evidence | — |
 | H10 | OWNER_APPROVAL_REQUIRED | Room07 + Room08 equivalent complete evidence | owner approval for SCOPE_DEDUP_ONLY |
-| H11 | PARTIAL_EVIDENCE_RECEIVED | Room09 D12 surface/skew research + method QA | 09｜衍生品與國際總經研究室 residual common-parent comparison |
+| H11 | OWNER_APPROVAL_REQUIRED | `research/d12_h11_common_parent_residual_return_20261004_v0_1.json` | owner approval for SCOPE_DEDUP_ONLY |
 | H12 | PARTIAL_EVIDENCE_RECEIVED | Room05 + Room13 semantic packet | 10｜投組風控與交易執行研究室 + Room13 first live TWSE source receipt |
 | H13 | CLOSED_NO_STRUCTURAL_CHANGE | equivalent Room06 + Room15 evidence | — |
 | H14 | CLOSED_NO_STRUCTURAL_CHANGE | Room05 packet + Room08 equivalent PIT evidence | — |
@@ -787,3 +787,22 @@ Current state:
 `OWNER_APPROVAL_REQUIRED`.
 
 No rename, module-count, maturity, Formal or runtime change before approval.
+
+
+## H11 terminal specialist return + 00 audit — 2026-10-04
+
+Accepted terminal specialist return:
+`research/d12_h11_common_parent_residual_return_20261004_v0_1.json`.
+
+00 audit:
+`shared-knowledge/CURRICULUM_H11_DEPENDENCY_SCOPE_DEDUP_AUDIT_20261004_V0_1.md`.
+
+Result:
+**KEEP_SEPARATE / SCOPE_DEDUP_ONLY / OWNER_APPROVAL_REQUIRED**.
+
+Proposed ownership:
+- D12-07 = simple skew level/asymmetry + ATM/near-far term-structure baseline owner.
+- D12-16 = residual curvature/smile + cross-expiry surface interaction + construction/fit/coverage/static-arbitrage quality owner.
+- D12-16 cannot re-count D12-07 linear skew/ATM term primitive as a second vote.
+
+Both remain L2/40%; no rename, module-count, maturity or Formal change before approval.
