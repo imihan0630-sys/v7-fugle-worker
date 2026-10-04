@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "CURRICULUM_H08_DEPENDENCY_ANTI_ORPHAN_AUDIT_V0_1",
+  "date": "2026-10-04",
+  "auditBaseMain": "587144013dc705c9e27c36a6f9d5046fae15fe55",
+  "clusterId": "H08",
+  "modules": [
+    "D09-11",
+    "D17-11",
+    "D20-11"
+  ],
+  "acceptedEvidence": [
+    "MARKET_BREADTH_ROTATION_RESEARCH.md",
+    "NEWS_EVENT_TRANSMISSION_RESEARCH.md",
+    "research/news_event_transmission_contract_v0_2.json",
+    "BEHAVIORAL_FINANCE_RESEARCH.md",
+    "BEHAVIORAL_FINANCE_CHECKPOINT.md"
+  ],
+  "terminalClassification": "KEEP_SEPARATE",
+  "governanceDisposition": "MEMBERSHIP_VS_EVENT_PROPAGATION_VS_NARRATIVE_DIFFUSION",
+  "dependencyAudit": "PASS_THREE_LAYER_MEMBERSHIP_EVENT_NARRATIVE_GRAPH",
+  "antiDoubleCount": "PASS_SHARED_THEME_EVENT_SOCIAL_RECEIPT_FIREWALL",
+  "antiOrphan": "PASS_NO_ORPHAN",
+  "maturity": {
+    "D09-11": {
+      "level": "L3",
+      "maturityPct": 60,
+      "change": "NONE"
+    },
+    "D17-11": {
+      "level": "L2",
+      "maturityPct": 40,
+      "change": "NONE"
+    },
+    "D20-11": {
+      "level": "L3",
+      "maturityPct": 60,
+      "change": "NONE"
+    }
+  },
+  "state": "CLOSED_NO_STRUCTURAL_CHANGE",
+  "structuralChange": "NONE",
+  "ownerApprovalRequired": false,
+  "formalCoreImpact": "NONE_LOCKED"
+}
