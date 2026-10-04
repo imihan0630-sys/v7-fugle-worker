@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.1",
+  "schemaVersion": "0.1.1",
   "generatedAt": "2026-10-04 Asia/Taipei",
   "status": "PRE_PVE_240_OUTCOME_BLIND_EXECUTABLE_GATE_PASS",
   "evidenceCursor": "PVE-239",
@@ -9,7 +9,7 @@
   "runtime": {
     "name": "Node.js",
     "version": "v22.16.0",
-    "tests": 19,
+    "tests": 23,
     "status": "PASS"
   },
   "artifacts": [
@@ -38,12 +38,20 @@
     "censoredOutcomeCountsAsCompleted": false,
     "duplicateEventIdFatalIntegrity": true,
     "maturityPromotionAuthorized": false,
-    "formalCoreChangeAuthorized": false
+    "formalCoreChangeAuthorized": false,
+    "hypothesisSpecificEvidenceAccounting": true
   },
   "remainingBlockers": [
     "CLEAN_DATE_ZERO",
     "PVE-240_PENDING",
     "GATE_7_CLOSED",
     "NO_GENUINE_PROSPECTIVE_OR_OOS_EVIDENCE"
-  ]
+  ],
+  "hypothesisSpecificFloors": true,
+  "crossHypothesisSampleBorrowingAllowed": false,
+  "correctedDefect": {
+    "id": "WAVE1_CROSS_HYPOTHESIS_SAMPLE_BORROWING",
+    "status": "FIXED_BEFORE_GENUINE_PROSPECTIVE_OUTCOME_EVIDENCE",
+    "effect": "dates/events/review receipts are now hypothesis-specific"
+  }
 }
