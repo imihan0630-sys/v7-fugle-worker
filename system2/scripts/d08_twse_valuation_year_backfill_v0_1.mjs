@@ -26,10 +26,15 @@ if(year!==2026) assert.ok(calendar.tradingDates.length>220,"TWSE full-year tradi
 
 const dateSources=[];
 const dates=calendar.tradingDates;
-for(let i=0;i<dates.length;i+=4){
-  const batch=dates.slice(i,i+4);
+for(let i=0;i<dates.length;i+=2){
+  const batch=dates.slice(i,i+2);
   const got=await Promise.all(batch.map(marketDate=>
-    fetchOfficialHistoricalA6ValuationDateV0_1({marketDate,observedAt:capturedAt})
+    fetchOfficialHistoricalA6ValuationDateV0_1({
+      marketDate,
+      observedAt:capturedAt,
+      retryAttempts:6,
+      retryDelayMs:650,
+    })
   ));
   for(const source of got){
     assert.equal(source.state,"READY","A6 history source not READY "+source.marketDate);
@@ -37,7 +42,7 @@ for(let i=0;i<dates.length;i+=4){
     assert.ok(source.ordinarySymbolCount>500,"A6 ordinary symbol coverage too low "+source.marketDate);
     dateSources.push(source);
   }
-  if(i+4<dates.length) await new Promise(r=>setTimeout(r,120));
+  if(i+2<dates.length) await new Promise(r=>setTimeout(r,220));
 }
 dateSources.sort((a,b)=>a.marketDate.localeCompare(b.marketDate));
 assert.equal(dateSources.length,dates.length,"A6 trading-date/source count mismatch");
