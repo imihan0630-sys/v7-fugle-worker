@@ -1,6 +1,6 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 
-export const OFFICIAL_HISTORICAL_A1_SOURCE_VERSION = "0.2-RESEARCH";
+export const OFFICIAL_HISTORICAL_A1_SOURCE_VERSION = "0.3-RESEARCH";
 
 export const OFFICIAL_HISTORICAL_A1_SOURCES = deepFreeze({
   TWSE: {
@@ -247,7 +247,7 @@ export function buildOfficialHistoricalA1UrlV0_1(market, marketDate) {
     return `${OFFICIAL_HISTORICAL_A1_SOURCES.TWSE.sourceUrl}?response=json&date=${compactDate(date)}&type=ALLBUT0999`;
   }
   if (market === "TPEX") {
-    return `${OFFICIAL_HISTORICAL_A1_SOURCES.TPEX.sourceUrl}?response=json&date=${encodeURIComponent(slashDate(date))}`;
+    return `${OFFICIAL_HISTORICAL_A1_SOURCES.TPEX.sourceUrl}?l=zh-tw&s=0%2Casc%2C0&o=json&date=${encodeURIComponent(slashDate(date))}`;
   }
   throw new Error("unsupported market: " + market);
 }
@@ -257,6 +257,7 @@ export function buildOfficialHistoricalA1FallbackUrlsV0_1(market, marketDate) {
   if (market !== "TPEX") return deepFreeze([]);
   const source = OFFICIAL_HISTORICAL_A1_SOURCES.TPEX;
   return deepFreeze([
+    `${source.sourceUrl}?response=json&date=${encodeURIComponent(slashDate(date))}`,
     `${source.legacySourceUrl}?l=zh-tw&d=${encodeURIComponent(rocSlashDate(date))}&se=EW&s=0%2Casc%2C0&o=json`,
   ]);
 }
@@ -338,10 +339,15 @@ export async function fetchOfficialHistoricalA1DateV0_1({
   }
 
   const primaryUrl = buildOfficialHistoricalA1UrlV0_1(market, marketDate);
+  const fallbacks = buildOfficialHistoricalA1FallbackUrlsV0_1(market, marketDate);
   const candidates = [
     { url: primaryUrl, transportMode: "PRIMARY" },
-    ...buildOfficialHistoricalA1FallbackUrlsV0_1(market, marketDate)
-      .map((url) => ({ url, transportMode: "LEGACY_JSON_FALLBACK" })),
+    ...fallbacks.map((url, index) => ({
+      url,
+      transportMode: market === "TPEX" && index === 0
+        ? "RESPONSE_JSON_FALLBACK"
+        : "LEGACY_JSON_FALLBACK",
+    })),
   ];
   const transportErrors = [];
 
