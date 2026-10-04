@@ -359,3 +359,50 @@ No formal specialist return exists yet for COV-01, COV-06, COV-07, COV-08, COV-0
 Partial evidence must not be mislabeled as a specialist return.
 
 Formal Core remains LOCKED.
+
+
+## COV-08 / COV-09 return-readiness reconciliation — 2026-10-04
+
+Both candidates remain formally `PARTIAL_EVIDENCE_RECEIVED` because Coverage governance requires a committed specialist return before 00 Intake.
+
+### COV-08 — D16 dependence-aware resampling
+
+Readiness:
+`SPECIALIST_RETURN_READY_PENDING_TERMINAL_RECOMMENDATION`.
+
+Already established:
+- naive iid inference is invalid under regime persistence / overlapping horizons / position carry / volatility clustering / common shocks;
+- stationary and moving/block bootstrap are accepted candidate dependence-aware methods;
+- HAC/cluster-robust inference remains a simpler alternative when assumptions fit;
+- block length/bandwidth is an inference parameter and must be documented/sensitivity-tested, never outcome-tuned;
+- multiple resampling variants are diagnostics, not multiple evidence votes;
+- D16-06 is the natural module-level owner.
+
+Exact remaining specialist delta:
+1. freeze when cluster-robust/HAC is enough versus block bootstrap required;
+2. freeze minimum sample / effective-sample / block-length sensitivity reporting;
+3. give exactly one terminal recommendation;
+4. commit `research/COV08_D16_SPECIALIST_RETURN_V0_1.md`.
+
+No maturity or Formal change.
+
+### COV-09 — D19 multi-factor benchmark models
+
+Readiness:
+`SPECIALIST_RETURN_READY_PENDING_TERMINAL_RECOMMENDATION`.
+
+Already established:
+- D19-15 owns benchmark construction/methodology;
+- D19-01 owns benchmark-relative alpha/residual interpretation;
+- D19-10 owns exposure/multicollinearity/spanning diagnostics;
+- Fama-French / profitability-investment / q-style evidence and Taiwan heterogeneity are already researched;
+- benchmark vintage, PIT universe, corporate actions, delistings, costs and multiple testing are required;
+- benchmark models are risk-adjustment/attribution tools, not automatic strategy votes.
+
+Exact remaining specialist delta:
+1. freeze D19-15 as benchmark-model construction owner versus D19-01/D19-10 consumers;
+2. state whether Taiwan inference requires Taiwan-reconstructed benchmark portfolios rather than imported U.S. factors;
+3. give exactly one terminal recommendation;
+4. commit `research/COV09_D19_SPECIALIST_RETURN_V0_1.md`.
+
+No maturity or Formal change.
