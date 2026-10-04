@@ -28,7 +28,7 @@ This registry tracks routing and return state; it does not itself decide module 
 | COV-07 | D12 | 09｜衍生品與國際總經研究室 | TRUE_GAP_CANDIDATE | PARTIAL_EVIDENCE_RECEIVED | `research/COV07_D12_SPECIALIST_RETURN_V0_1.md` |
 | COV-10 | D20 | 13｜行為金融與市場心理研究室 | TRUE_GAP_CANDIDATE | PARTIAL_EVIDENCE_RECEIVED | `research/COV10_D20_SPECIALIST_RETURN_V0_1.md` |
 | COV-11 | D21 | 14｜公司治理與內部人研究室 | TRUE_GAP_CANDIDATE | PARTIAL_EVIDENCE_RECEIVED | `research/COV11_D21_SPECIALIST_RETURN_V0_1.md` |
-| COV-12 | D22 | 15｜信用市場與資本結構研究室 | SCOPE_EXTENSION_CANDIDATE | PENDING_SPECIALIST_RETURN | `research/COV12_D22_SPECIALIST_RETURN_V0_1.md` |
+| COV-12 | D22 | 15｜信用市場與資本結構研究室 | SCOPE_EXTENSION_CANDIDATE | PARTIAL_EVIDENCE_RECEIVED | `research/COV12_D22_SPECIALIST_RETURN_V0_1.md` |
 
 ## Coverage-B registry
 
@@ -541,3 +541,43 @@ Still required:
 9. commit `research/COV11_D21_SPECIALIST_RETURN_V0_1.md`.
 
 No maturity or Formal change.
+
+
+## COV-12 partial-intake reconciliation — 2026-10-04
+
+COV-12 is no longer an empty Coverage candidate.
+
+Accepted Room15 evidence:
+- `research/d22_12_distress_recovery_tail_risk_contract_v0_1.json`;
+- `research/d22_12_distress_recovery_replay_readiness_v0_1.json`;
+- D22-07 Taiwan covenant/default/liquidity replay;
+- D22-12 default/recovery source-route and rare-event/selection-bias safeguards.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED`.
+
+Exact blocker:
+`INSTRUMENT_LEVEL_SENIORITY_COLLATERAL_RECOVERY_WATERFALL_REPLAY_PENDING`.
+
+Already frozen:
+- D22-07 owns covenant/default trigger semantics;
+- D22-12 owns distress/recovery/equity-tail-risk semantics;
+- PD, LGD/recovery, distress state and equity tail risk are distinct;
+- recovery is seniority/collateral/process dependent;
+- universal recovery rates are prohibited;
+- missing recovery remains UNKNOWN;
+- defaulted/delisted/unrated cases must remain in the denominator.
+
+Still required:
+1. secured / unsecured / subordinated ranking;
+2. collateral package, guarantees and structural subordination;
+3. recovery waterfall distinct from D22-07 default trigger;
+4. at least one Taiwan issuer/security historical document-vintage replay with knownAt;
+5. actual claim-priority/collateral/guarantee linkage to default/restructuring/recovery;
+6. private bank-loan ranking/collateral remains UNKNOWN when undisclosed;
+7. compare D22-12 vs D22-07 scope extension;
+8. anti-double-count versus D07 leverage and D21 pledging/control;
+9. exactly one terminal recommendation;
+10. commit `research/COV12_D22_SPECIALIST_RETURN_V0_1.md`.
+
+No maturity, module-count or Formal change.
