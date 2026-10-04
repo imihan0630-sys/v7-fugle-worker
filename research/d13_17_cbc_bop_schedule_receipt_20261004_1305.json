@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "0.1",
+  "status": "PROSPECTIVE_SCHEDULE_ONLY",
+  "room": "09｜衍生品與國際總經研究室",
+  "moduleId": "D13-17",
+  "eventFamily": "CBC_BALANCE_OF_PAYMENTS",
+  "scheduledAtTaipei": "2026-11-20T16:20:00+08:00",
+  "firstObservedAt": "2026-10-04T13:05:25+08:00",
+  "capturedAt": "2026-10-04T13:05:25+08:00",
+  "sourceIdentity": "Central Bank of the Republic of China (Taiwan), BALANCE OF PAYMENTS (Q2 2026), Release Date 2026-08-20",
+  "sourceUrl": "https://www.cbc.gov.tw/en/cp-448-192741-2ae10-2.html",
+  "sourceStatement": "The next release of balance of payments data will be at 16:20 on November 20, 2026.",
+  "realizationKnownAtCapture": false,
+  "realization": "UNKNOWN",
+  "consensus": "UNKNOWN",
+  "surprise": "UNKNOWN",
+  "taiwanOutcomeJoin": "CLOSED",
+  "formalCore": "LOCKED",
+  "notes": [
+    "Schedule receipt only; does not assert future realization.",
+    "Quarterly BOP is not equivalent to daily TWSE foreign equity flow.",
+    "Preserve any later reschedule/cancellation as append-only receipt."
+  ]
+}
