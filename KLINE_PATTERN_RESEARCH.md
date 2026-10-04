@@ -22826,3 +22826,59 @@ New durable artifacts:
 - research/PATTERN_STRUCTURAL_OBJECT_PERSISTENCE_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-031 — Structural aging vs observability censoring (2026-10-04)
+
+DL-030 showed that repeated rolling scans can rediscover one persistent structural object many times. DL-031 asks what "old" actually means for that object.
+
+The central correction is that elapsed calendar time, market-session age, detector observability and actual interaction exposure are not the same variable.
+
+A structural root can be 100 calendar days old but have only 65 eligible sessions because of weekends, holidays and suspensions. It may have been fully observable for only 50 sessions because of source gaps. It may have encountered price only twice. Calling all four states "age 100" discards the mechanism we need to test.
+
+Four clocks are therefore frozen.
+
+A0 calendar age is descriptive only.
+
+A1 eligible-session age is the primary chronological market-time clock.
+
+A2 observable-session age counts only sessions where the relevant root state can be causally followed.
+
+A3 interaction-opportunity age tracks actual structural opportunities under the DL-026 opportunity semantics.
+
+The empirical literature makes this separation especially important. Chung and Bellotti's support/resistance study reports two effects at once: prior bounce count is positively associated with another bounce, while bounce probability falls with elapsed time. That is exactly the pattern that a one-dimensional "old levels are weak" score would destroy. More prior successful uses may reinforce a level while simple elapsed time weakens it; repeated testing could alternatively deplete it. D01 therefore freezes interaction history separately from age and refuses to assume the sign or shape.
+
+A second major firewall is detector-horizon censoring.
+
+Under a finite rolling lookback, an old root's original anchors eventually fall outside the detector input by construction. If research keeps only objects that remain detectable, older objects are selectively lost even when the market has never invalidated them. An apparent age-decay curve can therefore be generated mechanically by the detector horizon.
+
+DL-031 preserves WINDOW_CENSORED_ROOT_PERSISTED as a distinct state. A root may stop being reconstructible by the current detector window while its previously certified identity/boundary remains durably available for research follow-up. That continued follow-up must be explicitly labeled as persisted-root follow-up; it may not pretend the detector rediscovered the object.
+
+Observability states are now:
+OBSERVABLE_ACTIVE;
+WINDOW_CENSORED_ROOT_PERSISTED;
+UNKNOWN_COVERAGE_GAP;
+DETECTOR_ABSENT_COMPLETE_SCAN;
+MARKET_INVALIDATED;
+STUDY_END_RIGHT_CENSORED.
+
+Only MARKET_INVALIDATED is a structural market event. Study end is administrative censoring. Window censoring is detector observability loss. Coverage gaps are unknown. Complete detector absence is detector behavior. Pooling these states would make any decay estimate uninterpretable.
+
+Root age and version age are also separated. A later causal anchor extension can legitimately change the boundary version. It must not make the root itself young again. Therefore ROOT_AGE continues from first confirmation while VERSION_AGE resets from the new version effective time.
+
+The future estimand should be opportunity-based. A level that price never approaches for 80 sessions has not generated 80 failed tests. At a valid future interaction opportunity, freeze all predictor state immediately before interaction: root age, version age, prior bounces/breaks/reclaims, last-interaction recency, opportunity geometry, volatility/liquidity, tick/round-price context, D02 acceptance/persistence and regime. Only then may D16 later evaluate post-opportunity response.
+
+Survival-analysis concepts provide the correct governance vocabulary even though D01 does not select an estimator. Unknown first confirmation creates left truncation and is not promotion-grade for age-decay inference unless exact replay reconstructs the first-confirmation history. Study end creates right censoring, not failure. Time-varying age and interaction histories must remain time-aware. Window censoring is especially problematic because it is mechanically related to age under a finite lookback and should not be treated as innocent random censoring.
+
+No exponential, linear or fixed-half-life curve is frozen. Henderson et al. (2026) use a waiting-time transition in a theoretical path-dependent support/resistance model, which supports time-varying structural state as a plausible mechanism but does not justify importing its functional form into D01. Future D16 work must compare a preregistered flexible age representation with a no-age null on common support.
+
+Fourteen adversarial cases are authored. They distinguish root from version age, reject incomplete session clocks, preserve age after detector-window censoring, classify coverage gaps / detector absence / market invalidation / study-end censoring separately, reject unknown-first-confirmation promotion, permit exact historical replay, prohibit non-opportunity pseudo-failures, preserve interaction history outside the age clock and keep opportunity snapshots outcome-free.
+
+New durable artifacts:
+- research/PATTERN_STRUCTURAL_AGING_OBSERVABILITY_V0_1.md
+- research/pattern_structural_aging_observability_v0_1.json
+- research/pattern_structural_aging_observability_v0_1.mjs
+- research/test_pattern_structural_aging_observability_v0_1.mjs
+- research/PATTERN_STRUCTURAL_AGING_OBSERVABILITY_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.

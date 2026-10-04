@@ -1185,3 +1185,78 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 4. Hand root/episode/repeated-exposure and overlapping-window dependence semantics to D16.
 5. Next D01 science: distinguish genuine structural aging/decay from mere observability loss as root anchors leave the detector horizon.
 6. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-031 (2026-10-04)
+
+### DL-031 — Structural aging vs observability censoring
+- DL-030 separated one persistent structural object from repeated rolling-window rediscovery.
+- DL-031 freezes the next falsification: an old support/resistance object can look weaker because of true aging, repeated-use depletion/reinforcement, or simple detector-horizon observability loss.
+- External evidence motivates a two-dimensional mechanism rather than one scalar age:
+  Chung and Bellotti report that more prior bounces can increase another bounce probability while elapsed time is associated with decreasing bounce probability.
+  Henderson et al. (2026) provide a path-dependent state model with waiting-time transition toward a neutral regime, which makes time-varying structural state plausible but does not prove D01 alpha.
+- Four separate clocks are frozen:
+  A0 CALENDAR_AGE_DAYS — descriptive only;
+  A1 ELIGIBLE_SESSION_AGE — primary chronological market-time age;
+  A2 OBSERVABLE_SESSION_AGE — sessions with complete/reconstructible follow-up;
+  A3 INTERACTION_OPPORTUNITY_AGE — causally valid structural interaction opportunities.
+- Interaction history remains a separate family:
+  priorInteractionCount;
+  priorBounceCount;
+  priorBreakCount;
+  priorReclaimCount;
+  timeSinceLastInteractionEligibleSessions;
+  timeSinceLastBounceEligibleSessions.
+- No combined strength/decay score and no fixed half-life are defined.
+- Root age and version age are separated:
+  a causal boundary/anchor extension does not reset ROOT_AGE;
+  it does reset VERSION_AGE.
+- Observability states are frozen:
+  O0 OBSERVABLE_ACTIVE;
+  O1 WINDOW_CENSORED_ROOT_PERSISTED;
+  O2 UNKNOWN_COVERAGE_GAP;
+  O3 DETECTOR_ABSENT_COMPLETE_SCAN;
+  O4 MARKET_INVALIDATED;
+  O5 STUDY_END_RIGHT_CENSORED.
+- WINDOW_CENSORED_ROOT_PERSISTED is a detector-observability state, not structural failure.
+- Under finite rolling lookback, window censoring is mechanically age-dependent. Restricting analysis to objects still emitted by the detector would create a survivor/observability selection problem.
+- Persisted-root follow-up is allowed only from a causal immutable root/boundary/version ledger. It does not pretend the current rolling detector could rediscover the old object.
+- Left-truncation firewall:
+  unknown first confirmation -> LEFT_TRUNCATED_FIRST_CONFIRMATION_UNKNOWN -> not promotion-grade for decay inference.
+  exact historical first-confirmation replay may remain evaluable if the full causal history is certified.
+- Primary future decay estimand is opportunity-based:
+  freeze age + interaction history immediately before a real structural interaction opportunity.
+  A non-approach day is not a failure.
+- MARKET_INVALIDATED is an event.
+  STUDY_END_RIGHT_CENSORED is censoring.
+  WINDOW_CENSORED_ROOT_PERSISTED is detector censoring / observability loss.
+  UNKNOWN_COVERAGE_GAP is unknown/missingness.
+  These states may never be pooled into one inactive label.
+- Future D16 falsification ladder:
+  A0 apparent decay only while detector-visible -> detector-horizon artifact;
+  A1 age effect redundant with interaction history;
+  A2 interaction effect redundant with age;
+  A3 age and interaction both remain;
+  A4 not evaluable.
+- New files:
+  - research/PATTERN_STRUCTURAL_AGING_OBSERVABILITY_V0_1.md
+  - research/pattern_structural_aging_observability_v0_1.json
+  - research/pattern_structural_aging_observability_v0_1.mjs
+  - research/test_pattern_structural_aging_observability_v0_1.mjs
+  - research/PATTERN_STRUCTURAL_AGING_OBSERVABILITY_D16_HANDOFF_V0_1.md
+- 14 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcomes inspected; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-031
+
+1. Reconcile the DL-031 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-031 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve root age, version age, observability age and interaction history as separate fields; do not create a decay score.
+4. Preserve window-censored roots in the research follow-up manifest; never relabel horizon loss as market failure.
+5. Hand left-truncation/right-censoring/opportunity-based inference semantics to D16.
+6. Next D01 science: separate structural aging from regime migration / volatility-scale migration so a level does not look old merely because the price process changed scale.
+7. No outcome join / no runtime wiring / no Formal change.

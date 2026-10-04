@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "pattern-structural-aging-observability-v0.1",
+  "updated": "2026-10-04 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "ageClocks": [
+    "CALENDAR_AGE_DAYS",
+    "ELIGIBLE_SESSION_AGE",
+    "OBSERVABLE_SESSION_AGE",
+    "INTERACTION_OPPORTUNITY_AGE"
+  ],
+  "observabilityStates": [
+    "OBSERVABLE_ACTIVE",
+    "WINDOW_CENSORED_ROOT_PERSISTED",
+    "UNKNOWN_COVERAGE_GAP",
+    "DETECTOR_ABSENT_COMPLETE_SCAN",
+    "MARKET_INVALIDATED",
+    "STUDY_END_RIGHT_CENSORED"
+  ],
+  "calendarAgeAsSoleDecayClock": false,
+  "windowCensoringIsDecay": false,
+  "nonApproachDayIsFailure": false,
+  "rootAgeResetsOnCausalExtension": false,
+  "versionAgeResetsOnCausalExtension": true,
+  "fixedDecayHalfLife": null,
+  "leftTruncatedUnknownFirstConfirmationPromotionGrade": false,
+  "outcomeJoin": "CLOSED",
+  "inferenceOwner": "D16",
+  "formalOptimizationCandidate": "NONE"
+}
