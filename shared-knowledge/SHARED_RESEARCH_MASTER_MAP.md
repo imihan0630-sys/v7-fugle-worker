@@ -1782,3 +1782,42 @@ Reusable cross-system rule:
    - Current Bollinger/ADX acceptance semantics remain unchanged until a separately versioned owner contract says otherwise.
 
 No Formal, runtime or maturity change is granted by this reusable rule.
+
+
+### D03 cutoff-safe continuity update — 2026-10-04 18:56
+
+Status: **PHYSICAL_CONTRACT_PASS / GENUINE_PARENT_RUNTIME_PENDING / OUTCOMES_CLOSED**.
+
+Reusable cross-lane rules:
+
+1. **Decision cutoff beats receipt timestamp.**
+   - A later decisionAt/capturedAt/parent-known timestamp cannot establish whether a source fact was available when Formal inputs froze.
+   - Promotion-grade causality requires physical decisionCutoffAt or an owner-approved cryptographically equivalent input-freeze receipt.
+   - Historical generations without it remain LEGACY_DECISION_CUTOFF_UNKNOWN.
+
+2. **Effective V8.17 audited cutoff boundary.**
+   - Read-only run 37196768178 physically built the effective V8.17 Worker and passed the existing C1/C2 review 95/95.
+   - The last observed Formal-affecting async input is the STOCKS_KV V7_MARKET_CONSENSUS read, not totalCapital.
+   - After market-consensus read and before synchronous selectTomorrowCandidates there are zero external/async reads.
+   - Current C1 has decisionAt but not decisionCutoffAt.
+   - Owner implementation candidate = immediately after market-consensus read, before selector; newer runtimes must be re-audited.
+
+3. **Evidence cut / computation clock separation.**
+   - Facts must be frozen before decisionCutoffAt.
+   - A deterministic continuity receipt may be materialized later only from the immutable pre-cut fact set.
+   - No post-cut/unbound fact is allowed.
+   - Market-wide source-cut manifest and symbol transform-input manifest are distinct provenance layers.
+
+4. **No-revision-gap rule.**
+   - Post-parent bounded reconciliation may certify a candidate cut only if no pre-cut version was omitted/mutated/lost.
+   - A genuinely later version reported after the cutoff is later information and does not retroactively invalidate the cut.
+   - D03 cannot self-certify owner completeness.
+
+5. **Indicator promotion order.**
+   - Bollinger remains L2 until a genuine cutoff-bearing parent + owner continuity cut + complete parent attempts exist.
+   - ADX additionally requires canonical-anchor FULL_REPLAY.
+   - No maturity or Formal change from contract tests alone.
+
+D03 current maturity = 56.7%.
+Next honest thresholds: Bollinger L3 -> 58.3%; ADX L3 -> 60.0%.
+FORMAL_OPTIMIZATION_CANDIDATE = NONE.
