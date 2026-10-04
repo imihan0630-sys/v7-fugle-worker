@@ -501,7 +501,7 @@ Must beat simple low-valuation and technical-rebound baselines after PIT/OOS/cos
 2. MULTI_STRATEGY_CONFLUENCE（多策略共振） cannot double-count shared underlying evidence.
 3. Strategy-specific intraday confirmation remains independent; no universal 15-minute gate.
 4. Candidate/watch pool remains max 12 unique symbols; each strategy max 3 ACTIVE_INTRADAY_MONITOR（盤中主動監控） symbols.
-5. Actual holdings remain in POSITION_MONITOR（持股監控） outside candidate/entry-monitor caps.
+5. Target architecture: verified actual holdings, once an owner-authorized actual-holdings source/reconciliation path is wired, remain in an actual POSITION_MONITOR lane outside candidate/entry-monitor caps. Current implemented POSITION_MONITOR semantics are virtual/simulated only.
 6. Every strategy must freeze decision timestamp, version, factor states, reasons, warnings, entry/stop/target plan and invalidation.
 7. Any result-changing change to factor formula, threshold, interaction, gate, setup or exit semantics requires a new strategy version.
 
