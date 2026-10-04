@@ -1,0 +1,33 @@
+name: Research D03 Bollinger Acceptance V0.2 Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d03_bollinger_l3_acceptance_v0_2.mjs"
+      - "tests/test_d03_bollinger_l3_acceptance_v0_2.mjs"
+      - "research/D03_BOLLINGER_FIRST_PARENT_ACCEPTANCE_V0_2.md"
+      - ".github/workflows/research-d03-bollinger-acceptance-v0-2-readonly.yml"
+permissions:
+  contents: read
+concurrency:
+  group: research-d03-bollinger-acceptance-v0-2-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run Bollinger v0.2 acceptance falsification suite
+        run: node tests/test_d03_bollinger_l3_acceptance_v0_2.mjs
+      - name: Confirm research-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'wrangler|deploy|CLOUDFLARE|V7_ADMIN_TOKEN|livePush|sendLine|THREEMIN' research/d03_bollinger_l3_acceptance_v0_2.mjs
+          echo "Research-only Bollinger v0.2 acceptance boundary PASS"
