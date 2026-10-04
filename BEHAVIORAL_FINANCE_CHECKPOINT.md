@@ -145,3 +145,35 @@ Do not repeat D06 crowding research. Room13 only needs to close the behavioral-i
 If no such independent PIT-capable source exists, return EVIDENCE_INSUFFICIENT / narrowing-or-merge-eligible. Do not invent behavioral intent.
 
 This routed task does not override the room's active L4 prospective sequence; service it at the next safe governance/research slot.
+
+
+## 00 routed H07 / H12 counterpart deltas — 2026-10-04
+
+### H07 — D03-05 vs D20-09
+
+Room03 side is accepted:
+`research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md`.
+
+Do not repeat observable pullback/reversal geometry or PIT sequence.
+
+Room13 remaining delta:
+- prove D20-09 behavioral overreaction using independent behavioral/event-expectation evidence beyond the completed reversal path;
+- falsify bid-ask bounce, liquidity provision, inventory, forced flow, event correction, volatility normalization and price-limit/microstructure alternatives;
+- provide PIT sequence and divergent states;
+- if D20-09 remains only “extreme return then reversal”, return narrowing/merge-eligible rather than a second behavioral vote.
+
+### H12 — D06/D14/D20 shorting chain
+
+Room05 side is accepted:
+- D06-09 = observed borrowing/short quantities;
+- D06-18 = borrow fee / supply-demand / availability / scarcity economics;
+- one primitive receipt; no duplicate bearish vote;
+- true utilization UNKNOWN without verified lendable inventory.
+
+Room13 remaining delta:
+- D20-13 must own limits-to-arbitrage / noise-trader-risk context only;
+- show residual explanatory role after D06 borrow economics and D14 execution feasibility;
+- no fourth directional vote from the same borrow scarcity/fee observation;
+- provide divergent states and falsification.
+
+These routed tasks do not override the room's active prospective L4 sequence; service at the next safe governance slot.
