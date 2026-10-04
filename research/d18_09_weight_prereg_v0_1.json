@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "D18_09_WEIGHT_PREREG_V0_1",
+  "policyId": "D18-09-SHORT-MOMENTUM-DOWN-TREND-HALF-WEIGHT-V0_1",
+  "policyVersion": "0.1-RESEARCH",
+  "policyClass": "DISCRETE_REGIME_EXPOSURE_MULTIPLIER",
+  "strategyId": "SHORT_MOMENTUM",
+  "strategyVersion": "V0.1-CONTRACT",
+  "state": "PREREGISTERED_SHADOW",
+  "registeredAt": "2026-10-04T14:40:00+08:00",
+  "availableAt": "2026-10-04T14:40:00+08:00",
+  "parameters": {
+    "regimeDimension": "trendContext",
+    "weightByValue": {
+      "UP_TREND_CONTEXT": 1,
+      "RANGE_OR_MIXED": 1,
+      "DOWN_TREND_CONTEXT": 0.5
+    },
+    "unknownAction": "DATA_UNKNOWN",
+    "staticBaselineWeight": 1,
+    "maxResearchWeight": 1,
+    "leverageAllowed": false
+  },
+  "parameterHash": "0ad39b9df2b166a64c8ad91230305aee2d25bb8e0c06a145e21e02102041c67a",
+  "hypothesis": "A tiny preregistered non-levered exposure map may improve short-momentum risk-adjusted policy value in known down-trend context after charging incremental policy turnover.",
+  "falsification": [
+    "No after-cost benefit versus static weight 1.0.",
+    "Incremental turnover cost consumes the gross benefit.",
+    "Missed upside during fast rebounds dominates avoided downside.",
+    "Effect is concentrated in one date, sector or regime episode.",
+    "Unknown or natural-zero dates create selective coverage.",
+    "The map adds no incremental value beyond stock-level trend/volatility controls.",
+    "Alternative nearby weights are required to rescue the result, indicating parameter fragility."
+  ],
+  "formalImpact": "NONE"
+}
