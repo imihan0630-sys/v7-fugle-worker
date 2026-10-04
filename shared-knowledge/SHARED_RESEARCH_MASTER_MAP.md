@@ -1433,3 +1433,19 @@ Evidence:
 - `research/d17_14_expectation_source_receipt_v0_1.json`
 
 Formal Core unchanged. Outcome joins remain closed.
+
+
+## COV-02 owner-approved canonical scope extension — 2026-10-04
+
+COV-02 is structurally closed.
+
+- Target: D05-06.
+- Canonical name: `Opening / Closing Auction & Auction Imbalance（開收盤集合競價與競價不平衡）`.
+- Action: `EXTEND_EXISTING_SCOPE`.
+- Module count: unchanged.
+- D05-06 maturity: L2 / 40%, unchanged.
+- Scope: opening + closing auction mechanics, explicit auction-phase states, prospective trial/indicative observations when actually captured, and final auction state.
+- Historical pre-close imbalance remains UNKNOWN where no timestamped source exists; never reconstruct from final close/volume.
+- One auction episode uses one D05-06 parent primitive. D05-14 integrity, D14 execution, D11/D17 event clocks and D02 EOD volume are consumers/context, not independent duplicate votes.
+- System1/System2 Formal behavior: unchanged.
+- Formal Core: LOCKED.
