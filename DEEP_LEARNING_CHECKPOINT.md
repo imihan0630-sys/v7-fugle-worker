@@ -1742,3 +1742,17 @@ Status: D21-12_L3 / D21-13_L2 / RESEARCH_ONLY / FORMAL_CORE_UNCHANGED
 - Counterevidence/quality: source-route existence is not raw-parent attestation; aggregate cumulative changes do not identify which prior quarter changed; later revised history cannot be backfilled to original decision dates; tool/access failure is not source absence.
 - Maturity unchanged: D12 40.0%, D13 41.1%. Outcomes CLOSED. Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE=NONE.
 - Exact next: D12 materialize one permitted OpenAPI/time-and-sales parent plus a permitted quote-chain parent for H11 identical-parent/common-support comparison; D13 losslessly inspect CBC 2025-11-20 native XLSX first, then 2026-02-26 and 2026-05-20 only if needed to establish the first-public 2025Q2 revision.
+
+
+## 2026-10-04 D03 — TI-611~630 ADX/Bollinger acceptance hardening
+
+- D03 remains 56.7%; no maturity increase from synthetic/fixture acceptance logic.
+- ADX acceptance v0.1 initially passed read-only CI but was then self-falsified: a caller could self-declare FULL_REPLAY and supply nonempty lineage/hash labels.
+- ADX v0.2 now requires owner-chain source identity, rawHistoryAdmissionReceiptId, symbol/session/calendar/continuity/corporate-action versions, 64-hex sourceHistoryHash/continuityTransformHash/stateLineageId, canonical clean-history anchor certification, exact eligible-bar count from anchor, per-bar observedRawBarIdentity/sourceBarHash and prefix replay equality.
+- Read-only ADX v0.2 workflow run 37184852267 PASS; fake lineage, uncertified/shifted anchor and unverified trusted-prior state fail closed.
+- Bollinger v0.1 was found to have the same self-attestation weakness. Bollinger v0.2 requires the same owner-chain continuity identity, exact 20 eligible-session population counts, per-bar raw identity/hash and the frozen core formula implementation.
+- Read-only Bollinger v0.2 workflow run 37184976280 PASS; fake lineage, missing raw receipt, late capture, 19-bar window, unresolved event and wrong standard-deviation semantics fail closed.
+- V0.1 evaluators are not promotion-grade; v0.2 is the current acceptance contract.
+- First genuine post-V8.17 Taiwan parent remains pending because 2026-10-04 is Sunday.
+- D03-10 Bollinger stays L2/40; D03-09 ADX stays L2/40; raw source-version gate stays 2/3; TI-005/TI-006 outcomes remain closed.
+- Exact next: inspect and freeze the parent-to-continuity receipt binding envelope so Monday cannot substitute a continuity receipt from another parent/generation/symbol/window; then use the first genuine parent for Bollinger v0.2, followed by ADX v0.2 FULL_REPLAY.
