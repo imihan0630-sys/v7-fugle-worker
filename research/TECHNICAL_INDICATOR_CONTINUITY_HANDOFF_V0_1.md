@@ -339,3 +339,29 @@ Formal Core remains LOCKED.
 - research/PATTERN_OBSERVER_PERSISTENCE_V0_1.md
 - SHADOW_COHORT_SEMANTICS_CLASS_B_PROPOSAL.md
 - V8.12 HISTORY_SOURCE_REVALIDATION implementation/contract
+
+
+## 2026-10-04 owner-handoff supersession — pre-parent source cut
+
+Earlier runtime-readiness language in this document is historical. Latest D03 evidence supersedes it as follows:
+
+- V8.17 immutable C1 / Shadow parent engineering is DEPLOYED_AND_VERSION_VERIFIED; the first genuine post-deployment trading generation remains pending.
+- Bollinger/ADX v0.2 acceptance and immutable parent×continuity binding are physically test-passed.
+- The remaining shared-owner blocker is a cutoff-safe TECHNICAL_CONTINUITY source cut, not indicator formula design.
+- Exact MOPS version `firstObservedAt <= parentKnownAt` is sufficient conservative availability-by-cutoff evidence for that version; a prior <=5-minute NOT_OBSERVED window is latency-precision evidence and is not intrinsically required for D03 parent eligibility.
+- Selected-only pre-parent version capture is structurally invalid because the parent population is produced only by the later normal scan.
+- Required source scope is market-wide/exchange-wide or full eligible-universe before the parent.
+- Read-only run `37190871367` measured 294 official corporate-action events over 31 event-bearing dates in 2026-08-15..2026-10-02, maximum 33 events on one effective date, supporting an event-driven owner design as a research-engineering candidate.
+- Read-only source-cut policy run `37191199051` PASS and rejects late cut, selected-only scope, late/retrospective MOPS versions, incomplete version keysets and truncation.
+- `noRevisionGapThroughCut` remains owner-certified debt. D03 does not self-certify it or add a duplicate source schedule.
+- Current Bollinger/ADX v0.2 `capturedAt <= parentKnownAt` semantics remain unchanged. A future evidenceCutoffAt/receiptCreatedAt split would require a new owner contract and D03 review.
+
+Current handoff:
+`PRE_PARENT_SOURCE_CUT_POLICY = PHYSICAL_TEST_PASS`
+`SHARED_OWNER_SOURCE_CUT_RUNTIME = NOT_YET_PHYSICAL`
+`NO_REVISION_GAP_THROUGH_CUT = PENDING_OWNER_CERTIFICATION`
+`D03_MATURITY = 56.7_PERCENT`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Durable D03 handoff:
+`research/D03_PRE_PARENT_CONTINUITY_SOURCE_CUT_HANDOFF_V0_1.md`.
