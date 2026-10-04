@@ -464,7 +464,13 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H13_H20_ANTI_DOUBLE_COUNT_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H13_H20_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "SPECIALIST_VALIDATION_PENDING"
+      "status": "PARTIAL_EVIDENCE_RECEIVED_ROOM14_COMPLETE_ROOM06_D07_19_PENDING",
+      "receivedPackets": [
+        "CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md",
+        "research/stock_market_learning_tracker_v0_1.json"
+      ],
+      "intakeDecision": "EVIDENCE_INSUFFICIENT_PENDING_D07_19_PROJECT_ECONOMICS",
+      "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json"
     },
     {
       "id": "H19",
@@ -480,7 +486,14 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H13_H20_ANTI_DOUBLE_COUNT_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H13_H20_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "SPECIALIST_VALIDATION_PENDING"
+      "status": "PARTIAL_EVIDENCE_RECEIVED_SEMANTIC_BOUNDARY_COMPLETE_EMPIRICAL_REDUNDANCY_PENDING",
+      "receivedPackets": [
+        "TECHNICAL_INDICATOR_CHECKPOINT.md",
+        "ASSET_PRICING_FACTOR_CHECKPOINT.md",
+        "research/stock_market_learning_tracker_v0_1.json"
+      ],
+      "intakeDecision": "EVIDENCE_INSUFFICIENT_PENDING_COMMON_SUPPORT_REDUNDANCY_RESIDUAL_TESTS",
+      "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json"
     },
     {
       "id": "H20",
