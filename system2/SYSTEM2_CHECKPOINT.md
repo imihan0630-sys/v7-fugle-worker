@@ -1387,3 +1387,75 @@ Still authoritative:
 all trading authority false.
 
 System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
+
+## 2026-10-04 S2-07 revision provenance / clock milestone — FROZEN CONTROL ROUTING PHYSICALLY VERIFIED
+
+S2-07 advanced through four linked read-only gates without weakening PIT semantics.
+
+### Source-reported clock
+PR #471 / `07aac29e0bc239feb8c756c88095837722512fa8`:
+- 5/5 MOPS correction/cancellation controls PASS;
+- `sourceReportedVersionClockSemanticsCertified=true`;
+- `historicalKnownAtCandidateClockAvailable=true`;
+- `publicAvailabilityLatencyCertified=false`;
+- `knownAtVersionClockCertified=false`.
+
+### Regulator-side provenance
+PR #475 / `a9dc408e1303f0470359f77dff6f833379862355`:
+- official SFB/FSC 115-year case workbook physically parsed;
+- direct 1342 八貫現金增資 `廢止/撤銷` regulator record observed;
+- representative regulator provenance PASS;
+- `authorityRevisionCoverageComplete=false`.
+
+### Prospective availability observer
+PR #480 / `4fd9e3fa0cbb8f0cb20193d74ebb09035d58085d`:
+- observer contract + tests + official readback probe PASS;
+- 9/9 historical MOPS version rows stayed `RETROSPECTIVE_SOURCE_CLOCK_ONLY`;
+- zero retrospective rows were promoted to first-observed availability;
+- prospective adapter is implemented but no prospective event sample has yet been collected;
+- no new schedule / Worker Cron / D1 write was introduced.
+
+### Cross-authority provenance matrix
+PR #483 / `4c8ecd468632d51e25e93beab2eb9e50ef5d29a6`:
+- 5/5 frozen authority controls PASS;
+- `frozenAuthorityRoutingCoverageComplete=true`;
+- 2467 issuer revision + TWSE operational effective date 2026-06-18;
+- 1459 issuer revision + TWSE capital-reduction operational effective date 2026-08-03;
+- 2321 issuer board-decision revision preserved as issuer-owned fact;
+- 1342 issuer cash-capital-increase correction preserved as issuer-owned fact;
+- 1342 cancellation joined to direct SFB/FSC `廢止/撤銷` regulator evidence.
+
+### Current semantic boundary
+
+The remaining knownAt blocker cannot be honestly solved from historical pages. A historical MOPS row can supply certified `sourceReportedAt`, but exact public availability requires genuinely prospective observation.
+
+Therefore the following remain authoritative:
+- `publicAvailabilityLatencyCertified=false`;
+- `knownAtVersionClockCertified=false`;
+- `pitReplayUseAsAvailableAtAuthorized=false`;
+- `authorityRevisionCoverageComplete=false`;
+- `revisionCoverageComplete=false`;
+- `noEventMayBeClaimed=false`;
+- `suspensionCoverageComplete=false`;
+- `symbolSessionCompletenessCertified=false`;
+- `technicalContinuityCertified=false`;
+- `historyMutationPerformed=false`;
+- `strategyEvaluationPerformed=false`;
+- `capacityRunProduced=false`;
+- `selectionAuthority=false`;
+- `finalSelectionEnabled=false`;
+- `livePushEnabled=false`;
+- `capitalImpact=false`;
+- `orderImpact=false`;
+- `system1RuntimeUsed=false`.
+
+### Exact continuation
+
+1. freeze a bounded supplemental revision provenance receipt that combines final-result lanes, MOPS revision/source-clock integrity, authority routing and explicit knownAt evidence blockers;
+2. do **not** claim revision completeness merely because the frozen authority controls pass;
+3. keep exact MOPS knownAt blocked until a preregistered prospective event sample exists;
+4. independently integrate the already-improved TWSE suspension/resumption evidence into shared session completeness and close the TPEx suspension/session gap;
+5. bind verified event/revision/suspension evidence to expected symbol sessions and RAW A1 lineage without mutating RAW bars;
+6. only after history + continuity are READY address `ASSESSOR_POLICY_NOT_FROZEN`, then Strategy -> Ranking -> Capacity -> real `s2_capacity_runs`.
+
+System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
