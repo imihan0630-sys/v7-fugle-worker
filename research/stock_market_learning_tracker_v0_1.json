@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T14:59:00+08:00",
+  "updatedAt": "2026-10-04T15:09:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -3737,8 +3737,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Credit Cycle／Bank Lending Conditions信用週期與銀行放款條件」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / CREDIT_SUPPLY_DEMAND_SEPARATION_REQUIRED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-          "next": "建立台灣 release-vintage 銀行信用條件資料，先識別 supply vs demand，再以 D22-10 既知 bank dependence 映射發行人；loan growth 不得單獨當 supply shock。"
+          "status": "L2 / PIT_CONTEXT_AND_ISSUER_EXPOSURE_REPLAY_VALIDATED / CREDIT_SUPPLY_SHOCK_UNIDENTIFIED / HOLD_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "央行 release-vintage 放款利率與企業資金調查、以及發行人 bank-dependence exposure 已可重播，但 credit-supply shock 尚無法與需求分離；續找 lending-standard／approval／collateral／term 或自然實驗證據，未識別前維持 L2。"
         },
         {
           "id": "D22-12",
@@ -3747,14 +3747,14 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Distress／Recovery／Equity Tail Risk財務困境回收與股權尾端風險」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / PD_LGD_RECOVERY_EQUITY_TAIL_SEPARATED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-          "next": "建立台灣 PIT distress inputs 並納入 delisted/defaulted cases，預註冊 distance-to-default horizon/barrier、PD 與 recovery/LGD 分離；與 primitive-input baseline 比較後才升 L3/L4。"
+          "status": "L2 / DEFAULT_EVENT_SOURCE_ROUTES_VALIDATED / ISSUER_LEVEL_RECOVERY_PANEL_INCOMPLETE / RARE_EVENT_SELECTION_BIAS_GUARD / HOLD_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "建立 issuer-level default/restructuring/recovery event ledger，納入 delisted/defaulted cases 並分離 bankruptcy、restructuring、bond-payment default、covenant breach、market default 與非信用下市；未形成可重播回收面板前維持 L2。"
         }
       ],
-      "status": "ACTIVE_RESEARCH / D22_01_02_03_05_07_08_10_L3 / D22_04_06_SOURCE_BLOCKED_L2 / D22_09_11_12_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D22-07 已升 L3。D22-04／D22-06 的 TPEx 歷史逐券資料為付費資料來源，未取得前維持 SOURCE_BLOCKED；下一個可執行主線為 D22-11：建立央行 release-vintage 銀行信用條件資料並嚴格分離 supply vs demand，評估是否足以升 L3。D22-09 仍依賴 D22-06。",
-      "lastResearchUpdate": "2026-10-04T14:59:00+08:00",
-      "researchNote": "D22-07 promoted to L3 after PIT replay of Chunghwa Telecom facility headroom, ASE restrictive/cross-default semantics, and UMC guarantee exposure plus early-repayment resolution. Missing numeric covenant thresholds and drawability remain UNKNOWN. D22-04/06 are source-blocked by paid historical TPEx security-level data access; no proxy substitution."
+      "status": "ACTIVE_RESEARCH / D22_01_02_03_05_07_08_10_L3 / D22_04_06_SOURCE_BLOCKED_L2 / D22_11_12_IDENTIFICATION_BLOCKED_L2 / D22_09_DEPENDENCY_BLOCKED_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D22=51.7%。先建立 D22 L4 共用 preregistration：對已達 L3 的 D22-01/02/03/05/07/08/10 做 exact common-support、independent-date、OOS/walk-forward、Prospective Shadow、冗餘與成本比較；股票 outcomes 在預註冊與樣本門檻完成前維持 CLOSED。D22-04/06 等待合法 TPEx 歷史逐券資料；D22-09 依賴 D22-06；D22-11/12 保留識別／樣本阻塞。",
+      "lastResearchUpdate": "2026-10-04T15:09:00+08:00",
+      "researchNote": "D22-07 promoted to L3 after multi-issuer PIT liquidity/covenant/guarantee replay. D22-11 remains L2 because public Taiwan data replay aggregate bank-pricing context but do not identify supply separately from demand. D22-12 remains L2 because issuer-level default/recovery panel is incomplete and rated/default events are rare, creating selection/survivorship risk."
     }
   ],
   "rules": {
