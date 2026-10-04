@@ -1,6 +1,6 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 
-export const HISTORICAL_MARKET_YEAR_COVERAGE_VERSION = "0.1-RESEARCH";
+export const HISTORICAL_MARKET_YEAR_COVERAGE_VERSION = "0.2-RESEARCH";
 
 function requiredDate(value, field) {
   const text = String(value || "").trim();
@@ -186,18 +186,30 @@ export function buildHistoricalMarketYearCoverageV0_1({
     .filter(([state]) => state !== "VALID_OHLC")
     .reduce((sum,[,count]) => sum + count, 0);
 
-  const rawCoverageState = unknownMissingBars === 0
-      && unexpectedBars.length === 0
+  // Missing active-universe symbol sessions are a separate provenance/readiness
+  // question from whether the official A1 source was physically captured intact.
+  // Do not call an exchange-omitted symbol-session a storage/source loss unless
+  // fresh-source reconciliation proves the row was actually present upstream.
+  const structuralCoverageState = unexpectedBars.length === 0
       && nonTradingDateBars.length === 0
       && missingTradingDates.length === 0
       && provenanceIssues.length === 0
     ? "PASS" : "BLOCKED";
+  const symbolSessionReadiness = unknownMissingBars === 0
+    ? "PASS_CLASSIFIED"
+    : "PARTIAL_UNKNOWN_GAPS";
   const pitReadiness = provenanceIssues.length === 0 ? "PASS_CONSERVATIVE_SESSION_FINALITY" : "BLOCKED";
   const continuityReadiness = continuityUnverified === 0 ? "PASS" : "PARTIAL_UNVERIFIED";
   const technicalPriceReadiness = nonPriceRows === 0 ? "PASS" : "PARTIAL_NONPRICE_OBSERVATIONS";
-  const overallState = rawCoverageState === "BLOCKED" || pitReadiness === "BLOCKED"
+  const overallState = structuralCoverageState === "BLOCKED" || pitReadiness === "BLOCKED"
     ? "BLOCKED"
-    : (continuityReadiness === "PASS" && technicalPriceReadiness === "PASS" ? "PASS" : "PARTIAL");
+    : (
+      symbolSessionReadiness === "PASS_CLASSIFIED"
+      && continuityReadiness === "PASS"
+      && technicalPriceReadiness === "PASS"
+        ? "PASS"
+        : "PARTIAL"
+    );
 
   return deepFreeze({
     market:mkt,year:yr,fromDate:from,toDate:to,
@@ -220,7 +232,12 @@ export function buildHistoricalMarketYearCoverageV0_1({
     provenanceIssueSample:Object.freeze(provenanceIssues.slice(0,100)),
     unexpectedBarSample:Object.freeze(unexpectedBars.slice(0,100)),
     missingSample:Object.freeze(missingSample),
-    rawCoverageState,pitReadiness,continuityReadiness,technicalPriceReadiness,overallState,
-    schemaVersion:"S2_HISTORICAL_MARKET_YEAR_COVERAGE_V0_1",
+    expectedBars:expectedKeys.size,
+    classifiedGapBars:suspensionMissingBars,
+    structuralCoverageState,
+    rawCoverageState:structuralCoverageState,
+    symbolSessionReadiness,
+    pitReadiness,continuityReadiness,technicalPriceReadiness,overallState,
+    schemaVersion:"S2_HISTORICAL_MARKET_YEAR_COVERAGE_V0_2",
   });
 }
