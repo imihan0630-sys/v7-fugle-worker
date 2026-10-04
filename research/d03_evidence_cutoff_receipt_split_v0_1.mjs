@@ -24,6 +24,12 @@ export function evaluateEvidenceCutoffReceiptSplitV0_1({parent,evidenceCut,conti
   const reasons=[];
   if(!parent||typeof parent!=="object") return blocked(["PARENT_MISSING"]);
   if(!isoTime(parent.knownAt)) reasons.push("PARENT_KNOWN_AT_INVALID");
+  if(!isoTime(parent.decisionAt)) reasons.push("PARENT_DECISION_AT_INVALID");
+  if(!isoTime(parent.decisionCutoffAt)) reasons.push("PARENT_DECISION_CUTOFF_AT_INVALID");
+  if(
+    isoTime(parent.decisionCutoffAt)&&isoTime(parent.decisionAt)&&
+    Date.parse(parent.decisionCutoffAt)>Date.parse(parent.decisionAt)
+  ) reasons.push("PARENT_DECISION_CUTOFF_AFTER_DECISION_AT");
   if(!evidenceCut||typeof evidenceCut!=="object") return blocked(["EVIDENCE_CUT_MISSING"]);
   if(!continuityReceipt||typeof continuityReceipt!=="object") return blocked(["CONTINUITY_RECEIPT_MISSING"]);
 
@@ -32,7 +38,7 @@ export function evaluateEvidenceCutoffReceiptSplitV0_1({parent,evidenceCut,conti
   if(
     isoTime(evidenceCut.evidenceCutoffAt)&&
     isoTime(parent.knownAt)&&
-    Date.parse(evidenceCut.evidenceCutoffAt)>Date.parse(parent.knownAt)
+    Date.parse(evidenceCut.evidenceCutoffAt)>Date.parse(parent.decisionCutoffAt)
   ) reasons.push("EVIDENCE_CUT_AFTER_PARENT");
 
   if(evidenceCut.scope!=="MARKET_WIDE_OR_FULL_ELIGIBLE_UNIVERSE") reasons.push("EVIDENCE_CUT_SCOPE_INVALID");
@@ -83,6 +89,8 @@ export function evaluateEvidenceCutoffReceiptSplitV0_1({parent,evidenceCut,conti
   const timingIdentity={
     evidenceCutId:evidenceCut.evidenceCutId,
     evidenceCutoffAt:new Date(evidenceCut.evidenceCutoffAt).toISOString(),
+    parentDecisionCutoffAt:new Date(parent.decisionCutoffAt).toISOString(),
+    parentDecisionAt:new Date(parent.decisionAt).toISOString(),
     parentKnownAt:new Date(parent.knownAt).toISOString(),
     receiptCreatedAt:new Date(continuityReceipt.receiptCreatedAt).toISOString(),
     sourceCutManifestHash:evidenceCut.sourceCutManifestHash,
@@ -100,7 +108,9 @@ export function evaluateEvidenceCutoffReceiptSplitV0_1({parent,evidenceCut,conti
     ...timingIdentity,
     receiptCreatedAfterParent:
       Date.parse(continuityReceipt.receiptCreatedAt)>Date.parse(parent.knownAt),
-    parentEligibilityClock:"EVIDENCE_CUTOFF_AT",
+    receiptCreatedAfterDecision:
+      Date.parse(continuityReceipt.receiptCreatedAt)>Date.parse(parent.decisionAt),
+    parentEligibilityClock:"DECISION_CUTOFF_AT",
     computationClock:"RECEIPT_CREATED_AT",
   };
 }
