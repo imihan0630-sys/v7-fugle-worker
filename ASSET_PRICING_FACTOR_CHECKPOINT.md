@@ -2,7 +2,7 @@
 
 Updated: 2026-10-04 Asia/Taipei
 Scope: D19｜資產定價／因子投資／市場異象
-Status: RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / FACTOR_LAYER_RECEIPT_ADAPTER_IMPLEMENTED / REAL_TWSE_SMOKE_PASS_NEGATIVE_L3_GATE / FORMAL_CORE_UNCHANGED
+Status: RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / FULL_TWSE_UNIVERSE_COVERAGE_PASS / TPEx_AND_CONTINUITY_GATES_OPEN / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - This file is the canonical continuation checkpoint for D19.
@@ -107,3 +107,35 @@ Status: RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / FACTOR_LAYER_RECEIPT_ADAPTE
 6. Replace engineering cost placeholder with a versioned D14-compatible research cost scenario and explicit provenance quality.
 7. Re-run D19-04. Only a zero-blocker deterministic Taiwan PIT replay can trigger an L3 readiness review; no automatic promotion.
 8. D19-07 remains L2 until benchmark/beta-estimation semantics are executable; raw volatility alone is insufficient.
+
+
+## Stage 8 completed on 2026-10-04
+- PR #460 merged as `1a7b6e7e8d8552953f909f4ee1448733a1daf643`.
+- Full TWSE 2026-08-31 survivorship-controlled historical-universe denominator physically reconciled against official 2026-08-03..2026-08-31 daily history.
+- Coverage workflow `37172684933` PASS; System2 Research CI `37172684904` PASS; V8 Regression `37172684903` PASS; production isolation PASS.
+- Snapshot denominator = 1,089; D19-04 factor input = 1,064 KNOWN / 25 explicit UNKNOWN = 97.7043% KNOWN.
+- UNKNOWN split: 2 recent-listing insufficient lookback; 6 incomplete session rows requiring symbol-session provenance; 17 null/invalid close cases requiring trading-state provenance. No silent omission and no UNKNOWN->0.
+- PR #459 was a negative TPEx transport experiment and was closed without merge. All three official historical transports returned HTTP 520 in run `37172219750`; CI/regression passed fail-closed behavior only.
+- Earlier TPEx full-market benchmark had successfully read 18,646 rows for the same August interval, but was read-only and did not persist a full-market replayable dataset.
+- Corporate-action official source/parser is physically verified, but full continuity certification remains locked.
+- Cost gate narrowed: statutory tax semantics are sourceable; broker-specific commission/slippage/turnover remain unresolved.
+- Machine reconciliation: `research/d19_04_l3_blocker_reconciliation_20261004_v0_1.json`.
+- D19 remains 40.0%; no L3 promotion.
+
+## Current D19-04 L3 blocker state
+1. HISTORICAL_UNIVERSE = PARTIAL_PASS: TWSE resolved; TPEx date-vintaged universe/replay remains unresolved.
+2. FACTOR_INPUT_COVERAGE = PARTIAL_PASS: 1,064/1,089 TWSE KNOWN; 25 explicit UNKNOWN, including 2 legitimate recent listings and 23 requiring symbol-session/trading-state evidence.
+3. CORPORATE_ACTION_CONTINUITY = PARTIAL_PASS_SOURCE_PARSER_ONLY: full certification / revision / NO_EVENT / suspension-resumption completeness still required.
+4. INDUSTRY_NEUTRALIZATION = BLOCKED: no date-vintaged PIT industry classification.
+5. D03_D09_REDUNDANCY = BLOCKED: paired same-date same-universe residual test not yet executed.
+6. COST_PROVENANCE = PARTIAL_PASS_TAX_ONLY: statutory tax source available; account-specific commission, slippage and turnover semantics unresolved.
+7. TPEX_HISTORICAL_SOURCE = BLOCKED_CURRENT_TRANSPORT: live official routes currently HTTP 520; do not infer historical nonexistence and do not fabricate rows.
+
+## Updated exact next continuation
+1. Resolve the 23 TWSE non-recent-listing UNKNOWN names with authoritative symbol-session / trading-state provenance; preserve the two recent listings as insufficient-lookback rather than failures.
+2. Build TPEx date-vintaged historical-universe receipt and source-independent replay from immutable persisted official history where available; live HTTP transport must not be the sole replay dependency.
+3. Bind shared corporate-action continuity receipt to exact D19 formation windows; do not implement a D19-local adjustment engine.
+4. Freeze PIT industry vintage and run industry neutralization.
+5. Execute D03/D09 paired redundancy controls on identical frozen date/universe.
+6. Freeze D14-compatible research cost scenarios with explicit quality; actual owner commission remains UNKNOWN until directly evidenced.
+7. Zero applicable blockers may trigger L3 readiness review only; no automatic promotion.
