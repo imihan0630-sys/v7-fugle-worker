@@ -177,7 +177,23 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H09_H12_SCOPE_DEDUP_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H09_H12_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "SPECIALIST_VALIDATION_PENDING"
+      "status": "OWNER_APPROVAL_REQUIRED",
+      "terminalClassification": "KEEP_SEPARATE",
+      "governanceDisposition": "SCOPE_DEDUP_ONLY",
+      "receivedPackets": [
+        "research/D16_16_19_MODEL_VALIDATION_CLUSTER_20261004_V0_1.md",
+        "research/D16_D18_VALIDATION_CHECKPOINT.md",
+        "research/D16_25_D15_19_MERGE_DECISION_INPUT_V0_1.md"
+      ],
+      "audit": "shared-knowledge/CURRICULUM_H09_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md",
+      "machineAudit": "shared-knowledge/curriculum_h09_dependency_anti_orphan_audit_20261004_v0_1.json",
+      "dependencyAudit": "PASS",
+      "antiDoubleCount": "PASS",
+      "antiOrphan": "PASS",
+      "maturityImpact": "NONE_D16_19_D16_25_REMAIN_L2_40",
+      "renameRequired": false,
+      "proposedScopeChange": true,
+      "formalCoreImpact": "NONE"
     },
     {
       "id": "H10",
