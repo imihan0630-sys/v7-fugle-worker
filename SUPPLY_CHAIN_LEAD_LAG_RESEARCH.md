@@ -2392,3 +2392,20 @@ SC-056:
 - continue future steel-chain vintages under the same frozen lag set;
 - if independent future physical chains continue to show edge-specific or unstable lag behavior, reject generic fixed-lag supply-chain timing and retain only chain-specific contextual states.
 
+
+
+## 00 routed COV-06 exact remaining delta — 2026-10-04
+
+COV-06 remains PARTIAL. Do not repeat supply-chain map / lead-lag / issuer-exposure research.
+
+Exact remaining topology delta:
+1. define topology-specific graph schema: node, directed edge, edge weight and effective-dated relation;
+2. define articulation/single-point-failure and alternate-path redundancy/resilience;
+3. distinguish concentration from topology;
+4. preserve substitutionState / qualificationConstraint / incomplete-graph UNKNOWN;
+5. produce at least one Taiwan effective-dated graph witness where alternate-source semantics are known;
+6. compare topology information against D10-01 mapping, D07 concentration and D17 propagation;
+7. choose exactly one terminal recommendation;
+8. commit `research/COV06_D10_SPECIALIST_RETURN_V0_1.md`.
+
+No maturity or Formal change is authorized by this routing.
