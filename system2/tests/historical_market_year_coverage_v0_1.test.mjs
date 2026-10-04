@@ -66,7 +66,12 @@ const unknown=buildHistoricalMarketYearCoverageV0_1({
   tradingDates:["2017-01-03","2017-01-04"],registry,rows,suspensionIntervals:[],
 });
 assert.equal(unknown.unknownBars,1);
-assert.equal(unknown.rawCoverageState,"BLOCKED");
-assert.equal(unknown.overallState,"BLOCKED");
+assert.equal(unknown.rawCoverageState,"PASS");
+assert.equal(unknown.symbolSessionCoverageState,"PARTIAL_UNKNOWN_SYMBOL_SESSIONS");
+assert.equal(unknown.overallState,"PARTIAL");
+assert.deepEqual(unknown.missingBySymbol,[{
+  symbol:"1102",missingCount:1,unknownCount:1,suspensionCount:0,
+  firstMissingDate:"2017-01-04",lastMissingDate:"2017-01-04",
+}]);
 
 console.log("historical_market_year_coverage_v0_1 tests passed");
