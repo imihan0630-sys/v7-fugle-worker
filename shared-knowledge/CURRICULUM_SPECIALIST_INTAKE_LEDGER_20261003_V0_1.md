@@ -87,12 +87,12 @@ Until that packet arrives:
 | H12 | PARTIAL_EVIDENCE_RECEIVED | Room05 + Room13 semantic packet | 10｜投組風控與交易執行研究室 + Room13 first live TWSE source receipt |
 | H13 | CLOSED_NO_STRUCTURAL_CHANGE | equivalent Room06 + Room15 evidence | — |
 | H14 | CLOSED_NO_STRUCTURAL_CHANGE | Room05 packet + Room08 equivalent PIT evidence | — |
-| H15 | PENDING | — | specialist packet(s) |
-| H16 | PENDING | — | specialist packet(s) |
+| H15 | CLOSED_NO_STRUCTURAL_CHANGE | equivalent Room08 + Room04 evidence | — |
+| H16 | CLOSED_NO_STRUCTURAL_CHANGE | equivalent Room04 + Room08 + Room01 evidence | — |
 | H17 | PENDING | — | specialist packet(s) |
 | H18 | PENDING | — | specialist packet(s) |
 | H19 | PENDING | — | specialist packet(s) |
-| H20 | PARTIAL_EVIDENCE_RECEIVED | `research/D02_H20_BREAKOUT_SPECIALIST_RETURN_V0_1.md` | 01｜K線與型態研究室、04｜波動與市場微結構研究室 |
+| H20 | CLOSED_NO_STRUCTURAL_CHANGE | Room02 formal return + equivalent Room01/04 evidence | — |
 
 ## Intake rules
 
@@ -595,3 +595,43 @@ D07-06 remains L2/40%; D22-03 remains L3/60%. Net debt is derived; maturity wall
 
 Closure receipt:
 `shared-knowledge/CURRICULUM_H13_CANONICAL_CLOSURE_RECEIPT_20261004_V0_1.md`.
+
+
+## H15 / H16 / H20 terminal closures — 2026-10-04
+
+### H15
+Terminal:
+`KEEP_SEPARATE / EVENT_RISK_TO_VOLATILITY_TO_POST_EVENT_PATH / ONE_OPENING_GAP_RECEIPT`.
+
+- D11-10 = event-linked overnight-gap risk.
+- D04-09 = distributional tail/gap volatility state.
+- D17-12 = post-gap continuation/fill/reversal path only after the initial gap observation.
+- one opening gap cannot become three time-zero votes.
+
+State: `CLOSED_NO_STRUCTURAL_CHANGE`.
+
+### H16
+Terminal:
+`KEEP_SEPARATE / FOUR_LAYER_PRICE_LIMIT_CHAIN / ONE_LIMIT_EVENT_RECEIPT`.
+
+- D05-02 = price-limit mechanics.
+- D11-11 = exit/orderability transformation.
+- D01-09 = chart/pattern semantics under price-limit constraints.
+- D04-10 = volatility-estimator contamination.
+- one limit-hit session cannot become four independent signals.
+
+State: `CLOSED_NO_STRUCTURAL_CHANGE`.
+
+### H20
+Terminal:
+`KEEP_SEPARATE / MULTI_EVIDENCE_BREAKOUT_FAMILY / NO_INDEPENDENT_COMPONENT_VOTE_UNTIL_RESIDUAL_VALUE`.
+
+- D01-05 = breakout/failure event owner.
+- D02-03 = volume-confirmation transform.
+- D04-07 = volatility interaction/context transform.
+- volume and volatility remain conditional/supportive until preregistered residual incremental value is demonstrated.
+- one breakout event cannot receive three automatic votes.
+
+State: `CLOSED_NO_STRUCTURAL_CHANGE`.
+
+No module-count, maturity, Formal or runtime change from these governance closures.
