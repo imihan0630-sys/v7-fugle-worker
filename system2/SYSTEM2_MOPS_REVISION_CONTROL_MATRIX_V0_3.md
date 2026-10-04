@@ -57,3 +57,28 @@ It does not certify:
 - NO_EVENT;
 - technical continuity;
 - any trading authority.
+
+## 2026-10-04 physical V0.3 acceptance
+
+PR #502 merged as `13bd801a6eeb06aa81f8ffde9ce00d794c629247`.
+
+Checks:
+- TPEx 3152 Representative Revision Control Readonly `37182093418`: PASS.
+- System2 Research CI `37182093346`: PASS.
+- V8 Regression `37182093362`: PASS.
+
+Physical MOPS V0.3 result:
+- state=`MULTI_EXCHANGE_MULTI_FAMILY_REVISION_CONTROLS_OBSERVED`;
+- controlCount=6 / passCount=6;
+- crossMonthControlCount=1;
+- 3152 required months=[1,5], observed months=[1,5];
+- originalCount=1;
+- revisionCount=1;
+- distinctVersionKeyCount=2;
+- source-reported clock semantics PASS 6/6.
+
+3152 source-reported chain:
+- 2026-01-20 17:14:53 / seqNo=2 / original;
+- 2026-05-28 17:20:08 / seqNo=1 / correction.
+
+Exact knownAt remains uncertified.
