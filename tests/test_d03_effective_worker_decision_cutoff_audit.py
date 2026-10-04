@@ -7,31 +7,22 @@ if not path.exists():
 text=path.read_text(encoding="utf-8")
 
 def function_body(name):
-    marker=re.search(rf'^(?:async )?function {re.escape(name)}\(',text,re.M)
-    if not marker:
+    lines=text.splitlines()
+    start=None
+    pattern=re.compile(rf'^(?:async )?function {re.escape(name)}\(')
+    function_start=re.compile(r'^(?:async )?function \w+\(')
+    for i,line in enumerate(lines):
+        if pattern.search(line):
+            start=i
+            break
+    if start is None:
         raise SystemExit(f"function missing: {name}")
-    start=marker.start()
-    brace=text.find("{",marker.end()-1)
-    depth=0
-    quote=None
-    escape=False
-    backtick=chr(96)
-    for i in range(brace,len(text)):
-        ch=text[i]
-        if quote:
-            if escape: escape=False
-            elif ch=="\\": escape=True
-            elif ch==quote: quote=None
-            continue
-        if ch in ("'", '"', backtick):
-            quote=ch
-            continue
-        if ch=="{": depth+=1
-        elif ch=="}":
-            depth-=1
-            if depth==0:
-                return text[start:i+1]
-    raise SystemExit(f"unterminated function: {name}")
+    stop=len(lines)
+    for i in range(start+1,len(lines)):
+        if function_start.search(lines[i]):
+            stop=i
+            break
+    return "\n".join(lines[start:stop])
 
 core=function_body("runAfterMarketScanCore")
 selector=function_body("selectTomorrowCandidates")
