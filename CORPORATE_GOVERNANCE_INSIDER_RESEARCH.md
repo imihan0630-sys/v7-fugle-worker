@@ -1954,3 +1954,229 @@ Exact next continuation:
 Build D21-13 historical materiality replay across at least two sectors with different material risk channels, e.g. semiconductor water/energy/carbon exposure versus a high-emission industrial sector or labor/product-safety-sensitive sector. Preserve disclosure vintage, mandatory-adoption phase, metric methodology, target-versus-realized distinction and financial transmission channel. Do not use aggregate ESG ratings as the primary feature.
 
 Formal Core impact: NONE.
+
+
+## D21-13 Materiality PIT Replay v0.2 / D21-09 Succession PIT Replay v0.2
+
+Date: 2026-10-04 Asia/Taipei
+Status: D21-13 L3 / D21-09 L3 / FORMAL_CORE_UNCHANGED
+
+## D21-13 Historical Materiality PIT Replay v0.2
+
+### Sector A — Semiconductor / TSMC 2330 / 2023 sustainability vintage
+
+Public-known anchor:
+- TSMC's 2023 Sustainability Report was publicly released online on 2024-07-31.
+- Metrics describe 2023 performance and therefore are NOT decision-time-known in 2023 unless supported by an earlier filing.
+- For conservative historical daily replay, these report-specific metrics enter availability on 2024-07-31.
+
+Materiality channel:
+- semiconductor production has financially material water and electricity dependency;
+- process continuity, capacity expansion and reclaimed-water substitution connect resource management to operating resilience and cost.
+
+2023 water replay:
+- unit water consumption: 176.4 liters per 12-inch equivalent wafer mask layer;
+- versus 2010 base 140.9, increase = 25.2%;
+- annual target was a 2.7% reduction from base, so the target was missed;
+- issuer explanation attributes deterioration materially to lower-than-expected capacity utilization, which raises unit consumption through the denominator effect;
+- process-water recycling rate: 90.3%;
+- reclaimed-water replacement rate: 12%, above the disclosed 5% target for 2023;
+- total system water recycling: about 286.4 million m3.
+
+Falsification:
+- a worsened environmental intensity metric can be caused by lower utilization rather than weaker operational environmental management;
+- therefore resource-intensity changes must be decomposed into numerator and production denominator;
+- target miss in one metric can coexist with progress in another material resilience metric.
+
+Research fields validated:
+- public_known_at;
+- measurement_period;
+- metric methodology;
+- target baseline;
+- realized value;
+- target_hit/miss;
+- management explanation;
+- resource-resilience channel;
+- denominator context.
+
+### Sector B — Integrated steel / China Steel 2002 / 2023 sustainability vintage
+
+Public-known anchor:
+- China Steel's board approved the 2023 Sustainability Report on 2024-08-13 and publicly described its major results that day.
+- The report covers 2023 operations.
+- For conservative daily replay, report-specific metrics enter availability no later than the 2024-08-13 public board release; they are not backfilled into 2023.
+
+Materiality channels:
+- carbon fee and carbon-border policy can directly increase operating cost;
+- low-carbon raw-material scarcity can increase input cost;
+- low-carbon technology investment raises R&D/capex burden;
+- water is operationally material but the steel process has a different recycling / production-intensity profile from semiconductor fabrication.
+
+2023 replay:
+- annual carbon reduction achieved: about 358,000 tCO2e;
+- self-generated green electricity: 58,554 kWh;
+- process-water recycling rate: 98.5%;
+- total water-intensity target: 4.90 t/tCS, actual 5.04 t/tCS, about 2.86% worse than target;
+- new-water-intensity target: 2.50 t/tCS, actual 2.16 t/tCS, about 13.6% better than target;
+- reclaimed-water use materially reduced dependence on new water.
+
+Climate-risk map:
+- transition of raw materials ranked as the highest climate-related risk;
+- implementation of a carbon-fee mechanism ranked second;
+- the issuer explicitly links carbon fees, low-carbon energy and low-carbon raw materials to higher operating costs;
+- reduction technology and operational-efficiency projects are mitigation mechanisms, not free benefits.
+
+Falsification:
+- high total process-water recycling does not imply all water-intensity targets are met;
+- an apparently strong 98.5% recycling figure can coexist with a missed total-water-intensity target;
+- new-water intensity can improve while total-water intensity worsens, so one aggregate water score can hide opposite underlying states;
+- carbon reduction achievement does not eliminate transition-cost exposure.
+
+### Cross-sector conclusion
+
+A single ESG / climate composite is invalid for research ownership.
+
+Semiconductor materiality:
+- water continuity;
+- power availability / renewable sourcing;
+- process resource intensity;
+- supplier and customer decarbonization requirements.
+
+Integrated steel materiality:
+- absolute emissions;
+- carbon fee / border-adjustment exposure;
+- low-carbon raw material cost;
+- technology / capex transition;
+- water continuity and process recycling.
+
+Required sector-materiality mapping:
+- materiality_channel;
+- sector_specific_denominator;
+- absolute_metric;
+- intensity_metric;
+- target_baseline;
+- target_status;
+- methodology_version;
+- public_known_at;
+- reporting_regime;
+- financial_transmission;
+- management_attribution;
+- target-versus-realized state.
+
+Do not compare raw water intensity, emissions intensity or recycling rate cross-sector without sector-specific scale and production definitions.
+
+### Disclosure-regime firewall
+
+- sustainability reports are delayed annual evidence;
+- 2023 operating metrics published in 2024 must enter the historical feature set in 2024, not 2023;
+- mandatory IFRS sustainability adoption beginning with FY2026 changes coverage and timing, so pre/post adoption periods require regime controls;
+- methodology/base-year restatement creates a new vintage and must not overwrite the old one historically.
+
+### D21-13 maturity decision
+
+Advance D21-13 from L2 / 40% to L3 / 60%.
+
+L3 rationale:
+- two Taiwan sectors with materially different financial transmission channels are historically replayable;
+- known-at dates for report-specific data can be conservatively anchored;
+- target, realized metric, methodology/denominator and financial-transmission state can be reconstructed;
+- cross-sector falsification demonstrates why generic ESG scores and raw unscaled metrics are unsafe.
+
+L4 remains closed:
+- no OOS/prospective evidence that materiality-specific features add predictive value after controlling industry, profitability, capex cycle, valuation and regulation phase.
+
+Role: RESEARCH_ONLY / CONTEXT / GOVERNANCE_TAIL_RISK.
+Formal Core impact: NONE.
+
+## D21-09 Historical Succession / Key-person PIT Replay v0.2
+
+### Case A — TSMC 2330 planned succession
+
+First public plan:
+- 2023-12-19: TSMC publicly announced Chairman Mark Liu would not seek nomination for the next board term and would retire after the 2024 AGM.
+- the Nominating, Corporate Governance and Sustainability Committee recommended Vice Chairman C.C. Wei as the next chairman, subject to the June 2024 board election.
+
+Effective transition:
+- 2024-06-04: AGM elected the new board and the board elected C.C. Wei as chairman; he also remained CEO.
+- plan-to-effective lead time: 168 days.
+
+State sequence:
+- PREANNOUNCED_SUCCESSION;
+- SUCCESSOR_NAMED_CONDITIONAL;
+- TRANSITION_PENDING;
+- EFFECTIVE_SUCCESSION;
+- CHAIR_CEO_DUALITY_AFTER_SUCCESSION.
+
+Interpretation:
+- this is a planned transition with long lead time and identified successor;
+- uncertainty is lower than in a sudden-loss event, but successor certainty was conditional on the board election until the effective date;
+- event is not equivalent to an abrupt key-person shock.
+
+### Case B — Taiwan Cement 1101 sudden key-person loss
+
+Public state sequence:
+- 2017-01-22: after Chairman/President Leslie Koo Cheng-yun became unable to exercise duties due to hospitalization, the board selected Chang An-Ping as acting chairman and acting president, effective the same day.
+- MOPS-derived public archive observed the acting appointment by 2017-01-23 07:20.
+- 2017-01-23 early morning: Leslie Koo died.
+- the company announced the chairman's death before market open; public reporting records a MOPS material announcement around 08:39.
+- 2017-01-23 later that day: a provisional board meeting selected Chang An-Ping as formal chairman and president.
+- MOPS-derived public archive observed the formal appointment by 17:23.
+- the 2017 annual report later confirmed the death, the same-day board appointment and that the matters had been publicly disclosed under securities law.
+
+State sequence:
+- KEY_PERSON_INCAPACITATED;
+- ACTING_SUCCESSOR_ACTIVE;
+- KEY_PERSON_DEATH_CONFIRMED;
+- PERMANENT_SUCCESSOR_SELECTED.
+
+Interpretation:
+- the risk state changed multiple times inside roughly one day;
+- using only the final annual-report roster would erase the acting period and the pre-market death shock;
+- a daily after-market model can use the final 17:23 appointment only for subsequent decision timestamps; intraday studies require the finer event clock.
+
+### Cross-case conclusion
+
+Succession must be modeled as a state machine, not a single “CEO/Chair changed” flag.
+
+Required fields:
+- event_type;
+- first_public_known_at;
+- incapacity/death/resignation/retirement reason;
+- acting_successor_known_at;
+- permanent_successor_known_at;
+- effective_date;
+- planned_lead_days;
+- successor_internal_external_family;
+- successor_prior_role / tenure;
+- founder_or_predecessor_continues_control;
+- chair_CEO_role_after;
+- board/election dependency;
+- management continuity statement;
+- uncertainty_state.
+
+Falsification:
+- planned succession with long lead time is not the same tail-risk event as abrupt death/incapacity;
+- immediate appointment of an experienced insider can materially reduce disruption;
+- company statements that operations are unaffected are management claims, not proof of no economic impact;
+- poor performance may cause planned turnover, so later performance cannot be attributed mechanically to succession.
+
+### D21-09 maturity decision
+
+Advance D21-09 from L2 / 40% to L3 / 60%.
+
+L3 rationale:
+- one planned and one abrupt Taiwan succession event are historically replayable;
+- first-public plan, interim/acting state, permanent appointment and effective dates can be separated;
+- succession type materially changes the information set and uncertainty path.
+
+L4 remains closed:
+- no OOS/prospective validation of which succession-state features add return/risk information beyond prior performance, governance quality and industry context.
+
+Role: CONTEXT_ONLY / GOVERNANCE_TAIL_RISK / CONFIDENCE.
+Formal Core impact: NONE.
+
+Exact next continuation:
+1. D21-13 requires multi-year OOS/prospective validation and sector-neutral incremental tests before L4.
+2. D21-09 requires broader planned/unplanned succession samples and OOS/prospective testing before L4.
+3. Return to blocked L2 modules in priority order: D21-11 contemporaneous tunneling evidence, D21-04 authoritative pledge receipts, D21-03 original monthly insider-known-at, D21-01 original ownership-report known-at.
+4. D21-07 remains the largest executable L2 module without PIT validation; build compensation-policy to capital-allocation historical replay next.
