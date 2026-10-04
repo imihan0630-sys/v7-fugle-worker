@@ -23037,3 +23037,45 @@ New durable artifacts:
 - research/PATTERN_ROLE_REVERSAL_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-035 — Polarity memory vs breakout momentum, boundary salience and retest selection (2026-10-04)
+
+DL-034 stopped the most obvious leakage by defining role-flip eligibility at the confirmed crossing and reserving the first opposite-side retest as a future test.
+
+DL-035 identifies a subtler problem: even a clean first-retest comparison can be biased if the former-role history changes whether price returns to the boundary in the first place.
+
+Two different future estimands are therefore frozen.
+
+E1 FIRST_RETEST_ARRIVAL begins with every eligible breakout at breakoutConfirmedAt and asks whether/when a valid first opposite-side retest occurs. E1 retains right-censored cases, candidates cancelled before retest and data-blocked cases as separate states.
+
+E2 FIRST_RETEST_RESPONSE is conditional on FIRST_RETEST_ARRIVED and asks what happens after the first valid retest opportunity. It cannot be described as the unconditional polarity effect for the full breakout cohort.
+
+The timing of controls is now explicit. Pre-break context available by breakout confirmation can be used as baseline adjustment: breakout quality, D02 acceptance/persistence, volatility/liquidity/regime, tick/constraint state, detector prominence and boundary salience.
+
+Post-break/pre-retest path is different. Maximum displacement, cumulative path, time to retest, retracement path and intervening scale migration only exist after the breakout. They may mediate the effect of prior role history or participate in the selection process that determines E2 membership. Treating them as ordinary baseline confounders would change the estimand.
+
+D16 therefore receives two explicit future estimands.
+
+TOTAL_POLARITY_INCREMENT compares S1 certified-former-role breakouts with S0 salient-non-role breakouts using preregistered pre-break adjustment/common support.
+
+PATH_CONDITIONAL_POLARITY_INCREMENT additionally conditions on post-break path among E2 cases and must be interpreted as a direct/context-conditional comparison rather than the total former-role effect.
+
+The control is also strengthened. A random horizontal breakout line is too weak because certified former-role levels are inherently salient. S0 must itself be salient but must not have certified prior opposite-role status. Preferred controls include same-detector unconfirmed candidates from DL-028 or preregistered salient range/channel/reference boundaries.
+
+This is especially relevant in Taiwan. Limit-order evidence shows price clustering at integer/even prices can itself create barriers, while Taiwan 52-week-high momentum evidence shows salient historical reference points and recency carry return information in a state-dependent way. Generic salience and momentum therefore cannot be credited automatically to polarity memory.
+
+A second treatment-definition caution is frozen. Certified prior role exists because of historical interactions. Exact-matching every interaction dimension away could remove the treatment itself. Future work must distinguish the effect of certified-role presence from the intensity of role history among already-certified roots.
+
+Selection reporting is mandatory. For both S0 and S1, future E1 analysis must show eligible cohort size, retest arrival rate, time to retest, cancellation, right censoring and data-block/constraint rates. A large E2 difference combined with materially different E1 selection is not a clean unconditional polarity conclusion.
+
+Eighteen adversarial tests are authored. They enforce salient S0 controls, prohibit post-break path in the E1 baseline, verify arrival/cancellation/censoring distinctions, require E2 only after first-retest arrival, mark post-break path as mediator/selection state, prevent response leakage, preserve one causal N, distinguish total versus path-conditional estimands and enforce the appropriate common-support dimensions.
+
+New durable artifacts:
+- research/PATTERN_POLARITY_INCREMENTALITY_V0_1.md
+- research/pattern_polarity_incrementality_v0_1.json
+- research/pattern_polarity_incrementality_v0_1.mjs
+- research/test_pattern_polarity_incrementality_v0_1.mjs
+- research/PATTERN_POLARITY_INCREMENTALITY_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
