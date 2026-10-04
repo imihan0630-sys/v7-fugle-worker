@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import {twoAssetMeanVariance,perturbMean,perturbCorrelation2,equalRiskContribution2,blackLittermanViewGuard} from "../research/d15_optimizer_estimation_stress_v0_1.mjs";
+const cov=perturbCorrelation2({vol:[.2,.2],corr:.2});
+const a=twoAssetMeanVariance({mu:[.10,.09],cov,riskAversion:4,grid:.001});
+const b=twoAssetMeanVariance({mu:perturbMean({mu:[.10,.09],index:1,delta:.02}),cov,riskAversion:4,grid:.001});
+assert.ok(Math.abs(a.weights[0]-b.weights[0])>.01);
+const low=equalRiskContribution2({cov:perturbCorrelation2({vol:[.1,.3],corr:0}),grid:.001});
+const high=equalRiskContribution2({cov:perturbCorrelation2({vol:[.1,.3],corr:.9}),grid:.001});
+assert.ok(low.weights[0]>.5);
+assert.ok(high.weights[0]>.5);
+assert.equal(blackLittermanViewGuard({viewReceiptId:"V1",viewKnownAt:"2026-01-01T09:00:00Z",confidenceFrozenAt:"2026-01-01T09:00:00Z",decisionAt:"2026-01-02T09:00:00Z",outcomeKnownAt:"2026-01-10T09:00:00Z"}).eligible,true);
+assert.equal(blackLittermanViewGuard({viewReceiptId:"V1",viewKnownAt:"2026-01-03T09:00:00Z",confidenceFrozenAt:"2026-01-01T09:00:00Z",decisionAt:"2026-01-02T09:00:00Z",outcomeKnownAt:"2026-01-10T09:00:00Z"}).eligible,false);
+console.log(JSON.stringify({meanVarianceBefore:a,meanVarianceAfter:b,riskParityLowCorr:low,riskParityHighCorr:high},null,2));
+console.log("D15-16 optimizer estimation stress tests PASS");
