@@ -279,3 +279,25 @@ No merge, rename, retirement, module-count or Formal change.
 
 Audit:
 `shared-knowledge/CURRICULUM_H05_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+
+## H13 terminal closure — 2026-10-04
+
+Accepted equivalent cross-room evidence:
+- Room06 D07-06 accounting/balance-sheet primitive ownership;
+- Room15 D22-03 credit/funding structure replay + version lineage.
+
+Terminal:
+`KEEP_SEPARATE / ACCOUNTING_PRIMITIVE_VS_CREDIT_FUNDING_TRANSFORM / SINGLE_BALANCE_SHEET_RECEIPT`.
+
+State:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+- D07-06 remains L2/40%.
+- D22-03 remains L3/60%.
+- net debt is derived, not a raw fact;
+- carrying debt and contractual maturity cash flows are linked representations, not additive;
+- one balance-sheet receipt cannot become two independent leverage/credit votes.
+
+Audit:
+`shared-knowledge/CURRICULUM_H13_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
