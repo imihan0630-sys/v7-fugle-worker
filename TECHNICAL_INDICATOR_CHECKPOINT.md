@@ -2644,3 +2644,82 @@ Current:
 `FORMAL_OPTIMIZATION_CANDIDATE = NONE`
 
 No maturity increase is assigned for preregistration/method handoff alone.
+
+
+## TI-555 through TI-563 — continuity revision-source blocker reduction (2026-10-04)
+
+Durable artifacts:
+- `research/D03_CONTINUITY_REVISION_SOURCE_PROGRESS_20261004_V0_1.md`
+- `research/d03_continuity_revision_source_progress_20261004_v0_1.json`
+
+### TI-555 — transport failure separated from source truth
+A physical TLS diagnostic on the modern `mops.twse.com.tw` gateway recorded an expired TWSE leaf certificate (notAfter 2026-05-31 GMT; OpenSSL verify code 10). No TLS bypass is allowed. The resulting transport failure is not negative evidence about historical MOPS content.
+
+### TI-556 — secure direct official historical source
+Direct official `mopsov.twse.com.tw/mops/web/ajax_t05st01` passed standard TLS and a 2467 read-only positive control:
+- TLS valid through 2026-11-28 GMT;
+- HTTP 200;
+- original + correction both present;
+- no D1/Production/Formal effect.
+
+### TI-557 — physical 5/5 cross-family correction/cancellation capability
+Workflow run `37167344795` physically passed all five frozen controls:
+- 2467 dividend original+correction;
+- 1459 capital-reduction schedule original+correction;
+- 2321 capital-reduction decision original+correction;
+- 1342 cash-capital-increase original+correction;
+- 1342 cash-capital-increase cancellation.
+
+Summary:
+`MULTI_FAMILY_CORRECTION_AND_CANCELLATION_CAPABILITY_OBSERVED`
+with correction 4/4, cancellation 1/1 and four distinct action families.
+
+### TI-558/TI-559 — capability does not certify completeness
+Still false/unproven:
+- boundedIntervalCoverageComplete;
+- actionFamilyCoverageComplete;
+- cancellationHistoryComplete;
+- knownAtVersionClockCertified;
+- revisionCoverageComplete;
+- symbolSessionCompletenessCertified;
+- technicalContinuityCertified.
+
+Next source work must prove bounded query population, no hidden pagination/truncation, immutable version clocks and cross-source reconciliation. Absence cannot be claimed from a non-certified bounded population.
+
+### TI-560 — immutable parent has owner approval but is not yet physical
+Latest main contains `research/SYSTEM1_SHADOW_COHORT_MEMBERSHIP_CLASS_B_HANDOFF_20261004.md`:
+`OWNER_APPROVED_CLASS_B / IMPLEMENTATION_PENDING / FORMAL_CORE_LOCKED`.
+
+But canonical parent/persistence status still says:
+`CURRENT_PRODUCTION_IMMUTABLE_PARENT = NOT_IMPLEMENTED`,
+`RUNTIME_IMPLEMENTATION = NOT_IMPLEMENTED`,
+`D1_SCHEMA_IMPLEMENTATION = NOT_IMPLEMENTED`.
+
+Approval is not a persisted/read-back generation receipt.
+
+### TI-561/TI-562 — module decisions
+Bollinger remains L2/40:
+needs physical immutable parent generation + certified bounded TECHNICAL_CONTINUITY + exact 20-session window/replay/attempt accounting.
+
+ADX remains L2/40:
+needs all Bollinger-class lineage plus canonical Wilder recursive-state replay/trusted prior-state certification.
+
+### TI-563 — anti-inflation maturity decision
+D03 remains **56.7%**.
+
+The source blocker is materially narrower, but the L3 curriculum gate has not been met for D03-09/10.
+
+Next honest levels:
+- D03-10 Bollinger L3 => **58.3%**;
+- then D03-09 ADX L3 => **60.0%**.
+
+Current:
+`MOPSOV_MULTI_FAMILY_REVISION_CANCELLATION = 5_OF_5_PHYSICAL_PASS`
+`BOUNDED_REVISION_COMPLETENESS = NOT_YET_PROVEN`
+`IMMUTABLE_PARENT_CLASS_B = OWNER_APPROVED_IMPLEMENTATION_PENDING`
+`D03_10 = L2_REMAINS`
+`D03_09 = L2_REMAINS`
+`D03_MATURITY = 56.7_PERCENT`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Raw D03 source-version gate remains independently 2/3 and TI-005/TI-006 outcomes remain closed.
