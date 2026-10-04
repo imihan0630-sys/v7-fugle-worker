@@ -40,8 +40,9 @@ jobs:
           date -u +"CAPTURE2_UTC=%Y-%m-%dT%H:%M:%SZ"
 
       - name: Normalize and compare without outcomes
-        shell: node
+        shell: bash
         run: |
+          node <<'NODE'
           const fs = require("fs");
           const crypto = require("crypto");
           const sources = {
@@ -102,6 +103,7 @@ jobs:
           console.log("D17_CAPTURE_SUMMARY_BEGIN");
           console.log(JSON.stringify(out,null,2));
           console.log("D17_CAPTURE_SUMMARY_END");
+          NODE
 
       - name: Run observer regression
         run: node tests/test_d17_disclosure_snapshot_observer_v0_1.mjs
