@@ -1,7 +1,57 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T14:35:00+08:00",
+  "updatedAt": "2026-10-04T15:13:33+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
-  "directives": []
+  "directives": [
+    {
+      "directiveId": "S2-CORR-20261004-001",
+      "createdAt": "2026-10-04T15:13:33+08:00",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "title": "Historical daily-market backfill stalled after first 2017 TWSE annual attempt",
+      "affectedScope": [
+        "S2-03 Historical infrastructure",
+        "P0 2017-present TWSE+TPEx daily A1 cold history"
+      ],
+      "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "canonicalRequirement": "Physically populate and verify staged official 2017-present Taiwan-equity daily history before claiming complete full-market historical coverage/replay.",
+      "observedProblem": "The first 2017 TWSE annual cold-backfill attempt failed before annual ingest. The calendar source was repaired and the checkpoint required a rerun, but no later canonical annual completion receipt is recorded; current build progress still marks full 2017-present completion as pending.",
+      "evidence": [
+        "SYSTEM2_CHECKPOINT run 36545375167 failed before annual ingest",
+        "SYSTEM2_CHECKPOINT requires repaired 2017 TWSE rerun before TPEx",
+        "SYSTEM2_BUILD_PROGRESS_MAP S2-03 remains yellow; full 2017-present cold history remains separate work",
+        "SYSTEM2_MVP_SHADOW_STATUS_V0_1 does not claim 2017 full-market cold backfill complete"
+      ],
+      "riskIfUnfixed": "Creates false-completion/evidence-coverage risk for multi-year replay, factor validation, regime robustness and strategy backtesting.",
+      "requiredCorrection": [
+        "Resume from repaired calendar implementation without redesigning the architecture",
+        "Complete and verify 2017 TWSE annual cold backfill",
+        "Then complete and verify 2017 TPEx",
+        "Continue year-by-year through present with durable receipts",
+        "Produce aggregate market-year coverage matrix with explicit UNKNOWN/gaps",
+        "Run first real full-market PIT replay only from verified history"
+      ],
+      "acceptanceCriteria": [
+        "2017 TWSE verified completion receipt reconciles manifests, R2 objects and coverage",
+        "2017 TPEx accepted under same standard",
+        "Every later market-year has completion or explicit blocked/deferred receipt",
+        "2017-present aggregate coverage is machine-readable with unresolved gaps explicit",
+        "Full-market replay consumes only verified historical registry/cold packs with PIT/continuity guards",
+        "System1 Formal Core and production runtime unchanged"
+      ],
+      "protectedBoundaries": [
+        "System1 Formal Core",
+        "System2 live selection authority",
+        "production push",
+        "capital/order impact",
+        "historical evidence must not be relabeled prospective"
+      ],
+      "ownerDecisionRequired": false,
+      "implementationEvidence": [],
+      "verificationEvidence": [],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-04T15:13:33+08:00"
+    }
+  ]
 }
