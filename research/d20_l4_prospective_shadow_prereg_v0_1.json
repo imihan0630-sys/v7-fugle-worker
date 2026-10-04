@@ -3,7 +3,7 @@
   "frozenAtAsiaTaipei": "2026-10-04T08:52:19+08:00",
   "researchRoom": "13",
   "domain": "D20",
-  "status": "PREREGISTERED_RESEARCH_ONLY / OUTCOME_JOIN_LOCKED_UNTIL_PARENT_FROZEN / NO_L4_PROMOTION_YET",
+  "status": "PREREGISTERED_RESEARCH_ONLY / NINE_L3_LANES_IN_SCOPE / OUTCOME_JOIN_LOCKED_UNTIL_PARENT_FROZEN / NO_L4_PROMOTION_YET",
   "maturityRule": {
     "L3": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
     "L4": "PROSPECTIVE_SHADOW_OR_OOS_EVIDENCE",
@@ -263,12 +263,91 @@
       "primaryQuestion": "Can the behavioral hypothesis discriminate against at least one plausible structural explanation on prospective common-support parents?",
       "minimumIndependentCasesForL4": 20,
       "promotionRule": "May reach L4 only from prospective/OOS discriminating evidence, not merely because upstream modules have outcome data."
+    },
+    "D20-01": {
+      "role": "TWSE_SHORT_SIDE_REFERENCE_DEPENDENCE_RESEARCH",
+      "firstEligibleParent": "First immutable D20-02 short-side weekly parent after preregistration extension",
+      "sharedParentRule": "Reuse exact D20-02 parent receipt; do not create a second primitive vote.",
+      "parentFields": [
+        "symbol",
+        "asOf",
+        "referencePriceShort",
+        "shortCapitalGainsOverhang",
+        "priorShortBalance",
+        "currentShortBalance",
+        "newShortSales",
+        "returnsOrCovering",
+        "adjustments",
+        "borrowEconomics_or_UNKNOWN",
+        "sourceHash",
+        "ruleVintage"
+      ],
+      "primaryQuestion": "Does observable covering behavior change asymmetrically around the reconstructed zero-gain short reference point after controls?",
+      "primaryOutcome": "NEXT_WEEK_COVER_RATIO",
+      "secondaryOutcome": "D5_MARKET_SECTOR_RESIDUAL_RETURN",
+      "mandatoryControls": [
+        "size",
+        "liquidity",
+        "volatility",
+        "newShortSales",
+        "institutionalOwnership_when_valid",
+        "borrowEconomics_when_valid",
+        "market_regime"
+      ],
+      "minimumIndependentWeeklyDatesForL4": 12,
+      "interpretationGuard": "A positive result supports reference-dependent asymmetry in this bounded short-side lane; it does not by itself identify pure loss aversion or generalize to long-account investors."
+    },
+    "D20-09": {
+      "role": "EVENT_CONDITIONED_OVERREACTION_RESEARCH",
+      "firstEligibleParent": "First post-extension event with valid first-known clock, frozen surprise definition and completed 15m source receipt",
+      "parentFields": [
+        "eventId",
+        "symbol",
+        "eventClass",
+        "eventKnownAt",
+        "firstEligibleSession",
+        "surpriseDefinitionVersion",
+        "surpriseValue_or_UNKNOWN",
+        "preEventRet20",
+        "sector",
+        "liquidityState",
+        "priceLimitState",
+        "attentionState_or_UNKNOWN",
+        "sentimentState_or_UNKNOWN",
+        "first15mReturn",
+        "first30mReturn",
+        "marketSectorResidualInitialResponse",
+        "sourceReceiptHashes",
+        "formulaVersion"
+      ],
+      "primaryQuestion": "Does a large continuous event-conditioned initial-response residual predict later correction after structural controls, without using the later reversal in the parent?",
+      "primaryOutcomes": [
+        "SAME_SESSION_REVERSAL_PATH_D03_05",
+        "D1_RESIDUAL_RETURN",
+        "D5_RESIDUAL_RETURN"
+      ],
+      "mandatoryControls": [
+        "event_information_content",
+        "market_open_move",
+        "sector_move",
+        "liquidity",
+        "volatility",
+        "price_limit_state",
+        "preEventRet20",
+        "institutionalFlow_when_valid",
+        "attention_when_valid",
+        "sentiment_when_valid"
+      ],
+      "noOutcomeTunedThreshold": true,
+      "minimumIndependentEventDatesForL4": 12,
+      "interpretationGuard": "Price reversal remains D03-05 observable phenomenon. D20-09 may claim behavioral overreaction only if event/behavior evidence survives structural counterfactuals; otherwise cause remains UNKNOWN."
     }
   },
   "l4Decision": {
     "currentPromotionCount": 0,
-    "currentD20MaturityPct": 50.8,
+    "currentD20MaturityPct": 53.8,
     "formalOptimizationCandidate": "NONE",
-    "nextAction": "Begin immutable prospective parent capture; do not open an outcome until its parent receipt and preregistered specification are frozen."
-  }
+    "nextAction": "Collect immutable post-freeze parents for nine L3 lanes. D20-01 and D20-09 become eligible only after this 2026-10-04 11:40 extension; no earlier observed outcome may count as prospective evidence."
+  },
+  "extendedAtAsiaTaipei": "2026-10-04T11:40:09+08:00"
 }
