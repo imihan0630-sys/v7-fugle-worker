@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "D20_SOCIAL_SAMPLING_COVERAGE_CONTRACT_V0_1",
+  "frozenAtAsiaTaipei": "2026-10-04T16:47:00+08:00",
+  "status": "FROZEN_BEFORE_PRIMARY_L4_SOCIAL_SAMPLE / RESEARCH_ONLY",
+  "purpose": "Prevent manual-capture timing and finite-feed-window selection bias in D20-06/D20-11/D20-03 prospective evidence.",
+  "canonicalPrimaryClock": {
+    "rule": "A primary social snapshot is eligible only when captured inside an actually executed Room13 scheduled research run at its fixed :10 slot while that automation is enabled by the rotation controller.",
+    "noAssumedHourlyContinuity": "The controller may rotate Room13 off. Disabled/missed hours are not silently filled and are marked NO_SCHEDULED_CAPTURE / UNKNOWN coverage.",
+    "manualCaptureRole": "User-triggered/manual captures may test source/parser/version logic and may form SECONDARY_PROSPECTIVE_PROCESS samples, but do not count toward primary L4 sample-size gates."
+  },
+  "feedCoverage": {
+    "source": "PTT Stock Atom public feed",
+    "finiteWindowRisk": "Feed exposes only a finite latest-entry window; absence between snapshots cannot be treated as zero posts without continuity evidence.",
+    "overlapRule": "For consecutive primary snapshots, require at least one stable article ID overlap OR another independently frozen continuity proof. If no overlap, interval completeness = UNKNOWN/INCOMPLETE.",
+    "includeAllFirstObserved": "Every newly first-observed entry in a valid primary snapshot is included irrespective of topic, stance, engagement or later outcome.",
+    "noCherryPicking": true
+  },
+  "articleCapture": {
+    "contentFingerprintContract": "D20_SOCIAL_CONTENT_FINGERPRINT_CONTRACT_V0_2",
+    "firstKnown": "scheduled snapshot capturedAt",
+    "versionRule": "Append-only article snapshots; no historical backfill before first observation.",
+    "zeroEngagementRule": "Zero-reply/zero-adoption parents remain in the cohort."
+  },
+  "moduleRules": {
+    "D20-03": "Only qualifying explicit-confidence posts first observed in a valid primary snapshot after its current taxonomy effective time count toward primary L4.",
+    "D20-06": "Aggregate social-herding parents from valid primary snapshots only; no named-user psychology/influence profile.",
+    "D20-11": "Aggregate narrative-diffusion parents from valid primary snapshots only; event/news/theme/attention controls remain mandatory."
+  },
+  "priorManualParent": {
+    "parentDecisionReceiptId": "D20SOC-20261004-002",
+    "classification": "SECONDARY_PROSPECTIVE_PROCESS_SAMPLE / SOURCE_AND_HASH_VALID / NOT_PRIMARY_L4_COUNT",
+    "reason": "Captured prospectively after preregistration but at an ad hoc manual time before the deterministic sampling-clock contract was frozen."
+  },
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE"
+}
