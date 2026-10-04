@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "D22_08_FIXED_FLOATING_RATE_EXPOSURE_CONTRACT_V0_1",
+  "generatedAt": "2026-10-04T08:46:00+08:00",
+  "module": "D22-08",
+  "level": "L2",
+  "maturityPct": 40,
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_ISSUER_SEMANTIC_EXAMPLES_AVAILABLE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "researchQuestion": "Does unhedged repricing structure explain when rate shocks transmit into debt-service pressure beyond the level of policy/risk-free rates?",
+  "stateVector": [
+    "fixed_principal",
+    "floating_principal",
+    "reset_index",
+    "spread_over_index",
+    "reset_frequency",
+    "rate_floor",
+    "rate_cap",
+    "maturity_date",
+    "hedge_notional",
+    "hedge_type",
+    "hedge_maturity",
+    "currency",
+    "unhedged_repricing_principal"
+  ],
+  "mechanism": [
+    "Floating-rate debt transmits benchmark-rate changes into cash interest faster, subject to reset terms/floors/caps and hedges.",
+    "Fixed-rate debt suppresses immediate cash-flow pass-through but can create a refinancing cliff when low-cost fixed debt matures.",
+    "Hedges transform rather than erase exposure; hedge notional, term, counterparty and accounting designation must be separated."
+  ],
+  "evidenceAndCounterevidence": [
+    {
+      "support": "Firm-level research finds more unhedged floating-rate bank debt increases sensitivity of cash flows/investment and equity to monetary tightening.",
+      "counter": "Cash buffers, hedges, pricing power and falling benchmark rates can offset exposure."
+    },
+    {
+      "support": "Official TSMC disclosure states a majority of debt is fixed-rate, limiting immediate debt cash-flow sensitivity to rate changes.",
+      "counter": "That does not remove rollover risk at maturity."
+    },
+    {
+      "support": "Official UMC disclosure distinguishes fixed-rate bonds from floating-rate bank loans.",
+      "counter": "A fixed/floating percentage alone is insufficient without reset/maturity/hedge timing."
+    }
+  ],
+  "pitContract": [
+    "Record debt principal by fixed/floating state at first-known statement date.",
+    "For floating debt preserve index, spread, reset frequency, floor/cap and next reset date when disclosed.",
+    "For fixed debt preserve maturity and callable/puttable terms.",
+    "Record swaps/hedges separately and compute unhedged exposure only when notional/maturity relationship is evidenced.",
+    "Unknown reset/hedge details remain UNKNOWN, never assumed fully floating or fully hedged."
+  ],
+  "falsificationGates": [
+    "Floating-rate share != directional stock signal; effect depends on rate move direction, earnings sensitivity and liquidity.",
+    "Fixed-rate debt != low risk; maturity can convert it into D22-04 refinancing exposure.",
+    "Do not count the same benchmark-rate move already owned by D13 as an independent signal.",
+    "D22-08 owns exposure/transmission; D22-04 owns replacement cost; D22-01 owns maturity amount/timing.",
+    "If exposure structure adds no incremental information after those controls, classify REJECTED_OR_REDUNDANT."
+  ],
+  "outcomeGate": "CLOSED",
+  "formalCore": "LOCKED",
+  "next": [
+    "Build Taiwan PIT fixed/floating/reset/hedge receipts across multiple non-financial issuers and dates.",
+    "Construct unhedged repricing-principal measures with explicit UNKNOWN handling.",
+    "Test rate-rise and rate-fall regimes separately before any L4 claim."
+  ]
+}
