@@ -64,3 +64,39 @@ Any positive must still be manually/fail-closed reviewed for:
 - exact join to the already-known TWSE operational effective date.
 
 If no positive exists, preserve the negative result and widen only through another preregistered official-evidence path. Never weaken the 6/6 criterion merely to fill the matrix.
+
+## 2026-10-04 physical discovery acceptance
+
+PR #577 merged as `8d4193acd57405b7ba4f6fe2c778850e3bbf0a0a`.
+
+Physical workflows:
+- U04 TWSE Par Value Candidate Discovery Readonly `37205790568`: PASS;
+- U04 Bounded List Query V0.2 Readonly `37205790557`: PASS;
+- U04 Scope Serializer Diagnostic Readonly `37205790549`: PASS;
+- System2 Research CI `37205790552`: PASS;
+- V8 Regression `37205790559`: PASS.
+
+Result:
+- `candidateCount=4`;
+- `transportReady=true`;
+- `issuerEvidenceCandidateCount=0`;
+- `revisionParValueCandidateCount=0`;
+- positiveSymbols=[].
+
+Frozen 2025 official TWSE par-value events checked:
+- 4763 / effective 2025-06-30;
+- 6919 / effective 2025-07-21;
+- 2327 / effective 2025-08-25;
+- 8422 / effective 2025-11-17.
+
+Both company-scope and listed-market-scope U04 queries returned no qualifying actual issuer revision/par-value rows in the preregistered windows.
+
+Interpretation:
+- the U04 transport/serializer path is physically usable;
+- this specific issuer-announcement path does not supply a representative TWSE par-value revision chain for the four frozen 2025 events;
+- no representative control is promoted;
+- the negative result must be preserved and this exact path must not be blindly repeated.
+
+Next research direction:
+1. test alternate official issuer/regulator/exchange announcement families whose legal/source scope better matches par-value/share-exchange events;
+2. if bounded alternate-source searches remain negative, freeze a structural-unavailability disposition rather than weakening representative-control criteria.
