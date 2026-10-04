@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "D03_DECISION_CUTOFF_MINIMAL_IMPLEMENTATION_AUDIT_V0_1",
+  "updatedAt": "2026-10-04T20:29:00+08:00",
+  "classification": "RESEARCH_ONLY_IMPLEMENTATION_SURFACE_AUDIT",
+  "formalCore": "LOCKED",
+  "sourceBoundary": {
+    "finalFormalAsyncInput": "STOCKS_KV_V7_MARKET_CONSENSUS",
+    "cutoffAnchor": "AFTER_FINAL_FORMAL_INPUT_BEFORE_SELECT_TOMORROW_CANDIDATES",
+    "ownerMustReauditNewerRuntime": true
+  },
+  "persistenceFinding": {
+    "dedicatedD1ColumnRequired": false,
+    "semanticPersistencePath": "C1_RECEIPT_HEADER_JSON",
+    "immutableConflictGuardReusable": true,
+    "shadowMembershipFieldDuplicationRequired": false,
+    "historicalBackfillAllowed": false
+  },
+  "minimumRuntimePatch": [
+    "STAMP_REAL_DECISION_CUTOFF_AT_AFTER_FINAL_FORMAL_INPUT",
+    "PASS_EXACT_VALUE_INTO_SELECTOR",
+    "PASS_EXACT_VALUE_INTO_C1_BUILDER",
+    "VALIDATE_CUTOFF_LE_DECISION_AT",
+    "INCLUDE_IN_C1_RECEIPT_HEADER",
+    "PERSIST_AND_READBACK_VIA_EXISTING_HEADER_JSON",
+    "NO_NEW_PROVIDER_CALL",
+    "NO_FORMAL_BEHAVIOR_CHANGE"
+  ],
+  "requiredTests": [
+    "EXACT_CUTOFF_LOCATION",
+    "NO_EXTERNAL_READ_BETWEEN_CUTOFF_AND_SELECTOR",
+    "SELECTOR_REMAINS_SYNCHRONOUS",
+    "CUTOFF_PROPAGATION_IDENTITY",
+    "HEADER_JSON_READBACK_EQUALITY",
+    "SAME_GENERATION_CUTOFF_MUTATION_CONFLICT",
+    "FORMAL_PARITY",
+    "LEGACY_NO_CUTOFF_INELIGIBLE_NO_BACKFILL"
+  ],
+  "d03": {
+    "maturityPct": 56.7,
+    "d03_10": {
+      "level": "L2",
+      "maturityPct": 40
+    },
+    "d03_09": {
+      "level": "L2",
+      "maturityPct": 40
+    },
+    "nextIfBollingerL3": 58.3,
+    "nextIfAdxL3Afterward": 60
+  },
+  "current": {
+    "runtimeImplementation": "OWNER_PENDING",
+    "firstGenuineCutoffBearingParent": "NOT_YET_EXISTS",
+    "formalOptimizationCandidate": "NONE"
+  }
+}
