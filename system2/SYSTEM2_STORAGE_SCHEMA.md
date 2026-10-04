@@ -424,7 +424,9 @@ Never overwrite original historical intent.
 Signal price != fill price.
 
 ### s2_positions
-System 2 virtual positions only; never V8 live holdings.
+System 2 virtual/simulated positions only; never owner actual holdings and never V8 live holdings.
+
+Capability state: `VIRTUAL_POSITION_READY`.
 
 - position_id
 - portfolio_id
@@ -437,6 +439,14 @@ System 2 virtual positions only; never V8 live holdings.
 - state
 - closed_at
 - exit_reason
+
+Semantic guard:
+- `quantity` / `cost_basis` in this table are virtual-position accounting fields derived from the System 2 simulation lane; they are not broker/account ownership evidence.
+- A `POSITION_MONITOR` state backed by `s2_positions` means simulated/virtual position monitoring.
+- Do not overload this table with actual holdings.
+- Current actual-holdings readiness is `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`; `ACTUAL_POSITION_MONITOR_VERIFIED=false`.
+- A future actual-holdings store/adapter requires owner authorization plus source/account scope, as-of time, reconciled quantity, cost/fill provenance where available, ownership provenance, reconciliation/UNKNOWN semantics and physical persistence/readback evidence.
+- Signal, trigger, suggested/requested-share and plan records cannot be converted into actual holdings.
 
 ### s2_outcomes
 - decision_id
