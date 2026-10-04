@@ -568,3 +568,15 @@ Maturity unchanged: D13 41.1%; D13-17 stays L2. Strict clean prospective dates a
 3. Re-check authoritative BIS/Federal Register state on/after 2026-11-10 before calling the scheduled reimposition realized.
 4. Continue H.4.1/CBC/TWSE prospective source-attested receipts under existing PIT clocks; no L3/OOS/optimization before independent clean dates and applicable gates.
 5. D12 continuation is DR-074: permitted raw TAIFEX parent + same-parent replay QA, while prospective 18:10 evidence remains separate.
+
+
+## 2026-10-04 MC-157..MC-162
+- MC-157: aggregate reserve quantity is not a universal scarcity threshold; ample-reserves regime and distributional money-market frictions remain separate controls.
+- MC-158: H.4.1 week-average and Wednesday-stock observations require separate statistic identity; no one-number liquidity score.
+- MC-159: CBC BOP nonresident portfolio composition changes across quarters; quarterly BOP is not daily TWSE foreign equity flow.
+- MC-160: prospective CBC BOP schedule-only receipt captured for 2026-11-20 16:20 Taipei; realization, consensus and surprise remain UNKNOWN.
+- MC-161: CBO baseline is assumption-cutoff dependent; later legal/policy changes can invalidate assumptions. Revision is not pure macro surprise.
+- MC-162: tariff transmission sign for Taiwan remains unidentified across demand, diversion, margins, USD/rates and fiscal channels.
+- Evidence: `research/d12_d13_vintage_regime_audit_20261004_v0_1.md`; `research/d13_17_cbc_bop_schedule_receipt_20261004_1305.json`.
+- Maturity unchanged: D13 41.1%. Outcomes CLOSED; Formal Core LOCKED.
+- Exact next: preserve future H.4.1 series vintages; append BOP schedule changes only if observed; capture BOP realization separately on/after publication; continue CBO assumption-cutoff lineage and eligible TWSE 18:10 foreign-flow receipts.
