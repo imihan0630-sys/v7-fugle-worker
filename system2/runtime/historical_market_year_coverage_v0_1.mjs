@@ -163,6 +163,7 @@ export function buildHistoricalMarketYearCoverageV0_1({
 
   const missingReasonCounts = {};
   const missingSample = [];
+  const missingBySymbolMap = new Map();
   let unknownMissingBars = 0;
   let suspensionMissingBars = 0;
   for (const key of expectedKeys) {
@@ -173,11 +174,22 @@ export function buildHistoricalMarketYearCoverageV0_1({
     missingReasonCounts[reason] = (missingReasonCounts[reason] || 0) + 1;
     if (matched) suspensionMissingBars += 1;
     else unknownMissingBars += 1;
+    const grouped = missingBySymbolMap.get(symbol) || {
+      symbol,missingCount:0,unknownCount:0,suspensionCount:0,firstMissingDate:null,lastMissingDate:null,
+    };
+    grouped.missingCount += 1;
+    if (matched) grouped.suspensionCount += 1;
+    else grouped.unknownCount += 1;
+    if (!grouped.firstMissingDate || date < grouped.firstMissingDate) grouped.firstMissingDate = date;
+    if (!grouped.lastMissingDate || date > grouped.lastMissingDate) grouped.lastMissingDate = date;
+    missingBySymbolMap.set(symbol, grouped);
     if (missingSample.length < 100) {
       missingSample.push({ marketDate:date,symbol,reason,sourceRowHash:matched?.sourceRowHash || null });
     }
   }
 
+  const missingBySymbol = [...missingBySymbolMap.values()]
+    .sort((a,b) => b.missingCount - a.missingCount || a.symbol.localeCompare(b.symbol));
   const missingTradingDates = tradingDates.filter((d) => !actualDateSet.has(d));
   const continuityUnverified = Object.entries(continuityStateCounts)
     .filter(([state]) => state === "UNVERIFIED" || state === "UNKNOWN")
@@ -226,6 +238,7 @@ export function buildHistoricalMarketYearCoverageV0_1({
     nonTradingDateBars:nonTradingDateBars.length,
     missingTradingDates:Object.freeze(missingTradingDates),
     missingReasonCounts:deepFreeze(missingReasonCounts),
+    missingBySymbol:Object.freeze(missingBySymbol.map((x)=>deepFreeze(x))),
     observationStateCounts:deepFreeze(observationStateCounts),
     continuityStateCounts:deepFreeze(continuityStateCounts),
     provenanceIssueCount:provenanceIssues.length,
