@@ -85,7 +85,7 @@ Until that packet arrives:
 | H10 | PENDING | — | specialist packet(s) |
 | H11 | PARTIAL_EVIDENCE_RECEIVED | Room09 D12 surface/skew research + method QA | 09｜衍生品與國際總經研究室 residual common-parent comparison |
 | H12 | PARTIAL_EVIDENCE_RECEIVED | Room05 + Room13 semantic packet | 10｜投組風控與交易執行研究室 + Room13 first live TWSE source receipt |
-| H13 | PENDING | — | specialist packet(s) |
+| H13 | CLOSED_NO_STRUCTURAL_CHANGE | equivalent Room06 + Room15 evidence | — |
 | H14 | CLOSED_NO_STRUCTURAL_CHANGE | Room05 packet + Room08 equivalent PIT evidence | — |
 | H15 | PENDING | — | specialist packet(s) |
 | H16 | PENDING | — | specialist packet(s) |
@@ -574,3 +574,24 @@ State:
 `PARTIAL_EVIDENCE_RECEIVED / ROOM09_COMMON_PARENT_RESIDUAL_TEST_PENDING`.
 
 No maturity/count/Formal change from intake.
+
+
+## H13 00-room terminal closure — 2026-10-04
+
+Accepted equivalent evidence:
+- Room06 D07-06 accounting/balance-sheet ownership;
+- Room15 D22-03 PIT component replay, version lineage and credit/funding transform contracts.
+
+Audit:
+`shared-knowledge/CURRICULUM_H13_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+Terminal:
+**KEEP_SEPARATE / ACCOUNTING_PRIMITIVE_VS_CREDIT_FUNDING_TRANSFORM / SINGLE_BALANCE_SHEET_RECEIPT**
+
+State:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+D07-06 remains L2/40%; D22-03 remains L3/60%. Net debt is derived; maturity wall is linked but not additive to carrying debt. No structural or Formal change.
+
+Closure receipt:
+`shared-knowledge/CURRICULUM_H13_CANONICAL_CLOSURE_RECEIPT_20261004_V0_1.md`.
