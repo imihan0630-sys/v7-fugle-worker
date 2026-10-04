@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T13:05:25+08:00",
+  "updatedAt": "2026-10-04T14:06:56+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -3406,7 +3406,7 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Herding／Social Proof從眾與社會證明」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / PTT_FORUM_ACTOR_SOCIAL_HERDING_SUBLANE / NOT_BROKERAGE_INVESTOR_IDENTITY / SHARED_SOCIAL_RECEIPT_NO_DOUBLE_VOTE / L4_PREREG_NEXT",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / PTT_FORUM_ACTOR_SOCIAL_HERDING_SUBLANE / NOT_BROKERAGE_INVESTOR_IDENTITY / SHARED_SOCIAL_RECEIPT_NO_DOUBLE_VOTE / L4_PREREG_NEXT / L4_PREREG_FROZEN / PROSPECTIVE_AGGREGATE_EVIDENCE_PENDING",
           "next": "使用 PTT Stock 公開 Atom＋文章頁的前瞻版本鏈，建立 forum-actor 領先/跟隨與立場收斂研究。PTT 帳號只能稱公開論壇 actor，不得稱投資帳戶；推/噓/箭頭不是股票多空立場。只有在控制共同新聞、題材、注意力、市場/產業後的時序殘差才可稱 social-herding evidence；同一社群 receipt 不得與 D20-11/D20-07 重複計票。"
         },
         {
@@ -3456,7 +3456,7 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Narrative／Theme Diffusion敘事與題材擴散」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / PTT_STOCK_PROSPECTIVE_NARRATIVE_SUBLANE / VERSION_CHAIN_FEASIBLE / HISTORICAL_COMPLETENESS_NOT_CLAIMED / L4_PREREG_NEXT",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / PTT_STOCK_PROSPECTIVE_NARRATIVE_SUBLANE / VERSION_CHAIN_FEASIBLE / HISTORICAL_COMPLETENESS_NOT_CLAIMED / L4_PREREG_NEXT / L4_PREREG_FROZEN / PROSPECTIVE_AGGREGATE_EVIDENCE_PENDING",
           "next": "使用已驗證的 PTT Stock Atom＋文章頁保存 article URL、作者、發文時間、編輯時間、推文 actor/time 與逐次 snapshot fingerprint；capturedAt 為保守 first-known。D20-11 只研究跨文章/帳號的 topic/phrase/stance 傳播；新聞複製歸 D17、題材成員歸 D09、單純聲量歸 D20-07。下一步凍結 topic/stance 分類版本與 L4 prospective parent 規則。"
         },
         {
@@ -3481,8 +3481,8 @@
         }
       ],
       "status": "D20_L3_11_OF_13 / MATURITY_56_9 / SOCIAL_PIT_SUBLANES_VALIDATED / D20_13_L3_READY / D20_03_IDENTIFIABILITY_BLOCKED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "先把新升 L3 的 D20-06 與 D20-11 納入 2026-10-04 凍結後的 L4 前瞻契約，且只有延伸凍結時間之後的新 PTT parent 才能算 prospective evidence；今天已讀過的即時文章只算 L3 source receipt。下一有效交易日仍優先執行 D20-13 TWSE 借券費率/揭示供需首次實測；若完整可升 L3。D20-03 維持 L2，除非取得可重播的明示信心/不確定性或近直接 overconfidence proxy。",
-      "lastResearchUpdate": "2026-10-04T13:59:48+08:00",
+      "exactNextContinuationPoint": "D20 現為 11 個 L3、2 個 L2。D20-06/D20-11 的 L4 前瞻規則已於 2026-10-04 14:06:56 台北時間延伸凍結；只有之後新抓到的 PTT 聚合 parent 才能算 prospective evidence，個別帳號不建立心理/影響力輪廓。下一有效交易日仍先驗證 D20-13 TWSE 借券費率/揭示供需首次 live receipt；若完整可評估 L3。D20-03 維持 L2，等待明示信心/不確定性或其他近直接 overconfidence proxy。",
+      "lastResearchUpdate": "2026-10-04T14:06:56+08:00",
       "researchNote": "Live source feasibility breakthrough. PTT Stock Atom feed was successfully fetched live and exposed article URLs, publication/update clocks, authors and content previews. A live article page exposed public author handle, second-level post time, minute-level push/boo/arrow actor clocks and explicit edit markers with second-level edit times. A durable source receipt freezes capturedAt as conservative first-known and append-only snapshots for later edits/deletions. D20-11 advances L2→L3 for a bounded prospective public-forum narrative-diffusion sublane. D20-06 advances L2→L3 only for public forum-actor social-herding/leader-follower transforms; it does not identify brokerage investors or natural-person order flow. The same PTT primitive cannot create multiple independent votes across D20-06/07/11. D20-03 remains L2 because public forecast errors do not identify overconfidence without stated confidence/uncertainty or another near-direct proxy. Formal Core unchanged."
     },
     {
