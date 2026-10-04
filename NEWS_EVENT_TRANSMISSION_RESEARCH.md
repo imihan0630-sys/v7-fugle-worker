@@ -813,3 +813,37 @@ No article count, duplicate count, sentiment or event count becomes a Formal vot
 
 Exact next:
 collect at least one additional independent official session plus after-hours expected/observed polling; preserve any content-hash changes append-only; search for native MOPS correction linkage; keep general-news licensing and first-availability gaps explicit.
+
+## 2026-10-04 evening continuation — after-hours coverage + D17-10 source-lineage validation
+
+New receipts:
+- `research/d17_after_hours_coverage_receipt_20261004_v0_1.json`
+- `research/d17_10_cross_source_lineage_receipt_20261004_v0_1.json`
+
+The read-only official disclosure collector completed successful weekend/non-trading coverage in run `37197636375`. Both TWSE and TPEx had expected polls = 2 and observed polls = 2. The two within-run snapshots were unchanged, and both source raw hashes also matched the earlier 2026-10-04 afternoon run. This is bounded weekend stability, not proof of immutable source history or authenticated API first-availability time.
+
+Therefore:
+- D17-01 stays L2: official truth-lane evidence improved, but licensed production general-news coverage remains unresolved.
+- D17-02 stays L2: capturedAt-safe replay and expected/observed polling are stronger, but true sourcePublishedAt-to-API-availability latency is still unauthenticated.
+- D11-08 and D11-13 stay L2: one covered source lane/window cannot prove complete negative evidence across all event/news lanes.
+
+D17-10 now has a Taiwan field-level lineage case.
+
+Case 2537 / 聯上澐朗 fire:
+- an early local-media report describes the physical fire and location while leaving cause/casualty resolution open;
+- the issuer later filed an official material disclosure;
+- a later financial-media article reports the extinguished fire and repeats issuer statements on no injuries, insurance and preliminary immaterial financial impact.
+
+The important result is field-level independence:
+- physical event occurrence has independent local-media + issuer-disclosure lineages;
+- issuer claims on insurance/materiality are not independently confirmed merely because financial media repeats them;
+- unresolved cause remains UNKNOWN;
+- retrospective webpage publication clocks are not backdated into strategy firstKnownAt.
+
+A second derivative example is 7827 HCB303: PChome explicitly republishes the MOPS disclosure with the same timestamp. It is distribution of one primary lineage, not a second confirmation.
+
+Maturity decision:
+D17-10 advances L2 -> L3 for Taiwan PIT/source feasibility of field-level lineage-aware cross-validation. Production general-news licensing, authenticated historical firstKnownAt and any alpha/outcome effect remain unresolved. Formal Core unchanged; outcome joins closed.
+
+Exact next:
+prospectively capture one independent-media + official-disclosure pair with capture timestamps on both lanes; retain field conflicts/version resolution; test cross-validation incremental value only after preregistration.
