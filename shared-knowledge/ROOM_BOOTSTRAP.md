@@ -113,3 +113,79 @@ Work／Codex 短移交範本：
 - **專屬 checkpoint 承擔完整續接責任。**
 - **巨大 Router／Master Map 按需讀，不做日常啟動全文。**
 - **任何規則更新只改 canonical files，不複製到每個新聊天室。**
+
+## 八、不中斷執行與防靜默停滯（MANDATORY）
+
+本節適用於一般 Chat、Work、Codex，以及 System 1、System 2、01～15 研究室與其他使用本 repository 的研究／工程聊天室。
+
+### 1. 里程碑立即 durable 化
+
+- 每完成一個可獨立驗證的 milestone，應儘快寫回既有 checkpoint、commit／PR 或其他正式 durable state；不得把多個大型階段全部留在單一聊天回合記憶中。
+- 已完成且已 durable 的成果，後續中斷時不得重做；恢復時從 exact next continuation point 接續。
+- 若尚未完成 commit，但已產生重要實質結果，至少先把 branch、變更檔案、測試結果、blocker 與 next action 寫入正式 checkpoint。
+
+### 2. 禁止無聲等待與假性背景執行
+
+- 只要任務仍在進行，不得因等待 CI、workflow、merge 狀態、外部來源或工具回應而長時間無聲停住。
+- 長鏈任務原則上每約 2～3 次工具操作或約 15 秒應提供一次簡短進度更新；若此時沒有新的實質結果，至少明確說明目前正在等待什麼、已完成什麼、下一個可執行動作是什麼。
+- 等待 GitHub Actions 或其他外部結果時，應優先執行不衝突的安全工作；若確實沒有其他安全工作可做，必須明確標示為「僅等待外部結果」，不得讓使用者誤以為仍有其他背景工作正在進行。
+- ChatGPT 不得宣稱會在背景繼續工作或稍後自行交付；所有實際工作必須在當前可執行回合中完成，或留下 durable continuation state。
+
+### 3. 「已說繼續卻未進入下一步」視為異常中斷
+
+若已對使用者表示「繼續」、「接著做」、「不停」、「正在執行」或等價承諾，但實際上沒有發動下一個必要工具／研究／工程動作，應視為：
+
+`ABNORMAL_INTERRUPTION`
+
+恢復時第一件事必須如實回報：
+
+1. 上次最後一個真正完成的 durable milestone；
+2. 上次實際停住的位置；
+3. 是否存在未 commit／未 merge／未驗證的工作；
+4. exact next continuation point。
+
+不得把停止狀態描述成仍在背景處理。
+
+### 4. main 漂移只同步，不重做
+
+- 長任務期間若 latest `main` 被其他研究室或工程支線推進，先重新讀 latest main 並比較差異。
+- 若新 commit 與本任務無衝突，採同步／rebase／重新建立 branch 等安全方式續接，不得因此重做已完成研究。
+- 只有在實際檔案、schema、規則或語意衝突時才重新驗證受影響部分。
+- 永遠不得以舊 SHA 覆蓋較新的正式成果。
+
+### 5. 長工程拆成可驗證的小批次
+
+- 長 GitHub 工程優先拆成可獨立測試、可 rollback、可 merge 的小 milestone，而不是把來源探索、parser、archive、schema、驗證、runtime、promotion 全塞進單一超長回合。
+- 每一批次完成後記錄：branch／PR／commit、tests、readback、blocker、next action。
+- 拆批不得改變研究完整性；不得為了快速結束而跳過反證、PIT、OOS、成本、UNKNOWN 或 Formal 邊界檢查。
+
+### 6. 模式切換門檻
+
+- 一般研究、判斷、規則設計與反證優先留在 Chat。
+- 當任務已明顯成為大型 repository 改檔、連續測試、rebase／merge、跨檔工程或大量自動化操作時，應主動判斷 Codex 是否較適合；大型跨領域長任務則判斷 Work。
+- 需要切換時，必須先 durable 化現況，並依本檔「Work／Codex 模式切換」產生完整但精簡的 handoff 與建議聊天室名稱；不得只叫韓哥自行切換。
+- 未達必要門檻時，不得為了方便而消耗 Work／Codex 額度。
+
+### 7. 唯一續接點必須可恢復
+
+任何未完成的長鏈研究／工程，在結束一個可執行回合前，應盡可能讓正式狀態能回答：
+
+- latest observed main SHA；
+- 最後完成／merged 的 PR 或 commit；
+- 已通過與未通過的 tests／checks；
+- 當前 blocker；
+- 未 commit 或未 merge 的工作（若有）；
+- exact next continuation point。
+
+若上述資訊已存在專屬 checkpoint，不必重複建立新文件，但必須更新原 checkpoint。
+
+### 8. 中斷後自動恢復原則
+
+- 使用者輸入「繼續」時，若前一輪屬未完成任務，應優先恢復前述 exact next continuation point，而不是重新規劃。
+- 若 GitHub 可恢復狀態，不得要求使用者重貼舊內容。
+- 除 MFA、Secret、新增權限、重大策略／Formal Core／production 風險決策，或所有安全替代方案均失敗外，不得把一般工具錯誤或流程中斷轉嫁給使用者。
+
+### 9. 核心判準
+
+**工作可以因工具或回合邊界暫停，但不得無聲失聯、不得假裝仍在背景執行、不得遺失續接點、不得因中斷而重做已 durable 的成果。**
+
