@@ -61,3 +61,41 @@ Only after that may a bounded MOPS supplemental revision source distinguish "con
 ## Authority firewall
 
 No D1/R2 mutation, no strategy evaluation, no capacity, no selection, no push, no capital, no orders, no System 1 runtime.
+
+## 2026-10-04 physical characterization acceptance
+
+PR #450 physically characterized official MOPSOV company-month responses with frozen empty and positive controls.
+
+- Merge commit: `af1d526cb628ecaba64375a15e99ba0fbaaa6831`.
+- Empty Month Characterization Readonly run `37169012904`: PASS.
+- System2 Research CI `37169012900`: PASS.
+- V8 Regression `37169012896`: PASS.
+- controlCount=7: 4 empty controls + 3 positive controls.
+- allHttp200=true.
+- allHtml=true.
+- allEmptyRowsZero=true.
+- allPositiveRowsNonZero=true.
+- allEmptyPayloadsIdentical=true.
+- uniqueEmptyPayloadHashCount=1.
+- frozen empty payload SHA-256:
+  `9d2e63bf800085e3953d9e675f72cd95131758de64546ad898a5beee56a39e5d`.
+- frozen empty payload size: 2540 bytes.
+- normalized visible text for all four empty controls:
+  `公開資訊觀測站 資料庫中查無需求資料`.
+- positive-control hashes did not collide with the empty signature.
+- no known error/access-block phrase was observed.
+- empty structure: HTML/body/table/MOPS present; no company form and no stock code.
+- positive controls had non-zero rows and normal company-specific form/stock-code structure.
+- read-only boundary PASS.
+
+Important discovery:
+the generic candidate phrase list used before the physical run did not include the exact official text `資料庫中查無需求資料`; the physical run discovered this exact phrase. The next certification must use the physically observed official signature rather than retroactively claiming characterization had already certified it.
+
+This milestone remains characterization only:
+- `emptyMonthSemanticsCertified=false`;
+- `revisionCoverageComplete=false`;
+- `knownAtVersionClockCertified=false`;
+- `technicalContinuityCertified=false`;
+- `selectionAuthority=false`.
+
+Next: freeze and physically verify an endpoint-specific empty-month certification that requires the exact official no-data signature plus same-endpoint positive controls and fails closed on drift.
