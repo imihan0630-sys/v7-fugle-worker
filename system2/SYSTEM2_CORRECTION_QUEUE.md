@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-04 19:30 Asia/Taipei
+Updated: 2026-10-04 20:19 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -81,6 +81,45 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - 2017 TWSE disposition: `DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL`.
 - finalDisposition: PENDING
 - updatedAt: 2026-10-04T19:03:00+08:00
+
+
+### S2-CORR-20261004-003 — Correction routing governance contradiction can cause BUILD_LANE to seize work assigned to other lanes
+
+- createdAt: 2026-10-04T20:19:00+08:00
+- severity: MEDIUM
+- status: OPEN
+- routingClass: REMEDIATION_LANE
+- assignedLane: REMEDIATION_LANE
+- assignedRoom: System 2｜補強修復室
+- modificationOwner: SYSTEM2_REMEDIATION_ROOM
+- blockedBy: none
+- affectedScope: System 2 correction governance / execution-lane routing / room bootstrap semantics
+- detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- canonicalRequirement: Execution routing must have one unambiguous authority. BUILD_LANE may execute only LOCAL_FIX / BUILD_LANE items assigned to it and must not seize DATA_LANE or REMEDIATION_LANE work merely because severity is HIGH or CRITICAL.
+- observedProblem: SYSTEM2_MASTER still states that CRITICAL/HIGH directives may be implemented by the build/control room. SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1 instead requires the build room to execute only LOCAL_FIX / BUILD_LANE items assigned to it and explicitly forbids seizing DATA_LANE / REMEDIATION_LANE work merely because the issue is HIGH. These canonical statements conflict.
+- evidence:
+  - SYSTEM2_MASTER: "CRITICAL/HIGH directives may be implemented by the build/control room but are not self-closed by the implementation role."
+  - SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1: build room must "execute only LOCAL_FIX / BUILD_LANE items assigned to it" and "not seize DATA_LANE or REMEDIATION_LANE work merely because it is HIGH".
+  - Current room bootstrap routing already follows the newer lane-governance rule, so MASTER is the stale conflicting surface.
+- riskIfUnfixed: A restarted/new build room can interpret MASTER literally and take over DATA_LANE or REMEDIATION_LANE corrections, creating duplicate work, conflicting branches, ownership violations and false lane accountability.
+- requiredCorrection:
+  1. Reconcile SYSTEM2_MASTER to the execution-lane governance rule.
+  2. Search all canonical System 2 governance/bootstrap/checkpoint surfaces for equivalent stale wording.
+  3. Preserve independent closure rules for CRITICAL/HIGH while separating implementation assignment from severity.
+  4. Add or extend a semantic guard so future edits cannot reintroduce "severity implies BUILD ownership".
+  5. Treat the stale "shared 18-domain research" label in SYSTEM2_BUILD_PROGRESS_MAP as a separate LOW/LOCAL_FIX documentation drift; do not broaden this correction unless needed for the same touched surface.
+- acceptanceCriteria:
+  - MASTER, Correction Governance, Execution Lane Governance, Room Bootstrap Registry and Correction Queue agree that assignment follows routingClass/assignedLane rather than severity.
+  - BUILD_LANE cannot claim DATA_LANE/REMEDIATION_LANE corrections absent explicit reassignment.
+  - CRITICAL/HIGH independent-verification/closure requirements remain unchanged.
+  - No System 1 Formal Core, System 2 strategy/ranking, capital/order or production behavior changes.
+- protectedBoundaries: System 1 Formal Core; System 2 strategy/ranking/final-selection; capital/order; production push/runtime.
+- ownerDecisionRequired: false.
+- implementationEvidence: PENDING
+- verificationEvidence: PENDING
+- finalDisposition: PENDING
+- updatedAt: 2026-10-04T20:19:00+08:00
+
 
 ## Closed directives
 
