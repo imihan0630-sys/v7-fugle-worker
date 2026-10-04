@@ -1,132 +1,141 @@
 # System 2 Remediation Checkpoint
 
-Updated: 2026-10-04 19:00 Asia/Taipei
+Updated: 2026-10-04 20:33 Asia/Taipei
 Status: ACTIVE / REMEDIATION_LANE / FIX_IMPLEMENTED / PENDING_INDEPENDENT_AUDIT
 Room: System 2｜補強修復室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
 ## Mission
 
-Serve as System 2's concentrated remediation/SWAT lane for cross-module, recurrent, orphaned, false-completion and explicitly routed remediation work. This room is not a generic bug inbox.
+Serve as System 2's focused remediation/SWAT lane for cross-module, recurrent, orphaned, false-completion and explicitly routed remediation work. This room is not a generic bug inbox.
 
 ## Active correction
 
-`S2-CORR-20261004-002` — POSITION_MONITOR target behavior is presented as current operational capability.
+`S2-CORR-20261004-003` — Correction routing governance contradiction can cause BUILD_LANE to seize work assigned to other lanes.
 
 Routing:
 - routingClass: `REMEDIATION_LANE`
 - assignedLane: `REMEDIATION_LANE`
 - assignedRoom: `System 2｜補強修復室`
 - modificationOwner: `SYSTEM2_REMEDIATION_ROOM`
-- severity: `MEDIUM`
+- severity: `UNKNOWN` — the owner handoff did not provide a severity classification, so none was invented
 - implementation status: `FIX_IMPLEMENTED`
 - independent verification: `PENDING_INDEPENDENT_AUDIT`
 - blockedBy: none
 
-`S2-CORR-20261004-001` remains DATA_LANE ownership and was not touched.
+Other corrections:
+- `S2-CORR-20261004-002` is `VERIFIED_CLOSED` in the latest canonical Correction Queue and was not reopened.
+- `S2-CORR-20261004-001` remains DATA_LANE ownership and was not touched.
 
-## Implemented state
+## Implemented semantic model
 
-Canonical capability/readiness is now separated into:
+The canonical correction model now keeps three independent axes:
 
-- `TARGET_ONLY`: continuous owner actual-holdings monitoring target behavior.
-- `DESIGN_APPROVED`: actual-vs-desired exposure, capacity exclusion and symmetric HOLD / REDUCE / EXIT / ADD / RE-ADD / RESTORE architecture.
-- `VIRTUAL_POSITION_READY`: simulated fills, virtual `s2_positions`, `SIM_FILLED -> POSITION_MONITOR`, and current simulated-position resonance HOLD/EXIT context.
-- `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`: no authorized System 2 actual-holdings ingestion/reconciliation adapter is physically verified.
-- `ACTUAL_POSITION_MONITOR_VERIFIED=false`.
+1. **severity**
+   - CRITICAL / HIGH / MEDIUM / LOW;
+   - expresses seriousness/blocking effect only;
+   - does not grant implementation ownership.
 
-Current literal `POSITION_MONITOR` runtime state must therefore be interpreted as virtual/simulated unless a future separately authorized actual-holdings provenance contract is introduced and verified.
+2. **implementation ownership**
+   - determined by `routingClass / assignedLane / modificationOwner`;
+   - BUILD_LANE may implement only formally assigned `LOCAL_FIX / BUILD_LANE` corrections;
+   - BUILD_LANE may not seize DATA_LANE or REMEDIATION_LANE work merely because severity is HIGH/CRITICAL;
+   - ownership transfer requires a formal Correction Queue routing/assignment/modification-owner update before mutation.
 
-## Not implemented / remaining UNKNOWN
+3. **verification authority**
+   - separate from implementation ownership;
+   - for CRITICAL/HIGH, the assigned implementation lane may reach `FIX_IMPLEMENTED`;
+   - the same implementation role cannot advance directly to `VERIFIED_CLOSED`;
+   - independent audit / explicit owner override semantics remain unchanged.
 
-The correction intentionally does **not** implement:
-- broker holdings integration;
-- System 1/V8 shared holdings import;
-- actual-holdings reconciliation;
-- actual quantity/cost/fill/ownership readback;
-- actual capital/order authority;
-- production push changes.
-
-No complete authorized System 2 actual-holdings adapter/reconciliation/readback chain was found in the bounded repository audit.
-
-## Actual-holding fail-closed gate
-
-A future System 2 surface may call a position an **actual holding** only after owner-authorized integration preserves:
-- source identity and account scope;
-- position as-of / observation timestamp;
-- reconciled quantity;
-- cost basis only when actually sourced/reconciled;
-- confirmed fill provenance if fill history is used;
-- ownership provenance;
-- reconciliation status, conflicts and UNKNOWN semantics;
-- durable persistence/readback evidence.
-
-Signal price, trigger price, suggested/requested shares, plan snapshot, candidate state, simulated fill and virtual `s2_positions` rows are insufficient to establish actual ownership.
-
-Any broker-holdings or System 1 shared-holdings integration is `OWNER_DECISION_REQUIRED`.
-
-## Conflict units changed
+## Canonical files corrected
 
 - `system2/SYSTEM2_MASTER.md`
-- `system2/SYSTEM2_ARCHITECTURE.md`
-- `system2/SYSTEM2_POSITION_MANAGEMENT_ARCHITECTURE.md`
-- `system2/SYSTEM2_STORAGE_SCHEMA.md`
+  - removed the stale “CRITICAL/HIGH directives may be implemented by the build/control room” rule;
+  - now explicitly states that severity does not grant implementation ownership;
+  - formally gates ownership to queue routing fields.
+
+- `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
+  - replaced ambiguous generic `builder` ownership wording with `formally assigned implementation lane`;
+  - made severity / implementation ownership / verification authority explicit;
+  - prohibits chat-based self-seizure of another lane's conflict unit.
+
 - `system2/SYSTEM2_BUILD_PROGRESS_MAP.md`
+  - LOW / LOCAL_FIX documentation-only sync:
+    `shared 18-domain research` -> `shared 22-domain / 354-module research`.
+
+## Read-only consistency surfaces verified
+
+These were already correct and were not gratuitously rewritten:
+- `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - `system2/SYSTEM2_CHECKPOINT.md`
-- `system2/SYSTEM2_INSTITUTIONAL_MONITORING_UI_V0_1.md`
-- `system2/SYSTEM2_CANDIDATE_LIFECYCLE_CONTRACT_V0_1.md`
-- `system2/SYSTEM2_CANDIDATE_CAPACITY_CONTRACT_V0_1.md`
-- `system2/SYSTEM2_STRATEGY_IDENTITY_CARDS.md`
-- `system2/SYSTEM2_CORRECTION_QUEUE.md`
-- `system2/SYSTEM2_CORRECTION_QUEUE.json`
-- this remediation checkpoint
-- `system2/tests/position_monitor_capability_semantics.test.mjs`
+- `shared-knowledge/ROOM_BOOTSTRAP.md`
+- `shared-knowledge/ROOM_BOOTSTRAP_REGISTRY.json`
+- `AGENTS.md`
+- `system2/CHATGPT_PROJECT_INSTRUCTIONS.md`
 
-No System 1 Formal Core, System 1 holdings/runtime, capital/order logic, production push or Class B/Class C behavior was changed.
+Key readback:
+- Execution Lane Governance: BUILD executes only assigned LOCAL_FIX / BUILD_LANE items and must not seize DATA/REMEDIATION work because it is HIGH.
+- System2 Checkpoint: build room executes only BUILD_LANE/LOCAL_FIX work assigned to it.
+- Room Bootstrap Registry: SYSTEM2 shortStart explicitly says to execute assigned BUILD_LANE/LOCAL_FIX work and forbids seizing DATA_LANE/REMEDIATION_LANE.
 
-## Tests / physical evidence
+## Semantic guard
 
-PR: `#536` — `System2 CORR-002: separate virtual positions from actual holdings readiness` — merged to `main` as `0774a356377efc6892e72bf60c202561d227e47b`.
+Added:
+`system2/tests/correction_routing_governance_semantics.test.mjs`
 
-Semantic readback:
-- all five readiness states present;
-- old misleading present-tense actual-holdings claims removed from Master/Architecture;
-- storage confirms `s2_positions` virtual/simulated only;
-- UI contract fails closed on actual-holdings labels;
-- candidate lifecycle states current `POSITION_MONITOR` is simulated/virtual;
-- Correction Queue MD/JSON agree on `FIX_IMPLEMENTED`.
+The guard fails if:
+- the obsolete Master CRITICAL/HIGH -> BUILD sentence returns;
+- Master stops separating severity from implementation ownership;
+- Correction Governance returns to ambiguous builder ownership wording;
+- BUILD assignment/anti-seizure rules disappear from Execution Lane Governance or Checkpoint;
+- SYSTEM2 bootstrap stops enforcing assigned BUILD/LOCAL-only execution;
+- Build Progress Map regresses to `shared 18-domain research`.
 
-Targeted regression:
-- added `system2/tests/position_monitor_capability_semantics.test.mjs`.
-- first CI attempt exposed a test-regex false positive against the explicit prohibition sentence; the test itself was corrected rather than weakening the semantic guard.
+## CI / physical evidence
 
-Corrected semantic head `67151b901029b17b567cf1f29b4a74c349460996`:
-- System2 Research CI `37197332296`: PASS.
-- V8 Regression `37197332187`: PASS.
+PR: `#556` — `System2 CORR-003: align correction routing ownership governance`.
 
-Final PR #536 head `d0f97bded1e88965d75b9db804cc5264e1220ebe`:
-- System2 Research CI `37197495890`: PASS.
-- V8 Regression `37197495893`: PASS.
-- PR #536 mergeability: true before merge.
-- Squash merge to main: `0774a356377efc6892e72bf60c202561d227e47b`.
+Initial implementation head:
+`5fc3b9c43ea0f79fe6fa5b714dae53d868ab69f2`
 
-Merged-main readback confirms `S2-CORR-20261004-002` = `FIX_IMPLEMENTED`, assignedLane=`REMEDIATION_LANE`, verificationEvidence=`PENDING_INDEPENDENT_AUDIT`, and all canonical readiness guards remain present.
+- System2 Research CI `37202451095`: PASS.
+  - all research-only tests PASS;
+  - runtime/deployment syntax checks PASS;
+  - SQL validation PASS;
+  - production isolation guard PASS.
+- V8 Regression `37202451081`: PASS.
+  - production Worker guarded build PASS;
+  - syntax/offline regression PASS;
+  - read-only production authorization preflight PASS;
+  - latest after-market read-only diagnostic PASS.
 
-## Closure / owner gate
+Changed-file scope before final evidence:
+- SYSTEM2_MASTER
+- SYSTEM2_CORRECTION_GOVERNANCE
+- SYSTEM2_BUILD_PROGRESS_MAP
+- Correction Queue MD/JSON
+- Remediation Checkpoint
+- one semantic regression test
 
-This correction fixes readiness truth; it does **not** prove the actual Position Monitor operational.
+No System 1 Formal Core, System 2 strategy/ranking/final-selection, capital/order, production push or production runtime file was changed.
 
-Do not claim:
-- actual holdings are currently monitored;
-- actual holdings reconciliation exists;
-- quantity/cost/fill provenance exists;
-- Position Monitor is fully complete.
+Latest-main drift check before final evidence:
+- main = `d199a70b14dc56374a5f51433ee5648b5ae6ce7d`;
+- no concurrent drift from the branch base.
 
-Future actual-holdings integration remains `OWNER_DECISION_REQUIRED`.
+## Remaining UNKNOWN / residual
+
+- `severity` for CORR-003 remains `UNKNOWN` because the explicit owner handoff supplied routing/ownership but did not supply a severity classification.
+- This does not block implementation because routing ownership is explicit.
+- Independent auditor may classify severity during verification without changing the already-fixed routing semantics.
+- No remaining canonical severity-implies-BUILD contradiction was found in the scanned System 2 governance/bootstrap/checkpoint surfaces.
+- No runtime/trading residual is introduced because this correction is documentation/governance/test only.
 
 ## Exact next continuation point
 
-1. Hand `S2-CORR-20261004-002` to `SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR` for independent acceptance-criteria verification.
-2. If the auditor confirms the implementation evidence, it may advance through `VERIFYING` to `VERIFIED_CLOSED` under correction governance.
-3. If the auditor finds a semantic/runtime gap, reopen only the affected conflict unit and return it to REMEDIATION_LANE; do not broaden into a new holdings integration.
-4. Do not start any broker/System1 holdings integration without a separate owner decision; that future work remains `OWNER_DECISION_REQUIRED`.
+1. Require the final PR #556 head, including queue/checkpoint evidence commits, to pass System2 Research CI and V8 Regression again.
+2. Re-read latest main immediately before merge and reconcile any shared Correction Queue drift without overwriting DATA_LANE/AUDIT_LANE evidence.
+3. Merge only if PR remains mergeable and protected boundaries remain unchanged.
+4. Re-read merged main for canonical wording and CORR-003 = `FIX_IMPLEMENTED`.
+5. Hand CORR-003 to `SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR` for independent verification; do not self-mark `VERIFIED_CLOSED`.

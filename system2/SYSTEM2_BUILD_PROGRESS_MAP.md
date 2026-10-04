@@ -31,7 +31,7 @@ GitHub `main` remains authoritative. Chat summaries are context only.
 | S2-01 | Governance / System isolation | ✅ | Shared Knowledge + System 1/System 2 isolation established. |
 | S2-02 | Data-source contracts / PIT clocks | 🟡 | Core source contracts exist; additional sources continue through PIT/availability verification. |
 | S2-03 | Historical infrastructure | 🟡 | D1/R2, manifests, checkpoints, receipts, PIT Replay/Bulk Backtest primitives exist; full 2017-present cold history completion remains separate work. |
-| S2-04 | Market Regime / shared 18-domain research | 🟡 | Shared research network active; not every research finding is a production factor. |
+| S2-04 | Market Regime / shared 22-domain / 354-module research | 🟡 | Shared research network active; not every research finding is a production factor. |
 | S2-05 | Factor Engine / family assessments / UNKNOWN semantics | 🟡 | Core contracts and research plumbing exist; richer validated factors remain incremental. Contextual Evidence Router North-Star contract now defines scenario-dependent knowledge routing and over-constraint diagnostics; runtime synthesis is not yet complete. |
 | S2-06 | Multi-strategy contracts | 🟡 | Strategy families and Shadow contracts exist; exact live weights/thresholds remain evidence-gated. |
 | S2-07 | Daily PIT-safe Shadow Orchestrator | 🟡 | Strategy-run -> RANK-01 -> revalidation -> capacity assembler is built; official A1 current-source + isolated D1 PIT-history read-only preflight is now repository-implemented. Daily source/history/factor diagnostic D1 writes and read API are physically verified via PR #303. Exact strategy assessor policies and scheduled physical daily `s2_capacity_runs` remain pending; diagnostic receipts cannot seed the pool. |

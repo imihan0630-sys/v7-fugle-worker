@@ -657,7 +657,11 @@ Canonical governance:
 
 Before substantive System 2 build continuation, the build/control room must inspect the correction governance and all active directives affecting the current task.
 
-CRITICAL/HIGH directives may be implemented by the build/control room but are not self-closed by the implementation role. They require independent verification or an explicit owner override.
+Severity does not grant implementation ownership. `routingClass / assignedLane / modificationOwner` determine which lane may mutate a correction conflict unit. BUILD_LANE may implement only corrections formally assigned to `LOCAL_FIX / BUILD_LANE`; it must not seize `DATA_LANE` or `REMEDIATION_LANE` work because a directive is CRITICAL/HIGH.
+
+If implementation ownership changes, the Correction Queue must first record the new `routingClass / assignedLane / modificationOwner`; a room cannot self-transfer ownership in chat.
+
+For CRITICAL/HIGH directives, the formally assigned implementation lane may progress the directive through `FIX_IMPLEMENTED`, but the same implementation role cannot self-declare `VERIFIED_CLOSED`. Independent verification or an explicit owner override remains required.
 
 `FIX_IMPLEMENTED` is not equivalent to `VERIFIED_CLOSED`.
 
