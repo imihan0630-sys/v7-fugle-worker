@@ -1126,3 +1126,62 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 4. Hand the parent-nested/common-support robustness matrix to D16 before any outcome join.
 5. Next D01 science: distinguish true structural-object persistence from repeated rediscovery caused by overlapping rolling windows, detector refresh cadence and duplicate anchor lineages.
 6. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-030 (2026-10-04)
+
+### DL-030 — Structural-object persistence vs rolling-window rediscovery
+- Repeated Pattern scans operate on overlapping rolling windows, so the same support/resistance or pattern structure can be emitted on many adjacent decision dates or multiple refreshes.
+- DL-030 freezes four identity layers without replacing the existing Shadow parent identity:
+  - STRUCTURAL_OBJECT_ROOT;
+  - STRUCTURAL_OBJECT_VERSION;
+  - STRUCTURAL_OBJECT_EPISODE;
+  - OBSERVATION_SNAPSHOT.
+- Existing daily Shadow parent identity remains (scan_date, symbol) plus immutable parent snapshot/hash. A structural object can be visible to multiple daily parents; these are repeated decision exposures, not automatically independent structural samples.
+- Structural root identity includes symbol, semantic space, timeframe, detector family, structure family, orientation, firstConfirmedAt and ordered root anchor IDs. scanDate/runAt/cohortRank/future outcomes are excluded.
+- Same root may receive causal versions when boundaries update or later certified anchors are added. A version is not a new independent root/sample.
+- Exact anchor superset with only causally later anchors -> SAME_ROOT_CAUSAL_EXTENSION.
+- Anchor replacement/removal without canonical lineage explanation -> IDENTITY_BREAK_OR_RESEGMENTATION. No fuzzy post-outcome matching is allowed.
+- Repeated state snapshots are not repeated confirmation events. Same decision timestamp + same object/version + same snapshot hash -> REPLAY_DUPLICATE.
+- Missing detector output is split into:
+  - UNKNOWN_COVERAGE_GAP;
+  - WINDOW_CENSORED;
+  - DETECTOR_ABSENT_COMPLETE_SCAN;
+  - explicit MARKET_INVALIDATED.
+- WINDOW_CENSORED is detector observability loss as root anchors leave the rolling horizon; it is not market failure.
+- Only explicit lifecycle invalidation can close an object episode as a market-structure event.
+- Same root reacquired after detector absence or window censoring does not automatically become a new independent object. Reappearance after explicit MARKET_INVALIDATED requires NEW_EPISODE_AFTER_INVALIDATION.
+- Within one decision timestamp, overlapping raw detector windows that emit the same root/version are deduplicated to one observation snapshot while raw emissions remain in the audit ledger.
+- Same root/version with conflicting snapshot hashes -> PROVENANCE_CONFLICT, never majority vote.
+- timeframe remains part of root identity; daily/weekly objects are not auto-deduplicated by price proximity.
+- D16 future inference must report multiple Ns separately:
+  unique daily decision parents;
+  unique structural roots;
+  unique structural episodes;
+  object versions;
+  observation snapshots;
+  raw detector emissions;
+  repeated-exposure distribution;
+  coverage/window-censoring rates.
+- External finance evidence supports the dependence firewall: overlapping observations can materially change estimates/inference, and even small correlation among overlapping event observations can bias test statistics.
+- New files:
+  - research/PATTERN_STRUCTURAL_OBJECT_PERSISTENCE_V0_1.md
+  - research/pattern_structural_object_persistence_v0_1.json
+  - research/pattern_structural_object_persistence_v0_1.mjs
+  - research/test_pattern_structural_object_persistence_v0_1.mjs
+  - research/PATTERN_STRUCTURAL_OBJECT_PERSISTENCE_D16_HANDOFF_V0_1.md
+- 14 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcomes inspected; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-030
+
+1. Reconcile the DL-030 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-030 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve raw detector emissions and deduplicated snapshots together; never delete raw emissions to manufacture clean identity.
+4. Hand root/episode/repeated-exposure and overlapping-window dependence semantics to D16.
+5. Next D01 science: distinguish genuine structural aging/decay from mere observability loss as root anchors leave the detector horizon.
+6. No outcome join / no runtime wiring / no Formal change.

@@ -22790,3 +22790,39 @@ New durable artifacts:
 Twelve adversarial cases are authored and remain TEST_EXECUTION_PENDING. They cover legal-grid consumption, future tick-rule rejection, invalid contraction retention, non-independent variant semantics, complete anchor jackknife coverage, structure disappearance, identity change, future-state prohibition, semantic-equivalent version replay, preregistered detector challenges and post-outcome detector prohibition.
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-030 — Structural-object persistence vs rolling-window rediscovery (2026-10-04)
+
+Rolling detectors create a deceptively simple sample-size problem. A support/resistance structure can be emitted again tomorrow because the rolling window still contains the same anchor geometry. It can also be emitted twice today because two overlapping windows or replay runs see the same object. Neither fact creates another independent structural event.
+
+DL-030 therefore separates the existing immutable daily Shadow parent from a new research-only structural-object identity. This is not a parent migration. The daily parent remains (scan_date, symbol) because the decision state can legitimately differ day by day. The new object identity tells us whether several parents are repeatedly observing the same causal structure.
+
+Four layers are frozen.
+
+STRUCTURAL_OBJECT_ROOT is the causal identity created at first confirmation from symbol, semantic space, timeframe, detector family, structure family, orientation, first confirmation time and root anchor IDs. scanDate and runAt are deliberately excluded.
+
+STRUCTURAL_OBJECT_VERSION records a causal geometry/anchor update under the same root. For example, if all prior anchors remain and a new certified anchor is added after the prior asOf and before the new asOf, that is SAME_ROOT_CAUSAL_EXTENSION. A version update is not a new independent object.
+
+STRUCTURAL_OBJECT_EPISODE represents an active market-structure episode. Only an explicit structural lifecycle invalidation can close the episode. Missing rows, detector absence and rolling-window loss do not.
+
+OBSERVATION_SNAPSHOT is the detector's view at one decision timestamp. Continuing ACTIVE state across many dates is many observations of one object, not many confirmations.
+
+Absence semantics are the most important falsification. If coverage is incomplete, status is UNKNOWN_COVERAGE_GAP. If the root anchor history has rolled outside the detector lookback, status is WINDOW_CENSORED. If coverage is complete and the root is still observable but the detector emits nothing, status is DETECTOR_ABSENT_COMPLETE_SCAN. MARKET_INVALIDATED is reserved for an explicit separate lifecycle event. This prevents a mechanical lookback edge from being misread as structural failure.
+
+Rediscovery is also split. Reacquisition after incomplete coverage remains uncertain. Reacquisition after complete detector absence is detector-stability evidence but not a new independent object. Reacquisition after window censoring may preserve root identity only when durable anchor lineage still certifies it. Reappearance after explicit invalidation requires a new episode.
+
+Within one decision timestamp, duplicate raw emissions from overlapping windows are collapsed to one snapshot only when root/version and snapshot content agree. Raw emissions remain in the audit ledger. If supposedly identical root/version emissions disagree on snapshot hashes, the correct state is PROVENANCE_CONFLICT, not a majority vote.
+
+The statistical consequence is that no single N is adequate. Future D16 work must show at least daily decision-parent count, structural-root count, episode count, version count, snapshot count and raw emission count. It must also report repeated exposure per root and window-censoring/coverage loss. Finance methodology on overlapping observations supports this firewall: overlapping samples can produce materially different inference, and even modest correlation among overlapping event observations can bias test statistics.
+
+Fourteen adversarial cases are authored. They verify that scan date is excluded from root identity, repeated snapshots do not create events, replay duplicates stay non-independent, incomplete coverage cannot certify absence, window censoring is not invalidation, causal anchor extensions preserve the root, future anchors are rejected, anchor replacement breaks identity, explicit invalidation creates a new episode, timeframe remains distinct, same-root reacquisition is non-independent, duplicate raw windows collapse correctly and conflicting emissions fail closed.
+
+New durable artifacts:
+- research/PATTERN_STRUCTURAL_OBJECT_PERSISTENCE_V0_1.md
+- research/pattern_structural_object_persistence_v0_1.json
+- research/pattern_structural_object_persistence_v0_1.mjs
+- research/test_pattern_structural_object_persistence_v0_1.mjs
+- research/PATTERN_STRUCTURAL_OBJECT_PERSISTENCE_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
