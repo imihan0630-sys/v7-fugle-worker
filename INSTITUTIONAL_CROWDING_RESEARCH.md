@@ -1068,3 +1068,21 @@ Promotion:
 5. L4 requires independent dates, D5+ outcomes, date clustering, regime/sector/liquidity controls, passive-event stratification, and incremental tests against simpler institutional/price-volume baselines.
 6. D06-07/08/09 remain L2 until authorized/replayable TPEx evidence is actually captured; source existence or paid product availability is insufficient.
 7. Formal Core remains LOCKED; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+
+---
+
+## COV-03 canonical owner approval — 2026-10-04
+
+00｜研究總控室完成 Intake / Dependency / overlap / anti-double-count / anti-orphan 後，韓哥已明確批准新增 D06-19 `Retail / Individual Investor Participation & Flow（散戶／自然人參與與流向）`，正式起點 L0 / 0%。
+
+固定防火牆：
+- 只有來源直接辨識自然人時才建立 direct-retail receipt；
+- 融資、當沖、零股、券商分點、total-minus-institutions 殘差都不能改名成直接散戶流；
+- 本國自然人個股×日期方向流未有權威 PIT 來源前維持 UNKNOWN；
+- D20 行為解釋只可引用同一底層 receipt，不得再算一張獨立票；
+- 初期角色只允許 context / validation / supportive；不得直接進 Formal。
+
+D06-19 exact next：先做直接自然人來源 taxonomy＋PIT/replay 契約與 market/channel source receipts；方向性與選股增量研究要等 stock×date direct source 成立後才開。
+
+Formal Core unchanged / FORMAL_OPTIMIZATION_CANDIDATE = NONE.
