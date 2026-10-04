@@ -103,3 +103,18 @@ Proposed scope split:
 - D09-14 = issuer-specific strategic-action identity and announcement→commitment→implementation→outcome lifecycle.
 
 No rename/scope mutation is executed before explicit owner approval.
+
+
+## H01 canonical completion — 2026-10-04
+
+Owner approved H01 KEEP_SEPARATE / SCOPE_DEDUP_ONLY.
+
+Canonical outcome:
+- D09-13 → Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）;
+- D09-14 → Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）;
+- both remain L3/60%;
+- module count unchanged;
+- anti-double-count shared-parent receipt boundary is canonical;
+- Formal Core remains LOCKED.
+
+Status: **CANONICAL_UPDATE_COMPLETE**.
