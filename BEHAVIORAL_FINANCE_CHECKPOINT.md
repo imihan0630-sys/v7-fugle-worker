@@ -203,3 +203,25 @@ These routed tasks do not override the room's active prospective L4 sequence; se
 - Exact next: next valid Taiwan trading day execute D20-13 first-live TWSE borrow-rate/displayed-supply source capture under frozen 09:15 / 12:00 / 15:20 slots. If at least one slot receipt passes all source/PIT/schema/fingerprint/UNKNOWN gates, reassess bounded TWSE-only L3 promotion.
 - Formal Core locked; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
 
+
+
+## 00 control-plane receipt — H06 / H07 closures
+
+H06 is CLOSED_NO_STRUCTURAL_CHANGE:
+- D06-06 owns observable crowding.
+- D20-06 owns bounded PIT-capable public-forum social-herding only after common-news/topic/attention/market-sector controls.
+- one PTT receipt cannot become independent D20-06/D20-11/D20-07 votes.
+- D20-06 remains L3/60%.
+
+H07 is CLOSED_NO_STRUCTURAL_CHANGE:
+- D03-05 owns observable pullback/reversal path.
+- D20-09 owns only event-conditioned candidate-overreaction parent before later reversal.
+- reversal cannot be used inside the D20 decision-time parent.
+- unresolved structural alternatives => behavioral cause UNKNOWN.
+- D20-09 remains L3/60%.
+
+Audits:
+- shared-knowledge/CURRICULUM_H06_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
+- shared-knowledge/CURRICULUM_H07_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
+
+Do not repeat the ownership studies unless contradictory evidence appears.
