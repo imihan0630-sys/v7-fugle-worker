@@ -1,7 +1,7 @@
 # System 1 extreme-move proxy denominator audit V0.1
 
 Date: 2026-10-04 Asia/Taipei
-Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_PENDING / FORMAL_CORE_LOCKED
+Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_GREEN_MERGED / FORMAL_CORE_LOCKED
 
 ## Purpose
 
@@ -170,3 +170,13 @@ Formal Core: LOCKED
 3. Keep UP/DOWN/missing separate while independent dates accumulate.
 4. Do not join return outcomes until exact official limit-state coverage is separately proven complete where that estimand requires it.
 5. Any reformulation of the 9.8% Formal gate is Class-C and requires explicit owner approval plus mature prospective/OOS execution/downside evidence.
+
+## Merge acceptance
+
+- PR #559 merged at `639efbe9d6c24dc5d193f96ce0cdf4277e626c98`.
+- Exact head `3e836f65210f50e1dda706ae3ff137515fb71b8b`:
+  - V8 Regression Tests run `37203823571` PASS;
+  - V8 Repair CI run `37203823669` PASS;
+  - System1 C1 C2 isolated offline repair review run `37203823520` PASS.
+- No Worker/runtime/D1/Production/Formal/System2 behavior change or Cloudflare deployment was introduced.
+- The next required evidence is prospective and will be emitted by the existing daily C1 evidence workflow on genuine trading sessions.
