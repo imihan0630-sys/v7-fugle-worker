@@ -1470,3 +1470,31 @@ Exact remaining return delta:
 5. commit `research/COV01_D01_SPECIALIST_RETURN_V0_1.md`.
 
 No maturity or Formal change is authorized by this routing.
+
+
+## COV-01 specialist return — 2026-10-04
+
+COV-01 is COMPLETE with terminal recommendation:
+`EXTEND_EXISTING_SCOPE`.
+
+- D01-07 becomes the umbrella owner for continuation/base pre-breakout morphology.
+- D01-05 remains breakout/failure lifecycle owner.
+- D01-08 remains VCP specialization.
+- D02 owns volume confirmation transforms; D04/D05 own volatility/microstructure context.
+- Named labels over one shared structural parent are taxonomy views, not independent votes.
+- No unique source/decision/replay contract was found that justifies a new module.
+- Taiwan daily OHLCV/trading-day continuity is sufficient for core geometry under existing D01 confirmed-swing and technical-continuity rules.
+- Scope extension does not transfer maturity; D01-07 remains L2/40%.
+- No module-count change, no maturity promotion, no Formal change.
+- Pattern alpha remains UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+- Durable return: research/COV01_D01_SPECIALIST_RETURN_V0_1.md
+
+### Updated exact next continuation point after COV-01
+
+1. Re-read latest main and reconcile this Class-A research branch before any PR because parallel rooms remain active.
+2. Do not create a new continuation/base module from COV-01; ownership recommendation is D01-07 scope extension only.
+3. Preserve one-parent/multi-label anti-double-count semantics in all future pattern tests.
+4. Resume the latest unfinished D01 science lane from main after reconciliation; do not redo COV-01.
+5. No outcome join / no runtime wiring / no Formal change.
