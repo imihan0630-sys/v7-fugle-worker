@@ -17,7 +17,13 @@ class Db {
 }
 const date="2026-10-02", clock="2026-10-02T05:31:00.000Z", h="a".repeat(64);
 const base={pool:{poolId:"P1",poolHash:h,sourceCapacityRunId:"C1",sourceCapacityHash:h,
-  sourceMarketDate:"2026-10-01",sourceDecisionTimestamp:"2026-10-01T10:00:00Z",activatedAt:"2026-10-01T11:00:00Z",
+  sourceMarketDate:"2026-10-01",sourceDecisionTimestamp:"2026-10-01T10:00:00Z",
+  sourceDenominatorState:"PARTIAL",sourceDenominatorProvenanceHash:"b".repeat(64),
+  sourceDenominatorProvenance:{version:"S2_SELECTION_DENOMINATOR_PROVENANCE_V0_1",denominatorState:"PARTIAL",
+    unresolvedCount:1,unresolvedByState:{INCOMPLETE:1},blockerCodes:[],
+    contributingShadowRuns:[{strategyId:"SHORT_MOMENTUM",strategyVersion:"V0.1-CONTRACT",runId:"RUN1",shadowAccountingHash:"c".repeat(64),runFingerprintHash:null}],
+    provenanceHash:"b".repeat(64),legacyProvenanceIncomplete:false},
+  activatedAt:"2026-10-01T11:00:00Z",
   state:"ACTIVE",fullMarketScan:false,symbolCount:1,symbols:[{symbol:"2330",strategyMemberships:["SHORT_MOMENTUM"]}]},
   symbol:"2330",marketDate:date,asOf:clock,
   sourceReceipt:{sourceId:"FUGLE_FIXTURE_ONLY",sourceReceiptHash:h,historyPayloadHash:h,quotePayloadHash:h,
@@ -33,6 +39,9 @@ assert.equal(f.baseline.snapshot.formulaVersion.fastEma,16);
 assert.equal(f.baseline.snapshot.formulaVersion.slowEma,64);
 assert.equal(f.cost.state,"UNKNOWN");
 assert.equal(f.regime.state,"UNKNOWN");
+assert.equal(f.pool.sourceDenominatorState,"PARTIAL");
+assert.equal(f.pool.sourceDenominatorProvenance.denominatorState,"PARTIAL");
+assert.equal(f.pool.sourceDenominatorProvenance.contributingShadowRuns[0].runId,"RUN1");
 assert(Object.isFrozen(f.monitorInput.historyBars));
 const stripped=await frame({...base,monitorInput:{...base.monitorInput,outcome:"FUTURE_WIN",currentDailyBar:{...base.monitorInput.currentDailyBar,outcome:999}}});
 assert.equal(stripped.frameHash,f.frameHash);
