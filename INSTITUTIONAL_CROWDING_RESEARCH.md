@@ -894,3 +894,103 @@ D06-15 remains L2/40% and CONTEXT_ONLY / WARNING_MODIFIER. The exact provider-sp
 6. H06/H12/H14 remain counterpart-pending until the total-control intake ledger receives all required room packets.
 7. Institutional component outcomes remain closed until independent D5+ and readiness gates pass.
 8. Formal Core remains LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+---
+
+## IC-048 — D06-03 dealer proprietary / hedge split reaches L3 source-feasibility maturity
+
+Research cycle: 2026-10-04 Asia/Taipei
+Status: TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Research receipt:
+`research/d06_03_dealer_prop_hedge_pit_contract_v0_1.json`.
+
+### Why L3 is now justified
+Both Taiwan markets expose dealer proprietary trading and dealer hedging as distinct official stock-level source fields.
+
+TWSE:
+- official T86 stock-level reports explicitly provide self-trading and hedge buy/sell/net fields;
+- official date-query pages replay historical dates;
+- the exchange data product documents daily production at 18:00 excluding block trades and 20:00 including block trades, with history from 2004-09-09.
+
+TPEx:
+- official stock-level institutional detail exposes dealer proprietary and dealer hedge buy/sell/net separately;
+- the official historical query family supports long-running date/year/month replay;
+- System 2 retrospective source verification requested 2026-09-24 and received the target-date TPEx institution dataset with 775 covered rows, establishing date-specific replay/coverage feasibility.
+
+Therefore the research question 'can Taiwan proprietary and hedge dealer flows be sourced, semantically separated and replayed by date?' is no longer merely conceptual.
+
+### Critical boundary: research source maturity is not Formal adoption
+Current System 1 Formal persistence still stores only aggregate `dealerNet`; the split source fields are compressed before `institutionalScore` is evaluated.
+
+Consequently:
+- D06-03 can advance from L2 to L3 as a knowledge/data-feasibility module;
+- historical Formal rows cannot be retroactively decomposed if the split was never persisted;
+- preserving the split in shared runtime remains a Class-B proposal-first engineering question;
+- assigning new Formal weights/signs to the split remains Class C and requires owner approval.
+
+### Falsification remains open
+L3 does NOT mean proprietary flow is bullish or hedge flow is noise. It means the Taiwan PIT source/semantic/replay layer is ready for prospective research.
+
+Next maturity gate is L4: independent prospective split-flow receipts plus Shadow/OOS evidence versus aggregate dealerNet, price-volume, derivatives/passive context and market regime.
+
+Promotion:
+`D06-03 L2/40% -> L3/60%`.
+
+---
+
+## IC-049 — D06-10 TDCC distribution reaches L3 while ownership inference remains L2
+
+Research receipt:
+`research/d06_10_tdcc_distribution_pit_source_contract_v0_1.json`.
+
+TDCC source feasibility now clears the L3 gate for D06-10 itself.
+
+Official source semantics are frozen:
+- issuer/security × weekly data date × holding bracket;
+- fields include data date, security code, bracket, holder count, shares and percentage of deposited inventory;
+- the official OpenAPI exposes the shareholding-distribution dataset;
+- data are slow ownership stock, not daily institutional flow and not investor identity.
+
+Production parsing is also materially validated:
+- grades 1-15, grade-16 adjustment and grade-17 total are reconciled by share counts;
+- 400-lot-plus and 1,000-lot-plus ratios are deterministically derived;
+- `chipAsOfDate` and `chipDefinition` are preserved upstream;
+- ordinary-stock coverage must exceed the frozen completeness floor.
+
+Observed production/readback evidence already includes:
+- 2026-09-17: 2,955 securities with TDCC as-of 2026-09-11;
+- 2026-09-18 quality acceptance: 2,956 securities;
+- 2026-10-02 quality readback: 2,957 securities with TDCC as-of 2026-09-24.
+
+This proves that Taiwan source semantics, parser reconciliation, weekly date provenance and replay of captured vintages are operationally feasible.
+
+Promotion:
+`D06-10 L2/40% -> L3/60%`.
+
+### Why D06-05 does NOT inherit this promotion
+D06-05 is an economic ownership-concentration interpretation module, not merely the TDCC source module.
+
+It still lacks:
+- immutable same-generation `chipAsOfDate/chipDefinition/hash` inside the prospective research row itself;
+- holder identity capable of separating active institution, passive fund, strategic holder and other large-holder ownership;
+- vintage-deduplicated prospective outcome evidence.
+
+Therefore:
+`D06-05 = L2/40%` remains frozen.
+
+Source maturity cannot be copied into inference maturity.
+
+---
+
+## IC-050 — maturity impact and exact continuation
+With D06-03 and D06-10 each moving from 40% to 60%, while all other D06 modules remain unchanged, the 17-module D06 maturity becomes 47.1%.
+
+Exact next:
+1. Do not search additional score weights or thresholds.
+2. D06-03: preserve prospective dealer proprietary/hedge split receipts with schema fingerprint and firstKnownAt, then wait for independent Shadow/OOS evidence before L4.
+3. D06-10: preserve immutable TDCC vintage/hash receipts; repeated scan dates sharing one `chipAsOfDate` are not independent ownership observations.
+4. D06-05 remains L2 until same-generation lineage and ownership inference are prospectively validated.
+5. Next valid trading date still owns IC-043, PF-040, D06-18 prospective borrow-economics and D06-14 T/T+1/T+2 vintage capture.
+6. H06/H12/H14 remain counterpart-pending under total-control intake.
+7. Formal Core remains LOCKED and `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
