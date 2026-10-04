@@ -1448,3 +1448,20 @@ Mechanism: changed structural growth assumptions can distinguish demand/producti
 D12 40.0%; D13 41.1%; room09 40.6%, unchanged. D13-19 remains L2/40%. Strict clean prospective dates added=0. FORMAL_OPTIMIZATION_CANDIDATE=NONE. Formal Core LOCKED. No runtime/selection/signal/push/capital changes. Global tracker observed 42.4% / 354 modules; other-room progress is not credited to this audit.
 
 Exact next: resolve/download permitted February 2026, September 2025 and January 2025 CBO original economic projection supplements via the official report/catalog, preserve raw identity, inspect common-variable/horizon coverage and assumptions outcome-blind. Do not repeat MC-149..152. Then H.4.1 decomposition and CBC BOP/policy/TWSE version receipts. NDC official numeric ex-TAIEX remains UNKNOWN pending same-vintage standardized/estimated inputs and authorized archive/readback. Raw attestation and true prospective dates remain required for L3.
+
+
+## 2026-10-04 Room14 D21-05 source-clock replay
+
+Status: RESEARCH_ONLY / D21-05_L2_UNCHANGED / FINANCING_RPT_REPLAY_PARTIAL / FORMAL_CORE_LOCKED
+
+- Recovered from latest D21 checkpoint rather than restarting.
+- Taiwan official disclosure architecture confirms separate periodic, monthly and event-driven clocks for related-party evidence.
+- Financing-family replay: 2760 巨宇翔, 2026-10-01 public material information. Subsidiary Ding Tea Corporation guaranteed parent financing; renewal board approval was 2026-09-29. Original guarantee balance NTD70m, new guarantee NTD70m, post-event balance NTD140m, actual drawdown NTD56m.
+- Guardrails: guarantee balance != cash drawdown; renewal != new extraction; parent/subsidiary direction, collateral and capacity remain separate fields.
+- TWSE 2024 review evidence supports distinguishing ordinary RPT intensity from abnormal terms, overdue balances, deficient substantive-related-party identification and process/valuation failures.
+- Counterevidence retained: efficient internal contracting, treasury support and vertical integration.
+- D21-11 may not double count D21-05 raw RPT variables.
+- D21-05 remains L2/40. L3 requires a second economically different native Taiwan RPT family with relationship vintage, approval clock and public known_at.
+- No outcomes, OOS, walk-forward or prospective Shadow inspected. FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+
+Exact next: replay one operating or asset RPT family; if blocked, proceed to D21-10 dual-vintage restatement/correction replay.
