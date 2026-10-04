@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T17:15:00+08:00",
+  "updatedAt": "2026-10-04T18:06:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1992,9 +1992,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Volatility Surface／Smile波動率曲面與微笑」。學習範圍：衍生品研究必須凍結合約、到期、履約價、DTE、價格／IV時計與流動性語意；研究 Greeks、IV-RV、VRP與波動率曲面時必須包含正向機制、反證、PIT、可重播、交易成本、稀疏報價／插值風險、與既有VIX／Skew／Gamma資訊的冗餘及增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2 / SURFACE_METHOD_V0_1_FROZEN / NORMALIZED_ROW_VALIDATOR_10_TESTS_PASS / RAW_TAIFEX_PARENT_PENDING / OUTCOMES_CLOSED",
-          "next": "Audit permitted TAIFEX historical/statistical option-chain source for parser/surface QA, freeze surface method/quality receipts, then accumulate source-attested independent dates before L3.",
-          "evidence": "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json plus DERIVATIVES_VOLATILITY_RESEARCH.md DR-051..DR-059 reconcile pre-existing Gamma/VIX/VRP/surface work into the expanded D12 curriculum. No L3: strict Taiwan option-chain/surface prospective receipts and OOS evidence remain absent.\n2026-10-03: research/d12_surface_method_v0_1_spec.json plus research/d12_option_row_validator_v0_1.mjs; isolated local Node tests PASS 10 assertions for quote admissibility, duplicates, monotonicity and convexity. Synthetic tests are method QA, not market evidence."
+          "status": "L2 / SURFACE_METHOD_V0_1_FROZEN / REAL_PARENT_PARITY_FORWARD_QA / DISCOUNT_SOURCE_AND_SETTLEMENT_CLOCK_FIREWALL / IV_REPLAY_PENDING / OUTCOMES_CLOSED",
+          "next": "Freeze one research-only primary discount convention plus alternative sensitivity; use exact TXO settlement clock and same-expiry TX futures forward for monthly IV/skew/surface replay on identical 2026-10-02 common support.",
+          "evidence": "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json plus DERIVATIVES_VOLATILITY_RESEARCH.md DR-051..DR-059 reconcile pre-existing Gamma/VIX/VRP/surface work into the expanded D12 curriculum. No L3: strict Taiwan option-chain/surface prospective receipts and OOS evidence remain absent.\n2026-10-03: research/d12_surface_method_v0_1_spec.json plus research/d12_option_row_validator_v0_1.mjs; isolated local Node tests PASS 10 assertions for quote admissibility, duplicates, monotonicity and convexity. Synthetic tests are method QA, not market evidence.\n2026-10-04 DR-086..089 in DERIVATIVES_VOLATILITY_CHECKPOINT.md: no unique TAIFEX-mandated risk-free series; asynchronous CBC CD issuance curve rejected as exact contemporaneous curve; TXO settlement-clock and rate-sensitivity requirements frozen."
         },
         {
           "id": "D12-17",
