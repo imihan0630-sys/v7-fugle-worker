@@ -1,23 +1,13 @@
 # System 2 Remediation Checkpoint
 
-Updated: 2026-10-04 18:52 Asia/Taipei
-Status: ACTIVE / REMEDIATION_LANE / FIX_IN_PROGRESS
+Updated: 2026-10-04 19:00 Asia/Taipei
+Status: ACTIVE / REMEDIATION_LANE / FIX_IMPLEMENTED_PENDING_AUDIT
 Room: System 2｜補強修復室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
 ## Mission
 
-Serve as System 2's concentrated remediation/SWAT lane for defects that should not remain inside ordinary build flow.
-
-Primary scope:
-- cross-module defects;
-- recurring failures;
-- orphaned implementation gaps with no cleaner owner;
-- false-completion remediation;
-- integration breakage;
-- technical debt explicitly routed from the Correction Queue.
-
-This room is not a generic bug inbox.
+Serve as System 2's concentrated remediation/SWAT lane for cross-module, recurrent, orphaned, false-completion and explicitly routed remediation work. This room is not a generic bug inbox.
 
 ## Active correction
 
@@ -29,44 +19,54 @@ Routing:
 - assignedRoom: `System 2｜補強修復室`
 - modificationOwner: `SYSTEM2_REMEDIATION_ROOM`
 - severity: `MEDIUM`
-- working status: `FIX_IN_PROGRESS`
+- implementation status: `FIX_IMPLEMENTED`
+- independent verification: `PENDING_INDEPENDENT_AUDIT`
 - blockedBy: none
 
-`S2-CORR-20261004-001` remains DATA_LANE ownership and is not touched by this room.
+`S2-CORR-20261004-001` remains DATA_LANE ownership and was not touched.
 
-## Diagnosis frozen so far
+## Implemented state
 
-Latest-main repository audit distinguishes three different truths that had been blurred together:
+Canonical capability/readiness is now separated into:
 
-1. **Target/design truth**
-   - Owner-approved Position Management architecture requires actual holdings to eventually live outside candidate/entry-monitor capacity and to support symmetric HOLD / REDUCE / EXIT / ADD / RE-ADD / RESTORE decisions.
-   - This is an approved target invariant, not evidence that actual holdings are wired today.
+- `TARGET_ONLY`: continuous owner actual-holdings monitoring target behavior.
+- `DESIGN_APPROVED`: actual-vs-desired exposure, capacity exclusion and symmetric HOLD / REDUCE / EXIT / ADD / RE-ADD / RESTORE architecture.
+- `VIRTUAL_POSITION_READY`: simulated fills, virtual `s2_positions`, `SIM_FILLED -> POSITION_MONITOR`, and current simulated-position resonance HOLD/EXIT context.
+- `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`: no authorized System 2 actual-holdings ingestion/reconciliation adapter is physically verified.
+- `ACTUAL_POSITION_MONITOR_VERIFIED=false`.
 
-2. **Physically implemented System 2 truth**
-   - `s2_positions` is explicitly defined as System 2 virtual/simulated positions only.
-   - Candidate lifecycle implements `SIM_FILLED -> POSITION_MONITOR`.
-   - Daily resonance persistence reads open `s2_positions` to provide simulated-position HOLD/EXIT lifecycle context.
-   - System 2 execution simulation produces simulated fills/outcomes.
-   - Existing MVP documentation already states no real position or order is created.
+Current literal `POSITION_MONITOR` runtime state must therefore be interpreted as virtual/simulated unless a future separately authorized actual-holdings provenance contract is introduced and verified.
 
-3. **Not implemented / not proven**
-   - no authorized System 2 actual-holdings source contract found;
-   - no broker-holdings adapter for System 2 found;
-   - no end-to-end actual-holdings reconciliation path found;
-   - no physically verified actual quantity/cost/fill/ownership provenance readback found;
-   - no authority exists to silently import System 1/V8 holdings;
-   - signal price, suggested shares, plan snapshots or simulated fills cannot establish actual ownership.
+## Not implemented / remaining UNKNOWN
 
-Current readiness classification:
-- `TARGET_ONLY`: actual-holdings continuous POSITION_MONITOR target behavior.
-- `DESIGN_APPROVED`: symmetric actual-vs-desired exposure architecture and capacity exclusion rule.
-- `VIRTUAL_POSITION_READY`: simulated fills / `s2_positions` / virtual POSITION_MONITOR lifecycle.
-- `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`: current actual-holdings ingestion/reconciliation state.
-- `ACTUAL_POSITION_MONITOR_VERIFIED`: false.
+The correction intentionally does **not** implement:
+- broker holdings integration;
+- System 1/V8 shared holdings import;
+- actual-holdings reconciliation;
+- actual quantity/cost/fill/ownership readback;
+- actual capital/order authority;
+- production push changes.
 
-## Active conflict units
+No complete authorized System 2 actual-holdings adapter/reconciliation/readback chain was found in the bounded repository audit.
 
-This correction currently owns semantic/readiness edits only in:
+## Actual-holding fail-closed gate
+
+A future System 2 surface may call a position an **actual holding** only after owner-authorized integration preserves:
+- source identity and account scope;
+- position as-of / observation timestamp;
+- reconciled quantity;
+- cost basis only when actually sourced/reconciled;
+- confirmed fill provenance if fill history is used;
+- ownership provenance;
+- reconciliation status, conflicts and UNKNOWN semantics;
+- durable persistence/readback evidence.
+
+Signal price, trigger price, suggested/requested shares, plan snapshot, candidate state, simulated fill and virtual `s2_positions` rows are insufficient to establish actual ownership.
+
+Any broker-holdings or System 1 shared-holdings integration is `OWNER_DECISION_REQUIRED`.
+
+## Conflict units changed
+
 - `system2/SYSTEM2_MASTER.md`
 - `system2/SYSTEM2_ARCHITECTURE.md`
 - `system2/SYSTEM2_POSITION_MANAGEMENT_ARCHITECTURE.md`
@@ -75,50 +75,53 @@ This correction currently owns semantic/readiness edits only in:
 - `system2/SYSTEM2_CHECKPOINT.md`
 - `system2/SYSTEM2_INSTITUTIONAL_MONITORING_UI_V0_1.md`
 - `system2/SYSTEM2_CANDIDATE_LIFECYCLE_CONTRACT_V0_1.md`
-- correction queue MD/JSON
+- `system2/SYSTEM2_CANDIDATE_CAPACITY_CONTRACT_V0_1.md`
+- `system2/SYSTEM2_STRATEGY_IDENTITY_CARDS.md`
+- `system2/SYSTEM2_CORRECTION_QUEUE.md`
+- `system2/SYSTEM2_CORRECTION_QUEUE.json`
 - this remediation checkpoint
-- one targeted semantic regression test if needed.
+- `system2/tests/position_monitor_capability_semantics.test.mjs`
 
-No System 1/V8 source, holdings/runtime, Formal Core, production push, capital/order behavior, strategy thresholds or Class B/Class C behavior is in scope.
+No System 1 Formal Core, System 1 holdings/runtime, capital/order logic, production push or Class B/Class C behavior was changed.
 
-## Required fail-closed actual-holdings gate
+## Tests / physical evidence
 
-Before any System 2 surface may label a position as an **actual holding**, a future owner-authorized integration must provide and preserve at minimum:
-- authorized source identity/account scope;
-- observation/as-of timestamp and source provenance;
-- reconciled quantity;
-- cost basis only when actually sourced/reconciled;
-- confirmed fill provenance where fills are used;
-- ownership provenance;
-- reconciliation state and conflict/UNKNOWN semantics;
-- persistence/readback evidence;
-- explicit separation from virtual/simulated `s2_positions`.
+PR: `#536` — `System2 CORR-002: separate virtual positions from actual holdings readiness`.
 
-A future System 1 shared-holdings or broker-holdings integration is `OWNER_DECISION_REQUIRED` before implementation.
+Semantic readback:
+- all five readiness states present;
+- old misleading present-tense actual-holdings claims removed from Master/Architecture;
+- storage confirms `s2_positions` virtual/simulated only;
+- UI contract fails closed on actual-holdings labels;
+- candidate lifecycle states current `POSITION_MONITOR` is simulated/virtual;
+- Correction Queue MD/JSON agree on `FIX_IMPLEMENTED`.
 
-## Tests / evidence
+Targeted regression:
+- added `system2/tests/position_monitor_capability_semantics.test.mjs`.
+- first CI attempt exposed a test-regex false positive against the explicit prohibition sentence; the test itself was corrected rather than weakening the semantic guard.
 
-Completed diagnosis evidence:
-- bounded repository search found only simulated/virtual `s2_positions` lifecycle reads inside System 2 runtime;
-- `SYSTEM2_STORAGE_SCHEMA.md` says `s2_positions` are System 2 virtual positions only and never V8 live holdings;
-- `SYSTEM2_MVP_SHADOW_STATUS_V0_1.md` says existing simulated open positions supply HOLD semantics and no real position/order is created;
-- no complete System 2 actual-holdings adapter/reconciliation/readback chain was found.
+Corrected semantic head `67151b901029b17b567cf1f29b4a74c349460996`:
+- System2 Research CI `37197332296`: PASS.
+- V8 Regression `37197332187`: PASS.
 
-Pending:
-- canonical semantic edits;
-- targeted semantic regression test;
-- System2 Research CI;
-- V8 Regression;
-- final latest-main/readback reconciliation;
-- Correction Queue implementationEvidence update.
+Queue/checkpoint evidence-only commits followed those PASS runs. The final PR head must still retain green required checks before merge.
 
-## Closure rule
+## Closure / owner gate
 
-Because this is a MEDIUM correction, implementation evidence may be recorded when the semantic/readiness fix is merged. Do not claim the entire Position Monitor operationally complete. Actual holdings integration remains unimplemented until separately authorized and physically verified.
+This correction fixes readiness truth; it does **not** prove the actual Position Monitor operational.
+
+Do not claim:
+- actual holdings are currently monitored;
+- actual holdings reconciliation exists;
+- quantity/cost/fill provenance exists;
+- Position Monitor is fully complete.
+
+Future actual-holdings integration remains `OWNER_DECISION_REQUIRED`.
 
 ## Exact next continuation point
 
-Apply the minimum canonical semantic/readiness edits so every affected surface distinguishes:
-`TARGET_ONLY / DESIGN_APPROVED / VIRTUAL_POSITION_READY / ACTUAL_HOLDINGS_SOURCE_NOT_WIRED / ACTUAL_POSITION_MONITOR_VERIFIED=false`.
-
-Then add/run targeted semantic regression coverage, run System2 Research CI and V8 Regression, re-read canonical files from the final PR head, update `S2-CORR-20261004-002` implementationEvidence/status, and merge only after checks pass.
+1. Require final PR #536 head System2 Research CI + V8 Regression to remain PASS.
+2. Merge PR #536 to latest main only if mergeable and checks are green.
+3. Re-read merged main canonical queue/checkpoint/readiness state.
+4. Hand `S2-CORR-20261004-002` back to `SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR` with status `FIX_IMPLEMENTED` for independent verification.
+5. Do not start any broker/System1 holdings integration without a separate owner decision.
