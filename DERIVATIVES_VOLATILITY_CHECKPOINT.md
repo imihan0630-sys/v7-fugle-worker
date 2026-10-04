@@ -306,3 +306,19 @@ Durable evidence: `research/d12_d13_source_clock_continuation_20261004_v0_1.md`.
 - Evidence: `research/d12_d13_vintage_regime_audit_20261004_v0_1.md`.
 - Maturity unchanged: D12 40.0%, L2. Outcomes CLOSED; Formal Core LOCKED.
 - Exact next: permitted raw TAIFEX option-chain parent with publication/effective/session identities; independent source-attested PIT dates required before L3.
+
+
+## 00 routed H11 exact remaining delta — 2026-10-04
+
+H11 (D12-07 vs D12-16) has been accepted as PARTIAL_EVIDENCE_RECEIVED.
+
+Do not redo theory, quote-quality, Surface Method V0.1, no-static-arbitrage or source-clock research.
+
+Exact remaining H11 delta:
+1. obtain one permitted raw TAIFEX option-chain parent with preserved source identity/hash;
+2. parse D12-07 simple skew/term and D12-16 complex surface from identical parent rows/common-support;
+3. test D12-16 residual structure after D12-07 controls;
+4. record real divergent states, coverage/fit/interpolation quality;
+5. return terminal KEEP_SEPARATE / SCOPE_DEDUP_ONLY / MERGE_ELIGIBLE / EVIDENCE_INSUFFICIENT.
+
+This routed governance delta does not override the room's existing active source-acquisition sequence; it is aligned with that sequence.
