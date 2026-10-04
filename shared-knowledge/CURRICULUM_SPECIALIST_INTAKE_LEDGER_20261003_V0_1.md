@@ -14,7 +14,7 @@ A cluster does not become decided merely because one participating room submits 
 
 ## Current intake summary
 
-- H01: **SPECIALIST_EVIDENCE_RECEIVED / KEEP_SEPARATE_PROPOSED / 00 DEPENDENCY AUDIT PENDING**.
+- H01: **DEPENDENCY_AUDIT_COMPLETE / KEEP_SEPARATE + SCOPE_DEDUP_ONLY / OWNER_APPROVAL_REQUIRED**.
 - H02-H04: pending.
 - H05: **PARTIAL_EVIDENCE_RECEIVED**.
 - H06-H19: pending.
@@ -253,3 +253,33 @@ Until then:
 - no module-count change;
 - no Formal Core change;
 - `FORMAL_OPTIMIZATION_CANDIDATE: NONE`.
+
+
+## H01 00-room Dependency / anti-orphan closure — 2026-10-04
+
+Canonical audit:
+- `shared-knowledge/CURRICULUM_H01_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`
+- `shared-knowledge/curriculum_h01_dependency_anti_orphan_audit_20261004_v0_1.json`
+
+00-room result:
+**KEEP_SEPARATE / SCOPE_DEDUP_ONLY / OWNER_APPROVAL_REQUIRED**
+
+Passed:
+- Dependency Audit;
+- D10 and D11/D17 producer/consumer boundary;
+- anti-double-count shared-parent receipt firewall;
+- anti-orphan capability inventory;
+- divergent-state requirement;
+- maturity firewall;
+- Formal Core isolation.
+
+Proposed canonical cleanup:
+- D09-13 → `Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）`;
+- D09-14 → `Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）`;
+- both remain L3/60%;
+- no module-count change;
+- D09-13 owns industry structural state;
+- D09-14 owns issuer-specific strategic-action lifecycle;
+- shared market-share/capacity/price/margin evidence remains one parent receipt.
+
+No canonical tracker/router/module wording is changed until explicit owner approval.
