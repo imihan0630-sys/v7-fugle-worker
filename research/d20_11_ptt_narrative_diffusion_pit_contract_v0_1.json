@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "D20_11_PTT_NARRATIVE_DIFFUSION_PIT_CONTRACT_V0_1",
+  "frozenAtAsiaTaipei": "2026-10-04T13:59:48+08:00",
+  "module": "D20-11",
+  "sourceReceipt": "research/d20_ptt_social_source_live_receipt_20261004_v0_1.json",
+  "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / PTT_STOCK_PROSPECTIVE_NARRATIVE_SUBLANE / HISTORICAL_COMPLETENESS_NOT_CLAIMED / OUTCOMES_CLOSED",
+  "sourceScope": "Public PTT Stock-board Atom feed plus article pages, prospectively captured from the first verified live receipt onward.",
+  "parentFields": [
+    "captureId",
+    "capturedAt",
+    "articleUrl",
+    "articleId",
+    "sourcePublishedAt",
+    "feedUpdatedAt_or_UNKNOWN",
+    "authorHandle",
+    "title",
+    "bodySnapshot",
+    "articleEditMarkers",
+    "replySnapshots",
+    "snapshotFingerprint",
+    "sourceLinks"
+  ],
+  "narrativeTransforms": {
+    "topicState": "Frozen topic/phrase extraction version required; raw title/body remain canonical.",
+    "stanceState": "Bullish/bearish/uncertain stance may be derived only under a frozen classifier/manual-label contract; UNKNOWN is allowed.",
+    "diffusionEdge": "Later distinct-actor post/reply may link to an earlier narrative only if temporal order is valid and similarity/topic criteria were frozen before outcomes.",
+    "amplification": "Count/velocity of distinct-actor adoption may be studied, but raw post/reply volume is an attention primitive and cannot independently vote."
+  },
+  "clocks": {
+    "firstKnown": "capturedAt is the conservative system-observable clock.",
+    "sourceTimes": "Article publication/edit times and comment minute clocks are provenance; they do not backdate observability before first successful capture.",
+    "versioning": "Append snapshots; never overwrite. Disappearance after capture becomes deletion/unavailable state."
+  },
+  "ownershipFirewall": {
+    "D09-11": "theme/company/industry taxonomy and membership",
+    "D17-11": "underlying dated news/event propagation",
+    "D20-11": "independent social-language narrative diffusion",
+    "D20-07": "attention/salience volume context",
+    "sharedPrimitiveRule": "Same PTT receipt may support controls/transforms but never multiple additive selection votes."
+  },
+  "falsification": [
+    "Copied headline/news link alone is D17 propagation, not independent narrative diffusion.",
+    "Static theme membership is D09 taxonomy, not diffusion.",
+    "Price co-movement without text propagation is not narrative evidence.",
+    "A single prolific author or bot-like account can create volume without broad diffusion.",
+    "Deleted/edited content before first capture remains UNKNOWN."
+  ],
+  "maturityDecision": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
+  "l4Requirement": "Post-freeze prospective narrative parents across independent dates with frozen topic/stance model, event/news controls, actor de-duplication and later outcome joins.",
+  "formalOptimizationCandidate": "NONE",
+  "formalCore": "LOCKED"
+}
