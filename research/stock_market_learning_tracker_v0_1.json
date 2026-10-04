@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T23:12:00+08:00",
+  "updatedAt": "2026-10-05T05:38:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -494,10 +494,10 @@
           "researchNote": "Versioned Taiwan price-limit mechanics plus explicit observed limit/reference state support PIT contamination classification; unknown historical rule/reference remains UNKNOWN."
         }
       ],
-      "status": "L3_BROAD_COMPLETE / L4_WAVE1_PREREGISTERED / FUTURE_EVIDENCE_PENDING",
-      "exactNextContinuationPoint": "D04-L4-W1-01: count only genuine post-freeze parent receipts for D04-03/04/07. Before outcome interpretation report exact parent coverage, distinct clean dates, state/episode occupancy, UNKNOWN/exclusion reasons and common-support retention; then freeze D16 MDE/dependence review. No historical Prospective Shadow backfill. D04 stays 58.0% until actual prospective/OOS evidence qualifies.",
-      "lastResearchUpdate": "2026-10-04T19:16:02+08:00",
-      "researchNote": "D04 remains 58.0%. L4 Wave-1 is frozen prospectively for D04-03 contraction, D04-04 expansion/shock, and D04-07 volatility×trend/breakout interaction. No L4 credit from code/tests/history; genuine post-freeze parents/outcomes and D16 dependence/MDE review are required. D04-08 remains L2 because sizing is a portfolio-risk/execution policy transform."
+      "status": "L3_BROAD_COMPLETE / L4_WAVE1_PREREGISTERED / FIRST_ELIGIBLE_SESSION_20261005_PENDING_CLOSE",
+      "exactNextContinuationPoint": "D04-L4-W1-02: after the complete official 2026-10-05 Taiwan session, run COVERAGE-ONLY parent audit for D04-03 contraction, D04-04 expansion/shock and D04-07 volatility×trend/breakout. Freeze exact parent count, distinct clean date count, state/episode occupancy, UNKNOWN/exclusion reasons and common-support retention before inspecting future economic outcomes; then require D16 dependence/MDE checkpoint. No historical backfill and no L4 credit before genuine post-freeze evidence.",
+      "lastResearchUpdate": "2026-10-05T05:38:00+08:00",
+      "researchNote": "Recovered after repeated abnormal chat interruptions. D04 remains 58.0%. First genuine post-freeze Taiwan session is 2026-10-05; before market open count remains structurally zero. D04-03/04/07 may create first genuine parents only after official session completion and coverage/common-support/UNKNOWN audit. No outcome peeking or L4 credit yet."
     },
     {
       "id": "D05",
@@ -647,10 +647,10 @@
           "researchNote": "TWSE official Attention/Disposition databases provide historical date-query/CSV records from 2001 with conservative after-market availability semantics and versioned surveillance rules. Official surveillance state/public anomaly replay is feasible; actor identity/intent/wash/spoof/manipulation attribution remains UNKNOWN."
         }
       ],
-      "status": "PIT_FEASIBILITY_54_3 / D05_06_14_L3_BOUNDED / L4_WAVE1_PREREGISTERED",
-      "exactNextContinuationPoint": "D05-L4-W1-01 remains primary: wait for first genuine post-freeze Taiwan trading session, then run coverage-only audit for D05-03/04/09 before outcomes. Separately, D05-06/14 are now L3 and may begin prospective parent accumulation only; no historical imbalance backfill, no legal/intent attribution. D05-05 true OFI and D05-11/12/13 own-order/fill/queue blockers remain unchanged.",
-      "lastResearchUpdate": "2026-10-04T21:12:00+08:00",
-      "researchNote": "D05-06 and D05-14 advanced L2->L3 after outcome-blind PIT feasibility audit. D05-06 is prospective-only for trial/closing-auction replay; uncaptured historical pre-close imbalance remains UNKNOWN. D05-14 can replay official TWSE Attention/Disposition and public anomaly states conservatively after the official after-market publication boundary; actor/account intent remains UNKNOWN. D05 aggregate = 54.3%."
+      "status": "PIT_FEASIBILITY_54_3 / L4_WAVE1_PREREGISTERED / 20261005_C3_PARENT_CAPTURE_BLOCKED",
+      "exactNextContinuationPoint": "D05-L4-W1-02: exclude 2026-10-05 from C3-derived Wave-1 parent counting because the prerequisite 2026-10-02 C1 generation was missing. Verify the next scheduled System1 C1/C2 evidence run produces a genuine C1 generation and successful C3 registration for the next official session; only then count prospective D05-03 spread, D05-04 top5 depth and D05-09 liquidity-state parents. True OFI and own-order/fill/queue blockers remain unchanged. No retrospective quote/depth backfill.",
+      "lastResearchUpdate": "2026-10-05T05:38:00+08:00",
+      "researchNote": "D05 remains 54.3%. PR #327 quote/top5 research capability is merged, but the 2026-10-03 00:23 Taipei scheduled System1 C1 evidence run 37033639328 failed with FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND, so no valid C3 research cohort was registered for Monday 2026-10-05. This date cannot be retrospectively backfilled as prospective D05 Wave-1 evidence."
     },
     {
       "id": "D06",
