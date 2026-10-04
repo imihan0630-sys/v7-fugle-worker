@@ -14,7 +14,7 @@ const c3RegistrationPath=resolve(process.env.C3_REGISTRATION_OUTPUT||'artifacts/
 const registerC3=String(process.env.C3_REGISTER||'').trim().toLowerCase()==='true';
 const save=async(path,value)=>{await mkdir(dirname(path),{recursive:true});await writeFile(path,JSON.stringify(value,null,2)+'\n','utf8');};
 try {
-  const {pages,adapted,diagnosis,paired,scanProof,zeroPickProspective,shadowCohort,c4RankingRedundancy,setupChannelScale,marketCapConditionalAdmission,firstFailureMasking,sectorGateComponents,atrGateDecomposition,extremeMoveProxyDenominator,liquidityRejectedControl}=await collectVerifiedC1C2({origin,token,scanDate});
+  const {pages,adapted,diagnosis,paired,scanProof,zeroPickProspective,shadowCohort,c4RankingRedundancy,setupChannelScale,marketCapConditionalAdmission,firstFailureMasking,sectorGateComponents,atrGateDecomposition,extremeMoveProxyDenominator,liquidityRejectedControl,marketCapFloorEconomic}=await collectVerifiedC1C2({origin,token,scanDate});
   const gateTotals={},firstFailures={};
   for(const row of diagnosis.observations){
     for(const [gate,observation] of Object.entries(row.gates)){
@@ -31,7 +31,7 @@ try {
     summary:{populationN:diagnosis.populationN,capturedN:diagnosis.capturedN,coverageComplete:true,
       selectedN:paired.tally.formalSelectedN,qualifiedN:paired.tally.formalQualifiedN,firstFailures,gateTotals,
       overlaps:diagnosis.overlaps,samples:diagnosis.samples,economicSuperiority:'UNKNOWN',fullFormalCounterfactual:false},
-    diagnosis,zeroPickProspective,shadowCohort,c4RankingRedundancy,setupChannelScale,marketCapConditionalAdmission,firstFailureMasking,sectorGateComponents,atrGateDecomposition,extremeMoveProxyDenominator,liquidityRejectedControl,safety:{researchOnly:true,decisionImpact:false,formalCoreImpact:false,
+    diagnosis,zeroPickProspective,shadowCohort,c4RankingRedundancy,setupChannelScale,marketCapConditionalAdmission,firstFailureMasking,sectorGateComponents,atrGateDecomposition,extremeMoveProxyDenominator,liquidityRejectedControl,marketCapFloorEconomic,safety:{researchOnly:true,decisionImpact:false,formalCoreImpact:false,
       noPlanChanges:true,noTrade:true,noPush:true}};
   const pairedArtifact={...paired,scanProof};
   await save(output,artifact);await save(pairedOutput,pairedArtifact);
