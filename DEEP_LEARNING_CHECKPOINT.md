@@ -1923,3 +1923,14 @@ D21 remaining L2 source-blocked priorities:
 2. D21-03 authoritative monthly insider known_at plus a second transfer-motive case.
 3. D21-01 authoritative ownership-report first-known receipt/time.
 Do not idle if one source remains blocked; try the next executable source path. No Formal Core change.
+
+
+## 2026-10-04 D03 — TI-686~692 decision-cutoff minimal implementation audit
+
+- Latest authoritative D03 state remained 56.7% with Bollinger/ADX blocked behind genuine cutoff-bearing parent + owner-certified continuity.
+- New source-level implementation audit proves a dedicated D1 column is not semantically required for `decisionCutoffAt`: current C1 receipt persistence already serializes the entire immutable parent header in `trade_research_c1_generations.header_json`, and readback reparses it.
+- Existing same-generation header conflict logic can make cutoff immutable automatically once the field is present.
+- D03 does not need cutoff duplicated into each Shadow membership row; membership -> captureGeneration -> immutable C1 header is the preferred single-owner chain.
+- Minimum owner runtime patch: stamp cutoff after the final `V7_MARKET_CONSENSUS` read and before synchronous selector; pass exact value into selector/C1 builder; enforce cutoff <= decisionAt; persist/read back via existing header; no provider call; no Formal behavior change; no historical backfill.
+- This narrows implementation risk but does not create genuine session evidence, so D03 maturity remains 56.7%.
+- Exact next: shared System1 parent owner implements under Production governance, then first genuine post-deploy session readback + cutoff-safe continuity binding + complete Bollinger v0.2 parent reconciliation; ADX only after canonical FULL_REPLAY.
