@@ -1,0 +1,31 @@
+name: D03 Pre-Parent Source Cut Policy Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d03_pre_parent_source_cut_v0_1.mjs"
+      - "tests/test_d03_pre_parent_source_cut_v0_1.mjs"
+      - "research/D03_PRE_PARENT_CONTINUITY_SOURCE_CUT_HANDOFF_V0_1.md"
+      - ".github/workflows/research-d03-pre-parent-source-cut-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tests/test_d03_pre_parent_source_cut_v0_1.mjs
+      - name: Confirm Formal isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE|BUY|SELL' research/d03_pre_parent_source_cut_v0_1.mjs
+          echo "D03 source-cut policy isolation PASS"
