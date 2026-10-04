@@ -47,6 +47,23 @@ assert.equal(twse.rows[0].availableAt, "2026-09-01T05:30:00.000Z");
 assert.equal(twse.rows[0].availabilityBasis, "SESSION_CLOSE_FINALITY");
 assert.equal(twse.rows[0].sourceId, "TWSE_STOCK_DAY_MONTHLY");
 
+const twseRocDate = await normalizeOfficialMonthlyHistoryPayloadV0_1({
+  market: "TWSE",
+  symbol: "2330",
+  companyName: "台積電",
+  yearMonth: "2026-09",
+  observedAt: "2026-10-01T01:00:00Z",
+  payload: {
+    stat: "OK",
+    data: [
+      ["115/09/01", "10,000", "15,200,000", "1500", "1530", "1490", "1520", "+20", "1,200"],
+    ],
+  },
+});
+assert.equal(twseRocDate.rowCount, 1);
+assert.equal(twseRocDate.rows[0].marketDate, "2026-09-01");
+assert.equal(twseRocDate.rows[0].close, 1520);
+
 const tpex = await normalizeOfficialMonthlyHistoryPayloadV0_1({
   market: "TPEX",
   symbol: "6488",
