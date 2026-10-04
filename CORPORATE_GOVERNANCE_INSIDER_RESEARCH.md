@@ -1370,3 +1370,76 @@ Exact continuation:
 1. Build a historical D21-11 case set containing at least one confirmed/near-confirmed value-extraction case and one economically justified RPT control case.
 2. Require contemporaneous beneficiary, pricing/terms, control and approval evidence.
 3. Test whether D21-11 classification adds information beyond D21-01/04/05 instead of double counting them.
+
+
+## 2026-10-04 D21-11 extraction-versus-control replay
+
+Status: D21-11 L2 / CASE_PAIR_PARTIAL / CONFIRMED_EXTRACTION_LATER_ADJUDICATED / CONTROL_CASE_REPLAYABLE / CONTEMPORANEOUS_EXTRACTION_RECEIPT_PENDING / FORMAL_CORE_UNCHANGED
+
+### Positive case — China Chemical & Pharmaceutical 1701 / controller-benefit extraction
+
+Authoritative later adjudication:
+- Supreme Court 109-Tai-Shang-3424, public judgment-news release dated 2020-11-04.
+- The court summary describes a chairman and finance manager using listed-company funds in transactions designed to compensate a supporter for foregone gains connected with support for the chairman's re-election.
+- One described off-market purchase let the beneficiary earn NT$16,508,077 and caused the listed company the same amount of damage.
+- A separate USD ~520k branch was upheld as special breach of trust against the listed company.
+- This is a high-quality CONFIRMED_TUNNELING label only from the later adjudication known_at onward. It must NOT be backfilled as a confirmed label to the original 2004/2011/2012 transaction dates.
+
+Evidence mapping:
+- beneficiary_controller_linkage: YES by adjudicated motive/support relationship.
+- transfer_direction: listed-company value -> controller-linked supporter / related vehicle.
+- abnormal_pricing_or_terms: YES for the described off-market transaction inconsistent with ordinary practice.
+- legal_or_regulatory_finding: YES.
+- contemporaneous_public_receipt_at_transaction_date: UNKNOWN in this run.
+- historical decision-time label before later adjudication: UNKNOWN / at most AMBIGUOUS unless an original disclosure receipt is recovered.
+
+### Negative/control case — Yuanta Financial 2885 / related-party real-estate disposal
+
+Issuer-official archive dated 2024-04-29:
+- subsidiary Yuanta International Asset Management disposed Taipei Nangang real estate to EirGenix, explicitly a related party;
+- transaction amount NT$133m;
+- prior durable replay preserves professional appraisal NT$124.102m, expected disposal gain ~NT$47.238m, existing-tenant rationale, and same-day board/audit approval;
+- public archive evidence was observed before the formal daily after-market decision clock.
+
+D21-11 classification:
+- related-party status: YES;
+- value-transfer-to-controller beneficiary: NOT ESTABLISHED;
+- abnormal pricing/terms: NOT ESTABLISHED merely from sale price above appraisal;
+- independent valuation support: YES;
+- governance approval process: disclosed;
+- state: INSUFFICIENT for tunneling, not CONFIRMED/HIGH_SUSPICION.
+
+This control demonstrates that a related-party asset transaction with a large amount is not itself tunneling evidence.
+
+### Falsification and anti-look-ahead conclusion
+
+The pair validates the classification logic but not full historical L3 PIT feasibility:
+1. A later court finding can establish a gold-standard confirmed extraction label, but the label's known_at is the adjudication/publication clock.
+2. A contemporaneous related-party transaction can remain INSUFFICIENT when beneficiary extraction and abnormal terms are not established.
+3. Backfilling later judicial knowledge to the transaction date would create severe look-ahead bias.
+4. D21-11 therefore needs two clocks: event/disclosure evidence available then, and later adjudication/remediation evidence.
+5. CONFIRMED_TUNNELING may be useful as a retrospective label for model evaluation, but prospective decision features must use only evidence known by each decision date.
+
+### Bias / redundancy controls
+
+Any future OOS test must condition on D21-01 control wedge, D21-04 pledge, D21-05 RPT family/terms, D07 accounting quality, D11 event clocks, size, industry, leverage, liquidity and prior distress.
+No additive governance score is approved.
+Do not select cases based on subsequent returns.
+No historical Shadow sample is fabricated.
+
+### Maturity decision
+
+D21-11 remains L2 / 40%.
+
+Reason for no promotion:
+- one later-adjudicated confirmed extraction case and one economically plausible RPT control case now exist;
+- however the confirmed extraction case lacks a recovered contemporaneous transaction-date public receipt in this run;
+- therefore reproducible historical decision-time classification is not yet proven end-to-end.
+
+Exact next continuation:
+1. Recover an original contemporaneous disclosure / regulator / issuer receipt for a confirmed or near-confirmed extraction case, preserving what was knowable before later adjudication.
+2. If unavailable, build a second high-suspicion case whose contemporaneous terms, beneficiary linkage and approval/control evidence are independently public.
+3. Only after decision-time reproducibility is demonstrated reassess D21-11 for L3.
+4. Then begin D21-12 management-guidance credibility mechanism/falsification contract.
+
+Formal Core impact: NONE.
