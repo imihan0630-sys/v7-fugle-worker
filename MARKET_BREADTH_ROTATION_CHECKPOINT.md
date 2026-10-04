@@ -869,3 +869,15 @@ BR-059 compatible issuer product/application revenue numerator evidence; BR-060 
 - Formal Core unchanged.
 
 Exact next: BR-061 prospective snapshot append with unchanged semantics and later member-level common-clock joins.
+
+
+## BR-062 same-clock breadth-regime gate
+
+- D18-01/02/03 dependencies have matured to executable L3 data-feasibility layers.
+- D09-04 has genuine official TWSE breadth evidence.
+- D09-12 does NOT inherit maturity automatically.
+- Missing object: one genuine persisted same-clock D18 context + breadth receipt with immutable source hashes.
+- Historical reconstruction and test fixtures are explicitly forbidden substitutes.
+- D09-12 remains L2/40%.
+
+Exact next: BR-063 on the next genuinely completed Taiwan session.
