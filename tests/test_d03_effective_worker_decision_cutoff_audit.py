@@ -37,21 +37,25 @@ core=function_body("runAfterMarketScanCore")
 selector=function_body("selectTomorrowCandidates")
 c1=function_body("buildC1PopulationReceipt")
 
-budget_anchor='const storedBudget = await env.STOCKS_KV.get(KV_KEY, "json");'
-capital_anchor='const totalCapital = positiveNumber(storedBudget?.totalCapital) || positiveNumber(env.V7_TOTAL_CAPITAL) || DEFAULT_TOTAL_CAPITAL;'
-selection_anchor='const scan = selectTomorrowCandidates('
+budget_matches=list(re.finditer(r'const\s+storedBudget\s*=\s*await\s+env\.STOCKS_KV\.get\(\s*KV_KEY\s*,\s*["\' ]?json["\' ]?\s*\)',core))
+capital_matches=list(re.finditer(r'const\s+totalCapital\s*=\s*positiveNumber\(storedBudget\?\.totalCapital\).*?DEFAULT_TOTAL_CAPITAL\s*;',core,re.S))
+selection_matches=list(re.finditer(r'const\s+scan\s*=\s*selectTomorrowCandidates\s*\(',core))
 
-for anchor in [budget_anchor,capital_anchor,selection_anchor]:
-    if core.count(anchor)!=1:
-        raise SystemExit(f"anchor count !=1: {anchor}")
+if len(budget_matches)!=1:
+    raise SystemExit("storedBudget semantic anchor count !=1: "+str(len(budget_matches)))
+if len(capital_matches)!=1:
+    raise SystemExit("totalCapital semantic anchor count !=1: "+str(len(capital_matches)))
+if len(selection_matches)!=1:
+    raise SystemExit("selection semantic anchor count !=1: "+str(len(selection_matches)))
 
-budget_i=core.index(budget_anchor)
-capital_i=core.index(capital_anchor)
-select_i=core.index(selection_anchor)
+budget_i=budget_matches[0].start()
+capital_i=capital_matches[0].start()
+capital_end=capital_matches[0].end()
+select_i=selection_matches[0].start()
 if not (budget_i < capital_i < select_i):
     raise SystemExit("unexpected budget/capital/selection ordering")
 
-between=core[capital_i+len(capital_anchor):select_i]
+between=core[capital_end:select_i]
 for forbidden in ["await ","fetch(","STOCKS_KV.get","V7_DB.","fetchWithDeadline("]:
     if forbidden in between:
         raise SystemExit("external/async read between final capital input and selector: "+forbidden)
@@ -62,7 +66,7 @@ for forbidden in ["await ","fetch(","fetchWithDeadline(","STOCKS_KV.get","V7_DB.
     if forbidden in selector:
         raise SystemExit("selector contains external/async read: "+forbidden)
 
-if 'const decisionAt=new Date().toISOString();' not in c1:
+if not re.search(r'const\s+decisionAt\s*=\s*new\s+Date\(\)\.toISOString\(\)\s*;',c1):
     raise SystemExit("C1 decisionAt receipt stamp missing")
 if "decisionCutoffAt" in c1:
     raise SystemExit("decisionCutoffAt already exists in effective C1; audit expectation stale")
