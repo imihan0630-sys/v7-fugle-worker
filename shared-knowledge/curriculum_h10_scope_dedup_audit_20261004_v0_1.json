@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "CURRICULUM_H10_SCOPE_DEDUP_AUDIT_V0_1",
+  "date": "2026-10-04",
+  "auditBaseMain": "587144013dc705c9e27c36a6f9d5046fae15fe55",
+  "clusterId": "H10",
+  "modules": [
+    "D10-12",
+    "D17-04",
+    "D17-05"
+  ],
+  "acceptedEvidence": [
+    "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md",
+    "NEWS_EVENT_TRANSMISSION_RESEARCH.md",
+    "research/news_event_transmission_contract_v0_2.json"
+  ],
+  "terminalClassification": "KEEP_SEPARATE",
+  "governanceDisposition": "SCOPE_DEDUP_ONLY_STRUCTURAL_EXPOSURE_TO_EVENT_OVERLAY",
+  "dependencyAudit": "PASS_PRODUCER_CONSUMER_GRAPH",
+  "antiDoubleCount": "PASS_STRUCTURAL_EDGE_PLUS_EVENT_OVERLAY_FIREWALL",
+  "antiOrphan": "PASS_NO_ORPHAN",
+  "proposedOwnership": {
+    "D10-12": "STRUCTURAL_EXPOSURE_GRAPH_PRODUCER",
+    "D17-04": "EVENT_SPECIFIC_DIRECT_ATTRIBUTION_CONSUMER",
+    "D17-05": "EVENT_SPECIFIC_SECOND_ORDER_PATH_CONSUMER"
+  },
+  "maturity": {
+    "D10-12": {
+      "level": "L3",
+      "maturityPct": 60,
+      "change": "NONE"
+    },
+    "D17-04": {
+      "level": "L2",
+      "maturityPct": 40,
+      "change": "NONE"
+    },
+    "D17-05": {
+      "level": "L2",
+      "maturityPct": 40,
+      "change": "NONE"
+    }
+  },
+  "renameRequired": false,
+  "moduleCountChange": 0,
+  "structuralScopeWordingChange": true,
+  "ownerApprovalRequired": true,
+  "state": "OWNER_APPROVAL_REQUIRED",
+  "formalCoreImpact": "NONE_LOCKED"
+}
