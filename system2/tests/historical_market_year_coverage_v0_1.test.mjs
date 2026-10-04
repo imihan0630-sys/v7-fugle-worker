@@ -55,7 +55,9 @@ assert.equal(classified.actualBars,3);
 assert.equal(classified.missingBars,1);
 assert.equal(classified.unknownBars,0);
 assert.equal(classified.suspensionClassifiedMissingBars,1);
+assert.equal(classified.structuralCoverageState,"PASS");
 assert.equal(classified.rawCoverageState,"PASS");
+assert.equal(classified.symbolSessionReadiness,"PASS_CLASSIFIED");
 assert.equal(classified.pitReadiness,"PASS_CONSERVATIVE_SESSION_FINALITY");
 assert.equal(classified.continuityReadiness,"PARTIAL_UNVERIFIED");
 assert.equal(classified.technicalPriceReadiness,"PARTIAL_NONPRICE_OBSERVATIONS");
@@ -66,7 +68,11 @@ const unknown=buildHistoricalMarketYearCoverageV0_1({
   tradingDates:["2017-01-03","2017-01-04"],registry,rows,suspensionIntervals:[],
 });
 assert.equal(unknown.unknownBars,1);
-assert.equal(unknown.rawCoverageState,"BLOCKED");
-assert.equal(unknown.overallState,"BLOCKED");
+assert.equal(unknown.expectedBars,4);
+assert.equal(unknown.missingBars,1);
+assert.equal(unknown.structuralCoverageState,"PASS");
+assert.equal(unknown.rawCoverageState,"PASS");
+assert.equal(unknown.symbolSessionReadiness,"PARTIAL_UNKNOWN_GAPS");
+assert.equal(unknown.overallState,"PARTIAL");
 
 console.log("historical_market_year_coverage_v0_1 tests passed");
