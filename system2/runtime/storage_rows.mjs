@@ -90,6 +90,7 @@ export function toCapacityRunRow(receipt) {
       vacancyCount: receipt.vacancyCount,
       activeCountByStrategy: receipt.activeCountByStrategy || {},
       symbolStrategyCounts: receipt.symbolStrategyCounts || {},
+      selectionDenominator: receipt.selectionDenominator || null,
     }),
     capacity_hash: requiredText(receipt.capacityHash, "capacityHash"),
     captured_at: requiredText(receipt.capturedAt, "capturedAt"),
