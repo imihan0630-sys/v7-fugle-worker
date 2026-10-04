@@ -16,7 +16,7 @@ assert.match(pct,/D08_PERCENTILE_R2_RECEIPT/);
 assert.match(pct,/outcomeJoin:false/);
 assert.match(wf,/matrix:/);
 assert.match(wf,/2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026/);
-assert.match(wf,/max-parallel: 2/);
+assert.match(wf,/max-parallel: 1/);
 assert.match(wf,/environment: system2-research/);
 assert.match(wf,/SYSTEM2_R2_ACCESS_KEY_ID/);
 assert.doesNotMatch(wf,/wrangler.*deploy|V7_DB|STOCKS_KV|PUSH_WEBHOOK_URL|FUGLE_API_KEY/i);
