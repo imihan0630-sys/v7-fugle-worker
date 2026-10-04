@@ -3698,3 +3698,52 @@ Artifact:
 
 Status:
 `B14 = KEEP_SEPARATE / SCOPE_DEDUP_ONLY / NO_MATURITY_TRANSFER`.
+
+
+## MS-088 — D05 L4 Wave-1 is snapshot-level first, not event-level causality
+
+D05 has crossed 50% through L3 source/clock/replay feasibility, but L4 requires real prospective/OOS evidence.
+
+The first frozen D05 L4 Wave-1 modules are:
+- D05-03 Bid-Ask Spread;
+- D05-04 Order-book Depth;
+- D05-09 Liquidity State Classification.
+
+These are deliberately snapshot-level questions.
+
+D05-03:
+test same-symbol/same-slot spread-state persistence and short-horizon friction/path context beyond volatility/activity/tick state.
+
+D05-04:
+test whether one frozen top-five displayed-depth block adds information beyond spread, volatility and activity.
+
+D05-09:
+test a liquidity component vector, not an outcome-tuned scalar GOOD/BAD score.
+
+Hard boundary:
+`DISPLAYED_TOP5_SNAPSHOT != COMPLETE_EXCHANGE_EVENT_LEDGER`.
+
+Therefore this Wave does not authorize:
+- true OFI;
+- exact queue position;
+- spoof/toxicity intent inference;
+- own-order market-impact claims.
+
+Current evidence audit:
+- System2 2026-10-02 daily diagnostic = INPUTS_NOT_READY;
+- code/CI readiness = zero L4 credit;
+- synthetic/history fixtures = zero L4 credit;
+- no completed promotion-grade D05 outcome block is proven.
+
+Current result:
+`D05_L4_PROMOTIONS = 0`.
+
+D05 remains 51.4%.
+
+Artifacts:
+- `research/D04_D05_L4_WAVE1_PREREGISTRATION_20261004_V0_1.md`;
+- `research/D04_D05_L4_READINESS_AUDIT_20261004_V0_1.md`;
+- `research/d04_d05_l4_wave1_preregistration_v0_1.json`.
+
+Status:
+`D05_L4_WAVE1 = PREREGISTERED / SNAPSHOT_FIRST / EVENT_CAUSALITY_STILL_GATED`.
