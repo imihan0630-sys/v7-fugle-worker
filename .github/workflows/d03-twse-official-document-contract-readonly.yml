@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/d03-twse-official-document-contract-readonly.yml"
+      - "research/d03_twse_official_document_machine_contract_v0_1.mjs"
 
 permissions:
   contents: read
