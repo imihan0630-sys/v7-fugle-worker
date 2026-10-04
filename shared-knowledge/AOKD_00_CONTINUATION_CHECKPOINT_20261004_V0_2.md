@@ -988,3 +988,40 @@ Exact new-chat behavior:
 - intake any newly arrived complete return immediately;
 - continue non-protected governance work without waiting for approval;
 - ask owner only when a protected structural mutation reaches OWNER_APPROVAL_REQUIRED.
+
+
+## 2026-10-05 COV-07 return-contract reconciliation
+
+00-room latest-main continuation found a newly committed COV-07 specialist artifact:
+- `research/COV07_D12_SPECIALIST_RETURN_V0_1.md`;
+- evidence `research/cov07_d12_tx_curve_replay_20261004_v0_1.json`.
+
+Substantive COV-07 blocker is now closed:
+- official TAIFEX TX contract-level price/OI/volume replay exists;
+- expiry/contract provenance, front/next/far curve, roll-yield convention, continuous-contract no-look-ahead guard and residual comparison versus D12-01/D12-02 are present;
+- one terminal recommendation token = `ADD_MODULE`;
+- outcomes remain closed.
+
+Formal Intake is **not** yet legal. The artifact does not conform to the executable Coverage Specialist Return contract:
+- all seven canonical header labels are missing;
+- canonical sections missing: Existing-module Overlap Matrix, Why Current Scope Is Insufficient, Taiwan Data Feasibility, PIT / Replay Implication, Decision Role, Proposed Owner, Maturity Starting Point.
+
+Canonical validation receipt:
+- `shared-knowledge/CURRICULUM_COVERAGE_COV07_RETURN_CONTRACT_VALIDATION_20261005_V0_1.md`;
+- `shared-knowledge/curriculum_coverage_cov07_return_contract_validation_20261005_v0_1.json`.
+
+COV-07 state remains:
+`PARTIAL_EVIDENCE_RECEIVED / SPECIALIST_CONTENT_COMPLETE_RETURN_CONTRACT_REPAIR_REQUIRED`.
+
+00 does not infer specialist-owned missing fields merely to pass the validator. Room09 must perform a format-only rewrite from the already completed evidence; no repeated TX research or outcome join is required.
+
+D12-18 is retired/absorbed into D12-17 and not reusable. D12-19 is only a collision-free future candidate ID, not reserved/canonical before validator-complete Intake + 00 Dependency/overlap/anti-double-count/anti-orphan review + explicit owner approval.
+
+No module, maturity, tracker, Router, Shared Master, System1/System2 or Formal mutation occurred.
+
+### Exact next continuation for 00
+1. Watch latest main for the validator-complete COV-07 return; intake immediately when it appears.
+2. Continue scanning for other newly arrived non-protected specialist/source receipts rather than idling.
+3. Preserve existing owner-approval gates H04/H10/H11/COV-06/COV-08/COV-10; this generic continuation does not approve them.
+4. Keep H02/H03/H12/H17/H18/H19, COV-09/COV-11/COV-12 and AOKD-05 at their latest evidence-specific gates unless actual new receipts appear.
+5. Never promote maturity from governance bookkeeping alone.
