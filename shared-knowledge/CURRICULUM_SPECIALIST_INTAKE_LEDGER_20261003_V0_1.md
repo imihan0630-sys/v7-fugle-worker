@@ -81,7 +81,7 @@ Until that packet arrives:
 | H06 | PARTIAL_EVIDENCE_RECEIVED | `research/d06_h06_crowding_vs_herding_room05_packet_v0_1.md` | 13｜行為金融與市場心理研究室 |
 | H07 | PARTIAL_EVIDENCE_RECEIVED | `research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md` | 13｜行為金融與市場心理研究室 |
 | H08 | PENDING | — | specialist packet(s) |
-| H09 | OWNER_APPROVAL_REQUIRED | equivalent complete Room11 evidence | owner approval for SCOPE_DEDUP_ONLY |
+| H09 | CANONICAL_UPDATE_COMPLETE | equivalent complete Room11 evidence | — |
 | H10 | PENDING | — | specialist packet(s) |
 | H11 | PENDING | — | specialist packet(s) |
 | H12 | PARTIAL_EVIDENCE_RECEIVED | `research/d06_securities_lending_economics_h12_v0_1.md` + rule-vintage receipt | 10｜投組風控與交易執行研究室、13｜行為金融與市場心理研究室 |
@@ -429,3 +429,22 @@ Still required:
 - Room13: D20-13 limits-to-arbitrage context that consumes D06/D14 constraints without becoming another directional vote.
 
 No maturity/count/Formal change from intake.
+
+
+## H09 owner approval + canonical update — 2026-10-04
+
+Owner decision: **APPROVED**.
+
+State:
+`OWNER_APPROVAL_REQUIRED → CANONICAL_UPDATE_COMPLETE`.
+
+Executed:
+- D16-19 scope now explicitly owns model/calibrator fitting, probability-quality diagnostics, model/calibration drift and immutable CalibrationReceipt production.
+- D16-25 scope now explicitly consumes calibrated probabilities/distributions and owns prior/Bayesian update, uncertainty, utility, risk-coverage and ABSTAIN.
+- D16-25 cannot fit a second calibrator or create a second probability authority.
+- both remain L2/40%;
+- names unchanged;
+- no module-count or aggregate-maturity change;
+- Formal Core unchanged.
+
+Canonical receipt is recorded separately.
