@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 const sha=(x)=>createHash("sha256").update(String(x)).digest("hex");
 const base="https://www.tpex.org.tw";
 const pageUrl=base+"/zh-tw/mainboard/listed/delisted.html";
+const newListedPageUrl=base+"/zh-tw/mainboard/applying/status/new-listed.html";
 const currentUrl=base+"/openapi/v1/mopsfin_t187ap03_O";
 const delistedApiBase=base+"/www/zh-tw/company/deListed";
 const delistedApiCandidates=[
@@ -62,12 +63,16 @@ const currentRaw=await fetchRaw(currentUrl);
 const delistedApiResults=[];
 for(const url of delistedApiCandidates)delistedApiResults.push(summarize(await fetchRaw(url)));
 const pageRaw=await fetchRaw(pageUrl);
+const newListedPageRaw=await fetchRaw(newListedPageUrl);
 const scriptUrls=[];
 for(const m of pageRaw.text.matchAll(/<script[^>]+src=["']([^"']+)["']/gi)){
   const u=new URL(m[1],pageUrl).href;
   if(u.startsWith(base)&&!scriptUrls.includes(u))scriptUrls.push(u);
 }
 
+const newListedPageHints=snippets(newListedPageRaw.text,[
+  "tables.init","action:","newlisted","新上櫃","api_pattern","pattern:",
+]);
 const pageHints=snippets(pageRaw.text,[
   "delisted","終止上櫃","ajax","api","response","tables.js","listed/",
 ]);
@@ -89,6 +94,8 @@ console.log(JSON.stringify({
   currentProfile:summarize(currentRaw),
   delistedApiResults,
   delistedPage:summarize(pageRaw),
+  newListedPage:summarize(newListedPageRaw),
+  newListedPageHints,
   pageHints,
   scriptUrlCount:scriptUrls.length,
   scripts,
