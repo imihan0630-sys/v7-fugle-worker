@@ -3376,7 +3376,7 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Overconfidence過度自信」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 Owner-approved 2026-10-03 governance role: OWNER_APPROVED / OBSERVATION / RESEARCH_ONLY / BEHAVIORAL_PROXY_IDENTIFIABILITY_REQUIRED. 角色分類只影響研究治理，不改變目前成熟度，也不授權 Formal Core 變更。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / PUBLIC_EXPLICIT_CONFIDENCE_CALIBRATION_SUBLANE / OBSERVATION_RESEARCH_ONLY / PSYCHOLOGICAL_TRAIT_NOT_IDENTIFIED / L4_PREREG_NEXT",
+          "status": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / PUBLIC_EXPLICIT_CONFIDENCE_CALIBRATION_SUBLANE / OBSERVATION_RESEARCH_ONLY / PSYCHOLOGICAL_TRAIT_NOT_IDENTIFIED / L4_PREREG_NEXT / L4_PREREG_FROZEN / PROSPECTIVE_AGGREGATE_EVIDENCE_PENDING",
           "next": "使用前瞻 PTT Stock [標的] 或等價公開貼文，只在明示多/空與明示 confidence/skill claim 存在時建立文章層級 calibration parent；分類包含明示機率/百分比、明示確定語言、自報勝率/能力宣稱、無明示信心。禁止從成交量、融資、報酬、發文頻率或目標價誤差反推 overconfidence。只做聚合校準，不建立個人心理分數。"
         },
         {
@@ -3481,7 +3481,7 @@
         }
       ],
       "status": "D20_L3_12_OF_13 / MATURITY_58_5 / ONLY_D20_13_REMAINS_L2 / SOCIAL_AND_CONFIDENCE_PIT_SUBLANES_VALIDATED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "先把 D20-03 的公開明示信心校準子線納入 2026-10-04 14:12 後的 L4 前瞻契約；今天已讀過的歷史/即時 PTT 文章只算 L3 source evidence。D20 現僅剩 D20-13 為 L2，下一有效交易日優先按已凍結的 09:15/12:00/15:20 時槽取得 TWSE 借券費率/揭示供需 live receipt；若至少一筆完整通過 source/timestamp/schema/fingerprint/UNKNOWN 檢查，再評估 D20-13 L3。",
+      "exactNextContinuationPoint": "D20 現為 12 個 L3、1 個 L2。D20-03 公開明示信心校準子線的 L4 規則已於 2026-10-04 14:12:14 台北時間凍結；只有之後新抓到的 qualifying forecast parent 才能算 prospective evidence，個別帳號不建立信心/心理/技能分數。D20-06/D20-11 同樣只接受 14:06:56 後的新聚合社群 parent。下一有效交易日唯一剩餘的 L2 主線是 D20-13：按既定 09:15/12:00/15:20 時槽取得 TWSE 借券費率/揭示供需 live receipt，完整通過後再評估 L3。",
       "lastResearchUpdate": "2026-10-04T14:12:14+08:00",
       "researchNote": "D20-03 advances L2→L3 only for a bounded public explicit-confidence calibration sublane. PTT Stock structured target posts expose explicit direction/target/stop and some posts contain explicit certainty or self-reported performance language, making point-in-time capture of expressed confidence feasible. The lane remains observation/research-only and does not identify a psychological trait, actual trading, or general investor overconfidence. Forecast error alone is not overconfidence; explicit confidence evidence is required. Derived evaluation is aggregate-only with no named-user psychology or influence profile. D20-13 remains the only L2 module pending a genuine live TWSE borrow-rate/displayed-supply receipt. Formal Core unchanged."
     },
