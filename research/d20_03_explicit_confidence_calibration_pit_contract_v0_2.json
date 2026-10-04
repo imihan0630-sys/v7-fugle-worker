@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "D20_03_EXPLICIT_CONFIDENCE_CALIBRATION_PIT_CONTRACT_V0_2",
+  "frozenAtAsiaTaipei": "2026-10-04T14:12:14+08:00",
+  "module": "D20-03",
+  "sourceReceipt": "research/d20_ptt_social_source_live_receipt_20261004_v0_1.json",
+  "status": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED / PUBLIC_EXPLICIT_CONFIDENCE_CALIBRATION_SUBLANE / OBSERVATION_RESEARCH_ONLY / PSYCHOLOGICAL_TRAIT_NOT_IDENTIFIED / OUTCOMES_CLOSED",
+  "sourceScope": "Prospectively captured PTT Stock [標的] posts or equivalent public posts with explicit directional forecast plus explicit confidence/performance language.",
+  "parentEligibility": [
+    "post captured under append-only PTT source contract",
+    "direction is explicit from structured post field/title or remains UNKNOWN",
+    "forecast horizon/target/stop is explicit where used; no inferred hidden horizon",
+    "confidence evidence must be explicit text, not inferred from turnover, returns, posting frequency or leverage"
+  ],
+  "confidenceClasses": [
+    "EXPLICIT_PROBABILITY_OR_PERCENT",
+    "EXPLICIT_CERTAINTY_LANGUAGE",
+    "EXPLICIT_SELF_REPORTED_HIT_RATE_OR_SKILL_CLAIM",
+    "NO_EXPLICIT_CONFIDENCE"
+  ],
+  "parentFields": [
+    "forecastReceiptId",
+    "capturedAt",
+    "articleId",
+    "symbol_or_market",
+    "direction_or_UNKNOWN",
+    "targetPrice_or_UNKNOWN",
+    "stopPrice_or_UNKNOWN",
+    "horizon_or_UNKNOWN",
+    "explicitConfidenceClass",
+    "explicitConfidenceTextSpanFingerprint",
+    "sourceSnapshotFingerprint",
+    "editState"
+  ],
+  "futureEvaluation": {
+    "primary": "confidence-performance alignment at article/aggregate level",
+    "secondary": [
+      "target/stop realization",
+      "forecast error conditional on frozen horizon"
+    ],
+    "guard": "No future outcome enters the parent. No post-outcome threshold tuning."
+  },
+  "privacyGuard": {
+    "rule": "No named-user overconfidence score, ranking or persistent psychology profile.",
+    "durableDerivedFields": [
+      "confidenceClassCounts",
+      "aggregateHitRateByConfidenceClass",
+      "aggregateForecastErrorByConfidenceClass",
+      "date/topic/regime buckets"
+    ],
+    "handles": "May be used transiently only for duplicate-post control; not persisted in derived behavioral outputs."
+  },
+  "falsification": [
+    "Public statements can be strategic, performative or sarcastic rather than faithful private belief.",
+    "Self-reported hit rate can be selective or unverifiable.",
+    "Forecast accuracy is not overconfidence unless paired with explicit confidence/uncertainty evidence.",
+    "Forum posters are selected and not representative of all Taiwan investors.",
+    "This lane does not prove actual trading behavior."
+  ],
+  "ownershipFirewall": {
+    "D20-10": "broad market sentiment",
+    "D20-11": "narrative diffusion",
+    "D20-03": "explicit-confidence calibration only",
+    "sharedPrimitiveRule": "Same PTT post may support controls, but no multiple independent selection votes."
+  },
+  "maturityDecision": "L3_TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
+  "l4Requirement": "Only posts first captured after a separate L4 preregistration extension may count as prospective evidence; require frozen confidence classes, horizon rules and aggregate-only evaluation.",
+  "formalOptimizationCandidate": "NONE",
+  "formalCore": "LOCKED"
+}
