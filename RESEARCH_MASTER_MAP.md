@@ -216,3 +216,12 @@ Formal Core remains LOCKED.
 - D10-04 advances L2 -> L3 for bounded Taiwan PIT/source feasibility only.
 - BR-062 records that D18 dependencies are executable, but D09-12 still lacks one genuine same-clock breadth + regime receipt; historical reconstruction and test fixtures are prohibited substitutes.
 - No L4 claim, no Production behavior and no Formal Core change.
+
+
+## 2026-10-04 COV-02 canonical scope completion
+
+- D05-06 canonical owner name: `Opening / Closing Auction & Auction Imbalance（開收盤集合競價與競價不平衡）`.
+- COV-02 terminal action: `EXTEND_EXISTING_SCOPE`.
+- L2 / 40% unchanged; no module-count or aggregate-maturity effect.
+- Missing historical pre-close auction imbalance remains UNKNOWN; no final-close backfill.
+- No Formal/System1/System2 behavior change.
