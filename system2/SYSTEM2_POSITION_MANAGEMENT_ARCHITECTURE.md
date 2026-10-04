@@ -1,11 +1,12 @@
 # System 2 Position & Exposure Management Architecture
 
-Updated: 2026-09-26 Asia/Taipei
-Status: OWNER-APPROVED ARCHITECTURE V0.1 / CORE FLOW APPROVED / THRESHOLDS NOT YET FROZEN
+Updated: 2026-10-04 Asia/Taipei
+Status: OWNER-APPROVED TARGET ARCHITECTURE V0.1 / VIRTUAL_POSITION_READY / ACTUAL_HOLDINGS_SOURCE_NOT_WIRED / THRESHOLDS NOT YET FROZEN
 
 ## Purpose
 
-System 2 must manage actual holdings and simulated positions symmetrically.
+The approved target architecture requires System 2 to manage verified actual holdings and simulated positions with symmetric decision semantics. Current implementation readiness is narrower: the virtual/simulated lane is implemented, while an authorized actual-holdings source and reconciliation path are not wired.
+
 
 The system must not be structurally biased toward:
 - REDUCE / HOLD only;
@@ -15,9 +16,47 @@ The system must not be structurally biased toward:
 
 A position can rationally be reduced when risk rises and later re-expanded at a higher price when the information state improves.
 
+## Capability/readiness boundary
+
+These states are canonical and must not be collapsed:
+
+| State | Current truth |
+|---|---|
+| `TARGET_ONLY` | Continuous owner actual-holdings monitoring is a target behavior, not a current operational claim. |
+| `DESIGN_APPROVED` | Actual-vs-desired exposure, capacity exclusion and symmetric reduce/re-add rules are owner-approved architecture. |
+| `VIRTUAL_POSITION_READY` | Simulated fills, virtual `s2_positions`, and `SIM_FILLED -> POSITION_MONITOR` lifecycle semantics are implemented/research-ready. |
+| `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED` | No authorized System 2 actual-holdings source/reconciliation adapter is physically verified. |
+| `ACTUAL_POSITION_MONITOR_VERIFIED` | `false`. This may become true only after source + reconciliation + provenance + persistence/readback evidence. |
+
+### Actual-holding label gate
+
+No System 2 runtime/API/UI/storage record may call a position an **actual holding** unless an owner-authorized integration preserves at minimum:
+
+- source identity and account scope;
+- position as-of / observation timestamp;
+- reconciled quantity;
+- cost basis only when actually sourced/reconciled;
+- confirmed fill provenance if fill history is used;
+- ownership provenance;
+- reconciliation status, conflicts and UNKNOWN semantics;
+- durable persistence/readback evidence.
+
+The following are explicitly insufficient to establish actual ownership:
+- signal price;
+- trigger price;
+- suggested/requested shares;
+- plan snapshot;
+- candidate state;
+- simulated fill;
+- virtual `s2_positions` row.
+
+System 1/V8 holdings must not be silently imported. Broker holdings or shared System 1 holdings integration is `OWNER_DECISION_REQUIRED` before implementation.
+
 ## Core principle: actual exposure vs desired exposure
 
-For every monitored holding, System 2 maintains two distinct concepts:
+This is a target/design rule for verified actual holdings and a research analogue for virtual positions. The word **actual** must be used only after the actual-holding label gate above passes.
+
+For every monitored holding with valid provenance, System 2 maintains two distinct concepts:
 
 1. **Actual exposure**
    - verified/current shares where available;
@@ -39,17 +78,17 @@ Examples:
 
 Exact position percentages are not frozen yet and require Shadow validation.
 
-## Actual holdings are always monitored
+## Target rule: verified actual holdings are always monitored
 
-Owner-approved rule:
+Owner-approved target rule:
 
-- The user's actual holdings belong to a dedicated POSITION_MONITOR layer.
-- Actual holdings do **not** consume the 12-symbol candidate/watch-pool capacity.
-- Actual holdings do **not** consume the per-strategy 3-symbol ACTIVE_ENTRY_MONITOR capacity.
-- A position remains monitored until actual ownership is reconciled to zero or the owner explicitly removes it from tracked holdings.
-- A stock may simultaneously exist in POSITION_MONITOR and one or more strategy research contexts.
+- Once the actual-holding label gate is satisfied, the user's verified actual holdings belong to a dedicated actual POSITION_MONITOR lane.
+- Verified actual holdings do **not** consume the 12-symbol candidate/watch-pool capacity.
+- Verified actual holdings do **not** consume the per-strategy 3-symbol ACTIVE_ENTRY_MONITOR capacity.
+- A verified actual position remains monitored until authorized holdings reconciliation reaches zero or the owner explicitly removes it from tracked holdings.
+- A stock may simultaneously exist in actual POSITION_MONITOR and one or more strategy research contexts.
 
-This prevents an existing holding from disappearing merely because it is no longer a new-entry candidate.
+**Current implementation note:** the repository's implemented `POSITION_MONITOR` lifecycle is currently entered from `SIM_FILLED` and backed by virtual `s2_positions`. That is `VIRTUAL_POSITION_READY`, not evidence that owner actual holdings are continuously monitored.
 
 ## Two-sided monitor on every holding
 
@@ -93,7 +132,7 @@ The monitor must never evaluate only the downside branch.
 
 ## Position state machine
 
-Recommended state graph:
+Recommended **target** state graph for an authorized actual-holdings lane:
 
 ```
 EXTERNAL_OR_INITIAL_HOLDING
@@ -130,6 +169,8 @@ HOLD_TARGET                    RISK_WARNING
                                      v
                                   RESTORED
 ```
+
+Current virtual runtime does not enter this graph from external ownership; it enters the shared POSITION_MONITOR concept through `SIM_FILLED -> POSITION_MONITOR`. An external/initial actual holding requires the future authorized source/reconciliation gate.
 
 Separate terminal risk path:
 
@@ -244,7 +285,7 @@ This is a portfolio constraint, not a statement that the stock thesis is invalid
 Every position-management action/opportunity must record:
 - symbol;
 - strategy/thesis memberships;
-- actualShares;
+- actualShares (must be null/UNKNOWN unless actual-holding provenance is authorized and reconciled; virtual positions use simulated quantity semantics);
 - desiredExposureState;
 - priorExposureState;
 - action type;
@@ -288,10 +329,10 @@ It may reuse Shared Knowledge from System 1 REDUCE/RE-ADD research, but it does 
 
 ## Owner approval
 
-Owner explicitly approved the full position-management architecture on 2026-09-26.
+Owner explicitly approved the full position-management **architecture/design** on 2026-09-26. That approval does not itself prove an operational actual-holdings feed or authorize importing System 1/V8 holdings.
 
 Approved concepts include:
-- actual holdings monitored outside candidate and active-entry caps;
+- target rule: verified actual holdings, once an authorized source/reconciliation path is wired, are monitored outside candidate and active-entry caps;
 - actual exposure vs desired exposure;
 - HOLD / REDUCE / EXIT and ADD / RE-ADD / RESTORE as symmetric first-class actions;
 - fresh-entry chase logic must not be reused blindly for re-add;
