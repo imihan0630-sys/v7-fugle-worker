@@ -1,0 +1,187 @@
+{
+  "schemaVersion": "D22_10_FUNDING_MIX_EVENT_REPLAY_V0_1",
+  "generatedAt": "2026-10-04T13:45:00+08:00",
+  "status": "RESEARCH_ONLY / MULTI_ISSUER_MULTI_EVENT_PIT_REPLAY / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "governance": {
+    "eventIdentityOwner": "D11",
+    "accountingLeverageOwner": "D07",
+    "maturityOwner": "D22-01",
+    "costOwner": "D22-04",
+    "fundingStructureOwner": "D22-10",
+    "laterEventsDoNotBackfillEarlierState": true,
+    "hybridInstrumentsRequireContractSpecificTreatment": true,
+    "unknownIsNotZero": true
+  },
+  "receipts": [
+    {
+      "issuer": "TSMC",
+      "twseSymbol": "2330",
+      "industry": "semiconductor",
+      "sourceKnownAt": "2023-04-25",
+      "sourceType": "official SEC 6-K monthly filing",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1046179/000162828023012636/tsm-monthend6kx20230425.htm",
+      "financingEvent": {
+        "instrument": "unsecured domestic straight bonds",
+        "issuance": "112-1",
+        "tranches": [
+          {
+            "tenorYears": 5,
+            "amountTWDmillion": 12200,
+            "couponPct": 1.54
+          },
+          {
+            "tenorYears": 7,
+            "amountTWDmillion": 2300,
+            "couponPct": 1.6
+          },
+          {
+            "tenorYears": 10,
+            "amountTWDmillion": 4800,
+            "couponPct": 1.78
+          }
+        ],
+        "repayment": "bullet",
+        "interestPayment": "annual",
+        "useOfProceeds": "capacity expansion and/or pollution-prevention related expenditures"
+      },
+      "transformRole": "Funding-source/tenor/cost/use-of-proceeds state; event identity itself belongs to D11."
+    },
+    {
+      "issuer": "TSMC",
+      "twseSymbol": "2330",
+      "industry": "semiconductor",
+      "sourceKnownAt": "2023-09-25",
+      "sourceType": "official SEC 6-K monthly filing",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1046179/000104617923000010/tsm-monthend6kx20230925.htm",
+      "financingEvent": {
+        "instrument": "unsecured domestic straight bonds",
+        "issuance": "112-4",
+        "tranches": [
+          {
+            "tenorYears": 5,
+            "amountTWDmillion": 7300,
+            "couponPct": 1.6
+          },
+          {
+            "tenorYears": 7,
+            "amountTWDmillion": 700,
+            "couponPct": 1.65
+          },
+          {
+            "tenorYears": 10,
+            "amountTWDmillion": 7900,
+            "couponPct": 1.76
+          }
+        ],
+        "repayment": "bullet",
+        "interestPayment": "annual"
+      },
+      "transformRole": "Same-issuer multi-date funding-mix replay."
+    },
+    {
+      "issuer": "UMC",
+      "twseSymbol": "2303",
+      "industry": "semiconductor",
+      "sourceKnownAt": "2023-09-06",
+      "sourceType": "official SEC 6-K corporate-bond issuance announcement",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1033767/000095017023049514/umc-ex99.htm",
+      "financingEvent": {
+        "instrument": "unsecured straight corporate bond",
+        "amountTWDmillion": 10000,
+        "tenorYears": 5,
+        "couponPct": 1.62,
+        "secured": false,
+        "issuePrice": "PAR",
+        "put": "NONE",
+        "call": "NONE",
+        "useOfProceeds": "green building"
+      },
+      "transformRole": "Issuer funding-source/seniority/tenor/cost/use-of-proceeds state."
+    },
+    {
+      "issuer": "Chunghwa Telecom",
+      "twseSymbol": "2412",
+      "industry": "telecom",
+      "sourceKnownAt": "2022-01-25",
+      "sourceType": "official SEC 6-K board approval",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000156459022004849/cht-6k_20220214.htm",
+      "financingEvent": {
+        "instrument": "unsecured domestic corporate bonds",
+        "approvedAmountCapTWDmillion": 10000,
+        "tenorMaxYears": 10,
+        "couponType": "FIXED_TO_BE_PRICED",
+        "secured": false,
+        "plannedUses": [
+          "environmental/social projects",
+          "equipment construction/expansion/replacement",
+          "M&A",
+          "investment in other enterprises",
+          "working capital",
+          "debt repayment",
+          "business expansion"
+        ]
+      },
+      "transformRole": "Approval state; later pricing is a separate PIT event."
+    },
+    {
+      "issuer": "Chunghwa Telecom",
+      "twseSymbol": "2412",
+      "industry": "telecom",
+      "eventDate": "2022-03-08",
+      "sourceKnownAt": "2022-03-10",
+      "sourceType": "official SEC 6-K priced issuance",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000156459022009447/cht-6k_20220310.htm",
+      "financingEvent": {
+        "instrument": "unsecured sustainability bond",
+        "amountTWDmillion": 3500,
+        "tenorYears": 5,
+        "couponPct": 0.69,
+        "issuePrice": "PAR",
+        "secured": false,
+        "useOfProceeds": "environmental protection or social development projects"
+      },
+      "transformRole": "Approval-to-pricing state transition."
+    },
+    {
+      "issuer": "Chunghwa Telecom",
+      "twseSymbol": "2412",
+      "industry": "telecom",
+      "eventDate": "2025-07-24",
+      "sourceKnownAt": "2025-07-28",
+      "sourceType": "official SEC 6-K priced issuance",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1132924/000095017025099330/cht_6k_20250728.htm",
+      "financingEvent": {
+        "instrument": "unsecured sustainability bond",
+        "amountTWDmillion": 3500,
+        "tenorYears": 5,
+        "couponPct": 1.73,
+        "issuePrice": "PAR",
+        "secured": false,
+        "useOfProceeds": "environmental protection or social development projects"
+      },
+      "transformRole": "Same-issuer multi-date financing-cost/funding-choice replay."
+    }
+  ],
+  "crossIssuerFindings": [
+    "Funding events are directly replayable with amount, tenor, coupon, security and use-of-proceeds semantics.",
+    "Board approval and final pricing are separate states; later pricing must not be backfilled into the approval date.",
+    "The same nominal instrument type can carry very different coupons across years, so funding mix must retain time and market-state context.",
+    "Use of proceeds matters for interpretation: growth/capex/green investment and debt repayment are not equivalent financing motives."
+  ],
+  "falsificationFindings": [
+    "Bond issuance is not automatically negative leverage expansion; proceeds can fund productive capex or refinance other debt.",
+    "Equity issuance would not automatically be positive de-risking; motive, dilution and distress context matter.",
+    "D22-10 does not get a second vote for an event already owned by D11; it only transforms event terms into funding-structure state."
+  ],
+  "maturityDecision": {
+    "proposedLevel": "L3",
+    "maturityPct": 60,
+    "rationale": "First-known financing-event terms are replayable across multiple Taiwan non-financial issuers, industries and dates, with approval/pricing lineage and use-of-proceeds semantics. This validates PIT data feasibility only."
+  },
+  "next": [
+    "Add bank/private-debt and convertible/hybrid receipts where first-known terms are public.",
+    "Build statement-state funding vectors between financing events without overwriting event lineage.",
+    "Pre-register comparisons controlling D07 leverage, D11 event identity, D22-01 maturity and D22-04 cost before L4.",
+    "Keep financial institutions in a separate lane."
+  ]
+}
