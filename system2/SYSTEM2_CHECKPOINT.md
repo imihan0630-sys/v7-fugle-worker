@@ -1345,3 +1345,45 @@ System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOC
 - This falsifies a naive one-price-per-market-session assumption. Any future factor replay must distinguish valid price observations, verified non-trading sessions, zero-trade rows and unresolved active/no-OHLC states.
 - Forward fill / previous-close substitution is not authorized. Shared symbol-session and continuity semantics remain the authority; D19 must not fork a local adjustment engine.
 - Full L3 remains blocked by TPEx replayable history/universe, complete continuity certification, PIT industry vintage, D03/D09 compatible redundancy inputs and D14-compatible cost evidence.
+
+## 2026-10-04 S2-07 MOPSOV high-row pagination/truncation stress — PHYSICALLY VERIFIED
+
+PR #455 merged as `3772f6332465a5912d1ca32314c322b455685d18`.
+
+Physical checks:
+- MOPSOV High Row Pagination Stress Readonly `37169619727`: PASS.
+- System2 Research CI `37169619744`: PASS.
+- V8 Regression `37169619690`: PASS.
+
+Frozen 11-company discovery selected the three highest-row controls:
+- 2891: 391 prefix rows;
+- 3711: 383 prefix rows;
+- 2881: 300 prefix rows.
+
+For all three:
+- full-query prefix == Jan-Sep month union;
+- onlyAll=0;
+- onlyMonthShard=0;
+- duplicateMonthKey=0;
+- exactKeysetReconciliation=true.
+
+No pagination hints were observed; max frozen row count was 391 and the largest single selected month contained 81 rows.
+
+This completes the currently planned MOPSOV query-shape / empty-month / high-row transport guards for the frozen 2026 sample.
+
+### Exact continuation
+1. validate MOPS source-reported date/time/sequence semantics as historical version knownAt candidates;
+2. add exchange-side official-document cancellation/revocation evidence where MOPS alone is insufficient;
+3. assemble the supplemental revision-history completeness receipt only after those gates are satisfied;
+4. integrate the concurrently improved TWSE suspension/resumption evidence into shared session completeness, then complete TPEx/symbol-session coverage;
+5. bind expected symbol sessions -> RAW A1 lineage -> technical continuity;
+6. only after history + continuity READY address `ASSESSOR_POLICY_NOT_FROZEN`, then Strategy -> Ranking -> Capacity -> real `s2_capacity_runs`.
+
+Still authoritative:
+`knownAtVersionClockCertified=false`,
+`revisionCoverageComplete=false`,
+`noEventMayBeClaimed=false`,
+`technicalContinuityCertified=false`,
+all trading authority false.
+
+System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
