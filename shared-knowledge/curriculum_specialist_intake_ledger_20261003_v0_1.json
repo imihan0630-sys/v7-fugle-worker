@@ -1,6 +1,6 @@
 {
   "schemaVersion": "CURRICULUM_SPECIALIST_INTAKE_LEDGER_V0_1",
-  "updatedAt": "2026-10-04T14:45:00+08:00",
+  "updatedAt": "2026-10-04T16:41:00+08:00",
   "status": "ACTIVE_INTAKE_LEDGER",
   "formalCoreImpact": "NONE",
   "clusters": [
@@ -160,17 +160,25 @@
     },
     {
       "id": "H15",
-      "status": "PENDING",
-      "receivedPackets": [],
+      "status": "CLOSED_NO_STRUCTURAL_CHANGE",
+      "receivedPackets": [
+        "research/d11_10_11_event_gap_exit_pit_audit_20261004_v0_1.json",
+        "EVENT_RISK_CHECKPOINT.md",
+        "research/D04_D05_PIT_FEASIBILITY_PROMOTION_AUDIT_20261004_V0_1.md"
+      ],
       "pendingRooms": [],
-      "controlDecision": "NOT_EVALUATED"
+      "controlDecision": "KEEP_SEPARATE_EVENT_RISK_TO_VOLATILITY_TO_POST_EVENT_PATH"
     },
     {
       "id": "H16",
-      "status": "PENDING",
-      "receivedPackets": [],
+      "status": "CLOSED_NO_STRUCTURAL_CHANGE",
+      "receivedPackets": [
+        "research/d11_10_11_event_gap_exit_pit_audit_20261004_v0_1.json",
+        "research/D04_D05_PIT_FEASIBILITY_PROMOTION_AUDIT_20261004_V0_1.md",
+        "KLINE_PATTERN_CHECKPOINT.md"
+      ],
       "pendingRooms": [],
-      "controlDecision": "NOT_EVALUATED"
+      "controlDecision": "KEEP_SEPARATE_FOUR_LAYER_PRICE_LIMIT_CHAIN"
     },
     {
       "id": "H17",
@@ -195,15 +203,16 @@
     },
     {
       "id": "H20",
-      "status": "PARTIAL_EVIDENCE_RECEIVED",
+      "status": "CLOSED_NO_STRUCTURAL_CHANGE",
       "receivedPackets": [
-        "research/D02_H20_BREAKOUT_SPECIALIST_RETURN_V0_1.md"
+        "research/D02_H20_BREAKOUT_SPECIALIST_RETURN_V0_1.md",
+        "KLINE_PATTERN_CHECKPOINT.md",
+        "research/PATTERN_DL007_IMPLEMENTATION_AND_COUNTEREVIDENCE_V0_1.md",
+        "research/D04_D05_PIT_FEASIBILITY_PROMOTION_AUDIT_20261004_V0_1.md",
+        "VOLATILITY_REGIME_RESEARCH.md"
       ],
-      "pendingRooms": [
-        "01｜K線與型態研究室",
-        "04｜波動與市場微結構研究室"
-      ],
-      "controlDecision": "EVIDENCE_INSUFFICIENT_PENDING_COUNTERPARTS"
+      "pendingRooms": [],
+      "controlDecision": "KEEP_SEPARATE_MULTI_EVIDENCE_BREAKOUT_FAMILY"
     }
   ],
   "h05": {
@@ -268,7 +277,17 @@
       "CROSS_ROOM_SHARED_RECEIPT_COMPATIBILITY",
       "FINAL_DEPENDENCY_AUDIT"
     ],
-    "currentControlDecision": "EVIDENCE_INSUFFICIENT_PENDING_COUNTERPARTS"
+    "currentControlDecision": "EVIDENCE_INSUFFICIENT_PENDING_COUNTERPARTS",
+    "audit": "shared-knowledge/CURRICULUM_H20_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md",
+    "machineAudit": "shared-knowledge/curriculum_h20_dependency_anti_orphan_audit_20261004_v0_1.json",
+    "canonicalReceipt": "shared-knowledge/CURRICULUM_H20_CANONICAL_CLOSURE_RECEIPT_20261004_V0_1.md",
+    "canonicalReceiptJson": "shared-knowledge/curriculum_h20_canonical_closure_receipt_20261004_v0_1.json",
+    "terminalClassification": "KEEP_SEPARATE",
+    "governanceDisposition": "MULTI_EVIDENCE_BREAKOUT_FAMILY",
+    "state": "CLOSED_NO_STRUCTURAL_CHANGE",
+    "maturityChange": "NONE",
+    "structuralChange": "NONE",
+    "formalOptimizationCandidate": "NONE"
   },
   "otherReturns": [
     {
@@ -499,6 +518,30 @@
     "governanceDisposition": "ACCOUNTING_PRIMITIVE_VS_CREDIT_FUNDING_TRANSFORM",
     "state": "CLOSED_NO_STRUCTURAL_CHANGE",
     "maturityChange": "NONE_D07_06_L2_40_D22_03_L3_60",
+    "structuralChange": "NONE",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "h15": {
+    "audit": "shared-knowledge/CURRICULUM_H15_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md",
+    "machineAudit": "shared-knowledge/curriculum_h15_dependency_anti_orphan_audit_20261004_v0_1.json",
+    "canonicalReceipt": "shared-knowledge/CURRICULUM_H15_CANONICAL_CLOSURE_RECEIPT_20261004_V0_1.md",
+    "canonicalReceiptJson": "shared-knowledge/curriculum_h15_canonical_closure_receipt_20261004_v0_1.json",
+    "terminalClassification": "KEEP_SEPARATE",
+    "governanceDisposition": "EVENT_RISK_TO_VOLATILITY_TO_POST_EVENT_PATH",
+    "state": "CLOSED_NO_STRUCTURAL_CHANGE",
+    "maturityChange": "NONE",
+    "structuralChange": "NONE",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "h16": {
+    "audit": "shared-knowledge/CURRICULUM_H16_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md",
+    "machineAudit": "shared-knowledge/curriculum_h16_dependency_anti_orphan_audit_20261004_v0_1.json",
+    "canonicalReceipt": "shared-knowledge/CURRICULUM_H16_CANONICAL_CLOSURE_RECEIPT_20261004_V0_1.md",
+    "canonicalReceiptJson": "shared-knowledge/curriculum_h16_canonical_closure_receipt_20261004_v0_1.json",
+    "terminalClassification": "KEEP_SEPARATE",
+    "governanceDisposition": "FOUR_LAYER_PRICE_LIMIT_CHAIN",
+    "state": "CLOSED_NO_STRUCTURAL_CHANGE",
+    "maturityChange": "NONE",
     "structuralChange": "NONE",
     "formalOptimizationCandidate": "NONE"
   }
