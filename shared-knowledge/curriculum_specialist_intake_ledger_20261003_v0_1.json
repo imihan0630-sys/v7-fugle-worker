@@ -88,14 +88,14 @@
     },
     {
       "id": "H09",
-      "status": "OWNER_APPROVAL_REQUIRED",
+      "status": "CANONICAL_UPDATE_COMPLETE",
       "receivedPackets": [
         "research/D16_16_19_MODEL_VALIDATION_CLUSTER_20261004_V0_1.md",
         "research/D16_D18_VALIDATION_CHECKPOINT.md",
         "research/D16_25_D15_19_MERGE_DECISION_INPUT_V0_1.md"
       ],
       "pendingRooms": [],
-      "controlDecision": "KEEP_SEPARATE_SCOPE_DEDUP_ONLY_OWNER_APPROVAL_REQUIRED"
+      "controlDecision": "KEEP_SEPARATE_SCOPE_DEDUP_ONLY_CANONICAL"
     },
     {
       "id": "H10",
@@ -378,15 +378,23 @@
     "machineAudit": "shared-knowledge/curriculum_h09_dependency_anti_orphan_audit_20261004_v0_1.json",
     "terminalClassification": "KEEP_SEPARATE",
     "governanceDisposition": "SCOPE_DEDUP_ONLY",
-    "state": "OWNER_APPROVAL_REQUIRED",
+    "state": "CANONICAL_UPDATE_COMPLETE",
     "proposedOwnership": {
       "D16-19": "MODEL_ESTIMATION_CALIBRATION_IMPLEMENTATION_AND_DIAGNOSTICS_PRODUCER",
       "D16-25": "CALIBRATED_BELIEF_DECISION_POLICY_UNCERTAINTY_UTILITY_ABSTAIN_CONSUMER"
     },
-    "maturityChange": "NONE",
+    "maturityChange": "NONE_D16_19_D16_25_REMAIN_L2_40",
     "renameRequired": false,
     "moduleCountChange": 0,
-    "formalOptimizationCandidate": "NONE"
+    "formalOptimizationCandidate": "NONE",
+    "canonicalOwnership": {
+      "D16-19": "MODEL_ESTIMATION_CALIBRATION_IMPLEMENTATION_AND_DIAGNOSTICS_PRODUCER",
+      "D16-25": "CALIBRATED_BELIEF_DECISION_POLICY_UNCERTAINTY_UTILITY_ABSTAIN_CONSUMER"
+    },
+    "sharedInterface": "CalibrationReceipt -> PredictiveDecisionReceipt",
+    "ownerApproval": "APPROVED_IN_00_CHAT_2026-10-04",
+    "canonicalReceipt": "shared-knowledge/CURRICULUM_H09_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md",
+    "canonicalReceiptJson": "shared-knowledge/curriculum_h09_canonical_update_receipt_20261004_v0_1.json"
   },
   "h07": {
     "sourceRoom": "03｜技術指標與趨勢動能研究室",
