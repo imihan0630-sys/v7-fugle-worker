@@ -426,3 +426,30 @@ Exact next:
 2. continue detecting complete-but-unregistered H clusters;
 3. H12 waits only on the explicit remaining blockers above;
 4. H05, COV-12 and AOKD-05 remain candidates for next evidence reconciliation.
+
+
+## H05 / H06 / H07 / H13 closure sweep + H11 partial — 2026-10-04
+
+00-room latest-main reconciliation closed four hidden-overlap clusters without structural mutation:
+
+- H05 → KEEP_SEPARATE / statement anomaly vs governance-control event / shared restatement receipt.
+- H06 → KEEP_SEPARATE / bounded social-herding sublane / shared social receipt firewall.
+- H07 → KEEP_SEPARATE / event-conditioned overreaction parent vs reversal outcome / behavioral cause fail-closed.
+- H13 → KEEP_SEPARATE / accounting primitive vs credit-funding transform / single balance-sheet receipt.
+
+All four are:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+No module-count or Formal/runtime change from these closures. No maturity transfer occurred.
+
+Additional partial advance:
+- H11 → PARTIAL_EVIDENCE_RECEIVED; only Room09 same-parent D12-07 vs D12-16 residual comparison remains.
+- H12 → Room13 semantic packet accepted, but still blocked by Room10 D14-19 execution-lifecycle counterpart + first live TWSE rate/supply receipt.
+
+Exact next 00 continuation:
+1. do not reopen H05/H06/H07/H13 absent contradictory evidence;
+2. continue complete-but-unregistered scan;
+3. H11 waits for actual common-parent residual surface evidence;
+4. H12 waits on the two explicit blockers above;
+5. H17 is not terminal-ready because D07-18 remains L0 and D22-04 is still historical security-level replay blocked;
+6. COV-12 and AOKD-05 retain their existing gates.
