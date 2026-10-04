@@ -864,3 +864,53 @@ Validated official daily OHLC makes close and subsequent D1/D3/D5 states histori
 Frozen post-open states include continuation, partial fill, full fill, reversal, limit-constrained, suspension/resumption, corporate-action-blocked and UNKNOWN.
 
 No claim is made that any path state predicts returns. No universal gap-fill threshold is introduced. Price-limit-constrained sessions do not reveal latent unconstrained price paths. Formal Core unchanged; outcomes closed.
+
+## 2026-10-04 late-evening continuation — connected disclosure semantics + D17-04/D17-11 PIT feasibility
+
+New receipts:
+- `research/d17_material_disclosure_connected_source_audit_20261004_v0_1.json`
+- `research/d17_04_direct_exposure_pit_audit_20261004_v0_1.json`
+- `research/d17_11_sector_propagation_pit_audit_20261004_v0_1.json`
+
+Connected-source audit:
+the available Fugle material-disclosure content type `FCNT000004` physically returns item ID, symbol, second-level timestamp, title, original MOPS URL and structured description fields. A recent 2537 disclosure can be replayed exactly by `target_id`; an older 2537 correction disclosure is also independently replayable, showing that the correction exists as an additional item rather than silently replacing the prior item.
+
+However:
+- `timestamp_start` did not return raw rows in the tested bounded query, so incremental retrieval semantics remain unproven;
+- older and newer item IDs serialize differently in the connected response;
+- source/display timestamp is not authenticated API first-availability time;
+- the connected content inventory still exposes no canonical licensed general-news content class.
+
+Therefore D11-08, D17-01 and D17-02 remain L2. The finding narrows the blocker but does not clear it.
+
+### D17-04 — direct exposure chain
+
+Three divergent Taiwan official-disclosure witnesses now demonstrate the frozen chain:
+`EVENT -> ECONOMIC_PRIMITIVE -> FIRM_EXPOSURE -> FINANCIAL_TRANSMISSION -> EFFECTIVE_TIMING`.
+
+2537 construction fire:
+direct adverse physical exposure is known, but net financial effect remains unknown because insurance and issuer preliminary immateriality assessment do not independently prove realized loss.
+
+7827 HCB303 IND approval:
+regulatory development progress is direct and source-proven, but it is not product approval, revenue, validated safety or efficacy. Financial magnitude/sign remain unknown.
+
+6461 restricted employee shares:
+direct issuer exposure is known, while retention/incentive benefit and dilution/compensation cost coexist. Net direction is conflicted.
+
+This proves the data/state construction is Taiwan PIT-feasible without forcing event direction into a stock sign.
+
+Maturity decision: D17-04 L2 -> L3. Alpha and outcome claims remain closed.
+
+### D17-11 — event-specific sector propagation
+
+D09 remains owner of point-in-time industry classification, persistent sector relative strength/breadth and peer-universe state. D10 remains owner of causal supply-chain/economic edges. D17 owns only event-specific propagation from a frozen event anchor into a pre-frozen peer set.
+
+A bounded current-source witness confirms that 7827, 6461, 1795, 6472 and 4162 are all mapped to the biotechnology/medical industry in the same source family. This is not historical backfill permission; prospective studies must use D09's point-in-time classification vintage.
+
+The propagation state can be COMMON_DEMAND_CONTAGION, COMMON_COST_CONTAGION, SUPPLY_CHAIN_TRANSMISSION, COMPETITIVE_SHARE_SHIFT, SUBSTITUTION, REGULATORY_COMMON_SHOCK, ATTENTION_ONLY, NO_VERIFIED_PROPAGATION_MECHANISM or UNKNOWN.
+
+Same-industry membership does not imply same-sign effect. A leader return cannot become a peer fundamental score. Peer co-movement alone cannot prove the transmission edge.
+
+Maturity decision: D17-11 L2 -> L3 for Taiwan PIT/source feasibility only.
+
+D17-05 remains L2 because its graph authority still depends on D10-01, which is not yet L3. Formal Core unchanged; outcome joins closed.
