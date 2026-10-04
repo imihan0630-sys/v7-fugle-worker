@@ -1,6 +1,6 @@
 {
   "schemaVersion": "CURRICULUM_COVERAGE_EXECUTION_REGISTRY_V0_1",
-  "updatedAt": "2026-10-04T16:47:00+08:00",
+  "updatedAt": "2026-10-04T19:31:00+08:00",
   "status": "COV02_COV03_COV04_COV05_CANONICAL_UPDATE_COMPLETE / COV01_06_07_08_09_10_11_PARTIAL / COV12_PENDING",
   "formalCoreImpact": "NONE_LOCKED",
   "canonicalSnapshot": {
@@ -265,5 +265,61 @@
     ],
     "canonicalReceipt": "shared-knowledge/CURRICULUM_COV02_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md",
     "canonicalReceiptJson": "shared-knowledge/curriculum_cov02_canonical_update_receipt_20261004_v0_1.json"
+  },
+  "cov08": {
+    "state": "PARTIAL_EVIDENCE_RECEIVED",
+    "readiness": "SPECIALIST_RETURN_READY_PENDING_TERMINAL_RECOMMENDATION",
+    "candidate": "Dependence-aware Resampling / Block Bootstrap",
+    "likelyOwner": "D16-06",
+    "likelyDisposition": "EXTEND_EXISTING_SCOPE_OR_MERGE_INTO_EXISTING",
+    "acceptedEvidence": [
+      "research/D16_D18_PROMOTION_GATE_V0_1.md",
+      "research/D16_D18_VALIDATION_CHECKPOINT.md",
+      "research/stock_market_learning_tracker_v0_1.json"
+    ],
+    "closedQuestions": [
+      "IID inference failure under serial dependence",
+      "stationary/moving block bootstrap as dependence-aware candidates",
+      "block length/bandwidth must be documented and sensitivity-tested",
+      "resampling variants are validation methods, not independent votes",
+      "D16-06 is the natural module-level owner"
+    ],
+    "remaining": [
+      "freeze when cluster-robust/HAC is sufficient versus block bootstrap required",
+      "freeze minimum sample/effective-sample/block-length reporting",
+      "submit exactly one terminal recommendation",
+      "commit research/COV08_D16_SPECIALIST_RETURN_V0_1.md"
+    ],
+    "maturityChange": "NONE",
+    "formalCoreImpact": "NONE_LOCKED"
+  },
+  "cov09": {
+    "state": "PARTIAL_EVIDENCE_RECEIVED",
+    "readiness": "SPECIALIST_RETURN_READY_PENDING_TERMINAL_RECOMMENDATION",
+    "candidate": "Multi-factor Benchmark Models",
+    "likelyOwner": "D19-15_WITH_D19_01_D19_10_CONSUMERS",
+    "likelyDisposition": "EXTEND_EXISTING_SCOPE_OR_MERGE_INTO_EXISTING",
+    "acceptedEvidence": [
+      "ASSET_PRICING_FACTOR_RESEARCH.md",
+      "ASSET_PRICING_FACTOR_CHECKPOINT.md",
+      "research/stock_market_learning_tracker_v0_1.json"
+    ],
+    "closedQuestions": [
+      "benchmark-relative alpha and residual semantics defined",
+      "benchmark choice is model-relative",
+      "Fama-French/profitability/investment/q-style evidence covered",
+      "PIT universe/corporate-action/delisting/cost/multiple-testing controls defined",
+      "D19-15 already owns benchmark construction/methodology",
+      "D19-01 owns benchmark residual/alpha interpretation",
+      "D19-10 owns exposure/multicollinearity/spanning diagnostics"
+    ],
+    "remaining": [
+      "freeze D19-15 as benchmark-model construction owner versus D19-01/D19-10 consumers",
+      "state whether Taiwan-reconstructed benchmark portfolios are required for Taiwan inference",
+      "submit exactly one terminal recommendation",
+      "commit research/COV09_D19_SPECIALIST_RETURN_V0_1.md"
+    ],
+    "maturityChange": "NONE",
+    "formalCoreImpact": "NONE_LOCKED"
   }
 }
