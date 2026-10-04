@@ -1,6 +1,6 @@
 {
   "schemaVersion": "CURRICULUM_SPECIALIST_INTAKE_LEDGER_V0_1",
-  "updatedAt": "2026-10-04T16:41:00+08:00",
+  "updatedAt": "2026-10-04T19:31:00+08:00",
   "status": "ACTIVE_INTAKE_LEDGER",
   "formalCoreImpact": "NONE",
   "clusters": [
@@ -133,17 +133,14 @@
     },
     {
       "id": "H11",
-      "status": "PARTIAL_EVIDENCE_RECEIVED",
+      "status": "OWNER_APPROVAL_REQUIRED",
       "receivedPackets": [
-        "DERIVATIVES_VOLATILITY_RESEARCH.md",
+        "research/d12_h11_common_parent_residual_return_20261004_v0_1.json",
         "DERIVATIVES_VOLATILITY_CHECKPOINT.md",
-        "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json",
         "research/d12_surface_method_v0_1_spec.json"
       ],
-      "pendingRooms": [
-        "09｜衍生品與國際總經研究室 — common-parent residual comparison"
-      ],
-      "controlDecision": "EVIDENCE_INSUFFICIENT_PENDING_COMMON_PARENT_RESIDUAL_TEST"
+      "pendingRooms": [],
+      "controlDecision": "KEEP_SEPARATE_SCOPE_DEDUP_ONLY_OWNER_APPROVAL_REQUIRED"
     },
     {
       "id": "H12",
@@ -533,7 +530,7 @@
   },
   "h11": {
     "sourceRoom": "09｜衍生品與國際總經研究室",
-    "state": "PARTIAL_EVIDENCE_RECEIVED",
+    "state": "OWNER_APPROVAL_REQUIRED",
     "acceptedBoundary": {
       "D12-07": "SIMPLE_SKEW_TERM_STRUCTURE_SUMMARIES",
       "D12-16": "RESIDUAL_CURVATURE_SMILE_COMPLEX_SURFACE_AND_QUALITY"
@@ -547,7 +544,18 @@
     ],
     "currentControlDecision": "EVIDENCE_INSUFFICIENT_PENDING_COMMON_PARENT_RESIDUAL_TEST",
     "maturityChange": "NONE",
-    "formalOptimizationCandidate": "NONE"
+    "formalOptimizationCandidate": "NONE",
+    "specialistReturn": "research/d12_h11_common_parent_residual_return_20261004_v0_1.json",
+    "audit": "shared-knowledge/CURRICULUM_H11_DEPENDENCY_SCOPE_DEDUP_AUDIT_20261004_V0_1.md",
+    "machineAudit": "shared-knowledge/curriculum_h11_dependency_scope_dedup_audit_20261004_v0_1.json",
+    "terminalClassification": "KEEP_SEPARATE",
+    "governanceDisposition": "SCOPE_DEDUP_ONLY",
+    "proposedOwnership": {
+      "D12-07": "SIMPLE_SKEW_TERM_STRUCTURE_BASELINE_OWNER",
+      "D12-16": "RESIDUAL_CURVATURE_SURFACE_INTERACTION_AND_QUALITY_OWNER"
+    },
+    "renameRequired": false,
+    "moduleCountChange": 0
   },
   "h13": {
     "sourceRooms": [
