@@ -1,0 +1,55 @@
+name: System2 MOPS TLS Diagnostic Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-mops-tls-diagnostic-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-mops-tls-diagnostic-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Diagnose official MOPS TLS certificate without application-data fallback
+        shell: bash
+        run: |
+          set -u
+          HOST="mops.twse.com.tw"
+          PORT="443"
+
+          echo "host=${HOST}"
+          echo "runner_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+          set +e
+          timeout 20 openssl s_client             -connect "${HOST}:${PORT}"             -servername "${HOST}"             -verify_return_error             -showcerts             </dev/null >/tmp/mops_tls_verify.txt 2>&1
+          VERIFY_RC=$?
+          set -e
+
+          echo "verify_command_exit=${VERIFY_RC}"
+          echo "----- verify transcript (bounded) -----"
+          tail -n 80 /tmp/mops_tls_verify.txt
+
+          echo "----- leaf certificate metadata -----"
+          set +e
+          timeout 20 openssl s_client             -connect "${HOST}:${PORT}"             -servername "${HOST}"             -showcerts             </dev/null 2>/tmp/mops_tls_leaf_err.txt             | openssl x509 -noout                 -subject -issuer -serial -dates                 -fingerprint -sha256
+          CERT_RC=${PIPESTATUS[1]}
+          set -e
+          echo "certificate_parse_exit=${CERT_RC}"
+
+          echo "----- leaf diagnostic stderr (bounded) -----"
+          tail -n 40 /tmp/mops_tls_leaf_err.txt || true
+
+          # Diagnostic workflow never treats certificate failure as source-data evidence.
+          # It succeeds so the transcript remains inspectable.
+          echo "diagnostic_only=true"
+          echo "application_data_accepted=false"
+          echo "tls_verification_bypassed=false"
