@@ -1449,3 +1449,32 @@ COV-02 is structurally closed.
 - One auction episode uses one D05-06 parent primitive. D05-14 integrity, D14 execution, D11/D17 event clocks and D02 EOD volume are consumers/context, not independent duplicate votes.
 - System1/System2 Formal behavior: unchanged.
 - Formal Core: LOCKED.
+
+
+## H14 canonical no-structural-change closure — 2026-10-04
+
+H14 (D06-11 vs D11-14) is closed as:
+`KEEP_SEPARATE / PRODUCER_CONSUMER_EVENT_FLOW_BOUNDARY / SINGLE_EVENT_RECEIPT`.
+
+Canonical boundary:
+- D11-14 owns index-adjustment event identity, announcement/effective lifecycle and event revision/version semantics.
+- D06-11 owns realized passive/index fund flow and rebalancing stock/flow.
+- D06-16 owns ETF creation/redemption/AP/PCF/tracking mechanics.
+
+Anti-double-count:
+- one D11-14 eventReceiptId;
+- D06-11 flow may be incremental only when measured beyond event expectation;
+- event-imputed flow is not an independent vote;
+- missing realized flow remains UNKNOWN;
+- downstream price/volume/auction/execution transforms do not clone the parent event.
+
+Maturity unchanged:
+- D06-11 L2/40%;
+- D11-14 L3/60%.
+
+No merge, retirement, rename, module-count or Formal Core change.
+
+Audit:
+`shared-knowledge/CURRICULUM_H14_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+H06 is separately PARTIAL_EVIDENCE_RECEIVED from Room05; Room13 independent behavioral counterpart remains required.
