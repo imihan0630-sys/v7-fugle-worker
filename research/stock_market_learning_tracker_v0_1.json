@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T08:52:19+08:00",
+  "updatedAt": "2026-10-04T09:18:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -274,10 +274,10 @@
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
       ],
       "maturityPct": 56.7,
-      "status": "D03_56_7_PERCENT / TI005_TI006_PREREGISTERED / D16_METHOD_HANDOFF_FROZEN / OUTCOME_CLOSED / RAW_RECEIPT_GATE_2_OF_3",
+      "status": "D03_56_7_PERCENT / MOPSOV_REVISION_CANCELLATION_5_OF_5_PHYSICAL_PASS / BOUNDED_CONTINUITY_AND_IMMUTABLE_PARENT_RUNTIME_BLOCKED / TI005_TI006_PREREGISTERED_OUTCOME_CLOSED / RAW_RECEIPT_GATE_2_OF_3",
       "lastResearchUpdate": "2026-10-04",
-      "researchNote": "TI-534~550: H07 ownership reconciliation promotes D03-05 Pullback/Reversal L2/40 to L3/60 for the observable price episode only; causal origin remains optional cross-lane moderator/UNKNOWN and generic reversal factor remains rejected. D03 aggregate=56.7%. TI-005 KD-vs-RSI and TI-006 MACD-vs-direct-trend are now outcome-closed preregistered with frozen model ladders, D5 primary return/MFE/MAE, D10/D20 secondary family, exact common support, dependence-aware D16 handoff, purged holdout, multiple-testing and rejection firewalls. Critical gate correction: the D03 raw source-version 3/3 gate is necessary but not sufficient; System2 2026-10-02 diagnostic evidence is not receipt-equivalent and cannot fill the missing third D03 receipt. Full immutable parent, TECHNICAL_CONTINUITY, symbol-session/limit, state/replay and attempt-accounting gates must pass before the true prospective Technical Indicator observer clock and outcomes. D03-09/10 remain L2; Formal Core locked. TI-551~554 freeze a D03-to-D16 method handoff before outcomes: D03 owns feature/estimand/multiple-testing identity; D16 owns dependence-aware finite-sample inference, purging/holdout and must return a machine-readable METHOD_READY/BLOCKED receipt. No maturity gain is assigned for this handoff.",
-      "exactNextContinuationPoint": "Next genuine Taiwan completed session: capture third receipt-equivalent D03 raw source-version session + repeat. 3/3 does not open outcomes automatically. Re-audit immutable parent, TECHNICAL_CONTINUITY, symbol-session/limit, state replay and attempt completeness; start true prospective observer only when T1-T3 are physical. Accumulate T4/T6 floors and require the frozen D03->D16 method receipt before T5. Execute TI-005 first, then TI-006. ADX/Bollinger remain continuity-gated; Formal Core locked.",
+      "researchNote": "TI-555~563 materially narrow the D03-09/D03-10 shared TECHNICAL_CONTINUITY blocker without maturity inflation. The modern mops.twse.com.tw gateway physically fails standard TLS on 2026-10-04 due an expired TWSE leaf certificate, so transport failure is separated from source truth and insecure TLS bypass is prohibited. Direct official mopsov.twse.com.tw historical access has valid TLS and physically returned HTTP 200. Read-only run 37167344795 passes 5/5 frozen controls across dividend, capital-reduction schedule, capital-reduction decision and cash-capital-increase families, including explicit cancellation/revocation: MULTI_FAMILY_CORRECTION_AND_CANCELLATION_CAPABILITY_OBSERVED. This proves cross-family correction/cancellation representational capability, not bounded completeness: boundedIntervalCoverageComplete/actionFamilyCoverageComplete/cancellationHistoryComplete/knownAtVersionClockCertified/revisionCoverageComplete/technicalContinuityCertified remain false. Latest main also records owner-approved Shadow Cohort Membership Class-B implementation, but current production immutable parent/runtime/D1 schema remain NOT_IMPLEMENTED. Therefore D03-10 Bollinger and D03-09 ADX remain L2/40, D03 remains 56.7%, outcomes closed, Formal Core locked.",
+      "exactNextContinuationPoint": "Two independent upstream gates now define the next honest maturity jump. SOURCE: freeze and physically validate bounded MOPSOV query completeness, pagination/truncation, version-clock semantics and cross-source reconciliation into a certified TECHNICAL_CONTINUITY receipt. PARENT: consume the owner-approved Class-B immutable Shadow parent only after Codex implementation is merged and physical generation/readback exists; approval alone is insufficient. When both exist, re-review D03-10 Bollinger first using exact 20 eligible-session continuity-corrected closes + parent keyset/attempt accounting; L3 would move D03 56.7->58.3. D03-09 ADX follows only with canonical Wilder recursive replay/trusted state certification; L3 would then move D03 to 60.0. Raw source-version gate remains independently 2/3 and TI-005/TI-006 outcomes remain closed.",
       "modules": [
         {
           "id": "D03-01",
@@ -356,8 +356,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「ADX平均趨向指標」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "FORMULA_MECHANICS_FROZEN / R1_SOURCE_BLOCKED / CANONICAL_REPLAY_REQUIRED / OUTCOME_UNKNOWN",
-          "next": "Wait for shared TECHNICAL_CONTINUITY and immutable parent observer receipts; then prove canonical H/L/C replay or trusted prior-state lineage with formulaVersion/stateLineageId/replay certification before L3 review. Deeper history alone does not promote ADX."
+          "status": "FORMULA_MECHANICS_FROZEN / MOPSOV_REVISION_CAPABILITY_PHYSICAL_PASS / BOUNDED_CONTINUITY_PARENT_RUNTIME_BLOCKED / CANONICAL_RECURSIVE_REPLAY_REQUIRED / OUTCOME_UNKNOWN",
+          "next": "Wait for physical immutable parent generation/readback plus bounded certified TECHNICAL_CONTINUITY. Then prove canonical Wilder H/L/C replay or replay-certified trusted prior state with exact source/state hashes and complete parent attempts. MOPSOV 5/5 capability does not certify ADX recursive state."
         },
         {
           "id": "D03-10",
@@ -366,8 +366,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Bollinger Bands布林通道」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "FORMULA_MECHANICS_FROZEN / FINITE_WINDOW / R1_SOURCE_BLOCKED / OUTCOME_UNKNOWN",
-          "next": "Once shared TECHNICAL_CONTINUITY + immutable parent capture is physically available, validate exact 20 eligible-session continuity window, POPULATION std formulaVersion, price-limit/special-session provenance and replay/prefix exactness. Bollinger may be re-reviewed for L3 before ADX because it has no recursive seed state."
+          "status": "FORMULA_MECHANICS_FROZEN / MOPSOV_REVISION_CAPABILITY_PHYSICAL_PASS / FINITE_WINDOW / BOUNDED_CONTINUITY_PARENT_RUNTIME_BLOCKED / OUTCOME_UNKNOWN",
+          "next": "First re-review target after shared gates. Require physical immutable parent generation/readback, certified bounded TECHNICAL_CONTINUITY, exact 20 eligible-session closes, population-std formulaVersion, price-limit/special-session provenance, replay/prefix exactness and complete parent attempts. MOPSOV 5/5 capability alone is insufficient."
         },
         {
           "id": "D03-12",
