@@ -579,3 +579,48 @@ Exact remaining delta:
 8. commit `research/COV07_D12_SPECIALIST_RETURN_V0_1.md`.
 
 No maturity or Formal change is authorized by this routing.
+
+
+## 00 routed COV-07 formal return-contract repair — 2026-10-05
+
+00｜研究總控室 validated the newly committed COV-07 specialist artifact against the executable Coverage return contract.
+
+Substantive research status:
+`COMPLETE_FOR_CURRENT_COV07_DELTA`.
+
+Do **not** redo the TX contract-level replay, source discovery, curve construction, basis/OI residual comparison or outcome research.
+
+The only remaining COV-07 task is format-only governance repair of:
+`research/COV07_D12_SPECIALIST_RETURN_V0_1.md`.
+
+The current artifact is blocked from `RETURN_CONTRACT_COMPLETE` because it lacks all seven required header labels:
+- Candidate ID
+- Domain
+- Specialist room
+- Return artifact path
+- Evidence cutoff
+- Current candidate class
+- Proposed terminal recommendation
+
+It also lacks these canonical section headings required by `research/curriculum_coverage_return_validator_v0_1.mjs`:
+- Existing-module Overlap Matrix
+- Why Current Scope Is Insufficient
+- Taiwan Data Feasibility
+- PIT / Replay Implication
+- Decision Role
+- Proposed Owner
+- Maturity Starting Point
+
+Required action:
+1. Rewrite the same evidence into `shared-knowledge/CURRICULUM_COVERAGE_SPECIALIST_RETURN_INTAKE_TEMPLATE_20261003_V0_1.md` structure.
+2. Preserve all existing source hashes, PIT/roll guards, anti-double-count semantics and UNKNOWN states.
+3. Supply specialist-owned evidence cutoff, decision role, proposed owner and maturity starting point explicitly rather than relying on 00 inference.
+4. Retain `ADD_MODULE` only if it remains the Room09 terminal specialist recommendation after the canonical fields are completed.
+5. Run the Coverage validator/intake preflight and commit the compliant return.
+6. Return to 00 for formal Intake; do not mutate tracker/module count/maturity/Router/Shared Master/Formal.
+
+00 validation receipt:
+- `shared-knowledge/CURRICULUM_COVERAGE_COV07_RETURN_CONTRACT_VALIDATION_20261005_V0_1.md`
+- `shared-knowledge/curriculum_coverage_cov07_return_contract_validation_20261005_v0_1.json`
+
+COV-07 remains PARTIAL until that format repair is committed.
