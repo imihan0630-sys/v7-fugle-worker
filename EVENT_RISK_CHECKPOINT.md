@@ -107,3 +107,17 @@ Build immutable prospective/historical source-version receipts for the six new m
 
 Exact next:
 Validate ex-ante expectation archives for independent Taiwan policy decisions and prospectively preserve raw draft/final/effective versions with capturedAt; continue D17-01/02/09 source-version coverage.
+
+## Room 08 continuation — D17-14 ex-ante expectation lane reaches L3 — 2026-10-04
+
+- New receipt: `research/d17_14_expectation_source_receipt_v0_1.json`.
+- Two independent CBC decisions have pre-decision Reuters forecast distributions and compatible official CBC realizations: 2026-06-15 -> 2026-06-18 and 2026-09-14 -> 2026-09-17.
+- D17-14 advances L2 -> L3 for Taiwan PIT/source feasibility. This closes the prior missing-expectation-source blocker, not the outcome-evidence gate.
+- Preserve full forecast distributions. Mean/median/mode or any surprise functional must be preregistered before equity returns are inspected; market reaction cannot infer missing expectations.
+- Both historical witnesses matched the modal expectation. No unexpected-policy return effect has been demonstrated.
+- D13 remains owner of macro-policy state/controls; D17 owns event identity, first-known expectation/surprise clock and transmission. No double factor voting.
+- Existing ER-024 prospective Shadow/opening-data blockers remain unchanged.
+- No event-direction score, risk penalty, return outcome or Formal Core change.
+
+Exact next:
+Prospectively capture future independent Taiwan policy expectation distributions with capturedAt/version evidence, including non-modal realization if naturally observed; preregister the surprise functional, event-zero and outcome horizons before any L4 test. Continue D17-01/02/09 multi-day source/version coverage.
