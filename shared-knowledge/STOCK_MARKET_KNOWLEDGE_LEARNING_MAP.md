@@ -1,6 +1,6 @@
 # 股市知識學習大地圖 — 22領域 / 356模組
 
-Updated: 2026-10-04 11:09 Asia/Taipei
+Updated: 2026-10-04 11:46 Asia/Taipei
 Status: CANONICAL_LEARNING_CURRICULUM_V0_1 / CROSS_SYSTEM  
 Formal Core impact: NONE  
 Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 正式研究成熟度仍由 `RESEARCH_MASTER_MAP.md` 與 `research/research_master_map.json` 管理。
@@ -337,8 +337,8 @@ GitHub專屬checkpoint：
 | D09-10 | 產業成交值／集中度 | L3 台股PIT資料可行 | 60% |
 | D09-11 | 題材股與正式產業分類橋接 | L3 台股PIT資料可行 | 60% |
 | D09-12 | Breadth×Regime交互作用 | L2 機制＋反證 | 40% |
-| D09-13 | Industry Structure／Porter Five Forces產業結構與波特五力 | L3 台股PIT資料可行 | 60% |
-| D09-14 | Market Share／Entry Barrier／Substitution／Competitive Strategy市占、進入障礙、替代與競爭策略 | L3 台股PIT資料可行 | 60% |
+| D09-13 | Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力） | L3 台股PIT資料可行 | 60% |
+| D09-14 | Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動） | L3 台股PIT資料可行 | 60% |
 
 
 ### D10｜供應鏈／產能／庫存／原物料傳導 — 55.4%
@@ -714,3 +714,14 @@ GitHub專屬checkpoint：
 
 本次只改治理角色與下一驗證責任，不改 L0-L5 成熟度，不改模組數，不授權任何 System 1／System 2 Formal Core（正式核心）變更。課綱維持 22 領域／354 模組。
 
+
+
+## H01 owner-approved scope dedup — 2026-10-04
+
+H01 is formally **KEEP_SEPARATE / SCOPE_DEDUP_ONLY**.
+
+- D09-13 = Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）, L3/60%.
+- D09-14 = Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）, L3/60%.
+- D09-13 owns industry structural state; D09-14 owns issuer-specific strategic-action lifecycle.
+- Shared market-share/capacity/price/margin/customer/supplier evidence has one parent receipt and cannot become two independent votes.
+- Module count, maturity and Formal Core are unchanged.
