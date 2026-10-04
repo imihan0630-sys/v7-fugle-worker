@@ -3262,3 +3262,18 @@ Exact next continuation:
 3. Execute this acceptance evaluator for all expected parents and persist VALID/BLOCKED/UNKNOWN.
 4. Only a COMPLETE run may support Bollinger L3 review.
 5. If D03-10 reaches L3, D03 becomes 58.3%; ADX remains separate until canonical recursive replay passes.
+
+
+## 00 control-plane receipt — H07 terminal closure
+
+00｜研究總控室 closed H07:
+KEEP_SEPARATE / EVENT_CONDITIONED_OVERREACTION_PARENT_VS_REVERSAL_OUTCOME.
+
+D03-05 remains canonical owner of observable pullback/reversal geometry and PIT-safe reversal path.
+D20-09 may study an event-conditioned candidate behavioral parent, but the later reversal itself remains D03-owned evidence and cannot be counted twice.
+
+D03-05 remains L3/60%.
+No Formal/runtime change.
+
+Audit:
+shared-knowledge/CURRICULUM_H07_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
