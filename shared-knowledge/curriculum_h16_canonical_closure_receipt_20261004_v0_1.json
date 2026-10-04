@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "CURRICULUM_H16_CANONICAL_CLOSURE_RECEIPT_V0_1",
+  "date": "2026-10-04",
+  "clusterId": "H16",
+  "state": "CLOSED_NO_STRUCTURAL_CHANGE",
+  "terminalClassification": "KEEP_SEPARATE",
+  "governanceDisposition": "FOUR_LAYER_PRICE_LIMIT_CHAIN",
+  "primitive": "ONE_LIMIT_EVENT_RECEIPT",
+  "maturity": {
+    "D05-02": {
+      "level": "L3",
+      "maturityPct": 60
+    },
+    "D11-11": {
+      "level": "L3",
+      "maturityPct": 60
+    },
+    "D01-09": {
+      "level": "L2",
+      "maturityPct": 40
+    },
+    "D04-10": {
+      "level": "L3",
+      "maturityPct": 60
+    }
+  },
+  "maturityChange": "NONE",
+  "moduleCountChange": 0,
+  "formalCoreImpact": "NONE_LOCKED",
+  "runtimeImpact": "NONE"
+}
