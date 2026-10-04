@@ -2177,3 +2177,47 @@ capital commitment increase != direct award increase != actual disbursement != q
 D10-14 remains L3; second-issuer robustness improves but L4 is not justified.
 
 Formal Core unchanged.
+
+
+## SC-052 — Cross-industry issuer-native capacity contract clears bounded D10-04 L3
+
+Artifact:
+`research/sc052_cross_industry_capacity_source_contract_v0_1.json`
+
+The previous blocker was not "capacity is impossible to study"; it was that one issuer plus aggregate macro evidence did not establish a reusable Taiwan issuer-capacity source contract.
+
+SC-052 now has three deliberately different controls:
+
+1. TSMC:
+   - 2025 annual managed manufacturing capacity exceeded 17 million 12-inch-equivalent wafers;
+   - actual 2025 wafer shipments were 15.0 million 12-inch-equivalent wafers;
+   - shipment / capacity therefore supplies only a bounded throughput-to-capacity upper-bound context, NOT official utilization;
+   - Arizona Fab 1 HVM and later-fab construction/installation states preserve lifecycle timing separately.
+
+2. China Steel:
+   - CSC four blast furnaces are disclosed at about 9.9 million tonnes crude-steel annual capacity;
+   - 2025Q1 CSC stand-alone crude-steel production was about 1.993 million tonnes;
+   - annualizing the quarter gives an approximately 80.5% nominal-output-to-capacity proxy, but this remains explicitly synthetic and seasonality/maintenance sensitive;
+   - issuer disclosures separately state low-utilization/aged lines are being consolidated, sealed or retired, with No.1 blast furnace retirement planned no later than 2029Q1.
+
+3. GlobalWafers:
+   - policy/facility identity is known;
+   - current qualified capacity, HVM and utilization remain UNKNOWN because source freshness is insufficient;
+   - this is the missing-denominator negative control.
+
+Reusable contract:
+`CapEx != nameplate capacity != available capacity != qualified capacity != actual production != shipment != official utilization`.
+
+Maturity decision:
+`D10-04 L2 -> L3` for bounded Taiwan PIT/source feasibility only.
+
+Why no L4:
+- no prospective/OOS capacity-state outcome evidence;
+- official utilization denominators are still incomplete;
+- cross-industry numeric ratios are not one comparable factor;
+- no revenue/margin/market-share/stock-return join is opened.
+
+Exact next:
+SC-053 prospectively append issuer-native capacity/production/HVM vintages; obtain at least one issuer-reported true utilization-rate case and one delay/cancellation/low-utilization control before any L4 test.
+
+Formal Core unchanged.
