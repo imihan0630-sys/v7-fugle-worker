@@ -9,6 +9,7 @@ import {buildSystem1FirstFailureMaskingAudit} from './system1_first_failure_mask
 import {buildSystem1SectorGateComponentAudit} from './system1_sector_gate_component_audit_v0_1.mjs';
 import {buildSystem1AtrGateDecompositionAudit} from './system1_atr_gate_decomposition_audit_v0_1.mjs';
 import {buildSystem1ExtremeMoveProxyDenominatorAudit} from './system1_extreme_move_proxy_denominator_audit_v0_1.mjs';
+import {buildSystem1LiquidityRejectedControlEvidence} from './system1_liquidity_rejected_control_v0_1.mjs';
 function blocked(code,httpStatus=200){const e=new Error(code);e.code=code;e.httpStatus=httpStatus;return e;}
 
 // Authorized GETs only. Both artifacts use these exact verified page objects.
@@ -67,5 +68,6 @@ export async function collectVerifiedC1C2({origin,token,scanDate,request=fetch,t
   const sectorGateComponents=buildSystem1SectorGateComponentAudit({adapted,diagnosis,firstFailureMasking});
   const atrGateDecomposition=buildSystem1AtrGateDecompositionAudit({adapted,diagnosis,firstFailureMasking});
   const extremeMoveProxyDenominator=buildSystem1ExtremeMoveProxyDenominatorAudit({adapted,diagnosis,firstFailureMasking});
-  return {pages,adapted,diagnosis,paired,scanProof,zeroPickProspective,shadowCohort,c4RankingRedundancy,setupChannelScale,marketCapConditionalAdmission,firstFailureMasking,sectorGateComponents,atrGateDecomposition,extremeMoveProxyDenominator};
+  const liquidityRejectedControl=buildSystem1LiquidityRejectedControlEvidence(shadowCohort);
+  return {pages,adapted,diagnosis,paired,scanProof,zeroPickProspective,shadowCohort,c4RankingRedundancy,setupChannelScale,marketCapConditionalAdmission,firstFailureMasking,sectorGateComponents,atrGateDecomposition,extremeMoveProxyDenominator,liquidityRejectedControl};
 }
