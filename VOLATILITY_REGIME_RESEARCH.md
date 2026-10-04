@@ -1335,3 +1335,43 @@ Machine-readable audit:
 - `research/d04_d05_pit_feasibility_promotion_audit_20261004_v0_1.json`.
 Long-form audit:
 - `research/D04_D05_PIT_FEASIBILITY_PROMOTION_AUDIT_20261004_V0_1.md`.
+
+
+## VR-043 — L4 Wave-1 preregistration freezes prospective questions before outcomes
+
+D04 has reached broad L3 Taiwan PIT feasibility, but L4 requires genuine prospective Shadow/OOS evidence.
+
+The first frozen D04 L4 Wave-1 modules are:
+- D04-03 Volatility Contraction;
+- D04-04 Volatility Expansion / Shock;
+- D04-07 Volatility × Trend / Breakout Interaction.
+
+D04-03 primary question:
+does a PIT-defined contraction add prospective information about future volatility/range expansion beyond current volatility level and simple trend/range context?
+
+D04-04 primary question:
+does a PIT-defined expansion/shock distinguish future volatility persistence versus normalization, with direction stored separately?
+
+D04-07 primary question:
+does volatility context add incremental breakout-path information beyond the price-only breakout baseline?
+
+Anti-peeking rules:
+- parent frozen before outcome;
+- outcome strictly after firstKnownAt;
+- exact common support;
+- no post-outcome threshold/horizon/cohort tuning;
+- dependence-aware D16 review before promotion inference;
+- no historical reconstruction relabeled as Prospective Shadow.
+
+Current result:
+`D04_L4_PROMOTIONS = 0`.
+
+D04 remains 58.0%.
+
+Artifact:
+- `research/D04_D05_L4_WAVE1_PREREGISTRATION_20261004_V0_1.md`;
+- `research/D04_D05_L4_READINESS_AUDIT_20261004_V0_1.md`;
+- `research/d04_d05_l4_wave1_preregistration_v0_1.json`.
+
+Status:
+`D04_L4_WAVE1 = PREREGISTERED / FUTURE_EVIDENCE_ONLY / FORMAL_CORE_LOCKED`.
