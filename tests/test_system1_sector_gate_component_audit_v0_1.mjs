@@ -5,7 +5,7 @@ const base={sessionDate:'2026-10-05',generationId:'C1:g',decisionAt:'2026-10-05T
 const mk=(symbol,{breadth=50,ret=0,amount=1,fail=[],unknown=[]}={})=>({
   raw:{symbol,sector:{breadth,avgChange:ret,amountVs20DayAverage:amount}},
   obs:{symbol,pool:'GENERAL',firstFailureReason:null,formalResult:{ok:false},gates:{
-    SECTOR_GATE:{status:fail.length?'FAIL':unknown.length?'UNKNOWN':'PASS'},
+    SECTOR_GATE:{status:unknown.length?'UNKNOWN':fail.length?'FAIL':'PASS'},
     SECTOR_BREADTH:{status:fail.includes('SECTOR_BREADTH')?'FAIL':unknown.includes('SECTOR_BREADTH')?'UNKNOWN':'PASS'},
     SECTOR_RETURN:{status:fail.includes('SECTOR_RETURN')?'FAIL':unknown.includes('SECTOR_RETURN')?'UNKNOWN':'PASS'},
     SECTOR_AMOUNT:{status:fail.includes('SECTOR_AMOUNT')?'FAIL':unknown.includes('SECTOR_AMOUNT')?'UNKNOWN':'PASS'}
