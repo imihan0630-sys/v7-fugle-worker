@@ -355,3 +355,23 @@ Formal Core impact: NONE.
 4. All L3 modules remain locked below L4 without OOS/prospective evidence.
 
 Formal Core impact: NONE.
+
+
+## 00 routed COV-11 exact remaining delta — 2026-10-04
+
+COV-11 remains PARTIAL.
+
+Do not redo D21 ownership/control, board, insider, RPT, minority-risk or audit/control work.
+
+Exact remaining delta:
+1. define the recurring shareholder-rights / stewardship / activism / voting family;
+2. separate formal rights from D21-01 ownership/control concentration and D21-11 minority-risk outcomes;
+3. freeze MOPS shareholder-meeting notice/agenda/material/proposal/minutes/voting-result first-known lifecycle;
+4. freeze stewardship-code / institutional-voting disclosure source and version clocks;
+5. produce at least one historical Taiwan lifecycle replay from agenda publication through voting result;
+6. define activism/stewardship states without normative good/bad scoring;
+7. prevent D06 ownership-flow and D11 proxy/event mechanics from becoming duplicate evidence;
+8. choose exactly one terminal recommendation;
+9. commit `research/COV11_D21_SPECIALIST_RETURN_V0_1.md`.
+
+No maturity or Formal change is authorized by this routing.
