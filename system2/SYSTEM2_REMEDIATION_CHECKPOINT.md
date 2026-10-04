@@ -1,6 +1,6 @@
 # System 2 Remediation Checkpoint
 
-Updated: 2026-10-04 20:33 Asia/Taipei
+Updated: 2026-10-04 20:36 Asia/Taipei
 Status: ACTIVE / REMEDIATION_LANE / FIX_IMPLEMENTED / PENDING_INDEPENDENT_AUDIT
 Room: System 2｜補強修復室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
@@ -110,6 +110,15 @@ Initial implementation head:
   - read-only production authorization preflight PASS;
   - latest after-market read-only diagnostic PASS.
 
+Final evidence head:
+`fcfabf757a0b3b5eb1241037a92bebb800ac89d4`
+
+- System2 Research CI `37202660117`: PASS.
+- V8 Regression `37202660107`: PASS.
+- PR #556 was mergeable immediately before merge.
+- PR #556 squash-merged to main as `f507b9a8714e53f9bf42235cb70824a545ffefae`.
+- Merged-main readback confirmed all canonical routing guards and the 22-domain / 354-module wording.
+
 Changed-file scope before final evidence:
 - SYSTEM2_MASTER
 - SYSTEM2_CORRECTION_GOVERNANCE
@@ -134,8 +143,8 @@ Latest-main drift check before final evidence:
 
 ## Exact next continuation point
 
-1. Require the final PR #556 head, including queue/checkpoint evidence commits, to pass System2 Research CI and V8 Regression again.
-2. Re-read latest main immediately before merge and reconcile any shared Correction Queue drift without overwriting DATA_LANE/AUDIT_LANE evidence.
-3. Merge only if PR remains mergeable and protected boundaries remain unchanged.
-4. Re-read merged main for canonical wording and CORR-003 = `FIX_IMPLEMENTED`.
-5. Hand CORR-003 to `SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR` for independent verification; do not self-mark `VERIFIED_CLOSED`.
+1. Hand `S2-CORR-20261004-003` to `SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR` for independent acceptance-criteria verification.
+2. Auditor may classify the still-UNKNOWN severity without changing implementation ownership unless the Queue formally changes `routingClass / assignedLane / modificationOwner`.
+3. If acceptance criteria pass, advance through `VERIFYING` to `VERIFIED_CLOSED` under correction governance.
+4. If a residual governance contradiction is found, reopen only the affected governance conflict unit and route it formally; do not infer BUILD ownership from severity.
+5. No System 1 Formal Core, System 2 strategy/ranking/final-selection, capital/order, production push or production runtime work is authorized by this handoff.
