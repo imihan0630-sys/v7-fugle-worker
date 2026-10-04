@@ -59,6 +59,7 @@ assert.equal(pageResponse.ok,true,"TWSE official-document page HTTP "+pageRespon
 
 const assets=scriptSrcs(pageHtml);
 const inspected=[];
+const assetBodies=[];
 for(const url of assets.slice(0,30)){
   let response,body="";
   try{
@@ -71,6 +72,7 @@ for(const url of assets.slice(0,30)){
     inspected.push({url,httpStatus:null,error:String(error?.message||error),bytes:0,hash:null,termHits:{},urlCandidates:[]});
     continue;
   }
+  assetBodies.push({url,body});
   const termHits={};
   for(const term of TERMS){
     const ss=snippets(body,term);
@@ -103,6 +105,71 @@ const queryLike=allCandidates.filter(u=>
   /announcement|announce|document|notice|rwd\/zh/i.test(u)
 );
 
+const dataApi=pageHtml.match(/<form\b[^>]*\bdata-api=["']([^"']+)["'][^>]*>/i)?.[1]||null;
+const configCorpus=[pageHtml,...assetBodies.map(x=>x.body)].join("\n");
+const rwdBaseCandidates=new Set();
+for(const m of configCorpus.matchAll(/(?:["']?rwd["']?)\s*:\s*["'`](https:\/\/[^"'`]+)["'`]/gi)){
+  rwdBaseCandidates.add(m[1].replace(/\/$/,""));
+}
+for(const m of configCorpus.matchAll(/apiHost\s*[:=]\s*\{([\s\S]{0,1800}?)\}/gi)){
+  const x=m[1].match(/(?:["']?rwd["']?)\s*:\s*["'`]([^"'`]+)["'`]/i);
+  if(x){
+    try{
+      const u=new URL(x[1],PAGE);
+      if(u.protocol==="https:"&&ALLOWED_HOSTS.has(u.hostname)) rwdBaseCandidates.add(u.toString().replace(/\/$/,""));
+    }catch{}
+  }
+}
+
+const derivedEndpointCandidates=[];
+for(const base of rwdBaseCandidates){
+  if(dataApi){
+    try{
+      const u=new URL(base.replace(/\/$/,"")+"/zh"+dataApi);
+      if(ALLOWED_HOSTS.has(u.hostname)) derivedEndpointCandidates.push(u.toString());
+    }catch{}
+  }
+}
+
+async function validatePositiveControl(endpoint){
+  const u=new URL(endpoint);
+  u.searchParams.set("startDate","20250606");
+  u.searchParams.set("endDate","20250606");
+  u.searchParams.set("keyword","1140010257");
+  u.searchParams.set("response","json");
+  try{
+    const response=await fetch(u,{
+      headers:{accept:"application/json,text/plain,*/*","user-agent":"System2-TWSE-Official-Document-Discovery/0.1"},
+      signal:AbortSignal.timeout(30000),
+    });
+    const raw=await response.text();
+    let parsed=null;
+    try{parsed=JSON.parse(raw);}catch{}
+    const flat=parsed?JSON.stringify(parsed):raw;
+    const pass=response.ok && /1140010257/.test(flat) && /4763/.test(flat);
+    return {
+      endpoint,
+      requestUrl:u.toString(),
+      httpStatus:response.status,
+      contentType:response.headers.get("content-type")||null,
+      bytes:Buffer.byteLength(raw),
+      hash:sha256(raw),
+      parseReady:parsed!==null,
+      pass,
+      hasKnownRef:/1140010257/.test(flat),
+      hasKnownSymbol:/4763/.test(flat),
+      sample:flat.slice(0,2400),
+    };
+  }catch(error){
+    return {endpoint,requestUrl:u.toString(),httpStatus:null,contentType:null,bytes:0,hash:null,parseReady:false,pass:false,error:String(error?.message||error),hasKnownRef:false,hasKnownSymbol:false,sample:""};
+  }
+}
+const positiveControlResults=[];
+for(const endpoint of derivedEndpointCandidates){
+  positiveControlResults.push(await validatePositiveControl(endpoint));
+}
+const stableQueryEndpoint=positiveControlResults.find(x=>x.pass===true)?.endpoint||null;
+
 const result={
   schemaVersion:"S2_TWSE_OFFICIAL_DOCUMENT_QUERY_DISCOVERY_V0_1",
   observedAt:new Date().toISOString(),
@@ -118,7 +185,12 @@ const result={
   inspectedScriptCount:inspected.length,
   inspected,
   queryLikeCandidates:queryLike,
-  stableQueryEndpointEstablished:false,
+  formDataApi:dataApi,
+  rwdBaseCandidates:[...rwdBaseCandidates],
+  derivedEndpointCandidates,
+  positiveControlResults,
+  stableQueryEndpoint,
+  stableQueryEndpointEstablished:Boolean(stableQueryEndpoint),
   boundedHistoricalQueryPerformed:false,
   representativeControlPromoted:false,
   representativeAuthorityReadyCount:5,
