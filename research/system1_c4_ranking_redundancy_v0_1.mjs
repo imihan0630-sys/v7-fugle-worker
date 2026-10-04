@@ -87,8 +87,8 @@ function summarizeVariant(name,baseline,variant,rows){
 function scoreParts(row){
   const d=row.rankInput.decomposition;
   return {
-    SETUP:row.setupQuality*.28,
-    SECTOR:row.sectorFlow*.14,
+    SETUP:row.rankInput.setupQuality*.28,
+    SECTOR:row.rankInput.sectorFlow*.14,
     INSTITUTIONAL:d.institutionalScore*.16,
     FUNDAMENTAL:d.fundamentalScore*.14,
     RS:d.rsComponent*.14,
@@ -112,8 +112,12 @@ function normalizeQualifiedRow(raw,receipt){
   assert(ri.rankComparatorVersion===COMPARATOR_VERSION,'COMPARATOR_VERSION_MISMATCH');
   assert(ri.scanDate===receipt.sessionDate&&ri.symbol===raw.symbol&&ri.pool===raw.pricePool&&ri.captureGeneration===receipt.generationId,'IDENTITY_MISMATCH');
   assert(ri.decisionAt===receipt.decisionAt,'DECISION_TIME_MISMATCH');
-  const map={priorityScore:'postConsensusPriorityScore',rewardPerRisk:'rewardPerRisk',marketConsensusScore:'marketConsensusScore',setupQuality:'setupQuality',sectorFlow:'sectorFlow',relativeStrength:'relativeStrength'};
-  for(const [actualKey,rankKey] of Object.entries(map)) assert(eq(t[actualKey],ri[rankKey]),'ACTUAL_COUNTERFACTUAL_TUPLE_DIVERGENCE_'+actualKey.toUpperCase());
+  const exactMap={priorityScore:'postConsensusPriorityScore',rewardPerRisk:'rewardPerRisk',marketConsensusScore:'marketConsensusScore',setupQuality:'setupQuality'};
+  for(const [actualKey,rankKey] of Object.entries(exactMap)) assert(eq(t[actualKey],ri[rankKey]),'ACTUAL_COUNTERFACTUAL_TUPLE_DIVERGENCE_'+actualKey.toUpperCase());
+  // Formal result rounds sectorFlow and relativeStrength to one decimal for the deployed comparator,
+  // while the same-request zero-pick decomposition retains their raw score inputs.
+  assert(eq(t.sectorFlow,round(ri.sectorFlow,1)),'ACTUAL_COUNTERFACTUAL_TUPLE_DIVERGENCE_SECTORFLOW');
+  assert(eq(t.relativeStrength,round(ri.relativeStrength,1)),'ACTUAL_COUNTERFACTUAL_TUPLE_DIVERGENCE_RELATIVESTRENGTH');
   assert(t.preSortOrdinal===ri.preSortOrdinal,'ORDINAL_DIVERGENCE');
   const d=ri.decomposition;
   assert(d&&['preConsensusPriorityScore','marketConsensusBonus','institutionalScore','fundamentalScore','rsComponent','rrComponent'].every(k=>finite(d[k])),'DECOMPOSITION_REQUIRED');
