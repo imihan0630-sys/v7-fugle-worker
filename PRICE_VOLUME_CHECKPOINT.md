@@ -2859,3 +2859,53 @@ CLEAN_DATE_ZERO / PVE-239 / Gate 7 CLOSED.
 D02 remains 60.0%.
 No FORMAL_OPTIMIZATION_CANDIDATE.
 Formal Core remains LOCKED.
+
+## Pre-PVE-240 continuation — D02-01 semantic gate + all-module L4 admission coverage (2026-10-04)
+
+Status: OUTCOME_BLIND / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+New artifacts:
+- `research/d02_01_l4_semantic_governance_admission_v0_1.mjs`;
+- `tests/test_d02_01_l4_semantic_governance_admission_v0_1.mjs`;
+- `research/d02_01_l4_semantic_governance_validation_20261004_v0_1.md`;
+- `research/d02_01_l4_semantic_governance_validation_v0_1.json`.
+
+Independent Node.js v22.16.0 execution:
+18/18 tests PASS.
+
+D02-01 is treated as non-alpha semantic governance.
+
+The executable admission layer enforces:
+- DAILY volume unit = SHARES;
+- INTRADAY_REGULAR_LOT volume unit = LOTS;
+- factual zero-volume session != missing session;
+- older-row substitution forbidden for factual zero or missing expected sessions;
+- verified suspension/non-symbol session cannot become eligible volume session;
+- UNKNOWN source semantics cannot become ELIGIBLE;
+- UNIT_SCALE needs verified bridge or reset-clean >=20 sessions;
+- SUPPLY_CHANGE RAW_ACTIVITY may remain factual;
+- SUPPLY_CHANGE COMPARABLE_PARTICIPATION needs denominator normalization or fully post-break >=20 sessions;
+- late-known corporate action cannot rewrite earlier feature state;
+- counterfactual classification must come from a frozen adapter.
+
+The dataset receipt counts classificationDelta and materialPreventionCandidate, but:
+- alphaClaimAuthorized=false;
+- economicOutcomeAccessAuthorized=false;
+- l4MaturityAuthorized=false;
+- formalCoreChangeAuthorized=false.
+
+### D02 all-module next-level admission coverage
+
+Executable admission firewalls now exist for all 12 D02 modules:
+- D02-01 semantic governance;
+- Wave-1: D02-02 / D02-03 / D02-06;
+- Wave-2: D02-04 / D02-05 / D02-07 / D02-08 / D02-09 / D02-10 / D02-11 / D02-12.
+
+This completes admission design, not L4 evidence.
+
+Current evidence remains:
+CLEAN_DATE_ZERO / PVE-239 / Gate 7 CLOSED.
+
+D02 remains 60.0%.
+No FORMAL_OPTIMIZATION_CANDIDATE.
+Formal Core remains LOCKED.
