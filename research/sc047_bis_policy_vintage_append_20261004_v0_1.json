@@ -1,0 +1,52 @@
+{
+  "version": "0.1",
+  "id": "SC-047",
+  "capturedAt": "2026-10-04T09:54:00+08:00",
+  "module": "D10-13 貿易政策／出口管制／制裁供應鏈傳導",
+  "mode": "CURRENT_BIS_POLICY_VINTAGE_APPEND / NOT_PROSPECTIVE / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "policyVintages": [
+    {
+      "publishedAt": "2026-05-31",
+      "authority": "U.S. BIS",
+      "state": "D5_PARENT_ENTITY_ADVANCED_COMPUTING_LICENSE_REQUIREMENT_CLARIFIED",
+      "evidence": "BIS guidance clarified that advanced-computing license requirements continue for entities headquartered in, or ultimately parented in, Country Group D:5 or Macau even when the operating entity is located elsewhere.",
+      "implication": "Customer/end-user parentage is a required exposure field; physical destination alone is insufficient."
+    },
+    {
+      "publishedAt": "2026-07-14",
+      "authority": "U.S. BIS / EAR 740",
+      "state": "UAE_FAVORABLE_ADVANCED_COMPUTING_TREATMENT_WITH_NAMED_ENTITIES",
+      "evidence": "EAR 740 added favorable treatment for specified UAE entities and certain U.S.-headquartered AI companies, with entity-specific authorization and expiry semantics.",
+      "implication": "Policy exposure can loosen for named entities/destinations while remaining restrictive elsewhere; no fixed one-direction country sign."
+    }
+  ],
+  "issuerTransmissionImplication": [
+    "Taiwan foundry/design/packaging exposure must include ultimate-parent/end-user identity where relevant.",
+    "A customer located in a low-friction geography may still trigger restrictions through parentage or end-user rules.",
+    "Named authorization can reduce friction for a transaction without proving issuer revenue benefit."
+  ],
+  "falsification": [
+    "Policy tightening and policy easing can occur simultaneously across different entities and destinations.",
+    "Guidance can clarify pre-existing obligations without creating a new economic shock of the same magnitude as a new rule.",
+    "Authorization expiry can reverse a currently favorable pathway; current status cannot be backfilled permanently.",
+    "No revenue/customer-share magnitude may be inferred without issuer-native compatible disclosure."
+  ],
+  "pitRules": [
+    "Append each rule/guidance/list vintage with published/effective/expiry clocks.",
+    "Do not label this receipt prospective: both 2026 policy vintages predate the current research capture.",
+    "Future SC-047-family updates must be captured prospectively from this point onward.",
+    "Missing issuer customer/destination magnitude remains UNKNOWN."
+  ],
+  "maturityDecision": {
+    "D10-13": "KEEP_L3"
+  },
+  "reasonNoL4": "This adds policy-state granularity but no prospective issuer outcome evidence or OOS stock-selection value.",
+  "exactNext": [
+    "Prospectively append the next BIS rule/list/license vintage after this capture.",
+    "Join issuer-native customer/destination exposure only on compatible denominators.",
+    "Preregister outcome windows before opening revenue/margin/stock effects."
+  ],
+  "status": "CURRENT_POLICY_VINTAGES_APPENDED / PARENTAGE_AND_ENTITY_AUTHORIZATION_SEMANTICS / NOT_PROSPECTIVE / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
