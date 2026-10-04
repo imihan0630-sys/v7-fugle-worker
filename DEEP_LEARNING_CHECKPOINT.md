@@ -1584,3 +1584,41 @@ Build a D21-11 historical one-positive/one-control case set using contemporaneou
 - Forward fill, previous-close substitution, and volume-to-price substitution are prohibited. The 20-session momentum lane requires a preregistered valid-observation / symbol-session / stale-price contract before L3 replay.
 - Remaining hard gates: TPEx replayable history/universe, full continuity certification, PIT industry vintage, compatible D03/D09 paired redundancy, and D14-compatible cost provenance.
 - Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+
+## 2026-10-04 Room09 — MC-165..172 native CBC revisions and BIS legal clocks
+Run start 2026-10-04 11:34 Asia/Taipei. RESEARCH_ONLY / OUTCOMES_CLOSED / NO_PROMOTION.
+Artifact: research/d13_cbc_native_revision_policy_lineage_20261004_v0_1.json.
+
+### Append-only evidence-identity reconciliation
+Two earlier source families reused MC-149..156. Retain both unchanged. Disambiguate by (evidenceId,sourceArtifact,runHeading), never evidenceId alone: CBO family research/d13_19_cbo_three_vintage_source_qa_20261004_v0_1.json and preceding MC-149..152 CBO heading; cross-link family research/d12_d13_source_lineage_deepening_20261004_v0_1.md. Max prior substantive sequence is MC-164; this run continues MC-165..172, next MC-173. No deletion, historical renumbering, false progress rollback or duplicate independent-event credit.
+
+### MC-165 — three permitted native annexes
+Retrieved CBC official XLSX at links attached to 2026-05-20,2026-08-20 and2025-08-20 releases. URLs, byte counts, SHA256, local completion time, selected raw cached cell strings and labels recorded in artifact. Respect allowed native downloads; no original-release byte attestation inferred. May has3 worksheets; August and prior-year August have4 because H1 comparison is additional sheet2. Historical current/financial sheets are May2/3 vs August3/4. Resolve table title/units/reference quarter and revision marker rather than ordinal index. Native p/r note=preliminary/revised. Standard-library OOXML read only; no formula recalculation; arithmetic at displayed0.01 USD100m while preserving raw serialization tails. Corrected an intermediate mistaken 'service detail' description to H1 comparison after native title read.
+
+### MC-166 — Q1 2026 financial revision decomposes
+May sheet1 B19=648.64; August sheet4 D32=643.30 with C32=1r. Delta -5.34 USD100m. Net direct73.68->73.02 (-0.66); portfolio415.07->417.78 (+2.71); derivative -2.31 unchanged; other162.20->154.81 (-7.39). Component deltas close -5.34 exactly. May resident-other assets292.62->283.05 and liabilities130.42->128.24 explain net-other change. Revised accounting cannot establish why source submissions changed or a new capital-flight event on original quarter date.
+
+### MC-167 — small current-account change is a real revision
+May CA625.29 vs August history625.35, C32=1r, delta+0.06. Goods580.05->584.04 (+3.99), services-34.23->-36.25 (-2.02), primary92.21->90.33 (-1.88), secondary-12.74->-12.77 (-0.03), exact sum+0.06. Previously headline-only625.3/625.4 allowed rounding; native revised row now resolves it. A tiny net revision conceals materially offsetting component changes; no gross double-counting score.
+
+### MC-168 — prior-year base revision resolves +9.7 witness
+2025 August native Q2 CA362.29; 2026 August same quarter revised372.01 (sheet3 C29=2r). Exact +9.72 USD100m. Goods+10.79, services-1.57, primary+0.47, secondary+0.03 close+9.72. Current Q2 YoY212.90 uses revised372.01. Applying original362.29 to current584.91 instead gives222.62: different version-defined comparison, not economic surprise. These endpoints do not identify intervening release or first revision time; lineage interval remains unresolved.
+
+### MC-169 — complete signs close the earlier residual
+August native Q2: CA584.91 + capital(-0.03) - FA537.89 + errors(-39.13) = reserves7.86 USD100m. May Q1 same identity closes -46.55;2025Q2 closes160.02. Eight targeted Decimal checks PASS:3 revision decompositions,3 BOP identities,2 Q2 component sums. The headline39.1 residual is accounted for by capital plus errors with proper signs; not identified equity withdrawal/FX demand. Q2 net financial84.68+48.06-88.32+493.47=537.89. Resident/nonresident net accounting remains distinct from TWSE daily equities and actual FX settlement.
+
+### MC-170 — BIS original document boundary and clocks
+Verified official govinfo PDF2025-19001,90FR47201, publication2025-09-30, effective2025-09-29; original press datedSept29 has no audited intraday time. Document's own footer Filed9-29-25;8:45am. First-page PDF includes tail/footer of PRECEDING2025-18992; never assign that identity to affiliates rule. Original text includes50-percent ownership restrictions and scoped temporary license endingNov28,2025; not universal transaction relief. Ownership, jurisdiction/items, party restrictions and exceptions remain separate from company-sector exposures.
+Source: https://www.govinfo.gov/content/pkg/FR-2025-09-30/pdf/2025-19001.pdf ; https://www.bis.gov/press-release/department-commerce-expands-entity-list-cover-affiliates-listed-entities .
+
+### MC-171 — supersession and scheduled phase
+Official2025-19846 PDF90FR50857: filedNov10,2025;8:45am, effectiveNov10; publicationNov12. It stays changes throughNov9,2026 and schedules reinstatementNov10,2026 absent further extension/amendment. Future phase=SCHEDULED_SUBJECT_TO_AMENDMENT, not observed or guaranteed current law. Not an exhaustive intervening-amendment legal audit. PDF includes beginning of another Entity List rule after its own footer: exclude unrelated provisions. Filing footer's quoted clock has no encoded timezone; no invented UTC timestamp. Announcement, public inspection, formal publication, effective, transition expiry and local observedAt must remain separate.
+Source: https://www.govinfo.gov/content/pkg/FR-2025-11-12/pdf/2025-19846.pdf .
+
+### MC-172 — mechanism, falsification and eligibility
+Possible incremental signal is revision composition/known legal phase conditional on Taiwan price/sector, domestic flow, rates/USD/global baselines. Rival explanations: reporting revisions, offsets, instrument/settlement shifts, anticipatory pricing, correlated diplomatic/macro events. Later retrieved official native bytes improve source QA but do not establish historical first-known or source-attested decision-time receipts. Raw native bytes are not durably archived by this JSON; hashes/excerpts are not archive/readback certification. No imputation, realized outcome joins, company eligibility claim or trading recommendation. Require contemporaneous immutable source receipt, event-cluster independence, exposure known at decision, costs, purged walk-forward/OOS, leave-one-event/regime-out and multiple-testing control before promotion.
+
+D12=40.0%; D13=41.1%; room09=40.6%,36 modules unchanged. D13-11/16/17 stay L2/40%; strict clean prospective dates added0. FORMAL_OPTIMIZATION_CANDIDATE=NONE; Formal Core LOCKED. No runtime, selection, ranking, signal, push, capital/holdings change. Latest global tracker read43.7%/356 modules; concurrent other-room work is not credited to this run.
+
+Exact next: MC-173. Bound CBC intermediate release lineage to identify when2025Q2 revisions became public; preserve future2026-11-20 scheduled BOP raw receipt only upon actual release and authorized archive/readback. For BIS, audit amendment/supersession chain before any current legal-state claim; resolve authoritative public-inspection availability and timezone only from direct evidence. D12 next remains permitted raw TAIFEX option-chain metadata/date/strike/bid-ask/settlement coverage and first-known receipts; later replay alone is not L3. CBO native403 remains blocked; no bypass. Do not repeat MC-165..172.
