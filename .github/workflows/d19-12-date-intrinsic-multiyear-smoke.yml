@@ -1,0 +1,38 @@
+name: D19-12 Date-Intrinsic Multi-Year Smoke
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/d19-12-date-intrinsic-multiyear-smoke.yml"
+      - "system2/scripts/d19_12_date_intrinsic_multiyear_smoke_v0_1.mjs"
+      - "system2/runtime/historical_twse_calendar_v0_1.mjs"
+      - "system2/evidence/S2_HISTORICAL_TWSE_2017_PHYSICAL_VERIFICATION_V0_1.json"
+      - "system2/evidence/S2_HISTORICAL_TWSE_2018_PHYSICAL_VERIFICATION_V0_1.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate D19-12 independent years
+        run: node system2/scripts/d19_12_date_intrinsic_multiyear_smoke_v0_1.mjs
+
+      - name: Confirm production isolation
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          git diff --exit-code -- wrangler.toml Worker.js
+          echo "Production isolation PASS"
