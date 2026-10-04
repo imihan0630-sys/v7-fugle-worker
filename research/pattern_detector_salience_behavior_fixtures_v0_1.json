@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "0.1",
+  "researchId": "DL-028",
+  "title": "Detector salience behavioral falsification fixtures",
+  "outcomeBlind": true,
+  "formalCoreImpact": "NONE",
+  "outcomeJoin": "CLOSED",
+  "invariants": [
+    "parent and control eligibility frozen at parent confirmation time",
+    "missing salience or opportunity evidence remains UNKNOWN",
+    "salience matching and crossing-opportunity matching are separate families",
+    "all eligible and failed controls are retained with failure reason",
+    "future-discovered controls cannot enter an earlier parent manifest",
+    "no outcome-based pruning or tolerance tuning"
+  ],
+  "fixtures": [
+    {
+      "id": "DL028B01",
+      "case": "round_tick_salience_mismatch",
+      "setup": {
+        "trueZoneRoundTickSalience": "HIGH",
+        "controlRoundTickSalience": "LOW",
+        "opportunity": "MATCHED"
+      },
+      "expected": "SALience_MISMATCH_BLOCK_COMPARISON"
+    },
+    {
+      "id": "DL028B02",
+      "case": "preconfirmation_touch_count_mismatch",
+      "setup": {
+        "trueZoneTouches": 5,
+        "controlTouches": 1,
+        "knownAtParentConfirmation": true
+      },
+      "expected": "SALIENCE_MISMATCH_BLOCK_COMPARISON"
+    },
+    {
+      "id": "DL028B03",
+      "case": "future_discovered_control",
+      "setup": {
+        "controlKnownAtParentConfirmation": false,
+        "discoveredAfterParentConfirmation": true
+      },
+      "expected": "CONTROL_INELIGIBLE_LOOKAHEAD"
+    },
+    {
+      "id": "DL028B04",
+      "case": "missing_salience_provenance",
+      "setup": {
+        "salienceEvidence": "MISSING"
+      },
+      "expected": "UNKNOWN_NOT_ZERO_NOT_BAD"
+    },
+    {
+      "id": "DL028B05",
+      "case": "post_outcome_control_pruning",
+      "setup": {
+        "eligibleAtParentConfirmation": true,
+        "removalReason": "OUTCOME_PERFORMANCE"
+      },
+      "expected": "PRUNING_PROHIBITED"
+    },
+    {
+      "id": "DL028B06",
+      "case": "salience_matched_opportunity_mismatched",
+      "setup": {
+        "salience": "MATCHED",
+        "volatility": "MISMATCHED",
+        "zoneWidth": "MISMATCHED",
+        "liquidity": "MISMATCHED"
+      },
+      "expected": "OPPORTUNITY_MISMATCH_BLOCK_MECHANISM_CLAIM"
+    },
+    {
+      "id": "DL028B07",
+      "case": "opportunity_matched_salience_mismatched",
+      "setup": {
+        "opportunity": "MATCHED",
+        "roundTickSalience": "MISMATCHED",
+        "touchCount": "MISMATCHED"
+      },
+      "expected": "SALIENCE_MISMATCH_BLOCK_MECHANISM_CLAIM"
+    }
+  ],
+  "promotionRule": "Only comparisons matched on both salience and crossing opportunity may remain structural-specific representation candidates; never alpha proof.",
+  "requiredBiasChecks": [
+    "PIT",
+    "OOS",
+    "WALK_FORWARD",
+    "SELECTION_BIAS",
+    "LOOK_AHEAD",
+    "DATA_SNOOPING",
+    "MULTIPLE_TESTING",
+    "OVERFITTING",
+    "FACTOR_REDUNDANCY",
+    "SMALL_SAMPLE",
+    "DATE_CLUSTERING",
+    "TRANSACTION_COST",
+    "LIQUIDITY",
+    "MARKET_REGIME"
+  ],
+  "status": "BEHAVIOR_FIXTURES_FROZEN_TEST_EXECUTION_PENDING"
+}
