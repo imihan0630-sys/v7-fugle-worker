@@ -1,7 +1,7 @@
 # System 1 C4 ranking redundancy audit V0.1
 
 Date: 2026-10-04 Asia/Taipei
-Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / FIXTURE_VERIFIED / CI_PENDING / FORMAL_CORE_LOCKED
+Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_PENDING / FORMAL_CORE_LOCKED
 
 ## Purpose
 
@@ -129,3 +129,31 @@ Formal Core: LOCKED
    - coverage/data-quality blockers.
 5. Accumulate independent dates before joining forward outcomes.
 6. Only after prospective outcome maturity may any duplicated layer become a Class-C Formal optimization candidate.
+
+
+## Daily evidence collector integration
+
+The Class-A analyzer is now attached to the existing verified C1/C2 read-only collection path through:
+
+- `research/system1_c4_ranking_collection_v0_1.mjs`;
+- `research/system1_c1_c2_collection_v0_1.mjs`;
+- `tests/collect_system1_c1_c2_evidence.mjs`.
+
+The existing `.github/workflows/system1-c1-evidence.yml` schedule is unchanged. No duplicate scheduler, provider request, business scan, write endpoint or Production runtime hook is added.
+
+For V8.17+ immutable C1 generations, the daily C1 evidence JSON gains a `c4RankingRedundancy` section. The side-study consumes the already verified raw C1 pages because the legacy diagnostic adapter intentionally does not reinterpret the V8.17 actual Formal ranking tuple.
+
+Isolation semantics:
+- C1 digest/generation/pagination and C1/C2 verification remain the parent authority;
+- C4 ranking evidence is independently fail-closed;
+- a C4 tuple/decomposition/parity problem returns `DATA_QUALITY_BLOCKED` for C4 without invalidating otherwise-valid C1/C2/C3 evidence;
+- a valid V8.17 generation with zero qualified rows returns `NO_QUALIFIED_RANKING_POPULATION`;
+- pre-V8.17 generations return `LEGACY_NO_C4_RANKING_INPUT` and are never reconstructed/backfilled.
+- V8.17+ generations missing the required capture marker are `DATA_QUALITY_BLOCKED`, never mislabeled as legacy.
+
+Collector integration performs zero additional HTTP/provider calls. Existing C3 registration semantics and the 00:10 Taipei evidence schedule remain unchanged.
+
+Dedicated collector test:
+`tests/test_system1_c4_ranking_collection_v0_1.mjs`.
+
+The exact next genuine-session action is now automatic: after the next successful normal V8.17+ trading-session scan, the existing evidence workflow will preserve C1/C2, zero-pick, Shadow Cohort, and C4 ranking-redundancy evidence from the same immutable generation.
