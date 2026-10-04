@@ -1,6 +1,6 @@
 {
   "schemaVersion": "CURRICULUM_THIRD_ROUND_EXECUTION_REGISTRY_V0_1",
-  "updatedAt": "2026-10-03T12:18:00+08:00",
+  "updatedAt": "2026-10-04T11:09:00+08:00",
   "status": "H01_H20_GOVERNANCE_CONTRACTS_COMPLETE_SPECIALIST_VALIDATION_PENDING",
   "scope": {
     "domains": 22,
@@ -28,7 +28,19 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H01_H04_CONSOLIDATION_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H01_H04_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "SPECIALIST_VALIDATION_PENDING"
+      "status": "OWNER_APPROVAL_REQUIRED",
+      "terminalClassification": "KEEP_SEPARATE",
+      "governanceDisposition": "SCOPE_DEDUP_ONLY",
+      "audit": "shared-knowledge/CURRICULUM_H01_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md",
+      "machineAudit": "shared-knowledge/curriculum_h01_dependency_anti_orphan_audit_20261004_v0_1.json",
+      "dependencyAudit": "PASS",
+      "antiOrphan": "PASS",
+      "maturityImpact": "NONE_D09_13_D09_14_REMAIN_L3_60",
+      "formalCoreImpact": "NONE",
+      "proposedNames": {
+        "D09-13": "Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）",
+        "D09-14": "Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）"
+      }
     },
     {
       "id": "H02",
