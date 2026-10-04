@@ -5280,3 +5280,33 @@ This does not create:
 
 PVE remains 239.
 Gate 7 remains CLOSED.
+
+# Pre-PVE-240 addendum — D02 consumes D16 validation receipts, not self-made sample thresholds (2026-10-04)
+
+No PVE number consumed.
+No economic outcome inspected.
+
+24/24 executable guard tests PASS.
+
+New rule:
+D02 may define feature semantics and evidence admission, but promotion-grade statistical adequacy must be returned by D16.
+
+The D16 receipt must bind:
+- exact D02 evidence key;
+- exact admission / experiment / outcome versions;
+- common support;
+- independent scan dates and symbols;
+- date dependence method;
+- small-cluster treatment;
+- overlap/purge control;
+- coverage/missingness;
+- preregistered MDE / precision / semantic-materiality target;
+- sample adequacy;
+- effective sample;
+- multiple-testing review;
+- concentration review;
+- cost/liquidity review for positive economic candidates.
+
+Cross-module receipt reuse is fatal integrity.
+
+No D02 L4 maturity change occurs from this interface alone.
