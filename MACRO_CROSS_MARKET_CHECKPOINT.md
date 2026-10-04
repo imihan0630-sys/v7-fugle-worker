@@ -685,3 +685,62 @@ The native publication-vintage path is therefore:
 2. Continue D13 source-attested H.4.1/TWSE/global-control dates while outcomes remain closed.
 3. Historical CBC first-public narrowing is secondary unless a validation design needs it.
 4. D12 remains the active immediate lane at DR-086: official rate/discount convention and real-parent IV replay.
+
+
+## 2026-10-04 Room09 continuation — MC-188..MC-192 CBO projection-vintage reconciliation
+
+Status: RESEARCH_ONLY / OFFICIAL_MULTI_VINTAGE_REPLAY / OUTCOMES_CLOSED / NO_PROMOTION.
+Durable evidence: `research/d13_19_cbo_projection_vintage_reconciliation_20261004_v0_1.json`.
+
+### MC-188 — one CBO forecast has multiple policy/data cutoffs
+The 2026-02-11 CBO outlook does not have one universal cutoff clock:
+- trade policy reflected as of 2025-11-20;
+- demographic projections based on laws/policies as of 2025-09-30;
+- economic developments and laws reflected as of 2025-12-03;
+- budget projections also incorporate legislation through 2026-01-14.
+Therefore `projectionVintage` alone is insufficient. Each feature must carry the assumption/data cutoff relevant to that component.
+
+### MC-189 — displayed historical data can postdate the forecast-input state
+CBO states that some historical data displayed in the February report reflected late-January 2026 updates that were not available when the economic forecast was finalized on 2025-12-03.
+Hence:
+- forecast input state;
+- later historical data displayed in the report;
+- publication date;
+are distinct clocks. A later displayed actual must not be treated as a model input to the earlier forecast.
+
+### MC-190 — current February files are not automatically original February bytes
+The official report page records later repost/correction events on 2026-03-04, 2026-03-24 and 2026-03-25.
+CBO's official `US-CBO/cbo-data` repository now preserves standardized vintage-named files, but the 2026-02 calendar projection file first entered that repository in commit `4b38d1b60ed63dc937d62613dd442278690a2ca1` on 2026-05-27T20:18:20Z.
+Thus the machine repository is excellent for official standardized cross-vintage replay but cannot be relabeled as an immutable 2026-02-11 first-known raw receipt.
+
+### MC-191 — projection revision is a multidimensional vector
+Official standardized 2025-09 -> 2026-02 calendar-vintage comparison for 2026 shows:
+- real GDP growth +0.330 pp;
+- PCE inflation +0.023 pp;
+- core PCE inflation -0.102 pp;
+- unemployment +0.164 pp;
+- 3-month Treasury rate -0.130 pp;
+- 10-year Treasury rate -0.064 pp;
+- federal funds rate -0.148 pp.
+
+For 2027, examples include:
+- real GDP growth -0.074 pp;
+- PCE inflation +0.321 pp;
+- core PCE inflation +0.227 pp;
+- unemployment +0.185 pp;
+- 10-year Treasury rate +0.220 pp.
+
+These directions conflict inside one vintage transition. A scalar `macroRevisionScore` with mechanical bullish/bearish sign is therefore not identified without a preregistered transformation and transmission model.
+
+### MC-192 — schema and partial-update firewall
+- Starting in the 2026-02 standardized economic files, population/labor-force fields split Census-based and BLS-based variants. Definition/schema change must be separated from economic revision.
+- CBO's 2026-08-20 tariff update incorporates tariff-policy changes through 2026-07-31 for budgetary projections. It is not a complete replacement economic forecast and must not be spliced onto the February macro vector as though a coherent new full forecast had been published.
+- D13-19 remains L2/40%; D13 remains 41.1%.
+- No Taiwan outcomes inspected; no L3/OOS claim.
+- Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+
+### Exact next continuation after MC-192
+1. Use the official version-aware CBO repository for source-only cross-vintage replay, preserving its retrospective-normalization status.
+2. Only origin release-time receipts may establish strict first-known bytes/timestamps.
+3. Freeze any future CBO revision feature as a component vector by horizon/definition before Taiwan outcomes.
+4. Continue D13-16 H.4.1 source-vintage decomposition and D13-17 prospective CBC BOP receipts independently.
