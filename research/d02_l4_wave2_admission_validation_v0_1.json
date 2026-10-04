@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_EXECUTABLE_ADMISSION_PASS",
+  "evidenceCursor": "PVE-239",
+  "formalCore": "LOCKED",
+  "d02MaturityPct": 60,
+  "maturityImpact": "NONE",
+  "runtime": {
+    "name": "Node.js",
+    "version": "v22.16.0",
+    "tests": 32,
+    "status": "PASS"
+  },
+  "modules": [
+    "D02-04",
+    "D02-05",
+    "D02-07",
+    "D02-08",
+    "D02-09",
+    "D02-10",
+    "D02-11",
+    "D02-12"
+  ],
+  "guarantees": {
+    "outcomeBlind": true,
+    "moduleSpecificAdmission": true,
+    "duplicateEventIdFatalIntegrity": true,
+    "maturityPromotionAuthorized": false,
+    "l4SampleAdequacyAuthorized": false,
+    "formalCoreChangeAuthorized": false
+  },
+  "keyBlockersPreserved": {
+    "D02_04": "no hindsight demand-reexpansion leak",
+    "D02_05": "no latent motive inference",
+    "D02_07": "no OBV duplicate vote",
+    "D02_08": "no true OFI/intent upgrade",
+    "D02_09": "typed families only; no visual/all-pair/best-window search",
+    "D02_10": "parent-clock and anti-triple-vote firewall",
+    "D02_11": "reason-stratified rejected-control lane required",
+    "D02_12": "bounded time curve; prospective-only price profile"
+  },
+  "remainingBlockers": [
+    "CLEAN_DATE_ZERO",
+    "PVE-240_PENDING",
+    "GATE_7_CLOSED",
+    "NO_GENUINE_PROSPECTIVE_OR_OOS_EVIDENCE"
+  ]
+}
