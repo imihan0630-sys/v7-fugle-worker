@@ -46,7 +46,9 @@
       "canonicalNames": {
         "D09-13": "Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）",
         "D09-14": "Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）"
-      }
+      },
+      "canonicalReceipt": "shared-knowledge/CURRICULUM_H01_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md",
+      "canonicalReceiptJson": "shared-knowledge/curriculum_h01_canonical_update_receipt_20261004_v0_1.json"
     },
     {
       "id": "H02",
