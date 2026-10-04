@@ -1,6 +1,6 @@
 # System 2 Historical Data Checkpoint
 
-Updated: 2026-10-04 21:14 Asia/Taipei
+Updated: 2026-10-04 21:20 Asia/Taipei
 Status: ACTIVE / DATA_LANE
 Room: System 2｜歷史資料工程室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
@@ -97,4 +97,4 @@ Require, as applicable:
 
 ## Exact next action
 
-Generalize the annual workflow from hard-coded 2017 to an explicit year input without changing storage architecture, then execute and physically verify 2018 TWSE followed by 2018 TPEx. Preserve all 2017 UNKNOWN/continuity/survivorship debt in the coverage matrix; do not reopen accepted 2017 raw A1 backfills unless new source-integrity evidence requires it.
+The completed-year annual workflow is parameterized for 2017-2025 and rejects the current/incomplete calendar year. Dispatch 2018 TWSE first, physically verify and durable-write its evidence, then dispatch 2018 TPEx under the same standard. Preserve all 2017 UNKNOWN/continuity/survivorship debt in the coverage matrix. Handle 2026 later through a separate incremental/current-year receipt path so an incomplete year can never be frozen as an annual COMPLETE receipt.
