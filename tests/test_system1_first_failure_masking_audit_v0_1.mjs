@@ -16,16 +16,20 @@ const diagnosis={
     obs('B','產業廣度、漲幅或資金活躍度偏弱',['SECTOR_GATE']),
     obs('C','A拉回承接/B突破後承接皆未形成候選',['AB_SETUP','TARGET_AVAILABLE']),
     obs('D','NEW_UNKNOWN_REASON',['ATR_QUALITY']),
+    obs('UP','HISTORY_OR_FEATURE_ADMISSION_BLOCKED',['HISTORY_60D']),
     obs('E',null,[],true)
   ]
 };
 const x=audit(diagnosis);
-assert.equal(x.formalRejectedN,4);
+assert.equal(x.formalRejectedN,5);
+assert.equal(x.scoreCandidateReasonScopeN,4);
+assert.equal(x.outsideScoreCandidateReasonScopeN,1);
 assert.equal(x.mappedFirstFailureN,3);
 assert.equal(x.unmappedFirstFailureN,1);
 assert.equal(x.multiFailRejectedN,2);
 assert.equal(x.singleFailRejectedN,2);
 assert.equal(x.totalHiddenObservedFails,3);
+assert.equal(x.mappingCoverageRate,.75);
 assert.equal(x.perGate.LIQUIDITY.firstFailureN,1);
 assert.equal(x.perGate.LIQUIDITY.observedFailN,1);
 assert.equal(x.perGate.SECTOR_GATE.firstFailureN,1);
