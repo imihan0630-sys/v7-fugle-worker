@@ -1,0 +1,138 @@
+name: Research TPEx Halt Machine Contract Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/research-tpex-halt-machine-contract-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: research-tpex-halt-machine-contract-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Capture official page form and exact machine route
+        shell: bash
+        run: |
+          set -euo pipefail
+          PAGE="https://www.tpex.org.tw/zh-tw/announce/market/halt/historical.html"
+          ENDPOINT="https://www.tpex.org.tw/www/zh-tw/bulletin/sprcHis"
+
+          curl --fail --silent --show-error --location --max-time 30             --dump-header /tmp/page.headers             --output /tmp/page.html             "${PAGE}"
+
+          python - <<'PY'
+          from html.parser import HTMLParser
+          import json
+          class P(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.inputs=[]; self.select=None; self.selects={}; self._option=None
+              def handle_starttag(self, tag, attrs):
+                  a=dict(attrs)
+                  if tag=="input" and a.get("name"):
+                      self.inputs.append({k:a.get(k) for k in ("name","type","value","data-value","data-initial")})
+                  elif tag=="select" and a.get("name"):
+                      self.select=a["name"]; self.selects.setdefault(self.select,[])
+                  elif tag=="option" and self.select is not None:
+                      self._option={"value":a.get("value"),"selected":"selected" in a,"text":""}
+              def handle_data(self,data):
+                  if self._option is not None: self._option["text"] += data
+              def handle_endtag(self,tag):
+                  if tag=="option" and self.select is not None and self._option is not None:
+                      self._option["text"]=self._option["text"].strip()
+                      self.selects[self.select].append(self._option); self._option=None
+                  elif tag=="select": self.select=None
+          p=P(); p.feed(open("/tmp/page.html",encoding="utf-8",errors="replace").read())
+          print("FORM_INPUTS="+json.dumps(p.inputs,ensure_ascii=False))
+          print("FORM_SELECTS="+json.dumps(p.selects,ensure_ascii=False))
+          PY
+
+          curl --fail --silent --show-error --location --max-time 30             --output /tmp/main.js "https://www.tpex.org.tw/rsrc/js/main.js"
+          python - <<'PY'
+          import re
+          s=open("/tmp/main.js",encoding="utf-8",errors="replace").read()
+          m=re.search(r'API_PATTERN="([^"]+)"',s)
+          print("API_PATTERN="+(m.group(1) if m else "NOT_FOUND"))
+          print("EXPECTED_ENDPOINT=https://www.tpex.org.tw/www/zh-tw/bulletin/sprcHis")
+          PY
+
+      - name: POST frozen 2026 mainboard control as JSON
+        shell: bash
+        run: |
+          set -euo pipefail
+          ENDPOINT="https://www.tpex.org.tw/www/zh-tw/bulletin/sprcHis"
+          curl --silent --show-error --location --max-time 30             --request POST             --header "Content-Type: application/x-www-form-urlencoded; charset=UTF-8"             --header "Referer: https://www.tpex.org.tw/zh-tw/announce/market/halt/historical.html"             --data-urlencode "date=2026"             --data-urlencode "cate=1"             --data-urlencode "response=json"             --dump-header /tmp/json.headers             --output /tmp/control.json             --write-out "JSON_HTTP_STATUS=%{http_code}\nJSON_CONTENT_TYPE=%{content_type}\nJSON_BYTES=%{size_download}\n"             "${ENDPOINT}"
+
+          echo "JSON_SHA256=$(sha256sum /tmp/control.json | awk '{print $1}')"
+          sed -n '1,60p' /tmp/json.headers
+          python - <<'PY'
+          import json,hashlib
+          raw=open("/tmp/control.json","rb").read()
+          try:
+              j=json.loads(raw)
+          except Exception as e:
+              print("JSON_PARSE=FAIL",repr(e))
+              print(raw[:1200].decode("utf-8","replace"))
+              raise SystemExit(0)
+          print("JSON_PARSE=PASS")
+          print("TOP_KEYS="+json.dumps(sorted(j.keys()),ensure_ascii=False))
+          print("STAT="+str(j.get("stat")))
+          tables=j.get("tables")
+          if isinstance(tables,list):
+              print("TABLE_COUNT="+str(len(tables)))
+              for i,t in enumerate(tables[:5]):
+                  print("TABLE_%d_KEYS="%i+json.dumps(sorted(t.keys()),ensure_ascii=False))
+                  print("TABLE_%d_FIELDS="%i+json.dumps(t.get("fields"),ensure_ascii=False))
+                  data=t.get("data") if isinstance(t.get("data"),list) else []
+                  print("TABLE_%d_ROW_COUNT="%i+str(len(data)))
+                  print("TABLE_%d_TOTAL_COUNT="%i+str(t.get("totalCount")))
+                  print("TABLE_%d_FIRST_ROWS="%i+json.dumps(data[:3],ensure_ascii=False))
+          else:
+              for key in ("data","aaData"):
+                  data=j.get(key)
+                  if isinstance(data,list):
+                      print(key.upper()+"_ROW_COUNT="+str(len(data)))
+                      print(key.upper()+"_FIRST_ROWS="+json.dumps(data[:3],ensure_ascii=False))
+          PY
+
+      - name: GET same frozen control as CSV export
+        shell: bash
+        run: |
+          set -euo pipefail
+          ENDPOINT="https://www.tpex.org.tw/www/zh-tw/bulletin/sprcHis"
+          curl --silent --show-error --location --max-time 30             --get             --data-urlencode "date=2026"             --data-urlencode "cate=1"             --data-urlencode "response=csv"             --dump-header /tmp/csv.headers             --output /tmp/control.csv             --write-out "CSV_HTTP_STATUS=%{http_code}\nCSV_CONTENT_TYPE=%{content_type}\nCSV_BYTES=%{size_download}\n"             "${ENDPOINT}"
+
+          echo "CSV_SHA256=$(sha256sum /tmp/control.csv | awk '{print $1}')"
+          sed -n '1,60p' /tmp/csv.headers
+          python - <<'PY'
+          from pathlib import Path
+          raw=Path("/tmp/control.csv").read_bytes()
+          print("CSV_PREFIX_HEX="+raw[:8].hex())
+          for enc in ("utf-8-sig","big5","cp950","utf-8"):
+              try:
+                  text=raw.decode(enc)
+                  print("CSV_DECODE="+enc)
+                  lines=[x for x in text.splitlines() if x.strip()]
+                  print("CSV_NONEMPTY_LINES="+str(len(lines)))
+                  print("CSV_FIRST_LINES="+repr(lines[:5]))
+                  break
+              except UnicodeDecodeError:
+                  pass
+          PY
+
+      - name: Confirm research-only authority boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "research_only=true"
+          echo "history_mutation=false"
+          echo "system1_runtime_used=false"
+          echo "selection_authority=false"
+          echo "formal_core_changed=false"
