@@ -61,3 +61,23 @@ const semanticB=buildD08SemanticUniverseIdentityV0_1({
 });
 assert.equal(semanticA.semanticRegistryHash,semanticB.semanticRegistryHash,
   "semantic universe hash must ignore capture clock and volatile generic membership hash");
+
+
+const legacy=parseOfficialHistoricalA6ValuationPayloadV0_1({
+  marketDate:"2005-09-02",observedAt:"2026-10-04T00:00:00Z",
+  payload:{
+    stat:"OK",date:"20050902",
+    fields:["證券代號","證券名稱","本益比","殖利率(%)","股價淨值比"],
+    data:[["1101","台泥","16.92","5.91","1.07"],["1103","嘉泥","-","0.00","0.99"]]
+  },
+});
+assert.equal(legacy.sourceSchemaProfile,"LEGACY_RATIO_ONLY");
+assert.equal(legacy.closeFieldProvided,false);
+assert.equal(legacy.fiscalReportPeriodFieldProvided,false);
+assert.equal(legacy.rows[0].close,null);
+assert.equal(legacy.rows[0].closeState,"SOURCE_NOT_PROVIDED");
+assert.equal(legacy.rows[0].fiscalReportPeriod,null);
+assert.equal(legacy.rows[0].fiscalReportPeriodState,"SOURCE_NOT_PROVIDED");
+assert.equal(legacy.rows[0].pe,16.92);
+assert.equal(legacy.rows[1].pe,null);
+assert.equal(legacy.rows[1].pb,0.99);
