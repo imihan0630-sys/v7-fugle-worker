@@ -1,0 +1,179 @@
+{
+  "schemaVersion": "D22_L4_STAGE_A_INCREMENTAL_VALUE_PREREG_V0_1",
+  "frozenAt": "2026-10-04T15:10:00+08:00",
+  "status": "OUTCOME_BLIND / STAGE_A_PREREGISTRATION / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "scope": {
+    "eligibleL3Modules": [
+      "D22-01",
+      "D22-02",
+      "D22-03",
+      "D22-05",
+      "D22-07",
+      "D22-08",
+      "D22-10"
+    ],
+    "blockedModules": {
+      "D22-04": "historical TPEx issuer-security-date replay unavailable",
+      "D22-06": "historical TPEx issuer-security-date spread replay unavailable",
+      "D22-09": "downstream dependency on D22-06 credit-market replay",
+      "D22-11": "bank-credit supply cannot yet be identified separately from demand",
+      "D22-12": "issuer-level default/recovery panel incomplete and rare-event selection bias unresolved"
+    }
+  },
+  "objective": "Test whether each PIT-valid D22 transformation adds incremental Taiwan equity information beyond its primitive accounting, macro, event and overlapping credit dependencies, without treating the 22-domain curriculum as an AND-gate.",
+  "commonSupport": {
+    "parentKey": [
+      "issuer",
+      "decisionDate",
+      "sourceVersion",
+      "entityScope",
+      "accountingBasis"
+    ],
+    "rule": "Baseline and challenger are compared only on the exact same eligible issuer-date population. Coverage changes are reported separately and never converted into apparent alpha.",
+    "clusterRule": "Multiple credit disclosures/events on the same issuer-date or one continuous deterioration/refinancing episode are clustered to prevent duplicate evidence weighting.",
+    "minimumEvidenceRule": "Fewer than 20 mature independent paired dates remains ACCUMULATING and cannot support a directional conclusion; reaching 20 does not by itself satisfy L4."
+  },
+  "outcomeFamily": {
+    "primaryHorizonsTradingDays": [
+      5,
+      10,
+      20
+    ],
+    "laterMaturityHorizonsTradingDays": [
+      40,
+      60
+    ],
+    "pathOutcomes": [
+      "MFE",
+      "MAE"
+    ],
+    "relativeOutcomes": [
+      "market_or_sector_adjusted_return_when_same_basis_is_available"
+    ],
+    "rule": "Do not search for the best horizon after outcomes are observed. D+40/D+60 are evaluated only after sufficient elapsed time.",
+    "outcomesOpen": false
+  },
+  "baselineHierarchy": [
+    {
+      "id": "B0",
+      "controls": [
+        "D07 accounting profitability/leverage/liquidity primitives",
+        "D13 risk-free/rate/macro context",
+        "industry",
+        "size/liquidity",
+        "known corporate-action/event clocks from D11"
+      ],
+      "role": "minimum shared baseline"
+    },
+    {
+      "id": "B1",
+      "controls": [
+        "B0",
+        "module-specific upstream D22 primitives"
+      ],
+      "role": "anti-repackaging baseline"
+    }
+  ],
+  "moduleChallengers": [
+    {
+      "module": "D22-01",
+      "transform": "contractual maturity pressure / refinancing timing",
+      "mustBeat": [
+        "D07 carrying leverage/liquidity",
+        "D13 rate context"
+      ],
+      "failure": "No incremental information or effect disappears after exact knownAt/common-support controls."
+    },
+    {
+      "module": "D22-02",
+      "transform": "frozen-definition interest/debt-service capacity",
+      "mustBeat": [
+        "D07 operating cash flow/profitability/leverage",
+        "D22-01 maturity timing"
+      ],
+      "failure": "Coverage is only a repackaged profitability/leverage effect."
+    },
+    {
+      "module": "D22-03",
+      "transform": "cash-accessibility-aware net-debt/funding structure",
+      "mustBeat": [
+        "D07 gross debt/cash primitives",
+        "D22-01 maturity",
+        "D22-02 coverage"
+      ],
+      "failure": "Structured liquidity/debt view adds no information beyond primitives."
+    },
+    {
+      "module": "D22-05",
+      "transform": "clustered rating/outlook/watch surprise state",
+      "mustBeat": [
+        "pre-event fundamentals",
+        "D22-06 market-credit state once available",
+        "prior rating/outlook/watch state"
+      ],
+      "failure": "Agency action is fully anticipated or duplicates existing deterioration."
+    },
+    {
+      "module": "D22-07",
+      "transform": "contractual liquidity/covenant trigger, cushion, breach/waiver state",
+      "mustBeat": [
+        "D22-02 ratio primitive",
+        "D22-03 liquidity primitive"
+      ],
+      "failure": "Only repeats the same ratio/cash information without contractual nonlinearity."
+    },
+    {
+      "module": "D22-08",
+      "transform": "unhedged repricing exposure / transmission state",
+      "mustBeat": [
+        "D13 rate move",
+        "D22-01 maturity amount/timing",
+        "D22-04 replacement cost when available"
+      ],
+      "failure": "Fixed/floating label adds no incremental transmission information."
+    },
+    {
+      "module": "D22-10",
+      "transform": "funding-source/tenor/seniority/use-of-proceeds sequence",
+      "mustBeat": [
+        "D07 leverage",
+        "D11 event identity",
+        "D22-01 maturity",
+        "D22-04 cost when available"
+      ],
+      "failure": "Funding-mix effect is only issuance-event or leverage repackaging."
+    }
+  ],
+  "validationSequence": [
+    "Freeze eligible PIT source receipts and versions.",
+    "Freeze exact common-support population without return labels.",
+    "Freeze outcome horizons and event-clustering rules.",
+    "Open historical outcomes once for the frozen panel.",
+    "Run leave-one-date-out / walk-forward sensitivity with date clustering.",
+    "Hold out later independent dates or accumulate Prospective Shadow; never fabricate historical Shadow.",
+    "Report coverage, UNKNOWN rate, date/industry concentration, MFE, MAE, raw and adjusted returns together.",
+    "Apply multiple-testing accounting to every new threshold/window/classification.",
+    "Perform redundancy tests versus baselines and upstream D22 dependencies.",
+    "Only after OOS/prospective evidence may a module be considered for L4."
+  ],
+  "antiOverfit": [
+    "No sign flipping after seeing outcomes.",
+    "No threshold optimization unless separately preregistered as a new experiment.",
+    "No changing maturity bucket, covenant definition, rating cluster or fixed/floating taxonomy after outcome opening.",
+    "No exclusion of losing industries/dates except pre-specified data-quality invalidations.",
+    "No treating UNKNOWN as neutral/pass/fail.",
+    "No duplicate votes from one underlying primitive or one deterioration/refinancing episode."
+  ],
+  "formalBoundary": {
+    "formalCore": "LOCKED",
+    "optimizationCandidate": "NONE",
+    "systemUse": "RESEARCH_ONLY",
+    "promotionRule": "L4 evidence is necessary but not sufficient for any Formal optimization. Cost, robustness, redundancy, multi-regime and owner approval remain required."
+  },
+  "exactNext": [
+    "Expand independent-date PIT panels for D22-01/02/03/05/07/08/10 without opening returns.",
+    "Materialize a frozen common-support inventory and count independent issuer-date clusters.",
+    "When a lane reaches the pre-outcome panel gate, freeze its exact population/hash and then open outcomes once.",
+    "Keep D22-04/06/09/11/12 blocked at their current gates rather than substituting incompatible proxies."
+  ]
+}
