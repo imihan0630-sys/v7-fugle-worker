@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "D20_03_PUBLIC_FORECAST_CALIBRATION_CANDIDATE_V0_1",
+  "frozenAtAsiaTaipei": "2026-10-04T13:59:48+08:00",
+  "module": "D20-03",
+  "sourceReceipt": "research/d20_ptt_social_source_live_receipt_20261004_v0_1.json",
+  "status": "CANDIDATE_SOURCE_FEASIBLE / OVERCONFIDENCE_IDENTIFIABILITY_NOT_PROVEN / KEEP_L2",
+  "candidate": "Prospectively capture explicit public numerical forecasts, targets or ranges by public forum handle, then evaluate calibration error under a frozen horizon.",
+  "whyNotL3": [
+    "A public forecast is not verified trading behavior.",
+    "Many posts do not state subjective probability or confidence intervals, so overprecision is often not directly observable.",
+    "Posting selection, reputation incentives, sarcasm and later edits can confound calibration.",
+    "Numeric target error measures forecast accuracy, not overconfidence by itself."
+  ],
+  "unlockForL3": "A bounded sublane must directly observe stated confidence/uncertainty or another near-direct confidence proxy with replayable lineage, rather than infer confidence from turnover, returns or target errors alone.",
+  "formalOptimizationCandidate": "NONE",
+  "formalCore": "LOCKED"
+}
