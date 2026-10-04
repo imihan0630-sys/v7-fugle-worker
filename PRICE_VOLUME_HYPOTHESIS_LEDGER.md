@@ -945,3 +945,24 @@ All 12 D02 modules now have executable L4-admission firewalls.
 No economic hypothesis changes status.
 No L4 promotion.
 No FORMAL_OPTIMIZATION_CANDIDATE.
+
+## Pre-PVE-240 D02→D16 validation ownership overlay — 2026-10-04
+
+D02 does not own statistical sample-adequacy certification.
+
+Wave-1 retains its frozen descriptive/evidence checkpoints.
+Wave-2 does not inherit 100/30 as a universal rule.
+
+For each evidence key:
+D02 first admits genuine prospective/OOS rows.
+D16 then determines dependence-aware sample adequacy against a preregistered effect/precision target.
+
+Allowed positive D16 outputs for D02 review:
+- VALIDATION_PASS_CANDIDATE;
+- SEMANTIC_GOVERNANCE_CANDIDATE.
+
+These are review candidates only.
+They are not automatic maturity promotions.
+
+No hypothesis status changes.
+No FORMAL_OPTIMIZATION_CANDIDATE.
