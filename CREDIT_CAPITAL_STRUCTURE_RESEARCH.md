@@ -1,6 +1,6 @@
 # Credit / Capital Structure Research
 
-Updated: 2026-10-04 13:55 Asia/Taipei
+Updated: 2026-10-04 13:45 Asia/Taipei
 Scope: D22
 Status: ACTIVE_RESEARCH / D22-01 L3_WAITING_PANEL / D22-02 L2_ACTIVE / D22-03 L2_MECHANISM_DEFINED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
@@ -280,7 +280,7 @@ Distress, PD, LGD/recovery and equity tail risk are separate. Structural/Merton 
 ### Exact next continuation
 Prioritize D22-04/D22-06 TPEx market-credit replay, then D22-05 rating-event replay, then D22-07/D22-08 contractual/repricing panels. These upstream data families are prerequisites for defensible D22-09~12 PIT replay and later L4 incremental-value tests.
 
-## 2026-10-04 13:55 continuation｜Second-stage PIT validation: D22-05 / D22-08 / D22-10 promoted to L3
+## 2026-10-04 13:45 continuation｜Second-stage PIT validation: D22-05 / D22-08 / D22-10 promoted to L3
 
 This continuation moved D22 from 45.0% to 50.0% through three module-specific Taiwan PIT replay validations. No equity outcomes were opened and no module was promoted on source-route feasibility alone.
 
