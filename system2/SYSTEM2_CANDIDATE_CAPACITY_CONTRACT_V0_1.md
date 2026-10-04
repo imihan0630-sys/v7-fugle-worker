@@ -20,7 +20,7 @@ This contract is System 2 only and does not alter System 1/V8.
 7. Existing global-pool members are revalidated daily and retained while at least one strategy thesis still has meaningful observation value.
 8. If one strategy membership fails while another remains valid, remove only the failed membership; do not automatically remove the symbol globally.
 9. If more than 12 retained symbols somehow survive revalidation, treat this as an invariant violation rather than silently dropping a name.
-10. Actual positions in POSITION_MONITOR（持股監控） remain outside candidate/entry-monitor caps.
+10. Current implemented `POSITION_MONITOR` reached from `SIM_FILLED` is a virtual/simulated position and remains outside candidate/entry-monitor caps. Target rule: verified actual holdings will also remain outside those caps only after an owner-authorized actual-holdings source/reconciliation path is wired; this contract does not itself prove that capability.
 
 ## Ranking boundary
 
