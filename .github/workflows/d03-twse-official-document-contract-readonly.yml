@@ -1,0 +1,101 @@
+name: D03 TWSE Official Document Contract Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/d03-twse-official-document-contract-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: d03-twse-official-document-contract-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Fetch official TWSE announcement page
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="https://wwwc.twse.com.tw"
+          PAGE="/zh/announcement/announcement/list.html"
+          curl --fail --silent --show-error --location --max-time 30 \
+            --header "User-Agent: D03-TWSE-Official-Document-Contract/0.1" \
+            "${BASE}${PAGE}" -o /tmp/twse_announcement.html
+          echo "http_fetch=PASS"
+          echo "bytes=$(wc -c </tmp/twse_announcement.html)"
+          echo "sha256=$(sha256sum /tmp/twse_announcement.html | awk '{print $1}')"
+
+      - name: Inspect forms inputs scripts and endpoint-like strings
+        shell: python
+        run: |
+          from html.parser import HTMLParser
+          from urllib.parse import urljoin, urlparse
+          from pathlib import Path
+          import json, re, subprocess
+
+          BASE="https://wwwc.twse.com.tw"
+          html=Path("/tmp/twse_announcement.html").read_text(encoding="utf-8",errors="replace")
+
+          class P(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.forms=[]; self.inputs=[]; self.scripts=[]; self.links=[]
+              def handle_starttag(self,tag,attrs):
+                  d=dict(attrs)
+                  if tag=="form": self.forms.append(d)
+                  if tag in ("input","select","textarea","button"):
+                      self.inputs.append({"tag":tag,**d})
+                  if tag=="script" and d.get("src"): self.scripts.append(d["src"])
+                  if tag=="a" and d.get("href"): self.links.append(d["href"])
+          p=P(); p.feed(html)
+
+          print("FORMS_JSON="+json.dumps(p.forms,ensure_ascii=False))
+          print("INPUTS_JSON="+json.dumps(p.inputs,ensure_ascii=False))
+          print("SCRIPT_SRCS_JSON="+json.dumps(p.scripts,ensure_ascii=False))
+
+          inline=set()
+          for m in re.finditer(r'https?://[^"\'\s<>]+',html,re.I):
+              inline.add(m.group(0))
+          for m in re.finditer(r'["\']([^"\']*(?:announcement|ajax|api|query|search|report|csv|json)[^"\']*)["\']',html,re.I):
+              inline.add(m.group(1))
+          print("INLINE_ENDPOINT_HINTS_JSON="+json.dumps(sorted(inline)[:300],ensure_ascii=False))
+
+          same_host_scripts=[]
+          for src in p.scripts:
+              u=urljoin(BASE,src)
+              if urlparse(u).hostname=="wwwc.twse.com.tw":
+                  same_host_scripts.append(u)
+          print("SAME_HOST_SCRIPT_COUNT="+str(len(same_host_scripts)))
+
+          hints=[]
+          for i,u in enumerate(same_host_scripts[:40]):
+              cp=subprocess.run(
+                  ["curl","--fail","--silent","--show-error","--location","--max-time","30",
+                   "--header","User-Agent: D03-TWSE-Official-Document-Contract/0.1",u],
+                  text=True,capture_output=True
+              )
+              if cp.returncode!=0:
+                  print("SCRIPT_FETCH_ERROR",u,cp.stderr[:300])
+                  continue
+              for line_no,line in enumerate(cp.stdout.splitlines(),1):
+                  if re.search(r'announcement|ajax|api|query|search|startDate|endDate|keyword|csv|json|response|page',line,re.I):
+                      hints.append({"url":u,"line":line_no,"text":line.strip()[:1000]})
+          print("SCRIPT_HINTS_JSON="+json.dumps(hints[:500],ensure_ascii=False))
+
+      - name: Bounded raw-page grep
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Ein 'announcement|ajax|api|query|search|startDate|endDate|keyword|csv|json|page' /tmp/twse_announcement.html | head -n 250 || true
+          echo "READ_ONLY_BOUNDARY=PASS"
+          echo "HISTORY_MUTATION=false"
+          echo "STRATEGY_EVALUATION=false"
+          echo "SELECTION_AUTHORITY=false"
+          echo "SYSTEM1_RUNTIME_USED=false"
