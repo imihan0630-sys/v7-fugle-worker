@@ -2442,3 +2442,164 @@ Exact next continuation:
 2. D21-03: recover authoritative monthly insider known_at and a second transfer-motive case.
 3. D21-01: recover authoritative ownership-report known_at / receipt.
 4. All L3 modules require OOS / prospective validation before L4.
+
+
+## D21-01 Conservative Daily PIT Bound v0.3 / D21-04 Source-Gate Update
+
+Date: 2026-10-04 Asia/Taipei
+Status: D21-01 L3 DAILY_PIT_BOUND_VALIDATED / D21-04 L2 SOURCE_BLOCKED / FORMAL_CORE_UNCHANGED
+
+## D21-01 conservative daily PIT bound
+
+### Research problem
+
+The prior D21-01 replay correctly refused to treat print dates, mirror dates or statutory deadlines as exact first-known timestamps.
+However, for a daily after-market selection model, exact first-public second is not always required if an authoritative rule creates a conservative latest-publication bound.
+
+The safe research object is therefore split:
+- exact_first_known_at: preferred when authoritative filing receipt exists;
+- safe_daily_effective_from: a deliberately later timestamp/date after which public availability is guaranteed by regulation.
+
+This is a lower-freshness but no-look-ahead fallback. It may NOT be used for intraday event studies.
+
+### Historical rule vintage
+
+For the 2024 annual-report vintage used at 2025 shareholder meetings, the 2024-08-01 version of Taiwan's annual-report rules required:
+- listed/OTC issuers generally to file the electronic annual report 7 days before the shareholders' meeting;
+- listed/OTC issuers with latest-year-end paid-in capital >= NT$2bn, or foreign/PRC shareholding >=30%, to file 14 days before the shareholders' meeting.
+
+The rule explicitly requires filing to the regulator-designated information website.
+
+Therefore:
+safe_daily_effective_from = next trading day after the statutory filing deadline,
+unless an earlier authoritative filing timestamp is independently recovered.
+
+This does not claim the statutory deadline is the actual known_at.
+It claims only that public availability must already have occurred by that deadline.
+
+### Replay A — TSMC 2330 / 2024 annual report
+
+2025 AGM date:
+- 2025-06-03.
+
+Applicable filing bound:
+- TSMC qualifies for the 14-day rule by paid-in capital.
+- latest required filing date = 2025-05-20.
+- conservative daily safe date = 2025-05-21.
+
+Historical ownership snapshot in the 2024 annual report:
+- ADR-Taiwan Semiconductor Manufacturing Company Ltd.: 20.49%;
+- National Development Fund, Executive Yuan: 6.38%;
+- other custody/institutional holders materially smaller.
+
+Threshold falsification retained:
+- the 20.49% ADR depositary line is not automatically one ultimate beneficial controller;
+- a naive >=20% direct-holder rule can still create a false positive.
+
+Replay rule:
+- the annual-report ownership graph may enter a daily historical feature set from 2025-05-21 at the latest-safe boundary;
+- if an earlier original MOPS receipt is later recovered, the feature may be moved earlier, never later than the conservative bound unless a filing breach is documented.
+
+### Replay B — Formosa Plastics 1301 / 2024 annual report
+
+2025 AGM date:
+- 2025-06-11.
+
+Applicable filing bound:
+- Formosa Plastics qualifies for the 14-day rule by paid-in capital.
+- latest required filing date = 2025-05-28.
+- conservative daily safe date = 2025-05-29.
+
+Historical major-holder snapshot as of 2025-04-13:
+- Chang Gung Medical Foundation: 9.44%;
+- Formosa Chemicals & Fibre: 7.65%;
+- custody account: 6.26%;
+- Nan Ya Plastics: 4.63%;
+- Chindwell International Investment: 4.16%;
+- Vanson International Investment: 3.05%;
+- Formosa Petrochemical: 2.07%;
+- Ming Chi University of Technology: 1.43%.
+
+Threshold falsification retained:
+- related group/network control can exist while each visible direct group holder is below 10%;
+- a single-holder >=10% rule can create a false negative.
+
+Replay rule:
+- the 2024 annual-report ownership snapshot may enter a daily historical feature set from 2025-05-29 at the latest-safe boundary.
+
+### Precision hierarchy frozen
+
+Ownership/replay clock quality:
+A. AUTHORITATIVE_EXACT_TIMESTAMP:
+   original MOPS filing receipt / authoritative exact timestamp.
+B. AUTHORITATIVE_OBSERVED_DATE_BEFORE_DECISION:
+   issuer/regulator archive proves public availability by a specific date/time.
+C. STATUTORY_LATEST_PUBLIC_BOUND:
+   applicable rule + shareholder-meeting date establish a guaranteed latest filing date; first safe daily use begins next trading day.
+D. PRINT_DATE_ONLY / THIRD_PARTY_MIRROR_ONLY:
+   insufficient for PIT eligibility unless reconciled.
+
+Rules:
+1. never label category C as exact known_at;
+2. category C is valid for conservative daily replay but prohibited for intraday studies;
+3. if a documented late-filing violation exists, statutory-bound eligibility is invalid and must be replaced by actual publication evidence;
+4. current ownership is never backfilled;
+5. all original controller-chain UNKNOWN semantics remain.
+
+### D21-01 maturity decision
+
+Advance D21-01 from L2 / 40% to L3 / 60%.
+
+L3 rationale:
+- two structurally different Taiwan listed-company ownership snapshots can be replayed without look-ahead under an authoritative conservative daily availability bound;
+- ownership fields, document vintage, relationship structure and threshold falsifications are reconstructable;
+- exact MOPS timestamp remains desirable but is no longer a blocker for DAILY PIT feasibility.
+
+L4 remains closed:
+- no OOS / prospective evidence that control-cashflow wedge or controller-network features add predictive value;
+- ultimate-controller reconstruction remains sensitive to incomplete chains and control-method definitions.
+
+Role: RESEARCH_ONLY / CONTEXT / GOVERNANCE_TAIL_RISK.
+Formal Core impact: NONE.
+
+## D21-04 source-gate update
+
+Official Taiwan reporting rules confirm:
+- directors/supervisors and specified insider positions must notify the company of pledge setup/release;
+- the company must input setup/release information into MOPS within 5 days;
+- monthly insider pledge changes are also aggregated in the monthly filing by the 15th.
+
+This creates a valid future conservative clock:
+- if an authoritative pledge event date is recovered, safe_daily_effective_from may be set no earlier than the next trading day after the applicable statutory latest-public date, unless an exact earlier authoritative timestamp is recovered.
+
+Current 2850 / Shinkong Textile path:
+- 2024-12-19 +8,000 lots;
+- 2025-01-23 -4,000 lots;
+- 2025-02-03 -5,000 lots;
+remains supported only by a secondary structured historical source for the individual event dates.
+
+Therefore:
+- D21-04 stays L2 / 40%;
+- do not promote from the legal deadline alone because the underlying event dates themselves are not yet independently authoritative;
+- current official issuer materials corroborate the major-shareholder identity / holdings context, not the individual historical pledge-event receipts.
+
+## D21-03 motive-diversity update
+
+A second non-directional transfer family is now frozen using the Hon Hai 2317 historical trust-transfer example:
+- 2019-04-18 and 2019-04-19;
+- manager's spouse;
+- 3,000 thousand shares each day;
+- transfer method = trust;
+- beneficiary account = bank trust account.
+
+An FSC official monthly publication independently records the 2019-04-19 insider transfer amount/holder, while market-data archives identify the trust method and receiving trust account.
+
+Implication:
+- trust transfer must not be interpreted as a bearish sale;
+- pre-transfer rows still do not solve the monthly post-change known_at blocker;
+- D21-03 remains L2 until authoritative monthly actual-change availability can be replayed conservatively or exactly.
+
+Exact next continuation:
+1. D21-03: construct conservative monthly actual-change safe-known-at using the statutory 15th-day deadline only if the underlying monthly change content is independently cross-validated by an authoritative source.
+2. D21-04: recover authoritative pledge-event dates/receipts or find a different issuer with official pledge setup/release event archive.
+3. All L3 modules require OOS/prospective validation before L4.
