@@ -530,3 +530,16 @@ Physical result:
 - `emptyMonthSemanticsCertified=true`.
 
 The broader revision/continuity gates remain blocked. Next: higher-row-count truncation stress -> historical knownAt semantics -> exchange-side cancellation/revocation coverage.
+
+## 2026-10-04 MOPSOV high-row pagination/truncation stress
+
+PR #455 / `3772f6332465a5912d1ca32314c322b455685d18` physically stressed the official MOPSOV company-history endpoint on a frozen 11-company universe.
+
+Top 3 by pre-cutoff row count:
+- 2891 = 391;
+- 3711 = 383;
+- 2881 = 300.
+
+All three reconciled exactly to Jan-Sep month shards with no one-sided or duplicate keys. No visible pagination hint was observed. This closes the currently planned frozen-sample high-row transport integrity gate, not revision completeness.
+
+Next engineering target: historical version knownAt semantics.
