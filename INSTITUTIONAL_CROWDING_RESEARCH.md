@@ -1247,3 +1247,68 @@ Exact continuation:
 3. H12: await Room10 counterpart + first live TWSE source receipt.
 4. Execute the pre-registered next-trading-day capture plan when a valid session arrives.
 5. Formal Core remains LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+---
+
+## IC-058 — D06-19 access gate refined to special-access contract, not data-existence uncertainty
+
+Research cycle: 2026-10-04 Asia/Taipei
+Status: DIRECT_DATA_EXISTENCE_VERIFIED / CURRENT_SPECIAL_ACCESS_CONTRACT_UNVERIFIED / L2_REMAINS / FORMAL_CORE_LOCKED
+
+Machine audit:
+`research/d06_19_retail_source_access_audit_v0_2.json`.
+
+### Standard TWSE historical order product is not the investor-type research dataset
+TWSE Data E-Shop currently documents a standard historical Order book log / 委託檔 with:
+- history from 2006-01-01;
+- the most recent one year excluded;
+- internal-use-only licensing;
+- custom production lead time of at least seven working days;
+- observed price NT$10,000 per month.
+
+However the public product contract does not advertise investor-type identity as a standard field.
+
+By contrast, the 2026 Journal of Banking & Finance study `Behavioural theories of investor behaviour: Empirical evidence from the limit order book` states that the authors acquired a unique dataset directly from TWSE for 2013-05-02 through 2018-03-31. Each order contains stock ID, buy/sell direction, price/volume and investor type including individual investor, foreign investor, others and securities investment trust.
+
+Therefore:
+`DIRECT_INVESTOR_TYPE_STOCK_ORDER_DATA_EXISTS_AT_TWSE = VERIFIED`
+but
+`STANDARD_PUBLIC_ORDER_PRODUCT_EQUALS_INVESTOR_TYPE_DATA = REJECTED`.
+
+### Current public access route remains unverified
+Public TWSE pages provide Data E-Shop product enquiry contacts, but this audit did not identify a current public self-service product or public research-application form specifically licensing the investor-type order dataset used in academic research.
+
+Safe state:
+`SPECIAL_RESEARCH_ACCESS = HISTORICALLY_DEMONSTRATED / CURRENT_ELIGIBILITY_PRICE_PERSISTENCE_DELIVERY_CONTRACT_UNVERIFIED`.
+
+No autonomous enquiry, request or purchase is authorized by this research cycle.
+
+### TPEx parity remains open
+TPEx publicly supports investors retrieving their own OTC/Emerging-stock order and transaction records. This proves account-scoped order/trade data exist, but does not establish a market-wide investor-type research feed.
+
+Thus:
+`TPEX_MARKETWIDE_INVESTOR_TYPE_PARITY = UNVERIFIED`.
+
+D06-19 remains L2/40%.
+
+---
+
+## IC-059 — retail participation sublane is replayable at aggregate level but cannot promote stock-flow maturity
+
+TWSE historical statistical publications provide monthly/annual trading-value shares for Domestic Juridical, Foreign Juridical, Domestic Individual and Foreign Individual investors. This supports retrospective aggregate participation-regime research.
+
+Separate sublane states are therefore frozen:
+- `RETAIL_MARKET_PARTICIPATION_HISTORY = AGGREGATE_REPLAY_FEASIBLE`;
+- `RETAIL_CHANNEL_PARTICIPATION = DIRECTLY_OBSERVABLE_FOR_SELECTED_CHANNELS` such as odd-lot and credit studies;
+- `DIRECT_DOMESTIC_RETAIL_STOCK_DATE_FLOW = RESTRICTED_SOURCE_ACCESS_GATED / CURRENT_PIT_CONTRACT_UNVERIFIED`.
+
+Anti-leak rule:
+aggregate monthly/annual participation must never be backfilled into stock-day direct-retail flow. A stock-day feature stays UNKNOWN even when the market-wide retail share for that month/year is known.
+
+Exact continuation:
+1. D06-19 no longer needs further public-web searching for proof of data existence; that question is closed.
+2. A future special-data pursuit requires owner authorization before contacting/requesting/purchasing anything.
+3. Until then, research may use aggregate retail participation only as market-level context/control, never as stock-level retail direction.
+4. D06-05, D06-13/14/15, D06-11/16/18 and next-trading-day PIT capture lanes continue independently.
+5. H12 remains blocked by Room10 execution counterpart plus first genuine live TWSE rate/supply receipt.
+6. Formal Core remains LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
