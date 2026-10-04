@@ -50,6 +50,7 @@ jobs:
                   "rawSha256":hashlib.sha256(raw).hexdigest(),
                   "sheets":[],
                   "matchingRows":[],
+                  "headRows":[],
                   "tailRows":[],
                   "rawPersisted":False
               }
@@ -79,6 +80,8 @@ jobs:
                           joined="|".join(str(v) for _,v in vals)
                           if re.search(r"2026|115",joined):
                               result["matchingRows"].append({"sheet":sname,"row":int(row.attrib["r"]),"cells":[f"{a}={v}" for a,v in vals]})
+                  for rnum,vals in allrows[:15]:
+                      result["headRows"].append({"sheet":sname,"row":rnum,"cells":[f"{a}={v}" for a,v in vals]})
                   for rnum,vals in allrows[-15:]:
                       result["tailRows"].append({"sheet":sname,"row":rnum,"cells":[f"{a}={v}" for a,v in vals]})
           print("ROOM09_CBC_RATE_JSON="+json.dumps(result,ensure_ascii=False,separators=(",",":")))
