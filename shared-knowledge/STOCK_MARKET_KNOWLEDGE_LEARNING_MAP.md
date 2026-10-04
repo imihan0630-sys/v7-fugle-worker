@@ -12,12 +12,12 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 
 ## 成熟度
 
-- L2 機制＋反證已定義 40%：UNSTUDIED，尚未研究
-- L2 機制＋反證已定義 40%：THEORY_UNDERSTOOD，理論與定義已理解
-- L2 機制＋反證已定義 40%：MECHANISM_AND_FALSIFICATION_DEFINED，正向機制與反證條件已定義
-- L2 機制＋反證已定義 40%：TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED，台股PIT資料來源／語意／重播可行
-- L2 機制＋反證已定義 40%：PROSPECTIVE_SHADOW_OR_OOS_EVIDENCE，有前瞻Shadow或OOS證據
-- L2 機制＋反證已定義 40%：ROBUSTNESS_COST_REDUNDANCY_MULTI_REGIME_VALIDATED，已通過多Regime、成本、冗餘、獨立日期與穩健性驗證
+- L0 = 0%：UNSTUDIED，尚未研究
+- L1 = 20%：THEORY_UNDERSTOOD，理論與定義已理解
+- L2 = 40%：MECHANISM_AND_FALSIFICATION_DEFINED，正向機制與反證條件已定義
+- L3 = 60%：TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED，台股PIT資料來源／語意／重播可行
+- L4 = 80%：PROSPECTIVE_SHADOW_OR_OOS_EVIDENCE，有前瞻Shadow或OOS證據
+- L5 = 100%：ROBUSTNESS_COST_REDUNDANCY_MULTI_REGIME_VALIDATED，已通過多Regime、成本、冗餘、獨立日期與穩健性驗證
 
 ## 目前總覽
 
