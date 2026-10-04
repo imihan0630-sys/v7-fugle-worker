@@ -150,3 +150,27 @@ D20 maturity remains 50.8%.
 The research value of this tranche is that the next eligible observations can now become genuine prospective evidence instead of another retrospective study.
 
 FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+## Extension 2026-10-04 11:40 Asia/Taipei
+
+Two newly promoted L3 lanes are added prospectively before any eligible post-extension outcome exists.
+
+### D20-01 short-side reference dependence
+- Reuse the exact D20-02 TWSE short-side parent receipt.
+- Primary question: whether covering behavior is asymmetric around the reconstructed zero-gain reference point after controls.
+- Primary outcome: next-week covering ratio.
+- Secondary outcome: D5 market/sector residual return.
+- Minimum: 12 independent weekly post-extension dates.
+- Interpretation guard: this can support bounded reference dependence; it does not identify pure loss aversion and cannot be counted as a second vote from the same D20-02 primitive.
+
+### D20-09 event-conditioned overreaction
+- Parent requires valid event first-known clock, frozen surprise definition and completed causal 15m bars.
+- Parent contains only initial response information; later reversal is forbidden from the parent.
+- Primary question: whether a large continuous event-conditioned initial-response residual predicts later correction after structural controls.
+- D03-05 continues to own observable reversal geometry.
+- Minimum: 12 independent post-extension event dates.
+- If event surprise or structural counterfactual data are missing, behavioral cause remains UNKNOWN.
+
+The extension does not alter any prior frozen lane or open any outcome join.
+No L4 promotion is assigned by preregistration itself.
+
