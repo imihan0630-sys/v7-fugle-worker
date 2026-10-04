@@ -453,3 +453,29 @@ Exact next 00 continuation:
 4. H12 waits on the two explicit blockers above;
 5. H17 is not terminal-ready because D07-18 remains L0 and D22-04 is still historical security-level replay blocked;
 6. COV-12 and AOKD-05 retain their existing gates.
+
+
+## H15 / H16 / H20 terminal closure sweep — 2026-10-04
+
+00-room complete-but-unregistered scan closed three additional dependency/anti-double-count clusters:
+
+- H15 → KEEP_SEPARATE / event-risk → volatility → post-event path / one opening-gap receipt.
+- H16 → KEEP_SEPARATE / four-layer price-limit chain / one limit-event receipt.
+- H20 → KEEP_SEPARATE / multi-evidence breakout family / no independent component vote until residual value.
+
+All three:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+Audits:
+- `shared-knowledge/CURRICULUM_H15_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`
+- `shared-knowledge/CURRICULUM_H16_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`
+- `shared-knowledge/CURRICULUM_H20_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`
+
+No maturity/count/Formal/runtime change from these closures.
+
+Exact next:
+1. H15/H16/H20 are closed; do not reopen absent contradictory evidence.
+2. H17 remains non-terminal because D07-18 WACC is L0 and D22-04 historical security-level debt-cost replay is still blocked.
+3. scan H18 and H19 for equivalent complete evidence already present under room-specific filenames.
+4. H11 and H12 retain their explicit remaining evidence gates.
+5. COV-12 and AOKD-05 retain their source/data gates.
