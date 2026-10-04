@@ -112,7 +112,7 @@
         "CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md",
         "CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md"
       ],
-      "intakeDecision": "EVIDENCE_INSUFFICIENT_PENDING_COUNTERPART",
+      "intakeDecision": "TERMINAL_KEEP_SEPARATE_CLOSED_NO_STRUCTURAL_CHANGE",
       "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json",
       "terminalClassification": "KEEP_SEPARATE",
       "governanceDisposition": "STATEMENT_ANOMALY_VS_GOVERNANCE_CONTROL_EVENT",
@@ -145,7 +145,7 @@
         "research/d20_06_ptt_social_herding_pit_contract_v0_1.json",
         "research/d20_ptt_social_source_live_receipt_20261004_v0_1.json"
       ],
-      "intakeDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOM13_COUNTERPART",
+      "intakeDecision": "TERMINAL_KEEP_SEPARATE_CLOSED_NO_STRUCTURAL_CHANGE",
       "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json",
       "terminalClassification": "KEEP_SEPARATE",
       "governanceDisposition": "BOUNDED_SOCIAL_HERDING_SUBLANE",
@@ -177,7 +177,7 @@
         "research/d20_h07_overreaction_vs_reversal_room13_packet_v0_1.md",
         "research/d20_09_event_conditioned_overreaction_pit_contract_v0_1.json"
       ],
-      "intakeDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOM13_COUNTERPART",
+      "intakeDecision": "TERMINAL_KEEP_SEPARATE_CLOSED_NO_STRUCTURAL_CHANGE",
       "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json",
       "terminalClassification": "KEEP_SEPARATE",
       "governanceDisposition": "EVENT_CONDITIONED_OVERREACTION_PARENT_VS_REVERSAL_OUTCOME",
