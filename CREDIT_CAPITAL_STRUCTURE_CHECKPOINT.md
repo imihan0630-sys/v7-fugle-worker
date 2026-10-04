@@ -1,6 +1,6 @@
 # Credit / Capital Structure Checkpoint
 
-Updated: 2026-10-04 15:12 Asia/Taipei
+Updated: 2026-10-04 21:09 Asia/Taipei
 Scope: D22｜信用市場／資本結構／融資壓力／股債傳導
 Status: ACTIVE_RESEARCH / D22_MATURITY_51_7PCT / D22-01_02_03_05_07_08_10_L3 / D22-04_06_SOURCE_BLOCKED_L2 / D22-09_DEPENDENCY_BLOCKED_L2 / D22-11_12_HOLD_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
@@ -481,3 +481,59 @@ Exact remaining specialist delta:
 10. commit `research/COV12_D22_SPECIALIST_RETURN_V0_1.md`.
 
 No maturity or Formal change is authorized by this routing.
+
+## 2026-10-04 21:09 continuation｜L4 Stage-A common-support inventory + D22-05 challenger gate
+
+### D22 Stage-A inventory
+Durable file:
+- `research/d22_l4_stage_a_common_support_inventory_v0_1.json`
+
+Current outcome-blind inventory:
+- 58 raw L3 replay receipts;
+- 52 receipts with exact challenger knownAt;
+- 44 global unique issuer-date clusters after cross-module same-date dedup;
+- 0 mature paired dates because exact B0/B1 baselines are not yet frozen on the same issuer-date population.
+
+This zero is intentional. Challenger dates from different modules cannot be pooled to satisfy the >=20 rule, and global unique dates are descriptive only.
+
+### D22-05 rating-event expansion
+Durable files:
+- `research/d22_05_rating_event_replay_v0_1.json`
+- `research/d22_05_rating_episode_cluster_v0_1.json`
+- `research/d22_05_stage_a_pairing_manifest_v0_1.json`
+
+The rating-event replay now contains 29 exact directional events across 10 Taiwan non-financial issuers. The frozen outcome-blind episode rule clusters consecutive same-direction outlook/watch/notch events within an issuer until sign reversal.
+
+After clustering:
+- 29 directional event receipts;
+- 22 independent directional episodes;
+- challenger-side >=20 count gate = PASSED;
+- baseline-frozen anchors = 0;
+- mature paired anchors = 0;
+- outcomes remain CLOSED.
+
+The Stage-A manifest uses the first directional event of each episode as the only independent anchor. Later same-direction agency actions update the episode state but do not create extra samples.
+
+### D22-04 / D22-06 source blocker refined
+Durable audit:
+- `research/d22_04_06_tpex_market_data_access_audit_v0_1.json`
+
+New verified boundary:
+- TPEx offers a free daily security-level corporate-bond fair-value/reference report;
+- the official report exposes bond code, maturity, coupon, reference curve, fair value and yield;
+- this provenance is MODEL/REFERENCE, not an actual trade;
+- full historical after-market bulk files remain a separate acquisition/product path.
+
+Therefore D22-04 and D22-06 remain L2. The blocker is narrower, not removed:
+- free fair-value/reference lane is source-validated;
+- reproducible multi-date security-level replay is still pending;
+- actual trade/quote replay remains unavailable in the current research packet;
+- fair value may never be relabeled as transaction evidence.
+
+### Exact next continuation
+1. D22-05: materialize exact B0/B1 PIT baselines for the 22 frozen episode anchors; current mature paired anchors remain 0.
+2. Keep all equity return/MFE/MAE outcomes closed until >=20 anchors remain mature after exact baseline pairing.
+3. D22-04/D22-06: materialize multiple independent-date TPEx free fair-value/reference reports through a reproducible transport path; keep provenance separate from trade/quote.
+4. Continue common-support inventory expansion for D22-01/02/03/07/08/10.
+5. No L4 or Formal promotion from challenger count alone.
+
