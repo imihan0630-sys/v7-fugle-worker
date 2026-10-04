@@ -30,6 +30,8 @@ For each frozen company:
 
 The discovery does not assume that a candidate must have a revision.
 
+For the ex-right/dividend lane, generic `基準日` alone is deliberately insufficient because capital-reduction / share-exchange disclosures also use that term. Ex-right/dividend matching requires dividend/right-specific language and explicitly excludes reduction/share-exchange/par-value-change rows.
+
 ## Positive discovery semantics
 
 A row group becomes a **candidate** only when:
