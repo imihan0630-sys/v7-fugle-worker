@@ -78,13 +78,13 @@ Until that packet arrives:
 | H03 | PENDING | — | specialist packet(s) |
 | H04 | PENDING | — | specialist packet(s) |
 | H05 | PARTIAL_EVIDENCE_RECEIVED | `research/h05_d07_25_specialist_evidence_packet_v0_1.json` | 14｜公司治理與內部人研究室 |
-| H06 | PARTIAL_EVIDENCE_RECEIVED | `research/d06_h06_crowding_vs_herding_room05_packet_v0_1.md` | 13｜行為金融與市場心理研究室 |
-| H07 | PARTIAL_EVIDENCE_RECEIVED | `research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md` | 13｜行為金融與市場心理研究室 |
+| H06 | CLOSED_NO_STRUCTURAL_CHANGE | Room05 + Room13 complete | — |
+| H07 | CLOSED_NO_STRUCTURAL_CHANGE | Room03 + Room13 complete | — |
 | H08 | PENDING | — | specialist packet(s) |
 | H09 | CANONICAL_UPDATE_COMPLETE | equivalent complete Room11 evidence | — |
 | H10 | PENDING | — | specialist packet(s) |
 | H11 | PENDING | — | specialist packet(s) |
-| H12 | PARTIAL_EVIDENCE_RECEIVED | `research/d06_securities_lending_economics_h12_v0_1.md` + rule-vintage receipt | 10｜投組風控與交易執行研究室、13｜行為金融與市場心理研究室 |
+| H12 | PARTIAL_EVIDENCE_RECEIVED | Room05 + Room13 semantic packet | 10｜投組風控與交易執行研究室 + Room13 first live TWSE source receipt |
 | H13 | PENDING | — | specialist packet(s) |
 | H14 | CLOSED_NO_STRUCTURAL_CHANGE | Room05 packet + Room08 equivalent PIT evidence | — |
 | H15 | PENDING | — | specialist packet(s) |
@@ -453,3 +453,69 @@ Canonical receipt is recorded separately.
 H09 canonical receipts:
 - `shared-knowledge/CURRICULUM_H09_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md`
 - `shared-knowledge/curriculum_h09_canonical_update_receipt_20261004_v0_1.json`
+
+
+## H06 00-room terminal closure — 2026-10-04
+
+Accepted:
+- Room05 crowding packet;
+- Room13 behavioral counterpart;
+- live PTT public-source receipt;
+- D20-06 PTT social-herding PIT contract.
+
+Audit:
+`shared-knowledge/CURRICULUM_H06_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+Terminal:
+**KEEP_SEPARATE / BOUNDED_SOCIAL_HERDING_SUBLANE / SHARED_SOCIAL_RECEIPT_FIREWALL**
+
+State:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+D06-06 remains L3/60%; D20-06 remains L3/60%. PTT actors are public forum actors only; the same social receipt cannot become independent D20-06/D20-11/D20-07 votes. No structural or Formal change.
+
+Closure receipt:
+`shared-knowledge/CURRICULUM_H06_CANONICAL_CLOSURE_RECEIPT_20261004_V0_1.md`.
+
+
+## H07 00-room terminal closure — 2026-10-04
+
+Accepted:
+- Room03 observable pullback/reversal evidence;
+- Room13 event-conditioned overreaction counterpart and PIT contract.
+
+Audit:
+`shared-knowledge/CURRICULUM_H07_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
+
+Terminal:
+**KEEP_SEPARATE / EVENT_CONDITIONED_OVERREACTION_PARENT_VS_REVERSAL_OUTCOME / BEHAVIORAL_CAUSE_FAIL_CLOSED**
+
+State:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+D03-05 remains L3/60%; D20-09 remains L3/60%. Reversal is excluded from the D20 parent; structural alternatives must be separated or behavioral cause remains UNKNOWN. No structural or Formal change.
+
+Closure receipt:
+`shared-knowledge/CURRICULUM_H07_CANONICAL_CLOSURE_RECEIPT_20261004_V0_1.md`.
+
+
+## H12 Room13 partial counterpart intake — 2026-10-04
+
+Accepted Room13 semantic packet:
+`research/d20_h12_limits_to_arbitrage_room13_packet_v0_1.md`.
+
+What is closed on the Room13 semantic side:
+- D20-13 remains context/falsification only;
+- no directional vote from borrow fee, scarcity or short balance;
+- requires an independently identified mispricing/anomaly parent;
+- consumes D06 borrow economics and D14 execution feasibility rather than re-owning them;
+- true utilization remains UNKNOWN without verified lendable-inventory denominator.
+
+Still unresolved:
+1. Room10 D14-19 short execution lifecycle counterpart;
+2. first genuine outcome-blind live TWSE rate/supply receipt under the frozen D20-13 capture protocol.
+
+Therefore H12 remains:
+`PARTIAL_EVIDENCE_RECEIVED / EVIDENCE_INSUFFICIENT_PENDING_ROOM10_AND_LIVE_SOURCE_RECEIPT`.
+
+No maturity/count/Formal change from intake.
