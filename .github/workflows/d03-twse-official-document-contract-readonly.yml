@@ -213,6 +213,73 @@ jobs:
                   interesting.append(d)
           print("PAGING_ATTRS_JSON="+json.dumps(interesting,ensure_ascii=False))
 
+      - name: Reconcile server-side pagination over a high-volume bounded interval
+        shell: python
+        run: |
+          import json, subprocess, urllib.parse, hashlib, math
+
+          base="https://wwwc.twse.com.tw/rwd/zh/announcement/announcement"
+          common={"startDate":"20260701","endDate":"20260810","keyword":"","response":"json"}
+
+          def fetch(extra):
+              q=dict(common); q.update(extra)
+              url=base+"?"+urllib.parse.urlencode(q)
+              p=subprocess.run(
+                ["curl","--fail","--silent","--show-error","--location","--max-time","30",
+                 "--header","User-Agent: D03-TWSE-Official-Document-Contract/0.1",url],
+                text=True,capture_output=True
+              )
+              if p.returncode!=0: raise RuntimeError(p.stderr[:1000])
+              obj=json.loads(p.stdout)
+              if str(obj.get("stat","")).lower()!="ok": raise RuntimeError("non-ok "+str(obj.get("stat")))
+              return url,p.stdout,obj
+
+          # Browser contract says paging=15, server-side.
+          page_size=15
+          url0,raw0,obj0=fetch({"paging":page_size,"offset":0})
+          total=int(obj0.get("total",0))
+          pages=max(1,math.ceil(total/page_size))
+          all_rows=[]
+          receipts=[]
+          for page in range(pages):
+              off=page*page_size
+              url,raw,obj=fetch({"paging":page_size,"offset":off})
+              rows=obj.get("data") or []
+              receipts.append({
+                "page":page+1,"offset":off,"count":len(rows),"total":obj.get("total"),
+                "sha256":hashlib.sha256(raw.encode("utf-8")).hexdigest()
+              })
+              all_rows.extend(rows)
+
+          ids=[str(row[-1]) for row in all_rows if isinstance(row,list) and row]
+          unique_ids=sorted(set(ids))
+          print("PAGED_URL0="+url0)
+          print("PAGED_TOTAL="+str(total))
+          print("PAGED_PAGE_COUNT="+str(pages))
+          print("PAGED_FETCHED_ROWS="+str(len(all_rows)))
+          print("PAGED_UNIQUE_IDS="+str(len(unique_ids)))
+          print("PAGED_DUPLICATE_IDS="+str(len(ids)-len(unique_ids)))
+          print("PAGED_RECEIPTS="+json.dumps(receipts,ensure_ascii=False))
+          print("PAGED_FIRST_ROWS="+json.dumps(all_rows[:5],ensure_ascii=False))
+          print("PAGED_LAST_ROWS="+json.dumps(all_rows[-5:],ensure_ascii=False))
+
+          # Characterize unpaged behavior on the identical frozen interval.
+          un_url,un_raw,un_obj=fetch({})
+          un_rows=un_obj.get("data") or []
+          un_ids=[str(row[-1]) for row in un_rows if isinstance(row,list) and row]
+          print("UNPAGED_URL="+un_url)
+          print("UNPAGED_TOTAL="+str(un_obj.get("total")))
+          print("UNPAGED_DATA_COUNT="+str(len(un_rows)))
+          print("UNPAGED_UNIQUE_IDS="+str(len(set(un_ids))))
+          print("UNPAGED_SHA256="+hashlib.sha256(un_raw.encode("utf-8")).hexdigest())
+
+          exact=(len(all_rows)==total and len(unique_ids)==total and len(ids)==len(unique_ids))
+          unpaged_exact=(len(un_rows)==total and set(un_ids)==set(unique_ids))
+          print("SERVER_SIDE_PAGINATION_RECONCILIATION="+("PASS" if exact else "FAIL"))
+          print("UNPAGED_EQUIVALENCE="+("PASS" if unpaged_exact else "NOT_EQUIVALENT"))
+          if not exact:
+              raise SystemExit("server-side pagination reconciliation failed")
+
       - name: Bounded raw-page grep
         shell: bash
         run: |
