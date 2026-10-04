@@ -13,7 +13,7 @@ D02 maturity impact: NONE
 
 Independent local runtime:
 - Node.js v22.16.0
-- 19/19 tests PASS
+- 23/23 tests PASS
 
 ## What the evaluator does
 
@@ -73,6 +73,10 @@ L4 promotion review additionally requires external evidence receipts:
 17. H20 event-key date mismatch blocks the row.
 18. H003 PRE_EVENT_ONLY_EXPIRY is QA-only and cannot mature.
 19. explicit promotion-review prerequisites can be recognized, but maturityPromotionAuthorized remains false.
+20. H001 can reach its own evidence floor without making H20/H003 eligible.
+21. 99 H20 events + 1 H001 event does not become 100 H20 events.
+22. all-wave eligibility requires H001, H20 and H003 to each independently satisfy their own floor.
+23. promotion-review receipts are hypothesis-specific; one hypothesis cannot lend review evidence to another.
 
 ## Research consequence
 
@@ -86,3 +90,21 @@ Remaining blocker is real data:
 Therefore D02 remains 60.0%.
 
 No synthetic fixture, unit test or preregistration may be reclassified as Prospective Shadow evidence.
+
+
+## Corrected governance defect — cross-hypothesis sample borrowing
+
+The first evaluator revision aggregated eligible events and clean dates across H001, H20 and H003.
+That could incorrectly make the Wave-1 program look L4-evidence-eligible when only one hypothesis had mature evidence.
+
+This violates the module-specific L4 promotion rule.
+
+Revision V0.1.1 therefore:
+- computes dates/events separately for H001, H20 and H003;
+- exposes byHypothesis receipts;
+- sets crossHypothesisSampleBorrowingAllowed=false;
+- makes promotionReviewEligible hypothesis-specific;
+- reserves allWave1L4EvidenceEligible for the case where all three hypotheses independently satisfy the floor.
+
+The defect was found and corrected before any genuine prospective outcome evidence existed.
+No maturity, Formal or hypothesis status changed.
