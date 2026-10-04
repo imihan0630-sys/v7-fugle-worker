@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T11:40:00+08:00",
+  "updatedAt": "2026-10-04T11:28:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 43.5
+    "maturityWeightedPct": 43.7
   },
   "domains": [
     {
@@ -2997,7 +2997,7 @@
         "research/D16_D18_SOURCE_CLOCK_REVALIDATION_V0_1.md",
         "research/D18_U2_TRUE_RETURN_DISTRIBUTION_CONTRACT_V0_1.md"
       ],
-      "maturityPct": 45.3,
+      "maturityPct": 46.7,
       "modules": [
         {
           "id": "D18-01",
@@ -3107,10 +3107,13 @@
         {
           "id": "D18-11",
           "name": "Regime Transition狀態轉換",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Regime Transition狀態轉換」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行性已驗證",
+          "status": "L3 / TAIWAN_PIT_TRANSITION_FEASIBILITY_VALIDATED / ADJACENT_OFFICIAL_SESSION_REPLAY_PASS / UNKNOWN_PRESERVED / NO_SMOOTHING_OR_RETROSPECTIVE_RELABEL / WAITING_PROSPECTIVE_TRANSITION_OCCUPANCY",
+          "next": "維持 L3/60%。先累積 context-only prospective transition receipts 與 transition/UNKNOWN frequency；L4 前需 frozen strategy+transition-policy versions、next-session timing、paired baseline/exposure controls、multiple transition episodes、成本與 missed-opportunity accounting。",
+          "evidence": "research/D18_11_REGIME_TRANSITION_L3_ACCEPTANCE_20261004_V0_1.md + system2/runtime/d18_regime_transition_v0_1.mjs + system2/tests/d18_regime_transition_v0_1.test.mjs"
         },
         {
           "id": "D18-12",
