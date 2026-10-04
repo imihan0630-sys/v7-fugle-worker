@@ -3,7 +3,7 @@
   "frozenAtAsiaTaipei": "2026-10-04T08:52:19+08:00",
   "researchRoom": "13",
   "domain": "D20",
-  "status": "PREREGISTERED_RESEARCH_ONLY / ELEVEN_L3_LANES_IN_SCOPE / OUTCOME_JOIN_LOCKED_UNTIL_PARENT_FROZEN / NO_L4_PROMOTION_YET",
+  "status": "PREREGISTERED_RESEARCH_ONLY / TWELVE_L3_LANES_IN_SCOPE / OUTCOME_JOIN_LOCKED_UNTIL_PARENT_FROZEN / NO_L4_PROMOTION_YET",
   "maturityRule": {
     "L3": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
     "L4": "PROSPECTIVE_SHADOW_OR_OOS_EVIDENCE",
@@ -410,13 +410,45 @@
       "privacyGuard": "No named-user influence or psychology profiles; only aggregate participant counts and transition statistics persist.",
       "minimumIndependentDatesForL4": 20,
       "minimumNarrativeParentsForL4": 50
+    },
+    "D20-03": {
+      "role": "PUBLIC_EXPLICIT_CONFIDENCE_CALIBRATION_RESEARCH",
+      "firstEligibleParent": "First qualifying public forecast captured strictly after 2026-10-04T14:12:14+08:00",
+      "parentFields": [
+        "forecastReceiptId",
+        "capturedAt",
+        "articleId",
+        "symbol_or_market",
+        "direction_or_UNKNOWN",
+        "targetPrice_or_UNKNOWN",
+        "stopPrice_or_UNKNOWN",
+        "horizon_or_UNKNOWN",
+        "explicitConfidenceClass",
+        "sourceSnapshotFingerprint",
+        "editState"
+      ],
+      "confidenceClasses": [
+        "EXPLICIT_PROBABILITY_OR_PERCENT",
+        "EXPLICIT_CERTAINTY_LANGUAGE",
+        "EXPLICIT_SELF_REPORTED_HIT_RATE_OR_SKILL_CLAIM",
+        "NO_EXPLICIT_CONFIDENCE"
+      ],
+      "primaryQuestion": "At aggregate article/date level, do stronger explicit confidence classes exhibit better, equal or worse calibration under frozen forecast horizons?",
+      "primaryOutcomes": [
+        "AGGREGATE_HIT_RATE_BY_CONFIDENCE_CLASS",
+        "AGGREGATE_FORECAST_ERROR_BY_CONFIDENCE_CLASS"
+      ],
+      "privacyGuard": "No named-user confidence, psychology, skill or influence scores; derived evidence is aggregate only.",
+      "minimumIndependentDatesForL4": 20,
+      "minimumQualifyingForecastParentsForL4": 100,
+      "interpretationGuard": "A result concerns public expressed-confidence calibration only; it does not establish psychological trait overconfidence or actual trading behavior."
     }
   },
   "l4Decision": {
     "currentPromotionCount": 0,
-    "currentD20MaturityPct": 56.9,
+    "currentD20MaturityPct": 58.5,
     "formalOptimizationCandidate": "NONE",
-    "nextAction": "Collect immutable post-extension aggregate parents for eleven L3 lanes. D20-06 and D20-11 are prospective only for captures first observed after 2026-10-04T14:06:56+08:00. Earlier inspected pages remain L3 source-feasibility evidence only."
+    "nextAction": "Collect immutable post-extension parents for twelve L3 lanes. D20-03 becomes prospective only for qualifying forecasts first captured after 2026-10-04T14:12:14+08:00. Previously inspected PTT posts remain L3 source-feasibility examples only."
   },
-  "extendedAtAsiaTaipei": "2026-10-04T14:06:56+08:00"
+  "extendedAtAsiaTaipei": "2026-10-04T14:12:14+08:00"
 }
