@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-05 02:21 Asia/Taipei
+Updated: 2026-10-05 02:45 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -99,12 +99,13 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - finalDisposition: PENDING
 - updatedAt: 2026-10-05T02:33:00+08:00
 
+## Closed directives
 
 ### S2-CORR-20261004-004 — Whole-universe history/continuity gate can block all Shadow evaluation because of symbol-local UNKNOWNs
 
 - createdAt: 2026-10-04T22:51:00+08:00
 - severity: HIGH
-- status: FIX_IMPLEMENTED
+- status: VERIFIED_CLOSED
 - routingClass: REMEDIATION_LANE
 - assignedLane: REMEDIATION_LANE
 - assignedRoom: System 2｜補強修復室
@@ -157,11 +158,26 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - Final implementation head `7ee02cc98913e79fc981da4d21e39b54b48b4983`: System2 Research CI `37224012433` PASS; V8 Regression `37224012419` PASS.
   - Merged-main readback on `b6dd5bff357d6c678825ca212afae6a533da68c8` confirmed all CORR-004 runtime guards and no 95/90/80% threshold logic.
   - Protected boundaries unchanged: no System 1 Formal Core/runtime, System 2 live/final-selection authority, production push/runtime, capital/order, strategy weight, formal entry/exit threshold, or assessor-policy change.
-- verificationEvidence: PENDING_INDEPENDENT_AUDIT- finalDisposition: PENDING
-- updatedAt: 2026-10-05T02:21:47+08:00
-
-
-## Closed directives
+- verificationEvidence:
+  - Independent audit re-read latest main and CORR-004 runtime/tests rather than relying on remediation-room claims.
+  - PR #585 is merged as b6dd5bff357d6c678825ca212afae6a533da68c8 and changed only System2 Shadow research runtime/contracts/tests plus remediation checkpoint; no System1 Formal Core/runtime or trading authority file was changed.
+  - daily_shadow_history_reader_v0_1.mjs now separates descriptive aggregate coverage from globalIntegrityState and emits per-symbol readinessState, blockerCodes, evaluationInputReady and denominatorAccounted.
+  - daily_shadow_input_preflight_v0_1.mjs uses global source/history integrity for global blocking while exposing symbol-local eligible/blocked lists; symbol-local HISTORY/CONTINUITY gaps no longer create PIT_HISTORY_GLOBAL blockers.
+  - Mixed-universe regression proves A=ready can proceed while B=insufficient history, C=continuity unverified and D=required evidence UNKNOWN remain INCOMPLETE/BLOCKED, non-admitted and individually accounted.
+  - strategy_evaluator missing-required-evidence semantics remain unchanged: symbol-local UNKNOWN cannot become BUY_ELIGIBLE and maps to INCOMPLETE/BLOCKED.
+  - Global fail-closed behavior remains present for current-source errors, calendar/clock failures, history-probe/query failures, universe-accounting failures and explicit source-wide/global integrity BLOCKED states.
+  - No 95%/90%/80% or other arbitrary market-wide coverage threshold was introduced; readiness remains categorical and provenance-based.
+  - daily_shadow_capacity_orchestrator_v0_1.mjs emits CAPACITY_READY_PARTIAL_COVERAGE only when at least one clean symbol is legitimately admitted; INCOMPLETE symbols are not in capacity/active-monitor assignments.
+  - Partial denominator with no ready admission returns CAPACITY_PARTIAL_COVERAGE_NO_SELECTION with zeroPickDay=null, capacityReceipt=null and no s2_capacity_runs persistence, preventing a false downstream ZERO_PICK_ACTIVE.
+  - Prediction Snapshot independently distinguishes CLEAN_ZERO_PICK, PARTIAL_COVERAGE_NO_SELECTION and DENOMINATOR_UNKNOWN_NO_SELECTION and leaves zeroPickDay=null when denominator completeness is unresolved.
+  - Denominator truth is durably preserved in s2_shadow_runs via eligible_count/accounted_count/completion_rate/state_counts_json/unaccounted_symbols_json/symbol_accounts_json and in frozen decisions. The capacity row itself is not self-describing for partial coverage, but this is a non-blocking observability hardening opportunity because denominator evidence is separately immutable at the same decision clock and partial-no-selection writes no capacity row.
+  - Final implementation head 7ee02cc98913e79fc981da4d21e39b54b48b4983 passed System2 Research CI 37224012433 and V8 Regression 37224012419.
+  - From PR #585 merge through audit time, 23 later main commits did not touch any CORR-004 runtime/test conflict unit; no concurrent drift invalidated the verification.
+  - Independent verification receipt: `system2/evidence/s2_corr_20261004_004_independent_verification.json`
+- finalDisposition: VERIFIED_CLOSED — symbol-local UNKNOWN/INCOMPLETE no longer globally blocks clean Shadow evaluation; global integrity and denominator-safe zero-pick behavior remain fail-closed.
+- verifiedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- verifiedAt: 2026-10-05T02:45:47+08:00
+- updatedAt: 2026-10-05T02:45:47+08:00
 
 ### S2-CORR-20261004-003 — Correction routing governance contradiction can cause BUILD_LANE to seize work assigned to other lanes
 
