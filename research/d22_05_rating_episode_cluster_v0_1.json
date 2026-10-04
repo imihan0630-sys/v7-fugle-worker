@@ -1,10 +1,10 @@
 {
   "schemaVersion": "D22_05_RATING_EPISODE_CLUSTER_V0_1",
-  "generatedAt": "2026-10-04T21:06:00+08:00",
-  "status": "OUTCOME_BLIND / EPISODE_CLUSTERING_FROZEN / BASELINE_PAIRING_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "generatedAt": "2026-10-04T21:13:00+08:00",
+  "status": "OUTCOME_BLIND / CHALLENGER_EPISODE_GATE_PASSED / BASELINE_PAIRING_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
   "sourceReplay": {
     "path": "research/d22_05_rating_event_replay_v0_1.json",
-    "sha": "705404d83053d26b62a033b44458c47322d6f901"
+    "sha": "ff54c75ce54f473aeecb54bf1d35726d032f3913"
   },
   "rules": {
     "signMap": {
@@ -30,10 +30,10 @@
     "note": "This is conservative. Long same-direction sequences remain one episode unless a recorded sign reversal occurs."
   },
   "counts": {
-    "rawEventReceipts": 25,
-    "directionalEventReceipts": 25,
-    "independentDirectionalEpisodes": 18,
-    "issuerCount": 8
+    "rawEventReceipts": 29,
+    "directionalEventReceipts": 29,
+    "independentDirectionalEpisodes": 22,
+    "issuerCount": 10
   },
   "clusters": [
     {
@@ -572,6 +572,109 @@
           "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5585"
         }
       ]
+    },
+    {
+      "clusterId": "Pegatron_1",
+      "issuer": "Pegatron",
+      "direction": "POSITIVE",
+      "startDate": "2021-01-21",
+      "endDate": "2021-01-21",
+      "events": [
+        {
+          "date": "2021-01-21",
+          "eventType": "OUTLOOK_UP",
+          "priorState": {
+            "longTerm": "twAA-",
+            "outlook": "Negative",
+            "shortTerm": "twA-1+"
+          },
+          "newState": {
+            "longTerm": "twAA-",
+            "outlook": "Stable",
+            "shortTerm": "twA-1+"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5248"
+        }
+      ]
+    },
+    {
+      "clusterId": "Pegatron_2",
+      "issuer": "Pegatron",
+      "direction": "NEGATIVE",
+      "startDate": "2026-01-29",
+      "endDate": "2026-01-29",
+      "events": [
+        {
+          "date": "2026-01-29",
+          "eventType": "OUTLOOK_DOWN",
+          "priorState": {
+            "longTerm": "twAA-",
+            "outlook": "Stable",
+            "shortTerm": "twA-1+"
+          },
+          "newState": {
+            "longTerm": "twAA-",
+            "outlook": "Negative",
+            "shortTerm": "twA-1+"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5248"
+        }
+      ]
+    },
+    {
+      "clusterId": "Wiwynn_1",
+      "issuer": "Wiwynn",
+      "direction": "NEGATIVE",
+      "startDate": "2021-08-24",
+      "endDate": "2021-08-24",
+      "events": [
+        {
+          "date": "2021-08-24",
+          "eventType": "OUTLOOK_DOWN",
+          "priorState": {
+            "longTerm": "twA",
+            "outlook": "Stable",
+            "shortTerm": "twA-1"
+          },
+          "newState": {
+            "longTerm": "twA",
+            "outlook": "Negative",
+            "shortTerm": "twA-1"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5141"
+        }
+      ]
+    },
+    {
+      "clusterId": "Wiwynn_2",
+      "issuer": "Wiwynn",
+      "direction": "POSITIVE",
+      "startDate": "2023-08-22",
+      "endDate": "2023-08-22",
+      "events": [
+        {
+          "date": "2023-08-22",
+          "eventType": "OUTLOOK_UP",
+          "priorState": {
+            "longTerm": "twA",
+            "outlook": "Negative",
+            "shortTerm": "twA-1"
+          },
+          "newState": {
+            "longTerm": "twA",
+            "outlook": "Stable",
+            "shortTerm": "twA-1"
+          },
+          "sourceUrl": "https://www.taiwanratings.com/portal/front/memberProfile?ratingId=5141"
+        }
+      ]
     }
-  ]
+  ],
+  "gateDecision": {
+    "minimumIndependentEpisodes": 20,
+    "challengerEpisodeCount": 22,
+    "challengerSidePassed": true,
+    "maturePairedDates": 0,
+    "reason": "The 20-date challenger-side episode gate is descriptive only. No L4 evidence is created until exact B0/B1 baseline pairing on the same issuer-date population is frozen."
+  }
 }
