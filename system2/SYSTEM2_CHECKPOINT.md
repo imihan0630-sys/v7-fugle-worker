@@ -1513,3 +1513,58 @@ Still authoritative:
 all trading authority false.
 
 System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
+
+## 2026-10-04 S2-07 representative authority breadth — 3 OF 6 PHYSICALLY VERIFIED
+
+Three linked milestones are now formal:
+
+### Discovery correction — PR #497
+- 7 frozen candidate symbols across four missing lanes were physically screened;
+- a 4207 false positive caused by overly broad action-family matching was detected and removed before acceptance;
+- only 3152 璟德 remained a valid revision-chain candidate;
+- the other three lane families were valid negative results in this frozen candidate set.
+
+### TPEx 3152 representative control — PR #502
+- MOPS revision control matrix V0.3: 6/6 PASS;
+- V0.3 added fail-closed cross-month chain semantics;
+- 3152 Jan original + May correction PASS;
+- source-reported clock semantics 6/6 PASS;
+- authority provenance matrix V0.2: 6/6 PASS;
+- 3152 matched official TPEx capital-reduction effective/resume date 2026-06-30;
+- representative exchange lane count advanced to 3.
+
+### Canonical six-lane receipt — PR #503
+- all six final-result lanes remain READY;
+- representativeAuthorityReadyCount advanced 2 -> 3;
+- supplementalRevisionReadyCount remains 0;
+- representative gaps reduced 4 -> 3.
+
+Current representative gaps:
+1. TWSE par-value change;
+2. TPEx ex-right/dividend;
+3. TPEx par-value change.
+
+Common blockers on all six lanes remain:
+- public-availability latency not certified;
+- exact knownAt not certified;
+- bounded authority revision coverage incomplete;
+- bounded revision-history coverage incomplete.
+
+### Exact continuation
+1. expand official-event-derived candidate discovery for the three remaining representative lanes;
+2. require true action-family original+correction/cancellation chains before promotion;
+3. join any positive candidate to the exact exchange operational/effective event before freezing;
+4. version the canonical supplemental receipt again only after representative breadth physically advances;
+5. keep exact knownAt as a separate prospective-evidence debt;
+6. after representative revision routing work, continue bounded revision completeness and shared suspension/session integration.
+
+Still authoritative:
+`knownAtVersionClockCertified=false`,
+`revisionCoverageComplete=false`,
+`noEventMayBeClaimed=false`,
+`suspensionCoverageComplete=false`,
+`symbolSessionCompletenessCertified=false`,
+`technicalContinuityCertified=false`,
+all trading authority false.
+
+System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
