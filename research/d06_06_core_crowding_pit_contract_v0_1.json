@@ -1,0 +1,217 @@
+{
+  "schemaVersion": "D06_06_CORE_CROWDING_PIT_CONTRACT_V0_1",
+  "updated": "2026-10-04 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "module": "D06-06",
+  "question": "Can D06-06 observable crowding reach Taiwan PIT data-feasibility without requiring every optional leverage/shorting/day-trading/passive axis to be simultaneously mature?",
+  "decision": "YES_FOR_CORE_VECTOR_ONLY",
+  "canonicalDefinition": {
+    "object": "Observable crowding is a multi-axis market-state vector, not motive, not herding identity, and not a monotonic directional score.",
+    "coreAxes": [
+      {
+        "axis": "institutionalFlowState",
+        "required": [
+          "foreignNet",
+          "trustNet",
+          "dealerNet",
+          "institutionTotalNet",
+          "foreignBuyDays",
+          "trustBuyDays",
+          "dealerBuyDays"
+        ],
+        "semantics": "actor-separated daily flow and bounded persistence; aggregate sign does not replace actor divergence"
+      },
+      {
+        "axis": "flowLiquidityNormalization",
+        "required": [
+          "avgVolume20Lots",
+          "institutionTotalNet"
+        ],
+        "semantics": "net flow must be scaled to contemporaneous liquidity; raw shares alone are size/liquidity confounded"
+      },
+      {
+        "axis": "largeHolderOwnershipState",
+        "required": [
+          "chipConcentration",
+          "chipAsOfDate",
+          "chipDefinition"
+        ],
+        "semantics": "weekly large-holder ownership concentration; identity-agnostic and slow cadence"
+      },
+      {
+        "axis": "priceFlowReaction",
+        "required": [
+          "marketDate",
+          "close or same-date price response",
+          "volume/liquidity context"
+        ],
+        "semantics": "flow must be read jointly with price acceptance/rejection; no motive inferred"
+      }
+    ],
+    "optionalExtensionAxes": [
+      "marginLong",
+      "marginShort",
+      "securitiesBorrowing",
+      "actualSblShortSale",
+      "dayTrading",
+      "passiveIndexEvent",
+      "borrowFeeDisplayedAvailability"
+    ],
+    "optionalMissingRule": "Any unavailable extension axis stays UNKNOWN and does not invalidate the PIT feasibility of the core vector."
+  },
+  "actualOperationalEvidence": [
+    {
+      "artifact": "research/institutional_score_decomposition_observer_readback_20260929_v0_2.json",
+      "evidence": {
+        "rows": 62,
+        "independentScanDates": 2,
+        "decompositionReadyRows": 62,
+        "reconstructionMatchPct": 100,
+        "actorDivergenceRows": 36,
+        "largeHolderConcentrationPresent": true,
+        "note": "Bounded Shadow proves row-level co-presence of institutional flow/persistence, liquidity denominator and large-holder concentration. It is structural evidence only, not outcome evidence."
+      }
+    },
+    {
+      "artifact": "research/d02_20261002_after_market_h20_receipt_v0_1.json",
+      "evidence": {
+        "marketDate": "2026-10-02",
+        "institutionReady": true,
+        "institutionStockCount": 1865,
+        "tdccReady": true,
+        "tdccStockCount": 2957,
+        "tdccAsOfDate": "2026-09-24",
+        "note": "Operational data-QA co-availability exists even though the 2026-10-02 Formal selection generation itself was not confirmed and is ineligible as an outcome cohort."
+      }
+    },
+    {
+      "artifact": "Worker.js",
+      "evidence": {
+        "currentRuntimeJoin": "institutionalScore consumes foreign/trust/dealer streaks, institutionTotalNet normalized by avgVolume20Lots, and chipConcentration in the same stock feature object",
+        "guard": "Current Formal formula is not adopted as the crowding definition; it is cited only as operational proof that the source families already co-exist and join by stock."
+      }
+    }
+  ],
+  "maturityDependencies": {
+    "alreadyL3": [
+      "D06-01 foreign cash flow",
+      "D06-02 investment-trust flow",
+      "D06-03 dealer prop/hedge source feasibility",
+      "D06-04 institutional persistence",
+      "D06-10 TDCC distribution source feasibility",
+      "D06-12 flow/liquidity/price-reaction normalization"
+    ],
+    "stillL2AndOptional": [
+      "D06-07 margin financing",
+      "D06-08 margin short",
+      "D06-09 securities borrowing / actual SBL short",
+      "D06-11 passive/index flow",
+      "D06-14 day trading",
+      "D06-18 lending economics"
+    ],
+    "noInheritance": "L3 for D06-06 does not promote any optional source module and does not imply all crowding axes are available."
+  },
+  "pitReceipt": {
+    "required": [
+      "marketDate",
+      "symbol",
+      "market",
+      "institutionSourceDate",
+      "institutionCapturedAt",
+      "institutionFirstKnownAt",
+      "institutionContentHash",
+      "foreignNet",
+      "trustNet",
+      "dealerNet",
+      "institutionTotalNet",
+      "foreignBuyDays",
+      "trustBuyDays",
+      "dealerBuyDays",
+      "avgVolume20Lots",
+      "tdccAsOfDate",
+      "tdccCapturedAt",
+      "tdccFirstKnownAt",
+      "tdccContentHash",
+      "chipConcentration",
+      "chipDefinition",
+      "priceSourceDate",
+      "priceCapturedAt",
+      "unknownAxes",
+      "parserVersions"
+    ],
+    "cadenceRules": [
+      "Repeated scan dates sharing the same tdccAsOfDate are not independent ownership updates.",
+      "Institutional flow remains daily while TDCC ownership remains weekly; never sum them as same-cadence evidence.",
+      "A core receipt is decision-time eligible only after the latest firstKnownAt among required core axes.",
+      "Later finalized retrieval cannot fabricate historical firstKnownAt."
+    ]
+  },
+  "allowedCoreStates": [
+    {
+      "state": "FLOW_CONCENTRATION",
+      "meaning": "persistent/aligned or intense actor flow after liquidity normalization",
+      "direction": "NONE"
+    },
+    {
+      "state": "FLOW_OWNERSHIP_CONCENTRATION",
+      "meaning": "flow concentration coexists with elevated identity-agnostic large-holder ownership concentration",
+      "direction": "TWO_SIDED_CONTINUATION_OR_EXIT_RISK"
+    },
+    {
+      "state": "BUY_ABSORBED",
+      "meaning": "positive institutional flow with weak/negative price response",
+      "direction": "INTERPRETATION_OPEN"
+    },
+    {
+      "state": "SELL_RESILIENT",
+      "meaning": "negative institutional flow with positive price response",
+      "direction": "INTERPRETATION_OPEN"
+    },
+    {
+      "state": "ACTOR_DIVERGENCE",
+      "meaning": "institutional actor signs disagree; aggregate total is not consensus",
+      "direction": "NONE"
+    }
+  ],
+  "prohibited": [
+    "crowdingScore scalar tuning before outcomes",
+    "high crowding => bullish",
+    "high crowding => bearish",
+    "crowding => behavioral herding",
+    "TDCC 400+ holders => institutions/main force",
+    "missing margin/day-trading/SBL/passive axis => zero",
+    "counting multiple daily rows with one TDCC vintage as independent ownership evidence",
+    "using current Formal institutionalScore as the canonical crowding definition"
+  ],
+  "externalFalsificationPrior": [
+    {
+      "source": "Hsieh 2013, International Review of Financial Analysis, Taiwan",
+      "result": "institutional and individual herding differ by stock characteristics, market pressure and subsequent return behavior",
+      "implication": "crowding/herding cannot be assigned one universal mechanism or sign"
+    },
+    {
+      "source": "Lee/Lin/Xia 2025, Cogent Economics & Finance, Taiwan",
+      "result": "institutional herding effects vary across downturn/boom states and by herding intensity",
+      "implication": "regime and intensity interactions are mandatory before any outcome interpretation"
+    }
+  ],
+  "maturityDecision": {
+    "previous": "L2 / 40%",
+    "new": "L3 / 60%",
+    "basis": "A PIT-feasible Taiwan core crowding vector can now be constructed from already validated institutional-flow, liquidity/price-reaction and TDCC source families. Actual bounded Shadow rows prove row-level co-presence and 2026-10-02 production receipts prove current cross-source availability. Optional leverage/day-trading/SBL/passive axes remain separate UNKNOWN-capable extensions."
+  },
+  "l4Gate": [
+    "prospective immutable core receipts with source hashes/firstKnownAt on independent scan dates",
+    "ownership-vintage deduplication",
+    "D5+ outcome maturity",
+    "regime/sector/liquidity controls",
+    "passive-event stratification where coverage exists",
+    "incremental test versus simpler institutional-flow and price-volume baselines",
+    "MAE/MFE/false-break/flow-cessation reversal outcomes",
+    "date-cluster inference and transaction-cost relevance"
+  ],
+  "status": "CORE_CROWDING_PIT_DATA_FEASIBILITY_VALIDATED / MULTI_AXIS_NON_MONOTONIC / EXTENSION_AXES_OPTIONAL_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "exactNext": "Capture immutable prospective CORE_CROWDING receipts on independent trading dates. Do not wait for every optional axis to exist, but never coerce missing optional axes to zero. L4 requires outcome-blind readiness first, then D5+ incremental and downside tests. No scalar score and no Formal change."
+}
