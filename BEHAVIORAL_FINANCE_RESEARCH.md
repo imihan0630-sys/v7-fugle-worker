@@ -928,3 +928,34 @@ Artifact:
 Maturity decision:
 D20 remains 58.5%. The run adds genuine prospective evidence collection, not enough independent dates/parents for L4.
 Formal Core unchanged.
+
+## 2026-10-04｜Social source fingerprint self-falsification and repair
+
+The first prospective social pipeline exposed a source-identity defect before any L4 promotion.
+
+V0.1 failure:
+- the parent fingerprint hashed the connector/tool envelope rather than canonical page content only;
+- repeated fetches therefore produced different fingerprints even when no post-parent edit/reply was observable;
+- the apparent fingerprint DIFF could not be interpreted as source-content change.
+
+Governance response:
+- never rewrite parent 001;
+- append invalidation receipt;
+- remove parent 001 from promotion-grade coverage;
+- freeze V0.2 before re-baselining.
+
+V0.2:
+- parse the connector result;
+- hash only normalized canonical page text;
+- remove transport latency/cache/tool-envelope fields;
+- use SHA-256 over UTF-8 normalized content;
+- derive a separate receipt hash from URL + capturedAt + content hash + schema version.
+
+Rebased parent:
+`D20SOC-20261004-002`.
+
+Immediate repeatability:
+PASS — identical canonical page content produced identical SHA-256.
+
+This is a pipeline-quality result, not an alpha result.
+D20 maturity remains 58.5%.
