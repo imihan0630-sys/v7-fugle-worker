@@ -1854,3 +1854,51 @@ Current Room 08 maturity after this continuation:
 - Room 08 = 52.7% across 33 modules.
 
 Formal Core unchanged. Outcome joins remain closed.
+
+### D17 shared handoff — direct exposure, sector propagation and connected disclosure semantics (2026-10-04 late evening)
+
+Room 08 reusable findings:
+
+1. Connected material-disclosure source:
+- `FCNT000004` physically exposes item ID, symbol, second-level timestamp, title, original MOPS URL and structured description fields.
+- exact `target_id` replay works on recent and correction items;
+- correction item coexistence is physically observed rather than silent overwrite;
+- `timestamp_start` did not return raw rows in the tested query, and older/newer ID serialization is inconsistent;
+- source timestamp still does not authenticate strategy first availability;
+- no canonical licensed general-news content class is exposed.
+Therefore D11-08 and D17-01/02 remain L2.
+
+2. D17-04 direct exposure:
+- source-feasible frozen chain: EVENT -> ECONOMIC_PRIMITIVE -> FIRM_EXPOSURE -> FINANCIAL_TRANSMISSION -> EFFECTIVE_TIMING;
+- 2537 fire = direct adverse physical exposure, net financial effect UNKNOWN after insurance/materiality uncertainty;
+- 7827 HCB303 IND approval = direct regulatory progress, not product approval/revenue/validated efficacy;
+- 6461 restricted employee shares = direct issuer event with offsetting incentive/dilution channels;
+- direct exposure does not force a stock direction.
+D17-04 = L3 Taiwan PIT/source feasible; outcomes closed.
+
+3. D17-11 event-specific sector propagation:
+- D09 owns PIT industry classification and persistent sector state;
+- D10 owns causal economic/supply-chain edges;
+- D17 owns only event-specific propagation into a peer set frozen before outcomes;
+- current-source biotechnology witness includes 7827, 6461, 1795, 6472 and 4162;
+- same-industry membership and peer co-movement are not causal same-sign evidence;
+- competition, substitution, attention-only and UNKNOWN states remain explicit.
+D17-11 = L3 Taiwan PIT/source feasible; outcomes closed.
+
+4. Explicit blockers:
+- D17-03 half-life still depends on a trustworthy availability origin clock;
+- D17-05 second-order supply-chain propagation remains dependent on D10-01 graph maturity;
+- D17-06/07 require broader ex-ante expectation evidence;
+- D17-08 remains blocked by canonical licensed general-news source readiness.
+
+Evidence:
+- `research/d17_material_disclosure_connected_source_audit_20261004_v0_1.json`
+- `research/d17_04_direct_exposure_pit_audit_20261004_v0_1.json`
+- `research/d17_11_sector_propagation_pit_audit_20261004_v0_1.json`
+
+Current Room 08 maturity:
+- D11 = 56.8%.
+- D17 = 50.0%.
+- Room 08 = 53.9% across 33 modules.
+
+Formal Core unchanged. Outcome joins remain closed.
