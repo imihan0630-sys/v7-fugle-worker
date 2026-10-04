@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "D03_PARENT_DECISION_CUTOFF_OWNER_HANDOFF_V0_2",
+  "updatedAt": "2026-10-04T18:53:00+08:00",
+  "classification": "RESEARCH_HANDOFF_EFFECTIVE_BUILD_AUDITED",
+  "producer": "D03",
+  "owner": "SYSTEM1_SHARED_IMMUTABLE_C1_PARENT",
+  "formalCore": "LOCKED",
+  "productionMutationPerformed": false,
+  "physicalAudit": {
+    "workflowRunId": 37196768178,
+    "conclusion": "SUCCESS",
+    "effectiveWorkerVersion": "8.17.0-shadow-cohort-membership",
+    "regressionPassCount": 95,
+    "finalFormalAsyncInput": "STOCKS_KV_V7_MARKET_CONSENSUS",
+    "asyncOrExternalReadsAfterFinalFormalInputAndBeforeSelector": 0,
+    "selectorSynchronous": true,
+    "selectorExternalReadsObserved": false,
+    "c1DecisionAtExists": true,
+    "c1DecisionCutoffAtExists": false,
+    "c1BuildDownstreamOfFormalResultCapture": true
+  },
+  "correctedBoundary": {
+    "supersedes": "AFTER_TOTAL_CAPITAL_READ",
+    "currentCandidate": "AFTER_V7_MARKET_CONSENSUS_READ_BEFORE_SELECT_TOMORROW_CANDIDATES",
+    "reason": "MARKET_CONSENSUS_IS_FORMAL_AFFECTING_AND_LOADED_AFTER_TOTAL_CAPITAL",
+    "ownerMustReauditAnyNewerRuntime": true
+  },
+  "requiredFields": [
+    "decisionCutoffAt",
+    "decisionAt",
+    "captureGeneration",
+    "scanDate",
+    "runtimeVersion",
+    "selectionRuleVersion",
+    "parentIdentity"
+  ],
+  "forbidden": [
+    "COPY_DECISION_AT_AS_CUTOFF",
+    "SCHEDULE_BACKFILL",
+    "HISTORICAL_GENERATION_RECOMPUTE",
+    "FREE_FLOATING_LOG_TIMESTAMP",
+    "FORMAL_BEHAVIOR_CHANGE_FROM_PROVENANCE_ONLY_PATCH"
+  ],
+  "d03Downstream": [
+    "PRE_PARENT_MARKET_WIDE_EVIDENCE_CUT_LE_DECISION_CUTOFF",
+    "OWNER_NO_REVISION_GAP_CERTIFICATION",
+    "CUTOFF_DERIVED_CONTINUITY_RECEIPT",
+    "PARENT_EVIDENCE_CUT_BINDING_V0_2",
+    "BOLLINGER_COMPLETE_PARENT_POPULATION_FIRST",
+    "ADX_CANONICAL_FULL_REPLAY_SECOND"
+  ],
+  "currentD03MaturityPct": 56.7,
+  "maturityChange": 0,
+  "formalOptimizationCandidate": "NONE"
+}
