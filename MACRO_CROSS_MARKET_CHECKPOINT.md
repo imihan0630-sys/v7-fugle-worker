@@ -483,3 +483,21 @@ Freeze Taiwan price/sector -> domestic institution flow -> rates/USD/global -> c
 D13-16/17/19 remain L2/40%; D12=40.0%, D13=41.1%, room09=40.6%. Strict clean prospective dates added=0. Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE=NONE; outcomes CLOSED. No Worker/runtime, rankings, signals, push, capital or holdings changes. Global tracker observed42.4%/354 modules, not this run's promotion.
 
 Exact next: obtain permitted CBO native XLSX (or explicitly validated official original archive) and verify projection shading/definition against pinned transformed rows; do not bypass 403. Read CBC May/August/2025 annex vintages to reconcile the -5.3/+9.7 discrepancies; keep UNKNOWN until complete signs/rows are verified. Then audit one USTR/BIS/OFAC announcement/legal/effective policy lineage and TWSE 18:10 foreign-flow version receipts. For H.4.1, preserve a future authorized raw receipt at actual publication; independently matched NYFed ONRRP before heuristic comparisons. NDC ex-TAIEX remains UNKNOWN pending standardized vintage inputs. Do not repeat MC-153..164.
+
+
+## 2026-10-04 source-lineage deepening — MC-149..MC-156
+- MC-149..151 are D12 cross-links; canonical D12 details live in DERIVATIVES_VOLATILITY_CHECKPOINT.md.
+- MC-152: CBC BOP Q2 release fixes quarterly-flow semantics and explicitly schedules next release 2026-11-20 16:20. Quarterly BOP and daily TWSE foreign trading are different populations/clocks.
+- MC-153: CBC 2026-Q3 release separates 2026-09-17 rate decision/release from selective-credit-control effective date 2026-09-18. Announcement/decision/legal/effective clocks must remain separate.
+- MC-154: Fed H.4.1 has distinct week-average and Wednesday-level objects; DDP series identity/frequency/statistic/reference/release fields are mandatory. No asset-size=liquidity shortcut.
+- MC-155: CBO 2026 baseline is assumption/cutoff dependent; potential-growth projection is structural context, not market consensus or next-session alpha.
+- MC-156: TWSE 2026-10-02 foreign-flow table has precise venue/accounting coverage; it is not BOP portfolio flow or intraday foreign pressure. Later observation is not strict 18:10 first-known attestation.
+- Durable evidence: `research/d12_d13_source_lineage_deepening_20261004_v0_1.md`.
+- Maturity unchanged: D13 41.1%; outcomes CLOSED; FORMAL_OPTIMIZATION_CANDIDATE NONE; Formal Core LOCKED.
+
+### Exact next continuation after MC-156
+1. Prospectively preserve CBC 2026-11-20 16:20 BOP release if available, with prior-vintage/revision lineage.
+2. Build append-only CBC policy announcement/decision/effective lineage.
+3. Archive future H.4.1 series-specific vintages without mixing week-average/Wednesday stock.
+4. Capture TWSE foreign-flow source response before/at an eligible future 18:10 research decision.
+5. Independent PIT-clean dates are required before L3/OOS/optimization.
