@@ -1058,3 +1058,50 @@ Bounded TPEx August-2026 witnesses:
 - Counterevidence remains binding: calendar effects can decay/reverse and the family has severe multiple-testing/data-mining risk.
 - D19 aggregate becomes 41.3%; one active module is L3/60 and fourteen remain L2/40.
 - Exact next: add at least one independent historical year under identical WEEKDAY/MONTH_OF_YEAR semantics; separately seek historical known-at evidence for holiday/turn-of-month states; no L4 without prospective/OOS, costs, multiple-testing and robustness.
+
+
+## 2026-10-05 Long-block Stage 13 — D19-12 independent-year date-intrinsic PIT robustness
+
+### Durable evidence
+- PR #603 merged as `32a6adc155eda8c1a500baf73346c55170de4a7b`.
+- Canonical robustness receipt: `research/d19_12_date_intrinsic_calendar_pit_receipt_20261005_v0_2.json`.
+- System2 Research CI `37243300685`: PASS.
+- V8 Regression `37243300702`: PASS.
+- D19-12 multi-year smoke `37243300721`: PASS_D19_12_DATE_INTRINSIC_MULTI_YEAR_PIT.
+- Multi-year state hash: `fed1ca6c7f9e9edd1d3a366c1de3c1ecf0618578f1d80ff317e0409bde590557`.
+- Receipt hash: `5b9124396eb9d93e5af31e2ff8aede322d7a7b5fab328043066d69f6dc0320b7`.
+
+### Independent-year physical replay
+2017:
+- official sessions = 246;
+- first/last official trading date = 2017-01-03 / 2017-12-29;
+- fresh official rows = cold rows = 222,194;
+- missing/extra/source-row-hash mismatch = 0/0/0;
+- weekday-state hash = `856342c9806eb3464d21ad76821c46ec3c08c7f2841791f9dfe8e4e346212cc6`.
+
+2018:
+- official sessions = 247;
+- first/last official trading date = 2018-01-02 / 2018-12-28;
+- fresh official rows = cold rows = 227,381;
+- missing/extra/source-row-hash mismatch = 0/0/0;
+- weekday/month state hash = `18d7af407780ddaf8c3e597c7b8e55dfeeee1beafa54454d5fabc7861d9b6db0`.
+
+### Important falsification of a naive weekday assumption
+- 2017 contains 3 Saturday trading sessions.
+- 2018 contains 2 Saturday trading sessions.
+- Therefore a Taiwan weekday-seasonality implementation must classify the weekday of the actual official marketDate and must not hard-code Monday-Friday only.
+- Weekend calendar days that are not official sessions remain absent; Saturday sessions that are official sessions remain valid observations.
+
+### Maturity decision
+- D19-12 remains L3 / 60%.
+- This stage strengthens cross-year PIT robustness but does not satisfy L4 because no prospective/OOS return outcome, cost-adjusted effect, multiple-testing correction or multi-regime efficacy evidence is opened.
+- Existing L3 promoted scope remains only WEEKDAY and MONTH_OF_YEAR.
+- HOLIDAY / PRE_HOLIDAY / POST_HOLIDAY / TURN_OF_MONTH / LUNAR_CALENDAR / SETTLEMENT_OR_INDEX_REBALANCE remain source-clock gated.
+- Formal Core unchanged; no FORMAL_OPTIMIZATION_CANDIDATE.
+
+### Exact next after Stage 13
+1. Establish historical calendar-vintage / announcedAt evidence for at least one bounded annual holiday schedule before expanding HOLIDAY/PRE_HOLIDAY/POST_HOLIDAY or TURN_OF_MONTH L3 scope.
+2. Treat annual schedule knownAt separately from emergency closures/typhoon closures, which require event-specific clocks.
+3. Keep lunar and settlement/index-rebalance families separately source-gated.
+4. Continue D19-04 only by consuming DATA_LANE TPEx/universe/continuity outputs; do not duplicate that engineering.
+5. No L4 without prospective/OOS outcomes, costs, multiple-testing control and robustness.
