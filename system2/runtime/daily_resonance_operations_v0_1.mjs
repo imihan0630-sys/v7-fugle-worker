@@ -1,6 +1,7 @@
 import { sha256Hex } from "./decision_archive.mjs";
 import {
   loadActiveResonanceWatchPoolV0_1,
+  normalizeCapacityDenominatorProvenanceV0_1,
 } from "./daily_resonance_persistence_v0_1.mjs";
 
 export const RESONANCE_POOL_AUDIT_VERSION = "0.1-RESEARCH";
@@ -41,6 +42,8 @@ export async function persistResonancePoolRefreshAuditV0_1({
     state,
     poolId: pool?.poolId || null,
     sourceCapacityRunId: pool?.sourceCapacityRunId || null,
+    sourceDenominatorState: pool?.sourceDenominatorProvenance?.denominatorState || "UNKNOWN",
+    sourceDenominatorProvenanceHash: pool?.sourceDenominatorProvenance?.provenanceHash || null,
     symbolCount: pool?.symbolCount || 0,
   });
   const runHash = await sha256Hex(base);
@@ -58,6 +61,8 @@ export async function persistResonancePoolRefreshAuditV0_1({
       event: "POOL_REFRESH",
       sourceCapacityRunId: base.sourceCapacityRunId,
       sourceMarketDate: pool?.sourceMarketDate || null,
+      sourceDenominatorState: base.sourceDenominatorState,
+      sourceDenominatorProvenanceHash: base.sourceDenominatorProvenanceHash,
       state,
     }],
     runHash,
@@ -83,7 +88,8 @@ export async function readResonanceOperationsV0_1(db, { marketDate } = {}) {
   const date = dateText(marketDate);
   const [capacity, latestPool, refresh, monitor, activePool] = await Promise.all([
     db.prepare(
-      `SELECT capacity_run_id, market_date, decision_timestamp, captured_at
+      `SELECT capacity_run_id, market_date, decision_timestamp, captured_at,
+              counts_json, schema_version
          FROM s2_capacity_runs
         ORDER BY market_date DESC, decision_timestamp DESC LIMIT 1`,
     ).first(),
@@ -124,6 +130,7 @@ export async function readResonanceOperationsV0_1(db, { marketDate } = {}) {
       marketDate: capacity.market_date,
       decisionTimestamp: capacity.decision_timestamp,
       capturedAt: capacity.captured_at,
+      denominatorProvenance: normalizeCapacityDenominatorProvenanceV0_1(capacity),
     } : null,
     latestPool: latestPool ? {
       poolId: latestPool.pool_id,
@@ -151,6 +158,7 @@ export async function readResonanceOperationsV0_1(db, { marketDate } = {}) {
     } : null,
     activePoolId: activePool?.poolId || null,
     activeSymbolCount: activePool?.symbolCount || 0,
+    activePoolDenominatorProvenance: activePool?.sourceDenominatorProvenance || null,
     fullMarketScan: false,
     captureEnabled: false,
     livePushEnabled: false,

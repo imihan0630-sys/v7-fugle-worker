@@ -118,6 +118,25 @@ No arbitrary market-wide percentage coverage threshold is used.
 
 The later 19:00 resonance lane may therefore receive a capacity receipt only when it cannot falsely infer a clean zero-pick from unresolved symbol-local UNKNOWNs.
 
+## Capacity provenance V0.2
+
+A persisted capacity receipt must not lose the CORR-004 denominator state.
+
+For every new capacity row, the immutable receipt now includes `selectionDenominator` with:
+- `denominatorState = COMPLETE / PARTIAL / UNKNOWN`;
+- unresolved count and unresolved-by-state;
+- denominator blocker codes;
+- contributing Shadow run `runId`;
+- the canonical `shadowAccountingHash = sha256(shadowRunReceipt)`;
+- run fingerprint hash when physically available;
+- a dedicated denominator provenance hash.
+
+The complete denominator payload participates in `capacityHash`. Therefore two capacity decisions with identical admitted symbols but different COMPLETE/PARTIAL Shadow accounting cannot have the same capacity identity.
+
+Persistence remains backward-compatible with isolated D1 schema V1.1: denominator provenance is stored inside existing `s2_capacity_runs.counts_json`. Legacy rows without the payload read as `UNKNOWN / LEGACY_PROVENANCE_INCOMPLETE`, never COMPLETE.
+
+The resonance lane resolves this provenance by exact `source_capacity_run_id + source_capacity_hash` linkage, not by market-date / decision-clock heuristics.
+
 ## Persistence boundary
 
 The returned batch uses only isolated `SYSTEM2_DB` whitelisted tables:

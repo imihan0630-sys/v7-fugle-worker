@@ -6,6 +6,7 @@ import {
   ENTRY_PROXIMATE_STATES,
 } from "./candidate_capacity.mjs";
 import { buildCandidateCapacityReceipt } from "./candidate_capacity_receipt.mjs";
+import { sha256Hex } from "./decision_archive.mjs";
 import {
   toCapacityRunRow,
   toStrategyOrderingRow,
@@ -67,7 +68,7 @@ function decisionMapForRun(run) {
   return map;
 }
 
-function summarizeSelectionDenominator(strategyRuns) {
+async function summarizeSelectionDenominator(strategyRuns) {
   const unresolvedStates = ["INCOMPLETE", "SOURCE_BLOCKED", "SESSION_INVALID", "ERROR"];
   const unresolvedByState = Object.fromEntries(unresolvedStates.map((state) => [state, 0]));
   const blockerCodes = [];
@@ -78,7 +79,17 @@ function summarizeSelectionDenominator(strategyRuns) {
       run.bundle?.strategyId ?? run.strategyId,
       "strategyRun.strategyId",
     );
+    const strategyVersion = requiredText(
+      run.bundle?.strategyVersion ?? run.strategyVersion,
+      "strategyRun.strategyVersion",
+    );
     const receipt = run.bundle?.runReceipt || {};
+    const runId = requiredText(receipt.runId, "strategyRun.runReceipt.runId");
+    const shadowAccountingHash = await sha256Hex(receipt);
+    const fingerprintAccountingHash = run.bundle?.fingerprint?.shadowAccountingHash || null;
+    if (fingerprintAccountingHash && fingerprintAccountingHash !== shadowAccountingHash) {
+      throw new Error(`SHADOW_ACCOUNTING_HASH_MISMATCH:${strategyId}`);
+    }
     const counts = receipt.stateCounts;
     if (!counts || typeof counts !== "object") {
       blockerCodes.push(`STATE_COUNTS_MISSING:${strategyId}`);
@@ -101,6 +112,10 @@ function summarizeSelectionDenominator(strategyRuns) {
     }
     strategies.push(Object.freeze({
       strategyId,
+      strategyVersion,
+      runId,
+      shadowAccountingHash,
+      runFingerprintHash: run.bundle?.fingerprint?.runFingerprintHash || null,
       state: receipt.runState === "COMPLETE" && unresolvedCount === 0
         ? "COMPLETE"
         : "PARTIAL",
@@ -122,7 +137,18 @@ function summarizeSelectionDenominator(strategyRuns) {
     unresolvedCount,
     unresolvedByState: Object.freeze(unresolvedByState),
     blockerCodes: Object.freeze([...new Set(blockerCodes)]),
-    strategies: Object.freeze(strategies),
+    strategies: Object.freeze(strategies.map((row) => Object.freeze({
+      strategyId: row.strategyId,
+      state: row.state,
+      unresolvedCount: row.unresolvedCount,
+    }))),
+    contributingShadowRuns: Object.freeze(strategies.map((row) => Object.freeze({
+      strategyId: row.strategyId,
+      strategyVersion: row.strategyVersion,
+      runId: row.runId,
+      shadowAccountingHash: row.shadowAccountingHash,
+      runFingerprintHash: row.runFingerprintHash,
+    }))),
   });
 }
 
@@ -378,7 +404,7 @@ export async function buildDailyShadowCapacityOrchestrationV0_1({
   const identities = strategyRuns.map((run, index) =>
     strategyRunIdentity(run, index, date, clock),
   );
-  const selectionDenominator = summarizeSelectionDenominator(strategyRuns);
+  const selectionDenominator = await summarizeSelectionDenominator(strategyRuns);
   const seenStrategies = new Set();
   const runByStrategy = new Map();
   const decisionMaps = new Map();
@@ -566,6 +592,7 @@ export async function buildDailyShadowCapacityOrchestrationV0_1({
     capturedAt: captured,
     globalAllocation: gated.allocation,
     activeAllocation,
+    selectionDenominator,
   });
 
   const persistenceBatch = await buildSystem2PersistenceBatch({

@@ -152,6 +152,11 @@ function strategyRun(inputs) {
       strategyId: "SHORT_MOMENTUM",
       strategyVersion: "V0.1-CONTRACT",
       runReceipt: {
+        runId: "RUN-SHORT_MOMENTUM-MIXED",
+        marketDate,
+        decisionTimestamp,
+        strategyId: "SHORT_MOMENTUM",
+        strategyVersion: "V0.1-CONTRACT",
         runState: "COMPLETE",
         accountedCount: 4,
         eligibleCount: 4,
@@ -184,6 +189,8 @@ const mixedCapacity = await buildDailyShadowCapacityOrchestrationV0_1({
 assert.equal(mixedCapacity.state, "CAPACITY_READY_PARTIAL_COVERAGE");
 assert.equal(mixedCapacity.selectionDenominator.complete, false);
 assert.equal(mixedCapacity.selectionDenominator.unresolvedByState.INCOMPLETE, 3);
+assert.equal(mixedCapacity.capacityReceipt.selectionDenominator.denominatorState, "PARTIAL");
+assert.equal(mixedCapacity.capacityReceipt.selectionDenominator.contributingShadowRuns[0].runId, "RUN-SHORT_MOMENTUM-MIXED");
 assert.equal(mixedCapacity.zeroPickDay, false);
 assert.deepEqual(mixedCapacity.capacityReceipt.globalPool.map((row) => row.symbol), ["A"]);
 assert.deepEqual(mixedCapacity.capacityReceipt.activeAssignments.SHORT_MOMENTUM.map((row) => row.symbol), ["A"]);

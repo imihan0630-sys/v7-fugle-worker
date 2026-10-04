@@ -68,6 +68,16 @@ const validCapacity = {
   capacity_run_id: "CAP-OCT-01", market_date: "2026-10-01",
   decision_timestamp: "2026-10-01T10:00:00.000Z",
   captured_at: "2026-10-01T10:15:00.000Z",
+  counts_json: JSON.stringify({ selectionDenominator: {
+    version: "S2_SELECTION_DENOMINATOR_PROVENANCE_V0_1",
+    denominatorState: "PARTIAL",
+    unresolvedCount: 1,
+    unresolvedByState: { INCOMPLETE: 1 },
+    blockerCodes: [],
+    contributingShadowRuns: [{ strategyId: "SHORT_MOMENTUM", strategyVersion: "V0.1-CONTRACT", runId: "RUN1", shadowAccountingHash: "a".repeat(64), runFingerprintHash: null }],
+    provenanceHash: "b".repeat(64),
+  }}),
+  schema_version: "S2_CAPACITY_V0_2",
 };
 const staleCapacity = { ...validCapacity, capacity_run_id: "CAP-SEP-30",
   market_date: "2026-09-30",
@@ -82,6 +92,17 @@ assert.equal((await loadLatestCapacityRunForResonanceV0_1(
 assert.equal(await loadLatestCapacityRunForResonanceV0_1(
   capacityDb, "2026-10-02", "2026-10-02T11:00:00.000Z",
 ), null, "stale older capacity cannot be reused");
+const legacyDb = fixtureDb({ capacities: [{
+  capacity_run_id: "CAP-LEGACY", market_date: "2026-10-01",
+  decision_timestamp: "2026-10-01T10:00:00.000Z",
+  captured_at: "2026-10-01T10:15:00.000Z",
+}] });
+const legacyLoaded = await loadLatestCapacityRunForResonanceV0_1(
+  legacyDb, "2026-10-01", "2026-10-01T11:00:00.000Z",
+);
+assert.equal(legacyLoaded.denominatorProvenance.denominatorState, "UNKNOWN");
+assert.equal(legacyLoaded.denominatorProvenance.legacyProvenanceIncomplete, true);
+assert.ok(legacyLoaded.denominatorProvenance.blockerCodes.includes("LEGACY_PROVENANCE_INCOMPLETE"));
 assert.equal(await loadLatestCapacityRunForResonanceV0_1(
   capacityDb, "2026-10-01", "2026-10-01T09:00:00.000Z",
 ), null, "capacity unknown at decision clock cannot be used");
@@ -105,6 +126,8 @@ const freshPool = {
   activated_at: "2026-10-01T11:00:00.000Z",
   source_capacity_run_id: "CAP-OCT-01", source_capacity_hash: "hash-new",
   source_decision_timestamp: "2026-10-01T10:00:00.000Z",
+  source_capacity_counts_json: validCapacity.counts_json,
+  source_capacity_schema_version: validCapacity.schema_version,
   pool_hash: "new-hash",
 };
 const db = fixtureDb({ capacities: [staleCapacity, validCapacity],
@@ -129,6 +152,7 @@ assert.equal(db.state.audits.length, 2, "duplicate scheduled invocation must be 
 const status = await readResonanceOperationsV0_1(db, { marketDate: "2026-10-02" });
 assert.equal(status.state, "LATEST_POOL_REFRESH_NO_CAPACITY_RECEIPT");
 assert.equal(status.upstreamCapacity.capacityRunId, "CAP-OCT-01");
+assert.equal(status.upstreamCapacity.denominatorProvenance.denominatorState, "PARTIAL");
 assert.equal(status.lastPoolRefresh.state, "POOL_REFRESH_NO_CAPACITY_RECEIPT");
 assert.equal(status.activeSymbolCount, 0);
 assert.equal(status.fullMarketScan, false);
@@ -142,7 +166,9 @@ const goodAudit = await persistResonancePoolRefreshAuditV0_1({
     poolId: "POOL-OCT-01", symbolCount: 1 },
 });
 assert.equal(goodAudit.runState, "POOL_REFRESH_ACTIVE");
-assert.equal((await loadActiveResonanceWatchPoolV0_1(freshDb, "2026-10-02")).symbolCount, 1);
+const loadedFreshPool = await loadActiveResonanceWatchPoolV0_1(freshDb, "2026-10-02");
+assert.equal(loadedFreshPool.symbolCount, 1);
+assert.equal(loadedFreshPool.sourceDenominatorProvenance.denominatorState, "PARTIAL");
 assert.equal((await readResonanceOperationsV0_1(freshDb, {
   marketDate: "2026-10-02",
 })).state, "BOUNDED_POOL_READY");

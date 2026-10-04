@@ -1,4 +1,5 @@
 import { sha256Hex } from "./decision_archive.mjs";
+import { normalizeCapacityDenominatorProvenanceV0_1 } from "./daily_resonance_persistence_v0_1.mjs";
 
 export const DAILY_RESONANCE_INTEGRATION_VERSION = "0.1-RESEARCH";
 export const DAILY_RESONANCE_HISTORY_SOURCE_ID =
@@ -231,6 +232,9 @@ export async function buildResonanceWatchPoolFromCapacityRowV0_1({
     capacityRow.decision_timestamp ?? capacityRow.decisionTimestamp,
     "decisionTimestamp",
   );
+  const sourceDenominatorProvenance =
+    capacityRow.denominatorProvenance
+    || normalizeCapacityDenominatorProvenanceV0_1(capacityRow);
   const activated = timestamp(activatedAt, "activatedAt");
   const symbols = normalizeActiveAssignments(
     capacityRow.active_assignments_json ?? capacityRow.activeAssignments,
@@ -244,6 +248,9 @@ export async function buildResonanceWatchPoolFromCapacityRowV0_1({
     sourceCapacityHash: capacityHash,
     sourceMarketDate: marketDate,
     sourceDecisionTimestamp: decisionTimestamp,
+    sourceDenominatorState: sourceDenominatorProvenance.denominatorState,
+    sourceDenominatorProvenanceHash: sourceDenominatorProvenance.provenanceHash,
+    sourceDenominatorProvenance,
     mode: "BOUNDED_PRESELECTED_ONLY",
     maxUniqueSymbols: DAILY_RESONANCE_POOL_MAX_SYMBOLS,
     symbolCount: sorted.length,
@@ -252,7 +259,7 @@ export async function buildResonanceWatchPoolFromCapacityRowV0_1({
   };
   const poolHash = await sha256Hex(poolBase);
   return Object.freeze({
-    schemaVersion: "SYSTEM2_RESONANCE_WATCH_POOL_V0_1",
+    schemaVersion: "SYSTEM2_RESONANCE_WATCH_POOL_V0_2",
     poolId: `S2_RESONANCE_POOL:${capacityRunId}`,
     ...poolBase,
     activatedAt: activated,

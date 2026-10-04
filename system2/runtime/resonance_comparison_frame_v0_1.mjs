@@ -80,6 +80,20 @@ export async function buildResonanceComparisonFrameV0_1({ pool, symbol, marketDa
       sourceCapacityRunId: text(pool.sourceCapacityRunId, "capacityRunId"),
       sourceCapacityHash: hash(pool.sourceCapacityHash, "capacityHash"),
       sourceMarketDate: pool.sourceMarketDate, sourceDecisionTimestamp: time(pool.sourceDecisionTimestamp, "capacity clock"),
+      sourceDenominatorState: ["COMPLETE", "PARTIAL", "UNKNOWN"].includes(pool.sourceDenominatorState)
+        ? pool.sourceDenominatorState
+        : pool.sourceDenominatorProvenance?.denominatorState || "UNKNOWN",
+      sourceDenominatorProvenanceHash:
+        pool.sourceDenominatorProvenanceHash || pool.sourceDenominatorProvenance?.provenanceHash || null,
+      sourceDenominatorProvenance: clone(pool.sourceDenominatorProvenance || {
+        denominatorState: "UNKNOWN",
+        unresolvedCount: null,
+        unresolvedByState: {},
+        blockerCodes: ["LEGACY_PROVENANCE_INCOMPLETE"],
+        contributingShadowRuns: [],
+        provenanceHash: null,
+        legacyProvenanceIncomplete: true,
+      }),
       activatedAt: time(pool.activatedAt, "pool activatedAt"), symbols: clone(pool.symbols).sort((a,b)=>a.symbol.localeCompare(b.symbol)) },
     source, monitorInput: input, inputPayloadHash: await sha256Hex(input),
     cost: costContract ? { state: "SUPPLIED_UNVALIDATED", contract: clone(costContract), hash: await sha256Hex(costContract) } : { state: "UNKNOWN", contract: null, hash: null },
