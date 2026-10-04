@@ -116,3 +116,11 @@ Status: FOUNDATION_CLUSTER_L2 / D20-01_02_04_07 / FORMAL_CORE_UNCHANGED
 - Exact next: on the next valid Taiwan trading day, first try to close D20-13 L3 with the frozen live TWSE borrow-rate/displayed-supply receipt. In parallel begin post-freeze parent capture for all nine L3 lanes. No historical Shadow fabrication.
 - Formal Core locked; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
 
+## D20-13 first-live source capture freeze｜2026-10-04 11:40 Asia/Taipei
+- Protocol: research/d20_13_first_live_twse_borrow_constraint_capture_v0_1.json
+- TWSE SBL service hours verified as 09:00-15:30.
+- First genuine post-freeze trading day target slots are fixed at 09:15, 12:00 and 15:20 Asia/Taipei, each with ±5-minute tolerance.
+- Missing capture inside a slot stays MISSING/UNKNOWN; no later substitute snapshot.
+- Purpose is source/PIT certification only. Outcomes remain locked.
+- D20-13 remains L2 until at least one genuine slot receipt passes source/timestamp/schema/hash/UNKNOWN checks.
+
