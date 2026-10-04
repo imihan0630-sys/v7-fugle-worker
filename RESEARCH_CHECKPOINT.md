@@ -2682,3 +2682,21 @@ Artifacts:
 Maturity unchanged: D13-18/19 L2 40%; D12 40.0%; D13 41.1%; room09 40.6%. Strict clean prospective dates added: 0. FORMAL_OPTIMIZATION_CANDIDATE NONE. Formal Core LOCKED; no runtime, score, ranking, signal, portfolio or push changes.
 
 Exact next continuation: obtain/readback authorized NDC native vintage archives and standardized/estimated component transforms; if unavailable, retain numeric official ex-TAIEX UNKNOWN and separately preregister six-component macro breadth. Then CBO original projection vintage/assumptions, H.4.1 decomposition, CBC BOP/policy lineage and TWSE 18:10 version receipts. Do not repeat MC-142..148 or pretend these later observations were release-time captures.
+
+
+## Room 07 SC-052 / BR-062 continuation — 2026-10-04
+
+- Canonical tracker at this write: 22 domains / 356 modules.
+- D09 = 57.1%; D10 = 56.9%; Room 07 weighted = 57.0%.
+- SC-052 supersedes the old D10-04 source-contract blocker: issuer-native capacity semantics are now reusable across TSMC semiconductor manufacturing and China Steel crude steel, with GlobalWafers retained as a missing/freshness negative control.
+- D10-04 -> L3/60 for bounded Taiwan PIT/source feasibility only.
+- Official utilization remains incomplete; shipment, production and derived throughput/capacity proxies are never relabeled as official utilization.
+- BR-062 narrows D09-12's blocker: D18-01/02/03 builders are ready, but there is no genuine persisted same-clock D18 context + official breadth receipt for 2026-10-02. Fixtures and historical reconstruction are prohibited substitutes.
+- D09-12 remains L2/40.
+- BR-035 remains live-lineage blocked; no clean System1 Above-MA receipt was found.
+- Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+Exact next:
+1. SC-053 prospectively append issuer-native capacity/production/HVM vintages and seek one true issuer-reported utilization-rate case plus one delay/cancellation/low-utilization control.
+2. BR-063 persist the first genuine same-clock D18 observable-regime + official breadth receipt on a future completed Taiwan session.
+3. BR-035 remains waiting for a genuinely clean post-repair System1 live lineage.
