@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "D20_SOCIAL_FINGERPRINT_V0_2_REPEATABILITY_RECEIPT",
+  "parentDecisionReceiptId": "D20SOC-20261004-002",
+  "validatedAtAsiaTaipei": "2026-10-04T16:43:58+08:00",
+  "parentContentSha256": "20f98fd45c24c5fa4140c43a1cfc2be7a0ca70fd8996d10590273cd374b2dd4b",
+  "repeatCaptureContentSha256": "20f98fd45c24c5fa4140c43a1cfc2be7a0ca70fd8996d10590273cd374b2dd4b",
+  "result": "PASS_STABLE_CONTENT_HASH",
+  "rule": "Only identical normalized canonical page text must hash identically; transport metadata is excluded.",
+  "promotionImpact": "V0_2_FINGERPRINT_CONTRACT_REPEATABILITY_PASS",
+  "formalCore": "LOCKED"
+}
