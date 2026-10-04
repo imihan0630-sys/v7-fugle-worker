@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T15:30:00+08:00",
+  "updatedAt": "2026-10-04T16:42:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -2553,9 +2553,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦主動投組 Diagnostics（診斷）與 Attribution（歸因）：Tracking Error（追蹤誤差）、Active Share（主動持股比率），以及 Allocation／Selection／Timing（配置／選股／擇時）績效歸因。其角色是解釋投組相對基準與策略來源，不是股票是否可買的硬門檻。原 D15-20 完整範圍由本模組承接；需控制 benchmark 選擇、現金、交易成本、產業／因子曝險與時間聚合。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2_SPECIALIST_CONTRACT / SELECTION_SIZING_CASH_EXECUTION_LAYERS / BENCHMARK_FIREWALL / ACTIVE_SHARE_TRACKING_ERROR_SEMANTICS / REAL_TAIWAN_ATTRIBUTION_REPLAY_PENDING / FORMAL_CORE_UNCHANGED",
-          "next": "建立第一個 Taiwan PIT common-support attribution witness：優先用同一 selected set 比較 current PriorityScore sizing vs equal-capital／planned-stop-risk sizing，嚴格凍結 benchmark；若成熟 forward outcome 可合法 join，計算 sizing contribution。Tracking Error／broad-market Active Share 等待完整同步投組與 benchmark 時序／權重。",
-          "evidence": "research/D15_21_ACTIVE_PORTFOLIO_DIAGNOSTICS_CONTRACT_20261004_V0_1.md + research/d15_active_portfolio_diagnostics_v0_1.mjs + tests/test_d15_active_portfolio_diagnostics_v0_1.mjs. Existing D15-07/08/15 and D14 boundaries reused; no realized attribution claim yet."
+          "status": "L2_DEEPENED / PREREGISTERED_20260918_SIZING_WITNESS / COMMON_SUPPORT_HARNESS_READY / MATURE_D1_D3_D5_RECEIPT_NOT_FOUND / TRACKING_ERROR_AND_BROAD_MARKET_ACTIVE_SHARE_DATA_BLOCKED / FORMAL_CORE_UNCHANGED",
+          "next": "等待或由治理流程產生 2026-09-18 2006/3105/6133 同批、同 horizon、具 firstKnownAt 與 immutable outcomeReceiptId 的成熟 D1/D3/D5 收據；取得後直接執行 current 50/64/54k vs equal-capital 56/56/56k gross sizing attribution。不得用今日可變行情倒填成歷史 receipt。並行可深化 D15-22 Risk Attribution，不以工程完成提高 D15-21 Level。",
+          "evidence": "research/D15_21_ACTIVE_PORTFOLIO_DIAGNOSTICS_CONTRACT_20261004_V0_1.md + research/d15_active_portfolio_diagnostics_v0_1.mjs + tests/test_d15_active_portfolio_diagnostics_v0_1.mjs. Existing D15-07/08/15 and D14 boundaries reused; no realized attribution claim yet. + research/D15_21_FIRST_ATTRIBUTION_WITNESS_READINESS_20261004_V0_1.md + research/d15_sizing_attribution_witness_v0_1.mjs. 2026-09-18 comparator was preregistered before outcome read; mature common-support outcome receipt absent."
         },
         {
           "id": "D15-22",
