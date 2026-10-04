@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-04 20:36 Asia/Taipei
+Updated: 2026-10-04 20:52 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -82,11 +82,13 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - finalDisposition: PENDING
 - updatedAt: 2026-10-04T19:03:00+08:00
 
+## Closed directives
+
 ### S2-CORR-20261004-003 — Correction routing governance contradiction can cause BUILD_LANE to seize work assigned to other lanes
 
 - createdAt: 2026-10-04T20:26:00+08:00
 - severity: UNKNOWN
-- status: FIX_IMPLEMENTED
+- status: VERIFIED_CLOSED
 - routingClass: REMEDIATION_LANE
 - assignedLane: REMEDIATION_LANE
 - assignedRoom: System 2｜補強修復室
@@ -137,12 +139,25 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - Final PR #556 head `fcfabf757a0b3b5eb1241037a92bebb800ac89d4`: System2 Research CI `37202660117` PASS; V8 Regression `37202660107` PASS; mergeable=true immediately before merge.
   - PR #556 squash-merged to main as `f507b9a8714e53f9bf42235cb70824a545ffefae`.
   - Merged-main readback confirmed: stale Master severity-implies-BUILD sentence absent; severity / implementation ownership / verification authority split present; BUILD anti-seizure rules preserved in Execution Lane Governance, System2 Checkpoint and Room Bootstrap Registry; Build Progress Map reports `22-domain / 354-module`.
-- verificationEvidence: PENDING_INDEPENDENT_AUDIT
-- finalDisposition: PENDING
-- updatedAt: 2026-10-04T20:36:49+08:00
-
-
-## Closed directives
+- verificationEvidence:
+  - Independent audit re-read latest main before closure and did not rely solely on the remediation-room completion claim.
+  - SYSTEM2_MASTER no longer contains the stale rule that CRITICAL/HIGH directives may be implemented by the build/control room; it now states that severity does not grant implementation ownership.
+  - SYSTEM2_CORRECTION_GOVERNANCE_V0_1 explicitly separates severity, implementation ownership and verification authority, and binds mutation ownership to routingClass / assignedLane / modificationOwner.
+  - SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1 still requires BUILD_LANE to execute only assigned LOCAL_FIX / BUILD_LANE items and forbids seizing DATA_LANE / REMEDIATION_LANE work merely because severity is HIGH.
+  - SYSTEM2_CHECKPOINT and ROOM_BOOTSTRAP_REGISTRY retain the same assignment-gated BUILD_LANE semantics.
+  - Ownership transfer now requires formal Correction Queue routingClass / assignedLane / modificationOwner changes before mutation; chat-based self-seizure is prohibited.
+  - CRITICAL/HIGH independent closure semantics remain intact: the assigned implementation lane may reach FIX_IMPLEMENTED but the same implementation role cannot self-VERIFIED_CLOSED.
+  - The semantic regression test system2/tests/correction_routing_governance_semantics.test.mjs directly guards Master, Correction Governance, Execution Lane Governance, Checkpoint, Room Bootstrap Registry and the research-universe wording.
+  - PR #556 changed governance/documentation/test surfaces only and did not modify System1 Formal Core, System2 strategy/ranking/final-selection, capital/order, production push or production runtime.
+  - PR #556 final head fcfabf757a0b3b5eb1241037a92bebb800ac89d4: System2 Research CI 37202660117 PASS and V8 Regression 37202660107 PASS.
+  - Build Progress Map now uses shared 22-domain / 354-module research and the obsolete shared 18-domain wording is absent from canonical progress state.
+  - Superseded audit-opening PR #554 was confirmed never merged and was closed during independent audit to prevent stale duplicate queue mutation.
+  - CORR-003 severity remains UNKNOWN because canonical main never received the earlier unmerged MEDIUM classification; this explicit UNKNOWN does not affect the repaired routing semantics or closure evidence.
+  - Independent verification receipt: `system2/evidence/s2_corr_20261004_003_independent_verification.json`
+- finalDisposition: VERIFIED_CLOSED — routing-governance contradiction corrected; BUILD_LANE remains assignment-gated and severity does not grant cross-lane mutation ownership.
+- verifiedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- verifiedAt: 2026-10-04T20:52:58+08:00
+- updatedAt: 2026-10-04T20:52:58+08:00
 
 ### S2-CORR-20261004-002 — POSITION_MONITOR target behavior is presented as current operational capability
 
