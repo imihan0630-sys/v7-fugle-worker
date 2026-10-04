@@ -9,6 +9,15 @@ on:
       - "system2/runtime/official_historical_backfill_source_v0_1.mjs"
       - "system2/runtime/official_historical_a1_source_v0_1.mjs"
       - "system2/runtime/historical_twse_calendar_v0_1.mjs"
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-d19-factor-receipt-real-source-smoke.yml"
+      - "system2/runtime/d19_factor_receipt_adapter_v0_1.mjs"
+      - "system2/scripts/d19_factor_receipt_real_source_smoke_v0_1.mjs"
+      - "system2/runtime/official_historical_backfill_source_v0_1.mjs"
+      - "system2/runtime/official_historical_a1_source_v0_1.mjs"
+      - "system2/runtime/historical_twse_calendar_v0_1.mjs"
   workflow_dispatch:
 
 permissions:
