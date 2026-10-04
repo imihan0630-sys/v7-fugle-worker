@@ -1,7 +1,7 @@
 {
   "schemaVersion": "D20_L4_PROSPECTIVE_COVERAGE_LEDGER_V0_1",
-  "updatedAtAsiaTaipei": "2026-10-04T16:35:35+08:00",
-  "status": "PROSPECTIVE_COLLECTION_ACTIVE / NO_L4_PROMOTION",
+  "updatedAtAsiaTaipei": "2026-10-04T16:43:58+08:00",
+  "status": "PROSPECTIVE_COLLECTION_ACTIVE / FIRST_PROMOTION_GRADE_SOCIAL_PARENT_VALIDATED / NO_L4_PROMOTION",
   "domain": "D20",
   "counts": {
     "D20-03": {
@@ -29,12 +29,15 @@
     }
   },
   "firstParent": {
-    "parentDecisionReceiptId": "D20SOC-20261004-001",
-    "file": "research/d20_social_prospective_parent_20261004_001.json",
-    "capturedAt": "2026-10-04T16:34:04+08:00",
+    "parentDecisionReceiptId": "D20SOC-20261004-002",
+    "file": "research/d20_social_prospective_parent_20261004_002.json",
+    "capturedAt": "2026-10-04T16:43:58+08:00",
+    "fingerprintContract": "D20_SOCIAL_CONTENT_FINGERPRINT_CONTRACT_V0_2",
+    "fingerprintRepeatability": "PASS",
+    "repeatabilityReceipt": "research/d20_social_fingerprint_v0_2_repeatability_receipt_20261004.json",
     "D20-06": "ELIGIBLE / zero multi-actor sequence at capture",
     "D20-11": "ELIGIBLE / initial narrative state",
-    "D20-03": "INELIGIBLE / observed before confidence-taxonomy amendment"
+    "D20-03": "INELIGIBLE FOR THIS ARTICLE / first observed before uncertainty-taxonomy amendment"
   },
   "rules": [
     "Zero-engagement and zero-herding parents remain in the sample to prevent selection on attention.",
@@ -43,5 +46,13 @@
     "Outcome joins remain closed until their horizon matures.",
     "Maturity remains unchanged until each module meets its preregistered L4 evidence gate."
   ],
-  "formalCore": "LOCKED"
+  "formalCore": "LOCKED",
+  "invalidatedParents": [
+    {
+      "parentDecisionReceiptId": "D20SOC-20261004-001",
+      "status": "NOT_PROMOTION_GRADE",
+      "reason": "V0.1 fingerprint included transport metadata",
+      "receipt": "research/d20_social_parent_20261004_001_invalidation_v0_1.json"
+    }
+  ]
 }
