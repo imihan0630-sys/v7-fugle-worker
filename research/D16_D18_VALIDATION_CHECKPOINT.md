@@ -1487,3 +1487,33 @@ D18 domain maturity: **44%**.
 Global tracker maturity after latest-main recompute: **42.3%**.
 
 No L4 / policy-alpha claim. FORMAL_OPTIMIZATION_CANDIDATE: NONE. Formal Core LOCKED.
+
+
+## 2026-10-04 D18-01 observable regime vector — L3
+
+Canonical evidence: `research/D18_01_OBSERVABLE_REGIME_VECTOR_L3_ACCEPTANCE_20261004_V0_1.md`.
+
+D18-01 -> L3/60.
+
+Executable taxonomy layer:
+- `system2/runtime/d18_observable_regime_vector_v0_1.mjs`;
+- `system2/tests/d18_observable_regime_vector_v0_1.test.mjs`.
+
+Key acceptance:
+- exact marketDate / decisionTimestamp identity;
+- immutable upstream hashes;
+- deterministic vector replay;
+- hard prerequisite mismatch -> UNKNOWN;
+- immature producer dimensions remain UNKNOWN/CONTEXT_RAW;
+- no scalar Risk-On/Off score;
+- no policy/selection/weight/capital effect;
+- no historical backfill.
+
+D18-04 remains L2 because U2B continuity-certified return is not executable and shared Corporate Action revision/suspension/continuity gates remain incomplete.
+
+D18 domain maturity after D18-01 promotion: **45.3%**.
+Global tracker maturity after recompute: **43.5%**.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE. Formal Core LOCKED.
+
+Exact next: persist prospective context-only D18 vector occupancy; continue shared-continuity dependencies for D18-04; no policy arm before OOS/prospective evidence.
