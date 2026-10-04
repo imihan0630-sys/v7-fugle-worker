@@ -21,7 +21,11 @@ jobs:
           set -euo pipefail
           out="/tmp/a13rate.xls"
           curl --fail --silent --show-error --location --retry 2 \
+            -D /tmp/a13rate.headers \
             "https://www.cbc.gov.tw/tw/public/data/a13rate.xls" -o "$out"
+          echo "ROOM09_CBC_RATE_HEADERS_BEGIN"
+          sed -n '1,80p' /tmp/a13rate.headers
+          echo "ROOM09_CBC_RATE_HEADERS_END"
           python - <<'PY'
           import hashlib, json, re, zipfile
           import xml.etree.ElementTree as ET
