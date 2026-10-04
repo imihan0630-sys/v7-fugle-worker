@@ -1,0 +1,116 @@
+{
+  "candidateId": "COV-03",
+  "domain": "D06",
+  "specialistRoom": "05｜法人與籌碼研究室",
+  "artifactPath": "research/cov03_retail_individual_investor_flow_specialist_return_v0_1.md",
+  "evidenceCutoff": "2026-10-04 Asia/Taipei",
+  "currentCandidateClass": "TRUE_GAP_CANDIDATE",
+  "exactKnowledgeDefinition": {
+    "family": "Retail / Individual Investor Participation & Flow",
+    "observableUnit": [
+      "direct natural-person participation",
+      "direct natural-person ownership",
+      "direct natural-person directional flow",
+      "channel-specific natural-person activity"
+    ],
+    "not": [
+      "institutional residual",
+      "margin proxy",
+      "day-trade proxy",
+      "broker-branch identity"
+    ],
+    "unknown": "No direct stock-date identity => UNKNOWN"
+  },
+  "overlapMatrix": [
+    {
+      "module": "D06-07",
+      "shared": "retail-heavy credit activity",
+      "distinct": "direct natural-person identity",
+      "ownerBoundary": "leverage vs investor class"
+    },
+    {
+      "module": "D06-13",
+      "shared": "brokered execution",
+      "distinct": "beneficial-owner class",
+      "ownerBoundary": "execution venue vs investor identity"
+    },
+    {
+      "module": "D06-14",
+      "shared": "short-horizon activity",
+      "distinct": "natural-person identity/direction",
+      "ownerBoundary": "turnover vs investor class"
+    },
+    {
+      "module": "D06-10",
+      "shared": "ownership",
+      "distinct": "legal investor class vs size bracket",
+      "ownerBoundary": "distribution brackets vs investor identity"
+    },
+    {
+      "module": "D20",
+      "shared": "retail behavior",
+      "distinct": "observable flow vs behavioral interpretation",
+      "ownerBoundary": "D06 primitive / D20 transform"
+    }
+  ],
+  "whyCurrentScopeIsInsufficient": "Current D06 modules observe institutions, leverage, shorting, branches, day trading and holding-size distribution but none owns direct natural-person investor-class observables or explicitly preserves the stock-level directional source gap.",
+  "taiwanDataFeasibility": {
+    "directMarketLevel": "VERIFIED",
+    "directChannelLevel": "VERIFIED",
+    "domesticStockDateDirectional": "NOT_VERIFIED",
+    "officialExamples": [
+      "TWSE investor-category trading-value statistics",
+      "TWSE intraday odd-lot investor-type statistics",
+      "TWSE credit-trading investor composition",
+      "TWSE Fact Book domestic individual ownership"
+    ],
+    "residualProxyForbidden": true
+  },
+  "pitReplayImplication": {
+    "marketAggregateHistory": "usable for aggregate structure only",
+    "stockDateHistory": "UNKNOWN",
+    "firstKnown": "must be captured from future direct source",
+    "historicalBackfill": "must not synthesize stock-level retail flow from current aggregates",
+    "missing": "UNKNOWN"
+  },
+  "decisionRole": {
+    "primary": "context",
+    "roles": [
+      "context",
+      "validation",
+      "supportive"
+    ]
+  },
+  "antiDoubleCountRule": {
+    "primitiveOwner": "direct investor-class source only",
+    "forbiddenReLabels": [
+      "total-institution residual",
+      "margin financing",
+      "day trading",
+      "odd lot",
+      "broker branch"
+    ],
+    "D20": "behavioral transform only; no duplicate primitive vote"
+  },
+  "proposedOwner": {
+    "domain": "D06",
+    "existingModule": null,
+    "newModule": "Retail / Individual Investor Participation & Flow",
+    "dependencies": [
+      "D06-07",
+      "D06-10",
+      "D06-13",
+      "D06-14",
+      "D20"
+    ],
+    "reason": "Investor identity/flow is a market-data object; behavior motive belongs downstream to D20."
+  },
+  "maturityStartingPoint": {
+    "proposed": "L1 / 20%",
+    "reason": "Direct official natural-person market/channel semantics are proven, but stock-date directional source contract is missing."
+  },
+  "terminalRecommendation": "ADD_MODULE",
+  "strongestPositiveEvidence": "Official Taiwan sources directly identify domestic natural persons in market participation, odd-lot, credit-trading and ownership statistics; retail identity therefore exists as an observable class rather than only a residual proxy.",
+  "strongestCounterevidence": "No authoritative replayable domestic-natural-person stock×date buy/sell/net source contract was identified; nearby proxies cannot establish beneficial owner identity.",
+  "unresolvedBlocker": "Direct stock-level domestic-natural-person directional flow source plus first-known/revision/replay semantics and market parity."
+}
