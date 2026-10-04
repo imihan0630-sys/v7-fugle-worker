@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D13-18",
+  "runDate": "2026-10-04",
+  "status": "LATER_OBSERVED_NATIVE_ATTACHMENT_QA__NOT_HISTORICAL_FIRST_KNOWN",
+  "formalCoreImpact": "NONE",
+  "baselineMain": "46ffc0e665cbcedf89fa84620de0a97bdff7a347",
+  "sources": [
+    {
+      "url": "https://www.ndc.gov.tw/nc_332_40495",
+      "publicationDate": "2026-09-29",
+      "observedDate": "2026-10-04",
+      "rawLength": 287562,
+      "rawSha256": "110e18167274ff1574e590d95f82a3639cf2f0f3cffd5377c26a1c0f58a161de",
+      "immutableNativeArchive": null
+    },
+    {
+      "url": "https://www.ndc.gov.tw/nc_336_2246",
+      "evidenceClass": "OFFICIAL_SEARCH_EXTRACT",
+      "method": "X13 seasonal adjustment; two-stage HP detrend/smoothing; mean absolute deviation normalization; equal-weight composition; amplitude adjustment; trend restoration."
+    },
+    {
+      "url": "https://www.ndc.gov.tw/nc_336_2250",
+      "evidenceClass": "OFFICIAL_SEARCH_EXTRACT",
+      "revision": "Whole history revised monthly for source, seasonal and trend changes."
+    }
+  ],
+  "nativeAttachment": {
+    "httpStatus": 200,
+    "transportCompletedAt": "2026-10-03T23:59:34.344603+00:00",
+    "sourcePage": "https://www.ndc.gov.tw/nc_332_40495",
+    "filename": "11508新聞稿附件數列.xlsx",
+    "rawLength": 860717,
+    "rawSha256": "c035dc5bbd3fe91ca80a620fd84828a54e8c49885a1b3aa51db5e42857772c83",
+    "immutableRawArchive": null,
+    "readbackVerified": false,
+    "usageEntitlement": "UNKNOWN_NOT_AUTOMATION_APPROVAL",
+    "strictSourceAttestation": false
+  },
+  "workbookInspection": {
+    "sheetCount": 5,
+    "rowsPerSheetIncludingHeader": 537,
+    "annexVintage": "reference month 2026-08",
+    "leadingRawHeaders": [
+      "DATE",
+      "export-order diffusion",
+      "nominal M1B",
+      "TAIEX",
+      "employee net accession",
+      "building starts",
+      "nominal semiconductor equipment imports"
+    ],
+    "missingLeadingComponent": "TIER manufacturing business-climate not present in inspected leading raw sheet",
+    "latestMissingMarkers": [
+      "leading E537 employee net accession = ellipsis",
+      "coincident C537/D537/F537 = ellipsis",
+      "lagging C537/F537 = ellipsis"
+    ],
+    "missingness": "ellipsis must be UNKNOWN; official aggregate can contain estimates not disclosed as raw inputs",
+    "missingTransformInputs": [
+      "real-value deflators",
+      "standardized seven-component vintage matrix",
+      "HP/seasonal endpoint/specification information",
+      "normalization calibration window",
+      "reference-series amplitude factor"
+    ]
+  },
+  "revisionWitness": {
+    "priorJulyNewsHeadline": 104.63,
+    "augustAnnexJuly": 103.87791359650292,
+    "augustAnnexAugust": 104.40865987750504,
+    "sameVintageMoMPct": 0.5109327504051686,
+    "crossVintageSplicePct": -0.21154556293123683,
+    "interpretation": "Negative cross-release splice is not August deceleration; same-vintage July/August change is positive. No historical first-known claim."
+  },
+  "reconstruction": {
+    "officialExTAIEX": "UNKNOWN_NOT_RECONSTRUCTABLE_FROM_INSPECTED_ANNEX_ALONE",
+    "standardizedExTAIEXFormula": "If all seven same-vintage standardized components exist: Z_ex = (7 * Z_preAmplitude - Z_TAIEX) / 6. Published final amplitude-adjusted index cannot replace Z_preAmplitude.",
+    "alternative": "Six-component breadth count is a distinct preregistered custom context; not official NDC index. July and August text both have four rising non-price components out of six; direction-only information loses amplitude.",
+    "candidateStatus": "FALSIFICATION_IN_PROGRESS",
+    "testsRequired": [
+      "aggregate versus six-component-only custom context",
+      "component baseline versus price/trend baseline",
+      "no full-sample seasonal/HP fit",
+      "independent release dates, not 536 months of one revised workbook",
+      "fixed-horizon OOS/walk-forward with overlapping-window purge",
+      "cost and sector/rate/USD redundancy"
+    ]
+  },
+  "maturity": "L2 / 40% unchanged",
+  "strictCleanProspectiveDatesAdded": 0,
+  "outcomes": "CLOSED",
+  "formalOptimizationCandidate": "NONE",
+  "exactNext": "Archive/readback authorized native release artifacts across independent releases; obtain standardized/estimated components, deflators and transformation vintage before numerical ex-TAIEX reconstruction; if unavailable, test explicitly named custom macro breadth without representing it as official ex-TAIEX."
+}
