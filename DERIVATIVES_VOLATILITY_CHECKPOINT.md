@@ -266,3 +266,17 @@ Key frozen guards:
 3. Preserve TAIFEX official Delta separately with publication/effective-date version lineage; compare own-computed Delta outcome-blind.
 4. Audit 14:30 -> 16:30 -> next-day 06:45 Delta universe/version changes, with new-series additions separated from numeric revisions.
 5. Only after source-attested independent dates exist, preregister outcomes and consider L3. Live MIS automation stays blocked unless explicitly authorized.
+
+
+## 2026-10-04 source-lineage deepening — DR-067..DR-069
+- DR-067: TAIFEX Daily Delta afternoon versions are next-business-day parameters. A pre-18:10 generation timestamp does not make them current-session market-state evidence. Publication time, publication version and effective trading date remain separate.
+- DR-068: TAIFEX participant Call/Put buy/sell/OI aggregates plus series-level Delta do not identify strike-expiry-position-side dealer inventory. Exact signed dealer GEX remains NOT_IDENTIFIED; no gamma-wall/zero-gamma directional promotion.
+- DR-069: official daily/annual option-chain downloads strengthen parser/contract/roll/session replay feasibility, including following-session attribution and scheduled expiry metadata, but historical download is not historical first-known 18:10 evidence.
+- Durable evidence: `research/d12_d13_source_lineage_deepening_20261004_v0_1.md`.
+- Maturity unchanged: D12 40.0%; no L3. Outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation after DR-069
+1. Acquire one permitted raw TAIFEX option-chain parent for parser/schema QA and preserve source identity.
+2. Keep historical replay QA separate from live first-known evidence.
+3. Pursue actual authorized 18:10 parent receipts prospectively; missing stays UNKNOWN.
+4. No dealer-GEX sign claim without strike-expiry-position-side identification.
