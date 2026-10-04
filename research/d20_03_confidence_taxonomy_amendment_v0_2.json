@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "D20_03_CONFIDENCE_TAXONOMY_AMENDMENT_V0_2",
+  "effectiveAfterAsiaTaipei": "2026-10-04T16:34:04+08:00",
+  "status": "PROSPECTIVE_ONLY / DOES_NOT_RECLASSIFY_ALREADY_OBSERVED_POSTS",
+  "addsClass": "EXPLICIT_UNCERTAINTY_LANGUAGE",
+  "definition": "Explicit uncertainty/caveat about the forecast or strategy, such as stated doubt/uncertainty; never inferred from wording intensity, volatility or outcomes.",
+  "reason": "First post-freeze observed article contained explicit bullish direction plus explicit uncertainty, a state not representable by the frozen V0.1 confidence classes.",
+  "antiRetrofitRule": "The already-observed article M.1791102403.A.CB9 remains ineligible for D20-03. Only qualifying posts first observed strictly after this amendment effective time may use the new class.",
+  "noOutcomeUsed": true,
+  "privacyGuard": "Aggregate calibration only; no named-user confidence profile.",
+  "formalCore": "LOCKED"
+}
