@@ -2,6 +2,7 @@ import {collectShadowCohortEvidence} from './system1_shadow_cohort_collection_v0
 import {adaptC1PopulationPages,diagnosePopulation} from './system1_selection_isolated_v0_1.mjs';
 import {buildC2ProspectivePairedLedger} from './system1_c2_paired_ledger_v0_1.mjs';
 import {verifyC1ZeroPickProspectiveEvidence} from './system1_zero_pick_evidence_collector_v0_1.mjs';
+import {collectC4RankingRedundancyEvidence} from './system1_c4_ranking_collection_v0_1.mjs';
 function blocked(code,httpStatus=200){const e=new Error(code);e.code=code;e.httpStatus=httpStatus;return e;}
 
 // Authorized GETs only. Both artifacts use these exact verified page objects.
@@ -53,5 +54,6 @@ export async function collectVerifiedC1C2({origin,token,scanDate,request=fetch,t
   const scanProof={scanDate,generationId,pipelineComplete:true,configVerified:true,c1SaveVerified:true};
   const zeroPickProspective=verifyC1ZeroPickProspectiveEvidence({pages,adapted,scanProof,formalSelectedCount:scan.selectedCount});
   const shadowCohort=await collectShadowCohortEvidence({pages,diagnosis,origin,headers,request,timeoutMs});
-  return {pages,adapted,diagnosis,paired,scanProof,zeroPickProspective,shadowCohort};
+  const c4RankingRedundancy=collectC4RankingRedundancyEvidence({pages});
+  return {pages,adapted,diagnosis,paired,scanProof,zeroPickProspective,shadowCohort,c4RankingRedundancy};
 }
