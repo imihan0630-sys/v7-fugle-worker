@@ -1,13 +1,9 @@
 # System 2 Remediation Checkpoint
 
-Updated: 2026-10-05 02:07 Asia/Taipei
-Status: ACTIVE / REMEDIATION_LANE / FIX_IN_PROGRESS
+Updated: 2026-10-05 02:21 Asia/Taipei
+Status: ACTIVE / REMEDIATION_LANE / FIX_IMPLEMENTED / PENDING_INDEPENDENT_AUDIT
 Room: System 2｜補強修復室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
-
-## Mission
-
-Serve as System 2's focused remediation/SWAT lane for cross-module, recurrent, orphaned, false-completion and explicitly routed remediation work. This room is not a generic bug inbox.
 
 ## Active correction
 
@@ -15,97 +11,269 @@ Serve as System 2's focused remediation/SWAT lane for cross-module, recurrent, o
 
 Routing:
 - severity: `HIGH`
-- status: `FIX_IN_PROGRESS`
+- status: `FIX_IMPLEMENTED`
 - routingClass: `REMEDIATION_LANE`
 - assignedLane: `REMEDIATION_LANE`
 - assignedRoom: `System 2｜補強修復室`
 - modificationOwner: `SYSTEM2_REMEDIATION_ROOM`
+- independent verification: `PENDING_INDEPENDENT_AUDIT`
 - blockedBy: none
 
 Other corrections:
-- `S2-CORR-20261004-001` remains `DATA_LANE` ownership and is not touched.
-- `S2-CORR-20261004-002` and `S2-CORR-20261004-003` are independently `VERIFIED_CLOSED` and are not reopened.
+- `S2-CORR-20261004-001` remains DATA_LANE ownership and was not modified by this remediation.
+- `S2-CORR-20261004-002` and `S2-CORR-20261004-003` remain independently `VERIFIED_CLOSED`.
 
-## Canonical problem statement
+## Implemented state
 
-The current S2-07 upstream gate collapses symbol-local missingness into a whole-universe failure:
+The S2-07 readiness model now separates two levels:
 
-1. `daily_shadow_history_reader_v0_1.mjs` reports READY only when every current-universe symbol is history-ready and continuity-ready.
-2. `daily_shadow_input_preflight_v0_1.mjs` then requires whole-universe history state READY before any authorized strategy evaluation/capacity path can continue.
-3. One new listing, one symbol-local history gap, one local continuity/provenance UNKNOWN, or one symbol-local required-evidence gap can therefore starve otherwise clean symbols.
-4. Downstream semantics already support symbol-local `INCOMPLETE / BLOCKED` without converting UNKNOWN into negative evidence.
+### 1. Global observation integrity
 
-## Required correction boundary
+Global fail-closed remains in force for defects that invalidate the observation universe / clock / source contract.
 
-Separate **global observation integrity** from **symbol-local evaluation readiness**.
+Examples:
+- current A1 source not READY;
+- source/decision clock invalid;
+- whole-universe accounting cannot be completed;
+- source-wide history/revision/provenance integrity is explicitly BLOCKED;
+- history source/query failures that prevent a trustworthy global probe.
 
-Global fail-closed remains mandatory for whole-universe/source/clock defects such as:
-- wrong source date / decision clock;
-- market-wide source corruption;
-- whole-batch provenance failure;
-- source-wide revision ambiguity;
-- missing mandatory market-wide source identity.
+These remain `INPUTS_NOT_READY` and cannot authorize capacity or zero-pick.
 
-Symbol-local missingness must remain local:
-- insufficient history / new listing;
-- continuity not verified;
-- symbol-local PIT/provenance gap;
-- symbol-local REQUIRED evidence UNKNOWN.
+### 2. Symbol-local readiness
 
-Ready symbols may continue through authorized Shadow evaluation / Frozen Decision / Ranking / Capacity.
-Incomplete symbols must remain explicitly accounted, `INCOMPLETE / BLOCKED`, never BUY_ELIGIBLE / ACTIVE_ENTRY_MONITOR / capacity-admitted.
+Symbol-local defects no longer block otherwise clean symbols globally.
 
-No arbitrary whole-market coverage threshold may be introduced.
+Examples:
+- insufficient PIT history / young listing;
+- symbol-local continuity not verified;
+- symbol-local history/revision/PIT gap;
+- REQUIRED strategy evidence UNKNOWN.
 
-## Zero-pick boundary
+These remain explicitly:
+- `INCOMPLETE`;
+- `BLOCKED`;
+- denominator-accounted;
+- not BUY_ELIGIBLE;
+- not ACTIVE_ENTRY_MONITOR eligible;
+- not capacity-admitted.
 
-Partial denominator coverage must never be promoted to a clean zero-pick truth.
+Ready symbols may continue through the already-authorized Shadow evaluation/ranking/capacity mechanics. No strategy threshold or assessor policy was invented.
 
-The corrected path must distinguish a fully-accounted clean no-selection result from a partial-coverage no-selection state such as `PARTIAL_COVERAGE_NO_SELECTION` (or equivalent fail-safe semantics).
+## Changed files — implementation PR #585
+
+PR #585 changed exactly these 13 files:
+
+1. `system2/SYSTEM2_DAILY_SHADOW_CAPACITY_ORCHESTRATION_V0_1.md`
+2. `system2/SYSTEM2_DAILY_SHADOW_INPUT_PREFLIGHT_V0_1.md`
+3. `system2/SYSTEM2_REMEDIATION_CHECKPOINT.md`
+4. `system2/runtime/daily_shadow_capacity_orchestrator_v0_1.mjs`
+5. `system2/runtime/daily_shadow_history_reader_v0_1.mjs`
+6. `system2/runtime/daily_shadow_input_preflight_v0_1.mjs`
+7. `system2/runtime/prediction_snapshot_v0_1.mjs`
+8. `system2/tests/daily_shadow_capacity_orchestrator_v0_1.test.mjs`
+9. `system2/tests/daily_shadow_input_preflight_v0_1.test.mjs`
+10. `system2/tests/daily_shadow_input_preflight_workflow_guard.test.mjs`
+11. `system2/tests/limited_shadow_run_assembler_v0_1.test.mjs`
+12. `system2/tests/mixed_universe_shadow_readiness_v0_1.test.mjs`
+13. `system2/tests/prediction_snapshot_v0_1.test.mjs`
+
+Evidence-finalization branch additionally changes only:
+- `system2/SYSTEM2_CORRECTION_QUEUE.md`;
+- `system2/SYSTEM2_CORRECTION_QUEUE.json`;
+- this remediation checkpoint.
+
+## Runtime details
+
+### History reader
+
+`daily_shadow_history_reader_v0_1.mjs` now preserves:
+- aggregate descriptive history/continuity coverage state;
+- `globalIntegrityState`;
+- `globalBlockerCodes`;
+- `accountedSymbolCount`;
+- `accountingComplete`;
+- `symbolLocalIncompleteCount`;
+- `selectionDenominatorComplete`;
+- per-symbol `readinessState`, `evaluationInputReady`, `blockerCodes`, `denominatorAccounted`.
+
+A local history/continuity/revision problem is retained on that symbol instead of becoming the global preflight gate.
+
+### Input preflight
+
+`daily_shadow_input_preflight_v0_1.mjs` now:
+- uses global source/history integrity for global blocking;
+- exposes `symbolAccounts`, `symbolLocalBlockers`, eligible and blocked symbol lists;
+- permits future authorized assessor evaluation of ready symbols even if other symbols are locally incomplete;
+- keeps `capacityWriteAuthorized` gated by global inputs + authorized assessor;
+- keeps `zeroPickMayBeClaimed` additionally gated by complete selection denominator.
+
+Current assessor policies remain unchanged/unfrozen where they were already unfrozen.
+
+### Prediction zero-pick semantics
+
+`prediction_snapshot_v0_1.mjs` now derives a selection denominator from complete Shadow run accounting.
+
+No-selection states are separated:
+- `CLEAN_ZERO_PICK` -> denominator complete -> `zeroPickDay=true`;
+- `PARTIAL_COVERAGE_NO_SELECTION` -> unresolved INCOMPLETE/SOURCE_BLOCKED/SESSION_INVALID/ERROR -> `zeroPickDay=null`;
+- `DENOMINATOR_UNKNOWN_NO_SELECTION` -> insufficient denominator evidence -> `zeroPickDay=null`.
+
+### Capacity semantics
+
+`daily_shadow_capacity_orchestrator_v0_1.mjs` now distinguishes:
+
+- `CAPACITY_READY`
+  - denominator complete with non-empty legitimate capacity.
+
+- `CAPACITY_ZERO_PICK_READY`
+  - denominator complete;
+  - no surviving/admitted candidate;
+  - `zeroPickDay=true`.
+
+- `CAPACITY_READY_PARTIAL_COVERAGE`
+  - some symbols unresolved/incomplete;
+  - at least one clean symbol is legitimately admitted;
+  - ready symbols may proceed;
+  - incomplete symbols remain blocked/non-admitted;
+  - `zeroPickDay=false`.
+
+- `CAPACITY_PARTIAL_COVERAGE_NO_SELECTION`
+  - denominator partial;
+  - no ready admission;
+  - `zeroPickDay=null`;
+  - `capacityReceipt=null`;
+  - **no `s2_capacity_runs` persistence**.
+
+The no-receipt rule is deliberate: downstream 19:00 resonance currently treats an empty capacity receipt as a zero-pick pool, so partial denominator no-selection must not emit a capacity row that can become false `ZERO_PICK_ACTIVE`.
+
+## Mixed-universe regression evidence
+
+New:
+`system2/tests/mixed_universe_shadow_readiness_v0_1.test.mjs`
+
+Frozen fixture contains one universe with:
+
+- A: history + continuity complete;
+- B: insufficient history;
+- C: continuity unverified;
+- D: history/continuity complete but REQUIRED strategy evidence UNKNOWN.
+
+Verified behavior:
+- A history readiness = READY;
+- B = INCOMPLETE / `INSUFFICIENT_PIT_HISTORY`;
+- C = INCOMPLETE / `SYMBOL_LOCAL_CONTINUITY_NOT_VERIFIED`;
+- D is mapped by the unchanged strategy evaluator to `strategyValidity=INCOMPLETE / entryReadiness=BLOCKED`;
+- A can become the only admitted/active capacity symbol;
+- B/C/D cannot become capacity admissions;
+- B/C/D remain individually diagnosed rather than disappearing;
+- all four current-universe symbols are denominator-accounted;
+- partial coverage does not stop A.
+
+## Global fail-closed evidence
+
+The mixed-universe/preflight regression also injects a source-wide revision-integrity blocker:
+
+- aggregate state = `SOURCE_WIDE_REVISION_AMBIGUITY`;
+- `globalIntegrityState=BLOCKED`;
+- global blocker = `SOURCE_WIDE_REVISION_AMBIGUITY`.
+
+Verified:
+- preflight = `INPUTS_NOT_READY`;
+- `globalInputsReady=false`;
+- `capacityWriteAuthorized=false`;
+- `zeroPickMayBeClaimed=false`.
+
+Current A1 source/clock validation remains unchanged; malformed/source-error/current-batch failures continue to fail closed globally.
+
+## Zero-pick denominator evidence
+
+Regression coverage verifies both cases:
+
+### Clean denominator, no selection
+- state = `CAPACITY_ZERO_PICK_READY`;
+- `selectionDenominator.complete=true`;
+- `zeroPickState=CLEAN_ZERO_PICK`;
+- `zeroPickDay=true`.
+
+### Partial denominator, no selection
+- state = `CAPACITY_PARTIAL_COVERAGE_NO_SELECTION`;
+- `selectionDenominator.complete=false`;
+- `zeroPickState=PARTIAL_COVERAGE_NO_SELECTION`;
+- `zeroPickDay=null`;
+- `capacityReceipt=null`;
+- no `s2_capacity_runs` operation exists.
+
+Prediction Snapshot carries the same fail-safe denominator distinction.
+
+## PIT / UNKNOWN preservation
+
+This correction does not relax:
+- `availableAt <= decisionTimestamp`;
+- `pit_replay_eligible=1`;
+- revision ambiguity detection;
+- continuity state;
+- source identity/provenance;
+- immutable run accounting;
+- strategy REQUIRED evidence UNKNOWN semantics.
+
+It does not perform:
+- UNKNOWN -> 0;
+- UNKNOWN -> PASS;
+- missing -> neutral;
+- forward-fill;
+- use of current data as historical truth.
+
+No 95% / 90% / 80% or other market-wide coverage threshold was added.
+
+## Test / CI evidence
+
+Two early System2 CI failures were diagnostic and corrected without weakening the fix:
+
+1. System2 Research CI `37223831928`:
+   - old capacity test expected `CAPACITY_READY` for a prior INCOMPLETE membership;
+   - expectation corrected to `CAPACITY_READY_PARTIAL_COVERAGE`.
+
+2. System2 Research CI `37223878523`:
+   - new mixed-universe test attempted an in-place `.sort()` on a frozen output array;
+   - test changed to sort a copy, preserving immutability.
+
+Final implementation head:
+`7ee02cc98913e79fc981da4d21e39b54b48b4983`
+
+- System2 Research CI `37224012433`: **PASS**
+- V8 Regression `37224012419`: **PASS**
+- PR #585 mergeability immediately before merge: true
+- PR #585 squash merge:
+  `b6dd5bff357d6c678825ca212afae6a533da68c8`
+
+Merged-main readback confirmed all key runtime guards and no arbitrary coverage-threshold logic.
 
 ## Protected boundaries
 
-Do not change:
-- System 1 Formal Core or runtime;
+Unchanged:
+- System 1 Formal Core;
+- System 1 runtime;
 - System 2 live/final-selection authority;
 - production push/runtime;
 - capital/order behavior;
 - strategy weights;
 - formal entry/exit thresholds;
-- assessor policy itself;
-- PIT/UNKNOWN semantics.
+- assessor policy.
 
-## Active conflict units
+## Remaining UNKNOWN / residual
 
-Initial owned conflict units:
-- `system2/runtime/daily_shadow_history_reader_v0_1.mjs`
-- `system2/runtime/daily_shadow_input_preflight_v0_1.mjs`
-- downstream accounting/capacity glue only where required to distinguish partial denominator vs clean zero-pick;
-- associated System 2 tests;
-- correction queue MD/JSON;
-- this remediation checkpoint;
-- canonical docs only if runtime semantics require corresponding truth updates.
-
-## Tests / evidence required
-
-Pending:
-- mixed-universe test: A ready; B insufficient history; C continuity UNKNOWN; D required evidence UNKNOWN;
-- A continues through evaluation while B/C/D remain INCOMPLETE/BLOCKED;
-- all current-universe symbols denominator-accounted;
-- INCOMPLETE never becomes BUY_ELIGIBLE / ACTIVE_ENTRY_MONITOR / capacity admission;
-- partial denominator no-selection is not CLEAN zero-pick;
-- source-wide/global corruption still blocks globally;
-- PIT/availableAt/firstKnownAt/revision/continuity/provenance UNKNOWN semantics preserved;
-- System2 Research CI;
-- V8 Regression;
-- latest-main drift/readback.
+- This correction fixes the **readiness level error**, but it does not authorize a strategy assessor or scheduled production Shadow capture.
+- Current assessor readiness remains whatever the canonical assessor registry says; CORR-004 does not promote it.
+- Historical/local continuity/provenance gaps may still exist for individual symbols. They are intentionally preserved as local UNKNOWN/INCOMPLETE rather than “fixed” by imputation.
+- A truly source-wide revision/provenance ambiguity must be surfaced as a global integrity blocker by the upstream source/history adapter. CORR-004 preserves that fail-closed interface; it does not attempt to manufacture new source-wide evidence.
+- No physical live-selection/capital/order authority was enabled or tested because it is outside scope.
 
 ## Exact next continuation point
 
-1. Read the exact history-reader/preflight/capacity contracts and existing tests.
-2. Implement the minimum state-shape change that separates global blockers from per-symbol readiness without inventing coverage thresholds.
-3. Add mixed-universe and global-corruption regression coverage.
-4. Run targeted tests, then full System2 Research CI and V8 Regression.
-5. Re-read latest main and reconcile shared Queue/checkpoint drift without overwriting DATA_LANE/AUDIT_LANE work.
-6. Update CORR-004 to `FIX_IMPLEMENTED` with durable evidence only after all checks pass.
-7. Merge and hand back to AUDIT_LANE; do not self-mark `VERIFIED_CLOSED`.
+1. Require the evidence-finalization PR head to pass System2 Research CI and V8 Regression.
+2. Re-read latest main before merge and reconcile any concurrent Correction Queue / checkpoint updates without overwriting DATA_LANE or AUDIT_LANE evidence.
+3. Merge the evidence-only PR if checks are green and conflict units are clean.
+4. Re-read merged main and verify `S2-CORR-20261004-004 = FIX_IMPLEMENTED`, `PENDING_INDEPENDENT_AUDIT`.
+5. Hand `S2-CORR-20261004-004` to `SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR`.
+6. Because CORR-004 is HIGH, REMEDIATION_LANE must not self-mark `VERIFIED_CLOSED`.

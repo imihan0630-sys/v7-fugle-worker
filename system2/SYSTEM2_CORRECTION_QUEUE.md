@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-04 22:51 Asia/Taipei
+Updated: 2026-10-05 02:21 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -98,7 +98,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
 - createdAt: 2026-10-04T22:51:00+08:00
 - severity: HIGH
-- status: OPEN
+- status: FIX_IMPLEMENTED
 - routingClass: REMEDIATION_LANE
 - assignedLane: REMEDIATION_LANE
 - assignedRoom: System 2｜補強修復室
@@ -137,10 +137,22 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - System 1 Formal Core, System 2 production selection authority, live push, capital and orders remain unchanged.
 - protectedBoundaries: System 1 Formal Core; System 2 live/final-selection authority; production push/runtime; capital/order; PIT/UNKNOWN semantics; no invented thresholds.
 - ownerDecisionRequired: false for restoring canonical per-symbol UNKNOWN semantics in research/shadow; any later production minimum-coverage policy remains separately owner/evidence gated.
-- implementationEvidence: PENDING
-- verificationEvidence: PENDING
-- finalDisposition: PENDING
-- updatedAt: 2026-10-04T22:51:00+08:00
+- implementationEvidence:
+  - PR #585 implemented CORR-004 and squash-merged to main as `b6dd5bff357d6c678825ca212afae6a533da68c8`.
+  - `daily_shadow_history_reader_v0_1.mjs` separates aggregate coverage from `globalIntegrityState` and preserves explicit per-symbol readiness/blocker/denominator accounting.
+  - `daily_shadow_input_preflight_v0_1.mjs` globally blocks only global A1/history-integrity failures and exposes symbol-local eligible/blocked accounting instead of turning local gaps into `PIT_HISTORY_GLOBAL` blockers.
+  - No arbitrary whole-market coverage threshold was added; PIT/provenance/continuity UNKNOWN remains explicit and is not converted to zero/pass/neutral or forward-filled.
+  - Prediction Snapshot now distinguishes `CLEAN_ZERO_PICK`, `PARTIAL_COVERAGE_NO_SELECTION`, and denominator-unknown no-selection; `zeroPickDay=null` unless the required no-selection denominator is complete.
+  - Capacity allows ready admissions under partial coverage as `CAPACITY_READY_PARTIAL_COVERAGE`, while INCOMPLETE symbols remain blocked and cannot enter active monitor/capacity admission.
+  - Partial denominator with no ready admission returns `CAPACITY_PARTIAL_COVERAGE_NO_SELECTION`, `capacityReceipt=null`, and writes no `s2_capacity_runs`, preventing downstream false `ZERO_PICK_ACTIVE`.
+  - Mixed-universe regression covers A ready, B insufficient history, C continuity unverified, D required evidence UNKNOWN: A proceeds; B/C/D remain `INCOMPLETE/BLOCKED`; all symbols remain accounted.
+  - Global-failure regression verifies source-wide revision ambiguity remains `INPUTS_NOT_READY`, with capacity/zero-pick authorization false.
+  - First CI failure (`37223831928`) was an obsolete test expectation for an INCOMPLETE prior membership; second (`37223878523`) was an in-place sort of a frozen test output. Both test issues were corrected without weakening the runtime guard.
+  - Final implementation head `7ee02cc98913e79fc981da4d21e39b54b48b4983`: System2 Research CI `37224012433` PASS; V8 Regression `37224012419` PASS.
+  - Merged-main readback on `b6dd5bff357d6c678825ca212afae6a533da68c8` confirmed all CORR-004 runtime guards and no 95/90/80% threshold logic.
+  - Protected boundaries unchanged: no System 1 Formal Core/runtime, System 2 live/final-selection authority, production push/runtime, capital/order, strategy weight, formal entry/exit threshold, or assessor-policy change.
+- verificationEvidence: PENDING_INDEPENDENT_AUDIT- finalDisposition: PENDING
+- updatedAt: 2026-10-05T02:21:47+08:00
 
 
 ## Closed directives
