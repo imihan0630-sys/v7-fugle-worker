@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "CURRICULUM_COV03_INTAKE_DEPENDENCY_AUDIT_V0_1",
+  "candidateId": "COV-03",
+  "domain": "D06",
+  "specialistRoom": "05｜法人與籌碼研究室",
+  "status": "OWNER_APPROVAL_REQUIRED",
+  "structuralRecommendation": "ADD_MODULE",
+  "proposedModule": {
+    "id": "D06-19",
+    "name": "Retail / Individual Investor Participation & Flow（散戶／自然人參與與流向）",
+    "startingLevel": "L0",
+    "startingMaturityPct": 0
+  },
+  "canonicalImpact": "NONE_UNTIL_OWNER_APPROVAL",
+  "formalCoreImpact": "NONE_LOCKED",
+  "systemFormalImpact": "NONE",
+  "intake": {
+    "result": "RETURN_ACCEPTED_FOR_INTAKE",
+    "terminalRecommendation": "ADD_MODULE",
+    "unknownPreserved": true,
+    "historicalShadowFabricated": false
+  },
+  "maturityConflict": {
+    "canonicalReturn": "L0/0%",
+    "supportingJson": "L1/20%",
+    "supportingMarkdownEarlier": "L1/20%",
+    "resolution": "FAIL_CLOSED_TO_CANONICAL_L0_0",
+    "reason": "New module default plus canonical formal return; no automatic maturity inheritance."
+  },
+  "dependencyAudit": {
+    "result": "PASS",
+    "dependencies": [
+      "D06-07",
+      "D06-10",
+      "D06-13",
+      "D06-14",
+      "D06-01~04",
+      "D20"
+    ],
+    "missingCounterpartRequired": false,
+    "stockDateRetailDirectionalSource": "UNKNOWN_FUTURE_RESEARCH_GATE"
+  },
+  "overlapRecheck": {
+    "result": "ADD_MODULE_SURVIVES",
+    "absorbIntoExistingRejected": [
+      "D06-07",
+      "D06-10",
+      "D06-13",
+      "D06-14",
+      "D20"
+    ]
+  },
+  "antiDoubleCount": {
+    "result": "PASS_WITH_HARD_FIREWALL",
+    "forbidden": [
+      "margin-as-direct-retail",
+      "daytrade-as-direct-retail",
+      "oddlot-as-whole-market-retail",
+      "broker-branch-as-beneficial-owner",
+      "total-minus-institutions-as-retail",
+      "duplicate D06 primitive plus D20 independent vote"
+    ]
+  },
+  "antiOrphan": {
+    "result": "PASS",
+    "preservedOwners": [
+      "D06-07",
+      "D06-10",
+      "D06-13",
+      "D06-14",
+      "D20"
+    ],
+    "retiredIdReuseForbidden": "D06-17",
+    "proposedIdCollision": "NONE_FOUND_FOR_D06-19"
+  },
+  "dataBoundary": {
+    "verified": [
+      "market-level natural-person observability",
+      "selected-channel natural-person observability",
+      "natural-person ownership observability"
+    ],
+    "unverified": [
+      "domestic natural-person stock-date directional flow",
+      "complete historical firstKnownAt",
+      "OOS/Shadow alpha"
+    ]
+  },
+  "nextAction": "EXPLICIT_OWNER_APPROVAL_FOR_COV03_ADD_MODULE_D06_19_L0_0",
+  "cov12": "PENDING_SPECIALIST_RETURN",
+  "formalCore": "LOCKED"
+}
