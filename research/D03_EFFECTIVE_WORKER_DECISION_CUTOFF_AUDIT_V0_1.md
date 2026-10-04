@@ -23,7 +23,8 @@ No deploy, secret, D1 write, market-data call or Formal decision is performed.
 
 PASS requires:
 - total-capital KV read occurs before selection;
-- after totalCapital resolves, no await/fetch/KV/D1 read occurs before selector call;
+- the effective patch chain's later Formal-affecting V7_MARKET_CONSENSUS KV read is present;
+- after that market-consensus read, no await/fetch/KV/D1 read occurs before selector call;
 - selector is synchronous;
 - selector contains no await/fetch/KV/D1 read;
 - C1 has a later decisionAt receipt stamp;
@@ -32,7 +33,16 @@ PASS requires:
 
 ## Interpretation
 
-If PASS, the current effective-build candidate cutoff anchor is immediately after totalCapital resolution and immediately before selectTomorrowCandidates(...).
+Physical run 37196768178 PASS after the C1/C2 repair review reported 95/95 tests PASS.
+
+The audit first falsified the earlier totalCapital boundary because an effective-build market-consensus read exists after totalCapital.
+
+The corrected current effective-build candidate cutoff anchor is immediately after the V7_MARKET_CONSENSUS KV read and immediately before selectTomorrowCandidates(...).
+
+Observed effective runtime source version: 8.17.0-shadow-cohort-membership.
+Observed async/external reads after the final Formal input and before selector: 0.
+Observed physical C1 decisionAt: present.
+Observed physical C1 decisionCutoffAt: absent.
 
 This is a source-audit fact only.
 
