@@ -927,3 +927,21 @@ time curve and price-by-volume profile remain separate; price profile is prospec
 No economic hypothesis changes status.
 No L4 promotion.
 No FORMAL_OPTIMIZATION_CANDIDATE.
+
+## Pre-PVE-240 D02-01 semantic-governance overlay — 2026-10-04
+
+D02-01 L4 question is not directional alpha.
+
+Primary future evidence:
+prospective semantic/provenance defects plus counterfactual classification delta under the frozen adapter.
+
+Positive semantic-governance evidence means:
+a legal prospective row demonstrates that the frozen governance changes or prevents a classification that the ungoverned frozen counterfactual would have admitted.
+
+It does not mean:
+the governed path has higher returns.
+
+All 12 D02 modules now have executable L4-admission firewalls.
+No economic hypothesis changes status.
+No L4 promotion.
+No FORMAL_OPTIMIZATION_CANDIDATE.
