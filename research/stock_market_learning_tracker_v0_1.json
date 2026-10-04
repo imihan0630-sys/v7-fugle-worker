@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T19:24:00+08:00",
+  "updatedAt": "2026-10-04T19:16:02+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -494,10 +494,10 @@
           "researchNote": "Versioned Taiwan price-limit mechanics plus explicit observed limit/reference state support PIT contamination classification; unknown historical rule/reference remains UNKNOWN."
         }
       ],
-      "status": "SECOND_WAVE_L3_COMPLETE / D04_02_05_06_PROMOTED / ONLY_D04_08_REMAINS_L2",
-      "exactNextContinuationPoint": "D04-NEXT-L4-01: D04 is 58.0%. Only D04-08 remains L2; do not promote it without portfolio-risk/execution policy evidence. All other D04 modules are L3 and require genuine prospective Shadow/OOS for L4. D04-02/05/06 may accumulate prospective A2/context/transition receipts, but feasibility is already validated; no retrospective first-known fabrication. Formal Core locked.",
-      "lastResearchUpdate": "2026-10-04T15:15:00+08:00",
-      "researchNote": "Shared D18/A2 TAIEX context and transition builders now provide executable PIT source/calendar/clock/hash/replay evidence for D04-02 and D04-05. D04-06 joins that market parent with existing A1 stock PIT/continuity lineage under exact common support. Three modules advance L2->L3; D04 rises 52->58%. D04-08 stays L2 because sizing is a portfolio/risk policy transform, not an input-data feasibility question. B04 D04-05 vs D18-11 returns KEEP_SEPARATE / COMPONENT_TO_COMPOSITE_DEPENDENCY with one shared volatility primitive and no duplicate vote."
+      "status": "L3_BROAD_COMPLETE / L4_WAVE1_PREREGISTERED / FUTURE_EVIDENCE_PENDING",
+      "exactNextContinuationPoint": "D04-L4-W1-01: count only genuine post-freeze parent receipts for D04-03/04/07. Before outcome interpretation report exact parent coverage, distinct clean dates, state/episode occupancy, UNKNOWN/exclusion reasons and common-support retention; then freeze D16 MDE/dependence review. No historical Prospective Shadow backfill. D04 stays 58.0% until actual prospective/OOS evidence qualifies.",
+      "lastResearchUpdate": "2026-10-04T19:16:02+08:00",
+      "researchNote": "D04 remains 58.0%. L4 Wave-1 is frozen prospectively for D04-03 contraction, D04-04 expansion/shock, and D04-07 volatility×trend/breakout interaction. No L4 credit from code/tests/history; genuine post-freeze parents/outcomes and D16 dependence/MDE review are required. D04-08 remains L2 because sizing is a portfolio-risk/execution policy transform."
     },
     {
       "id": "D05",
@@ -646,10 +646,10 @@
           "researchNote": "Four-layer semantics frozen: observable anomaly, TWSE attention/disposition surveillance state, non-accusatory research pattern candidate, and authoritative legal finding are distinct. Attention/disposition is not a manipulation verdict; disposition is an execution-regime intervention. High cancellation is not spoofing; public top5 cannot establish actor intent/account linkage. False-positive controls and non-accusatory machine vocabulary are mandatory."
         }
       ],
-      "status": "PIT_FEASIBILITY_ABOVE_50 / D05_03_04_07_08_09_L3 / EVENT_LEVEL_INFERENCE_PENDING",
-      "exactNextContinuationPoint": "D05-NEXT-L4-01: D05 remains 51.4%. L3 snapshot/mechanism modules need prospective Shadow/OOS for L4. D05-05/11/12/13/14 remain gated by event/order-lifecycle/official-integrity evidence; D05-06 expanded auction scope remains L2 until imbalance replay/source feasibility is stronger. B14 de-dup remains in force.",
-      "lastResearchUpdate": "2026-10-04T07:45:00+08:00",
-      "researchNote": "L3 audit promoted D05-03/04/07/08/09 using merged timestamped/fail-closed quote evidence and current Taiwan/Fugle source contracts. D05-05 true OFI remains blocked; D05-06 COV-02 scope extension awaits 00 intake; D05-11..14 remain behind own-order/legal-event/PIT gates."
+      "status": "PIT_FEASIBILITY_ABOVE_50 / L4_WAVE1_PREREGISTERED / EVENT_CAUSALITY_GATED",
+      "exactNextContinuationPoint": "D05-L4-W1-01: count only genuine post-freeze D05-03/04/09 quote/depth parents. First checkpoint reports timestamp/freshness, quote-age/reconnect missingness, mechanism-state exclusions, exact common-support retention and nested marketDate/date-cluster counts before any economic outcome interpretation. No true OFI or scalar liquidity threshold. D05 stays 51.4% until actual prospective/OOS evidence qualifies.",
+      "lastResearchUpdate": "2026-10-04T19:16:02+08:00",
+      "researchNote": "D05 remains 51.4%. L4 Wave-1 is frozen for D05-03 spread, D05-04 top-five displayed depth, and D05-09 liquidity component state. Snapshot-level evidence first; true OFI/event completeness, own-order impact, toxicity intent and exact queue remain separate blockers. System2 2026-10-02 INPUTS_NOT_READY and engineering/CI receive zero L4 credit."
     },
     {
       "id": "D06",
