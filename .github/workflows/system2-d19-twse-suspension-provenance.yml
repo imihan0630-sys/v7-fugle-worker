@@ -1,0 +1,34 @@
+name: System2 D19 TWSE Suspension Provenance
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-d19-twse-suspension-provenance.yml"
+      - "system2/scripts/d19_twse_suspension_probe_v0_1.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Probe official TWSE suspension history
+        env:
+          D19_SUSP_START: "20260803"
+          D19_SUSP_END: "20260831"
+        run: node system2/scripts/d19_twse_suspension_probe_v0_1.mjs
+      - name: Confirm production isolation
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- wrangler.toml Worker.js
+          echo "Production isolation PASS"
