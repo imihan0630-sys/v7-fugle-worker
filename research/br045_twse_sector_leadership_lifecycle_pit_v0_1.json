@@ -1,0 +1,154 @@
+{
+  "version": "0.1",
+  "id": "BR-045",
+  "capturedAt": "2026-10-04T09:54:00+08:00",
+  "module": "D09-07 領導股／主流族群生命週期",
+  "mode": "OFFICIAL_TWSE_MULTI_DATE_SECTOR_LEADERSHIP_LIFECYCLE_PIT / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "source": {
+    "authority": "Taiwan Stock Exchange",
+    "report": "MI_INDEX",
+    "indexType": "34 official industry total-return indices",
+    "dates": [
+      "2026-09-23",
+      "2026-09-24",
+      "2026-09-30",
+      "2026-10-01",
+      "2026-10-02"
+    ],
+    "urls": [
+      "https://www.twse.com.tw/exchangeReport/MI_INDEX?date=20260923&response=json&type=ALLBUT0999",
+      "https://www.twse.com.tw/exchangeReport/MI_INDEX?date=20260924&response=json&type=ALLBUT0999",
+      "https://www.twse.com.tw/exchangeReport/MI_INDEX?date=20260930&response=json&type=ALLBUT0999",
+      "https://www.twse.com.tw/exchangeReport/MI_INDEX?date=20261001&response=json&type=ALLBUT0999",
+      "https://www.twse.com.tw/exchangeReport/MI_INDEX?date=20261002&response=json&type=ALLBUT0999"
+    ],
+    "noFillRule": "2026-09-25 was not used because no usable official trading snapshot existed in this sequence; no interpolation."
+  },
+  "frozenSemantics": {
+    "leaderSet": "same-date top quartile by daily industry total-return percentage",
+    "BROAD_PARTICIPATION": "positive-industry share >= 75%",
+    "MIXED_PARTICIPATION": "40% <= positive-industry share < 75%",
+    "NARROW_PARTICIPATION": "positive-industry share < 40%",
+    "top3Turnover": "1 - top3 overlap with prior snapshot / 3",
+    "thresholdUse": "descriptive research semantics only; no forward-return optimization"
+  },
+  "snapshots": [
+    {
+      "date": "2026-09-23",
+      "positiveN": 18,
+      "totalN": 34,
+      "positiveShare": 0.5294,
+      "state": "MIXED_PARTICIPATION",
+      "top3": [
+        "水泥類報酬指數 2.83%",
+        "電子零組件類報酬指數 1.49%",
+        "半導體類報酬指數 1.25%"
+      ]
+    },
+    {
+      "date": "2026-09-24",
+      "positiveN": 12,
+      "totalN": 34,
+      "positiveShare": 0.3529,
+      "state": "NARROW_PARTICIPATION",
+      "top3": [
+        "塑膠類報酬指數 3.60%",
+        "玻璃陶瓷類報酬指數 1.61%",
+        "電子零組件類報酬指數 1.15%"
+      ],
+      "top3OverlapPrev": 1
+    },
+    {
+      "date": "2026-09-30",
+      "positiveN": 31,
+      "totalN": 34,
+      "positiveShare": 0.9118,
+      "state": "BROAD_PARTICIPATION",
+      "top3": [
+        "玻璃陶瓷類報酬指數 3.94%",
+        "電器電纜類報酬指數 3.76%",
+        "塑膠類報酬指數 3.64%"
+      ],
+      "top3OverlapPrev": 2
+    },
+    {
+      "date": "2026-10-01",
+      "positiveN": 15,
+      "totalN": 34,
+      "positiveShare": 0.4412,
+      "state": "MIXED_PARTICIPATION",
+      "top3": [
+        "通信網路類報酬指數 2.71%",
+        "電子通路類報酬指數 2.19%",
+        "電子零組件類報酬指數 1.90%"
+      ],
+      "top3OverlapPrev": 0
+    },
+    {
+      "date": "2026-10-02",
+      "positiveN": 16,
+      "totalN": 34,
+      "positiveShare": 0.4706,
+      "state": "MIXED_PARTICIPATION",
+      "top3": [
+        "油電燃氣類報酬指數 5.51%",
+        "化學類報酬指數 2.83%",
+        "塑膠類報酬指數 2.75%"
+      ],
+      "top3OverlapPrev": 0
+    }
+  ],
+  "topQuartilePersistence": [
+    {
+      "industry": "電子零組件類報酬指數",
+      "dates": 4
+    },
+    {
+      "industry": "電子通路類報酬指數",
+      "dates": 4
+    },
+    {
+      "industry": "光電類報酬指數",
+      "dates": 4
+    },
+    {
+      "industry": "塑膠類報酬指數",
+      "dates": 3
+    },
+    {
+      "industry": "玻璃陶瓷類報酬指數",
+      "dates": 3
+    }
+  ],
+  "mechanisms": [
+    "Repeated official close snapshots permit replay of sector leadership persistence, churn and participation-state transitions without future outcomes.",
+    "Leadership identity and participation breadth are distinct state dimensions.",
+    "Top-quartile persistence captures sustained leadership candidates while top3 overlap/turnover captures fast rotation."
+  ],
+  "falsification": [
+    "Daily leader ranks can be one-day shocks and do not prove persistent economic leadership.",
+    "Industry indices can hide member-level concentration and breadth.",
+    "Five dates prove data feasibility only, not a stable lifecycle distribution or predictive value.",
+    "Sector leadership does not complete individual leader-stock lifecycle evidence."
+  ],
+  "pitRules": [
+    "No backdating before official close report capture.",
+    "No interpolation across non-trading dates.",
+    "Member explanations require effective-dated membership vintages.",
+    "Missing rows remain UNKNOWN."
+  ],
+  "maturityDecision": {
+    "D09-07": "PROMOTE_L2_TO_L3_BOUNDED_TAIWAN_PIT_DATA_FEASIBILITY_ONLY",
+    "D09-06": "KEEP_L3",
+    "D09-12": "KEEP_L2"
+  },
+  "promotionReason": "Five independent official TWSE close snapshots across all 34 industry total-return indices clear the prior repeated-PIT-snapshot blocker for the mainstream-sector component of D09-07. Individual-stock leadership and predictive efficacy remain unproven.",
+  "exactNext": [
+    "BR-061 append future official close snapshots prospectively under unchanged semantics.",
+    "Add member-level leader concentration/breadth only with effective-dated membership and common clocks.",
+    "Before L4, preregister persistence/reversal outcomes and ablate against D09-06, D09-10 and D09-04."
+  ],
+  "status": "BOUNDED_SECTOR_LEADERSHIP_LIFECYCLE_PIT_FEASIBLE / FIVE_OFFICIAL_DATES / STOCK_LEVEL_PARTIAL / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
