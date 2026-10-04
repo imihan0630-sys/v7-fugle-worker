@@ -1021,3 +1021,48 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 4. Next D01 science after merge: separate detector-selection salience from true structural-memory mechanism if confirmed zones outperform non-anchor controls.
 5. Preserve pseudo-zone manifests and failed controls; no outcome-based pruning.
 6. No outcome join / no Formal change.
+
+
+## Continuation update — DL-028 (2026-10-04)
+
+### D01 progress denominator reconciliation
+- Current curriculum authority is `shared-knowledge/LEARNING_ROOM_ROUTER.md` plus `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md`.
+- Current D01 curriculum has 11 active modules and reports 52.7%.
+- The older 51.7% label in this checkpoint used the prior 12-module denominator, where D01-12 remained a separate L2 / 40% module.
+- After D01-12 was merged into D01-02 / D01-03 / D01-05 / D01-09, the active-module maturity sum is 580 percentage-points across 11 modules: 580 / 11 = 52.7%.
+- The old denominator was 620 / 12 = 51.7%.
+- Therefore 51.7% -> 52.7% is a curriculum-denominator reconciliation, NOT a new module maturity promotion.
+- Historical 51.7% entries above are retained as contemporaneous records; current authoritative D01 maturity is 52.7%.
+
+### DL-028 — Detector-selection salience vs structural-memory firewall
+- DL-027 non-anchor pseudo-zones control generic horizontal-level crossing, but true-zone superiority over random/non-anchor levels would still not identify structural memory.
+- DL-028 freezes a three-layer mechanism ladder:
+  - M0 = NON_ANCHOR_HORIZONTAL_CONTROL from DL-027;
+  - M1 = DETECTOR_SALIENCE_CONTROL: same symbol / semantic space / detector version, already-created but UNCONFIRMED_ACTIVE candidate at the true-zone confirmation landmark;
+  - M2 = CONFIRMED_STRUCTURAL_ZONE.
+- The key falsification is M2 vs M1 after DL-026 opportunity controls. If M2 beats M0 but not M1, detector-selection salience is sufficient and the structural-memory interpretation weakens.
+- M1 membership is frozen strictly as-of the true-zone confirmation landmark. A candidate that confirms later remains an eligible M1 control if it was genuinely unconfirmed at the landmark; future state may not retroactively alter the risk set.
+- No scalar salience score is created. Pre-landmark anchor prominence, excursion, volume/range, round/tick proximity, candidate age, exposure/opportunity, volatility, liquidity, D02 context and regime are stored as covariates for later D16 inference.
+- D01 does not choose matching/weighting/calipers after outcomes. All eligible controls are retained in an immutable manifest; D16 owns future preregistered inference.
+- Candidates overlapping the true zone, known duplicate relation, wrong detector version/semantic space/symbol, future-created state or incomplete provenance are fail-closed.
+- External evidence is mechanism-compatible but non-identifying: support/resistance interruption predictability can coexist with order clustering, round-number effects, local-extrema selection and path dependence. Therefore none is treated as direct proof of D01 alpha.
+- New files:
+  - research/PATTERN_DETECTOR_SALIENCE_MEMORY_FIREWALL_V0_1.md
+  - research/pattern_detector_salience_memory_v0_1.json
+  - research/pattern_detector_salience_memory_v0_1.mjs
+  - research/test_pattern_detector_salience_memory_v0_1.mjs
+- 10 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcomes inspected; no historical Pattern Shadow fabrication; no runtime/Worker/D1 wiring; no new R09.
+- Current D01 maturity = 52.7% under the 11-module curriculum denominator.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-028
+
+1. Keep this tranche Class-A research-only and reconcile it against then-latest main before merge because parallel rooms are active.
+2. Execute DL-022..DL-028 research Node tests independently when an approved research-test execution path is available; V8 Repair/Regression alone is only Formal-isolation evidence.
+3. Preserve all M1 eligible/excluded candidates and manifest hashes; no post-outcome pruning or hand-picked matching.
+4. Hand the frozen M0/M1/M2 comparison and pre-landmark covariates to D16 for future preregistered matching/weighting/inference.
+5. Next D01 science: test whether any confirmation-specific representation survives boundary-identity perturbation and detector-version perturbation without outcome tuning.
+6. No outcome join / no runtime wiring / no Formal change.
