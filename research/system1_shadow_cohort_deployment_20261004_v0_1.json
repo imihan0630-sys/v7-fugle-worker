@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "SYSTEM1_SHADOW_COHORT_DEPLOYMENT_V0_1",
+  "observedAt": "2026-10-04T02:44:38.379120+00:00",
+  "ownerProductionApproval": "批准 PR #454 合併與 Production 部署",
+  "implementationPr": 454,
+  "approvedHeadSha": "99ad42feb229bfe8fbacb160d4940faffe558f9f",
+  "mergeSha": "f92c5e6a6ec6c63d9ae7999b2b1208d03aa9f81f",
+  "runtimeVersion": "8.17.0-shadow-cohort-membership",
+  "deploymentRun": 37171810825,
+  "deploymentConclusion": "success",
+  "mainRegressionRun": 37171810855,
+  "mainRegressionConclusion": "success",
+  "prCiRuns": [
+    37169887789,
+    37169887765,
+    37169887775
+  ],
+  "prCiConclusion": "success",
+  "versionReadbackVerified": true,
+  "testMode": false,
+  "bindings": {
+    "kv": true,
+    "d1": true
+  },
+  "existingMonitoringConfigurationVerified": true,
+  "cronChanged": false,
+  "cronCount": 4,
+  "researchDashboardReadbackVerified": true,
+  "shadowCohortUnauthenticatedGetHttpStatus": 401,
+  "shadowCohortAuthenticatedGenerationReadback": "PENDING_NEXT_GENUINE_TRADING_SESSION",
+  "backup": {
+    "verified": true,
+    "runtimeVersion": "8.16.0-zero-pick-prospective-capture",
+    "artifactName": "v7-predeploy-37171810825",
+    "retentionDays": 30,
+    "activeVersionId": "5b8f334d-6679-4198-afb7-64269303803d"
+  },
+  "rollbackPerformed": false,
+  "businessScanTriggeredForAcceptance": false,
+  "historicalBackfillPerformed": false,
+  "syntheticProspectiveEvidenceCreated": false,
+  "pushResendPerformed": false,
+  "formalCore": "LOCKED",
+  "providerCallDelta": 0,
+  "system2Touched": false,
+  "economicSuperiority": "UNKNOWN",
+  "formalOptimizationCandidate": "NONE",
+  "FIRST_PROSPECTIVE_SHADOW_COHORT_READBACK": "PENDING_NEXT_GENUINE_TRADING_SESSION",
+  "FIRST_PROSPECTIVE_C1_CHILD_READBACK": "PENDING_NEXT_GENUINE_TRADING_SESSION",
+  "nextAction": "After the first genuine post-deployment trading session and successful normal scan, use the existing C1 evidence workflow to verify the same immutable C1 generation, cohort frames/denominators/memberships/fingerprints and pinned quality watermark. Preserve failures/UNKNOWN, no historical reconstruction or synthetic scans. Production resource/latency and cohort D1 persistence remain to be observed on that genuine generation."
+}

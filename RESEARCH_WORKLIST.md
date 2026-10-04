@@ -160,7 +160,7 @@ Formal `scoreCandidate()` 為順序式 fail-fast；現有 exclusion_reason 只�
 
 
 ## 10. Shadow cohort membership 統一修復
-狀態：OWNER_APPROVED_CLASS_B / V8_17_0_CANDIDATE / PRODUCTION_APPROVAL_PENDING
+狀態：OWNER_APPROVED_CLASS_B_AND_PRODUCTION / V8_17_0_DEPLOYED / FIRST_GENUINE_SESSION_READBACK_PENDING
 
 已凍結：
 - `SHADOW_COHORT_SEMANTICS_CLASS_B_PROPOSAL.md`
@@ -175,4 +175,4 @@ Formal `scoreCandidate()` 為順序式 fail-fast；現有 exclusion_reason 只�
 - Near-miss 改為 pool × nearestChannel × failed-check-pattern 的前瞻研究取樣語意；
 - Broad Market Control 與 Residual Control 必須明確選擇不同 estimand，不再維持 quota-conditioned hybrid。
 
-Owner 已批准 Class-B 實裝；V8.17.0 candidate 沿用 immutable C1 parent，新增 membership / quality overlays。完整本機 isolated review 86/86 PASS；具體 PR 的 merge／Production deploy 仍須獨立批准。實裝與 exact next action：`research/SYSTEM1_SHADOW_COHORT_MEMBERSHIP_IMPLEMENTATION_20261004.md`。
+Owner 已明確批准 PR #454 合併與 Production 部署；V8.17.0 沿用 immutable C1 parent，新增 membership / quality overlays。完整本機 isolated review 86/86、三條 PR CI、main Regression 與 Production deploy 全部 PASS，版本與既有設定／research dashboard readback 通過。首筆真正交易日 cohort readback 與資源觀察仍 PENDING。實裝與 exact next action：`research/SYSTEM1_SHADOW_COHORT_MEMBERSHIP_IMPLEMENTATION_20261004.md`。
