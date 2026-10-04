@@ -1172,5 +1172,13 @@
     "This closes the raw-valuation snapshot layer only. Historical percentile windows and full control snapshots remain outcome-closed."
   ],
   "formalCoreChanged": false,
-  "formalOptimizationCandidate": "NONE"
+  "formalOptimizationCandidate": "NONE",
+  "validationStatus": "INVALIDATED_BY_IDEMPOTENCY_COUNTEREVIDENCE",
+  "invalidatedAtAsiaTaipei": "2026-10-04T14:47:00+08:00",
+  "invalidReason": [
+    "Second execution reproduced identical official A6 source hashes and identical coverage counts for all 44 dates, but all 44 canonical payload/object hashes changed.",
+    "Root cause: capturedAt/observedAt propagated through generic historical-universe membership/registry/snapshot hashes and into D08 canonical object identity.",
+    "Economic/source content remained unchanged, so v0.1 must not be treated as immutable historical evidence."
+  ],
+  "supersededBy": "D08_TWSE_RAW_VALUATION_R2_CAPTURE_RECEIPT_V0_2"
 }
