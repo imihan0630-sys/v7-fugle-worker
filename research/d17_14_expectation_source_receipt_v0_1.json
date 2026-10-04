@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04 Asia/Taipei",
+  "owner": "08｜事件與新聞研究室",
+  "module": "D17-14",
+  "title": "Policy／Regulatory Event Clock／Surprise政策法規事件時鐘與預期差 — ex-ante expectation source feasibility",
+  "status": "TAIWAN_PIT_CLOCK_AND_EX_ANTE_EXPECTATION_SOURCE_FEASIBLE / TWO_INDEPENDENT_CBC_DECISIONS / OUTCOMES_CLOSED",
+  "formalCoreImpact": "NONE",
+  "purpose": "Validate an ex-ante Taiwan policy-expectation source lane without inferring expectations from market reaction and without opening equity-return outcomes.",
+  "sourcePairs": [
+    {
+      "decisionDate": "2026-06-18",
+      "expectationSource": {
+        "provider": "Reuters",
+        "publishedDate": "2026-06-15",
+        "url": "https://www.reuters.com/world/asia-pacific/taiwan-likely-hold-rates-steady-inflation-concern-ahead-2026-06-15/",
+        "observation": "27 of 30 economists expected the CBC discount rate to remain 2.0%; 3 expected 2.125%.",
+        "knownBeforeDecision": true
+      },
+      "realizationSource": {
+        "provider": "Central Bank of the Republic of China (Taiwan)",
+        "publishedDate": "2026-06-18",
+        "url": "https://www.cbc.gov.tw/tw/cp-971-192417-50f40-1.html",
+        "observation": "Official board decision kept the benchmark discount rate at 2.0%."
+      }
+    },
+    {
+      "decisionDate": "2026-09-17",
+      "expectationSource": {
+        "provider": "Reuters",
+        "publishedDate": "2026-09-14",
+        "url": "https://www.reuters.com/world/asia-pacific/taiwan-likely-keep-rates-unchanged-fed-hike-could-upend-expectations-2026-09-14/",
+        "observation": "28 of 31 economists expected the CBC discount rate to remain 2.0%; 3 expected 2.125%.",
+        "knownBeforeDecision": true
+      },
+      "realizationSource": {
+        "provider": "Central Bank of the Republic of China (Taiwan)",
+        "publishedDate": "2026-09-17",
+        "url": "https://www.cbc.gov.tw/tw/cp-302-192864-4319f-1.html",
+        "observation": "Official board decision kept the benchmark discount rate at 2.0%."
+      }
+    }
+  ],
+  "frozenExpectationContract": [
+    "Preserve the full ex-ante forecast distribution whenever available; do not choose mean/median/mode after observing the decision or returns.",
+    "Expectation timestamp must precede the decision timestamp/date. Post-decision analyst commentary is not an expectation observation.",
+    "Realized policy and expected policy must share compatible units and decision object.",
+    "If a categorical policy has no natural numeric metric, store scenario probabilities/distribution rather than inventing a scalar surprise.",
+    "A market price move cannot back-solve the missing expectation.",
+    "Future prospective captures must preserve capturedAt and immutable source/version evidence."
+  ],
+  "falsification": [
+    "Both historical CBC witnesses realized the modal expectation; they prove source feasibility, not that policy events create alpha.",
+    "Two dates are insufficient for any equity-return, half-life, sector-transmission or trading conclusion.",
+    "CBC macro-state interpretation remains owned by D13; D17 owns event identity, expectation/surprise clock and transmission evidence. No double factor vote.",
+    "No expectation functional may be optimized after observing equity returns."
+  ],
+  "maturityDecision": {
+    "from": "L2",
+    "to": "L3",
+    "basis": "Two independent Taiwan decisions have dated ex-ante expectation distributions from a durable news source and compatible official CBC realization records. This satisfies Taiwan PIT/source feasibility only.",
+    "notClaimed": [
+      "L4 prospective/OOS evidence",
+      "equity alpha",
+      "policy-direction score",
+      "event-return significance"
+    ]
+  },
+  "outcomesOpened": false,
+  "formalOptimizationCandidate": false,
+  "exactNext": "Prospectively archive ex-ante expectation distributions with capturedAt on future independent Taiwan policy decisions; include non-modal/unexpected outcomes when naturally observed; preregister surprise functional, event zero, horizons, D13 macro controls and equity outcomes before any L4 claim."
+}
