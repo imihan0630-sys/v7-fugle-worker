@@ -881,3 +881,20 @@ Exact next: BR-061 prospective snapshot append with unchanged semantics and late
 - D09-12 remains L2/40%.
 
 Exact next: BR-063 on the next genuinely completed Taiwan session.
+
+
+## H01 owner-approved scope boundary — 2026-10-04
+
+00-room Dependency Audit and anti-orphan review passed; owner approved KEEP_SEPARATE / SCOPE_DEDUP_ONLY.
+
+Canonical names and boundaries:
+- D09-13 `Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）` — industry structural state owner.
+- D09-14 `Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）` — issuer-specific strategic-action lifecycle owner.
+
+Shared market-share/capacity/price/margin observations remain one parent receipt; no firm-specific action field means D09-13 only. D10 physical-capacity and D11/D17 event/news clocks are dependencies, not duplicate votes.
+
+Both remain L3/60%; no maturity or Formal change.
+
+Existing exact next research remains valid:
+- D09-13: BR-059 compatible issuer-native PCB/ABF product/application revenue numerator evidence;
+- D09-14: BR-060 prospective strategic-action milestone appends before outcomes.
