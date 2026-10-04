@@ -31,24 +31,12 @@ jobs:
           curl --fail --silent --show-error --location --retry 2 \
             "https://www.taifex.com.tw/cht/2/tX?menuid1=12" -o /tmp/tx-spec.html
 
-          get_twse () {
-            month="$1"
-            out="$2"
-            u1="https://www.twse.com.tw/rwd/zh/afterTrading/MI_5MINS_HIST?date=${month}01&response=json"
-            u2="https://www.twse.com.tw/indicesReport/MI_5MINS_HIST?date=${month}01&response=json"
-            if curl --fail --silent --show-error --location --retry 2 "$u1" -o "$out"; then
-              if python - "$out" <<'PY'
-import json,sys
-j=json.load(open(sys.argv[1],encoding="utf-8"))
-assert j.get("data")
-PY
-              then return 0; fi
-            fi
-            curl --fail --silent --show-error --location --retry 2 "$u2" -o "$out"
-          }
-
-          get_twse 202609 /tmp/twse-202609.json
-          get_twse 202610 /tmp/twse-202610.json
+          curl --fail --silent --show-error --location --retry 2 \
+            "https://www.twse.com.tw/rwd/zh/afterTrading/MI_5MINS_HIST?date=20260901&response=json" \
+            -o /tmp/twse-202609.json
+          curl --fail --silent --show-error --location --retry 2 \
+            "https://www.twse.com.tw/rwd/zh/afterTrading/MI_5MINS_HIST?date=20261001&response=json" \
+            -o /tmp/twse-202610.json
 
           python - <<'PY'
           import csv,datetime as dt,hashlib,io,json,math,re,statistics
