@@ -58,9 +58,13 @@ function numberOrNull(value, { positive = false, nonNegative = false } = {}) {
 }
 
 function gregorianDateFromTwse(value) {
-  const text = String(value || "").trim().replaceAll("/", "-");
-  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
-  return null;
+  const raw = String(value || "").trim();
+  const normalized = raw.replaceAll("/", "-");
+  if (/^\d{4}-\d{2}-\d{2}$/.test(normalized)) return normalized;
+  const roc = raw.match(/^(\d{2,3})\/(\d{2})\/(\d{2})$/);
+  if (!roc) return null;
+  const year = Number(roc[1]) + 1911;
+  return String(year).padStart(4, "0") + "-" + roc[2] + "-" + roc[3];
 }
 
 function gregorianDateFromTpex(value) {
