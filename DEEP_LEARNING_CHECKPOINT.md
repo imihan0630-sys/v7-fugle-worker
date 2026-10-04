@@ -1776,3 +1776,13 @@ Status: D21-12_L3 / D21-13_L2 / RESEARCH_ONLY / FORMAL_CORE_UNCHANGED
 - Continuity/MOPS capability workflows currently have no recurring pre-parent promotion-grade capture schedule.
 - Therefore PRE_PARENT_CERTIFIED_CONTINUITY_CAPTURE_NOT_PRESENT is a new explicit blocker; Bollinger/ADX first-parent promotion readiness is false under the current clock envelope.
 - D03 remains 56.7%; next research target is whether official MOPS sourceReportedAt can be certified as a public disclosure clock or must remain a prospective-observation debt.
+
+
+## 2026-10-04 D03 — TI-644~650 MOPS clock corroboration
+
+- Official TWSE rules/material independently corroborate MOPS as a public/timely disclosure platform and sourceReportedAt as a meaningful issuer disclosure/reporting clock.
+- This does not prove zero/bounded public retrieval latency; historical sourceReportedAt remains insufficient as exact availableAt.
+- Safe asymmetry: sourceReportedAt after parent => excluded; sourceReportedAt before parent without certified prospective observation => still availability-UNKNOWN.
+- Read-only run 37185849126 PASS for the clock classifier.
+- Latest owner lane already has source-reported clock semantics certified and a prospective observation adapter implemented, but prospectiveObservationCount remains 0 and no automatic high-frequency schedule exists.
+- D03 therefore consumes the shared observer rather than forking one; maturity remains 56.7%.
