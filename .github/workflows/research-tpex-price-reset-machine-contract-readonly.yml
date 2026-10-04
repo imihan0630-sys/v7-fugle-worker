@@ -1,0 +1,78 @@
+name: Research TPEx Price Reset Machine Contract Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/research-tpex-price-reset-machine-contract-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Probe official TPEx price-reset APIs
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/controls.tsv <<'EOF'
+          EX_DAILY_Q	bulletin/exDailyQ	2026/07/01	2026/10/04
+          REDUCTION_REFERENCE	bulletin/revivt	2026/01/01	2026/10/04
+          EOF
+
+          while IFS=$'\t' read -r id action start end; do
+            endpoint="https://www.tpex.org.tw/www/zh-tw/${action}"
+            jfile="/tmp/${id}.json"
+            cfile="/tmp/${id}.csv"
+
+            echo "===== ${id} JSON ====="
+            jcode=$(curl --silent --show-error --location --max-time 30               --request POST               --header "Content-Type: application/x-www-form-urlencoded; charset=UTF-8"               --data-urlencode "startDate=${start}"               --data-urlencode "endDate=${end}"               --data-urlencode "response=json"               --output "${jfile}"               --write-out "%{http_code}"               "${endpoint}")
+            echo "HTTP=${jcode} SHA256=$(sha256sum "${jfile}" | awk '{print $1}') BYTES=$(wc -c <"${jfile}")"
+
+            ID="${id}" FILE="${jfile}" python - <<'PY'
+          import json,os
+          raw=open(os.environ["FILE"],"rb").read()
+          try:j=json.loads(raw)
+          except Exception as e:
+              print("PARSE=FAIL",repr(e),raw[:1000].decode("utf-8","replace")); raise SystemExit(0)
+          print("PARSE=PASS")
+          print("STAT="+str(j.get("stat")))
+          print("TOP_KEYS="+",".join(sorted(j.keys())))
+          tables=j.get("tables") if isinstance(j.get("tables"),list) else []
+          print("TABLE_COUNT="+str(len(tables)))
+          for i,t in enumerate(tables):
+              data=t.get("data") if isinstance(t.get("data"),list) else []
+              print(f"TABLE_{i}_TOTAL={t.get('totalCount')} ROWS={len(data)}")
+              print("FIELDS="+repr(t.get("fields")))
+              print("FIRST_ROWS="+repr(data[:3]))
+          PY
+
+            echo "===== ${id} CSV ====="
+            ccode=$(curl --silent --show-error --location --max-time 30               --get               --data-urlencode "startDate=${start}"               --data-urlencode "endDate=${end}"               --data-urlencode "response=csv"               --output "${cfile}"               --write-out "%{http_code}"               "${endpoint}")
+            echo "HTTP=${ccode} SHA256=$(sha256sum "${cfile}" | awk '{print $1}') BYTES=$(wc -c <"${cfile}")"
+            ID="${id}" FILE="${cfile}" python - <<'PY'
+          from pathlib import Path
+          import os
+          raw=Path(os.environ["FILE"]).read_bytes()
+          for enc in ("utf-8-sig","big5","cp950","utf-8"):
+              try:
+                  text=raw.decode(enc); break
+              except UnicodeDecodeError: continue
+          else:
+              print("CSV_DECODE=FAIL"); raise SystemExit(0)
+          lines=[x for x in text.splitlines() if x.strip()]
+          print("CSV_DECODE="+enc)
+          print("CSV_NONEMPTY_LINES="+str(len(lines)))
+          print("CSV_FIRST_LINES="+repr(lines[:5]))
+          PY
+          done </tmp/controls.tsv
+
+          echo "research_only=true"
+          echo "history_mutation=false"
+          echo "system1_runtime_used=false"
+          echo "selection_authority=false"
+          echo "formal_core_changed=false"
