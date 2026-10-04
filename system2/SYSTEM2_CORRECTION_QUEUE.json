@@ -144,7 +144,9 @@
         "First System2 Research CI attempt failed only because the new test regex incorrectly flagged the explicit prohibition sentence itself; the guard was corrected to assert required fail-closed wording rather than word proximity.",
         "Corrected PR head 67151b901029b17b567cf1f29b4a74c349460996: System2 Research CI 37197332296 PASS; V8 Regression 37197332187 PASS.",
         "Changed-file scope contains only System2 canonical documentation, correction/checkpoint state and the new System2 semantic test; no System1 Formal Core, System1 holdings/runtime, capital/order logic or production push file is modified.",
-        "Remaining UNKNOWN / future gate: no actual-holdings source is wired or physically verified. Any broker-holdings or System1 shared-holdings integration remains OWNER_DECISION_REQUIRED and is not implemented by this correction."
+        "Remaining UNKNOWN / future gate: no actual-holdings source is wired or physically verified. Any broker-holdings or System1 shared-holdings integration remains OWNER_DECISION_REQUIRED and is not implemented by this correction.",
+        "Final PR #536 head d0f97bded1e88965d75b9db804cc5264e1220ebe: System2 Research CI 37197495890 PASS; V8 Regression 37197495893 PASS; mergeable=true before merge.",
+        "PR #536 squash-merged to main as 0774a356377efc6892e72bf60c202561d227e47b; merged-main readback preserved FIX_IMPLEMENTED, virtual-only storage truth, and ACTUAL_POSITION_MONITOR_VERIFIED=false."
       ],
       "verificationEvidence": [
         "PENDING_INDEPENDENT_AUDIT"
