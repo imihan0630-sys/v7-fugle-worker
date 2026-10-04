@@ -3,7 +3,7 @@
   "frozenAtAsiaTaipei": "2026-10-04T08:52:19+08:00",
   "researchRoom": "13",
   "domain": "D20",
-  "status": "PREREGISTERED_RESEARCH_ONLY / NINE_L3_LANES_IN_SCOPE / OUTCOME_JOIN_LOCKED_UNTIL_PARENT_FROZEN / NO_L4_PROMOTION_YET",
+  "status": "PREREGISTERED_RESEARCH_ONLY / ELEVEN_L3_LANES_IN_SCOPE / OUTCOME_JOIN_LOCKED_UNTIL_PARENT_FROZEN / NO_L4_PROMOTION_YET",
   "maturityRule": {
     "L3": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED",
     "L4": "PROSPECTIVE_SHADOW_OR_OOS_EVIDENCE",
@@ -341,13 +341,82 @@
       "noOutcomeTunedThreshold": true,
       "minimumIndependentEventDatesForL4": 12,
       "interpretationGuard": "Price reversal remains D03-05 observable phenomenon. D20-09 may claim behavioral overreaction only if event/behavior evidence survives structural counterfactuals; otherwise cause remains UNKNOWN."
+    },
+    "D20-06": {
+      "role": "PUBLIC_FORUM_AGGREGATE_SOCIAL_HERDING_RESEARCH",
+      "firstEligibleParent": "First new PTT Stock social aggregate captured strictly after 2026-10-04T14:06:56+08:00",
+      "parentFields": [
+        "captureId",
+        "capturedAt",
+        "articleId",
+        "topicState_or_UNKNOWN",
+        "stanceHistogram",
+        "distinctActorCount",
+        "sequenceTransitionCounts",
+        "underlyingNewsEventReceiptId_or_UNKNOWN",
+        "snapshotFingerprint"
+      ],
+      "primaryQuestion": "After common-news/topic/attention controls, does aggregate stance convergence across distinct forum participants persist beyond common-information explanations?",
+      "primaryOutcomes": [
+        "AGGREGATE_STANCE_CONVERGENCE",
+        "D1_MARKET_SECTOR_RESIDUAL_RETURN",
+        "D5_MARKET_SECTOR_RESIDUAL_RETURN"
+      ],
+      "mandatoryControls": [
+        "common_news_event",
+        "topic_state",
+        "attention_state",
+        "market_move",
+        "sector_move",
+        "thread_age",
+        "posting_time",
+        "market_regime"
+      ],
+      "privacyGuard": "No named-user psychological or influence scores; public handles are used transiently only for within-window deduplication.",
+      "minimumIndependentDatesForL4": 20,
+      "minimumAggregateParentsForL4": 50
+    },
+    "D20-11": {
+      "role": "PUBLIC_FORUM_AGGREGATE_NARRATIVE_DIFFUSION_RESEARCH",
+      "firstEligibleParent": "First new PTT Stock narrative aggregate captured strictly after 2026-10-04T14:06:56+08:00",
+      "parentFields": [
+        "captureId",
+        "capturedAt",
+        "topicState",
+        "stanceHistogram",
+        "distinctActorCount",
+        "diffusionTransitionCounts",
+        "narrativeHalfLife_or_UNKNOWN",
+        "snapshotFingerprint",
+        "sourceEventReceiptIds"
+      ],
+      "primaryQuestion": "Do topic/phrase/stance narratives diffuse across posts beyond underlying news/event propagation and static theme taxonomy?",
+      "primaryOutcomes": [
+        "DISTINCT_ACTOR_ADOPTION",
+        "NARRATIVE_HALF_LIFE",
+        "D1_MARKET_SECTOR_RESIDUAL_RETURN",
+        "D5_MARKET_SECTOR_RESIDUAL_RETURN"
+      ],
+      "mandatoryControls": [
+        "D17_event_news",
+        "D09_theme_taxonomy",
+        "D20_07_attention",
+        "market_move",
+        "sector_move",
+        "thread_age",
+        "market_regime"
+      ],
+      "classifierRule": "Topic/stance extraction version must be frozen before any outcome join; UNKNOWN allowed.",
+      "privacyGuard": "No named-user influence or psychology profiles; only aggregate participant counts and transition statistics persist.",
+      "minimumIndependentDatesForL4": 20,
+      "minimumNarrativeParentsForL4": 50
     }
   },
   "l4Decision": {
     "currentPromotionCount": 0,
-    "currentD20MaturityPct": 53.8,
+    "currentD20MaturityPct": 56.9,
     "formalOptimizationCandidate": "NONE",
-    "nextAction": "Collect immutable post-freeze parents for nine L3 lanes. D20-01 and D20-09 become eligible only after this 2026-10-04 11:40 extension; no earlier observed outcome may count as prospective evidence."
+    "nextAction": "Collect immutable post-extension aggregate parents for eleven L3 lanes. D20-06 and D20-11 are prospective only for captures first observed after 2026-10-04T14:06:56+08:00. Earlier inspected pages remain L3 source-feasibility evidence only."
   },
-  "extendedAtAsiaTaipei": "2026-10-04T11:40:09+08:00"
+  "extendedAtAsiaTaipei": "2026-10-04T14:06:56+08:00"
 }
