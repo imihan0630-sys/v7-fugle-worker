@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T14:18:20+08:00",
+  "updatedAt": "2026-10-04T14:28:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -274,10 +274,10 @@
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
       ],
       "maturityPct": 56.7,
-      "status": "D03_56_7_PERCENT / TPEX_HALT_EXDIV_REDUCTION_MACHINE_BOUNDED_PHYSICAL_PASS / V8_17_PARENT_READBACK_PENDING / RAW_RECEIPT_GATE_2_OF_3 / OUTCOMES_CLOSED",
+      "status": "D03_56_7_PERCENT / TPEX_CONTINUITY_MACHINE_SOURCES_BOUNDED_PHYSICAL_PASS / BOLLINGER_L3_ACCEPTANCE_LOGIC_PHYSICAL_PASS / FIRST_GENUINE_V8_17_PARENT_PENDING / RAW_RECEIPT_GATE_2_OF_3 / OUTCOMES_CLOSED",
       "lastResearchUpdate": "2026-10-04",
-      "researchNote": "TI-594~605 physically close the previously unresolved TPEx machine transport/source branch without maturity inflation. Official API_PATTERN + page action resolve the halt route to /www/zh-tw/bulletin/sprcHis; 2026 mainboard POST JSON returns stat=ok 30/30 rows and official CSV independently returns the same 30-key population with zero duplicates. Source-local zero controls pass. Official TPEx ex-right/ex-dividend actual-result endpoint /bulletin/exDailyQ physically returns 587/587 rows for 2026-07-01..2026-10-04 and exact JSON/CSV keyset equivalence; fields include prior close, reference price, rights/dividend values, trading-base price and allocation fields. Official capital-reduction endpoint /bulletin/revivt physically returns 11/11 rows for 2026-01-01..2026-10-04 with JSON/CSV keyset equivalence and detail fields for suspension/resumption, replacement shares and cash-return/capital-increase data. PROSPECTIVE_OBSERVED knowledge mode can use pre-parent fetchedAt as a causal upper-bound clock. However TI-531/TI-529 still require a first genuine post-V8.17 immutable parent/capture generation and parent-cutoff-safe continuity receipt; Sunday cannot create that parent. D03-10/D03-09 remain L2, D03 remains 56.7%, raw gate 2/3, outcomes closed.",
-      "exactNextContinuationPoint": "Next genuine Taiwan trading session: read back the first post-V8.17 immutable Level-B parent/captureGeneration and exact expected keyset. Bind pre-parent or cutoff-safe official TPEx/TWSE/MOPSOV continuity captures to exact parent symbols/windows and attempt every parent VALID/BLOCKED/UNKNOWN. Re-review D03-10 Bollinger first using exactly 20 eligible continuity-corrected closes, formula POPSTD20, price-limit/special-session provenance and replay/prefix exactness; if L3, D03 becomes 58.3%. D03-09 ADX follows only with canonical Wilder recursive replay/trusted-state certification; if L3, D03 becomes 60.0%. Raw 3-session source gate remains separate at 2/3; TI-005/TI-006 outcomes stay closed.",
+      "researchNote": "TI-594~610 physically close the TPEx machine-source discovery gap and the Bollinger L3 acceptance-logic gap without maturity inflation. Official TPEx halt/resumption machine endpoint /www/zh-tw/bulletin/sprcHis returns a bounded 2026 mainboard population of 30/30 rows with exact JSON/CSV keyset equivalence and source-local empty controls. Official ex-right/ex-dividend actual-result endpoint /bulletin/exDailyQ returns 587/587 rows for 2026-07-01..2026-10-04 with JSON/CSV equivalence; official capital-reduction endpoint /bulletin/revivt returns 11/11 rows for 2026-01-01..2026-10-04 with exact non-detail keyset equivalence and detailed suspension/resumption/replacement-share fields. PROSPECTIVE_OBSERVED continuity knowledge time can use source fetchedAt as a conservative upper bound when captured no later than the parent cutoff. A dedicated Bollinger acceptance evaluator and read-only workflow run 37182674404 pass exact-20-session, population-SD, late-capture, missing/duplicate, constrained-state and complete expected-parent accounting fixtures. But Sunday cannot produce the first genuine post-V8.17 Taiwan parent/captureGeneration required by TI-531, so D03-10 remains L2/40, D03 remains 56.7%, raw gate 2/3 and outcomes closed.",
+      "exactNextContinuationPoint": "First genuine Taiwan trading session after V8.17: read back the immutable parent/captureGeneration and exact expected keyset. For every parent, attach a source capture/TECHNICAL_CONTINUITY receipt known no later than parent knownAt, then execute the frozen Bollinger L3 evaluator and persist exactly one VALID/VALID_BUT_CONSTRAINED/DATA_BLOCKED/UNKNOWN attempt per expected parent. Only COMPLETE parent reconciliation can promote D03-10 to L3 and D03 to 58.3%. Then D03-09 ADX requires the same parent/continuity layer plus canonical Wilder FULL_REPLAY or replay-certified TRUSTED_PRIOR_STATE to reach L3 and D03 60.0%. Raw D03 source gate stays separately 2/3; TI-005/TI-006 outcomes stay closed.",
       "modules": [
         {
           "id": "D03-01",
@@ -366,8 +366,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Bollinger Bands布林通道」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "FORMULA_MECHANICS_FROZEN / TPEx_HALT_EXDIV_REDUCTION_SOURCES_BOUNDED_PHYSICAL_PASS / FINITE_WINDOW / FIRST_GENUINE_PARENT_PENDING / OUTCOME_UNKNOWN",
-          "next": "First re-review target after genuine V8.17 parent readback. Require exact parent keyset/generation, cutoff-safe certified TECHNICAL_CONTINUITY, exactly 20 eligible closes, population std formula, price-limit/special-session provenance, replay/prefix exactness and complete parent attempts."
+          "status": "FORMULA_MECHANICS_FROZEN / TPEX_MACHINE_SOURCES_BOUNDED_PHYSICAL_PASS / L3_ACCEPTANCE_LOGIC_PHYSICAL_TEST_PASS / FINITE_WINDOW / FIRST_GENUINE_PARENT_PENDING / OUTCOME_UNKNOWN",
+          "next": "On first genuine post-V8.17 Taiwan parent generation, run research/d03_bollinger_l3_acceptance_v0_1.mjs against all expected parents with cutoff-safe TECHNICAL_CONTINUITY receipts. Require exact 20 eligible closes, POPULATION std, price-limit/special-session provenance and COMPLETE expected-parent attempts. Do not promote from synthetic fixture alone."
         },
         {
           "id": "D03-12",
