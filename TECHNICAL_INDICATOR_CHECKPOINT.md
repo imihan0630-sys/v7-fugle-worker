@@ -3018,3 +3018,17 @@ Exact continuation:
 5. preserve halt/resumption separately from capital-action cause/effective-date evidence;
 6. on the next genuine Taiwan trading session, prioritize the already deployed V8.17 C1 immutable parent/cohort readback; never synthesize or backfill a generation;
 7. after parent readback, re-audit Bollinger against exact 20-session symbol-window TECHNICAL_CONTINUITY; ADX still additionally requires canonical Wilder recursive replay.
+
+
+## 00 control-plane receipt — H07 Room03 side accepted
+
+00｜研究總控室 accepted `research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md` as the Room03 side of H07.
+
+Closed on this side:
+- D03-05 owns observable pullback / short-term reversal phenomenon;
+- causal confirmation clock and failed reversal are explicit;
+- origin/behavior remains optional/UNKNOWN;
+- D03 does not own behavioral overreaction.
+
+H07 remains partial until Room13 supplies D20-09 behavioral-identifiability evidence.
+Do not repeat the Room03 ownership work.
