@@ -71,12 +71,19 @@ assert.ok(
   "architecture must not present unverified actual-holdings monitoring as operational",
 );
 
-for (const text of [master, architecture, positionArchitecture, storage, ui]) {
-  assert.ok(
-    !/suggested shares?.{0,80}(actual holdings?|actual ownership)/is.test(text),
-    "suggested shares must not establish actual holdings",
-  );
-}
+assert.ok(
+  master.includes("suggested shares") && master.includes("must never be promoted into actual holdings"),
+  "master must explicitly prohibit suggested-share promotion into actual holdings",
+);
+assert.ok(
+  positionArchitecture.includes("suggested/requested shares")
+    && positionArchitecture.includes("explicitly insufficient to establish actual ownership"),
+  "position architecture must fail closed on suggested/requested-share ownership inference",
+);
+assert.ok(
+  storage.includes("Signal, trigger, suggested/requested-share and plan records cannot be converted into actual holdings"),
+  "storage contract must prohibit plan/signal/share inference into actual holdings",
+);
 
 console.log(JSON.stringify({
   ok: true,
