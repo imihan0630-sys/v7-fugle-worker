@@ -682,3 +682,9 @@ Current historical-backfill correction `S2-CORR-20261004-001` is assigned to DAT
 Expanded discovery PR #518 found one new valid representative candidate: 6548 長科* for TPEx par-value change. PR #520 physically verified its exact MOPS original/correction chain and TPEx effective date 2022-09-05, advancing representative exchange coverage from 3/6 to 4/6.
 
 Remaining representative-routing gaps are TWSE par-value change and TPEx ex-right/dividend. Exact knownAt, bounded revision completeness, session/technical continuity and all trading authorities remain locked. HIGH correction S2-CORR-20261004-001 separately remains ACKNOWLEDGED for the 2017 historical cold-backfill resumption and is not considered resolved by this S2-07 progress.
+
+## 2026-10-04 S2-07 representative authority 5/6 milestone
+
+PR #528 established another valid negative discovery pass. Wrong-exchange candidate 6184 was rejected in closed PR #531. PR #533 physically validated 5356 協益 as a true TPEx ex-right/dividend issuer-correction + exchange-event pair, and PR #535 promoted it into MOPS V0.5 / authority V0.4 / supplemental receipt V0.4.
+
+Representative authority coverage is now 5/6. The only remaining representative-routing gap is TWSE par-value change. Exact knownAt, bounded revision completeness, session/technical continuity and all trading authorities remain locked.
