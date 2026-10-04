@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-04T21:14:00+08:00",
+  "updatedAt": "2026-10-04T22:51:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -270,6 +270,71 @@
       "updatedAt": "2026-10-04T20:52:58+08:00",
       "verifiedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "verifiedAt": "2026-10-04T20:52:58+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261004-004",
+      "createdAt": "2026-10-04T22:51:00+08:00",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "title": "Whole-universe history/continuity gate can block all Shadow evaluation because of symbol-local UNKNOWNs",
+      "affectedScope": [
+        "S2-07 Daily Shadow preflight",
+        "PIT-history readiness",
+        "per-symbol UNKNOWN semantics",
+        "strategy evaluation",
+        "capacity generation"
+      ],
+      "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "canonicalRequirement": "Symbol-local missing history, continuity or required evidence must remain symbol-local INCOMPLETE/UNKNOWN when the source itself is valid. Global fail-closed blocking is reserved for defects that invalidate the whole observation universe or decision clock.",
+      "observedProblem": "probePitHistoryCoverageV0_1 requires history and continuity readiness for the entire current universe before buildDailyShadowInputPreflightV0_1 authorizes any strategy evaluation/capacity. One symbol-local gap can therefore block all otherwise evaluable symbols, while downstream evaluator/limited-shadow/capacity code already supports per-symbol INCOMPLETE/BLOCKED accounting.",
+      "evidence": [
+        "daily_shadow_history_reader_v0_1.mjs: HISTORY_COVERAGE_INCOMPLETE / CONTINUITY_NOT_VERIFIED are triggered by historyReadyCount or continuityReadyCount being below currentUniverseCount",
+        "daily_shadow_input_preflight_v0_1.mjs: sourceAndHistoryReady requires historyCoverage.state === READY before any evaluation/capacity",
+        "strategy_evaluator.mjs: missing required evidence maps per symbol to INCOMPLETE/BLOCKED",
+        "limited_shadow_v0_1.mjs: INCOMPLETE is a frozen decision state",
+        "SYSTEM2_LIMITED_SHADOW_PREREGISTRY_V0_1.md requires freezing INCOMPLETE records rather than dropping them",
+        "daily_shadow_capacity_orchestrator_v0_1.mjs preserves INCOMPLETE prior memberships and diagnoses nonqualified new symbols without global failure"
+      ],
+      "riskIfUnfixed": "Any newly listed or symbol-specific history/continuity/provenance gap can prevent all S2-07 strategy evaluation and physical s2_capacity_runs, causing opportunity starvation and blocking prospective Shadow evidence for clean symbols.",
+      "requiredCorrection": [
+        "Separate global source/infrastructure integrity from symbol-level evaluation readiness",
+        "Retain global fail-closed behavior for whole-universe source/clock/corruption failures",
+        "Route symbol-local history/continuity gaps into per-symbol INCOMPLETE/BLOCKED readiness",
+        "Allow ready symbols to proceed through authorized assessor/frozen decision/ranking/capacity",
+        "Keep complete denominator accounting for every current-universe symbol",
+        "Do not invent an arbitrary market-wide coverage percentage threshold",
+        "Separate capacity readiness from zero-pick truth under partial/incomplete denominator coverage",
+        "Preserve PIT/availableAt/continuity/revision guards and UNKNOWN semantics",
+        "Add mixed-universe regression tests proving clean symbols can evaluate while incomplete symbols remain blocked"
+      ],
+      "acceptanceCriteria": [
+        "symbol-local history/continuity gaps do not globally block otherwise-ready symbols",
+        "whole-universe/source-integrity failures still fail closed globally",
+        "every symbol remains explicitly denominator-accounted",
+        "INCOMPLETE symbols cannot become BUY_ELIGIBLE/ACTIVE_ENTRY_MONITOR/capacity admissions",
+        "ready symbols can reach authorized Shadow evaluation/capacity without imputing blocked evidence",
+        "zeroPickDay is not asserted when required denominator completeness is unresolved and partial coverage remains explicit",
+        "no arbitrary coverage threshold is added without separate preregistration/evidence",
+        "System1 Formal Core and System2 production/push/capital/order boundaries remain unchanged"
+      ],
+      "protectedBoundaries": [
+        "System1 Formal Core",
+        "System2 live/final-selection authority",
+        "production push/runtime",
+        "capital/order",
+        "PIT/UNKNOWN semantics",
+        "no invented thresholds"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "REMEDIATION_LANE",
+      "assignedLane": "REMEDIATION_LANE",
+      "assignedRoom": "System 2｜補強修復室",
+      "modificationOwner": "SYSTEM2_REMEDIATION_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-04T22:51:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
