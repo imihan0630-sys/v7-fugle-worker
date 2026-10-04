@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "D20_SOCIAL_PROSPECTIVE_PARENT_V0_2",
+  "parentDecisionReceiptId": "D20SOC-20261004-002",
+  "captureGeneration": 2,
+  "capturedAtAsiaTaipei": "2026-10-04T16:43:58+08:00",
+  "asOf": "2026-10-04",
+  "sourceArticleId": "M.1791102403.A.CB9",
+  "sourcePublishedAt": "2026-10-04T16:26:43+08:00",
+  "sourceEditAtObserved": "2026-10-04T16:32:41+08:00",
+  "contentFingerprintContract": "D20_SOCIAL_CONTENT_FINGERPRINT_CONTRACT_V0_2",
+  "contentSha256": "20f98fd45c24c5fa4140c43a1cfc2be7a0ca70fd8996d10590273cd374b2dd4b",
+  "sourceReceiptSha256": "f7dcacf6400bf2105e7ae431473c5d3c29faeb16d7d75eb7d093880f274971ec",
+  "classifierVersion": "D20_SOCIAL_TOPIC_STANCE_CLASSIFIER_V0_1",
+  "topicState": [
+    "TSMC",
+    "ETF",
+    "LEVERAGE",
+    "AI",
+    "MARKET_OUTLOOK"
+  ],
+  "stanceState": "MIXED_BULLISH_UNCERTAIN",
+  "distinctActorCountAtCapture": 1,
+  "replyCountAtCapture": 0,
+  "stanceHistogramAtCapture": {
+    "MIXED_BULLISH_UNCERTAIN": 1,
+    "BULLISH": 0,
+    "BEARISH": 0,
+    "UNCERTAIN": 0,
+    "NEUTRAL_OR_UNKNOWN": 0
+  },
+  "sequenceTransitionCountsAtCapture": {
+    "available": false,
+    "reason": "NO_MULTI_ACTOR_SEQUENCE_AT_CAPTURE"
+  },
+  "diffusionTransitionCountsAtCapture": {
+    "available": false,
+    "reason": "NO_MULTI_ACTOR_SEQUENCE_AT_CAPTURE"
+  },
+  "narrativeHalfLifeAtCapture": "UNKNOWN",
+  "outcomeFieldsPresent": false,
+  "eligibility": {
+    "D20-06": "ELIGIBLE_PROSPECTIVE_PARENT / REBASED_AFTER_FINGERPRINT_FIX / ZERO_HERDING_SEQUENCE_AT_CAPTURE",
+    "D20-11": "ELIGIBLE_PROSPECTIVE_PARENT / REBASED_AFTER_FINGERPRINT_FIX / INITIAL_NARRATIVE_STATE",
+    "D20-03": "PERMANENTLY_INELIGIBLE_FOR_THIS_ARTICLE / FIRST_OBSERVED_BEFORE_V0_2_CONFIDENCE_TAXONOMY_EFFECTIVE_TIME"
+  },
+  "privacyGuard": "No source handle persisted in derived parent.",
+  "formalCore": "LOCKED"
+}
