@@ -6,6 +6,9 @@ on:
     paths:
       - ".github/workflows/d19-tpex-universe-route-probe.yml"
       - "system2/scripts/d19_tpex_universe_route_probe_v0_1.mjs"
+      - "system2/scripts/d19_tpex_historical_universe_smoke_v0_1.mjs"
+      - "system2/runtime/d19_tpex_historical_universe_source_v0_1.mjs"
+      - "system2/tests/d19_tpex_historical_universe_source_v0_1.test.mjs"
   workflow_dispatch:
 
 permissions:
@@ -14,7 +17,7 @@ permissions:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -24,6 +27,9 @@ jobs:
           node-version: "22"
       - name: Probe TPEx current and delisted universe routes
         run: node system2/scripts/d19_tpex_universe_route_probe_v0_1.mjs
+      - name: Build full TPEx historical universe and frozen snapshot
+        run: node system2/scripts/d19_tpex_historical_universe_smoke_v0_1.mjs
+
       - name: Confirm production isolation
         run: |
           set -euo pipefail
