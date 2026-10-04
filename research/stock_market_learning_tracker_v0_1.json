@@ -3292,10 +3292,10 @@
           "next": "建立台股PIT流動性因子切片；比較Amihud及排除overnight/recency版本，控制Size/Value/Volatility/Turnover/Spread/Industry/Momentum/Distress並納入成本容量；只有residual alpha通過OOS/多Regime才考慮L3。"
         }
       ],
-      "status": "RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / FACTOR_LAYER_PIT_ADAPTER_SPEC_DEFINED / EXECUTABLE_RECEIPTS_REQUIRED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "工程主線：在System2既有cold loader／PIT replay之上新增research-only D19 factor-layer receipt adapter，不複製既有PIT/universe邏輯；第一個可執行smoke slice優先D19-04橫截面動能＋D19-07低波動/低Beta，產生universe→return→factorInput→neutralization→cost→replay deterministic receipt鏈與fail-closed測試；未產生實際台股PIT receipt前任何模組不得升L3。D19-03/05/06等財報因子待first-known financial ingestion後再接。",
-      "lastResearchUpdate": "2026-10-04T07:09:00+08:00",
-      "researchNote": "Stage 6 completed: D19-13 relative-value family, D19-15 benchmark construction and D19-16 liquidity premium reached L2. All 15 active D19 modules are now L2 (40.0%). Repository audit confirms the six factor-layer receipt types are research requirements only, not implemented code. The next gate is a research-only adapter above existing System2 PIT/cold loaders, first smoke slice D19-04 + D19-07. No L3 and no Formal Core change."
+      "status": "RESEARCH_ACTIVE / ALL_15_ACTIVE_MODULES_L2 / FACTOR_LAYER_RECEIPT_ADAPTER_IMPLEMENTED / REAL_TWSE_SMOKE_PASS_NEGATIVE_L3_GATE / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D19-04 L3 readiness lane: replace bounded witness with date-vintaged historical-universe registry receipt; bind corporate-action continuity; physically revalidate official TPEx historical transport (currently HTTP 520 on both primary/legacy, keep UNKNOWN/SOURCE_UNAVAILABLE); add date-vintaged industry neutralization; run paired D03/D09 redundancy controls; replace transport-only cost placeholder with versioned D14-compatible research cost provenance; rerun zero-blocker deterministic Taiwan PIT receipt. D19-07 remains L2 until executable benchmark/beta-estimation semantics exist. No automatic L3.",
+      "lastResearchUpdate": "2026-10-04T08:28:00+08:00",
+      "researchNote": "Stage 7 engineering evidence: PR #439 merged as 76f5ef80dbf0654a033a0a780b065ebfabbf0e30. Six-layer research-only D19 receipts are implemented and deterministic tests pass. System2 CI 37165603677 PASS; V8 Regression 37165603710 PASS; real official-source smoke 37165603790 PASS_NEGATIVE_L3_GATE. TWSE 2026-08-03..08-31 physical receipt chain completed on bounded 2330/2454, but L3 remains blocked by historical-registry universe, corporate-action continuity, industry neutralization, D03/D09 redundancy, cost provenance, and TPEx official source HTTP 520. D19 maturity intentionally remains 40.0%; Formal Core unchanged."
     },
     {
       "id": "D20",
