@@ -1,6 +1,6 @@
 {
   "schemaVersion": "CURRICULUM_THIRD_ROUND_EXECUTION_REGISTRY_V0_1",
-  "updatedAt": "2026-10-04T13:08:00+08:00",
+  "updatedAt": "2026-10-04T14:45:00+08:00",
   "status": "H01_H20_GOVERNANCE_CONTRACTS_COMPLETE_SPECIALIST_VALIDATION_PENDING",
   "scope": {
     "domains": 22,
@@ -126,12 +126,25 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H05_H08_SEMANTIC_SPLIT_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H05_H08_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "PARTIAL_EVIDENCE_RECEIVED_ROOM05_COMPLETE_ROOM13_PENDING",
+      "status": "CLOSED_NO_STRUCTURAL_CHANGE",
       "receivedPackets": [
-        "research/d06_h06_crowding_vs_herding_room05_packet_v0_1.md"
+        "research/d06_h06_crowding_vs_herding_room05_packet_v0_1.md",
+        "research/d20_h06_herding_vs_crowding_room13_packet_v0_2.md",
+        "research/d20_06_ptt_social_herding_pit_contract_v0_1.json",
+        "research/d20_ptt_social_source_live_receipt_20261004_v0_1.json"
       ],
       "intakeDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOM13_COUNTERPART",
-      "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json"
+      "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json",
+      "terminalClassification": "KEEP_SEPARATE",
+      "governanceDisposition": "BOUNDED_SOCIAL_HERDING_SUBLANE",
+      "audit": "shared-knowledge/CURRICULUM_H06_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md",
+      "machineAudit": "shared-knowledge/curriculum_h06_dependency_anti_orphan_audit_20261004_v0_1.json",
+      "dependencyAudit": "PASS",
+      "antiDoubleCount": "PASS_SHARED_SOCIAL_RECEIPT_FIREWALL",
+      "antiOrphan": "PASS",
+      "maturityImpact": "NONE_D06_06_L3_60_D20_06_L3_60",
+      "structuralChange": "NONE",
+      "formalCoreImpact": "NONE"
     },
     {
       "id": "H07",
@@ -146,12 +159,24 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H05_H08_SEMANTIC_SPLIT_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H05_H08_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "PARTIAL_EVIDENCE_RECEIVED_ROOM03_COMPLETE_ROOM13_PENDING",
+      "status": "CLOSED_NO_STRUCTURAL_CHANGE",
       "receivedPackets": [
-        "research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md"
+        "research/D03_PULLBACK_REVERSAL_OBSERVABLE_PIT_V0_2.md",
+        "research/d20_h07_overreaction_vs_reversal_room13_packet_v0_1.md",
+        "research/d20_09_event_conditioned_overreaction_pit_contract_v0_1.json"
       ],
       "intakeDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOM13_COUNTERPART",
-      "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json"
+      "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json",
+      "terminalClassification": "KEEP_SEPARATE",
+      "governanceDisposition": "EVENT_CONDITIONED_OVERREACTION_PARENT_VS_REVERSAL_OUTCOME",
+      "audit": "shared-knowledge/CURRICULUM_H07_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md",
+      "machineAudit": "shared-knowledge/curriculum_h07_dependency_anti_orphan_audit_20261004_v0_1.json",
+      "dependencyAudit": "PASS",
+      "antiDoubleCount": "PASS_EVENT_PARENT_REQUIRES_INDEPENDENT_EXPECTATION_CONTEXT",
+      "antiOrphan": "PASS",
+      "maturityImpact": "NONE_D03_05_L3_60_D20_09_L3_60",
+      "structuralChange": "NONE",
+      "formalCoreImpact": "NONE"
     },
     {
       "id": "H08",
@@ -254,12 +279,13 @@
       ],
       "acceptanceContract": "shared-knowledge/CURRICULUM_H09_H12_SCOPE_DEDUP_ACCEPTANCE_CONTRACT_20261003_V0_1.md",
       "specialistPacket": "shared-knowledge/CURRICULUM_H09_H12_SPECIALIST_VALIDATION_PACKETS_20261003_V0_1.md",
-      "status": "PARTIAL_EVIDENCE_RECEIVED_ROOM05_COMPLETE_ROOMS10_13_PENDING",
+      "status": "PARTIAL_EVIDENCE_RECEIVED_ROOM05_ROOM13_SEMANTIC_COMPLETE_ROOM10_AND_LIVE_SOURCE_PENDING",
       "receivedPackets": [
         "research/d06_securities_lending_economics_h12_v0_1.md",
-        "research/d06_18_borrow_fee_identifiability_rule_vintage_v0_1.md"
+        "research/d06_18_borrow_fee_identifiability_rule_vintage_v0_1.md",
+        "research/d20_h12_limits_to_arbitrage_room13_packet_v0_1.md"
       ],
-      "intakeDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOMS10_13_COUNTERPARTS",
+      "intakeDecision": "EVIDENCE_INSUFFICIENT_PENDING_ROOM10_AND_LIVE_SOURCE_RECEIPT",
       "intakeLedger": "shared-knowledge/curriculum_specialist_intake_ledger_20261003_v0_1.json"
     },
     {
