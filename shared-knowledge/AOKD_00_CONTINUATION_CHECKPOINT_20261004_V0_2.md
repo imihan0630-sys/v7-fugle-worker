@@ -1025,3 +1025,36 @@ No module, maturity, tracker, Router, Shared Master, System1/System2 or Formal m
 3. Preserve existing owner-approval gates H04/H10/H11/COV-06/COV-08/COV-10; this generic continuation does not approve them.
 4. Keep H02/H03/H12/H17/H18/H19, COV-09/COV-11/COV-12 and AOKD-05 at their latest evidence-specific gates unless actual new receipts appear.
 5. Never promote maturity from governance bookkeeping alone.
+
+
+## 2026-10-05 standing self-deception audit role
+
+00-room now carries a standing audit role for stock-selection self-deception / blind spots.
+
+Canonical audit artifacts:
+- `shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md`;
+- `shared-knowledge/stock_selection_self_deception_audit_v0_1.json`;
+- `shared-knowledge/SYSTEM_ALPHA_LINEAGE_AND_DOUBLE_COUNT_GUARD_V0_1.md`.
+
+Scope:
+- D01-D22;
+- 01-15 learning rooms;
+- System 1 and System 2 construction;
+- cross-domain overlap, proxy, PIT/vintage, hindsight, universe/survivorship, multiple-testing, causal-overclaim, execution-realism and validator-self-confirmation risks.
+
+00 audit duties on every relevant new research/system return:
+1. check whether the result creates or closes a listed blind spot;
+2. distinguish learning-room semantic/falsification remediation from system engineering enforcement;
+3. require D16 common-support/incrementality/OOS controls where applicable;
+4. never close a blind spot from documentation or maturity percentage alone;
+5. preserve one-primitive/one-receipt and source-lineage rules across domains;
+6. keep Formal Core locked until explicit owner approval for behavior-changing promotion.
+
+Launch-critical audit priority:
+D01, D02, D03, D06, D09 + D16/D18, with D04/D05 and D11/D14/D15 as safety/control follow-up.
+
+Exact continuation:
+- learning rooms consume their assigned Dxx audit row automatically via ROOM_BOOTSTRAP;
+- System1/System2 build work consumes both the audit map and Alpha lineage guard;
+- 00 tracks closure/readback and routes newly discovered cross-domain blind spots;
+- existing H/COV/AOKD owner gates remain unchanged and are not implicitly approved.
