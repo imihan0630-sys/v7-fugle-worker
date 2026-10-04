@@ -75,8 +75,8 @@ const preflight = buildDailyShadowInputPreflightV0_1({
 assert.equal(preflight.globalInputsReady, true);
 assert.equal(preflight.sourceAndHistoryReady, true);
 assert.equal(preflight.blockers.some((row) => row.layer === "PIT_HISTORY_GLOBAL"), false);
-assert.deepEqual(preflight.evaluationInputEligibleSymbols.sort(), ["A", "D"]);
-assert.deepEqual(preflight.evaluationInputBlockedSymbols.sort(), ["B", "C"]);
+assert.deepEqual([...preflight.evaluationInputEligibleSymbols].sort(), ["A", "D"]);
+assert.deepEqual([...preflight.evaluationInputBlockedSymbols].sort(), ["B", "C"]);
 assert.equal(preflight.selectionDenominatorComplete, false);
 assert.equal(preflight.zeroPickMayBeClaimed, false);
 
