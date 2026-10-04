@@ -537,7 +537,7 @@ GitHub專屬checkpoint：
 | D16-16 | Time-series Models時間序列模型 | L0 未研究 | 0% |
 | D16-17 | Panel／Cross-sectional Models面板與橫截面模型 | L0 未研究 | 0% |
 | D16-18 | Regularization／Feature Selection正則化與特徵選擇 | L0 未研究 | 0% |
-| D16-19 | Machine Learning／Calibration機器學習與校準 | L0 未研究 | 0% |
+| D16-19 | Machine Learning／Calibration機器學習與校準 | L2 機制＋反證已定義 | 40% |
 | D16-20 | Causal Inference因果推論 | L0 未研究 | 0% |
 | D16-21 | Alternative Data Provenance／Selection Bias替代資料來源與選樣偏誤 | L0 未研究 | 0% |
 | D16-22 | NLP／LLM Financial-text Feature Validation自然語言與大型語言模型財經文本特徵驗證 | L0 未研究 | 0% |
@@ -729,3 +729,14 @@ H01 is formally **KEEP_SEPARATE / SCOPE_DEDUP_ONLY**.
 - D09-13 owns industry structural state; D09-14 owns issuer-specific strategic-action lifecycle.
 - Shared market-share/capacity/price/margin/customer/supplier evidence has one parent receipt and cannot become two independent votes.
 - Module count, maturity and Formal Core are unchanged.
+
+
+## H09 canonical producer-consumer boundary — 2026-10-04
+
+Owner-approved H09 scope de-dup:
+- D16-19 owns model/calibrator fitting, probability-quality diagnostics, calibration/model drift and immutable `CalibrationReceipt`.
+- D16-25 consumes calibrated probabilities/distributions and owns prior/Bayesian decision update, uncertainty, utility, risk-coverage and ABSTAIN.
+- D16-25 may require calibration quality but cannot fit a second calibrator or create a second probability authority.
+- both remain L2/40%; no module-count or maturity change from H09.
+
+The D16-19 table row is synchronized here to the already-canonical Tracker L2/40%; this is not a new maturity promotion.
