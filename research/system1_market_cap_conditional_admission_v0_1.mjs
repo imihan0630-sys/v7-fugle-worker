@@ -14,7 +14,7 @@ export const MARKET_CAP_CONDITIONAL_ADMISSION_V0_1=Object.freeze({
   formalCoreLocked:true
 });
 
-const finite=x=>typeof x==='number'&&Number.isFinite(x);
+const finite=x=>typeof x==='number'&&Number.isFinite(x)?x:null;
 const round=(x,d=4)=>Math.round(x*10**d)/10**d;
 const assert=(ok,code)=>{if(!ok)throw new Error('MCAP_ADMISSION_'+code);};
 
