@@ -32,6 +32,19 @@ jobs:
             --data-urlencode "commodity_id2=" \
             "$url" -o "$out"
 
+          fut_url="https://www.taifex.com.tw/cht/3/futDataDown"
+          fut_out="/tmp/tx-20261002.csv"
+          curl --fail --silent --show-error --location \
+            --retry 2 --retry-delay 2 \
+            -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" \
+            -H "Accept: text/csv,*/*;q=0.8" \
+            --data-urlencode "queryStartDate=2026/10/02" \
+            --data-urlencode "queryEndDate=2026/10/02" \
+            --data-urlencode "down_type=1" \
+            --data-urlencode "commodity_id=TX" \
+            --data-urlencode "commodity_id2=" \
+            "$fut_url" -o "$fut_out"
+
           python - <<'PY'
           import csv, hashlib, io, json
           from collections import Counter, defaultdict
@@ -201,4 +214,34 @@ jobs:
               "formalDecisionImpact":False
           }
           print("ROOM09_SUMMARY_JSON="+json.dumps(summary,ensure_ascii=False,separators=(",",":")))
+
+          fp="/tmp/tx-20261002.csv"
+          fraw=open(fp,"rb").read()
+          if fraw.lstrip().lower().startswith((b"<!doctype", b"<html")):
+              raise SystemExit("TAIFEX_FUTURES_RETURNED_HTML_NOT_CSV")
+          ftext=fraw.decode("cp950")
+          fparsed=list(csv.reader(io.StringIO(ftext)))
+          fheader=fparsed[0]
+          frows=[r for r in fparsed[1:] if r and r[0].strip()]
+          fsummary={
+              "sourceUrl":"https://www.taifex.com.tw/cht/3/futDataDown",
+              "query":{"start":"2026/10/02","end":"2026/10/02","contract":"TX","downType":"1"},
+              "rawSha256":hashlib.sha256(fraw).hexdigest(),
+              "rawByteCount":len(fraw),
+              "header":[h.strip() for h in fheader if h.strip()],
+              "rowCount":len(frows),
+              "regularRows":[
+                  {
+                      "date":field(r,0),"contract":field(r,1),"expiry":field(r,2),
+                      "close":field(r,6),"settlement":field(r,10),
+                      "openInterest":field(r,11),"bestBid":field(r,12),"bestAsk":field(r,13),
+                      "session":field(r,17)
+                  }
+                  for r in frows
+                  if field(r,1)=="TX" and field(r,17)=="一般" and "/" not in field(r,2)
+              ],
+              "rawPersisted":False,
+              "formalDecisionImpact":False
+          }
+          print("ROOM09_FUTURES_JSON="+json.dumps(fsummary,ensure_ascii=False,separators=(",",":")))
           PY
