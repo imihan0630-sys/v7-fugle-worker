@@ -399,7 +399,7 @@ Status: MVP_AND_SHADOW_P0_IMPLEMENTATION_IN_PROGRESS
 
 - Exposure control must be symmetric: actual exposure is compared with desired exposure, supporting HOLD / REDUCE / EXIT as well as ADD / RE-ADD / RESTORE.
 
-- Position-management architecture approved: actual holdings are always monitored outside candidate/active-entry caps.
+- Position-management target architecture approved: verified actual holdings, once an owner-authorized holdings source/reconciliation path is wired, remain outside candidate/active-entry caps. Current implemented `POSITION_MONITOR` lifecycle is virtual/simulated only (`VIRTUAL_POSITION_READY`); actual-holdings ingestion/reconciliation is `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED` and `ACTUAL_POSITION_MONITOR_VERIFIED=false`.
 
 - Candidate lifecycle approved: the 12-symbol pool persists across days; every post-close run revalidates each existing name, retains it while at least one strategy thesis still has observation value, removes it when the surviving thesis is invalidated/turns materially bearish, and fills vacancies with newly qualified names. State-change reasons must be frozen.
 
@@ -412,6 +412,24 @@ Status: MVP_AND_SHADOW_P0_IMPLEMENTATION_IN_PROGRESS
 - Daily outputs must be frozen and performance-tracked.
 - Shared knowledge is reusable; system-specific decision logic remains isolated.
 - System 2 decision authority is fully independent: System 1/V8 cannot approve, reject or gate System 2 selection, entry, exit, monitoring or notifications.
+
+## 2026-10-04 S2-CORR-20261004-002 position-monitor semantic remediation
+
+Correction state at implementation start:
+- target/design rule and current operational capability were previously conflated in canonical wording;
+- `s2_positions` and current `SIM_FILLED -> POSITION_MONITOR` runtime are virtual/simulated System 2 position lifecycle;
+- no authorized System 2 actual-holdings source, broker-holdings adapter, reconciliation path or physical quantity/cost/fill/ownership provenance readback has been verified;
+- signal price, suggested/requested shares, plan snapshots and simulated fills cannot establish actual ownership;
+- System 1/V8 holdings must not be imported without explicit owner authorization.
+
+Canonical readiness terms:
+- `TARGET_ONLY`
+- `DESIGN_APPROVED`
+- `VIRTUAL_POSITION_READY`
+- `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`
+- `ACTUAL_POSITION_MONITOR_VERIFIED=false`
+
+Any future broker/shared-live holdings integration is `OWNER_DECISION_REQUIRED`. This correction changes semantic/readiness truth only; it does not change strategy logic, capital/order authority, System 1 runtime or production push.
 
 ## MVP + Shadow implementation transition (2026-09-28)
 
