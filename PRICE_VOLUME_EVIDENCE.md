@@ -5310,3 +5310,31 @@ The D16 receipt must bind:
 Cross-module receipt reuse is fatal integrity.
 
 No D02 L4 maturity change occurs from this interface alone.
+
+# Pre-PVE-240 addendum — effect-target preregistration loophole closed (2026-10-04)
+
+No PVE number consumed.
+No economic outcome inspected.
+
+Audit result:
+the prior D16 consumer guard did not bind a numerical effect/precision target strongly enough.
+
+Correction:
+- historical V0.1 restored and replayable, 24/24 PASS;
+- V0.2 created separately, 39/39 PASS;
+- fixture target values explicitly declared non-research;
+- complete target ID/version/hash binding now mandatory.
+
+A promotion-grade target must freeze:
+metric + unit + direction + numerical criterion + comparator + horizon + cost treatment + freeze clock + hash.
+
+Current repository truth:
+no formal numerical D02 target is yet frozen.
+
+Therefore:
+14/14 D02 evidence keys = TARGET_VALUE_PENDING_FREEZE.
+
+This blocks promotion-grade outcome interpretation, not PIT/admission capture.
+
+D02 remains 60.0%.
+Gate 7 remains CLOSED.
