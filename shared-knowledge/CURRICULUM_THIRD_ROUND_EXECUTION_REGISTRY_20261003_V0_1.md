@@ -213,3 +213,8 @@ Both remain L2/40%. Names, module count and aggregate maturity are unchanged. Fo
 
 Status:
 **CANONICAL_UPDATE_COMPLETE**.
+
+
+H09 canonical receipts:
+- `shared-knowledge/CURRICULUM_H09_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md`
+- `shared-knowledge/curriculum_h09_canonical_update_receipt_20261004_v0_1.json`
