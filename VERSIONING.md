@@ -150,3 +150,14 @@
 - 新增共用 C1 parent 的 immutable population/membership 與 append-only quality overlay；屬新增研究功能，不改選股架構或 Formal Core，因此採功能版本。
 - Owner 已批准實裝；具體 PR merge／Production deploy 仍須獨立批准。
 - 實裝 checkpoint：`research/SYSTEM1_SHADOW_COHORT_MEMBERSHIP_IMPLEMENTATION_20261004.md`。
+
+
+## 17. V8.18.0｜Decision Cutoff Provenance（決策截止來源追溯）候選
+
+- Runtime candidate: `8.18.0-decision-cutoff-provenance`.
+- 本次新增不可變 C1 研究母體的 `decisionCutoffAt` 來源追溯欄位，不改 3+3 股池、不改 A/B 選股、不改排名 comparator、不改資金、訊號、推播或下單，因此依版本規則屬 V8 功能版本。
+- 截止時間只允許在最後一個已稽核的 Formal-affecting 外部輸入 `V7_MARKET_CONSENSUS` 讀取完成後、同步 `selectTomorrowCandidates` 開始前打點。
+- 欄位透過既有不可變 C1 `header_json` 持久化與讀回；語意上不要求 D1 schema migration。
+- 同一 generation 若修改 cutoff，既有 immutable-header conflict guard 必須拒絕。
+- 歷史 generation 不回填；缺少 cutoff 的 legacy/fixture parent 可讀，但不得作 D03 promotion-grade cutoff-safe 證據。
+- 本功能是共享研究 provenance 能力；具體 PR 合併與 Production 部署仍受既有 Production approval gate 約束。

@@ -3,7 +3,7 @@ from pathlib import Path
 import os, re, subprocess, sys, json
 workflow=Path('.github/workflows/v7-regression.yml').read_text(encoding='utf-8')
 scripts=re.findall(r'python3 (scripts/\S+\.py)',workflow)
-tail={"scripts/apply_v8_15_1.py","scripts/apply_v8_15_2.py","scripts/apply_v8_15_3.py","scripts/apply_v8_15_4.py","scripts/apply_v8_16_0.py","scripts/apply_v8_17_0.py"}
+tail={"scripts/apply_v8_15_1.py","scripts/apply_v8_15_2.py","scripts/apply_v8_15_3.py","scripts/apply_v8_15_4.py","scripts/apply_v8_16_0.py","scripts/apply_v8_17_0.py","scripts/apply_v8_18_0.py"}
 for script in scripts:
     if script not in tail:
         subprocess.run([sys.executable,script],check=True)
@@ -19,6 +19,9 @@ class_b_baseline=Path('Worker.js').read_text(encoding='utf-8')
 subprocess.run([sys.executable,'scripts/apply_v8_16_0.py'],check=True)
 v816_candidate=Path('Worker.js').read_text(encoding='utf-8')
 subprocess.run([sys.executable,'scripts/apply_v8_17_0.py'],check=True)
+v817_candidate=Path('Worker.js').read_text(encoding='utf-8')
+if "scripts/apply_v8_18_0.py" in scripts:
+    subprocess.run([sys.executable,'scripts/apply_v8_18_0.py'],check=True)
 candidate=Path('Worker.js').read_text(encoding='utf-8')
 def functions(source):
     matches=list(re.finditer(r'^(?:async )?function (\w+)\(',source,re.M))
@@ -31,9 +34,13 @@ def functions(source):
 before,after=functions(baseline),functions(candidate)
 class_b_before=functions(class_b_baseline)
 v816_functions=functions(v816_candidate)
-v817_changed=[name for name,body in v816_functions.items() if body!=after.get(name)]
+v817_functions=functions(v817_candidate)
+v817_changed=[name for name,body in v816_functions.items() if body!=v817_functions.get(name)]
 if set(v817_changed)!={'buildC1PopulationReceipt','persistCompletedC1Safe'}:
     raise SystemExit('Unexpected Shadow cohort plumbing changes: '+str(v817_changed))
+v818_changed=[name for name,body in v817_functions.items() if body!=after.get(name)]
+if set(v818_changed)!={'buildC1PopulationReceipt','runAfterMarketScanCore','selectTomorrowCandidates'}:
+    raise SystemExit('Unexpected decision-cutoff provenance changes: '+str(v818_changed))
 class_b_changed=[name for name,body in class_b_before.items() if body!=v816_functions.get(name)]
 class_b_new=sorted(set(v816_functions)-set(class_b_before))
 if set(class_b_changed)!={'buildC1PopulationReceipt','persistC1PopulationReceipt','selectTomorrowCandidates'}:
@@ -50,7 +57,22 @@ if "scripts/apply_v8_15_3.py" in scripts:
 if "scripts/apply_v8_15_4.py" in scripts:
     allowed.update({'buildC1PopulationReceipt'})
 if set(changed)-allowed: raise SystemExit('Unexpected protected function changes: '+str(sorted(set(changed)-allowed)))
+core=after['runAfterMarketScanCore'].replace(
+    '  const decisionCutoffAt=new Date().toISOString();\n',''
+).replace(
+    'V7_MARKET_CONSENSUS:marketConsensus }, marketDate,decisionCutoffAt);',
+    'V7_MARKET_CONSENSUS:marketConsensus }, marketDate);'
+)
+if core!=v817_functions['runAfterMarketScanCore']:
+    raise SystemExit('runAfterMarketScanCore changed beyond cutoff stamp/propagation')
+
 selector=after['selectTomorrowCandidates'].replace(
+    'function selectTomorrowCandidates(marketState, todayRows, env, scanDate,decisionCutoffAt=null) {',
+    'function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {'
+).replace(
+    'selected,scanDate,c1ZeroPickContext,decisionCutoffAt);',
+    'selected,scanDate,c1ZeroPickContext);'
+).replace(
     '  let c1ZeroPickContext=null;\n'
     '  try { c1ZeroPickContext={ordinals:c1ZeroPickOrdinals(featureRows,todayRows),consensusReference:env.V7_MARKET_CONSENSUS}; }\n'
     '  catch(error) { c1ZeroPickContext={ordinals:null,consensusReference:null}; }\n', ''
@@ -77,9 +99,10 @@ for name,args in commands:
     if result.returncode: print((result.stdout+result.stderr)[-5000:],flush=True)
 Path('artifacts').mkdir(exist_ok=True)
 receipt={'schemaVersion':'SYSTEM1_C1_C2_REPAIR_REVIEW_V0_1','passed':sum(r['exitCode']==0 for r in results),
-  'shadowCohortChangedFunctions':v817_changed,'classBChangedFunctions':class_b_changed,'classBNewFunctions':class_b_new,
+  'shadowCohortChangedFunctions':v817_changed,'decisionCutoffChangedFunctions':v818_changed,'classBChangedFunctions':class_b_changed,'classBNewFunctions':class_b_new,
   'total':len(results),'changedFunctions':changed,'protectedFunctionCount':len(before)-len(changed),
-  'selectorUnchangedExceptCaptureFirewall':True,'fixtureOnly':True,'formalCoreImpact':False,'results':results}
+  'selectorUnchangedExceptCaptureFirewall':True,'runAfterMarketScanCoreUnchangedExceptCutoffStamp':True,
+  'decisionCutoffProvenanceOnly':True,'fixtureOnly':True,'formalCoreImpact':False,'results':results}
 Path('artifacts/system1-c1-c2-repair-review.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(receipt),flush=True)
 if any(r['exitCode'] for r in results): raise SystemExit(1)
