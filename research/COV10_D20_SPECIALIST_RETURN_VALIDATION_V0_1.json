@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "COV10_D20_SPECIALIST_RETURN_VALIDATION_V0_1",
+  "validatedAtAsiaTaipei": "2026-10-04T20:20:00+08:00",
+  "candidateId": "COV-10",
+  "domain": "D20",
+  "artifact": "research/COV10_D20_SPECIALIST_RETURN_V0_1.md",
+  "result": "RETURN_CONTRACT_COMPLETE",
+  "checks": {
+    "requiredHeaders": "PASS",
+    "requiredSections10": "PASS",
+    "candidateIdentity": "PASS",
+    "domainIdentity": "PASS",
+    "artifactPathIdentity": "PASS",
+    "exactlyOneTerminalRecommendation": "PASS_ADD_MODULE",
+    "unknownCoercion": "PASS_NONE"
+  },
+  "governance": {
+    "acceptedForIntake": false,
+    "reason": "00 control room owns intake/state transition/dependency audit/owner approval/canonical update.",
+    "curriculumMutation": false,
+    "maturityImpact": "NONE",
+    "formalCore": "LOCKED"
+  }
+}
