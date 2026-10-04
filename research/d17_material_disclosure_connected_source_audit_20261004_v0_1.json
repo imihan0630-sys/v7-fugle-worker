@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04T21:04:00+08:00",
+  "owner": "08｜事件與新聞研究室",
+  "modules": [
+    "D11-08",
+    "D17-01",
+    "D17-02",
+    "D17-09",
+    "D17-10"
+  ],
+  "title": "Fugle connected material-disclosure source capability audit",
+  "status": "ITEM_REPLAY_AND_CORRECTION_COEXISTENCE_PROVEN / INCREMENTAL_QUERY_AND_FIRST_AVAILABILITY_UNPROVEN / GENERAL_NEWS_STILL_SOURCE_NEEDED",
+  "connectedCapability": {
+    "contentSpecId": "FCNT000004",
+    "name": "重大訊息",
+    "accessible": true,
+    "requiredParams": [
+      "symbol_id"
+    ],
+    "optionalParams": [
+      "timestamp_start",
+      "target_id"
+    ]
+  },
+  "observedSchema": [
+    "_id",
+    "symbol_id",
+    "name",
+    "timestamp",
+    "title",
+    "url",
+    "descs"
+  ],
+  "positiveEvidence": [
+    "2537 latest fire disclosure can be replayed exactly by target_id 6ac0814f9e92b0f406eceda0.",
+    "2537 2026-08-04 correction disclosure can be replayed independently by its own target_id, showing the correction exists as an additional item rather than silently replacing the earlier disclosure.",
+    "The MOPS URL embeds issuer, spoke_date, spoke_time and sequence context, allowing source-level reconciliation.",
+    "Structured descs preserve event facts, issuer impact statements, effective dates and correction wording where disclosed."
+  ],
+  "counterevidence": [
+    "timestamp_start query returned only contentId metadata in this test and did not return rawContent; incremental retrieval semantics are therefore not yet proven.",
+    "An older target_id replay serialized _id as a binary/object structure while newer replay returned a string; stable identifier serialization across vintages is not yet guaranteed.",
+    "The content-spec inventory exposes material disclosures but no canonical licensed general-news content type.",
+    "Provider timestamp is a source/display clock; this audit did not authenticate when the connected source first made the item available to a strategy."
+  ],
+  "maturityDecision": {
+    "D11_08": "KEEP_L2",
+    "D17_01": "KEEP_L2",
+    "D17_02": "KEEP_L2",
+    "D17_09": "KEEP_L3",
+    "D17_10": "KEEP_L3"
+  },
+  "exactNext": [
+    "Prospectively query a newly arriving disclosure at fixed cadence and freeze connector capturedAt for the first successful appearance.",
+    "Retest timestamp_start on a known bounded window and document provider semantics or treat it as unsupported.",
+    "Normalize _id serialization before using it as a durable cross-vintage machine identity.",
+    "Keep licensed general-news source discovery separate; material disclosures cannot substitute for general news."
+  ],
+  "outcomeJoin": false,
+  "formalCoreChanged": false
+}
