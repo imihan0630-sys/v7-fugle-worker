@@ -898,3 +898,24 @@ Both remain L3/60%; no maturity or Formal change.
 Existing exact next research remains valid:
 - D09-13: BR-059 compatible issuer-native PCB/ABF product/application revenue numerator evidence;
 - D09-14: BR-060 prospective strategic-action milestone appends before outcomes.
+
+
+## 00 control-plane receipt — H08 closure / H10 owner gate
+
+H08 is CLOSED_NO_STRUCTURAL_CHANGE:
+- D09-11 remains the effective-dated theme/industry/issuer membership bridge.
+- D17-11 remains event/news propagation.
+- D20-11 remains independent social-language/topic/stance narrative diffusion.
+- one theme/headline/social lineage cannot become three independent votes.
+- D09-11 remains L3/60%.
+
+H10 audit reached OWNER_APPROVAL_REQUIRED:
+- D10-12 = structural exposure graph producer.
+- D17-04 = event-specific direct-attribution consumer.
+- D17-05 = event-specific second-order path consumer.
+- D17 overlays must reference D10 effective-dated exposure edges rather than rebuild a second graph from headlines.
+- no canonical wording mutation until explicit owner approval.
+
+Audits:
+- shared-knowledge/CURRICULUM_H08_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
+- shared-knowledge/CURRICULUM_H10_SCOPE_DEDUP_AUDIT_20261004_V0_1.md
