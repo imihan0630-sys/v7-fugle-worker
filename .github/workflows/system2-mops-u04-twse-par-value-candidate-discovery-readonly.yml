@@ -1,0 +1,47 @@
+name: System2 MOPS U04 TWSE Par Value Candidate Discovery Readonly
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_mops_u04_twse_par_value_candidate_discovery_readonly_v0_1.mjs"
+      - "system2/SYSTEM2_MOPS_U04_TWSE_PAR_VALUE_CANDIDATE_DISCOVERY_V0_1.md"
+      - ".github/workflows/system2-mops-u04-twse-par-value-candidate-discovery-readonly.yml"
+      - "system2/scripts/probe_mops_u04_scope_serializer_diagnostic_readonly_v0_1.mjs"
+      - "system2/SYSTEM2_MOPS_U04_SCOPE_SERIALIZER_DIAGNOSTIC_V0_1.md"
+  push:
+    branches: [main]
+    paths:
+      - "system2/scripts/probe_mops_u04_twse_par_value_candidate_discovery_readonly_v0_1.mjs"
+      - "system2/SYSTEM2_MOPS_U04_TWSE_PAR_VALUE_CANDIDATE_DISCOVERY_V0_1.md"
+      - ".github/workflows/system2-mops-u04-twse-par-value-candidate-discovery-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-mops-u04-twse-par-value-discovery-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Reverify serializer diagnostic
+        run: node system2/scripts/probe_mops_u04_scope_serializer_diagnostic_readonly_v0_1.mjs
+      - name: Discover U04 issuer revision candidates
+        run: node system2/scripts/probe_mops_u04_twse_par_value_candidate_discovery_readonly_v0_1.mjs
+      - name: Confirm read-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_mops_u04_twse_par_value_candidate_discovery_readonly_v0_1.mjs
+          echo "MOPS U04 TWSE par-value candidate discovery read-only boundary PASS"
