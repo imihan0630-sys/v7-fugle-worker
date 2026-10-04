@@ -1,8 +1,8 @@
 # Corporate Governance / Insider Checkpoint
 
-Updated: 2026-10-04 16:37 Asia/Taipei
+Updated: 2026-10-04 19:18 Asia/Taipei
 Scope: D21｜公司治理／經營者／內部人／控制權品質
-Status: D21-01 L2 / D21-02 L3 / D21-03 L2 / D21-04 L2 / D21-05 L3 / D21-07 L2 / D21-09 L3 / D21-10 L3 / D21-11 L2 PARTIAL_REPLAY / D21-12 L3 / D21-13 L3 / FORMAL_CORE_UNCHANGED
+Status: D21-01 L2 / D21-02 L3 / D21-03 L2 / D21-04 L2 / D21-05 L3 / D21-07 L3 / D21-09 L3 / D21-10 L3 / D21-11 L2 PARTIAL_REPLAY / D21-12 L3 / D21-13 L3 / FORMAL_CORE_UNCHANGED
 
 ## Governance
 - Canonical continuation checkpoint for D21.
@@ -308,3 +308,27 @@ Closed on Room14 side:
 H18 remains PARTIAL only because D07-19 project/capital-budget economics is still L0/0 and unstudied.
 
 Do not repeat D21-07 ownership work unless contradictory evidence appears.
+
+
+## 2026-10-04 evening D21-07 durable continuation
+
+### D21-07 incentive -> capital-allocation replay
+- TSMC 2024-02-06 Board disclosure provides a decision-time incentive event: 2023 RSA issuance and a 2024 RSA proposal were explicitly justified by executive/key-talent retention and alignment with shareholder interests and ESG outcomes.
+- TSMC 2024-06-05 Board disclosure provides two capital-allocation families:
+  1. about US$17.3562bn capital appropriations for long-term capacity based on demand forecasts and technology roadmap;
+  2. repurchase of 3,249,000 common shares explicitly to offset dilution from employee restricted stock awards.
+- The dilution-offset buyback is recorded as an ISSUER_STATED direct mechanism. The capex decision is only ASSOCIATION_ONLY with incentive design; no causal inference is allowed.
+- TSMC 2024-08-13 approved further about US$29.61547bn capital appropriations, up to US$7.5bn Arizona capital injection and 2.353m 2024 RSA shares. Same-meeting occurrence remains non-causal evidence.
+- Later outcomes: 2024 consolidated capex about US$29.76bn; annual report states about 0.9m 12-inch-equivalent wafer capacity increase; the 3.249m-share buyback was completed and cancelled.
+- Board capital appropriations are authorization batches, not an annual capex forecast. No fake execution ratio may be calculated from annual capex divided by one authorization.
+- MediaTek provides a falsification/control structure: 2022 executive stock-ownership guidelines, 2024 remuneration/RSA governance, an 80%-85% regular payout policy plus 2021-2024 special dividends, and about NT$132bn 2024 R&D investment. High payout and high long-term investment can coexist.
+- D21-07 advances L2 -> L3 / 60%.
+- L4 remains closed because no OOS/prospective incremental evidence or causal proof exists.
+
+## Exact next continuation
+1. Prioritize D21-11 contemporaneous decision-time evidence recovery / alternative high-suspicion case construction.
+2. Then D21-04 authoritative pledge setup/release receipts.
+3. Then D21-03 original monthly insider known_at and D21-01 original ownership-report known_at.
+4. All L3 modules require OOS/prospective evidence before L4; no theory-only promotion.
+
+Formal Core impact: NONE.
