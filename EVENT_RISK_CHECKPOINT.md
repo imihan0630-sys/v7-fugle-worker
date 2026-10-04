@@ -179,3 +179,17 @@ Proposed canonical boundary:
 - D17 may not reconstruct a second supply-chain graph from headlines.
 
 D17-04 and D17-05 remain L2/40%. No canonical wording mutation before owner approval.
+
+## Evening source-lineage continuation — 2026-10-04
+
+D17 weekend/non-trading source coverage completed in workflow run `37197636375` with expected/observed poll accounting. This deepens source completeness discipline but does not promote D17-01, D17-02, D11-08 or D11-13.
+
+D17-10 advances L2 -> L3. The 2537 construction-fire case physically separates independent event-occurrence corroboration from issuer-only materiality/insurance statements that later media merely redistribute. The 7827 HCB303 example separately demonstrates that copied MOPS disclosures across websites remain one primary lineage.
+
+The cross-validation unit is field + evidence lineage, not URL count. Conflicts retain both values/timestamps/lineages; missing independent confirmation remains UNKNOWN. Retrospective publication clocks cannot be backdated into strategy firstKnownAt.
+
+Evidence receipts:
+`research/d17_after_hours_coverage_receipt_20261004_v0_1.json`
+`research/d17_10_cross_source_lineage_receipt_20261004_v0_1.json`
+
+Formal Core unchanged. Outcome joins remain closed.
