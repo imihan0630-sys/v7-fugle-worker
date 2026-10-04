@@ -1,6 +1,6 @@
 {
   "schemaVersion": "CURRICULUM_COVERAGE_EXECUTION_REGISTRY_V0_1",
-  "updatedAt": "2026-10-04T21:31:00+08:00",
+  "updatedAt": "2026-10-05T05:40:00+08:00",
   "status": "COV02_COV03_COV04_COV05_CANONICAL_UPDATE_COMPLETE / COV01_06_07_08_09_10_11_12_PARTIAL / NO_GENERIC_PENDING",
   "formalCoreImpact": "NONE_LOCKED",
   "canonicalSnapshot": {
@@ -337,11 +337,14 @@
   },
   "cov07": {
     "state": "PARTIAL_EVIDENCE_RECEIVED",
-    "readiness": "CONTRACT_LEVEL_FUTURES_CURVE_REPLAY_PENDING",
+    "readiness": "SPECIALIST_CONTENT_COMPLETE_RETURN_CONTRACT_REPAIR_REQUIRED",
     "candidate": "Futures Term Structure / Calendar Spread / Roll Yield",
     "acceptedEvidence": [
       "DERIVATIVES_VOLATILITY_RESEARCH.md",
-      "DERIVATIVES_VOLATILITY_CHECKPOINT.md"
+      "DERIVATIVES_VOLATILITY_CHECKPOINT.md",
+      "research/COV07_D12_SPECIALIST_RETURN_V0_1.md",
+      "research/cov07_d12_tx_curve_replay_20261004_v0_1.json",
+      "shared-knowledge/CURRICULUM_COVERAGE_COV07_RETURN_CONTRACT_VALIDATION_20261005_V0_1.md"
     ],
     "closedQuestions": [
       "front versus next contract distinction",
@@ -352,17 +355,19 @@
       "near-expiry mechanics and carry/dividend guard"
     ],
     "remaining": [
-      "immutable contract-level historical TX price/OI/volume replay receipt",
-      "expiry calendar/version provenance",
-      "front-next-tenor curve object on one historical date range",
-      "annualized carry/roll-yield formula and sign convention",
-      "continuous-contract construction with no look-ahead/back-adjustment leakage",
-      "incremental comparison versus D12-01 basis and D12-02 OI",
-      "exactly one terminal recommendation",
-      "commit research/COV07_D12_SPECIALIST_RETURN_V0_1.md"
+      "Room09 performs format-only rewrite using canonical Coverage Specialist Return template",
+      "include all 7 required header labels",
+      "include all 10 canonical section headings",
+      "run research/curriculum_coverage_return_validator_v0_1.mjs and intake preflight",
+      "return validator-complete artifact to 00; no repeat TX replay or outcome analysis"
     ],
     "maturityChange": "NONE",
-    "formalCoreImpact": "NONE_LOCKED"
+    "formalCoreImpact": "NONE_LOCKED",
+    "substantiveDelta": "COMPLETE",
+    "returnContract": "INCOMPLETE_CANONICAL_HEADERS_AND_SECTIONS",
+    "proposedFutureId": "D12-19_UNRESERVED_UNTIL_INTAKE_AUDIT_AND_OWNER_APPROVAL",
+    "validationReceipt": "shared-knowledge/CURRICULUM_COVERAGE_COV07_RETURN_CONTRACT_VALIDATION_20261005_V0_1.md",
+    "validationReceiptJson": "shared-knowledge/curriculum_coverage_cov07_return_contract_validation_20261005_v0_1.json"
   },
   "cov06": {
     "state": "OWNER_APPROVAL_REQUIRED",
