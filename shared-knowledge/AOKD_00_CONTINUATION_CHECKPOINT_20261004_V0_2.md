@@ -71,3 +71,30 @@ Exact next continuation point:
 5. A06 remains DATA_BLOCKED/watchlist. Bounded broad sweep remains saturated; do not restart it absent a new mechanism/source/clock trigger.
 
 No outcome test was opened. No tracker, runtime, System1, System2 or Formal Core file was changed.
+
+
+## COV-03 governance milestone — 2026-10-04 Asia/Taipei
+
+00-room completed COV-03 formal Intake, Dependency Audit, overlap recheck, anti-double-count and anti-orphan review.
+
+Canonical audit:
+- `shared-knowledge/CURRICULUM_COVERAGE_COV03_INTAKE_DEPENDENCY_AUDIT_20261004_V0_1.md`
+- `shared-knowledge/curriculum_coverage_cov03_intake_dependency_audit_20261004_v0_1.json`
+
+Decision:
+- structural recommendation `ADD_MODULE` survives;
+- proposed ID = **D06-19** (D06-17 is retired and not reusable);
+- proposed name = **Retail / Individual Investor Participation & Flow（散戶／自然人參與與流向）**;
+- proposed starting maturity = **L0 / 0%**;
+- supporting L1/20% is not authoritative for structural execution;
+- domestic natural-person stock×date directional flow remains UNKNOWN/source-gated;
+- initial role = context/validation/supportive; no independent directional vote;
+- Formal Core remains LOCKED.
+
+Current state: **OWNER_APPROVAL_REQUIRED**.
+
+Exact next continuation point:
+1. obtain explicit owner approval or rejection for `COV-03 ADD_MODULE → D06-19 at L0/0`;
+2. if approved, re-read latest main and atomically update tracker + Shared Master + Router + Coverage registries, then recompute maturity denominator and verify no Formal/runtime change;
+3. if rejected, preserve the audit and close with no structural change or requested scope revision;
+4. COV-12 remains pending; do not infer a return that does not exist.
