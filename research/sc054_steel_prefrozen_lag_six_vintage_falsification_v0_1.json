@@ -1,0 +1,346 @@
+{
+  "version": "0.1",
+  "id": "SC-054",
+  "capturedAt": "2026-10-04T14:18:20+08:00",
+  "module": "D10-02 供應鏈Lead-Lag領先落後",
+  "secondaryModule": "D10-09 上游→中游→下游不對稱傳導",
+  "mode": "PREFROZEN_LAG_SIX_VINTAGE_STEEL_FALSIFICATION / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "purpose": "在 SC-049 已事前固定 1M/2M/3M lag 候選後，讀取此前未用於該 lag 判讀的 2026-04~06 鋼鐵月度版本，與既有 2026-07~09 合併為六個連續版本，檢查短窗 1M 關係是否穩健。",
+  "preregistration": {
+    "lagSetParent": "research/sc049_supply_chain_lead_lag_identifiability_audit_v0_1.json",
+    "lagSetFrozenAt": "2026-10-04T07:37:00+08:00",
+    "lagCandidatesMonths": [
+      1,
+      2,
+      3
+    ],
+    "interpretationRule": "No lag may be added, removed or selected after inspecting the additional vintages.",
+    "predecessor": "research/sc050_supply_chain_lead_lag_three_vintage_cross_chain_falsification_v0_1.json"
+  },
+  "sourceFamily": {
+    "report": "基本金屬供需情勢發展評估報告",
+    "authority": "金屬工業研究發展中心 / 經濟部產業發展署指導",
+    "mirror": "TPCA 台灣電路板協會",
+    "directReferencePages": [
+      {
+        "reportIssue": 57,
+        "reportMonth": "2026-05",
+        "referenceMonth": "2026-04",
+        "mirrorNewsNo": "28642"
+      },
+      {
+        "reportIssue": 58,
+        "reportMonth": "2026-06",
+        "referenceMonth": "2026-05",
+        "mirrorNewsNo": "28688"
+      },
+      {
+        "reportIssue": 59,
+        "reportMonth": "2026-07",
+        "referenceMonth": "2026-06",
+        "mirrorNewsNo": "500246"
+      },
+      {
+        "reportIssue": 60,
+        "reportMonth": "2026-08",
+        "referenceMonth": "2026-07",
+        "mirrorNewsNo": "500346"
+      }
+    ],
+    "laterVintagesParent": "research/sc036_steel_asymmetric_transmission_two_vintage_v0_1.json",
+    "pitClockCaveat": "Mirror release dates demonstrate the monthly reports existed after their reference months, but one uniform native first-publication timestamp is not frozen for all six vintages. For decision-time use, the conservative capturedAt/native-knownAt rule remains required."
+  },
+  "chain": {
+    "id": "TAIWAN_EAF_STEEL_SCRAP_TO_BILLET_TO_H_BEAM",
+    "vintages": [
+      {
+        "month": "2026-04",
+        "scrap": {
+          "value": 10.2,
+          "unit": "NTD/kg",
+          "momPct": 5.2,
+          "state": "UP"
+        },
+        "billet": {
+          "value": 15790,
+          "unit": "NTD/t",
+          "momPct": -2.5,
+          "state": "DOWN"
+        },
+        "hBeam": {
+          "value": 35900,
+          "unit": "NTD/t",
+          "momPct": 2.3,
+          "state": "UP"
+        }
+      },
+      {
+        "month": "2026-05",
+        "scrap": {
+          "value": 10.4,
+          "unit": "NTD/kg",
+          "momPct": 2,
+          "state": "UP"
+        },
+        "billet": {
+          "value": 16060,
+          "unit": "NTD/t",
+          "momPct": 1.7,
+          "state": "UP"
+        },
+        "hBeam": {
+          "value": 36700,
+          "unit": "NTD/t",
+          "momPct": 2.2,
+          "state": "UP"
+        }
+      },
+      {
+        "month": "2026-06",
+        "scrap": {
+          "value": 10,
+          "unit": "NTD/kg",
+          "momPct": -3.9,
+          "state": "DOWN"
+        },
+        "billet": {
+          "value": 15830,
+          "unit": "NTD/t",
+          "momPct": -1.4,
+          "state": "DOWN"
+        },
+        "hBeam": {
+          "value": 37500,
+          "unit": "NTD/t",
+          "momPct": 2.2,
+          "state": "UP"
+        }
+      },
+      {
+        "month": "2026-07",
+        "scrap": {
+          "value": 9.6,
+          "unit": "NTD/kg",
+          "momPct": -4,
+          "state": "DOWN"
+        },
+        "billet": {
+          "value": 16025,
+          "unit": "NTD/t",
+          "momPct": 1.2,
+          "state": "UP"
+        },
+        "hBeam": {
+          "value": 37500,
+          "unit": "NTD/t",
+          "momPct": 0,
+          "state": "FLAT"
+        }
+      },
+      {
+        "month": "2026-08",
+        "scrap": {
+          "value": 9.8,
+          "unit": "NTD/kg",
+          "momPct": 2.1,
+          "state": "UP"
+        },
+        "billet": {
+          "value": 15460,
+          "unit": "NTD/t",
+          "momPct": -3.5,
+          "state": "DOWN"
+        },
+        "hBeam": {
+          "value": 37500,
+          "unit": "NTD/t",
+          "momPct": 0,
+          "state": "FLAT"
+        }
+      },
+      {
+        "month": "2026-09",
+        "scrap": {
+          "value": 10.2,
+          "unit": "NTD/kg",
+          "momPct": 4.1,
+          "state": "UP"
+        },
+        "billet": {
+          "value": 16050,
+          "unit": "NTD/t",
+          "momPct": 3.8,
+          "state": "UP"
+        },
+        "hBeam": {
+          "value": 37500,
+          "unit": "NTD/t",
+          "momPct": 0,
+          "state": "FLAT"
+        }
+      }
+    ]
+  },
+  "lagReplay": {
+    "scrapToBillet": [
+      {
+        "lagMonths": 1,
+        "pairs": [
+          {
+            "from": "2026-04",
+            "to": "2026-05",
+            "fromState": "UP",
+            "toState": "UP",
+            "concordant": true
+          },
+          {
+            "from": "2026-05",
+            "to": "2026-06",
+            "fromState": "UP",
+            "toState": "DOWN",
+            "concordant": false
+          },
+          {
+            "from": "2026-06",
+            "to": "2026-07",
+            "fromState": "DOWN",
+            "toState": "UP",
+            "concordant": false
+          },
+          {
+            "from": "2026-07",
+            "to": "2026-08",
+            "fromState": "DOWN",
+            "toState": "DOWN",
+            "concordant": true
+          },
+          {
+            "from": "2026-08",
+            "to": "2026-09",
+            "fromState": "UP",
+            "toState": "UP",
+            "concordant": true
+          }
+        ],
+        "maturedPairN": 5,
+        "concordantN": 3,
+        "concordanceRate": 0.6,
+        "decision": "NOT_STABLE"
+      },
+      {
+        "lagMonths": 2,
+        "pairs": [
+          {
+            "from": "2026-04",
+            "to": "2026-06",
+            "fromState": "UP",
+            "toState": "DOWN",
+            "concordant": false
+          },
+          {
+            "from": "2026-05",
+            "to": "2026-07",
+            "fromState": "UP",
+            "toState": "UP",
+            "concordant": true
+          },
+          {
+            "from": "2026-06",
+            "to": "2026-08",
+            "fromState": "DOWN",
+            "toState": "DOWN",
+            "concordant": true
+          },
+          {
+            "from": "2026-07",
+            "to": "2026-09",
+            "fromState": "DOWN",
+            "toState": "UP",
+            "concordant": false
+          }
+        ],
+        "maturedPairN": 4,
+        "concordantN": 2,
+        "concordanceRate": 0.5,
+        "decision": "NOT_STABLE"
+      },
+      {
+        "lagMonths": 3,
+        "pairs": [
+          {
+            "from": "2026-04",
+            "to": "2026-07",
+            "fromState": "UP",
+            "toState": "UP",
+            "concordant": true
+          },
+          {
+            "from": "2026-05",
+            "to": "2026-08",
+            "fromState": "UP",
+            "toState": "DOWN",
+            "concordant": false
+          },
+          {
+            "from": "2026-06",
+            "to": "2026-09",
+            "fromState": "DOWN",
+            "toState": "UP",
+            "concordant": false
+          }
+        ],
+        "maturedPairN": 3,
+        "concordantN": 1,
+        "concordanceRate": 0.3333333333,
+        "decision": "NOT_STABLE"
+      }
+    ],
+    "sameMonthScrapToBillet": {
+      "maturedPairN": 6,
+      "concordantN": 3,
+      "concordanceRate": 0.5,
+      "decision": "NOT_STABLE"
+    },
+    "billetToHBeamOneMonth": {
+      "maturedPairN": 5,
+      "exactDirectionConcordantN": 1,
+      "note": "H-beam moved UP through June then remained FLAT July-September; a cost/intermediate move does not map mechanically to downstream monthly direction.",
+      "decision": "DOWNSTREAM_PRICE_STICKINESS_DOMINATES_SIMPLE_LAG"
+    }
+  },
+  "keyFalsification": {
+    "priorShortWindow": "SC-050's July->August and August->September 1M scrap-to-billet pairs were 2/2 concordant.",
+    "expandedWindow": "After adding April-June, the same prefrozen 1M relation falls to 3/5 concordance.",
+    "interpretation": "The attractive 2/2 short-window pattern was not robust. This is exactly the false-positive risk SC-049 preregistered.",
+    "universalLagRejected": true
+  },
+  "alternativeExplanations": [
+    "inventory and replenishment cycles",
+    "contract/posting repricing cadence",
+    "seasonality and construction demand",
+    "electricity/freight/yield changes",
+    "independent billet demand",
+    "trade-policy/export-demand shocks",
+    "downstream price stickiness"
+  ],
+  "statisticalBoundary": {
+    "noCorrelationClaim": true,
+    "reason": "Six monthly observations remain too small and serially dependent for stable correlation/causal inference; direction concordance is descriptive falsification only.",
+    "multipleLagSearch": "The 1M/2M/3M set was frozen before the additional vintages were inspected, so the result is not a hindsight best-lag selection.",
+    "independenceCaveat": "Adjacent months are not independent economic episodes; effective sample size is lower than the raw pair count."
+  },
+  "maturityDecision": {
+    "D10-02": "KEEP_L2_MECHANISM_AND_FALSIFICATION_DEFINED",
+    "D10-09": "KEEP_L3_THREE_PLUS_VINTAGE_ASYMMETRIC_TRANSMISSION_FEASIBLE"
+  },
+  "reasonNoD10_02L3": "All three prefrozen lag candidates fail to show stable directional replay in the six-vintage steel sequence. A second physical non-steel chain and fully compatible first-known clocks are also still missing. L3 may not be awarded for data volume alone when the relation under study is not yet identified.",
+  "formalOptimizationCandidate": "NONE",
+  "exactNext": [
+    "SC-055 build a genuinely physical non-steel three-layer chain with effective-dated product/exposure semantics and compatible monthly source clocks.",
+    "Continue prospective steel vintages without changing the 1M/2M/3M lag set; treat each new month as a falsification opportunity.",
+    "Before any D10-02 L3 promotion, show at least one chain-specific relation that remains replayable after inventory, seasonality, contract-reset and common-shock controls; if none survives, classify the generic fixed-lag hypothesis as rejected rather than endlessly adding data."
+  ],
+  "status": "SIX_STEEL_VINTAGES / PREFROZEN_LAG_REPLAY_COMPLETE / 1M_3_OF_5 / 2M_2_OF_4 / 3M_1_OF_3 / SHORT_WINDOW_FALSE_POSITIVE_FALSIFIED / D10_02_KEEP_L2 / FORMAL_UNCHANGED"
+}
