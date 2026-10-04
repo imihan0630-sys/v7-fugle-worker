@@ -65,3 +65,37 @@ Therefore:
 3. expand representative-control discovery for TPEx par-value change;
 4. separately collect genuinely prospective MOPS availability observations;
 5. only after representative routing breadth improves, address bounded authority/revision-history completeness.
+
+## 2026-10-04 physical V0.2 acceptance — REPRESENTATIVE AUTHORITY 3/6
+
+PR #503 merged as `3d8d869b0bcf43d341fa333f1890a12c755fdc97`.
+
+Checks:
+- Supplemental Revision Provenance Receipt V0.2 Readonly `37182276016`: PASS.
+- System2 Research CI `37182275922`: PASS.
+- V8 Regression `37182275927`: PASS.
+- result=`PASS_REPRESENTATIVE_AUTHORITY_3_OF_6`.
+
+Physical receipt:
+- requiredLaneCount=6;
+- finalResultReadyCount=6;
+- representativeAuthorityReadyCount=3;
+- supplementalRevisionReadyCount=0;
+- `queryIntegrityReady=true`;
+- `sourceReportedClockReady=true`;
+- `frozenAuthorityRoutingCoverageComplete=true`;
+- `revisionCoverageComplete=false`.
+
+Remaining representative-routing gaps:
+- TWSE_PAR_VALUE_CHANGE_REFERENCE;
+- TPEX_EX_RIGHT_DIVIDEND_ACTUAL;
+- TPEX_PAR_VALUE_CHANGE_REFERENCE.
+
+Blocker counts retained:
+- PUBLIC_AVAILABILITY_LATENCY_NOT_CERTIFIED = 6;
+- KNOWN_AT_VERSION_CLOCK_NOT_CERTIFIED = 6;
+- AUTHORITY_REVISION_BOUNDED_COVERAGE_INCOMPLETE = 6;
+- BOUNDED_REVISION_HISTORY_COVERAGE_INCOMPLETE = 6;
+- LANE_REPRESENTATIVE_AUTHORITY_ROUTING_NOT_OBSERVED = 3.
+
+This is a representative-evidence breadth improvement only. It does not upgrade bounded revision completeness.
