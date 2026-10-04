@@ -1,0 +1,30 @@
+name: D03 Pre-Parent Continuity Capacity Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d03_pre_parent_continuity_capacity_probe_v0_1.mjs"
+      - ".github/workflows/research-d03-pre-parent-continuity-capacity-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Probe recent official continuity event cardinality
+        run: node research/d03_pre_parent_continuity_capacity_probe_v0_1.mjs
+      - name: Confirm research-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE|BUY|SELL' research/d03_pre_parent_continuity_capacity_probe_v0_1.mjs
+          echo "D03 continuity capacity probe boundary PASS"
