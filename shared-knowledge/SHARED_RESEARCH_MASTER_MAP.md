@@ -1735,3 +1735,24 @@ Proposed canonical boundary pending owner approval:
 - D17 must reference D10 exposure edges rather than rebuild a second graph from headlines.
 
 No maturity/count/Formal change before H10 approval.
+
+
+## 00 governance state reconciliation — hidden overlap + coverage 2026-10-04
+
+Hidden-overlap H01-H20 control plane now has no generic PENDING states.
+Every cluster is one of:
+- canonical update complete;
+- closed no structural change;
+- owner approval required;
+- evidence-specific partial with exact blocker.
+
+Current owner-decision gates from this sweep:
+- H04: MERGE_ELIGIBLE, proposed D12-15 survivor with D12-14 child proxy family.
+- H10: KEEP_SEPARATE / SCOPE_DEDUP_ONLY, D10-12 structural exposure producer -> D17-04/05 event-attribution consumers.
+
+Coverage control plane:
+- complete: COV-02/03/04/05;
+- partial: COV-01/06/07/08/09/10/11;
+- pending formal specialist return: COV-12 only.
+
+This reconciliation changes no System1/System2 Formal behavior and creates no maturity by bookkeeping.
