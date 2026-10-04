@@ -222,3 +222,22 @@ Evidence:
 `research/d17_11_sector_propagation_pit_audit_20261004_v0_1.json`
 
 Formal Core unchanged. Outcome joins closed.
+
+## 2026-10-05 morning — D17-06/07 PIT feasibility and preopen window falsification
+
+D17-06 advances L2 -> L3:
+Taiwan evidence now distinguishes full forecast distributions, categorical conditional scenario sets, authorization-with-unquantified-magnitude, and no-valid-expectation UNKNOWN. Numeric surprise is allowed only when expectation and realization are definition/unit compatible and the functional is preregistered.
+
+D17-07 advances L2 -> L3:
+the replayable object is pre-event expectation evidence, not the latent true priced-in fraction. 7827 provides a high-expectation-evidence conditional case, 6461 a partial-expectation case, and 2537 an unscheduled low-prior-evidence case. No post-event return is used.
+
+Preopen workflow run `37243049741` completed 2/2 polls per source. TWSE row count rolled from 5 to 3 with a new payload hash, while TPEx stayed stable at 4 rows. This strengthens the rule that later absence is not cancellation/no-event evidence.
+
+D17-01/02, D11-08 and D11-13 remain L2. No first-new-arrival latency was observed. D17-03/05/08 remain blocked by their distinct clock/graph/general-news gates.
+
+Evidence:
+`research/d17_06_expectation_surprise_pit_audit_20261005_v0_1.json`
+`research/d17_07_priced_in_evidence_state_audit_20261005_v0_1.json`
+`research/d17_preopen_rolling_window_receipt_20261005_v0_1.json`
+
+Formal Core unchanged. Outcome joins remain closed.
