@@ -19,7 +19,28 @@ assert.equal(p.rows[0].pe,null);
 assert.equal(p.rows[0].pb,0.82);
 assert.equal(p.rows[1].pe,9.83);
 assert.equal(p.sourceDateEvidence,"2026-10-02");
+
 assert.match(buildOfficialHistoricalA6ValuationUrlV0_1("2026-10-02"),/date=20261002/);
+
+const legacy2017=parseOfficialHistoricalA6ValuationPayloadV0_1({
+  marketDate:"2017-01-03",observedAt:"2026-10-04T00:00:00Z",
+  payload:{
+    stat:"OK",date:"20170103",
+    fields:["證券代號","證券名稱","本益比","殖利率(%)","股價淨值比"],
+    data:[
+      ["1101","台泥","20.56","3.78","1.23"],
+      ["1102","亞泥","31.93","4.15","0.73"],
+    ],
+  },
+});
+assert.equal(legacy2017.state,"READY");
+assert.equal(legacy2017.rows[0].close,null);
+assert.equal(legacy2017.rows[0].fiscalReportPeriod,null);
+assert.equal(legacy2017.rows[0].pe,20.56);
+assert.equal(legacy2017.rows[0].pb,1.23);
+assert.equal(legacy2017.schemaCapabilities.close,false);
+assert.equal(legacy2017.schemaCapabilities.fiscalReportPeriod,false);
+assert.equal(legacy2017.schemaCapabilities.fiscalDenominatorTransitionDirectlyObservable,false);
 
 assert.throws(()=>parseOfficialHistoricalA6ValuationPayloadV0_1({
   marketDate:"2026-10-01",observedAt:"2026-10-04T00:00:00Z",
