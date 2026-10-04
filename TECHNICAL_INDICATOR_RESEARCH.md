@@ -2985,3 +2985,149 @@ Current:
 
 Exact next:
 the shared source owner must freeze/execute genuine prospective sampling and produce exact-version observations that are causal relative to the System1 parent cutoff. D03 does not duplicate that source observer.
+
+
+## TI-651 through TI-660 — pre-parent source-cut acceptance / capacity audit (2026-10-04)
+
+Durable artifacts:
+- `research/D03_PRE_PARENT_CONTINUITY_SOURCE_CUT_HANDOFF_V0_1.md`
+- `research/d03_pre_parent_source_cut_v0_1.mjs`
+- `tests/test_d03_pre_parent_source_cut_v0_1.mjs`
+- `research/d03_pre_parent_continuity_capacity_probe_v0_1.mjs`
+- read-only workflows `.github/workflows/research-d03-pre-parent-source-cut-readonly.yml` and `.github/workflows/research-d03-pre-parent-continuity-capacity-readonly.yml`.
+
+### TI-651 — first-observed availability is sufficient for parent cutoff causality
+
+The shared MOPSOV owner adapter separates:
+- firstObservedAt / firstObservedAvailableAt;
+- precisionEligible (prior NOT_OBSERVED <=5 minutes);
+- publication-latency certification.
+
+For D03 parent causality, an exact version that was prospectively first-observed no later than parent knownAt can establish conservative availability-by-cutoff even when precisionEligible=false.
+
+The <=5-minute prior-NOT_OBSERVED window is a latency-estimation precision requirement, not an intrinsic Bollinger/ADX parent-eligibility requirement.
+
+No polling schedule is authorized by this conclusion.
+
+### TI-652 — selected-only pre-parent source querying is rejected
+
+The immutable C1 parent population is created by the normal scan. Waiting for selected/parent symbols before querying source versions would necessarily make the source capture post-parent.
+
+Promotion-grade pre-parent evidence must therefore be market-wide/exchange-wide or full eligible-universe scoped before the parent.
+
+Selected-only pre-parent source capture is structurally invalid.
+
+### TI-653 — market-wide source base already exists
+
+Existing shared-source work already exposes:
+- six range-verified TWSE/TPEx actual corporate-action result lanes;
+- TWSE daily material-information OpenAPI;
+- TPEx daily material-information OpenAPI;
+- direct official MOPSOV historical/version transport.
+
+The daily disclosure feeds are prospective snapshots, not historical version-complete archives, and therefore require immutable capture/version semantics before promotion use.
+
+### TI-654 — physical source-cardinality audit
+
+Read-only workflow run `37190871367` PASS on 2026-08-15..2026-10-02.
+
+Across the six official actual-result lanes:
+- total event rows = 294;
+- unique event keys = 294;
+- event-bearing dates = 31;
+- mean events per event-bearing date ≈9.48;
+- maximum events / unique symbols on one effective date = 33.
+
+Lane counts:
+- TWSE ex-right/dividend =149;
+- TWSE capital reduction =7;
+- TWSE par-value change =1;
+- TPEx ex-right/dividend =129;
+- TPEx capital reduction =7;
+- TPEx par-value change =1.
+
+This supports event-driven owner engineering as materially smaller than full-market per-symbol revision polling. It does not certify a production request budget, completeness or knownAt.
+
+### TI-655/TI-656 — frozen parent source-cut acceptance
+
+A future shared-owner source cut is parent-eligible only when:
+- scanDate equals the parent scanDate;
+- scope is market-wide/full eligible universe;
+- all required market-wide lanes are READY with payload hashes;
+- range lanes verify their requested range;
+- parser completeness is true;
+- source cut completes no later than actual parent knownAt;
+- required MOPS exact-version expected/observed keysets reconcile exactly;
+- each required MOPS version is PROSPECTIVE_POLL and firstObservedAt <= parent knownAt;
+- no query/budget truncation;
+- no UNKNOWN required lane;
+- owner certifies noRevisionGapThroughCut.
+
+Deterministic workflow run `37191199051` PASS:
+- valid pre-parent source cut -> VALID_SOURCE_CUT_FOR_PARENT;
+- precisionEligible=0 does not block availability-by-cutoff;
+- late cut -> blocked;
+- selected-only -> blocked;
+- late MOPS version -> blocked;
+- retrospective readback -> blocked;
+- incomplete version keyset -> blocked;
+- truncated query -> blocked.
+
+### TI-657 — current receipt clock is not silently weakened
+
+Bollinger/ADX v0.2 currently requires an owner continuity receipt captured no later than parent knownAt.
+
+This tranche does not reinterpret or weaken that field.
+
+If the shared owner later wants to compute a transform after the parent using only an immutable pre-parent evidence cut, that requires a separately versioned evidenceCutoffAt/receiptCreatedAt owner contract and a new D03 review.
+
+### TI-658 — noRevisionGapThroughCut remains the hard unsolved claim
+
+A source snapshot proves observed state, not absence of omitted versions.
+
+Owner certification still needs complete source-population semantics, append-only exact version identity, prospective observation and reconciliation of any later-discovered pre-parent version.
+
+D03 does not self-certify this field.
+
+### TI-659 — two owner architectures remain possible
+
+Research-compatible candidates:
+1. pre-parent market-wide source cut, where actual observedAt controls eligibility and a late run fails closed;
+2. versioned evidence-cutoff / receipt-created split, where later transform computation consumes only immutable pre-parent facts.
+
+D03 does not deploy or choose either shared-owner architecture.
+
+### TI-660 — maturity decision
+
+No maturity promotion.
+
+The source-cut requirement is now substantially narrower and executable, but no genuine cutoff-safe owner receipt has been produced.
+
+Therefore:
+- D03-10 Bollinger remains L2/40;
+- D03-09 ADX remains L2/40;
+- D03 aggregate remains **56.7%**.
+
+Next honest transitions remain:
+- Bollinger L3 -> D03 58.3%;
+- ADX L3 after canonical FULL_REPLAY -> D03 60.0%.
+
+Current:
+`PRE_PARENT_SOURCE_CUT_POLICY = PHYSICAL_TEST_PASS`
+`EVENT_DRIVEN_SOURCE_CARDINALITY = PHYSICAL_MEASURED`
+`HIGH_FREQUENCY_POLLING_INTRINSICALLY_REQUIRED = FALSE`
+`SELECTED_ONLY_PRE_PARENT_SOURCE_CAPTURE = REJECTED`
+`NO_REVISION_GAP_THROUGH_CUT = OWNER_CERTIFICATION_PENDING`
+`D03_10 = L2_REMAINS`
+`D03_09 = L2_REMAINS`
+`D03_MATURITY = 56.7_PERCENT`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Exact next:
+1. shared continuity owner implements/executes one versioned pre-parent architecture;
+2. produce a genuine cutoff-safe market-wide/full-universe source cut and exact prospective MOPS version observations;
+3. certify noRevisionGapThroughCut and symbol-session completeness under owner rules;
+4. bind owner continuity receipts to the first genuine V8.17 parent keyset;
+5. execute Bollinger v0.2 for every expected parent and require COMPLETE reconciliation before any 58.3% promotion;
+6. ADX follows only with canonical FULL_REPLAY;
+7. raw D03 3-session gate remains 2/3 and TI-005/TI-006 outcomes remain closed.
