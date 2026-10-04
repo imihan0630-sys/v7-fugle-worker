@@ -326,7 +326,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | 10｜投組風控與交易執行研究室 | D14＋D15 | 39 | 34.9% | 交易執行／投組最佳化／績效歸因／避險／VaR |
 | 11｜統計驗證與策略市場狀態研究室 | D16＋D18 | 40 | 41.5% | 資料來源治理／機率式決策／PIT／OOS／壓力測試／Regime |
 | 12｜資產定價與因子研究室 | D19 | 15 | 16% | 資產定價／流動性因子／相對價值 |
-| 13｜行為金融與市場心理研究室 | D20 | 13 | 50.8% | 行為金融／套利限制／市場心理 |
+| 13｜行為金融與市場心理研究室 | D20 | 13 | 53.8% | 行為金融／套利限制／市場心理 |
 | 14｜公司治理與內部人研究室 | D21 | 11 | 3.6% | 治理／管理層誘因／資本配置／內部人／財務重大ESG |
 | 15｜信用市場與資本結構研究室 | D22 | 12 | 0% | 信用市場／資本結構／融資壓力 |
 
@@ -410,15 +410,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 
 > D02 latest 2026-10-04: D02-10 / D02-12 PIT readiness closure: D02-10 freezes D03-owned pre-session trend context × current completed-slot D02 participation with max-known-at timing and no third primitive vote; D02-12 splits TIME_OF_DAY_VOLUME_CURVE from PRICE_BY_VOLUME_PROFILE, accepts historical/live 15m PIT feasibility for the bounded 09:00~13:00 current-monitor window and prospective-only price-profile capture. Both promote L2 機制＋反證已定義 40%; PVE cursor remains 239; Formal Core locked.
 > D02 latest 2026-10-04: D02-05 / D02-07 / D02-09 / D02-11 PIT readiness closure: D02-05 is promoted only as observable EXTREME_PARTICIPATION_STATE while distribution motive stays UNKNOWN; D02-11 separates volume-capacity, execution-liquidity context and Formal-gate reference while rejecting the defective pvIlliquidityWarning as research truth; D02-07/D02-09 gain executable fail-closed daily-volume continuity replay with 14/14 final fixtures PASS after an anti-look-ahead correction. D02-08 remains L2 機制＋反證已定義 40%; PVE cursor 239; Gate 7 CLOSED; Formal Core locked.
-> D02 latest 2026-10-04: D02-08 provider-pressure L3 closure + L4 ceiling audit: D02-08 is promoted only as PROVIDER_TRADE_PRESSURE_PROXY with 14/14 executable fixtures PASS; true OFI, dynamic absorption and participant intent remain explicitly ineligible. All 12 D02 modules are now at least L3, so D02 reaches 60.0%. A full L4 audit makes zero promotions because CLEAN_DATE_ZERO, Gate 7 CLOSED and no genuine prospective/OOS module-level evidence yet. PVE cursor remains 239; Formal Core locked.
-
-## 03｜技術指標與趨勢動能研究室
-
-負責領域：**D03 趨勢／動能／反轉／技術指標**  
-必讀 checkpoint：`TECHNICAL_INDICATOR_CHECKPOINT.md`、`TREND_MOMENTUM_REVERSAL_CHECKPOINT.md`  
-禁止：不得把其他 Dxx 領域當成本聊天室主線；跨領域發現只能建立 dependency（依賴）或引用證據，不能雙重計算進度。
-
-### D03｜趨勢／動能／反轉／技術指標 — 56.7%
+> D02 latest 2026-10-04: D02-08 provider-pressure L2 機制＋反證已定義 40%. A full L2 機制＋反證已定義 40%
 
 > D03 pullback latest 2026-10-04: H07 owner reconciliation separates observable pullback/reversal price episodes from causal-origin attribution. TI-534~542 validate PIT-safe daily-parent + contiguous completed-M15 episode replay and promote D03-05 L2 機制＋反證已定義 40%; raw source gate 2/3; Formal Core locked.
 
@@ -618,9 +610,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 必讀 checkpoint：`MARKET_BREADTH_ROTATION_CHECKPOINT.md`、`MARKET_BREADTH_ROTATION_RESEARCH.md`、`SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md`  
 禁止：不得把其他 Dxx 領域當成本聊天室主線；跨領域發現只能建立 dependency（依賴）或引用證據，不能雙重計算進度。Formal Core 維持 LOCKED。
 
-> 2026-10-04 durable progress：BR-045 以 5 個獨立 TWSE 官方收盤、34 個產業報酬指數建立可重播主流族群領導生命週期，使 D09-07 由 L2 升至 L3；SC-047 追加 BIS 規則／名單語意，SC-048 加入 6488 環球晶第二家公司政策→產能控制，但 D10-13／D10-14 維持 L3。D09=57.1%、D10=55.4%、本室加權約56.3%；Formal Core 不變。
-
-> 2026-10-03 H01 專科驗證：BR-051～BR-056 已完成晶圓代工、鋼鐵、PCB 三產業結構控制，以及半導體／鋼鐵／電動車公司策略動作與失敗／中止控制；專科結論為 KEEP_SEPARATE（維持分開）但必須 scope dedup（範圍去重）。D09-13／D09-14 均為 L3 台股PIT資料可行 60%，H01 已送總控收件簿，等待 00 Dependency Audit／owner review；Formal Core 不變。
+> 2026-10-04 durable progress：BR-045 以 5 個獨立 TWSE 官方收盤、34 個產業報酬指數建立可重播主流族群領導生命週期，使 D09-07 由 L2 機制＋反證已定義 40%，H01 已送總控收件簿，等待 00 Dependency Audit／owner review；Formal Core 不變。
 
 | 模組 | 研究模組 | 學習範圍 | 等級 | 完成度 |
 |---|---|---|---|---:|
