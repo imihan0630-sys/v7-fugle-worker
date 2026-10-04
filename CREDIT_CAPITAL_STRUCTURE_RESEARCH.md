@@ -1,8 +1,8 @@
 # Credit / Capital Structure Research
 
-Updated: 2026-10-04 13:45 Asia/Taipei
+Updated: 2026-10-04 15:12 Asia/Taipei
 Scope: D22
-Status: ACTIVE_RESEARCH / D22-01 L3_WAITING_PANEL / D22-02 L2_ACTIVE / D22-03 L2_MECHANISM_DEFINED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
+Status: ACTIVE_RESEARCH / D22_01_02_03_05_07_08_10_L3 / D22_04_06_SOURCE_BLOCKED_L2 / D22_09_DEPENDENCY_BLOCKED_L2 / D22_11_12_HOLD_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
 ## D22-01｜Debt Maturity Wall / Refinancing Schedule
 
@@ -348,4 +348,74 @@ The next highest-value path is no longer another theory pass. It is:
 2. D22-07 covenant/facility PIT receipts;
 3. independent-date expansion for D22-05/D22-08/D22-10;
 4. then downstream D22-09 divergence replay after D22-06 becomes usable.
+
+## 2026-10-04 15:12 continuation｜Contractual liquidity validated; supply/recovery shortcuts rejected; L4 Stage-A frozen
+
+### D22-07 advanced to L3 / 60%
+The module now has Taiwan PIT replay across telecom, semiconductor packaging and semiconductor issuers:
+- multi-date unused credit-line states;
+- restrictive-covenant / cross-default semantics;
+- revolving-credit headroom;
+- guarantee exposure and a later early-repayment resolution event.
+
+The main learning is nonlinear: covenant or guarantee exposure can exist without default, and later repayment can extinguish exposure. The correct research state is therefore a dated contract/liquidity state machine, not a permanent BAD flag.
+
+Durable replay:
+- `research/d22_07_liquidity_covenant_replay_v0_1.json`
+
+### D22-11 stays L2 / 40%
+Official CBC data make aggregate bank-pricing and enterprise-funding context replayable, and issuer bank-dependence can be mapped from first-known financing structures. However, public modern Taiwan data in this pass do not cleanly identify credit supply separately from borrower demand.
+
+This is a substantive negative result:
+- loan-volume contraction is not automatically supply tightening;
+- a higher new-loan rate is not an issuer credit spread;
+- common aggregate context must not be assigned uniformly across issuers;
+- creditSupplyShock remains UNKNOWN until lending standards/approval/collateral/term or an equivalent identifying design is available.
+
+Durable readiness audit:
+- `research/d22_11_credit_cycle_replay_readiness_v0_1.json`
+
+### D22-12 stays L2 / 40%
+Taiwan Ratings historical studies show rare corporate defaults in the rated universe, including many zero-default years. This creates a severe class-imbalance and coverage problem. TPEx/TWSE source routes exist for default notices and bankruptcy/restructuring delisting semantics, but these are not yet a classified issuer-level recovery dataset.
+
+Required protections:
+- include defaulted/delisted/unrated cases rather than rated survivors only;
+- distinguish bankruptcy, restructuring, bond-payment default, covenant breach, market/trading default and non-credit delisting;
+- recovery must be tied to security seniority/collateral and recovery date;
+- distance-to-default is a model estimate, not observed PD.
+
+Durable readiness audit:
+- `research/d22_12_distress_recovery_replay_readiness_v0_1.json`
+
+### D22-04 / D22-06 source state
+Official TPEx market-data schema supports the necessary security-level trade/yield/fair-value/curve fields, but the historical archive required for a clean issuer-security-date replay is a separate paid/acquisition route. No purchase was made and no proxy substitution was used.
+
+These modules remain L2 and D22-09 remains downstream-blocked.
+
+### L4 Stage-A incremental-value preregistration
+Durable preregistration:
+- `research/d22_l4_stage_a_incremental_value_prereg_v0_1.json`
+
+Seven L3 modules are now governed by one outcome-blind framework:
+D22-01, D22-02, D22-03, D22-05, D22-07, D22-08 and D22-10.
+
+Frozen design:
+- exact common support;
+- independent issuer-date/episode clustering;
+- <20 mature paired dates remains ACCUMULATING;
+- D+5 / D+10 / D+20 primary outcome family; D+40 / D+60 only after elapsed maturity;
+- MFE / MAE path outcomes;
+- no best-horizon search;
+- one historical outcome opening after population freeze;
+- leave-one-date-out / walk-forward plus later independent dates or Prospective Shadow;
+- multiple-testing accounting;
+- baseline/redundancy controls against D07, D13, D11 and upstream D22 primitives;
+- UNKNOWN remains missing;
+- Formal Core stays LOCKED.
+
+### Current D22 maturity
+51.7%.
+
+### Exact next continuation
+Build the frozen common-support inventory for the seven L3 lanes without opening equity outcomes. Expand independent issuer-date receipts until the first lane genuinely satisfies the pre-outcome panel gate. Maintain source/dependency/identification blockers for D22-04/06/09/11/12 rather than weakening their contracts.
 
