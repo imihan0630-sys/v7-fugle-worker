@@ -1896,7 +1896,10 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「Implied Volatility隱含波動率」。學習範圍：期貨、選擇權、基差、OI、外資期貨、PCR、VIX、IV、Skew、Term Structure、Gamma與結算；夜盤與到期效應；合約／DTE語意；對市場與個股的增量資訊。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / REAL_PARENT_MONTHLY_IV_REPLAY_PASS / PRIMARY_RATE_FORWARD_CLOCK_CONVENTION_FROZEN / PROSPECTIVE_DECISION_TIME_PIT_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "next": "Accumulate independent source-attested prospective option dates under the frozen forward/rate/settlement-clock convention; historical daily last-best quotes remain replay QA and cannot prove 18:10 first-known.",
+          "evidence": "2026-10-04: research/d12_h11_common_parent_residual_return_20261004_v0_1.json + DERIVATIVES_VOLATILITY_CHECKPOINT.md DR-090..095. Real 2026-10-02 monthly TXO IV replay passed on official option/futures/rate hashes; one historical parent only, no L3."
         },
         {
           "id": "D12-07",
@@ -1904,7 +1907,10 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「Skew偏斜／Term Structure期限結構」。學習範圍：期貨、選擇權、基差、OI、外資期貨、PCR、VIX、IV、Skew、Term Structure、Gamma與結算；夜盤與到期效應；合約／DTE語意；對市場與個股的增量資訊。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / REAL_PARENT_SIMPLE_SKEW_TERM_REPLAY_PASS / H11_TERMINAL_SPECIALIST_RETURN_SCOPE_DEDUP_ONLY / PROSPECTIVE_PIT_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "next": "Own simple skew level/asymmetry and ATM/near-far term-structure baselines. Do not duplicate D12-16 residual curvature; accumulate independent prospective source-attested dates before L3.",
+          "evidence": "2026-10-04 H11 real common-parent replay: downside-minus-upside IV is about 0.95-1.09 vol points across five monthly expiries; D12-16 curvature remains distinct. Terminal specialist recommendation SCOPE_DEDUP_ONLY in research/d12_h11_common_parent_residual_return_20261004_v0_1.json."
         },
         {
           "id": "D12-08",
@@ -1992,9 +1998,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Volatility Surface／Smile波動率曲面與微笑」。學習範圍：衍生品研究必須凍結合約、到期、履約價、DTE、價格／IV時計與流動性語意；研究 Greeks、IV-RV、VRP與波動率曲面時必須包含正向機制、反證、PIT、可重播、交易成本、稀疏報價／插值風險、與既有VIX／Skew／Gamma資訊的冗餘及增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2 / SURFACE_METHOD_V0_1_FROZEN / REAL_PARENT_PARITY_FORWARD_QA / DISCOUNT_SOURCE_AND_SETTLEMENT_CLOCK_FIREWALL / IV_REPLAY_PENDING / OUTCOMES_CLOSED",
-          "next": "Freeze one research-only primary discount convention plus alternative sensitivity; use exact TXO settlement clock and same-expiry TX futures forward for monthly IV/skew/surface replay on identical 2026-10-02 common support.",
-          "evidence": "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json plus DERIVATIVES_VOLATILITY_RESEARCH.md DR-051..DR-059 reconcile pre-existing Gamma/VIX/VRP/surface work into the expanded D12 curriculum. No L3: strict Taiwan option-chain/surface prospective receipts and OOS evidence remain absent.\n2026-10-03: research/d12_surface_method_v0_1_spec.json plus research/d12_option_row_validator_v0_1.mjs; isolated local Node tests PASS 10 assertions for quote admissibility, duplicates, monotonicity and convexity. Synthetic tests are method QA, not market evidence.\n2026-10-04 DR-086..089 in DERIVATIVES_VOLATILITY_CHECKPOINT.md: no unique TAIFEX-mandated risk-free series; asynchronous CBC CD issuance curve rejected as exact contemporaneous curve; TXO settlement-clock and rate-sensitivity requirements frozen."
+          "status": "L2 / REAL_PARENT_RESIDUAL_CURVATURE_REPLAY_PASS / RATE_SENSITIVITY_PASS / H11_TERMINAL_SPECIALIST_RETURN_SCOPE_DEDUP_ONLY / PROSPECTIVE_PIT_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "next": "Own residual curvature/smile, cross-expiry surface interactions and construction/fit/coverage/static-arbitrage quality only after D12-07 simple skew/term baselines. Accumulate independent prospective source-attested dates before L3.",
+          "evidence": "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json plus DERIVATIVES_VOLATILITY_RESEARCH.md DR-051..DR-059 reconcile pre-existing Gamma/VIX/VRP/surface work into the expanded D12 curriculum. No L3: strict Taiwan option-chain/surface prospective receipts and OOS evidence remain absent.\n2026-10-03: research/d12_surface_method_v0_1_spec.json plus research/d12_option_row_validator_v0_1.mjs; isolated local Node tests PASS 10 assertions for quote admissibility, duplicates, monotonicity and convexity. Synthetic tests are method QA, not market evidence.\n2026-10-04 DR-086..089 in DERIVATIVES_VOLATILITY_CHECKPOINT.md: no unique TAIFEX-mandated risk-free series; asynchronous CBC CD issuance curve rejected as exact contemporaneous curve; TXO settlement-clock and rate-sensitivity requirements frozen.\\n2026-10-04: research/d12_h11_common_parent_residual_return_20261004_v0_1.json. On identical 2026-10-02 official monthly common support, quadratic leave-one-strike-out RMSE improves 42.02%-79.67% over linear skew; CBC CD-rate sensitivity gives 42.81%-79.68%. H11 specialist terminal=SCOPE_DEDUP_ONLY; no maturity transfer."
         },
         {
           "id": "D12-17",
