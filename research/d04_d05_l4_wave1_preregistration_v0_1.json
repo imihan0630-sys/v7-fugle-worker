@@ -1,0 +1,173 @@
+{
+  "schemaVersion": "D04_D05_L4_WAVE1_PREREG_V0_1",
+  "frozenAt": "2026-10-04T19:16:02+08:00",
+  "room": "04",
+  "status": "PREREGISTERED_RESEARCH_ONLY_NO_L4_PROMOTION",
+  "formalCoreImpact": "NONE",
+  "maturityAtFreeze": {
+    "D04": 58,
+    "D05": 51.4,
+    "room04": 54.2
+  },
+  "wave1": {
+    "D04": {
+      "modules": [
+        "D04-03",
+        "D04-04",
+        "D04-07"
+      ],
+      "parentUnit": "DECISION_DATE_CLUSTERED_SYMBOL_ROWS_WHERE_APPLICABLE",
+      "experiments": {
+        "D04-03": {
+          "question": "Does PIT contraction add prospective information about future volatility/range expansion beyond current volatility level and ordinary context?",
+          "primaryOutcomes": [
+            "D1_REALIZED_RANGE",
+            "D3_CUMULATIVE_RANGE_OR_DISPERSION",
+            "D5_CUMULATIVE_RANGE_OR_DISPERSION"
+          ],
+          "baseline": "MATCHED_NON_CONTRACTION_COMMON_SUPPORT",
+          "controls": [
+            "CURRENT_VOL_LEVEL",
+            "MARKET_VOL_CONTEXT",
+            "TREND",
+            "LIQUIDITY_PRICE_TIER",
+            "SECTOR",
+            "PRICE_LIMIT",
+            "TECHNICAL_CONTINUITY"
+          ],
+          "falsifier": "NO_INCREMENT_BEYOND_CURRENT_VOL_AND_SIMPLE_TREND_RANGE_BASELINES"
+        },
+        "D04-04": {
+          "question": "Does PIT expansion/shock distinguish future volatility persistence versus normalization?",
+          "primaryOutcomes": [
+            "NEXT_SESSION_RANGE_OR_DISPERSION",
+            "D3_VOL_PERSISTENCE",
+            "D5_VOL_PERSISTENCE"
+          ],
+          "baseline": "SAME_CURRENT_VOL_LEVEL_WITHOUT_NEW_EXPANSION_SHOCK",
+          "controls": [
+            "ABS_RETURN",
+            "EVENT_CONTEXT",
+            "MARKET_SHOCK",
+            "PRICE_LIMIT_VI_SUSPENSION"
+          ],
+          "directionalClaimAllowed": false
+        },
+        "D04-07": {
+          "question": "Does volatility context add incremental breakout-path information beyond price-only structure?",
+          "modelLadder": [
+            "A_PRICE_ONLY",
+            "B_A_PLUS_VOL_LEVEL",
+            "C_B_PLUS_CONTRACTION_EXPANSION",
+            "D_C_PLUS_MARKET_STOCK_VOL_INTERACTION"
+          ],
+          "primaryContrast": "C_VS_B",
+          "primaryOutcomes": [
+            "D1_D3_D5_FOLLOW_THROUGH",
+            "D3_D5_MFE",
+            "D3_D5_MAE",
+            "FAILED_BREAKOUT"
+          ],
+          "primitiveOwner": "D01_PRICE_STRUCTURE",
+          "antiDoubleCount": "ONE_BREAKOUT_EVENT_ONE_PRIMITIVE_RECEIPT"
+        }
+      }
+    },
+    "D05": {
+      "modules": [
+        "D05-03",
+        "D05-04",
+        "D05-09"
+      ],
+      "parentUnit": "MARKET_DATE_CLUSTER_WITH_NESTED_SYMBOL_SLOT_ROWS",
+      "experiments": {
+        "D05-03": {
+          "question": "Does same-symbol same-slot spread state persist and explain short-horizon friction/path quality beyond activity and volatility?",
+          "outcomes": [
+            "NEXT_SLOT_SPREAD",
+            "NEXT_SLOT_MIDQUOTE_RANGE",
+            "SIMULATED_IMMEDIATE_CROSSING_COST_DESCRIPTIVE_ONLY"
+          ],
+          "controls": [
+            "MIDQUOTE_LOCAL_VOL",
+            "ACTIVITY",
+            "TICK_PRICE_TIER",
+            "MECHANISM",
+            "TIME_OF_DAY"
+          ],
+          "realFillClaimAllowed": false
+        },
+        "D05-04": {
+          "question": "Does top-five displayed depth add prospective information beyond spread, volatility and activity?",
+          "outcomes": [
+            "NEXT_SLOT_SPREAD_CHANGE",
+            "NEXT_SLOT_MIDQUOTE_RANGE",
+            "NEXT_SLOT_DEPTH_PERSISTENCE"
+          ],
+          "baseline": "SPREAD_PLUS_LOCAL_VOL_PLUS_ACTIVITY_PLUS_TICK",
+          "challenger": "ONE_FROZEN_TOP5_DEPTH_BLOCK",
+          "trueEventCompletenessClaimAllowed": false
+        },
+        "D05-09": {
+          "question": "Does a preregistered liquidity component vector identify prospectively different friction states without a tuned scalar threshold?",
+          "components": [
+            "SPREAD_STATE",
+            "DISPLAYED_DEPTH_STATE",
+            "FRESHNESS_COVERAGE",
+            "MECHANISM_STATE",
+            "ACTIVITY_IF_VALID"
+          ],
+          "outcomes": [
+            "NEXT_SLOT_QUOTE_AVAILABILITY",
+            "NEXT_SLOT_SPREAD",
+            "NEXT_SLOT_DEPTH",
+            "MIDQUOTE_RANGE",
+            "MISSINGNESS_RECONNECT"
+          ],
+          "compositeGoodBadThresholdAuthorized": false
+        }
+      }
+    }
+  },
+  "commonGate": {
+    "requires": [
+      "FROZEN_PARENT_BEFORE_OUTCOME",
+      "GENUINE_PROSPECTIVE_OR_UNTOUCHED_CHRONOLOGICAL_OOS",
+      "EXACT_COMMON_SUPPORT",
+      "OUTCOME_STRICTLY_AFTER_FIRST_KNOWN",
+      "SOURCE_REPLAY_UNKNOWN_AUDIT_PASS",
+      "MULTIPLE_RELEVANT_EPISODES_WHERE_APPLICABLE",
+      "NO_SINGLE_DATE_EPISODE_SECTOR_DOMINATION",
+      "NEGATIVE_CONTROLS_AND_SIMPLER_BASELINE",
+      "NO_POST_OUTCOME_TUNING",
+      "D16_DEPENDENCE_AWARE_REVIEW_WHEN_INFERENCE_ATTEMPTED"
+    ],
+    "universalFixedN": false,
+    "sampleSufficiencyDrivers": [
+      "MDE",
+      "STATE_OCCUPANCY",
+      "DATE_EPISODE_VARIABILITY",
+      "MISSINGNESS",
+      "MULTIPLE_TESTING",
+      "COST_UNCERTAINTY"
+    ]
+  },
+  "currentEvidenceAudit": {
+    "l4PromotionsThisTranche": 0,
+    "system2GeneralProspectiveCaptureUsable": false,
+    "system2Diagnostic20261002": "INPUTS_NOT_READY_ZERO_L4_CREDIT",
+    "syntheticFixturesCount": false,
+    "codeAndCIOnlyCount": false,
+    "historicalBackfillAllowed": false
+  },
+  "blockedOrDeferred": {
+    "D04-08": "L2_POLICY_TRANSFORM_NEEDS_PORTFOLIO_RISK_EXECUTION_FEASIBILITY",
+    "D05-05": "TRUE_OFI_EVENT_SEQUENCE_COMPLETENESS_NOT_PROVEN",
+    "D05-06": "CLOSING_IMBALANCE_REPLAY_SOURCE_FEASIBILITY_NOT_STRONG_ENOUGH",
+    "D05-11": "OWN_ORDER_LIFECYCLE_AND_COUNTERFACTUAL_REQUIRED",
+    "D05-12": "OWN_FILL_MARKOUT_AND_CONTROLS_REQUIRED",
+    "D05-13": "EXACT_QUEUE_RANK_UNOBSERVABLE_PUBLIC_TOP5",
+    "D05-14": "PIT_OFFICIAL_INTEGRITY_EVENT_LINEAGE_REQUIRED"
+  },
+  "formalOptimizationCandidate": false
+}
