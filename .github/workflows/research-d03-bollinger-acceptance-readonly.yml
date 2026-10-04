@@ -1,0 +1,31 @@
+name: Research D03 Bollinger Acceptance Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d03_bollinger_l3_acceptance_v0_1.mjs"
+      - "tests/test_d03_bollinger_l3_acceptance_v0_1.mjs"
+      - ".github/workflows/research-d03-bollinger-acceptance-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run outcome-blind Bollinger acceptance fixture
+        run: node tests/test_d03_bollinger_l3_acceptance_v0_1.mjs
+      - name: Confirm research-only boundary
+        run: |
+          echo "research_only=true"
+          echo "outcomes_opened=false"
+          echo "system1_runtime_used=false"
+          echo "formal_core_changed=false"
