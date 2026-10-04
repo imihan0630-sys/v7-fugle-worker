@@ -431,3 +431,62 @@ Room06 exact remaining D07-19 delta:
 - no duplicate vote from the same NPV/project economics under D21 governance.
 
 These routed governance deltas do not override Room06 active research sequence; service at the next safe slot.
+
+
+## 2026-10-04 Room-06 active D08-03 full daily valuation archive
+
+This is an active in-progress durable continuation point, not a completion claim.
+
+Completed before this archive phase:
+- D08 raw 44-scan-date TWSE valuation snapshots are physically stored in isolated research R2.
+- Semantic-idempotency repair is canonical on main:
+  - repair commit 72f8df7d73e9fba4815924ec5b3d1b2c15c45e37;
+  - durable receipt research/d08_twse_raw_valuation_r2_capture_receipt_20261004_v0_2.json;
+  - 45,287 survivorship-safe membership rows;
+  - 45,041 observed valuation rows;
+  - 35,719 PE known;
+  - 45,036 PB known;
+  - two consecutive physical captures produced identical canonical semantic/object identities.
+- D08-03 remains L3/60. Outcomes remain CLOSED.
+
+Full daily archive task:
+- branch: research/d08-daily-valuation-year-pack-v0-1
+- PR: #548
+- objective: immutable yearly TWSE BWIBBU_d PE/PB packs from verified machine archive boundary through 2026-08-31, with isolated-R2 write/readback hashes and no return access.
+- machine boundary evidence:
+  - 2005-09-01 is rejected by the official machine endpoint as earlier than the supported boundary;
+  - 2005-09-02 is the first verified machine-readable date;
+  - durable boundary receipt: research/d08_twse_daily_valuation_archive_boundary_receipt_20261004_v0_1.json.
+- legacy schema:
+  - early official history exposes symbol/name/PE/yield/PB only;
+  - close and fiscal-report period are SOURCE_NOT_PROVIDED, never reconstructed;
+  - PE/PB ratio observations remain eligible for historical percentile history.
+- 2005 physical pilot PASS after schema/version and semantic-vs-object hash corrections:
+  - 85 trading dates;
+  - 56,634 rows;
+  - PE known 40,845;
+  - PB known 56,497;
+  - two consecutive executions had identical packPayloadHash/objectSha256 and verified R2 readback.
+- original full-year matrix run 37199944604 used max-parallel=2 plus four intra-year parallel date requests.
+- observed successful years so far in that run: 2005, 2006, 2007, 2010, 2012, 2013, 2014.
+- 2008, 2009 and 2011 failed at different dates with exhausted fetch transports; independent official verification proved at least the 2008 failed date exists, so these are transport/rate-limit failures, not missing-history evidence.
+- transport hardening now committed on the branch:
+  - daily requests serialized;
+  - retryAttempts=7;
+  - retryDelayMs=1000;
+  - annual matrix max-parallel=1;
+  - UNKNOWN may not be assigned from transport exhaustion.
+- new hardened workflow run 37200323003 is pending behind the prior same-branch concurrency group. System2 Research CI/V8 checks for the hardened branch are in flight/required before rollout.
+
+Exact next continuation point:
+1. let the original matrix finish/clear the same-ref concurrency group while retaining all successful R2 packs;
+2. execute hardened serialized 2005-2026 matrix and require every yearly job PASS;
+3. for every year persist trading-date count, total rows, PE/PB known counts, sourceBundleHash, packPayloadHash, objectSha256/objectKey and readback status;
+4. build one durable 2005-2026 archive manifest and aggregate packBundleHash;
+5. only after all year packs are complete, compute outcome-blind PE/PB 252/756/1260 and true EXPANDING_SINCE_AVAILABLE percentiles for the 44 frozen scan dates;
+6. cross-check every scan-date current PE/PB against the already durable raw-v0.2 month-end snapshot; mismatch => DATA_BLOCKED;
+7. then materialize remaining preregistered controls/coverage receipts;
+8. outcome join remains CLOSED until those gates pass.
+
+Formal Core/runtime/selection/scoring/capital/signals remain unchanged.
+FORMAL_OPTIMIZATION_CANDIDATE = NONE.
