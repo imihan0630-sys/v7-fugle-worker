@@ -1,0 +1,46 @@
+name: D19 TPEx Monthly Source Smoke
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/d19-tpex-monthly-source-smoke.yml"
+      - "system2/scripts/d19_tpex_monthly_source_smoke_v0_1.mjs"
+      - "system2/scripts/d19_tpex_monthly_route_probe_v0_1.mjs"
+      - "system2/runtime/official_monthly_history_adapter_v0_1.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Diagnose current TPEx individual-history routes
+        env:
+          D19_TPEX_ROUTE_SYMBOL: "6488"
+          D19_TPEX_ROUTE_DATE: "2026/08/01"
+        run: node system2/scripts/d19_tpex_monthly_route_probe_v0_1.mjs
+
+      - name: Probe official TPEx individual monthly history
+        env:
+          D19_TPEX_MONTH: "2026-08"
+          D19_TPEX_SYMBOLS: "3105,6488"
+        run: node system2/scripts/d19_tpex_monthly_source_smoke_v0_1.mjs
+
+      - name: Confirm production isolation
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          git diff --exit-code -- wrangler.toml Worker.js
+          echo "Production isolation PASS"

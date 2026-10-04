@@ -19,7 +19,7 @@ assert.equal(
     symbol: "6488",
     yearMonth: "2026-09",
   }),
-  "https://www.tpex.org.tw/web/stock/aftertrading/daily_trading_info/st43_result.php?d=115/09&stkno=6488",
+  "https://www.tpex.org.tw/www/zh-tw/afterTrading/tradingStock?code=6488&date=2026%2F09%2F01&response=json",
 );
 
 const twse = await normalizeOfficialMonthlyHistoryPayloadV0_1({
@@ -71,21 +71,30 @@ const tpex = await normalizeOfficialMonthlyHistoryPayloadV0_1({
   yearMonth: "2026-09",
   observedAt: "2026-10-01T01:00:00Z",
   payload: {
-    iTotalRecords: 2,
-    aaData: [
-      ["115/09/01", "1,500", "765,000,000", "500", "512", "498", "510", "+10", "2,100"],
-      ["115/09/02", "1,200", "606,000,000", "510", "511", "502", "505", "-5", "1,900"],
-    ],
+    tables: [{
+      title: "個股日成交資訊",
+      data: [
+        ["115/09/01", "1,500", "765,000", "500", "512", "498", "510", "+10", "2,100"],
+        ["115/09/02", "1,200", "606,000", "510", "511", "502", "505", "-5", "1,900"],
+      ],
+    }],
+    date: "20260901",
+    code: "6488",
+    name: "環球晶",
+    flagField: "張數",
+    stat: "ok",
   },
 });
 
 assert.equal(tpex.rowCount, 2);
 assert.equal(tpex.rows[0].marketDate, "2026-09-01");
-assert.equal(tpex.rows[0].volumeShares, 1500);
+assert.equal(tpex.rows[0].volumeShares, 1500000);
 assert.equal(tpex.rows[0].tradeValue, 765000000);
 assert.equal(tpex.rows[0].high, 512);
 assert.equal(tpex.rows[0].low, 498);
-assert.equal(tpex.rows[0].sourceId, "TPEX_ST43_MONTHLY");
+assert.equal(tpex.rows[0].sourceId, "TPEX_TRADING_STOCK_MONTHLY");
+assert.equal(tpex.rows[0].sourceFields.sourceVolumeUnit, "LOT_1000_SHARES");
+assert.equal(tpex.rows[0].sourceFields.sourceTradeValueUnit, "THOUSAND_NTD");
 
 await assert.rejects(
   () => normalizeOfficialMonthlyHistoryPayloadV0_1({

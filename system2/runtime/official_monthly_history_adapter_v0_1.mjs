@@ -1,7 +1,7 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 import { sha256Hex } from "./decision_archive.mjs";
 
-export const OFFICIAL_MONTHLY_HISTORY_ADAPTER_VERSION = "0.1-RESEARCH";
+export const OFFICIAL_MONTHLY_HISTORY_ADAPTER_VERSION = "0.2-RESEARCH";
 
 export const OFFICIAL_MONTHLY_HISTORY_SOURCES = deepFreeze({
   TWSE: {
@@ -11,9 +11,9 @@ export const OFFICIAL_MONTHLY_HISTORY_SOURCES = deepFreeze({
     officialHost: "www.twse.com.tw",
   },
   TPEX: {
-    sourceId: "TPEX_ST43_MONTHLY",
-    sourceName: "TPEx individual mainboard stock daily history (monthly query)",
-    sourceUrlTemplate: "https://www.tpex.org.tw/web/stock/aftertrading/daily_trading_info/st43_result.php?d={ROC_YYY/MM}&stkno={SYMBOL}",
+    sourceId: "TPEX_TRADING_STOCK_MONTHLY",
+    sourceName: "TPEx tradingStock individual mainboard daily history (monthly query)",
+    sourceUrlTemplate: "https://www.tpex.org.tw/www/zh-tw/afterTrading/tradingStock?code={SYMBOL}&date={YYYY/MM/01}&response=json",
     officialHost: "www.tpex.org.tw",
   },
 });
@@ -141,9 +141,9 @@ export function buildOfficialMonthlyHistoryUrl({ market, symbol, yearMonth } = {
       .replace("{YYYYMM01}", year + month + "01")
       .replace("{SYMBOL}", code);
   }
-  const rocYear = String(Number(year) - 1911);
+  const queryDate = encodeURIComponent(year + "/" + month + "/01");
   return source.sourceUrlTemplate
-    .replace("{ROC_YYY/MM}", rocYear + "/" + month)
+    .replace("{YYYY/MM/01}", queryDate)
     .replace("{SYMBOL}", code);
 }
 
@@ -172,28 +172,43 @@ function rowsFromTwsePayload(payload) {
 
 function rowsFromTpexPayload(payload) {
   if (!payload || typeof payload !== "object") throw new Error("TPEx payload must be an object");
-  const rows = Array.isArray(payload.aaData)
-    ? payload.aaData
-    : Array.isArray(payload.data)
-      ? payload.data
-      : null;
+  const currentTable = Array.isArray(payload.tables)
+    ? payload.tables.find((table) => Array.isArray(table?.data))
+    : null;
+  const rows = currentTable?.data
+    || (Array.isArray(payload.aaData)
+      ? payload.aaData
+      : Array.isArray(payload.data)
+        ? payload.data
+        : null);
   if (!rows) {
     if (Number(payload.iTotalRecords) === 0) return [];
-    throw new Error("TPEx payload aaData/data must be an array");
+    throw new Error("TPEx payload tables/aaData/data must contain an array");
+  }
+  if (currentTable && payload.flagField && payload.flagField !== "張數") {
+    throw new Error("unsupported TPEx tradingStock volume unit: " + payload.flagField);
   }
   return rows.map((r, i) => {
     if (!Array.isArray(r) || r.length < 9) throw new Error("TPEx data row " + i + " is malformed");
+    const volumeLots = numberOrNull(r[1], { nonNegative: true });
+    const tradeValueThousandNtd = numberOrNull(r[2], { nonNegative: true });
     return {
       marketDate: gregorianDateFromTpex(r[0]),
-      volumeShares: r[1],
-      tradeValue: r[2],
+      volumeShares: volumeLots === null ? null : volumeLots * 1000,
+      tradeValue: tradeValueThousandNtd === null ? null : tradeValueThousandNtd * 1000,
       open: r[3],
       high: r[4],
       low: r[5],
       close: r[6],
       change: r[7],
       transactions: r[8],
-      sourceFields: r,
+      sourceFields: {
+        row: r,
+        sourceVolumeUnit: "LOT_1000_SHARES",
+        sourceTradeValueUnit: "THOUSAND_NTD",
+        volumeToSharesMultiplier: 1000,
+        tradeValueToNtdMultiplier: 1000,
+      },
     };
   });
 }
