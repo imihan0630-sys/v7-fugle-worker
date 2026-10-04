@@ -2669,3 +2669,54 @@ No FORMAL_OPTIMIZATION_CANDIDATE.
 Formal Core remains LOCKED.
 
 Exact formal continuation remains PVE-240 on the first genuine completed post-repair market session, Gate 0→6 before any outcome use.
+
+
+## Pre-PVE-240 L4 prospective/OOS admission matrix — 2026-10-04
+
+Status: PREREGISTERED / OUTCOME_BLIND / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+Durable artifact:
+- `research/d02_l4_prospective_oos_admission_matrix_pre_pve240_v0_1.md`
+
+Purpose:
+freeze module-specific L4 questions before any clean prospective/OOS outcomes exist, so future evidence cannot be selected after seeing results.
+
+Shared gates:
+- complete PIT decision lineage;
+- generation-linked, outcome-independent cohort membership;
+- identical common support across compared specifications;
+- feature firstKnownAt <= cutoff;
+- corporate-action/unit/session continuity for cross-session volume magnitude;
+- no older-row substitution for missing expected sessions;
+- no retrospective Shadow reconstruction;
+- session/date clustering;
+- cost/slippage/liquidity stratification;
+- market/sector/liquidity/event/regime reporting;
+- preregistered primary comparator and testing family.
+
+Familywise budget:
+- F0 data-semantic governance: D02-01, non-alpha;
+- F1 participation normalization: D02-02/03/04;
+- F2 participation-response representation: D02-05/06;
+- F3 residual directional/comparator transforms: D02-07/09;
+- F4 independent provider-pressure proxy: D02-08;
+- F5 interaction/liquidity/profile context: D02-10/11/12.
+
+Key anti-redundancy rules:
+- D02-03 must test incremental breakout quality, not assume high-volume necessity;
+- D02-06 state compression must beat its primitive inputs;
+- D02-07 only signedVolumeBalance20 D-vs-C measures residual OBV-family value;
+- D02-08 remains provider proxy only and can never infer participant intent;
+- D02-09 divergence must beat its underlying price/volume trajectories;
+- D02-10 only explicit interaction D-vs-C counts as interaction value;
+- D02-11 does not authorize threshold sweep;
+- D02-12 keeps time-of-day curve separate from prospective price-by-volume profile.
+
+No module reaches L4 from this preregistration.
+D02 remains 60.0%, 12/12 modules L3.
+Clean prospective date count remains 0.
+PVE cursor remains 239.
+Formal next evidence remains PVE-240.
+Gate 7 CLOSED.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
