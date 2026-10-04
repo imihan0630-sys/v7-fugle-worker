@@ -92,6 +92,7 @@ Covered cases include:
 - dropping only RR tie-break swapping cutline membership;
 - removing only the Setup score component changing membership while leaving the setup gate/tie-break concept intact;
 - exact decomposition rebuild of pre/post-consensus PriorityScore;
+- raw sector/RS decomposition precision versus one-decimal Formal comparator rounding;
 - corrupted actual-vs-counterfactual tuple rejection;
 - incomplete decomposition rejection;
 - stored-selection parity failure rejection;
