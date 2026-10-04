@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T08:46:58+08:00",
+  "updatedAt": "2026-10-04T08:50:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 355,
-    "maturityWeightedPct": 42.4
+    "maturityWeightedPct": 43.3
   },
   "domains": [
     {
@@ -3589,7 +3589,7 @@
         "CREDIT_CAPITAL_STRUCTURE_CHECKPOINT.md",
         "CREDIT_CAPITAL_STRUCTURE_RESEARCH.md"
       ],
-      "maturityPct": 18.3,
+      "maturityPct": 45,
       "modules": [
         {
           "id": "D22-01",
@@ -3634,88 +3634,88 @@
         {
           "id": "D22-05",
           "name": "Credit Rating／Rating Migration信用評等與遷移",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Credit Rating／Rating Migration信用評等與遷移」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D22-05 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_DISCLOSURE_ROUTE_FEASIBLE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "建立台灣 issuer／issue rating event PIT receipts，分離 issuer rating、issue rating、outlook、watch／review、upgrade／downgrade 與 first-known；先控制 D22-06 市場信用定價與既有基本面，再評估 L3。"
         },
         {
           "id": "D22-06",
           "name": "Credit Spread／Bond Yield信用利差與債券殖利率",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Credit Spread／Bond Yield信用利差與債券殖利率」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D22-06 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_TPEX_SOURCE_ROUTE_FEASIBLE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "建立多發行人×多日期 TPEx security-level PIT replay，嚴格標示 actual trade／quote／reference／fair value、staleness、optionalities 與 matched benchmark；無成交維持 UNKNOWN，完成可重播面板後才升 L3。"
         },
         {
           "id": "D22-07",
           "name": "Liquidity／Covenant／Default Risk流動性契約與違約風險",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Liquidity／Covenant／Default Risk流動性契約與違約風險」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D22-07 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_DISCLOSURE_ROUTE_FEASIBLE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "蒐集 covenant／facility PIT receipts，分離 maintenance／incurrence、threshold、cushion、breach、waiver、cross-default 與 committed／drawable facility；無公開條款維持 UNKNOWN。"
         },
         {
           "id": "D22-08",
           "name": "Fixed／Floating Rate Exposure固定浮動利率曝險",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Fixed／Floating Rate Exposure固定浮動利率曝險」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D22-08 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_ISSUER_SEMANTICS_AVAILABLE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "建立多發行人×多日期 fixed／floating／reset／floor-cap／hedge PIT receipts，計算 unhedged repricing principal；控制 D13、D22-01、D22-04 後才評估 L3。"
         },
         {
           "id": "D22-09",
           "name": "Equity-Credit Divergence股債背離",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Equity-Credit Divergence股債背離」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D22-09 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / LEAD_LAG_DIRECTION_NOT_ASSUMED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "等待 D22-06 security-level credit replay 後建立 session-aligned 股債 divergence states；預註冊 lead／lag windows，分別檢驗 equity-leading、credit-leading、no-lead null。"
         },
         {
           "id": "D22-10",
           "name": "Capital Structure／Funding Mix資本結構與融資組合",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Capital Structure／Funding Mix資本結構與融資組合」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D22-10 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / FINANCING_CHOICE_NOT_MONOTONIC / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "建立台灣 financing event＋statement state PIT receipts，拆 internal cash／bank／bond／convertible／equity／secured-seniority／currency／maturity／rate type；控制 D07、D11、D22-01/03/04 後才升 L3。"
         },
         {
           "id": "D22-11",
           "name": "Credit Cycle／Bank Lending Conditions信用週期與銀行放款條件",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Credit Cycle／Bank Lending Conditions信用週期與銀行放款條件」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D22-11 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / CREDIT_SUPPLY_DEMAND_SEPARATION_REQUIRED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "建立台灣 release-vintage 銀行信用條件資料，先識別 supply vs demand，再以 D22-10 既知 bank dependence 映射發行人；loan growth 不得單獨當 supply shock。"
         },
         {
           "id": "D22-12",
           "name": "Distress／Recovery／Equity Tail Risk財務困境回收與股權尾端風險",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Distress／Recovery／Equity Tail Risk財務困境回收與股權尾端風險」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D22-12 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED / PD_LGD_RECOVERY_EQUITY_TAIL_SEPARATED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+          "next": "建立台灣 PIT distress inputs 並納入 delisted/defaulted cases，預註冊 distance-to-default horizon/barrier、PD 與 recovery/LGD 分離；與 primitive-input baseline 比較後才升 L3/L4。"
         }
       ],
-      "status": "ACTIVE_RESEARCH / D22-01_L3 / D22-02_L3 / D22-03_L3 / D22-04_L2_ACTIVE / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D22-04：建立台灣公司債PIT債務成本與再融資價差重播；D22-01至03持續擴大多日期面板，股票結果維持關閉。",
-      "lastResearchUpdate": "2026-10-04T07:22:00+08:00",
-      "researchNote": "D22-02 and D22-03 are L3 PIT-feasibility. D22-04 advanced to L2 after debt-cost/refinancing mechanism, D13/D07 anti-double-count ownership, Taiwan TPEx source route, coupon-vs-market-yield semantics and falsification gates were frozen. No equity outcomes opened; Formal Core unchanged."
+      "status": "ACTIVE_RESEARCH / D22-01_TO_03_L3 / D22-04_TO_12_L2_OR_HIGHER / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "第二階段資料驗證：優先 D22-04／D22-06 建立 TPEx 公司債逐券多日期 PIT replay，D22-05 建 rating-event replay，D22-07／08 建 covenant-liquidity 與 repricing exposure replay；D22-09～12 已完成 L2 機制反證契約，待上游信用資料可重播後進 L3。",
+      "lastResearchUpdate": "2026-10-04T08:50:00+08:00",
+      "researchNote": "D22-05 through D22-12 advanced from L0 to L2 after mechanism, counterevidence, PIT semantics, cross-domain ownership and failure conditions were frozen. D22-04 remains L2 because issuer-security-date historical TPEx replay is not yet validated. All equity outcomes remain closed; Formal Core unchanged."
     }
   ],
   "rules": {
