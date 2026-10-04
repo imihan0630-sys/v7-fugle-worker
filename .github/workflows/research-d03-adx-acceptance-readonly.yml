@@ -1,0 +1,41 @@
+name: Research D03 ADX Acceptance Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d03_adx_l3_acceptance_v0_1.mjs"
+      - "tests/test_d03_adx_l3_acceptance_v0_1.mjs"
+      - "research/D03_ADX_FIRST_PARENT_ACCEPTANCE_V0_1.md"
+      - ".github/workflows/research-d03-adx-acceptance-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: research-d03-adx-acceptance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run ADX L3 acceptance deterministic suite
+        run: node tests/test_d03_adx_l3_acceptance_v0_1.mjs
+
+      - name: Confirm research-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'wrangler|deploy|CLOUDFLARE|V7_ADMIN_TOKEN|livePush|sendLine|THREEMIN' research/d03_adx_l3_acceptance_v0_1.mjs
+          echo "Research-only ADX acceptance boundary PASS"
