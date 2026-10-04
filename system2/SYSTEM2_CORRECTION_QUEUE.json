@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-04T15:58:20+08:00",
+  "updatedAt": "2026-10-04T16:30:15+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -71,6 +71,60 @@
       "blockedBy": [
         "GitHub workflow_dispatch execution channel / owner login authorization if still required"
       ]
+    },
+    {
+      "directiveId": "S2-CORR-20261004-002",
+      "createdAt": "2026-10-04T16:30:15+08:00",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "title": "POSITION_MONITOR target behavior is presented as current operational capability",
+      "affectedScope": [
+        "System2 position-management documentation",
+        "storage/runtime capability state",
+        "UI-readiness semantics"
+      ],
+      "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "canonicalRequirement": "Canonical documentation must distinguish approved target architecture from physically implemented/runtime-verified capability. Actual holdings must not be claimed as continuously monitored without an authorized actual-holdings source, reconciliation path, runtime/persistence behavior and evidence.",
+      "observedProblem": "SYSTEM2_MASTER and SYSTEM2_ARCHITECTURE use present-tense actual-holdings monitoring language, while SYSTEM2_CHECKPOINT describes architecture approval/unfrozen thresholds and SYSTEM2_STORAGE_SCHEMA defines s2_positions as virtual System2 positions only. No complete authorized actual-holdings ingestion/reconciliation runtime contract or physical evidence was found in the bounded audit.",
+      "evidence": [
+        "SYSTEM2_MASTER present-tense actual holdings continuously monitored",
+        "SYSTEM2_ARCHITECTURE present-tense existing positions continuously monitored",
+        "SYSTEM2_CHECKPOINT architecture approved; thresholds unfrozen pending Shadow",
+        "SYSTEM2_STORAGE_SCHEMA s2_positions are System2 virtual positions only, never V8 live holdings",
+        "bounded repository audit found simulated/virtual s2_positions lifecycle reads but no complete actual-holdings source/reconciliation runtime evidence"
+      ],
+      "riskIfUnfixed": "Can create false-completion, UI mislabeling, or research assumptions about actual holdings provenance that does not exist.",
+      "requiredCorrection": [
+        "Separate target architecture, virtual-position readiness and actual-holdings operational readiness in canonical docs",
+        "Define authorized actual-holdings source/reconciliation contract before actual-holdings claims",
+        "Prevent virtual s2_positions from being relabeled as actual holdings in storage/API/UI/runtime",
+        "Reuse any existing proven adapter if one exists rather than duplicating it",
+        "Expose explicit readiness states for position-monitor capability"
+      ],
+      "acceptanceCriteria": [
+        "Master/architecture/position contract/storage/progress surfaces agree on capability state",
+        "virtual/simulated positions remain distinct from owner actual holdings",
+        "no operational actual-holdings claim without source/reconciliation/physical evidence",
+        "future actual-holdings integration preserves fill quantity cost reconciliation provenance and does not silently import System1 holdings",
+        "System1 Formal Core and production behavior unchanged"
+      ],
+      "protectedBoundaries": [
+        "System1 Formal Core",
+        "System1 holdings/runtime",
+        "System2 capital/order authority",
+        "production push",
+        "no inferred fills/holdings"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "REMEDIATION_LANE",
+      "assignedLane": "REMEDIATION_LANE",
+      "assignedRoom": "System 2｜補強修復室",
+      "modificationOwner": "SYSTEM2_REMEDIATION_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-04T16:30:15+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"

@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-04 15:58 Asia/Taipei
+Updated: 2026-10-04 16:30 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -72,6 +72,48 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - verificationEvidence: PENDING
 - finalDisposition: PENDING
 - updatedAt: 2026-10-04T15:58:20+08:00
+
+
+
+### S2-CORR-20261004-002 — POSITION_MONITOR target behavior is presented as current operational capability
+
+- createdAt: 2026-10-04T16:30:15+08:00
+- severity: MEDIUM
+- status: OPEN
+- routingClass: REMEDIATION_LANE
+- assignedLane: REMEDIATION_LANE
+- assignedRoom: System 2｜補強修復室
+- modificationOwner: SYSTEM2_REMEDIATION_ROOM
+- blockedBy: none
+- affectedScope: System 2 position-management documentation / storage/runtime capability state / UI-readiness semantics
+- detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- canonicalRequirement: Canonical documentation must distinguish approved target architecture from physically implemented/runtime-verified capability. Actual holdings must not be claimed as continuously monitored unless an authorized actual-holdings source, reconciliation path, persistence/runtime behavior and evidence exist.
+- observedProblem: SYSTEM2_MASTER and SYSTEM2_ARCHITECTURE state in present tense that actual holdings are continuously monitored in a dedicated POSITION_MONITOR. SYSTEM2_CHECKPOINT describes the position-management architecture as owner-approved with exact thresholds still unfrozen. SYSTEM2_STORAGE_SCHEMA defines s2_positions as System 2 virtual positions only and explicitly not V8 live holdings. Repository search found candidate lifecycle and resonance reads of virtual s2_positions, but no complete authorized actual-holdings ingestion/reconciliation runtime contract or physical evidence that user actual holdings are continuously monitored by System 2.
+- evidence:
+  - SYSTEM2_MASTER: "Actual holdings are continuously monitored in a dedicated POSITION_MONITOR".
+  - SYSTEM2_ARCHITECTURE: "Existing positions are continuously monitored in POSITION_MONITOR".
+  - SYSTEM2_CHECKPOINT: position-management architecture is owner-approved; exact thresholds remain unfrozen pending Shadow validation.
+  - SYSTEM2_STORAGE_SCHEMA: s2_positions = System 2 virtual positions only; never V8 live holdings.
+  - Existing runtime references query s2_positions for simulated/open System 2 position lifecycle; no complete actual-holdings source/reconciliation runtime was found in the bounded audit.
+- riskIfUnfixed: The owner and downstream modules can mistake a future architecture invariant for a currently operational capability, causing false-completion claims, UI mislabeling, or later position/capital research to assume actual holdings provenance that does not exist.
+- requiredCorrection:
+  1. Reconcile canonical wording so target architecture, virtual/simulated position support and physically operational actual-holdings monitoring are separate states.
+  2. Define the authorized source/reconciliation contract required before System 2 may call a position "actual holding".
+  3. Ensure storage/API/UI/runtime cannot relabel s2_positions virtual positions as actual holdings.
+  4. If an actual-holdings adapter already exists under another path, surface its exact provenance, tests and physical readback instead of duplicating it.
+  5. Add explicit readiness state such as TARGET_ONLY / VIRTUAL_POSITION_READY / ACTUAL_HOLDINGS_SOURCE_NOT_WIRED / ACTUAL_POSITION_MONITOR_VERIFIED.
+- acceptanceCriteria:
+  - SYSTEM2_MASTER, SYSTEM2_ARCHITECTURE, POSITION_MANAGEMENT contract, storage schema and build/progress surfaces describe the same capability state.
+  - Virtual/simulated positions remain distinguishable from owner actual holdings.
+  - No UI/API/runtime claims actual holdings are monitored unless actual-holdings source + reconciliation + physical evidence are present.
+  - Any future actual-holdings source preserves fill/quantity/cost/reconciliation provenance and does not silently import System 1/V8 holdings without explicit authorization.
+  - System 1 Formal Core, capital/order behavior and production monitoring remain unchanged.
+- protectedBoundaries: System 1 Formal Core; System 1 holdings/runtime; System 2 capital/order authority; production push; no inferred fills/holdings.
+- ownerDecisionRequired: false for semantic reconciliation and research-only readiness contract; true later if a protected shared/live holdings integration is proposed.
+- implementationEvidence: PENDING
+- verificationEvidence: PENDING
+- finalDisposition: PENDING
+- updatedAt: 2026-10-04T16:30:15+08:00
 
 
 ## Closed directives
