@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T11:36:00+08:00",
+  "updatedAt": "2026-10-04T11:42:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -2997,7 +2997,7 @@
         "research/D16_D18_SOURCE_CLOCK_REVALIDATION_V0_1.md",
         "research/D18_U2_TRUE_RETURN_DISTRIBUTION_CONTRACT_V0_1.md"
       ],
-      "maturityPct": 46.7,
+      "maturityPct": 48,
       "modules": [
         {
           "id": "D18-01",
@@ -3128,12 +3128,13 @@
         {
           "id": "D18-13",
           "name": "策略績效Regime Attribution",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「策略績效Regime Attribution」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WAITING_PIT_OOS",
-          "next": "Freeze strategy/regime versions before outcome and separate attribution from policy value."
+          "levelMeaning": "台股PIT資料可行性已驗證",
+          "status": "L3 / TAIWAN_PIT_ATTRIBUTION_FEASIBILITY_VALIDATED / FROZEN_DECISION_REGIME_OUTCOME_JOIN_REPLAY_PASS / IMMATURE_UNKNOWN_SEPARATED / ATTRIBUTION_ONLY / WAITING_PROSPECTIVE_MULTI_EPISODE_EVIDENCE",
+          "next": "維持 L3/60%。累積 frozen decision×regime×matured-outcome attribution receipts，按獨立日期與 Regime episode 報告；L4 前需多段落 prospective/OOS、完整 outcome join、相同成本、occupancy 與 single-episode domination 檢查。",
+          "evidence": "research/D18_13_REGIME_ATTRIBUTION_L3_ACCEPTANCE_20261004_V0_1.md + system2/runtime/d18_regime_attribution_v0_1.mjs + system2/tests/d18_regime_attribution_v0_1.test.mjs"
         },
         {
           "id": "D18-14",
