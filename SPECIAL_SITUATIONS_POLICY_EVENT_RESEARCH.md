@@ -513,3 +513,41 @@ Both witnesses realize the modal expectation. They prove source/PIT feasibility 
 Maturity decision: **D17-14 L2 -> L3** for Taiwan PIT/source feasibility. L4 remains closed until prospective/OOS expectation captures, preregistered surprise functional/event zero/horizons, D13 macro controls, costs and outcome tests exist.
 
 Formal Core unchanged. Equity outcomes remain closed.
+
+## 2026-10-05 morning continuation — 6921 lock-up path and supply-realization deepening
+
+New receipt: `research/d11_16_issuer_realization_deepening_20261005_v0_3.json`.
+
+6921 嘉雨思 now has a materially narrower issuer-level replay path.
+
+Listing date:
+- 2025-12-23 on the Taiwan Innovation Board.
+
+Profitability-path reconstruction:
+- connected annual data show 2023 pre-tax profit 7.00 vs year-end capital 300.68 = 2.3281%;
+- 2024 pre-tax profit 22.86 vs capital 300.68 = 7.6028%;
+- two-year average = 4.9654%.
+
+Against the Article 4 profitability alternatives, the observed 2023/2024 figures do not support the special profitable-issuer shorter custody path. The bounded replay therefore uses the standard Article 35 schedule:
+- first 1/4 legally eligible after six months = 2026-06-23;
+- then another 1/4 each six months;
+- full eligibility after two years.
+
+This remains legal/theoretical eligibility only. It does not prove actual TWSE-approved release quantity or TDCC custody withdrawal.
+
+A separate connected-data supply realization chain is now physically consistent:
+- 2025-12-16 嘉澤端子工業 declared 10,000 shares for over-allotment from a reported holding of 4,732,059;
+- the 2026-09 director-holding snapshot shows 4,722,059;
+- the exact difference is 10,000 shares.
+
+This validates the back-half semantics `TRANSFER_PREDECLARED -> later holding reduction` for a pre-listing over-allotment supply event.
+
+Hard falsification:
+the 2025-12-16 declaration predates the 2025-12-23 listing and is explicitly over-allotment. It is not a lock-up expiry sale and may never be relabeled as one.
+
+Aggregate TDCC distribution is available but cannot identify an issuer-specific custody withdrawal.
+
+Maturity decision:
+D11-16 stays L2. Remaining blockers are original issuer custody quantity plus actual TWSE-approved release/TDCC withdrawal after eligibility, and authenticated post-eligibility transfer/untransferred coverage.
+
+Formal Core unchanged. Outcomes closed.
