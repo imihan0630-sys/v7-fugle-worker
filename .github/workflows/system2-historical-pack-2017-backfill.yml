@@ -1,8 +1,23 @@
-name: System2 Historical Pack 2017 Backfill
+name: System2 Historical Pack Annual Backfill
 
 on:
   workflow_dispatch:
     inputs:
+      year:
+        description: "Completed calendar year only; current year uses a separate incremental path"
+        required: true
+        type: choice
+        default: "2018"
+        options:
+          - "2017"
+          - "2018"
+          - "2019"
+          - "2020"
+          - "2021"
+          - "2022"
+          - "2023"
+          - "2024"
+          - "2025"
       market:
         description: "Backfill one market only; run TWSE first, verify, then run TPEX"
         required: true
@@ -49,35 +64,35 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Backfill 2017 packed history
+      - name: Backfill selected-year packed history
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
           SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
           SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
           SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
-          SYSTEM2_HISTORY_YEAR: "2017"
+          SYSTEM2_HISTORY_YEAR: ${{ inputs.year }}
           SYSTEM2_HISTORY_YEAR_MARKET: ${{ inputs.market }}
         run: node system2/scripts/historical_pack_year_backfill_v0_1.mjs
-      - name: Physically verify 2017 market coverage and R2 byte hashes
+      - name: Physically verify selected-year market coverage and R2 byte hashes
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
           SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
           SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
           SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
-          SYSTEM2_HISTORY_YEAR: "2017"
+          SYSTEM2_HISTORY_YEAR: ${{ inputs.year }}
           SYSTEM2_HISTORY_YEAR_MARKET: ${{ inputs.market }}
-          SYSTEM2_HISTORY_COVERAGE_OUTPUT: "/tmp/system2-historical-coverage-${{ inputs.market }}-2017.json"
+          SYSTEM2_HISTORY_COVERAGE_OUTPUT: "/tmp/system2-historical-coverage-${{ inputs.market }}-${{ inputs.year }}.json"
         run: |
           set -euo pipefail
-          node system2/scripts/historical_market_year_verify_v0_1.mjs | tee /tmp/system2-historical-coverage-${{ inputs.market }}-2017.log
-      - name: Upload 2017 physical coverage evidence
+          node system2/scripts/historical_market_year_verify_v0_1.mjs | tee /tmp/system2-historical-coverage-${{ inputs.market }}-${{ inputs.year }}.log
+      - name: Upload selected-year physical coverage evidence
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: system2-historical-coverage-${{ inputs.market }}-2017
-          path: /tmp/system2-historical-coverage-${{ inputs.market }}-2017.json
+          name: system2-historical-coverage-${{ inputs.market }}-${{ inputs.year }}
+          path: /tmp/system2-historical-coverage-${{ inputs.market }}-${{ inputs.year }}.json
           if-no-files-found: warn
           retention-days: 30
       - name: Confirm System1 production files untouched
