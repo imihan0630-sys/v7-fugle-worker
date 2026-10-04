@@ -254,3 +254,28 @@ Remaining blockers:
 - first genuine live TWSE rate/supply receipt for D20-13 under frozen source/PIT contract.
 
 No module-count, maturity or Formal Core change from these governance transitions.
+
+
+## H05 terminal closure — 2026-10-04
+
+Accepted evidence:
+- Room06 `research/h05_d07_25_specialist_evidence_packet_v0_1.json`;
+- equivalent independent Room14 D21-10 research/checkpoint evidence.
+
+Terminal:
+`KEEP_SEPARATE / STATEMENT_ANOMALY_VS_GOVERNANCE_CONTROL_EVENT / SHARED_RESTATEMENT_EVENT_RECEIPT`.
+
+State:
+`CLOSED_NO_STRUCTURAL_CHANGE`.
+
+Canonical boundary:
+- D07-25 = statement-level forensic/anomaly orchestration;
+- D21-10 = audit/restatement/internal-control governance/control event state;
+- one restatement/control event has one parent receipt;
+- corrected values never backfill before correction/restatement known_at.
+
+Maturity unchanged: D07-25 L0/0%, D21-10 L3/60%.
+No merge, rename, retirement, module-count or Formal change.
+
+Audit:
+`shared-knowledge/CURRICULUM_H05_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md`.
