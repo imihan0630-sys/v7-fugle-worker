@@ -581,3 +581,27 @@ Still required:
 10. commit `research/COV12_D22_SPECIALIST_RETURN_V0_1.md`.
 
 No maturity, module-count or Formal change.
+
+
+## Evening Coverage summary reconciliation — 2026-10-04
+
+This supersedes the stale late-afternoon summary that still listed COV-12 as the sole `PENDING_SPECIALIST_RETURN`.
+
+Current Coverage control-plane states:
+- `CANONICAL_UPDATE_COMPLETE`: COV-02, COV-03, COV-04, COV-05.
+- `PARTIAL_EVIDENCE_RECEIVED`: COV-01, COV-06, COV-07, COV-08, COV-09, COV-10, COV-11, COV-12.
+- generic `PENDING_SPECIALIST_RETURN`: **none**.
+
+Return-readiness refinements:
+- COV-01: `SPECIALIST_RETURN_READY_PENDING_TERMINAL_RECOMMENDATION`.
+- COV-08: `SPECIALIST_RETURN_READY_PENDING_TERMINAL_RECOMMENDATION`.
+- COV-09: `SPECIALIST_RETURN_READY_PENDING_TERMINAL_RECOMMENDATION`.
+- COV-06: graph-topology owner evidence pending.
+- COV-07: contract-level futures-curve replay pending.
+- COV-10: belief-updating owner + observable proxy pending.
+- COV-11: rights/stewardship/voting family + PIT replay pending.
+- COV-12: instrument-level seniority/collateral/recovery-waterfall replay pending.
+
+This does not reclassify partial evidence as a specialist return. 00 Intake still requires the committed specialist-return contract where Coverage governance requires it.
+
+No maturity, module-count or Formal Core change.
