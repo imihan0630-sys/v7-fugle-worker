@@ -18,7 +18,7 @@ This matrix is not a new scoring model. It is the routing authority for what sho
 | PRICE_FLOOR | Owner-fixed universe policy | A2 gate-role inventory | NOT A RESEARCH RELAXATION TARGET | Preserve <10 exclusion |
 | HISTORY_60D | Confidence / feature sufficiency | P1-A minimal-blocking contract | EVIDENCE/PIPELINE ISSUE, NOT NEGATIVE ALPHA | Keep UNKNOWN/blocked semantics |
 | RS_CONTEXT | Confidence / availability only | P1-A minimal-blocking + C5 reach | SAME | Do not treat missing RS as bearish alpha |
-| MARKET_CAP_FLOOR | Mixed: missing data vs known <10bn economic/context threshold | P1-A explicitly splits missing vs economic threshold; gate overlap exists | **REMAINING DIRECT GAP for known <10bn economic threshold** | Prospective economic-threshold counterfactual may be designed Class-A; no Formal change |
+| MARKET_CAP_FLOOR | Mixed: missing data vs known <10bn economic/context threshold | P1-A semantic split + PR #569 market-cap-floor economic audit | **PROSPECTIVE STRUCTURAL EVIDENCE READY** | Keep missing separate; wait genuine independent-date outcome/execution evidence |
 | DAILY_ABNORMALITY | Context proxy over-hardened; +/-9.8 is not legal limit state | extreme-move structural falsification + PR #559 daily formal-reach denominator | PROSPECTIVE INCIDENCE READY / OFFICIAL STATE NOT JOINED | Wait for genuine dates; keep UP/DOWN/missing separate |
 | LIQUIDITY | Execution proxy over-hardened | V8.17 memberships + PR #563 LIQUIDITY_REJECTED_CONTROL | PROSPECTIVE SELECTION-TIME CONTROL READY | Wait quality + independent dates + executable outcome evidence |
 | SMALL_CAP_SPECIAL | Context/primary by horizon; over-hardened | market-cap conditional-admission audit + liquidity control | PROSPECTIVE INCIDENCE READY | Wait outcomes |
@@ -26,7 +26,7 @@ This matrix is not a new scoring model. It is the routing authority for what sho
 | CHIP_CONCENTRATION_PRESENT | Confidence/presence, not chip-quality alpha | P1-A minimal-blocking contract | P1-A OWNER | Do not build duplicate gate audit |
 | FINANCIAL_SOURCE_COMPLETENESS | Confidence / source completeness | P1-A minimal-blocking contract | P1-A OWNER | Do not equate missing source with negative alpha |
 | ANNOUNCEMENT_RISK | Concrete severe official event risk | A2 aligned-hard classification + gate observer | HARD INVALIDATION SUBJECT TO PIT QUALITY | No relaxation study merely for candidate scarcity |
-| VALUATION_RELATIVE_RISK | Context for short / primary candidate for swing; current hard gate over-hardened | valuation domain research exists; C1 gate overlap exists | **REMAINING DIRECT SYSTEM1 GATE-SPECIFIC ECONOMIC GAP** | Build only a same-parent prospective matched-control contract; no threshold sweep |
+| VALUATION_RELATIVE_RISK | Context for short / primary candidate for swing; current hard gate over-hardened | PR #575 gate-specific structural audit + valuation research | **STRUCTURAL EVIDENCE READY / SOURCE_VINTAGE_BLOCKED** | Freeze source-vintage provenance prospectively before promotion-grade outcome join |
 | SECTOR_GATE | Context over-hardened | PR #501 sector component audit + firstFailure masking + sector research | PROSPECTIVE COMPONENT EVIDENCE READY | Wait independent dates/outcomes |
 | AB_SETUP | Core A/B strategy identity | existing A/B formal definitions + setup channel scale audit | PRIMARY STRATEGY / DO NOT RELAX BY SCARCITY | Evaluate alternatives only as explicit strategy redesign |
 | FUNDAMENTAL_COMPONENT_COUNT | Confidence/evidence count | P1-A minimal-blocking contract | P1-A OWNER | Do not treat count as economic quality |
@@ -98,7 +98,7 @@ Research question:
 among rows with known, PIT-valid market cap below 10bn, what opportunity/risk/execution paths occur versus matched 10bn+ controls after liquidity, price tier, sector, ATR, regime and event controls?
 
 Current status:
-`CONTRACT_NOT_YET_DEDICATED / FORMAL_UNCHANGED`.
+`CLASS_A_IMPLEMENTED_PR_569 / DAILY_COLLECTOR_WIRED / FORMAL_UNCHANGED / PROSPECTIVE_OUTCOME_PENDING`.
 
 No threshold sweep around 10bn is permitted.
 
@@ -120,7 +120,12 @@ Required future split:
 No 2.5x or 25% threshold sweep is permitted.
 
 Current status:
-`SYSTEM1_GATE_SPECIFIC_MATCHED_CONTROL_NOT_YET_IMPLEMENTED / FORMAL_UNCHANGED`.
+`CLASS_A_STRUCTURAL_AUDIT_IMPLEMENTED_PR_575 / DAILY_COLLECTOR_WIRED / SOURCE_VINTAGE_BLOCKED / FORMAL_UNCHANGED`.
+
+Canonical provenance proposal:
+`research/SYSTEM1_VALUATION_SOURCE_VINTAGE_CLASS_B_PROPOSAL_20261005_V0_1.md`.
+
+No Class-B implementation is authorized without explicit owner approval.
 
 ### R3 — outcome maturity, not more structure
 
@@ -160,5 +165,22 @@ Formal Core: LOCKED
 
 1. Let the first genuine V8.17+ daily artifact exercise all currently wired audits.
 2. Verify no side-study is DATA_QUALITY_BLOCKED and all parent/generation linkages reconcile.
-3. If weekend/non-market work continues before that evidence arrives, only R1 or R2 is justified as new direct System1 selection research.
-4. Prefer R1 first because MARKET_CAP_FLOOR is earlier in the Formal funnel and has a clean known-vs-missing semantic split already frozen.
+3. R1 and R2 structural Class-A work are complete. Do not create further gate-specific structural audits merely to keep engineering busy.
+4. The only remaining engineering-adjacent blocker is the R2 valuation source-vintage provenance proposal, which is Class-B and requires explicit owner approval before implementation.
+5. Otherwise, wait for genuine V8.17+ prospective evidence and outcome maturity.
+
+## 2026-10-05 continuation update
+
+- R1 MARKET_CAP_FLOOR economic-threshold audit: PR #569 merged, exact-head Regression/Repair/isolated review PASS.
+- R2 VALUATION_RELATIVE_RISK structural audit: PR #575 merged, exact-head Regression/Repair/isolated review PASS.
+- R1/R2 are no longer direct Class-A instrumentation gaps.
+- R2 promotion-grade outcome attribution remains blocked by missing immutable source-vintage provenance in C1.
+- Feasibility audit found existing upstream metadata that can be reused with zero provider-call delta:
+  - VALUATION snapshot `asOfDate`;
+  - per-symbol `valuationDate` / `valuationSource`;
+  - FINANCIAL snapshot `asOfDate/year/quarter`;
+  - QUARTER_EPS snapshot/source metadata where present;
+  - same-scan derived `sectorMedianPe` with peer-count/derivation lineage.
+- Missing fields must not be fabricated: immutable first-written snapshot receipt and official field-level first-known timestamps are not currently proven.
+- Canonical next engineering gate: explicit owner approval for `SYSTEM1_VALUATION_SOURCE_VINTAGE_CLASS_B_PROPOSAL_20261005_V0_1.md`.
+- Until then, the correct next action is prospective evidence accumulation, not more Class-A gate instrumentation.
