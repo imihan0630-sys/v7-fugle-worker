@@ -293,3 +293,18 @@ Formal Core impact: NONE.
 3. D21-09 and D21-13 require OOS/prospective evidence before L4.
 
 Formal Core impact: NONE.
+
+
+## 00 control-plane receipt — H18 Room14 side accepted
+
+00｜研究總控室 accepted D21-07 as the governance/incentive side of H18.
+
+Closed on Room14 side:
+- management incentive/alignment vs short-termism/metric-gaming mechanisms;
+- capital-allocation outcomes across investment, M&A, buybacks/dividends, financing and cash;
+- reverse-causality / talent-market / overconfidence-control countermechanisms;
+- project economics itself is not owned by D21-07.
+
+H18 remains PARTIAL only because D07-19 project/capital-budget economics is still L0/0 and unstudied.
+
+Do not repeat D21-07 ownership work unless contradictory evidence appears.
