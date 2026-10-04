@@ -11,7 +11,7 @@ export const OFFICIAL_MONTHLY_HISTORY_SOURCES = deepFreeze({
     officialHost: "www.twse.com.tw",
   },
   TPEX: {
-    sourceId: "TPEX_ST43_MONTHLY",
+    sourceId: "TPEX_TRADING_STOCK_MONTHLY",
     sourceName: "TPEx tradingStock individual mainboard daily history (monthly query)",
     sourceUrlTemplate: "https://www.tpex.org.tw/www/zh-tw/afterTrading/tradingStock?code={SYMBOL}&date={YYYY/MM/01}&response=json",
     officialHost: "www.tpex.org.tw",
