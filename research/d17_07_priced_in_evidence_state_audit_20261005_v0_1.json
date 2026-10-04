@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "generatedAt": "2026-10-05T07:19:00+08:00",
+  "generatedAt": "2026-10-05T07:16:50+08:00",
   "owner": "08｜事件與新聞研究室",
   "module": "D17-07",
   "title": "Priced-in evidence-state Taiwan PIT feasibility audit",
@@ -77,5 +77,9 @@
     "Add PIT-valid pre-event price/volume/attention only as additional evidence, never as proof of incorporation.",
     "Collect cases where high expectation evidence still produces large reactions and low expectation evidence produces little reaction as falsification controls.",
     "Before L4, test whether this pre-event evidence state adds value beyond D17-06 surprise class, D17-09 novelty and D17-13 schedule state."
-  ]
+  ],
+  "timestampCorrection": {
+    "correctedAt": "2026-10-05T07:29:11+08:00",
+    "reason": "Align generatedAt with the actual GitHub commit creation time; remove manually projected future timestamp."
+  }
 }
