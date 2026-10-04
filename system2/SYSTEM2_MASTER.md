@@ -630,3 +630,7 @@ The next S2-07 revision-source blocker is historical version knownAt semantics. 
 S2-07 now has physically verified MOPS source-reported clock semantics (PR #471), direct SFB/FSC regulator revocation evidence for the frozen 1342 control (PR #475), a fail-closed prospective availability observer that refuses retrospective knownAt fabrication (PR #480), and a 5/5 cross-authority issuer/regulator/exchange routing matrix (PR #483).
 
 This materially narrows the revision-source blocker but does not certify exact public availability or bounded revision completeness. `knownAtVersionClockCertified=false`, `revisionCoverageComplete=false`, session/technical continuity and all trading authorities remain locked.
+
+## 2026-10-04 supplemental revision blocker milestone
+
+S2-07 now has a physically verified lane-level blocker receipt (PR #488). All six final-result lanes are ready, but only TWSE ex-right/dividend and TWSE capital reduction currently have representative issuer/authority revision controls. TWSE par-value change plus all three TPEx lanes remain representative-control gaps; exact knownAt and bounded revision completeness remain separately blocked.
