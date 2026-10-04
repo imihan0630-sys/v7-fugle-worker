@@ -14,7 +14,7 @@ A cluster does not become decided merely because one participating room submits 
 
 ## Current intake summary
 
-- H01: **DEPENDENCY_AUDIT_COMPLETE / KEEP_SEPARATE + SCOPE_DEDUP_ONLY / OWNER_APPROVAL_REQUIRED**.
+- H01: **CANONICAL_UPDATE_COMPLETE / KEEP_SEPARATE + SCOPE_DEDUP_ONLY**.
 - H02-H04: pending.
 - H05: **PARTIAL_EVIDENCE_RECEIVED**.
 - H06-H19: pending.
@@ -283,3 +283,20 @@ Proposed canonical cleanup:
 - shared market-share/capacity/price/margin evidence remains one parent receipt.
 
 No canonical tracker/router/module wording is changed until explicit owner approval.
+
+
+## H01 owner approval + canonical update — 2026-10-04
+
+Owner decision: **APPROVED**.
+
+State:
+- H01 → **CANONICAL_UPDATE_COMPLETE**.
+
+Executed:
+- D09-13 renamed/scoped to `Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力）`;
+- D09-14 renamed/scoped to `Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）`;
+- D09-13 = industry structural owner;
+- D09-14 = issuer strategic-action lifecycle owner;
+- shared parent evidence cannot generate two independent votes.
+
+Both remain L3/60%. No module-count or Formal Core change.
