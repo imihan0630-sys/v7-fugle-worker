@@ -22,33 +22,64 @@ jobs:
           out="/tmp/a13rate.xls"
           curl --fail --silent --show-error --location --retry 2 \
             "https://www.cbc.gov.tw/tw/public/data/a13rate.xls" -o "$out"
-          python -m pip install --quiet xlrd==2.0.1
           python - <<'PY'
-          import hashlib, json, re
-          import xlrd
+          import hashlib, json, re, zipfile
+          import xml.etree.ElementTree as ET
 
           p="/tmp/a13rate.xls"
           raw=open(p,"rb").read()
-          book=xlrd.open_workbook(file_contents=raw)
-          result={
-              "sourceUrl":"https://www.cbc.gov.tw/tw/public/data/a13rate.xls",
-              "rawByteCount":len(raw),
-              "rawSha256":hashlib.sha256(raw).hexdigest(),
-              "sheets":book.sheet_names(),
-              "matches":[],
-              "tailRows":[],
-              "rawPersisted":False
-          }
-          for sname in book.sheet_names():
-              sh=book.sheet_by_name(sname)
-              for r in range(sh.nrows):
-                  vals=[sh.cell_value(r,c) for c in range(sh.ncols)]
-                  txt=[str(v).strip() for v in vals]
-                  joined="|".join(txt)
-                  if re.search(r"2026|115",joined) and re.search(r"9|09",joined):
-                      result["matches"].append({"sheet":sname,"row":r+1,"values":txt})
-              start=max(0,sh.nrows-12)
-              for r in range(start,sh.nrows):
-                  result["tailRows"].append({"sheet":sname,"row":r+1,"values":[str(sh.cell_value(r,c)).strip() for c in range(sh.ncols)]})
+          if not raw.startswith(b"PK"):
+              raise SystemExit("UNEXPECTED_NON_XLSX_CONTENT")
+          NS="{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+          REL="{http://schemas.openxmlformats.org/officeDocument/2006/relationships}"
+          PKG="{http://schemas.openxmlformats.org/package/2006/relationships}"
+
+          with zipfile.ZipFile(p) as z:
+              try:
+                  sroot=ET.fromstring(z.read("xl/sharedStrings.xml"))
+                  ss=["".join((t.text or "") for t in si.iter(NS+"t")) for si in sroot.findall(NS+"si")]
+              except KeyError:
+                  ss=[]
+              wb=ET.fromstring(z.read("xl/workbook.xml"))
+              rel=ET.fromstring(z.read("xl/_rels/workbook.xml.rels"))
+              targets={x.attrib["Id"]:x.attrib["Target"] for x in rel.findall(PKG+"Relationship")}
+              sheets=[]
+              result={
+                  "sourceUrl":"https://www.cbc.gov.tw/tw/public/data/a13rate.xls",
+                  "rawByteCount":len(raw),
+                  "rawSha256":hashlib.sha256(raw).hexdigest(),
+                  "sheets":[],
+                  "matchingRows":[],
+                  "tailRows":[],
+                  "rawPersisted":False
+              }
+              for s in wb.find(NS+"sheets"):
+                  sname=s.attrib["name"]
+                  target=targets[s.attrib[REL+"id"]]
+                  target=("xl/"+target.lstrip("/")) if not target.startswith("/") else target.lstrip("/")
+                  result["sheets"].append(sname)
+                  root=ET.fromstring(z.read(target))
+                  allrows=[]
+                  for row in root.iter(NS+"row"):
+                      vals=[]
+                      for cell in row.findall(NS+"c"):
+                          typ=cell.attrib.get("t")
+                          v=cell.find(NS+"v")
+                          val=""
+                          if typ=="inlineStr":
+                              val="".join((t.text or "") for t in cell.iter(NS+"t"))
+                          elif v is not None and v.text is not None:
+                              if typ=="s":
+                                  val=ss[int(v.text)]
+                              else:
+                                  val=v.text
+                          vals.append((cell.attrib.get("r",""),val))
+                      if vals:
+                          allrows.append((int(row.attrib["r"]),vals))
+                          joined="|".join(str(v) for _,v in vals)
+                          if re.search(r"2026|115",joined):
+                              result["matchingRows"].append({"sheet":sname,"row":int(row.attrib["r"]),"cells":[f"{a}={v}" for a,v in vals]})
+                  for rnum,vals in allrows[-15:]:
+                      result["tailRows"].append({"sheet":sname,"row":rnum,"cells":[f"{a}={v}" for a,v in vals]})
           print("ROOM09_CBC_RATE_JSON="+json.dumps(result,ensure_ascii=False,separators=(",",":")))
           PY
