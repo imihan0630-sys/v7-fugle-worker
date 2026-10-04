@@ -1,6 +1,6 @@
 # Credit / Capital Structure Research
 
-Updated: 2026-10-04 15:12 Asia/Taipei
+Updated: 2026-10-04 21:09 Asia/Taipei
 Scope: D22
 Status: ACTIVE_RESEARCH / D22_01_02_03_05_07_08_10_L3 / D22_04_06_SOURCE_BLOCKED_L2 / D22_09_DEPENDENCY_BLOCKED_L2 / D22_11_12_HOLD_L2 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
@@ -418,4 +418,53 @@ Frozen design:
 
 ### Exact next continuation
 Build the frozen common-support inventory for the seven L3 lanes without opening equity outcomes. Expand independent issuer-date receipts until the first lane genuinely satisfies the pre-outcome panel gate. Maintain source/dependency/identification blockers for D22-04/06/09/11/12 rather than weakening their contracts.
+
+## 2026-10-04 21:09 continuation｜Outcome-blind Stage-A sample architecture
+
+### Why raw receipt count is not the L4 sample
+The seven L3 D22 lanes currently contain 58 durable replay receipts, of which 52 have exact challenger timestamps. Cross-module same-issuer same-date dedup leaves 44 global issuer-date clusters. None of these counts is allowed to masquerade as the >=20 mature-paired-date threshold.
+
+A mature pair requires the exact same issuer-decisionDate population for challenger + frozen B0/B1 controls. Current mature paired dates remain zero.
+
+### D22-05 reaches the challenger-side count gate
+The issuer-rating panel was expanded from 8 to 29 exact directional events using additional Taiwan Ratings histories across industrial materials, real-estate services, electrical machinery, steel, cement, electronics manufacturing and server electronics.
+
+A frozen outcome-blind clustering rule now prevents repeated agency actions within one same-direction episode from becoming multiple votes:
+- consecutive OUTLOOK_DOWN / DOWNGRADE / WATCH_NEG = one negative episode until sign reversal;
+- consecutive OUTLOOK_UP / UPGRADE / WATCH_POS = one positive episode until sign reversal;
+- returns are not consulted.
+
+Result:
+- 29 directional events;
+- 22 independent directional episodes;
+- challenger-side count gate passed;
+- mature paired dates still zero because B0/B1 pairing is not frozen.
+
+The first directional event date is the only Stage-A anchor for each episode. Later same-direction events are state updates, not additional samples.
+
+### D22-04 / D22-06 data-access refinement
+The prior statement "historical TPEx security-level data are blocked" is now refined.
+
+Verified public path:
+- TPEx free daily corporate-bond fair-value/reference report;
+- security-level fields include bond code, maturity, coupon, reference curve, fair value and yield;
+- TPEx methodology uses issuer/MOPS bond information and corporate-bond reference yield curves subject to eligibility rules.
+
+Still blocked:
+- reproducible multi-date public transport has not yet been materialized;
+- actual transaction/quote history is not in the current packet;
+- fair value/reference is not a trade and must remain a separate provenance lane;
+- clean issuer spread still requires currency/maturity/optionality-consistent benchmarking.
+
+Therefore D22-04/D22-06 stay L2.
+
+### Research implication
+The first D22 lane close to the historical-outcome gate is now D22-05, but it is not ready to open outcomes. The next hard work is baseline reconstruction, not additional rating-event harvesting.
+
+Exact next:
+1. Freeze B0/B1 PIT controls for all 22 D22-05 episode anchors.
+2. Drop/UNKNOWN any anchor that cannot be reconstructed exactly rather than backfilling later data.
+3. Recount mature paired anchors after baseline pairing.
+4. Only if >=20 remain may the preregistered historical outcomes be opened once.
+5. Continue free fair-value multi-date transport research for D22-04/D22-06 without conflating reference values with transactions.
 
