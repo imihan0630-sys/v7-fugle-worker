@@ -431,7 +431,8 @@
         "EXPLICIT_PROBABILITY_OR_PERCENT",
         "EXPLICIT_CERTAINTY_LANGUAGE",
         "EXPLICIT_SELF_REPORTED_HIT_RATE_OR_SKILL_CLAIM",
-        "NO_EXPLICIT_CONFIDENCE"
+        "NO_EXPLICIT_CONFIDENCE",
+        "EXPLICIT_UNCERTAINTY_LANGUAGE"
       ],
       "primaryQuestion": "At aggregate article/date level, do stronger explicit confidence classes exhibit better, equal or worse calibration under frozen forecast horizons?",
       "primaryOutcomes": [
@@ -441,14 +442,20 @@
       "privacyGuard": "No named-user confidence, psychology, skill or influence scores; derived evidence is aggregate only.",
       "minimumIndependentDatesForL4": 20,
       "minimumQualifyingForecastParentsForL4": 100,
-      "interpretationGuard": "A result concerns public expressed-confidence calibration only; it does not establish psychological trait overconfidence or actual trading behavior."
+      "interpretationGuard": "A result concerns public expressed-confidence calibration only; it does not establish psychological trait overconfidence or actual trading behavior.",
+      "taxonomyAmendment": {
+        "version": "V0_2",
+        "effectiveAfterAsiaTaipei": "2026-10-04T16:34:04+08:00",
+        "file": "research/d20_03_confidence_taxonomy_amendment_v0_2.json",
+        "antiRetrofit": "Posts first observed before the amendment effective time are never reclassified into EXPLICIT_UNCERTAINTY_LANGUAGE."
+      }
     }
   },
   "l4Decision": {
     "currentPromotionCount": 0,
     "currentD20MaturityPct": 58.5,
     "formalOptimizationCandidate": "NONE",
-    "nextAction": "Collect immutable post-extension parents for twelve L3 lanes. D20-03 becomes prospective only for qualifying forecasts first captured after 2026-10-04T14:12:14+08:00. Previously inspected PTT posts remain L3 source-feasibility examples only."
+    "nextAction": "Continue immutable post-freeze parent capture. First genuine D20-06/D20-11 parent is D20SOC-20261004-001. D20-03 has zero eligible prospective parents so far; its explicit-uncertainty class applies only to posts first observed after 2026-10-04T16:34:04+08:00. D20-13 remains pending next genuine Taiwan trading-day live receipt."
   },
   "extendedAtAsiaTaipei": "2026-10-04T14:12:14+08:00"
 }
