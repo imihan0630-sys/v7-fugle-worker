@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "CURRICULUM_H13_CANONICAL_CLOSURE_RECEIPT_V0_1",
+  "date": "2026-10-04",
+  "verificationMainAtReceiptCreation": "72f8df7d73e9fba4815924ec5b3d1b2c15c45e37",
+  "clusterId": "H13",
+  "state": "CLOSED_NO_STRUCTURAL_CHANGE",
+  "terminalClassification": "KEEP_SEPARATE",
+  "governanceDisposition": "ACCOUNTING_PRIMITIVE_VS_CREDIT_FUNDING_TRANSFORM",
+  "accountingOwner": "D07-06",
+  "creditFundingOwner": "D22-03",
+  "antiDoubleCount": "ONE_BALANCE_SHEET_RECEIPT",
+  "maturity": {
+    "D07-06": {
+      "level": "L2",
+      "maturityPct": 40
+    },
+    "D22-03": {
+      "level": "L3",
+      "maturityPct": 60
+    },
+    "change": "NONE"
+  },
+  "moduleCountChange": 0,
+  "formalCoreImpact": "NONE_LOCKED",
+  "runtimeImpact": "NONE"
+}
