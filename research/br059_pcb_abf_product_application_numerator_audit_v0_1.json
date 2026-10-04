@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "0.1",
+  "id": "BR-059",
+  "domain": "D09-13",
+  "capturedAt": "2026-10-04T13:07:44+08:00",
+  "purpose": "issuer-native PCB/ABF product/application numerator evidence audit",
+  "issuers": [
+    {
+      "symbol": "8046",
+      "issuer": "南亞電路板",
+      "productScope": "ABF substrate confirmed",
+      "compatibleRevenueNumerator": "UNKNOWN",
+      "observedDisclosure": "consolidated monthly sales only",
+      "firewall": "do not infer ABF revenue share from consolidated revenue"
+    },
+    {
+      "symbol": "3189",
+      "issuer": "景碩",
+      "productScope": "IC substrate/advanced substrate confirmed",
+      "compatibleRevenueNumerator": "UNKNOWN",
+      "observedDisclosure": "consolidated monthly revenue and aggregate wafer-input/resource metrics",
+      "firewall": "do not infer ABF/AI substrate revenue share from aggregate input, water, capacity or consolidated revenue"
+    }
+  ],
+  "conclusion": "PRODUCT_SCOPE_KNOWN / EXPOSURE_MAGNITUDE_UNKNOWN / NO_SYNTHETIC_DENOMINATOR",
+  "outcomeState": "CLOSED",
+  "formalCore": "LOCKED",
+  "maturityDecision": "KEEP_D09_13_L3_60",
+  "next": "Append only issuer-native compatible product/application revenue, shipment, capacity-allocation or order numerator; otherwise keep UNKNOWN."
+}
