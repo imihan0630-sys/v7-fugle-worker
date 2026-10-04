@@ -1,0 +1,96 @@
+{
+  "version": "0.1",
+  "id": "SC-048",
+  "capturedAt": "2026-10-04T09:54:00+08:00",
+  "module": "D10-14 產業政策／補貼／地緣瓶頸",
+  "mode": "SECOND_TAIWAN_ISSUER_POLICY_TO_CAPACITY_CONTROL / GLOBALWAFERS / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "issuer": {
+    "symbol": "6488",
+    "name": "環球晶"
+  },
+  "policyLifecycle": [
+    {
+      "at": "2024-07-17",
+      "state": "PRELIMINARY_NON_BINDING_TERMS",
+      "authority": "U.S. Department of Commerce",
+      "directFundingUsdMn": "up to 400",
+      "plannedProjects": [
+        "Sherman Texas 300mm silicon wafer",
+        "St. Peters Missouri 300mm SOI",
+        "Sherman SiC epi conversion"
+      ],
+      "privateInvestmentContextUsdBn": "approximately 4"
+    },
+    {
+      "at": "2024-12-17",
+      "state": "FINAL_AWARD",
+      "authority": "U.S. Department of Commerce",
+      "directFundingUsdMn": "up to 406",
+      "milestoneRule": "funds disbursed based on project milestone completion",
+      "projectCapexUsdBn": "approximately 4"
+    },
+    {
+      "at": "2026-01",
+      "state": "CAPITAL_COMMITMENT_EXPANDED",
+      "authority": "U.S. Department of Commerce",
+      "totalCapitalCommitmentUsdBn": 7.94,
+      "previousCommitmentUsdBn": 3.94,
+      "note": "Government summary reports higher company capital commitment; this is not treated as an increase in the direct-funding award."
+    }
+  ],
+  "currentFacilityEvidence": [
+    {
+      "source": "GlobalWafers official locations page",
+      "location": "Sherman, Texas",
+      "product": "300mm polished and epitaxial wafers",
+      "freshnessIssue": "The page still says 'Coming in 2024' when captured in 2026, so it cannot authenticate current HVM timing."
+    },
+    {
+      "source": "GlobalWafers official locations page",
+      "location": "St. Peters, Missouri",
+      "product": "200mm and 300mm SOI substrates",
+      "status": "existing operating site with expansion context"
+    }
+  ],
+  "stateVector": {
+    "awardMaximum": "KNOWN",
+    "milestoneDisbursementMechanism": "KNOWN",
+    "actualDirectFundingDisbursed": "UNKNOWN",
+    "loanOrTaxCreditRealization": "UNKNOWN",
+    "totalPrivateCapitalCommitment": "KNOWN_FROM_2026_GOVERNMENT_SUMMARY",
+    "Sherman300mmConstructionStage": "UNKNOWN_CURRENT_EXACT_STAGE",
+    "Sherman300mmHVM": "UNKNOWN",
+    "MissouriExpansionQualifiedCapacity": "UNKNOWN",
+    "realizedMarginEffect": "UNKNOWN"
+  },
+  "positiveMechanism": [
+    "Milestone-based public funding can support local wafer capacity and supply-chain localization.",
+    "A second Taiwan issuer demonstrates the policy-to-capacity schema is not TSMC-specific.",
+    "Government award and company facility/product evidence can be joined without inventing HVM."
+  ],
+  "negativeControls": [
+    "Private capital commitment growth from US$3.94bn to US$7.94bn is not evidence that subsidy disbursement increased by the same amount.",
+    "A final award and named facility do not prove current HVM or qualified capacity.",
+    "A stale official company page can establish facility/product identity but not a reliable current production clock.",
+    "Policy support may accelerate localization while creating execution, utilization and cost risks; subsidy is not automatically margin-accretive.",
+    "Silicon-wafer supply-chain benefits cannot be generalized to all Taiwan semiconductor issuers."
+  ],
+  "pitRules": [
+    "Separate preliminary terms, final award, capital commitment, disbursement, construction, qualification and HVM clocks.",
+    "Stale source freshness creates UNKNOWN for current stage rather than backward or forward inference.",
+    "Future physical milestones append; prior states remain immutable.",
+    "No stock or margin outcome join in this receipt."
+  ],
+  "maturityDecision": {
+    "D10-14": "KEEP_L3_SECOND_ISSUER_CONTROL_ADDED"
+  },
+  "reasonNoL4": "Second-issuer generalization improves robustness, but actual disbursement/current HVM and prospective/OOS economic or stock outcomes remain missing.",
+  "exactNext": [
+    "SC-051 seek fresh issuer/government physical milestone or actual disbursement evidence for GlobalWafers without relying on stale site text.",
+    "Add a policy-supported project negative control with delay/cancellation/under-utilization if an official Taiwan-issuer case becomes available.",
+    "Do not score policy beneficiaries before common-support prospective outcome tests."
+  ],
+  "status": "SECOND_TAIWAN_ISSUER_CONTROL / FINAL_AWARD_AND_CAPITAL_COMMITMENT_KNOWN / CURRENT_HVM_AND_DISBURSEMENT_UNKNOWN / SOURCE_FRESHNESS_CONFLICT / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
