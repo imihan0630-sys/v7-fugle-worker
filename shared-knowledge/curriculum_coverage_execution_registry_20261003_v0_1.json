@@ -350,5 +350,34 @@
     ],
     "maturityChange": "NONE",
     "formalCoreImpact": "NONE_LOCKED"
+  },
+  "cov07": {
+    "state": "PARTIAL_EVIDENCE_RECEIVED",
+    "readiness": "CONTRACT_LEVEL_FUTURES_CURVE_REPLAY_PENDING",
+    "candidate": "Futures Term Structure / Calendar Spread / Roll Yield",
+    "acceptedEvidence": [
+      "DERIVATIVES_VOLATILITY_RESEARCH.md",
+      "DERIVATIVES_VOLATILITY_CHECKPOINT.md"
+    ],
+    "closedQuestions": [
+      "front versus next contract distinction",
+      "calendar spread / roll-window context",
+      "expiry state NORMAL_FRONT/PRE_ROLL/EXPIRY_DAY/POST_ROLL_RESET",
+      "basis versus inter-contract curve distinction",
+      "TAIFEX official futures data source feasibility",
+      "near-expiry mechanics and carry/dividend guard"
+    ],
+    "remaining": [
+      "immutable contract-level historical TX price/OI/volume replay receipt",
+      "expiry calendar/version provenance",
+      "front-next-tenor curve object on one historical date range",
+      "annualized carry/roll-yield formula and sign convention",
+      "continuous-contract construction with no look-ahead/back-adjustment leakage",
+      "incremental comparison versus D12-01 basis and D12-02 OI",
+      "exactly one terminal recommendation",
+      "commit research/COV07_D12_SPECIALIST_RETURN_V0_1.md"
+    ],
+    "maturityChange": "NONE",
+    "formalCoreImpact": "NONE_LOCKED"
   }
 }
