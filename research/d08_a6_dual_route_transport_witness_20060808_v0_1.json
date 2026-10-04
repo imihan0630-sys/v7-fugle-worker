@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "D08_A6_DUAL_ROUTE_TRANSPORT_WITNESS_20060808_V0_1",
+  "researchRoom": "06",
+  "domain": "D08",
+  "module": "D08-03",
+  "observedAtAsiaTaipei": "2026-10-05T02:38:00+08:00",
+  "failedArchiveRun": {
+    "workflowRun": 37224491439,
+    "job": "capture-years (2006)",
+    "failedDate": "2006-08-08",
+    "failure": "A6 historical source exhausted transports 2006-08-08: fetch failed",
+    "classification": "TRANSPORT_EXHAUSTION_NOT_SOURCE_ABSENCE"
+  },
+  "officialWitness": {
+    "date": "2006-08-08",
+    "primaryUrl": "https://www.twse.com.tw/exchangeReport/BWIBBU_d?response=json&date=20060808&selectType=ALL",
+    "fallbackUrl": "https://www.twse.com.tw/rwd/zh/afterTrading/BWIBBU_d?response=json&date=20060808&selectType=ALL",
+    "primaryObserved": "OK",
+    "fallbackObserved": "OK",
+    "rawJsonLengthPrimary": 23990,
+    "rawJsonLengthFallback": 23990,
+    "rawJsonExactEquality": true,
+    "semanticEquality": true,
+    "fieldsEquality": true,
+    "dataEquality": true,
+    "sourceDatePrimary": "20060808",
+    "sourceDateFallback": "20060808",
+    "interpretation": "Both official routes exposed the same exact JSON witness for the failed date. The archive failure was transport-only; UNKNOWN/source absence is not authorized."
+  },
+  "repairContract": {
+    "sourceId": "A6_TWSE_BWIBBU_D_HISTORICAL",
+    "routeOrder": [
+      "exchangeReport/BWIBBU_d",
+      "rwd/zh/afterTrading/BWIBBU_d"
+    ],
+    "fallbackAllowedFor": [
+      "transport failure",
+      "HTTP failure"
+    ],
+    "failClosedFor": [
+      "SOURCE_DATE_MISMATCH",
+      "schema drift",
+      "source stat semantic rejection",
+      "duplicate ordinary symbol",
+      "missing source date evidence"
+    ],
+    "retrySemantics": "Try both official aliases inside one retry round before consuming the next retry delay.",
+    "identityRule": "This witness supports exact route equivalence for 2006-08-08 only; future cross-route divergence must be inspected rather than silently normalized."
+  },
+  "outcomeAccess": false,
+  "formalCoreChanged": false,
+  "promotionState": "NO_MATURITY_CHANGE_FROM_TRANSPORT_REPAIR"
+}
