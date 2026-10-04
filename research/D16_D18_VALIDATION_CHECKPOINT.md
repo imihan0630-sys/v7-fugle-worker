@@ -1517,3 +1517,34 @@ Global tracker maturity after recompute: **43.5%**.
 FORMAL_OPTIMIZATION_CANDIDATE: NONE. Formal Core LOCKED.
 
 Exact next: persist prospective context-only D18 vector occupancy; continue shared-continuity dependencies for D18-04; no policy arm before OOS/prospective evidence.
+
+
+## 2026-10-04 D18-11 Regime Transition — L3
+
+Canonical evidence: `research/D18_11_REGIME_TRANSITION_L3_ACCEPTANCE_20261004_V0_1.md`.
+
+D18-11 -> L3/60.
+
+Executable observer:
+- `system2/runtime/d18_regime_transition_v0_1.mjs`;
+- `system2/tests/d18_regime_transition_v0_1.test.mjs`.
+
+Acceptance:
+- adjacent official sessions required;
+- prior/current vector PIT identity required;
+- changed/unchanged/unknown dimensions explicit;
+- deterministic replay hash;
+- no smoothing;
+- no retrospective relabel;
+- no policy/strategy/capital impact.
+
+Prior validated head evidence:
+- System2 Research CI 37174490288 SUCCESS;
+- V8 Regression 37174490377 SUCCESS.
+
+D18 domain maturity after D18-11 promotion: **46.7%**.
+Global tracker maturity after recompute: **43.7%**.
+
+D18-13/14 remain L2 pending a dedicated frozen Regime × strategy outcome attribution/walk-forward joiner.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE. Formal Core LOCKED.
