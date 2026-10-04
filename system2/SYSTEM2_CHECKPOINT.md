@@ -1746,3 +1746,45 @@ all trading authority false.
 HIGH correction `S2-CORR-20261004-001` remains assigned to DATA_LANE and is not closed by this S2-07 milestone.
 
 System2 remains `P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS`. Formal Core remains LOCKED.
+
+## 2026-10-04 S2-07 TWSE par-value U04 alternate-source search — NEGATIVE / PRESERVED
+
+PR #577 merged as `8d4193acd57405b7ba4f6fe2c778850e3bbf0a0a`.
+
+The final representative-routing gap remains `TWSE_PAR_VALUE_CHANGE_REFERENCE`.
+
+U04 alternate issuer evidence was physically queried for the four frozen 2025 TWSE par-value final-result events (4763, 6919, 2327, 8422) using both company and listed-market scopes.
+
+Physical result:
+- transport and serializer diagnostics PASS;
+- candidateCount=4;
+- issuerEvidenceCandidateCount=0;
+- revisionParValueCandidateCount=0;
+- no representative control promoted.
+
+This adds another valid negative path after:
+- 2020..2026 final-result-derived MOPS candidate search: negative;
+- 2010..2019 historical endpoint: zero official par-value events;
+- 2025 U04 issuer-announcement search: negative.
+
+### Exact continuation
+1. do not repeat the exhausted final-result or U04 paths without new evidence;
+2. inventory alternate official issuer/regulator/exchange announcement families for TWSE par-value/share-exchange revisions;
+3. preregister bounded candidate windows before querying;
+4. if all materially distinct official historical routes are negative, document structural historical unavailability rather than fabricating a 6/6 representative control;
+5. regardless of representative routing disposition, keep public availability/knownAt and bounded revision-completeness debts separate;
+6. after this representative-routing disposition, continue bounded revision completeness and shared suspension/session integration.
+
+Still authoritative:
+`representativeAuthorityReadyCount=5`,
+`publicAvailabilityLatencyCertified=false`,
+`knownAtVersionClockCertified=false`,
+`authorityRevisionCoverageComplete=false`,
+`revisionCoverageComplete=false`,
+`noEventMayBeClaimed=false`,
+`suspensionCoverageComplete=false`,
+`symbolSessionCompletenessCertified=false`,
+`technicalContinuityCertified=false`,
+all trading authority false.
+
+HIGH correction `S2-CORR-20261004-001` remains assigned to DATA_LANE and is not affected by this S2-07 result.
