@@ -1,0 +1,153 @@
+name: Room09 D13 prospective PIT 20261004
+
+on:
+  push:
+    branches:
+      - research-room09-d13-prospective-pit-20261004
+    paths:
+      - .github/workflows/room09-d13-prospective-pit-20261004.yml
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Capture official macro sources before Taiwan 2026-10-05 decision
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/room09
+
+          curl --fail --silent --show-error --location --retry 2 \
+            "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?field_tdr_date_value=2026&type=daily_treasury_yield_curve" \
+            -o /tmp/room09/treasury.html
+
+          curl --fail --silent --show-error --location --retry 2 \
+            "https://www.bls.gov/news.release/archives/empsit_10022026.htm" \
+            -o /tmp/room09/bls.html
+
+          curl --fail --silent --show-error --location --retry 2 \
+            "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm" \
+            -o /tmp/room09/fed.html
+
+          curl --fail --silent --show-error --location --retry 2 \
+            "https://www.cbc.gov.tw/tw/cp-302-192864-4319f-1.html" \
+            -o /tmp/room09/cbc.html
+
+          python - <<'PY'
+          import hashlib,html,json,re,datetime as dt
+          from html.parser import HTMLParser
+          from pathlib import Path
+
+          class TableParser(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.rows=[]; self.row=[]; self.cell=[]; self.inrow=False; self.incell=False
+              def handle_starttag(self,tag,attrs):
+                  if tag=="tr": self.inrow=True; self.row=[]
+                  elif tag in ("td","th") and self.inrow: self.incell=True; self.cell=[]
+              def handle_data(self,data):
+                  if self.incell: self.cell.append(data)
+              def handle_endtag(self,tag):
+                  if tag in ("td","th") and self.incell:
+                      self.row.append(re.sub(r"\s+"," ","".join(self.cell)).strip()); self.incell=False
+                  elif tag=="tr" and self.inrow:
+                      if self.row:self.rows.append(self.row)
+                      self.inrow=False
+
+          def raw_info(path):
+              raw=Path(path).read_bytes()
+              text=raw.decode("utf-8",errors="replace")
+              plain=html.unescape(re.sub(r"<[^>]+>"," ",text))
+              plain=re.sub(r"\s+"," ",plain)
+              return raw,text,plain
+
+          out={
+            "schemaVersion":"0.1",
+            "targetTaiwanDecisionDate":"2026-10-05",
+            "captureUtc":dt.datetime.now(dt.timezone.utc).isoformat(),
+            "sources":{}
+          }
+
+          # Treasury
+          raw,text,plain=raw_info("/tmp/room09/treasury.html")
+          p=TableParser(); p.feed(text)
+          target=None; header=None
+          for i,row in enumerate(p.rows):
+              if any(c=="10/02/2026" for c in row):
+                  target=row
+                  for j in range(i-1,-1,-1):
+                      cand=p.rows[j]
+                      if any("Date"==c for c in cand) and any("10-year" in c.lower() or "10 yr" in c.lower() for c in cand):
+                          header=cand; break
+                  break
+          if not target:
+              raise SystemExit("TREASURY_20261002_ROW_NOT_FOUND")
+          out["sources"]["treasury"]={
+            "url":"https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?field_tdr_date_value=2026&type=daily_treasury_yield_curve",
+            "sha256":hashlib.sha256(raw).hexdigest(),"byteCount":len(raw),
+            "header":header,"row":target
+          }
+
+          # BLS
+          raw,text,plain=raw_info("/tmp/room09/bls.html")
+          checks={
+            "releaseDate":bool(re.search(r"October\s+2,\s+2026",plain,re.I)),
+            "payroll29k":bool(re.search(r"(?:rose|increased|changed)[^\.]{0,120}29,000",plain,re.I)),
+            "unemployment42":bool(re.search(r"unemployment rate[^\.]{0,100}4\.2 percent",plain,re.I)),
+            "ahe01":bool(re.search(r"average hourly earnings[^\.]{0,180}0\.1 percent",plain,re.I)),
+            "ahe30":bool(re.search(r"average hourly earnings[^\.]{0,220}3\.0 percent",plain,re.I))
+          }
+          if not all(checks.values()):
+              raise SystemExit("BLS_CONTENT_CHECK_FAIL "+json.dumps(checks))
+          out["sources"]["bls"]={
+            "url":"https://www.bls.gov/news.release/archives/empsit_10022026.htm",
+            "sha256":hashlib.sha256(raw).hexdigest(),"byteCount":len(raw),
+            "checks":checks,
+            "releaseState":{"referenceMonth":"2026-09","payrollChange":29000,"unemploymentRatePct":4.2,"aheMonthPct":0.1,"aheYearPct":3.0}
+          }
+
+          # Fed
+          raw,text,plain=raw_info("/tmp/room09/fed.html")
+          fed_checks={
+            "date":bool(re.search(r"September\s+16,\s+2026",plain,re.I)),
+            "range":bool(re.search(r"3[-– ]?3/4\s+to\s+4\s+percent",plain,re.I)),
+            "quarterPoint":bool(re.search(r"(?:raise|increas)[^\.]{0,150}(?:1/4|one-quarter|quarter)[^\.]{0,80}percentage point",plain,re.I)),
+          }
+          if not fed_checks["date"] or not fed_checks["range"]:
+              raise SystemExit("FED_CONTENT_CHECK_FAIL "+json.dumps(fed_checks))
+          out["sources"]["fed"]={
+            "url":"https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+            "sha256":hashlib.sha256(raw).hexdigest(),"byteCount":len(raw),
+            "checks":fed_checks,
+            "policyState":{"effectiveDecisionDate":"2026-09-16","targetRangeLowerPct":3.75,"targetRangeUpperPct":4.0}
+          }
+
+          # CBC
+          raw,text,plain=raw_info("/tmp/room09/cbc.html")
+          cbc_checks={
+            "date":("2026-09-17" in plain or "115年9月17日" in plain),
+            "unchanged":("維持政策利率不變" in plain),
+            "rates":("2%" in plain and "2.375%" in plain and "4.25%" in plain)
+          }
+          if not cbc_checks["unchanged"] or not cbc_checks["rates"]:
+              raise SystemExit("CBC_CONTENT_CHECK_FAIL "+json.dumps(cbc_checks,ensure_ascii=False))
+          out["sources"]["cbc"]={
+            "url":"https://www.cbc.gov.tw/tw/cp-302-192864-4319f-1.html",
+            "sha256":hashlib.sha256(raw).hexdigest(),"byteCount":len(raw),
+            "checks":cbc_checks,
+            "policyState":{"decisionDate":"2026-09-17","discountRatePct":2.0,"securedAccommodationRatePct":2.375,"shortTermAccommodationRatePct":4.25}
+          }
+
+          out["guards"]=[
+            "capture precedes target Taiwan 2026-10-05 decision date",
+            "no Taiwan 2026-10-05 return/outcome observed",
+            "BLS consensus surprise remains UNKNOWN",
+            "Treasury row is a known market-rate state, not a return forecast",
+            "Fed and CBC policy states remain effective-known states, not fresh surprise signals",
+            "all raw bytes are temporary; durable receipt stores source identity/hash/parsed state only"
+          ]
+          print("ROOM09_D13_PROSPECTIVE_JSON="+json.dumps(out,ensure_ascii=False,separators=(",",":")))
+          PY
