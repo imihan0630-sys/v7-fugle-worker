@@ -1580,3 +1580,36 @@ Global tracker maturity after recompute: **43.8%**.
 D18-14 remains L2 until a dedicated chronological date-level walk-forward assembler consumes frozen attribution receipts with purge/holdout semantics.
 
 FORMAL_OPTIMIZATION_CANDIDATE: NONE. Formal Core LOCKED.
+
+
+## 2026-10-04 D18-14 Walk-forward Regime Validation — L3
+
+Canonical evidence: `research/D18_14_WALK_FORWARD_L3_ACCEPTANCE_20261004_V0_1.md`.
+
+D18-14 -> L3/60.
+
+Executable planner:
+- `system2/runtime/d18_walk_forward_plan_v0_1.mjs`;
+- `system2/tests/d18_walk_forward_plan_v0_1.test.mjs`.
+
+Acceptance:
+- chronological non-overlapping folds;
+- official-session date boundaries;
+- D+N purge against holdout start;
+- training knowledge cutoff;
+- test evaluation cutoff;
+- MATURED/IMMATURE/UNKNOWN preserved;
+- independent date counts reported separately from rows;
+- fold boundaries not chosen from outcomes;
+- no model/threshold/policy optimization.
+
+Prior validated head:
+- System2 Research CI 37175061832 SUCCESS;
+- V8 Regression 37175061814 SUCCESS.
+
+D18 domain maturity after D18-14 promotion: **49.3%**.
+Global tracker maturity after recompute: **43.9%**.
+
+No L4 is claimed. Real prospective/OOS folds require multiple relevant Regime episodes and preregistered policy/MDE.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE. Formal Core LOCKED.
