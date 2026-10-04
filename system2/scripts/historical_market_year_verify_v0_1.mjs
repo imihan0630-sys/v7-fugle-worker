@@ -268,15 +268,25 @@ const storageVerification={
     ?"PASS":"BLOCKED",
 };
 
-const overallState = storageVerification.state==="PASS"
+const dataCoverageState = storageVerification.state==="PASS"
   && sourceReconciliation.state==="PASS"
-  && coverage.overallState!=="BLOCKED"
-    ? coverage.overallState
+  && coverage.structuralCoverageState==="PASS"
+    ? "PASS"
     : "BLOCKED";
+const replayReadinessState = dataCoverageState==="BLOCKED"
+  ? "BLOCKED"
+  : coverage.overallState;
+const overallState = dataCoverageState==="BLOCKED"
+  ? "BLOCKED"
+  : replayReadinessState;
 
 const output={
-  result:overallState==="BLOCKED"?"BLOCKED_MARKET_YEAR_VERIFICATION":"PASS_MARKET_YEAR_VERIFICATION_WITH_READINESS_STATE",
-  verifierVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_1",
+  result:dataCoverageState==="BLOCKED"
+    ?"BLOCKED_MARKET_YEAR_VERIFICATION"
+    :(replayReadinessState==="PASS"
+      ?"PASS_MARKET_YEAR_DATA_AND_REPLAY_READINESS"
+      :"PASS_MARKET_YEAR_DATA_PARTIAL_REPLAY_READINESS"),
+  verifierVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_2",
   market,year,fromDate,toDate,
   storageVerification,
   sourceReconciliation,
@@ -299,7 +309,10 @@ const output={
     sourceHistoryStart:suspension.sourceHistoryStart,
   },
   coverage,
+  dataCoverageState,
+  replayReadinessState,
   pitContinuityReadiness:{
+    symbolSession:coverage.symbolSessionReadiness,
     pit:coverage.pitReadiness,
     continuity:coverage.continuityReadiness,
     technicalPrice:coverage.technicalPriceReadiness,
@@ -310,10 +323,10 @@ const output={
   finalSelectionAuthorityChanged:false,
   capitalOrderAuthorityChanged:false,
   observedAt,
-  schemaVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_1",
+  schemaVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_2",
 };
 
 const json=JSON.stringify(output,null,2);
 if(outputPath)await writeFile(outputPath,json+"\n","utf8");
 console.log(json);
-if(overallState==="BLOCKED")process.exitCode=2;
+if(dataCoverageState==="BLOCKED")process.exitCode=2;
