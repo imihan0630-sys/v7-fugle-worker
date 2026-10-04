@@ -373,3 +373,28 @@ Exact next D07-34:
 4. join compatible earnings/CFO denominators only after their knownAt;
 5. validate ordinary/special/stock/cash classification and financial-institution exception;
 6. only a clean PIT receipt can justify L3.
+
+
+## 00 control-plane receipt — H05 / H13 closure
+
+00｜研究總控室 completed two no-structural-change closures:
+
+H05:
+- D07-25 remains statement-level forensic/anomaly owner.
+- D21-10 remains audit/restatement/internal-control governance/control-event owner.
+- one shared restatement/control parent receipt; corrected values never backfill pre-known-at history.
+- H05 state = CLOSED_NO_STRUCTURAL_CHANGE.
+- D07-25 remains L0/0%; no maturity transfer.
+
+H13:
+- D07-06 remains accounting balance-sheet/leverage primitive owner.
+- D22-03 owns residual credit/funding transforms after liquidity-quality classification.
+- one balance-sheet receipt; net debt is derived; maturity wall is linked but not additive.
+- H13 state = CLOSED_NO_STRUCTURAL_CHANGE.
+- D07-06 remains L2/40%; D22-03 remains L3/60%.
+
+Audits:
+- shared-knowledge/CURRICULUM_H05_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
+- shared-knowledge/CURRICULUM_H13_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
+
+These receipts do not override Room06 active research order.
