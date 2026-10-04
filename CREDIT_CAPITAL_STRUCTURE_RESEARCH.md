@@ -1,6 +1,6 @@
 # Credit / Capital Structure Research
 
-Updated: 2026-10-04 08:51 Asia/Taipei
+Updated: 2026-10-04 13:55 Asia/Taipei
 Scope: D22
 Status: ACTIVE_RESEARCH / D22-01 L3_WAITING_PANEL / D22-02 L2_ACTIVE / D22-03 L2_MECHANISM_DEFINED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED
 
@@ -279,4 +279,73 @@ Distress, PD, LGD/recovery and equity tail risk are separate. Structural/Merton 
 
 ### Exact next continuation
 Prioritize D22-04/D22-06 TPEx market-credit replay, then D22-05 rating-event replay, then D22-07/D22-08 contractual/repricing panels. These upstream data families are prerequisites for defensible D22-09~12 PIT replay and later L4 incremental-value tests.
+
+## 2026-10-04 13:55 continuation｜Second-stage PIT validation: D22-05 / D22-08 / D22-10 promoted to L3
+
+This continuation moved D22 from 45.0% to 50.0% through three module-specific Taiwan PIT replay validations. No equity outcomes were opened and no module was promoted on source-route feasibility alone.
+
+### D22-05｜Credit Rating / Rating Migration
+L3 / 60%.
+
+Taiwan Ratings historical issuer records provide exact-dated rating and outlook states across multiple non-financial industries and dates. The replay demonstrates:
+- outlook deterioration can precede a later formal downgrade;
+- outlook can normalize without a notch change;
+- positive outlook can precede a later upgrade;
+- issuer-rating, issue-rating, outlook and watch/review must remain separate event classes.
+
+The durable replay explicitly forbids double-counting multiple agency events from one deterioration episode and requires anticipation controls before any equity outcome test.
+
+Files:
+- `research/d22_05_credit_rating_migration_contract_v0_1.json`
+- `research/d22_05_rating_event_replay_v0_1.json`
+
+### D22-08｜Fixed / Floating Rate Exposure
+L3 / 60%.
+
+Official issuer filings now support cross-issuer and multi-date replay of rate-exposure states:
+- TSMC: floating short-term versus majority fixed long-term debt semantics in historical quarterly filings;
+- UMC: exact fixed-rate bond issuance terms in a timestamped event;
+- Chunghwa Telecom: two annual states with benchmark-linked non-fixed exposure sensitivity and no interest-rate derivatives.
+
+The data-feasibility conclusion is limited: exact floating principal, reset dates, floors/caps and hedge notionals remain UNKNOWN unless source-attested. A sensitivity table is not permission to reverse-engineer missing debt principal.
+
+Files:
+- `research/d22_08_fixed_floating_rate_exposure_contract_v0_1.json`
+- `research/d22_08_rate_exposure_replay_v0_1.json`
+
+### D22-10｜Capital Structure / Funding Mix
+L3 / 60%.
+
+First-known financing-event replay now covers multiple issuers, industries and dates:
+- TSMC domestic unsecured bond tranches across multiple 2023 issuances;
+- UMC 2023 five-year fixed-rate unsecured green bond;
+- Chunghwa Telecom approval→pricing lineage in 2022 and later 2025 sustainability-bond pricing.
+
+The replay preserves approval, pricing and issuance as separate states and keeps event identity with D11. D22-10 only owns the funding-structure transformation: source, tenor, coupon, security, use of proceeds and sequencing.
+
+Files:
+- `research/d22_10_capital_structure_funding_mix_contract_v0_1.json`
+- `research/d22_10_funding_mix_event_replay_v0_1.json`
+
+### D22-04 / D22-06 blocker remains valid
+The official TPEx route is known and supports the required data families, but clean historical issuer-security-date replay was not independently completed. Therefore both modules stay L2. The blocker is recorded in:
+- `research/d22_04_06_tpex_market_data_access_audit_v0_1.json`
+
+No proxy substitution was used. Fair value is not silently treated as a transaction, stale observations are not forward-filled, and a duration/currency-mismatched subtraction is not promoted as issuer spread.
+
+### Domain state after this continuation
+- L3: D22-01, D22-02, D22-03, D22-05, D22-08, D22-10.
+- L2: D22-04, D22-06, D22-07, D22-09, D22-11, D22-12.
+- D22 maturity: 50.0%.
+- Equity outcomes: CLOSED.
+- Formal Core: LOCKED.
+- Candidate state: FALSIFICATION_IN_PROGRESS.
+- No FORMAL_OPTIMIZATION_CANDIDATE.
+
+### Exact next continuation
+The next highest-value path is no longer another theory pass. It is:
+1. historical TPEx security-level replay for D22-04/D22-06;
+2. D22-07 covenant/facility PIT receipts;
+3. independent-date expansion for D22-05/D22-08/D22-10;
+4. then downstream D22-09 divergence replay after D22-06 becomes usable.
 
