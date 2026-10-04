@@ -360,3 +360,22 @@ H19:
 - state: `PARTIAL_EVIDENCE_RECEIVED / COMMON_SUPPORT_REDUNDANCY_RESIDUAL_TESTS_PENDING`.
 
 No maturity/count/Formal change.
+
+
+## H17 partial-intake update — 2026-10-04
+
+H17 compositional cost-of-capital chain is no longer empty:
+- D13-06 = sovereign/risk-free curve owner;
+- D22-04 = issuer debt-cost/refinancing-spread owner;
+- D07-18 = WACC/cost-of-capital composite owner.
+
+State:
+`PARTIAL_EVIDENCE_RECEIVED / D07_18_AND_D22_04_REPLAY_GATES_PENDING`.
+
+Remaining:
+- D07-18 WACC/COE/COD ownership and falsification contract;
+- D22-04 issuer-security-date historical replay with benchmark matching;
+- D13-06 multidate strict source attestation;
+- empirical divergent-state receipts.
+
+No maturity/count/Formal change.
