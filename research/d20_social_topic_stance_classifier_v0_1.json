@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "D20_SOCIAL_TOPIC_STANCE_CLASSIFIER_V0_1",
+  "frozenAtAsiaTaipei": "2026-10-04T16:34:04+08:00",
+  "status": "FROZEN_BEFORE_OUTCOME_JOIN / RESEARCH_ONLY",
+  "scope": "PTT Stock public posts/replies captured under D20 social source contract",
+  "topicLabels": {
+    "TSMC": "explicit 台積電/TSMC/TSM references",
+    "ETF": "explicit ETF/0050/正二 or broad index-product references",
+    "LEVERAGE": "explicit 質押/借款/槓桿 references",
+    "AI": "explicit AI references",
+    "MARKET_OUTLOOK": "explicit 大盤/Q4/多頭/空頭 market-outlook language",
+    "OTHER": "none of the frozen labels"
+  },
+  "stanceRules": {
+    "BULLISH": "explicit 看多/多頭/會漲/上看 equivalent without explicit bearish contradiction",
+    "BEARISH": "explicit 看空/空頭/會跌/下看 equivalent without explicit bullish contradiction",
+    "MIXED_BULLISH_UNCERTAIN": "explicit bullish market/stock direction plus explicit uncertainty such as 不知道是否正確/猶豫/不確定",
+    "MIXED_BEARISH_UNCERTAIN": "explicit bearish direction plus explicit uncertainty",
+    "UNCERTAIN": "explicit uncertainty without directional forecast",
+    "NEUTRAL_OR_UNKNOWN": "no frozen stance rule matched"
+  },
+  "reactionGuard": "push/boo/arrow is never mapped directly to stock stance",
+  "privacyGuard": "No named-user psychology/influence profile. Handles, when source-exposed, may be used transiently only for within-window distinct-participant deduplication.",
+  "noOutcomeTuning": true
+}
