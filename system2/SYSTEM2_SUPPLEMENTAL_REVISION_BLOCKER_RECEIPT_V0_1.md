@@ -100,3 +100,42 @@ This receipt determines the next research order:
 5. do not promote `revisionCoverageComplete` until all six lanes are complete.
 
 No selection, push, capital, order or System1 authority is granted by this receipt.
+
+## 2026-10-04 physical blocker decomposition acceptance
+
+PR #488 merged as `fd3a6ecd128508b9deb0a07ff67e6c658c95b00d`.
+
+Physical checks:
+- Supplemental Revision Blocker Receipt Readonly `37181182912`: PASS.
+- System2 Research CI `37181182863`: PASS.
+- V8 Regression `37181182896`: PASS.
+- result=`SUPPLEMENTAL_REVISION_BLOCKERS_DECOMPOSED`.
+
+Observed receipt:
+- requiredLaneCount=6;
+- finalResultReadyCount=6;
+- representativeIssuerReadyCount=2;
+- representativeAuthorityReadyCount=2;
+- sourceReportedVersionClockSemanticsCertified=true;
+- publicAvailabilityLatencyCertified=false;
+- knownAtVersionClockCertified=false;
+- supplementalRevisionReadyCount=0;
+- revisionCoverageComplete=false.
+
+Blocker counts:
+- PROSPECTIVE_PUBLIC_AVAILABILITY_NOT_CERTIFIED = 6;
+- KNOWN_AT_VERSION_CLOCK_NOT_CERTIFIED = 6;
+- BOUNDED_SUPPLEMENTAL_REVISION_HISTORY_NOT_PROVEN = 6;
+- CANCELLATION_HISTORY_NOT_COMPLETE = 6;
+- REPRESENTATIVE_ISSUER_REVISION_CONTROL_NOT_OBSERVED = 4;
+- REPRESENTATIVE_AUTHORITY_ROUTE_NOT_OBSERVED = 4.
+
+Representative-ready lanes:
+- TWSE_EX_RIGHT_DIVIDEND_ACTUAL;
+- TWSE_CAPITAL_REDUCTION_REFERENCE.
+
+Still missing representative revision/authority controls:
+- TWSE_PAR_VALUE_CHANGE_REFERENCE;
+- TPEX_EX_RIGHT_DIVIDEND_ACTUAL;
+- TPEX_CAPITAL_REDUCTION_REFERENCE;
+- TPEX_PAR_VALUE_CHANGE_REFERENCE.
