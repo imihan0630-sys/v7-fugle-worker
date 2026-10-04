@@ -968,3 +968,53 @@ Durable evidence:
 4. D05-05 true OFI remains blocked by event-sequence completeness.
 5. D05-11/12/13 remain blocked by own-order/fill/queue evidence.
 6. No historical Prospective Shadow backfill and no actor-intent inference.
+
+
+## 2026-10-05 05:38 abnormal-interruption recovery — first L4 post-freeze session preflight
+
+Status: RECOVERED_FROM_ABNORMAL_INTERRUPTION / ROOM04_ABOVE_50 / D05_FIRST_SESSION_CAPTURE_BLOCKED  
+Formal Core: LOCKED.
+
+### Bootstrap recovery
+- Re-read latest main ROOM_BOOTSTRAP, ROOM_BOOTSTRAP_REGISTRY and RESEARCH_OUTPUT_CONTRACT after repeated chat/tool interruption.
+- Canonical tracker at recovery:
+  - D04 = 58.0%;
+  - D05 = 54.3%;
+  - weighted Room04 = 55.8%.
+- Therefore the prior owner goal of crossing 50% has already been legitimately achieved through L3 Taiwan PIT-feasibility promotions; do not redo those promotions.
+
+### Canonical L4 cursor recovered
+D04:
+- Wave-1 = D04-03 / D04-04 / D04-07.
+- Freeze = 2026-10-04T19:16:02+08:00.
+- First eligible post-freeze Taiwan trading session = 2026-10-05.
+- At 05:38 before market open, genuine post-freeze date count remains 0 by calendar structure only.
+- D04 may still create its first genuine daily parent after the 2026-10-05 official session completes, provided source/continuity/common-support gates pass.
+- No outcome interpretation before the parent-coverage checkpoint and D16 dependence/MDE review.
+
+D05:
+- Wave-1 = D05-03 / D05-04 / D05-09.
+- PR #327 is merged; bounded raw Quote/top-five research fields are present in main.
+- Scheduled cohort creation depends on .github/workflows/system1-c1-evidence.yml and a verified C1/C2 parent.
+- The run intended to prepare the next official session from 2026-10-02 executed at 2026-10-03 00:23 Asia/Taipei:
+  - GitHub Actions run 37033639328;
+  - result = failure;
+  - blocker = FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND;
+  - explicit readiness artifact was preserved;
+  - mayCountAsZeroPick=false.
+- Because no verified C1 parent existed, no valid C3 research cohort could be registered for Monday 2026-10-05.
+- Therefore 2026-10-05 must NOT be counted as a D05 Wave-1 parent date for the missing C3 cohort, even if later quotes/candles can be fetched retrospectively.
+- No historical/realtime backfill may be relabelled prospective.
+- Next D05 Wave-1 eligible date is the first future official trading session that was preceded by a successful verified C1/C2 registration and complete prospective C3 quote/depth capture.
+
+### Schedule semantics clarified
+- workflow cron 10 16 * * 1-5 is evaluated in UTC;
+- this corresponds to Tuesday-Saturday 00:10 Asia/Taipei;
+- it is intentionally positioned after Monday-Friday source sessions.
+- Monday 2026-10-05 readiness therefore depended on the Saturday 2026-10-03 Taipei run, not a Monday 00:10 run.
+
+### Exact next continuation
+1. D04-L4-W1-02: after the first complete official 2026-10-05 session, perform coverage-only parent audit for D04-03/04/07. Freeze eligible parent count, clean-date count, state/episode occupancy, UNKNOWN/exclusion reasons and exact common support before opening any future outcome.
+2. D05-L4-W1-02: do not count 2026-10-05 as a C3-derived D05 Wave-1 date. First verify the next scheduled C1/C2 evidence run produces a genuine C1 generation and successful C3 registration for the following official trading session; only then begin quote/depth/liquidity parent counting.
+3. Route FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND remediation to the existing System1 evidence-capture engineering owner if repair is required; Room04 does not patch production/runtime from this research checkpoint.
+4. No L4 maturity promotion yet; no FORMAL_OPTIMIZATION_CANDIDATE.
