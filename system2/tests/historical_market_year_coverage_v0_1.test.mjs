@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import {
   buildHistoricalMarketYearCoverageV0_1,
+  buildObservedIntervalUniverseRegistryV0_1,
   classifyHistoricalA1ObservationV0_1,
 } from "../runtime/historical_market_year_coverage_v0_1.mjs";
 
@@ -78,5 +79,46 @@ assert.deepEqual(unknown.missingBySymbol,[{
   firstMissingDate:"2017-01-04",lastMissingDate:"2017-01-04",
 }]);
 assert.equal(unknown.overallState,"PARTIAL");
+
+const tpexObserved=buildObservedIntervalUniverseRegistryV0_1({
+  market:"TPEX",
+  fromDate:"2017-01-01",
+  toDate:"2017-12-31",
+  rows:[
+    bar("6488","2017-01-03",{market:"TPEX"}),
+    bar("6488","2017-01-04",{market:"TPEX"}),
+    bar("1566","2017-03-01",{market:"TPEX"}),
+    bar("1566","2017-03-03",{market:"TPEX"}),
+  ],
+  currentListingByMarketSymbol:{
+    "TPEX|6488":{listingDate:"2014-03-28"},
+    "TPEX|3105":{listingDate:"2002-01-23"},
+  },
+});
+assert.equal(tpexObserved.state,"PARTIAL_OBSERVED_INTERVAL_UNIVERSE");
+assert.equal(tpexObserved.survivorshipComplete,false);
+assert.equal(tpexObserved.officialDelistingUnionComplete,false);
+assert.equal(tpexObserved.membershipCount,3);
+assert.equal(tpexObserved.officialCurrentCount,2);
+assert.equal(tpexObserved.observedHistoricalOnlyCount,1);
+assert.equal(tpexObserved.currentWithoutObservedRowsCount,1);
+assert.deepEqual(tpexObserved.memberships.find(x=>x.symbol==="6488"),{
+  market:"TPEX",symbol:"6488",replayEligible:true,
+  effectiveFrom:"2017-01-01",effectiveTo:null,listingDate:"2014-03-28",
+  firstObservedDate:"2017-01-03",lastObservedDate:"2017-01-04",
+  membershipBasis:"OFFICIAL_CURRENT_LISTING_DATE_PLUS_A1_OBSERVED",
+});
+assert.deepEqual(tpexObserved.memberships.find(x=>x.symbol==="1566"),{
+  market:"TPEX",symbol:"1566",replayEligible:true,
+  effectiveFrom:"2017-03-01",effectiveTo:"2017-03-03",listingDate:null,
+  firstObservedDate:"2017-03-01",lastObservedDate:"2017-03-03",
+  membershipBasis:"A1_OBSERVED_INTERVAL_ONLY_NO_OFFICIAL_DELISTING_UNION",
+});
+assert.deepEqual(tpexObserved.memberships.find(x=>x.symbol==="3105"),{
+  market:"TPEX",symbol:"3105",replayEligible:true,
+  effectiveFrom:"2017-01-01",effectiveTo:null,listingDate:"2002-01-23",
+  firstObservedDate:null,lastObservedDate:null,
+  membershipBasis:"OFFICIAL_CURRENT_LISTING_DATE_NO_A1_OBSERVATION",
+});
 
 console.log("historical_market_year_coverage_v0_1 tests passed");
