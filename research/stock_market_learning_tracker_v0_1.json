@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-04T19:18:00+08:00",
+  "updatedAt": "2026-10-04T19:24:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 45.7
+    "maturityWeightedPct": 45.8
   },
   "domains": [
     {
@@ -3511,7 +3511,7 @@
         "CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md",
         "CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md"
       ],
-      "maturityPct": 52.7,
+      "maturityPct": 54.5,
       "modules": [
         {
           "id": "D21-01",
@@ -3596,12 +3596,12 @@
         {
           "id": "D21-11",
           "name": "Tunneling／Minority Shareholder Risk利益輸送與小股東風險",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Tunneling／Minority Shareholder Risk利益輸送與小股東風險」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "DERIVED_RISK_LAYER / POSITIVE_CONTROL_REPLAY_PARTIAL / CONTEMPORANEOUS_PUBLIC_RECEIPT_BLOCKED / GOVERNANCE_TAIL_RISK / RESEARCH_ONLY",
-          "next": "已完成一個事後司法確認利益輸送案例＋一個具合理經濟目的 RPT 控制案例。下一步需補確認案例在原交易時點可取得的同時期公開證據，或建立第二個具 contemporaneous beneficiary/terms/control evidence 的高疑似案例；不得把後來判決倒填到早期決策日。完成 decision-time reproducibility 後才評估 L3。"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_DECISION_TIME_TUNNELING_STATE_REPLAY_VALIDATED / DATE_ONLY_CLOCK_CONSERVATIVE / GOVERNANCE_TAIL_RISK / CONFIDENCE / RESEARCH_ONLY",
+          "next": "擴大 UNKNOWN／AMBIGUOUS／HIGH_SUSPICION／CONFIRMED／REMediation 狀態樣本並做 OOS／前瞻驗證；日期只有到日的證據，除非能證明早於決策時間，否則最早下一交易日才可用。需驗證相對 D21-01／04／05、D07、D11 的增量資訊。無 OOS/Shadow 證據前不得升 L4。"
         },
         {
           "id": "D21-12",
@@ -3624,10 +3624,10 @@
           "next": "擴大多年度、多產業重大性樣本並做 OOS／前瞻驗證；至少控制產業、規模、資本支出循環、獲利、估值、法規導入階段與量測方法版本。無 OOS/Shadow 證據前不得升 L4。"
         }
       ],
-      "status": "D21_01_L2 / D21_02_L3 / D21_03_L2 / D21_04_L2 / D21_05_L3 / D21_07_L3 / D21_09_L3 / D21_10_L3 / D21_11_L2_PARTIAL_REPLAY / D21_12_L3 / D21_13_L3 / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "優先補 D21-11 決策時點可取得之利益輸送證據／替代高疑似案例，再補 D21-04 原始質押 receipt、D21-03 月度內部人 known_at、D21-01 所有權報告 known_at。所有 L3 模組後續只接受 OOS／前瞻證據升 L4。",
-      "lastResearchUpdate": "2026-10-04T19:18:00+08:00",
-      "researchNote": "D21-07 advanced to L3 with a replayable TSMC incentive-to-capital-allocation chain. The direct issuer-stated link is employee RSA dilution -> 3.249m-share buyback; capex and incentive approvals are not treated as causal merely because they co-occur. Later capex/capacity and completed buyback outcomes are kept behind an outcome-time firewall. MediaTek provides a falsification control that high payout and high R&D can coexist. Formal Core unchanged."
+      "status": "D21_01_L2 / D21_02_L3 / D21_03_L2 / D21_04_L2 / D21_05_L3 / D21_07_L3 / D21_09_L3 / D21_10_L3 / D21_11_L3 / D21_12_L3 / D21_13_L3 / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "優先處理 D21-04 原始質押設定／解除 receipt，再處理 D21-03 原始月度內部人 known_at 與第二種轉讓案例，最後補 D21-01 所有權報告 first-known。所有 L3 模組後續只接受 OOS／前瞻證據升 L4。",
+      "lastResearchUpdate": "2026-10-04T19:24:00+08:00",
+      "researchNote": "D21-11 advanced to L3 using Formosa Oilseed Processing 1225 decision-time public evidence. The state moves from AMBIGUOUS after a 2020-02-07 issuer correction revealing previously omitted related-party transactions, to HIGH_SUSPICION after the 2020-11-05 prosecutor indictment publicly alleging controller/beneficiary linkage, irregular transactions, concealment and quantified company loss. Date-only evidence is conservatively eligible from the next trading day unless an earlier exact timestamp is recovered. Formal Core unchanged."
     },
     {
       "id": "D22",
