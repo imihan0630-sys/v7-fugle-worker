@@ -739,3 +739,47 @@ No D19 module is promoted to L3 in Stage 6. Next gate: executable code + determi
 - All 15 active D19 modules are now L2 / 40%; domain simple-average maturity = 40.0%.
 - Formal Core remains unchanged and locked.
 - No formal optimization candidate.
+
+
+## 2026-10-04 Long-block Stage 7 — executable factor-layer receipts + real-source negative L3 gate
+
+### Engineering result
+- PR #439 merged to main as `76f5ef80dbf0654a033a0a780b065ebfabbf0e30`.
+- Added `system2/runtime/d19_factor_receipt_adapter_v0_1.mjs` implementing deterministic research-only universeReceipt, returnReceipt, factorInputReceipt, neutralizationReceipt, costReceipt and replayReceipt builders.
+- Added `system2/tests/d19_factor_receipt_adapter_v0_1.test.mjs` covering deterministic hash stability, input-order independence, duplicate-universe rejection, future availableAt rejection, required UNKNOWN preservation, upstream-hash propagation and incomplete-cost blocking.
+- Added `system2/scripts/d19_factor_receipt_real_source_smoke_v0_1.mjs` and a dedicated read-only official-source workflow.
+- Receipt-chain completeness and L3 data-feasibility eligibility are separate states. A complete six-receipt chain cannot self-promote when explicit eligibility blockers remain.
+
+### Physical validation
+- System2 Research CI run `37165603677`: PASS.
+- V8 Regression run `37165603710`: PASS.
+- D19 official real-source smoke run `37165603790`: PASS_NEGATIVE_L3_GATE with production isolation PASS.
+- Frozen interval: 2026-08-03 through 2026-08-31, 21 official trading dates.
+- TWSE official history succeeded with 22,810 full-market rows across the interval; bounded witness symbols 2330 and 2454 each had complete 21-session rows.
+- Observed 20-session features from official rows: 2330 momentum +1.4768% and realized volatility 1.3581%; 2454 momentum +0.3836% and realized volatility 2.8175%.
+- Last-row availableAt was 2026-08-31T05:30:00Z for both bounded TWSE witnesses, before the frozen decisionTimestamp 2026-08-31T05:40:00Z.
+- Real-source receipt chain was deterministic across reordered inputs/capture time and produced replay receipt hash `24e0751adeef3b9b0405c1ea4d57554ba8245cfd77a921304465ec0e5a205a52`.
+
+### Negative evidence / why D19 does NOT advance to L3
+The physical smoke deliberately returned l3DataFeasibilityEligible=false. The remaining blockers are substantive rather than cosmetic:
+1. BOUNDED_UNIVERSE_NOT_HISTORICAL_REGISTRY — the successful witness uses a bounded official-source set, not a date-vintaged historical-registry universe denominator.
+2. CORPORATE_ACTION_CONTINUITY_UNVERIFIED — raw daily bars still carry continuityState UNVERIFIED; a momentum or volatility factor cannot claim robust historical continuity across corporate actions from this smoke alone.
+3. INDUSTRY_NEUTRALIZATION_NOT_PROVEN — the smoke only proves within-market centering, not date-vintaged industry neutralization.
+4. D03_D09_REDUNDANCY_NOT_PROVEN — D19-04 has not yet demonstrated residual information beyond existing trend/momentum and industry/rotation families.
+5. COST_PROVENANCE_MODELED_TRANSPORT_ONLY — the cost receipt is an engineering transport placeholder, not a claim of actual/net factor performance.
+6. TPEX_OFFICIAL_HISTORICAL_SOURCE_UNAVAILABLE — during physical run 37165603790, both current and legacy TPEx official historical A1 transports returned HTTP 520 for 2026-08-03. The run preserved this as a blocker instead of fabricating rows or treating missing TPEx as zero.
+
+### Scientific implication
+- This stage materially improves engineering readiness but does not justify a maturity promotion.
+- D19-04 remains L2 / 40%. The next possible promotion would move one module from 40% to 60%, taking the 15-module D19 average from 40.0% to about 41.3%, but only after all L3 blockers applicable to that module are closed with a real frozen-date replay receipt.
+- D19-07 also remains L2 because low-beta requires a benchmark/beta-estimation contract beyond the current 21-session raw-volatility witness; observed volatility alone is not proof of low-beta feasibility.
+- Formal Core remains unchanged and locked. No ranking, threshold, production runtime, selection authority, push, capital or live-trading behavior changed.
+
+### Exact next evidence program
+1. Replace bounded-universe smoke membership with an actual historical-universe registry snapshot and deterministic membership receipt.
+2. Bind corporate-action continuity evidence to the exact D19 replay bars without rewriting raw history.
+3. Recover or replace the currently failing official TPEx historical transport only with a physically validated official source; until then TPEx remains SOURCE_UNAVAILABLE/UNKNOWN.
+4. Add date-vintaged industry membership and run industry neutralization.
+5. Run paired D03/D09 redundancy controls on identical PIT dates/universe.
+6. Replace transport-only cost placeholder with a versioned D14-compatible research cost scenario whose provenance quality is explicit.
+7. Re-run D19-04. Only a zero-blocker deterministic replay receipt can trigger an L3 readiness review; no automatic promotion.
