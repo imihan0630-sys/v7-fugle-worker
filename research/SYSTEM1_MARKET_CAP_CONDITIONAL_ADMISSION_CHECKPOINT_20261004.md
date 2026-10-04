@@ -1,7 +1,7 @@
 # System 1 market-cap conditional admission audit V0.1
 
 Date: 2026-10-04 Asia/Taipei
-Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_PENDING / FORMAL_CORE_LOCKED
+Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_GREEN_MERGED / FORMAL_CORE_LOCKED
 
 ## Purpose
 
@@ -176,3 +176,13 @@ Formal Core: LOCKED
 3. Accumulate independent dates before claiming practical gate burden.
 4. Join matched Shadow outcomes and execution-liquidity evidence only after sufficient prospective observations exist.
 5. Only then may a threshold reformulation become a Class-C proposal requiring explicit owner approval.
+
+## Merge acceptance
+
+- PR #490 merged at `bc06f4ea7e1cf1eecf8b816d3695e4b581c24832`.
+- Exact head `d7c402b7d7a5119b63cbefa8ac395ce25e2a4304`:
+  - V8 Regression Tests run `37181306065` PASS;
+  - V8 Repair CI run `37181306087` PASS;
+  - System1 C1 C2 isolated offline repair review run `37181306189` PASS.
+- No Worker/runtime/D1/Production/Formal/System2 behavior change or Cloudflare deployment was introduced.
+- The next required evidence is prospective and will be emitted by the existing daily C1 evidence workflow on genuine trading sessions.

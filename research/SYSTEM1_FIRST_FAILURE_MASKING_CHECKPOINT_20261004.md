@@ -1,7 +1,7 @@
 # System 1 first-failure masking audit V0.1
 
 Date: 2026-10-04 Asia/Taipei
-Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_PENDING / FORMAL_CORE_LOCKED
+Status: CLASS_A_RESEARCH_ONLY_IMPLEMENTED / DAILY_COLLECTOR_WIRED / CI_GREEN_MERGED / FORMAL_CORE_LOCKED
 
 ## Purpose
 
@@ -142,3 +142,13 @@ Formal Core: LOCKED
 3. Require mapping completeness before using firstFailure-vs-overlap comparisons in gate-priority discussions.
 4. Accumulate independent dates before claiming practical masking materiality.
 5. Gate reformulation remains Class-C and requires explicit owner approval plus mature prospective/OOS outcome evidence.
+
+## Merge acceptance
+
+- PR #496 merged at `f4099f904b0e050e9de5c9784ee12606c64b4229`.
+- Exact head `aff8d0cdc686bf999f04df6c3a3c3acc75929fd3`:
+  - V8 Regression Tests run `37181599119` PASS;
+  - V8 Repair CI run `37181599113` PASS;
+  - System1 C1 C2 isolated offline repair review run `37181599118` PASS.
+- No Worker/runtime/D1/Production/Formal/System2 behavior change or Cloudflare deployment was introduced.
+- The next required evidence is prospective and will be emitted by the existing daily C1 evidence workflow on genuine trading sessions.
