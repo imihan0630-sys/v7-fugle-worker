@@ -136,3 +136,64 @@ jobs:
           echo "system1_runtime_used=false"
           echo "selection_authority=false"
           echo "formal_core_changed=false"
+
+      - name: Reconcile JSON and CSV row keysets
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,csv,io,hashlib
+          j=json.load(open("/tmp/control.json",encoding="utf-8"))
+          t=j["tables"][0]
+          jrows=[[str(x) for x in row] for row in t["data"]]
+          raw=open("/tmp/control.csv","rb").read()
+          text=raw.decode("big5")
+          lines=[x for x in text.splitlines() if x.strip()]
+          rows=list(csv.reader(io.StringIO("\n".join(lines[2:]))))
+          crows=[[str(x) for x in row] for row in rows]
+          def key(row):
+              return tuple(row[1:])  # ignore display sequence number
+          jk=[key(x) for x in jrows]
+          ck=[key(x) for x in crows]
+          print("JSON_ROWS="+str(len(jrows)))
+          print("CSV_ROWS="+str(len(crows)))
+          print("JSON_UNIQUE_KEYS="+str(len(set(jk))))
+          print("CSV_UNIQUE_KEYS="+str(len(set(ck))))
+          print("JSON_ONLY="+str(len(set(jk)-set(ck))))
+          print("CSV_ONLY="+str(len(set(ck)-set(jk))))
+          print("DUP_JSON="+str(len(jk)-len(set(jk))))
+          print("DUP_CSV="+str(len(ck)-len(set(ck))))
+          assert len(jrows)==30
+          assert t.get("totalCount")==30
+          assert set(jk)==set(ck)
+          assert len(jk)==len(set(jk))
+          assert len(ck)==len(set(ck))
+          print("JSON_CSV_KEYSET_EQUIVALENCE=PASS")
+          PY
+
+      - name: Probe frozen source-local empty-control candidates
+        shell: bash
+        run: |
+          set -euo pipefail
+          ENDPOINT="https://www.tpex.org.tw/www/zh-tw/bulletin/sprcHis"
+          python - <<'PY' >/tmp/empty_candidates.txt
+          for y,c in [(2026,5),(2026,6),(2020,5)]:
+              print(f"{y}\t{c}")
+          PY
+          while IFS=$'\t' read -r year cate; do
+            out="/tmp/empty_${year}_${cate}.json"
+            code=$(curl --silent --show-error --location --max-time 30               --request POST               --header "Content-Type: application/x-www-form-urlencoded; charset=UTF-8"               --header "Referer: https://www.tpex.org.tw/zh-tw/announce/market/halt/historical.html"               --data-urlencode "date=${year}"               --data-urlencode "cate=${cate}"               --data-urlencode "response=json"               --output "${out}"               --write-out "%{http_code}"               "${ENDPOINT}")
+            echo "EMPTY_CANDIDATE year=${year} cate=${cate} http=${code} sha256=$(sha256sum "${out}" | awk '{print $1}') bytes=$(wc -c <"${out}")"
+            YEAR="${year}" CATE="${cate}" OUT="${out}" python - <<'PY'
+          import json,os
+          p=os.environ["OUT"]; y=os.environ["YEAR"]; c=os.environ["CATE"]
+          try: j=json.load(open(p,encoding="utf-8"))
+          except Exception as e:
+              print(f"EMPTY_CANDIDATE_RESULT year={y} cate={c} parse=FAIL error={e!r}")
+              raise SystemExit(0)
+          tables=j.get("tables") if isinstance(j.get("tables"),list) else []
+          total=sum(int(t.get("totalCount") or 0) for t in tables if isinstance(t,dict))
+          rows=sum(len(t.get("data") or []) for t in tables if isinstance(t,dict))
+          print(f"EMPTY_CANDIDATE_RESULT year={y} cate={c} stat={j.get('stat')} total={total} rows={rows}")
+          PY
+          done </tmp/empty_candidates.txt
