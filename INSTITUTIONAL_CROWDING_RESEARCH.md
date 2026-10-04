@@ -1183,3 +1183,67 @@ No additional maturity promotion is granted from this pre-registration. It only 
 
 FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 Formal Core remains LOCKED.
+
+---
+
+## IC-056 — D06-19 source gap refined: public-product gap, not data-existence gap
+
+Research cycle: 2026-10-04 Asia/Taipei
+Status: RESTRICTED_RESEARCH_SOURCE_EXISTS / PUBLIC_REUSABLE_PIT_CONTRACT_UNVERIFIED / L2_REMAINS / FORMAL_CORE_LOCKED
+
+Machine audit:
+`research/d06_19_retail_source_access_audit_v0_1.json`.
+
+### New source classification
+Earlier wording `STOCK_DATE_DIRECTIONAL_SOURCE_GAP` was too coarse because it could be read as if TWSE does not possess investor-type stock/order data.
+
+External evidence now proves otherwise.
+A 2026 Journal of Banking & Finance study states that the authors acquired a unique limit-order-book dataset directly from TWSE covering 2013-05-02 through 2018-03-31. Each order contains stock identifier, buy/sell direction, price/volume and investor type, including individual investor, foreign investor, others and securities investment trust.
+
+Therefore the safe state is:
+`DIRECT_DOMESTIC_INDIVIDUAL_STOCK_ORDER_DATA_EXISTS_AT_TWSE`
+but
+`CURRENT_AUTHORIZED_REUSABLE_PIT_RESEARCH_CONTRACT = UNVERIFIED`.
+
+### Public Data E-Shop is not automatically the same dataset
+TWSE Data E-Shop currently advertises historical order-book products such as `Order book log`, `Securities intra-day data with order type`, and `Securities intra-day data with 5-level order book`. Their public product descriptions specify history, price and internal-use restrictions, but do not advertise investor-type identity as a field.
+
+Accordingly, the academically used investor-type limit-order dataset must not be assumed to be identical to the standard public Data E-Shop historical products.
+
+### Four access classes are now separated
+1. PUBLIC_AGGREGATE: market/channel/ownership natural-person statistics;
+2. PERSONAL_ACCOUNT_SCOPED: investors may retrieve their own account/order/trade records;
+3. PUBLIC_STANDARD_DATA_PRODUCT: historical market/order-book products whose advertised fields do not establish domestic-natural-person identity;
+4. RESTRICTED_RESEARCH: direct TWSE investor-type stock/order data demonstrably used by academic researchers, with current access/application/licence contract not yet verified.
+
+### L3 decision
+D06-19 remains L2/40%.
+
+Why:
+- historical academic access proves data existence, not current project authorization;
+- current eligibility/application path, cost/licence, permitted persistence, coverage, delivery clock and replay rights are not frozen;
+- TPEx parity is not verified;
+- no current immutable prospective receipt exists.
+
+Do not autonomously purchase or request restricted data.
+
+---
+
+## IC-057 — cross-room governance state refresh after H06/H14 closure
+
+Total-control intake now records:
+- H06 D06-06 Crowding vs D20-06 Herding = `CLOSED_NO_STRUCTURAL_CHANGE`; keep separate. D06-06 owns observable crowding; D20-06 must own independently identified behavioral/herding content.
+- H14 D06-11 Passive Flow vs D11-14 Index Adjustment = `CLOSED_NO_STRUCTURAL_CHANGE`; keep producer/consumer boundary and a single event receipt.
+- H12 short-side execution cluster remains `PARTIAL_EVIDENCE_RECEIVED`: Room05 + Room13 semantic work exists, but Room10 execution counterpart and Room13 first live TWSE source receipt remain required.
+
+Research consequence:
+- remove obsolete H06/H14 counterpart-pending language from Room05 continuation state;
+- no maturity increase follows from closure alone;
+- H12 remains a live dependency but does not block D06's other research lanes.
+
+Exact continuation:
+1. D06-19: identify current TWSE restricted-research application/licensing route for investor-type stock/order data; no autonomous purchase/request.
+2. D06-05: wait for prospective same-generation immutable TDCC lineage; no historical reconstruction.
+3. H12: await Room10 counterpart + first live TWSE source receipt.
+4. Execute the pre-registered next-trading-day capture plan when a valid session arrives.
+5. Formal Core remains LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
