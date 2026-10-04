@@ -352,3 +352,30 @@ Cross-room checkpoint deltas were routed. No maturity, module-count or Formal ch
 
 Current 00 approval blocker:
 H09 is `OWNER_APPROVAL_REQUIRED` for KEEP_SEPARATE / SCOPE_DEDUP_ONLY between D16-19 and D16-25.
+
+
+## H09 canonical completion — owner approved 2026-10-04
+
+Owner approved H09 `KEEP_SEPARATE / SCOPE_DEDUP_ONLY`.
+
+Canonical update completed:
+- D16-19 = model/calibrator fitting, probability-quality diagnostics, model/calibration drift and immutable CalibrationReceipt producer.
+- D16-25 = calibrated-belief consumer owning prior/Bayesian update, uncertainty, expected utility, risk-coverage and ABSTAIN.
+- D16-25 may consume calibration-quality metadata but cannot fit a second calibrator or create a second probability authority.
+- both remain L2/40%;
+- names unchanged;
+- module count and aggregate maturity unchanged;
+- System1/System2 Formal and runtime unchanged.
+
+Learning Map / Router D16-19 row was also synchronized from stale L0/0 to the already-canonical Tracker L2/40; this was a mirror correction, not a new promotion.
+
+Canonical receipts:
+- `shared-knowledge/CURRICULUM_H09_CANONICAL_UPDATE_RECEIPT_20261004_V0_1.md`;
+- `shared-knowledge/curriculum_h09_canonical_update_receipt_20261004_v0_1.json`.
+
+Exact next 00 continuation:
+1. H09 is closed; do not reopen unless new evidence invalidates the producer-consumer boundary.
+2. H06 and H07 remain Room13-counterpart gated.
+3. H12 remains Room10 + Room13-counterpart gated.
+4. H14 remains closed no-structural-change.
+5. Continue scanning latest main for complete-but-unregistered H/COV packets; COV-12 and AOKD-05 retain their existing gates.
