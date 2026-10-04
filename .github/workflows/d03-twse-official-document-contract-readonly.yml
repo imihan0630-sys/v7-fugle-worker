@@ -325,6 +325,54 @@ jobs:
                       if pos>=0:
                           print(tag+"_DETAIL_CONTEXT_"+needle+"="+html[max(0,pos-300):min(len(html),pos+900)].replace("\n"," ")[:1300])
 
+      - name: Resolve official-document detail API token contract
+        shell: python
+        run: |
+          import json, subprocess, re, urllib.parse, hashlib
+
+          token="0DE33D5F8CB111F19A80005056BE3760"
+          page="https://wwwc.twse.com.tw/zh/announcement/announcement/detail.html?"+token
+          p=subprocess.run(["curl","--fail","--silent","--show-error","--location","--max-time","30",page],
+                           text=True,capture_output=True,check=True)
+          html=p.stdout
+          print("DETAIL_INLINE_CONTEXTS_BEGIN")
+          for needle in ("location.search","onload-argv","announcement_detail","URLSearchParams","search.substring","document.location"):
+              pos=0; hits=0
+              while True:
+                  i=html.find(needle,pos)
+                  if i<0: break
+                  hits+=1
+                  print("DETAIL_INLINE needle="+needle+" hit="+str(hits))
+                  print(html[max(0,i-600):min(len(html),i+1600)].replace("\n"," ")[:2400])
+                  pos=i+len(needle)
+                  if hits>=6: break
+          print("DETAIL_INLINE_CONTEXTS_END")
+
+          base="https://wwwc.twse.com.tw/rwd/zh/announcement/announcement_detail"
+          variants=[
+              {"id":token,"response":"json"},
+              {"ID":token,"response":"json"},
+              {"uuid":token,"response":"json"},
+              {"keyword":token,"response":"json"},
+          ]
+          for q in variants:
+              url=base+"?"+urllib.parse.urlencode(q)
+              z=subprocess.run(["curl","--fail","--silent","--show-error","--location","--max-time","30",url],
+                               text=True,capture_output=True)
+              print("DETAIL_API_VARIANT="+url)
+              print("DETAIL_API_EXIT="+str(z.returncode))
+              if z.returncode==0:
+                  raw=z.stdout
+                  print("DETAIL_API_BYTES="+str(len(raw.encode("utf-8"))))
+                  print("DETAIL_API_SHA256="+hashlib.sha256(raw.encode("utf-8")).hexdigest())
+                  try:
+                      obj=json.loads(raw)
+                      print("DETAIL_API_JSON="+json.dumps(obj,ensure_ascii=False)[:12000])
+                  except Exception:
+                      print("DETAIL_API_TEXT_HEAD="+json.dumps(raw[:3000],ensure_ascii=False))
+              else:
+                  print("DETAIL_API_ERROR="+z.stderr[:600])
+
       - name: Bounded raw-page grep
         shell: bash
         run: |
