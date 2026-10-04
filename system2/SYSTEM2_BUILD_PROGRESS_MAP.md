@@ -629,3 +629,14 @@ Only representative gap:
 - TWSE par-value change.
 
 KnownAt and bounded-completeness blockers remain unchanged.
+
+## 2026-10-04 TWSE par-value U04 alternate-source result
+
+- PR #577: U04 source/serializer physical checks PASS.
+- Four frozen 2025 TWSE par-value events queried in company + listed-market scopes.
+- issuerEvidenceCandidateCount=0.
+- revisionParValueCandidateCount=0.
+- representative authority remains 5/6.
+- exact U04 path is now an exhausted negative route unless new source evidence changes the premise.
+
+Next: distinct official-source family inventory -> bounded alternate-source probes -> structural-unavailability disposition if all materially distinct historical routes remain negative.
