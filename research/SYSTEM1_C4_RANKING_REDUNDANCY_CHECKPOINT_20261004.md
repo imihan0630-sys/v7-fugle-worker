@@ -149,6 +149,7 @@ Isolation semantics:
 - a C4 tuple/decomposition/parity problem returns `DATA_QUALITY_BLOCKED` for C4 without invalidating otherwise-valid C1/C2/C3 evidence;
 - a valid V8.17 generation with zero qualified rows returns `NO_QUALIFIED_RANKING_POPULATION`;
 - pre-V8.17 generations return `LEGACY_NO_C4_RANKING_INPUT` and are never reconstructed/backfilled.
+- V8.17+ generations missing the required capture marker are `DATA_QUALITY_BLOCKED`, never mislabeled as legacy.
 
 Collector integration performs zero additional HTTP/provider calls. Existing C3 registration semantics and the 00:10 Taipei evidence schedule remain unchanged.
 
