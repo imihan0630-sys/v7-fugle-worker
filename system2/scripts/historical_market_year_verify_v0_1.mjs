@@ -123,6 +123,162 @@ async function fetchTwseSuspensionIntervals(){
   };
 }
 
+async function fetchTpexSuspensionIntervals(){
+  const url="https://www.tpex.org.tw/www/zh-tw/bulletin/sprcHis";
+  const body=new URLSearchParams({date:String(year),cate:"1",response:"json"});
+  let response;
+  let rawText="";
+  try{
+    response=await fetch(url,{
+      method:"POST",
+      redirect:"follow",
+      headers:{
+        accept:"application/json,text/plain,*/*",
+        "content-type":"application/x-www-form-urlencoded; charset=UTF-8",
+        referer:"https://www.tpex.org.tw/zh-tw/announce/market/halt/historical.html",
+        "user-agent":"System2-DATA-LANE-market-year-verify/0.3",
+      },
+      body,
+      signal:AbortSignal.timeout(60000),
+    });
+    rawText=await response.text();
+  }catch(error){
+    return {
+      state:"SOURCE_TRANSPORT_UNAVAILABLE_PARTIAL",
+      sourceUrl:url,
+      sourceHash:null,
+      upstreamStatus:null,
+      fields:[],
+      intervalCount:0,
+      intervals:[],
+      absenceCertifiesNoSuspension:false,
+      sourceHistoryStart:null,
+      limitation:"TPEx halt/resumption transport failed for requested historical year; no absence inference permitted: "+String(error?.message||error),
+    };
+  }
+  const sourceHash=sha256Text(rawText);
+  if(!response.ok){
+    return {
+      state:"SOURCE_HTTP_UNAVAILABLE_PARTIAL",
+      sourceUrl:url,
+      sourceHash,
+      upstreamStatus:"HTTP_"+response.status,
+      fields:[],
+      intervalCount:0,
+      intervals:[],
+      absenceCertifiesNoSuspension:false,
+      sourceHistoryStart:null,
+      limitation:"TPEx halt/resumption historical request returned HTTP "+response.status+"; no absence inference permitted.",
+    };
+  }
+
+  let payload;
+  try{
+    payload=JSON.parse(rawText);
+  }catch(error){
+    return {
+      state:"SOURCE_PARSE_UNAVAILABLE_PARTIAL",
+      sourceUrl:url,
+      sourceHash,
+      upstreamStatus:null,
+      fields:[],
+      intervalCount:0,
+      intervals:[],
+      absenceCertifiesNoSuspension:false,
+      sourceHistoryStart:null,
+      limitation:"TPEx halt/resumption historical response was not valid JSON; no absence inference permitted.",
+    };
+  }
+
+  const tables=Array.isArray(payload?.tables)?payload.tables:[];
+  const table=tables[0]||{};
+  const fields=Array.isArray(table.fields)?table.fields.map(normalizedField):[];
+  const data=Array.isArray(table.data)?table.data:[];
+  const totalCount=Number(table.totalCount??data.length);
+  const stat=String(payload?.stat??"").trim();
+
+  if(stat.toLowerCase()!=="ok" || (fields.length===0 && data.length>0)){
+    return {
+      state:"SOURCE_SCHEMA_UNAVAILABLE_PARTIAL",
+      sourceUrl:url,
+      sourceHash,
+      upstreamStatus:stat||null,
+      fields,
+      intervalCount:0,
+      intervals:[],
+      absenceCertifiesNoSuspension:false,
+      sourceHistoryStart:null,
+      limitation:"TPEx halt/resumption historical schema/stat not accepted for requested year; no absence inference permitted.",
+    };
+  }
+  assert.equal(totalCount,data.length,"TPEx sprcHis totalCount must match returned rows");
+
+  if(data.length===0){
+    return {
+      state:"SOURCE_LOCAL_EMPTY_UNCERTIFIED_HISTORY",
+      sourceUrl:url,
+      sourceHash,
+      upstreamStatus:stat,
+      fields,
+      intervalCount:0,
+      intervals:[],
+      absenceCertifiesNoSuspension:false,
+      sourceHistoryStart:null,
+      limitation:"Source-local empty is preserved, but 2017 all-history completeness is not certified by the bounded 2026 machine contract.",
+    };
+  }
+
+  const symbolIndex=fields.findIndex((x)=>x.includes("有價證券代號")||x.includes("證券代號")||x==="代號");
+  const suspendedIndex=fields.findIndex((x)=>x.includes("暫停交易日期"));
+  const resumedIndex=fields.findIndex((x)=>x.includes("恢復交易日期"));
+  if(symbolIndex<0 || suspendedIndex<0){
+    return {
+      state:"SOURCE_FIELD_CONTRACT_UNAVAILABLE_PARTIAL",
+      sourceUrl:url,
+      sourceHash,
+      upstreamStatus:stat,
+      fields,
+      intervalCount:0,
+      intervals:[],
+      absenceCertifiesNoSuspension:false,
+      sourceHistoryStart:null,
+      limitation:"TPEx halt/resumption historical fields did not match certified names; no absence inference permitted.",
+    };
+  }
+
+  const intervals=[];
+  for(const row of data){
+    if(!Array.isArray(row))continue;
+    const symbol=String(row[symbolIndex]??"").trim();
+    if(!/^[1-9][0-9]{3}$/.test(symbol))continue;
+    const suspendedFrom=dateFromAny(row[suspendedIndex]);
+    const resumedOn=resumedIndex>=0?dateFromAny(row[resumedIndex]):null;
+    if(!suspendedFrom)continue;
+    intervals.push({
+      market:"TPEX",
+      symbol,
+      suspendedFrom,
+      resumedOn,
+      coverageTo:toDate,
+      sourceRowHash:sha256Text(JSON.stringify({fields,row})),
+    });
+  }
+  return {
+    state:"OBSERVED_POSITIVE_INTERVALS_UNCERTIFIED_HISTORY",
+    sourceUrl:url,
+    sourceHash,
+    upstreamStatus:stat,
+    fields,
+    intervalCount:intervals.length,
+    intervals,
+    absenceCertifiesNoSuspension:false,
+    sourceHistoryStart:null,
+    boundedMachineContract:"D03_TPEX_HALT_RESUMPTION_MACHINE_CONTRACT_V0_2",
+    allHistoryCompletenessCertified:false,
+    limitation:"Positive rows may classify matching gaps; absence outside observed rows does not certify no suspension for 2017.",
+  };
+}
+
 const db=await createRemoteD1RestAdapter({
   accountId,apiToken,databaseName:"system2-research",
 });
@@ -284,18 +440,7 @@ if(market==="TWSE"){
     },
     survivorshipCompleteForDataCoverage:false,
   };
-  suspension={
-    state:"PARTIAL_2017_TPEX_HALT_HISTORY_NOT_CERTIFIED",
-    sourceUrl:"https://www.tpex.org.tw/www/zh-tw/bulletin/sprcHis",
-    sourceHash:null,
-    upstreamStatus:null,
-    fields:[],
-    intervalCount:0,
-    intervals:[],
-    absenceCertifiesNoSuspension:false,
-    sourceHistoryStart:null,
-    limitation:"Official machine route is bounded-verified for modern controls, but 2017 all-history completeness is not certified.",
-  };
+  suspension=await fetchTpexSuspensionIntervals();
 }
 
 const coverage=buildHistoricalMarketYearCoverageV0_1({
