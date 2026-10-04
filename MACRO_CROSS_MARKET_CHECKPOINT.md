@@ -629,3 +629,43 @@ Remaining Room09 contribution for terminal H17:
 - provide clean common-support rate states that Room15 D22-04 can benchmark against.
 
 D13-06 remains separate from issuer spread and enterprise WACC.
+
+
+## 2026-10-04 Room09 continuation — MC-182..MC-186 lossless CBC 2025Q2 revision path
+
+Status: RESEARCH_ONLY / CLASS_A_SOURCE_QA / OUTCOMES_CLOSED / NO_PROMOTION.
+Durable evidence: `research/d12_d13_native_parent_revision_lineage_20261004_v0_1.md`.
+
+### MC-182 — 2025-11-20 native vintage
+Official CBC XLSX was fetched losslessly. Bytes=35,729; SHA-256=`0b81830e6fb5b24c7acb1bfa5b7d90f6eaa02a13980e67bf06bef4a0c02f064a`. Worksheet 3 marks 2025Q2 as `2r` and current account = 367.59 USD100m. The original 2025-08-20 value 362.29 had therefore already been revised by 2025-11-20.
+
+### MC-183 — 2026-02-26 native vintage
+Official CBC XLSX bytes=35,744; SHA-256=`b06555d1f3c3bcfa6caf324ab06cf0708939e9f053aed57852ce12f3dd89f0cf`. Worksheet 3 marks 2025Q2 as `2r` and current account = 363.27. The revision moved back toward the original value; revisions are not monotonic.
+
+### MC-184 — 2026-05-20 native vintage
+Official CBC XLSX bytes=31,636; SHA-256=`2161dcb4bc08c43de3a3cec5bccc3dc2810ed77c30f75bc63da59296f47673eb`. Worksheet 2 marks 2025Q2 as `2r` and current account = 363.50.
+
+### MC-185 — 2026-08-20 native vintage
+Official CBC XLSX bytes=35,716; SHA-256=`989a9a5f322577097696bea6ff5826ba76d0fb179cccfeb1c3f0b6ed59544263`. Worksheet 3 marks 2025Q2 as `2r` and current account = 372.01, matching the previously observed later endpoint.
+
+The native publication-vintage path is therefore:
+362.29 (2025-08-20 original)
+→ 367.59 (2025-11-20)
+→ 363.27 (2026-02-26)
+→ 363.50 (2026-05-20)
+→ 372.01 (2026-08-20).
+
+### MC-186 — revision lineage is a state path, not an endpoint pair
+- CBC historical quarter values can change repeatedly and non-monotonically across releases.
+- Original/final comparison alone hides intermediate information states and can create false historical signals.
+- The exact first-public date of 372.01 is currently bounded to after 2026-05-20 and no later than 2026-08-20. Do not tighten this interval without a more granular official publication/database-vintage receipt.
+- Every macro feature using revised BOP history must bind publication vintage, reference quarter, revision marker and observedAt/knownAt. Backfilling the latest history into prior decisions is LOOK_AHEAD.
+- Revision magnitude is not automatically macro surprise; it may reflect source-report updates, classification, seasonal/statistical processing or other statistical revisions.
+- D13 remains 41.1%; D13-17 remains L2; strict clean prospective dates added=0. Outcomes CLOSED; Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+
+### Exact next continuation after MC-186
+1. Only if decision value justifies it, search official CBC evidence inside the interval (2026-05-20, 2026-08-20] to narrow the first-public 372.01 timestamp; do not treat a current database value as immutable historical publication evidence.
+2. Freeze an append-only BOP revision-receipt schema: reference period + publication vintage + marker + value + source hash + capturedAt/knownAt.
+3. Use revision lineage first as data-quality/vintage state, not a directional Taiwan-stock factor.
+4. Continue prospective CBC/H.4.1/TWSE source-attested dates; no L3/OOS/optimization before applicable gates.
+5. D12 continuation is DR-082 parity/common-support QA on the real 2026-10-02 TXO parent.
