@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-04 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_FROZEN",
+  "evidenceCursor": "PVE-239",
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": "NONE",
+  "dependenceUnit": "scanDate",
+  "floors": {
+    "DESCRIPTIVE_READY": {
+      "cleanScanDates": 20,
+      "commonSupportRequired": true,
+      "l4Promotion": false
+    },
+    "L4_EVIDENCE_ELIGIBLE": {
+      "completedEligibleEvents": 100,
+      "cleanScanDates": 30,
+      "commonSupportRequired": true,
+      "dataQaPass": true,
+      "cleanCohortProvenance": true,
+      "generationAlignment": true,
+      "formalIsolationPass": true
+    },
+    "milestones": [
+      100,
+      250,
+      500
+    ]
+  },
+  "experiments": {
+    "W1_H001": {
+      "module": "D02-02",
+      "hypothesis": "H001",
+      "primaryContrast": "C_vs_B",
+      "models": {
+        "A": [
+          "FormalContext"
+        ],
+        "B": [
+          "FormalContext",
+          "formalLocalVolumeRatio"
+        ],
+        "C": [
+          "FormalContext",
+          "formalLocalVolumeRatio",
+          "pvSlotRvol20"
+        ],
+        "D": [
+          "FormalContext",
+          "formalLocalVolumeRatio",
+          "pvSlotRvol20",
+          "pvCumvolPace20"
+        ]
+      },
+      "minSlot": "10:15",
+      "D_isSecondary": true,
+      "D_requires": "H002 redundancy/common-support pass"
+    },
+    "W1_H20": {
+      "module": "D02-03",
+      "hypothesis": "H20",
+      "primitiveEventOwner": "D01-05",
+      "primaryContrast": "C_vs_B",
+      "independentPrimitiveVote": false,
+      "models": {
+        "A": [
+          "D01 price-only breakout"
+        ],
+        "B": [
+          "A",
+          "localPrevious5VolumeRatio"
+        ],
+        "C": [
+          "B",
+          "sameSlotRVOL"
+        ],
+        "D": [
+          "C",
+          "cumulativeParticipationPace"
+        ]
+      }
+    },
+    "W1_H003": {
+      "module": "D02-06",
+      "hypothesis": "H003",
+      "primaryContrast": "PRICE_PLUS_VOLUME_RESPONSE_vs_PRICE_ONLY_RESPONSE",
+      "models": {
+        "P": [
+          "price geometry only"
+        ],
+        "PV": [
+          "same price geometry",
+          "volume effort"
+        ]
+      },
+      "outcomeMustStartStrictlyAfterFeatureBar": true,
+      "maturityCounter": "H003_HYPOTHESIS_CLEAN_EVENT_COUNT",
+      "qaOnlyCounter": "PRE_EVENT_ONLY_EXPIRY"
+    }
+  },
+  "outcomeStates": [
+    "OUTCOME_ACCESS_CLOSED",
+    "DESCRIPTIVE_ONLY",
+    "L4_EVIDENCE_ELIGIBLE",
+    "L4_PROMOTION_REVIEW"
+  ],
+  "forbidden": [
+    "post-outcome threshold search",
+    "post-outcome slot selection",
+    "post-outcome horizon search",
+    "different-support model comparison",
+    "dropping losing dates",
+    "historical Shadow fabrication",
+    "naive IID row-level significance as primary inference"
+  ]
+}
