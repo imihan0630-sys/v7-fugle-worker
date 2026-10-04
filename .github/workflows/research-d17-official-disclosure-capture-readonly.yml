@@ -1,4 +1,5 @@
 name: D17 Official Disclosure Capture Readonly
+# research-trigger: 2026-10-05T07:14+08:00
 
 on:
   push:
