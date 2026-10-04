@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "pattern-detector-salience-memory-firewall-v0.1",
+  "updated": "2026-10-04 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "mechanismLayers": [
+    "M0_NON_ANCHOR_HORIZONTAL_CONTROL",
+    "M1_DETECTOR_SALIENCE_CONTROL",
+    "M2_CONFIRMED_STRUCTURAL_ZONE"
+  ],
+  "primaryControl": {
+    "detectorFamily": "SAME_AS_TRUE_ZONE",
+    "symbol": "SAME_AS_TRUE_ZONE",
+    "semanticSpace": "SAME_AS_TRUE_ZONE",
+    "stateAtLandmark": "UNCONFIRMED_ACTIVE",
+    "landmark": "TRUE_ZONE_CONFIRMED_AT"
+  },
+  "futureStateBackfill": "PROHIBITED",
+  "outcomeTunedMatching": "PROHIBITED",
+  "salienceScore": "NOT_DEFINED",
+  "retainAllEligibleControls": true,
+  "inferenceOwner": "D16",
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
