@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "D06_18_PUBLIC_SBL_SOURCE_LAYER_CONTRACT_V0_1",
+  "updatedAt": "2026-10-05T15:43:00+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-18",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "objective": "Separate Taiwan public securities-lending quote, execution, balance and true-inventory evidence so one disclosure cannot be misused as all four borrow-economics objects.",
+  "officialEvidence": [
+    {
+      "source": "TWSE SBL Rules Article 28",
+      "url": "https://twse-regulation.twse.com.tw/ENG/EN/law/DOC01.aspx?FLCODE=FL007044&FLNO=28",
+      "evidence": "Internet/computer disclosure is required for fixed-rate executed quantity plus unexecuted lend/borrow totals and for competitive-bid executions plus best-five lend/borrow rate/quantity and totals."
+    },
+    {
+      "source": "TWSE SBL Disclosures",
+      "url": "https://www.twse.com.tw/en/products/sbl/disclosures/info.html",
+      "evidence": "Borrowing is explicitly not equivalent to short selling; borrowed securities can support hedging, arbitrage, loan returns and other uses."
+    },
+    {
+      "source": "TWSE historical transaction inquiry",
+      "url": "https://wwwc.twse.com.tw/en/products/sbl/disclosures/t13sa710.html",
+      "evidence": "Public historical transaction inquiry exposes traded-date, transaction-type and stock filters with HTML/CSV download controls; exact stable programmatic parameter contract remains unfrozen."
+    },
+    {
+      "source": "TWSE SBL balance public inquiry",
+      "url": "https://wwwc.twse.com.tw/en/products/sbl/disclosures/twt72u.html",
+      "evidence": "Public balance inquiry exposes historical date/category query and CSV download and states data availability since 2004-11-22."
+    },
+    {
+      "source": "TWSE Data E-Shop TWT72U",
+      "url": "https://eshop.twse.com.tw/en/product/detail/790d45d2b28b4f50a52a951ec0723150",
+      "evidence": "End-of-day SBL balance product is generated at 20:30 and contains prior balance, current borrowing, returns, current balance, close and market value; it does not provide live quote-book depth or true lendable inventory."
+    }
+  ],
+  "sourceLayers": [
+    {
+      "layer": "BORROW_QUOTE_BOOK_INTRADAY",
+      "evidenceObject": "fixed/competitive displayed lend and borrow quantities/rates, including best five where applicable",
+      "sourceState": "OFFICIAL_PUBLIC_DISCLOSURE_REQUIRED / DYNAMIC_BROWSER_PAGE_EXISTS / REPLAYABLE_MACHINE_CONTRACT_UNVERIFIED",
+      "identity": "Displayed quote book, not executed demand and not total lendable inventory",
+      "todaysState": "2026-10-05 frozen 15:20 attempt remains UNKNOWN/MISSING and cannot be backfilled"
+    },
+    {
+      "layer": "BORROW_EXECUTION_RATE",
+      "evidenceObject": "executed transaction type, volume and fee rate",
+      "sourceState": "PUBLIC_HISTORICAL_QUERY_AND_CSV_CONTROL_EXIST / STABLE_MACHINE_PARAMETER_CONTRACT_UNVERIFIED",
+      "identity": "Realized transaction evidence, not current available supply"
+    },
+    {
+      "layer": "BORROW_BALANCE_EOD",
+      "evidenceObject": "previous balance, current borrowing, returns, current balance",
+      "sourceState": "PUBLIC_HISTORY_EXISTS / DATA_ESHOP_MACHINE_PRODUCT_TWT72U_DOCUMENTED",
+      "identity": "Position/flow stock evidence, not fee/depth and not short sale identity"
+    },
+    {
+      "layer": "TOTAL_LENDABLE_INVENTORY",
+      "evidenceObject": "verified denominator covering total securities actually available to lend",
+      "sourceState": "UNVERIFIED",
+      "identity": "Required denominator for true utilization",
+      "guard": "No proxy denominator may be silently substituted"
+    }
+  ],
+  "forbiddenConversions": [
+    "BORROW_BALANCE_EOD -> BORROW_QUOTE_BOOK_INTRADAY",
+    "BORROW_EXECUTION_RATE -> SHORT_DIRECTIONAL_CONVICTION",
+    "UNEXECUTED_LEND_QTY -> TOTAL_LENDABLE_INVENTORY",
+    "SBL_TRANSACTION_VOLUME -> SHORT_SALE_VOLUME",
+    "BORROW_QUOTE_BOOK_INTRADAY -> EXECUTABLE_OWN_FILL",
+    "ANY_AVAILABLE_NUMERATOR / UNVERIFIED_DENOMINATOR -> TRUE_UTILIZATION"
+  ],
+  "futureCaptureProtocol": {
+    "liveQuoteReceipt": [
+      "tradeDate",
+      "capturedAt",
+      "firstKnownAt",
+      "transactionType",
+      "symbol",
+      "fixedRateIfApplicable",
+      "executedQty",
+      "executedRateIfApplicable",
+      "displayedUnexecutedLendQty",
+      "displayedUnexecutedBorrowQty",
+      "bestFiveLendRateQtyIfApplicable",
+      "bestFiveBorrowRateQtyIfApplicable",
+      "recallTerm",
+      "quotePersistenceRuleVintage",
+      "sourceVersion",
+      "contentHash",
+      "parseStatus",
+      "unknownReasons"
+    ],
+    "executionReplayReceipt": [
+      "tradeDate",
+      "transactionType",
+      "symbol",
+      "executedQty",
+      "executedRate",
+      "capturedAt",
+      "sourceVersion",
+      "contentHash"
+    ],
+    "balanceReceipt": [
+      "tradeDate",
+      "symbol",
+      "previousBalance",
+      "currentBorrowing",
+      "currentReturns",
+      "currentBalance",
+      "capturedAt",
+      "sourceVersion",
+      "contentHash"
+    ],
+    "trueInventoryReceipt": "ABSENT until a verified total-lendable-inventory source is established",
+    "noBackfillRule": "A future successful machine route may improve future captures but cannot overwrite the already-frozen 2026-10-05 15:20 UNKNOWN/MISSING slot."
+  },
+  "maturityImpact": "NONE",
+  "status": "SOURCE_LAYER_DECOMPOSITION_COMPLETE / LIVE_QUOTE_MACHINE_ROUTE_UNVERIFIED / TRUE_UTILIZATION_DENOMINATOR_UNKNOWN / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Preserve today's missing slot. Before the next valid trading-date capture, continue authorized discovery only for a stable public/machine representation of the live SBL quote book. Historical execution/balance replay can be developed separately, but may not substitute for the live quote layer or true inventory."
+}
