@@ -1186,3 +1186,21 @@ Exact next SDA continuation is now event-driven:
 5. independently close SDA-016/SDA-017 only from 00 after D16/System evidence;
 6. blocked SDA-010/SDA-012 remain frozen behind existing owner gates and are not unblocked by generic continuation;
 7. Formal Core remains locked.
+
+
+## 2026-10-05 global web-tool policy — Firecrawl replaces TinyFish for new work
+
+Owner decision is now durable in:
+`shared-knowledge/GLOBAL_EXTERNAL_WEB_TOOL_POLICY_V0_1.md`.
+
+Effective immediately for all rooms/projects that load this repository/shared bootstrap:
+- TinyFish = DISALLOWED_FOR_NEW_WORK;
+- Firecrawl = DEFAULT_EXTERNAL_WEB_RESEARCH_PLUGIN_WHEN_AVAILABLE;
+- no silent fallback from unavailable Firecrawl to TinyFish;
+- native ChatGPT web/search/browser may be used when sufficient;
+- repository-owned API/Playwright/CI collectors remain valid and are not automatically replaced;
+- historical TinyFish provenance remains immutable.
+
+Bootstrap and AGENTS both reference this policy, and ROOM_BOOTSTRAP_REGISTRY contains the machine-readable rule.
+
+At policy creation, Firecrawl is available in the ChatGPT plugin directory but is not installed at account level. This is a connection-state note only; the routing policy is already active.
