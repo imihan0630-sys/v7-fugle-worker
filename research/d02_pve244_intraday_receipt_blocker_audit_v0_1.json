@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "D02_PVE244_BLOCKER_AUDIT_V0_1",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "status": "SOURCE_BLOCKED",
+  "evidenceCursor": "PVE-244_ACTIVE_NOT_COMPLETED",
+  "blockers": [
+    "NO_DECISION_TIME_VALID_15M_CANONICAL_RECEIPT_FOR_2026_10_05",
+    "NO_VALID_C3_RESEARCH_COHORT_FOR_2026_10_05_PROVEN",
+    "HISTORICAL_15M_CANNOT_BACKFILL_PROSPECTIVE_RECEIPT"
+  ],
+  "h001Prerequisites": {
+    "timeframe": "15m",
+    "minimumSlot": "10:15",
+    "sameSlotBaselineClean": true,
+    "priorSameSlotObservationsMin": 20,
+    "currentSlotCoverageValid": true,
+    "commonSupportRequired": true
+  },
+  "counters": {
+    "cleanProspectiveSelectionDates": 0,
+    "numericalEffectTargetsFrozen": 0,
+    "numericalEffectTargetsTotal": 14,
+    "d16Wave1MethodReceiptsFrozen": 0,
+    "d16Wave1MethodReceiptsTotal": 3
+  },
+  "gate7": "CLOSED",
+  "formalOptimizationCandidate": "NONE",
+  "formalCore": "LOCKED"
+}
