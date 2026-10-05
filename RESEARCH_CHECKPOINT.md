@@ -2720,3 +2720,24 @@ Exact next:
 
 Exact next:
 SC-055 build a genuinely physical non-steel three-layer chain with effective-dated product/exposure semantics and compatible monthly source clocks. Continue new steel vintages under the unchanged 1M/2M/3M lag set. If no chain-specific lag survives inventory/seasonality/contract-reset/common-shock controls, reject the generic fixed-lag hypothesis instead of expanding the search.
+
+
+## 2026-10-05 SDA engineering intake
+
+Canonical routing:
+`shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_ROUTING_20261005_V0_1.md`.
+
+System 1 engineering assignments currently relevant:
+- SDA-001 factor lineage / raw-vs-dedup Shadow diagnostics;
+- SDA-004 machine alias / parameter-family guard;
+- SDA-009 D09 self-contribution / leave-one-out diagnostic after Room07 semantic freeze;
+- SDA-016 generic experiment holdout-use / outcome-lock infrastructure.
+
+Rules:
+- implement isolated Class A research/shadow diagnostics where possible;
+- do not change Formal A/B eligibility, ranking, Top6, weights, thresholds, capital, trading or push behavior;
+- any production behavior change remains Class C and requires explicit owner approval;
+- do not repeat accepted research controls listed in the critical reconciliation receipt;
+- respect the existing exact System 1 continuation and integrate these as audit-required engineering deltas, not as a restart.
+
+Mode guidance for actual cross-file implementation/tests: Codex / GPT-6 Astra / High.
