@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "0.2",
+  "generatedAt": "2026-10-05 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_PRIMARY_METRIC_AND_HORIZON_FROZEN_NUMERIC_PENDING",
+  "evidenceCursor": "PVE-239",
+  "primaryMetric": {
+    "id": "DATE_BALANCED_BRIER_LOSS_IMPROVEMENT",
+    "formula": "equal-date mean(meanBrier_baseline - meanBrier_challenger)",
+    "unit": "brier_score_points",
+    "direction": "GREATER_THAN_OR_EQUAL",
+    "d16Owner": "D16-19",
+    "rowWeightedPrimary": false
+  },
+  "mandatorySecondary": [
+    "LOG_LOSS",
+    "ABSOLUTE_FAILURE_RATE_DIFFERENCE_WHEN_DEFINED",
+    "RISK_RATIO_WHEN_DEFINED",
+    "MEDIAN_MFE",
+    "MEDIAN_MAE",
+    "MEDIAN_RETURN",
+    "SUBGROUP_DATE_STABILITY",
+    "PV086_UTILITY"
+  ],
+  "lanes": {
+    "D02-02:H001": {
+      "outcome": "STRUCTURAL_FAILURE_NO_FOLLOW_THROUGH_B2",
+      "outcomeHorizon": "B2",
+      "comparatorId": "MODEL_C_VS_MODEL_B",
+      "sensitivityHorizons": [
+        "B1",
+        "B4"
+      ],
+      "sensitivityCanRescuePrimary": false,
+      "oppositeDirectionMaterialSensitivityAction": "HORIZON_INSTABILITY_REVIEW"
+    },
+    "D02-03:H20": {
+      "outcome": "D01_OWNED_BREAKOUT_STRUCTURAL_FAILURE_NO_FOLLOW_THROUGH_B2",
+      "outcomeHorizon": "B2",
+      "comparatorId": "MODEL_C_VS_MODEL_B_ON_IDENTICAL_D01_BREAKOUT_EVENT",
+      "sensitivityHorizons": [
+        "B1",
+        "B4"
+      ],
+      "sensitivityCanRescuePrimary": false,
+      "primitiveOwner": "D01-05"
+    },
+    "D02-06:H003": {
+      "outcome": "CLEAN_ACTIVE_ACCEPTANCE_LIFECYCLE_TERMINAL_FAILURE",
+      "outcomeHorizon": "ACTIVE_LIFECYCLE_ENTRY_TO_FIRST_TERMINAL_OR_13_00_CENSOR",
+      "comparatorId": "PRICE_PLUS_VOLUME_RESPONSE_VS_PRICE_ONLY_RESPONSE",
+      "successStates": [
+        "B_REACCELERATION",
+        "A_REACCELERATION"
+      ],
+      "failureStates": [
+        "B_FAILED_REENTRY",
+        "A_FAILED_REENTRY"
+      ],
+      "censoredStates": [
+        "B_EXPIRED_AMBIGUOUS",
+        "A_EXPIRED_AMBIGUOUS",
+        "PRE_EVENT_ONLY_EXPIRY",
+        "UNKNOWN"
+      ],
+      "maturityDenominator": "H003_HYPOTHESIS_CLEAN_EVENT_COUNT",
+      "bHorizonsRole": "SECONDARY_DIAGNOSTIC_ONLY"
+    }
+  },
+  "numericalTargetFrozen": false,
+  "formalCoreImpact": "NONE"
+}
