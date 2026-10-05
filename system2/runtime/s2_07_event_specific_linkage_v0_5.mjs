@@ -12,7 +12,7 @@ export function familyMatchV0_5(rowText,family){
   if(family==="CAPITAL_REDUCTION") return /減資/.test(t);
   if(family==="PAR_VALUE_CHANGE"){
     if(/財務報告|合併財務|個體財務|每股盈餘|每股淨值/.test(t)) return false;
-    return /股票面額變更|變更股票面額|每股面額變更|面額變更.*換發|換發.*股票面額/.test(t);
+    return /股票面額.*變更|變更.*股票面額|每股面額.*變更|面額變更.*換發|換發.*股票面額/.test(t);
   }
   return false;
 }
