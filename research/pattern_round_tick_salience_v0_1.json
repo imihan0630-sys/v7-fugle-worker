@@ -1,0 +1,32 @@
+{
+  "schemaVersion":"pattern-round-tick-salience-v0.1",
+  "updated":"2026-10-05 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "auditTickets":{"SDA-001":"REMEDIATION_IN_PROGRESS"},
+  "salienceObjects":[
+    "LEGAL_TICK_GRID",
+    "TICK_BAND_TRANSITION",
+    "ROUND_NUMBER_REFERENCE",
+    "STRUCTURAL_BOUNDARY"
+  ],
+  "roundPriceEqualsStructure":false,
+  "tickBandBoundaryEqualsStructure":false,
+  "roundReferenceCoincidenceEqualsConfirmation":false,
+  "roundTickReferenceCreatesExtraVote":false,
+  "outcomeSelectedRoundGrid":"PROHIBITED",
+  "currentTickBackfill":"PROHIBITED",
+  "orderClusteringFromDailyOHLC":"UNIDENTIFIED",
+  "behavioralAnchoringFromRoundness":"UNIDENTIFIED",
+  "informationRoot":"PRICE_OHLC",
+  "redundancyGroup":"D01_ROUND_TICK_REFERENCE_CONTEXT",
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "residualIncrementalityStatus":"NOT_VALIDATED",
+  "futureComparisonLadder":["G0","G1","G2","G3","G4","G5","G6","G7"],
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "microstructureOwner":"D04_D05",
+  "behaviorMechanismOwner":"D20",
+  "formalOptimizationCandidate":"NONE"
+}
