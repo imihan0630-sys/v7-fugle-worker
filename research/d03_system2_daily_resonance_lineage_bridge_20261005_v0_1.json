@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "D03_SYSTEM2_DAILY_RESONANCE_LINEAGE_BRIDGE_V0_1",
+  "updatedAt": "2026-10-05T15:14:00+08:00",
+  "classification": "CLASS_A_RESEARCH_SHADOW_ONLY",
+  "formalCoreImpact": "NONE_LOCKED",
+  "tickets": [
+    "SDA-001",
+    "SDA-004"
+  ],
+  "sourceRuntime": "system2/runtime/daily_resonance_monitor_v0_1.mjs",
+  "lifecycleSemantics": {
+    "entryCountMeaning": "RAW_LIFECYCLE_CONDITION_COUNT_0_TO_3",
+    "exitCountMeaning": "RAW_LIFECYCLE_CONDITION_COUNT_0_TO_3",
+    "independentEvidenceMeaning": "NOT_EQUIVALENT_TO_ENTRY_OR_EXIT_COUNT",
+    "sameFamilyIndependenceClaim": false,
+    "evidenceFamily": "PRICE_DERIVED_TREND_MOMENTUM_STATE"
+  },
+  "conditions": [
+    {
+      "conditionId": "S2_DAILY_RESONANCE_PRICE_ABOVE_EMA16_AND_RISING",
+      "d03Owner": "D03-01",
+      "informationRoot": [
+        "PRICE_OHLC"
+      ],
+      "representationFamily": "WEIGHTED_PRICE_TREND_GEOMETRY",
+      "redundancyGroupId": "RG_D03_PRICE_TREND",
+      "independenceStatus": "SAME_ROOT_REDUNDANT",
+      "parameterFamilyId": "PF_D03_MA_WINDOWS"
+    },
+    {
+      "conditionId": "S2_DAILY_RESONANCE_EMA16_ABOVE_EMA64",
+      "d03Owner": "D03-01",
+      "informationRoot": [
+        "PRICE_OHLC"
+      ],
+      "representationFamily": "WEIGHTED_PRICE_TREND_GEOMETRY",
+      "redundancyGroupId": "RG_D03_PRICE_TREND",
+      "independenceStatus": "SAME_ROOT_REDUNDANT",
+      "parameterFamilyId": "PF_D03_MA_WINDOWS"
+    },
+    {
+      "conditionId": "S2_DAILY_RESONANCE_IMPULSE_MACD_BULLISH",
+      "d03Owner": "D03-08_COMPARATOR_CHALLENGER",
+      "informationRoot": [
+        "PRICE_OHLC"
+      ],
+      "representationFamily": "FILTERED_PRICE_TREND_TRANSITION",
+      "redundancyGroupId": "RG_D03_PRICE_TREND",
+      "independenceStatus": "SAME_ROOT_REDUNDANT",
+      "parameterFamilyId": "PF_D03_SYSTEM2_IMPULSE_MACD_34_9_HLC3_V0_1",
+      "factorVersion": "S2_IMPULSE_MACD_SMM34_ZLEMA34_SMA9_HLC3_V0_1"
+    }
+  ],
+  "diagnosticsRequired": {
+    "rawSignalCount": "0_TO_3",
+    "dedupedEvidenceFamilyCount": "MAX_1_FOR_CURRENT_THREE_CONDITION_CLUSTER",
+    "effectiveIndependentEvidenceCount": "MAX_1_UNTIL_RESIDUAL_PROOF",
+    "overlappingSignalIds": "REQUIRED",
+    "redundancyGroupContributions": "REQUIRED",
+    "dominantInformationRoots": [
+      "PRICE_OHLC"
+    ]
+  },
+  "guardRules": [
+    "THREE_OF_THREE_LIFECYCLE_STATE_MAY_EXIST_WITH_ONE_EFFECTIVE_EVIDENCE_FAMILY",
+    "ENTRY_COUNT_AND_EXIT_COUNT_MUST_NOT_BE_REUSED_AS_ALPHA_VOTE_COUNT",
+    "SEMANTIC_BASIS_SEPARATION_DOES_NOT_OVERRIDE_REDUNDANCY_GROUP",
+    "IMPULSE_MACD_FORMULA_DIFFERENCE_DOES_NOT_PROVE_INDEPENDENCE",
+    "MISSING_LINEAGE_FAILS_CLOSED_UNKNOWN",
+    "NO_FORMAL_RANKING_OR_TRADING_IMPACT"
+  ],
+  "promotionGate": [
+    "SYSTEM2_MACHINE_RECEIPT",
+    "D03_MAPPING_DRIFT_REVIEW",
+    "D16_COMMON_SUPPORT_RESIDUAL_AND_MULTIPLICITY",
+    "ROOM00_CROSS_DOMAIN_CLOSURE"
+  ]
+}
