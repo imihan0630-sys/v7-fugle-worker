@@ -2418,3 +2418,175 @@ No maturity or Formal change is authorized by this routing.
 6. Hand T0-T6 / M0-M7 session-mechanism inference to D16.
 7. Next D01 science: separate opening-gap mechanics from prior-close / reference-price anchoring so apparent support/resistance around prior close is not confused with overnight reversal mechanics.
 8. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-044 (2026-10-05)
+
+### DL-044 — Structural boundary vs prior-close / auction-reference price anchors
+- DL-043 separated overnight gap, opening auction and continuous-session mechanisms.
+- DL-044 freezes the next reference-price confound: apparent support/resistance around the open can coincide with the prior close or official auction reference price, and a move back toward those references may reflect overnight reversal / gap normalization rather than structural memory.
+- Three price objects are kept separate:
+  PRIOR_CLOSE_REFERENCE;
+  AUCTION_REFERENCE_PRICE;
+  STRUCTURAL_BOUNDARY.
+- Prior close is not a universal substitute for the official auction reference price.
+  Special sessions may use mechanically adjusted reference semantics.
+- D01 consumes official / owner-certified auctionReferencePrice, source, ruleVersion, knownAt and specialReferenceState rather than reconstructing the reference from prior close.
+- Behavioral firewall:
+  D01 may store REFERENCE_PRICE_PROXIMITY / REFERENCE_PRICE_COINCIDENCE;
+  OHLC alone does not identify anchoring bias, trapped-investor intent, breakeven motive or psychological magnet.
+  D20 owns behavior-specific identification.
+- Reference coincidence descriptors remain continuous:
+  prior-close distance in price / ATR / ticks;
+  auction-reference distance in price / ATR / ticks.
+  No arbitrary near/far threshold is frozen.
+- Frozen coincidence states:
+  STRUCTURE_DISTINCT_FROM_REFERENCES;
+  PRIOR_CLOSE_INSIDE_STRUCTURE;
+  AUCTION_REFERENCE_INSIDE_STRUCTURE;
+  BOTH_REFERENCES_INSIDE_STRUCTURE;
+  REFERENCE_CONTEXT_UNKNOWN.
+- Numerical equality does not merge causal identity.
+  priorClose == auctionReferencePrice == structural level may still represent distinct reference/mechanism objects.
+- Corporate-action / special-reference firewall:
+  raw prior close may be non-comparable;
+  auction reference may be mechanically reset;
+  missing official reference on special sessions -> DATA_BLOCKED, not prior-close fallback.
+- Gap fill / same-day reversal remains an outcome / post-open path.
+  It cannot enter a pre-open or at-open predictor snapshot.
+- If a structural root overlaps prior close or official reference, do not discard it.
+  Future D16 must ask whether the structural root adds representation beyond the simple reference-price baseline.
+- Reference coincidence creates no extra independent vote.
+  Default effectiveIndependentEvidenceCount remains 1.
+- Future D16 comparison ladder:
+  P0 RAW_STRUCTURAL_RESPONSE;
+  P1 PRIOR_CLOSE_CONTEXT_CONTROLLED;
+  P2 AUCTION_REFERENCE_CONTEXT_CONTROLLED;
+  P3 OVERNIGHT_GAP_CONTEXT_CONTROLLED;
+  P4 MARKET_SECTOR_GAP_CONTROLLED;
+  P5 REFERENCE_DISTINCT_STRUCTURE_ONLY;
+  P6 REFERENCE_ROBUST_PATTERN_REPLICATION.
+- Future interpretations:
+  C0 PRIOR_CLOSE_REFERENCE_EXPLANATION;
+  C1 AUCTION_REFERENCE_MECHANICS_EXPLANATION;
+  C2 OVERNIGHT_REVERSAL_EXPLANATION;
+  C3 COMMON_GAP_NORMALIZATION_EXPLANATION;
+  C4 STRUCTURAL_RESIDUAL_AROUND_REFERENCE;
+  C5 STRUCTURE_DISTINCT_FROM_REFERENCE_CANDIDATE;
+  C6 REFERENCE_ROBUST_PATTERN_CANDIDATE;
+  C7 NOT_EVALUABLE.
+- Common support must include overnight gap, reference distance, auction mechanism, volatility/liquidity, limits, event context, market/sector gap and regime.
+- Outcome-selected reference families are prohibited.
+  DL-044 v0.1 freezes only prior close + official auction reference.
+- New files:
+  - research/PATTERN_REFERENCE_PRICE_ANCHOR_V0_1.md
+  - research/pattern_reference_price_anchor_v0_1.json
+  - research/pattern_reference_price_anchor_v0_1.mjs
+  - research/test_pattern_reference_price_anchor_v0_1.mjs
+  - research/PATTERN_REFERENCE_PRICE_ANCHOR_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 remains REMEDIATION_IN_PROGRESS.
+- SDA-002 remains REMEDIATION_IN_PROGRESS.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-044
+
+1. Reconcile the DL-044 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-044 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve prior close and official auction reference as distinct causal/reference objects even when numerically equal.
+4. Preserve special-session reference UNKNOWN / DATA_BLOCKED states and prohibit unverified prior-close fallback.
+5. Hand P0-P6 / C0-C7 reference-context incrementality inference to D16.
+6. Keep behavioral anchoring UNIDENTIFIED unless D20 provides behavior-specific observables.
+7. Next D01 science: separate prior-close/reference effects from round-number / tick-grid salience so apparent support near 100 / 200 / 500 is not mislabeled structural memory.
+8. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-045 (2026-10-05)
+
+### DL-045 — Structural memory vs round-number / tick-grid salience
+- DL-044 separated structural boundaries from prior-close and auction-reference effects.
+- DL-045 freezes the next salience confound: apparent support/resistance may arise from round-number order clustering, legal tick-grid mechanics or tick-band transitions rather than historical structural memory.
+- Taiwan evidence documents order-price clustering at integer / even / preferred terminal prices; broader microstructure evidence shows clustered limit orders can create price barriers.
+- D01 does not infer psychology from price clustering.
+  ROUND_PRICE_CLUSTERING_CONTEXT is observable context;
+  PSYCHOLOGICAL_ANCHOR_CONFIRMED remains prohibited without D20 behavior-specific evidence.
+- D04/D05 remain authoritative for point-in-time tick size, tick band, session mechanics and order-book interpretation.
+  D01 consumes tickSize, tickBandId, tickRuleVersion, tickKnownAt and transition receipts instead of hard-coding permanent exchange mechanics.
+- Four distinct objects are kept separate:
+  LEGAL_TICK_GRID;
+  TICK_BAND_TRANSITION;
+  ROUND_NUMBER_REFERENCE;
+  STRUCTURAL_BOUNDARY.
+- Round-grid families must be preregistered before outcomes.
+  Testing multiple nominal grids creates one multiple-testing family.
+  Best-grid selection after outcomes is prohibited.
+- Continuous salience descriptors are frozen:
+  boundary/center distance to nearest registered round reference in price/ticks;
+  distance to tick-band transition;
+  relative tick;
+  price/tick tier.
+  No universal near-round threshold is defined.
+- Current and formation tick receipts remain separate.
+  Current tick-band state may not be backfilled into historical structural formation.
+- Comparator logic:
+  R0 ROUND_SALIENT_NONSTRUCTURAL;
+  R1 STRUCTURAL_NONROUND;
+  R2 STRUCTURAL_ROUND_COINCIDENT.
+  Future D16 asks structural increment beyond salience and salience increment beyond structure.
+- Daily OHLC can establish round-price proximity but cannot prove actual displayed order clustering, hidden liquidity or queue behavior.
+  ORDER_CLUSTERING_MECHANISM remains PLAUSIBLE_NOT_OBSERVED without D05 book evidence.
+- DL-043 / DL-044 contexts remain required because a single price can simultaneously be round, near prior close, near auction reference, crossed at the open and inside a structural zone.
+  Those co-located descriptions are not independent confirmations.
+- SDA-001 anti-double-count default:
+  informationRoot = PRICE_OHLC;
+  redundancyGroup = D01_ROUND_TICK_REFERENCE_CONTEXT;
+  rawRepresentationCount may exceed 1;
+  effectiveIndependentEvidenceCount = 1;
+  independentVoteAllowed = false;
+  residualIncrementalityStatus = NOT_VALIDATED.
+- Future D16 ladder:
+  G0 RAW_STRUCTURAL_PATTERN;
+  G1 ROUND_REFERENCE_CONTEXT_CONTROLLED;
+  G2 TICK_BAND_CONTEXT_CONTROLLED;
+  G3 PRIOR_CLOSE_AUCTION_REFERENCE_CONTROLLED;
+  G4 MICROSTRUCTURE_CONTEXT_CONTROLLED;
+  G5 STRUCTURAL_NONROUND_REPLICATION;
+  G6 STRUCTURAL_VS_ROUND_NEGATIVE_CONTROL;
+  G7 ROUND_TICK_ROBUST_REPLICATION.
+- Future interpretations:
+  C0 ROUND_NUMBER_EXPLANATION;
+  C1 TICK_GRID_MECHANICS_EXPLANATION;
+  C2 REFERENCE_PRICE_COMPOSITE_EXPLANATION;
+  C3 MICROSTRUCTURE_CLUSTERING_EXPLANATION;
+  C4 STRUCTURAL_RESIDUAL_AFTER_SALIENCE;
+  C5 NONROUND_STRUCTURAL_CANDIDATE;
+  C6 ROUND_AND_STRUCTURE_INCREMENTAL_CANDIDATE;
+  C7 NOT_EVALUABLE.
+- New files:
+  - research/PATTERN_ROUND_TICK_SALIENCE_V0_1.md
+  - research/pattern_round_tick_salience_v0_1.json
+  - research/pattern_round_tick_salience_v0_1.mjs
+  - research/test_pattern_round_tick_salience_v0_1.mjs
+  - research/PATTERN_ROUND_TICK_SALIENCE_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 remains REMEDIATION_IN_PROGRESS.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-045
+
+1. Reconcile the DL-045 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-045 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve point-in-time tick receipts and preregistered round-grid families; never outcome-select a preferred nominal grid.
+4. Preserve structural, round, prior-close and auction-reference contexts as one deduplicated price-information family by default.
+5. Hand G0-G7 / C0-C7 round/tick salience incrementality inference to D16.
+6. Preserve SDA-001 as REMEDIATION_IN_PROGRESS until residual/system/00 closure evidence exists.
+7. Next D01 science: separate round/tick salience from volume-at-price / historical traded-volume concentration so a price level with heavy historical volume is not automatically treated as independent structural evidence.
+8. No outcome join / no runtime wiring / no Formal change.
