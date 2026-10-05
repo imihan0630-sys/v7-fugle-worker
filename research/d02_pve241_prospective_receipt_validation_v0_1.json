@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-05 Asia/Taipei",
+  "status": "PVE241_EXECUTABLE_RECEIPT_SCHEMA_PASS",
+  "evidenceCursor": "PVE-241",
+  "guardVersion": "D02_PVE241_PROSPECTIVE_RECEIPT_GUARD_V0_1",
+  "runtime": {
+    "name": "Node.js",
+    "tests": 33,
+    "status": "PASS"
+  },
+  "guarantees": {
+    "outcomeBlind": true,
+    "cleanProspectiveDateCreated": false,
+    "outcomeAccessAuthorized": false,
+    "numericalTargetAuthorized": false,
+    "d16MethodSelectionAuthorized": false,
+    "maturityPromotionAuthorized": false,
+    "formalCoreChangeAuthorized": false
+  },
+  "artifacts": [
+    "research/d02_pve241_prospective_receipt_guard_v0_1.mjs",
+    "tests/test_d02_pve241_prospective_receipt_guard_v0_1.mjs",
+    "research/D02_PVE241_PROSPECTIVE_RECEIPT_CONTRACT_V0_1.md"
+  ],
+  "next": "PVE-242"
+}
