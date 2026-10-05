@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "D03_FALSIFICATION_NULL_OF_NULL_CALIBRATION_CONTRACT_V0_1",
+  "updatedAt": "2026-10-06T07:56:00+08:00",
+  "owner": "D03",
+  "methodOwner": "D16",
+  "classification": "RESEARCH_ONLY_SYNTHETIC_METHOD_CALIBRATION",
+  "formalCoreImpact": "NONE_LOCKED",
+  "requiredWorldFields": [
+    "syntheticWorldFamilyId",
+    "syntheticWorldVersion",
+    "dgpHash",
+    "parameterHash",
+    "seed",
+    "sampleGeometryHash",
+    "truthLabel",
+    "expectedSupportState",
+    "methodVersion",
+    "calibrationStage"
+  ],
+  "truthLabels": [
+    "NO_RESIDUAL_INTERACTION",
+    "INJECTED_INTERACTION_WEAK",
+    "INJECTED_INTERACTION_MEDIUM",
+    "INJECTED_INTERACTION_STRONG"
+  ],
+  "calibrationStages": [
+    "DEVELOPMENT",
+    "HELD_OUT_AUDIT"
+  ],
+  "requiredNullWorldFamilies": [
+    "CORRELATED_MAIN_EFFECTS_NO_INTERACTION",
+    "DATE_COMMON_SHOCK_PANEL",
+    "SERIAL_DEPENDENCE",
+    "VOLATILITY_CLUSTERING_OR_REGIME",
+    "SECTOR_CONCENTRATION",
+    "STATE_DEPENDENT_ADMISSION_MISSINGNESS",
+    "SAME_ROOT_DETERMINISTIC_INDICATOR",
+    "MIXED_ROOT_CONDITIONAL",
+    "NONLINEAR_MAIN_EFFECT_MISSPECIFICATION",
+    "FULL_SEARCH_SELECTION_ZERO_INTERACTION",
+    "SPARSE_SUPPORT_BLOCKING"
+  ],
+  "injectedInteractionGeometries": [
+    "SMOOTH",
+    "THRESHOLD",
+    "LOCALIZED",
+    "REGIME_CONDITIONAL",
+    "UNEQUAL_SUPPORT"
+  ],
+  "requiredCalibrationOutputs": [
+    "type1ErrorSummary",
+    "directionalErrorSummary",
+    "sensitivityPowerSummary",
+    "supportBlockBehaviorSummary",
+    "searchSelectionCalibrationSummary",
+    "nullGeneratorValidationSummary"
+  ],
+  "auditGovernance": {
+    "auditScenarioIdentityHiddenUntilMethodFreeze": true,
+    "auditFailureCausesMethodVersionIncrement": true,
+    "failedAuditBecomesDevelopmentConsumed": true,
+    "newAuditSetRequiredAfterRedesign": true,
+    "seedDeletionAllowed": false,
+    "rerunUntilFavorableAllowed": false
+  },
+  "thresholdGovernance": {
+    "type1ToleranceFrozenPreAudit": true,
+    "directionalErrorToleranceFrozenPreAudit": true,
+    "powerCriterionFrozenPreAudit": true,
+    "supportBlockExpectationFrozenPreAudit": true,
+    "aggregationRuleFrozenPreAudit": true,
+    "universalNumericThresholdOwnedByD03": false
+  },
+  "resultStates": [
+    "CALIBRATION_NOT_RUN",
+    "DEVELOPMENT_ONLY",
+    "AUDIT_PASS",
+    "TYPE1_FAIL",
+    "DIRECTIONAL_ERROR_FAIL",
+    "POWER_INSUFFICIENT",
+    "SUPPORT_BLOCK_BEHAVIOR_FAIL",
+    "SEARCH_SELECTION_CALIBRATION_FAIL",
+    "NULL_GENERATOR_CALIBRATION_FAIL"
+  ],
+  "interpretation": {
+    "syntheticPassIsMarketEvidence": false,
+    "syntheticPassCanClearMethodLayerOnly": true,
+    "syntheticPassCannotPromoteMaturity": true,
+    "realProspectiveEvidenceStillRequired": true
+  },
+  "noDataDefaults": {
+    "resultState": "CALIBRATION_NOT_RUN",
+    "methodLayerCleared": false,
+    "marketEvidenceUnits": 0,
+    "maturityImpact": "NONE"
+  }
+}
