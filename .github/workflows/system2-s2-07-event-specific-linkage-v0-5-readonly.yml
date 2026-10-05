@@ -1,0 +1,29 @@
+name: System2 S2-07 Event-Specific Linkage V0.5 Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/s2_07_event_specific_linkage_v0_5.mjs"
+      - "system2/tests/s2_07_event_specific_linkage_v0_5.test.mjs"
+      - "system2/scripts/probe_s2_07_event_specific_linkage_readonly_v0_5.mjs"
+      - "system2/SYSTEM2_S2_07_EVENT_SPECIFIC_LINKAGE_V0_5.md"
+      - ".github/workflows/system2-s2-07-event-specific-linkage-v0-5-readonly.yml"
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - run: node system2/tests/s2_07_event_specific_linkage_v0_5.test.mjs
+      - run: node system2/scripts/probe_s2_07_event_specific_linkage_readonly_v0_5.mjs
+      - shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_s2_07_event_specific_linkage_readonly_v0_5.mjs
+          echo "S2-07 V0.5 read-only boundary PASS"
