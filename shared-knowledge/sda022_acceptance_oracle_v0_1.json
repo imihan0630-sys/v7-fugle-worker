@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "SDA022_ACCEPTANCE_ORACLE_V0_1",
+  "updatedAt": "2026-10-06T07:22:00+08:00",
+  "status": "PRE_OUTCOME_BLOCKING_ORACLE_FROZEN",
+  "owner": "00",
+  "formalCoreImpact": "NONE",
+  "outcomes": "CLOSED",
+  "parentAuthorities": [
+    "shared-knowledge/SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_V0_1.md",
+    "shared-knowledge/CROSS_SYSTEM_POLICY_FINGERPRINT_CONTRACT_V0_1.md",
+    "shared-knowledge/SYSTEM1_SYSTEM2_POLICY_FINGERPRINT_BASELINE_20261006_V0_1.md",
+    "shared-knowledge/SDA022_D16_VALIDATION_REQUEST_V0_1.md"
+  ],
+  "blockingTests": [
+    {
+      "id": "S22-T01",
+      "family": "SYSTEM1_FINGERPRINT",
+      "requirement": "System1 fingerprint has system/policy/version/decision clock/source artifact digests"
+    },
+    {
+      "id": "S22-T02",
+      "family": "SYSTEM1_FINGERPRINT",
+      "requirement": "System1 records universe/gates/ranking/capacity/entry/lifecycle"
+    },
+    {
+      "id": "S22-T03",
+      "family": "SYSTEM1_FINGERPRINT",
+      "requirement": "System1 explicitly records no required System2 candidate/rank dependency under current architecture"
+    },
+    {
+      "id": "S22-T04",
+      "family": "SYSTEM1_FINGERPRINT",
+      "requirement": "System1 ranking identity binds current effective Formal comparator"
+    },
+    {
+      "id": "S22-T05",
+      "family": "SYSTEM1_FINGERPRINT",
+      "requirement": "Fingerprint generation changes no Formal behavior"
+    },
+    {
+      "id": "S22-T06",
+      "family": "SYSTEM2_FINGERPRINT",
+      "requirement": "Each audited System2 strategy has distinct versioned fingerprint"
+    },
+    {
+      "id": "S22-T07",
+      "family": "SYSTEM2_FINGERPRINT",
+      "requirement": "SHORT_MOMENTUM and SWING_GROWTH do not collapse into unversioned universal score"
+    },
+    {
+      "id": "S22-T08",
+      "family": "SYSTEM2_FINGERPRINT",
+      "requirement": "Capacity preserves max12/max3/no forced fill/no implicit universal score"
+    },
+    {
+      "id": "S22-T09",
+      "family": "SYSTEM2_FINGERPRINT",
+      "requirement": "System2 explicitly records whether System1 Top6/candidates/rank are required"
+    },
+    {
+      "id": "S22-T10",
+      "family": "SYSTEM2_FINGERPRINT",
+      "requirement": "Unproven physical candidate source remains NOT_PHYSICALLY_PROVEN or UNKNOWN"
+    },
+    {
+      "id": "S22-T11",
+      "family": "NC_T01",
+      "requirement": "NC-T01 removes System1 Top6 and rank inputs"
+    },
+    {
+      "id": "S22-T12",
+      "family": "NC_T01",
+      "requirement": "No cached/persisted/alias/shared-state fallback reconstructs System1 output"
+    },
+    {
+      "id": "S22-T13",
+      "family": "NC_T01",
+      "requirement": "At least one System2 candidate-generation path remains executable with own required inputs READY"
+    },
+    {
+      "id": "S22-T14",
+      "family": "NC_T01",
+      "requirement": "Zero-pick distinguishable from dependency/data/runtime/capacity failure"
+    },
+    {
+      "id": "S22-T15",
+      "family": "NC_T01",
+      "requirement": "NC-T01 receipt binds source generation strategy version decision clock universe provenance and hash"
+    },
+    {
+      "id": "S22-T16",
+      "family": "NC_T01",
+      "requirement": "Synthetic fixtures cannot upgrade physicalIndependentDiscovery"
+    },
+    {
+      "id": "S22-T17",
+      "family": "SEMANTICS",
+      "requirement": "Same pick defaults to OVERLAP not TWO_INDEPENDENT_CONFIRMATIONS"
+    },
+    {
+      "id": "S22-T18",
+      "family": "SEMANTICS",
+      "requirement": "Different sets default to DIVERGENCE not DIVERSIFICATION"
+    },
+    {
+      "id": "S22-T19",
+      "family": "SEMANTICS",
+      "requirement": "Divergence reason uses frozen taxonomy"
+    },
+    {
+      "id": "S22-T20",
+      "family": "SEMANTICS",
+      "requirement": "Forced disagreement prohibited"
+    },
+    {
+      "id": "S22-T21",
+      "family": "OVERLAP_OBSERVABILITY",
+      "requirement": "Comparable-date receipt preserves fingerprints universes selected sets UNKNOWN roots and gates"
+    },
+    {
+      "id": "S22-T22",
+      "family": "OVERLAP_OBSERVABILITY",
+      "requirement": "Jaccard only on semantically comparable selected-set denominators"
+    },
+    {
+      "id": "S22-T23",
+      "family": "OVERLAP_OBSERVABILITY",
+      "requirement": "Rank correlation only on true comparable common support"
+    },
+    {
+      "id": "S22-T24",
+      "family": "OVERLAP_OBSERVABILITY",
+      "requirement": "Shared root ratio dedups aliases/deterministic transforms using SDA-001/004 lineage"
+    },
+    {
+      "id": "S22-T25",
+      "family": "D16_BOUNDARY",
+      "requirement": "D16 prereg exists before economic outcomes for target/horizon/support/dependence/multiplicity/missingness/groups"
+    },
+    {
+      "id": "S22-T26",
+      "family": "D16_BOUNDARY",
+      "requirement": "System2 strategies analyzed separately unless combined estimand preregistered"
+    },
+    {
+      "id": "S22-T27",
+      "family": "D16_BOUNDARY",
+      "requirement": "SHORT_MOMENTUM gets explicit dependence analysis vs System1"
+    },
+    {
+      "id": "S22-T28",
+      "family": "D16_BOUNDARY",
+      "requirement": "No diversification/double-confirmation/incremental claim before D16 and 00 readback"
+    }
+  ],
+  "allowedStates": [
+    "PASS_PRE_OUTCOME_OBSERVABILITY",
+    "PARTIAL_PASS",
+    "BLOCKED_MISSING_SYSTEM1_FINGERPRINT",
+    "BLOCKED_MISSING_SYSTEM2_FINGERPRINT",
+    "BLOCKED_NC_T01_NOT_PHYSICAL",
+    "BLOCKED_HIDDEN_CROSS_SYSTEM_DEPENDENCY",
+    "BLOCKED_COMMON_SUPPORT",
+    "BLOCKED_D16_PREREGISTRATION",
+    "ARCHITECTURE_MUTATION_OWNER_REVIEW_REQUIRED",
+    "EVIDENCE_NOT_YET_AVAILABLE"
+  ],
+  "currentExpectedState": "EVIDENCE_NOT_YET_AVAILABLE",
+  "closureBoundary": {
+    "oraclePassClosesTicket": false,
+    "prospectiveOverlapDivergenceRequired": true,
+    "d16DependenceIncrementalityRequired": true,
+    "room00IndependentClosureRequired": true
+  }
+}
