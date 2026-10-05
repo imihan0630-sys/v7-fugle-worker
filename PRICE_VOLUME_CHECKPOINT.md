@@ -3692,3 +3692,46 @@ Formal Core LOCKED.
 
 Exact next continuation point:
 PVE-249 — resolve/read back the pre-existing `test_system1_zero_pick_evidence_collector_v0_1.mjs` base-CI blocker, then rerun PR #651 full Regression + Repair CI. Only after all applicable checks are green may explicit Class-B merge/deploy approval be requested; physical Production remediation/H001 evidence comes later.
+
+
+## PVE-249 continuation — green Class-B candidate owner gate (2026-10-06)
+
+Status: ALL_APPLICABLE_CHECKS_PASS / DRAFT_PR_651_CLEAN / OWNER_APPROVAL_REQUIRED / UNMERGED / NOT_DEPLOYED / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+PVE-249 completed.
+
+Base blocker:
+- stale zero-pick collector fixture repaired on main by `c3bf53e0fe195647ecd77c87e6ce77e7ee744635`;
+- main Regression `37387343385` SUCCESS.
+
+Candidate correction:
+- moved from an invalid pre-V8.19 placement to the post-V8.19 `apply_v8_19_1_pve248_candidate.py` layer;
+- V8.18 historical byte-identity guard preserved, not weakened.
+
+Final candidate:
+- branch `research/d02-pve248-class-b-candidate-20261006`;
+- head `e26e0e8e7786e25505714942e82a64e4cb8cec09`;
+- draft PR `#651`;
+- mergeable=true / mergeable_state=clean;
+- unmerged / not deployed;
+- Production deploy workflow does not apply candidate.
+
+Final checks:
+- `37387779756` Candidate CI SUCCESS;
+- `37387779711` C1/C2 isolated review SUCCESS;
+- `37387779433` Repair CI SUCCESS;
+- `37387779413` Regression SUCCESS;
+- `37387775656` isolated candidate push CI SUCCESS.
+
+Technical preparation is complete, but governance prohibits merge/deploy without explicit owner approval.
+
+Current research state:
+- remediationReady=false until approved Production integration and physical readback;
+- h001ReceiptEligible=false;
+- clean prospective dates=0;
+- D02=60.0%;
+- Gate 7 CLOSED;
+- Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-250 — OWNER_APPROVAL_REQUIRED for Class-B Production integration of PR #651. If approved, wire the V8.19.1 candidate into the Production build/deploy path, rerun all applicable checks, merge/deploy under that approval, then perform physical readback and rerun the PVE-247 oracle. If not approved, remain draft/unmerged/un-deployed.
