@@ -2901,3 +2901,20 @@ System1 responsibility is observability only:
 - do not consume System2 strategy outputs as Formal prerequisites without separate owner-approved promotion.
 
 SDA-022 does not reorder the active System1 task lane.
+
+
+## 2026-10-06 SDA-022 fingerprint implementation intake
+
+Canonical artifacts:
+- shared-knowledge/CROSS_SYSTEM_POLICY_FINGERPRINT_CONTRACT_V0_1.md
+- shared-knowledge/SYSTEM1_SYSTEM2_POLICY_FINGERPRINT_BASELINE_20261006_V0_1.md
+- shared-knowledge/SDA022_D16_VALIDATION_REQUEST_V0_1.md
+
+System1 exact SDA-022 responsibility:
+1. emit a research-only policy fingerprint for the effective current Formal policy;
+2. fingerprint must preserve candidate-universe identity, gate/ranking policy identity, source artifact/version identity, capacity policy, entry-confirmation policy, lifecycle and information-root lineage;
+3. do not change Formal behavior to create the receipt;
+4. do not consume System2 output as a new Formal prerequisite;
+5. fingerprint generation is observability only and does not reorder current System1 launch work.
+
+No outcome interpretation and no Formal optimization is authorized by this intake.
