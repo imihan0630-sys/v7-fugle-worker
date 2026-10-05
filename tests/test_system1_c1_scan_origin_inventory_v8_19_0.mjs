@@ -23,7 +23,7 @@ assert.equal(attached.scanOrigin.generationId,base.generationId);n++;
 assert.deepEqual(attached.rows[0].c1ScanOriginAnchor,attached.scanOrigin);n++;
 assert.deepEqual(verifyC1ScanOrigin(attached),{ok:true,state:'CAPTURED',originKind:'CLOUDFLARE_CRON',scanAttemptId:context.scanAttemptId});n++;
 const unclassified=attachC1ScanOrigin({...base,rows:base.rows.map(x=>({...x}))},null);
-assert.equal(unclassified.scanOrigin.originKind,'INTERNAL_UNCLASSIFIED');assert.match(unclassified.scanOrigin.scanAttemptId,/^C1SCAN:2026-10-05:/);n+=2;
+assert.equal(unclassified.scanOrigin.originKind,'INTERNAL_UNCLASSIFIED');assert.match(unclassified.scanOrigin.scanAttemptId,/^C1SCAN:2026-10-05:/);assert.equal(unclassified.scanOrigin.decisionAt,null);assert.equal(unclassified.scanOrigin.decisionAtBinding,'UNBOUND_INTERNAL_CALL');n+=4;
 const tampered=structuredClone(attached);tampered.rows[0].c1ScanOriginAnchor.originKind='AUTHORIZED_MANUAL_API';
 assert.throws(()=>verifyC1ScanOrigin(tampered),/ANCHOR_MISMATCH/);n++;
 const missing={...base,rows:base.rows.map(x=>({...x}))};
