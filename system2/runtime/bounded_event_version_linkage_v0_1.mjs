@@ -264,17 +264,21 @@ export async function buildBoundedEventVersionLinkageV0_1({
         rowEvidence.length>0 &&
         detailReadyRows.length===rowEvidence.length;
 
-      const state=!queryIntegrity.complete
-        ? "QUERY_INTEGRITY_INCOMPLETE"
-        : boundedRows.length===0
-          ? "NO_ACTION_FAMILY_HISTORY"
-          : !detailCoverageComplete
-            ? "DETAIL_COVERAGE_INCOMPLETE"
-            : strictRows.length===0
-              ? "DETAIL_HISTORY_ONLY_UNRESOLVED"
-              : strictChainAmbiguityCount>0
-                ? "STRICT_LINKAGE_CHAIN_AMBIGUOUS"
-                : "STRICT_LINKAGE_OBSERVED";
+      // Positive event-to-version linkage and negative-history completeness are
+      // separate gates. Missing detail on an unrelated same-family row must not
+      // erase a directly observed event link; it only blocks later exhaustive
+      // revision/cancellation claims.
+      const state=boundedRows.length===0
+        ? "NO_ACTION_FAMILY_HISTORY"
+        : strictRows.length===0
+          ? "DETAIL_HISTORY_ONLY_UNRESOLVED"
+          : strictChainAmbiguityCount>0
+            ? "STRICT_LINKAGE_CHAIN_AMBIGUOUS"
+            : "STRICT_LINKAGE_OBSERVED";
+      const negativeCompletenessInputReady=
+        queryIntegrity.complete &&
+        detailCoverageComplete &&
+        state==="STRICT_LINKAGE_OBSERVED";
 
       const canonical={
         eventKey:eventKey(sourceId,event),
@@ -289,6 +293,7 @@ export async function buildBoundedEventVersionLinkageV0_1({
         boundedFamilyRowCount:rowEvidence.length,
         detailReadyRowCount:detailReadyRows.length,
         detailCoverageComplete,
+        negativeCompletenessInputReady,
         strictLinkedRowCount:strictRows.length,
         listOnlyCandidateRowCount:listOnlyCandidateRows.length,
         ambiguousSameDateRowCount:ambiguousSameDateRows.length,
@@ -339,9 +344,9 @@ export async function buildBoundedEventVersionLinkageV0_1({
       cancellationHintEventCount:eventResults.filter((x)=>x.cancellationHintCount>0).length,
       boundedEventVersionLinkageComplete:
         eventResults.length>0&&
-        strictLinkedCount===eventResults.length&&
-        queryIntegrityCompleteCount===eventResults.length&&
-        detailCoverageCompleteCount===eventResults.length,
+        strictLinkedCount===eventResults.length,
+      negativeCompletenessInputReadyEventCount:
+        eventResults.filter((x)=>x.negativeCompletenessInputReady).length,
       events:Object.freeze(eventResults),
     }));
   }
@@ -378,9 +383,9 @@ export async function buildBoundedEventVersionLinkageV0_1({
     linkageUniverseHash,
     boundedEventVersionLinkageComplete:
       finalEventCount>0&&
-      strictLinkedEventCount===finalEventCount&&
-      queryIntegrityCompleteEventCount===finalEventCount&&
-      detailCoverageCompleteEventCount===finalEventCount,
+      strictLinkedEventCount===finalEventCount,
+    negativeCompletenessInputReadyEventCount:
+      universe.filter((x)=>x.negativeCompletenessInputReady).length,
     laneResults:Object.freeze(laneResults),
 
     boundedRevisionHistoryCoverageComplete:false,
