@@ -2022,3 +2022,19 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
 - No Production deploy; PR remains draft/open/unmerged.
 - D03 remains 56.7%; Bollinger/ADX stay L2 until post-deploy genuine parent/continuity evidence.
 - Protected next action: explicit owner Production approval for concrete PR #600 merge/deploy.
+
+## 2026-10-05 D06 — IC-065~066 SDA-007 semantic lineage remediation
+
+- Room/domain: 05｜法人與籌碼研究室 / D06.
+- Durable contract: `research/d06_sda007_flow_ownership_lineage_contract_20261005_v0_1.json`.
+- SDA-007 learning-room semantic remediation is complete: observed flow/ownership is separated from motive; passive/active and mechanical/behavioral interpretations consume shared primitive receipts rather than creating new independent votes.
+- Primitive families are frozen across institutional flow, TDCC ownership, index event, ETF primary flow, margin, SBL, lending economics, day trading, broker/branch and direct-retail data.
+- Every derived child must reference parentReceiptIds/informationRoot; deterministic transforms have zero additional independent-evidence count until D16 residual incrementality is proven.
+- Outcomes remain closed. D06 maturity is unchanged. Formal Core remains LOCKED.
+- SDA-007 is NOT closed: System1/System2 machine lineage + D16 common-support/OOS validation + 00 readback remain required.
+
+### Exact next continuation
+1. On the next valid trading session execute the pre-registered D06 capture set with primitiveReceiptId/parentReceiptIds.
+2. Preserve CORE_CROWDING, dealer split, TDCC lineage, TPEx leverage vintage, TPEx day-trading vintages, ETF units+PCF and TWSE lending-rate/supply receipts.
+3. Route the new SDA-007 semantic receipt to engineering/D16 owners; do not change Formal or maturity from governance completion.
+4. D06-19 public data-existence search remains closed; special investor-type source access still requires owner authorization.
