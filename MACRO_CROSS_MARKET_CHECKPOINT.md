@@ -819,3 +819,44 @@ Therefore:
 1. On/after the scheduled 2026-10-08 H.4.1 release, append actual publication/capture/source identity and keep week-average vs Wednesday statistics separate.
 2. Future Treasury curve receipts preserve market-reference time separately from actual published/captured time.
 3. Continue CBC BOP prospective receipt plan independently.
+
+
+## 2026-10-05 Room09 continuation — MC-201..MC-203 Treasury observed-by clock
+
+Status: RESEARCH_ONLY / SOURCE_CLOCK_QA / OUTCOMES_CLOSED / NO_PROMOTION.
+
+### MC-201 — 2026-10-02 Treasury curve is observed before the 2026-10-05 Taiwan decision
+At the 2026-10-05 07:00 Asia/Taipei research capture, the official U.S. Treasury 2026 daily par-yield page contains the 2026-10-02 curve.
+Official values used only as source-state QA:
+- 2Y = 4.83%;
+- 10Y = 5.28%;
+- 30Y = 5.63%;
+- 10Y minus 2Y = +0.45 percentage point.
+This establishes a conservative observed-by bound for the 2026-10-05 18:10 Taiwan decision. It must not be backdated to the 2026-10-02 Taiwan 18:10 decision.
+
+### MC-202 — reference date, market-input time and public observation time are separate
+The same official Treasury page states that par-yield inputs are indicative bid-side quotations obtained at or near 15:30 U.S. Eastern time and are not actual transactions.
+The reference date and approximately 15:30 input clock do not prove exact public release time. Strict first-known research still requires source-attested publication/capture evidence.
+Frozen identity for this observation:
+- referenceDate = 2026-10-02;
+- observedAt = 2026-10-05 07:00 Asia/Taipei;
+- firstEligibleTaiwanDecision = 2026-10-05 18:10 Asia/Taipei;
+- strictFirstKnownReleaseTimestamp = UNKNOWN;
+- rawNativeResponseHash = UNKNOWN_NOT_CAPTURED;
+- outcomes = CLOSED.
+
+### MC-203 — retrieval-layer time ordering is a PIT gate
+This turn's generic web retrieval also surfaced some source pages carrying timestamps later than the 07:00 research clock. Such future-clock content is rejected for current PIT evidence even if a retrieval index exposes it.
+Search/crawl visibility is not a substitute for source-native publication ordering. Every D13 cross-market receipt must satisfy source publication/observation time <= applicable Taiwan decision time.
+
+Maturity firewall:
+- D13-06 remains L2/40%.
+- D13 remains 41.1%.
+- No L3 promotion; no outcome join.
+- Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+
+### Exact next continuation after MC-203
+1. Treat the 2026-10-02 Treasury curve as eligible no earlier than the 2026-10-05 18:10 Room09 decision under this conservative observed-by receipt.
+2. Future Treasury curves require their own source publication/capture clocks; calendar-date matching remains prohibited.
+3. Keep the prospective 2026-10-08 H.4.1 realization UNKNOWN until actual release; append, never overwrite, its schedule receipt.
+4. Continue CBC BOP prospective receipt plan independently.
