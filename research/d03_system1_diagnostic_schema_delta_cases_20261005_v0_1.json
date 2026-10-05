@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "D03_SYSTEM1_DIAGNOSTIC_SCHEMA_DELTA_CASES_V0_1",
+  "updatedAt": "2026-10-05T21:27:00+08:00",
+  "classification": "CLASS_A_RESEARCH_SHADOW_ONLY",
+  "formalCoreImpact": "NONE_LOCKED",
+  "baseImplementation": "research/system1_sda_shadow_v0_1.mjs",
+  "requiredFields": [
+    "redundancyGroupContributions",
+    "dominantInformationRoots",
+    "overlappingSignalRefs"
+  ],
+  "stableRefFields": ["factorId", "factorVersion", "signalIndex"],
+  "cases": [
+    {
+      "caseId": "CURRENT_GENERIC_ONLY",
+      "mutation": "REMOVE_REQUIRED_FIELDS",
+      "expectedStatus": "REJECT_CANONICAL_FIELDS_MISSING"
+    },
+    {
+      "caseId": "COMPLETE_ADDITIVE_SCHEMA",
+      "mutation": "NONE",
+      "expectedStatus": "PASS"
+    },
+    {
+      "caseId": "OVERLAP_FACTOR_VERSION_MISSING",
+      "mutation": "DELETE_FIRST_OVERLAP_FACTOR_VERSION",
+      "expectedStatus": "REJECT_STABLE_OVERLAP_IDENTITY"
+    },
+    {
+      "caseId": "CONTRIBUTION_COUNT_MISMATCH",
+      "mutation": "INCREMENT_FIRST_CONTRIBUTION",
+      "expectedStatus": "REJECT_CONTRIBUTION_RECONCILIATION"
+    },
+    {
+      "caseId": "DOMINANT_ROOT_MISMATCH",
+      "mutation": "REPLACE_DOMINANT_ROOT",
+      "expectedStatus": "REJECT_DOMINANT_ROOT_RECONCILIATION"
+    },
+    {
+      "caseId": "UNKNOWN_SIGNAL_LEAKAGE",
+      "mutation": "ADD_UNKNOWN_SIGNAL_TO_CONTRIBUTION",
+      "expectedStatus": "REJECT_INVALID_SIGNAL_LEAKAGE"
+    },
+    {
+      "caseId": "PERMUTATION_INVARIANCE",
+      "mutation": "REORDER_SIGNAL_INDICES_ONLY",
+      "expectedStatus": "PASS"
+    }
+  ],
+  "protectedFields": [
+    "rawSignalCount",
+    "rawScore",
+    "dedupedEvidenceFamilyCount",
+    "dedupedShadowScore",
+    "effectiveIndependentEvidenceCount",
+    "independentEvidenceStatus",
+    "formalSelectedSymbols",
+    "rawVoteShadowTop6",
+    "dedupShadowTop6"
+  ],
+  "effectiveIndependentEvidenceCount": 0,
+  "independentEvidenceStatus": "NOT_PROVEN_NO_PROMOTION_PATH",
+  "formalOptimizationCandidate": "NONE"
+}
+

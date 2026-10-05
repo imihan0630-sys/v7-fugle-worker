@@ -3603,3 +3603,27 @@ No outcome was inspected. No System 2 runtime or Formal behavior was changed. D0
 
 Exact next:
 System 2 implementation owner adds the required research/shadow lineage fields and returns an oracle-backed machine receipt. D03 reviews mapping drift. System 1 equivalent diagnostics, D16 sibling residual/multiplicity/OOS validation and 00 closure remain required. Protected PR #600, Bollinger and ADX paths are unchanged.
+
+
+## TI-733 through TI-748 — System 1 consumer mapping readback and schema-delta oracle (2026-10-05)
+
+Detailed artifacts:
+- `research/D03_SYSTEM1_SDA_CONSUMER_MAPPING_REVIEW_20261005_V0_1.md`;
+- `research/d03_system1_sda_consumer_mapping_review_20261005_v0_1.json`;
+- `research/D03_SYSTEM1_DIAGNOSTIC_SCHEMA_DELTA_ACCEPTANCE_20261005_V0_1.md`;
+- `research/d03_system1_diagnostic_schema_delta_cases_20261005_v0_1.json`;
+- `research/test_d03_system1_diagnostic_schema_delta_acceptance_v0_1.mjs`.
+
+### TI-733~740 — merged System 1 mapping readback
+Merged PR #608 passes canonical D03 registry digest pinning, retired D03-11->D03-02 alias handling, conservative same-root/redundancy/parent-child connected dedup, parameter-family reset prevention, fail-closed lineage/PIT handling, D03-04 outcome-only exclusion and the no-independent-evidence-promotion firewall. `effectiveIndependentEvidenceCount` remains 0. Verdict is `PASS_WITH_DIAGNOSTIC_SCHEMA_GAPS` because explicit redundancy-group contributions, dominant roots and stable overlap identities are incomplete.
+
+### TI-741~748 — schema-delta acceptance oracle
+The oracle freezes exact component reconciliation, dominant-root coverage semantics and stable factorId+factorVersion+signalIndex identity. It rejects field-name-only patches, count/score mismatch, root mismatch, missing factorVersion and UNKNOWN leakage. Permuting input order may change local indices only; stable identities, roots, counts, scores, Formal references and the independent-evidence firewall remain invariant.
+
+Observed:
+`status=PASS; acceptanceCases=7; completeSchema=PASS; genericOnly=REJECT_CANONICAL_FIELDS_MISSING; permutationInvariant=true; stableOverlapIdentity=true; dominantRootReconciled=true; effectiveIndependentEvidenceCount=0; formalCoreImpact=NONE_LOCKED`.
+
+No outcome was accessed. No System 1 implementation or Formal behavior changed. D03 remains 56.7%; D03-09 and D03-10 remain L2/40; SDA-001/SDA-004 remain REMEDIATION_IN_PROGRESS; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+Exact next:
+System 1 owner implements only the three Class A diagnostic schema deltas and returns an oracle-backed receipt. D03 revalidates the small schema delta, then waits for a genuine-session receipt. System 2, D16, 00 and protected Production paths remain separately pending.

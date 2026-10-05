@@ -4438,3 +4438,50 @@ No promotion:
 
 Exact next:
 System 1 engineering owner may add only the three diagnostic schema deltas without scoring/Formal changes; D03 then reviews the small delta only. First genuine-session System 1 receipt is still required. System 2 runtime dedup diagnostics remain missing. D16 common-support sibling residual/multiplicity/OOS validation and Room00 closure remain pending.
+
+
+## TI-741 through TI-748 — System 1 diagnostic schema delta acceptance (2026-10-05)
+
+Canonical artifacts:
+- `research/D03_SYSTEM1_DIAGNOSTIC_SCHEMA_DELTA_ACCEPTANCE_20261005_V0_1.md`;
+- `research/d03_system1_diagnostic_schema_delta_cases_20261005_v0_1.json`;
+- `research/test_d03_system1_diagnostic_schema_delta_acceptance_v0_1.mjs`.
+
+### TI-741 — explicit contribution reconciliation
+`redundancyGroupContributions` must describe the same connected components as `dedupedEvidenceFamilyCount`, carry stable factor/version references plus local indices, have unit contribution per component and reconcile exactly to `dedupedShadowScore`.
+
+### TI-742 — dominant-root semantics frozen
+`dominantInformationRoots` is derived from the maximum unique active-factor coverage by information root, sorted deterministically. Empty active evidence yields an empty array. Invalid, future-clock and outcome-only signals are excluded.
+
+### TI-743 — stable overlap identity and compatibility
+Acceptance requires factorId + factorVersion + signalIndex. Additive V0.1 may preserve legacy numeric IDs only if canonical stable refs are added; versioned V0.2 may separate stable IDs from local indices.
+
+### TI-744 — permutation invariance
+Reordering signals may change local indices only. Raw/dedup counts, scores, effective-independent count, stable overlap identities and dominant roots must not change.
+
+### TI-745 — superficial schema patches are rejected
+Missing fields, contribution/count disagreement, dominant-root mismatch, missing factorVersion, UNKNOWN leakage or protected-output changes fail acceptance.
+
+### TI-746 — interpretation
+Current gaps are traceability/readback debt, not demonstrated evidence inflation. Existing generic contributions contain much of the information, but index-only identity cannot support cross-receipt audit.
+
+### TI-747 — authority boundary
+Schema completion proves no Alpha, OOS, cost-adjusted value or production readiness. `effectiveIndependentEvidenceCount=0` and `independentEvidenceStatus=NOT_PROVEN_NO_PROMOTION_PATH` remain locked pending D16/00 evidence.
+
+### TI-748 — executable result and routing
+Observed:
+`status=PASS; acceptanceCases=7; completeSchema=PASS; genericOnly=REJECT_CANONICAL_FIELDS_MISSING; permutationInvariant=true; stableOverlapIdentity=true; dominantRootReconciled=true; effectiveIndependentEvidenceCount=0; formalCoreImpact=NONE_LOCKED`.
+
+This is implementation-ready acceptance evidence, not engineering completion.
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09 remains L2/40;
+- D03-10 remains L2/40;
+- first genuine System 1 SDA receipt remains pending;
+- outcomes remain CLOSED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`;
+- Formal Core remains LOCKED.
+
+Exact next:
+System 1 Class A owner implements the three schema deltas and executes this oracle. D03 revalidates only TI-738/TI-739 rather than reopening passed mapping logic, then waits for the first genuine-session receipt. System 2 implementation, D16 method receipt, 00 closure and protected PR #600/Bollinger/ADX paths remain independent.
