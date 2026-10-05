@@ -4665,3 +4665,103 @@ No promotion:
 
 Exact next:
 D16 future D03 method/incrementality receipts must satisfy both the prior TI-749~758 method oracle and the TI-769~776 admission-selection firewall. System1 still needs the three explicit diagnostic schema deltas plus a first genuine-session receipt. System2 still needs runtime raw-vs-dedup diagnostics. D03 next independent research path is to freeze how interaction/nonlinear composites are credited after two separately proven roots, so a P×V interaction cannot become a third evidence unit unless a preregistered interaction estimand proves value beyond both main effects. Protected PR #600/Bollinger/ADX path remains owner-gated and separate.
+
+
+## TI-777 through TI-794 — interaction increment evidence accounting guard (2026-10-06)
+
+Canonical artifacts:
+- `research/D03_INTERACTION_INCREMENT_EVIDENCE_ACCOUNTING_GUARD_20261006_V0_1.md`;
+- `research/d03_interaction_increment_evidence_accounting_guard_20261006_v0_1.json`;
+- `research/test_d03_interaction_increment_evidence_accounting_v0_1.mjs`;
+- `research/d03_interaction_increment_acceptance_receipt_20261006_v0_1.json`.
+
+### TI-777 — source roots and interaction increments are separate
+An interaction does not create a new information source. Machine accounting must separate `effectiveIndependentSourceRootCount`, `provenInteractionIncrementCount` and `effectiveEvidenceCount`.
+
+Two accepted roots P/V without an interaction remain 2 effective evidence units. A fully proven preregistered interaction may add one residual interaction increment so effective evidence may reach 3 while independent source-root count remains 2.
+
+### TI-778 — third-unit hierarchy
+This contract governs third-unit eligibility only after both component/root families are already accepted for the same consumer scope. Interactions can be studied earlier but cannot claim the third unit until both exact component versions/evidence receipts are bound.
+
+### TI-779 — both-main-effects baseline is mandatory
+The interaction must be tested against a baseline already containing both component main effects. Price-only, volume-only, omitted-component or weaker historical baselines cannot prove interaction incrementality.
+
+### TI-780 — nonlinear marginal misspecification firewall
+A product/AND/ratio/joint state can appear useful because the main-effect model is too rigid. D16 must freeze an adequate flexible marginal/main-effect control decision or justify why the frozen main-effect representation is the intended estimand. If the apparent interaction disappears under adequate marginal controls, classify `MAIN_EFFECT_MISSPECIFICATION_NOT_INTERACTION` and grant no increment.
+
+### TI-781 — representation variants remain one family
+Product, logical AND, ratio, thresholded joint state, quadrant/cell labels, percentile/z-score/sign interactions and acceptance/crossover labels from the same primitives remain one interaction family unless a genuinely distinct preregistered mechanism is established.
+
+### TI-782 — one increment cap per interaction family
+Successful aliases/parameterizations cannot multiply interaction evidence. One frozen component-pair mechanism family contributes at most +1. A second interaction increment requires a distinct non-duplicative preregistered mechanism plus separate D16 multiplicity accounting.
+
+### TI-783 — joint support is stricter than marginal support
+Adequate support for P and V separately does not establish support for P×V. Interaction graduation requires exact common support plus joint-state/design support and positivity. Sparse/near-zero joint regions cannot be repaired with extreme weights and then treated as identified.
+
+### TI-784 — interaction clock follows the latest component
+`interactionFirstObservableAt >= max(componentFirstObservableAt)`.
+Cross-timeframe finality remains binding. An interaction cannot use a component final state before that state was actually observable.
+
+### TI-785 — proof scope cannot exceed population/support scope
+Interaction proof inherits target/admitted population, restricted-support, admission lineage, positivity, evaluation cutoff and weighting/imputation semantics. Observed-subpopulation-only or support-mismatched proof cannot become a global third unit.
+
+### TI-786 — multiplicity includes interaction search
+Component pair, direction, algebraic form, thresholds, windows, smoothing, lifecycle encoding, horizon, subgroup/regime and selection/cost assumptions remain one search family where explored. Failed/null/inconclusive variants stay in history.
+
+### TI-787 — mandatory falsifiers
+Interaction proof must survive both-main-effects comparison, flexible marginal sensitivity where applicable, date-aware inference, leave-one-date sensitivity, concentration diagnostics, valid PIT-safe permutation/shuffle controls, coverage/opportunity checks and cost/fillability stress when selection changes.
+
+### TI-788 — explicit accounting policy
+V0.1 freezes:
+`MAIN_EFFECTS_PLUS_ONE_RESIDUAL_INTERACTION_CAP`.
+
+Accepted main-effect units remain; one proven residual interaction family may add at most +1; parent composite and duplicated interaction labels add +0. Silent replacement/triple counting is forbidden.
+
+### TI-789 — interaction is not an independent source
+Even after proof:
+allowed = `RESIDUAL_INTERACTION_INCREMENT_PROVEN`;
+forbidden for the interaction itself = `INDEPENDENT_SOURCE_PROVEN`.
+
+Useful nonlinear structure does not enlarge the information-root ontology.
+
+### TI-790 — parent composite and child interaction cannot both claim the same increment
+If a parent price-volume/Bollinger/ADX/oscillator-trend/nested-timeframe composite already embeds the same joint mechanism, one canonical interactionFamilyId owns the residual increment. Parent + child cannot both add +1.
+
+### TI-791 — proof revalidation on semantic drift
+Component versions/receipts, interaction formula, main-effect baseline, marginal controls, common/joint support, clock, D16 method, multiplicity, selection scope, outcome family or cost/fillability drift invalidate inherited interaction credit until revalidated.
+
+### TI-792 — interaction credit is consumer-scope bound
+Consumer component versions, population/support, clock and interaction mechanism must match the proof. Restricted-support evidence cannot export to unrestricted ranking; daily proof cannot silently become intraday evidence; research evidence cannot mutate Formal ranking without owner approval.
+
+### TI-793 — deterministic fixture frozen
+The canonical fixture covers 14 cases, including:
+- 2 roots / no interaction -> effective 2;
+- 2 roots / one valid interaction -> effective 3 while source-root count stays 2;
+- duplicate same-family interaction aliases -> still 3;
+- missing component binding, weak main-effect baseline, uncontrolled marginal misspecification, joint-support failure, observed-subpopulation-only scope, restricted-support mismatch, post-outcome retuning, negative-control failure and cost/fillability failure -> no third unit;
+- interaction-as-independent-source and pre-component interaction clock -> reject.
+
+This round freezes the executable fixture and contract-semantic acceptance receipt. No repository Node/CI execution receipt is claimed; `repositoryNodeFixtureExecutedInThisRound=false`.
+
+### TI-794 — decision and routing
+Frozen decision:
+`INTERACTION_THIRD_UNIT = PREREGISTERED_RESIDUAL_INCREMENT_ONLY`.
+
+Examples:
+- two accepted roots, no interaction proof => 2;
+- two accepted roots + one fully proven canonical interaction family => at most 3;
+- two accepted roots + multiple aliases/parameterizations of the same interaction family => still at most 3.
+
+No current interaction is empirically promoted.
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09 remains L2/40;
+- D03-10 remains L2/40;
+- raw source-version gate remains 2/3;
+- outcomes remain CLOSED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`;
+- Formal Core remains LOCKED.
+
+Exact next:
+audit the existing D03-10 Bollinger and D03-09 ADX composite mappings against TI-759~794 without redesigning their formulas: identify which components are main effects, which are composite/interaction representations, which baseline controls are required, and whether any current schema could accidentally let component + composite + interaction inflate evidence. D02 price-volume H003 remains producer-owned and is used only as a cross-domain consistency reference. External System1/System2/D16 machine lanes and protected PR #600 path remain independent.
