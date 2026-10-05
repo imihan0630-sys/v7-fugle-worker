@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "D06_14_DAYTRADE_REVISION_COMPARISON_CONTRACT_V0_1",
+  "updatedAt": "2026-10-05 Asia/Taipei",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-14",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "purpose": "Define fail-closed row-level comparison of TPEx T_PRELIM, T1_REVISED and T2_FINAL so revisions are not understated by common-row-only comparisons or missing-as-zero imputation.",
+  "vintageOrder": [
+    "T_PRELIM",
+    "T1_REVISED",
+    "T2_FINAL"
+  ],
+  "identityKey": [
+    "tradeDate",
+    "market",
+    "symbol"
+  ],
+  "unionDenominatorRule": "Compare the union of symbol identities across adjacent vintages. Common-support summaries may be reported separately but must not replace the union-denominator audit.",
+  "rowStates": {
+    "UNCHANGED": "symbol exists in both vintages and all compared source fields are identical",
+    "CHANGED": "symbol exists in both vintages and at least one compared source field differs",
+    "ADDED_IN_LATER": "symbol absent in earlier vintage and present in later vintage",
+    "REMOVED_IN_LATER": "symbol present in earlier vintage and absent in later vintage",
+    "UNKNOWN_IDENTITY_CONFLICT": "duplicate/malformed symbol identity or schema mismatch prevents safe comparison"
+  },
+  "comparedFields": [
+    "sellFirstSuspensionFlag",
+    "dayTradeShares",
+    "dayTradeBuyValue",
+    "dayTradeSellValue"
+  ],
+  "requiredMetrics": [
+    "earlierRowCount",
+    "laterRowCount",
+    "unionSymbolCount",
+    "commonSymbolCount",
+    "unchangedRowCount",
+    "changedRowCount",
+    "addedRowCount",
+    "removedRowCount",
+    "identityConflictCount",
+    "changedRowRateOverUnion",
+    "changedRowRateOverCommon",
+    "sumAbsoluteDayTradeSharesRevision",
+    "sumAbsoluteBuyValueRevision",
+    "sumAbsoluteSellValueRevision",
+    "maxAbsoluteSharesRevision",
+    "maxAbsoluteBuyValueRevision",
+    "maxAbsoluteSellValueRevision",
+    "suspensionFlagChangedCount"
+  ],
+  "safeguards": [
+    "Missing row in either vintage is not numeric zero.",
+    "Do not restrict revision analysis to common rows without separately reporting added/removed rows.",
+    "Do not divide by an earlier value of zero without an explicit zero-base state; relative revision is UNKNOWN or separately bucketed.",
+    "Do not infer return direction from buy-value minus sell-value revisions.",
+    "Do not infer investor identity or motive from day-trading revisions.",
+    "T2_FINAL may validate finality but must never replace the preserved T_PRELIM first-known state.",
+    "A later scraper/parser change must not be confused with a provider data revision; schema/parser version must be preserved.",
+    "Universe additions/removals, suspension-state changes and numeric revisions are separate revision mechanisms."
+  ],
+  "maturityRule": "One T_PRELIM receipt is insufficient for L3. At minimum preserve same-date T_PRELIM and subsequent revision/finality vintages with identity-safe comparison; broader independent-date stability is still preferred before predictive outcome work.",
+  "status": "REVISION_COMPARISON_CONTRACT_FROZEN / UNION_DENOMINATOR_REQUIRED / MISSING_NOT_ZERO / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Apply this contract to 2026-10-05 T_PRELIM versus 2026-10-06 T1_REVISED, then T1_REVISED versus 2026-10-07 T2_FINAL and T_PRELIM versus T2_FINAL. Preserve both union and common-support metrics."
+}
