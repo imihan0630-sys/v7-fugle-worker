@@ -8,19 +8,20 @@ Queue: shared-knowledge/stock_selection_audit_queue_v0_1.json
 
 ## Current snapshot
 
-- Tickets: 21
-- Domains covered: 22
-- CRITICAL: 5
+- Tickets: 22
+- Domain coverage: D01-D22 + 1 cross-system architecture ticket
+- CRITICAL: 6
 - HIGH: 14
 - MEDIUM: 2
 - REMEDIATION_IN_PROGRESS: 15
 - VALIDATION_PENDING: 4
 - BLOCKED_DEPENDENCY: 2
+- ROUTED: 1
 - CLOSED: 0
 
 ## Queue dashboard
 
-| Ticket | Severity | Status | Domains | Current readiness / blocker |
+| Ticket | Severity | Status | Scope | Current readiness / blocker |
 |---|---|---|---|---|
 | SDA-001 | CRITICAL | REMEDIATION_IN_PROGRESS | D01, D02, D03 | SYSTEM1_CORE_MERGED_D03_D01D02_SEMANTIC_FIREWALL_DEEPENED_THREE_SCHEMA_DELTAS_SYSTEM2_AND_GENUINE_RECEIPT_PENDING |
 | SDA-002 | HIGH | REMEDIATION_IN_PROGRESS | D01 | D01_CAUSAL_AND_PROFILE_NO_LOOKAHEAD_FIREWALL_DEEPENED_PENDING_ADVERSARIAL_TEST_EXECUTION_AND_SYSTEM_GUARD |
@@ -43,38 +44,38 @@ Queue: shared-knowledge/stock_selection_audit_queue_v0_1.json
 | SDA-019 | HIGH | VALIDATION_PENDING | D20 | FIRST_PRIMARY_SOCIAL_PARENT_DURABLE_COVERAGE_AND_RESIDUAL_EVIDENCE_IMMATURE_D20_13_LIVE_SOURCE_PENDING |
 | SDA-020 | MEDIUM | REMEDIATION_IN_PROGRESS | D21 | HINDSIGHT_FIREWALL_STRONG_INSIDER_PLEDGE_CLOCK_AND_SYSTEM_LINEAGE_PENDING |
 | SDA-021 | MEDIUM | REMEDIATION_IN_PROGRESS | D22 | CREDIT_LAYER_AND_PROVENANCE_FIREWALL_STRONG_SAME_POP_BASELINE_MARKET_CREDIT_AND_RECOVERY_EVIDENCE_PENDING |
+| SDA-022 | CRITICAL | ROUTED | SYSTEM-LEVEL | ARCHITECTURE_GUARD_FROZEN_IMPLEMENTATION_AND_PROSPECTIVE_OVERLAP_EVIDENCE_PENDING |
 
-## Latest engineering intake
+## SDA-022 cross-system architecture audit
 
-Receipt:
-shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_INTAKE_20261006_V0_3.md
+Current verdict:
+- System1 and System2 are NOT currently the same logic.
+- convergence risk is MATERIAL because both increasingly share research/evidence families and validation controls.
+- shared truth/provenance is allowed and preferred;
+- shared decision policy is not assumed;
+- same picks are allowed and do not prove convergence;
+- different picks are allowed and do not prove independence.
 
-Key changes:
-- SDA-016 now uses V0.4 with 48 blocking tests. System1 PR #644 is a useful provenance partial pass only; it remains draft/unmerged/undeployed and does not solve authoritative Formal->C1 binding or shared cross-system consumption.
-- SDA-017 now uses V0.3 with 48 blocking tests. D18 replication-support receipt is frozen, but no System2 episode/support engine is credited yet.
-- SDA-003 PVE-246 certifies three root causes: combined after-market Cron misclassification, 15m baseline bootstrap starvation, and raw provider/endpoint/hash loss before persistence. Remediation is not implemented and clean H001 date count remains zero.
-- SDA-001/004 gain stronger D03 selection-identification and D01/D02 mixed-root anti-double-count semantics. No empirical residual Alpha is claimed.
-- SDA-007 gains revision-clock, informative-missingness and universe-mismatch firewalls. Machine primitive-lineage enforcement remains pending.
-- SDA-002 remains open because the latest D01 adversarial test execution is still pending.
+Current canonical architecture remains materially distinct:
+- System1: protected V8/Formal A/B, Top6/3+3, Formal ranking/lifecycle and 15m semantics.
+- System2: multi-strategy, max-12 global candidate pool, per-strategy max-3 active monitor, persistent membership-aware lifecycle, strategy-local ranking, no universal cross-strategy score by default.
+- System2 RANK-01 baselines are explicitly strategy-specific: SHORT_MOMENTUM uses TECHNICAL_STRUCTURE + PRICE_VOLUME + RISK_FRICTION; SWING_GROWTH uses FUNDAMENTAL_QUALITY + INDUSTRY_THESIS.
+
+SDA-022 does NOT block plain System1 Selection Shadow S1/S2 progression.
+It DOES block any future claim that System1+System2 provide two independent confirmations/diversification until policy-lineage and dependence tests pass.
 
 ## Selection Shadow launch state
 
-- S0 = PASS.
-- S1 = PARTIAL.
-- S2 = NOT_READY.
-- S3 = NOT_READY.
-- S4 = OWNER_APPROVAL_REQUIRED.
+System1 launch gate remains independent:
+- S0 = PASS;
+- S1 = PARTIAL;
+- S2 = NOT_READY;
+- S3 = NOT_READY;
+- S4 = OWNER_APPROVAL_REQUIRED;
 - T1 = NOT_READY.
-
-Shortest S1 path remains:
-1. finish System1 SDA-001/004 three Shadow schema deltas;
-2. implement SDA-009 leave-one-out diagnostic;
-3. establish authoritative genuine same-generation parent binding and produce first genuine Shadow receipt.
-
-PR #644 does not move S1 to PASS.
 
 ## Operating rule
 
 Only durable evidence satisfying a frozen remaining delta advances a ticket.
-Engineering-green, methodology, synthetic fixtures, maturity percentage, unrelated System progress, or unmerged candidates cannot be counted as closure.
+No ticket is closed by maturity percentage, documentation volume, synthetic fixtures, unrelated engineering-green status or output disagreement alone.
 Formal Core remains locked unless separately owner-approved.
