@@ -1,0 +1,24 @@
+{
+  "schemaVersion":"pattern-market-common-shock-v0.1",
+  "updated":"2026-10-05 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "owners":{
+    "marketBreadthSectorContext":"D09",
+    "marketRegime":"D18",
+    "marketBetaFactors":"D19",
+    "economicInference":"D16"
+  },
+  "manySectorsOneDateEqualsIndependentReplication":false,
+  "marketContextEqualsIndependentConfirmation":false,
+  "futureWindowBetaAllowed":false,
+  "outcomeSelectedBenchmarkAllowed":false,
+  "patternPerformanceCanDefineRegime":false,
+  "futureBenchmarkReturnInPredictor":false,
+  "readinessLadder":["M0","M1","M2","M3","M4","M5"],
+  "interpretationStates":["Q0","Q1","Q2","Q3","Q4","Q5","Q6"],
+  "SDA-001":"REMEDIATION_IN_PROGRESS",
+  "outcomeJoin":"CLOSED",
+  "formalOptimizationCandidate":"NONE"
+}
