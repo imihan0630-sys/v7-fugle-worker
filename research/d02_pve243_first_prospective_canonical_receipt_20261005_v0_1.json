@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "D02_PROSPECTIVE_PV_PROVENANCE_RECEIPT_V0_1",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "symbol": "2330",
+  "marketDate": "2026-10-05",
+  "timeframe": "1d",
+  "source": {
+    "provider": "TWSE",
+    "endpoint": "https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=html&stockNo=2330",
+    "retrievedAt": "2026-10-05T20:41:42+08:00",
+    "sourceTier": "EXCHANGE_OFFICIAL",
+    "rawPayloadHash": "49bf802c95362145385a7e12ad58d2c212045437e48ed5f45914f1b3e7d5eae9"
+  },
+  "availability": {
+    "availableAt": "2026-10-05T20:41:42+08:00",
+    "firstKnownAt": "2026-10-05T20:41:42+08:00",
+    "decisionCutoff": "2026-10-05T20:50:00+08:00",
+    "knownByDecisionCutoff": true
+  },
+  "bar": {
+    "barStart": "2026-10-05T09:00:00+08:00",
+    "barEnd": "2026-10-05T13:30:00+08:00",
+    "timezone": "Asia/Taipei",
+    "completed": true
+  },
+  "volume": {
+    "rawValue": 26800187,
+    "rawUnit": "SHARES",
+    "normalizedValue": 26800187,
+    "normalizedUnit": "SHARES",
+    "conversionRule": "IDENTITY_SHARES",
+    "unitContinuityStatus": "PASS"
+  },
+  "price": {
+    "adjustmentSemantics": "UNADJUSTED",
+    "corporateActionContaminated": false
+  },
+  "corporateAction": {
+    "status": "NONE_VERIFIED",
+    "receiptRef": "research/D02_PVE243_FIRST_PROSPECTIVE_CANONICAL_RECEIPT_20261005_V0_1.md",
+    "knownByDecisionCutoff": true
+  },
+  "informationRoot": "PRICE_PLUS_VOLUME_DERIVED",
+  "participation": {
+    "proxyClass": "TOTAL_VOLUME",
+    "intentIdentified": false,
+    "openingAuctionCompleteness": "NOT_APPLICABLE"
+  },
+  "admission": {
+    "pitPass": true,
+    "unitPass": true,
+    "corporateActionPass": true,
+    "sourcePass": true,
+    "intentFirewallPass": true,
+    "eligibleForProspectiveEvidence": true,
+    "reasons": []
+  }
+}
