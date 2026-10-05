@@ -103,3 +103,41 @@ Next closure evidence:
 System1 fingerprint -> System2 fingerprints -> NC-T01 -> prospective overlap/divergence -> D16 dependence/incrementality -> 00 closure.
 
 No cross-system agreement may be labeled "two independent confirmations" before this chain passes.
+
+
+## SDA-022 stage-3 acceptance oracle / machine receipt readiness
+
+Current SDA-022 state:
+REMEDIATION_IN_PROGRESS.
+
+Completed governance/observability:
+- non-convergence guard;
+- architecture policy baseline;
+- machine-readable baseline;
+- D16 pre-outcome validation request;
+- 28-test blocking acceptance oracle S22-T01~T28;
+- System1/System2 policy-fingerprint receipt JSON schema;
+- NC-T01 physical-independence receipt JSON schema.
+
+Current expected oracle result:
+EVIDENCE_NOT_YET_AVAILABLE.
+
+No fingerprint/NC-T01/D16 prereg receipt has yet been physically accepted by 00.
+
+Next acceptable progression:
+1. System1 fingerprint -> test S22-T01~T05;
+2. System2 fingerprints -> test S22-T06~T10;
+3. physical NC-T01 -> test S22-T11~T16;
+4. D16 preregistration -> test S22-T25~T28;
+5. prospective overlap/divergence accumulation -> S22-T17~T24;
+6. D16 outcome dependence/incrementality;
+7. 00 closure.
+
+Current ticket counts:
+- REMEDIATION_IN_PROGRESS: 16;
+- VALIDATION_PENDING: 4;
+- BLOCKED_DEPENDENCY: 2;
+- ROUTED: 0;
+- CLOSED: 0.
+
+No Formal behavior change.
