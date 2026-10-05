@@ -1153,3 +1153,36 @@ Exact next SDA continuation:
 3. intake actual learning-room/System1/System2 remediation receipts as they arrive and advance only the corresponding ticket;
 4. independent 00 closure remains mandatory for SDA-016 and SDA-017;
 5. preserve unrelated H/COV/AOKD owner gates.
+
+
+## 2026-10-05 first full SDA baseline complete
+
+First full D01-D22 self-deception audit reconciliation is complete.
+
+Dashboard:
+`shared-knowledge/STOCK_SELECTION_AUDIT_DASHBOARD_V0_1.md`.
+
+Machine queue:
+`shared-knowledge/stock_selection_audit_queue_v0_1.json`.
+
+Baseline counts at completion:
+- 21 root-cause tickets covering all 22 domains;
+- 5 CRITICAL;
+- 14 HIGH;
+- 2 MEDIUM;
+- 14 REMEDIATION_IN_PROGRESS;
+- 4 VALIDATION_PENDING;
+- 2 BLOCKED_DEPENDENCY;
+- 1 ROUTED (SDA-009 exact circularity remediation still awaiting the D09 leave-one-out contract);
+- 0 CLOSED.
+
+Zero CLOSED is intentional. Existing controls were credited, but closure requires durable remediation/validation evidence.
+
+Exact next SDA continuation is now event-driven:
+1. on any new learning-room/System1/System2 commit or receipt, map it to SDA ticket(s);
+2. compare only against frozen remainingDelta/closure criteria; do not redo accepted controls;
+3. move ticket state forward only with durable evidence;
+4. prioritize launch-critical SDA-001/004/009/016/017 and high launch/safety SDA-002/003/005/006/007/008/011/014/015;
+5. independently close SDA-016/SDA-017 only from 00 after D16/System evidence;
+6. blocked SDA-010/SDA-012 remain frozen behind existing owner gates and are not unblocked by generic continuation;
+7. Formal Core remains locked.
