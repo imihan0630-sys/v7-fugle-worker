@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "D06_20261006_PROSPECTIVE_CAPTURE_SESSION_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "tradeDate": "2026-10-06",
+  "openedAt": "2026-10-06T06:11:31+08:00",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "parentPlan": "research/d06_next_trading_day_outcome_blind_capture_plan_v0_1.json",
+  "linkedRevisionSession": "research/d06_20261006_revision_followup_session_v0_1.json",
+  "globalGuards": [
+    "Raw parent receipts precede derived states.",
+    "UNKNOWN is never zero/no-event/no-flow.",
+    "No source/pass criteria may change after values are observed.",
+    "One information root does not create multiple independent votes.",
+    "No return/MFE/MAE/hit-rate or Formal scoring is opened during capture."
+  ],
+  "lanes": [
+    {
+      "laneId": "D06_14_DAY_TRADING_TODAY",
+      "module": "D06-14",
+      "sourceUrl": "https://www.tpex.org.tw/zh-tw/mainboard/trading/day-trading/statistics/day.html?date=20261006",
+      "preopenReceipt": "research/d06_14_tpex_daytrade_preopen_20261006_v0_1.json",
+      "preopenState": "NOT_YET_PUBLISHED / 0_ROWS",
+      "clock": "VARIABLE_AFTER_BROKER_REPORTING",
+      "next": "Later today repeat the same date-pinned query; first nonzero stock table becomes T_PRELIM with capturedAt/hash. Do not assume yesterday's first-observed clock repeats."
+    },
+    {
+      "laneId": "D06_14_T1_20261005",
+      "module": "D06-14",
+      "sourceUrl": "https://www.tpex.org.tw/zh-tw/mainboard/trading/day-trading/statistics/day.html?date=20261005",
+      "earlyReadback": "research/d06_14_tpex_daytrade_t1_calendar_early_readback_20261006_0542_v0_1.json",
+      "state": "T1_CALENDAR_EARLY_STABLE / T1_REVISED_NOT_YET_IDENTIFIED",
+      "next": "After T+1 workflow plausibly completes, recapture pinned 20261005 and apply revision + informative-missingness contracts."
+    },
+    {
+      "laneId": "D06_18_BORROW_ECONOMICS",
+      "module": "D06-18",
+      "targetTaipei": "15:20",
+      "state": "PENDING_BY_CLOCK",
+      "next": "Attempt official live borrow-rate/displayed-supply receipt at frozen slot; preserve UNKNOWN if authorized replayable rows remain unavailable."
+    },
+    {
+      "laneId": "D06_03_DEALER_SPLIT",
+      "module": "D06-03",
+      "TPExState": "PENDING_AFTER_MARKET",
+      "TWSEPublicTargetTaipei": "18:00",
+      "TWSEPaidIncludingBlockTargetTaipei": "20:00",
+      "paidAccessRule": "Do not purchase or substitute without authorization.",
+      "next": "Capture 2026-10-06 prospective dealer proprietary/hedge split under identical semantics; count today as a second temporal date only when a genuine same-date receipt exists."
+    },
+    {
+      "laneId": "D06_07_08_09_TPEX_VINTAGE",
+      "modules": [
+        "D06-07",
+        "D06-08",
+        "D06-09"
+      ],
+      "earlyTargetTaipei": "20:30",
+      "lateTargetTaipei": "22:30",
+      "state": "PENDING_BY_CLOCK",
+      "universeGuard": "research/d06_08_09_tpex_margin_sbl_universe_guard_20261005_v0_1.json",
+      "next": "Capture both EARLY and LATE on the same date through identical official sources/parser; keep D06-08 and D06-09 denominators separate."
+    },
+    {
+      "laneId": "D06_05_TDCC_LINEAGE",
+      "module": "D06-05",
+      "currentOwnershipVintage": "2026-10-02",
+      "existingParent": "research/d06_tdcc_parent_receipt_20261005_v0_1.json",
+      "state": "SAME_WEEKLY_VINTAGE / SAME_GENERATION_CONSUMER_PENDING",
+      "next": "Do not create an independent ownership-vintage count merely because scanDate advances. Bind exact parent only if a genuine 2026-10-06 consuming research row exists."
+    },
+    {
+      "laneId": "D06_06_CORE_CROWDING",
+      "module": "D06-06",
+      "state": "WAITING_COMPATIBLE_SHARED_PRICE_VOLUME_PARENT",
+      "parentRule": "Same-generation, D06-population-compatible shared PRICE_OHLC/VOLUME_TURNOVER lineage with exact parent identity.",
+      "next": "Consume a compatible D02/canonical parent if one becomes durable; never rematerialize the same information root inside D06."
+    },
+    {
+      "laneId": "D06_16_ETF_MECHANICS",
+      "module": "D06-16",
+      "state": "L3_SOURCE_PIT_READY / 20261006_USE_GENERATION_ALREADY_CAPTURED_PREVIOUS_EVENING",
+      "existingReceipt": "research/d06_pf041_pcf_multi_generation_stability_receipt_20261005_v0_1.json",
+      "next": "No duplicate independent-date credit from morning rereads of the same 2026-10-06 decision generation."
+    }
+  ],
+  "maturityImpact": "NONE_AT_OPEN",
+  "sessionState": "PREOPEN_REGISTERED / D06_14_PREOPEN_ZERO_ROWS_CAPTURED / ALL_OUTCOMES_CLOSED",
+  "exactNext": "At 15:20 execute the frozen D06-18 live borrow-economics slot unless a legitimately earlier source-clock task becomes due. After market close capture D06-03; around 20:30/22:30 capture TPEx leverage EARLY/LATE. Later today capture both D06-14 2026-10-06 first T_PRELIM and 2026-10-05 T1_REVISED using date-pinned queries. Preserve missing states and do not change gates."
+}
