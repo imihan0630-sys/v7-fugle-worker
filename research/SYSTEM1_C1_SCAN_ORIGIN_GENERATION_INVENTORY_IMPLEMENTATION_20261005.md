@@ -24,6 +24,8 @@ New request-local origin kinds:
 - `READ_ONLY_DRY_RUN`: preview/test capture that is never persisted as a production C1 generation.
 - `INTERNAL_UNCLASSIFIED`: explicit fallback for an otherwise uncategorized runtime caller; it is not silently inferred into another category.
 
+Direct/internal C1 builder calls that do not traverse a known request entrypoint receive this explicit `INTERNAL_UNCLASSIFIED` marker at construction time. This preserves legacy test/tool compatibility without manufacturing Cron/manual provenance. Normal production Cron and authenticated manual scans still pass their exact entrypoint context.
+
 Each invocation receives an opaque `scanAttemptId`. New C1 generation headers retain the request origin, attempt id, invocation/scheduled clocks, requested date, only-if-missing state, test mode, generation id, session date and decision clock. The same origin root is anchored into the first C1 row, therefore existing immutable C1 contentDigest/readback binds the header origin to stored row evidence. V8.19+ readback rejects a missing or mismatched origin anchor.
 
 ## Generation inventory
