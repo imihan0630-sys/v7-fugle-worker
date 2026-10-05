@@ -3648,9 +3648,9 @@
         }
       ],
       "status": "D21_01_L3 / D21_02_L3 / D21_03_L2 / D21_04_L2 / D21_05_L3 / D21_07_L3 / D21_09_L3 / D21_10_L3 / D21_11_L3 / D21_12_L3 / D21_13_L3 / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "優先處理 D21-03 月度內部人持股變動的 authoritative known_at／safe bound，再處理 D21-04 原始質押事件日期／receipt。所有 L3 模組後續只接受 OOS／前瞻證據升 L4。",
-      "lastResearchUpdate": "2026-10-04T21:25:00+08:00",
-      "researchNote": "D21-01 advanced to L3 by replacing an unnecessary exact-first-second requirement with a conservative daily PIT bound: when original MOPS timestamp is missing, the historical annual-report rule plus AGM date establishes a guaranteed latest filing date; daily eligibility begins the next trading day. TSMC and Formosa Plastics replay cleanly under this method while preserving prior threshold falsifications. D21-03 and D21-04 remain L2 because authoritative monthly/pledge event content is still incomplete. Formal Core unchanged."
+      "exactNextContinuationPoint": "D21-03 僅接受 authoritative historical monthly actual-change record + safe publication bound/receipt；D21-04 僅接受 insider/controller pledge setup/release historical event receipt。2026-03-30 外資境外擔保品質權制度僅作 pledge-semantics falsification，不得替代 insider/controller evidence。所有 L3 模組後續只接受 OOS／前瞻證據升 L4。",
+      "lastResearchUpdate": "2026-10-05T20:45:00+08:00",
+      "researchNote": "2026-10-05 20:45 receipt a7f81d6: D21-03 statutory monthly reporting bound reconfirmed but exact historical MOPS first-known remains blocked; legal-status/trust changes reinforce non-directional insider-change semantics. D21-04 gained a new regime falsification: 2026-03-30 TWSE institutional collateral rules permit pledge arrangements for offshore collateral/risk-management purposes, proving pledge existence alone is not controller distress/bearish evidence. D21-03 and D21-04 remain L2/40. Formal Core unchanged."
     },
     {
       "id": "D22",
