@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "D03_INTERACTION_SUPPORT_SEARCH_ACCEPTANCE_CONTRACT_V0_1",
+  "updatedAt": "2026-10-06T07:08:00+08:00",
+  "owner": "D03",
+  "classification": "RESEARCH_ONLY_OUTCOME_CLOSED",
+  "formalCoreImpact": "NONE_LOCKED",
+  "parents": [
+    "research/d03_interaction_estimability_concentration_oracle_20261006_v0_1.json",
+    "research/d03_interaction_search_genealogy_and_rebin_firewall_20261006_v0_1.json",
+    "research/d03_interaction_increment_evidence_accounting_guard_20261006_v0_1.json",
+    "research/d03_mixed_root_residual_selection_identification_addendum_20261006_v0_1.json"
+  ],
+  "requiredIdentityBindings": [
+    "interactionFamilyId",
+    "interactionVersion",
+    "interactionSearchFamilyId",
+    "variantId",
+    "variantVersion",
+    "componentPairHash",
+    "formulaIdentityHash",
+    "parameterCandidateSetHash",
+    "targetPopulationHash",
+    "commonSupportHash",
+    "consumerScopeHash",
+    "estimandScope",
+    "outcomeHorizonId",
+    "multipleTestingFamilyId",
+    "researchStreamId",
+    "supportFloorPreregistrationHash",
+    "supportSelectionPolicyHash",
+    "d16MethodReceiptHash",
+    "sda016ConsumptionRef"
+  ],
+  "supportReceipt": {
+    "schemaVersion": "D03_INTERACTION_ESTIMABILITY_CONCENTRATION_RECEIPT_V0_1",
+    "requiredTerminalState": "SUPPORT_READY",
+    "representationSpecificPassRequired": true,
+    "concentrationPassRequired": true,
+    "dependencePassRequired": true,
+    "selectionIdentificationPassRequired": true,
+    "versionContinuityPassRequired": true
+  },
+  "searchReceipt": {
+    "schemaVersion": "D03_INTERACTION_SEARCH_GENEALOGY_RECEIPT_V0_1",
+    "allowedTerminalStates": [
+      "SEARCH_GENEALOGY_VALID",
+      "EXPLORATORY_ONLY"
+    ],
+    "allOutcomeInspectedVariantsPreserved": true,
+    "aliasResetAllowed": false,
+    "winnerSelectionSampleReuseAllowed": false,
+    "freshPostSelectionEvidenceRequiredWhenWinnerSelected": true
+  },
+  "crossReceiptConsistency": [
+    "SAME_INTERACTION_FAMILY_AND_VERSION",
+    "SAME_VARIANT_ID_AND_VERSION",
+    "SAME_COMPONENT_PAIR_HASH",
+    "SAME_FORMULA_IDENTITY_HASH",
+    "SAME_TARGET_POPULATION_HASH",
+    "SAME_COMMON_SUPPORT_HASH",
+    "SAME_CONSUMER_SCOPE_HASH",
+    "SAME_ESTIMAND_SCOPE",
+    "SAME_OUTCOME_HORIZON_ID",
+    "SAME_MULTIPLICITY_FAMILY",
+    "SAME_RESEARCH_STREAM",
+    "SAME_SUPPORT_FLOOR_PREREGISTRATION",
+    "SAME_SUPPORT_SELECTION_POLICY",
+    "SAME_D16_METHOD_RECEIPT",
+    "SAME_SDA016_CONSUMPTION_REF"
+  ],
+  "promotionEligibility": {
+    "researchThirdUnitReviewEligibleOnlyIf": [
+      "INTERACTION_INCREMENT_GUARD_PASS",
+      "SUPPORT_RECEIPT_SUPPORT_READY",
+      "SEARCH_GENEALOGY_VALID",
+      "LOCAL_MULTIPLICITY_PASS",
+      "OUTER_STREAM_PASS_OR_EXPLORATORY_NO_CONFIRMATORY_CLAIM",
+      "SELECTION_IDENTIFICATION_PASS",
+      "GENUINE_OOS_OR_PROSPECTIVE_EVIDENCE",
+      "FRESH_POST_SELECTION_EVIDENCE_IF_WINNER_SELECTED",
+      "ROOM00_CROSS_DOMAIN_CLOSURE"
+    ],
+    "exploratoryOnlyCanPromote": false
+  },
+  "mismatchDisposition": "INTERACTION_ACCEPTANCE_RECEIPT_BINDING_MISMATCH",
+  "noDataDefaults": {
+    "status": "EVIDENCE_NOT_YET_AVAILABLE",
+    "thirdUnitReviewEligible": false,
+    "maturityImpact": "NONE"
+  },
+  "noClaim": {
+    "empiricalInteractionIncrementality": true,
+    "alpha": true,
+    "productionReadiness": true,
+    "formalPromotion": true
+  }
+}
