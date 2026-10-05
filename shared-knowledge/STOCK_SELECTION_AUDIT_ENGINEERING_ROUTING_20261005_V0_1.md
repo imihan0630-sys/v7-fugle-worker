@@ -143,3 +143,35 @@ Canonical reconciliation:
 - remaining work should be implemented as Class A Shadow/diagnostic where possible;
 - shared schema/runtime changes remain Class B;
 - any Formal scoring/ranking/Top6/sizing behavior change remains Class C and requires explicit owner approval.
+
+
+## Remaining HIGH engineering routing
+
+Reconciliation:
+`shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md`.
+
+### System 1
+- **SDA-002**: reuse D01 causal root/episode semantics; ensure future-pivot/episode lineage and no later-outcome eligibility leakage in Shadow/replay consumers.
+- **SDA-008**: converge financial/valuation consumers on sourceVintage/knownAt/universeVersion/denominator-eligibility; no current-universe historical backfill.
+- **SDA-010**: do not implement canonical D10 graph scope beyond approved semantics before H10/COV-06 owner decisions. When approved, use versioned effective-dated exposureGraphId and shared producer/consumer receipts.
+- **SDA-012**: derivatives consumers must preserve parentChainId/contractVersion/rollVersion and same-parent residual semantics; protected H04/H11/COV-07 gates remain untouched.
+- **SDA-013**: macro consumers should converge on macroReceiptId/sourceVintage/releaseClock/exposure lineage; Regime consumes the same primitive instead of receiving another independent vote.
+- **SDA-018**: D19 enters only as Challenger research; factor lineage, PIT universe, turnover/cost and baseline-spanning diagnostics required before any promotion review.
+- **SDA-019**: no behavioral factor may receive an independent vote without behavior-specific observable lineage and residual evidence beyond D03/D06/D17.
+
+### System 2
+- **SDA-002**: any pattern/price-structure observer must respect D01 causal clocks and episode identity.
+- **SDA-010**: event/strategy propagation consumers must use one versioned structural exposure primitive after protected owner gates are resolved.
+- **SDA-012**: futures/options context must preserve contract/expiry/roll provenance and same-parent dedup.
+- **SDA-013**: macro inputs to Regime require first-known release clocks/vintages and cannot become a second Regime vote.
+- **SDA-019**: behavioral/social context remains UNIDENTIFIED unless a behavior-specific source/clock exists; shared PTT/social primitives may not multiply votes.
+
+### Protected dependencies
+The following are not implicitly approved by this routing:
+- H04;
+- H10;
+- H11;
+- COV-06;
+- COV-07 canonical intake/new-module action.
+
+Engineering must stop at the existing governance boundary whenever these owner decisions are required.
