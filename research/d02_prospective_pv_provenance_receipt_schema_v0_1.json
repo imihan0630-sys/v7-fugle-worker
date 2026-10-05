@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "D02_PROSPECTIVE_PV_PROVENANCE_RECEIPT_V0_1",
+  "title": "D02 Prospective Price-Volume Provenance Receipt V0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion","researchOnly","outcomeBlind","symbol","marketDate","timeframe","source","availability","bar","volume","price","corporateAction","informationRoot","participation","admission"],
+  "properties": {
+    "schemaVersion":{"const":"D02_PROSPECTIVE_PV_PROVENANCE_RECEIPT_V0_1"},
+    "researchOnly":{"const":true},
+    "outcomeBlind":{"const":true},
+    "symbol":{"type":"string","minLength":1},
+    "marketDate":{"type":"string","pattern":"^\\d{4}-\\d{2}-\\d{2}$"},
+    "timeframe":{"enum":["1m","5m","15m","1d"]},
+    "source":{"type":"object","additionalProperties":false,"required":["provider","endpoint","retrievedAt","sourceTier","rawPayloadHash"],"properties":{
+      "provider":{"type":"string","minLength":1},"endpoint":{"type":"string","minLength":1},"retrievedAt":{"type":"string","format":"date-time"},
+      "sourceTier":{"enum":["LIVE_PROVIDER","HISTORICAL_PROVIDER","EXCHANGE_OFFICIAL","DERIVED_FROM_BOUND_PARENTS"]},"rawPayloadHash":{"type":"string","minLength":8}
+    }},
+    "availability":{"type":"object","additionalProperties":false,"required":["availableAt","firstKnownAt","decisionCutoff","knownByDecisionCutoff"],"properties":{
+      "availableAt":{"type":"string","format":"date-time"},"firstKnownAt":{"type":"string","format":"date-time"},"decisionCutoff":{"type":"string","format":"date-time"},"knownByDecisionCutoff":{"type":"boolean"}
+    }},
+    "bar":{"type":"object","additionalProperties":false,"required":["barStart","barEnd","timezone","completed"],"properties":{
+      "barStart":{"type":"string","format":"date-time"},"barEnd":{"type":"string","format":"date-time"},"timezone":{"const":"Asia/Taipei"},"completed":{"type":"boolean"}
+    }},
+    "volume":{"type":"object","additionalProperties":false,"required":["rawValue","rawUnit","normalizedValue","normalizedUnit","conversionRule","unitContinuityStatus"],"properties":{
+      "rawValue":{"type":"number","minimum":0},"rawUnit":{"enum":["SHARES","LOTS"]},"normalizedValue":{"type":"number","minimum":0},"normalizedUnit":{"const":"SHARES"},
+      "conversionRule":{"enum":["IDENTITY_SHARES","REGULAR_LOT_X_1000"]},"unitContinuityStatus":{"enum":["PASS","BLOCKED","UNKNOWN"]}
+    }},
+    "price":{"type":"object","additionalProperties":false,"required":["adjustmentSemantics","corporateActionContaminated"],"properties":{
+      "adjustmentSemantics":{"enum":["UNADJUSTED","ADJUSTED_DAILY_ONLY","UNKNOWN"]},"corporateActionContaminated":{"type":"boolean"}
+    }},
+    "corporateAction":{"type":"object","additionalProperties":false,"required":["status","receiptRef","knownByDecisionCutoff"],"properties":{
+      "status":{"enum":["NONE_VERIFIED","EX_RIGHT","EX_DIVIDEND","SUPPLY_CHANGE","UNIT_SCALE","MULTIPLE","UNKNOWN"]},"receiptRef":{"type":["string","null"]},"knownByDecisionCutoff":{"type":"boolean"}
+    }},
+    "informationRoot":{"enum":["PRICE_OHLC","VOLUME_TURNOVER","PRICE_PLUS_VOLUME_DERIVED"]},
+    "participation":{"type":"object","additionalProperties":false,"required":["proxyClass","intentIdentified","openingAuctionCompleteness"],"properties":{
+      "proxyClass":{"enum":["TOTAL_VOLUME","RVOL","CUMVOL_PACE","BID_ASK_SIDE_VOLUME","SIGNED_VOLUME_PROXY","PRICE_VOLUME_RESPONSE","OTHER_PARTICIPATION_PROXY"]},
+      "intentIdentified":{"const":false},"openingAuctionCompleteness":{"enum":["COMPLETE","INCOMPLETE_BY_SOURCE_CONTRACT","NOT_APPLICABLE","UNKNOWN"]}
+    }},
+    "admission":{"type":"object","additionalProperties":false,"required":["pitPass","unitPass","corporateActionPass","sourcePass","intentFirewallPass","eligibleForProspectiveEvidence","reasons"],"properties":{
+      "pitPass":{"type":"boolean"},"unitPass":{"type":"boolean"},"corporateActionPass":{"type":"boolean"},"sourcePass":{"type":"boolean"},"intentFirewallPass":{"type":"boolean"},
+      "eligibleForProspectiveEvidence":{"type":"boolean"},"reasons":{"type":"array","items":{"type":"string"}}
+    }}
+  }
+}
