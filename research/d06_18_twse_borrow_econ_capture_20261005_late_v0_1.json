@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "D06_18_TWSE_BORROW_ECON_CAPTURE_20261005_LATE_V0_1",
+  "ownerModule": "D06-18",
+  "downstreamConsumers": [
+    "D20-13"
+  ],
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "tradeDate": "2026-10-05",
+  "captureSlot": "LATE_SBL_SESSION",
+  "targetTaipei": "15:20",
+  "toleranceMinutes": 5,
+  "requestedAt": "2026-10-05T15:20:43+08:00",
+  "capturedAt": "2026-10-05T15:20:43+08:00",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "primitiveReceiptId": "D06-20261005-TWSE-BORROW-ECON-LATE",
+  "authority": "TWSE",
+  "officialDisclosurePage": "https://mis.twse.com.tw/stock/detail-sblInquiry",
+  "officialInfoPage": "https://www.twse.com.tw/zh/products/sbl/disclosures/info.html",
+  "officialRule": "TWSE Securities Borrowing and Lending Rules Article 28",
+  "serviceHours": "09:00-15:30 Asia/Taipei",
+  "sourceAccessResult": {
+    "officialEntryReachable": true,
+    "dynamicDisclosurePageReachable": true,
+    "machineReadableRateDepthRowsObtained": false,
+    "exactMachineEndpointContractVerified": false,
+    "valuesCaptured": false
+  },
+  "transactionType": "UNKNOWN",
+  "recallNotificationTerm": "UNKNOWN",
+  "fixedRate": null,
+  "executedRate": null,
+  "executedQty": null,
+  "executedTotalQty": null,
+  "unexecutedLendQty": null,
+  "unexecutedBorrowQty": null,
+  "best5LendQtyRate": null,
+  "best5BorrowQtyRate": null,
+  "totalLendQty": null,
+  "totalBorrowQty": null,
+  "pointInTimeEligible": false,
+  "parseStatus": "UNKNOWN_SOURCE_MACHINE_CONTRACT",
+  "unknownReasons": [
+    "Official dynamic disclosure entry exists, but the currently authorized non-browser machine-readable route did not expose the per-security live rate/depth rows inside the frozen slot.",
+    "No later snapshot may be substituted for this 15:20 slot.",
+    "Displayed supply, even if later obtained, is not total lendable inventory and cannot support true utilization."
+  ],
+  "preservedSemantics": [
+    "Borrowing is not short sale.",
+    "Borrow quotes expire on submission day while lend quotes persist until cancelled.",
+    "Fixed-price and competitive-bid depth must preserve transaction type and recall-term semantics.",
+    "Daily fee payment is not daily short demand."
+  ],
+  "passGate": "NOT_PASSED",
+  "maturityImpact": "NONE",
+  "sharedReceiptRule": "D20-13 may consume this primitive receipt as a missingness/source-contract observation; it must not create a duplicate independent market view.",
+  "exactNext": "Keep D06-18 at L2. Resolve an authorized replayable public machine endpoint or equivalent official artifact for live TWSE rate/depth. On a later preregistered slot, capture a new append-only receipt; never overwrite this missed 15:20 vintage."
+}
