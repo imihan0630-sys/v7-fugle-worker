@@ -2119,3 +2119,54 @@ Exact next:
 3. if shared SDA-016 authority lands, validate V0.4 T01-T48 only where new/pending;
 4. if System2 SDA-017 episode/support engine lands, validate V0.3 T01-T48 only where new/pending;
 5. otherwise continue schema-level falsification only if it closes a genuine blind spot; do not manufacture data or maturity.
+
+
+## 2026-10-06 sixth-round continuation — outer hypothesis stream + policy candidate survivorship
+
+Canonical files:
+- `research/SDA016_OUTER_SEQUENTIAL_HYPOTHESIS_STREAM_VALIDATION_ADDENDUM_20261006_V0_1.md`;
+- `research/D16_ONLINE_EXPERIMENT_STREAM_RECEIPT_CONTRACT_20261006_V0_1.json`;
+- `research/SDA016_VALIDATION_ORACLE_20261006_V0_5.json`;
+- `research/SDA017_POLICY_CANDIDATE_SURVIVORSHIP_VALIDATION_ADDENDUM_20261006_V0_1.md`;
+- `research/D18_POLICY_CANDIDATE_UNIVERSE_RECEIPT_CONTRACT_20261006_V0_1.json`;
+- `research/SDA017_VALIDATION_ORACLE_20261006_V0_4.json`.
+
+Validation baseline:
+- SDA-016 = 58 blocking tests;
+- SDA-017 = 56 blocking tests.
+
+New SDA-016 responsibilities:
+- distinguish inner sequential monitoring from outer hypothesis-stream multiplicity;
+- researchStreamId / hypothesis-birth lineage;
+- explicit FWER/FDR/mFDR/exploratory error objective;
+- durable online error-budget transitions;
+- dependence-assumption state;
+- negative/inconclusive/retired hypothesis preservation;
+- no fresh nominal error-budget reset under alias/new family ids;
+- doubly-sequential inner+outer validity.
+
+New SDA-017 responsibilities:
+- preserve all born/retired policy candidates;
+- fixed candidate-set and champion-selection identity;
+- selection period cannot become the winner's untouched validation;
+- rolling champion is a separate adaptive meta-policy;
+- survival-duration / Regime-support confounding;
+- common-support champion identification;
+- fresh post-selection evidence;
+- exact cross-ledger link to SDA-016 research stream.
+
+No new SDA-016/SDA-017 engineering delta was found before this semantic extension.
+No empirical evidence was fabricated.
+
+No maturity change:
+D16 = 60%.
+D18 = 52%.
+Formal Core LOCKED.
+
+Exact next:
+1. re-read latest main and queue because concurrent rooms are active;
+2. if System1/System2 shared holdout authority lands, validate new/pending SDA-016 V0.5 T01-T58 only;
+3. if System2 episode/support or policy-universe engine lands, validate new/pending SDA-017 V0.4 T01-T56 only;
+4. before the first outcome inspection of any newly created confirmatory Room11 experiment, bind it to a durable researchStreamId/error objective or explicitly label it exploratory;
+5. first future champion chosen among multiple policy candidates requires fresh post-selection evidence, not reuse of its selection period;
+6. Room00 remains sole closure authority.
