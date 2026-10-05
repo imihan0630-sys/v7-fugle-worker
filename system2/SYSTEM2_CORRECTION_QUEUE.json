@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-05T22:54:00+08:00",
+  "updatedAt": "2026-10-06T00:12:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -8,7 +8,7 @@
       "directiveId": "S2-CORR-20261004-001",
       "createdAt": "2026-10-04T15:13:33+08:00",
       "severity": "HIGH",
-      "status": "ACKNOWLEDGED",
+      "status": "FIX_IN_PROGRESS",
       "title": "Historical daily-market backfill stalled after first 2017 TWSE annual attempt",
       "affectedScope": [
         "S2-03 Historical infrastructure",
@@ -189,7 +189,7 @@
         "2021 TWSE disposition DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL"
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-05T22:54:00+08:00",
+      "updatedAt": "2026-10-06T00:12:00+08:00",
       "routingClass": "DATA_LANE",
       "assignedLane": "DATA_LANE",
       "assignedRoom": "System 2｜歷史資料工程室",
