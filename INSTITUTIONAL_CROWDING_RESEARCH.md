@@ -1644,3 +1644,36 @@ future tests must compare aggregate dealerNet against the split desks on common 
 Maturity impact: NONE.
 Outcomes remain CLOSED.
 Formal Core unchanged.
+
+
+---
+
+## IC-071 — D06-06 cross-domain price/volume parent lineage firewall
+
+Research cycle: 2026-10-05 Asia/Taipei
+Status: CROSSDOMAIN_PARENT_LINEAGE_FROZEN / DUPLICATE_PRICE_VOLUME_PRIMITIVE_FORBIDDEN / SHARED_PARENT_BINDING_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable contract:
+`research/d06_core_crowding_crossdomain_parent_lineage_20261005_v0_1.json`.
+
+A new self-deception gap was closed without creating a new factor. D06-06 CORE_CROWDING requires same-date price/volume response, but price and volume are shared primitives already owned by the D02/shared price-volume lineage. Re-materializing those observations inside D06 under a new receipt name would allow the same PRICE_OHLC / VOLUME_TURNOVER information to appear once in D02 and again inside D06 crowding.
+
+The frozen rule is therefore:
+- D06 institutional-flow and TDCC ownership parents remain D06-owned primitives;
+- PRICE_OHLC and VOLUME_TURNOVER are shared parents consumed by D06, not new D06 primitives;
+- `D06-20261005-LIQUIDITY-PRICEVOLUME` is consumer-alias-only until it is bound to exact same-generation shared parent receipt identities;
+- if the same-generation D02/canonical shared parent does not yet exist, D06-06 remains WAITING_SHARED_PARENT_RECEIPT rather than reconstructing a duplicate;
+- `D06_CORE_CROWDING_PRICE_FLOW_REACTION` is a derived interaction with effectiveIndependentEvidenceCount increment = 0 until D16 proves common-support residual incrementality beyond its exact parents.
+
+This is a D06 responsibility under SDA-007 and a dependency-aware guard against the same-root risks represented by SDA-001/SDA-003. Room05 does not claim ownership or closure of those other tickets.
+
+At the time of this freeze, no durable 2026-10-05 same-generation D02/shared price-volume parent receipt was found in the repository. The official market close being observable is not sufficient reason to create a duplicate D06 primitive.
+
+Maturity impact: NONE. D06 remains 47.8%. Outcomes remain CLOSED. Formal Core unchanged.
+
+Exact next:
+1. when the exact 2026-10-05 shared D02/canonical PRICE_OHLC + VOLUME_TURNOVER parent receipt becomes durable, bind its primitiveReceiptId/hash/firstKnownAt into D06-06;
+2. until then keep the price/volume parent state waiting and do not fabricate a D06 duplicate;
+3. continue TWSE dealer split, TPEx leverage EARLY/LATE, D06-14 T_PRELIM and PF-040 only at their actual source clocks;
+4. preserve the existing TDCC weekly parent for the same-generation D06-05/D06-06 join;
+5. no maturity or Formal promotion follows from lineage governance alone.
