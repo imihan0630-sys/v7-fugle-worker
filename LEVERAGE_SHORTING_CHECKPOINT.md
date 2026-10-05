@@ -330,3 +330,32 @@ D06-07/08/09 remain L2/40. The source/replay gate is stronger but the preregiste
 3. Maintain separate D06-08 margin-eligible and D06-09 SBL universes.
 4. Only if both vintages exist, compute revision deltas on union and common support.
 5. No outcomes or Formal change until later validation gates.
+
+
+## LS-047G / D06-18 — 2026-10-06 live-route preflight clears route uncertainty before the 15:20 slot
+
+Durable evidence:
+- `research/d06_18_twse_sbl_live_route_preflight_20261006_v0_1.json`;
+- `research/d06_18_twse_sbl_live_field_schema_v0_1.json`.
+
+Official TWSE rendered route now physically supports security selection through `?ch=<symbol>`.
+`?ch=2330&lang=zhHant` rendered 台積電(2330) and the required securities-lending rate/depth fields.
+
+A deterministic five-symbol source-route pilot was frozen before the target slot:
+`1101 / 2451 / 3532 / 6187 / 9941`.
+
+All five route checks matched the selected security and exposed the expected field labels.
+
+The pilot is not a cross-sectional market sample and carries no alpha interpretation. It exists only to prove and execute the source route at the frozen 15:20 slot.
+
+Field schema is frozen:
+- fixed-rate versus competitive-bid versus negotiated transaction families stay separate;
+- 10/3/1-day recall-notice states stay separate;
+- dash remains NULL, not zero;
+- displayed lend quantity is not total lendable inventory;
+- borrowing/fee/depth do not identify bearish motive.
+
+The 2026-10-05 missing 15:20 receipt remains immutable UNKNOWN/MISSING.
+
+D06-18 remains L2/40.
+Exact next: at 2026-10-06 15:20 ±5m, capture exactly the frozen five symbols through the same route and preserve source date, transaction type, recall state, rate/depth values, capturedAt and hash.
