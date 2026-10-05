@@ -8,6 +8,18 @@
   "ownerApprovedClassBImplementation": true,
   "mergeAuthorized": false,
   "productionDeployAuthorized": false,
-  "ciStatus": "PENDING",
-  "formalCoreImpact": false
+  "ciStatus": "QUEUED_EXACT_HEAD",
+  "formalCoreImpact": false,
+  "latestHead": "6bf61449d6013cef8cee16a3a610de593e99819c",
+  "exactHeadRuns": {
+    "regression": 37376410914,
+    "isolatedReview": 37376410949,
+    "repairCI": 37376410918
+  },
+  "resolvedDuringThisSegment": [
+    "V8.19 guarded patch persistence anchor aligned to effective V8.17/V8.18 chain",
+    "Regression workflow literal backslash-n wiring removed",
+    "V8.18 parity test scoped to pre-V8.19 runtime boundary and latest workflow version guard"
+  ],
+  "exactNextAction": "Read exact-head CI for 6bf61449d6013cef8cee16a3a610de593e99819c; if all three pass, record acceptance and stop at merge/production approval gate. If any fail, diagnose only the first concrete failure and repair without changing Formal Core."
 }
