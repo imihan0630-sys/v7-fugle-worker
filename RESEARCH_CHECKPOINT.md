@@ -2937,3 +2937,14 @@ A missing or stale effective-ranking identity blocks the fingerprint.
 Do not use raw/stale Worker ranking if guarded effective Formal comparator differs.
 
 No outcome interpretation is opened by this pointer.
+
+
+## 2026-10-06 SDA-022 machine receipt schema pointer
+
+Machine schema:
+- shared-knowledge/cross_system_policy_fingerprint_receipt_schema_v0_1.json
+
+Next System1 SDA-022 output is a research-only fingerprint receipt conforming to that schema and S22-T01~T05.
+
+The receipt must bind the current effective Formal policy, not a stale raw code path.
+No Formal mutation is authorized.
