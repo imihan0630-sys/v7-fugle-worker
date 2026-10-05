@@ -5613,3 +5613,54 @@ Formal Core LOCKED.
 
 Exact next continuation point:
 PVE-243 — capture the first genuine prospective canonical receipt using the frozen schema plus V0.2 canonical guard, without opening promotion-grade outcomes. If no decision-time-valid source is available, record BLOCKED/UNKNOWN instead of retroactively admitting historical data.
+
+
+# PVE-243 — First genuine prospective canonical provenance receipt (2026-10-05)
+
+Status: PROSPECTIVE_CANONICAL_RECEIPT_PASS / GENERIC_PROVENANCE_ONLY / OUTCOME_CLOSED / NO_CLEAN_SELECTION_DATE / FORMAL_UNCHANGED.
+
+Source capture:
+- symbol 2330;
+- marketDate 2026-10-05;
+- official TWSE STOCK_DAY row;
+- trade volume 26,800,187 SHARES;
+- open/high/low/close 2550/2580/2545/2575;
+- change +75;
+- source row SHA-256 49bf802c95362145385a7e12ad58d2c212045437e48ed5f45914f1b3e7d5eae9;
+- firstKnownAt 2026-10-05T20:41:42+08:00;
+- decisionCutoff 2026-10-05T20:50:00+08:00.
+
+Corporate-action cross-check:
+- no 2330 match in the current TWSE TWT48U ex-right/ex-dividend forecast at capture;
+- TWSE market-report semantics mark ex-right/ex-dividend/new-listing/resumption as N/A for change comparison;
+- 2330 has a normal +75 change, not N/A;
+- connected Fugle recent-important-dates data updated 2026-10-05 reports cshDivDate 2026-12-10, not 2026-10-05.
+
+Source fallback audit:
+- connected Fugle real-time quote was unavailable because real-time quote access is not enabled;
+- FCNT000013 returned historical three-day price/volume, but its payload did not explicitly bind the volume unit;
+- FCNT000154 returned no usable raw data for the requested capture;
+- neither historical connector path was substituted for decision-time source proof.
+
+Executable result:
+- canonical receipt guard: PASS;
+- PVE-242 GENERIC_PROVENANCE lane: PASS;
+- H001 lane: FAIL_CLOSED as expected because the receipt is 1d rather than 15m.
+
+Durable artifacts:
+- research/d02_pve243_first_prospective_canonical_receipt_20261005_v0_1.json;
+- research/D02_PVE243_FIRST_PROSPECTIVE_CANONICAL_RECEIPT_20261005_V0_1.md;
+- research/d02_pve243_first_prospective_receipt_validation_v0_1.json.
+
+Interpretation:
+This is the first real prospective canonical provenance receipt.
+It is not an H001/H20/H003/D02-08 clean event and does not increment clean prospective selection-date counters.
+
+Current evidence:
+PVE-243 / CLEAN_SELECTION_DATE_ZERO / Gate 7 CLOSED.
+D02 remains 60.0%.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-244 — obtain the first decision-time-valid 15m canonical receipt for Wave-1, beginning with H001 only at slot >=10:15 and only when baseline/history/current-slot/common-support requirements all pass. If a live 15m source cannot be proven, record BLOCKED/UNKNOWN rather than after-the-fact historical evidence.
