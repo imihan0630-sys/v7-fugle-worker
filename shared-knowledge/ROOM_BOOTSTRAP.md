@@ -204,3 +204,18 @@ Canonical audit map:
 - 學習室負責語意、機制、反證、代理變數邊界；D16 負責 common-support、incrementality、OOS/Shadow、多重檢定；00 負責跨領域稽核與關閉；工程聊天室負責 lineage/clock/provenance/receipt/test 等執行層防線。
 - blind spot 不得因文件寫了就視為 CLOSED；需有對應研究修正、工程 guard/test 或 D16 evidence，再由 00 readback 關閉。
 - 此稽核不授權 Formal Core 變更；任何會改 A/B、ranking、Top6、weight、threshold 或交易行為的動作仍須明確 owner approval。
+
+
+## 十、全域外部 Web 工具政策（MANDATORY）
+
+所有使用本 repository/shared-knowledge bootstrap 的聊天室（00、01～15、System 1、System 2、Chat／Work／Codex 與跨專案 continuation）都必須讀取：
+
+`shared-knowledge/GLOBAL_EXTERNAL_WEB_TOOL_POLICY_V0_1.md`
+
+核心規則：
+- **TinyFish 對所有新任務停用。** 不得再把 TinyFish 當成新網頁研究／抓取／頁面解析工具。
+- 需要外部網頁 discovery / crawl / page extraction / reading 時，**Firecrawl 為預設替代工具**。
+- 若當前聊天室尚未連接 Firecrawl，不得暗中退回 TinyFish；可先用 ChatGPT 原生 web/search/browser，若任務確實需要 Firecrawl 才能完成，則只在實際連線邊界停住並說明。
+- 已有的官方 API、repository-owned Playwright collector、CI/runtime collector 不因這條規則被強制改寫；工程資料擷取仍以可重現、PIT、source lineage 為準。
+- 舊 evidence 若真實記錄過 TinyFish，只能保留歷史 provenance，不得竄改；「歷史上曾用過」不等於「現在仍授權」。
+- Firecrawl 只是 retrieval channel，不等於官方來源；官方 primary source 仍優先。
