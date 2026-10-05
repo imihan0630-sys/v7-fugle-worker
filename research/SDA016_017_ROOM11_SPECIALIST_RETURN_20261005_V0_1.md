@@ -599,3 +599,62 @@ A diversification claim additionally requires aligned return/exposure/cost/downs
 Room11 does not close SDA-022.
 No maturity change.
 Formal Core remains LOCKED.
+
+
+## 2026-10-06 SDA-022 stage-4 canonical oracle convergence + D16 preregistration return
+
+00 has frozen the canonical SDA-022 pre-outcome oracle:
+- `shared-knowledge/SDA022_ACCEPTANCE_ORACLE_V0_1.md`;
+- `shared-knowledge/sda022_acceptance_oracle_v0_1.json`;
+- 28 blocking tests, S22-T01~T28;
+- outcomes CLOSED.
+
+Canonical machine schemas:
+- `shared-knowledge/cross_system_policy_fingerprint_receipt_schema_v0_1.json`;
+- `shared-knowledge/sda022_nc_t01_receipt_schema_v0_1.json`.
+
+Room11 supplemental compatibility work:
+- `research/SDA022_D16_FINGERPRINT_CONTRACT_COMPATIBILITY_AUDIT_20261006_V0_1.md`;
+- `research/SDA022_D16_FINGERPRINT_COMPATIBILITY_MATRIX_20261006_V0_1.json`;
+- `research/SDA022_D16_CROSS_SYSTEM_NON_CONVERGENCE_ORACLE_20261006_V0_2.json`.
+
+The Room11 24-test oracle is now supplemental/adversarial only.
+Whole-ticket closure baseline is the 00-owned 28-test oracle.
+
+Room11 preregistered the highest-risk pair before economic outcome access:
+- System1 current Formal A/B short-horizon policy;
+- System2 SHORT_MOMENTUM V0.1-CONTRACT;
+- primary target = exact official-session D5 common-reference-close positive-return event;
+- primary metric = date-balanced Brier loss improvement;
+- selected-only analysis prohibited;
+- common information cutoff required;
+- dependence / missingness / multiplicity / SDA-016 footprint controls frozen;
+- other System2 strategies require separate experiment/version;
+- D1/D3/D10 cannot rescue the D5 primary;
+- diversification claim explicitly prohibited.
+
+Canonical prereg:
+- `research/SDA022_D16_S1_SHORT_MOMENTUM_D5_INCREMENTALITY_PREREG_20261006_V0_1.md`;
+- `research/SDA022_D16_S1_SHORT_MOMENTUM_D5_INCREMENTALITY_PREREG_20261006_V0_1.json`.
+
+Room11 machine validation against the 00 oracle:
+- S22-T25 PASS;
+- S22-T26 PASS;
+- S22-T27 PASS;
+- S22-T28 PASS;
+- D16_BOUNDARY = 4/4 PASS.
+
+Validation return:
+- `research/SDA022_ROOM11_D16_PREREG_VALIDATION_RETURN_20261006_V0_1.md`;
+- `research/SDA022_ROOM11_D16_PREREG_VALIDATION_RETURN_20261006_V0_1.json`.
+
+Whole SDA-022 remains PARTIAL_PASS.
+Repository search found schemas only, not actual System1 fingerprint, System2 per-strategy fingerprints, or physical NC-T01 receipt.
+
+Therefore:
+- S22-T01~T16 remain evidence-not-yet-available / pending;
+- S22-T17~T24 cannot begin prospective accumulation until the upstream fingerprints + physical independence chain is ready;
+- economic outcomes remain CLOSED;
+- no maturity change;
+- Formal Core remains LOCKED;
+- 00 remains sole closure authority.
