@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "SDA022_ROOM11_D16_PREREG_VALIDATION_RETURN_V0_1",
+  "updatedAt": "2026-10-06T07:00:00+08:00",
+  "ticket": "SDA-022",
+  "validator": "D16 / Room11",
+  "closureAuthority": "00",
+  "canonicalOracle": "shared-knowledge/sda022_acceptance_oracle_v0_1.json",
+  "canonicalBlockingTestN": 28,
+  "validatedFamily": "D16_BOUNDARY",
+  "results": [
+    {
+      "id": "S22-T25",
+      "status": "PASS",
+      "disposition": "PASS_PRE_OUTCOME_D16_BOUNDARY"
+    },
+    {
+      "id": "S22-T26",
+      "status": "PASS",
+      "disposition": "PASS_STRATEGY_SEPARATION"
+    },
+    {
+      "id": "S22-T27",
+      "status": "PASS",
+      "disposition": "PASS_EXPLICIT_DEPENDENCE_BOUNDARY"
+    },
+    {
+      "id": "S22-T28",
+      "status": "PASS",
+      "disposition": "PASS_NO_PREMATURE_CLAIM_FIREWALL"
+    }
+  ],
+  "d16BoundaryPassN": 4,
+  "d16BoundaryTotalN": 4,
+  "wholeTicketPassed": false,
+  "actualSystem1FingerprintFound": false,
+  "actualSystem2FingerprintFound": false,
+  "actualNcT01PhysicalReceiptFound": false,
+  "outcomes": "CLOSED",
+  "currentState": "PARTIAL_PASS",
+  "supplementalOracle": "research/SDA022_D16_CROSS_SYSTEM_NON_CONVERGENCE_ORACLE_20261006_V0_2.json",
+  "maturityImpact": "NONE",
+  "formalCoreImpact": "NONE"
+}
