@@ -2503,3 +2503,90 @@ No maturity or Formal change is authorized by this routing.
 6. Keep behavioral anchoring UNIDENTIFIED unless D20 provides behavior-specific observables.
 7. Next D01 science: separate prior-close/reference effects from round-number / tick-grid salience so apparent support near 100 / 200 / 500 is not mislabeled structural memory.
 8. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-045 (2026-10-05)
+
+### DL-045 — Structural memory vs round-number / tick-grid salience
+- DL-044 separated structural boundaries from prior-close and auction-reference effects.
+- DL-045 freezes the next salience confound: apparent support/resistance may arise from round-number order clustering, legal tick-grid mechanics or tick-band transitions rather than historical structural memory.
+- Taiwan evidence documents order-price clustering at integer / even / preferred terminal prices; broader microstructure evidence shows clustered limit orders can create price barriers.
+- D01 does not infer psychology from price clustering.
+  ROUND_PRICE_CLUSTERING_CONTEXT is observable context;
+  PSYCHOLOGICAL_ANCHOR_CONFIRMED remains prohibited without D20 behavior-specific evidence.
+- D04/D05 remain authoritative for point-in-time tick size, tick band, session mechanics and order-book interpretation.
+  D01 consumes tickSize, tickBandId, tickRuleVersion, tickKnownAt and transition receipts instead of hard-coding permanent exchange mechanics.
+- Four distinct objects are kept separate:
+  LEGAL_TICK_GRID;
+  TICK_BAND_TRANSITION;
+  ROUND_NUMBER_REFERENCE;
+  STRUCTURAL_BOUNDARY.
+- Round-grid families must be preregistered before outcomes.
+  Testing multiple nominal grids creates one multiple-testing family.
+  Best-grid selection after outcomes is prohibited.
+- Continuous salience descriptors are frozen:
+  boundary/center distance to nearest registered round reference in price/ticks;
+  distance to tick-band transition;
+  relative tick;
+  price/tick tier.
+  No universal near-round threshold is defined.
+- Current and formation tick receipts remain separate.
+  Current tick-band state may not be backfilled into historical structural formation.
+- Comparator logic:
+  R0 ROUND_SALIENT_NONSTRUCTURAL;
+  R1 STRUCTURAL_NONROUND;
+  R2 STRUCTURAL_ROUND_COINCIDENT.
+  Future D16 asks structural increment beyond salience and salience increment beyond structure.
+- Daily OHLC can establish round-price proximity but cannot prove actual displayed order clustering, hidden liquidity or queue behavior.
+  ORDER_CLUSTERING_MECHANISM remains PLAUSIBLE_NOT_OBSERVED without D05 book evidence.
+- DL-043 / DL-044 contexts remain required because a single price can simultaneously be round, near prior close, near auction reference, crossed at the open and inside a structural zone.
+  Those co-located descriptions are not independent confirmations.
+- SDA-001 anti-double-count default:
+  informationRoot = PRICE_OHLC;
+  redundancyGroup = D01_ROUND_TICK_REFERENCE_CONTEXT;
+  rawRepresentationCount may exceed 1;
+  effectiveIndependentEvidenceCount = 1;
+  independentVoteAllowed = false;
+  residualIncrementalityStatus = NOT_VALIDATED.
+- Future D16 ladder:
+  G0 RAW_STRUCTURAL_PATTERN;
+  G1 ROUND_REFERENCE_CONTEXT_CONTROLLED;
+  G2 TICK_BAND_CONTEXT_CONTROLLED;
+  G3 PRIOR_CLOSE_AUCTION_REFERENCE_CONTROLLED;
+  G4 MICROSTRUCTURE_CONTEXT_CONTROLLED;
+  G5 STRUCTURAL_NONROUND_REPLICATION;
+  G6 STRUCTURAL_VS_ROUND_NEGATIVE_CONTROL;
+  G7 ROUND_TICK_ROBUST_REPLICATION.
+- Future interpretations:
+  C0 ROUND_NUMBER_EXPLANATION;
+  C1 TICK_GRID_MECHANICS_EXPLANATION;
+  C2 REFERENCE_PRICE_COMPOSITE_EXPLANATION;
+  C3 MICROSTRUCTURE_CLUSTERING_EXPLANATION;
+  C4 STRUCTURAL_RESIDUAL_AFTER_SALIENCE;
+  C5 NONROUND_STRUCTURAL_CANDIDATE;
+  C6 ROUND_AND_STRUCTURE_INCREMENTAL_CANDIDATE;
+  C7 NOT_EVALUABLE.
+- New files:
+  - research/PATTERN_ROUND_TICK_SALIENCE_V0_1.md
+  - research/pattern_round_tick_salience_v0_1.json
+  - research/pattern_round_tick_salience_v0_1.mjs
+  - research/test_pattern_round_tick_salience_v0_1.mjs
+  - research/PATTERN_ROUND_TICK_SALIENCE_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 remains REMEDIATION_IN_PROGRESS.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-045
+
+1. Reconcile the DL-045 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-045 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve point-in-time tick receipts and preregistered round-grid families; never outcome-select a preferred nominal grid.
+4. Preserve structural, round, prior-close and auction-reference contexts as one deduplicated price-information family by default.
+5. Hand G0-G7 / C0-C7 round/tick salience incrementality inference to D16.
+6. Preserve SDA-001 as REMEDIATION_IN_PROGRESS until residual/system/00 closure evidence exists.
+7. Next D01 science: separate round/tick salience from volume-at-price / historical traded-volume concentration so a price level with heavy historical volume is not automatically treated as independent structural evidence.
+8. No outcome join / no runtime wiring / no Formal change.
