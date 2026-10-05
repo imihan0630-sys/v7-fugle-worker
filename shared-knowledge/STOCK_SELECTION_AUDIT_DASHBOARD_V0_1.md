@@ -4,7 +4,7 @@ Updated: 2026-10-06 Asia/Taipei
 Status: ACTIVE_REMEDIATION_AND_VALIDATION
 Owner: 00｜研究總控室
 Formal Core impact: NONE
-Queue: `shared-knowledge/stock_selection_audit_queue_v0_1.json`
+Queue: shared-knowledge/stock_selection_audit_queue_v0_1.json
 
 ## Current snapshot
 
@@ -18,8 +18,6 @@ Queue: `shared-knowledge/stock_selection_audit_queue_v0_1.json`
 - BLOCKED_DEPENDENCY: 2
 - ROUTED: 0
 - CLOSED: 0
-
-The important change from the first baseline is that SDA-009 is no longer merely routed: Room07 has frozen the leave-one-out D09 semantics and engineering is now pending.
 
 ## Queue dashboard
 
@@ -36,54 +34,46 @@ The important change from the first baseline is that SDA-009 is no longer merely
 | SDA-009 | CRITICAL | REMEDIATION_IN_PROGRESS | D09 | D09_LEAVE_ONE_OUT_SEMANTICS_FROZEN_SYSTEM1_DIAGNOSTIC_PENDING |
 | SDA-010 | HIGH | BLOCKED_DEPENDENCY | D10, D17 | RESEARCH_BOUNDARY_READY_OWNER_GATES_AND_VERSIONED_GRAPH_EVIDENCE_PENDING |
 | SDA-011 | HIGH | REMEDIATION_IN_PROGRESS | D11, D17 | FIRST_KNOWN_GOVERNANCE_EXISTS_CANONICAL_EVENT_STORY_DEDUP_AND_SOURCE_COVERAGE_PENDING |
-| SDA-012 | HIGH | BLOCKED_DEPENDENCY | D12 | SAME_PARENT_AND_ROLL_RESEARCH_STRONG_OWNER_GATES_AND_PROSPECTIVE_INCREMENTALITY_PENDING |
-| SDA-013 | HIGH | REMEDIATION_IN_PROGRESS | D13, D18 | REVISION_AND_CLOCK_FIREWALL_STRONG_CANONICAL_RECEIPT_AND_INCREMENTAL_EVIDENCE_PENDING |
+| SDA-012 | HIGH | BLOCKED_DEPENDENCY | D12 | SAME_PARENT_AND_ROLL_RESEARCH_STRONG_SAME_EFFECTIVE_DATE_LANE_FEASIBLE_OWNER_GATES_AND_COMMON_SUPPORT_PENDING |
+| SDA-013 | HIGH | REMEDIATION_IN_PROGRESS | D13, D18 | REVISION_AND_CLOCK_FIREWALL_DEEPENED_CROSS_MARKET_DATE_MATCHING_REJECTED_CANONICAL_RECEIPT_PENDING |
 | SDA-014 | HIGH | VALIDATION_PENDING | D14 | RESEARCH_EXECUTION_CONTRACT_STRONG_PROSPECTIVE_BROKER_RECEIPTS_PENDING |
 | SDA-015 | HIGH | REMEDIATION_IN_PROGRESS | D15 | PLAN_TIME_SEMANTIC_FIREWALL_STRONG_PRETRADE_RISK_VERSION_AND_PROSPECTIVE_ATTRIBUTION_PENDING |
 | SDA-016 | CRITICAL | REMEDIATION_IN_PROGRESS | D16 | ROOM11_V0_2_ORACLE_FROZEN_SYSTEM1_PARTIAL_PASS_SHARED_CROSS_SYSTEM_AUTHORITY_PENDING |
 | SDA-017 | CRITICAL | REMEDIATION_IN_PROGRESS | D18 | ROOM11_V0_2_ORACLE_FROZEN_EXISTING_D18_MACHINE_PARTIAL_PASS_EPISODE_SUPPORT_ENGINE_PENDING |
-| SDA-018 | HIGH | REMEDIATION_IN_PROGRESS | D19 | FACTOR_ZOO_GOVERNANCE_STRONG_FACTOR_RECEIPTS_AND_CHALLENGER_OOS_PENDING |
-| SDA-019 | HIGH | VALIDATION_PENDING | D20 | BEHAVIOR_IDENTIFIABILITY_FIREWALL_STRONG_PRIMARY_PROSPECTIVE_AND_RESIDUAL_EVIDENCE_PENDING |
+| SDA-018 | HIGH | REMEDIATION_IN_PROGRESS | D19 | FACTOR_ZOO_GOVERNANCE_STRONG_D19_12_SCHEDULED_CALENDAR_KNOWNAT_FIRST_RECEIPT_CHALLENGER_OOS_PENDING |
+| SDA-019 | HIGH | VALIDATION_PENDING | D20 | FIRST_PRIMARY_SOCIAL_PARENT_DURABLE_COVERAGE_AND_RESIDUAL_EVIDENCE_IMMATURE_D20_13_LIVE_SOURCE_PENDING |
 | SDA-020 | MEDIUM | REMEDIATION_IN_PROGRESS | D21 | HINDSIGHT_FIREWALL_STRONG_INSIDER_PLEDGE_CLOCK_AND_SYSTEM_LINEAGE_PENDING |
 | SDA-021 | MEDIUM | REMEDIATION_IN_PROGRESS | D22 | CREDIT_LAYER_AND_PROVENANCE_FIREWALL_STRONG_SAME_POP_BASELINE_MARKET_CREDIT_AND_RECOVERY_EVIDENCE_PENDING |
 
-## Launch-critical readback
+## Latest incremental intake
 
-### SDA-001
-System 1 PR #608 is merged. Class-A lineage/dedup Shadow diagnostics exist and D03 mapping readback passes conservatively. Three diagnostic schema gaps, first genuine-session receipt, System2 matching diagnostic and D16 incrementality remain.
+Receipt:
+shared-knowledge/STOCK_SELECTION_AUDIT_INCREMENTAL_INTAKE_20261006_V0_2.md
 
-### SDA-004
-System 1 alias/parameter-family guard is merged and D03 mapping passes. Genuine-session evidence, System2 corresponding consumption behavior and D16 multiplicity/residual evidence remain.
+Newly credited:
+- SDA-019: first deterministic primary social parent is durable; evidence remains far below coverage gates and D20-13 live source remains missing.
+- SDA-018: first bounded scheduled annual-calendar knownAt witness is durable; it is source-clock evidence only, not factor efficacy.
+- SDA-013: cross-market calendar-date matching is explicitly rejected; first-eligible-Taiwan-decision clock semantics are strengthened.
+- SDA-012: a same-effective-date derivatives lane is feasible, but protected H04/H11/COV-07 and common-support gates remain.
+- D07-18 WACC: no new ticket; it is classified as a composite consumer of existing D13/D22/D07 parents and must not create an independent vote when later consumed by D08 or a system.
+- System2 S2-07 query-integrity progress does not count as SDA-016/017 remediation.
 
-### SDA-009
-Room07 leave-one-out semantics are frozen. System1 inclusive-vs-LOO candidate-self-contribution / gate / rank / Top6 diagnostic remains.
+## Launch-critical summary
 
-### SDA-016
-Room11 V0.2 oracle has 30 blocking tests. System1 exact-dataset/mutation guard is a partial pass only. Shared cross-system consumption authority, overlap/footprint/release lineage and independent 00 closure remain.
+- SDA-001: System1 PR #608 merged; schema deltas + genuine receipt + System2 + D16 remain.
+- SDA-004: System1 alias/parameter core guard merged; genuine receipt + System2 + D16 remain.
+- SDA-009: D09 leave-one-out semantics frozen; System1 diagnostic pending.
+- SDA-016: Room11 V0.2 T01-T30 contract; shared cross-system consumption authority pending.
+- SDA-017: Room11 V0.2 T01-T40 contract; System2 episode/support observer + prospective multi-episode evidence pending.
 
-### SDA-017
-Room11 V0.2 oracle has 40 blocking tests. Existing D18 fixed-semantic machine is a partial pass only. System2 episode/support observer, learned-fit clock lineage, prospective multi-episode evidence and independent 00 closure remain.
+## Operating rule
 
-## Launch HIGH readback
+Every new commit/receipt is checked for:
+1. which SDA ticket it actually addresses;
+2. whether it satisfies a frozen remaining delta;
+3. whether it merely improves knowledge/source feasibility rather than Alpha validation;
+4. whether it creates a cross-domain duplicate-vote risk;
+5. whether unrelated progress is being accidentally credited to the wrong ticket.
 
-- SDA-002: D01 causal/hindsight firewall continues to deepen, but newest adversarial suites remain TEST_EXECUTION_PENDING.
-- SDA-003: live 15m observability is physically proven; no clean H001 event because baseline, raw provenance and runtime/session continuity fail closed.
-- SDA-007: D06 learning semantic remediation is complete; machine receipt-lineage enforcement and D16 residual validation remain.
-- SDA-005 / SDA-014 / SDA-019 remain validation-driven.
-- SDA-006 / SDA-008 / SDA-011 / SDA-013 / SDA-015 / SDA-018 remain remediation-driven.
-- SDA-010 / SDA-012 remain behind protected owner/dependency gates.
-
-## Current operating rule
-
-00 does not restart accepted research.
-
-On every returned commit/receipt:
-1. map it to one or more SDA tickets;
-2. compare only against frozen `remainingDelta`;
-3. credit durable work;
-4. advance status only if the lifecycle gate is actually met;
-5. require D16 validation where applicable;
-6. preserve independent 00 closure for SDA-016/SDA-017;
-7. never treat maturity percentage, documentation, synthetic fixtures or a single unit-test pass as ticket closure.
-
-Formal A/B, ranking, Top6, weights, thresholds, capital and trading behavior remain locked unless separately owner-approved.
+No ticket is closed by maturity percentage, documentation volume, synthetic fixtures or unrelated System progress.
+Formal Core remains locked unless separately owner-approved.
