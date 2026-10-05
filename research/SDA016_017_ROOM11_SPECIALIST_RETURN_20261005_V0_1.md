@@ -151,3 +151,53 @@ Exact next:
 - System 2 SDA-017 episode/support observer must pass original tests 1–15 plus addendum tests 16–30;
 - Room11 performs adversarial revalidation only after those engineering deltas land;
 - 00 remains the only independent closure authority.
+
+
+## 2026-10-05 machine-readable validation oracles
+
+Canonical executable acceptance oracles:
+- `research/SDA016_VALIDATION_ORACLE_20261005_V0_1.json`;
+- `research/SDA017_VALIDATION_ORACLE_20261005_V0_1.json`.
+
+These freeze the research-owner expected disposition for all currently required adversarial tests:
+- SDA-016: 22 blocking tests;
+- SDA-017: 30 blocking tests.
+
+They are not runtime code and do not self-close either ticket.
+
+### SDA-016 oracle emphasis
+
+The oracle separates:
+- logical holdout identity;
+- independent decision-date overlap;
+- target-specific outcome information footprint overlap;
+- cross-System physical consumption;
+- purge/embargo eligibility;
+- D16-06 statistical dependence.
+
+A no-overlap holdout verdict does not imply statistical independence. The D16-06 inference gate remains separate.
+
+External methodology anchors remain consistent with this guard:
+- adaptive reuse can overfit a holdout itself;
+- overlapping multi-horizon outcomes induce serial dependence for ordinary mean-style inference;
+- trading-rule/model searches require accounting over the full searched family rather than reporting only the best rule.
+
+### SDA-017 oracle emphasis
+
+The oracle freezes:
+- prospective episode continuation;
+- decision-time-only episode identity;
+- structural episode count distinct from inferential effective sample;
+- `DECISION_STATE_CONDITIONAL` as the primary prospective policy estimand;
+- horizon-transition crossing retained in the primary sample;
+- future persistence as a separate estimand/family;
+- explicit dependency on SDA-016 footprint/consumption and D16-06 dependence clearance.
+
+### Closure rule
+
+Room11 status can advance to `SPECIALIST_REVALIDATION_PASS` only when the corresponding engineering implementation passes every blocking oracle test applicable to that implementation.
+
+Ticket `CLOSED` remains reserved for independent Room00 readback.
+
+No maturity change.
+Formal Core remains LOCKED.
