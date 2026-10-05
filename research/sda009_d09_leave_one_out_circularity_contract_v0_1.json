@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "SDA009_D09_LEAVE_ONE_OUT_CIRCULARITY_CONTRACT_V0_1",
+  "status": "RESEARCH_SEMANTICS_FROZEN / ENGINEERING_DIAGNOSTIC_PENDING / D16_VALIDATION_PENDING",
+  "room": "07｜產業與供應鏈研究室",
+  "domains": [
+    "D09"
+  ],
+  "auditTicket": "SDA-009",
+  "capturedAt": "2026-10-05T08:36:00+08:00",
+  "observedMainBeforeWrite": "b1876e86fa29df89ff880bf31c7857a57f4950fe",
+  "problem": {
+    "title": "Circular industry-strength reward",
+    "confirmedCurrentPaths": [
+      "SECTOR_HARD_GATE: candidate contributes to same-day breadth, avgChange and amountVs20DayAverage used to admit itself.",
+      "SECTOR_RANK_SCORE: candidate contributes to sector.score, which contributes 14% of priorityScore.",
+      "HISTORY_WARMUP_PRIORITY: candidate contributes to sector.score, which contributes to coarseWarmupScore used to prioritize history completion."
+    ],
+    "existingGoodControl": "20-day sector peer return already excludes the candidate before computing sectorReturn20; this is the precedent to extend rather than redesign."
+  },
+  "frozenSemantics": {
+    "unit": "candidate × scanDate × classificationVintage",
+    "inclusiveState": "Current production-equivalent sector state including candidate.",
+    "leaveOneOutState": "Same sector state recomputed after removing candidate symbol from the effective-dated member set.",
+    "membershipRequirements": [
+      "classificationSchemeId and membershipVersion must identify the decision-time taxonomy.",
+      "membership must be effective at scanDate and known by decisionTimestamp.",
+      "candidate exclusion is by exact symbol identity before aggregation.",
+      "later reclassification cannot be backfilled into historical receipts."
+    ],
+    "metrics": [
+      "peerCount",
+      "amount",
+      "breadth",
+      "avgChange",
+      "historicalCoverage",
+      "amountVs20DayAverage",
+      "volumeVs20DayAverage",
+      "sectorScore",
+      "hardGatePass"
+    ],
+    "globalNormalizerRule": "For candidate-specific leave-one-out sectorScore, recompute max sector amount after removing the candidate from its own sector; otherwise self-contribution can remain inside the normalization denominator.",
+    "unknownRules": [
+      "If no peer remains, leave-one-out sector state is UNKNOWN, never 0.",
+      "If no history-ready peer remains for the 20-day amount denominator, leave-one-out activity is UNKNOWN.",
+      "One-peer diagnostics may be reported but must carry SMALL_N_SENSITIVE and are not automatically eligible for Formal use.",
+      "Missing classification vintage or ambiguous membership fails closed."
+    ]
+  },
+  "requiredDiagnostics": [
+    "selfAmountShare = candidate.tradeValue / inclusiveSectorAmount",
+    "breadthDelta = inclusiveBreadth - looBreadth",
+    "avgChangeDelta = inclusiveAvgChange - looAvgChange",
+    "activityDelta = inclusiveAmountVs20D - looAmountVs20D when both known",
+    "sectorScoreDelta = inclusiveSectorScore - looSectorScore",
+    "priorityScoreDeltaFromSector = 0.14 × sectorScoreDelta before clamp interaction",
+    "gateFlip = inclusiveHardGatePass != looHardGatePass",
+    "rankDelta and Top6 membership difference under common-support diagnostic replay",
+    "warmupPriorityDelta for candidates whose history admission depends on sectorScore"
+  ],
+  "adversarialCounterexample": {
+    "members": [
+      {
+        "role": "candidate",
+        "changePct": 10,
+        "tradeValue": 90,
+        "avgAmount20": 100
+      },
+      {
+        "role": "peer",
+        "changePct": -2,
+        "tradeValue": 10,
+        "avgAmount20": 100
+      }
+    ],
+    "otherSectorMaxAmount": 100,
+    "inclusive": {
+      "breadthPct": 50,
+      "avgChangePct": 4,
+      "amountVs20DayAverage": 0.5,
+      "hardGatePass": true,
+      "sectorScore": 85
+    },
+    "leaveOneOut": {
+      "peerCount": 1,
+      "breadthPct": 0,
+      "avgChangePct": -2,
+      "amountVs20DayAverage": 0.1,
+      "hardGatePass": false,
+      "sectorScore": 9.5,
+      "supportState": "SMALL_N_SENSITIVE"
+    },
+    "directPriorityScoreDifferenceFromSectorTerm": 10.57,
+    "lesson": "The candidate can simultaneously flip the sector hard gate and add more than ten priority-score points through its own same-day contribution in an extreme but mathematically valid case."
+  },
+  "researchDecision": {
+    "formalCoreMutation": "NONE",
+    "formalReplacementAuthorized": false,
+    "maturityPromotion": "NONE",
+    "recommendedUse": "Research-only diagnostics first. Compare current inclusive production-equivalent state against leave-one-out state without changing live A/B, sector gate, ranking, Top6, weights or capital.",
+    "d16Requirement": "D16 must evaluate common-support rank/selection effects and residual incrementality before any promotion or replacement."
+  },
+  "engineeringContract": {
+    "owner": "System 1",
+    "minimumMachineFields": [
+      "membershipVersion",
+      "classificationSchemeId",
+      "candidateSymbol",
+      "inclusiveSectorState",
+      "leaveOneOutSectorState",
+      "candidateSelfContribution",
+      "gateFlip",
+      "rawPriorityScore",
+      "leaveOneOutDiagnosticPriorityScore",
+      "rawRank",
+      "leaveOneOutDiagnosticRank",
+      "rawTop6",
+      "leaveOneOutTop6",
+      "warmupPriorityDelta"
+    ],
+    "class": "DIAGNOSTIC_ONLY_UNLESS_OWNER_APPROVES_FORMAL_MUTATION",
+    "tests": [
+      "candidate removal can flip breadth gate",
+      "candidate removal can flip avgChange gate",
+      "candidate removal can flip amount-activity gate",
+      "candidate-specific maxAmount normalizer is recomputed",
+      "zero-peer and zero-history-ready cases return UNKNOWN",
+      "existing 20-day sector peer-return exclusion remains unchanged",
+      "diagnostic mode cannot mutate live ranking/Top6/allocation"
+    ]
+  },
+  "auditClosureNotYetMet": [
+    "System 1 machine diagnostic implementation",
+    "common-support raw-vs-leave-one-out Top6/rank receipt",
+    "D16 validation",
+    "00 independent readback/closure"
+  ],
+  "exactNext": "Route this frozen contract to System 1 diagnostic implementation without Formal mutation; 07 then resumes BR-059 issuer-native numerator search while accumulating D09 leave-one-out evidence. After machine receipts exist, D16 compares inclusive versus excluding-self rank/Top6 effects on common support."
+}
