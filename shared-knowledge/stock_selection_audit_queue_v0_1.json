@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-06T00:29:00+08:00",
+  "updatedAt": "2026-10-06T05:46:00+08:00",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -323,6 +323,12 @@
         "TPEx PIT-safe historical valuation lane",
         "D07 prospective filing/fundamental coverage",
         "generic financial sourceVintage/knownAt/universeVersion guard"
+      ],
+      "crossDomainGuardEvidence": [
+        {
+          "receipt": "research/d07_18_wacc_cost_of_capital_foundation_v0_1.json",
+          "interpretation": "WACC is a composite consumer of D13 risk-free, D22 debt-cost and D07 balance-sheet primitives; deterministic recomposition must not create an independent vote or be re-counted in D08 valuation."
+        }
       ]
     },
     {
@@ -454,14 +460,16 @@
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
       ],
-      "readiness": "SAME_PARENT_AND_ROLL_RESEARCH_STRONG_OWNER_GATES_AND_PROSPECTIVE_INCREMENTALITY_PENDING",
-      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "readiness": "SAME_PARENT_AND_ROLL_RESEARCH_STRONG_SAME_EFFECTIVE_DATE_LANE_FEASIBLE_OWNER_GATES_AND_COMMON_SUPPORT_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_INCREMENTAL_INTAKE_20261006_V0_2.md",
       "remainingDelta": [
         "H04 owner decision",
         "H11 owner decision",
         "COV-07 validator-complete intake path",
-        "DERIVATIVES lineage integration",
-        "prospective residual/liquidity robustness"
+        "common-support quote/reference/forward/volatility/rate-dividend/new-series alignment",
+        "DERIVATIVES lineage integration with parentChainId/contractVersion/rollVersion",
+        "prospective residual/liquidity robustness",
+        "00 independent closure"
       ]
     },
     {
@@ -491,13 +499,21 @@
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
       ],
-      "readiness": "REVISION_AND_CLOCK_FIREWALL_STRONG_CANONICAL_RECEIPT_AND_INCREMENTAL_EVIDENCE_PENDING",
-      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "readiness": "REVISION_AND_CLOCK_FIREWALL_DEEPENED_CROSS_MARKET_DATE_MATCHING_REJECTED_CANONICAL_RECEIPT_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_INCREMENTAL_INTAKE_20261006_V0_2.md",
       "remainingDelta": [
-        "canonical macro receipt/sourceVintage/releaseClock lineage",
-        "first-known vintage archive gaps",
-        "heterogeneous exposure",
-        "prospective incremental evidence"
+        "canonical macroReceiptId/sourceVintage/releaseClock/exposure lineage shared by D13 and D18 consumers",
+        "prospective official U.S. rate/H4.1 release receipts mapped to first eligible Taiwan decision",
+        "remaining first-known vintage archive gaps",
+        "heterogeneous issuer/industry exposure",
+        "prospective incremental evidence beyond Taiwan price/sector/rates/USD/global baselines",
+        "00 independent closure"
+      ],
+      "crossDomainGuardEvidence": [
+        {
+          "receipt": "research/d07_18_wacc_cost_of_capital_foundation_v0_1.json",
+          "interpretation": "Risk-free-rate primitives consumed by D07-18 WACC remain shared parent evidence, not a second macro confirmation."
+        }
       ]
     },
     {
@@ -671,13 +687,15 @@
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
       ],
-      "readiness": "FACTOR_ZOO_GOVERNANCE_STRONG_FACTOR_RECEIPTS_AND_CHALLENGER_OOS_PENDING",
-      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "readiness": "FACTOR_ZOO_GOVERNANCE_STRONG_D19_12_SCHEDULED_CALENDAR_KNOWNAT_FIRST_RECEIPT_CHALLENGER_OOS_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_INCREMENTAL_INTAKE_20261006_V0_2.md",
       "remainingDelta": [
-        "D19 factor-layer receipts",
+        "broader D19 factor-layer receipts beyond bounded D19-12 clock evidence",
         "TPEx historical universe/continuity dependency",
-        "System1 Challenger factor lineage/cost diagnostics",
-        "independent OOS incrementality"
+        "PIT industry membership and D03/D09 paired redundancy on identical support",
+        "System1 Challenger factor lineage and turnover/cost diagnostics",
+        "multiple-testing-controlled independent OOS incrementality",
+        "00 independent closure"
       ]
     },
     {
@@ -707,12 +725,13 @@
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
       ],
-      "readiness": "BEHAVIOR_IDENTIFIABILITY_FIREWALL_STRONG_PRIMARY_PROSPECTIVE_AND_RESIDUAL_EVIDENCE_PENDING",
-      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "readiness": "FIRST_PRIMARY_SOCIAL_PARENT_DURABLE_COVERAGE_AND_RESIDUAL_EVIDENCE_IMMATURE_D20_13_LIVE_SOURCE_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_INCREMENTAL_INTAKE_20261006_V0_2.md",
       "remainingDelta": [
-        "primary prospective social coverage",
-        "D20-13 genuine live source receipt",
-        "residual behavioral incrementality beyond D03/D06/D17"
+        "accumulate preregistered primary scheduled social parents toward D20-06/D20-11 50-parent and 20-date gates",
+        "obtain first genuine D20-13 live TWSE borrow-rate/displayed-supply source receipt",
+        "residual behavioral incrementality beyond D03/D06/D17 controls",
+        "00 independent closure"
       ]
     },
     {
@@ -781,6 +800,12 @@
         "D22-12 instrument-level recovery waterfall replay",
         "System1 credit lineage/coverage eligibility",
         "D07 residual incrementality"
+      ],
+      "crossDomainGuardEvidence": [
+        {
+          "receipt": "research/d07_18_wacc_cost_of_capital_foundation_v0_1.json",
+          "interpretation": "WACC is a composite consumer of D13 risk-free, D22 debt-cost and D07 balance-sheet primitives; deterministic recomposition must not create an independent vote or be re-counted in D08 valuation."
+        }
       ]
     }
   ],
@@ -790,5 +815,6 @@
   "lastMediumReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_MEDIUM_RECONCILIATION_20261005_V0_1.md",
   "firstFullReconciliationBaselineComplete": true,
   "lastCriticalIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_INTAKE_20261006_V0_1.md",
-  "lastHighIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_INTAKE_20261006_V0_1.md"
+  "lastHighIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_INTAKE_20261006_V0_1.md",
+  "lastIncrementalIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_INCREMENTAL_INTAKE_20261006_V0_2.md"
 }
