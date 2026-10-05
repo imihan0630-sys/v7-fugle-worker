@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "D06_TDCC_PARENT_RECEIPT_20261005_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "scanDate": "2026-10-05",
+  "generationId": "D06-20261005-PREOPEN",
+  "primitiveReceiptId": "D06-20261005-TDCC-WEEKLY",
+  "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+  "sourceUrl": "https://opendata.tdcc.com.tw/getOD.ashx?id=1-5",
+  "sourceDataset": "集保戶股權分散表",
+  "sourceDate": "20261002",
+  "chipAsOfDate": "2026-10-02",
+  "chipDefinition": "TDCC weekly bracket distribution; grades 12-15 = 400-lot-plus concentration; grade 15 = over-1000-lot concentration; grade 16 adjustment; grade 17 total",
+  "capturedAt": "2026-10-05T08:42:50+08:00",
+  "firstKnownAt": "2026-10-05T08:42:50+08:00",
+  "sourceFingerprint": "fnv1a64-utf8:ad1a265c0a3dcaf8",
+  "sourceFingerprintAlgorithm": "FNV1A64 over UTF-8 source text",
+  "sourceCharacters": 2375414,
+  "rowCount": 69326,
+  "securityCount": 4078,
+  "gradeReconciliation": {
+    "formula": "sum(grades1..15 shares) - grade16 adjustment == grade17 total shares",
+    "pass": 4078,
+    "fail": 0,
+    "missingGrades": 0,
+    "passPct": 100
+  },
+  "priorKnownD06Vintage": "2026-09-24",
+  "isNewOwnershipVintageVersusPriorKnown": true,
+  "sameGenerationResearchRowAttachment": "PENDING_AFTER_MARKET_RESEARCH_GENERATION",
+  "ownershipInferenceUnit": "one TDCC sourceDate/vintage, not each later scanDate",
+  "holderIdentity": "UNKNOWN",
+  "passiveShare": "UNKNOWN",
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "maturityImplication": {
+    "D06_10": "Strengthens existing L3 prospective replay evidence.",
+    "D06_05": "No promotion until this exact primitiveReceiptId/fingerprint/chipAsOfDate/chipDefinition is immutably attached to same-generation research rows consuming chip concentration."
+  },
+  "passGate": {
+    "rawSourceCaptured": true,
+    "sourceDatePresent": true,
+    "fullGradeCoverage": true,
+    "exactShareReconciliation": true,
+    "contentFingerprintPresent": true,
+    "sameGenerationJoin": false
+  },
+  "status": "TDCC_PARENT_CAPTURED / NEW_WEEKLY_VINTAGE / SOURCE_INTEGRITY_PASS / SAME_GENERATION_JOIN_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "exactNext": "After the 2026-10-05 research/after-market generation exists, attach this primitiveReceiptId/sourceFingerprint/chipAsOfDate/chipDefinition to same-generation D06-05/D06-06 rows. Do not count later scan dates reusing this sourceDate as new ownership observations."
+}
