@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "D03_INTERACTION_INCREMENT_ACCEPTANCE_RECEIPT_V0_1",
+  "updatedAt": "2026-10-06T06:18:00+08:00",
+  "contract": "research/d03_interaction_increment_evidence_accounting_guard_20261006_v0_1.json",
+  "canonicalExecutableFixture": "research/test_d03_interaction_increment_evidence_accounting_v0_1.mjs",
+  "validationMode": "CONTRACT_SEMANTIC_REVIEW_AND_DETERMINISTIC_FIXTURE_FREEZE",
+  "repositoryNodeFixtureExecutedInThisRound": false,
+  "ciReceiptClaimed": false,
+  "outcomeDataUsed": false,
+  "status": "PASS_CONTRACT_SEMANTICS",
+  "cases": 14,
+  "expected": {
+    "twoRootsNoInteraction": {
+      "effectiveIndependentSourceRootCount": 2,
+      "provenInteractionIncrementCount": 0,
+      "effectiveEvidenceCount": 2
+    },
+    "twoRootsOneProvenInteraction": {
+      "effectiveIndependentSourceRootCount": 2,
+      "provenInteractionIncrementCount": 1,
+      "effectiveEvidenceCount": 3
+    },
+    "duplicateSameFamilyInteractionAlias": {
+      "effectiveIndependentSourceRootCount": 2,
+      "provenInteractionIncrementCount": 1,
+      "effectiveEvidenceCount": 3
+    },
+    "oneComponentOnly": {
+      "interactionIncrement": 0
+    },
+    "weakMainEffectBaseline": {
+      "interactionIncrement": 0
+    },
+    "marginalMisspecificationUncontrolled": {
+      "interactionIncrement": 0
+    },
+    "jointSupportInsufficient": {
+      "interactionIncrement": 0
+    },
+    "observedSubpopulationOnly": {
+      "globalInteractionIncrement": 0
+    },
+    "restrictedSupportConsumerMismatch": {
+      "interactionIncrement": 0
+    },
+    "postOutcomeRetuning": {
+      "interactionIncrement": 0
+    },
+    "negativeControlFailure": {
+      "interactionIncrement": 0
+    },
+    "costFillabilityFailureWhenTradable": {
+      "interactionIncrement": 0
+    },
+    "interactionAsIndependentSource": "REJECT",
+    "interactionClockBeforeLatestComponent": "REJECT"
+  },
+  "interpretation": [
+    "INTERACTION_DOES_NOT_CREATE_A_NEW_INFORMATION_SOURCE",
+    "THIRD_EFFECTIVE_UNIT_REQUIRES_PREREGISTERED_RESIDUAL_INTERACTION_INCREMENT",
+    "BOTH_MAIN_EFFECTS_AND_FLEXIBLE_MARGINAL_CONTROL_ARE_REQUIRED",
+    "JOINT_SUPPORT_IS_STRONGER_THAN_MARGINAL_SUPPORT",
+    "SAME_INTERACTION_FAMILY_ALIASES_CANNOT_MULTIPLY_EVIDENCE",
+    "INTERACTION_INCREMENT_IS_POPULATION_AND_CONSUMER_SCOPE_BOUND"
+  ],
+  "empiricalInteractionIncrementalityClaimed": false,
+  "formalCoreImpact": "NONE_LOCKED",
+  "maturityImpact": "NONE_56_7_PERCENT"
+}
