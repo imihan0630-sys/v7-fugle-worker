@@ -2210,3 +2210,49 @@ Exact next continuation:
 3. if none, audit the first actual experiment proposed for confirmatory interpretation against local-family + outer-stream dual enrollment before outcome access;
 4. never backfill historical global error-control claims;
 5. Room00 remains sole closure authority.
+
+
+## 2026-10-06 SDA-022 D16 cross-system convergence intake
+
+New queue intake:
+- `SDA-022`;
+- CRITICAL / ROUTED;
+- System1 + System2 engineering;
+- D16 validation required;
+- Room00 closure.
+
+Canonical files:
+- `shared-knowledge/SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_V0_1.md`;
+- `research/SDA022_D16_CROSS_SYSTEM_NON_CONVERGENCE_VALIDATION_CONTRACT_20261006_V0_1.md`;
+- `research/SDA022_D16_CROSS_SYSTEM_NON_CONVERGENCE_ORACLE_20261006_V0_1.json`.
+
+Oracle baseline:
+- XSYS-T01 through XSYS-T16;
+- 16/16 blocking;
+- current state `WAITING_POLICY_FINGERPRINTS`;
+- empirical evidence attached = false;
+- no Jaccard/rank-correlation/information-root-ratio threshold frozen.
+
+D16 interpretation:
+- architecture distinct != statistical incrementality;
+- shared information != independent confirmation;
+- low pick overlap != diversification;
+- high pick overlap != convergence failure;
+- diversification requires aligned strategy returns/exposure/cost/downside dependence, not pick overlap alone.
+
+Existing architecture is currently materially distinct:
+- System1 Formal protected;
+- System2 strategy-local baselines remain distinct and do not use a universal System1 rank;
+- no claim of independent confirmation is yet allowed.
+
+Exact SDA-022 next:
+1. System1 emits decision-policy fingerprint;
+2. System2 emits per-strategy policy fingerprints and independent-discovery proof;
+3. prospective pair receipts accumulate;
+4. Room11 validates XSYS-T01~T16 plus dependence/incrementality;
+5. 00 independently closes.
+
+No maturity change:
+D16 = 60%.
+D18 = 52%.
+Formal Core LOCKED.
