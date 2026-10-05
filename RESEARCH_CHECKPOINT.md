@@ -2948,3 +2948,39 @@ Next System1 SDA-022 output is a research-only fingerprint receipt conforming to
 
 The receipt must bind the current effective Formal policy, not a stale raw code path.
 No Formal mutation is authorized.
+
+
+## 2026-10-06 D02 PVE-248 Class-B candidate / System1 base-CI blocker
+
+Canonical D02 validation:
+- `research/D02_PVE248_CLASS_B_CANDIDATE_20261006_V0_1.md`
+- `research/d02_pve248_class_b_candidate_validation_v0_1.json`
+
+Active candidate:
+- branch `research/d02-pve248-class-b-candidate-20261006`;
+- draft PR `#651`;
+- candidate head `302f6739b7c28c077f955b070c63332a7b59b61b`;
+- unmerged / not deployed / owner approval not granted.
+
+Targeted candidate validation is green:
+- isolated push CI `37386567610` SUCCESS;
+- isolated PR CI `37386696263` SUCCESS.
+
+Repository-wide checks remain blocked:
+- PR Regression `37386695299` fails at `tests/test_system1_zero_pick_evidence_collector_v0_1.mjs`;
+- PR Repair CI `37386695246` fails at the same test;
+- independent main Regression `37382689408`, which contains no PVE-248 candidate, fails at the same test.
+
+Classification:
+`PREEXISTING_BASE_CI_BLOCKER_NOT_PVE248`.
+
+System1 next engineering responsibility:
+1. diagnose/repair the existing zero-pick evidence collector CI failure without changing Formal behavior;
+2. return a durable green main/base receipt;
+3. rerun PR #651 full Regression + Repair CI;
+4. do not infer merge/deploy approval from technical green checks.
+
+D02 does not modify that unrelated System1 collector merely to make its candidate green.
+
+Only after all applicable checks are green may explicit owner Class-B merge/deploy approval be requested.
+No Production deployment or H001 evidence admission is authorized by this checkpoint.
