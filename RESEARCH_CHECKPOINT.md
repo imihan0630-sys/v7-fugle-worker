@@ -2984,3 +2984,46 @@ D02 does not modify that unrelated System1 collector merely to make its candidat
 
 Only after all applicable checks are green may explicit owner Class-B merge/deploy approval be requested.
 No Production deployment or H001 evidence admission is authorized by this checkpoint.
+
+
+## 2026-10-06 D02 PVE-249 green Class-B candidate / owner gate
+
+Canonical evidence:
+- `research/D02_PVE249_GREEN_CANDIDATE_OWNER_GATE_20261006_V0_1.md`
+- `research/d02_pve249_green_candidate_owner_gate_v0_1.json`
+
+Base CI blocker is resolved:
+- root cause was stale zero-pick collector fixture after V8.19 generation-inventory read was added;
+- Class-A fixture-only main commit `c3bf53e0fe195647ecd77c87e6ce77e7ee744635`;
+- main Regression `37387343385` SUCCESS;
+- no Worker/Formal runtime change.
+
+PVE-248 candidate was resequenced above V8.19 rather than weakening V8.18 historical invariants.
+
+Final candidate:
+- branch `research/d02-pve248-class-b-candidate-20261006`;
+- head `e26e0e8e7786e25505714942e82a64e4cb8cec09`;
+- patch `scripts/apply_v8_19_1_pve248_candidate.py`;
+- guard `tests/test_v8_19_1_pve248_runtime_candidate.mjs`;
+- draft PR `#651`;
+- GitHub readback: open / mergeable / clean / unmerged;
+- Production deploy workflow still does not apply candidate.
+
+Final applicable checks:
+- Candidate CI `37387779756` SUCCESS;
+- System1 C1/C2 isolated repair review `37387779711` SUCCESS;
+- V8 Repair CI `37387779433` SUCCESS;
+- V8 Regression Tests `37387779413` SUCCESS;
+- isolated push Candidate CI `37387775656` SUCCESS.
+
+System1 governance state:
+`OWNER_APPROVAL_REQUIRED`.
+
+No merge/deploy is authorized by technical green checks.
+If owner approves Class-B Production integration, next work is to wire the validated V8.19.1 patch into Production build/deploy with explicit version/readback, rerun all checks, merge/deploy under that approval, then physically validate schedule identity/recovery idempotence/bootstrap receipt/raw provenance and rerun PVE-247 oracle.
+
+Until then:
+- draft/unmerged/un-deployed;
+- no Production remediation claim;
+- no H001 admission;
+- no Formal change.
