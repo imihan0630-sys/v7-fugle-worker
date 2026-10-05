@@ -157,3 +157,12 @@
 - 新增同 request valuation/financial snapshot digest 與 immutable C1 provenance capture；屬新增研究功能，Formal 選股架構不變。
 - Owner 已批准工程實裝與 PR 驗證；merge／Production deploy 未授權。
 - Checkpoint: `research/SYSTEM1_VALUATION_SOURCE_VINTAGE_IMPLEMENTATION_20261005.md`。
+
+## 18. V8.19.0｜C1 Scan-Origin & Generation Inventory（Class-B candidate）
+
+- Runtime candidate: `8.19.0-c1-scan-origin-inventory`.
+- 新增 C1 request-entrypoint scan-origin provenance、scan-attempt identity 與受保護的 generation inventory read API；既有 C1 D1 generation/chunk schema 不變。
+- V8.19+ 新世代必須有 origin anchor；V8.18 及更早資料只標示 `LEGACY_ORIGIN_NOT_CAPTURED`，禁止事後推測來源。
+- 不新增市場／供應商呼叫，不重跑選股，不改 A/B、ranking、Top6/3+3、資金、15 分 K、signal、push、order 或 System2。
+- Owner 已批准 Class-B 工程實裝與 PR 驗證；具體 merge／Production deploy 仍須獨立批准。
+- Checkpoint: `research/SYSTEM1_C1_SCAN_ORIGIN_GENERATION_INVENTORY_IMPLEMENTATION_20261005.md`。
