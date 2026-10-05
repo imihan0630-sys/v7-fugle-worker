@@ -721,3 +721,11 @@ Authoritative state:
 - new official evidence may reopen the search.
 
 Next S2-07 focus is bounded revision completeness plus shared suspension/session integration. Exact knownAt and all trading authority remain locked.
+
+## 2026-10-05 S2-07 bounded revision-history census milestone
+
+After representative-routing research was dispositioned at 5/6, S2-07 entered bounded completeness work.
+
+PR #610 froze the 2026-04-05..2026-10-02 low-volume final-event universe (23 events / 23 symbols) and physically observed MOPS issuer-side action-family history plus pre-effective issuer evidence for all 23 events.
+
+This is 23/23 observability, not exhaustive revision completeness. The next gate is event-to-version linkage and negative no-revision/cancellation qualification. Exact public knownAt and all trading authorities remain locked.
