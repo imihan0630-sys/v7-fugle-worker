@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-05 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_EFFECT_SIZE_FAMILY_FROZEN_HORIZON_RULE_PENDING",
+  "evidenceCursor": "PVE-239",
+  "wave1": [
+    "D02-02:H001",
+    "D02-03:H20",
+    "D02-06:H003"
+  ],
+  "effectSizeReportingPriority": [
+    "absolute_failure_rate_difference",
+    "risk_ratio",
+    "median_MFE",
+    "median_MAE",
+    "median_return",
+    "subgroup_date_stability"
+  ],
+  "utilityReporting": [
+    "adverse_confirmations_avoided",
+    "valid_follow_through_opportunities_lost",
+    "BUY_frequency_impact",
+    "idle_capital_impact"
+  ],
+  "frozenHorizons": [
+    "B1",
+    "B2",
+    "B4"
+  ],
+  "canonicalPrimaryHorizon": null,
+  "multihorizonDecisionRuleStatus": "PENDING",
+  "rules": {
+    "postOutcomeBestHorizonSelectionAllowed": false,
+    "horizonsCountAsIndependentEvents": false,
+    "singleHorizonCanRescueFailedFamily": false,
+    "d16MultiplicityDependenceReviewRequired": true
+  },
+  "numericalTargetFrozen": false
+}
