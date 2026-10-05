@@ -8,7 +8,8 @@ import {adaptC1PopulationPages,diagnosePopulation} from '../research/system1_sel
 import {persistShadowCohort} from '../research/system1_shadow_cohort_storage_v0_1.mjs';
 const sha=s=>createHash('sha256').update(s).digest('hex');
 const baseline=fs.readFileSync('artifacts/Worker-before-v8_18_0.mjs','utf8');
-const source=fs.readFileSync(process.env.V7_TEST_WORKER_PATH||'Worker.js','utf8');
+const sourcePath=fs.existsSync('artifacts/Worker-before-v8_19_0.mjs')?'artifacts/Worker-before-v8_19_0.mjs':(process.env.V7_TEST_WORKER_PATH||'Worker.js');
+const source=fs.readFileSync(sourcePath,'utf8');
 function body(s,name){const start=s.indexOf('function '+name+'('),end=s.indexOf('\n}',start)+2;assert.ok(start>=0&&end>start);return s.slice(start,end);}
 const changed=['runAfterMarketScanCore','selectTomorrowCandidates','buildC1PopulationReceipt','persistC1PopulationReceipt','verifyC1StoredGeneration'];
 let normalized=source.replace('8.18.0-valuation-source-vintage','8.17.0-shadow-cohort-membership')
@@ -19,10 +20,15 @@ assert.equal(body(source,'selectTomorrowCandidates').replace(',env.V7_VALUATION_
 assert.equal(body(source,'runAfterMarketScanCore').replace(/  \/\/ BEGIN V8\.18 REQUEST SOURCE CAPTURE[\s\S]*?  \/\/ END V8\.18 REQUEST SOURCE CAPTURE\n/,'').replace(', V7_VALUATION_SOURCE_VINTAGE:valuationSourceVintageContext',''),body(baseline,'runAfterMarketScanCore'));
 for(const path of ['v7-regression.yml','v7-repair-ci.yml','v7-cloudflare.yml']){
  const workflow=fs.readFileSync('.github/workflows/'+path,'utf8');
- assert.ok(workflow.includes('const VERSION = \"8.18.0-valuation-source-vintage\";'),path+' exact candidate version guard');
  const chain=[...workflow.matchAll(/python3 (scripts\/apply_v8_[\d_]+\.py)/g)].map(m=>m[1]);
  assert.equal(chain.filter(x=>x==='scripts/apply_v8_18_0.py').length,1);
  assert.equal(chain.indexOf('scripts/apply_v8_18_0.py'),chain.indexOf('scripts/apply_v8_17_0.py')+1);
+ if(chain.includes('scripts/apply_v8_19_0.py')){
+   assert.equal(chain.indexOf('scripts/apply_v8_19_0.py'),chain.indexOf('scripts/apply_v8_18_0.py')+1);
+   assert.ok(workflow.includes('const VERSION = \"8.19.0-c1-scan-origin-generation-inventory\";'),path+' latest exact candidate version guard');
+ } else {
+   assert.ok(workflow.includes('const VERSION = \"8.18.0-valuation-source-vintage\";'),path+' V8.18 exact candidate version guard');
+ }
 }
 const exports='buildC1PopulationReceipt,persistC1PopulationReceipt,readC1PopulationReceipt,persistCompletedC1Safe,c1ZeroPickOrdinals,selectTomorrowCandidates';
 const load=(s,extra='',stub='')=>import('data:text/javascript;base64,'+Buffer.from(s+'\n'+stub+'\nexport {'+exports+extra+'};').toString('base64'));
