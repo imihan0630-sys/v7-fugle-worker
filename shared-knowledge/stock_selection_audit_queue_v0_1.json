@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-06T07:25:00+08:00",
+  "updatedAt": "2026-10-06T07:36:00+08:00",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -849,7 +849,7 @@
         "D16_dependence_and_incrementality_analysis",
         "00_cross_system_readback"
       ],
-      "readiness": "NON_CONVERGENCE_GUARD_BASELINE_AND_28_TEST_PRE_OUTCOME_ORACLE_FROZEN_RUNTIME_FINGERPRINTS_NC_T01_D16_PENDING",
+      "readiness": "NON_CONVERGENCE_GUARD_BASELINE_28_TEST_ORACLE_AND_MACHINE_RECEIPT_SCHEMAS_FROZEN_RUNTIME_FINGERPRINTS_NC_T01_D16_PENDING",
       "receipt": "shared-knowledge/SYSTEM1_SYSTEM2_POLICY_FINGERPRINT_BASELINE_20261006_V0_1.md",
       "remainingDelta": [
         "System1 research-only decision-policy fingerprint receipt generated from current effective policy and passing S22-T01~T05",
@@ -865,7 +865,9 @@
         "shared-knowledge/CROSS_SYSTEM_POLICY_FINGERPRINT_CONTRACT_V0_1.md",
         "shared-knowledge/system1_system2_policy_fingerprint_baseline_20261006_v0_1.json",
         "shared-knowledge/SDA022_ACCEPTANCE_ORACLE_V0_1.md",
-        "shared-knowledge/sda022_acceptance_oracle_v0_1.json"
+        "shared-knowledge/sda022_acceptance_oracle_v0_1.json",
+        "shared-knowledge/cross_system_policy_fingerprint_receipt_schema_v0_1.json",
+        "shared-knowledge/sda022_nc_t01_receipt_schema_v0_1.json"
       ]
     }
   ],
