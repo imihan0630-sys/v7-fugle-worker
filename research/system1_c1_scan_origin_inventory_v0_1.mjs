@@ -49,6 +49,7 @@ export function buildC1ScanOriginContext(input={}) {
 
 export function attachC1ScanOrigin(receipt,context) {
   assert(receipt&&Array.isArray(receipt.rows)&&receipt.rows.length>0,'RECEIPT_REQUIRED');
+  const hasEntrypointContext=Boolean(context);
   const suffix=String(receipt.generationId||'').split(':').pop()||'unclassified';
   const effectiveContext=context||buildC1ScanOriginContext({
     originKind:'INTERNAL_UNCLASSIFIED',
@@ -58,12 +59,13 @@ export function attachC1ScanOrigin(receipt,context) {
     scheduledAt:null,cronExpression:null,onlyIfMissing:false,testMode:false
   });
   assert(effectiveContext&&effectiveContext.schemaVersion===C1_SCAN_ORIGIN_SCHEMA&&effectiveContext.state==='CAPTURED','CONTEXT_REQUIRED');
-  assert(Date.parse(effectiveContext.invokedAt)<=Date.parse(receipt.decisionAt),'CLOCK_ORDER');
+  if(hasEntrypointContext) assert(Date.parse(effectiveContext.invokedAt)<=Date.parse(receipt.decisionAt),'CLOCK_ORDER');
   const root=Object.freeze({
     ...effectiveContext,
     generationId:String(receipt.generationId),
     sessionDate:String(receipt.sessionDate),
-    decisionAt:String(receipt.decisionAt)
+    decisionAt:hasEntrypointContext?String(receipt.decisionAt):null,
+    decisionAtBinding:hasEntrypointContext?'ENTRYPOINT_BOUND':'UNBOUND_INTERNAL_CALL'
   });
   const rows=receipt.rows.map((row,index)=>index===0?{...row,c1ScanOriginAnchor:root}:row);
   return {...receipt,scanOrigin:root,rows};
@@ -79,7 +81,12 @@ export function verifyC1ScanOrigin(receipt) {
   }
   const root=receipt.scanOrigin;
   assert(root.schemaVersion===C1_SCAN_ORIGIN_SCHEMA&&root.state==='CAPTURED','INVALID_ROOT');
-  assert(root.generationId===receipt.generationId&&root.sessionDate===receipt.sessionDate&&root.decisionAt===receipt.decisionAt,'IDENTITY_MISMATCH');
+  assert(root.generationId===receipt.generationId&&root.sessionDate===receipt.sessionDate,'IDENTITY_MISMATCH');
+  if(root.originKind==='INTERNAL_UNCLASSIFIED') {
+    assert(root.decisionAt===null&&root.decisionAtBinding==='UNBOUND_INTERNAL_CALL','UNCLASSIFIED_BINDING_INVALID');
+  } else {
+    assert(root.decisionAt===receipt.decisionAt&&root.decisionAtBinding==='ENTRYPOINT_BOUND','IDENTITY_MISMATCH');
+  }
   assert(C1_SCAN_ORIGIN_KINDS.includes(root.originKind),'INVALID_KIND');
   const anchor=receipt.rows?.[0]?.c1ScanOriginAnchor;
   assert(anchor,'ANCHOR_MISSING');
