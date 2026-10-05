@@ -1010,3 +1010,29 @@ Wave-1:
 
 No hypothesis changes support status.
 No FORMAL_OPTIMIZATION_CANDIDATE.
+
+## Pre-PVE-240 Wave-1 metric/horizon/method overlay — 2026-10-05
+
+H001:
+- primary metric = equal-date Brier-loss improvement;
+- primary horizon = B2;
+- B1/B4 cannot rescue B2;
+- D16-19 method receipt pending.
+
+H20:
+- same metric and B2 hierarchy;
+- identical D01-owned breakout event is mandatory;
+- D16-19 method receipt pending.
+
+H003:
+- same statistical metric;
+- primary outcome clock = active lifecycle to first terminal or 13:00 censor;
+- terminal failure = B/A_FAILED_REENTRY;
+- terminal success = B/A_REACCELERATION;
+- expiry / PRE_EVENT-only expiry / UNKNOWN = censor;
+- D16-19 method receipt pending.
+
+No target value is selected.
+No hypothesis changes support status.
+No L4 promotion.
+No FORMAL_OPTIMIZATION_CANDIDATE.
