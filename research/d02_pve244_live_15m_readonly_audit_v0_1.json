@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-05 Asia/Taipei",
+  "status": "PVE244_LIVE_15M_CAPTURE_PROVEN_H001_FAIL_CLOSED",
+  "evidenceCursor": "PVE-244",
+  "production": {
+    "runtimeVersion": "8.18.0-valuation-source-vintage",
+    "pvShadowEnabled": true,
+    "d1ReadOnlyRunId": 37334245340,
+    "d1ReadOnlyRunHeadSha": "517b5d95352cd63d328f68e858c0c6d4d3381050",
+    "mutationCount": 0,
+    "diagnosticCleanup": {
+      "subdomainDisabled": true,
+      "scriptDeleted": true
+    }
+  },
+  "marketDate": "2026-10-05",
+  "intraday15m": {
+    "rowCount": 8,
+    "symbolCount": 1,
+    "symbol": "2454",
+    "firstSlot": "09:00",
+    "lastSlot": "10:45",
+    "decisionImpactNonzeroRows": 0,
+    "h001EligibleTimeSlotsObserved": [
+      "10:15",
+      "10:30",
+      "10:45"
+    ],
+    "h001SlotRows": [
+      {
+        "slot": "10:15",
+        "formalLocalVolumeRatio": 0.36,
+        "pvSlotRvol20": null,
+        "slotHistoryCount": 1,
+        "guardState": "DATA_INSUFFICIENT",
+        "interpretability": "INVALID",
+        "sourceFetchedAt": "2026-10-05T02:31:47.000Z"
+      },
+      {
+        "slot": "10:30",
+        "formalLocalVolumeRatio": 0.73,
+        "pvSlotRvol20": null,
+        "slotHistoryCount": 1,
+        "guardState": "DATA_INSUFFICIENT",
+        "interpretability": "INVALID",
+        "sourceFetchedAt": "2026-10-05T02:46:47.000Z"
+      },
+      {
+        "slot": "10:45",
+        "formalLocalVolumeRatio": 1.22,
+        "pvSlotRvol20": null,
+        "slotHistoryCount": 1,
+        "guardState": "DATA_INSUFFICIENT",
+        "interpretability": "INVALID",
+        "sourceFetchedAt": "2026-10-05T03:01:47.000Z"
+      }
+    ]
+  },
+  "baseline": {
+    "rows": [
+      {
+        "symbol": "2006",
+        "validSessions": 2,
+        "lastMarketDate": "2026-09-30"
+      },
+      {
+        "symbol": "2454",
+        "validSessions": 1,
+        "lastMarketDate": "2026-10-02"
+      },
+      {
+        "symbol": "4977",
+        "validSessions": 2,
+        "lastMarketDate": "2026-09-30"
+      }
+    ],
+    "requiredPriorSessions": 20,
+    "bootstrapDesignFetchRangeDays": 180,
+    "bootstrapReady": false
+  },
+  "canonicalSourceBinding": {
+    "sourceFamily": "FUGLE_INTRADAY_15M_LOTS",
+    "barStartPresent": true,
+    "barEndPresent": true,
+    "sourceFetchedAtPresent": true,
+    "completedBarPresent": true,
+    "semanticFingerprintPresent": true,
+    "rawPayloadHashPresent": false,
+    "endpointPresent": false,
+    "providerPresent": false,
+    "canonicalReceiptPass": false
+  },
+  "scheduleObservability": {
+    "lastObservedIntradayMonitorScheduledAt": "2026-10-05T03:08:47.000Z",
+    "lastObservedIntradayMonitorTaipei": "2026-10-05T11:08:47+08:00",
+    "expectedFormalWindowThroughTaipei": "13:24",
+    "missingObservedIntradayCronAfter1108": true,
+    "currentDeploymentCronReadback": [
+      "0-24 5 * * MON-FRI",
+      "* 1-4 * * MON-FRI",
+      "35,55 15 * * mon-fri",
+      "* 9 * * MON-FRI"
+    ],
+    "currentDeploymentCronReadbackAt": "2026-10-05T06:53:06Z",
+    "afterMarketObservedRow": {
+      "scheduledAt": "2026-10-05T15:35:48.000Z",
+      "taipei": "2026-10-05T23:35:48+08:00",
+      "recordedJobType": "INTRADAY_MONITOR",
+      "status": "SKIPPED"
+    },
+    "expectedAfterMarketSemantics": "isAfterMarketSchedule returns after-market for Taiwan hour >=18",
+    "rootCauseCertified": false
+  },
+  "blockers": [
+    "H001_SLOT_HISTORY_LT_20",
+    "H001_PV_SLOT_RVOL20_NOT_COMPUTABLE",
+    "CANONICAL_RAW_SOURCE_HASH_MISSING",
+    "CANONICAL_SOURCE_ENDPOINT_MISSING",
+    "CANONICAL_SOURCE_PROVIDER_MISSING",
+    "INTRADAY_CAPTURE_WINDOW_TRUNCATED_2026_10_05",
+    "AFTER_MARKET_JOBTYPE_READBACK_MISMATCH_ROOT_CAUSE_UNKNOWN"
+  ],
+  "guarantees": {
+    "live15mObservabilityProven": true,
+    "h001CanonicalReceiptCreated": false,
+    "cleanProspectiveSelectionDateIncrement": 0,
+    "outcomeAccessAuthorized": false,
+    "numericalTargetAuthorized": false,
+    "d16MethodSelectionAuthorized": false,
+    "maturityPromotionAuthorized": false,
+    "formalCoreChangeAuthorized": false
+  },
+  "next": "PVE-245"
+}
