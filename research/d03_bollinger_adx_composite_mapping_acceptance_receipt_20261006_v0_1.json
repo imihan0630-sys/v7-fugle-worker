@@ -1,6 +1,6 @@
 {
   "receiptVersion": "D03_BOLLINGER_ADX_COMPOSITE_MAPPING_ACCEPTANCE_V0_1",
-  "executedAtAsiaTaipei": "2026-10-06T06:23:00+08:00",
+  "executedAtAsiaTaipei": "2026-10-06T06:19:00+08:00",
   "testPath": "research/test_d03_bollinger_adx_composite_mapping_v0_1.mjs",
   "fixturePath": "research/d03_bollinger_adx_composite_mapping_cases_20261006_v0_1.json",
   "contractPath": "research/D03_BOLLINGER_ADX_COMPOSITE_MAPPING_AUDIT_20261006_V0_1.md",
