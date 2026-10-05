@@ -17,7 +17,7 @@
   ],
   "preregistrationParent": "research/d06_next_trading_day_outcome_blind_capture_plan_v0_1.json",
   "lineageContract": "research/d06_sda007_flow_ownership_lineage_contract_20261005_v0_1.json",
-  "sessionState": "INTRADAY_CAPTURE_IN_PROGRESS / TDCC_PARENT_CAPTURED / PF040_SOURCE_REFRESH_PENDING / D06_18_LATE_SLOT_MISSING_PRESERVED",
+  "sessionState": "INTRADAY_CAPTURE_IN_PROGRESS / TPEX_DEALER_SPLIT_CAPTURED / TWSE_DEALER_SPLIT_PENDING / TDCC_PARENT_CAPTURED / PF040_SOURCE_REFRESH_PENDING",
   "globalRules": [
     "No lane may change fields or pass criteria after source values are observed.",
     "Raw parent receipts precede derived states.",
@@ -37,7 +37,7 @@
       ],
       "primitiveReceiptId": "D06-20261005-INSTITUTION-DEALER-SPLIT",
       "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
-      "preopenState": "PENDING_BY_CLOCK",
+      "preopenState": "TPEX_SAME_DAY_CAPTURED / TWSE_PENDING_BY_CLOCK",
       "sourceClock": {
         "TWSE": [
           "18:00 excluding block trades",
@@ -63,7 +63,18 @@
         "coverage",
         "unknownReasons"
       ],
-      "passGate": "same-date actor/desk split captured with aggregate reconciliation and source schema verified"
+      "passGate": "same-date actor/desk split captured with aggregate reconciliation and source schema verified",
+      "tpexCapture": {
+        "receipt": "research/d06_03_tpex_dealer_split_capture_20261005_v0_1.json",
+        "capturedAt": "2026-10-05T15:28:58+08:00",
+        "sourceDate": "20261005",
+        "sourceRows": 916,
+        "ordinaryFourDigitRows": 795,
+        "schemaFingerprint": "fnv1a64-utf8:6ca0bb5edbff5cd3",
+        "contentHash": "fnv1a64-utf8:5bd324cc7136e2ca",
+        "deskReconciliation": "916/916 PASS",
+        "institutionTotalReconciliation": "916/916 PASS"
+      }
     },
     {
       "laneId": "D06_05_TDCC_LINEAGE",
