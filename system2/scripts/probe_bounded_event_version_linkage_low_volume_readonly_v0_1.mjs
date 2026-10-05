@@ -242,7 +242,7 @@ for(const sourceId of LOW_LANES){
 }
 
 const symbols=[...new Set(Object.values(laneEvents).flat().map((x)=>x.symbol))].sort();
-const issuerHistories={};
+const rawIssuerHistories={};
 
 for(let si=0;si<symbols.length;si+=1){
   const symbol=symbols[si];
@@ -264,17 +264,54 @@ for(let si=0;si<symbols.length;si+=1){
     if(!(si===symbols.length-1&&yi===YEARS.length-1)) await sleep(250);
   }
   const boundedRows=allRows.filter((row)=>row.date&&row.date<=END);
-  const rawFamilies={
-    CAPITAL_REDUCTION:familyRows(boundedRows,"CAPITAL_REDUCTION"),
-    PAR_VALUE_CHANGE:familyRows(boundedRows,"PAR_VALUE_CHANGE"),
-  };
-  const familyRowsByActionFamily=await enrichFamilyRowsWithDetails(rawFamilies);
-  issuerHistories[symbol]={
+  rawIssuerHistories[symbol]={
     transportReady,
     queriedYears:[...YEARS],
     payloadCount:payloads.length,
     payloads,
-    familyRowsByActionFamily,
+    familyRowsByActionFamily:{
+      CAPITAL_REDUCTION:familyRows(boundedRows,"CAPITAL_REDUCTION"),
+      PAR_VALUE_CHANGE:familyRows(boundedRows,"PAR_VALUE_CHANGE"),
+    },
+  };
+}
+
+const uniqueDetailRows=new Map();
+for(const history of Object.values(rawIssuerHistories)){
+  for(const rows of Object.values(history.familyRowsByActionFamily)){
+    for(const row of rows){
+      const key=detailIdentityKey(row);
+      if(!uniqueDetailRows.has(key)) uniqueDetailRows.set(key,row);
+    }
+  }
+}
+const detailEvidencePairs=await mapLimit(
+  [...uniqueDetailRows.entries()],
+  6,
+  async ([key,row])=>[key,await fetchDetailEvidence(row)],
+);
+const detailEvidenceMap=new Map(detailEvidencePairs);
+
+const issuerHistories={};
+for(const [symbol,history] of Object.entries(rawIssuerHistories)){
+  const enrichedFamilies={};
+  for(const [family,rows] of Object.entries(history.familyRowsByActionFamily)){
+    enrichedFamilies[family]=rows.map((row)=>({
+      ...row,
+      ...(detailEvidenceMap.get(detailIdentityKey(row))||{
+        detailTransportReady:false,
+        detailIdentityObserved:false,
+        detailBodyDateTokens:[],
+        detailBodyTextHash:null,
+        detailPayloadHash:null,
+        detailTransportMode:"T05ST01_STEP2_GET",
+        detailError:"DETAIL_EVIDENCE_MISSING",
+      }),
+    }));
+  }
+  issuerHistories[symbol]={
+    ...history,
+    familyRowsByActionFamily:enrichedFamilies,
   };
 }
 
