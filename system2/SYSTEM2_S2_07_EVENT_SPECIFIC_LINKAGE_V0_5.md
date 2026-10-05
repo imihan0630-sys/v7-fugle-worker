@@ -40,3 +40,48 @@ V0.5 never claims:
 - trading authority.
 
 Normalized subject stem is not a sufficient episode key.
+
+
+## Physical execution freeze — run 37331662930
+
+
+## 2026-10-05 S2-07 event-specific linkage V0.5 physical result
+
+Authoritative physical execution:
+- merge commit: `50aac2717c47f6e1bc6fd29d29dd867267d09887`;
+- workflow: `System2 S2-07 Event-Specific Linkage V0.5 Readonly`;
+- run: `37331662930`;
+- job: `111836005547`;
+- conclusion: PASS.
+
+Regression evidence around the same BUILD_LANE sequence:
+- V8 Regression Tests run `37331377958`: PASS;
+- V0.4 diagnostic rerun `37331377874`: PASS.
+
+Physical summary:
+- eventCount = 17;
+- actionFamilyQueryIntegrityExactCount = 13;
+- periodicNoticeOnlyDivergenceCount = 3;
+- eventSpecificAnchorCandidateCount = 13;
+- correctionObservedCount = 5;
+- cancellationObservedCount = 0;
+- promotionLinkageEstablishedCount = 0.
+
+The four remaining action-family query-integrity divergences are all PAR_VALUE_CHANGE events:
+- 6949 / 2026-09-07: one month-only recurring announcement-period row;
+- 8937 / 2026-04-13: one month-only face-value change row on the official stop-trading date;
+- 5904 / 2026-08-10: one month-only recurring announcement-period row;
+- 4747 / 2026-08-31: one month-only recurring announcement-period row.
+
+The 13 exact events now have issuer + target-action-family keyset reconciliation and diagnostic event-specific anchors based on official event identity/detail plus issuer chronology. These are still bounded research candidates, not promotion-grade linkage and not trading authority.
+
+Positive correction evidence is observed for five events (3356, 3591, 1441, 6241, 4806). No cancellation disclosure was observed inside the V0.5 semantic episode candidates, but absence is not negative proof: `cancellationHistoryComplete=false` and no-cancellation may not be claimed.
+
+All completeness / exact-clock / technical-continuity / trading-authority flags remain false.
+
+Next exact BUILD_LANE continuation:
+1. resolve the four PAR_VALUE_CHANGE source-divergence semantics at row/provenance level;
+2. formalize cancellation state as positive-observed vs not-certified, never NO_CANCELLATION by absence;
+3. determine which bounded event-specific candidates meet promotion evidence requirements without subject-stem dependence;
+4. then continue shared suspension/resumption + symbol-session integration;
+5. then RAW A1 lineage.
