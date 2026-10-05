@@ -13931,3 +13931,31 @@ PVE-240 data collection may proceed, but promotion-grade outcome interpretation 
 D02 remains 60.0%.
 PVE cursor remains 239.
 Gate 7 remains CLOSED.
+
+# Pre-PVE-240 — numerical target freeze is now provenance-gated, not guess-driven (2026-10-05)
+
+The target problem is decomposed into:
+1. evidence-key-specific research question;
+2. comparator;
+3. primary outcome family;
+4. statistical metric rule;
+5. horizon decision rule;
+6. numerical criterion;
+7. rationale provenance.
+
+The repository has enough authority to freeze several shells, but not enough authority to invent numerical thresholds.
+
+External methodological guidance is aligned with this:
+smallest meaningful effects should come from theory/practical consequence/cost-benefit and be fixed before outcomes; generic benchmark effect sizes are weak justification.
+
+D14 evidence also prevents a universal cost anchor:
+broker commission/minimum fee is account-specific and slippage is UNKNOWN without execution provenance.
+
+Therefore target registry V0.2 keeps all 14 numerical values pending while preserving per-key blockers and allowed derivation paths.
+
+Highest-value next work:
+freeze the Wave-1 singular metric rule and multihorizon decision rule before any numerical target.
+
+D02 remains 60.0%.
+PVE cursor remains 239.
+Gate 7 remains CLOSED.
