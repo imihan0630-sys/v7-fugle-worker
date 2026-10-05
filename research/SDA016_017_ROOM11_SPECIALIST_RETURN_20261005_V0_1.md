@@ -201,3 +201,63 @@ Ticket `CLOSED` remains reserved for independent Room00 readback.
 
 No maturity change.
 Formal Core remains LOCKED.
+
+
+## 2026-10-05 third-round deep falsification
+
+New canonical addenda:
+- `research/SDA016_INFORMATION_RELEASE_SELECTION_VALIDATION_ADDENDUM_20261005_V0_1.md`;
+- `research/SDA017_REALTIME_FIT_FRAGMENTATION_VALIDATION_ADDENDUM_20261005_V0_1.md`.
+
+New immutable validation oracle versions:
+- `research/SDA016_VALIDATION_ORACLE_20261005_V0_2.json` — 30 blocking tests;
+- `research/SDA017_VALIDATION_ORACLE_20261005_V0_2.json` — 40 blocking tests.
+
+V0.1 oracle files remain frozen and are not rewritten.
+
+### SDA-016 third-round finding
+
+Holdout contamination follows information release lineage, not raw-row access or consumer identity.
+
+Outcome-derived PASS/FAIL, sign, metric, plot, ranking, winner identity or downstream recommendation all count as information exposure under the current conservative contract.
+
+If Room A inspects a holdout and Room B changes a hypothesis because of Room A's recommendation, the downstream hypothesis inherits the same consumption lineage even if Room B never sees raw outcomes.
+
+Promotion-grade evidence must also report admission/maturity missingness by pre-outcome strata. Complete-case analysis cannot silently redefine the population when capture/readback/label maturity is state-dependent.
+
+Multi-horizon inspection belongs to one multiplicity/consumption family unless a primary horizon was frozen before results.
+
+Cross-room corroboration:
+`research/D03_D16_METHOD_RECEIPT_ACCEPTANCE_ORACLE_20261005_V0_1.md` independently freezes holdoutMethodSelection=false, forward-footprint purge, common-support, coverage-bias terminal states and a non-shrinking D5/D10/D20 multiplicity family. Room11 absorbs these as compatible producer requirements rather than creating a competing D03-specific method.
+
+### SDA-017 third-round finding
+
+Outcome-free Regime construction is not automatically point-in-time.
+
+Any learned/fitted threshold, scaler, PCA, clustering or latent-state model must bind an exact fit receipt whose knowledge cutoff is no later than the decision clock. Full-sample covariate fitting is look-ahead even when future outcomes are excluded.
+
+Current D18 V0.1 trend/volatility implementation was re-read:
+- future history rows are rejected;
+- same decision clock is enforced;
+- current trend/volatility semantics are computed from bounded trailing history;
+- dimensions without a frozen authorized threshold remain CONTEXT_RAW/UNKNOWN.
+
+Therefore the new fitted-Regime clock is a forward firewall for future learned dimensions; it does not retroactively invalidate already-accepted current fixed-semantic D18 components.
+
+Episode accounting is now split:
+- structuralEpisodeN = observable contiguous known segments;
+- replicationEpisodeN = conservative recurrence support;
+- mechanicalFragmentN = UNKNOWN/source/version/clock splits that cannot automatically earn independent recurrence credit.
+
+Active episodes are right-censored, not absent. Primary DECISION_STATE_CONDITIONAL analysis cannot drop matured decisions merely because their episode remains active.
+
+Regime-specific observability/capture coverage must be reported; known-state-only performance with state-dependent missingness cannot stand alone for promotion.
+
+### Current closure boundary
+
+SDA-016 requires V0.2 tests T01-T30.
+SDA-017 requires V0.2 tests T01-T40 plus genuine prospective multi-episode matured evidence.
+Existing accepted System1 exact-dataset/mutation guards and D18 ex-ante/UNKNOWN guards remain accepted; only new/pending deltas are rerun.
+
+No maturity change.
+Formal Core remains LOCKED.
