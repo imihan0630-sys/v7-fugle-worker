@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-06T06:48:00+08:00",
+  "updatedAt": "2026-10-06T07:07:00+08:00",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -822,7 +822,7 @@
     {
       "id": "SDA-022",
       "severity": "CRITICAL",
-      "status": "ROUTED",
+      "status": "REMEDIATION_IN_PROGRESS",
       "domains": [],
       "learningOwners": [
         "00｜研究總控室"
@@ -843,16 +843,21 @@
         "D16_dependence_and_incrementality_analysis",
         "00_cross_system_readback"
       ],
-      "readiness": "ARCHITECTURE_GUARD_FROZEN_IMPLEMENTATION_AND_PROSPECTIVE_OVERLAP_EVIDENCE_PENDING",
-      "receipt": "shared-knowledge/SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_V0_1.md",
+      "readiness": "NON_CONVERGENCE_GUARD_AND_POLICY_BASELINE_FROZEN_RUNTIME_FINGERPRINTS_NC_T01_AND_D16_PENDING",
+      "receipt": "shared-knowledge/SYSTEM1_SYSTEM2_POLICY_FINGERPRINT_BASELINE_20261006_V0_1.md",
       "remainingDelta": [
-        "System1 decision-policy fingerprint receipt",
-        "System2 strategy-policy fingerprint receipt",
-        "System2 independently executable discovery proof without consuming System1 rank/Top6",
-        "cross-system universe/pick/rank/information-root overlap diagnostic",
-        "divergence reason classification",
-        "D16 dependence/incrementality test before any diversification or confirmation claim",
+        "System1 research-only decision-policy fingerprint receipt generated from current effective policy",
+        "System2 per-strategy policy fingerprint receipts generated from current effective strategy policies",
+        "NC-T01 physical proof that at least one System2 candidate-generation path executes without System1 Top6/rank",
+        "prospective cross-system universe/pick/rank/information-root overlap receipts",
+        "divergence reason classification on comparable decision dates",
+        "D16 dependence/incrementality analysis before any diversification or double-confirmation claim",
         "00 independent closure"
+      ],
+      "supportingReceipts": [
+        "shared-knowledge/SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_V0_1.md",
+        "shared-knowledge/CROSS_SYSTEM_POLICY_FINGERPRINT_CONTRACT_V0_1.md",
+        "shared-knowledge/system1_system2_policy_fingerprint_baseline_20261006_v0_1.json"
       ]
     }
   ],
@@ -865,5 +870,5 @@
   "lastHighIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_INTAKE_20261006_V0_1.md",
   "lastIncrementalIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_INCREMENTAL_INTAKE_20261006_V0_2.md",
   "lastEngineeringIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_INTAKE_20261006_V0_3.md",
-  "lastSystemLevelAudit": "shared-knowledge/SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_V0_1.md"
+  "lastSystemLevelAudit": "shared-knowledge/SYSTEM1_SYSTEM2_POLICY_FINGERPRINT_BASELINE_20261006_V0_1.md"
 }
