@@ -1813,3 +1813,19 @@ FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 Formal Core: LOCKED.
 
 Exact next: do not invent historical C1 predictions. On the first genuine post-V8.17 trading-session C1 generation, verify the immutable parent plus complete qualified priorityScore coverage, then freeze the first prospective base-rate PredictionReceipt before any D+5 outcome. Continue daily receipts; fit the score challenger only after the preregistered support gate is genuinely reached. In parallel, D18 prospective context/activation receipts may continue accumulating, but no D18 L4 follows from this D16 preregistration.
+
+
+## 2026-10-05 13:23 Taipei — D18-09 dynamic-weight identifiability continuation
+
+Research artifact: `research/D18_09_DYNAMIC_WEIGHT_IDENTIFIABILITY_REPLAY_AUDIT_20261005_V0_1.md`.
+
+- Current main tracker remains D16 60.0%, D18 52.0%, overall 46.4% across 356 modules at the start of this round.
+- D18-09 remains L2 / 40%. No maturity promotion is justified.
+- Dynamic weighting is separated into allocation effect, aggregate-exposure effect, turnover/cost effect and missed-opportunity effect.
+- First admissible challenger is restricted to one PIT-safe regime dimension, frozen strategies and a tiny preregistered discrete weight map. Continuous optimization is not admissible for the first generation.
+- Required identification arms: static-weight baseline, regime discrete-weight challenger, and exposure-matched regime-independent control; turnover-matched control is secondary when feasible.
+- Missing expected strategies/common support fail closed. Silent renormalization is a different policy and is forbidden unless preregistered.
+- Twelve replay invariants are frozen before any alpha/optimal-weight search. Synthetic invariant tests are engineering evidence only and cannot promote D18-09 to L3.
+- Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE remains NONE.
+
+Exact next continuation point: build or audit a research-only deterministic discrete-weight receipt verifier reusing D18-01 regime identity, D18-08 registration/cost lineage, D18-10 common-support semantics and D18-14 chronological validation boundaries. Run the twelve fail-closed invariants before any return search. Genuine Taiwan PIT replay remains required for L3.
