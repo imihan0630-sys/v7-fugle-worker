@@ -5338,3 +5338,37 @@ This blocks promotion-grade outcome interpretation, not PIT/admission capture.
 
 D02 remains 60.0%.
 Gate 7 remains CLOSED.
+
+# Pre-PVE-240 addendum — target derivation and freeze-precondition closure (2026-10-05)
+
+No PVE number consumed.
+No prospective economic outcome inspected.
+
+New machine guard:
+D02_L4_TARGET_FREEZE_PRECONDITION_V0_1.
+Independent execution: 24/24 PASS.
+
+It prevents target freeze from:
+- current prospective results;
+- post-outcome metric/horizon winner selection;
+- fixture values;
+- unjustified generic benchmarks;
+- UNKNOWN costs converted to zero;
+- cross-key borrowing.
+
+Target registry V0.2 now carries derivation readiness and partial shell state for all 14 evidence keys.
+
+Numerical target state:
+0 FROZEN / 14 PENDING.
+
+Wave-1 outcome-family state is narrower than before:
+- H001 structural failure/no-follow-through;
+- H20 breakout structural failure/no-follow-through;
+- H003 structural acceptance/failure.
+
+PV-084 effect-size family and PV-086 utility trade-off remain authoritative reporting constraints.
+
+No canonical B1/B2/B4 primary horizon exists.
+Post-outcome horizon selection is forbidden.
+
+No L4 promotion occurs.
