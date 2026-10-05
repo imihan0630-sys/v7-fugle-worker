@@ -128,16 +128,6 @@ once('''async function runAfterMarketScan(env, scheduledTime = Date.now(), optio
   const lockKey=`V7_AFTER_MARKET_LEASE:${requestedDate}`;let lease=null;''','scan origin context')
 once('const summary = await runAfterMarketScanCore(env, scheduledTime, options);',
      'const summary = await runAfterMarketScanCore(env, scheduledTime, {...options,c1ScanOriginContext});','core origin context')
-once('''      status: "SUCCESS", requestedDate, scanDate: summary.scanDate, selectedCount: summary.selectedCount,
-      generatedAt: summary.generatedAt, threeMin: summary.threeMin, dailyReport: summary.dailyReport''',
-     '''      status: "SUCCESS", requestedDate, scanDate: summary.scanDate, selectedCount: summary.selectedCount,
-      generatedAt: summary.generatedAt, scanOriginKind:c1ScanOriginContext?.originKind||null,scanAttemptId:c1ScanOriginContext?.scanAttemptId||null,
-      threeMin: summary.threeMin, dailyReport: summary.dailyReport''','success attempt origin')
-once('''      await env.STOCKS_KV.put("V7_LAST_SCAN_ATTEMPT", JSON.stringify({status:"FAILED", requestedDate,
-        generatedAt:taiwanTime(), error:String(err).slice(0, 1500), failureAlert:alert}), { expirationTtl:14 * 86400 });''',
-     '''      await env.STOCKS_KV.put("V7_LAST_SCAN_ATTEMPT", JSON.stringify({status:"FAILED", requestedDate,
-        generatedAt:taiwanTime(), scanOriginKind:c1ScanOriginContext?.originKind||null,scanAttemptId:c1ScanOriginContext?.scanAttemptId||null,
-        error:String(err).slice(0, 1500), failureAlert:alert}), { expirationTtl:14 * 86400 });''','failed attempt origin')
 
 Path('artifacts').mkdir(exist_ok=True)
 Path('artifacts/Worker-before-v8_19_0.mjs').write_text(path.read_text(encoding='utf-8'),encoding='utf-8')
