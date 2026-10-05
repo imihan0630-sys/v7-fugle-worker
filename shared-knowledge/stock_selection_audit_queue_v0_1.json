@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-05T08:31:00+08:00",
+  "updatedAt": "2026-10-05T08:39:00+08:00",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -69,7 +69,7 @@
     {
       "id": "SDA-002",
       "severity": "HIGH",
-      "status": "ROUTED",
+      "status": "REMEDIATION_IN_PROGRESS",
       "domains": [
         "D01"
       ],
@@ -90,6 +90,13 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "CAUSAL_PATTERN_SEMANTICS_STRONG_TEST_EXECUTION_AND_SYSTEM_GUARD_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "execute pending D01 adversarial tests",
+        "future-pivot/episode lineage system guard",
+        "prospective outcome evidence"
       ]
     },
     {
@@ -260,7 +267,7 @@
     {
       "id": "SDA-008",
       "severity": "HIGH",
-      "status": "ROUTED",
+      "status": "REMEDIATION_IN_PROGRESS",
       "domains": [
         "D07",
         "D08"
@@ -281,6 +288,14 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "D08_SURVIVORSHIP_GUARD_STRONG_CROSS_DOMAIN_FINANCIAL_VINTAGE_COVERAGE_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "44 date-specific valuation/control snapshots + coverage receipts",
+        "TPEx PIT-safe historical valuation lane",
+        "D07 prospective filing/fundamental coverage",
+        "generic financial sourceVintage/knownAt/universeVersion guard"
       ]
     },
     {
@@ -318,7 +333,7 @@
     {
       "id": "SDA-010",
       "severity": "HIGH",
-      "status": "ROUTED",
+      "status": "BLOCKED_DEPENDENCY",
       "domains": [
         "D10",
         "D17"
@@ -341,6 +356,14 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "RESEARCH_BOUNDARY_READY_OWNER_GATES_AND_VERSIONED_GRAPH_EVIDENCE_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "H10 owner decision",
+        "COV-06 owner decision",
+        "versioned effective-dated graph implementation",
+        "pre-event graph coverage / substitution evidence"
       ]
     },
     {
@@ -380,7 +403,7 @@
     {
       "id": "SDA-012",
       "severity": "HIGH",
-      "status": "ROUTED",
+      "status": "BLOCKED_DEPENDENCY",
       "domains": [
         "D12"
       ],
@@ -401,12 +424,21 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "SAME_PARENT_AND_ROLL_RESEARCH_STRONG_OWNER_GATES_AND_PROSPECTIVE_INCREMENTALITY_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "H04 owner decision",
+        "H11 owner decision",
+        "COV-07 validator-complete intake path",
+        "DERIVATIVES lineage integration",
+        "prospective residual/liquidity robustness"
       ]
     },
     {
       "id": "SDA-013",
       "severity": "HIGH",
-      "status": "ROUTED",
+      "status": "REMEDIATION_IN_PROGRESS",
       "domains": [
         "D13",
         "D18"
@@ -429,6 +461,14 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "REVISION_AND_CLOCK_FIREWALL_STRONG_CANONICAL_RECEIPT_AND_INCREMENTAL_EVIDENCE_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "canonical macro receipt/sourceVintage/releaseClock lineage",
+        "first-known vintage archive gaps",
+        "heterogeneous exposure",
+        "prospective incremental evidence"
       ]
     },
     {
@@ -565,7 +605,7 @@
     {
       "id": "SDA-018",
       "severity": "HIGH",
-      "status": "ROUTED",
+      "status": "REMEDIATION_IN_PROGRESS",
       "domains": [
         "D19"
       ],
@@ -585,12 +625,20 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "FACTOR_ZOO_GOVERNANCE_STRONG_FACTOR_RECEIPTS_AND_CHALLENGER_OOS_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "D19 factor-layer receipts",
+        "TPEx historical universe/continuity dependency",
+        "System1 Challenger factor lineage/cost diagnostics",
+        "independent OOS incrementality"
       ]
     },
     {
       "id": "SDA-019",
       "severity": "HIGH",
-      "status": "ROUTED",
+      "status": "VALIDATION_PENDING",
       "domains": [
         "D20"
       ],
@@ -613,6 +661,13 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "BEHAVIOR_IDENTIFIABILITY_FIREWALL_STRONG_PRIMARY_PROSPECTIVE_AND_RESIDUAL_EVIDENCE_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "primary prospective social coverage",
+        "D20-13 genuine live source receipt",
+        "residual behavioral incrementality beyond D03/D06/D17"
       ]
     },
     {
@@ -668,5 +723,6 @@
     }
   ],
   "lastReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md",
-  "lastHighReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md"
+  "lastHighReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md",
+  "lastRemainingHighReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md"
 }
