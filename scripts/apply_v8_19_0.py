@@ -13,10 +13,11 @@ def once(old,new,label):
     text=text.replace(old,new,1)
 
 source=Path('research/system1_c1_scan_origin_inventory_v0_1.mjs').read_text(encoding='utf-8')
-expected='b684b2cafadd0436e50cb9ebceec1a5f11c02e60492139e0e6f51141ffd74021'
+expected='7c600ed90f5aa0253e8824fb58aac24483b2cba5e0e30b9ca541ef579bff94bb'
 if hashlib.sha256(source.encode()).hexdigest()!=expected:
     raise SystemExit('Frozen C1 scan-origin module changed')
 source='\n'.join(line for line in source.splitlines() if not line.startswith('import ')).replace('export ','')
+source='\n'.join(('  '+line) if line else '' for line in source.splitlines())
 module='''\n// BEGIN V8.19 C1 SCAN ORIGIN INVENTORY
 const C1_SCAN_ORIGIN=(()=>{
   const {canonicalJcsJson}=SHADOW_CANONICAL;
