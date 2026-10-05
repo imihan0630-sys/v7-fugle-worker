@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "0.1",
+  "id": "D07-18-WACC-COST-OF-CAPITAL-FOUNDATION-V0-1",
+  "createdAt": "2026-10-06T05:34:00+08:00",
+  "owner": "06｜基本面與估值研究室",
+  "module": "D07-18",
+  "title": "WACC／Cost of Capital 加權平均資金成本研究基礎",
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / PIT_CONTRACT_DEFINED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED",
+  "formalCoreImpact": "NONE",
+  "mechanism": {
+    "purpose": "將企業層資金成本拆成權益成本、稅後債務成本與資本結構權重；僅作估值／資本配置的折現背景，不把利率或信用利差重複計成獨立基本面票。",
+    "costOfEquity": "以同一 as-of 時點的無風險利率、beta/風險曝險模型與 equity risk premium 假設形成；模型選擇本身是估計風險。",
+    "costOfDebt": "使用公司可取得的新發債／再融資邊際成本；歷史票息或帳面利息率不是自動等同邊際債務成本。",
+    "taxShield": "僅在利息稅盾實際可用且稅率口徑相容時使用；虧損／稅損遞延狀態不得機械套用完整法定稅率稅盾。",
+    "weights": "市場價值權重與目標資本結構必須分開保存；不得以事後實現資本結構回填歷史。",
+    "applicability": "穩定營運企業較適合單一企業 WACC；高成長、多事業、困境、金融機構與專案型現金流需分部／狀態特定折現語意。"
+  },
+  "supportMechanisms": [
+    "較高企業資金成本在其他條件相同時降低長久期現金流現值，並提高投資案最低報酬要求。",
+    "資本結構改變可在公司債務成本近似不變時，透過權益風險、權重與稅盾改變企業 WACC。",
+    "同一無風險利率衝擊可同時進入權益與債務成本，因此只能共享父事件，不得多重計票。"
+  ],
+  "counterEvidence": [
+    "觀察到市場殖利率上升不代表公司 WACC 等幅上升；beta、風險溢酬、信用利差、權重與稅盾可能反向變化。",
+    "低 WACC 不代表股票便宜或公司品質高；低風險成熟公司可能同時具有低成長，估值仍取決於現金流與成長。",
+    "以歷史平均 beta、單一市場風險溢酬或帳面權重可產生偽精確，尤其在 regime 切換、槓桿劇變與業務轉型時。",
+    "金融機構的負債多屬營運投入且受監理資本約束，普通企業 WACC／淨債務框架不可直接移植。"
+  ],
+  "falsification": [
+    "若 WACC 變化在控制 D13-06 無風險曲線、D22-04 發行人債務成本、資本結構與成長後無獨立解釋力，則不得建立新增投票。",
+    "若不同合理 beta／ERP／目標權重設定導致排序方向頻繁翻轉，訊號標記 MODEL_UNSTABLE 而非取最佳模型。",
+    "若僅在少數日期／產業／高槓桿公司有效，必須標記 regime/sector dependence，不得泛化。",
+    "若估計所需欄位在 as-of 時點不可得，記 UNKNOWN，不得用後來公告或目前資本結構回填。"
+  ],
+  "pitContract": {
+    "requiredVintages": [
+      "riskFreeCurveKnownAt",
+      "equityRiskPremiumModelVersion",
+      "betaEstimationWindowEnd",
+      "issuerDebtCostKnownAt",
+      "taxStatusKnownAt",
+      "equityMarketValueAsOf",
+      "debtMarketOrCompatibleProxyAsOf",
+      "targetCapitalStructureKnownAt"
+    ],
+    "noLookAhead": true,
+    "revisionsAppendOnly": true,
+    "missingEvidence": "UNKNOWN"
+  },
+  "dependencies": {
+    "D13-06": "只消費無風險／主權殖利率曲線父收據，不重算成熟度。",
+    "D22-04": "只消費發行人債務成本／再融資利差父收據，不重算成熟度。",
+    "D07-06": "消費槓桿／資產負債表原始量。",
+    "D08": "折現率可作估值情境輸入，但不得把同一 WACC 變動再次當估值獨立票。"
+  },
+  "divergentStates": [
+    "權益風險溢酬或 beta 上升、債務成本近似不變：WACC 仍可上升。",
+    "債務利差上升但公司降槓桿／權益權重上升：WACC 變化方向需重新計算，不可由債務成本單獨推定。",
+    "無風險利率下降但 ERP 上升：權益成本可能不降。"
+  ],
+  "validationPlan": {
+    "beforeOutcomeJoin": [
+      "台股 PIT 欄位可得性盤點",
+      "多模型敏感度矩陣",
+      "產業／金融機構適用性分層",
+      "日期群聚與 regime 穩健性",
+      "與 D13-06、D22-04 因子冗餘檢查"
+    ],
+    "oos": "任何選股增量主張必須另做 OOS／Walk-forward；本基礎不開啟報酬。",
+    "multipleTesting": "不得用報酬挑 beta 視窗、ERP 模型、權重或門檻。"
+  },
+  "maturityDecision": {
+    "from": "L0/0",
+    "to": "L2/40",
+    "reason": "完成機制、反證、失效條件、PIT 與跨領域去重契約；尚無台股 PIT 實體收據，故不得升 L3。"
+  },
+  "formalOptimizationCandidate": "NONE",
+  "exactNext": "建立台股 D07-18 outcome-blind PIT 欄位可行性收據：凍結權益成本／債務成本／稅盾／市場與目標權重的 knownAt；做模型敏感度與金融機構適用性防火牆；未通過前不開啟報酬。"
+}

@@ -1,6 +1,6 @@
 # System 2 Historical Data Checkpoint
 
-Updated: 2026-10-05 22:54 Asia/Taipei
+Updated: 2026-10-06 00:12 Asia/Taipei
 Status: ACTIVE / DATA_LANE
 Room: System 2｜歷史資料工程室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
@@ -25,6 +25,9 @@ Assigned correction:
 
 Routing:
 `DATA_LANE`
+
+Correction lifecycle:
+`FIX_IN_PROGRESS` — actual DATA_LANE corrective work is underway; this is not `FIX_IMPLEMENTED` and remains subject to the existing acceptance criteria and independent closure rules.
 
 Physically accepted raw A1 market-years:
 - 2017 TWSE / TPEx: data coverage PASS / replay readiness PARTIAL;

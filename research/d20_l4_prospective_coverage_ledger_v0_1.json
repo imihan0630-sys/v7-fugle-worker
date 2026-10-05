@@ -1,7 +1,7 @@
 {
   "schemaVersion": "D20_L4_PROSPECTIVE_COVERAGE_LEDGER_V0_1",
-  "updatedAtAsiaTaipei": "2026-10-04T16:47:00+08:00",
-  "status": "PROSPECTIVE_COLLECTION_ACTIVE / PRIMARY_SOCIAL_SAMPLING_CLOCK_FROZEN / NO_L4_PROMOTION",
+  "updatedAtAsiaTaipei": "2026-10-06T01:07:44+08:00",
+  "status": "PROSPECTIVE_COLLECTION_ACTIVE / FIRST_PRIMARY_SOCIAL_PARENT_DURABLE / D20_13_LIVE_SOURCE_PENDING / NO_L4_PROMOTION",
   "domain": "D20",
   "counts": {
     "D20-03": {
@@ -12,16 +12,16 @@
       "requiredDates": 20
     },
     "D20-06": {
-      "primaryEligibleAggregateParents": 0,
-      "primaryIndependentDates": 0,
+      "primaryEligibleAggregateParents": 1,
+      "primaryIndependentDates": 1,
       "secondaryProcessParents": 1,
       "requiredParents": 50,
       "requiredDates": 20,
-      "primaryMultiActorSequenceParents": 0
+      "primaryMultiActorSequenceParents": 1
     },
     "D20-11": {
-      "primaryEligibleNarrativeParents": 0,
-      "primaryIndependentDates": 0,
+      "primaryEligibleNarrativeParents": 1,
+      "primaryIndependentDates": 1,
       "secondaryProcessParents": 1,
       "requiredParents": 50,
       "requiredDates": 20
@@ -49,7 +49,8 @@
     "All newly first-observed entries from valid primary snapshots are included regardless of engagement/topic/stance/outcome.",
     "Zero-engagement parents remain included.",
     "No future price or engagement outcome is stored in parent receipts.",
-    "No maturity increase until module-specific preregistered L4 gates are met."
+    "No maturity increase until module-specific preregistered L4 gates are met.",
+    "Ledger sync on 2026-10-06 records only the already-durable 2026-10-04 23:11 primary parent; it does not backfill missed slots, open outcomes, or change maturity."
   ],
   "formalCore": "LOCKED",
   "invalidatedParents": [
@@ -61,7 +62,16 @@
     }
   ],
   "samplingContract": "research/d20_social_sampling_coverage_contract_v0_1.json",
-  "firstPrimarySocialParent": null,
+  "firstPrimarySocialParent": {
+    "parentDecisionReceiptId": "D20SOC-PRIMARY-20261004-2311-001",
+    "file": "research/d20_social_primary_snapshot_20261004_2311_v0_1.json",
+    "capturedAt": "2026-10-04T23:11:43+08:00",
+    "classification": "PRIMARY_CANDIDATE_FIXED_10_SCHEDULED_RUN / DURABLE_PARENT",
+    "continuity": "PRECEDING_INTERVAL_UNKNOWN_NO_PRIOR_PRIMARY_PARENT",
+    "D20-03": "PARENT_POOL_CAPTURE_ONLY / QUALIFYING_EXPLICIT_CONFIDENCE_COUNT_NOT_ESTABLISHED",
+    "D20-06": "PRIMARY_AGGREGATE_PARENT_CANDIDATE / MULTI_ACTOR_SEQUENCES_VISIBLE / CONTROLS_REQUIRED",
+    "D20-11": "PRIMARY_NARRATIVE_PARENT_CANDIDATE / CHILD_TOPIC_STANCE_TRANSFORM_PENDING"
+  },
   "secondaryProcessParents": [
     {
       "parentDecisionReceiptId": "D20SOC-20261004-002",

@@ -1204,3 +1204,47 @@ Effective immediately for all rooms/projects that load this repository/shared bo
 Bootstrap and AGENTS both reference this policy, and ROOM_BOOTSTRAP_REGISTRY contains the machine-readable rule.
 
 At policy creation, Firecrawl is available in the ChatGPT plugin directory but is not installed at account level. This is a connection-state note only; the routing policy is already active.
+
+
+## 2026-10-06 SDA remediation intake after parallel-room returns
+
+New intake receipts:
+- `shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_INTAKE_20261006_V0_1.md`;
+- `shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_INTAKE_20261006_V0_1.md`.
+
+Dashboard refreshed:
+`shared-knowledge/STOCK_SELECTION_AUDIT_DASHBOARD_V0_1.md`.
+
+Current queue counts:
+- REMEDIATION_IN_PROGRESS = 15;
+- VALIDATION_PENDING = 4;
+- BLOCKED_DEPENDENCY = 2;
+- ROUTED = 0;
+- CLOSED = 0.
+
+Material progress credited:
+1. SDA-001: System1 PR #608 merged; Class-A lineage/dedup Shadow core exists. D03 readback PASS_WITH_DIAGNOSTIC_SCHEMA_GAPS. Remaining: three schema fields, first genuine receipt, System2 counterpart, D16 residual/OOS, 00 closure.
+2. SDA-004: System1 alias/parameter-family core guard merged; D03 mapping passes. Remaining genuine/System2/D16 evidence.
+3. SDA-009: Room07 leave-one-out D09 contract frozen. Ticket advances ROUTED -> REMEDIATION_IN_PROGRESS. System1 inclusive-vs-LOO diagnostic remains.
+4. SDA-016: Room11 V0.2 oracle now requires 30 blocking tests; System1 current guard is partial pass only; cross-system physical consumption/release/footprint/missingness authority remains.
+5. SDA-017: Room11 V0.2 oracle now requires 40 blocking tests; existing D18 machine partial pass credited; System2 episode/support/fit-clock observer + prospective multi-episode evidence remain.
+6. SDA-003: PVE-244 physically proves live 15m observability but no clean H001 event. PVE-245 System1 remediation is required for baseline/provenance/session blockers.
+7. SDA-007: Room05 learning semantic remediation is complete; machine primitiveReceiptId/parentReceiptIds lineage + prospective receipts + D16 residual validation remain.
+8. SDA-002: D01 causal/hindsight firewall deepened; latest adversarial suites are still TEST_EXECUTION_PENDING.
+
+Shared engineering routing has been updated with exact accepted producer contracts. Do not redo accepted work.
+
+Formal Core remains LOCKED; no selection/ranking/Top6/weight/threshold/capital/trading behavior was changed by 00.
+
+Exact next SDA continuation:
+1. intake the next actual engineering receipts from System1/System2 against the refreshed frozen deltas;
+2. highest-value next receipts are:
+   - System1 SDA-001/004 three schema-delta implementation + first genuine receipt;
+   - System1 SDA-009 leave-one-out diagnostic;
+   - System1 PVE-245 remediation for SDA-003;
+   - System1/System2 SDA-007 primitive lineage enforcement;
+   - shared System1/System2 SDA-016 authority against V0.2 T01-T30;
+   - System2 SDA-017 episode/support observer against V0.2 T01-T40;
+3. Room11 revalidates only new deltas; 00 alone can independently close SDA-016/SDA-017;
+4. do not unblock SDA-010/SDA-012 without their existing owner gates;
+5. preserve all unrelated H/COV/AOKD protected decisions.

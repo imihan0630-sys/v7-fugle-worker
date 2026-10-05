@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-05T08:47:00+08:00",
+  "updatedAt": "2026-10-06T00:29:00+08:00",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -58,16 +58,21 @@
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
       ],
-      "readiness": "RESEARCH_SEMANTICS_PARTIAL_COMPLETE_ENGINEERING_IMPLEMENTATION_PENDING",
-      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md",
+      "readiness": "SYSTEM1_CLASS_A_MERGED_PASS_D03_READBACK_PASS_WITH_SCHEMA_GAPS_SYSTEM2_AND_GENUINE_RECEIPT_PENDING",
+      "receipt": "research/SYSTEM1_SDA_SHADOW_REMEDIATION_CHECKPOINT_20261005.md",
       "remainingDelta": [
-        "machine factor-lineage fields",
-        "raw-vs-dedup Top6 diagnostic",
-        "D16 residual incrementality readback"
+        "System1 emit explicit redundancyGroupContributions",
+        "System1 emit explicit dominantInformationRoots",
+        "System1 stable overlap identities factorId+factorVersion",
+        "first genuine-session System1 SDA receipt on verified lineage input",
+        "System2 corresponding lineage/dedup diagnostic",
+        "D16 common-support residual/OOS incrementality readback",
+        "00 independent closure"
       ],
       "system1Engineering": {
-        "status": "CLASS_A_IMPLEMENTED_VALIDATION_PENDING",
+        "status": "MERGED_PR608_PASS_WITH_DIAGNOSTIC_SCHEMA_GAPS",
         "receipt": "research/SYSTEM1_SDA_SHADOW_REMEDIATION_CHECKPOINT_20261005.md",
+        "d03ConsumerReview": "research/D03_SYSTEM1_SDA_CONSUMER_MAPPING_REVIEW_20261005_V0_1.md",
         "formalCoreImpact": "NONE",
         "ticketClosure": false
       }
@@ -97,12 +102,14 @@
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
       ],
-      "readiness": "CAUSAL_PATTERN_SEMANTICS_STRONG_TEST_EXECUTION_AND_SYSTEM_GUARD_PENDING",
-      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "readiness": "D01_CAUSAL_HINDSIGHT_FIREWALL_DEEPENED_LATEST_ADVERSARIAL_TEST_EXECUTION_PENDING",
+      "receipt": "KLINE_PATTERN_CHECKPOINT.md",
       "remainingDelta": [
-        "execute pending D01 adversarial tests",
-        "future-pivot/episode lineage system guard",
-        "prospective outcome evidence"
+        "execute latest D01 adversarial research tests currently marked TEST_EXECUTION_PENDING",
+        "System1/System2 future-pivot/root/episode lineage guard integration",
+        "first genuine prospective outcome evidence under frozen clocks",
+        "D16 common-support inference",
+        "00 independent closure"
       ]
     },
     {
@@ -130,12 +137,16 @@
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
       ],
-      "readiness": "SEMANTIC_AND_ADMISSION_GUARD_COMPLETE_PROSPECTIVE_RESIDUAL_EVIDENCE_PENDING",
-      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "readiness": "LIVE_15M_OBSERVABILITY_PROVEN_H001_FAIL_CLOSED_RUNTIME_AND_PROVENANCE_BLOCKERS_BEFORE_CLEAN_RESIDUAL_EVIDENCE",
+      "receipt": "research/D02_PVE244_LIVE_15M_READONLY_AUDIT_20261005_V0_1.md",
       "remainingDelta": [
-        "clean prospective common-support evidence",
+        "PVE-245 System1 runtime remediation: historical 15m bootstrap readiness/failure reason",
+        "persist provider + endpoint + rawPayloadHash prospectively at capture time",
+        "restore/verify complete intraday monitor continuity and after-market job semantics",
+        "first clean canonical H001 prospective common-support receipt",
         "price-only vs price-plus-volume residual incrementality",
-        "SDA-001 lineage integration"
+        "SDA-001 lineage integration",
+        "00 independent closure"
       ]
     },
     {
@@ -163,17 +174,19 @@
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
       ],
-      "readiness": "RESEARCH_REDUNDANCY_CONTROL_EXISTS_MACHINE_ALIAS_GUARD_PENDING",
-      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md",
+      "readiness": "SYSTEM1_ALIAS_PARAMETER_GUARD_MERGED_D03_MAPPING_PASS_SYSTEM2_D16_AND_GENUINE_RECEIPT_PENDING",
+      "receipt": "research/SYSTEM1_SDA_SHADOW_REMEDIATION_CHECKPOINT_20261005.md",
       "remainingDelta": [
-        "central machine alias registry",
-        "parameter-family enforcement",
-        "deterministic no-alias-evidence-inflation test",
-        "D16 promotion-grade residual/OOS"
+        "System1 three diagnostic schema deltas shared with SDA-001",
+        "first genuine-session receipt proving alias/parameter-family behavior on real lineage input",
+        "System2 corresponding alias/redundancy diagnostic where D03-derived signals are consumed",
+        "D16 multiple-testing and residual/OOS promotion-grade evidence",
+        "00 independent closure"
       ],
       "system1Engineering": {
-        "status": "CLASS_A_IMPLEMENTED_VALIDATION_PENDING",
+        "status": "MERGED_PR608_CORE_GUARD_PASS",
         "receipt": "research/SYSTEM1_SDA_SHADOW_REMEDIATION_CHECKPOINT_20261005.md",
+        "d03ConsumerReview": "research/D03_SYSTEM1_SDA_CONSUMER_MAPPING_REVIEW_20261005_V0_1.md",
         "formalCoreImpact": "NONE",
         "ticketClosure": false
       }
@@ -268,12 +281,14 @@
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
       ],
-      "readiness": "RESEARCH_SCOPE_SPLITS_EXIST_SHARED_RECEIPT_AND_RESIDUAL_GUARDS_PENDING",
-      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "readiness": "D06_LEARNING_SEMANTIC_REMEDIATION_COMPLETE_ENGINEERING_LINEAGE_AND_D16_INCREMENTALITY_PENDING",
+      "receipt": "research/d06_sda007_flow_ownership_lineage_contract_20261005_v0_1.json",
       "remainingDelta": [
-        "one-receipt-many-consumers institutional/passive lineage",
-        "portable motive/intent eligibility state",
-        "prospective active-vs-passive-vs-crowding residual evidence"
+        "System1/System2 primitiveReceiptId + parentReceiptIds + informationRoot enforcement",
+        "portable motive/intent eligibility state with UNKNOWN fail-closed",
+        "prospective parent receipts proving one-receipt-many-consumers behavior",
+        "D16 active-vs-passive-vs-crowding common-support residual evidence",
+        "00 independent closure"
       ]
     },
     {
@@ -313,7 +328,7 @@
     {
       "id": "SDA-009",
       "severity": "CRITICAL",
-      "status": "ROUTED",
+      "status": "REMEDIATION_IN_PROGRESS",
       "domains": [
         "D09"
       ],
@@ -334,12 +349,14 @@
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
       ],
-      "readiness": "RELATED_RESEARCH_EXISTS_EXACT_CIRCULARITY_REMEDIATION_PENDING",
-      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md",
+      "readiness": "D09_LEAVE_ONE_OUT_SEMANTICS_FROZEN_SYSTEM1_DIAGNOSTIC_PENDING",
+      "receipt": "research/sda009_d09_leave_one_out_circularity_contract_v0_1.json",
       "remainingDelta": [
-        "leave-one-out industry-strength contract",
-        "candidate self-contribution diagnostic",
-        "Top6/rank sensitivity receipt"
+        "System1 candidateSelfContribution / inclusive-vs-LOO diagnostic implementation",
+        "System1 gateFlip/rankDelta/Top6 sensitivity receipt",
+        "membershipVersion/classificationSchemeId fail-closed implementation",
+        "D16 common-support rank/selection effect validation",
+        "00 independent closure"
       ]
     },
     {
@@ -572,17 +589,21 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "00_cross_domain_readback"
       ],
-      "readiness": "RESEARCH_PREREGISTRATION_STRONG_GENERIC_HOLDOUT_CONSUMPTION_GUARD_PENDING",
-      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md",
+      "readiness": "ROOM11_V0_2_ORACLE_FROZEN_SYSTEM1_PARTIAL_PASS_SHARED_CROSS_SYSTEM_AUTHORITY_PENDING",
+      "receipt": "research/SDA016_017_ROOM11_SPECIALIST_RETURN_20261005_V0_1.md",
       "remainingDelta": [
-        "generic holdout-use ledger",
-        "target/benchmark mutation rejection",
-        "generic outcome-lock / consumed-holdout semantics",
+        "shared System1+System2 canonical consumption authority",
+        "partial decision-date overlap accounting",
+        "outcome-information-footprint overlap accounting",
+        "release lineage and transitive cross-room contamination tracking",
+        "admission/maturity missingness and censoring accounting",
+        "multi-horizon family identity",
+        "System1/System2 pass SDA016 V0.2 T01-T30",
         "independent 00 closure"
       ],
       "system1Engineering": {
-        "status": "CLASS_A_IMPLEMENTED_VALIDATION_PENDING",
-        "receipt": "research/SYSTEM1_SDA_SHADOW_REMEDIATION_CHECKPOINT_20261005.md",
+        "status": "PARTIAL_PASS_EXISTING_EXACT_DATASET_MUTATION_GUARD",
+        "receipt": "research/SDA016_SYSTEM1_HOLDOUT_GUARD_VALIDATION_20261005_V0_1.md",
         "formalCoreImpact": "NONE",
         "ticketClosure": false
       }
@@ -611,12 +632,18 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "00_cross_domain_readback"
       ],
-      "readiness": "RESEARCH_GOVERNANCE_STRONG_EXECUTABLE_PROSPECTIVE_EVIDENCE_PENDING",
-      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md",
+      "readiness": "ROOM11_V0_2_ORACLE_FROZEN_EXISTING_D18_MACHINE_PARTIAL_PASS_EPISODE_SUPPORT_ENGINE_PENDING",
+      "receipt": "research/SDA016_017_ROOM11_SPECIALIST_RETURN_20261005_V0_1.md",
       "remainingDelta": [
-        "executable immutable regime builder",
-        "prospective policy evidence",
-        "machine-visible support/UNKNOWN/ABSTAIN enforcement",
+        "System2 executable immutable episode identity with official-session adjacency",
+        "UNKNOWN/source/version/clock episode break semantics",
+        "machine support states with effective dates, occupancy, transitions and paired support",
+        "fitReceipt/knowledge-cutoff lineage for any learned/fitted Regime dimension",
+        "structuralEpisodeN vs replicationEpisodeN vs mechanicalFragmentN separation",
+        "Regime observability/capture coverage by state",
+        "link family mutation to SDA-016 consumption authority",
+        "System2 pass SDA017 V0.2 T01-T40",
+        "genuine prospective multi-episode matured policy evidence",
         "independent 00 closure"
       ]
     },
@@ -761,5 +788,7 @@
   "lastHighReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md",
   "lastRemainingHighReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md",
   "lastMediumReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_MEDIUM_RECONCILIATION_20261005_V0_1.md",
-  "firstFullReconciliationBaselineComplete": true
+  "firstFullReconciliationBaselineComplete": true,
+  "lastCriticalIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_INTAKE_20261006_V0_1.md",
+  "lastHighIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_INTAKE_20261006_V0_1.md"
 }
