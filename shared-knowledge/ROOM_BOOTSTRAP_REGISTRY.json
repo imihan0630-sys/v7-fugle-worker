@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-05T08:52:00+08:00",
+  "updatedAt": "2026-10-05T21:49:00+08:00",
   "status": "CANONICAL_ROOM_BOOTSTRAP_REGISTRY_V0_1",
   "repository": "imihan0630-sys/v7-fugle-worker",
   "authoritativeBranch": "main",
@@ -17,7 +17,10 @@
     "auditQueue": "shared-knowledge/STOCK_SELECTION_AUDIT_QUEUE.md",
     "auditQueueMachine": "shared-knowledge/stock_selection_audit_queue_v0_1.json",
     "auditEngineeringRouting": "shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_ROUTING_20261005_V0_1.md",
-    "auditDashboard": "shared-knowledge/STOCK_SELECTION_AUDIT_DASHBOARD_V0_1.md"
+    "auditDashboard": "shared-knowledge/STOCK_SELECTION_AUDIT_DASHBOARD_V0_1.md",
+    "globalExternalWebToolPolicy": "shared-knowledge/GLOBAL_EXTERNAL_WEB_TOOL_POLICY_V0_1.md",
+    "tinyFishStatus": "DISALLOWED_FOR_NEW_WORK",
+    "firecrawlStatus": "DEFAULT_EXTERNAL_WEB_RESEARCH_PLUGIN_WHEN_AVAILABLE"
   },
   "identities": [
     {
