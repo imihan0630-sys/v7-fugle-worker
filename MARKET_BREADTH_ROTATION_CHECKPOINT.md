@@ -980,3 +980,20 @@ No maturity promotion from this audit-contract work. D09 remains 57.1% aggregate
 
 ### Exact next
 SDA-009-R1: build the first Taiwan candidate/date leave-one-out replay table on existing D09 PIT receipts, prioritizing concentrated-industry threshold-crossing cases; freeze membershipVersion and support denominator. Then hand the same receipt schema to System 1 for constituentContribution/circular-reward diagnostics and to D16 for before/after rank readback. Existing BR lanes remain open but SDA-009 is priority until R1 is durable.
+
+
+## SDA-009 R1 replay preflight — atomic-input sufficiency gate
+
+Artifact: `research/SDA009_R1_REPLAY_PREFLIGHT_20261005_V0_1.md`
+
+Status: R1_PREFLIGHT_COMPLETE / LIVE_CANDIDATE_LEVEL_REPLAY_COUNT_0 / MACHINE_RECEIPT_REQUIRED / FORMAL_CORE_UNCHANGED
+
+Production readback reconfirms three circularity paths: inclusive sector hard gate, 14% sector-score ranking term, and sector-score history-warmup priority. Existing 20-day sector peer return already excludes the candidate and remains the local precedent.
+
+The 2026-09-11 Formal backfill provides five candidate/date anchors, but not the complete same-date sector atomic denominator. Official TWSE industry-index receipts also cannot substitute because Formal uses a custom sector composite. Therefore no historical leave-one-out number is fabricated.
+
+R1 data sufficiency is now frozen: exact replay requires effective-dated membership/version plus per-member change, trade amount, 20-day amount readiness and candidate-specific max-sector-amount recomputation. Missing lineage fails closed; zero peers = UNKNOWN; one peer = SMALL_N_SENSITIVE.
+
+Maturity: D09 remains 57.1%; no promotion from preflight/governance work.
+
+Exact next: SDA-009-R2 obtain the first genuine candidate-level machine receipt containing inclusive + leave-one-out sector state on one Taiwan scan date, then build the first common-support replay table and classify gate/rank/Top6 effects. Until that receipt exists, System 1 diagnostic implementation is the blocking dependency and historical proxy reconstruction is prohibited.
