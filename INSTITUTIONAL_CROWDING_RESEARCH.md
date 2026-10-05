@@ -1528,3 +1528,28 @@ Formal Core remains LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
 
 Exact next:
 After the 2026-10-05 after-market research generation exists, bind D06-20261005-TDCC-WEEKLY to same-generation D06-05/D06-06 research rows. Only after that immutable join passes may D06-05 L3 source/PIT feasibility be reconsidered. Continue the other frozen 2026-10-05 capture lanes at their actual source clocks; outcomes stay closed.
+
+
+## IC-068 — SDA-007 passive-active residual identifiability firewall
+
+Research cycle: 2026-10-05 Asia/Taipei
+Status: RESIDUAL_IDENTIFIABILITY_FIREWALL_COMPLETE / D16_AND_ENGINEERING_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable contract: `research/d06_sda007_passive_active_residual_identifiability_20261005_v0_1.json`.
+
+Fresh external and Taiwan-source review strengthens an important falsifier: investor-class flow and trading motive are not the same object. TWSE institutional reports classify foreign, investment-trust and dealer desks, while ETF primary-market rules allow in-kind/cash creation, aggregate/minimum creation and cash substitution. Units-delta plus PCF therefore measures modeled basket exposure, not proven same-day constituent execution.
+
+Recent passive-flow literature also shows why a subtraction shortcut is unsafe. ETF flow effects can reflect non-fundamental price pressure; ETF sampling changes which constituents actually absorb arbitrage demand; passive demand can be accommodated by firms and can move together with other institutional trading. Consequently:
+
+- observed institutional flow minus modeled passive exposure MUST NOT be labeled active conviction;
+- the only allowed residual label is `INSTITUTIONAL_FLOW_RESIDUAL_AFTER_PASSIVE_CONTROLS`;
+- `INDEX_EVENT_EXPECTATION`, `ETF_MODELED_BASKET_EXPOSURE` and `ACTUAL_PASSIVE_STOCK_EXECUTION` remain three distinct identification layers;
+- D06-06 crowding remains a child of exact parent receipts and gets no independent vote merely by transformation;
+- D16 must test common-support residual incrementality and dependence-aware inference before any distinct evidence claim;
+- motive remains UNKNOWN unless a separate source/design identifies it.
+
+Four residual questions R1-R4 are frozen in the machine contract before outcomes: institutional-after-passive, passive-after-institutional, crowding-after-parents, and active-conviction identifiability. Statistical residualization by itself cannot pass the fourth gate.
+
+Maturity impact: NONE. This is anti-self-deception governance plus preregistration, not prospective return evidence. Formal Core unchanged.
+
+Exact next: continue today's frozen source captures; route the contract to D16 plus System 1/System 2 lineage owners. Do not open outcomes until D16 freezes horizon/benchmark/dependence/multiple-testing/stop rules and prospective common-support coverage is sufficient.
