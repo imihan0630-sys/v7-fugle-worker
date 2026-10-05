@@ -1276,3 +1276,36 @@ Exact next:
 3. continue cross-domain audit on every newly created module/contract, especially composite consumers such as WACC;
 4. no new ticket if the root cause is already covered by an existing SDA family;
 5. Formal Core remains locked.
+
+
+## 2026-10-06 staged System1 Selection Shadow Launch Gate
+
+Canonical launch governance:
+- shared-knowledge/STOCK_SELECTION_SHADOW_LAUNCH_GATE_V0_1.md
+- shared-knowledge/stock_selection_shadow_launch_gate_v0_1.json
+
+Current gate state:
+- S0 RESEARCH_AUDIT_FOUNDATION = PASS;
+- S1 SELECTION_SHADOW_INSTRUMENTATION = PARTIAL;
+- S2 PROSPECTIVE_SELECTION_COMPARISON = NOT_READY;
+- S3 PROMOTION_REVIEW_ELIGIBLE = NOT_READY;
+- S4 FORMAL_SELECTION_CHANGE = OWNER_APPROVAL_REQUIRED;
+- T1 TRADING_SHADOW_PROMOTION = NOT_READY.
+
+Key governance decision:
+- all 21 SDA tickets do NOT need to be CLOSED before Selection Shadow diagnostics begin;
+- S1/S2 must be satisfied before interpreting prospective Shadow comparisons;
+- S3 is the minimum gate before preparing any Formal optimization candidate;
+- S4 still requires explicit owner approval and existing Class B/C governance;
+- trading/execution readiness is separate from pure Selection Shadow readiness.
+
+Shortest current path:
+1. System1 finish SDA-001/004 three schema deltas;
+2. System1 implement SDA-009 leave-one-out diagnostic;
+3. produce first genuine same-generation Shadow receipt;
+4. register comparison under SDA-016 before opening outcomes;
+5. accumulate prospective comparison dates;
+6. D16 evaluate incrementality/multiplicity/dependence;
+7. only then prepare an owner-review candidate.
+
+This launch-gate file changes no Formal behavior.
