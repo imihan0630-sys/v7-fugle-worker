@@ -3472,3 +3472,40 @@ Formal Core LOCKED.
 
 Exact next continuation point:
 PVE-243 — capture the first genuine prospective canonical receipt using the frozen schema and V0.2 guard without opening promotion-grade outcomes; fail CLOSED/UNKNOWN when decision-time observability cannot be proven.
+
+
+## PVE-243 continuation — first genuine prospective canonical provenance receipt (2026-10-05)
+
+Status: PROSPECTIVE_CANONICAL_RECEIPT_PASS / GENERIC_PROVENANCE_ONLY / OUTCOME_CLOSED / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+PVE-242 lane bridge was hardened with a separate executable lane gate:
+- research/d02_pve242_lane_bridge_guard_v0_1.mjs;
+- tests/test_d02_pve242_lane_bridge_guard_v0_1.mjs;
+- 17/17 tests PASS.
+
+This prevents valid daily receipts from entering H001/H20/H003 intraday evidence.
+
+PVE-243 real capture:
+- TWSE official 2330 2026-10-05 daily row;
+- volume 26,800,187 SHARES;
+- source hash 49bf802c95362145385a7e12ad58d2c212045437e48ed5f45914f1b3e7d5eae9;
+- firstKnownAt 20:41:42 +08:00;
+- decisionCutoff 20:50:00 +08:00;
+- canonical guard PASS;
+- GENERIC_PROVENANCE PASS;
+- H001 FAIL_CLOSED because 1d != 15m.
+
+The unavailable connected real-time quote and ambiguous-unit historical connector outputs were not used to fabricate a live intraday receipt.
+
+No promotion-grade outcome was opened.
+No numerical target or D16 model receipt was created.
+Clean prospective selection dates remain 0.
+
+Current evidence:
+PVE-243 / CLEAN_SELECTION_DATE_ZERO / Gate 7 CLOSED.
+D02 remains 60.0%.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-244 — obtain the first decision-time-valid 15m canonical receipt for Wave-1 H001 at slot >=10:15 with all frozen baseline/history/current-slot/common-support gates. If live 15m observability is unavailable, fail CLOSED/UNKNOWN.
