@@ -5664,3 +5664,99 @@ Formal Core LOCKED.
 
 Exact next continuation point:
 PVE-244 — obtain the first decision-time-valid 15m canonical receipt for Wave-1, beginning with H001 only at slot >=10:15 and only when baseline/history/current-slot/common-support requirements all pass. If a live 15m source cannot be proven, record BLOCKED/UNKNOWN rather than after-the-fact historical evidence.
+
+
+# PVE-244 — Physical live 15m receipt audit (2026-10-05)
+
+Status: LIVE_15M_CAPTURE_PROVEN / H001_FAIL_CLOSED / CANONICAL_SOURCE_BINDING_INCOMPLETE / SESSION_CAPTURE_PARTIAL / NO_PROMOTION / FORMAL_UNCHANGED.
+
+Durable evidence:
+- `research/D02_PVE244_LIVE_15M_READONLY_AUDIT_20261005_V0_1.md`;
+- `research/d02_pve244_live_15m_readonly_audit_v0_1.json`;
+- `.github/workflows/d02-pve244-d1-readonly.yml`.
+
+Successful isolated read-only physical run:
+- GitHub Actions run 37334245340;
+- runtime 8.18.0-valuation-source-vintage;
+- PV_SHADOW_ENABLED=true;
+- mutationCount=0;
+- temporary diagnostic Worker/subdomain cleaned up.
+
+Physical 2026-10-05 D1 result:
+- 8 INTRADAY_15M rows;
+- one symbol: 2454;
+- slots 09:00 through 10:45;
+- all decisionImpact=0.
+
+H001-eligible-time rows exist at 10:15, 10:30 and 10:45, but all fail closed:
+- slotHistoryCount=1;
+- pvSlotRvol20=null;
+- pvGuardState=DATA_INSUFFICIENT;
+- pvInterpretability=INVALID.
+
+Physical baseline table:
+- 2006 valid_sessions=2;
+- 2454 valid_sessions=1;
+- 4977 valid_sessions=2.
+
+Frozen implementation intends a 180-day historical 15m bootstrap when validSessions<20 and skips only after validSessions>=20.
+Therefore the physical baseline is not accepted as naturally ready; bootstrap root cause remains UNKNOWN.
+
+Canonical-source gap:
+physical 15m rows contain sourceFamily/barStart/barEnd/sourceFetchedAt/completedBar/semanticFingerprint, but rawPayloadHash, endpoint and provider are null.
+semanticFingerprint is not relabeled as rawPayloadHash.
+No PVE-241 canonical H001 receipt is created.
+
+Runtime continuity counter-evidence:
+- physical INTRADAY_MONITOR audit rows continue only to approximately 11:08 Asia/Taipei;
+- no later intraday monitor row is observed before history warmup;
+- this explains why no completed 11:00 slot was persisted;
+- current source/spec expects intraday monitoring through 13:24;
+- 23:35 Asia/Taipei is physically recorded as INTRADAY_MONITOR / SKIPPED although source scheduling semantics classify Taiwan hour>=18 as after-market.
+Root cause remains uncertified.
+
+PVE-244 falsification result:
+live 15m prospective observability is physically proven, but H001 canonical admission remains blocked independently by:
+1. insufficient same-slot historical baseline;
+2. incomplete raw-source provenance;
+3. partial/semantically inconsistent runtime schedule evidence.
+
+No clean prospective date is added.
+D02 remains 60.0%.
+Gate 7 CLOSED.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
+
+
+# PVE-245 — System 1 runtime remediation handoff (2026-10-05)
+
+Status: ROUTED / RESEARCH_BLOCKER / NO_PRODUCTION_CHANGE_AUTHORIZED / FORMAL_UNCHANGED.
+
+Durable handoff:
+`research/D02_PVE245_SYSTEM1_RUNTIME_REMEDIATION_HANDOFF_20261005_V0_1.md`.
+
+Cross-room durable routing:
+`RESEARCH_CHECKPOINT.md` now carries the System 1 intake.
+
+Three remediation families:
+1. prospective source provenance persistence:
+   provider + endpoint + rawPayloadHash at decision-time capture, separate from semanticFingerprint;
+2. historical 15m baseline bootstrap:
+   diagnose why intended 180-day bootstrap leaves only 1-2 valid sessions, expose explicit failure reason and require >=20 before H001;
+3. scheduled capture continuity:
+   verify a full future 09:00-13:24 intraday session and reconcile the observed 23:35 INTRADAY_MONITOR/SKIPPED readback against after-market semantics.
+
+Governance:
+- read-only diagnosis may proceed as Class A;
+- production persistence/schema/bootstrap/runtime/schedule changes require engineering classification/authorization;
+- D02 did not modify Formal production behavior;
+- 2026-10-05 is permanently excluded from retrospective clean-date relabeling after repair.
+
+Current evidence:
+PVE-245 / CLEAN_SELECTION_DATE_ZERO / Gate 7 CLOSED.
+D02 remains 60.0%.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-246 — consume the durable System 1 remediation readback when available, then capture the first future decision-time-valid 15m H001 canonical receipt under the corrected path. Until all provenance/baseline/runtime gates pass, H001 prospective admission remains fail-closed.
