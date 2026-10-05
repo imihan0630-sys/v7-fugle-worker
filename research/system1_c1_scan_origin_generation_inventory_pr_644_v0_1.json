@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "SYSTEM1_C1_SCAN_ORIGIN_GENERATION_INVENTORY_PR_GATE_V0_1",
+  "date": "2026-10-05",
+  "pr": 644,
+  "branch": "codex/system1-c1-scan-origin-generation-inventory",
+  "preSyncHead": "e761c1c29171a7049e85b49c8d95308e3ae1a853",
+  "reconciledMain": "27ed77fb3754ce2afe9f5c10650c71ce30f965d3",
+  "ownerApprovedClassBImplementation": true,
+  "mergeAuthorized": false,
+  "productionDeployAuthorized": false,
+  "ciStatus": "PENDING",
+  "formalCoreImpact": false
+}
