@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "D06_18_TWSE_SBL_LIVE_FIELD_SCHEMA_V0_1",
+  "updatedAt": "2026-10-06 Asia/Taipei",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-18",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "sourceAuthority": "TWSE",
+  "sourcePage": "https://mis.twse.com.tw/stock/detail-sblInquiry?ch=<symbol>&lang=zhHant",
+  "purpose": "Freeze the rendered official field mapping before the 2026-10-06 15:20 slot so live values cannot change field interpretation.",
+  "transactionFamilies": [
+    {
+      "family": "FIXED_RATE",
+      "sourceLabel": "定價交易",
+      "recallTerms": [
+        "10_DAY_NOTICE",
+        "3_DAY_NOTICE",
+        "1_DAY_NOTICE"
+      ],
+      "fields": [
+        "matchTime",
+        "dayTotalExecutedQty",
+        "displayedUnexecutedLendQty",
+        "displayedUnexecutedBorrowQty",
+        "borrowFeeRatePct"
+      ]
+    },
+    {
+      "family": "COMPETITIVE_BID",
+      "sourceLabels": [
+        "競價交易 (10 日前通知提前還券)",
+        "競價交易 (3 日前通知提前還券)",
+        "競價交易 (1 日前通知提前還券)"
+      ],
+      "recallTerms": [
+        "10_DAY_NOTICE",
+        "3_DAY_NOTICE",
+        "1_DAY_NOTICE"
+      ],
+      "fields": [
+        "matchTime",
+        "dayTotalExecutedQty",
+        "displayedUnexecutedLendQty",
+        "displayedUnexecutedBorrowQty",
+        "latestExecutedQty",
+        "latestExecutedFeeRatePct",
+        "bestFiveBorrowFeeRateQty",
+        "bestFiveLendFeeRateQty"
+      ]
+    },
+    {
+      "family": "NEGOTIATED",
+      "sourceLabel": "議借交易",
+      "recallTerms": [
+        "CONTRACT_SPECIFIC_OR_UNKNOWN"
+      ],
+      "fields": [
+        "matchTime",
+        "dayTotalExecutedQty"
+      ],
+      "limitation": "Rendered public page exposes aggregate negotiated volume here but not the same best-five quote-book structure as competitive-bid sections."
+    }
+  ],
+  "missingSemantics": {
+    "dash": "SOURCE_DISPLAYED_NO_VALUE / preserve NULL with field-present state",
+    "zero": "Actual displayed numeric zero only when the source renders 0; do not convert dash to zero",
+    "absentSection": "UNKNOWN unless source/rule contract proves inapplicability"
+  },
+  "antiCollapseRules": [
+    "Fixed-rate, competitive-bid and negotiated transactions are separate transaction families.",
+    "10-day, 3-day and 1-day recall-notice states are separate contract conditions.",
+    "Displayed unexecuted lend quantity is not total lendable inventory.",
+    "Displayed unexecuted borrow quantity is not executed demand.",
+    "Best-five quotes are quote-book state, not guaranteed own execution.",
+    "Executed fee/rate is not a bearish-conviction score.",
+    "Borrowing is not equivalent to short selling."
+  ],
+  "status": "FIELD_SCHEMA_FROZEN_PRE_SLOT / 1520_CAPTURE_READY / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "maturityImpact": "NONE",
+  "exactNext": "At 15:20±5m parse exactly these fields for the frozen five-symbol pilot; preserve dash/null versus numeric zero and transaction/recall identities."
+}
