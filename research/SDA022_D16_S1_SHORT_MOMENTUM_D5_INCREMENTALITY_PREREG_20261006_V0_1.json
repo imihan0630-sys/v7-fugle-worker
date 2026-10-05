@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "SDA022_D16_S1_SHORT_MOMENTUM_D5_INCREMENTALITY_PREREG_V0_1",
+  "updatedAt": "2026-10-06T07:00:00+08:00",
+  "ticket": "SDA-022",
+  "owner": "D16 / Room11",
+  "status": "TARGET_ESTIMAND_PREREGISTERED_METHOD_MDE_OUTER_STREAM_PENDING_OUTCOMES_CLOSED",
+  "formalCoreImpact": "NONE",
+  "pair": {
+    "baselineSystem": "SYSTEM1",
+    "challengerSystem": "SYSTEM2",
+    "challengerStrategyId": "SHORT_MOMENTUM",
+    "challengerStrategyVersion": "V0.1-CONTRACT",
+    "primaryDirection": "SYSTEM2_INCREMENTAL_OVER_SYSTEM1"
+  },
+  "target": {
+    "targetId": "SDA022_S1_SM_D5_REFERENCE_CLOSE_POSITIVE_V0_1",
+    "horizonOfficialSessions": 5,
+    "event": "D5_CLOSE_GT_COMMON_DECISION_REFERENCE_CLOSE",
+    "unknownOn": [
+      "SESSION_CONTINUITY_UNPROVEN",
+      "SYMBOL_CONTINUITY_UNPROVEN",
+      "CORPORATE_ACTION_SEMANTICS_UNPROVEN",
+      "PRICE_PATH_MISSING",
+      "REFERENCE_CLOSE_UNSAFE"
+    ]
+  },
+  "primaryPopulation": {
+    "selectedOnly": false,
+    "requiresBothPolicyStates": true,
+    "requiresKnownCandidateUniverseRelationship": true,
+    "requiresCommonInformationCutoff": true,
+    "preserveStates": [
+      "SELECTED_OR_ACTIVE",
+      "ELIGIBLE_NOT_SELECTED",
+      "NATURAL_ZERO",
+      "POLICY_DISABLED",
+      "UNKNOWN",
+      "INCOMPLETE",
+      "ADMISSION_BLOCKED"
+    ]
+  },
+  "primaryEstimand": {
+    "metric": "DATE_BALANCED_BRIER_LOSS_IMPROVEMENT",
+    "baselineArm": "SYSTEM1_ONLY",
+    "augmentedArm": "SYSTEM1_PLUS_SHORT_MOMENTUM",
+    "deltaDefinition": "BRIER_AUGMENTED_MINUS_BRIER_BASELINE",
+    "favorableDirection": "LESS_THAN_ZERO",
+    "rowWeightedResult": "DESCRIPTIVE_ONLY"
+  },
+  "nonRescuingSecondary": [
+    "DATE_BALANCED_LOG_LOSS",
+    "CALIBRATION_IN_THE_LARGE",
+    "SYSTEM1_INCREMENTAL_OVER_SYSTEM2",
+    "REGIME_STRATIFICATION",
+    "SECTOR_STRATIFICATION"
+  ],
+  "clockGate": {
+    "requiredState": "COMMON_INFORMATION_CUTOFF_VERIFIED",
+    "incompatibleDisposition": "CLOCK_INCOMPATIBLE_PRIMARY_EXCLUDED_PRESERVE_IN_COVERAGE"
+  },
+  "outcomeOpenGates": [
+    "SYSTEM1_MACHINE_FINGERPRINT_READY",
+    "SYSTEM2_SHORT_MOMENTUM_MACHINE_FINGERPRINT_READY",
+    "NC_T01_PHYSICAL_PROOF_RECORDED",
+    "PROSPECTIVE_PAIR_RECEIPT_SCHEMA_READY",
+    "MODEL_METHOD_RECEIPT_FROZEN",
+    "MDE_OR_PRECISION_TARGET_FROZEN",
+    "STOPPING_RULE_FROZEN",
+    "OUTER_RESEARCH_STREAM_STATE_FROZEN"
+  ],
+  "dependenceRequirements": [
+    "D16_06_DATE_TEMPORAL_DEPENDENCE",
+    "REPEATED_SYMBOL",
+    "OVERLAPPING_D5_WINDOWS",
+    "SECTOR_CLUSTERING",
+    "REGIME_REPLICATION_CLUSTER_CONCENTRATION",
+    "SDA016_OUTCOME_FOOTPRINT_CONSUMPTION",
+    "ADMISSION_MISSINGNESS_POSITIVITY"
+  ],
+  "primarySupportFloor": {
+    "effectiveIndependentDecisionDates": 40,
+    "interpretation": "EXISTING_D16_GOVERNANCE_FLOOR_NOT_UNIVERSAL_MATHEMATICAL_CONSTANT"
+  },
+  "multipleComparisonBoundary": {
+    "primaryFamily": [
+      "SYSTEM1_VS_SHORT_MOMENTUM",
+      "D5",
+      "SYSTEM2_INCREMENTAL_OVER_SYSTEM1"
+    ],
+    "rescueHorizonsForbidden": [
+      "D1",
+      "D3",
+      "D10"
+    ],
+    "otherSystem2StrategiesRequireNewExperiment": true
+  },
+  "outerStream": {
+    "state": "OUTER_STREAM_ENROLLMENT_PENDING",
+    "confirmatoryInterpretationAllowed": false
+  },
+  "diversificationClaimAllowed": false,
+  "outcomeAccess": "CLOSED",
+  "empiricalEvidenceAttached": false,
+  "maturityImpact": "NONE"
+}
