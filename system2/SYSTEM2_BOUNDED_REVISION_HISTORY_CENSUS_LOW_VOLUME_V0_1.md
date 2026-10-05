@@ -96,3 +96,46 @@ After physical census:
 5. then shard the two high-volume ex-right/dividend lanes.
 
 No data mutation, strategy evaluation, push, capital, order or System1 runtime is authorized.
+
+## 2026-10-05 physical low-volume census acceptance
+
+PR #610 merged as `7e8a7415064bb1f1c5d23c3b1bbd6570c1df8274`.
+
+Physical checks:
+- Bounded Revision History Census Low Volume Readonly `37281410197`: PASS.
+- System2 Research CI `37281410209`: PASS.
+- V8 Regression `37281410123`: PASS.
+
+Frozen interval:
+2026-04-05..2026-10-02.
+
+Exact bounded event universe:
+- finalEventCount=23;
+- uniqueSymbolCount=23;
+- eventUniverseHash=`3e31779c36582bd70378d4b393ce0d4b2510bb84fe557686a0e51d3a2f604049`.
+
+Issuer-history observability:
+- issuerTransportReadyEventCount=23/23;
+- issuerFamilyObservedEventCount=23/23;
+- preEffectiveIssuerEvidenceEventCount=23/23;
+- `issuerTransportCoverageComplete=true`;
+- `issuerFamilyObservabilityCoverageComplete=true`;
+- `preEffectiveIssuerEvidenceCoverageComplete=true`.
+
+Lane results:
+- TWSE capital reduction: 9/9 observable; 6/9 events have correction/revision hints; 0 cancellation hints.
+- TWSE par-value change: 1/1 observable; 0 revision hints; 0 cancellation hints.
+- TPEx capital reduction: 9/9 observable; 6/9 events have correction/revision hints; 0 cancellation hints.
+- TPEx par-value change: 4/4 observable; 0 revision hints; 0 cancellation hints.
+
+This is the first full bounded event-universe census for these four low-volume lanes.
+
+It still does not promote:
+- `boundedRevisionHistoryCoverageComplete`;
+- `correctionHistoryComplete`;
+- `cancellationHistoryComplete`;
+- exact public knownAt;
+- `authorityRevisionCoverageComplete`;
+- `revisionCoverageComplete`.
+
+Next: classify event-to-version chains and verify no-revision/cancellation semantics with per-symbol query-integrity evidence before any lane-level completeness promotion.

@@ -658,3 +658,12 @@ Next BUILD_LANE target:
 bounded authority/revision-history completeness -> shared suspension/session integration -> expected-session/RAW A1 lineage -> technical continuity.
 
 KnownAt, revision completeness, NO_EVENT, session completeness and all trading authority remain false.
+
+## 2026-10-05 bounded revision-history low-volume census
+
+PR #610 physically froze 23 low-volume final corporate-action events for 2026-04-05..2026-10-02 and verified 23/23 issuer transport, 23/23 action-family history observability and 23/23 pre-effective issuer evidence.
+
+Revision hints were present on 6/9 TWSE capital-reduction events and 6/9 TPEx capital-reduction events; both par-value lanes had zero revision hints in the bounded event set.
+
+Next BUILD_LANE target:
+event-to-version linkage + per-symbol query-integrity/no-revision/cancellation semantics. No revision-completeness flag is promoted yet.
