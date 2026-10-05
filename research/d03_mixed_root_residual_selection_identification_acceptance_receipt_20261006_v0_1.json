@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "D03_MIXED_ROOT_RESIDUAL_SELECTION_IDENTIFICATION_ACCEPTANCE_RECEIPT_V0_1",
+  "updatedAt": "2026-10-06T05:50:00+08:00",
+  "contract": "research/d03_mixed_root_residual_selection_identification_addendum_20261006_v0_1.json",
+  "canonicalExecutableFixture": "research/test_d03_mixed_root_residual_selection_identification_v0_1.mjs",
+  "validationMode": "INDEPENDENT_LOGIC_MIRROR_VALIDATION",
+  "repositoryNodeFixtureExecutedInThisRound": false,
+  "ciReceiptClaimed": false,
+  "outcomeDataUsed": false,
+  "status": "PASS_CONTRACT_SEMANTICS",
+  "cases": 12,
+  "observed": {
+    "observedSubpopulationEffectiveEvidenceIncrement": 0,
+    "targetPopulationEffectiveEvidenceIncrement": 1,
+    "restrictedSupportMatchingConsumerIncrement": 1,
+    "restrictedSupportMismatchedConsumerIncrement": 0,
+    "positivityFailIncrement": 0,
+    "tierAFullPopulationIncrement": 0,
+    "tierCBoundsCrossingIncrement": 0,
+    "componentIsolationMissingIncrement": 0,
+    "outcomeDrivenEvaluationCutoffRejected": true,
+    "outcomeDrivenSelectionModelRetuningRejected": true,
+    "postOutcomeImputationSelectionRejected": true
+  },
+  "interpretation": [
+    "COMMON_SUPPORT_ALONE_DOES_NOT_IDENTIFY_TARGET_POPULATION",
+    "OBSERVED_SUBPOPULATION_RESULT_CANNOT_GRADUATE_GLOBAL_EVIDENCE",
+    "RESTRICTED_SUPPORT_REQUIRES_EXACT_CONSUMER_SUPPORT_MATCH",
+    "POSITIVITY_FAILURE_BLOCKS_TARGET_POPULATION_GRADUATION",
+    "SELECTION_AND_IMPUTATION_RULES_ARE_PREOUTCOME_FROZEN"
+  ],
+  "empiricalIncrementalityClaimed": false,
+  "formalCoreImpact": "NONE_LOCKED",
+  "maturityImpact": "NONE_56_7_PERCENT"
+}
