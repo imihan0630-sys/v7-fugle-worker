@@ -4546,3 +4546,122 @@ No promotion:
 
 Exact next:
 when D16 returns the machine-readable D03 receipt, run only this frozen oracle and accept legitimate blocking states without redesign. System 1 schema implementation, first genuine-session receipt and System 2 dedup runtime remain independent pending lanes. Even METHOD_READY does not open outcomes until T1-T5 separately pass. Room00 remains SDA-001/SDA-004 closure authority.
+
+
+## TI-759 through TI-776 — mixed-root residual graduation and selection-identification guard (2026-10-06)
+
+Canonical artifacts:
+- `research/D03_MIXED_ROOT_RESIDUAL_GRADUATION_GUARD_20261006_V0_1.md`;
+- `research/d03_mixed_root_residual_graduation_guard_20261006_v0_1.json`;
+- `research/test_d03_mixed_root_residual_graduation_guard_v0_1.mjs`;
+- `research/d03_mixed_root_residual_graduation_acceptance_receipt_20261006_v0_1.json`;
+- `research/D03_MIXED_ROOT_RESIDUAL_SELECTION_IDENTIFICATION_ADDENDUM_20261006_V0_1.md`;
+- `research/d03_mixed_root_residual_selection_identification_addendum_20261006_v0_1.json`;
+- `research/test_d03_mixed_root_residual_selection_identification_v0_1.mjs`;
+- `research/d03_mixed_root_residual_selection_identification_acceptance_receipt_20261006_v0_1.json`.
+
+### TI-759 — mixed-root factor is not independent by construction
+A factor consuming multiple roots such as PRICE_OHLC + VOLUME_TURNOVER is not automatically multiple independent evidence units. Before component-specific residual proof, the parent remains PARTIAL_OVERLAP / RESIDUAL_CANDIDATE / SAME_ROOT_REDUNDANT and adds no effective independent evidence beyond already-counted overlapping roots.
+
+### TI-760 — graduation attaches only to an isolated residual child
+If D16 proves that one root adds stable information conditional on the overlapping roots and registered controls, the promotable research object is an immutable root-specific residual child. The whole parent composite may not inherit the proof.
+
+Required bindings include parent factor/version, isolated root, conditioned-on roots, residualization method, baseline hash, common-support hash, D16 method/incrementality receipt hashes, parameter family and decision clock.
+
+Allowed evidence state is RESIDUAL_INCREMENTAL_PROVEN, not INDEPENDENT_SOURCE_PROVEN.
+
+### TI-761 — parent composite remains non-additive
+For one price family plus one proven volume residual:
+- price family = at most 1 effective unit;
+- proven volume residual = at most +1;
+- original price-volume composite = +0;
+- total = at most 2, never 3.
+
+Raw parent/child activity may remain visible, but effective-evidence accounting cannot count both parent and residual child for the same isolated root.
+
+### TI-762 — proof must be root-specific and baseline-bound
+A generic finding that a mixed factor beats a price-only model is insufficient. The receipt must identify exactly which root/component is incremental and bind it to the exact baseline, common support, residualization method, multiplicity family, OOS/prospective evidence and D16 method receipt.
+
+### TI-763 — no residual laundering through labels/transforms
+Renaming, products/ratios, percentile/z-score/rank transforms, sign inversion, thresholding, timeframe restatement or post-outcome interaction labels cannot manufacture a new residual family.
+
+### TI-764 — baseline or method drift invalidates inherited proof
+Changes to baseline family, parent formula/version, source semantics, common support, residualization method, decision clock, parameter/outcome family or holdout/dependence method require revalidation. Old proof cannot become permanent independence credit.
+
+### TI-765 — raw observability is separate from effective evidence
+rawSignalCount may show both parent and child. Effective evidence may count only the root-specific family authorized by proof. When a residual child is the promoted object, parentCompositeContributionToIndependentEvidence is zero.
+
+### TI-766 — undecomposed mixed roots fail closed
+Missing root decomposition, baseline identity, parent lineage or proof identity yields MIXED_ROOT_UNDECOMPOSED and no hidden residual increment.
+
+### TI-767 — D02/D03 cross-domain boundary
+D02 owns truth about VOLUME_TURNOVER source/unit/PIT semantics. D03 owns only the anti-stacking evidence-counting rule. The same component-specific logic applies to D03-10 Bollinger location/volatility components and D03-09 ADX trend/range components: proof for one child does not promote the whole composite.
+
+### TI-768 — first deterministic accounting result
+Canonical Node fixture is frozen. Independent logic-mirror validation in this research round covered 12 cases: 3 positive accounting cases plus 9 adversarial rejections.
+
+Observed:
+`unproven mixed-root effective count = 1`;
+`proven volume residual effective count = 2`;
+`duplicate volume residual aliases still = 2`;
+whole-parent graduation, stale baseline/common-support/D16 bindings, invalid root and self-conditioning are rejected.
+
+No CI/Node execution receipt is claimed for this round; the acceptance receipt explicitly records `repositoryNodeFixtureExecutedInThisRound=false`.
+
+### TI-769 — common support is necessary but not sufficient
+D16's new SDA-016 admission-selection identification firewall was observed on latest main while this tranche was being written. A mathematically identical complete-case row set does not prove representation of the preregistered target population.
+
+`COMMON_SUPPORT_PASS != TARGET_POPULATION_IDENTIFIED`.
+
+### TI-770 — admission remains first-class lineage
+Residual graduation must preserve stage-wise target eligibility, capture, readback, prediction, outcome maturity, performance/cost eligibility, final admission, exclusions and decision-time context. Keeping only final admitted rows is insufficient.
+
+### TI-771 — estimand scope binds residual evidence
+Allowed scopes:
+- OBSERVED_SUBPOPULATION_ESTIMAND;
+- RESTRICTED_SUPPORT_ESTIMAND;
+- TARGET_POPULATION_ESTIMAND.
+
+Observed-subpopulation evidence remains RESIDUAL_CANDIDATE for cross-system evidence counting and contributes zero new effective independent units.
+
+### TI-772 — restricted-support evidence cannot become global evidence
+Trimming, truncation, overlap weighting or support restriction changes the estimand. A restricted-support residual may increment evidence only for a consumer bound to the same support rule/hash; it cannot be exported to an unrestricted universe or Top6 claim.
+
+### TI-773 — positivity/overlap failure blocks target-population graduation
+Zero/near-zero admission probability cannot be repaired merely by extreme weights. Target-population graduation requires admissible positivity/overlap diagnostics and fails closed otherwise.
+
+### TI-774 — selection-sensitivity tier is part of proof identity
+Tier A is observed-subpopulation only. Tier B requires preregistered decision-time admission/censoring weighting plus weight/balance diagnostics. Tier C uses partial-identification / worst-case sensitivity when point identification is not defensible. Tier changes after outcome inspection consume a new adaptive family.
+
+### TI-775 — evaluation cutoff and imputation are frozen pre-outcome
+Outcome-driven maturity-window changes, early stopping, selection-model retuning or post-outcome imputation-model choice are forbidden as proof repair mechanisms.
+
+### TI-776 — augmented two-layer graduation decision
+Cross-system RESIDUAL_INCREMENTAL_PROVEN requires BOTH:
+1. component-isolation/root-specific residual proof; and
+2. selection-identification proof for the claimed estimand.
+
+If layer 1 passes but layer 2 does not:
+`ROOT_SPECIFIC_MECHANISM_SUPPORTED_BUT_POPULATION_INCREMENTALITY_NOT_IDENTIFIED`
+and effective independent evidence increment = 0.
+
+Second deterministic selection-identification fixture is frozen. Independent logic-mirror validation covered 12 cases and observed:
+- observed-subpopulation increment = 0;
+- target-population identified increment = 1;
+- restricted-support matching-consumer increment = 1;
+- restricted-support mismatched-consumer increment = 0;
+- positivity failure increment = 0.
+
+No empirical Alpha/incrementality is claimed by either fixture.
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09 remains L2/40;
+- D03-10 remains L2/40;
+- raw receipt gate remains 2/3;
+- outcomes remain CLOSED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`;
+- Formal Core remains LOCKED.
+
+Exact next:
+D16 future D03 method/incrementality receipts must satisfy both the prior TI-749~758 method oracle and the TI-769~776 admission-selection firewall. System1 still needs the three explicit diagnostic schema deltas plus a first genuine-session receipt. System2 still needs runtime raw-vs-dedup diagnostics. D03 next independent research path is to freeze how interaction/nonlinear composites are credited after two separately proven roots, so a P×V interaction cannot become a third evidence unit unless a preregistered interaction estimand proves value beyond both main effects. Protected PR #600/Bollinger/ADX path remains owner-gated and separate.
