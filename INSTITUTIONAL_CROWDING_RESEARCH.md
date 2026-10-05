@@ -1677,3 +1677,65 @@ Exact next:
 3. continue TWSE dealer split, TPEx leverage EARLY/LATE, D06-14 T_PRELIM and PF-040 only at their actual source clocks;
 4. preserve the existing TDCC weekly parent for the same-generation D06-05/D06-06 join;
 5. no maturity or Formal promotion follows from lineage governance alone.
+
+
+---
+
+## IC-072 — 2026-10-05 TWSE 18:00 dealer split captured prospectively; listed-market structural disagreement confirmed
+
+Research cycle: 2026-10-05 Asia/Taipei  
+Status: TWSE_1800_PUBLIC_PARENT_CAPTURED / 1344_OF_1344_RECONCILED / STRUCTURAL_FALSIFICATION_CORROBORATED / 2000_INCLUDE_BLOCK_ACCESS_GATED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable receipt:
+`research/d06_03_twse_dealer_split_capture_20261005_1800_v0_1.json`.
+
+The official TWSE T86/TWT86UC non-block-trade report for 2026-10-05 was captured after its documented 18:00 source clock.
+
+Outcome-blind full-table integrity:
+- total rows = 1,344;
+- numeric-valid rows = 1,344;
+- ordinary four-digit stocks = 1,088;
+- duplicate ordinary codes = 0;
+- proprietary buy-sell-net arithmetic = 1,344/1,344 PASS;
+- hedge buy-sell-net arithmetic = 1,344/1,344 PASS;
+- proprietary + hedge = aggregate dealer = 1,344/1,344 PASS;
+- institutional components = institutional total = 1,344/1,344 PASS;
+- source fingerprint = fnv1a64-utf8:be22e70f6ec9da3a;
+- schema fingerprint = fnv1a64-utf8:334c6531bfaa2963.
+
+Among 1,088 ordinary four-digit listed stocks:
+- proprietary desk nonzero = 537;
+- hedge desk nonzero = 491;
+- both desks active = 351;
+- opposite signs among both-active = 150 = 42.7%;
+- aggregate dealer nonzero = 677;
+- rows where aggregate dealer flow contains opposing desks = 150 = 22.2%.
+
+Together with the earlier TPEx prospective receipt, this corroborates across both Taiwan cash markets that aggregate dealerNet can materially compress internal desk disagreement. It does not identify motive or predictive value.
+
+The 20:00 including-block-trade sibling product TWTAIUC is an official paid product. Its existence and clock are verified, but no access/purchase is authorized. The public non-block T86 receipt must not be relabeled as the 20:00 including-block version.
+
+D06-03 remains L3/60%. No maturity promotion follows from another source-feasibility receipt alone; L4 still requires OOS/Shadow residual incrementality on common support. Formal Core unchanged.
+
+---
+
+## IC-073 — 2026-10-05 TPEx 20:30 leverage EARLY slot preserved missing; day-trade T_PRELIM remains variable-clock pending
+
+Research cycle: 2026-10-05 Asia/Taipei  
+Status: LEVERAGE_EARLY_SLOT_UNKNOWN_MISSING / DAYTRADE_T_PRELIM_VARIABLE_CLOCK_PENDING / NO_BACKFILL / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable receipts:
+- `research/d06_07_08_09_tpex_leverage_early_20261005_v0_1.json`;
+- `research/d06_14_tpex_daytrade_tprelim_attempt_20261005_v0_1.json`.
+
+At 20:33 the official TPEx current margin and SBL pages were reachable and their schema headers were observable, but same-date stock rows were not exposed through the already-verified free machine-readable route. The stable documented historical programmatic margin contract remains unresolved.
+
+Therefore the preregistered EARLY slot is `UNKNOWN_MISSING_AT_EARLY_SLOT`. It is not zero, no-flow or a failed market state. Later data must never be backfilled into this 20:30 receipt.
+
+For D06-14, the official TPEx day-trading page was reachable at the same time but the T-day stock-level statistics object was not yet observed. Because TPEx T-day completion depends on broker reporting/adjustment workflow, this state is `PENDING_BY_VARIABLE_SOURCE_WORKFLOW`, not a fixed-clock failure.
+
+Exact next:
+1. repeat the same authorized TPEx leverage source families at LATE 22:30; preserve separate firstKnownAt if rows appear;
+2. retry D06-14 T_PRELIM later the same evening and append only when the actual statistics object is observed;
+3. never rewrite EARLY from LATE;
+4. outcomes stay closed.
