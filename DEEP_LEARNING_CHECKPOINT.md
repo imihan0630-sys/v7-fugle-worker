@@ -2078,3 +2078,28 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
 - Public historical transaction/balance replay cannot substitute for live best-five depth; displayed lend quantity cannot substitute for total lendable inventory.
 - D06-18 remains L2/40%; no outcomes and no Formal change.
 - Exact next: continue authorized live-machine-route discovery for a future date while preserving the frozen 2026-10-05 failure state.
+
+
+## 2026-10-05 D06 — IC-069~070 TPEx dealer split prospective capture
+
+- Room/domain: 05｜法人與籌碼研究室 / D06.
+- Durable parent receipt: `research/d06_03_tpex_dealer_split_capture_20261005_v0_1.json`.
+- At 2026-10-05T15:28:58+08:00 the official TPEx institutional stock-level source returned same-date 20261005 data.
+- Coverage = 916 rows; 795 ordinary four-digit stocks.
+- Source schema fingerprint = fnv1a64-utf8:6ca0bb5edbff5cd3.
+- Content hash = fnv1a64-utf8:5bd324cc7136e2ca.
+- Dealer proprietary + hedge arithmetic reconciled 916/916; foreign + trust + aggregate dealer reconciled to institutional total 916/916.
+- Same-date structural falsification on 795 ordinary stocks: 165 had both dealer desks nonzero; 82/165 = 49.7% had opposite desk signs. Hedge-only activity = 285 stocks versus proprietary-only = 28. Aggregate dealer sign hid an opposing desk in 83 nonzero-aggregate rows.
+- Interpretation: aggregate dealerNet materially compresses desk disagreement on this bounded date. This is semantic/structural evidence only; no predictive value, desk motive or return sign is established.
+- TWSE was still before its frozen 18:00/20:00 source clocks; pre-clock no-data is PENDING_BY_CLOCK, not failure.
+- D06-14 actual day-trading statistics T_PRELIM remains unobserved; DayTradeMark eligibility data are not a substitute.
+- D06-05 same-generation TDCC join remains absent; do not attach the 2026-10-02 TDCC parent to a nonexistent 2026-10-05 research generation.
+- D06 maturity remains 47.8%; outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. At/after TWSE 18:00 and 20:00 clocks capture same-date dealer proprietary/hedge split as a sibling market subreceipt without rewriting the TPEx firstKnownAt.
+2. When the 2026-10-05 research generation actually exists, bind the immutable TDCC parent to D06-05/D06-06 same-generation rows.
+3. Capture TPEx leverage EARLY 20:30 and LATE 22:30 exactly; no later backfill into EARLY.
+4. Capture D06-14 T_PRELIM only from the actual stock-level day-trading statistics object.
+5. Append PF-040 only after issuer units/PCF source date advances to 2026-10-05.
+6. Keep D06-18 15:20 slot UNKNOWN/MISSING and all outcomes closed.
