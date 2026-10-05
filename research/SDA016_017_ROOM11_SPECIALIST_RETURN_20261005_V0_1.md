@@ -330,3 +330,90 @@ D03's method-receipt oracle already supports common-support, coverage-bias, chro
 
 No maturity change.
 Formal Core remains LOCKED.
+
+
+## 2026-10-06 fourth/fifth-round durable continuation
+
+Additional machine receipt contracts:
+- `research/D16_ADMISSION_SENSITIVITY_RECEIPT_CONTRACT_20261006_V0_1.json`;
+- `research/D18_REPLICATION_SUPPORT_RECEIPT_CONTRACT_20261006_V0_1.json`;
+- superseding D16 receipt contract `research/D16_ADMISSION_SENSITIVITY_RECEIPT_CONTRACT_20261006_V0_2.json`.
+
+These contracts intentionally attach no genuine sample and default to no promotion / no maturity impact.
+
+### Fifth-round SDA-016 finding — same-session C1 generation multiplicity
+
+Canonical addendum:
+`research/SDA016_C1_GENERATION_PARENT_SELECTION_VALIDATION_ADDENDUM_20261006_V0_1.md`.
+
+Canonical V0.4 oracle:
+`research/SDA016_VALIDATION_ORACLE_20261006_V0_4.json` — 48 blocking tests.
+
+Research-owner validation of System1 candidate:
+`research/SDA016_SYSTEM1_V819_SCAN_ORIGIN_INVENTORY_VALIDATION_20261006_V0_1.md`.
+
+PR #644 exact accepted head at Room11 readback:
+`e925a04bc630816a1dd174f4e6675798ebe1937b`.
+
+Credited candidate checks:
+- V8 Regression `37377008932` PASS;
+- System1 C1/C2 isolated offline review `37377009056` PASS;
+- V8 Repair CI `37377008883` PASS;
+- dedicated scan-origin/inventory adversarial suite 12/12 PASS by test contract;
+- immutable V8.19+ scan-origin semantics;
+- legacy no-backfill;
+- all-generation same-date inventory;
+- corrupt modern rows remain visible/fail closed;
+- Formal core protected.
+
+Governance boundary:
+- PR remains OPEN/DRAFT;
+- merge not authorized;
+- Production deployment not authorized;
+- no genuine V8.19 generation/readback exists from this candidate;
+- therefore it is not empirical D16 evidence and not an SDA-016 closure receipt.
+
+### Existing Formal-to-C1 guard retained
+
+Current System1 collector already pins the first-read C1 generation and verifies current Formal scan proof:
+`scan.researchC1Population.generationId` must equal the collected generation, with save/readback/count/content/universe checks.
+
+Mismatch correctly returns:
+`FORMAL_C1_GENERATION_UNLINKED`.
+
+This remains accepted and must not be weakened.
+
+### Residual authoritative-parent gap
+
+C1 storage allows more than one immutable generation for one scan date.
+A scanDate-only C1 read currently resolves the latest created generation.
+
+The current Formal pointer is useful for same-session verification, but `LAST_SCAN_KEY` is current/latest state with finite retention and is not an append-only historical Formal-decision ledger.
+
+Therefore D16 promotion-grade C1 evidence now requires a durable immutable binding:
+`AUTHORITATIVE_FORMAL_DECISION_RECEIPT <-> EXACT_C1_GENERATION`.
+
+Neither:
+- latest generation;
+- earliest generation;
+- scan-origin class;
+- selected-symbol equality;
+- inventory ordinal;
+- selectionVerified alone
+
+may define the research parent.
+
+If historical exact binding is unprovable:
+`PARENT_GENERATION_AMBIGUOUS` or `HISTORICAL_BINDING_NOT_PROVEN`,
+and the date remains retrospective/UNKNOWN for D16-CAL-01.
+
+If generation-inventory multiplicity is used in admission logic, a deterministic session-finalization receipt is also required because the V8.19 candidate correctly declares the inventory mutable until session completion.
+
+### Current Room11 closure baseline
+
+- SDA-016: V0.4 T01-T48 blocking tests.
+- SDA-017: V0.3 T01-T48 blocking tests + genuine prospective multi-replication-cluster matured evidence.
+- Existing accepted guards remain accepted; new oracle versions are additive deltas, not reverse revalidation.
+- Room00 remains sole closure authority.
+- No maturity change.
+- Formal Core remains LOCKED.
