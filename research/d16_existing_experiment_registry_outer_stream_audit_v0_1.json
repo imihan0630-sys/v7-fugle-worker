@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "D16_EXISTING_EXPERIMENT_REGISTRY_OUTER_STREAM_AUDIT_V0_1",
+  "updatedAt": "2026-10-06T06:00:00+08:00",
+  "status": "LOCAL_MULTIPLICITY_PARTIAL_CROSS_ROOM_OUTER_STREAM_NOT_MODELED",
+  "owner": "11",
+  "formalCoreImpact": "NONE",
+  "centralRegistry": {
+    "path": "research/EXPERIMENT_REGISTRY.md",
+    "baseRFamilies": [
+      "R01",
+      "R02",
+      "R03",
+      "R04",
+      "R05",
+      "R06",
+      "R07",
+      "R08"
+    ],
+    "baseRFamilyN": 8,
+    "versionedSubdefinitions": [
+      "R01 v1.1",
+      "R02 v1.1",
+      "R04 v1.1",
+      "R05 v1.1",
+      "R07 v1.1"
+    ],
+    "versionedSubdefinitionN": 5,
+    "additionalPreregistered": [
+      "D16-CAL-01"
+    ],
+    "explicitlyNamedStudyDefinitionN": 14,
+    "researchStreamIdPresent": false,
+    "multipleTestingFamilyIdPresent": false
+  },
+  "d02Local": {
+    "path": "research/d02_l4_effect_target_registry_v0_4.json",
+    "entryN": 14,
+    "familyCounts": {
+      "F0": 1,
+      "F1": 3,
+      "F2": 2,
+      "F3": 3,
+      "F4": 1,
+      "F5": 4
+    },
+    "interpretation": "LOCAL_MULTIPLICITY_GOVERNANCE_PRESENT"
+  },
+  "d03Local": {
+    "path": "research/d03_primary_queue_d16_method_handoff_v0_1.json",
+    "experiments": [
+      "TI_005_KD_VS_RSI",
+      "TI_006_MACD_VS_DIRECT_TREND"
+    ],
+    "multipleTestingFamilyIdRequired": true,
+    "currentD16MethodReceipt": "NOT_YET_RETURNED"
+  },
+  "d16Cal01": {
+    "outcomeAccessState": "BEFORE_FIRST_GENUINE_C1_OUTCOME",
+    "outerStreamEnrollmentState": "STREAM_ENROLLMENT_REQUIRED_BEFORE_FIRST_GENUINE_OUTCOME_INSPECTION",
+    "errorObjectiveChosen": false,
+    "streamMethodChosen": false,
+    "numericErrorLevelChosen": false
+  },
+  "prohibited": [
+    "RETROACTIVE_FAVORABLE_STREAM_ASSIGNMENT",
+    "LOCAL_FAMILY_PASS_AS_GLOBAL_STREAM_PASS",
+    "DELETE_HISTORICAL_NEGATIVE_HYPOTHESES",
+    "CLAIM_HISTORICAL_WHOLE_STREAM_ERROR_CONTROL_WITHOUT_LEDGER"
+  ],
+  "maturityImpact": "NONE",
+  "exactNext": "Bind future confirmatory experiments to both local multipleTestingFamilyId and outer researchStreamId before relevant outcome access; preserve historical descriptive/development status."
+}
