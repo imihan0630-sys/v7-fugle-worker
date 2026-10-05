@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "D06_03_TWSE_DEALER_SPLIT_CAPTURE_20261005_1800_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-03",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "tradeDate": "2026-10-05",
+  "market": "TWSE",
+  "primitiveReceiptId": "D06-20261005-INSTITUTION-DEALER-SPLIT",
+  "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+  "sourceProduct": "TWSE T86 / TWT86UC public non-block-trade report",
+  "sourceUrl": "https://www.twse.com.tw/rwd/zh/fund/T86?date=20261005&selectType=ALLBUT0999&response=html",
+  "sourceClockContract": "18:00 Asia/Taipei excluding block trades",
+  "capturedAt": "2026-10-05T20:33:21+08:00",
+  "firstKnownAt": "2026-10-05T20:33:21+08:00",
+  "coverage": {
+    "totalRows": 1344,
+    "numericValidRows": 1344,
+    "ordinaryFourDigitRows": 1088,
+    "duplicateOrdinaryCodes": 0
+  },
+  "fingerprints": {
+    "content": "fnv1a64-utf8:be22e70f6ec9da3a",
+    "schema": "fnv1a64-utf8:334c6531bfaa2963a"
+  },
+  "arithmeticReconciliation": {
+    "proprietaryDesk": "1344/1344 PASS",
+    "hedgeDesk": "1344/1344 PASS",
+    "dealerAggregate": "1344/1344 PASS",
+    "institutionTotal": "1344/1344 PASS"
+  },
+  "ordinaryStockDeskStructure": {
+    "proprietaryNonzero": 537,
+    "hedgeNonzero": 491,
+    "bothActive": 351,
+    "hedgeOnly": 140,
+    "proprietaryOnly": 186,
+    "bothZero": 411,
+    "samePositive": 99,
+    "sameNegative": 102,
+    "oppositeSigns": 150,
+    "oppositePctAmongBothActive": 42.7,
+    "aggregateDealerNonzero": 677,
+    "aggregateRowsWithOpposingDesks": 150,
+    "opposingPctAmongAggregateNonzero": 22.2,
+    "hedgeAbsDominant": 353,
+    "proprietaryAbsDominant": 322,
+    "equalAbs": 413
+  },
+  "interpretationGuards": [
+    "Dealer proprietary and hedge are observed desk categories, not motive labels.",
+    "Aggregate dealerNet can hide opposite desk directions and is not identified proprietary conviction.",
+    "This TWSE subreceipt and the TPEx subreceipt belong to the same primitive family and do not create extra independent votes.",
+    "No predictive value is inferred from this one-date structural cross-section."
+  ],
+  "sibling2000IncludingBlockTrades": {
+    "sourceProduct": "TWTAIUC including block trades",
+    "sourceClockContract": "20:00 Asia/Taipei",
+    "officialExistence": "VERIFIED",
+    "accessState": "PAID_OFFICIAL_PRODUCT / NOT_AUTHORIZED",
+    "captureState": "NOT_CAPTURED",
+    "rule": "Do not substitute TWT86UC non-block-trade public values for TWTAIUC including-block-trade values."
+  },
+  "maturityImpact": "NONE",
+  "status": "TWSE_1800_PUBLIC_PROSPECTIVE_CAPTURED / 1344_OF_1344_RECONCILED / 2000_INCLUDE_BLOCK_ACCESS_GATED / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Keep this 18:00 non-block receipt immutable. Do not backfill the 20:00 including-block product without authorization. Use the sibling market receipts only as one D06-03 primitive family; future L4 work requires common-support OOS/Shadow incrementality versus aggregate dealerNet."
+}
