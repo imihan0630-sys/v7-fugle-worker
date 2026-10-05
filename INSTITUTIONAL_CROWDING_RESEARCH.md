@@ -1884,3 +1884,86 @@ The corrected D06-06 gate is no longer tied to a PVE number. A compatible shared
 6. fail-closed UNKNOWN when the parent is absent.
 
 Maturity impact: NONE. D06-06 remains L3/60% on its existing bounded source/PIT basis, while today's new compatible price/volume parent remains WAITING. No outcomes or Formal change.
+
+
+---
+
+## IC-078 — 2026-10-05 TPEx leverage LATE capture succeeds; EARLY remains immutable missing
+
+Research cycle: 2026-10-05 Asia/Taipei
+Status: LATE_COMPLETE / EARLY_MISSING_PRESERVED / UNIT_SEMANTICS_RECONCILED / REVISION_UNIDENTIFIED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable artifacts:
+- `research/d06_07_08_tpex_margin_late_snapshot_20261005_2340_v0_1.csv`;
+- `research/d06_08_09_tpex_sbl_late_snapshot_20261005_2340_v0_1.csv`;
+- `research/d06_07_08_09_tpex_leverage_late_20261005_v0_1.json`;
+- `research/d06_07_08_09_tpex_leverage_late_stability_20261005_v0_1.json`.
+
+The same official TPEx source families used at EARLY were captured after the preregistered 22:30 LATE target.
+
+Margin-transactions table:
+- 918 rows;
+- 918 numeric-valid;
+- 802 ordinary four-digit stocks;
+- duplicate symbols = 0;
+- margin-financing balance arithmetic = 918/918 PASS;
+- margin-short balance arithmetic = 918/918 PASS;
+- preserved snapshot fingerprint = fnv1a64-utf8:d86bcebd6469f4e3.
+
+Margin-short / SBL-short table:
+- 931 rows;
+- 931 numeric-valid;
+- 815 ordinary four-digit stocks;
+- duplicate symbols = 0;
+- margin-short balance arithmetic = 931/931 PASS;
+- actual SBL-short balance arithmetic = 931/931 PASS;
+- preserved snapshot fingerprint = fnv1a64-utf8:e2f21cc9a06e570d.
+
+A same-evening re-read reproduced both row counts and both fingerprints exactly.
+
+The prior EARLY receipt at 20:33 remains `UNKNOWN_MISSING_AT_EARLY_SLOT`. The late capture does not overwrite it. Because no verified EARLY numeric snapshot exists, an EARLY-versus-LATE numerical revision estimate is not identifiable for 2026-10-05.
+
+Observed availability is bounded rather than fabricated:
+- lower bound: after 20:33:21, when the verified EARLY receipt still lacked rows;
+- upper bound: the 23:40:13 late capture when complete rows were verified.
+The official SBL page itself states two approximate evening updates around 20:30 and 22:30 with actual timing dependent on end-of-day processing; this does not authorize asserting an exact 22:30 first-known time.
+
+Maturity decision:
+D06-07, D06-08 and D06-09 remain L2/40%. Product-specific late-source readiness is materially strengthened, but the preregistered gate also asks for prospective readiness/revision behavior. With EARLY missing, the paired-vintage requirement is incomplete.
+
+No outcomes or Formal change.
+
+---
+
+## IC-079 — TPEx margin-versus-SBL unit precision and universe mismatch firewall
+
+Research cycle: 2026-10-05 Asia/Taipei
+Status: UNIVERSE_MISMATCH_CONFIRMED / INNER_JOIN_BIAS_GUARD_FROZEN / UNIT_PRECISION_GUARD_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable guard:
+`research/d06_08_09_tpex_margin_sbl_universe_guard_20261005_v0_1.json`.
+
+Cross-source common-support audit:
+- common symbols = 918;
+- margin-short previous balance / sell / buy / cash repayment / current balance match exactly after LOTS x1000 -> SHARES on 918/918 symbols;
+- margin-short limit matches exact x1000 on only 173/918 because the margin-transactions page displays whole lots;
+- `floor(shareLimit/1000) == displayedLimitLots` holds on 918/918 common symbols.
+
+Therefore the limit-field differences are display-precision semantics, not source disagreement.
+
+More importantly, the SBL table contains 13 symbols absent from the margin-transactions table. All 13 carry note `Y` = not qualified for margin trading.
+Those 13 are not inert:
+- 13/13 have nonzero actual SBL-short balances;
+- 5/13 have nonzero SBL-short sales on 2026-10-05;
+- 7/13 have same-day SBL sell/return/adjustment activity.
+
+Consequences:
+1. D06-08 margin-short and D06-09 actual-SBL-short do not share an identical eligible universe;
+2. an inner join to the margin table would systematically delete valid SBL observations;
+3. margin-table absence must not become zero SBL;
+4. every future cross-sectional comparison must report D06-08 and D06-09 denominators separately;
+5. common-support analysis may be reported, but dropped SBL-only rows must remain visible.
+
+This is a selection-bias and unit-semantics firewall only. No predictive sign or motive is inferred.
+
+Maturity impact: NONE. D06-07/08/09 remain L2/40%.
