@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "D03_PIPELINE_LEVEL_MAX_STATISTIC_NULL_REPLAY_CONTRACT_V0_1",
+  "updatedAt": "2026-10-06T07:43:00+08:00",
+  "owner": "D03",
+  "classification": "RESEARCH_ONLY_OUTCOME_CLOSED",
+  "formalCoreImpact": "NONE_LOCKED",
+  "fixedCandidateEligibleWhen": [
+    "CANDIDATE_FIXED_BEFORE_TARGET_OUTCOME_ACCESS",
+    "NO_OUTCOME_DRIVEN_THRESHOLD_WINDOW_HORIZON_REPRESENTATION_SELECTION",
+    "D16_METHOD_ALLOWS_FIXED_CANDIDATE_NULL"
+  ],
+  "fullReplayRequiredWhen": [
+    "WINNER_SELECTED_FROM_MULTIPLE_CANDIDATES",
+    "THRESHOLD_OR_WINDOW_TUNED",
+    "BEST_HORIZON_SELECTED",
+    "REPRESENTATION_SELECTED",
+    "RANK_OR_TOPK_SELECTED",
+    "DOWNSTREAM_TRADING_POLICY_SELECTED"
+  ],
+  "requiredPipelineIdentity": [
+    "candidateUniverseHash",
+    "supportPolicyHash",
+    "fitRuleHash",
+    "tuningRuleHash",
+    "splitRuleHash",
+    "evaluationMetricHash",
+    "selectionStatisticHash",
+    "tieBreakRuleHash",
+    "costFillabilityRuleHash",
+    "nullGeneratorRef",
+    "searchGenealogyRef"
+  ],
+  "requiredDrawFields": [
+    "drawId",
+    "seed",
+    "nullGeneratorVersion",
+    "candidateUniverseHash",
+    "survivingCandidateCount",
+    "selectedCandidateId",
+    "selectedStatistic",
+    "supportBlockDisposition",
+    "pipelineHash",
+    "createdAt"
+  ],
+  "symmetryRequirements": [
+    "SAME_CANDIDATE_UNIVERSE_POLICY",
+    "SAME_SUPPORT_POLICY",
+    "SAME_FIT_RULE",
+    "SAME_TUNING_RULE",
+    "SAME_SPLIT_CHRONOLOGY",
+    "SAME_SELECTION_METRIC",
+    "SAME_TIE_BREAK",
+    "SAME_COST_FILLABILITY_RULE",
+    "SAME_STATISTIC_SCALE",
+    "SAME_CLOCK_SEMANTICS"
+  ],
+  "forbidden": [
+    "FIXED_WINNER_NULL_AFTER_SEARCH",
+    "OBSERVED_SIDE_MORE_CANDIDATES_THAN_NULL",
+    "DROP_EXTREME_NULL_CANDIDATES",
+    "REDRAW_NULL_UNTIL_SUPPORT_LOOKS_GOOD",
+    "COPY_OUTCOME_SELECTED_PARAMETERS_INTO_NULL",
+    "RAW_OBSERVED_VS_STUDENTIZED_NULL",
+    "NET_OBSERVED_VS_GROSS_NULL",
+    "OOS_OBSERVED_VS_INSAMPLE_NULL",
+    "SELECTED_OBSERVED_MAX_VS_MEAN_NULL_CANDIDATE"
+  ],
+  "nullDrawLedger": {
+    "appendOnly": true,
+    "failedDrawsVisible": true,
+    "retryPolicyPreregistered": true,
+    "overwriteAllowed": false
+  },
+  "terminalStates": [
+    "PIPELINE_NULL_READY",
+    "FIXED_CANDIDATE_NULL_ELIGIBLE",
+    "FULL_PIPELINE_REPLAY_REQUIRED",
+    "PIPELINE_ASYMMETRY",
+    "NULL_GENERATOR_BLOCKED",
+    "SUPPORT_DRAW_POLICY_UNSPECIFIED",
+    "COMPUTATIONAL_SHORTCUT_UNVALIDATED",
+    "STATISTIC_SCALE_MISMATCH",
+    "EVIDENCE_NOT_YET_AVAILABLE"
+  ],
+  "noClaim": {
+    "empiricalInteractionIncrementality": true,
+    "alpha": true,
+    "productionReadiness": true,
+    "formalPromotion": true
+  },
+  "maturityImpact": "NONE_56_7_PERCENT"
+}
