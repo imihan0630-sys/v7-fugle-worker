@@ -2170,3 +2170,43 @@ Exact next:
 4. before the first outcome inspection of any newly created confirmatory Room11 experiment, bind it to a durable researchStreamId/error objective or explicitly label it exploratory;
 5. first future champion chosen among multiple policy candidates requires fresh post-selection evidence, not reuse of its selection period;
 6. Room00 remains sole closure authority.
+
+
+## 2026-10-06 existing experiment-registry outer-stream audit
+
+New durable audit:
+- `research/D16_EXISTING_EXPERIMENT_REGISTRY_OUTER_STREAM_AUDIT_20261006_V0_1.md`;
+- `research/d16_existing_experiment_registry_outer_stream_audit_v0_1.json`.
+
+Verified:
+- R01-R08 base families = 8;
+- R v1.1 subdefinitions = 5;
+- D16-CAL-01 additionally preregistered;
+- central Experiment Registry has no `researchStreamId`;
+- central Experiment Registry has no `multipleTestingFamilyId`;
+- D02 local registry has 14 entries across F0-F5;
+- D03 handoff has 2 experiments and requires a future D16 `multipleTestingFamilyId`.
+
+Interpretation:
+`LOCAL_MULTIPLICITY_PARTIAL / CROSS_ROOM_OUTER_STREAM_NOT_MODELED`.
+
+This does not rewrite historical results.
+Do not retroactively assign favorable outer error budgets.
+
+D16-CAL-01 exact next before first genuine outcome inspection:
+- bind local `multipleTestingFamilyId` where applicable;
+- bind an outer `researchStreamId` and explicit error objective for confirmatory use, or keep it exploratory;
+- no confirmatory outcome interpretation should precede that stream enrollment.
+
+SDA-016 V0.5 = 58 blocking tests.
+SDA-017 V0.4 = 56 blocking tests.
+D16 remains 60%.
+D18 remains 52%.
+Formal Core LOCKED.
+
+Exact next continuation:
+1. re-read latest main/queue;
+2. validate any new shared SDA-016 authority or System2 SDA-017 engine delta first;
+3. if none, audit the first actual experiment proposed for confirmatory interpretation against local-family + outer-stream dual enrollment before outcome access;
+4. never backfill historical global error-control claims;
+5. Room00 remains sole closure authority.
