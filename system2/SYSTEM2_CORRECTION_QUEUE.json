@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-05T22:29:24+08:00",
+  "updatedAt": "2026-10-05T22:54:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -16,7 +16,7 @@
       ],
       "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "canonicalRequirement": "Physically populate and verify staged official 2017-present Taiwan-equity daily history before claiming complete full-market historical coverage/replay.",
-      "observedProblem": "Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE. Replay readiness remains PARTIAL because explicit symbol-session UNKNOWNs, RAW continuity debt, and incomplete TPEx historical delisting-union remain. The correction stays open because 2021 TPEx, 2022-present market-years, the 2026 incremental path, and the final full-market PIT replay are still pending.",
+      "observedProblem": "Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE. 2021 TPEx run #17 was stopped by Cloudflare D1 free-tier daily row-write quota before Physical verify; this is an infrastructure quota blocker, not a data-integrity failure. Replay readiness for accepted years remains PARTIAL because explicit symbol-session UNKNOWNs, RAW continuity debt, and incomplete TPEx historical delisting-union remain. The correction stays open because 2021 TPEx, later market-years, the 2026 incremental path, and the final full-market PIT replay are pending.",
       "evidence": [
         "SYSTEM2_CHECKPOINT run 36545375167 failed before annual ingest",
         "SYSTEM2_CHECKPOINT requires repaired 2017 TWSE rerun before TPEx",
@@ -73,7 +73,11 @@
         "2021 TWSE storage verification PASS: 968 packs, 232956 bars, 968/968 R2 HEAD and byte-GET SHA checks",
         "Fresh official TWSE 2021 reconciliation PASS: 244 trading dates, 232956 official rows, 0 missing from cold, 0 extra versus fresh official, 0 full-row hash mismatch, 0 canonical A1 mismatch",
         "2021 TWSE historical-universe denominator 233530 versus 232956 source rows leaves 574 explicit UNKNOWN symbol-session gaps; data coverage PASS but replay readiness PARTIAL",
-        "2021 TWSE coverage artifact 11352061154 digest sha256:4bee3d3b9698b1fc9cdf52e230eeaa19f4b8c686587abe8fc87486483ceedc19"
+        "2021 TWSE coverage artifact 11352061154 digest sha256:4bee3d3b9698b1fc9cdf52e230eeaa19f4b8c686587abe8fc87486483ceedc19",
+        "2021 TPEx run 37326149826 (#17): migrate SUCCESS, backfill stopped at D1 writeCheckpoint due free-tier daily row-write quota, Physical verify skipped, System1 isolation PASS",
+        "Cloudflare D1 error explicitly requires waiting until midnight UTC for free-tier daily write reset; no paid upgrade is required for planned continuation",
+        "2021 TPEx blocker evidence frozen at system2/evidence/S2_HISTORICAL_TPEX_2021_D1_QUOTA_BLOCKER_V0_1.json",
+        "2021 TPEx coverage matrix remains PENDING with executionState BLOCKED_D1_FREE_TIER_DAILY_ROW_WRITE_LIMIT"
       ],
       "riskIfUnfixed": "Creates false-completion/evidence-coverage risk for multi-year replay, factor validation, regime robustness and strategy backtesting.",
       "requiredCorrection": [
@@ -132,7 +136,9 @@
         "2020 TPEx durable acceptance evidence is frozen at system2/evidence/S2_HISTORICAL_TPEX_2020_PHYSICAL_VERIFICATION_V0_2.json",
         "2017-2020 TWSE/TPEx raw A1 data coverage are all physically accepted; next population target is 2021 TWSE",
         "2021 TWSE durable evidence receipt and market-year matrix row are committed under DATA_LANE",
-        "Next population target is 2021 TPEx"
+        "Next population target is 2021 TPEx",
+        "Historical cold-pack resume semantics preserve immutable partial state: existing R2 objects are hash-checked, existing manifests are immutable-compared, duplicate logical keys are rejected, and completed receipts verify before fast-path return",
+        "2021 TPEx must be fresh-dispatched after free-tier reset; partial cold history must not be deleted or rewritten"
       ],
       "verificationEvidence": [
         "Run 37197090867 migrate/backfill/physical verify/artifact upload/System1 isolation all SUCCESS",
@@ -183,12 +189,14 @@
         "2021 TWSE disposition DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL"
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-05T22:29:24+08:00",
+      "updatedAt": "2026-10-05T22:54:00+08:00",
       "routingClass": "DATA_LANE",
       "assignedLane": "DATA_LANE",
       "assignedRoom": "System 2｜歷史資料工程室",
       "modificationOwner": "SYSTEM2_HISTORICAL_DATA_ROOM",
-      "blockedBy": []
+      "blockedBy": [
+        "Cloudflare D1 free-tier daily row-write quota; retry not before 2026-10-06T00:00:00Z (2026-10-06 08:00 Asia/Taipei)"
+      ]
     },
     {
       "directiveId": "S2-CORR-20261004-002",
