@@ -1933,3 +1933,44 @@ Still false:
 all trading authority false.
 
 DATA_LANE correction ownership is unchanged. System 1 Formal Core remains LOCKED.
+
+
+## 2026-10-05 S2-07 bounded revision event linkage V0.2 physical result
+
+Authoritative physical execution:
+- commit: `fc3eac9e35fe6eacf8fef9805e6578ed91fe1701`;
+- workflow: `System2 Bounded Revision Event Linkage V0.2 Readonly`;
+- run: `37287352394`;
+- job: `111689298076`;
+- conclusion: PASS.
+
+Observed result:
+- eventCount = 23;
+- `REVISION_CHAIN_OBSERVED = 6`;
+- `AMBIGUOUS_MULTIPLE_ACTION_GROUPS = 15`;
+- `AMBIGUOUS_MULTIPLE_VERSION_CHAINS = 2`;
+- resolvedCount = 6;
+- ambiguousCount = 17;
+- `eventLinkageCoverageComplete=false`;
+- `boundedRevisionHistoryCoverageComplete=false`;
+- `correctionHistoryComplete=false`;
+- `cancellationHistoryComplete=false`;
+- `knownAtVersionClockCertified=false`;
+- `revisionCoverageComplete=false`.
+
+Interpretation boundary:
+- the 6 observed revision chains are bounded diagnostic evidence only;
+- 17 events remain unresolved / ambiguous;
+- this does not prove revision completeness, NO_EVENT, exact knownAt, technical continuity, session completeness, or any trading authority;
+- cancellation absence is not inferred from lack of a cancellation row;
+- normalized subject stem is not sufficient promotion linkage evidence because distinct corporate-action episodes for the same issuer can share a similar normalized stem.
+
+Exact BUILD_LANE continuation:
+1. narrower follow-up for the 17 ambiguous events;
+2. per-symbol query-integrity;
+3. event-specific linkage disambiguation using explicit event anchors, with subject stem only as supporting evidence;
+4. cancellation / no-cancellation evidence;
+5. shared suspension/resumption + symbol-session integration;
+6. RAW A1 lineage.
+
+This is BUILD_LANE checkpoint/evidence progression, not a REMEDIATION_LANE correction.
