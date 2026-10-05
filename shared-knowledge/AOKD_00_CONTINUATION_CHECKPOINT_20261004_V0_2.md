@@ -1121,3 +1121,35 @@ Exact next SDA continuation:
 2. on each returned commit/receipt, compare to the SDA closure criteria and advance state only with evidence;
 3. meanwhile continue audit of HIGH tickets in launch order: SDA-003, SDA-007, SDA-005/006, SDA-011, SDA-014/015;
 4. preserve existing H/COV/AOKD protected owner gates separately.
+
+
+## 2026-10-05 SDA HIGH reconciliation complete
+
+HIGH reconciliation receipts:
+- `shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md`;
+- `shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md`.
+
+All CRITICAL and HIGH SDA tickets now have latest-main reconciliation, explicit remaining deltas and routing.
+
+HIGH current states:
+- VALIDATION_PENDING: SDA-003, SDA-005, SDA-014, SDA-019.
+- REMEDIATION_IN_PROGRESS: SDA-002, SDA-006, SDA-007, SDA-008, SDA-011, SDA-013, SDA-015, SDA-018.
+- BLOCKED_DEPENDENCY: SDA-010, SDA-012.
+
+Important accepted-controls rule:
+- do not repeat D02 intent firewall;
+- do not repeat H20 breakout-family ownership;
+- do not repeat D14 filled/unfilled semantic work;
+- do not repeat D15 plan-vs-actual / heat-vs-selection firewalls;
+- do not repeat D20 H06/H07/H08 ownership studies;
+- do not bypass H04/H10/H11/COV-06/COV-07 protected gates.
+
+Engineering routing file has been extended for all reconciled HIGH tickets.
+No Formal behavior changed.
+
+Exact next SDA continuation:
+1. reconcile MEDIUM tickets SDA-020 (D21) and SDA-021 (D22);
+2. after MEDIUM reconciliation, produce a compact queue dashboard grouped by CLOSED-readiness class: blocked / remediation / validation;
+3. intake actual learning-room/System1/System2 remediation receipts as they arrive and advance only the corresponding ticket;
+4. independent 00 closure remains mandatory for SDA-016 and SDA-017;
+5. preserve unrelated H/COV/AOKD owner gates.
