@@ -99,3 +99,55 @@ Room 11:
 
 00:
 - independent closure readback after engineering + Room11 revalidation.
+
+
+## 2026-10-05 second-round validation extension
+
+Additional canonical validation files:
+- `research/SDA016_INFORMATION_FOOTPRINT_VALIDATION_ADDENDUM_20261005_V0_1.md`;
+- `research/SDA017_EPISODE_HORIZON_DEPENDENCE_VALIDATION_ADDENDUM_20261005_V0_1.md`.
+
+### SDA-016 additional blocker
+
+Exact decision-date overlap is necessary but not sufficient.
+
+A new holdout can have disjoint decision dates while sharing the same underlying future market sessions through overlapping D+N outcomes. Therefore closure must also machine-track target-specific outcome information footprint overlap.
+
+New required acceptance:
+- decision-date overlap + outcome-information-footprint overlap are separate diagnostics;
+- different logical holdout IDs / consumers / systems cannot reset a consumed physical outcome footprint;
+- unknown footprint lineage fails closed;
+- purge/embargo is frozen before outcomes and follows the full path dependency of the target;
+- footprint de-duplication does not replace D16-06 dependence-aware inference.
+
+SDA-016 remaining blocker is now explicitly:
+`PARTIAL_DATE_OVERLAP + OUTCOME_INFORMATION_FOOTPRINT_OVERLAP + SHARED_CROSS_SYSTEM_CONSUMPTION_AUTHORITY`.
+
+### SDA-017 additional blocker
+
+Episode identity is a structural support unit, not an inferential independent-sample count.
+
+Primary prospective policy estimand is frozen as:
+`DECISION_STATE_CONDITIONAL`.
+
+Future regime persistence may not be used to delete decisions whose later horizon crosses a regime transition. A persistence-conditioned analysis is a separate ex-post estimand/family and, if added after outcome inspection, consumes the original holdout under SDA-016.
+
+New required acceptance:
+- prospective episode continuation uses only current/prior official-session receipts;
+- decision receipt cannot contain future episode end/length;
+- structuralEpisodeN, maturedOutcomeEpisodeN, completedEpisodeN and effectiveIndependentDateN are distinct;
+- transition-crossing D+N outcomes stay in the primary decision-state analysis and are flagged, not dropped;
+- future Regime UNKNOWN does not delete an otherwise valid price outcome from the decision-state primary estimand;
+- episode support cannot be promotion-eligible while D16 dependence / SDA-016 footprint state is unresolved.
+
+SDA-017 remaining blocker is now explicitly:
+`EPISODE_LINEAGE + SUPPORT_ENGINE + EPISODE_DEPENDENCE + HORIZON_ATTRIBUTION + SDA016_CONSUMPTION_LINK + PROSPECTIVE_MULTI_EPISODE_EVIDENCE`.
+
+No maturity change.
+Formal Core remains LOCKED.
+
+Exact next:
+- System 1 / System 2 shared SDA-016 authority must pass original tests 1–12 plus addendum tests 13–22;
+- System 2 SDA-017 episode/support observer must pass original tests 1–15 plus addendum tests 16–30;
+- Room11 performs adversarial revalidation only after those engineering deltas land;
+- 00 remains the only independent closure authority.
