@@ -2128,3 +2128,98 @@ No maturity or Formal change is authorized by this routing.
 7. Preserve SDA-001 as REMEDIATION_IN_PROGRESS until residual evidence, system lineage and independent 00 closure exist.
 8. Next D01 science: separate sector composition from market-wide common shocks / beta so cross-sector replication in one market surge is not mistaken for independent Pattern evidence.
 9. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-041 (2026-10-05)
+
+### DL-041 — Cross-sector Pattern replication vs market-wide common shock / beta
+- DL-040 separated Pattern representation from sector/industry composition.
+- DL-041 freezes the next dependence layer: many sectors showing Pattern on one date may reflect one market-wide shock, beta exposure or regime move rather than multiple independent Pattern replications.
+- Taiwan evidence motivates the firewall:
+  market-wide common factors explain a material share of stock-return fluctuation;
+  Taiwan momentum evidence changes materially across continuing vs transitioning market states.
+- Ownership boundary:
+  D09 supplies market breadth/participation and sector context;
+  D18 supplies ex-ante regime receipts;
+  D19 supplies market-factor/beta/asset-pricing controls;
+  D16 owns dependence-aware residual inference.
+  D01 does not build a second beta/factor/regime system.
+- Three timing layers are separated:
+  PRE_SIGNAL_MARKET_CONTEXT;
+  SAME_DATE_COMMON_SHOCK_CONTEXT;
+  FUTURE_BENCHMARK_OUTCOME.
+- Future benchmark/factor returns belong outside the D01 predictor snapshot.
+- Benchmark/factor receipt contract freezes:
+  marketBenchmarkId/version;
+  factorModelId/version;
+  betaEstimateId;
+  betaEstimationWindowId;
+  betaKnownAt/asOf;
+  regime owner/version/knownAt;
+  predictorFreezeAt.
+- Future-window/full-sample beta and current-beta historical backfill are prohibited.
+- Outcome-selected benchmark/factor model is prohibited.
+- Pattern performance may not define favorable market regime.
+- Cross-sector dependence example is explicit:
+  20 stock rows + 5 sectors + one market date may still be one market common-shock family.
+- Future reporting must keep separate:
+  stockObservationCount;
+  uniqueSymbolCount;
+  uniqueStructuralRootCount;
+  uniqueSectorCount;
+  sectorDateClusterCount;
+  marketDateClusterCount;
+  independentMarketEpisodeCount;
+  regimeCount.
+- Candidate self-inclusion in cap/equal-weight market return or breadth does not create independent confirmation.
+  MARKET_SELF_INCLUSION_UNRESOLVED remains explicit when candidate-excluded market context is unavailable.
+- Even candidate-excluded market context remains a control/context family, not an automatic extra vote.
+- Future readiness ladder:
+  M0 RAW_CROSS_SECTOR_PATTERN;
+  M1 MARKET_DATE_CLUSTERED;
+  M2 PRE_SIGNAL_MARKET_CONTEXT_MATCHED;
+  M3 D19_BETA_FACTOR_CONTEXT_READY;
+  M4 MARKET_AND_SECTOR_RESIDUAL_DESIGN_FROZEN;
+  M5 INDEPENDENT_MARKET_DATE_REPLICATION_READY.
+- Future interpretation:
+  Q0 MARKET_COMMON_SHOCK_EXPLANATION;
+  Q1 BETA_EXPOSURE_EXPLANATION;
+  Q2 MARKET_REGIME_EXPLANATION;
+  Q3 SECTOR_PLUS_MARKET_EXPLANATION;
+  Q4 PATTERN_WITHIN_MARKET_DATE_INCREMENT;
+  Q5 MULTI_DATE_CROSS_SECTOR_PATTERN_CANDIDATE;
+  Q6 NOT_EVALUABLE.
+- Common support now includes DL-039 size/liquidity/listing-age, DL-040 sector context, beta/factor exposure, market context, regime and opportunity geometry.
+  Lack of overlap -> MARKET_FACTOR_EXTRAPOLATION_PROHIBITED.
+- Same-date timestamp ordering is explicit:
+  market context known after predictorFreezeAt is POST_HOC_MARKET_CONTEXT.
+  Session-date equality alone is insufficient.
+- Common-shock dependenceUnitId is required for future D16 analysis.
+  Rows sharing one dependence unit are not independent even across sectors.
+- SDA-001 remains active:
+  stock Pattern + stock trend + sector RS + market trend may all recycle price information and may not become multiple confirmations by naming alone.
+- New files:
+  - research/PATTERN_MARKET_COMMON_SHOCK_V0_1.md
+  - research/pattern_market_common_shock_v0_1.json
+  - research/pattern_market_common_shock_v0_1.mjs
+  - research/test_pattern_market_common_shock_v0_1.mjs
+  - research/PATTERN_MARKET_COMMON_SHOCK_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 remains REMEDIATION_IN_PROGRESS.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-041
+
+1. Reconcile the DL-041 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-041 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve stock/root/sector-date/market-date/independent-market-episode counts separately.
+4. Consume D09/D18/D19 point-in-time market/sector/regime/factor receipts without recreating their taxonomies.
+5. Keep future benchmark/factor outcomes outside D01 predictor manifests.
+6. Hand M0-M5 / Q0-Q6 dependence-aware residual inference to D16.
+7. Preserve SDA-001 as REMEDIATION_IN_PROGRESS until residual evidence, system lineage and independent 00 closure exist.
+8. Next D01 science: separate local Taiwan market common shocks from global overnight / cross-market transmission so gap-open Pattern clusters are not attributed automatically to local chart structure.
+9. No outcome join / no runtime wiring / no Formal change.
