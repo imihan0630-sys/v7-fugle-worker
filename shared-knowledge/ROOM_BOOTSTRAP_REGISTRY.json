@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-05T07:54:00+08:00",
+  "updatedAt": "2026-10-05T08:04:00+08:00",
   "status": "CANONICAL_ROOM_BOOTSTRAP_REGISTRY_V0_1",
   "repository": "imihan0630-sys/v7-fugle-worker",
   "authoritativeBranch": "main",
@@ -13,7 +13,9 @@
     "sharedMap": "shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md",
     "selfDeceptionAudit": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
     "alphaLineageGuard": "shared-knowledge/SYSTEM_ALPHA_LINEAGE_AND_DOUBLE_COUNT_GUARD_V0_1.md",
-    "selfDeceptionAuditMachine": "shared-knowledge/stock_selection_self_deception_audit_v0_1.json"
+    "selfDeceptionAuditMachine": "shared-knowledge/stock_selection_self_deception_audit_v0_1.json",
+    "auditQueue": "shared-knowledge/STOCK_SELECTION_AUDIT_QUEUE.md",
+    "auditQueueMachine": "shared-knowledge/stock_selection_audit_queue_v0_1.json"
   },
   "identities": [
     {
