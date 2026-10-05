@@ -32,7 +32,7 @@ export function extractDateTokensV0_1(value){
     const iso=toIsoDate(Number(m[1])+1911,m[2],m[3]);
     if(iso) out.add(iso);
   }
-  for(const m of text.matchAll(/(\d{4})\s*[\/.-]\s*(\d{1,2})\s*[\/.-]\s*(\d{1,2})/g)){
+  for(const m of text.matchAll(/(?<!\d)(\d{4})(?!\d)\s*[\/.-]\s*(\d{1,2})\s*[\/.-]\s*(\d{1,2})/g)){
     const iso=toIsoDate(m[1],m[2],m[3]);
     if(iso) out.add(iso);
   }
@@ -45,7 +45,7 @@ function canonicalSubject(value, symbol){
   if(symbolText) text=text.split(symbolText).join(" ");
   return text
     .replace(/(?<!\d)\d{3}(?!\d)\s*[年\/.-]\s*\d{1,2}\s*[月\/.-]\s*\d{1,2}\s*日?/g," ")
-    .replace(/\d{4}\s*[\/.-]\s*\d{1,2}\s*[\/.-]\s*\d{1,2}/g," ")
+    .replace(/(?<!\d)\d{4}(?!\d)\s*[\/.-]\s*\d{1,2}\s*[\/.-]\s*\d{1,2}/g," ")
     .replace(/\b\d{2}:\d{2}:\d{2}\b/g," ")
     .replace(/更正|修正|補充|更新|重新公告|取消|撤銷|廢止/g," ")
     .replace(/[()（）【】\[\]：:，,。．;；、_\-\s]+/g,"")
@@ -112,19 +112,43 @@ function queryIntegrityForHistory(history, expectedYears){
 
 async function buildRowEvidence(row, symbol, effectiveDate){
   const rowText=String(row?.rowText||"");
-  const mentionedDates=extractDateTokensV0_1(rowText);
+  const listMentionedDates=extractDateTokensV0_1(rowText);
   const announcementDate=typeof row?.date==="string" ? row.date : null;
-  const explicitEffectiveDateMention=
-    mentionedDates.includes(effectiveDate) &&
+  const listExplicitEffectiveDateMention=
+    listMentionedDates.includes(effectiveDate) &&
     announcementDate!==effectiveDate;
-  const ambiguousSameDateMention=
-    mentionedDates.includes(effectiveDate) &&
+  const listAmbiguousSameDateMention=
+    listMentionedDates.includes(effectiveDate) &&
     announcementDate===effectiveDate;
+
+  const detailBodyDateTokens=Object.freeze(
+    Array.isArray(row?.detailBodyDateTokens)
+      ? [...new Set(row.detailBodyDateTokens.filter((x)=>typeof x==="string"))].sort()
+      : []
+  );
+  const detailTransportReady=row?.detailTransportReady===true;
+  const detailIdentityObserved=row?.detailIdentityObserved===true;
+  const detailBodyTextHash=typeof row?.detailBodyTextHash==="string"&&row.detailBodyTextHash
+    ? row.detailBodyTextHash
+    : null;
+  const detailPayloadHash=typeof row?.detailPayloadHash==="string"&&row.detailPayloadHash
+    ? row.detailPayloadHash
+    : null;
+  const detailEvidenceReady=
+    detailTransportReady &&
+    detailIdentityObserved &&
+    Boolean(detailBodyTextHash) &&
+    Boolean(detailPayloadHash);
+  const detailEffectiveDateMention=
+    detailEvidenceReady &&
+    detailBodyDateTokens.includes(effectiveDate);
+
   const subject=canonicalSubject(rowText,symbol);
   const subjectFingerprintHash=await sha256Hex(subject);
   const rowTextHash=await sha256Hex(rowText);
   const versionKey=rowVersionKey(row);
   const versionKeyComplete=Boolean(row?.date&&row?.time&&row?.seqNo);
+
   return deepFreeze({
     date:announcementDate,
     time:row?.time||null,
@@ -133,9 +157,17 @@ async function buildRowEvidence(row, symbol, effectiveDate){
     spokeTimeRaw:row?.spokeTimeRaw||null,
     correctionOrCancellationHint:row?.correctionOrCancellationHint===true,
     cancellationHint:isCancellation(row),
-    mentionedDates,
-    explicitEffectiveDateMention,
-    ambiguousSameDateMention,
+    listMentionedDates,
+    listExplicitEffectiveDateMention,
+    listAmbiguousSameDateMention,
+    detailTransportReady,
+    detailIdentityObserved,
+    detailEvidenceReady,
+    detailBodyDateTokens,
+    detailBodyTextHash,
+    detailPayloadHash,
+    detailTransportMode:typeof row?.detailTransportMode==="string" ? row.detailTransportMode : null,
+    detailEffectiveDateMention,
     versionKey,
     versionKeyComplete,
     subjectFingerprintHash,
@@ -180,6 +212,8 @@ function summarizeChains(rows){
       duplicateVersionKeyCount,
       versionKeys:Object.freeze(keys),
       rowTextHashes:Object.freeze(sorted.map((x)=>x.rowTextHash)),
+      detailBodyTextHashes:Object.freeze(sorted.map((x)=>x.detailBodyTextHash).filter(Boolean)),
+      detailPayloadHashes:Object.freeze(sorted.map((x)=>x.detailPayloadHash).filter(Boolean)),
     }));
   }
   return Object.freeze(chains.sort((a,b)=>a.subjectFingerprintHash.localeCompare(b.subjectFingerprintHash)));
@@ -219,20 +253,28 @@ export async function buildBoundedEventVersionLinkageV0_1({
       const boundedRows=allFamilyRows.filter((row)=>typeof row?.date==="string"&&row.date<=end);
       const rowEvidence=[];
       for(const row of boundedRows) rowEvidence.push(await buildRowEvidence(row,symbol,effectiveDate));
-      const strictRows=rowEvidence.filter((x)=>x.explicitEffectiveDateMention);
-      const ambiguousSameDateRows=rowEvidence.filter((x)=>x.ambiguousSameDateMention);
+
+      const detailReadyRows=rowEvidence.filter((x)=>x.detailEvidenceReady);
+      const strictRows=rowEvidence.filter((x)=>x.detailEffectiveDateMention);
+      const listOnlyCandidateRows=rowEvidence.filter((x)=>x.listExplicitEffectiveDateMention&&!x.detailEffectiveDateMention);
+      const ambiguousSameDateRows=rowEvidence.filter((x)=>x.listAmbiguousSameDateMention);
       const strictChains=summarizeChains(strictRows);
       const strictChainAmbiguityCount=strictChains.filter((x)=>x.state!=="CHAIN_OBSERVED").length;
+      const detailCoverageComplete=
+        rowEvidence.length>0 &&
+        detailReadyRows.length===rowEvidence.length;
 
       const state=!queryIntegrity.complete
         ? "QUERY_INTEGRITY_INCOMPLETE"
         : boundedRows.length===0
           ? "NO_ACTION_FAMILY_HISTORY"
-          : strictRows.length===0
-            ? "HISTORY_BUNDLE_ONLY_UNRESOLVED"
-            : strictChainAmbiguityCount>0
-              ? "STRICT_LINKAGE_CHAIN_AMBIGUOUS"
-              : "STRICT_LINKAGE_OBSERVED";
+          : !detailCoverageComplete
+            ? "DETAIL_COVERAGE_INCOMPLETE"
+            : strictRows.length===0
+              ? "DETAIL_HISTORY_ONLY_UNRESOLVED"
+              : strictChainAmbiguityCount>0
+                ? "STRICT_LINKAGE_CHAIN_AMBIGUOUS"
+                : "STRICT_LINKAGE_OBSERVED";
 
       const canonical={
         eventKey:eventKey(sourceId,event),
@@ -245,7 +287,10 @@ export async function buildBoundedEventVersionLinkageV0_1({
         queryIntegrityState:queryIntegrity.state,
         queryIntegrityComplete:queryIntegrity.complete,
         boundedFamilyRowCount:rowEvidence.length,
+        detailReadyRowCount:detailReadyRows.length,
+        detailCoverageComplete,
         strictLinkedRowCount:strictRows.length,
+        listOnlyCandidateRowCount:listOnlyCandidateRows.length,
         ambiguousSameDateRowCount:ambiguousSameDateRows.length,
         strictChainCount:strictChains.length,
         strictChainAmbiguityCount,
@@ -253,6 +298,8 @@ export async function buildBoundedEventVersionLinkageV0_1({
         cancellationHintCount:strictRows.filter((x)=>x.cancellationHint).length,
         state,
         strictRowHashes:strictRows.map((x)=>x.rowTextHash).sort(),
+        strictDetailBodyHashes:strictRows.map((x)=>x.detailBodyTextHash).filter(Boolean).sort(),
+        strictDetailPayloadHashes:strictRows.map((x)=>x.detailPayloadHash).filter(Boolean).sort(),
         strictSubjectFingerprintHashes:strictChains.map((x)=>x.subjectFingerprintHash).sort(),
       };
       const linkageHash=await sha256Hex(canonical);
@@ -263,6 +310,7 @@ export async function buildBoundedEventVersionLinkageV0_1({
         queryIntegrity,
         strictChains,
         strictRows:Object.freeze(strictRows),
+        listOnlyCandidateRows:Object.freeze(listOnlyCandidateRows),
         ambiguousSameDateRows:Object.freeze(ambiguousSameDateRows),
         linkageHash,
         exactPublicKnownAtCertified:false,
@@ -277,12 +325,14 @@ export async function buildBoundedEventVersionLinkageV0_1({
     const strictLinkedCount=eventResults.filter((x)=>x.state==="STRICT_LINKAGE_OBSERVED").length;
     const unresolvedCount=eventResults.length-strictLinkedCount;
     const queryIntegrityCompleteCount=eventResults.filter((x)=>x.queryIntegrityComplete).length;
+    const detailCoverageCompleteCount=eventResults.filter((x)=>x.detailCoverageComplete).length;
     laneResults.push(deepFreeze({
       sourceId,
       exchange:contract.exchange,
       actionFamilyId:contract.actionFamilyId,
       finalEventCount:eventResults.length,
       queryIntegrityCompleteEventCount:queryIntegrityCompleteCount,
+      detailCoverageCompleteEventCount:detailCoverageCompleteCount,
       strictLinkedEventCount:strictLinkedCount,
       unresolvedEventCount:unresolvedCount,
       correctionHintEventCount:eventResults.filter((x)=>x.correctionHintCount>0).length,
@@ -290,7 +340,8 @@ export async function buildBoundedEventVersionLinkageV0_1({
       boundedEventVersionLinkageComplete:
         eventResults.length>0&&
         strictLinkedCount===eventResults.length&&
-        queryIntegrityCompleteCount===eventResults.length,
+        queryIntegrityCompleteCount===eventResults.length&&
+        detailCoverageCompleteCount===eventResults.length,
       events:Object.freeze(eventResults),
     }));
   }
@@ -309,6 +360,7 @@ export async function buildBoundedEventVersionLinkageV0_1({
   const finalEventCount=universe.length;
   const strictLinkedEventCount=universe.filter((x)=>x.state==="STRICT_LINKAGE_OBSERVED").length;
   const queryIntegrityCompleteEventCount=universe.filter((x)=>x.queryIntegrityComplete).length;
+  const detailCoverageCompleteEventCount=universe.filter((x)=>x.detailCoverageComplete).length;
   const unresolvedEventCount=finalEventCount-strictLinkedEventCount;
 
   return deepFreeze({
@@ -322,11 +374,13 @@ export async function buildBoundedEventVersionLinkageV0_1({
     strictLinkedEventCount,
     unresolvedEventCount,
     queryIntegrityCompleteEventCount,
+    detailCoverageCompleteEventCount,
     linkageUniverseHash,
     boundedEventVersionLinkageComplete:
       finalEventCount>0&&
       strictLinkedEventCount===finalEventCount&&
-      queryIntegrityCompleteEventCount===finalEventCount,
+      queryIntegrityCompleteEventCount===finalEventCount&&
+      detailCoverageCompleteEventCount===finalEventCount,
     laneResults:Object.freeze(laneResults),
 
     boundedRevisionHistoryCoverageComplete:false,
