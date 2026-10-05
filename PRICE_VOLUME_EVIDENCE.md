@@ -5865,3 +5865,59 @@ Formal Core LOCKED.
 
 Exact next continuation point:
 PVE-248 — prepare/consume the bounded System 1 Class-B repair candidate and its tests without merge/deploy; owner approval remains required before Production promotion.
+
+
+# PVE-248 — Class-B repair candidate validation (2026-10-06)
+
+Status: CLASS_B_CANDIDATE_PREPARED / ISOLATED_CI_PASS / FULL_CI_BLOCKED_BY_PREEXISTING_BASE_FAILURE / DRAFT_PR_651_OPEN / UNMERGED / NOT_DEPLOYED.
+
+Durable validation:
+- `research/D02_PVE248_CLASS_B_CANDIDATE_20261006_V0_1.md`;
+- `research/d02_pve248_class_b_candidate_validation_v0_1.json`.
+
+Candidate branch:
+`research/d02-pve248-class-b-candidate-20261006`.
+
+Active draft PR:
+`#651`.
+
+Superseded PR `#650` was automatically closed during a safe branch reconstruction when the head temporarily equaled the base; it was never merged or deployed.
+
+Candidate scope:
+- combined 23:35/23:55 after-market runtime recognition while retaining existing `onlyIfMissing:true` and D1 lease idempotence;
+- Cron audit reason persistence;
+- fail-open PV baseline warmup sidecar independent of Formal scan success;
+- explicit bootstrap receipt in existing baseline JSON;
+- exact 15m HTTP response-text SHA-256 provenance before JSON parse.
+
+Candidate-isolated validation:
+- push run `37386567610` SUCCESS;
+- PR run `37386696263` SUCCESS.
+
+Full PR checks:
+- Regression `37386695299` FAILURE;
+- Repair CI `37386695246` FAILURE.
+
+Both fail before the PVE-248 runtime test at existing:
+`tests/test_system1_zero_pick_evidence_collector_v0_1.mjs`
+with `collector CLI failed`.
+
+Independent main run `37382689408`, with no PVE-248 candidate, fails at the same collector test.
+Therefore:
+`PREEXISTING_BASE_CI_BLOCKER_NOT_PVE248`.
+
+PVE-248 does not modify the unrelated System 1 collector to manufacture a green candidate.
+
+Candidate remains:
+- owner approval NOT GRANTED;
+- merged NO;
+- deployed NO;
+- remediationReady=false until approved deployment + physical readback;
+- H001 receipt eligible=false;
+- clean prospective dates=0;
+- D02 60.0%;
+- Gate 7 CLOSED;
+- Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-249 — System 1 resolves the pre-existing zero-pick collector base-CI failure and returns a durable green base receipt. Then rerun PR #651 full Regression + Repair CI. Only when candidate-isolated and applicable repository-wide checks are green may explicit Class-B merge/deploy approval be requested.
