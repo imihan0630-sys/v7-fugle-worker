@@ -23319,3 +23319,35 @@ New durable artifacts:
 - research/PATTERN_SECTOR_COMPOSITION_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-041 — Cross-sector Pattern replication vs market-wide common shock / beta (2026-10-05)
+
+DL-040 showed that many stock rows do not necessarily represent many sectors. DL-041 adds the next dependence layer: many sectors do not necessarily represent many independent market environments.
+
+A broad Taiwan market rally can create simultaneous breakouts, higher lows and support retests in semiconductors, financials, industrials and other sectors. A naive cross-sector count would call this replication. A dependence-aware design may see one market-date shock.
+
+Taiwan evidence makes this a realistic alternative explanation. Market-wide common components explain a material share of individual stock-return variation, while Taiwan momentum evidence changes across continuing and transitioning market states. Cross-sector Pattern observations must therefore be separated from market beta, common market trend and ex-ante regime.
+
+Ownership remains external to D01. D09 owns market breadth/participation and sector context. D18 owns ex-ante regime interpretation. D19 owns beta/market-factor/asset-pricing context. D16 owns residual and dependence-aware inference. D01 only freezes how Pattern research consumes these receipts.
+
+The causal clock is split into pre-signal market context, same-date common-shock context and future benchmark outcomes. Only information known by predictorFreezeAt can enter baseline controls. Future market/factor returns never enter the D01 predictor manifest.
+
+The factor receipt itself must be point-in-time. Full-sample beta, forward-window beta or a current beta backfilled historically are post-hoc. Likewise, the benchmark or factor model cannot be chosen after seeing which residual makes Pattern look best.
+
+Replication counts are now deliberately plural. Future reports separately show stock observations, unique symbols, structural roots, sectors, sector-date clusters, market-date clusters and independent market episodes. Twenty stocks across five sectors on one date can therefore be represented honestly as twenty observations, five sector-date clusters and one market-date common-shock family.
+
+Candidate self-inclusion is retained as a caution. A stock can contribute to its own cap-weighted/equal-weight market return or breadth statistic. Candidate-excluded market context is preferable when available, but even such a context remains a control rather than an independent confirmation.
+
+The future readiness ladder runs from raw cross-sector Pattern, through market-date clustering, pre-signal market matching, D19 beta/factor readiness and a frozen market+sector residual design, to independent market-date replication. D01 does not assign an economic success state.
+
+Twenty adversarial cases are authored. They reject post-freeze market context, Pattern-defined market states, future-window beta, outcome-selected benchmarks/models, post-hoc regimes and future benchmark leakage; distinguish stock/sector-date/market-date counts; classify one-date multi-sector samples as one common-shock family; preserve market self-inclusion uncertainty; and enforce beta/regime/common-context support.
+
+New durable artifacts:
+- research/PATTERN_MARKET_COMMON_SHOCK_V0_1.md
+- research/pattern_market_common_shock_v0_1.json
+- research/pattern_market_common_shock_v0_1.mjs
+- research/test_pattern_market_common_shock_v0_1.mjs
+- research/PATTERN_MARKET_COMMON_SHOCK_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
