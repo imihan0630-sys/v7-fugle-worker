@@ -494,6 +494,7 @@ const output={
   replayReadinessState,
   pitContinuityReadiness:{
     universe:historicalUniverseEvidence.readiness,
+    sourceVersion:sourceReconciliation.sourceVersionState,
     symbolSession:coverage.symbolSessionReadiness,
     pit:coverage.pitReadiness,
     continuity:coverage.continuityReadiness,
