@@ -2200,3 +2200,50 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
 3. On 2026-10-07 capture T2_FINAL and compare T_PRELIM->T2 plus T1->T2.
 4. D06-06 waits for a same-generation D06-population-compatible shared PRICE_OHLC/VOLUME_TURNOVER parent with exact lineage; no fixed PVE-number shortcut.
 5. D06-05 waits for a genuine same-generation row before TDCC attachment.
+
+
+## 2026-10-05 D06 — IC-078~079 leverage LATE and universe guard
+
+- Room/domain: 05｜法人與籌碼研究室 / D06.
+- TPEx leverage LATE was captured after the preregistered 22:30 target through the same official page families used for EARLY.
+- Durable evidence:
+  - `research/d06_07_08_09_tpex_leverage_late_20261005_v0_1.json`;
+  - `research/d06_07_08_tpex_margin_late_snapshot_20261005_2340_v0_1.csv`;
+  - `research/d06_08_09_tpex_sbl_late_snapshot_20261005_2340_v0_1.csv`;
+  - `research/d06_07_08_09_tpex_leverage_late_stability_20261005_v0_1.json`;
+  - `research/d06_08_09_tpex_margin_sbl_universe_guard_20261005_v0_1.json`.
+- Margin table:
+  - 918 rows, 918 numeric-valid, 802 ordinary four-digit stocks, no duplicates;
+  - financing balance arithmetic 918/918 PASS;
+  - margin-short balance arithmetic 918/918 PASS;
+  - fingerprint fnv1a64-utf8:d86bcebd6469f4e3.
+- SBL table:
+  - 931 rows, 931 numeric-valid, 815 ordinary four-digit stocks, no duplicates;
+  - margin-short balance arithmetic 931/931 PASS;
+  - actual-SBL-short balance arithmetic 931/931 PASS;
+  - fingerprint fnv1a64-utf8:e2f21cc9a06e570d.
+- Same-evening re-read reproduced both fingerprints exactly.
+- EARLY 20:30 remains immutable UNKNOWN/MISSING; no late backfill. Because no numeric EARLY snapshot exists, 2026-10-05 EARLY/LATE revision magnitude is unidentifiable.
+- Common-source unit audit:
+  - 918 common symbols;
+  - previous/sell/buy/cash-repay/current margin-short fields match 918/918 after LOTS x1000 -> SHARES;
+  - exact limit x1000 matches only 173/918;
+  - floor(shareLimit/1000) equals displayed whole-lot limit on 918/918, proving a display-precision rule rather than source contradiction.
+- Universe audit:
+  - SBL table has 13 Y/not-credit-qualified rows absent from margin transactions;
+  - all 13 have nonzero actual SBL-short balance;
+  - 5 have same-day SBL sell;
+  - 7 have same-day sell/return/adjustment activity.
+- Therefore D06-08 margin-short and D06-09 actual SBL-short require separate denominators; an inner join to the margin-eligible universe would create structural selection bias.
+- D06-07/08/09 remain L2/40 because the preregistered source/revision gate is only partially cleared: LATE readiness is proven, paired EARLY/LATE revision is not.
+- D06 remains 48.9%; global tracker remains 46.5% / 356 modules at this write.
+- SDA-007 remains open; this evidence does not identify motive or create independent votes.
+- Outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. On 2026-10-06 capture D06-14 T1_REVISED for tradeDate 2026-10-05 under the frozen union/common-support revision contract.
+2. On 2026-10-07 capture D06-14 T2_FINAL.
+3. On the next genuine trading date repeat TPEx leverage EARLY near 20:30 and LATE near 22:30 using identical source/parser/unit semantics.
+4. Keep D06-08 margin-eligible and D06-09 SBL universes separate; never convert margin absence to zero SBL.
+5. D06-05 waits for a genuine same-generation TDCC child row.
+6. D06-06 waits for a same-generation D06-population-compatible shared PRICE_OHLC/VOLUME_TURNOVER parent with exact lineage.
