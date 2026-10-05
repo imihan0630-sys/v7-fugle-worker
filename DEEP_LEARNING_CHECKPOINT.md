@@ -2247,3 +2247,47 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
 4. Keep D06-08 margin-eligible and D06-09 SBL universes separate; never convert margin absence to zero SBL.
 5. D06-05 waits for a genuine same-generation TDCC child row.
 6. D06-06 waits for a same-generation D06-population-compatible shared PRICE_OHLC/VOLUME_TURNOVER parent with exact lineage.
+
+
+## 2026-10-06 D06 — IC-080~081 T+1 revision-clock follow-up
+
+- Room/domain: 05｜法人與籌碼研究室 / D06.
+- Latest restored D06 maturity at start: 48.9%; global tracker 46.5% / 356 modules.
+- D06-14 2026-10-05 T_PRELIM parent remains authoritative:
+  - 841 rows;
+  - canonical fingerprint fnv1a64-utf8:48e8edf2952b9b40.
+- First T+1 calendar-day readback at 2026-10-06T05:42:50+08:00:
+  - official TPEx page still displays trade date 2026-10-05;
+  - canonical parser = 841 rows / 841 numeric-valid / 725 ordinary four-digit / 0 duplicates;
+  - union = 841 / common = 841;
+  - unchanged = 841;
+  - changed = 0 / added = 0 / removed = 0 / identity conflicts = 0;
+  - all absolute revision metrics = 0;
+  - fingerprint remains fnv1a64-utf8:48e8edf2952b9b40.
+- This is deliberately NOT labeled T1_REVISED:
+  - TPEx states T/T+1/T+2 updates occur after broker overall processing and transmission;
+  - calendar rollover alone does not prove the T+1 update ran;
+  - durable receipt: research/d06_14_tpex_daytrade_t1_calendar_early_readback_20261006_0542_v0_1.json.
+- Revision clock guard frozen:
+  - research/d06_14_daytrade_revision_clock_guard_v0_1.json;
+  - page-query summary estimated 703 rows but canonical table parse returned 841; the summary count is rejected;
+  - canonical parser/table controls revision evidence.
+- Informative missingness guard frozen:
+  - research/d06_14_daytrade_informative_missingness_guard_v0_1.json;
+  - TPEx states securities adjusted to non-day-trading state stop appearing in the day-trading report until eligibility returns;
+  - official altered-trading-security page exists and states such securities cannot day trade, margin trade or securities-lend;
+  - REMOVED_IN_LATER must be cause-classified; removed row is never zero;
+  - union/common-support reporting now adds eligibility-censoring / provider-revision / source-coverage / unknown-removal states.
+- D06-05 blocker re-audit: no genuine 2026-10-05 after-market same-generation TDCC consumer row found; PREOPEN parent remains unjoined.
+- D06-06 blocker re-audit: D02 PVE-245 is a System1 engineering remediation handoff for provenance/bootstrap/session continuity; it does not create a D06-compatible cross-sectional shared price-volume parent.
+- SDA-007 readback: learning semantic remediation remains complete, but machine lineage enforcement, prospective one-receipt-many-consumers evidence, D16 residual validation and 00 closure remain pending.
+- D06-14 remains L2/40; D06 remains 48.9%; no outcomes; Formal Core locked.
+- New follow-up session: research/d06_20261006_revision_followup_session_v0_1.json.
+
+### Exact next continuation
+1. Later on 2026-10-06, after the TPEx T+1 reporting workflow is plausibly complete, recapture the 2026-10-05 day-trading table.
+2. Apply union-support and common-support revision metrics plus removal/reappearance cause classification.
+3. Preserve capturedAt and bounded firstKnownAt; do not invent an exact provider publication minute.
+4. Only then append a T1_REVISED vintage.
+5. On 2026-10-07 capture T2_FINAL under the provider's explicit finality rule.
+6. D06-05, D06-06 and SDA-007 remain fail-closed at their current blockers.
