@@ -1,0 +1,252 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-10-06T07:03:00+08:00",
+  "status": "SDA022_ARCHITECTURE_BASELINE_FROZEN",
+  "formalCoreImpact": "NONE",
+  "contract": "shared-knowledge/CROSS_SYSTEM_POLICY_FINGERPRINT_CONTRACT_V0_1.md",
+  "sources": {
+    "system1GateInventory": {
+      "path": "shared-knowledge/SYSTEM1_A2_GATE_ROLE_INVENTORY_20261003_V0_1.md",
+      "contentSha": "900acaa3dfafab4f8f46d8dd4f608276716590ef"
+    },
+    "system2StrategyContracts": {
+      "path": "system2/runtime/strategy_contracts_v0_1.mjs",
+      "contentSha": "2a5038ce2310aa18035e691db1a3bee7d5b22ae5"
+    },
+    "system2Rank01": {
+      "path": "system2/SYSTEM2_STRATEGY_LOCAL_RANKING_BASELINES_V0_1.md",
+      "contentSha": "396c0616ce167c525323c22bcce26c1321962392"
+    },
+    "system2Capacity": {
+      "path": "system2/SYSTEM2_CANDIDATE_CAPACITY_CONTRACT_V0_1.md",
+      "contentSha": "dd357b70297340f018c79b9bec7eb0ce61ce8ac8"
+    }
+  },
+  "system1": {
+    "systemId": "SYSTEM1",
+    "policyId": "V8_FORMAL_SELECTION",
+    "authority": "FORMAL_LOCKED",
+    "candidateUniverseMode": "INDEPENDENT_AUTHORIZED_UNIVERSE",
+    "requiresSystem2Candidates": false,
+    "requiresSystem2Rank": false,
+    "primaryStrategyIdentity": [
+      "A_SETUP",
+      "B_SETUP"
+    ],
+    "ranking": {
+      "mechanism": "SYSTEM1_FORMAL_COMPARATOR",
+      "order": [
+        "priorityScore",
+        "rewardPerRisk",
+        "marketConsensusScore",
+        "setupQuality",
+        "sectorFlow",
+        "relativeStrength"
+      ]
+    },
+    "capacity": {
+      "policy": "TOP6_3PLUS3",
+      "generalMax": 3,
+      "thousandMax": 3,
+      "thousandThresholdTwd": 1000,
+      "crossPoolTransfer": false,
+      "totalMax": 6,
+      "forcedFill": false
+    },
+    "constants": {
+      "priceFloorTwd": 10,
+      "rrFloor": 2,
+      "signalGradeBFloor": 65,
+      "signalGradeA": 80,
+      "maxSingleNameAllocationPct": 35
+    },
+    "entryConfirmation": "FORMAL_15M",
+    "lifecycle": [
+      "BUY",
+      "ADD",
+      "REDUCE",
+      "SELL",
+      "STOP"
+    ],
+    "currentInformationFamilies": [
+      "AB_SETUP",
+      "REWARD_RISK",
+      "MARKET_CONSENSUS",
+      "SECTOR",
+      "FUNDAMENTAL",
+      "INSTITUTIONAL_CHIP",
+      "RELATIVE_STRENGTH",
+      "LIQUIDITY_RISK"
+    ]
+  },
+  "system2": {
+    "systemId": "SYSTEM2",
+    "policyId": "MULTI_STRATEGY_PLATFORM",
+    "authority": "RESEARCH_SHADOW",
+    "designCandidateUniverseMode": "INDEPENDENT_FULL_MARKET",
+    "physicalIndependentDiscovery": "NOT_PHYSICALLY_PROVEN",
+    "requiresSystem1CandidatesByArchitecture": false,
+    "requiresSystem1RankByArchitecture": false,
+    "capacity": {
+      "globalCandidateMax": 12,
+      "perStrategyActiveMonitorMax": 3,
+      "forcedFill": false,
+      "universalCrossStrategyScore": false,
+      "scarceGlobalPriorityWithoutPolicy": "GLOBAL_PRIORITY_UNRESOLVED"
+    },
+    "strategies": [
+      {
+        "strategyId": "SHORT_MOMENTUM",
+        "strategyVersion": "V0.1-CONTRACT",
+        "horizons": [
+          1,
+          3,
+          5,
+          10
+        ],
+        "primaryFamilies": [
+          "TECHNICAL_STRUCTURE",
+          "PRICE_VOLUME",
+          "MARKET_REGIME"
+        ],
+        "requiredFamilies": [
+          "RISK_FRICTION"
+        ],
+        "supportiveFamilies": [
+          "CAPITAL_FLOW"
+        ],
+        "contextFamilies": [
+          "FUNDAMENTAL_QUALITY"
+        ],
+        "rankingPolicyId": "SM-PARETO-BASELINE",
+        "rankingPolicyVersion": "0.1",
+        "rankingMechanism": "STRATEGY_LOCAL_PARETO",
+        "rank01Families": [
+          "TECHNICAL_STRUCTURE",
+          "PRICE_VOLUME",
+          "RISK_FRICTION"
+        ],
+        "convergenceRiskVsSystem1": "HIGHEST_CURRENT_STRUCTURAL_OVERLAP_SURFACE"
+      },
+      {
+        "strategyId": "SWING_GROWTH",
+        "strategyVersion": "V0.1-CONTRACT",
+        "horizons": [
+          10,
+          20,
+          40,
+          60
+        ],
+        "primaryFamilies": [
+          "INDUSTRY_THESIS",
+          "FUNDAMENTAL_QUALITY",
+          "EVENT_CATALYST"
+        ],
+        "requiredFamilies": [
+          "VALUATION"
+        ],
+        "supportiveFamilies": [
+          "TECHNICAL_STRUCTURE",
+          "PRICE_VOLUME",
+          "CHIP_OWNERSHIP"
+        ],
+        "rankingPolicyId": "SG-PARETO-BASELINE",
+        "rankingPolicyVersion": "0.1",
+        "rankingMechanism": "STRATEGY_LOCAL_PARETO",
+        "rank01Families": [
+          "FUNDAMENTAL_QUALITY",
+          "INDUSTRY_THESIS"
+        ],
+        "convergenceRiskVsSystem1": "MATERIAL_BUT_LOWER_THAN_SHORT_MOMENTUM"
+      },
+      {
+        "strategyId": "INDUSTRY_TREND",
+        "strategyVersion": "V0.1-CONTRACT",
+        "horizons": [
+          20,
+          40,
+          60,
+          120
+        ],
+        "primaryFamilies": [
+          "INDUSTRY_THESIS"
+        ],
+        "supportiveFamilies": [
+          "FUNDAMENTAL_QUALITY",
+          "VALUATION",
+          "CAPITAL_FLOW",
+          "TECHNICAL_STRUCTURE",
+          "PRICE_VOLUME"
+        ],
+        "rankingMechanism": "NO_LOCAL_RANK_FROZEN",
+        "convergenceRiskVsSystem1": "SHARED_D09_ROOT_REQUIRES_LINEAGE"
+      },
+      {
+        "strategyId": "EVENT_DRIVEN",
+        "strategyVersion": "V0.1-CONTRACT",
+        "horizons": [
+          1,
+          3,
+          5,
+          10,
+          20,
+          40
+        ],
+        "primaryFamilies": [
+          "EVENT_CATALYST"
+        ],
+        "requiredFamilies": [
+          "RISK_FRICTION"
+        ],
+        "supportiveFamilies": [
+          "INDUSTRY_THESIS",
+          "FUNDAMENTAL_QUALITY",
+          "PRICE_VOLUME",
+          "TECHNICAL_STRUCTURE"
+        ],
+        "rankingMechanism": "NO_LOCAL_RANK_FROZEN",
+        "convergenceRiskVsSystem1": "LOWER_THESIS_OVERLAP_BUT_SHARED_TIMING_SUPPORT"
+      },
+      {
+        "strategyId": "VALUE_REVERSION",
+        "strategyVersion": "V0.1-CONTRACT",
+        "authority": "RESEARCH_ONLY_APPROVED",
+        "horizons": [
+          10,
+          20,
+          40,
+          60,
+          120
+        ],
+        "primaryFamilies": [
+          "VALUATION",
+          "FUNDAMENTAL_QUALITY",
+          "EVENT_CATALYST"
+        ],
+        "supportiveFamilies": [
+          "TECHNICAL_STRUCTURE",
+          "PRICE_VOLUME",
+          "CHIP_OWNERSHIP"
+        ],
+        "rankingMechanism": "NO_LOCAL_RANK_FROZEN",
+        "convergenceRiskVsSystem1": "LOWER_THESIS_OVERLAP_BUT_SHARED_SUPPORT"
+      }
+    ]
+  },
+  "auditVerdict": {
+    "currentSystemsIdentical": false,
+    "physicalIndependenceFullyProven": false,
+    "convergenceRisk": "MATERIAL",
+    "highestRiskPair": "SYSTEM1_FORMAL_vs_SYSTEM2_SHORT_MOMENTUM",
+    "noForcedDivergence": true,
+    "noNumericIndependenceThresholdFrozen": true
+  },
+  "nextEvidence": [
+    "SYSTEM1_POLICY_FINGERPRINT_RECEIPT",
+    "SYSTEM2_STRATEGY_POLICY_FINGERPRINT_RECEIPTS",
+    "NC_T01_SYSTEM2_WITHOUT_SYSTEM1_TOP6_OR_RANK",
+    "PROSPECTIVE_CROSS_SYSTEM_OVERLAP_DIVERGENCE_RECEIPTS",
+    "D16_DEPENDENCE_INCREMENTALITY_VALIDATION",
+    "00_INDEPENDENT_CLOSURE"
+  ]
+}
