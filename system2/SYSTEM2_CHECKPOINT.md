@@ -2202,3 +2202,17 @@ Important:
 - a legitimate zero-pick remains valid if distinguishable from dependency/data/runtime failure.
 
 This pointer does not reorder the active BUILD_LANE and authorizes no strategy/ranking mutation.
+
+
+## 2026-10-06 SDA-022 machine receipt schema pointer
+
+Machine schemas:
+- shared-knowledge/cross_system_policy_fingerprint_receipt_schema_v0_1.json
+- shared-knowledge/sda022_nc_t01_receipt_schema_v0_1.json
+
+Next System2 SDA-022 outputs:
+1. one strategy-policy fingerprint receipt per audited strategy, conforming to the fingerprint schema and S22-T06~T10;
+2. NC-T01 physical independence receipt conforming to the NC-T01 schema and S22-T11~T16.
+
+Synthetic fixtures may test schema behavior but cannot set PHYSICALLY_INDEPENDENT_PATH_OBSERVED.
+This pointer authorizes no ranking/strategy/live behavior change.
