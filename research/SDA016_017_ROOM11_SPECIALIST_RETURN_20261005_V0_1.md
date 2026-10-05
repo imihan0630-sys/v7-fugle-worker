@@ -491,3 +491,35 @@ These are governance anchors only, not Taiwan-stock alpha evidence.
 - Room00 remains sole closure authority;
 - no maturity change;
 - Formal Core remains LOCKED.
+
+
+## 2026-10-06 existing-registry outer-stream audit
+
+Canonical audit:
+- `research/D16_EXISTING_EXPERIMENT_REGISTRY_OUTER_STREAM_AUDIT_20261006_V0_1.md`;
+- `research/d16_existing_experiment_registry_outer_stream_audit_v0_1.json`.
+
+Physical readback:
+- central `research/EXPERIMENT_REGISTRY.md` has 8 base R families (R01-R08);
+- 5 explicit R v1.1 subdefinitions;
+- D16-CAL-01 is additionally preregistered;
+- central registry contains no `researchStreamId`;
+- central registry contains no `multipleTestingFamilyId`.
+
+Local multiplicity is not absent:
+- D02 L4 target registry contains 14 entries across F0-F5;
+- D03 primary handoff contains 2 experiments and requires `multipleTestingFamilyId` in the future D16 method receipt.
+
+Disposition:
+`LOCAL_MULTIPLICITY_PARTIAL / CROSS_ROOM_OUTER_STREAM_NOT_MODELED`.
+
+This is a real governance gap but does not retroactively invalidate every local experiment.
+Historical inspected evidence keeps its existing descriptive/development/consumption status; no favorable historical outer-budget assignment is permitted.
+
+D16-CAL-01 remains before first genuine C1 outcome inspection and therefore has a clean opportunity for pre-outcome outer-stream enrollment.
+
+Required pre-outcome state for confirmatory use:
+`STREAM_ENROLLMENT_REQUIRED_BEFORE_FIRST_GENUINE_OUTCOME_INSPECTION`.
+
+No specific FWER/FDR/mFDR/online method or numeric error level is selected by this audit.
+No maturity change.
