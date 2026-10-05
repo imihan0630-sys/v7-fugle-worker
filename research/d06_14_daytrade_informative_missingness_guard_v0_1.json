@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "D06_14_DAYTRADE_INFORMATIVE_MISSINGNESS_GUARD_V0_1",
+  "updatedAt": "2026-10-06 Asia/Taipei",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-14",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "officialSources": [
+    {
+      "product": "TPEx 現股當沖交易統計資訊",
+      "url": "https://www.tpex.org.tw/zh-tw/mainboard/trading/day-trading/statistics/day.html",
+      "rule": "When a security is adjusted to become non-day-trading eligible, the report stops disclosing that security's day-trading information until eligibility is restored."
+    },
+    {
+      "product": "TPEx 新增之變更交易證券",
+      "url": "https://www.tpex.org.tw/zh-tw/mainboard/trading/day-trading/securities/change.html",
+      "fields": [
+        "新增變更交易日期",
+        "證券代號",
+        "證券名稱",
+        "分盤交易",
+        "屬管理股票",
+        "搓合循環時間"
+      ],
+      "rule": "Altered-trading securities cannot conduct day trading, margin trading, securities lending, or below-reference-price securities-lending short sales."
+    }
+  ],
+  "problem": "A row disappearing between T_PRELIM, T1_REVISED and T2_FINAL can be an eligibility/censoring event rather than a numeric revision to zero. Common-row-only analysis or zero imputation would create selection bias.",
+  "removalStates": {
+    "ELIGIBILITY_CENSORING_CONFIRMED": "Later absence is supported by an official security-eligibility/change source for the relevant vintage.",
+    "PROVIDER_REVISION_REMOVAL_CONFIRMED": "Provider revision lineage explicitly removes the row without an eligibility-state explanation.",
+    "SOURCE_COVERAGE_OR_SCHEMA_CHANGE": "A source/parser/schema coverage change explains absence; not a market-data revision.",
+    "UNKNOWN_REMOVAL_CAUSE": "Row is absent later but no authoritative cause is established."
+  },
+  "reappearanceStates": {
+    "ELIGIBILITY_RESTORED_REAPPEARANCE": "Previously censored symbol reappears after day-trading eligibility restoration.",
+    "UNKNOWN_REAPPEARANCE_CAUSE": "Later presence resumes but eligibility cause is not verified."
+  },
+  "requiredRevisionMetricsExtension": [
+    "removedRowCountByCause",
+    "addedOrReappearedRowCountByCause",
+    "eligibilityCensoringCount",
+    "unknownRemovalCauseCount",
+    "commonSupportRevisionMetrics",
+    "unionSupportRevisionMetrics"
+  ],
+  "safeguards": [
+    "Removed row is never numeric zero.",
+    "Do not silently drop removed rows from the revision denominator.",
+    "Do not call a later reappearance a new listing without identity and eligibility evidence.",
+    "Sell-first suspension flag and full day-trading eligibility are separate states.",
+    "Eligibility changes are rule-state observations, not investor-motive or directional signals.",
+    "If official eligibility history cannot be resolved, preserve UNKNOWN_REMOVAL_CAUSE."
+  ],
+  "current20261006Observation": {
+    "changedTradingSecuritiesPageDisplayedDate": "2026-10-06",
+    "currentRowsObserved": 0,
+    "interpretation": "No current rows were displayed in the fetched page at this observation; this is not used to backfill or infer historical 2026-10-05 eligibility changes."
+  },
+  "maturityImpact": "NONE",
+  "status": "INFORMATIVE_ROW_MISSINGNESS_FIREWALL_FROZEN / ELIGIBILITY_CENSORING_SEPARATED_FROM_NUMERIC_REVISION / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Apply these cause states whenever T1/T2 union comparison has removed or reappeared symbols. Use official eligibility/change evidence when available; otherwise fail closed as UNKNOWN."
+}
