@@ -2,6 +2,14 @@ name: D02 PVE-248 Candidate CI
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - "research/d02-pve248-class-b-candidate-20261006"
+    paths:
+      - "scripts/apply_v8_18_1_pve248_candidate.py"
+      - "tests/test_v8_18_1_pve248_runtime_candidate.mjs"
+      - ".github/workflows/v7-regression.yml"
+      - ".github/workflows/d02-pve248-candidate.yml"
   pull_request:
     branches: [main]
     paths:
