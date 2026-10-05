@@ -2103,3 +2103,21 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
 4. Capture D06-14 T_PRELIM only from the actual stock-level day-trading statistics object.
 5. Append PF-040 only after issuer units/PCF source date advances to 2026-10-05.
 6. Keep D06-18 15:20 slot UNKNOWN/MISSING and all outcomes closed.
+
+
+## 2026-10-05 D06 — IC-071 cross-domain price/volume parent lineage
+
+- Room/domain: 05｜法人與籌碼研究室 / D06.
+- Durable contract: `research/d06_core_crowding_crossdomain_parent_lineage_20261005_v0_1.json`.
+- D06-06 CORE_CROWDING may consume PRICE_OHLC / VOLUME_TURNOVER only through the exact same-generation D02/canonical shared parent lineage; it may not create a second D06 primitive for the same information.
+- Legacy planned id `D06-20261005-LIQUIDITY-PRICEVOLUME` is consumer-alias-only until exact shared parent primitiveReceiptId/hash/firstKnownAt are bound.
+- No durable 2026-10-05 same-generation D02/shared price-volume parent receipt was found at freeze time, so D06-06 remains waiting instead of duplicating the parent.
+- The price-flow reaction child contributes zero new independent evidence until D16 common-support residual incrementality is proven.
+- This is SDA-007 remediation with SDA-001/SDA-003 dependency awareness; Room05 does not claim closure of those tickets.
+- D06 maturity remains 47.8%; outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. Bind the exact shared 2026-10-05 D02/canonical PRICE_OHLC + VOLUME_TURNOVER parent when it becomes durable.
+2. Continue the remaining 2026-10-05 frozen source lanes strictly at their actual clocks: TWSE dealer split, TPEx leverage EARLY/LATE, D06-14 T_PRELIM and PF-040 source refresh.
+3. Complete same-generation TDCC attachment to D06-05/D06-06 when the corresponding research generation row exists.
+4. Do not increase maturity from lineage governance alone.
