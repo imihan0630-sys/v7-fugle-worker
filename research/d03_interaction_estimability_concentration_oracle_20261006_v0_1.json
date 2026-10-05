@@ -33,7 +33,12 @@
     "selectionIdentificationDisposition",
     "dependenceMethodRef",
     "consumerScopeHash",
-    "terminalState"
+    "terminalState",
+    "supportFloorPreregistrationHash",
+    "preregisteredMinIndependentDecisionDateN",
+    "methodSpecificSupportFloorPass",
+    "representationChangedAfterOutcome",
+    "knownSemanticBreaksPooled"
   ],
   "categoricalJointCellRequired": [
     "preregisteredCellUniverse",
@@ -191,5 +196,18 @@
     "productionReadiness": true,
     "formalPromotion": true
   },
-  "maturityImpact": "NONE_56_7_PERCENT"
+  "maturityImpact": "NONE_56_7_PERCENT",
+  "preregistrationRules": {
+    "supportFloorPreregistrationHashRequired": true,
+    "minIndependentDecisionDateNMustBeFrozenPreOutcome": true,
+    "representationClassMustBeFrozenPreOutcome": true,
+    "nearZeroCellRuleMustBeFrozenPreOutcome": true,
+    "concentrationWarningRulesMustBeFrozenPreOutcomeWhereUsed": true,
+    "supportFloorMutationAfterOutcome": "NEW_FAMILY_AND_SDA016_CONSUMPTION"
+  },
+  "requiredCommonFieldSemantics": {
+    "methodSpecificSupportFloorPass": "Boolean result evaluated against the pre-outcome D16 method-specific support contract; false routes to POWER_INSUFFICIENT unless a more specific blocking state applies.",
+    "representationChangedAfterOutcome": "Must be false for confirmatory continuity.",
+    "knownSemanticBreaksPooled": "Must be false unless the D16 method receipt explicitly authorizes a break-aware method and binds it in the support-floor preregistration."
+  }
 }
