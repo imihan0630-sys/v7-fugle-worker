@@ -5467,3 +5467,37 @@ Current state after PVE-240:
 
 Exact next continuation point:
 PVE-241 — freeze the executable prospective receipt schema for minute/daily unit normalization, corporate-action contamination, source availability clocks and participation-intent classification; remain outcome-blind and do not create numerical targets or D16 model methods.
+
+
+# PVE-241 — Prospective provenance receipt schema freeze (2026-10-05)
+
+Status: OUTCOME_BLIND / SCHEMA_FROZEN / NO_PROMOTION / FORMAL_UNCHANGED.
+
+Durable artifacts:
+- `research/d02_prospective_pv_provenance_receipt_schema_v0_1.json`;
+- `research/d02_pve_241_prospective_receipt_schema_freeze_20261005.md`.
+
+Frozen receipt boundary:
+- source/provider/endpoint/retrieval time/raw payload hash;
+- availableAt/firstKnownAt/decisionCutoff;
+- completed-bar identity and Asia/Taipei clock;
+- raw and normalized volume units with explicit conversion;
+- adjustment semantics and corporate-action lineage;
+- information-root identity;
+- participation proxy class with intentIdentified=false;
+- fail-closed admission booleans/reasons.
+
+Allowed V0.1 normalization is intentionally narrow:
+SHARES identity, or regular-lot LOTS x1000 to SHARES.
+Anything else remains UNKNOWN/BLOCKED until separately versioned.
+
+The schema closes the design degree of freedom but does not prove runtime compliance.
+A planned 14-case fail-closed fixture matrix was not durably created in this round because the repository write was blocked; therefore executable guard validation is still pending.
+
+PVE-241 does not create a clean prospective date, numerical EffectTargetReceipt, D16 method receipt, L4 promotion or Formal change.
+
+Current state:
+PVE-241 / CLEAN_DATE_ZERO / Gate 7 CLOSED / D02 60.0%.
+
+Exact next continuation:
+PVE-242 — implement and independently validate the fail-closed executable guard/fixture set against the frozen PVE-241 schema, then capture the first genuine prospective receipt without opening promotion-grade outcomes.
