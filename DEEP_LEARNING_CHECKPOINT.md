@@ -2161,3 +2161,42 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
 3. Search for a genuine same-generation D06-05/D06-06 row before attaching the existing TDCC parent; no fabricated generation.
 4. Wait for D02 PVE-243 genuine prospective canonical PRICE_OHLC/VOLUME_TURNOVER parent before D06-06 binding.
 5. D06-16 L4 requires preregistered OOS/Shadow residual incrementality; no performance claim from L3 source readiness.
+
+
+## 2026-10-05 D06 — IC-075~077 T_PRELIM and shared-parent correction
+
+- Room/domain: 05｜法人與籌碼研究室 / D06.
+- D06-14 first genuine TPEx T_PRELIM for trade date 2026-10-05 is now prospectively preserved:
+  - receipt: `research/d06_14_tpex_daytrade_tprelim_capture_20261005_2210_v0_1.json`;
+  - earlier 20:33:21 and 20:43:06 observations preserved as not-yet-observed;
+  - by 22:10:01 same-date rows were visible;
+  - empirical publication interval = (20:43:06, 22:10:01] Asia/Taipei, exact provider minute not invented;
+  - 841 rows / 841 numeric-valid; 725 ordinary four-digit stocks; 0 duplicate symbols; 12 suspension-flag rows;
+  - total day-trading shares 563,183,000;
+  - total buy value NTD 139,035,902,050;
+  - total sell value NTD 139,484,441,280;
+  - canonical normalized-row fingerprint = fnv1a64-utf8:48e8edf2952b9b40.
+- 22:15 same-generation re-read is identical under the same canonicalization:
+  - `research/d06_14_tpex_daytrade_tprelim_same_day_stability_20261005_v0_1.json`;
+  - an intermediate apparent hash mismatch was diagnosed as raw-display-vs-normalized hashing and is NOT a provider revision.
+- Revision comparison guard frozen:
+  - `research/d06_14_daytrade_revision_comparison_contract_v0_1.json`;
+  - union-symbol denominator plus common support;
+  - added/removed rows are explicit, missing is not zero, zero-base relative revision fails closed;
+  - parser/schema changes must not be mislabeled provider revisions.
+- D06-14 remains L2/40%; T+1/T+2 revision lineage remains required. No return/outcome data were read.
+- D06-06 continuation was corrected after D02 PVE-243/PVE-244 readback:
+  - `research/d06_06_shared_price_volume_parent_reassessment_20261005_v0_1.json`;
+  - PVE-243 is genuine one-symbol 2330 / 1d / GENERIC_PROVENANCE_ONLY with informationRoot PRICE_PLUS_VOLUME_DERIVED, not a D06-compatible cross-sectional shared parent;
+  - PVE-244 is SOURCE_BLOCKED for a decision-time-valid 15m Wave-1 receipt;
+  - D06-06 now waits for compatible population/root lineage rather than a specific PVE number.
+- D06-05 same-generation TDCC attachment was re-searched and remains absent; parent receipt stays unjoined.
+- D06 maturity remains 48.9%; global tracker remains 46.5% / 356 modules at this readback.
+- Outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. At 22:30 capture TPEx leverage LATE through the same authorized official source families; EARLY 20:30 remains immutable UNKNOWN/MISSING.
+2. On 2026-10-06 capture D06-14 T1_REVISED for tradeDate 2026-10-05 and apply the union/common-support revision contract.
+3. On 2026-10-07 capture T2_FINAL and compare T_PRELIM->T2 plus T1->T2.
+4. D06-06 waits for a same-generation D06-population-compatible shared PRICE_OHLC/VOLUME_TURNOVER parent with exact lineage; no fixed PVE-number shortcut.
+5. D06-05 waits for a genuine same-generation row before TDCC attachment.
