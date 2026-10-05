@@ -1823,3 +1823,64 @@ Exact next:
 2. on 2026-10-07 preserve T2_FINAL for the same date and compare against both earlier vintages;
 3. quantify revision coverage, changed-row count, absolute/relative revision magnitude and suspension-flag changes without returns;
 4. do not promote D06-14 before revision/PIT stability is evidenced.
+
+
+---
+
+## IC-076 — TPEx day-trading revision comparison guard and same-evening stability
+
+Research cycle: 2026-10-05 Asia/Taipei  
+Status: REVISION_COMPARISON_CONTRACT_FROZEN / T_PRELIM_SAME_DAY_STABLE / T1_T2_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable artifacts:
+- `research/d06_14_daytrade_revision_comparison_contract_v0_1.json`;
+- `research/d06_14_tpex_daytrade_tprelim_same_day_stability_20261005_v0_1.json`.
+
+The 2026-10-05 TPEx T_PRELIM receipt captured by 22:10 was re-read at 22:15 under the same numeric canonicalization. Row count, aggregate shares, buy value, sell value and canonical fingerprint remained identical:
+`fnv1a64-utf8:48e8edf2952b9b40`.
+
+An intermediate apparent hash mismatch was diagnosed as a canonicalization mismatch: raw display strings with thousands separators had been compared against normalized numeric rows. After the same normalization rule was applied, no provider revision remained. This false alarm is preserved as a provenance lesson rather than mislabeled as a data revision.
+
+The revision comparison contract now requires:
+- union-symbol denominator plus a separately reported common-support denominator;
+- UNCHANGED / CHANGED / ADDED_IN_LATER / REMOVED_IN_LATER / UNKNOWN_IDENTITY_CONFLICT states;
+- missing rows are never numeric zero;
+- zero-base relative changes fail closed or use a separate bucket;
+- suspension-flag changes and numeric revisions are separate mechanisms;
+- parser/schema changes must not be confused with provider revisions;
+- T2_FINAL can validate finality but cannot overwrite T_PRELIM first-known state.
+
+D06-14 remains L2/40%. Same-evening stability is useful source evidence but is not a substitute for T+1/T+2 revision lineage.
+
+---
+
+## IC-077 — D06-06 shared price/volume parent gate corrected after D02 PVE-243/PVE-244 readback
+
+Research cycle: 2026-10-05 Asia/Taipei  
+Status: STALE_CONTINUATION_CORRECTED / PVE243_GENERIC_NOT_D06_PARENT / PVE244_SOURCE_BLOCKED / SHARED_PARENT_STILL_WAITING / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable reassessment:
+`research/d06_06_shared_price_volume_parent_reassessment_20261005_v0_1.json`.
+
+The earlier continuation text said D06-06 should wait for D02 PVE-243 as if that specific node would necessarily provide the required shared parent. Latest D02 evidence falsifies that assumption.
+
+PVE-243 is a genuine prospective canonical provenance receipt, but:
+- it covers only symbol 2330;
+- timeframe is 1d;
+- its informationRoot is `PRICE_PLUS_VOLUME_DERIVED`;
+- it is classified GENERIC_PROVENANCE_ONLY;
+- clean prospective selection dates remain zero.
+
+Therefore PVE-243 is valuable D02 source/PIT evidence but cannot serve as the cross-sectional D06-06 shared parent layer by itself.
+
+PVE-244 separately records SOURCE_BLOCKED for a valid decision-time 15m Wave-1 receipt and rejects retrospective relabeling of later historical candles. That blocker also does not manufacture a D06 parent.
+
+The corrected D06-06 gate is no longer tied to a PVE number. A compatible shared parent must provide:
+1. same-generation/date compatibility;
+2. D06-population-compatible coverage or explicit row-level joins;
+3. exact parent identity/hash/firstKnownAt;
+4. preserved PRICE_OHLC and VOLUME_TURNOVER ancestry without D06 rematerialization;
+5. sufficient unit/corporate-action semantics;
+6. fail-closed UNKNOWN when the parent is absent.
+
+Maturity impact: NONE. D06-06 remains L3/60% on its existing bounded source/PIT basis, while today's new compatible price/volume parent remains WAITING. No outcomes or Formal change.
