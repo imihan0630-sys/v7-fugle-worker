@@ -1309,3 +1309,51 @@ Shortest current path:
 7. only then prepare an owner-review candidate.
 
 This launch-gate file changes no Formal behavior.
+
+
+## 2026-10-06 latest SDA engineering intake — 48/48 oracle baseline
+
+Canonical intake:
+shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_INTAKE_20261006_V0_3.md
+
+Latest authoritative validation:
+- SDA-016 = V0.4 / 48 blocking tests;
+- SDA-017 = V0.3 / 48 blocking tests.
+
+System1 PR #644:
+- useful provenance partial pass;
+- OPEN / DRAFT / NOT_MERGED / NOT_DEPLOYED;
+- 12/12 dedicated tests + exact-head CI PASS;
+- does not solve authoritative Formal decision -> exact C1 generation binding;
+- does not solve shared cross-system holdout authority;
+- merge/deploy remains separately owner-gated.
+
+D02 PVE-246:
+- after-market combined Cron misclassification root cause CERTIFIED;
+- historical 15m bootstrap starvation mechanism CERTIFIED;
+- provider/endpoint/rawPayloadHash persistence loss CERTIFIED;
+- remediation not implemented;
+- 2026-10-05 remains permanently non-clean;
+- clean H001 prospective date count remains zero.
+
+D03/D01/D02:
+- mixed-root residual evidence now requires target-population identification, positivity/estimand identity and pre-outcome admission rules;
+- volume-at-price remains one mixed-root family by default, effectiveIndependentEvidenceCount=1, no independent vote without D16 residual proof.
+
+D06:
+- calendar-day rollover != revision publication;
+- row disappearance may be informative eligibility censoring, never automatic zero;
+- machine lineage and D16 residual evidence remain open.
+
+Launch Gate remains:
+S0 PASS / S1 PARTIAL / S2 NOT_READY / S3 NOT_READY / S4 OWNER_APPROVAL_REQUIRED / T1 NOT_READY.
+
+Exact next 00 cursor:
+1. intake the next actual System1 Class-A SDA-001/004 schema-delta receipt;
+2. intake System1 SDA-009 leave-one-out diagnostic when landed;
+3. treat PR #644 only as candidate evidence unless a separately approved merge/deploy occurs;
+4. intake System1 PVE-246 remediation only after the correct governance class/approval boundary is respected;
+5. intake System2 SDA-017 episode/support observer against V0.3 T01-T48;
+6. intake shared SDA-016 authority against V0.4 T01-T48;
+7. do not close SDA-016/SDA-017 without independent 00 readback;
+8. Formal Core remains locked.
