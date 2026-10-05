@@ -3119,3 +3119,114 @@ Formal Core LOCKED.
 
 ### Exact continuation
 Audit latest canonical D14/D15/D16 and decision contracts for pre-existing compatible decision-utility, risk-tolerance or precision anchors. Classify each D02 evidence key's calibration source as LEGAL / INCOMPATIBLE / MISSING without reading matching D02 outcomes. Freeze a numerical target only from a legal source; otherwise preserve UNKNOWN and continue PVE-240 admission capture only.
+
+## Pre-PVE-240 continuation — effect-target derivation readiness + freeze precondition guard (2026-10-05)
+
+Status: OUTCOME_BLIND / NUMERICAL_TARGETS_0_OF_14_FROZEN / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+New durable artifacts:
+- `research/D02_L4_EFFECT_TARGET_DERIVATION_MATRIX_20261005_V0_1.md`;
+- `research/d02_l4_effect_target_derivation_matrix_v0_1.json`;
+- `research/D02_L4_PRIMARY_OUTCOME_SHELL_FREEZE_20261005_V0_1.md`;
+- `research/d02_l4_primary_outcome_shell_registry_v0_1.json`;
+- `research/D02_L4_TARGET_FREEZE_PRECONDITION_CONTRACT_V0_1.md`;
+- `research/d02_l4_target_freeze_precondition_guard_v0_1.mjs`;
+- `tests/test_d02_l4_target_freeze_precondition_guard_v0_1.mjs`;
+- `research/d02_l4_effect_target_registry_v0_2.json`;
+- `research/D02_WAVE1_METRIC_HORIZON_GOVERNANCE_20261005_V0_1.md`;
+- `research/d02_wave1_metric_horizon_governance_v0_1.json`;
+- `research/d02_l4_target_freeze_precondition_validation_20261005_v0_1.md`;
+- `research/d02_l4_target_freeze_precondition_validation_v0_1.json`.
+
+Independent executable validation:
+24/24 tests PASS.
+
+### Derivation conclusion
+
+No universal D02 numerical target is justified.
+
+A target may be frozen only from:
+- COST_BENEFIT;
+- THEORETICAL_BOUND;
+- PRIOR_INDEPENDENT_EVIDENCE;
+- PRECISION_REQUIREMENT;
+- D02-01 SEMANTIC_POLICY.
+
+Forbidden:
+- current D02 prospective outcomes;
+- post-outcome best metric;
+- post-outcome best horizon;
+- test fixture value;
+- generic benchmark without justification;
+- UNKNOWN cost as zero;
+- another evidence key's target.
+
+### Target planning data rule
+
+Historical/retrospective planning data can support target design only when:
+- immutable planning receipt/hash/freeze time exists;
+- role = PLANNING_ONLY;
+- it is disjoint from promotion evidence.
+
+It can never be silently recycled as Prospective/OOS L4 evidence.
+
+### Wave-1 target-shell progress
+
+D02-02 H001:
+- comparator frozen;
+- primary outcome family frozen: structural failure/no-follow-through;
+- effect-size reporting family already governed by PV-084;
+- B1/B2/B4 horizon semantics frozen;
+- singular promotion metric pending;
+- multihorizon decision rule pending;
+- numerical target pending.
+
+D02-03 H20:
+- same pattern on the identical D01-owned breakout event.
+
+D02-06 H003:
+- comparator frozen: PRICE_PLUS_VOLUME_RESPONSE vs PRICE_ONLY_RESPONSE;
+- primary outcome family frozen: future structural acceptance/failure;
+- future-only clock frozen;
+- singular promotion metric pending;
+- multihorizon/horizon decision rule pending;
+- numerical target pending.
+
+D02-01:
+- semantic estimand shell frozen:
+  materialPreventionCandidateCount / eligibleSemanticReceipts;
+- numerical semantic tolerance remains pending.
+
+### PV-084 / PV-086 retained
+
+Effect-size and utility reporting before significance remains:
+- absolute failure-rate difference;
+- risk ratio;
+- median MFE/MAE/return;
+- subgroup/date stability;
+- adverse confirmations avoided;
+- valid follow-through opportunities lost;
+- BUY-frequency / idle-capital impact.
+
+P-values/AUC alone cannot establish usefulness.
+
+### Horizon audit
+
+No canonical repository authority ranks B1/B2/B4.
+Therefore:
+- no post-outcome best-horizon selection;
+- horizons from the same anchor are not independent events;
+- a promotion-grade family rule must be frozen before outcome access.
+
+### Current target registry
+
+V0.2 has 14 evidence keys.
+0 numerical targets FROZEN.
+14 remain TARGET_VALUE_PENDING_FREEZE with explicit per-key blockers.
+
+Current evidence:
+PVE-239 / CLEAN_DATE_ZERO / Gate 7 CLOSED.
+
+D02 remains 60.0%.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core remains LOCKED.
