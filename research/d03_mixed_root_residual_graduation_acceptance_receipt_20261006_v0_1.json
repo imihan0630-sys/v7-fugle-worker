@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "D03_MIXED_ROOT_RESIDUAL_GRADUATION_ACCEPTANCE_RECEIPT_V0_1",
+  "updatedAt": "2026-10-06T05:44:00+08:00",
+  "contract": "research/d03_mixed_root_residual_graduation_guard_20261006_v0_1.json",
+  "canonicalExecutableFixture": "research/test_d03_mixed_root_residual_graduation_guard_v0_1.mjs",
+  "validationMode": "INDEPENDENT_LOGIC_MIRROR_VALIDATION",
+  "repositoryNodeFixtureExecutedInThisRound": false,
+  "ciReceiptClaimed": false,
+  "outcomeDataUsed": false,
+  "status": "PASS_CONTRACT_SEMANTICS",
+  "cases": {
+    "positive": 3,
+    "adversarialRejected": 9,
+    "total": 12
+  },
+  "observed": {
+    "unprovenMixedRootEffectiveIndependentEvidenceCount": 1,
+    "provenVolumeResidualEffectiveIndependentEvidenceCount": 2,
+    "duplicateVolumeResidualEffectiveIndependentEvidenceCount": 2,
+    "wholeParentGraduationRejected": true,
+    "independentSourceLabelOnResidualChildRejected": true,
+    "baselineDriftRejected": true,
+    "commonSupportDriftRejected": true,
+    "d16MethodReceiptDriftRejected": true,
+    "isolatedRootOutsideParentRejected": true,
+    "selfConditioningResidualRejected": true
+  },
+  "interpretation": [
+    "PARENT_COMPOSITE_NEVER_EARNS_AUTOMATIC_INCREMENT",
+    "ONLY_ROOT_SPECIFIC_RESIDUAL_CHILD_CAN_GRADUATE",
+    "DUPLICATE_RESIDUAL_LABELS_CANNOT_INFLATE_EFFECTIVE_COUNT",
+    "PROOF_IS_BASELINE_COMMON_SUPPORT_AND_D16_RECEIPT_BOUND"
+  ],
+  "empiricalIncrementalityClaimed": false,
+  "formalCoreImpact": "NONE_LOCKED",
+  "maturityImpact": "NONE_56_7_PERCENT"
+}
