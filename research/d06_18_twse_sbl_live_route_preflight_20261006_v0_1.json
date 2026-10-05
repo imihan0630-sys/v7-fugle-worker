@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "D06_18_TWSE_SBL_LIVE_ROUTE_PREFLIGHT_20261006_V0_1",
+  "updatedAt": "2026-10-06T06:22:34+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-18",
+  "downstreamConsumers": [
+    "D20-13"
+  ],
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "sourceAuthority": "TWSE",
+  "officialPage": "https://mis.twse.com.tw/stock/detail-sblInquiry",
+  "serviceHours": "09:00-15:30 Asia/Taipei",
+  "purpose": "Preflight only: prove the official rendered route can select predetermined securities and expose the required securities-lending rate/depth fields before the frozen 15:20 slot. Current values are not admitted as evidence.",
+  "officialFrontendContract": {
+    "routeQueryKey": "ch",
+    "evidence": "Official TWSE frontend route code pushes /detail-sblInquiry?ch=<securityCode> when a security is selected and refreshes the selected data periodically.",
+    "directRouteVerified": "https://mis.twse.com.tw/stock/detail-sblInquiry?ch=2330&lang=zhHant rendered 台積電(2330)"
+  },
+  "requiredVisibleFields": [
+    "當日總成交量",
+    "尚可出借數量",
+    "尚待借券數量",
+    "借券費率(%)",
+    "當筆成交量",
+    "當筆成交費率",
+    "借券數量",
+    "出借費率(%)",
+    "出借數量"
+  ],
+  "sourceRoutePilot": {
+    "inferenceUse": "SOURCE_ROUTE_FEASIBILITY_ONLY",
+    "marketRepresentationClaim": "NONE",
+    "selectableFourDigitCodesObserved": 438,
+    "filteredPilotFrameCount": 436,
+    "filteringRule": "exclude code<1101 and 9100-9199 DR range; this is not a canonical market-universe definition",
+    "samplingRule": "sort filtered codes ascending and choose nearest-index q={0,0.25,0.5,0.75,1}",
+    "frozenSymbols": [
+      "1101",
+      "2451",
+      "3532",
+      "6187",
+      "9941"
+    ],
+    "routeValidation": [
+      {
+        "symbol": "1101",
+        "selectedSecurityMatched": true,
+        "coreFieldsVisible": true
+      },
+      {
+        "symbol": "2451",
+        "selectedSecurityMatched": true,
+        "coreFieldsVisible": true
+      },
+      {
+        "symbol": "3532",
+        "selectedSecurityMatched": true,
+        "coreFieldsVisible": true
+      },
+      {
+        "symbol": "6187",
+        "selectedSecurityMatched": true,
+        "coreFieldsVisible": true
+      },
+      {
+        "symbol": "9941",
+        "selectedSecurityMatched": true,
+        "coreFieldsVisible": true
+      }
+    ]
+  },
+  "interpretationGuards": [
+    "The five-symbol pilot is not representative of the whole Taiwan lending market and cannot support cross-sectional alpha inference.",
+    "No value observed before the frozen 15:20 slot is used as the live research receipt.",
+    "A selected symbol with zero/blank depth at 15:20 remains a valid source-state observation if source date, transaction type, fields and provenance are preserved.",
+    "Displayed lend quantity is not total lendable inventory.",
+    "Borrowing activity is not identical to short selling or bearish intent.",
+    "D20-13 may consume the later primitive receipt but must not create a duplicate independent bearish vote."
+  ],
+  "priorBlockerChange": {
+    "before": "DYNAMIC_BROWSER_PAGE_EXISTS / REPLAYABLE_MACHINE_CONTRACT_UNVERIFIED",
+    "now": "OFFICIAL_RENDERED_ROUTE_AND_SECURITY_SELECTION_QUERY_VERIFIED / FROZEN_LIVE_SLOT_NOT_YET_CAPTURED",
+    "maturityImpact": "NONE until a genuine within-slot receipt is captured"
+  },
+  "status": "LIVE_ROUTE_PREFLIGHT_PASS / FIVE_SYMBOL_PILOT_FROZEN / 1520_SLOT_PENDING / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "At 2026-10-06 15:20±5m, request exactly the frozen five symbol URLs through the same rendered official route. Preserve each symbol's selected identity, source date/time, transaction type, recall-term state, rate/depth fields, capturedAt and content hash. Do not substitute later snapshots for a missed slot."
+}
