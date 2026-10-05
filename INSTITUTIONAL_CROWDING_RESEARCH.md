@@ -1439,3 +1439,57 @@ Still blocked:
 Therefore Sunday L3 promotion remains rejected. Exact next remains the next genuine trading-day prospective capture set plus owner-authorized special-data pursuit only if explicitly approved.
 
 Formal Core remains LOCKED; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+---
+
+## IC-065 — SDA-007 one-primitive lineage semantic remediation
+
+Research cycle: 2026-10-05 Asia/Taipei
+Status: SDA007_LEARNING_SEMANTIC_REMEDIATION_COMPLETE / ENGINEERING_AND_D16_PENDING / FORMAL_CORE_LOCKED
+
+Machine contract:
+`research/d06_sda007_flow_ownership_lineage_contract_20261005_v0_1.json`.
+
+The D06 learning-room side of SDA-007 is now consolidated across institutional flow, TDCC ownership, passive/index context, ETF primary-market flow, margin/leverage, SBL activity, lending economics, day trading, broker/branch execution and direct-retail investor-class observations.
+
+The core rule is one primitive observation -> one primitiveReceiptId -> many allowed consumers, with explicit parentReceiptIds and informationRoot. A new module name, transformation or interpretation does not manufacture a second independent vote.
+
+### Motive firewall
+Observed flow and ownership stay observational unless an independent source identifies motive. The contract preserves ACTIVE_CONVICTION_UNIDENTIFIED, HEDGE_ARBITRAGE_POSSIBLE, POLICY_MOTIVE_UNKNOWN, RETAIL_BEHAVIOR_MOTIVE_UNKNOWN and BENEFICIAL_OWNER_UNKNOWN.
+
+Forbidden shortcuts include SMART_MONEY_CONVICTION, PASSIVE_FLOW_PROVEN_FROM_EVENT_ONLY, GOVERNMENT_SUPPORT_INTENT, RETAIL_PANIC_OR_FOMO and SHORT_SPECULATIVE_INTENT without independent identifying evidence.
+
+### Canonical double-count examples
+- D06-01/02/03/04 institutional flow is the primitive; D06-06 crowding and D06-12 normalization consume it and are not extra independent votes by transformation alone.
+- D06-10 TDCC ownership is one weekly primitive; D06-05 ownership interpretation and D06-06 ownership-crowding consume the same vintage.
+- D11-14 index event, D06-11 realized passive flow and D06-16 ETF mechanics remain event -> measured-flow -> transmission layers. Event-imputed flow is not independent realized flow.
+- D06-09 SBL activity and D06-18 lending economics remain linked; generic borrowing, short-sale activity, borrow fee and ETF fulfillment are not interchangeable or automatically independent.
+- D06-07/14/13 proxies cannot be relabeled as D06-19 direct retail identity.
+
+### Residual-incrementality gate
+A derived child becomes a distinct candidate only after D16 proves residual/common-support incrementality beyond its parent receipts, with PIT, OOS/Shadow, dependence/date clustering, cost and multiple-testing controls. Correlation below one, a different formula or a different module owner is not independence evidence.
+
+No outcomes were opened. No score, weight, threshold or rank was changed.
+
+---
+
+## IC-066 — SDA-007 handoff boundary and exact continuation
+
+Room05 completion status:
+- observed-flow vs motive split = COMPLETE;
+- effective/revision clock semantics = COMPLETE at research-contract level;
+- passive-flow identity boundary = COMPLETE at research-contract level;
+- one-receipt-many-consumers semantic guard = COMPLETE;
+- residual-test design = PREREGISTERED SEMANTICALLY;
+- System1/System2 machine lineage = PENDING;
+- D16 incrementality validation = PENDING;
+- 00 audit closure = REQUIRED.
+
+Therefore SDA-007 itself remains open. Learning-room documentation does not close an audit ticket.
+
+Exact next:
+1. next valid trading-date D06 capture must attach primitiveReceiptId/parentReceiptIds to the frozen parent receipts;
+2. System1/System2 engineering must enforce shared lineage and raw-vote versus de-duplicated evidence diagnostics;
+3. D16 must run common-support/passive-active residual incrementality only after prospective PIT coverage is sufficient;
+4. 00 alone advances or closes SDA-007 after readback;
+5. D06 maturity remains unchanged; Formal Core remains LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
