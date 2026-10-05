@@ -2273,3 +2273,19 @@ Room11 responsibility:
 - do not self-close SDA-022.
 
 Outcomes remain CLOSED until the preregistration and required prospective receipts exist.
+
+
+## 2026-10-06 SDA-022 acceptance oracle pointer
+
+Latest pre-outcome oracle:
+- shared-knowledge/SDA022_ACCEPTANCE_ORACLE_V0_1.md
+- shared-knowledge/sda022_acceptance_oracle_v0_1.json
+
+D16 owns S22-T25~T28 preregistration boundary.
+Before economic outcomes:
+- freeze target/horizon/common-support/dependence/multiplicity/missingness/group definitions;
+- keep System2 strategies separate unless a combined estimand is preregistered;
+- explicitly analyze SHORT_MOMENTUM dependence vs System1;
+- forbid diversification/double-confirmation claims before D16 + 00 readback.
+
+Current expected oracle state remains EVIDENCE_NOT_YET_AVAILABLE.
