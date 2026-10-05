@@ -2256,3 +2256,20 @@ No maturity change:
 D16 = 60%.
 D18 = 52%.
 Formal Core LOCKED.
+
+
+## 2026-10-06 SDA-022 cross-system dependence validation intake
+
+Audit request:
+shared-knowledge/SDA022_D16_VALIDATION_REQUEST_V0_1.md
+
+Room11 responsibility:
+- preregister the System1-vs-System2 dependence/incrementality evaluation before outcome inspection;
+- keep strategies separate, especially System2 SHORT_MOMENTUM vs SWING_GROWTH;
+- require exact common support, policy fingerprints, universe provenance and UNKNOWN/missing denominators;
+- no arbitrary overlap threshold;
+- no interpretation that same picks equal independent confirmation or low overlap equals diversification;
+- preserve overlap / System1-only / System2-only / no-selection / UNKNOWN groups;
+- do not self-close SDA-022.
+
+Outcomes remain CLOSED until the preregistration and required prospective receipts exist.
