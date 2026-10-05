@@ -1,0 +1,192 @@
+{
+  "schemaVersion": "SDA016_VALIDATION_ORACLE_V0_1",
+  "ticket": "SDA-016",
+  "owner": "11",
+  "status": "RESEARCH_ONLY_VALIDATION_ORACLE_FROZEN",
+  "formalCoreImpact": "NONE",
+  "canonicalContracts": [
+    "research/SDA016_HOLDOUT_CONSUMPTION_VALIDATION_CONTRACT_20261005_V0_1.md",
+    "research/SDA016_INFORMATION_FOOTPRINT_VALIDATION_ADDENDUM_20261005_V0_1.md"
+  ],
+  "closureAuthority": "00",
+  "passRule": "ALL_BLOCKING_TESTS_PASS_AND_ROOM00_INDEPENDENT_READBACK",
+  "currentEngineeringState": "PARTIAL_PASS",
+  "tests": [
+    {
+      "id": "SDA016-T01",
+      "name": "same holdout replay",
+      "scenario": "same experiment/version/physical holdout inspected twice",
+      "expected": "SECOND_ACCESS_CONSUMES_NOT_NEW_EVIDENCE",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T02",
+      "name": "same-version target mutation",
+      "scenario": "targetHash changes within same experiment version",
+      "expected": "REJECT",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T03",
+      "name": "same-version benchmark mutation",
+      "scenario": "benchmarkHash changes within same experiment version",
+      "expected": "REJECT",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T04",
+      "name": "post-result new version exact same holdout",
+      "scenario": "new version registered after prior inspection",
+      "expected": "DEVELOPMENT_CONSUMED_NOT_UNTOUCHED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T05",
+      "name": "cosmetic holdout rename",
+      "scenario": "same physical dataset/date identity with different logical id",
+      "expected": "SAME_CONSUMPTION_LINEAGE",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T06",
+      "name": "partial decision-date overlap",
+      "scenario": "holdouts share some independent decision dates",
+      "expected": "REPORT_OVERLAP_AND_DEDUP_EFFECTIVE_NEW_DATES",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T07",
+      "name": "fixed-N interim peek",
+      "scenario": "unregistered interim outcome access before final N",
+      "expected": "CONFIRMATORY_INVALID_DEVELOPMENT_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T08",
+      "name": "preregistered sequential policy",
+      "scenario": "all looks frozen before first outcome with immutable information times/error rule",
+      "expected": "ALLOW_ONLY_IF_EXPLICIT_D16_SEQUENTIAL_CONTRACT",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T09",
+      "name": "negative variant deletion",
+      "scenario": "ledger contains failed/negative variant but registry/accounting omits it",
+      "expected": "REJECT_FAMILY_ACCOUNTING_MISMATCH",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T10",
+      "name": "cross-system logical alias",
+      "scenario": "System1 and System2 use different ids for same physical holdout",
+      "expected": "MERGE_CONSUMPTION_BY_CANONICAL_PHYSICAL_IDENTITY",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T11",
+      "name": "D18 outcome-driven state split",
+      "scenario": "new regime split created after outcome inspection",
+      "expected": "NEW_FAMILY_AND_ORIGINAL_HOLDOUT_DEVELOPMENT_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T12",
+      "name": "outcome arrival immutability",
+      "scenario": "later matured outcome attempts to alter prediction/preregistration/decision receipt",
+      "expected": "REJECT_MUTATION_APPEND_OUTCOME_ONLY",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T13",
+      "name": "disjoint decision dates overlapping D+N windows",
+      "scenario": "date sets disjoint but outcome dependency sessions overlap",
+      "expected": "OUTCOME_FOOTPRINT_OVERLAP_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T14",
+      "name": "different endpoints same underlying sessions",
+      "scenario": "cumulative horizons share primitive market sessions",
+      "expected": "OUTCOME_FOOTPRINT_OVERLAP_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T15",
+      "name": "path target endpoint-only identity",
+      "scenario": "MFE/MAE/path statistic shares path sessions but only endpoint hashes differ",
+      "expected": "REJECT_INCOMPLETE_FOOTPRINT_IDENTITY",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T16",
+      "name": "horizon expansion",
+      "scenario": "same decision dates change D5 to D10 after inspection",
+      "expected": "NEW_VERSION_SAME_ADAPTIVE_FAMILY_EXPANDED_FOOTPRINT_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T17",
+      "name": "same date different symbols",
+      "scenario": "stock rows differ but scanDate same",
+      "expected": "ONE_SHARED_DATE_UNIT_FOR_FRESH_EVIDENCE",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T18",
+      "name": "cross-system same outcome footprint",
+      "scenario": "different consumers/holdout ids use same physical outcome footprint",
+      "expected": "MERGE_CONSUMPTION",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T19",
+      "name": "unknown footprint lineage",
+      "scenario": "session/horizon/continuity provenance insufficient",
+      "expected": "UNKNOWN_OVERLAP_FAIL_CLOSED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T20",
+      "name": "post-outcome purge tuning",
+      "scenario": "purge/embargo changed after seeing results",
+      "expected": "NEW_ADAPTIVE_VERSION_DEVELOPMENT_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T21",
+      "name": "preregistered clean purge",
+      "scenario": "new holdout avoids all consumed decision/outcome footprints under frozen purge",
+      "expected": "UNSEEN_ELIGIBILITY_SUBJECT_TO_ALL_OTHER_GATES",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T22",
+      "name": "overlap guard versus dependence",
+      "scenario": "no footprint overlap but statistical dependence may remain",
+      "expected": "PASS_OVERLAP_ONLY_D16_06_INFERENCE_STILL_REQUIRED",
+      "blocking": true
+    }
+  ],
+  "requiredMachineOutputs": [
+    "experimentFamilyId",
+    "holdoutId",
+    "decisionDateSetHash",
+    "outcomeInformationFootprintHash",
+    "decisionDateOverlapN",
+    "decisionDateOverlapRatio",
+    "outcomeSessionOverlapN",
+    "outcomeSessionOverlapRatio",
+    "priorConsumedOutcomeFootprintRefs",
+    "purgeRuleVersion",
+    "overlapDisposition",
+    "consumptionState",
+    "outcomeLockHash"
+  ],
+  "unresolvedEngineering": [
+    "PARTIAL_DATE_OVERLAP_LINEAGE",
+    "OUTCOME_INFORMATION_FOOTPRINT_OVERLAP",
+    "SHARED_CROSS_SYSTEM_CONSUMPTION_AUTHORITY",
+    "COMPLETE_MACHINE_VISIBLE_OUTCOME_LOCK_IDENTITY"
+  ],
+  "maturityImpact": "NONE"
+}
