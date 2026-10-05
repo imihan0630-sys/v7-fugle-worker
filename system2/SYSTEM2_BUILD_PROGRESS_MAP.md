@@ -799,3 +799,46 @@ Next exact BUILD_LANE continuation:
 3. determine which bounded event-specific candidates meet promotion evidence requirements without subject-stem dependence;
 4. then continue shared suspension/resumption + symbol-session integration;
 5. then RAW A1 lineage.
+
+
+## 2026-10-06 S2-07 V0.3 ambiguous-event narrowing physical result
+
+Authoritative execution:
+- main commit: `8252a0b8417cf63fd317bb645c3f835a55d7e976`;
+- workflow: `System2 Bounded Revision Event Linkage V0.3 Readonly`;
+- run: `37328246286`;
+- job: `111824389195`;
+- conclusion: PASS.
+
+Physical result over the 17 V0.2 ambiguous events:
+- eventCount = 17;
+- `AMBIGUOUS_NO_EVENT_SPECIFIC_ANCHOR = 10`;
+- `PER_SYMBOL_QUERY_INTEGRITY_NOT_CERTIFIED = 7`;
+- queryIntegrityCertifiedCount = 10;
+- eventAnchoredCount = 0.
+
+The 10 exact per-symbol company-history vs month-shard reconciliations are: 6176, 1563, 3356, 1441, 6550, 6129, 3710, 8277, 4806, 3086.
+
+The 7 query-integrity mismatches requiring direct diagnostic follow-up are:
+- 3591: all=40 / monthUnion=30 / onlyAll=10 / onlyMonth=0;
+- 6949: all=72 / monthUnion=73 / onlyAll=0 / onlyMonth=1;
+- 5381: all=58 / monthUnion=60 / onlyAll=0 / onlyMonth=2;
+- 6241: all=57 / monthUnion=60 / onlyAll=0 / onlyMonth=3;
+- 8937: all=49 / monthUnion=50 / onlyAll=0 / onlyMonth=1;
+- 5904: all=44 / monthUnion=45 / onlyAll=0 / onlyMonth=1;
+- 4747: all=42 / monthUnion=43 / onlyAll=0 / onlyMonth=1.
+
+Interpretation:
+- V0.3 successfully separated query-integrity from event-linkage ambiguity;
+- no event acquired promotion-grade event anchoring;
+- an effective-date token in the issuer subject is too strict and produced zero anchored events, so it must not be treated as a completeness gate;
+- normalized subject stem remains supporting evidence only and must never be the sole corporate-action episode key.
+
+All authority flags remain false: eventLinkageCoverageComplete, boundedRevisionHistoryCoverageComplete, correctionHistoryComplete, cancellationHistoryComplete, knownAtVersionClockCertified, revisionCoverageComplete, technicalContinuityCertified, and tradingAuthority.
+
+Next BUILD_LANE continuation:
+1. diagnose the 7 per-symbol all-query vs month-shard mismatches, including repeated-snapshot stability;
+2. replace title-only effective-date anchoring with event-specific disambiguation evidence tied to source event identity / issuer / action family / effective date and, where available, official detail fields;
+3. cancellation / no-cancellation evidence;
+4. shared suspension/resumption + symbol-session integration;
+5. RAW A1 lineage.
