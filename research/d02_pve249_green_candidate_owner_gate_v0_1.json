@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-10-06 Asia/Taipei",
+  "evidenceCursor": "PVE-249",
+  "status": "BASE_CI_REPAIRED / CANDIDATE_RESEQUENCED_V8_19_1 / ALL_APPLICABLE_CHECKS_PASS / DRAFT_PR_651_CLEAN / OWNER_APPROVAL_REQUIRED / UNMERGED / NOT_DEPLOYED",
+  "latestObservedMainBeforeWrite": "9c03767f5ea83b0599dc6005bcff390042f0c50e",
+  "baseCiRepair": {
+    "rootCause": "ZERO_PICK_COLLECTOR_TEST_FIXTURE_STALE_AFTER_V8_19_GENERATION_INVENTORY",
+    "fixCommit": "c3bf53e0fe195647ecd77c87e6ce77e7ee744635",
+    "mainRegression": {
+      "id": 37387343385,
+      "conclusion": "success"
+    },
+    "runtimeChanged": false,
+    "formalChanged": false
+  },
+  "candidateCorrection": {
+    "earlierLayer": "PRE_V8_19 / apply_v8_18_1_pve248_candidate.py",
+    "issue": "V8.18 historical byte-identity invariant correctly rejected later shared-runtime modifications inserted before V8.19.",
+    "finalLayer": "POST_V8_19 / apply_v8_19_1_pve248_candidate.py",
+    "historicalInvariantWeakened": false
+  },
+  "candidate": {
+    "branch": "research/d02-pve248-class-b-candidate-20261006",
+    "head": "e26e0e8e7786e25505714942e82a64e4cb8cec09",
+    "draftPr": 651,
+    "state": "open",
+    "draft": true,
+    "mergeable": true,
+    "mergeableState": "clean",
+    "merged": false,
+    "deployed": false,
+    "productionDeployWired": false,
+    "ownerApprovalGranted": false
+  },
+  "finalChecks": [
+    {
+      "name": "D02 PVE-248 Candidate CI",
+      "id": 37387779756,
+      "conclusion": "success"
+    },
+    {
+      "name": "System1 C1 C2 isolated offline repair review",
+      "id": 37387779711,
+      "conclusion": "success"
+    },
+    {
+      "name": "V8 Repair CI",
+      "id": 37387779433,
+      "conclusion": "success"
+    },
+    {
+      "name": "V8 Regression Tests",
+      "id": 37387779413,
+      "conclusion": "success"
+    },
+    {
+      "name": "D02 PVE-248 Candidate CI push isolation",
+      "id": 37387775656,
+      "conclusion": "success"
+    }
+  ],
+  "governance": {
+    "technicalCandidateReviewEligible": true,
+    "productionIntegrationAuthorized": false,
+    "mergeAuthorized": false,
+    "deployAuthorized": false,
+    "remediationReady": false,
+    "h001ReceiptEligible": false,
+    "maturityPromotionAuthorized": false,
+    "formalCoreChangeAuthorized": false
+  },
+  "exactNext": "PVE-250"
+}
