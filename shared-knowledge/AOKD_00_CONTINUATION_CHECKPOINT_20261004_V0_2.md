@@ -1421,3 +1421,37 @@ SDA-022 does not block plain System1 Selection Shadow S1/S2 progression.
 It blocks any claim of cross-system independent confirmation/diversification until the above evidence exists.
 
 Formal Core remains locked.
+
+
+## 2026-10-06 SDA-022 acceptance oracle and machine schemas complete
+
+New canonical audit artifacts:
+- shared-knowledge/SDA022_ACCEPTANCE_ORACLE_V0_1.md
+- shared-knowledge/sda022_acceptance_oracle_v0_1.json
+- shared-knowledge/cross_system_policy_fingerprint_receipt_schema_v0_1.json
+- shared-knowledge/sda022_nc_t01_receipt_schema_v0_1.json
+
+SDA-022 pre-outcome blocking oracle:
+- 28 tests: S22-T01~T28;
+- current expected state = EVIDENCE_NOT_YET_AVAILABLE;
+- outcomes remain CLOSED.
+
+Engineering boundaries are now fully specified:
+- System1 next deliverable = policy fingerprint receipt;
+- System2 next deliverables = per-strategy fingerprint receipts + physical NC-T01 receipt;
+- D16 next deliverable = preregistration satisfying S22-T25~T28.
+
+D03 incremental intake also credited:
+- interaction support is now multi-axis / representation-specific / fail-closed;
+- threshold/horizon/window/rebin/representation search genealogy is append-only;
+- outcome-driven redesign consumes prior holdout and cannot reset multiplicity;
+- this strengthens SDA-004 but does not close it or prove Alpha.
+
+Exact next 00 cursor:
+1. intake actual System1 fingerprint receipt and evaluate S22-T01~T05;
+2. intake actual System2 strategy fingerprints and evaluate S22-T06~T10;
+3. intake physical NC-T01 receipt and evaluate S22-T11~T16;
+4. intake D16 preregistration and evaluate S22-T25~T28;
+5. only after those pass, begin prospective S22-T17~T24 overlap/divergence accumulation;
+6. no economic outcome interpretation before the preregistration boundary;
+7. Formal Core remains locked.
