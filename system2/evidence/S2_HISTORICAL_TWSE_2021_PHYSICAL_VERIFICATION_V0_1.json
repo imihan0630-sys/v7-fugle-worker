@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_DURABLE_EVIDENCE_V0_2",
+  "market": "TWSE",
+  "year": 2021,
+  "disposition": "DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL",
+  "acceptedRun": {
+    "runId": 37320600966,
+    "runNumber": 16,
+    "headSha": "d74b7bda9acfe40fb52fb2a031ffb32cafd6d8f0",
+    "workflowConclusion": "success",
+    "completedAt": "2026-10-05T14:29:24Z",
+    "artifactId": 11352061154,
+    "artifactName": "system2-historical-coverage-TWSE-2021",
+    "artifactDigest": "sha256:4bee3d3b9698b1fc9cdf52e230eeaa19f4b8c686587abe8fc87486483ceedc19",
+    "artifactCreatedAt": "2026-10-05T14:29:20Z",
+    "artifactExpiresAt": "2026-11-04T14:29:19Z"
+  },
+  "storageVerification": {
+    "receiptId": "S2HCR-a6ea89acf316e2cb5a30c8c785ed76b3773487adde1d8a3ae1adad1d8ac9eb1f",
+    "batchId": "S2-HIST-PACK-YEAR|TWSE|2021",
+    "completionReceiptState": "COMPLETE",
+    "packCount": 968,
+    "barCount": 232956,
+    "manifestRollingHash": "a6ea89acf316e2cb5a30c8c785ed76b3773487adde1d8a3ae1adad1d8ac9eb1f",
+    "checkpointState": "COMPLETE",
+    "headObjectCountVerified": 968,
+    "byteGetObjectCountVerified": 968,
+    "state": "PASS"
+  },
+  "sourceReconciliation": {
+    "state": "PASS",
+    "dataIntegrityState": "PASS",
+    "sourceVersionState": "STABLE",
+    "coldRowCount": 232956,
+    "freshOfficialRowCount": 232956,
+    "missingFromColdCount": 0,
+    "absentFromFreshOfficialCount": 0,
+    "sourceRowHashMismatchCount": 0,
+    "canonicalA1ValueMismatchCount": 0,
+    "sourceRevisionOnlyCount": 0,
+    "sourceRevisionDateCount": 0,
+    "officialTradingDates": 244,
+    "reconciliationContract": "S2_HISTORICAL_SOURCE_RECONCILIATION_V0_1"
+  },
+  "historicalUniverse": {
+    "readiness": "PASS_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION",
+    "registryId": "S2-DATA-TWSE-2021-OFFICIAL-UNION-V0.1",
+    "registryHash": "1ab8e6ae8b3d93624e1bb57f83c4acd8ebe931e5815b5db4e3430278168d0dad",
+    "membershipCount": 1122,
+    "currentCount": 1089,
+    "delistedCount": 33,
+    "unknownStartCount": 0,
+    "survivorshipCompleteForDataCoverage": true
+  },
+  "coverage": {
+    "expectedSessions": 244,
+    "actualSessions": 244,
+    "expectedBars": 233530,
+    "actualBars": 232956,
+    "missingBars": 574,
+    "unknownBars": 574,
+    "rawCoverageState": "PASS",
+    "symbolSessionReadiness": "PARTIAL_UNKNOWN_GAPS",
+    "pitReadiness": "PASS_CONSERVATIVE_SESSION_FINALITY",
+    "continuityReadiness": "PARTIAL_UNVERIFIED",
+    "technicalPriceReadiness": "PARTIAL_NONPRICE_OBSERVATIONS",
+    "observationStateCounts": {
+      "VALID_OHLC": 232382,
+      "POSITIVE_ACTIVITY_NO_VALID_CLOSE": 348,
+      "OFFICIAL_ZERO_TRADE_NO_PRICE": 226
+    },
+    "continuityStateCounts": {
+      "UNVERIFIED": 232956
+    }
+  },
+  "readiness": {
+    "dataCoverageState": "PASS",
+    "replayReadinessState": "PARTIAL",
+    "overallState": "PARTIAL"
+  },
+  "verifierVersion": "S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_4",
+  "correctionDirective": "S2-CORR-20261004-001",
+  "correctionStatusAfterEvidence": "ACKNOWLEDGED",
+  "closureAuthority": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "nextMarketYear": {
+    "market": "TPEX",
+    "year": 2021
+  },
+  "protectedBoundaries": {
+    "system1RuntimeChanged": false,
+    "system2StrategyAuthorityChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "capitalOrderAuthorityChanged": false
+  }
+}
