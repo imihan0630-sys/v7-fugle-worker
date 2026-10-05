@@ -2108,3 +2108,24 @@ Next BUILD_LANE continuation:
 3. cancellation / no-cancellation evidence;
 4. shared suspension/resumption + symbol-session integration;
 5. RAW A1 lineage.
+
+
+## 2026-10-06 standing SDA validation pointer
+
+This is an audit dependency pointer only. It does not replace the active S2-07 BUILD_LANE continuation.
+
+Latest canonical validation:
+- SDA-016: research/SDA016_VALIDATION_ORACLE_20261006_V0_4.json — 48 blocking tests;
+- SDA-017: research/SDA017_VALIDATION_ORACLE_20261006_V0_3.json — 48 blocking tests;
+- D18 support schema: research/D18_REPLICATION_SUPPORT_RECEIPT_CONTRACT_20261006_V0_1.json;
+- shared routing: shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_ROUTING_20261005_V0_1.md.
+
+System 2 has not yet been credited with the SDA-017 episode/support observer implementation. Existing S2-07 revision/query-integrity work is valid but must not be counted as SDA-016/017 remediation.
+
+When the assigned SDA lane is serviced:
+- preserve structuralEpisodeN / replicationEpisodeN / mechanicalFragmentN separately;
+- preserve learned-fit knowledge cutoff;
+- use the shared SDA-016 consumption authority rather than forking incompatible holdout semantics;
+- pass the latest 48-test contracts before specialist/00 closure.
+
+No change to current correction/build ownership, trading authority, Formal Core or capture authorization is made by this pointer.
