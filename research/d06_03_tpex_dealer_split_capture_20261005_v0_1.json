@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "D06_03_TPEX_DEALER_SPLIT_CAPTURE_20261005_V0_1",
+  "createdAt": "2026-10-05T15:28:58+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "tradeDate": "2026-10-05",
+  "market": "TPEx",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "parentPlan": "research/d06_20261005_prospective_capture_session_v0_1.json",
+  "auditTicket": "SDA-007",
+  "primitiveReceiptId": "D06-20261005-INSTITUTION-DEALER-SPLIT",
+  "marketSubReceiptId": "D06-20261005-INSTITUTION-DEALER-SPLIT-TPEX",
+  "source": {
+    "authority": "Taipei Exchange",
+    "url": "https://www.tpex.org.tw/www/zh-tw/insti/dailyTrade?type=Daily&sect=EW&date=115%2F10%2F05&id=&response=json",
+    "sourceDate": "20261005",
+    "tableDate": "115/10/05",
+    "capturedAt": "2026-10-05T15:28:58+08:00",
+    "firstKnownAt": "2026-10-05T15:28:58+08:00",
+    "contentHash": "fnv1a64-utf8:5bd324cc7136e2ca",
+    "schemaFingerprint": "fnv1a64-utf8:6ca0bb5edbff5cd3",
+    "fieldCount": 24,
+    "sourceTotalCount": 916,
+    "fieldIndexContract": {
+      "code": 0,
+      "name": 1,
+      "foreignNet": 10,
+      "trustNet": 13,
+      "dealerPropBuy": 14,
+      "dealerPropSell": 15,
+      "dealerPropNet": 16,
+      "dealerHedgeBuy": 17,
+      "dealerHedgeSell": 18,
+      "dealerHedgeNet": 19,
+      "dealerAggregateBuy": 20,
+      "dealerAggregateSell": 21,
+      "dealerAggregateNet": 22,
+      "institutionTotalNet": 23
+    }
+  },
+  "quality": {
+    "tableRows": 916,
+    "validNumericRows": 916,
+    "ordinaryFourDigitRows": 795,
+    "duplicateCodes": 0,
+    "numericFailRows": 0,
+    "propHedgeAggregateReconciliationPass": 916,
+    "propHedgeAggregateReconciliationPct": 100,
+    "institutionTotalReconciliationPass": 916,
+    "institutionTotalReconciliationPct": 100,
+    "status": "PASS"
+  },
+  "boundedValidationSamples": [
+    {
+      "code": "8111",
+      "propNet": 14000,
+      "hedgeNet": -37253,
+      "dealerNet": -23253,
+      "foreignNet": 878850,
+      "trustNet": 0,
+      "total": 855597
+    },
+    {
+      "code": "8299",
+      "propNet": 1200,
+      "hedgeNet": 18667,
+      "dealerNet": 19867,
+      "foreignNet": 330925,
+      "trustNet": 22400,
+      "total": 373192
+    },
+    {
+      "code": "8358",
+      "propNet": 724741,
+      "hedgeNet": 271864,
+      "dealerNet": 996605,
+      "foreignNet": 5007395,
+      "trustNet": 96000,
+      "total": 6100000
+    }
+  ],
+  "interpretationGuard": [
+    "dealer proprietary and dealer hedge are observed desk categories, not guaranteed motive labels",
+    "dealer proprietary is not automatically informed conviction and dealer hedge is not automatically noise",
+    "TPEx is captured now; TWSE remains separately pending its official 18:00/20:00 source clocks",
+    "no outcome, score, ranking, selection or Formal behavior is read or changed"
+  ],
+  "status": "TPEX_SAME_DAY_CAPTURED / SOURCE_DATE_VERIFIED / SCHEMA_VERIFIED / PROP_HEDGE_RECONCILED / TWSE_PENDING_BY_CLOCK / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
