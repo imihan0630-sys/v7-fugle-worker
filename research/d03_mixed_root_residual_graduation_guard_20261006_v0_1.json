@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "D03_MIXED_ROOT_RESIDUAL_GRADUATION_GUARD_V0_1",
+  "updatedAt": "2026-10-06T05:40:00+08:00",
+  "owner": "D03",
+  "classification": "RESEARCH_ONLY_OUTCOME_CLOSED",
+  "formalCoreImpact": "NONE_LOCKED",
+  "tickets": [
+    "SDA-001",
+    "SDA-004"
+  ],
+  "policy": "COMPONENT_SPECIFIC_RESIDUAL_GRADUATION_ONLY",
+  "allowedInformationRoots": [
+    "PRICE_OHLC",
+    "VOLUME_TURNOVER",
+    "INSTITUTIONAL_FLOW_OWNERSHIP",
+    "INDUSTRY_BREADTH_ROTATION",
+    "FUNDAMENTAL_ACCOUNTING",
+    "EVENT_DISCLOSURE",
+    "VOLATILITY_STATE",
+    "DERIVATIVES",
+    "MACRO_CROSS_MARKET",
+    "MICROSTRUCTURE_LIQUIDITY",
+    "CREDIT_CAPITAL_STRUCTURE"
+  ],
+  "parentComposite": {
+    "defaultIndependenceStates": [
+      "PARTIAL_OVERLAP",
+      "RESIDUAL_CANDIDATE",
+      "SAME_ROOT_REDUNDANT"
+    ],
+    "independentEvidenceIncrement": 0,
+    "mayRemainVisibleAsRawState": true,
+    "automaticGraduationForbidden": true
+  },
+  "residualChildRequiredFields": [
+    "componentFactorId",
+    "componentFactorVersion",
+    "parentCompositeFactorId",
+    "parentCompositeFactorVersion",
+    "isolatedInformationRoot",
+    "conditionedOnInformationRoots",
+    "residualizationMethodVersion",
+    "baselineFeatureSetHash",
+    "commonSupportHash",
+    "d16MethodReceiptHash",
+    "d16IncrementalityReceiptHash",
+    "parameterFamilyId",
+    "decisionClock",
+    "firstObservableAt",
+    "provenance",
+    "independenceStatus"
+  ],
+  "residualChildRules": {
+    "allowedIndependenceStatus": "RESIDUAL_INCREMENTAL_PROVEN",
+    "independentSourceProvenForbidden": true,
+    "baselineBound": true,
+    "commonSupportBound": true,
+    "d16ReceiptBound": true,
+    "room00ClosureRequiredForCrossSystemPromotion": true,
+    "parentCompositeContributionAfterChildGraduation": 0
+  },
+  "effectiveEvidenceExamples": [
+    {
+      "id": "PRICE_PLUS_UNPROVEN_PRICE_VOLUME_COMPOSITE",
+      "expectedEffectiveEvidenceMax": 1,
+      "explanation": "shared PRICE_OHLC ancestry; no root-specific residual proof"
+    },
+    {
+      "id": "PRICE_PLUS_PROVEN_VOLUME_RESIDUAL_CHILD",
+      "expectedEffectiveEvidenceMax": 2,
+      "explanation": "one price family plus one D16-proven VOLUME_TURNOVER residual family; parent composite adds zero"
+    },
+    {
+      "id": "PRICE_PLUS_PROVEN_VOLUME_CHILD_PLUS_PARENT_COMPOSITE",
+      "expectedEffectiveEvidenceMax": 2,
+      "explanation": "parent composite cannot become a third vote"
+    }
+  ],
+  "invalidationTriggers": [
+    "BASELINE_FEATURE_SET_DRIFT",
+    "COMMON_SUPPORT_DRIFT",
+    "PARENT_COMPOSITE_VERSION_DRIFT",
+    "ISOLATED_ROOT_SOURCE_SEMANTIC_DRIFT",
+    "RESIDUALIZATION_METHOD_DRIFT",
+    "DECISION_CLOCK_DRIFT",
+    "PARAMETER_FAMILY_DRIFT",
+    "OUTCOME_FAMILY_DRIFT",
+    "HOLDOUT_OR_DEPENDENCE_METHOD_DRIFT"
+  ],
+  "invalidationDisposition": [
+    "RESIDUAL_PROOF_REVALIDATION_REQUIRED",
+    "UNKNOWN"
+  ],
+  "machineAccounting": {
+    "rawSignalCountMayIncludeParentAndChild": true,
+    "dedupedFamilyMustExposeParentChildRelation": true,
+    "effectiveIndependentEvidenceCountsOnlyAllowedFamilies": true,
+    "noHeuristicHiddenResidualInference": true,
+    "undecomposedMixedRootState": "MIXED_ROOT_UNDECOMPOSED"
+  },
+  "noClaim": {
+    "empiricalIncrementality": true,
+    "alpha": true,
+    "oosSuperiority": true,
+    "productionReadiness": true,
+    "formalPromotion": true
+  },
+  "maturityImpact": "NONE_56_7_PERCENT"
+}
