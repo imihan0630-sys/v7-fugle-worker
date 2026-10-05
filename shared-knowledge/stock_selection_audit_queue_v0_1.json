@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-05T08:12:00+08:00",
+  "updatedAt": "2026-10-05T08:31:00+08:00",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -95,7 +95,7 @@
     {
       "id": "SDA-003",
       "severity": "HIGH",
-      "status": "ROUTED",
+      "status": "VALIDATION_PENDING",
       "domains": [
         "D02"
       ],
@@ -116,6 +116,13 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "SEMANTIC_AND_ADMISSION_GUARD_COMPLETE_PROSPECTIVE_RESIDUAL_EVIDENCE_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "clean prospective common-support evidence",
+        "price-only vs price-plus-volume residual incrementality",
+        "SDA-001 lineage integration"
       ]
     },
     {
@@ -155,7 +162,7 @@
     {
       "id": "SDA-005",
       "severity": "HIGH",
-      "status": "ROUTED",
+      "status": "VALIDATION_PENDING",
       "domains": [
         "D04"
       ],
@@ -176,12 +183,18 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "RESEARCH_ANTI_DOUBLE_COUNT_COMPLETE_PROSPECTIVE_INCREMENTAL_EVIDENCE_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "prospective D04 L4 parent/economic evidence",
+        "shared breakout episode / volatility lineage in system diagnostics"
       ]
     },
     {
       "id": "SDA-006",
       "severity": "HIGH",
-      "status": "ROUTED",
+      "status": "REMEDIATION_IN_PROGRESS",
       "domains": [
         "D05"
       ],
@@ -202,12 +215,19 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "OBSERVABILITY_FIREWALL_EXISTS_EXECUTION_CAPACITY_RECEIPTS_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "prospective own-order/fill/cancel/reject denominators",
+        "queue/own-impact provenance where observable",
+        "System2 partial/missing capacity denominator preservation"
       ]
     },
     {
       "id": "SDA-007",
       "severity": "HIGH",
-      "status": "ROUTED",
+      "status": "REMEDIATION_IN_PROGRESS",
       "domains": [
         "D06"
       ],
@@ -228,6 +248,13 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "RESEARCH_SCOPE_SPLITS_EXIST_SHARED_RECEIPT_AND_RESIDUAL_GUARDS_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "one-receipt-many-consumers institutional/passive lineage",
+        "portable motive/intent eligibility state",
+        "prospective active-vs-passive-vs-crowding residual evidence"
       ]
     },
     {
@@ -319,7 +346,7 @@
     {
       "id": "SDA-011",
       "severity": "HIGH",
-      "status": "ROUTED",
+      "status": "REMEDIATION_IN_PROGRESS",
       "domains": [
         "D11",
         "D17"
@@ -341,6 +368,13 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "FIRST_KNOWN_GOVERNANCE_EXISTS_CANONICAL_EVENT_STORY_DEDUP_AND_SOURCE_COVERAGE_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "canonical eventId/newsClusterId machine contract",
+        "cross-source duplicate-story guard",
+        "prospective first-availability/source coverage"
       ]
     },
     {
@@ -400,7 +434,7 @@
     {
       "id": "SDA-014",
       "severity": "HIGH",
-      "status": "ROUTED",
+      "status": "VALIDATION_PENDING",
       "domains": [
         "D14"
       ],
@@ -420,12 +454,19 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "RESEARCH_EXECUTION_CONTRACT_STRONG_PROSPECTIVE_BROKER_RECEIPTS_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "at least three independent prospective order-choice dates",
+        "broker-confirmed fill/cancel/reject lineage",
+        "mechanism-complete opportunity denominator"
       ]
     },
     {
       "id": "SDA-015",
       "severity": "HIGH",
-      "status": "ROUTED",
+      "status": "REMEDIATION_IN_PROGRESS",
       "domains": [
         "D15"
       ],
@@ -445,6 +486,14 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "PLAN_TIME_SEMANTIC_FIREWALL_STRONG_PRETRADE_RISK_VERSION_AND_PROSPECTIVE_ATTRIBUTION_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "immutable pre-trade portfolio-decision receipt",
+        "covariance/risk-input version",
+        "selection-vs-sizing prospective attribution",
+        "actual fill/holding lineage for realized lifecycle claims"
       ]
     },
     {
@@ -618,5 +667,6 @@
       ]
     }
   ],
-  "lastReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md"
+  "lastReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md",
+  "lastHighReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md"
 }
