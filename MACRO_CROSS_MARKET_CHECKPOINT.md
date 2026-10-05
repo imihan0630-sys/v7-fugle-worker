@@ -860,3 +860,18 @@ Maturity firewall:
 2. Future Treasury curves require their own source publication/capture clocks; calendar-date matching remains prohibited.
 3. Keep the prospective 2026-10-08 H.4.1 realization UNKNOWN until actual release; append, never overwrite, its schedule receipt.
 4. Continue CBC BOP prospective receipt plan independently.
+
+
+## 2026-10-05 Room09 correction — MC-204 execution-clock correction
+
+- The immediately preceding MC-201..MC-203 block used an incorrect 07:00 Asia/Taipei execution timestamp.
+- Verified runtime clock for this turn is 2026-10-05 23:09 Asia/Taipei.
+- Therefore the claimed 2026-10-05 07:00 observed-by bound and any inference that same-day 14:30/16:xx TAIFEX timestamps were future relative to this turn are INVALID and must not enter PIT evidence.
+- The official 2026-10-02 Treasury curve remains later-observed source evidence by this turn, but this turn does not establish a 07:00 observedAt or a new 18:10 eligibility receipt.
+- Preserve the older already-frozen Treasury reference-vs-publication clock rules. Strict first-known publication/capture evidence remains pending.
+- D13 remains 41.1%; no promotion; outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation after MC-204
+1. Ignore MC-201..MC-203 for PIT eligibility except as a documented clock-error correction trail.
+2. Future receipts must obtain the runtime clock from a verified execution source before any source-time comparison.
+3. Continue H.4.1 2026-10-08 prospective schedule lane and CBC BOP prospective lane unchanged.
