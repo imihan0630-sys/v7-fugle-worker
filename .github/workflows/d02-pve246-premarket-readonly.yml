@@ -70,7 +70,7 @@ jobs:
               recent:Array.isArray(cron?.recent)?cron.recent.slice(0,20):[],
               expected:cron?.expected??null
             },
-            cloudflareSchedules:(schedules?.result||[]).map(x=>x.cron)
+            cloudflareSchedules:(Array.isArray(schedules?.result)?schedules.result:Array.isArray(schedules?.result?.schedules)?schedules.result.schedules:[]).map(x=>x.cron||x)
           };
           console.log("D02_PVE246_RESULT="+JSON.stringify(report));
           NODE
