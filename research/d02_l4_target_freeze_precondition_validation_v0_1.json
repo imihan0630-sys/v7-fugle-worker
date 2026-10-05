@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-05 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_EXECUTABLE_TARGET_FREEZE_GUARD_PASS",
+  "evidenceCursor": "PVE-239",
+  "d02MaturityPct": 60,
+  "runtime": {
+    "tests": 24,
+    "status": "PASS",
+    "contract": "D02_L4_TARGET_FREEZE_PRECONDITION_V0_1"
+  },
+  "numericalTargetsFrozen": 0,
+  "numericalTargetsPending": 14,
+  "targetRegistry": "research/d02_l4_effect_target_registry_v0_2.json",
+  "wave1": {
+    "outcomeFamilyFrozen": true,
+    "effectSizeReportingPriorityFrozen": true,
+    "horizonSemanticsFrozen": true,
+    "singularMetricRuleFrozen": false,
+    "multihorizonDecisionRuleFrozen": false,
+    "numericalTargetFrozen": false
+  },
+  "guarantees": {
+    "currentProspectiveOutcomeCanSetTarget": false,
+    "postOutcomeBestMetricAllowed": false,
+    "postOutcomeBestHorizonAllowed": false,
+    "testFixtureCanSetTarget": false,
+    "unknownCostAsZeroAllowed": false,
+    "crossKeyTargetBorrowingAllowed": false,
+    "maturityPromotionAuthorized": false,
+    "formalCoreChangeAuthorized": false
+  }
+}
