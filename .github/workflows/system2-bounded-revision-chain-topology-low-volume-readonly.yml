@@ -1,0 +1,49 @@
+name: System2 Bounded Revision Chain Topology Low Volume Readonly
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/runtime/bounded_revision_chain_topology_v0_2.mjs"
+      - "system2/tests/bounded_revision_chain_topology_v0_2.test.mjs"
+      - "system2/scripts/probe_bounded_revision_chain_topology_low_volume_readonly_v0_2.mjs"
+      - "system2/SYSTEM2_BOUNDED_REVISION_CHAIN_TOPOLOGY_LOW_VOLUME_V0_2.md"
+      - ".github/workflows/system2-bounded-revision-chain-topology-low-volume-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/bounded_revision_chain_topology_v0_2.mjs"
+      - "system2/tests/bounded_revision_chain_topology_v0_2.test.mjs"
+      - "system2/scripts/probe_bounded_revision_chain_topology_low_volume_readonly_v0_2.mjs"
+      - "system2/SYSTEM2_BOUNDED_REVISION_CHAIN_TOPOLOGY_LOW_VOLUME_V0_2.md"
+      - ".github/workflows/system2-bounded-revision-chain-topology-low-volume-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-bounded-revision-chain-topology-low-volume-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  topology:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run topology unit tests
+        run: node system2/tests/bounded_revision_chain_topology_v0_2.test.mjs
+      - name: Run physical topology assessment
+        run: node system2/scripts/probe_bounded_revision_chain_topology_low_volume_readonly_v0_2.mjs
+      - name: Confirm read-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_bounded_revision_chain_topology_low_volume_readonly_v0_2.mjs
+          echo "Read-only bounded revision-chain topology boundary PASS"
