@@ -1,0 +1,32 @@
+{
+  "schemaVersion":"pattern-inherited-vs-new-structure-v0.1",
+  "updated":"2026-10-05 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "auditTickets":{
+    "SDA-001":"REMEDIATION_IN_PROGRESS",
+    "SDA-002":"REMEDIATION_IN_PROGRESS"
+  },
+  "informationRoot":"PRICE_OHLC",
+  "representationFamily":"D01_PRICE_GEOMETRY",
+  "spatialOverlapEqualsSameRoot":false,
+  "newStructuralRootEqualsIndependentVote":false,
+  "retestBarCanCertifyOwnPredictor":false,
+  "postTestConfirmationCanExplainPriorTest":false,
+  "sameRootExtensionCountsAsNewRoot":false,
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "residualIncrementalityStatus":"NOT_VALIDATED",
+  "lineageClasses":[
+    "INHERITED_ROLE_ONLY",
+    "SAME_ROOT_CAUSAL_EXTENSION",
+    "NEW_POST_BREAK_ROOT_PRETEST",
+    "COLOCATED_DUAL_LINEAGE_PRETEST",
+    "NEW_STRUCTURE_CONFIRMED_AFTER_TEST",
+    "SPATIAL_OVERLAP_WITHOUT_LINEAGE",
+    "NEW_POST_BREAK_ROOT_NONOVERLAP"
+  ],
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}
