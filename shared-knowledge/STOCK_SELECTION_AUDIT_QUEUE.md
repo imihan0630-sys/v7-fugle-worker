@@ -491,3 +491,22 @@ Readback:
 - SDA-007 remains REMEDIATION_IN_PROGRESS: D06 learning-room semantic remediation is now complete with one-primitive/one-receipt-many-consumers lineage frozen; System1/System2 enforcement + prospective receipt + D16 residual validation remain.
 
 No ticket CLOSED. No Formal behavior changed.
+
+
+## SDA-022 — Cross-system strategy convergence / pseudo-diversification
+
+- Severity: **CRITICAL**
+- Status: **ROUTED**
+- Scope: System 1 + System 2
+- Audit owner: 00｜研究總控室
+- Engineering owners: System 1, System 2
+- D16 validation: REQUIRED
+- Risk:
+  two nominally independent systems may gradually reuse the same candidate gates, effective information roots and rankings, then be mistaken for independent confirmation/diversification.
+- Guard:
+  `shared-knowledge/SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_V0_1.md`.
+- Key rule:
+  same output is allowed; hidden policy dependence is not. Forced disagreement is also prohibited.
+- Remaining:
+  policy fingerprints, independent System2 discovery proof, cross-system overlap/divergence receipts, D16 dependence/incrementality analysis, 00 closure.
+- Formal Core impact: NONE.
