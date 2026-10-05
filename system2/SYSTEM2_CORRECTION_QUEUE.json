@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-05T09:56:00+08:00",
+  "updatedAt": "2026-10-05T13:46:20+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -16,7 +16,7 @@
       ],
       "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "canonicalRequirement": "Physically populate and verify staged official 2017-present Taiwan-equity daily history before claiming complete full-market historical coverage/replay.",
-      "observedProblem": "Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017 TWSE, 2017 TPEx, 2018 TWSE, 2018 TPEx, and 2019 TWSE. Replay readiness remains PARTIAL because explicit symbol-session UNKNOWNs, RAW continuity debt, and incomplete TPEx historical delisting-union remain. The correction stays open because 2019 TPEx, 2020-present market-years, the 2026 incremental path, and the final full-market PIT replay are still pending.",
+      "observedProblem": "Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017, 2018, and 2019 on both TWSE and TPEx. Replay readiness remains PARTIAL because explicit symbol-session UNKNOWNs, RAW continuity debt, and incomplete TPEx historical delisting-union remain. The correction stays open because 2020-present market-years, the 2026 incremental path, and the final full-market PIT replay are still pending.",
       "evidence": [
         "SYSTEM2_CHECKPOINT run 36545375167 failed before annual ingest",
         "SYSTEM2_CHECKPOINT requires repaired 2017 TWSE rerun before TPEx",
@@ -49,7 +49,12 @@
         "2019 TWSE storage verification PASS: 953 packs, 226715 bars, 953/953 R2 HEAD and byte-GET SHA checks",
         "Fresh official TWSE 2019 reconciliation PASS: 242 trading dates, 226715 official rows, 0 missing from cold, 0 extra versus fresh official, 0 source-row-hash mismatch",
         "2019 TWSE historical-universe denominator 227299 versus 226715 source rows leaves 584 explicit UNKNOWN symbol-session gaps; data coverage PASS but replay readiness PARTIAL",
-        "2019 TWSE coverage artifact 11321561727 digest sha256:4bce2e6040f0d1b9aecfaa930e17943896dcdbe99620167a3a37af76959e0e30"
+        "2019 TWSE coverage artifact 11321561727 digest sha256:4bce2e6040f0d1b9aecfaa930e17943896dcdbe99620167a3a37af76959e0e30",
+        "GitHub Actions run 37265660775 (#12) completed SUCCESS on head 83944fb3534f1a865d23d7eb775f4748d8083b91",
+        "2019 TPEx storage verification PASS: 785 packs, 186311 bars, 785/785 R2 HEAD and byte-GET SHA checks",
+        "Fresh official TPEx 2019 reconciliation PASS: 242 trading dates, 186311 official rows, 0 missing from cold, 0 extra versus fresh official, 0 source-row-hash mismatch",
+        "2019 TPEx conservative universe denominator 186617 versus 186311 source rows leaves 306 explicit UNKNOWN symbol-session gaps; data coverage PASS but replay readiness PARTIAL",
+        "2019 TPEx coverage artifact 11328115392 digest sha256:f7f678ad230ae34ebc20d83277035b20a70486eeac5cde06bce016daf2a8116f"
       ],
       "riskIfUnfixed": "Creates false-completion/evidence-coverage risk for multi-year replay, factor validation, regime robustness and strategy backtesting.",
       "requiredCorrection": [
@@ -97,7 +102,9 @@
         "2018 TPEx durable evidence receipt and market-year matrix row are committed under DATA_LANE",
         "2017 and 2018 TWSE/TPEx raw A1 data coverage are all physically accepted; next population target is 2019 TWSE",
         "2019 TWSE durable evidence receipt and market-year matrix row are committed under DATA_LANE",
-        "Next population target is 2019 TPEx"
+        "Next population target is 2019 TPEx",
+        "2019 TPEx durable evidence receipt and market-year matrix row are committed under DATA_LANE",
+        "2017-2019 TWSE/TPEx raw A1 data coverage are all physically accepted; next population target is 2020 TWSE"
       ],
       "verificationEvidence": [
         "Run 37197090867 migrate/backfill/physical verify/artifact upload/System1 isolation all SUCCESS",
@@ -124,10 +131,15 @@
         "2019 TWSE completion receipt S2HCR-b64c8108daafc342ff68e87989e3a5c9202fa287823fc8b9b9090e80afdba97e COMPLETE",
         "2019 TWSE manifest rolling hash b64c8108daafc342ff68e87989e3a5c9202fa287823fc8b9b9090e80afdba97e",
         "2019 TWSE storage/source equality: 226715 cold rows == 226715 fresh official rows with zero row-hash mismatches",
-        "2019 TWSE disposition DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL"
+        "2019 TWSE disposition DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL",
+        "Run 37265660775 migrate/backfill/physical verify/artifact upload/System1 isolation all SUCCESS",
+        "2019 TPEx completion receipt S2HCR-5fdadc2d017aa9db7d279f9285a6ca379a588d83a775b47b3161998846d12c59 COMPLETE",
+        "2019 TPEx manifest rolling hash 5fdadc2d017aa9db7d279f9285a6ca379a588d83a775b47b3161998846d12c59",
+        "2019 TPEx storage/source equality: 186311 cold rows == 186311 fresh official rows with zero row-hash mismatches",
+        "2019 TPEx disposition DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL"
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-05T09:56:00+08:00",
+      "updatedAt": "2026-10-05T13:46:20+08:00",
       "routingClass": "DATA_LANE",
       "assignedLane": "DATA_LANE",
       "assignedRoom": "System 2｜歷史資料工程室",
