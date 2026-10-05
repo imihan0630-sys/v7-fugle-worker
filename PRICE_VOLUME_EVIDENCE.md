@@ -5821,3 +5821,47 @@ PVE-246 consequence:
 
 Exact next continuation point:
 PVE-247 — consume System 1 implementation/readback for the certified Cron identity, baseline bootstrap and fetch-boundary provenance fixes. Only after physical readback proves all three may D02 capture the first future decision-time-valid 15m H001 canonical receipt.
+
+
+# PVE-247 — Executable remediation acceptance oracle (2026-10-06)
+
+Status: ACCEPTANCE_ORACLE_IMPLEMENTED / CI_PASS / SYSTEM1_FIX_NOT_YET_IMPLEMENTED / H001_FAIL_CLOSED / NO_PROMOTION / FORMAL_UNCHANGED.
+
+Durable artifacts:
+- `research/d02_pve247_remediation_acceptance_oracle_v0_1.mjs`;
+- `tests/test_d02_pve247_remediation_acceptance_oracle_v0_1.mjs`;
+- `.github/workflows/d02-pve247-remediation-oracle.yml`;
+- `research/D02_PVE247_REMEDIATION_ACCEPTANCE_ORACLE_20261006_V0_1.md`;
+- `research/d02_pve247_remediation_oracle_validation_v0_1.json`.
+
+Validation:
+- local deterministic fixtures: 15/15 PASS;
+- dedicated CI run 37381110086: SUCCESS.
+
+The oracle separates:
+1. `remediationReady` — schedule identity + >=20 same-slot baseline + fetch-boundary raw provenance;
+2. `h001ReceiptEligible` — remediationReady plus future date, canonical receipt guard, H001 lane guard, common support and cohort/generation/Formal-isolation.
+
+This prevents engineering repair from being misread as H001 evidence or a maturity promotion.
+
+Non-retroactivity is executable:
+marketDate <= 2026-10-05 is rejected from the first repaired H001 evidence path.
+
+New falsification / self-deception finding:
+the legacy V8.7.12 regression validates the single 23:35 marker and removal of the broad evening fallback, while the Cloudflare schedule updater/recovery updater already accepts the combined 23:35+23:55 Cron. The runtime contract test does not prove `isAfterMarketSchedule` recognizes that combined Cron. Therefore legacy regression can pass while Production misclassifies both scheduled events.
+
+Current Production verdict remains:
+- schedule FAIL;
+- baseline FAIL;
+- provenance FAIL;
+- remediationReady=false;
+- h001ReceiptEligible=false.
+
+No clean prospective date is added.
+D02 remains 60.0%.
+Gate 7 CLOSED.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-248 — prepare/consume the bounded System 1 Class-B repair candidate and its tests without merge/deploy; owner approval remains required before Production promotion.
