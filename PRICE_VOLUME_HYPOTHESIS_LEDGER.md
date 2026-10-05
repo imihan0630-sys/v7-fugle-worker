@@ -989,3 +989,24 @@ No fixture value is a research threshold.
 No economic hypothesis changes support status.
 No L4 promotion.
 No FORMAL_OPTIMIZATION_CANDIDATE.
+
+## Pre-PVE-240 effect-target derivation / freeze-precondition overlay — 2026-10-05
+
+Target selection itself is now a preregistered research object.
+
+Allowed derivation:
+cost-benefit / theory bound / prior independent planning evidence / explicit precision requirement / D02-01 semantic policy.
+
+Forbidden:
+current outcome / best metric after results / best horizon after results / fixture / unexplained benchmark / UNKNOWN cost=0 / cross-key target borrowing.
+
+Wave-1:
+- outcome families frozen;
+- PV-084 effect-size reporting family frozen;
+- horizon semantics frozen;
+- singular metric rule still pending;
+- multihorizon decision rule still pending;
+- numerical MDE/precision values still pending.
+
+No hypothesis changes support status.
+No FORMAL_OPTIMIZATION_CANDIDATE.
