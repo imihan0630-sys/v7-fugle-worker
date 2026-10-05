@@ -2242,3 +2242,30 @@ The shell binds only existing verified read APIs: health, bounded resonance, act
 Authority boundary remains unchanged: no strategy/assessor change, no capacity mutation, no push, no orders, no actual holdings claim, no final-selection authority and no System 1 Formal Core change.
 
 Next S2-16 wiring order follows S2-07 frozen candidate/read API -> Regime/market context -> virtual positions -> frozen decision/history -> performance -> PIT-safe event/industry.
+
+
+## 2026-10-06 S2-16 institutional terminal shell V0.1 — PHYSICALLY VERIFIED
+
+Physical deployment acceptance:
+- UI implementation merge: `95c85a4dfea513394caa265cb13b56fcabcbcc1f` (PR #654);
+- D1 read-only deploy fast-path merge: `b2ae3488309df83bf9a6399c81ec5b1321ce2be2` (PR #655);
+- terminal verification repair merge: `92b565c0effe217d0bf10188b2409728e727673c` (PR #656);
+- deployment workflow: `System2 Daily Resonance Deploy` run `37389121118` / job `112029719361` = PASS.
+
+Verified runtime facts:
+- public Worker: `https://system2-shadow-research.imihan0630.workers.dev`;
+- `/` and `/terminal` serve the institutional System 2 terminal shell;
+- `/resonance` remains the dedicated resonance page;
+- health, resonance, operations, daily diagnostic and terminal UI checks passed in the deployment workflow;
+- System 2 D1 readiness used `READ_ONLY_FAST_PATH` with schemaVersion `1.1`, tableCount `46`, requiredTablesPresent=true, schemaMutationPerformed=false and writeReadVerification=`SKIPPED_ALREADY_READY`;
+- one System 2 Cron remains `*/5 0-5,11 * * MON-FRI`;
+- `captureState=CAPTURE_DISABLED` and `resonanceState=BOUNDED_RESONANCE_SCHEDULED`;
+- `system1RuntimeUsed=false`;
+- System 1 production files were verified unchanged.
+
+Current UI truth boundary:
+- complete operating shell / navigation / responsive layout is physically deployed;
+- existing verified read APIs are live-bound;
+- Market Regime, full daily candidate/frozen-decision population, virtual-position read API, performance cohorts, and PIT-safe event/industry read APIs remain pending and must display UNKNOWN / LOCKED / PENDING rather than synthetic data;
+- actual holdings remain locked under `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED` and `ACTUAL_POSITION_MONITOR_VERIFIED=false`;
+- no strategy, selection, capital, push, order or Formal Core authority was promoted.
