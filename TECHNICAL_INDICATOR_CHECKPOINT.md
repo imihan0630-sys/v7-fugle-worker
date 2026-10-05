@@ -4265,3 +4265,47 @@ No maturity promotion:
 
 Exact next:
 System 1/System 2 consume the canonical D03 registry and expose raw-vs-deduplicated Shadow diagnostics plus duplicate/alias tests; D03 reviews mapping drift and rejects sibling/child/nested-timeframe vote inflation; D16 preregisters the parameter-family budget and runs sibling/common-support residual/OOS tests; protected Production path remains owner-gated at PR #600. Bollinger remains first post-deploy target and ADX second behind canonical FULL_REPLAY.
+
+
+## TI-717 through TI-724 — System 2 daily resonance lineage bridge (2026-10-05)
+
+Canonical artifacts:
+- `research/D03_SYSTEM2_DAILY_RESONANCE_LINEAGE_BRIDGE_20261005_V0_1.md`;
+- `research/d03_system2_daily_resonance_lineage_bridge_20261005_v0_1.json`.
+
+### TI-717 — actual System 2 runtime semantics observed
+The current research-only daily resonance runtime uses three entry/exit booleans and `entryCount`/`exitCount` for 1/3 -> 2/3 -> 3/3 lifecycle progression. The same runtime explicitly declares `sameFamilyIndependenceClaim=false`, one `PRICE_DERIVED_TREND_MOMENTUM_STATE` evidence family, no decision/notification/order impact and a note that the three conditions are correlated price-derived states rather than three independent votes.
+
+### TI-718 — three-condition D03 lineage mapping
+Price-above-EMA16-and-rising and EMA16-above-EMA64 map to D03-01 / `RG_D03_PRICE_TREND`. System 2 Impulse MACD also maps to `PRICE_OHLC` and the same `RG_D03_PRICE_TREND` as a comparator/challenger representation, not a new independent family.
+
+### TI-719 — Impulse MACD parameter-family loophole closed
+System 2 Impulse MACD is not canonical MACD12/26/9; it uses HLC3 + SMMA34 envelope + ZLEMA34 + SMA9 signal. Formula difference does not prove independence. Frozen research parameter family: `PF_D03_SYSTEM2_IMPULSE_MACD_34_9_HLC3_V0_1`. Future source/smoother/window/seed/warm-up changes must consume the same broader experiment-family budget.
+
+### TI-720 — 3-of-3 is lifecycle count, not evidence count
+`entryCount` and `exitCount` remain valid lifecycle condition counts. They are not Alpha vote counts. For the current three-condition cluster, raw condition count may be 0..3 while deduplicated D03 group count and effective independent technical evidence count remain at most 1 until residual proof.
+
+### TI-721 — semantic-basis separation cannot override D03 redundancy groups
+Older System 2 semantic bases remain descriptive. Example: KD maps to B2 and RSI to B3, but both remain in `RG_D03_OSCILLATOR` until bilateral sibling residual evidence justifies a split. `semanticBasisIds` describe content dimensions; `redundancyGroupId` governs effective-evidence deduplication.
+
+### TI-722 — runtime dedup diagnostics still missing
+Current daily resonance/factor runtime does not yet emit the D03-required fields `rawSignalCount`, `dedupedEvidenceFamilyCount`, `effectiveIndependentEvidenceCount`, overlap IDs, redundancy-group contributions and dominant roots. This is a diagnostic gap, not evidence of a live ranking bug.
+
+Current safe status:
+`SEMANTIC_GUARD_PRESENT_RUNTIME_DEDUP_DIAGNOSTICS_MISSING`.
+
+### TI-723 — consumer acceptance frozen
+A compliant System 2 research/shadow bridge may preserve 1/3, 2/3 and 3/3 states, but must expose the three raw conditions, map all current components to `PRICE_OHLC` / `RG_D03_PRICE_TREND`, report one deduplicated family for a full 3/3 state, keep same-family independence false, block lifecycle counts from becoming Alpha vote counts, version parameter challengers and fail missing lineage closed to UNKNOWN.
+
+### TI-724 — maturity/routing
+No promotion:
+- D03 remains 56.7%;
+- D03-09 remains L2/40;
+- D03-10 remains L2/40;
+- raw receipt gate remains 2/3;
+- outcome joins remain closed;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`;
+- SDA-001/SDA-004 remain `REMEDIATION_IN_PROGRESS`.
+
+Exact next:
+System 2 implementation owner adds research/shadow lineage diagnostics to the daily resonance consumer without changing the 3-of-3 lifecycle or Formal behavior; D03 reviews the machine receipt for exact three-raw-to-one-group mapping. System 1 still requires equivalent raw-vs-deduplicated diagnostics. D16 owns sibling residual, parameter-family multiplicity and OOS/prospective validation. Protected PR #600 remains owner-gated and independent.
