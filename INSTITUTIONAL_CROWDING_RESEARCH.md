@@ -2023,3 +2023,48 @@ Exact next:
 3. only then label the durable version T1_REVISED;
 4. D06-05 and D06-06 remain fail-closed at their existing blockers;
 5. outcomes stay closed and Formal Core remains unchanged.
+
+
+---
+
+## IC-081 — TPEx day-trading row disappearance is potentially informative censoring, not zero
+
+Research cycle: 2026-10-06 Asia/Taipei
+Status: INFORMATIVE_MISSINGNESS_FIREWALL_FROZEN / ELIGIBILITY_CENSORING_SEPARATED_FROM_NUMERIC_REVISION / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable guard:
+`research/d06_14_daytrade_informative_missingness_guard_v0_1.json`.
+
+Official TPEx semantics create a non-random missingness problem for T/T+1/T+2 vintage comparison.
+
+The day-trading statistics page explicitly states that when a security is adjusted to a non-day-trading state, the report stops disclosing that security's day-trading information until eligibility is restored.
+
+A separate official TPEx page, `新增之變更交易證券`, exposes change-date/security/status fields and states that altered-trading securities cannot conduct day trading, margin trading or securities-lending activity.
+
+Therefore a symbol disappearing from a later day-trading vintage cannot be treated as:
+- numeric zero;
+- ordinary provider correction;
+- harmless row drop;
+- evidence of zero participation.
+
+Frozen removal states:
+1. ELIGIBILITY_CENSORING_CONFIRMED;
+2. PROVIDER_REVISION_REMOVAL_CONFIRMED;
+3. SOURCE_COVERAGE_OR_SCHEMA_CHANGE;
+4. UNKNOWN_REMOVAL_CAUSE.
+
+Reappearance likewise requires a cause state; it is not automatically a newly listed security.
+
+The T/T+1/T+2 comparison must now report:
+- union support;
+- common support;
+- removed rows by cause;
+- reappeared/added rows by cause;
+- eligibility-censoring count;
+- unknown-removal count.
+
+If official eligibility/change evidence is unavailable for a disappearing symbol, the cause remains UNKNOWN rather than being imputed.
+
+This rule strengthens D06-14 revision integrity but does not change maturity. D06-14 remains L2/40%.
+
+No outcomes or Formal change.
