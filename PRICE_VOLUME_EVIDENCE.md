@@ -5372,3 +5372,32 @@ No canonical B1/B2/B4 primary horizon exists.
 Post-outcome horizon selection is forbidden.
 
 No L4 promotion occurs.
+
+# Pre-PVE-240 addendum — Wave-1 metric/horizon and D16 method selection frozen (2026-10-05)
+
+No PVE number consumed.
+No prospective economic outcome inspected.
+
+Executable evidence:
+- D02_WAVE1_METRIC_HORIZON_GUARD_V0_1 = 23/23 PASS;
+- D02_D16_WAVE1_METHOD_GUARD_V0_1 = 21/21 PASS.
+
+Frozen primary statistical metric:
+DATE_BALANCED_BRIER_LOSS_IMPROVEMENT.
+
+Frozen primary horizons:
+- H001 = B2;
+- H20 = B2;
+- H003 = active Acceptance lifecycle to first terminal success/failure or 13:00 censor.
+
+Non-rescue rule:
+- H001/H20 B1/B4 are sensitivities only;
+- H003 B horizons are diagnostics only.
+
+D16-19 method receipt is now a mandatory pre-outcome dependency.
+Actual frozen Wave-1 method receipts: 0/3.
+
+No numerical target is frozen.
+Target registry remains 14/14 pending because no justified numerical Brier MDE/precision target or D02-01 semantic tolerance exists, and D14 universal after-cost evidence remains incomplete.
+
+This is validation-design closure, not L4 evidence.
