@@ -5401,3 +5401,69 @@ No numerical target is frozen.
 Target registry remains 14/14 pending because no justified numerical Brier MDE/precision target or D02-01 semantic tolerance exists, and D14 universal after-cost evidence remains incomplete.
 
 This is validation-design closure, not L4 evidence.
+
+
+# PVE-240 — Historical minute-bar provenance and participation-intent firewall (2026-10-05)
+
+Status: PIT_PROVENANCE_EVIDENCE / OUTCOME_BLIND / NO_PROMOTION / SDA_001_SDA_003_ALIGNED.
+
+Purpose:
+Establish whether future D02 prospective receipts can bind historical minute-bar availability, timestamp, volume-unit and participation-proxy semantics without inspecting promotion-grade economic outcomes.
+
+Authoritative/source evidence reviewed:
+- Fugle MarketData historical candles documentation: https://developer.fugle.tw/docs/data/http-api/historical/candles/
+- Fugle MarketData intraday volumes documentation: https://developer.fugle.tw/docs/data/http-api/intraday/volumes/
+- TWSE OpenAPI catalogue: https://openapi.twse.com.tw/
+- TWSE historical information service description: https://eshop.twse.com.tw/en/category/main/41
+- TWSE ex-right/ex-dividend reference data: https://www.twse.com.tw/en/announcement/ex-right/twt49u.html
+
+Durable findings:
+1. Fugle historical minute bars are documented from 2023-05-23 onward; minute timestamps are ISO-8601 with +08:00 timezone. Historical data are documented as updated by 16:30 after each trading day.
+2. Volume unit is timeframe-dependent: regular-lot minute bars use lots, while regular-lot daily/weekly/monthly bars use shares. Any D02 join across minute and daily data must normalize units explicitly before RVOL/participation computation.
+3. adjusted=true applies only to daily/weekly/monthly bars. Minute-bar prospective evidence therefore must not silently inherit adjusted-price semantics from daily controls.
+4. Fugle intraday volumeAtBid/volumeAtAsk excludes the opening auction's first matched trade by design; therefore bid/ask-side cumulative volume is not a complete-volume identity and cannot be interpreted as true investor motive or true OFI.
+5. TWSE exposes official daily trading and corporate-action/reference-price data, while richer historical intraday quote/trade/order-book products are separately described by TWSE Data E-Shop. Source tier and field provenance must therefore remain explicit; public daily authority does not retroactively prove every minute-field primitive.
+6. Ex-right/ex-dividend reference prices are mechanically adjusted by TWSE rules. Price-response controls crossing corporate-action dates must bind a corporate-action flag/reference-price provenance rather than treating the mechanical gap as ordinary price discovery.
+
+SDA-001 control:
+- PRICE_OHLC-derived breakout/return/response transforms remain one price-information root.
+- PVE-240 authorizes provenance capture only; it does not create an independent price vote.
+- Volume/turnover may be tested only as residual/incremental information on identical common support against the price-only parent.
+
+SDA-003 control:
+- participation != motive.
+- volumeAtBid/volumeAtAsk, RVOL, turnover, signed trade-pressure proxies and price-volume response remain participation/proxy observables unless independently identified.
+- labels such as accumulation, distribution, informed buying, informed selling, smart money or true OFI remain forbidden from these primitives alone.
+
+Admission consequences for future clean receipts:
+- require source + endpoint + retrieval/freeze timestamp;
+- require exchange/session/symbol/date/timeframe;
+- require timezone and completed-bar status;
+- require raw volume unit + normalized volume unit;
+- require adjusted/unadjusted price semantics and corporate-action flag where relevant;
+- require PRICE_OHLC vs VOLUME_TURNOVER informationRoot separation;
+- require proxyClass and explicit intentIdentified=false unless an independent intent source exists;
+- reject cross-timeframe joins with unproven unit conversion;
+- reject opening-auction side-volume completeness assumptions;
+- reject corporate-action mechanical gaps as ordinary breakout/response evidence.
+
+Counter-evidence / limitation:
+- Documentation establishes availability and semantics, not predictive alpha.
+- Historical availability today does not prove the field was observable at the original decision time unless the future receipt binds firstKnownAt/availableAt or a valid decision-time source.
+- Provider historical reconstruction can support replay/provenance, but cannot by itself establish prospective live observability.
+- No D16 method receipt or numerical target was created here.
+
+Result:
+PVE-240 is accepted as provenance/admission evidence only.
+It does not count as a clean prospective selection date and does not authorize L4 promotion.
+
+Current state after PVE-240:
+- PVE cursor: PVE-240.
+- clean prospective selection dates: 0.
+- D02 maturity: 60.0% unchanged.
+- Gate 7: CLOSED.
+- FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+- Formal Core: LOCKED.
+
+Exact next continuation point:
+PVE-241 — freeze the executable prospective receipt schema for minute/daily unit normalization, corporate-action contamination, source availability clocks and participation-intent classification; remain outcome-blind and do not create numerical targets or D16 model methods.
