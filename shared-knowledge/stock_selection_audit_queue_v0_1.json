@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-06T06:09:00+08:00",
+  "updatedAt": "2026-10-06T06:48:00+08:00",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -27,7 +27,7 @@
   ],
   "formalMutationRequiresOwnerApproval": true,
   "closureByMaturityPercentageForbidden": true,
-  "issueCount": 21,
+  "issueCount": 22,
   "issues": [
     {
       "id": "SDA-001",
@@ -818,6 +818,42 @@
           "interpretation": "WACC is a composite consumer of D13 risk-free, D22 debt-cost and D07 balance-sheet primitives; deterministic recomposition must not create an independent vote or be re-counted in D08 valuation."
         }
       ]
+    },
+    {
+      "id": "SDA-022",
+      "severity": "CRITICAL",
+      "status": "ROUTED",
+      "domains": [],
+      "learningOwners": [
+        "00｜研究總控室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1",
+        "SYSTEM2"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Cross-system strategy convergence / pseudo-diversification",
+      "requiredRemediation": "Preserve separate decision-policy lineage, independently executable System2 strategy paths, cross-system overlap/divergence receipts, and D16 dependence/incrementality analysis.",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_IMPLEMENTED",
+        "cross_system_policy_lineage_observability",
+        "prospective_overlap_and_divergence_receipts",
+        "D16_dependence_and_incrementality_analysis",
+        "00_cross_system_readback"
+      ],
+      "readiness": "ARCHITECTURE_GUARD_FROZEN_IMPLEMENTATION_AND_PROSPECTIVE_OVERLAP_EVIDENCE_PENDING",
+      "receipt": "shared-knowledge/SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_V0_1.md",
+      "remainingDelta": [
+        "System1 decision-policy fingerprint receipt",
+        "System2 strategy-policy fingerprint receipt",
+        "System2 independently executable discovery proof without consuming System1 rank/Top6",
+        "cross-system universe/pick/rank/information-root overlap diagnostic",
+        "divergence reason classification",
+        "D16 dependence/incrementality test before any diversification or confirmation claim",
+        "00 independent closure"
+      ]
     }
   ],
   "lastReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md",
@@ -828,5 +864,6 @@
   "lastCriticalIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_INTAKE_20261006_V0_1.md",
   "lastHighIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_INTAKE_20261006_V0_1.md",
   "lastIncrementalIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_INCREMENTAL_INTAKE_20261006_V0_2.md",
-  "lastEngineeringIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_INTAKE_20261006_V0_3.md"
+  "lastEngineeringIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_INTAKE_20261006_V0_3.md",
+  "lastSystemLevelAudit": "shared-knowledge/SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_V0_1.md"
 }
