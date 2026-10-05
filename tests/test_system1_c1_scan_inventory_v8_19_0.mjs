@@ -15,6 +15,7 @@ for(const name of ['v7-regression.yml','v7-repair-ci.yml','v7-cloudflare.yml']){
  assert.equal(chain.filter(x=>x==='scripts/apply_v8_19_0.py').length,1,name+' new patch built once');
  assert.equal(chain.indexOf('scripts/apply_v8_19_0.py'),chain.indexOf('scripts/apply_v8_18_0.py')+1,name+' preserve patch order');
  assert.ok(workflow.includes('const VERSION = "8.19.0-c1-scan-origin-inventory";'));
+ assert.doesNotMatch(workflow,/run: python3[^\n]+\n\s+python3/,'single-line run must not fold the next patch into an argument');
 }
 let normalized=source.replace('8.19.0-c1-scan-origin-inventory','8.18.0-valuation-source-vintage').replace(/\n\/\/ BEGIN V8\.19 C1 SCAN INVENTORY[\s\S]*?\/\/ END V8\.19 C1 SCAN INVENTORY\n/,'');
 for(const n of plumbing)normalized=normalized.replace(body(normalized,n),body(baseline,n));
