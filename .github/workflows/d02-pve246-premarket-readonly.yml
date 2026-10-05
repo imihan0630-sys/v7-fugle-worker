@@ -1,0 +1,76 @@
+name: D02 PVE-246 Premarket Readonly
+
+on:
+  push:
+    paths:
+      - ".github/workflows/d02-pve246-premarket-readonly.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: d02-pve246-premarket-readonly
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read production version, scan and cron status only
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from "node:assert/strict";
+          const origin="https://fugle-test.imihan0630.workers.dev";
+          const adminToken=process.env.V7_ADMIN_TOKEN;
+          const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
+          const apiToken=process.env.CLOUDFLARE_API_TOKEN;
+          assert.ok(adminToken&&accountId&&apiToken,"required repository secrets missing");
+          async function getJson(url,headers={},label=url){
+            const r=await fetch(url,{headers:{accept:"application/json","cache-control":"no-cache",...headers},signal:AbortSignal.timeout(45000)});
+            const t=await r.text(); let j; try{j=JSON.parse(t)}catch{j=null}
+            if(!r.ok) throw new Error(`${label} HTTP ${r.status}: ${String(j?.error||t).slice(0,300)}`);
+            return j;
+          }
+          const [version,scan,cron,schedules]=await Promise.all([
+            getJson(origin+"/api/version?d02pve246="+Date.now(),{},"version"),
+            getJson(origin+"/api/scan/status?d02pve246="+Date.now(),{"x-admin-token":adminToken},"scan"),
+            getJson(origin+"/api/cron/status?d02pve246="+Date.now(),{"x-admin-token":adminToken},"cron"),
+            getJson(`https://api.cloudflare.com/client/v4/accounts/${accountId}/workers/scripts/fugle-test/schedules`,{authorization:`Bearer ${apiToken}`},"schedules")
+          ]);
+          const pv=scan?.pvShadow||null;
+          const report={
+            schemaVersion:"D02_PVE246_PREMARKET_READONLY_V0_1",
+            checkedAt:new Date().toISOString(),
+            readOnly:true,
+            runtimeVersion:version?.version??null,
+            testMode:version?.testMode??null,
+            scan:{
+              version:scan?.version??null,
+              scanDate:scan?.scanDate??null,
+              generatedAt:scan?.generatedAt??null,
+              selectedCount:scan?.selectedCount??null,
+              pipelineComplete:scan?.pipeline?.complete??null,
+              pvShadow:pv?{
+                schemaVersion:pv?.schemaVersion??null,
+                mode:pv?.mode??null,
+                enabled:pv?.enabled??null,
+                bootstrap:pv?.bootstrap??null,
+                daily:pv?.daily??null
+              }:null
+            },
+            cron:{
+              version:cron?.version??null,
+              latest:cron?.latest??null,
+              recent:Array.isArray(cron?.recent)?cron.recent.slice(0,20):[],
+              expected:cron?.expected??null
+            },
+            cloudflareSchedules:(schedules?.result||[]).map(x=>x.cron)
+          };
+          console.log("D02_PVE246_RESULT="+JSON.stringify(report));
+          NODE
