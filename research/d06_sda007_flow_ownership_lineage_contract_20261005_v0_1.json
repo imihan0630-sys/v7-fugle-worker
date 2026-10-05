@@ -1,0 +1,302 @@
+{
+  "schemaVersion": "D06_SDA007_FLOW_OWNERSHIP_LINEAGE_CONTRACT_20261005_V0_1",
+  "updatedAt": "2026-10-05 Asia/Taipei",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "auditTicket": "SDA-007",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "purpose": "Complete the D06 learning-room semantic remediation for flow/ownership intent overclaim and passive-active double counting by freezing one-primitive/one-receipt-many-consumers lineage rules.",
+  "rootCause": {
+    "risk": "Observed institutional flow, ownership, passive-event, leverage, crowding, lending, broker and retail-proxy data can be renamed as intent or counted repeatedly across D06 modules.",
+    "failureModes": [
+      "observed flow -> active conviction without identification",
+      "index event -> passive flow -> ETF mechanics counted as separate votes despite shared origin",
+      "TDCC ownership -> ownership concentration -> crowding counted as multiple independent votes",
+      "borrowing/SBL -> borrow economics -> ETF fulfillment or short pressure counted independently without lineage",
+      "margin/day-trade/broker proxies -> retail identity",
+      "same primitive reused across System1/System2 scoring layers without effectiveIndependentEvidenceCount"
+    ]
+  },
+  "primitiveFamilies": [
+    {
+      "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+      "primitiveType": "INSTITUTIONAL_FLOW_DAILY",
+      "canonicalOwnerModules": [
+        "D06-01",
+        "D06-02",
+        "D06-03",
+        "D06-04"
+      ],
+      "observedFields": [
+        "foreignNet",
+        "trustNet",
+        "dealerPropNet",
+        "dealerHedgeNet",
+        "dealerNet",
+        "institutionTotalNet",
+        "actorPersistence"
+      ],
+      "motiveState": "UNIDENTIFIED_UNLESS_INDEPENDENT_EVIDENCE",
+      "consumers": [
+        "D06-06",
+        "D06-12",
+        "D06-11 as contamination/control context"
+      ],
+      "antiDoubleCount": "Crowding or normalized-flow children may transform this primitive but do not create a second independent directional vote by name alone."
+    },
+    {
+      "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+      "primitiveType": "TDCC_OWNERSHIP_WEEKLY",
+      "canonicalOwnerModules": [
+        "D06-10"
+      ],
+      "observedFields": [
+        "chipConcentration",
+        "holdersOver1000LotsRatio",
+        "chipAsOfDate",
+        "chipDefinition"
+      ],
+      "motiveState": "HOLDER_IDENTITY_UNKNOWN",
+      "consumers": [
+        "D06-05",
+        "D06-06"
+      ],
+      "antiDoubleCount": "D06-05/D06-06 consume the same TDCC receipt; one weekly ownership vintage cannot become two independent ownership votes."
+    },
+    {
+      "informationRoot": "EVENT_DISCLOSURE",
+      "primitiveType": "INDEX_EVENT",
+      "canonicalOwnerModules": [
+        "D11-14"
+      ],
+      "observedFields": [
+        "provider",
+        "indexId",
+        "eventId",
+        "announcedAt",
+        "effectiveAt",
+        "memberOrWeightChange"
+      ],
+      "motiveState": "MECHANICAL_EVENT_CONTEXT",
+      "consumers": [
+        "D06-11",
+        "D06-16",
+        "D06-06 as contamination context"
+      ],
+      "antiDoubleCount": "Event expectation is one event primitive. Realized passive flow is independent only when directly measured from a separate fund-flow receipt rather than imputed from the event."
+    },
+    {
+      "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+      "primitiveType": "ETF_PRIMARY_MARKET_FLOW",
+      "canonicalOwnerModules": [
+        "D06-11"
+      ],
+      "observedFields": [
+        "unitsDelta",
+        "creationUnit",
+        "pcfVersion",
+        "pcfUseDate",
+        "cashSubstitutionState"
+      ],
+      "motiveState": "MECHANICAL_OR_INVESTOR_DEMAND_MIXED",
+      "consumers": [
+        "D06-16",
+        "D06-06 as contamination/context"
+      ],
+      "antiDoubleCount": "D06-16 mechanics explains transmission/friction and cannot re-count the same units delta as another vote."
+    },
+    {
+      "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+      "primitiveType": "MARGIN_LEVERAGE",
+      "canonicalOwnerModules": [
+        "D06-07",
+        "D06-08"
+      ],
+      "observedFields": [
+        "marginLongBalance",
+        "marginLongFlow",
+        "marginShortBalance",
+        "marginShortFlow"
+      ],
+      "motiveState": "INVESTOR_IDENTITY_AND_MOTIVE_PARTIAL_OR_UNKNOWN",
+      "consumers": [
+        "D06-06",
+        "D06-19 as proxy-validation context"
+      ],
+      "antiDoubleCount": "Margin activity is leverage evidence, not direct-retail identity; D06-19 may benchmark proxy purity/coverage but not create a second retail-flow primitive."
+    },
+    {
+      "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+      "primitiveType": "SBL_ACTIVITY",
+      "canonicalOwnerModules": [
+        "D06-09"
+      ],
+      "observedFields": [
+        "borrowingQty",
+        "borrowingBalance",
+        "returnQty",
+        "actualSblShortQty",
+        "actualSblShortBalance"
+      ],
+      "motiveState": "SHORT_HEDGE_ARBITRAGE_FULFILLMENT_MIXED",
+      "consumers": [
+        "D06-18",
+        "D06-16",
+        "D06-06"
+      ],
+      "antiDoubleCount": "Borrow activity, lending economics and ETF fulfillment must share linked primitive IDs; generic borrowing is not a second short-sale vote."
+    },
+    {
+      "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+      "primitiveType": "BORROW_ECONOMICS",
+      "canonicalOwnerModules": [
+        "D06-18"
+      ],
+      "observedFields": [
+        "borrowRateAtTrade",
+        "displayedLendQty",
+        "displayedBorrowQty",
+        "availabilityState"
+      ],
+      "motiveState": "DEMAND_SUPPLY_SEARCH_FRICTION_MIXED",
+      "consumers": [
+        "D06-06",
+        "D14-19 execution feasibility",
+        "D20-13 limits-to-arbitrage context"
+      ],
+      "antiDoubleCount": "Fee/scarcity is an economic state derived from lending markets; downstream feasibility/context consumers must not convert it into extra bearish votes."
+    },
+    {
+      "informationRoot": "VOLUME_TURNOVER",
+      "primitiveType": "DAY_TRADING",
+      "canonicalOwnerModules": [
+        "D06-14"
+      ],
+      "observedFields": [
+        "dayTradingShares",
+        "dayTradingValue",
+        "dayTradingRatio"
+      ],
+      "motiveState": "TURNOVER_NOT_DIRECTIONAL_INVENTORY",
+      "consumers": [
+        "D06-06",
+        "D06-19 as proxy-validation context"
+      ],
+      "antiDoubleCount": "High day-trading activity is not direct-retail flow and not a separate crowding vote unless residual incrementality is proven."
+    },
+    {
+      "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+      "primitiveType": "BROKER_BRANCH_EXECUTION",
+      "canonicalOwnerModules": [
+        "D06-13"
+      ],
+      "observedFields": [
+        "brokerBranchBuy",
+        "brokerBranchSell",
+        "brokerBranchNet",
+        "branchConcentration"
+      ],
+      "motiveState": "BENEFICIAL_OWNER_UNKNOWN",
+      "consumers": [
+        "D06-15 public-proxy classification",
+        "D06-19 identity falsification"
+      ],
+      "antiDoubleCount": "Public-bank or main-force labels are metadata/context on the same execution receipt unless independent beneficial-owner evidence exists."
+    },
+    {
+      "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+      "primitiveType": "DIRECT_RETAIL_INVESTOR_CLASS",
+      "canonicalOwnerModules": [
+        "D06-19"
+      ],
+      "observedFields": [
+        "investorClassDefinition",
+        "participation",
+        "ownership",
+        "directionalFlowWhenDirectlyObserved"
+      ],
+      "motiveState": "BEHAVIORAL_MOTIVE_UNKNOWN",
+      "consumers": [
+        "D20 behavioral transforms"
+      ],
+      "antiDoubleCount": "D20 may add behavior-specific evidence but cannot re-score the same direct-retail primitive as an independent behavioral vote without an extra identifiable observable."
+    }
+  ],
+  "interpretationLayers": [
+    {
+      "layer": "OBSERVED_PRIMITIVE",
+      "rule": "Direct source observation only. Identity/motive labels are limited to what the source explicitly identifies."
+    },
+    {
+      "layer": "DERIVED_STATE",
+      "rule": "A deterministic or rule-based transform references parentReceiptIds and inherits the same information root; transformation alone does not create independent evidence."
+    },
+    {
+      "layer": "CONTEXT_OR_CONTAMINATION",
+      "rule": "Index/passive, ETF-mechanics, policy-proxy, retail-proxy and lending-mechanism states may change interpretation/confidence but do not create extra direction by default."
+    },
+    {
+      "layer": "RESIDUAL_INCREMENTAL_CANDIDATE",
+      "rule": "May be treated as distinct only after D16 common-support/residual/OOS tests prove information beyond its parents and redundancy group."
+    }
+  ],
+  "motiveTaxonomy": {
+    "allowed": [
+      "OBSERVED_INVESTOR_CLASS",
+      "MECHANICAL_CONTEXT_SUPPORTED",
+      "ACTIVE_CONVICTION_UNIDENTIFIED",
+      "HEDGE_ARBITRAGE_POSSIBLE",
+      "POLICY_MOTIVE_UNKNOWN",
+      "RETAIL_BEHAVIOR_MOTIVE_UNKNOWN",
+      "BENEFICIAL_OWNER_UNKNOWN"
+    ],
+    "forbiddenWithoutIndependentEvidence": [
+      "SMART_MONEY_CONVICTION",
+      "PASSIVE_FLOW_PROVEN_FROM_EVENT_ONLY",
+      "GOVERNMENT_SUPPORT_INTENT",
+      "RETAIL_PANIC_OR_FOMO",
+      "SHORT_SPECULATIVE_INTENT"
+    ]
+  },
+  "sharedReceiptRules": [
+    "Each source observation receives one primitiveReceiptId.",
+    "Every derived child stores parentReceiptIds, informationRoot, sourceVintage/firstKnownAt and transformationVersion.",
+    "Multiple modules may consume one receipt but must expose dependency rather than independentVote=true.",
+    "A child derived only from existing parents has effectiveIndependentEvidenceCount=0 until residual incrementality is proven.",
+    "A directly measured new source family may add one candidate independent evidence unit, subject to common-support and redundancy tests.",
+    "UNKNOWN source/motive/coverage remains UNKNOWN and is never converted to zero/no-event/no-flow.",
+    "Later revisions append new vintages; they never overwrite the historical decision-time receipt.",
+    "Repeated symbols on one market date do not manufacture independent market-regime evidence; repeated scan dates on one TDCC vintage do not manufacture ownership updates."
+  ],
+  "passiveActiveResidualTestPrerequisites": {
+    "baseline": [
+      "institutional actor flow/persistence",
+      "price/volume",
+      "liquidity",
+      "market/sector/regime"
+    ],
+    "context": [
+      "index event receipt",
+      "ETF units/PCF receipt where available",
+      "derivatives expiry where applicable"
+    ],
+    "testQuestion": "Does directly measured realized passive/fund flow add information beyond event expectation and ordinary institutional flow, or does the institutional feature retain residual value after passive context is controlled?",
+    "outcomeGate": "CLOSED until prospective PIT coverage and D16 preregistration are satisfied",
+    "noEventRule": "No event row means NO_EVENT only when declared event-universe coverage is complete; otherwise UNKNOWN."
+  },
+  "sda007LearningRemediation": {
+    "observedFlowVsMotiveSplit": "COMPLETE",
+    "effectiveRevisionClockSemantics": "COMPLETE_AT_RESEARCH_CONTRACT_LEVEL",
+    "passiveFlowIdentityBoundary": "COMPLETE_AT_RESEARCH_CONTRACT_LEVEL",
+    "oneReceiptManyConsumersSemanticGuard": "COMPLETE",
+    "residualTestDesign": "PREREGISTERED_SEMANTICALLY / D16_EXECUTION_PENDING",
+    "engineeringLineageGuard": "PENDING_SYSTEM1_SYSTEM2",
+    "d16IncrementalityValidation": "PENDING",
+    "auditClosure": "NOT_AUTHORIZED_BY_ROOM05"
+  },
+  "maturityImpact": "NONE",
+  "formalOptimizationCandidate": "NONE",
+  "status": "SDA007_LEARNING_SEMANTIC_REMEDIATION_COMPLETE / ENGINEERING_LINEAGE_PENDING / D16_INCREMENTALITY_PENDING / 00_CLOSURE_REQUIRED / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Route this receipt to the existing SDA-007 engineering/D16 owners. On the next valid trading date, capture the preregistered D06 parent receipts with primitiveReceiptId/parentReceiptIds so actual one-receipt-many-consumers behavior can be validated. Do not change D06 maturity or Formal scoring from governance completion."
+}
