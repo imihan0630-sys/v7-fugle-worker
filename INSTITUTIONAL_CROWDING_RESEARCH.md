@@ -2068,3 +2068,71 @@ If official eligibility/change evidence is unavailable for a disappearing symbol
 This rule strengthens D06-14 revision integrity but does not change maturity. D06-14 remains L2/40%.
 
 No outcomes or Formal change.
+
+
+---
+
+## IC-082 — TPEx date-pinned day-trading replay contract removes default-page rollover risk
+
+Research cycle: 2026-10-06 Asia/Taipei
+Status: DATE_PINNED_QUERY_REPLAY_VERIFIED / T1_T2_FOLLOWUP_EXECUTABLE / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable contract:
+`research/d06_14_tpex_daytrade_date_pinned_query_contract_v0_1.json`.
+
+The official TPEx page itself exposes a `date` form input and table action `intraday/stat`. The date selector is therefore part of the official page query contract, not an invented hidden endpoint.
+
+Two pinned forms were verified against trade date 2026-10-05:
+- `?date=20261005`;
+- `?date=2026%2F10%2F05`.
+
+Both returned:
+- HTTP 200;
+- displayed trade date 2026-10-05;
+- 841 stock-level rows.
+
+The canonical research form is frozen as:
+`?date=YYYYMMDD`.
+
+This solves a critical revision-lineage risk: when the default page advances to 2026-10-06, T1_REVISED and T2_FINAL for trade date 2026-10-05 can still be queried reproducibly without relying on the default date state.
+
+Important boundary:
+historical date-pinned access does not recreate an earlier first-known timestamp. Vintage identity still requires the actual prospective capturedAt / firstKnownAt evidence.
+
+Maturity impact: NONE. This is execution/replay integrity, not predictive evidence.
+
+---
+
+## IC-083 — 2026-10-06 second prospective day-trading date opened with a clean pre-open zero-row state
+
+Research cycle: 2026-10-06 Asia/Taipei
+Status: SECOND_PROSPECTIVE_DATE_OPENED / PREOPEN_NOT_YET_PUBLISHED / PVE246_BLOCKER_READBACK_UNCHANGED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable artifacts:
+- `research/d06_14_tpex_daytrade_preopen_20261006_v0_1.json`;
+- `research/d06_20261006_prospective_capture_session_v0_1.json`.
+
+At 2026-10-06T06:11:31+08:00, the date-pinned official query for trade date 2026-10-06 was valid but contained zero stock-level rows.
+
+Interpretation:
+- state = NOT_YET_PUBLISHED;
+- zero rows are not zero day-trading activity;
+- no no-event/no-flow inference is allowed;
+- this pre-open observation supplies a genuine lower-bound point for today's first-known publication interval.
+
+2026-10-06 is a valid Taiwan trading date; the next scheduled market holiday is 2026-10-09.
+
+The full 2026-10-06 D06 prospective capture session is now frozen before observing same-day after-market source values:
+- D06-18 live borrow-economics slot: 15:20;
+- D06-03 dealer split: after market, TWSE public non-block target 18:00;
+- D06-07/08/09 TPEx leverage: EARLY 20:30 / LATE 22:30;
+- D06-14 current-day T_PRELIM: variable clock on pinned 20261006 query;
+- D06-14 prior-day T1_REVISED: pinned 20261005 query after T+1 workflow;
+- D06-05 TDCC: same 2026-10-02 ownership vintage remains one ownership inference unit unless a new source vintage appears;
+- D06-16 2026-10-06-use decision generation was already captured prospectively the previous evening and receives no duplicate-date credit from rereads.
+
+Cross-room readback:
+D02 PVE-246 has certified its three runtime root causes, but remediation remains pending and PVE-247 has no FIX_IMPLEMENTED/PASS receipt. Therefore D06-06 still lacks a same-generation, D06-population-compatible shared PRICE_OHLC/VOLUME_TURNOVER parent. No cross-room blocker is falsely cleared merely because PVE numbering advanced.
+
+Maturity impact: NONE at session open.
+D06 remains 48.9%; D06-14 remains L2/40%; Formal Core unchanged.
