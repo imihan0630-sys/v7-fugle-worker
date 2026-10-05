@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "D06_CORE_CROWDING_CROSSDOMAIN_PARENT_LINEAGE_20261005_V0_1",
+  "updatedAt": "2026-10-05 Asia/Taipei",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-06",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "linkedAuditTickets": [
+    "SDA-007"
+  ],
+  "crossDomainDependencies": [
+    "SDA-001",
+    "SDA-003"
+  ],
+  "purpose": "Freeze cross-room lineage for the D06-06 CORE_CROWDING price/volume reaction parent so shared price/volume evidence cannot be re-materialized inside D06 and counted as an additional independent vote.",
+  "canonicalRoots": {
+    "institutionalFlow": {
+      "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+      "canonicalProducer": "D06",
+      "roleInCoreCrowding": "PARENT"
+    },
+    "ownership": {
+      "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+      "canonicalProducer": "D06",
+      "roleInCoreCrowding": "PARENT",
+      "currentPrimitiveReceiptId": "D06-20261005-TDCC-WEEKLY"
+    },
+    "price": {
+      "informationRoot": "PRICE_OHLC",
+      "canonicalProducer": "D02/shared price-volume source lineage",
+      "roleInCoreCrowding": "SHARED_PARENT_CONSUMED_BY_D06"
+    },
+    "volume": {
+      "informationRoot": "VOLUME_TURNOVER",
+      "canonicalProducer": "D02/shared price-volume source lineage",
+      "roleInCoreCrowding": "SHARED_PARENT_CONSUMED_BY_D06"
+    }
+  },
+  "derivedState": {
+    "name": "D06_CORE_CROWDING_PRICE_FLOW_REACTION",
+    "type": "DERIVED_INTERACTION",
+    "requiredParents": [
+      "institutional flow/persistence primitive",
+      "shared PRICE_OHLC primitive",
+      "shared VOLUME_TURNOVER primitive"
+    ],
+    "independentVote": false,
+    "effectiveIndependentEvidenceCountIncrement": 0,
+    "promotionGate": "D16 common-support residual incrementality beyond exact parent receipts with PIT/OOS/Shadow, dependence/date clustering, cost and multiple-testing controls"
+  },
+  "antiDoubleCountRules": [
+    "D06 must not create a new PRICE_OHLC primitive when the same decision-generation price parent already exists in D02/shared lineage.",
+    "D06 must not create a new VOLUME_TURNOVER primitive when the same decision-generation volume parent already exists in D02/shared lineage.",
+    "A different module name, normalization, state label or interaction name does not create another independent price/volume vote.",
+    "priceFlowReactionState is a D06 interpretation child; it references exact parentReceiptIds and contributes zero additional independent evidence before D16 residual validation.",
+    "If a same-generation shared parent receipt is absent, D06-06 remains WAITING_PARENT_RECEIPT rather than reconstructing or duplicating a parent.",
+    "Final close/volume may not backfill any earlier intraday state or source clock."
+  ],
+  "today20261005": {
+    "marketCloseObserved": true,
+    "sameGenerationD02SharedParentReceiptFoundInRepository": false,
+    "d06DuplicateParentCreationAllowed": false,
+    "coreCrowdingPriceVolumeParentState": "WAITING_SHARED_PARENT_RECEIPT",
+    "maturityImpact": "NONE"
+  },
+  "namingGuard": {
+    "legacyPlannedId": "D06-20261005-LIQUIDITY-PRICEVOLUME",
+    "interpretation": "CONSUMER_ALIAS_ONLY_UNTIL_BOUND_TO_SHARED_PARENT",
+    "rule": "The planned D06 label may not be treated as a new primitiveReceiptId. It must bind to exact shared PRICE_OHLC/VOLUME_TURNOVER parent receipt identities before use."
+  },
+  "status": "CROSSDOMAIN_PRICE_VOLUME_LINEAGE_FROZEN / D06_DUPLICATE_PARENT_FORBIDDEN / SHARED_PARENT_BINDING_PENDING / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "When the 2026-10-05 shared D02/price-volume decision-generation parent receipt exists, bind its exact primitiveReceiptId/hash/firstKnownAt into D06-06. Until then keep CORE_CROWDING waiting on the shared parent. Continue the frozen actual-clock D06 source captures without creating duplicate price/volume primitives."
+}
