@@ -13,7 +13,7 @@ def once(old,new,label):
     text=text.replace(old,new,1)
 
 source=Path('research/system1_c1_scan_origin_inventory_v0_1.mjs').read_text(encoding='utf-8')
-expected='e5a15846a8df251cedbbff394a3ecbdc3af4e762ebbd2038e09234969a8b6770'
+expected='b684b2cafadd0436e50cb9ebceec1a5f11c02e60492139e0e6f51141ffd74021'
 if hashlib.sha256(source.encode()).hexdigest()!=expected:
     raise SystemExit('Frozen C1 scan-origin module changed')
 source='\n'.join(line for line in source.splitlines() if not line.startswith('import ')).replace('export ','')
@@ -119,8 +119,8 @@ once('''async function runAfterMarketScan(env, scheduledTime = Date.now(), optio
   const lockKey=`V7_AFTER_MARKET_LEASE:${requestedDate}`;let lease=null;''',
      '''async function runAfterMarketScan(env, scheduledTime = Date.now(), options = {}) {
   const requestedDate = taiwanDate(scheduledTime);
-  const c1ScanOriginContext=options.dryRun===true?null:C1_SCAN_ORIGIN.buildC1ScanOriginContext({
-    originKind:options.scanOriginKind||"INTERNAL_UNCLASSIFIED",
+  const c1ScanOriginContext=C1_SCAN_ORIGIN.buildC1ScanOriginContext({
+    originKind:options.scanOriginKind||(options.dryRun===true?"READ_ONLY_DRY_RUN":"INTERNAL_UNCLASSIFIED"),
     scanAttemptId:`C1SCAN:${requestedDate}:${crypto.randomUUID()}`,
     requestedDate,invokedAt:new Date().toISOString(),scheduledAt:new Date(scheduledTime).toISOString(),
     cronExpression:options.scanOriginCronExpression??null,onlyIfMissing:options.onlyIfMissing===true,testMode:isTestMode(env)
