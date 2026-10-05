@@ -4309,3 +4309,51 @@ No promotion:
 
 Exact next:
 System 2 implementation owner adds research/shadow lineage diagnostics to the daily resonance consumer without changing the 3-of-3 lifecycle or Formal behavior; D03 reviews the machine receipt for exact three-raw-to-one-group mapping. System 1 still requires equivalent raw-vs-deduplicated diagnostics. D16 owns sibling residual, parameter-family multiplicity and OOS/prospective validation. Protected PR #600 remains owner-gated and independent.
+
+
+## TI-725 through TI-732 — System 2 resonance dedup acceptance oracle (2026-10-05)
+
+Canonical artifacts:
+- `research/D03_SYSTEM2_RESONANCE_DEDUP_ACCEPTANCE_ORACLE_20261005_V0_1.md`;
+- `research/d03_system2_resonance_dedup_acceptance_cases_20261005_v0_1.json`;
+- `research/test_d03_system2_resonance_dedup_acceptance_v0_1.mjs`.
+
+### TI-725 — complete three-condition truth table frozen
+All eight Boolean entry combinations are covered. Raw lifecycle count remains 0..3, while every nonzero combination deduplicates to one `RG_D03_PRICE_TREND` family and one effective independent evidence unit. Exit semantics are symmetric.
+
+### TI-726 — missing lineage fails closed
+An active unregistered condition preserves raw observability but forces deduplicated/effective counts to null with `UNKNOWN_LINEAGE_FAIL_CLOSED`. UNKNOWN is not coerced to zero, PASS or BAD.
+
+### TI-727 — duplicate registration cannot inflate counts
+Repeated condition IDs collapse to one raw identity and one family contribution. Cosmetic aliases cannot reset lineage or parameter-family multiplicity.
+
+### TI-728 — mapping drift is rejected
+Any silent reassignment of EMA16/EMA64/Impulse-MACD conditions outside `RG_D03_PRICE_TREND` fails acceptance absent newer D16/00 closure.
+
+### TI-729 — parameter drift is rejected
+Impulse MACD source/smoother/window/seed/warm-up changes require a new factorVersion and remain charged to `PF_D03_SYSTEM2_IMPULSE_MACD_34_9_HLC3_V0_1` broader experiment-family accounting.
+
+### TI-730 — support and counterhypothesis
+Same-root deduplication is supported by deterministic OHLC ancestry and shared EMA16 dependence. The counterhypothesis that Impulse MACD adds path discrimination remains testable, but cannot create a second vote before direct sibling/common-support/multiplicity/OOS evidence.
+
+### TI-731 — inference boundary
+The oracle proves lineage mechanics only. PIT/finality/continuity, purged OOS/prospective Shadow, walk-forward, date clustering, multiple testing, D01/D02/D04/D18 controls, costs, limits, suspension and fillability remain required.
+
+### TI-732 — deterministic result and routing
+Observed:
+`status=PASS; truthTableCases=8; adversarialCases=4; fullResonanceRawSignalCount=3; fullResonanceDedupedEvidenceFamilyCount=1; fullResonanceEffectiveIndependentEvidenceCount=1; missingLineage=UNKNOWN_FAIL_CLOSED; formalCoreImpact=NONE_LOCKED`.
+
+This is implementation-ready acceptance evidence, not System 2 implementation completion.
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09 remains L2/40;
+- D03-10 remains L2/40;
+- raw receipt gate remains 2/3;
+- outcomes remain CLOSED;
+- `SYSTEM2_RUNTIME_DEDUP_DIAGNOSTICS = MISSING`;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`;
+- Formal Core remains LOCKED.
+
+Exact next:
+System 2 implementation owner adds the six required research/shadow diagnostics and executes this oracle without changing lifecycle, signal, notification, order or Formal behavior. D03 reviews the returned machine receipt for exact 3-raw-to-1-family mapping and mapping/parameter drift. System 1 equivalent diagnostics, D16 validation, 00 closure, protected PR #600 approval, Bollinger post-deploy evidence and ADX FULL_REPLAY remain separately required.

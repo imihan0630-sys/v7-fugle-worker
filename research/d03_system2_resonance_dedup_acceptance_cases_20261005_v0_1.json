@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "D03_SYSTEM2_RESONANCE_DEDUP_ACCEPTANCE_CASES_V0_1",
+  "updatedAt": "2026-10-05T17:10:00+08:00",
+  "classification": "CLASS_A_RESEARCH_SHADOW_ONLY",
+  "formalCoreImpact": "NONE_LOCKED",
+  "bridge": "research/d03_system2_daily_resonance_lineage_bridge_20261005_v0_1.json",
+  "conditionIds": [
+    "S2_DAILY_RESONANCE_PRICE_ABOVE_EMA16_AND_RISING",
+    "S2_DAILY_RESONANCE_EMA16_ABOVE_EMA64",
+    "S2_DAILY_RESONANCE_IMPULSE_MACD_BULLISH"
+  ],
+  "truthTable": [
+    {"caseId":"000","active":[],"expectedRawSignalCount":0,"expectedDedupedEvidenceFamilyCount":0,"expectedEffectiveIndependentEvidenceCount":0},
+    {"caseId":"100","active":["S2_DAILY_RESONANCE_PRICE_ABOVE_EMA16_AND_RISING"],"expectedRawSignalCount":1,"expectedDedupedEvidenceFamilyCount":1,"expectedEffectiveIndependentEvidenceCount":1},
+    {"caseId":"010","active":["S2_DAILY_RESONANCE_EMA16_ABOVE_EMA64"],"expectedRawSignalCount":1,"expectedDedupedEvidenceFamilyCount":1,"expectedEffectiveIndependentEvidenceCount":1},
+    {"caseId":"001","active":["S2_DAILY_RESONANCE_IMPULSE_MACD_BULLISH"],"expectedRawSignalCount":1,"expectedDedupedEvidenceFamilyCount":1,"expectedEffectiveIndependentEvidenceCount":1},
+    {"caseId":"110","active":["S2_DAILY_RESONANCE_PRICE_ABOVE_EMA16_AND_RISING","S2_DAILY_RESONANCE_EMA16_ABOVE_EMA64"],"expectedRawSignalCount":2,"expectedDedupedEvidenceFamilyCount":1,"expectedEffectiveIndependentEvidenceCount":1},
+    {"caseId":"101","active":["S2_DAILY_RESONANCE_PRICE_ABOVE_EMA16_AND_RISING","S2_DAILY_RESONANCE_IMPULSE_MACD_BULLISH"],"expectedRawSignalCount":2,"expectedDedupedEvidenceFamilyCount":1,"expectedEffectiveIndependentEvidenceCount":1},
+    {"caseId":"011","active":["S2_DAILY_RESONANCE_EMA16_ABOVE_EMA64","S2_DAILY_RESONANCE_IMPULSE_MACD_BULLISH"],"expectedRawSignalCount":2,"expectedDedupedEvidenceFamilyCount":1,"expectedEffectiveIndependentEvidenceCount":1},
+    {"caseId":"111","active":["S2_DAILY_RESONANCE_PRICE_ABOVE_EMA16_AND_RISING","S2_DAILY_RESONANCE_EMA16_ABOVE_EMA64","S2_DAILY_RESONANCE_IMPULSE_MACD_BULLISH"],"expectedRawSignalCount":3,"expectedDedupedEvidenceFamilyCount":1,"expectedEffectiveIndependentEvidenceCount":1}
+  ],
+  "adversarialCases": [
+    {
+      "caseId": "DUPLICATE_CONDITION_REGISTRATION",
+      "active": [
+        "S2_DAILY_RESONANCE_EMA16_ABOVE_EMA64",
+        "S2_DAILY_RESONANCE_EMA16_ABOVE_EMA64"
+      ],
+      "expectedRawSignalCount": 1,
+      "expectedDedupedEvidenceFamilyCount": 1,
+      "expectedEffectiveIndependentEvidenceCount": 1,
+      "expectedStatus": "PASS_DEDUPLICATED"
+    },
+    {
+      "caseId": "MISSING_LINEAGE",
+      "active": ["UNREGISTERED_RESONANCE_CONDITION"],
+      "expectedRawSignalCount": 1,
+      "expectedDedupedEvidenceFamilyCount": null,
+      "expectedEffectiveIndependentEvidenceCount": null,
+      "expectedStatus": "UNKNOWN_LINEAGE_FAIL_CLOSED"
+    },
+    {
+      "caseId": "REDUNDANCY_GROUP_DRIFT",
+      "active": ["S2_DAILY_RESONANCE_IMPULSE_MACD_BULLISH"],
+      "override": {"redundancyGroupId": "RG_UNAPPROVED_MOMENTUM_SPLIT"},
+      "expectedStatus": "REJECT_MAPPING_DRIFT"
+    },
+    {
+      "caseId": "PARAMETER_FAMILY_DRIFT",
+      "active": ["S2_DAILY_RESONANCE_IMPULSE_MACD_BULLISH"],
+      "override": {"parameterFamilyId": "PF_UNVERSIONED_IMPULSE_VARIANT"},
+      "expectedStatus": "REJECT_PARAMETER_DRIFT"
+    }
+  ],
+  "exitSemantics": "SYMMETRIC_TO_ENTRY_TRUTH_TABLE",
+  "lifecycleCountMayRemain": true,
+  "entryExitCountMayBeUsedAsAlphaVoteCount": false,
+  "formalOptimizationCandidate": "NONE"
+}
+

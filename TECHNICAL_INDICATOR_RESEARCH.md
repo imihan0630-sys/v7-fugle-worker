@@ -3575,3 +3575,31 @@ No maturity promotion:
 
 Exact next:
 protected Production path still requires owner approval for PR #600, then a genuine cutoff-bearing Taiwan-session parent and complete Bollinger v0.2 reconciliation. Independent Class A path hands the frozen registry to System1/System2 for raw-vs-deduplicated Shadow diagnostics; D16 must preregister the parameter-family budget and validate common-support residual/OOS incrementality. ADX remains second behind Bollinger and canonical FULL_REPLAY.
+
+
+## TI-709 through TI-732 — lineage consumer pre-audit, System 2 bridge and executable acceptance oracle (2026-10-05)
+
+Canonical detailed artifacts:
+- `research/D03_RESIDUAL_BASELINE_AND_CONSUMER_PREAUDIT_20261005_V0_1.md`;
+- `research/D03_SYSTEM2_DAILY_RESONANCE_LINEAGE_BRIDGE_20261005_V0_1.md`;
+- `research/d03_system2_daily_resonance_lineage_bridge_20261005_v0_1.json`;
+- `research/D03_SYSTEM2_RESONANCE_DEDUP_ACCEPTANCE_ORACLE_20261005_V0_1.md`;
+- `research/d03_system2_resonance_dedup_acceptance_cases_20261005_v0_1.json`;
+- `research/test_d03_system2_resonance_dedup_acceptance_v0_1.mjs`.
+
+### TI-709~716 — residual baseline and consumer pre-audit
+Downstream indexed consumption was not demonstrated at the audited cursor, so raw-vs-deduplicated behavior remained unverified. The strongest same-root baselines are frozen for every active D03 lane. Residual success against a weak baseline does not split a redundancy group. KD/RSI require bilateral sibling controls; divergence/Bollinger/multi-timeframe child-parent stacking is forbidden; parameter variants stay inside one experiment-family budget.
+
+### TI-717~724 — System 2 daily resonance bridge
+The observed research runtime uses close-above-EMA16-and-rising, EMA16-above-EMA64 and Impulse MACD for 1/3->2/3->3/3 lifecycle states and already declares same-family independence false. All three map to `PRICE_OHLC` / `RG_D03_PRICE_TREND`. Impulse MACD uses HLC3 + SMMA34 + ZLEMA34 + SMA9 and is frozen as `PF_D03_SYSTEM2_IMPULSE_MACD_34_9_HLC3_V0_1`. Runtime dedup diagnostics remain missing.
+
+### TI-725~732 — executable acceptance oracle
+All eight Boolean combinations and four adversarial cases pass. Full resonance is exactly three raw lifecycle conditions but one deduplicated/effective price-trend family. Duplicate registration cannot inflate counts; missing lineage fails closed to UNKNOWN; redundancy-group and parameter-family drift are rejected.
+
+Observed:
+`status=PASS; truthTableCases=8; adversarialCases=4; fullResonanceRawSignalCount=3; fullResonanceDedupedEvidenceFamilyCount=1; fullResonanceEffectiveIndependentEvidenceCount=1; missingLineage=UNKNOWN_FAIL_CLOSED; formalCoreImpact=NONE_LOCKED`.
+
+No outcome was inspected. No System 2 runtime or Formal behavior was changed. D03 remains 56.7%; D03-09 and D03-10 remain L2/40; raw gate remains 2/3; SDA-001/SDA-004 remain REMEDIATION_IN_PROGRESS; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+Exact next:
+System 2 implementation owner adds the required research/shadow lineage fields and returns an oracle-backed machine receipt. D03 reviews mapping drift. System 1 equivalent diagnostics, D16 sibling residual/multiplicity/OOS validation and 00 closure remain required. Protected PR #600, Bollinger and ADX paths are unchanged.
