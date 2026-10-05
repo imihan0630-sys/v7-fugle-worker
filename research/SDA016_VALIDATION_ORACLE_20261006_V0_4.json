@@ -1,0 +1,454 @@
+{
+  "schemaVersion": "SDA016_VALIDATION_ORACLE_V0_4",
+  "ticket": "SDA-016",
+  "owner": "11",
+  "status": "RESEARCH_ONLY_VALIDATION_ORACLE_FROZEN",
+  "formalCoreImpact": "NONE",
+  "canonicalContracts": [
+    "research/SDA016_HOLDOUT_CONSUMPTION_VALIDATION_CONTRACT_20261005_V0_1.md",
+    "research/SDA016_INFORMATION_FOOTPRINT_VALIDATION_ADDENDUM_20261005_V0_1.md",
+    "research/SDA016_INFORMATION_RELEASE_SELECTION_VALIDATION_ADDENDUM_20261005_V0_1.md",
+    "research/SDA016_ADMISSION_SELECTION_IDENTIFICATION_VALIDATION_ADDENDUM_20261006_V0_1.md",
+    "research/SDA016_C1_GENERATION_PARENT_SELECTION_VALIDATION_ADDENDUM_20261006_V0_1.md"
+  ],
+  "closureAuthority": "00",
+  "passRule": "ALL_48_BLOCKING_TESTS_PASS_AND_ROOM00_INDEPENDENT_READBACK",
+  "currentEngineeringState": "PARTIAL_PASS",
+  "tests": [
+    {
+      "id": "SDA016-T01",
+      "name": "same holdout replay",
+      "scenario": "same experiment/version/physical holdout inspected twice",
+      "expected": "SECOND_ACCESS_CONSUMES_NOT_NEW_EVIDENCE",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T02",
+      "name": "same-version target mutation",
+      "scenario": "targetHash changes within same experiment version",
+      "expected": "REJECT",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T03",
+      "name": "same-version benchmark mutation",
+      "scenario": "benchmarkHash changes within same experiment version",
+      "expected": "REJECT",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T04",
+      "name": "post-result new version exact same holdout",
+      "scenario": "new version registered after prior inspection",
+      "expected": "DEVELOPMENT_CONSUMED_NOT_UNTOUCHED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T05",
+      "name": "cosmetic holdout rename",
+      "scenario": "same physical dataset/date identity with different logical id",
+      "expected": "SAME_CONSUMPTION_LINEAGE",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T06",
+      "name": "partial decision-date overlap",
+      "scenario": "holdouts share some independent decision dates",
+      "expected": "REPORT_OVERLAP_AND_DEDUP_EFFECTIVE_NEW_DATES",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T07",
+      "name": "fixed-N interim peek",
+      "scenario": "unregistered interim outcome access before final N",
+      "expected": "CONFIRMATORY_INVALID_DEVELOPMENT_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T08",
+      "name": "preregistered sequential policy",
+      "scenario": "all looks frozen before first outcome with immutable information times/error rule",
+      "expected": "ALLOW_ONLY_IF_EXPLICIT_D16_SEQUENTIAL_CONTRACT",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T09",
+      "name": "negative variant deletion",
+      "scenario": "ledger contains failed/negative variant but registry/accounting omits it",
+      "expected": "REJECT_FAMILY_ACCOUNTING_MISMATCH",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T10",
+      "name": "cross-system logical alias",
+      "scenario": "System1 and System2 use different ids for same physical holdout",
+      "expected": "MERGE_CONSUMPTION_BY_CANONICAL_PHYSICAL_IDENTITY",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T11",
+      "name": "D18 outcome-driven state split",
+      "scenario": "new regime split created after outcome inspection",
+      "expected": "NEW_FAMILY_AND_ORIGINAL_HOLDOUT_DEVELOPMENT_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T12",
+      "name": "outcome arrival immutability",
+      "scenario": "later matured outcome attempts to alter prediction/preregistration/decision receipt",
+      "expected": "REJECT_MUTATION_APPEND_OUTCOME_ONLY",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T13",
+      "name": "disjoint decision dates overlapping D+N windows",
+      "scenario": "date sets disjoint but outcome dependency sessions overlap",
+      "expected": "OUTCOME_FOOTPRINT_OVERLAP_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T14",
+      "name": "different endpoints same underlying sessions",
+      "scenario": "cumulative horizons share primitive market sessions",
+      "expected": "OUTCOME_FOOTPRINT_OVERLAP_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T15",
+      "name": "path target endpoint-only identity",
+      "scenario": "MFE/MAE/path statistic shares path sessions but only endpoint hashes differ",
+      "expected": "REJECT_INCOMPLETE_FOOTPRINT_IDENTITY",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T16",
+      "name": "horizon expansion",
+      "scenario": "same decision dates change D5 to D10 after inspection",
+      "expected": "NEW_VERSION_SAME_ADAPTIVE_FAMILY_EXPANDED_FOOTPRINT_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T17",
+      "name": "same date different symbols",
+      "scenario": "stock rows differ but scanDate same",
+      "expected": "ONE_SHARED_DATE_UNIT_FOR_FRESH_EVIDENCE",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T18",
+      "name": "cross-system same outcome footprint",
+      "scenario": "different consumers/holdout ids use same physical outcome footprint",
+      "expected": "MERGE_CONSUMPTION",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T19",
+      "name": "unknown footprint lineage",
+      "scenario": "session/horizon/continuity provenance insufficient",
+      "expected": "UNKNOWN_OVERLAP_FAIL_CLOSED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T20",
+      "name": "post-outcome purge tuning",
+      "scenario": "purge/embargo changed after seeing results",
+      "expected": "NEW_ADAPTIVE_VERSION_DEVELOPMENT_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T21",
+      "name": "preregistered clean purge",
+      "scenario": "new holdout avoids all consumed decision/outcome footprints under frozen purge",
+      "expected": "UNSEEN_ELIGIBILITY_SUBJECT_TO_ALL_OTHER_GATES",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T22",
+      "name": "overlap guard versus dependence",
+      "scenario": "no footprint overlap but statistical dependence may remain",
+      "expected": "PASS_OVERLAP_ONLY_D16_06_INFERENCE_STILL_REQUIRED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T23",
+      "name": "boolean release still consumes",
+      "scenario": "holdout only returns PASS/FAIL and next hypothesis adapts to it",
+      "expected": "INFORMATION_EXPOSURE_COUNTS_AS_INSPECTION",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T24",
+      "name": "cross-room recommendation contamination",
+      "scenario": "Room A sees holdout metric and tells Room B to change threshold without sharing raw outcome",
+      "expected": "DOWNSTREAM_HYPOTHESIS_INHERITS_CONSUMPTION_LINEAGE",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T25",
+      "name": "plot or ranking release",
+      "scenario": "holdout releases only plot/ranking/aggregate table",
+      "expected": "RELEASE_RECEIPT_REQUIRED_AND_CONSUMPTION_RECORDED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T26",
+      "name": "multi-agent summary alias",
+      "scenario": "multiple agents receive different summaries of same physical holdout",
+      "expected": "SHARED_CANONICAL_RELEASE_AND_CONSUMPTION_LINEAGE",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T27",
+      "name": "orphan result release",
+      "scenario": "outcome-derived release lacks parent inspection/result digest",
+      "expected": "UNTOUCHED_STATUS_UNPROVEN_FAIL_CLOSED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T28",
+      "name": "admission missingness by state",
+      "scenario": "capture/admission failure is concentrated in a pre-outcome state",
+      "expected": "ADMISSION_SELECTION_WARNING_NO_COMPLETE_CASE_PROMOTION",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T29",
+      "name": "informative label maturity",
+      "scenario": "matured-label availability differs by suspension/corporate-action/source state",
+      "expected": "CENSORING_SELECTION_WARNING_REPORT_UNKNOWN_AND_MATURITY_STRATA",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T30",
+      "name": "best horizon after joint inspection",
+      "scenario": "same hypothesis inspects D5/D10/D20 then promotes best horizon to primary",
+      "expected": "NEW_ADAPTIVE_VERSION_AND_ORIGINAL_HOLDOUT_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T31",
+      "name": "complete-case target mismatch",
+      "scenario": "admission depends on pre-outcome regime/source state but complete cases are reported as full target population",
+      "expected": "OBSERVED_SUBPOPULATION_ONLY_NO_FULL_TARGET_PROMOTION",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T32",
+      "name": "future-informed admission model",
+      "scenario": "admission/censoring model uses post-decision variables or future regime path",
+      "expected": "REJECT_PIT_SELECTION_MODEL",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T33",
+      "name": "positivity failure hidden by extreme weights",
+      "scenario": "one preregistered stratum has zero or near-zero admission probability and IPW is used to claim full-population recovery",
+      "expected": "IDENTIFICATION_BLOCKED_POSITIVITY_FAILURE",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T34",
+      "name": "weighting estimand drift",
+      "scenario": "trimming/truncation/overlap weighting changes support but output retains original full-population estimand identity",
+      "expected": "REJECT_ESTIMAND_IDENTITY_MISMATCH",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T35",
+      "name": "binary missing-outcome bounds cross decision boundary",
+      "scenario": "worst/best-case bounds permit both sides of the directional decision boundary",
+      "expected": "DIRECTION_NOT_IDENTIFIED_UNDER_MISSINGNESS",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T36",
+      "name": "Brier robustness not bound-stable",
+      "scenario": "paired Brier advantage changes sign within legal missing-label sensitivity bounds",
+      "expected": "NO_ROBUST_PROMOTION",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T37",
+      "name": "unbounded log-loss sensitivity",
+      "scenario": "finite worst-case missing-label log-loss robustness is claimed without preregistered finite probability clipping",
+      "expected": "REJECT_UNBOUNDED_ROBUSTNESS_CLAIM",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T38",
+      "name": "adaptive maturity cutoff",
+      "scenario": "evaluation or maturity cutoff is chosen after inspecting matured outcomes",
+      "expected": "ADAPTIVE_INSPECTION_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T39",
+      "name": "outcome-tuned missingness model",
+      "scenario": "admission/imputation model family or tuning is chosen using holdout economic performance",
+      "expected": "NEW_FAMILY_AND_HOLDOUT_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T40",
+      "name": "single imputation as observed truth",
+      "scenario": "single imputed labels are treated as observed outcomes without uncertainty accounting",
+      "expected": "REJECT_FALSE_CERTAINTY",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T41",
+      "name": "outcome-guided same-session generation selection",
+      "scenario": "multiple complete C1 generations exist for one scanDate and the parent is selected after outcome inspection",
+      "expected": "REJECT_ADAPTIVE_PARENT_SELECTION_AND_CONSUME_FAMILY",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T42",
+      "name": "latest-generation heuristic without formal binding",
+      "scenario": "experiment parent is chosen by created_at DESC / latest generation without immutable authoritative Formal binding",
+      "expected": "PARENT_GENERATION_AMBIGUOUS",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T43",
+      "name": "collector latest-versus-formal mismatch",
+      "scenario": "scanDate read resolves to one generation while Formal scan proof points to another",
+      "expected": "FORMAL_C1_GENERATION_UNLINKED_FAIL_CLOSED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T44",
+      "name": "same-origin multiple after-market generations",
+      "scenario": "two AFTER_MARKET_SCAN_PIPELINE generations are both selectionVerified on same date",
+      "expected": "ORIGIN_NOT_SUFFICIENT_REQUIRE_EXACT_FORMAL_DECISION_BINDING",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T45",
+      "name": "stage-selection supersedes inventory order",
+      "scenario": "later STAGE_SELECTION_ROUTE generation becomes inventory latest after authoritative normal generation",
+      "expected": "MUST_NOT_REPLACE_AUTHORITATIVE_FORMAL_PARENT",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T46",
+      "name": "mutable-or-expired current scan pointer",
+      "scenario": "historical LAST_SCAN_KEY pointer is updated or expired while C1 generations remain",
+      "expected": "NO_PARENT_GUESS_HISTORICAL_BINDING_REQUIRED",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T47",
+      "name": "selected-set equality used as parent inference",
+      "scenario": "historical generation lacks formal binding but selected symbols happen to match",
+      "expected": "REJECT_INFERRED_PARENT_FROM_SELECTED_SET",
+      "blocking": true
+    },
+    {
+      "id": "SDA016-T48",
+      "name": "inventory snapshot treated as finalized set",
+      "scenario": "generation inventory reports snapshotMutableUntilSessionComplete=true but consumer treats it as final complete set",
+      "expected": "REJECT_SESSION_COMPLETENESS_CLAIM",
+      "blocking": true
+    }
+  ],
+  "requiredMachineOutputs": [
+    "experimentFamilyId",
+    "holdoutId",
+    "decisionDateSetHash",
+    "outcomeInformationFootprintHash",
+    "decisionDateOverlapN",
+    "decisionDateOverlapRatio",
+    "outcomeSessionOverlapN",
+    "outcomeSessionOverlapRatio",
+    "priorConsumedOutcomeFootprintRefs",
+    "purgeRuleVersion",
+    "overlapDisposition",
+    "consumptionState",
+    "outcomeLockHash",
+    "releaseId",
+    "releaseClass",
+    "recipientScope",
+    "parentReleaseIds",
+    "downstreamHypothesisRefs",
+    "consumptionStateAfterRelease",
+    "calendarCandidateN",
+    "admissionEligibleN",
+    "readbackPendingN",
+    "parentMissingN",
+    "captureDisabledN",
+    "labelUnknownN",
+    "immatureN",
+    "costUnknownN",
+    "admissionFractionByPreOutcomeStratum",
+    "maturityStateByPreOutcomeStratum",
+    "multipleTestingFamilyId",
+    "primaryHorizonId",
+    "targetPopulationEligible",
+    "parentCaptured",
+    "readbackVerified",
+    "predictionAvailable",
+    "outcomeMatured",
+    "performanceEligible",
+    "costEligible",
+    "finalAnalysisAdmitted",
+    "admissionModelId",
+    "admissionModelKnowledgeCutoff",
+    "admissionPropensityMin",
+    "admissionPropensityQuantiles",
+    "maxAdmissionWeight",
+    "weightConcentration",
+    "weightedEffectiveSupport",
+    "estimandIdentity",
+    "supportRestrictionRule",
+    "binaryMissingOutcomeLowerBound",
+    "binaryMissingOutcomeUpperBound",
+    "brierSensitivityLowerBound",
+    "brierSensitivityUpperBound",
+    "probabilityClippingContract",
+    "evaluationCutoffRule",
+    "imputationContract",
+    "imputationUncertaintyState",
+    "formalDecisionReceiptId",
+    "formalDecisionAt",
+    "formalRuntimeVersion",
+    "formalSourceMainSha",
+    "formalResultDigest",
+    "formalSelectedSymbolsDigest",
+    "formalSelectedCount",
+    "authoritativeC1GenerationId",
+    "authoritativeC1DecisionAt",
+    "authoritativeC1ContentDigest",
+    "authoritativeC1UniverseDigest",
+    "authoritativeC1PopulationN",
+    "authoritativeC1ScanOriginKind",
+    "formalC1BindingCreatedAt",
+    "formalC1BindingDigest",
+    "parentSelectionRuleVersion",
+    "generationSetFinalizationState",
+    "generationSetFinalizationRuleVersion"
+  ],
+  "unresolvedEngineering": [
+    "PARTIAL_DATE_OVERLAP_LINEAGE",
+    "OUTCOME_INFORMATION_FOOTPRINT_OVERLAP",
+    "SHARED_CROSS_SYSTEM_CONSUMPTION_AUTHORITY",
+    "COMPLETE_MACHINE_VISIBLE_OUTCOME_LOCK_IDENTITY",
+    "OUTCOME_INFORMATION_RELEASE_LINEAGE",
+    "CROSS_ROOM_TRANSITIVE_CONTAMINATION",
+    "ADMISSION_SELECTION_ACCOUNTING",
+    "DELAYED_LABEL_CENSORING_ACCOUNTING",
+    "MULTI_HORIZON_FAMILY_ACCOUNTING",
+    "ADMISSION_SELECTION_IDENTIFICATION",
+    "POSITIVITY_OVERLAP_DIAGNOSTICS",
+    "WEIGHTING_ESTIMAND_IDENTITY",
+    "PARTIAL_IDENTIFICATION_BOUNDS",
+    "PROPER_SCORE_MISSINGNESS_SENSITIVITY",
+    "DETERMINISTIC_MATURITY_CUTOFF",
+    "IMPUTATION_UNCERTAINTY_ACCOUNTING",
+    "IMMUTABLE_FORMAL_DECISION_TO_C1_GENERATION_BINDING",
+    "SAME_SESSION_GENERATION_PARENT_DISAMBIGUATION",
+    "GENERATION_SET_FINALIZATION_RECEIPT"
+  ],
+  "maturityImpact": "NONE",
+  "supersedes": "research/SDA016_VALIDATION_ORACLE_20261006_V0_3.json"
+}

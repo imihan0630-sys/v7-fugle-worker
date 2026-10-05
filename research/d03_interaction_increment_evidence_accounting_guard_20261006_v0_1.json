@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "D03_INTERACTION_INCREMENT_EVIDENCE_ACCOUNTING_GUARD_V0_1",
+  "updatedAt": "2026-10-06T06:15:00+08:00",
+  "owner": "D03",
+  "classification": "RESEARCH_ONLY_OUTCOME_CLOSED",
+  "formalCoreImpact": "NONE_LOCKED",
+  "tickets": [
+    "SDA-001",
+    "SDA-004"
+  ],
+  "policy": "MAIN_EFFECTS_PLUS_ONE_RESIDUAL_INTERACTION_CAP",
+  "states": {
+    "allowedInteractionEvidenceState": "RESIDUAL_INTERACTION_INCREMENT_PROVEN",
+    "forbiddenInteractionSourceState": "INDEPENDENT_SOURCE_PROVEN"
+  },
+  "requiredInteractionFields": [
+    "interactionHypothesisId",
+    "interactionFamilyId",
+    "interactionVersion",
+    "componentRefs",
+    "componentInformationRoots",
+    "componentEvidenceReceiptHashes",
+    "formulaVersion",
+    "decisionClock",
+    "firstObservableAt",
+    "commonSupportHash",
+    "jointSupportHash",
+    "mainEffectsBaselineHash",
+    "marginalControlDecision",
+    "d16MethodReceiptHash",
+    "d16InteractionIncrementalityReceiptHash",
+    "multiplicityFamilyId",
+    "selectionIdentificationDisposition",
+    "estimandScope",
+    "supportRuleHash",
+    "independenceStatus"
+  ],
+  "thirdUnitEligibility": {
+    "bothComponentsAccepted": true,
+    "exactComponentVersions": true,
+    "sameConsumerPopulation": true,
+    "sameSupport": true,
+    "mainEffectsCompleteComparator": true,
+    "marginalMisspecificationControlled": true,
+    "jointSupportAdequate": true,
+    "pitClockPass": true,
+    "multiplicityFrozen": true,
+    "selectionIdentificationPass": true,
+    "oosOrProspectiveRequired": true,
+    "dateDependenceAware": true,
+    "negativeControlsRequired": true,
+    "costFillabilityWhereTradable": true
+  },
+  "accounting": {
+    "independentSourceRootCountDoesNotIncreaseFromInteraction": true,
+    "maxInteractionIncrementPerInteractionFamily": 1,
+    "parentCompositeInteractionIncrement": 0,
+    "duplicateInteractionAliasIncrement": 0,
+    "effectiveEvidenceFormula": "ACCEPTED_MAIN_EFFECT_UNITS + DISTINCT_PROVEN_INTERACTION_INCREMENT_FAMILIES",
+    "exampleTwoRootsNoInteraction": {
+      "effectiveIndependentSourceRootCount": 2,
+      "provenInteractionIncrementCount": 0,
+      "effectiveEvidenceCount": 2
+    },
+    "exampleTwoRootsOneProvenInteraction": {
+      "effectiveIndependentSourceRootCount": 2,
+      "provenInteractionIncrementCount": 1,
+      "effectiveEvidenceCount": 3
+    },
+    "exampleTwoRootsDuplicateInteractionAliases": {
+      "effectiveIndependentSourceRootCount": 2,
+      "provenInteractionIncrementCount": 1,
+      "effectiveEvidenceCount": 3
+    }
+  },
+  "sameInteractionFamilyVariants": [
+    "PRODUCT",
+    "LOGICAL_AND",
+    "RATIO",
+    "THRESHOLDED_JOINT_STATE",
+    "QUADRANT_OR_CELL_LABEL",
+    "PERCENTILE_INTERACTION",
+    "ZSCORE_INTERACTION",
+    "SIGN_INTERACTION",
+    "CROSSOVER_OR_ACCEPTANCE_LABEL_FROM_SAME_PRIMITIVES"
+  ],
+  "blockingDispositions": [
+    "COMPONENT_BINDING_INCOMPLETE",
+    "MAIN_EFFECT_BASELINE_INCOMPLETE",
+    "MAIN_EFFECT_MISSPECIFICATION_NOT_INTERACTION",
+    "INTERACTION_JOINT_SUPPORT_INSUFFICIENT",
+    "INTERACTION_PIT_CLOCK_INVALID",
+    "INTERACTION_MULTIPLICITY_NOT_FROZEN",
+    "INTERACTION_SELECTION_IDENTIFICATION_BLOCKED",
+    "INTERACTION_PROOF_REVALIDATION_REQUIRED",
+    "INTERACTION_SOURCE_INDEPENDENCE_LABEL_FORBIDDEN"
+  ],
+  "invalidationTriggers": [
+    "COMPONENT_VERSION_DRIFT",
+    "COMPONENT_EVIDENCE_RECEIPT_DRIFT",
+    "INTERACTION_FORMULA_VERSION_DRIFT",
+    "MAIN_EFFECT_BASELINE_DRIFT",
+    "MARGINAL_CONTROL_DRIFT",
+    "COMMON_OR_JOINT_SUPPORT_DRIFT",
+    "DECISION_CLOCK_DRIFT",
+    "D16_METHOD_RECEIPT_DRIFT",
+    "MULTIPLICITY_FAMILY_DRIFT",
+    "SELECTION_SCOPE_DRIFT",
+    "OUTCOME_FAMILY_DRIFT",
+    "COST_FILLABILITY_CONTRACT_DRIFT"
+  ],
+  "noClaim": {
+    "empiricalInteractionIncrementality": true,
+    "alpha": true,
+    "independentNewSource": true,
+    "productionReadiness": true,
+    "formalPromotion": true
+  },
+  "maturityImpact": "NONE_56_7_PERCENT"
+}

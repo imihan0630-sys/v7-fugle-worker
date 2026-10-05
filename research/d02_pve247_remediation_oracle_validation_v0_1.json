@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-10-06 Asia/Taipei",
+  "evidenceCursor": "PVE-247",
+  "status": "ACCEPTANCE_ORACLE_IMPLEMENTED / CI_PASS / SYSTEM1_FIX_NOT_YET_IMPLEMENTED / H001_FAIL_CLOSED / FORMAL_UNCHANGED",
+  "oracle": {
+    "module": "research/d02_pve247_remediation_acceptance_oracle_v0_1.mjs",
+    "tests": "tests/test_d02_pve247_remediation_acceptance_oracle_v0_1.mjs",
+    "workflow": ".github/workflows/d02-pve247-remediation-oracle.yml",
+    "ciRunId": 37381110086,
+    "ciConclusion": "success",
+    "fixtureCount": 15,
+    "localFixtureCount": 15,
+    "localPassCount": 15
+  },
+  "currentProductionState": {
+    "remediationReady": false,
+    "h001ReceiptEligible": false,
+    "schedule": {
+      "pass": false,
+      "blockers": [
+        "AFTER_MARKET_MISCLASSIFIED_AS_INTRADAY",
+        "AFTER_MARKET_JOBTYPE_NOT_GOVERNED"
+      ],
+      "physicalEvidence": "PVE-246"
+    },
+    "baseline": {
+      "pass": false,
+      "blockers": [
+        "BOOTSTRAP_NOT_PHYSICALLY_REPAIRED",
+        "FINAL_VALID_SESSIONS_LT_20",
+        "SAME_SLOT_HISTORY_LT_20",
+        "PV_SLOT_RVOL20_NOT_FINITE"
+      ],
+      "physicalEvidence": "PVE-244/PVE-246"
+    },
+    "provenance": {
+      "pass": false,
+      "blockers": [
+        "PROVIDER_MISSING",
+        "ENDPOINT_MISSING",
+        "RAW_PAYLOAD_HASH_INVALID"
+      ],
+      "physicalEvidence": "PVE-244/PVE-246"
+    }
+  },
+  "oracleSeparation": {
+    "remediationReadyMeaning": "runtime/evidence plumbing is physically ready",
+    "h001ReceiptEligibleMeaning": "future receipt additionally passes canonical, H001 lane, common-support and cohort/generation/Formal-isolation gates",
+    "maturityPromotionImplied": false,
+    "outcomeAccessImplied": false
+  },
+  "newlyExposedTestBlindSpot": {
+    "existingTest": "tests/test_v8_7_12_after_market_2335.mjs",
+    "updaterKnowsCombinedCron": true,
+    "updaterFiles": [
+      "tests/update_cloudflare_after_market_cron.mjs",
+      "tests/update_cloudflare_after_market_recovery_cron.mjs"
+    ],
+    "blindSpot": "existing V8.7.12 test asserts the single 23:35 cron marker and removal of broad >=18 fallback but does not prove runtime isAfterMarketSchedule recognizes the configured combined 23:35+23:55 cron",
+    "consequence": "regression may pass while production misclassifies both scheduled events"
+  },
+  "nonRetroactivity": {
+    "cutoffDate": "2026-10-05",
+    "rule": "marketDate must be later than 2026-10-05 before H001 evidence admission",
+    "enforcedByOracle": true
+  },
+  "authorizations": {
+    "productionFixAuthorized": false,
+    "formalCoreChangeAuthorized": false,
+    "maturityPromotionAuthorized": false,
+    "outcomeAccessAuthorized": false,
+    "numericalTargetAuthorized": false,
+    "d16MethodSelectionAuthorized": false
+  },
+  "exactNext": "PVE-248"
+}

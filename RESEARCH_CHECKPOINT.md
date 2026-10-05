@@ -2762,3 +2762,91 @@ Routing:
 Acceptance criteria and exact field-level requirements are in the PVE-245 handoff.
 
 System 1 should integrate this as a bounded runtime/evidence remediation dependency, not restart selection research and not alter Formal A/B, ranking, Top6, thresholds, capital, trading or push behavior without the required authorization.
+
+
+## 2026-10-06 staged Selection Shadow launch gate
+
+Canonical governance:
+shared-knowledge/STOCK_SELECTION_SHADOW_LAUNCH_GATE_V0_1.md
+
+System1 current launch state:
+- S0 research/audit foundation = PASS;
+- S1 selection Shadow instrumentation = PARTIAL;
+- S2 prospective comparison = NOT_READY;
+- S3 promotion review = NOT_READY;
+- S4 Formal selection change = OWNER_APPROVAL_REQUIRED.
+
+Exact System1 delta for S1:
+1. finish SDA-001/004 additive diagnostic fields:
+   redundancyGroupContributions, dominantInformationRoots, stable factorId+factorVersion overlap identities;
+2. implement SDA-009 inclusive-vs-leave-one-out D09 diagnostic under the frozen Room07 contract;
+3. bind the first genuine same-generation parent receipt and emit a research-only Shadow receipt;
+4. preserve decisionImpact=false and all Formal eligibility/ranking/Top6 behavior;
+5. do not wait for every SDA ticket or every curriculum domain to close before running research Shadow diagnostics.
+
+No Formal switch is authorized by this entry.
+
+
+## 2026-10-06 D02 PVE-246 root-cause certification
+
+Canonical source:
+`research/D02_PVE246_ROOT_CAUSE_CERTIFICATION_20261006_V0_1.md`.
+
+The three PVE-245 blockers are no longer root-cause UNKNOWN.
+
+Certified System 1 engineering facts:
+
+1. After-market schedule identity regression
+- active runtime/build policy introduced by `scripts/apply_v8_7_12.py` recognizes only exact `35 15 * * mon-fri`;
+- the prior Taipei-hour >=18 fallback was deliberately removed and replaced with `return false`;
+- actual Cloudflare schedule is `35,55 15 * * mon-fri`;
+- physical D1 readback on 2026-10-05 shows BOTH 23:35 and 23:55 classified as `INTRADAY_MONITOR / SKIPPED`.
+This is a certified identity mismatch, not a speculative timing issue.
+
+2. PV 15m baseline bootstrap starvation
+- `scripts/apply_v8_11_0.py` places `bootstrapPvShadowBaselinesSafe` after the successful Formal after-market path;
+- the misclassified 23:35/23:55 events therefore do not reach the PV historical bootstrap hook;
+- `pvRollObservedSession` can grow the fallback baseline only when a completed 13:00 slot exists;
+- 2026-10-05 intraday monitoring stopped around 11:08, so that session could not roll.
+The Fugle documented historical endpoint supports 15m history and the requested 180-day window; direct provider execution under a repaired path still requires physical readback.
+
+3. PV raw provenance loss
+- the raw 15m response exists at the fetch/analyze boundary;
+- current PV normalization keeps `session15` but the persisted source object omits `provider`, `endpoint` and `rawPayloadHash`;
+- the existing `semanticFingerprint` is not a valid substitute for raw-source provenance.
+
+PVE-246 read-only Production evidence:
+- workflow `.github/workflows/d02-pve246-premarket-readonly.yml`;
+- successful run `37378253538`;
+- runtime `8.18.0-valuation-source-vintage`;
+- latest stored scan remains `2026-09-29`, `pipeline.complete=false`.
+
+Engineering acceptance:
+- recognize the configured 23:35 primary + 23:55 recovery family without causing duplicate business scans; preserve existing lock / only-if-missing / idempotence semantics;
+- expose bounded PV baseline-warmup receipts with requested range, provider status, raw-row count, normalized/rejected sessions and final validSessions; H001 remains fail-closed below 20;
+- bind provider / endpoint / rawPayloadHash at the 15m fetch boundary before normalization, without persisting credentials.
+
+Governance:
+- diagnosis/readback is Class A;
+- Production Cron/runtime/persistence/schema changes still require classification/authorization under `RESEARCH_ENGINEERING_GOVERNANCE.md`;
+- no Formal A/B, ranking, Top6, thresholds, capital, trade or push change is authorized here;
+- 2026-10-05 remains permanently excluded from retrospective clean prospective evidence.
+
+D02 exact continuation after implementation:
+`PVE-247` — consume the System 1 repair/readback and accept the first future H001 canonical receipt only when schedule identity, >=20 same-slot baseline with finite pvSlotRvol20, and raw provenance all physically pass.
+
+
+## 2026-10-06 SDA oracle supersession pointer
+
+00 audit authority has advanced the current validation baseline:
+- SDA-016: research/SDA016_VALIDATION_ORACLE_20261006_V0_4.json — 48 blocking tests;
+- SDA-017: research/SDA017_VALIDATION_ORACLE_20261006_V0_3.json — 48 blocking tests;
+- shared engineering routing: shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_ROUTING_20261005_V0_1.md.
+
+For System 1:
+- PR #644 scan-origin/generation-inventory is a useful Class-B provenance candidate but remains OPEN/DRAFT/NOT_MERGED/NOT_DEPLOYED and does not satisfy authoritative Formal-decision -> exact C1-generation binding by itself;
+- merge/deploy remains separately owner-gated;
+- S1 Selection Shadow launch gate remains PARTIAL until SDA-001/004 three schema deltas, SDA-009 leave-one-out diagnostic and genuine same-generation parent binding are complete;
+- PVE-246 root causes are certified, but Production remediation is not yet credited.
+
+This pointer does not reorder the active System 1 task lane and authorizes no Formal or Production mutation.

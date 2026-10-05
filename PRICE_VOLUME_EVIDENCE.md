@@ -5760,3 +5760,108 @@ Formal Core LOCKED.
 
 Exact next continuation point:
 PVE-246 — consume the durable System 1 remediation readback when available, then capture the first future decision-time-valid 15m H001 canonical receipt under the corrected path. Until all provenance/baseline/runtime gates pass, H001 prospective admission remains fail-closed.
+
+
+# PVE-246 — Premarket remediation readback + certified root cause (2026-10-06)
+
+Status: PREMARKET_READBACK_COMPLETE / ROOT_CAUSE_CERTIFIED / SYSTEM1_REMEDIATION_PENDING / H001_FAIL_CLOSED / NO_PROMOTION / FORMAL_UNCHANGED.
+
+Durable evidence:
+- `research/D02_PVE246_ROOT_CAUSE_CERTIFICATION_20261006_V0_1.md`;
+- `research/d02_pve246_root_cause_certification_v0_1.json`;
+- `.github/workflows/d02-pve246-premarket-readonly.yml`.
+
+Successful read-only Production run:
+- GitHub Actions run 37378253538;
+- head SHA 56efe4cce4fdbf811f6c4b1597bd7bf260bd3591;
+- runtime 8.18.0-valuation-source-vintage;
+- TEST_MODE=false;
+- no business POST, D1 mutation, re-selection or push.
+
+System 1 durable-fix readback:
+- PVE-245 intake exists;
+- no FIX_IMPLEMENTED/PASS remediation receipt exists yet;
+- SDA-003 remains VALIDATION_PENDING.
+
+Physical scan readback:
+- latest stored scan version 8.14.3-closure-receipt-memo;
+- scanDate 2026-09-29;
+- pipeline.complete=false;
+- pvShadow absent on that stored result.
+
+Certified root cause A — after-market Cron identity:
+- runtime expects exact `35 15 * * MON-FRI`;
+- actual Cloudflare schedule is `35,55 15 * * mon-fri`;
+- 2026-10-05 23:35 and 23:55 both physically logged as INTRADAY_MONITOR / SKIPPED;
+- `scripts/apply_v8_7_12.py` changed after-market recognition to exact `35 15 * * mon-fri` and removed the previous Taipei-hour >=18 fallback by replacing it with `return false`.
+Therefore the configured combined primary+recovery Cron cannot match the runtime's exact after-market identity.
+
+Certified root cause B — 15m baseline bootstrap starvation:
+- `scripts/apply_v8_11_0.py` invokes the 180-day historical 15m PV bootstrap only after a successful Formal after-market scan reaches the post-Formal PV hook;
+- the current 23:35/23:55 schedule identity never reaches that after-market path;
+- the only fallback baseline-growth path, `pvRollObservedSession`, writes only when the latest slot is exactly 13:00;
+- 2026-10-05 physical monitoring stopped around 11:08, so that date could not roll into baseline.
+The documented Fugle endpoint supports 15m history and the requested 180-day range, so endpoint capability itself is not the certified blocker.
+
+Certified root cause C — raw provenance dropped before persistence:
+- the raw 15m provider response is available at the fetch/analyze boundary;
+- `pvExtractCompletedSession15` converts it to normalized `session15`;
+- the persisted PV snapshot source object omits provider / endpoint / rawPayloadHash;
+- semanticFingerprint remains separate and is not accepted as raw-source identity.
+
+PVE-246 consequence:
+- the three PVE-245 blockers are now root-cause certified rather than UNKNOWN;
+- remediation is still not implemented;
+- no H001 canonical receipt or clean prospective date exists;
+- 2026-10-05 remains permanently excluded from retrospective clean-date relabeling;
+- D02 remains 60.0%;
+- Gate 7 CLOSED;
+- FORMAL_OPTIMIZATION_CANDIDATE: NONE;
+- Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-247 — consume System 1 implementation/readback for the certified Cron identity, baseline bootstrap and fetch-boundary provenance fixes. Only after physical readback proves all three may D02 capture the first future decision-time-valid 15m H001 canonical receipt.
+
+
+# PVE-247 — Executable remediation acceptance oracle (2026-10-06)
+
+Status: ACCEPTANCE_ORACLE_IMPLEMENTED / CI_PASS / SYSTEM1_FIX_NOT_YET_IMPLEMENTED / H001_FAIL_CLOSED / NO_PROMOTION / FORMAL_UNCHANGED.
+
+Durable artifacts:
+- `research/d02_pve247_remediation_acceptance_oracle_v0_1.mjs`;
+- `tests/test_d02_pve247_remediation_acceptance_oracle_v0_1.mjs`;
+- `.github/workflows/d02-pve247-remediation-oracle.yml`;
+- `research/D02_PVE247_REMEDIATION_ACCEPTANCE_ORACLE_20261006_V0_1.md`;
+- `research/d02_pve247_remediation_oracle_validation_v0_1.json`.
+
+Validation:
+- local deterministic fixtures: 15/15 PASS;
+- dedicated CI run 37381110086: SUCCESS.
+
+The oracle separates:
+1. `remediationReady` — schedule identity + >=20 same-slot baseline + fetch-boundary raw provenance;
+2. `h001ReceiptEligible` — remediationReady plus future date, canonical receipt guard, H001 lane guard, common support and cohort/generation/Formal-isolation.
+
+This prevents engineering repair from being misread as H001 evidence or a maturity promotion.
+
+Non-retroactivity is executable:
+marketDate <= 2026-10-05 is rejected from the first repaired H001 evidence path.
+
+New falsification / self-deception finding:
+the legacy V8.7.12 regression validates the single 23:35 marker and removal of the broad evening fallback, while the Cloudflare schedule updater/recovery updater already accepts the combined 23:35+23:55 Cron. The runtime contract test does not prove `isAfterMarketSchedule` recognizes that combined Cron. Therefore legacy regression can pass while Production misclassifies both scheduled events.
+
+Current Production verdict remains:
+- schedule FAIL;
+- baseline FAIL;
+- provenance FAIL;
+- remediationReady=false;
+- h001ReceiptEligible=false.
+
+No clean prospective date is added.
+D02 remains 60.0%.
+Gate 7 CLOSED.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-248 — prepare/consume the bounded System 1 Class-B repair candidate and its tests without merge/deploy; owner approval remains required before Production promotion.

@@ -1967,3 +1967,172 @@ Consequences:
 This is a selection-bias and unit-semantics firewall only. No predictive sign or motive is inferred.
 
 Maturity impact: NONE. D06-07/08/09 remain L2/40%.
+
+
+---
+
+## IC-080 — T+1 calendar rollover is not the same as T+1 revision publication
+
+Research cycle: 2026-10-06 Asia/Taipei
+Status: T1_CALENDAR_EARLY_READBACK_STABLE / T1_REVISED_NOT_YET_IDENTIFIED / REVISION_CLOCK_GUARD_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable artifacts:
+- `research/d06_14_tpex_daytrade_t1_calendar_early_readback_20261006_0542_v0_1.json`;
+- `research/d06_14_daytrade_revision_clock_guard_v0_1.json`.
+
+At 2026-10-06T05:42:50+08:00, the official TPEx day-trading page still displayed trade date 2026-10-05 and a complete stock-level table.
+
+Canonical comparison against the preserved T_PRELIM:
+- current rows = 841;
+- numeric-valid rows = 841;
+- ordinary four-digit rows = 725;
+- duplicate symbols = 0;
+- suspension-flag rows = 12;
+- union symbols = 841;
+- common symbols = 841;
+- unchanged = 841;
+- changed = 0;
+- added = 0;
+- removed = 0;
+- identity conflicts = 0;
+- all absolute revision sums = 0;
+- canonical fingerprint remains fnv1a64-utf8:48e8edf2952b9b40.
+
+This is NOT labeled T1_REVISED yet.
+
+Reason:
+TPEx explicitly states that T-day values are updated on T, T+1 and T+2 after securities firms finish overall processing and transmit corrected amounts, with T+2 final. Merely crossing midnight into calendar date T+1 does not establish that the T+1 provider update has already run.
+
+A second falsification also occurred:
+the page-query summarizer estimated 703 rows, while deterministic parsing of the actual displayed table returned the same 841 rows as T_PRELIM. The 703 summary is rejected. Row-count/revision evidence must come from canonical table parsing, not natural-language extraction summaries.
+
+Frozen rule:
+`calendar day != published revision vintage`.
+
+Maturity decision:
+D06-14 remains L2/40%. This early-morning stability readback strengthens timing semantics but does not complete the T1 revision lineage.
+
+Additional blocker re-audit:
+- D06-05: no genuine 2026-10-05 after-market same-generation TDCC consumer row was found; only the PREOPEN parent receipt remains durable, so no L3 promotion.
+- D06-06: D02 PVE-245 is an engineering remediation handoff for 15m provenance/bootstrap/session blockers; it creates no D06-compatible cross-sectional shared price/volume parent.
+- SDA-007: engineering lineage enforcement remains pending in System 1/System 2; Room05 does not close the audit ticket.
+
+Exact next:
+1. later on 2026-10-06, after the TPEx T+1 workflow is plausibly complete, recapture trade date 2026-10-05 and apply the frozen union/common-support revision contract;
+2. preserve exact capturedAt and bound firstKnownAt rather than inventing a T+1 publication minute;
+3. only then label the durable version T1_REVISED;
+4. D06-05 and D06-06 remain fail-closed at their existing blockers;
+5. outcomes stay closed and Formal Core remains unchanged.
+
+
+---
+
+## IC-081 — TPEx day-trading row disappearance is potentially informative censoring, not zero
+
+Research cycle: 2026-10-06 Asia/Taipei
+Status: INFORMATIVE_MISSINGNESS_FIREWALL_FROZEN / ELIGIBILITY_CENSORING_SEPARATED_FROM_NUMERIC_REVISION / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable guard:
+`research/d06_14_daytrade_informative_missingness_guard_v0_1.json`.
+
+Official TPEx semantics create a non-random missingness problem for T/T+1/T+2 vintage comparison.
+
+The day-trading statistics page explicitly states that when a security is adjusted to a non-day-trading state, the report stops disclosing that security's day-trading information until eligibility is restored.
+
+A separate official TPEx page, `新增之變更交易證券`, exposes change-date/security/status fields and states that altered-trading securities cannot conduct day trading, margin trading or securities-lending activity.
+
+Therefore a symbol disappearing from a later day-trading vintage cannot be treated as:
+- numeric zero;
+- ordinary provider correction;
+- harmless row drop;
+- evidence of zero participation.
+
+Frozen removal states:
+1. ELIGIBILITY_CENSORING_CONFIRMED;
+2. PROVIDER_REVISION_REMOVAL_CONFIRMED;
+3. SOURCE_COVERAGE_OR_SCHEMA_CHANGE;
+4. UNKNOWN_REMOVAL_CAUSE.
+
+Reappearance likewise requires a cause state; it is not automatically a newly listed security.
+
+The T/T+1/T+2 comparison must now report:
+- union support;
+- common support;
+- removed rows by cause;
+- reappeared/added rows by cause;
+- eligibility-censoring count;
+- unknown-removal count.
+
+If official eligibility/change evidence is unavailable for a disappearing symbol, the cause remains UNKNOWN rather than being imputed.
+
+This rule strengthens D06-14 revision integrity but does not change maturity. D06-14 remains L2/40%.
+
+No outcomes or Formal change.
+
+
+---
+
+## IC-082 — TPEx date-pinned day-trading replay contract removes default-page rollover risk
+
+Research cycle: 2026-10-06 Asia/Taipei
+Status: DATE_PINNED_QUERY_REPLAY_VERIFIED / T1_T2_FOLLOWUP_EXECUTABLE / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable contract:
+`research/d06_14_tpex_daytrade_date_pinned_query_contract_v0_1.json`.
+
+The official TPEx page itself exposes a `date` form input and table action `intraday/stat`. The date selector is therefore part of the official page query contract, not an invented hidden endpoint.
+
+Two pinned forms were verified against trade date 2026-10-05:
+- `?date=20261005`;
+- `?date=2026%2F10%2F05`.
+
+Both returned:
+- HTTP 200;
+- displayed trade date 2026-10-05;
+- 841 stock-level rows.
+
+The canonical research form is frozen as:
+`?date=YYYYMMDD`.
+
+This solves a critical revision-lineage risk: when the default page advances to 2026-10-06, T1_REVISED and T2_FINAL for trade date 2026-10-05 can still be queried reproducibly without relying on the default date state.
+
+Important boundary:
+historical date-pinned access does not recreate an earlier first-known timestamp. Vintage identity still requires the actual prospective capturedAt / firstKnownAt evidence.
+
+Maturity impact: NONE. This is execution/replay integrity, not predictive evidence.
+
+---
+
+## IC-083 — 2026-10-06 second prospective day-trading date opened with a clean pre-open zero-row state
+
+Research cycle: 2026-10-06 Asia/Taipei
+Status: SECOND_PROSPECTIVE_DATE_OPENED / PREOPEN_NOT_YET_PUBLISHED / PVE246_BLOCKER_READBACK_UNCHANGED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable artifacts:
+- `research/d06_14_tpex_daytrade_preopen_20261006_v0_1.json`;
+- `research/d06_20261006_prospective_capture_session_v0_1.json`.
+
+At 2026-10-06T06:11:31+08:00, the date-pinned official query for trade date 2026-10-06 was valid but contained zero stock-level rows.
+
+Interpretation:
+- state = NOT_YET_PUBLISHED;
+- zero rows are not zero day-trading activity;
+- no no-event/no-flow inference is allowed;
+- this pre-open observation supplies a genuine lower-bound point for today's first-known publication interval.
+
+2026-10-06 is a valid Taiwan trading date; the next scheduled market holiday is 2026-10-09.
+
+The full 2026-10-06 D06 prospective capture session is now frozen before observing same-day after-market source values:
+- D06-18 live borrow-economics slot: 15:20;
+- D06-03 dealer split: after market, TWSE public non-block target 18:00;
+- D06-07/08/09 TPEx leverage: EARLY 20:30 / LATE 22:30;
+- D06-14 current-day T_PRELIM: variable clock on pinned 20261006 query;
+- D06-14 prior-day T1_REVISED: pinned 20261005 query after T+1 workflow;
+- D06-05 TDCC: same 2026-10-02 ownership vintage remains one ownership inference unit unless a new source vintage appears;
+- D06-16 2026-10-06-use decision generation was already captured prospectively the previous evening and receives no duplicate-date credit from rereads.
+
+Cross-room readback:
+D02 PVE-246 has certified its three runtime root causes, but remediation remains pending and PVE-247 has no FIX_IMPLEMENTED/PASS receipt. Therefore D06-06 still lacks a same-generation, D06-population-compatible shared PRICE_OHLC/VOLUME_TURNOVER parent. No cross-room blocker is falsely cleared merely because PVE numbering advanced.
+
+Maturity impact: NONE at session open.
+D06 remains 48.9%; D06-14 remains L2/40%; Formal Core unchanged.

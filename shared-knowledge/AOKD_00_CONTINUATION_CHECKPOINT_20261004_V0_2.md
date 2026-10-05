@@ -1248,3 +1248,112 @@ Exact next SDA continuation:
 3. Room11 revalidates only new deltas; 00 alone can independently close SDA-016/SDA-017;
 4. do not unblock SDA-010/SDA-012 without their existing owner gates;
 5. preserve all unrelated H/COV/AOKD protected decisions.
+
+
+## 2026-10-06 incremental SDA intake — D19/D20/D12/D13/D07
+
+Receipt:
+shared-knowledge/STOCK_SELECTION_AUDIT_INCREMENTAL_INTAKE_20261006_V0_2.md
+
+Accepted without ticket closure:
+- SDA-019: first deterministic primary social parent durable; D20-06/D20-11 primary count is 1 date, far below gates; D20-13 live source remains 0.
+- SDA-018: D19-12 has a bounded 2018 annual-calendar knownAt witness; scheduled-holiday source clock narrowed, efficacy/OOS/factor-family gates unchanged.
+- SDA-013: U.S./Taiwan calendar-date matching is explicitly rejected; source/reference/publication/first-eligible-Taiwan clocks remain separate; canonical macro receipt lineage still pending.
+- SDA-012: 2026-10-02 afternoon Delta -> 2026-10-05 effective-date mapping is preserved; same-effective-date lane feasible, but H04/H11/COV-07 and common-support remain blocking.
+- D07-18 WACC creates no new SDA ticket: it is a composite consumer of D13 risk-free, D22 debt-cost and D07 balance-sheet primitives. D08/System consumers must not re-count deterministic WACC composition as independent evidence.
+- System2 S2-07 query-integrity work is valid but unrelated to SDA-016/SDA-017 closure; no false credit granted.
+
+Current queue remains:
+- 15 REMEDIATION_IN_PROGRESS;
+- 4 VALIDATION_PENDING;
+- 2 BLOCKED_DEPENDENCY;
+- 0 ROUTED;
+- 0 CLOSED.
+
+Exact next:
+1. prioritize actual engineering returns for SDA-001/004/009/016/017;
+2. intake PVE-245, SDA-007 lineage, or D20/D19/D13 prospective receipts only when durable;
+3. continue cross-domain audit on every newly created module/contract, especially composite consumers such as WACC;
+4. no new ticket if the root cause is already covered by an existing SDA family;
+5. Formal Core remains locked.
+
+
+## 2026-10-06 staged System1 Selection Shadow Launch Gate
+
+Canonical launch governance:
+- shared-knowledge/STOCK_SELECTION_SHADOW_LAUNCH_GATE_V0_1.md
+- shared-knowledge/stock_selection_shadow_launch_gate_v0_1.json
+
+Current gate state:
+- S0 RESEARCH_AUDIT_FOUNDATION = PASS;
+- S1 SELECTION_SHADOW_INSTRUMENTATION = PARTIAL;
+- S2 PROSPECTIVE_SELECTION_COMPARISON = NOT_READY;
+- S3 PROMOTION_REVIEW_ELIGIBLE = NOT_READY;
+- S4 FORMAL_SELECTION_CHANGE = OWNER_APPROVAL_REQUIRED;
+- T1 TRADING_SHADOW_PROMOTION = NOT_READY.
+
+Key governance decision:
+- all 21 SDA tickets do NOT need to be CLOSED before Selection Shadow diagnostics begin;
+- S1/S2 must be satisfied before interpreting prospective Shadow comparisons;
+- S3 is the minimum gate before preparing any Formal optimization candidate;
+- S4 still requires explicit owner approval and existing Class B/C governance;
+- trading/execution readiness is separate from pure Selection Shadow readiness.
+
+Shortest current path:
+1. System1 finish SDA-001/004 three schema deltas;
+2. System1 implement SDA-009 leave-one-out diagnostic;
+3. produce first genuine same-generation Shadow receipt;
+4. register comparison under SDA-016 before opening outcomes;
+5. accumulate prospective comparison dates;
+6. D16 evaluate incrementality/multiplicity/dependence;
+7. only then prepare an owner-review candidate.
+
+This launch-gate file changes no Formal behavior.
+
+
+## 2026-10-06 latest SDA engineering intake — 48/48 oracle baseline
+
+Canonical intake:
+shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_INTAKE_20261006_V0_3.md
+
+Latest authoritative validation:
+- SDA-016 = V0.4 / 48 blocking tests;
+- SDA-017 = V0.3 / 48 blocking tests.
+
+System1 PR #644:
+- useful provenance partial pass;
+- OPEN / DRAFT / NOT_MERGED / NOT_DEPLOYED;
+- 12/12 dedicated tests + exact-head CI PASS;
+- does not solve authoritative Formal decision -> exact C1 generation binding;
+- does not solve shared cross-system holdout authority;
+- merge/deploy remains separately owner-gated.
+
+D02 PVE-246:
+- after-market combined Cron misclassification root cause CERTIFIED;
+- historical 15m bootstrap starvation mechanism CERTIFIED;
+- provider/endpoint/rawPayloadHash persistence loss CERTIFIED;
+- remediation not implemented;
+- 2026-10-05 remains permanently non-clean;
+- clean H001 prospective date count remains zero.
+
+D03/D01/D02:
+- mixed-root residual evidence now requires target-population identification, positivity/estimand identity and pre-outcome admission rules;
+- volume-at-price remains one mixed-root family by default, effectiveIndependentEvidenceCount=1, no independent vote without D16 residual proof.
+
+D06:
+- calendar-day rollover != revision publication;
+- row disappearance may be informative eligibility censoring, never automatic zero;
+- machine lineage and D16 residual evidence remain open.
+
+Launch Gate remains:
+S0 PASS / S1 PARTIAL / S2 NOT_READY / S3 NOT_READY / S4 OWNER_APPROVAL_REQUIRED / T1 NOT_READY.
+
+Exact next 00 cursor:
+1. intake the next actual System1 Class-A SDA-001/004 schema-delta receipt;
+2. intake System1 SDA-009 leave-one-out diagnostic when landed;
+3. treat PR #644 only as candidate evidence unless a separately approved merge/deploy occurs;
+4. intake System1 PVE-246 remediation only after the correct governance class/approval boundary is respected;
+5. intake System2 SDA-017 episode/support observer against V0.3 T01-T48;
+6. intake shared SDA-016 authority against V0.4 T01-T48;
+7. do not close SDA-016/SDA-017 without independent 00 readback;
+8. Formal Core remains locked.

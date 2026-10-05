@@ -2108,3 +2108,47 @@ Next BUILD_LANE continuation:
 3. cancellation / no-cancellation evidence;
 4. shared suspension/resumption + symbol-session integration;
 5. RAW A1 lineage.
+
+
+## 2026-10-06 standing SDA validation pointer
+
+This is an audit dependency pointer only. It does not replace the active S2-07 BUILD_LANE continuation.
+
+Latest canonical validation:
+- SDA-016: research/SDA016_VALIDATION_ORACLE_20261006_V0_4.json — 48 blocking tests;
+- SDA-017: research/SDA017_VALIDATION_ORACLE_20261006_V0_3.json — 48 blocking tests;
+- D18 support schema: research/D18_REPLICATION_SUPPORT_RECEIPT_CONTRACT_20261006_V0_1.json;
+- shared routing: shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_ROUTING_20261005_V0_1.md.
+
+System 2 has not yet been credited with the SDA-017 episode/support observer implementation. Existing S2-07 revision/query-integrity work is valid but must not be counted as SDA-016/017 remediation.
+
+When the assigned SDA lane is serviced:
+- preserve structuralEpisodeN / replicationEpisodeN / mechanicalFragmentN separately;
+- preserve learned-fit knowledge cutoff;
+- use the shared SDA-016 consumption authority rather than forking incompatible holdout semantics;
+- pass the latest 48-test contracts before specialist/00 closure.
+
+No change to current correction/build ownership, trading authority, Formal Core or capture authorization is made by this pointer.
+
+
+## 2026-10-06 S2-07 V0.4 per-symbol query-integrity physical result
+
+Authoritative execution:
+- commit: `bf94fcd267c0f87ca42df24935a4be5052247ac6`;
+- workflow: `System2 Bounded Revision Query Integrity V0.4 Readonly`;
+- run: `37376748993`;
+- job: `111987637837`;
+- conclusion: PASS.
+
+Physical classification of the seven V0.3 query-integrity mismatches:
+- `EXACT_KEYSET_RECONCILIATION = 1` (3591);
+- `MONTH_SHARD_SUPERSET = 6` (6949, 5381, 6241, 8937, 5904, 4747).
+
+Repeated `month=all` snapshots were stable. Therefore the six residual mismatches are not transient all-query nondeterminism in this run; the bounded month-shard union exposed additional rows that the stable all-query omitted. These six remain query-integrity unresolved for negative-history claims.
+
+Important boundary:
+- 3591 may advance only its per-symbol query-integrity gate;
+- the six MONTH_SHARD_SUPERSET symbols do not support a negative no-revision/no-cancellation inference from `month=all`;
+- none of this proves event linkage, revision completeness, cancellation completeness, NO_EVENT, exact knownAt, technical continuity, session completeness, or trading authority.
+
+Next BUILD_LANE step: event-specific linkage disambiguation packets must use source event identity + issuer + action family + effective date + authority/detail evidence and preserve candidate rows separately. Normalized subject stem may be retained only as supporting text and must never be the sole episode key.

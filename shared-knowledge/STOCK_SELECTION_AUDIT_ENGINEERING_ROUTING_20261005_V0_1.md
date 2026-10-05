@@ -186,7 +186,7 @@ Do not redo accepted work. Use these latest-main contracts as the producer autho
 - SDA-009: consume `research/sda009_d09_leave_one_out_circularity_contract_v0_1.json`. Implement inclusive-vs-leave-one-out candidateSelfContribution, gateFlip, rankDelta, Top6 sensitivity, membershipVersion/classificationSchemeId and fail-closed UNKNOWN handling. Diagnostic only; no live sector gate/rank replacement.
 - SDA-003: consume `research/D02_PVE245_SYSTEM1_RUNTIME_REMEDIATION_HANDOFF_20261005_V0_1.md`. Do not retroactively turn 2026-10-05 into clean evidence. Repair only the frozen runtime/evidence gaps under existing Class governance.
 - SDA-007: consume `research/d06_sda007_flow_ownership_lineage_contract_20261005_v0_1.json`. Implement primitiveReceiptId / parentReceiptIds / informationRoot / motive-state lineage without creating new votes.
-- SDA-016: existing System1 holdout guard is only partial pass. Do not call complete until shared cross-system authority satisfies Room11 V0.2 T01-T30, including footprint/release/missingness/multi-horizon lineage.
+- SDA-016: existing System1 holdout guard is only partial pass. Do not call complete until shared cross-system authority satisfies Room11 V0.4 T01-T48, including footprint/release/missingness/multi-horizon lineage.
 
 ### System 2
 - SDA-001 / SDA-004: corresponding signal/resonance consumers still need canonical lineage/dedup diagnostics; do not equate visual condition count with independent evidence.
@@ -200,3 +200,24 @@ Do not redo accepted work. Use these latest-main contracts as the producer autho
 - D16 residual/OOS evidence remains required for SDA-001/004/009/007 where specified.
 
 No routing in this section authorizes Formal A/B, ranking, Top6, weight, threshold, capital or trading changes.
+
+
+## 2026-10-06 oracle supersession notice
+
+The latest authoritative validation oracles supersede older test-count references:
+- SDA-016: research/SDA016_VALIDATION_ORACLE_20261006_V0_4.json — 48 blocking tests.
+- SDA-017: research/SDA017_VALIDATION_ORACLE_20261006_V0_3.json — 48 blocking tests.
+
+Newly mandatory engineering concerns include:
+- authoritative Formal-decision -> exact C1-generation binding;
+- same-session generation-parent ambiguity and finalization;
+- admission/maturity missingness, positivity, estimand identity and outcome-footprint accounting;
+- replicationCluster vs structuralEpisode vs mechanicalFragment separation;
+- learned/fitted Regime fit-clock provenance.
+
+System1 PR #644 is accepted only as a useful provenance partial-pass candidate:
+- OPEN / DRAFT / NOT_MERGED / NOT_DEPLOYED;
+- it does not itself satisfy SDA-016 closure;
+- merge/deploy remains separately owner-gated.
+
+Engineering rooms must use latest oracle versions when validating new work. Passing an older 30-test/40-test contract is not sufficient.

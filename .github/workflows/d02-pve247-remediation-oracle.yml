@@ -1,0 +1,29 @@
+name: D02 PVE-247 Remediation Oracle
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d02_pve247_remediation_acceptance_oracle_v0_1.mjs"
+      - "tests/test_d02_pve247_remediation_acceptance_oracle_v0_1.mjs"
+      - ".github/workflows/d02-pve247-remediation-oracle.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: d02-pve247-remediation-oracle
+  cancel-in-progress: false
+
+jobs:
+  oracle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run PVE-247 remediation acceptance oracle
+        run: node tests/test_d02_pve247_remediation_acceptance_oracle_v0_1.mjs

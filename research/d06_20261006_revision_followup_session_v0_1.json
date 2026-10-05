@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "D06_20261006_REVISION_FOLLOWUP_SESSION_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "sessionDate": "2026-10-06",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "authoritativeParents": [
+    "research/d06_14_tpex_daytrade_tprelim_capture_20261005_2210_v0_1.json",
+    "research/d06_14_daytrade_revision_comparison_contract_v0_1.json",
+    "research/d06_14_daytrade_revision_clock_guard_v0_1.json"
+  ],
+  "d06_14": {
+    "tradeDate": "2026-10-05",
+    "targetVintage": "T1_REVISED",
+    "earlyCalendarReadback": {
+      "capturedAt": "2026-10-06T05:42:50+08:00",
+      "receipt": "research/d06_14_tpex_daytrade_t1_calendar_early_readback_20261006_0542_v0_1.json",
+      "rowCount": 841,
+      "canonicalFingerprint": "fnv1a64-utf8:48e8edf2952b9b40",
+      "comparisonToTPrelim": "841 unchanged / 0 changed / 0 added / 0 removed",
+      "vintageState": "T1_CALENDAR_EARLY_READBACK_ONLY"
+    },
+    "nextState": "WAITING_POST_WORKFLOW_T1_CAPTURE",
+    "guard": "Calendar date rollover does not certify T1 revision publication.",
+    "informativeMissingnessGuard": "research/d06_14_daytrade_informative_missingness_guard_v0_1.json",
+    "removalRule": "Later row absence must be classified by cause; missing is never zero."
+  },
+  "blockersReaudited": {
+    "D06_05": "No genuine 2026-10-05 after-market same-generation TDCC consumer row found; PREOPEN parent remains unjoined.",
+    "D06_06": "D02 PVE-245 is engineering remediation routing only; no D06-compatible same-generation cross-sectional PRICE_OHLC/VOLUME_TURNOVER parent created.",
+    "SDA_007": "Learning semantics complete; System1/System2 lineage enforcement + prospective one-receipt-many-consumers evidence + D16 residual validation + 00 closure still pending."
+  },
+  "maturityImpact": "NONE",
+  "sessionState": "T1_CALENDAR_EARLY_READBACK_COMPLETE / T1_REVISED_PENDING_POST_WORKFLOW / INFORMATIVE_MISSINGNESS_GUARD_FROZEN / D06_05_D06_06_BLOCKERS_UNCHANGED / SDA007_ENGINEERING_PENDING",
+  "exactNext": "Later on 2026-10-06, after the TPEx T+1 reporting workflow is plausibly complete, recapture the 2026-10-05 day-trading table; compare union and common support to T_PRELIM; classify any removed/reappeared rows by eligibility/revision/source cause; append T1_REVISED only then. Do not infer zero revision from the 05:42 readback."
+}

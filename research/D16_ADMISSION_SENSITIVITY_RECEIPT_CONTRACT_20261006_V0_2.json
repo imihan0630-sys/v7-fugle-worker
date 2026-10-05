@@ -1,0 +1,182 @@
+{
+  "schemaVersion": "D16_ADMISSION_SENSITIVITY_RECEIPT_CONTRACT_V0_2",
+  "updatedAt": "2026-10-06T05:38:00+08:00",
+  "owner": "D16",
+  "room": "11",
+  "status": "RESEARCH_ONLY_CONTRACT_FROZEN_NO_SAMPLE_ATTACHED",
+  "formalCoreImpact": "NONE",
+  "evidenceState": "NO_GENUINE_PROSPECTIVE_SAMPLE_ATTACHED",
+  "purpose": "Machine contract for promotion-grade admission-selection and missing-outcome sensitivity without fabricating unavailable outcomes.",
+  "identities": {
+    "experimentFamilyId": "REQUIRED",
+    "experimentVersion": "REQUIRED",
+    "preregistrationHash": "REQUIRED",
+    "targetPopulationDefinitionHash": "REQUIRED",
+    "primaryEstimandId": "REQUIRED",
+    "primaryHorizonId": "REQUIRED",
+    "multipleTestingFamilyId": "REQUIRED",
+    "evaluationCutoffRuleHash": "REQUIRED",
+    "sourceLineageHash": "REQUIRED"
+  },
+  "admissionFunnel": {
+    "calendarCandidateN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "targetPopulationEligibleN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "parentCapturedN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "readbackVerifiedN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "predictionAvailableN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "outcomeMaturedN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "performanceEligibleN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "costEligibleN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "finalAnalysisAdmittedN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "exclusionReasonCounts": "REQUIRED_MAP",
+    "byPreOutcomeStratum": "REQUIRED_MAP"
+  },
+  "observedSubpopulation": {
+    "estimandIdentity": "OBSERVED_SUBPOPULATION_ESTIMAND",
+    "estimate": "NULL_UNTIL_GENUINE_DATA",
+    "uncertainty": "NULL_UNTIL_GENUINE_DATA",
+    "mayRepresentFullTargetPopulation": false
+  },
+  "selectionModel": {
+    "stateEnum": [
+      "NOT_RUN",
+      "PREREGISTERED_READY",
+      "MODEL_INVALID",
+      "POSITIVITY_BLOCKED",
+      "PIT_VIOLATION",
+      "OUTCOME_TUNED_REJECTED"
+    ],
+    "knowledgeCutoff": "REQUIRED_IF_RUN",
+    "predictorSetHash": "REQUIRED_IF_RUN",
+    "modelFamilyHash": "REQUIRED_IF_RUN",
+    "regularizationRuleHash": "REQUIRED_IF_RUN",
+    "clippingOrTrimmingRuleHash": "REQUIRED_IF_RUN",
+    "futureInformationUsed": false,
+    "outcomePerformanceUsedForModelSelection": false
+  },
+  "positivityDiagnostics": {
+    "minAdmissionPropensity": "REQUIRED_IF_WEIGHTED",
+    "propensityQuantiles": "REQUIRED_IF_WEIGHTED",
+    "maxWeight": "REQUIRED_IF_WEIGHTED",
+    "weightQuantiles": "REQUIRED_IF_WEIGHTED",
+    "weightConcentration": "REQUIRED_IF_WEIGHTED",
+    "weightedEffectiveSupport": "REQUIRED_IF_WEIGHTED",
+    "zeroSupportStrata": "REQUIRED_LIST",
+    "nearZeroSupportWarning": "REQUIRED_BOOLEAN_IF_WEIGHTED"
+  },
+  "weightedSensitivity": {
+    "stateEnum": [
+      "NOT_RUN",
+      "READY_SAME_TARGET",
+      "READY_RESTRICTED_TARGET",
+      "POSITIVITY_BLOCKED",
+      "BALANCE_BLOCKED",
+      "MODEL_BLOCKED"
+    ],
+    "estimandIdentity": "REQUIRED_IF_RUN",
+    "supportRestrictionHash": "REQUIRED_IF_RESTRICTED",
+    "estimate": "NULL_UNTIL_GENUINE_DATA",
+    "uncertainty": "NULL_UNTIL_GENUINE_DATA",
+    "balanceDiagnostics": "REQUIRED_IF_RUN"
+  },
+  "partialIdentification": {
+    "stateEnum": [
+      "NOT_RUN",
+      "READY",
+      "UNBOUNDED",
+      "NOT_APPLICABLE"
+    ],
+    "binarySuccessRateLowerBound": "NULL_UNTIL_GENUINE_DATA",
+    "binarySuccessRateUpperBound": "NULL_UNTIL_GENUINE_DATA",
+    "brierDifferenceLowerBound": "NULL_UNTIL_GENUINE_DATA",
+    "brierDifferenceUpperBound": "NULL_UNTIL_GENUINE_DATA",
+    "logLossDifferenceLowerBound": "NULL_UNTIL_GENUINE_DATA",
+    "logLossDifferenceUpperBound": "NULL_UNTIL_GENUINE_DATA",
+    "probabilityClippingContractHash": "REQUIRED_FOR_FINITE_LOGLOSS_BOUNDS"
+  },
+  "imputationSensitivity": {
+    "stateEnum": [
+      "NOT_RUN",
+      "PREREGISTERED_READY",
+      "MODEL_BLOCKED",
+      "ASSUMPTION_SENSITIVE"
+    ],
+    "contractHash": "REQUIRED_IF_RUN",
+    "uncertaintyPropagated": "REQUIRED_BOOLEAN_IF_RUN",
+    "singleImputationTreatedAsObservedTruth": false
+  },
+  "releaseAndConsumption": {
+    "holdoutConsumptionRef": "REQUIRED",
+    "releaseLineageRefs": "REQUIRED_LIST",
+    "outcomeInformationFootprintDisposition": "REQUIRED"
+  },
+  "terminalStateEnum": [
+    "EVIDENCE_NOT_YET_AVAILABLE",
+    "OBSERVED_SUBPOPULATION_ONLY",
+    "SELECTION_SENSITIVITY_READY",
+    "POSITIVITY_BLOCKED",
+    "PARTIAL_IDENTIFICATION_ONLY",
+    "MISSINGNESS_DIRECTION_NOT_IDENTIFIED",
+    "PIT_SELECTION_MODEL_REJECTED",
+    "ADAPTIVE_SELECTION_MODEL_REJECTED",
+    "PROMOTION_REVIEW_ELIGIBLE"
+  ],
+  "promotionGate": [
+    "GENUINE_PROSPECTIVE_DATA_REQUIRED",
+    "SDA016_V0_3_ALL_APPLICABLE_TESTS_PASS",
+    "NO_FULL_TARGET_CLAIM_IF_POSITIVITY_OR_SELECTION_UNRESOLVED",
+    "ROOM00_INDEPENDENT_CLOSURE_REQUIRED",
+    "AUTHORITATIVE_FORMAL_C1_PARENT_BINDING_REQUIRED",
+    "NO_PARENT_SELECTION_BY_LATEST_OR_INVENTORY_POSITION",
+    "GENERATION_SET_FINALIZATION_REQUIRED_IF_MULTIPLICITY_IS_USED_FOR_ADMISSION"
+  ],
+  "noDataDefaults": {
+    "terminalState": "EVIDENCE_NOT_YET_AVAILABLE",
+    "promotionEligible": false,
+    "maturityImpact": "NONE",
+    "authoritativeParentBindingState": "NOT_YET_AVAILABLE"
+  },
+  "supersedes": "research/D16_ADMISSION_SENSITIVITY_RECEIPT_CONTRACT_20261006_V0_1.json",
+  "authoritativeParentBinding": {
+    "stateEnum": [
+      "NOT_YET_AVAILABLE",
+      "BOUND_VERIFIED",
+      "PARENT_GENERATION_AMBIGUOUS",
+      "HISTORICAL_BINDING_NOT_PROVEN",
+      "FORMAL_C1_GENERATION_UNLINKED",
+      "GENERATION_SET_NOT_FINALIZED"
+    ],
+    "formalDecisionReceiptId": "REQUIRED_FOR_BOUND_VERIFIED",
+    "formalDecisionAt": "REQUIRED_FOR_BOUND_VERIFIED",
+    "formalRuntimeVersion": "REQUIRED_FOR_BOUND_VERIFIED",
+    "formalSourceMainSha": "REQUIRED_FOR_BOUND_VERIFIED",
+    "formalResultDigest": "REQUIRED_FOR_BOUND_VERIFIED",
+    "formalSelectedSymbolsDigest": "REQUIRED_FOR_BOUND_VERIFIED",
+    "formalSelectedCount": "REQUIRED_FOR_BOUND_VERIFIED",
+    "c1GenerationId": "REQUIRED_FOR_BOUND_VERIFIED",
+    "c1DecisionAt": "REQUIRED_FOR_BOUND_VERIFIED",
+    "c1ContentDigest": "REQUIRED_FOR_BOUND_VERIFIED",
+    "c1UniverseDigest": "REQUIRED_FOR_BOUND_VERIFIED",
+    "c1PopulationN": "REQUIRED_FOR_BOUND_VERIFIED",
+    "c1ScanOriginKind": "REQUIRED_FOR_BOUND_VERIFIED",
+    "bindingCreatedAt": "REQUIRED_FOR_BOUND_VERIFIED",
+    "bindingDigest": "REQUIRED_FOR_BOUND_VERIFIED",
+    "parentSelectionRuleVersion": "REQUIRED_FOR_BOUND_VERIFIED",
+    "outcomeIndependentSelection": true,
+    "latestGenerationHeuristicAllowed": false,
+    "inventoryOrdinalHeuristicAllowed": false,
+    "selectedSetEqualityInferenceAllowed": false
+  },
+  "generationInventory": {
+    "generationCount": "REQUIRED_WHEN_MULTIPLE_GENERATIONS_OBSERVED",
+    "inventoryReadAt": "REQUIRED_IF_USED",
+    "snapshotMutableUntilSessionComplete": "REQUIRED_IF_USED",
+    "finalizationStateEnum": [
+      "NOT_OBSERVED",
+      "NOT_FINALIZED",
+      "FINALIZED_VERIFIED"
+    ],
+    "finalizationReceiptRef": "REQUIRED_FOR_FINALIZED_VERIFIED",
+    "historicalOriginBackfillAllowed": false
+  }
+}

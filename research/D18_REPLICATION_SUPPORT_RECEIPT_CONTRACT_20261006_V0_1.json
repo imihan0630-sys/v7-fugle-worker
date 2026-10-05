@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "D18_REPLICATION_SUPPORT_RECEIPT_CONTRACT_V0_1",
+  "updatedAt": "2026-10-06T05:38:00+08:00",
+  "owner": "D18",
+  "room": "11",
+  "status": "RESEARCH_ONLY_CONTRACT_FROZEN_NO_SAMPLE_ATTACHED",
+  "formalCoreImpact": "NONE",
+  "evidenceState": "NO_GENUINE_MULTI_REPLICATION_SAMPLE_ATTACHED",
+  "purpose": "Machine contract for multi-axis Regime support and replication evidence without collapsing support into one magic effective N.",
+  "identities": {
+    "regimeFamilyId": "REQUIRED",
+    "regimeVectorVersion": "REQUIRED",
+    "policyFamilyId": "REQUIRED",
+    "policyVersion": "REQUIRED",
+    "primaryEstimand": "DECISION_STATE_CONDITIONAL",
+    "primaryWeightingRule": "DECISION_DATE_WEIGHTED",
+    "supportVectorVersion": "D18_SUPPORT_VECTOR_V0_1",
+    "separationRuleVersion": "REQUIRED",
+    "sda016ConsumptionRef": "REQUIRED",
+    "d16DependenceMethodRef": "REQUIRED"
+  },
+  "coverageAxis": {
+    "calendarCandidateN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "prospectiveAdmissibleDateN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "knownDateN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "unknownDateN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "captureBlockedDateN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "stateSpecificAdmissibilityFraction": "REQUIRED_MAP",
+    "observabilityWarning": "REQUIRED_BOOLEAN"
+  },
+  "dateAxis": {
+    "rawDecisionDateN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "effectiveIndependentDateN": "REQUIRED_NONNEGATIVE_NUMBER_OR_UNKNOWN",
+    "contiguousSegmentN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "evidenceCalendarSpanSessions": "REQUIRED_NONNEGATIVE_INTEGER",
+    "longestContinuousSegmentN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "separatedPeriodN": "REQUIRED_NONNEGATIVE_INTEGER"
+  },
+  "episodeAxis": {
+    "structuralEpisodeN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "replicationEpisodeN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "mechanicalFragmentN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "completedEpisodeN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "activeEpisodeN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "rightCensoredEpisodeN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "oneSessionEpisodeN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "shortEpisodeN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "chatterClusterN": "REQUIRED_NONNEGATIVE_INTEGER"
+  },
+  "replicationClusterAxis": {
+    "replicationClusterN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "clusterSizeDistribution": "REQUIRED_ARRAY",
+    "maxReplicationClusterDateShare": "REQUIRED_NUMBER_OR_UNKNOWN",
+    "leverageDiagnostics": "REQUIRED_OBJECT_OR_UNKNOWN",
+    "influenceDiagnostics": "REQUIRED_OBJECT_OR_UNKNOWN",
+    "leaveOneReplicationClusterOutDiagnostics": "REQUIRED_OBJECT_OR_NOT_YET_APPLICABLE",
+    "fragilityStateEnum": [
+      "NOT_ASSESSED",
+      "STABLE",
+      "REPLICATION_FRAGILE",
+      "INSUFFICIENT_CLUSTERS"
+    ]
+  },
+  "transitionPathAxis": {
+    "predecessorStateDistribution": "REQUIRED_MAP",
+    "transitionPathConcentration": "REQUIRED_OBJECT",
+    "stateEffectHeterogeneityWarning": "REQUIRED_BOOLEAN",
+    "successorStateDistribution": "SECONDARY_EX_POST_ONLY",
+    "transitionCrossingOutcomeN": "REQUIRED_NONNEGATIVE_INTEGER"
+  },
+  "footprintAxis": {
+    "outcomeFootprintDisposition": "REQUIRED",
+    "overlappingOutcomeSessionN": "REQUIRED_NONNEGATIVE_INTEGER_OR_UNKNOWN",
+    "purgeEmbargoRuleVersion": "REQUIRED",
+    "effectiveBlockCount": "REQUIRED_NUMBER_OR_UNKNOWN",
+    "dependenceClearanceState": "REQUIRED"
+  },
+  "weightingSensitivity": {
+    "primaryWeightingRule": "DECISION_DATE_WEIGHTED",
+    "equalEpisodeWeightingState": "SECONDARY_ONLY",
+    "equalEpisodeEstimate": "NULL_UNTIL_GENUINE_DATA",
+    "equalEpisodeMayReplacePrimary": false
+  },
+  "supportStateEnum": [
+    "EVIDENCE_NOT_YET_AVAILABLE",
+    "STRUCTURAL_SUPPORT_INSUFFICIENT",
+    "STRUCTURAL_SUPPORT_READY_REPLICATION_PENDING",
+    "REPLICATION_SUPPORT_READY_STATISTICAL_DEPENDENCE_PENDING",
+    "REPLICATION_FRAGILE",
+    "STATE_EFFECT_HETEROGENEITY_WARNING",
+    "PRIMARY_VALIDATION_ELIGIBLE"
+  ],
+  "promotionGate": [
+    "GENUINE_PROSPECTIVE_MULTI_REPLICATION_DATA_REQUIRED",
+    "SDA017_V0_3_ALL_APPLICABLE_TESTS_PASS",
+    "SDA016_FOOTPRINT_AND_CONSUMPTION_VALID",
+    "D16_DEPENDENCE_CLEARANCE_REQUIRED",
+    "NO_GENERIC_REGIME_CLAIM_FROM_SINGLE_REPLICATION_CLUSTER",
+    "ROOM00_INDEPENDENT_CLOSURE_REQUIRED"
+  ],
+  "noDataDefaults": {
+    "supportState": "EVIDENCE_NOT_YET_AVAILABLE",
+    "promotionEligible": false,
+    "maturityImpact": "NONE"
+  }
+}
