@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "SDA022_D16_FINGERPRINT_COMPATIBILITY_MATRIX_V0_1",
+  "status": "CANONICAL_CONTRACT_MAPPED_OUTCOMES_CLOSED",
+  "requiredCommon": [
+    "fingerprintVersion",
+    "systemId",
+    "policyId",
+    "policyVersion",
+    "effectiveAt",
+    "decisionClockRole",
+    "sourceArtifactPaths",
+    "sourceArtifactDigests",
+    "candidateUniverseMode",
+    "candidateUniverseSourceRefs",
+    "requiresOtherSystemCandidateOutput",
+    "requiresOtherSystemRankOutput",
+    "informationRoots",
+    "rankingPolicyId",
+    "rankingPolicyVersion",
+    "rankingMechanism",
+    "capacityPolicy",
+    "entryConfirmationPolicy",
+    "lifecyclePolicy",
+    "primaryHorizon",
+    "authorityState"
+  ],
+  "requiredPair": [
+    "selectedSetOverlap",
+    "selectedSetJaccard",
+    "sharedInformationRoots",
+    "sharedInformationRootRatio",
+    "sharedHardGateFamilies",
+    "sharedHardGateRatio",
+    "requiresUpstreamSystemOutput",
+    "system1OnlySymbols",
+    "system2OnlySymbols",
+    "overlapSymbols",
+    "comparableSupportDefinition",
+    "missingDenominatorN",
+    "unknownDenominatorN"
+  ],
+  "rules": [
+    "HASH_AND_SEMANTIC_PAYLOAD_BOTH_REQUIRED",
+    "CANDIDATE_AND_RANK_DEPENDENCY_MUST_BE_SEPARATE",
+    "SYSTEM2_PER_STRATEGY_FINGERPRINT_REQUIRED",
+    "RATIOS_MUST_BE_RECOMPUTABLE",
+    "PHYSICAL_INDEPENDENCE_REQUIRES_NC_T01"
+  ],
+  "outcomeAccess": "CLOSED",
+  "maturityImpact": "NONE"
+}
