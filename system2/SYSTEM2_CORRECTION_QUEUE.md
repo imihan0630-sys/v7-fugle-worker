@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-06 00:12 Asia/Taipei
+Updated: 2026-10-06 07:38 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -131,6 +131,48 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - 2017 TWSE disposition: `DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL`.
 - finalDisposition: PENDING
 - updatedAt: 2026-10-06T00:12:00+08:00
+
+### S2-CORR-20261006-001 — Institutional terminal labels unapproved research strategies as SHADOW
+
+- createdAt: 2026-10-06T07:38:30+08:00
+- severity: MEDIUM
+- status: OPEN
+- routingClass: BUILD_LANE
+- assignedLane: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- modificationOwner: SYSTEM2_BUILD_CONTROL_ROOM
+- blockedBy: none
+- affectedScope: S2-16 institutional terminal / Strategy Center capability truthfulness
+- detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- canonicalRequirement: User-facing System 2 surfaces must distinguish implemented Shadow capability from research-only / owner-review-pending strategy concepts. A strategy may not be labeled SHADOW unless its canonical contract/preregistration/readiness actually permits Shadow activation.
+- observedProblem: `system2/deploy/terminal_page.mjs` renders `INSTITUTIONAL_ACCUMULATION` and `BLACK_HORSE_ACCUMULATION` with a `SHADOW` status badge. Canonical strategy governance says INSTITUTIONAL_ACCUMULATION remains owner-review pending and must not activate before owner approval; BLACK_HORSE_ACCUMULATION remains a research lane whose distinctness is not proven and is not preregistered as an active Limited Shadow strategy. The terminal therefore overstates operational maturity for two strategy lanes.
+- evidence:
+  - `SYSTEM2_STRATEGY_CONTRACT_V0.md`: INSTITUTIONAL_ACCUMULATION = owner review pending; BLACK_HORSE_ACCUMULATION = research lane / distinctness not proven.
+  - `SYSTEM2_LIMITED_SHADOW_PREREGISTRY_V0_1.md`: INSTITUTIONAL_ACCUMULATION must not activate before owner approval; BLACK_HORSE distinctness is not proven.
+  - `SYSTEM2_STRATEGY_PREREGISTRY.md`: BLACK_HORSE is not preregistered as a fourth strategy until distinctness from IA is demonstrated.
+  - `SYSTEM2_STRATEGY_SOURCE_READINESS_V0.md`: INSTITUTIONAL_ACCUMULATION machine contract remains blocked by owner-review status; BLACK_HORSE remains research lane.
+  - `terminal_page.mjs`: both strategies currently display `<span class="status shadow">SHADOW</span>`.
+  - Existing S2-16 checkpoint otherwise claims truthful UNKNOWN / LOCKED presentation and no fake authority.
+- riskIfUnfixed: An operator can reasonably interpret SHADOW as an activated Shadow strategy lane, creating false-completion/capability perception and weakening the strategy-version/owner-approval boundary even though no live trading authority is granted.
+- requiredCorrection:
+  1. Replace the INSTITUTIONAL_ACCUMULATION UI state with a canonical non-active label such as `OWNER REVIEW PENDING` / `NOT ACTIVATED`.
+  2. Replace the BLACK_HORSE_ACCUMULATION UI state with `RESEARCH ONLY` / `DISTINCTNESS NOT PROVEN` or equivalent non-active wording.
+  3. Do not label either strategy SHADOW until canonical preregistration/owner gates actually permit it.
+  4. Add/strengthen terminal regression tests so canonical non-active strategy states cannot silently regress to SHADOW.
+  5. Keep existing truthful states for SHORT_MOMENTUM / SWING_GROWTH and other strategy lanes unless canonical evidence says otherwise.
+  6. Do not change strategy logic, assessor policy, preregistration, weights, thresholds, ranking, capacity, production push, orders, or System 1 Formal Core.
+- acceptanceCriteria:
+  - Terminal Strategy Center no longer presents INSTITUTIONAL_ACCUMULATION or BLACK_HORSE_ACCUMULATION as SHADOW.
+  - UI wording matches canonical strategy-contract/preregistration/readiness state.
+  - Automated tests fail if these two lanes are again rendered as active SHADOW without canonical promotion.
+  - No strategy activation or trading authority is introduced by the UI correction.
+  - S2-16 read-only/UNKNOWN/LOCKED semantics and System1 isolation remain intact.
+- protectedBoundaries: strategy contracts/preregistration; assessor policy; strategy weights/thresholds; ranking/capacity; final/live selection authority; production push; capital/orders; System1 Formal Core.
+- ownerDecisionRequired: false for truthful UI labeling only; actual strategy activation remains separately owner/evidence gated.
+- implementationEvidence: PENDING
+- verificationEvidence: PENDING
+- finalDisposition: PENDING
+- updatedAt: 2026-10-06T07:38:30+08:00
 
 ## Closed directives
 
