@@ -1769,3 +1769,57 @@ Additional guards:
 Maturity impact: NONE. D06-03 remains L3/60%. No outcomes or Formal change.
 
 Exact next: accumulate independent prospective dates under identical desk/source semantics; only then test residual incrementality of split desks versus aggregate dealerNet on common support.
+
+
+---
+
+## IC-075 — 2026-10-05 TPEx day-trading T_PRELIM captured prospectively with bounded publication interval
+
+Research cycle: 2026-10-05 Asia/Taipei  
+Status: T_PRELIM_PROSPECTIVE_CAPTURED / VARIABLE_CLOCK_EMPIRICALLY_BOUNDED / REVISION_LINEAGE_OPEN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable receipt:
+`research/d06_14_tpex_daytrade_tprelim_capture_20261005_2210_v0_1.json`.
+
+The official TPEx stock-level day-trading daily table for trade date 2026-10-05 became prospectively observable during the evening.
+
+Prior preserved observations:
+- 20:33:21 +08:00: page reachable, same-date stock rows not observed;
+- 20:43:06 +08:00: query interface visible, same-date stock rows still not observed;
+- by 22:10:01 +08:00: same-date stock-level rows were observable.
+
+Therefore the honest empirical publication bound for this date is:
+`(2026-10-05T20:43:06+08:00, 2026-10-05T22:10:01+08:00]`.
+
+No exact provider publication minute is invented.
+
+Outcome-blind source integrity:
+- total rows = 841;
+- numeric-valid rows = 841;
+- ordinary four-digit stocks = 725;
+- duplicate symbols = 0;
+- rows carrying sell-first suspension flags = 12;
+- total day-trading shares = 563,183,000;
+- total day-trading buy value = NTD 139,035,902,050;
+- total day-trading sell value = NTD 139,484,441,280;
+- canonical row fingerprint = fnv1a64-utf8:48e8edf2952b9b40;
+- page-markdown fingerprint = fnv1a64-utf8:c911f83a0a81bbe5.
+
+Interpretation firewall:
+- buy/sell value imbalance is not a clean directional position signal;
+- same-session round trips do not identify overnight inventory;
+- high day-trading activity does not identify retail identity or motive;
+- the TWSE surveillance 60% condition is not reused as a TPEx alpha threshold;
+- T_PRELIM remains preliminary: T+1 may revise and T+2 is final;
+- later vintages must be appended, never backfilled into this receipt.
+
+Maturity decision:
+D06-14 remains L2/40%. The first genuine T-day prospective receipt removes the source-existence blocker but does not yet prove revision magnitude/stability across T/T+1/T+2. L3 is deferred until the same-date revision lineage is observed and PIT-safe.
+
+Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+Exact next:
+1. on 2026-10-06 preserve T1_REVISED for trade date 2026-10-05 and compute row-level revision deltas outcome-blind;
+2. on 2026-10-07 preserve T2_FINAL for the same date and compare against both earlier vintages;
+3. quantify revision coverage, changed-row count, absolute/relative revision magnitude and suspension-flag changes without returns;
+4. do not promote D06-14 before revision/PIT stability is evidenced.
