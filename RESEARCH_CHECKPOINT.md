@@ -2762,3 +2762,26 @@ Routing:
 Acceptance criteria and exact field-level requirements are in the PVE-245 handoff.
 
 System 1 should integrate this as a bounded runtime/evidence remediation dependency, not restart selection research and not alter Formal A/B, ranking, Top6, thresholds, capital, trading or push behavior without the required authorization.
+
+
+## 2026-10-06 staged Selection Shadow launch gate
+
+Canonical governance:
+shared-knowledge/STOCK_SELECTION_SHADOW_LAUNCH_GATE_V0_1.md
+
+System1 current launch state:
+- S0 research/audit foundation = PASS;
+- S1 selection Shadow instrumentation = PARTIAL;
+- S2 prospective comparison = NOT_READY;
+- S3 promotion review = NOT_READY;
+- S4 Formal selection change = OWNER_APPROVAL_REQUIRED.
+
+Exact System1 delta for S1:
+1. finish SDA-001/004 additive diagnostic fields:
+   redundancyGroupContributions, dominantInformationRoots, stable factorId+factorVersion overlap identities;
+2. implement SDA-009 inclusive-vs-leave-one-out D09 diagnostic under the frozen Room07 contract;
+3. bind the first genuine same-generation parent receipt and emit a research-only Shadow receipt;
+4. preserve decisionImpact=false and all Formal eligibility/ranking/Top6 behavior;
+5. do not wait for every SDA ticket or every curriculum domain to close before running research Shadow diagnostics.
+
+No Formal switch is authorized by this entry.
