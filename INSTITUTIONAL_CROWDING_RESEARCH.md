@@ -1739,3 +1739,33 @@ Exact next:
 2. retry D06-14 T_PRELIM later the same evening and append only when the actual statistics object is observed;
 3. never rewrite EARLY from LATE;
 4. outcomes stay closed.
+
+
+---
+
+## IC-074 — same-day TWSE/TPEx dealer-desk corroboration is not independent temporal replication
+
+Research cycle: 2026-10-05 Asia/Taipei  
+Status: CROSS_MARKET_STRUCTURAL_CORROBORATION / SAME_DATE_PSEUDOREPLICATION_GUARD_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable guard:
+`research/d06_03_cross_market_desk_disagreement_guard_20261005_v0_1.json`.
+
+On the first shared prospective date:
+- TPEx: 82/165 both-active ordinary stocks had opposite proprietary/hedge desk signs = 49.7%;
+- TWSE: 150/351 both-active ordinary stocks had opposite signs = 42.7%;
+- pooled descriptive count = 232/516 = 45.0%.
+
+This materially corroborates the structural falsifier that aggregate dealerNet can hide internal desk disagreement across both Taiwan cash markets.
+
+However the two market cross-sections share the same trade date and common market regime. They are not two independent temporal replications. The pooled denominator is descriptive only and must never be used as if N=516 independent evidence units for persistence, effect size or predictive inference.
+
+Additional guards:
+- exchange/listing composition differs;
+- liquidity and dealer participation differ;
+- raw TWSE-versus-TPEx percentage differences do not identify a market effect;
+- L4 must accumulate independent dates and cluster inference by trade date.
+
+Maturity impact: NONE. D06-03 remains L3/60%. No outcomes or Formal change.
+
+Exact next: accumulate independent prospective dates under identical desk/source semantics; only then test residual incrementality of split desks versus aggregate dealerNet on common support.
