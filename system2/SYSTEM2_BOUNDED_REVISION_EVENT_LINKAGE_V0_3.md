@@ -35,3 +35,8 @@ Rows from a subsidiary disclosure are excluded from an issuer-level event anchor
 ## Continuation after V0.3
 
 Any events still unresolved proceed to event-specific authority-side disambiguation and cancellation/no-cancellation evidence. After that, S2-07 proceeds to shared suspension/resumption + symbol-session integration, then RAW A1 lineage.
+
+
+## Physical execution freeze — run 37328246286
+
+V0.3 PASS: 17 ambiguous events -> 10 exact per-symbol bounded keyset reconciliations + 7 fail-closed query-integrity discrepancies. No event-specific effective-date title anchor was established for any of the 17. All completeness, exact-knownAt, technical-continuity and trading-authority flags remain false.
