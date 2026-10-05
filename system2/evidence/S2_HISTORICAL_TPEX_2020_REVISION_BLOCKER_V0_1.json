@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "S2_HISTORICAL_TPEX_2020_REVISION_BLOCKER_EVIDENCE_V0_1",
+  "correctionDirective": "S2-CORR-20261004-001",
+  "market": "TPEX",
+  "year": 2020,
+  "failedRun": {
+    "runId": 37283878520,
+    "runNumber": 14,
+    "headSha": "2f1a67223584d841ec0dde78927b5f5876d1c187",
+    "workflowConclusion": "failure",
+    "backfillState": "SUCCESS",
+    "physicalVerifyState": "BLOCKED",
+    "artifactId": 11335608519,
+    "artifactDigest": "sha256:8e2aa65f45e95e32a6b363fb616dc18f60ab7082b63d2edeb44676d0690181b9",
+    "system1Isolation": "PASS"
+  },
+  "physicalFacts": {
+    "storageState": "PASS",
+    "packCount": 794,
+    "barCount": 189746,
+    "byteGetObjectCountVerified": 794,
+    "officialTradingDates": 245,
+    "freshOfficialRowCount": 189746,
+    "coldRowCount": 189746,
+    "missingFromColdCount": 0,
+    "absentFromFreshOfficialCount": 0,
+    "sourceRowHashMismatchCount": 773,
+    "mismatchDate": "2020-02-27",
+    "mismatchObservation": "773 matched keys changed full-source-row hash while key set and row counts stayed identical",
+    "rawCoverageState": "PASS",
+    "dataCoverageState": "BLOCKED"
+  },
+  "diagnosis": {
+    "state": "SOURCE_REVISION_CLASSIFICATION_REQUIRED",
+    "notStorageCorruption": true,
+    "notMissingRows": true,
+    "coldHistoryImmutable": true,
+    "policy": "Do not rewrite cold history and do not ignore source revisions. Compare canonical A1 values separately from full official source-row identity."
+  },
+  "fix": {
+    "mergeSha": "4cd31c569886faaa8e3cb3522ae28b72e9346724",
+    "verifierVersion": "S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_4",
+    "reconciliationContract": "S2_HISTORICAL_SOURCE_RECONCILIATION_V0_1",
+    "behavior": [
+      "full-source-row revision is preserved as explicit revision evidence",
+      "canonical A1 OHLC/activity/change values are independently compared",
+      "canonical A1 drift remains BLOCKED",
+      "revision-only drift may pass data coverage while source-version/replay readiness remains PARTIAL"
+    ]
+  },
+  "nextAction": "Fresh workflow_dispatch on latest main for year=2020 market=TPEX; do not use rerun of old SHA.",
+  "correctionStatus": "ACKNOWLEDGED"
+}
