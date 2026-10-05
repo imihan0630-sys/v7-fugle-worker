@@ -23271,3 +23271,51 @@ New durable artifacts:
 - research/PATTERN_CROSSSECTION_LIQUIDITY_SURVIVORSHIP_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-040 — Pattern generalization vs sector / industry composition (2026-10-05)
+
+DL-040 follows the DL-039 cross-sectional selection firewall with a second question: even if many stocks are properly included, do they represent many independent economic environments?
+
+A Pattern cohort can contain dozens of stocks while almost all observations come from semiconductors during one sector rally. Counting stock rows alone would then confuse sector-wide momentum with generic Pattern evidence.
+
+Industry research makes this a serious alternative explanation. Moskowitz and Grinblatt show that industry momentum accounts for much of individual-stock momentum profitability. Hou and Robinson show industry concentration itself is related to average stock returns after standard controls. Later work also shows industry-classification granularity can change measured industry relationships. The practical conclusion is not that Pattern is false, but that sector composition must be explicit.
+
+D09 owns the relevant taxonomy and sector context. D01 therefore consumes point-in-time classification, sector return/RS, breadth, leadership and rotation receipts. It does not invent another taxonomy, another sector score or another Formal gate. D10 remains the separate owner for supply-chain and issuer-exposure transmission.
+
+Classification is treated as time-varying research context. The manifest keeps taxonomy ID, classification level, version, effective dating and knownAt. Current classifications cannot simply be projected backward, and a researcher cannot try several classification levels after seeing returns and keep the favorable one.
+
+Pattern prevalence and Pattern incrementality are separated. A detector may emit a particular structure much more often in one industry because that industry's volatility, trend persistence, price scale or market structure is different. That prevalence is a real detector/composition fact, not evidence that the Pattern has generic economic value.
+
+Candidate self-inclusion is another key firewall. A strong Pattern stock can improve its own sector return, breadth, above-MA share, new-high share or leadership statistics. If those self-included sector measures are then cited as "confirmation," the same candidate price has been counted twice. D01 therefore prefers candidate leave-one-out D09 context. If removing the candidate leaves no peers, the correct state is LOO_SECTOR_CONTEXT_UNAVAILABLE, not zero or a fallback to the self-included value.
+
+Even leave-one-out sector context is not automatically an independent vote. It is a context/control family whose residual contribution belongs to D16. This preserves SDA-001 semantics while removing direct self-inclusion.
+
+The future comparison ladder is increasingly strict.
+
+S0 is the raw Pattern cohort.
+
+S1 matches sector composition.
+
+S2 adds candidate-excluded sector return/breadth controls.
+
+S3 asks whether Pattern remains within comparable sector/date context.
+
+S4 asks whether that within-sector increment replicates across sectors and independent sector-date clusters.
+
+This produces scoped interpretations. A raw effect that vanishes after sector composition is a sector-composition explanation. An effect that disappears after candidate-excluded sector momentum or breadth is not generic Pattern evidence. A result that remains within one sector is SECTOR_SPECIFIC. Only a result that survives multiple sectors with adequate common support becomes a cross-sector Pattern research candidate.
+
+The denominator remains visible. Sector reports retain target eligibility, detector evaluability, structure emission, opportunity readiness, no-structure, blocked and unclassified counts. UNCLASSIFIED_UNKNOWN cannot be silently removed or assigned retrospectively.
+
+Stock rows also remain distinct from replication units. Ten Pattern stocks on one semiconductor date may produce ten stock observations and several structural roots, but only one semiconductor-date cluster and one market-date shock. D16 must use dependence-aware inference rather than row count.
+
+Twenty adversarial tests are authored. They reject future classification, current-classification backfill and outcome-selected taxonomies; preserve unclassified names; verify candidate-excluded return/breadth; keep single-member sector leave-one-out unknown; quantify sector concentration; reject self-included confirmation; enforce cross-sector common support; distinguish stock rows from sector-date clusters; and limit one-sector results to sector-specific claims.
+
+New durable artifacts:
+- research/PATTERN_SECTOR_COMPOSITION_V0_1.md
+- research/pattern_sector_composition_v0_1.json
+- research/pattern_sector_composition_v0_1.mjs
+- research/test_pattern_sector_composition_v0_1.mjs
+- research/PATTERN_SECTOR_COMPOSITION_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
