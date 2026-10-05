@@ -32,7 +32,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - affectedScope: S2-03 Historical infrastructure / P0 2017-present TWSE+TPEx daily A1 cold history
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement: System 2 historical infrastructure must physically populate and verify the staged official 2017-present Taiwan-equity daily history before it can be described as complete or used as complete full-market replay evidence.
-- observedProblem: Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017 TWSE, 2017 TPEx, 2018 TWSE, and 2018 TPEx. Replay readiness remains PARTIAL because symbol-session UNKNOWNs, RAW continuity debt, and incomplete TPEx historical delisting-union remain. CORR-001 stays open because 2019-present market-years, the 2026 incremental path, and final full-market PIT replay are pending.
+- observedProblem: Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017 TWSE, 2017 TPEx, 2018 TWSE, 2018 TPEx, and 2019 TWSE. Replay readiness remains PARTIAL because symbol-session UNKNOWNs, RAW continuity debt, and incomplete TPEx historical delisting-union remain. CORR-001 stays open because 2019 TPEx, later market-years, the 2026 incremental path, and final full-market PIT replay are pending.
 - evidence:
   - SYSTEM2_CHECKPOINT: run 36545375167 failed before annual ingest.
   - SYSTEM2_CHECKPOINT: repaired continuation required manual 2017 TWSE rerun, then TPEx only after TWSE coverage/hash/manifest/receipt verification.
@@ -63,6 +63,11 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - Conservative TPEx universe expected membership sessions 186,729; 379 UNKNOWN symbol-session gaps retained fail-closed; data coverage PASS, replay readiness PARTIAL.
   - Artifact `11311721304`, digest `sha256:84f33f09df6a04ab1980ca60b1ddaf5d11025940a3cbe3cb1e55ac62631981dd`.
   - TPEx limitation text hard-coded to 2017 in run #10 was metadata-only and corrected for future runs by merge `c7e8156c96b82a252510b3fc8f07cfd93425acd6`.
+  - GitHub Actions run `37251356804` (#11): SUCCESS on head `5d0cb81bf85e8a10ffdbdde29545aef97802b0eb`.
+  - 2019 TWSE storage verification: 953 packs / 226,715 bars / 953 HEAD + 953 byte-GET SHA checks PASS.
+  - Fresh official TWSE 2019 reconciliation: 242 sessions / 226,715 rows / 0 missing-from-cold / 0 extra / 0 row-hash mismatch.
+  - Historical-universe expected membership sessions 227,299; 584 UNKNOWN symbol-session gaps retained fail-closed; data coverage PASS, replay readiness PARTIAL.
+  - Artifact `11321561727`, digest `sha256:4bce2e6040f0d1b9aecfaa930e17943896dcdbe99620167a3a37af76959e0e30`.
 - riskIfUnfixed: Historical replay, factor validation, multi-year backtests, regime robustness and strategy comparison can be mistaken for being backed by a complete market history when only bounded/smoke datasets exist. This creates a false-completion and evidence-coverage risk on a P0 dependency.
 - requiredCorrection:
   1. Resume from the repaired historical-calendar implementation; do not restart architecture design.
@@ -97,7 +102,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - Manifest rolling hash `98d7cf6888e3069a2a170c20dbe8acee1cd7d5cb9bc7d9afa33319eb816fe97a`.
   - 2017 TWSE disposition: `DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL`.
 - finalDisposition: PENDING
-- updatedAt: 2026-10-05T02:33:00+08:00
+- updatedAt: 2026-10-05T09:56:00+08:00
 
 ## Closed directives
 
