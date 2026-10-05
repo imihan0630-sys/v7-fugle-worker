@@ -1,0 +1,153 @@
+{
+  "schemaVersion": "D06_07_08_09_TPEX_LEVERAGE_LATE_20261005_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "modules": [
+    "D06-07",
+    "D06-08",
+    "D06-09"
+  ],
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "tradeDate": "2026-10-05",
+  "market": "TPEx",
+  "captureLabel": "LATE",
+  "targetTaipei": "22:30",
+  "requestAt": "2026-10-05T23:40:13+08:00",
+  "capturedAt": "2026-10-05T23:40:13+08:00",
+  "firstKnownAt": null,
+  "firstKnownAtBound": {
+    "lowerExclusive": "2026-10-05T20:33:21+08:00",
+    "upperInclusive": "2026-10-05T23:40:13+08:00",
+    "meaning": "EARLY 20:33 receipt had no verified same-day rows; complete late rows are verified by this capture. Exact provider first-public time is not asserted."
+  },
+  "retrievalChannel": "Firecrawl under GLOBAL_EXTERNAL_WEB_TOOL_POLICY_V0_1",
+  "sourceAuthority": "Taipei Exchange (TPEx)",
+  "sources": {
+    "margin": {
+      "product": "融資融券餘額表",
+      "url": "https://www.tpex.org.tw/zh-tw/mainboard/trading/margin-trading/transactions.html",
+      "rawSnapshot": "research/d06_07_08_tpex_margin_late_snapshot_20261005_2340_v0_1.csv",
+      "rowCount": 918,
+      "ordinaryFourDigitRows": 802,
+      "numericValidRows": 918,
+      "duplicateSymbols": 0,
+      "marginArithmeticPass": "918/918",
+      "marginShortArithmeticPass": "918/918",
+      "fingerprint": "fnv1a64-utf8:d86bcebd6469f4e3",
+      "nativeUnit": "LOTS for balance/flow/limit fields displayed on this page"
+    },
+    "sbl": {
+      "product": "融券借券賣出餘額",
+      "url": "https://www.tpex.org.tw/zh-tw/mainboard/trading/margin-trading/sbl.html",
+      "rawSnapshot": "research/d06_08_09_tpex_sbl_late_snapshot_20261005_2340_v0_1.csv",
+      "rowCount": 931,
+      "ordinaryFourDigitRows": 815,
+      "numericValidRows": 931,
+      "duplicateSymbols": 0,
+      "marginShortArithmeticPass": "931/931",
+      "actualSblShortArithmeticPass": "931/931",
+      "fingerprint": "fnv1a64-utf8:e2f21cc9a06e570d",
+      "nativeUnit": "SHARES"
+    }
+  },
+  "crossSourceUnitAudit": {
+    "commonSymbols": 918,
+    "marginShortPrevSellBuyRepayBalanceExactAfterLotsTimes1000": "918/918",
+    "limitExactTimes1000": "173/918",
+    "limitFloorSharesDiv1000EqualsDisplayedLots": "918/918",
+    "interpretation": "Five balance/flow fields are exact LOTS->SHARES x1000 matches. Limit shares can contain sub-lot remainders; the margin page displays the floor whole-lot value. Do not flag those remainder differences as source disagreement.",
+    "sblOnlySymbols": [
+      {
+        "symbol": "3485",
+        "name": "敘豐",
+        "note": "Y"
+      },
+      {
+        "symbol": "6680",
+        "name": "鑫創電子",
+        "note": "Y"
+      },
+      {
+        "symbol": "6846",
+        "name": "綠茵",
+        "note": "Y"
+      },
+      {
+        "symbol": "6904",
+        "name": "伯鑫",
+        "note": "Y"
+      },
+      {
+        "symbol": "6983",
+        "name": "華洋精機",
+        "note": "Y"
+      },
+      {
+        "symbol": "7713",
+        "name": "威力德生醫",
+        "note": "Y"
+      },
+      {
+        "symbol": "7743",
+        "name": "金利食安",
+        "note": "Y"
+      },
+      {
+        "symbol": "7772",
+        "name": "耀穎",
+        "note": "Y"
+      },
+      {
+        "symbol": "7820",
+        "name": "立盈",
+        "note": "Y"
+      },
+      {
+        "symbol": "7828",
+        "name": "創新服務",
+        "note": "Y"
+      },
+      {
+        "symbol": "7856",
+        "name": "漢測",
+        "note": "Y"
+      },
+      {
+        "symbol": "8084",
+        "name": "巨虹",
+        "note": "Y"
+      },
+      {
+        "symbol": "8092",
+        "name": "建暐",
+        "note": "Y"
+      }
+    ],
+    "sblOnlyInterpretation": "All 13 SBL-only rows carry Y = not qualified for margin trading, so their absence from the margin-transactions table is structural coverage, not missing-data zero."
+  },
+  "providerClockEvidence": {
+    "sblPageNote": "TPEx states this information is updated twice each evening at approximately 20:30 and 22:30, with actual timing subject to end-of-day processing.",
+    "earlyReceipt": "research/d06_07_08_09_tpex_leverage_early_20261005_v0_1.json",
+    "earlyState": "UNKNOWN_MISSING_AT_EARLY_SLOT",
+    "lateState": "COMPLETE_ROWS_OBSERVED_AFTER_LATE_TARGET",
+    "revisionComparison": "NOT_IDENTIFIABLE_TODAY because no verified EARLY row snapshot exists"
+  },
+  "maturityDecision": {
+    "D06-07": "remain L2/40",
+    "D06-08": "remain L2/40",
+    "D06-09": "remain L2/40",
+    "reason": "Product-specific late-source readiness is now strongly demonstrated, but the preregistered passGate also requires readiness/revision behavior. EARLY values were unavailable, so no honest early-vs-late numerical revision comparison exists."
+  },
+  "guards": [
+    "EARLY UNKNOWN/MISSING is immutable and is never backfilled from this LATE snapshot.",
+    "Source existence is not identical to first-known time; exact 22:30 publication is not asserted.",
+    "Margin financing, margin short and actual SBL short are separate primitives and must not be merged into one bearish/bullish vote.",
+    "Margin/SBL activity does not identify investor motive or retail identity.",
+    "SBL short-sale balance is not total securities borrowing and is not lendable inventory.",
+    "Limit-field precision differs across the two official pages; use explicit unit/display semantics."
+  ],
+  "status": "LATE_COMPLETE / EARLY_MISSING_PRESERVED / UNIT_SEMANTICS_RECONCILED / REVISION_UNIDENTIFIED / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "On the next genuine trading date, repeat EARLY around 20:30 and LATE around 22:30 through the same official pages and same parser/canonicalization. If both snapshots are captured, compute union/common-support revision deltas separately for D06-07/08/09. Do not promote from source existence alone."
+}
