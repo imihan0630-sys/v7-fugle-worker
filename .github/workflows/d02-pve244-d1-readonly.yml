@@ -29,6 +29,7 @@ jobs:
         run: |
           node --input-type=module <<'NODE'
           import assert from "node:assert/strict";
+          import { randomBytes } from "node:crypto";
           import { mkdir, writeFile } from "node:fs/promises";
 
           const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
@@ -36,6 +37,9 @@ jobs:
           assert.ok(accountId&&apiToken,"Cloudflare repository secrets required");
           const cf="https://api.cloudflare.com/client/v4";
           const headers={authorization:`Bearer ${apiToken}`,accept:"application/json"};
+          const diagScript=`d02-pve244-ro-${process.env.GITHUB_RUN_ID}`.toLowerCase();
+          const diagToken=randomBytes(32).toString("hex");
+          console.log(`::add-mask::${diagToken}`);
 
           async function jsonFetch(url,options={},label=url){
             const res=await fetch(url,{...options,signal:AbortSignal.timeout(45000)});
@@ -44,105 +48,131 @@ jobs:
             if(!res.ok||data?.success===false)throw new Error(`${label} HTTP ${res.status}: ${String(data?.errors?.[0]?.message||text).slice(0,300)}`);
             return data;
           }
+          async function cfCall(path,options={}){
+            return jsonFetch(`${cf}/accounts/${accountId}${path}`,{...options,headers:{...headers,...(options.headers||{})}},path);
+          }
 
-          const settings=(await jsonFetch(`${cf}/accounts/${accountId}/workers/scripts/fugle-test/settings`,{headers},"settings")).result;
+          const settings=(await cfCall("/workers/scripts/fugle-test/settings")).result;
           const db=(settings?.bindings||[]).find(x=>x?.name==="V7_DB");
           const databaseId=db?.id||db?.database_id;
           assert.ok(databaseId,"V7_DB binding missing");
           const pv=(settings?.bindings||[]).find(x=>x?.name==="PV_SHADOW_ENABLED");
           const pvRaw=typeof pv?.text==="string"?pv.text:typeof pv?.value==="string"?pv.value:null;
           const pvShadowEnabled=String(pvRaw||"").toLowerCase()==="true";
-
-          async function select(sql,params=[]){
-            assert.match(sql,/^\s*(SELECT|WITH|PRAGMA)\b/i,"READ_ONLY_SQL_REQUIRED");
-            assert.ok(!/\b(INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|ALTER|VACUUM|ATTACH|DETACH)\b/i.test(sql),"MUTATING_SQL_REJECTED");
-            const body=await jsonFetch(`${cf}/accounts/${accountId}/d1/database/${databaseId}/query`,{
-              method:"POST",
-              headers:{...headers,"content-type":"application/json"},
-              body:JSON.stringify({sql,params})
-            },"D1 SELECT");
-            const result=body?.result?.[0];
-            assert.equal(result?.success,true,"D1 query failed");
-            assert.equal(Number(result?.meta?.rows_written||0),0,"D1 SELECT wrote rows");
-            assert.notEqual(result?.meta?.changed_db,true,"D1 SELECT changed database");
-            return result?.results||[];
-          }
-
           const runtime=await jsonFetch("https://fugle-test.imihan0630.workers.dev/api/version",{headers:{accept:"application/json"}},"runtime");
-          const tables=await select("SELECT name FROM sqlite_schema WHERE type='table' AND name IN ('v7_pv_shadow_snapshots','v7_pv_intraday_baselines','v7_cron_runs') ORDER BY name");
-          const summary=await select("SELECT market_date,observation_type,COUNT(*) row_count,COUNT(DISTINCT symbol) symbol_count,MIN(created_at) first_created_at,MAX(created_at) last_created_at,SUM(CASE WHEN decision_impact<>0 THEN 1 ELSE 0 END) nonzero_decision_impact FROM v7_pv_shadow_snapshots WHERE market_date=?1 GROUP BY market_date,observation_type ORDER BY observation_type",["2026-10-05"]);
-          const rows=await select("SELECT snapshot_id,symbol,market_date,observed_at,observation_type,schema_version,event_key,features_json,context_json,coverage_json,source_json,decision_impact,created_at FROM v7_pv_shadow_snapshots WHERE market_date=?1 AND observation_type='INTRADAY_15M' ORDER BY observed_at,symbol LIMIT 500",["2026-10-05"]);
-          const baselines=await select("SELECT symbol,schema_version,valid_sessions,last_market_date,corporate_action_reset_at,updated_at FROM v7_pv_intraday_baselines ORDER BY symbol");
-          const crons=await select("SELECT id,scheduled_at,started_at,finished_at,job_type,status,skipped,fugle_calls,error FROM v7_cron_runs WHERE scheduled_at LIKE '2026-10-05%' ORDER BY id DESC LIMIT 80");
 
-          const projected=rows.map(row=>{
-            let features={},context={},coverage={},source={};
-            try{features=JSON.parse(row.features_json||"{}");}catch{}
-            try{context=JSON.parse(row.context_json||"{}");}catch{}
-            try{coverage=JSON.parse(row.coverage_json||"{}");}catch{}
-            try{source=JSON.parse(row.source_json||"{}");}catch{}
-            return {
-              snapshotId:row.snapshot_id,symbol:row.symbol,marketDate:row.market_date,observedAt:row.observed_at,
-              observationType:row.observation_type,schemaVersion:row.schema_version,eventKey:row.event_key,
-              decisionImpact:row.decision_impact,createdAt:row.created_at,
-              features:{
-                formalLocalVolumeRatio:features.formalLocalVolumeRatio??null,
-                pvSlotRvol20:features.pvSlotRvol20??null,
-                pvCumvolPace20:features.pvCumvolPace20??null,
-                pvGuardState:features.pvGuardState??null,
-                pvGuardFlags:features.pvGuardFlags??null,
-                pvInterpretability:features.pvInterpretability??null,
-                pvResponseState:features.pvResponseState??null,
-                pvAcceptanceState:features.pvAcceptanceState??null
-              },
-              context:{
-                baselineAsOfDate:context.baselineAsOfDate??null,
-                baselineSource:context.baselineSource??null,
-                coverageReasons:context.coverageReasons??null,
-                anchorEligible:context.anchorEligible??null,
-                generationId:context.generationId??null,
-                scanDate:context.scanDate??null
-              },
-              coverage:{
-                slotHistoryCount:coverage.slotHistoryCount??null,
-                dailyHistoryCount:coverage.dailyHistoryCount??null,
-                sourceContinuityPass:coverage.sourceContinuityPass??null,
-                currentSlotCoverageValid:coverage.currentSlotCoverageValid??null,
-                sameSlotBaselineClean:coverage.sameSlotBaselineClean??null
-              },
-              source:{
-                sourceBarTimestamp:source.sourceBarTimestamp??null,
-                barStart:source.barStart??null,
-                barEnd:source.barEnd??null,
-                sourceFetchedAt:source.sourceFetchedAt??null,
-                sourceFamily:source.sourceFamily??null,
-                slotKey:source.slotKey??null,
-                completedBar:source.completedBar??null,
-                semanticFingerprint:source.semanticFingerprint??null,
-                rawPayloadHash:source.rawPayloadHash??null,
-                endpoint:source.endpoint??null,
-                provider:source.provider??null
+          const workerSource=String.raw`
+          const forbidden=/\\b(INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|ALTER|VACUUM|ATTACH|DETACH)\\b/i;
+          async function select(env,sql,params=[]){
+            if(!/^\\s*(SELECT|WITH|PRAGMA)\\b/i.test(sql)||forbidden.test(sql))throw new Error("READ_ONLY_SQL_REQUIRED");
+            const r=await env.V7_DB.prepare(sql).bind(...params).all();
+            return r.results||[];
+          }
+          export default {
+            async fetch(req,env){
+              if(req.headers.get("authorization")!=="Bearer "+env.DIAG_TOKEN)return new Response("Not found",{status:404});
+              if(req.method!=="GET")return new Response("Method not allowed",{status:405});
+              try{
+                const marketDate="2026-10-05";
+                const tables=await select(env,"SELECT name FROM sqlite_schema WHERE type='table' AND name IN ('v7_pv_shadow_snapshots','v7_pv_intraday_baselines','v7_cron_runs') ORDER BY name");
+                const summary=await select(env,"SELECT market_date,observation_type,COUNT(*) row_count,COUNT(DISTINCT symbol) symbol_count,MIN(created_at) first_created_at,MAX(created_at) last_created_at,SUM(CASE WHEN decision_impact<>0 THEN 1 ELSE 0 END) nonzero_decision_impact FROM v7_pv_shadow_snapshots WHERE market_date=?1 GROUP BY market_date,observation_type ORDER BY observation_type",[marketDate]);
+                const rows=await select(env,"SELECT snapshot_id,symbol,market_date,observed_at,observation_type,schema_version,event_key,features_json,context_json,coverage_json,source_json,decision_impact,created_at FROM v7_pv_shadow_snapshots WHERE market_date=?1 AND observation_type='INTRADAY_15M' ORDER BY observed_at,symbol LIMIT 500",[marketDate]);
+                const baselines=await select(env,"SELECT symbol,schema_version,valid_sessions,last_market_date,corporate_action_reset_at,updated_at FROM v7_pv_intraday_baselines ORDER BY symbol");
+                const crons=await select(env,"SELECT id,scheduled_at,started_at,finished_at,job_type,status,skipped,fugle_calls,error FROM v7_cron_runs WHERE scheduled_at LIKE '2026-10-05%' ORDER BY id DESC LIMIT 80");
+                const projected=rows.map(row=>{
+                  let features={},context={},coverage={},source={};
+                  try{features=JSON.parse(row.features_json||"{}");}catch{}
+                  try{context=JSON.parse(row.context_json||"{}");}catch{}
+                  try{coverage=JSON.parse(row.coverage_json||"{}");}catch{}
+                  try{source=JSON.parse(row.source_json||"{}");}catch{}
+                  return {
+                    snapshotId:row.snapshot_id,symbol:row.symbol,marketDate:row.market_date,observedAt:row.observed_at,
+                    observationType:row.observation_type,schemaVersion:row.schema_version,eventKey:row.event_key,
+                    decisionImpact:row.decision_impact,createdAt:row.created_at,
+                    features:{
+                      formalLocalVolumeRatio:features.formalLocalVolumeRatio??null,
+                      pvSlotRvol20:features.pvSlotRvol20??null,
+                      pvCumvolPace20:features.pvCumvolPace20??null,
+                      pvGuardState:features.pvGuardState??null,
+                      pvGuardFlags:features.pvGuardFlags??null,
+                      pvInterpretability:features.pvInterpretability??null,
+                      pvResponseState:features.pvResponseState??null,
+                      pvAcceptanceState:features.pvAcceptanceState??null
+                    },
+                    context:{
+                      baselineAsOfDate:context.baselineAsOfDate??null,
+                      baselineSource:context.baselineSource??null,
+                      coverageReasons:context.coverageReasons??null,
+                      anchorEligible:context.anchorEligible??null,
+                      generationId:context.generationId??null,
+                      scanDate:context.scanDate??null
+                    },
+                    coverage:{
+                      slotHistoryCount:coverage.slotHistoryCount??null,
+                      dailyHistoryCount:coverage.dailyHistoryCount??null,
+                      sourceContinuityPass:coverage.sourceContinuityPass??null,
+                      currentSlotCoverageValid:coverage.currentSlotCoverageValid??null,
+                      sameSlotBaselineClean:coverage.sameSlotBaselineClean??null
+                    },
+                    source:{
+                      sourceBarTimestamp:source.sourceBarTimestamp??null,
+                      barStart:source.barStart??null,
+                      barEnd:source.barEnd??null,
+                      sourceFetchedAt:source.sourceFetchedAt??null,
+                      sourceFamily:source.sourceFamily??null,
+                      slotKey:source.slotKey??null,
+                      completedBar:source.completedBar??null,
+                      semanticFingerprint:source.semanticFingerprint??null,
+                      rawPayloadHash:source.rawPayloadHash??null,
+                      endpoint:source.endpoint??null,
+                      provider:source.provider??null
+                    }
+                  };
+                });
+                return Response.json({readOnly:true,tables:tables.map(x=>x.name),summary,intraday15mRowCount:projected.length,rows:projected,baselines,crons,mutationCount:0});
+              }catch(error){return Response.json({readOnly:true,error:String(error?.stack||error).slice(0,1200)},{status:500});}
+            }
+          };`;
+
+          let cleanup={subdomainDisabled:false,scriptDeleted:false};
+          let report=null,routeAttempts=0,lastRouteError=null;
+          try{
+            const metadata={main_module:"worker.js",bindings:[
+              {type:"d1",name:"V7_DB",id:databaseId},
+              {type:"plain_text",name:"DIAG_TOKEN",text:diagToken}
+            ]};
+            const body=new FormData();
+            body.append("metadata",new Blob([JSON.stringify(metadata)],{type:"application/json"}),"metadata.json");
+            body.append("worker.js",new Blob([workerSource],{type:"application/javascript+module"}),"worker.js");
+            await cfCall(`/workers/scripts/${diagScript}`,{method:"PUT",body});
+            await cfCall(`/workers/scripts/${diagScript}/subdomain`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({enabled:true})});
+            const subdomain=(await cfCall("/workers/subdomain")).result?.subdomain;
+            assert.ok(subdomain,"Workers.dev account subdomain unavailable");
+            const diagUrl=`https://${diagScript}.${subdomain}.workers.dev/`;
+            for(let attempt=1;attempt<=30;attempt++){
+              routeAttempts=attempt;
+              try{
+                report=await jsonFetch(diagUrl,{headers:{authorization:`Bearer ${diagToken}`,accept:"application/json"}},"ephemeral D1 diagnostic");
+                break;
+              }catch(error){
+                lastRouteError=String(error?.message||error).slice(0,500);
+                if(attempt===30)throw error;
+                await new Promise(resolve=>setTimeout(resolve,2000));
               }
-            };
-          });
-
-          const report={
-            schemaVersion:"D02_PVE244_D1_READONLY_AUDIT_V0_1",
-            generatedAt:new Date().toISOString(),
-            readOnly:true,
-            runtimeVersion:runtime?.version??null,
-            pvShadowEnabled,
-            tables:tables.map(x=>x.name),
-            summary,
-            intraday15mRowCount:projected.length,
-            rows:projected,
-            baselines,
-            crons,
-            mutationCount:0
-          };
-          await mkdir("artifacts",{recursive:true});
-          await writeFile("artifacts/d02-pve244-d1-readonly.json",JSON.stringify(report,null,2)+"\n");
-          console.log("D02_PVE244_RESULT="+JSON.stringify(report));
+            }
+            report={schemaVersion:"D02_PVE244_D1_READONLY_AUDIT_V0_2",generatedAt:new Date().toISOString(),readOnly:true,runtimeVersion:runtime?.version??null,pvShadowEnabled,routeAttempts,...report,mutationCount:0};
+          }finally{
+            try{await cfCall(`/workers/scripts/${diagScript}/subdomain`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({enabled:false})});cleanup.subdomainDisabled=true;}catch(error){cleanup.subdomainDisableError=String(error?.message||error).slice(0,300);}
+            try{await cfCall(`/workers/scripts/${diagScript}`,{method:"DELETE"});cleanup.scriptDeleted=true;}catch(error){cleanup.scriptDeleteError=String(error?.message||error).slice(0,300);}
+            const output=report||{schemaVersion:"D02_PVE244_D1_READONLY_AUDIT_V0_2",generatedAt:new Date().toISOString(),readOnly:true,runtimeVersion:runtime?.version??null,pvShadowEnabled,routeAttempts,lastRouteError,cleanup,mutationCount:0};
+            output.cleanup=cleanup;
+            await mkdir("artifacts",{recursive:true});
+            await writeFile("artifacts/d02-pve244-d1-readonly.json",JSON.stringify(output,null,2)+"\n");
+            console.log("D02_PVE244_RESULT="+JSON.stringify(output));
+          }
+          assert.equal(cleanup.subdomainDisabled,true,"diagnostic subdomain cleanup failed");
+          assert.equal(cleanup.scriptDeleted,true,"diagnostic Worker cleanup failed");
+          assert.ok(report,"D1 readonly report unavailable");
           NODE
       - name: Preserve sanitized PVE-244 evidence
         if: always()
