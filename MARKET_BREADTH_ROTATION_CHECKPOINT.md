@@ -936,3 +936,47 @@ Exact next continuation:
 1. BR-059 continue independent issuer-native application/product numerator search, prioritizing ABF-specific numeric disclosure for 3189/8046 while preserving UNKNOWN.
 2. Keep SDA-009 open until System 1 diagnostic implementation + D16 common-support readback + 00 closure.
 3. Do not change Formal sector gate, sector score, ranking, Top6, capital or trading behavior in this research room.
+
+
+## SDA-009 priority audit — circular industry-strength reward research contract
+
+Status: RESEARCH_REMEDIATION_CONTRACT_FROZEN / D16_REQUIRED / FORMAL_CORE_UNCHANGED
+Date: 2026-10-05 Asia/Taipei
+
+### Audit finding
+A candidate stock must not help create an industry-strength state and then receive a second independent reward from that same self-created state. Industry strength can be economically real, but self-contribution creates mechanical circularity and can inflate ranking confidence, especially in concentrated industries.
+
+### Mandatory candidate-specific leave-one-out state
+For candidate i in industry g at decision time t, compute the industry feature twice under the same membershipVersion and clock:
+1. full-industry state including i;
+2. leave-one-out state excluding i from numerator, denominator and any rank/breadth/concentration primitive that can inherit i's return/volume contribution.
+
+The candidate-specific industry vote is eligible for independent interpretation only when the leave-one-out state remains defined with adequate peer support. If exclusion leaves too few peers or unstable denominator coverage, state = UNKNOWN/ABSTAIN; never fall back to the full measure.
+
+### Effective-dated membership firewall
+Every replay must bind issuer, formal industry/classification scheme, effectiveFrom/effectiveTo, knownAt, membershipVersion and source vintage. Current membership cannot be backfilled into historical decisions. Classification level/scheme is frozen before outcomes; alternative classification systems are sensitivity checks, not researcher-selected replacements after seeing performance.
+
+### Residual/incrementality test
+D09 industry strength must be tested against the candidate's own return/momentum primitive rather than counted as automatically independent. Required comparisons:
+- own-stock primitive only;
+- full-industry measure;
+- leave-one-out industry measure;
+- own-stock + leave-one-out industry measure;
+- residualized industry component after controlling for own-stock primitive and predeclared common market/style controls.
+
+If leave-one-out or residualization removes the apparent advantage, classify the industry vote as redundant/mechanical, not additional Alpha.
+
+### Adversarial controls
+Required negative controls include concentrated industries where one constituent dominates the industry measure, single/near-single-member groups, membership changes, classification-level changes, limit-hit/extreme-return leaders, and dates where full vs leave-one-out industry rank crosses the selection threshold.
+
+### Closure evidence for SDA-009
+Research-side closure remains blocked until a replay table exists with candidate/date/membershipVersion, full vs leave-one-out industry values/ranks, self-contribution share, denominator/support diagnostics and residual test state. System 1 must separately implement membershipVersion, constituentContribution diagnostics and circular-reward flag. D16 must read back Top6/rank before-vs-after self-contribution removal and evaluate incremental OOS/Shadow evidence. Only 00 may close the audit ticket.
+
+### Literature/counter-evidence note
+Prior literature supports genuine industry momentum, but that does not validate circular scoring. Industry classification granularity can materially alter industry-momentum results, and Taiwan evidence includes reversal regimes. Therefore the null hypothesis is preserved: after self-removal, fixed-vintage membership and own-stock residual controls, the D09 vote may have zero or negative incremental value.
+
+### Maturity decision
+No maturity promotion from this audit-contract work. D09 remains 57.1% aggregate in the canonical tracker. This closes a semantic/falsification gap only; it does not provide the required leave-one-out replay, Top6/rank comparison or D16 outcome evidence.
+
+### Exact next
+SDA-009-R1: build the first Taiwan candidate/date leave-one-out replay table on existing D09 PIT receipts, prioritizing concentrated-industry threshold-crossing cases; freeze membershipVersion and support denominator. Then hand the same receipt schema to System 1 for constituentContribution/circular-reward diagnostics and to D16 for before/after rank readback. Existing BR lanes remain open but SDA-009 is priority until R1 is durable.
