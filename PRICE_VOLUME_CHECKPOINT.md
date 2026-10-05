@@ -3084,3 +3084,38 @@ PVE-239 / CLEAN_DATE_ZERO / Gate 7 CLOSED.
 D02 remains 60.0%.
 FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 Formal Core remains LOCKED.
+
+
+## Pre-PVE-240 — effect-target calibration-source firewall (2026-10-05)
+
+Outcome-blind audit receipt:
+- `research/d02_effect_target_calibration_source_audit_20261005_v0_1.json`
+
+New conclusion:
+the remaining effect-target blocker is numerical-target provenance, not schema completeness.
+
+Legal calibration sources are restricted to:
+- pre-existing decision-utility/risk/opportunity-cost anchors;
+- semantic/measurement anchors for D02-01;
+- preregistered precision anchors;
+- compatible external/domain priors whose population/metric/horizon/comparator/cost basis are demonstrated compatible before D02 outcome access.
+
+Forbidden:
+- matching D02 outcomes;
+- test fixtures;
+- significance-selected thresholds;
+- universal row-count thresholds;
+- universal transaction-cost constants;
+- cross-evidence-key target borrowing.
+
+PVE-240 may still collect PIT/admission/common-support/coverage/generation evidence while target values remain pending.
+Promotion-grade effect interpretation stays closed for an evidence key until its legal numerical target is frozen.
+
+All 14 numerical target values remain TARGET_VALUE_PENDING_FREEZE.
+D02 remains 60.0%.
+PVE cursor remains 239.
+Gate 7 CLOSED.
+Formal Core LOCKED.
+
+### Exact continuation
+Audit latest canonical D14/D15/D16 and decision contracts for pre-existing compatible decision-utility, risk-tolerance or precision anchors. Classify each D02 evidence key's calibration source as LEGAL / INCOMPATIBLE / MISSING without reading matching D02 outcomes. Freeze a numerical target only from a legal source; otherwise preserve UNKNOWN and continue PVE-240 admission capture only.
