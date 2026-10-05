@@ -1856,3 +1856,23 @@ Still false:
 all trading authority false.
 
 DATA_LANE / REMEDIATION_LANE corrections remain independently owned under execution-lane governance. System 1 Formal Core remains LOCKED.
+
+
+## 2026-10-05 SDA engineering intake
+
+Canonical routing:
+`shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_ROUTING_20261005_V0_1.md`.
+
+System 2 engineering assignments currently relevant:
+- SDA-001 / SDA-004 resonance lineage and effective-independent-evidence diagnostics for EMA16 / EMA64 / Impulse MACD and related price-derived conditions;
+- SDA-016 canonical holdout/experiment-consumption guard, preferably shared with System 1 rather than forked;
+- SDA-017 executable immutable Regime observer/builder under the already preregistered D18 semantics.
+
+Rules:
+- preserve the current Correction Queue / Execution Lane Governance; SDA work must not steal DATA_LANE or REMEDIATION_LANE ownership;
+- Class A Shadow diagnostics may proceed when isolated;
+- shared runtime/schema production risk is Class B;
+- live strategy gating/weights/ranking changes are Class C and require explicit owner approval;
+- do not infer historical regime evidence from specification alone.
+
+Mode guidance for actual cross-file implementation/tests: Codex / GPT-6 Astra / High.
