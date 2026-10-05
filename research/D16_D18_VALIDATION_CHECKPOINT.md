@@ -1968,3 +1968,47 @@ Exact next:
 2. accept the first D18 prospective policy date only after an authorized immutable capture path is active; never backdate eligibility;
 3. if SDA-016/017 engineering deltas land first, run only the pending oracle items and preserve accepted passes;
 4. prospective evidence availability does not bypass Room00 independent closure.
+
+
+## 2026-10-05 third-round SDA-016 / SDA-017 deep falsification
+
+Canonical new files:
+- `research/SDA016_INFORMATION_RELEASE_SELECTION_VALIDATION_ADDENDUM_20261005_V0_1.md`;
+- `research/SDA017_REALTIME_FIT_FRAGMENTATION_VALIDATION_ADDENDUM_20261005_V0_1.md`;
+- `research/SDA016_VALIDATION_ORACLE_20261005_V0_2.json`;
+- `research/SDA017_VALIDATION_ORACLE_20261005_V0_2.json`.
+
+Validation counts now:
+- SDA-016 = 30 blocking tests;
+- SDA-017 = 40 blocking tests.
+
+New SDA-016 responsibilities:
+- transitive outcome-information release lineage across rooms/systems/agents;
+- PASS/FAIL or aggregate release still counts as exposure under current default;
+- admission/capture/readback/maturity missingness by pre-outcome strata;
+- delayed-label/censoring selection accounting;
+- joint multi-horizon family accounting.
+
+New SDA-017 responsibilities:
+- fitted Regime transform/threshold knowledge clock;
+- no full-sample future-covariate fit;
+- structural episode vs replication episode distinction;
+- mechanical gap/version fragmentation cannot inflate recurrence support;
+- threshold-chatter diagnostics;
+- active/right-censored episode accounting;
+- Regime-specific observability/admissibility coverage.
+
+Current D18 fixed-semantic PIT components remain accepted: the current TAIEX context rejects future history rows and the observable vector preserves unauthorized dimensions as CONTEXT_RAW/UNKNOWN. Do not redo those accepted semantics.
+
+D03 cross-room method-receipt oracle independently corroborates D16 common-support / footprint purge / dependence / multiplicity / coverage-bias requirements and should be consumed as producer evidence, not duplicated.
+
+No maturity change:
+D16 = 60%.
+D18 = 52%.
+Formal Core LOCKED.
+
+Exact next:
+1. if SDA engineering lands, revalidate only pending/new V0.2 items;
+2. if no engineering lands, next Room11 deep-research target is support/admission selection sensitivity and effective replication-unit specification using genuine prospective receipts when available;
+3. do not promote historical reconstruction, complete-case-only results or mechanically fragmented episodes;
+4. Room00 remains sole closure authority.
