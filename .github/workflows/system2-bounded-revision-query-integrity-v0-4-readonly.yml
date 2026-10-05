@@ -1,0 +1,29 @@
+name: System2 Bounded Revision Query Integrity V0.4 Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/bounded_revision_query_integrity_v0_4.mjs"
+      - "system2/tests/bounded_revision_query_integrity_v0_4.test.mjs"
+      - "system2/scripts/probe_bounded_revision_query_integrity_mismatches_readonly_v0_4.mjs"
+      - "system2/SYSTEM2_BOUNDED_REVISION_QUERY_INTEGRITY_V0_4.md"
+      - ".github/workflows/system2-bounded-revision-query-integrity-v0-4-readonly.yml"
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - run: node system2/tests/bounded_revision_query_integrity_v0_4.test.mjs
+      - run: node system2/scripts/probe_bounded_revision_query_integrity_mismatches_readonly_v0_4.mjs
+      - shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_bounded_revision_query_integrity_mismatches_readonly_v0_4.mjs
+          echo "Read-only query-integrity diagnostic boundary PASS"
