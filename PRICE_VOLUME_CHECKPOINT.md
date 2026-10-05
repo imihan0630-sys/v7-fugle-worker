@@ -3402,3 +3402,40 @@ Formal Core LOCKED.
 
 Exact next continuation:
 PVE-242 — implement and independently validate a fail-closed executable guard/fixture set for the frozen PVE-241 receipt contract, then capture the first genuine prospective receipt without opening promotion-grade outcomes.
+
+
+## PVE-241 continuation — executable prospective receipt schema freeze (2026-10-05)
+
+Status: OUTCOME_BLIND / EXECUTABLE_RECEIPT_SCHEMA_PASS / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+PVE-241 completed.
+
+New durable artifacts:
+- research/d02_pve241_prospective_receipt_guard_v0_1.mjs
+- tests/test_d02_pve241_prospective_receipt_guard_v0_1.mjs
+- research/D02_PVE241_PROSPECTIVE_RECEIPT_CONTRACT_V0_1.md
+- research/d02_pve241_prospective_receipt_validation_v0_1.json
+
+Independent executable validation:
+33/33 tests PASS.
+
+Durable consequence:
+- decision-time source clocks are machine-checked;
+- historical replay cannot masquerade as original decision-time observability;
+- minute LOTS / daily SHARES normalization is machine-checked;
+- corporate-action contamination is machine-checked;
+- SDA-001 price-root duplicate-vote risk is rejected at receipt admission;
+- SDA-003 participation/intent and TRUE_OFI overclaim risk is rejected at receipt admission;
+- duplicate event identity is fatal integrity.
+
+No numerical target, D16 method receipt, economic outcome or clean prospective selection date was created.
+
+Current evidence:
+PVE-241 / CLEAN_DATE_ZERO / Gate 7 CLOSED.
+
+D02 remains 60.0%.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-242 — bind the PVE-241 receipt guard to existing D02 L4 admission lanes, prioritizing D02-02:H001, D02-03:H20, D02-06:H003 and D02-08; prove no admitted row can bypass source-clock, unit, corporate-action, information-root or participation-intent checks. Stay outcome-blind.
