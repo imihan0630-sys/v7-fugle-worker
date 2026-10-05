@@ -54,7 +54,7 @@ async function readC1GenerationInventory(env,{scanDate=null,cursor=0,limit=50}={
   await ensureD1Schema(env);
   const session=env.V7_DB.withSession("first-primary");
   const safeCursor=Math.max(0,Math.floor(Number(cursor)||0));
-  const safeLimit=Math.max(1,Math.min(100,Math.floor(Number(limit)||50));
+  const safeLimit=Math.max(1,Math.min(100,Math.floor(Number(limit)||50)));
   let countRow,result;
   if(scanDate) {
     countRow=await session.prepare(`SELECT COUNT(*) AS n FROM trade_research_c1_generations WHERE scan_date=?1`).bind(String(scanDate)).first();
