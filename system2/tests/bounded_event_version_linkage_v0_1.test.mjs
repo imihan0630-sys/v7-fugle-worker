@@ -137,6 +137,18 @@ const issuerHistories={
         correctionOrCancellationHint:false,
         ...detail(["2026-09-01"],"4444-a"),
       },
+      {
+        date:"2025-12-01",time:"08:00:00",seqNo:"7",
+        spokeDateRaw:"20251201",spokeTimeRaw:"080000",
+        rowText:"4444 過往股票面額變更相關公告",
+        correctionOrCancellationHint:false,
+        detailTransportReady:false,
+        detailIdentityObserved:false,
+        detailBodyDateTokens:[],
+        detailBodyTextHash:null,
+        detailPayloadHash:null,
+        detailTransportMode:"TEST",
+      },
     ],
   },[
     {year:2025,httpStatus:200,ok:true},
@@ -153,10 +165,10 @@ const receipt=await buildBoundedEventVersionLinkageV0_1({
 });
 
 assert.equal(receipt.finalEventCount,4);
-assert.equal(receipt.strictLinkedEventCount,1);
-assert.equal(receipt.unresolvedEventCount,3);
+assert.equal(receipt.strictLinkedEventCount,2);
+assert.equal(receipt.unresolvedEventCount,2);
 assert.equal(receipt.queryIntegrityCompleteEventCount,3);
-assert.equal(receipt.detailCoverageCompleteEventCount,4);
+assert.equal(receipt.detailCoverageCompleteEventCount,3);
 assert.equal(receipt.boundedEventVersionLinkageComplete,false);
 assert.equal(receipt.revisionCoverageComplete,false);
 assert.equal(receipt.knownAtVersionClockCertified,false);
@@ -174,6 +186,10 @@ const tpexCap=receipt.laneResults.find((x)=>x.sourceId==="TPEX_CAPITAL_REDUCTION
 assert.equal(tpexCap.events[0].state,"STRICT_LINKAGE_CHAIN_AMBIGUOUS");
 
 const tpexPar=receipt.laneResults.find((x)=>x.sourceId==="TPEX_PAR_VALUE_CHANGE_REFERENCE");
-assert.equal(tpexPar.events[0].state,"QUERY_INTEGRITY_INCOMPLETE");
+assert.equal(tpexPar.events[0].state,"STRICT_LINKAGE_OBSERVED");
+assert.equal(tpexPar.events[0].queryIntegrityComplete,false);
+assert.equal(tpexPar.events[0].detailCoverageComplete,false);
+assert.equal(tpexPar.events[0].negativeCompletenessInputReady,false);
+assert.equal(receipt.negativeCompletenessInputReadyEventCount,1);
 
 console.log("bounded event-version linkage V0.1 tests PASS");
