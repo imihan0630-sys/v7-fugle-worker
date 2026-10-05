@@ -5921,3 +5921,54 @@ Candidate remains:
 
 Exact next continuation point:
 PVE-249 — System 1 resolves the pre-existing zero-pick collector base-CI failure and returns a durable green base receipt. Then rerun PR #651 full Regression + Repair CI. Only when candidate-isolated and applicable repository-wide checks are green may explicit Class-B merge/deploy approval be requested.
+
+
+# PVE-249 — Green candidate owner gate (2026-10-06)
+
+Status: BASE_CI_REPAIRED / CANDIDATE_RESEQUENCED_V8_19_1 / ALL_APPLICABLE_CHECKS_PASS / DRAFT_PR_651_CLEAN / OWNER_APPROVAL_REQUIRED / UNMERGED / NOT_DEPLOYED.
+
+Canonical evidence:
+- `research/D02_PVE249_GREEN_CANDIDATE_OWNER_GATE_20261006_V0_1.md`;
+- `research/d02_pve249_green_candidate_owner_gate_v0_1.json`.
+
+Base-CI repair:
+- zero-pick collector failure root cause = stale pre-V8.19 test fixture missing the new generation-inventory GET contract;
+- Class-A fixture-only repair commit `c3bf53e0fe195647ecd77c87e6ce77e7ee744635`;
+- main Regression `37387343385` SUCCESS;
+- no Worker/Formal runtime change.
+
+Candidate sequencing correction:
+- the intermediate pre-V8.19 candidate placement was rejected by the V8.18 historical byte-identity invariant;
+- the invariant was not weakened;
+- final candidate is `scripts/apply_v8_19_1_pve248_candidate.py` applied after V8.19;
+- final guard is `tests/test_v8_19_1_pve248_runtime_candidate.mjs`.
+
+Final candidate:
+- branch `research/d02-pve248-class-b-candidate-20261006`;
+- head `e26e0e8e7786e25505714942e82a64e4cb8cec09`;
+- draft PR `#651`;
+- open / mergeable / clean;
+- unmerged / not deployed;
+- Production deploy wiring absent.
+
+Final green checks:
+- Candidate CI `37387779756` SUCCESS;
+- System1 C1/C2 isolated review `37387779711` SUCCESS;
+- Repair CI `37387779433` SUCCESS;
+- Regression `37387779413` SUCCESS;
+- isolated push candidate CI `37387775656` SUCCESS.
+
+Technical candidate review is complete.
+Class-B Production integration remains OWNER_APPROVAL_REQUIRED.
+
+No Production repair is claimed.
+No H001 canonical receipt is created.
+Clean prospective dates remain 0.
+D02 remains 60.0%.
+Gate 7 CLOSED.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
+2026-10-05 remains permanently non-retroactive.
+
+Exact next continuation point:
+PVE-250 — explicit owner decision on Class-B Production integration of PR #651. Only after approval may the candidate be wired into the Production build/deploy chain, revalidated, merged/deployed and physically read back under the PVE-247 oracle.
