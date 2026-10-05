@@ -1357,3 +1357,34 @@ Exact next 00 cursor:
 6. intake shared SDA-016 authority against V0.4 T01-T48;
 7. do not close SDA-016/SDA-017 without independent 00 readback;
 8. Formal Core remains locked.
+
+
+## 2026-10-06 SDA-022 cross-system convergence audit
+
+New CRITICAL system-level ticket:
+SDA-022 — Cross-system strategy convergence / pseudo-diversification.
+
+Canonical guard:
+shared-knowledge/SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_V0_1.md
+
+00 verdict:
+- CURRENT_SYSTEMS_IDENTICAL = FALSE;
+- CURRENT_CONVERGENCE_RISK = MATERIAL.
+
+Current canonical distinction:
+- System1 = protected V8/Formal A/B + Top6/3+3 + fixed Formal lifecycle/15m semantics;
+- System2 = separate multi-strategy platform, max-12 global pool, per-strategy max-3 active monitor, strategy-local ranking, persistent lifecycle, no universal cross-strategy score by default.
+
+Risk:
+both systems increasingly share D01-D22 evidence families, PIT/lineage and validation infrastructure. Without policy-lineage observability, gradual convergence could be mistaken for independent confirmation.
+
+Closure requires:
+1. System1 policy fingerprint;
+2. System2 strategy policy fingerprints;
+3. proof at least one System2 discovery path works without System1 Top6/rank;
+4. prospective overlap/divergence diagnostics;
+5. D16 dependence/incrementality analysis;
+6. 00 independent closure.
+
+No forced disagreement and no arbitrary overlap threshold.
+No Formal behavior change.
