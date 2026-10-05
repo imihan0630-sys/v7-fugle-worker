@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "D03_INTERACTION_NEGATIVE_CONTROL_PERMUTATION_ORACLE_V0_1",
+  "updatedAt": "2026-10-06T07:34:00+08:00",
+  "owner": "D03",
+  "classification": "RESEARCH_ONLY_OUTCOME_CLOSED",
+  "formalCoreImpact": "NONE_LOCKED",
+  "policy": "LINEAGE_CONSISTENT_DEPENDENCE_PRESERVING_PREREGISTERED_NULLS",
+  "requiredFalsifierFields": [
+    "falsifierFamilyId",
+    "falsifierVersion",
+    "targetInteractionFamilyId",
+    "targetInteractionVersion",
+    "nullClaimHash",
+    "preservedStructureHash",
+    "deliberatelyBrokenRelationHash",
+    "conditioningSetHash",
+    "representationClass",
+    "consumerScopeHash",
+    "decisionClock",
+    "outcomeHorizonId",
+    "preregistrationHash",
+    "permutationUnit",
+    "exchangeabilityDisposition",
+    "validityScope",
+    "nullGeneratorClass",
+    "nullGeneratorValidationState",
+    "primaryOrSensitivityRole"
+  ],
+  "nullGeneratorClasses": [
+    "EXCHANGEABILITY_BLOCK_PERMUTATION",
+    "CONDITIONAL_PERMUTATION",
+    "CONDITIONAL_RANDOMIZATION",
+    "PRIMITIVE_LINEAGE_SURROGATE",
+    "PATH_LEVEL_SURROGATE",
+    "DEPENDENCE_AWARE_STUDENTIZED_PERMUTATION",
+    "TEMPORAL_ALIGNMENT_PLACEBO",
+    "MECHANISM_MATCHED_PSEUDO_FEATURE",
+    "PIPELINE_MAX_STATISTIC_NULL",
+    "LEAKAGE_SENTINEL"
+  ],
+  "invalidDefaultClasses": [
+    "NAIVE_ROW_SHUFFLE",
+    "ARBITRARY_DERIVED_FIELD_SHUFFLE",
+    "UNVALIDATED_CYCLIC_SHIFT",
+    "UNVALIDATED_SIGN_FLIP",
+    "OUTCOME_SELECTED_NULL_GENERATOR"
+  ],
+  "validityScopes": [
+    "EXACT",
+    "ASYMPTOTIC",
+    "HEURISTIC_SENSITIVITY_ONLY",
+    "INVALID"
+  ],
+  "exchangeabilityDispositions": [
+    "PROVEN_FOR_EXACT_UNIT",
+    "DEPENDENCE_AWARE_METHOD_APPROVED",
+    "CONDITIONAL_MODEL_REQUIRED",
+    "NOT_PROVEN",
+    "NOT_APPLICABLE"
+  ],
+  "requiredPreservationDiagnostics": [
+    "datePanelPreservation",
+    "sectorIndustryCompositionPreservation",
+    "regimeCompositionPreservation",
+    "repeatedSymbolStructurePreservation",
+    "serialDependencePreservationOrModeled",
+    "supportAdmissionPreservation",
+    "continuityVersionPreservation",
+    "mechanicalConstraintPass",
+    "componentMarginalPreservationWhereRequired",
+    "targetRelationBreakVerified"
+  ],
+  "conditionalNullRequirements": [
+    "conditionalSamplerId",
+    "conditionalSamplerVersion",
+    "conditionalTrainingCutoff",
+    "conditionalPredictorSetHash",
+    "conditionalValidationHash",
+    "conditionalMisspecificationState",
+    "targetOutcomeUsedForSamplerSelection"
+  ],
+  "lineageSurrogateRequirements": [
+    "primitiveSurrogateId",
+    "primitiveRootIdentity",
+    "descendantRecomputeReceiptHash",
+    "factorDagVersion",
+    "continuityDisposition",
+    "supportDisposition"
+  ],
+  "monteCarloRequirements": [
+    "requestedReplications",
+    "realizedReplications",
+    "exceedanceCount",
+    "pValueMethod",
+    "randomSeedLedgerHash",
+    "rngAlgorithmVersion",
+    "replicationRulePreregistrationHash",
+    "monteCarloPrecisionRuleHash"
+  ],
+  "permittedPValueDefault": "PLUS_ONE_MONTE_CARLO_RANK",
+  "pValueFormula": "(1+exceedanceCount)/(1+realizedReplications)",
+  "zeroPValueAllowed": false,
+  "falsifierFamilyGovernance": {
+    "primaryFalsifierRequired": true,
+    "secondarySensitivityListFrozenPreOutcome": true,
+    "disagreementRuleFrozenPreOutcome": true,
+    "nullGeneratorShoppingAllowed": false
+  },
+  "pipelineReplayRequirements": [
+    "sameCandidateSetHash",
+    "sameSupportSelectionPolicyHash",
+    "sameRankingMetricHash",
+    "sameTieBreakRuleHash",
+    "sameModelFitRuleHash",
+    "sameTuningRuleHash",
+    "sameCostFillabilityRuleHashWhereApplicable",
+    "sameObservedAndNullClock"
+  ],
+  "leakageSentinels": [
+    "FUTURE_ONLY_FEATURE_MUST_REJECT",
+    "AFTER_CUTOFF_ROW_MUST_REJECT",
+    "REVISED_AFTER_DECISION_STATE_MUST_REJECT"
+  ],
+  "terminalStates": [
+    "NULL_GENERATOR_READY",
+    "EXCHANGEABILITY_NOT_PROVEN",
+    "CONDITIONAL_NULL_MODEL_UNRELIABLE",
+    "LINEAGE_INCONSISTENT_SURROGATE",
+    "DEPENDENCE_STRUCTURE_NOT_PRESERVED",
+    "MECHANICAL_STATE_INVALID",
+    "SUPPORT_DENOMINATOR_DRIFT",
+    "PIPELINE_NULL_MISMATCH",
+    "MONTE_CARLO_RESOLUTION_INSUFFICIENT",
+    "FALSIFIER_DISAGREEMENT_UNRESOLVED",
+    "NO_VALID_COMPONENTWISE_PERMUTATION",
+    "EVIDENCE_NOT_YET_AVAILABLE"
+  ],
+  "externalAnchors": [
+    {
+      "id": "ROMANO_TIRLEA_TIME_SERIES_PERMUTATION",
+      "source": "arxiv:2009.03170",
+      "use": "ordinary permutation can be invalid under dependence; studentized/dependence-aware procedures require explicit conditions"
+    },
+    {
+      "id": "BERRETT_WANG_BARBER_SAMWORTH_CPT",
+      "source": "arxiv:1807.05405",
+      "use": "conditional permutation preserves X-Z structure under an adequate X|Z model; misspecification can inflate type-I error"
+    },
+    {
+      "id": "ROMANO_TIRLEA_OLS_TIME_SERIES",
+      "source": "arxiv:2404.06238",
+      "use": "regression permutation under time dependence requires method-specific validity rather than naive exchangeability assumptions"
+    },
+    {
+      "id": "PHIPSON_SMYTH_ZERO_P",
+      "source": "pmid:21044043",
+      "use": "randomly drawn permutation p-values should not be reported as zero; finite-M correction is required"
+    }
+  ],
+  "noClaim": {
+    "empiricalInteractionIncrementality": true,
+    "alpha": true,
+    "productionReadiness": true,
+    "formalPromotion": true
+  },
+  "maturityImpact": "NONE_56_7_PERCENT"
+}
