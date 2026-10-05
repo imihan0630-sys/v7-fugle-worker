@@ -919,3 +919,20 @@ H10 audit reached OWNER_APPROVAL_REQUIRED:
 Audits:
 - shared-knowledge/CURRICULUM_H08_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
 - shared-knowledge/CURRICULUM_H10_SCOPE_DEDUP_AUDIT_20261004_V0_1.md
+
+
+## 2026-10-05 07-room continuation — SDA-009 + BR-059B
+
+- SDA-009 D09 circular industry-strength remediation semantics are frozen in `research/SDA009_D09_LEAVE_ONE_OUT_CIRCULARITY_CONTRACT_V0_1.md` and machine JSON.
+- Confirmed self-influence paths: same-day sector hard gate, 14% sector term in priorityScore, and sectorScore-dependent history warmup priority.
+- Existing 20-day sector peer return already excludes the candidate and is retained as the good-control precedent.
+- System 1 next: diagnostic-only inclusive vs leave-one-out sector state, self-contribution, gate flip, raw-vs-LOO rank/Top6 and warmup-priority deltas. No Formal mutation without owner approval.
+- D16 next after machine receipts: common-support residual/rank/Top6 validation. 00 remains closure owner.
+- BR-059B added Nan Ya PCB 8046 official 2025 AI/HPC application revenue share = 16% under total operating-revenue denominator; this is not ABF-specific.
+- Kinsus 3189 official bounded scan remains qualitative for AI/FCBGA/ABF contribution; numeric magnitude stays UNKNOWN.
+- D09-13 remains L3/60%; D09 domain maturity remains unchanged by these findings.
+
+Exact next continuation:
+1. BR-059 continue independent issuer-native application/product numerator search, prioritizing ABF-specific numeric disclosure for 3189/8046 while preserving UNKNOWN.
+2. Keep SDA-009 open until System 1 diagnostic implementation + D16 common-support readback + 00 closure.
+3. Do not change Formal sector gate, sector score, ranking, Top6, capital or trading behavior in this research room.
