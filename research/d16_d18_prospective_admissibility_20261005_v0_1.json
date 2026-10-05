@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "D16_D18_PROSPECTIVE_ADMISSIBILITY_AUDIT_V0_1",
+  "asOf": "2026-10-05T21:40:00+08:00",
+  "ownerRoom": "11",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "states": {
+    "D16_20261005": {
+      "lane": "D16-CAL-01",
+      "state": "READBACK_PENDING",
+      "countAsProspective": false,
+      "evidence": [
+        "SYSTEM1_FIRST_GENUINE_SESSION_READBACK_PENDING",
+        "NO_CANONICAL_2026_10_05_C1_ACCEPTANCE_FOUND_ON_MAIN_AS_OF_READBACK"
+      ],
+      "promotionRule": "ONLY_IF_IMMUTABLE_GENUINE_V8_17_PLUS_GENERATION_IS_PROVEN_TO_HAVE_EXISTED_AT_DECISION_TIME_WITH_COMPLETE_QUALIFIED_PRIORITYSCORE_COVERAGE",
+      "retrospectiveReconstructionMayCount": false
+    },
+    "D05_20261005_CORROBORATING_ONLY": {
+      "lane": "C3_DERIVED_WAVE1",
+      "state": "INELIGIBLE_PARENT_MISSING",
+      "countAsProspective": false,
+      "evidence": [
+        "FORMAL_SCAN_NOT_CONFIRMED",
+        "C1_GENERATION_NOT_FOUND",
+        "NO_VALID_PROSPECTIVE_C3_REGISTRATION"
+      ],
+      "owner": "04",
+      "room11UsesAs": "CROSS_DOMAIN_PROVENANCE_CORROBORATION_ONLY"
+    },
+    "D18_20261005": {
+      "lane": "D18_PROSPECTIVE_POLICY_FRAME",
+      "state": "INELIGIBLE_CAPTURE_DISABLED",
+      "countAsProspective": false,
+      "evidence": [
+        "SYSTEM2_CAPTURE_DISABLED",
+        "NO_CANONICAL_2026_10_05_GENUINE_ACTIVATION_FRAME_FOUND_ON_MAIN_AS_OF_READBACK"
+      ],
+      "retrospectiveReconstructionMayCount": false,
+      "forbiddenInterpretations": [
+        "POLICY_DISABLED",
+        "NATURAL_ZERO_PICK",
+        "STRATEGY_FAILURE",
+        "REGIME_INEFFECTIVE"
+      ]
+    }
+  },
+  "crossTicket": {
+    "SDA016": [
+      "T12_OUTCOME_ARRIVAL_IMMUTABILITY",
+      "T19_UNKNOWN_FOOTPRINT_LINEAGE_FAIL_CLOSED"
+    ],
+    "SDA017": [
+      "T14_HISTORICAL_RECONSTRUCTION_NOT_PROSPECTIVE",
+      "T01_T02_T28_IF_OUTCOME_GUIDED_REGIME_MUTATION"
+    ]
+  },
+  "maturityImpact": "NONE",
+  "exactNext": [
+    "VERIFY_FIRST_CANONICAL_C1_COHORT_READBACK_WITH_DECISION_TIME_PERSISTENCE",
+    "WAIT_FOR_FIRST_AUTHORIZED_D18_PROSPECTIVE_CAPTURE_DATE_WITHOUT_BACKDATING",
+    "KEEP_SDA016_22_AND_SDA017_30_ENGINEERING_ORACLE_GATES_SEPARATE"
+  ]
+}
