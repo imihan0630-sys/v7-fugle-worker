@@ -2152,3 +2152,18 @@ Important boundary:
 - none of this proves event linkage, revision completeness, cancellation completeness, NO_EVENT, exact knownAt, technical continuity, session completeness, or trading authority.
 
 Next BUILD_LANE step: event-specific linkage disambiguation packets must use source event identity + issuer + action family + effective date + authority/detail evidence and preserve candidate rows separately. Normalized subject stem may be retained only as supporting text and must never be the sole episode key.
+
+
+## 2026-10-06 SDA-022 cross-system non-convergence intake
+
+Canonical guard:
+shared-knowledge/SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_V0_1.md
+
+System2 must preserve architectural independence from System1:
+- System1 A/B, Top6/3+3, Formal ranking and 15m confirmation are not System2 prerequisites;
+- strategy-local candidate generation/ranking must remain independently executable where its own required inputs are available;
+- shared raw evidence/PIT/lineage is allowed and preferred;
+- same stock may be selected by both systems, but the policy path must remain independently traceable;
+- no claim of "two independent confirmations" from the same source/root without D16 dependence analysis.
+
+This pointer does not replace the active S2 BUILD_LANE or authorize any live ranking/strategy mutation.
