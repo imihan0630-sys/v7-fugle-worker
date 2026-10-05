@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-06T00:20:00+08:00",
+  "updatedAt": "2026-10-06T00:29:00+08:00",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -102,12 +102,14 @@
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
       ],
-      "readiness": "CAUSAL_PATTERN_SEMANTICS_STRONG_TEST_EXECUTION_AND_SYSTEM_GUARD_PENDING",
-      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "readiness": "D01_CAUSAL_HINDSIGHT_FIREWALL_DEEPENED_LATEST_ADVERSARIAL_TEST_EXECUTION_PENDING",
+      "receipt": "KLINE_PATTERN_CHECKPOINT.md",
       "remainingDelta": [
-        "execute pending D01 adversarial tests",
-        "future-pivot/episode lineage system guard",
-        "prospective outcome evidence"
+        "execute latest D01 adversarial research tests currently marked TEST_EXECUTION_PENDING",
+        "System1/System2 future-pivot/root/episode lineage guard integration",
+        "first genuine prospective outcome evidence under frozen clocks",
+        "D16 common-support inference",
+        "00 independent closure"
       ]
     },
     {
@@ -135,12 +137,16 @@
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
       ],
-      "readiness": "SEMANTIC_AND_ADMISSION_GUARD_COMPLETE_PROSPECTIVE_RESIDUAL_EVIDENCE_PENDING",
-      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "readiness": "LIVE_15M_OBSERVABILITY_PROVEN_H001_FAIL_CLOSED_RUNTIME_AND_PROVENANCE_BLOCKERS_BEFORE_CLEAN_RESIDUAL_EVIDENCE",
+      "receipt": "research/D02_PVE244_LIVE_15M_READONLY_AUDIT_20261005_V0_1.md",
       "remainingDelta": [
-        "clean prospective common-support evidence",
+        "PVE-245 System1 runtime remediation: historical 15m bootstrap readiness/failure reason",
+        "persist provider + endpoint + rawPayloadHash prospectively at capture time",
+        "restore/verify complete intraday monitor continuity and after-market job semantics",
+        "first clean canonical H001 prospective common-support receipt",
         "price-only vs price-plus-volume residual incrementality",
-        "SDA-001 lineage integration"
+        "SDA-001 lineage integration",
+        "00 independent closure"
       ]
     },
     {
@@ -275,12 +281,14 @@
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
       ],
-      "readiness": "RESEARCH_SCOPE_SPLITS_EXIST_SHARED_RECEIPT_AND_RESIDUAL_GUARDS_PENDING",
-      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md",
+      "readiness": "D06_LEARNING_SEMANTIC_REMEDIATION_COMPLETE_ENGINEERING_LINEAGE_AND_D16_INCREMENTALITY_PENDING",
+      "receipt": "research/d06_sda007_flow_ownership_lineage_contract_20261005_v0_1.json",
       "remainingDelta": [
-        "one-receipt-many-consumers institutional/passive lineage",
-        "portable motive/intent eligibility state",
-        "prospective active-vs-passive-vs-crowding residual evidence"
+        "System1/System2 primitiveReceiptId + parentReceiptIds + informationRoot enforcement",
+        "portable motive/intent eligibility state with UNKNOWN fail-closed",
+        "prospective parent receipts proving one-receipt-many-consumers behavior",
+        "D16 active-vs-passive-vs-crowding common-support residual evidence",
+        "00 independent closure"
       ]
     },
     {
@@ -781,5 +789,6 @@
   "lastRemainingHighReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md",
   "lastMediumReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_MEDIUM_RECONCILIATION_20261005_V0_1.md",
   "firstFullReconciliationBaselineComplete": true,
-  "lastCriticalIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_INTAKE_20261006_V0_1.md"
+  "lastCriticalIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_INTAKE_20261006_V0_1.md",
+  "lastHighIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_INTAKE_20261006_V0_1.md"
 }
