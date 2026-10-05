@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-06T00:12:00+08:00",
+  "updatedAt": "2026-10-06T07:38:30+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -574,6 +574,64 @@
       "updatedAt": "2026-10-05T09:29:13+08:00",
       "verifiedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "verifiedAt": "2026-10-05T09:29:13+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261006-001",
+      "createdAt": "2026-10-06T07:38:30+08:00",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "title": "Institutional terminal labels unapproved research strategies as SHADOW",
+      "affectedScope": [
+        "S2-16 institutional terminal",
+        "Strategy Center capability truthfulness"
+      ],
+      "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "canonicalRequirement": "User-facing System 2 surfaces must distinguish implemented Shadow capability from research-only or owner-review-pending strategy concepts. A strategy may not be labeled SHADOW unless canonical contract/preregistration/readiness permits Shadow activation.",
+      "observedProblem": "terminal_page.mjs renders INSTITUTIONAL_ACCUMULATION and BLACK_HORSE_ACCUMULATION with SHADOW status badges, while canonical strategy governance keeps INSTITUTIONAL_ACCUMULATION owner-review pending/not activatable and BLACK_HORSE_ACCUMULATION research-only with distinctness unproven and not preregistered as an active Limited Shadow strategy.",
+      "evidence": [
+        "SYSTEM2_STRATEGY_CONTRACT_V0.md: INSTITUTIONAL_ACCUMULATION owner review pending; BLACK_HORSE_ACCUMULATION research lane/distinctness not proven",
+        "SYSTEM2_LIMITED_SHADOW_PREREGISTRY_V0_1.md: IA must not activate before owner approval; BLACK_HORSE distinctness unproven",
+        "SYSTEM2_STRATEGY_PREREGISTRY.md: BLACK_HORSE not preregistered as a fourth strategy until distinctness is demonstrated",
+        "SYSTEM2_STRATEGY_SOURCE_READINESS_V0.md: IA machine contract blocked by owner-review; BLACK_HORSE remains research lane",
+        "terminal_page.mjs renders both with status shadow / SHADOW",
+        "S2-16 checkpoint claims truthful UNKNOWN/LOCKED presentation and no fake authority"
+      ],
+      "riskIfUnfixed": "Operator-facing UI overstates strategy operational maturity and can make non-activated research lanes look like active Shadow strategies, weakening version/approval truthfulness even though no live trading authority is granted.",
+      "requiredCorrection": [
+        "Render INSTITUTIONAL_ACCUMULATION as OWNER REVIEW PENDING / NOT ACTIVATED or equivalent canonical non-active state",
+        "Render BLACK_HORSE_ACCUMULATION as RESEARCH ONLY / DISTINCTNESS NOT PROVEN or equivalent canonical non-active state",
+        "Do not label either strategy SHADOW until canonical promotion gates permit it",
+        "Add regression tests protecting these canonical UI states",
+        "Keep other strategy labels aligned to canonical state",
+        "Do not modify strategy logic, assessor policy, preregistration, weights, thresholds, ranking, capacity, push, orders or System1 Formal Core"
+      ],
+      "acceptanceCriteria": [
+        "terminal no longer presents IA or BLACK_HORSE as SHADOW",
+        "UI wording matches canonical contract/preregistration/readiness",
+        "tests prevent silent regression to active SHADOW labels",
+        "no strategy activation/trading authority is introduced",
+        "S2-16 read-only/UNKNOWN/LOCKED semantics and System1 isolation remain intact"
+      ],
+      "protectedBoundaries": [
+        "strategy contracts/preregistration",
+        "assessor policy",
+        "strategy weights/thresholds",
+        "ranking/capacity",
+        "final/live selection authority",
+        "production push",
+        "capital/orders",
+        "System1 Formal Core"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "BUILD_LANE",
+      "assignedLane": "BUILD_LANE",
+      "assignedRoom": "System 2｜建置總控室",
+      "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-06T07:38:30+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
