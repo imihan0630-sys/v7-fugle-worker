@@ -1,3 +1,4 @@
+// HISTORICAL_FLAT_INTERFACE_ONLY — superseded as a receipt contract by research/d02_prospective_pv_provenance_receipt_schema_v0_1.json; use d02_pve241_canonical_guard_v0_2.mjs for canonical validation.
 const uniq=a=>[...new Set(a)];
 const iso=v=>Number.isFinite(Date.parse(v))?Date.parse(v):null;
 const finite=v=>Number.isFinite(Number(v));
