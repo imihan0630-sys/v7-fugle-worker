@@ -730,3 +730,34 @@ The 10 query-integrity-certified events reconciled company-history keys exactly 
 All promotion/completeness flags remain false, including event linkage completeness, bounded revision-history completeness, correction history completeness, cancellation history completeness, exact knownAt clock certification, revision coverage, technical continuity and trading authority.
 
 Interpretation: V0.3 disproves the sufficiency of normalized subject stem as an event key. No ambiguous event obtained a direct effective-date title anchor. The next diagnostic must inspect the seven keyset discrepancies at row level and use official-event subtype/detail plus issuer disclosure chronology/stage as candidate event-specific anchors; no promotion linkage may be made from subject normalization alone.
+
+
+## 2026-10-05 S2-07 linkage diagnostics V0.4 physical result
+
+Authoritative physical execution after transport retry + diagnostic-variable fix:
+- merge commit: `664fc36ab2a35dfd7e930e1bd0d05f37d4bb3fdc`;
+- workflow: `System2 S2-07 Linkage Diagnostics V0.4 Readonly`;
+- run: `37330025545`;
+- job: `111830481109`;
+- conclusion: PASS;
+- System2 Research CI run `37330025009`: PASS.
+
+Physical summary:
+- eventCount = 17;
+- v03ExactCount = 10;
+- discrepancyEventCount = 7;
+- discrepancyOnlyAllTotal = 0;
+- discrepancyOnlyMonthTotal = 9;
+- officialSubtypePresentCount = 12;
+- officialDetailPresentCount = 17;
+- promotionLinkageEstablishedCount = 0.
+
+Important diagnostic finding:
+- the V0.3 whole-company year-vs-month mismatch is too broad to be treated as corporate-action history incompleteness;
+- the 9 month-only rows include unrelated issuer-name-change notices and par-value recurring notice rows;
+- symbol 3591 reconciled 40=40 on the V0.4 rerun although V0.3 had shown 40 vs 30, demonstrating that source-query snapshots can change across observation times;
+- therefore the next query-integrity gate must reconcile issuer + target action-family rows, retain observation-time provenance, and fail closed for target-family discrepancies instead of treating unrelated company disclosures as blockers.
+
+Official-event evidence is richer than title stems: all 17 have official detail, 12/17 have subtype, and the detail carries stop/resume dates or par-value conversion terms. These fields can support event-specific disambiguation together with issuer-scope action-family chronology; normalized subject stem remains insufficient by itself.
+
+All completeness, NO_EVENT, exact-knownAt, cancellation-completeness, technical-continuity, session-completeness and trading-authority flags remain false.
