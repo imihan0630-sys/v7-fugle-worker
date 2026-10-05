@@ -16,6 +16,22 @@ The ambiguity is partly structural: one real corporate action naturally generate
 
 V0.3 therefore stops requiring one unique normalized subject group to represent an entire corporate action.
 
+## Stable universe identity
+
+PR #610 froze `eventUniverseHash=3e31779c36582bd70378d4b393ce0d4b2510bb84fe557686a0e51d3a2f604049`.
+
+That hash remains valid as the immutable receipt of the PR #610 capture, but it includes `eventVersionId`. Corporate-action `eventVersionId` intentionally commits to `sourceCaptureId` and `observedAt`, so a later recapture of the same official row receives a different version ID.
+
+V0.3 therefore does **not** misuse the PR #610 hash as a cross-fetch equality key.
+
+Cross-fetch replay identity is the exact frozen 23-key set:
+
+`sourceId | symbol | effectiveDate`
+
+This is safe for this bounded census because PR #610 physically observed 23 events and 23 unique symbols, and the extracted 23 stable keys are preserved verbatim in the V0.3 probe. A later fetch must match that keyset exactly before event-bundle analysis proceeds.
+
+V0.3 also emits a deterministic `stableEventKeysetHash`. The legacy PR #610 capture-specific hash is preserved separately and is never rewritten.
+
 ## Event-cycle boundary
 
 For each final exchange event:
