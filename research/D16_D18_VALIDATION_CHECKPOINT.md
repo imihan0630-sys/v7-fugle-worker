@@ -2012,3 +2012,52 @@ Exact next:
 2. if no engineering lands, next Room11 deep-research target is support/admission selection sensitivity and effective replication-unit specification using genuine prospective receipts when available;
 3. do not promote historical reconstruction, complete-case-only results or mechanically fragmented episodes;
 4. Room00 remains sole closure authority.
+
+
+## 2026-10-06 fourth-round admission sensitivity / replication-unit specification
+
+Canonical files:
+- `research/SDA016_ADMISSION_SELECTION_IDENTIFICATION_VALIDATION_ADDENDUM_20261006_V0_1.md`;
+- `research/SDA017_EFFECTIVE_REPLICATION_UNIT_VALIDATION_ADDENDUM_20261006_V0_1.md`;
+- `research/SDA016_VALIDATION_ORACLE_20261006_V0_3.json`;
+- `research/SDA017_VALIDATION_ORACLE_20261006_V0_3.json`.
+
+Validation counts:
+- SDA-016 = 40 blocking tests;
+- SDA-017 = 48 blocking tests.
+
+New SDA-016 responsibilities:
+- stage-wise admission selection identity;
+- observed-subpopulation vs full-target estimand distinction;
+- decision-time admission/censoring model clock;
+- positivity/overlap and extreme-weight diagnostics;
+- changed-estimand labeling after trimming/overlap weighting;
+- partial-identification / missing-outcome sensitivity bounds;
+- Brier/log-loss missing-label robustness semantics;
+- deterministic evaluation cutoff;
+- imputation uncertainty / no outcome-tuned imputation model selection.
+
+New SDA-017 responsibilities:
+- multi-axis support vector instead of one scalar effective N;
+- replicationCluster identity distinct from structural episode identity;
+- mechanical fragments cannot earn automatic replication credit;
+- leave-one-replication-cluster-out fragility;
+- cluster leverage/influence/dominance;
+- fixed primary decision-date weighting;
+- predecessor transition-path concentration;
+- calendar recurrence breadth / separated periods.
+
+Current accepted guards remain accepted. No reverse revalidation of current D18 fixed-semantic PIT logic or already-passed System1 exact-dataset/mutation guard.
+
+No new SDA-016/017 engineering implementation was found before this fourth-round research work.
+No maturity change:
+D16 = 60%.
+D18 = 52%.
+Formal Core LOCKED.
+
+Exact next:
+1. on new SDA engineering commits, validate only pending/new V0.3 items;
+2. if engineering is still absent, next deep-research target is to freeze the first machine-readable support-sensitivity receipt schema for genuine prospective C1/D18 data, without fabricating samples;
+3. no full-population claim from complete cases when positivity/selection is unresolved;
+4. no generic Regime claim from one replication cluster or narrow calendar phase;
+5. Room00 remains sole closure authority.
