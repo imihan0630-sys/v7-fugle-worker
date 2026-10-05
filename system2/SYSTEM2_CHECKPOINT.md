@@ -1876,3 +1876,60 @@ Rules:
 - do not infer historical regime evidence from specification alone.
 
 Mode guidance for actual cross-file implementation/tests: Codex / GPT-6 Astra / High.
+
+## 2026-10-05 S2-07 bounded revision-history census — LOW-VOLUME 23/23 OBSERVABLE
+
+PR #610 / `7e8a7415064bb1f1c5d23c3b1bbd6570c1df8274` physically froze and censused the exact 2026-04-05..2026-10-02 low-volume corporate-action event universe.
+
+Scope:
+- TWSE capital reduction = 9;
+- TWSE par-value change = 1;
+- TPEx capital reduction = 9;
+- TPEx par-value change = 4;
+- total = 23 events / 23 unique symbols.
+
+Physical result:
+- MOPS issuer transport ready = 23/23;
+- same action-family issuer history observed = 23/23;
+- issuer evidence on/before official effective date = 23/23;
+- eventUniverseHash=`3e31779c36582bd70378d4b393ce0d4b2510bb84fe557686a0e51d3a2f604049`.
+
+Revision-hint distribution:
+- TWSE capital reduction: 6/9;
+- TWSE par-value change: 0/1;
+- TPEx capital reduction: 6/9;
+- TPEx par-value change: 0/4.
+No cancellation hint was observed in these 23 final-event symbol histories.
+
+### Semantic boundary
+
+23/23 observability is not revision completeness.
+
+The next gate must distinguish:
+1. events with explicit version-chain hints;
+2. events with no revision hint but complete query evidence;
+3. ambiguous action-family rows;
+4. cancellation/no-cancellation evidence;
+5. source-reported version time vs exact public knownAt.
+
+### Exact continuation
+
+1. build event-to-version linkage for the 23 frozen events;
+2. add per-symbol query-integrity evidence needed for negative no-revision claims;
+3. certify lane-level bounded correction/cancellation history only where every event is resolved;
+4. preserve exact knownAt as a separate prospective-evidence debt;
+5. after low-volume lane semantics are proven, shard the two high-volume ex-right/dividend lanes;
+6. then integrate suspension/resumption + symbol-session evidence and RAW A1 lineage.
+
+Still false:
+`publicAvailabilityLatencyCertified=false`,
+`knownAtVersionClockCertified=false`,
+`authorityRevisionCoverageComplete=false`,
+`revisionCoverageComplete=false`,
+`noEventMayBeClaimed=false`,
+`suspensionCoverageComplete=false`,
+`symbolSessionCompletenessCertified=false`,
+`technicalContinuityCertified=false`,
+all trading authority false.
+
+DATA_LANE correction ownership is unchanged. System 1 Formal Core remains LOCKED.
