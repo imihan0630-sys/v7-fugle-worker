@@ -1,13 +1,13 @@
 {
   "schemaVersion": "D03_INTERACTION_INCREMENT_ACCEPTANCE_RECEIPT_V0_1",
-  "updatedAt": "2026-10-06T06:18:00+08:00",
+  "updatedAt": "2026-10-06T06:23:00+08:00",
   "contract": "research/d03_interaction_increment_evidence_accounting_guard_20261006_v0_1.json",
   "canonicalExecutableFixture": "research/test_d03_interaction_increment_evidence_accounting_v0_1.mjs",
-  "validationMode": "CONTRACT_SEMANTIC_REVIEW_AND_DETERMINISTIC_FIXTURE_FREEZE",
-  "repositoryNodeFixtureExecutedInThisRound": false,
+  "validationMode": "CANONICAL_NODE_FIXTURE_EXECUTED",
+  "repositoryNodeFixtureExecutedInThisRound": true,
   "ciReceiptClaimed": false,
   "outcomeDataUsed": false,
-  "status": "PASS_CONTRACT_SEMANTICS",
+  "status": "PASS_CANONICAL_NODE_EXECUTED",
   "cases": 14,
   "expected": {
     "twoRootsNoInteraction": {
@@ -65,5 +65,21 @@
   ],
   "empiricalInteractionIncrementalityClaimed": false,
   "formalCoreImpact": "NONE_LOCKED",
-  "maturityImpact": "NONE_56_7_PERCENT"
+  "maturityImpact": "NONE_56_7_PERCENT",
+  "observed": {
+    "status": "PASS",
+    "cases": 14,
+    "twoRootsNoInteractionEffectiveEvidence": 2,
+    "twoRootsOneInteractionEffectiveEvidence": 3,
+    "duplicateAliasEffectiveEvidence": 3,
+    "sourceRootCountAfterInteraction": 2,
+    "interactionIncrementCount": 1,
+    "formalCoreImpact": "NONE_LOCKED",
+    "outcomeDataUsed": false
+  },
+  "fileSha256": {
+    "contract": "5ea8a81509a721f74c312d827a01758ae9639e8cb6d5de6ef51f8ba378e959a1",
+    "fixture": "b533ef6adc64e55b13bd54d9f578159f14608a9ca4ce943e5a20d1ab04c53073",
+    "test": "b409f6ceb3880d68521987dc1b1de8fcc901f88db3a1c99aff63ac6c2f9d6d66"
+  }
 }

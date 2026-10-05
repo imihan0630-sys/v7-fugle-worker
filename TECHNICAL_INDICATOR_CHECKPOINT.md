@@ -4765,3 +4765,41 @@ No promotion:
 
 Exact next:
 audit the existing D03-10 Bollinger and D03-09 ADX composite mappings against TI-759~794 without redesigning their formulas: identify which components are main effects, which are composite/interaction representations, which baseline controls are required, and whether any current schema could accidentally let component + composite + interaction inflate evidence. D02 price-volume H003 remains producer-owned and is used only as a cross-domain consistency reference. External System1/System2/D16 machine lanes and protected PR #600 path remain independent.
+
+
+
+## TI-795 through TI-802 — Bollinger / ADX composite mapping audit (2026-10-06)
+
+Canonical artifacts:
+- `research/D03_BOLLINGER_ADX_COMPOSITE_MAPPING_AUDIT_20261006_V0_1.md`;
+- `research/d03_bollinger_adx_composite_mapping_cases_20261006_v0_1.json`;
+- `research/test_d03_bollinger_adx_composite_mapping_v0_1.mjs`;
+- `research/d03_bollinger_adx_composite_mapping_acceptance_receipt_20261006_v0_1.json`.
+
+### TI-795 — registry interpretation
+D03-09 and D03-10 parent records correctly preserve PARTIAL_OVERLAP and conservative group-level deduplication. Parent-level lineage is not component incrementality proof.
+
+### TI-796~797 — Bollinger decomposition and anti-stacking
+SMA20/close location is the price main effect; rolling dispersion/width is the dispersion/volatility component with D04 dependency; normalized position, touch/break and location×width are composite/interaction representations; squeeze/re-expansion is a path child. Required controls are direct return/MA distance, center state, D04 volatility/ATR/range compression/VCP, Regime, tick/liquidity and continuity.
+
+Current children remain inside RG_D03_VOLATILITY_ENVELOPE and contribute at most one deduplicated family. Future two proven components may reach 2; only one canonical proven interaction may reach 3; the parent envelope and touch/squeeze aliases add 0.
+
+### TI-798~800 — ADX decomposition and anti-stacking
++DM/-DM are directional main effects; TR/ATR is the range/volatility main effect; DI is direction normalized by range; DX is a nonlinear normalized contrast; ADX is Wilder-smoothed strength; threshold/crossover/slope labels are aliases/state transforms.
+
+High ADX is not a bullish direction vote. Required controls include direct trend/MA/path, D04 range/volatility, exact Wilder component lineage, Regime, tick/liquidity, continuity and canonical FULL_REPLAY. Price-only baseline uplift cannot isolate direction×range interaction. All current children remain one conservative parent family.
+
+### TI-801 — shared falsifiers
+Direct-price/volatility absorption, sparse joint cells, date/regime concentration, parameter search, walk-forward sign reversal, costs, fillability, limits/suspensions/corporate actions and parent+component+interaction alias inflation are mandatory falsifiers. Missing evidence remains UNKNOWN.
+
+### TI-802 — executable result
+Observed:
+`status=PASS; cases=12; currentBollingerEffectiveCount=1; currentAdxEffectiveCount=1; futureTwoComponentsNoInteraction=2; futureOneCanonicalInteraction=3; aliasInflationBlocked=true; weakBaselineBlocked=true; formalCoreImpact=NONE_LOCKED; outcomeDataUsed=false`.
+
+The latest canonical TI-777~794 fixture was also executed in this round:
+`status=PASS; cases=14; twoRootsNoInteractionEffectiveEvidence=2; twoRootsOneInteractionEffectiveEvidence=3; duplicateAliasEffectiveEvidence=3; sourceRootCountAfterInteraction=2; interactionIncrementCount=1; formalCoreImpact=NONE_LOCKED; outcomeDataUsed=false`.
+
+No formula, weight or threshold changed. No empirical Alpha or promotion is claimed. D03 remains 56.7%; D03-09 and D03-10 remain L2/40; outcomes remain CLOSED; Formal Core remains LOCKED.
+
+Exact next:
+freeze the sparse-cell/date-cluster estimability and concentration oracle for future interaction receipts. External System1/System2/D16 and protected PR #600/Bollinger/ADX physical-evidence lanes remain pending.
