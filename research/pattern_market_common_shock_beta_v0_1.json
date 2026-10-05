@@ -1,0 +1,27 @@
+{
+  "schemaVersion":"pattern-market-common-shock-beta-v0.1",
+  "updated":"2026-10-05 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "owners":{
+    "benchmarkBeta":"D19",
+    "marketRegime":"D18",
+    "globalShock":"D13",
+    "sectorContext":"D09",
+    "economicValidation":"D16"
+  },
+  "manySectorsOneDateEqualsIndependentReplication":false,
+  "betaEqualsAlpha":false,
+  "currentBetaCanBackfillHistory":false,
+  "outcomeSelectedBetaModel":"PROHIBITED",
+  "candidateIncludedBenchmarkIndependentConfirmation":false,
+  "exCandidateMarketContextNewAlphaVote":false,
+  "crossSectorEqualsCrossMarketDate":false,
+  "unknownBetaImputation":"PROHIBITED",
+  "sda001Status":"REMEDIATION_IN_PROGRESS",
+  "comparisonLadder":["M0","M1","M2","M3","M4","M5"],
+  "interpretationStates":["R0","R1","R2","R3","R4","R5","R6","R7"],
+  "outcomeJoin":"CLOSED",
+  "formalOptimizationCandidate":"NONE"
+}

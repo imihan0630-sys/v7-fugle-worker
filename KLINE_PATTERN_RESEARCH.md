@@ -23319,3 +23319,37 @@ New durable artifacts:
 - research/PATTERN_SECTOR_COMPOSITION_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-041 — Pattern generalization vs market-wide common shocks / beta (2026-10-05)
+
+DL-040 showed that many stock rows can be one sector story. DL-041 extends that logic one level higher: many sectors can still be one market story.
+
+A broad Taiwan rally can make semiconductor, financial, shipping and industrial Pattern candidates all look successful on the same dates. Counting those as four independent sector replications ignores the fact that all four may share the same market shock. Likewise, a Pattern cohort can be populated mainly by high-beta stocks even when the sector labels differ. A generic Pattern claim therefore requires separation from systematic market exposure.
+
+The ownership split is explicit. D19 owns benchmark construction, beta and benchmark-residual semantics. D18 owns market regime/common domestic state. D13 owns global/cross-market shocks. D09 owns sector context. D01 does not invent another beta estimator or market-shock taxonomy; it consumes versioned, as-of owner receipts.
+
+A beta receipt is only valid for the predictor freeze when its benchmark/model/version, estimate, knownAt, estimation window and observation count were all available by that time. A current beta estimate cannot be backfilled into historical Pattern snapshots. Missing beta is UNKNOWN, not zero or one. Trying several beta windows or benchmarks after outcomes and choosing the one that preserves Pattern significance is prohibited.
+
+Replication units are now explicitly multi-level. Future reports must distinguish stock observations, unique symbols, structural roots, sectors, sector-date clusters, market-date clusters and common-shock clusters. Ten stocks across eight sectors on one strong market date are still one market-date dependence family.
+
+Candidate self-inclusion creates another subtle circularity. A large-cap candidate can contribute materially to the same benchmark return later used as a market control. That direct reuse is not independent evidence. D19 ex-candidate market context is preferred where owner-supported; when unavailable the state is SELF_INCLUSION_UNRESOLVED. Even a clean ex-candidate benchmark remains context/control and does not become another alpha vote.
+
+DL-041 does not define a D01-local market-surge threshold. Market/common-shock state must come from the existing owners or remain unknown. This avoids selecting a convenient TAIEX percentage threshold after seeing Pattern outcomes.
+
+Future D16 analysis uses a nested ladder. M0 is the raw cross-sector Pattern cohort. M1 accounts for market-date dependence. M2 uses ex-candidate market context where available. M3 controls frozen D19 beta/benchmark exposure. M4 combines DL-040 sector and market controls. M5 requires residual representation across independent market-date clusters.
+
+Interpretation is correspondingly scoped. A raw Pattern result can be explained by common market shock, beta exposure, regime, combined sector+market state, or remain as a residual Pattern increment. Even a residual increment across several dates remains a research candidate rather than alpha proof. If conclusions materially change across preregistered benchmark/beta models, the result is MODEL_SENSITIVE.
+
+Taiwan-specific evidence makes these controls more than theoretical hygiene. Research on Taiwan finds a conditional beta-return relation, nonlinear/dynamic beta behavior, and a large aggregate component in stock-return fluctuation. That means systematic exposure and common market state can plausibly create broad-looking Pattern performance without any stock-specific structural edge.
+
+Twenty-two adversarial cases are authored. They reject historical beta backfill, future benchmark leakage, unknown-beta imputation, candidate self-inclusion as confirmation, outcome-selected beta models/windows/benchmarks, sector-count inflation of market replication, common-shock row inflation, beta common-support violations and over-claiming one-date residual evidence as cross-date replication.
+
+New durable artifacts:
+- research/PATTERN_MARKET_COMMON_SHOCK_BETA_V0_1.md
+- research/pattern_market_common_shock_beta_v0_1.json
+- research/pattern_market_common_shock_beta_v0_1.mjs
+- research/test_pattern_market_common_shock_beta_v0_1.mjs
+- research/PATTERN_MARKET_COMMON_SHOCK_BETA_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
