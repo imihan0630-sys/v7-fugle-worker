@@ -6,15 +6,15 @@ on:
     branches:
       - "research/d02-pve248-class-b-candidate-20261006"
     paths:
-      - "scripts/apply_v8_18_1_pve248_candidate.py"
-      - "tests/test_v8_18_1_pve248_runtime_candidate.mjs"
+      - "scripts/apply_v8_19_1_pve248_candidate.py"
+      - "tests/test_v8_19_1_pve248_runtime_candidate.mjs"
       - ".github/workflows/v7-regression.yml"
       - ".github/workflows/d02-pve248-candidate.yml"
   pull_request:
     branches: [main]
     paths:
-      - "scripts/apply_v8_18_1_pve248_candidate.py"
-      - "tests/test_v8_18_1_pve248_runtime_candidate.mjs"
+      - "scripts/apply_v8_19_1_pve248_candidate.py"
+      - "tests/test_v8_19_1_pve248_runtime_candidate.mjs"
       - ".github/workflows/v7-regression.yml"
       - ".github/workflows/d02-pve248-candidate.yml"
 
@@ -45,7 +45,7 @@ jobs:
               line=raw.strip()
               if line.startswith("python3 scripts/"):
                   commands.append(line)
-          if "python3 scripts/apply_v8_18_1_pve248_candidate.py" not in commands:
+          if "python3 scripts/apply_v8_19_1_pve248_candidate.py" not in commands:
               raise SystemExit("PVE-248 candidate missing from regression build chain")
           for command in commands:
               print("+",command,flush=True)
@@ -58,4 +58,4 @@ jobs:
       - name: PVE-248 runtime candidate guard
         env:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
-        run: node tests/test_v8_18_1_pve248_runtime_candidate.mjs
+        run: node tests/test_v8_19_1_pve248_runtime_candidate.mjs
