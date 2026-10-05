@@ -221,3 +221,29 @@ System1 PR #644 is accepted only as a useful provenance partial-pass candidate:
 - merge/deploy remains separately owner-gated.
 
 Engineering rooms must use latest oracle versions when validating new work. Passing an older 30-test/40-test contract is not sufficient.
+
+
+## SDA-022 cross-system non-convergence routing
+
+Canonical guard:
+`shared-knowledge/SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_V0_1.md`.
+
+### System 1
+Expose a research-only decision-policy fingerprint sufficient to compare universe/gate identity, Formal policy/version, ranking-policy identity, information-root set, selected symbols, decision timestamp and generation.
+
+Do not alter A/B, Top6/3+3, 15-minute confirmation, capital or lifecycle merely to create divergence.
+
+### System 2
+Expose strategy-specific policy fingerprints and prove at least one candidate-generation path remains executable without consuming System1 Top6/rank output. Preserve strategyId/strategyVersion, strategy-local evidence families, local ranking identity, global max-12/per-strategy max-3 capacity and independent lifecycle.
+
+Do not copy System1 A/B/Top6/3+3/ranking as hidden prerequisites.
+
+### D16 / Room11
+Validate dependence/incrementality instead of assuming two systems are independent. Compare overlap subset, System1-only, System2-only, shared-information-root ratio, common-support rank correlation where meaningful, and prospective outcomes by source-system/disagreement reason.
+
+No arbitrary overlap threshold is authorized yet.
+
+### 00
+Sole cross-system closure authority. High output overlap is not a failure by itself; hidden policy dependence is. Low overlap is not a success by itself; forced disagreement is prohibited.
+
+No Formal behavior change is authorized by SDA-022.
