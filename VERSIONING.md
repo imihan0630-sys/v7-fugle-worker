@@ -150,3 +150,10 @@
 - 新增共用 C1 parent 的 immutable population/membership 與 append-only quality overlay；屬新增研究功能，不改選股架構或 Formal Core，因此採功能版本。
 - Owner 已批准實裝；具體 PR merge／Production deploy 仍須獨立批准。
 - 實裝 checkpoint：`research/SYSTEM1_SHADOW_COHORT_MEMBERSHIP_IMPLEMENTATION_20261004.md`。
+
+## 17. V8.18.0｜Valuation Source Vintage（Class-B candidate）
+
+- Runtime candidate: `8.18.0-valuation-source-vintage`.
+- 新增同 request valuation/financial snapshot digest 與 immutable C1 provenance capture；屬新增研究功能，Formal 選股架構不變。
+- Owner 已批准工程實裝與 PR 驗證；merge／Production deploy 未授權。
+- Checkpoint: `research/SYSTEM1_VALUATION_SOURCE_VINTAGE_IMPLEMENTATION_20261005.md`。

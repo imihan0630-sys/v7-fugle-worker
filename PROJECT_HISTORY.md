@@ -496,3 +496,7 @@ stop for Production approval. Durable state and exact next action:
 - Actual V8.16.0 backup verified; original monitoring targets/configuration and four Cron preserved; authenticated research dashboard readback passed. New cohort unauthenticated GET returns 401; this does not establish authenticated generation readback.
 - No business scan, backfill, synthetic sample, push resend or rollback. First genuine-session C1/cohort readback remains PENDING; economicSuperiority UNKNOWN, formalOptimizationCandidate NONE, Formal Core LOCKED.
 - Receipt: `research/system1_shadow_cohort_deployment_20261004_v0_1.json`; exact continuation: implementation checkpoint. Monitor https://fugle-test.imihan0630.workers.dev/ .
+
+## 2026-10-05 — Valuation Source Vintage Class-B candidate (not deployed)
+
+Owner-approved engineering adds same-request valuation/financial/EPS snapshot digests and compact immutable C1 source/sector-median lineage via guarded V8.18.0. No provider calls, Formal or System2 changes. Official first-known and continuity remain NOT_PROVEN; outcome promotion remains blocked. Implementation/test/PR continuation: `research/SYSTEM1_VALUATION_SOURCE_VINTAGE_IMPLEMENTATION_20261005.md`. Concrete merge/Production deployment is not authorized.

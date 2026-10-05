@@ -351,3 +351,8 @@ First action:
 5. use guarded patch-chain engineering, not ad-hoc direct Worker.js edits;
 6. open a PR and run exact-head Regression, Repair CI, and isolated review;
 7. do not deploy Production unless current governance separately authorizes it after the concrete implementation is reviewed.
+
+## Implementation continuation
+
+The V8.18.0 candidate is implemented on `codex/system1-valuation-source-vintage`.
+Continue from `research/SYSTEM1_VALUATION_SOURCE_VINTAGE_IMPLEMENTATION_20261005.md` and the exact PR/head CI packet. Do not restart R1/R2 research or this proposal. Production merge/deploy remains NOT AUTHORIZED.
