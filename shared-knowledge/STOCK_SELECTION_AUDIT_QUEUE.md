@@ -451,3 +451,15 @@ Current HIGH states:
 
 Accepted controls in the reconciliation receipts must not be repeated merely to raise maturity.
 Protected owner gates remain unchanged.
+
+## System 1 Class A engineering return — SDA-001 / SDA-004 / SDA-016
+
+Additive offline implementation and tests are recorded in
+`research/SYSTEM1_SDA_SHADOW_REMEDIATION_CHECKPOINT_20261005.md`.
+This supplements the earlier critical reconciliation: System 1 lineage/dedup
+Shadow diagnostics, pinned alias/parameter registrations and generic immutable
+experiment/holdout-use guard now have executable implementations.
+Tickets remain REMEDIATION_IN_PROGRESS; no CLOSED/VERIFIED claim. D03 mapping
+review, D16 generic consumption semantics/residual/OOS validation, System 2 lane
+integration and independent 00 readback remain pending. Formal Core LOCKED;
+no runtime, D1, provider call or Production deployment change.
