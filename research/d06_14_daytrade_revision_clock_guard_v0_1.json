@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "D06_14_DAYTRADE_REVISION_CLOCK_GUARD_V0_1",
+  "updatedAt": "2026-10-06 Asia/Taipei",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-14",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "sourceAuthority": "Taipei Exchange (TPEx)",
+  "sourceProduct": "現股當沖交易統計資訊／日報表",
+  "providerRule": "TPEx states trade-date T values may be updated on T, T+1 and T+2 only after securities firms finish their overall processing and transmit final corrected amounts; T+2 is final.",
+  "frozenClockRules": [
+    "Calendar date rollover from T to T+1 does not prove the T+1 provider update has occurred.",
+    "A T+1 early-morning readback identical to T_PRELIM is a stability observation, not proof of zero T1 revision.",
+    "T1_REVISED labeling requires a defensible post-workflow T+1 capture; if exact provider completion time is unavailable, preserve capturedAt and bound firstKnownAt rather than invent a publication minute.",
+    "T2_FINAL may be labeled final only under the provider's explicit T+2 finality rule and the preserved trade date.",
+    "Later vintages are append-only and never overwrite earlier first-known versions."
+  ],
+  "parserAuthorityRules": [
+    "Canonical table parsing controls row-count and row-level evidence.",
+    "Natural-language page summaries or extraction-layer estimated row counts are non-authoritative diagnostics.",
+    "Any summary/parser discrepancy must be resolved against the actual displayed table before a revision is declared."
+  ],
+  "firstPhysicalExample": {
+    "tradeDate": "2026-10-05",
+    "tPrelimFingerprint": "fnv1a64-utf8:48e8edf2952b9b40",
+    "t1CalendarEarlyCapturedAt": "2026-10-06T05:42:50+08:00",
+    "canonicalRows": 841,
+    "unchangedRows": 841,
+    "changedRows": 0,
+    "addedRows": 0,
+    "removedRows": 0,
+    "extractionSummaryMiscount": 703,
+    "canonicalParserCount": 841,
+    "conclusion": "T1_CALENDAR_EARLY_READBACK_STABLE / T1_REVISED_NOT_YET_IDENTIFIED / EXTRACTION_SUMMARY_ROWCOUNT_REJECTED"
+  },
+  "maturityImpact": "NONE",
+  "status": "REVISION_CLOCK_AND_PARSER_AUTHORITY_GUARD_FROZEN / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Later on 2026-10-06 re-capture the 2026-10-05 table after the T+1 reporting workflow is plausibly complete; apply the frozen union/common-support revision contract and only then record the T1 revised vintage."
+}
