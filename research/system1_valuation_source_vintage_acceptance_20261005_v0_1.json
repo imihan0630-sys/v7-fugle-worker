@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "fixtureOnly": true,
+  "protectedRuntimeByteIdentical": true,
+  "selectorCaptureOnlyParity": true,
+  "selectedSymbolsParity": true,
+  "plansCapitalParity": true,
+  "signalStateParity": true,
+  "fifteenMinuteParity": true,
+  "pushParity": true,
+  "orderParity": true,
+  "providerCallDelta": 0,
+  "changedFunctions": [
+    "runAfterMarketScanCore",
+    "selectTomorrowCandidates",
+    "buildC1PopulationReceipt",
+    "persistC1PopulationReceipt",
+    "verifyC1StoredGeneration"
+  ],
+  "digestDeterministic": true,
+  "immutableConflictDetection": true,
+  "readbackVerified": true,
+  "officialFirstKnownState": "NOT_PROVEN",
+  "promotionGradeOutcomeJoin": false,
+  "scales": [
+    {
+      "rows": 500,
+      "bytes": 2492204,
+      "newProvenanceBytes": 194795,
+      "maxChunkBytes": 89616,
+      "headerBytes": 3311,
+      "elapsedMs": 444
+    },
+    {
+      "rows": 1000,
+      "bytes": 4982460,
+      "newProvenanceBytes": 388798,
+      "maxChunkBytes": 89634,
+      "headerBytes": 3317,
+      "elapsedMs": 807
+    },
+    {
+      "rows": 2000,
+      "bytes": 9961961,
+      "newProvenanceBytes": 775798,
+      "maxChunkBytes": 89634,
+      "headerBytes": 3318,
+      "elapsedMs": 1665
+    }
+  ],
+  "schemaVersion": "SYSTEM1_VALUATION_SOURCE_VINTAGE_ACCEPTANCE_V0_1",
+  "pr": 604,
+  "candidateVersion": "8.18.0-valuation-source-vintage",
+  "productionBaselineVerified": "8.17.0-shadow-cohort-membership",
+  "localFullReview": {
+    "passed": 100,
+    "total": 100
+  },
+  "exactHeadCiAuthority": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/604",
+  "requiredCi": [
+    "V8 Regression Tests",
+    "V8 Repair CI",
+    "System1 C1 C2 isolated offline repair review"
+  ],
+  "mergeAuthorized": false,
+  "deploymentAuthorized": false,
+  "formalCore": "LOCKED",
+  "system2Touched": false,
+  "schemaChanged": false,
+  "newEndpoints": 0,
+  "newSchedules": 0,
+  "FIRST_PROSPECTIVE_VALUATION_SOURCE_VINTAGE_READBACK": "PENDING_PRODUCTION_APPROVAL_AND_GENUINE_TRADING_SESSION",
+  "economicSuperiority": "UNKNOWN",
+  "formalOptimizationCandidate": "NONE"
+}
