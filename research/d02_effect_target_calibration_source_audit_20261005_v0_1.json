@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-10-05 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_CALIBRATION_SOURCE_AUDIT",
+  "evidenceCursor": "PVE-239",
+  "maturityImpact": "NONE",
+  "formalCore": "LOCKED",
+  "finding": "Numerical target provenance, not target schema, is the remaining blocker.",
+  "legalCalibrationClasses": [
+    "DECISION_UTILITY_ANCHOR",
+    "SEMANTIC_MEASUREMENT_ANCHOR",
+    "PRECISION_ANCHOR",
+    "COMPATIBLE_EXTERNAL_PRIOR"
+  ],
+  "forbidden": [
+    "MATCHING_D02_OUTCOME",
+    "TEST_FIXTURE",
+    "SIGNIFICANCE_SELECTED_THRESHOLD",
+    "UNIVERSAL_ROW_COUNT",
+    "UNIVERSAL_COST_CONSTANT",
+    "CROSS_EVIDENCE_KEY_TARGET_BORROWING"
+  ],
+  "currentTargetState": "14_OF_14_TARGET_VALUE_PENDING_FREEZE",
+  "next": "Audit pre-existing D14/D15/D16 decision/risk/precision anchors per evidence key without D02 outcome access."
+}
