@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-05T05:58:00+08:00",
+  "updatedAt": "2026-10-05T09:29:13+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -400,7 +400,7 @@
       "directiveId": "S2-CORR-20261005-001",
       "createdAt": "2026-10-05T02:54:16+08:00",
       "severity": "MEDIUM",
-      "status": "FIX_IMPLEMENTED",
+      "status": "VERIFIED_CLOSED",
       "title": "Capacity persistence loses partial-denominator provenance before downstream resonance/performance",
       "affectedScope": [
         "S2-09 capacity persistence",
@@ -475,10 +475,29 @@
         "Protected boundaries unchanged: no System1 Formal Core/runtime, System2 final/live selection authority, production push/runtime, capital/order, strategy weights/thresholds or assessor-policy change."
       ],
       "verificationEvidence": [
-        "PENDING_INDEPENDENT_AUDIT"
+        "Independent audit re-read latest main and the implementation runtime/tests rather than relying on the remediation-room completion claim.",
+        "PR #601 merged as 1aa5bc86a4e4b47178b890e70c5542562202e752; changed-file scope is limited to System2 capacity/resonance provenance contracts, runtime, UI and tests plus remediation checkpoint.",
+        "candidate_capacity_receipt.mjs now builds S2_SELECTION_DENOMINATOR_PROVENANCE_V0_1 with COMPLETE/PARTIAL/UNKNOWN, unresolvedCount, unresolvedByState, blockerCodes, contributing Shadow runs, provenanceHash and S2_CAPACITY_V0_2.",
+        "capacityHash is computed only after selectionDenominator provenance is included in the capacity receipt base; same admissions under COMPLETE vs PARTIAL therefore produce different capacityHash values.",
+        "daily_shadow_capacity_orchestrator_v0_1.mjs computes canonical shadowAccountingHash from the immutable Shadow run receipt and fails closed on mismatch with an existing fingerprint accounting hash.",
+        "toCapacityRunRow persists selectionDenominator inside the existing counts_json envelope without D1 schema migration; physical schema remains V1.1.",
+        "Legacy capacity rows without selectionDenominator normalize to UNKNOWN with LEGACY_PROVENANCE_INCOMPLETE and are never inferred COMPLETE.",
+        "daily_resonance_persistence_v0_1.mjs reads counts_json/schema_version and active-pool readback links pool to capacity by exact source_capacity_run_id plus source_capacity_hash, not by marketDate/decisionTimestamp heuristic matching.",
+        "daily_resonance_integration_v0_1.mjs propagates sourceDenominatorState, sourceDenominatorProvenanceHash and full provenance into the watch pool; poolHash commits to those fields.",
+        "Operations/read API and resonance UI expose upstream/active-pool denominator provenance, and resonance_comparison_frame_v0_1.mjs binds the same provenance into immutable comparison evidence.",
+        "Regression tests prove identical admitted symbols under COMPLETE vs PARTIAL remain distinguishable by provenanceHash/capacityHash/poolHash, and legacy rows remain UNKNOWN.",
+        "CORR-004 semantics are preserved: PARTIAL with clean admissions remains monitorable; PARTIAL with no ready selection keeps zeroPickDay=null, capacityReceipt=null and no s2_capacity_runs persistence.",
+        "No arbitrary 80/90/95 percent or other coverage threshold was introduced and denominator state was not converted into new trading/admission authority.",
+        "PR #601 formal checks: System2 Research CI 37238471951 PASS; V8 Regression 37238471968 PASS.",
+        "Evidence closeout PR #602 merged as 282b2b33b2a52ea4fa140acd6c3bc25fdc38b384; System2 Research CI 37238725112 PASS; V8 Regression 37238725105 PASS.",
+        "From implementation merge through audit time, 102 later main commits changed 75 files but none touched the CORR-20261005-001 core conflict units; no concurrent drift invalidated the verification.",
+        "Non-blocking hardening observation: downstream normalization validates denominator state/hash shape but does not recompute provenanceHash from counts_json at read time. Current acceptance still passes because new rows are created from a hash-bound receipt and persisted through immutable insert-or-identical semantics; read-time hash recomputation should remain an Audit Watchlist hardening item.",
+        "Independent verification receipt: system2/evidence/s2_corr_20261005_001_independent_verification.json"
       ],
-      "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-05T05:58:00+08:00"
+      "finalDisposition": "VERIFIED_CLOSED — capacity persistence and downstream resonance/comparison now preserve COMPLETE/PARTIAL/UNKNOWN denominator provenance; protected trading authority remains unchanged.",
+      "updatedAt": "2026-10-05T09:29:13+08:00",
+      "verifiedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "verifiedAt": "2026-10-05T09:29:13+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
