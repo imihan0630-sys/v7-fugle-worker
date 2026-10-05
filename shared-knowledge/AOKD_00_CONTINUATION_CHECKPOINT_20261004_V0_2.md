@@ -1094,3 +1094,30 @@ Exact next SDA continuation:
 2. identify the first missing machine-enforceable or research evidence for each CRITICAL ticket;
 3. route only those missing deltas to the relevant learning/build room;
 4. keep existing H/COV/AOKD owner-approval gates unchanged.
+
+
+## 2026-10-05 SDA critical reconciliation and engineering routing
+
+Critical reconciliation receipt:
+`shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md`.
+
+Engineering routing:
+`shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_ROUTING_20261005_V0_1.md`.
+
+Current critical ticket states:
+- SDA-001 = REMEDIATION_IN_PROGRESS; research same-root semantics partly complete, machine lineage/dedup implementation pending.
+- SDA-004 = REMEDIATION_IN_PROGRESS; D03 redundancy controls exist, centralized machine alias/parameter-family guard pending.
+- SDA-009 = ROUTED; related D09 residual-sector work exists, exact leave-one-out/self-contribution repair pending.
+- SDA-016 = REMEDIATION_IN_PROGRESS; preregistration strong, generic holdout-use/outcome-lock infrastructure pending; D16 cannot self-close.
+- SDA-017 = REMEDIATION_IN_PROGRESS; Regime governance strong, executable immutable builder + prospective policy evidence pending; D18 cannot self-close without 00 readback.
+
+System 1 checkpoint now directly references its critical engineering assignments.
+System 2 checkpoint now directly references its critical engineering assignments while preserving Correction Queue / Execution Lane ownership.
+
+No Formal Core, A/B, ranking, Top6, weights, thresholds, capital, signal or push behavior changed.
+
+Exact next SDA continuation:
+1. wait for / intake actual remediation commits from learning rooms or System1/System2 rather than redoing their assigned work;
+2. on each returned commit/receipt, compare to the SDA closure criteria and advance state only with evidence;
+3. meanwhile continue audit of HIGH tickets in launch order: SDA-003, SDA-007, SDA-005/006, SDA-011, SDA-014/015;
+4. preserve existing H/COV/AOKD protected owner gates separately.
