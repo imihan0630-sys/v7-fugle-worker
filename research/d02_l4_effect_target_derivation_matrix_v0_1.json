@@ -1,0 +1,406 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-05 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_PARTIAL_TARGET_SHELL_FREEZE_NUMERICAL_VALUES_PENDING",
+  "evidenceCursor": "PVE-239",
+  "d02MaturityPct": 60,
+  "numericalTargetsFrozen": 0,
+  "numericalTargetsPending": 14,
+  "entries": {
+    "D02-01:SEMANTIC_GOVERNANCE": {
+      "allowedTargetKind": "SEMANTIC_MATERIALITY_TARGET",
+      "primaryQuestion": "Does frozen unit/session/corporate-action governance materially prevent false classification?",
+      "comparator": "GOVERNED_CLASSIFICATION vs UNGOVERNED_FROZEN_COUNTERFACTUAL",
+      "registeredOutcomeFamily": [
+        "classificationDelta",
+        "materialPreventionCandidate"
+      ],
+      "horizonState": [
+        "same decision receipt"
+      ],
+      "costTreatment": "NOT_AN_ALPHA_ESTIMAND",
+      "readyComponents": [
+        "estimand",
+        "comparator",
+        "outcome family",
+        "horizon",
+        "cost treatment"
+      ],
+      "pendingComponents": [
+        "numerical semantic tolerance"
+      ],
+      "blocker": "No formal acceptable false-classification/material-prevention tolerance is frozen.",
+      "ownerNeed": "D02 owner must justify semantic materiality from governance consequence, not from observed incidence.",
+      "numericalTargetStatus": "TARGET_VALUE_PENDING_FREEZE"
+    },
+    "D02-02:H001": {
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "primaryQuestion": "Does same-slot RVOL add incremental discrimination beyond local previous-five volume ratio?",
+      "comparator": "C vs B",
+      "registeredOutcomeFamily": [
+        "false/no-follow-through",
+        "MFE",
+        "MAE",
+        "future return"
+      ],
+      "horizonState": [
+        "B1/B2/B4 where applicable",
+        "D1 secondary"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "readyComponents": [
+        "estimand family",
+        "comparator",
+        "admission support"
+      ],
+      "pendingComponents": [
+        "single primary outcome metric",
+        "single primary horizon",
+        "numerical target",
+        "cost-benefit anchor"
+      ],
+      "blocker": "Multiple registered outcomes remain; choosing one after outcomes would be test shopping.",
+      "ownerNeed": "D02 must freeze one primary outcome/horizon pre-outcome; D14 supplies cost context if economic.",
+      "numericalTargetStatus": "TARGET_VALUE_PENDING_FREEZE"
+    },
+    "D02-03:H20": {
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "primaryQuestion": "Does same-slot RVOL improve D01-owned breakout quality beyond local volume ratio?",
+      "comparator": "C vs B on identical D01 breakout events",
+      "registeredOutcomeFamily": [
+        "false/no-follow-through",
+        "MFE",
+        "MAE",
+        "structural acceptance/failure"
+      ],
+      "horizonState": [
+        "B1/B2/B4",
+        "D1 secondary"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "readyComponents": [
+        "primitive event owner",
+        "comparator",
+        "negative cases"
+      ],
+      "pendingComponents": [
+        "single primary outcome metric",
+        "single primary horizon",
+        "numerical target",
+        "economic utility anchor"
+      ],
+      "blocker": "Breakout quality has several valid outcomes; no single decision-value target is canonical yet.",
+      "ownerNeed": "D02+D01 must keep event identity fixed; D02 freezes one outcome/horizon; D14 cost context later.",
+      "numericalTargetStatus": "TARGET_VALUE_PENDING_FREEZE"
+    },
+    "D02-04:DRYUP": {
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "primaryQuestion": "Does pre-outcome low participation improve later setup quality beyond consolidation/volatility/liquidity?",
+      "comparator": "DRYUP candidate vs identical-support controls without D02 dry-up increment",
+      "registeredOutcomeFamily": [
+        "later demand re-expansion",
+        "future path quality",
+        "MFE/MAE"
+      ],
+      "horizonState": [
+        "not yet singularly frozen"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "readyComponents": [
+        "feature identity",
+        "required controls",
+        "hindsight prohibition"
+      ],
+      "pendingComponents": [
+        "primary outcome metric",
+        "primary horizon",
+        "numeric target"
+      ],
+      "blocker": "Setup quality is conceptually frozen but not reduced to one primary metric/horizon.",
+      "ownerNeed": "D02 must freeze target shell before outcome access; D16 owns adequacy thereafter.",
+      "numericalTargetStatus": "TARGET_VALUE_PENDING_FREEZE"
+    },
+    "D02-05:EXTREME_PARTICIPATION": {
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "primaryQuestion": "Does extreme participation × price response add stable path information after controls?",
+      "comparator": "controlled response model with vs without extreme-participation interaction",
+      "registeredOutcomeFamily": [
+        "future path",
+        "MFE",
+        "MAE",
+        "failure/continuation"
+      ],
+      "horizonState": [
+        "not yet singularly frozen"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "readyComponents": [
+        "observable construct",
+        "forbidden motive labels",
+        "control set"
+      ],
+      "pendingComponents": [
+        "primary metric",
+        "horizon",
+        "numeric target"
+      ],
+      "blocker": "No directional sign is assumed; a single promotion estimand is not yet frozen.",
+      "ownerNeed": "D02 must choose a non-motive path metric/horizon before any outcome inspection.",
+      "numericalTargetStatus": "TARGET_VALUE_PENDING_FREEZE"
+    },
+    "D02-06:H003": {
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "primaryQuestion": "Does PRICE_PLUS_VOLUME_RESPONSE discriminate future outcomes beyond PRICE_ONLY_RESPONSE?",
+      "comparator": "PV vs P identical rows",
+      "registeredOutcomeFamily": [
+        "future discrimination",
+        "acceptance/failure",
+        "MFE",
+        "MAE"
+      ],
+      "horizonState": [
+        "future-only after feature bar; exact primary horizon not singularly frozen"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "readyComponents": [
+        "comparator",
+        "anti-circular clock",
+        "clean-event counter"
+      ],
+      "pendingComponents": [
+        "primary discrimination metric",
+        "primary horizon",
+        "numeric target"
+      ],
+      "blocker": "Representation incrementality is frozen, but the promotion-grade discrimination metric is not.",
+      "ownerNeed": "D02 freezes one metric/horizon; D16 evaluates dependence-aware improvement.",
+      "numericalTargetStatus": "TARGET_VALUE_PENDING_FREEZE"
+    },
+    "D02-07:SVB20": {
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "primaryQuestion": "Does signedVolumeBalance20 add residual information beyond price, direct volume and PV response states?",
+      "comparator": "D vs C",
+      "registeredOutcomeFamily": [
+        "future return/path",
+        "MFE",
+        "MAE"
+      ],
+      "horizonState": [
+        "D1/D3/D5/D10 eligible family; no single primary"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "readyComponents": [
+        "canonical comparator",
+        "anti-duplicate rule",
+        "common-support sequence"
+      ],
+      "pendingComponents": [
+        "primary outcome",
+        "primary horizon",
+        "numeric target"
+      ],
+      "blocker": "SVB residual value is defined, but no single promotion metric/horizon is frozen.",
+      "ownerNeed": "D02 must not let CMF/OBV variants select the target ex post.",
+      "numericalTargetStatus": "TARGET_VALUE_PENDING_FREEZE"
+    },
+    "D02-08:PROVIDER_PRESSURE": {
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "primaryQuestion": "Does providerTradePressureProxy add value beyond OHLCV/RVOL/response after coverage and liquidity controls?",
+      "comparator": "baseline controls vs baseline + provider pressure proxy",
+      "registeredOutcomeFamily": [
+        "future path discrimination",
+        "MFE",
+        "MAE"
+      ],
+      "horizonState": [
+        "intraday/future path not singularly frozen"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "readyComponents": [
+        "proxy semantics",
+        "coverage variable",
+        "liquidity controls",
+        "intent prohibition"
+      ],
+      "pendingComponents": [
+        "primary metric",
+        "primary horizon",
+        "numeric target"
+      ],
+      "blocker": "Independent source exists, but no single promotion outcome/horizon is canonical.",
+      "ownerNeed": "D02 must freeze an observable predictive estimand, never participant intent.",
+      "numericalTargetStatus": "TARGET_VALUE_PENDING_FREEZE"
+    },
+    "D02-09:PIVOT_SIGNED_VOLUME": {
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "primaryQuestion": "Does pivot signed-volume disagreement add value beyond price pivot progression and primitive volume controls?",
+      "comparator": "typed divergence model vs primitive price+volume model",
+      "registeredOutcomeFamily": [
+        "post-confirmation future path",
+        "MFE",
+        "MAE"
+      ],
+      "horizonState": [
+        "post-confirmedAt; no single primary horizon"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "readyComponents": [
+        "typed family",
+        "pivot clock",
+        "anti-cherry-pick rules"
+      ],
+      "pendingComponents": [
+        "primary metric",
+        "primary horizon",
+        "numeric target"
+      ],
+      "blocker": "Confirmation-lag-safe outcome family exists but single decision horizon is not frozen.",
+      "ownerNeed": "D02 must freeze horizon after confirmedAt and keep pivot scale fixed.",
+      "numericalTargetStatus": "TARGET_VALUE_PENDING_FREEZE"
+    },
+    "D02-09:PARTICIPATION_TRAJECTORY": {
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "primaryQuestion": "Does participation-trajectory disagreement add value beyond price progression + current participation?",
+      "comparator": "C vs B in typed trajectory sequence",
+      "registeredOutcomeFamily": [
+        "future path",
+        "MFE",
+        "MAE"
+      ],
+      "horizonState": [
+        "not yet singularly frozen"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "readyComponents": [
+        "typed family",
+        "primitive controls"
+      ],
+      "pendingComponents": [
+        "primary metric",
+        "primary horizon",
+        "numeric target"
+      ],
+      "blocker": "Relational transform is frozen; promotion outcome is not singularly frozen.",
+      "ownerNeed": "D02 must not borrow the pivot-family target.",
+      "numericalTargetStatus": "TARGET_VALUE_PENDING_FREEZE"
+    },
+    "D02-10:TREND_VOLUME_INTERACTION": {
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "primaryQuestion": "Does explicit trend × participation interaction add residual information beyond both parents?",
+      "comparator": "D vs C",
+      "registeredOutcomeFamily": [
+        "future path discrimination",
+        "MFE",
+        "MAE"
+      ],
+      "horizonState": [
+        "not yet singularly frozen"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "readyComponents": [
+        "parent ownership",
+        "interaction clock",
+        "D-vs-C comparator"
+      ],
+      "pendingComponents": [
+        "primary metric",
+        "primary horizon",
+        "numeric target"
+      ],
+      "blocker": "Residual interaction question is clear, but promotion metric/horizon is not.",
+      "ownerNeed": "D02 freezes target shell; D03 parent semantics remain unchanged.",
+      "numericalTargetStatus": "TARGET_VALUE_PENDING_FREEZE"
+    },
+    "D02-11:LIQUIDITY_COUNTERFACTUAL": {
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "primaryQuestion": "Does volume-capacity context improve eligibility/risk classification using admitted + reason-stratified rejected controls?",
+      "comparator": "ADMITTED vs LIQUIDITY_REJECTED_CONTROL within frozen reason strata",
+      "registeredOutcomeFamily": [
+        "execution cost",
+        "spread/depth",
+        "opportunity cost",
+        "future return"
+      ],
+      "horizonState": [
+        "execution horizon / D1+ not singularly frozen"
+      ],
+      "costTreatment": "D14_EXECUTION_COST_RECEIPT_REQUIRED_FOR_ECONOMIC_TARGET",
+      "readyComponents": [
+        "counterfactual lane",
+        "reason stratification",
+        "no threshold sweep"
+      ],
+      "pendingComponents": [
+        "primary utility metric",
+        "cost provenance",
+        "primary horizon",
+        "numeric target"
+      ],
+      "blocker": "Economic meaning depends directly on execution-cost/opportunity-cost tradeoff; D14 cost inputs are incomplete/UNKNOWN for universal use.",
+      "ownerNeed": "D14 must provide cost-quality-aware anchor; D02 must not infer universal commission/slippage.",
+      "numericalTargetStatus": "TARGET_VALUE_PENDING_FREEZE"
+    },
+    "D02-12:TIME_OF_DAY_VOLUME_CURVE": {
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "primaryQuestion": "Does bounded 09:00–13:00 time-of-day volume shape add value beyond same-slot RVOL/cumulative pace/price location?",
+      "comparator": "controls vs controls + time-curve shape",
+      "registeredOutcomeFamily": [
+        "future path discrimination",
+        "MFE",
+        "MAE"
+      ],
+      "horizonState": [
+        "within observed intraday window; no single primary"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "readyComponents": [
+        "family identity",
+        "coverage bound",
+        "controls"
+      ],
+      "pendingComponents": [
+        "primary metric",
+        "primary horizon",
+        "numeric target"
+      ],
+      "blocker": "Current monitor is bounded and no singular promotion outcome is frozen.",
+      "ownerNeed": "D02 must keep full-session claims out until source coverage exists.",
+      "numericalTargetStatus": "TARGET_VALUE_PENDING_FREEZE"
+    },
+    "D02-12:PRICE_BY_VOLUME_PROFILE": {
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "primaryQuestion": "Does prospectively captured price-by-volume profile add value beyond RVOL/pace/price-location controls?",
+      "comparator": "controls vs controls + price-by-volume profile",
+      "registeredOutcomeFamily": [
+        "future path discrimination",
+        "MFE",
+        "MAE"
+      ],
+      "horizonState": [
+        "prospective current-day onward; no single primary"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "readyComponents": [
+        "family identity",
+        "prospective-only constraint",
+        "controls"
+      ],
+      "pendingComponents": [
+        "primary metric",
+        "primary horizon",
+        "numeric target"
+      ],
+      "blocker": "No historical backfill and no singular promotion metric/horizon are available yet.",
+      "ownerNeed": "D02 must freeze a prospective target before enough data accumulate.",
+      "numericalTargetStatus": "TARGET_VALUE_PENDING_FREEZE"
+    }
+  },
+  "crossKeyRules": [
+    "No universal numerical target.",
+    "No target borrowing across evidence keys.",
+    "No observed-outcome-driven target selection.",
+    "D02-11 economic target requires D14 cost-quality dependency.",
+    "D02-01 semantic target cannot be interpreted as alpha.",
+    "Wave-1 must freeze one primary metric/horizon before numerical MDE/precision freeze."
+  ]
+}
