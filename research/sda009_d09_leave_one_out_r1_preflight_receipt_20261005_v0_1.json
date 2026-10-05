@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "0.1",
+  "researchRoom": "07",
+  "domain": "D09",
+  "ticket": "SDA-009",
+  "stage": "R1_PREFLIGHT",
+  "capturedAt": "2026-10-05T23:10:00+08:00",
+  "observedMainSha": "9d037d09fb9fa198a96163e389716b38a5528434",
+  "purpose": "Fail-closed sufficiency gate before candidate/date leave-one-out industry-strength replay.",
+  "requiredAtomicInputs": [
+    "decisionDate",
+    "candidateSymbol",
+    "candidateOwnReturnOrMomentumPrimitive",
+    "industryClassificationSchemeId",
+    "membershipVersion",
+    "effectiveFrom",
+    "effectiveTo",
+    "knownAt",
+    "industryMemberSymbolsAtDecision",
+    "memberReturnOrStrengthPrimitiveAtDecision",
+    "industryAggregationRule",
+    "selectionThresholdOrRankContext"
+  ],
+  "requiredDerivedFields": [
+    "inclusiveIndustryStrength",
+    "leaveOneOutIndustryStrength",
+    "candidateSelfContribution",
+    "inclusiveIndustryRank",
+    "leaveOneOutIndustryRank",
+    "thresholdFlip",
+    "rankDelta"
+  ],
+  "failClosedRules": [
+    "Current membership may not be backfilled into historical decisions.",
+    "Missing atomic member-level primitives are UNKNOWN, never zero.",
+    "No synthetic candidate-level replay may be manufactured from aggregate sector receipts.",
+    "No Top6 or rank-impact claim without the exact decision-time candidate cohort and ranking context.",
+    "No maturity promotion and no Formal Core mutation from preflight or fixture-only evidence."
+  ],
+  "preflightResult": "ATOMIC_INPUTS_NOT_YET_PROVEN_DURABLE_FOR_FIRST_LIVE_CANDIDATE_DATE",
+  "liveReplayCount": 0,
+  "formalCoreImpact": "NONE",
+  "exactNextContinuationPoint": "SDA-009-R1A: locate the first existing D09/System1 decision-date artifact that simultaneously preserves candidate symbol, decision-time industry membershipVersion, member-level strength primitives and ranking context; if any atomic field is absent, emit UNKNOWN and route the missing provenance field to System1 diagnostics rather than reconstructing it from current membership."
+}
