@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "D16_ONLINE_EXPERIMENT_STREAM_RECEIPT_CONTRACT_V0_1",
+  "updatedAt": "2026-10-06T06:00:00+08:00",
+  "owner": "D16",
+  "room": "11",
+  "status": "RESEARCH_ONLY_CONTRACT_FROZEN_NO_STREAM_EVIDENCE_ATTACHED",
+  "formalCoreImpact": "NONE",
+  "purpose": "Separate inner sequential validity from outer sequential hypothesis-stream multiplicity and preserve every tested hypothesis.",
+  "streamIdentity": {
+    "researchStreamId": "REQUIRED",
+    "streamScope": "REQUIRED",
+    "streamErrorObjectiveEnum": [
+      "FWER",
+      "FDR",
+      "MFDR",
+      "EXPECTED_FALSE_DISCOVERIES",
+      "EXPLORATORY_ONLY"
+    ],
+    "streamErrorLevel": "REQUIRED_UNLESS_EXPLORATORY_ONLY",
+    "streamMethodId": "REQUIRED_UNLESS_EXPLORATORY_ONLY",
+    "streamMethodVersion": "REQUIRED_UNLESS_EXPLORATORY_ONLY",
+    "dependenceAssumptionId": "REQUIRED_UNLESS_EXPLORATORY_ONLY",
+    "hypothesisArrivalPolicyHash": "REQUIRED",
+    "alphaOrEvidenceBudgetPolicyHash": "REQUIRED_UNLESS_EXPLORATORY_ONLY",
+    "discoveryDefinitionHash": "REQUIRED",
+    "retirementRuleHash": "REQUIRED",
+    "streamStartAt": "REQUIRED",
+    "streamLedgerHeadHash": "REQUIRED"
+  },
+  "hypothesisRecord": {
+    "hypothesisOrdinal": "REQUIRED_POSITIVE_INTEGER",
+    "hypothesisId": "REQUIRED",
+    "experimentFamilyId": "REQUIRED",
+    "registeredAt": "REQUIRED",
+    "parentHypothesisRefs": "REQUIRED_LIST",
+    "priorOutcomeReleaseRefsKnownAtBirth": "REQUIRED_LIST",
+    "birthReasonCode": "REQUIRED",
+    "candidateSource": "REQUIRED",
+    "primaryClaimHash": "REQUIRED",
+    "nullHash": "REQUIRED",
+    "directionHash": "REQUIRED",
+    "analysisMethodHash": "REQUIRED",
+    "innerSequentialPolicyRef": "REQUIRED_OR_FIXED_SAMPLE",
+    "outerErrorBudgetAllocation": "REQUIRED_UNLESS_EXPLORATORY_ONLY",
+    "allocationKnownAt": "REQUIRED_UNLESS_EXPLORATORY_ONLY",
+    "resultStateEnum": [
+      "NOT_EVALUATED",
+      "REJECT_NULL",
+      "DO_NOT_REJECT",
+      "INCONCLUSIVE",
+      "INSUFFICIENT_SUPPORT",
+      "DATA_QUALITY_BLOCKED",
+      "RETIRED"
+    ],
+    "resultDigest": "REQUIRED_ON_EVALUATION",
+    "consumptionRef": "REQUIRED_ON_EVALUATION"
+  },
+  "budgetTransition": {
+    "stateBeforeHash": "REQUIRED_UNLESS_EXPLORATORY_ONLY",
+    "allocation": "REQUIRED_UNLESS_EXPLORATORY_ONLY",
+    "resultUsedForTransition": "REQUIRED_IF_METHOD_ALLOWS",
+    "stateAfterHash": "REQUIRED_UNLESS_EXPLORATORY_ONLY",
+    "transitionRuleHash": "REQUIRED_UNLESS_EXPLORATORY_ONLY",
+    "manualOverrideAllowed": false
+  },
+  "doublySequential": {
+    "innerSequentialValidityStateEnum": [
+      "FIXED_SAMPLE",
+      "VALIDATED",
+      "NOT_VALIDATED",
+      "NOT_APPLICABLE"
+    ],
+    "outerMultiplicityValidityStateEnum": [
+      "VALIDATED",
+      "NOT_VALIDATED",
+      "EXPLORATORY_ONLY"
+    ],
+    "bothRequiredForSequentialConfirmatoryStream": true
+  },
+  "accounting": {
+    "ledgerHypothesisCount": "REQUIRED",
+    "outcomeInspectedHypothesisCount": "REQUIRED",
+    "rejectedHypothesisCount": "REQUIRED",
+    "nonRejectedHypothesisCount": "REQUIRED",
+    "inconclusiveHypothesisCount": "REQUIRED",
+    "retiredHypothesisCount": "REQUIRED",
+    "deletedOutcomeInspectedHypothesisCount": 0,
+    "aliasResetAllowed": false
+  },
+  "terminalStateEnum": [
+    "STREAM_EVIDENCE_NOT_YET_AVAILABLE",
+    "EXPLORATORY_STREAM_ONLY",
+    "INNER_VALID_OUTER_MULTIPLICITY_PENDING",
+    "ONLINE_ERROR_CONTROL_ASSUMPTIONS_UNPROVEN",
+    "STREAM_LEDGER_ATTRITION_BLOCKED",
+    "OUTER_ERROR_CONTROL_VALIDATED",
+    "PROMOTION_REVIEW_ELIGIBLE"
+  ],
+  "promotionGate": [
+    "ALL_OUTCOME_INSPECTED_HYPOTHESES_PRESERVED",
+    "HYPOTHESIS_BIRTH_LINEAGE_COMPLETE",
+    "INNER_VALIDITY_IF_SEQUENTIAL",
+    "OUTER_MULTIPLICITY_CONTROL_IF_CONFIRMATORY",
+    "DEPENDENCE_ASSUMPTIONS_PROVEN_FOR_CHOSEN_METHOD",
+    "SDA016_CONSUMPTION_AUTHORITY_VALID",
+    "ROOM00_INDEPENDENT_CLOSURE_REQUIRED"
+  ],
+  "noDataDefaults": {
+    "terminalState": "STREAM_EVIDENCE_NOT_YET_AVAILABLE",
+    "promotionEligible": false,
+    "maturityImpact": "NONE"
+  }
+}
