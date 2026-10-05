@@ -23,7 +23,9 @@
       "vintageState": "T1_CALENDAR_EARLY_READBACK_ONLY"
     },
     "nextState": "WAITING_POST_WORKFLOW_T1_CAPTURE",
-    "guard": "Calendar date rollover does not certify T1 revision publication."
+    "guard": "Calendar date rollover does not certify T1 revision publication.",
+    "informativeMissingnessGuard": "research/d06_14_daytrade_informative_missingness_guard_v0_1.json",
+    "removalRule": "Later row absence must be classified by cause; missing is never zero."
   },
   "blockersReaudited": {
     "D06_05": "No genuine 2026-10-05 after-market same-generation TDCC consumer row found; PREOPEN parent remains unjoined.",
@@ -31,6 +33,6 @@
     "SDA_007": "Learning semantics complete; System1/System2 lineage enforcement + prospective one-receipt-many-consumers evidence + D16 residual validation + 00 closure still pending."
   },
   "maturityImpact": "NONE",
-  "sessionState": "T1_CALENDAR_EARLY_READBACK_COMPLETE / T1_REVISED_PENDING_POST_WORKFLOW / D06_05_D06_06_BLOCKERS_UNCHANGED / SDA007_ENGINEERING_PENDING",
-  "exactNext": "Later on 2026-10-06, after the TPEx T+1 reporting workflow is plausibly complete, recapture the 2026-10-05 day-trading table; compare union and common support to T_PRELIM; append T1_REVISED only then. Do not infer zero revision from the 05:42 readback."
+  "sessionState": "T1_CALENDAR_EARLY_READBACK_COMPLETE / T1_REVISED_PENDING_POST_WORKFLOW / INFORMATIVE_MISSINGNESS_GUARD_FROZEN / D06_05_D06_06_BLOCKERS_UNCHANGED / SDA007_ENGINEERING_PENDING",
+  "exactNext": "Later on 2026-10-06, after the TPEx T+1 reporting workflow is plausibly complete, recapture the 2026-10-05 day-trading table; compare union and common support to T_PRELIM; classify any removed/reappeared rows by eligibility/revision/source cause; append T1_REVISED only then. Do not infer zero revision from the 05:42 readback."
 }
