@@ -1058,3 +1058,39 @@ Exact continuation:
 - System1/System2 build work consumes both the audit map and Alpha lineage guard;
 - 00 tracks closure/readback and routes newly discovered cross-domain blind spots;
 - existing H/COV/AOKD owner gates remain unchanged and are not implicitly approved.
+
+
+## 2026-10-05 canonical SDA audit queue established
+
+Canonical queue artifacts:
+- `shared-knowledge/STOCK_SELECTION_AUDIT_QUEUE.md`;
+- `shared-knowledge/stock_selection_audit_queue_v0_1.json`.
+
+Queue design:
+- 21 root-cause tickets covering all D01-D22 domains;
+- cross-domain root causes are intentionally one ticket rather than duplicated per-room tickets;
+- lifecycle: OPEN -> ROUTED -> REMEDIATION_IN_PROGRESS -> FIX_IMPLEMENTED -> VALIDATION_PENDING -> VERIFIED -> CLOSED;
+- fail-closed states: BLOCKED_SOURCE / BLOCKED_DEPENDENCY / EVIDENCE_INSUFFICIENT / REJECTED_NOT_A_REAL_RISK;
+- closure by maturity percentage or documentation alone is forbidden.
+
+Current CRITICAL launch tickets:
+- SDA-001 D01/D02/D03 same-root PRICE_OHLC multi-vote;
+- SDA-004 D03 indicator zoo / alias stacking / parameter snooping;
+- SDA-009 D09 circular industry-strength reward;
+- SDA-016 D16 validator self-confirmation / repeated OOS consumption;
+- SDA-017 D18 post-hoc Regime mining.
+
+All 21 tickets are initially ROUTED via the global ROOM_BOOTSTRAP queue mechanism. Learning rooms consume only tickets matching their Dxx ownership. System1/System2 consume engineering-owned tickets and the Alpha lineage guard.
+
+00 responsibilities:
+1. prioritize CRITICAL launch tickets before lower-priority challenger/context issues;
+2. prevent duplicate remediation when one root cause spans multiple rooms;
+3. on new evidence/commit, advance ticket state only with durable closure evidence;
+4. D16 cannot self-close SDA-016 or SDA-017; independent 00 readback is mandatory;
+5. ticket closure never authorizes Formal A/B/ranking/Top6/weight/threshold changes.
+
+Exact next SDA continuation:
+1. reconcile existing latest-main controls against SDA-001/004/009/016/017 so work already completed is credited rather than repeated;
+2. identify the first missing machine-enforceable or research evidence for each CRITICAL ticket;
+3. route only those missing deltas to the relevant learning/build room;
+4. keep existing H/COV/AOKD owner-approval gates unchanged.
