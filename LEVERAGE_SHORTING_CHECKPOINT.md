@@ -294,3 +294,39 @@ Frozen state:
 - source existence remains verified, while point-in-time machine row access at this slot is not.
 
 No D06-07/08/09 promotion follows. LATE 22:30 remains the exact next paired capture. Outcomes and Formal remain closed.
+
+
+## LS-047F / D06-07~09 — 2026-10-05 LATE captured; universe and unit guards frozen
+
+Durable evidence:
+- `research/d06_07_08_09_tpex_leverage_late_20261005_v0_1.json`;
+- `research/d06_07_08_tpex_margin_late_snapshot_20261005_2340_v0_1.csv`;
+- `research/d06_08_09_tpex_sbl_late_snapshot_20261005_2340_v0_1.csv`;
+- `research/d06_07_08_09_tpex_leverage_late_stability_20261005_v0_1.json`;
+- `research/d06_08_09_tpex_margin_sbl_universe_guard_20261005_v0_1.json`.
+
+LATE source integrity:
+- margin table 918 rows; financing arithmetic 918/918; margin-short arithmetic 918/918;
+- SBL table 931 rows; margin-short arithmetic 931/931; actual-SBL-short arithmetic 931/931;
+- both snapshots repeat-stable on the same evening.
+
+EARLY remains UNKNOWN/MISSING. No late-to-early backfill is permitted, so 2026-10-05 revision magnitude is not identifiable.
+
+Cross-table unit audit:
+- five margin-short balance/flow fields match 918/918 after lots x1000 to shares;
+- limit field uses whole-lot display precision on the margin page and exact-share precision on SBL; floor(shares/1000) matches displayed lots 918/918.
+
+Universe guard:
+- SBL has 13 Y/not-credit-qualified rows absent from the margin table;
+- all 13 have nonzero SBL-short balance; 5 have same-day SBL sell and 7 have same-day sell/return/adjustment activity;
+- therefore D06-09 must not inherit the D06-08 margin-eligible denominator.
+
+Maturity:
+D06-07/08/09 remain L2/40. The source/replay gate is stronger but the preregistered paired EARLY/LATE revision requirement remains incomplete.
+
+### Exact next continuation after LS-047F
+1. Next genuine trading date, capture EARLY near 20:30 and LATE near 22:30 through the exact same official pages/parser.
+2. Preserve source-native units and limit precision; never convert share-limit remainders into false source conflicts.
+3. Maintain separate D06-08 margin-eligible and D06-09 SBL universes.
+4. Only if both vintages exist, compute revision deltas on union and common support.
+5. No outcomes or Formal change until later validation gates.
