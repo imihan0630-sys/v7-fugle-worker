@@ -3343,3 +3343,34 @@ CLEAN_DATE_ZERO.
 Gate 7 CLOSED.
 FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 Formal Core LOCKED.
+
+
+## PVE-240 continuation — historical minute-bar provenance + intent firewall (2026-10-05)
+
+Status: PIT_PROVENANCE_EVIDENCE / OUTCOME_BLIND / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+PVE-240 accepted as provenance/admission evidence only.
+
+Durable findings:
+- Fugle historical minute bars are documented from 2023-05-23; timestamps include +08:00 and historical data are updated by 16:30 after trading days.
+- regular-lot minute volume is lots while daily/weekly/monthly volume is shares; cross-timeframe D02 joins require explicit unit normalization.
+- adjusted=true is daily/weekly/monthly only; minute evidence cannot silently inherit adjusted-price semantics.
+- Fugle volumeAtBid/volumeAtAsk excludes the opening auction first match, so it is not complete volume and cannot identify investor motive or true OFI.
+- TWSE daily/corporate-action authority and historical intraday product availability must remain separate provenance tiers.
+- ex-right/ex-dividend mechanical reference-price changes require corporate-action contamination controls.
+
+SDA alignment:
+- SDA-001: PRICE_OHLC transforms remain one information root; no second price vote; volume/turnover requires residual incrementality on common support.
+- SDA-003: participation != motive; intent remains UNKNOWN unless independently observed.
+
+PVE-240 does not create a clean prospective selection date, numerical target, D16 method receipt or L4 promotion.
+
+Current evidence:
+PVE-240 / CLEAN_DATE_ZERO / Gate 7 CLOSED.
+
+D02 remains 60.0%.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-241 — freeze executable prospective receipt schema for minute/daily unit normalization, corporate-action contamination, source availability clocks and participation-intent classification; remain outcome-blind and do not create numerical targets or D16 model methods.
