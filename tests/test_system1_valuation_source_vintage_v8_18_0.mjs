@@ -115,6 +115,8 @@ const other=structuredClone(receipt);other.valuationSourceVintage.captureRequest
 await assert.rejects(()=>finalizeValuationSourceVintage({...receipt,effectiveRuntimeVersion:'8.17.0-shadow-cohort-membership'}),/LEGACY_NO_BACKFILL/);
 const legacy=structuredClone(parent);delete legacy.valuationSourceVintage;
 for(const r of legacy.rows){delete r.valuationProvenance;delete r.sectorMedianPeProvenance;delete r.valuationSourceVintageDigest;}
+await assert.rejects(()=>verifyValuationSourceVintage(legacy),/CAPTURE_MISSING/);
+legacy.effectiveRuntimeVersion='8.17.0-shadow-cohort-membership';
 assert.equal((await verifyValuationSourceVintage(legacy)).status,'LEGACY_NO_SOURCE_VINTAGE');
 const legacyPages=structuredClone(pages);legacyPages[0].header.valuationSourceVintage=null;
 assert.equal((await collectValuationSourceVintageEvidence(legacyPages)).status,'DATA_QUALITY_BLOCKED');

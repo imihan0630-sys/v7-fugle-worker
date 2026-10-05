@@ -95,7 +95,7 @@ export async function finalizeValuationSourceVintage(receipt){
 
 export async function verifyValuationSourceVintage(receipt){
  const root=receipt?.valuationSourceVintage;
- if(!root){assert(!receipt.rows?.some(r=>r.valuationProvenance||r.sectorMedianPeProvenance||r.valuationSourceVintageDigest),'ORPHAN_CHILD');return {status:'LEGACY_NO_SOURCE_VINTAGE',promotionGradeOutcomeJoin:false};}
+ if(!root){assert(!/^8\.(?:1[89]|[2-9]\d)\./.test(receipt.effectiveRuntimeVersion),'CAPTURE_MISSING');assert(!receipt.rows?.some(r=>r.valuationProvenance||r.sectorMedianPeProvenance||r.valuationSourceVintageDigest),'ORPHAN_CHILD');return {status:'LEGACY_NO_SOURCE_VINTAGE',promotionGradeOutcomeJoin:false};}
  assert(/^8\.(?:1[89]|[2-9]\d)\./.test(receipt.effectiveRuntimeVersion),'LEGACY_NO_BACKFILL');
  assert(root.schemaVersion===VINTAGE_SCHEMA&&root.researchOnly===true&&root.decisionImpact===false&&root.promotionGradeOutcomeJoin===false,'FIREWALL');
  assert(root.officialFirstKnownAt===null&&root.officialFirstKnownState==='NOT_PROVEN','OFFICIAL_FIRST_KNOWN_NOT_PROVEN');
@@ -108,6 +108,7 @@ export async function verifyValuationSourceVintage(receipt){
  assert(root.status==='SELECTION_TIME_SOURCE_VINTAGE_CAPTURED','STATUS');
  assert(typeof root.captureRequestId==='string'&&root.captureRequestId.length>0,'REQUEST_ID');
  assert(root.captureGeneration===receipt.generationId&&root.decisionAt===receipt.decisionAt&&root.knownAt===receipt.decisionAt,'GENERATION_BINDING');
+ assert(root.knownAtSemantics==='REQUEST_LOCAL_KNOWN_BY_DECISION_AT_UPPER_BOUND','KNOWN_AT_SEMANTICS');
  assert(root.notSourceEventTime===true&&root.systemFirstObservedContinuity==='NOT_PROVEN'&&root.providerCallDelta===0,'PIT_STATE');
  assert(root.sectorMedianPe.derivationVersion===MEDIAN_DERIVATION&&root.sectorMedianPe.valuationSnapshotRef==='valuation'&&root.sectorMedianPe.knownAt===receipt.decisionAt,'MEDIAN_LINEAGE');
  for(const key of ['valuation','financial','quarterEps']){
