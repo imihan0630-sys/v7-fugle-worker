@@ -1,0 +1,68 @@
+name: SC056 MOEA Playwright Read-only Smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      month:
+        description: Reference month (YYYY-MM); 2025-01 is the SC055 historical baseline
+        required: true
+        default: '2025-01'
+        type: string
+  pull_request:
+    paths:
+      - 'research/data-capture/sc056/**'
+      - '.github/workflows/sc056-moea-playwright-smoke.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  fixture-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: research/data-capture/sc056
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npx --no-install playwright install --with-deps chromium
+      - run: npm test
+
+  live-smoke:
+    if: github.event_name == 'workflow_dispatch'
+    needs: fixture-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: research/data-capture/sc056
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npx --no-install playwright install --with-deps chromium
+      - name: Replay twice and verify archived readback
+        env:
+          SC056_MONTH: ${{ inputs.month }}
+        run: node smoke.mjs --month "$SC056_MONTH" --out captures
+      - name: Verify production isolation
+        if: always()
+        working-directory: .
+        run: git diff --exit-code -- Worker.js wrangler.toml system2
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sc056-moea-${{ github.run_id }}-${{ github.run_attempt }}
+          path: research/data-capture/sc056/captures/
+          if-no-files-found: error
+          retention-days: 90

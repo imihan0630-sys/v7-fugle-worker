@@ -1,0 +1,210 @@
+{
+  "rows": [
+    {
+      "section": "THEAD",
+      "cells": [
+        {
+          "text": "項目別",
+          "className": "HorVerCross_Empty",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": " ",
+          "className": "HorVerCross_Empty",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "生產量",
+          "className": "HorDim",
+          "colSpan": 3,
+          "rowSpan": 1
+        },
+        {
+          "text": "存貨量",
+          "className": "HorDim",
+          "colSpan": 3,
+          "rowSpan": 1
+        },
+        {
+          "text": " ",
+          "className": "RightBorder",
+          "colSpan": 1,
+          "rowSpan": 1
+        }
+      ]
+    },
+    {
+      "section": "THEAD",
+      "cells": [
+        {
+          "text": " ",
+          "className": "HorVerCross_Empty",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": " ",
+          "className": "HorVerCross_Empty",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "(2433020)銅箔 (公噸)",
+          "className": "HorDim",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "(2630010)銅箔基板 (平方呎)",
+          "className": "HorDim",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "(2630040)印刷電路板(不含IC載板) (平方呎)",
+          "className": "HorDim",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "(2433020)銅箔 (公噸)",
+          "className": "HorDim",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "(2630010)銅箔基板 (平方呎)",
+          "className": "HorDim",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "(2630040)印刷電路板(不含IC載板) (平方呎)",
+          "className": "HorDim",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": " ",
+          "className": "RightBorder",
+          "colSpan": 1,
+          "rowSpan": 1
+        }
+      ]
+    },
+    {
+      "section": "TBODY",
+      "cells": [
+        {
+          "text": "114年",
+          "className": "VerDim",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "1月",
+          "className": "VerDim",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "6,843",
+          "className": "ValueLeftTop",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "26,780,035",
+          "className": "ValueTop",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "26,489,128",
+          "className": "ValueTop",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "6,028",
+          "className": "ValueTop",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "26,171,314",
+          "className": "ValueTop",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "21,208,038",
+          "className": "ValueTop",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": " ",
+          "className": "RightBorder",
+          "colSpan": 1,
+          "rowSpan": 1
+        }
+      ]
+    },
+    {
+      "section": "TBODY",
+      "cells": [
+        {
+          "text": "\n\n\t\t\t\t",
+          "className": "Width",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "\n\n\t\t\t\t",
+          "className": "Width",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "\n\n\t\t\t\t",
+          "className": "Width",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "\n\n\t\t\t\t",
+          "className": "Width",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "\n\n\t\t\t\t",
+          "className": "Width",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "\n\n\t\t\t\t",
+          "className": "Width",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "\n\n\t\t\t\t",
+          "className": "Width",
+          "colSpan": 1,
+          "rowSpan": 1
+        },
+        {
+          "text": "\n\n\t\t\t\t",
+          "className": "Width",
+          "colSpan": 1,
+          "rowSpan": 1
+        }
+      ]
+    }
+  ]
+}
