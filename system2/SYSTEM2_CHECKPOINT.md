@@ -2184,3 +2184,21 @@ System2 exact SDA-022 responsibility:
 5. do not force different picks and do not use System1 output as a hidden fallback.
 
 This intake does not replace the active BUILD_LANE and authorizes no live selection/ranking mutation.
+
+
+## 2026-10-06 SDA-022 acceptance oracle pointer
+
+Latest acceptance authority:
+- shared-knowledge/SDA022_ACCEPTANCE_ORACLE_V0_1.md
+- shared-knowledge/sda022_acceptance_oracle_v0_1.json
+
+System2 fingerprint work must satisfy S22-T06~T10.
+NC-T01 physical independence work must satisfy S22-T11~T16.
+
+Important:
+- design text cannot upgrade physicalIndependentDiscovery;
+- synthetic fixtures may validate schema/contract only;
+- hidden fallback to cached/persisted System1 Top6/rank fails NC-T01;
+- a legitimate zero-pick remains valid if distinguishable from dependency/data/runtime failure.
+
+This pointer does not reorder the active BUILD_LANE and authorizes no strategy/ranking mutation.
