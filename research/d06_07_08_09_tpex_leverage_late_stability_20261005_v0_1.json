@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "D06_07_08_09_TPEX_LEVERAGE_LATE_STABILITY_20261005_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "modules": [
+    "D06-07",
+    "D06-08",
+    "D06-09"
+  ],
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "tradeDate": "2026-10-05",
+  "captureLabel": "LATE",
+  "parentReceipt": "research/d06_07_08_09_tpex_leverage_late_20261005_v0_1.json",
+  "firstCaptureAt": "2026-10-05T23:40:13+08:00",
+  "readbackState": "SAME_LATE_GENERATION_STABLE",
+  "margin": {
+    "rows": 918,
+    "firstFingerprint": "fnv1a64-utf8:d86bcebd6469f4e3",
+    "readbackFingerprint": "fnv1a64-utf8:d86bcebd6469f4e3",
+    "stable": true
+  },
+  "sbl": {
+    "rows": 931,
+    "firstFingerprint": "fnv1a64-utf8:e2f21cc9a06e570d",
+    "readbackFingerprint": "fnv1a64-utf8:e2f21cc9a06e570d",
+    "stable": true
+  },
+  "interpretation": [
+    "Same-evening stability supports late-source consistency only.",
+    "It is not an independent trading date and not an EARLY/LATE revision comparison.",
+    "EARLY 20:30 remains UNKNOWN/MISSING and is never overwritten."
+  ],
+  "maturityImpact": "NONE",
+  "status": "LATE_SAME_GENERATION_STABLE / EARLY_STILL_MISSING / REVISION_UNIDENTIFIED / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Repeat true EARLY and LATE captures on the next genuine trading session under identical parsing and unit semantics."
+}
