@@ -216,3 +216,7 @@ It reuses the frozen D03 registry and adds offline diagnostics plus a generic
 experiment/holdout guard. Earlier historical runtime/approval notes above are
 not the scope of this task. Formal Core remains LOCKED; no Production change.
 The task checkpoint preserves precise validation and remaining D16/00 boundaries.
+
+## C1 scan-origin / generation inventory continuation — 2026-10-05
+
+Owner-approved Class-B engineering is tracked at `research/SYSTEM1_C1_SCAN_ORIGIN_INVENTORY_IMPLEMENTATION_20261005.md` and `research/system1_c1_scan_inventory_progress_20261005.json`. Fresh main and live runtime supersede historical activation notes above. V8.19 candidate uses existing immutable C1 D1 storage, preserves Formal Core, and does not backfill legacy provenance. Current local regression 99/99 PASS; genuine V8.19 Production acceptance is pending separate merge/deploy approval and the next actual scan. Follow the dedicated exact-next cursor, not the old 10/02 scheduling cursor.

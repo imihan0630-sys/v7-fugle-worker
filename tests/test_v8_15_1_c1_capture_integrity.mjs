@@ -27,8 +27,14 @@ class D1 {
 }
 const day='2026-10-02',now=Date.parse(day+'T07:00:00Z');
 const raw=[{symbol:'2006',close:100,market:'TWSE'},{symbol:'9999',close:30,market:'TPEx'}];
-function receipt(){return {...api.buildC1PopulationReceipt([],raw,{stocks:{}},{},new Map(),[],day),
-  decisionAt:day+'T06:00:00Z',capturedAt:day+'T06:00:00Z'};}
+function receipt(){
+  // Freeze the clock before capture: changing only decisionAt afterwards breaks provenance.
+  const RealDate=Date;
+  class CaptureDate extends RealDate{constructor(...args){super(...(args.length?args:[day+'T06:00:00Z']));}static now(){return RealDate.parse(day+'T06:00:00Z');}}
+  globalThis.Date=CaptureDate;
+  try{return api.buildC1PopulationReceipt([],raw,{stocks:{}},{},new Map(),[],day);}
+  finally{globalThis.Date=RealDate;}
+}
 let n=0;const eq=(a,b)=>{assert.deepEqual(a,b);n++;};
 const env={V7_DB:new D1(),TEST_MODE:'false'};
 const r=receipt();
@@ -48,6 +54,7 @@ eq((await api.persistCompletedC1Safe(env,beforeClose,day,{selectionVerified:true
 const future={...receipt(),decisionAt:day+'T08:00:00Z'};
 eq((await api.persistCompletedC1Safe(env,future,day,{selectionVerified:true,now})).reason,'NON_PROSPECTIVE_SESSION_CAPTURE');
 const changed={...r,decisionAt:day+'T06:01:00Z'};
+if(changed.scanInventory)changed.scanInventory={...r.scanInventory,generation:{...r.scanInventory.generation,decisionAt:changed.decisionAt}};
 await assert.rejects(()=>api.persistC1PopulationReceipt(env,changed),/IMMUTABLE_GENERATION_CONFLICT/);n++;
 const chunks=api.c1ChunkRows([{symbol:'1',name:'漢'.repeat(29000)},{symbol:'2',name:'漢'.repeat(29000)}]);
 eq(chunks.length,2);eq(chunks.every(c=>Buffer.byteLength(JSON.stringify(c))<=90000),true);

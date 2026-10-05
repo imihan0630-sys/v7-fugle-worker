@@ -9,7 +9,7 @@ const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worke
 }
 assert.match(source,/url\.pathname === "\/api\/scan\/stage-selection"/);
 assert.match(source,/Staged historical recovery from verified dry-run/);
-assert.match(source,/runAfterMarketScan\(env,scheduledTime,\{dryRun:true\}\)/);
+assert.match(source,/runAfterMarketScan\(env,scheduledTime,\{dryRun:true,c1ScanOrigin:"STAGED_RECOVERY",c1Staged:true\}\)/);
 assert.match(source,/selectionPersisted:true/);
 assert.match(source,/STAGED_RECOVERY_PENDING_DELIVERY/);
 assert.match(source,/OPEN_POSITION_PROTECTED/);

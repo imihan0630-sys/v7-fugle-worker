@@ -3,7 +3,7 @@ from pathlib import Path
 import os, re, subprocess, sys, json
 workflow=Path('.github/workflows/v7-regression.yml').read_text(encoding='utf-8')
 scripts=re.findall(r'python3 (scripts/\S+\.py)',workflow)
-tail={"scripts/apply_v8_15_1.py","scripts/apply_v8_15_2.py","scripts/apply_v8_15_3.py","scripts/apply_v8_15_4.py","scripts/apply_v8_16_0.py","scripts/apply_v8_17_0.py","scripts/apply_v8_18_0.py"}
+tail={"scripts/apply_v8_15_1.py","scripts/apply_v8_15_2.py","scripts/apply_v8_15_3.py","scripts/apply_v8_15_4.py","scripts/apply_v8_16_0.py","scripts/apply_v8_17_0.py","scripts/apply_v8_18_0.py","scripts/apply_v8_19_0.py"}
 for script in scripts:
     if script not in tail:
         subprocess.run([sys.executable,script],check=True)
@@ -21,6 +21,8 @@ v816_candidate=Path('Worker.js').read_text(encoding='utf-8')
 subprocess.run([sys.executable,'scripts/apply_v8_17_0.py'],check=True)
 v817_candidate=Path('Worker.js').read_text(encoding='utf-8')
 subprocess.run([sys.executable,'scripts/apply_v8_18_0.py'],check=True)
+v818_candidate=Path('Worker.js').read_text(encoding='utf-8')
+subprocess.run([sys.executable,'scripts/apply_v8_19_0.py'],check=True)
 candidate=Path('Worker.js').read_text(encoding='utf-8')
 def functions(source):
     matches=list(re.finditer(r'^(?:async )?function (\w+)\(',source,re.M))
@@ -30,7 +32,7 @@ def functions(source):
         if not end: raise SystemExit('Missing function boundary: '+m.group(1))
         result[m.group(1)]=source[m.start():m.end()+end.end()].rstrip()
     return result
-before,after=functions(baseline),functions(candidate)
+before,after=functions(baseline),functions(v818_candidate)
 class_b_before=functions(class_b_baseline)
 v816_functions=functions(v816_candidate)
 v817_functions=functions(v817_candidate)
@@ -83,7 +85,7 @@ for name,args in commands:
     if result.returncode: print((result.stdout+result.stderr)[-5000:],flush=True)
 Path('artifacts').mkdir(exist_ok=True)
 receipt={'schemaVersion':'SYSTEM1_C1_C2_REPAIR_REVIEW_V0_1','passed':sum(r['exitCode']==0 for r in results),
-  'valuationVintageChangedFunctions':v818_changed,'shadowCohortChangedFunctions':v817_changed,'classBChangedFunctions':class_b_changed,'classBNewFunctions':class_b_new,
+  'scanInventoryProtectedParityTest':'test_system1_c1_scan_inventory_v8_19_0.mjs','valuationVintageChangedFunctions':v818_changed,'shadowCohortChangedFunctions':v817_changed,'classBChangedFunctions':class_b_changed,'classBNewFunctions':class_b_new,
   'total':len(results),'changedFunctions':changed,'protectedFunctionCount':len(before)-len(changed),
   'selectorUnchangedExceptCaptureFirewall':True,'fixtureOnly':True,'formalCoreImpact':False,'results':results}
 Path('artifacts/system1-c1-c2-repair-review.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')

@@ -157,3 +157,9 @@
 - 新增同 request valuation/financial snapshot digest 與 immutable C1 provenance capture；屬新增研究功能，Formal 選股架構不變。
 - Owner 已批准工程實裝與 PR 驗證；merge／Production deploy 未授權。
 - Checkpoint: `research/SYSTEM1_VALUATION_SOURCE_VINTAGE_IMPLEMENTATION_20261005.md`。
+
+## 18. V8.19.0｜C1 Scan-Origin and Generation Inventory（Class-B candidate）
+
+- Runtime candidate: `8.19.0-c1-scan-origin-inventory`.
+- Owner-approved engineering adds immutable scan origin/generation/inventory provenance and header-column readback checks; Formal Core unchanged.
+- Merge/deploy require the concrete Production review. See `research/SYSTEM1_C1_SCAN_ORIGIN_INVENTORY_IMPLEMENTATION_20261005.md`.

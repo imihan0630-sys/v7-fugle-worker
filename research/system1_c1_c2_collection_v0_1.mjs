@@ -1,4 +1,5 @@
 import {collectValuationSourceVintageEvidence} from './system1_valuation_source_vintage_collection_v0_1.mjs';
+import {collectC1ScanInventoryEvidence} from './system1_c1_scan_inventory_collection_v0_1.mjs';
 import {collectShadowCohortEvidence} from './system1_shadow_cohort_collection_v0_1.mjs';
 import {adaptC1PopulationPages,diagnosePopulation} from './system1_selection_isolated_v0_1.mjs';
 import {buildC2ProspectivePairedLedger} from './system1_c2_paired_ledger_v0_1.mjs';
@@ -74,6 +75,7 @@ export async function collectVerifiedC1C2({origin,token,scanDate,request=fetch,t
   const liquidityRejectedControl=buildSystem1LiquidityRejectedControlEvidence(shadowCohort);
   const marketCapFloorEconomic=buildSystem1MarketCapFloorEconomicAudit({adapted,diagnosis,firstFailureMasking});
   const valuationSourceVintage=await collectValuationSourceVintageEvidence(pages);
+  const scanInventory=await collectC1ScanInventoryEvidence(pages);
   const valuationRelativeRisk=buildSystem1ValuationRelativeRiskAudit({adapted,diagnosis,firstFailureMasking});
-  return {pages,adapted,diagnosis,paired,scanProof,zeroPickProspective,shadowCohort,c4RankingRedundancy,setupChannelScale,marketCapConditionalAdmission,firstFailureMasking,sectorGateComponents,atrGateDecomposition,extremeMoveProxyDenominator,liquidityRejectedControl,marketCapFloorEconomic,valuationRelativeRisk,valuationSourceVintage};
+  return {pages,adapted,diagnosis,paired,scanProof,zeroPickProspective,shadowCohort,c4RankingRedundancy,setupChannelScale,marketCapConditionalAdmission,firstFailureMasking,sectorGateComponents,atrGateDecomposition,extremeMoveProxyDenominator,liquidityRejectedControl,marketCapFloorEconomic,valuationRelativeRisk,valuationSourceVintage,scanInventory};
 }

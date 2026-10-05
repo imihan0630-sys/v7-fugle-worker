@@ -1,0 +1,85 @@
+{
+  "evidenceType": "LOCAL_SQLITE_D1_ADAPTER_READBACK_NOT_PRODUCTION",
+  "generationId": "C1:2026-10-05:a33f85eb-92aa-4a8e-b0e1-a95b63bc4e41",
+  "contentDigest": "020a4cecfe502b8944bd7dab3710bfe9fe9bd194cf8d9dc9a5b20c47af0efda9",
+  "pages": 3,
+  "readback": {
+    "researchOnly": true,
+    "decisionImpact": false,
+    "formalCoreImpact": false,
+    "promotionGradeOutcomeJoin": false,
+    "economicSuperiority": "UNKNOWN",
+    "formalOptimizationCandidate": "NONE",
+    "status": "SCAN_INVENTORY_VERIFIED",
+    "generationId": "C1:2026-10-05:a33f85eb-92aa-4a8e-b0e1-a95b63bc4e41",
+    "scanOrigin": {
+      "entryPoint": "CRON_AFTER_MARKET",
+      "actorIdentity": "NOT_PROVEN",
+      "cron": "35,55 15 * * mon-fri",
+      "executionMode": "NORMAL_SCAN",
+      "requestedAt": "2026-10-05T15:35:00.000Z",
+      "observedAt": "2026-10-05T15:35:00.000Z",
+      "clockState": "OBSERVED"
+    },
+    "generation": {
+      "id": "C1:2026-10-05:a33f85eb-92aa-4a8e-b0e1-a95b63bc4e41",
+      "source": "REQUEST_LOCAL_C1_BUILDER_RANDOM_UUID",
+      "sourceGenerationId": null,
+      "sessionDate": "2026-10-05",
+      "decisionAt": "2026-10-05T15:35:00.000Z",
+      "buildSourceSha": "bb2099909adaaf1462cb737b2fe8d3c5153288b8",
+      "runtimeVersion": "8.19.0-c1-scan-origin-inventory",
+      "sourceShaSemantics": "BUILD_COMMIT_NOT_PROOF_OF_LATEST_MAIN_AT_SCAN"
+    },
+    "marketInputOrigins": [
+      {
+        "market": "TWSE",
+        "state": "UNKNOWN",
+        "source": null,
+        "marketDate": null,
+        "fallback": null,
+        "count": null
+      },
+      {
+        "market": "TPEx",
+        "state": "UNKNOWN",
+        "source": null,
+        "marketDate": null,
+        "fallback": null,
+        "count": null
+      }
+    ],
+    "generationSource": "REQUEST_LOCAL_C1_BUILDER_RANDOM_UUID",
+    "inventoryProvenance": "SAME_REQUEST_NORMALIZED_ROWS_BEFORE_HISTORY_ADMISSION",
+    "inventory": {
+      "scope": "OFFICIAL_NORMALIZED_ORDINARY_CLOSE_GTE_10_BEFORE_HISTORY_ADMISSION",
+      "populationN": 110,
+      "featureN": 0,
+      "provenance": "SAME_REQUEST_NORMALIZED_ROWS_BEFORE_HISTORY_ADMISSION",
+      "listingPopulation": "NOT_CAPTURED",
+      "providerAuthenticity": "NOT_INDEPENDENTLY_PROVEN",
+      "persistence": "EXISTING_IMMUTABLE_C1_D1_HEADER_AND_CHUNKS",
+      "children": [
+        {
+          "name": "population",
+          "status": "CAPTURED"
+        },
+        {
+          "name": "zeroPick",
+          "status": "NOT_CAPTURED"
+        },
+        {
+          "name": "shadowRanking",
+          "status": "NOT_CAPTURED"
+        },
+        {
+          "name": "valuationSourceVintage",
+          "status": "DATA_QUALITY_BLOCKED"
+        }
+      ],
+      "shadowMembership": "SEPARATE_POST_C1_PERSISTENCE_CHECK_REQUIRED",
+      "outcomes": "NOT_CAPTURED"
+    },
+    "sourceContentDigest": "020a4cecfe502b8944bd7dab3710bfe9fe9bd194cf8d9dc9a5b20c47af0efda9"
+  }
+}

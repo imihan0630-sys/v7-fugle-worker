@@ -1,0 +1,27 @@
+{
+  "observedAt": "2026-10-05T14:38:45.919Z",
+  "schemaVersion": "SYSTEM1_C1_READINESS_V0_1",
+  "scanDate": "2026-10-02",
+  "category": "FORMAL_SCAN_NOT_CONFIRMED",
+  "mayCountAsZeroPick": false,
+  "eligibleForResearch": false,
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCoreImpact": false,
+  "noPlanChanges": true,
+  "noTrade": true,
+  "noPush": true,
+  "facts": {
+    "receiptError": "C1_GENERATION_NOT_FOUND",
+    "receiptHttpStatus": 200,
+    "formalScanDate": "2026-09-29",
+    "formalPipelineComplete": false,
+    "institutionDate": "2026-10-02",
+    "institutionReady": true,
+    "qualityDate": "2026-10-02",
+    "qualityReady": true,
+    "missingQuality": [],
+    "readErrors": {}
+  },
+  "verificationFailure": "C1_GENERATION_NOT_FOUND"
+}

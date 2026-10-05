@@ -233,3 +233,7 @@ Key requirement: D01/D02/D03 and any other features that share deterministic or 
 Research/shadow lineage metadata, overlap diagnostics, raw-vs-deduped scores and deterministic tests are Class A when they cannot change Formal outputs and should be implemented proactively. Any use of de-duplicated scoring to alter Formal A/B eligibility, ranking, Top6 composition, weights or thresholds remains Class C and requires explicit owner approval.
 
 Missing lineage fails closed to UNKNOWN for independence purposes. Different formula names, different research-room ownership, or correlation below one are not sufficient evidence of independent Alpha.
+
+## Approved C1 scan-origin inventory engineering — 2026-10-05
+
+Owner explicitly approved C1 Scan-Origin & Generation Inventory Class-B implementation. Scope: request-local provenance, immutable C1 header/row binding, existing D1 readback consistency, collector evidence and regressions. Formal Core and production decisions remain locked. Implementation approval permits branch/PR verification, not auto-merge or Production deployment. Concrete review: `research/SYSTEM1_C1_SCAN_ORIGIN_INVENTORY_IMPLEMENTATION_20261005.md`. No research promotion or audit closure follows from fixture tests.
