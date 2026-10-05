@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "D06_PF040_PRECLOSE_SOURCE_STATE_20261005_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "tradeDate": "2026-10-05",
+  "capturedAt": "2026-10-05T15:14:00+08:00",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "primitiveReceiptId": "D06-20261005-ETF-UNITS-PCF-PRECLOSE",
+  "parentLane": "D06_16_PF040_ETF_UNITS_PCF",
+  "state": "PENDING_BY_SOURCE_REFRESH",
+  "interpretation": "Current official issuer pages are available, but the unit-difference and PCF trading-date data still refer to 2026-10-02. They are not eligible as the 2026-10-05 same-generation PF-040 receipt.",
+  "observations": [
+    {
+      "etfCode": "0050",
+      "issuer": "Yuanta Securities Investment Trust",
+      "sourceUrl": "https://www.yuantaetfs.com/tradeInfo/pcf/0050",
+      "pageAnnouncementDate": "2026-10-05",
+      "pageUploadTime": "2026-10-02T16:02:19+08:00",
+      "unitDataDate": "2026-10-02",
+      "unitsOutstanding": 22201000000,
+      "reportedUnitsDifference": 34500000,
+      "creationUnitSize": 500000,
+      "pcfTradingDate": "2026-10-02",
+      "splitReverseSplitState": "HISTORICAL_SPLIT_2025-06-11 / NO_2026-10-05_SAME_GENERATION_EVIDENCE_YET",
+      "eligibleFor20261005PF040": false,
+      "blocker": "SOURCE_PAGE_NOT_REFRESHED_TO_2026-10-05_TRADE_DATE"
+    },
+    {
+      "etfCode": "0056",
+      "issuer": "Yuanta Securities Investment Trust",
+      "sourceUrl": "https://yuantaetfs.com/tradeInfo/pcf/0056",
+      "pageAnnouncementDate": "2026-10-05",
+      "pageUploadTime": "2026-10-02T16:31:09+08:00",
+      "unitDataDate": "2026-10-02",
+      "unitsOutstanding": 14213534000,
+      "reportedUnitsDifference": 50000000,
+      "creationUnitSize": 500000,
+      "pcfTradingDate": "2026-10-02",
+      "observedCashSubstitutionNote": "Issuer note states no component was required to use cash substitution in the displayed PCF.",
+      "eligibleFor20261005PF040": false,
+      "blocker": "SOURCE_PAGE_NOT_REFRESHED_TO_2026-10-05_TRADE_DATE"
+    }
+  ],
+  "guards": [
+    "Announcement date alone does not define the economic data date.",
+    "Do not infer 2026-10-05 units delta from a page whose unitDataDate remains 2026-10-02.",
+    "Do not overwrite this pre-refresh receipt when the page later changes; append a later vintage.",
+    "No outcome, return, MFE, MAE, selection, rank or Formal field was read or changed."
+  ],
+  "passGate": "NOT_PASSED",
+  "exactNext": "After the issuer source refreshes to 2026-10-05 data, capture a new append-only vintage with units delta and same-generation PCF provenance. Do not rewrite this 15:14 pre-refresh receipt."
+}
