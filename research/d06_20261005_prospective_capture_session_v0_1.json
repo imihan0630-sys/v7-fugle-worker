@@ -17,7 +17,7 @@
   ],
   "preregistrationParent": "research/d06_next_trading_day_outcome_blind_capture_plan_v0_1.json",
   "lineageContract": "research/d06_sda007_flow_ownership_lineage_contract_20261005_v0_1.json",
-  "sessionState": "INTRADAY_CAPTURE_IN_PROGRESS / TPEX_DEALER_SPLIT_CAPTURED / TWSE_DEALER_SPLIT_PENDING / TDCC_PARENT_CAPTURED / PF040_SOURCE_REFRESH_PENDING / D06_D02_PRICE_VOLUME_PARENT_DEDUP_FROZEN",
+  "sessionState": "EVENING_CAPTURE_IN_PROGRESS / TPEX_AND_TWSE_DEALER_SPLIT_CAPTURED / TWSE_2000_INCLUDE_BLOCK_ACCESS_GATED / TPEX_LEVERAGE_EARLY_UNKNOWN_MISSING / TPEX_DAYTRADE_TPRELIM_VARIABLE_PENDING / TDCC_PARENT_CAPTURED_JOIN_PENDING / D06_16_PF041_L3_SOURCE_READY / D06_06_SHARED_PRICE_VOLUME_PARENT_PENDING",
   "globalRules": [
     "No lane may change fields or pass criteria after source values are observed.",
     "Raw parent receipts precede derived states.",
@@ -37,7 +37,7 @@
       ],
       "primitiveReceiptId": "D06-20261005-INSTITUTION-DEALER-SPLIT",
       "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
-      "preopenState": "TPEX_SAME_DAY_CAPTURED / TWSE_PENDING_BY_CLOCK",
+      "preopenState": "TPEX_SAME_DAY_CAPTURED / TWSE_1800_PUBLIC_CAPTURED / TWSE_2000_INCLUDE_BLOCK_ACCESS_GATED",
       "sourceClock": {
         "TWSE": [
           "18:00 excluding block trades",
@@ -74,6 +74,23 @@
         "contentHash": "fnv1a64-utf8:5bd324cc7136e2ca",
         "deskReconciliation": "916/916 PASS",
         "institutionTotalReconciliation": "916/916 PASS"
+      },
+      "twseCapture1800": {
+        "receipt": "research/d06_03_twse_dealer_split_capture_20261005_1800_v0_1.json",
+        "capturedAt": "2026-10-05T20:33:21+08:00",
+        "sourceDate": "2026-10-05",
+        "sourceRows": 1344,
+        "ordinaryFourDigitRows": 1088,
+        "schemaFingerprint": "fnv1a64-utf8:334c6531bfaa2963",
+        "contentHash": "fnv1a64-utf8:be22e70f6ec9da3a",
+        "deskReconciliation": "1344/1344 PASS",
+        "institutionTotalReconciliation": "1344/1344 PASS",
+        "oppositeDeskSignsAmongBothActive": "150/351 = 42.7%"
+      },
+      "twseCapture2000": {
+        "sourceProduct": "TWTAIUC including block trades",
+        "state": "OFFICIAL_PAID_PRODUCT / NOT_AUTHORIZED / NOT_CAPTURED",
+        "rule": "Do not substitute the public 18:00 non-block T86 values."
       }
     },
     {
@@ -125,8 +142,9 @@
       "rule": "latestParentFirstKnownAt = max(firstKnownAt of mandatory parents); optional leverage/day-trade/SBL/passive axes remain UNKNOWN when unavailable",
       "independentVote": false,
       "crossDomainPriceVolumeLineageContract": "research/d06_core_crowding_crossdomain_parent_lineage_20261005_v0_1.json",
-      "priceVolumeParentBinding": "WAITING_SHARED_D02_OR_CANONICAL_SHARED_PARENT",
-      "legacyPriceVolumeParentIdSemantics": "CONSUMER_ALIAS_ONLY_NOT_NEW_PRIMITIVE"
+      "priceVolumeParentBinding": "WAITING_PVE243_GENUINE_PROSPECTIVE_CANONICAL_RECEIPT",
+      "legacyPriceVolumeParentIdSemantics": "CONSUMER_ALIAS_ONLY_NOT_NEW_PRIMITIVE",
+      "priceVolumeParentEvidenceReview": "PVE-241/242 are schema/guard/admission evidence only; D02 CLEAN_DATE_ZERO remains and cannot satisfy the same-generation parent gate."
     },
     {
       "laneId": "D06_07_08_09_TPEX_VINTAGE",
@@ -144,7 +162,9 @@
         {
           "label": "EARLY",
           "targetTaipei": "20:30",
-          "preopenState": "PENDING_BY_CLOCK"
+          "preopenState": "UNKNOWN_MISSING_AT_EARLY_SLOT",
+          "capturedAt": "2026-10-05T20:33:21+08:00",
+          "receipt": "research/d06_07_08_09_tpex_leverage_early_20261005_v0_1.json"
         },
         {
           "label": "LATE",
@@ -161,13 +181,15 @@
       ],
       "primitiveReceiptId": "D06-20261005-TPEX-DAYTRADE-T",
       "informationRoot": "VOLUME_TURNOVER",
-      "preopenState": "PENDING_BY_CLOCK",
+      "preopenState": "T_PRELIM_NOT_YET_OBSERVED / VARIABLE_SOURCE_WORKFLOW_PENDING",
       "currentVintage": "T_PRELIM",
       "followups": [
         "T1_REVISED",
         "T2_FINAL"
       ],
-      "rule": "preserve append-only revision lineage; surveillance threshold is context, not alpha"
+      "rule": "preserve append-only revision lineage; surveillance threshold is context, not alpha",
+      "lastAttemptAt": "2026-10-05T20:33:21+08:00",
+      "attemptReceipt": "research/d06_14_tpex_daytrade_tprelim_attempt_20261005_v0_1.json"
     },
     {
       "laneId": "D06_16_PF040_ETF_UNITS_PCF",
@@ -177,12 +199,13 @@
       ],
       "primitiveReceiptId": "D06-20261005-ETF-UNITS-PCF",
       "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
-      "preopenState": "PRECLOSE_SOURCE_CHECKED / PENDING_BY_SOURCE_REFRESH",
+      "preopenState": "PF040_FIRST_DECISION_GENERATION_VALIDATED / PF041_SECOND_DECISION_GENERATION_STABLE",
       "rule": "capture units delta plus same-generation PCF; execution remains modeled unless directly observed; event receipt and flow receipt remain distinct",
-      "observedAt": "2026-10-05T15:14:00+08:00",
-      "observationReceipt": "research/d06_pf040_preclose_source_state_20261005_v0_1.json",
-      "observation": "Official issuer pages were reachable but 0050/0056 unit-data and PCF trading date still referenced 2026-10-02; not eligible as 2026-10-05 same-generation PF-040 evidence.",
-      "passGateStatus": "NOT_PASSED_YET"
+      "observedAt": "2026-10-05T20:36:43+08:00",
+      "observationReceipt": "research/d06_pf041_pcf_multi_generation_stability_receipt_20261005_v0_1.json",
+      "observation": "Two prospective decision generations are preserved with same-generation repeat stability; D06-16 Taiwan PIT/source feasibility gate passes. Actual AP/constituent execution remains UNKNOWN.",
+      "passGateStatus": "PASSED_FOR_D06_16_L3_SOURCE_PIT_FEASIBILITY",
+      "maturityDecision": "D06-16 L2/40 -> L3/60; D06-11 unchanged L2/40"
     },
     {
       "laneId": "D06_18_BORROW_ECONOMICS",
@@ -222,7 +245,7 @@
     "crossDomainPriceVolumeDedupContract": "COMPLETE",
     "crossDomainPriceVolumeDedupReceipt": "research/d06_core_crowding_crossdomain_parent_lineage_20261005_v0_1.json"
   },
-  "maturityImpact": "NONE_THROUGH_15_20",
+  "maturityImpact": "D06_16_L2_TO_L3_AT_2036 / OTHER_LANES_NO_PROMOTION",
   "formalOptimizationCandidate": "NONE",
-  "exactNext": "Continue only remaining 2026-10-05 frozen lanes at their actual source clocks. D06-06 price/volume input must bind to the exact same-generation D02/canonical shared PRICE_OHLC and VOLUME_TURNOVER parent; the legacy D06 price-volume label is consumer-alias-only and cannot create a duplicate primitive. After-market generation must attach the existing TDCC parent to same-generation D06-05/D06-06 rows. At/after official clocks capture remaining TWSE D06-03 dealer split, TPEx leverage EARLY/LATE vintages and D06-14 T_PRELIM. For PF-040 append a later issuer vintage only after the source data date advances to 2026-10-05. D06-18 late slot is closed as UNKNOWN/MISSING and must not be backfilled. Outcomes remain closed."
+  "exactNext": "Continue only remaining frozen lanes at their real source clocks. At 22:30 repeat TPEx leverage source families as LATE and never backfill the 20:30 EARLY UNKNOWN/MISSING slot. Retry D06-14 T_PRELIM later the same evening only from the actual stock-level statistics object. D06-16 PF-041 now passes L3 Taiwan PIT/source feasibility; D06-11 remains L2 and actual stock execution UNKNOWN. D06-06 must continue waiting for D02 PVE-243 or another genuine same-generation canonical PRICE_OHLC/VOLUME_TURNOVER parent; PVE-241/242 are schema/guard evidence only. Attach TDCC parent to D06-05/D06-06 only when a valid same-generation research row exists. D06-18 live 15:20 slot remains UNKNOWN/MISSING and cannot be backfilled. Outcomes remain closed."
 }
