@@ -434,3 +434,20 @@ Current states:
 - SDA-017: REMEDIATION_IN_PROGRESS — ex-ante Regime governance is strong; executable immutable builder and prospective policy evidence remain.
 
 Do not repeat accepted controls listed in the reconciliation receipt.
+
+
+## HIGH reconciliation status — 2026-10-05
+
+Launch/safety HIGH reconciliation:
+`shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md`.
+
+Remaining HIGH reconciliation:
+`shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md`.
+
+Current HIGH states:
+- VALIDATION_PENDING: SDA-003, SDA-005, SDA-014, SDA-019.
+- REMEDIATION_IN_PROGRESS: SDA-002, SDA-006, SDA-007, SDA-008, SDA-011, SDA-013, SDA-015, SDA-018.
+- BLOCKED_DEPENDENCY: SDA-010, SDA-012.
+
+Accepted controls in the reconciliation receipts must not be repeated merely to raise maturity.
+Protected owner gates remain unchanged.
