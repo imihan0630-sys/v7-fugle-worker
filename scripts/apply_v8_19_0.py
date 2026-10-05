@@ -107,8 +107,8 @@ once('    if (url.pathname === "/api/research/c1-population") {',
 once('const scan = await runAfterMarketScan(env, Date.now(), { dryRun: false });',
      'const scan = await runAfterMarketScan(env, Date.now(), { dryRun: false, scanOriginKind:"TEST_FINALIZE" });',
      'test finalize origin')
-once('return json(await runAfterMarketScan(env, Date.now(),{onlyIfMissing:body.onlyIfMissing===true}), 200, true);',
-     'return json(await runAfterMarketScan(env, Date.now(),{onlyIfMissing:body.onlyIfMissing===true,scanOriginKind:"AUTHORIZED_MANUAL_API"}), 200, true);',
+once('return json(await runAfterMarketScan(env, scheduledTime,{onlyIfMissing:body.onlyIfMissing===true}), 200, true);',
+     'return json(await runAfterMarketScan(env, scheduledTime,{onlyIfMissing:body.onlyIfMissing===true,scanOriginKind:"AUTHORIZED_MANUAL_API"}), 200, true);',
      'manual scan origin')
 once('? await runAfterMarketScan(env, scheduledTime,{onlyIfMissing:true})',
      '? await runAfterMarketScan(env, scheduledTime,{onlyIfMissing:true,scanOriginKind:"CLOUDFLARE_CRON",scanOriginCronExpression:cronExpression})',
