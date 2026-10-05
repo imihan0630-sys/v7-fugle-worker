@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-06T07:07:00+08:00",
+  "updatedAt": "2026-10-06T07:25:00+08:00",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -175,13 +175,14 @@
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
       ],
-      "readiness": "SYSTEM1_ALIAS_CORE_MERGED_D03_SELECTION_IDENTIFICATION_FIREWALL_DEEPENED_SYSTEM2_D16_AND_GENUINE_RECEIPT_PENDING",
-      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_INTAKE_20261006_V0_3.md",
+      "readiness": "SYSTEM1_ALIAS_CORE_MERGED_D03_SEARCH_GENEALOGY_AND_INTERACTION_SUPPORT_FIREWALL_FROZEN_SYSTEM2_D16_AND_GENUINE_OOS_PENDING",
+      "receipt": "research/D03_INTERACTION_SEARCH_GENEALOGY_AND_REBIN_FIREWALL_20261006_V0_1.md",
       "remainingDelta": [
         "System1 three diagnostic schema deltas shared with SDA-001",
         "first genuine-session receipt proving alias/parameter-family behavior on real lineage input",
         "System2 corresponding alias/redundancy diagnostic where D03-derived signals are consumed",
-        "D16 multiple-testing and residual/OOS promotion-grade evidence",
+        "D16 multiple-testing/search-family/residual OOS promotion-grade evidence",
+        "fresh post-selection evidence for any interaction winner after adaptive search",
         "00 independent closure"
       ],
       "system1Engineering": {
@@ -190,7 +191,12 @@
         "d03ConsumerReview": "research/D03_SYSTEM1_SDA_CONSUMER_MAPPING_REVIEW_20261005_V0_1.md",
         "formalCoreImpact": "NONE",
         "ticketClosure": false
-      }
+      },
+      "supportingReceipts": [
+        "research/D03_INTERACTION_ESTIMABILITY_CONCENTRATION_ORACLE_20261006_V0_1.md",
+        "research/d03_interaction_estimability_concentration_oracle_20261006_v0_1.json",
+        "research/d03_interaction_search_genealogy_and_rebin_firewall_20261006_v0_1.json"
+      ]
     },
     {
       "id": "SDA-005",
@@ -843,21 +849,23 @@
         "D16_dependence_and_incrementality_analysis",
         "00_cross_system_readback"
       ],
-      "readiness": "NON_CONVERGENCE_GUARD_AND_POLICY_BASELINE_FROZEN_RUNTIME_FINGERPRINTS_NC_T01_AND_D16_PENDING",
+      "readiness": "NON_CONVERGENCE_GUARD_BASELINE_AND_28_TEST_PRE_OUTCOME_ORACLE_FROZEN_RUNTIME_FINGERPRINTS_NC_T01_D16_PENDING",
       "receipt": "shared-knowledge/SYSTEM1_SYSTEM2_POLICY_FINGERPRINT_BASELINE_20261006_V0_1.md",
       "remainingDelta": [
-        "System1 research-only decision-policy fingerprint receipt generated from current effective policy",
-        "System2 per-strategy policy fingerprint receipts generated from current effective strategy policies",
-        "NC-T01 physical proof that at least one System2 candidate-generation path executes without System1 Top6/rank",
-        "prospective cross-system universe/pick/rank/information-root overlap receipts",
-        "divergence reason classification on comparable decision dates",
-        "D16 dependence/incrementality analysis before any diversification or double-confirmation claim",
+        "System1 research-only decision-policy fingerprint receipt generated from current effective policy and passing S22-T01~T05",
+        "System2 per-strategy policy fingerprint receipts passing S22-T06~T10",
+        "NC-T01 physical proof passing S22-T11~T16 without System1 Top6/rank",
+        "prospective cross-system overlap/divergence receipts satisfying S22-T17~T24",
+        "D16 preregistration satisfying S22-T25~T28 before outcomes",
+        "D16 dependence/incrementality analysis after prospective support matures",
         "00 independent closure"
       ],
       "supportingReceipts": [
         "shared-knowledge/SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_V0_1.md",
         "shared-knowledge/CROSS_SYSTEM_POLICY_FINGERPRINT_CONTRACT_V0_1.md",
-        "shared-knowledge/system1_system2_policy_fingerprint_baseline_20261006_v0_1.json"
+        "shared-knowledge/system1_system2_policy_fingerprint_baseline_20261006_v0_1.json",
+        "shared-knowledge/SDA022_ACCEPTANCE_ORACLE_V0_1.md",
+        "shared-knowledge/sda022_acceptance_oracle_v0_1.json"
       ]
     }
   ],
@@ -870,5 +878,5 @@
   "lastHighIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_INTAKE_20261006_V0_1.md",
   "lastIncrementalIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_INCREMENTAL_INTAKE_20261006_V0_2.md",
   "lastEngineeringIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_INTAKE_20261006_V0_3.md",
-  "lastSystemLevelAudit": "shared-knowledge/SYSTEM1_SYSTEM2_POLICY_FINGERPRINT_BASELINE_20261006_V0_1.md"
+  "lastSystemLevelAudit": "shared-knowledge/SDA022_ACCEPTANCE_ORACLE_V0_1.md"
 }
