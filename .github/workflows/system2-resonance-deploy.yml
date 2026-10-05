@@ -2,6 +2,12 @@ name: System2 Daily Resonance Deploy
 
 on:
   workflow_dispatch:
+    inputs:
+      apply_schema:
+        description: "Apply isolated D1 schema before deploy"
+        required: false
+        default: false
+        type: boolean
   push:
     branches: [main]
     paths:
@@ -28,6 +34,8 @@ jobs:
       DB_NAME: system2-research
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
@@ -51,7 +59,27 @@ jobs:
           for test_file in system2/tests/*.test.mjs; do node "$test_file"; done
           test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
 
+      - name: Detect whether isolated D1 schema mutation is required
+        id: schema_gate
+        shell: bash
+        env:
+          MANUAL_APPLY_SCHEMA: ${{ inputs.apply_schema || false }}
+        run: |
+          set -euo pipefail
+          apply_schema=false
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" && "${MANUAL_APPLY_SCHEMA}" == "true" ]]; then
+            apply_schema=true
+          elif [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+            changed="$(git diff --name-only HEAD^ HEAD)"
+            if printf '%s\n' "$changed" | grep -Eq '^(system2/sql/|system2/deploy/provision_system2_d1\.mjs$)'; then
+              apply_schema=true
+            fi
+          fi
+          echo "apply_schema=$apply_schema" >> "$GITHUB_OUTPUT"
+          echo "D1 schema apply required: $apply_schema"
+
       - name: Apply isolated D1 schema V1.1
+        if: steps.schema_gate.outputs.apply_schema == 'true'
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
