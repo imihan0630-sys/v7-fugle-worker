@@ -1884,3 +1884,30 @@ Formal Core: LOCKED.
 
 Exact next:
 do not redo accepted semantics. Wait for the engineering deltas: shared SDA-016 consumption/overlap authority and System2 SDA-017 episode/support observer. On new commits, Room11 performs only adversarial revalidation of those deltas, then returns to 00 for independent closure. In parallel, genuine prospective C1 and D18 receipts may continue accumulating but cannot bypass these tickets.
+
+
+## 2026-10-05 SDA-016 / SDA-017 second-round adversarial extension
+
+New canonical addenda:
+- `research/SDA016_INFORMATION_FOOTPRINT_VALIDATION_ADDENDUM_20261005_V0_1.md`;
+- `research/SDA017_EPISODE_HORIZON_DEPENDENCE_VALIDATION_ADDENDUM_20261005_V0_1.md`.
+
+SDA-016 validation responsibility expanded:
+- date-set overlap alone cannot certify fresh OOS;
+- overlapping D+N outcome information footprints must be detected across logical holdout ids and System 1/System 2 consumers;
+- unknown footprint lineage fails closed;
+- purge/embargo must be preregistered and target-path-aware.
+
+SDA-017 validation responsibility expanded:
+- episode count is structural diversity, not degrees of freedom;
+- primary policy estimand = `DECISION_STATE_CONDITIONAL`;
+- future persistence cannot filter the primary outcome set;
+- transition-crossing horizons remain included and flagged;
+- episode support cannot bypass D16-06 dependence or SDA-016 footprint/consumption state.
+
+No maturity change:
+D16 = 60%.
+D18 = 52%.
+
+Exact next:
+validate only new engineering deltas when they land. SDA-016 requires original 12 + addendum 10 adversarial tests. SDA-017 requires original 15 + addendum 15 adversarial tests. Do not redo already-passed System1 exact-dataset guards or existing D18 ex-ante/UNKNOWN firewalls. 00 independent closure remains mandatory.
