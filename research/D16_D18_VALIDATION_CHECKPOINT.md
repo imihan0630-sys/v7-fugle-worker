@@ -1813,3 +1813,74 @@ FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 Formal Core: LOCKED.
 
 Exact next: do not invent historical C1 predictions. On the first genuine post-V8.17 trading-session C1 generation, verify the immutable parent plus complete qualified priorityScore coverage, then freeze the first prospective base-rate PredictionReceipt before any D+5 outcome. Continue daily receipts; fit the score challenger only after the preregistered support gate is genuinely reached. In parallel, D18 prospective context/activation receipts may continue accumulating, but no D18 L4 follows from this D16 preregistration.
+
+
+## 2026-10-05 SDA-016 / SDA-017 priority validation — Room11 specialist return
+
+Canonical files:
+- `research/SDA016_HOLDOUT_CONSUMPTION_VALIDATION_CONTRACT_20261005_V0_1.md`;
+- `research/SDA016_SYSTEM1_HOLDOUT_GUARD_VALIDATION_20261005_V0_1.md`;
+- `research/SDA017_REGIME_SUPPORT_EPISODE_VALIDATION_CONTRACT_20261005_V0_1.md`;
+- `research/SDA017_EXISTING_D18_MACHINE_VALIDATION_20261005_V0_1.md`;
+- `research/SDA016_017_ROOM11_SPECIALIST_RETURN_20261005_V0_1.md`.
+
+### SDA-016
+
+State:
+`RESEARCH_OWNER_CONTRACT_COMPLETE / SYSTEM1_CLASS_A_PARTIAL_PASS / CROSS_SYSTEM_CONSUMPTION_AUTHORITY_PENDING / ROOM00_CLOSURE_PENDING`.
+
+Validated PASS:
+- immutable experiment version;
+- target/benchmark mutation rejection;
+- exact-dataset rename cannot reset holdout;
+- repeated inspection marks development-consumed;
+- single outcome lock;
+- negative/null/failed result preservation;
+- local append-only chain + stale-head/mutation rejection;
+- protected Formal outputs unchanged.
+
+Remaining blocker:
+- partial-overlap decision-date lineage;
+- shared System1/System2 consumption authority;
+- complete machine-visible outcome-lock identity;
+- any sequential-valid exception requires a later explicit D16 contract;
+- independent 00 closure.
+
+### SDA-017
+
+State:
+`RESEARCH_OWNER_CONTRACT_COMPLETE / EXISTING_D18_EX_ANTE_MACHINE_PARTIAL_PASS / EPISODE_SUPPORT_ENGINE_PENDING / PROSPECTIVE_MULTI_EPISODE_EVIDENCE_PENDING / ROOM00_CLOSURE_PENDING`.
+
+Validated PASS:
+- decision-time/PIT vector identity;
+- UNKNOWN / CONTEXT_RAW fail-closed;
+- deterministic vector replay;
+- no scalar hindsight Regime score;
+- preregistered activation mapping;
+- unknown policy input -> DATA_UNKNOWN;
+- NATURAL_ZERO_PICK != POLICY_DISABLED;
+- baseline/challenger cost parity;
+- parent accounting mutation rejection.
+
+Remaining blocker:
+- immutable episode identity / official-session adjacency;
+- UNKNOWN/version/source-boundary episode splits;
+- aggregate support states with effective independent dates / episodes / occupancy / transitions / paired support;
+- known-but-thin states cannot become promotion evidence;
+- regime-family mutation must consume holdout under SDA-016;
+- genuine prospective multi-episode matured outcomes;
+- independent 00 closure.
+
+Cross-ticket rule:
+any D18 state/threshold/policy/horizon mutation after outcome inspection is both SDA-017 family expansion and SDA-016 adaptive holdout consumption. The inspected holdout is development data for the new hypothesis and cannot be reset by version/name changes.
+
+No maturity change.
+D16 remains 60%.
+D18 remains 52%.
+No L4 / Formal promotion.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core: LOCKED.
+
+Exact next:
+do not redo accepted semantics. Wait for the engineering deltas: shared SDA-016 consumption/overlap authority and System2 SDA-017 episode/support observer. On new commits, Room11 performs only adversarial revalidation of those deltas, then returns to 00 for independent closure. In parallel, genuine prospective C1 and D18 receipts may continue accumulating but cannot bypass these tickets.
