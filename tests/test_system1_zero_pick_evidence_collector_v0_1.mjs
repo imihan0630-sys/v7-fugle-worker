@@ -36,7 +36,7 @@ const rows=[featureRow('2330',1000,0,{reference:{marketDate:day,updatedAt:day+'T
     formalResult:{ok:false,firstFailure:'HISTORY_BLOCKED',selected:false},zeroPickRankObservation:null,safety:{}}];
 function pagesFor(inputRows=rows,headerChange={}){
   const header={generationId,sessionDate:day,decisionAt,readbackVerified:true,
-    sourceMainSha:'a'.repeat(40),effectiveRuntimeVersion:'8.16.0-zero-pick-prospective-capture',
+    sourceMainSha:'a'.repeat(40),effectiveRuntimeVersion:'8.19.0-c1-scan-origin-generation-inventory',
     zeroPickCapture:capture,featureN:3,contentDigest:sha(JSON.stringify(inputRows)),
     universeDigest:sha(inputRows.map(r=>r.symbol).sort().join('\n')),populationN:inputRows.length,
     capturedN:inputRows.length,chunkCount:2,completeness:'IN_MEMORY_COMPLETE_NORMALIZED_UNIVERSE',...headerChange};
@@ -147,7 +147,17 @@ const request=async (url,options={})=>{
     value=pagesFor()[index];
   }else if(u.pathname==='/api/scan/status')value={scanDate:day,dryRun:false,selectedCount:0,pipeline:{complete:true},config:{verified:true},
     researchC1Population:{generationId,generated:rows.length,saved:rows.length,saveOk:true,readbackVerified:true}};
-  else if(u.pathname==='/api/config')value={stocks:[]};
+  else if(u.pathname==='/api/research/c1-generation-inventory'){
+    const header=pagesFor()[0].header;
+    value={ok:true,schemaVersion:'SYSTEM1_C1_GENERATION_INVENTORY_V0_1',scanDate:day,
+      generationCount:1,returnedCount:1,truncated:false,integrityComplete:true,modernOriginCoverageComplete:true,
+      historicalBackfillPerformed:false,generations:[{
+        generationId,sessionDate:day,originStatus:'SCAN_ORIGIN_CAPTURED',originKind:'AFTER_MARKET_SCAN_PIPELINE',
+        pathKind:'FORMAL_AFTER_MARKET_SCAN',runtimeVersion:header.effectiveRuntimeVersion,
+        contentDigest:header.contentDigest,universeDigest:header.universeDigest,
+        populationN:rows.length,capturedN:rows.length
+      }]};
+  }else if(u.pathname==='/api/config')value={stocks:[]};
   else throw Error('unexpected endpoint '+u.pathname);
   return {ok:true,status:200,json:async()=>structuredClone(value)};
 };
@@ -196,7 +206,7 @@ try{
  const {zeroPickProspective,...oldArtifact}=artifact;
  assert.deepEqual(buildC3Registration(oldArtifact,paired,{stocks:[]}),buildC3Registration(artifact,paired,{stocks:[]}));
  assert.equal(registration.status,'NO_SHADOW_ONLY_COHORT');
- assert.deepEqual(calls.map(c=>c[0]),['/api/research/c1-population','/api/research/c1-population','/api/scan/status','/api/config']);
+ assert.deepEqual(calls.map(c=>c[0]),['/api/research/c1-population','/api/research/c1-population','/api/scan/status','/api/research/c1-generation-inventory','/api/config']);
 }finally{
  globalThis.fetch=previousFetch;
  for(const [k,v] of Object.entries(previous))if(v===undefined)delete process.env[k];else process.env[k]=v;
