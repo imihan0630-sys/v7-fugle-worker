@@ -1,0 +1,195 @@
+{
+  "schemaVersion": "D03_INTERACTION_ESTIMABILITY_CONCENTRATION_ORACLE_V0_1",
+  "updatedAt": "2026-10-06T06:59:00+08:00",
+  "owner": "D03",
+  "classification": "RESEARCH_ONLY_OUTCOME_CLOSED",
+  "formalCoreImpact": "NONE_LOCKED",
+  "tickets": [
+    "SDA-001",
+    "SDA-004"
+  ],
+  "policy": "MULTI_AXIS_REPRESENTATION_SPECIFIC_FAIL_CLOSED",
+  "representationClasses": [
+    "CATEGORICAL_JOINT_CELL",
+    "CONTINUOUS_INTERACTION",
+    "MIXED_THRESHOLD_CONTINUOUS",
+    "PATH_OR_LIFECYCLE_INTERACTION"
+  ],
+  "requiredCommonFields": [
+    "interactionFamilyId",
+    "interactionVersion",
+    "representationClass",
+    "targetPopulationHash",
+    "estimandScope",
+    "commonSupportHash",
+    "rawRowN",
+    "rawDecisionDateN",
+    "admittedDecisionDateN",
+    "uniqueSymbolN",
+    "dateWeightingRule",
+    "outcomeHorizonId",
+    "purgeEmbargoRuleVersion",
+    "sda016ConsumptionRef",
+    "selectionIdentificationDisposition",
+    "dependenceMethodRef",
+    "consumerScopeHash",
+    "terminalState"
+  ],
+  "categoricalJointCellRequired": [
+    "preregisteredCellUniverse",
+    "rawRowNByCell",
+    "independentDecisionDateNByCell",
+    "uniqueSymbolNByCell",
+    "admittedDateNByCell",
+    "weightedEffectiveSupportByCell",
+    "zeroSupportCells",
+    "nearZeroSupportCells",
+    "preregisteredMinJointCellIndependentDateN",
+    "minJointCellFloorJustification",
+    "cellConcentrationDiagnostics"
+  ],
+  "continuousRequired": [
+    "componentRangeCoverage",
+    "componentQuantileCoverage",
+    "jointDesignCoverage",
+    "unsupportedDesignRegionState",
+    "componentCorrelation",
+    "interactionMainEffectCollinearity",
+    "leverageDiagnostics",
+    "partialLeverageDiagnostics",
+    "influenceDiagnostics",
+    "designRankState",
+    "marginalControlBasisHash"
+  ],
+  "mixedRequired": [
+    "thresholdIdentityHash",
+    "thresholdSearchFamilyId",
+    "categoricalSupportRef",
+    "continuousSupportRef"
+  ],
+  "pathRequired": [
+    "structuralEpisodeN",
+    "replicationClusterN",
+    "transitionN",
+    "activeEpisodeN",
+    "rightCensoredEpisodeN",
+    "calendarSpanSessions",
+    "separatedPeriodN",
+    "outcomeFootprintOverlapState",
+    "leaveOneReplicationClusterOutState"
+  ],
+  "clusterSupport": {
+    "required": [
+      "rawClusterN",
+      "effectiveClusterCount",
+      "clusterSizeDistribution",
+      "clusterLeverageDiagnostics",
+      "clusterInfluenceDiagnostics",
+      "clusteringDimensions"
+    ],
+    "governance": {
+      "effectiveClusterBelow20": "NO_STANDALONE_CONVENTIONAL_CLUSTER_PROMOTION",
+      "effectiveClusterAtLeast20": "ELIGIBILITY_ONLY",
+      "severeInfluenceOrImbalance": "OVERRIDES_RAW_CLUSTER_COUNT"
+    }
+  },
+  "hacSupport": {
+    "required": [
+      "kernel",
+      "bandwidth",
+      "lagDependenceDiagnostics",
+      "longRunVarianceInflation",
+      "effectiveDateDiagnostic"
+    ],
+    "governance": {
+      "effectiveDateBelow20": "NO_STANDALONE_ASYMPTOTIC_PROMOTION",
+      "effectiveDate20To39": "EXPLORATORY_OR_SENSITIVITY_UNLESS_CORROBORATED",
+      "effectiveDateAtLeast40": "ELIGIBILITY_ONLY"
+    }
+  },
+  "blockBootstrapSupport": {
+    "required": [
+      "bootstrapFamily",
+      "blockLength",
+      "blockLengthSelectorVersion",
+      "replications",
+      "effectiveNonOverlappingBlockCount",
+      "blockLengthSensitivity",
+      "semanticBoundaryCrossing"
+    ],
+    "governance": {
+      "effectiveBlocksBelow10": "INSUFFICIENT_BLOCK_SUPPORT",
+      "effectiveBlocks10To19": "EXPLORATORY_ONLY",
+      "effectiveBlocksAtLeast20": "ELIGIBILITY_ONLY"
+    }
+  },
+  "concentrationRequired": [
+    "maxDecisionDateShare",
+    "topKDecisionDateShare",
+    "symbolConcentration",
+    "sectorIndustryConcentration",
+    "regimeConcentration",
+    "episodeClusterConcentration",
+    "designRegionConcentration",
+    "effectContributionConcentration"
+  ],
+  "leaveOneOutRequired": [
+    "leaveOneDateOut",
+    "leaveOneReplicationClusterOutWhereApplicable",
+    "leaveOneSectorIndustryOutForCrossIndustryClaim",
+    "leaveOneRegimeOutForGlobalClaim",
+    "signStability",
+    "effectRange",
+    "promotionStateStability",
+    "maxAbsoluteDelta"
+  ],
+  "weightedSupportRequired": [
+    "sumWeights",
+    "sumSquaredWeights",
+    "weightedEffectiveSupport",
+    "maxWeight",
+    "weightQuantiles",
+    "weightConcentration",
+    "zeroSupportStrata",
+    "nearZeroSupportWarning",
+    "balanceDiagnostics"
+  ],
+  "claimScopeStates": [
+    "MARKET_WIDE_CLAIM_SUPPORTED",
+    "SECTOR_CONDITIONAL_OBSERVATION",
+    "REGIME_CONDITIONAL_OBSERVATION",
+    "PHASE_CONDITIONAL_OBSERVATION",
+    "RESTRICTED_SUPPORT_ONLY",
+    "CLAIM_SCOPE_UNIDENTIFIED"
+  ],
+  "terminalStates": [
+    "SUPPORT_READY",
+    "POWER_INSUFFICIENT",
+    "JOINT_SUPPORT_INSUFFICIENT",
+    "DEPENDENCE_TOO_STRONG_FOR_CURRENT_SAMPLE",
+    "CONCENTRATION_FRAGILE",
+    "SELECTION_IDENTIFICATION_BLOCKED",
+    "VERSION_OR_CONTINUITY_INCOMPATIBLE",
+    "METHOD_INCOMPATIBLE",
+    "EVIDENCE_NOT_YET_AVAILABLE"
+  ],
+  "forbidden": [
+    "MAGIC_SINGLE_EFFECTIVE_N",
+    "DROP_EMPTY_CELL",
+    "POST_OUTCOME_CELL_FLOOR_CHANGE",
+    "POST_OUTCOME_REPRESENTATION_CLASS_SWITCH",
+    "ROW_N_AS_INDEPENDENT_DATE_N",
+    "RAW_CLUSTER_N_WITHOUT_EFFECTIVE_CLUSTER_DIAGNOSTICS",
+    "EXTREME_WEIGHTS_AS_AUTOMATIC_SUPPORT_REPAIR",
+    "POOL_ACROSS_KNOWN_SEMANTIC_VERSION_BREAKS",
+    "GLOBAL_CLAIM_FROM_NARROW_SECTOR_REGIME_OR_PHASE_SUPPORT",
+    "POST_OUTCOME_REBINNING_TO_SOLVE_SPARSE_SUPPORT"
+  ],
+  "noClaim": {
+    "empiricalInteractionIncrementality": true,
+    "alpha": true,
+    "productionReadiness": true,
+    "formalPromotion": true
+  },
+  "maturityImpact": "NONE_56_7_PERCENT"
+}
