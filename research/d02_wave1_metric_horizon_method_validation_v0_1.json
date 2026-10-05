@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-05 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_WAVE1_VALIDATION_DESIGN_FIREWALL_PASS",
+  "evidenceCursor": "PVE-239",
+  "d02MaturityPct": 60,
+  "maturityImpact": "NONE",
+  "metricHorizon": {
+    "artifacts": [
+      "research/D02_WAVE1_PROMOTION_METRIC_HORIZON_FREEZE_20261005_V0_2.md",
+      "research/d02_wave1_metric_horizon_guard_v0_1.mjs",
+      "tests/test_d02_wave1_metric_horizon_guard_v0_1.mjs"
+    ],
+    "tests": 23,
+    "status": "PASS",
+    "primaryMetric": "DATE_BALANCED_BRIER_LOSS_IMPROVEMENT",
+    "H001PrimaryHorizon": "B2",
+    "H20PrimaryHorizon": "B2",
+    "H003PrimaryHorizon": "ACTIVE_LIFECYCLE_ENTRY_TO_FIRST_TERMINAL_OR_13_00_CENSOR"
+  },
+  "d16Method": {
+    "artifacts": [
+      "research/D02_D16_WAVE1_MODEL_METHOD_HANDOFF_V0_1.md",
+      "research/d02_d16_wave1_model_method_receipt_guard_v0_1.mjs",
+      "tests/test_d02_d16_wave1_model_method_receipt_guard_v0_1.mjs"
+    ],
+    "tests": 21,
+    "status": "PASS",
+    "owner": "D16-19",
+    "actualMethodReceiptsFrozen": 0
+  },
+  "numericalTargetsFrozen": 0,
+  "numericalTargetsPending": 14,
+  "costState": "D14_PARTIAL_TAX_KNOWN_COMMISSION_SLIPPAGE_NOT_UNIVERSALLY_KNOWN",
+  "guarantees": {
+    "postOutcomeMetricSelectionAllowed": false,
+    "postOutcomeHorizonSelectionAllowed": false,
+    "postOutcomeMethodSelectionAllowed": false,
+    "sensitivityCanRescuePrimary": false,
+    "rowWeightedPrimaryAllowed": false,
+    "maturityPromotionAuthorized": false,
+    "formalCoreChangeAuthorized": false
+  },
+  "remainingBlockers": [
+    "3_WAVE1_D16_METHOD_RECEIPTS_PENDING",
+    "14_NUMERICAL_TARGETS_PENDING",
+    "CLEAN_DATE_ZERO",
+    "PVE_240_PENDING",
+    "GATE_7_CLOSED"
+  ]
+}
