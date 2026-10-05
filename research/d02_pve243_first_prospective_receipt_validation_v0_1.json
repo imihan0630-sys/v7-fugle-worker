@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-05T20:41:42+08:00",
+  "status": "PVE243_FIRST_GENUINE_PROSPECTIVE_CANONICAL_PROVENANCE_RECEIPT_PASS",
+  "evidenceCursor": "PVE-243",
+  "receiptPath": "research/d02_pve243_first_prospective_canonical_receipt_20261005_v0_1.json",
+  "source": {
+    "provider": "TWSE",
+    "marketDate": "2026-10-05",
+    "symbol": "2330",
+    "rawPayloadHash": "49bf802c95362145385a7e12ad58d2c212045437e48ed5f45914f1b3e7d5eae9"
+  },
+  "canonicalGuard": {
+    "version": "D02_PVE241_CANONICAL_GUARD_V0_2",
+    "status": "PASS"
+  },
+  "laneReadback": {
+    "genericProvenance": "PASS",
+    "h001": "FAIL_CLOSED_EXPECTED",
+    "h001Reasons": [
+      "H001_REQUIRES_15M_RECEIPT",
+      "H001_SLOT_BEFORE_10_15_OR_INVALID"
+    ]
+  },
+  "sourceFallbacks": {
+    "fugleRealtimeQuote": "BLOCKED_ENTITLEMENT_NOT_ENABLED",
+    "fugleFCNT000013": "HISTORICAL_AVAILABLE_BUT_VOLUME_UNIT_NOT_EXPLICIT_IN_PAYLOAD",
+    "fugleFCNT000154": "NO_USABLE_RAW_CONTENT_RETURNED"
+  },
+  "guarantees": {
+    "outcomeBlind": true,
+    "cleanProspectiveSelectionDateIncrement": 0,
+    "outcomeAccessAuthorized": false,
+    "numericalTargetAuthorized": false,
+    "d16MethodSelectionAuthorized": false,
+    "maturityPromotionAuthorized": false,
+    "formalCoreChangeAuthorized": false
+  },
+  "next": "PVE-244"
+}
