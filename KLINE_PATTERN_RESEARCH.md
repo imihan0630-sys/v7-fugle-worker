@@ -23501,3 +23501,39 @@ New durable artifacts:
 - research/PATTERN_ROUND_TICK_SALIENCE_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-046 — Structural memory vs volume-at-price / historical traded-volume concentration (2026-10-06)
+
+DL-046 isolates a common but weakly identified technical-analysis claim: that a price becomes support or resistance because large historical trading volume accumulated there.
+
+The first correction is evidentiary. Practitioner material frequently describes high-volume price levels as support/resistance, and emerging work explores volume-weighted SR construction. But direct high-quality evidence that conventional volume-profile nodes deliver stable independent alpha is much thinner than the evidence for general support/resistance, round-price clustering and market-microstructure effects. D01 therefore treats volume-at-price as historical trading-density context, not a proven barrier mechanism.
+
+The second correction is ownership. D02-12 already owns PRICE_BY_VOLUME_PROFILE semantics. Its canonical Taiwan PIT study shows current-day price-by-volume data can be captured prospectively, but historical OOS depth is not established by the current source. D01 therefore does not build a second profile engine and explicitly prohibits synthesizing historical volume-at-price from OHLCV candles.
+
+The third correction is mechanism identity. Historical executed volume is not current order-book liquidity. A price where many trades occurred last week does not tell us how much bid/ask depth is resting there now, how much hidden liquidity exists, or whether any participant still intends to defend the price. D05 remains the owner of current spread/depth/queue evidence.
+
+Historical executed volume is also not remaining investor cost basis. The same shares can trade repeatedly, ownership changes, and cumulative executed volume can exceed free float. Claims about trapped holders, breakeven selling or institutional inventory remain behavior/inventory hypotheses requiring separate observables.
+
+DL-046 therefore freezes prospective receipt semantics. A usable profile must be captured no later than the predictor freeze and must carry source, version, market/session phase, window, exact price bins, bin rule, tick provenance, coverage and replay status. A later-downloaded profile cannot be relabeled as what was known earlier.
+
+Binning itself is another search family. The study cannot inspect outcomes and then choose the price grouping, kernel bandwidth or node-merging rule that produces the nicest support/resistance result. V0.1 prefers provider-native exact price levels or a deterministic preregistered owner rule.
+
+The core descriptors remain continuous. They record volume inside the frozen structural zone, zone share of captured executed volume, all tied maximum-volume prices, nearest max-node distance, tick/ATR-normalized distance and whether any tied max-volume node lies inside the structural zone. No universal high-volume threshold or standard 70% value-area rule is frozen.
+
+A further confound is time-at-price. A market that simply spends a long time near one price can accumulate large executed volume there without implying stronger demand/supply conviction. Until dwell-time can be controlled, the volume-density mechanism is only partially identified.
+
+The anti-double-count rule spans D01 and D02. A structural zone plus a high-volume node combines PRICE_OHLC and TRADED_VOLUME ancestry, but it does not become an automatic second confirmation. The same price can simultaneously be structural, round, near the prior close, near the opening reference and high-volume. Those contexts are retained as explanations, not multiplied votes.
+
+Future D16 work receives five comparison classes: structural-only, volume-node-only, structural-volume coincidence, round/reference-volume coincidence and non-evaluable profile. It must ask whether structural history adds beyond trading-density context, whether the profile adds beyond structural history and simpler D02 participation variables, and whether any coincident advantage survives time-at-price, liquidity, event-flow and reference-price controls.
+
+Twenty-two adversarial cases are authored. They prohibit OHLCV synthetic history, late profile fetches, future-trade inclusion, missing tick provenance, unfrozen bin rules, arbitrary node thresholds, arbitrary tie breaking, current-liquidity inference, remaining-cost-basis inference, automatic double voting, post-outcome bin mutation and pruning, and treating incomplete profiles as zero evidence.
+
+New durable artifacts:
+- research/PATTERN_VOLUME_AT_PRICE_CONTEXT_V0_1.md
+- research/pattern_volume_at_price_context_v0_1.json
+- research/pattern_volume_at_price_context_v0_1.mjs
+- research/test_pattern_volume_at_price_context_v0_1.mjs
+- research/PATTERN_VOLUME_AT_PRICE_CONTEXT_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. Historical volume-profile efficacy remains CLOSED. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.

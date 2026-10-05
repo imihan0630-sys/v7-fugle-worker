@@ -2590,3 +2590,104 @@ No maturity or Formal change is authorized by this routing.
 6. Preserve SDA-001 as REMEDIATION_IN_PROGRESS until residual/system/00 closure evidence exists.
 7. Next D01 science: separate round/tick salience from volume-at-price / historical traded-volume concentration so a price level with heavy historical volume is not automatically treated as independent structural evidence.
 8. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-046 (2026-10-06)
+
+### DL-046 — Structural memory vs volume-at-price / historical traded-volume concentration
+- DL-045 separated structural memory from round-number / tick-grid salience.
+- DL-046 freezes the next candidate explanation: a price region may appear important because large historical executed volume accumulated there, not because a structural turning-point memory exists.
+- Direct high-quality evidence for conventional volume-profile nodes as stable independent SR alpha is limited relative to general SR, round-price clustering and microstructure evidence.
+- Therefore D01 classifies volume-at-price as HISTORICAL_TRADING_DENSITY_CONTEXT, not proven structural memory, current liquidity or independent alpha.
+- D02-12 is the canonical owner of PRICE_BY_VOLUME_PROFILE semantics.
+- Current D02 contract allows current-day / prospective capture, but historical OOS replay from the current source is not established.
+- Historical price-by-volume may never be synthesized from OHLCV candles and relabeled as historical Shadow.
+- Core information roots:
+  PRICE_OHLC;
+  TRADED_VOLUME.
+- representationFamily = D02_PRICE_BY_VOLUME_PROFILE_CONTEXT.
+- redundancyGroup = D01_D02_PRICE_VOLUME_LEVEL_CONTEXT.
+- effectiveIndependentEvidenceCount = 1 by default;
+  independentVoteAllowed = false;
+  residualIncrementalityStatus = NOT_VALIDATED.
+- Executed historical volume is not current standing liquidity.
+  It does not identify current bid/ask depth, queue, hidden liquidity or willingness to defend.
+  D05 remains the live order-book owner.
+- Executed historical volume is not remaining investor inventory.
+  Shares can turn over repeatedly, ownership changes, and total executed volume may exceed float.
+  Trapped-holder / cost-basis interpretation remains UNIDENTIFIED without separate observables.
+- Every profile receipt must store:
+  sourceFetchedAt;
+  profileAsOf;
+  predictorFreezeAt;
+  profile window;
+  source/version;
+  session/market type;
+  price bins;
+  bin-construction rule;
+  tick provenance;
+  coverage state;
+  replaySafe.
+- sourceFetchedAt/profileAsOf/profileWindowEnd > predictorFreezeAt => POST_HOC_NOT_ELIGIBLE.
+- Bin construction cannot be tuned after outcomes.
+  No post-outcome choice of bin width, tick grouping, kernel bandwidth, node merging or number of bins.
+- Point-in-time tick semantics consume DL-045 / D04-D05 owner receipts.
+- Frozen continuous descriptors:
+  zoneExecutedVolume;
+  zoneVolumeShare;
+  maxVolumePrices;
+  maxNodeTieCount;
+  maxNodeVolumeShare;
+  structuralCenterDistanceToNearestMaxNodePrice;
+  distance in ticks / ATR where legal;
+  structuralZoneContainsAnyMaxNode;
+  distinctPriceLevelCount.
+- Tied max-volume nodes are all retained; one convenient node may not be selected after the fact.
+- No universal high-volume-node threshold / 70% value area / top-decile threshold is frozen.
+- Volume concentration has a time-at-price confound:
+  more time spent at a price can mechanically generate more executed volume.
+  Without dwell-time control, volume-density mechanism is only PARTIALLY_IDENTIFIED.
+- DL-044 prior-close / auction-reference and DL-045 round/tick contexts remain mandatory because a single price may be simultaneously structural, round, reference-anchored and high-volume.
+- Future comparison classes:
+  V0 STRUCTURAL_ONLY;
+  V1 VOLUME_NODE_NONSTRUCTURAL;
+  V2 STRUCTURE_VOLUME_COINCIDENT;
+  V3 ROUND_REFERENCE_VOLUME_NODE;
+  V4 PROFILE_NOT_EVALUABLE.
+- Future D16 questions:
+  structural increment beyond profile concentration;
+  profile increment beyond structural history;
+  V2 increment after D02 participation/turnover and DL-044/DL-045 controls;
+  time-at-price / liquidity / event-flow explanation;
+  profile value beyond simpler D02 volume variables;
+  residual contribution without creating a second vote.
+- Prospective-only evidence lane is mandatory until D02 supplies genuinely replayable profile evidence.
+- D02 provider caveat is preserved:
+  bid/ask classified volume may not sum to total because opening first trade is excluded from inside/outside classification.
+  V0.1 therefore uses total executed volume by price and defers directional bid/ask profile interpretation.
+- New files:
+  - research/PATTERN_VOLUME_AT_PRICE_CONTEXT_V0_1.md
+  - research/pattern_volume_at_price_context_v0_1.json
+  - research/pattern_volume_at_price_context_v0_1.mjs
+  - research/test_pattern_volume_at_price_context_v0_1.mjs
+  - research/PATTERN_VOLUME_AT_PRICE_CONTEXT_D16_HANDOFF_V0_1.md
+- 22 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 remains REMEDIATION_IN_PROGRESS.
+- SDA-002 remains REMEDIATION_IN_PROGRESS.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-046
+
+1. Reconcile the DL-046 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-046 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Keep PRICE_BY_VOLUME_PROFILE under D02 ownership and prohibit OHLCV synthetic historical reconstruction.
+4. Keep structural / volume-profile / round / prior-close / auction-reference contexts deduplicated by default; no automatic second vote.
+5. Hand V0-V4 / Q1-Q6 prospective common-support and residual inference to D16.
+6. Keep historical price-by-volume outcome inference CLOSED until D02 provides prospective or genuinely replayable profile evidence.
+7. Preserve SDA-001/SDA-002 as REMEDIATION_IN_PROGRESS until canonical closure evidence exists.
+8. Next D01 science: separate volume-at-price concentration from anchored VWAP / volume-weighted cost-reference effects and from actual live order-book liquidity.
+9. No runtime wiring / no Formal change.
