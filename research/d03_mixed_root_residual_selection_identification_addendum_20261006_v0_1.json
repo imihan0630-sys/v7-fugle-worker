@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "D03_MIXED_ROOT_RESIDUAL_SELECTION_IDENTIFICATION_ADDENDUM_V0_1",
+  "updatedAt": "2026-10-06T05:47:00+08:00",
+  "owner": "D03",
+  "upstreamD16Contract": "research/SDA016_ADMISSION_SELECTION_IDENTIFICATION_VALIDATION_ADDENDUM_20261006_V0_1.md",
+  "parentGuard": "research/d03_mixed_root_residual_graduation_guard_20261006_v0_1.json",
+  "classification": "RESEARCH_ONLY_OUTCOME_CLOSED",
+  "formalCoreImpact": "NONE_LOCKED",
+  "requiredResidualSelectionFields": [
+    "estimandScope",
+    "admissionLineageHash",
+    "selectionSensitivityTier",
+    "positivityState",
+    "supportRuleHash",
+    "evaluationCutoffRule",
+    "selectionFirewallDisposition"
+  ],
+  "estimandScopes": [
+    "OBSERVED_SUBPOPULATION_ESTIMAND",
+    "RESTRICTED_SUPPORT_ESTIMAND",
+    "TARGET_POPULATION_ESTIMAND"
+  ],
+  "selectionSensitivityTiers": [
+    "TIER_A",
+    "TIER_B",
+    "TIER_C"
+  ],
+  "positivityStates": [
+    "PASS",
+    "THIN",
+    "FAIL",
+    "UNKNOWN"
+  ],
+  "dispositions": [
+    "TARGET_POPULATION_INCREMENTALITY_IDENTIFIED",
+    "RESTRICTED_SUPPORT_INCREMENTALITY_IDENTIFIED",
+    "ROOT_SPECIFIC_MECHANISM_SUPPORTED_BUT_POPULATION_INCREMENTALITY_NOT_IDENTIFIED",
+    "SELECTION_IDENTIFICATION_BLOCKED",
+    "UNKNOWN"
+  ],
+  "stageWiseAdmissionRequired": [
+    "targetPopulationEligible",
+    "parentCaptured",
+    "readbackVerified",
+    "predictionAvailable",
+    "outcomeMatured",
+    "performanceEligible",
+    "costEligible",
+    "finalAnalysisAdmitted",
+    "exclusionReasons",
+    "decisionTimeContext"
+  ],
+  "graduationRules": [
+    {
+      "when": {
+        "estimandScope": "OBSERVED_SUBPOPULATION_ESTIMAND"
+      },
+      "crossSystemResidualStatus": "RESIDUAL_CANDIDATE",
+      "effectiveIndependentEvidenceIncrement": 0
+    },
+    {
+      "when": {
+        "estimandScope": "RESTRICTED_SUPPORT_ESTIMAND"
+      },
+      "crossSystemResidualStatus": "RESIDUAL_INCREMENTAL_PROVEN_ONLY_IF_CONSUMER_SUPPORT_MATCHES",
+      "requiresSupportRuleHashMatch": true,
+      "unrestrictedConsumerIncrement": 0
+    },
+    {
+      "when": {
+        "estimandScope": "TARGET_POPULATION_ESTIMAND"
+      },
+      "crossSystemResidualStatus": "RESIDUAL_INCREMENTAL_PROVEN_ONLY_IF_SELECTION_FIREWALL_PASSES",
+      "requiresPositivityPass": true,
+      "requiresAdmissionLineage": true,
+      "requiresFrozenEvaluationCutoff": true
+    }
+  ],
+  "forbidden": [
+    "COMPLETE_CASE_TO_TARGET_POPULATION_WITHOUT_IDENTIFICATION",
+    "RESTRICTED_SUPPORT_TO_FULL_POPULATION_EXPORT",
+    "EXTREME_WEIGHTING_AS_AUTOMATIC_POSITIVITY_REPAIR",
+    "OUTCOME_DRIVEN_SELECTION_MODEL_RETUNING",
+    "OUTCOME_DRIVEN_EVALUATION_CUTOFF",
+    "POST_OUTCOME_IMPUTATION_MODEL_SELECTION"
+  ],
+  "noClaim": {
+    "empiricalIncrementality": true,
+    "alpha": true,
+    "productionReadiness": true,
+    "formalPromotion": true
+  },
+  "maturityImpact": "NONE_56_7_PERCENT"
+}
