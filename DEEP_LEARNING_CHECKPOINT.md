@@ -2038,3 +2038,20 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
 2. Preserve CORE_CROWDING, dealer split, TDCC lineage, TPEx leverage vintage, TPEx day-trading vintages, ETF units+PCF and TWSE lending-rate/supply receipts.
 3. Route the new SDA-007 semantic receipt to engineering/D16 owners; do not change Formal or maturity from governance completion.
 4. D06-19 public data-existence search remains closed; special investor-type source access still requires owner authorization.
+
+## 2026-10-05 D06 — IC-067 TDCC prospective parent
+
+- Official TDCC current weekly distribution was captured pre-market for the 2026-10-05 D06 prospective generation.
+- New source date = 2026-10-02; previous durable D06 TDCC vintage was 2026-09-24.
+- Durable parent receipt: research/d06_tdcc_parent_receipt_20261005_v0_1.json.
+- Coverage = 69,326 bracket rows / 4,078 securities.
+- Exact grade integrity passed 4,078/4,078 with no missing grades and no reconciliation failures.
+- Source fingerprint = fnv1a64-utf8:ad1a265c0a3dcaf8.
+- D06-10 existing L3 is strengthened by a genuine prospective parent vintage.
+- D06-05 remains L2: same-generation immutable row attachment is still pending; holder identity/passive share remain UNKNOWN.
+- No outcomes were joined; no Formal change; no maturity promotion from parent capture alone.
+
+### Exact next continuation
+1. After the 2026-10-05 after-market research generation exists, attach primitive receipt D06-20261005-TDCC-WEEKLY plus fingerprint/chipAsOfDate/chipDefinition to the same-generation D06-05/D06-06 rows.
+2. Continue the frozen D06-03, TPEx leverage vintages, D06-14 day-trading vintages, PF-040 ETF units+PCF and D06-18 lending-economics lanes only at their actual source clocks.
+3. Keep SDA-007 engineering/D16/00 closure pending; learning semantic remediation is complete.
