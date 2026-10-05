@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-05T16:19:00+08:00",
+  "updatedAt": "2026-10-05T21:11:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -59,7 +59,10 @@
         "2020 TWSE storage verification PASS: 958 packs, 231961 bars, 958/958 R2 HEAD and byte-GET SHA checks",
         "Fresh official TWSE 2020 reconciliation PASS: 245 trading dates, 231961 official rows, 0 missing from cold, 0 extra versus fresh official, 0 source-row-hash mismatch",
         "2020 TWSE historical-universe denominator 232475 versus 231961 source rows leaves 514 explicit UNKNOWN symbol-session gaps; data coverage PASS but replay readiness PARTIAL",
-        "2020 TWSE coverage artifact 11331320701 digest sha256:e330cd8df13332cea813550a71fbf88c159300e3706893f2624bbc1ee165eaae"
+        "2020 TWSE coverage artifact 11331320701 digest sha256:e330cd8df13332cea813550a71fbf88c159300e3706893f2624bbc1ee165eaae",
+        "2020 TPEx run 37283878520 (#14): annual backfill SUCCESS, R2 verification 794/794, 189746 cold rows == 189746 fresh official rows, 0 missing/extra keys, but V0.3 blocked on 773 source-row-hash mismatches concentrated on 2020-02-27",
+        "The 2020 TPEx mismatch is classified as SOURCE_REVISION_CLASSIFICATION_REQUIRED rather than storage corruption; immutable cold history remains unchanged",
+        "Revision-aware verifier fix merged as 4cd31c569886faaa8e3cb3522ae28b72e9346724 with canonical A1 comparison and explicit source-version lineage"
       ],
       "riskIfUnfixed": "Creates false-completion/evidence-coverage risk for multi-year replay, factor validation, regime robustness and strategy backtesting.",
       "requiredCorrection": [
@@ -111,7 +114,9 @@
         "2019 TPEx durable evidence receipt and market-year matrix row are committed under DATA_LANE",
         "2017-2019 TWSE/TPEx raw A1 data coverage are all physically accepted; next population target is 2020 TWSE",
         "2020 TWSE durable evidence receipt and market-year matrix row are committed under DATA_LANE",
-        "Next population target is 2020 TPEx"
+        "Next population target is 2020 TPEx",
+        "Verifier V0.4 separates full official source-row revisions from canonical A1 value drift; canonical A1 drift still BLOCKS data coverage",
+        "2020 TPEx blocker evidence frozen at system2/evidence/S2_HISTORICAL_TPEX_2020_REVISION_BLOCKER_V0_1.json"
       ],
       "verificationEvidence": [
         "Run 37197090867 migrate/backfill/physical verify/artifact upload/System1 isolation all SUCCESS",
@@ -151,12 +156,14 @@
         "2020 TWSE disposition DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL"
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-05T16:19:00+08:00",
+      "updatedAt": "2026-10-05T21:11:00+08:00",
       "routingClass": "DATA_LANE",
       "assignedLane": "DATA_LANE",
       "assignedRoom": "System 2｜歷史資料工程室",
       "modificationOwner": "SYSTEM2_HISTORICAL_DATA_ROOM",
-      "blockedBy": []
+      "blockedBy": [
+        "2020 TPEx requires fresh latest-main revalidation under verifier V0.4"
+      ]
     },
     {
       "directiveId": "S2-CORR-20261004-002",

@@ -78,6 +78,9 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - Fresh official TWSE 2020 reconciliation: 245 sessions / 231,961 rows / 0 missing-from-cold / 0 extra / 0 row-hash mismatch.
   - Historical-universe expected membership sessions 232,475; 514 UNKNOWN symbol-session gaps retained fail-closed; data coverage PASS, replay readiness PARTIAL.
   - Artifact `11331320701`, digest `sha256:e330cd8df13332cea813550a71fbf88c159300e3706893f2624bbc1ee165eaae`.
+  - 2020 TPEx run `37283878520` (#14): backfill/storage PASS; 794/794 R2 byte checks; 189,746 cold rows == 189,746 fresh official rows; 0 missing/extra keys; V0.3 blocked on 773 full-source-row hash changes on 2020-02-27.
+  - Source revision is not being silently ignored or used to rewrite cold history. Verifier V0.4 merged in `4cd31c569886faaa8e3cb3522ae28b72e9346724` compares canonical A1 values separately and preserves revision lineage.
+  - Blocker evidence: `system2/evidence/S2_HISTORICAL_TPEX_2020_REVISION_BLOCKER_V0_1.json`.
 - riskIfUnfixed: Historical replay, factor validation, multi-year backtests, regime robustness and strategy comparison can be mistaken for being backed by a complete market history when only bounded/smoke datasets exist. This creates a false-completion and evidence-coverage risk on a P0 dependency.
 - requiredCorrection:
   1. Resume from the repaired historical-calendar implementation; do not restart architecture design.
@@ -112,7 +115,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - Manifest rolling hash `98d7cf6888e3069a2a170c20dbe8acee1cd7d5cb9bc7d9afa33319eb816fe97a`.
   - 2017 TWSE disposition: `DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL`.
 - finalDisposition: PENDING
-- updatedAt: 2026-10-05T16:19:00+08:00
+- updatedAt: 2026-10-05T21:11:00+08:00
 
 ## Closed directives
 

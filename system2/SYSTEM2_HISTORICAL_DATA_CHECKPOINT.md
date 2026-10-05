@@ -1,6 +1,6 @@
 # System 2 Historical Data Checkpoint
 
-Updated: 2026-10-05 16:19 Asia/Taipei
+Updated: 2026-10-05 21:11 Asia/Taipei
 Status: ACTIVE / DATA_LANE
 Room: System 2｜歷史資料工程室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
@@ -63,7 +63,7 @@ Accepted-year replay debt remains explicit:
 
 These are replay/readiness debts, not raw-source loss.
 
-The next DATA_LANE population target is 2020 TPEx.
+2020 TPEx cold-pack population is complete, but fresh physical revalidation is pending after source-revision-aware verifier fix `4cd31c569886faaa8e3cb3522ae28b72e9346724`.
 
 ## Protected boundaries
 
@@ -89,4 +89,4 @@ Require, as applicable:
 
 ## Exact next action
 
-Dispatch 2020 TPEx through the completed-year annual workflow, physically verify R2/D1/source/universe/coverage evidence, durable-write the result, then advance to 2021 TWSE. Preserve all existing UNKNOWN/continuity/survivorship debt in the coverage matrix. Continue year-by-year through 2025; keep 2026 excluded from annual COMPLETE receipts and handle it through the separate incremental/current-year path.
+Fresh-dispatch 2020 TPEx on latest main using verifier V0.4. The prior run #14 / `37283878520` must not be treated as accepted because its V0.3 source-row rule blocked on 773 full-row hash changes from 2020-02-27. R2 storage, key coverage and row counts passed; immutable cold history must not be rewritten. Accept 2020 TPEx only if V0.4 proves canonical A1 values stable (source revision only) or otherwise keep it BLOCKED if canonical A1 values changed. After durable acceptance, advance to 2021 TWSE.
