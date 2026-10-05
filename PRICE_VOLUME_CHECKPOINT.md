@@ -3570,3 +3570,36 @@ Formal Core LOCKED.
 
 Exact next continuation point:
 PVE-246 — consume System 1 remediation readback when durable and capture the first future decision-time-valid 15m H001 canonical receipt under the corrected frozen path. Until then, fail closed.
+
+
+## PVE-246 continuation — premarket root-cause certification (2026-10-06)
+
+Status: PREMARKET_READBACK_COMPLETE / ROOT_CAUSE_CERTIFIED / SYSTEM1_REMEDIATION_PENDING / H001_FAIL_CLOSED / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+PVE-246 completed.
+
+Read-only Production run 37378253538 confirms:
+- runtime 8.18.0-valuation-source-vintage;
+- latest stored scan remains 2026-09-29 / pipeline.complete=false;
+- runtime expected after-market Cron = `35 15 * * MON-FRI`;
+- actual Cloudflare Cron = `35,55 15 * * mon-fri`;
+- both 23:35 and 23:55 on 2026-10-05 were physically recorded as INTRADAY_MONITOR / SKIPPED.
+
+Root causes are now certified:
+1. `apply_v8_7_12.py` recognizes only the exact single 23:35 expression and removed the prior >=18 Taipei-time fallback, so the combined 23:35+23:55 Cron is misclassified.
+2. PV historical 15m bootstrap is downstream of successful after-market scan, so the misclassification starves the intended 180-day bootstrap. The fallback observed-session roll requires a completed 13:00 slot; 2026-10-05 stopped around 11:08.
+3. PV 15m raw-source identity is lost before snapshot persistence: provider / endpoint / rawPayloadHash are never carried from the raw fetch boundary into the persisted source object.
+
+Important boundary:
+- the historical provider call itself has not yet been physically exercised under a repaired path;
+- no System 1 production repair is claimed;
+- 2026-10-05 cannot be relabeled as clean after repair.
+
+Current evidence:
+PVE-246 / CLEAN_SELECTION_DATE_ZERO / Gate 7 CLOSED.
+D02 remains 60.0%.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-247 — consume System 1 implementation/readback for the certified three-part root cause. Require physical schedule-identity, >=20 same-slot baseline with finite pvSlotRvol20, and provider/endpoint/rawPayloadHash provenance before capturing the first future H001 canonical receipt. Until then, fail closed.
