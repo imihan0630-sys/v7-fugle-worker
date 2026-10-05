@@ -1,7 +1,7 @@
 # Passive Flow & Index Rebalancing Checkpoint
 
 Updated: 2026-09-28 Asia/Taipei
-Current cursor: PF-001 through PF-038 complete.
+Current cursor: PF-001 through PF-041 complete.
 Status: CONCEPT_COMPLETE / SOURCE_MAP_COMPLETE / BOUNDED_MSCI_MEMBERSHIP_CONTRACT_VALIDATED / ETF_NET_UNITS_PROSPECTIVE_CONTRACT_READY / SOURCE_LICENSE_AND_HISTORY_GATES / OUTCOME_DATA_GATED.
 Next: validate prospective ETF units-delta + PCF timestamp/corporate-action semantics on a bounded domestic in-kind sample; seek authorized/licensed membership-event sources; separately improve weight-change/non-MSCI/historical-PIT/close-auction coverage before outcome testing.
 
@@ -101,3 +101,19 @@ Next: validate prospective ETF units-delta + PCF timestamp/corporate-action sema
 2. Preserve existing-inventory, collective-creation, minimum-basket, shortage-stock buy/borrow and cash-substitution uncertainty in every modeled basket receipt.
 3. Without actual AP/market execution evidence, actual constituent execution remains UNKNOWN.
 4. Do not promote D06-16 or start outcomes from mechanism completeness alone.
+
+
+## PF-040 through PF-041 durable update
+- PF-040 corrected the T/T-1 clock: a T decision PCF can legitimately carry prior-business-day ISSUES-DIFF; announce/use date and unit-observation date must be separate.
+- The 2026-10-05 decision generation was captured twice and remained stable.
+- The 2026-10-06 decision generation was prospectively captured on 2026-10-05 evening and re-read with identical hashes for 0050 and 0056.
+- Cash-substitution and corporate-action states are preserved.
+- D06-16 promotes L2/40 -> L3/60 for Taiwan PIT/source feasibility only.
+- Actual AP/constituent execution remains UNKNOWN; modeled basket exposure is not actual stock passive flow.
+- D06-11 remains L2; no outcome test; no Formal change.
+
+## Exact next continuation after PF-041
+1. Accumulate additional decision generations and append every same-generation version change.
+2. Freeze L4 OOS/Shadow hypotheses before outcomes.
+3. Test residual incrementality beyond institutional flow/index-event/price-volume/liquidity/regime on common support.
+4. Keep actual execution UNKNOWN and preserve one-event/one-primitive anti-double-count lineage.
