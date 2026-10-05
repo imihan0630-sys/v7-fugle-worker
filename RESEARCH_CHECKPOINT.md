@@ -2741,3 +2741,24 @@ Rules:
 - respect the existing exact System 1 continuation and integrate these as audit-required engineering deltas, not as a restart.
 
 Mode guidance for actual cross-file implementation/tests: Codex / GPT-6 Astra / High.
+
+
+## 2026-10-05 D02 PVE-245 System 1 runtime remediation intake
+
+Source:
+`research/D02_PVE245_SYSTEM1_RUNTIME_REMEDIATION_HANDOFF_20261005_V0_1.md`.
+
+Physical D02 read-only evidence at PVE-244 found three independent blockers to the first clean H001 prospective receipt:
+- physical 15m capture exists, but the monitored 2454 baseline has only 1 valid prior session and pvSlotRvol20 remains null; the frozen bootstrap implementation intends a 180-day historical 15m bootstrap until >=20 valid sessions;
+- physical PV snapshot source provenance lacks provider / endpoint / rawPayloadHash required by the frozen D02 canonical receipt;
+- 2026-10-05 D1 intraday cron evidence truncates around 11:08 Asia/Taipei, and a 23:35 row is physically recorded as INTRADAY_MONITOR/SKIPPED despite source semantics that classify Taiwan hour >=18 as after-market.
+
+Routing:
+- Class A read-only root-cause diagnostics may proceed;
+- any production persistence/schema/bootstrap/runtime/schedule change must be classified under `RESEARCH_ENGINEERING_GOVERNANCE.md` before merge/deploy;
+- this intake does not authorize a Formal Core change;
+- 2026-10-05 must not be retrospectively relabeled as clean prospective evidence after repair.
+
+Acceptance criteria and exact field-level requirements are in the PVE-245 handoff.
+
+System 1 should integrate this as a bounded runtime/evidence remediation dependency, not restart selection research and not alter Formal A/B, ranking, Top6, thresholds, capital, trading or push behavior without the required authorization.
