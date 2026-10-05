@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "D06_08_09_TPEX_MARGIN_SBL_UNIVERSE_GUARD_20261005_V0_1",
+  "updatedAt": "2026-10-05 Asia/Taipei",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "modules": [
+    "D06-08",
+    "D06-09"
+  ],
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "tradeDate": "2026-10-05",
+  "sourceParents": [
+    "research/d06_07_08_tpex_margin_late_snapshot_20261005_2340_v0_1.csv",
+    "research/d06_08_09_tpex_sbl_late_snapshot_20261005_2340_v0_1.csv"
+  ],
+  "observedUniverse": {
+    "marginTransactionsRows": 918,
+    "sblRows": 931,
+    "commonRows": 918,
+    "sblOnlyRows": 13,
+    "sblOnlyAllNoteY": true,
+    "noteYSemantics": "未取得信用交易資格",
+    "sblOnlyWithNonzeroSblShortBalance": 13,
+    "sblOnlyWithNonzeroSblShortSellToday": 5,
+    "sblOnlyWithAnySameDaySblActivity": 7,
+    "sblOnlySymbols": [
+      "3485",
+      "6680",
+      "6846",
+      "6904",
+      "6983",
+      "7713",
+      "7743",
+      "7772",
+      "7820",
+      "7828",
+      "7856",
+      "8084",
+      "8092"
+    ]
+  },
+  "unitGuard": {
+    "commonMarginShortBalanceFlowFieldsExactAfterLotsTimes1000": "918/918",
+    "shortLimitExactTimes1000": "173/918",
+    "shortLimitFloorSharesDiv1000EqualsDisplayedLots": "918/918",
+    "rule": "For prev/sell/buy/cash-repay/balance fields, LOTS*1000 equals SHARES exactly. For limit, the margin page displays whole lots equal to floor(shareLimit/1000); preserve source-native precision."
+  },
+  "antiSelectionBiasRules": [
+    "D06-09 SBL universe must not be inner-joined to the D06-08 margin-eligible universe by default.",
+    "Y/not-credit-qualified rows are structurally absent from the margin-transactions table but can carry real SBL short balances and same-day activity.",
+    "Absence from the margin table is not zero SBL activity and not missing-data evidence for D06-09.",
+    "D06-08 and D06-09 require separate denominators and coverage counts before any cross-sectional comparison.",
+    "When comparing only common support, report the dropped SBL-only population separately.",
+    "Credit eligibility is a market-rule state, not an investor-motive label."
+  ],
+  "status": "UNIVERSE_MISMATCH_EMPIRICALLY_CONFIRMED / INNER_JOIN_BIAS_GUARD_FROZEN / UNIT_PRECISION_GUARD_FROZEN / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "maturityImpact": "NONE",
+  "exactNext": "Carry separate D06-08 margin-eligible and D06-09 SBL universes into every future receipt. On the next trading date verify whether the 13-row pattern persists; never infer zero SBL from margin-table absence."
+}
