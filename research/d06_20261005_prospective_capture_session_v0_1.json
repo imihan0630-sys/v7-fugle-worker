@@ -91,7 +91,9 @@
         "sourceProduct": "TWTAIUC including block trades",
         "state": "OFFICIAL_PAID_PRODUCT / NOT_AUTHORIZED / NOT_CAPTURED",
         "rule": "Do not substitute the public 18:00 non-block T86 values."
-      }
+      },
+      "crossMarketPseudoreplicationGuard": "research/d06_03_cross_market_desk_disagreement_guard_20261005_v0_1.json",
+      "independentTemporalReplicationCountThrough20261005": 1
     },
     {
       "laneId": "D06_05_TDCC_LINEAGE",
@@ -181,15 +183,20 @@
       ],
       "primitiveReceiptId": "D06-20261005-TPEX-DAYTRADE-T",
       "informationRoot": "VOLUME_TURNOVER",
-      "preopenState": "T_PRELIM_NOT_YET_OBSERVED / VARIABLE_SOURCE_WORKFLOW_PENDING",
+      "preopenState": "T_PRELIM_NOT_YET_OBSERVED / VARIABLE_SOURCE_WORKFLOW_PENDING / TWO_ATTEMPTS_PRESERVED",
       "currentVintage": "T_PRELIM",
       "followups": [
         "T1_REVISED",
         "T2_FINAL"
       ],
       "rule": "preserve append-only revision lineage; surveillance threshold is context, not alpha",
-      "lastAttemptAt": "2026-10-05T20:33:21+08:00",
-      "attemptReceipt": "research/d06_14_tpex_daytrade_tprelim_attempt_20261005_v0_1.json"
+      "lastAttemptAt": "2026-10-05T20:43:06+08:00",
+      "attemptReceipt": "research/d06_14_tpex_daytrade_tprelim_attempt_20261005_v0_1.json",
+      "retryReceipt": "research/d06_14_tpex_daytrade_tprelim_retry_20261005_2043_v0_1.json",
+      "attemptHistory": [
+        "research/d06_14_tpex_daytrade_tprelim_attempt_20261005_v0_1.json",
+        "research/d06_14_tpex_daytrade_tprelim_retry_20261005_2043_v0_1.json"
+      ]
     },
     {
       "laneId": "D06_16_PF040_ETF_UNITS_PCF",
@@ -247,5 +254,5 @@
   },
   "maturityImpact": "D06_16_L2_TO_L3_AT_2036 / OTHER_LANES_NO_PROMOTION",
   "formalOptimizationCandidate": "NONE",
-  "exactNext": "Continue only remaining frozen lanes at their real source clocks. At 22:30 repeat TPEx leverage source families as LATE and never backfill the 20:30 EARLY UNKNOWN/MISSING slot. Retry D06-14 T_PRELIM later the same evening only from the actual stock-level statistics object. D06-16 PF-041 now passes L3 Taiwan PIT/source feasibility; D06-11 remains L2 and actual stock execution UNKNOWN. D06-06 must continue waiting for D02 PVE-243 or another genuine same-generation canonical PRICE_OHLC/VOLUME_TURNOVER parent; PVE-241/242 are schema/guard evidence only. Attach TDCC parent to D06-05/D06-06 only when a valid same-generation research row exists. D06-18 live 15:20 slot remains UNKNOWN/MISSING and cannot be backfilled. Outcomes remain closed."
+  "exactNext": "Exact next: TPEx leverage LATE at 22:30 with no EARLY backfill; retry D06-14 T_PRELIM later only if actual same-date stock rows appear; D06-06 waits for D02 PVE-243 genuine prospective canonical PRICE_OHLC/VOLUME_TURNOVER parent; D06-05 waits for a real same-generation row before TDCC attachment. D06-16 is L3 source/PIT-ready after PF-041 but L4/outcomes remain closed. IC-074 freezes that same-day TWSE+TPEx dealer evidence counts as one temporal replication, not two. D06-18 15:20 live slot remains UNKNOWN/MISSING."
 }
