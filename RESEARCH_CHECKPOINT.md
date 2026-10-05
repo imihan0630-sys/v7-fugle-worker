@@ -2834,3 +2834,19 @@ Governance:
 
 D02 exact continuation after implementation:
 `PVE-247` — consume the System 1 repair/readback and accept the first future H001 canonical receipt only when schedule identity, >=20 same-slot baseline with finite pvSlotRvol20, and raw provenance all physically pass.
+
+
+## 2026-10-06 SDA oracle supersession pointer
+
+00 audit authority has advanced the current validation baseline:
+- SDA-016: research/SDA016_VALIDATION_ORACLE_20261006_V0_4.json — 48 blocking tests;
+- SDA-017: research/SDA017_VALIDATION_ORACLE_20261006_V0_3.json — 48 blocking tests;
+- shared engineering routing: shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_ROUTING_20261005_V0_1.md.
+
+For System 1:
+- PR #644 scan-origin/generation-inventory is a useful Class-B provenance candidate but remains OPEN/DRAFT/NOT_MERGED/NOT_DEPLOYED and does not satisfy authoritative Formal-decision -> exact C1-generation binding by itself;
+- merge/deploy remains separately owner-gated;
+- S1 Selection Shadow launch gate remains PARTIAL until SDA-001/004 three schema deltas, SDA-009 leave-one-out diagnostic and genuine same-generation parent binding are complete;
+- PVE-246 root causes are certified, but Production remediation is not yet credited.
+
+This pointer does not reorder the active System 1 task lane and authorizes no Formal or Production mutation.
