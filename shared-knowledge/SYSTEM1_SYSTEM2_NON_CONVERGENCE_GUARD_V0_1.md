@@ -4,7 +4,7 @@ Updated: 2026-10-06 Asia/Taipei
 Status: CANONICAL_CROSS_SYSTEM_ARCHITECTURE_GUARD
 Owner: 00｜研究總控／稽核
 Formal Core impact: NONE
-Scope: System 1 + System 2
+Scope: System 1 + System 2 across all related ChatGPT projects/rooms that use this repository/shared bootstrap
 
 ## Problem
 
@@ -239,3 +239,16 @@ Primary reason:
 - without explicit non-convergence observability, gradual policy convergence could be mistaken for independent confirmation.
 
 No Formal behavior is changed by this guard.
+
+
+## Cross-project enforcement
+
+This guard applies regardless of which ChatGPT Project contains the build room.
+
+If a System 1 / System 2 / equivalent primary build room restores state from this repository or shared bootstrap, it MUST consume this guard before changing candidate generation, ranking, strategy integration, Regime/confluence use, or cross-system confirmation semantics.
+
+Project boundaries are not architecture boundaries.
+
+Opening System 1 or System 2 in a different ChatGPT Project must not create a second policy fork or bypass SDA-022.
+
+A completely unrelated project that does not read this repository/shared bootstrap cannot be technically forced by this file; such a project must explicitly adopt this bootstrap/governance source before automatic enforcement can be claimed.
