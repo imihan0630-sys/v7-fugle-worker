@@ -1,3 +1,9 @@
+> Reconciliation notice — 2026-10-05
+> Status: HISTORICAL_FLAT_INTERFACE_ONLY / SUPERSEDED_AS_CONTRACT.
+> The authoritative frozen receipt contract is research/d02_prospective_pv_provenance_receipt_schema_v0_1.json.
+> The flat guard remains historical implementation evidence only. Canonical executable validation is research/d02_pve241_canonical_guard_v0_2.mjs and tests/test_d02_pve241_canonical_guard_v0_2.mjs.
+> Do not use this document as a second receipt schema.
+
 # D02 PVE-241 Prospective Receipt Contract V0.1
 
 Updated: 2026-10-05 Asia/Taipei
