@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-05T08:39:00+08:00",
+  "updatedAt": "2026-10-05T08:47:00+08:00",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -673,7 +673,7 @@
     {
       "id": "SDA-020",
       "severity": "MEDIUM",
-      "status": "ROUTED",
+      "status": "REMEDIATION_IN_PROGRESS",
       "domains": [
         "D21"
       ],
@@ -693,12 +693,20 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "HINDSIGHT_FIREWALL_STRONG_INSIDER_PLEDGE_CLOCK_AND_SYSTEM_LINEAGE_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_MEDIUM_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "D21-03 authoritative insider knownAt",
+        "D21-04 original pledge setup/release receipts",
+        "generic governance/insider sourceVintage/knownAt lineage",
+        "OOS residual incrementality"
       ]
     },
     {
       "id": "SDA-021",
       "severity": "MEDIUM",
-      "status": "ROUTED",
+      "status": "REMEDIATION_IN_PROGRESS",
       "domains": [
         "D22"
       ],
@@ -719,10 +727,21 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "CREDIT_LAYER_AND_PROVENANCE_FIREWALL_STRONG_SAME_POP_BASELINE_MARKET_CREDIT_AND_RECOVERY_EVIDENCE_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_MEDIUM_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "D22-05 same-population B0/B1 baseline",
+        "D22-04/06 multi-date market-credit transport and trade provenance",
+        "D22-12 instrument-level recovery waterfall replay",
+        "System1 credit lineage/coverage eligibility",
+        "D07 residual incrementality"
       ]
     }
   ],
   "lastReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md",
   "lastHighReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md",
-  "lastRemainingHighReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md"
+  "lastRemainingHighReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_REMAINING_HIGH_RECONCILIATION_20261005_V0_1.md",
+  "lastMediumReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_MEDIUM_RECONCILIATION_20261005_V0_1.md",
+  "firstFullReconciliationBaselineComplete": true
 }
