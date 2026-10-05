@@ -207,3 +207,12 @@ next verifier. Formal optimization remains ineligible.
 - Real GET-only collector run 36983767480 / job 110764009881 executed the activated paired CLI and intentionally failed closed: scanDate=2026-10-01, verificationFailure=C1_GENERATION_NOT_FOUND, category=FORMAL_SCAN_NOT_CONFIRMED, mayCountAsZeroPick=false, noPlanChanges=true. It did not produce C1/C2 success artifacts or fabricate a historical receipt. This validates the negative live path, not a successful new generation.
 - Always-upload step PASS. Saved one readiness artifact: system1-c1-evidence-36983767480, artifact ID 11216068363, 552 bytes, ZIP SHA256 d36a5fd52914e711189187a282e6c870f30844cfabbf991c3da95e02a8b253a3, 90-day retention. Run: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/36983767480 . Failure therefore remains reviewable instead of silently becoming zero picks.
 - Remaining acceptance cursor unchanged: genuine 2026-10-02 normal 23:35/23:55 scan, then scheduled collector 2026-10-03 00:10 Taipei. Determine any new upstream/capture failure from that session's preserved facts; never retroactively manufacture 10/01 WATCH/C1. No strategy switch is authorized.
+
+## SDA-001 / SDA-004 / SDA-016 Class A engineering continuation — 2026-10-05
+
+Current engineering cursor for the owner's requested remediation is
+`research/SYSTEM1_SDA_SHADOW_REMEDIATION_CHECKPOINT_20261005.md`.
+It reuses the frozen D03 registry and adds offline diagnostics plus a generic
+experiment/holdout guard. Earlier historical runtime/approval notes above are
+not the scope of this task. Formal Core remains LOCKED; no Production change.
+The task checkpoint preserves precise validation and remaining D16/00 boundaries.

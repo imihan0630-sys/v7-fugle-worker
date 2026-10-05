@@ -64,7 +64,13 @@
         "machine factor-lineage fields",
         "raw-vs-dedup Top6 diagnostic",
         "D16 residual incrementality readback"
-      ]
+      ],
+      "system1Engineering": {
+        "status": "CLASS_A_IMPLEMENTED_VALIDATION_PENDING",
+        "receipt": "research/SYSTEM1_SDA_SHADOW_REMEDIATION_CHECKPOINT_20261005.md",
+        "formalCoreImpact": "NONE",
+        "ticketClosure": false
+      }
     },
     {
       "id": "SDA-002",
@@ -164,7 +170,13 @@
         "parameter-family enforcement",
         "deterministic no-alias-evidence-inflation test",
         "D16 promotion-grade residual/OOS"
-      ]
+      ],
+      "system1Engineering": {
+        "status": "CLASS_A_IMPLEMENTED_VALIDATION_PENDING",
+        "receipt": "research/SYSTEM1_SDA_SHADOW_REMEDIATION_CHECKPOINT_20261005.md",
+        "formalCoreImpact": "NONE",
+        "ticketClosure": false
+      }
     },
     {
       "id": "SDA-005",
@@ -567,7 +579,13 @@
         "target/benchmark mutation rejection",
         "generic outcome-lock / consumed-holdout semantics",
         "independent 00 closure"
-      ]
+      ],
+      "system1Engineering": {
+        "status": "CLASS_A_IMPLEMENTED_VALIDATION_PENDING",
+        "receipt": "research/SYSTEM1_SDA_SHADOW_REMEDIATION_CHECKPOINT_20261005.md",
+        "formalCoreImpact": "NONE",
+        "ticketClosure": false
+      }
     },
     {
       "id": "SDA-017",
