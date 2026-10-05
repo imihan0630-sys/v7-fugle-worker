@@ -1,0 +1,655 @@
+{
+  "schemaVersion": "0.2",
+  "generatedAt": "2026-10-05 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_DERIVATION_AWARE_TARGET_REGISTRY",
+  "evidenceCursor": "PVE-239",
+  "formalCore": "LOCKED",
+  "numericalTargetsFrozen": 0,
+  "numericalTargetsPending": 14,
+  "supersedesForFutureTargetWork": "research/d02_l4_effect_target_registry_v0_1.json",
+  "notes": [
+    "V0.1 remains historical initial pending registry.",
+    "V0.2 carries derivation readiness and partial shell state; it does not fabricate numerical targets.",
+    "A target may become FROZEN only after D02_L4_TARGET_FREEZE_PRECONDITION_V0_1 passes.",
+    "Promotion-grade D16 consumption then requires D02_D16_L4_RECEIPT_GUARD_V0_2."
+  ],
+  "entries": {
+    "D02-01:SEMANTIC_GOVERNANCE": {
+      "multipleTestingFamilyId": "F0",
+      "allowedTargetKind": "SEMANTIC_MATERIALITY_TARGET",
+      "targetStatus": "TARGET_VALUE_PENDING_FREEZE",
+      "promotionGradeD16ReceiptAllowed": false,
+      "targetShellStatus": "PRIMARY_ESTIMAND_SHELL_FROZEN_NUMERICAL_VALUE_PENDING",
+      "estimandId": "D02_01_MATERIAL_PREVENTION_RATE_V0_1",
+      "metric": "materialPreventionCandidateCount / eligibleSemanticReceipts",
+      "unit": "share_of_eligible_semantic_receipts",
+      "direction": "GREATER_THAN_OR_EQUAL",
+      "comparatorId": "GOVERNED_VS_UNGOVERNED_FROZEN_ADAPTER",
+      "outcomeFamily": "CLASSIFICATION_DELTA / MATERIAL_PREVENTION",
+      "outcomeHorizon": "SAME_DECISION_RECEIPT",
+      "costTreatment": "NOT_APPLICABLE_TO_SEMANTIC_PRIMARY_ESTIMAND",
+      "thresholdValue": null,
+      "maxHalfWidth": null,
+      "targetId": null,
+      "targetVersion": null,
+      "targetHash": null,
+      "allowedRationaleBases": [
+        "SEMANTIC_POLICY"
+      ],
+      "readyComponents": [
+        "estimand",
+        "comparator",
+        "outcome family",
+        "horizon",
+        "cost treatment"
+      ],
+      "pendingComponents": [
+        "numerical semantic tolerance"
+      ],
+      "currentBlocker": "No formal acceptable false-classification/material-prevention tolerance is frozen.",
+      "ownerNeed": "D02 owner must justify semantic materiality from governance consequence, not from observed incidence.",
+      "derivationMatrixRef": "research/d02_l4_effect_target_derivation_matrix_v0_1.json",
+      "primaryShellRef": "research/d02_l4_primary_outcome_shell_registry_v0_1.json",
+      "freezePreconditionGuardRef": "research/d02_l4_target_freeze_precondition_guard_v0_1.mjs",
+      "d16PromotionGuardRef": "research/d02_d16_l4_validation_receipt_guard_v0_2.mjs"
+    },
+    "D02-02:H001": {
+      "multipleTestingFamilyId": "F1",
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "targetStatus": "TARGET_VALUE_PENDING_FREEZE",
+      "promotionGradeD16ReceiptAllowed": false,
+      "targetShellStatus": "PRIMARY_OUTCOME_FAMILY_FROZEN_METRIC_AND_VALUE_PENDING",
+      "estimandId": "D02_02_H001_STRUCTURAL_FAILURE_INCREMENT_V0_1",
+      "metric": null,
+      "unit": null,
+      "direction": "IMPROVEMENT_REQUIRED",
+      "comparatorId": "MODEL_C_VS_MODEL_B",
+      "outcomeFamily": "FROZEN_STRUCTURAL_FAILURE_NO_FOLLOW_THROUGH",
+      "outcomeHorizon": "B1_B2_B4_FAMILY_PRIMARY_HORIZON_NOT_YET_SELECTED",
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "thresholdValue": null,
+      "maxHalfWidth": null,
+      "targetId": null,
+      "targetVersion": null,
+      "targetHash": null,
+      "allowedRationaleBases": [
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "readyComponents": [
+        "estimand family",
+        "comparator",
+        "admission support"
+      ],
+      "pendingComponents": [
+        "single primary outcome metric",
+        "single primary horizon",
+        "numerical target",
+        "cost-benefit anchor"
+      ],
+      "currentBlocker": "Multiple registered outcomes remain; choosing one after outcomes would be test shopping.",
+      "ownerNeed": "D02 must freeze one primary outcome/horizon pre-outcome; D14 supplies cost context if economic.",
+      "derivationMatrixRef": "research/d02_l4_effect_target_derivation_matrix_v0_1.json",
+      "primaryShellRef": "research/d02_l4_primary_outcome_shell_registry_v0_1.json",
+      "freezePreconditionGuardRef": "research/d02_l4_target_freeze_precondition_guard_v0_1.mjs",
+      "d16PromotionGuardRef": "research/d02_d16_l4_validation_receipt_guard_v0_2.mjs"
+    },
+    "D02-03:H20": {
+      "multipleTestingFamilyId": "F1",
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "targetStatus": "TARGET_VALUE_PENDING_FREEZE",
+      "promotionGradeD16ReceiptAllowed": false,
+      "targetShellStatus": "PRIMARY_OUTCOME_FAMILY_FROZEN_METRIC_AND_VALUE_PENDING",
+      "estimandId": "D02_03_H20_BREAKOUT_QUALITY_INCREMENT_V0_1",
+      "metric": null,
+      "unit": null,
+      "direction": "IMPROVEMENT_REQUIRED",
+      "comparatorId": "MODEL_C_VS_MODEL_B_ON_IDENTICAL_D01_BREAKOUT_EVENT",
+      "outcomeFamily": "BREAKOUT_STRUCTURAL_FAILURE_NO_FOLLOW_THROUGH",
+      "outcomeHorizon": "B1_B2_B4_FAMILY_PRIMARY_HORIZON_NOT_YET_SELECTED",
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "thresholdValue": null,
+      "maxHalfWidth": null,
+      "targetId": null,
+      "targetVersion": null,
+      "targetHash": null,
+      "allowedRationaleBases": [
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "readyComponents": [
+        "primitive event owner",
+        "comparator",
+        "negative cases"
+      ],
+      "pendingComponents": [
+        "single primary outcome metric",
+        "single primary horizon",
+        "numerical target",
+        "economic utility anchor"
+      ],
+      "currentBlocker": "Breakout quality has several valid outcomes; no single decision-value target is canonical yet.",
+      "ownerNeed": "D02+D01 must keep event identity fixed; D02 freezes one outcome/horizon; D14 cost context later.",
+      "derivationMatrixRef": "research/d02_l4_effect_target_derivation_matrix_v0_1.json",
+      "primaryShellRef": "research/d02_l4_primary_outcome_shell_registry_v0_1.json",
+      "freezePreconditionGuardRef": "research/d02_l4_target_freeze_precondition_guard_v0_1.mjs",
+      "d16PromotionGuardRef": "research/d02_d16_l4_validation_receipt_guard_v0_2.mjs"
+    },
+    "D02-04:DRYUP": {
+      "multipleTestingFamilyId": "F1",
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "targetStatus": "TARGET_VALUE_PENDING_FREEZE",
+      "promotionGradeD16ReceiptAllowed": false,
+      "targetShellStatus": "DERIVATION_READINESS_ONLY",
+      "estimandId": null,
+      "metric": null,
+      "unit": null,
+      "direction": null,
+      "comparatorId": "DRYUP candidate vs identical-support controls without D02 dry-up increment",
+      "outcomeFamily": [
+        "later demand re-expansion",
+        "future path quality",
+        "MFE/MAE"
+      ],
+      "outcomeHorizon": [
+        "not yet singularly frozen"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "thresholdValue": null,
+      "maxHalfWidth": null,
+      "targetId": null,
+      "targetVersion": null,
+      "targetHash": null,
+      "allowedRationaleBases": [
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "readyComponents": [
+        "feature identity",
+        "required controls",
+        "hindsight prohibition"
+      ],
+      "pendingComponents": [
+        "primary outcome metric",
+        "primary horizon",
+        "numeric target"
+      ],
+      "currentBlocker": "Setup quality is conceptually frozen but not reduced to one primary metric/horizon.",
+      "ownerNeed": "D02 must freeze target shell before outcome access; D16 owns adequacy thereafter.",
+      "derivationMatrixRef": "research/d02_l4_effect_target_derivation_matrix_v0_1.json",
+      "primaryShellRef": null,
+      "freezePreconditionGuardRef": "research/d02_l4_target_freeze_precondition_guard_v0_1.mjs",
+      "d16PromotionGuardRef": "research/d02_d16_l4_validation_receipt_guard_v0_2.mjs"
+    },
+    "D02-05:EXTREME_PARTICIPATION": {
+      "multipleTestingFamilyId": "F2",
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "targetStatus": "TARGET_VALUE_PENDING_FREEZE",
+      "promotionGradeD16ReceiptAllowed": false,
+      "targetShellStatus": "DERIVATION_READINESS_ONLY",
+      "estimandId": null,
+      "metric": null,
+      "unit": null,
+      "direction": null,
+      "comparatorId": "controlled response model with vs without extreme-participation interaction",
+      "outcomeFamily": [
+        "future path",
+        "MFE",
+        "MAE",
+        "failure/continuation"
+      ],
+      "outcomeHorizon": [
+        "not yet singularly frozen"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "thresholdValue": null,
+      "maxHalfWidth": null,
+      "targetId": null,
+      "targetVersion": null,
+      "targetHash": null,
+      "allowedRationaleBases": [
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "readyComponents": [
+        "observable construct",
+        "forbidden motive labels",
+        "control set"
+      ],
+      "pendingComponents": [
+        "primary metric",
+        "horizon",
+        "numeric target"
+      ],
+      "currentBlocker": "No directional sign is assumed; a single promotion estimand is not yet frozen.",
+      "ownerNeed": "D02 must choose a non-motive path metric/horizon before any outcome inspection.",
+      "derivationMatrixRef": "research/d02_l4_effect_target_derivation_matrix_v0_1.json",
+      "primaryShellRef": null,
+      "freezePreconditionGuardRef": "research/d02_l4_target_freeze_precondition_guard_v0_1.mjs",
+      "d16PromotionGuardRef": "research/d02_d16_l4_validation_receipt_guard_v0_2.mjs"
+    },
+    "D02-06:H003": {
+      "multipleTestingFamilyId": "F2",
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "targetStatus": "TARGET_VALUE_PENDING_FREEZE",
+      "promotionGradeD16ReceiptAllowed": false,
+      "targetShellStatus": "PRIMARY_OUTCOME_FAMILY_FROZEN_METRIC_AND_VALUE_PENDING",
+      "estimandId": "D02_06_H003_ACCEPTANCE_FAILURE_INCREMENT_V0_1",
+      "metric": null,
+      "unit": null,
+      "direction": "IMPROVEMENT_REQUIRED",
+      "comparatorId": "PRICE_PLUS_VOLUME_RESPONSE_VS_PRICE_ONLY_RESPONSE",
+      "outcomeFamily": "STRUCTURAL_ACCEPTANCE_FAILURE",
+      "outcomeHorizon": "FUTURE_ONLY_AFTER_FEATURE_BAR_PRIMARY_HORIZON_NOT_YET_SELECTED",
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "thresholdValue": null,
+      "maxHalfWidth": null,
+      "targetId": null,
+      "targetVersion": null,
+      "targetHash": null,
+      "allowedRationaleBases": [
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "readyComponents": [
+        "comparator",
+        "anti-circular clock",
+        "clean-event counter"
+      ],
+      "pendingComponents": [
+        "primary discrimination metric",
+        "primary horizon",
+        "numeric target"
+      ],
+      "currentBlocker": "Representation incrementality is frozen, but the promotion-grade discrimination metric is not.",
+      "ownerNeed": "D02 freezes one metric/horizon; D16 evaluates dependence-aware improvement.",
+      "derivationMatrixRef": "research/d02_l4_effect_target_derivation_matrix_v0_1.json",
+      "primaryShellRef": "research/d02_l4_primary_outcome_shell_registry_v0_1.json",
+      "freezePreconditionGuardRef": "research/d02_l4_target_freeze_precondition_guard_v0_1.mjs",
+      "d16PromotionGuardRef": "research/d02_d16_l4_validation_receipt_guard_v0_2.mjs"
+    },
+    "D02-07:SVB20": {
+      "multipleTestingFamilyId": "F3",
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "targetStatus": "TARGET_VALUE_PENDING_FREEZE",
+      "promotionGradeD16ReceiptAllowed": false,
+      "targetShellStatus": "DERIVATION_READINESS_ONLY",
+      "estimandId": null,
+      "metric": null,
+      "unit": null,
+      "direction": null,
+      "comparatorId": "D vs C",
+      "outcomeFamily": [
+        "future return/path",
+        "MFE",
+        "MAE"
+      ],
+      "outcomeHorizon": [
+        "D1/D3/D5/D10 eligible family; no single primary"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "thresholdValue": null,
+      "maxHalfWidth": null,
+      "targetId": null,
+      "targetVersion": null,
+      "targetHash": null,
+      "allowedRationaleBases": [
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "readyComponents": [
+        "canonical comparator",
+        "anti-duplicate rule",
+        "common-support sequence"
+      ],
+      "pendingComponents": [
+        "primary outcome",
+        "primary horizon",
+        "numeric target"
+      ],
+      "currentBlocker": "SVB residual value is defined, but no single promotion metric/horizon is frozen.",
+      "ownerNeed": "D02 must not let CMF/OBV variants select the target ex post.",
+      "derivationMatrixRef": "research/d02_l4_effect_target_derivation_matrix_v0_1.json",
+      "primaryShellRef": null,
+      "freezePreconditionGuardRef": "research/d02_l4_target_freeze_precondition_guard_v0_1.mjs",
+      "d16PromotionGuardRef": "research/d02_d16_l4_validation_receipt_guard_v0_2.mjs"
+    },
+    "D02-08:PROVIDER_PRESSURE": {
+      "multipleTestingFamilyId": "F4",
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "targetStatus": "TARGET_VALUE_PENDING_FREEZE",
+      "promotionGradeD16ReceiptAllowed": false,
+      "targetShellStatus": "DERIVATION_READINESS_ONLY",
+      "estimandId": null,
+      "metric": null,
+      "unit": null,
+      "direction": null,
+      "comparatorId": "baseline controls vs baseline + provider pressure proxy",
+      "outcomeFamily": [
+        "future path discrimination",
+        "MFE",
+        "MAE"
+      ],
+      "outcomeHorizon": [
+        "intraday/future path not singularly frozen"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "thresholdValue": null,
+      "maxHalfWidth": null,
+      "targetId": null,
+      "targetVersion": null,
+      "targetHash": null,
+      "allowedRationaleBases": [
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "readyComponents": [
+        "proxy semantics",
+        "coverage variable",
+        "liquidity controls",
+        "intent prohibition"
+      ],
+      "pendingComponents": [
+        "primary metric",
+        "primary horizon",
+        "numeric target"
+      ],
+      "currentBlocker": "Independent source exists, but no single promotion outcome/horizon is canonical.",
+      "ownerNeed": "D02 must freeze an observable predictive estimand, never participant intent.",
+      "derivationMatrixRef": "research/d02_l4_effect_target_derivation_matrix_v0_1.json",
+      "primaryShellRef": null,
+      "freezePreconditionGuardRef": "research/d02_l4_target_freeze_precondition_guard_v0_1.mjs",
+      "d16PromotionGuardRef": "research/d02_d16_l4_validation_receipt_guard_v0_2.mjs"
+    },
+    "D02-09:PIVOT_SIGNED_VOLUME": {
+      "multipleTestingFamilyId": "F3",
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "targetStatus": "TARGET_VALUE_PENDING_FREEZE",
+      "promotionGradeD16ReceiptAllowed": false,
+      "targetShellStatus": "DERIVATION_READINESS_ONLY",
+      "estimandId": null,
+      "metric": null,
+      "unit": null,
+      "direction": null,
+      "comparatorId": "typed divergence model vs primitive price+volume model",
+      "outcomeFamily": [
+        "post-confirmation future path",
+        "MFE",
+        "MAE"
+      ],
+      "outcomeHorizon": [
+        "post-confirmedAt; no single primary horizon"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "thresholdValue": null,
+      "maxHalfWidth": null,
+      "targetId": null,
+      "targetVersion": null,
+      "targetHash": null,
+      "allowedRationaleBases": [
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "readyComponents": [
+        "typed family",
+        "pivot clock",
+        "anti-cherry-pick rules"
+      ],
+      "pendingComponents": [
+        "primary metric",
+        "primary horizon",
+        "numeric target"
+      ],
+      "currentBlocker": "Confirmation-lag-safe outcome family exists but single decision horizon is not frozen.",
+      "ownerNeed": "D02 must freeze horizon after confirmedAt and keep pivot scale fixed.",
+      "derivationMatrixRef": "research/d02_l4_effect_target_derivation_matrix_v0_1.json",
+      "primaryShellRef": null,
+      "freezePreconditionGuardRef": "research/d02_l4_target_freeze_precondition_guard_v0_1.mjs",
+      "d16PromotionGuardRef": "research/d02_d16_l4_validation_receipt_guard_v0_2.mjs"
+    },
+    "D02-09:PARTICIPATION_TRAJECTORY": {
+      "multipleTestingFamilyId": "F3",
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "targetStatus": "TARGET_VALUE_PENDING_FREEZE",
+      "promotionGradeD16ReceiptAllowed": false,
+      "targetShellStatus": "DERIVATION_READINESS_ONLY",
+      "estimandId": null,
+      "metric": null,
+      "unit": null,
+      "direction": null,
+      "comparatorId": "C vs B in typed trajectory sequence",
+      "outcomeFamily": [
+        "future path",
+        "MFE",
+        "MAE"
+      ],
+      "outcomeHorizon": [
+        "not yet singularly frozen"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "thresholdValue": null,
+      "maxHalfWidth": null,
+      "targetId": null,
+      "targetVersion": null,
+      "targetHash": null,
+      "allowedRationaleBases": [
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "readyComponents": [
+        "typed family",
+        "primitive controls"
+      ],
+      "pendingComponents": [
+        "primary metric",
+        "primary horizon",
+        "numeric target"
+      ],
+      "currentBlocker": "Relational transform is frozen; promotion outcome is not singularly frozen.",
+      "ownerNeed": "D02 must not borrow the pivot-family target.",
+      "derivationMatrixRef": "research/d02_l4_effect_target_derivation_matrix_v0_1.json",
+      "primaryShellRef": null,
+      "freezePreconditionGuardRef": "research/d02_l4_target_freeze_precondition_guard_v0_1.mjs",
+      "d16PromotionGuardRef": "research/d02_d16_l4_validation_receipt_guard_v0_2.mjs"
+    },
+    "D02-10:TREND_VOLUME_INTERACTION": {
+      "multipleTestingFamilyId": "F5",
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "targetStatus": "TARGET_VALUE_PENDING_FREEZE",
+      "promotionGradeD16ReceiptAllowed": false,
+      "targetShellStatus": "DERIVATION_READINESS_ONLY",
+      "estimandId": null,
+      "metric": null,
+      "unit": null,
+      "direction": null,
+      "comparatorId": "D vs C",
+      "outcomeFamily": [
+        "future path discrimination",
+        "MFE",
+        "MAE"
+      ],
+      "outcomeHorizon": [
+        "not yet singularly frozen"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "thresholdValue": null,
+      "maxHalfWidth": null,
+      "targetId": null,
+      "targetVersion": null,
+      "targetHash": null,
+      "allowedRationaleBases": [
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "readyComponents": [
+        "parent ownership",
+        "interaction clock",
+        "D-vs-C comparator"
+      ],
+      "pendingComponents": [
+        "primary metric",
+        "primary horizon",
+        "numeric target"
+      ],
+      "currentBlocker": "Residual interaction question is clear, but promotion metric/horizon is not.",
+      "ownerNeed": "D02 freezes target shell; D03 parent semantics remain unchanged.",
+      "derivationMatrixRef": "research/d02_l4_effect_target_derivation_matrix_v0_1.json",
+      "primaryShellRef": null,
+      "freezePreconditionGuardRef": "research/d02_l4_target_freeze_precondition_guard_v0_1.mjs",
+      "d16PromotionGuardRef": "research/d02_d16_l4_validation_receipt_guard_v0_2.mjs"
+    },
+    "D02-11:LIQUIDITY_COUNTERFACTUAL": {
+      "multipleTestingFamilyId": "F5",
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "targetStatus": "TARGET_VALUE_PENDING_FREEZE",
+      "promotionGradeD16ReceiptAllowed": false,
+      "targetShellStatus": "DERIVATION_READINESS_ONLY",
+      "estimandId": null,
+      "metric": null,
+      "unit": null,
+      "direction": null,
+      "comparatorId": "ADMITTED vs LIQUIDITY_REJECTED_CONTROL within frozen reason strata",
+      "outcomeFamily": [
+        "execution cost",
+        "spread/depth",
+        "opportunity cost",
+        "future return"
+      ],
+      "outcomeHorizon": [
+        "execution horizon / D1+ not singularly frozen"
+      ],
+      "costTreatment": "D14_EXECUTION_COST_RECEIPT_REQUIRED_FOR_ECONOMIC_TARGET",
+      "thresholdValue": null,
+      "maxHalfWidth": null,
+      "targetId": null,
+      "targetVersion": null,
+      "targetHash": null,
+      "allowedRationaleBases": [
+        "COST_BENEFIT",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "readyComponents": [
+        "counterfactual lane",
+        "reason stratification",
+        "no threshold sweep"
+      ],
+      "pendingComponents": [
+        "primary utility metric",
+        "cost provenance",
+        "primary horizon",
+        "numeric target"
+      ],
+      "currentBlocker": "Economic meaning depends directly on execution-cost/opportunity-cost tradeoff; D14 cost inputs are incomplete/UNKNOWN for universal use.",
+      "ownerNeed": "D14 must provide cost-quality-aware anchor; D02 must not infer universal commission/slippage.",
+      "derivationMatrixRef": "research/d02_l4_effect_target_derivation_matrix_v0_1.json",
+      "primaryShellRef": null,
+      "freezePreconditionGuardRef": "research/d02_l4_target_freeze_precondition_guard_v0_1.mjs",
+      "d16PromotionGuardRef": "research/d02_d16_l4_validation_receipt_guard_v0_2.mjs"
+    },
+    "D02-12:TIME_OF_DAY_VOLUME_CURVE": {
+      "multipleTestingFamilyId": "F5",
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "targetStatus": "TARGET_VALUE_PENDING_FREEZE",
+      "promotionGradeD16ReceiptAllowed": false,
+      "targetShellStatus": "DERIVATION_READINESS_ONLY",
+      "estimandId": null,
+      "metric": null,
+      "unit": null,
+      "direction": null,
+      "comparatorId": "controls vs controls + time-curve shape",
+      "outcomeFamily": [
+        "future path discrimination",
+        "MFE",
+        "MAE"
+      ],
+      "outcomeHorizon": [
+        "within observed intraday window; no single primary"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "thresholdValue": null,
+      "maxHalfWidth": null,
+      "targetId": null,
+      "targetVersion": null,
+      "targetHash": null,
+      "allowedRationaleBases": [
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "readyComponents": [
+        "family identity",
+        "coverage bound",
+        "controls"
+      ],
+      "pendingComponents": [
+        "primary metric",
+        "primary horizon",
+        "numeric target"
+      ],
+      "currentBlocker": "Current monitor is bounded and no singular promotion outcome is frozen.",
+      "ownerNeed": "D02 must keep full-session claims out until source coverage exists.",
+      "derivationMatrixRef": "research/d02_l4_effect_target_derivation_matrix_v0_1.json",
+      "primaryShellRef": null,
+      "freezePreconditionGuardRef": "research/d02_l4_target_freeze_precondition_guard_v0_1.mjs",
+      "d16PromotionGuardRef": "research/d02_d16_l4_validation_receipt_guard_v0_2.mjs"
+    },
+    "D02-12:PRICE_BY_VOLUME_PROFILE": {
+      "multipleTestingFamilyId": "F5",
+      "allowedTargetKind": "MDE_OR_PRECISION_TARGET",
+      "targetStatus": "TARGET_VALUE_PENDING_FREEZE",
+      "promotionGradeD16ReceiptAllowed": false,
+      "targetShellStatus": "DERIVATION_READINESS_ONLY",
+      "estimandId": null,
+      "metric": null,
+      "unit": null,
+      "direction": null,
+      "comparatorId": "controls vs controls + price-by-volume profile",
+      "outcomeFamily": [
+        "future path discrimination",
+        "MFE",
+        "MAE"
+      ],
+      "outcomeHorizon": [
+        "prospective current-day onward; no single primary"
+      ],
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "thresholdValue": null,
+      "maxHalfWidth": null,
+      "targetId": null,
+      "targetVersion": null,
+      "targetHash": null,
+      "allowedRationaleBases": [
+        "THEORETICAL_BOUND",
+        "PRIOR_INDEPENDENT_EVIDENCE",
+        "PRECISION_REQUIREMENT"
+      ],
+      "readyComponents": [
+        "family identity",
+        "prospective-only constraint",
+        "controls"
+      ],
+      "pendingComponents": [
+        "primary metric",
+        "primary horizon",
+        "numeric target"
+      ],
+      "currentBlocker": "No historical backfill and no singular promotion metric/horizon are available yet.",
+      "ownerNeed": "D02 must freeze a prospective target before enough data accumulate.",
+      "derivationMatrixRef": "research/d02_l4_effect_target_derivation_matrix_v0_1.json",
+      "primaryShellRef": null,
+      "freezePreconditionGuardRef": "research/d02_l4_target_freeze_precondition_guard_v0_1.mjs",
+      "d16PromotionGuardRef": "research/d02_d16_l4_validation_receipt_guard_v0_2.mjs"
+    }
+  }
+}
