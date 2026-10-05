@@ -17,7 +17,7 @@
   ],
   "preregistrationParent": "research/d06_next_trading_day_outcome_blind_capture_plan_v0_1.json",
   "lineageContract": "research/d06_sda007_flow_ownership_lineage_contract_20261005_v0_1.json",
-  "sessionState": "PREOPEN_SESSION_FROZEN",
+  "sessionState": "PREOPEN_SESSION_FROZEN / TDCC_PARENT_CAPTURED",
   "globalRules": [
     "No lane may change fields or pass criteria after source values are observed.",
     "Raw parent receipts precede derived states.",
@@ -73,7 +73,7 @@
       ],
       "primitiveReceiptId": "D06-20261005-TDCC-WEEKLY",
       "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
-      "preopenState": "PENDING_LIVE_VINTAGE_CHECK",
+      "preopenState": "PARENT_CAPTURED / NEW_WEEKLY_VINTAGE / SAME_GENERATION_JOIN_PENDING",
       "frozenFields": [
         "scanDate",
         "generationId",
@@ -88,7 +88,14 @@
         "tdccParserVersion",
         "unknownReasons"
       ],
-      "passGate": "same-generation immutable TDCC lineage attached; repeated scan dates sharing one chipAsOfDate are one ownership vintage"
+      "passGate": "same-generation immutable TDCC lineage attached; repeated scan dates sharing one chipAsOfDate are one ownership vintage",
+      "parentReceiptPath": "research/d06_tdcc_parent_receipt_20261005_v0_1.json",
+      "sourceDate": "20261002",
+      "chipAsOfDate": "2026-10-02",
+      "sourceFingerprint": "fnv1a64-utf8:ad1a265c0a3dcaf8",
+      "securityCount": 4078,
+      "integrity": "4078/4078 exact share reconciliation PASS",
+      "sameGenerationJoin": false
     },
     {
       "laneId": "D06_06_CORE_CROWDING",
@@ -188,5 +195,5 @@
   },
   "maturityImpact": "NONE_AT_PREOPEN",
   "formalOptimizationCandidate": "NONE",
-  "exactNext": "After each frozen source clock becomes available on 2026-10-05, append the actual parent receipt without changing fields/pass gates. First evaluate source/coverage/PIT readiness only. Keep outcomes closed."
+  "exactNext": "Continue 2026-10-05 frozen lanes as their source clocks arrive. TDCC parent is captured and integrity-passed; attach the same primitiveReceiptId/fingerprint to the actual after-market D06-05/D06-06 generation before any D06-05 maturity promotion. Keep outcomes closed."
 }
