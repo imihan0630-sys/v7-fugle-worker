@@ -1288,3 +1288,65 @@ Exact next continuation — PF-040:
 2. 保存 cash substitution（現金替代）、split/reverse-split（分割／反分割）與 PCF 更新版本。
 3. MODELED_PRIMARY_BASKET_EXPOSURE（模型化初級市場籃子曝險）保持 research-only；actual stock execution（實際個股執行）維持 UNKNOWN。
 4. 與 D11-14 共用 index-event receipt，不雙重計票。
+
+
+## PF-040 — T/T-1 clock semantic correction: 2026-10-05 issuer page was not stale merely because units date was 2026-10-02
+
+Research cycle: 2026-10-05 Asia/Taipei
+Status: CLOCK_SEMANTIC_SELF_CORRECTION_COMPLETE / FIRST_T_DECISION_RECEIPT_IDENTIFIED / MULTI_DATE_VALIDATION_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Raw audit trail remains append-only:
+- `research/d06_pf040_preclose_source_state_20261005_v0_1.json` captured 15:14;
+- `research/d06_pf040_postclose_source_state_20261005_1547_v0_1.json` captured 15:47.
+
+The raw observations were correct, but the original interpretation "unitDataDate must advance to 2026-10-05 before the 2026-10-05 PCF can be used" is superseded.
+
+### Official clock correction
+TWSE 115-year ETF creation/redemption workflow states:
+- the PCF is filed on T-1 from 16:30 to 19:00;
+- PUBLISH-DATE is the current business day of filing;
+- ANNOUNCE-YMD is the next business day;
+- ISSUES-DIFF is built from T-1 initial-review successful creations/redemptions, T-2 second-review failure reversals, and T-1 dual-currency conversions where applicable;
+- the PCF can still be updated on T before the fund's creation/redemption cutoff.
+
+Therefore for T = 2026-10-05, a file posted on the prior business day 2026-10-02 with announcement date 2026-10-05 and an ISSUES-DIFF dated 2026-10-02 is structurally expected. It is not stale merely because the unit-change observation belongs to T-1.
+
+### Bounded issuer evidence
+At the 15:14 decision-time capture:
+- 0050 announcement date = 2026-10-05; posting time = 2026-10-02 16:02:19; reported unit difference = +34,500,000; creation unit = 500,000;
+- 0056 announcement date = 2026-10-05; posting time = 2026-10-02 16:31:09; reported unit difference = +50,000,000; creation unit = 500,000.
+
+At 15:47 the same pages still displayed the same generation. That stability no longer counts as "failure to refresh"; it is compatible with the T/T-1 workflow.
+
+### Corrected semantic object
+For a T-day after-market research decision, the safe object is:
+`PRIOR_BUSINESS_DAY_UNIT_CHANGE_WITH_T_DECISION_PCF`.
+
+It means:
+- PCF decision/use context = T;
+- reported unit-change state = T-1 by design;
+- same-day T creation/redemption flow = UNKNOWN;
+- actual constituent execution = UNKNOWN.
+
+The following shortcut is rejected:
+`PCF_ANNOUNCE_DATE_T => ISSUES_DIFF_DATE_MUST_EQUAL_T`.
+
+### Maturity consequence
+This correction removes a false source-refresh blocker and establishes a genuine 2026-10-05 decision-time prospective PCF receipt captured before the 15:30 after-market window.
+
+However D06-16 remains L2/40% for now:
+- a second independent prospective date is still required;
+- version stability/T-day update handling must be demonstrated across dates;
+- modeled basket exposure still does not identify actual stock execution.
+
+D06-11 likewise does not promote from this correction alone.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core unchanged.
+
+### Exact next
+1. Preserve the 2026-10-05 raw 15:14 and 15:47 receipts; never rewrite them.
+2. Future receipts must store both PCF announce/use date and the lagged ISSUES-DIFF observation date instead of requiring date equality.
+3. Capture the next independent trading-date PCF prospectively before the after-market decision window.
+4. Preserve T-day PCF update/version state and cash-substitution/corporate-action metadata.
+5. Keep same-day T passive stock flow and actual stock execution UNKNOWN.
