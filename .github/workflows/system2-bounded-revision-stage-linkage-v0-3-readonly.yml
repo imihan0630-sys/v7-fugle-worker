@@ -1,0 +1,27 @@
+name: System2 Bounded Revision Stage Linkage V0.3 Readonly
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "system2/runtime/bounded_revision_stage_linkage_v0_3.mjs"
+      - "system2/tests/bounded_revision_stage_linkage_v0_3.test.mjs"
+      - "system2/scripts/probe_bounded_revision_stage_linkage_low_volume_readonly_v0_3.mjs"
+      - "system2/SYSTEM2_BOUNDED_REVISION_STAGE_LINKAGE_V0_3.md"
+      - ".github/workflows/system2-bounded-revision-stage-linkage-v0-3-readonly.yml"
+permissions: {contents: read}
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - run: node system2/tests/bounded_revision_stage_linkage_v0_3.test.mjs
+      - run: node system2/scripts/probe_bounded_revision_stage_linkage_low_volume_readonly_v0_3.mjs
+      - shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_bounded_revision_stage_linkage_low_volume_readonly_v0_3.mjs
+          echo "Read-only stage-linkage boundary PASS"
