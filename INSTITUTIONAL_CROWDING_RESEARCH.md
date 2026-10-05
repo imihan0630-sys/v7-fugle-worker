@@ -1605,3 +1605,42 @@ Exact next:
 3. after the 2026-10-05 research generation exists, attach exact parentReceiptIds to D06-06 CORE_CROWDING and the TDCC weekly parent to D06-05/D06-06 same-generation rows;
 4. keep D06-14 T_PRELIM pending until the actual TPEx day-trading statistics object is observed; DayTradeMark eligibility data are not a substitute;
 5. keep outcomes closed.
+
+
+---
+
+## IC-070 — TPEx dealer desk split structural falsification on the first prospective date
+
+Research cycle: 2026-10-05 Asia/Taipei
+Status: OUTCOME_BLIND_STRUCTURAL_FALSIFICATION_COMPLETE / FORMAL_CORE_LOCKED
+
+Parent receipt:
+`research/d06_03_tpex_dealer_split_capture_20261005_v0_1.json`.
+
+Population:
+795 ordinary four-digit TPEx stocks from the same 2026-10-05 source version.
+
+Observed desk structure:
+- proprietary desk nonzero: 193;
+- hedge desk nonzero: 450;
+- both desks nonzero: 165;
+- hedge-only: 285;
+- proprietary-only: 28;
+- both zero: 317.
+
+Among the 165 stocks where both desks were active:
+- same positive sign: 45;
+- same negative sign: 38;
+- opposite signs: 82 = 49.7%.
+
+Across active stocks, absolute hedge flow dominated absolute proprietary flow in 374 cases versus 103 proprietary-dominant cases. Among nonzero aggregate dealer rows, 83 rows = 17.4% contained an opposing desk whose sign was hidden by the aggregate sign.
+
+Interpretation:
+This one-date prospective cross-section falsifies the shortcut that aggregate dealerNet can be interpreted as proprietary-desk conviction. Aggregation can materially compress desk disagreement. It does not prove either desk has incremental predictive value, and raw share magnitudes remain size/liquidity confounded.
+
+L4 design implication:
+future tests must compare aggregate dealerNet against the split desks on common support, normalize by liquidity, cluster by market date, and test residual value beyond institutional flow, price-volume, passive/derivatives context and regime. No desk sign or weight may be tuned from this single date.
+
+Maturity impact: NONE.
+Outcomes remain CLOSED.
+Formal Core unchanged.
