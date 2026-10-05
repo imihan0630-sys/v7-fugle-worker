@@ -219,3 +219,23 @@ Canonical audit map:
 - 已有的官方 API、repository-owned Playwright collector、CI/runtime collector 不因這條規則被強制改寫；工程資料擷取仍以可重現、PIT、source lineage 為準。
 - 舊 evidence 若真實記錄過 TinyFish，只能保留歷史 provenance，不得竄改；「歷史上曾用過」不等於「現在仍授權」。
 - Firecrawl 只是 retrieval channel，不等於官方來源；官方 primary source 仍優先。
+
+
+## 十一、跨專案 System 1 / System 2 非同質化規則（MANDATORY）
+
+所有使用本 repository/shared-knowledge 恢復狀態的主要系統建置聊天室，不論位於哪一個 ChatGPT Project，都必須讀取：
+
+`shared-knowledge/SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_V0_1.md`
+
+並遵守：
+
+- System 1 與 System 2 可以共用 raw data、D01-D22 研究、PIT、source lineage、SDA、D16 驗證基礎；
+- 不得因此默默共用候選生成、hard gate、ranking policy、Top picks、進出場／持倉邏輯；
+- System 2 不得把 System 1 A/B、Top6/3+3、Formal ranking、15m Formal confirmation 當成隱藏前提；
+- System 1 不得把 System 2 strategy-local rank、Regime、confluence、max-12/max-3 lifecycle 等默默吸收成 Formal 規則；
+- 同一檔股票被兩套系統選中不等於兩個獨立確認；需經 SDA-022 / D16 dependence-incrementality 驗證；
+- 不得為了「看起來不同」而強迫兩套選不同股票；
+- 任何跨系統角色／決策政策收斂都必須以 SDA-022 顯式呈現，不能靠聊天默認；
+- ChatGPT Project 邊界不構成治理豁免：只要使用本 repo/shared bootstrap，就套用同一規則。
+
+完全不讀本 repo/shared bootstrap 的獨立 Project 無法被此檔自動強制；若要納入同一治理，必須先把該 Project 的主要建置聊天室接到本 bootstrap/registry。
