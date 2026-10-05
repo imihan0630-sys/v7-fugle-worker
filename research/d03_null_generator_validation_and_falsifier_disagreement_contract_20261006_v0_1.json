@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "D03_NULL_GENERATOR_VALIDATION_AND_FALSIFIER_DISAGREEMENT_CONTRACT_V0_1",
+  "updatedAt": "2026-10-06T07:47:00+08:00",
+  "owner": "D03",
+  "classification": "RESEARCH_ONLY_OUTCOME_CLOSED",
+  "formalCoreImpact": "NONE_LOCKED",
+  "dualGate": {
+    "targetRelationBreakPassRequired": true,
+    "nuisancePreservationPassRequired": true
+  },
+  "requiredValidationAxes": [
+    "targetRelationBreakState",
+    "componentMarginalPreservation",
+    "conditionalStructurePreservation",
+    "dateCompositionPreservation",
+    "sectorIndustryCompositionPreservation",
+    "regimeCompositionPreservation",
+    "liquiditySizeCompositionPreservation",
+    "serialDependencePreservation",
+    "volatilityClusteringPreservation",
+    "crossSectionalCommonShockPreservation",
+    "repeatedSymbolStructurePreservation",
+    "supportAdmissionPreservation",
+    "missingnessPreservation",
+    "continuityVersionPreservation",
+    "marketMechanicalConstraintPass"
+  ],
+  "conditionalNullDiagnostics": [
+    "conditionalCalibration",
+    "conditionalResidualDiagnostics",
+    "supportOverlapDiagnostics",
+    "predictiveDistributionDiagnostics",
+    "subgroupConditionalCalibration",
+    "misspecificationSensitivity"
+  ],
+  "temporalNullDiagnostics": [
+    "autocorrelationDiagnostics",
+    "spectralDiagnostics",
+    "volatilityClusteringDiagnostics",
+    "localMeanVarianceDiagnostics",
+    "regimeSegmentBoundaryDiagnostics",
+    "calendarGapDiagnostics",
+    "structuralVersionBoundaryDiagnostics"
+  ],
+  "syntheticCalibrationStates": [
+    "NOT_RUN",
+    "TYPE1_AND_POWER_CALIBRATED",
+    "TYPE1_CALIBRATED_POWER_INSUFFICIENT",
+    "TYPE1_FAIL",
+    "POWER_INSUFFICIENT",
+    "SOFTWARE_VALIDATION_ONLY"
+  ],
+  "validityStates": [
+    "VALID",
+    "ASYMPTOTICALLY_VALID",
+    "HEURISTIC_ONLY",
+    "INVALID",
+    "UNKNOWN"
+  ],
+  "powerStates": [
+    "ADEQUATE_FOR_CLAIM",
+    "LOW_POWER",
+    "POWER_NOT_ESTABLISHED",
+    "NOT_APPLICABLE"
+  ],
+  "resultStates": [
+    "NULL_GENERATOR_READY",
+    "TARGET_RELATION_NOT_BROKEN",
+    "NUISANCE_STRUCTURE_OVERBROKEN",
+    "CONDITIONAL_NULL_MODEL_FRAGILE",
+    "NULL_NOT_IDENTIFIABLE_BY_SURROGATE_FAMILY",
+    "SUPPORT_INFLATION",
+    "SUPPORT_DEGRADATION",
+    "FALSIFIER_POWER_INSUFFICIENT",
+    "SAME_NULL_FALSIFIER_CONTRADICTION",
+    "NULL_SPECIFIC_DISAGREEMENT",
+    "EVIDENCE_NOT_YET_AVAILABLE"
+  ],
+  "falsifierRoleStates": [
+    "PRIMARY",
+    "SENSITIVITY"
+  ],
+  "contradictionPolicy": {
+    "sameNullContradictionBlocksThirdUnit": true,
+    "differentNullDisagreementMustRemainNullSpecific": true,
+    "primarySwapAfterOutcomeAllowed": false
+  },
+  "noClaim": {
+    "empiricalInteractionIncrementality": true,
+    "alpha": true,
+    "productionReadiness": true,
+    "formalPromotion": true
+  },
+  "maturityImpact": "NONE_56_7_PERCENT"
+}
