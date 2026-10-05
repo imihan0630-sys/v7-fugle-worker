@@ -1,206 +1,97 @@
 # COV-07 / D12 Specialist Return V0.1
 
-Room: 09｜衍生品與國際總經研究室
-Candidate: Futures Term Structure / Calendar Spread / Roll Yield
-Status: SPECIALIST_RETURN_COMPLETE / ADD_MODULE_RECOMMENDED / OUTCOMES_CLOSED / FORMAL_UNCHANGED
+- Candidate ID: COV-07
+- Domain: D12
+- Specialist room: 09｜衍生品與國際總經研究室
+- Return artifact path: research/COV07_D12_SPECIALIST_RETURN_V0_1.md
+- Evidence cutoff: 2026-10-04T23:59:59+08:00
+- Current candidate class: TRUE_GAP_CANDIDATE
+- Proposed terminal recommendation: ADD_MODULE
+
 Evidence: `research/cov07_d12_tx_curve_replay_20261004_v0_1.json`
+Governance: RESEARCH_ONLY / OUTCOMES_CLOSED / FORMAL_UNCHANGED
 
-## Terminal recommendation
+## 1. Exact Knowledge Definition
 
-**ADD_MODULE**
+The candidate owns the same-date multi-expiry Taiwan futures price curve: ordered contract-tenor vector, near/next/far calendar spreads, descriptive annualized roll-yield/carry proxies, curve slope/curvature, expiry-transition semantics, continuous-contract construction and explicit contract identity across rolls.
 
-This is a curriculum recommendation only. It does not authorize module-count mutation, maturity transfer, System 1/System 2 use, ranking, signal, capital, monitoring or Formal Core changes. Control-plane Dependency Audit, overlap recheck, anti-orphan audit and owner approval remain required.
+Frozen sign convention: `calendarSpread(near,far) = nearPrice - farPrice`. Positive means backwardation; negative means contango.
 
-## 1. Exact knowledge definition
-
-The candidate owns the same-date multi-expiry Taiwan futures price curve:
-- contract-tenor vector ordered by expiry;
-- near/next/far calendar spreads;
-- annualized descriptive roll-yield/carry proxies;
-- curve slope/curvature across futures expiries;
-- expiry-transition and continuous-contract construction semantics;
-- explicit contract identity across rolls.
-
-Sign convention:
-`calendarSpread(near,far) = nearPrice - farPrice`.
-Positive = backwardation; negative = contango.
-
-Descriptive annualized roll-yield proxy:
-`((nearPrice - farPrice) / nearPrice) * 365 / (farDTE - nearDTE)`.
+Descriptive annualized roll-yield proxy: `((nearPrice - farPrice) / nearPrice) * 365 / (farDTE - nearDTE)`.
 
 This is a curve/carry state, not realized return or causal expected return.
 
-## 2. Boundary versus existing D12 owners
+## 2. Existing-module Overlap Matrix
 
-### D12-01 basis
-D12-01 owns cash index versus one futures contract.
-COV-07 owns futures contract versus futures contract across expiries.
+- D12-01 basis owns cash index versus one futures contract. COV-07 owns futures contract versus futures contract across expiries.
+- D12-02 owns contract-level OI and migration/position state. OI qualifies liquidity/roll dominance but does not determine the price curve.
+- D12-09 owns expiry/settlement event mechanics. COV-07 uses expiry identity as a mandatory curve/roll guard without duplicating event-effect ownership.
+- D12-07 owns option implied-volatility skew/term structure. COV-07 owns futures-price term structure.
+- D13 rates/dividend/macro carry context is explanatory/control context and cannot be counted again as an independent COV-07 vote.
 
-Real residual witness:
-- 2026-09-14 front basis = -18.65 bp, front-next spread = -126 points;
-- 2026-09-16 front basis = -19.61 bp, front-next spread = -301 points.
+Real residual witnesses from the preserved replay:
+- 2026-09-14 front basis -18.65 bp, front-next spread -126 points.
+- 2026-09-16 front basis -19.61 bp, front-next spread -301 points.
+- 2026-09-15 basis +17.69 bp while front-next spread remained contango at -135 points.
+- 2026-09-17, 09-18 and 10-02 front OI share stayed about 97.7%-98.6% while spreads were -157, -153 and -171.
 
-Basis is almost unchanged while inter-contract curve slope changes by 175 points.
+These establish state separability only; no predictive alpha is claimed.
 
-Additional divergent state:
-- 2026-09-15 basis = +17.69 bp;
-- front-next spread remains contango at -135 points.
+## 3. Why Current Scope Is Insufficient
 
-Therefore curve shape is not a rename of spot-futures basis.
+Existing D12 modules do not own the cross-expiry futures-price curve as a first-class object. Cash-futures basis cannot represent near-versus-far slope; OI cannot replace price-curve state; expiry mechanics are controls rather than the curve itself; option IV term structure is a different market object. Without a dedicated owner, futures curve slope, calendar spread, roll/carry proxy and PIT-safe roll construction have no canonical research home and are at risk of either omission or double counting.
 
-### D12-02 open interest
-D12-02 owns contract-level OI and migration/position state.
-OI helps identify liquidity/roll dominance but does not determine the price curve.
+## 4. Taiwan Data Feasibility
 
-After September expiry:
-- 2026-09-17 front OI share = 98.60%, spread = -157;
-- 2026-09-18 front OI share = 98.55%, spread = -153;
-- 2026-10-02 front OI share = 97.73%, spread = -171.
+Official TAIFEX TX historical daily download is replay-feasible. Preserved source evidence covers 2026-09-14 through 2026-10-02 and includes date, contract, expiry month, OHLC, volume, settlement, OI, final best bid/ask and session.
 
-Similar OI concentration does not collapse the curve state.
+Preserved raw source SHA-256: `6465a86fadde57abe16a9db63cdf20702c7aa2c3420452f61503660b7d111701`; bytes: 29,219.
 
-### D12-09 expiry/settlement
-D12-09 owns expiry/settlement event mechanics. COV-07 uses expiry identity as a mandatory curve/roll guard but does not duplicate event-effect ownership.
+TAIFEX TX contract specification source hash: `3a84e988f3ada407a331d0e2c47a31f1b600b0bf91798637e9f0dcaf0d87185c`. Third-Wednesday monthly last-trading/settlement rule was verified; holiday/disruption exceptions require the official calendar.
 
-### D12-07 option skew/term
-D12-07 is option implied-volatility skew/term structure. COV-07 is futures-price term structure. No duplicate vote is permitted merely because both use “term structure.”
+TWSE TAIEX history was used only for same-date basis cross-check. September source hash: `b6f8cf1552ff55338934e646ca846b54d1b18c0b82919ca78f440174bb605404`; October source hash: `0bf01255d772a79508da8e30c195ddcfb2be1f8a8c151866181f555ca61a2e53`.
 
-## 3. Official Taiwan replay feasibility
+Raw bytes were not committed. Historical replay feasibility is established; historical first-known decision-time availability is not.
 
-TAIFEX TX historical daily download:
-- source: `https://www.taifex.com.tw/cht/3/futDataDown`
-- query: 2026/09/14 through 2026/10/02, TX, download type 1
-- raw SHA-256: `6465a86fadde57abe16a9db63cdf20702c7aa2c3420452f61503660b7d111701`
-- bytes: 29,219
-- fields include date, contract, expiry month, OHLC, volume, settlement, OI, final best bid/ask and session.
+## 5. PIT / Replay Implication
 
-TAIFEX TX contract specification:
-- source: `https://www.taifex.com.tw/cht/2/tX?menuid1=12`
-- SHA-256: `3a84e988f3ada407a331d0e2c47a31f1b600b0bf91798637e9f0dcaf0d87185c`
-- third-Wednesday monthly last-trading/settlement rule verified.
-- holiday/disruption exceptions must use the official calendar rather than arithmetic.
+Primary curve uses regular session, monthly TX only, explicit contract ID and expiry, positive prices, DTE/expiry flags, and separate volume/OI quality state. Weekly/flexible expiries are excluded.
 
-TWSE TAIEX history used only for same-date basis cross-check:
-- 2026-09 source SHA-256: `b6f8cf1552ff55338934e646ca846b54d1b18c0b82919ca78f440174bb605404`
-- 2026-10 source SHA-256: `0bf01255d772a79508da8e30c195ddcfb2be1f8a8c151866181f555ca61a2e53`.
+Frozen price rule: positive official settlement; otherwise positive close with explicit fallback flag; otherwise UNKNOWN/exclude. The 2026-09-16 expiry-day September row has settlement 0 and close 45,759, proving the fallback flag is necessary.
 
-Raw bytes were not committed.
+Frozen roll rule: at close t, evaluate roll conditions only from information known at close t; any roll becomes effective next trading session, never retroactively at the same close. Roll when front calendar DTE <= 5 OR next-contract OI > front-contract OI. Preserve selected contract identity.
 
-Conclusion:
-**Taiwan contract-level historical futures price/OI/volume and expiry replay is feasible.**
+No future roll gap may rewrite historical source prices. Without an executable roll-price convention, cross-contract return over the switch remains UNKNOWN. Historical daily replay does not prove 18:10 first-known availability; prospective source-attested independent dates remain required.
 
-## 4. Expiry-transition evidence
+## 6. Decision Role
 
-September 2026 TX monthly expiry is 2026-09-16 under the third-Wednesday rule.
+Research-only contextual state and control family. The candidate may describe futures curve/carry regime, qualify roll/expiry/liquidity context, and later enter incremental tests after basis/OI/expiry/macro controls. It is not approved as a directional vote, ranking factor, capital rule, monitoring trigger or production signal.
 
-Observed OI migration:
-- 2026-09-14: Sep OI 47,416; Oct OI 59,870.
-- 2026-09-15: Sep OI 18,797; Oct OI 89,861.
-- 2026-09-16: Sep OI 9,684; Oct OI 95,896.
-- 2026-09-17: Sep is no longer the front curve node; Oct OI 99,476.
+Contango/backwardation may reflect financing/dividend/carry expectations, hedging demand, positioning/liquidity, expiry mechanics, macro/rate expectations or contract-specific supply/demand. Curve shape does not identify one causal mechanism, so no monotonic bullish/bearish interpretation is authorized.
 
-The expiry-day Sep row has settlement field 0 while close is 45,759. This is a concrete source-quality warning.
-
-Frozen price rule:
-1. positive official settlement;
-2. otherwise positive close with explicit fallback flag;
-3. otherwise UNKNOWN/exclude.
-
-Expiry-day curve observations remain a special regime even when a positive close exists.
-
-## 5. Near-expiry / liquidity / session guards
-
-Primary curve:
-- regular session only;
-- monthly TX only;
-- explicit contract ID and expiry;
-- weekly/flexible expiries excluded;
-- volume and OI preserved separately;
-- no zero/nonpositive price;
-- DTE and expiry day flagged;
-- price-limit/session state preserved when available.
-
-Far contracts may have very low volume and OI. Their prices can describe a curve only with liquidity-quality state; low-liquidity curvature cannot automatically be interpreted as clean carry.
-
-## 6. Continuous-contract construction
-
-For feature replay, raw contract history is never back-adjusted.
-
-Frozen rule:
-- at close t, calculate roll condition using only information known at close t;
-- any roll becomes effective next trading session, never retroactively at the same close;
-- roll to next monthly contract when front calendar DTE <= 5 OR next-contract OI > front-contract OI;
-- preserve selected contract identity.
-
-Observed example:
-- 2026-09-14 satisfies both triggers;
-- a PIT-safe synthetic selection moves to 202610 from the next trading session rather than waiting until 202609 expiry.
-
-Back-adjustment firewall:
-- never rewrite historical source prices using a future roll gap;
-- a display series, if needed, is a separate stitched object with explicit roll events;
-- without an executable roll-price convention, cross-contract return over the switch is UNKNOWN rather than calculated from two different contract closes.
-
-## 7. Residual context independent of basis and OI
-
-Real divergent states:
-1. Nearly equal basis, very different curve:
-   - 2026-09-14: -18.65 bp / -126 points;
-   - 2026-09-16: -19.61 bp / -301 points.
-2. Basis sign flips while curve regime persists:
-   - 2026-09-15: +17.69 bp / -135 points.
-3. Similar high front-OI concentration with different curve slopes:
-   - 2026-09-17, 09-18, 10-02: front OI share about 97.7%-98.6%;
-   - spreads -157, -153, -171.
-
-These establish state separability, not predictive alpha. Taiwan forward-return outcomes were not inspected.
-
-## 8. Carry / hedging-pressure interpretation firewall
-
-Contango/backwardation can reflect financing/dividend/carry expectations, hedging demand, positioning/liquidity, expiry mechanics, macro/rate expectations or contract-specific supply/demand.
-
-Curve shape does not causally identify one mechanism.
-No “contango bearish” or “backwardation bullish” rule is approved.
-
-## 9. Anti-double-count rules
+## 7. Anti-double-count Rule
 
 - D12-01 basis and COV-07 calendar spread remain separate primitives.
-- D12-02 OI may qualify liquidity/roll dominance but cannot be counted again as an independent curve signal without incremental evidence.
+- D12-02 OI can qualify liquidity/roll dominance but cannot be counted again as an independent curve signal without incremental evidence.
 - D12-09 expiry state is a contamination/control variable, not another directional vote.
 - D12-07/D12-16 option IV term/surface and COV-07 futures-price curve remain different feature families.
-- D13 rates/dividend/macro carry context is explanatory/control context; do not duplicate the same carry shock as both D13 and COV-07 votes.
-- Any future composite must test curve residual information after basis, OI, expiry and macro/carry controls.
+- D13 rates/dividend/macro carry context is explanatory/control context; the same carry shock cannot be duplicated as both D13 and COV-07 votes.
+- Any future composite must test residual curve information after basis, OI, expiry and macro/carry controls on common support.
 
-## 10. Terminal specialist decision
+## 8. Proposed Owner
 
-The candidate satisfies the burden for **ADD_MODULE**:
-- distinct owner gap exists;
-- official Taiwan contract-level replay is feasible;
-- expiry/roll semantics can be made PIT-safe;
-- real residual states survive D12-01 basis and D12-02 OI ownership;
-- continuous-contract leakage guards are frozen;
-- causal and anti-double-count firewalls are explicit.
+D12 domain under 09｜衍生品與國際總經研究室. The proposed owner scope is futures term structure / calendar spread / roll-yield research only. Canonical module identifier is not reserved by this packet; D12-18 is retired/absorbed and must not be reused. Any future identifier requires control-plane dependency/overlap/anti-orphan review plus explicit owner approval.
 
-This does not establish L3/L4 or alpha.
+## 9. Maturity Starting Point
 
-Recommended governance:
-`ADD_MODULE / RESEARCH_ONLY / OUTCOMES_CLOSED / FORMAL_UNCHANGED`.
+If the structural addition is later approved, specialist recommendation is L0 / 0% at canonical creation. Existing D12 L2 evidence must not be inherited automatically. The historical replay packet can then support staged advancement only under the canonical maturity governance, with prospective source-attested independent dates required before L3 and outcome evidence required before any higher promotion.
 
-Suggested capability name:
-**Futures Term Structure／Calendar Spread／Roll Yield（期貨期限結構／跨月價差／轉倉收益）**
+No current D12 module, domain maturity, module count, Router, Shared Master, System 1, System 2 or Formal Core state is changed by this return.
 
-## 11. Maturity and Formal firewall
+## 10. Terminal Recommendation
 
-- Existing D12 maturity is unchanged by this specialist packet.
-- No existing module is promoted.
-- No return outcome was opened.
-- No OOS/Prospective Shadow evidence exists.
-- Formal Core remains LOCKED.
-- `FORMAL_OPTIMIZATION_CANDIDATE=NONE`.
+ADD_MODULE
 
-## 12. Exact next continuation
+Rationale: a distinct owner gap exists; official Taiwan contract-level replay is feasible; expiry/roll semantics can be made PIT-safe; real residual states survive D12-01 basis and D12-02 OI ownership; continuous-contract leakage guards and anti-double-count rules are frozen. This recommendation does not establish alpha, L3/L4, production use or Formal optimization.
 
-1. Return this packet to 00 control plane.
-2. Do not mutate canonical module count/name until Dependency Audit + anti-orphan audit + owner approval.
-3. If approved, build prospective source-attested independent curve dates under the frozen contract/roll rules.
-4. Only after enough independent dates exist, preregister incremental tests versus D12-01 basis + D12-02 OI + D12-09 expiry + D13 carry/rates controls.
+Exact next continuation after specialist return: 00 control plane performs Intake plus Dependency / overlap / anti-double-count / anti-orphan review. If owner approval later authorizes structural addition, build prospective source-attested independent curve dates under the frozen contract/roll rules, then preregister incremental tests versus D12-01 basis, D12-02 OI, D12-09 expiry and D13 carry/rates controls.
