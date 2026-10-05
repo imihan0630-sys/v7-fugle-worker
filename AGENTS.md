@@ -131,3 +131,18 @@ This rule applies to every Chat / Work / Codex room and cross-project task that 
 - Existing repository-owned API/Playwright/CI/runtime collectors remain governed by reproducibility, PIT and source-lineage requirements and are not automatically replaced by a chat plugin.
 - Do not rewrite historical evidence that truthfully records prior TinyFish use. Historical provenance is immutable and does not authorize future use.
 - Official/primary sources remain preferred; Firecrawl is a retrieval channel, not source authority.
+
+
+## Cross-project System 1 / System 2 non-convergence (owner rule, 2026-10-06)
+
+For any Chat / Work / Codex task using this repository, regardless of ChatGPT Project container:
+
+- read `shared-knowledge/SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_V0_1.md` before changing System 1 or System 2 candidate generation, ranking, cross-system integration, Regime/confluence use, or confirmation semantics;
+- shared data/research/provenance is allowed; silent policy convergence is not;
+- System 2 must retain at least one independently executable discovery/selection path that does not depend on System 1 Top6/rank;
+- System 1 Formal rules must not silently absorb System 2 strategy policy;
+- same-symbol agreement is not two independent confirmations until SDA-022/D16 dependence analysis supports that interpretation;
+- do not force disagreement merely to manufacture apparent diversification;
+- project boundaries do not create governance forks.
+
+A room that does not load this repository/shared bootstrap is outside automatic enforcement and must explicitly adopt it before compliance can be assumed.
