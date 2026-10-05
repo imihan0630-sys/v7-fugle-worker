@@ -118,3 +118,16 @@ Official candidate EPS review now fetches the previous actual quarter for Q2/Q3 
 - This centralized repository rule is the continuity mechanism; the owner does not need to manually re-instruct each existing chatroom.
 - Shared knowledge never self-promotes into V8 Formal Core. Existing Class B/C approval boundaries remain unchanged.
 - For System 2 continuity, read `system2/SYSTEM2_MASTER.md` and `system2/SYSTEM2_CHECKPOINT.md` after the Shared Master Map.
+
+
+## Global external web-tool policy (owner rule, 2026-10-05)
+
+This rule applies to every Chat / Work / Codex room and cross-project task that uses this repository or its shared bootstrap.
+
+- Read `shared-knowledge/GLOBAL_EXTERNAL_WEB_TOOL_POLICY_V0_1.md` before choosing an external webpage crawler/reader.
+- **TinyFish is retired and disallowed for NEW work.** Do not use it for new research, crawling, page extraction, or interactive web tasks.
+- **Firecrawl is the default replacement** when the current ChatGPT environment exposes it and the task needs external webpage discovery/crawling/extraction/reading.
+- If Firecrawl is unavailable, do not silently fall back to TinyFish. Use native web/search/browser when sufficient, or stop at the actual Firecrawl connection boundary if that capability is essential.
+- Existing repository-owned API/Playwright/CI/runtime collectors remain governed by reproducibility, PIT and source-lineage requirements and are not automatically replaced by a chat plugin.
+- Do not rewrite historical evidence that truthfully records prior TinyFish use. Historical provenance is immutable and does not authorize future use.
+- Official/primary sources remain preferred; Firecrawl is a retrieval channel, not source authority.
