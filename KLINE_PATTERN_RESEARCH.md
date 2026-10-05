@@ -23171,3 +23171,49 @@ New durable artifacts:
 - research/PATTERN_TOPOLOGY_PARAMETER_ROBUSTNESS_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-038 — Detector robustness vs economic robustness across symbols, dates and regimes (2026-10-05)
+
+DL-037 established that parameter stability is a detector property, not an evidence count. DL-038 extends that separation to economic generalization.
+
+A structure can be detected almost identically under many frozen parameter variants and still have no stable economic effect across stocks, dates or regimes. Conversely, a local historical result can look strong simply because the same persistent root is observed repeatedly across adjacent dates. These are different failure modes and require different ledgers.
+
+The first axis is detector robustness. It asks whether the same local price topology receives stable root identity across a frozen parameter family.
+
+The second axis is economic robustness. It asks whether a preregistered structural state retains incremental representation across distinct symbols, independent dates or episodes, ex-ante market regimes, fresh OOS/prospective periods and eventually cost-aware execution conditions.
+
+D01 freezes these semantics but keeps outcomes closed.
+
+The literature motivates this firewall strongly. Data-snooping work shows that technical-rule universes need familywise correction. True fresh OOS work has failed to reproduce several historically successful rules. More recent large-rule studies show that apparently profitable technical strategies may lose significance or profitability after multiple-testing controls, OOS evaluation and transaction costs. Recent breakout evidence also shows that rule behavior can depend heavily on market state. None of these results says Pattern is useless; they say local detector stability cannot be promoted into generalizable alpha without separate evidence.
+
+The future readiness ladder is:
+G0 local detector only;
+G1 cross-symbol;
+G2 cross-date;
+G3 cross-regime;
+G4 prospective/OOS;
+G5 cost-aware.
+
+A key identity correction is that one root observed on thirty adjacent dates is still one persistent structural lineage, not thirty independent replications. Future D16 inference must separately report unique parents, roots, episodes, symbols, independent clusters and regime strata.
+
+Coverage is equally important. A broad-looking result can be manufactured by keeping only liquid, data-rich stocks where pattern detection works cleanly. DL-038 therefore requires eligible, evaluable, blocked, no-opportunity and missing counts. UNKNOWN is never silently removed.
+
+Regime robustness is also protected. Pattern returns may not be inspected first and then used to define a favorable regime. Any market-state conditioning must consume ex-ante canonical regime receipts.
+
+The holdout firewall records holdout identity, first opening and use count. Repeatedly consulting one OOS period makes it development information, so the design can no longer describe that same period as a fresh holdout without D16 governance.
+
+Before economic outcomes can be opened outside D01, the validation design must freeze the semantic rule, parameter family, parent/root identity, symbol universe vintage, date windows, regime owner/version, target, benchmark, horizon, cost treatment, missingness/coverage policy, dependence unit and holdout policy. Missing contracts mean ECONOMIC_VALIDATION_NOT_READY.
+
+SDA-001 remains active because any eventual Pattern result must still be residualized against direct PRICE_OHLC baselines and overlapping D02/D03 families. SDA-002 remains active because a large sample of future-confirmed or hindsight-labeled patterns is not generalization evidence no matter how many symbols it contains.
+
+Eighteen adversarial tests are authored. They enforce complete preregistration, keep D01 outcomes closed, block performance-shaped regimes, flag consumed holdouts, distinguish repeated observations from independent clusters, preserve raw-vs-dedup evidence counts, keep coverage failures visible, enforce G0-G5 readiness ordering and reject reused holdouts or post-hoc regimes.
+
+New durable artifacts:
+- research/PATTERN_DETECTOR_VS_ECONOMIC_ROBUSTNESS_V0_1.md
+- research/pattern_detector_vs_economic_robustness_v0_1.json
+- research/pattern_detector_vs_economic_robustness_v0_1.mjs
+- research/test_pattern_detector_vs_economic_robustness_v0_1.mjs
+- research/PATTERN_DETECTOR_VS_ECONOMIC_ROBUSTNESS_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.

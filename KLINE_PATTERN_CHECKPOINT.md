@@ -1808,3 +1808,104 @@ No maturity or Formal change is authorized by this routing.
 6. Preserve SDA-001/SDA-002 as REMEDIATION_IN_PROGRESS until canonical closure evidence exists.
 7. Next D01 science: separate detector robustness from economic robustness across symbols, dates and regimes so stable local topology is not mistaken for generalizable evidence.
 8. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-038 (2026-10-05)
+
+### DL-038 — Detector robustness vs economic robustness across symbols, dates and regimes
+- DL-037 froze detector parameter-family robustness.
+- DL-038 freezes a strict separation:
+  DETECTOR_ROBUSTNESS = same local geometry is stably identified across frozen detector variants;
+  ECONOMIC_ROBUSTNESS = incremental evidence generalizes across symbols, independent dates/episodes, ex-ante regimes, prospective/OOS periods and costs.
+- Detector robustness may be high while economic robustness is zero or UNKNOWN.
+- External evidence motivates the firewall:
+  Sullivan/Timmermann/White require data-snooping correction across technical-rule universes;
+  true fresh OOS research has failed to reproduce some classic technical-rule results;
+  recent large-rule studies show much apparent profitability can disappear after multiple-testing correction, OOS evaluation and transaction costs;
+  breakout evidence can vary materially with market condition.
+- D01 does not open economic outcomes.
+  D16 owns actual economic robustness evidence.
+- Frozen detector axis:
+  D0 DETECTOR_NOT_EVALUABLE;
+  D1 DETECTOR_UNSTABLE;
+  D2 DETECTOR_LOCALLY_STABLE.
+- Frozen future economic axis:
+  E0 ECONOMIC_NOT_OPENED;
+  E1 ECONOMIC_LOCAL_ONLY;
+  E2 ECONOMIC_MULTI_SYMBOL;
+  E3 ECONOMIC_MULTI_DATE;
+  E4 ECONOMIC_MULTI_REGIME;
+  E5 ECONOMIC_PROSPECTIVE_OOS_COST_AWARE.
+- High sameRootSupportRate / low conflictRate cannot promote the E-axis.
+- Repeated observations of one root across adjacent dates do not create independent replication.
+- Future reports must separate:
+  unique decision parents;
+  unique structural roots;
+  unique object episodes;
+  unique symbols;
+  independent date/episode clusters;
+  regime strata;
+  raw representation N;
+  deduped PRICE_OHLC effective evidence N.
+- Symbol generalization must report concentration and missing/data-blocked symbols so one dominant stock cannot masquerade as broad evidence.
+- Date generalization requires dependence-aware independent clusters; adjacent dates sharing one root/regime/outcome window are not independent.
+- Regime generalization consumes only canonical ex-ante regime receipts; Pattern performance may not define the favorable regime.
+- Coverage firewall:
+  eligible/evaluable/data-blocked/no-opportunity/missing denominators remain visible.
+  UNKNOWN is not zero and is not silently dropped.
+- Future generalization readiness ladder:
+  G0 LOCAL_DETECTOR_ONLY;
+  G1 CROSS_SYMBOL;
+  G2 CROSS_DATE;
+  G3 CROSS_REGIME;
+  G4 PROSPECTIVE_OOS;
+  G5 COST_AWARE.
+- These are design/evidence stages; D01 does not assign economic success.
+- Holdout discipline fields:
+  holdoutId;
+  holdoutFirstOpenedAt;
+  holdoutUseCount;
+  prospectiveFlag.
+  Repeatedly opening the same OOS set makes it development-like.
+- Economic validation readiness requires frozen:
+  semantic detector contract;
+  parameter family;
+  parent/root identity;
+  symbol-universe vintage;
+  date windows;
+  regime owner/version;
+  target/benchmark/horizon;
+  cost policy;
+  missingness/coverage policy;
+  dependence unit;
+  holdout policy.
+- Missing any required item -> ECONOMIC_VALIDATION_NOT_READY.
+- SDA-001 remains central:
+  any eventual Pattern economic evidence must still prove residual value beyond direct PRICE_OHLC baselines and overlapping D02/D03 families.
+- SDA-002 remains central:
+  all roots/episodes used in replication must be replay-safe; a large hindsight-labeled sample is not valid generalization evidence.
+- New files:
+  - research/PATTERN_DETECTOR_VS_ECONOMIC_ROBUSTNESS_V0_1.md
+  - research/pattern_detector_vs_economic_robustness_v0_1.json
+  - research/pattern_detector_vs_economic_robustness_v0_1.mjs
+  - research/test_pattern_detector_vs_economic_robustness_v0_1.mjs
+  - research/PATTERN_DETECTOR_VS_ECONOMIC_ROBUSTNESS_D16_HANDOFF_V0_1.md
+- 18 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 remains REMEDIATION_IN_PROGRESS.
+- SDA-002 remains REMEDIATION_IN_PROGRESS.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-038
+
+1. Reconcile the DL-038 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-038 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve detector robustness, economic replication and coverage as separate ledgers.
+4. Keep repeated root dates separate from independent economic replication count.
+5. Hand G0-G5 generalization readiness / holdout / regime / coverage semantics to D16.
+6. Preserve SDA-001/SDA-002 as REMEDIATION_IN_PROGRESS until canonical closure evidence exists.
+7. Next D01 science: separate cross-sectional generalization from liquidity/size survivorship so Pattern does not appear robust only because data-rich liquid stocks are easier to detect and trade.
+8. No outcome join / no runtime wiring / no Formal change.

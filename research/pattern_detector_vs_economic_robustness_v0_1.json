@@ -1,0 +1,28 @@
+{
+  "schemaVersion":"pattern-detector-vs-economic-robustness-v0.1",
+  "updated":"2026-10-05 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "detectorRobustnessEqualsEconomicRobustness":false,
+  "parameterStabilityEqualsGeneralization":false,
+  "repeatedRootDatesEqualIndependentReplications":false,
+  "regimeDiscoveryFromPatternPerformance":"PROHIBITED",
+  "coverageFailuresCanBeDropped":false,
+  "economicValidationOwner":"D16",
+  "informationRoot":"PRICE_OHLC",
+  "auditTickets":{
+    "SDA-001":"REMEDIATION_IN_PROGRESS",
+    "SDA-002":"REMEDIATION_IN_PROGRESS"
+  },
+  "generalizationLadder":[
+    "G0_LOCAL_DETECTOR_ONLY",
+    "G1_CROSS_SYMBOL",
+    "G2_CROSS_DATE",
+    "G3_CROSS_REGIME",
+    "G4_PROSPECTIVE_OOS",
+    "G5_COST_AWARE"
+  ],
+  "outcomeJoin":"CLOSED",
+  "formalOptimizationCandidate":"NONE"
+}
