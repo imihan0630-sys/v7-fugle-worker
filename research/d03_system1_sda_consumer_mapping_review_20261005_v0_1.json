@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "D03_SYSTEM1_SDA_CONSUMER_MAPPING_REVIEW_V0_1",
+  "updatedAt": "2026-10-05T20:36:00+08:00",
+  "classification": "CLASS_A_RESEARCH_READBACK",
+  "tickets": [
+    "SDA-001",
+    "SDA-004"
+  ],
+  "reviewedImplementation": "research/system1_sda_shadow_v0_1.mjs",
+  "mergedPr": 608,
+  "formalCoreImpact": "NONE_LOCKED",
+  "outcomeAccess": "CLOSED",
+  "overallDecision": "PASS_WITH_DIAGNOSTIC_SCHEMA_GAPS",
+  "checks": [
+    {
+      "id": "REGISTRY_PINNING",
+      "state": "PASS"
+    },
+    {
+      "id": "RETIRED_ALIAS_MAPPING",
+      "state": "PASS"
+    },
+    {
+      "id": "SAME_ROOT_CONNECTED_DEDUP",
+      "state": "PASS_CONSERVATIVE"
+    },
+    {
+      "id": "PARAMETER_FAMILY_RESET_GUARD",
+      "state": "PASS"
+    },
+    {
+      "id": "FAIL_CLOSED_LINEAGE_AND_PIT",
+      "state": "PASS"
+    },
+    {
+      "id": "OUTCOME_ONLY_NOT_A_VOTE",
+      "state": "PASS"
+    },
+    {
+      "id": "INDEPENDENT_EVIDENCE_PROMOTION_FIREWALL",
+      "state": "PASS"
+    },
+    {
+      "id": "CANONICAL_DIAGNOSTIC_FIELD_COVERAGE",
+      "state": "PARTIAL",
+      "missing": [
+        "redundancyGroupContributions",
+        "dominantInformationRoots"
+      ]
+    },
+    {
+      "id": "OVERLAP_IDENTITY_DURABILITY",
+      "state": "PARTIAL",
+      "current": "signalIndex",
+      "required": [
+        "factorId",
+        "factorVersion",
+        "signalIndex"
+      ]
+    }
+  ],
+  "safeInterpretation": {
+    "dedupedEvidenceFamilyCount": "CONNECTED_ROOT_FAMILY_DIAGNOSTIC_NOT_INDEPENDENCE_PROOF",
+    "effectiveIndependentEvidenceCount": 0,
+    "independentEvidenceStatus": "NOT_PROVEN_NO_PROMOTION_PATH"
+  },
+  "requiredNextDeltas": [
+    "ADD_EXPLICIT_REDUNDANCY_GROUP_CONTRIBUTIONS",
+    "ADD_EXPLICIT_DOMINANT_INFORMATION_ROOTS",
+    "ADD_STABLE_FACTOR_ID_VERSION_OVERLAP_IDENTITIES"
+  ],
+  "maturityDecision": "NO_CHANGE_56_7_PERCENT",
+  "ticketClosure": "NOT_AUTHORIZED"
+}
