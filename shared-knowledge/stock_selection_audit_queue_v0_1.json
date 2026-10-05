@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-05T08:00:00+08:00",
+  "updatedAt": "2026-10-05T08:12:00+08:00",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -32,7 +32,7 @@
     {
       "id": "SDA-001",
       "severity": "CRITICAL",
-      "status": "ROUTED",
+      "status": "REMEDIATION_IN_PROGRESS",
       "domains": [
         "D01",
         "D02",
@@ -57,6 +57,13 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "RESEARCH_SEMANTICS_PARTIAL_COMPLETE_ENGINEERING_IMPLEMENTATION_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "machine factor-lineage fields",
+        "raw-vs-dedup Top6 diagnostic",
+        "D16 residual incrementality readback"
       ]
     },
     {
@@ -114,7 +121,7 @@
     {
       "id": "SDA-004",
       "severity": "CRITICAL",
-      "status": "ROUTED",
+      "status": "REMEDIATION_IN_PROGRESS",
       "domains": [
         "D03"
       ],
@@ -135,6 +142,14 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "RESEARCH_REDUNDANCY_CONTROL_EXISTS_MACHINE_ALIAS_GUARD_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "central machine alias registry",
+        "parameter-family enforcement",
+        "deterministic no-alias-evidence-inflation test",
+        "D16 promotion-grade residual/OOS"
       ]
     },
     {
@@ -264,6 +279,13 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
+      ],
+      "readiness": "RELATED_RESEARCH_EXISTS_EXACT_CIRCULARITY_REMEDIATION_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "leave-one-out industry-strength contract",
+        "candidate self-contribution diagnostic",
+        "Top6/rank sensitivity receipt"
       ]
     },
     {
@@ -428,7 +450,7 @@
     {
       "id": "SDA-016",
       "severity": "CRITICAL",
-      "status": "ROUTED",
+      "status": "REMEDIATION_IN_PROGRESS",
       "domains": [
         "D16"
       ],
@@ -448,12 +470,20 @@
         "applicable_learning_semantic_or_falsification_repair",
         "applicable_engineering_guard_and_deterministic_tests",
         "00_cross_domain_readback"
+      ],
+      "readiness": "RESEARCH_PREREGISTRATION_STRONG_GENERIC_HOLDOUT_CONSUMPTION_GUARD_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "generic holdout-use ledger",
+        "target/benchmark mutation rejection",
+        "generic outcome-lock / consumed-holdout semantics",
+        "independent 00 closure"
       ]
     },
     {
       "id": "SDA-017",
       "severity": "CRITICAL",
-      "status": "ROUTED",
+      "status": "REMEDIATION_IN_PROGRESS",
       "domains": [
         "D18"
       ],
@@ -473,6 +503,14 @@
         "applicable_learning_semantic_or_falsification_repair",
         "applicable_engineering_guard_and_deterministic_tests",
         "00_cross_domain_readback"
+      ],
+      "readiness": "RESEARCH_GOVERNANCE_STRONG_EXECUTABLE_PROSPECTIVE_EVIDENCE_PENDING",
+      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md",
+      "remainingDelta": [
+        "executable immutable regime builder",
+        "prospective policy evidence",
+        "machine-visible support/UNKNOWN/ABSTAIN enforcement",
+        "independent 00 closure"
       ]
     },
     {
@@ -579,5 +617,6 @@
         "00_cross_domain_readback"
       ]
     }
-  ]
+  ],
+  "lastReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md"
 }
