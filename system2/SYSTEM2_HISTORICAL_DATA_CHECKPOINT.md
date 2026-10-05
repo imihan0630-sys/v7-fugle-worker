@@ -1,6 +1,6 @@
 # System 2 Historical Data Checkpoint
 
-Updated: 2026-10-05 21:11 Asia/Taipei
+Updated: 2026-10-05 21:46 Asia/Taipei
 Status: ACTIVE / DATA_LANE
 Room: System 2｜歷史資料工程室
 Governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
@@ -30,40 +30,52 @@ Physically accepted raw A1 market-years:
 - 2017 TWSE / TPEx: data coverage PASS / replay readiness PARTIAL;
 - 2018 TWSE / TPEx: data coverage PASS / replay readiness PARTIAL;
 - 2019 TWSE / TPEx: data coverage PASS / replay readiness PARTIAL;
-- 2020 TWSE: data coverage PASS / replay readiness PARTIAL.
+- 2020 TWSE / TPEx: data coverage PASS / replay readiness PARTIAL.
 
-2020 TWSE durable state from run `37274480646` / #13:
-- workflow SUCCESS on head `2ad1312d9de26c37d0ab343239f3b9fce88d33c9`;
+2020 TPEx durable acceptance from fresh run `37318143684` / #15:
+- workflow SUCCESS on head `cd3f616fa4d26bfd81d316b26dabd467f62814cd`;
+- verifier V0.4 / reconciliation contract `S2_HISTORICAL_SOURCE_RECONCILIATION_V0_1`;
 - 245/245 official sessions;
-- 958 R2 packs / 231,961 bars;
-- 958/958 R2 HEAD and byte-GET SHA-256 checks;
-- fresh official reconciliation: 231,961 cold == 231,961 fresh official, with 0 missing, 0 extra, 0 source-row-hash mismatch;
-- official TWSE historical-universe union readiness PASS for data coverage;
-- 232,475 expected membership-sessions versus 231,961 source rows leaves 514 UNKNOWN symbol-session gaps retained fail-closed;
-- observation semantics: VALID_OHLC 231,195; OFFICIAL_ZERO_TRADE_NO_PRICE 416; POSITIVE_ACTIVITY_NO_VALID_CLOSE 350;
-- continuity remains UNVERIFIED on 231,961 rows;
-- artifact `system2-historical-coverage-TWSE-2020` id `11331320701`, digest `sha256:e330cd8df13332cea813550a71fbf88c159300e3706893f2624bbc1ee165eaae`;
+- 794 R2 packs / 189,746 bars;
+- 794/794 R2 HEAD and byte-GET SHA-256 checks;
+- fresh official reconciliation: 189,746 cold == 189,746 fresh official;
+- missing-from-cold 0 / absent-from-fresh 0 / full-row hash mismatch 0;
+- canonical A1 value mismatch 0;
+- sourceVersionState `STABLE`;
+- conservative observed-interval universe: 794 memberships; TPEx official delisting-union remains incomplete;
+- 190,154 expected membership-sessions versus 189,746 source rows leaves 408 UNKNOWN symbol-session gaps retained fail-closed;
+- observation semantics: VALID_OHLC 185,243; POSITIVE_ACTIVITY_NO_VALID_CLOSE 1,421; OFFICIAL_ZERO_TRADE_NO_PRICE 3,082;
+- continuity remains UNVERIFIED on 189,746 rows;
+- artifact `system2-historical-coverage-TPEX-2020` id `11349482735`, digest `sha256:6fad4807366e4d9c462eef22272d74f353b04310133930f3d76b1284e5759004`;
 - System1 production isolation PASS.
 
-Durable evidence:
-- `system2/evidence/S2_HISTORICAL_TWSE_2020_PHYSICAL_VERIFICATION_V0_1.json`
+Prior run `37283878520` / #14 remains preserved as blocker evidence:
+- V0.3 observed 773 full-source-row hash mismatches concentrated on 2020-02-27;
+- storage and key coverage were intact;
+- fresh latest-main V0.4 revalidation did not reproduce the mismatch;
+- cold history was never rewritten;
+- blocker evidence remains at `system2/evidence/S2_HISTORICAL_TPEX_2020_REVISION_BLOCKER_V0_1.json`.
+
+Durable acceptance evidence:
+- `system2/evidence/S2_HISTORICAL_TPEX_2020_PHYSICAL_VERIFICATION_V0_2.json`
 - `system2/SYSTEM2_HISTORICAL_MARKET_YEAR_COVERAGE_MATRIX.json`
 
 No 2017→present completeness claim is permitted yet.
 
 ## Important current blocker
 
-No remaining raw A1 population blocker exists for 2017-2019 TWSE/TPEx or 2020 TWSE.
+No remaining raw A1 population blocker exists for 2017-2020 TWSE/TPEx.
 
 Accepted-year replay debt remains explicit:
 - all accepted market-years retain UNKNOWN symbol-session gaps and RAW technical continuity UNVERIFIED;
 - TPEx historical delisting-union remains incomplete where noted;
-- 2020 TWSE retains 514 UNKNOWN symbol-session gaps;
+- 2020 TPEx retains 408 UNKNOWN symbol-session gaps;
+- prior #14 source-row discrepancy remains preserved as non-reproduced upstream evidence;
 - non-price official observations remain explicit and are never fabricated into OHLC.
 
-These are replay/readiness debts, not raw-source loss.
+These are replay/readiness/provenance debts, not raw-source loss.
 
-2020 TPEx cold-pack population is complete, but fresh physical revalidation is pending after source-revision-aware verifier fix `4cd31c569886faaa8e3cb3522ae28b72e9346724`.
+The next DATA_LANE population target is 2021 TWSE followed by 2021 TPEx.
 
 ## Protected boundaries
 
@@ -89,4 +101,4 @@ Require, as applicable:
 
 ## Exact next action
 
-Fresh-dispatch 2020 TPEx on latest main using verifier V0.4. The prior run #14 / `37283878520` must not be treated as accepted because its V0.3 source-row rule blocked on 773 full-row hash changes from 2020-02-27. R2 storage, key coverage and row counts passed; immutable cold history must not be rewritten. Accept 2020 TPEx only if V0.4 proves canonical A1 values stable (source revision only) or otherwise keep it BLOCKED if canonical A1 values changed. After durable acceptance, advance to 2021 TWSE.
+Dispatch 2021 TWSE through the completed-year annual workflow, physically verify R2/D1/source/universe/coverage evidence, durable-write the result, then dispatch 2021 TPEx under the same standard. Preserve all existing UNKNOWN/continuity/survivorship/source-revision debt in the coverage matrix. Continue year-by-year through 2025; keep 2026 excluded from annual COMPLETE receipts and handle it through the separate incremental/current-year path.
