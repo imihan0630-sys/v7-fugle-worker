@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "D03_D16_METHOD_RECEIPT_ACCEPTANCE_ORACLE_V0_1",
+  "updatedAt": "2026-10-05T22:54:00+08:00",
+  "producer": "D03",
+  "inferenceOwner": "D16",
+  "status": "RESEARCH_ONLY_OUTCOME_CLOSED_ACCEPTANCE_ORACLE_FROZEN",
+  "formalCoreImpact": "NONE_LOCKED",
+  "tickets": [
+    "SDA-001",
+    "SDA-004"
+  ],
+  "experiments": [
+    "TI_005_KD_VS_RSI",
+    "TI_006_MACD_VS_DIRECT_TREND"
+  ],
+  "experimentOrder": [
+    "TI_005_KD_VS_RSI",
+    "TI_006_MACD_VS_DIRECT_TREND"
+  ],
+  "allowedTerminalMethodStates": [
+    "METHOD_READY",
+    "METHOD_BLOCKED",
+    "POWER_INSUFFICIENT",
+    "DEPENDENCE_TOO_STRONG_FOR_CURRENT_SAMPLE",
+    "COMMON_SUPPORT_INSUFFICIENT",
+    "COVERAGE_BIASED",
+    "VERSION_INCOMPATIBLE"
+  ],
+  "requiredIdentityFields": [
+    "methodReceiptVersion",
+    "d03ExperimentVersion",
+    "preregistrationHash",
+    "featureContractHashes",
+    "parentContractVersion",
+    "continuityContractVersion",
+    "outcomeContractVersion"
+  ],
+  "requiredPopulationFields": [
+    "expectedParentPopulationDefinition",
+    "commonSupportInclusionRule",
+    "blockedUnknownConstrainedHandling",
+    "selectedOnlyInference",
+    "dateLevelPopulationAccounting"
+  ],
+  "requiredSplitFields": [
+    "chronologicalSplitRule",
+    "trainingScanDates",
+    "purgedTrainingScanDates",
+    "holdoutScanDates",
+    "purgeGapRule",
+    "holdoutMethodSelection"
+  ],
+  "requiredDependenceFields": [
+    "primaryDependenceMethod",
+    "scanDateTreatment",
+    "symbolTreatment",
+    "episodeTreatment",
+    "overlappingOutcomeTreatment",
+    "overlappingFeatureWindowTreatment",
+    "sectorIndustryTreatment",
+    "smallClusterTreatment",
+    "finiteSampleMethod",
+    "rowN",
+    "independentScanDateN",
+    "uniqueSymbolN",
+    "repeatedSymbolShare",
+    "clusterSizeDistribution",
+    "forwardWindowOverlapDiagnostics"
+  ],
+  "requiredInferenceFields": [
+    "estimands",
+    "weightingRule",
+    "uncertaintyMethod",
+    "effectSizeMetric",
+    "leaveOneDateOut",
+    "nonOverlappingDateSensitivity",
+    "dateVsRowBalanceDiagnostic",
+    "concentrationDiagnostics",
+    "repeatedSymbolSensitivity",
+    "coverageSensitivity"
+  ],
+  "requiredMultiplicity": {
+    "familyId": "D03_TI005_TI006_V0_1",
+    "hypotheses": [
+      "H005-A",
+      "H005-B",
+      "H005-C",
+      "H005-D",
+      "H006-A",
+      "H006-B",
+      "H006-C"
+    ],
+    "primaryEndpoints": [
+      "D5_RETURN_PCT",
+      "D5_MFE",
+      "D5_MAE"
+    ],
+    "secondaryEndpoints": [
+      "D10_RETURN_PCT",
+      "D10_MFE",
+      "D10_MAE",
+      "D20_RETURN_PCT",
+      "D20_MFE",
+      "D20_MAE"
+    ],
+    "failedCellsRemain": true,
+    "alternatePeriodsAuthorized": false,
+    "timeframeSearchAuthorized": false
+  },
+  "blockingRules": [
+    {
+      "id": "M01_IDENTITY_BINDING",
+      "expect": "ALL_IDENTITY_FIELDS_PRESENT_AND_MATCH_FROZEN_CONTRACTS"
+    },
+    {
+      "id": "M02_SELECTED_ONLY_FALSE",
+      "expect": "selectedOnlyInference=false"
+    },
+    {
+      "id": "M03_UNKNOWN_NOT_NEGATIVE",
+      "expect": "BLOCKED_UNKNOWN_CONSTRAINED_EXPLICIT_FAIL_CLOSED"
+    },
+    {
+      "id": "M04_COMMON_SUPPORT_SAME_ROWS",
+      "expect": "ALL_COMPARISON_ARMS_USE_FROZEN_COMMON_SUPPORT"
+    },
+    {
+      "id": "M05_CHRONOLOGICAL_SPLIT",
+      "expect": "NO_RANDOM_ROW_SPLIT"
+    },
+    {
+      "id": "M06_HOLDOUT_METHOD_SELECTION_FALSE",
+      "expect": "holdoutMethodSelection=false"
+    },
+    {
+      "id": "M07_FORWARD_FOOTPRINT_PURGE",
+      "expect": "PURGE_RULE_COVERS_MAX_REGISTERED_D20_FORWARD_FOOTPRINT"
+    },
+    {
+      "id": "M08_NO_IID_ROW_PRIMARY",
+      "expect": "ROW_LEVEL_IID_PRIMARY_INFERENCE_PROHIBITED"
+    },
+    {
+      "id": "M09_SCAN_DATE_N_PRIMARY",
+      "expect": "ROW_N_NOT_INDEPENDENT_N"
+    },
+    {
+      "id": "M10_DEPENDENCE_GRAPH_COMPLETE",
+      "expect": "DATE_SYMBOL_EPISODE_OUTCOME_WINDOW_FEATURE_WINDOW_SECTOR_HANDLED"
+    },
+    {
+      "id": "M11_ESTIMAND_LOCK",
+      "expect": "ALL_REGISTERED_ENDPOINTS_AND_CONTRASTS_DECLARED_BEFORE_OUTCOMES"
+    },
+    {
+      "id": "M12_D5_PRIMARY_NOT_RESCUED",
+      "expect": "SECONDARY_D10_D20_CANNOT_REPLACE_FAILED_D5_PRIMARY"
+    },
+    {
+      "id": "M13_MULTIPLICITY_FAMILY_COMPLETE",
+      "expect": "ALL_H005_H006_AND_ENDPOINT_CELLS_RETAINED"
+    },
+    {
+      "id": "M14_EXPERIMENT_ORDER_FROZEN",
+      "expect": "TI005_BEFORE_TI006"
+    },
+    {
+      "id": "M15_TERMINAL_STATE_ALLOWED",
+      "expect": "ONE_ALLOWED_TERMINAL_METHOD_STATE"
+    },
+    {
+      "id": "M16_POST_OUTCOME_RETUNING_FORBIDDEN",
+      "expect": "NO_FORMULA_PERIOD_THRESHOLD_BASELINE_ENDPOINT_RETUNING_AFTER_OUTCOME_ACCESS"
+    }
+  ],
+  "structuralPassMeaning": "RECEIPT_CONTRACT_ADMISSIBLE_ONLY",
+  "methodReadyDoesNotAuthorize": [
+    "OUTCOME_JOIN",
+    "T1_T5_PHYSICAL_GATE_BYPASS",
+    "T6_SAMPLE_FLOOR_BYPASS",
+    "INDEPENDENT_EVIDENCE_GRADUATION",
+    "FORMAL_PROMOTION"
+  ],
+  "current": {
+    "d16MethodReceipt": "NOT_YET_RETURNED",
+    "rawSourceVersionGate": "2_OF_3",
+    "outcomeJoin": "CLOSED",
+    "system1GenuineSessionSdaReceipt": "PENDING",
+    "system2RuntimeDedupDiagnostics": "MISSING",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "maturityImpact": "NONE_56_7_PERCENT"
+}
