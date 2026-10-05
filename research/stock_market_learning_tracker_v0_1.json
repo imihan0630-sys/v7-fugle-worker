@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-05T08:25:00+08:00",
+  "updatedAt": "2026-10-05T09:19:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -274,10 +274,10 @@
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
       ],
       "maturityPct": 56.7,
-      "status": "D03_56_7_PERCENT / V8_18_PR600_THREE_CI_GATES_PASS / PRODUCTION_APPROVAL_PENDING / BOLLINGER_FIRST_POST_DEPLOY_PROMOTION_TARGET / ADX_FULL_REPLAY_SECOND / RAW_RECEIPT_GATE_2_OF_3 / OUTCOMES_CLOSED",
+      "status": "D03_56_7_PERCENT / TI701_708_LINEAGE_PARAMETER_SEMANTIC_CONTRACT_FROZEN / SDA001_SDA004_REMEDIATION_IN_PROGRESS / V8_18_PR600_PRODUCTION_APPROVAL_PENDING / BOLLINGER_FIRST_POST_DEPLOY_PROMOTION_TARGET / ADX_FULL_REPLAY_SECOND / RAW_RECEIPT_GATE_2_OF_3 / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
       "lastResearchUpdate": "2026-10-05",
-      "researchNote": "TI-693~700 convert the audited decision-cutoff handoff into a concrete non-Production V8.18.0 candidate. Draft PR #600 exact head f030f04c1a807a23fe19072b96407f1436d09da8 stamps decisionCutoffAt immediately after the final V7_MARKET_CONSENSUS read and before synchronous selection, propagates it into the immutable C1 header, uses no new D1 scalar column, adds no provider calls and forbids historical backfill. V8 Repair run 37237843589 PASS; System1 C1/C2 isolated review run 37237843572 PASS 100/100 with V8.18 delta limited to runAfterMarketScanCore/buildC1PopulationReceipt/selectTomorrowCandidates, selector parity true, runAfter parity except cutoff true, formalCoreImpact false; V8 Regression run 37237843517 PASS including dedicated cutoff placement/header roundtrip/same-generation conflict fixture. PR remains DRAFT/OPEN/UNMERGED and no Cloudflare deploy was triggered. Engineering evidence does not raise D03 maturity.",
-      "exactNextContinuationPoint": "Protected boundary: obtain explicit owner Production approval for concrete draft PR #600 before merge/deploy. If approved and deployed, do not promote maturity immediately. Wait for the first genuine post-deploy Taiwan trading session and normal scan to produce a decisionCutoffAt-bearing immutable C1 generation with exact protected readback. Bind cutoff-safe owner continuity evidence and execute Bollinger v0.2 over all expected parents with COMPLETE reconciliation; only then may D03-10 advance L2/40->L3/60 and D03 56.7->58.3. D03-09 ADX follows only after canonical FULL_REPLAY/trusted-state certification and would move D03 to 60.0. Raw D03 source-version gate remains independently 2/3; TI-005/TI-006 outcomes remain closed; Formal Core locked.",
+      "researchNote": "TI-701~708 freeze the D03 indicator representation-family, redundancy-group and parameter-family semantic contract for SDA-001/SDA-004. All active D03 modules are primarily PRICE_OHLC descendants; different formulas/correlation below one do not prove independence. Historical D03-11 ROC remains retired into D03-02. The Class A machine registry covers 12 active modules and fails missing lineage closed to UNKNOWN. Deterministic fixture PASS: same-horizon retN/ROC/Momentum/log-return aliases collapse to one family; EMA/MACD/trend collapse absent residual proof; duplicate registration and multi-timeframe views cannot inflate deduped evidence. No outcomes, no Formal change, no maturity increase.",
+      "exactNextContinuationPoint": "Two parallel governed paths. Protected Production path: obtain explicit owner approval for draft PR #600 before merge/deploy; after approved deploy wait for the first genuine cutoff-bearing Taiwan-session immutable C1 parent, exact readback, cutoff-safe continuity cut and COMPLETE Bollinger v0.2 expected-parent reconciliation before any 58.3 promotion. Independent Class A path: System1/System2 consume research/d03_indicator_lineage_registry_20261005_v0_1.json for raw-vs-deduplicated Shadow diagnostics and alias/duplicate tests; D16 preregisters the parameter-family experiment budget and runs common-support residual/multiple-testing/OOS validation; 00 performs cross-domain closure. ADX remains second and requires canonical FULL_REPLAY. Raw gate remains 2/3; outcomes closed; Formal Core locked.",
       "modules": [
         {
           "id": "D03-01",

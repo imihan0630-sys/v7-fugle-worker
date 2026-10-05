@@ -3528,3 +3528,50 @@ The next genuine Taiwan trading session must produce:
 
 Only then may D03-10 be considered for L3 and D03 58.3%.
 ADX remains second and additionally requires canonical FULL_REPLAY.
+
+
+## TI-701 through TI-708 — D03 indicator lineage / parameter-family anti-double-count contract (2026-10-05)
+
+Canonical artifacts:
+- `research/D03_INDICATOR_LINEAGE_AND_PARAMETER_FAMILY_CONTRACT_20261005_V0_1.md`;
+- `research/d03_indicator_lineage_registry_20261005_v0_1.json`;
+- `research/test_d03_indicator_lineage_registry_v0_1.mjs`.
+
+### TI-701 — same root and different formulas
+All active D03 modules are primarily descendants of `PRICE_OHLC`. Different formulas may support residual candidates but do not prove independence. Correlation below one, module ownership and formula names are insufficient.
+
+### TI-702 — representation families frozen
+The 12 active canonical modules are assigned to explicit representation/redundancy groups. Historical D03-11 ROC remains retired into D03-02 because same-horizon percentage ROC is exactly `100 * retN`; capability coverage remains, but no duplicate vote returns.
+
+### TI-703 — parameter-family ledger frozen before outcomes
+Return horizons remain 5/20/60 eligible sessions; existing canonical SMA/EMA/MACD/KD/RSI/ADX/Bollinger/divergence/multi-timeframe formula contracts remain authoritative. Any window, smoother, warm-up, seed, field or threshold change creates a new factorVersion inside the same parameterFamilyId and consumes one experiment-family budget.
+
+### TI-704 — residual incrementality gate
+Independent-vote status requires same-horizon aliases, direct price/trend, D01/D02 price-only, D04 volatility and D18 Regime controls where applicable; PIT, common support, purged OOS/prospective Shadow, walk-forward, date dependence, multiple testing, cost/fillability and D16/00 readback remain mandatory.
+
+### TI-705 — support, falsifiers and failure states
+Within-family grouping is supported by deterministic ancestry and exact aliases. Counterhypothesis remains open where path/range/dispersion may add residual information. Choppy markets, limits, suspension, corporate actions, tick discreteness, volatility shocks, nested timeframes and parameter search are frozen failure modes. Missing controls remain UNKNOWN.
+
+### TI-706 — machine fail-closed rule
+The registry carries the canonical lineage fields. Missing lineage, unknown representation family or unregistered version cannot increase effectiveIndependentEvidenceCount. Raw count and deduplicated family count must both be observable.
+
+### TI-707 — deterministic fixture passes
+Observed fixture result:
+`status=PASS; modules=12; retiredRocOwner=D03-02; directReturnAliasFamilies=1; trendAliasFamilies=1; missingLineage=UNKNOWN; formalCoreImpact=NONE_LOCKED`.
+
+This proves contract mechanics, not Alpha.
+
+### TI-708 — maturity and routing decision
+D03 semantic remediation for SDA-001/SDA-004 is now frozen V0.1. The tickets remain REMEDIATION_IN_PROGRESS because System1/System2 shared lineage/dedup Shadow engineering, D16 residual/multiple-testing/OOS readback and 00 closure remain outstanding.
+
+No maturity promotion:
+- D03 remains 56.7%;
+- D03-09 remains L2/40;
+- D03-10 remains L2/40;
+- PR #600 remains owner-gated and untouched;
+- raw receipt gate remains 2/3;
+- outcome joins remain closed;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+Exact next:
+protected Production path still requires owner approval for PR #600, then a genuine cutoff-bearing Taiwan-session parent and complete Bollinger v0.2 reconciliation. Independent Class A path hands the frozen registry to System1/System2 for raw-vs-deduplicated Shadow diagnostics; D16 must preregister the parameter-family budget and validate common-support residual/OOS incrementality. ADX remains second behind Bollinger and canonical FULL_REPLAY.
