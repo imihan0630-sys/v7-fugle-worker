@@ -140,7 +140,7 @@ for(const e of FROZEN){
      sourceRowHash:official.sourceRowHash||null,
    },
    yearTransportReady:yearOk,
-   yearNoPaginationHint,
+   yearNoPaginationHint:yearNoPagination,
    boundedYearRowCount:boundedYear.length,
    issuerActionFamilyCandidateCount:issuerCandidates.length,
    issuerStageCounts:stageCounts,
