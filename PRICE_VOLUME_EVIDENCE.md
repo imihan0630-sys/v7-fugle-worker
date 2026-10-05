@@ -5501,3 +5501,58 @@ PVE-241 / CLEAN_DATE_ZERO / Gate 7 CLOSED / D02 60.0%.
 
 Exact next continuation:
 PVE-242 — implement and independently validate the fail-closed executable guard/fixture set against the frozen PVE-241 schema, then capture the first genuine prospective receipt without opening promotion-grade outcomes.
+
+
+# PVE-241 — Executable prospective receipt schema freeze (2026-10-05)
+
+Status: OUTCOME_BLIND / EXECUTABLE_RECEIPT_SCHEMA_PASS / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+New durable artifacts:
+- research/d02_pve241_prospective_receipt_guard_v0_1.mjs
+- tests/test_d02_pve241_prospective_receipt_guard_v0_1.mjs
+- research/D02_PVE241_PROSPECTIVE_RECEIPT_CONTRACT_V0_1.md
+- research/d02_pve241_prospective_receipt_validation_v0_1.json
+
+Independent executable validation:
+33/33 tests PASS.
+
+Frozen receipt protections:
+1. sourceAvailableAt <= featureFirstKnownAt <= decisionCutoffAt;
+2. non-replay decision sources must be prospectively captured;
+3. HISTORICAL_REPLAY_ONLY may support replay/provenance but cannot prove original decision-time observability or become promotion-eligible;
+4. MINUTE regular-lot volume must be LOTS, DAILY volume must be SHARES, and normalized comparison volume must be SHARES;
+5. LOTS to SHARES requires explicit factor 1000 and value consistency;
+6. cross-timeframe joins require unitNormalizationPass;
+7. every row binds corporateActionClass; UNKNOWN cannot be ELIGIBLE;
+8. EX_RIGHT_DIVIDEND requires mechanical reference-price control and cannot be ordinary price discovery;
+9. UNIT_SCALE and SUPPLY_CHANGE require explicit continuity/comparability proof;
+10. PRICE_OHLC and VOLUME_TURNOVER remain separate information roots; price-derived transforms cannot create a second independent vote;
+11. future promotion claims require residual incrementality on common support;
+12. participation/proxy observables do not identify motive without an independent decision-time source;
+13. BID_ASK_SIDE_VOLUME / PROVIDER_TRADE_PRESSURE cannot become TRUE_OFI or claim complete-volume identity;
+14. BID_ASK_SIDE_VOLUME cannot claim opening-auction completeness;
+15. duplicate event identity is a fatal dataset-integrity condition.
+
+SDA alignment:
+- SDA-001 now has an executable D02-side no-second-price-vote receipt gate.
+- SDA-003 now has an executable participation != motive / TRUE_OFI overclaim gate.
+These are research-side controls only; audit tickets remain subject to D16 and 00 closure requirements.
+
+Permanent authorization limits:
+- outcomeAccessAuthorized=false;
+- numericalTargetAuthorized=false;
+- d16MethodSelectionAuthorized=false;
+- maturityPromotionAuthorized=false;
+- formalCoreChangeAuthorized=false.
+
+PVE-241 creates no clean prospective date and no L4 promotion.
+
+Current evidence:
+PVE-241 / CLEAN_DATE_ZERO / Gate 7 CLOSED.
+
+D02 remains 60.0%.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-242 — bind the PVE-241 receipt guard to the existing D02 L4 admission lanes, prioritizing D02-02:H001, D02-03:H20, D02-06:H003 and D02-08, and prove that no admitted row can bypass source-clock, volume-unit, corporate-action, information-root or participation-intent checks. Remain outcome-blind.
