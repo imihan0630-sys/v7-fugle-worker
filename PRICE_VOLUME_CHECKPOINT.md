@@ -3641,3 +3641,15 @@ Formal Core LOCKED.
 
 Exact next continuation point:
 PVE-248 — prepare/consume the unmerged System 1 Class-B repair candidate and deterministic tests for combined-Cron recognition/idempotent recovery, baseline bootstrap receipts/readiness, and fetch-boundary raw provenance. Do not merge/deploy without owner approval.
+
+
+## PVE-248 continuation — repair candidate intake (2026-10-06)
+
+Status: CANDIDATE_INTAKE_AUDITED / REMEDIATION_NOT_PROVEN / OUTCOME_BLIND / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+Latest-main V8.19 C1 inventory work is not D02 H001 remediation evidence. Latest-main Worker source contains an after-market Taipei-hour fallback, but physical primary/recovery routing and idempotence remain unproven. Baseline readiness still requires a future >=20 same-slot receipt with finite pvSlotRvol20. Raw provider/endpoint/exact-response hash provenance remains independently required. 2026-10-05 cannot be repaired backward.
+
+D02 remains 60.0%. Clean prospective dates=0. Gate 7 CLOSED. Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-249 — consume durable System 1 repair/readback for all three PVE-247 acceptance families, rerun the oracle, then test only a future decision-time 15m row for H001 eligibility.
