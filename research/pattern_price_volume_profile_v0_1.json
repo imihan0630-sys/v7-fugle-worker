@@ -1,0 +1,30 @@
+{
+  "schemaVersion":"pattern-price-volume-profile-v0.1",
+  "updated":"2026-10-05 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "owner":"D02_PRICE_VOLUME",
+  "auditTickets":{"SDA-001":"REMEDIATION_IN_PROGRESS"},
+  "informationRoots":["PRICE_OHLC","VOLUME_TURNOVER"],
+  "independenceStatus":"PARTIAL_OVERLAP",
+  "profileNodeEqualsStructure":false,
+  "profileVolumeEqualsIndependentVote":false,
+  "multiRootEqualsIndependence":false,
+  "minuteBarApproximationEqualsCanonicalProfile":false,
+  "fullDayProfileCanBackfillIntradayPredictor":false,
+  "postformationProfileIsBaselineConfounder":false,
+  "historicalProfileSourceState":"NOT_ESTABLISHED",
+  "residualIncrementalityStatus":"NOT_VALIDATED",
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "profileTimingClasses":[
+    "PREEXISTING_PROFILE",
+    "POSTFORMATION_PROFILE",
+    "PROFILE_CONFIRMED_AFTER_TEST",
+    "PROFILE_CONTEXT_UNKNOWN"
+  ],
+  "futureComparisonLadder":["P0","P1","P2","P3","P4","P5","P6","P7"],
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}
