@@ -4803,3 +4803,192 @@ No formula, weight or threshold changed. No empirical Alpha or promotion is clai
 
 Exact next:
 freeze the sparse-cell/date-cluster estimability and concentration oracle for future interaction receipts. External System1/System2/D16 and protected PR #600/Bollinger/ADX physical-evidence lanes remain pending.
+
+
+## TI-803 through TI-852 — interaction estimability, concentration, search genealogy and parameter-family firewall (2026-10-06)
+
+Canonical artifacts:
+- `research/D03_INTERACTION_ESTIMABILITY_CONCENTRATION_ORACLE_20261006_V0_1.md`;
+- `research/d03_interaction_estimability_concentration_oracle_20261006_v0_1.json`;
+- `research/test_d03_interaction_estimability_concentration_oracle_v0_1.mjs`;
+- `research/D03_INTERACTION_SEARCH_GENEALOGY_AND_REBIN_FIREWALL_20261006_V0_1.md`;
+- `research/d03_interaction_search_genealogy_and_rebin_firewall_20261006_v0_1.json`;
+- `research/test_d03_interaction_search_genealogy_and_rebin_firewall_v0_1.mjs`;
+- `research/D03_BOLLINGER_ADX_PARAMETER_SEARCH_GENEALOGY_AUDIT_20261006_V0_1.md`;
+- `research/d03_interaction_support_search_acceptance_contract_20261006_v0_1.json`;
+- `research/test_d03_interaction_support_search_acceptance_contract_v0_1.mjs`;
+- `research/d03_interaction_deep_guard_freeze_receipt_20261006_v0_1.json`.
+
+### TI-803 — support is a vector, not a single effective N
+Interaction evidence must preserve coverage, independent dates, representation-specific joint/design support, dependence/clusters, concentration/influence, admission/weights, calendar/episode breadth, outcome footprints and consumer scope. Row N, date N, episode N, cluster N or weighted ESS cannot alone represent all evidence support.
+
+### TI-804 — representation class is part of the hypothesis
+Primary interaction representation is frozen before target outcome interpretation as categorical joint-cell, continuous, mixed threshold/continuous, or path/lifecycle. Outcome-driven representation switching is a new adaptive family.
+
+### TI-805 — categorical cell universe is append-only
+All preregistered cells remain visible, including zero-count cells. Report row/date/symbol/admission/weighted support by cell. An estimand-critical zero cell blocks identification rather than disappearing from the report.
+
+### TI-806 — no universal joint-cell N
+D03 does not invent a single minimum cell count for all methods. D16 must freeze a method-specific minimum independent-date floor before target outcomes. Falling below it yields POWER_INSUFFICIENT or JOINT_SUPPORT_INSUFFICIENT, not post-result rebinning.
+
+### TI-807 — continuous interactions require design-support diagnostics
+Continuous interaction evidence must report component-range/joint-design coverage, unsupported regions, collinearity, leverage/partial leverage, influence, design-rank identifiability and frozen marginal-control basis. A coefficient driven by extreme points is not rescued by large row N.
+
+### TI-808 — mixed threshold/continuous interactions inherit both support burdens
+Threshold-side cell support and continuous-side design/leverage support are both required. One side cannot hide weakness on the other.
+
+### TI-809 — path/lifecycle interactions use episode/transition support
+Rows/bars are not independent recurrence. Report decision dates, structural episodes, conservative replication clusters, transitions, right censoring, calendar breadth and outcome-footprint overlap.
+
+### TI-810 — decision date is the first common cross-sectional inference axis
+Many symbols on one Taiwan scan date share shocks and cannot manufacture independent experiments. Raw rows and unique symbols remain descriptive; inference remains date/dependence aware.
+
+### TI-811 — effective cluster diagnostics are mandatory
+When clustered inference is used, report raw G, effective G*, cluster sizes, leverage/influence and clustering dimensions. D03 inherits D16 governance: G*<20 cannot stand alone as conventional cluster promotion evidence; >=20 is only an eligibility floor and influence/imbalance can still block.
+
+### TI-812 — HAC/block support follows D16 method-specific floors
+For HAC, T_eff<20 blocks standalone asymptotic promotion; 20–39 is exploratory/sensitivity absent corroboration; >=40 is only eligible. For temporal block bootstrap, effective blocks <10 are insufficient, 10–19 exploratory, >=20 only eligible. These are governance floors, not universal mathematical discontinuities.
+
+### TI-813 — concentration is a separate evidence axis
+Report concentration across dates, clusters/episodes, symbols, sectors, regimes and design regions, plus contribution/influence concentration. No universal concentration cutoff is invented in D03; claim-specific thresholds must be frozen by the D16 method receipt where used.
+
+### TI-814 — leave-one-unit fragility is mandatory
+Where support permits, leave-one-date, replication-cluster, sector and regime diagnostics report sign, effect range, rank/order and promotion-state stability. A sign or promotion-state flip from removing one unit routes to CONCENTRATION_FRAGILE.
+
+### TI-815 — claim scope contracts to supported evidence
+Narrow evidence becomes SECTOR_CONDITIONAL_OBSERVATION / REGIME_CONDITIONAL_OBSERVATION / PHASE_CONDITIONAL_OBSERVATION rather than a generic market-wide interaction claim.
+
+### TI-816 — weighted support must show effective support
+Report sum weights, squared weights, weighted effective support, max/quantile/concentration, zero/near-zero strata and balance. Weighting cannot hide weak positivity, and trimming/overlap weighting changes the support/estimand identity.
+
+### TI-817 — overlapping forward outcomes reduce fresh information
+D5/D10/D20 outcome-session overlap and purge/embargo are part of support. Disjoint decision dates with overlapping market-session outcomes do not carry the same fresh information as independent footprints.
+
+### TI-818 — semantic/version breaks cannot be pooled to manufacture N
+Known source, factor, session, continuity or consumer-policy breaks require frozen segmentation/break-aware methods or fail closed. Resampling cannot cross known semantic boundaries merely to enlarge support.
+
+### TI-819 — insufficient power/dependence is a valid terminal scientific result
+Allowed blocks include POWER_INSUFFICIENT, JOINT_SUPPORT_INSUFFICIENT, DEPENDENCE_TOO_STRONG_FOR_CURRENT_SAMPLE, CONCENTRATION_FRAGILE, SELECTION_IDENTIFICATION_BLOCKED and VERSION_OR_CONTINUITY_INCOMPATIBLE. A block does not authorize outcome-driven threshold/window/population repair.
+
+### TI-820 — support oracle decision
+`INTERACTION_SUPPORT = MULTI_AXIS_REPRESENTATION_SPECIFIC_FAIL_CLOSED`.
+No current D03 interaction receives a third unit.
+
+### TI-821 — interaction search universe has durable identity
+Every confirmatory interaction family binds local multiple-testing family, outer research stream or EXPLORATORY_ONLY, component pair, mechanism claim, allowed search axes, birth/retirement policies, representation-change policy, support-only redesign policy and outcome-release boundary.
+
+### TI-822 — candidate variant ledger is append-only
+Every threshold/window/horizon/representation candidate keeps immutable birth lineage, support refs, prior outcome-release refs, result state and retirement state. Negative/inconclusive/sparse/retired variants remain visible.
+
+### TI-823 — outcome-blind support redesign is permitted with lineage
+A sparse-support design may be revised before target outcomes if only predictor/design/admission information was used, the child points to the parent, the support-selection policy is frozen and candidates remain in the same search genealogy.
+
+### TI-824 — outcome-driven support repair consumes the prior holdout
+After any target outcome release, rebinning/window/threshold/representation changes are adaptive. The previous holdout is development-consumed and fresh evidence is required.
+
+### TI-825 — threshold lattice remains one family
+Nearby ADX thresholds, Bollinger width quantiles/multipliers, volume thresholds or joint cutpoints do not become fresh independent families simply by renaming.
+
+### TI-826 — horizon lattice remains in multiplicity history
+D5/D10/D20 cannot serve as retry buttons. Registered horizons remain one declared family; new post-result horizons inherit adaptive lineage.
+
+### TI-827 — parameter windows/smoothing cannot reset the family
+Bollinger center/dispersion windows, ADX Wilder periods/smoothing, MA/EMA lookbacks and participation windows remain candidate axes inside the search genealogy.
+
+### TI-828 — representation switches are explicit adaptive events
+Cell, continuous, mixed and path-state switches create new variant versions. Pre-outcome rule-driven switching can remain outcome-blind; post-outcome switching consumes evidence.
+
+### TI-829 — rebinning cannot delete empty/losing cells
+Original sparse/zero cell universes remain in history. New binning is a child candidate, never a retroactive rewrite of the ex-ante design.
+
+### TI-830 — support-quality selection is still candidate selection
+Choosing a candidate by cell N, balance, G*, leverage, positivity or weight concentration can be valid only under a frozen deterministic support-selection policy with candidate-set and tie-break identities.
+
+### TI-831 — winner selection period is not untouched confirmation
+When economic outcomes select the winning interaction variant, the selection period is development-consumed. Fresh post-selection evidence or a preregistered valid selective-inference design is required.
+
+### TI-832 — local and outer multiplicity remain distinct
+A valid local interaction family does not establish whole-program error control. Future confirmatory D03 interaction work binds both multipleTestingFamilyId and D16 researchStreamId/error objective or stays exploratory.
+
+### TI-833 — adaptive hypothesis birth is allowed but must be labeled
+A new mechanism inspired by prior results can be researched, but parent result lineage, information known at birth, family relationship and outer-stream treatment must be durable.
+
+### TI-834 — pre-outcome support-blocked candidates remain visible
+Sparse/data-quality/method-blocked variants do not consume target outcomes if never inspected, but remain in the candidate ledger.
+
+### TI-835 — outcome-inspected candidates can never be deleted
+Every outcome-exposed variant stays in local/outer multiplicity and SDA-016 consumption history despite retirement, supersession or renaming.
+
+### TI-836 — evidence dedup and attempt accounting are different
+Equivalent aliases may collapse to one effective evidence family while every actually outcome-tested alias remains visible as a search attempt. Deduplication cannot erase multiplicity history.
+
+### TI-837 — confirmatory winner requires fresh evidence
+A third interaction unit requires complete search genealogy, preserved siblings, local and outer multiplicity disposition, no reuse of the selection period as untouched validation, fresh support vector and fresh D16 incrementality evidence.
+
+### TI-838 — search genealogy decision
+`INTERACTION_SEARCH_HISTORY = APPEND_ONLY_NO_RESET_NO_REBIN_LAUNDERING`.
+
+### TI-839 — canonical Bollinger remains fixed 20×2
+Current formula `BBANDS_CLOSE_SMA20_POPSTD20_K2_V0_1` is a fixed research baseline with exact continuity requirements, not a verified winner from parameter optimization.
+
+### TI-840 — canonical ADX remains fixed Wilder 14
+Current `WILDER_ADX14_TALIB_STYLE_NO_ROUNDING_V0_1` is fixed with explicit smoothing/init semantics and FULL_REPLAY requirement, not a verified optimized winner.
+
+### TI-841 — mentioned values are not automatically outcome-tested attempts
+Conventional ADX 20/25/40 values are explicitly descriptive in the existing contract and no threshold sweep is authorized. D03 now distinguishes MENTIONED_ONLY, SUPPORT_EVALUATED_ONLY and OUTCOME_INSPECTED.
+
+### TI-842 — Bollinger future parameter axes belong to one search genealogy
+Center lookback/type, dispersion definition, multiplier, width/%B representation, squeeze percentile/lookback/threshold/duration, touch/break/re-entry, sign/lifecycle, comparator set, horizon and subgroup all enter the candidate family if searched.
+
+### TI-843 — ADX future parameter axes belong to one search genealogy
+Wilder period/init, level threshold, slope definition/window, DI dominance/crossover/retest, DX/DI transforms, ATR/TR controls, state bins, direction gate, lifecycle, horizon and subgroup are explicit future search axes.
+
+### TI-844 — jointly optimized axes imply a candidate lattice
+The actual candidate universe is the set of combinations considered/tested, not the number of reported winning axes. Candidate-set hash must be durable before confirmatory interpretation.
+
+### TI-845 — preregistered funnels may screen pre-outcome without fabricating multiplicity
+Formula/mechanics -> support/continuity -> redundancy/main-effect -> outcome funnels may retire candidates before outcomes. Those candidates remain in the ledger but do not consume outcome evidence.
+
+### TI-846 — outcome-blind support selection can choose a canonical test candidate
+A frozen support rule may select among pre-outcome candidates using date support, leverage, concentration and continuity. The selected candidate is not an economic-performance winner.
+
+### TI-847 — continuous first-pass reduces arbitrary cutpoint freedom
+Continuous ADX, BBW/%B/decomposed location/dispersion remain preferred first redundancy representations before threshold hunting, while nonlinear basis complexity itself remains governed if searched.
+
+### TI-848 — Bollinger touch/squeeze labels share parent lineage
+Touch, outside, re-entry, squeeze/expansion/duration are state transforms. They cannot stack as independent evidence, while every outcome-tested label remains visible for search accounting.
+
+### TI-849 — ADX threshold/slope/crossover labels share parent lineage
+High/rising/crossing ADX and DI crossover/strength labels remain downstream DMI/ADX transforms with shared search genealogy.
+
+### TI-850 — canonical L3 readiness cannot be repaired by changing formula
+Bollinger 20×2 and ADX14 physical readiness are distinct from predictive search. Alternative formulas define new research variants and cannot make a blocked canonical readiness receipt pass.
+
+### TI-851 — current repository shows no verified outcome-driven Bollinger/ADX sweep
+Current governed evidence shows fixed canonical baselines, descriptive threshold mentions, explicit no-threshold-sweep rules and closed D03 outcomes. Disposition:
+`NO_VERIFIED_OUTCOME_DRIVEN_BOLLINGER_ADX_PARAMETER_SWEEP`.
+
+This does not claim omniscience about ungoverned/off-repo exploration.
+
+### TI-852 — combined receipt binding
+New combined contract requires support, search-genealogy and incrementality receipts to bind the same interaction/variant/component pair/formula/parameter set/population/support/horizon/multiplicity/research-stream/method/consumption identity. Receipt drift yields `INTERACTION_ACCEPTANCE_RECEIPT_BINDING_MISMATCH`.
+
+Three executable fixtures are frozen:
+- support/concentration: 20 cases;
+- search genealogy: 13 cases;
+- combined binding: 13 cases;
+- total defined cases = 46.
+
+Repository workflow lookup found zero workflow runs for these three new fixture commits. Therefore no Node/CI execution PASS is claimed this round.
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09 remains L2/40;
+- D03-10 remains L2/40;
+- raw receipt gate remains 2/3;
+- outcomes remain CLOSED;
+- Formal Core remains LOCKED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+Exact next:
+first re-read System1/System2/D16 machine deltas before adding more semantics. If no external implementation lands, the next independent D03 path is a negative-control/permutation falsification oracle for interaction claims: preserve date/sector/regime dependence while breaking only the claimed component relation, and prevent invalid row-wise shuffles from creating false reassurance. Do not open outcomes. Protected PR #600/Bollinger/ADX physical-readiness lanes remain separate.
