@@ -2918,3 +2918,22 @@ System1 exact SDA-022 responsibility:
 5. fingerprint generation is observability only and does not reorder current System1 launch work.
 
 No outcome interpretation and no Formal optimization is authorized by this intake.
+
+
+## 2026-10-06 SDA-022 acceptance oracle pointer
+
+Latest acceptance authority:
+- shared-knowledge/SDA022_ACCEPTANCE_ORACLE_V0_1.md
+- shared-knowledge/sda022_acceptance_oracle_v0_1.json
+
+System1 policy fingerprint must satisfy S22-T01~T05.
+This remains observability-only:
+- no A/B change;
+- no Top6/3+3 change;
+- no 15m change;
+- no capital/lifecycle change.
+
+A missing or stale effective-ranking identity blocks the fingerprint.
+Do not use raw/stale Worker ranking if guarded effective Formal comparator differs.
+
+No outcome interpretation is opened by this pointer.
