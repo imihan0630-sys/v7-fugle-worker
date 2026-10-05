@@ -17,7 +17,7 @@
   ],
   "preregistrationParent": "research/d06_next_trading_day_outcome_blind_capture_plan_v0_1.json",
   "lineageContract": "research/d06_sda007_flow_ownership_lineage_contract_20261005_v0_1.json",
-  "sessionState": "EVENING_CAPTURE_IN_PROGRESS / TPEX_AND_TWSE_DEALER_SPLIT_CAPTURED / TWSE_2000_INCLUDE_BLOCK_ACCESS_GATED / TPEX_LEVERAGE_EARLY_UNKNOWN_MISSING / TPEX_DAYTRADE_TPRELIM_VARIABLE_PENDING / TDCC_PARENT_CAPTURED_JOIN_PENDING / D06_16_PF041_L3_SOURCE_READY / D06_06_SHARED_PRICE_VOLUME_PARENT_PENDING",
+  "sessionState": "EVENING_CAPTURE_IN_PROGRESS / TPEX_AND_TWSE_DEALER_SPLIT_CAPTURED / TPEX_DAYTRADE_T_PRELIM_CAPTURED_STABLE / TPEX_LEVERAGE_EARLY_UNKNOWN_MISSING / TPEX_LEVERAGE_LATE_PENDING_2230 / TDCC_PARENT_JOIN_PENDING / D06_16_PF041_L3_SOURCE_READY / D06_06_COMPATIBLE_SHARED_PARENT_PENDING",
   "globalRules": [
     "No lane may change fields or pass criteria after source values are observed.",
     "Raw parent receipts precede derived states.",
@@ -144,9 +144,10 @@
       "rule": "latestParentFirstKnownAt = max(firstKnownAt of mandatory parents); optional leverage/day-trade/SBL/passive axes remain UNKNOWN when unavailable",
       "independentVote": false,
       "crossDomainPriceVolumeLineageContract": "research/d06_core_crowding_crossdomain_parent_lineage_20261005_v0_1.json",
-      "priceVolumeParentBinding": "WAITING_PVE243_GENUINE_PROSPECTIVE_CANONICAL_RECEIPT",
+      "priceVolumeParentBinding": "WAITING_COMPATIBLE_SHARED_PARENT",
       "legacyPriceVolumeParentIdSemantics": "CONSUMER_ALIAS_ONLY_NOT_NEW_PRIMITIVE",
-      "priceVolumeParentEvidenceReview": "PVE-241/242 are schema/guard/admission evidence only; D02 CLEAN_DATE_ZERO remains and cannot satisfy the same-generation parent gate."
+      "priceVolumeParentEvidenceReview": "PVE-243 is genuine generic one-symbol 1d provenance with PRICE_PLUS_VOLUME_DERIVED root but is not a D06-compatible cross-sectional shared parent; PVE-244 is SOURCE_BLOCKED for decision-time 15m. Gate is now population/root compatibility, not a fixed PVE number.",
+      "sharedParentReassessmentReceipt": "research/d06_06_shared_price_volume_parent_reassessment_20261005_v0_1.json"
     },
     {
       "laneId": "D06_07_08_09_TPEX_VINTAGE",
@@ -183,20 +184,26 @@
       ],
       "primitiveReceiptId": "D06-20261005-TPEX-DAYTRADE-T",
       "informationRoot": "VOLUME_TURNOVER",
-      "preopenState": "T_PRELIM_NOT_YET_OBSERVED / VARIABLE_SOURCE_WORKFLOW_PENDING / TWO_ATTEMPTS_PRESERVED",
-      "currentVintage": "T_PRELIM",
+      "preopenState": "T_PRELIM_CAPTURED / SAME_DAY_STABILITY_PASS / T1_T2_PENDING",
+      "currentVintage": "T_PRELIM_CAPTURED",
       "followups": [
-        "T1_REVISED",
-        "T2_FINAL"
+        "T1_REVISED on 2026-10-06",
+        "T2_FINAL on 2026-10-07"
       ],
-      "rule": "preserve append-only revision lineage; surveillance threshold is context, not alpha",
+      "rule": "preserve append-only revision lineage; union-symbol and common-support revision metrics; missing is not zero; surveillance threshold is context, not alpha",
       "lastAttemptAt": "2026-10-05T20:43:06+08:00",
       "attemptReceipt": "research/d06_14_tpex_daytrade_tprelim_attempt_20261005_v0_1.json",
       "retryReceipt": "research/d06_14_tpex_daytrade_tprelim_retry_20261005_2043_v0_1.json",
       "attemptHistory": [
         "research/d06_14_tpex_daytrade_tprelim_attempt_20261005_v0_1.json",
         "research/d06_14_tpex_daytrade_tprelim_retry_20261005_2043_v0_1.json"
-      ]
+      ],
+      "capturedAt": "2026-10-05T22:10:01+08:00",
+      "firstKnownAtUpperBound": "2026-10-05T22:10:01+08:00",
+      "publicationBound": "(2026-10-05T20:43:06+08:00, 2026-10-05T22:10:01+08:00]",
+      "captureReceipt": "research/d06_14_tpex_daytrade_tprelim_capture_20261005_2210_v0_1.json",
+      "stabilityReceipt": "research/d06_14_tpex_daytrade_tprelim_same_day_stability_20261005_v0_1.json",
+      "revisionContract": "research/d06_14_daytrade_revision_comparison_contract_v0_1.json"
     },
     {
       "laneId": "D06_16_PF040_ETF_UNITS_PCF",
@@ -254,5 +261,5 @@
   },
   "maturityImpact": "D06_16_L2_TO_L3_AT_2036 / OTHER_LANES_NO_PROMOTION",
   "formalOptimizationCandidate": "NONE",
-  "exactNext": "Exact next: TPEx leverage LATE at 22:30 with no EARLY backfill; retry D06-14 T_PRELIM later only if actual same-date stock rows appear; D06-06 waits for D02 PVE-243 genuine prospective canonical PRICE_OHLC/VOLUME_TURNOVER parent; D06-05 waits for a real same-generation row before TDCC attachment. D06-16 is L3 source/PIT-ready after PF-041 but L4/outcomes remain closed. IC-074 freezes that same-day TWSE+TPEx dealer evidence counts as one temporal replication, not two. D06-18 15:20 live slot remains UNKNOWN/MISSING."
+  "exactNext": "At 22:30 capture TPEx leverage LATE using the same authorized official source families and never backfill EARLY 20:30 UNKNOWN/MISSING. D06-14 T_PRELIM is now prospectively captured and stable at 22:15; next vintage actions are T1_REVISED on 2026-10-06 and T2_FINAL on 2026-10-07 under the union-denominator revision contract. D06-06 no longer waits for a specific PVE number; wait for a same-generation, D06-population-compatible shared PRICE_OHLC/VOLUME_TURNOVER parent with exact lineage. D06-05 still waits for a real same-generation row before TDCC attachment. Outcomes remain closed."
 }
