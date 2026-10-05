@@ -33,7 +33,7 @@ function isSemanticAmendment(subject){
 
 function normalizedStem(subject){
   return text(subject)
-    .replace(/^[\[【（(]?(?:更正|修正)[^\]】）)]*[\]】）)]?\s*/,"")
+    .replace(/^[\[【（(](?:更正|修正)[^\]】）)]*[\]】）)]\s*/,"")
     .replace(/^(?:更正|修正|更新|更改|補充說明|補充公告|調整)\s*/,"")
     .replace(/^\d{7,8}\s*/,"")
     .replace(/公告本公司|本公司|公告/g,"")
