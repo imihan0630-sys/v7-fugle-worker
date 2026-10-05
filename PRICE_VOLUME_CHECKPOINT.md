@@ -3603,3 +3603,41 @@ Formal Core LOCKED.
 
 Exact next continuation point:
 PVE-247 — consume System 1 implementation/readback for the certified three-part root cause. Require physical schedule-identity, >=20 same-slot baseline with finite pvSlotRvol20, and provider/endpoint/rawPayloadHash provenance before capturing the first future H001 canonical receipt. Until then, fail closed.
+
+
+## PVE-247 continuation — executable remediation acceptance oracle (2026-10-06)
+
+Status: ACCEPTANCE_ORACLE_IMPLEMENTED / CI_PASS / SYSTEM1_FIX_NOT_YET_IMPLEMENTED / H001_FAIL_CLOSED / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+PVE-247 completed.
+
+Artifacts:
+- `research/d02_pve247_remediation_acceptance_oracle_v0_1.mjs`;
+- `tests/test_d02_pve247_remediation_acceptance_oracle_v0_1.mjs`;
+- `.github/workflows/d02-pve247-remediation-oracle.yml`;
+- `research/D02_PVE247_REMEDIATION_ACCEPTANCE_ORACLE_20261006_V0_1.md`;
+- `research/d02_pve247_remediation_oracle_validation_v0_1.json`.
+
+Validation:
+- local 15/15 PASS;
+- dedicated CI 37381110086 SUCCESS.
+
+Oracle layers:
+1. after-market 23:35 primary + 23:55 recovery identity with at-most-one successful business execution and explicit recovery idempotence;
+2. bootstrap receipt with provider status, raw/normalized/rejected counts, >=20 final valid sessions, >=20 same-slot history and finite pvSlotRvol20;
+3. provider + endpoint + exact-response SHA-256 rawPayloadHash before normalization.
+
+`remediationReady` does not imply H001 evidence.
+`h001ReceiptEligible` additionally requires post-2026-10-05 marketDate, PVE-241 canonical guard PASS, PVE-242 H001 lane guard PASS, common support and cohort/generation/Formal isolation.
+
+New test blind spot:
+existing V8.7.12 test and Cron-updater tests disagree in semantic coverage. Updaters accept combined `35,55 15 * * mon-fri`, but the runtime contract test never proves `isAfterMarketSchedule` recognizes it. Legacy regression can therefore be green while Production fails.
+
+Current Production remains unremediated.
+Clean prospective dates=0.
+D02 remains 60.0%.
+Gate 7 CLOSED.
+Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-248 — prepare/consume the unmerged System 1 Class-B repair candidate and deterministic tests for combined-Cron recognition/idempotent recovery, baseline bootstrap receipts/readiness, and fetch-boundary raw provenance. Do not merge/deploy without owner approval.
