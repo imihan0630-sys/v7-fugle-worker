@@ -23425,3 +23425,45 @@ New durable artifacts:
 - research/PATTERN_SESSION_GAP_AUCTION_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-044 — Structural boundary vs prior-close / auction-reference price anchors (2026-10-05)
+
+DL-043 separated the overnight gap, opening call auction and later continuous trading. DL-044 asks whether a structural level near the open is actually adding anything beyond very simple market reference prices.
+
+Three price objects are now kept distinct.
+
+The previous close is a historical market reference.
+
+The official auction reference price is an exchange-mechanics object used under the applicable session rule.
+
+The frozen D01 structural boundary is a technical-geometry object.
+
+They may be numerically equal without being the same causal object.
+
+This distinction is especially important in Taiwan because the legal opening-auction reference is not universally the raw prior close. Special sessions such as ex-right, ex-dividend, split/capital-change or other reference-reset conditions can produce mechanically adjusted session references. D01 therefore consumes official or owner-certified reference provenance and explicitly blocks special-session prior-close fallback when that provenance is missing.
+
+The behavioral interpretation is deliberately weaker than common chart narratives. A return toward the prior close can be called reference-price proximity, gap reversal or gap normalization. OHLC data alone do not identify psychological anchoring, trapped investors, breakeven motives or a price magnet. Those mechanisms remain D20's responsibility when behavior-specific observables exist.
+
+Reference-to-structure distance is stored continuously in price, ATR and legal-tick units. No arbitrary "within 0.5 ATR means anchored" threshold is defined.
+
+Five context states are frozen: structure distinct from references; prior close inside the structure; auction reference inside the structure; both references inside; and reference context unknown. These are context states, not bullish/bearish labels.
+
+Gap fill and same-day reversal remain outcomes or post-open path states. A pre-open or at-open predictor may not use the later fact that price returned to prior close. Otherwise a reversal would be used both to define the mechanism and prove the mechanism.
+
+A structural zone that overlaps prior close is not thrown away. Instead, future D16 inference must test whether the structural root contributes beyond the simple prior-close baseline. The same logic applies when the zone overlaps the official auction reference.
+
+The future comparison ladder begins with raw structural response, then controls prior-close context, official auction-reference context, overnight-gap context, market/sector common-gap context, a reference-distinct structural subset, and finally replication across reference states. A result that disappears after those controls becomes a reference/gap explanation rather than generic structural-memory evidence.
+
+All of these price-system representations remain one information family by default. Prior close, official auction reference and structural coincidence do not manufacture extra independent votes.
+
+Twenty adversarial tests are authored. They verify separate prior-close and auction-reference coincidence states, no behavioral overclaim from OHLC, continuity blocking, special-session reference blocking, separate distance descriptors, predictor-clock availability, separate open distances, mandatory official-reference provenance, no arbitrary near threshold, common-support requirements and preservation of numerically equal prior-close/reference values as distinct fields.
+
+New durable artifacts:
+- research/PATTERN_REFERENCE_PRICE_ANCHOR_V0_1.md
+- research/pattern_reference_price_anchor_v0_1.json
+- research/pattern_reference_price_anchor_v0_1.mjs
+- research/test_pattern_reference_price_anchor_v0_1.mjs
+- research/PATTERN_REFERENCE_PRICE_ANCHOR_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
