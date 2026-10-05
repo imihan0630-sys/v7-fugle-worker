@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "SYSTEM1_C1_SCAN_INVENTORY_PROGRESS_V0_1",
+  "observedMainSha": "bb2099909adaaf1462cb737b2fe8d3c5153288b8",
+  "branch": "codex/c1-inventory-20261005",
+  "candidateVersion": "8.19.0-c1-scan-origin-inventory",
+  "observedProductionVersion": "8.18.0-valuation-source-vintage",
+  "classification": "OWNER_APPROVED_CLASS_B_IMPLEMENTATION",
+  "formalCore": "LOCKED",
+  "engineering": "IMPLEMENTED",
+  "localRegression": {"passed": 99, "total": 99, "fixtureOnly": true},
+  "sqliteReadback": "VERIFIED_NOT_PRODUCTION",
+  "latestMainReconciled": true,
+  "exactHeadCI": "PENDING_PR",
+  "mergeDeployAuthorization": "SEPARATE_CONCRETE_REVIEW_REQUIRED",
+  "productionNewInventoryReadback": "PENDING_DEPLOYMENT_AND_GENUINE_SCAN",
+  "priorLiveReadback": {"runId": 37067696964, "scanDate": "2026-10-02", "status": "C1_GENERATION_NOT_FOUND", "mayCountAsZeroPick": false},
+  "checkpoint": "research/SYSTEM1_C1_SCAN_ORIGIN_INVENTORY_IMPLEMENTATION_20261005.md",
+  "nextAction": "Verify exact-head PR checks and GET-only live readback, then surface concrete merge/deploy approval packet; no business scan or legacy backfill.",
+  "promotionGradeOutcomeJoin": false,
+  "economicSuperiority": "UNKNOWN",
+  "formalOptimizationCandidate": "NONE"
+}
