@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "D06_PF040_POSTCLOSE_SOURCE_STATE_20261005_1547_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "tradeDate": "2026-10-05",
+  "capturedAt": "2026-10-05T15:47:30+08:00",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "primitiveReceiptId": "D06-20261005-ETF-UNITS-PCF-1547",
+  "parentLane": "D06_16_PF040_ETF_UNITS_PCF",
+  "priorReceipt": "research/d06_pf040_preclose_source_state_20261005_v0_1.json",
+  "state": "PENDING_BY_SOURCE_REFRESH",
+  "observations": [
+    {
+      "etfCode": "0050",
+      "sourceUrl": "https://www.yuantaetfs.com/tradeInfo/pcf/0050",
+      "pageAnnouncementDate": "2026-10-05",
+      "pagePostingTime": "2026-10-02T16:02:19+08:00",
+      "unitDataDate": "2026-10-02",
+      "pcfTradingDate": "2026-10-02",
+      "unitsOutstanding": 22201000000,
+      "reportedUnitsDifference": 34500000,
+      "creationUnitSize": 500000,
+      "eligibleFor20261005PF040": false
+    },
+    {
+      "etfCode": "0056",
+      "sourceUrl": "https://www.yuantaetfs.com/tradeInfo/pcf/0056",
+      "pageAnnouncementDate": "2026-10-05",
+      "pagePostingTime": "2026-10-02T16:31:09+08:00",
+      "unitDataDate": "2026-10-02",
+      "pcfTradingDate": "2026-10-02",
+      "unitsOutstanding": 14213534000,
+      "reportedUnitsDifference": 50000000,
+      "creationUnitSize": 500000,
+      "eligibleFor20261005PF040": false
+    }
+  ],
+  "comparisonWith1514": {
+    "sourceDateAdvanced": false,
+    "unitDataChanged": false,
+    "pcfTradeDateChanged": false,
+    "conclusion": "The same official issuer pages still expose 2026-10-02 economic data at 15:47 despite 2026-10-05 announcement date."
+  },
+  "guard": [
+    "announcement date is not the unit-data date",
+    "announcement date is not the PCF trade date",
+    "do not overwrite the 15:14 receipt",
+    "do not create 2026-10-05 modeled basket exposure until source dates advance",
+    "no outcome or Formal field is used"
+  ],
+  "passGate": "NOT_PASSED",
+  "exactNext": "Append another source vintage only after the issuer pages materially refresh. PF-040 remains pending until units and same-generation PCF refer to 2026-10-05."
+}
