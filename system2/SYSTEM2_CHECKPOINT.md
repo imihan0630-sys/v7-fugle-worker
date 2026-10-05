@@ -2129,3 +2129,26 @@ When the assigned SDA lane is serviced:
 - pass the latest 48-test contracts before specialist/00 closure.
 
 No change to current correction/build ownership, trading authority, Formal Core or capture authorization is made by this pointer.
+
+
+## 2026-10-06 S2-07 V0.4 per-symbol query-integrity physical result
+
+Authoritative execution:
+- commit: `bf94fcd267c0f87ca42df24935a4be5052247ac6`;
+- workflow: `System2 Bounded Revision Query Integrity V0.4 Readonly`;
+- run: `37376748993`;
+- job: `111987637837`;
+- conclusion: PASS.
+
+Physical classification of the seven V0.3 query-integrity mismatches:
+- `EXACT_KEYSET_RECONCILIATION = 1` (3591);
+- `MONTH_SHARD_SUPERSET = 6` (6949, 5381, 6241, 8937, 5904, 4747).
+
+Repeated `month=all` snapshots were stable. Therefore the six residual mismatches are not transient all-query nondeterminism in this run; the bounded month-shard union exposed additional rows that the stable all-query omitted. These six remain query-integrity unresolved for negative-history claims.
+
+Important boundary:
+- 3591 may advance only its per-symbol query-integrity gate;
+- the six MONTH_SHARD_SUPERSET symbols do not support a negative no-revision/no-cancellation inference from `month=all`;
+- none of this proves event linkage, revision completeness, cancellation completeness, NO_EVENT, exact knownAt, technical continuity, session completeness, or trading authority.
+
+Next BUILD_LANE step: event-specific linkage disambiguation packets must use source event identity + issuer + action family + effective date + authority/detail evidence and preserve candidate rows separately. Normalized subject stem may be retained only as supporting text and must never be the sole episode key.
