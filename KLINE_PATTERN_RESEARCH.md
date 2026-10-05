@@ -23131,3 +23131,43 @@ New durable artifacts:
 - research/PATTERN_INHERITED_VS_NEW_STRUCTURE_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-037 — Topology identity robustness across detector parameterizations (2026-10-05)
+
+DL-037 addresses a classic technical-analysis failure mode: once pattern detection becomes algorithmic, subjectivity can reappear through parameter search.
+
+Lo, Mamaysky and Wang demonstrate that chart patterns can be defined systematically rather than by visual judgment alone. That is useful, but it does not eliminate the question of smoothing bandwidths, pivot neighborhoods, lookbacks, clustering tolerances, minimum anchors and other detector choices. Sullivan, Timmermann and White show why this matters: a large universe of technical rules creates data-snooping risk if the investigator later reports only the favorable rule.
+
+D01 therefore freezes a parameter-family registry before any outcome inspection.
+
+A detector variant is one exact parameter vector. Structural topology identity is a different object: the causal root/version/anchor lineage produced by that variant. Information identity is stricter again: every price-only D01 variant remains derived from PRICE_OHLC.
+
+If two variants produce exactly the same root, version, ordered anchors, boundary hash and lifecycle state at the same predictor freeze, they are EXACT_VARIANT_ALIAS. They are not two confirmations.
+
+If variants preserve the same root but differ in legal boundary/version details, they are SAME_ROOT_PARAMETER_VARIATION. That is sensitivity evidence, not an independent vote.
+
+If variants produce different roots and no canonical causal lineage resolves the difference, the state is PARAMETER_IDENTITY_CONFLICT. The majority root does not become truth merely because more parameter settings emitted it.
+
+Negative output is part of the evidence. A frozen variant that emits no structure stays in the denominator. Data-blocked and post-hoc variants are also preserved explicitly. Computing a robustness percentage only across variants that successfully detected the desired structure is prohibited.
+
+DL-037 defines descriptive robustness counts and rates: emission rate, same-root support rate, conflict rate and no-structure rate. None is alpha. A high same-root support rate may tell us the detector is topologically stable, but it does not tell us the structure predicts returns, deserves more capital or should receive additional ranking weight.
+
+The SDA-001 implication is direct. Thirty detector parameterizations of the same price history do not create thirty confirmations. The parameter family exports one PRICE_OHLC information root and one D01_PRICE_GEOMETRY_PARAMETER_FAMILY redundancy group. effectiveIndependentEvidenceCount stays one until D16 shows residual incrementality beyond the canonical root.
+
+The SDA-002 implication is equally important. Every variant must independently satisfy firstObservableAt/confirmedAt/latestAnchorAt/predictorFreezeAt/replaySafe/futureBarRequired timing. A consensus cannot launder a future-looking pivot detector simply because many other variants agree.
+
+Canonical root selection itself cannot be outcome-driven. It must come from the pre-existing canonical detector or a deterministic rule frozen before results. Majority-vote root selection and best-return parameter selection are explicitly prohibited.
+
+Future D16 work receives four comparison families: canonical-only, family diagnostic, raw variant ensemble and deduplicated variant ensemble. The raw-versus-dedup comparison is intended to show how much apparent confidence is created solely by correlated parameter multiplicity. D16 must treat the entire frozen parameter grid as one technical-rule search family and account for dependence, repeated dates, family revisions and holdout consumption.
+
+Twenty adversarial tests are authored. They cover exact aliases, same-root variation, cross-root conflict, no-structure retention, future-bar and replay-unsafe variants, late confirmation, data blocking, denominator integrity, multiple aliases under one effective evidence count, conflict rates, non-alpha robustness, post-outcome family mutation, deletion of losing variants, registry timing, majority-vote rejection, best-outcome rejection, deterministic canonical selection and unresolved canonical roots.
+
+New durable artifacts:
+- research/PATTERN_TOPOLOGY_PARAMETER_ROBUSTNESS_V0_1.md
+- research/pattern_topology_parameter_robustness_v0_1.json
+- research/pattern_topology_parameter_robustness_v0_1.mjs
+- research/test_pattern_topology_parameter_robustness_v0_1.mjs
+- research/PATTERN_TOPOLOGY_PARAMETER_ROBUSTNESS_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
