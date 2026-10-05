@@ -1493,3 +1493,38 @@ Exact next:
 3. D16 must run common-support/passive-active residual incrementality only after prospective PIT coverage is sufficient;
 4. 00 alone advances or closes SDA-007 after readback;
 5. D06 maturity remains unchanged; Formal Core remains LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+---
+
+## IC-067 — 2026-10-05 new TDCC weekly parent captured before market; same-generation ownership join remains the promotion gate
+
+Research cycle: 2026-10-05 Asia/Taipei
+Status: NEW_TDCC_WEEKLY_PARENT_CAPTURED / SOURCE_INTEGRITY_PASS / SAME_GENERATION_JOIN_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable parent receipt: research/d06_tdcc_parent_receipt_20261005_v0_1.json.
+
+The official TDCC shareholding-distribution source was captured pre-market on 2026-10-05 and reports source date 2026-10-02, newer than the previously durable D06 ownership vintage 2026-09-24.
+
+Outcome-blind source integrity:
+- 69,326 bracket rows;
+- 4,078 unique securities;
+- every security has grades 1 through 17;
+- exact identity sum(grades 1..15 shares) - grade16 adjustment = grade17 total shares passes 4,078/4,078;
+- deterministic source fingerprint fnv1a64-utf8:ad1a265c0a3dcaf8.
+
+Research implication:
+- D06-10 receives a genuine new prospective weekly parent vintage and its existing L3 source/replay status is strengthened;
+- D06-05 does NOT promote from L2 merely because the source parent exists;
+- D06-05 L3 requires the exact primitiveReceiptId, source fingerprint, chipAsOfDate and chipDefinition to be immutably attached to the same 2026-10-05 research generation that consumes chip concentration;
+- later scan dates that reuse 2026-10-02 TDCC data remain one ownership-vintage inference unit.
+
+Motive/identity remains unresolved:
+TDCC large-holder brackets do not identify active institution, passive fund, strategic holder, natural-person whale or other beneficial-owner motive. Holder identity and passive share remain UNKNOWN.
+
+The pre-open capture session was updated at research/d06_20261005_prospective_capture_session_v0_1.json.
+
+Maturity impact: NONE at this pre-market stage.
+Formal Core remains LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+Exact next:
+After the 2026-10-05 after-market research generation exists, bind D06-20261005-TDCC-WEEKLY to same-generation D06-05/D06-06 research rows. Only after that immutable join passes may D06-05 L3 source/PIT feasibility be reconsidered. Continue the other frozen 2026-10-05 capture lanes at their actual source clocks; outcomes stay closed.
