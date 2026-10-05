@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "D06_PF041_PCF_MULTI_GENERATION_STABILITY_RECEIPT_V0_1",
+  "updatedAt": "2026-10-05T20:36:43+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-16",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "comparedDecisionGenerations": [
+    {
+      "decisionUseDate": "2026-10-05",
+      "captures": [
+        "2026-10-05T15:14:00+08:00",
+        "2026-10-05T15:47:30+08:00"
+      ],
+      "state": "SAME_GENERATION_STABLE",
+      "unitObservationDate": "2026-10-02"
+    },
+    {
+      "decisionUseDate": "2026-10-06",
+      "captures": [
+        "2026-10-05T20:35:15+08:00",
+        "2026-10-05T20:36:43+08:00"
+      ],
+      "state": "SAME_GENERATION_HASH_STABLE",
+      "unitObservationDate": "2026-10-05",
+      "hashes": {
+        "0050": "fnv1a64-utf8:c7ae53391ed48cd9",
+        "0056": "fnv1a64-utf8:07d4527644752dc1"
+      }
+    }
+  ],
+  "secondGenerationObservations": {
+    "0050": {
+      "announceDate": "2026-10-06",
+      "postingDate": "2026-10-05T15:56:27+08:00",
+      "unitObservationDate": "2026-10-05",
+      "unitsOutstanding": 22221500000,
+      "reportedUnitsDifference": 20500000,
+      "creationUnitSize": 500000,
+      "creationUnitEquivalentNetChange": 41,
+      "pcfTradeDate": "2026-10-05",
+      "cashSubstitutionState": "NO_REQUIRED_CASH_SUBSTITUTION_OBSERVED",
+      "corporateActionGuard": "HISTORICAL_SPLIT_2025-06-11 / NO_CURRENT_SPLIT_OBSERVED"
+    },
+    "0056": {
+      "announceDate": "2026-10-06",
+      "postingDate": "2026-10-05T16:32:48+08:00",
+      "unitObservationDate": "2026-10-05",
+      "unitsOutstanding": 14228034000,
+      "reportedUnitsDifference": 14500000,
+      "creationUnitSize": 500000,
+      "creationUnitEquivalentNetChange": 29,
+      "pcfTradeDate": "2026-10-05",
+      "cashSubstitutionState": "NO_REQUIRED_CASH_SUBSTITUTION_OBSERVED",
+      "corporateActionGuard": "NO_CURRENT_SPLIT_TEXT_OBSERVED"
+    }
+  },
+  "passGates": {
+    "multipleIndependentDecisionDates": true,
+    "sameGenerationVersionStabilityDemonstrated": true,
+    "announceVsUnitObservationClockSeparated": true,
+    "cashSubstitutionStatePreserved": true,
+    "corporateActionStatePreserved": true,
+    "sourceHashesPreserved": true,
+    "actualConstituentExecutionObserved": false
+  },
+  "maturityDecision": {
+    "module": "D06-16",
+    "from": "L2 / 40%",
+    "to": "L3 / 60%",
+    "reason": "Two independent prospective decision generations now have PIT-safe issuer PCF/unit-change provenance, with repeated same-generation stability checks and explicit cash-substitution/corporate-action guards.",
+    "scopeLimit": "L3 validates Taiwan PIT/source feasibility for ETF mechanics only. It does not validate predictive alpha or actual AP/constituent execution."
+  },
+  "forbiddenInferences": [
+    "positive units delta => bullish constituents",
+    "creation-unit-equivalent => actual creation order count",
+    "PCF basket => same-day market purchases",
+    "modeled basket exposure => actual stock passive flow"
+  ],
+  "formalOptimizationCandidate": "NONE",
+  "status": "PF041_MULTI_GENERATION_PIT_FEASIBILITY_PASS / D06_16_L3_SOURCE_READY / ACTUAL_EXECUTION_UNKNOWN / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Accumulate additional independent decision generations and later run OOS/Shadow incrementality for L4. Preserve every PCF version and source hash. D06-11 remains separately gated; actual stock execution stays UNKNOWN."
+}
