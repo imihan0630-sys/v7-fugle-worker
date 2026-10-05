@@ -91,6 +91,7 @@ jobs:
           python3 scripts/apply_v8_16_0.py
           python3 scripts/apply_v8_17_0.py
           python3 scripts/apply_v8_18_0.py
+          python3 scripts/apply_v8_19_0.py
           # V8.9.3 Hybrid WATCH regression contract
       - name: Syntax and offline behavior regression
         env:
@@ -99,7 +100,7 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.18.0-valuation-source-vintage";' Worker.js
+          grep -F 'const VERSION = "8.19.0-c1-scan-origin-generation-inventory";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c1_generations' Worker.js
           grep -F 'url.pathname === "/api/research/c1-population"' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c3_cohorts' Worker.js
@@ -224,6 +225,7 @@ jobs:
           node tests/test_system1_zero_pick_evidence_collector_v0_1.mjs
           node tests/test_system1_shadow_cohort_v8_17_0.mjs
           node tests/test_system1_valuation_source_vintage_v8_18_0.mjs
+          node tests/test_system1_c1_scan_origin_generation_inventory_v8_19_0.mjs
           node tests/test_system1_c3_c4_c5_shadow_v0_1.mjs
           node tests/test_system1_c4_ranking_redundancy_v0_1.mjs
           node tests/test_system1_c4_ranking_collection_v0_1.mjs

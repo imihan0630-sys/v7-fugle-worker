@@ -156,4 +156,12 @@
 - Runtime candidate: `8.18.0-valuation-source-vintage`.
 - 新增同 request valuation/financial snapshot digest 與 immutable C1 provenance capture；屬新增研究功能，Formal 選股架構不變。
 - Owner 已批准工程實裝與 PR 驗證；merge／Production deploy 未授權。
-- Checkpoint: `research/SYSTEM1_VALUATION_SOURCE_VINTAGE_IMPLEMENTATION_20261005.md`。
+- Checkpoint: `research/SYSTEM1_VALUATION_SOURCE_VINTAGE_IMPLEMENTATION_20261005.md`。\n\n## 18. V8.19.0｜C1 Scan-Origin & Generation Inventory（Class-B candidate）
+
+- Runtime candidate: `8.19.0-c1-scan-origin-generation-inventory`.
+- Owner explicitly approved Class-B implementation on 2026-10-05.
+- Adds immutable per-generation runtime scan-origin provenance and an authorized read-only same-session generation inventory over the existing C1 generation table.
+- No new provider request, D1 table, scheduler, Formal score/gate/rank rule, pool quota, capital rule, 15m signal semantics or push/order behavior.
+- Pre-V8.19 generations remain `LEGACY_NO_SCAN_ORIGIN`; no historical origin is inferred or backfilled.
+- Implementation checkpoint: `research/SYSTEM1_C1_SCAN_ORIGIN_GENERATION_INVENTORY_IMPLEMENTATION_20261005.md`.
+- Engineering / PR verification is authorized. Concrete merge and Production deployment require separate owner approval.\n

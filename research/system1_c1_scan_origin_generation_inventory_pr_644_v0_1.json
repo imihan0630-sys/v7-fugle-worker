@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "SYSTEM1_C1_SCAN_ORIGIN_GENERATION_INVENTORY_PR_GATE_V0_1",
+  "date": "2026-10-05",
+  "pr": 644,
+  "branch": "codex/system1-c1-scan-origin-generation-inventory",
+  "preSyncHead": "e761c1c29171a7049e85b49c8d95308e3ae1a853",
+  "reconciledMain": "27ed77fb3754ce2afe9f5c10650c71ce30f965d3",
+  "ownerApprovedClassBImplementation": true,
+  "mergeAuthorized": false,
+  "productionDeployAuthorized": false,
+  "ciStatus": "QUEUED_EXACT_HEAD",
+  "formalCoreImpact": false,
+  "latestHead": "6bf61449d6013cef8cee16a3a610de593e99819c",
+  "exactHeadRuns": {
+    "regression": 37376410914,
+    "isolatedReview": 37376410949,
+    "repairCI": 37376410918
+  },
+  "resolvedDuringThisSegment": [
+    "V8.19 guarded patch persistence anchor aligned to effective V8.17/V8.18 chain",
+    "Regression workflow literal backslash-n wiring removed",
+    "V8.18 parity test scoped to pre-V8.19 runtime boundary and latest workflow version guard"
+  ],
+  "exactNextAction": "Read exact-head CI for 6bf61449d6013cef8cee16a3a610de593e99819c; if all three pass, record acceptance and stop at merge/production approval gate. If any fail, diagnose only the first concrete failure and repair without changing Formal Core."
+}
