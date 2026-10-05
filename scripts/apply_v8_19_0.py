@@ -33,8 +33,8 @@ once('async function persistCompletedC1Safe(env,receipt,scanDate,{selectionVerif
   scanOrigin=C1_SCAN_ORIGIN.C1_SCAN_ORIGINS.DIRECT_SAFE_PERSISTENCE_CALLER}={}) {''',
 'safe persistence origin argument')
 
-once('    else save=await persistC1PopulationReceipt(env,receipt);',
-     '    else save=await persistC1PopulationReceipt(env,receipt,{scanOrigin});',
+once('      save=await persistC1PopulationReceipt(env,receipt);',
+     '      save=await persistC1PopulationReceipt(env,receipt,{scanOrigin});',
      'propagate origin to immutable generation')
 
 once('''c1PopulationSave = await persistCompletedC1Safe(env,scan.c1PopulationReceipt,marketDate,{selectionVerified:saved.verified===true,captureError:scan.c1CaptureError});''',
