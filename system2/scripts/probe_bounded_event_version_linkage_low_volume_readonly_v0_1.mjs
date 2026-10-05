@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+import { spawnSync, execFile } from "node:child_process";
 import { createHash } from "node:crypto";
 import { buildOfficialContinuitySourceUrlsV0_1 } from "../runtime/official_continuity_source_capability_v0_1.mjs";
 import { parseOfficialHistoricalContinuityPayloadV0_1 } from "../runtime/official_continuity_event_parser_v0_1.mjs";
@@ -85,6 +85,33 @@ function detailIdentityKey(row){
   ].join("|");
 }
 
+function curlDetail(url){
+  return new Promise((resolve)=>{
+    const marker="\n__STATUS__:";
+    execFile("curl",[
+      "--silent","--show-error","--location","--http1.1","--compressed",
+      "--connect-timeout","10","--max-time","30",
+      "--retry","2","--retry-delay","1","--retry-all-errors",
+      "--header","User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36",
+      "--header","Accept: text/html,application/xhtml+xml,*/*;q=0.8",
+      "--header","Accept-Language: zh-TW,zh;q=0.9,en;q=0.6",
+      "--write-out","\n__STATUS__:%{http_code}\n",
+      url,
+    ],{encoding:"utf8",maxBuffer:32*1024*1024},(error,stdout,stderr)=>{
+      const raw=String(stdout||"");
+      const pos=raw.lastIndexOf(marker);
+      const body=pos>=0?raw.slice(0,pos):raw;
+      const status=pos>=0?Number(raw.slice(pos+marker.length).trim()):0;
+      resolve({
+        ok:!error&&status===200,
+        status,
+        body,
+        error:error?String(stderr||error.message||error).slice(0,1000):null,
+      });
+    });
+  });
+}
+
 async function fetchDetailEvidence(row){
   if(!row?.stockCode||!row?.spokeDateRaw||!row?.spokeTimeRaw||!row?.seqNo){
     return {
@@ -93,7 +120,7 @@ async function fetchDetailEvidence(row){
       detailBodyDateTokens:[],
       detailBodyTextHash:null,
       detailPayloadHash:null,
-      detailTransportMode:"T05ST01_STEP2_GET",
+      detailTransportMode:"T05ST01_STEP2_GET_CURL",
       detailError:"DETAIL_IDENTITY_KEY_INCOMPLETE",
     };
   }
@@ -113,59 +140,52 @@ async function fetchDetailEvidence(row){
       detailBodyDateTokens:[],
       detailBodyTextHash:null,
       detailPayloadHash:null,
-      detailTransportMode:"T05ST01_STEP2_GET",
+      detailTransportMode:"T05ST01_STEP2_GET_CURL",
       detailError:String(error?.message||error),
     };
   }
 
-  let lastError=null;
-  for(let attempt=1;attempt<=3;attempt+=1){
-    try{
-      const response=await fetch(request.url,{
-        headers:{
-          accept:"text/html,application/xhtml+xml,*/*;q=0.8",
-          "accept-language":"zh-TW,zh;q=0.9,en;q=0.6",
-          "user-agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36",
-        },
-        signal:AbortSignal.timeout(30000),
-      });
-      const html=await response.text();
-      if(!response.ok){
-        lastError="HTTP_"+response.status;
-      }else{
-        const parsed=await parseMopsMaterialDetailHtmlV0_1({
-          html,
-          stockCode:row.stockCode,
-          spokeDateRaw:row.spokeDateRaw,
-          spokeTimeRaw:row.spokeTimeRaw,
-          seqNo:row.seqNo,
-        });
-        return {
-          detailTransportReady:true,
-          detailIdentityObserved:parsed.identityObserved===true,
-          detailBodyDateTokens:[...parsed.bodyDateTokens],
-          detailBodyTextHash:parsed.bodyTextHash,
-          detailPayloadHash:sha256(html),
-          detailTransportMode:"T05ST01_STEP2_GET",
-          detailAttemptCount:attempt,
-          detailError:parsed.identityObserved ? null : "DETAIL_IDENTITY_NOT_OBSERVED",
-        };
-      }
-    }catch(error){
-      lastError=String(error?.message||error);
-    }
-    if(attempt<3) await sleep(500*attempt);
+  const response=await curlDetail(request.url);
+  if(!response.ok){
+    return {
+      detailTransportReady:false,
+      detailIdentityObserved:false,
+      detailBodyDateTokens:[],
+      detailBodyTextHash:null,
+      detailPayloadHash:response.body?sha256(response.body):null,
+      detailTransportMode:"T05ST01_STEP2_GET_CURL",
+      detailError:response.error||("HTTP_"+response.status),
+    };
   }
-  return {
-    detailTransportReady:false,
-    detailIdentityObserved:false,
-    detailBodyDateTokens:[],
-    detailBodyTextHash:null,
-    detailPayloadHash:null,
-    detailTransportMode:"T05ST01_STEP2_GET",
-    detailAttemptCount:3,
-    detailError:lastError||"DETAIL_TRANSPORT_FAILED",
-  };
+
+  try{
+    const parsed=await parseMopsMaterialDetailHtmlV0_1({
+      html:response.body,
+      stockCode:row.stockCode,
+      spokeDateRaw:row.spokeDateRaw,
+      spokeTimeRaw:row.spokeTimeRaw,
+      seqNo:row.seqNo,
+    });
+    return {
+      detailTransportReady:true,
+      detailIdentityObserved:parsed.identityObserved===true,
+      detailBodyDateTokens:[...parsed.bodyDateTokens],
+      detailBodyTextHash:parsed.bodyTextHash,
+      detailPayloadHash:sha256(response.body),
+      detailTransportMode:"T05ST01_STEP2_GET_CURL",
+      detailError:parsed.identityObserved ? null : "DETAIL_IDENTITY_NOT_OBSERVED",
+    };
+  }catch(error){
+    return {
+      detailTransportReady:true,
+      detailIdentityObserved:false,
+      detailBodyDateTokens:[],
+      detailBodyTextHash:null,
+      detailPayloadHash:sha256(response.body),
+      detailTransportMode:"T05ST01_STEP2_GET_CURL",
+      detailError:String(error?.message||error),
+    };
+  }
 }
 
 async function mapLimit(items,limit,fn){
@@ -205,7 +225,7 @@ async function enrichFamilyRowsWithDetails(familyMap){
         detailBodyDateTokens:[],
         detailBodyTextHash:null,
         detailPayloadHash:null,
-        detailTransportMode:"T05ST01_STEP2_GET",
+        detailTransportMode:"T05ST01_STEP2_GET_CURL",
         detailError:"DETAIL_EVIDENCE_MISSING",
       }),
     }));
@@ -304,7 +324,7 @@ for(const [symbol,history] of Object.entries(rawIssuerHistories)){
         detailBodyDateTokens:[],
         detailBodyTextHash:null,
         detailPayloadHash:null,
-        detailTransportMode:"T05ST01_STEP2_GET",
+        detailTransportMode:"T05ST01_STEP2_GET_CURL",
         detailError:"DETAIL_EVIDENCE_MISSING",
       }),
     }));
