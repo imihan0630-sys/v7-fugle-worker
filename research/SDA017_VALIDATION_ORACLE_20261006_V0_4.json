@@ -1,0 +1,541 @@
+{
+  "schemaVersion": "SDA017_VALIDATION_ORACLE_V0_4",
+  "ticket": "SDA-017",
+  "owner": "11",
+  "status": "RESEARCH_ONLY_VALIDATION_ORACLE_FROZEN",
+  "formalCoreImpact": "NONE",
+  "canonicalContracts": [
+    "research/SDA017_REGIME_SUPPORT_EPISODE_VALIDATION_CONTRACT_20261005_V0_1.md",
+    "research/SDA017_EPISODE_HORIZON_DEPENDENCE_VALIDATION_ADDENDUM_20261005_V0_1.md",
+    "research/SDA017_REALTIME_FIT_FRAGMENTATION_VALIDATION_ADDENDUM_20261005_V0_1.md",
+    "research/SDA017_EFFECTIVE_REPLICATION_UNIT_VALIDATION_ADDENDUM_20261006_V0_1.md",
+    "research/SDA017_POLICY_CANDIDATE_SURVIVORSHIP_VALIDATION_ADDENDUM_20261006_V0_1.md",
+    "research/D18_POLICY_CANDIDATE_UNIVERSE_RECEIPT_CONTRACT_20261006_V0_1.json"
+  ],
+  "closureAuthority": "00",
+  "primaryEstimand": "DECISION_STATE_CONDITIONAL",
+  "passRule": "ALL_56_BLOCKING_TESTS_PASS_PLUS_GENUINE_PROSPECTIVE_MULTI_REPLICATION_AND_FRESH_CHAMPION_EVIDENCE_AND_ROOM00_READBACK",
+  "currentEngineeringState": "PARTIAL_PASS",
+  "tests": [
+    {
+      "id": "SDA017-T01",
+      "name": "post-outcome new regime",
+      "scenario": "new regime definition after seeing outcomes",
+      "expected": "NEW_FAMILY_AND_SDA016_CONSUMPTION",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T02",
+      "name": "post-outcome threshold mutation",
+      "scenario": "threshold changes after outcome inspection",
+      "expected": "SAME_VERSION_REJECT_OR_NEW_FAMILY_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T03",
+      "name": "drop UNKNOWN for performance",
+      "scenario": "UNKNOWN rows removed and reported performance improves",
+      "expected": "REJECT_COVERAGE_MISMATCH",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T04",
+      "name": "one long episode many dates",
+      "scenario": "many rows/dates all inside one state episode",
+      "expected": "INSUFFICIENT_SUPPORT_EPISODE_N_1",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T05",
+      "name": "UNKNOWN gap",
+      "scenario": "same state before/after an UNKNOWN official session",
+      "expected": "MUST_SPLIT_EPISODE",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T06",
+      "name": "vector version boundary",
+      "scenario": "same state but regimeVectorVersion changes",
+      "expected": "MUST_SPLIT_EPISODE",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T07",
+      "name": "CONTEXT_RAW policy action",
+      "scenario": "non-discrete context is mapped directly to policy action",
+      "expected": "REJECT_DATA_UNKNOWN_OR_ABSTAIN",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T08",
+      "name": "known but thin state",
+      "scenario": "KNOWN state lacks preregistered support floor",
+      "expected": "INSUFFICIENT_SUPPORT_NO_PROMOTION",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T09",
+      "name": "cost mismatch",
+      "scenario": "baseline/challenger use different cost semantics",
+      "expected": "REJECT",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T10",
+      "name": "disabled opportunity cost missing",
+      "scenario": "POLICY_DISABLED lacks paired missed-opportunity outcome",
+      "expected": "NOT_PROMOTION_ELIGIBLE",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T11",
+      "name": "huge row N tiny date/episode N",
+      "scenario": "stock rows large but independent dates/episodes thin",
+      "expected": "INSUFFICIENT_SUPPORT",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T12",
+      "name": "best-state-only reporting",
+      "scenario": "only favorable state/episode retained",
+      "expected": "REJECT_FAMILY_ACCOUNTING_MISMATCH",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T13",
+      "name": "future-smoothed decision state",
+      "scenario": "decision-time policy uses future-informed latent/smoothed state",
+      "expected": "REJECT_LOOKAHEAD",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T14",
+      "name": "historical reconstruction labeled prospective",
+      "scenario": "state receipts generated after the fact from current spec",
+      "expected": "REJECT_PROSPECTIVE_CLAIM",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T15",
+      "name": "duplicate primitive multiple votes",
+      "scenario": "same primitive counted via trend/composite/policy as independent evidence",
+      "expected": "NO_INCREMENT_IN_EFFECTIVE_EVIDENCE",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T16",
+      "name": "adjacent episodes",
+      "scenario": "three structural episodes separated by one session each",
+      "expected": "STRUCTURAL_EPISODE_N_3_NOT_THREE_INDEPENDENT_REPLICATIONS",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T17",
+      "name": "horizon crosses transition",
+      "scenario": "decision state KNOWN and D+N path changes regime",
+      "expected": "KEEP_PRIMARY_ROW_AND_FLAG_TRANSITION_CROSSING",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T18",
+      "name": "future persistence filter",
+      "scenario": "only rows staying same regime through horizon retained after outcomes",
+      "expected": "REJECT_UNLESS_SEPARATE_PREREGISTERED_ESTIMAND",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T19",
+      "name": "future regime UNKNOWN but price outcome valid",
+      "scenario": "decision state known; future regime path partly UNKNOWN",
+      "expected": "KEEP_DECISION_STATE_PRIMARY_PRICE_OUTCOME",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T20",
+      "name": "official-session gap",
+      "scenario": "same state resumes after non-adjacent/missing session",
+      "expected": "MUST_SPLIT_EPISODE",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T21",
+      "name": "version boundary episode continuation",
+      "scenario": "episodeId continues across vector/source semantic version change",
+      "expected": "REJECT",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T22",
+      "name": "future episode facts in decision receipt",
+      "scenario": "decision receipt contains finalEpisodeLength/futureEndDate",
+      "expected": "REJECT_LOOKAHEAD",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T23",
+      "name": "active episode counted completed",
+      "scenario": "ongoing episode included in completedEpisodeN",
+      "expected": "REJECT_SUPPORT_ACCOUNTING",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T24",
+      "name": "episode count without matured outcome diversity",
+      "scenario": "three structural episodes but matured outcomes only from one",
+      "expected": "NOT_PRIMARY_ELIGIBLE",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T25",
+      "name": "episode diversity but consumed outcome footprint",
+      "scenario": "episode support passes but SDA016 footprint overlap is consumed",
+      "expected": "NOT_PROMOTION_ELIGIBLE",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T26",
+      "name": "realized persistence as live signal",
+      "scenario": "future realized persistence directly controls policy",
+      "expected": "REJECT_NEEDS_DECISION_TIME_FORECAST_CONTRACT",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T27",
+      "name": "transition-specific result promoted post hoc",
+      "scenario": "secondary transition subset outperforms and replaces primary",
+      "expected": "NEW_FAMILY_AND_SDA016_CONSUMPTION",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T28",
+      "name": "threshold retunes episode map",
+      "scenario": "threshold changed after outcomes causing historical episode recut",
+      "expected": "NEW_FAMILY_AND_DEVELOPMENT_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T29",
+      "name": "episode dominance",
+      "scenario": "one episode explains more than 50% supported dates",
+      "expected": "EPISODE_DOMINANCE_WARNING_NOT_STANDALONE_PASS",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T30",
+      "name": "structural support without dependence clearance",
+      "scenario": "episode/date floors pass but D16 dependence state unresolved",
+      "expected": "STRUCTURAL_SUPPORT_READY_STATISTICAL_DEPENDENCE_PENDING",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T31",
+      "name": "full-sample quantile lookahead",
+      "scenario": "historical regime thresholds are fit with covariates from dates after each decision",
+      "expected": "REJECT_LOOKAHEAD_FIT_CLOCK",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T32",
+      "name": "future-informed preprocessing",
+      "scenario": "PCA/clustering/HMM/scaler fit uses post-decision covariates although outcomes are excluded",
+      "expected": "REJECT_LOOKAHEAD_FIT_CLOCK",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T33",
+      "name": "post-outcome fit rule mutation",
+      "scenario": "fit window/normalization/threshold rule changes after outcome inspection",
+      "expected": "NEW_FAMILY_AND_SDA016_CONSUMPTION",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T34",
+      "name": "UNKNOWN fragmentation credit",
+      "scenario": "same state before/after UNKNOWN gap creates two structural episodes",
+      "expected": "STRUCTURAL_SPLIT_YES_REPLICATION_CREDIT_NO_AUTOMATIC_INCREMENT",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T35",
+      "name": "version migration fragmentation credit",
+      "scenario": "same state split only by vector/source semantic version change",
+      "expected": "STRUCTURAL_SPLIT_YES_REPLICATION_CREDIT_NO_AUTOMATIC_INCREMENT",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T36",
+      "name": "threshold chatter",
+      "scenario": "near-threshold A-B-A-B short episodes inflate transition/episode counts",
+      "expected": "CHATTER_WARNING_NO_INDEPENDENT_RECURRENCE_CREDIT_WITHOUT_FROZEN_RULE",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T37",
+      "name": "active episode dropped",
+      "scenario": "end-of-sample active episode omitted from support accounting",
+      "expected": "REJECT_RIGHT_CENSOR_ACCOUNTING",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T38",
+      "name": "completed-only primary analysis",
+      "scenario": "decision-state primary excludes matured decisions because their episode is still active",
+      "expected": "REJECT_RIGHT_CENSOR_SELECTION",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T39",
+      "name": "regime-dependent observability",
+      "scenario": "UNKNOWN/capture failure fraction is materially state-dependent but only known-state performance is reported",
+      "expected": "REGIME_OBSERVABILITY_SELECTION_WARNING_NO_STANDALONE_PROMOTION",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T40",
+      "name": "future-known fit population",
+      "scenario": "regime fit population membership uses post-decision eligibility or future-known membership",
+      "expected": "REJECT_PIT_FIT_POPULATION",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T41",
+      "name": "post-outcome episode weighting switch",
+      "scenario": "primary aggregation changes from decision-date weighting to equal-episode weighting after outcomes",
+      "expected": "NEW_ESTIMAND_FAMILY_AND_SDA016_ACCOUNTING",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T42",
+      "name": "mechanical fragments counted as replications",
+      "scenario": "same-state UNKNOWN/version/clock fragments each receive independent replication credit",
+      "expected": "MERGE_INTO_CONSERVATIVE_REPLICATION_CLUSTER",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T43",
+      "name": "three episodes one replication cluster",
+      "scenario": "structuralEpisodeN>=3 but replicationClusterN=1",
+      "expected": "NOT_PRIMARY_VALIDATION_ELIGIBLE",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T44",
+      "name": "leave-one-cluster sign flip",
+      "scenario": "removing any one replication cluster flips the primary direction",
+      "expected": "REPLICATION_FRAGILE_NO_STANDALONE_PROMOTION",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T45",
+      "name": "cluster influence dominance",
+      "scenario": "date occupancy appears balanced but one replication cluster dominates leverage/influence/effect",
+      "expected": "CLUSTER_DOMINANCE_WARNING_NO_STANDALONE_PROMOTION",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T46",
+      "name": "transition-path concentration hidden",
+      "scenario": "positive result is concentrated in one predecessor transition path but reported as generic state effect",
+      "expected": "STATE_EFFECT_HETEROGENEITY_WARNING",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T47",
+      "name": "narrow calendar recurrence",
+      "scenario": "episode count passes but all replication evidence occurs within one narrow preregistered separation period",
+      "expected": "RECURRENCE_BREADTH_INSUFFICIENT",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T48",
+      "name": "single ESS collapse",
+      "scenario": "only one ESS/N_eff is reported without date/episode/cluster/block/influence diagnostics",
+      "expected": "SUPPORT_ACCOUNTING_FAIL",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T49",
+      "name": "policy survivor denominator loss",
+      "scenario": "only active policy candidates remain and retired losers disappear from historical denominator",
+      "expected": "REJECT_POLICY_SURVIVORSHIP_ACCOUNTING",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T50",
+      "name": "selection period reused as validation",
+      "scenario": "A/B/C are compared on one period, B wins, and the same period is called B untouched validation",
+      "expected": "SELECTION_PERIOD_DEVELOPMENT_CONSUMED",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T51",
+      "name": "rolling champion splice",
+      "scenario": "best candidate is reselected each period and realized champion returns are concatenated as if one fixed strategy",
+      "expected": "CHAMPION_META_POLICY_REQUIRES_OWN_PREREGISTRATION",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T52",
+      "name": "post-outcome champion rule mutation",
+      "scenario": "champion ranking metric or selection rule changes after observing outcomes",
+      "expected": "NEW_META_POLICY_FAMILY_AND_SDA016_CONSUMPTION",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T53",
+      "name": "retired policy alias reset",
+      "scenario": "retired losing policy re-enters under a new id without parent lineage",
+      "expected": "REJECT_POLICY_ID_ALIAS_RESET",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T54",
+      "name": "survival-duration confounding hidden",
+      "scenario": "surviving policy has different exposure duration/regime support from losers but comparison omits this",
+      "expected": "SURVIVAL_DURATION_CONFOUNDING_WARNING",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T55",
+      "name": "unequal activation support champion race",
+      "scenario": "candidates are compared only on their own enabled dates despite different activation opportunities",
+      "expected": "POLICY_CHAMPION_NOT_IDENTIFIED_ON_COMMON_SUPPORT",
+      "blocking": true
+    },
+    {
+      "id": "SDA017-T56",
+      "name": "policy universe versus hypothesis stream mismatch",
+      "scenario": "champion changes, candidate births or retirements disagree with SDA016 research-stream ledger",
+      "expected": "CROSS_LEDGER_MULTIPLICITY_MISMATCH",
+      "blocking": true
+    }
+  ],
+  "requiredMachineOutputs": [
+    "regimeFamilyId",
+    "regimeVectorVersion",
+    "regimeStateReceiptHash",
+    "episodeId",
+    "episodeOrdinal",
+    "episodeFirstDate",
+    "priorOfficialSessionReceiptHash",
+    "structuralEpisodeN",
+    "maturedOutcomeEpisodeN",
+    "completedEpisodeN",
+    "activeEpisodeN",
+    "effectiveIndependentDateN",
+    "transitionN",
+    "interEpisodeGapSessions",
+    "episodeOccupancy",
+    "maxEpisodeDateShare",
+    "outcomeCrossesRegimeTransition",
+    "transitionCountWithinOutcomeHorizon",
+    "futureRegimePathKnownFraction",
+    "supportState",
+    "sda016ConsumptionRef",
+    "sda016OutcomeFootprintDisposition",
+    "regimeFitId",
+    "fitMethodVersion",
+    "fitKnowledgeCutoff",
+    "fitStartDate",
+    "fitEndDate",
+    "fitSourceDigest",
+    "fitPopulationHash",
+    "transformParametersHash",
+    "thresholdDefinitionHash",
+    "scalerStatisticsHash",
+    "futureRowsUsed",
+    "outcomesUsed",
+    "episodeStartReason",
+    "episodeEndReason",
+    "splitCause",
+    "replicationClusterId",
+    "mechanicalFragment",
+    "mechanicalFragmentN",
+    "replicationEpisodeN",
+    "witnessedDifferentStateSincePriorSameState",
+    "transitionDensity",
+    "oneSessionEpisodeN",
+    "shortEpisodeN",
+    "chatterClusterN",
+    "rightCensoredEpisodeN",
+    "maturedDecisionNInsideActiveEpisodes",
+    "stateSpecificAdmissibilityFraction",
+    "observabilityWarning",
+    "supportVectorVersion",
+    "replicationClusterId",
+    "replicationClusterN",
+    "replicationClusterSizeDistribution",
+    "maxReplicationClusterDateShare",
+    "replicationClusterLeverageDiagnostics",
+    "replicationClusterInfluenceDiagnostics",
+    "leaveOneReplicationClusterOutDiagnostics",
+    "primaryWeightingRule",
+    "predecessorStateDistribution",
+    "transitionPathConcentration",
+    "evidenceCalendarSpanSessions",
+    "separatedPeriodN",
+    "separationRuleVersion",
+    "recurrenceBreadthState",
+    "policyUniverseId",
+    "policyUniverseVersion",
+    "candidateSetHashAtDecision",
+    "candidateBirthLedgerHash",
+    "candidateRetirementLedgerHash",
+    "championSelectionRuleHash",
+    "championPolicyId",
+    "selectionMetricHash",
+    "freshEvaluationStartAt",
+    "bornCandidateN",
+    "activeCandidateN",
+    "retiredCandidateN",
+    "outcomeInspectedCandidateN",
+    "deletedOutcomeInspectedCandidateN",
+    "championTurnoverN",
+    "candidateExposureDurationDistribution",
+    "candidateRegimeSupportDistribution",
+    "policyUniverseSda016ResearchStreamRef"
+  ],
+  "supportStates": [
+    "STRUCTURAL_SUPPORT_INSUFFICIENT",
+    "STRUCTURAL_SUPPORT_READY_REPLICATION_PENDING",
+    "REPLICATION_SUPPORT_READY_STATISTICAL_DEPENDENCE_PENDING",
+    "PRIMARY_VALIDATION_ELIGIBLE",
+    "REPLICATION_FRAGILE",
+    "STATE_EFFECT_HETEROGENEITY_WARNING",
+    "POLICY_UNIVERSE_ACCOUNTING_INCOMPLETE",
+    "SELECTION_PERIOD_DEVELOPMENT_CONSUMED",
+    "POLICY_CHAMPION_NOT_IDENTIFIED_ON_COMMON_SUPPORT",
+    "CHAMPION_SELECTION_BIAS",
+    "FRESH_CHAMPION_VALIDATION_PENDING",
+    "POLICY_CHAMPION_VALIDATION_ELIGIBLE"
+  ],
+  "unresolvedEngineering": [
+    "IMMUTABLE_EPISODE_LINEAGE",
+    "AGGREGATE_SUPPORT_ENGINE",
+    "UNSUPPORTED_STATE_ABSTAIN_ENFORCEMENT",
+    "EPISODE_DEPENDENCE_ACCOUNTING",
+    "HORIZON_TRANSITION_ATTRIBUTION",
+    "SDA016_CONSUMPTION_LINK",
+    "FITTED_REGIME_KNOWLEDGE_CLOCK",
+    "STRUCTURAL_VS_REPLICATION_EPISODE_ACCOUNTING",
+    "MECHANICAL_FRAGMENTATION_GUARD",
+    "THRESHOLD_CHATTER_DIAGNOSTICS",
+    "RIGHT_CENSOR_ACCOUNTING",
+    "REGIME_OBSERVABILITY_SELECTION_ACCOUNTING",
+    "MULTI_AXIS_SUPPORT_VECTOR",
+    "REPLICATION_CLUSTER_ACCOUNTING",
+    "LEAVE_ONE_REPLICATION_CLUSTER_OUT",
+    "PRIMARY_WEIGHTING_IDENTITY",
+    "TRANSITION_PATH_CONCENTRATION",
+    "CALENDAR_RECURRENCE_BREADTH",
+    "POLICY_CANDIDATE_UNIVERSE_LEDGER",
+    "POLICY_SURVIVORSHIP_ACCOUNTING",
+    "CHAMPION_SELECTION_META_POLICY_IDENTITY",
+    "FRESH_POST_SELECTION_CHAMPION_VALIDATION",
+    "POLICY_COMMON_SUPPORT_ACCOUNTING",
+    "SDA016_RESEARCH_STREAM_CROSS_LEDGER_LINK"
+  ],
+  "prospectiveEvidenceRequirement": "GENUINE_MULTI_REPLICATION_CLUSTER_AND_FRESH_CHAMPION_MATURED_OUTCOMES_PENDING",
+  "maturityImpact": "NONE",
+  "supersedes": "research/SDA017_VALIDATION_ORACLE_20261006_V0_3.json"
+}
