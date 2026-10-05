@@ -257,3 +257,24 @@ No maturity/count/Formal change.
 
 Audit:
 shared-knowledge/CURRICULUM_H06_DEPENDENCY_ANTI_ORPHAN_AUDIT_20261004_V0_1.md
+
+
+## LS-047D / D06-18 — public SBL source-layer decomposition after the 2026-10-05 missing live slot
+
+Durable contract: `research/d06_18_public_sbl_source_layer_contract_20261005_v0_1.json`.
+
+The failed 2026-10-05 15:20 live capture is preserved exactly as UNKNOWN/MISSING. This research does not backfill it.
+
+Official TWSE evidence now freezes four different evidence objects that must never be collapsed:
+1. intraday quote book — fixed/competitive displayed lend/borrow quantities and rates, including best five where applicable;
+2. executed borrow rate — transaction type, executed quantity and fee rate;
+3. end-of-day SBL balance — previous/current balance, borrowing and returns;
+4. verified total lendable inventory — still UNKNOWN and required before true utilization can be computed.
+
+TWSE rules require public Internet/computer disclosure of the first layer, while public historical transaction and balance pages expose query/CSV interfaces for replay-oriented layers. TWT72U is documented at 20:30 with balance fields. None of these balance fields prove live quote depth or total lendable inventory.
+
+Forbidden conversions are frozen in the machine contract, including balance->quote book, executed fee->directional conviction, displayed lend quantity->total inventory, SBL volume->short-sale volume and any utilization ratio with an unverified denominator.
+
+Maturity impact: NONE. D06-18 remains L2/40%. Source-layer clarity improved, but today's live receipt is still missing and true utilization is still unidentified.
+
+Exact next: preserve today's missing slot; continue only authorized discovery of a stable public/machine live quote representation for a future date. Historical execution/balance replay may progress separately but cannot substitute for the live layer.
