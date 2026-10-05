@@ -1,10 +1,11 @@
 # System 1 C1 scan-origin and generation inventory Class-B implementation
 
 Date: 2026-10-05 Asia/Taipei
-Status: IMPLEMENTED_BRANCH / LOCAL_REGRESSION_99_OF_99_PASS / PR_CI_PENDING
+Status: IMPLEMENTED_BRANCH / LOCAL_REGRESSION_99_OF_99_PASS / IMPLEMENTATION_CI_102_OF_102_PASS / FINAL_HEAD_CHECKS_IN_PR_631
 Branch: `codex/c1-inventory-20261005`
 Owner approval: this task explicitly approves C1 Scan-Origin & Generation Inventory Class-B implementation.
-Authority: latest GitHub main, freshly fetched at start and before submission: `bb2099909adaaf1462cb737b2fe8d3c5153288b8`.
+Authority: main freshly fetched at start: `bb2099909adaaf1462cb737b2fe8d3c5153288b8`; re-fetched and reconciled before final submission: `ca90efab5a7d6d27cc3d05a545efcd1ce44db247`. Its five System2 progress files were merged without rewriting them; no C1/runtime conflict.
+PR: https://github.com/imihan0630-sys/v7-fugle-worker/pull/631 (OPEN; merge/deploy not performed).
 Production read-only baseline: `8.18.0-valuation-source-vintage`; TEST_MODE=false; KV/D1=true; requirements30Complete=false.
 Candidate: `8.19.0-c1-scan-origin-inventory`. Formal Core LOCKED. Merge/deploy are separate concrete production review boundaries.
 
@@ -34,6 +35,8 @@ All runtime outside the five listed plumbing functions, isolated module/version 
 
 Full local regression: 99/99 PASS. Dedicated integration exercises actual Worker functions with SQLite through a D1 adapter, transactional persistence, three-page readback, shared Shadow cohort persistence, legacy receipt read/idempotence, JSON/column mismatch, mutated header, conflict, clock/retrospective rejection, digest/D1 failure and UNKNOWN provenance. Source parity and the three exact-version/patch-order workflow guards PASS. These are engineering/fixture results, not live market or Cloudflare resource acceptance.
 
+Implementation head `4c0a5f89855ffb96b829ce463bbb719f82e5a09a` passed [Regression 37326529264](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37326529264), [Repair CI 37326529397](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37326529397), and [isolated review 37326529259](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37326529259). The preserved genuine CI receipt is `research/system1_c1_scan_inventory_ci_review_20261005.json`: 102/102 PASS, 451 protected legacy functions, plus the dedicated V8.19 byte-parity test. The initial Repair workflow folded the new patch into an argument; a distinct run step and a regression guard repaired it. Final head after main reconciliation and evidence writeback is verified in PR #631's current check packet; old green SHA is not final-head authority.
+
 The old integrity fixture formerly changed only decisionAt after building its provenance; it now freezes time before capture. The old staged-recovery assertion now requires its explicit new origin label and unchanged dryRun flag. Historical V8.18 parity tests still exercise their frozen pre-V8.19 artifact, while the dedicated V8.19 test checks the actual candidate.
 
 Local Windows validation used an isolated copy with UTF-8/LF and `git apply -p0` for the existing embedded GNU-patch dependency. Repository build scripts and Worker.js are unchanged except the new guarded patch; Linux exact-head CI remains required. No claims of phone delivery, source authenticity, full 30-rule completion, OOS uplift or promotion.
@@ -45,6 +48,8 @@ Checked-in `research/system1_c1_scan_inventory_local_readback_20261005.json` is 
 Existing genuine read-only collector run [37067696964](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37067696964), artifact 11252813915, observed 2026-10-03 05:35:23 Taipei for scanDate 2026-10-02, returned C1_GENERATION_NOT_FOUND / FORMAL_SCAN_NOT_CONFIRMED. Formal scanDate was 2026-09-29 and pipelineComplete=false, while institution/quality dates were ready for 2026-10-02. This is negative live evidence, not a successful C1 or zero-pick. The original non-secret readback is preserved at `research/system1_c1_scan_inventory_prior_live_readback_20261005.json`.
 
 Current production inventory acceptance is pending: this task has not merged/deployed V8.19 or triggered a business scan. Missing C1 generation cannot be repaired by manufacturing historical PIT rows. A fresh GET-only collector may confirm a genuine existing generation or preserve an explicit blocker.
+
+Fresh owner-authorized GET-only collector [37326304554](https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37326304554) on the implementation branch used the normally configured V7_ADMIN_TOKEN secret, manual dispatch (C3_REGISTER=false), and scanDate 2026-10-02 (last completed trading session). At 2026-10-05 22:38:45 Taipei it again returned C1_GENERATION_NOT_FOUND / FORMAL_SCAN_NOT_CONFIRMED, formalScanDate=2026-09-29, pipelineComplete=false, mayCountAsZeroPick=false, with no read errors. Artifact 11351918269 is preserved at `research/system1_c1_scan_inventory_live_readback_20261005.json`. Its intentionally failed-closed workflow is negative live evidence, distinct from all passing engineering CI. Nothing establishes an existing schema write failure as the cause of the missing historical generation. Do not manufacture that receipt or trigger historical/live business scans for acceptance.
 
 ## Exact next continuation
 

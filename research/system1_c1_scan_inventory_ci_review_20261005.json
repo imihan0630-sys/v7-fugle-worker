@@ -1,0 +1,453 @@
+{
+  "schemaVersion": "SYSTEM1_C1_C2_REPAIR_REVIEW_V0_1",
+  "passed": 102,
+  "scanInventoryProtectedParityTest": "test_system1_c1_scan_inventory_v8_19_0.mjs",
+  "valuationVintageChangedFunctions": [
+    "runAfterMarketScanCore",
+    "buildC1PopulationReceipt",
+    "verifyC1StoredGeneration",
+    "persistC1PopulationReceipt",
+    "selectTomorrowCandidates"
+  ],
+  "shadowCohortChangedFunctions": [
+    "buildC1PopulationReceipt",
+    "persistCompletedC1Safe"
+  ],
+  "classBChangedFunctions": [
+    "buildC1PopulationReceipt",
+    "persistC1PopulationReceipt",
+    "selectTomorrowCandidates"
+  ],
+  "classBNewFunctions": [
+    "buildC1ZeroPickChild",
+    "c1ZeroPickOrdinals",
+    "finalizeC1ZeroPickReceipt"
+  ],
+  "total": 102,
+  "changedFunctions": [
+    "ensureD1Schema",
+    "runBackgroundMonitor",
+    "runAfterMarketScanCore",
+    "c1ProjectFeature",
+    "c1DerivedState",
+    "buildC1PopulationReceipt",
+    "c1ChunkRows",
+    "persistC1PopulationReceipt",
+    "readC1PopulationReceipt",
+    "selectTomorrowCandidates"
+  ],
+  "protectedFunctionCount": 451,
+  "selectorUnchangedExceptCaptureFirewall": true,
+  "fixtureOnly": true,
+  "formalCoreImpact": false,
+  "results": [
+    {
+      "test": "tests/test_requirements_repair.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_three_min_auth_check.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_7_13_daily_mobile_alert.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_three_min_current_recovery.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_1_ops_hardening.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_1_1_acceptance_state.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_1_2_position_reconciliation.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_1_3_ops_console.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_2_0_push_receipt.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_2_1_evidence_acceptance.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_3_0_storage_bridge.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_3_1_storage_health.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_4_0_github_mirror.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_4_1_provider_neutral.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_5_0_trade_journal.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_5_2_history_backfill.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_6_0_performance_center.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_6_1_shared_navigation.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_6_2_v7_formal_performance.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_6_3_v7_current_close.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_7_0_research_foundation.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_7_1_history_research.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_7_2_shadow_candidate_archive.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_7_3_validation_firewall.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_7_4_counterfactual_research.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_7_5_research_governance.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_7_6_anti_overfit.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_7_7_incremental_factor_diagnostics.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_7_8_date_cluster_robustness.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_7_9_research_evidence_enrichment.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_7_10_research_readiness_matrix.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_7_11_cross_market_evidence.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_7_12_after_market_2335.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_8_0_execution_recorder.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_8_1_execution_coverage.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_8_2_zero_selection_push.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_9_7_recovery_hardening.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_9_8_staged_recovery.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_9_9_staged_delivery.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_10_0_aideen_independent_pool.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_11_0_pv_shadow.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_12_0_history_source_revalidation_contract.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_13_0_priority_score_provenance.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_14_0_sector_gate_provenance.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_14_1_tdcc_reconciliation.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_14_2_unscheduled_closure_recovery_guard.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_14_3_closure_receipt_memo.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_14_4_history_memory_compaction.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_15_0_c1_population_receipts.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_cross_midnight_recovery_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_15_1_c1_capture_integrity.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_15_2_c3_research_capture.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_15_3_c3_quote_context.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_15_4_c4_priority_provenance.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_zero_pick_runtime_capture_v8_16_0.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_zero_pick_runtime_source_adapter_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_zero_pick_rank_input_observer_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_zero_pick_counterfactual_comparator_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_zero_pick_research_pipeline_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_zero_pick_c5_eligibility_adapter_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_zero_pick_class_b_acceptance_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_verify_deployment_readonly_retry_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_cloudflare_deploy_trigger_decoupling_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_c3_registration_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_c1_c2_collection_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_zero_pick_evidence_collector_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_shadow_cohort_v8_17_0.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_valuation_source_vintage_v8_18_0.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_c1_scan_inventory_v8_19_0.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_c3_c4_c5_shadow_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_c4_ranking_redundancy_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_c4_ranking_collection_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_c4_saturation_carryover_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_c4_priority_rounding_collision_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_setup_channel_scale_audit_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_market_cap_conditional_admission_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_first_failure_masking_audit_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_sector_gate_component_audit_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_atr_gate_decomposition_audit_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_extreme_move_proxy_denominator_audit_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_liquidity_rejected_control_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_market_cap_floor_economic_audit_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_valuation_relative_risk_audit_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_sda_shadow_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_c5_semantic_repair_v0_2.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_p1a_outcome_evaluator_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_p1a_conditional_reach_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_p1a_safety_capture_demand_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_c3_capture_contract_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_evidence_automation_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_postsession_evidence_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_c3_depth_semantics_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_c3_live_depth_prereg_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_c3_live_depth_readiness_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_postsession_workflow_guard_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_maturity_ledger_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_9_0_three_pool_hybrid_shadow.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_v8_9_1_three_pool_dashboard.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/github_plan_mirror.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_selection_isolated_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_c1_readiness_v0_1.mjs",
+      "exitCode": 0
+    },
+    {
+      "test": "tests/test_system1_c2_paired_ledger_v0_1.mjs",
+      "exitCode": 0
+    }
+  ]
+}
