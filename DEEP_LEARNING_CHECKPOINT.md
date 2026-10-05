@@ -2055,3 +2055,16 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
 1. After the 2026-10-05 after-market research generation exists, attach primitive receipt D06-20261005-TDCC-WEEKLY plus fingerprint/chipAsOfDate/chipDefinition to the same-generation D06-05/D06-06 rows.
 2. Continue the frozen D06-03, TPEx leverage vintages, D06-14 day-trading vintages, PF-040 ETF units+PCF and D06-18 lending-economics lanes only at their actual source clocks.
 3. Keep SDA-007 engineering/D16/00 closure pending; learning semantic remediation is complete.
+
+
+## 2026-10-05 D06 — IC-068 passive-active residual identifiability
+
+- Room/domain: 05｜法人與籌碼研究室 / D06.
+- Durable receipt: `research/d06_sda007_passive_active_residual_identifiability_20261005_v0_1.json`.
+- New falsifier: investor-class flow minus modeled passive ETF/index exposure is not identified active conviction.
+- Taiwan source reason: TWSE institutional data identify actor/desk categories, while ETF creation/redemption mechanics permit multiple fulfillment paths; PCF/units therefore do not prove actual stock execution.
+- External evidence reason: fund-flow return relations mix information and price pressure; ETF sampling and market-clearing responses make naive passive-flow subtraction non-identifying.
+- Frozen outcome-blind tests: institutional-after-passive; passive-after-institutional; crowding-after-parents; active-conviction identification.
+- One primitive can have many consumers but not many independent votes. Statistical residuals retain observational labels.
+- Maturity impact: NONE. D06 remains 47.8%; outcomes CLOSED; Formal Core LOCKED.
+- Exact next: continue 2026-10-05 actual-clock capture lanes, then route R1-R4 to D16 only after prospective common-support coverage is sufficient. System 1/System 2 still owe machine lineage enforcement; 00 still owns SDA-007 closure.
