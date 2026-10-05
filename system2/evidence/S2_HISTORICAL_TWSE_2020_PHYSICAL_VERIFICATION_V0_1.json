@@ -1,0 +1,1296 @@
+{
+  "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_DURABLE_EVIDENCE_V0_1",
+  "market": "TWSE",
+  "year": 2020,
+  "disposition": "DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL",
+  "githubRun": {
+    "runId": 37274480646,
+    "runNumber": 13,
+    "headSha": "2ad1312d9de26c37d0ab343239f3b9fce88d33c9",
+    "event": "workflow_dispatch",
+    "conclusion": "success",
+    "completedAt": "2026-10-05T07:28:08Z",
+    "artifactId": 11331320701,
+    "artifactName": "system2-historical-coverage-TWSE-2020",
+    "artifactDigest": "sha256:e330cd8df13332cea813550a71fbf88c159300e3706893f2624bbc1ee165eaae",
+    "artifactSizeBytes": 4832,
+    "artifactCreatedAt": "2026-10-05T07:28:05Z",
+    "artifactExpiresAt": "2026-11-04T07:28:05Z"
+  },
+  "verifierOutput": {
+    "result": "PASS_MARKET_YEAR_DATA_PARTIAL_REPLAY_READINESS",
+    "verifierVersion": "S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_3",
+    "market": "TWSE",
+    "year": 2020,
+    "fromDate": "2020-01-01",
+    "toDate": "2020-12-31",
+    "storageVerification": {
+      "receiptId": "S2HCR-3d4d5fe12c5f8e712570e12d1d39296d66ce36363698ee2464524355bae545f8",
+      "batchId": "S2-HIST-PACK-YEAR|TWSE|2020",
+      "completionReceiptState": "COMPLETE",
+      "packCount": 958,
+      "barCount": 231961,
+      "manifestRollingHash": "3d4d5fe12c5f8e712570e12d1d39296d66ce36363698ee2464524355bae545f8",
+      "checkpointState": "COMPLETE",
+      "checkpointObjectReadyCount": 958,
+      "checkpointManifestCommittedCount": 958,
+      "headObjectCountVerified": 958,
+      "byteGetObjectCountVerified": 958,
+      "r2Bucket": "system2-historical-research",
+      "state": "PASS"
+    },
+    "sourceReconciliation": {
+      "officialTradingDates": 245,
+      "freshOfficialRowCount": 231961,
+      "coldRowCount": 231961,
+      "missingFromColdCount": 0,
+      "absentFromFreshOfficialCount": 0,
+      "sourceRowHashMismatchCount": 0,
+      "missingFromColdSample": [],
+      "absentFromFreshOfficialSample": [],
+      "sourceRowHashMismatchSample": [],
+      "state": "PASS"
+    },
+    "historicalUniverse": {
+      "readiness": "PASS_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION",
+      "registryId": "S2-DATA-TWSE-2020-OFFICIAL-UNION-V0.1",
+      "registryHash": "3a3598e586379891198a36d966dd1566cc186b8667fab6f47fc3a39def5a6a15",
+      "membershipCount": 1128,
+      "replayEligibleCount": 1128,
+      "currentCount": 1089,
+      "delistedCount": 39,
+      "unknownStartCount": 0,
+      "sourceReceipt": {
+        "currentCount": 1089,
+        "newListingHistoryCount": 793,
+        "delistedCount": 39,
+        "datasetStartFallbackCount": 9,
+        "datasetStartFallbackSymbols": [
+          "1507",
+          "1701",
+          "1724",
+          "1902",
+          "2358",
+          "2809",
+          "2823",
+          "2841",
+          "9188"
+        ],
+        "datasetFirstTradingDate": "2020-01-02",
+        "currentSourceHash": "39ef1ef97341b0e0828dc9bdeb7a30f5badbdcee2d43fdd02c1d88f2b470995b",
+        "newListingSourceHash": "bb70678fc001770c7e86ef9471e0ff96b8fe87b6852545a485ab18d1610f7b91",
+        "delistingSourceHash": "a80693f2ab3c94b024ed830c73e64f2a0d122fdba806148edce38bf1570fc143",
+        "schemaVersion": "D08_TWSE_HISTORICAL_UNIVERSE_SOURCE_V0_1"
+      },
+      "survivorshipCompleteForDataCoverage": true
+    },
+    "suspensionEvidence": {
+      "state": "OBSERVED",
+      "sourceUrl": "https://www.twse.com.tw/rwd/zh/afterTrading/TWTAWU?startDate=20200101&endDate=20201231&querytype=3&response=json",
+      "sourceHash": "5d8b31169b44b39f9169dd59e97cfb306e898b0a7a8a462364063d73cafb842c",
+      "upstreamStatus": "OK",
+      "fields": [
+        "編號",
+        "證券代號",
+        "證券名稱",
+        "暫停交易日期",
+        "暫停交易時間",
+        "恢復交易日期",
+        "恢復交易時間"
+      ],
+      "intervalCount": 24,
+      "intervalSample": [
+        {
+          "market": "TWSE",
+          "symbol": "1416",
+          "suspendedFrom": "2020-03-09",
+          "resumedOn": "2020-03-10",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "a48eaca346284fd693cd78a079b34c7615ebeec6806ab33eaaf4029dc8430e4c"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "1472",
+          "suspendedFrom": "2020-11-12",
+          "resumedOn": "2020-11-13",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "291186cb6e23d0b2f171695e1b26e1e1ed7ff3ba55011aabb927a5945349dfdf"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "1472",
+          "suspendedFrom": "2020-12-24",
+          "resumedOn": "2020-12-25",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "f3ac061fdb4a06447b1ae28016e4061e5ec026a81caebe5eda7568df8990ed8d"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "1734",
+          "suspendedFrom": "2020-08-11",
+          "resumedOn": "2020-08-12",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "5f2841e09f2065fcb1577f73db00698d76a988ef67397d0d12c3e7c34adc1804"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "1760",
+          "suspendedFrom": "2020-09-08",
+          "resumedOn": "2020-09-09",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "deb1766c927e89818d148d5d22fa34e6fe5bdb6ad555d279fcf8ae2086892b92"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "2104",
+          "suspendedFrom": "2020-02-12",
+          "resumedOn": "2020-02-13",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "704725b53948c64a3a7ea2fc32d94a5f7ec6429b392e1279e51f15cdbc61c569"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "2201",
+          "suspendedFrom": "2020-03-30",
+          "resumedOn": "2020-03-31",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "8bf4193cd1d1d2121cb3f478620dd7d849d610b4b015e579ed8ec37b35d097a9"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "2448",
+          "suspendedFrom": "2020-06-18",
+          "resumedOn": "2020-06-19",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "fb0e82959b89dc3c85ea836a6a357e229460ccf4438cab1197feea3026e99654"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "2474",
+          "suspendedFrom": "2020-08-18",
+          "resumedOn": "2020-08-19",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "97bbedd2c9fb2faf65381a857f74e25b914773bed4572e7184fccdd87dd935b1"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "2477",
+          "suspendedFrom": "2020-10-16",
+          "resumedOn": "2020-10-19",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "7d17a0509b62bc3756822639282a56952cd24d00cdd125b5b64fb47bdf39453f"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "3036",
+          "suspendedFrom": "2020-02-21",
+          "resumedOn": "2020-02-24",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "9a1b2937cfc101450de4607e2d1eca2ac2123655a9abe9cde49d8ada9cfdd9cf"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "3051",
+          "suspendedFrom": "2020-08-12",
+          "resumedOn": "2020-08-13",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "1346269a236ed1aec5d305d7922b8a18b3c4a6c6fb0e60bd7a54a9a36e9eb6a8"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "3698",
+          "suspendedFrom": "2020-06-18",
+          "resumedOn": "2020-06-19",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "89f9720faec516957adc668c6f7b5a097aed176fba342dc56f983fc1234a59d3"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "4144",
+          "suspendedFrom": "2020-07-27",
+          "resumedOn": "2020-07-28",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "e581114ce44babb115d1504b65970437e2fccd073a1c2276e7f6d07b34c51225"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "4938",
+          "suspendedFrom": "2020-08-13",
+          "resumedOn": "2020-08-14",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "fd158d0341784cb3876a91b6897e8736ceb25406dc80ab290da21671691d6007"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "4958",
+          "suspendedFrom": "2020-03-10",
+          "resumedOn": "2020-03-11",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "cb5f6cbd55768ad1013cbdb2ebdd36f2e60e1071da25a91202a0dc132d28b363"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "5264",
+          "suspendedFrom": "2020-08-13",
+          "resumedOn": "2020-08-14",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "fac352726a93b538d31aac982d04ede579b6a4fe150e3c301f8035269168e5fb"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "5269",
+          "suspendedFrom": "2020-02-21",
+          "resumedOn": "2020-02-24",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "08f6e1a40ee70a4096c5e7f529715f0d73948669b11ad9b398b0530f0fb17684"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "6224",
+          "suspendedFrom": "2020-07-08",
+          "resumedOn": "2020-07-09",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "ed5cbd52b9651d7cb5db6999c2d745f05dd6ed09e06f3625fc66f048b5215da2"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "6670",
+          "suspendedFrom": "2020-10-15",
+          "resumedOn": "2020-10-16",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "3f1e46acc6af4f189fdcca8a610e1c8cf11ad88bc0e0f67b14ef31ea41cd99cb"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "8427",
+          "suspendedFrom": "2020-08-28",
+          "resumedOn": "2020-08-31",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "67f80d4e06a9dc5d9f6c4d079778aa835bad8cb0ebb7fa184abbca936af4bf74"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "8442",
+          "suspendedFrom": "2020-12-22",
+          "resumedOn": "2020-12-23",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "d909a0f175da28f58def12290e291b94855040a98f391d160978a2d70de21636"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "8497",
+          "suspendedFrom": "2020-05-28",
+          "resumedOn": "2020-05-29",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "f57078eb1ff3de9c522578347e7cb692ef7bde6e81f43c05b774606ed7c1ede3"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "9110",
+          "suspendedFrom": "2020-05-27",
+          "resumedOn": "2020-06-08",
+          "coverageTo": "2020-12-31",
+          "sourceRowHash": "b239368c25ed83b41f977c87cb16c04c224f18d6ba306c2f42b5b6650870084c"
+        }
+      ],
+      "absenceCertifiesNoSuspension": false,
+      "sourceHistoryStart": "2011-10-03",
+      "limitation": null
+    },
+    "coverage": {
+      "market": "TWSE",
+      "year": 2020,
+      "fromDate": "2020-01-01",
+      "toDate": "2020-12-31",
+      "expectedSessions": 245,
+      "actualSessions": 245,
+      "historicalUniverseSize": 959,
+      "membershipSessionDenominator": 232475,
+      "actualBars": 231961,
+      "totalStoredRowsInRange": 231961,
+      "missingBars": 514,
+      "unknownBars": 514,
+      "suspensionClassifiedMissingBars": 0,
+      "unexpectedBars": 0,
+      "nonTradingDateBars": 0,
+      "missingTradingDates": [],
+      "missingReasonCounts": {
+        "UNKNOWN_SYMBOL_SESSION_GAP": 514
+      },
+      "missingBySymbol": [
+        {
+          "symbol": "2499",
+          "missingCount": 150,
+          "unknownCount": 150,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-04-07",
+          "lastMissingDate": "2020-11-10"
+        },
+        {
+          "symbol": "6452",
+          "missingCount": 95,
+          "unknownCount": 95,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-08-18",
+          "lastMissingDate": "2020-12-31"
+        },
+        {
+          "symbol": "6131",
+          "missingCount": 33,
+          "unknownCount": 33,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-09-18",
+          "lastMissingDate": "2020-12-31"
+        },
+        {
+          "symbol": "1315",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-10-15",
+          "lastMissingDate": "2020-10-23"
+        },
+        {
+          "symbol": "1417",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-02-06",
+          "lastMissingDate": "2020-02-14"
+        },
+        {
+          "symbol": "1432",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-09-10",
+          "lastMissingDate": "2020-09-18"
+        },
+        {
+          "symbol": "1449",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-11-19",
+          "lastMissingDate": "2020-11-27"
+        },
+        {
+          "symbol": "1524",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-10-22",
+          "lastMissingDate": "2020-10-30"
+        },
+        {
+          "symbol": "1611",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-09-10",
+          "lastMissingDate": "2020-09-18"
+        },
+        {
+          "symbol": "2201",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-10-07",
+          "lastMissingDate": "2020-10-16"
+        },
+        {
+          "symbol": "2321",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-10-07",
+          "lastMissingDate": "2020-10-16"
+        },
+        {
+          "symbol": "2375",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-08-06",
+          "lastMissingDate": "2020-08-14"
+        },
+        {
+          "symbol": "2424",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-12-10",
+          "lastMissingDate": "2020-12-18"
+        },
+        {
+          "symbol": "2442",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-11-12",
+          "lastMissingDate": "2020-11-20"
+        },
+        {
+          "symbol": "2534",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-12-03",
+          "lastMissingDate": "2020-12-11"
+        },
+        {
+          "symbol": "3057",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-09-17",
+          "lastMissingDate": "2020-09-25"
+        },
+        {
+          "symbol": "3545",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-10-15",
+          "lastMissingDate": "2020-10-23"
+        },
+        {
+          "symbol": "3557",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-01-09",
+          "lastMissingDate": "2020-01-17"
+        },
+        {
+          "symbol": "3682",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-01-09",
+          "lastMissingDate": "2020-01-17"
+        },
+        {
+          "symbol": "4144",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-10-22",
+          "lastMissingDate": "2020-10-30"
+        },
+        {
+          "symbol": "4725",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-07-09",
+          "lastMissingDate": "2020-07-17"
+        },
+        {
+          "symbol": "4934",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-01-09",
+          "lastMissingDate": "2020-01-17"
+        },
+        {
+          "symbol": "6271",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-11-19",
+          "lastMissingDate": "2020-11-27"
+        },
+        {
+          "symbol": "8070",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-08-06",
+          "lastMissingDate": "2020-08-14"
+        },
+        {
+          "symbol": "8497",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-10-22",
+          "lastMissingDate": "2020-10-30"
+        },
+        {
+          "symbol": "9929",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-12-03",
+          "lastMissingDate": "2020-12-11"
+        },
+        {
+          "symbol": "2349",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-09-29",
+          "lastMissingDate": "2020-10-08"
+        },
+        {
+          "symbol": "2448",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-12-24",
+          "lastMissingDate": "2020-12-31"
+        },
+        {
+          "symbol": "2504",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-10-07",
+          "lastMissingDate": "2020-10-15"
+        },
+        {
+          "symbol": "2505",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-12-24",
+          "lastMissingDate": "2020-12-31"
+        },
+        {
+          "symbol": "3698",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-12-24",
+          "lastMissingDate": "2020-12-31"
+        },
+        {
+          "symbol": "5259",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-01-02",
+          "lastMissingDate": "2020-01-09"
+        },
+        {
+          "symbol": "6289",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-02-27",
+          "lastMissingDate": "2020-03-06"
+        },
+        {
+          "symbol": "6552",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-10-23",
+          "lastMissingDate": "2020-10-30"
+        },
+        {
+          "symbol": "1538",
+          "missingCount": 5,
+          "unknownCount": 5,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-11-09",
+          "lastMissingDate": "2020-11-13"
+        },
+        {
+          "symbol": "1902",
+          "missingCount": 5,
+          "unknownCount": 5,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-05-26",
+          "lastMissingDate": "2020-06-01"
+        },
+        {
+          "symbol": "2316",
+          "missingCount": 5,
+          "unknownCount": 5,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-09-24",
+          "lastMissingDate": "2020-09-30"
+        },
+        {
+          "symbol": "2434",
+          "missingCount": 5,
+          "unknownCount": 5,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-09-08",
+          "lastMissingDate": "2020-09-14"
+        },
+        {
+          "symbol": "5305",
+          "missingCount": 5,
+          "unknownCount": 5,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-11-24",
+          "lastMissingDate": "2020-11-30"
+        },
+        {
+          "symbol": "2438",
+          "missingCount": 2,
+          "unknownCount": 2,
+          "suspensionCount": 0,
+          "firstMissingDate": "2020-12-30",
+          "lastMissingDate": "2020-12-31"
+        }
+      ],
+      "observationStateCounts": {
+        "VALID_OHLC": 231195,
+        "OFFICIAL_ZERO_TRADE_NO_PRICE": 416,
+        "POSITIVE_ACTIVITY_NO_VALID_CLOSE": 350
+      },
+      "continuityStateCounts": {
+        "UNVERIFIED": 231961
+      },
+      "provenanceIssueCount": 0,
+      "provenanceIssueSample": [],
+      "unexpectedBarSample": [],
+      "missingSample": [
+        {
+          "marketDate": "2020-01-02",
+          "symbol": "5259",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-03",
+          "symbol": "5259",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-06",
+          "symbol": "5259",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-07",
+          "symbol": "5259",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-08",
+          "symbol": "5259",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-09",
+          "symbol": "3557",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-09",
+          "symbol": "3682",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-09",
+          "symbol": "4934",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-09",
+          "symbol": "5259",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-10",
+          "symbol": "3557",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-10",
+          "symbol": "3682",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-10",
+          "symbol": "4934",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-13",
+          "symbol": "3557",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-13",
+          "symbol": "3682",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-13",
+          "symbol": "4934",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-14",
+          "symbol": "3557",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-14",
+          "symbol": "3682",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-14",
+          "symbol": "4934",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-15",
+          "symbol": "3557",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-15",
+          "symbol": "3682",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-15",
+          "symbol": "4934",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-16",
+          "symbol": "3557",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-16",
+          "symbol": "3682",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-16",
+          "symbol": "4934",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-17",
+          "symbol": "3557",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-17",
+          "symbol": "3682",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-01-17",
+          "symbol": "4934",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-02-06",
+          "symbol": "1417",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-02-07",
+          "symbol": "1417",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-02-10",
+          "symbol": "1417",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-02-11",
+          "symbol": "1417",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-02-12",
+          "symbol": "1417",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-02-13",
+          "symbol": "1417",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-02-14",
+          "symbol": "1417",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-02-27",
+          "symbol": "6289",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-03-02",
+          "symbol": "6289",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-03-03",
+          "symbol": "6289",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-03-04",
+          "symbol": "6289",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-03-05",
+          "symbol": "6289",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-03-06",
+          "symbol": "6289",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-07",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-08",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-09",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-10",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-13",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-14",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-15",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-16",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-17",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-20",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-21",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-22",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-23",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-24",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-27",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-28",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-29",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-04-30",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-04",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-05",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-06",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-07",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-08",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-11",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-12",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-13",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-14",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-15",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-18",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-19",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-20",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-21",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-22",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-25",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-26",
+          "symbol": "1902",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-26",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-27",
+          "symbol": "1902",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-27",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-28",
+          "symbol": "1902",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-28",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-29",
+          "symbol": "1902",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-05-29",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-01",
+          "symbol": "1902",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-01",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-02",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-03",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-04",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-05",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-08",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-09",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-10",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-11",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-12",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-15",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-16",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-17",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-18",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-19",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-22",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2020-06-23",
+          "symbol": "2499",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        }
+      ],
+      "expectedBars": 232475,
+      "classifiedGapBars": 0,
+      "structuralCoverageState": "PASS",
+      "rawCoverageState": "PASS",
+      "symbolSessionReadiness": "PARTIAL_UNKNOWN_GAPS",
+      "pitReadiness": "PASS_CONSERVATIVE_SESSION_FINALITY",
+      "continuityReadiness": "PARTIAL_UNVERIFIED",
+      "technicalPriceReadiness": "PARTIAL_NONPRICE_OBSERVATIONS",
+      "overallState": "PARTIAL",
+      "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_COVERAGE_V0_2"
+    },
+    "dataCoverageState": "PASS",
+    "replayReadinessState": "PARTIAL",
+    "pitContinuityReadiness": {
+      "universe": "PASS_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION",
+      "symbolSession": "PARTIAL_UNKNOWN_GAPS",
+      "pit": "PASS_CONSERVATIVE_SESSION_FINALITY",
+      "continuity": "PARTIAL_UNVERIFIED",
+      "technicalPrice": "PARTIAL_NONPRICE_OBSERVATIONS"
+    },
+    "overallState": "PARTIAL",
+    "system1RuntimeChanged": false,
+    "system2StrategyAuthorityChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "capitalOrderAuthorityChanged": false,
+    "observedAt": "2026-10-05T07:21:28.314Z",
+    "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_3"
+  },
+  "correctionDirective": "S2-CORR-20261004-001",
+  "correctionStatusAfterEvidence": "ACKNOWLEDGED",
+  "closureAuthority": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "nextMarketYear": {
+    "market": "TPEX",
+    "year": 2020
+  },
+  "protectedBoundaries": {
+    "system1RuntimeChanged": false,
+    "system2StrategyAuthorityChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "capitalOrderAuthorityChanged": false
+  }
+}
