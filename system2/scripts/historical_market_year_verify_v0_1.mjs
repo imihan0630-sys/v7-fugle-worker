@@ -16,6 +16,7 @@ import {
   buildObservedIntervalUniverseRegistryV0_1,
 } from "../runtime/historical_market_year_coverage_v0_1.mjs";
 import { fetchCurrentListingMetadataV0_1 } from "../runtime/current_listing_metadata_v0_1.mjs";
+import { reconcileHistoricalSourceRowsV0_1 } from "../runtime/historical_source_reconciliation_v0_1.mjs";
 
 const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
 const apiToken=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN;
@@ -344,31 +345,11 @@ const officialRange=await fetchOfficialHistoricalA1RangeV0_1({
 });
 assert.equal(officialRange.fetchedTradingDateCount,officialRange.tradingDateCount,"official session fetch incomplete");
 
-const coldByKey=new Map();
-for(const row of coldRows){
-  const key=row.marketDate+"|"+row.symbol;
-  assert.equal(coldByKey.has(key),false,"duplicate cold bar key: "+key);
-  coldByKey.set(key,row);
-}
-const officialByKey=new Map();
-for(const row of officialRange.rows){
-  const key=row.marketDate+"|"+row.symbol;
-  assert.equal(officialByKey.has(key),false,"duplicate official source key: "+key);
-  officialByKey.set(key,row);
-}
-const missingFromCold=[];
-const absentFromFreshOfficial=[];
-const sourceRowHashMismatches=[];
-for(const [key,row] of officialByKey){
-  const cold=coldByKey.get(key);
-  if(!cold){missingFromCold.push(key);continue;}
-  if(String(cold.sourceRowHash||"")!==String(row.sourceRowHash||"")){
-    sourceRowHashMismatches.push(key);
-  }
-}
-for(const key of coldByKey.keys()){
-  if(!officialByKey.has(key))absentFromFreshOfficial.push(key);
-}
+const sourceReconciliationBase=reconcileHistoricalSourceRowsV0_1({
+  coldRows,
+  freshOfficialRows:officialRange.rows,
+  sampleLimit:100,
+});
 
 let registry;
 let historicalUniverseEvidence;
@@ -450,17 +431,8 @@ const coverage=buildHistoricalMarketYearCoverageV0_1({
 });
 
 const sourceReconciliation={
+  ...sourceReconciliationBase,
   officialTradingDates:officialRange.tradingDateCount,
-  freshOfficialRowCount:officialRange.rowCount,
-  coldRowCount:coldRows.length,
-  missingFromColdCount:missingFromCold.length,
-  absentFromFreshOfficialCount:absentFromFreshOfficial.length,
-  sourceRowHashMismatchCount:sourceRowHashMismatches.length,
-  missingFromColdSample:missingFromCold.slice(0,100),
-  absentFromFreshOfficialSample:absentFromFreshOfficial.slice(0,100),
-  sourceRowHashMismatchSample:sourceRowHashMismatches.slice(0,100),
-  state:missingFromCold.length===0&&absentFromFreshOfficial.length===0&&sourceRowHashMismatches.length===0
-    ?"PASS":"BLOCKED",
 };
 
 const storageVerification={
@@ -481,11 +453,12 @@ const storageVerification={
 };
 
 const dataCoverageState = storageVerification.state==="PASS"
-  && sourceReconciliation.state==="PASS"
+  && sourceReconciliation.dataIntegrityState==="PASS"
   && coverage.structuralCoverageState==="PASS"
     ? "PASS"
     : "BLOCKED";
 const universeReplayPartial = historicalUniverseEvidence.readiness.startsWith("PARTIAL");
+const sourceRevisionReplayPartial = sourceReconciliation.sourceVersionState!=="STABLE";
 const replayReadinessState = dataCoverageState==="BLOCKED"
   ? "BLOCKED"
   : (universeReplayPartial || coverage.overallState==="PARTIAL" ? "PARTIAL" : coverage.overallState);
@@ -499,7 +472,7 @@ const output={
     :(replayReadinessState==="PASS"
       ?"PASS_MARKET_YEAR_DATA_AND_REPLAY_READINESS"
       :"PASS_MARKET_YEAR_DATA_PARTIAL_REPLAY_READINESS"),
-  verifierVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_3",
+  verifierVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_4",
   market,year,fromDate,toDate,
   storageVerification,
   sourceReconciliation,
@@ -521,6 +494,7 @@ const output={
   replayReadinessState,
   pitContinuityReadiness:{
     universe:historicalUniverseEvidence.readiness,
+    sourceVersion:sourceReconciliation.sourceVersionState,
     symbolSession:coverage.symbolSessionReadiness,
     pit:coverage.pitReadiness,
     continuity:coverage.continuityReadiness,
@@ -532,7 +506,7 @@ const output={
   finalSelectionAuthorityChanged:false,
   capitalOrderAuthorityChanged:false,
   observedAt,
-  schemaVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_3",
+  schemaVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_4",
 };
 
 const json=JSON.stringify(output,null,2);
