@@ -1388,3 +1388,36 @@ Closure requires:
 
 No forced disagreement and no arbitrary overlap threshold.
 No Formal behavior change.
+
+
+## 2026-10-06 SDA-022 fingerprint baseline and validation routing complete
+
+New canonical artifacts:
+- shared-knowledge/CROSS_SYSTEM_POLICY_FINGERPRINT_CONTRACT_V0_1.md
+- shared-knowledge/SYSTEM1_SYSTEM2_POLICY_FINGERPRINT_BASELINE_20261006_V0_1.md
+- shared-knowledge/system1_system2_policy_fingerprint_baseline_20261006_v0_1.json
+- shared-knowledge/SDA022_D16_VALIDATION_REQUEST_V0_1.md
+
+SDA-022 status:
+ROUTED -> REMEDIATION_IN_PROGRESS.
+
+Frozen architecture baseline:
+- System1 and System2 are currently NOT identical;
+- convergence risk remains MATERIAL;
+- System2 design is independent, but physical independent discovery is NOT_PHYSICALLY_PROVEN;
+- highest current convergence-risk pair is System1 Formal A/B short-horizon selection vs System2 SHORT_MOMENTUM;
+- no arbitrary overlap threshold and no forced disagreement.
+
+Exact next evidence:
+1. System1 research-only policy fingerprint receipt;
+2. System2 per-strategy policy fingerprint receipts;
+3. NC-T01 physical proof that System2 can generate candidates without System1 Top6/rank input;
+4. prospective cross-system overlap/divergence receipts;
+5. D16 preregistered dependence/incrementality evaluation;
+6. 00 independent closure.
+
+Outcomes remain CLOSED at the current SDA-022 stage.
+SDA-022 does not block plain System1 Selection Shadow S1/S2 progression.
+It blocks any claim of cross-system independent confirmation/diversification until the above evidence exists.
+
+Formal Core remains locked.
