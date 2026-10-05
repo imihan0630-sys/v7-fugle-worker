@@ -1,0 +1,29 @@
+name: System2 S2-07 Par-Value Divergence V0.6 Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/s2_07_par_value_divergence_v0_6.mjs"
+      - "system2/tests/s2_07_par_value_divergence_v0_6.test.mjs"
+      - "system2/scripts/probe_s2_07_par_value_divergence_readonly_v0_6.mjs"
+      - "system2/SYSTEM2_S2_07_PAR_VALUE_DIVERGENCE_V0_6.md"
+      - ".github/workflows/system2-s2-07-par-value-divergence-v0-6-readonly.yml"
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - run: node system2/tests/s2_07_par_value_divergence_v0_6.test.mjs
+      - run: node system2/scripts/probe_s2_07_par_value_divergence_readonly_v0_6.mjs
+      - shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_s2_07_par_value_divergence_readonly_v0_6.mjs
+          echo "S2-07 V0.6 read-only boundary PASS"

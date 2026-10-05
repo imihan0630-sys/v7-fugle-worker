@@ -761,3 +761,41 @@ Important diagnostic finding:
 Official-event evidence is richer than title stems: all 17 have official detail, 12/17 have subtype, and the detail carries stop/resume dates or par-value conversion terms. These fields can support event-specific disambiguation together with issuer-scope action-family chronology; normalized subject stem remains insufficient by itself.
 
 All completeness, NO_EVENT, exact-knownAt, cancellation-completeness, technical-continuity, session-completeness and trading-authority flags remain false.
+
+
+## 2026-10-05 S2-07 event-specific linkage V0.5 physical result
+
+Authoritative physical execution:
+- merge commit: `50aac2717c47f6e1bc6fd29d29dd867267d09887`;
+- workflow: `System2 S2-07 Event-Specific Linkage V0.5 Readonly`;
+- run: `37331662930`;
+- job: `111836005547`;
+- conclusion: PASS.
+
+Regression evidence around the same BUILD_LANE sequence:
+- V8 Regression Tests run `37331377958`: PASS;
+- V0.4 diagnostic rerun `37331377874`: PASS.
+
+Physical summary:
+- eventCount = 17;
+- actionFamilyQueryIntegrityExactCount = 13;
+- periodicNoticeOnlyDivergenceCount = 3;
+- eventSpecificAnchorCandidateCount = 13;
+- correctionObservedCount = 5;
+- cancellationObservedCount = 0;
+- promotionLinkageEstablishedCount = 0.
+
+The four remaining action-family query-integrity divergences are all PAR_VALUE_CHANGE events: 6949 / 2026-09-07, 8937 / 2026-04-13, 5904 / 2026-08-10, and 4747 / 2026-08-31.
+
+The 13 exact events have issuer + target-action-family keyset reconciliation and diagnostic event-specific anchors based on official event identity/detail plus issuer chronology. These remain bounded research candidates, not promotion-grade linkage and not trading authority.
+
+Positive correction evidence is observed for five events: 3356, 3591, 1441, 6241, 4806. No cancellation disclosure was observed inside the V0.5 semantic episode candidates, but absence is not negative proof: `cancellationHistoryComplete=false` and no-cancellation may not be claimed.
+
+All completeness / exact-clock / technical-continuity / trading-authority flags remain false.
+
+Next exact BUILD_LANE continuation:
+1. resolve the four PAR_VALUE_CHANGE source-divergence semantics at row/provenance level;
+2. formalize cancellation state as positive-observed vs not-certified, never NO_CANCELLATION by absence;
+3. determine which bounded event-specific candidates meet promotion evidence requirements without subject-stem dependence;
+4. then continue shared suspension/resumption + symbol-session integration;
+5. then RAW A1 lineage.
