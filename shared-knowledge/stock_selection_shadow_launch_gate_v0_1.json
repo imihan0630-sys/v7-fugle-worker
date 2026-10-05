@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-06T05:55:00+08:00",
+  "updatedAt": "2026-10-06T06:12:00+08:00",
   "status": "CANONICAL_SELECTION_LAUNCH_GOVERNANCE",
   "formalCoreImpact": "NONE",
   "gates": [
@@ -19,7 +19,8 @@
         "SDA001_004_THREE_SCHEMA_DELTAS",
         "SDA009_SYSTEM1_LEAVE_ONE_OUT_DIAGNOSTIC",
         "GENUINE_SAME_GENERATION_PARENT_BINDING"
-      ]
+      ],
+      "latestReadback": "System1 PR #644 is useful provenance partial-pass only; OPEN/DRAFT/NOT_MERGED/NOT_DEPLOYED and does not establish authoritative Formal->C1 binding."
     },
     {
       "id": "S2",
@@ -29,9 +30,10 @@
       "blockers": [
         "FIRST_GENUINE_SYSTEM1_SDA_RECEIPT",
         "FIRST_GENUINE_D09_LOO_RECEIPT",
-        "SDA016_PRE_OUTCOME_REGISTRATION",
-        "COMMON_SUPPORT_AND_UNKNOWN_ACCOUNTING"
-      ]
+        "SDA016_V0_4_PRE_OUTCOME_REGISTRATION_AND_CONSUMPTION_AUTHORITY",
+        "COMMON_SUPPORT_UNKNOWN_ADMISSION_AND_OUTCOME_FOOTPRINT_ACCOUNTING"
+      ],
+      "latestReadback": "SDA-016 closure oracle expanded to 48 blocking tests; genuine prospective comparison remains unavailable."
     },
     {
       "id": "S3",
@@ -40,7 +42,7 @@
       "formalMutation": false,
       "blockers": [
         "D16_INCREMENTALITY_OOS_MULTIPLICITY_DEPENDENCE",
-        "MISSINGNESS_AND_ADMISSION_ACCOUNTING",
+        "MISSINGNESS_ADMISSION_POSITIVITY_AND_ESTIMAND_IDENTITY",
         "NET_COST_IF_TRADABLE",
         "NO_SAME_ROOT_OR_CIRCULARITY_INFLATION"
       ]
@@ -64,12 +66,12 @@
     }
   ],
   "currentShortestPath": [
-    "System1 complete SDA-001/004 schema deltas",
-    "System1 implement SDA-009 leave-one-out diagnostic",
-    "produce first genuine same-generation S1 Shadow receipt",
-    "register prospective comparison under SDA-016 before outcomes",
-    "accumulate prospective comparison dates",
-    "D16 evaluate residual incrementality, multiplicity and dependence",
+    "System1 complete SDA-001/004 three Shadow output-schema deltas",
+    "System1 implement SDA-009 leave-one-out Shadow diagnostic",
+    "establish authoritative genuine same-generation parent binding and first genuine S1 Shadow receipt",
+    "register comparison under SDA-016 V0.4 before outcomes",
+    "accumulate prospective comparison dates with full admission/missingness lineage",
+    "D16 evaluate residual incrementality, multiplicity, dependence and estimand robustness",
     "only then prepare S3 owner-review candidate"
   ],
   "nonBlockingParallel": [
@@ -79,5 +81,10 @@
     "D19/D20 challenger evidence",
     "D12/D13 challenger evidence"
   ],
-  "formalMutationRequiresExplicitOwnerApproval": true
+  "formalMutationRequiresExplicitOwnerApproval": true,
+  "notes": [
+    "PR #644 does not move S1 to PASS because it is not merged/deployed and authoritative Formal->C1 binding remains unresolved.",
+    "PVE-246 root causes are certified but remediation is not implemented; D02 clean H001 date count remains zero.",
+    "System2 SDA-017 remains outside the plain System1 Selection Shadow S1 blocker set, but is mandatory before any Regime-conditioned promotion."
+  ]
 }
