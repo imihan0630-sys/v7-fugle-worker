@@ -278,3 +278,19 @@ Forbidden conversions are frozen in the machine contract, including balance->quo
 Maturity impact: NONE. D06-18 remains L2/40%. Source-layer clarity improved, but today's live receipt is still missing and true utilization is still unidentified.
 
 Exact next: preserve today's missing slot; continue only authorized discovery of a stable public/machine live quote representation for a future date. Historical execution/balance replay may progress separately but cannot substitute for the live layer.
+
+
+## LS-047E / D06-07~09 — 2026-10-05 TPEx EARLY slot preserved as UNKNOWN/MISSING
+
+Durable receipt: `research/d06_07_08_09_tpex_leverage_early_20261005_v0_1.json`.
+
+At 2026-10-05T20:33:21+08:00 the official TPEx margin and borrowed-stock short-sale pages were reachable and exposed the validated field headers, but the same-day stock rows were not available through the verified free machine representation used in this research lane.
+
+Frozen state:
+- EARLY 20:30 = UNKNOWN/MISSING;
+- no zero imputation;
+- no later backfill into EARLY;
+- undocumented endpoint guessing remains forbidden;
+- source existence remains verified, while point-in-time machine row access at this slot is not.
+
+No D06-07/08/09 promotion follows. LATE 22:30 remains the exact next paired capture. Outcomes and Formal remain closed.
