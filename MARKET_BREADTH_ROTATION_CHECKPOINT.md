@@ -997,3 +997,23 @@ R1 data sufficiency is now frozen: exact replay requires effective-dated members
 Maturity: D09 remains 57.1%; no promotion from preflight/governance work.
 
 Exact next: SDA-009-R2 obtain the first genuine candidate-level machine receipt containing inclusive + leave-one-out sector state on one Taiwan scan date, then build the first common-support replay table and classify gate/rank/Top6 effects. Until that receipt exists, System 1 diagnostic implementation is the blocking dependency and historical proxy reconstruction is prohibited.
+
+
+## SDA-009 R2 receipt oracle implemented
+
+Artifact:
+- `research/SDA009_R2_RECEIPT_ORACLE_CHECKPOINT_20261006.md`
+- `research/sda009_r2_receipt_oracle_v0_1.mjs`
+- `research/test_sda009_r2_receipt_oracle_v0_1.mjs`
+
+Status: R2_ORACLE_IMPLEMENTED / DETERMINISTIC_TEST_PASS_12 / GENUINE_RECEIPT_COUNT_0 / SYSTEM1_DIAGNOSTIC_PENDING / FORMAL_CORE_UNCHANGED
+
+The research room no longer waits passively for engineering. A fail-closed executable oracle now classifies candidate-level inclusive-vs-leave-one-out receipts as NO_MATERIAL_SELF_EFFECT, SCORE_ONLY_SELF_EFFECT, GATE_FLIP, RANK_FLIP, TOP6_FLIP, SMALL_N_SENSITIVE or BLOCKED while preserving all mechanical effect flags.
+
+Local isolated validation passes 12 deterministic assertions. This proves classifier semantics only, not Taiwan-market effect size.
+
+Latest visible genuine System 1 C1 evidence collection run `37382689418` failed for scanDate `2026-10-05` with `C1_GENERATION_NOT_FOUND` / `FORMAL_SCAN_NOT_CONFIRMED`. It explicitly cannot count as a zero-pick date. Therefore missing receipt must not be interpreted as no circularity.
+
+D09 maturity remains 57.1%; no promotion. D16 remains required for economic materiality and incrementality.
+
+Exact next: `SDA-009-R3` consume the first verified same-generation candidate-level System 1 inclusive-vs-LOO receipt through the oracle; freeze the first common-support gate/rank/Top6 comparison with BLOCKED/UNKNOWN rows retained. Until the System 1 diagnostic exists and a verified C1 generation is available, do not fabricate historical replay values.
