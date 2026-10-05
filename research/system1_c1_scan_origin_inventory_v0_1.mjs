@@ -49,10 +49,18 @@ export function buildC1ScanOriginContext(input={}) {
 
 export function attachC1ScanOrigin(receipt,context) {
   assert(receipt&&Array.isArray(receipt.rows)&&receipt.rows.length>0,'RECEIPT_REQUIRED');
-  assert(context&&context.schemaVersion===C1_SCAN_ORIGIN_SCHEMA&&context.state==='CAPTURED','CONTEXT_REQUIRED');
-  assert(Date.parse(context.invokedAt)<=Date.parse(receipt.decisionAt),'CLOCK_ORDER');
+  const suffix=String(receipt.generationId||'').split(':').pop()||'unclassified';
+  const effectiveContext=context||buildC1ScanOriginContext({
+    originKind:'INTERNAL_UNCLASSIFIED',
+    scanAttemptId:`C1SCAN:${String(receipt.sessionDate)}:${suffix}`,
+    requestedDate:String(receipt.sessionDate),
+    invokedAt:String(receipt.decisionAt),
+    scheduledAt:null,cronExpression:null,onlyIfMissing:false,testMode:false
+  });
+  assert(effectiveContext&&effectiveContext.schemaVersion===C1_SCAN_ORIGIN_SCHEMA&&effectiveContext.state==='CAPTURED','CONTEXT_REQUIRED');
+  assert(Date.parse(effectiveContext.invokedAt)<=Date.parse(receipt.decisionAt),'CLOCK_ORDER');
   const root=Object.freeze({
-    ...context,
+    ...effectiveContext,
     generationId:String(receipt.generationId),
     sessionDate:String(receipt.sessionDate),
     decisionAt:String(receipt.decisionAt)
