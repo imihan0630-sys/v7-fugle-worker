@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "BR059_NANYA_PCB_APPLICATION_NUMERATOR_KINSUS_NEGATIVE_CONTROL_V0_1",
+  "room": "07｜產業與供應鏈研究室",
+  "domain": "D09",
+  "module": "D09-13",
+  "capturedAt": "2026-10-05T08:35:22+08:00",
+  "observedMainBeforeWrite": "60719133bb084cce31fdf14c7b2f23292daf1ca5",
+  "status": "SECOND_COMPATIBLE_PCB_APPLICATION_NUMERATOR / NANYA_8046_AI_HPC_2025_16PCT / NOT_ABF_SPECIFIC / KINSUS_NUMERIC_MAGNITUDE_STILL_UNKNOWN / OUTCOMES_CLOSED",
+  "objective": "Extend BR-059 with an independent issuer-native denominator-compatible PCB application revenue numerator and preserve a bounded negative control where only qualitative exposure is disclosed.",
+  "positiveControl": {
+    "issuer": "Nan Ya Printed Circuit Board Corp.",
+    "symbol": "8046",
+    "sourcePublishedAt": "2026-08-27T00:00:00+08:00",
+    "sourcePublishedAtBasis": "Official company investor-relations page dates the linked presentation 2026/08/27.",
+    "sourceUrls": [
+      "https://www.nanyapcb.com.tw/nypcb/chinese/InvestorRelations/FinancialReports",
+      "https://www.nanyapcb.com.tw/nypcb/images/InvestorRelations/FinancialReport/NYPCBCH20260506.pdf"
+    ],
+    "issuerNativeScope": "Company states it produces and sells IC substrates and general PCBs; official presentation separately describes ABF, BT and general-PCB development directions.",
+    "receipts": [
+      {
+        "referencePeriod": "2025",
+        "disclosedDimension": "APPLICATION_REVENUE_MIX",
+        "numeratorLabel": "Artificial Intelligence and High-Performance Computing",
+        "numeratorSharePct": 16,
+        "denominatorLabel": "Operating Revenue",
+        "denominatorCompatibility": "SAME_ISSUER_SAME_CHART_SAME_PERIOD",
+        "otherApplicationSharesPct": {
+          "PC": 17,
+          "NetworkingAndCommunication": 49,
+          "ConsumerElectronics": 12,
+          "AutomotiveElectronics": 6
+        },
+        "displayedRowSumPct": 100,
+        "sourcePageVisual": 10,
+        "cleanPeriodState": "CLEAN"
+      },
+      {
+        "referencePeriod": "2026Q1",
+        "disclosedDimension": "APPLICATION_REVENUE_MIX",
+        "numeratorLabel": "Artificial Intelligence and High-Performance Computing",
+        "numeratorSharePct": 16,
+        "denominatorLabel": "Operating Revenue",
+        "denominatorCompatibility": "SAME_ISSUER_SAME_CHART_SAME_PERIOD",
+        "otherApplicationSharesPct": {
+          "PC": 17,
+          "NetworkingAndCommunication": 49,
+          "ConsumerElectronics": 12,
+          "AutomotiveElectronics": 6
+        },
+        "displayedRowSumPct": 100,
+        "sourcePageVisual": 10,
+        "cleanPeriodState": "CLEAN_VISUAL_LABEL"
+      }
+    ],
+    "taxonomyFirewall": {
+      "validInference": "8046 disclosed AI/HPC application revenue at 16% of total operating revenue for 2025 and visually for 2026Q1.",
+      "invalidInferences": [
+        "16% is not ABF-substrate revenue share.",
+        "16% cannot be assigned only to IC substrate because application categories may span ABF, BT and general PCB products.",
+        "16% cannot be transferred to 3189 or other issuers.",
+        "No product-level margin or stock alpha is implied."
+      ]
+    },
+    "periodTextConflictNote": "Machine text extraction around the 2026 presentation contains '2026 first half' wording, while the visual chart and bullets visibly label the comparison period as 2026Q1. The receipt follows the rendered chart for the numeric period and does not infer 2026H1 mix."
+  },
+  "boundedNegativeControl": {
+    "issuer": "Kinsus Interconnect Technology Corp.",
+    "symbol": "3189",
+    "officialSources": [
+      "https://www.kinsus.com.tw/en/html/message_from_the_chairman/index",
+      "https://www.kinsus.com.tw/zh-tw/download/investor_conferences/index",
+      "https://www.kinsus.com.tw/en/annual/monthly_revenue",
+      "https://www.kinsus.com.tw/en/product/products/products_overview"
+    ],
+    "observedEvidence": [
+      "Official chairman message says revenue contribution from AI advanced-packaging substrates grew significantly.",
+      "Official product pages identify high-end FCBGA and ABF-related technology/application scope.",
+      "Official monthly revenue provides total-company denominator data."
+    ],
+    "missingEvidence": "No issuer-native numeric AI/FCBGA/ABF revenue-share numerator was found in the bounded official-source scan.",
+    "exposureMagnitudeState": "UNKNOWN",
+    "missingIsNotZero": true
+  },
+  "crossIssuerConclusion": {
+    "compatibleNumeratorCountBefore": 1,
+    "compatibleNumeratorCountAfter": 2,
+    "issuersWithCompatibleApplicationNumerator": [
+      "2313 Compeq",
+      "8046 Nan Ya PCB"
+    ],
+    "issuerStillMissingNumericProductApplicationNumerator": [
+      "3189 Kinsus"
+    ],
+    "abfSpecificNumericNumeratorCount": 0,
+    "lesson": "Taiwan PCB issuers can disclose numeric application revenue mix, but this does not authorize conversion of application mix into ABF product revenue. ABF-specific issuer exposure remains unproven in the current bounded sample."
+  },
+  "maturityDecision": {
+    "D09_13": "L3_60_KEEP",
+    "D09": "57.1_KEEP",
+    "reason": "Independent issuer breadth improved from one to two compatible application numerators, but ABF-specific numeric exposure is still absent and no preregistered prospective/OOS predictive evidence was opened."
+  },
+  "formalOptimizationCandidate": "NONE",
+  "exactNext": "BR-059 continue searching issuer-native same-company same-period product/application revenue numerators, especially an ABF/substrate-specific numeric numerator for 3189 or 8046; maintain application-vs-product taxonomy separation. If no ABF numerator is disclosed, preserve UNKNOWN rather than infer from AI/HPC or networking mix."
+}
