@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "D03_D16_INTERACTION_FALSIFICATION_METHOD_RECEIPT_V0_1",
+  "updatedAt": "2026-10-06T07:52:00+08:00",
+  "owner": "D03",
+  "methodOwner": "D16",
+  "classification": "RESEARCH_ONLY_METHOD_HANDOFF_OUTCOMES_CLOSED",
+  "formalCoreImpact": "NONE_LOCKED",
+  "requiredIdentityFields": [
+    "falsificationMethodReceiptVersion",
+    "d03InteractionFamilyId",
+    "d03InteractionVersion",
+    "variantId",
+    "variantVersion",
+    "interactionSearchFamilyId",
+    "componentPairHash",
+    "componentRootHash",
+    "primaryNullClaimHash",
+    "primaryFalsifierFamilyId",
+    "primaryFalsifierVersion",
+    "nullGeneratorVersion",
+    "targetPopulationHash",
+    "commonSupportHash",
+    "consumerScopeHash",
+    "decisionClock",
+    "outcomeHorizonId",
+    "d16MethodVersion",
+    "multipleTestingFamilyId",
+    "researchStreamId",
+    "sda016ConsumptionRef"
+  ],
+  "methodReadinessFields": [
+    "nullGeneratorValidationState",
+    "targetBreakValidationState",
+    "nuisancePreservationValidationState",
+    "lineageMechanicalValidityState",
+    "supportAdmissionSymmetryState",
+    "conditionalMisspecificationSensitivityState",
+    "powerCalibrationState",
+    "selectionAdjustmentMethod",
+    "monteCarloDesignHash",
+    "falsifierDisagreementPolicyHash"
+  ],
+  "allowedTerminalStates": [
+    "FALSIFICATION_METHOD_READY",
+    "NULL_GENERATOR_NOT_READY",
+    "NO_VALID_COMPONENTWISE_PERMUTATION",
+    "NULL_NOT_IDENTIFIABLE_BY_SURROGATE_FAMILY",
+    "CONDITIONAL_NULL_MODEL_UNRELIABLE",
+    "POWER_INSUFFICIENT",
+    "JOINT_SUPPORT_INSUFFICIENT",
+    "DEPENDENCE_TOO_STRONG_FOR_CURRENT_SAMPLE",
+    "FALSIFIER_DISAGREEMENT_UNRESOLVED",
+    "VERSION_INCOMPATIBLE",
+    "SELECTION_IDENTIFICATION_BLOCKED"
+  ],
+  "readyRequirements": {
+    "nullGeneratorValidationState": "PASS",
+    "targetBreakValidationState": "PASS",
+    "nuisancePreservationValidationState": "PASS",
+    "lineageMechanicalValidityState": "PASS",
+    "supportAdmissionSymmetryState": "PASS",
+    "selectionAdjustmentMethodNot": "FIXED_WINNER_NULL_AFTER_SEARCH",
+    "monteCarloDesignHashRequiredIfResampling": true,
+    "falsifierDisagreementPolicyHashRequired": true
+  },
+  "blockingStatePolicy": {
+    "acceptedAsScientificResult": true,
+    "redesignRequired": false,
+    "outcomeRetuningAllowed": false,
+    "maturityPromotion": false
+  },
+  "interpretation": {
+    "methodReadyDoesNotEqualEvidencePass": true,
+    "methodReadyDoesNotOpenOutcomes": true,
+    "methodReadyDoesNotGrantThirdUnit": true,
+    "methodReadyDoesNotChangeFormalCore": true
+  },
+  "noDataDefaults": {
+    "terminalState": "NULL_GENERATOR_NOT_READY",
+    "outcomeExecutionAuthorized": false,
+    "thirdUnitReviewEligible": false,
+    "maturityImpact": "NONE"
+  }
+}
