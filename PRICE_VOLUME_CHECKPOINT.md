@@ -3439,3 +3439,36 @@ Formal Core LOCKED.
 
 Exact next continuation point:
 PVE-242 — bind the PVE-241 receipt guard to existing D02 L4 admission lanes, prioritizing D02-02:H001, D02-03:H20, D02-06:H003 and D02-08; prove no admitted row can bypass source-clock, unit, corporate-action, information-root or participation-intent checks. Stay outcome-blind.
+
+
+## PVE-242 continuation — canonical schema reconciliation + admission bridge (2026-10-05)
+
+Status: OUTCOME_BLIND / CANONICAL_SCHEMA_RECONCILED / ADMISSION_BRIDGE_PASS / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+PVE-242 completed.
+
+Canonical authority:
+research/d02_prospective_pv_provenance_receipt_schema_v0_1.json.
+
+The concurrent flat PVE-241 interface is historical only and is not a second contract.
+
+New executable canonical layer:
+- research/d02_pve241_canonical_guard_v0_2.mjs;
+- tests/test_d02_pve241_canonical_guard_v0_2.mjs;
+- 27/27 tests PASS;
+- research/D02_PVE242_CANONICAL_RECEIPT_ADMISSION_BRIDGE_20261005_V0_1.md;
+- research/d02_pve242_canonical_admission_bridge_validation_v0_1.json.
+
+Bridge coverage:
+D02-02:H001 / D02-03:H20 / D02-06:H003 / D02-08.
+
+No outcome access, target freeze, D16 model selection, clean prospective date, maturity promotion or Formal change occurred.
+
+Current evidence:
+PVE-242 / CLEAN_DATE_ZERO / Gate 7 CLOSED.
+D02 remains 60.0%.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-243 — capture the first genuine prospective canonical receipt using the frozen schema and V0.2 guard without opening promotion-grade outcomes; fail CLOSED/UNKNOWN when decision-time observability cannot be proven.
