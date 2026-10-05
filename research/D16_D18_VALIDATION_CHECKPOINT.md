@@ -1911,3 +1911,21 @@ D18 = 52%.
 
 Exact next:
 validate only new engineering deltas when they land. SDA-016 requires original 12 + addendum 10 adversarial tests. SDA-017 requires original 15 + addendum 15 adversarial tests. Do not redo already-passed System1 exact-dataset guards or existing D18 ex-ante/UNKNOWN firewalls. 00 independent closure remains mandatory.
+
+
+## 2026-10-05 SDA validation oracles frozen
+
+Machine-readable owner oracles:
+- `research/SDA016_VALIDATION_ORACLE_20261005_V0_1.json` — 22 blocking acceptance tests;
+- `research/SDA017_VALIDATION_ORACLE_20261005_V0_1.json` — 30 blocking acceptance tests.
+
+Current status:
+- no new shared SDA-016 consumption authority implementation was present on the latest main at this readback;
+- no new SDA-017 episode/support observer implementation was present on the latest main at this readback;
+- therefore no engineering pass is fabricated and no maturity changes.
+
+Exact next:
+1. on new SDA-016 engineering commit, run only the new/previously-pending oracle items, preserving already-passed exact-dataset/mutation tests;
+2. on new SDA-017 engineering commit, run episode/support/dependence/horizon-attribution oracle items while preserving existing ex-ante/UNKNOWN passes;
+3. a research-owner PASS still routes to Room00 independent closure;
+4. in parallel, prospective C1 / D18 evidence may accumulate but cannot substitute for the missing machine guards.
