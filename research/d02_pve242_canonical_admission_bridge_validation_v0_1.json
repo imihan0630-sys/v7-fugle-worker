@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-05 Asia/Taipei",
+  "status": "PVE242_CANONICAL_SCHEMA_RECONCILED_ADMISSION_BRIDGE_PASS",
+  "evidenceCursor": "PVE-242",
+  "authoritativeSchema": "research/d02_prospective_pv_provenance_receipt_schema_v0_1.json",
+  "guardVersion": "D02_PVE241_CANONICAL_GUARD_V0_2",
+  "runtime": {
+    "name": "Node.js",
+    "tests": 27,
+    "status": "PASS"
+  },
+  "bridgeTargets": [
+    "D02-02:H001",
+    "D02-03:H20",
+    "D02-06:H003",
+    "D02-08"
+  ],
+  "guarantees": {
+    "outcomeBlind": true,
+    "cleanProspectiveDateCreated": false,
+    "historicalProviderSelfProvesDecisionObservability": false,
+    "priceDerivedIndependentVote": false,
+    "participationIntentFirewall": true,
+    "outcomeAccessAuthorized": false,
+    "numericalTargetAuthorized": false,
+    "d16MethodSelectionAuthorized": false,
+    "maturityPromotionAuthorized": false,
+    "formalCoreChangeAuthorized": false
+  },
+  "next": "PVE-243"
+}
