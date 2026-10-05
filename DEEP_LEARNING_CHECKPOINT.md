@@ -2121,3 +2121,43 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
 2. Continue the remaining 2026-10-05 frozen source lanes strictly at their actual clocks: TWSE dealer split, TPEx leverage EARLY/LATE, D06-14 T_PRELIM and PF-040 source refresh.
 3. Complete same-generation TDCC attachment to D06-05/D06-06 when the corresponding research generation row exists.
 4. Do not increase maturity from lineage governance alone.
+
+
+## 2026-10-05 D06 — IC-072~073 / PF-041 evening evidence
+
+- Room/domain: 05｜法人與籌碼研究室 / D06.
+- TWSE 18:00 public non-block dealer split is now a genuine prospective receipt:
+  - `research/d06_03_twse_dealer_split_capture_20261005_1800_v0_1.json`;
+  - 1,344 rows / 1,344 numeric-valid;
+  - 1,344/1,344 proprietary, hedge, aggregate-dealer and institutional-total arithmetic PASS;
+  - 1,088 ordinary four-digit stocks;
+  - 351 both dealer desks active; 150/351 = 42.7% opposite signs;
+  - aggregate dealer nonzero in 677 rows; 150/677 = 22.2% contain opposing desk flow;
+  - content fingerprint fnv1a64-utf8:be22e70f6ec9da3a;
+  - schema fingerprint fnv1a64-utf8:334c6531bfaa2963.
+- TWSE 20:00 including-block sibling TWTAIUC is official paid/not-authorized; public 18:00 T86 is not substituted.
+- TPEx leverage EARLY 20:30 is durably UNKNOWN/MISSING:
+  - `research/d06_07_08_09_tpex_leverage_early_20261005_v0_1.json`;
+  - official pages/schema reachable, same-date rows unavailable through verified free machine path;
+  - no zero imputation and no LATE backfill into EARLY.
+- D06-14 T_PRELIM attempt at 20:33 remains variable-workflow pending:
+  - `research/d06_14_tpex_daytrade_tprelim_attempt_20261005_v0_1.json`;
+  - page reachable, actual same-date stock-level object not yet observed.
+- PF-041 establishes D06-16 Taiwan PIT/source feasibility:
+  - first decision generation 2026-10-05 was captured twice and stable;
+  - second decision generation 2026-10-06 was prospectively captured twice with identical 0050/0056 hashes;
+  - 0050 source hash fnv1a64-utf8:c7ae53391ed48cd9; reported unit change +20.5m;
+  - 0056 source hash fnv1a64-utf8:07d4527644752dc1; reported unit change +14.5m;
+  - cash-substitution and corporate-action guards preserved;
+  - actual AP/constituent execution remains UNKNOWN.
+- D06-16 promotes L2/40 -> L3/60 for source/PIT feasibility only; D06-11 remains L2.
+- D06 aggregate maturity becomes 48.9%; whole 356-module tracker becomes 46.5%.
+- D06-06 price/volume parent remains unbound: D02 PVE-241/242 are schema/admission evidence with CLEAN_DATE_ZERO; first genuine canonical receipt is deferred to PVE-243.
+- Outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. TPEx leverage LATE at 22:30; never rewrite EARLY.
+2. Retry D06-14 T_PRELIM later in the evening under its variable publication workflow.
+3. Search for a genuine same-generation D06-05/D06-06 row before attaching the existing TDCC parent; no fabricated generation.
+4. Wait for D02 PVE-243 genuine prospective canonical PRICE_OHLC/VOLUME_TURNOVER parent before D06-06 binding.
+5. D06-16 L4 requires preregistered OOS/Shadow residual incrementality; no performance claim from L3 source readiness.
