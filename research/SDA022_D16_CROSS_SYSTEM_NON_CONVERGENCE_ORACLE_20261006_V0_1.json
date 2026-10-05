@@ -1,0 +1,187 @@
+{
+  "schemaVersion": "SDA022_D16_CROSS_SYSTEM_NON_CONVERGENCE_ORACLE_V0_1",
+  "updatedAt": "2026-10-06T06:55:00+08:00",
+  "ticket": "SDA-022",
+  "validationOwner": "D16 / Room11",
+  "closureAuthority": "00",
+  "status": "RESEARCH_ONLY_VALIDATION_ORACLE_FROZEN",
+  "formalCoreImpact": "NONE",
+  "canonicalContracts": [
+    "shared-knowledge/SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_V0_1.md",
+    "research/SDA022_D16_CROSS_SYSTEM_NON_CONVERGENCE_VALIDATION_CONTRACT_20261006_V0_1.md"
+  ],
+  "principles": [
+    "OUTPUT_OVERLAP_IS_NOT_POLICY_INDEPENDENCE",
+    "OUTPUT_DIVERGENCE_IS_NOT_POLICY_INDEPENDENCE",
+    "ARCHITECTURAL_DISTINCTNESS_IS_NOT_STATISTICAL_INCREMENTALITY",
+    "SHARED_TRUTH_MUST_NOT_BE_DUPLICATED_TO_FAKE_INDEPENDENCE",
+    "DIVERSIFICATION_REQUIRES_ALIGNED_RETURN_EXPOSURE_DEPENDENCE_NOT_PICK_JACCARD"
+  ],
+  "requiredMachineOutputs": {
+    "system1Fingerprint": [
+      "policyVersion",
+      "formalGenerationId",
+      "decisionAt",
+      "universeDefinitionHash",
+      "eligibleUniverseDigest",
+      "hardGateLineageHash",
+      "rankingPolicyHash",
+      "informationRootSetHash",
+      "informationRoots",
+      "selectedSymbolsDigest",
+      "selectedCount",
+      "formalPolicyReceiptHash"
+    ],
+    "system2StrategyFingerprint": [
+      "strategyId",
+      "strategyVersion",
+      "policyId",
+      "policyVersion",
+      "decisionAt",
+      "candidateUniverseDefinitionHash",
+      "candidateUniverseDigest",
+      "discoveryPathHash",
+      "consumedSystem1Output",
+      "requiredEvidenceFamilies",
+      "hardGateLineageHash",
+      "rankingPolicyHash",
+      "informationRootSetHash",
+      "informationRoots",
+      "activeSymbolsDigest",
+      "activeCount",
+      "capacityPolicyHash",
+      "strategyPolicyReceiptHash"
+    ],
+    "pairReceipt": [
+      "pairReceiptId",
+      "decisionDate",
+      "system1FingerprintRef",
+      "system2StrategyFingerprintRef",
+      "clockAlignmentState",
+      "targetCompatibilityState",
+      "horizonCompatibilityState",
+      "universeRelationshipState",
+      "candidateUniverseOverlap",
+      "selectedSetJaccard",
+      "commonSupportN",
+      "commonSupportRankCorrelationState",
+      "sharedInformationRootRatio",
+      "sharedHardGateRatio",
+      "system2IndependentDiscoveryN",
+      "system2IndependentDiscoveryRate",
+      "system1OnlyPickN",
+      "system2OnlyPickN",
+      "overlapPickN",
+      "divergenceReasonCounts",
+      "outcomeFootprintRef",
+      "sda016ConsumptionRef"
+    ]
+  },
+  "tests": [
+    {
+      "id": "XSYS-T01",
+      "scenario": "System1 Top6/rank removed while shared raw receipts remain",
+      "expected": "SYSTEM2_AUTHORIZED_PATH_EXECUTES_OR_INDEPENDENT_DISCOVERY_NOT_PROVEN",
+      "blocking": true
+    },
+    {
+      "id": "XSYS-T02",
+      "scenario": "System2 outputs removed from System1 inputs",
+      "expected": "SYSTEM1_FORMAL_UNCHANGED_ABSENT_APPROVED_INTEGRATION",
+      "blocking": true
+    },
+    {
+      "id": "XSYS-T03",
+      "scenario": "same stock selected through separately fingerprinted paths",
+      "expected": "OVERLAP_WITH_DISTINCT_PATHS_NO_DOUBLE_CONFIRMATION",
+      "blocking": true
+    },
+    {
+      "id": "XSYS-T04",
+      "scenario": "different stocks but System2 parent candidate list is System1 Top6",
+      "expected": "OUTPUT_DIVERGENCE_WITH_POLICY_DEPENDENCE",
+      "blocking": true
+    },
+    {
+      "id": "XSYS-T05",
+      "scenario": "same OHLCV primitive appears under different factor names",
+      "expected": "SAME_INFORMATION_ROOT_NO_INDEPENDENT_CREDIT",
+      "blocking": true
+    },
+    {
+      "id": "XSYS-T06",
+      "scenario": "System2 discovers candidate outside System1 Top6 through independent path",
+      "expected": "INDEPENDENT_DISCOVERY_OBSERVED_NOT_ALPHA_PROOF",
+      "blocking": true
+    },
+    {
+      "id": "XSYS-T07",
+      "scenario": "System1 total order compared with System2 Pareto partial order",
+      "expected": "NO_FABRICATED_SCALAR_RANK_CORRELATION",
+      "blocking": true
+    },
+    {
+      "id": "XSYS-T08",
+      "scenario": "high selected-set Jaccard with distinct policy paths",
+      "expected": "NO_OVERLAP_ONLY_FAILURE",
+      "blocking": true
+    },
+    {
+      "id": "XSYS-T09",
+      "scenario": "low overlap created by forced cross-system exclusion",
+      "expected": "FORCED_DISAGREEMENT_INVALIDATES_INDEPENDENCE_CLAIM",
+      "blocking": true
+    },
+    {
+      "id": "XSYS-T10",
+      "scenario": "raw-row source-group difference disappears under equal-date comparison",
+      "expected": "NO_INCREMENTALITY_CLAIM",
+      "blocking": true
+    },
+    {
+      "id": "XSYS-T11",
+      "scenario": "fresh-looking same-target improvement uses consumed outcome footprint",
+      "expected": "SDA016_BLOCKS_UNTOUCHED_CONFIRMATION",
+      "blocking": true
+    },
+    {
+      "id": "XSYS-T12",
+      "scenario": "incremental gain dominated by one episode or replication cluster",
+      "expected": "FRAGILE_NO_STANDALONE_INCREMENTAL_CLAIM",
+      "blocking": true
+    },
+    {
+      "id": "XSYS-T13",
+      "scenario": "low pick overlap but aligned strategy returns highly co-dependent",
+      "expected": "DIVERSIFICATION_NOT_IDENTIFIED_FROM_PICK_OVERLAP",
+      "blocking": true
+    },
+    {
+      "id": "XSYS-T14",
+      "scenario": "high pick overlap but stable fresh conditional incremental information under separate policies",
+      "expected": "OVERLAP_ALONE_CANNOT_REJECT_INCREMENTAL_VALUE",
+      "blocking": true
+    },
+    {
+      "id": "XSYS-T15",
+      "scenario": "combined System1+System2 policy created after inspecting separate outcomes",
+      "expected": "NEW_ADAPTIVE_FAMILY_SDA016_CONSUMPTION",
+      "blocking": true
+    },
+    {
+      "id": "XSYS-T16",
+      "scenario": "policy fingerprint lineage mutates after outcome access under same version",
+      "expected": "REJECT_IMMUTABLE_POLICY_IDENTITY",
+      "blocking": true
+    }
+  ],
+  "passRule": "ALL_16_BLOCKING_TESTS_PASS_PLUS_PROSPECTIVE_PAIR_RECEIPTS_PLUS_D16_DEPENDENCE_INCREMENTALITY_ANALYSIS_AND_ROOM00_READBACK",
+  "thresholds": {
+    "selectedSetJaccard": "NO_ARBITRARY_PASS_FAIL_THRESHOLD_V0_1",
+    "commonSupportRankCorrelation": "NO_ARBITRARY_PASS_FAIL_THRESHOLD_V0_1",
+    "sharedInformationRootRatio": "NO_ARBITRARY_PASS_FAIL_THRESHOLD_V0_1"
+  },
+  "currentState": "WAITING_POLICY_FINGERPRINTS",
+  "empiricalEvidenceAttached": false,
+  "maturityImpact": "NONE"
+}
