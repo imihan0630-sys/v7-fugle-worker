@@ -2785,3 +2785,52 @@ Exact System1 delta for S1:
 5. do not wait for every SDA ticket or every curriculum domain to close before running research Shadow diagnostics.
 
 No Formal switch is authorized by this entry.
+
+
+## 2026-10-06 D02 PVE-246 root-cause certification
+
+Canonical source:
+`research/D02_PVE246_ROOT_CAUSE_CERTIFICATION_20261006_V0_1.md`.
+
+The three PVE-245 blockers are no longer root-cause UNKNOWN.
+
+Certified System 1 engineering facts:
+
+1. After-market schedule identity regression
+- active runtime/build policy introduced by `scripts/apply_v8_7_12.py` recognizes only exact `35 15 * * mon-fri`;
+- the prior Taipei-hour >=18 fallback was deliberately removed and replaced with `return false`;
+- actual Cloudflare schedule is `35,55 15 * * mon-fri`;
+- physical D1 readback on 2026-10-05 shows BOTH 23:35 and 23:55 classified as `INTRADAY_MONITOR / SKIPPED`.
+This is a certified identity mismatch, not a speculative timing issue.
+
+2. PV 15m baseline bootstrap starvation
+- `scripts/apply_v8_11_0.py` places `bootstrapPvShadowBaselinesSafe` after the successful Formal after-market path;
+- the misclassified 23:35/23:55 events therefore do not reach the PV historical bootstrap hook;
+- `pvRollObservedSession` can grow the fallback baseline only when a completed 13:00 slot exists;
+- 2026-10-05 intraday monitoring stopped around 11:08, so that session could not roll.
+The Fugle documented historical endpoint supports 15m history and the requested 180-day window; direct provider execution under a repaired path still requires physical readback.
+
+3. PV raw provenance loss
+- the raw 15m response exists at the fetch/analyze boundary;
+- current PV normalization keeps `session15` but the persisted source object omits `provider`, `endpoint` and `rawPayloadHash`;
+- the existing `semanticFingerprint` is not a valid substitute for raw-source provenance.
+
+PVE-246 read-only Production evidence:
+- workflow `.github/workflows/d02-pve246-premarket-readonly.yml`;
+- successful run `37378253538`;
+- runtime `8.18.0-valuation-source-vintage`;
+- latest stored scan remains `2026-09-29`, `pipeline.complete=false`.
+
+Engineering acceptance:
+- recognize the configured 23:35 primary + 23:55 recovery family without causing duplicate business scans; preserve existing lock / only-if-missing / idempotence semantics;
+- expose bounded PV baseline-warmup receipts with requested range, provider status, raw-row count, normalized/rejected sessions and final validSessions; H001 remains fail-closed below 20;
+- bind provider / endpoint / rawPayloadHash at the 15m fetch boundary before normalization, without persisting credentials.
+
+Governance:
+- diagnosis/readback is Class A;
+- Production Cron/runtime/persistence/schema changes still require classification/authorization under `RESEARCH_ENGINEERING_GOVERNANCE.md`;
+- no Formal A/B, ranking, Top6, thresholds, capital, trade or push change is authorized here;
+- 2026-10-05 remains permanently excluded from retrospective clean prospective evidence.
+
+D02 exact continuation after implementation:
+`PVE-247` — consume the System 1 repair/readback and accept the first future H001 canonical receipt only when schedule identity, >=20 same-slot baseline with finite pvSlotRvol20, and raw provenance all physically pass.
