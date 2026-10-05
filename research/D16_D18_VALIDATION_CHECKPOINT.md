@@ -1929,3 +1929,42 @@ Exact next:
 2. on new SDA-017 engineering commit, run episode/support/dependence/horizon-attribution oracle items while preserving existing ex-ante/UNKNOWN passes;
 3. a research-owner PASS still routes to Room00 independent closure;
 4. in parallel, prospective C1 / D18 evidence may accumulate but cannot substitute for the missing machine guards.
+
+
+## 2026-10-05 evening prospective-admissibility audit
+
+Canonical evidence:
+- `research/D16_D18_PROSPECTIVE_ADMISSIBILITY_AUDIT_20261005_V0_1.md`;
+- `research/d16_d18_prospective_admissibility_20261005_v0_1.json`.
+
+Frozen distinction:
+
+### D16 / D16-CAL-01
+2026-10-05 is `READBACK_PENDING / NOT_COUNTABLE_YET`, not a positive sample, not a failure and not zero-pick evidence.
+
+System1 canonical deployment state still reports first genuine-session readback pending, and no latest-main canonical 2026-10-05 C1/cohort acceptance receipt was found at this readback.
+
+A later readback may make the generation admissible only if it proves that a genuine immutable V8.17+ C1 generation actually existed at decision time, with complete required population/provenance/ranking coverage and no retrospective reconstruction.
+
+### D18 prospective policy evidence
+2026-10-05 is `INELIGIBLE_CAPTURE_DISABLED / NO_CANONICAL_PROSPECTIVE_POLICY_FRAME`.
+
+System2 canonical state still includes `CAPTURE_DISABLED`; no genuine 2026-10-05 strategy activation frame or regime-state receipt was found on latest main.
+
+Historical reconstruction may be used only for deterministic replay / exploratory engineering validation. It cannot increment prospective date N, prospective episode N or D18 L4 evidence.
+
+### Cross-ticket consequence
+- retrospective C1/D18 reconstruction cannot be relabeled prospective;
+- missing/readback-pending evidence cannot be coerced to zero/negative/no-signal;
+- SDA-016 22-test and SDA-017 30-test engineering gates remain independent blockers.
+
+No maturity change.
+D16 = 60%.
+D18 = 52%.
+Formal Core remains LOCKED.
+
+Exact next:
+1. verify the first actual System1 C1/cohort canonical readback and classify by decision-time persistence, not by later file availability;
+2. accept the first D18 prospective policy date only after an authorized immutable capture path is active; never backdate eligibility;
+3. if SDA-016/017 engineering deltas land first, run only the pending oracle items and preserve accepted passes;
+4. prospective evidence availability does not bypass Room00 independent closure.
