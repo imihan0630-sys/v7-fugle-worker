@@ -2339,3 +2339,123 @@ No maturity or Formal change is authorized by this routing.
 6. Hand A0-A6 / C0-C7 event-cluster dependence inference to D16.
 7. Next D01 science: separate calendar/event clustering from overnight-gap/opening-auction mechanics so a Pattern result driven only by gap-to-open behavior is not mislabeled as continuous-session structure.
 8. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-043 (2026-10-05)
+
+### DL-043 — Pattern response vs overnight gap / opening-auction mechanics
+- DL-042 separated Pattern from event-day / scheduled-information clustering.
+- DL-043 freezes a response-mechanism distinction: an apparent daily Pattern effect may be realized entirely through the next overnight gap / opening call auction rather than through continuous-session structural follow-through.
+- Taiwan market structure makes this distinction mandatory:
+  regular stocks cannot continuously trade during the overnight interval;
+  TWSE uses opening call-auction price formation before continuous trading;
+  Taiwan evidence reports materially different overnight and intraday return behavior.
+- Ownership boundary:
+  D11 owns overnight gap / event risk / corporate-action and reference-price continuity;
+  D05 owns opening call auction / opening price discovery / microstructure;
+  D04 owns volatility context;
+  D16 owns future economic inference.
+  D01 only freezes Pattern response-path claim scope.
+- Frozen decomposition for valid adjacent sessions:
+  OVERNIGHT_RETURN = open_t / close_{t-1} - 1;
+  INTRADAY_RETURN = close_t / open_t - 1;
+  CLOSE_TO_CLOSE_RETURN = close_t / close_{t-1} - 1;
+  with multiplicative identity across the two components.
+- Daily close-to-close response is not equivalent to continuous-session Pattern response.
+- previousClose and referencePrice are distinct:
+  RAW_OVERNIGHT_GAP = openPrice / previousClose - 1;
+  REFERENCE_GAP = openPrice / referencePrice - 1.
+- On ex-right/ex-dividend, split, capital reduction or other reference reset:
+  raw previous-close gap may mix corporate-action mechanics with price movement;
+  reference-price / continuity state must come from D11;
+  missing owner provenance -> CORPORATE_ACTION_GAP_DATA_BLOCKED.
+- Opening receipt should preserve where owner-supported:
+  tradeDate;
+  expectedOpenCapture;
+  capturedAt;
+  previousClose;
+  referencePrice;
+  openPrice;
+  openTime;
+  limitUpPrice / limitDownPrice;
+  openingAuctionState;
+  priceLimitState;
+  suspensionState;
+  provenance.
+- Missing open is UNKNOWN / OPENING_DATA_MISSING, never zero return.
+- For an after-market Pattern predictor, next open, opening-auction state, first 5m/15m/30m path and next close are all future and may not enter the predictor snapshot.
+- Opening-auction state is post-selection for the total Pattern estimand.
+  It can be used for mechanism/path-conditional analysis, not casually as a baseline confounder.
+- Future response estimands remain separate:
+  TOTAL_NEXT_SESSION_RESPONSE;
+  OVERNIGHT_COMPONENT;
+  INTRADAY_COMPONENT;
+  EARLY_CONTINUOUS_COMPONENT.
+- Future mechanism classes may include:
+  OVERNIGHT_ONLY;
+  OPENING_AUCTION_DOMINANT;
+  INTRADAY_CONTINUATION;
+  INTRADAY_REVERSAL;
+  MIXED_PATH;
+  LIMIT_CONSTRAINED;
+  CORPORATE_ACTION_CONTAMINATED;
+  NOT_EVALUABLE.
+- No arbitrary 2%, ATR or gap-fill threshold is defined.
+- DL-042 event state remains context:
+  event category != gap sign;
+  gap sign != intraday continuation;
+  event presence != Pattern alpha.
+- Selection/censoring firewall retains:
+  NORMAL_OPEN;
+  PRICE_LIMIT_CONSTRAINED;
+  SUSPENDED_NO_OPEN;
+  OPENING_DATA_MISSING;
+  CORPORATE_ACTION_GAP_DATA_BLOCKED;
+  AUCTION_STATE_UNKNOWN.
+  Clean normal-open rows may not define the full denominator.
+- Repository evidence-readiness remains partial:
+  older snapshots may have previousClose/openPrice in some paths;
+  referencePrice/openTime are not durably complete for the required historical panel;
+  opening-recorder coverage is not exhaustive all-symbol/all-date.
+  Therefore OPENING_PATH_EVIDENCE_READINESS = DATA_QUALITY_BLOCKED_PARTIAL.
+- No historical path Shadow may be fabricated from current/latest feeds.
+- Future comparison ladder:
+  G0 DAILY_CLOSE_TO_CLOSE;
+  G1 OVERNIGHT_INTRADAY_SPLIT;
+  G2 MARKET_SECTOR_GAP_CONTROLLED;
+  G3 OPENING_AUCTION_STATE_CONTROLLED;
+  G4 INTRADAY_RESIDUAL_PATTERN;
+  G5 CROSS_PATH_REPLICATION.
+- Future interpretation states:
+  P0 DAILY_EFFECT_IS_OVERNIGHT_ONLY;
+  P1 OPENING_AUCTION_MECHANISM_EXPLANATION;
+  P2 INTRADAY_CONTINUATION_PATTERN;
+  P3 INTRADAY_REVERSAL_AFTER_GAP;
+  P4 MARKET_SECTOR_GAP_EXPLANATION;
+  P5 LIMIT_OR_AUCTION_CONSTRAINT_EXPLANATION;
+  P6 CORPORATE_ACTION_CONTAMINATION;
+  P7 MIXED_PATH_PATTERN;
+  P8 NOT_EVALUABLE.
+- New files:
+  - research/PATTERN_OVERNIGHT_OPENING_AUCTION_V0_1.md
+  - research/pattern_overnight_opening_auction_v0_1.json
+  - research/pattern_overnight_opening_auction_v0_1.mjs
+  - research/test_pattern_overnight_opening_auction_v0_1.mjs
+  - research/PATTERN_OVERNIGHT_OPENING_AUCTION_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-043
+
+1. Reconcile the DL-043 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-043 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve total, overnight, intraday and early-continuous response paths as separate future estimands.
+4. Consume D11 reference-price / event receipts and D05 opening-auction receipts without rebuilding owner engines.
+5. Preserve constrained / suspended / missing-open / corporate-action-blocked cases in denominators.
+6. Hand G0-G5 / P0-P8 path-decomposition inference to D16.
+7. Next D01 science: separate overnight/opening mechanics from close-price construction / closing-auction effects so daily candle bodies are not treated as pure continuous-session evidence.
+8. No outcome join / no runtime wiring / no Formal change.
