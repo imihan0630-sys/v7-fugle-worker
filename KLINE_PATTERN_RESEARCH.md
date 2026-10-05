@@ -23389,3 +23389,37 @@ New durable artifacts:
 - research/PATTERN_EVENT_DAY_CLUSTERING_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-043 — Pattern response vs overnight gap / opening-auction mechanics (2026-10-05)
+
+DL-042 showed that many Pattern observations may be one information-event story. DL-043 asks where the apparent response is actually realized.
+
+A daily candle combines two economically different trading regimes. The move from the prior close to the next open occurs while ordinary stock trading is unavailable and overnight information accumulates. The move from the open to the close occurs during the continuous cash session. Taiwan evidence explicitly reports different overnight and intraday return behavior, while TWSE market mechanics use an opening call auction before continuous matching. A close-to-close Pattern result therefore cannot by itself establish continuous-session structural persistence.
+
+The response path is frozen as three core quantities:
+overnight return from prior close to open;
+intraday return from open to close;
+total close-to-close return.
+Their multiplicative identity provides a deterministic reconciliation check.
+
+Corporate actions create an additional firewall. previousClose and the exchange referencePrice are not interchangeable. A split, ex-right/ex-dividend or capital reduction can make a raw open/previous-close comparison look like an economic gap when part of the difference is a mechanical reference reset. D11 remains the owner of that continuity truth. Missing reference-price / corporate-action provenance blocks gap interpretation rather than allowing a convenient raw calculation.
+
+Opening data are also treated as a coverage problem. A missing open is not zero. A suspended symbol, price-limit-constrained open, missing open receipt, unknown auction state and corporate-action-blocked row remain separate denominator states. Restricting inference to clean normal opens would introduce selection bias.
+
+For an after-market Pattern predictor, the next opening price, opening-auction state, first 5m/15m/30m path and next close are all future. They belong only to a later outcome/mechanism join authorized by D16. Opening-auction imbalance cannot be smuggled into the baseline Pattern predictor merely because it later explains the move.
+
+The future inference question is deliberately narrower than “did the next daily return go up?” D16 must ask whether the total response is carried by the overnight component, whether it continues after the open, whether it reverses intraday, whether market/sector opening context explains it, or whether opening-auction / limit mechanics dominate.
+
+The repository is not yet fully data-ready for that economic inference. Existing event-risk audits show some execution paths retain previousClose/openPrice, but referencePrice/openTime coverage is incomplete historically and the opening recorder is not an exhaustive all-symbol/all-date panel. Therefore DL-043 declares OPENING_PATH_EVIDENCE_READINESS = DATA_QUALITY_BLOCKED_PARTIAL and explicitly prohibits historical reconstruction from current/latest feeds.
+
+Twenty adversarial cases are authored. They preserve normal, missing, suspended and constrained opens; block corporate-action gaps without reference truth; verify raw/reference gap semantics; test the overnight/intraday multiplicative identity; preserve opposite-sign overnight/intraday paths; reject incomplete continuity; distinguish constraint/contamination/not-evaluable states; expose partial opening-receipt coverage; and detect suspicious future next-open information appearing before the predictor freeze.
+
+New durable artifacts:
+- research/PATTERN_OVERNIGHT_OPENING_AUCTION_V0_1.md
+- research/pattern_overnight_opening_auction_v0_1.json
+- research/pattern_overnight_opening_auction_v0_1.mjs
+- research/test_pattern_overnight_opening_auction_v0_1.mjs
+- research/PATTERN_OVERNIGHT_OPENING_AUCTION_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
