@@ -188,12 +188,14 @@
       ],
       "primitiveReceiptId": "D06-20261005-TWSE-BORROW-ECON",
       "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
-      "preopenState": "LATE_SLOT_ATTEMPTED / UNKNOWN_SOURCE_MACHINE_CONTRACT",
+      "preopenState": "LATE_SLOT_ATTEMPTED / UNKNOWN_SOURCE_MACHINE_CONTRACT / FUTURE_SOURCE_LAYERS_FROZEN",
       "rule": "preserve transaction type, rate, displayed lend/borrow quantities, recall terms, quote-persistence and 2026-06-01 settlement vintage; never call displayed supply total lendable inventory",
       "observedAt": "2026-10-05T15:20:43+08:00",
       "observationReceipt": "research/d06_18_twse_borrow_econ_capture_20261005_late_v0_1.json",
       "observation": "TWSE official dynamic disclosure entry was reachable inside the frozen slot, but the authorized machine-readable route did not expose live per-security rate/depth rows. Slot preserved as UNKNOWN/MISSING; no later substitution allowed.",
-      "passGateStatus": "NOT_PASSED"
+      "passGateStatus": "NOT_PASSED",
+      "futureSourceLayerContract": "research/d06_18_public_sbl_source_layer_contract_20261005_v0_1.json",
+      "futureSourceLayerState": "QUOTE_EXECUTION_BALANCE_SPLIT_FROZEN / LIVE_MACHINE_ROUTE_UNVERIFIED / TRUE_INVENTORY_UNKNOWN"
     },
     {
       "laneId": "D06_19_RETAIL",
