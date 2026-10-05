@@ -27,6 +27,19 @@ const FROZEN=[
 ].map(([sourceId,symbol,effectiveDate,family,v03Exact])=>({sourceId,symbol,effectiveDate,family,v03Exact}));
 
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+async function fetchTextWithRetry(url,{attempts=4,timeoutMs=30000,userAgent="System2-S2-07-Linkage-Diagnostics/0.4"}={}){
+ let lastError=null;
+ for(let i=1;i<=attempts;i++){
+  try{
+   const res=await fetch(url,{headers:{accept:"application/json,text/plain,*/*","user-agent":userAgent},signal:AbortSignal.timeout(timeoutMs)});
+   const raw=await res.text();
+   if(res.ok) return {res,raw,attempt:i};
+   lastError=new Error("HTTP "+res.status);
+  }catch(error){lastError=error;}
+  if(i<attempts) await sleep(500*i);
+ }
+ throw lastError||new Error("fetch failed after retries");
+}
 function key(r){return [r?.date||"",r?.time||"",r?.seqNo||""].join("|");}
 function dateMinusDays(iso,days){return new Date(new Date(iso+"T00:00:00Z").getTime()-days*86400000).toISOString().slice(0,10);}
 function monthRange(startDate,endDate){
@@ -71,8 +84,8 @@ const urls=buildOfficialContinuitySourceUrlsV0_1({startDate:START,endDate:END});
 const parsedBySource={};
 for(const sourceId of [...new Set(FROZEN.map(x=>x.sourceId))]){
  const source=urls[sourceId];
- const res=await fetch(source.url,{headers:{accept:"application/json,text/plain,*/*","user-agent":"System2-S2-07-Linkage-Diagnostics/0.4"},signal:AbortSignal.timeout(30000)});
- const raw=await res.text();assert.equal(res.ok,true);
+ const fetched=await fetchTextWithRetry(source.url,{attempts:4,timeoutMs:30000});
+ const res=fetched.res,raw=fetched.raw;assert.equal(res.ok,true);
  const parsed=await parseOfficialHistoricalContinuityPayloadV0_1({sourceId,sourceUrl:source.url,rawText:raw,fetchedAt:new Date().toISOString(),requestedStartDate:START,requestedEndDate:END});
  assert.equal(parsed.responseRangeVerified,true);assert.equal(parsed.parserComplete,true);
  parsedBySource[sourceId]=parsed;
