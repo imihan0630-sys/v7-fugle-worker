@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-10-06T05:55:00+08:00",
+  "status": "CANONICAL_SELECTION_LAUNCH_GOVERNANCE",
+  "formalCoreImpact": "NONE",
+  "gates": [
+    {
+      "id": "S0",
+      "name": "RESEARCH_AUDIT_FOUNDATION",
+      "state": "PASS",
+      "formalMutation": false
+    },
+    {
+      "id": "S1",
+      "name": "SELECTION_SHADOW_INSTRUMENTATION",
+      "state": "PARTIAL",
+      "formalMutation": false,
+      "blockers": [
+        "SDA001_004_THREE_SCHEMA_DELTAS",
+        "SDA009_SYSTEM1_LEAVE_ONE_OUT_DIAGNOSTIC",
+        "GENUINE_SAME_GENERATION_PARENT_BINDING"
+      ]
+    },
+    {
+      "id": "S2",
+      "name": "PROSPECTIVE_SELECTION_COMPARISON",
+      "state": "NOT_READY",
+      "formalMutation": false,
+      "blockers": [
+        "FIRST_GENUINE_SYSTEM1_SDA_RECEIPT",
+        "FIRST_GENUINE_D09_LOO_RECEIPT",
+        "SDA016_PRE_OUTCOME_REGISTRATION",
+        "COMMON_SUPPORT_AND_UNKNOWN_ACCOUNTING"
+      ]
+    },
+    {
+      "id": "S3",
+      "name": "PROMOTION_REVIEW_ELIGIBLE",
+      "state": "NOT_READY",
+      "formalMutation": false,
+      "blockers": [
+        "D16_INCREMENTALITY_OOS_MULTIPLICITY_DEPENDENCE",
+        "MISSINGNESS_AND_ADMISSION_ACCOUNTING",
+        "NET_COST_IF_TRADABLE",
+        "NO_SAME_ROOT_OR_CIRCULARITY_INFLATION"
+      ]
+    },
+    {
+      "id": "S4",
+      "name": "FORMAL_SELECTION_CHANGE",
+      "state": "OWNER_APPROVAL_REQUIRED",
+      "formalMutation": true
+    },
+    {
+      "id": "T1",
+      "name": "TRADING_SHADOW_PROMOTION",
+      "state": "NOT_READY",
+      "formalMutation": false,
+      "blockers": [
+        "SDA006_EXECUTABLE_LIQUIDITY_CAPACITY",
+        "SDA014_FILL_UNFILLED_CANCEL_REJECT_ACCOUNTING",
+        "SDA015_PRETRADE_RISK_AND_SELECTION_VS_SIZING_ATTRIBUTION"
+      ]
+    }
+  ],
+  "currentShortestPath": [
+    "System1 complete SDA-001/004 schema deltas",
+    "System1 implement SDA-009 leave-one-out diagnostic",
+    "produce first genuine same-generation S1 Shadow receipt",
+    "register prospective comparison under SDA-016 before outcomes",
+    "accumulate prospective comparison dates",
+    "D16 evaluate residual incrementality, multiplicity and dependence",
+    "only then prepare S3 owner-review candidate"
+  ],
+  "nonBlockingParallel": [
+    "D02 PVE-245 cleanup",
+    "D06 SDA-007 primitive lineage",
+    "D04 prospective volatility evidence",
+    "D19/D20 challenger evidence",
+    "D12/D13 challenger evidence"
+  ],
+  "formalMutationRequiresExplicitOwnerApproval": true
+}
