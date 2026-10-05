@@ -261,3 +261,72 @@ Existing accepted System1 exact-dataset/mutation guards and D18 ex-ante/UNKNOWN 
 
 No maturity change.
 Formal Core remains LOCKED.
+
+
+## 2026-10-06 fourth-round selection sensitivity and effective replication
+
+New canonical addenda:
+- `research/SDA016_ADMISSION_SELECTION_IDENTIFICATION_VALIDATION_ADDENDUM_20261006_V0_1.md`;
+- `research/SDA017_EFFECTIVE_REPLICATION_UNIT_VALIDATION_ADDENDUM_20261006_V0_1.md`.
+
+New immutable validation oracle versions:
+- `research/SDA016_VALIDATION_ORACLE_20261006_V0_3.json` — 40 blocking tests;
+- `research/SDA017_VALIDATION_ORACLE_20261006_V0_3.json` — 48 blocking tests.
+
+V0.1 / V0.2 oracle files remain frozen.
+
+### SDA-016 fourth-round finding
+
+Admission/readback/maturity/cost completion is a selection process and must not be treated as a neutral implementation detail.
+
+A complete-case result estimates the full preregistered target population only under defensible assumptions. Otherwise its honest identity is `OBSERVED_SUBPOPULATION_ESTIMAND`.
+
+Promotion-grade evidence now requires a three-tier sensitivity structure:
+1. raw observed-subpopulation estimate;
+2. preregistered admission/censoring weighted sensitivity when a decision-time missingness model and overlap/positivity are defensible;
+3. partial-identification / worst-case bounds when missingness is not credibly point-identifiable or positivity fails.
+
+Near-zero admission probabilities are an identification warning, not a license for arbitrary extreme weights. Trimming/truncation/overlap weighting changes support and therefore must bind a changed estimand identity.
+
+For D16-CAL-01 binary outcomes, assumption-light missing-outcome success-rate bounds are directly computable from target N, observed N and observed positive count.
+
+Brier sensitivity is bounded. Log-loss missing-label worst-case sensitivity is finite only if a probability clipping contract is frozen before outcome interpretation; no epsilon is authorized by this research return.
+
+Evaluation/maturity cutoff and imputation model selection must also be outcome-independent. Outcome-tuned missingness modeling is another adaptive family use under SDA-016.
+
+### SDA-017 fourth-round finding
+
+No single `N_eff`, episode count or cluster count can certify independent Regime recurrence.
+
+D18 promotion now requires a multi-axis support vector spanning:
+- coverage/admissibility;
+- date support;
+- structural/replication/mechanical episodes;
+- replication clusters and leverage/influence;
+- transition-path concentration;
+- calendar breadth;
+- SDA-016 outcome-footprint freshness;
+- D16-06 dependence diagnostics.
+
+Structural episodes separated only by UNKNOWN/source/version/clock fragmentation remain separate observational segments but do not automatically create new replication clusters.
+
+Primary `DECISION_STATE_CONDITIONAL` aggregation remains decision-date based. Equal-episode weighting is a separate estimand and cannot replace the primary after outcome access.
+
+A leave-one-replication-cluster-out diagnostic is required once multi-cluster support exists. If deleting one cluster flips the main direction, status becomes `REPLICATION_FRAGILE`; this is a valid research outcome but not standalone promotion evidence.
+
+Transition-path concentration is also reported without post-hoc subsetting. If positive evidence is concentrated in one predecessor path, status includes `STATE_EFFECT_HETEROGENEITY_WARNING`; a later path-specific policy is a new family under SDA-016.
+
+### Cross-room consistency
+
+D03's method-receipt oracle already supports common-support, coverage-bias, chronology, multiplicity and holdout constraints. The fourth-round Room11 rules generalize those principles across D16/D18; they do not replace D03 ownership.
+
+### Current closure boundary
+
+- SDA-016 now requires V0.3 T01-T40.
+- SDA-017 now requires V0.3 T01-T48 plus genuine prospective multi-replication-cluster matured evidence.
+- previously accepted System1 exact-dataset/mutation guards remain accepted;
+- previously accepted D18 fixed-semantic PIT/UNKNOWN guards remain accepted;
+- only new/pending engineering deltas are rerun.
+
+No maturity change.
+Formal Core remains LOCKED.
