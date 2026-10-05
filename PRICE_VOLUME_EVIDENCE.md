@@ -5556,3 +5556,60 @@ Formal Core LOCKED.
 
 Exact next continuation point:
 PVE-242 — bind the PVE-241 receipt guard to the existing D02 L4 admission lanes, prioritizing D02-02:H001, D02-03:H20, D02-06:H003 and D02-08, and prove that no admitted row can bypass source-clock, volume-unit, corporate-action, information-root or participation-intent checks. Remain outcome-blind.
+
+
+# PVE-242 — Canonical schema reconciliation and admission bridge (2026-10-05)
+
+Status: OUTCOME_BLIND / CANONICAL_SCHEMA_RECONCILED / ADMISSION_BRIDGE_PASS / NO_PROMOTION / FORMAL_UNCHANGED.
+
+Concurrency reconciliation:
+- a nested canonical PVE-241 schema and a later flat executable PVE-241 guard were created concurrently;
+- the frozen canonical authority is research/d02_prospective_pv_provenance_receipt_schema_v0_1.json;
+- the flat V0.1 guard/contract is retained only as historical implementation evidence and explicitly marked superseded as a receipt contract;
+- there is now one receipt authority, not two.
+
+New durable artifacts:
+- research/d02_pve241_canonical_guard_v0_2.mjs;
+- tests/test_d02_pve241_canonical_guard_v0_2.mjs;
+- research/D02_PVE242_CANONICAL_RECEIPT_ADMISSION_BRIDGE_20261005_V0_1.md;
+- research/d02_pve242_canonical_admission_bridge_validation_v0_1.json.
+
+Independent executable validation:
+27/27 tests PASS.
+
+Canonical guard consequences:
+- exact schemaVersion D02_PROSPECTIVE_PV_PROVENANCE_RECEIPT_V0_1 is required;
+- source hash / provider / endpoint / clocks are fail-closed;
+- completed-bar chronology is enforced;
+- intraday regular-lot LOTS -> SHARES x1000 and daily SHARES identity are enforced;
+- historical-provider data cannot self-prove original prospective decision-time observability;
+- corporate-action UNKNOWN and mechanical contamination fail closed;
+- intentIdentified must remain false under canonical V0.1;
+- BID_ASK_SIDE_VOLUME cannot claim opening-auction completeness;
+- eligibility cannot be true when any admission component fails.
+
+Admission bridge now binds canonical receipts to:
+- D02-02:H001;
+- D02-03:H20;
+- D02-06:H003;
+- D02-08.
+
+SDA-001:
+Wave-1 bridge explicitly preserves PRICE_OHLC and VOLUME_TURNOVER lineage, requires common support + residual incrementality, and fixes priceDerivedIndependentVote=false.
+
+SDA-003:
+D02-08 bridge fixes trueOfiEligible=false, participantIntentEligible=false and dynamicAbsorptionEligible=false while preserving typed opening-auction completeness.
+
+No economic outcome was opened.
+No numerical target or D16 model method was created.
+No clean prospective date was created.
+No L4 promotion or Formal Core change is authorized.
+
+Current evidence:
+PVE-242 / CLEAN_DATE_ZERO / Gate 7 CLOSED.
+D02 remains 60.0%.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-243 — capture the first genuine prospective canonical receipt using the frozen schema plus V0.2 canonical guard, without opening promotion-grade outcomes. If no decision-time-valid source is available, record BLOCKED/UNKNOWN instead of retroactively admitting historical data.
