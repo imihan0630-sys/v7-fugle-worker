@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "D18_POLICY_CANDIDATE_UNIVERSE_RECEIPT_CONTRACT_V0_1",
+  "updatedAt": "2026-10-06T06:00:00+08:00",
+  "owner": "D18",
+  "room": "11",
+  "status": "RESEARCH_ONLY_CONTRACT_FROZEN_NO_POLICY_SELECTION_EVIDENCE_ATTACHED",
+  "formalCoreImpact": "NONE",
+  "purpose": "Preserve the denominator and selection lineage of all policy candidates so current champions cannot hide retired losers.",
+  "universeIdentity": {
+    "policyUniverseId": "REQUIRED",
+    "policyUniverseVersion": "REQUIRED",
+    "candidateSetHashAtDecision": "REQUIRED",
+    "candidateBirthLedgerHash": "REQUIRED",
+    "candidateRetirementLedgerHash": "REQUIRED",
+    "championSelectionRuleHash": "REQUIRED",
+    "baselinePolicyId": "REQUIRED",
+    "commonSupportRuleHash": "REQUIRED",
+    "selectionAt": "REQUIRED",
+    "freshEvaluationStartAt": "REQUIRED",
+    "sda016ResearchStreamRef": "REQUIRED"
+  },
+  "candidateRecord": {
+    "policyCandidateId": "REQUIRED",
+    "policyFamilyId": "REQUIRED",
+    "policyVersion": "REQUIRED",
+    "bornAt": "REQUIRED",
+    "birthReason": "REQUIRED",
+    "parentPolicyRefs": "REQUIRED_LIST",
+    "retiredAt": "NULL_OR_TIMESTAMP",
+    "retirementReason": "NULL_OR_REASON",
+    "outcomeAccessCountAtBirth": "REQUIRED_NONNEGATIVE_INTEGER",
+    "regimeFamilyId": "REQUIRED",
+    "activationRuleHash": "REQUIRED",
+    "evaluationOpportunityN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "exposureDateN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "regimeSupportSummary": "REQUIRED"
+  },
+  "championSelection": {
+    "championPolicyId": "REQUIRED_IF_SELECTED",
+    "candidateSetHash": "REQUIRED_IF_SELECTED",
+    "selectionMetricHash": "REQUIRED_IF_SELECTED",
+    "lookbackWindowHash": "REQUIRED_IF_SELECTED",
+    "switchingRuleHash": "REQUIRED_IF_DYNAMIC",
+    "selectionPeriodConsumptionRef": "REQUIRED_IF_SELECTED",
+    "selectionPeriodMayServeAsUntouchedValidation": false,
+    "freshPostSelectionEvaluationRequired": true
+  },
+  "commonSupport": {
+    "pairedDecisionDateN": "REQUIRED",
+    "baselineOpportunityN": "REQUIRED",
+    "challengerOpportunityN": "REQUIRED",
+    "disabledOpportunityCostState": "REQUIRED",
+    "costSemanticsMatch": "REQUIRED_BOOLEAN",
+    "commonSupportStateEnum": [
+      "READY",
+      "INSUFFICIENT",
+      "NOT_IDENTIFIED"
+    ]
+  },
+  "survivorshipAccounting": {
+    "bornCandidateN": "REQUIRED",
+    "activeCandidateN": "REQUIRED",
+    "retiredCandidateN": "REQUIRED",
+    "outcomeInspectedCandidateN": "REQUIRED",
+    "deletedOutcomeInspectedCandidateN": 0,
+    "championTurnoverN": "REQUIRED",
+    "candidateExposureDurationDistribution": "REQUIRED",
+    "candidateRegimeSupportDistribution": "REQUIRED"
+  },
+  "stateEnum": [
+    "POLICY_EVIDENCE_NOT_YET_AVAILABLE",
+    "POLICY_UNIVERSE_ACCOUNTING_INCOMPLETE",
+    "SELECTION_PERIOD_DEVELOPMENT_CONSUMED",
+    "POLICY_CHAMPION_NOT_IDENTIFIED_ON_COMMON_SUPPORT",
+    "CHAMPION_SELECTION_BIAS",
+    "FRESH_CHAMPION_VALIDATION_PENDING",
+    "POLICY_CHAMPION_VALIDATION_ELIGIBLE"
+  ],
+  "promotionGate": [
+    "ALL_TESTED_POLICY_CANDIDATES_PRESERVED",
+    "CANDIDATE_BIRTH_RETIREMENT_LINEAGE_COMPLETE",
+    "CHAMPION_RULE_FROZEN_BEFORE_SELECTION_OUTCOME_USE",
+    "FRESH_POST_SELECTION_EVIDENCE_REQUIRED",
+    "COMMON_SUPPORT_OR_EXPLICIT_RESTRICTED_ESTIMAND_REQUIRED",
+    "SDA016_RESEARCH_STREAM_ACCOUNTING_VALID",
+    "D16_DEPENDENCE_CLEARANCE_REQUIRED",
+    "ROOM00_INDEPENDENT_CLOSURE_REQUIRED"
+  ],
+  "noDataDefaults": {
+    "state": "POLICY_EVIDENCE_NOT_YET_AVAILABLE",
+    "promotionEligible": false,
+    "maturityImpact": "NONE"
+  }
+}
