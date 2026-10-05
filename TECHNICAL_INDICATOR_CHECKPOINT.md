@@ -4357,3 +4357,84 @@ No promotion:
 
 Exact next:
 System 2 implementation owner adds the six required research/shadow diagnostics and executes this oracle without changing lifecycle, signal, notification, order or Formal behavior. D03 reviews the returned machine receipt for exact 3-raw-to-1-family mapping and mapping/parameter drift. System 1 equivalent diagnostics, D16 validation, 00 closure, protected PR #600 approval, Bollinger post-deploy evidence and ADX FULL_REPLAY remain separately required.
+
+
+## TI-733 through TI-740 — System 1 SDA consumer mapping review (2026-10-05)
+
+Canonical artifacts:
+- `research/D03_SYSTEM1_SDA_CONSUMER_MAPPING_REVIEW_20261005_V0_1.md`;
+- `research/d03_system1_sda_consumer_mapping_review_20261005_v0_1.json`.
+
+### TI-733 — merged consumer authority
+PR #608 is merged and the System 1 Class A diagnostic consumer is present on main. It imports the canonical D03 registry directly and pins its digest. Caller-provided D03 lineage cannot silently override the canonical mapping.
+
+Decision:
+`SYSTEM1_D03_REGISTRY_PINNING = PASS`.
+
+### TI-734 — retired alias / parameter-family mapping
+D03-11 correctly resolves to D03-02; aliases cannot reset parameter/experiment identity. Same-horizon return/ROC/Momentum/log-return aliases deduplicate correctly.
+
+Decision:
+`D03_ALIAS_RETIREMENT_MAPPING = PASS`.
+
+### TI-735 — same-root connected dedup
+The consumer collapses active factors when they share an information root, redundancy group or direct parent/child link. This is conservative and prevents D01/D02/D03 same-price ancestry from manufacturing extra votes.
+
+Decision:
+`SAME_ROOT_CONNECTED_DEDUP = PASS_CONSERVATIVE`.
+
+`dedupedEvidenceFamilyCount` remains a connected-root-family diagnostic, not proof of independent economic Alpha.
+
+### TI-736 — independent-vote promotion remains closed
+The implementation currently fixes:
+`effectiveIndependentEvidenceCount = 0`
+and
+`independentEvidenceStatus = NOT_PROVEN_NO_PROMOTION_PATH`.
+
+No local result can silently promote an independent vote before D16/00 evidence.
+
+Decision:
+`INDEPENDENT_EVIDENCE_PROMOTION_FIREWALL = PASS`.
+
+### TI-737 — fail-closed / clock / outcome-lane checks
+Missing lineage, invalid/future observation clocks, non-boolean signal state and D03-04 outcome-relation voting all fail closed. Any incomplete Formal-eligible candidate blocks aggregate Shadow ranking rather than producing favorable complete-case output.
+
+Decision:
+`FAIL_CLOSED_AND_CLOCK_GUARD = PASS`.
+
+### TI-738 — diagnostic schema field gap
+Canonical D03 requires explicit `redundancyGroupContributions` and `dominantInformationRoots`. System 1 currently provides equivalent group/root information inside generic `contributions` but does not emit both canonical top-level fields.
+
+Decision:
+`CANONICAL_DIAGNOSTIC_FIELD_COVERAGE = PARTIAL`.
+
+This is a machine-readback/schema gap, not evidence that current grouping is wrong.
+
+### TI-739 — overlap identity durability gap
+Current `overlappingSignalIds` contains local signal indices rather than stable factorId + factorVersion identities. Indices are deterministic within one receipt but weaker across reordering, regenerated receipts and version migration.
+
+Decision:
+`OVERLAP_IDENTITY_DURABILITY = PARTIAL`.
+
+Required future diagnostic preserves factorId, factorVersion and optional local signalIndex.
+
+### TI-740 — overall mapping decision
+System 1 D03 consumer mapping:
+`PASS_WITH_DIAGNOSTIC_SCHEMA_GAPS`.
+
+Open research-only deltas:
+1. explicit `redundancyGroupContributions`;
+2. explicit `dominantInformationRoots`;
+3. stable factorId + factorVersion overlap identity.
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09 remains L2/40;
+- D03-10 remains L2/40;
+- raw receipt gate remains 2/3;
+- outcomes remain CLOSED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`;
+- SDA-001/SDA-004 remain REMEDIATION_IN_PROGRESS.
+
+Exact next:
+System 1 engineering owner may add only the three diagnostic schema deltas without scoring/Formal changes; D03 then reviews the small delta only. First genuine-session System 1 receipt is still required. System 2 runtime dedup diagnostics remain missing. D16 common-support sibling residual/multiplicity/OOS validation and Room00 closure remain pending.
