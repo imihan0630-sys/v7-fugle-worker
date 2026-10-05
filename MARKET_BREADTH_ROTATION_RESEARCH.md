@@ -2345,3 +2345,74 @@ Exact next:
 - no composite industry-structure score before OOS/redundancy validation.
 
 Formal Core unchanged.
+
+
+## SDA-009 — D09 leave-one-out circularity contract frozen
+
+Artifacts:
+- `research/SDA009_D09_LEAVE_ONE_OUT_CIRCULARITY_CONTRACT_V0_1.md`
+- `research/sda009_d09_leave_one_out_circularity_contract_v0_1.json`
+
+The 2026-10-05 self-deception audit confirmed three candidate self-influence paths in current production semantics:
+1. same-day sector hard-gate inputs: breadth, avgChange and amountVs20DayAverage include the candidate;
+2. sector.score includes the candidate and contributes 14% of priorityScore;
+3. sector.score also contributes to history warmup priority, so self-influence can affect observability/admission timing.
+
+Positive control: 20-day sector peer return already excludes the candidate before candidate Sector RS is computed. The remediation therefore extends an existing excluding-self precedent rather than redesigning all D09 semantics.
+
+Frozen research diagnostic unit:
+`candidate × scanDate × classificationVintage`.
+For each candidate preserve inclusive and leave-one-out sector states under the same decision clock and effective-dated membership.
+
+Mandatory diagnostics include self amount share, breadth/avgChange/activity/sector-score deltas, hard-gate flip, raw-vs-leave-one-out rank/Top6 difference and history-warmup priority delta. Candidate-specific sector-score normalization must recompute the cross-sector maximum after candidate removal.
+
+Adversarial proof-of-possibility:
+a two-member sector with candidate +10% change / trade amount 90 / avg20 amount 100 and one peer -2% / 10 / 100 passes the current inclusive hard gate with breadth 50%, avgChange +4% and activity 0.5. After excluding the candidate, breadth becomes 0%, avgChange -2%, activity 0.1 and the gate fails. With another sector fixing max amount at 100, sector score moves from 85 to 9.5, a 75.5-point sector-score delta and about 10.57 priority-score points through the 14% sector term alone.
+
+This is a deterministic circularity counterexample, not an estimate of live prevalence.
+
+Status: `RESEARCH_SEMANTICS_FROZEN / ENGINEERING_DIAGNOSTIC_PENDING / D16_VALIDATION_PENDING`.
+No Formal A/B, gate, score, ranking, Top6, capital or trading behavior changed.
+
+Exact next for SDA-009:
+System 1 implements diagnostic-only machine fields and deterministic tests; D16 later compares raw versus leave-one-out rank/Top6 effects on common support; 00 independently closes the ticket. 07 resumes the pre-existing research cursor in parallel.
+
+Formal Core unchanged.
+
+
+## BR-059B — 8046 provides second compatible application-revenue numerator; ABF magnitude still UNKNOWN
+
+Artifact:
+`research/br059_nanya_pcb_application_numerator_kinsus_negative_control_v0_1.json`
+
+Nan Ya PCB 8046 official investor materials provide an independent positive control for the BR-057 denominator firewall.
+
+The issuer's 2026-08-27 presentation shows application revenue mix under one total operating-revenue denominator. For 2025:
+- PC 17%;
+- Networking & Communication 49%;
+- Consumer Electronics 12%;
+- Automotive Electronics 6%;
+- Artificial Intelligence & High-Performance Computing 16%.
+
+The five categories sum to 100%. The rendered chart also shows the same 16% AI/HPC share for 2026Q1. The visual chart is used for the numeric period label; machine text around the later presentation contains mixed first-half wording, so no 2026H1 percentage is inferred from that conflict.
+
+Taxonomy firewall:
+- 16% is a valid issuer-native AI/HPC **application** revenue share;
+- it is not an ABF-substrate revenue share;
+- it cannot be assigned only to IC substrates because Nan Ya PCB also discloses ABF, BT and general-PCB product families;
+- it cannot be transferred to Kinsus or other issuers.
+
+Bounded Kinsus 3189 negative control:
+official sources confirm high-end FCBGA / large-area high-layer-count ABF positioning and state that AI advanced-packaging-substrate revenue contribution grew significantly, but the bounded official-source scan did not find a numeric same-company product/application revenue-share numerator. Therefore Kinsus numeric exposure magnitude remains UNKNOWN, not zero.
+
+Cross-issuer BR-059 state:
+- compatible issuer-native application numerators: 2 issuers (Compeq 2313, Nan Ya PCB 8046);
+- ABF-specific compatible numeric numerators: 0;
+- Kinsus 3189 ABF/AI magnitude: UNKNOWN.
+
+Maturity decision: `D09-13 L3 / 60% KEEP`. Cross-issuer feasibility improved, but no ABF-specific numeric exposure and no prospective/OOS predictive evidence were opened.
+
+Exact next:
+continue issuer-native numerator search, prioritizing ABF/substrate-specific numeric revenue evidence for 3189/8046; preserve application-vs-product taxonomy separation and keep missing ABF magnitude UNKNOWN.
+
+Formal Core unchanged.
