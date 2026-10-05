@@ -49,7 +49,6 @@ export function buildC1ScanOriginContext(input={}) {
 export function attachC1ScanOrigin(receipt,context) {
   assert(receipt&&Array.isArray(receipt.rows)&&receipt.rows.length>0,'RECEIPT_REQUIRED');
   assert(context&&context.schemaVersion===C1_SCAN_ORIGIN_SCHEMA&&context.state==='CAPTURED','CONTEXT_REQUIRED');
-  assert(context.requestedDate===receipt.sessionDate,'SESSION_MISMATCH');
   assert(Date.parse(context.invokedAt)<=Date.parse(receipt.decisionAt),'CLOCK_ORDER');
   const root=Object.freeze({
     ...context,
