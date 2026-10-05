@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-10-06 Asia/Taipei",
+  "evidenceCursor": "PVE-246",
+  "status": "PREMARKET_READBACK_COMPLETE / ROOT_CAUSE_CERTIFIED / REMEDIATION_NOT_YET_IMPLEMENTED / H001_FAIL_CLOSED / FORMAL_UNCHANGED",
+  "latestObservedMainBeforeWrite": "b98f902ec388da8a0abe5f266e0cddd75bc22777",
+  "system1Remediation": {
+    "durableFixFound": false,
+    "auditQueueState": "SDA-003 VALIDATION_PENDING",
+    "latestSystem1IntakePresent": true
+  },
+  "productionReadback": {
+    "workflow": "D02 PVE-246 Premarket Readonly",
+    "runId": 37378253538,
+    "headSha": "56efe4cce4fdbf811f6c4b1597bd7bf260bd3591",
+    "readOnly": true,
+    "runtimeVersion": "8.18.0-valuation-source-vintage",
+    "testMode": false,
+    "scanStatus": {
+      "version": "8.14.3-closure-receipt-memo",
+      "scanDate": "2026-09-29",
+      "generatedAt": "2026/09/30 05:18:52",
+      "selectedCount": 2,
+      "pipelineComplete": false,
+      "pvShadow": null
+    },
+    "runtimeCronExpected": [
+      "* 1-4 * * MON-FRI",
+      "0-24 5 * * MON-FRI",
+      "* 9 * * MON-FRI",
+      "35 15 * * MON-FRI"
+    ],
+    "cloudflareSchedules": [
+      "0-24 5 * * MON-FRI",
+      "* 1-4 * * MON-FRI",
+      "35,55 15 * * mon-fri",
+      "* 9 * * MON-FRI"
+    ],
+    "afterMarketPhysical": [
+      {
+        "scheduledAt": "2026-10-05T15:35:48.000Z",
+        "taipei": "2026-10-05T23:35:48+08:00",
+        "cron": "35,55 15 * * mon-fri",
+        "jobType": "INTRADAY_MONITOR",
+        "status": "SKIPPED",
+        "detail": "非V7盤中監控時段，已跳過 Fugle 呼叫"
+      },
+      {
+        "scheduledAt": "2026-10-05T15:55:48.000Z",
+        "taipei": "2026-10-05T23:55:48+08:00",
+        "cron": "35,55 15 * * mon-fri",
+        "jobType": "INTRADAY_MONITOR",
+        "status": "SKIPPED",
+        "detail": "非V7盤中監控時段，已跳過 Fugle 呼叫"
+      }
+    ]
+  },
+  "rootCauses": {
+    "afterMarketMisclassification": {
+      "certified": true,
+      "patch": "scripts/apply_v8_7_12.py",
+      "exactExpectedCron": "35 15 * * mon-fri",
+      "actualCron": "35,55 15 * * mon-fri",
+      "broadTaipeiTimeFallbackRemoved": true,
+      "consequence": "Both 23:35 and 23:55 scheduled events fail exact after-market identity and are routed as INTRADAY_MONITOR, then skipped outside intraday hours."
+    },
+    "baselineBootstrapStarvation": {
+      "certifiedMechanism": true,
+      "directProviderFailureCertified": false,
+      "mechanism": [
+        "PV historical 15m bootstrap runs only inside successful after-market scan flow.",
+        "Automatic after-market scan path is not reached under current combined 23:35/23:55 cron identity.",
+        "Fallback baseline growth through pvRollObservedSession requires a completed 13:00 slot.",
+        "2026-10-05 physical intraday monitoring ended around 11:08, so that date could not roll into baseline."
+      ],
+      "currentPhysicalBaselineFromPVE244": [
+        {
+          "symbol": "2006",
+          "validSessions": 2
+        },
+        {
+          "symbol": "2454",
+          "validSessions": 1
+        },
+        {
+          "symbol": "4977",
+          "validSessions": 2
+        }
+      ],
+      "providerCapabilityCountercheck": {
+        "historical15mSupported": true,
+        "maxQueryWindowLessThanOneYear": true,
+        "requestedBootstrapWindowDays": 180,
+        "minuteHistoryAvailableSince": "2023-05-23",
+        "regularLotMinuteVolumeUnit": "LOTS"
+      }
+    },
+    "rawProvenanceLoss": {
+      "certified": true,
+      "patch": "scripts/apply_v8_11_0.py",
+      "mechanism": [
+        "analyzeStockSmart receives the raw 15m provider response as raw.",
+        "pvExtractCompletedSession15 normalizes raw into session15.",
+        "result.pvShadow persists only normalized session15, not raw provider response identity.",
+        "pvBuildIntradaySnapshot source object omits provider, endpoint and rawPayloadHash."
+      ],
+      "missingCanonicalFields": [
+        "provider",
+        "endpoint",
+        "rawPayloadHash"
+      ],
+      "semanticFingerprintSubstitutionForbidden": true
+    }
+  },
+  "falsification": {
+    "h001CleanReceiptCreated": false,
+    "cleanProspectiveDateIncrement": 0,
+    "outcomeOpened": false,
+    "numericalTargetCreated": false,
+    "d16MethodSelected": false,
+    "maturityChange": false,
+    "formalCoreChange": false
+  },
+  "recommendedSystem1Remediation": [
+    "Recognize the actual combined 35,55 15 cron as the intended 23:35 primary plus 23:55 recovery after-market family, preserving onlyIfMissing/idempotent behavior.",
+    "Decouple research-only 15m baseline bootstrap availability from successful Formal selection completion, or otherwise prove a bounded guaranteed warmup path for currently monitored symbols; expose attempt/range/raw-row/normalized-session/rejection/final-validSessions receipts.",
+    "Bind provider, endpoint and a canonical raw payload hash at the 15m fetch boundary before normalization; keep semanticFingerprint separate."
+  ],
+  "nonRetroactivity": "2026-10-05 remains excluded from clean prospective-date counting after any repair.",
+  "exactNext": "PVE-247"
+}
