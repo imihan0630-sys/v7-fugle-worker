@@ -13959,3 +13959,25 @@ freeze the Wave-1 singular metric rule and multihorizon decision rule before any
 D02 remains 60.0%.
 PVE cursor remains 239.
 Gate 7 remains CLOSED.
+
+# Pre-PVE-240 — Wave-1 promotion design now freezes metric, horizon and method-selection boundary (2026-10-05)
+
+The earlier Wave-1 shell left two degrees of freedom open:
+which statistical metric would be promotion-primary, and which B horizon could be selected.
+
+Those are now frozen before clean outcomes:
+- equal-date Brier-loss improvement is primary;
+- H001/H20 use B2 primary with B1/B4 non-rescuing sensitivities;
+- H003 uses its genuine Acceptance lifecycle rather than forcing a B horizon.
+
+A second audit then identified a remaining model-selection degree of freedom:
+a proper score can still be overfit if D16 chooses estimator/calibrator after labels.
+
+Therefore D16-19 must now freeze a ModelMethodReceipt before promotion-grade outcome access.
+D02 intentionally does not select the model family; it only prevents post-outcome shopping.
+
+D14 cost provenance remains incomplete for universal after-cost MDE construction, so numerical targets remain pending rather than guessed.
+
+D02 remains 60.0%.
+PVE cursor remains 239.
+Gate 7 remains CLOSED.
