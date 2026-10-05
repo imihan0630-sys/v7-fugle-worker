@@ -2323,3 +2323,37 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
 3. D06-14 later today: pinned 20261005 T1_REVISED plus first actual pinned 20261006 T_PRELIM.
 4. 20:30 / 22:30 TPEx leverage paired vintages.
 5. Never award independent-date credit to rereads of the already-captured 2026-10-06 ETF decision generation.
+
+
+## 2026-10-06 D06 — IC-084 live SBL route preflight
+
+- D06-18 prior 2026-10-05 15:20 missing slot remains immutable UNKNOWN/MISSING.
+- Official TWSE rendered SBL page is now machine-readable through the authorized retrieval channel.
+- Official frontend route contract:
+  - selected-security query key = `ch`;
+  - `?ch=2330&lang=zhHant` rendered 台積電(2330);
+  - page refreshes selected security periodically.
+- A deterministic source-route pilot was frozen before the 15:20 observation:
+  - selectable four-digit codes observed = 438;
+  - pilot filtering excludes code<1101 and 91xx DR range, only for source-route feasibility;
+  - five sorted-quantile pilot symbols = 1101 / 2451 / 3532 / 6187 / 9941;
+  - all 5 physically matched selected identity and exposed core rate/depth labels.
+- Pilot is NOT a representative market sample and carries no alpha inference.
+- Frozen field schema:
+  - FIXED_RATE: separate 10-day / 3-day / 1-day recall notice;
+  - COMPETITIVE_BID: separate recall sections with total execution, displayed lend/borrow, latest execution rate/qty and best-five quote book;
+  - NEGOTIATED: separate aggregate transaction family;
+  - dash = NULL/source-no-value, not numeric zero.
+- Guards remain:
+  - displayed lend != total lendable inventory;
+  - borrow != short sale;
+  - fee/depth != bearish intent;
+  - quote-book depth != own execution.
+- D06-18 remains L2/40; route uncertainty is narrowed but no genuine 15:20 receipt exists yet.
+- D06 remains 48.9%; global tracker remains 46.5% / 356 modules.
+
+### Exact next continuation
+1. At 2026-10-06 15:20 ±5m capture exactly 1101/2451/3532/6187/9941 through the verified official rendered route.
+2. Preserve selected identity, source date, transaction family, recall condition, rate/depth values, capturedAt, content hash and NULL-vs-zero semantics.
+3. If route fails or the slot is missed, record UNKNOWN/MISSING and never backfill later.
+4. After market continue the already-frozen D06-03, D06-14 and TPEx leverage clocks.
