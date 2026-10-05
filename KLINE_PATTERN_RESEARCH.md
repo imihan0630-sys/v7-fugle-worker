@@ -23389,3 +23389,39 @@ New durable artifacts:
 - research/PATTERN_EVENT_DAY_CLUSTERING_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-043 — Overnight gap / opening auction / continuous-session separation (2026-10-05)
+
+DL-042 showed that many Pattern rows can be one information-event story. DL-043 asks a different question: even after event dependence is controlled, which trading mechanism actually generated the observed price response?
+
+This matters directly in Taiwan. Current TWSE materials state that the market open is determined by call auction and regular trading then moves into continuous trading. Taiwan research on overnight and intraday return components also documents that night and day can carry distinct predictability and momentum/reversal behavior. A daily candle therefore combines mechanically different price-formation regimes.
+
+The first split is close-to-open versus open-to-later-session. The overnight return contains information accumulation during a non-trading interval plus the result of the opening price-discovery mechanism. It is not a continuous executable path. A previous close of 100 and opening price of 106 does not imply that an investor could transact continuously through 101, 102, 103, 104 and 105.
+
+The opening print itself is also special. It is a call-auction clearing outcome, not just the first ordinary continuous trade. D01 therefore consumes the existing D04/D05 session taxonomy instead of inventing a new one.
+
+Four components are frozen: overnight gap, opening call auction, immediate post-open continuous trading and later continuous session. The immediate opening window must be preregistered. D01 explicitly prohibits choosing the first 5 minutes because it looks favorable and then switching to the first 15 minutes when the result changes.
+
+Boundary crossing semantics are correspondingly split. A verified intraday traded-through crossing is CONTINUOUS_CROSS. A prior close and opening print on opposite sides of the frozen zone with no observed path through the zone is OPENING_GAP_CROSS. An opening clearing inside the zone is AUCTION_AT_BOUNDARY. Price-limit / halt / resumption constraints remain explicit rather than being pooled with ordinary crossings.
+
+This distinction directly protects support/resistance interpretation. A gap over resistance may be caused by overnight information and auction price discovery, whereas an intraday continuous break asks whether trading actually traversed and accepted prices beyond the boundary. These are not the same evidence about structural memory.
+
+The predictor clock is equally strict. Before open, current open is future. At the open, the first-15-minute path is future. After 15 minutes, the rest of the session is future. Later session components can become outcomes or subsequent states but cannot be backfilled into an earlier predictor snapshot.
+
+DL-042 event context stays separate. A macro or issuer event can create the gap, but an event instance and the opening-auction mechanism are different causal objects. Future inference must preserve both.
+
+The future D16 ladder moves from raw daily Pattern evidence to overnight/intraday decomposition, opening-auction separation, early-session separation, later-continuous-only analysis, non-gap continuous-cross analysis and finally session-robust replication. If an apparent Pattern effect exists only in overnight returns, it becomes an overnight-gap explanation rather than evidence of continuous-session support/resistance memory. If it survives later continuous trading and non-gap crossings across independent dates, the continuous structural interpretation becomes stronger, while still requiring market/sector/event/momentum controls.
+
+The information-root rule remains unchanged. Overnight gap, opening print, early-session return and later-session return are decomposition views of one price history, not four independent confirmations.
+
+Twenty adversarial tests are authored. They cover ordinary gaps, corporate-action blocking, continuity failure, opening-gap versus continuous crossing, auction-at-boundary, constrained crossing, UNKNOWN session state, preregistered windows, pre-open/at-open/15m predictor clocks, one PRICE_OHLC evidence family, closed outcome join, gap-only explanation, later-continuous residual, incomplete coverage, combined session robustness and missing-open UNKNOWN behavior.
+
+New durable artifacts:
+- research/PATTERN_SESSION_GAP_AUCTION_V0_1.md
+- research/pattern_session_gap_auction_v0_1.json
+- research/pattern_session_gap_auction_v0_1.mjs
+- research/test_pattern_session_gap_auction_v0_1.mjs
+- research/PATTERN_SESSION_GAP_AUCTION_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.

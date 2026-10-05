@@ -1,0 +1,32 @@
+{
+  "schemaVersion":"pattern-session-gap-auction-v0.1",
+  "updated":"2026-10-05 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "sessionComponents":[
+    "OVERNIGHT_GAP_COMPONENT",
+    "OPEN_AUCTION_COMPONENT",
+    "IMMEDIATE_POST_OPEN_COMPONENT",
+    "LATER_CONTINUOUS_COMPONENT"
+  ],
+  "crossingStates":[
+    "CONTINUOUS_CROSS",
+    "OPENING_GAP_CROSS",
+    "AUCTION_AT_BOUNDARY",
+    "CONSTRAINED_OPENING_CROSS",
+    "CROSSING_UNKNOWN"
+  ],
+  "overnightReturnEqualsIntradayReturn":false,
+  "openingAuctionPrintEqualsContinuousPrint":false,
+  "openingGapCrossEqualsContinuousCross":false,
+  "dailyPatternEffectEqualsContinuousSessionEffect":false,
+  "outcomeTunedOpeningWindow":"PROHIBITED",
+  "sessionUnknownDefaultsToContinuous":false,
+  "informationRoot":"PRICE_OHLC",
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "futureComparisonLadder":["T0","T1","T2","T3","T4","T5","T6"],
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}
