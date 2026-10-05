@@ -115,3 +115,31 @@ A build room must return:
 7. exact next action.
 
 No ticket becomes CLOSED merely because code merged.
+
+
+## Launch/safety HIGH engineering routing
+
+Canonical reconciliation:
+`shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_RECONCILIATION_20261005_V0_1.md`.
+
+### System 1 additions
+- **SDA-003**: reuse D02 existing intent firewall; integrate D02 proxy/value lineage with SDA-001. Do not create a new intent score. Primary remaining debt is prospective residual validation, not more semantics.
+- **SDA-007**: add shared institutional/passive primitive lineage and one-receipt-many-consumers diagnostics; preserve intent/motive as UNKNOWN unless independently identified. Do not let D06 flow + D11 rebalance event + D20 herding become three votes from one primitive.
+- **SDA-005**: expose shared breakout episode / D04 volatility-context lineage in Shadow diagnostics. Existing H20 semantics are authoritative; do not reimplement separate breakout identity.
+- **SDA-006**: execution/capacity surfaces must preserve ACTUAL vs MODELED, filled/unfilled/cancel/reject denominators, and UNKNOWN queue/own-impact. Quote/depth cannot become executable fill evidence.
+- **SDA-011**: implement or converge on canonical eventId/newsClusterId/firstKnownAt/availableAt and cross-source duplicate-story diagnostics. Mechanical corporate-action adjustments must remain distinct from economic-event Alpha.
+- **SDA-014**: preserve parent decision + intended quantity + child fill/cancel/reject lineage; prospective broker-confirmed receipts are the gate. Do not renormalize evaluation onto filled shares only.
+- **SDA-015**: add immutable portfolioDecisionId/riskInputVersion/covarianceVersion where applicable to research/shadow sizing studies; preserve selection-vs-sizing attribution and actual-vs-planned lifecycle distinction.
+
+### System 2 additions
+- **SDA-003**: if D02 price-volume context is consumed by any strategy/resonance layer, preserve PROXY_ONLY / INTENT_UNIDENTIFIED and SDA-001 lineage.
+- **SDA-007**: institutional/passive context must reuse canonical primitive receipts and not infer motive.
+- **SDA-005**: volatility context must share canonical market-state/raw primitives and breakout episode lineage rather than becoming a second taxonomy/vote.
+- **SDA-006**: capacity persistence must retain numerator/denominator provenance and partial/missing coverage semantics; displayed depth is not fillability.
+- **SDA-011**: any news/event propagation consumer must use canonical event/story identity and first-known clocks once available.
+
+### Engineering acceptance for these HIGH tickets
+- semantic controls already credited in the HIGH reconciliation MUST NOT be rebuilt merely to claim progress;
+- remaining work should be implemented as Class A Shadow/diagnostic where possible;
+- shared schema/runtime changes remain Class B;
+- any Formal scoring/ranking/Top6/sizing behavior change remains Class C and requires explicit owner approval.
