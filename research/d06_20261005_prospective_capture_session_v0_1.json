@@ -17,7 +17,7 @@
   ],
   "preregistrationParent": "research/d06_next_trading_day_outcome_blind_capture_plan_v0_1.json",
   "lineageContract": "research/d06_sda007_flow_ownership_lineage_contract_20261005_v0_1.json",
-  "sessionState": "INTRADAY_CAPTURE_IN_PROGRESS / TPEX_DEALER_SPLIT_CAPTURED / TWSE_DEALER_SPLIT_PENDING / TDCC_PARENT_CAPTURED / PF040_SOURCE_REFRESH_PENDING",
+  "sessionState": "INTRADAY_CAPTURE_IN_PROGRESS / TPEX_DEALER_SPLIT_CAPTURED / TWSE_DEALER_SPLIT_PENDING / TDCC_PARENT_CAPTURED / PF040_SOURCE_REFRESH_PENDING / D06_D02_PRICE_VOLUME_PARENT_DEDUP_FROZEN",
   "globalRules": [
     "No lane may change fields or pass criteria after source values are observed.",
     "Raw parent receipts precede derived states.",
@@ -123,7 +123,10 @@
         "D06-20261005-TDCC-WEEKLY"
       ],
       "rule": "latestParentFirstKnownAt = max(firstKnownAt of mandatory parents); optional leverage/day-trade/SBL/passive axes remain UNKNOWN when unavailable",
-      "independentVote": false
+      "independentVote": false,
+      "crossDomainPriceVolumeLineageContract": "research/d06_core_crowding_crossdomain_parent_lineage_20261005_v0_1.json",
+      "priceVolumeParentBinding": "WAITING_SHARED_D02_OR_CANONICAL_SHARED_PARENT",
+      "legacyPriceVolumeParentIdSemantics": "CONSUMER_ALIAS_ONLY_NOT_NEW_PRIMITIVE"
     },
     {
       "laneId": "D06_07_08_09_TPEX_VINTAGE",
@@ -215,9 +218,11 @@
     "auditClosure": "00_REQUIRED",
     "residualIdentifiabilityContract": "COMPLETE",
     "residualIdentifiabilityReceipt": "research/d06_sda007_passive_active_residual_identifiability_20261005_v0_1.json",
-    "activeConvictionIdentity": "UNIDENTIFIED_BY_RESIDUALIZATION"
+    "activeConvictionIdentity": "UNIDENTIFIED_BY_RESIDUALIZATION",
+    "crossDomainPriceVolumeDedupContract": "COMPLETE",
+    "crossDomainPriceVolumeDedupReceipt": "research/d06_core_crowding_crossdomain_parent_lineage_20261005_v0_1.json"
   },
   "maturityImpact": "NONE_THROUGH_15_20",
   "formalOptimizationCandidate": "NONE",
-  "exactNext": "Continue only remaining 2026-10-05 frozen lanes at their actual source clocks. After-market generation must attach the existing TDCC parent to same-generation D06-05/D06-06 rows. At/after official clocks capture remaining TWSE D06-03 dealer split, TPEx leverage EARLY/LATE vintages and D06-14 T_PRELIM. For PF-040 append a later issuer vintage only after the source data date advances to 2026-10-05. D06-18 late slot is closed as UNKNOWN/MISSING and must not be backfilled. SDA-007 residual identifiability contract is frozen; residual institutional flow must not be renamed active conviction. Outcomes remain closed."
+  "exactNext": "Continue only remaining 2026-10-05 frozen lanes at their actual source clocks. D06-06 price/volume input must bind to the exact same-generation D02/canonical shared PRICE_OHLC and VOLUME_TURNOVER parent; the legacy D06 price-volume label is consumer-alias-only and cannot create a duplicate primitive. After-market generation must attach the existing TDCC parent to same-generation D06-05/D06-06 rows. At/after official clocks capture remaining TWSE D06-03 dealer split, TPEx leverage EARLY/LATE vintages and D06-14 T_PRELIM. For PF-040 append a later issuer vintage only after the source data date advances to 2026-10-05. D06-18 late slot is closed as UNKNOWN/MISSING and must not be backfilled. Outcomes remain closed."
 }
