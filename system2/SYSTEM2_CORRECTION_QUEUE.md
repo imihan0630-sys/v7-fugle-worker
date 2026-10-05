@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-05 09:29 Asia/Taipei
+Updated: 2026-10-06 00:12 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -23,7 +23,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
 - createdAt: 2026-10-04T15:13:33+08:00
 - severity: HIGH
-- status: ACKNOWLEDGED
+- status: FIX_IN_PROGRESS
 - routingClass: DATA_LANE
 - assignedLane: DATA_LANE
 - assignedRoom: System 2｜歷史資料工程室
@@ -130,7 +130,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - Manifest rolling hash `98d7cf6888e3069a2a170c20dbe8acee1cd7d5cb9bc7d9afa33319eb816fe97a`.
   - 2017 TWSE disposition: `DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL`.
 - finalDisposition: PENDING
-- updatedAt: 2026-10-05T22:54:00+08:00
+- updatedAt: 2026-10-06T00:12:00+08:00
 
 ## Closed directives
 
