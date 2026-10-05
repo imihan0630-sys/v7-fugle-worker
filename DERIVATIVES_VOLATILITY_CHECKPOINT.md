@@ -624,3 +624,18 @@ Required action:
 - `shared-knowledge/curriculum_coverage_cov07_return_contract_validation_20261005_v0_1.json`
 
 COV-07 remains PARTIAL until that format repair is committed.
+
+
+## 2026-10-05 Room09 continuation — DR-103 COV-07 return-contract repair
+
+- Re-read latest main and the 00 validation receipt. COV-07 substantive futures-curve research was already complete; no replay/source/outcome work was repeated.
+- Rewrote `research/COV07_D12_SPECIALIST_RETURN_V0_1.md` into the executable Coverage Specialist Return contract with all seven required headers and ten canonical sections.
+- Specialist-owned fields are explicit: evidence cutoff 2026-10-04T23:59:59+08:00; decision role research-only contextual/control state; proposed owner D12 / Room09; starting maturity L0/0% if later structurally approved.
+- Terminal specialist recommendation remains `ADD_MODULE`.
+- This repair does not mutate module count, canonical identifier, D12 maturity, Router, Shared Master, System 1, System 2 or Formal Core.
+- D12 remains 40.0%; outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation after DR-103
+1. Return the repaired COV-07 artifact to 00 control-plane validator/intake.
+2. Do not create/reserve a new D12 identifier or change maturity until Dependency/overlap/anti-double-count/anti-orphan review and explicit owner approval.
+3. D12-13 remains on the preregistered 2026-10-05 same-effective-date Delta alignment lane; only source observations whose publication/observed clock is not later than the research clock may enter PIT evidence.
