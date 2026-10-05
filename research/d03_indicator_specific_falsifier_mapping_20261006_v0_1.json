@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "D03_INDICATOR_SPECIFIC_FALSIFIER_MAPPING_V0_1",
+  "updatedAt": "2026-10-06T07:39:00+08:00",
+  "owner": "D03",
+  "formalCoreImpact": "NONE_LOCKED",
+  "mappings": [
+    {
+      "family": "BOLLINGER_LOCATION_WIDTH",
+      "lineageClass": "SAME_ROOT_PATH_COUPLED",
+      "root": [
+        "PRICE_OHLC"
+      ],
+      "invalidPrimary": [
+        "COMPONENTWISE_FIELD_SHUFFLE"
+      ],
+      "plausiblePrimary": [
+        "PATH_LEVEL_SURROGATE",
+        "DEPENDENCE_AWARE_RESIDUALIZED_INTERACTION"
+      ],
+      "recompute": [
+        "SMA20",
+        "POPSTD20",
+        "UPPER",
+        "LOWER",
+        "BBW",
+        "PCT_B",
+        "TOUCH",
+        "OUTSIDE",
+        "REENTRY",
+        "SQUEEZE"
+      ]
+    },
+    {
+      "family": "ADX_DIRECTION_RANGE",
+      "lineageClass": "SAME_ROOT_PATH_COUPLED",
+      "root": [
+        "PRICE_OHLC"
+      ],
+      "invalidPrimary": [
+        "COMPONENTWISE_DM_TR_SHUFFLE",
+        "FINAL_ADX_VALUE_SHUFFLE"
+      ],
+      "plausiblePrimary": [
+        "PATH_LEVEL_SURROGATE",
+        "DEPENDENCE_AWARE_RESIDUALIZED_INTERACTION"
+      ],
+      "recompute": [
+        "TR",
+        "PLUS_DM",
+        "MINUS_DM",
+        "WILDER_TR",
+        "WILDER_PLUS_DM",
+        "WILDER_MINUS_DM",
+        "PLUS_DI",
+        "MINUS_DI",
+        "DX",
+        "ADX"
+      ]
+    },
+    {
+      "family": "PRICE_VOLUME",
+      "lineageClass": "MIXED_ROOT_CONDITIONAL",
+      "root": [
+        "PRICE_OHLC",
+        "VOLUME_TURNOVER"
+      ],
+      "invalidPrimary": [
+        "RAW_VOLUME_GLOBAL_SHUFFLE"
+      ],
+      "plausiblePrimary": [
+        "CONDITIONAL_PERMUTATION",
+        "CONDITIONAL_RANDOMIZATION",
+        "PRIMITIVE_LINEAGE_SURROGATE"
+      ],
+      "recompute": [
+        "VOLUME_DERIVED_FIELDS",
+        "PRICE_VOLUME_INTERACTION"
+      ]
+    },
+    {
+      "family": "NESTED_TIMEFRAME",
+      "lineageClass": "SHARED_ANCESTRY_CLOCK_COUPLED",
+      "root": [
+        "PRICE_OHLC"
+      ],
+      "invalidPrimary": [
+        "FINAL_TIMEFRAME_INDICATOR_SHUFFLE_WITHOUT_ANCESTRY_CONTROL"
+      ],
+      "plausiblePrimary": [
+        "ANCESTRY_PRESERVING_PATH_SURROGATE",
+        "DEPENDENCE_AWARE_RESIDUALIZED_INTERACTION"
+      ],
+      "recompute": [
+        "TIMEFRAME_DESCENDANTS"
+      ]
+    },
+    {
+      "family": "OSCILLATOR_TREND",
+      "lineageClass": "SAME_PRICE_ROOT",
+      "root": [
+        "PRICE_OHLC"
+      ],
+      "invalidPrimary": [
+        "DERIVED_OSCILLATOR_SHUFFLE"
+      ],
+      "plausiblePrimary": [
+        "PRICE_PATH_SURROGATE",
+        "DEPENDENCE_AWARE_RESIDUALIZED_INTERACTION"
+      ],
+      "recompute": [
+        "KD_RSI_MACD_TREND_DESCENDANTS"
+      ]
+    },
+    {
+      "family": "DIVERGENCE",
+      "lineageClass": "PIVOT_CLOCK_LINEAGE_COUPLED",
+      "root": [
+        "PRICE_OHLC"
+      ],
+      "invalidPrimary": [
+        "DIVERGENCE_LABEL_SHUFFLE"
+      ],
+      "plausiblePrimary": [
+        "PIVOT_RECOMPUTED_PATH_SURROGATE"
+      ],
+      "recompute": [
+        "PIVOTS",
+        "INDICATOR_STATE",
+        "DIVERGENCE_CONFIRMATION"
+      ]
+    }
+  ],
+  "universalRules": {
+    "observedAndNullClockSymmetry": true,
+    "observedAndNullContinuitySymmetry": true,
+    "descendantRecomputeRequiredWhenPrimitivePerturbed": true,
+    "futureClockAccessForbidden": true,
+    "impossibleSyntheticStateForbidden": true
+  },
+  "maturityImpact": "NONE_56_7_PERCENT"
+}
