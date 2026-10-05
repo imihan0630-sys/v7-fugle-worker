@@ -96,6 +96,49 @@ assert.equal(tpex.rows[0].sourceId, "TPEX_TRADING_STOCK_MONTHLY");
 assert.equal(tpex.rows[0].sourceFields.sourceVolumeUnit, "LOT_1000_SHARES");
 assert.equal(tpex.rows[0].sourceFields.sourceTradeValueUnit, "THOUSAND_NTD");
 
+const tpexHistoricalThousandShares = await normalizeOfficialMonthlyHistoryPayloadV0_1({
+  market: "TPEX",
+  symbol: "3455",
+  companyName: "由田",
+  yearMonth: "2023-10",
+  observedAt: "2026-10-04T11:50:00Z",
+  payload: {
+    tables: [{
+      title: "個股日成交資訊",
+      data: [
+        ["112/10/02", "104", "7,177", "69.50", "69.50", "68.90", "69.10", "0.00", "173"],
+      ],
+    }],
+    date: "20231001",
+    code: "3455",
+    name: "由田",
+    flagField: "仟股",
+    stat: "ok",
+  },
+});
+assert.equal(tpexHistoricalThousandShares.rowCount, 1);
+assert.equal(tpexHistoricalThousandShares.rows[0].volumeShares, 104000);
+assert.equal(tpexHistoricalThousandShares.rows[0].tradeValue, 7177000);
+assert.equal(tpexHistoricalThousandShares.rows[0].close, 69.1);
+assert.equal(tpexHistoricalThousandShares.rows[0].sourceFields.sourceVolumeUnit, "LOT_1000_SHARES");
+assert.equal(tpexHistoricalThousandShares.rows[0].sourceFields.sourceVolumeUnitLabel, "仟股");
+assert.equal(tpexHistoricalThousandShares.rows[0].sourceFields.volumeToSharesMultiplier, 1000);
+
+await assert.rejects(
+  () => normalizeOfficialMonthlyHistoryPayloadV0_1({
+    market: "TPEX",
+    symbol: "3455",
+    yearMonth: "2023-10",
+    observedAt: "2026-10-04T11:50:00Z",
+    payload: {
+      tables: [{ data: [["112/10/02", "104", "7,177", "69.50", "69.50", "68.90", "69.10", "0.00", "173"]] }],
+      flagField: "股",
+      stat: "ok",
+    },
+  }),
+  /unsupported TPEx tradingStock volume unit/,
+);
+
 await assert.rejects(
   () => normalizeOfficialMonthlyHistoryPayloadV0_1({
     market: "TWSE",
