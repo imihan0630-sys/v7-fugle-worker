@@ -23,7 +23,7 @@
   },
   "fingerprints": {
     "content": "fnv1a64-utf8:be22e70f6ec9da3a",
-    "schema": "fnv1a64-utf8:334c6531bfaa2963a"
+    "schema": "fnv1a64-utf8:334c6531bfaa2963"
   },
   "arithmeticReconciliation": {
     "proprietaryDesk": "1344/1344 PASS",
