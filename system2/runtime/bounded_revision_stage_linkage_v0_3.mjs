@@ -11,7 +11,10 @@ function daysBetween(a,b){return Math.round((Date.parse(b+"T00:00:00Z")-Date.par
 function normalize(raw){
   return text(raw)
     .replace(/^\d+\s+\S+\s+\d{3}\/\d{2}\/\d{2}\s+\d{2}:\d{2}:\d{2}\s*/,"")
-    .replace(/^[（(]?(?:更正|修正)[）)]?[-：:、\s]*/g,"")
+    .replace(/^[\[【][^\]】]*(?:更正|修正)[^\]】]*[\]】][-：:、\s]*/,"")
+    .replace(/^(?:更新|更正|修正)[-：:、\s]*/,"")
+    .replace(/^(?:\d{7}|\d{8})[-：:、\s]*/,"")
+    .replace(/^[（(]?(?:更正|修正)[）)]?[-：:、\s]*/,"")
     .replace(/(?:\(|（)(?:更正|修正)[^\)）]*(?:\)|）)/g,"")
     .replace(/公告本公司|本公司|公告/g,"")
     .replace(/[\s()（）:：,，。；;、\-_/]/g,"")
