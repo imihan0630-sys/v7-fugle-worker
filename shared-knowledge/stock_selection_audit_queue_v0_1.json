@@ -1,0 +1,583 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-10-05T08:00:00+08:00",
+  "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
+  "owner": "00｜研究總控室",
+  "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
+  "lifecycle": [
+    "OPEN",
+    "ROUTED",
+    "REMEDIATION_IN_PROGRESS",
+    "FIX_IMPLEMENTED",
+    "VALIDATION_PENDING",
+    "VERIFIED",
+    "CLOSED"
+  ],
+  "failClosedStatuses": [
+    "BLOCKED_SOURCE",
+    "BLOCKED_DEPENDENCY",
+    "EVIDENCE_INSUFFICIENT",
+    "REJECTED_NOT_A_REAL_RISK"
+  ],
+  "severityOrder": [
+    "CRITICAL",
+    "HIGH",
+    "MEDIUM",
+    "LOW"
+  ],
+  "formalMutationRequiresOwnerApproval": true,
+  "closureByMaturityPercentageForbidden": true,
+  "issueCount": 21,
+  "issues": [
+    {
+      "id": "SDA-001",
+      "severity": "CRITICAL",
+      "status": "ROUTED",
+      "domains": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "learningOwners": [
+        "01｜K線與型態研究室",
+        "02｜價量研究室",
+        "03｜技術指標與趨勢動能研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1",
+        "SYSTEM2"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Same-root PRICE_OHLC multi-vote across D01/D02/D03",
+      "requiredRemediation": "Factor lineage + redundancy grouping + common-parent residual incrementality",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-002",
+      "severity": "HIGH",
+      "status": "ROUTED",
+      "domains": [
+        "D01"
+      ],
+      "learningOwners": [
+        "01｜K線與型態研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1",
+        "SYSTEM2"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Pattern hindsight / future-pivot confirmation",
+      "requiredRemediation": "Label-independent geometry + firstObservableAt/confirmedAt + replay guard",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-003",
+      "severity": "HIGH",
+      "status": "ROUTED",
+      "domains": [
+        "D02"
+      ],
+      "learningOwners": [
+        "02｜價量研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1",
+        "SYSTEM2"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Participation proxy overclaimed as investor intent",
+      "requiredRemediation": "Participation!=motive firewall + price-only residual control",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-004",
+      "severity": "CRITICAL",
+      "status": "ROUTED",
+      "domains": [
+        "D03"
+      ],
+      "learningOwners": [
+        "03｜技術指標與趨勢動能研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1",
+        "SYSTEM2"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Indicator zoo / alias stacking / parameter snooping",
+      "requiredRemediation": "Indicator-family freeze + alias registry + multiple-testing/incrementality",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-005",
+      "severity": "HIGH",
+      "status": "ROUTED",
+      "domains": [
+        "D04"
+      ],
+      "learningOwners": [
+        "04｜波動與市場微結構研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1",
+        "SYSTEM2"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Ex-post volatility state / breakout-family double count",
+      "requiredRemediation": "Ex-ante state snapshot + shared breakout episode + incrementality",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-006",
+      "severity": "HIGH",
+      "status": "ROUTED",
+      "domains": [
+        "D05"
+      ],
+      "learningOwners": [
+        "04｜波動與市場微結構研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1",
+        "SYSTEM2"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Quote/depth observability mistaken for executable liquidity",
+      "requiredRemediation": "Capacity provenance + fill/unfilled/cancel/reject opportunity denominator",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-007",
+      "severity": "HIGH",
+      "status": "ROUTED",
+      "domains": [
+        "D06"
+      ],
+      "learningOwners": [
+        "05｜法人與籌碼研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1",
+        "SYSTEM2"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Flow/ownership intent and passive-active double count",
+      "requiredRemediation": "Observed-flow!=motive + vintage + one-receipt-many-consumers",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-008",
+      "severity": "HIGH",
+      "status": "ROUTED",
+      "domains": [
+        "D07",
+        "D08"
+      ],
+      "learningOwners": [
+        "06｜基本面與估值研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Financial/valuation PIT-vintage and historical-universe leakage",
+      "requiredRemediation": "Filing/source vintage + universe version + denominator eligibility",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-009",
+      "severity": "CRITICAL",
+      "status": "ROUTED",
+      "domains": [
+        "D09"
+      ],
+      "learningOwners": [
+        "07｜產業與供應鏈研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Circular industry-strength reward",
+      "requiredRemediation": "Leave-one-out industry measure + membership vintage + self-contribution diagnostic",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-010",
+      "severity": "HIGH",
+      "status": "ROUTED",
+      "domains": [
+        "D10",
+        "D17"
+      ],
+      "learningOwners": [
+        "07｜產業與供應鏈研究室",
+        "08｜事件與新聞研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1",
+        "SYSTEM2"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Exposure-graph hindsight and structural/event double count",
+      "requiredRemediation": "Effective-dated graph + shared exposure receipt + producer/consumer split",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-011",
+      "severity": "HIGH",
+      "status": "ROUTED",
+      "domains": [
+        "D11",
+        "D17"
+      ],
+      "learningOwners": [
+        "08｜事件與新聞研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1",
+        "SYSTEM2"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Event first-known leakage and duplicate-story amplification",
+      "requiredRemediation": "Canonical event/story identity + firstKnownAt + duplicate-story guard",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-012",
+      "severity": "HIGH",
+      "status": "ROUTED",
+      "domains": [
+        "D12"
+      ],
+      "learningOwners": [
+        "09｜衍生品與國際總經研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1",
+        "SYSTEM2"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Same-chain derivatives stacking / expiry-roll leakage",
+      "requiredRemediation": "Same-parent residual test + contract/roll provenance",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-013",
+      "severity": "HIGH",
+      "status": "ROUTED",
+      "domains": [
+        "D13",
+        "D18"
+      ],
+      "learningOwners": [
+        "09｜衍生品與國際總經研究室",
+        "11｜統計驗證與策略市場狀態研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1",
+        "SYSTEM2"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Macro vintage/timezone hindsight and Regime input duplication",
+      "requiredRemediation": "First-release clock + exposure lineage + producer/consumer dedup",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-014",
+      "severity": "HIGH",
+      "status": "ROUTED",
+      "domains": [
+        "D14"
+      ],
+      "learningOwners": [
+        "10｜投組風控與交易執行研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Paper execution Alpha / filled-only bias",
+      "requiredRemediation": "Opportunity-set accounting + broker-confirmed fill lineage",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-015",
+      "severity": "HIGH",
+      "status": "ROUTED",
+      "domains": [
+        "D15"
+      ],
+      "learningOwners": [
+        "10｜投組風控與交易執行研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Ex-post portfolio optimization / utilization confounding",
+      "requiredRemediation": "Frozen pre-trade risk inputs + immutable portfolio decision receipt",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-016",
+      "severity": "CRITICAL",
+      "status": "ROUTED",
+      "domains": [
+        "D16"
+      ],
+      "learningOwners": [
+        "11｜統計驗證與策略市場狀態研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1",
+        "SYSTEM2"
+      ],
+      "d16ValidationRequired": false,
+      "title": "Validator self-confirmation / repeated OOS consumption",
+      "requiredRemediation": "Immutable experiment registry + holdout-use ledger + independent 00 closure",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-017",
+      "severity": "CRITICAL",
+      "status": "ROUTED",
+      "domains": [
+        "D18"
+      ],
+      "learningOwners": [
+        "11｜統計驗證與策略市場狀態研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1",
+        "SYSTEM2"
+      ],
+      "d16ValidationRequired": false,
+      "title": "Post-hoc Regime mining",
+      "requiredRemediation": "Ex-ante regime definition + minimum support + frozen regime state + independent 00 closure",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-018",
+      "severity": "HIGH",
+      "status": "ROUTED",
+      "domains": [
+        "D19"
+      ],
+      "learningOwners": [
+        "12｜資產定價與因子研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Factor Zoo / momentum overlap / survivorship",
+      "requiredRemediation": "Factor-family accounting + PIT universe + residual/spanning + challenger-only admission",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-019",
+      "severity": "HIGH",
+      "status": "ROUTED",
+      "domains": [
+        "D20"
+      ],
+      "learningOwners": [
+        "13｜行為金融與市場心理研究室",
+        "05｜法人與籌碼研究室",
+        "03｜技術指標與趨勢動能研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1",
+        "SYSTEM2"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Behavioral story without identifiable observables",
+      "requiredRemediation": "Behavior-specific observable + competing mechanism + UNIDENTIFIED fail-closed",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-020",
+      "severity": "MEDIUM",
+      "status": "ROUTED",
+      "domains": [
+        "D21"
+      ],
+      "learningOwners": [
+        "14｜公司治理與內部人研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Governance/insider hindsight and motive inference",
+      "requiredRemediation": "Known-at vintage + transaction!=motive + PIT issuer universe",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    },
+    {
+      "id": "SDA-021",
+      "severity": "MEDIUM",
+      "status": "ROUTED",
+      "domains": [
+        "D22"
+      ],
+      "learningOwners": [
+        "15｜信用市場與資本結構研究室",
+        "06｜基本面與估值研究室"
+      ],
+      "engineeringOwners": [
+        "SYSTEM1"
+      ],
+      "d16ValidationRequired": true,
+      "title": "Sparse-credit coverage / accounting duplication / fair-value-as-trade",
+      "requiredRemediation": "Same-pop baseline + coverage map + instrument provenance + fair-value/trade split",
+      "routingMechanism": "ROOM_BOOTSTRAP_GLOBAL_QUEUE",
+      "formalCoreImpact": "NONE",
+      "closureRequires": [
+        "applicable_learning_semantic_or_falsification_repair",
+        "applicable_engineering_guard_and_deterministic_tests",
+        "D16_common_support_incrementality_or_OOS_validation",
+        "00_cross_domain_readback"
+      ]
+    }
+  ]
+}
