@@ -104,8 +104,8 @@ route=r'''    if (url.pathname === "/api/research/c1-generation-inventory") {
 once('    if (url.pathname === "/api/research/c1-population") {',
      route+'    if (url.pathname === "/api/research/c1-population") {','protected inventory route')
 
-once('return json(await runAfterMarketScan(env, Date.now(), { dryRun: false });',
-     'return json(await runAfterMarketScan(env, Date.now(), { dryRun: false, scanOriginKind:"TEST_FINALIZE" });',
+once('const scan = await runAfterMarketScan(env, Date.now(), { dryRun: false });',
+     'const scan = await runAfterMarketScan(env, Date.now(), { dryRun: false, scanOriginKind:"TEST_FINALIZE" });',
      'test finalize origin')
 once('return json(await runAfterMarketScan(env, Date.now(),{onlyIfMissing:body.onlyIfMissing===true}), 200, true);',
      'return json(await runAfterMarketScan(env, Date.now(),{onlyIfMissing:body.onlyIfMissing===true,scanOriginKind:"AUTHORIZED_MANUAL_API"}), 200, true);',
