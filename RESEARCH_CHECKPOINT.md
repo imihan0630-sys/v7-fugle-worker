@@ -2850,3 +2850,40 @@ For System 1:
 - PVE-246 root causes are certified, but Production remediation is not yet credited.
 
 This pointer does not reorder the active System 1 task lane and authorizes no Formal or Production mutation.
+
+
+## 2026-10-06 D02 PVE-247 executable remediation oracle
+
+Canonical source:
+`research/D02_PVE247_REMEDIATION_ACCEPTANCE_ORACLE_20261006_V0_1.md`.
+
+New Class-A research-only artifacts:
+- `research/d02_pve247_remediation_acceptance_oracle_v0_1.mjs`;
+- `tests/test_d02_pve247_remediation_acceptance_oracle_v0_1.mjs`;
+- `.github/workflows/d02-pve247-remediation-oracle.yml`.
+
+Validation:
+- local fixtures 15/15 PASS;
+- dedicated CI run `37381110086` SUCCESS.
+
+The oracle creates two distinct gates:
+- `remediationReady`: System 1 runtime/evidence plumbing physically repaired;
+- `h001ReceiptEligible`: a future H001 receipt additionally passes canonical/lane/common-support/cohort-generation/Formal-isolation gates.
+
+No engineering repair is allowed to imply maturity promotion, outcome access or Formal change.
+
+New System 1 regression blind spot:
+- `tests/test_v8_7_12_after_market_2335.mjs` asserts the single `35 15 * * MON-FRI` runtime marker and removal of broad >=18 fallback;
+- `tests/update_cloudflare_after_market_cron.mjs` and `tests/update_cloudflare_after_market_recovery_cron.mjs` already accept the combined `35,55 15 * * mon-fri` Production schedule;
+- the existing runtime contract test does not prove `isAfterMarketSchedule` recognizes that combined schedule.
+This allows green legacy regression while both physical 23:35 and 23:55 events are misclassified.
+
+PVE-248 System 1 Class-B candidate must therefore include a runtime-level combined-Cron classification test plus:
+1. at-most-one successful business scan across primary/recovery;
+2. explicit bootstrap attempt/range/provider/raw-row/normalized/rejected/final-validSessions receipt with >=20 same-slot readiness;
+3. provider/endpoint/rawPayloadHash binding at the 15m fetch boundary before normalization;
+4. no secret material persisted;
+5. no retroactive clean-date repair for 2026-10-05.
+
+Preparation of an unmerged branch/PR is permitted under Class-B proposal-first governance.
+Merge/deploy/Production promotion remains owner-approval gated.

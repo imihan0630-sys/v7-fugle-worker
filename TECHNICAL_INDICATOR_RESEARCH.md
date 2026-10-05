@@ -3627,3 +3627,16 @@ No outcome was accessed. No System 1 implementation or Formal behavior changed. 
 
 Exact next:
 System 1 owner implements only the three Class A diagnostic schema deltas and returns an oracle-backed receipt. D03 revalidates the small schema delta, then waits for a genuine-session receipt. System 2, D16, 00 and protected Production paths remain separately pending.
+
+
+
+## TI-777 through TI-802 — interaction accounting execution and Bollinger/ADX mapping audit (2026-10-06)
+
+The canonical TI-777~794 fourteen-case fixture was executed and passed. It preserves two independent source roots after a proven interaction, permits at most one residual interaction increment, and blocks alias inflation. This is contract evidence only; no outcome data was used.
+
+TI-795~802 then audited current D03-10 Bollinger and D03-09 ADX mappings without formula redesign. Bollinger was separated into price location, dispersion/volatility and their composite interaction; ADX was separated into directional movement, TR/range, DI/DX normalization and Wilder-smoothed strength. Current parent mappings remain conservative one-family evidence. Future component and interaction counts are capped at 2 and 3 only after the full TI-759~794 proof stack.
+
+Observed mapping fixture:
+`status=PASS; cases=12; currentBollingerEffectiveCount=1; currentAdxEffectiveCount=1; futureTwoComponentsNoInteraction=2; futureOneCanonicalInteraction=3; aliasInflationBlocked=true; weakBaselineBlocked=true; formalCoreImpact=NONE_LOCKED; outcomeDataUsed=false`.
+
+No maturity or Formal change. Exact next is a sparse-cell/date-cluster estimability oracle for future interaction receipts.

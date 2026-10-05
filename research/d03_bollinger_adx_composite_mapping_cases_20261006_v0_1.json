@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "D03_BOLLINGER_ADX_COMPOSITE_MAPPING_CASES_V0_1",
+  "formalCoreImpact": "NONE_LOCKED",
+  "cases": [
+    {"id":"B01_CURRENT_PARENT","indicator":"BOLLINGER","componentsProven":0,"interactionProven":false,"parentActive":true,"aliases":3,"gatesPass":true,"expectedCount":1},
+    {"id":"B02_TWO_COMPONENTS","indicator":"BOLLINGER","componentsProven":2,"interactionProven":false,"parentActive":true,"aliases":3,"gatesPass":true,"expectedCount":2},
+    {"id":"B03_INTERACTION","indicator":"BOLLINGER","componentsProven":2,"interactionProven":true,"parentActive":true,"aliases":4,"gatesPass":true,"expectedCount":3},
+    {"id":"B04_MISSING_D04","indicator":"BOLLINGER","componentsProven":2,"interactionProven":true,"parentActive":true,"aliases":2,"gatesPass":false,"expectedCount":1},
+    {"id":"B05_SUPPORT_DRIFT","indicator":"BOLLINGER","componentsProven":2,"interactionProven":true,"parentActive":true,"aliases":2,"gatesPass":false,"expectedCount":1},
+    {"id":"B06_DUPLICATE_TOUCH_SQUEEZE","indicator":"BOLLINGER","componentsProven":2,"interactionProven":true,"parentActive":true,"aliases":8,"gatesPass":true,"expectedCount":3},
+    {"id":"A01_CURRENT_PARENT","indicator":"ADX","componentsProven":0,"interactionProven":false,"parentActive":true,"aliases":4,"gatesPass":true,"expectedCount":1},
+    {"id":"A02_TWO_COMPONENTS","indicator":"ADX","componentsProven":2,"interactionProven":false,"parentActive":true,"aliases":3,"gatesPass":true,"expectedCount":2},
+    {"id":"A03_INTERACTION","indicator":"ADX","componentsProven":2,"interactionProven":true,"parentActive":true,"aliases":5,"gatesPass":true,"expectedCount":3},
+    {"id":"A04_PRICE_ONLY_BASELINE","indicator":"ADX","componentsProven":2,"interactionProven":true,"parentActive":true,"aliases":2,"gatesPass":false,"expectedCount":1},
+    {"id":"A05_FULL_REPLAY_MISSING","indicator":"ADX","componentsProven":2,"interactionProven":true,"parentActive":true,"aliases":2,"gatesPass":false,"expectedCount":1},
+    {"id":"A06_HIGH_ADX_NOT_BULLISH","indicator":"ADX","componentsProven":0,"interactionProven":false,"parentActive":true,"aliases":9,"gatesPass":true,"expectedCount":1}
+  ]
+}
+
