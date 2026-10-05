@@ -1,0 +1,22 @@
+{
+  "schemaVersion":"pattern-sector-composition-v0.1",
+  "updated":"2026-10-05 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "sectorOwner":"D09",
+  "supplyChainExposureOwner":"D10",
+  "manyStocksEqualsManySectors":false,
+  "sectorConcentrationCanBeHidden":false,
+  "currentClassificationCanBeBackfilled":false,
+  "outcomeSelectedTaxonomy":"PROHIBITED",
+  "candidateIncludedSectorContextEqualsIndependentConfirmation":false,
+  "singleSectorEffectEqualsGenericPattern":false,
+  "unclassifiedCanBeSilentlyDropped":false,
+  "comparisonLadder":["S0","S1","S2","S3","S4"],
+  "interpretationStates":["C0","C1","C2","C3","C4","C5","C6"],
+  "SDA-001":"REMEDIATION_IN_PROGRESS",
+  "economicValidationOwner":"D16",
+  "outcomeJoin":"CLOSED",
+  "formalOptimizationCandidate":"NONE"
+}

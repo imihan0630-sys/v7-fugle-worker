@@ -2018,3 +2018,113 @@ No maturity or Formal change is authorized by this routing.
 8. Preserve SDA-001/SDA-002 as REMEDIATION_IN_PROGRESS until canonical closure evidence exists.
 9. Next D01 science: separate cross-sectional coverage from sector/industry composition so a Pattern effect concentrated in one industry is not mislabeled as generic chart-structure evidence.
 10. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-040 (2026-10-05)
+
+### DL-040 — Pattern generalization vs sector / industry composition
+- DL-039 froze cross-sectional selection against size/liquidity/listing-age/survivorship bias.
+- DL-040 freezes the next confound: a Pattern result may look broad across many stocks while actually being concentrated in one sector, one industry cycle or one sector-wide momentum episode.
+- External evidence motivates this firewall:
+  Moskowitz/Grinblatt show industry momentum explains a substantial share of individual-stock momentum;
+  Hou/Robinson show industry concentration is related to average returns after standard controls;
+  later evidence shows industry-classification granularity itself can affect measured industry-return relations;
+  Taiwan technical-rule evidence shows technical profitability varies across firm/state context.
+- Ownership boundary:
+  D09 owns industry/sector classification, sector return/RS, breadth, leadership, concentration and rotation;
+  D10 owns supply-chain / physical-cycle / issuer-exposure transmission.
+  D01 consumes D09 receipts and does not build a second taxonomy/sector score or alter the Formal sector gate.
+- Every classification receipt must preserve:
+  sectorTaxonomyId;
+  classificationLevel;
+  classificationVersion;
+  effective dating where available;
+  knownAt/capturedAt;
+  classificationState.
+- Current classifications may not be backfilled historically without owner-certified effective membership.
+- Classification level must be frozen before outcomes.
+  Trying several sector/industry taxonomies and reporting the favorable one is prohibited.
+- Pattern prevalence and Pattern incrementality are distinct:
+  PATTERN_PREVALENCE_BY_SECTOR asks where the detector emits structures;
+  PATTERN_INCREMENT_WITHIN_SECTOR asks whether Pattern adds representation beyond comparable sector context.
+- Sector composition denominator must retain:
+  target eligible;
+  detector evaluable;
+  structure emitted;
+  opportunity ready;
+  no structure;
+  blocked;
+  unclassified counts by sector.
+- Descriptive concentration fields include:
+  uniqueSectorCount;
+  opportunitiesBySector;
+  top1/top3 sector opportunity share;
+  sector opportunity HHI;
+  unclassifiedShare.
+  No concentration threshold is frozen in D01.
+- Candidate self-inclusion firewall:
+  candidate price can mechanically improve sector return, breadth, above-MA, new-high share, leadership and RS.
+  Pattern controls should therefore prefer candidate leave-one-out D09 receipts where available.
+- If excluding the candidate leaves no valid peers:
+  LOO_SECTOR_CONTEXT_UNAVAILABLE.
+  Do not substitute zero, self-included sector value or market value without an explicit design.
+- SDA-001 implication:
+  candidate Pattern and self-included sector confirmation share the candidate PRICE_OHLC and are not independent votes.
+  Leave-one-out reduces direct self-inclusion but still leaves sector context as a control/context family, not automatic independent alpha.
+- Existing Formal sector-strength gate remains unchanged; DL-040 does not change thresholds/weights or add a second gate.
+- Future D16 comparison ladder:
+  S0 RAW_PATTERN_COHORT;
+  S1 SECTOR_COMPOSITION_MATCHED;
+  S2 LOO_SECTOR_CONTEXT_CONTROLLED;
+  S3 WITHIN_SECTOR_INCREMENT;
+  S4 CROSS_SECTOR_REPLICATION.
+- Future interpretation states:
+  C0 SECTOR_COMPOSITION_EXPLANATION;
+  C1 SECTOR_MOMENTUM_EXPLANATION;
+  C2 SECTOR_BREADTH_EXPLANATION;
+  C3 WITHIN_SECTOR_PATTERN_INCREMENT;
+  C4 SECTOR_SPECIFIC_PATTERN;
+  C5 CROSS_SECTOR_PATTERN_CANDIDATE;
+  C6 NOT_EVALUABLE.
+- A one-sector effect is not automatically a failure, but its claim scope is SECTOR_SPECIFIC rather than generic Pattern evidence.
+- Cross-sector common support must include:
+  DL-039 size/liquidity/listing age;
+  price/tick tier;
+  market;
+  regime;
+  detector history readiness;
+  opportunity geometry;
+  sector return/breadth context.
+  Lack of overlap -> CROSS_SECTOR_EXTRAPOLATION_PROHIBITED.
+- Sector-date dependence is explicit:
+  ten Pattern stocks in one semiconductor rally are not ten independent sector replications.
+  Future D16 reports stock N, root N, symbol N, sector N, sector-date cluster N and market-date cluster N separately.
+- UNCLASSIFIED_UNKNOWN stays visible.
+  Do not silently drop it, backfill it from future classification or treat generic OTHER as a coherent economic sector.
+- Diversified-company sector code is taxonomy context only.
+  If economic exposure matters, D10 issuer/supply-chain mapping is a separate owner dependency.
+- New files:
+  - research/PATTERN_SECTOR_COMPOSITION_V0_1.md
+  - research/pattern_sector_composition_v0_1.json
+  - research/pattern_sector_composition_v0_1.mjs
+  - research/test_pattern_sector_composition_v0_1.mjs
+  - research/PATTERN_SECTOR_COMPOSITION_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 remains REMEDIATION_IN_PROGRESS.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-040
+
+1. Reconcile the DL-040 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-040 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve Pattern prevalence and Pattern incrementality as separate questions.
+4. Consume D09 point-in-time classification / breadth / rotation receipts and candidate leave-one-out controls without recreating D09 taxonomies.
+5. Keep stock/root/symbol/sector/sector-date/market-date replication counts separate.
+6. Hand S0-S4 / C0-C6 sector-matched common-support inference to D16.
+7. Preserve SDA-001 as REMEDIATION_IN_PROGRESS until residual evidence, system lineage and independent 00 closure exist.
+8. Next D01 science: separate sector composition from market-wide common shocks / beta so cross-sector replication in one market surge is not mistaken for independent Pattern evidence.
+9. No outcome join / no runtime wiring / no Formal change.
