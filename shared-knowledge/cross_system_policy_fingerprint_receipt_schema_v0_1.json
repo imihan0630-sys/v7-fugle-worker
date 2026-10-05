@@ -1,0 +1,275 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shared-knowledge/cross_system_policy_fingerprint_receipt_schema_v0_1.json",
+  "title": "Cross-System Policy Fingerprint Receipt V0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "fingerprintId",
+    "fingerprintHash",
+    "systemId",
+    "policyId",
+    "policyVersion",
+    "effectiveAt",
+    "decisionClockRole",
+    "authorityState",
+    "sourceArtifacts",
+    "candidateUniverseMode",
+    "candidateUniverseSourceRefs",
+    "requiresOtherSystemCandidateOutput",
+    "requiresOtherSystemRankOutput",
+    "gateFamilyIds",
+    "requiredEvidenceFamilies",
+    "supportiveEvidenceFamilies",
+    "contextEvidenceFamilies",
+    "informationRoots",
+    "rankingPolicy",
+    "capacityPolicy",
+    "entryConfirmationPolicy",
+    "lifecyclePolicy",
+    "primaryHorizonSessions",
+    "unknownSemantics",
+    "formalMutation",
+    "generatedAt"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "CROSS_SYSTEM_POLICY_FINGERPRINT_RECEIPT_V0_1"
+    },
+    "fingerprintId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fingerprintHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "systemId": {
+      "enum": [
+        "SYSTEM1",
+        "SYSTEM2"
+      ]
+    },
+    "strategyId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "strategyVersion": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "policyId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policyVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "effectiveAt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decisionClockRole": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authorityState": {
+      "enum": [
+        "FORMAL_LOCKED",
+        "RESEARCH_ONLY",
+        "RESEARCH_SHADOW",
+        "OWNER_APPROVED_STRATEGY",
+        "OTHER_VERSIONED_STATE"
+      ]
+    },
+    "sourceArtifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "contentSha"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "contentSha": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{40,64}$"
+          }
+        }
+      }
+    },
+    "candidateUniverseMode": {
+      "enum": [
+        "INDEPENDENT_FULL_MARKET",
+        "INDEPENDENT_AUTHORIZED_UNIVERSE",
+        "OPTIONAL_OTHER_SYSTEM_CONTEXT",
+        "REQUIRED_OTHER_SYSTEM_CANDIDATES",
+        "REQUIRED_OTHER_SYSTEM_RANK",
+        "NOT_PHYSICALLY_PROVEN"
+      ]
+    },
+    "candidateUniverseSourceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requiresOtherSystemCandidateOutput": {
+      "type": "boolean"
+    },
+    "requiresOtherSystemRankOutput": {
+      "type": "boolean"
+    },
+    "gateFamilyIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "requiredEvidenceFamilies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "supportiveEvidenceFamilies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "contextEvidenceFamilies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "informationRoots": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "rankingPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rankingPolicyId",
+        "rankingPolicyVersion",
+        "rankingMechanism"
+      ],
+      "properties": {
+        "rankingPolicyId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rankingPolicyVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rankingMechanism": {
+          "enum": [
+            "SYSTEM1_FORMAL_COMPARATOR",
+            "STRATEGY_LOCAL_PARETO",
+            "NO_LOCAL_RANK_FROZEN",
+            "GLOBAL_PRIORITY_UNRESOLVED",
+            "OTHER_VERSIONED_POLICY"
+          ]
+        },
+        "orderedComparatorFields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "capacityPolicy": {
+      "type": "object"
+    },
+    "entryConfirmationPolicy": {
+      "type": "object"
+    },
+    "lifecyclePolicy": {
+      "type": "object"
+    },
+    "primaryHorizonSessions": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "uniqueItems": true
+    },
+    "unknownSemantics": {
+      "type": "string",
+      "minLength": 1
+    },
+    "formalMutation": {
+      "const": false
+    },
+    "generatedAt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "systemId": {
+            "const": "SYSTEM1"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "strategyId": {
+            "type": "null"
+          },
+          "strategyVersion": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "systemId": {
+            "const": "SYSTEM2"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "strategyId",
+          "strategyVersion"
+        ]
+      }
+    }
+  ]
+}
