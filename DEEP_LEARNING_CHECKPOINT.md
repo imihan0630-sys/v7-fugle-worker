@@ -2068,3 +2068,13 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
 - One primitive can have many consumers but not many independent votes. Statistical residuals retain observational labels.
 - Maturity impact: NONE. D06 remains 47.8%; outcomes CLOSED; Formal Core LOCKED.
 - Exact next: continue 2026-10-05 actual-clock capture lanes, then route R1-R4 to D16 only after prospective common-support coverage is sufficient. System 1/System 2 still owe machine lineage enforcement; 00 still owns SDA-007 closure.
+
+
+## 2026-10-05 D06 — IC-069 SBL source-layer decomposition
+
+- Durable receipt: `research/d06_18_public_sbl_source_layer_contract_20261005_v0_1.json`.
+- Today's 15:20 live rate/depth slot stays UNKNOWN/MISSING; no backfill.
+- Official-source review separates intraday quote book, executed fee/rate, EOD balance and true lendable inventory.
+- Public historical transaction/balance replay cannot substitute for live best-five depth; displayed lend quantity cannot substitute for total lendable inventory.
+- D06-18 remains L2/40%; no outcomes and no Formal change.
+- Exact next: continue authorized live-machine-route discovery for a future date while preserving the frozen 2026-10-05 failure state.
