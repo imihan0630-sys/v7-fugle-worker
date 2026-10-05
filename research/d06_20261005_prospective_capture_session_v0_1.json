@@ -17,7 +17,7 @@
   ],
   "preregistrationParent": "research/d06_next_trading_day_outcome_blind_capture_plan_v0_1.json",
   "lineageContract": "research/d06_sda007_flow_ownership_lineage_contract_20261005_v0_1.json",
-  "sessionState": "EVENING_CAPTURE_IN_PROGRESS / TPEX_AND_TWSE_DEALER_SPLIT_CAPTURED / TPEX_DAYTRADE_T_PRELIM_CAPTURED_STABLE / TPEX_LEVERAGE_EARLY_UNKNOWN_MISSING / TPEX_LEVERAGE_LATE_PENDING_2230 / TDCC_PARENT_JOIN_PENDING / D06_16_PF041_L3_SOURCE_READY / D06_06_COMPATIBLE_SHARED_PARENT_PENDING",
+  "sessionState": "20261005_CAPTURE_DAY_CLOSED_FOR_AVAILABLE_SAME_DAY_LANES / TPEX_LEVERAGE_EARLY_UNKNOWN_LATE_COMPLETE / TPEX_DAYTRADE_T_PRELIM_CAPTURED_STABLE / TDCC_SAME_GENERATION_JOIN_PENDING / D06_06_COMPATIBLE_SHARED_PARENT_PENDING / D06_16_L3_SOURCE_READY / D06_18_LIVE_SLOT_MISSING_PRESERVED",
   "globalRules": [
     "No lane may change fields or pass criteria after source values are observed.",
     "Raw parent receipts precede derived states.",
@@ -172,10 +172,25 @@
         {
           "label": "LATE",
           "targetTaipei": "22:30",
-          "preopenState": "PENDING_BY_CLOCK"
+          "preopenState": "COMPLETE_ROWS_OBSERVED_AFTER_LATE_TARGET",
+          "capturedAt": "2026-10-05T23:40:13+08:00",
+          "firstKnownAt": null,
+          "firstKnownAtBound": "(2026-10-05T20:33:21+08:00, 2026-10-05T23:40:13+08:00]",
+          "receipt": "research/d06_07_08_09_tpex_leverage_late_20261005_v0_1.json",
+          "marginSnapshot": "research/d06_07_08_tpex_margin_late_snapshot_20261005_2340_v0_1.csv",
+          "sblSnapshot": "research/d06_08_09_tpex_sbl_late_snapshot_20261005_2340_v0_1.csv",
+          "marginRows": 918,
+          "sblRows": 931,
+          "marginFingerprint": "fnv1a64-utf8:d86bcebd6469f4e3",
+          "sblFingerprint": "fnv1a64-utf8:e2f21cc9a06e570d",
+          "sameEveningStability": "PASS",
+          "revisionVsEarly": "UNIDENTIFIABLE_EARLY_ROWS_MISSING"
         }
       ],
-      "rule": "authorized/free official route only; later availability must not be backfilled into EARLY"
+      "rule": "authorized/free official route only; later availability must not be backfilled into EARLY",
+      "unitUniverseGuard": "research/d06_08_09_tpex_margin_sbl_universe_guard_20261005_v0_1.json",
+      "preopenState": "EARLY_UNKNOWN_MISSING / LATE_COMPLETE_STABLE / REVISION_UNIDENTIFIED",
+      "maturityDecision": "D06-07/08/09 remain L2/40; late readiness strengthened but paired EARLY/LATE revision gate incomplete."
     },
     {
       "laneId": "D06_14_DAY_TRADING_VINTAGE",
@@ -261,5 +276,5 @@
   },
   "maturityImpact": "D06_16_L2_TO_L3_AT_2036 / OTHER_LANES_NO_PROMOTION",
   "formalOptimizationCandidate": "NONE",
-  "exactNext": "At 22:30 capture TPEx leverage LATE using the same authorized official source families and never backfill EARLY 20:30 UNKNOWN/MISSING. D06-14 T_PRELIM is now prospectively captured and stable at 22:15; next vintage actions are T1_REVISED on 2026-10-06 and T2_FINAL on 2026-10-07 under the union-denominator revision contract. D06-06 no longer waits for a specific PVE number; wait for a same-generation, D06-population-compatible shared PRICE_OHLC/VOLUME_TURNOVER parent with exact lineage. D06-05 still waits for a real same-generation row before TDCC attachment. Outcomes remain closed."
+  "exactNext": "Next genuine trading date: repeat TPEx leverage EARLY near 20:30 and LATE near 22:30 through the same official pages/parser, preserving separate D06-08 and D06-09 universes and source-native limit precision. On 2026-10-06 capture D06-14 T1_REVISED for tradeDate 2026-10-05; on 2026-10-07 capture T2_FINAL. D06-05 still waits for a genuine same-generation TDCC child row; D06-06 waits for a same-generation D06-population-compatible shared PRICE_OHLC/VOLUME_TURNOVER parent. EARLY 2026-10-05 and D06-18 live missing slots remain immutable UNKNOWN/MISSING. Outcomes remain closed."
 }
