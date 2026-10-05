@@ -3653,3 +3653,42 @@ D02 remains 60.0%. Clean prospective dates=0. Gate 7 CLOSED. Formal Core LOCKED.
 
 Exact next continuation point:
 PVE-249 — consume durable System 1 repair/readback for all three PVE-247 acceptance families, rerun the oracle, then test only a future decision-time 15m row for H001 eligibility.
+
+
+## PVE-248 candidate validation completion — 2026-10-06
+
+Status: CLASS_B_CANDIDATE_PREPARED / ISOLATED_CI_PASS / BASE_CI_BLOCKED / DRAFT_PR_651 / UNMERGED / NOT_DEPLOYED / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+This entry supersedes the earlier PVE-248 intake state with completed candidate evidence.
+
+Candidate:
+- branch `research/d02-pve248-class-b-candidate-20261006`;
+- active draft PR `#651`;
+- candidate head `302f6739b7c28c077f955b070c63332a7b59b61b`;
+- PR #650 superseded/closed without merge or deploy.
+
+Candidate-isolated CI:
+- `37386567610` SUCCESS;
+- `37386696263` SUCCESS.
+
+Full checks are not green:
+- Regression `37386695299` fails at existing System 1 zero-pick evidence collector before the new PVE-248 test executes;
+- Repair CI `37386695246` fails at the same existing collector;
+- independent main Regression `37382689408`, without PVE-248, fails at the same collector.
+
+Attribution:
+`PREEXISTING_BASE_CI_BLOCKER_NOT_PVE248`.
+
+No owner approval has been granted.
+No merge.
+No deployment.
+No Production remediation readback.
+
+D02 remains 60.0%.
+Clean prospective dates=0.
+Gate 7 CLOSED.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-249 — resolve/read back the pre-existing `test_system1_zero_pick_evidence_collector_v0_1.mjs` base-CI blocker, then rerun PR #651 full Regression + Repair CI. Only after all applicable checks are green may explicit Class-B merge/deploy approval be requested; physical Production remediation/H001 evidence comes later.
