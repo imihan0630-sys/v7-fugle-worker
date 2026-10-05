@@ -97,3 +97,19 @@ Require, as applicable:
 ## Exact next action
 
 After the Cloudflare D1 free-tier daily row-write quota resets at 2026-10-06T00:00:00Z (08:00 Asia/Taipei), fresh-dispatch 2021 TPEx from latest main. The rerun must resume/reconcile immutable partial state, finish annual backfill, complete Physical verify, upload evidence, and confirm System1 isolation before 2021 TPEx can be accepted. Only after durable acceptance advance to 2022 TWSE.
+
+
+## 2026-10-06 pre-reset resume validation
+
+Latest main re-read before continuation: `c3bf53e0fe195647ecd77c87e6ce77e7ee744635`.
+
+2021 TPEx run #17 remains blocked only by the Cloudflare D1 free-tier daily row-write quota until `2026-10-06T00:00:00Z` = `2026-10-06 08:00 Asia/Taipei`. No retry was issued before reset.
+
+Blob-level drift check from failed run head `ca90efab5a7d6d27cc3d05a545efcd1ce44db247` to latest main confirms the execution-critical continuation units are unchanged:
+- `.github/workflows/system2-historical-pack-2017-backfill.yml`: `98121be7b81b79feee939573d7ce2d58e0d8ffd1`;
+- `system2/scripts/historical_pack_year_backfill_v0_1.mjs`: `c21b59f1d3550601161dc2554ab25c534d26cd95`;
+- `system2/scripts/historical_market_year_verify_v0_1.mjs`: `59ecad64c3fd24e9561ac82177609374da0c1e0c`;
+- `system2/runtime/historical_cold_pack_store_v0_1.mjs`: `5901e414ac8668a31c717ce9c70869fa9eacc888`;
+- `system2/deploy/provision_system2_d1.mjs`: `dc8f3376a771676222c99d2b17da5cf7a4cc1f43`.
+
+Therefore the blocker remains infrastructure quota, not execution-code drift. The exact next action is unchanged: after 08:00 Asia/Taipei, fresh-dispatch `year=2021, market=TPEX` from latest main; resume/reconcile immutable partial state; require Physical verify + artifact + System1 isolation before acceptance. Do not rerun the old run merely to bypass fresh-main dispatch semantics.
