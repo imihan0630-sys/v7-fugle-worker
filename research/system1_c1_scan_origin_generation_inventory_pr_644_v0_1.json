@@ -6,8 +6,8 @@
   "preSyncHead": "e761c1c29171a7049e85b49c8d95308e3ae1a853",
   "reconciledMain": "27ed77fb3754ce2afe9f5c10650c71ce30f965d3",
   "ownerApprovedClassBImplementation": true,
-  "mergeAuthorized": false,
-  "productionDeployAuthorized": false,
+  "mergeAuthorized": true,
+  "productionDeployAuthorized": true,
   "ciStatus": "QUEUED_EXACT_HEAD",
   "formalCoreImpact": false,
   "latestHead": "6bf61449d6013cef8cee16a3a610de593e99819c",
@@ -21,5 +21,19 @@
     "Regression workflow literal backslash-n wiring removed",
     "V8.18 parity test scoped to pre-V8.19 runtime boundary and latest workflow version guard"
   ],
-  "exactNextAction": "Read exact-head CI for 6bf61449d6013cef8cee16a3a610de593e99819c; if all three pass, record acceptance and stop at merge/production approval gate. If any fail, diagnose only the first concrete failure and repair without changing Formal Core."
+  "exactNextAction": "After the first genuine post-deploy C1 session, verify scanOrigin, generationId, generation inventory denominator/returned rows, immutable D1 readback, and modernOriginCoverageComplete. Do not fabricate historical origin.",
+  "prState": "MERGED",
+  "mergeSha": "b79e1e7c22b015e96ecd3780cbf56b21091fd4de",
+  "productionDeployRun": 37382112616,
+  "productionDeployConclusion": "success",
+  "postMergeRegressionRun": 37382112493,
+  "postMergeRegressionConclusion": "success",
+  "productionRuntimeReadback": {
+    "verified": true,
+    "version": "8.19.0-c1-scan-origin-generation-inventory",
+    "testMode": false,
+    "liveStore": "D1 primary",
+    "rollbackTriggered": false
+  },
+  "genuineReadbackStatus": "PENDING_FIRST_GENUINE_POST_DEPLOY_C1_SESSION"
 }
