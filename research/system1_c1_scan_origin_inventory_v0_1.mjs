@@ -51,9 +51,10 @@ export function attachC1ScanOrigin(receipt,context) {
   assert(receipt&&Array.isArray(receipt.rows)&&receipt.rows.length>0,'RECEIPT_REQUIRED');
   const hasEntrypointContext=Boolean(context);
   const suffix=String(receipt.generationId||'').split(':').pop()||'unclassified';
+  const internalToken=(suffix.replace(/[^A-Za-z0-9-]/g,'-')+'-internal').slice(0,80);
   const effectiveContext=context||buildC1ScanOriginContext({
     originKind:'INTERNAL_UNCLASSIFIED',
-    scanAttemptId:`C1SCAN:${String(receipt.sessionDate)}:${suffix}`,
+    scanAttemptId:`C1SCAN:${String(receipt.sessionDate)}:${internalToken}`,
     requestedDate:String(receipt.sessionDate),
     invokedAt:String(receipt.decisionAt),
     scheduledAt:null,cronExpression:null,onlyIfMissing:false,testMode:false
