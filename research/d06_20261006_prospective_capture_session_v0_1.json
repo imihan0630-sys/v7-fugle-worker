@@ -38,8 +38,17 @@
       "laneId": "D06_18_BORROW_ECONOMICS",
       "module": "D06-18",
       "targetTaipei": "15:20",
-      "state": "PENDING_BY_CLOCK",
-      "next": "Attempt official live borrow-rate/displayed-supply receipt at frozen slot; preserve UNKNOWN if authorized replayable rows remain unavailable."
+      "state": "LIVE_ROUTE_PREFLIGHT_PASS / 1520_SLOT_PENDING",
+      "next": "At 15:20±5m capture exactly the frozen five symbols through ?ch=<symbol>; preserve selected identity, source date, transaction family, recall condition, rate/depth fields and hash. Pilot is source-feasibility-only.",
+      "routePreflight": "research/d06_18_twse_sbl_live_route_preflight_20261006_v0_1.json",
+      "fieldSchema": "research/d06_18_twse_sbl_live_field_schema_v0_1.json",
+      "frozenPilotSymbols": [
+        "1101",
+        "2451",
+        "3532",
+        "6187",
+        "9941"
+      ]
     },
     {
       "laneId": "D06_03_DEALER_SPLIT",
@@ -87,6 +96,6 @@
     }
   ],
   "maturityImpact": "NONE_AT_OPEN",
-  "sessionState": "PREOPEN_REGISTERED / D06_14_PREOPEN_ZERO_ROWS_CAPTURED / ALL_OUTCOMES_CLOSED",
-  "exactNext": "At 15:20 execute the frozen D06-18 live borrow-economics slot unless a legitimately earlier source-clock task becomes due. After market close capture D06-03; around 20:30/22:30 capture TPEx leverage EARLY/LATE. Later today capture both D06-14 2026-10-06 first T_PRELIM and 2026-10-05 T1_REVISED using date-pinned queries. Preserve missing states and do not change gates."
+  "sessionState": "PREOPEN_REGISTERED / D06_14_PREOPEN_ZERO_ROWS_CAPTURED / D06_18_LIVE_ROUTE_READY_1520_PENDING / ALL_OUTCOMES_CLOSED",
+  "exactNext": "First fixed-clock task is D06-18 at 15:20±5m using the frozen five-symbol TWSE rendered-route pilot. After market capture D06-03; around 20:30/22:30 capture TPEx leverage EARLY/LATE. Later today capture D06-14 2026-10-06 first T_PRELIM and 2026-10-05 T1_REVISED via date-pinned queries. Preserve missing states and do not change gates."
 }
