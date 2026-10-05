@@ -1,0 +1,7637 @@
+{
+  "schemaVersion": "D06_14_TPEX_DAYTRADE_T_PRELIM_20261005_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-14",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "market": "TPEx",
+  "tradeDate": "2026-10-05",
+  "vintageLabel": "T_PRELIM",
+  "revisionSequence": 0,
+  "isFinal": false,
+  "sourceProduct": "TPEx 現股當沖交易統計資訊／日報表",
+  "sourceUrl": "https://www.tpex.org.tw/zh-tw/mainboard/trading/day-trading/statistics/day.html",
+  "retrievalChannel": "Firecrawl under GLOBAL_EXTERNAL_WEB_TOOL_POLICY_V0_1",
+  "sourceAuthority": "Taipei Exchange (TPEx)",
+  "producedAtContract": "VARIABLE_AFTER_BROKER_REPORTING_AND_ADJUSTMENT_WORKFLOW",
+  "earlierObservations": [
+    {
+      "capturedAt": "2026-10-05T20:33:21+08:00",
+      "state": "T_PRELIM_NOT_YET_OBSERVED",
+      "receipt": "research/d06_14_tpex_daytrade_tprelim_attempt_20261005_v0_1.json"
+    },
+    {
+      "capturedAt": "2026-10-05T20:43:06+08:00",
+      "state": "T_PRELIM_NOT_YET_OBSERVED",
+      "receipt": "research/d06_14_tpex_daytrade_tprelim_retry_20261005_2043_v0_1.json"
+    }
+  ],
+  "firstKnownAtUpperBound": "2026-10-05T22:10:01+08:00",
+  "capturedAt": "2026-10-05T22:10:01+08:00",
+  "summary": {
+    "totalRows": 841,
+    "numericValidRows": 841,
+    "ordinaryFourDigitRows": 725,
+    "duplicateSymbolCount": 0,
+    "rowsWithSellFirstSuspensionFlag": 12,
+    "totalDayTradeShares": 563183000,
+    "totalDayTradeBuyValue": 139035902050,
+    "totalDayTradeSellValue": 139484441280
+  },
+  "fingerprints": {
+    "canonicalRows": "fnv1a64-utf8:48e8edf2952b9b40",
+    "pageMarkdown": "fnv1a64-utf8:c911f83a0a81bbe5"
+  },
+  "fields": [
+    "symbol",
+    "name",
+    "sellFirstSuspensionFlag",
+    "dayTradeShares",
+    "dayTradeBuyValue",
+    "dayTradeSellValue"
+  ],
+  "rows": [
+    {
+      "sequence": 1,
+      "symbol": "00411A",
+      "name": "主動統一前沿科技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 165000,
+      "dayTradeBuyValue": 1805640,
+      "dayTradeSellValue": 1805490
+    },
+    {
+      "sequence": 2,
+      "symbol": "006201",
+      "name": "元大富櫃50",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 23000,
+      "dayTradeBuyValue": 1118770,
+      "dayTradeSellValue": 1121780
+    },
+    {
+      "sequence": 3,
+      "symbol": "00679B",
+      "name": "元大美債20年",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3395000,
+      "dayTradeBuyValue": 83340920,
+      "dayTradeSellValue": 83329260
+    },
+    {
+      "sequence": 4,
+      "symbol": "00687B",
+      "name": "國泰20年美債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1269000,
+      "dayTradeBuyValue": 32360510,
+      "dayTradeSellValue": 32343040
+    },
+    {
+      "sequence": 5,
+      "symbol": "00694B",
+      "name": "富邦美債1-3",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 768000,
+      "dayTradeBuyValue": 31978640,
+      "dayTradeSellValue": 31978600
+    },
+    {
+      "sequence": 6,
+      "symbol": "00695B",
+      "name": "富邦美債7-10",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 53000,
+      "dayTradeBuyValue": 1780870,
+      "dayTradeSellValue": 1781180
+    },
+    {
+      "sequence": 7,
+      "symbol": "00696B",
+      "name": "富邦美債20年",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 478000,
+      "dayTradeBuyValue": 12764100,
+      "dayTradeSellValue": 12771560
+    },
+    {
+      "sequence": 8,
+      "symbol": "00697B",
+      "name": "元大美債7-10",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 20000,
+      "dayTradeBuyValue": 677880,
+      "dayTradeSellValue": 679300
+    },
+    {
+      "sequence": 9,
+      "symbol": "00719B",
+      "name": "元大美債1-3",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 70000,
+      "dayTradeBuyValue": 2168810,
+      "dayTradeSellValue": 2173160
+    },
+    {
+      "sequence": 10,
+      "symbol": "00720B",
+      "name": "元大投資級公司債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 85000,
+      "dayTradeBuyValue": 2602980,
+      "dayTradeSellValue": 2603610
+    },
+    {
+      "sequence": 11,
+      "symbol": "00722B",
+      "name": "群益投資級電信債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 156000,
+      "dayTradeBuyValue": 5134190,
+      "dayTradeSellValue": 5135410
+    },
+    {
+      "sequence": 12,
+      "symbol": "00723B",
+      "name": "群益投資級科技債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 58000,
+      "dayTradeBuyValue": 1633570,
+      "dayTradeSellValue": 1632220
+    },
+    {
+      "sequence": 13,
+      "symbol": "00724B",
+      "name": "群益投資級金融債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2501000,
+      "dayTradeBuyValue": 78438360,
+      "dayTradeSellValue": 78438270
+    },
+    {
+      "sequence": 14,
+      "symbol": "00725B",
+      "name": "國泰投資級公司債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 82000,
+      "dayTradeBuyValue": 2679890,
+      "dayTradeSellValue": 2680090
+    },
+    {
+      "sequence": 15,
+      "symbol": "00726B",
+      "name": "國泰新興投等債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 50000,
+      "dayTradeBuyValue": 1545500,
+      "dayTradeSellValue": 1545500
+    },
+    {
+      "sequence": 16,
+      "symbol": "00727B",
+      "name": "國泰優選非投等債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 54000,
+      "dayTradeBuyValue": 2097240,
+      "dayTradeSellValue": 2097240
+    },
+    {
+      "sequence": 17,
+      "symbol": "00734B",
+      "name": "台新JPM新興債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 100000,
+      "dayTradeBuyValue": 1476000,
+      "dayTradeSellValue": 1476000
+    },
+    {
+      "sequence": 18,
+      "symbol": "00740B",
+      "name": "富邦全球投等債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 560000,
+      "dayTradeBuyValue": 19983830,
+      "dayTradeSellValue": 19984830
+    },
+    {
+      "sequence": 19,
+      "symbol": "00741B",
+      "name": "富邦全球非投等債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 75000,
+      "dayTradeBuyValue": 2737250,
+      "dayTradeSellValue": 2737550
+    },
+    {
+      "sequence": 20,
+      "symbol": "00746B",
+      "name": "富邦A級公司債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 25000,
+      "dayTradeBuyValue": 828750,
+      "dayTradeSellValue": 826750
+    },
+    {
+      "sequence": 21,
+      "symbol": "00749B",
+      "name": "凱基新興債10+",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 22,
+      "symbol": "00750B",
+      "name": "凱基科技債10+",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 23,
+      "symbol": "00751B",
+      "name": "元大AAA至A公司債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 114000,
+      "dayTradeBuyValue": 3271320,
+      "dayTradeSellValue": 3272710
+    },
+    {
+      "sequence": 24,
+      "symbol": "00754B",
+      "name": "群益AAA-AA公司債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 25000,
+      "dayTradeBuyValue": 754750,
+      "dayTradeSellValue": 754750
+    },
+    {
+      "sequence": 25,
+      "symbol": "00755B",
+      "name": "群益投資級公用債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 25000,
+      "dayTradeBuyValue": 755750,
+      "dayTradeSellValue": 755750
+    },
+    {
+      "sequence": 26,
+      "symbol": "00756B",
+      "name": "群益投等新興公債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 27000,
+      "dayTradeBuyValue": 772200,
+      "dayTradeSellValue": 772400
+    },
+    {
+      "sequence": 27,
+      "symbol": "00758B",
+      "name": "復華能源債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 28,
+      "symbol": "00759B",
+      "name": "復華製藥債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 29,
+      "symbol": "00760B",
+      "name": "復華新興企業債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 49760,
+      "dayTradeSellValue": 49800
+    },
+    {
+      "sequence": 30,
+      "symbol": "00761B",
+      "name": "國泰A級公司債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 50000,
+      "dayTradeBuyValue": 1585500,
+      "dayTradeSellValue": 1585500
+    },
+    {
+      "sequence": 31,
+      "symbol": "00764B",
+      "name": "群益25年美債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1644000,
+      "dayTradeBuyValue": 41791890,
+      "dayTradeSellValue": 41794800
+    },
+    {
+      "sequence": 32,
+      "symbol": "00768B",
+      "name": "復華20年美債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 112000,
+      "dayTradeBuyValue": 5106040,
+      "dayTradeSellValue": 5107730
+    },
+    {
+      "sequence": 33,
+      "symbol": "00772B",
+      "name": "中信高評級公司債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 19000,
+      "dayTradeBuyValue": 588740,
+      "dayTradeSellValue": 588650
+    },
+    {
+      "sequence": 34,
+      "symbol": "00773B",
+      "name": "中信優先金融債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1016000,
+      "dayTradeBuyValue": 33679870,
+      "dayTradeSellValue": 33680970
+    },
+    {
+      "sequence": 35,
+      "symbol": "00777B",
+      "name": "凱基AAA至A公司債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 36,
+      "symbol": "00778B",
+      "name": "凱基金融債20+",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 37,
+      "symbol": "00779B",
+      "name": "凱基美債25+",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 38,
+      "symbol": "00780B",
+      "name": "國泰A級金融債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 50000,
+      "dayTradeBuyValue": 1761000,
+      "dayTradeSellValue": 1761000
+    },
+    {
+      "sequence": 39,
+      "symbol": "00781B",
+      "name": "國泰A級科技債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 50000,
+      "dayTradeBuyValue": 1279000,
+      "dayTradeSellValue": 1279000
+    },
+    {
+      "sequence": 40,
+      "symbol": "00782B",
+      "name": "國泰A級公用債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 50000,
+      "dayTradeBuyValue": 1408500,
+      "dayTradeSellValue": 1408500
+    },
+    {
+      "sequence": 41,
+      "symbol": "00785B",
+      "name": "富邦金融投等債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 50000,
+      "dayTradeBuyValue": 1631500,
+      "dayTradeSellValue": 1631500
+    },
+    {
+      "sequence": 42,
+      "symbol": "00786B",
+      "name": "元大10年IG銀行債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 43,
+      "symbol": "00787B",
+      "name": "元大10年IG醫療債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 44,
+      "symbol": "00788B",
+      "name": "元大10年IG電能債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 45,
+      "symbol": "00789B",
+      "name": "復華公司債A3",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 46,
+      "symbol": "00791B",
+      "name": "復華信用債1-5",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 47,
+      "symbol": "00792B",
+      "name": "群益A級公司債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 48,
+      "symbol": "00795B",
+      "name": "中信美國公債20年",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2926000,
+      "dayTradeBuyValue": 72128260,
+      "dayTradeSellValue": 72126790
+    },
+    {
+      "sequence": 49,
+      "symbol": "00799B",
+      "name": "國泰A級醫療債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 51000,
+      "dayTradeBuyValue": 1392850,
+      "dayTradeSellValue": 1392820
+    },
+    {
+      "sequence": 50,
+      "symbol": "00834B",
+      "name": "第一金金融債10+",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 51,
+      "symbol": "00836B",
+      "name": "永豐10年A公司債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 52,
+      "symbol": "00840B",
+      "name": "凱基IG精選15+",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 53,
+      "symbol": "00841B",
+      "name": "凱基AAA-AA公司債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 54,
+      "symbol": "00842B",
+      "name": "台新美元銀行債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 51000,
+      "dayTradeBuyValue": 1430040,
+      "dayTradeSellValue": 1432110
+    },
+    {
+      "sequence": 55,
+      "symbol": "00844B",
+      "name": "台新15年IG金融債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 40000,
+      "dayTradeBuyValue": 1164000,
+      "dayTradeSellValue": 1164000
+    },
+    {
+      "sequence": 56,
+      "symbol": "00845B",
+      "name": "富邦新興投等債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 50000,
+      "dayTradeBuyValue": 1561000,
+      "dayTradeSellValue": 1561000
+    },
+    {
+      "sequence": 57,
+      "symbol": "00846B",
+      "name": "富邦歐洲銀行債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 50000,
+      "dayTradeBuyValue": 1694000,
+      "dayTradeSellValue": 1694000
+    },
+    {
+      "sequence": 58,
+      "symbol": "00848B",
+      "name": "中信新興亞洲債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 50000,
+      "dayTradeBuyValue": 1603500,
+      "dayTradeSellValue": 1603500
+    },
+    {
+      "sequence": 59,
+      "symbol": "00849B",
+      "name": "中信EM主權債0-5",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 52000,
+      "dayTradeBuyValue": 1930680,
+      "dayTradeSellValue": 1930800
+    },
+    {
+      "sequence": 60,
+      "symbol": "00853B",
+      "name": "統一美債10年Aa-A",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 250000,
+      "dayTradeBuyValue": 6345000,
+      "dayTradeSellValue": 6345000
+    },
+    {
+      "sequence": 61,
+      "symbol": "00856B",
+      "name": "永豐1-3年美公債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 62,
+      "symbol": "00857B",
+      "name": "永豐20年美公債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 153000,
+      "dayTradeBuyValue": 3243560,
+      "dayTradeSellValue": 3245130
+    },
+    {
+      "sequence": 63,
+      "symbol": "00858",
+      "name": "永豐美國500大",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 109000,
+      "dayTradeSellValue": 108920
+    },
+    {
+      "sequence": 64,
+      "symbol": "00859B",
+      "name": "群益0-1年美債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 299000,
+      "dayTradeBuyValue": 12145960,
+      "dayTradeSellValue": 12154970
+    },
+    {
+      "sequence": 65,
+      "symbol": "00860B",
+      "name": "群益1-5Y投資級債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 66,
+      "symbol": "00862B",
+      "name": "中信投資級公司債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 50000,
+      "dayTradeBuyValue": 1452000,
+      "dayTradeSellValue": 1452000
+    },
+    {
+      "sequence": 67,
+      "symbol": "00863B",
+      "name": "中信全球電信債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 50000,
+      "dayTradeBuyValue": 1467500,
+      "dayTradeSellValue": 1467500
+    },
+    {
+      "sequence": 68,
+      "symbol": "00864B",
+      "name": "中信美國公債0-1",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 84000,
+      "dayTradeBuyValue": 3874340,
+      "dayTradeSellValue": 3875260
+    },
+    {
+      "sequence": 69,
+      "symbol": "00867B",
+      "name": "台新A-BBB電信債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 70,
+      "symbol": "00870B",
+      "name": "元大15年EM主權債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 25960,
+      "dayTradeSellValue": 25980
+    },
+    {
+      "sequence": 71,
+      "symbol": "00877",
+      "name": "復華中國5G",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 66000,
+      "dayTradeBuyValue": 2302650,
+      "dayTradeSellValue": 2303830
+    },
+    {
+      "sequence": 72,
+      "symbol": "00884B",
+      "name": "中信低碳新興債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 50000,
+      "dayTradeBuyValue": 1359500,
+      "dayTradeSellValue": 1359500
+    },
+    {
+      "sequence": 73,
+      "symbol": "00886",
+      "name": "永豐美國科技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 10000,
+      "dayTradeBuyValue": 497500,
+      "dayTradeSellValue": 497500
+    },
+    {
+      "sequence": 74,
+      "symbol": "00887",
+      "name": "永豐中國科技50大",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 162000,
+      "dayTradeBuyValue": 2433720,
+      "dayTradeSellValue": 2438670
+    },
+    {
+      "sequence": 75,
+      "symbol": "00888",
+      "name": "永豐台灣ESG",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1540000,
+      "dayTradeBuyValue": 57328080,
+      "dayTradeSellValue": 57142980
+    },
+    {
+      "sequence": 76,
+      "symbol": "00890B",
+      "name": "凱基ESG BBB債15+",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 50000,
+      "dayTradeBuyValue": 1491500,
+      "dayTradeSellValue": 1491720
+    },
+    {
+      "sequence": 77,
+      "symbol": "00928",
+      "name": "中信上櫃ESG 30",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 14000,
+      "dayTradeBuyValue": 496660,
+      "dayTradeSellValue": 495400
+    },
+    {
+      "sequence": 78,
+      "symbol": "00931B",
+      "name": "統一美債20年",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 199000,
+      "dayTradeBuyValue": 2469560,
+      "dayTradeSellValue": 2467690
+    },
+    {
+      "sequence": 79,
+      "symbol": "00933B",
+      "name": "國泰10Y+金融債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 338000,
+      "dayTradeBuyValue": 5023890,
+      "dayTradeSellValue": 5026900
+    },
+    {
+      "sequence": 80,
+      "symbol": "00937B",
+      "name": "群益ESG投等債20+",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3183000,
+      "dayTradeBuyValue": 43399270,
+      "dayTradeSellValue": 43408860
+    },
+    {
+      "sequence": 81,
+      "symbol": "00942B",
+      "name": "台新美A公司債20+",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 82,
+      "symbol": "00948B",
+      "name": "中信優息投資級債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 8740,
+      "dayTradeSellValue": 8730
+    },
+    {
+      "sequence": 83,
+      "symbol": "00950B",
+      "name": "凱基A級公司債",
+      "sellFirstSuspensionFlag": "＊",
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 84,
+      "symbol": "00955",
+      "name": "中信日本商社",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 62000,
+      "dayTradeBuyValue": 981800,
+      "dayTradeSellValue": 986060
+    },
+    {
+      "sequence": 85,
+      "symbol": "00957B",
+      "name": "兆豐US優選投等債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 86,
+      "symbol": "00958B",
+      "name": "永豐ESG銀行債15+",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 25680,
+      "dayTradeSellValue": 25680
+    },
+    {
+      "sequence": 87,
+      "symbol": "00959B",
+      "name": "大華投等美債15Y+",
+      "sellFirstSuspensionFlag": "＊",
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 88,
+      "symbol": "00966B",
+      "name": "統一ESG投等債15+",
+      "sellFirstSuspensionFlag": "＊",
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 89,
+      "symbol": "00967B",
+      "name": "元大優息美債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 29000,
+      "dayTradeBuyValue": 245490,
+      "dayTradeSellValue": 245950
+    },
+    {
+      "sequence": 90,
+      "symbol": "00968B",
+      "name": "元大優息投等債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 47000,
+      "dayTradeBuyValue": 403730,
+      "dayTradeSellValue": 404200
+    },
+    {
+      "sequence": 91,
+      "symbol": "00969B",
+      "name": "元大零息超長美債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 111000,
+      "dayTradeBuyValue": 815970,
+      "dayTradeSellValue": 818070
+    },
+    {
+      "sequence": 92,
+      "symbol": "00970B",
+      "name": "台新BBB投等債20+",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 12000,
+      "dayTradeBuyValue": 103800,
+      "dayTradeSellValue": 103600
+    },
+    {
+      "sequence": 93,
+      "symbol": "009806",
+      "name": "台新標普500",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 94,
+      "symbol": "009807",
+      "name": "台新標普科技精選",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 95,
+      "symbol": "00980B",
+      "name": "台新特選IG債10+",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 103000,
+      "dayTradeBuyValue": 902280,
+      "dayTradeSellValue": 902310
+    },
+    {
+      "sequence": 96,
+      "symbol": "00980D",
+      "name": "主動聯博投等入息",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 97,
+      "symbol": "00980T",
+      "name": "平衡凱基美國TOP",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 98,
+      "symbol": "009814",
+      "name": "富邦標普500",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 21000,
+      "dayTradeBuyValue": 240040,
+      "dayTradeSellValue": 240430
+    },
+    {
+      "sequence": 99,
+      "symbol": "009815",
+      "name": "大華美國MAG7+",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 25000,
+      "dayTradeBuyValue": 304430,
+      "dayTradeSellValue": 303730
+    },
+    {
+      "sequence": 100,
+      "symbol": "00981B",
+      "name": "第一金優選非投債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 809000,
+      "dayTradeBuyValue": 7218130,
+      "dayTradeSellValue": 7223210
+    },
+    {
+      "sequence": 101,
+      "symbol": "00981D",
+      "name": "主動中信非投等債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 40180,
+      "dayTradeSellValue": 40200
+    },
+    {
+      "sequence": 102,
+      "symbol": "009822",
+      "name": "華南永昌未來金融",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 103,
+      "symbol": "009823",
+      "name": "群益S&P500",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 226000,
+      "dayTradeBuyValue": 2377390,
+      "dayTradeSellValue": 2377730
+    },
+    {
+      "sequence": 104,
+      "symbol": "009825",
+      "name": "聯邦美國金融創新",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 105,
+      "symbol": "00982B",
+      "name": "FT投資級債20+",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 106,
+      "symbol": "00983B",
+      "name": "大華優利美公債20",
+      "sellFirstSuspensionFlag": "＊",
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 107,
+      "symbol": "00984B",
+      "name": "大華優利美A債15",
+      "sellFirstSuspensionFlag": "＊",
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 108,
+      "symbol": "00985D",
+      "name": "主動貝萊德優投等",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 8000,
+      "dayTradeBuyValue": 75420,
+      "dayTradeSellValue": 75280
+    },
+    {
+      "sequence": 109,
+      "symbol": "00986B",
+      "name": "FT金融債10+",
+      "sellFirstSuspensionFlag": "＊",
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 110,
+      "symbol": "00986D",
+      "name": "主動復華金融債息",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 131000,
+      "dayTradeBuyValue": 1812420,
+      "dayTradeSellValue": 1809110
+    },
+    {
+      "sequence": 111,
+      "symbol": "00987B",
+      "name": "野村10+澳洲公債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 75850,
+      "dayTradeSellValue": 75900
+    },
+    {
+      "sequence": 112,
+      "symbol": "00987D",
+      "name": "主動統一美債量化",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 60000,
+      "dayTradeBuyValue": 566400,
+      "dayTradeSellValue": 565800
+    },
+    {
+      "sequence": 113,
+      "symbol": "00988B",
+      "name": "玉山嚴選非投債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 18000,
+      "dayTradeBuyValue": 342410,
+      "dayTradeSellValue": 342700
+    },
+    {
+      "sequence": 114,
+      "symbol": "00989B",
+      "name": "台新美國非投等債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 115,
+      "symbol": "00990B",
+      "name": "國泰收益非投等債",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 10000,
+      "dayTradeBuyValue": 98160,
+      "dayTradeSellValue": 98030
+    },
+    {
+      "sequence": 116,
+      "symbol": "00998A",
+      "name": "主動復華金融股息",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 592000,
+      "dayTradeBuyValue": 9579100,
+      "dayTradeSellValue": 9569980
+    },
+    {
+      "sequence": 117,
+      "symbol": "1240",
+      "name": "茂生農經",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 108000,
+      "dayTradeSellValue": 107700
+    },
+    {
+      "sequence": 118,
+      "symbol": "1259",
+      "name": "安心",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 119,
+      "symbol": "1264",
+      "name": "德麥",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 120,
+      "symbol": "1268",
+      "name": "漢來美食",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 176000,
+      "dayTradeSellValue": 176000
+    },
+    {
+      "sequence": 121,
+      "symbol": "1294",
+      "name": "漢田生技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 49650,
+      "dayTradeSellValue": 49750
+    },
+    {
+      "sequence": 122,
+      "symbol": "1295",
+      "name": "生合",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 147200,
+      "dayTradeSellValue": 146800
+    },
+    {
+      "sequence": 123,
+      "symbol": "1336",
+      "name": "台翰",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 55000,
+      "dayTradeBuyValue": 977600,
+      "dayTradeSellValue": 984700
+    },
+    {
+      "sequence": 124,
+      "symbol": "1565",
+      "name": "精華",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 9000,
+      "dayTradeBuyValue": 871300,
+      "dayTradeSellValue": 871600
+    },
+    {
+      "sequence": 125,
+      "symbol": "1569",
+      "name": "濱川",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3130000,
+      "dayTradeBuyValue": 216098600,
+      "dayTradeSellValue": 215805700
+    },
+    {
+      "sequence": 126,
+      "symbol": "1570",
+      "name": "力肯",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 32600,
+      "dayTradeSellValue": 32500
+    },
+    {
+      "sequence": 127,
+      "symbol": "1580",
+      "name": "新麥",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 383000,
+      "dayTradeSellValue": 384400
+    },
+    {
+      "sequence": 128,
+      "symbol": "1584",
+      "name": "精剛",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 102000,
+      "dayTradeBuyValue": 1861600,
+      "dayTradeSellValue": 1859800
+    },
+    {
+      "sequence": 129,
+      "symbol": "1586",
+      "name": "和勤",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 58000,
+      "dayTradeBuyValue": 1029800,
+      "dayTradeSellValue": 1033950
+    },
+    {
+      "sequence": 130,
+      "symbol": "1591",
+      "name": "駿吉-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 69000,
+      "dayTradeBuyValue": 2843150,
+      "dayTradeSellValue": 2880850
+    },
+    {
+      "sequence": 131,
+      "symbol": "1593",
+      "name": "祺驊",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 132,
+      "symbol": "1595",
+      "name": "川寶",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1129000,
+      "dayTradeBuyValue": 83721700,
+      "dayTradeSellValue": 84153400
+    },
+    {
+      "sequence": 133,
+      "symbol": "1599",
+      "name": "宏佳騰",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 69100,
+      "dayTradeSellValue": 69550
+    },
+    {
+      "sequence": 134,
+      "symbol": "1742",
+      "name": "台蠟",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 34700,
+      "dayTradeSellValue": 34700
+    },
+    {
+      "sequence": 135,
+      "symbol": "1777",
+      "name": "生泰",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 74000,
+      "dayTradeSellValue": 74400
+    },
+    {
+      "sequence": 136,
+      "symbol": "1781",
+      "name": "合世",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 137,
+      "symbol": "1784",
+      "name": "訊聯",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 9000,
+      "dayTradeBuyValue": 534900,
+      "dayTradeSellValue": 537400
+    },
+    {
+      "sequence": 138,
+      "symbol": "1785",
+      "name": "光洋科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1766000,
+      "dayTradeBuyValue": 182503000,
+      "dayTradeSellValue": 182698500
+    },
+    {
+      "sequence": 139,
+      "symbol": "1788",
+      "name": "杏昌",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 140,
+      "symbol": "1796",
+      "name": "金穎生技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 141,
+      "symbol": "1813",
+      "name": "寶利徠",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 142,
+      "symbol": "1815",
+      "name": "富喬",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 36991000,
+      "dayTradeBuyValue": 4660068500,
+      "dayTradeSellValue": 4670078500
+    },
+    {
+      "sequence": 143,
+      "symbol": "2061",
+      "name": "風青",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2209000,
+      "dayTradeBuyValue": 146628400,
+      "dayTradeSellValue": 146848800
+    },
+    {
+      "sequence": 144,
+      "symbol": "2063",
+      "name": "世鎧",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 118450,
+      "dayTradeSellValue": 118450
+    },
+    {
+      "sequence": 145,
+      "symbol": "2064",
+      "name": "晉椿",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 345000,
+      "dayTradeBuyValue": 4186500,
+      "dayTradeSellValue": 4185350
+    },
+    {
+      "sequence": 146,
+      "symbol": "2065",
+      "name": "世豐",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 35750,
+      "dayTradeSellValue": 35550
+    },
+    {
+      "sequence": 147,
+      "symbol": "2066",
+      "name": "世德",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 156600,
+      "dayTradeSellValue": 157600
+    },
+    {
+      "sequence": 148,
+      "symbol": "2070",
+      "name": "精湛",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 16000,
+      "dayTradeBuyValue": 1012600,
+      "dayTradeSellValue": 1006800
+    },
+    {
+      "sequence": 149,
+      "symbol": "2230",
+      "name": "泰茂",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 21000,
+      "dayTradeBuyValue": 460950,
+      "dayTradeSellValue": 462350
+    },
+    {
+      "sequence": 150,
+      "symbol": "2235",
+      "name": "謚源",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 27150,
+      "dayTradeSellValue": 27200
+    },
+    {
+      "sequence": 151,
+      "symbol": "2596",
+      "name": "綠意",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 20000,
+      "dayTradeBuyValue": 692300,
+      "dayTradeSellValue": 691500
+    },
+    {
+      "sequence": 152,
+      "symbol": "2640",
+      "name": "大車隊",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 467000,
+      "dayTradeSellValue": 464000
+    },
+    {
+      "sequence": 153,
+      "symbol": "2641",
+      "name": "正德",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 146000,
+      "dayTradeBuyValue": 2531250,
+      "dayTradeSellValue": 2533750
+    },
+    {
+      "sequence": 154,
+      "symbol": "2643",
+      "name": "捷迅",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 155,
+      "symbol": "2718",
+      "name": "全心投控",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 156,
+      "symbol": "2719",
+      "name": "燦星旅",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 19800,
+      "dayTradeSellValue": 19800
+    },
+    {
+      "sequence": 157,
+      "symbol": "2729",
+      "name": "瓦城",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 158,
+      "symbol": "2732",
+      "name": "六角",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 159,
+      "symbol": "2734",
+      "name": "易飛網",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 12000,
+      "dayTradeBuyValue": 170750,
+      "dayTradeSellValue": 171750
+    },
+    {
+      "sequence": 160,
+      "symbol": "2736",
+      "name": "富野",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 161,
+      "symbol": "2743",
+      "name": "山富",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 153300,
+      "dayTradeSellValue": 154600
+    },
+    {
+      "sequence": 162,
+      "symbol": "2745",
+      "name": "五福",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 422500,
+      "dayTradeSellValue": 423800
+    },
+    {
+      "sequence": 163,
+      "symbol": "2751",
+      "name": "王座",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 104700,
+      "dayTradeSellValue": 105600
+    },
+    {
+      "sequence": 164,
+      "symbol": "2754",
+      "name": "亞洲藏壽司",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 7000,
+      "dayTradeBuyValue": 474100,
+      "dayTradeSellValue": 476400
+    },
+    {
+      "sequence": 165,
+      "symbol": "2755",
+      "name": "揚秦",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6000,
+      "dayTradeBuyValue": 596200,
+      "dayTradeSellValue": 597200
+    },
+    {
+      "sequence": 166,
+      "symbol": "2756",
+      "name": "聯發國際",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 60900,
+      "dayTradeSellValue": 60900
+    },
+    {
+      "sequence": 167,
+      "symbol": "2916",
+      "name": "滿心",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 121450,
+      "dayTradeSellValue": 121750
+    },
+    {
+      "sequence": 168,
+      "symbol": "2926",
+      "name": "誠品生活",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 29450,
+      "dayTradeSellValue": 29950
+    },
+    {
+      "sequence": 169,
+      "symbol": "3066",
+      "name": "李洲",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 702000,
+      "dayTradeBuyValue": 20186050,
+      "dayTradeSellValue": 20219950
+    },
+    {
+      "sequence": 170,
+      "symbol": "3071",
+      "name": "協禧",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 16000,
+      "dayTradeBuyValue": 365850,
+      "dayTradeSellValue": 364000
+    },
+    {
+      "sequence": 171,
+      "symbol": "3073",
+      "name": "天方能源",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 20550,
+      "dayTradeSellValue": 20700
+    },
+    {
+      "sequence": 172,
+      "symbol": "3078",
+      "name": "僑威",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 46000,
+      "dayTradeBuyValue": 2105850,
+      "dayTradeSellValue": 2116100
+    },
+    {
+      "sequence": 173,
+      "symbol": "3081",
+      "name": "聯亞",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3772000,
+      "dayTradeBuyValue": 11264520000,
+      "dayTradeSellValue": 11371140000
+    },
+    {
+      "sequence": 174,
+      "symbol": "3083",
+      "name": "網龍",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 23750,
+      "dayTradeSellValue": 23950
+    },
+    {
+      "sequence": 175,
+      "symbol": "3088",
+      "name": "艾訊",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 147000,
+      "dayTradeBuyValue": 19708500,
+      "dayTradeSellValue": 19763000
+    },
+    {
+      "sequence": 176,
+      "symbol": "3093",
+      "name": "港建\\*",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 65000,
+      "dayTradeBuyValue": 3014600,
+      "dayTradeSellValue": 3027600
+    },
+    {
+      "sequence": 177,
+      "symbol": "3095",
+      "name": "及成",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 178,
+      "symbol": "3105",
+      "name": "穩懋",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 25769000,
+      "dayTradeBuyValue": 15879631000,
+      "dayTradeSellValue": 15897685000
+    },
+    {
+      "sequence": 179,
+      "symbol": "3114",
+      "name": "好德",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 390000,
+      "dayTradeBuyValue": 16705200,
+      "dayTradeSellValue": 16846350
+    },
+    {
+      "sequence": 180,
+      "symbol": "3118",
+      "name": "進階",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 124500,
+      "dayTradeSellValue": 126050
+    },
+    {
+      "sequence": 181,
+      "symbol": "3128",
+      "name": "昇銳",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 13000,
+      "dayTradeBuyValue": 262400,
+      "dayTradeSellValue": 262550
+    },
+    {
+      "sequence": 182,
+      "symbol": "3131",
+      "name": "弘塑",
+      "sellFirstSuspensionFlag": "＊",
+      "dayTradeShares": 120000,
+      "dayTradeBuyValue": 301010000,
+      "dayTradeSellValue": 304790000
+    },
+    {
+      "sequence": 183,
+      "symbol": "3141",
+      "name": "晶宏",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1566000,
+      "dayTradeBuyValue": 140606500,
+      "dayTradeSellValue": 140480700
+    },
+    {
+      "sequence": 184,
+      "symbol": "3147",
+      "name": "大綜",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 662000,
+      "dayTradeBuyValue": 174276000,
+      "dayTradeSellValue": 175845000
+    },
+    {
+      "sequence": 185,
+      "symbol": "3152",
+      "name": "璟德",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 80000,
+      "dayTradeBuyValue": 19047500,
+      "dayTradeSellValue": 19038500
+    },
+    {
+      "sequence": 186,
+      "symbol": "3162",
+      "name": "精確",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 851000,
+      "dayTradeBuyValue": 74860300,
+      "dayTradeSellValue": 74732400
+    },
+    {
+      "sequence": 187,
+      "symbol": "3163",
+      "name": "波若威",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2137000,
+      "dayTradeBuyValue": 1525914000,
+      "dayTradeSellValue": 1526479000
+    },
+    {
+      "sequence": 188,
+      "symbol": "3169",
+      "name": "亞信",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 52000,
+      "dayTradeBuyValue": 5930500,
+      "dayTradeSellValue": 5951000
+    },
+    {
+      "sequence": 189,
+      "symbol": "3171",
+      "name": "炎洲流通",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 190,
+      "symbol": "3176",
+      "name": "基亞",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 108000,
+      "dayTradeBuyValue": 4095500,
+      "dayTradeSellValue": 4101200
+    },
+    {
+      "sequence": 191,
+      "symbol": "3178",
+      "name": "公準",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 108000,
+      "dayTradeBuyValue": 7689600,
+      "dayTradeSellValue": 7650700
+    },
+    {
+      "sequence": 192,
+      "symbol": "3188",
+      "name": "鑫龍騰",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 36000,
+      "dayTradeBuyValue": 823800,
+      "dayTradeSellValue": 820650
+    },
+    {
+      "sequence": 193,
+      "symbol": "3205",
+      "name": "佰研",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 194,
+      "symbol": "3206",
+      "name": "志豐",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 7000,
+      "dayTradeBuyValue": 237300,
+      "dayTradeSellValue": 239950
+    },
+    {
+      "sequence": 195,
+      "symbol": "3207",
+      "name": "耀勝",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 72000,
+      "dayTradeBuyValue": 2880150,
+      "dayTradeSellValue": 2887000
+    },
+    {
+      "sequence": 196,
+      "symbol": "3211",
+      "name": "順達",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1551000,
+      "dayTradeBuyValue": 620662000,
+      "dayTradeSellValue": 621713500
+    },
+    {
+      "sequence": 197,
+      "symbol": "3213",
+      "name": "茂訊",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 34000,
+      "dayTradeBuyValue": 4241000,
+      "dayTradeSellValue": 4262000
+    },
+    {
+      "sequence": 198,
+      "symbol": "3217",
+      "name": "優群",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 43000,
+      "dayTradeBuyValue": 5547000,
+      "dayTradeSellValue": 5552000
+    },
+    {
+      "sequence": 199,
+      "symbol": "3218",
+      "name": "大學光",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 15000,
+      "dayTradeBuyValue": 2000000,
+      "dayTradeSellValue": 2003000
+    },
+    {
+      "sequence": 200,
+      "symbol": "3221",
+      "name": "台嘉碩",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4702000,
+      "dayTradeBuyValue": 268395200,
+      "dayTradeSellValue": 268046900
+    },
+    {
+      "sequence": 201,
+      "symbol": "3224",
+      "name": "三顧",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 8000,
+      "dayTradeBuyValue": 251800,
+      "dayTradeSellValue": 255100
+    },
+    {
+      "sequence": 202,
+      "symbol": "3226",
+      "name": "龍鋒",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 186400,
+      "dayTradeSellValue": 186300
+    },
+    {
+      "sequence": 203,
+      "symbol": "3227",
+      "name": "原相",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 165000,
+      "dayTradeBuyValue": 31105500,
+      "dayTradeSellValue": 31122000
+    },
+    {
+      "sequence": 204,
+      "symbol": "3230",
+      "name": "錦明",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 120000,
+      "dayTradeBuyValue": 4929450,
+      "dayTradeSellValue": 4936500
+    },
+    {
+      "sequence": 205,
+      "symbol": "3232",
+      "name": "昱捷",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 20250,
+      "dayTradeSellValue": 20450
+    },
+    {
+      "sequence": 206,
+      "symbol": "3236",
+      "name": "千如",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 14919000,
+      "dayTradeBuyValue": 820526300,
+      "dayTradeSellValue": 821510200
+    },
+    {
+      "sequence": 207,
+      "symbol": "3252",
+      "name": "海灣",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 30300,
+      "dayTradeSellValue": 30500
+    },
+    {
+      "sequence": 208,
+      "symbol": "3260",
+      "name": "威剛",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 856000,
+      "dayTradeBuyValue": 325227000,
+      "dayTradeSellValue": 325409000
+    },
+    {
+      "sequence": 209,
+      "symbol": "3264",
+      "name": "欣銓",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5251000,
+      "dayTradeBuyValue": 1272396500,
+      "dayTradeSellValue": 1276723500
+    },
+    {
+      "sequence": 210,
+      "symbol": "3265",
+      "name": "台星科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 671000,
+      "dayTradeBuyValue": 126208000,
+      "dayTradeSellValue": 126167000
+    },
+    {
+      "sequence": 211,
+      "symbol": "3268",
+      "name": "海德威",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 190000,
+      "dayTradeBuyValue": 4355000,
+      "dayTradeSellValue": 4388100
+    },
+    {
+      "sequence": 212,
+      "symbol": "3272",
+      "name": "東碩",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 213,
+      "symbol": "3276",
+      "name": "宇環",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 42700,
+      "dayTradeSellValue": 42850
+    },
+    {
+      "sequence": 214,
+      "symbol": "3284",
+      "name": "太普高",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 244000,
+      "dayTradeBuyValue": 5203750,
+      "dayTradeSellValue": 5182600
+    },
+    {
+      "sequence": 215,
+      "symbol": "3285",
+      "name": "微端",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 126000,
+      "dayTradeSellValue": 125400
+    },
+    {
+      "sequence": 216,
+      "symbol": "3287",
+      "name": "廣寰科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 114000,
+      "dayTradeBuyValue": 4702150,
+      "dayTradeSellValue": 4721750
+    },
+    {
+      "sequence": 217,
+      "symbol": "3289",
+      "name": "宜特",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 585000,
+      "dayTradeBuyValue": 83708000,
+      "dayTradeSellValue": 83480000
+    },
+    {
+      "sequence": 218,
+      "symbol": "3290",
+      "name": "東浦",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 177000,
+      "dayTradeBuyValue": 8891800,
+      "dayTradeSellValue": 8910600
+    },
+    {
+      "sequence": 219,
+      "symbol": "3293",
+      "name": "鈊象",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 392000,
+      "dayTradeBuyValue": 310001000,
+      "dayTradeSellValue": 310591000
+    },
+    {
+      "sequence": 220,
+      "symbol": "3294",
+      "name": "英濟",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 227000,
+      "dayTradeBuyValue": 7433400,
+      "dayTradeSellValue": 7450700
+    },
+    {
+      "sequence": 221,
+      "symbol": "3297",
+      "name": "杭特",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 127000,
+      "dayTradeBuyValue": 4101650,
+      "dayTradeSellValue": 4134150
+    },
+    {
+      "sequence": 222,
+      "symbol": "3303",
+      "name": "岱稜",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 25000,
+      "dayTradeBuyValue": 1222750,
+      "dayTradeSellValue": 1224550
+    },
+    {
+      "sequence": 223,
+      "symbol": "3306",
+      "name": "鼎天",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 141400,
+      "dayTradeSellValue": 141900
+    },
+    {
+      "sequence": 224,
+      "symbol": "3310",
+      "name": "佳穎",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 67800,
+      "dayTradeSellValue": 67600
+    },
+    {
+      "sequence": 225,
+      "symbol": "3313",
+      "name": "斐成",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 51850,
+      "dayTradeSellValue": 51900
+    },
+    {
+      "sequence": 226,
+      "symbol": "3317",
+      "name": "尼克森",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2899000,
+      "dayTradeBuyValue": 202671500,
+      "dayTradeSellValue": 205109500
+    },
+    {
+      "sequence": 227,
+      "symbol": "3322",
+      "name": "建舜電",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 135000,
+      "dayTradeBuyValue": 1506350,
+      "dayTradeSellValue": 1508800
+    },
+    {
+      "sequence": 228,
+      "symbol": "3323",
+      "name": "加百裕",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 266000,
+      "dayTradeBuyValue": 8136450,
+      "dayTradeSellValue": 8165000
+    },
+    {
+      "sequence": 229,
+      "symbol": "3324",
+      "name": "雙鴻",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2706000,
+      "dayTradeBuyValue": 4144170000,
+      "dayTradeSellValue": 4151700000
+    },
+    {
+      "sequence": 230,
+      "symbol": "3332",
+      "name": "幸康",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 64000,
+      "dayTradeSellValue": 64800
+    },
+    {
+      "sequence": 231,
+      "symbol": "3339",
+      "name": "泰谷",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 720000,
+      "dayTradeBuyValue": 33789300,
+      "dayTradeSellValue": 33727550
+    },
+    {
+      "sequence": 232,
+      "symbol": "3354",
+      "name": "律勝",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2448000,
+      "dayTradeBuyValue": 77087500,
+      "dayTradeSellValue": 77568750
+    },
+    {
+      "sequence": 233,
+      "symbol": "3357",
+      "name": "臺慶科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1052000,
+      "dayTradeBuyValue": 232588000,
+      "dayTradeSellValue": 232542500
+    },
+    {
+      "sequence": 234,
+      "symbol": "3360",
+      "name": "尚立",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 73000,
+      "dayTradeBuyValue": 1129850,
+      "dayTradeSellValue": 1125550
+    },
+    {
+      "sequence": 235,
+      "symbol": "3362",
+      "name": "先進光",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4082000,
+      "dayTradeBuyValue": 755554500,
+      "dayTradeSellValue": 763318000
+    },
+    {
+      "sequence": 236,
+      "symbol": "3363",
+      "name": "上詮",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1320000,
+      "dayTradeBuyValue": 887906000,
+      "dayTradeSellValue": 887810000
+    },
+    {
+      "sequence": 237,
+      "symbol": "3373",
+      "name": "熱映",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 31850,
+      "dayTradeSellValue": 32100
+    },
+    {
+      "sequence": 238,
+      "symbol": "3379",
+      "name": "彬台",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 7000,
+      "dayTradeBuyValue": 195700,
+      "dayTradeSellValue": 196600
+    },
+    {
+      "sequence": 239,
+      "symbol": "3388",
+      "name": "崇越電",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 150000,
+      "dayTradeBuyValue": 12839900,
+      "dayTradeSellValue": 12827100
+    },
+    {
+      "sequence": 240,
+      "symbol": "3390",
+      "name": "旭軟",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 13000,
+      "dayTradeBuyValue": 288000,
+      "dayTradeSellValue": 289900
+    },
+    {
+      "sequence": 241,
+      "symbol": "3402",
+      "name": "漢科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 161000,
+      "dayTradeBuyValue": 22600500,
+      "dayTradeSellValue": 22671500
+    },
+    {
+      "sequence": 242,
+      "symbol": "3430",
+      "name": "奇鈦科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 83000,
+      "dayTradeBuyValue": 9442000,
+      "dayTradeSellValue": 9458500
+    },
+    {
+      "sequence": 243,
+      "symbol": "3434",
+      "name": "哲固",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 13000,
+      "dayTradeBuyValue": 401200,
+      "dayTradeSellValue": 402750
+    },
+    {
+      "sequence": 244,
+      "symbol": "3438",
+      "name": "類比科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 16000,
+      "dayTradeBuyValue": 997400,
+      "dayTradeSellValue": 997500
+    },
+    {
+      "sequence": 245,
+      "symbol": "3441",
+      "name": "聯一光",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5305000,
+      "dayTradeBuyValue": 1180288000,
+      "dayTradeSellValue": 1200545500
+    },
+    {
+      "sequence": 246,
+      "symbol": "3444",
+      "name": "利機",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 37000,
+      "dayTradeBuyValue": 2897800,
+      "dayTradeSellValue": 2906800
+    },
+    {
+      "sequence": 247,
+      "symbol": "3455",
+      "name": "由田",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5217000,
+      "dayTradeBuyValue": 1489029000,
+      "dayTradeSellValue": 1493810500
+    },
+    {
+      "sequence": 248,
+      "symbol": "3465",
+      "name": "進泰電子",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 30050,
+      "dayTradeSellValue": 30050
+    },
+    {
+      "sequence": 249,
+      "symbol": "3466",
+      "name": "德晉",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 17000,
+      "dayTradeBuyValue": 408600,
+      "dayTradeSellValue": 411500
+    },
+    {
+      "sequence": 250,
+      "symbol": "3467",
+      "name": "台灣精材",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 199000,
+      "dayTradeBuyValue": 14466300,
+      "dayTradeSellValue": 14461600
+    },
+    {
+      "sequence": 251,
+      "symbol": "3479",
+      "name": "安勤",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 125000,
+      "dayTradeBuyValue": 17090000,
+      "dayTradeSellValue": 17126500
+    },
+    {
+      "sequence": 252,
+      "symbol": "3483",
+      "name": "力致",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 335000,
+      "dayTradeBuyValue": 27780400,
+      "dayTradeSellValue": 27710700
+    },
+    {
+      "sequence": 253,
+      "symbol": "3484",
+      "name": "崧騰",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 53000,
+      "dayTradeBuyValue": 2599400,
+      "dayTradeSellValue": 2600700
+    },
+    {
+      "sequence": 254,
+      "symbol": "3485",
+      "name": "敘豐",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 40000,
+      "dayTradeBuyValue": 8629000,
+      "dayTradeSellValue": 8654000
+    },
+    {
+      "sequence": 255,
+      "symbol": "3489",
+      "name": "森寶",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 256,
+      "symbol": "3490",
+      "name": "單井",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2761000,
+      "dayTradeBuyValue": 131733400,
+      "dayTradeSellValue": 131692700
+    },
+    {
+      "sequence": 257,
+      "symbol": "3491",
+      "name": "昇達科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 509000,
+      "dayTradeBuyValue": 795845000,
+      "dayTradeSellValue": 809185000
+    },
+    {
+      "sequence": 258,
+      "symbol": "3492",
+      "name": "長盛",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 7000,
+      "dayTradeBuyValue": 136900,
+      "dayTradeSellValue": 137700
+    },
+    {
+      "sequence": 259,
+      "symbol": "3498",
+      "name": "陽程",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2232000,
+      "dayTradeBuyValue": 500198500,
+      "dayTradeSellValue": 506747000
+    },
+    {
+      "sequence": 260,
+      "symbol": "3511",
+      "name": "矽瑪",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 56000,
+      "dayTradeBuyValue": 1125800,
+      "dayTradeSellValue": 1131550
+    },
+    {
+      "sequence": 261,
+      "symbol": "3512",
+      "name": "皇龍",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 95050,
+      "dayTradeSellValue": 94800
+    },
+    {
+      "sequence": 262,
+      "symbol": "3516",
+      "name": "亞帝歐",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 23000,
+      "dayTradeBuyValue": 594450,
+      "dayTradeSellValue": 597100
+    },
+    {
+      "sequence": 263,
+      "symbol": "3520",
+      "name": "華盈",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 293000,
+      "dayTradeBuyValue": 5300950,
+      "dayTradeSellValue": 5292900
+    },
+    {
+      "sequence": 264,
+      "symbol": "3521",
+      "name": "台鋼建設",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 9000,
+      "dayTradeBuyValue": 104800,
+      "dayTradeSellValue": 104400
+    },
+    {
+      "sequence": 265,
+      "symbol": "3526",
+      "name": "凡甲",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 12000,
+      "dayTradeBuyValue": 3309500,
+      "dayTradeSellValue": 3309500
+    },
+    {
+      "sequence": 266,
+      "symbol": "3527",
+      "name": "聚積",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 11000,
+      "dayTradeBuyValue": 564500,
+      "dayTradeSellValue": 562600
+    },
+    {
+      "sequence": 267,
+      "symbol": "3529",
+      "name": "力旺",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 336000,
+      "dayTradeBuyValue": 1065880000,
+      "dayTradeSellValue": 1068230000
+    },
+    {
+      "sequence": 268,
+      "symbol": "3531",
+      "name": "先益",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 269,
+      "symbol": "3537",
+      "name": "堡達",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 191000,
+      "dayTradeBuyValue": 10827100,
+      "dayTradeSellValue": 10832300
+    },
+    {
+      "sequence": 270,
+      "symbol": "3540",
+      "name": "曜越",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 537000,
+      "dayTradeBuyValue": 13147550,
+      "dayTradeSellValue": 13193350
+    },
+    {
+      "sequence": 271,
+      "symbol": "3541",
+      "name": "西柏",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 10000,
+      "dayTradeBuyValue": 244950,
+      "dayTradeSellValue": 247000
+    },
+    {
+      "sequence": 272,
+      "symbol": "3546",
+      "name": "宇峻",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 21000,
+      "dayTradeBuyValue": 1526900,
+      "dayTradeSellValue": 1528500
+    },
+    {
+      "sequence": 273,
+      "symbol": "3548",
+      "name": "兆利",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 87000,
+      "dayTradeBuyValue": 6645600,
+      "dayTradeSellValue": 6642600
+    },
+    {
+      "sequence": 274,
+      "symbol": "3551",
+      "name": "世禾",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 619000,
+      "dayTradeBuyValue": 124679500,
+      "dayTradeSellValue": 124739000
+    },
+    {
+      "sequence": 275,
+      "symbol": "3552",
+      "name": "同致",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 126000,
+      "dayTradeBuyValue": 5632950,
+      "dayTradeSellValue": 5646050
+    },
+    {
+      "sequence": 276,
+      "symbol": "3555",
+      "name": "博士旺",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 506000,
+      "dayTradeSellValue": 501000
+    },
+    {
+      "sequence": 277,
+      "symbol": "3556",
+      "name": "禾瑞亞",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 27000,
+      "dayTradeBuyValue": 1586800,
+      "dayTradeSellValue": 1588900
+    },
+    {
+      "sequence": 278,
+      "symbol": "3558",
+      "name": "神準",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 30000,
+      "dayTradeBuyValue": 3930000,
+      "dayTradeSellValue": 3935000
+    },
+    {
+      "sequence": 279,
+      "symbol": "3564",
+      "name": "其陽",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 31000,
+      "dayTradeBuyValue": 1912700,
+      "dayTradeSellValue": 1912700
+    },
+    {
+      "sequence": 280,
+      "symbol": "3567",
+      "name": "逸昌",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 51950,
+      "dayTradeSellValue": 52100
+    },
+    {
+      "sequence": 281,
+      "symbol": "3570",
+      "name": "大塚",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 339000,
+      "dayTradeSellValue": 339500
+    },
+    {
+      "sequence": 282,
+      "symbol": "3577",
+      "name": "泓格",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 73000,
+      "dayTradeBuyValue": 8247000,
+      "dayTradeSellValue": 8244500
+    },
+    {
+      "sequence": 283,
+      "symbol": "3580",
+      "name": "友威科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 342000,
+      "dayTradeBuyValue": 37240000,
+      "dayTradeSellValue": 37297000
+    },
+    {
+      "sequence": 284,
+      "symbol": "3581",
+      "name": "博磊",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 260000,
+      "dayTradeBuyValue": 30658000,
+      "dayTradeSellValue": 30816000
+    },
+    {
+      "sequence": 285,
+      "symbol": "3587",
+      "name": "閎康",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 511000,
+      "dayTradeBuyValue": 128176500,
+      "dayTradeSellValue": 129790000
+    },
+    {
+      "sequence": 286,
+      "symbol": "3594",
+      "name": "磐儀",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 28000,
+      "dayTradeBuyValue": 1305650,
+      "dayTradeSellValue": 1298600
+    },
+    {
+      "sequence": 287,
+      "symbol": "3597",
+      "name": "映興",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 268000,
+      "dayTradeBuyValue": 8129350,
+      "dayTradeSellValue": 8149550
+    },
+    {
+      "sequence": 288,
+      "symbol": "3609",
+      "name": "三一東林",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 12000,
+      "dayTradeBuyValue": 277350,
+      "dayTradeSellValue": 283700
+    },
+    {
+      "sequence": 289,
+      "symbol": "3611",
+      "name": "鼎翰",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6000,
+      "dayTradeBuyValue": 1097500,
+      "dayTradeSellValue": 1095500
+    },
+    {
+      "sequence": 290,
+      "symbol": "3615",
+      "name": "安可",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 990000,
+      "dayTradeBuyValue": 44477400,
+      "dayTradeSellValue": 44491150
+    },
+    {
+      "sequence": 291,
+      "symbol": "3623",
+      "name": "富晶通",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 30000,
+      "dayTradeBuyValue": 918650,
+      "dayTradeSellValue": 911500
+    },
+    {
+      "sequence": 292,
+      "symbol": "3624",
+      "name": "光頡",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 8554000,
+      "dayTradeBuyValue": 1280222500,
+      "dayTradeSellValue": 1280632000
+    },
+    {
+      "sequence": 293,
+      "symbol": "3628",
+      "name": "盈正",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 7000,
+      "dayTradeBuyValue": 503400,
+      "dayTradeSellValue": 503800
+    },
+    {
+      "sequence": 294,
+      "symbol": "3630",
+      "name": "新鉅科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 247000,
+      "dayTradeBuyValue": 6719400,
+      "dayTradeSellValue": 6745600
+    },
+    {
+      "sequence": 295,
+      "symbol": "3631",
+      "name": "晟楠",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 121000,
+      "dayTradeBuyValue": 5003550,
+      "dayTradeSellValue": 5010650
+    },
+    {
+      "sequence": 296,
+      "symbol": "3646",
+      "name": "艾恩特",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 297,
+      "symbol": "3663",
+      "name": "鑫科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 114000,
+      "dayTradeBuyValue": 7382500,
+      "dayTradeSellValue": 7324800
+    },
+    {
+      "sequence": 298,
+      "symbol": "3666",
+      "name": "光耀",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 57000,
+      "dayTradeBuyValue": 1433200,
+      "dayTradeSellValue": 1436750
+    },
+    {
+      "sequence": 299,
+      "symbol": "3675",
+      "name": "德微",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1756000,
+      "dayTradeBuyValue": 635155500,
+      "dayTradeSellValue": 634319000
+    },
+    {
+      "sequence": 300,
+      "symbol": "3680",
+      "name": "家登",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 699000,
+      "dayTradeBuyValue": 394643000,
+      "dayTradeSellValue": 394725000
+    },
+    {
+      "sequence": 301,
+      "symbol": "3684",
+      "name": "榮昌",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 52800,
+      "dayTradeSellValue": 54600
+    },
+    {
+      "sequence": 302,
+      "symbol": "3687",
+      "name": "歐買尬",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 183700,
+      "dayTradeSellValue": 183000
+    },
+    {
+      "sequence": 303,
+      "symbol": "3689",
+      "name": "湧德",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 161000,
+      "dayTradeBuyValue": 18268000,
+      "dayTradeSellValue": 18270500
+    },
+    {
+      "sequence": 304,
+      "symbol": "3691",
+      "name": "碩禾",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 540000,
+      "dayTradeBuyValue": 57737500,
+      "dayTradeSellValue": 58111500
+    },
+    {
+      "sequence": 305,
+      "symbol": "3693",
+      "name": "營邦",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 694000,
+      "dayTradeBuyValue": 461063000,
+      "dayTradeSellValue": 464369000
+    },
+    {
+      "sequence": 306,
+      "symbol": "3707",
+      "name": "漢磊",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 34397000,
+      "dayTradeBuyValue": 3047959700,
+      "dayTradeSellValue": 3047198100
+    },
+    {
+      "sequence": 307,
+      "symbol": "3709",
+      "name": "鑫聯大投控",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 54000,
+      "dayTradeBuyValue": 3512600,
+      "dayTradeSellValue": 3530400
+    },
+    {
+      "sequence": 308,
+      "symbol": "3718",
+      "name": "中光電投控",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 343000,
+      "dayTradeBuyValue": 22405200,
+      "dayTradeSellValue": 22449400
+    },
+    {
+      "sequence": 309,
+      "symbol": "4102",
+      "name": "永日",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6000,
+      "dayTradeBuyValue": 108250,
+      "dayTradeSellValue": 108200
+    },
+    {
+      "sequence": 310,
+      "symbol": "4105",
+      "name": "東洋",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 58000,
+      "dayTradeBuyValue": 4563800,
+      "dayTradeSellValue": 4563200
+    },
+    {
+      "sequence": 311,
+      "symbol": "4107",
+      "name": "邦特",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 312,
+      "symbol": "4109",
+      "name": "加捷生醫",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 25000,
+      "dayTradeBuyValue": 273050,
+      "dayTradeSellValue": 273450
+    },
+    {
+      "sequence": 313,
+      "symbol": "4111",
+      "name": "濟生",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 28750,
+      "dayTradeSellValue": 29000
+    },
+    {
+      "sequence": 314,
+      "symbol": "4113",
+      "name": "聯上",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 98000,
+      "dayTradeBuyValue": 1450500,
+      "dayTradeSellValue": 1455750
+    },
+    {
+      "sequence": 315,
+      "symbol": "4114",
+      "name": "健喬",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 123000,
+      "dayTradeBuyValue": 3589800,
+      "dayTradeSellValue": 3593900
+    },
+    {
+      "sequence": 316,
+      "symbol": "4116",
+      "name": "明基醫",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 317,
+      "symbol": "4120",
+      "name": "友華",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 138150,
+      "dayTradeSellValue": 138600
+    },
+    {
+      "sequence": 318,
+      "symbol": "4121",
+      "name": "優盛",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 12700,
+      "dayTradeSellValue": 12900
+    },
+    {
+      "sequence": 319,
+      "symbol": "4123",
+      "name": "晟德",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 148000,
+      "dayTradeBuyValue": 4554450,
+      "dayTradeSellValue": 4562650
+    },
+    {
+      "sequence": 320,
+      "symbol": "4126",
+      "name": "太醫",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 321,
+      "symbol": "4127",
+      "name": "天良",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 131000,
+      "dayTradeBuyValue": 5720850,
+      "dayTradeSellValue": 5755100
+    },
+    {
+      "sequence": 322,
+      "symbol": "4128",
+      "name": "中天",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 767000,
+      "dayTradeBuyValue": 11929750,
+      "dayTradeSellValue": 11935400
+    },
+    {
+      "sequence": 323,
+      "symbol": "4129",
+      "name": "聯合",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 11000,
+      "dayTradeBuyValue": 904000,
+      "dayTradeSellValue": 904400
+    },
+    {
+      "sequence": 324,
+      "symbol": "4138",
+      "name": "曜亞",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 214600,
+      "dayTradeSellValue": 216100
+    },
+    {
+      "sequence": 325,
+      "symbol": "4147",
+      "name": "中裕",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 147000,
+      "dayTradeBuyValue": 8907700,
+      "dayTradeSellValue": 8878000
+    },
+    {
+      "sequence": 326,
+      "symbol": "4153",
+      "name": "鈺緯",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 62700,
+      "dayTradeSellValue": 62900
+    },
+    {
+      "sequence": 327,
+      "symbol": "4157",
+      "name": "太景\\*-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 82000,
+      "dayTradeBuyValue": 705310,
+      "dayTradeSellValue": 705200
+    },
+    {
+      "sequence": 328,
+      "symbol": "4160",
+      "name": "訊聯基因",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 14000,
+      "dayTradeBuyValue": 540550,
+      "dayTradeSellValue": 539750
+    },
+    {
+      "sequence": 329,
+      "symbol": "4161",
+      "name": "聿新科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 10000,
+      "dayTradeBuyValue": 216550,
+      "dayTradeSellValue": 216100
+    },
+    {
+      "sequence": 330,
+      "symbol": "4162",
+      "name": "智擎",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 43000,
+      "dayTradeBuyValue": 2386300,
+      "dayTradeSellValue": 2376700
+    },
+    {
+      "sequence": 331,
+      "symbol": "4163",
+      "name": "鐿鈦",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 24000,
+      "dayTradeBuyValue": 3238500,
+      "dayTradeSellValue": 3247500
+    },
+    {
+      "sequence": 332,
+      "symbol": "4166",
+      "name": "友霖",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 11000,
+      "dayTradeBuyValue": 269450,
+      "dayTradeSellValue": 269150
+    },
+    {
+      "sequence": 333,
+      "symbol": "4167",
+      "name": "松瑞藥",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 63000,
+      "dayTradeBuyValue": 1230200,
+      "dayTradeSellValue": 1230250
+    },
+    {
+      "sequence": 334,
+      "symbol": "4171",
+      "name": "瑞基",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 57000,
+      "dayTradeBuyValue": 956700,
+      "dayTradeSellValue": 966050
+    },
+    {
+      "sequence": 335,
+      "symbol": "4173",
+      "name": "久裕",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 336,
+      "symbol": "4175",
+      "name": "杏一",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 101600,
+      "dayTradeSellValue": 102900
+    },
+    {
+      "sequence": 337,
+      "symbol": "4205",
+      "name": "中華食",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 338,
+      "symbol": "4207",
+      "name": "環泰",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 8000,
+      "dayTradeBuyValue": 154000,
+      "dayTradeSellValue": 155700
+    },
+    {
+      "sequence": 339,
+      "symbol": "4303",
+      "name": "信立",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 180000,
+      "dayTradeBuyValue": 5854950,
+      "dayTradeSellValue": 5856050
+    },
+    {
+      "sequence": 340,
+      "symbol": "4305",
+      "name": "世坤",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 341,
+      "symbol": "4401",
+      "name": "東隆興",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 13800,
+      "dayTradeSellValue": 13750
+    },
+    {
+      "sequence": 342,
+      "symbol": "4406",
+      "name": "新昕纖",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 343,
+      "symbol": "4413",
+      "name": "飛寶企業",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 79950,
+      "dayTradeSellValue": 81200
+    },
+    {
+      "sequence": 344,
+      "symbol": "4416",
+      "name": "三圓",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 99000,
+      "dayTradeBuyValue": 1262250,
+      "dayTradeSellValue": 1263950
+    },
+    {
+      "sequence": 345,
+      "symbol": "4417",
+      "name": "金洲",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 196250,
+      "dayTradeSellValue": 196900
+    },
+    {
+      "sequence": 346,
+      "symbol": "4420",
+      "name": "光明",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 70300,
+      "dayTradeSellValue": 70350
+    },
+    {
+      "sequence": 347,
+      "symbol": "4430",
+      "name": "耀億",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 71050,
+      "dayTradeSellValue": 71400
+    },
+    {
+      "sequence": 348,
+      "symbol": "4432",
+      "name": "銘旺實",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 46200,
+      "dayTradeSellValue": 46200
+    },
+    {
+      "sequence": 349,
+      "symbol": "4433",
+      "name": "興采",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6000,
+      "dayTradeBuyValue": 106050,
+      "dayTradeSellValue": 107050
+    },
+    {
+      "sequence": 350,
+      "symbol": "4442",
+      "name": "竣邦-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 351,
+      "symbol": "4503",
+      "name": "金雨",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 23000,
+      "dayTradeBuyValue": 554750,
+      "dayTradeSellValue": 554650
+    },
+    {
+      "sequence": 352,
+      "symbol": "4506",
+      "name": "崇友",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 15000,
+      "dayTradeBuyValue": 1766000,
+      "dayTradeSellValue": 1777500
+    },
+    {
+      "sequence": 353,
+      "symbol": "4510",
+      "name": "高鋒",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 116000,
+      "dayTradeBuyValue": 5035850,
+      "dayTradeSellValue": 4998100
+    },
+    {
+      "sequence": 354,
+      "symbol": "4513",
+      "name": "福裕",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 14000,
+      "dayTradeBuyValue": 226150,
+      "dayTradeSellValue": 225700
+    },
+    {
+      "sequence": 355,
+      "symbol": "4523",
+      "name": "永彰",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 23750,
+      "dayTradeSellValue": 23750
+    },
+    {
+      "sequence": 356,
+      "symbol": "4528",
+      "name": "江興鍛",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 14900,
+      "dayTradeSellValue": 14800
+    },
+    {
+      "sequence": 357,
+      "symbol": "4530",
+      "name": "天意能創",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 94500,
+      "dayTradeSellValue": 96650
+    },
+    {
+      "sequence": 358,
+      "symbol": "4533",
+      "name": "協易機",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 126000,
+      "dayTradeBuyValue": 3224600,
+      "dayTradeSellValue": 3235400
+    },
+    {
+      "sequence": 359,
+      "symbol": "4535",
+      "name": "至興",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 360,
+      "symbol": "4538",
+      "name": "大詠城",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 34600,
+      "dayTradeSellValue": 35000
+    },
+    {
+      "sequence": 361,
+      "symbol": "4541",
+      "name": "晟田",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 219000,
+      "dayTradeBuyValue": 13327700,
+      "dayTradeSellValue": 13352300
+    },
+    {
+      "sequence": 362,
+      "symbol": "4543",
+      "name": "萬在",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 59850,
+      "dayTradeSellValue": 60100
+    },
+    {
+      "sequence": 363,
+      "symbol": "4549",
+      "name": "桓達",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 196500,
+      "dayTradeSellValue": 198400
+    },
+    {
+      "sequence": 364,
+      "symbol": "4550",
+      "name": "長佳",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 365,
+      "symbol": "4554",
+      "name": "橙的",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 140400,
+      "dayTradeSellValue": 139450
+    },
+    {
+      "sequence": 366,
+      "symbol": "4556",
+      "name": "旭然",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1763000,
+      "dayTradeBuyValue": 212342000,
+      "dayTradeSellValue": 213118500
+    },
+    {
+      "sequence": 367,
+      "symbol": "4558",
+      "name": "寶緯",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 33600,
+      "dayTradeSellValue": 33900
+    },
+    {
+      "sequence": 368,
+      "symbol": "4561",
+      "name": "健椿",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 27000,
+      "dayTradeBuyValue": 1162000,
+      "dayTradeSellValue": 1161100
+    },
+    {
+      "sequence": 369,
+      "symbol": "4563",
+      "name": "百德",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 42000,
+      "dayTradeBuyValue": 2225900,
+      "dayTradeSellValue": 2238400
+    },
+    {
+      "sequence": 370,
+      "symbol": "4568",
+      "name": "科際精密",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 39200,
+      "dayTradeSellValue": 39000
+    },
+    {
+      "sequence": 371,
+      "symbol": "4577",
+      "name": "達航科技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 143000,
+      "dayTradeBuyValue": 13214800,
+      "dayTradeSellValue": 13237700
+    },
+    {
+      "sequence": 372,
+      "symbol": "4580",
+      "name": "捷流閥業",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 409700,
+      "dayTradeSellValue": 411400
+    },
+    {
+      "sequence": 373,
+      "symbol": "4702",
+      "name": "中美實",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 18550,
+      "dayTradeSellValue": 18640
+    },
+    {
+      "sequence": 374,
+      "symbol": "4706",
+      "name": "大恭",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 69650,
+      "dayTradeSellValue": 70650
+    },
+    {
+      "sequence": 375,
+      "symbol": "4707",
+      "name": "磐亞",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2069000,
+      "dayTradeBuyValue": 63191350,
+      "dayTradeSellValue": 63202750
+    },
+    {
+      "sequence": 376,
+      "symbol": "4711",
+      "name": "永純",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 39000,
+      "dayTradeBuyValue": 653150,
+      "dayTradeSellValue": 654900
+    },
+    {
+      "sequence": 377,
+      "symbol": "4714",
+      "name": "永捷",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 418000,
+      "dayTradeBuyValue": 5091550,
+      "dayTradeSellValue": 5117250
+    },
+    {
+      "sequence": 378,
+      "symbol": "4716",
+      "name": "大立",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2939000,
+      "dayTradeBuyValue": 55960750,
+      "dayTradeSellValue": 56294100
+    },
+    {
+      "sequence": 379,
+      "symbol": "4721",
+      "name": "美琪瑪",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 136000,
+      "dayTradeBuyValue": 11072200,
+      "dayTradeSellValue": 11100400
+    },
+    {
+      "sequence": 380,
+      "symbol": "4728",
+      "name": "雙美",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 381,
+      "symbol": "4729",
+      "name": "熒茂",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 156000,
+      "dayTradeBuyValue": 3122750,
+      "dayTradeSellValue": 3123450
+    },
+    {
+      "sequence": 382,
+      "symbol": "4735",
+      "name": "豪展",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 36050,
+      "dayTradeSellValue": 36250
+    },
+    {
+      "sequence": 383,
+      "symbol": "4741",
+      "name": "泓瀚",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 26000,
+      "dayTradeBuyValue": 1070250,
+      "dayTradeSellValue": 1065750
+    },
+    {
+      "sequence": 384,
+      "symbol": "4743",
+      "name": "合一",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1391000,
+      "dayTradeBuyValue": 66575500,
+      "dayTradeSellValue": 66751050
+    },
+    {
+      "sequence": 385,
+      "symbol": "4744",
+      "name": "皇將",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 56400,
+      "dayTradeSellValue": 56650
+    },
+    {
+      "sequence": 386,
+      "symbol": "4745",
+      "name": "合富-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 387,
+      "symbol": "4747",
+      "name": "強生\\*",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 22900,
+      "dayTradeSellValue": 23000
+    },
+    {
+      "sequence": 388,
+      "symbol": "4749",
+      "name": "新應材",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 484000,
+      "dayTradeBuyValue": 387323000,
+      "dayTradeSellValue": 387873000
+    },
+    {
+      "sequence": 389,
+      "symbol": "4754",
+      "name": "國碳科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 38000,
+      "dayTradeSellValue": 37950
+    },
+    {
+      "sequence": 390,
+      "symbol": "4760",
+      "name": "勤凱",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 1394000,
+      "dayTradeSellValue": 1394000
+    },
+    {
+      "sequence": 391,
+      "symbol": "4767",
+      "name": "誠泰科技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 56550,
+      "dayTradeSellValue": 57100
+    },
+    {
+      "sequence": 392,
+      "symbol": "4768",
+      "name": "晶呈科技",
+      "sellFirstSuspensionFlag": "＊",
+      "dayTradeShares": 216000,
+      "dayTradeBuyValue": 81447000,
+      "dayTradeSellValue": 80327000
+    },
+    {
+      "sequence": 393,
+      "symbol": "4772",
+      "name": "台特化",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 746000,
+      "dayTradeBuyValue": 211196500,
+      "dayTradeSellValue": 210903500
+    },
+    {
+      "sequence": 394,
+      "symbol": "4903",
+      "name": "聯光通",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1762000,
+      "dayTradeBuyValue": 78604400,
+      "dayTradeSellValue": 78781100
+    },
+    {
+      "sequence": 395,
+      "symbol": "4905",
+      "name": "台聯電",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 166000,
+      "dayTradeBuyValue": 16477800,
+      "dayTradeSellValue": 16433100
+    },
+    {
+      "sequence": 396,
+      "symbol": "4907",
+      "name": "富宇",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 92000,
+      "dayTradeBuyValue": 3992400,
+      "dayTradeSellValue": 3972150
+    },
+    {
+      "sequence": 397,
+      "symbol": "4908",
+      "name": "前鼎",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6039000,
+      "dayTradeBuyValue": 1424835500,
+      "dayTradeSellValue": 1428569000
+    },
+    {
+      "sequence": 398,
+      "symbol": "4909",
+      "name": "新復興",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 62000,
+      "dayTradeBuyValue": 2293400,
+      "dayTradeSellValue": 2296950
+    },
+    {
+      "sequence": 399,
+      "symbol": "4911",
+      "name": "德英",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 400,
+      "symbol": "4923",
+      "name": "力士",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 687000,
+      "dayTradeBuyValue": 44571600,
+      "dayTradeSellValue": 44706400
+    },
+    {
+      "sequence": 401,
+      "symbol": "4924",
+      "name": "欣厚-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 97000,
+      "dayTradeBuyValue": 1495000,
+      "dayTradeSellValue": 1488200
+    },
+    {
+      "sequence": 402,
+      "symbol": "4931",
+      "name": "新盛力",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1488000,
+      "dayTradeBuyValue": 376203500,
+      "dayTradeSellValue": 376463500
+    },
+    {
+      "sequence": 403,
+      "symbol": "4933",
+      "name": "友輝",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 35000,
+      "dayTradeBuyValue": 1887700,
+      "dayTradeSellValue": 1894200
+    },
+    {
+      "sequence": 404,
+      "symbol": "4939",
+      "name": "亞電",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2963000,
+      "dayTradeBuyValue": 235529200,
+      "dayTradeSellValue": 235631400
+    },
+    {
+      "sequence": 405,
+      "symbol": "4946",
+      "name": "辣椒",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 98100,
+      "dayTradeSellValue": 99000
+    },
+    {
+      "sequence": 406,
+      "symbol": "4951",
+      "name": "精拓科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 76000,
+      "dayTradeBuyValue": 6901400,
+      "dayTradeSellValue": 6915400
+    },
+    {
+      "sequence": 407,
+      "symbol": "4953",
+      "name": "緯致",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 31000,
+      "dayTradeBuyValue": 3630000,
+      "dayTradeSellValue": 3631500
+    },
+    {
+      "sequence": 408,
+      "symbol": "4966",
+      "name": "譜瑞-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 73000,
+      "dayTradeBuyValue": 41991000,
+      "dayTradeSellValue": 41987000
+    },
+    {
+      "sequence": 409,
+      "symbol": "4971",
+      "name": "IET-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1978000,
+      "dayTradeBuyValue": 1171830000,
+      "dayTradeSellValue": 1173810000
+    },
+    {
+      "sequence": 410,
+      "symbol": "4972",
+      "name": "湯石照明",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 81300,
+      "dayTradeSellValue": 82250
+    },
+    {
+      "sequence": 411,
+      "symbol": "4973",
+      "name": "廣穎",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 102000,
+      "dayTradeBuyValue": 14145000,
+      "dayTradeSellValue": 14158000
+    },
+    {
+      "sequence": 412,
+      "symbol": "4974",
+      "name": "亞泰",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 11000,
+      "dayTradeBuyValue": 780500,
+      "dayTradeSellValue": 782400
+    },
+    {
+      "sequence": 413,
+      "symbol": "4991",
+      "name": "環宇-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4596000,
+      "dayTradeBuyValue": 2426242000,
+      "dayTradeSellValue": 2437542000
+    },
+    {
+      "sequence": 414,
+      "symbol": "4995",
+      "name": "晶達",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 21000,
+      "dayTradeBuyValue": 990800,
+      "dayTradeSellValue": 997250
+    },
+    {
+      "sequence": 415,
+      "symbol": "5009",
+      "name": "榮剛",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 411000,
+      "dayTradeBuyValue": 13411500,
+      "dayTradeSellValue": 13391450
+    },
+    {
+      "sequence": 416,
+      "symbol": "5011",
+      "name": "久陽",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 59000,
+      "dayTradeBuyValue": 1300650,
+      "dayTradeSellValue": 1317400
+    },
+    {
+      "sequence": 417,
+      "symbol": "5013",
+      "name": "強新",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 418,
+      "symbol": "5014",
+      "name": "建錩",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 27000,
+      "dayTradeBuyValue": 272150,
+      "dayTradeSellValue": 271900
+    },
+    {
+      "sequence": 419,
+      "symbol": "5015",
+      "name": "華祺",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 57000,
+      "dayTradeBuyValue": 1329250,
+      "dayTradeSellValue": 1331500
+    },
+    {
+      "sequence": 420,
+      "symbol": "5016",
+      "name": "松和",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 106000,
+      "dayTradeBuyValue": 2961950,
+      "dayTradeSellValue": 2948150
+    },
+    {
+      "sequence": 421,
+      "symbol": "5201",
+      "name": "凱衛",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 137800,
+      "dayTradeSellValue": 138150
+    },
+    {
+      "sequence": 422,
+      "symbol": "5202",
+      "name": "力新",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 119000,
+      "dayTradeBuyValue": 1659100,
+      "dayTradeSellValue": 1658100
+    },
+    {
+      "sequence": 423,
+      "symbol": "5206",
+      "name": "坤悅",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 22700,
+      "dayTradeSellValue": 22800
+    },
+    {
+      "sequence": 424,
+      "symbol": "5209",
+      "name": "新鼎",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 19000,
+      "dayTradeBuyValue": 3347000,
+      "dayTradeSellValue": 3352500
+    },
+    {
+      "sequence": 425,
+      "symbol": "5210",
+      "name": "寶碩",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 68000,
+      "dayTradeBuyValue": 2046600,
+      "dayTradeSellValue": 2043500
+    },
+    {
+      "sequence": 426,
+      "symbol": "5211",
+      "name": "蒙恬",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 104600,
+      "dayTradeSellValue": 105450
+    },
+    {
+      "sequence": 427,
+      "symbol": "5212",
+      "name": "凌網",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 428,
+      "symbol": "5213",
+      "name": "亞昕",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 63000,
+      "dayTradeBuyValue": 1266650,
+      "dayTradeSellValue": 1277000
+    },
+    {
+      "sequence": 429,
+      "symbol": "5220",
+      "name": "萬達光電",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 36000,
+      "dayTradeBuyValue": 809200,
+      "dayTradeSellValue": 820350
+    },
+    {
+      "sequence": 430,
+      "symbol": "5223",
+      "name": "安力-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 23300,
+      "dayTradeSellValue": 23000
+    },
+    {
+      "sequence": 431,
+      "symbol": "5228",
+      "name": "鈺鎧",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1577000,
+      "dayTradeBuyValue": 80513050,
+      "dayTradeSellValue": 80137450
+    },
+    {
+      "sequence": 432,
+      "symbol": "5230",
+      "name": "雷笛克光學",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 190000,
+      "dayTradeBuyValue": 4308050,
+      "dayTradeSellValue": 4313500
+    },
+    {
+      "sequence": 433,
+      "symbol": "5245",
+      "name": "智晶",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 8000,
+      "dayTradeBuyValue": 166850,
+      "dayTradeSellValue": 166450
+    },
+    {
+      "sequence": 434,
+      "symbol": "5251",
+      "name": "天鉞電",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6000,
+      "dayTradeBuyValue": 177400,
+      "dayTradeSellValue": 177150
+    },
+    {
+      "sequence": 435,
+      "symbol": "5263",
+      "name": "智崴",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 21000,
+      "dayTradeBuyValue": 1897300,
+      "dayTradeSellValue": 1894300
+    },
+    {
+      "sequence": 436,
+      "symbol": "5272",
+      "name": "笙科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 35500,
+      "dayTradeSellValue": 35800
+    },
+    {
+      "sequence": 437,
+      "symbol": "5274",
+      "name": "信驊",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 42000,
+      "dayTradeBuyValue": 813785000,
+      "dayTradeSellValue": 817350000
+    },
+    {
+      "sequence": 438,
+      "symbol": "5278",
+      "name": "尚凡\\*",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 8000,
+      "dayTradeBuyValue": 187800,
+      "dayTradeSellValue": 189300
+    },
+    {
+      "sequence": 439,
+      "symbol": "5287",
+      "name": "數字",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 274000,
+      "dayTradeSellValue": 275000
+    },
+    {
+      "sequence": 440,
+      "symbol": "5289",
+      "name": "宜鼎",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 339000,
+      "dayTradeBuyValue": 441395000,
+      "dayTradeSellValue": 441920000
+    },
+    {
+      "sequence": 441,
+      "symbol": "5291",
+      "name": "邑昇",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 271000,
+      "dayTradeBuyValue": 17219100,
+      "dayTradeSellValue": 17430800
+    },
+    {
+      "sequence": 442,
+      "symbol": "5299",
+      "name": "杰力",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 187000,
+      "dayTradeBuyValue": 19940000,
+      "dayTradeSellValue": 19889000
+    },
+    {
+      "sequence": 443,
+      "symbol": "5309",
+      "name": "系統電",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6925000,
+      "dayTradeBuyValue": 466310800,
+      "dayTradeSellValue": 466535500
+    },
+    {
+      "sequence": 444,
+      "symbol": "5310",
+      "name": "天剛",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 9000,
+      "dayTradeBuyValue": 262850,
+      "dayTradeSellValue": 266850
+    },
+    {
+      "sequence": 445,
+      "symbol": "5312",
+      "name": "寶島科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 89100,
+      "dayTradeSellValue": 89700
+    },
+    {
+      "sequence": 446,
+      "symbol": "5314",
+      "name": "世紀\\*",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 10718000,
+      "dayTradeBuyValue": 312460950,
+      "dayTradeSellValue": 313160350
+    },
+    {
+      "sequence": 447,
+      "symbol": "5315",
+      "name": "光聯",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 448,
+      "symbol": "5321",
+      "name": "美而快",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 57000,
+      "dayTradeBuyValue": 3864300,
+      "dayTradeSellValue": 3876400
+    },
+    {
+      "sequence": 449,
+      "symbol": "5328",
+      "name": "華容",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3602000,
+      "dayTradeBuyValue": 212931200,
+      "dayTradeSellValue": 213428300
+    },
+    {
+      "sequence": 450,
+      "symbol": "5340",
+      "name": "建榮",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3066000,
+      "dayTradeBuyValue": 263843600,
+      "dayTradeSellValue": 264172900
+    },
+    {
+      "sequence": 451,
+      "symbol": "5347",
+      "name": "世界",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6024000,
+      "dayTradeBuyValue": 1114578500,
+      "dayTradeSellValue": 1117094500
+    },
+    {
+      "sequence": 452,
+      "symbol": "5351",
+      "name": "鈺創",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4927000,
+      "dayTradeBuyValue": 564221000,
+      "dayTradeSellValue": 565172500
+    },
+    {
+      "sequence": 453,
+      "symbol": "5353",
+      "name": "台林",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 19000,
+      "dayTradeBuyValue": 558800,
+      "dayTradeSellValue": 557800
+    },
+    {
+      "sequence": 454,
+      "symbol": "5356",
+      "name": "協益",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 103000,
+      "dayTradeSellValue": 103500
+    },
+    {
+      "sequence": 455,
+      "symbol": "5364",
+      "name": "力麗店",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 16540,
+      "dayTradeSellValue": 16610
+    },
+    {
+      "sequence": 456,
+      "symbol": "5381",
+      "name": "光譜",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 67000,
+      "dayTradeBuyValue": 1558250,
+      "dayTradeSellValue": 1556050
+    },
+    {
+      "sequence": 457,
+      "symbol": "5386",
+      "name": "青雲",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 137000,
+      "dayTradeBuyValue": 40006000,
+      "dayTradeSellValue": 40011500
+    },
+    {
+      "sequence": 458,
+      "symbol": "5392",
+      "name": "能率",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 85000,
+      "dayTradeBuyValue": 3405250,
+      "dayTradeSellValue": 3364150
+    },
+    {
+      "sequence": 459,
+      "symbol": "5398",
+      "name": "慕康生醫",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 54450,
+      "dayTradeSellValue": 54700
+    },
+    {
+      "sequence": 460,
+      "symbol": "5403",
+      "name": "中菲",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 461100,
+      "dayTradeSellValue": 463700
+    },
+    {
+      "sequence": 461,
+      "symbol": "5410",
+      "name": "國眾",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 164750,
+      "dayTradeSellValue": 164750
+    },
+    {
+      "sequence": 462,
+      "symbol": "5425",
+      "name": "台半",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 17387000,
+      "dayTradeBuyValue": 1899787500,
+      "dayTradeSellValue": 1885544000
+    },
+    {
+      "sequence": 463,
+      "symbol": "5426",
+      "name": "振發",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 392000,
+      "dayTradeBuyValue": 11726650,
+      "dayTradeSellValue": 11717700
+    },
+    {
+      "sequence": 464,
+      "symbol": "5432",
+      "name": "新門",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 261000,
+      "dayTradeBuyValue": 44707000,
+      "dayTradeSellValue": 44880500
+    },
+    {
+      "sequence": 465,
+      "symbol": "5438",
+      "name": "東友",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 69300,
+      "dayTradeSellValue": 69400
+    },
+    {
+      "sequence": 466,
+      "symbol": "5439",
+      "name": "高技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 947000,
+      "dayTradeBuyValue": 246338500,
+      "dayTradeSellValue": 246969000
+    },
+    {
+      "sequence": 467,
+      "symbol": "5443",
+      "name": "均豪",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 575000,
+      "dayTradeBuyValue": 65522500,
+      "dayTradeSellValue": 65707000
+    },
+    {
+      "sequence": 468,
+      "symbol": "5450",
+      "name": "南良",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 85000,
+      "dayTradeBuyValue": 1236600,
+      "dayTradeSellValue": 1232700
+    },
+    {
+      "sequence": 469,
+      "symbol": "5452",
+      "name": "佶優",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1023000,
+      "dayTradeBuyValue": 30246950,
+      "dayTradeSellValue": 30413750
+    },
+    {
+      "sequence": 470,
+      "symbol": "5455",
+      "name": "昇益",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 30000,
+      "dayTradeSellValue": 30800
+    },
+    {
+      "sequence": 471,
+      "symbol": "5457",
+      "name": "宣德",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 77000,
+      "dayTradeBuyValue": 1868450,
+      "dayTradeSellValue": 1874850
+    },
+    {
+      "sequence": 472,
+      "symbol": "5460",
+      "name": "同協",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 10000,
+      "dayTradeBuyValue": 175400,
+      "dayTradeSellValue": 175500
+    },
+    {
+      "sequence": 473,
+      "symbol": "5464",
+      "name": "霖宏",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 406000,
+      "dayTradeBuyValue": 38828300,
+      "dayTradeSellValue": 38940500
+    },
+    {
+      "sequence": 474,
+      "symbol": "5465",
+      "name": "富驊",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 156000,
+      "dayTradeBuyValue": 5108500,
+      "dayTradeSellValue": 5149050
+    },
+    {
+      "sequence": 475,
+      "symbol": "5474",
+      "name": "聰泰",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 31000,
+      "dayTradeBuyValue": 4982000,
+      "dayTradeSellValue": 4973500
+    },
+    {
+      "sequence": 476,
+      "symbol": "5475",
+      "name": "德宏",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3276000,
+      "dayTradeBuyValue": 613858500,
+      "dayTradeSellValue": 612330500
+    },
+    {
+      "sequence": 477,
+      "symbol": "5478",
+      "name": "智冠",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 487100,
+      "dayTradeSellValue": 486800
+    },
+    {
+      "sequence": 478,
+      "symbol": "5481",
+      "name": "新華",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 21700,
+      "dayTradeSellValue": 21750
+    },
+    {
+      "sequence": 479,
+      "symbol": "5483",
+      "name": "中美晶",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 12559000,
+      "dayTradeBuyValue": 2759918500,
+      "dayTradeSellValue": 2765618000
+    },
+    {
+      "sequence": 480,
+      "symbol": "5487",
+      "name": "通泰",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 60000,
+      "dayTradeBuyValue": 1745600,
+      "dayTradeSellValue": 1762400
+    },
+    {
+      "sequence": 481,
+      "symbol": "5488",
+      "name": "松普",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 81000,
+      "dayTradeBuyValue": 988600,
+      "dayTradeSellValue": 988150
+    },
+    {
+      "sequence": 482,
+      "symbol": "5489",
+      "name": "彩富",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 210500,
+      "dayTradeSellValue": 211350
+    },
+    {
+      "sequence": 483,
+      "symbol": "5490",
+      "name": "同亨",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 38000,
+      "dayTradeBuyValue": 968950,
+      "dayTradeSellValue": 972450
+    },
+    {
+      "sequence": 484,
+      "symbol": "5493",
+      "name": "三聯",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 20000,
+      "dayTradeBuyValue": 1818900,
+      "dayTradeSellValue": 1820000
+    },
+    {
+      "sequence": 485,
+      "symbol": "5498",
+      "name": "凱崴",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3120000,
+      "dayTradeBuyValue": 174514200,
+      "dayTradeSellValue": 174550500
+    },
+    {
+      "sequence": 486,
+      "symbol": "5508",
+      "name": "永信建",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 39000,
+      "dayTradeBuyValue": 2067000,
+      "dayTradeSellValue": 2067900
+    },
+    {
+      "sequence": 487,
+      "symbol": "5511",
+      "name": "德昌",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 23000,
+      "dayTradeBuyValue": 1585300,
+      "dayTradeSellValue": 1575800
+    },
+    {
+      "sequence": 488,
+      "symbol": "5512",
+      "name": "力麒",
+      "sellFirstSuspensionFlag": "＊",
+      "dayTradeShares": 91000,
+      "dayTradeBuyValue": 686130,
+      "dayTradeSellValue": 684250
+    },
+    {
+      "sequence": 489,
+      "symbol": "5514",
+      "name": "三豐",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 490,
+      "symbol": "5520",
+      "name": "力泰",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 491,
+      "symbol": "5523",
+      "name": "豐謙",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 20000,
+      "dayTradeBuyValue": 601600,
+      "dayTradeSellValue": 603600
+    },
+    {
+      "sequence": 492,
+      "symbol": "5529",
+      "name": "鉅陞",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6000,
+      "dayTradeBuyValue": 156550,
+      "dayTradeSellValue": 155950
+    },
+    {
+      "sequence": 493,
+      "symbol": "5530",
+      "name": "龍巖",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 21000,
+      "dayTradeBuyValue": 1014650,
+      "dayTradeSellValue": 1012650
+    },
+    {
+      "sequence": 494,
+      "symbol": "5536",
+      "name": "聖暉\\*",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 870000,
+      "dayTradeBuyValue": 833002000,
+      "dayTradeSellValue": 834451000
+    },
+    {
+      "sequence": 495,
+      "symbol": "5543",
+      "name": "桓鼎-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 27000,
+      "dayTradeSellValue": 27450
+    },
+    {
+      "sequence": 496,
+      "symbol": "5547",
+      "name": "久舜",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 497,
+      "symbol": "5548",
+      "name": "安倉",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 498,
+      "symbol": "5601",
+      "name": "台聯櫃",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 499,
+      "symbol": "5603",
+      "name": "陸海",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 53400,
+      "dayTradeSellValue": 53900
+    },
+    {
+      "sequence": 500,
+      "symbol": "5604",
+      "name": "中連",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 63200,
+      "dayTradeSellValue": 63500
+    },
+    {
+      "sequence": 501,
+      "symbol": "5609",
+      "name": "中菲行",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 155000,
+      "dayTradeSellValue": 155000
+    },
+    {
+      "sequence": 502,
+      "symbol": "5704",
+      "name": "老爺知",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 43000,
+      "dayTradeBuyValue": 974000,
+      "dayTradeSellValue": 973850
+    },
+    {
+      "sequence": 503,
+      "symbol": "5864",
+      "name": "致和證",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1026000,
+      "dayTradeBuyValue": 40968450,
+      "dayTradeSellValue": 40973400
+    },
+    {
+      "sequence": 504,
+      "symbol": "5902",
+      "name": "德記",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 136000,
+      "dayTradeSellValue": 136700
+    },
+    {
+      "sequence": 505,
+      "symbol": "5903",
+      "name": "全家",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 186000,
+      "dayTradeSellValue": 186500
+    },
+    {
+      "sequence": 506,
+      "symbol": "5904",
+      "name": "寶雅\\*",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 356000,
+      "dayTradeBuyValue": 24387600,
+      "dayTradeSellValue": 24405800
+    },
+    {
+      "sequence": 507,
+      "symbol": "6015",
+      "name": "宏遠證",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 703000,
+      "dayTradeBuyValue": 12713050,
+      "dayTradeSellValue": 12706850
+    },
+    {
+      "sequence": 508,
+      "symbol": "6016",
+      "name": "康和證",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 654000,
+      "dayTradeBuyValue": 15925250,
+      "dayTradeSellValue": 15938250
+    },
+    {
+      "sequence": 509,
+      "symbol": "6020",
+      "name": "大展證",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 510,
+      "symbol": "6021",
+      "name": "美好證",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 33000,
+      "dayTradeBuyValue": 1411700,
+      "dayTradeSellValue": 1408950
+    },
+    {
+      "sequence": 511,
+      "symbol": "6023",
+      "name": "元大期",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 128000,
+      "dayTradeBuyValue": 10754400,
+      "dayTradeSellValue": 10766300
+    },
+    {
+      "sequence": 512,
+      "symbol": "6026",
+      "name": "福邦證",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 116000,
+      "dayTradeBuyValue": 1851800,
+      "dayTradeSellValue": 1856100
+    },
+    {
+      "sequence": 513,
+      "symbol": "6028",
+      "name": "公勝保經",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 297700,
+      "dayTradeSellValue": 298700
+    },
+    {
+      "sequence": 514,
+      "symbol": "6101",
+      "name": "寬魚國際",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 68000,
+      "dayTradeBuyValue": 2546650,
+      "dayTradeSellValue": 2553250
+    },
+    {
+      "sequence": 515,
+      "symbol": "6103",
+      "name": "合邦",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 7000,
+      "dayTradeBuyValue": 244350,
+      "dayTradeSellValue": 252350
+    },
+    {
+      "sequence": 516,
+      "symbol": "6104",
+      "name": "創惟",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 79000,
+      "dayTradeBuyValue": 7211100,
+      "dayTradeSellValue": 7204600
+    },
+    {
+      "sequence": 517,
+      "symbol": "6111",
+      "name": "光聚晶電",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 27000,
+      "dayTradeBuyValue": 1014250,
+      "dayTradeSellValue": 1008500
+    },
+    {
+      "sequence": 518,
+      "symbol": "6113",
+      "name": "亞矽",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 54000,
+      "dayTradeBuyValue": 1323450,
+      "dayTradeSellValue": 1318050
+    },
+    {
+      "sequence": 519,
+      "symbol": "6114",
+      "name": "久威",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 23300,
+      "dayTradeSellValue": 23250
+    },
+    {
+      "sequence": 520,
+      "symbol": "6118",
+      "name": "建達",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 13000,
+      "dayTradeBuyValue": 209800,
+      "dayTradeSellValue": 209800
+    },
+    {
+      "sequence": 521,
+      "symbol": "6121",
+      "name": "新普",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 94000,
+      "dayTradeBuyValue": 36031000,
+      "dayTradeSellValue": 36113500
+    },
+    {
+      "sequence": 522,
+      "symbol": "6122",
+      "name": "擎邦",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 960000,
+      "dayTradeBuyValue": 60112300,
+      "dayTradeSellValue": 60432700
+    },
+    {
+      "sequence": 523,
+      "symbol": "6123",
+      "name": "上奇",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6000,
+      "dayTradeBuyValue": 256850,
+      "dayTradeSellValue": 257200
+    },
+    {
+      "sequence": 524,
+      "symbol": "6124",
+      "name": "業強",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 525,
+      "symbol": "6125",
+      "name": "廣運",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 142000,
+      "dayTradeBuyValue": 7197400,
+      "dayTradeSellValue": 7211900
+    },
+    {
+      "sequence": 526,
+      "symbol": "6126",
+      "name": "信音",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1652000,
+      "dayTradeBuyValue": 55607600,
+      "dayTradeSellValue": 55855800
+    },
+    {
+      "sequence": 527,
+      "symbol": "6127",
+      "name": "九豪",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5868000,
+      "dayTradeBuyValue": 343648900,
+      "dayTradeSellValue": 343901300
+    },
+    {
+      "sequence": 528,
+      "symbol": "6130",
+      "name": "上亞科技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 51000,
+      "dayTradeBuyValue": 1165250,
+      "dayTradeSellValue": 1166600
+    },
+    {
+      "sequence": 529,
+      "symbol": "6134",
+      "name": "萬旭",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 539000,
+      "dayTradeBuyValue": 15891500,
+      "dayTradeSellValue": 15987150
+    },
+    {
+      "sequence": 530,
+      "symbol": "6138",
+      "name": "茂達",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 490000,
+      "dayTradeBuyValue": 142917500,
+      "dayTradeSellValue": 142924500
+    },
+    {
+      "sequence": 531,
+      "symbol": "6143",
+      "name": "振曜",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 63000,
+      "dayTradeBuyValue": 5062800,
+      "dayTradeSellValue": 5050000
+    },
+    {
+      "sequence": 532,
+      "symbol": "6146",
+      "name": "耕興",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 10000,
+      "dayTradeBuyValue": 1823500,
+      "dayTradeSellValue": 1823000
+    },
+    {
+      "sequence": 533,
+      "symbol": "6147",
+      "name": "頎邦",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 13477000,
+      "dayTradeBuyValue": 2954088000,
+      "dayTradeSellValue": 2958536500
+    },
+    {
+      "sequence": 534,
+      "symbol": "6148",
+      "name": "驊宏資",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 314000,
+      "dayTradeBuyValue": 11583250,
+      "dayTradeSellValue": 11619800
+    },
+    {
+      "sequence": 535,
+      "symbol": "6150",
+      "name": "撼訊",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 144000,
+      "dayTradeBuyValue": 9665500,
+      "dayTradeSellValue": 9667900
+    },
+    {
+      "sequence": 536,
+      "symbol": "6151",
+      "name": "晉倫",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6000,
+      "dayTradeBuyValue": 210200,
+      "dayTradeSellValue": 211650
+    },
+    {
+      "sequence": 537,
+      "symbol": "6154",
+      "name": "順發",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 538,
+      "symbol": "6156",
+      "name": "松上",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 122000,
+      "dayTradeBuyValue": 2699050,
+      "dayTradeSellValue": 2708200
+    },
+    {
+      "sequence": 539,
+      "symbol": "6158",
+      "name": "禾昌",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 14000,
+      "dayTradeBuyValue": 246700,
+      "dayTradeSellValue": 246850
+    },
+    {
+      "sequence": 540,
+      "symbol": "6161",
+      "name": "捷波",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 196350,
+      "dayTradeSellValue": 196650
+    },
+    {
+      "sequence": 541,
+      "symbol": "6163",
+      "name": "華電網",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1652000,
+      "dayTradeBuyValue": 69600250,
+      "dayTradeSellValue": 69961600
+    },
+    {
+      "sequence": 542,
+      "symbol": "6167",
+      "name": "久正",
+      "sellFirstSuspensionFlag": "＊",
+      "dayTradeShares": 9000,
+      "dayTradeBuyValue": 92250,
+      "dayTradeSellValue": 92700
+    },
+    {
+      "sequence": 543,
+      "symbol": "6170",
+      "name": "統振",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 544,
+      "symbol": "6171",
+      "name": "大城地產",
+      "sellFirstSuspensionFlag": "＊",
+      "dayTradeShares": 10000,
+      "dayTradeBuyValue": 241500,
+      "dayTradeSellValue": 241650
+    },
+    {
+      "sequence": 545,
+      "symbol": "6173",
+      "name": "信昌電",
+      "sellFirstSuspensionFlag": "＊",
+      "dayTradeShares": 4165000,
+      "dayTradeBuyValue": 1283042500,
+      "dayTradeSellValue": 1259764500
+    },
+    {
+      "sequence": 546,
+      "symbol": "6174",
+      "name": "安碁",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 199000,
+      "dayTradeBuyValue": 12039500,
+      "dayTradeSellValue": 12039500
+    },
+    {
+      "sequence": 547,
+      "symbol": "6175",
+      "name": "立敦",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 864000,
+      "dayTradeBuyValue": 66596400,
+      "dayTradeSellValue": 66514300
+    },
+    {
+      "sequence": 548,
+      "symbol": "6179",
+      "name": "亞通",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1690000,
+      "dayTradeBuyValue": 60839250,
+      "dayTradeSellValue": 60905950
+    },
+    {
+      "sequence": 549,
+      "symbol": "6180",
+      "name": "橘子",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 57000,
+      "dayTradeBuyValue": 2342350,
+      "dayTradeSellValue": 2347400
+    },
+    {
+      "sequence": 550,
+      "symbol": "6182",
+      "name": "合晶",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 45527000,
+      "dayTradeBuyValue": 6138993500,
+      "dayTradeSellValue": 6139816000
+    },
+    {
+      "sequence": 551,
+      "symbol": "6185",
+      "name": "幃翔",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 12450,
+      "dayTradeSellValue": 12450
+    },
+    {
+      "sequence": 552,
+      "symbol": "6186",
+      "name": "新潤",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 17000,
+      "dayTradeBuyValue": 486450,
+      "dayTradeSellValue": 486450
+    },
+    {
+      "sequence": 553,
+      "symbol": "6187",
+      "name": "萬潤",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1634000,
+      "dayTradeBuyValue": 2341405000,
+      "dayTradeSellValue": 2368335000
+    },
+    {
+      "sequence": 554,
+      "symbol": "6188",
+      "name": "廣明",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 113000,
+      "dayTradeBuyValue": 7010500,
+      "dayTradeSellValue": 7012900
+    },
+    {
+      "sequence": 555,
+      "symbol": "6190",
+      "name": "萬泰科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2150000,
+      "dayTradeBuyValue": 162912500,
+      "dayTradeSellValue": 165192800
+    },
+    {
+      "sequence": 556,
+      "symbol": "6194",
+      "name": "育富",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 557,
+      "symbol": "6195",
+      "name": "詩肯",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 558,
+      "symbol": "6199",
+      "name": "天品",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6249000,
+      "dayTradeBuyValue": 829581500,
+      "dayTradeSellValue": 829978500
+    },
+    {
+      "sequence": 559,
+      "symbol": "6203",
+      "name": "海韻電",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 560,
+      "symbol": "6204",
+      "name": "艾華",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 374000,
+      "dayTradeBuyValue": 42320000,
+      "dayTradeSellValue": 42475500
+    },
+    {
+      "sequence": 561,
+      "symbol": "6207",
+      "name": "雷科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 9105000,
+      "dayTradeBuyValue": 1357605000,
+      "dayTradeSellValue": 1362602000
+    },
+    {
+      "sequence": 562,
+      "symbol": "6208",
+      "name": "日揚",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 63000,
+      "dayTradeBuyValue": 5082500,
+      "dayTradeSellValue": 5088800
+    },
+    {
+      "sequence": 563,
+      "symbol": "6212",
+      "name": "理銘",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 564,
+      "symbol": "6217",
+      "name": "中探針",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1053000,
+      "dayTradeBuyValue": 188352000,
+      "dayTradeSellValue": 188509500
+    },
+    {
+      "sequence": 565,
+      "symbol": "6219",
+      "name": "富旺",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 36150,
+      "dayTradeSellValue": 36600
+    },
+    {
+      "sequence": 566,
+      "symbol": "6220",
+      "name": "岳豐",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 12000,
+      "dayTradeBuyValue": 303900,
+      "dayTradeSellValue": 305950
+    },
+    {
+      "sequence": 567,
+      "symbol": "6221",
+      "name": "晉泰",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 278000,
+      "dayTradeBuyValue": 8346850,
+      "dayTradeSellValue": 8385000
+    },
+    {
+      "sequence": 568,
+      "symbol": "6222",
+      "name": "立軒",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 38800,
+      "dayTradeSellValue": 39250
+    },
+    {
+      "sequence": 569,
+      "symbol": "6223",
+      "name": "旺矽",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 342000,
+      "dayTradeBuyValue": 1848620000,
+      "dayTradeSellValue": 1857255000
+    },
+    {
+      "sequence": 570,
+      "symbol": "6227",
+      "name": "茂綸",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1448000,
+      "dayTradeBuyValue": 211549500,
+      "dayTradeSellValue": 211832000
+    },
+    {
+      "sequence": 571,
+      "symbol": "6229",
+      "name": "研通",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 11000,
+      "dayTradeBuyValue": 265950,
+      "dayTradeSellValue": 265950
+    },
+    {
+      "sequence": 572,
+      "symbol": "6231",
+      "name": "系微",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 88000,
+      "dayTradeBuyValue": 20931500,
+      "dayTradeSellValue": 20928000
+    },
+    {
+      "sequence": 573,
+      "symbol": "6233",
+      "name": "旺玖",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 20000,
+      "dayTradeBuyValue": 472200,
+      "dayTradeSellValue": 471700
+    },
+    {
+      "sequence": 574,
+      "symbol": "6234",
+      "name": "高僑",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 239000,
+      "dayTradeBuyValue": 9415050,
+      "dayTradeSellValue": 9432150
+    },
+    {
+      "sequence": 575,
+      "symbol": "6237",
+      "name": "驊訊",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 46000,
+      "dayTradeBuyValue": 1662300,
+      "dayTradeSellValue": 1664950
+    },
+    {
+      "sequence": 576,
+      "symbol": "6240",
+      "name": "松崗",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 8000,
+      "dayTradeBuyValue": 208650,
+      "dayTradeSellValue": 208900
+    },
+    {
+      "sequence": 577,
+      "symbol": "6244",
+      "name": "茂迪",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 983000,
+      "dayTradeBuyValue": 23329200,
+      "dayTradeSellValue": 23179600
+    },
+    {
+      "sequence": 578,
+      "symbol": "6245",
+      "name": "立端",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 163000,
+      "dayTradeBuyValue": 14517400,
+      "dayTradeSellValue": 14511600
+    },
+    {
+      "sequence": 579,
+      "symbol": "6246",
+      "name": "臺龍",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 580,
+      "symbol": "6248",
+      "name": "沛波",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 581,
+      "symbol": "6259",
+      "name": "百徽",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 182000,
+      "dayTradeBuyValue": 6024200,
+      "dayTradeSellValue": 6017600
+    },
+    {
+      "sequence": 582,
+      "symbol": "6261",
+      "name": "久元",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 50000,
+      "dayTradeBuyValue": 3924800,
+      "dayTradeSellValue": 3926300
+    },
+    {
+      "sequence": 583,
+      "symbol": "6263",
+      "name": "普萊德",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 40000,
+      "dayTradeBuyValue": 6660000,
+      "dayTradeSellValue": 6668000
+    },
+    {
+      "sequence": 584,
+      "symbol": "6265",
+      "name": "方土昶",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 325000,
+      "dayTradeBuyValue": 16089250,
+      "dayTradeSellValue": 16060800
+    },
+    {
+      "sequence": 585,
+      "symbol": "6266",
+      "name": "泰詠",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 487000,
+      "dayTradeBuyValue": 13312900,
+      "dayTradeSellValue": 13308000
+    },
+    {
+      "sequence": 586,
+      "symbol": "6270",
+      "name": "倍微",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 48000,
+      "dayTradeBuyValue": 1468550,
+      "dayTradeSellValue": 1475850
+    },
+    {
+      "sequence": 587,
+      "symbol": "6274",
+      "name": "台燿",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4655000,
+      "dayTradeBuyValue": 8043095000,
+      "dayTradeSellValue": 8115835000
+    },
+    {
+      "sequence": 588,
+      "symbol": "6275",
+      "name": "元山",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 35000,
+      "dayTradeBuyValue": 1668050,
+      "dayTradeSellValue": 1672150
+    },
+    {
+      "sequence": 589,
+      "symbol": "6279",
+      "name": "胡連",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 65000,
+      "dayTradeBuyValue": 7610500,
+      "dayTradeSellValue": 7608000
+    },
+    {
+      "sequence": 590,
+      "symbol": "6284",
+      "name": "佳邦",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1475000,
+      "dayTradeBuyValue": 120401000,
+      "dayTradeSellValue": 120851500
+    },
+    {
+      "sequence": 591,
+      "symbol": "6290",
+      "name": "良維",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1077000,
+      "dayTradeBuyValue": 302063000,
+      "dayTradeSellValue": 302596500
+    },
+    {
+      "sequence": 592,
+      "symbol": "6291",
+      "name": "沛亨",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 254000,
+      "dayTradeBuyValue": 125401000,
+      "dayTradeSellValue": 125435000
+    },
+    {
+      "sequence": 593,
+      "symbol": "6292",
+      "name": "迅德",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 296000,
+      "dayTradeBuyValue": 21064800,
+      "dayTradeSellValue": 21089700
+    },
+    {
+      "sequence": 594,
+      "symbol": "6294",
+      "name": "智基",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 28050,
+      "dayTradeSellValue": 28050
+    },
+    {
+      "sequence": 595,
+      "symbol": "6411",
+      "name": "晶焱",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 90000,
+      "dayTradeBuyValue": 7168300,
+      "dayTradeSellValue": 7172900
+    },
+    {
+      "sequence": 596,
+      "symbol": "6417",
+      "name": "韋僑",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 36000,
+      "dayTradeBuyValue": 3720500,
+      "dayTradeSellValue": 3714000
+    },
+    {
+      "sequence": 597,
+      "symbol": "6418",
+      "name": "詠昇",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 16000,
+      "dayTradeBuyValue": 552550,
+      "dayTradeSellValue": 556400
+    },
+    {
+      "sequence": 598,
+      "symbol": "6419",
+      "name": "京晨科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 681000,
+      "dayTradeBuyValue": 115414500,
+      "dayTradeSellValue": 116257500
+    },
+    {
+      "sequence": 599,
+      "symbol": "6423",
+      "name": "億而得",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 36000,
+      "dayTradeBuyValue": 3436200,
+      "dayTradeSellValue": 3404900
+    },
+    {
+      "sequence": 600,
+      "symbol": "6425",
+      "name": "易發",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 181000,
+      "dayTradeBuyValue": 14119100,
+      "dayTradeSellValue": 14075600
+    },
+    {
+      "sequence": 601,
+      "symbol": "6432",
+      "name": "今展科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 619000,
+      "dayTradeBuyValue": 41644300,
+      "dayTradeSellValue": 41608100
+    },
+    {
+      "sequence": 602,
+      "symbol": "6435",
+      "name": "大中",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1205000,
+      "dayTradeBuyValue": 343631000,
+      "dayTradeSellValue": 344755500
+    },
+    {
+      "sequence": 603,
+      "symbol": "6441",
+      "name": "廣錠",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 150000,
+      "dayTradeBuyValue": 3851300,
+      "dayTradeSellValue": 3833800
+    },
+    {
+      "sequence": 604,
+      "symbol": "6462",
+      "name": "神盾",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 172000,
+      "dayTradeBuyValue": 17942000,
+      "dayTradeSellValue": 17983500
+    },
+    {
+      "sequence": 605,
+      "symbol": "6465",
+      "name": "威潤",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 13000,
+      "dayTradeBuyValue": 539100,
+      "dayTradeSellValue": 538850
+    },
+    {
+      "sequence": 606,
+      "symbol": "6469",
+      "name": "大樹",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 76000,
+      "dayTradeBuyValue": 4834000,
+      "dayTradeSellValue": 4846500
+    },
+    {
+      "sequence": 607,
+      "symbol": "6470",
+      "name": "宇智",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 84600,
+      "dayTradeSellValue": 85300
+    },
+    {
+      "sequence": 608,
+      "symbol": "6474",
+      "name": "華豫寧",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 107250,
+      "dayTradeSellValue": 106800
+    },
+    {
+      "sequence": 609,
+      "symbol": "6482",
+      "name": "弘煜科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 23500,
+      "dayTradeSellValue": 23500
+    },
+    {
+      "sequence": 610,
+      "symbol": "6485",
+      "name": "點序",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 657000,
+      "dayTradeBuyValue": 52853500,
+      "dayTradeSellValue": 53046300
+    },
+    {
+      "sequence": 611,
+      "symbol": "6486",
+      "name": "互動",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 113000,
+      "dayTradeBuyValue": 8683300,
+      "dayTradeSellValue": 8787400
+    },
+    {
+      "sequence": 612,
+      "symbol": "6488",
+      "name": "環球晶",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 8424000,
+      "dayTradeBuyValue": 10145520000,
+      "dayTradeSellValue": 10159275000
+    },
+    {
+      "sequence": 613,
+      "symbol": "6494",
+      "name": "九齊",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 12000,
+      "dayTradeBuyValue": 631300,
+      "dayTradeSellValue": 635000
+    },
+    {
+      "sequence": 614,
+      "symbol": "6496",
+      "name": "科懋",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 94950,
+      "dayTradeSellValue": 96850
+    },
+    {
+      "sequence": 615,
+      "symbol": "6498",
+      "name": "久禾光",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 29000,
+      "dayTradeBuyValue": 2011100,
+      "dayTradeSellValue": 2016100
+    },
+    {
+      "sequence": 616,
+      "symbol": "6499",
+      "name": "益安",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 127000,
+      "dayTradeBuyValue": 10218500,
+      "dayTradeSellValue": 10186500
+    },
+    {
+      "sequence": 617,
+      "symbol": "6506",
+      "name": "雙邦",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 36800,
+      "dayTradeSellValue": 37150
+    },
+    {
+      "sequence": 618,
+      "symbol": "6508",
+      "name": "惠光",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 132100,
+      "dayTradeSellValue": 131100
+    },
+    {
+      "sequence": 619,
+      "symbol": "6509",
+      "name": "聚和",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 288000,
+      "dayTradeBuyValue": 14356350,
+      "dayTradeSellValue": 14368750
+    },
+    {
+      "sequence": 620,
+      "symbol": "6510",
+      "name": "精測",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 462000,
+      "dayTradeBuyValue": 1432960000,
+      "dayTradeSellValue": 1439620000
+    },
+    {
+      "sequence": 621,
+      "symbol": "6516",
+      "name": "勤崴國際",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 169000,
+      "dayTradeSellValue": 169600
+    },
+    {
+      "sequence": 622,
+      "symbol": "6517",
+      "name": "保勝光學",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 106000,
+      "dayTradeBuyValue": 7110300,
+      "dayTradeSellValue": 7103200
+    },
+    {
+      "sequence": 623,
+      "symbol": "6523",
+      "name": "達爾膚",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 178300,
+      "dayTradeSellValue": 178200
+    },
+    {
+      "sequence": 624,
+      "symbol": "6527",
+      "name": "明達醫",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 74300,
+      "dayTradeSellValue": 74300
+    },
+    {
+      "sequence": 625,
+      "symbol": "6530",
+      "name": "創威",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 351000,
+      "dayTradeBuyValue": 35220700,
+      "dayTradeSellValue": 35167000
+    },
+    {
+      "sequence": 626,
+      "symbol": "6532",
+      "name": "瑞耘",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 514000,
+      "dayTradeBuyValue": 59146500,
+      "dayTradeSellValue": 59247000
+    },
+    {
+      "sequence": 627,
+      "symbol": "6538",
+      "name": "倉和",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 666000,
+      "dayTradeBuyValue": 230698500,
+      "dayTradeSellValue": 234713000
+    },
+    {
+      "sequence": 628,
+      "symbol": "6542",
+      "name": "隆中",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 629,
+      "symbol": "6546",
+      "name": "正基",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 32000,
+      "dayTradeBuyValue": 1949300,
+      "dayTradeSellValue": 1950100
+    },
+    {
+      "sequence": 630,
+      "symbol": "6547",
+      "name": "高端疫苗",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 401000,
+      "dayTradeBuyValue": 24372300,
+      "dayTradeSellValue": 24328500
+    },
+    {
+      "sequence": 631,
+      "symbol": "6548",
+      "name": "長科\\*",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3187000,
+      "dayTradeBuyValue": 247653600,
+      "dayTradeSellValue": 247841600
+    },
+    {
+      "sequence": 632,
+      "symbol": "6560",
+      "name": "欣普羅",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 125200,
+      "dayTradeSellValue": 125850
+    },
+    {
+      "sequence": 633,
+      "symbol": "6561",
+      "name": "是方",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 941500,
+      "dayTradeSellValue": 942000
+    },
+    {
+      "sequence": 634,
+      "symbol": "6568",
+      "name": "宏觀",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 22000,
+      "dayTradeBuyValue": 3046500,
+      "dayTradeSellValue": 3062500
+    },
+    {
+      "sequence": 635,
+      "symbol": "6569",
+      "name": "醫揚",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 91700,
+      "dayTradeSellValue": 91800
+    },
+    {
+      "sequence": 636,
+      "symbol": "6570",
+      "name": "維田",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 10000,
+      "dayTradeBuyValue": 475050,
+      "dayTradeSellValue": 476350
+    },
+    {
+      "sequence": 637,
+      "symbol": "6577",
+      "name": "勁豐",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 638,
+      "symbol": "6578",
+      "name": "達邦蛋白",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 16400,
+      "dayTradeSellValue": 16450
+    },
+    {
+      "sequence": 639,
+      "symbol": "6584",
+      "name": "南俊國際",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 258000,
+      "dayTradeBuyValue": 139021000,
+      "dayTradeSellValue": 139741000
+    },
+    {
+      "sequence": 640,
+      "symbol": "6588",
+      "name": "東典光電",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 304000,
+      "dayTradeBuyValue": 34351500,
+      "dayTradeSellValue": 34384000
+    },
+    {
+      "sequence": 641,
+      "symbol": "6593",
+      "name": "台灣銘板",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 31900,
+      "dayTradeSellValue": 31650
+    },
+    {
+      "sequence": 642,
+      "symbol": "6596",
+      "name": "寬宏藝術",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 7000,
+      "dayTradeBuyValue": 674000,
+      "dayTradeSellValue": 673900
+    },
+    {
+      "sequence": 643,
+      "symbol": "6603",
+      "name": "富強鑫",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1172000,
+      "dayTradeBuyValue": 33671150,
+      "dayTradeSellValue": 33701900
+    },
+    {
+      "sequence": 644,
+      "symbol": "6609",
+      "name": "瀧澤科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 78200,
+      "dayTradeSellValue": 78350
+    },
+    {
+      "sequence": 645,
+      "symbol": "6612",
+      "name": "奈米醫材",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 9000,
+      "dayTradeBuyValue": 676500,
+      "dayTradeSellValue": 675700
+    },
+    {
+      "sequence": 646,
+      "symbol": "6613",
+      "name": "朋億\\*",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 76000,
+      "dayTradeBuyValue": 21559500,
+      "dayTradeSellValue": 21582000
+    },
+    {
+      "sequence": 647,
+      "symbol": "6615",
+      "name": "慧智",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 9000,
+      "dayTradeBuyValue": 302700,
+      "dayTradeSellValue": 305600
+    },
+    {
+      "sequence": 648,
+      "symbol": "6616",
+      "name": "特昇-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 649,
+      "symbol": "6617",
+      "name": "共信-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 192000,
+      "dayTradeBuyValue": 24666000,
+      "dayTradeSellValue": 24710500
+    },
+    {
+      "sequence": 650,
+      "symbol": "6620",
+      "name": "漢達",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1799000,
+      "dayTradeBuyValue": 263622500,
+      "dayTradeSellValue": 263301500
+    },
+    {
+      "sequence": 651,
+      "symbol": "6624",
+      "name": "萬年清",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 39500,
+      "dayTradeSellValue": 39500
+    },
+    {
+      "sequence": 652,
+      "symbol": "6629",
+      "name": "泰金-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 653,
+      "symbol": "6637",
+      "name": "醫影",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 53500,
+      "dayTradeSellValue": 54100
+    },
+    {
+      "sequence": 654,
+      "symbol": "6640",
+      "name": "均華",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 190000,
+      "dayTradeBuyValue": 218430000,
+      "dayTradeSellValue": 221280000
+    },
+    {
+      "sequence": 655,
+      "symbol": "6642",
+      "name": "富致",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 43000,
+      "dayTradeBuyValue": 3569700,
+      "dayTradeSellValue": 3581400
+    },
+    {
+      "sequence": 656,
+      "symbol": "6643",
+      "name": "M31",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 259000,
+      "dayTradeBuyValue": 132616000,
+      "dayTradeSellValue": 132895000
+    },
+    {
+      "sequence": 657,
+      "symbol": "6649",
+      "name": "台生材",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 658,
+      "symbol": "6651",
+      "name": "全宇昕",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 213000,
+      "dayTradeBuyValue": 33030000,
+      "dayTradeSellValue": 33089500
+    },
+    {
+      "sequence": 659,
+      "symbol": "6654",
+      "name": "天正國際",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 880000,
+      "dayTradeSellValue": 876000
+    },
+    {
+      "sequence": 660,
+      "symbol": "6664",
+      "name": "群翊",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 279000,
+      "dayTradeBuyValue": 108436500,
+      "dayTradeSellValue": 108854000
+    },
+    {
+      "sequence": 661,
+      "symbol": "6667",
+      "name": "信紘科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 111000,
+      "dayTradeBuyValue": 29099500,
+      "dayTradeSellValue": 29163500
+    },
+    {
+      "sequence": 662,
+      "symbol": "6679",
+      "name": "鈺太",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 36000,
+      "dayTradeBuyValue": 7504500,
+      "dayTradeSellValue": 7500500
+    },
+    {
+      "sequence": 663,
+      "symbol": "6680",
+      "name": "鑫創電子",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 664,
+      "symbol": "6683",
+      "name": "雍智科技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 436000,
+      "dayTradeBuyValue": 634815000,
+      "dayTradeSellValue": 636305000
+    },
+    {
+      "sequence": 665,
+      "symbol": "6684",
+      "name": "安格",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 20000,
+      "dayTradeBuyValue": 986850,
+      "dayTradeSellValue": 993300
+    },
+    {
+      "sequence": 666,
+      "symbol": "6690",
+      "name": "安碁資訊",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 34000,
+      "dayTradeBuyValue": 5972500,
+      "dayTradeSellValue": 5979000
+    },
+    {
+      "sequence": 667,
+      "symbol": "6692",
+      "name": "進能服",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 23250,
+      "dayTradeSellValue": 23450
+    },
+    {
+      "sequence": 668,
+      "symbol": "6693",
+      "name": "廣閎科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 812000,
+      "dayTradeBuyValue": 172244500,
+      "dayTradeSellValue": 172882500
+    },
+    {
+      "sequence": 669,
+      "symbol": "6697",
+      "name": "東捷資訊",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 82250,
+      "dayTradeSellValue": 83050
+    },
+    {
+      "sequence": 670,
+      "symbol": "6703",
+      "name": "軒郁",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 199900,
+      "dayTradeSellValue": 201000
+    },
+    {
+      "sequence": 671,
+      "symbol": "6708",
+      "name": "天擎",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 26000,
+      "dayTradeBuyValue": 1783500,
+      "dayTradeSellValue": 1783600
+    },
+    {
+      "sequence": 672,
+      "symbol": "6712",
+      "name": "長聖",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 49000,
+      "dayTradeBuyValue": 7857000,
+      "dayTradeSellValue": 7909500
+    },
+    {
+      "sequence": 673,
+      "symbol": "6716",
+      "name": "應廣",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 191000,
+      "dayTradeBuyValue": 24095500,
+      "dayTradeSellValue": 24452500
+    },
+    {
+      "sequence": 674,
+      "symbol": "6720",
+      "name": "久昌",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 675,
+      "symbol": "6725",
+      "name": "矽科宏晟",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 12000,
+      "dayTradeBuyValue": 2659500,
+      "dayTradeSellValue": 2663500
+    },
+    {
+      "sequence": 676,
+      "symbol": "6727",
+      "name": "亞泰金屬",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 964000,
+      "dayTradeBuyValue": 508736000,
+      "dayTradeSellValue": 510875000
+    },
+    {
+      "sequence": 677,
+      "symbol": "6728",
+      "name": "上洋",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 8000,
+      "dayTradeBuyValue": 858500,
+      "dayTradeSellValue": 865500
+    },
+    {
+      "sequence": 678,
+      "symbol": "6730",
+      "name": "常廣",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 32250,
+      "dayTradeSellValue": 31950
+    },
+    {
+      "sequence": 679,
+      "symbol": "6732",
+      "name": "昇佳電子",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 27000,
+      "dayTradeBuyValue": 4146000,
+      "dayTradeSellValue": 4170500
+    },
+    {
+      "sequence": 680,
+      "symbol": "6735",
+      "name": "美達科技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 7000,
+      "dayTradeBuyValue": 466500,
+      "dayTradeSellValue": 468300
+    },
+    {
+      "sequence": 681,
+      "symbol": "6739",
+      "name": "竹陞科技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 84000,
+      "dayTradeBuyValue": 96550000,
+      "dayTradeSellValue": 96515000
+    },
+    {
+      "sequence": 682,
+      "symbol": "6741",
+      "name": "91APP\\*-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 16000,
+      "dayTradeBuyValue": 878000,
+      "dayTradeSellValue": 880000
+    },
+    {
+      "sequence": 683,
+      "symbol": "6751",
+      "name": "智聯服務",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 684,
+      "symbol": "6752",
+      "name": "叡揚",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 96600,
+      "dayTradeSellValue": 97000
+    },
+    {
+      "sequence": 685,
+      "symbol": "6761",
+      "name": "穩得",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 57000,
+      "dayTradeBuyValue": 9633000,
+      "dayTradeSellValue": 9643000
+    },
+    {
+      "sequence": 686,
+      "symbol": "6763",
+      "name": "綠界科技\\*",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 12000,
+      "dayTradeBuyValue": 495050,
+      "dayTradeSellValue": 494550
+    },
+    {
+      "sequence": 687,
+      "symbol": "6785",
+      "name": "昱展新藥",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6000,
+      "dayTradeBuyValue": 566100,
+      "dayTradeSellValue": 566800
+    },
+    {
+      "sequence": 688,
+      "symbol": "6788",
+      "name": "華景電",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 328000,
+      "dayTradeBuyValue": 122625000,
+      "dayTradeSellValue": 123384000
+    },
+    {
+      "sequence": 689,
+      "symbol": "6791",
+      "name": "虎門科技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 99500,
+      "dayTradeSellValue": 99500
+    },
+    {
+      "sequence": 690,
+      "symbol": "6803",
+      "name": "崑鼎",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 795000,
+      "dayTradeSellValue": 795000
+    },
+    {
+      "sequence": 691,
+      "symbol": "6804",
+      "name": "明係",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 55400,
+      "dayTradeSellValue": 55550
+    },
+    {
+      "sequence": 692,
+      "symbol": "6811",
+      "name": "宏碁資訊",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 120000,
+      "dayTradeBuyValue": 29271000,
+      "dayTradeSellValue": 29375500
+    },
+    {
+      "sequence": 693,
+      "symbol": "6821",
+      "name": "聯寶",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 203000,
+      "dayTradeBuyValue": 9444550,
+      "dayTradeSellValue": 9468900
+    },
+    {
+      "sequence": 694,
+      "symbol": "6823",
+      "name": "濾能",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6000,
+      "dayTradeBuyValue": 367700,
+      "dayTradeSellValue": 368100
+    },
+    {
+      "sequence": 695,
+      "symbol": "6829",
+      "name": "千附精密",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 105000,
+      "dayTradeBuyValue": 21882000,
+      "dayTradeSellValue": 21790500
+    },
+    {
+      "sequence": 696,
+      "symbol": "6840",
+      "name": "東研信超",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 95000,
+      "dayTradeBuyValue": 9311100,
+      "dayTradeSellValue": 9322500
+    },
+    {
+      "sequence": 697,
+      "symbol": "6841",
+      "name": "長佳智能",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 37000,
+      "dayTradeBuyValue": 2072500,
+      "dayTradeSellValue": 2068600
+    },
+    {
+      "sequence": 698,
+      "symbol": "6843",
+      "name": "進典",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 114600,
+      "dayTradeSellValue": 113900
+    },
+    {
+      "sequence": 699,
+      "symbol": "6846",
+      "name": "綠茵",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 700,
+      "symbol": "6859",
+      "name": "伯特光",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 609000,
+      "dayTradeSellValue": 616000
+    },
+    {
+      "sequence": 701,
+      "symbol": "6865",
+      "name": "偉康科技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 54250,
+      "dayTradeSellValue": 54750
+    },
+    {
+      "sequence": 702,
+      "symbol": "6870",
+      "name": "騰雲",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 13000,
+      "dayTradeBuyValue": 4102500,
+      "dayTradeSellValue": 4133500
+    },
+    {
+      "sequence": 703,
+      "symbol": "6874",
+      "name": "倍力",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 140800,
+      "dayTradeSellValue": 140800
+    },
+    {
+      "sequence": 704,
+      "symbol": "6877",
+      "name": "鏵友益",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 267000,
+      "dayTradeBuyValue": 38134500,
+      "dayTradeSellValue": 38544500
+    },
+    {
+      "sequence": 705,
+      "symbol": "6894",
+      "name": "衛司特",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 17000,
+      "dayTradeBuyValue": 6078500,
+      "dayTradeSellValue": 6133500
+    },
+    {
+      "sequence": 706,
+      "symbol": "6895",
+      "name": "宏碩系統",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 23000,
+      "dayTradeBuyValue": 3534500,
+      "dayTradeSellValue": 3531500
+    },
+    {
+      "sequence": 707,
+      "symbol": "6899",
+      "name": "創為精密",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 708,
+      "symbol": "6903",
+      "name": "巨漢",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 142000,
+      "dayTradeBuyValue": 45947500,
+      "dayTradeSellValue": 46293500
+    },
+    {
+      "sequence": 709,
+      "symbol": "6904",
+      "name": "伯鑫",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 710,
+      "symbol": "6907",
+      "name": "雅特力-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 784000,
+      "dayTradeBuyValue": 154854000,
+      "dayTradeSellValue": 154394500
+    },
+    {
+      "sequence": 711,
+      "symbol": "6910",
+      "name": "德鴻",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 52150,
+      "dayTradeSellValue": 51700
+    },
+    {
+      "sequence": 712,
+      "symbol": "6913",
+      "name": "鴻呈",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 21000,
+      "dayTradeBuyValue": 2731000,
+      "dayTradeSellValue": 2732000
+    },
+    {
+      "sequence": 713,
+      "symbol": "6922",
+      "name": "宸曜",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 45000,
+      "dayTradeBuyValue": 9547500,
+      "dayTradeSellValue": 9622000
+    },
+    {
+      "sequence": 714,
+      "symbol": "6925",
+      "name": "意藍",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 405000,
+      "dayTradeBuyValue": 28951800,
+      "dayTradeSellValue": 28928500
+    },
+    {
+      "sequence": 715,
+      "symbol": "6953",
+      "name": "家碩",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 104000,
+      "dayTradeBuyValue": 27256000,
+      "dayTradeSellValue": 27078000
+    },
+    {
+      "sequence": 716,
+      "symbol": "6961",
+      "name": "旅天下",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 717,
+      "symbol": "6967",
+      "name": "汎瑋材料",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 20000,
+      "dayTradeBuyValue": 1411700,
+      "dayTradeSellValue": 1416000
+    },
+    {
+      "sequence": 718,
+      "symbol": "6968",
+      "name": "萬達寵物",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4000,
+      "dayTradeBuyValue": 164750,
+      "dayTradeSellValue": 164800
+    },
+    {
+      "sequence": 719,
+      "symbol": "6971",
+      "name": "惠民實業",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 8000,
+      "dayTradeBuyValue": 190950,
+      "dayTradeSellValue": 190550
+    },
+    {
+      "sequence": 720,
+      "symbol": "6982",
+      "name": "大井泵浦",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 45050,
+      "dayTradeSellValue": 45000
+    },
+    {
+      "sequence": 721,
+      "symbol": "6983",
+      "name": "華洋精機",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 29000,
+      "dayTradeBuyValue": 10348500,
+      "dayTradeSellValue": 10338000
+    },
+    {
+      "sequence": 722,
+      "symbol": "6996",
+      "name": "力領科技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6000,
+      "dayTradeBuyValue": 1005000,
+      "dayTradeSellValue": 1006000
+    },
+    {
+      "sequence": 723,
+      "symbol": "7402",
+      "name": "邑錡",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 11000,
+      "dayTradeBuyValue": 1097900,
+      "dayTradeSellValue": 1099000
+    },
+    {
+      "sequence": 724,
+      "symbol": "7547",
+      "name": "碩網",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 13000,
+      "dayTradeBuyValue": 829800,
+      "dayTradeSellValue": 829900
+    },
+    {
+      "sequence": 725,
+      "symbol": "7556",
+      "name": "意德士",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 73000,
+      "dayTradeBuyValue": 21096000,
+      "dayTradeSellValue": 21326000
+    },
+    {
+      "sequence": 726,
+      "symbol": "7584",
+      "name": "樂意",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 28500,
+      "dayTradeSellValue": 28500
+    },
+    {
+      "sequence": 727,
+      "symbol": "7642",
+      "name": "昶瑞機電",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6000,
+      "dayTradeBuyValue": 406500,
+      "dayTradeSellValue": 407800
+    },
+    {
+      "sequence": 728,
+      "symbol": "7703",
+      "name": "銳澤",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 7000,
+      "dayTradeBuyValue": 1433500,
+      "dayTradeSellValue": 1436000
+    },
+    {
+      "sequence": 729,
+      "symbol": "7704",
+      "name": "明遠精密",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 181200,
+      "dayTradeSellValue": 181100
+    },
+    {
+      "sequence": 730,
+      "symbol": "7709",
+      "name": "榮田",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 47000,
+      "dayTradeBuyValue": 4085500,
+      "dayTradeSellValue": 4090300
+    },
+    {
+      "sequence": 731,
+      "symbol": "7712",
+      "name": "博盛半導體",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 331000,
+      "dayTradeBuyValue": 57846000,
+      "dayTradeSellValue": 58096500
+    },
+    {
+      "sequence": 732,
+      "symbol": "7713",
+      "name": "威力德生醫",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 733,
+      "symbol": "7714",
+      "name": "創泓科技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 16000,
+      "dayTradeBuyValue": 2716500,
+      "dayTradeSellValue": 2715000
+    },
+    {
+      "sequence": 734,
+      "symbol": "7715",
+      "name": "裕山",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 13000,
+      "dayTradeBuyValue": 352050,
+      "dayTradeSellValue": 354250
+    },
+    {
+      "sequence": 735,
+      "symbol": "7717",
+      "name": "萊德光電-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 636000,
+      "dayTradeBuyValue": 376591000,
+      "dayTradeSellValue": 378360000
+    },
+    {
+      "sequence": 736,
+      "symbol": "7718",
+      "name": "友鋮",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 45900,
+      "dayTradeSellValue": 45950
+    },
+    {
+      "sequence": 737,
+      "symbol": "7723",
+      "name": "築間",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 90150,
+      "dayTradeSellValue": 90650
+    },
+    {
+      "sequence": 738,
+      "symbol": "7728",
+      "name": "光焱科技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 7000,
+      "dayTradeBuyValue": 4450000,
+      "dayTradeSellValue": 4462000
+    },
+    {
+      "sequence": 739,
+      "symbol": "7734",
+      "name": "印能科技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 45000,
+      "dayTradeBuyValue": 126815000,
+      "dayTradeSellValue": 126745000
+    },
+    {
+      "sequence": 740,
+      "symbol": "7738",
+      "name": "東聯互動",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 9000,
+      "dayTradeBuyValue": 1395000,
+      "dayTradeSellValue": 1398500
+    },
+    {
+      "sequence": 741,
+      "symbol": "7743",
+      "name": "金利食安",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 7000,
+      "dayTradeBuyValue": 179050,
+      "dayTradeSellValue": 181050
+    },
+    {
+      "sequence": 742,
+      "symbol": "7744",
+      "name": "崴寶",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 19000,
+      "dayTradeBuyValue": 10013000,
+      "dayTradeSellValue": 10074000
+    },
+    {
+      "sequence": 743,
+      "symbol": "7751",
+      "name": "竑騰",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 37000,
+      "dayTradeBuyValue": 59690000,
+      "dayTradeSellValue": 60040000
+    },
+    {
+      "sequence": 744,
+      "symbol": "7753",
+      "name": "星亞",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 10000,
+      "dayTradeBuyValue": 354800,
+      "dayTradeSellValue": 356100
+    },
+    {
+      "sequence": 745,
+      "symbol": "7757",
+      "name": "金色三麥",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 268400,
+      "dayTradeSellValue": 268100
+    },
+    {
+      "sequence": 746,
+      "symbol": "7767",
+      "name": "仁大資訊",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 747,
+      "symbol": "7772",
+      "name": "耀穎",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 744000,
+      "dayTradeBuyValue": 133278500,
+      "dayTradeSellValue": 132691000
+    },
+    {
+      "sequence": 748,
+      "symbol": "7777",
+      "name": "能率亞洲",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 619000,
+      "dayTradeBuyValue": 23989800,
+      "dayTradeSellValue": 24075100
+    },
+    {
+      "sequence": 749,
+      "symbol": "7782",
+      "name": "光速火箭",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 750,
+      "symbol": "7805",
+      "name": "威聯通",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 7000,
+      "dayTradeBuyValue": 3450000,
+      "dayTradeSellValue": 3463000
+    },
+    {
+      "sequence": 751,
+      "symbol": "7810",
+      "name": "捷創科技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 115000,
+      "dayTradeBuyValue": 28642000,
+      "dayTradeSellValue": 28769500
+    },
+    {
+      "sequence": 752,
+      "symbol": "7828",
+      "name": "創新服務",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 42000,
+      "dayTradeBuyValue": 77720000,
+      "dayTradeSellValue": 77670000
+    },
+    {
+      "sequence": 753,
+      "symbol": "7856",
+      "name": "漢測",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 115000,
+      "dayTradeBuyValue": 493715000,
+      "dayTradeSellValue": 494190000
+    },
+    {
+      "sequence": 754,
+      "symbol": "8027",
+      "name": "鈦昇",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1103000,
+      "dayTradeBuyValue": 233312500,
+      "dayTradeSellValue": 233721000
+    },
+    {
+      "sequence": 755,
+      "symbol": "8032",
+      "name": "光菱",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 72250,
+      "dayTradeSellValue": 72950
+    },
+    {
+      "sequence": 756,
+      "symbol": "8034",
+      "name": "榮群",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 757,
+      "symbol": "8040",
+      "name": "九暘",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 621000,
+      "dayTradeBuyValue": 58979400,
+      "dayTradeSellValue": 59061900
+    },
+    {
+      "sequence": 758,
+      "symbol": "8042",
+      "name": "金山電",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2997000,
+      "dayTradeBuyValue": 364581000,
+      "dayTradeSellValue": 363741500
+    },
+    {
+      "sequence": 759,
+      "symbol": "8043",
+      "name": "蜜望實",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1311000,
+      "dayTradeBuyValue": 186940500,
+      "dayTradeSellValue": 186823000
+    },
+    {
+      "sequence": 760,
+      "symbol": "8044",
+      "name": "網家",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 42000,
+      "dayTradeBuyValue": 1004800,
+      "dayTradeSellValue": 998400
+    },
+    {
+      "sequence": 761,
+      "symbol": "8048",
+      "name": "德勝",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 10000,
+      "dayTradeBuyValue": 512700,
+      "dayTradeSellValue": 508900
+    },
+    {
+      "sequence": 762,
+      "symbol": "8049",
+      "name": "晶采",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 32000,
+      "dayTradeBuyValue": 788700,
+      "dayTradeSellValue": 790750
+    },
+    {
+      "sequence": 763,
+      "symbol": "8050",
+      "name": "廣積",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 348000,
+      "dayTradeBuyValue": 21788000,
+      "dayTradeSellValue": 21768000
+    },
+    {
+      "sequence": 764,
+      "symbol": "8054",
+      "name": "安國",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 233000,
+      "dayTradeBuyValue": 20555500,
+      "dayTradeSellValue": 20632200
+    },
+    {
+      "sequence": 765,
+      "symbol": "8064",
+      "name": "東捷",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2416000,
+      "dayTradeBuyValue": 336376500,
+      "dayTradeSellValue": 337039000
+    },
+    {
+      "sequence": 766,
+      "symbol": "8066",
+      "name": "來思達",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 14800,
+      "dayTradeSellValue": 14850
+    },
+    {
+      "sequence": 767,
+      "symbol": "8068",
+      "name": "全達",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 88250,
+      "dayTradeSellValue": 88000
+    },
+    {
+      "sequence": 768,
+      "symbol": "8069",
+      "name": "元太",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1766000,
+      "dayTradeBuyValue": 255544500,
+      "dayTradeSellValue": 257214500
+    },
+    {
+      "sequence": 769,
+      "symbol": "8071",
+      "name": "能率網通",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 136000,
+      "dayTradeBuyValue": 3011900,
+      "dayTradeSellValue": 3039400
+    },
+    {
+      "sequence": 770,
+      "symbol": "8074",
+      "name": "鉅橡",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1448000,
+      "dayTradeBuyValue": 83069700,
+      "dayTradeSellValue": 83219900
+    },
+    {
+      "sequence": 771,
+      "symbol": "8076",
+      "name": "伍豐",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 232000,
+      "dayTradeBuyValue": 5017700,
+      "dayTradeSellValue": 5008550
+    },
+    {
+      "sequence": 772,
+      "symbol": "8083",
+      "name": "瑞穎",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 13000,
+      "dayTradeBuyValue": 2045500,
+      "dayTradeSellValue": 2050000
+    },
+    {
+      "sequence": 773,
+      "symbol": "8086",
+      "name": "宏捷科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 9077000,
+      "dayTradeBuyValue": 1149420000,
+      "dayTradeSellValue": 1157961500
+    },
+    {
+      "sequence": 774,
+      "symbol": "8087",
+      "name": "麗升能源",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 775,
+      "symbol": "8088",
+      "name": "品安",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 73000,
+      "dayTradeBuyValue": 3240450,
+      "dayTradeSellValue": 3230100
+    },
+    {
+      "sequence": 776,
+      "symbol": "8089",
+      "name": "康全電訊",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 22000,
+      "dayTradeBuyValue": 427900,
+      "dayTradeSellValue": 430600
+    },
+    {
+      "sequence": 777,
+      "symbol": "8091",
+      "name": "翔名",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 653000,
+      "dayTradeBuyValue": 156769500,
+      "dayTradeSellValue": 157014500
+    },
+    {
+      "sequence": 778,
+      "symbol": "8092",
+      "name": "建暐",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 24800,
+      "dayTradeSellValue": 24700
+    },
+    {
+      "sequence": 779,
+      "symbol": "8096",
+      "name": "擎亞",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1009000,
+      "dayTradeBuyValue": 90901500,
+      "dayTradeSellValue": 90919600
+    },
+    {
+      "sequence": 780,
+      "symbol": "8097",
+      "name": "常珵",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 19000,
+      "dayTradeBuyValue": 916300,
+      "dayTradeSellValue": 921950
+    },
+    {
+      "sequence": 781,
+      "symbol": "8099",
+      "name": "大世科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 297300,
+      "dayTradeSellValue": 300000
+    },
+    {
+      "sequence": 782,
+      "symbol": "8102",
+      "name": "傑霖科技",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 783,
+      "symbol": "8107",
+      "name": "大億金茂",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 59100,
+      "dayTradeSellValue": 59400
+    },
+    {
+      "sequence": 784,
+      "symbol": "8109",
+      "name": "博大",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 76000,
+      "dayTradeBuyValue": 10709500,
+      "dayTradeSellValue": 10697000
+    },
+    {
+      "sequence": 785,
+      "symbol": "8111",
+      "name": "立碁",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 24359000,
+      "dayTradeBuyValue": 2213552600,
+      "dayTradeSellValue": 2212190400
+    },
+    {
+      "sequence": 786,
+      "symbol": "8147",
+      "name": "正淩",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 89000,
+      "dayTradeBuyValue": 12745000,
+      "dayTradeSellValue": 12766000
+    },
+    {
+      "sequence": 787,
+      "symbol": "8155",
+      "name": "博智",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 293000,
+      "dayTradeBuyValue": 97080000,
+      "dayTradeSellValue": 97295000
+    },
+    {
+      "sequence": 788,
+      "symbol": "8171",
+      "name": "天宇",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6000,
+      "dayTradeBuyValue": 123300,
+      "dayTradeSellValue": 123750
+    },
+    {
+      "sequence": 789,
+      "symbol": "8182",
+      "name": "加高",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2227000,
+      "dayTradeBuyValue": 104385350,
+      "dayTradeSellValue": 103707200
+    },
+    {
+      "sequence": 790,
+      "symbol": "8234",
+      "name": "新漢",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 70000,
+      "dayTradeBuyValue": 4414800,
+      "dayTradeSellValue": 4418500
+    },
+    {
+      "sequence": 791,
+      "symbol": "8240",
+      "name": "華宏",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 323000,
+      "dayTradeBuyValue": 19121900,
+      "dayTradeSellValue": 19079200
+    },
+    {
+      "sequence": 792,
+      "symbol": "8255",
+      "name": "朋程",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 233000,
+      "dayTradeBuyValue": 36252000,
+      "dayTradeSellValue": 36083500
+    },
+    {
+      "sequence": 793,
+      "symbol": "8279",
+      "name": "生展",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 160200,
+      "dayTradeSellValue": 161400
+    },
+    {
+      "sequence": 794,
+      "symbol": "8284",
+      "name": "三竹",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 795,
+      "symbol": "8289",
+      "name": "泰藝",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 4012000,
+      "dayTradeBuyValue": 239009300,
+      "dayTradeSellValue": 239339700
+    },
+    {
+      "sequence": 796,
+      "symbol": "8299",
+      "name": "群聯",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1131000,
+      "dayTradeBuyValue": 2373570000,
+      "dayTradeSellValue": 2373880000
+    },
+    {
+      "sequence": 797,
+      "symbol": "8342",
+      "name": "益張",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 798,
+      "symbol": "8349",
+      "name": "恒耀",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 8000,
+      "dayTradeBuyValue": 321600,
+      "dayTradeSellValue": 321900
+    },
+    {
+      "sequence": 799,
+      "symbol": "8354",
+      "name": "冠好",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 800,
+      "symbol": "8358",
+      "name": "金居",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 19338000,
+      "dayTradeBuyValue": 10830152000,
+      "dayTradeSellValue": 10890795000
+    },
+    {
+      "sequence": 801,
+      "symbol": "8383",
+      "name": "千附",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 246000,
+      "dayTradeBuyValue": 17089500,
+      "dayTradeSellValue": 17112000
+    },
+    {
+      "sequence": 802,
+      "symbol": "8390",
+      "name": "金益鼎",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 30000,
+      "dayTradeBuyValue": 2682400,
+      "dayTradeSellValue": 2697000
+    },
+    {
+      "sequence": 803,
+      "symbol": "8401",
+      "name": "白紗科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 804,
+      "symbol": "8403",
+      "name": "盛弘",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 37800,
+      "dayTradeSellValue": 37700
+    },
+    {
+      "sequence": 805,
+      "symbol": "8410",
+      "name": "森田",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 27650,
+      "dayTradeSellValue": 27700
+    },
+    {
+      "sequence": 806,
+      "symbol": "8415",
+      "name": "大國鋼",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 87000,
+      "dayTradeBuyValue": 3064800,
+      "dayTradeSellValue": 3067400
+    },
+    {
+      "sequence": 807,
+      "symbol": "8421",
+      "name": "旭源",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 5000,
+      "dayTradeBuyValue": 65300,
+      "dayTradeSellValue": 64900
+    },
+    {
+      "sequence": 808,
+      "symbol": "8423",
+      "name": "保綠-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 809,
+      "symbol": "8424",
+      "name": "惠普",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 810,
+      "symbol": "8426",
+      "name": "紅木-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 13000,
+      "dayTradeBuyValue": 266600,
+      "dayTradeSellValue": 266200
+    },
+    {
+      "sequence": 811,
+      "symbol": "8431",
+      "name": "匯鑽科",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 315000,
+      "dayTradeBuyValue": 20191000,
+      "dayTradeSellValue": 20234800
+    },
+    {
+      "sequence": 812,
+      "symbol": "8432",
+      "name": "東生華",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 51200,
+      "dayTradeSellValue": 51100
+    },
+    {
+      "sequence": 813,
+      "symbol": "8433",
+      "name": "弘帆",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 52600,
+      "dayTradeSellValue": 52800
+    },
+    {
+      "sequence": 814,
+      "symbol": "8435",
+      "name": "鉅邁",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 815,
+      "symbol": "8436",
+      "name": "大江",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 190000,
+      "dayTradeBuyValue": 19572500,
+      "dayTradeSellValue": 19702500
+    },
+    {
+      "sequence": 816,
+      "symbol": "8437",
+      "name": "大地-KY",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 10000,
+      "dayTradeBuyValue": 106100,
+      "dayTradeSellValue": 107800
+    },
+    {
+      "sequence": 817,
+      "symbol": "8440",
+      "name": "綠電",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 40400,
+      "dayTradeSellValue": 40700
+    },
+    {
+      "sequence": 818,
+      "symbol": "8446",
+      "name": "華研",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6000,
+      "dayTradeBuyValue": 511100,
+      "dayTradeSellValue": 515600
+    },
+    {
+      "sequence": 819,
+      "symbol": "8472",
+      "name": "納維康",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 199100,
+      "dayTradeSellValue": 200400
+    },
+    {
+      "sequence": 820,
+      "symbol": "8489",
+      "name": "三貝德",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 7000,
+      "dayTradeBuyValue": 153600,
+      "dayTradeSellValue": 154150
+    },
+    {
+      "sequence": 821,
+      "symbol": "8905",
+      "name": "裕國",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 822,
+      "symbol": "8906",
+      "name": "花王",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 823,
+      "symbol": "8908",
+      "name": "欣雄",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 824,
+      "symbol": "8916",
+      "name": "光隆",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 825,
+      "symbol": "8917",
+      "name": "欣泰",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 826,
+      "symbol": "8923",
+      "name": "時報",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 18100,
+      "dayTradeSellValue": 18000
+    },
+    {
+      "sequence": 827,
+      "symbol": "8924",
+      "name": "大田",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 3000,
+      "dayTradeBuyValue": 147350,
+      "dayTradeSellValue": 148100
+    },
+    {
+      "sequence": 828,
+      "symbol": "8927",
+      "name": "北基",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 41000,
+      "dayTradeBuyValue": 771400,
+      "dayTradeSellValue": 771950
+    },
+    {
+      "sequence": 829,
+      "symbol": "8928",
+      "name": "鉅明",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 22700,
+      "dayTradeSellValue": 22900
+    },
+    {
+      "sequence": 830,
+      "symbol": "8929",
+      "name": "富堡",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 26050,
+      "dayTradeSellValue": 25950
+    },
+    {
+      "sequence": 831,
+      "symbol": "8930",
+      "name": "青鋼",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 28500,
+      "dayTradeSellValue": 28450
+    },
+    {
+      "sequence": 832,
+      "symbol": "8931",
+      "name": "大汽電",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 6000,
+      "dayTradeBuyValue": 254050,
+      "dayTradeSellValue": 255300
+    },
+    {
+      "sequence": 833,
+      "symbol": "8932",
+      "name": "智通\\*",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 417000,
+      "dayTradeBuyValue": 38534900,
+      "dayTradeSellValue": 38561500
+    },
+    {
+      "sequence": 834,
+      "symbol": "8936",
+      "name": "國統",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 259000,
+      "dayTradeBuyValue": 13690900,
+      "dayTradeSellValue": 13699600
+    },
+    {
+      "sequence": 835,
+      "symbol": "8938",
+      "name": "明安",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 9000,
+      "dayTradeBuyValue": 464700,
+      "dayTradeSellValue": 466400
+    },
+    {
+      "sequence": 836,
+      "symbol": "8941",
+      "name": "關中",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 86350,
+      "dayTradeSellValue": 87200
+    },
+    {
+      "sequence": 837,
+      "symbol": "8942",
+      "name": "森鉅",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 23000,
+      "dayTradeBuyValue": 920950,
+      "dayTradeSellValue": 920600
+    },
+    {
+      "sequence": 838,
+      "symbol": "9949",
+      "name": "琉園",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 839,
+      "symbol": "9951",
+      "name": "皇田",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 0,
+      "dayTradeBuyValue": 0,
+      "dayTradeSellValue": 0
+    },
+    {
+      "sequence": 840,
+      "symbol": "9960",
+      "name": "邁達康",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 1000,
+      "dayTradeBuyValue": 37850,
+      "dayTradeSellValue": 38450
+    },
+    {
+      "sequence": 841,
+      "symbol": "9962",
+      "name": "有益",
+      "sellFirstSuspensionFlag": null,
+      "dayTradeShares": 2000,
+      "dayTradeBuyValue": 20500,
+      "dayTradeSellValue": 20800
+    }
+  ],
+  "semanticGuards": [
+    "T_PRELIM is auxiliary/preliminary; T+1 may revise and T+2 is final.",
+    "Day-trading buy and sell values are same-session turnover measures and do not identify overnight directional inventory.",
+    "Aggregate buy-sell value difference must not be used as a clean directional position signal.",
+    "The TWSE 60% surveillance criterion is not a TPEx alpha threshold and is not used here.",
+    "Later T+1/T+2 values must be appended as new vintages and must not overwrite this T_PRELIM receipt.",
+    "Retrieval channel is not source authority; TPEx remains the primary source."
+  ],
+  "maturityImpact": "NONE_YET",
+  "status": "T_PRELIM_PROSPECTIVE_RECEIPT_CAPTURED / REVISION_LINEAGE_OPEN / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "On 2026-10-06 capture T1_REVISED for tradeDate 2026-10-05, compare row-level deltas against this canonical receipt outcome-blind, then capture T2_FINAL on 2026-10-07. Do not promote D06-14 until vintage behavior and PIT stability are sufficiently demonstrated."
+}
