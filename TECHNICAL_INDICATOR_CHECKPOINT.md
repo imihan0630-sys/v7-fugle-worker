@@ -4225,3 +4225,43 @@ No maturity promotion:
 
 Exact next:
 protected Production path still requires owner approval for PR #600, then a genuine cutoff-bearing Taiwan-session parent and complete Bollinger v0.2 reconciliation. Independent Class A path hands the frozen registry to System1/System2 for raw-vs-deduplicated Shadow diagnostics; D16 must preregister the parameter-family budget and validate common-support residual/OOS incrementality. ADX remains second behind Bollinger and canonical FULL_REPLAY.
+
+
+## TI-709 through TI-716 — residual-baseline / consumer pre-audit (2026-10-05)
+
+Canonical artifact:
+- `research/D03_RESIDUAL_BASELINE_AND_CONSUMER_PREAUDIT_20261005_V0_1.md`.
+
+### TI-709 — consumer reachability is not yet demonstrated
+At observed main before this tranche, GitHub code search for the exact D03 lineage registry filename returned zero indexed consumer references. This is recorded as `NO_INDEXED_CONSUMER_REFERENCE_OBSERVED`, not proof that no consumer exists. Until a deterministic consumer receipt exists, raw-vs-deduplicated Shadow behavior remains unverified.
+
+### TI-710 — strongest-baseline matrix frozen
+Each D03 residual candidate now has an explicit strongest sibling/parent/control set. The matrix prevents a weak single-baseline test from manufacturing multiple independent confirmations.
+
+### TI-711 — residual success does not auto-split a redundancy group
+A candidate may add residual predictive value and still remain inside its existing effective evidence family. `redundancyGroupId` cannot split merely because correlation is below one or a local residual coefficient is positive. Group split requires sibling controls, common support, multiplicity correction, OOS/prospective evidence, D16 readback and 00 closure.
+
+### TI-712 — KD/RSI bilateral-control rule
+KD and RSI require candidate-versus-sibling conditional tests after shared direct-return/trend/range controls. Passing only separate KD-vs-return and RSI-vs-return tests cannot create two oscillator votes.
+
+### TI-713 — child-parent anti-stacking rule
+Divergence cannot vote independently alongside both its price-pivot parent and base indicator by default. The same rule applies to multi-timeframe conflict, Bollinger component combinations and pullback confirmation relations.
+
+### TI-714 — component decomposition is diagnostic, not vote multiplication
+Bollinger position and width must be falsified against separate location and volatility/compression controls, but together remain one envelope family absent explicit reclassification. ADX directional movement and true-range components likewise require trend plus D04 volatility/range controls.
+
+### TI-715 — parameter budget survives renaming/transforms
+Rejected parameterizations stay in the experiment-family history. Renaming, sign inversion, percentile conversion, normalization or timeframe restatement does not reset the parameter-family budget. D16 owns multiplicity and holdout accounting.
+
+### TI-716 — maturity/routing
+No maturity promotion:
+- D03 remains 56.7%;
+- D03-09 remains L2/40;
+- D03-10 remains L2/40;
+- raw receipt gate remains 2/3;
+- outcomes remain closed;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`;
+- SDA-001/SDA-004 remain `REMEDIATION_IN_PROGRESS`.
+
+Exact next:
+System 1/System 2 consume the canonical D03 registry and expose raw-vs-deduplicated Shadow diagnostics plus duplicate/alias tests; D03 reviews mapping drift and rejects sibling/child/nested-timeframe vote inflation; D16 preregisters the parameter-family budget and runs sibling/common-support residual/OOS tests; protected Production path remains owner-gated at PR #600. Bollinger remains first post-deploy target and ADX second behind canonical FULL_REPLAY.
