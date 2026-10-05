@@ -463,3 +463,18 @@ Tickets remain REMEDIATION_IN_PROGRESS; no CLOSED/VERIFIED claim. D03 mapping
 review, D16 generic consumption semantics/residual/OOS validation, System 2 lane
 integration and independent 00 readback remain pending. Formal Core LOCKED;
 no runtime, D1, provider call or Production deployment change.
+
+
+## 2026-10-06 critical remediation intake
+
+Receipt:
+`shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_INTAKE_20261006_V0_1.md`.
+
+Current critical readback:
+- SDA-001: System 1 PR #608 merged and core Class-A lineage/dedup Shadow diagnostics pass; three diagnostic schema gaps + first genuine-session receipt + System2 + D16 remain.
+- SDA-004: System 1 alias/parameter-family core guard merged and D03 mapping pass; genuine receipt + System2 + D16 remain.
+- SDA-009: Room07 leave-one-out semantics are frozen; ticket advances from ROUTED to REMEDIATION_IN_PROGRESS; System1 inclusive-vs-LOO diagnostic remains.
+- SDA-016: Room11 V0.2 oracle freezes 30 blocking tests; System1 exact-dataset/mutation guard is only partial pass; shared cross-system consumption authority remains.
+- SDA-017: Room11 V0.2 oracle freezes 40 blocking tests; existing D18 fixed-semantic machine is partial pass; System2 episode/support engine + prospective multi-episode evidence remain.
+
+No ticket CLOSED. Formal Core unchanged.
