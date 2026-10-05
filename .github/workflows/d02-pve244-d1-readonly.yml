@@ -62,9 +62,11 @@ jobs:
           const runtime=await jsonFetch("https://fugle-test.imihan0630.workers.dev/api/version",{headers:{accept:"application/json"}},"runtime");
 
           const workerSource=String.raw`
-          const forbidden=/\\b(INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|ALTER|VACUUM|ATTACH|DETACH)\\b/i;
           async function select(env,sql,params=[]){
-            if(!/^\\s*(SELECT|WITH|PRAGMA)\\b/i.test(sql)||forbidden.test(sql))throw new Error("READ_ONLY_SQL_REQUIRED");
+            const upper=String(sql||"").trimStart().toUpperCase();
+            const readPrefix=upper.startsWith("SELECT ")||upper.startsWith("WITH ")||upper.startsWith("PRAGMA ");
+            const blocked=["INSERT ","UPDATE ","DELETE ","REPLACE ","CREATE ","DROP ","ALTER ","VACUUM","ATTACH ","DETACH "].some(token=>upper.includes(token));
+            if(!readPrefix||blocked)throw new Error("READ_ONLY_SQL_REQUIRED");
             const r=await env.V7_DB.prepare(sql).bind(...params).all();
             return r.results||[];
           }
