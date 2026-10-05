@@ -419,3 +419,18 @@ Challenger/context tickets:
 SDA-020, SDA-021.
 
 All are ROUTED through ROOM_BOOTSTRAP. No ticket closure or routing action changes Formal Core.
+
+
+## Critical reconciliation — 2026-10-05
+
+Canonical receipt:
+`shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md`.
+
+Current states:
+- SDA-001: REMEDIATION_IN_PROGRESS — research same-root controls exist; machine lineage/dedup implementation + D16 residual readback remain.
+- SDA-004: REMEDIATION_IN_PROGRESS — D03 redundancy/ROC consolidation exists; central machine alias/parameter guard remains.
+- SDA-009: ROUTED — related D09 residual-sector research exists; exact leave-one-out/self-contribution circularity repair remains.
+- SDA-016: REMEDIATION_IN_PROGRESS — preregistration is strong; generic holdout-use ledger/outcome-lock + independent 00 closure remain.
+- SDA-017: REMEDIATION_IN_PROGRESS — ex-ante Regime governance is strong; executable immutable builder and prospective policy evidence remain.
+
+Do not repeat accepted controls listed in the reconciliation receipt.
