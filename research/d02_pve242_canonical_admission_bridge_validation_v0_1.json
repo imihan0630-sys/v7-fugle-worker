@@ -28,5 +28,14 @@
     "maturityPromotionAuthorized": false,
     "formalCoreChangeAuthorized": false
   },
-  "next": "PVE-243"
+  "next": "PVE-243",
+  "laneBridge": {
+    "guard": "research/d02_pve242_lane_bridge_guard_v0_1.mjs",
+    "test": "tests/test_d02_pve242_lane_bridge_guard_v0_1.mjs",
+    "tests": 17,
+    "status": "PASS",
+    "dailyReceiptCanEnterH001": false,
+    "wave1Requires15m": true,
+    "genericProvenanceDoesNotAuthorizeCleanSelectionDate": true
+  }
 }
