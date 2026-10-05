@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "D06_14_TPEX_DAYTRADE_TPRELIM_ATTEMPT_20261005_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-14",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "tradeDate": "2026-10-05",
+  "market": "TPEx",
+  "vintageLabel": "T_PRELIM",
+  "sourceUrl": "https://www.tpex.org.tw/zh-tw/mainboard/trading/day-trading/statistics/day.html",
+  "capturedAt": "2026-10-05T20:33:21+08:00",
+  "officialClockSemantics": "Variable T-day completion after broker reporting/adjustment workflow; T+1 may revise; T+2 is final.",
+  "observedState": "PAGE_REACHABLE / SAME_DAY_STOCK_STATISTICS_NOT_OBSERVED_IN_VERIFIED_FETCH",
+  "stateSemantics": "PENDING_BY_VARIABLE_SOURCE_WORKFLOW",
+  "missingIsNotZero": true,
+  "notFailureYet": true,
+  "surveillanceThresholdAlphaUse": "FORBIDDEN",
+  "maturityImpact": "NONE",
+  "status": "T_PRELIM_NOT_YET_OBSERVED_AT_2033 / VARIABLE_CLOCK_PENDING / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Retry the official current-day statistics object later the same evening without inventing a fixed TPEx clock. Once observed, append a T_PRELIM receipt with its actual firstKnownAt/hash; then follow the same trade date on T+1 and T+2 append-only."
+}
