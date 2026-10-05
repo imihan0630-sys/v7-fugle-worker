@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-10-06 Asia/Taipei",
+  "evidenceCursor": "PVE-248",
+  "status": "CLASS_B_CANDIDATE_PREPARED / ISOLATED_CI_PASS / FULL_CI_BLOCKED_BY_PREEXISTING_BASE_FAILURE / DRAFT_PR_OPEN / UNMERGED / NOT_DEPLOYED",
+  "latestObservedMainBeforeWrite": "c974d7c206bae801114d4f181ac998723e558223",
+  "candidate": {
+    "branch": "research/d02-pve248-class-b-candidate-20261006",
+    "activeHead": "302f6739b7c28c077f955b070c63332a7b59b61b",
+    "draftPr": 651,
+    "supersededClosedPr": 650,
+    "changedFiles": [
+      ".github/workflows/d02-pve248-candidate.yml",
+      ".github/workflows/v7-regression.yml",
+      "scripts/apply_v8_18_1_pve248_candidate.py",
+      "tests/test_v8_18_1_pve248_runtime_candidate.mjs"
+    ],
+    "merged": false,
+    "deployed": false,
+    "ownerApprovalGranted": false
+  },
+  "candidateValidation": {
+    "isolatedPushRun": {
+      "id": 37386567610,
+      "conclusion": "success"
+    },
+    "isolatedPrRun": {
+      "id": 37386696263,
+      "conclusion": "success"
+    },
+    "checks": [
+      "regression build-chain reconstruction",
+      "Worker syntax check",
+      "combined 23:35/23:55 runtime classification",
+      "onlyIfMissing recovery semantics marker",
+      "baseline warmup receipt markers",
+      "exact raw HTTP response SHA-256 provenance markers",
+      "formal protected markers unchanged"
+    ]
+  },
+  "fullCi": {
+    "regression": {
+      "id": 37386695299,
+      "conclusion": "failure",
+      "failedBeforeCandidateTest": true,
+      "failedTest": "tests/test_system1_zero_pick_evidence_collector_v0_1.mjs",
+      "error": "collector CLI failed"
+    },
+    "repair": {
+      "id": 37386695246,
+      "conclusion": "failure",
+      "failedBeforeCandidateTest": true,
+      "failedTest": "tests/test_system1_zero_pick_evidence_collector_v0_1.mjs",
+      "error": "collector CLI failed"
+    },
+    "independentMainCounterexample": {
+      "id": 37382689408,
+      "conclusion": "failure",
+      "candidateAbsent": true,
+      "failedTest": "tests/test_system1_zero_pick_evidence_collector_v0_1.mjs",
+      "error": "collector CLI failed"
+    },
+    "attribution": "PREEXISTING_BASE_CI_BLOCKER_NOT_PVE248"
+  },
+  "candidateSemantics": {
+    "schedule": "Recognize single or combined after-market Cron while retaining existing D1 lease and onlyIfMissing recovery behavior.",
+    "baseline": "Fail-open research sidecar attempts historical 15m bootstrap on after-market events and persists bounded bootstrap receipt in existing baseline JSON without new schema.",
+    "provenance": "Hash exact 15m HTTP response text before JSON.parse and carry provider/endpoint/rawPayloadHash/rawPayloadHashBasis/capturedAt into PV snapshot source.",
+    "formalCoreChangeIntended": false
+  },
+  "gates": {
+    "remediationReady": false,
+    "h001ReceiptEligible": false,
+    "cleanProspectiveDateIncrement": 0,
+    "maturityPromotionAuthorized": false,
+    "formalCoreChangeAuthorized": false,
+    "mergeAuthorized": false,
+    "deployAuthorized": false
+  },
+  "nonRetroactivity": "2026-10-05 remains excluded from clean prospective H001 evidence after any repair.",
+  "exactNext": "PVE-249"
+}
