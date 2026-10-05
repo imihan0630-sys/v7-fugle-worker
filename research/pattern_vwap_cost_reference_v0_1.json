@@ -1,0 +1,43 @@
+{
+  "schemaVersion":"pattern-vwap-cost-reference-v0.1",
+  "updated":"2026-10-06 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "referenceObjects":[
+    "SESSION_AVERAGE_PRICE_REFERENCE",
+    "EVENT_ANCHORED_VOLUME_WEIGHTED_REFERENCE",
+    "AGGREGATE_COST_REFERENCE_PROXY",
+    "LIVE_ORDER_BOOK_LIQUIDITY"
+  ],
+  "owners":{
+    "sessionReference":"D02",
+    "aggregateCostReference":"D20",
+    "liveOrderBookLiquidity":"D05"
+  },
+  "sessionAverageEqualsAnchoredVwap":false,
+  "vwapEqualsInvestorCostBasis":false,
+  "anchoredVwapEqualsInstitutionalCost":false,
+  "costReferenceProxyEqualsTrueHoldingsCost":false,
+  "vwapEqualsCurrentLiquidity":false,
+  "multiReferenceCoincidenceEqualsMultiVote":false,
+  "bestAnchorAfterOutcomes":"PROHIBITED",
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "residualIncrementalityStatus":"NOT_VALIDATED",
+  "comparisonClasses":[
+    "C0_STRUCTURAL_ONLY",
+    "C1_SESSION_REFERENCE_COINCIDENT",
+    "C2_ANCHORED_REFERENCE_COINCIDENT",
+    "C3_COST_PROXY_COINCIDENT",
+    "C4_LIVE_LIQUIDITY_COINCIDENT",
+    "C5_MULTI_REFERENCE_COINCIDENT",
+    "C6_REFERENCE_NOT_EVALUABLE"
+  ],
+  "auditTickets":{
+    "SDA-001":"REMEDIATION_IN_PROGRESS",
+    "SDA-002":"REMEDIATION_IN_PROGRESS"
+  },
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}

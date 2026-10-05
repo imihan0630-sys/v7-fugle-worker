@@ -2691,3 +2691,111 @@ No maturity or Formal change is authorized by this routing.
 7. Preserve SDA-001/SDA-002 as REMEDIATION_IN_PROGRESS until canonical closure evidence exists.
 8. Next D01 science: separate volume-at-price concentration from anchored VWAP / volume-weighted cost-reference effects and from actual live order-book liquidity.
 9. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-047 (2026-10-06)
+
+### DL-047 — Structural boundary vs VWAP / anchored-VWAP / cost-reference / live-liquidity objects
+- DL-046 separated structural memory from historical volume-at-price concentration.
+- DL-047 freezes four commonly conflated reference objects:
+  SESSION_AVERAGE_PRICE_REFERENCE;
+  EVENT_ANCHORED_VOLUME_WEIGHTED_REFERENCE;
+  AGGREGATE_COST_REFERENCE_PROXY;
+  LIVE_ORDER_BOOK_LIQUIDITY.
+- VWAP is primarily a traded-price/volume average and execution benchmark; direct academic evidence for anchored-VWAP as stable independent SR alpha is sparse relative to practitioner usage.
+- Behavioral reference-price evidence is a separate mechanism family:
+  Odean documents disposition behavior from actual account data;
+  Grinblatt/Han use historical price + turnover to estimate an aggregate reference-price / capital-gains-overhang proxy.
+- Aggregate reference price remains a proxy, not direct observation of all holders' actual remaining purchase prices.
+- Canonical ownership:
+  D02 owns session-average / VWAP-style participation and acceptance diagnostics;
+  D20 owns behavioral reference dependence / cost-basis proxies;
+  D05 owns current spread / depth / queue / live liquidity.
+- Existing provider avgPrice / sessionVwapProxy remains SESSION_AVERAGE_PRICE_PROXY unless its exact formula is independently certified as VWAP.
+- Session average and event-anchored VWAP are different causal objects.
+- Any anchored reference must have a preregistered anchor rule and causal clock:
+  anchorClass;
+  anchorRuleId;
+  anchorRuleFrozenAt;
+  anchorAt;
+  anchorKnownAt;
+  priceVolumeWindowStart/End;
+  referenceAsOf;
+  sourceFetchedAt;
+  predictorFreezeAt;
+  replaySafe.
+- Outcome-selected anchors, future pivots, tested bars that create their own anchors and later source fetches are prohibited.
+- Multiple anchor choices form one search family; best-anchor selection after outcomes is prohibited.
+- D20 aggregate cost/reference receipt must be labeled AGGREGATE_COST_REFERENCE_PROXY unless direct holdings/account evidence exists.
+- Forbidden without direct evidence:
+  TRUE_INVESTOR_COST_BASIS;
+  INSTITUTIONAL_COST;
+  MARKET_AVERAGE_ENTRY_PRICE;
+  TRAPPED_HOLDER_PRICE.
+- A turnover-weighted reference price does not identify holder identity or exact remaining inventory.
+- VWAP / AVWAP / cost-reference proxy do not identify live liquidity.
+  Current liquidity remains a D05 object and requires a contemporaneous order-book receipt.
+- Structural-distance descriptors are frozen separately for each valid reference:
+  inside-zone;
+  edge distance in price/ticks/ATR;
+  center distance;
+  side relative to zone.
+- Reference coincidence classes:
+  C0 STRUCTURAL_ONLY;
+  C1 SESSION_REFERENCE_COINCIDENT;
+  C2 ANCHORED_REFERENCE_COINCIDENT;
+  C3 COST_PROXY_COINCIDENT;
+  C4 LIVE_LIQUIDITY_COINCIDENT;
+  C5 MULTI_REFERENCE_COINCIDENT;
+  C6 REFERENCE_NOT_EVALUABLE.
+- A single zone may simultaneously coincide with structural, round, prior-close, auction-reference, volume-profile, VWAP, cost-proxy and live-liquidity descriptions.
+  These are context labels, not eight votes.
+- Default anti-double-count:
+  effectiveIndependentEvidenceCount = 1;
+  independentVoteAllowed = false;
+  residualIncrementalityStatus = NOT_VALIDATED.
+- Distinct D20/D05 primitive roots may later show residual incrementality, but they remain context inputs rather than automatic extra selection votes.
+- Future D16 ladder:
+  A0 RAW_STRUCTURAL;
+  A1 SESSION_REFERENCE_CONTROLLED;
+  A2 ANCHORED_REFERENCE_CONTROLLED;
+  A3 COST_REFERENCE_CONTROLLED;
+  A4 VOLUME_PROFILE_CONTROLLED;
+  A5 LIVE_LIQUIDITY_CONTROLLED;
+  A6 MULTI_REFERENCE_DEDUP;
+  A7 STRUCTURAL_RESIDUAL_REPLICATION.
+- Future interpretations:
+  I0 SESSION_AVERAGE_EXPLANATION;
+  I1 ANCHORED_REFERENCE_EXPLANATION;
+  I2 COST_REFERENCE_PROXY_EXPLANATION;
+  I3 LIVE_LIQUIDITY_EXPLANATION;
+  I4 MULTI_REFERENCE_COMPOSITE;
+  I5 STRUCTURAL_RESIDUAL_AFTER_REFERENCES;
+  I6 REFERENCE_OBJECT_INCREMENTAL_CANDIDATE;
+  I7 NOT_EVALUABLE.
+- UNKNOWN reference receipt is not zero coincidence.
+- New files:
+  - research/PATTERN_VWAP_COST_REFERENCE_V0_1.md
+  - research/pattern_vwap_cost_reference_v0_1.json
+  - research/pattern_vwap_cost_reference_v0_1.mjs
+  - research/test_pattern_vwap_cost_reference_v0_1.mjs
+  - research/PATTERN_VWAP_COST_REFERENCE_D16_HANDOFF_V0_1.md
+- 22 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 remains REMEDIATION_IN_PROGRESS.
+- SDA-002 remains REMEDIATION_IN_PROGRESS.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-047
+
+1. Reconcile the DL-047 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-047 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Keep session average, anchored VWAP, D20 cost-reference proxy and D05 live liquidity as distinct objects with separate owner receipts.
+4. Never call provider average-price proxy exchange VWAP without formula certification; never call AVWAP institutional cost; never call aggregate cost proxy true remaining holdings cost.
+5. Hand A0-A7 / I0-I7 common-support and residual inference to D16.
+6. Preserve SDA-001/SDA-002 as REMEDIATION_IN_PROGRESS.
+7. Next D01 science: separate historical cost/reference-price effects from actual holder turnover / ownership persistence so stale reference proxies are not treated as live inventory memory.
+8. No runtime wiring / no Formal change.

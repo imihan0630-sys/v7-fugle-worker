@@ -23537,3 +23537,39 @@ New durable artifacts:
 - research/PATTERN_VOLUME_AT_PRICE_CONTEXT_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. Historical volume-profile efficacy remains CLOSED. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-047 — Structural boundary vs VWAP / anchored-VWAP / cost-reference / live-liquidity objects (2026-10-06)
+
+DL-047 addresses a semantic shortcut that can quietly turn one price line into several unsupported causal stories.
+
+VWAP is a volume-weighted average of traded prices and is widely used as an execution benchmark. Practitioner trading literature often treats session VWAP or anchored VWAP as support/resistance, but rigorous direct evidence for anchored-VWAP as stable independent SR alpha is comparatively sparse. Behavioral-finance evidence about investor reference prices is stronger, but it belongs to a different mechanism family.
+
+D01 therefore separates four objects.
+
+SESSION_AVERAGE_PRICE_REFERENCE is the current-session average traded-price reference. The existing repository provider avgPrice/sessionVwapProxy is conservatively labeled SESSION_AVERAGE_PRICE_PROXY unless its exact VWAP formula is certified.
+
+EVENT_ANCHORED_VOLUME_WEIGHTED_REFERENCE starts from a preregistered causal event and accumulates price-volume information only from that point. It is not the same as session VWAP. The anchor itself becomes a research search dimension, so anchor rules and families must be frozen before outcomes.
+
+AGGREGATE_COST_REFERENCE_PROXY belongs to D20. Turnover-weighted reference-price models such as the Grinblatt-Han framework can estimate an aggregate behavioral reference price, but they do not directly observe every investor's current holdings cost. Turnover approximates holder renewal; it does not identify who still owns the shares.
+
+LIVE_ORDER_BOOK_LIQUIDITY belongs to D05 and is contemporaneous spread/depth/queue state. A VWAP line, anchored VWAP or cost-reference proxy may coincide numerically with current depth, but that coincidence does not make them the same mechanism.
+
+The causal-clock firewall is strict. An anchored reference cannot use an anchor chosen after seeing the outcome, a later-confirmed pivot, the tested bar itself, a late source fetch or any price-volume observation after the predictor freeze. Multiple candidate anchor classes form a preregistered family and may not be winner-selected after outcomes.
+
+The naming firewall is equally important. Without direct holdings/account evidence, D01 prohibits labels such as institutional cost, true investor cost basis, market average entry price or trapped-holder price. A D20 receipt remains an AGGREGATE_COST_REFERENCE_PROXY.
+
+D01 then measures only geometry: whether each valid reference is inside the frozen structural zone, its edge distance, center distance and normalized tick/ATR distance. These remain context descriptors with no automatic directional meaning.
+
+Coincidence classes preserve structural-only, session-reference, anchored-reference, cost-proxy, live-liquidity, multi-reference and non-evaluable states. Even when many references coincide, the default effective independent evidence count remains one. Distinct D20/D05 primitive roots may later be shown incrementally useful by D16, but they are not automatic extra selection votes.
+
+Twenty-two adversarial cases are authored. They reject provider-average relabeling, late session references, outcome-selected anchors, future pivots, late anchor knowledge, non-D20 cost proxies, institutional-cost overclaims, non-D05 liquidity claims, reference-distance mutation, multi-reference vote multiplication, distinct-root automatic voting, post-outcome anchor-family mutation, losing-anchor deletion and unfrozen anchor registries.
+
+New durable artifacts:
+- research/PATTERN_VWAP_COST_REFERENCE_V0_1.md
+- research/pattern_vwap_cost_reference_v0_1.json
+- research/pattern_vwap_cost_reference_v0_1.mjs
+- research/test_pattern_vwap_cost_reference_v0_1.mjs
+- research/PATTERN_VWAP_COST_REFERENCE_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
