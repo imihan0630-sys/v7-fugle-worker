@@ -38,6 +38,16 @@ assert.equal(correction.state,"EVENT_BUNDLE_AMENDMENT_OBSERVED");
 assert.equal(correction.explicitCorrectionRowCount,1);
 assert.equal(correction.pairedAmendmentCount,1);
 
+const bracketedCorrection=classifyBoundedRevisionEventBundleV0_3({
+  event:baseEvent,queryIntegrity:exact,
+  familyRows:[
+    row("2026-07-01","10:00:00","1","1234 A 115/07/01 10:00:00 訂定減資換股作業計畫及減資換發股票基準日"),
+    row("2026-07-02","10:00:00","2","1234 A 115/07/02 10:00:00 [更正其他應敘明事項]訂定減資換股作業計畫及減資換發股票基準日",true),
+  ],
+});
+assert.equal(bracketedCorrection.state,"EVENT_BUNDLE_AMENDMENT_OBSERVED");
+assert.equal(bracketedCorrection.pairedAmendmentCount,1);
+
 const semantic=classifyBoundedRevisionEventBundleV0_3({
   event:baseEvent,queryIntegrity:exact,
   familyRows:[
