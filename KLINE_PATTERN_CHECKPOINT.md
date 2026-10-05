@@ -1721,3 +1721,90 @@ No maturity or Formal change is authorized by this routing.
 6. Preserve SDA-001 and SDA-002 as REMEDIATION_IN_PROGRESS until machine guards, D16 evidence and independent 00 closure satisfy the canonical queue.
 7. Next D01 science: quantify topology identity robustness when multiple detector parameterizations generate the same apparent post-break root, without creating an indicator/geometry zoo.
 8. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-037 (2026-10-05)
+
+### DL-037 — Topology identity robustness across detector parameterizations
+- DL-036 separated structural lineage from information lineage.
+- DL-037 freezes parameter-family robustness so many detector variants cannot become a geometry/indicator zoo.
+- External methodology support:
+  Lo/Mamaysky/Wang show systematic algorithmic pattern recognition can reduce visual subjectivity;
+  Sullivan/Timmermann/White show technical-rule families are exposed to data-snooping when many rules/variants are searched.
+- Every detector family must export a frozen parameter registry before outcome inspection:
+  detectorFamilyId;
+  detectorVersion;
+  parameterFamilyId;
+  parameterGridHash;
+  registryFrozenAt;
+  variantId;
+  parameterVector;
+  semantic space/timeframe/source receipts.
+- Variant identity, structural-topology identity and information identity are now explicitly separate.
+- Exact same root/version/anchors/boundary/lifecycle at the same freeze -> EXACT_VARIANT_ALIAS.
+- Same root with legal geometry/version differences -> SAME_ROOT_PARAMETER_VARIATION.
+- Different root identities with no canonical relation -> PARAMETER_IDENTITY_CONFLICT.
+- Majority vote may not decide canonical truth.
+- Best-performing variant may not be selected after outcomes.
+- Variants that emit no structure remain in the frozen family denominator.
+- Data-blocked and post-hoc variants remain visible as separate states.
+- Allowed family robustness descriptors:
+  eligibleVariantCount;
+  rootEmittedCount;
+  exactAliasCount;
+  sameRootVariationCount;
+  noStructureCount;
+  dataBlockedCount;
+  postHocCount;
+  identityConflictCount;
+  emissionRate;
+  sameRootSupportRate;
+  conflictRate;
+  noStructureRate.
+- These are detector robustness descriptors, not alpha scores and not vote counts.
+- All price-only D01 variants remain:
+  informationRoot = PRICE_OHLC;
+  representationFamily = D01_PRICE_GEOMETRY;
+  redundancyGroup = D01_PRICE_GEOMETRY_PARAMETER_FAMILY.
+- Default effectiveIndependentEvidenceCount remains 1 regardless of rawVariantCount.
+- residualIncrementalityStatus remains NOT_VALIDATED until D16 common-parent residual evidence exists.
+- SDA-002 no-lookahead is enforced per variant:
+  firstObservableAt;
+  confirmedAt;
+  latestAnchorAt;
+  predictorFreezeAt;
+  futureBarRequired;
+  replaySafe.
+- A family consensus cannot launder a future-looking variant.
+- Future D16 comparison families:
+  P0 CANONICAL_ONLY;
+  P1 FAMILY_DIAGNOSTIC;
+  P2 VARIANT_ENSEMBLE_RAW;
+  P3 VARIANT_ENSEMBLE_DEDUP.
+- P2 vs P3 is intended to expose false confidence from correlated variant multiplicity.
+- Familywise inference must account for all preregistered variants, dependence, repeated dates, family revisions and holdout use.
+- New files:
+  - research/PATTERN_TOPOLOGY_PARAMETER_ROBUSTNESS_V0_1.md
+  - research/pattern_topology_parameter_robustness_v0_1.json
+  - research/pattern_topology_parameter_robustness_v0_1.mjs
+  - research/test_pattern_topology_parameter_robustness_v0_1.mjs
+  - research/PATTERN_TOPOLOGY_PARAMETER_ROBUSTNESS_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 remains REMEDIATION_IN_PROGRESS.
+- SDA-002 remains REMEDIATION_IN_PROGRESS.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-037
+
+1. Reconcile the DL-037 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-037 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Keep the full preregistered parameter family in robustness denominators; never drop no-structure or poor variants after outcomes.
+4. Keep effectiveIndependentEvidenceCount = 1 for price-only D01 parameter families until D16 residual incrementality is validated.
+5. Hand P0-P3 familywise inference / dependence / residual testing to D16.
+6. Preserve SDA-001/SDA-002 as REMEDIATION_IN_PROGRESS until canonical closure evidence exists.
+7. Next D01 science: separate detector robustness from economic robustness across symbols, dates and regimes so stable local topology is not mistaken for generalizable evidence.
+8. No outcome join / no runtime wiring / no Formal change.
