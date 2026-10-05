@@ -708,3 +708,25 @@ Exact BUILD_LANE continuation:
 6. RAW A1 lineage.
 
 This is BUILD_LANE checkpoint/evidence progression, not a REMEDIATION_LANE correction.
+
+
+## 2026-10-05 S2-07 ambiguous-event narrowing V0.3 physical result
+
+Authoritative physical execution:
+- merge commit: `8252a0b8417cf63fd317bb645c3f835a55d7e976`;
+- workflow: `System2 Bounded Revision Event Linkage V0.3 Readonly`;
+- run: `37328246286`;
+- job: `111824389195`;
+- conclusion: PASS.
+
+The 17 V0.2 ambiguous events narrowed into:
+- `AMBIGUOUS_NO_EVENT_SPECIFIC_ANCHOR = 10`;
+- `PER_SYMBOL_QUERY_INTEGRITY_NOT_CERTIFIED = 7`;
+- queryIntegrityCertifiedCount = 10;
+- eventAnchoredCount = 0.
+
+The 10 query-integrity-certified events reconciled company-history keys exactly against month shards over their bounded 400-day pre-effective windows. Seven events exposed year-vs-month shard discrepancies and therefore remain fail-closed before any negative or linkage claim.
+
+All promotion/completeness flags remain false, including event linkage completeness, bounded revision-history completeness, correction history completeness, cancellation history completeness, exact knownAt clock certification, revision coverage, technical continuity and trading authority.
+
+Interpretation: V0.3 disproves the sufficiency of normalized subject stem as an event key. No ambiguous event obtained a direct effective-date title anchor. The next diagnostic must inspect the seven keyset discrepancies at row level and use official-event subtype/detail plus issuer disclosure chronology/stage as candidate event-specific anchors; no promotion linkage may be made from subject normalization alone.
