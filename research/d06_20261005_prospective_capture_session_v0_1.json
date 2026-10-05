@@ -210,9 +210,12 @@
     "todayPrimitiveIdsPrecommitted": true,
     "engineeringOnePrimitiveOneReceiptValidation": "PENDING",
     "d16ResidualIncrementality": "PENDING",
-    "auditClosure": "00_REQUIRED"
+    "auditClosure": "00_REQUIRED",
+    "residualIdentifiabilityContract": "COMPLETE",
+    "residualIdentifiabilityReceipt": "research/d06_sda007_passive_active_residual_identifiability_20261005_v0_1.json",
+    "activeConvictionIdentity": "UNIDENTIFIED_BY_RESIDUALIZATION"
   },
   "maturityImpact": "NONE_THROUGH_15_20",
   "formalOptimizationCandidate": "NONE",
-  "exactNext": "Continue only remaining 2026-10-05 frozen lanes at their actual source clocks. After-market generation must attach the existing TDCC parent to same-generation D06-05/D06-06 rows. At/after official clocks capture D06-03 dealer split, TPEx leverage EARLY/LATE vintages and D06-14 T_PRELIM. For PF-040 append a later issuer vintage only after the source data date advances to 2026-10-05. D06-18 late slot is closed as UNKNOWN/MISSING and must not be backfilled. Outcomes remain closed."
+  "exactNext": "Continue only remaining 2026-10-05 frozen lanes at their actual source clocks. After-market generation must attach the existing TDCC parent to same-generation D06-05/D06-06 rows. At/after official clocks capture remaining TWSE D06-03 dealer split, TPEx leverage EARLY/LATE vintages and D06-14 T_PRELIM. For PF-040 append a later issuer vintage only after the source data date advances to 2026-10-05. D06-18 late slot is closed as UNKNOWN/MISSING and must not be backfilled. SDA-007 residual identifiability contract is frozen; residual institutional flow must not be renamed active conviction. Outcomes remain closed."
 }
