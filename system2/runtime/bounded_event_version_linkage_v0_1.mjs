@@ -28,7 +28,7 @@ function toIsoDate(year, month, day){
 export function extractDateTokensV0_1(value){
   const text=String(value||"");
   const out=new Set();
-  for(const m of text.matchAll(/(\d{3})\s*[年\/.-]\s*(\d{1,2})\s*[月\/.-]\s*(\d{1,2})\s*日?/g)){
+  for(const m of text.matchAll(/(?<!\d)(\d{3})(?!\d)\s*[年\/.-]\s*(\d{1,2})\s*[月\/.-]\s*(\d{1,2})\s*日?/g)){
     const iso=toIsoDate(Number(m[1])+1911,m[2],m[3]);
     if(iso) out.add(iso);
   }
@@ -44,7 +44,7 @@ function canonicalSubject(value, symbol){
   const symbolText=String(symbol||"");
   if(symbolText) text=text.split(symbolText).join(" ");
   return text
-    .replace(/\d{3}\s*[年\/.-]\s*\d{1,2}\s*[月\/.-]\s*\d{1,2}\s*日?/g," ")
+    .replace(/(?<!\d)\d{3}(?!\d)\s*[年\/.-]\s*\d{1,2}\s*[月\/.-]\s*\d{1,2}\s*日?/g," ")
     .replace(/\d{4}\s*[\/.-]\s*\d{1,2}\s*[\/.-]\s*\d{1,2}/g," ")
     .replace(/\b\d{2}:\d{2}:\d{2}\b/g," ")
     .replace(/更正|修正|補充|更新|重新公告|取消|撤銷|廢止/g," ")
