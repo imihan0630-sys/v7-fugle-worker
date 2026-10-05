@@ -26,8 +26,9 @@ function isExplicitCorrection(row,subject){
 function isSemanticAmendment(subject){
   const s=text(subject);
   if(/更新|更改|補充說明|補充公告|調整/.test(s)) return true;
-  if(/(?:變更|改訂).*(?:減資.*(?:換股|換發)|股票面額變更.*(?:換股|換發)|(?:換股|換發).*(?:基準日|作業計畫|作業計劃))/.test(s)
-    && !/變更登記完成/.test(s)) return true;
+  const core=s.replace(/^(?:公告本公司|本公司|公告)\s*/,"");
+  if(/^(?:變更|改訂).*(?:換股|換發).*(?:基準日|作業計畫|作業計劃)/.test(core)
+    && !/變更登記完成/.test(core)) return true;
   return false;
 }
 
