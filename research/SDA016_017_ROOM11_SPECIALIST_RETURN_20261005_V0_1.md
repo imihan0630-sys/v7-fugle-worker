@@ -523,3 +523,79 @@ Required pre-outcome state for confirmatory use:
 
 No specific FWER/FDR/mFDR/online method or numeric error level is selected by this audit.
 No maturity change.
+
+
+## 2026-10-06 SDA-022 cross-system non-convergence D16 intake
+
+New critical ticket:
+`SDA-022 — Cross-system strategy convergence / pseudo-diversification`.
+
+Latest queue explicitly sets:
+- severity = CRITICAL;
+- status = ROUTED;
+- engineering owners = SYSTEM1 + SYSTEM2;
+- `d16ValidationRequired=true`;
+- closure authority = 00.
+
+Canonical architecture guard:
+`shared-knowledge/SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_V0_1.md`.
+
+Room11/D16 canonical validation:
+- `research/SDA022_D16_CROSS_SYSTEM_NON_CONVERGENCE_VALIDATION_CONTRACT_20261006_V0_1.md`;
+- `research/SDA022_D16_CROSS_SYSTEM_NON_CONVERGENCE_ORACLE_20261006_V0_1.json`.
+
+Validation oracle:
+- 16 blocking adversarial tests;
+- no empirical pair receipts attached yet;
+- current state `WAITING_POLICY_FINGERPRINTS`;
+- no arbitrary overlap/correlation threshold.
+
+### D16 semantic split
+
+SDA-022 must keep four ideas separate:
+
+1. architectural executability independence;
+2. information-root overlap/dependence;
+3. statistical incremental information on same-target/common-support prospective evidence;
+4. diversification of aligned strategy return/exposure paths.
+
+High output overlap is not automatic failure.
+Low output overlap is not automatic independence.
+Shared truth/provenance is allowed and preferred.
+Direct consumption of one system's decision output as the other's mandatory discovery path is a much stronger dependence state.
+
+### Current architecture readback
+
+System1 remains protected Formal A/B + Top6/3+3 + Formal ranking/lifecycle.
+
+System2 remains materially distinct:
+- `SHORT_MOMENTUM` RANK-01 uses TECHNICAL_STRUCTURE + PRICE_VOLUME + RISK_FRICTION;
+- `SWING_GROWTH` RANK-01 uses FUNDAMENTAL_QUALITY + INDUSTRY_THESIS;
+- strategy-local Pareto ranking;
+- no universal cross-strategy scalar score by default;
+- global candidate max 12 / per-strategy active max 3.
+
+Therefore current state is not `SYSTEMS_IDENTICAL`.
+But prospective non-convergence observability and D16 incrementality remain pending.
+
+### Required D16 evidence
+
+Future comparable-date pair receipts must expose:
+- System1 policy fingerprint;
+- per-strategy System2 fingerprint;
+- discovery-path identity;
+- candidate/universe relationship;
+- shared information roots/hard gates;
+- output overlap;
+- legitimate common-support rank comparison when possible;
+- System2 independent discovery;
+- divergence reasons;
+- SDA-016 consumption/outcome-footprint references.
+
+Raw overlap-group returns are descriptive selection decomposition, not causal incrementality.
+
+A diversification claim additionally requires aligned return/exposure/cost/downside dependence evidence; pick Jaccard alone is insufficient.
+
+Room11 does not close SDA-022.
+No maturity change.
+Formal Core remains LOCKED.
