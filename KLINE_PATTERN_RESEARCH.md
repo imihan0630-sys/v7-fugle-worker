@@ -23217,3 +23217,57 @@ New durable artifacts:
 - research/PATTERN_DETECTOR_VS_ECONOMIC_ROBUSTNESS_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-039 — Cross-sectional generalization vs liquidity / size / survivorship selection (2026-10-05)
+
+DL-038 established that detector stability is not economic generalization. DL-039 asks whether even an apparently broad multi-symbol sample is actually a selected subset of the market.
+
+The central risk is that large, liquid, long-listed and data-rich stocks are easier to study. They have longer histories, fewer provider gaps, cleaner price formation, more opportunities, lower execution friction and more stable point-in-time metadata. If every difficult symbol silently disappears at one of those stages, Pattern can look broadly robust while evidence actually applies only to the easiest part of the cross-section.
+
+Taiwan evidence makes this more than a theoretical concern. Firm-level technical-trading profitability has been reported to vary with size and trading volume. Recent Taiwan size-effect work also identifies illiquidity and price-limit related limits-to-arbitrage as important cross-sectional context. Classic survivorship-bias research shows that restoring later-delisted/non-surviving securities can change cross-sectional estimates. These findings do not prove or disprove Pattern; they require explicit selection accounting.
+
+DL-039 therefore freezes the target population before outcomes.
+
+A study may target the POINT_IN_TIME_MARKET_UNIVERSE or the narrower FORMAL_ELIGIBLE_UNIVERSE. Both are legitimate questions. They are not the same claim. A result measured only after existing Formal liquidity/price eligibility may inform the actual system population, but it cannot be described as market-wide evidence.
+
+The point-in-time universe itself must come from an existing authoritative receipt. The current repository includes a historical-universe registry that preserves CURRENT and DELISTED membership intervals and explicitly prevents future membership end from entering the strategy timestamp. D01 consumes that contract rather than creating a duplicate historical universe.
+
+The main scientific contribution is a full attrition ledger.
+
+A symbol/date starts in the target universe. It may have sufficient history, be too young by design, or have missing expected history. If history is ready, the detector may emit a structure or may causally emit none. A valid structure may later receive a retest opportunity or no opportunity. Future D16 may then determine economic evaluability, while execution/cost owners determine tradability evaluability.
+
+These stages cannot be collapsed.
+
+A newly listed stock with every available bar present can still be too young for a sixty-session detector. That is HISTORY_TOO_SHORT_BY_DESIGN, not missing data and not a negative Pattern observation.
+
+A mature symbol with expected sessions missing is HISTORY_DATA_BLOCKED, not NO_STRUCTURE.
+
+A detector that runs successfully and emits nothing is DETECTOR_NO_STRUCTURE and remains in the denominator.
+
+A valid structure that never receives a retest is NO_VALID_OPPORTUNITY, not a failed Pattern.
+
+An opportunity with unknown execution context remains scientifically observable even if tradability cannot yet be evaluated.
+
+Historical survivorship is separately protected. Today's listed universe cannot be projected backward. Later-delisted symbols remain members of historical denominators when they were eligible, while future delisting knowledge is hidden from the predictor. D01 does not decide terminal delisting returns; D16 must later freeze that treatment.
+
+Size and liquidity are preserved as point-in-time context, not as post-hoc cleanup tools. D01 consumes owner receipts for size, volume/value traded/turnover, spread/depth where available, relative tick, price tier, constrained-session state and listing age. Current market cap or current liquidity may not be substituted for historical values.
+
+The future coverage matrix must make selection visible by size/liquidity/listing-age strata. For each stratum it reports target eligibility, history readiness, history-too-short, history blocking, detector evaluability, no-structure, structure emission, opportunity readiness, no-opportunity, opportunity blocking, economic evaluability and tradability evaluability.
+
+This design prevents a successful-case denominator. A study cannot compute "Pattern success among detected/retested/liquid names" and present it as cross-sectional generalization without also showing how many target-universe stocks disappeared before those stages.
+
+Breadth is also separated from event count. A hundred opportunities produced mostly by one or two symbols do not represent a hundred-stock generalization. Future reports therefore preserve unique-symbol counts and concentration descriptors.
+
+Common support must exist in point-in-time size, liquidity, listing age, price/tick tier, market, regime and detector-history readiness. If Pattern cases and controls occupy disjoint liquidity or size regions, D16 must classify the comparison as extrapolation rather than adjust it into existence after outcomes.
+
+Twenty adversarial tests are authored. They reject current-survivor historical universes, future delisting leakage and current-value backfills; preserve Formal-only claim scope; distinguish age-limited history from missing data; keep no-structure/no-opportunity states in denominators; enforce point-in-time context clocks; preserve full attrition counts; test common support; keep symbol concentration descriptive; and retain delisting, suspension, price-limit and unknown-execution states.
+
+New durable artifacts:
+- research/PATTERN_CROSSSECTION_LIQUIDITY_SURVIVORSHIP_V0_1.md
+- research/pattern_crosssection_liquidity_survivorship_v0_1.json
+- research/pattern_crosssection_liquidity_survivorship_v0_1.mjs
+- research/test_pattern_crosssection_liquidity_survivorship_v0_1.mjs
+- research/PATTERN_CROSSSECTION_LIQUIDITY_SURVIVORSHIP_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
