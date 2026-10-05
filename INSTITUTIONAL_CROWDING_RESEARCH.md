@@ -2136,3 +2136,51 @@ D02 PVE-246 has certified its three runtime root causes, but remediation remains
 
 Maturity impact: NONE at session open.
 D06 remains 48.9%; D06-14 remains L2/40%; Formal Core unchanged.
+
+
+---
+
+## IC-084 — TWSE live securities-lending route is now prospectively executable for the frozen 15:20 slot
+
+Research cycle: 2026-10-06 Asia/Taipei
+Status: LIVE_ROUTE_PREFLIGHT_PASS / SECURITY_SELECTION_QUERY_VERIFIED / FIELD_SCHEMA_FROZEN / 1520_SLOT_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable artifacts:
+- `research/d06_18_twse_sbl_live_route_preflight_20261006_v0_1.json`;
+- `research/d06_18_twse_sbl_live_field_schema_v0_1.json`.
+
+The prior 2026-10-05 15:20 D06-18 receipt remains immutable UNKNOWN/MISSING. It is not backfilled.
+
+Today the authorized rendered TWSE Market Information System route was successfully preflighted:
+- official page: `https://mis.twse.com.tw/stock/detail-sblInquiry`;
+- the official frontend itself uses query key `ch` for selected security;
+- `?ch=2330&lang=zhHant` physically rendered 台積電(2330);
+- required transaction/rate/depth labels were visible.
+
+The frozen route-pilot universe is source-feasibility-only, not a market inference sample.
+From the official selectable list, a deterministic five-symbol pilot was frozen before the 15:20 observation:
+`1101 / 2451 / 3532 / 6187 / 9941`.
+
+All five route checks rendered the requested selected security and the core rate/depth labels.
+
+Field semantics are frozen before live values:
+- FIXED_RATE: separate 10-day / 3-day / 1-day recall-notice conditions;
+- COMPETITIVE_BID: separate 10-day / 3-day / 1-day recall-notice sections with total execution, displayed lend/borrow, latest execution and best-five quote-book fields;
+- NEGOTIATED: separately identified negotiated-trade aggregate;
+- dash is NULL/source-no-value, not numeric zero;
+- transaction family and recall term must remain explicit.
+
+Important inference limits:
+- five-symbol pilot is not representative of the Taiwan lending market;
+- this preflight is not the 15:20 research receipt;
+- displayed lend quantity is not total lendable inventory;
+- best-five depth is quote-book state, not own-fill certainty;
+- borrowing is not short selling and fee is not bearish conviction.
+
+D06-18 remains L2/40%. However the source-route blocker has materially narrowed:
+`DYNAMIC_BROWSER_PAGE_EXISTS / MACHINE_ROUTE_UNVERIFIED`
+becomes
+`OFFICIAL_RENDERED_ROUTE_AND_SECURITY_SELECTION_VERIFIED / LIVE_SLOT_PENDING`.
+
+Exact next:
+At 2026-10-06 15:20 ±5 minutes, query exactly the frozen five symbols through the same official rendered route. Preserve source date, selected symbol, transaction family, recall condition, rate/depth values, capturedAt and content hash. If the slot is missed or the route fails, record UNKNOWN/MISSING and never substitute a later snapshot.
