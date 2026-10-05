@@ -4485,3 +4485,64 @@ No promotion:
 
 Exact next:
 System 1 Class A owner implements the three schema deltas and executes this oracle. D03 revalidates only TI-738/TI-739 rather than reopening passed mapping logic, then waits for the first genuine-session receipt. System 2 implementation, D16 method receipt, 00 closure and protected PR #600/Bollinger/ADX paths remain independent.
+
+
+## TI-749 through TI-758 — D03 -> D16 method receipt acceptance oracle (2026-10-05)
+
+Canonical artifacts:
+- `research/D03_D16_METHOD_RECEIPT_ACCEPTANCE_ORACLE_20261005_V0_1.md`;
+- `research/d03_d16_method_receipt_acceptance_oracle_20261005_v0_1.json`;
+- `research/test_d03_d16_method_receipt_acceptance_v0_1.mjs`.
+
+### TI-749 — receipt identity binding
+A future D16 receipt must bind exact method receipt version, D03 experiment version, preregistration hash, feature-contract hashes, parent/continuity/outcome contract versions. Missing/mismatched identity is blocking and cannot be repaired after outcomes.
+
+### TI-750 — common-support population invariants
+Selected-only inference is forbidden. BLOCKED/UNKNOWN/CONSTRAINED handling must remain explicit and fail closed. All comparison arms must use the same frozen common-support parent rows with date-level population accounting.
+
+### TI-751 — chronology / purge / holdout firewall
+Chronological split, training dates, purged training dates, untouched holdout dates and a purge rule covering the maximum registered D20 forward information footprint must be frozen before outcomes. Random row split, holdout-driven method selection and post-outcome purge retuning are forbidden.
+
+### TI-752 — dependence-aware inference requirement
+Stock rows are not IID. The receipt must address scanDate common shocks, repeated symbols, episodes, overlapping forward windows, overlapping feature lookbacks and sector/industry dependence. Row N may not be reported as independent N.
+
+### TI-753 — estimand / endpoint / weighting lock
+Every H005/H006 comparison requires an exact endpoint, contrast, weighting rule, uncertainty method and effect-size metric. D5 return/MFE/MAE remain the jointly declared primary family. D10/D20 remain secondary and cannot rescue a failed D5 conclusion.
+
+### TI-754 — multiplicity family cannot shrink
+The receipt must retain H005-A/B/C/D, H006-A/B/C plus all registered D5/D10/D20 endpoints in one family. Failed/null/inconclusive cells remain counted. Renaming indicators, versions, holdouts or endpoint presentation cannot reset family consumption. Alternate KD/RSI/MACD periods and timeframe search remain unauthorized in V0.1.
+
+### TI-755 — experiment order / no-retuning guard
+TI-005 KD-vs-RSI remains before TI-006 MACD-vs-direct-trend. Outcome-driven reordering, formula/period/threshold/baseline/endpoint changes or difficult-date removal are prohibited.
+
+### TI-756 — legitimate blocking states are valid science
+Allowed terminal states include METHOD_READY, METHOD_BLOCKED, POWER_INSUFFICIENT, DEPENDENCE_TOO_STRONG_FOR_CURRENT_SAMPLE, COMMON_SUPPORT_INSUFFICIENT, COVERAGE_BIASED and VERSION_INCOMPATIBLE.
+
+A structurally valid blocking receipt is accepted as a scientific method result and must not be retuned into METHOD_READY.
+
+METHOD_READY means method-contract admissibility only; it does not bypass D03 T1-T5 physical gates, T6 support floors, independent-evidence proof or Formal approval.
+
+### TI-757 — adversarial cases frozen
+The executable fixture rejects missing/mismatched identity, selected-only inference, UNKNOWN-to-negative coercion, random row split, holdout method selection, incomplete forward-footprint purge, IID row inference, row-N pseudo-replication, common-support mismatch, experiment-order drift, unsupported terminal state, D10/D20 rescue, multiplicity-family shrinkage and post-outcome formula/period/threshold/endpoint/baseline changes.
+
+The fixture also encodes that POWER_INSUFFICIENT can be structurally accepted while remaining non-executable, and METHOD_READY cannot authorize outcome execution while D03 T1-T5 remain blocked.
+
+### TI-758 — current routing
+The oracle is frozen before the real D16 D03-specific method receipt arrives. The executable fixture is present but has not been used as evidence that a real D16 receipt passed.
+
+Current:
+- D16 D03 method receipt = NOT_YET_RETURNED;
+- D03 raw source-version gate = 2/3;
+- outcome join = CLOSED;
+- first genuine System 1 SDA receipt = pending;
+- System 2 runtime dedup diagnostics = missing;
+- Formal Core = LOCKED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09 remains L2/40;
+- D03-10 remains L2/40.
+
+Exact next:
+when D16 returns the machine-readable D03 receipt, run only this frozen oracle and accept legitimate blocking states without redesign. System 1 schema implementation, first genuine-session receipt and System 2 dedup runtime remain independent pending lanes. Even METHOD_READY does not open outcomes until T1-T5 separately pass. Room00 remains SDA-001/SDA-004 closure authority.
