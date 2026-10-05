@@ -1967,3 +1967,59 @@ Consequences:
 This is a selection-bias and unit-semantics firewall only. No predictive sign or motive is inferred.
 
 Maturity impact: NONE. D06-07/08/09 remain L2/40%.
+
+
+---
+
+## IC-080 — T+1 calendar rollover is not the same as T+1 revision publication
+
+Research cycle: 2026-10-06 Asia/Taipei
+Status: T1_CALENDAR_EARLY_READBACK_STABLE / T1_REVISED_NOT_YET_IDENTIFIED / REVISION_CLOCK_GUARD_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable artifacts:
+- `research/d06_14_tpex_daytrade_t1_calendar_early_readback_20261006_0542_v0_1.json`;
+- `research/d06_14_daytrade_revision_clock_guard_v0_1.json`.
+
+At 2026-10-06T05:42:50+08:00, the official TPEx day-trading page still displayed trade date 2026-10-05 and a complete stock-level table.
+
+Canonical comparison against the preserved T_PRELIM:
+- current rows = 841;
+- numeric-valid rows = 841;
+- ordinary four-digit rows = 725;
+- duplicate symbols = 0;
+- suspension-flag rows = 12;
+- union symbols = 841;
+- common symbols = 841;
+- unchanged = 841;
+- changed = 0;
+- added = 0;
+- removed = 0;
+- identity conflicts = 0;
+- all absolute revision sums = 0;
+- canonical fingerprint remains fnv1a64-utf8:48e8edf2952b9b40.
+
+This is NOT labeled T1_REVISED yet.
+
+Reason:
+TPEx explicitly states that T-day values are updated on T, T+1 and T+2 after securities firms finish overall processing and transmit corrected amounts, with T+2 final. Merely crossing midnight into calendar date T+1 does not establish that the T+1 provider update has already run.
+
+A second falsification also occurred:
+the page-query summarizer estimated 703 rows, while deterministic parsing of the actual displayed table returned the same 841 rows as T_PRELIM. The 703 summary is rejected. Row-count/revision evidence must come from canonical table parsing, not natural-language extraction summaries.
+
+Frozen rule:
+`calendar day != published revision vintage`.
+
+Maturity decision:
+D06-14 remains L2/40%. This early-morning stability readback strengthens timing semantics but does not complete the T1 revision lineage.
+
+Additional blocker re-audit:
+- D06-05: no genuine 2026-10-05 after-market same-generation TDCC consumer row was found; only the PREOPEN parent receipt remains durable, so no L3 promotion.
+- D06-06: D02 PVE-245 is an engineering remediation handoff for 15m provenance/bootstrap/session blockers; it creates no D06-compatible cross-sectional shared price/volume parent.
+- SDA-007: engineering lineage enforcement remains pending in System 1/System 2; Room05 does not close the audit ticket.
+
+Exact next:
+1. later on 2026-10-06, after the TPEx T+1 workflow is plausibly complete, recapture trade date 2026-10-05 and apply the frozen union/common-support revision contract;
+2. preserve exact capturedAt and bound firstKnownAt rather than inventing a T+1 publication minute;
+3. only then label the durable version T1_REVISED;
+4. D06-05 and D06-06 remain fail-closed at their existing blockers;
+5. outcomes stay closed and Formal Core remains unchanged.
