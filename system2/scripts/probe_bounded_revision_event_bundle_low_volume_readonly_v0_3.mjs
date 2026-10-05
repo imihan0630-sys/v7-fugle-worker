@@ -14,7 +14,32 @@ const END="2026-10-02";
 const HISTORY_START="2025-01-01";
 const YEARS=[2025,2026];
 const MOPS_URL="https://mopsov.twse.com.tw/mops/web/ajax_t05st01";
-const EXPECTED_UNIVERSE_HASH="3e31779c36582bd70378d4b393ce0d4b2510bb84fe557686a0e51d3a2f604049";
+const LEGACY_CAPTURE_SPECIFIC_UNIVERSE_HASH="3e31779c36582bd70378d4b393ce0d4b2510bb84fe557686a0e51d3a2f604049";
+const EXPECTED_STABLE_EVENT_KEYS=Object.freeze([
+  "TPEX_CAPITAL_REDUCTION_REFERENCE|3152|2026-06-30",
+  "TPEX_CAPITAL_REDUCTION_REFERENCE|3710|2026-09-21",
+  "TPEX_CAPITAL_REDUCTION_REFERENCE|4806|2026-10-02",
+  "TPEX_CAPITAL_REDUCTION_REFERENCE|5381|2026-04-13",
+  "TPEX_CAPITAL_REDUCTION_REFERENCE|6129|2026-09-14",
+  "TPEX_CAPITAL_REDUCTION_REFERENCE|6241|2026-08-25",
+  "TPEX_CAPITAL_REDUCTION_REFERENCE|6461|2026-09-09",
+  "TPEX_CAPITAL_REDUCTION_REFERENCE|8059|2026-09-21",
+  "TPEX_CAPITAL_REDUCTION_REFERENCE|8277|2026-09-21",
+  "TPEX_PAR_VALUE_CHANGE_REFERENCE|3086|2026-04-20",
+  "TPEX_PAR_VALUE_CHANGE_REFERENCE|4747|2026-08-31",
+  "TPEX_PAR_VALUE_CHANGE_REFERENCE|5904|2026-08-10",
+  "TPEX_PAR_VALUE_CHANGE_REFERENCE|8937|2026-04-13",
+  "TWSE_CAPITAL_REDUCTION_REFERENCE|1441|2026-09-29",
+  "TWSE_CAPITAL_REDUCTION_REFERENCE|1459|2026-08-03",
+  "TWSE_CAPITAL_REDUCTION_REFERENCE|1563|2026-09-07",
+  "TWSE_CAPITAL_REDUCTION_REFERENCE|2321|2026-09-21",
+  "TWSE_CAPITAL_REDUCTION_REFERENCE|2380|2026-06-29",
+  "TWSE_CAPITAL_REDUCTION_REFERENCE|3356|2026-09-21",
+  "TWSE_CAPITAL_REDUCTION_REFERENCE|3591|2026-09-21",
+  "TWSE_CAPITAL_REDUCTION_REFERENCE|6176|2026-08-24",
+  "TWSE_CAPITAL_REDUCTION_REFERENCE|6550|2026-09-29",
+  "TWSE_PAR_VALUE_CHANGE_REFERENCE|6949|2026-09-07"
+]);
 const LANES={
   TWSE_CAPITAL_REDUCTION_REFERENCE:"CAPITAL_REDUCTION",
   TWSE_PAR_VALUE_CHANGE_REFERENCE:"PAR_VALUE_CHANGE",
@@ -111,11 +136,27 @@ for(const [sourceId,family] of Object.entries(LANES)){
 }
 assert.equal(currentEvents.length,23);
 
-const canonical=currentEvents.map(e=>({
+const captureSpecificCanonical=currentEvents.map(e=>({
   eventKey:e.eventKey,sourceId:e.sourceId,symbol:e.symbol,effectiveDate:e.effectiveDate,eventVersionId:e.eventVersionId,
 })).sort((a,b)=>a.eventKey.localeCompare(b.eventKey));
-const universeHash=await sha256Hex({interval:{startDate:START,endDate:END},events:canonical});
-assert.equal(universeHash,EXPECTED_UNIVERSE_HASH);
+const freshCaptureSpecificUniverseHash=await sha256Hex({
+  interval:{startDate:START,endDate:END},
+  events:captureSpecificCanonical,
+});
+
+// PR #610's eventUniverseHash committed to eventVersionId, and eventVersionId
+// intentionally commits to sourceCaptureId/observedAt. It is therefore a
+// capture-specific immutable receipt, not a cross-fetch universe identity.
+// Replays compare the exact frozen semantic keyset instead.
+const actualStableEventKeys=currentEvents
+  .map(e=>[e.sourceId,e.symbol,e.effectiveDate].join("|"))
+  .sort();
+assert.deepEqual(actualStableEventKeys,[...EXPECTED_STABLE_EVENT_KEYS].sort());
+assert.equal(new Set(actualStableEventKeys).size,23);
+const stableEventKeysetHash=await sha256Hex({
+  interval:{startDate:START,endDate:END},
+  stableEventKeys:actualStableEventKeys,
+});
 
 for(const event of currentEvents){
   const prior=(historicalEventsByLane[event.sourceId]||[])
@@ -134,7 +175,7 @@ for(let si=0;si<symbols.length;si++){
     const r=fetchMops(symbol,year-1911,"all");
     histories[symbol].full[year]=r;
     histories[symbol].allRows.push(...r.rows.filter(x=>x.date&&x.date<=END));
-    await sleep(180);
+    await sleep(350);
   }
 }
 
@@ -146,7 +187,7 @@ for(let si=0;si<symbols.length;si++){
     for(let month=1;month<=maxMonth;month++){
       const r=fetchMops(symbol,year-1911,month);
       histories[symbol].monthly[year].push({month,...r});
-      await sleep(180);
+      await sleep(350);
     }
   }
 }
@@ -207,7 +248,11 @@ console.log(JSON.stringify({
   result:"LOW_VOLUME_EVENT_BUNDLE_V0_3_PHYSICAL_DIAGNOSTIC_COMPLETE",
   interval:{startDate:START,endDate:END},
   historyStartDate:HISTORY_START,
-  eventUniverseHash:universeHash,
+  legacyCaptureSpecificEventUniverseHash:LEGACY_CAPTURE_SPECIFIC_UNIVERSE_HASH,
+  freshCaptureSpecificEventUniverseHash,
+  stableEventKeysetHash,
+  stableEventKeyCount:actualStableEventKeys.length,
+  stableEventKeys:actualStableEventKeys,
   symbolCount:symbols.length,
   queryIntegrityBySymbol,
   summary,
