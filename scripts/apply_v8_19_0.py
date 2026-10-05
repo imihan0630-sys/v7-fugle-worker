@@ -128,9 +128,6 @@ once('''async function runAfterMarketScan(env, scheduledTime = Date.now(), optio
   const lockKey=`V7_AFTER_MARKET_LEASE:${requestedDate}`;let lease=null;''','scan origin context')
 once('const summary = await runAfterMarketScanCore(env, scheduledTime, options);',
      'const summary = await runAfterMarketScanCore(env, scheduledTime, {...options,c1ScanOriginContext});','core origin context')
-once('await persistSignalStateLease(env,lockKey,lease.token,{status:"SUCCESS",scanDate:summary.scanDate,generatedAt:summary.generatedAt,testMode:isTestMode(env)});',
-     'await persistSignalStateLease(env,lockKey,lease.token,{status:"SUCCESS",scanDate:summary.scanDate,generatedAt:summary.generatedAt,testMode:isTestMode(env),scanOriginKind:c1ScanOriginContext?.originKind||null,scanAttemptId:c1ScanOriginContext?.scanAttemptId||null});',
-     'lease origin summary')
 once('''      status: "SUCCESS", requestedDate, scanDate: summary.scanDate, selectedCount: summary.selectedCount,
       generatedAt: summary.generatedAt, threeMin: summary.threeMin, dailyReport: summary.dailyReport''',
      '''      status: "SUCCESS", requestedDate, scanDate: summary.scanDate, selectedCount: summary.selectedCount,
