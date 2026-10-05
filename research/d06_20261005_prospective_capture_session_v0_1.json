@@ -1,0 +1,192 @@
+{
+  "schemaVersion": "D06_20261005_PROSPECTIVE_CAPTURE_SESSION_V0_1",
+  "createdAt": "2026-10-05T08:37:59+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "tradeDate": "2026-10-05",
+  "calendarStatus": "VALID_TRADING_DATE",
+  "calendarEvidence": {
+    "source": "TWSE 115-year market holiday schedule",
+    "rule": "2026-10-05 is not listed as a market closure; next October closure shown is 2026-10-09 National Day compensatory holiday.",
+    "marketRegularHours": "09:00-13:30 Asia/Taipei"
+  },
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "linkedAuditTickets": [
+    "SDA-007"
+  ],
+  "preregistrationParent": "research/d06_next_trading_day_outcome_blind_capture_plan_v0_1.json",
+  "lineageContract": "research/d06_sda007_flow_ownership_lineage_contract_20261005_v0_1.json",
+  "sessionState": "PREOPEN_SESSION_FROZEN",
+  "globalRules": [
+    "No lane may change fields or pass criteria after source values are observed.",
+    "Raw parent receipts precede derived states.",
+    "Every parent receipt gets one primitiveReceiptId and immutable source/version/hash clocks.",
+    "Derived children reference parentReceiptIds and do not create independent evidence by transformation alone.",
+    "PENDING_BY_CLOCK means the frozen source window has not arrived; it is not UNKNOWN, zero, no-event or failure.",
+    "UNKNOWN is used only after the source window when the required object cannot be observed or qualified.",
+    "Later revisions append vintages and never overwrite earlier observations.",
+    "No returns, MFE, MAE, hit rate, ranking or selection outcomes are joined.",
+    "No Formal score, rank, Top6, capital or signal behavior changes."
+  ],
+  "lanes": [
+    {
+      "laneId": "D06_03_DEALER_SPLIT",
+      "modules": [
+        "D06-03"
+      ],
+      "primitiveReceiptId": "D06-20261005-INSTITUTION-DEALER-SPLIT",
+      "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+      "preopenState": "PENDING_BY_CLOCK",
+      "sourceClock": {
+        "TWSE": [
+          "18:00 excluding block trades",
+          "20:00 including block trades"
+        ],
+        "TPEx": "capture when official same-date stock-level detail is actually available; do not impute a TWSE clock"
+      },
+      "frozenFields": [
+        "tradeDate",
+        "market",
+        "symbol",
+        "dealerPropBuy",
+        "dealerPropSell",
+        "dealerPropNet",
+        "dealerHedgeBuy",
+        "dealerHedgeSell",
+        "dealerHedgeNet",
+        "aggregateDealerNet",
+        "capturedAt",
+        "firstKnownAt",
+        "schemaFingerprint",
+        "contentHash",
+        "coverage",
+        "unknownReasons"
+      ],
+      "passGate": "same-date actor/desk split captured with aggregate reconciliation and source schema verified"
+    },
+    {
+      "laneId": "D06_05_TDCC_LINEAGE",
+      "modules": [
+        "D06-05",
+        "D06-10"
+      ],
+      "primitiveReceiptId": "D06-20261005-TDCC-WEEKLY",
+      "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+      "preopenState": "PENDING_LIVE_VINTAGE_CHECK",
+      "frozenFields": [
+        "scanDate",
+        "generationId",
+        "symbol",
+        "chipConcentration",
+        "chipAsOfDate",
+        "chipDefinition",
+        "tdccSourceDate",
+        "tdccCapturedAt",
+        "tdccFirstKnownAt",
+        "tdccContentHash",
+        "tdccParserVersion",
+        "unknownReasons"
+      ],
+      "passGate": "same-generation immutable TDCC lineage attached; repeated scan dates sharing one chipAsOfDate are one ownership vintage"
+    },
+    {
+      "laneId": "D06_06_CORE_CROWDING",
+      "modules": [
+        "D06-06"
+      ],
+      "childReceiptId": "D06-20261005-CORE-CROWDING",
+      "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+      "preopenState": "WAITING_PARENT_RECEIPTS",
+      "parentReceiptIds": [
+        "D06-20261005-INSTITUTION-DEALER-SPLIT",
+        "D06-20261005-INSTITUTION-FLOW",
+        "D06-20261005-LIQUIDITY-PRICEVOLUME",
+        "D06-20261005-TDCC-WEEKLY"
+      ],
+      "rule": "latestParentFirstKnownAt = max(firstKnownAt of mandatory parents); optional leverage/day-trade/SBL/passive axes remain UNKNOWN when unavailable",
+      "independentVote": false
+    },
+    {
+      "laneId": "D06_07_08_09_TPEX_VINTAGE",
+      "modules": [
+        "D06-07",
+        "D06-08",
+        "D06-09"
+      ],
+      "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+      "primitiveReceiptIds": [
+        "D06-20261005-TPEX-LEV-EARLY",
+        "D06-20261005-TPEX-LEV-LATE"
+      ],
+      "captures": [
+        {
+          "label": "EARLY",
+          "targetTaipei": "20:30",
+          "preopenState": "PENDING_BY_CLOCK"
+        },
+        {
+          "label": "LATE",
+          "targetTaipei": "22:30",
+          "preopenState": "PENDING_BY_CLOCK"
+        }
+      ],
+      "rule": "authorized/free official route only; later availability must not be backfilled into EARLY"
+    },
+    {
+      "laneId": "D06_14_DAY_TRADING_VINTAGE",
+      "modules": [
+        "D06-14"
+      ],
+      "primitiveReceiptId": "D06-20261005-TPEX-DAYTRADE-T",
+      "informationRoot": "VOLUME_TURNOVER",
+      "preopenState": "PENDING_BY_CLOCK",
+      "currentVintage": "T_PRELIM",
+      "followups": [
+        "T1_REVISED",
+        "T2_FINAL"
+      ],
+      "rule": "preserve append-only revision lineage; surveillance threshold is context, not alpha"
+    },
+    {
+      "laneId": "D06_16_PF040_ETF_UNITS_PCF",
+      "modules": [
+        "D06-11",
+        "D06-16"
+      ],
+      "primitiveReceiptId": "D06-20261005-ETF-UNITS-PCF",
+      "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+      "preopenState": "PENDING_SAME_GENERATION_SOURCE",
+      "rule": "capture units delta plus same-generation PCF; execution remains modeled unless directly observed; event receipt and flow receipt remain distinct"
+    },
+    {
+      "laneId": "D06_18_BORROW_ECONOMICS",
+      "modules": [
+        "D06-18"
+      ],
+      "primitiveReceiptId": "D06-20261005-TWSE-BORROW-ECON",
+      "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+      "preopenState": "PENDING_BY_CLOCK_OR_PUBLIC_SOURCE_AVAILABILITY",
+      "rule": "preserve transaction type, rate, displayed lend/borrow quantities, recall terms, quote-persistence and 2026-06-01 settlement vintage; never call displayed supply total lendable inventory"
+    },
+    {
+      "laneId": "D06_19_RETAIL",
+      "modules": [
+        "D06-19"
+      ],
+      "preopenState": "NO_NEW_PUBLIC_EXISTENCE_SEARCH",
+      "rule": "aggregate proxy-validation Stage1/IC-064 already complete; special stock/order investor-type access requires owner authorization before contact/request/purchase",
+      "independentVote": false
+    }
+  ],
+  "sda007Readiness": {
+    "learningSemanticContract": "COMPLETE",
+    "todayPrimitiveIdsPrecommitted": true,
+    "engineeringOnePrimitiveOneReceiptValidation": "PENDING",
+    "d16ResidualIncrementality": "PENDING",
+    "auditClosure": "00_REQUIRED"
+  },
+  "maturityImpact": "NONE_AT_PREOPEN",
+  "formalOptimizationCandidate": "NONE",
+  "exactNext": "After each frozen source clock becomes available on 2026-10-05, append the actual parent receipt without changing fields/pass gates. First evaluate source/coverage/PIT readiness only. Keep outcomes closed."
+}
