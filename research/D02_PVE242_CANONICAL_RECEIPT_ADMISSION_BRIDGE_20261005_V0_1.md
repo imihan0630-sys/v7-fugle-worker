@@ -71,3 +71,22 @@ It does not authorize L4 maturity or Formal Core changes.
 ## Exact next continuation point
 
 PVE-243 — capture the first genuine prospective canonical receipt using the frozen schema and V0.2 guard, without opening promotion-grade outcomes; if no decision-time-valid source is available, record BLOCKED/UNKNOWN rather than retroactively admitting historical data.
+
+
+## Lane-specific bridge correction from PVE-243 capture
+
+A canonical source receipt passing provenance admission is not sufficient for a hypothesis lane.
+
+New executable lane guard:
+- research/d02_pve242_lane_bridge_guard_v0_1.mjs;
+- tests/test_d02_pve242_lane_bridge_guard_v0_1.mjs;
+- independent validation 17/17 PASS.
+
+Additional fail-closed constraints:
+- D02-02:H001 requires a 15m receipt, slot >=10:15, clean same-slot baseline, >=20 prior slot observations, valid current-slot coverage and common support.
+- D02-03:H20 requires a 15m receipt plus D01-05 primitive ownership, shared primitive event identity, identical anchor bar and identical outcome horizon.
+- D02-06:H003 requires a 15m receipt plus same P/PV feature bar, hypothesis-clean event and no PRE_EVENT_ONLY_EXPIRY.
+- D02-08 requires an intraday receipt, a pressure-capable proxy family, source continuity/classification coverage and permanent false states for true OFI / participant intent / dynamic absorption.
+- GENERIC_PROVENANCE is allowed for a canonical receipt but never authorizes a clean selection date.
+
+This correction prevents a valid 1d source receipt from being misrouted into intraday Wave-1 evidence.
