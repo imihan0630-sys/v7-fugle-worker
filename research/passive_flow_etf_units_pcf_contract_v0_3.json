@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "PASSIVE_FLOW_ETF_UNITS_PCF_CONTRACT_V0_3",
+  "supersedes": "research/passive_flow_etf_units_pcf_contract_v0_2.json",
+  "updated": "2026-10-05 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "semanticHierarchy": [
+    "FUND_UNIT_CHANGE",
+    "PRIMARY_MARKET_DELIVERY_OBLIGATION",
+    "AP_INVENTORY_FINANCING_PATH",
+    "ACTUAL_SECONDARY_MARKET_EXECUTION"
+  ],
+  "primaryFlowObject": {
+    "name": "priorBusinessDayReportedUnitChangeWithOperationalAdjustments",
+    "interpretation": "For a T-day PCF decision context, ISSUES-DIFF is a lagged T-1 operational unit-change state by design, not same-day T flow.",
+    "notEquivalentTo": [
+      "same-day T net creations",
+      "gross creations",
+      "gross redemptions",
+      "actual stock trades"
+    ]
+  },
+  "clockContract": {
+    "pcfSubmission": "T-1 16:30-19:00",
+    "publishDate": "T-1 business/processing date",
+    "announceDate": "T next business day",
+    "issuesDiffObservation": "T-1 initial-review net creation/redemption with T-2 failure reversals and T-1 conversion adjustments",
+    "tDayUpdate": "PCF may be updated/retransmitted on T before the creation/redemption cutoff",
+    "forbiddenEquality": "Do not require unitObservationDate == decisionDate.",
+    "decisionObject": "PRIOR_BUSINESS_DAY_UNIT_CHANGE_WITH_T_DECISION_PCF"
+  },
+  "requiredProspectiveReceipt": [
+    "fundCode",
+    "fundType",
+    "benchmark",
+    "creationRedemptionMode",
+    "decisionDate",
+    "pcfAnnounceDate",
+    "pcfPublishDate",
+    "unitObservationDate",
+    "capturedAt",
+    "firstKnownAt",
+    "sourceUrl",
+    "sourceHash",
+    "outstandingUnits",
+    "reportedUnitsDifference",
+    "issuesDiffSemantic",
+    "pcfTradeDate",
+    "pcfVersion",
+    "pcfGenerationId",
+    "pcfHash",
+    "creationUnitSize",
+    "cashSubstitutionByComponent",
+    "tDayUpdateState",
+    "splitReverseSplitFlag",
+    "otherUnitCorporateActionFlag",
+    "modeledVsActualExecution",
+    "pointInTimeEligible",
+    "unknownReasons"
+  ],
+  "taiwanExecutionIdentifiabilityGuards": {
+    "existingInventory": "Applicants/APs may deliver pre-existing holdings; creation need not cause new market purchases.",
+    "collectiveInKindCreation": "Up to three applicants may pool existing holdings for an in-kind creation.",
+    "minimumInKindBasket": "With issuer approval, an AP may initially deliver at least 90% of the required stock-basket market value and later buy or borrow shortage shares by the next business day.",
+    "cashSubstitution": "Specific PCF constituents may be replaced by cash under allowed conditions.",
+    "pcfVersioning": "T-day PCF can be updated/retransmitted; same-generation version/use-date/hash must be preserved.",
+    "conclusion": "Units delta plus PCF can support MODELED_PRIMARY_BASKET_EXPOSURE, not ACTUAL_STOCK_PASSIVE_FLOW."
+  },
+  "crossModuleOwnership": {
+    "D11_14": "index event identity, announcement/effective clocks and event lifecycle",
+    "D06_11": "observed passive/index fund flow",
+    "D06_16": "creation/redemption, AP, premium-discount, tracking and underlying-liquidity mechanics",
+    "antiDoubleCount": "One event/units primitive receipt is referenced downstream; it does not create multiple directional votes."
+  },
+  "falsification": [
+    "Announcement date T with unit observation date T-1 is expected under the official PCF workflow and is not stale by itself.",
+    "T-1 unit change is not same-day T fund flow.",
+    "Zero reported unit change does not prove zero gross creation/redemption.",
+    "Positive reported unit change does not prove every constituent was purchased in the secondary market.",
+    "PCF basket obligations do not identify AP inventory sourcing or actual execution timing.",
+    "Current prospective pages do not establish a complete immutable historical archive."
+  ],
+  "currentProspectiveEvidence": {
+    "date": "2026-10-05",
+    "capturedBeforeAfterMarketDecision": true,
+    "etfs": [
+      "0050",
+      "0056"
+    ],
+    "decisionPcfObserved": true,
+    "unitObservationDate": "2026-10-02",
+    "status": "FIRST_GENUINE_T_DECISION_RECEIPT_IDENTIFIED / MULTI_DATE_GATE_OPEN"
+  },
+  "maturityDecision": {
+    "D06_16": "L2 / 40% remains",
+    "reason": "Clock semantics are corrected and the first genuine T-decision prospective receipt is identified, but independent multi-date version stability is still required for L3."
+  },
+  "status": "CLOCK_SEMANTICS_CORRECTED / FALSE_REFRESH_BLOCKER_REMOVED / MULTI_DATE_PROSPECTIVE_VALIDATION_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "exactNext": "Capture the next independent trading-date T-decision PCF before the after-market decision window, storing both T announce/use date and T-1 unit-observation date plus T-day update/version state."
+}
