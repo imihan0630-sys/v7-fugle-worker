@@ -1,0 +1,1306 @@
+{
+  "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_DURABLE_EVIDENCE_V0_1",
+  "market": "TWSE",
+  "year": 2019,
+  "disposition": "DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL",
+  "githubRun": {
+    "runId": 37251356804,
+    "runNumber": 11,
+    "headSha": "5d0cb81bf85e8a10ffdbdde29545aef97802b0eb",
+    "event": "workflow_dispatch",
+    "conclusion": "success",
+    "completedAt": "2026-10-05T01:55:59Z",
+    "artifactId": 11321561727,
+    "artifactName": "system2-historical-coverage-TWSE-2019",
+    "artifactDigest": "sha256:4bce2e6040f0d1b9aecfaa930e17943896dcdbe99620167a3a37af76959e0e30",
+    "artifactSizeBytes": 5050,
+    "artifactCreatedAt": "2026-10-05T01:55:55Z",
+    "artifactExpiresAt": "2026-11-04T01:55:55Z"
+  },
+  "verifierOutput": {
+    "result": "PASS_MARKET_YEAR_DATA_PARTIAL_REPLAY_READINESS",
+    "verifierVersion": "S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_3",
+    "market": "TWSE",
+    "year": 2019,
+    "fromDate": "2019-01-01",
+    "toDate": "2019-12-31",
+    "storageVerification": {
+      "receiptId": "S2HCR-b64c8108daafc342ff68e87989e3a5c9202fa287823fc8b9b9090e80afdba97e",
+      "batchId": "S2-HIST-PACK-YEAR|TWSE|2019",
+      "completionReceiptState": "COMPLETE",
+      "packCount": 953,
+      "barCount": 226715,
+      "manifestRollingHash": "b64c8108daafc342ff68e87989e3a5c9202fa287823fc8b9b9090e80afdba97e",
+      "checkpointState": "COMPLETE",
+      "checkpointObjectReadyCount": 953,
+      "checkpointManifestCommittedCount": 953,
+      "headObjectCountVerified": 953,
+      "byteGetObjectCountVerified": 953,
+      "r2Bucket": "system2-historical-research",
+      "state": "PASS"
+    },
+    "sourceReconciliation": {
+      "officialTradingDates": 242,
+      "freshOfficialRowCount": 226715,
+      "coldRowCount": 226715,
+      "missingFromColdCount": 0,
+      "absentFromFreshOfficialCount": 0,
+      "sourceRowHashMismatchCount": 0,
+      "missingFromColdSample": [],
+      "absentFromFreshOfficialSample": [],
+      "sourceRowHashMismatchSample": [],
+      "state": "PASS"
+    },
+    "historicalUniverse": {
+      "readiness": "PASS_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION",
+      "registryId": "S2-DATA-TWSE-2019-OFFICIAL-UNION-V0.1",
+      "registryHash": "39c83b14a7018dd4e0f977a18da475e7d9bbbfd2d0a54133e30b0978c20b0c43",
+      "membershipCount": 1134,
+      "replayEligibleCount": 1134,
+      "currentCount": 1089,
+      "delistedCount": 45,
+      "unknownStartCount": 0,
+      "sourceReceipt": {
+        "currentCount": 1089,
+        "newListingHistoryCount": 793,
+        "delistedCount": 45,
+        "datasetStartFallbackCount": 11,
+        "datasetStartFallbackSymbols": [
+          "1507",
+          "1701",
+          "1704",
+          "1724",
+          "1902",
+          "2358",
+          "2809",
+          "2823",
+          "2841",
+          "9157",
+          "9188"
+        ],
+        "datasetFirstTradingDate": "2019-01-02",
+        "currentSourceHash": "39ef1ef97341b0e0828dc9bdeb7a30f5badbdcee2d43fdd02c1d88f2b470995b",
+        "newListingSourceHash": "bb70678fc001770c7e86ef9471e0ff96b8fe87b6852545a485ab18d1610f7b91",
+        "delistingSourceHash": "a80693f2ab3c94b024ed830c73e64f2a0d122fdba806148edce38bf1570fc143",
+        "schemaVersion": "D08_TWSE_HISTORICAL_UNIVERSE_SOURCE_V0_1"
+      },
+      "survivorshipCompleteForDataCoverage": true
+    },
+    "suspensionEvidence": {
+      "state": "OBSERVED",
+      "sourceUrl": "https://www.twse.com.tw/rwd/zh/afterTrading/TWTAWU?startDate=20190101&endDate=20191231&querytype=3&response=json",
+      "sourceHash": "1a17444a06a3e9ca4fd026a0fa430dd37732c131abc08618abd76e32f65338b3",
+      "upstreamStatus": "OK",
+      "fields": [
+        "編號",
+        "證券代號",
+        "證券名稱",
+        "暫停交易日期",
+        "暫停交易時間",
+        "恢復交易日期",
+        "恢復交易時間"
+      ],
+      "intervalCount": 29,
+      "intervalSample": [
+        {
+          "market": "TWSE",
+          "symbol": "1229",
+          "suspendedFrom": "2019-03-28",
+          "resumedOn": "2019-03-29",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "021e8204645ad6d3f5b66077fb9af578d0a7d7befdc66a6e5100b2be655315bb"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "1262",
+          "suspendedFrom": "2019-07-11",
+          "resumedOn": "2019-07-12",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "b3e502ba1acaf18290b6b93683df48754f02b637829d752b3973a24c3a90e550"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "1439",
+          "suspendedFrom": "2019-12-10",
+          "resumedOn": "2019-12-11",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "c857d07925cb7bdb55ff1b193439a9a230dcf111a8d10128105588317517b8bf"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "1457",
+          "suspendedFrom": "2019-10-31",
+          "resumedOn": "2019-11-01",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "f1d90000b674b6410b4eb7fe0dfb91687a62d059f517795aacc50bc0bc8c0a9e"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "2231",
+          "suspendedFrom": "2019-01-21",
+          "resumedOn": "2019-01-22",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "491e9c031179f23239420c4c0126e2f8190891817514e8ccdd912636ca6274fa"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "2327",
+          "suspendedFrom": "2019-11-12",
+          "resumedOn": "2019-11-13",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "a6251306309cc5b23eaf3905a9b3e6ebd8911956dcb4038b7c96aae5e9e7e83b"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "2371",
+          "suspendedFrom": "2019-03-27",
+          "resumedOn": "2019-03-28",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "064c5fc5366d5e7595932d9a6791c07b419763842e32a59c741072ae7971c79d"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "2375",
+          "suspendedFrom": "2019-03-13",
+          "resumedOn": "2019-03-14",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "339753ccbf4554c8f6d19e69b405b1b6adbed9fbd1a3c88e96f12534f4effe66"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "2475",
+          "suspendedFrom": "2019-03-27",
+          "resumedOn": "2019-03-28",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "5d5557e7e373ae0ab938c46e66cd6fca8a18b1f0656b81a16b6f38aadb260120"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "2514",
+          "suspendedFrom": "2019-04-02",
+          "resumedOn": "2019-04-03",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "ef7173699ba985b4cc9f62c764e5ce18ba54c2f8ad9dc640714b2183fb7a1d29"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "2601",
+          "suspendedFrom": "2019-04-08",
+          "resumedOn": "2019-04-09",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "8a91660ed64490cb7719fd67916ba4ab9e39d6b09c4304d52dfaaf9a3263c5cb"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "3519",
+          "suspendedFrom": "2019-03-20",
+          "resumedOn": "2019-03-21",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "95a0583085cbab4446391097f6631485e18df163e9ce709a424b2ddd9df39752"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "3557",
+          "suspendedFrom": "2019-04-17",
+          "resumedOn": "2019-04-18",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "b3c6f78dab07a853824465685fd62e98e494e214bb193f7dcc82703750a4597b"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "3579",
+          "suspendedFrom": "2019-05-10",
+          "resumedOn": "2019-05-13",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "1b2a485b147619ceaf1c0d47196d09c70e135094c7806b3cadbbd962dafa4e16"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "3686",
+          "suspendedFrom": "2019-03-13",
+          "resumedOn": "2019-03-14",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "ce7540b6697afeccad5ed6a2b6e4d5fb7ac827d1fe38e372924404cdd0418d76"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "3702",
+          "suspendedFrom": "2019-11-12",
+          "resumedOn": "2019-11-13",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "68d4208f2e102ad158ca20e3980478eee4f06b67bc7e9307b0de265b2ae8034e"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "4414",
+          "suspendedFrom": "2019-02-12",
+          "resumedOn": "2019-02-13",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "8c3e33415f52d3516a60cba0d23141ba22a5ce5a2642c57843828617898dd7eb"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "4414",
+          "suspendedFrom": "2019-12-10",
+          "resumedOn": "2019-12-11",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "4b25207dbc4858860059523f5b2a06412d84e838f13e6a4de07a10a7682bbb1e"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "4551",
+          "suspendedFrom": "2019-10-01",
+          "resumedOn": "2019-10-01",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "fed815bbe2985e15b0b44b71ee8a66a621c0e0583067e235bc20a17b8490bcb1"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "4919",
+          "suspendedFrom": "2019-11-28",
+          "resumedOn": "2019-11-29",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "537d44af5f9163ea8932c3bbd0ba81f3cb4c5b8b3492039e371a6d3faada61ca"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "4960",
+          "suspendedFrom": "2019-10-24",
+          "resumedOn": "2019-10-25",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "a1d152078673d6d117ccc58275104c64c87bbb79c52fa22cae2ae3a89bca70e4"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "5469",
+          "suspendedFrom": "2019-07-30",
+          "resumedOn": "2019-07-31",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "2647611f97c56e537c5d1b3c3f88201190665a4ae5af1b82c3c94e946d33c2b2"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "6153",
+          "suspendedFrom": "2019-07-30",
+          "resumedOn": "2019-07-31",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "8ccfef28a72b106056c9429c470fd21d289fb1b46964b0b1d84de32dc691ee78"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "6251",
+          "suspendedFrom": "2019-10-18",
+          "resumedOn": "2019-10-21",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "651633076224f38450d0e1938bb2b5adef881221df90ff7b935027a2172b8dc2"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "6271",
+          "suspendedFrom": "2019-12-27",
+          "resumedOn": "2019-12-30",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "b6ac1354ed0b0644935e2bdfee2c1b561e6a067c8d1ed68025f2b0e6642e592a"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "6464",
+          "suspendedFrom": "2019-07-17",
+          "resumedOn": "2019-07-18",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "ebb24b70bfdd5015e20d22f9fecdab32ae4ce16caab431811f3062a51c7fc85f"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "6531",
+          "suspendedFrom": "2019-05-14",
+          "resumedOn": "2019-05-15",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "c93bbddb22a57ef8e03ed2384efcbb6019fb5ed2691314a13d5812af3f4e1b04"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "8427",
+          "suspendedFrom": "2019-12-20",
+          "resumedOn": "2019-12-23",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "d5d0a938e9ad6013c651f76555a164b9bb7a3fec7d006f721d2c16ec3af0d4ce"
+        },
+        {
+          "market": "TWSE",
+          "symbol": "9943",
+          "suspendedFrom": "2019-02-22",
+          "resumedOn": "2019-02-25",
+          "coverageTo": "2019-12-31",
+          "sourceRowHash": "342bdafd6f9996904db4ca3ebf7ec0d6452ff42bb9298ca08e0267b120411fde"
+        }
+      ],
+      "absenceCertifiesNoSuspension": false,
+      "sourceHistoryStart": "2011-10-03",
+      "limitation": null
+    },
+    "coverage": {
+      "market": "TWSE",
+      "year": 2019,
+      "fromDate": "2019-01-01",
+      "toDate": "2019-12-31",
+      "expectedSessions": 242,
+      "actualSessions": 242,
+      "historicalUniverseSize": 953,
+      "membershipSessionDenominator": 227299,
+      "actualBars": 226715,
+      "totalStoredRowsInRange": 226715,
+      "missingBars": 584,
+      "unknownBars": 584,
+      "suspensionClassifiedMissingBars": 0,
+      "unexpectedBars": 0,
+      "nonTradingDateBars": 0,
+      "missingTradingDates": [],
+      "missingReasonCounts": {
+        "UNKNOWN_SYMBOL_SESSION_GAP": 584
+      },
+      "missingBySymbol": [
+        {
+          "symbol": "1213",
+          "missingCount": 117,
+          "unknownCount": 117,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-04-08",
+          "lastMissingDate": "2019-09-23"
+        },
+        {
+          "symbol": "5259",
+          "missingCount": 99,
+          "unknownCount": 99,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-04-08",
+          "lastMissingDate": "2019-12-31"
+        },
+        {
+          "symbol": "1603",
+          "missingCount": 92,
+          "unknownCount": 92,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-04-08",
+          "lastMissingDate": "2019-08-16"
+        },
+        {
+          "symbol": "2025",
+          "missingCount": 57,
+          "unknownCount": 57,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-01-02",
+          "lastMissingDate": "2019-04-03"
+        },
+        {
+          "symbol": "6131",
+          "missingCount": 47,
+          "unknownCount": 47,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-01-02",
+          "lastMissingDate": "2019-03-20"
+        },
+        {
+          "symbol": "1410",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-10-17",
+          "lastMissingDate": "2019-10-25"
+        },
+        {
+          "symbol": "1417",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-08-29",
+          "lastMissingDate": "2019-09-06"
+        },
+        {
+          "symbol": "1709",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-11-14",
+          "lastMissingDate": "2019-11-22"
+        },
+        {
+          "symbol": "2323",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-09-19",
+          "lastMissingDate": "2019-09-27"
+        },
+        {
+          "symbol": "2340",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-09-11",
+          "lastMissingDate": "2019-09-20"
+        },
+        {
+          "symbol": "2514",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-12-05",
+          "lastMissingDate": "2019-12-13"
+        },
+        {
+          "symbol": "2534",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-12-05",
+          "lastMissingDate": "2019-12-13"
+        },
+        {
+          "symbol": "2705",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-10-31",
+          "lastMissingDate": "2019-11-08"
+        },
+        {
+          "symbol": "3041",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-10-24",
+          "lastMissingDate": "2019-11-01"
+        },
+        {
+          "symbol": "3311",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-09-11",
+          "lastMissingDate": "2019-09-20"
+        },
+        {
+          "symbol": "3321",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-11-07",
+          "lastMissingDate": "2019-11-15"
+        },
+        {
+          "symbol": "3383",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-10-24",
+          "lastMissingDate": "2019-11-01"
+        },
+        {
+          "symbol": "3686",
+          "missingCount": 7,
+          "unknownCount": 7,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-11-14",
+          "lastMissingDate": "2019-11-22"
+        },
+        {
+          "symbol": "1611",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-12-12",
+          "lastMissingDate": "2019-12-19"
+        },
+        {
+          "symbol": "2204",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-09-26",
+          "lastMissingDate": "2019-10-04"
+        },
+        {
+          "symbol": "2316",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-09-26",
+          "lastMissingDate": "2019-10-04"
+        },
+        {
+          "symbol": "2380",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-09-26",
+          "lastMissingDate": "2019-10-04"
+        },
+        {
+          "symbol": "2478",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-09-26",
+          "lastMissingDate": "2019-10-04"
+        },
+        {
+          "symbol": "3022",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-08-29",
+          "lastMissingDate": "2019-09-05"
+        },
+        {
+          "symbol": "5484",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-09-12",
+          "lastMissingDate": "2019-09-20"
+        },
+        {
+          "symbol": "5608",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-02-15",
+          "lastMissingDate": "2019-02-22"
+        },
+        {
+          "symbol": "6443",
+          "missingCount": 6,
+          "unknownCount": 6,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-06-21",
+          "lastMissingDate": "2019-06-28"
+        },
+        {
+          "symbol": "1704",
+          "missingCount": 5,
+          "unknownCount": 5,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-01-24",
+          "lastMissingDate": "2019-01-30"
+        },
+        {
+          "symbol": "2406",
+          "missingCount": 5,
+          "unknownCount": 5,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-11-25",
+          "lastMissingDate": "2019-11-29"
+        },
+        {
+          "symbol": "2481",
+          "missingCount": 5,
+          "unknownCount": 5,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-09-16",
+          "lastMissingDate": "2019-09-20"
+        },
+        {
+          "symbol": "5515",
+          "missingCount": 5,
+          "unknownCount": 5,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-11-27",
+          "lastMissingDate": "2019-12-03"
+        },
+        {
+          "symbol": "1262",
+          "missingCount": 3,
+          "unknownCount": 3,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-10-08",
+          "lastMissingDate": "2019-10-14"
+        },
+        {
+          "symbol": "2475",
+          "missingCount": 1,
+          "unknownCount": 1,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-05-13",
+          "lastMissingDate": "2019-05-13"
+        },
+        {
+          "symbol": "3519",
+          "missingCount": 1,
+          "unknownCount": 1,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-05-02",
+          "lastMissingDate": "2019-05-02"
+        },
+        {
+          "symbol": "3579",
+          "missingCount": 1,
+          "unknownCount": 1,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-06-26",
+          "lastMissingDate": "2019-06-26"
+        },
+        {
+          "symbol": "9157",
+          "missingCount": 1,
+          "unknownCount": 1,
+          "suspensionCount": 0,
+          "firstMissingDate": "2019-11-12",
+          "lastMissingDate": "2019-11-12"
+        }
+      ],
+      "observationStateCounts": {
+        "VALID_OHLC": 225452,
+        "POSITIVE_ACTIVITY_NO_VALID_CLOSE": 655,
+        "OFFICIAL_ZERO_TRADE_NO_PRICE": 608
+      },
+      "continuityStateCounts": {
+        "UNVERIFIED": 226715
+      },
+      "provenanceIssueCount": 0,
+      "provenanceIssueSample": [],
+      "unexpectedBarSample": [],
+      "missingSample": [
+        {
+          "marketDate": "2019-01-02",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-02",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-03",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-03",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-04",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-04",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-07",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-07",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-08",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-08",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-09",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-09",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-10",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-10",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-11",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-11",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-14",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-14",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-15",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-15",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-16",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-16",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-17",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-17",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-18",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-18",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-21",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-21",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-22",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-22",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-23",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-23",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-24",
+          "symbol": "1704",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-24",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-24",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-25",
+          "symbol": "1704",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-25",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-25",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-28",
+          "symbol": "1704",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-28",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-28",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-29",
+          "symbol": "1704",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-29",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-29",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-30",
+          "symbol": "1704",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-30",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-01-30",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-11",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-11",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-12",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-12",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-13",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-13",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-14",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-14",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-15",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-15",
+          "symbol": "5608",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-15",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-18",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-18",
+          "symbol": "5608",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-18",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-19",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-19",
+          "symbol": "5608",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-19",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-20",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-20",
+          "symbol": "5608",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-20",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-21",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-21",
+          "symbol": "5608",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-21",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-22",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-22",
+          "symbol": "5608",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-22",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-25",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-25",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-26",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-26",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-27",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-02-27",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-04",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-04",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-05",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-05",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-06",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-06",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-07",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-07",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-08",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-08",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-11",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-11",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-12",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-12",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-13",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-13",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-14",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-14",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-15",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-15",
+          "symbol": "6131",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        },
+        {
+          "marketDate": "2019-03-18",
+          "symbol": "2025",
+          "reason": "UNKNOWN_SYMBOL_SESSION_GAP",
+          "sourceRowHash": null
+        }
+      ],
+      "expectedBars": 227299,
+      "classifiedGapBars": 0,
+      "structuralCoverageState": "PASS",
+      "rawCoverageState": "PASS",
+      "symbolSessionReadiness": "PARTIAL_UNKNOWN_GAPS",
+      "pitReadiness": "PASS_CONSERVATIVE_SESSION_FINALITY",
+      "continuityReadiness": "PARTIAL_UNVERIFIED",
+      "technicalPriceReadiness": "PARTIAL_NONPRICE_OBSERVATIONS",
+      "overallState": "PARTIAL",
+      "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_COVERAGE_V0_2"
+    },
+    "dataCoverageState": "PASS",
+    "replayReadinessState": "PARTIAL",
+    "pitContinuityReadiness": {
+      "universe": "PASS_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION",
+      "symbolSession": "PARTIAL_UNKNOWN_GAPS",
+      "pit": "PASS_CONSERVATIVE_SESSION_FINALITY",
+      "continuity": "PARTIAL_UNVERIFIED",
+      "technicalPrice": "PARTIAL_NONPRICE_OBSERVATIONS"
+    },
+    "overallState": "PARTIAL",
+    "system1RuntimeChanged": false,
+    "system2StrategyAuthorityChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "capitalOrderAuthorityChanged": false,
+    "observedAt": "2026-10-05T01:51:30.836Z",
+    "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_3"
+  },
+  "correctionDirective": "S2-CORR-20261004-001",
+  "correctionStatusAfterEvidence": "ACKNOWLEDGED",
+  "closureAuthority": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "nextMarketYear": {
+    "market": "TPEX",
+    "year": 2019
+  },
+  "protectedBoundaries": {
+    "system1RuntimeChanged": false,
+    "system2StrategyAuthorityChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "capitalOrderAuthorityChanged": false
+  }
+}
