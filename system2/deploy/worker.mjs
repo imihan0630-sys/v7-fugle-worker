@@ -4,6 +4,7 @@ import {
   buildSystem2HealthPayload,
 } from "./worker_core.mjs";
 import { buildResonancePageHtml } from "./resonance_page.mjs";
+import { buildSystem2TerminalPageHtml } from "./terminal_page.mjs";
 import { readDailyShadowDiagnosticV0_1 } from "../runtime/daily_shadow_diagnostic_orchestrator_v0_1.mjs";
 import {
   taipeiMarketDateV0_1,
@@ -121,7 +122,18 @@ export default {
       const schemaVersion = await readSchemaVersion(env.SYSTEM2_DB);
       return json(buildSystem2HealthPayload({ schemaVersion, env }));
     }
-    if (url.pathname === "/" || url.pathname === "/resonance") {
+    if (url.pathname === "/" || url.pathname === "/terminal") {
+      return new Response(buildSystem2TerminalPageHtml(), {
+        status: 200,
+        headers: {
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "no-store",
+          "x-content-type-options": "nosniff",
+          "referrer-policy": "no-referrer",
+        },
+      });
+    }
+    if (url.pathname === "/resonance") {
       return new Response(buildResonancePageHtml(), {
         status: 200,
         headers: {

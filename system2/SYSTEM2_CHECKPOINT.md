@@ -2216,3 +2216,29 @@ Next System2 SDA-022 outputs:
 
 Synthetic fixtures may test schema behavior but cannot set PHYSICALLY_INDEPENDENT_PATH_OBSERVED.
 This pointer authorizes no ranking/strategy/live behavior change.
+
+
+## 2026-10-06 S2-16 institutional terminal shell V0.1
+
+BUILD_LANE implemented the first complete System 2 operating-interface shell from the existing Institutional Monitoring UI North-Star contract.
+
+New read-only terminal surfaces:
+- Market Command Center;
+- Candidate Board;
+- Decision Workspace;
+- Virtual Positions;
+- Resonance Center;
+- Strategy Center;
+- Performance Center;
+- Event / Industry;
+- Evidence / System.
+
+Routes:
+- `/` and `/terminal` -> new institutional terminal;
+- `/resonance` -> existing dedicated resonance page preserved.
+
+The shell binds only existing verified read APIs: health, bounded resonance, active pool, operations audit and daily Shadow diagnostic. Pending Regime, actual holdings, performance and event/industry data remain visibly UNKNOWN / LOCKED rather than being synthesized.
+
+Authority boundary remains unchanged: no strategy/assessor change, no capacity mutation, no push, no orders, no actual holdings claim, no final-selection authority and no System 1 Formal Core change.
+
+Next S2-16 wiring order follows S2-07 frozen candidate/read API -> Regime/market context -> virtual positions -> frozen decision/history -> performance -> PIT-safe event/industry.
