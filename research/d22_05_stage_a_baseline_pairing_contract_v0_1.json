@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "D22_05_STAGE_A_BASELINE_PAIRING_CONTRACT_V0_1",
+  "frozenAt": "2026-10-05T19:10:00+08:00",
+  "status": "OUTCOME_BLIND / BASELINE_PAIRING_CONTRACT_FROZEN / MATURE_PAIRS_ZERO / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "sourceManifest": {
+    "path": "research/d22_05_stage_a_pairing_manifest_v0_1.json",
+    "sha": "5873ba376562e6d4d98422d83a1aa09aae9ce6d6"
+  },
+  "sourceGapAudit": {
+    "path": "research/d22_05_stage_a_baseline_gap_audit_v0_1.json",
+    "sha": "d23ade3e76e120da439dc5715b02e3e1ca11bf2c"
+  },
+  "population": {
+    "anchorCount": 22,
+    "minimumMatureIndependentPairs": 20,
+    "baselineFrozenAnchors": 0,
+    "maturePairedAnchors": 0
+  },
+  "keys": [
+    "issuer",
+    "anchorDate",
+    "sourceVersion",
+    "entityScope",
+    "accountingBasis"
+  ],
+  "b0Required": [
+    "D07 pre-event PIT profitability/leverage/liquidity primitives",
+    "D13 pre-event risk-free/rate/macro context",
+    "industry",
+    "size/liquidity",
+    "D11 known event clocks if applicable"
+  ],
+  "b1Required": [
+    "prior rating/outlook/watch state",
+    "pre-event fundamentals",
+    "D22-06 pre-event market-credit state when available"
+  ],
+  "timingRules": [
+    "Every baseline receipt must be demonstrably public before the rating-event decision cutoff.",
+    "Same-date data with unresolved publication ordering remains UNKNOWN and blocks freezing.",
+    "Later financial statements, restatements, revised macro vintages and later rating actions never backfill an earlier anchor."
+  ],
+  "missingnessRules": [
+    "Missing evidence remains UNKNOWN; never coerce to zero, neutral, BAD, pass or no deterioration.",
+    "D22-06 market-credit state is optional only as preregistered when genuinely unavailable; its absence cannot be encoded as zero spread."
+  ],
+  "independenceRules": [
+    "Use only the first directional event date of each frozen episode as the independent challenger anchor.",
+    "Later same-direction actions update episode state but do not create another independent pair."
+  ],
+  "freezeGate": [
+    "Exact issuer-anchor population match.",
+    "All required B0 receipts satisfy knownAt cutoff.",
+    "Entity scope and accounting basis are compatible.",
+    "No unresolved same-day ordering for required controls.",
+    "No later-vintage backfill.",
+    "B1 prior rating state is frozen; optional market-credit evidence preserves provenance and UNKNOWN."
+  ],
+  "outcomeGate": "CLOSED until at least 20 mature independent pairs are frozen under this contract; reaching 20 permits the next gate only and does not imply L4.",
+  "formalBoundary": {
+    "formalCore": "LOCKED",
+    "optimizationCandidate": "NONE",
+    "systemUse": "RESEARCH_ONLY"
+  },
+  "next": [
+    "Materialize receipt rows for the 22 frozen anchors without return labels.",
+    "Classify each anchor as FROZEN, UNKNOWN_BLOCKED, ORDERING_BLOCKED or SCOPE_BLOCKED.",
+    "Freeze population hash only after at least 20 mature independent pairs survive.",
+    "Open outcomes once only after the frozen common-support gate; then perform preregistered clustered walk-forward/OOS checks."
+  ]
+}
