@@ -3509,3 +3509,64 @@ Formal Core LOCKED.
 
 Exact next continuation point:
 PVE-244 — obtain the first decision-time-valid 15m canonical receipt for Wave-1 H001 at slot >=10:15 with all frozen baseline/history/current-slot/common-support gates. If live 15m observability is unavailable, fail CLOSED/UNKNOWN.
+
+
+## PVE-244 continuation — physical live 15m audit (2026-10-05)
+
+Status: LIVE_15M_CAPTURE_PROVEN / H001_FAIL_CLOSED / CANONICAL_SOURCE_BINDING_INCOMPLETE / SESSION_CAPTURE_PARTIAL / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+PVE-244 completed.
+
+Physical read-only D1 evidence:
+- runtime 8.18.0-valuation-source-vintage;
+- PV_SHADOW_ENABLED=true;
+- successful isolated read-only run 37334245340;
+- 8 physical INTRADAY_15M rows for 2454 on 2026-10-05;
+- slots 09:00..10:45;
+- decisionImpact always 0.
+
+H001 rows at 10:15/10:30/10:45 fail closed:
+- slotHistoryCount=1;
+- pvSlotRvol20=null;
+- DATA_INSUFFICIENT / INVALID.
+
+Baseline physical state:
+2006=2 sessions / 2454=1 / 4977=2, despite frozen bootstrap code that requests historical 15m back to marketDate-180 days when <20.
+
+Canonical source binding remains incomplete:
+rawPayloadHash=null / endpoint=null / provider=null.
+semanticFingerprint does not substitute for raw payload provenance.
+
+Runtime continuity:
+physical intraday cron evidence stops around 11:08 Asia/Taipei.
+A 23:35 row is recorded INTRADAY_MONITOR/SKIPPED despite after-market source semantics.
+Root cause UNKNOWN.
+
+No clean prospective date or H001 canonical receipt created.
+D02 remains 60.0%.
+Gate 7 CLOSED.
+Formal Core LOCKED.
+
+## PVE-245 continuation — System 1 runtime remediation routing (2026-10-05)
+
+Status: ROUTED / RESEARCH_BLOCKER / NO_PRODUCTION_CHANGE_AUTHORIZED / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+Handoff:
+- research/D02_PVE245_SYSTEM1_RUNTIME_REMEDIATION_HANDOFF_20261005_V0_1.md
+- RESEARCH_CHECKPOINT.md System 1 intake.
+
+Remediation acceptance families:
+1. provider + endpoint + decision-time rawPayloadHash;
+2. >=20-session 15m bootstrap or explicit fail reason;
+3. full future intraday cron continuity through 13:24 plus after-market job-type reconciliation.
+
+2026-10-05 must never be repaired backward into a clean prospective date.
+
+Current evidence:
+PVE-245 / CLEAN_SELECTION_DATE_ZERO / Gate 7 CLOSED.
+D02 remains 60.0%.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-246 — consume System 1 remediation readback when durable and capture the first future decision-time-valid 15m H001 canonical receipt under the corrected frozen path. Until then, fail closed.
