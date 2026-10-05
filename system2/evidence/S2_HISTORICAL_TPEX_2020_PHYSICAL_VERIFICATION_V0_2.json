@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_DURABLE_EVIDENCE_V0_2",
+  "market": "TPEX",
+  "year": 2020,
+  "disposition": "DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL",
+  "acceptedRun": {
+    "runId": 37318143684,
+    "runNumber": 15,
+    "headSha": "cd3f616fa4d26bfd81d316b26dabd467f62814cd",
+    "workflowConclusion": "success",
+    "completedAt": "2026-10-05T13:46:28Z",
+    "artifactId": 11349482735,
+    "artifactName": "system2-historical-coverage-TPEX-2020",
+    "artifactDigest": "sha256:6fad4807366e4d9c462eef22272d74f353b04310133930f3d76b1284e5759004",
+    "artifactCreatedAt": "2026-10-05T13:46:23Z",
+    "artifactExpiresAt": "2026-11-04T13:46:22Z"
+  },
+  "storageVerification": {
+    "receiptId": "S2HCR-1698904639812e26710f434f718beff34c37307c85d82af5852d96873d8d679d",
+    "batchId": "S2-HIST-PACK-YEAR|TPEX|2020",
+    "completionReceiptState": "COMPLETE",
+    "packCount": 794,
+    "barCount": 189746,
+    "manifestRollingHash": "1698904639812e26710f434f718beff34c37307c85d82af5852d96873d8d679d",
+    "checkpointState": "COMPLETE",
+    "headObjectCountVerified": 794,
+    "byteGetObjectCountVerified": 794,
+    "state": "PASS"
+  },
+  "sourceReconciliation": {
+    "state": "PASS",
+    "dataIntegrityState": "PASS",
+    "sourceVersionState": "STABLE",
+    "coldRowCount": 189746,
+    "freshOfficialRowCount": 189746,
+    "missingFromColdCount": 0,
+    "absentFromFreshOfficialCount": 0,
+    "sourceRowHashMismatchCount": 0,
+    "canonicalA1ValueMismatchCount": 0,
+    "sourceRevisionOnlyCount": 0,
+    "sourceRevisionDateCount": 0,
+    "officialTradingDates": 245,
+    "reconciliationContract": "S2_HISTORICAL_SOURCE_RECONCILIATION_V0_1"
+  },
+  "historicalUniverse": {
+    "readiness": "PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION",
+    "membershipCount": 794,
+    "currentCount": 741,
+    "observedHistoricalOnlyCount": 53,
+    "officialDelistingUnionComplete": false,
+    "survivorshipCompleteForDataCoverage": false
+  },
+  "coverage": {
+    "expectedSessions": 245,
+    "actualSessions": 245,
+    "expectedBars": 190154,
+    "actualBars": 189746,
+    "missingBars": 408,
+    "unknownBars": 408,
+    "rawCoverageState": "PASS",
+    "symbolSessionReadiness": "PARTIAL_UNKNOWN_GAPS",
+    "pitReadiness": "PASS_CONSERVATIVE_SESSION_FINALITY",
+    "continuityReadiness": "PARTIAL_UNVERIFIED",
+    "technicalPriceReadiness": "PARTIAL_NONPRICE_OBSERVATIONS",
+    "observationStateCounts": {
+      "VALID_OHLC": 185243,
+      "POSITIVE_ACTIVITY_NO_VALID_CLOSE": 1421,
+      "OFFICIAL_ZERO_TRADE_NO_PRICE": 3082
+    },
+    "continuityStateCounts": {
+      "UNVERIFIED": 189746
+    }
+  },
+  "readiness": {
+    "dataCoverageState": "PASS",
+    "replayReadinessState": "PARTIAL",
+    "overallState": "PARTIAL"
+  },
+  "priorBlockedRun": {
+    "runId": 37283878520,
+    "runNumber": 14,
+    "evidencePath": "system2/evidence/S2_HISTORICAL_TPEX_2020_REVISION_BLOCKER_V0_1.json",
+    "priorObservation": "773 full-source-row hash mismatches on 2020-02-27 under verifier V0.3",
+    "freshRevalidationOutcome": "NOT_REPRODUCED",
+    "interpretation": "The prior discrepancy remains preserved as upstream/source-row revision evidence, but fresh latest-main V0.4 revalidation found zero full-row mismatches and zero canonical A1 mismatches. Cold history was never rewritten."
+  },
+  "verifierVersion": "S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_4",
+  "correctionDirective": "S2-CORR-20261004-001",
+  "correctionStatusAfterEvidence": "ACKNOWLEDGED",
+  "closureAuthority": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "nextMarketYear": {
+    "market": "TWSE",
+    "year": 2021
+  },
+  "protectedBoundaries": {
+    "system1RuntimeChanged": false,
+    "system2StrategyAuthorityChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "capitalOrderAuthorityChanged": false
+  }
+}
