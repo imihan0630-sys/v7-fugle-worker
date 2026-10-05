@@ -1553,3 +1553,55 @@ Four residual questions R1-R4 are frozen in the machine contract before outcomes
 Maturity impact: NONE. This is anti-self-deception governance plus preregistration, not prospective return evidence. Formal Core unchanged.
 
 Exact next: continue today's frozen source captures; route the contract to D16 plus System 1/System 2 lineage owners. Do not open outcomes until D16 freezes horizon/benchmark/dependence/multiple-testing/stop rules and prospective common-support coverage is sufficient.
+
+
+---
+
+## IC-069 — 2026-10-05 TPEx dealer proprietary/hedge split captured prospectively before TWSE source clock
+
+Research cycle: 2026-10-05 Asia/Taipei
+Status: TPEX_SAME_DAY_PARENT_CAPTURED / SCHEMA_AND_ARITHMETIC_RECONCILIATION_PASS / TWSE_PENDING_BY_CLOCK / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable receipt:
+`research/d06_03_tpex_dealer_split_capture_20261005_v0_1.json`.
+
+This is a genuine same-day prospective parent capture for D06-03, not a historical replay.
+
+At 2026-10-05T15:28:58+08:00 the official TPEx stock-level institutional endpoint returned source date 20261005 and table date 115/10/05 with 916 rows.
+
+Frozen schema contract:
+- foreignNet index 10;
+- trustNet index 13;
+- dealer proprietary buy/sell/net indices 14/15/16;
+- dealer hedge buy/sell/net indices 17/18/19;
+- dealer aggregate buy/sell/net indices 20/21/22;
+- institution total net index 23.
+
+Outcome-blind integrity:
+- total rows = 916;
+- numeric-valid rows = 916;
+- ordinary four-digit stock rows = 795;
+- duplicate codes = 0;
+- proprietary/hedge/aggregate dealer reconciliation = 916/916 PASS;
+- foreign + trust + aggregate dealer = institution total = 916/916 PASS;
+- content hash = fnv1a64-utf8:5bd324cc7136e2ca;
+- schema fingerprint = fnv1a64-utf8:6ca0bb5edbff5cd3.
+
+Interpretation guard:
+- proprietary and hedge are observed dealer-desk categories, not motive labels;
+- proprietary is not automatically informed conviction;
+- hedge is not automatically noise or non-directional;
+- this TPEx subreceipt belongs to primitiveReceiptId `D06-20261005-INSTITUTION-DEALER-SPLIT` and does not create an extra independent vote under SDA-007;
+- TWSE had not reached its frozen 18:00/20:00 publication clocks at this capture time, so its pre-clock no-data state remains PENDING_BY_CLOCK rather than MISSING/FAIL.
+
+Research impact:
+D06-03 already sits at L3, so this capture strengthens prospective PIT evidence but does not promote maturity. Current Formal persistence still compresses dealer desks into aggregate dealerNet. No return, ranking, hit-rate, MFE/MAE, selection or signal outcome was read.
+
+Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+Exact next:
+1. preserve the existing TPEx receipt immutably;
+2. at/after the TWSE 18:00 and 20:00 source clocks capture the listed-market dealer split as a sibling market subreceipt, without rewriting the TPEx firstKnownAt;
+3. after the 2026-10-05 research generation exists, attach exact parentReceiptIds to D06-06 CORE_CROWDING and the TDCC weekly parent to D06-05/D06-06 same-generation rows;
+4. keep D06-14 T_PRELIM pending until the actual TPEx day-trading statistics object is observed; DayTradeMark eligibility data are not a substitute;
+5. keep outcomes closed.
