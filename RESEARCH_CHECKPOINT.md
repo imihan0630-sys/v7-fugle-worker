@@ -2887,3 +2887,17 @@ PVE-248 System 1 Class-B candidate must therefore include a runtime-level combin
 
 Preparation of an unmerged branch/PR is permitted under Class-B proposal-first governance.
 Merge/deploy/Production promotion remains owner-approval gated.
+
+
+## 2026-10-06 SDA-022 cross-system non-convergence intake
+
+Canonical guard:
+shared-knowledge/SYSTEM1_SYSTEM2_NON_CONVERGENCE_GUARD_V0_1.md
+
+System1 responsibility is observability only:
+- preserve its own Formal A/B, Top6/3+3, ranking, 15m confirmation, capital and lifecycle identity;
+- expose a research-only policy fingerprint for later comparison with System2;
+- do not change Formal behavior merely to make the systems look different;
+- do not consume System2 strategy outputs as Formal prerequisites without separate owner-approved promotion.
+
+SDA-022 does not reorder the active System1 task lane.
