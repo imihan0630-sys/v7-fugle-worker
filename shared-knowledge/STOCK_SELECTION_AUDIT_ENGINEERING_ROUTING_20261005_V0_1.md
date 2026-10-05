@@ -175,3 +175,28 @@ The following are not implicitly approved by this routing:
 - COV-07 canonical intake/new-module action.
 
 Engineering must stop at the existing governance boundary whenever these owner decisions are required.
+
+
+## 2026-10-06 accepted-remediation delta routing
+
+Do not redo accepted work. Use these latest-main contracts as the producer authority for the next engineering delta.
+
+### System 1
+- SDA-001 / SDA-004: PR #608 core Class-A implementation is accepted. Only add the D03-reviewed diagnostic schema deltas: explicit `redundancyGroupContributions`, explicit `dominantInformationRoots`, and stable overlap identities using factorId + factorVersion. Preserve decisionImpact=false and Formal isolation. First genuine-session receipt remains required.
+- SDA-009: consume `research/sda009_d09_leave_one_out_circularity_contract_v0_1.json`. Implement inclusive-vs-leave-one-out candidateSelfContribution, gateFlip, rankDelta, Top6 sensitivity, membershipVersion/classificationSchemeId and fail-closed UNKNOWN handling. Diagnostic only; no live sector gate/rank replacement.
+- SDA-003: consume `research/D02_PVE245_SYSTEM1_RUNTIME_REMEDIATION_HANDOFF_20261005_V0_1.md`. Do not retroactively turn 2026-10-05 into clean evidence. Repair only the frozen runtime/evidence gaps under existing Class governance.
+- SDA-007: consume `research/d06_sda007_flow_ownership_lineage_contract_20261005_v0_1.json`. Implement primitiveReceiptId / parentReceiptIds / informationRoot / motive-state lineage without creating new votes.
+- SDA-016: existing System1 holdout guard is only partial pass. Do not call complete until shared cross-system authority satisfies Room11 V0.2 T01-T30, including footprint/release/missingness/multi-horizon lineage.
+
+### System 2
+- SDA-001 / SDA-004: corresponding signal/resonance consumers still need canonical lineage/dedup diagnostics; do not equate visual condition count with independent evidence.
+- SDA-007: reuse the D06 primitive lineage contract; no passive/active/crowding duplicate vote from one primitive.
+- SDA-016: converge on one shared physical holdout/consumption authority with System1 rather than forking a second ledger semantics.
+- SDA-017: implement the Room11 V0.2 episode/support contract and pass T01-T40 before specialist revalidation. Preserve structuralEpisodeN, replicationEpisodeN and mechanicalFragmentN separately; learned/fitted Regime dimensions require fitReceipt knowledge cutoff <= decision clock.
+
+### D16 / Room11
+- Revalidate only new engineering deltas against frozen oracles.
+- No self-closure of SDA-016 or SDA-017.
+- D16 residual/OOS evidence remains required for SDA-001/004/009/007 where specified.
+
+No routing in this section authorizes Formal A/B, ranking, Top6, weight, threshold, capital or trading changes.
