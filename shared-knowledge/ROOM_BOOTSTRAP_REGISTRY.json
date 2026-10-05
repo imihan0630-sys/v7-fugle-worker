@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-06T07:12:00+08:00",
+  "updatedAt": "2026-10-06T07:27:00+08:00",
   "status": "CANONICAL_ROOM_BOOTSTRAP_REGISTRY_V0_1",
   "repository": "imihan0630-sys/v7-fugle-worker",
   "authoritativeBranch": "main",
@@ -27,7 +27,9 @@
     "crossSystemPolicyFingerprintContract": "shared-knowledge/CROSS_SYSTEM_POLICY_FINGERPRINT_CONTRACT_V0_1.md",
     "crossSystemPolicyFingerprintBaseline": "shared-knowledge/SYSTEM1_SYSTEM2_POLICY_FINGERPRINT_BASELINE_20261006_V0_1.md",
     "crossSystemPolicyFingerprintBaselineMachine": "shared-knowledge/system1_system2_policy_fingerprint_baseline_20261006_v0_1.json",
-    "sda022D16ValidationRequest": "shared-knowledge/SDA022_D16_VALIDATION_REQUEST_V0_1.md"
+    "sda022D16ValidationRequest": "shared-knowledge/SDA022_D16_VALIDATION_REQUEST_V0_1.md",
+    "sda022AcceptanceOracle": "shared-knowledge/SDA022_ACCEPTANCE_ORACLE_V0_1.md",
+    "sda022AcceptanceOracleMachine": "shared-knowledge/sda022_acceptance_oracle_v0_1.json"
   },
   "identities": [
     {
