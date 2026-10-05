@@ -7,7 +7,7 @@ def once(old,new,label):
  if text.count(old)!=1:raise SystemExit(f'{label}: expected one anchor, got {text.count(old)}')
  text=text.replace(old,new,1)
 source=Path('research/system1_valuation_source_vintage_v0_1.mjs').read_text()
-expected='f4912bc740b4caf917614a2cc05c05b9d586ee3d5300b30cbbcad57bce75fc6f'
+expected='20945bc87d8ed856cac6c71839e2fea2427aee9adc3c82adcb326f2d08316ed5'
 if hashlib.sha256(source.encode()).hexdigest()!=expected:raise SystemExit('Frozen source vintage module changed')
 source='\n'.join(line for line in source.splitlines() if not line.startswith('import ')).replace('export ','')
 module='\n// BEGIN V8.18 VALUATION SOURCE VINTAGE\nconst VALUATION_VINTAGE=(()=>{\n  const {canonicalJcsJson,sha256HexUtf8}=SHADOW_CANONICAL;\n'+source+'\nreturn {captureValuationSourceVintage,attachValuationSourceVintage,finalizeValuationSourceVintage,verifyValuationSourceVintage};\n})();\n// END V8.18 VALUATION SOURCE VINTAGE\n'

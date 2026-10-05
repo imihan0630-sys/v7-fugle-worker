@@ -84,7 +84,7 @@ export async function finalizeValuationSourceVintage(receipt){
   const root=receipt.valuationSourceVintage;
   const digest=await hash(root);
   const result={...receipt,rows:receipt.rows.map((r,i)=>i===0?{...r,valuationSourceVintageDigest:digest}:r)};
-  if(new TextEncoder().encode(JSON.stringify(result)).byteLength>=10000000||new TextEncoder().encode(JSON.stringify(root)).byteLength>90000)throw Error('CAPTURE_BUDGET');
+  if(new TextEncoder().encode(JSON.stringify(result)).byteLength>=9990000||new TextEncoder().encode(JSON.stringify(root)).byteLength>90000)throw Error('CAPTURE_BUDGET');
   return result;
  }catch{
   const root=blocked('FINALIZE_FAILED');

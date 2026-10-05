@@ -1,8 +1,9 @@
 # System 1 Valuation Source Vintage Class-B implementation
 
-Status: IMPLEMENTED / LOCAL_REVIEW_100_OF_100_PASS / EXACT_HEAD_CI_PENDING / PRODUCTION_DEPLOY_NOT_AUTHORIZED
+Status: IMPLEMENTED / LOCAL_REVIEW_100_OF_100_PASS / EXACT_HEAD_CI_PACKET_IN_PR_604 / PRODUCTION_DEPLOY_NOT_AUTHORIZED
 Date: 2026-10-05 Asia/Taipei
 Branch: `codex/system1-valuation-source-vintage`
+PR: https://github.com/imihan0630-sys/v7-fugle-worker/pull/604 (OPEN; merge/deploy NOT AUTHORIZED).
 Authority: latest main and owner approval in `SYSTEM1_VALUATION_SOURCE_VINTAGE_CLASS_B_PROPOSAL_20261005_V0_1.md`.
 
 ## Scope and runtime lineage
@@ -28,7 +29,7 @@ The module is SHA-pinned by the patch. No sync hash substitution and no async co
 
 ## Failure and interpretation
 
-Capture exceptions/future timestamps/request-date mismatch produce `DATA_QUALITY_BLOCKED`, never fabricated provenance. Finalization/digest or capture-budget failure drops only the additive child and leaves an explicit blocked marker. C1/D1 failure remains contained by existing persistCompletedC1Safe; Formal execution proceeds. The existing 90,000 UTF-8-byte row/chunk guard remains, with a 10 MB receipt capture budget and 90 KB shared-root guard.
+Capture exceptions/future timestamps/request-date mismatch produce `DATA_QUALITY_BLOCKED`, never fabricated provenance. Finalization/digest or capture-budget failure drops only the additive child and leaves an explicit blocked marker. C1/D1 failure remains contained by existing persistCompletedC1Safe; Formal execution proceeds. The existing 90,000 UTF-8-byte row/chunk guard remains, with a 9,990,000-byte draft capture budget (10 KB reserved for final C1 header fields under the 10 MB receipt bound) and 90 KB shared-root guard.
 
 The existing daily evidence collector adds `valuationSourceVintage`, verifying the complete C1 digest/keyset, shared root digest, clock/generation identity, peer counts and pagination metadata. Invalid provenance is blocked independently of established C1/C2/C3 and R2 structural behavior. Legacy receipts are `LEGACY_NO_SOURCE_VINTAGE`, not repaired. A pre-V8.18 receipt bearing the new marker is rejected.
 
@@ -58,7 +59,9 @@ Rollback after any separately authorized future deployment: existing code-only b
 
 ## Exact next action / authorization gate
 
-Full local isolated review is 100/100 PASS (451 protected legacy functions in the cumulative review). Concurrent main through `fbb4fda7` was reconciled without runtime changes. Publish the branch and PR, and require exact-head V8 Regression, V8 Repair CI and System1 C1 C2 isolated offline review all PASS. Record exact PR/head/CI packet in the PR description and this checkpoint. Then STOP: owner has authorized engineering/PR verification only, not merge or Production deployment. Do not enable auto-merge or dispatch any workflow deployment.
+Full local isolated review is 100/100 PASS (451 protected legacy functions in the cumulative review). Concurrent main through `49f52984` was reconciled without runtime changes. PR #604 is published. Read its current head and exact-head CI packet; require exact-head V8 Regression, V8 Repair CI and System1 C1 C2 isolated offline review all PASS. The PR description records the final exact-head CI packet without self-referential commit hashes. Then STOP: owner has authorized engineering/PR verification only, not merge or Production deployment. Do not enable auto-merge or dispatch any workflow deployment.
 
 `FIRST_PROSPECTIVE_VALUATION_SOURCE_VINTAGE_READBACK=PENDING_PRODUCTION_APPROVAL_AND_GENUINE_TRADING_SESSION`
 Formal Core LOCKED. Monitor: https://fugle-test.imihan0630.workers.dev/
+
+Initial exact-head isolated CI 37246876698 PASS. Regression 37246876792 and Repair 37246876731 stopped at stale V8.17.0 version grep guards before behavioral tests; both guards are updated and a three-workflow exact-version assertion prevents recurrence. Use the current PR head CI packet for final acceptance.

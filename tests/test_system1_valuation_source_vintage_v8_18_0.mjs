@@ -18,7 +18,9 @@ assert.equal(sha(normalized),sha(baseline),'all other Formal/legacy runtime byte
 assert.equal(body(source,'selectTomorrowCandidates').replace(',env.V7_VALUATION_SOURCE_VINTAGE);',');'),body(baseline,'selectTomorrowCandidates'));
 assert.equal(body(source,'runAfterMarketScanCore').replace(/  \/\/ BEGIN V8\.18 REQUEST SOURCE CAPTURE[\s\S]*?  \/\/ END V8\.18 REQUEST SOURCE CAPTURE\n/,'').replace(', V7_VALUATION_SOURCE_VINTAGE:valuationSourceVintageContext',''),body(baseline,'runAfterMarketScanCore'));
 for(const path of ['v7-regression.yml','v7-repair-ci.yml','v7-cloudflare.yml']){
- const chain=[...fs.readFileSync('.github/workflows/'+path,'utf8').matchAll(/python3 (scripts\/apply_v8_[\d_]+\.py)/g)].map(m=>m[1]);
+ const workflow=fs.readFileSync('.github/workflows/'+path,'utf8');
+ assert.ok(workflow.includes('const VERSION = \"8.18.0-valuation-source-vintage\";'),path+' exact candidate version guard');
+ const chain=[...workflow.matchAll(/python3 (scripts\/apply_v8_[\d_]+\.py)/g)].map(m=>m[1]);
  assert.equal(chain.filter(x=>x==='scripts/apply_v8_18_0.py').length,1);
  assert.equal(chain.indexOf('scripts/apply_v8_18_0.py'),chain.indexOf('scripts/apply_v8_17_0.py')+1);
 }
@@ -121,9 +123,15 @@ env.V7_DB.db.prepare('UPDATE trade_research_c1_generations SET header_json=? WHE
 await assert.rejects(()=>api.readC1PopulationReceipt(env,{generationId:receipt.generationId}),/ROOT_DIGEST/);
 env.V7_DB.db.prepare('UPDATE trade_research_c1_generations SET header_json=? WHERE generation_id=?').run(originalHeader,receipt.generationId);
 assert.equal((await persistShadowCohort(env.V7_DB,receipt.generationId)).readbackVerified,true,'same C1 remains usable by shared membership');
+const d1Failure=make(features);env.V7_DB.fail=sql=>sql.includes('INSERT INTO trade_research_c1_chunks');
+const failedSave=await api.persistCompletedC1Safe(env,d1Failure,day,{selectionVerified:true,now:Date.parse(stamp)});env.V7_DB.fail=null;assert.equal(failedSave.saveOk,false);
+assert.equal((await api.readC1PopulationReceipt(env,{generationId:receipt.generationId})).header.contentDigest,saved.contentDigest,'failed transaction preserves prior immutable evidence');
 // C1 diagnosis values and Formal selector output are independent of source metadata.
 const adapted=adaptC1PopulationPages(pages),d=diagnosePopulation(adapted);
 assert.equal(d.populationN,features.length);
+const cleanPages=structuredClone(pages);for(const p of cleanPages){delete p.header.valuationSourceVintage;for(const c of p.chunks)for(const r of c.rows){delete r.valuationProvenance;delete r.sectorMedianPeProvenance;delete r.valuationSourceVintageDigest;}}
+const cleanDigest=sha(JSON.stringify(cleanPages.flatMap(p=>p.chunks).flatMap(c=>c.rows)));for(const p of cleanPages)p.header.contentDigest=cleanDigest;
+assert.deepEqual(diagnosePopulation(adaptC1PopulationPages(cleanPages)),d,'unchanged structural C1/Formal diagnosis');
 const stub='buildEligibleMarketFeature=stock=>({...stock.fixture});';
 const before=await load(baseline,'',stub),after=await load(source,'',stub);
 const broken=await load(source,'',stub+'\nVALUATION_VINTAGE.attachValuationSourceVintage=()=>{throw Error("fixture capture failure")};');
@@ -150,7 +158,6 @@ for(const n of [500,1000,2000]){
  const stored={...ps[0].header,rows:ps.flatMap(p=>p.rows)},bytes=Buffer.byteLength(JSON.stringify(stored));
  const maxChunkBytes=Math.max(...ps.flatMap(p=>p.chunks).map(c=>Buffer.byteLength(JSON.stringify(c.rows))));
  assert.ok(maxChunkBytes<=90000);assert.ok(bytes<10000000,`receipt ${n} bytes ${bytes}`);
- const old=await load(baseline);globalThis.Date=FixtureDate;let oldReceipt;try{oldReceipt=old.buildC1PopulationReceipt(rows,rows,{stocks:{}},sector,new Map(),[],day,{ordinals:old.c1ZeroPickOrdinals(rows,rows),consensusReference:null});}finally{globalThis.Date=DateOriginal;}
  const newOnlyBytes=Buffer.byteLength(JSON.stringify(stored.valuationSourceVintage))+stored.rows.reduce((n,r)=>n+Buffer.byteLength(JSON.stringify({valuationProvenance:r.valuationProvenance,sectorMedianPeProvenance:r.sectorMedianPeProvenance,valuationSourceVintageDigest:r.valuationSourceVintageDigest})),0);
  scales.push({rows:n,bytes,newProvenanceBytes:newOnlyBytes,maxChunkBytes,headerBytes:Buffer.byteLength(JSON.stringify(ps[0].header)),elapsedMs:Date.now()-start});
 }
