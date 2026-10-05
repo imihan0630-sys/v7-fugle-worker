@@ -22,7 +22,7 @@ assert.match(workflow, /environment: system2-research/);
 assert.match(workflow, /group: system2-isolated-d1-writer/);
 assert.match(workflow, /SYSTEM2_CONFIRM: CREATE_SYSTEM2_ISOLATED_D1/);
 assert.match(workflow, /secrets\.FUGLE_API_KEY/);
-assert.match(workflow, /provision_system2_d1\.mjs/);
+assert.match(workflow, /ensure_system2_d1_ready\.mjs/);\nassert.match(await readFile(new URL("../deploy/ensure_system2_d1_ready.mjs", import.meta.url), "utf8"), /provision_system2_d1\.mjs/);
 assert.match(workflow, /system2-shadow-research/);
 assert.match(workflow, /! grep -Eq 'V7_DB\|STOCKS_KV\|PUSH_WEBHOOK_URL\|THREEMIN'/);
 
