@@ -1248,3 +1248,31 @@ Exact next SDA continuation:
 3. Room11 revalidates only new deltas; 00 alone can independently close SDA-016/SDA-017;
 4. do not unblock SDA-010/SDA-012 without their existing owner gates;
 5. preserve all unrelated H/COV/AOKD protected decisions.
+
+
+## 2026-10-06 incremental SDA intake — D19/D20/D12/D13/D07
+
+Receipt:
+shared-knowledge/STOCK_SELECTION_AUDIT_INCREMENTAL_INTAKE_20261006_V0_2.md
+
+Accepted without ticket closure:
+- SDA-019: first deterministic primary social parent durable; D20-06/D20-11 primary count is 1 date, far below gates; D20-13 live source remains 0.
+- SDA-018: D19-12 has a bounded 2018 annual-calendar knownAt witness; scheduled-holiday source clock narrowed, efficacy/OOS/factor-family gates unchanged.
+- SDA-013: U.S./Taiwan calendar-date matching is explicitly rejected; source/reference/publication/first-eligible-Taiwan clocks remain separate; canonical macro receipt lineage still pending.
+- SDA-012: 2026-10-02 afternoon Delta -> 2026-10-05 effective-date mapping is preserved; same-effective-date lane feasible, but H04/H11/COV-07 and common-support remain blocking.
+- D07-18 WACC creates no new SDA ticket: it is a composite consumer of D13 risk-free, D22 debt-cost and D07 balance-sheet primitives. D08/System consumers must not re-count deterministic WACC composition as independent evidence.
+- System2 S2-07 query-integrity work is valid but unrelated to SDA-016/SDA-017 closure; no false credit granted.
+
+Current queue remains:
+- 15 REMEDIATION_IN_PROGRESS;
+- 4 VALIDATION_PENDING;
+- 2 BLOCKED_DEPENDENCY;
+- 0 ROUTED;
+- 0 CLOSED.
+
+Exact next:
+1. prioritize actual engineering returns for SDA-001/004/009/016/017;
+2. intake PVE-245, SDA-007 lineage, or D20/D19/D13 prospective receipts only when durable;
+3. continue cross-domain audit on every newly created module/contract, especially composite consumers such as WACC;
+4. no new ticket if the root cause is already covered by an existing SDA family;
+5. Formal Core remains locked.
