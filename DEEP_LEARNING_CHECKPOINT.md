@@ -2291,3 +2291,35 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
 4. Only then append a T1_REVISED vintage.
 5. On 2026-10-07 capture T2_FINAL under the provider's explicit finality rule.
 6. D06-05, D06-06 and SDA-007 remain fail-closed at their current blockers.
+
+
+## 2026-10-06 D06 — IC-082~083 date-pinned replay and second prospective date
+
+- Official TPEx day-trading page exposes form input `date` and action `intraday/stat`.
+- Date-pinned replay verified:
+  - `?date=20261005` -> displayed 2026-10-05 / 841 rows;
+  - `?date=2026%2F10%2F05` -> displayed 2026-10-05 / 841 rows.
+- Canonical research query is frozen as `?date=YYYYMMDD`.
+- This makes T1/T2 historical-date follow-up executable after the default page rolls forward, but does not recreate historical firstKnownAt.
+- 2026-10-06 is a genuine trading date.
+- At 06:11:31, pinned `?date=20261006` returned a valid page with 0 stock rows:
+  - state = NOT_YET_PUBLISHED;
+  - missing != zero/no-event/no-flow;
+  - durable receipt = `research/d06_14_tpex_daytrade_preopen_20261006_v0_1.json`.
+- Full 2026-10-06 prospective D06 session is frozen:
+  - `research/d06_20261006_prospective_capture_session_v0_1.json`;
+  - D06-18 15:20 live slot;
+  - D06-03 after-market dealer split;
+  - D06-07/08/09 TPEx 20:30/22:30 vintages;
+  - D06-14 pinned current-date T_PRELIM plus pinned prior-date T1_REVISED.
+- D02 PVE-246 was re-read: three root causes are certified, but no System1 FIX_IMPLEMENTED/PASS receipt exists; PVE-247 remains pending.
+- Therefore D06-06 shared price/volume parent blocker is unchanged.
+- D06 maturity remains 48.9%; global maturity remains 46.5% / 356 modules.
+- Outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. 15:20 D06-18 official live borrow-economics capture.
+2. After market D06-03 second-date dealer split.
+3. D06-14 later today: pinned 20261005 T1_REVISED plus first actual pinned 20261006 T_PRELIM.
+4. 20:30 / 22:30 TPEx leverage paired vintages.
+5. Never award independent-date credit to rereads of the already-captured 2026-10-06 ETF decision generation.
