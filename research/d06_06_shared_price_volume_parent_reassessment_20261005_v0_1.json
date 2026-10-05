@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "D06_06_SHARED_PRICE_VOLUME_PARENT_REASSESSMENT_20261005_V0_1",
+  "updatedAt": "2026-10-05 Asia/Taipei",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-06",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "priorContinuationAssumption": "Wait for D02 PVE-243 genuine prospective canonical PRICE_OHLC/VOLUME_TURNOVER parent.",
+  "evidenceReadback": {
+    "PVE243": {
+      "artifact": "research/d02_pve243_first_prospective_canonical_receipt_20261005_v0_1.json",
+      "symbol": "2330",
+      "timeframe": "1d",
+      "marketDate": "2026-10-05",
+      "informationRoot": "PRICE_PLUS_VOLUME_DERIVED",
+      "eligibleForProspectiveEvidence": true,
+      "scope": "GENERIC_PROVENANCE_ONLY",
+      "cleanSelectionDate": false,
+      "d06ParentEligibility": false,
+      "reasons": [
+        "single-symbol coverage cannot serve the D06-06 cross-sectional parent layer",
+        "informationRoot is PRICE_PLUS_VOLUME_DERIVED rather than separately bound PRICE_OHLC and VOLUME_TURNOVER roots",
+        "the receipt is a D02 generic provenance proof, not a D06-compatible same-generation shared parent contract"
+      ]
+    },
+    "PVE244": {
+      "artifact": "research/D02_PVE244_INTRADAY_RECEIPT_BLOCKER_AUDIT_20261005_V0_1.md",
+      "state": "SOURCE_BLOCKED",
+      "implication": "No decision-time-valid 15m Wave-1 receipt was preserved for 2026-10-05; later historical candles cannot be relabeled prospective.",
+      "d06BindingImpact": "Does not create a compatible D06 parent and does not authorize retrospective reconstruction."
+    }
+  },
+  "correctedEligibilityRule": {
+    "required": [
+      "same research generation/date compatible with D06-06",
+      "coverage compatible with the D06-06 population or explicit symbol-level parent joins for every admitted row",
+      "exact primitiveReceiptId/source hash/firstKnownAt",
+      "PRICE_OHLC and VOLUME_TURNOVER lineage identities preserved without duplicate D06 rematerialization",
+      "corporate-action and unit semantics sufficient for the consumed price/volume fields",
+      "missing parent remains UNKNOWN/WAITING rather than reconstructed"
+    ],
+    "notSufficient": [
+      "a single-symbol generic provenance receipt",
+      "a combined PRICE_PLUS_VOLUME_DERIVED root without separable ancestry",
+      "historical after-the-fact intraday candles",
+      "schema/guard capability without an actual compatible parent population"
+    ]
+  },
+  "currentState": "WAITING_COMPATIBLE_SHARED_PARENT",
+  "maturityImpact": "NONE",
+  "status": "PVE243_GENERIC_RECEIPT_NOT_D06_PARENT / PVE244_SOURCE_BLOCKED / STALE_EXACT_NEXT_CORRECTED / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Wait for a genuine same-generation D02/canonical shared price-volume parent whose population and root lineage are compatible with D06-06. Bind exact parent identities row-by-row when available; do not key the gate to a PVE number and do not reconstruct missing parents retrospectively."
+}
