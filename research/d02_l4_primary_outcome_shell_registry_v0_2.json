@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "0.2",
+  "generatedAt": "2026-10-05 Asia/Taipei",
+  "status": "PRE_PVE_240_OUTCOME_BLIND_WAVE1_PRIMARY_METRIC_HORIZON_FROZEN_NUMERICAL_PENDING",
+  "evidenceCursor": "PVE-239",
+  "numericalTargetsFrozen": 0,
+  "shellCount": 4,
+  "shells": {
+    "D02-01:SEMANTIC_GOVERNANCE": {
+      "shellStatus": "PRIMARY_ESTIMAND_SHELL_FROZEN_NUMERICAL_VALUE_PENDING",
+      "estimandId": "D02_01_MATERIAL_PREVENTION_RATE_V0_1",
+      "estimand": "Among prospectively eligible semantic receipts, rate at which frozen governance prevents/changes a classification that the ungoverned frozen adapter would admit.",
+      "metric": "materialPreventionCandidateCount / eligibleSemanticReceipts",
+      "unit": "share_of_eligible_semantic_receipts",
+      "direction": "GREATER_THAN_OR_EQUAL",
+      "comparatorId": "GOVERNED_VS_UNGOVERNED_FROZEN_ADAPTER",
+      "outcomeFamily": "CLASSIFICATION_DELTA / MATERIAL_PREVENTION",
+      "outcomeHorizon": "SAME_DECISION_RECEIPT",
+      "costTreatment": "NOT_APPLICABLE_TO_SEMANTIC_PRIMARY_ESTIMAND",
+      "pending": [
+        "thresholdValue",
+        "semantic materiality rationale"
+      ],
+      "sourceAuthority": [
+        "research/d02_01_l4_semantic_governance_admission_v0_1.mjs",
+        "research/D02_L4_EFFECT_TARGET_CONTRACT_V0_1.md"
+      ]
+    },
+    "D02-02:H001": {
+      "shellStatus": "PRIMARY_METRIC_HORIZON_FROZEN_NUMERICAL_VALUE_PENDING",
+      "estimandId": "D02_02_H001_STRUCTURAL_FAILURE_INCREMENT_V0_1",
+      "estimand": "Incremental discrimination of frozen structural failure/no-follow-through when pvSlotRvol20 is added beyond the existing local previous-five-bar volume ratio on identical support.",
+      "metric": "DATE_BALANCED_BRIER_LOSS_IMPROVEMENT",
+      "unit": "brier_score_points",
+      "direction": "GREATER_THAN_OR_EQUAL",
+      "comparatorId": "MODEL_C_VS_MODEL_B",
+      "outcomeFamily": "FROZEN_STRUCTURAL_FAILURE_NO_FOLLOW_THROUGH",
+      "outcomeHorizon": "B2",
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "pending": [
+        "numerical MDE_or_precision_value",
+        "MDE_or_precision_value",
+        "cost-benefit rationale"
+      ],
+      "sourceAuthority": [
+        "PRICE_VOLUME_HYPOTHESIS_LEDGER.md:PV-H001",
+        "research/d02_l4_wave1_preregistration_20261004_v0_1.md",
+        "PRICE_VOLUME_SHADOW_SPEC.md"
+      ],
+      "metricHorizonGovernanceRef": "research/D02_WAVE1_PROMOTION_METRIC_HORIZON_FREEZE_20261005_V0_2.md",
+      "metricHorizonGuardRef": "research/d02_wave1_metric_horizon_guard_v0_1.mjs",
+      "sensitivityHorizons": [
+        "B1",
+        "B4"
+      ]
+    },
+    "D02-03:H20": {
+      "shellStatus": "PRIMARY_METRIC_HORIZON_FROZEN_NUMERICAL_VALUE_PENDING",
+      "estimandId": "D02_03_H20_BREAKOUT_QUALITY_INCREMENT_V0_1",
+      "estimand": "Incremental breakout-quality discrimination from same-slot RVOL beyond local previous-five-bar volume ratio on the identical D01-owned breakout event.",
+      "metric": "DATE_BALANCED_BRIER_LOSS_IMPROVEMENT",
+      "unit": "brier_score_points",
+      "direction": "GREATER_THAN_OR_EQUAL",
+      "comparatorId": "MODEL_C_VS_MODEL_B_ON_IDENTICAL_D01_BREAKOUT_EVENT",
+      "outcomeFamily": "BREAKOUT_STRUCTURAL_FAILURE_NO_FOLLOW_THROUGH",
+      "outcomeHorizon": "B2",
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "pending": [
+        "numerical MDE_or_precision_value",
+        "MDE_or_precision_value",
+        "cost-benefit rationale"
+      ],
+      "sourceAuthority": [
+        "PRICE_VOLUME_HYPOTHESIS_LEDGER.md:H20_SHARED_EVENT",
+        "research/d02_l4_wave1_preregistration_20261004_v0_1.md",
+        "PRICE_VOLUME_SHADOW_SPEC.md"
+      ],
+      "metricHorizonGovernanceRef": "research/D02_WAVE1_PROMOTION_METRIC_HORIZON_FREEZE_20261005_V0_2.md",
+      "metricHorizonGuardRef": "research/d02_wave1_metric_horizon_guard_v0_1.mjs",
+      "sensitivityHorizons": [
+        "B1",
+        "B4"
+      ]
+    },
+    "D02-06:H003": {
+      "shellStatus": "PRIMARY_METRIC_HORIZON_FROZEN_NUMERICAL_VALUE_PENDING",
+      "estimandId": "D02_06_H003_ACCEPTANCE_FAILURE_INCREMENT_V0_1",
+      "estimand": "Incremental future structural acceptance/failure discrimination from PRICE_PLUS_VOLUME_RESPONSE beyond PRICE_ONLY_RESPONSE on identical clean events.",
+      "metric": "DATE_BALANCED_BRIER_LOSS_IMPROVEMENT",
+      "unit": "brier_score_points",
+      "direction": "GREATER_THAN_OR_EQUAL",
+      "comparatorId": "PRICE_PLUS_VOLUME_RESPONSE_VS_PRICE_ONLY_RESPONSE",
+      "outcomeFamily": "STRUCTURAL_ACCEPTANCE_FAILURE",
+      "outcomeHorizon": "ACTIVE_LIFECYCLE_ENTRY_TO_FIRST_TERMINAL_OR_13_00_CENSOR",
+      "costTreatment": "ECONOMIC_PROMOTION_REQUIRES_D14_COST_STRATIFICATION",
+      "pending": [
+        "numerical MDE_or_precision_value",
+        "MDE_or_precision_value",
+        "cost-benefit rationale"
+      ],
+      "sourceAuthority": [
+        "PRICE_VOLUME_HYPOTHESIS_LEDGER.md:PV-H003",
+        "research/d02_l4_wave1_preregistration_20261004_v0_1.md",
+        "PRICE_VOLUME_CHECKPOINT.md:H003_ANTI_CIRCULARITY"
+      ],
+      "metricHorizonGovernanceRef": "research/D02_WAVE1_PROMOTION_METRIC_HORIZON_FREEZE_20261005_V0_2.md",
+      "metricHorizonGuardRef": "research/d02_wave1_metric_horizon_guard_v0_1.mjs",
+      "maturityDenominator": "H003_HYPOTHESIS_CLEAN_EVENT_COUNT",
+      "resolvedSuccessStates": [
+        "B_REACCELERATION",
+        "A_REACCELERATION"
+      ],
+      "resolvedFailureStates": [
+        "B_FAILED_REENTRY",
+        "A_FAILED_REENTRY"
+      ],
+      "censoredStates": [
+        "B_EXPIRED_AMBIGUOUS",
+        "A_EXPIRED_AMBIGUOUS",
+        "PRE_EVENT_ONLY_EXPIRY",
+        "UNKNOWN"
+      ]
+    }
+  }
+}
