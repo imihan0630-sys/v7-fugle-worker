@@ -1350,3 +1350,45 @@ Formal Core unchanged.
 3. Capture the next independent trading-date PCF prospectively before the after-market decision window.
 4. Preserve T-day PCF update/version state and cash-substitution/corporate-action metadata.
 5. Keep same-day T passive stock flow and actual stock execution UNKNOWN.
+
+
+## PF-041 — two independent decision generations establish D06-16 Taiwan PIT feasibility
+
+Research cycle: 2026-10-05 Asia/Taipei  
+Status: MULTI_GENERATION_PIT_FEASIBILITY_PASS / D06_16_L3 / ACTUAL_EXECUTION_UNKNOWN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable receipts:
+- `research/d06_pf040_next_decision_pcf_20261006_captured_20261005_v0_1.json`;
+- `research/d06_pf041_pcf_multi_generation_stability_receipt_20261005_v0_1.json`.
+
+The earlier PF-040 correction established the 2026-10-05 decision generation with two stable captures at 15:14 and 15:47. The issuer pages later rolled prospectively into the 2026-10-06 decision generation, which was captured twice at 20:35 and 20:36 with identical content hashes.
+
+Second decision generation:
+- 0050: announce/use date 2026-10-06; unit observation date 2026-10-05; outstanding units 22,221,500,000; reported unit change +20,500,000; creation unit 500,000; source hash fnv1a64-utf8:c7ae53391ed48cd9.
+- 0056: announce/use date 2026-10-06; unit observation date 2026-10-05; outstanding units 14,228,034,000; reported unit change +14,500,000; creation unit 500,000; source hash fnv1a64-utf8:07d4527644752dc1.
+
+For both ETFs, the displayed 2026-10-05 PCF stated that no component was required to use cash substitution. 0050's historical 2025-06-11 split remains separately identified; no current split/reverse-split event was observed.
+
+This clears the L3 source/PIT feasibility gate for D06-16 because:
+1. at least two independent decision generations are prospectively preserved;
+2. announce/use date and lagged unit-observation date are separated correctly;
+3. same-generation repeat captures demonstrate version stability;
+4. cash-substitution and corporate-action guards are explicit;
+5. source hashes are durable.
+
+The promotion is deliberately narrow:
+- D06-16 moves L2/40 -> L3/60 for Taiwan PIT/source feasibility;
+- D06-11 remains L2/40 and inherits no maturity;
+- creation-unit-equivalent counts are not actual creation orders;
+- units + PCF remain MODELED_PRIMARY_BASKET_EXPOSURE only;
+- actual AP execution and actual constituent stock passive flow remain UNKNOWN;
+- no return/outcome evidence exists, so L4 is not considered.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.  
+Formal Core unchanged.
+
+Exact next:
+1. accumulate additional independent decision generations and preserve any same-generation version changes append-only;
+2. for L4, preregister OOS/Shadow incrementality versus institutional flow, index-event context, price/volume, liquidity and regime;
+3. retain shared event/primitive lineage so D06-11/D06-16/D11 cannot double count one event or units receipt;
+4. actual constituent execution stays UNKNOWN without direct execution evidence.
