@@ -6,6 +6,9 @@ Formal Core: LOCKED / no runtime change / no version increment
 Baseline: latest main fetched at implementation start, aaa04683e5bc9677367ccee9069cc09ec86c37f7.
 This SHA records the reviewed input, not future authority; always re-fetch main.
 
+PR: https://github.com/imihan0630-sys/v7-fugle-worker/pull/608
+Exact-head CI authority: the PR head and its three completed workflow runs.
+
 ## Completed delta
 
 Reused the frozen D03 JSON registry and TI-701–716 semantics, the canonical
@@ -123,9 +126,11 @@ before the next write. Tests contain executable complete input examples.
 
 ## Exact next action
 
-1. Complete PR exact-head Regression, Repair CI and isolated review; fix ordinary
-   failures, then merge only this Class A diff if checks and latest-main scope
-   remain clean. No runtime/Production approval is conveyed.
+1. Read PR #608 state and its final exact-head CI receipt. Engineering candidate
+   c589eeda90c0d795b522ba321c14dbb4e369c6ac passed Regression 37277297393, Repair
+   37277297313 and isolated review 37277297268. Subsequent head checks and merge
+   receipt are recorded in the PR. If merged, continue at step 2; do not redo
+   implementation. No runtime/Production approval is conveyed.
 2. D03 reviews consumer mapping drift; D01/D02 supply exact factor registrations
    and observation clocks for already-verified genuine C1 inputs. Produce the
    first genuine-session receipt without backfilling old lineages.

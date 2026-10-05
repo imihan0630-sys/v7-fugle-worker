@@ -60,6 +60,11 @@ const append=(type,extra={},id='E1')=>{const result=appendExperimentEvent(events
 append('REGISTER',{spec});
 assert.throws(()=>appendExperimentEvent(events,head,event('REGISTER',{spec:{...spec,stopRule:'PEEK'}})),/IMMUTABLE/);
 assert.throws(()=>appendExperimentEvent(events,head,event('REGISTER',{spec:{...spec,target:{return:'D20'}}},'E2')),/HASH_MISMATCH/);
+for (const field of ['target','benchmark']) {
+  const changed={...spec,[field]:{changed:true},[field+'Hash']:definitionHash({changed:true})};
+  assert.throws(()=>appendExperimentEvent(events,head,event('REGISTER',{spec:changed})),/IMMUTABLE/);
+}
+assert.throws(()=>appendExperimentEvent(events,head,event('REGISTER',{spec:{...spec,inspectionPolicy:'PEEK_UNTIL_GOOD'}},'E2')),/SEQUENTIAL_EXCEPTION/);
 let state=append('INSPECT',{inspectionId:'look1'});assert.equal(state.holdouts[0].holdoutUseCount,1);assert.equal(state.holdouts[0].consumedAsDevelopmentData,false);
 state=append('LOCK_OUTCOME',{result:'NEGATIVE',outcomeDigest:'b'.repeat(64)});assert.equal(state.experiments[0].outcomeLock.result,'NEGATIVE');
 assert.throws(()=>appendExperimentEvent(events,head,event('LOCK_OUTCOME',{result:'POSITIVE',outcomeDigest:'c'.repeat(64)})),/ALREADY_LOCKED/);
