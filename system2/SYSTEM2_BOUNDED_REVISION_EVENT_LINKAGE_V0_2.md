@@ -52,3 +52,18 @@ It does not by itself set:
 - revisionCoverageComplete.
 
 The next gate uses unresolved events to decide where direct month-shard or authority-side follow-up is necessary.
+
+
+## Physical execution freeze — run 37287352394
+
+The readonly workflow on commit `fc3eac9e35fe6eacf8fef9805e6578ed91fe1701` completed successfully and produced:
+- eventCount: 23;
+- REVISION_CHAIN_OBSERVED: 6;
+- AMBIGUOUS_MULTIPLE_ACTION_GROUPS: 15;
+- AMBIGUOUS_MULTIPLE_VERSION_CHAINS: 2;
+- resolvedCount: 6;
+- ambiguousCount: 17.
+
+All completeness / exact-clock flags remain false: `eventLinkageCoverageComplete`, `boundedRevisionHistoryCoverageComplete`, `correctionHistoryComplete`, `cancellationHistoryComplete`, `knownAtVersionClockCertified`, and `revisionCoverageComplete`.
+
+Promotion caution: normalized subject stem alone must never be used as sufficient evidence that two rows belong to the same corporate-action episode. Any future promotion-grade linkage must add an event-specific anchor / disambiguation layer.
