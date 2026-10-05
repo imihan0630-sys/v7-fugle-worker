@@ -2289,3 +2289,109 @@ Before economic outcomes:
 - forbid diversification/double-confirmation claims before D16 + 00 readback.
 
 Current expected oracle state remains EVIDENCE_NOT_YET_AVAILABLE.
+
+
+## 2026-10-06 SDA-022 canonical 28-test convergence + D16 preregistration 4/4 PASS
+
+Latest whole-ticket authority:
+- `shared-knowledge/SDA022_ACCEPTANCE_ORACLE_V0_1.md`;
+- `shared-knowledge/sda022_acceptance_oracle_v0_1.json`;
+- 28 blocking tests: `S22-T01~T28`;
+- owner / closure authority = Room00;
+- outcomes = CLOSED.
+
+Canonical machine schemas:
+- `shared-knowledge/cross_system_policy_fingerprint_receipt_schema_v0_1.json`;
+- `shared-knowledge/sda022_nc_t01_receipt_schema_v0_1.json`.
+
+Room11 compatibility artifacts:
+- `research/SDA022_D16_FINGERPRINT_CONTRACT_COMPATIBILITY_AUDIT_20261006_V0_1.md`;
+- `research/SDA022_D16_FINGERPRINT_COMPATIBILITY_MATRIX_20261006_V0_1.json`;
+- `research/SDA022_D16_CROSS_SYSTEM_NON_CONVERGENCE_ORACLE_20261006_V0_2.json`.
+
+Important authority clarification:
+Room11 V0.2 24-test oracle is supplemental/adversarial only.
+It is NOT the whole SDA-022 closure count.
+Whole-ticket closure uses the Room00 28-test oracle.
+
+### D16 preregistration frozen before economic outcomes
+
+Canonical preregistration:
+- `research/SDA022_D16_S1_SHORT_MOMENTUM_D5_INCREMENTALITY_PREREG_20261006_V0_1.md`;
+- `research/SDA022_D16_S1_SHORT_MOMENTUM_D5_INCREMENTALITY_PREREG_20261006_V0_1.json`.
+
+Primary pair:
+- System1 current Formal A/B short-horizon policy;
+- System2 `SHORT_MOMENTUM / V0.1-CONTRACT`.
+
+Primary target:
+`SDA022_S1_SM_D5_REFERENCE_CLOSE_POSITIVE_V0_1`.
+
+Primary estimand:
+`DATE_BALANCED_BRIER_LOSS_IMPROVEMENT`.
+
+Frozen boundaries:
+- D5 official-session horizon;
+- common information cutoff required;
+- identical common-support population required;
+- selected-only analysis prohibited;
+- row-weighted result descriptive only;
+- D1/D3/D10 cannot rescue D5;
+- other System2 strategies require new experiment/version;
+- D16-06 dependence + repeated-symbol + overlapping-D5 + sector/regime replication-cluster + SDA-016 footprint + missingness/positivity controls;
+- diversification claim prohibited;
+- confirmatory interpretation prohibited while outer-stream method/state is unresolved.
+
+Still not frozen:
+- exact machine state encoding;
+- estimator/calibrator;
+- regularization;
+- finite-sample inference method;
+- MDE / precision target;
+- stopping rule;
+- confirmatory outer-stream error-control method.
+
+Therefore outcomes remain CLOSED.
+
+### Room11 machine validation against Room00 oracle
+
+Durable validation:
+- `research/SDA022_ROOM11_D16_PREREG_VALIDATION_RETURN_20261006_V0_1.md`;
+- `research/SDA022_ROOM11_D16_PREREG_VALIDATION_RETURN_20261006_V0_1.json`.
+
+Results:
+- `S22-T25 = PASS`;
+- `S22-T26 = PASS`;
+- `S22-T27 = PASS`;
+- `S22-T28 = PASS`.
+
+D16-owned pre-outcome boundary:
+`4 / 4 PASS`.
+
+Whole SDA-022:
+`PARTIAL_PASS`, not closed.
+
+Repository search at validation time found:
+- actual System1 machine fingerprint receipt = NOT FOUND;
+- actual System2 per-strategy machine fingerprints = NOT FOUND;
+- actual physical NC-T01 receipt = NOT FOUND.
+
+Therefore:
+- `S22-T01~T05` await actual System1 receipt;
+- `S22-T06~T10` await actual System2 per-strategy receipts;
+- `S22-T11~T16` await physical NC-T01;
+- `S22-T17~T24` prospective overlap/divergence accumulation cannot start until upstream identity/physical-independence chain is available.
+
+No maturity change:
+- D16 = 60%;
+- D18 = 52%;
+- Formal Core LOCKED.
+
+Exact next continuation:
+1. re-read latest main and SDA-022 queue;
+2. if actual System1 fingerprint lands, validate `S22-T01~T05` only;
+3. if actual System2 per-strategy fingerprints land, validate `S22-T06~T10` only;
+4. if physical NC-T01 lands, validate `S22-T11~T16` only and never credit synthetic fixtures as physical independence;
+5. only after upstream pre-outcome observability passes, begin prospective `S22-T17~T24`;
+6. before any economic outcome inference, freeze exact ModelMethodReceipt, MDE/precision target, stopping rule, and outer research-stream confirmatory state or keep analysis exploratory;
+7. Room00 remains sole SDA-022 closure authority.
