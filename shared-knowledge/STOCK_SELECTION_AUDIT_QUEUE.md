@@ -478,3 +478,16 @@ Current critical readback:
 - SDA-017: Room11 V0.2 oracle freezes 40 blocking tests; existing D18 fixed-semantic machine is partial pass; System2 episode/support engine + prospective multi-episode evidence remain.
 
 No ticket CLOSED. Formal Core unchanged.
+
+
+## 2026-10-06 launch HIGH evidence intake
+
+Receipt:
+`shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_INTAKE_20261006_V0_1.md`.
+
+Readback:
+- SDA-002 remains REMEDIATION_IN_PROGRESS: D01 causal/hindsight semantics were deepened, but latest adversarial suites are still TEST_EXECUTION_PENDING and system/genuine-evidence gates remain.
+- SDA-003 remains VALIDATION_PENDING: PVE-244 physically proves live 15m observability, but H001 fails closed on baseline, raw provenance and session/runtime continuity blockers. No clean residual event exists.
+- SDA-007 remains REMEDIATION_IN_PROGRESS: D06 learning-room semantic remediation is now complete with one-primitive/one-receipt-many-consumers lineage frozen; System1/System2 enforcement + prospective receipt + D16 residual validation remain.
+
+No ticket CLOSED. No Formal behavior changed.
