@@ -79,3 +79,27 @@ System1 launch gate remains independent:
 Only durable evidence satisfying a frozen remaining delta advances a ticket.
 No ticket is closed by maturity percentage, documentation volume, synthetic fixtures, unrelated engineering-green status or output disagreement alone.
 Formal Core remains locked unless separately owner-approved.
+
+
+## SDA-022 stage-2 fingerprint baseline — 2026-10-06
+
+Status:
+REMEDIATION_IN_PROGRESS.
+
+Architecture baseline:
+- CURRENT_SYSTEMS_IDENTICAL = FALSE;
+- PHYSICAL_INDEPENDENCE_FULLY_PROVEN = FALSE;
+- CURRENT_CONVERGENCE_RISK = MATERIAL.
+
+Highest overlap surface:
+System1 Formal A/B short-horizon policy vs System2 SHORT_MOMENTUM.
+
+Current distinct architecture:
+- System1 uses A/B identity, Formal comparator, Top6/3+3, protected 15m confirmation and Formal lifecycle.
+- System2 uses strategy contracts, strategy-local policies, max-12 global pool, per-strategy max-3 active monitor, persistent membership-aware lifecycle and no universal cross-strategy score by default.
+- SWING_GROWTH / INDUSTRY_TREND / EVENT_DRIVEN / VALUE_REVERSION retain thesis structures that are materially different from System1 A/B.
+
+Next closure evidence:
+System1 fingerprint -> System2 fingerprints -> NC-T01 -> prospective overlap/divergence -> D16 dependence/incrementality -> 00 closure.
+
+No cross-system agreement may be labeled "two independent confirmations" before this chain passes.
