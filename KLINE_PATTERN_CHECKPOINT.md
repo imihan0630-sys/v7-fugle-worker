@@ -1632,3 +1632,92 @@ No maturity or Formal change is authorized by this routing.
 5. Hand total-vs-path-conditional inference and S0/S1 common-support handling to D16.
 6. Next D01 science: distinguish inherited old-role polarity memory from NEW post-break structure formed after the crossing near the same price zone.
 7. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-036 (2026-10-05)
+
+### DL-036 — Inherited polarity memory vs new post-break structure
+- DL-034 froze role-reversal eligibility; DL-035 separated retest arrival/response, momentum, salience and selection.
+- DL-036 addresses a distinct ambiguity: a later response near the old broken zone may reflect inherited polarity memory, a genuinely new post-break structure, a same-root causal extension, two co-located lineages, or no valid new structure.
+- Spatial overlap is descriptive only and may not determine lineage identity.
+- Two identities are now explicitly separated:
+  STRUCTURAL_LINEAGE asks same root / new root / unresolved;
+  INFORMATION_LINEAGE asks whether the representation is an independent information contribution.
+- New structural root != new independent vote.
+  D01 structural geometry remains informationRoot = PRICE_OHLC and representationFamily = D01_PRICE_GEOMETRY.
+- Default same-parent redundancy rule:
+  rawRepresentationCount may exceed 1;
+  distinctStructuralRootCount may exceed 1;
+  effectiveIndependentEvidenceCount remains 1 until D16 validates residual incrementality.
+- This is additive to existing SDA-001 controls and does not claim ticket closure.
+- Frozen lineage states:
+  INHERITED_ROLE_ONLY;
+  SAME_ROOT_CAUSAL_EXTENSION;
+  NEW_POST_BREAK_ROOT_PRETEST;
+  COLOCATED_DUAL_LINEAGE_PRETEST;
+  NEW_STRUCTURE_CONFIRMED_AFTER_TEST;
+  SPATIAL_OVERLAP_WITHOUT_LINEAGE;
+  NEW_POST_BREAK_ROOT_NONOVERLAP.
+- Causal lineage beats price proximity:
+  same-root anchor superset with only later causal anchors -> SAME_ROOT_CAUSAL_EXTENSION;
+  independently certified post-break root -> new structural lineage;
+  ambiguous/replaced anchors -> unresolved rather than fuzzy assignment.
+- No overlap threshold (50%, 70%, ATR band, etc.) is allowed to decide same-root/new-root identity.
+- SDA-002-specific timing firewall is extended:
+  every new candidate stores firstObservableAt, confirmedAt, latestAnchorAt, predictorFreezeAt, replaySafe and futureBarRequired.
+- A structure confirmed at or after the tested retest opportunity cannot explain that opportunity.
+- A retest bar or later pivot-confirmation bar cannot certify its own pre-retest predictor.
+- Future bars may not rewrite an earlier candidate snapshot.
+- Negative/divergent states remain mandatory:
+  no new structure;
+  new-only;
+  dual co-location;
+  same-root extension;
+  unresolved overlap;
+  post-hoc confirmation;
+  non-overlap;
+  never-confirmed candidate.
+- A new post-break structure may itself be a mediator of the breakout path.
+  It is therefore not an automatic baseline confounder for the total inherited-polarity estimand.
+- Future comparison families handed to D16:
+  C0 INHERITED_ONLY;
+  C1 NEW_ONLY;
+  C2 DUAL_COLOCATED;
+  C3 SAME_ROOT_EXTENSION;
+  C4 POST_HOC_NEW_STRUCTURE.
+- Future incrementality questions:
+  inherited role beyond new structure;
+  new structure beyond inherited role;
+  dual co-location after common-parent PRICE_OHLC residualization;
+  raw-vs-dedup confluence;
+  no-lookahead robustness after removal of post-hoc cases.
+- External evidence remains compatible with multiple mechanisms:
+  Osler order clustering supports reversal/acceleration around salient price levels;
+  Chung/Bellotti support temporary SR barrier memory;
+  recent breakout/retest work finds retest arrival/path characteristics can matter and generic breakout momentum can explain a large part of apparent technical-rule effects.
+  None identifies inherited polarity memory by itself.
+- New files:
+  - research/PATTERN_INHERITED_VS_NEW_STRUCTURE_V0_1.md
+  - research/pattern_inherited_vs_new_structure_v0_1.json
+  - research/pattern_inherited_vs_new_structure_v0_1.mjs
+  - research/test_pattern_inherited_vs_new_structure_v0_1.mjs
+  - research/PATTERN_INHERITED_VS_NEW_STRUCTURE_D16_HANDOFF_V0_1.md
+- 18 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 remains REMEDIATION_IN_PROGRESS; existing engineering Shadow lineage/dedup work is credited, while D16 common-parent residual readback / System 2 integration / independent 00 closure remain outside D01 ownership.
+- SDA-002 remains REMEDIATION_IN_PROGRESS; causal semantics are strong, but research Node test execution / system future-pivot guards / prospective evidence / 00 readback remain pending.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-036
+
+1. Reconcile the DL-036 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-036 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve STRUCTURAL_LINEAGE and INFORMATION_LINEAGE separately; never promote a second price-derived structural root to a second effective vote by identity alone.
+4. Preserve firstObservableAt / confirmedAt / latestAnchorAt / predictorFreezeAt / futureBarRequired for every post-break candidate.
+5. Hand C0-C4 plus common-parent PRICE_OHLC residual inference to D16.
+6. Preserve SDA-001 and SDA-002 as REMEDIATION_IN_PROGRESS until machine guards, D16 evidence and independent 00 closure satisfy the canonical queue.
+7. Next D01 science: quantify topology identity robustness when multiple detector parameterizations generate the same apparent post-break root, without creating an indicator/geometry zoo.
+8. No outcome join / no runtime wiring / no Formal change.

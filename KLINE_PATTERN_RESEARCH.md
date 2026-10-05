@@ -23079,3 +23079,55 @@ New durable artifacts:
 - research/PATTERN_POLARITY_INCREMENTALITY_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-036 — Inherited polarity memory vs new post-break structure (2026-10-05)
+
+DL-036 addresses a lineage problem that appears only after the role-reversal semantics of DL-034 and the retest-selection controls of DL-035 are in place.
+
+Suppose an old resistance is broken upward. Price spends several sessions above it, creates a local base around roughly the same price, and later revisits the area. A visual analyst can tell at least four different stories after the fact: old resistance became support; a new support formed; the old structure simply gained new anchors; or both old and new structures formed a powerful confluence. Without causal lineage those stories are observationally easy to interchange.
+
+DL-036 therefore separates STRUCTURAL_LINEAGE from INFORMATION_LINEAGE.
+
+STRUCTURAL_LINEAGE answers whether the later geometry belongs to the old root, a new root, or an unresolved lineage. INFORMATION_LINEAGE answers whether multiple representations provide independent information. The second question is stricter. A genuinely new structural root can still be derived entirely from the same PRICE_OHLC history and therefore does not automatically become a second evidence vote.
+
+Seven lineage states are frozen.
+
+INHERITED_ROLE_ONLY means no independent new structure is confirmed before the tested opportunity.
+
+SAME_ROOT_CAUSAL_EXTENSION uses the DL-030 rule: old anchors remain and only later causal anchors are added, so the root persists with a new version.
+
+NEW_POST_BREAK_ROOT_PRETEST is a genuinely independent post-break root whose anchors and confirmation were all available before the predictor freeze.
+
+COLOCATED_DUAL_LINEAGE_PRETEST means inherited role and independent new root both exist before the test and overlap spatially.
+
+NEW_STRUCTURE_CONFIRMED_AFTER_TEST is explicit post-hoc structure and cannot enter the tested predictor state.
+
+SPATIAL_OVERLAP_WITHOUT_LINEAGE retains uncertainty rather than forcing identity from visual proximity.
+
+NEW_POST_BREAK_ROOT_NONOVERLAP records a valid new structure that is not evidence for polarity at the old zone.
+
+Spatial overlap itself is now only descriptive. Intersection width, interval-overlap ratio and center distance may be stored, but no 50%, 70%, ATR or visually chosen threshold may decide root identity. Causal anchor lineage and timing decide identity.
+
+The strongest SDA-002 extension concerns the tested retest bar. A common hindsight failure is to revisit the old level, observe a swing low on that same interaction, wait several later bars until the pivot is obvious, call that pivot a new support structure, and then claim the new structure predicted the original retest response. DL-036 explicitly prohibits this loop. Every candidate carries firstObservableAt, confirmedAt, latestAnchorAt, predictorFreezeAt, replaySafe and futureBarRequired. Any field requiring the test bar after freeze or later confirmation makes the candidate unavailable for that test.
+
+The strongest SDA-001 extension is that structural multiplicity is not evidence multiplicity. If an inherited old-role root and a new post-break root coexist at the same zone, rawRepresentationCount can equal two and distinctStructuralRootCount can equal two while effectiveIndependentEvidenceCount remains one. Both are still D01_PRICE_GEOMETRY derived from PRICE_OHLC. Only D16 common-parent residual evidence may later justify an incremental contribution. Until then residualIncrementalityStatus is NOT_VALIDATED.
+
+This does not overwrite existing SDA-001 remediation. The critical-reconciliation receipt already credits D01/D03 redundancy semantics and System 1 Shadow lineage/dedup implementation. DL-036 adds the missing within-D01 distinction between structural-root identity and information-root independence. The ticket remains REMEDIATION_IN_PROGRESS because System 2 integration, D16 residual readback and independent 00 closure are still required.
+
+Likewise SDA-002 is not claimed closed. The reconciliation already credits strong causal pattern semantics. DL-036 adds the specific post-break/new-structure no-lookahead case, but recent D01 Node research tests remain TEST_EXECUTION_PENDING and generic consuming-system future-pivot guards / prospective evidence / 00 readback remain outstanding.
+
+A further causal subtlety is preserved: a new post-break base may itself be caused by the breakout path. Therefore total inherited-polarity estimation should not automatically control it away as though it were a pre-break confounder. Mechanism/path-conditional analyses may include it, but must state that it is potentially post-treatment.
+
+Future D16 work receives five comparison families: inherited only, new only, dual co-located, same-root extension and post-hoc new structure. The key falsifiers are whether inherited role adds beyond new structure, whether new structure adds beyond inherited role, whether dual co-location survives PRICE_OHLC residualization, whether apparent confluence vanishes under raw-vs-dedup diagnostics, and whether results survive removal of post-hoc structures.
+
+Eighteen adversarial cases are authored. They test descriptive overlap without identity inference, unconfirmed candidates, independent co-located roots, no double vote, non-overlap, same-root causal extension, illegal anchor replacement, post-freeze confirmation, confirmation at the retest timestamp, future-bar pivot dependence, replay-unsafety, unresolved lineage, multiple structural roots under one PRICE_OHLC information family, named-pattern aliases, nonvalidated residual incrementality, late anchors, negative/divergent receipts and exact-boundary equality without evidence multiplication.
+
+New durable artifacts:
+- research/PATTERN_INHERITED_VS_NEW_STRUCTURE_V0_1.md
+- research/pattern_inherited_vs_new_structure_v0_1.json
+- research/pattern_inherited_vs_new_structure_v0_1.mjs
+- research/test_pattern_inherited_vs_new_structure_v0_1.mjs
+- research/PATTERN_INHERITED_VS_NEW_STRUCTURE_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
