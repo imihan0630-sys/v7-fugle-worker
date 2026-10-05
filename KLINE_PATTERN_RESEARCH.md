@@ -23467,3 +23467,37 @@ New durable artifacts:
 - research/PATTERN_REFERENCE_PRICE_ANCHOR_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-045 — Structural memory vs round-number / tick-grid salience (2026-10-05)
+
+DL-045 isolates one of the oldest alternative explanations for support and resistance: price clustering itself.
+
+Taiwan limit-order research finds that orders cluster at integer, even and other preferred terminal prices. Broader order-book research shows that clustered limit orders can form price barriers. This means a bounce near 100, 200 or another salient nominal price is not automatically evidence that the market remembers an earlier structural turning point.
+
+D01 therefore separates legal tick-grid mechanics, tick-band transitions, preregistered round-number references and genuine structural lineage.
+
+The exchange tick grid is first-order context because Taiwan stock tick size changes with price tier. A one-tick distance around a low-priced stock and a one-tick distance around a thousand-dollar stock are not the same economic distance. Current tick size also cannot be backfilled into historical structure formation when the price tier differed.
+
+Round-number research itself is placed behind a registry. If several candidate nominal grids are studied, the entire family must be frozen before outcomes and accounted as one multiple-testing family. The researcher cannot inspect returns and then declare that multiples of 10, 50 or 100 were the "real" round numbers for the successful sample.
+
+The structural root remains separate from salience context. A structural zone exactly centered at a registered round price can be STRUCTURE_ROUND_COINCIDENT, but that coincidence does not create a second vote. Likewise a structural center exactly at a tick-band transition remains one price-information family until residual incrementality is validated.
+
+The negative-control logic is stronger than simply adding a round-number dummy. R0 is a salient round/tick reference with no certified structure. R1 is a certified structural root away from exact registered round/tick-transition coincidence. R2 contains both. Future D16 analysis can then ask whether R2 beats R0 because of structural history, whether R2 differs from R1 because salience contributes separately, and whether R1 survives away from round-number effects.
+
+Daily OHLC is not enough to claim that clustered orders caused the barrier. Actual queue concentration, cancellations, hidden liquidity and order-flow behavior require D05 microstructure evidence. The mechanism therefore remains PLAUSIBLE_NOT_OBSERVED unless such data exist.
+
+Behavioral language is also constrained. Round-price clustering can be consistent with cognitive preference, negotiation simplification, execution conventions or queue-priority behavior. D01 records the clustering context but does not infer psychological anchoring.
+
+The anti-double-count consequence is explicit. A price level can simultaneously be a structural zone, a round number, the prior close and the auction reference. Those are useful causal/context labels, but they do not become four independent bullish confirmations. rawRepresentationCount may be four while effectiveIndependentEvidenceCount remains one.
+
+Twenty adversarial tests are authored. They cover point-in-time tick provenance, future tick receipts, preregistered round grids, post-outcome grid mutation, continuous round-distance descriptors, structural/round coincidence, tick-transition coincidence, multi-salience coincidence, absence of book-mechanism identification from OHLC, no behavioral overclaim, historical tick migration, no current-tick backfill, triple/quadruple price-family de-duplication, residual incrementality status and missing round-grid provenance.
+
+New durable artifacts:
+- research/PATTERN_ROUND_TICK_SALIENCE_V0_1.md
+- research/pattern_round_tick_salience_v0_1.json
+- research/pattern_round_tick_salience_v0_1.mjs
+- research/test_pattern_round_tick_salience_v0_1.mjs
+- research/PATTERN_ROUND_TICK_SALIENCE_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
