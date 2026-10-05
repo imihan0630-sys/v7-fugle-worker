@@ -2224,3 +2224,118 @@ No maturity or Formal change is authorized by this routing.
 7. Preserve SDA-001 as REMEDIATION_IN_PROGRESS until residual evidence, system lineage and independent 00 closure exist.
 8. Next D01 science: separate market-wide common shocks from event-day clustering / scheduled-information days so one CPI/FOMC/earnings-season shock cluster is not mislabeled as independent Pattern replication.
 9. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-042 (2026-10-05)
+
+### DL-042 — Pattern generalization vs event-day / scheduled-information clustering
+- DL-041 separated Pattern from market-wide common shocks and beta exposure.
+- DL-042 freezes the next dependence layer: many stocks, sectors or market dates can still be one information event or one event family.
+- External evidence makes the event firewall material:
+  scheduled FOMC meetings can create broad equity return drift across industries and international markets;
+  macro-announcement days can concentrate a large share of market risk premium and alter beta-return relations;
+  earnings-announcement dates have distinct return/volume behavior;
+  macro and firm-level news can interact in information processing.
+- Ownership boundary:
+  D08 owns event/news and issuer-event risk semantics;
+  D13 owns macro schedule / release / consensus / surprise clocks;
+  D17/disclosure-clock owners remain authoritative for issuer publication timestamps where applicable;
+  D16 owns economic inference.
+  D01 consumes owner receipts and does not rebuild calendars or surprise models.
+- Four clocks are kept separate:
+  SCHEDULE_CLOCK;
+  RELEASE_CLOCK;
+  SURPRISE_CLOCK;
+  MARKET_REACTION_CLOCK.
+  No later clock may be attached to an earlier predictor snapshot.
+- Decision-relative event states:
+  E0 NO_KNOWN_EVENT;
+  E1 SCHEDULED_PENDING;
+  E2 REALIZED_PRE_FREEZE;
+  E3 UNSCHEDULED_DISCLOSED_PRE_FREEZE;
+  E4 EVENT_AFTER_FREEZE_FUTURE;
+  E5 EVENT_CONTEXT_UNKNOWN.
+- NO_KNOWN_EVENT is never an absolute claim that no event can occur.
+- Three event identities are preserved:
+  EVENT_FAMILY;
+  EVENT_INSTANCE;
+  COMMON_EVENT_CLUSTER.
+  Many stock rows attached to one event instance are one event dependence family.
+- Market-date count is not event-instance count.
+  One event can span pre-event, overnight and post-event Taiwan dates without becoming several independent events.
+- Multiple FOMC meetings are multiple event instances but one event family.
+  Family-level replication and instance-level replication remain separate.
+- Scheduled event presence carries timing information only.
+  Realized release, surprise and sign are unavailable until their release clocks are valid.
+- Current event calendars cannot backfill historical first-known schedules without archived/captured vintage receipts.
+- Earnings season is not one common event by default.
+  Issuer events remain separate instances unless an owner-certified common-event relation exists.
+- Event-cluster denominator reports:
+  stockObservationN;
+  uniqueSymbolN;
+  structuralRootN;
+  marketDateClusterN;
+  eventInstanceClusterN;
+  eventFamilyN;
+  commonEventClusterN;
+  nonEventMarketDateN;
+  unknownEventContextN.
+- Outcome-selected event deletion is prohibited.
+  Allowed sensitivity designs must be preregistered:
+  full sample;
+  event-stratified;
+  owner-defined event-family exclusion;
+  leave-one-event-instance-out;
+  leave-one-event-family-out;
+  non-event-date replication.
+- Future comparison ladder:
+  A0 RAW_MARKET_RESIDUAL_PATTERN;
+  A1 EVENT_STATE_STRATIFIED;
+  A2 EVENT_INSTANCE_CLUSTERED;
+  A3 EVENT_FAMILY_CLUSTERED;
+  A4 NON_EVENT_DATE_RESIDUAL;
+  A5 CROSS_EVENT_FAMILY_REPLICATION;
+  A6 EVENT_AND_NON_EVENT_REPLICATION.
+- Future interpretation:
+  C0 ANNOUNCEMENT_DAY_EXPLANATION;
+  C1 PRE_EVENT_DRIFT_EXPLANATION;
+  C2 EVENT_FAMILY_SPECIFIC;
+  C3 EVENT_INSTANCE_DEPENDENCE;
+  C4 NON_EVENT_RESIDUAL_PATTERN;
+  C5 CROSS_EVENT_RESIDUAL_PATTERN;
+  C6 EVENT_AND_NON_EVENT_PATTERN_CANDIDATE;
+  C7 NOT_EVALUABLE.
+- Event vs non-event inference requires common support in:
+  size/liquidity;
+  sector;
+  beta/market regime;
+  opportunity geometry;
+  pre-event volatility;
+  tradability.
+  Failure -> EVENT_CONTEXT_EXTRAPOLATION_PROHIBITED.
+- Macro events and issuer events remain separate families.
+  Common-event mapping must come from owner evidence, not D01 narrative.
+- Event schedule/disclosure can be a distinct information source from PRICE_OHLC, but event-driven price reactions remain price-derived and are not automatic extra votes.
+- New files:
+  - research/PATTERN_EVENT_DAY_CLUSTERING_V0_1.md
+  - research/pattern_event_day_clustering_v0_1.json
+  - research/pattern_event_day_clustering_v0_1.mjs
+  - research/test_pattern_event_day_clustering_v0_1.mjs
+  - research/PATTERN_EVENT_DAY_CLUSTERING_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-042
+
+1. Reconcile the DL-042 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-042 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve event family / event instance / common-event cluster / market-date counts separately.
+4. Preserve schedule / release / surprise / market-reaction clocks separately; no realized surprise before its release.
+5. Consume D08/D13/D17 owner receipts without reconstructing event calendars in D01.
+6. Hand A0-A6 / C0-C7 event-cluster dependence inference to D16.
+7. Next D01 science: separate calendar/event clustering from overnight-gap/opening-auction mechanics so a Pattern result driven only by gap-to-open behavior is not mislabeled as continuous-session structure.
+8. No outcome join / no runtime wiring / no Formal change.

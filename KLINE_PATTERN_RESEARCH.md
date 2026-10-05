@@ -23353,3 +23353,39 @@ New durable artifacts:
 - research/PATTERN_MARKET_COMMON_SHOCK_BETA_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-042 — Pattern generalization vs event-day / scheduled-information clustering (2026-10-05)
+
+DL-041 established that broad cross-sector Pattern performance may still be one market story. DL-042 adds a tighter dependence unit: one information event can generate many stock rows, many sectors and even several Taiwan market dates.
+
+Scheduled-information days are not ordinary dates. Research on FOMC meetings documents broad pre-announcement equity drift across industries and international markets. Macro-announcement research finds that a large share of equity premium can occur on a small number of scheduled announcement days and that beta-return relations differ between announcement and non-announcement days. Earnings announcements also carry their own announcement-period return and volume behavior. These are strong alternative explanations for apparent Pattern replication.
+
+D01 therefore does not create an event score. It consumes D08 event/news receipts, D13 macro schedule/release/surprise clocks and D17/disclosure timing where routed.
+
+Four event clocks are frozen separately. Schedule knowledge can exist before an event, but the release, surprise and post-release market reaction are later information objects. If a CPI or FOMC result arrives after the Pattern predictor freeze, only SCHEDULED_PENDING is available to that predictor. The realized value, surprise and market reaction cannot be backfilled.
+
+Event dependence is recorded at three levels. EVENT_FAMILY identifies the recurring type such as FOMC, CPI or issuer earnings. EVENT_INSTANCE identifies one specific dated release or meeting. COMMON_EVENT_CLUSTER identifies one information shock that can affect many symbols or sectors. A single event instance can therefore generate many Pattern observations without increasing the event-instance replication count.
+
+Market dates are also not event instances. One event can influence a pre-event Taiwan session, overnight trading, the next open and the next full cash session. Those can be several market dates but still one underlying event cluster.
+
+No-known-event is deliberately weak language. It means no owner-certified event was known under the available coverage, not that nothing can happen.
+
+Calendar vintage is first-class. Today's event calendar cannot prove what the historical strategy knew unless archived/captured receipts establish the older schedule state. Reschedules and cancellations remain UNKNOWN when vintage lineage is absent.
+
+Earnings season receives the same anti-narrative treatment. A broad date range cannot be declared one common event after outcomes. Issuer earnings remain separate event instances unless an owner-certified common-event relation is preregistered.
+
+Future D16 work receives an event-aware ladder: raw market-residual Pattern, event-state stratification, event-instance clustering, event-family clustering, non-event-date residual analysis, cross-event-family replication and finally replication across both event and non-event conditions.
+
+The claim scope can therefore collapse from a generic Pattern story into an announcement-day explanation, pre-event drift, event-family-specific behavior or event-instance dependence. Stronger evidence requires non-event residual representation and replication across distinct event families and ordinary dates.
+
+Twenty adversarial cases are authored. They cover scheduled-pending state, realized pre-freeze events, unscheduled disclosure timing, no-known-event semantics, surprise leakage, revised-data misuse, consensus timing, current-calendar backfill, future-captured schedules, many stocks on one event, one event across several market dates, repeated FOMC instances, non-event denominators, outcome-selected event exclusion and event/non-event common-support failure.
+
+New durable artifacts:
+- research/PATTERN_EVENT_DAY_CLUSTERING_V0_1.md
+- research/pattern_event_day_clustering_v0_1.json
+- research/pattern_event_day_clustering_v0_1.mjs
+- research/test_pattern_event_day_clustering_v0_1.mjs
+- research/PATTERN_EVENT_DAY_CLUSTERING_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
