@@ -17,7 +17,7 @@
   ],
   "preregistrationParent": "research/d06_next_trading_day_outcome_blind_capture_plan_v0_1.json",
   "lineageContract": "research/d06_sda007_flow_ownership_lineage_contract_20261005_v0_1.json",
-  "sessionState": "PREOPEN_SESSION_FROZEN / TDCC_PARENT_CAPTURED",
+  "sessionState": "INTRADAY_CAPTURE_IN_PROGRESS / TDCC_PARENT_CAPTURED / PF040_SOURCE_REFRESH_PENDING / D06_18_LATE_SLOT_MISSING_PRESERVED",
   "globalRules": [
     "No lane may change fields or pass criteria after source values are observed.",
     "Raw parent receipts precede derived states.",
@@ -163,8 +163,12 @@
       ],
       "primitiveReceiptId": "D06-20261005-ETF-UNITS-PCF",
       "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
-      "preopenState": "PENDING_SAME_GENERATION_SOURCE",
-      "rule": "capture units delta plus same-generation PCF; execution remains modeled unless directly observed; event receipt and flow receipt remain distinct"
+      "preopenState": "PRECLOSE_SOURCE_CHECKED / PENDING_BY_SOURCE_REFRESH",
+      "rule": "capture units delta plus same-generation PCF; execution remains modeled unless directly observed; event receipt and flow receipt remain distinct",
+      "observedAt": "2026-10-05T15:14:00+08:00",
+      "observationReceipt": "research/d06_pf040_preclose_source_state_20261005_v0_1.json",
+      "observation": "Official issuer pages were reachable but 0050/0056 unit-data and PCF trading date still referenced 2026-10-02; not eligible as 2026-10-05 same-generation PF-040 evidence.",
+      "passGateStatus": "NOT_PASSED_YET"
     },
     {
       "laneId": "D06_18_BORROW_ECONOMICS",
@@ -173,8 +177,12 @@
       ],
       "primitiveReceiptId": "D06-20261005-TWSE-BORROW-ECON",
       "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
-      "preopenState": "PENDING_BY_CLOCK_OR_PUBLIC_SOURCE_AVAILABILITY",
-      "rule": "preserve transaction type, rate, displayed lend/borrow quantities, recall terms, quote-persistence and 2026-06-01 settlement vintage; never call displayed supply total lendable inventory"
+      "preopenState": "LATE_SLOT_ATTEMPTED / UNKNOWN_SOURCE_MACHINE_CONTRACT",
+      "rule": "preserve transaction type, rate, displayed lend/borrow quantities, recall terms, quote-persistence and 2026-06-01 settlement vintage; never call displayed supply total lendable inventory",
+      "observedAt": "2026-10-05T15:20:43+08:00",
+      "observationReceipt": "research/d06_18_twse_borrow_econ_capture_20261005_late_v0_1.json",
+      "observation": "TWSE official dynamic disclosure entry was reachable inside the frozen slot, but the authorized machine-readable route did not expose live per-security rate/depth rows. Slot preserved as UNKNOWN/MISSING; no later substitution allowed.",
+      "passGateStatus": "NOT_PASSED"
     },
     {
       "laneId": "D06_19_RETAIL",
@@ -193,7 +201,7 @@
     "d16ResidualIncrementality": "PENDING",
     "auditClosure": "00_REQUIRED"
   },
-  "maturityImpact": "NONE_AT_PREOPEN",
+  "maturityImpact": "NONE_THROUGH_15_20",
   "formalOptimizationCandidate": "NONE",
-  "exactNext": "Continue 2026-10-05 frozen lanes as their source clocks arrive. TDCC parent is captured and integrity-passed; attach the same primitiveReceiptId/fingerprint to the actual after-market D06-05/D06-06 generation before any D06-05 maturity promotion. Keep outcomes closed."
+  "exactNext": "Continue only remaining 2026-10-05 frozen lanes at their actual source clocks. After-market generation must attach the existing TDCC parent to same-generation D06-05/D06-06 rows. At/after official clocks capture D06-03 dealer split, TPEx leverage EARLY/LATE vintages and D06-14 T_PRELIM. For PF-040 append a later issuer vintage only after the source data date advances to 2026-10-05. D06-18 late slot is closed as UNKNOWN/MISSING and must not be backfilled. Outcomes remain closed."
 }
