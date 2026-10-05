@@ -1909,3 +1909,112 @@ No maturity or Formal change is authorized by this routing.
 6. Preserve SDA-001/SDA-002 as REMEDIATION_IN_PROGRESS until canonical closure evidence exists.
 7. Next D01 science: separate cross-sectional generalization from liquidity/size survivorship so Pattern does not appear robust only because data-rich liquid stocks are easier to detect and trade.
 8. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-039 (2026-10-05)
+
+### DL-039 — Cross-sectional generalization vs liquidity / size / survivorship selection
+- DL-038 separated detector robustness from economic robustness.
+- DL-039 freezes the next cross-sectional selection firewall: Pattern may look robust only because large, liquid, long-listed and data-rich stocks are easier to observe, detect, retest and trade.
+- External evidence motivates explicit controls:
+  Taiwan firm-level technical-trading evidence reports profitability varies with firm size and trading volume;
+  recent Taiwan size-effect evidence identifies illiquidity and price-limit related limits-to-arbitrage as important cross-sectional context;
+  survivorship-bias literature shows historical cross-sectional inference can change when later-delisted/non-surviving firms are restored.
+- Every future design must freeze one target population before outcomes:
+  POINT_IN_TIME_MARKET_UNIVERSE;
+  or FORMAL_ELIGIBLE_UNIVERSE.
+- If the target is FORMAL_ELIGIBLE_UNIVERSE, claims are restricted to that Formal-eligible population; market-wide generalization is prohibited.
+- D01 consumes an existing point-in-time historical-universe receipt rather than rebuilding one.
+  The current repository historical-universe registry explicitly supports CURRENT + DELISTED membership intervals and hides future delisting information from strategy timestamps.
+- Cross-sectional attrition is now frozen as explicit stages:
+  TARGET_UNIVERSE_ELIGIBLE;
+  HISTORY_READY;
+  HISTORY_TOO_SHORT_BY_DESIGN;
+  HISTORY_DATA_BLOCKED;
+  DETECTOR_EVALUABLE;
+  DETECTOR_NO_STRUCTURE;
+  DETECTOR_DATA_BLOCKED;
+  STRUCTURE_EMITTED;
+  OPPORTUNITY_READY;
+  NO_VALID_OPPORTUNITY;
+  OPPORTUNITY_DATA_BLOCKED;
+  ECONOMIC_EVALUABLE;
+  TRADABILITY_EVALUABLE.
+- New-listing firewall:
+  when listing-age-aware available history is complete but detector minimum lookback is not reached, state = HISTORY_TOO_SHORT_BY_DESIGN.
+  It is not missing data, no-pattern evidence or a negative case.
+- Historical-survivorship firewall:
+  today's survivors cannot reconstruct a historical universe;
+  later-delisted symbols remain in the point-in-time denominator when they were eligible;
+  future delisting date may not enter the predictor;
+  D01 does not assign terminal delisting returns.
+- Data survivorship is separated from no-pattern evidence:
+  HISTORY_DATA_BLOCKED / DETECTOR_DATA_BLOCKED / OPPORTUNITY_DATA_BLOCKED / EXECUTION_CONTEXT_UNKNOWN remain visible.
+  UNKNOWN is never silently recoded as NO_STRUCTURE.
+- D01 consumes point-in-time size/liquidity receipts and does not redefine their owner taxonomies.
+  Relevant context includes market cap/size, value traded/volume/turnover, spread/depth where available, relative tick, price tier, constraints and listing age.
+- Current/future size or liquidity values may not be backfilled into historical predictor states.
+- Formal liquidity eligibility and scientific cross-sectional generalization are kept separate.
+  Future reports show market-universe denominator, Formal-eligible denominator, detector-evaluable denominator, opportunity denominator and tradability denominator.
+- Detectability and tradability are distinct:
+  a symbol can be detector-evaluable but not execution-evaluable;
+  a new listing can be data-complete but history-ineligible;
+  a structure can exist without a valid opportunity.
+- Cross-sectional coverage matrix must report by point-in-time market / size / liquidity / listing-age / price-tick context:
+  target eligible;
+  history ready;
+  history too short;
+  history blocked;
+  detector evaluable;
+  no structure;
+  structure emitted;
+  opportunity ready;
+  no opportunity;
+  opportunity blocked;
+  economic evaluable;
+  tradability evaluable.
+- Successful-case denominators are prohibited:
+  structure-only, retest-only, execution-complete-only, current-survivor-only and hidden mature-history-only samples cannot define cross-sectional coverage.
+- Symbol breadth is separated from opportunity count.
+  top contributor shares / concentration remain descriptive and cannot create broad-generalization claims by themselves.
+- Common-support firewall spans point-in-time size, liquidity, listing age, price/tick tier, market, regime and detector-history readiness.
+  Lack of overlap -> CROSS_SECTIONAL_EXTRAPOLATION_PROHIBITED.
+- Liquidity-conditioned technical effects are treated as context, not Pattern alpha.
+  Better results in liquid names may reflect cleaner observability/trend persistence/lower noise/lower cost;
+  stronger results in illiquid names may reflect stale prices/spread/limits-to-arbitrage/untradeable marks.
+- Delisting, suspension, price-limit constraint and unknown execution context are separate later-evaluation states; none is silently dropped.
+- Cross-sectional readiness ladder:
+  X0 TARGET_UNIVERSE_UNFROZEN;
+  X1 POINT_IN_TIME_UNIVERSE_READY;
+  X2 HISTORY_AND_DATA_ATTRITION_AUDITED;
+  X3 DETECTOR_COVERAGE_BY_SIZE_LIQUIDITY_READY;
+  X4 COMMON_SUPPORT_AND_SURVIVORSHIP_READY;
+  X5 OPPORTUNITY_SELECTION_AUDITED;
+  X6 TRADABILITY_CONTEXT_AUDITED.
+- New files:
+  - research/PATTERN_CROSSSECTION_LIQUIDITY_SURVIVORSHIP_V0_1.md
+  - research/pattern_crosssection_liquidity_survivorship_v0_1.json
+  - research/pattern_crosssection_liquidity_survivorship_v0_1.mjs
+  - research/test_pattern_crosssection_liquidity_survivorship_v0_1.mjs
+  - research/PATTERN_CROSSSECTION_LIQUIDITY_SURVIVORSHIP_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 remains REMEDIATION_IN_PROGRESS.
+- SDA-002 remains REMEDIATION_IN_PROGRESS.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-039
+
+1. Reconcile the DL-039 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-039 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve target-universe, history-readiness, detector, opportunity, economic-evaluability and tradability ledgers separately.
+4. Keep HISTORY_TOO_SHORT_BY_DESIGN separate from data missingness and no-structure evidence.
+5. Preserve POINT_IN_TIME_MARKET_UNIVERSE vs FORMAL_ELIGIBLE_UNIVERSE claim scope explicitly.
+6. Hand X0-X6 / size-liquidity common support / delisting / symbol-concentration semantics to D16.
+7. Consume existing historical-universe and D04/D05 liquidity owners without duplicating their taxonomies.
+8. Preserve SDA-001/SDA-002 as REMEDIATION_IN_PROGRESS until canonical closure evidence exists.
+9. Next D01 science: separate cross-sectional coverage from sector/industry composition so a Pattern effect concentrated in one industry is not mislabeled as generic chart-structure evidence.
+10. No outcome join / no runtime wiring / no Formal change.

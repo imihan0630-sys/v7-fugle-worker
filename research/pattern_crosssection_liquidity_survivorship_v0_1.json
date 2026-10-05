@@ -1,0 +1,23 @@
+{
+  "schemaVersion":"pattern-crosssection-liquidity-survivorship-v0.1",
+  "updated":"2026-10-05 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "targetPopulationTypes":[
+    "POINT_IN_TIME_MARKET_UNIVERSE",
+    "FORMAL_ELIGIBLE_UNIVERSE"
+  ],
+  "currentSurvivorsCanDefineHistoricalUniverse":false,
+  "historyTooShortEqualsDataMissing":false,
+  "dataBlockedEqualsNoStructure":false,
+  "noRetestEqualsFailedPattern":false,
+  "formalEligibleSampleEqualsMarketWideGeneralization":false,
+  "liquidityFilterMayUseFutureData":false,
+  "delistedSymbolsCanBeSilentlyDropped":false,
+  "cleanDataOnlyDenominator":"PROHIBITED",
+  "readinessLadder":["X0","X1","X2","X3","X4","X5","X6"],
+  "economicValidationOwner":"D16",
+  "outcomeJoin":"CLOSED",
+  "formalOptimizationCandidate":"NONE"
+}
