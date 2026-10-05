@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "D16_ADMISSION_SENSITIVITY_RECEIPT_CONTRACT_V0_1",
+  "updatedAt": "2026-10-06T05:38:00+08:00",
+  "owner": "D16",
+  "room": "11",
+  "status": "RESEARCH_ONLY_CONTRACT_FROZEN_NO_SAMPLE_ATTACHED",
+  "formalCoreImpact": "NONE",
+  "evidenceState": "NO_GENUINE_PROSPECTIVE_SAMPLE_ATTACHED",
+  "purpose": "Machine contract for promotion-grade admission-selection and missing-outcome sensitivity without fabricating unavailable outcomes.",
+  "identities": {
+    "experimentFamilyId": "REQUIRED",
+    "experimentVersion": "REQUIRED",
+    "preregistrationHash": "REQUIRED",
+    "targetPopulationDefinitionHash": "REQUIRED",
+    "primaryEstimandId": "REQUIRED",
+    "primaryHorizonId": "REQUIRED",
+    "multipleTestingFamilyId": "REQUIRED",
+    "evaluationCutoffRuleHash": "REQUIRED",
+    "sourceLineageHash": "REQUIRED"
+  },
+  "admissionFunnel": {
+    "calendarCandidateN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "targetPopulationEligibleN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "parentCapturedN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "readbackVerifiedN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "predictionAvailableN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "outcomeMaturedN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "performanceEligibleN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "costEligibleN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "finalAnalysisAdmittedN": "REQUIRED_NONNEGATIVE_INTEGER",
+    "exclusionReasonCounts": "REQUIRED_MAP",
+    "byPreOutcomeStratum": "REQUIRED_MAP"
+  },
+  "observedSubpopulation": {
+    "estimandIdentity": "OBSERVED_SUBPOPULATION_ESTIMAND",
+    "estimate": "NULL_UNTIL_GENUINE_DATA",
+    "uncertainty": "NULL_UNTIL_GENUINE_DATA",
+    "mayRepresentFullTargetPopulation": false
+  },
+  "selectionModel": {
+    "stateEnum": [
+      "NOT_RUN",
+      "PREREGISTERED_READY",
+      "MODEL_INVALID",
+      "POSITIVITY_BLOCKED",
+      "PIT_VIOLATION",
+      "OUTCOME_TUNED_REJECTED"
+    ],
+    "knowledgeCutoff": "REQUIRED_IF_RUN",
+    "predictorSetHash": "REQUIRED_IF_RUN",
+    "modelFamilyHash": "REQUIRED_IF_RUN",
+    "regularizationRuleHash": "REQUIRED_IF_RUN",
+    "clippingOrTrimmingRuleHash": "REQUIRED_IF_RUN",
+    "futureInformationUsed": false,
+    "outcomePerformanceUsedForModelSelection": false
+  },
+  "positivityDiagnostics": {
+    "minAdmissionPropensity": "REQUIRED_IF_WEIGHTED",
+    "propensityQuantiles": "REQUIRED_IF_WEIGHTED",
+    "maxWeight": "REQUIRED_IF_WEIGHTED",
+    "weightQuantiles": "REQUIRED_IF_WEIGHTED",
+    "weightConcentration": "REQUIRED_IF_WEIGHTED",
+    "weightedEffectiveSupport": "REQUIRED_IF_WEIGHTED",
+    "zeroSupportStrata": "REQUIRED_LIST",
+    "nearZeroSupportWarning": "REQUIRED_BOOLEAN_IF_WEIGHTED"
+  },
+  "weightedSensitivity": {
+    "stateEnum": [
+      "NOT_RUN",
+      "READY_SAME_TARGET",
+      "READY_RESTRICTED_TARGET",
+      "POSITIVITY_BLOCKED",
+      "BALANCE_BLOCKED",
+      "MODEL_BLOCKED"
+    ],
+    "estimandIdentity": "REQUIRED_IF_RUN",
+    "supportRestrictionHash": "REQUIRED_IF_RESTRICTED",
+    "estimate": "NULL_UNTIL_GENUINE_DATA",
+    "uncertainty": "NULL_UNTIL_GENUINE_DATA",
+    "balanceDiagnostics": "REQUIRED_IF_RUN"
+  },
+  "partialIdentification": {
+    "stateEnum": [
+      "NOT_RUN",
+      "READY",
+      "UNBOUNDED",
+      "NOT_APPLICABLE"
+    ],
+    "binarySuccessRateLowerBound": "NULL_UNTIL_GENUINE_DATA",
+    "binarySuccessRateUpperBound": "NULL_UNTIL_GENUINE_DATA",
+    "brierDifferenceLowerBound": "NULL_UNTIL_GENUINE_DATA",
+    "brierDifferenceUpperBound": "NULL_UNTIL_GENUINE_DATA",
+    "logLossDifferenceLowerBound": "NULL_UNTIL_GENUINE_DATA",
+    "logLossDifferenceUpperBound": "NULL_UNTIL_GENUINE_DATA",
+    "probabilityClippingContractHash": "REQUIRED_FOR_FINITE_LOGLOSS_BOUNDS"
+  },
+  "imputationSensitivity": {
+    "stateEnum": [
+      "NOT_RUN",
+      "PREREGISTERED_READY",
+      "MODEL_BLOCKED",
+      "ASSUMPTION_SENSITIVE"
+    ],
+    "contractHash": "REQUIRED_IF_RUN",
+    "uncertaintyPropagated": "REQUIRED_BOOLEAN_IF_RUN",
+    "singleImputationTreatedAsObservedTruth": false
+  },
+  "releaseAndConsumption": {
+    "holdoutConsumptionRef": "REQUIRED",
+    "releaseLineageRefs": "REQUIRED_LIST",
+    "outcomeInformationFootprintDisposition": "REQUIRED"
+  },
+  "terminalStateEnum": [
+    "EVIDENCE_NOT_YET_AVAILABLE",
+    "OBSERVED_SUBPOPULATION_ONLY",
+    "SELECTION_SENSITIVITY_READY",
+    "POSITIVITY_BLOCKED",
+    "PARTIAL_IDENTIFICATION_ONLY",
+    "MISSINGNESS_DIRECTION_NOT_IDENTIFIED",
+    "PIT_SELECTION_MODEL_REJECTED",
+    "ADAPTIVE_SELECTION_MODEL_REJECTED",
+    "PROMOTION_REVIEW_ELIGIBLE"
+  ],
+  "promotionGate": [
+    "GENUINE_PROSPECTIVE_DATA_REQUIRED",
+    "SDA016_V0_3_ALL_APPLICABLE_TESTS_PASS",
+    "NO_FULL_TARGET_CLAIM_IF_POSITIVITY_OR_SELECTION_UNRESOLVED",
+    "ROOM00_INDEPENDENT_CLOSURE_REQUIRED"
+  ],
+  "noDataDefaults": {
+    "terminalState": "EVIDENCE_NOT_YET_AVAILABLE",
+    "promotionEligible": false,
+    "maturityImpact": "NONE"
+  }
+}
