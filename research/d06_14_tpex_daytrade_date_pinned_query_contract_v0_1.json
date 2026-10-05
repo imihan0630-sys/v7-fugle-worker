@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "D06_14_TPEX_DAYTRADE_DATE_PINNED_QUERY_CONTRACT_V0_1",
+  "updatedAt": "2026-10-06 Asia/Taipei",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-14",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "sourceAuthority": "Taipei Exchange (TPEx)",
+  "pageUrl": "https://www.tpex.org.tw/zh-tw/mainboard/trading/day-trading/statistics/day.html",
+  "officialPageEvidence": {
+    "formId": "tables-form",
+    "dateInputName": "date",
+    "dateInputStart": "20140106",
+    "dateInputFormat": "D",
+    "pageAction": "intraday/stat"
+  },
+  "verifiedPinnedQueries": [
+    {
+      "query": "?date=20261005",
+      "resultTradeDate": "2026-10-05",
+      "rowCount": 841,
+      "statusCode": 200
+    },
+    {
+      "query": "?date=2026%2F10%2F05",
+      "resultTradeDate": "2026-10-05",
+      "rowCount": 841,
+      "statusCode": 200
+    }
+  ],
+  "canonicalChoice": "?date=YYYYMMDD",
+  "purpose": "Keep T/T+1/T+2 revision follow-up pinned to the same tradeDate after the default page rolls forward.",
+  "guards": [
+    "The date parameter is taken from the official page form contract, not guessed from an undocumented endpoint.",
+    "Pinned-query success must be revalidated by displayed date and canonical table contents.",
+    "Default-page date rollover never substitutes for an explicit historical tradeDate query.",
+    "Pinned historical access does not imply historical first-known time; vintage identity still comes from prospective capture clocks."
+  ],
+  "maturityImpact": "NONE",
+  "status": "DATE_PINNED_QUERY_REPLAY_VERIFIED / T1_T2_FOLLOWUP_EXECUTABLE / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Use ?date=20261005 for later T1_REVISED and T2_FINAL captures of the 2026-10-05 trade date; use ?date=20261006 for today's T_PRELIM capture."
+}
