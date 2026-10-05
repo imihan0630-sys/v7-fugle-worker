@@ -90,6 +90,8 @@ export async function readC1GenerationInventory(db,{scanDate,limit=100}={}){
   const date=String(scanDate||"");
   if(!DATE.test(date))throw new Error("C1_GENERATION_INVENTORY_SCAN_DATE_REQUIRED");
   const bound=Math.max(1,Math.min(250,Number(limit)||100));
+  const countRow=await db.prepare(`SELECT COUNT(*) AS n FROM trade_research_c1_generations WHERE scan_date=?1`).bind(date).first();
+  const total=Math.max(0,Number(countRow?.n)||0);
   const result=await db.prepare(`SELECT generation_id,scan_date,decision_at,captured_at,source_main_sha,runtime_version,
     universe_digest,content_digest,population_n,captured_n,feature_n,chunk_count,completeness,header_json,created_at
     FROM trade_research_c1_generations WHERE scan_date=?1 ORDER BY decision_at ASC,generation_id ASC LIMIT ?2`).bind(date,bound).all();
@@ -127,12 +129,12 @@ export async function readC1GenerationInventory(db,{scanDate,limit=100}={}){
   return {
     schemaVersion:C1_GENERATION_INVENTORY_SCHEMA_VERSION,
     scanDate:date,
-    generationCount:generations.length,
+    generationCount:total,
     returnedCount:generations.length,
     limit:bound,
-    truncated:generations.length===bound,
+    truncated:total>generations.length,
     integrityComplete:generations.every(x=>x.originStatus!=="DATA_QUALITY_BLOCKED"),
-    modernOriginCoverageComplete:modern.every(x=>x.originStatus==="SCAN_ORIGIN_CAPTURED"),
+    modernOriginCoverageComplete:modern.length?modern.every(x=>x.originStatus==="SCAN_ORIGIN_CAPTURED"):null,
     snapshotMutableUntilSessionComplete:true,
     historicalBackfillPerformed:false,
     generations,
