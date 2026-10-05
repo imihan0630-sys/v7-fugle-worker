@@ -2167,3 +2167,20 @@ System2 must preserve architectural independence from System1:
 - no claim of "two independent confirmations" from the same source/root without D16 dependence analysis.
 
 This pointer does not replace the active S2 BUILD_LANE or authorize any live ranking/strategy mutation.
+
+
+## 2026-10-06 SDA-022 fingerprint / NC-T01 intake
+
+Canonical artifacts:
+- shared-knowledge/CROSS_SYSTEM_POLICY_FINGERPRINT_CONTRACT_V0_1.md
+- shared-knowledge/SYSTEM1_SYSTEM2_POLICY_FINGERPRINT_BASELINE_20261006_V0_1.md
+- shared-knowledge/SDA022_D16_VALIDATION_REQUEST_V0_1.md
+
+System2 exact SDA-022 responsibility:
+1. emit strategy-specific policy fingerprints without changing strategy logic;
+2. preserve current multi-strategy identities and no-universal-score boundary;
+3. execute NC-T01 when the relevant lane is available: strategy candidate generation with System1 Top6/rank unavailable but shared raw source receipts still available;
+4. physical proof must distinguish DESIGN_INDEPENDENT from PHYSICALLY_INDEPENDENT;
+5. do not force different picks and do not use System1 output as a hidden fallback.
+
+This intake does not replace the active BUILD_LANE and authorizes no live selection/ranking mutation.
