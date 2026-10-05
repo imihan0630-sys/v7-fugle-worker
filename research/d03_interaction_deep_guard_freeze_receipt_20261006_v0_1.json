@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "D03_INTERACTION_DEEP_GUARD_FREEZE_RECEIPT_V0_1",
+  "updatedAt": "2026-10-06T07:11:00+08:00",
+  "owner": "D03",
+  "scope": "TI803_TI852",
+  "artifacts": [
+    "research/D03_INTERACTION_ESTIMABILITY_CONCENTRATION_ORACLE_20261006_V0_1.md",
+    "research/d03_interaction_estimability_concentration_oracle_20261006_v0_1.json",
+    "research/test_d03_interaction_estimability_concentration_oracle_v0_1.mjs",
+    "research/D03_INTERACTION_SEARCH_GENEALOGY_AND_REBIN_FIREWALL_20261006_V0_1.md",
+    "research/d03_interaction_search_genealogy_and_rebin_firewall_20261006_v0_1.json",
+    "research/test_d03_interaction_search_genealogy_and_rebin_firewall_v0_1.mjs",
+    "research/D03_BOLLINGER_ADX_PARAMETER_SEARCH_GENEALOGY_AUDIT_20261006_V0_1.md",
+    "research/d03_interaction_support_search_acceptance_contract_20261006_v0_1.json",
+    "research/test_d03_interaction_support_search_acceptance_contract_v0_1.mjs"
+  ],
+  "deterministicFixtures": {
+    "interactionSupportCasesDefined": 20,
+    "searchGenealogyCasesDefined": 13,
+    "combinedBindingCasesDefined": 13,
+    "totalCasesDefined": 46,
+    "repositoryWorkflowRunsObserved": 0,
+    "ciExecutionReceiptClaimed": false,
+    "nodeExecutionReceiptClaimed": false
+  },
+  "externalMethodologyAnchors": {
+    "clusterRobustInference": "MacKinnon_Nielsen_Webb_2023",
+    "leverageInfluence": "MacKinnon_Nielsen_Webb_2023_summclust",
+    "positivityWeighting": "Recent_AJE_and_PMC_weighting_guidance",
+    "technicalRuleDataSnooping": "Sullivan_Timmermann_White_1999_and_Taiwan_followups",
+    "winnerSelection": "Andrews_Kitagawa_McCloskey_inference_on_winners"
+  },
+  "conclusions": [
+    "SUPPORT_IS_MULTI_AXIS_NOT_MAGIC_N",
+    "REPRESENTATION_CLASS_SWITCH_CANNOT_ESCAPE_SUPPORT_GATES",
+    "OUTCOME_BLIND_SUPPORT_REDESIGN_ALLOWED_WITH_APPEND_ONLY_LINEAGE",
+    "OUTCOME_DRIVEN_REBINNING_CONSUMES_PRIOR_HOLDOUT",
+    "EVIDENCE_DEDUP_DOES_NOT_DELETE_MULTIPLICITY_ATTEMPTS",
+    "BOLLINGER20X2_AND_ADX14_CURRENT_CANONICAL_BASELINES_ARE_FIXED_NOT_VERIFIED_PARAMETER_WINNERS",
+    "MENTIONED_THRESHOLDS_ARE_NOT_AUTOMATICALLY_OUTCOME_TESTED_HYPOTHESES",
+    "FUTURE_SEARCH_AXES_REQUIRE_CANDIDATE_SET_AND_OUTER_STREAM_BINDING"
+  ],
+  "empiricalOutcomeDataUsed": false,
+  "empiricalInteractionIncrementalityClaimed": false,
+  "maturityImpact": "NONE_56_7_PERCENT",
+  "formalCoreImpact": "NONE_LOCKED"
+}
