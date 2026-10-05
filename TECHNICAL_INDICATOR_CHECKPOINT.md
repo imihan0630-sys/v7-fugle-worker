@@ -4992,3 +4992,212 @@ No promotion:
 
 Exact next:
 first re-read System1/System2/D16 machine deltas before adding more semantics. If no external implementation lands, the next independent D03 path is a negative-control/permutation falsification oracle for interaction claims: preserve date/sector/regime dependence while breaking only the claimed component relation, and prevent invalid row-wise shuffles from creating false reassurance. Do not open outcomes. Protected PR #600/Bollinger/ADX physical-readiness lanes remain separate.
+
+
+## TI-853 through TI-970 — interaction falsification, null replay, null validation and null-of-null calibration (2026-10-06)
+
+Canonical artifacts:
+- `research/D03_INTERACTION_NEGATIVE_CONTROL_PERMUTATION_FALSIFICATION_ORACLE_20261006_V0_1.md`;
+- `research/d03_interaction_negative_control_permutation_oracle_20261006_v0_1.json`;
+- `research/test_d03_interaction_negative_control_permutation_oracle_v0_1.mjs`;
+- `research/D03_INDICATOR_SPECIFIC_FALSIFIER_MAPPING_20261006_V0_1.md`;
+- `research/d03_indicator_specific_falsifier_mapping_20261006_v0_1.json`;
+- `research/test_d03_indicator_specific_falsifier_mapping_v0_1.mjs`;
+- `research/D03_PIPELINE_LEVEL_MAX_STATISTIC_NULL_REPLAY_CONTRACT_20261006_V0_1.md`;
+- `research/d03_pipeline_level_max_statistic_null_replay_contract_20261006_v0_1.json`;
+- `research/test_d03_pipeline_level_max_statistic_null_replay_v0_1.mjs`;
+- `research/D03_NULL_GENERATOR_VALIDATION_AND_FALSIFIER_DISAGREEMENT_CONTRACT_20261006_V0_1.md`;
+- `research/d03_null_generator_validation_and_falsifier_disagreement_contract_20261006_v0_1.json`;
+- `research/test_d03_null_generator_validation_and_falsifier_disagreement_v0_1.mjs`;
+- `research/D03_D16_INTERACTION_FALSIFICATION_HANDOFF_ADDENDUM_20261006_V0_1.md`;
+- `research/d03_d16_interaction_falsification_method_receipt_schema_20261006_v0_1.json`;
+- `research/test_d03_d16_interaction_falsification_method_receipt_v0_1.mjs`;
+- `research/D03_FALSIFICATION_NULL_OF_NULL_CALIBRATION_CONTRACT_20261006_V0_1.md`;
+- `research/d03_falsification_null_of_null_calibration_contract_20261006_v0_1.json`;
+- `research/test_d03_falsification_null_of_null_calibration_v0_1.mjs`.
+
+### TI-853~888 — negative-control / permutation falsification oracle
+
+Frozen decision:
+`INTERACTION_FALSIFICATION = LINEAGE_CONSISTENT_DEPENDENCE_PRESERVING_PREREGISTERED_NULLS`.
+
+Key rules:
+- primary null is residual interaction absence after preserving both main effects and registered controls, not universal independence;
+- naive row-wise shuffling is invalid by default because it destroys date, sector, regime, serial, repeated-symbol and support structure;
+- permutation requires explicit exchangeability/randomization or a D16-approved dependence-aware/studentized method;
+- conditional permutation/randomization must bind a valid X|Z sampler, outcome-blind sampler selection and misspecification diagnostics;
+- derived technical fields sharing primitive ancestry cannot be independently shuffled when doing so creates off-manifold states;
+- prefer primitive/root-layer perturbation plus full descendant recomputation when feasible;
+- same-root interactions may legitimately have NO_VALID_COMPONENTWISE_PERMUTATION;
+- cyclic shifts, phase surrogates and sign flips are null-specific and not generic defaults;
+- future/after-cutoff sentinels are leakage alarms only and never candidate signals;
+- if observed analysis searched/tuned candidates, the null must replay that search rather than test only the observed winner;
+- finite Monte Carlo p-values cannot be zero; plus-one rank form is the default candidate unless D16 freezes another valid method;
+- primary and sensitivity falsifiers are preregistered; unresolved same-null contradiction blocks the third unit.
+
+The first falsification fixture defines 21 adversarial cases. No CI/Node run is claimed for this tranche.
+
+### TI-889~904 — indicator-specific falsifier mapping
+
+Frozen mappings:
+- Bollinger location×width = SAME_ROOT_PATH_COUPLED;
+- ADX direction×range = SAME_ROOT_PATH_COUPLED;
+- price×volume = MIXED_ROOT_CONDITIONAL;
+- nested timeframe = SHARED_ANCESTRY_CLOCK_COUPLED;
+- oscillator×trend = SAME_PRICE_ROOT;
+- divergence = PIVOT_CLOCK_LINEAGE_COUPLED.
+
+Consequences:
+- Bollinger %B/width componentwise field shuffle is not a valid primary falsifier;
+- Bollinger path surrogate must recompute SMA20/popStd20/bands/BBW/%B/touch/re-entry/squeeze descendants;
+- ADX +DM/-DM/TR or final ADX field shuffles are invalid primary falsifiers;
+- ADX valid path null must recompute full DMI/ADX state with the same FULL_REPLAY semantics;
+- price×volume can use a conditional-root falsifier only if volume-price-context dependence, units, liquidity/session, suspension and lineage are preserved;
+- raw global volume shuffle is rejected;
+- divergence and nested-timeframe nulls must preserve pivot/timeframe observability and ancestry.
+
+The mapping fixture defines 14 adversarial cases.
+
+### TI-905~920 — pipeline-level max/selected-statistic null replay
+
+Frozen:
+`FIXED_WINNER_NULL_AFTER_SEARCH = INVALID`.
+
+If the observed claim benefited from candidate/threshold/window/horizon/representation/rank/trading-policy selection, each null draw must replay the same frozen pipeline:
+- same candidate universe/policy;
+- same support filter;
+- same fit/tuning/cross-fitting chronology;
+- same selection metric and tie-break;
+- same cost/fillability rule where applicable;
+- same statistic scale and clock.
+
+The null may choose a different winner.
+Null support failures cannot be silently discarded/redrawn.
+Observed winner identity cannot constrain the null search unless the target was truly ex-ante fixed.
+Search replay does not rescue an invalid null generator.
+
+The pipeline-null fixture defines 15 adversarial cases.
+
+### TI-921~940 — null-generator validation / falsifier disagreement
+
+Frozen:
+`NULL_GENERATOR_ACCEPTANCE = TARGET_BREAK_AND_NUISANCE_PRESERVATION_DUAL_GATE`.
+
+A valid null generator must simultaneously:
+1. break the claimed target relation; and
+2. preserve the nuisance/data-generating structure required by the declared null.
+
+Validation vector includes, where applicable:
+- marginal and conditional distributions;
+- date/sector/regime/liquidity composition;
+- serial dependence/volatility clustering;
+- cross-sectional common shocks;
+- repeated-symbol structure;
+- support/admission/missingness;
+- continuity/source version;
+- market mechanics.
+
+Under-breaking the target and over-breaking nuisance are both failures.
+Good marginal fit cannot substitute for X|Z conditional fit.
+Support cannot be artificially improved or degraded under null generation.
+Synthetic type-I/power calibration is method evidence only.
+Validity and power are separate machine states.
+Same-null falsifier contradiction blocks promotion; different-null disagreement is reported null-specifically.
+
+The null-validation fixture defines 15 cases.
+
+### TI-941~950 — D03 -> D16 interaction-falsification handoff addendum
+
+D03 freezes scientific semantics but leaves exact inferential method ownership to D16.
+
+Future D16 method receipt binds interaction/variant/search/root/null/generator/population/support/clock/horizon/multiplicity/research-stream/SDA-016 identities.
+
+Allowed terminal states include:
+- FALSIFICATION_METHOD_READY;
+- NULL_GENERATOR_NOT_READY;
+- NO_VALID_COMPONENTWISE_PERMUTATION;
+- NULL_NOT_IDENTIFIABLE_BY_SURROGATE_FAMILY;
+- CONDITIONAL_NULL_MODEL_UNRELIABLE;
+- POWER_INSUFFICIENT;
+- JOINT_SUPPORT_INSUFFICIENT;
+- DEPENDENCE_TOO_STRONG_FOR_CURRENT_SAMPLE;
+- FALSIFIER_DISAGREEMENT_UNRESOLVED;
+- VERSION_INCOMPATIBLE;
+- SELECTION_IDENTIFICATION_BLOCKED.
+
+A legitimate blocking state is accepted as a scientific result and does not authorize redesign.
+FALSIFICATION_METHOD_READY still does not authorize outcome execution, grant a third unit or change Formal Core.
+
+The D16 falsification-receipt fixture defines 12 cases.
+
+### TI-951~970 — null-of-null synthetic calibration
+
+Frozen:
+`FALSIFIER_CALIBRATION = TWO_STAGE_SYNTHETIC_DEVELOPMENT_PLUS_HELD_OUT_AUDIT`.
+
+Synthetic method calibration requires both:
+- no-interaction worlds for type-I/directional-error/support behavior;
+- injected-interaction worlds for sensitivity/power.
+
+Required no-interaction stress families include:
+- correlated main effects with zero residual interaction;
+- date common-shock panel;
+- serial dependence;
+- volatility clustering/regime;
+- sector concentration;
+- state-dependent admission/missingness;
+- same-root deterministic technical indicators;
+- mixed-root conditional dependence;
+- nonlinear main-effect misspecification;
+- full-search-selection zero-interaction;
+- sparse-support blocking.
+
+A full candidate zoo must be replayed in at least one no-interaction calibration to test search-adjustment validity.
+Calibration development worlds are separate from held-out audit worlds.
+If held-out synthetic audit causes method redesign, method version increments and a new audit set is required.
+Bad seeds/worlds cannot be deleted or rerun until favorable.
+Synthetic pass clears only the method layer and contributes zero market-evidence units.
+
+The null-of-null fixture defines 13 cases.
+
+### External methodology readback
+
+This tranche used Firecrawl under the current global tool policy and reviewed method literature on:
+- time-series permutation validity under weak dependence;
+- conditional permutation/randomization and X|Z misspecification;
+- regression permutation under time dependence;
+- finite Monte Carlo permutation p-values;
+- interaction/knockoff and conditional-permutation literature;
+- surrogate time-series nulls.
+
+These references constrain methodology only; they do not establish Taiwan-stock alpha.
+
+### Execution evidence
+
+New executable fixture counts defined:
+- falsification oracle: 21;
+- indicator mapping: 14;
+- pipeline null replay: 15;
+- null-generator validation: 15;
+- D16 method receipt: 12;
+- null-of-null calibration: 13;
+- total = 90 defined cases.
+
+GitHub workflow lookup for all six new fixture commits returned zero workflow runs.
+Therefore:
+- `CI_EXECUTION_RECEIPT = NONE`;
+- `NODE_EXECUTION_PASS_CLAIM = FALSE`.
+
+No empirical outcome was opened or fabricated.
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09 remains L2/40;
+- D03-10 remains L2/40;
+- raw source gate remains 2/3;
+- outcomes remain CLOSED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`;
+- Formal Core remains LOCKED.
+
+Exact next:
+re-read external System1/System2/D16 machine lanes before further semantic expansion. If no external machine evidence lands, the next independent D03 research path is to freeze a "causal-direction / lead-lag placebo hierarchy" that distinguishes predictive timing from contemporaneous association without permitting future-state leakage; however, semantic research must remain maturity-neutral. The next actual maturity gain must come from genuine prospective/raw-source evidence or external machine implementation/readback.
