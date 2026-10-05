@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "D06_03_CROSS_MARKET_DESK_DISAGREEMENT_GUARD_20261005_V0_1",
+  "updatedAt": "2026-10-05 Asia/Taipei",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-03",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "tradeDate": "2026-10-05",
+  "parents": [
+    "research/d06_03_tpex_dealer_split_capture_20261005_v0_1.json",
+    "research/d06_03_twse_dealer_split_capture_20261005_1800_v0_1.json"
+  ],
+  "sameDateStructuralEvidence": {
+    "TPEx": {
+      "ordinaryFourDigitStocks": 795,
+      "bothDesksActive": 165,
+      "oppositeDeskSigns": 82,
+      "oppositePct": 49.7
+    },
+    "TWSE": {
+      "ordinaryFourDigitStocks": 1088,
+      "bothDesksActive": 351,
+      "oppositeDeskSigns": 150,
+      "oppositePct": 42.7
+    },
+    "pooledDescriptiveOnly": {
+      "bothDesksActive": 516,
+      "oppositeDeskSigns": 232,
+      "oppositePct": 45
+    }
+  },
+  "interpretation": [
+    "Both Taiwan cash markets show material same-date dealer-desk disagreement, strengthening the structural falsification of aggregate dealerNet as a pure proprietary-conviction label.",
+    "TWSE and TPEx observations on one trade date are not two independent temporal replications; common market/date regime can affect both.",
+    "Pooled 232/516 is descriptive only and must not be used as an independent-date sample size.",
+    "Cross-market composition, listing population, liquidity and dealer activity differ; raw percentage differences do not identify a market effect.",
+    "L4 evidence must cluster by trade date and accumulate independent prospective dates before any inference about persistence or predictive incrementality."
+  ],
+  "inferenceUnit": {
+    "structuralCrossSection": "market × symbol within 2026-10-05",
+    "independentTemporalReplicationCount": 1,
+    "reason": "shared trade date/common market regime"
+  },
+  "maturityImpact": "NONE",
+  "status": "CROSS_MARKET_STRUCTURAL_CORROBORATION / SAME_DATE_PSEUDOREPLICATION_GUARD_FROZEN / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Accumulate independent prospective trading dates under the same desk definitions and source clocks. For L4, cluster by date and compare split desks versus aggregate dealerNet on common support with liquidity, institutional-flow, passive/derivatives and regime controls."
+}
