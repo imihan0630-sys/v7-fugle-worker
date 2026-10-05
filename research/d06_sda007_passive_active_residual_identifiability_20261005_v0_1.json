@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "D06_SDA007_PASSIVE_ACTIVE_RESIDUAL_IDENTIFIABILITY_V0_1",
+  "updatedAt": "2026-10-05T15:35:00+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "auditTicket": "SDA-007",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "objective": "Freeze what can and cannot be identified when observed institutional investor-class flow overlaps with passive/index/ETF mechanics, before any return outcome is opened.",
+  "newEvidence": [
+    {
+      "source": "Taiwan Stock Exchange Daily Trading Details of Foreign and Institutional Investors",
+      "url": "https://eshop.twse.com.tw/en/product/detail/6edec1b6e62345cb9f1244acbbcefae0",
+      "implication": "Official flow fields classify investor/desk categories such as foreign, investment trust, dealer proprietary and dealer hedge. They do not identify investment motive such as active conviction versus passive benchmark demand."
+    },
+    {
+      "source": "Taiwan Stock Exchange ETF creation/redemption overview",
+      "url": "https://www.twse.com.tw/en/products/securities/etf/overview/issuing.html",
+      "implication": "ETF primary-market mechanics include in-kind and cash creation/redemption; PCF is a basket contract, not direct proof of same-day constituent execution."
+    },
+    {
+      "source": "Taiwan Stock Exchange ETF glossary and creation/redemption mechanics",
+      "url": "https://www.twse.com.tw/en/products/securities/etf/overview/introduction.html",
+      "implication": "Minimum in-kind creation, aggregate creation and cash-in-lieu mean units-delta multiplied by PCF is modeled delivery exposure with execution uncertainty, not identified realized stock flow."
+    },
+    {
+      "source": "Yousefi, Najand and Sun (2024), Accounting & Finance, DOI 10.1111/acfi.13265",
+      "url": "https://doi.org/10.1111/acfi.13265",
+      "implication": "Flow-performance evidence requires separating managerial/information interpretations from non-fundamental price pressure; positive flow-performance association alone does not identify smart money."
+    },
+    {
+      "source": "Brogaard, Heath and Huang (2026), Journal of Financial and Quantitative Analysis, ETF Sampling and Index Arbitrage",
+      "url": "https://doi.org/10.1017/S0022109025102378",
+      "implication": "ETF replication can sample indexes and channel arbitrage toward liquid stocks, so benchmark weights alone are not a sufficient execution model."
+    },
+    {
+      "source": "Xu (2025), Passive Flows, Index Rebalancing, and Price Impact",
+      "url": "https://ssrn.com/abstract=5703304",
+      "implication": "Mechanical index-rebalancing demand can move prices without information, supporting a separate passive price-pressure mechanism."
+    },
+    {
+      "source": "Sammon and Shim (2026), Who Clears the Market When Passive Investors Trade?",
+      "url": "https://ssrn.com/abstract=4777585",
+      "implication": "Other institutions may trade in the same direction as passive funds and firms can supply shares; therefore subtracting modeled passive demand from investor-class flow does not identify a clean active-conviction flow."
+    }
+  ],
+  "identificationFirewall": {
+    "forbiddenIdentity": "observedInstitutionalFlow - modeledPassiveExposure != identifiedActiveInstitutionalFlow",
+    "allowedLabel": "INSTITUTIONAL_FLOW_RESIDUAL_AFTER_PASSIVE_CONTROLS",
+    "motiveState": "ACTIVE_CONVICTION_UNIDENTIFIED unless an independent source identifies strategy/motive",
+    "passiveLayers": [
+      "INDEX_EVENT_EXPECTATION",
+      "ETF_MODELED_BASKET_EXPOSURE",
+      "ACTUAL_PASSIVE_STOCK_EXECUTION"
+    ],
+    "passiveLayerRule": "The three passive layers are not interchangeable and cannot be promoted into one another without direct evidence.",
+    "crowdingRule": "D06-06 CORE_CROWDING consumes institutional/ownership/price-flow parents and is not an independent directional vote merely because it is a composite child."
+  },
+  "preregisteredResidualQuestions": [
+    {
+      "id": "R1",
+      "question": "Does observed institutional flow retain incremental information after passive-event and modeled ETF basket controls plus price/volume, sector, liquidity and regime controls?",
+      "null": "No incremental contribution on common support.",
+      "namingRule": "Any residual is statistical residual flow, not active conviction."
+    },
+    {
+      "id": "R2",
+      "question": "Does modeled passive ETF/index exposure retain incremental information after observed institutional flow and the same common controls?",
+      "null": "No incremental contribution on common support.",
+      "namingRule": "Modeled basket exposure is not actual passive execution."
+    },
+    {
+      "id": "R3",
+      "question": "Does D06-06 crowding add incremental information beyond its exact parent receipts?",
+      "null": "No independent contribution beyond parents.",
+      "namingRule": "A transformed child does not create a second vote."
+    },
+    {
+      "id": "R4",
+      "question": "Can an active-conviction interpretation be identified?",
+      "null": "UNIDENTIFIED absent a direct motive/strategy source or separately valid identification design.",
+      "namingRule": "Statistical residualization alone cannot pass this identity gate."
+    }
+  ],
+  "commonSupportRules": [
+    "No zero-imputation for unavailable passive/flow parents.",
+    "Compare raw versus controlled/residual representations on the same observable rows.",
+    "Preserve source vintage and firstKnownAt for every parent.",
+    "Multiple symbols sharing one date or one rebalance event are not independent replications.",
+    "Multiple ETFs sharing one benchmark/event do not create independent event counts.",
+    "D16 must freeze horizon, benchmark, dependence handling, multiple-testing family and stop rule before outcomes open."
+  ],
+  "lineageRules": [
+    "Every primitive carries primitiveReceiptId and informationRoot.",
+    "Every derived consumer lists parentReceiptIds.",
+    "Expected index event, modeled ETF basket exposure and observed institutional flow may coexist but cannot be counted as three independent votes unless residual incrementality is proven.",
+    "D11 event identity and D06 passive-flow measurement share event lineage when they refer to the same rebalance episode.",
+    "D20 behavioral interpretation cannot create a new vote from the same D06 crowding/flow primitive without behavior-specific evidence."
+  ],
+  "maturityImpact": "NONE",
+  "formalOptimizationCandidate": "NONE",
+  "status": "IC068_RESIDUAL_IDENTIFIABILITY_FIREWALL_COMPLETE / SDA007_D16_AND_ENGINEERING_PENDING / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Continue the frozen 2026-10-05 prospective captures. Route this contract to D16 and System 1/System 2 lineage owners. D16 must test R1-R4 only after sufficient prospective common-support coverage and must never rename a statistical residual as active conviction."
+}
