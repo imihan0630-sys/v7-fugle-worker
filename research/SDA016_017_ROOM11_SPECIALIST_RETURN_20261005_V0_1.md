@@ -417,3 +417,77 @@ If generation-inventory multiplicity is used in admission logic, a deterministic
 - Room00 remains sole closure authority.
 - No maturity change.
 - Formal Core remains LOCKED.
+
+
+## 2026-10-06 sixth-round outer research-stream / policy-survivorship validation
+
+Canonical additions:
+- `research/SDA016_OUTER_SEQUENTIAL_HYPOTHESIS_STREAM_VALIDATION_ADDENDUM_20261006_V0_1.md`;
+- `research/D16_ONLINE_EXPERIMENT_STREAM_RECEIPT_CONTRACT_20261006_V0_1.json`;
+- `research/SDA016_VALIDATION_ORACLE_20261006_V0_5.json`;
+- `research/SDA017_POLICY_CANDIDATE_SURVIVORSHIP_VALIDATION_ADDENDUM_20261006_V0_1.md`;
+- `research/D18_POLICY_CANDIDATE_UNIVERSE_RECEIPT_CONTRACT_20261006_V0_1.json`;
+- `research/SDA017_VALIDATION_ORACLE_20261006_V0_4.json`.
+
+### D16 finding — inner sequential validity is not outer research-stream multiplicity control
+
+Existing SDA-016 T07/T08 correctly handle one experiment's fixed-N interim peeking versus preregistered sequential monitoring.
+
+The new blind spot is the outer sequence of hypotheses:
+`H1 -> outcome -> H2 -> outcome -> H3 -> ...`.
+
+A self-evolving research program can still accumulate false discoveries if each newly created experiment receives a fresh nominal error budget, even when every experiment is individually stopping-valid.
+
+Therefore promotion-grade research now requires:
+- canonical `researchStreamId`;
+- explicit stream error objective;
+- method/version and dependence assumptions;
+- hypothesis birth ordinal and parent/release lineage;
+- immutable outer error-budget transition history;
+- preservation of negative/inconclusive/retired hypotheses;
+- separate inner versus outer validity states.
+
+No specific online-testing method is authorized by this research return. The chosen method must match its dependence/adaptation assumptions.
+
+SDA-016 V0.5 now contains T01-T58, all blocking.
+
+### D18 finding — fixed Regime semantics do not prevent adaptive policy-universe survivorship
+
+Even if Regime definitions are fully ex-ante, policy candidates can be adaptively created, retired and replaced.
+
+A current champion cannot be validated by:
+- deleting retired losers from the denominator;
+- reusing the winner-selection period as untouched validation;
+- concatenating each period's best candidate return as if one fixed strategy;
+- changing the champion metric after outcome access;
+- comparing candidates only on each candidate's favorable activation dates.
+
+D18 now requires:
+- policy-candidate birth/retirement ledger;
+- candidate-set hash at selection;
+- frozen champion-selection rule;
+- candidate exposure-duration / Regime-support accounting;
+- common-support identification;
+- fresh post-selection champion evidence;
+- cross-ledger match to SDA-016 research stream.
+
+SDA-017 V0.4 now contains T01-T56, all blocking.
+
+### Methodology interpretation
+
+The sixth-round distinction follows the external methodology split between:
+- within-experiment sequential monitoring / anytime-valid inference;
+- online multiple testing across a continuing stream of hypotheses;
+and the model/backtest-selection problem where choosing the best of many alternatives creates selection bias.
+
+These are governance anchors only, not Taiwan-stock alpha evidence.
+
+### Current closure boundary
+
+- SDA-016: V0.5 T01-T58 blocking.
+- SDA-017: V0.4 T01-T56 blocking plus genuine prospective multi-replication and fresh post-selection champion evidence.
+- no new System1/System2 implementation was credited during this sixth-round semantic extension;
+- all previously accepted guards remain accepted;
+- Room00 remains sole closure authority;
+- no maturity change;
+- Formal Core remains LOCKED.
