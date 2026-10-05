@@ -3374,3 +3374,31 @@ Formal Core LOCKED.
 
 Exact next continuation point:
 PVE-241 — freeze executable prospective receipt schema for minute/daily unit normalization, corporate-action contamination, source availability clocks and participation-intent classification; remain outcome-blind and do not create numerical targets or D16 model methods.
+
+
+## PVE-241 continuation — prospective provenance receipt schema freeze (2026-10-05)
+
+Status: OUTCOME_BLIND / SCHEMA_FROZEN / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+Durable artifacts:
+- `research/d02_prospective_pv_provenance_receipt_schema_v0_1.json`;
+- `research/d02_pve_241_prospective_receipt_schema_freeze_20261005.md`.
+
+PVE-241 freezes the machine-checkable observation boundary before economic outcome access:
+source identity/hash; availability and first-known clocks; decision cutoff; completed-bar identity; raw/normalized volume unit and conversion; adjustment/corporate-action semantics; information-root class; participation proxy class; and intentIdentified=false.
+
+V0.1 normalization permits only SHARES identity and regular-lot LOTS x1000 to SHARES.
+UNKNOWN/unproven conversion fails closed.
+
+The schema is design closure only.
+Executable fail-closed fixture/guard validation remains pending because the fixture write was blocked in this round.
+No clean prospective date, target value, D16 method receipt, L4 promotion or Formal change is created.
+
+Current evidence:
+PVE-241 / CLEAN_DATE_ZERO / Gate 7 CLOSED.
+D02 remains 60.0%.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
+
+Exact next continuation:
+PVE-242 — implement and independently validate a fail-closed executable guard/fixture set for the frozen PVE-241 receipt contract, then capture the first genuine prospective receipt without opening promotion-grade outcomes.
