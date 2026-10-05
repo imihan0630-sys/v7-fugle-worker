@@ -3230,3 +3230,116 @@ PVE-239 / CLEAN_DATE_ZERO / Gate 7 CLOSED.
 D02 remains 60.0%.
 FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 Formal Core remains LOCKED.
+
+## Pre-PVE-240 continuation — Wave-1 primary metric/horizon freeze + D16 method firewall (2026-10-05)
+
+Status: OUTCOME_BLIND / NO_NUMERICAL_TARGET_FREEZE / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+New durable artifacts:
+- `research/D02_WAVE1_PROMOTION_METRIC_HORIZON_FREEZE_20261005_V0_2.md`;
+- `research/d02_wave1_promotion_metric_horizon_registry_v0_2.json`;
+- `research/d02_wave1_metric_horizon_guard_v0_1.mjs`;
+- `tests/test_d02_wave1_metric_horizon_guard_v0_1.mjs`;
+- `research/D02_D16_WAVE1_MODEL_METHOD_HANDOFF_V0_1.md`;
+- `research/d02_d16_wave1_model_method_receipt_guard_v0_1.mjs`;
+- `tests/test_d02_d16_wave1_model_method_receipt_guard_v0_1.mjs`;
+- `research/d02_wave1_metric_horizon_method_validation_20261005_v0_1.md`;
+- `research/d02_wave1_metric_horizon_method_validation_v0_1.json`;
+- `research/d02_l4_primary_outcome_shell_registry_v0_2.json`;
+- `research/d02_l4_effect_target_registry_v0_4.json`.
+
+Independent executable validation:
+- metric/horizon guard: 23/23 PASS;
+- D16 method-receipt guard: 21/21 PASS.
+
+### Wave-1 singular promotion metric
+
+Primary:
+`DATE_BALANCED_BRIER_LOSS_IMPROVEMENT`.
+
+For each independent scanDate:
+- compute mean Brier loss separately for baseline and challenger on identical support;
+- date improvement = baseline mean Brier - challenger mean Brier;
+- primary estimand = equal-date-weight mean date improvement.
+
+Row-weighted Brier is descriptive only and cannot be the primary promotion metric.
+
+Log loss is mandatory secondary proper-score diagnostics.
+A material Brier-vs-log-loss conflict blocks promotion pending review.
+
+PV-084 remains mandatory supporting effect-size reporting:
+absolute failure-rate difference / risk ratio when a decision threshold is already frozen, plus MFE / MAE / return / subgroup-date stability.
+
+No new classification threshold may be invented after outcomes merely to make failure-rate difference available.
+
+PV-086 utility reporting remains mandatory.
+
+### Primary horizon governance
+
+H001:
+- PRIMARY = B2;
+- B1 = EARLY_RESPONSE_SENSITIVITY;
+- B4 = PERSISTENCE_SENSITIVITY;
+- sensitivity cannot rescue primary;
+- material opposite-direction sensitivity => HORIZON_INSTABILITY_REVIEW.
+
+H20:
+- same B2/B1/B4 hierarchy;
+- D01-05 remains primitive breakout-event owner;
+- no second breakout vote.
+
+H003:
+- does NOT use B2 as primary;
+- PRIMARY = ACTIVE_LIFECYCLE_ENTRY_TO_FIRST_TERMINAL_OR_13_00_CENSOR;
+- success = B_REACCELERATION / A_REACCELERATION;
+- failure = B_FAILED_REENTRY / A_FAILED_REENTRY;
+- B/A_EXPIRED_AMBIGUOUS, PRE_EVENT_ONLY_EXPIRY and UNKNOWN/incomplete = censored, never failure;
+- maturity denominator = H003_HYPOTHESIS_CLEAN_EVENT_COUNT;
+- B horizons remain secondary path diagnostics only.
+
+### D16-19 method-selection firewall
+
+Because Brier requires predicted probabilities, proper scoring alone does not prevent model shopping.
+
+Before promotion-grade label/outcome access, D16-19 must freeze one ModelMethodReceipt containing:
+- estimator family;
+- calibration method;
+- preprocessing / feature selection / regularization;
+- training / validation / calibration partitions;
+- refit / random-seed / missing-value / imbalance policies;
+- model-search family and candidate-method count;
+- immutable method hash.
+
+For pure feature incrementality:
+baseline and challenger must use identical common support and partitions and the same estimator/calibration family.
+
+Any post-outcome method/calibrator change creates a new methodVersion / experimentVersion and enters multiple-testing accounting.
+
+D02 does not choose logistic / Platt / Beta / isotonic / tree / neural or another method.
+D16-19 retains method ownership.
+
+Current actual frozen D16-19 Wave-1 method receipts:
+0 / 3.
+
+### Cost / numerical target state
+
+D14 evidence remains insufficient for a universal after-cost MDE:
+- statutory tax semantics are available;
+- broker commission/minimum fee is account-specific;
+- slippage / implementation shortfall requires actual execution provenance;
+- UNKNOWN cost cannot be zero.
+
+No arbitrary Brier MDE / precision value is invented.
+
+Current numerical target state:
+0 frozen / 14 pending.
+
+PVE-240 may collect PIT/provenance/admission data.
+Promotion-grade outcome interpretation remains blocked until both the relevant target and D16 method receipt are frozen.
+
+D02 remains 60.0%.
+PVE-239.
+CLEAN_DATE_ZERO.
+Gate 7 CLOSED.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
