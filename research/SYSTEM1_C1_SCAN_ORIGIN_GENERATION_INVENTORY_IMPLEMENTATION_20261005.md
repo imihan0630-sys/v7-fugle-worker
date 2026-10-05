@@ -34,7 +34,7 @@ New protected read-only endpoint:
 
 It lists actual rows from `trade_research_c1_generations`, optionally filtered by `scanDate`, with bounded offset pagination. It returns generation id, scan/decision/capture clocks, runtime/source SHA, universe/content digests, population/capture/feature/chunk counts, completeness and captured scan-origin fields. It never exports population rows and never initiates selection or provider calls.
 
-The response also exposes a sanitized current `V7_LAST_SCAN_ATTEMPT` only when relevant to the requested date. New success/failure scan attempts retain `scanOriginKind` and `scanAttemptId`. This is supporting diagnosis, not a historical attempt ledger; overwritten pre-V8.19 KV attempts are not reconstructed.
+The response also exposes a sanitized current `V7_LAST_SCAN_ATTEMPT` only when relevant to the requested date. The legacy attempt-KV write contract is deliberately left byte-identical; it may therefore lack origin fields. The immutable C1 generation header/row anchor is the authoritative origin evidence, while latest-attempt KV remains auxiliary diagnosis only. Overwritten pre-V8.19 attempts are not reconstructed.
 
 No new D1 table, binding, schedule, provider call or historical migration is introduced.
 
