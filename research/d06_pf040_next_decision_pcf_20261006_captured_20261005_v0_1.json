@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "D06_PF040_NEXT_DECISION_PCF_20261006_CAPTURED_20261005_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "modules": [
+    "D06-11",
+    "D06-16"
+  ],
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "capturedAt": "2026-10-05T20:35:15+08:00",
+  "decisionUseDate": "2026-10-06",
+  "unitObservationDate": "2026-10-05",
+  "parentLane": "D06_16_PF040_ETF_UNITS_PCF",
+  "priorReceipts": [
+    "research/d06_pf040_preclose_source_state_20261005_v0_1.json",
+    "research/d06_pf040_postclose_source_state_20261005_1547_v0_1.json"
+  ],
+  "semanticRule": "PCF announce/use date and ISSUES-DIFF observation date are separate clocks. This receipt is the next decision-generation after the 2026-10-05 decision receipt; it does not rewrite earlier vintages.",
+  "observations": [
+    {
+      "etfCode": "0050",
+      "issuer": "Yuanta Securities Investment Trust",
+      "sourceUrl": "https://www.yuantaetfs.com/tradeInfo/pcf/0050",
+      "sourceHash": "fnv1a64-utf8:c7ae53391ed48cd9",
+      "postingDate": "2026-10-05T15:56:27+08:00",
+      "announceDate": "2026-10-06",
+      "unitObservationDate": "2026-10-05",
+      "unitsOutstanding": 22221500000,
+      "reportedUnitsDifference": 20500000,
+      "creationUnitSize": 500000,
+      "creationUnitEquivalentNetChange": 41,
+      "pcfTradeDate": "2026-10-05",
+      "cashSubstitutionState": "NO_REQUIRED_CASH_SUBSTITUTION_OBSERVED",
+      "splitReverseSplitState": "HISTORICAL_SPLIT_2025-06-11 / NO_CURRENT_SPLIT_OBSERVED"
+    },
+    {
+      "etfCode": "0056",
+      "issuer": "Yuanta Securities Investment Trust",
+      "sourceUrl": "https://www.yuantaetfs.com/tradeInfo/pcf/0056",
+      "sourceHash": "fnv1a64-utf8:07d4527644752dc1",
+      "postingDate": "2026-10-05T16:32:48+08:00",
+      "announceDate": "2026-10-06",
+      "unitObservationDate": "2026-10-05",
+      "unitsOutstanding": 14228034000,
+      "reportedUnitsDifference": 14500000,
+      "creationUnitSize": 500000,
+      "creationUnitEquivalentNetChange": 29,
+      "pcfTradeDate": "2026-10-05",
+      "cashSubstitutionState": "NO_REQUIRED_CASH_SUBSTITUTION_OBSERVED",
+      "splitReverseSplitState": "NO_CURRENT_SPLIT_TEXT_OBSERVED"
+    }
+  ],
+  "guards": [
+    "Creation-unit-equivalent net change is an arithmetic scale only, not a count of actual creation orders.",
+    "Positive reported unit change does not prove same-day constituent buying.",
+    "PCF basket plus unit change supports MODELED_PRIMARY_BASKET_EXPOSURE only; actual stock execution remains UNKNOWN.",
+    "Same benchmark/event ancestry must not create duplicate D06-11/D06-16/D11 votes.",
+    "This next decision-generation candidate does not by itself prove version stability across later same-generation captures."
+  ],
+  "gateAssessment": {
+    "secondIndependentDecisionGeneration": "CANDIDATE_PASS",
+    "sameGenerationVersionStability": "PENDING_RECHECK",
+    "actualExecutionIdentification": "UNKNOWN",
+    "maturityPromotion": "NOT_YET"
+  },
+  "maturityImpact": "NONE_YET",
+  "status": "NEXT_DECISION_GENERATION_CAPTURED / SECOND_INDEPENDENT_DATE_CANDIDATE / SAME_GENERATION_STABILITY_PENDING / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Re-read the same 2026-10-06 decision-generation issuer pages later without changing the frozen fields. If hashes/values are stable, preserve the stability receipt; if changed, append a new version and measure the delta. Only then reconsider D06-16 L3 source/PIT readiness. Actual stock execution remains UNKNOWN."
+}
