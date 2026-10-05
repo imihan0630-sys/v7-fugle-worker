@@ -3,6 +3,7 @@ import {dirname,resolve} from 'node:path';
 import {collectVerifiedC1C2} from '../research/system1_c1_c2_collection_v0_1.mjs';
 import {previousTaipeiDate,collectC1ReadOnlyPreflight} from '../research/system1_c1_readiness_v0_1.mjs';
 import {buildC3Registration} from '../research/system1_c3_registration_v0_1.mjs';
+import {validateC1GenerationInventory} from '../research/system1_c1_generation_inventory_validation_v0_1.mjs';
 
 const origin=String(process.env.V7_ORIGIN||'https://fugle-test.imihan0630.workers.dev').replace(/\/$/,'');
 const token=String(process.env.V7_ADMIN_TOKEN||'');
@@ -11,6 +12,7 @@ const output=resolve(process.env.C1_EVIDENCE_OUTPUT||'artifacts/system1-c1-evide
 const pairedOutput=resolve(process.env.C2_EVIDENCE_OUTPUT||'artifacts/system1-c2-paired.json');
 const statusPath=resolve(process.env.C1_READINESS_OUTPUT||'artifacts/system1-c1-readiness.json');
 const c3RegistrationPath=resolve(process.env.C3_REGISTRATION_OUTPUT||'artifacts/system1-c3-registration.json');
+const inventoryOutput=resolve(process.env.C1_INVENTORY_OUTPUT||'artifacts/system1-c1-generation-inventory.json');
 const registerC3=String(process.env.C3_REGISTER||'').trim().toLowerCase()==='true';
 const save=async(path,value)=>{await mkdir(dirname(path),{recursive:true});await writeFile(path,JSON.stringify(value,null,2)+'\n','utf8');};
 try {
@@ -34,9 +36,20 @@ try {
     diagnosis,zeroPickProspective,shadowCohort,c4RankingRedundancy,setupChannelScale,marketCapConditionalAdmission,firstFailureMasking,sectorGateComponents,atrGateDecomposition,extremeMoveProxyDenominator,liquidityRejectedControl,marketCapFloorEconomic,valuationRelativeRisk,valuationSourceVintage,safety:{researchOnly:true,decisionImpact:false,formalCoreImpact:false,
       noPlanChanges:true,noTrade:true,noPush:true}};
   const pairedArtifact={...paired,scanProof};
-  await save(output,artifact);await save(pairedOutput,pairedArtifact);
+  const inventoryUrl=new URL('/api/research/c1-generation-inventory',origin);
+  inventoryUrl.searchParams.set('scanDate',scanDate);inventoryUrl.searchParams.set('limit','250');
+  const inventoryResponse=await fetch(inventoryUrl,{headers:{'x-admin-token':token,'accept':'application/json','cache-control':'no-cache'},signal:AbortSignal.timeout(45000)});
+  if([401,403].includes(inventoryResponse.status)) throw new Error('C1_INVENTORY_AUTHORIZATION_REJECTED');
+  const inventory=await inventoryResponse.json().catch(()=>null);
+  if(!inventoryResponse.ok||!inventory) throw new Error('C1_INVENTORY_HTTP_'+inventoryResponse.status);
+  const inventoryValidation=validateC1GenerationInventory(inventory,{scanDate,generationId:adapted.generationId,
+    runtimeVersion:adapted.effectiveRuntimeVersion,contentDigest:adapted.contentDigest,universeDigest:adapted.universeDigest});
+  const inventoryArtifact={observedAt:new Date().toISOString(),...inventory,validation:inventoryValidation,
+    safety:{researchOnly:true,decisionImpact:false,formalCoreImpact:false,noPlanChanges:true,noTrade:true,noPush:true}};
+  await save(output,artifact);await save(pairedOutput,pairedArtifact);await save(inventoryOutput,inventoryArtifact);
   console.log(JSON.stringify({ok:true,output,pairedOutput,scanDate,generationId:adapted.generationId,
-    populationN:diagnosis.populationN,coverageComplete:true,formalCoreImpact:false}));
+    populationN:diagnosis.populationN,coverageComplete:true,originKind:inventoryValidation.originKind,
+    generationCount:inventoryValidation.generationCount,inventoryOutput,formalCoreImpact:false}));
   if(registerC3){
     try{
       const headers={'x-admin-token':token,'accept':'application/json','content-type':'application/json'};
