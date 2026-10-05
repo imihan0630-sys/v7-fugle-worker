@@ -2418,3 +2418,88 @@ No maturity or Formal change is authorized by this routing.
 6. Hand T0-T6 / M0-M7 session-mechanism inference to D16.
 7. Next D01 science: separate opening-gap mechanics from prior-close / reference-price anchoring so apparent support/resistance around prior close is not confused with overnight reversal mechanics.
 8. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-044 (2026-10-05)
+
+### DL-044 — Structural boundary vs prior-close / auction-reference price anchors
+- DL-043 separated overnight gap, opening auction and continuous-session mechanisms.
+- DL-044 freezes the next reference-price confound: apparent support/resistance around the open can coincide with the prior close or official auction reference price, and a move back toward those references may reflect overnight reversal / gap normalization rather than structural memory.
+- Three price objects are kept separate:
+  PRIOR_CLOSE_REFERENCE;
+  AUCTION_REFERENCE_PRICE;
+  STRUCTURAL_BOUNDARY.
+- Prior close is not a universal substitute for the official auction reference price.
+  Special sessions may use mechanically adjusted reference semantics.
+- D01 consumes official / owner-certified auctionReferencePrice, source, ruleVersion, knownAt and specialReferenceState rather than reconstructing the reference from prior close.
+- Behavioral firewall:
+  D01 may store REFERENCE_PRICE_PROXIMITY / REFERENCE_PRICE_COINCIDENCE;
+  OHLC alone does not identify anchoring bias, trapped-investor intent, breakeven motive or psychological magnet.
+  D20 owns behavior-specific identification.
+- Reference coincidence descriptors remain continuous:
+  prior-close distance in price / ATR / ticks;
+  auction-reference distance in price / ATR / ticks.
+  No arbitrary near/far threshold is frozen.
+- Frozen coincidence states:
+  STRUCTURE_DISTINCT_FROM_REFERENCES;
+  PRIOR_CLOSE_INSIDE_STRUCTURE;
+  AUCTION_REFERENCE_INSIDE_STRUCTURE;
+  BOTH_REFERENCES_INSIDE_STRUCTURE;
+  REFERENCE_CONTEXT_UNKNOWN.
+- Numerical equality does not merge causal identity.
+  priorClose == auctionReferencePrice == structural level may still represent distinct reference/mechanism objects.
+- Corporate-action / special-reference firewall:
+  raw prior close may be non-comparable;
+  auction reference may be mechanically reset;
+  missing official reference on special sessions -> DATA_BLOCKED, not prior-close fallback.
+- Gap fill / same-day reversal remains an outcome / post-open path.
+  It cannot enter a pre-open or at-open predictor snapshot.
+- If a structural root overlaps prior close or official reference, do not discard it.
+  Future D16 must ask whether the structural root adds representation beyond the simple reference-price baseline.
+- Reference coincidence creates no extra independent vote.
+  Default effectiveIndependentEvidenceCount remains 1.
+- Future D16 comparison ladder:
+  P0 RAW_STRUCTURAL_RESPONSE;
+  P1 PRIOR_CLOSE_CONTEXT_CONTROLLED;
+  P2 AUCTION_REFERENCE_CONTEXT_CONTROLLED;
+  P3 OVERNIGHT_GAP_CONTEXT_CONTROLLED;
+  P4 MARKET_SECTOR_GAP_CONTROLLED;
+  P5 REFERENCE_DISTINCT_STRUCTURE_ONLY;
+  P6 REFERENCE_ROBUST_PATTERN_REPLICATION.
+- Future interpretations:
+  C0 PRIOR_CLOSE_REFERENCE_EXPLANATION;
+  C1 AUCTION_REFERENCE_MECHANICS_EXPLANATION;
+  C2 OVERNIGHT_REVERSAL_EXPLANATION;
+  C3 COMMON_GAP_NORMALIZATION_EXPLANATION;
+  C4 STRUCTURAL_RESIDUAL_AROUND_REFERENCE;
+  C5 STRUCTURE_DISTINCT_FROM_REFERENCE_CANDIDATE;
+  C6 REFERENCE_ROBUST_PATTERN_CANDIDATE;
+  C7 NOT_EVALUABLE.
+- Common support must include overnight gap, reference distance, auction mechanism, volatility/liquidity, limits, event context, market/sector gap and regime.
+- Outcome-selected reference families are prohibited.
+  DL-044 v0.1 freezes only prior close + official auction reference.
+- New files:
+  - research/PATTERN_REFERENCE_PRICE_ANCHOR_V0_1.md
+  - research/pattern_reference_price_anchor_v0_1.json
+  - research/pattern_reference_price_anchor_v0_1.mjs
+  - research/test_pattern_reference_price_anchor_v0_1.mjs
+  - research/PATTERN_REFERENCE_PRICE_ANCHOR_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 remains REMEDIATION_IN_PROGRESS.
+- SDA-002 remains REMEDIATION_IN_PROGRESS.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-044
+
+1. Reconcile the DL-044 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-044 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve prior close and official auction reference as distinct causal/reference objects even when numerically equal.
+4. Preserve special-session reference UNKNOWN / DATA_BLOCKED states and prohibit unverified prior-close fallback.
+5. Hand P0-P6 / C0-C7 reference-context incrementality inference to D16.
+6. Keep behavioral anchoring UNIDENTIFIED unless D20 provides behavior-specific observables.
+7. Next D01 science: separate prior-close/reference effects from round-number / tick-grid salience so apparent support near 100 / 200 / 500 is not mislabeled structural memory.
+8. No outcome join / no runtime wiring / no Formal change.
