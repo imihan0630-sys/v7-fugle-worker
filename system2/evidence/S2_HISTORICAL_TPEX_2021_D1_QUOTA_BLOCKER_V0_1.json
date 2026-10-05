@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "S2_HISTORICAL_TPEX_2021_D1_QUOTA_BLOCKER_V0_1",
+  "correctionDirective": "S2-CORR-20261004-001",
+  "market": "TPEX",
+  "year": 2021,
+  "failedRun": {
+    "runId": 37326149826,
+    "runNumber": 17,
+    "headSha": "ca90efab5a7d6d27cc3d05a545efcd1ce44db247",
+    "workflowConclusion": "failure",
+    "migrateState": "SUCCESS",
+    "backfillState": "FAILED_D1_DAILY_WRITE_LIMIT",
+    "physicalVerifyState": "SKIPPED",
+    "artifactUploadState": "NO_PHYSICAL_ARTIFACT",
+    "system1Isolation": "PASS"
+  },
+  "blocker": {
+    "state": "BLOCKED_D1_FREE_TIER_DAILY_ROW_WRITE_LIMIT",
+    "source": "Cloudflare D1 API",
+    "observedAt": "2026-10-05T14:53:26Z",
+    "resetNotBefore": "2026-10-06T00:00:00Z",
+    "resetNotBeforeTaipei": "2026-10-06T08:00:00+08:00",
+    "message": "Your account has exceeded D1's free tier daily row write limit. Upgrade to a paid plan or wait until tomorrow (midnight UTC) to continue.",
+    "paidUpgradeRequired": false,
+    "userActionRequiredNow": false
+  },
+  "failurePoint": {
+    "module": "system2/runtime/historical_cold_pack_store_v0_1.mjs",
+    "function": "writeCheckpoint",
+    "stage": "executeHistoricalColdPackSetV0_1",
+    "interpretation": "The failure occurred while persisting D1 progress metadata after cold-pack work had started. This is an infrastructure quota stop, not evidence of source-data corruption or System1 contamination."
+  },
+  "resumeSafety": {
+    "immutableColdHistory": true,
+    "existingObjectsAreHeadVerifiedBeforeReuse": true,
+    "existingManifestsAreComparedAgainstImmutableFields": true,
+    "duplicateLogicalPackKeysAreNotAllowed": true,
+    "completedReceiptIfPresentUsesVerificationFastPath": true,
+    "safeActionAfterReset": "Fresh-dispatch 2021 TPEX on latest main; do not delete or rewrite partial cold history."
+  },
+  "acceptanceState": "NOT_ACCEPTED",
+  "dataCoverageState": "PENDING_PHYSICAL_VERIFICATION",
+  "replayReadinessState": "PENDING_PHYSICAL_VERIFICATION",
+  "nextAction": "Wait for free-tier D1 daily write quota reset, then fresh-dispatch 2021 TPEX from latest main and complete physical verification.",
+  "correctionStatus": "ACKNOWLEDGED"
+}

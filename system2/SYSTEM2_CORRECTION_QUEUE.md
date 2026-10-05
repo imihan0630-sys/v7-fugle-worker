@@ -32,7 +32,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - affectedScope: S2-03 Historical infrastructure / P0 2017-present TWSE+TPEx daily A1 cold history
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement: System 2 historical infrastructure must physically populate and verify the staged official 2017-present Taiwan-equity daily history before it can be described as complete or used as complete full-market replay evidence.
-- observedProblem: Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE. Replay readiness remains PARTIAL because symbol-session UNKNOWNs, RAW continuity debt, and incomplete TPEx historical delisting-union remain. CORR-001 stays open because 2021 TPEx, later market-years, the 2026 incremental path, and final full-market PIT replay are pending.
+- observedProblem: Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE. 2021 TPEx run #17 stopped at D1 checkpoint persistence because the Cloudflare D1 free-tier daily row-write quota was exhausted before Physical verify. This is an infrastructure quota blocker, not a data-integrity failure. CORR-001 stays open because 2021 TPEx, later market-years, the 2026 incremental path, and final full-market PIT replay are pending.
 - evidence:
   - SYSTEM2_CHECKPOINT: run 36545375167 failed before annual ingest.
   - SYSTEM2_CHECKPOINT: repaired continuation required manual 2017 TWSE rerun, then TPEx only after TWSE coverage/hash/manifest/receipt verification.
@@ -92,6 +92,10 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - Fresh official TWSE 2021 reconciliation: 244 sessions / 232,956 rows / 0 missing-from-cold / 0 extra / 0 full-row hash mismatch / 0 canonical A1 mismatch.
   - Historical-universe expected membership sessions 233,530; 574 UNKNOWN symbol-session gaps retained fail-closed; data coverage PASS, replay readiness PARTIAL.
   - Artifact `11352061154`, digest `sha256:4bee3d3b9698b1fc9cdf52e230eeaa19f4b8c686587abe8fc87486483ceedc19`.
+  - GitHub Actions run `37326149826` (#17): migrate SUCCESS; annual backfill stopped at D1 `writeCheckpoint()` with free-tier daily row-write limit exceeded; Physical verify skipped; System1 isolation PASS.
+  - Earliest free-tier retry: `2026-10-06T00:00:00Z` = `2026-10-06 08:00 Asia/Taipei`.
+  - Partial cold state is resume-safe and must not be deleted or rewritten; existing R2 objects/manifests remain immutable-checked on retry.
+  - Blocker evidence: `system2/evidence/S2_HISTORICAL_TPEX_2021_D1_QUOTA_BLOCKER_V0_1.json`.
 - riskIfUnfixed: Historical replay, factor validation, multi-year backtests, regime robustness and strategy comparison can be mistaken for being backed by a complete market history when only bounded/smoke datasets exist. This creates a false-completion and evidence-coverage risk on a P0 dependency.
 - requiredCorrection:
   1. Resume from the repaired historical-calendar implementation; do not restart architecture design.
@@ -126,7 +130,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - Manifest rolling hash `98d7cf6888e3069a2a170c20dbe8acee1cd7d5cb9bc7d9afa33319eb816fe97a`.
   - 2017 TWSE disposition: `DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL`.
 - finalDisposition: PENDING
-- updatedAt: 2026-10-05T22:29:24+08:00
+- updatedAt: 2026-10-05T22:54:00+08:00
 
 ## Closed directives
 
