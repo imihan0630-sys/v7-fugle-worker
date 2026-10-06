@@ -1392,3 +1392,43 @@ Exact next:
 2. for L4, preregister OOS/Shadow incrementality versus institutional flow, index-event context, price/volume, liquidity and regime;
 3. retain shared event/primitive lineage so D06-11/D06-16/D11 cannot double count one event or units receipt;
 4. actual constituent execution stays UNKNOWN without direct execution evidence.
+
+
+## PF-042 — third independent ETF decision generation is source/PIT stable
+
+Research cycle: 2026-10-06 Asia/Taipei
+Status: THIRD_INDEPENDENT_DECISION_GENERATION_STABLE / MULTIGENERATION_PIT_REPLICATION_PASS / D06_16_REMAINS_L3 / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_pf042_third_decision_generation_candidate_20261007_v0_1.json`;
+- `research/d06_pf042_third_decision_generation_stability_20261007_v0_1.json`.
+
+The issuer pages advanced prospectively to decision-use date 2026-10-07 and were captured twice with identical content hashes.
+
+0050:
+- posting 2026-10-06 16:17:26;
+- announce/use date 2026-10-07;
+- unit observation / PCF trade date 2026-10-06;
+- outstanding units 22,233,000,000;
+- reported unit change +11,500,000;
+- creation-unit-equivalent change 23;
+- stable hash fnv1a64-utf8:44afa643c503c72c.
+
+0056:
+- posting 2026-10-06 16:37:37;
+- announce/use date 2026-10-07;
+- unit observation / PCF trade date 2026-10-06;
+- outstanding units 14,247,034,000;
+- reported unit change +19,000,000;
+- creation-unit-equivalent change 38;
+- stable hash fnv1a64-utf8:38922665d41400f9.
+
+Both pages again state no component was required to use cash substitution.
+
+This is the third independent prospective decision generation with same-generation stability. It strongly replicates Taiwan source/PIT feasibility but does not change D06-16 maturity:
+- D06-16 remains L3/60;
+- actual AP/constituent execution remains UNKNOWN;
+- modeled basket exposure is not actual stock passive flow;
+- no predictive/outcome incrementality is opened.
+
+The next maturity gate is OOS/Shadow residual incrementality, not additional source replication alone.
