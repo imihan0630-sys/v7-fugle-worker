@@ -2115,8 +2115,8 @@ Next BUILD_LANE continuation:
 This is an audit dependency pointer only. It does not replace the active S2-07 BUILD_LANE continuation.
 
 Latest canonical validation:
-- SDA-016: research/SDA016_VALIDATION_ORACLE_20261006_V0_4.json — 48 blocking tests;
-- SDA-017: research/SDA017_VALIDATION_ORACLE_20261006_V0_3.json — 48 blocking tests;
+- SDA-016: research/SDA016_VALIDATION_ORACLE_20261006_V0_5.json — 58 blocking tests;
+- SDA-017: research/SDA017_VALIDATION_ORACLE_20261006_V0_4.json — 56 blocking tests;
 - D18 support schema: research/D18_REPLICATION_SUPPORT_RECEIPT_CONTRACT_20261006_V0_1.json;
 - shared routing: shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_ROUTING_20261005_V0_1.md.
 
@@ -2269,3 +2269,29 @@ Current UI truth boundary:
 - Market Regime, full daily candidate/frozen-decision population, virtual-position read API, performance cohorts, and PIT-safe event/industry read APIs remain pending and must display UNKNOWN / LOCKED / PENDING rather than synthetic data;
 - actual holdings remain locked under `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED` and `ACTUAL_POSITION_MONITOR_VERIFIED=false`;
 - no strategy, selection, capital, push, order or Formal Core authority was promoted.
+
+
+## 2026-10-06 systemwide readiness reconciliation pointer
+
+Canonical audit:
+shared-knowledge/SYSTEMWIDE_LAUNCH_READINESS_GOVERNANCE_AUDIT_20261006_V0_1.md
+
+Current cross-system validation authority:
+- SDA-016 = V0.5 / 58 blocking tests;
+- SDA-017 = V0.4 / 56 blocking tests.
+
+Current System2 product readiness must remain split:
+- infrastructure/terminal = substantially ready;
+- terminal governance = S2-CORR-20261006-002 FIX_IMPLEMENTED, independent verification pending;
+- DATA_LANE = active/partial; 2021 TPEx blocked by canonical A1 revision/as-of semantics while independent later-year population may continue;
+- selection-to-capacity = INCOMPLETE;
+- resonance = research/shadow monitor only;
+- actual holdings/live trading = not wired/disabled.
+
+SDA-022 current upstream state:
+- System1 fingerprint S22-T01~T05 PASS;
+- D16 prereg S22-T25~T28 PASS;
+- System2 fingerprints S22-T06~T10 PENDING;
+- physical NC-T01 S22-T11~T16 PENDING.
+
+This pointer does not reorder BUILD_LANE/DATA_LANE/REMEDIATION_LANE ownership and authorizes no strategy, ranking, final-selection, push, order or System1 Formal mutation.
