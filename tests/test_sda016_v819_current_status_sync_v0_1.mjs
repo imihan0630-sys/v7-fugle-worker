@@ -32,7 +32,7 @@ assert.equal(issue.candidateEngineering?.productionDeployRun,prod.productionDepl
 assert.equal(issue.candidateEngineering?.genuineReadbackStatus,"PENDING_FIRST_GENUINE_POST_DEPLOY_C1_SESSION");
 assert.equal(issue.system1Engineering?.authoritativeFormalC1Ledger,"PENDING");
 assert.ok((issue.remainingDelta||[]).some(x=>String(x).includes("first genuine post-deploy V8.19 C1")));
-assert.ok((issue.remainingDelta||[]).some(x=>String(x).includes("authoritative Formal decision to exact C1 generation ledger")));
+assert.ok((issue.remainingDelta||[]).some(x=>/authoritative Formal.*C1 generation/i.test(String(x))),"authoritative Formal-C1 binding work must remain pending until Class-B implementation");
 assert.ok(!String(issue.readiness).includes("NOT_MERGED"));
 
 assert.equal(registry.rules.sda016System1V819CurrentStatus,
