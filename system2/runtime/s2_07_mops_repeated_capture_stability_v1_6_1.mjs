@@ -20,7 +20,12 @@ function captureIdentity(capture,index){
   const scopeHash=text(capture.stableEventUniverseHash);
   if(!hash64(scopeHash)) throw new Error("capture["+index+"].stableEventUniverseHash invalid");
   const observations=Array.isArray(capture.observations)?capture.observations:[];
-  return {capturedAt,scopeHash,observations,captureReady:capture.prospectiveExactVersionCaptureReady===true};
+  return {
+    capturedAt,
+    scopeHash,
+    observations,
+    captureReady:capture.repeatedCaptureReady===true || capture.prospectiveExactVersionCaptureReady===true,
+  };
 }
 
 export async function reconcileMopsRepeatedCapturesV1_6_1({
