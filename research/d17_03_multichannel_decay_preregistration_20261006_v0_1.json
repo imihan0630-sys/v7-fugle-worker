@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "2026-10-06.v0.1",
+  "domain": "D17",
+  "modules": [
+    "D17-02",
+    "D17-03",
+    "D17-09",
+    "D17-10"
+  ],
+  "observedAt": "2026-10-06T18:34:42+08:00",
+  "evidenceClass": "PREREGISTERED_SOURCE_CLOCK_AND_NEWS_DECAY_GUARD",
+  "hypothesis": "News persistence must be measured from a trustworthy strategy-available clock, at event-cluster rather than article-count level, with separate price/volatility/volume paths and explicit lineage deduplication.",
+  "support": [
+    "Hirshleifer, Peng and Wang report stronger immediate price/volatility/volume reactions with faster social diffusion, followed by weaker price drift, faster volatility decay, but more persistent volume.",
+    "Tetlock reports weaker same-day response to stale news but subsequent reversal associated with stale-news trading, supporting novelty/staleness separation.",
+    "Ait-Sahalia, Li and Li show most identifiable relevant news quickly maps to price jumps, while most jumps lack identifiable public news, so price jumps cannot be reverse-labeled as news events.",
+    "Didisheim, Kelly, Pourmohammadi and Tian show predictable news content can confound return-predictability inference; raw news content should not be treated as pure incremental information."
+  ],
+  "falsification": [
+    "A single scalar half-life is rejected if price, volatility and volume decay differently.",
+    "Repeated publication without new facts must not restart information time; attention refresh is separate from information refresh.",
+    "A price jump without a validated event lineage is not evidence that a news event existed.",
+    "If source first-availability is unverified, sourcePublishedAt cannot be backfilled as strategy knownAt.",
+    "If state-dependent or event-family effects reverse sign or persistence, a pooled decay parameter is invalid."
+  ],
+  "preregistration": {
+    "unit": "economic event cluster with immutable lineage and versioning",
+    "startClock": "interfaceFirstObservedAt/capturedAt until native first-availability is prospectively proven",
+    "dailyHorizons": [
+      "close",
+      "D1",
+      "D3",
+      "D5",
+      "D10"
+    ],
+    "intradayHorizons": [
+      "15m",
+      "30m",
+      "60m"
+    ],
+    "intradayRule": "prospective capture only",
+    "channels": [
+      "price",
+      "abnormal volatility",
+      "relative volume"
+    ],
+    "controls": [
+      "event family",
+      "market regime",
+      "issuer size/liquidity",
+      "duplicate lineage",
+      "halt/price-limit/corporate-action state"
+    ],
+    "missingness": "UNKNOWN, never zero/BAD",
+    "multipleTesting": "freeze primary horizons/channels before outcomes; secondary horizons are exploratory and cannot redefine the primary half-life",
+    "outcomeGate": "CLOSED until D17-02 trustworthy start-clock evidence and prospective event cohort exist"
+  },
+  "dependencies": {
+    "D17-02": "trustworthy first-known/availability clock",
+    "D17-09": "event-cluster deduplication/versioning",
+    "D17-10": "independent information-lineage identification"
+  },
+  "maturityDecision": "KEEP_L2",
+  "formalOptimizationCandidate": false,
+  "formalCoreImpact": "NONE",
+  "outcomes": "CLOSED",
+  "next": "Obtain prospective fixed-cadence first-arrival observations from a licensed general-news lane. Once D17-02 clock feasibility passes, freeze a prospective cohort and estimate channel-specific decay at the preregistered horizons without retuning after outcomes."
+}
