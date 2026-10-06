@@ -137,7 +137,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
 - createdAt: 2026-10-06T19:12:00+08:00
 - severity: MEDIUM
-- status: OPEN
+- status: FIX_IMPLEMENTED
 - routingClass: BUILD_LANE
 - assignedLane: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
@@ -175,10 +175,20 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - Existing resonance calculations, state machine, read APIs, bounded-pool constraints and protected trading authorities remain unchanged.
 - protectedBoundaries: resonance formula/state machine; strategy logic; assessor policy; preregistration; ranking/capacity; final/live selection authority; notification/push; capital/orders; System1 Formal Core.
 - ownerDecisionRequired: false for truthful UI semantics only; any future promotion from resonance monitor evidence to formal trading action requires separate validated authority and governance.
-- implementationEvidence: PENDING
-- verificationEvidence: PENDING
-- finalDisposition: PENDING
-- updatedAt: 2026-10-06T19:12:00+08:00
+- implementationEvidence:
+  - PR #673 merged as `36afa057bdc2e88238f5c37b926bea9f821b05d9` after latest-main zero-drift check.
+  - Candidate Board now labels the field `監控訊號（RESEARCH）` and preserves `BUY_RESONANCE` / `EXIT_RESONANCE` instead of converting them to bare ENTER / EXIT.
+  - Decision Workspace now separates monitor signal from formal frozen-decision action; without frozen decision data the formal action is `NO_FROZEN_DECISION`.
+  - `actionable resonance` wording was removed and replaced with research-monitor wording.
+  - Targeted `institutional_terminal_page_v0_1.test.mjs` PASS in System2 Research CI run `37458264775` / job `112251116356`.
+  - System2 Research CI run `37458264775` PASS; V8 Regression run `37458264777` PASS.
+  - Merged-main readback confirms no `actionOf()` mapping, no `return "ENTER"`, no `return "EXIT"`, and separate monitor/formal fields.
+  - Daily Resonance runtime files are byte-identical to the pre-fix base: monitor `a39fd428e54ce800600e96d23f178ea024f86d98`, read model `d5989e563c6995a9b8bb5110ce1ee8ab8e4aa4b4`, worker cycle `245044b7878360680854b11fda7f8f221d973d33`.
+  - Merged-main System2 Research CI run `37458445915` PASS and System2 Daily Resonance Deploy run `37458445783` PASS.
+  - No strategy logic, assessor policy, preregistration, weights, thresholds, ranking, capacity, final/live selection authority, notification/push authority, capital/order, or System1 Formal Core was changed.
+- verificationEvidence: PENDING — handoff to SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- finalDisposition: PENDING — implementation complete; independent verification required before closure
+- updatedAt: 2026-10-06T19:44:43+08:00
 
 
 ## Closed directives
