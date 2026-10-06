@@ -411,7 +411,7 @@ export async function persistResonanceRunV0_1(db, receipt) {
 
 export async function readLatestResonanceApiV0_1(db, { marketDate = null, symbol = null } = {}) {
   assertDb(db);
-  if (marketDate !== null && !/^\\d{4}-\\d{2}-\\d{2}$/.test(String(marketDate))) {
+  if (marketDate !== null && !/^\d{4}-\d{2}-\d{2}$/.test(String(marketDate))) {
     throw new Error("marketDate must be YYYY-MM-DD when provided");
   }
   const requestedMarketDate = marketDate || null;
