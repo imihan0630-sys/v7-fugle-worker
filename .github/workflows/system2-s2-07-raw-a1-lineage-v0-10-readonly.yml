@@ -1,0 +1,41 @@
+name: System2 S2-07 RAW A1 Lineage V0.10 Readonly
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/s2_07_raw_a1_lineage_v0_10.mjs"
+      - "system2/tests/s2_07_raw_a1_lineage_v0_10.test.mjs"
+      - "system2/scripts/probe_s2_07_raw_a1_lineage_readonly_v0_10.mjs"
+      - "system2/SYSTEM2_S2_07_RAW_A1_LINEAGE_V0_10.md"
+      - "system2/evidence/S2_07_NATIVE_SCHEDULE_INTEGRATION_V0_9_PHYSICAL_20261007.json"
+      - ".github/workflows/system2-s2-07-raw-a1-lineage-v0-10-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/s2_07_raw_a1_lineage_v0_10.mjs"
+      - "system2/tests/s2_07_raw_a1_lineage_v0_10.test.mjs"
+      - "system2/scripts/probe_s2_07_raw_a1_lineage_readonly_v0_10.mjs"
+      - "system2/SYSTEM2_S2_07_RAW_A1_LINEAGE_V0_10.md"
+      - "system2/evidence/S2_07_NATIVE_SCHEDULE_INTEGRATION_V0_9_PHYSICAL_20261007.json"
+      - ".github/workflows/system2-s2-07-raw-a1-lineage-v0-10-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node system2/tests/s2_07_raw_a1_lineage_v0_10.test.mjs
+      - run: node system2/scripts/probe_s2_07_raw_a1_lineage_readonly_v0_10.mjs
+      - shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_s2_07_raw_a1_lineage_readonly_v0_10.mjs
+          echo "S2-07 V0.10 read-only boundary PASS"
