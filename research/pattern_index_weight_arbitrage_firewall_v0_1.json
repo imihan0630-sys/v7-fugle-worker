@@ -1,0 +1,24 @@
+{
+  "schemaVersion":"pattern-index-weight-arbitrage-firewall-v0.1",
+  "updated":"2026-10-07 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "owners":{
+    "passiveRebalancing":"D06-11",
+    "etfMechanics":"D06-16",
+    "indexEvents":"D11-14",
+    "benchmarkMethodology":"D19-15",
+    "derivativeContext":"D12_OWNER_FAMILY",
+    "largeCapLeadership":"D18-06"
+  },
+  "rawIndexReturnAsExogenousWhenTargetIncluded":"PROHIBITED",
+  "adHocSelfExcludedApproximation":"PROHIBITED",
+  "currentWeightBackfill":"PROHIBITED",
+  "modeledEtfBasketEqualsActualExecution":false,
+  "differentInstrumentsEqualIndependentVotes":false,
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "futureInferenceOwner":"D16",
+  "outcomeJoin":"CLOSED",
+  "formalOptimizationCandidate":"NONE"
+}
