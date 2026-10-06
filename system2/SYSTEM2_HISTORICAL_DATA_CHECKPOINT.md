@@ -358,3 +358,38 @@ The run contains the same fix/test/verifier/workflow blobs as the CI-PASS fix-be
 Do not mark 2023 TWSE accepted until run #22 reaches terminal success and the verifier confirms the prior 205 unexpected bars are resolved without weakening fail-closed semantics.
 
 Run URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37493424179
+
+
+## 2026-10-07 2023 TWSE run #22 failure / second fix CI pass
+
+Run `37493424179` / #22 completed FAILURE at Physical verify while annual backfill and System1 isolation both PASSed.
+
+Run #22 confirmed that the first listing-start repair was insufficient:
+- storage receipt: COMPLETE;
+- packs / bars: 1,003 / 234,727;
+- R2 HEAD / byte verification: 1,003 / 1,003 PASS;
+- cold rows = fresh official rows = 234,727;
+- source-row / canonical A1 mismatches: 0 / 0;
+- official trading dates: 239;
+- historical universe membership count: 1,101;
+- `currentListingStartReconciledCount = 0`;
+- expected membership-session bars: 235,140;
+- matched actual bars: 234,522;
+- missing / UNKNOWN bars: 618 / 618;
+- unexpected bars: 205, still beginning with `2023-03-06|6873`;
+- data coverage / replay readiness: BLOCKED / BLOCKED.
+
+Root cause refinement: CURRENT company rows use the legal company name while TWSE NEWLISTING rows use the company short name. The first repair compared only one normalized name field, so the same company did not match even though the symbol and earlier Innovation Board date were correct.
+
+Second repair:
+- runtime commit: `6a227f96cb0af9d6c1620402be25b93167eb4e16`;
+- regression commit: `64d2f7e8ecf923e0b133101e340c78222facddef`;
+- matcher now requires same symbol plus non-empty alias intersection across legal name / company short name after conservative normalization; `-創` is normalized; same-code/different-company remains rejected;
+- System2 Research CI run `37495340984`: SUCCESS.
+
+Durable blocker evidence: `system2/evidence/S2_HISTORICAL_TWSE_2023_UNIVERSE_BLOCKER_V0_2.json`.
+
+Exact next action: fresh workflow_dispatch `year=2023`, `market=TWSE` from a latest main whose runtime/test/verifier/workflow blobs remain identical to the CI-PASS second-fix reference. Do not rerun old run #22. Acceptance requires Physical verify to remove the 205 unexpected bars without weakening fail-closed semantics.
+
+Run #22: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37493424179
+Second-fix CI: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37495340984
