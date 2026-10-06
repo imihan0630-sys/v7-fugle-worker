@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-07T05:35:41+08:00",
+  "updatedAt": "2026-10-07T05:46:00+08:00",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -653,7 +653,8 @@
         "research/sda016_system1_formal_c1_binding_contract_v0_1.json",
         "research/SDA016_VALIDATION_ORACLE_20261006_V0_5.json",
         "research/SYSTEM1_FORMAL_C1_BINDING_IMPLEMENTATION_20261006.md",
-        "research/SDA016_ROOM11_V820_RUNTIME_FIRST_SCHEDULED_READBACK_VALIDATION_20261007_V0_1.md"
+        "research/SDA016_ROOM11_V820_RUNTIME_FIRST_SCHEDULED_READBACK_VALIDATION_20261007_V0_1.md",
+        "research/SDA016_GENERATION_SET_FINALIZATION_CONTRACT_20261007_V0_1.json"
       ],
       "formalC1Binding": {
         "status": "V820_PRODUCTION_VERIFIED_GENUINE_BINDING_PENDING",
@@ -697,7 +698,9 @@
         "productionRegressionRun": 37483896007,
         "firstScheduledEvidenceRun": 37495670280,
         "firstScheduledEvidenceDisposition": "INELIGIBLE_PARENT_MISSING_FORMAL_SCAN_NOT_CONFIRMED",
-        "t48": "OPEN_SAME_SESSION_GENERATION_SET_FINALIZATION"
+        "t48": "OPEN_SAME_SESSION_GENERATION_SET_FINALIZATION",
+        "t48Contract": "research/SDA016_GENERATION_SET_FINALIZATION_CONTRACT_20261007_V0_1.json",
+        "t48ContractStatus": "RESEARCH_ONLY_FINALIZATION_SEMANTICS_FROZEN_ENGINEERING_RECEIPT_PENDING"
       }
     },
     {
