@@ -24051,3 +24051,35 @@ New durable artifacts:
 - research/PATTERN_INDEX_WEIGHT_ARBITRAGE_D16_HANDOFF_V0_1.md
 
 No outcomes were opened. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001 and SDA-002 remain open. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-062 — Structural response vs opening/closing auction mechanics (2026-10-07)
+
+DL-062 takes the mechanical-attribution logic of DL-061 to the session boundary. A daily chart can make a closing price look like a clean support hold or breakout confirmation even when the decisive price movement occurred in the closing call auction rather than the continuous market.
+
+That distinction matters because closing auctions have become major liquidity-concentration mechanisms. External research finds that closing-auction volume has risen materially, that passive/index ownership is strongly associated with closing-auction turnover, and that some closing-price deviations are transitory and reverse after the close. Market-on-close and index-rebalance demand can therefore create price pressure around the official close without implying a stock-specific structural-memory mechanism.
+
+D05-06 is the canonical owner of Taiwan opening/closing auction mechanics. D01 consumes its receipts and does not build another auction model. The D05 contract is strict: current/prospective trial information is source-feasible, but complete historical 13:25-13:30 pre-close trial/imbalance is not proven. Final daily close and final volume cannot reconstruct that missing path. Therefore historical auction imbalance remains UNKNOWN unless actually archived.
+
+DL-062 separates the entire close sequence. A structure may already be confirmed during the continuous session and survive the auction. Alternatively, continuous trading may not satisfy the intended side of the zone and the final auction can move the stock into an apparent hold. The reverse can also happen: continuous trading can hold the zone and the auction can push the final price through it. Finally, the structure itself may become confirmed only at the final print. These are different causal states and must not be merged into a generic "close confirmed."
+
+The strict same-print firewall is central. If CLOSE_FINAL is the observation that completes a breakout, support hold or zone classification, that same print cannot also be treated as a pre-close predictor of itself. The predictor must have existed before the outcome timestamp.
+
+When actual source data exist, D01 preserves last continuous price, pre-close midquote, trial price, final auction price and official close separately. Their differences can describe auction displacement but cannot be relabelled as hidden order imbalance. A true imbalance descriptor requires the D05-06 native auction/trial source.
+
+End-of-session volume is equally constrained. A large volume spike can come from passive replication, index rebalance, ETF flows, expiry, month/quarter end, liquidity-seeking execution or auction coordination. D02 generic EOD volume may not be rebranded as auction imbalance. Auction volume share and displayed trial state are context, not directional alpha.
+
+The opening is treated symmetrically in causal timing but differently in information content. Opening call auctions aggregate overnight information. A stock that gaps into or through a prior-day support/resistance zone at the open has not experienced an ordinary continuous-session retest. The opening auction and overnight information process must remain explicit.
+
+Future D16 analysis receives two complementary falsifications. First, compare the same auction state away from a preconfirmed zone versus at a preconfirmed zone. Second, compare structural opportunities that already existed in continuous trading with auction-only classifications and continuous/auction divergence. A robust structural representation should not exist only because the final auction print created the desired chart pattern.
+
+Twenty adversarial tests are authored. They prohibit final-close/trial backfill, prohibit EOD/final-volume imbalance inference, validate prospective pre-freeze trial receipts, reject post-freeze/replay-unsafe auction state, separate continuous hold from auction move-in/move-out, prohibit final-print self-confirmation, keep missing continuous context unknown, distinguish opening gap-into/gap-through/delayed states, preserve historical UNKNOWN, keep multiple close-session representations in one effective evidence family and keep outcome join closed.
+
+New durable artifacts:
+- research/PATTERN_AUCTION_ATTRIBUTION_FIREWALL_V0_1.md
+- research/pattern_auction_attribution_firewall_v0_1.json
+- research/pattern_auction_attribution_firewall_v0_1.mjs
+- research/test_pattern_auction_attribution_firewall_v0_1.mjs
+- research/PATTERN_AUCTION_ATTRIBUTION_D16_HANDOFF_V0_1.md
+
+No outcomes were opened. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001 and SDA-002 remain open. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
