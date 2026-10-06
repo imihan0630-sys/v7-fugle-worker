@@ -1,0 +1,37 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+
+const receipt=JSON.parse(fs.readFileSync(new URL('./d03_system2_s207_reference_availability_negative_readback_20261007_v0_1.json',import.meta.url),'utf8'));
+const o=receipt.observed;
+
+assert.equal(receipt.classification,'RESEARCH_ONLY_NEGATIVE_GATE_INCREMENTAL_READBACK');
+assert.equal(receipt.formalCoreImpact,'NONE_LOCKED');
+assert.equal(o.symbol,'4806');
+assert.equal(o.mopsRelevantRowCount,8);
+assert.equal(o.mopsSourceReportedClockEligibleCount,8);
+assert.equal(o.mopsRetrospectiveOnlyCount,8);
+assert.equal(o.independentEvidenceCount,0);
+assert.equal(o.independentlyReadyEvidenceCount,0);
+assert.equal(o.winningEvidence,null);
+assert.equal(o.state,'REFERENCE_EVENT_HISTORICAL_AVAILABILITY_NOT_PROVEN');
+assert.ok(o.blockers.includes('INDEPENDENT_HISTORICAL_PUBLIC_AVAILABILITY_NOT_PROVEN'));
+assert.equal(o.historicalAvailabilityProven,false);
+assert.equal(o.sourceReportedClockPromotedToAvailableAt,false);
+assert.equal(o.retrospectiveReadbackPromotedToFirstObservedAt,false);
+assert.equal(o.firstKnownAt,null);
+assert.equal(o.availableAt,null);
+assert.equal(o.pitEventReplayEligible,false);
+assert.equal(o.pitReplayBlocker,'OFFICIAL_REFERENCE_EVENT_HISTORICAL_AVAILABILITY_UNPROVEN');
+for(const key of ['knownAtVersionClockCertified','publicAvailabilityLatencyCertified','revisionCoverageComplete','technicalContinuityCertified','allHistoryContinuityCertified','continuityTransformPerformed','historyMutationPerformed','adjustedHistoryPersisted','selectionAuthority','finalSelectionEnabled','livePushEnabled','capitalImpact','orderImpact','system1RuntimeUsed','mutationPerformed']) assert.equal(o[key],false,key);
+assert.equal(receipt.workflowDisposition.dedicatedAvailabilityWorkflow,'SUCCESS');
+assert.equal(receipt.workflowDisposition.system2ResearchCi,'SUCCESS');
+assert.equal(receipt.workflowDisposition.repositoryRegression,'FAILURE_UNRELATED_CROSS_LANE_GOVERNANCE_SYNC');
+assert.equal(receipt.d03Interpretation.oos,'UNKNOWN_NOT_OPENED');
+assert.equal(receipt.d03Interpretation.walkForward,'UNKNOWN_NOT_OPENED');
+assert.equal(receipt.d03Interpretation.factorRedundancy,'NO_NEW_INDEPENDENT_INFORMATION_ROOT');
+assert.equal(receipt.maturityDecision.d03MaturityPct,56.7);
+assert.equal(receipt.maturityDecision.d03_09,'L2_40');
+assert.equal(receipt.maturityDecision.d03_10,'L2_40');
+assert.equal(receipt.maturityDecision.formalOptimizationCandidate,'NONE');
+
+console.log(JSON.stringify({status:'PASS',symbol:o.symbol,state:o.state,relevantRows:o.mopsRelevantRowCount,independentEvidence:o.independentEvidenceCount,pitReplayEligible:o.pitEventReplayEligible,maturityPct:receipt.maturityDecision.d03MaturityPct,formalCoreImpact:receipt.formalCoreImpact}));

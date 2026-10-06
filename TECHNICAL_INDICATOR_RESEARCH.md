@@ -3684,3 +3684,13 @@ System2 physical run `37498936053` proves one bounded TPEX 4806 capital-reductio
 Promotion is rejected because the official event knowledge clock is historical UNKNOWN: `firstKnownAt` and `availableAt` are null and PIT replay is false. One selected positive lineage case cannot establish all-history continuity, OOS, walk-forward, cost, fillability, market-state robustness or independent alpha. D03 remains 56.7%; D03-09/D03-10 remain L2/40; raw gate 2/3; outcomes CLOSED; Formal Core LOCKED.
 
 Exact next is a prospectively timestamped official-event version before the decision cutoff, followed by genuine parent binding and complete expected-parent reconciliation.
+
+## TI-1205 through TI-1214 — exact reference-event availability negative gate (2026-10-07)
+
+System2 V1.2 physically pins the TPEX 4806 reference-event version and eight relevant MOPS rows. All eight rows preserve valid source-reported chronology but are retrospective-only; independent exact-version public-availability evidence is 0, firstKnownAt/availableAt remain null and PIT replay remains false.
+
+This is meaningful negative evidence: issuer disclosure chronology does not prove when the exact exchange reference-price row became publicly available. Historical timestamps cannot be promoted to availableAt, retrospective retrieval cannot become firstObservedAt, and a late observer cannot prove pre-cutoff availability.
+
+Dedicated workflow and System2 Research CI pass. Repository-wide regression fails at an unrelated SDA-016 governance-sync token assertion, so D03 accepts only the dedicated bounded evidence. D03 remains 56.7%; D03-09/D03-10 L2/40; raw gate 2/3; outcomes CLOSED; Formal Core LOCKED.
+
+Exact next is to stop blind historical-clock promotion attempts and reopen only on exact-version prospective observation or an authoritative publication-time contract before the replay cutoff.
