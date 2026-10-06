@@ -2812,3 +2812,74 @@ No maturity or Formal change is authorized by this routing.
 - Aggregate research runner now imports all TP01-TP26 cases so split files cannot be silently omitted.
 - This is a machine-guard completion, not a maturity promotion.
 - D01 remains 52.7%; outcomes CLOSED; Formal Core LOCKED.
+
+
+## Continuation update — DL-049 (2026-10-06)
+
+### DL-049 — Zone acceptance vs directional churn / path disorder
+- DL-048 separated time-at-price, traded-volume weighting and participant-position observability.
+- DL-049 separates stable zone occupancy from directional churn / path disorder.
+- Repeated visits do not equal acceptance:
+  equal occupancy can coexist with very different transition structure;
+  equal transition counts can coexist with very different occupancy.
+- D03 remains owner of fixed-window pathEfficiency10 / trend-quality primitives.
+  D01 owns only zone-local structural path semantics and does not create a duplicate path-efficiency factor.
+- Completed-bar close states are frozen as BELOW / INSIDE / ABOVE relative to the frozen structural zone.
+- OHLC bar spanning both zone edges preserves BAR_SPANS_ENTIRE_ZONE ambiguity.
+  OHLC alone cannot reveal first edge touched, exact crossing count, crossing order or exact dwell time.
+- Exact crossing sequence requires complete replay-safe timestamped trade or quote event data.
+- Zone-local close-path descriptors remain descriptive:
+  eligible state count;
+  inside share;
+  state transition count;
+  direct outside flip count;
+  max consecutive inside run;
+  cumulative close travel / zone width.
+- No directional alpha sign, churn threshold or entropy factor is frozen in v0.1.
+- Tick regime, price-limit state, auction/continuous session, volatility-interruption, liquidity/spread and corporate-action continuity remain required controls.
+- Information lineage:
+  OHLC zone path -> PRICE_OHLC;
+  exact event path may add EVENT_TIME / TRADE_TIME / QUOTE_TIME.
+  Default effectiveIndependentEvidenceCount remains 1 and residualIncrementalityStatus remains NOT_VALIDATED.
+- Future D16 comparison classes:
+  Z0 STRUCTURAL_ONLY;
+  Z1 HIGH_OCCUPANCY_LOW_CHURN_CONTEXT;
+  Z2 HIGH_OCCUPANCY_HIGH_CHURN_CONTEXT;
+  Z3 LOW_OCCUPANCY_HIGH_TRAVERSAL_CONTEXT;
+  Z4 EVENT_EXACT_CROSSING_CONTEXT;
+  Z5 CONSTRAINED_MECHANICS_CONTEXT;
+  Z6 NOT_EVALUABLE.
+- Future D16 questions:
+  occupancy beyond structure;
+  churn/path beyond occupancy;
+  occupancy beyond churn;
+  survival after D03 pathEfficiency10 controls;
+  OHLC proxy vs exact event sequence;
+  survival after market-mechanics controls;
+  residual information after PRICE_OHLC de-duplication.
+- New durable artifacts:
+  - research/PATTERN_ZONE_PATH_CHURN_V0_1.md
+  - research/pattern_zone_path_churn_v0_1.json
+  - research/pattern_zone_state_guard_v0_1.mjs
+  - research/pattern_zone_state_transition_v0_1.mjs
+  - research/test_pattern_zone_path_churn_v0_1.mjs
+  - research/PATTERN_ZONE_PATH_CHURN_D16_HANDOFF_V0_1.md
+- 20 executable adversarial cases authored; research-specific Node execution remains TEST_EXECUTION_PENDING.
+- Prior TOOL_BLOCKED note is superseded: helper/test durable write is now complete.
+- SDA-001 / SDA-002 remain REMEDIATION_IN_PROGRESS.
+- No outcome join; no runtime/Worker/D1 wiring; no Formal change.
+- D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-049
+
+1. Reconcile the clean DL-049 r2 Class-A branch against then-latest main and merge via a new research-only PR.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-049 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve occupancy, close-state transition/churn and exact event crossing as separate semantics.
+4. Keep D03 pathEfficiency10 as owner/control primitive and prohibit duplicate D01 trend-quality voting.
+5. Hand Z0-Z6 / Q1-Q7 common-support and residual inference to D16.
+6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+7. Next D01 science: separate ordinary oscillation from auction/limit/event-driven discrete repricing and microstructure bounce.
+8. No runtime wiring / no Formal change.
