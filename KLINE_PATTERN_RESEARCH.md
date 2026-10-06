@@ -24110,7 +24110,7 @@ New durable artifacts:
 - research/PATTERN_OVERNIGHT_OPENING_ANCHOR_FIREWALL_V0_1.md
 - research/pattern_overnight_opening_anchor_firewall_v0_1.json
 - research/pattern_overnight_opening_anchor_firewall_v0_1.mjs
-- research/test_pattern_overnIGHT_OPENING_ANCHOR_FIREWALL_V0_1.mjs
+- research/test_pattern_overnight_opening_anchor_firewall_v0_1.mjs
 - research/PATTERN_OVERNIGHT_OPENING_ANCHOR_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
