@@ -32,21 +32,23 @@ The existing MOPS clock contract remains authoritative:
 
 Therefore MOPS historical rows are processed only in `RETROSPECTIVE_READBACK` mode.
 
+For 4806, V1.2 also reuses the frozen event-specific semantic-episode rule: older 2025 capital-reduction rows are lineage, but they are not part of the 2026-10-02 loss-offset episode. The bounded episode begins from the latest matching `CORPORATE_DECISION` semantic seed and preserves only aligned follow-on rows.
+
 ## Independent evidence classes
 
 V1.2 can recognize a historical availability proof only when an exact event/version has one of these separately certified forms:
 
 1. `PROSPECTIVE_EXACT_VERSION_OBSERVER`
-   - exact version identity;
-   - genuinely prospective public observation;
+   - exact TPEx reference-event version ID and source-row hash identity;
+   - genuinely prospective public observation of that exact reference version;
    - first observation no later than the replay cutoff.
 
 2. `AUTHORITATIVE_PUBLICATION_TIME_CONTRACT`
-   - exact version identity;
+   - exact TPEx reference-event version ID and source-row hash identity;
    - authoritative source semantics explicitly certify the publication/public-availability timestamp;
    - certified timestamp no later than the replay cutoff.
 
-A historical display timestamp by itself satisfies neither class.
+A historical display timestamp by itself satisfies neither class. MOPS event chronology also cannot certify the availability of the exact TPEx reference-price row unless the evidence is explicitly linked to that reference event/version.
 
 ## Expected current disposition
 
