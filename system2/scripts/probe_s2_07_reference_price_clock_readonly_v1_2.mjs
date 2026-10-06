@@ -11,7 +11,7 @@ const evidence=JSON.parse(await readFile(
 assert.equal(evidence.scope.symbol,"4806");
 assert.equal(evidence.bridgeResult.state,"BOUNDED_CONTINUITY_BRIDGE_READY_PIT_BLOCKED");
 
-const URL="https://mopsov.twse.com.tw/mops/web/ajax_t05st01";
+const MOPS_URL="https://mopsov.twse.com.tw/mops/web/ajax_t05st01";
 function curlHistory(month){
   const args=[
     "--fail","--silent","--show-error","--location","--max-time","30","--request","POST",
@@ -20,7 +20,7 @@ function curlHistory(month){
     "--header","User-Agent: System2-S2-07-Reference-Price-Clock/1.2",
     "--data-urlencode","firstin=1","--data-urlencode","step=1","--data-urlencode","TYPEK=all",
     "--data-urlencode","co_id=4806","--data-urlencode","year=115","--data-urlencode","month="+month,
-    "--data-urlencode","b_date=","--data-urlencode","e_date=",URL,
+    "--data-urlencode","b_date=","--data-urlencode","e_date=",MOPS_URL,
   ];
   const p=spawnSync("curl",args,{encoding:"utf8",maxBuffer:32*1024*1024});
   if(p.error||p.status!==0)throw new Error(String(p.stderr||p.error||"MOPS curl failure").slice(0,500));
