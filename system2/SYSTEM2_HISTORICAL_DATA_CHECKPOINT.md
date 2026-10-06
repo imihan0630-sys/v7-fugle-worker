@@ -340,3 +340,21 @@ Validation gate: System2 Research CI run `37490564826` is pending at latest read
 
 Run #21: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37482307633
 Fix CI: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37490564826
+
+
+## 2026-10-07 2023 TWSE post-fix fresh re-verification run #22
+
+Fresh post-fix workflow_dispatch run `37493424179` / #22 is active on branch `main`.
+
+- run head: `4f0033fba02603fa0edc7b33e8f38e1cb4c3b6e8`;
+- run head matched latest main at readback;
+- migrate: SUCCESS;
+- annual backfill: SUCCESS;
+- Physical verify: IN_PROGRESS;
+- evidence artifact / System1 isolation: PENDING.
+
+The run contains the same fix/test/verifier/workflow blobs as the CI-PASS fix-bearing reference `751f57afe31c9a618c3866def24843efc8bfc7f8`, including runtime blob `3066601a564e49f0267b56b81ba67bc62e19e1ca` and regression-test blob `fadd8d80edca670211494fea0dcc5718093f1544`.
+
+Do not mark 2023 TWSE accepted until run #22 reaches terminal success and the verifier confirms the prior 205 unexpected bars are resolved without weakening fail-closed semantics.
+
+Run URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37493424179
