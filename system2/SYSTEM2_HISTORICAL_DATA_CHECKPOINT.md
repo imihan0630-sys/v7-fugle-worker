@@ -37,6 +37,7 @@ Physically accepted raw A1 market-years:
 - 2021 TWSE: data coverage PASS / replay readiness PARTIAL;
 - 2022 TWSE: data coverage PASS / replay readiness PARTIAL;
 - 2022 TPEx: data coverage PASS / replay readiness PARTIAL.
+- 2023 TWSE: data coverage PASS / replay readiness PARTIAL.
 
 2021 TPEx run `37326149826` / #17 is **not accepted**:
 - migrate SUCCESS;
@@ -393,3 +394,42 @@ Exact next action: fresh workflow_dispatch `year=2023`, `market=TWSE` from a lat
 
 Run #22: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37493424179
 Second-fix CI: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37495340984
+
+
+## 2026-10-07 2023 TWSE durable acceptance after universe repair
+
+Fresh run `37534409279` / #23 completed SUCCESS on head `676c26a53f59aa8cb6b07afbd0453ba3e06d8112` with confirmed inputs `year=2023`, `market=TWSE`.
+
+The second historical-universe repair was live-validated rather than inferred from CI alone:
+- `currentListingStartReconciledCount = 4`;
+- reconciled symbols: `2465, 2482, 2486, 6873`;
+- prior `unexpectedBars = 205` reduced to `0`;
+- verifier fail-closed semantics were not relaxed.
+
+Acceptance facts:
+- annual backfill / storage: PASS;
+- packs / bars: 1,003 / 234,727;
+- R2 HEAD / byte verification: 1,003 / 1,003 PASS;
+- official trading dates: 239;
+- cold/fresh official rows: 234,727 / 234,727;
+- missing-from-cold / absent-from-fresh: 0 / 0;
+- source-row hash mismatch / canonical A1 mismatch: 0 / 0;
+- source version: STABLE;
+- historical-universe readiness: PASS_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION;
+- membership-session denominator: 235,345;
+- actual bars: 234,727;
+- UNKNOWN symbol-session gaps: 618;
+- unexpected bars: 0;
+- data coverage: PASS;
+- replay readiness: PARTIAL;
+- System1 production isolation: PASS.
+
+Durable evidence: `system2/evidence/S2_HISTORICAL_TWSE_2023_PHYSICAL_VERIFICATION_V0_1.json`.
+
+Run: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37534409279
+
+Artifact: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37534409279/artifacts/11446466007
+
+Prior blocker evidence V0_1/V0_2 remains immutable historical provenance and is superseded operationally by this accepted run; it must not be deleted.
+
+Next annual continuation: fresh workflow_dispatch `year=2023`, `market=TPEX` from latest main. The separate 2021 TPEx canonical-revision blocker remains open in parallel.
