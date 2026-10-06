@@ -35,6 +35,7 @@ jobs:
       - name: Validate V8.20 Formal-C1 binding readback semantics
         run: node tests/test_system1_formal_c1_binding_validation_v0_1.mjs
       - name: Read and verify the immutable C1 population receipt
+        if: github.event_name != 'push'
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
           C1_SCAN_DATE: ${{ inputs.scan_date }}
@@ -47,7 +48,7 @@ jobs:
           C3_REGISTER: ${{ github.event_name == 'schedule' && 'true' || 'false' }}
         run: node tests/collect_system1_c1_c2_evidence.mjs
       - name: Preserve approved research evidence or explicit readiness blocker
-        if: always()
+        if: always() && github.event_name != 'push'
         uses: actions/upload-artifact@v4
         with:
           name: system1-c1-evidence-${{ github.run_id }}
