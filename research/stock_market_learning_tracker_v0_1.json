@@ -1972,8 +1972,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Greeks：Delta／Gamma／Vega／Theta」。學習範圍：衍生品研究必須凍結合約、到期、履約價、DTE、價格／IV時計與流動性語意；研究 Greeks、IV-RV、VRP與波動率曲面時必須包含正向機制、反證、PIT、可重播、交易成本、稀疏報價／插值風險、與既有VIX／Skew／Gamma資訊的冗餘及增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2 / OFFICIAL_DELTA_NEXT_EFFECTIVE_DATE_RECEIPT_CAPTURED / 20261005_COMMON_SUPPORT_PREREGISTERED / 20261005_ALIGNED_INPUTS_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
-          "next": "On/after 2026-10-05 observe the current-day official Delta version, freeze preserved-afternoon/current-day/own-model common support before error metrics, separate new-series additions, and keep outcomes closed.",
+          "status": "L2 / OFFICIAL_DELTA_ENDPOINT_DIVERGENCE_OBSERVED / 20261006_064518_INTERACTIVE_CURRENT_DAY_VERSION_OBSERVED / EXCEL_ENDPOINT_STALE_PREVIOUS_VERSION / COMMON_SUPPORT_MODEL_CLOCKS_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+          "next": "Preserve the 2026-10-06 interactive-vs-Excel endpoint divergence pair; bind endpoint/version identity and materialize common contract support plus model-input clocks before Delta residual attribution.",
           "evidence": "research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json plus DERIVATIVES_VOLATILITY_RESEARCH.md DR-051..DR-059 reconcile pre-existing Gamma/VIX/VRP/surface work into the expanded D12 curriculum. No L3: strict Taiwan option-chain/surface prospective receipts and OOS evidence remain absent.\n2026-10-03: research/d12_13_taifex_daily_delta_clock_semantics_v0_1.json freezes 06:45 same-day vs 14:30/16:30 next-business-day Delta semantics. 2026-10-02 official file generation 16:39:28 is pre-18:10 but historical retrieval is not strict source attestation.\n2026-10-04: research/d12_d13_source_lineage_deepening_20261004_v0_1.md MC-149..151 confirms afternoon Delta effective-date firewall, dealer-GEX identifiability boundary and historical replay-vs-first-known separation.\n2026-10-04: research/d12_13_official_delta_version_alignment_20261004_v0_1.json + DR-096..098. Official later-retrieved TXO Delta page hash a5a91485... publicationText 2026-10-02 16:39:21; afternoon version is next-business-day effective, so direct comparison to 2026-10-02 EOD option parent is invalid.\n2026-10-04: research/d12_13_taifex_delta_effective_date_receipt_20261004_2211.json captured before the 2026-10-05 effective trading date; raw hash UNKNOWN in this receipt."
         },
         {
@@ -2082,9 +2082,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦「美債利率／殖利率曲線」。學習範圍：美股、日韓股、匯率、美元、利率、油價、原物料與總經數據；跨時區與休市對齊；公告時鐘與Surprise；全球Shock傳導；台股Residual反應與Regime用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "L2 / TREASURY_REFERENCE_VS_PUBLICATION_CLOCK_SEPARATED / FIRST_ELIGIBLE_TAIWAN_DECISION_JOIN_FROZEN / STRICT_PROSPECTIVE_PUBLISHED_CAPTURE_PENDING / OUTCOMES_CLOSED",
+          "status": "L2 / TREASURY_REFERENCE_AVAILABILITY_CLOCK_FIREWALL / ENDPOINT_VERSION_PROVENANCE_REQUIRED / 20261005_LATER_OBSERVED_OFFICIAL_CURVE / PROSPECTIVE_FIRST_ELIGIBLE_TAIWAN_RECEIPTS_PENDING / OUTCOMES_CLOSED",
           "evidence": "research/global_market_source_only_pilot_20260930.json contains latest already-published 2026-09-29 official Treasury curve captured before the 2026-09-30 18:10 Taiwan decision.\n2026-10-02 audit: research/global_market_source_attestation_audit_20261002.json: 2026-09-29 UST 2Y/10Y numerically corroborated, but native original HTTP response bytes/version first-known and immutable raw archive missing; exclude from strict clean date denominator.\n2026-10-04 official Treasury methodology audit: ~15:30 ET is input/reference time; official curve is usually available by 18:00 ET and may be delayed. Do not use 15:30 as knownAt.",
-          "next": "Capture a future official U.S. rates publication after verified public availability and map it to the first eligible Taiwan decision; calendar-date matching is prohibited."
+          "next": "Capture future official U.S. rate publication endpoints after verified release; bind endpoint/version, reference date, observedAt and firstEligibleTaiwanDecision; never backdate from source date."
         },
         {
           "id": "D13-07",
@@ -2183,7 +2183,7 @@
           "learningScope": "聚焦「Central-bank Balance Sheet／System Liquidity央行資產負債表與系統流動性」。研究財政、貨幣、金融條件、央行流動性與地緣／資金流傳導。需區分政策決策、預期差、實際流動性與市場價格反應，避免把單一宏觀指標當成機械式股價方向。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
           "status": "L2 / PROSPECTIVE_H41_SCHEDULE_RECEIPT_CAPTURED / 20261008_REALIZATION_PENDING / WEEK_AVERAGE_VS_WEDNESDAY_SEPARATE / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
-          "next": "Keep research/d13_16_h41_schedule_receipt_20261004_2211.json immutable; on/after the scheduled 2026-10-08 16:30 ET release append actual publication/capture/source identity and preserve statistic identity.",
+          "next": "Keep the prospective H.4.1 schedule receipt immutable; on/after 2026-10-08 16:30 ET observe the concrete publication endpoint, append actual publication/capture identity and map to first eligible Taiwan decision.",
           "evidence": "research/d13_16_central_bank_liquidity_spec_v0_1.json + MACRO_CROSS_MARKET_RESEARCH.md MC-107..MC-112: Fed asset stock != reserve balances; TGA/RRP/currency liability mechanics, ample-reserves regime, H.4.1 decomposition, Taiwan transmission and redundancy gates frozen.\n2026-10-04: research/d12_d13_source_lineage_deepening_20261004_v0_1.md MC-154 strengthens week-average vs Wednesday-level firewall using official H.4.1/DDP identities.\n2026-10-04: research/d13_16_h41_statistic_identity_divergence_20261004_v0_1.json + MC-193..197. Official 2026-09-24 and 2026-10-01 H.4.1 raw page hashes show week-average TGA/RRP/reserve changes can have opposite direction to Wednesday snapshots in the same release.\n2026-10-04: prospective schedule-only receipt research/d13_16_h41_schedule_receipt_20261004_2211.json; realization UNKNOWN at capture."
         },
         {
