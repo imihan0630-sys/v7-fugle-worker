@@ -3,7 +3,7 @@ from pathlib import Path
 import os, re, subprocess, sys, json
 workflow=Path('.github/workflows/v7-regression.yml').read_text(encoding='utf-8')
 scripts=re.findall(r'python3 (scripts/\S+\.py)',workflow)
-tail={"scripts/apply_v8_15_1.py","scripts/apply_v8_15_2.py","scripts/apply_v8_15_3.py","scripts/apply_v8_15_4.py","scripts/apply_v8_16_0.py","scripts/apply_v8_17_0.py","scripts/apply_v8_18_0.py","scripts/apply_v8_19_0.py"}
+tail={"scripts/apply_v8_15_1.py","scripts/apply_v8_15_2.py","scripts/apply_v8_15_3.py","scripts/apply_v8_15_4.py","scripts/apply_v8_16_0.py","scripts/apply_v8_17_0.py","scripts/apply_v8_18_0.py","scripts/apply_v8_19_0.py","scripts/apply_v8_19_1_pve250_prod_stamp.py"}
 for script in scripts:
     if script not in tail:
         subprocess.run([sys.executable,script],check=True)
