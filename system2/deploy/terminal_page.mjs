@@ -17,7 +17,7 @@ export function resolveTerminalSessionAlignmentV0_1({
   pool = null,
   operations = null,
 } = {}) {
-  if (typeof terminalMarketDate !== "string" || !/^\\d{4}-\\d{2}-\\d{2}$/.test(terminalMarketDate)) {
+  if (typeof terminalMarketDate !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(terminalMarketDate)) {
     throw new Error("terminalMarketDate must be YYYY-MM-DD");
   }
   const observedDates = Object.freeze({
