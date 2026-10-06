@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "S2_HISTORICAL_TWSE_2023_UNIVERSE_BLOCKER_EVIDENCE_V0_1",
+  "correctionDirective": "S2-CORR-20261004-001",
+  "market": "TWSE",
+  "year": 2023,
+  "workflow": {
+    "runId": 37482307633,
+    "runNumber": 21,
+    "headSha": "30a1f9e7b7bf7e344f0cd44242efb701e56b6f4b",
+    "conclusion": "failure",
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37482307633",
+    "backfillState": "SUCCESS",
+    "physicalVerifyState": "BLOCKED",
+    "artifactId": 11423484682,
+    "artifactName": "system2-historical-coverage-TWSE-2023",
+    "artifactDigest": "sha256:51207f46bbc07726040781551db9c55a018a3ffe62e03231cdf5c9bf8690fba3",
+    "artifactUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37482307633/artifacts/11423484682",
+    "system1Isolation": "PASS"
+  },
+  "verificationFacts": {
+    "storageVerification": "PASS",
+    "sourceVersionState": "STABLE",
+    "missingFromColdCount": 0,
+    "absentFromFreshOfficialCount": 0,
+    "sourceRowHashMismatchCount": 0,
+    "canonicalA1ValueMismatchCount": 0,
+    "sourceRevisionOnlyCount": 0,
+    "sourceRevisionDateCount": 0,
+    "historicalUniverseReadiness": "PASS_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION",
+    "historicalUniverseMembershipCount": 1101,
+    "actualBars": 234522,
+    "expectedBars": 235140,
+    "missingBars": 618,
+    "unknownBars": 618,
+    "unexpectedBars": 205,
+    "structuralCoverageState": "BLOCKED",
+    "dataCoverageState": "BLOCKED",
+    "replayReadinessState": "BLOCKED",
+    "overallState": "BLOCKED"
+  },
+  "diagnosis": {
+    "state": "HISTORICAL_UNIVERSE_CURRENT_LISTING_START_TOO_LATE",
+    "unexpectedBarSamplePrefix": [
+      "2023-03-06|6873",
+      "2023-03-07|6873",
+      "2023-03-08|6873",
+      "2023-03-09|6873",
+      "2023-03-10|6873"
+    ],
+    "officialEvidence": [
+      "TWSE new-listing history records 6873 HD Renewable Energy as starting listed trading on 2023-03-06 on the Taiwan Innovation Board.",
+      "TWSE later announced 6873 would change from the Innovation Board to regular listed trading on 2024-09-26."
+    ],
+    "codeFinding": "d08_twse_historical_universe_source_v0_1 builds CURRENT memberships from the current-company basic-data listingDate and only uses official newlisting rows to pair DELISTED rows. A current company that originally listed on the Innovation Board and later moved to the regular board can therefore inherit the later current listingDate and lose its earlier continuous TWSE membership interval.",
+    "expectedFix": "For CURRENT rows, reconcile the current basic-data listing date with official newlisting history for the same symbol/company lifecycle and preserve the earliest valid official TWSE listing start; retain explicit provenance for the adjustment."
+  },
+  "policy": [
+    "Do not mark 2023 TWSE accepted.",
+    "Do not delete or rewrite the completed cold packs.",
+    "Do not weaken unexpectedBars fail-closed behavior.",
+    "Fix historical-universe reconstruction, add regression coverage, then fresh-dispatch 2023/TWSE from the fixed latest main."
+  ],
+  "correctionStatus": "FIX_IN_PROGRESS",
+  "protectedBoundaries": {
+    "system1RuntimeChanged": false,
+    "system2StrategyAuthorityChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "capitalOrderAuthorityChanged": false
+  }
+}
