@@ -207,7 +207,7 @@ export async function buildProspectiveMopsExactVersionPopulationReceiptV1_6({
     d?.transportReady!==true
     || d?.annualQueriesReady!==true
     || d?.monthShardQueriesReady!==true
-    || d?.noPaginationHint!==true
+    || d?.monthShardNoPaginationHint!==true
     || Number(d?.monthShardQueryCount||0)<=0
   );
   if(badDiagnostics.length) blockers.push("MOPS_QUERY_TRANSPORT_OR_SHARD_CAPTURE_INCOMPLETE");
