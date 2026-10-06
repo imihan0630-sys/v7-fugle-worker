@@ -1,0 +1,171 @@
+{
+  "schemaVersion": "D03_TEMPORAL_NONINTERFERENCE_DIFFERENTIAL_ORACLE_V0_1",
+  "updatedAt": "2026-10-06T10:30:00+08:00",
+  "owner": "D03",
+  "classification": "RESEARCH_ONLY_OUTCOME_CLOSED",
+  "formalCoreImpact": "NONE_LOCKED",
+  "policy": "TWO_RUN_FUTURE_PERTURBATION_AGREEMENT",
+  "requiredReceiptFields": [
+    "receiptVersion",
+    "decisionEpoch",
+    "decisionClockVersion",
+    "authorizedInformationSetHash",
+    "worldAPrefixHash",
+    "worldBPrefixHash",
+    "futurePerturbationFamilyId",
+    "futurePerturbationFamilyVersion",
+    "outputSemanticHashA",
+    "outputSemanticHashB",
+    "factorId",
+    "factorVersion",
+    "sourceVersion",
+    "continuityVersion",
+    "calendarVersion",
+    "modelPreprocessingVersion",
+    "trainingCutoff",
+    "randomSeedLedgerHash",
+    "terminalState"
+  ],
+  "perturbationFamilies": [
+    "FUTURE_OUTCOME",
+    "FUTURE_PRICE_PATH",
+    "FUTURE_ROLLING_WINDOW_INPUT",
+    "FUTURE_CROSS_SECTION_MEMBER",
+    "FUTURE_UNIVERSE_MEMBERSHIP",
+    "FUTURE_CORPORATE_ACTION",
+    "FUTURE_SOURCE_CORRECTION",
+    "FUTURE_CALENDAR_REVISION",
+    "FUTURE_CACHE_LOAD",
+    "FUTURE_MODEL_TRAINING_DATA",
+    "FUTURE_HYPERPARAMETER_LABEL",
+    "FUTURE_REGIME_INPUT",
+    "FUTURE_PIVOT_CONFIRMATION_PATH",
+    "FUTURE_HIGHER_TIMEFRAME_COMPLETION",
+    "FUTURE_PROVISIONAL_TO_FINAL_EVOLUTION"
+  ],
+  "semanticOutputFields": [
+    "eligibility",
+    "factorValue",
+    "finalityState",
+    "constraintState",
+    "factorVersion",
+    "continuitySpace",
+    "signalKnownAt",
+    "timingReceiptHash",
+    "featureLineageId",
+    "redundancyGroupId",
+    "researchRankState",
+    "reasonCodes"
+  ],
+  "factorPerturbationMapping": [
+    {
+      "family": "FINITE_WINDOW",
+      "factors": [
+        "D03-02",
+        "D03-06",
+        "D03-10"
+      ],
+      "required": [
+        "FUTURE_PRICE_PATH",
+        "FUTURE_ROLLING_WINDOW_INPUT"
+      ]
+    },
+    {
+      "family": "RECURSIVE_STATE",
+      "factors": [
+        "D03-01",
+        "D03-07",
+        "D03-08",
+        "D03-09"
+      ],
+      "required": [
+        "FUTURE_PRICE_PATH",
+        "FUTURE_CACHE_LOAD",
+        "FUTURE_MODEL_TRAINING_DATA"
+      ]
+    },
+    {
+      "family": "PATH_PERSISTENCE",
+      "factors": [
+        "D03-03"
+      ],
+      "required": [
+        "FUTURE_PRICE_PATH",
+        "FUTURE_NORMALIZATION_IF_USED"
+      ]
+    },
+    {
+      "family": "EPISODE_CONFIRMATION",
+      "factors": [
+        "D03-05"
+      ],
+      "required": [
+        "FUTURE_PRICE_PATH",
+        "FUTURE_CACHE_LOAD"
+      ]
+    },
+    {
+      "family": "OUTCOME_RELATION",
+      "factors": [
+        "D03-04"
+      ],
+      "required": [
+        "FUTURE_OUTCOME"
+      ],
+      "predictorUseAllowed": false
+    },
+    {
+      "family": "DIVERGENCE",
+      "factors": [
+        "D03-12"
+      ],
+      "required": [
+        "FUTURE_PIVOT_CONFIRMATION_PATH",
+        "FUTURE_PRICE_PATH"
+      ]
+    },
+    {
+      "family": "MULTITIMEFRAME",
+      "factors": [
+        "D03-13"
+      ],
+      "required": [
+        "FUTURE_HIGHER_TIMEFRAME_COMPLETION",
+        "FUTURE_CALENDAR_REVISION",
+        "FUTURE_PROVISIONAL_TO_FINAL_EVOLUTION"
+      ]
+    }
+  ],
+  "invariants": {
+    "prefixAgreementRequired": true,
+    "futureOnlyDifferenceAllowed": true,
+    "semanticOutputExactAgreementRequired": true,
+    "futureSentinelAcceptanceBlocks": true,
+    "passingFiniteSentinelsProvesUniversalFreedom": false,
+    "sourceVersionAsOfRequired": true,
+    "trainingCutoffBound": true,
+    "fullSampleNormalizationForbidden": true,
+    "survivorUniverseBackfillForbidden": true
+  },
+  "allowedTerminalStates": [
+    "REGISTERED_CHANNELS_CLEAR",
+    "TEMPORAL_NONINTERFERENCE_FAIL",
+    "OUTCOME_TO_FEATURE_LEAKAGE",
+    "FUTURE_CACHE_STATE_CONTAMINATION",
+    "FUTURE_CORPORATE_ACTION_REWRITE",
+    "FUTURE_VERSION_REWRITE",
+    "FUTURE_UNIVERSE_SURVIVORSHIP_LEAK",
+    "FUTURE_NORMALIZATION_LEAK",
+    "FUTURE_REGIME_LABEL_LEAK",
+    "FINALITY_BACKFILL_LEAK",
+    "NONDETERMINISTIC_REPLAY_UNRESOLVED",
+    "VERSION_INCOMPATIBLE"
+  ],
+  "noClaim": {
+    "universalLeakFreedom": false,
+    "empiricalAlpha": true,
+    "structuralCausality": true,
+    "formalPromotion": true
+  },
+  "maturityImpact": "NONE_56_7_PERCENT"
+}
