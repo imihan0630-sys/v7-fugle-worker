@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-07 05:32 Asia/Taipei
+Updated: 2026-10-07 07:22 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -32,7 +32,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - affectedScope: S2-03 Historical infrastructure / P0 2017-present TWSE+TPEx daily A1 cold history
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement: System 2 historical infrastructure must physically populate and verify the staged official 2017-present Taiwan-equity daily history before it can be described as complete or used as complete full-market replay evidence.
-- observedProblem: Historical raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE, both 2022 markets and 2023 TWSE. The 2023 TWSE historical-universe blocker is resolved by the alias-aware listing-start repair and live run #23 verification: `currentListingStartReconciledCount=4` and `unexpectedBars` fell from 205 to 0 without weakening fail-closed semantics. 2021 TPEx remains explicitly BLOCKED on an official-source canonical A1 revision. CORR-001 stays FIX_IN_PROGRESS for that blocker, 2023 TPEx and later market-years, the 2026 incremental path and final full-market PIT replay.
+- observedProblem: Historical raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE, both 2022 markets and both 2023 markets. The 2023 TWSE historical-universe blocker is live-verified resolved, and 2023 TPEx run #24 is physically accepted with data coverage PASS / replay readiness PARTIAL. 2021 TPEx remains explicitly BLOCKED on an official-source canonical A1 revision. CORR-001 stays FIX_IN_PROGRESS for that blocker, 2024+ market-years, the 2026 incremental path and final full-market PIT replay.
 - evidence:
   - SYSTEM2_CHECKPOINT: run 36545375167 failed before annual ingest.
   - SYSTEM2_CHECKPOINT: repaired continuation required manual 2017 TWSE rerun, then TPEx only after TWSE coverage/hash/manifest/receipt verification.
@@ -118,6 +118,11 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - 2023 TWSE storage/source PASS: 1,003 packs / 234,727 bars / 1,003 R2 HEAD + byte checks; 234,727 cold rows = 234,727 fresh official rows; 0 missing/extra/source-row/canonical mismatches; source version STABLE.
   - Membership-session denominator 235,345 leaves 618 explicit UNKNOWN symbol-session gaps; data coverage PASS / replay readiness PARTIAL.
   - Accepted evidence: `system2/evidence/S2_HISTORICAL_TWSE_2023_PHYSICAL_VERIFICATION_V0_1.json`; artifact `11446466007`, digest `sha256:83e771a65d4853677210303b5b30b5141e3b9a3902dfbbcb83ef1ad4eb459e27`. Prior blocker evidence V0_1/V0_2 remains preserved as historical provenance.
+  - 2023 TPEx run `37537013825` (#24): SUCCESS; 824 packs / 193,327 bars / 824 R2 HEAD + byte checks; 239 official sessions; 0 missing/extra/source-row/canonical mismatches; source version STABLE.
+  - 2023 TPEx denominator 193,722 leaves 395 explicit UNKNOWN symbol-session gaps; `unexpectedBars=0`; data coverage PASS / replay readiness PARTIAL.
+  - TPEx historical-universe readiness remains `PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION`; official delisting union is not inferred complete.
+  - Durable evidence: `system2/evidence/S2_HISTORICAL_TPEX_2023_PHYSICAL_VERIFICATION_V0_1.json`; artifact `11448741341`, digest `sha256:b69cc4faa66b236cbf3de3afa7807f64f4232ed7494dfb84a29a0c255ffbd4ee`.
+  - Independent audit progress receipt `system2/evidence/S2_CORR_20261004_001_AUDIT_PROGRESS_20261007_V0_1.json` independently confirmed the same physical acceptance and found only canonical sync debt inside existing CORR-001; no duplicate correction was opened.
   - 2021 TPEx is fail-closed BLOCKED, not rewritten. The coverage matrix preserves the old quota blocker as resolved historical provenance and now records the canonical revision blocker.
 - riskIfUnfixed: Historical replay, factor validation, multi-year backtests, regime robustness and strategy comparison can be mistaken for being backed by a complete market history when only bounded/smoke datasets exist. This creates a false-completion and evidence-coverage risk on a P0 dependency.
 - requiredCorrection:
