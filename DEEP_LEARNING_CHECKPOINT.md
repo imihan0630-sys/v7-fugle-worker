@@ -2414,3 +2414,73 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
 
 ### Exact next continuation
 After 22:30 capture identical TPEx leverage LATE sources and compare against the frozen 21:25 EARLY snapshots on union/common support. Only then reassess D06-07/08/09 maturity.
+
+
+## 2026-10-06 D06 — IC-090 paired leverage vintages promote D06-07/08/09 to L3
+
+- Room/domain: 05｜法人與籌碼研究室 / D06.
+- Preregistered TPEx leverage passGate required product-specific official semantics plus prospective readiness/revision through an authorized replayable route.
+- 2026-10-06 EARLY:
+  - captured 21:25:30;
+  - margin 918 rows, all financing and margin-short arithmetic pass;
+  - SBL 931 rows, all margin-short and actual-SBL-short arithmetic pass.
+- PRE_LATE at 22:28:
+  - full-row fingerprints already differed from EARLY;
+  - frozen core balance/flow fields remained 918/918 and 931/931 unchanged;
+  - proved that hash change alone is not an economically relevant revision.
+- 2026-10-06 LATE:
+  - captured 22:30:34;
+  - margin rows 918;
+  - SBL rows 931;
+  - all arithmetic still passes.
+- EARLY -> LATE field-level revision:
+  - margin: 0/918 rows changed across all displayed fields;
+  - SBL: 1/931 rows changed;
+  - only 4527 方土霖:
+    - nextBusinessDaySblShortLimitShares 0 -> 7,044;
+    - note V -> blank;
+    - all current-day SBL prev/sell/return/adjustment/balance fields unchanged.
+- Official TPEx note semantics:
+  - V = 不得借券交易且無借券餘額停止借券賣出.
+- Interpretation:
+  - observed later update is a next-business-day eligibility/limit state revision, not a current-day SBL flow revision.
+- Timing:
+  - later full-row state was first observed by 22:28;
+  - first-known bound = (21:25:30, 22:28:06];
+  - exact provider update minute remains UNKNOWN.
+- Universe:
+  - D06-08 margin universe 918;
+  - D06-09 SBL universe 931;
+  - 13 SBL-only Y rows remain persistent and all retain nonzero SBL balances;
+  - denominators remain separate.
+- Durable artifacts:
+  - research/d06_07_08_tpex_margin_late_snapshot_20261006_2230_v0_1.csv;
+  - research/d06_08_09_tpex_sbl_late_snapshot_20261006_2230_v0_1.csv;
+  - research/d06_07_08_09_tpex_leverage_late_20261006_v0_1.json;
+  - research/d06_07_08_09_tpex_paired_vintage_l3_decision_20261006_v0_1.json.
+- Maturity promotions:
+  - D06-07 L2/40 -> L3/60;
+  - D06-08 L2/40 -> L3/60;
+  - D06-09 L2/40 -> L3/60.
+- D06 aggregate maturity:
+  - 48.9% -> 52.2%.
+- Global 356-module maturity:
+  - 46.6% -> 46.7%.
+- Scope limit:
+  - L3 = Taiwan PIT/source/replay feasibility only;
+  - no predictive alpha, return, MFE/MAE or Formal evidence.
+- Additional same-cycle guards:
+  - IC-088 reconfirmed D06-19 direct-retail stock-date directional source gap;
+  - IC-089 separated cross-date D06-14 universe drift from same-date revision;
+  - SDA-007 remains REMEDIATION_IN_PROGRESS.
+- Outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. 2026-10-07: capture D06-14 T2_FINAL for tradeDate 2026-10-05.
+2. 2026-10-07: capture D06-14 T1_REVISED for tradeDate 2026-10-06.
+3. D06-07/08/09: continue multi-date EARLY/LATE revision-frequency stability; L4 requires preregistered OOS/Shadow residual incrementality.
+4. D06-05: wait for genuine same-generation TDCC consumer row.
+5. D06-06: wait for same-generation D06-population-compatible shared PRICE_OHLC/VOLUME_TURNOVER parent.
+6. D06-18: execute a genuine in-slot live SBL receipt on the next valid date; 2026-10-06 15:20 remains MISSED/UNKNOWN.
+7. D06-19: continue direct-retail source discovery only; stock-date natural-person direction remains UNKNOWN.
+8. SDA-007: wait for System1/System2 machine lineage enforcement, prospective one-receipt-many-consumers evidence, D16 residual validation and independent 00 closure.
