@@ -3660,3 +3660,19 @@ The six canonical TI-853~970 fixtures were fetched from latest main with exact b
 The execution closes the prior Node-receipt gap for contract mechanics only. It accessed no outcome data, contributes zero market-evidence units, does not replace a real D16 method/incrementality/falsification receipt, and does not justify maturity or Formal promotion.
 
 Exact next: external machine readback first; if unchanged, causal-direction/lead-lag placebo hierarchy, maturity-neutral.
+
+
+
+## TI-979 through TI-1000 — causal-direction / lead-lag placebo hierarchy (2026-10-06)
+
+Detailed artifacts:
+- `research/D03_CAUSAL_DIRECTION_LEAD_LAG_PLACEBO_HIERARCHY_20261006_V0_1.md`;
+- `research/d03_causal_direction_lead_lag_placebo_cases_20261006_v0_1.json`;
+- `research/test_d03_causal_direction_lead_lag_placebo_v0_1.mjs`;
+- `research/d03_causal_direction_lead_lag_placebo_acceptance_receipt_20261006_v0_1.json`.
+
+D03 now separates decision-time predictive information from contemporaneous association, stale persistence, reverse-time association and future-state leakage. Future indicator states are leakage sentinels only; same-close fills are rejected where the close finalized the signal; lead/lag offsets remain one preregistered multiplicity family; common support, purge, dependence, ancestry controls and multi-timeframe finality remain mandatory.
+
+The 16-case executable oracle passes and uses no outcome data. Timing consistency supports predictive incrementality only, not structural causality. No maturity or Formal change.
+
+Exact next: external machine readback first; otherwise freeze the consumer timing-receipt schema/mapping, maturity-neutral.

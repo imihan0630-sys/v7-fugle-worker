@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "D03_CAUSAL_DIRECTION_LEAD_LAG_PLACEBO_CASES_V0_1",
+  "formalCoreImpact": "NONE_LOCKED",
+  "outcomeDataUsed": false,
+  "allowedTerminalStates": [
+    "TIMING_METHOD_READY",
+    "CONTEMPORANEOUS_ONLY",
+    "REDUNDANT_WITH_ANCESTRY",
+    "FUTURE_STATE_LEAKAGE_SUSPECTED",
+    "LEAD_LAG_SYMMETRY_UNRESOLVED",
+    "TEMPORAL_AGGREGATION_CONFOUND",
+    "CLOCK_IDENTITY_INCOMPATIBLE",
+    "COMMON_SUPPORT_INSUFFICIENT",
+    "POWER_INSUFFICIENT",
+    "DEPENDENCE_TOO_STRONG_FOR_CURRENT_SAMPLE",
+    "COST_OR_FILLABILITY_INVALIDATES",
+    "VERSION_INCOMPATIBLE"
+  ],
+  "cases": [
+    {"id":"C01_VALID_PIT","knownBeforeCutoff":true,"endpointAfterCutoff":true,"futureFeature":false,"futureSentinelOnly":false,"sameCloseFill":false,"commonSupport":true,"dependenceSafe":true,"purgeSufficient":true,"ancestryControls":true,"preregisteredOffsets":true,"finalityValid":true,"expected":"TIMING_METHOD_READY"},
+    {"id":"C02_CONTEMPORANEOUS","knownBeforeCutoff":false,"endpointAfterCutoff":false,"futureFeature":false,"futureSentinelOnly":false,"sameCloseFill":false,"commonSupport":true,"dependenceSafe":true,"purgeSufficient":true,"ancestryControls":true,"preregisteredOffsets":true,"finalityValid":true,"expected":"CONTEMPORANEOUS_ONLY"},
+    {"id":"C03_FUTURE_AS_FEATURE","knownBeforeCutoff":false,"endpointAfterCutoff":true,"futureFeature":true,"futureSentinelOnly":false,"sameCloseFill":false,"commonSupport":true,"dependenceSafe":true,"purgeSufficient":true,"ancestryControls":true,"preregisteredOffsets":true,"finalityValid":true,"expected":"REJECT_FUTURE_FEATURE"},
+    {"id":"C04_FUTURE_SENTINEL","knownBeforeCutoff":false,"endpointAfterCutoff":true,"futureFeature":false,"futureSentinelOnly":true,"sameCloseFill":false,"commonSupport":true,"dependenceSafe":true,"purgeSufficient":true,"ancestryControls":true,"preregisteredOffsets":true,"finalityValid":true,"expected":"FUTURE_STATE_LEAKAGE_SUSPECTED"},
+    {"id":"C05_REVERSE_OVERCLAIM","knownBeforeCutoff":true,"endpointAfterCutoff":false,"futureFeature":false,"futureSentinelOnly":false,"sameCloseFill":false,"commonSupport":true,"dependenceSafe":true,"purgeSufficient":true,"ancestryControls":true,"preregisteredOffsets":true,"finalityValid":true,"expected":"CONTEMPORANEOUS_ONLY"},
+    {"id":"C06_OFFSET_CHERRYPICK","knownBeforeCutoff":true,"endpointAfterCutoff":true,"futureFeature":false,"futureSentinelOnly":false,"sameCloseFill":false,"commonSupport":true,"dependenceSafe":true,"purgeSufficient":true,"ancestryControls":true,"preregisteredOffsets":false,"finalityValid":true,"expected":"REJECT_OFFSET_NOT_PREREGISTERED"},
+    {"id":"C07_SUPPORT_MISMATCH","knownBeforeCutoff":true,"endpointAfterCutoff":true,"futureFeature":false,"futureSentinelOnly":false,"sameCloseFill":false,"commonSupport":false,"dependenceSafe":true,"purgeSufficient":true,"ancestryControls":true,"preregisteredOffsets":true,"finalityValid":true,"expected":"COMMON_SUPPORT_INSUFFICIENT"},
+    {"id":"C08_RANDOM_SPLIT","knownBeforeCutoff":true,"endpointAfterCutoff":true,"futureFeature":false,"futureSentinelOnly":false,"sameCloseFill":false,"commonSupport":true,"dependenceSafe":false,"purgeSufficient":true,"ancestryControls":true,"preregisteredOffsets":true,"finalityValid":true,"expected":"DEPENDENCE_TOO_STRONG_FOR_CURRENT_SAMPLE"},
+    {"id":"C09_PURGE_SHORT","knownBeforeCutoff":true,"endpointAfterCutoff":true,"futureFeature":false,"futureSentinelOnly":false,"sameCloseFill":false,"commonSupport":true,"dependenceSafe":true,"purgeSufficient":false,"ancestryControls":true,"preregisteredOffsets":true,"finalityValid":true,"expected":"REJECT_PURGE_INSUFFICIENT"},
+    {"id":"C10_CALENDAR_SHIFT","knownBeforeCutoff":true,"endpointAfterCutoff":true,"futureFeature":false,"futureSentinelOnly":false,"sameCloseFill":false,"commonSupport":true,"dependenceSafe":false,"purgeSufficient":true,"ancestryControls":true,"preregisteredOffsets":true,"finalityValid":true,"expected":"DEPENDENCE_TOO_STRONG_FOR_CURRENT_SAMPLE"},
+    {"id":"C11_PREMATURE_TIMEFRAME","knownBeforeCutoff":false,"endpointAfterCutoff":true,"futureFeature":false,"futureSentinelOnly":false,"sameCloseFill":false,"commonSupport":true,"dependenceSafe":true,"purgeSufficient":true,"ancestryControls":true,"preregisteredOffsets":true,"finalityValid":false,"expected":"CLOCK_IDENTITY_INCOMPATIBLE"},
+    {"id":"C12_PIVOT_BACKDATE","knownBeforeCutoff":false,"endpointAfterCutoff":true,"futureFeature":false,"futureSentinelOnly":false,"sameCloseFill":false,"commonSupport":true,"dependenceSafe":true,"purgeSufficient":true,"ancestryControls":true,"preregisteredOffsets":true,"finalityValid":false,"expected":"CLOCK_IDENTITY_INCOMPATIBLE"},
+    {"id":"C13_SAME_CLOSE_FILL","knownBeforeCutoff":true,"endpointAfterCutoff":true,"futureFeature":false,"futureSentinelOnly":false,"sameCloseFill":true,"commonSupport":true,"dependenceSafe":true,"purgeSufficient":true,"ancestryControls":true,"preregisteredOffsets":true,"finalityValid":true,"expected":"COST_OR_FILLABILITY_INVALIDATES"},
+    {"id":"C14_NO_ANCESTRY_CONTROL","knownBeforeCutoff":true,"endpointAfterCutoff":true,"futureFeature":false,"futureSentinelOnly":false,"sameCloseFill":false,"commonSupport":true,"dependenceSafe":true,"purgeSufficient":true,"ancestryControls":false,"preregisteredOffsets":true,"finalityValid":true,"expected":"REDUNDANT_WITH_ANCESTRY"},
+    {"id":"C15_LEAD_LAG_SYMMETRY","knownBeforeCutoff":true,"endpointAfterCutoff":true,"futureFeature":false,"futureSentinelOnly":false,"sameCloseFill":false,"commonSupport":true,"dependenceSafe":true,"purgeSufficient":true,"ancestryControls":true,"preregisteredOffsets":true,"finalityValid":true,"leadLagSymmetric":true,"expected":"LEAD_LAG_SYMMETRY_UNRESOLVED"},
+    {"id":"C16_POWER_BLOCK","knownBeforeCutoff":true,"endpointAfterCutoff":true,"futureFeature":false,"futureSentinelOnly":false,"sameCloseFill":false,"commonSupport":true,"dependenceSafe":true,"purgeSufficient":true,"ancestryControls":true,"preregisteredOffsets":true,"finalityValid":true,"powerSufficient":false,"expected":"POWER_INSUFFICIENT"}
+  ]
+}
+

@@ -5258,3 +5258,73 @@ No promotion:
 
 Exact next:
 re-read external machine lanes first. If unchanged, freeze a causal-direction / lead-lag placebo hierarchy that separates predictive timing from contemporaneous association while preserving date/sector/regime/symbol dependence and prohibiting future-state leakage. Maturity remains unchanged until genuine prospective/raw-source or external machine evidence arrives.
+
+
+
+## TI-979 through TI-1000 — causal-direction / lead-lag placebo hierarchy (2026-10-06)
+
+Canonical artifacts:
+- `research/D03_CAUSAL_DIRECTION_LEAD_LAG_PLACEBO_HIERARCHY_20261006_V0_1.md`;
+- `research/d03_causal_direction_lead_lag_placebo_cases_20261006_v0_1.json`;
+- `research/test_d03_causal_direction_lead_lag_placebo_v0_1.mjs`;
+- `research/d03_causal_direction_lead_lag_placebo_acceptance_receipt_20261006_v0_1.json`.
+
+### TI-979 — PIT timing order
+Required:
+`signalKnownAt <= decisionCutoff < endpointWindowStart <= endpointKnownAt`.
+A bar carrying the decision date is unavailable if its state finalized after the cutoff.
+
+### TI-980 — contemporaneous association is not prediction
+Same-session indicator/return association may be mechanical because both consume the same OHLC path. It contributes zero predictive evidence unless fully observable before a tradable cutoff and evaluated on a later endpoint.
+
+### TI-981 — preregistered lead-lag ladder
+Stale lags, decision-time signal, illegal future leads, contemporaneous endpoint and authorized D5/D10/D20 endpoints form one preregistered multiplicity family. Best-offset selection after outcomes is forbidden.
+
+### TI-982 — future state is diagnostic only
+Future X(t+k) is permitted only as an offline leakage sentinel. It cannot be a candidate feature, add evidence, set thresholds, select models or repair weak decision-time evidence. Strong future-lead performance triggers `FUTURE_STATE_LEAKAGE_SUSPECTED` or `TIMING_IDENTITY_UNRESOLVED`.
+
+### TI-983~984 — reverse endpoint and ancestry controls
+Past/already-realized endpoints diagnose mechanical ancestry, trend selection and reverse interpretation. Direct returns, MA/trend controls, D01 structure, D04 volatility/range, D18 Regime and overlapping System1/System2 factors remain required. No residual value yields `REDUNDANT_WITH_ANCESTRY`, not BAD.
+
+### TI-985~987 — purge, support and dependence
+Purge/embargo covers the maximum forward endpoint plus feature/confirmation footprint. Offset arms use common support. Timing placebos preserve official sessions, date shocks, sector/regime, repeated symbols/episodes, continuity and featureKnownAt. Random rows and calendar-day shifts are invalid.
+
+### TI-988 — multi-timeframe finality
+Weekly/Daily/M15 clocks remain separate. Interaction observability is the maximum component firstObservableAt. Incomplete weekly/closing-M15 states and later-confirmed pivots cannot be backdated.
+
+### TI-989~990 — stale variants and symmetry
+Offset variants stay one timing/parameter family. Stable stale-lag behavior may support robustness but cannot multiply votes. Lead/lag symmetry triggers unresolved persistence, aggregation or clock-confound states.
+
+### TI-991 — causal-language boundary
+Passing the hierarchy supports only PIT-valid predictive incrementality or conditional association. D03 timing tests alone cannot claim treatment or structural causal effects.
+
+### TI-992~994 — state, execution and selection
+Regime/liquidity slices are preregistered and require independent-date support. Evaluation begins at the first executable price after signalKnownAt; same-close fill is rejected when the close completed the signal. Null/placebo replay reproduces the full selected offset/horizon/threshold/subgroup pipeline.
+
+### TI-995 — indicator applications
+Bollinger same-close %B/touch is contemporaneous unless pre-cutoff; future band states are sentinels. ADX uses canonical Wilder availability and cannot backfill later convergence. KD/RSI/MACD close-finalized states cannot assume same-close fill. Divergence uses confirmedAt, not the pivot date. Multi-timeframe uses latest component finality.
+
+### TI-996~997 — terminal states and receipt fields
+Blocking states include CONTEMPORANEOUS_ONLY, REDUNDANT_WITH_ANCESTRY, FUTURE_STATE_LEAKAGE_SUSPECTED, LEAD_LAG_SYMMETRY_UNRESOLVED, TEMPORAL_AGGREGATION_CONFOUND, CLOCK_IDENTITY_INCOMPATIBLE, COMMON_SUPPORT_INSUFFICIENT, POWER_INSUFFICIENT, DEPENDENCE_TOO_STRONG_FOR_CURRENT_SAMPLE and COST_OR_FILLABILITY_INVALIDATES.
+
+The machine receipt binds factor/version, signal/cutoff/execution clocks, endpoints, offset family, ancestry baseline, common support, purge, dependence, multiplicity, research stream, selection pipeline, costs and terminal state.
+
+### TI-998 — deterministic oracle
+Sixteen adversarial cases cover valid PIT ordering, contemporaneous-only, illegal future feature, future sentinel, reverse overclaim, offset cherry-pick, support mismatch, random split, insufficient purge, calendar shift, premature timeframe, pivot backdating, same-close fill, missing ancestry controls, lead-lag symmetry and insufficient power.
+
+Observed:
+`status=PASS; cases=16; validPitOrdering=true; contemporaneousIsNotPredictive=true; futureFeatureRejected=true; futureSentinelDiagnosticOnly=true; offsetPreregistrationRequired=true; commonSupportRequired=true; dependenceAndPurgeRequired=true; multiTimeframeFinalityRequired=true; sameCloseFillRejected=true; ancestryControlsRequired=true; leadLagSymmetryBlocks=true; formalCoreImpact=NONE_LOCKED; outcomeDataUsed=false`.
+
+### TI-999 — support/counterevidence
+Support: prediction requires information availability before endpoint and executable entry.
+Counterevidence: smoothing/persistent regimes can produce symmetric timing patterns without explicit leakage; symmetry blocks rather than proves misconduct.
+Alternatives include price persistence, aggregation, common shocks, uneven support, delayed finality and fill timing.
+
+### TI-1000 — decision
+Frozen:
+`TIMING_EVIDENCE = PIT_ORDERING_PLUS_DEPENDENCE_PRESERVING_LEAD_LAG_PLACEBO_HIERARCHY`.
+
+No outcomes were opened; no factor was promoted/demoted; D03 remains 56.7%; D03-09/D03-10 remain L2/40; raw gate remains 2/3; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`; Formal Core remains LOCKED.
+
+Exact next:
+re-read external machine lanes first. If unchanged, freeze a consumer-ready timing-receipt schema/mapping for current D03 factor families without changing formulas or Formal behavior. Actual maturity gain still requires genuine prospective/raw-source or external machine evidence.

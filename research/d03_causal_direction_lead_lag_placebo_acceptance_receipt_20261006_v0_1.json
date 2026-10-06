@@ -1,0 +1,37 @@
+{
+  "receiptVersion": "D03_CAUSAL_DIRECTION_LEAD_LAG_PLACEBO_ACCEPTANCE_V0_1",
+  "executedAtAsiaTaipei": "2026-10-06T10:18:00+08:00",
+  "sourceMainSha": "05cfe0f0fc4b857dc089355f6fccd7a8ec8100f0",
+  "contractPath": "research/D03_CAUSAL_DIRECTION_LEAD_LAG_PLACEBO_HIERARCHY_20261006_V0_1.md",
+  "contractSha256": "1baabfe30d2793fd55797fb2577bc9f8c6e2a1db43bc369f73463b6e9aa991da",
+  "fixturePath": "research/d03_causal_direction_lead_lag_placebo_cases_20261006_v0_1.json",
+  "fixtureSha256": "8726308043f7e8109f7f19c525057e1dbb80b40f37146bf78ac36fe5017cca4c",
+  "testPath": "research/test_d03_causal_direction_lead_lag_placebo_v0_1.mjs",
+  "testSha256": "0bdcddca039367af2a05a8d25abb9ff0d7fd8289621b58dab12a2a1feb532794",
+  "exitCode": 0,
+  "result": {
+    "status": "PASS",
+    "cases": 16,
+    "validPitOrdering": true,
+    "contemporaneousIsNotPredictive": true,
+    "futureFeatureRejected": true,
+    "futureSentinelDiagnosticOnly": true,
+    "offsetPreregistrationRequired": true,
+    "commonSupportRequired": true,
+    "dependenceAndPurgeRequired": true,
+    "multiTimeframeFinalityRequired": true,
+    "sameCloseFillRejected": true,
+    "ancestryControlsRequired": true,
+    "leadLagSymmetryBlocks": true,
+    "formalCoreImpact": "NONE_LOCKED",
+    "outcomeDataUsed": false
+  },
+  "authorityBoundary": {
+    "timingContractMechanicsOnly": true,
+    "causalEffectIdentified": false,
+    "empiricalAlphaClaimed": false,
+    "marketEvidenceUnits": 0,
+    "maturityPromotionAuthorized": false,
+    "formalPromotionAuthorized": false
+  }
+}
