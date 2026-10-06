@@ -690,3 +690,26 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 ## Next action
 
 When the independent correction auditor identifies a material issue, append the directive here and update the JSON companion in the same change.
+
+
+## S2-CORR-20261006-003 — VERIFIED_CLOSED
+
+Independent verification:
+- receipt: `system2/evidence/s2_corr_20261006_003_independent_verification.json`;
+- implementation merge: `fa9c433cf84d61f400c935cbd70019c7c9d39878`;
+- System2 Research CI `37469475340` PASS;
+- V8 Regression `37469475238` PASS;
+- merged-main System2 Research CI `37469704138` PASS.
+
+Verified boundaries:
+- formal Candidate Board remains pending/empty until an authorized S2-07 candidate source exists;
+- resonance/pool rows are visibly segregated as MONITOR_ONLY;
+- monitor strategy provenance is not formal candidate strategy authority;
+- unresolved provenance is not promoted to a formal strategy identity;
+- Decision Workspace keeps formal candidate state NOT_AVAILABLE and formal action NO_FROZEN_DECISION;
+- no strategy/ranking/capacity/final-selection/push/order/System1 Formal authority changed.
+
+Final disposition:
+`VERIFIED_CLOSED`.
+
+This closure does not resolve `S2-CORR-20261006-004`, which is a separate current-session date-alignment defect.
