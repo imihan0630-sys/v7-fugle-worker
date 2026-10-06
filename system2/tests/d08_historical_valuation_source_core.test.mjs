@@ -44,10 +44,11 @@ assert.deepEqual(
 assert.equal(parseD08TwseDateV0_1("115/09/01"),"2026-09-01");
 
 const reconciledCurrent=reconcileD08TwseCurrentListingStartsV0_1([{
-  market:"TWSE",symbol:"6873",companyName:"泓德能源",listingDate:"2024-09-26",
-  memberState:"CURRENT",sourceRowHash:"CURRENT-6873",
+  market:"TWSE",symbol:"6873",companyName:"泓德能源科技股份有限公司",companyShortName:"泓德能源",
+  listingDate:"2024-09-26",memberState:"CURRENT",sourceRowHash:"CURRENT-6873",
 }],[{
-  symbol:"6873",companyName:"泓德能源-創",listingDate:"2023-03-06",
+  symbol:"6873",companyName:"泓德能源-創",companyShortName:"泓德能源-創",companyLegalName:null,
+  listingDate:"2023-03-06",
   raw:{公司代號:"6873",公司簡稱:"泓德能源-創",股票上市買賣日期:"112.03.06"},
 }]);
 assert.equal(reconciledCurrent.adjustedCount,1);
@@ -58,10 +59,11 @@ assert.equal(reconciledCurrent.rows[0].listingDateEvidenceSource,"TWSE_NEWLISTIN
 assert.match(reconciledCurrent.rows[0].sourceId,/NEWLISTING_EARLIEST/);
 
 const codeReuseGuard=reconcileD08TwseCurrentListingStartsV0_1([{
-  market:"TWSE",symbol:"6873",companyName:"不同公司",listingDate:"2024-09-26",
-  memberState:"CURRENT",sourceRowHash:"CURRENT-DIFFERENT",
+  market:"TWSE",symbol:"6873",companyName:"不同公司股份有限公司",companyShortName:"不同公司",
+  listingDate:"2024-09-26",memberState:"CURRENT",sourceRowHash:"CURRENT-DIFFERENT",
 }],[{
-  symbol:"6873",companyName:"泓德能源-創",listingDate:"2023-03-06",
+  symbol:"6873",companyName:"泓德能源-創",companyShortName:"泓德能源-創",companyLegalName:null,
+  listingDate:"2023-03-06",
   raw:{公司代號:"6873",公司簡稱:"泓德能源-創",股票上市買賣日期:"112.03.06"},
 }]);
 assert.equal(codeReuseGuard.adjustedCount,0,"same symbol with different company identity must not be stitched");
