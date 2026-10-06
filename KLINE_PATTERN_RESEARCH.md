@@ -23537,3 +23537,36 @@ New durable artifacts:
 - research/PATTERN_VOLUME_AT_PRICE_CONTEXT_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. Historical volume-profile efficacy remains CLOSED. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-047 — Anchored VWAP vs Structural Memory vs Live Liquidity (2026-10-06)
+
+DL-047 separates three mechanisms often conflated in chart interpretation: historical volume-at-price, transaction-weighted reference prices, and current displayed order-book liquidity.
+
+VWAP is treated as an observable transaction-weighted reference, not remaining-holder cost basis. Provider avgPrice remains a provider average-price proxy unless exact VWAP construction is independently verified.
+
+Anchored VWAP requires a preregistered causal anchor plus complete trade/value coverage through predictor freeze. Session-mechanic, external-event, D01-structural-event and manually preregistered anchors remain distinct. Outcome-selected anchors are prohibited. A D01-event anchor inherits PRICE_OHLC dependence and therefore does not become an independent confirmation by default.
+
+Volume profile and VWAP remain different representations of shared executed trades: profile describes the distribution across price; VWAP is a weighted mean. Neither equals current standing liquidity.
+
+D05 owns live book semantics. Fresh displayed best-five bid/ask state is current microstructure context, not historical trading inventory and not certified structural support/resistance. Book snapshot time, fetch time, freshness and session mechanism must be valid at predictor freeze.
+
+Three clocks remain separate: TRADE_FLOW_CLOCK, ANCHOR_CLOCK and BOOK_CLOCK. No later flow or book state may explain an earlier predictor.
+
+Context classes C0-C6 cover structure-only, VWAP-only, structure/VWAP, structure/profile/VWAP, structure/book, structure/VWAP/book and not-evaluable cases. They are diagnostic classes, not votes.
+
+Possible raw roots include PRICE_OHLC, TRADED_VOLUME, LIVE_ORDER_BOOK and EVENT_CLOCK, but default effectiveIndependentEvidenceCount remains one until D16 validates residual contribution on common support.
+
+Historical exact anchored VWAP may not be synthesized from OHLCV proxies. Missing causal flow remains DATA_BLOCKED. Prospective capture with immutable source/time receipts is allowed.
+
+Twenty adversarial cases are authored across two test files. They cover anchor timing, provider-proxy semantics, exact-flow requirements, synthetic reconstruction prohibition, stale/late/incomplete book states, reference distance, shared-root de-duplication and explicit not-evaluable states.
+
+Durable artifacts:
+- research/PATTERN_ANCHORED_VWAP_LIVE_LIQUIDITY_V0_1.md
+- research/pattern_anchored_vwap_live_liquidity_v0_1.json
+- research/pattern_anchored_vwap_live_liquidity_v0_1.mjs
+- research/test_pattern_anchored_vwap_live_liquidity_clock_v0_1.mjs
+- research/test_pattern_anchored_vwap_live_liquidity_lineage_v0_1.mjs
+- research/PATTERN_ANCHORED_VWAP_LIVE_LIQUIDITY_D16_HANDOFF_V0_1.md
+
+No outcomes were opened. D01 maturity remains 52.7%. SDA-001/SDA-002 remain REMEDIATION_IN_PROGRESS. Formal Core remains LOCKED.
