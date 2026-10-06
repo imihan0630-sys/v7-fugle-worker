@@ -359,3 +359,37 @@ The 2026-10-05 missing 15:20 receipt remains immutable UNKNOWN/MISSING.
 
 D06-18 remains L2/40.
 Exact next: at 2026-10-06 15:20 ±5m, capture exactly the frozen five symbols through the same route and preserve source date, transaction type, recall state, rate/depth values, capturedAt and hash.
+
+
+## LS-047H / D06-18 — 2026-10-06 post-close query executed; frozen 15:20 slot remains missed
+
+Durable receipt:
+`research/d06_18_twse_sbl_postclose_query_20261006_v0_1.json`.
+
+At 19:10-19:15 Asia/Taipei, after TWSE SBL service hours, the frozen five-symbol source-route pilot was queried through the official rendered security selector.
+
+All five selected identities matched:
+1101 台泥 / 2451 創見 / 3532 台勝科 / 6187 萬潤 / 9941 裕融.
+
+Rendered state:
+- fixed-rate 10/3/1-day sections: totalQty 0, rate/depth fields NULL for all five;
+- competitive-bid 10/3/1-day sections: totalQty 0, rate/depth fields NULL for all five;
+- negotiated:
+  - 1101: matchTime 15:01:09.76, totalQty 7000;
+  - 2451: 15:01:32.23, totalQty 1450;
+  - 3532: 11:45:32.02, totalQty 44;
+  - 6187: 14:24:39.33, totalQty 40;
+  - 9941: no match time, totalQty 0.
+
+Critical timing guard:
+this was outside the preregistered 15:20±5m slot. The 15:20 slot is therefore MISSED/UNKNOWN and is not backfilled from the 19:10 post-close page.
+
+The rendered security pages also did not explicitly certify a source/trade date, so the observed values are not admitted as date-certified 2026-10-06 live evidence.
+
+Interpretation remains bounded:
+- negotiated lending quantity != short-sale volume;
+- lending quantity/rate != bearish conviction;
+- NULL != zero;
+- five-symbol pilot != market representation.
+
+D06-18 remains L2/40. No promotion, no outcomes, no Formal change.
