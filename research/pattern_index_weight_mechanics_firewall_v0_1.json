@@ -1,0 +1,15 @@
+{
+  "schemaVersion":"pattern-index-weight-mechanics-firewall-v0.1",
+  "updated":"2026-10-07 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "capWeightedIndexUpEqualsBroadConfirmation":false,
+  "indexConfirmationEqualsIndependentPatternVote":false,
+  "currentIndexWeightCanBackfillHistory":false,
+  "candidateSelfIncludedIndexIsIndependentConfirmation":false,
+  "passiveFlowEqualsStructuralAlpha":false,
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}

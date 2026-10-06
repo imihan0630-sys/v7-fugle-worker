@@ -24015,3 +24015,31 @@ New durable artifacts:
 - research/PATTERN_COMMON_PRICE_DISCOVERY_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-061 — Structural response vs index-weight / mega-cap mechanical contribution (2026-10-07)
+
+DL-061 addresses a common "market confirmation" fallacy. A cap-weighted market or sector index can rise strongly even when the median stock, equal-weight return and advance share are weak, because one or a few mega-cap constituents dominate contribution. At the same time, index rebalancing, ETF tracking and benchmark execution can generate mechanical demand/supply.
+
+The repository already has dedicated Passive Flow / Index Rebalancing and Breadth / Rotation owners, so D01 does not rebuild those models. Instead it consumes their point-in-time receipts and asks whether the stock's zone-specific representation survives them.
+
+Five dimensions are separated: the stock's structural state, cap-weighted index movement, equal-weight/breadth participation, mega-cap contribution concentration, and passive/index-mechanical flow. No combined market-confirmation score is created.
+
+Historical index contribution requires historical event-date weights. Current constituent weights cannot be used backward. When breadth data are missing, a cap-weighted rally remains breadth-unknown rather than broad confirmation.
+
+Candidate self-inclusion is a central anti-double-count control. If the target stock itself is a major index constituent, its own price move helps create the index move that would otherwise be cited as "market confirmation." That index context cannot be counted as independent Pattern evidence. Future D16 sensitivity may use ex-candidate or ex-top-contributor context where owner data support it.
+
+Mechanical flow does not mean zero impact. Passive benchmark execution can consume liquidity, move the clearing price, attract anticipatory traders and later reverse. The causal channel is simply different from stock-specific structural memory.
+
+The generic falsifier compares comparable index-concentration/passive contexts away from and at the structural zone. If the zone adds no residual representation, index mechanics/common participation are enough.
+
+Twenty adversarial cases are authored. They distinguish broad versus cap-weight-only participation, mega-cap concentration, missing breadth, historical-weight clocks, replay blocking, candidate self-inclusion, ex-candidate availability, point-in-time index-event clocks, denominator integrity and one-default-evidence-family treatment.
+
+New durable artifacts:
+- research/PATTERN_INDEX_WEIGHT_MECHANICS_FIREWALL_V0_1.md
+- research/pattern_index_weight_mechanics_firewall_v0_1.json
+- research/pattern_index_weight_mechanics_firewall_v0_1.mjs
+- research/test_pattern_index_weight_mechanics_firewall_v0_1.mjs
+- research/PATTERN_INDEX_WEIGHT_MECHANICS_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.

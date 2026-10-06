@@ -4026,3 +4026,103 @@ No maturity or Formal change is authorized by this routing.
 6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 7. Next D01 science: separate structural response from index-weight / mega-cap mechanical contribution and constituent-arbitrage effects around market/sector moves.
 8. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-061 (2026-10-07)
+
+### DL-061 — Structural response vs index-weight / mega-cap mechanical contribution
+- DL-060 separated structural response from leader/follower propagation and common price discovery.
+- DL-061 freezes a narrower attribution firewall: a cap-weighted market/sector index may move because a few mega-cap constituents dominate contribution, while index-rebalance / ETF / benchmark-linked flows mechanically move those names and related constituents.
+- Passive Flow / Index Rebalancing remains owner of index-event taxonomy, weight changes, passive-flow proxies, ETF mechanics and closing-auction benchmark execution.
+- Breadth / Rotation remains owner of cap-weight vs equal-weight decomposition, participation breadth and leadership concentration.
+- D01 owns only whether structural-zone interpretation survives these owner-certified contexts.
+- Five contexts stay separate:
+  SELF_STRUCTURAL_STATE;
+  CAP_WEIGHTED_INDEX_MOVE;
+  EQUAL_WEIGHT_BREADTH_PARTICIPATION;
+  MEGA_CAP_CONTRIBUTION_CONCENTRATION;
+  PASSIVE_INDEX_MECHANICAL_FLOW.
+- No composite "market confirms pattern" score is defined.
+- A positive cap-weighted index can coexist with weak median member, weak advance share, weak equal-weight return and one/few mega-cap drivers.
+- Frozen diagnostic states:
+  W0 BROAD_MARKET_CONFIRMATION;
+  W1 NARROW_MEGA_CAP_LED_CONFIRMATION;
+  W2 MIXED_PARTICIPATION;
+  W3 CAP_WEIGHTED_UP_EQUAL_WEIGHT_WEAK;
+  W4 INDEX_CONTRIBUTION_UNKNOWN;
+  W5 INDEX_WEIGHT_DATA_BLOCKED.
+- Historical contribution requires event-date/as-of weights. Current index weight may not backfill history.
+- If only cap-weighted return exists, MARKET_CONFIRMATION_BREADTH_UNKNOWN.
+- Candidate self-inclusion is explicit:
+  when the target stock itself contributes to the index, the index move cannot count as independent confirmation.
+- Future D16 may use ex-candidate / ex-top1 / ex-top3 / equal-weight sensitivity contexts where owner data support them; these are controls, not new signals.
+- Index event clocks remain separate:
+  announcedAt;
+  firstKnownAt;
+  effectiveAt;
+  eventPhase;
+  oldWeight/newWeight;
+  eventVersion.
+- No retrospective "obvious future inclusion" labels.
+- Mechanical passive flow can have real price impact but is not stock-specific structural memory.
+- Primary generic comparator:
+  G0 INDEX_CONCENTRATION_OR_PASSIVE_EVENT_AWAY_FROM_ZONE;
+  G1 SAME_CONTEXT_AT_STRUCTURAL_ZONE.
+  If G1 adds no residual representation, index mechanics/common participation are sufficient.
+- Market-confirmation strata:
+  M0 broad confirmation;
+  M1 narrow mega-cap confirmation;
+  M2 cap-weighted-only confirmation;
+  M3 passive-rebalance context;
+  M4 candidate-self-included index;
+  M5 index-context unknown.
+- SDA-001 remains open:
+  target price/index/sector context often share the target stock, mega-cap drivers, common factors and passive flows.
+  effectiveIndependentEvidenceCount remains 1 by default absent D16 residual validation.
+- SDA-002 remains open:
+  index/passive receipts require firstObservableAt / knownAt / predictorFreezeAt / historicalWeightKnownAt / replaySafe;
+  later weights/revisions cannot backfill earlier predictors.
+- Future D16 ladder:
+  I0 RAW_ZONE_RESPONSE;
+  I1 DL060_COMMON_PRICE_DISCOVERY_CONTROLLED;
+  I2 CAP_WEIGHT_VS_EQUAL_WEIGHT_DECOMPOSED;
+  I3 LEADERSHIP_CONCENTRATION_CONTROLLED;
+  I4 EX_CANDIDATE_INDEX_CONTEXT_CONTROLLED;
+  I5 PASSIVE_REBALANCE_CONTEXT_CONTROLLED;
+  I6 CLOSING_AUCTION_EXPIRY_OVERLAP_CONTROLLED;
+  I7 GENERIC_INDEX_MECHANICS_COMPARATOR_CONTROLLED;
+  I8 STRUCTURAL_RESPONSE_RESIDUAL_CANDIDATE;
+  I9 MULTI_DATE_MULTI_INDEX_MULTI_CONCENTRATION_REPLICATION.
+- Future interpretations:
+  Q0 BROAD_MARKET_CONTEXT_EXPLANATION;
+  Q1 MEGA_CAP_CONCENTRATION_EXPLANATION;
+  Q2 SELF_INCLUSION_EXPLANATION;
+  Q3 PASSIVE_REBALANCE_EXPLANATION;
+  Q4 AUCTION_EXPIRY_MECHANICAL_EXPLANATION;
+  Q5 STRUCTURAL_RESPONSE_RESIDUAL;
+  Q6 INDEX_CONTEXT_UNKNOWN;
+  Q7 NOT_EVALUABLE.
+- New files:
+  - research/PATTERN_INDEX_WEIGHT_MECHANICS_FIREWALL_V0_1.md
+  - research/pattern_index_weight_mechanics_firewall_v0_1.json
+  - research/pattern_index_weight_mechanics_firewall_v0_1.mjs
+  - research/test_pattern_index_weight_mechanics_firewall_v0_1.mjs
+  - research/PATTERN_INDEX_WEIGHT_MECHANICS_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain open under canonical queue.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-061
+
+1. Reconcile the DL-061 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-061 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve cap-weighted, equal-weight, breadth, contribution concentration and passive-flow states separately.
+4. Consume Passive Flow / Breadth owner receipts rather than rebuilding index mechanics.
+5. Hand I0-I9 / Q0-Q7 residual inference to D16.
+6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+7. Next D01 science: separate structural response from closing-auction / opening-auction price formation so auction-clearing mechanics are not mislabeled as Pattern confirmation.
+8. No runtime wiring / no Formal change.
