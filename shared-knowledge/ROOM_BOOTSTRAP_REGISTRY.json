@@ -37,7 +37,9 @@
     "userNavigableUrlPolicySemantics": "When a user is asked to open/login/view/operate a concrete page and a stable safe URL is known, provide the direct clickable URL in the same response; prefer the deepest reliable target and never fabricate or expose secrets.",
     "system1PolicyFingerprintReceipt": "shared-knowledge/system1_policy_fingerprint_receipt_v0_1.json",
     "sda022System1FingerprintAcceptance": "shared-knowledge/sda022_system1_fingerprint_acceptance_20261006_v0_1.json",
-    "sda016System1V819CurrentStatus": "research/sda016_system1_v819_current_status_20261006_v0_1.json"
+    "sda016System1V819CurrentStatus": "research/sda016_system1_v819_current_status_20261006_v0_1.json",
+    "sda016System1FormalC1BindingContract": "research/SDA016_SYSTEM1_FORMAL_C1_BINDING_IMPLEMENTATION_CONTRACT_20261006_V0_1.md",
+    "sda016System1FormalC1BindingContractMachine": "research/sda016_system1_formal_c1_binding_contract_v0_1.json"
   },
   "identities": [
     {

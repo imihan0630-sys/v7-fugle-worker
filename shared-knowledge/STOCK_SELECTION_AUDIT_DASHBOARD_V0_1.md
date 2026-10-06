@@ -38,7 +38,7 @@ Queue: shared-knowledge/stock_selection_audit_queue_v0_1.json
 | SDA-013 | HIGH | REMEDIATION_IN_PROGRESS | D13, D18 | REVISION_AND_CLOCK_FIREWALL_DEEPENED_CROSS_MARKET_DATE_MATCHING_REJECTED_CANONICAL_RECEIPT_PENDING |
 | SDA-014 | HIGH | VALIDATION_PENDING | D14 | RESEARCH_EXECUTION_CONTRACT_STRONG_PROSPECTIVE_BROKER_RECEIPTS_PENDING |
 | SDA-015 | HIGH | REMEDIATION_IN_PROGRESS | D15 | PLAN_TIME_SEMANTIC_FIREWALL_STRONG_PRETRADE_RISK_VERSION_AND_PROSPECTIVE_ATTRIBUTION_PENDING |
-| SDA-016 | CRITICAL | REMEDIATION_IN_PROGRESS | D16 | V0_4_48_TEST_ORACLE_FROZEN_PR644_MERGED_V819_PRODUCTION_VERIFIED_GENUINE_C1_READBACK_AUTHORITATIVE_FORMAL_C1_BINDING_AND_SHARED_AUTHORITY_PENDING |
+| SDA-016 | CRITICAL | REMEDIATION_IN_PROGRESS | D16 | V0_5_58_TEST_ORACLE_PR644_MERGED_V819_PRODUCTION_VERIFIED_FORMAL_C1_BINDING_CONTRACT_FROZEN_CLASS_B_IMPLEMENTATION_GENUINE_READBACK_SHARED_AUTHORITY_PENDING |
 | SDA-017 | CRITICAL | REMEDIATION_IN_PROGRESS | D18 | ROOM11_V0_3_48_TEST_ORACLE_FROZEN_REPLICATION_SUPPORT_CONTRACT_READY_SYSTEM2_EPISODE_SUPPORT_ENGINE_PENDING |
 | SDA-018 | HIGH | REMEDIATION_IN_PROGRESS | D19 | FACTOR_ZOO_GOVERNANCE_STRONG_D19_12_SCHEDULED_CALENDAR_KNOWNAT_FIRST_RECEIPT_CHALLENGER_OOS_PENDING |
 | SDA-019 | HIGH | VALIDATION_PENDING | D20 | FIRST_PRIMARY_SOCIAL_PARENT_DURABLE_COVERAGE_AND_RESIDUAL_EVIDENCE_IMMATURE_D20_13_LIVE_SOURCE_PENDING |
@@ -192,5 +192,32 @@ Remaining System1 evidence:
 
 Current-status receipt:
 `research/sda016_system1_v819_current_status_20261006_v0_1.json`.
+
+Formal Core impact: NONE.
+
+
+## SDA-016 Authoritative Formal→C1 binding contract — 2026-10-06
+
+Current state:
+- validation oracle = V0.5 / 58 blocking tests;
+- PR #675 merged the Class-A Formal→C1 binding contract;
+- authoritative binding implementation = PENDING_CLASS_B;
+- `v8_plan_archive` is explicitly NOT an authoritative parent ledger because same-date writes can update the row;
+- the future authoritative ledger must be append-only and must bind one exact Formal decision receipt to one exact immutable C1 generation;
+- latest-generation, inventory-order, selected-set-equality and historical backfill inference remain forbidden.
+
+Canonical contract:
+- `research/SDA016_SYSTEM1_FORMAL_C1_BINDING_IMPLEMENTATION_CONTRACT_20261006_V0_1.md`;
+- `research/sda016_system1_formal_c1_binding_contract_v0_1.json`.
+
+Exact next System1 engineering gate:
+Class-B proposal/implementation for the append-only binding table + runtime writer + protected readback, with Formal business path fail-open and research evidence fail-closed.
+
+Still pending independently:
+- first genuine post-deploy V8.19 C1 readback;
+- generation-set finalization;
+- shared System1/System2 holdout-consumption authority;
+- remaining SDA-016 oracle evidence;
+- independent 00 closure.
 
 Formal Core impact: NONE.
