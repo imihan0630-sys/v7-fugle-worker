@@ -404,3 +404,39 @@ D06-18 remains L2/40. No promotion, no outcomes, no Formal change.
 - D06-08 and D06-09 must keep separate denominators.
 - D06-07/08/09 remain L2/40.
 - Exact next: after 22:30 capture identical LATE sources and compare EARLY->LATE on union and common support. Outcomes/Formal closed.
+
+
+## LS-047I / D06-07~09 — paired EARLY/LATE gate PASS; promote to L3 source/PIT feasibility
+
+Durable decision:
+`research/d06_07_08_09_tpex_paired_vintage_l3_decision_20261006_v0_1.json`.
+
+2026-10-06 provided the first complete same-date prospective EARLY/LATE pair:
+- EARLY 21:25:30;
+- LATE 22:30:34;
+- margin 918 rows both vintages;
+- SBL 931 rows both vintages;
+- all balance arithmetic passes.
+
+Revision:
+- margin: 0/918 rows changed;
+- SBL: 1/931 rows changed;
+- 4527 方土霖 only:
+  - next-day SBL short limit 0 -> 7,044;
+  - note V -> blank;
+  - all current-day SBL flow/balance fields unchanged.
+- official V semantics = no securities-lending transaction and no lending balance / suspend lending short sale.
+
+Interpretation:
+the later update changed next-business-day eligibility/limit state rather than today's SBL flow.
+
+PassGate now clears for source/PIT/replay:
+- D06-07 -> L3/60;
+- D06-08 -> L3/60;
+- D06-09 -> L3/60.
+
+No outcome or Formal evidence is implied.
+
+### Exact next
+Continue multi-date EARLY/LATE captures for revision-frequency stability.
+L4 requires OOS/Shadow residual incrementality, not more source existence evidence.
