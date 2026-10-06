@@ -36,7 +36,8 @@ function localVersionKey(row){return [row?.date||"",row?.time||"",row?.seqNo||""
 
 function curlHistory(symbol,year,month){
   const args=[
-    "--fail","--silent","--show-error","--location","--max-time","30","--request","POST",
+    "--fail","--silent","--show-error","--location","--max-time","30",
+    "--retry","3","--retry-delay","1","--retry-all-errors","--request","POST",
     "--header","Content-Type: application/x-www-form-urlencoded",
     "--header","Referer: https://mopsov.twse.com.tw/mops/web/t05st01",
     "--header","User-Agent: System2-S2-07-MOPS-Exact-Version/1.6",
@@ -126,10 +127,11 @@ for(const event of frozenEvents){
   const years=[...new Set(months.map(x=>x.year))];
 
   const annualObserved=[];
-  let transportReady=true,annualQueriesReady=true,monthShardQueriesReady=true,noPaginationHint=true;
+  let transportReady=true,annualQueriesReady=true,monthShardQueriesReady=true;
+  let annualNoPaginationHint=true,monthShardNoPaginationHint=true;
   for(const year of years){
     const r=await annual(event.symbol,year);
-    transportReady&&=r.ok;annualQueriesReady&&=r.ok;noPaginationHint&&=r.noPaginationHint;
+    transportReady&&=r.ok;annualQueriesReady&&=r.ok;annualNoPaginationHint&&=r.noPaginationHint;
     for(const row of r.rows){
       if(row?.date&&row.date>=queryStart&&row.date<=CAPTURE_END&&issuerScopeEligibleV0_5(row.rowText)&&familyMatchV0_5(row.rowText,event.family)){
         const o=await buildMopsExactVersionObservationV1_6({
@@ -143,7 +145,7 @@ for(const event of frozenEvents){
   const monthObserved=[];
   for(const ym of months){
     const r=await month(event.symbol,ym.year,ym.month);
-    transportReady&&=r.ok;monthShardQueriesReady&&=r.ok;noPaginationHint&&=r.noPaginationHint;
+    transportReady&&=r.ok;monthShardQueriesReady&&=r.ok;monthShardNoPaginationHint&&=r.noPaginationHint;
     for(const row of r.rows){
       if(row?.date&&row.date>=queryStart&&row.date<=CAPTURE_END&&issuerScopeEligibleV0_5(row.rowText)&&familyMatchV0_5(row.rowText,event.family)){
         const o=await buildMopsExactVersionObservationV1_6({
@@ -175,7 +177,8 @@ for(const event of frozenEvents){
     transportReady,
     annualQueriesReady,
     monthShardQueriesReady,
-    noPaginationHint,
+    annualNoPaginationHint,
+    monthShardNoPaginationHint,
     annualFamilyVersionCount:annualMap.size,
     monthFamilyVersionCount:monthMap.size,
     annualVsMonthKeysetExact:yearOnly.length===0&&monthOnly.length===0&&payloadMismatch.length===0,
@@ -195,20 +198,6 @@ const receipt=await buildProspectiveMopsExactVersionPopulationReceiptV1_6({
   frozenEvents,observations,queryDiagnostics,capturedAt,
 });
 
-assert.equal(receipt.frozenEventCount,23);
-assert.equal(receipt.frozenUniqueSymbolCount,23);
-assert.equal(receipt.coveredSymbolCount,23);
-assert.equal(receipt.prospectiveExactVersionCaptureReady,true,JSON.stringify(receipt.blockers));
-assert.equal(receipt.expectedMopsKeysetComplete,false);
-assert.equal(receipt.noRevisionGapThroughCut,false);
-assert.equal(receipt.preParentEvidenceCutReady,false);
-assert.equal(receipt.sourceSemanticsCertified,false);
-assert.equal(receipt.monthShardCoverageComplete,false);
-assert.equal(receipt.technicalContinuityCertified,false);
-assert.equal(receipt.scheduleAdded,false);
-assert.equal(receipt.selectionAuthority,false);
-assert.equal(receipt.system1RuntimeUsed,false);
-
 const artifact={
   schemaVersion:"S2_S2_07_MOPS_EXACT_VERSION_POPULATION_V1_6_PHYSICAL",
   recordedDate:"2026-10-07",
@@ -219,6 +208,19 @@ const artifact={
   receipt,
 };
 await writeFile("/tmp/S2_07_MOPS_EXACT_VERSION_POPULATION_V1_6_PHYSICAL_20261007.json",JSON.stringify(artifact,null,2)+"\n","utf8");
+
+const failedDiagnostics=queryDiagnostics.filter(d=>
+  d.transportReady!==true
+  || d.annualQueriesReady!==true
+  || d.monthShardQueriesReady!==true
+  || d.monthShardNoPaginationHint!==true
+);
+if(failedDiagnostics.length){
+  console.log(JSON.stringify({
+    result:"S2_07_MOPS_EXACT_VERSION_POPULATION_V1_6_QUERY_DIAGNOSTIC_BLOCKERS",
+    failedDiagnostics,
+  },null,2));
+}
 
 console.log(JSON.stringify({
   result:"S2_07_MOPS_EXACT_VERSION_POPULATION_V1_6_COMPLETE",
@@ -238,3 +240,17 @@ console.log(JSON.stringify({
   noRevisionGapThroughCut:receipt.noRevisionGapThroughCut,
   nextGate:"MOPS_MONTH_SHARD_SOURCE_SEMANTICS_AND_COMPLETE_EXPECTED_KEYSET",
 },null,2));
+
+assert.equal(receipt.frozenEventCount,23);
+assert.equal(receipt.frozenUniqueSymbolCount,23);
+assert.equal(receipt.coveredSymbolCount,23);
+assert.equal(receipt.prospectiveExactVersionCaptureReady,true,JSON.stringify(receipt.blockers));
+assert.equal(receipt.expectedMopsKeysetComplete,false);
+assert.equal(receipt.noRevisionGapThroughCut,false);
+assert.equal(receipt.preParentEvidenceCutReady,false);
+assert.equal(receipt.sourceSemanticsCertified,false);
+assert.equal(receipt.monthShardCoverageComplete,false);
+assert.equal(receipt.technicalContinuityCertified,false);
+assert.equal(receipt.scheduleAdded,false);
+assert.equal(receipt.selectionAuthority,false);
+assert.equal(receipt.system1RuntimeUsed,false);
