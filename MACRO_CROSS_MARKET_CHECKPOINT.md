@@ -875,3 +875,15 @@ Maturity firewall:
 1. Ignore MC-201..MC-203 for PIT eligibility except as a documented clock-error correction trail.
 2. Future receipts must obtain the runtime clock from a verified execution source before any source-time comparison.
 3. Continue H.4.1 2026-10-08 prospective schedule lane and CBC BOP prospective lane unchanged.
+
+
+## 2026-10-06 endpoint-divergence continuation — MC-208..MC-211
+- MC-208: institution identity alone is insufficient provenance; macro receipts must bind concrete endpoint/version.
+- MC-209: current official Treasury annual table exposes 2026-10-05 yields, but later observation is only an availability upper bound and cannot be backdated to Taiwan 2026-10-05 18:10.
+- MC-210: Fed calendar schedules H.15 Oct-6 16:15 ET and H.4.1 Oct-8 16:30 ET; schedule identity is not realization identity.
+- MC-211: cross-market join contract requires source family + endpoint/version + reference date + schedule + actual publication/availability when observed + observedAt + firstEligibleTaiwanDecision. Unknown publication stays UNKNOWN.
+- Evidence: `research/room09_d12_d13_source_endpoint_divergence_20261006_v0_1.md`.
+- D13 remains 41.1%; outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation after MC-211
+Capture actual H.15 Oct-6 and H.4.1 Oct-8 publication endpoints only after verified release; append observedAt and firstEligibleTaiwanDecision; keep schedule receipts immutable and never backdate from source date.
