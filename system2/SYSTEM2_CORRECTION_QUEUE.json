@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-06T21:12:49+08:00",
+  "updatedAt": "2026-10-06T21:47:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -16,7 +16,7 @@
       ],
       "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "canonicalRequirement": "Physically populate and verify staged official 2017-present Taiwan-equity daily history before claiming complete full-market historical coverage/replay.",
-      "observedProblem": "Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE. The prior 2021 TPEx D1 free-tier quota blocker was cleared by fresh run #18, which completed the annual cold backfill and immutable storage verification. Physical verification now blocks 2021 TPEx on an upstream official-source revision concentrated on 2021-01-14: 780 matched source-row hashes changed, including 698 canonical A1 value changes and 82 source-revision-only rows. Cold/fresh row counts remain identical at 191643 with zero missing/extra keys, and 795/795 R2 byte verification passes. 2021 TPEx therefore remains explicitly BLOCKED rather than accepted; immutable cold history must not be overwritten. CORR-001 stays open for revision-lineage handling, later market-years, the 2026 incremental path, and final full-market PIT replay.",
+      "observedProblem": "Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE and 2022 TWSE. 2021 TPEx remains explicitly BLOCKED on an official-source canonical A1 revision concentrated on 2021-01-14; immutable cold history is preserved and must not be overwritten. CORR-001 stays open for that revision-lineage work, later market-years, the 2026 incremental path, and final full-market PIT replay.",
       "evidence": [
         "SYSTEM2_CHECKPOINT run 36545375167 failed before annual ingest",
         "SYSTEM2_CHECKPOINT requires repaired 2017 TWSE rerun before TPEx",
@@ -86,7 +86,13 @@
         "2021 TPEx source revision facts: sourceRowHashMismatchCount=780, canonicalA1ValueMismatchCount=698, sourceRevisionOnlyCount=82, sourceVersionState=SOURCE_REVISION_WITH_CANONICAL_A1_CHANGE.",
         "The 100 retained canonical mismatch samples all differ in volumeShares/tradeValue/transactions while sampled OHLC/change remain stable; this is sample evidence only, not an exhaustive all-698 field claim.",
         "Durable revision blocker evidence: system2/evidence/S2_HISTORICAL_TPEX_2021_REVISION_BLOCKER_V0_1.json.",
-        "Coverage matrix now records 2021 TPEx as BLOCKED_SOURCE_REVISION_CANONICAL_A1_CHANGE; the prior D1 quota blocker is preserved as resolved historical provenance."
+        "Coverage matrix now records 2021 TPEx as BLOCKED_SOURCE_REVISION_CANONICAL_A1_CHANGE; the prior D1 quota blocker is preserved as resolved historical provenance.",
+        "2022 TWSE run 37467099680 (#19) completed SUCCESS on head 507fdd83ad9df9b3703cbc65e8940dda6b0c2662 with confirmed workflow inputs year=2022 market=TWSE.",
+        "2022 TWSE storage verification PASS: COMPLETE receipt, 985 packs, 237941 bars, 985/985 R2 HEAD and byte-GET SHA checks.",
+        "2022 TWSE fresh official reconciliation PASS: 246 trading dates, 237941 cold rows == 237941 fresh official rows, 0 missing-from-cold, 0 absent-from-fresh, 0 source-row-hash mismatch, 0 canonical A1 mismatch; sourceVersionState STABLE.",
+        "2022 TWSE historical-universe denominator 238640 versus 237941 actual bars leaves 699 explicit UNKNOWN_SYMBOL_SESSION_GAP rows; data coverage PASS, replay readiness PARTIAL.",
+        "2022 TWSE physical evidence: system2/evidence/S2_HISTORICAL_TWSE_2022_PHYSICAL_VERIFICATION_V0_1.json; artifact 11416932962 digest sha256:4718df9b1232cbe7e359a9ea2bdf9a31f03cd9574d744eaedd502293a65baddd.",
+        "2022 TWSE System1 production isolation PASS; no System1 Formal Core/runtime mutation."
       ],
       "riskIfUnfixed": "Creates false-completion/evidence-coverage risk for multi-year replay, factor validation, regime robustness and strategy backtesting.",
       "requiredCorrection": [
@@ -149,7 +155,8 @@
         "Historical cold-pack resume semantics preserve immutable partial state: existing R2 objects are hash-checked, existing manifests are immutable-compared, duplicate logical keys are rejected, and completed receipts verify before fast-path return",
         "2021 TPEx must be fresh-dispatched after free-tier reset; partial cold history must not be deleted or rewritten",
         "2021 TPEx current cold schema intentionally preserves one immutable manifest per market/symbol/year/price_space via UNIQUE(market,symbol,year,price_space); revised canonical data cannot silently overwrite the accepted cold capture.",
-        "DATA_LANE disposition is fail-closed: preserve 2021 TPEx as an explicit blocked market-year while revision-lineage/as-of semantics are engineered; continue later market-years under the correction criterion that each year may be completed or explicitly blocked/deferred."
+        "DATA_LANE disposition is fail-closed: preserve 2021 TPEx as an explicit blocked market-year while revision-lineage/as-of semantics are engineered; continue later market-years under the correction criterion that each year may be completed or explicitly blocked/deferred.",
+        "Annual continuation may proceed to 2022 TPEx while 2021 TPEx remains explicit BLOCKED, because CORR-001 acceptance permits each later market-year to be completed or explicitly blocked/deferred."
       ],
       "verificationEvidence": [
         "Run 37197090867 migrate/backfill/physical verify/artifact upload/System1 isolation all SUCCESS",
