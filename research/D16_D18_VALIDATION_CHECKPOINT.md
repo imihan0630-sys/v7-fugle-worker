@@ -2553,3 +2553,100 @@ Exact next:
 5. first genuine V8.19 post-deploy C1 session must be read back without historical synthesis;
 6. if System2 SDA-022 fingerprints or physical NC-T01 lands first, validate T06~T16 instead;
 7. economic outcomes remain CLOSED.
+
+
+## 2026-10-07 SDA-016 V8.20 runtime accepted / first scheduled date ineligible
+
+New durable validation:
+- `research/SDA016_ROOM11_V820_RUNTIME_FIRST_SCHEDULED_READBACK_VALIDATION_20261007_V0_1.md`;
+- `research/SDA016_ROOM11_V820_RUNTIME_FIRST_SCHEDULED_READBACK_VALIDATION_20261007_V0_1.json`.
+
+### V8.20 Class-B runtime
+
+PR #680:
+`1bd9e05d730f2f7c5909a52502837eabd2bb111f`.
+
+Production runtime:
+`8.20.0-formal-c1-binding-ledger`.
+
+Exact-head CI:
+- 37479305244 PASS;
+- 37479305145 PASS;
+- 37479305270 PASS;
+- 37479305394 PASS.
+
+Post-merge:
+- 37483896567 Production deploy PASS;
+- 37483896007 regression PASS.
+
+Engineering runtime oracle status:
+- T41 ENGINEERING_RUNTIME_PASS;
+- T42 ENGINEERING_RUNTIME_PASS;
+- T43 PASS_PRESERVED;
+- T44 ENGINEERING_RUNTIME_PASS;
+- T45 ENGINEERING_RUNTIME_PASS;
+- T46 ENGINEERING_RUNTIME_PASS;
+- T47 ENGINEERING_RUNTIME_PASS;
+- T48 OPEN_GENERATION_SET_FINALIZATION_PENDING.
+
+Do not equate these engineering passes with a genuine prospective Formal↔C1 sample.
+
+### First scheduled prospective evidence attempt
+
+Workflow run:
+`37495670280`.
+
+Artifact:
+`11426824056 / system1-c1-evidence-37495670280`.
+
+ZIP digest:
+`sha256:29d7659e2451188a52de5c3631e4088a4eedbaa0f3a3da235fffbf9ba7ad3967`.
+
+Only artifact file:
+`system1-c1-readiness.json`.
+
+Facts:
+- scanDate 2026-10-06;
+- category `FORMAL_SCAN_NOT_CONFIRMED`;
+- verificationFailure `C1_GENERATION_NOT_FOUND`;
+- mayCountAsZeroPick=false;
+- eligibleForResearch=false;
+- formalScanDate=2026-09-29;
+- formalPipelineComplete=false;
+- institutionReady=true;
+- qualityReady=false;
+- missingQuality=[FINANCIAL, QUARTER_EPS].
+
+Admission disposition:
+`INELIGIBLE_PARENT_MISSING`.
+
+Genuine Formal↔C1 binding sample count remains 0.
+
+PR #700 establishes read-only collection/validation plumbing only:
+`GENUINE_READBACK_COLLECTION_PIPELINE_READY / GENUINE_BINDING_RECEIPT_VERIFIED_FALSE`.
+
+### Current SDA-016 continuation
+
+Still open:
+- T48 same-session generation-set finalization;
+- first legitimate genuine Formal↔C1 binding receipt;
+- shared System1/System2 holdout-consumption authority;
+- partial decision-date / outcome-footprint accounting;
+- release/transitive contamination lineage;
+- admission/maturity missingness and positivity;
+- multi-horizon family identity;
+- remaining V0.5 blockers;
+- Room00 closure.
+
+No maturity change:
+D16 = 60%.
+D18 = 52%.
+Formal Core LOCKED.
+
+Exact next:
+1. re-read latest main and queue;
+2. next legitimate post-deploy session with a verified Formal scan: inspect C1 generation + exact binding receipt without historical synthesis;
+3. if a valid genuine binding appears, validate it against scanDate/decisionAt/runtime/source SHA/content digest/universe digest/population/origin;
+4. T48 stays open until a separate generation-set finalization receipt exists;
+5. if System2 SDA-022 fingerprints or NC-T01 land first, switch to S22-T06~T16;
+6. economic outcomes remain CLOSED.
