@@ -165,3 +165,14 @@
 - Pre-V8.19 generations remain `LEGACY_NO_SCAN_ORIGIN`; no historical origin is inferred or backfilled.
 - Implementation checkpoint: `research/SYSTEM1_C1_SCAN_ORIGIN_GENERATION_INVENTORY_IMPLEMENTATION_20261005.md`.
 - Engineering / PR verification is authorized. Concrete merge and Production deployment require separate owner approval.\n
+
+## 19. V8.20.0｜Formal→C1 Authoritative Binding Ledger（Class-B candidate）
+
+- Runtime candidate: `8.20.0-formal-c1-binding-ledger`.
+- Owner 明確批准 Class-B engineering implementation on 2026-10-06；Formal Core 維持 LOCKED。
+- 新增 append-only D1 Formal-decision ↔ exact immutable C1-generation provenance ledger 與 protected read-only API。
+- 本功能不修改 A/B、Formal comparator、Top6/3+3、資金、15 分 K、BUY/ADD/REDUCE/SELL/STOP、monitoring、push、order，也不修改 System2。
+- Provider call delta = 0；binding failure 只阻擋 research evidence，不回滾 Formal business path。
+- 歷史缺失 binding 不回填；禁止 latest-generation、inventory ordinal、selected-set equality 推測 parent。
+- Implementation checkpoint: `research/SYSTEM1_FORMAL_C1_BINDING_IMPLEMENTATION_20261006.md`.
+- Engineering / PR verification 已授權；具體 PR merge 與 Production deployment 仍須另行 owner approval。
