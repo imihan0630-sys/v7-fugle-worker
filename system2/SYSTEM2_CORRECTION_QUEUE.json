@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-06T20:54:24+08:00",
+  "updatedAt": "2026-10-06T21:01:27+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -764,6 +764,71 @@
       "updatedAt": "2026-10-06T20:54:24+08:00",
       "verifiedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "verifiedAt": "2026-10-06T20:54:24+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261006-003",
+      "createdAt": "2026-10-06T21:01:27+08:00",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "title": "Candidate Board presents monitored bounded rows as candidates without resolvable strategy identity",
+      "affectedScope": [
+        "S2-16 Candidate Board",
+        "S2-16 Decision Workspace monitored-row semantics",
+        "strategy attribution"
+      ],
+      "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "canonicalRequirement": "Until S2-07 exposes a real frozen daily candidate/read API, bounded resonance/pool rows may be reused only as monitored rows. They must not be presented as formally selected candidates, and strategy filtering/labels must not claim strategy attribution the read path cannot resolve.",
+      "observedProblem": "terminal_page.mjs populates Candidate Board from resonance rows and then pool fallback even when S2-07 formal candidates are unavailable, despite copy saying the board will remain empty. strategyOf() ignores pool strategyMemberships while the resonance read model carries no strategy identity, so monitored rows can appear as candidate rows with UNRESOLVED_STRATEGY and strategy tabs cannot reliably deliver the claimed per-strategy separation.",
+      "evidence": [
+        "SYSTEM2_INSTITUTIONAL_TERMINAL_IA_V0_1.md allows bounded resonance/pool reuse only as monitored rows and forbids relabeling diagnostics as formally selected candidates",
+        "IA next wiring step is S2-07 frozen daily candidate/read API -> Candidate Board + Decision Card",
+        "terminal_page.mjs candidateRows() returns resonance rows then pool rows even when formal candidate API is absent",
+        "terminal_page.mjs strategyOf() ignores strategyMemberships and falls back to UNRESOLVED_STRATEGY",
+        "daily_resonance_read_model_v0_1.mjs does not expose strategy identity",
+        "daily_resonance_integration_v0_1.mjs carries pool strategyMemberships upstream",
+        "institutional terminal tests do not cover candidate fallback/strategy identity boundaries"
+      ],
+      "riskIfUnfixed": "Users can interpret monitor-only bounded rows as formal System2 strategy candidates before candidate authority exists, while the UI simultaneously implies per-strategy attribution that the current data path cannot resolve.",
+      "requiredCorrection": [
+        "separate formal candidate rows from monitor-only resonance/pool rows",
+        "keep formal Candidate Board pending/empty until authorized S2-07 candidate data exists or visibly segregate monitor-only rows",
+        "do not use UNRESOLVED_STRATEGY rows as resolved strategy candidates",
+        "if monitor strategy provenance is shown, preserve it only as monitor/pool provenance",
+        "do not claim per-strategy candidate filtering without canonical candidate strategy identity",
+        "preserve candidate-vs-monitor distinction in Decision Workspace",
+        "add regression tests for source/strategy attribution boundaries",
+        "preserve all resonance/strategy/ranking/capacity/trading/System1 protected boundaries"
+      ],
+      "acceptanceCriteria": [
+        "resonance/pool fallback rows are no longer presented as formal candidates",
+        "formal Candidate Board is visibly pending/empty until authorized candidate data exists or monitor rows are visibly segregated",
+        "strategy filtering does not rely on UNRESOLVED_STRATEGY or promote monitor provenance into candidate authority",
+        "monitor strategy provenance remains explicitly monitor-only if displayed",
+        "Decision Workspace does not upgrade monitored row selection into formal candidate/frozen-decision readiness",
+        "regression tests protect these boundaries",
+        "no protected strategy/trading authority changes"
+      ],
+      "protectedBoundaries": [
+        "S2-07 assessor/frozen-candidate authority",
+        "strategy logic",
+        "strategy contracts/preregistration",
+        "ranking/capacity",
+        "resonance formula/state machine",
+        "final/live selection authority",
+        "notification/push",
+        "capital/orders",
+        "System1 Formal Core"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "BUILD_LANE",
+      "assignedLane": "BUILD_LANE",
+      "assignedRoom": "System 2｜建置總控室",
+      "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-06T21:01:27+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
