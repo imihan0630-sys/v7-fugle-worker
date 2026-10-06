@@ -1015,3 +1015,87 @@ No maturity change:
 D16 = 60%.
 D18 = 52%.
 Formal Core LOCKED.
+
+
+## 2026-10-07 prospective opportunity coverage + scheduler provenance
+
+New canonical D16 artifacts:
+- `research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_1.md`;
+- `research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_1.json`;
+- superseding scheduler-provenance extension:
+  - `research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_2.md`;
+  - `research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_2.json`;
+- canonical-test crosswalk:
+  - `research/SDA016_D16_SUPPLEMENTAL_GOVERNANCE_CROSSWALK_20261007_V0_1.json`.
+
+### New denominator distinction
+
+Attempt ledger is insufficient for silent no-run dates.
+
+Promotion-grade prospective accounting now separates:
+- expectedTradingOpportunityN;
+- operationalAttemptOneObservedN;
+- prospectiveEvidenceAdmissibleN.
+
+Expected opportunities must be generated from a preregistered market-date window plus market-session identity, independent of observed runs/artifacts.
+
+### Current System1 schedule semantic risk
+
+Current workflow:
+`.github/workflows/system1-c1-evidence.yml`
+
+has:
+- UTC cron `10 16 * * 1-5`;
+- local interpretation = 00:10 Asia/Taipei Tuesday-Saturday;
+- default blank scan date = `previousTaipeiDate()`;
+- `previousTaipeiDate()` is previous Taipei calendar date, not guaranteed official previous Taiwan session.
+
+Therefore:
+cron execution count is not the research-opportunity denominator.
+
+### Market-calendar provenance
+
+Repo already contains a concrete unscheduled-closure counterexample:
+2026-07-10 was a legitimate market closure but was absent from the preloaded 2026 planned-holiday calendar, causing historical expected-session misclassification.
+
+Therefore opportunity rows require versioned market-session provenance and append-only correction lineage.
+
+Do not silently rewrite trading/non-trading identity after later emergency-closure evidence arrives.
+
+### First scheduled attempt as coverage anchor
+
+Borrowing the already-frozen System2 coverage-integrity principle:
+- first scheduled attempt for an opportunity is immutable coverage anchor;
+- later rerun remains diagnostic;
+- manual/push success does not repair a missing or failed scheduled anchor;
+- later success cannot delete the first failure.
+
+### Scheduler provenance
+
+Official GitHub Actions documentation rechecked 2026-10-07:
+- schedule events can be delayed under high load;
+- queued scheduled jobs may be dropped under sufficiently high load;
+- schedule triggers depend on workflow presence on default branch;
+- scheduled run uses the latest default-branch commit.
+
+Therefore:
+`NO_SCHEDULED_ATTEMPT_OBSERVED`
+is an observation, not an identified root cause.
+
+It may still count as a coverage gap while causal state remains unknown.
+
+### Canonical-oracle count unchanged
+
+New supplemental controls are mapped back to existing:
+- SDA016-T28;
+- SDA016-T31;
+- SDA016-T38;
+- SDA016-T48.
+
+Canonical SDA016 V0.5 remains exactly 58 blocking tests.
+No test-count inflation.
+
+No maturity change.
+D16 = 60%.
+D18 = 52%.
+Formal Core LOCKED.
