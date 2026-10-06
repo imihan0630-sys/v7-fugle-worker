@@ -43,22 +43,7 @@ jobs:
             system2/tests/s2_07_official_reference_availability_observer_v1_3.test.mjs \
             system2/scripts/probe_s2_07_official_reference_availability_observer_readonly_v1_3.mjs
           then
-            node --input-type=module - <<'NODE'
-              import fs from "node:fs";
-              const path = "system2/evidence/S2_07_OFFICIAL_REFERENCE_AVAILABILITY_OBSERVER_V1_3_PHYSICAL_20261007.json";
-              const receipt = JSON.parse(fs.readFileSync(path, "utf8"));
-              if (receipt?.workflow?.conclusion !== "success") throw new Error("accepted physical receipt is not successful");
-              if (receipt?.workflow?.validatedCodeHeadCommit !== "2994fc905071660a6ace324e1db28556482b4c37") {
-                throw new Error("accepted physical receipt code-head mismatch");
-              }
-              if (receipt?.prospectiveObservation?.evidenceClass !== "PROSPECTIVE_EXACT_VERSION_OBSERVER") {
-                throw new Error("accepted physical receipt evidence class mismatch");
-              }
-              if (receipt?.cutoffChecks?.historical4806AvailabilityByCutoffProven !== false) {
-                throw new Error("accepted physical receipt lost historical fail-closed boundary");
-              }
-              console.log("S2-07 V1.3 accepted physical receipt REUSED: core code/probe unchanged");
-            NODE
+            node -e 'const fs=require("node:fs");const p="system2/evidence/S2_07_OFFICIAL_REFERENCE_AVAILABILITY_OBSERVER_V1_3_PHYSICAL_20261007.json";const r=JSON.parse(fs.readFileSync(p,"utf8"));if(r?.workflow?.conclusion!=="success")throw new Error("accepted physical receipt is not successful");if(r?.workflow?.validatedCodeHeadCommit!=="2994fc905071660a6ace324e1db28556482b4c37")throw new Error("accepted physical receipt code-head mismatch");if(r?.prospectiveObservation?.evidenceClass!=="PROSPECTIVE_EXACT_VERSION_OBSERVER")throw new Error("accepted physical receipt evidence class mismatch");if(r?.cutoffChecks?.historical4806AvailabilityByCutoffProven!==false)throw new Error("accepted physical receipt lost historical fail-closed boundary");console.log("S2-07 V1.3 accepted physical receipt REUSED: core code/probe unchanged")'
           else
             node system2/scripts/probe_s2_07_official_reference_availability_observer_readonly_v1_3.mjs
           fi
