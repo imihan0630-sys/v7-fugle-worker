@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "S2_CORR_20261004_001_AUDIT_PROGRESS_V0_1",
+  "correctionDirective": "S2-CORR-20261004-001",
+  "auditedAt": "2026-10-07T07:16:00+08:00",
+  "auditRole": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "canonicalMainShaAtAudit": "34455da7f47016ee149ffeaa963f798251e9fe3d",
+  "scope": "Historical daily-market backfill / 2023 TPEx acceptance and canonical DATA_LANE synchronization",
+  "findingState": "PHYSICAL_ACCEPTANCE_CONFIRMED_CANONICAL_DATA_ARTIFACT_SYNC_PENDING",
+  "physicalAcceptance": {
+    "market": "TPEX",
+    "year": 2023,
+    "runId": 37537013825,
+    "runNumber": 24,
+    "runHeadSha": "608384f9638989c78d97475fe9417bbfdfa51ade",
+    "workflowConclusion": "success",
+    "inputsConfirmed": {
+      "year": 2023,
+      "market": "TPEX"
+    },
+    "migrate": "PASS",
+    "annualBackfill": "PASS_YEAR_BACKFILL_COMPLETE",
+    "physicalVerify": "PASS",
+    "artifactUpload": "PASS",
+    "system1Isolation": "PASS",
+    "officialSessions": 239,
+    "packs": 824,
+    "r2HeadVerified": "824/824",
+    "r2ByteGetVerified": "824/824",
+    "coldRows": 193327,
+    "freshOfficialRows": 193327,
+    "missingFromCold": 0,
+    "absentFromFresh": 0,
+    "sourceRowHashMismatchCount": 0,
+    "canonicalA1ValueMismatchCount": 0,
+    "sourceVersionState": "STABLE",
+    "historicalUniverseSize": 824,
+    "expectedBars": 193722,
+    "actualBars": 193327,
+    "unknownBars": 395,
+    "unexpectedBars": 0,
+    "structuralCoverageState": "PASS",
+    "rawCoverageState": "PASS",
+    "pitReadiness": "PASS_CONSERVATIVE_SESSION_FINALITY",
+    "dataCoverageState": "PASS",
+    "replayReadinessState": "PARTIAL",
+    "artifact": {
+      "id": 11448741341,
+      "name": "system2-historical-coverage-TPEX-2023",
+      "digest": "sha256:b69cc4faa66b236cbf3de3afa7807f64f4232ed7494dfb84a29a0c255ffbd4ee"
+    }
+  },
+  "canonicalDivergence": {
+    "historicalDataCheckpoint": "2023 TPEx durable acceptance not yet recorded at audit readback",
+    "marketYearCoverageMatrix": "TPEX 2023 still PENDING at audit readback",
+    "launchReadinessCheckpoint": "already records 2023_TPEX_RAW_A1_ACCEPTED_REPLAY_PARTIAL",
+    "interpretation": "Physical evidence is sufficient for raw A1 acceptance, but DATA_LANE-owned canonical historical checkpoint and coverage matrix have not yet been synchronized."
+  },
+  "correctionHandling": {
+    "newCorrectionCreated": false,
+    "reason": "The synchronization gap is inside the already-open HIGH directive S2-CORR-20261004-001 and does not justify a duplicate directive.",
+    "directiveStatusRemains": "FIX_IN_PROGRESS",
+    "nextDataLaneActions": [
+      "Freeze durable 2023 TPEx physical acceptance evidence under DATA_LANE.",
+      "Update SYSTEM2_HISTORICAL_DATA_CHECKPOINT.md with 2023 TPEx accepted/raw-A1 PASS/replay PARTIAL facts.",
+      "Update SYSTEM2_HISTORICAL_MARKET_YEAR_COVERAGE_MATRIX.json from PENDING to PASS_DATA_PARTIAL_REPLAY while preserving 395 UNKNOWN symbol-session gaps.",
+      "Then fresh-dispatch 2024 TWSE from latest main under the same physical acceptance standard.",
+      "Keep 2021 TPEx canonical source-revision/as-of blocker explicitly open in parallel."
+    ]
+  },
+  "protectedBoundaries": {
+    "system1FormalCore": "UNCHANGED",
+    "system1ProductionRuntime": "UNCHANGED",
+    "system2StrategyRankingAuthority": "UNCHANGED",
+    "productionPush": "UNCHANGED",
+    "capitalOrderBehavior": "UNCHANGED"
+  }
+}
