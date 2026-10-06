@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "S2_S2_07_EIGHT_LANE_MARKET_WIDE_SOURCE_CUT_V1_5_PHYSICAL_ACCEPTANCE",
+  "version": "1.5-RESEARCH",
+  "recordedDate": "2026-10-07",
+  "status": "PHYSICAL_PASS_EIGHT_LANE_SOURCE_CUT_READY",
+  "authoritativeExecution": {
+    "implementationPullRequest": 738,
+    "implementationMerge": "34455da7f47016ee149ffeaa963f798251e9fe3d",
+    "workflow": "System2 S2-07 Eight-Lane Market-Wide Source Cut V1.5 Readonly",
+    "runId": 37545155428,
+    "jobId": 112547281624,
+    "conclusion": "success",
+    "system2ResearchCiRunId": 37545155258,
+    "system2ResearchCiConclusion": "success",
+    "v8RegressionRunId": 37545155314,
+    "v8RegressionConclusion": "failure_preexisting_sda016_stale_assertion",
+    "artifactId": 11450381019,
+    "artifactDigest": "sha256:24f955376900366f929ec9739f42ea07fa6db1fc102ec5ce7ae7f00a265e6157"
+  },
+  "interval": {
+    "startDate": "2026-04-05",
+    "endDate": "2026-10-07"
+  },
+  "evidenceCutoffAt": "2026-10-06T23:12:23.799Z",
+  "sourceCut": {
+    "state": "EIGHT_LANE_MARKET_WIDE_SOURCE_CUT_READY",
+    "sourceCutId": "S2-8LANE:55289262efdd48b2004494d86979873207e256ef645bea2a5d358b9fafed606d",
+    "sourceLaneManifestHash": "1e8e4db2699a0e214123087c08ce390af85c547be71229b53ff6ea552f57b863",
+    "sourceLaneCount": 8,
+    "eligibleSourceLaneCount": 8,
+    "twseLaneCount": 4,
+    "tpexLaneCount": 4,
+    "blockers": []
+  },
+  "sourceLanes": [
+    {
+      "sourceId": "TWSE_EX_RIGHT_DIVIDEND_ACTUAL",
+      "exchange": "TWSE",
+      "payloadHash": "be98d668ae18434994be4e7ff5c670ab2df9385c17ab7f45e8e6c88d4efebd8e",
+      "observedAt": "2026-10-06T23:12:19.596Z",
+      "rowCount": 1131,
+      "ordinarySymbolCount": 836,
+      "responseRangeVerified": true
+    },
+    {
+      "sourceId": "TWSE_CAPITAL_REDUCTION_REFERENCE",
+      "exchange": "TWSE",
+      "payloadHash": "168c56cddfc311f262a2f9d4d3e6d71412a84daf0c894646c02f09f50b797551",
+      "observedAt": "2026-10-06T23:12:20.279Z",
+      "rowCount": 10,
+      "ordinarySymbolCount": 10,
+      "responseRangeVerified": true
+    },
+    {
+      "sourceId": "TWSE_PAR_VALUE_CHANGE_REFERENCE",
+      "exchange": "TWSE",
+      "payloadHash": "590d2d39055e0fb07d6ea397336c681a7df43cf913ae0c6952b791316464963a",
+      "observedAt": "2026-10-06T23:12:20.727Z",
+      "rowCount": 1,
+      "ordinarySymbolCount": 1,
+      "responseRangeVerified": true
+    },
+    {
+      "sourceId": "TPEX_EX_RIGHT_DIVIDEND_ACTUAL",
+      "exchange": "TPEX",
+      "payloadHash": "3e1190eb6c374b40e194e17fba97d4d6919c89f9d5ced65619ed05ce6cd54499",
+      "observedAt": "2026-10-06T23:12:21.929Z",
+      "rowCount": 936,
+      "ordinarySymbolCount": 614,
+      "responseRangeVerified": true
+    },
+    {
+      "sourceId": "TPEX_CAPITAL_REDUCTION_REFERENCE",
+      "exchange": "TPEX",
+      "payloadHash": "0e612e02e2e761a8b1a6789240fff43adb5ef1e5c7022339fcb2cbf80f50a932",
+      "observedAt": "2026-10-06T23:12:22.615Z",
+      "rowCount": 11,
+      "ordinarySymbolCount": 11,
+      "responseRangeVerified": true
+    },
+    {
+      "sourceId": "TPEX_PAR_VALUE_CHANGE_REFERENCE",
+      "exchange": "TPEX",
+      "payloadHash": "17c578dba0384f788ea8f0a5267d003fab86b0365b98b749b1419df2086600d6",
+      "observedAt": "2026-10-06T23:12:22.786Z",
+      "rowCount": 4,
+      "ordinarySymbolCount": 4,
+      "responseRangeVerified": true
+    },
+    {
+      "sourceId": "TWSE_DAILY_MATERIAL_INFORMATION",
+      "exchange": "TWSE",
+      "payloadHash": "a90e36de7bc86bc226dfc8b8b7e3b7eac542479c3e94d832bde0bc3a436bc4a9",
+      "observedAt": "2026-10-06T23:12:23.633Z",
+      "rowCount": 54,
+      "ordinarySymbolCount": 46,
+      "responseRangeVerified": false
+    },
+    {
+      "sourceId": "TPEX_DAILY_MATERIAL_INFORMATION",
+      "exchange": "TPEX",
+      "payloadHash": "8ea23ffe476e81a8204156616d6aa2fe7a153fa8275164739400d90f1e68a522",
+      "observedAt": "2026-10-06T23:12:23.798Z",
+      "rowCount": 29,
+      "ordinarySymbolCount": 21,
+      "responseRangeVerified": false
+    }
+  ],
+  "remainingGates": {
+    "expectedMopsKeysetComplete": false,
+    "noRevisionGapThroughCut": false,
+    "noRevisionGapThroughCutCertified": false,
+    "preParentEvidenceCutReady": false,
+    "symbolSessionCompletenessCertified": false,
+    "technicalContinuityCertified": false
+  },
+  "authority": {
+    "scheduleAdded": false,
+    "historyMutationPerformed": false,
+    "selectionAuthority": false,
+    "finalSelectionEnabled": false,
+    "livePushEnabled": false,
+    "capitalImpact": false,
+    "orderImpact": false,
+    "system1RuntimeUsed": false,
+    "formalCoreImpact": false
+  },
+  "knownExternalRegression": {
+    "ticket": "SDA-016",
+    "failure": "test_sda016_formal_c1_binding_governance_sync_v0_1.mjs expected V0_5_58_TEST_ORACLE but main already exposes V820_PRODUCTION_VERIFIED_FIRST_SCHEDULED_DATE_INELIGIBLE_GENUINE_BINDING_PENDING_T48_OPEN_SHARED_AUTHORITY_PENDING",
+    "ownedByBuildLane": false,
+    "system2V15FilesImplicated": false
+  },
+  "nextBuildGate": "PROSPECTIVE_MOPS_EXACT_VERSION_POPULATION_AND_COMPLETE_EXPECTED_KEYSET"
+}

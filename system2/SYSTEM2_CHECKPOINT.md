@@ -2705,3 +2705,52 @@ Next exact BUILD_LANE continuation:
 4. freeze the complete expected MOPS keyset before parent cutoff;
 5. post-parent run bounded-complete MOPS reconciliation;
 6. only after `noRevisionGapThroughCut` passes bind symbol-session and technical-continuity receipts.
+
+## 2026-10-07 S2-07 Eight-Lane Market-Wide Source Cut V1.5 — PHYSICAL PASS
+
+Authoritative implementation:
+- PR #738 merged as `34455da7f47016ee149ffeaa963f798251e9fe3d`;
+- dedicated `System2 S2-07 Eight-Lane Market-Wide Source Cut V1.5 Readonly` run `37545155428` / job `112547281624`: PASS;
+- System2 Research CI run `37545155258`: PASS;
+- physical artifact `11450381019`, digest `sha256:24f955376900366f929ec9739f42ea07fa6db1fc102ec5ce7ae7f00a265e6157`;
+- V8 Regression `37545155314` reproduced only the already documented SDA-016 stale assertion and did not implicate any V1.5/System2 file.
+
+Physical source cut:
+- interval = 2026-04-05..2026-10-07;
+- evidenceCutoffAt = `2026-10-06T23:12:23.799Z` (2026-10-07 07:12:23.799 Asia/Taipei);
+- state = `EIGHT_LANE_MARKET_WIDE_SOURCE_CUT_READY`;
+- sourceCutId = `S2-8LANE:55289262efdd48b2004494d86979873207e256ef645bea2a5d358b9fafed606d`;
+- sourceLaneManifestHash = `1e8e4db2699a0e214123087c08ce390af85c547be71229b53ff6ea552f57b863`;
+- 8/8 lanes eligible; TWSE=4 / TPEx=4; blockers=[].
+
+Frozen lane results:
+- TWSE ex-right/dividend actual: 1,131 rows / 836 ordinary symbols / exact range PASS;
+- TWSE capital-reduction reference: 10 / 10 / exact range PASS;
+- TWSE par-value-change reference: 1 / 1 / exact range PASS;
+- TPEx ex-right/dividend actual: 936 / 614 / exact range PASS;
+- TPEx capital-reduction reference: 11 / 11 / exact range PASS;
+- TPEx par-value-change reference: 4 / 4 / exact range PASS;
+- TWSE daily material information: 54 rows / 46 ordinary symbols / whole-snapshot parser PASS;
+- TPEx daily material information: 29 rows / 21 ordinary symbols / whole-snapshot parser PASS.
+
+Boundary:
+- this closes the eight-lane whole-source snapshot gate only;
+- `expectedMopsKeysetComplete=false`;
+- `noRevisionGapThroughCut=false`;
+- `preParentEvidenceCutReady=false`;
+- symbol-session completeness=false;
+- technical continuity=false;
+- no scheduler/Cron, history mutation, selection/final-selection, push, capital or order authority;
+- System1 runtime unused and Formal Core unchanged.
+
+Durable evidence:
+`system2/evidence/S2_07_EIGHT_LANE_MARKET_WIDE_SOURCE_CUT_V1_5_PHYSICAL_20261007.json`.
+
+Next exact BUILD_LANE continuation:
+1. prospectively capture MOPS exact disclosure versions for the frozen event population;
+2. use exact-version row/content hashes, source-reported clock and first-observed clock;
+3. freeze the complete expected MOPS version-key set before the parent cutoff;
+4. bind V1.5 source-lane manifest + V1.4.1 MOPS version domain into the pre-parent evidence cut;
+5. after the parent, run bounded-complete MOPS reconciliation and require `noRevisionGapThroughCut=true`;
+6. only then bind symbol-session and technical-continuity receipts to genuine parent generations.
+
