@@ -1,0 +1,15 @@
+import assert from "node:assert/strict";
+import {classifyBookReceipt,referenceDistance,buildLineageDiagnostics,classifyContext} from "./pattern_anchored_vwap_live_liquidity_v0_1.mjs";
+let pass=0; const t=(n,f)=>{f();pass++;console.log("PASS",n);};
+const freeze="2026-10-06T10:00:00+08:00";
+t("AV11",()=>assert.equal(classifyBookReceipt({snapshotAt:"2026-10-06T09:59:00+08:00",sourceFetchedAt:"2026-10-06T09:59:00+08:00",predictorFreezeAt:freeze,freshnessState:"STALE",sessionMechanism:"CONTINUOUS",coverageComplete:true}).status,"BOOK_CONTEXT_STALE"));
+t("AV12",()=>assert.equal(classifyBookReceipt({snapshotAt:"2026-10-06T09:59:00+08:00",sourceFetchedAt:"2026-10-06T09:59:00+08:00",predictorFreezeAt:freeze,freshnessState:"FRESH",sessionMechanism:"CONTINUOUS",coverageComplete:false}).status,"DATA_BLOCKED"));
+t("AV13",()=>{const r=referenceDistance({referencePrice:102,lower:100,upper:104,tickSize:0.5,atr:2});assert.equal(r.referenceInsideZone,true);assert.equal(r.referenceDistancePrice,0);});
+t("AV14",()=>{const r=referenceDistance({referencePrice:110,lower:100,upper:104,tickSize:1,atr:3});assert.equal(r.referenceDistancePrice,6);assert.equal(r.referenceDistanceAtr,2);});
+t("AV15",()=>{const r=buildLineageDiagnostics({anchorLineage:"D01_STRUCTURAL_EVENT_ANCHOR",hasProfile:false,hasFreshBook:false});assert.equal(r.effectiveIndependentEvidenceCount,1);assert.equal(r.independentVoteAllowed,false);});
+t("AV16",()=>{const r=buildLineageDiagnostics({anchorLineage:"SESSION_MECHANIC_ANCHOR",hasProfile:false,hasFreshBook:true});assert.ok(r.informationRoots.includes("LIVE_ORDER_BOOK"));assert.equal(r.effectiveIndependentEvidenceCount,1);});
+t("AV17",()=>assert.ok(buildLineageDiagnostics({anchorLineage:"EXTERNAL_EVENT_ANCHOR"}).informationRoots.includes("EVENT_CLOCK")));
+t("AV18",()=>assert.equal(buildLineageDiagnostics({anchorLineage:"SESSION_MECHANIC_ANCHOR",hasProfile:true}).volumeProfileSharesTradeRoots,true));
+t("AV19",()=>assert.equal(classifyContext({hasStructure:true,hasVwap:true,hasFreshBook:true,evaluable:true}),"C5_STRUCTURE_VWAP_BOOK_COINCIDENT"));
+t("AV20",()=>assert.equal(classifyContext({hasStructure:true,evaluable:false}),"C6_CONTEXT_NOT_EVALUABLE"));
+console.log(`SUMMARY ${pass}/10 PASS`);

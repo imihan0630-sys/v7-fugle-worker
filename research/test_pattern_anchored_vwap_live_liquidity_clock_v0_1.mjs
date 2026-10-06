@@ -1,0 +1,15 @@
+import assert from "node:assert/strict";
+import {classifyAnchor,validateVwapReceipt,classifyBookReceipt} from "./pattern_anchored_vwap_live_liquidity_v0_1.mjs";
+let pass=0; const t=(n,f)=>{f();pass++;console.log("PASS",n);};
+const freeze="2026-10-06T10:00:00+08:00";
+t("AV01",()=>{const r=classifyAnchor({anchorLineage:"D01_STRUCTURAL_EVENT_ANCHOR",anchorAt:"2026-10-06T09:15:00+08:00",anchorKnownAt:"2026-10-06T09:15:00+08:00",predictorFreezeAt:freeze});assert.equal(r.status,"VALID");assert.equal(r.structuralDependence,true);});
+t("AV02",()=>assert.equal(classifyAnchor({anchorLineage:"OUTCOME_SELECTED_ANCHOR",outcomeSelected:true}).status,"PROHIBITED"));
+t("AV03",()=>assert.equal(classifyAnchor({anchorLineage:"EXTERNAL_EVENT_ANCHOR",anchorAt:"2026-10-06T09:00:00+08:00",anchorKnownAt:"2026-10-06T10:05:00+08:00",predictorFreezeAt:freeze}).status,"POST_HOC_NOT_ELIGIBLE"));
+t("AV04",()=>{const r=validateVwapReceipt({kind:"PROVIDER_AVERAGE_PRICE_PROXY"});assert.equal(r.status,"VALID_PROXY");assert.equal(r.exactVwap,false);});
+t("AV05",()=>assert.equal(validateVwapReceipt({kind:"EXACT_SESSION_VWAP",sourceSemanticsVerified:false,coverageComplete:true,flowStart:"2026-10-06T09:00:00+08:00",flowEnd:"2026-10-06T09:59:00+08:00",predictorFreezeAt:freeze}).status,"DATA_BLOCKED"));
+t("AV06",()=>assert.equal(validateVwapReceipt({kind:"EXACT_SESSION_VWAP",sourceSemanticsVerified:true,coverageComplete:false,flowStart:"2026-10-06T09:00:00+08:00",flowEnd:"2026-10-06T09:59:00+08:00",predictorFreezeAt:freeze}).reason,"TRADE_FLOW_COVERAGE_INCOMPLETE"));
+t("AV07",()=>assert.equal(validateVwapReceipt({kind:"ANCHORED_VWAP_CANDIDATE",syntheticFromOhlcv:true}).status,"PROHIBITED"));
+t("AV08",()=>assert.equal(validateVwapReceipt({kind:"ANCHORED_VWAP_CANDIDATE",sourceSemanticsVerified:true,coverageComplete:true,flowStart:"2026-10-06T09:15:00+08:00",flowEnd:"2026-10-06T10:05:00+08:00",predictorFreezeAt:freeze}).status,"POST_HOC_NOT_ELIGIBLE"));
+t("AV09",()=>assert.equal(validateVwapReceipt({kind:"ANCHORED_VWAP_CANDIDATE",sourceSemanticsVerified:true,coverageComplete:true,flowStart:"2026-10-06T09:15:00+08:00",flowEnd:"2026-10-06T09:59:00+08:00",predictorFreezeAt:freeze}).status,"VALID_EXACT"));
+t("AV10",()=>assert.equal(classifyBookReceipt({snapshotAt:"2026-10-06T10:01:00+08:00",sourceFetchedAt:"2026-10-06T10:01:00+08:00",predictorFreezeAt:freeze,freshnessState:"FRESH",sessionMechanism:"CONTINUOUS",coverageComplete:true}).status,"POST_HOC_NOT_ELIGIBLE"));
+console.log(`SUMMARY ${pass}/10 PASS`);
