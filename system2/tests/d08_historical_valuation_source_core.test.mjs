@@ -5,7 +5,7 @@ import {
   buildOfficialHistoricalA6ValuationUrlsV0_1,
   fetchOfficialHistoricalA6ValuationDateV0_1,
 } from "../runtime/official_historical_a6_valuation_v0_1.mjs";
-import { d08TwseTableObjectsV0_1,parseD08TwseDateV0_1,buildD08SemanticUniverseIdentityV0_1 } from "../runtime/d08_twse_historical_universe_source_v0_1.mjs";
+import { d08TwseTableObjectsV0_1,parseD08TwseDateV0_1,buildD08SemanticUniverseIdentityV0_1,reconcileD08TwseCurrentListingStartsV0_1 } from "../runtime/d08_twse_historical_universe_source_v0_1.mjs";
 
 const fields=["證券代號","證券名稱","收盤價","殖利率(%)","股利年度","本益比","股價淨值比","財報年/季"];
 const p=parseOfficialHistoricalA6ValuationPayloadV0_1({
@@ -42,6 +42,31 @@ assert.deepEqual(
   [{"公司代號":"1101","股票上市買賣日期":"51/02/09"}]
 );
 assert.equal(parseD08TwseDateV0_1("115/09/01"),"2026-09-01");
+
+const reconciledCurrent=reconcileD08TwseCurrentListingStartsV0_1([{
+  market:"TWSE",symbol:"6873",companyName:"泓德能源",listingDate:"2024-09-26",
+  memberState:"CURRENT",sourceRowHash:"CURRENT-6873",
+}],[{
+  symbol:"6873",companyName:"泓德能源-創",listingDate:"2023-03-06",
+  raw:{公司代號:"6873",公司簡稱:"泓德能源-創",股票上市買賣日期:"112.03.06"},
+}]);
+assert.equal(reconciledCurrent.adjustedCount,1);
+assert.deepEqual(reconciledCurrent.adjustedSymbols,["6873"]);
+assert.equal(reconciledCurrent.rows[0].listingDate,"2023-03-06");
+assert.equal(reconciledCurrent.rows[0].listingDateReconciledFrom,"2024-09-26");
+assert.equal(reconciledCurrent.rows[0].listingDateEvidenceSource,"TWSE_NEWLISTING_EARLIEST_CONTINUOUS_LISTING");
+assert.match(reconciledCurrent.rows[0].sourceId,/NEWLISTING_EARLIEST/);
+
+const codeReuseGuard=reconcileD08TwseCurrentListingStartsV0_1([{
+  market:"TWSE",symbol:"6873",companyName:"不同公司",listingDate:"2024-09-26",
+  memberState:"CURRENT",sourceRowHash:"CURRENT-DIFFERENT",
+}],[{
+  symbol:"6873",companyName:"泓德能源-創",listingDate:"2023-03-06",
+  raw:{公司代號:"6873",公司簡稱:"泓德能源-創",股票上市買賣日期:"112.03.06"},
+}]);
+assert.equal(codeReuseGuard.adjustedCount,0,"same symbol with different company identity must not be stitched");
+assert.equal(codeReuseGuard.rows[0].listingDate,"2024-09-26");
+
 console.log(JSON.stringify({ok:true,guard:"D08_A6_AND_UNIVERSE_SOURCE_CORE",formalCoreImpact:false}));
 
 
