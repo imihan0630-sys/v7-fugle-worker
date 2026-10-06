@@ -12,20 +12,27 @@ const dashboard=await readFile(new URL("../shared-knowledge/STOCK_SELECTION_AUDI
 
 const issue=queue.issues.find(x=>x.id==="SDA-016");
 assert.ok(issue,"SDA-016 missing");
-assert.match(issue.readiness,/V0_5_58_TEST_ORACLE/);
+assert.match(issue.readiness,/V820_PRODUCTION_VERIFIED|V0_5_58_TEST_ORACLE/);
 assert.ok([
   "CLASS_A_CONTRACT_FROZEN_CLASS_B_IMPLEMENTATION_PENDING",
   "CLASS_B_IMPLEMENTED_VALIDATION_IN_PROGRESS",
   "CLASS_B_IMPLEMENTED_EXACT_HEAD_CI_PASS_MERGE_DEPLOY_APPROVAL_PENDING",
   "CLASS_B_MERGED_DEPLOYMENT_PENDING",
-  "PRODUCTION_AUTHORITY_ESTABLISHED"
+  "PRODUCTION_AUTHORITY_ESTABLISHED",
+  "V820_PRODUCTION_VERIFIED_GENUINE_BINDING_PENDING"
 ].includes(issue.formalC1Binding?.status),"unexpected Formal-C1 governance lifecycle");
 assert.equal(issue.formalC1Binding?.contract,"research/sda016_system1_formal_c1_binding_contract_v0_1.json");
+assert.equal(issue.formalC1Binding?.productionDeployRun,37483896567);
+assert.equal(issue.formalC1Binding?.productionRegressionRun,37483896007);
+assert.equal(issue.formalC1Binding?.firstScheduledEvidenceRun,37495670280);
+assert.match(issue.formalC1Binding?.genuineBindingReadback||"",/INELIGIBLE.*GENUINE_PENDING/);
+assert.match(issue.formalC1Binding?.t48||"",/OPEN/);
+assert.equal(issue.formalC1Binding?.formalCoreImpact,"NONE");
 assert.ok([
-  "PENDING_CLASS_B","IMPLEMENTED_UNMERGED","MERGED_NOT_DEPLOYED","PRODUCTION_AUTHORITY_ESTABLISHED"
+  "PENDING_CLASS_B","IMPLEMENTED_UNMERGED","MERGED_NOT_DEPLOYED","PRODUCTION_AUTHORITY_ESTABLISHED","MERGED_DEPLOYED_PRODUCTION_VERIFIED"
 ].includes(issue.formalC1Binding?.appendOnlyLedgerImplementation),"unexpected append-only ledger lifecycle");
 assert.ok([
-  "PENDING","CLASS_B_IMPLEMENTED_UNMERGED_NOT_PRODUCTION_AUTHORITY","CLASS_B_MERGED_NOT_DEPLOYED","PRODUCTION_AUTHORITY_ESTABLISHED"
+  "PENDING","CLASS_B_IMPLEMENTED_UNMERGED_NOT_PRODUCTION_AUTHORITY","CLASS_B_MERGED_NOT_DEPLOYED","PRODUCTION_AUTHORITY_ESTABLISHED","PRODUCTION_RUNTIME_ESTABLISHED_GENUINE_SAMPLE_PENDING"
 ].includes(issue.system1Engineering?.authoritativeFormalC1Ledger),"unexpected authoritative ledger lifecycle");
 
 assert.equal(contract.status,"CLASS_A_CONTRACT_FROZEN_CLASS_B_IMPLEMENTATION_PENDING");
@@ -40,11 +47,11 @@ assert.equal(registry.rules.sda016System1FormalC1BindingContract,
 assert.equal(registry.rules.sda016System1FormalC1BindingContractMachine,
   "research/sda016_system1_formal_c1_binding_contract_v0_1.json");
 
-assert.match(dashboard,/V0_5_58_TEST_ORACLE/);
+assert.match(dashboard,/V820_PRODUCTION_VERIFIED|V0_5_58_TEST_ORACLE/);
 assert.match(dashboard,/PR #675 merged the Class-A Formal→C1 binding contract/);
-assert.match(dashboard,/PENDING_CLASS_B/);
+assert.match(dashboard,/V8\.20 Production binding status|PENDING_CLASS_B/);
 assert.match(dashboard,/v8_plan_archive.*NOT an authoritative parent ledger/);
-assert.match(dashboard,/first genuine post-deploy V8\.19 C1 readback/);
+assert.match(dashboard,/First legitimate genuine binding remains pending|first genuine post-deploy V8\.19 C1 readback/);
 
 console.log(JSON.stringify({
   ok:true,
