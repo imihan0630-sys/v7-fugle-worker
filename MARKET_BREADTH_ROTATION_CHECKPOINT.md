@@ -1017,3 +1017,36 @@ Latest visible genuine System 1 C1 evidence collection run `37382689418` failed 
 D09 maturity remains 57.1%; no promotion. D16 remains required for economic materiality and incrementality.
 
 Exact next: `SDA-009-R3` consume the first verified same-generation candidate-level System 1 inclusive-vs-LOO receipt through the oracle; freeze the first common-support gate/rank/Top6 comparison with BLOCKED/UNKNOWN rows retained. Until the System 1 diagnostic exists and a verified C1 generation is available, do not fabricate historical replay values.
+
+
+## SDA-009 deep falsification V0.2 — current-path correction and capital spillover
+
+Artifacts:
+- `research/SDA009_D09_DEEP_FALSIFICATION_V0_2.md`
+- `research/SDA009_SYSTEM1_DIAGNOSTIC_HANDOFF_20261006_V0_2.md`
+
+Status: CURRENT_PATH_INVENTORY_CORRECTED / CAPITAL_CIRCULARITY_ADDED / WARMUP_PATH_DOWNGRADED_DORMANT / DIRECTIONAL_FALSIFICATION_FROZEN / FORMAL_CORE_UNCHANGED
+
+Latest-main readback corrects the earlier SDA-009 path inventory.
+
+Confirmed active current paths:
+1. candidate-inclusive sector hard gate (breadth / avgChange / amountVs20DayAverage);
+2. sector score inside priorityScore plus later sectorFlow tie-break, with actual rank impact conditional on earlier comparator precedence;
+3. post-selection capital allocation because allocation weights use priorityScore across the merged selected set.
+
+The prior history-warmup claim is downgraded. `chooseHistoryWarmupTargets` / `coarseWarmupScore` remain defined but no active call site exists in latest main; current 18:10 path sets `warmupTargets=[]`, and current seed queue does not consume sector score. Therefore warmup circularity is LEGACY_OR_DORMANT, not current production evidence.
+
+New material finding: selection seats are pool-specific 3+3, but allocation is shared after the GENERAL and THOUSAND selections are merged. A candidate self-inflated priorityScore can therefore alter peer capital across pools even without changing its own pool seat. If the candidate is already capped at 35%, additional score inflation may leave its own allocation unchanged while still reducing peer allocation and increasing residual cash.
+
+Directional falsification is now mandatory. Candidate self-inclusion can cause both SELF_PROMOTION and SELF_SUPPRESSION. The 40% breadth gate has exact small-N discontinuities; e.g. n=5 with two positive names is 40%, while excluding a positive candidate leaves 1/4=25%; n=3 with a non-positive candidate and one positive peer is 33.33%, while excluding the candidate leaves 1/2=50%.
+
+Score attribution must separate local constituent effect from cross-sector maxAmount normalizer externality. Rank diagnostics must preserve comparator precedence. Generic global Top6 comparison is insufficient; receipts must preserve GENERAL/THOUSAND pool identity and pool Top3 state.
+
+External falsification context remains non-directional: Taiwan momentum can reverse under market-state transitions/persistence changes, and industry-momentum behavior varies with classification granularity. These are D16 sensitivity controls, not additional Alpha votes.
+
+Maturity decision: D09 remains 57.1%. No promotion because genuine candidate-level leave-one-out Taiwan receipt count remains 0 and D16 economic evidence is absent.
+
+Exact next:
+- `SDA-009-R3A`: System 1 consumes the V0.2 handoff and implements diagnostic-only gate/rank/pool/allocation/normalizer/direction fields while preserving all Formal outputs.
+- `SDA-009-R3B`: Room07 consumes the first verified genuine same-generation receipt and freezes common-support gate direction, pool-seat flip, comparator-attributed rank flip, allocation redistribution and BLOCKED/UNKNOWN states.
+- D16 then evaluates economic incrementality under preregistered sector-size, classification-vintage and PIT-valid state controls.
