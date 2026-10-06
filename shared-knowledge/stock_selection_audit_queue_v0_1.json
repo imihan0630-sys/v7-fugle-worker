@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-07T05:46:00+08:00",
+  "updatedAt": "2026-10-07T07:03:00+08:00",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -627,11 +627,11 @@
         "independent 00 closure"
       ],
       "system1Engineering": {
-        "status": "PR644_MERGED_V819_PRODUCTION_VERIFIED_PARTIAL_PASS",
+        "status": "V820_PRODUCTION_VERIFIED_GENUINE_BINDING_PENDING",
         "receipt": "research/sda016_system1_v819_current_status_20261006_v0_1.json",
         "productionEvidence": "research/system1_c1_scan_origin_generation_inventory_pr_644_v0_1.json",
-        "genuineReadbackStatus": "PENDING_FIRST_GENUINE_POST_DEPLOY_C1_SESSION",
-        "authoritativeFormalC1Ledger": "CLASS_B_IMPLEMENTED_UNMERGED_NOT_PRODUCTION_AUTHORITY",
+        "genuineReadbackStatus": "FIRST_SCHEDULED_DATE_INELIGIBLE_C1_GENERATION_NOT_FOUND_GENUINE_PENDING",
+        "authoritativeFormalC1Ledger": "PRODUCTION_RUNTIME_ESTABLISHED_GENUINE_SAMPLE_PENDING",
         "formalCoreImpact": "NONE",
         "ticketClosure": false
       },
