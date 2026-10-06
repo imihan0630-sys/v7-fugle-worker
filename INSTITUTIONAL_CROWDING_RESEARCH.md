@@ -2474,3 +2474,32 @@ Maturity impact: NONE. D06-11 stays L2/40%. The source/event-clock layer is mate
 
 Exact next:
 use the now-precommitted 2026-11 public schedule as a prospective test: capture each scheduled after-close result only when it becomes public, then bind constituent changes to benchmark/fund exposure and weight deltas without using unavailable licensed-client knowledge times. In parallel, distinguish one-day vs staged-transition index families.
+
+
+---
+
+## IC-093 — D06-11 fund-index mapping and current AUM are observable, but event-time exposure cannot be backfilled
+
+Research cycle: 2026-10-06 Asia/Taipei  
+Status: FUND_INDEX_MAPPING_VERIFIED / CURRENT_AUM_OBSERVABLE / EVENT_TIME_AUM_VINTAGE_PENDING / POST_EVENT_BACKFILL_FORBIDDEN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_11_etf_index_mapping_and_aum_vintage_guard_20261006_v0_1.json`.
+
+For the Taiwan ESG Low Carbon 50 Index, the official index page directly links ETF 00923, and TWSE/issuer materials confirm that 00923 tracks the same index. The issuer states a full-replication index strategy and cash creation/redemption.
+
+The issuer's current 2026-10-06 state is observable:
+- fund NAV = TWD 41,075,398,869;
+- NAV per unit = TWD 43.2;
+- outstanding units = 950,923,000;
+- same-day unit change = -500,000;
+- current portfolio weights/shares are available from the issuer.
+
+This does NOT authorize retrospective event sizing for the 2026-10-02 review. Current 2026-10-06 AUM, units and holdings are post-event vintages and may not be substituted for 2026-10-02/2026-10-05 event-time exposure. A mechanical-demand estimate requires a properly versioned event-time or pre-event fund AUM plus constituent target-weight delta. Post-event holdings may validate a later state but cannot reconstruct the first-known execution path by themselves.
+
+A further semantic guard follows from the fund's cash creation/redemption structure: primary-market unit flow and portfolio rebalancing are distinct objects. Complete replication does not prove all review-related constituent execution occurred at one close.
+
+Maturity impact: NONE. D06-11 remains L2/40%. Fund-index mapping and present-state exposure are now source-verified, but historical event-time AUM/target-weight vintages and execution lineage remain pending.
+
+Exact next:
+search for replayable 2026-10-02/2026-10-05 issuer or TWSE vintages for 00923 AUM, units and holdings. If unavailable, preserve historical event-size UNKNOWN and use the already precommitted 2026-11 review calendar to capture these fields prospectively before/at the event.
