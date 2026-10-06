@@ -1,0 +1,17 @@
+{
+  "schemaVersion":"pattern-overnight-opening-anchor-firewall-v0.1",
+  "updated":"2026-10-07 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "overnightGapEqualsStructuralResponse":false,
+  "previousCloseAnchorEqualsStructure":false,
+  "preopenIndicativeCrossingEqualsExecutedCrossing":false,
+  "openingPrintCanBePredictorAndSameOutcome":false,
+  "noVerifiedNewsEqualsNoOvernightInformation":false,
+  "sameDirectionPreopenDerivativeSignalEqualsConfirmation":false,
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}
