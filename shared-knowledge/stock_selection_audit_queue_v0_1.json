@@ -612,10 +612,10 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "00_cross_domain_readback"
       ],
-      "readiness": "V0_4_48_TEST_ORACLE_FROZEN_PR644_MERGED_V819_PRODUCTION_VERIFIED_GENUINE_C1_READBACK_AUTHORITATIVE_FORMAL_C1_BINDING_AND_SHARED_AUTHORITY_PENDING",
+      "readiness": "V0_5_58_TEST_ORACLE_PR644_MERGED_V819_PRODUCTION_VERIFIED_FORMAL_C1_BINDING_CONTRACT_FROZEN_CLASS_B_IMPLEMENTATION_GENUINE_READBACK_SHARED_AUTHORITY_PENDING",
       "receipt": "research/sda016_system1_v819_current_status_20261006_v0_1.json",
       "remainingDelta": [
-        "immutable authoritative Formal decision to exact C1 generation ledger",
+        "implement Class-B append-only authoritative Formal decision to exact C1 generation binding per frozen V0.1 contract",
         "same-session generation-set finalization receipt",
         "shared System1+System2 canonical holdout-consumption authority",
         "partial decision-date overlap and outcome-information-footprint accounting",
@@ -648,8 +648,18 @@
       "supportingReceipts": [
         "research/SDA016_SYSTEM1_V819_SCAN_ORIGIN_INVENTORY_VALIDATION_20261006_V0_1.md",
         "research/system1_c1_scan_origin_generation_inventory_pr_644_v0_1.json",
-        "research/sda016_system1_v819_current_status_20261006_v0_1.json"
-      ]
+        "research/sda016_system1_v819_current_status_20261006_v0_1.json",
+        "research/SDA016_SYSTEM1_FORMAL_C1_BINDING_IMPLEMENTATION_CONTRACT_20261006_V0_1.md",
+        "research/sda016_system1_formal_c1_binding_contract_v0_1.json"
+      ],
+      "formalC1Binding": {
+        "status": "CLASS_A_CONTRACT_FROZEN_CLASS_B_IMPLEMENTATION_PENDING",
+        "contract": "research/sda016_system1_formal_c1_binding_contract_v0_1.json",
+        "humanContract": "research/SDA016_SYSTEM1_FORMAL_C1_BINDING_IMPLEMENTATION_CONTRACT_20261006_V0_1.md",
+        "currentPlanArchiveEligibleAsAuthoritativeLedger": false,
+        "appendOnlyLedgerImplementation": "PENDING_CLASS_B",
+        "formalCoreImpact": "NONE"
+      }
     },
     {
       "id": "SDA-017",
