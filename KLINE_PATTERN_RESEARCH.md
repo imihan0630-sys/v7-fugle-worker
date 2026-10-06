@@ -23651,3 +23651,39 @@ New durable artifacts:
 The earlier TOOL_BLOCKED note is no longer current: helper and test writes now exist durably. Research-specific Node execution is still TEST_EXECUTION_PENDING and must not be inferred from standard V8 CI.
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001/SDA-002 remain open. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-050 — Ordinary oscillation vs auction / limit / event / microstructure repricing (2026-10-06)
+
+DL-050 prevents a structural-zone churn study from treating all short-horizon price movement as the same market process.
+
+Taiwan's trading mechanism makes that assumption untenable. Opening and closing are call-auction regimes, intraday volatility interruptions can reopen through call auction, daily price limits can constrain one side of the path, and legal tick size varies by price level. These mechanics can generate discrete or censored price paths that look like structural oscillation when viewed only through coarse bars.
+
+The research state is therefore multi-axis rather than single-cause.
+
+MATCHING_MECHANISM distinguishes continuous trading, opening call auction, closing call auction, VI reopening call auction and other auction states.
+
+PRICE_CONSTRAINT_STATE distinguishes unconstrained trading, limit-up constraint, limit-down constraint and special no-limit regimes.
+
+MICROSTRUCTURE_BOUNCE_STATE distinguishes exact quote-confirmed bid-ask bounce from exact-event non-bounce, unverified candidate and not-evaluable states.
+
+EVENT_CONTEXT records whether D11 supplies a verified first-known event context without claiming that the event caused the move.
+
+These axes can coexist. An event-driven opening gap is simultaneously event context and call-auction repricing. A VI reopening may occur under deteriorated liquidity. A structural retest can coexist with quote-confirmed bounce. DL-050 does not force one explanatory winner.
+
+The strongest path guard concerns discrete repricing. If a pre-auction state is BELOW and the auction price is ABOVE the zone, D01 may record that the observed state changed across the zone. It may not invent the unobserved intermediate path, exact crossing count, dwell or continuous traversal sequence.
+
+The strongest microstructure guard concerns bid-ask bounce. Roll's effective-spread logic shows that alternating bid/ask transaction prices can create negative short-horizon serial dependence even when underlying value does not oscillate equivalently. Therefore OHLC or close-state alternation alone is insufficient. D01 accepts a confirmed bounce state only from canonical D04/D05 replay-safe trade/quote evidence.
+
+Price-limit observations are also separated. A level near limit-up or limit-down can exhibit compressed or one-sided movement because the legal trading range truncates the path. Such observations cannot be pooled with unconstrained churn without explicit common-support treatment.
+
+Twenty-two executable adversarial cases are authored. They cover PIT market-rule guards, opening/VI auction states, limit-up and special-no-limit regimes, OHLC rejection for bounce confirmation, exact trade/quote bounce confirmation and rejection, event context without causation, discrete auction crossing ambiguity, ordinary continuous K0 mapping, K1/K2 mechanism classes, mixed limit/event/bounce states, non-independent evidence counting, missing receipt fail-closed behavior and transition clock enforcement.
+
+New durable artifacts:
+- research/PATTERN_TRANSITION_MECHANICS_V0_1.md
+- research/pattern_transition_mechanics_v0_1.json
+- research/pattern_transition_mechanics_v0_1.mjs
+- research/test_pattern_transition_mechanics_v0_1.mjs
+- research/PATTERN_TRANSITION_MECHANICS_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001/SDA-002 remain open. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
