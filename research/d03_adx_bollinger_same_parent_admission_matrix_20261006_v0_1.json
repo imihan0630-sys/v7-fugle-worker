@@ -1,0 +1,218 @@
+{
+  "schemaVersion": "D03_ADX_BOLLINGER_SAME_PARENT_ADMISSION_MATRIX_V0_1",
+  "updatedAt": "2026-10-06T23:16:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "RESEARCH_ONLY_OUTCOME_BLIND",
+  "formalCoreImpact": "NONE_LOCKED",
+  "purpose": "Freeze field-level same-parent admission status for D03-09 ADX and D03-10 Bollinger so genuine cutoff-bearing C1 evidence can be evaluated immediately without redesign.",
+  "globalRules": {
+    "availabilityRule": "AVAILABLE_IN_REPOSITORY_DOES_NOT_EQUAL_SAME_PARENT_ADMITTED",
+    "zeroNewOrdinaryDailyProviderCallDefault": true,
+    "unknownMustRemainUnknown": true,
+    "laterRecomputationCannotBackfillDecisionTimeParent": true,
+    "requiredParentBindings": [
+      "generationId",
+      "decisionCutoffAt",
+      "sourceLineage",
+      "continuityState",
+      "commonSupportIdentity"
+    ]
+  },
+  "statuses": [
+    "SAME_PARENT_PROJECTED",
+    "CONDITIONAL_PARENT_ONLY",
+    "DERIVABLE_FROM_AUTHORIZED_HISTORY_NOT_PARENT_PERSISTED",
+    "RESEARCH_OR_SYSTEM_AVAILABLE_NOT_C1_ADMITTED",
+    "REPLAY_CERTIFICATION_REQUIRED",
+    "UNKNOWN"
+  ],
+  "fields": [
+    {
+      "field": "atrPercent",
+      "modules": [
+        "D03-09",
+        "D03-10"
+      ],
+      "status": "SAME_PARENT_PROJECTED",
+      "evidence": "V8.15.3 C1 projection",
+      "role": "volatility/risk control"
+    },
+    {
+      "field": "ret20",
+      "modules": [
+        "D03-09",
+        "D03-10"
+      ],
+      "status": "SAME_PARENT_PROJECTED",
+      "evidence": "V8.15.3 C1 projection",
+      "role": "direct return/trend control"
+    },
+    {
+      "field": "maDistance20Pct",
+      "modules": [
+        "D03-09",
+        "D03-10"
+      ],
+      "status": "SAME_PARENT_PROJECTED",
+      "evidence": "V8.15.3 C1 projection",
+      "role": "MA distance/location control"
+    },
+    {
+      "field": "lateStage",
+      "modules": [
+        "D03-09",
+        "D03-10"
+      ],
+      "status": "SAME_PARENT_PROJECTED",
+      "evidence": "V8.15.3 C1 projection",
+      "role": "extension/overheat context"
+    },
+    {
+      "field": "ret60",
+      "modules": [
+        "D03-09"
+      ],
+      "status": "CONDITIONAL_PARENT_ONLY",
+      "evidence": "V8.17 membershipLiquidity only for bounded rejection/liquidity strata",
+      "role": "longer-horizon direct return control"
+    },
+    {
+      "field": "volatility20",
+      "modules": [
+        "D03-09",
+        "D03-10"
+      ],
+      "status": "CONDITIONAL_PARENT_ONLY",
+      "evidence": "V8.17 membershipLiquidity only for bounded rejection/liquidity strata",
+      "role": "direct realized-volatility control"
+    },
+    {
+      "field": "ma20_ma60_slope_alignment",
+      "modules": [
+        "D03-09"
+      ],
+      "status": "DERIVABLE_FROM_AUTHORIZED_HISTORY_NOT_PARENT_PERSISTED",
+      "evidence": "existing market-history computation semantics",
+      "role": "direct trend-quality control"
+    },
+    {
+      "field": "directionalPathEfficiency",
+      "modules": [
+        "D03-09"
+      ],
+      "status": "DERIVABLE_FROM_AUTHORIZED_HISTORY_NOT_PARENT_PERSISTED",
+      "evidence": "price-history derivable; exact same-parent persistence not proven",
+      "role": "trend efficiency control"
+    },
+    {
+      "field": "hh_hl_lh_ll_progression",
+      "modules": [
+        "D03-09"
+      ],
+      "status": "RESEARCH_OR_SYSTEM_AVAILABLE_NOT_C1_ADMITTED",
+      "evidence": "pattern/trend research semantics exist",
+      "role": "structure control"
+    },
+    {
+      "field": "trendPersistence",
+      "modules": [
+        "D03-09"
+      ],
+      "status": "RESEARCH_OR_SYSTEM_AVAILABLE_NOT_C1_ADMITTED",
+      "evidence": "research/System2 semantics exist; exact C1 persistence not proven",
+      "role": "persistence control"
+    },
+    {
+      "field": "rangeCompressionSlope",
+      "modules": [
+        "D03-10"
+      ],
+      "status": "RESEARCH_OR_SYSTEM_AVAILABLE_NOT_C1_ADMITTED",
+      "evidence": "System2/research semantics exist",
+      "role": "direct compression control"
+    },
+    {
+      "field": "trueRangeDryUp",
+      "modules": [
+        "D03-10"
+      ],
+      "status": "RESEARCH_OR_SYSTEM_AVAILABLE_NOT_C1_ADMITTED",
+      "evidence": "System2/research semantics exist",
+      "role": "true-range compression control"
+    },
+    {
+      "field": "vcpPlatformCompressionGeometry",
+      "modules": [
+        "D03-10"
+      ],
+      "status": "RESEARCH_OR_SYSTEM_AVAILABLE_NOT_C1_ADMITTED",
+      "evidence": "D01/System2 structure semantics exist",
+      "role": "pattern compression control"
+    },
+    {
+      "field": "corporateActionAndLimitContinuity",
+      "modules": [
+        "D03-09",
+        "D03-10"
+      ],
+      "status": "REPLAY_CERTIFICATION_REQUIRED",
+      "evidence": "D03 continuity guard",
+      "role": "causal continuity gate"
+    },
+    {
+      "field": "wilderHlcStateReplay",
+      "modules": [
+        "D03-09"
+      ],
+      "status": "REPLAY_CERTIFICATION_REQUIRED",
+      "evidence": "D03-09 L3 gate",
+      "role": "canonical ADX state/replay gate"
+    }
+  ],
+  "moduleAdmission": {
+    "D03-10": {
+      "order": [
+        "atrPercent",
+        "volatility20",
+        "maDistance20Pct",
+        "rangeCompressionSlope",
+        "trueRangeDryUp",
+        "vcpPlatformCompressionGeometry",
+        "corporateActionAndLimitContinuity"
+      ],
+      "promotionBlockers": [
+        "GENUINE_CUTOFF_BEARING_PARENT_MISSING",
+        "EXACT_20_ELIGIBLE_SESSION_CONTINUITY_MISSING",
+        "COMPLETE_EXPECTED_PARENT_RECONCILIATION_MISSING"
+      ],
+      "firstPromotionTarget": true
+    },
+    "D03-09": {
+      "order": [
+        "ret20",
+        "ret60",
+        "ma20_ma60_slope_alignment",
+        "trendPersistence",
+        "directionalPathEfficiency",
+        "hh_hl_lh_ll_progression",
+        "atrPercent",
+        "wilderHlcStateReplay"
+      ],
+      "promotionBlockers": [
+        "GENUINE_CUTOFF_BEARING_PARENT_MISSING",
+        "CANONICAL_WILDER_FULL_REPLAY_OR_TRUSTED_STATE_MISSING"
+      ],
+      "firstPromotionTarget": false
+    }
+  },
+  "evidenceDecision": {
+    "maturityPct": 56.7,
+    "D03-09": "L2_40",
+    "D03-10": "L2_40",
+    "rawSourceVersionGate": "2_OF_3",
+    "technicalObserverR1": "BLOCKED",
+    "outcomes": "CLOSED",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "exactNextContinuationPoint": "On the first genuine cutoff-bearing C1 generation, read back actual persisted fields and classify each matrix row by generationId/decisionCutoffAt/source lineage/continuity/common support. Do not infer same-parent admission from source-code availability. D03-10 first; D03-09 second after Wilder replay certification."
+}
