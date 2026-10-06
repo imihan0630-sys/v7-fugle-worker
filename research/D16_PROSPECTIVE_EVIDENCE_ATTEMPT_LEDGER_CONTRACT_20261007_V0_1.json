@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "D16_PROSPECTIVE_EVIDENCE_ATTEMPT_LEDGER_CONTRACT_V0_1",
+  "updatedAt": "2026-10-07T05:34:00+08:00",
+  "owner": "D16 / Room11",
+  "status": "RESEARCH_ONLY_PRE_OUTCOME_CONTRACT_FROZEN",
+  "formalCoreImpact": "NONE",
+  "maturityImpact": "NONE",
+  "purpose": "Preserve every prospective evidence collection attempt, including blocked attempts, to prevent research-observability survivorship bias.",
+  "attemptIdentity": {
+    "attemptId": "REQUIRED_IMMUTABLE",
+    "researchStreamId": "REQUIRED_IF_ASSIGNED",
+    "experimentFamilyId": "REQUIRED_IF_ASSIGNED",
+    "workflowName": "REQUIRED",
+    "workflowRunId": "REQUIRED",
+    "workflowJobId": "REQUIRED",
+    "triggerTypeEnum": [
+      "SCHEDULE",
+      "WORKFLOW_DISPATCH",
+      "PUSH",
+      "OTHER"
+    ],
+    "scheduledFor": "REQUIRED_IF_SCHEDULED",
+    "startedAt": "REQUIRED",
+    "completedAt": "REQUIRED",
+    "headSha": "REQUIRED",
+    "intendedScanDate": "REQUIRED",
+    "officialSessionStateEnum": [
+      "VERIFIED_OFFICIAL_SESSION",
+      "VERIFIED_NON_SESSION",
+      "NOT_VERIFIED"
+    ],
+    "collectorVersionHash": "REQUIRED",
+    "validatorVersionHash": "REQUIRED"
+  },
+  "artifactIdentity": {
+    "artifactStateEnum": [
+      "PRESERVED",
+      "NONE",
+      "PARTIAL"
+    ],
+    "artifactId": "REQUIRED_IF_PRESERVED",
+    "artifactName": "REQUIRED_IF_PRESERVED",
+    "artifactDigest": "REQUIRED_IF_PRESERVED",
+    "artifactFiles": "REQUIRED_LIST"
+  },
+  "lifecycleStages": [
+    "TRIGGERED",
+    "VALIDATOR_READY",
+    "PARENT_READ_ATTEMPTED",
+    "PARENT_VERIFIED_OR_BLOCKED",
+    "INVENTORY_VERIFIED_OR_NOT_REACHED",
+    "FORMAL_C1_BINDING_VERIFIED_OR_NOT_REACHED",
+    "EVIDENCE_OR_BLOCKER_EMITTED"
+  ],
+  "terminalAttemptStateEnum": [
+    "EVIDENCE_ADMISSIBLE",
+    "INELIGIBLE_PARENT_MISSING",
+    "INELIGIBLE_SOURCE_NOT_READY",
+    "INELIGIBLE_CLOCK_OR_LINEAGE_MISMATCH",
+    "INELIGIBLE_SESSION_NOT_PROVEN",
+    "AUTHORIZATION_BLOCKED",
+    "NETWORK_OR_INFRA_FAILURE",
+    "VALIDATOR_CONTRACT_FAILURE",
+    "UNKNOWN_BLOCKER"
+  ],
+  "observedBlocker": {
+    "observedBlockerCategory": "REQUIRED_IF_BLOCKED",
+    "verificationFailure": "REQUIRED_IF_BLOCKED",
+    "readinessFacts": "REQUIRED_MAP_IF_AVAILABLE",
+    "causalAttributionStateEnum": [
+      "OBSERVED_FACTS_ONLY",
+      "PARTIAL_CAUSAL_CHAIN",
+      "CAUSAL_CHAIN_PROVEN",
+      "CONFLICTING_EVIDENCE",
+      "UNKNOWN"
+    ],
+    "causalAttributionRefs": "REQUIRED_LIST"
+  },
+  "statisticalRoles": {
+    "countInOperationalAttemptDenominator": "REQUIRED_BOOLEAN",
+    "countInResearchCalendarCandidateDenominator": "REQUIRED_BOOLEAN_OR_UNKNOWN",
+    "countInTargetPopulationEligibleDenominator": "REQUIRED_BOOLEAN_OR_UNKNOWN",
+    "countInProspectiveEvidenceN": "REQUIRED_BOOLEAN",
+    "countAsZeroPick": "REQUIRED_BOOLEAN",
+    "countAsNegativeOutcome": "REQUIRED_BOOLEAN",
+    "countAsStrategyFailure": "REQUIRED_BOOLEAN",
+    "countInMissingnessAccounting": "REQUIRED_BOOLEAN"
+  },
+  "failClosedDefaults": {
+    "parentOrLineageIncomplete": {
+      "countInProspectiveEvidenceN": false,
+      "countAsZeroPick": false,
+      "countAsNegativeOutcome": false,
+      "countAsStrategyFailure": false
+    }
+  },
+  "rerunRules": [
+    "PRESERVE_EVERY_EXECUTION_ATTEMPT",
+    "DO_NOT_DOUBLE_COUNT_RESEARCH_OPPORTUNITY_IDENTITY",
+    "SUCCESSFUL_RERUN_DOES_NOT_DELETE_PRIOR_FAILURE",
+    "RETROSPECTIVE_REPAIR_CANNOT_REWRITE_ORIGINAL_PROSPECTIVE_STATE"
+  ],
+  "promotionGate": [
+    "ATTEMPT_LEDGER_COMPLETE",
+    "ADMISSION_FUNNEL_LINKABLE",
+    "NO_BLOCKED_ATTEMPT_SILENTLY_DROPPED",
+    "NO_ROOT_CAUSE_OVERCLAIM",
+    "GENUINE_ADMISSIBLE_EVIDENCE_REQUIRED_FOR_EMPIRICAL_PROMOTION"
+  ]
+}
