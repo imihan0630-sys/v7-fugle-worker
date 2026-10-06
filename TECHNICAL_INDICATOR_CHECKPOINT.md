@@ -5328,3 +5328,167 @@ No outcomes were opened; no factor was promoted/demoted; D03 remains 56.7%; D03-
 
 Exact next:
 re-read external machine lanes first. If unchanged, freeze a consumer-ready timing-receipt schema/mapping for current D03 factor families without changing formulas or Formal behavior. Actual maturity gain still requires genuine prospective/raw-source or external machine evidence.
+
+
+## TI-1001 through TI-1102 — consumer timing receipts, temporal non-interference, lag-memory falsification and D16 timing handoff (2026-10-06)
+
+Canonical artifacts:
+- `research/D03_FACTOR_TIMING_RECEIPT_MAPPING_20261006_V0_1.md`;
+- `research/d03_factor_timing_receipt_schema_20261006_v0_1.json`;
+- `research/test_d03_factor_timing_receipt_schema_v0_1.mjs`;
+- `research/D03_TEMPORAL_NONINTERFERENCE_DIFFERENTIAL_ORACLE_20261006_V0_1.md`;
+- `research/d03_temporal_noninterference_differential_oracle_20261006_v0_1.json`;
+- `research/test_d03_temporal_noninterference_differential_oracle_v0_1.mjs`;
+- `research/D03_LAG_MEMORY_AND_TEMPORAL_AGGREGATION_FALSIFICATION_20261006_V0_1.md`;
+- `research/d03_lag_memory_aggregation_falsification_20261006_v0_1.json`;
+- `research/test_d03_lag_memory_aggregation_falsification_v0_1.mjs`;
+- `research/D03_D16_TIMING_METHOD_HANDOFF_ADDENDUM_20261006_V0_1.md`;
+- `research/d03_d16_timing_method_receipt_schema_20261006_v0_1.json`;
+- `research/test_d03_d16_timing_method_receipt_v0_1.mjs`;
+- `research/d03_timing_deep_execution_receipt_20261006_v0_1.json`;
+- `research/D03_TIMING_DEEP_EXECUTION_READBACK_20261006_V0_1.md`.
+
+### TI-1001~1022 — consumer-ready factor timing receipts
+
+D03 timing is now factor-specific rather than one generic clock.
+
+Profiles:
+- D03-01/02/03/06/07/08 = completed-session daily profile;
+- D03-09 = completed-session + FULL_REPLAY/trusted-state certification;
+- D03-10 = completed-session + exact 20 eligible-session continuity;
+- D03-04 = OUTCOME_RELATION_NOT_SIGNAL;
+- D03-05 = causal episode confirmation clock;
+- D03-12 = firstObservableAt / confirmed divergence clock;
+- D03-13 = max(required component known-at) across timeframe finality.
+
+Every consumer-ready timing receipt binds:
+factor/version, timing profile, lineage/redundancy/parameter family, source lineage, consumer scope, signal-known/decision/execution clocks, legal/nonfuture offset family, ancestry baseline, common support, purge/embargo, dependence method, multiplicity family, research stream, selection pipeline and cost/fillability.
+
+Future offsets are sentinel-only.
+Same-close execution is forbidden for close-finalized factors.
+D03-04 is explicitly barred from System1/System2 predictor use.
+
+### TI-1023~1046 — temporal non-interference differential oracle
+
+Frozen:
+`TEMPORAL_NONINTERFERENCE = TWO_RUN_FUTURE_PERTURBATION_AGREEMENT`.
+
+At fixed decision epoch T:
+- World A and World B share the exact authorized information prefix through T;
+- only post-T information may differ;
+- semantic decision outputs at T must remain identical.
+
+Registered future perturbations cover:
+- outcomes;
+- future price path;
+- rolling-window future input;
+- same-date later cross-section members;
+- universe/survivorship;
+- corporate actions;
+- source corrections;
+- calendar revisions;
+- cache state;
+- model training data;
+- hyperparameter labels;
+- regime inputs;
+- pivot confirmation;
+- higher-timeframe completion;
+- provisional-to-final evolution.
+
+Detected failure states include:
+OUTCOME_TO_FEATURE_LEAKAGE, FUTURE_CACHE_STATE_CONTAMINATION, FUTURE_CORPORATE_ACTION_REWRITE, FUTURE_VERSION_REWRITE, FUTURE_UNIVERSE_SURVIVORSHIP_LEAK, FUTURE_NORMALIZATION_LEAK, FUTURE_REGIME_LABEL_LEAK and FINALITY_BACKFILL_LEAK.
+
+Passing finite sentinels proves only registered channels are clear, not universal leak-freedom.
+
+### TI-1047~1074 — lag-memory / temporal-aggregation falsification
+
+Frozen:
+`OBSERVED_LAG = MARKET_DYNAMIC_PLUS_FACTOR_MEMORY_PLUS_AGGREGATION`.
+
+Technical-indicator lag peaks are not interpreted as market reaction delay until factor memory and aggregation are controlled.
+
+Key mapping:
+- finite-window overlap: returns/Bollinger;
+- recursive IIR memory: MA/RSI/MACD/ADX;
+- KD = hybrid finite-window + recursive;
+- pullback/divergence = episode/path confirmation;
+- D03-13 = nested timeframe aggregation/finality.
+
+Required lag diagnostics:
+- lag correlation/collinearity;
+- leave-one-lag-out stability;
+- peak set/plateau width;
+- neighboring-lag uncertainty;
+- raw-root residual control;
+- outcome-footprint overlap;
+- date/regime concentration.
+
+Boundary peak => BOUNDARY_PEAK_SEARCH_INCOMPLETE.
+Broad plateau => PERSISTENT_PLATEAU.
+Filtered effect absorbed by raw root => RAW_ROOT_EXPLAINS_EFFECT.
+Generic Granger/VAR direction on filtered/downsampled indicators is not accepted without representation-valid method support.
+
+### TI-1075~1094 — D03 -> D16 timing method handoff
+
+D03 owns timing semantics.
+D16 owns the inferential method.
+
+Future D16 timing receipt must bind:
+- exact factor/timing profile;
+- factor timing receipt;
+- lineage registry;
+- signal/decision/execution clocks;
+- legal lag family;
+- population/common support/consumer scope;
+- temporal-noninterference evidence;
+- memory class/replay version;
+- raw-root controls;
+- lag candidate set;
+- temporal aggregation;
+- lag correlation and outcome-overlap diagnostics;
+- multiplicity family/research stream/selection pipeline/SDA-016/holdout;
+- dependence and cost/fillability method.
+
+Valid blocking states are accepted scientific results and do not authorize redesign.
+TIMING_METHOD_READY still does not authorize outcome execution, prove predictive incrementality, identify an exact lag, establish structural causality or modify Formal Core.
+
+### TI-1095~1102 — exact-SHA canonical Node execution readback
+
+Pinned source main:
+`0d1a4fae2a5a59ede2f046188ba6ccc5a66108db`.
+
+Execution:
+`FIRECRAWL_INTERACT_BASH_NODE_EXACT_SHA_PINNED_RAW_BLOBS`.
+
+Four exact canonical tests fetched directly from the pinned SHA all exited 0 and emitted PASS:
+
+1. factor timing receipt:
+registered modules 12, ready predictor profiles 11, D03-04 outcome relation 1, adversarial cases 18.
+
+2. temporal non-interference:
+13 core adversarial cases, 15 perturbation families, 34 reported checks.
+
+3. lag-memory/aggregation:
+12 registered factors, 10 adversarial cases, 26 reported checks.
+
+4. D16 timing receipt:
+1 ready case, 11 accepted blocking states, 2 D03-04 guards, 10 adversarial READY rejections, 24 total cases.
+
+Heterogeneous reported check/case units = 114.
+This is execution accounting only, not effective N, market evidence, independent evidence count or alpha score.
+
+All report outcomeDataUsed=false and Formal Core NONE_LOCKED.
+
+Exact hashes and outputs are in:
+`research/d03_timing_deep_execution_receipt_20261006_v0_1.json`.
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09 and D03-10 remain L2/40;
+- raw source gate remains 2/3;
+- outcomes remain CLOSED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`;
+- Formal Core remains LOCKED.
+
+Exact next:
+re-read latest System1/System2/D16 machine lanes. If implementation/evidence has landed, do incremental readback only. Actual maturity gain must come from genuine prospective/raw-source or external machine evidence. If all external lanes remain blocked, any further D03 timing research should be narrowly limited to decision-boundary/execution-clock sensitivity rather than indefinitely expanding governance.
