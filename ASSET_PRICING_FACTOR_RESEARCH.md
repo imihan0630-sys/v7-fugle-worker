@@ -1105,3 +1105,32 @@ Bounded TPEx August-2026 witnesses:
 3. Keep lunar and settlement/index-rebalance families separately source-gated.
 4. Continue D19-04 only by consuming DATA_LANE TPEx/universe/continuity outputs; do not duplicate that engineering.
 5. No L4 without prospective/OOS outcomes, costs, multiple-testing control and robustness.
+
+
+## 2026-10-06 Long-block Stage 14 — D19-12 annual-calendar vintage regime falsification
+
+### New official evidence
+- TWSE Data E-Shop publication dated 2018-11-22 publishes the 2019 holiday schedule before the 2019 effective year.
+- TWSE governance material records the regime change source as 2018-09-13 letter 臺證交字第1070017873號: from 2019 onward, weekend make-up workdays are not trading or settlement days.
+- This creates a bounded cross-year falsification against 2018, whose verified official-session replay contains two Saturday trading sessions.
+
+### Scientific consequence
+- Annual calendar state is versioned market infrastructure, not a timeless weekday rule.
+- A PIT holiday/pre-holiday/post-holiday replay must bind effectiveYear + publishedAt/announcedAt + market-calendar regime version + actual official session calendar. A current rule must not be backfilled into 2018, and 2018 Saturday semantics must not be forward-filled into 2019.
+- Scheduled annual holidays and emergency/typhoon closures remain separate clocks. Emergency closures remain UNKNOWN until event-specific evidence is available.
+- Post-period Fact Book/session-count evidence may validate final totals but cannot substitute for historical known-at evidence.
+- The existing 2018 knownAt receipt remains evidence-only because immutable source bytes/sourceHash and a zero-difference state reconciliation have not yet been frozen.
+
+### Maturity decision
+- D19-12 remains L3 / 60% only for bounded WEEKDAY and MONTH_OF_YEAR states.
+- D19 aggregate remains 41.3%.
+- HOLIDAY / PRE_HOLIDAY / POST_HOLIDAY / TURN_OF_MONTH are not promoted by this stage.
+- No return outcome, cost-adjusted efficacy, multiple-testing-controlled result, OOS/prospective evidence, or Formal rule is opened.
+- Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+### Exact next after Stage 14
+1. Freeze immutable bytes/sourceHash for the 2018 annual calendar publication and preserve its 2017-12-15 publication clock.
+2. Build a versioned 2018 scheduled-calendar state set and reconcile it date-by-date against the verified 247-session official calendar; unexplained rows remain UNKNOWN.
+3. Add the 2019 pre-effective-year schedule plus the 2018-09-13 regime-change notice as an explicit cross-year negative-control fixture; verify that weekend make-up workdays do not inherit 2018 trading semantics.
+4. Only after zero applicable provenance/replay blockers may HOLIDAY/PRE_HOLIDAY/POST_HOLIDAY receive a bounded L3 readiness review; no automatic promotion.
+5. TURN_OF_MONTH remains separately gated because its state may depend on future official sessions around month-end; lunar/settlement/rebalance families remain source-clock gated.
