@@ -222,3 +222,6 @@ Still forbidden:
 - historical binding backfill or synthetic genuine evidence.
 
 A fresh exact-head CI pass after the latest-main lease remains mandatory before merge.
+
+
+Final merge lease base: `146e4cae4717bda92192cae5bfd919b3d7d28011`.
