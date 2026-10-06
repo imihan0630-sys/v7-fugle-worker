@@ -1,10 +1,10 @@
-name: D02 PVE-248 Candidate CI
+name: D02 PVE-250 Approved Integration CI
 
 on:
   workflow_dispatch:
   push:
     branches:
-      - "research/d02-pve250-rebased-candidate-20261006"
+      - "research/d02-pve251-approved-integration-20261006"
     paths:
       - "scripts/apply_v8_19_1_pve248_candidate.py"
       - "tests/test_v8_19_1_pve248_runtime_candidate.mjs"
@@ -46,7 +46,7 @@ jobs:
               if line.startswith("python3 scripts/"):
                   commands.append(line)
           if "python3 scripts/apply_v8_19_1_pve248_candidate.py" not in commands:
-              raise SystemExit("PVE-248 candidate missing from regression build chain")
+              raise SystemExit("PVE-250 approved candidate missing from regression build chain")
           for command in commands:
               print("+",command,flush=True)
               subprocess.run(command,shell=True,check=True)
