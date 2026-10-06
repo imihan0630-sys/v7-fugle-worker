@@ -83,3 +83,5 @@ Next valid proof must come prospectively on a future trading session.
 
 
 Final merge lease base: `777b5876917774a5ad4c32eac3e563df2b3acfe5`.
+
+Engineering acceptance lease base: `5076e2cd0a5609dc5c89da6d2d01333886a4af8a`.
