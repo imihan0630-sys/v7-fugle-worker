@@ -1,0 +1,28 @@
+{
+  "receiptId": "SC-056-SOURCE-CLOCK-20261006-2112",
+  "room": "07｜產業與供應鏈研究室",
+  "domain": "D10",
+  "module": "D10-02",
+  "capturedAt": "2026-10-06T21:12:44+08:00",
+  "baseMain": "3017095248d53bd4922164842339a5574981ca82",
+  "source": {
+    "publisher": "經濟部統計處",
+    "latestIndustrialProductionPeriod": "2026-08",
+    "sourcePublishedAt": "2026-09-23",
+    "nextRegularIndustrialProductionReleaseDay": "23",
+    "sourceUrl": "https://www.moea.gov.tw/mns/dos/home/Home.aspx"
+  },
+  "finding": "As of capture time, the latest native industrial-production release is August 2026. No September 2026 native industrial-production release is yet available, so SC-056 must not append a September physical-chain observation.",
+  "controls": {
+    "prefrozenLagsMonths": [1,2,3],
+    "primaryMetric": "production_direction",
+    "noPostHocLagExpansion": true,
+    "noHistoricalShadowFabrication": true,
+    "missingEvidence": "UNKNOWN",
+    "overlappingMonthComparisonsIndependent": false,
+    "stockOutcomesOpen": false
+  },
+  "status": "SOURCE_CLOCK_FROZEN / SEPTEMBER_NATIVE_RELEASE_NOT_YET_AVAILABLE / KEEP_L2",
+  "next": "After the next native industrial-production release, append copper-foil→CCL→PCB and steel-chain observations using the same 1M/2M/3M lag set and production-direction metric; freeze sourcePublishedAt/capturedAt before any outcome join.",
+  "formalCoreImpact": "NONE"
+}
