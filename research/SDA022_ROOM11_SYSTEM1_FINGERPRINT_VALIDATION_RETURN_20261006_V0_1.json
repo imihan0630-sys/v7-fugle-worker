@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "SDA022_ROOM11_SYSTEM1_FINGERPRINT_VALIDATION_RETURN_V0_1",
+  "updatedAt": "2026-10-06T19:02:00+08:00",
+  "ticket": "SDA-022",
+  "validator": "D16 / Room11",
+  "closureAuthority": "00",
+  "canonicalOracle": "shared-knowledge/sda022_acceptance_oracle_v0_1.json",
+  "evidence": {
+    "receipt": "shared-knowledge/system1_policy_fingerprint_receipt_v0_1.json",
+    "mergeCommit": "862b8c903e81e0945ba030b396b8a7d661f91f1e",
+    "sourceArtifactDigestMatches": 3,
+    "sourceArtifactDigestTotal": 3,
+    "mergeFiles": [
+      ".github/workflows/v7-regression.yml",
+      "shared-knowledge/system1_policy_fingerprint_receipt_v0_1.json",
+      "tests/test_sda022_system1_policy_fingerprint_v0_1.mjs"
+    ],
+    "workflowRunEvidenceVisible": false
+  },
+  "results": [
+    {
+      "id": "S22-T01",
+      "status": "PASS",
+      "disposition": "PASS_SYSTEM1_POLICY_SOURCE_BINDING"
+    },
+    {
+      "id": "S22-T02",
+      "status": "PASS",
+      "disposition": "PASS_SYSTEM1_POLICY_SEMANTIC_OBSERVABILITY"
+    },
+    {
+      "id": "S22-T03",
+      "status": "PASS",
+      "disposition": "PASS_NO_REQUIRED_SYSTEM2_DECISION_DEPENDENCY"
+    },
+    {
+      "id": "S22-T04",
+      "status": "PASS",
+      "disposition": "PASS_EFFECTIVE_FORMAL_RANKING_BINDING"
+    },
+    {
+      "id": "S22-T05",
+      "status": "PASS",
+      "disposition": "PASS_OBSERVABILITY_ONLY_NO_FORMAL_MUTATION"
+    }
+  ],
+  "familyPassN": 5,
+  "familyTotalN": 5,
+  "previouslyValidatedD16Boundary": [
+    "S22-T25",
+    "S22-T26",
+    "S22-T27",
+    "S22-T28"
+  ],
+  "wholeTicketPassed": false,
+  "currentState": "PARTIAL_PASS",
+  "outcomes": "CLOSED",
+  "maturityImpact": "NONE",
+  "formalCoreImpact": "NONE"
+}
