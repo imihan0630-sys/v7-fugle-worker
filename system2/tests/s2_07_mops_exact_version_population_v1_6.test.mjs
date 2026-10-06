@@ -53,7 +53,8 @@ const diagnostics=events.map(e=>({
   transportReady:true,
   annualQueriesReady:true,
   monthShardQueriesReady:true,
-  noPaginationHint:true,
+  annualNoPaginationHint:true,
+  monthShardNoPaginationHint:true,
   monthShardQueryCount:2,
   annualVsMonthKeysetExact:true,
   monthOnlyVersionCount:0,
@@ -90,7 +91,7 @@ assert.equal(late.eligible,false);
 assert.equal(late.state,"OBSERVATION_PRECEDES_SOURCE_REPORTED_CLOCK");
 
 const badDiagnostics=diagnostics.map(x=>({...x}));
-badDiagnostics[0].monthShardQueriesReady=false;
+badDiagnostics[0].monthShardNoPaginationHint=false;
 const blocked=await buildProspectiveMopsExactVersionPopulationReceiptV1_6({
   frozenEvents:events,
   observations,
