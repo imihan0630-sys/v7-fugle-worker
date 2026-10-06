@@ -18,7 +18,7 @@ Repair:
 - 2026-10-06 remains research-ineligible and is not converted into genuine prospective evidence.
 
 Final latest-main lease base:
-`c84ad7e4439702522e975b451b8deabf37dede8a`.
+`681c67cf2173db507ee9231c57f83b174a89bf65`.
 
 Next:
 - exact-head Regression + Repair CI;
