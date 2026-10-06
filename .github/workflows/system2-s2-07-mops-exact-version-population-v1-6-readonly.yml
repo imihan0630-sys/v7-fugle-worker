@@ -38,6 +38,7 @@ jobs:
         run: node system2/scripts/probe_s2_07_mops_exact_version_population_readonly_v1_6.mjs
 
       - name: No mutation scheduler or System1 authority
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
@@ -46,6 +47,7 @@ jobs:
           git diff --exit-code -- Worker.js wrangler.toml
 
       - name: Upload physical evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: s2-07-mops-exact-version-population-v1-6
