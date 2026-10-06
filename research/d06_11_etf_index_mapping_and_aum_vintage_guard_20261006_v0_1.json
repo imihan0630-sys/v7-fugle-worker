@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "D06_11_ETF_INDEX_MAPPING_AND_AUM_VINTAGE_GUARD_20261006_V0_1",
+  "createdAt": "2026-10-06T23:31:00+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "module": "D06-11",
+  "status": "RESEARCH_ONLY / FUND_INDEX_MAPPING_VERIFIED / CURRENT_AUM_OBSERVABLE / HISTORICAL_EVENT_AUM_NOT_BACKFILLED / FORMAL_CORE_LOCKED",
+  "verifiedMapping": {
+    "index": "臺灣指數公司特選臺灣ESG低碳50指數",
+    "indexCode": "IX0178",
+    "etfSymbol": "00923",
+    "etfName": "群益台ESG低碳50",
+    "trackingMethod": "指數化投資策略 / 投信公開頁面載明完全複製法",
+    "creationRedemptionMethod": "現金申購/買回",
+    "creationUnitBeneficiaryUnits": 500000
+  },
+  "currentObservation": {
+    "observationDate": "2026-10-06",
+    "fundNetAssetValueTWD": 41075398869,
+    "navPerUnitTWD": 43.2,
+    "outstandingUnits": 950923000,
+    "dayOverDayUnitChange": -500000,
+    "note": "These values are current 2026-10-06 issuer observations only."
+  },
+  "currentPortfolioExamples": [
+    {
+      "symbol": "2330",
+      "name": "台積電",
+      "weightPct": 40.76,
+      "shares": 6477000
+    },
+    {
+      "symbol": "2454",
+      "name": "聯發科",
+      "weightPct": 9.39,
+      "shares": 784000
+    },
+    {
+      "symbol": "2308",
+      "name": "台達電",
+      "weightPct": 5.64,
+      "shares": 1130000
+    },
+    {
+      "symbol": "2317",
+      "name": "鴻海",
+      "weightPct": 4.05,
+      "shares": 6498000
+    }
+  ],
+  "guards": [
+    "2026-10-06 AUM, units and holdings must not be used as 2026-10-02 or 2026-10-05 event-time exposure.",
+    "Mechanical demand estimates require event-time or properly versioned pre-event fund AUM plus constituent target-weight delta.",
+    "A current complete-replication mandate does not prove exact same-day execution at the review effective close.",
+    "Cash creation/redemption mechanics mean primary-market flows and portfolio rebalancing must remain separately identified.",
+    "Post-event holdings can validate resulting state but cannot reconstruct pre-event first-known execution path without historical vintage evidence."
+  ],
+  "sourceUrls": [
+    "https://taiwanindex.com.tw/indexes/IX0178",
+    "https://www.twse.com.tw/zh/products/securities/etf/products/content.html?00923#domestic",
+    "https://www.capitalfund.com.tw/etf/product/detail/365",
+    "https://www.capitalfund.com.tw/etf/product/detail/365/portfolio",
+    "https://www.capitalfund.com.tw/etf/product/detail/365/buyback"
+  ],
+  "maturityDecision": {
+    "level": "L2",
+    "maturityPct": 40,
+    "reason": "Fund-index mapping and current fund exposure are observable, but event-time AUM/target-weight vintages and historical first-known execution lineage are not yet bound."
+  },
+  "exactNext": "Locate replayable issuer/TWSE historical vintages for 2026-10-02/2026-10-05 fund AUM, outstanding units and constituent weights or precommit a future review event where those vintages can be captured prospectively. Do not backfill from 2026-10-06 current state."
+}
