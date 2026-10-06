@@ -2636,3 +2636,13 @@ After 22:30 capture identical TPEx leverage LATE sources and compare against the
 
 ### Exact next continuation
 Re-read external blockers. If unchanged, execute the deterministic admission artifact in a canonical repository runner when available; otherwise immediately consume any newly landed genuine C1/D16/System1/System2 receipt through the frozen matrix. No new indicator family or threshold search.
+
+
+## 2026-10-07 D03 — canonical admission runner evidence
+
+- Canonical GitHub Actions run `37493819432` completed SUCCESS at head `ee3893e6c6c44ff3d845983ec9e9fc8bfdd41cfa`.
+- Exact Node execution of `research/test_d03_adx_bollinger_same_parent_admission_matrix_v0_1.mjs` returned PASS with 15 fields, 4 SAME_PARENT_PROJECTED, 2 CONDITIONAL_PARENT_ONLY and 2 REPLAY_CERTIFICATION_REQUIRED.
+- Isolation guard also PASS.
+- Execution receipt written to `research/d03_adx_bollinger_same_parent_admission_execution_receipt_20261007_v0_1.json`.
+- This converts the prior in-session-only structural replay into repository-native execution evidence.
+- No market/outcome evidence added; no maturity promotion. D03 remains 56.7%.
