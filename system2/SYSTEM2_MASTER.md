@@ -769,3 +769,10 @@ No scheduler, selection, push, capital or order authority is enabled. Next BUILD
 V1.4.1 supersedes V1.4 pre-parent identity semantics after detecting that official reference-row keys and MOPS disclosure-version keys had been conflated. The corrected contract keeps eight market-wide source lanes, MOPS prospective exact versions and official reference observations as separate populations. Only MOPS disclosure versions may certify `noRevisionGapThroughCut`.
 
 PR #736 / merge `4748b4dd6e3a9c91cfa1567c0c6c0bf21d3eca69`; dedicated run `37543866544` PASS; System2 Research CI `37543866598` PASS. Current physical input remains honestly blocked because the genuine eight-lane cut and complete prospective MOPS version population do not yet exist. Formal Core and all trading authority remain locked.
+
+## 2026-10-07 S2-07 V1.5 eight-lane source-cut boundary
+
+PR #738 / merge `34455da7f47016ee149ffeaa963f798251e9fe3d` physically captured the frozen eight official market-wide source lanes in dedicated run `37545155428` / job `112547281624` (PASS). All 8/8 lanes are cutoff-ready with TWSE=4 / TPEx=4; the six corporate-action historical lanes have exact range identity and the two daily material-information feeds are whole-snapshot parser-complete. Source cut identity is `S2-8LANE:55289262efdd48b2004494d86979873207e256ef645bea2a5d358b9fafed606d` with manifest hash `1e8e4db2699a0e214123087c08ce390af85c547be71229b53ff6ea552f57b863`.
+
+This advances only the whole-source snapshot layer. MOPS exact-version expected-keyset completeness, noRevisionGapThroughCut, pre-parent evidence-cut readiness, symbol-session completeness and TECHNICAL_CONTINUITY all remain false. No scheduler or trading authority was added; System1/Formal Core remain unchanged. Next BUILD_LANE gate is prospective MOPS exact-version population capture and complete expected-keyset freeze.
+
