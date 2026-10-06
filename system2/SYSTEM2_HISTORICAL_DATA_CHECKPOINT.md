@@ -208,3 +208,21 @@ Fresh workflow_dispatch was confirmed on branch `main` with run `37467099680` / 
 The REST run payload does not expose workflow_dispatch input values. The requested continuation is 2022/TWSE, and the exact year/market inputs must be verified from the job log before acceptance. Do not accept or advance the market-year solely from run creation metadata.
 
 Run URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37467099680
+
+
+## 2026-10-06 run #19 execution-drift validation
+
+While run #19 remained in annual backfill, execution-critical blobs were compared from run head `507fdd83ad9df9b3703cbc65e8940dda6b0c2662` to then-latest main `816219437798a93bb11eae15b2f795139e013dcd`.
+
+Unchanged blobs:
+- annual workflow: `98121be7b81b79feee939573d7ce2d58e0d8ffd1`;
+- annual backfill script: `c21b59f1d3550601161dc2554ab25c534d26cd95`;
+- physical verifier: `59ecad64c3fd24e9561ac82177609374da0c1e0c`;
+- official historical range source: `c8528388ba82282461ba668dce8a4918122b3499`;
+- official historical date source: `0e08275d8ec545fb4afe799a77fae7952f5d57e9`;
+- current listing metadata source: `c1bf7b4ef8ba6b08b21fc61c991ab7adf6b810de`;
+- remote D1 adapter: `aafef9b8ddf9de3f16cdeca139f574879419a6f2`;
+- remote R2 adapter: `5a9fc975de62e1a10a803529e1db68bf943701d0`;
+- cold-pack store: `5901e414ac8668a31c717ce9c70869fa9eacc888`.
+
+Conclusion: later main movement does not change the execution semantics of run #19. At latest readback, migrate=SUCCESS, annual backfill=IN_PROGRESS, Physical verify/artifact/System1 isolation=PENDING. Continue from run URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37467099680
