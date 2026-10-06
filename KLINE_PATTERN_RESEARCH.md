@@ -23723,3 +23723,41 @@ New durable artifacts:
 - research/PATTERN_VOLATILITY_LIQUIDITY_CHURN_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-052 — Immediate snapback / price-discovery completion vs persistent structural rejection (2026-10-06)
+
+DL-052 rejects a common visual shortcut: price falls or jumps into a structural level, immediately snaps back, and the chart is then described as proof that the level "held."
+
+Microstructure research provides several alternative explanations for this exact path. Liquidity shocks can create temporary price concessions that reverse as liquidity providers absorb the imbalance. Thin or segmented trading can generate noisy prices that later revert. Auction and spread effects can create deviations that are not durable changes in efficient price. A one-window reversal is therefore not sufficient to identify structural rejection.
+
+The post-shock process is split into four clocks.
+
+T0 is the owner-certified shock anchor.
+
+T1 is the preregistered immediate-repair window, where temporary impact, microstructure repair and early price-discovery adjustment are most relevant.
+
+T2 is a later valid structural-test window, where the frozen zone may actually be revisited under a separate predictor freeze.
+
+T3 is the persistence follow-up, where later preregistered horizons test whether the T2 rejection state survives.
+
+No single number of minutes or bars is hard-coded. All candidate horizons belong to one frozen family, and every horizon must be retained. Choosing the horizon with the best eventual result, deleting failed horizons or extending the window after seeing a transient effect are all prohibited.
+
+Three reference objects are also separated. The pre-shock efficient-price proxy, the observed shock price and the frozen structural zone answer different questions. A return toward the pre-shock reference is evidence of reversion, not automatically evidence that the structural zone rejected price. Likewise, retaining a large fraction of the shock displacement can be consistent with price discovery at a new level even if the old zone no longer matters.
+
+A persistent structural-rejection candidate therefore requires more than an immediate reversal. A valid zone test must occur after the shock, its predictor state must be frozen before the response, and at least one later preregistered persistence receipt must remain compatible with the original rejection orientation. Missing follow-up, inconsistent later state or a new shock keeps the interpretation transient or contaminated.
+
+Transaction-price versus midquote behavior is an explicit falsifier. If the last trade snaps back but a valid quote midpoint does not, microstructure bounce becomes a stronger explanation. If quote data are unavailable, the correct state is insufficient separation, not proof of a structural bounce.
+
+Repeated shocks are also kept visible. A second volatility, liquidity, event or matching-mechanism shock between the original impulse and the persistence horizon breaks the naive one-shock narrative. D16 may later stratify or censor such cases under a preregistered design, but D01 does not silently delete them.
+
+Twenty adversarial cases are authored. They test valid/zero shock references, descriptive retention ratios, one-window snapback, new-level retention, transaction-only snapback, stable-midquote microstructure bounce, no-lookahead structural tests, transient versus persistent rejection, repeated-shock contamination, continuation through the zone, frozen horizon families, post-outcome horizon mutation/removal, ordered causal clocks and information-root de-duplication.
+
+New durable artifacts:
+- research/PATTERN_POST_SHOCK_PERSISTENCE_V0_1.md
+- research/pattern_post_shock_persistence_v0_1.json
+- research/pattern_post_shock_persistence_v0_1.mjs
+- research/test_pattern_post_shock_persistence_v0_1.mjs
+- research/PATTERN_POST_SHOCK_PERSISTENCE_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.

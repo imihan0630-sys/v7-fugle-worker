@@ -1,0 +1,20 @@
+{
+  "schemaVersion":"pattern-post-shock-persistence-v0.1",
+  "updated":"2026-10-06 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "clocks":["T0_SHOCK_ANCHOR","T1_IMMEDIATE_REPAIR_WINDOW","T2_STRUCTURAL_TEST_WINDOW","T3_PERSISTENCE_FOLLOWUP"],
+  "references":["R0_PRE_SHOCK_REFERENCE","R1_SHOCK_OBSERVED_PRICE","R2_FROZEN_STRUCTURAL_ZONE"],
+  "oneBarSnapbackEqualsStructuralRejection":false,
+  "immediateReversalEqualsDurableRejection":false,
+  "returnTowardPreShockReferenceEqualsZoneRejection":false,
+  "bestPersistenceHorizonAfterOutcomes":"PROHIBITED",
+  "repeatedShockPathEqualsSingleShockPath":false,
+  "transactionPriceSnapbackWithoutMidquoteControl":"INSUFFICIENT",
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "residualIncrementalityStatus":"NOT_VALIDATED",
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}
