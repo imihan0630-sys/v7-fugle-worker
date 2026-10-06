@@ -2572,3 +2572,20 @@ After 22:30 capture identical TPEx leverage LATE sources and compare against the
    - D03-10 Bollinger first after genuine cutoff-bearing parent + exact 20 eligible-session continuity;
    - D03-09 ADX second after canonical FULL_REPLAY/trusted-state certification.
 5. TI-005 KD-vs-RSI and TI-006 MACD-vs-direct-trend remain ahead of ADX/Bollinger for predictive incrementality.
+
+
+## 2026-10-06 D03 — TI-1165~1172 comparator-availability acceleration
+
+- Durable artifact: `research/D03_ADX_BOLLINGER_COMPARATOR_AVAILABILITY_20261006_V0_1.md`.
+- Repository audit confirms the future ADX/Bollinger residual test is primarily a same-parent provenance problem, not a missing-formula or missing-OHLC problem.
+- Already-computable/current-system controls include ret5/10/20/60, ATR%, volatility20, MA-distance/structure, gap context and pattern/compression ingredients.
+- V8.15.3 C1 projection explicitly persisted atrPercent, ret20, maDistance20Pct and lateStage; richer controls such as ret60, volatility20, rangeCompressionSlope, trueRangeDryUp, VCP/Platform geometry and trendPersistence exist elsewhere but are not yet proven complete under the same immutable C1 generation required by D03.
+- Frozen rule: AVAILABLE_IN_REPOSITORY != SAME_PARENT_ADMITTED.
+- Frozen zero-new-call rule: do not request new ordinary daily market-provider calls for ADX/Bollinger comparator reconstruction until the existing canonical inputs are proven insufficient.
+- No maturity promotion: D03 56.7%; D03-09/D03-10 L2/40; raw gate 2/3; technicalObserverR1 BLOCKED; outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. Re-read the five machine blockers.
+2. On first genuine cutoff-bearing C1 parent, inventory actual persisted fields from that generation rather than inferring from source code.
+3. Bind comparator reuse to generationId + decisionCutoffAt + source/continuity lineage + common support.
+4. D03-10 remains first promotion target; D03-09 remains second and additionally needs canonical Wilder FULL_REPLAY/trusted-state certification.
