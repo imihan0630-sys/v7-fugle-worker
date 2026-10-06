@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
+import {fetchBufferedOfficialSource} from './official_source_fetch_v0_1.mjs';
 
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worker.js',import.meta.url),'utf8');
 const quality=await readFile(new URL('./sync_official_quality.mjs',import.meta.url),'utf8');
@@ -22,6 +23,32 @@ assert.match(quality,/readonlyPreviewAccepted/);
 assert.match(quality,/bodyPrefix:text\.slice\(0,240\)/);
 assert.match(quality,/attempt<=3/);
 assert.match(quality,/text\\\/html/);
+assert.match(quality,/fetchBufferedOfficialSource/);
+
+let bodyAttempt=0;
+const bodyRetry=await fetchBufferedOfficialSource('https://example.invalid/slow-body',{},{
+  sleep:async()=>{},
+  fetchImpl:async()=>{
+    bodyAttempt+=1;
+    return {
+      status:200,ok:true,statusText:'OK',headers:new Headers({'content-type':'text/plain'}),
+      async arrayBuffer(){
+        if(bodyAttempt<3) throw new DOMException('The operation was aborted due to timeout','TimeoutError');
+        return new TextEncoder().encode('verified').buffer;
+      }
+    };
+  }
+});
+assert.equal(await bodyRetry.text(),'verified');
+assert.equal(bodyAttempt,3);
+
+let forbiddenAttempts=0;
+await assert.rejects(()=>fetchBufferedOfficialSource('https://example.invalid/forbidden',{},{
+  sleep:async()=>{},
+  fetchImpl:async()=>{forbiddenAttempts+=1;return {status:403,ok:false,statusText:'Forbidden',headers:new Headers(),arrayBuffer:async()=>new ArrayBuffer(0)};}
+}),/disallows access/);
+assert.equal(forbiddenAttempts,1);
+
 
 assert.match(recovery,/RECOVERY_MARKET_DATE/);
 assert.match(recovery,/historicalRecovery/);
@@ -33,6 +60,10 @@ assert.match(workflow,/Historical official quality recovery/);
 assert.match(workflow,/Historical after-market recovery/);
 assert.match(workflow,/QUALITY_MARKET_DATE:/);
 assert.match(workflow,/RECOVERY_MARKET_DATE:/);
+assert.match(workflow,/quality_only:/);
+assert.match(workflow,/QUALITY_RECOVERY_ONLY:/);
+assert.match(workflow,/github\.event\.schedule == '45 15 \* \* 1-5'/);
+assert.match(workflow,/inputs\.quality_only != true/);
 
 assert.doesNotMatch(source,/strategyA.*8\.9\.7|strategyB.*8\.9\.7/i);
 
@@ -42,5 +73,8 @@ console.log(JSON.stringify({
   historicalRecovery:true,
   readonlyPreviewBoundedRetry:true,
   responseObservability:true,
+  bodyStreamRetryCovered:true,
+  recoveryOnlyFallback:true,
+  qualityOnlyVerification:true,
   formalSelectionRulesChanged:false
 }));
