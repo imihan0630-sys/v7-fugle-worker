@@ -1,0 +1,160 @@
+{
+  "schemaVersion": "S2_S2_07_RAW_A1_LINEAGE_PHYSICAL_RECEIPT_V1_0",
+  "version": "1.0-RESEARCH",
+  "observedAt": "2026-10-07T00:30:41+08:00",
+  "lane": "BUILD_LANE",
+  "status": "RESEARCH_ONLY_PHYSICAL_PASS",
+  "implementation": {
+    "pr": 718,
+    "mergeCommit": "4c2350b499f3412b6a2be650c5d601ace2eea760"
+  },
+  "authoritativeRun": {
+    "workflow": "System2 S2-07 RAW A1 Lineage V1.0 Readonly",
+    "runId": 37496251790,
+    "jobId": 112381430570,
+    "conclusion": "PASS",
+    "system2ResearchCiRunId": 37496251753,
+    "v8RegressionRunId": 37496251698
+  },
+  "upstream": {
+    "nativeScheduleReceiptSchema": "S2_S2_07_NATIVE_SCHEDULE_INTEGRATION_PHYSICAL_RECEIPT_V0_9",
+    "nativeScheduleRunId": 37492646263,
+    "nativeScheduleMergeCommit": "44212a6f3d8556d2ffc98a0f85b7d0e97b65f269",
+    "boundedNativeReadyCaseCount": 4
+  },
+  "calendar": {
+    "source": "TWSE_OFFICIAL_HOLIDAY_SCHEDULE_HISTORICAL",
+    "fromDate": "2026-03-12",
+    "toDate": "2026-10-02",
+    "tradingDateCount": 141
+  },
+  "summary": {
+    "caseCount": 4,
+    "rawA1LineageReadyCount": 1,
+    "blockedCount": 3,
+    "readySymbols": [
+      "4806"
+    ],
+    "blockerCounts": {
+      "PRE_SUSPENSION_RAW_A1_BAR_MISSING": 3,
+      "RESUME_RAW_A1_BAR_MISSING": 3
+    },
+    "rawA1LineageBoundForAllCases": false
+  },
+  "cases": [
+    {
+      "symbol": "5381",
+      "market": "TPEX",
+      "family": "CAPITAL_REDUCTION",
+      "previousOfficialSession": "2026-03-31",
+      "stopTradingStart": "2026-04-01",
+      "resumeTradingDate": "2026-04-13",
+      "d1RawRowCount": 0,
+      "state": "RAW_A1_LINEAGE_BLOCKED",
+      "blockers": [
+        "PRE_SUSPENSION_RAW_A1_BAR_MISSING",
+        "RESUME_RAW_A1_BAR_MISSING"
+      ]
+    },
+    {
+      "symbol": "6241",
+      "market": "TPEX",
+      "family": "CAPITAL_REDUCTION",
+      "previousOfficialSession": "2026-08-17",
+      "stopTradingStart": "2026-08-18",
+      "resumeTradingDate": "2026-08-25",
+      "d1RawRowCount": 0,
+      "state": "RAW_A1_LINEAGE_BLOCKED",
+      "blockers": [
+        "PRE_SUSPENSION_RAW_A1_BAR_MISSING",
+        "RESUME_RAW_A1_BAR_MISSING"
+      ]
+    },
+    {
+      "symbol": "4806",
+      "market": "TPEX",
+      "family": "CAPITAL_REDUCTION",
+      "previousOfficialSession": "2026-09-22",
+      "stopTradingStart": "2026-09-23",
+      "resumeTradingDate": "2026-10-02",
+      "suspendedOfficialSessions": [
+        "2026-09-23",
+        "2026-09-24",
+        "2026-09-29",
+        "2026-09-30",
+        "2026-10-01"
+      ],
+      "d1RawRowCount": 2,
+      "suspendedRawA1RowCount": 0,
+      "state": "BOUNDED_RAW_A1_LINEAGE_READY",
+      "blockers": [],
+      "preSuspensionBar": {
+        "canonicalKey": "TPEX|4806|2026-09-22|RAW",
+        "barId": "S2H-A1-23c20530ea13b1c535b7dde09a35c1563de42b80e05e863b046d22d9ec40c239",
+        "sourceId": "A1_TPEX_DAILY_QUOTES_RECENT_HOT_WARMUP_PROSPECTIVE",
+        "sourceRowHash": "a912e6ddf04def697e29348c960d74b9313362aee236e7a24b0683a93310c24e",
+        "barHash": "23c20530ea13b1c535b7dde09a35c1563de42b80e05e863b046d22d9ec40c239",
+        "availableAt": "2026-10-04T15:49:07.565Z",
+        "pitAvailabilityClass": "OBSERVED_AVAILABLE_UPPER_BOUND",
+        "pitReplayEligible": true,
+        "continuityState": "UNVERIFIED",
+        "schemaVersion": "S2_HISTORICAL_A1_BAR_V0_2"
+      },
+      "resumeBar": {
+        "canonicalKey": "TPEX|4806|2026-10-02|RAW",
+        "barId": "S2H-A1-21b1279e8130e3ec52cca92e1eb81d67cac09f698d5f9b9280b6e900396e08a6",
+        "sourceId": "A1_TPEX_DAILY_QUOTES_RECENT_HOT_WARMUP_PROSPECTIVE",
+        "sourceRowHash": "4e3d3857ebdf3ccaeaa543bc8ab558bef20a1b2d3d1343729901be9604b163e3",
+        "barHash": "21b1279e8130e3ec52cca92e1eb81d67cac09f698d5f9b9280b6e900396e08a6",
+        "availableAt": "2026-10-03T08:46:53.319Z",
+        "pitAvailabilityClass": "OBSERVED_AVAILABLE_UPPER_BOUND",
+        "pitReplayEligible": true,
+        "continuityState": "UNVERIFIED",
+        "schemaVersion": "S2_HISTORICAL_A1_BAR_V0_2"
+      }
+    },
+    {
+      "symbol": "3086",
+      "market": "TPEX",
+      "family": "PAR_VALUE_CHANGE",
+      "previousOfficialSession": "2026-04-08",
+      "stopTradingStart": "2026-04-09",
+      "resumeTradingDate": "2026-04-20",
+      "d1RawRowCount": 0,
+      "state": "RAW_A1_LINEAGE_BLOCKED",
+      "blockers": [
+        "PRE_SUSPENSION_RAW_A1_BAR_MISSING",
+        "RESUME_RAW_A1_BAR_MISSING"
+      ]
+    }
+  ],
+  "d1": {
+    "databaseName": "system2-research",
+    "schemaVersion": "1.1",
+    "requestCount": 6,
+    "rowsRead": 12,
+    "rowsWritten": 0,
+    "mutationPerformed": false
+  },
+  "boundaries": {
+    "boundedFourCaseOnly": true,
+    "rawBarsMutated": false,
+    "adjustedPriceGenerated": false,
+    "continuityTransformPerformed": false,
+    "technicalContinuityCertified": false,
+    "symbolSessionCompletenessCertified": false,
+    "noSuspensionMayBeClaimed": false,
+    "selectionAuthority": false,
+    "finalSelectionEnabled": false,
+    "livePushEnabled": false,
+    "capitalImpact": false,
+    "orderImpact": false,
+    "system1RuntimeUsed": false
+  },
+  "interpretation": {
+    "readyCaseMeaning": "4806 has provenance-bearing bounded RAW A1 lineage across the certified stop/resume interval; this is not technical-continuity certification.",
+    "blockedCaseMeaning": "5381/6241/3086 are blocked by missing persisted RAW A1 boundary bars in isolated D1; BUILD_LANE must not backfill these rows ad hoc.",
+    "nextBuildCursor": "BOUNDED_TECHNICAL_CONTINUITY_CONTRACT_4806_ONLY",
+    "dataDependency": "5381/6241/3086 remain dependent on canonical DATA_LANE historical population/provenance."
+  }
+}

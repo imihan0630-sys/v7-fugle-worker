@@ -2481,3 +2481,43 @@ Next exact BUILD_LANE continuation:
 3. keep suspended sessions distinct from missing-data defects;
 4. only after source-row lineage and session coverage pass may a later gate evaluate technical continuity;
 5. all other 13 events remain blocked and must not inherit these four positives.
+
+
+## 2026-10-07 S2-07 RAW A1 Lineage V1.0 physical result
+
+Authoritative execution:
+- implementation merge: `4c2350b499f3412b6a2be650c5d601ace2eea760` (PR #718);
+- workflow: `System2 S2-07 RAW A1 Lineage V1.0 Readonly`;
+- run `37496251790` / job `112381430570` = PASS;
+- System2 Research CI `37496251753` = PASS;
+- V8 Regression `37496251698` = PASS.
+
+Physical result:
+- bounded case count = 4;
+- `rawA1LineageReadyCount = 1`;
+- READY = 4806;
+- BLOCKED = 5381, 6241, 3086;
+- blocker counts: `PRE_SUSPENSION_RAW_A1_BAR_MISSING=3`, `RESUME_RAW_A1_BAR_MISSING=3`;
+- D1 read-only metrics: requestCount=6, rowsRead=12, rowsWritten=0.
+
+4806:
+- previous official session = 2026-09-22;
+- native stop/resume interval = 2026-09-23 -> 2026-10-02;
+- exactly two provenance-bearing RAW A1 rows exist at the bounded endpoints;
+- zero RAW A1 rows exist on the certified suspended official sessions;
+- both endpoint rows remain `continuityState=UNVERIFIED`;
+- `rawA1LineageBound=true` only for this bounded case.
+
+5381 / 6241 / 3086:
+- current isolated D1 contains zero RAW A1 rows in each bounded pre-suspension-to-resume query window;
+- these are persisted-history coverage blockers, not proof of technical-continuity failure;
+- BUILD_LANE must not ad-hoc backfill them; historical population remains DATA_LANE-owned.
+
+Authority boundary remains:
+`rawBarsMutated=false`, `adjustedPriceGenerated=false`, `continuityTransformPerformed=false`, `technicalContinuityCertified=false`, selection/final-selection/push/capital/order=false, System1 unused.
+
+Next exact BUILD_LANE continuation:
+1. freeze a bounded technical-continuity contract for 4806 only;
+2. require independent adjustment/reference-price provenance rather than inferring continuity from price shape;
+3. keep 5381 / 6241 / 3086 blocked until canonical DATA_LANE RAW A1 coverage exists;
+4. do not generalize 4806 to the remaining event population.
