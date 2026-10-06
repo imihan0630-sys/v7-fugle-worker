@@ -1198,3 +1198,41 @@ Next exact BUILD_LANE continuation:
 3. reconcile expected vs observed exact-version keysets with append-only provenance;
 4. implement late-discovered-pre-cut version falsification for `noRevisionGapThroughCut`;
 5. only after that, bind symbol-session completeness and continuity receipts to genuine parent generations.
+
+
+## 2026-10-07 S2-07 Pre-Parent Evidence Cut V1.4 physical acceptance
+
+Authoritative implementation:
+- PR #734 merged as `deb426f5611a500826b212346c7f846bfe72b568`.
+- dedicated `System2 S2-07 Pre-Parent Evidence Cut V1.4 Readonly` run `37542639896` / job `112539041612`: PASS.
+- System2 Research CI run `37542639932`: PASS.
+- base..head comparison changed only five new System2 V1.4 files; System1/Formal files changed = 0.
+
+Current physical diagnostic intentionally fails closed:
+- V1.3 exact-reference observation stable key = `ef283de5c542e277e42105f12115cffe4d35a5a3b85fcb4c2f3db5c66fb5ba94`;
+- evidence cut state = `PRE_PARENT_EVIDENCE_CUT_BLOCKED`;
+- blockers = `EVIDENCE_CUT_SCOPE_INVALID`, `SELECTED_ONLY_CAPTURE_FORBIDDEN`, `MARKET_SCOPE_COVERAGE_MISMATCH`, `EXPECTED_VERSION_KEYSET_NOT_CERTIFIED_COMPLETE`;
+- evidenceCutId = `S2-ECUT:b202ee83c3919878238a802c28c0e599b6032ae00e1fd5ef227a9d2a844a36f5`;
+- sourceCutManifestHash = `609acccecf41544cb841eda3b64d0148348bdbd30bc26d89b4890d048902e1ec`;
+- `preCutManifestReady=false`;
+- `noRevisionGapThroughCut=false`.
+
+The two-point reconciler is physically exercised and remains blocked on the current single-sample input. Unit tests separately prove the positive complete-scope contract, late-observation rejection, late-discovered-pre-cut falsification, allowed genuinely later versions, and payload-mutation rejection. Historical `sourceReportedAt` is permitted only as a falsification clock, never for positive historical admission.
+
+V8 Regression run `37542639814` fails only at the pre-existing main test `tests/test_sda016_formal_c1_binding_governance_sync_v0_1.mjs`: it still expects `V0_5_58_TEST_ORACLE` while current main SDA-016 readiness is already `V820_PRODUCTION_VERIFIED_FIRST_SCHEDULED_DATE_INELIGIBLE_GENUINE_BINDING_PENDING_T48_OPEN_SHARED_AUTHORITY_PENDING`. `PRICE_VOLUME_CHECKPOINT.md` already records this exact stale baseline assertion and instructs other lanes not to mutate SDA-016 merely to force green CI. V1.4 does not modify that System1 conflict unit.
+
+Authority boundary:
+- no scheduler/Cron added;
+- history mutation=false;
+- symbol-session completeness=false;
+- technical continuity=false;
+- selection/final-selection/push/capital/order=false;
+- System1 runtime unused;
+- Formal Core unchanged.
+
+Next exact BUILD_LANE continuation:
+1. implement a genuine market-wide / exchange-wide / full-eligible pre-parent capture from verified official source lanes;
+2. freeze the complete expected exact-version population before the parent cutoff;
+3. persist immutable evidence-cut identity and source hashes;
+4. run post-parent bounded-complete reconciliation;
+5. only after `noRevisionGapThroughCut` passes bind symbol-session completeness and continuity receipts to genuine parent generations.
