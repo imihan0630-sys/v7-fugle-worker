@@ -23604,3 +23604,20 @@ Durable artifacts include:
 - research/PATTERN_TIME_AT_PRICE_INVENTORY_D16_HANDOFF_V0_1.md
 
 No outcomes were opened. D01 maturity remains 52.7%. SDA-001/SDA-002 remain REMEDIATION_IN_PROGRESS. Formal Core remains LOCKED.
+
+
+# DL-049 — Zone acceptance vs path disorder (2026-10-06)
+
+DL-049 separates repeated zone occupancy from directional path disorder.
+
+The same visited-bar share can arise from calm residence or repeated side-to-side movement. Conversely, the same number of state transitions can coexist with very different time spent inside the zone. Repeated visits therefore cannot be interpreted as stable acceptance without path context.
+
+D03 remains the owner of fixed-window pathEfficiency10. D01 restricts itself to zone-local semantics: BELOW / INSIDE / ABOVE close states, transition counts, side-to-side changes, bar-span ambiguity and exact event crossings where timestamped data exist.
+
+OHLC bars cannot reveal intrabar edge-touch order. A bar that spans both zone edges is stored as an ambiguous span, not as a reconstructed crossing sequence.
+
+No entropy factor, churn threshold or fixed directional sign is frozen in v0.1. Market mechanics such as tick regime, price limits, auction state and liquidity remain required context.
+
+The specification and machine contract are durable. Connector safety currently blocks helper/test-file creation, so executable adversarial testing is explicitly incomplete rather than inferred.
+
+Draft stacked PR #666 exists. No outcomes were opened. D01 maturity remains 52.7%. Formal Core remains locked.
