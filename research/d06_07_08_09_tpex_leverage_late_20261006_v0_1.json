@@ -1,0 +1,250 @@
+{
+  "schemaVersion": "D06_07_08_09_TPEX_LEVERAGE_LATE_20261006_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "modules": [
+    "D06-07",
+    "D06-08",
+    "D06-09"
+  ],
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "tradeDate": "2026-10-06",
+  "market": "TPEx",
+  "captureLabel": "LATE",
+  "targetTaipei": "22:30",
+  "capturedAt": "2026-10-06T22:30:34+08:00",
+  "sourceAuthority": "Taipei Exchange (TPEx)",
+  "earlyParent": "research/d06_07_08_09_tpex_leverage_early_20261006_v0_1.json",
+  "comparisonContract": "research/d06_07_08_09_tpex_early_late_comparison_contract_20261006_v0_1.json",
+  "preLateDiagnostic": {
+    "observedAt": "2026-10-06T22:28:06+08:00",
+    "marginFingerprint": "fnv1a64-utf8:81385d9868a8937b",
+    "sblFingerprint": "fnv1a64-utf8:9031f41de2a59a70",
+    "fingerprintsDifferedFromEarly": true,
+    "frozenCoreBalanceFlowComparison": "918/918 margin rows unchanged; 931/931 SBL rows unchanged on the pre-frozen core balance/flow fields",
+    "interpretation": "A full-row fingerprint change was already visible before 22:30, but core balance/flow fields had not changed. Do not equate hash change with economically relevant revision."
+  },
+  "sources": {
+    "margin": {
+      "product": "融資融券餘額表",
+      "url": "https://www.tpex.org.tw/zh-tw/mainboard/trading/margin-trading/transactions.html",
+      "snapshot": "research/d06_07_08_tpex_margin_late_snapshot_20261006_2230_v0_1.csv",
+      "rows": 918,
+      "numericValid": 918,
+      "duplicateSymbols": 0,
+      "financingArithmeticPass": "918/918",
+      "marginShortArithmeticPass": "918/918",
+      "fingerprint": "fnv1a64-utf8:81385d9868a8937b"
+    },
+    "sbl": {
+      "product": "融券借券賣出餘額",
+      "url": "https://www.tpex.org.tw/zh-tw/mainboard/trading/margin-trading/sbl.html",
+      "snapshot": "research/d06_08_09_tpex_sbl_late_snapshot_20261006_2230_v0_1.csv",
+      "rows": 931,
+      "numericValid": 931,
+      "duplicateSymbols": 0,
+      "marginShortArithmeticPass": "931/931",
+      "actualSblShortArithmeticPass": "931/931",
+      "fingerprint": "fnv1a64-utf8:9031f41de2a59a70"
+    }
+  },
+  "earlyLateComparison": {
+    "margin": {
+      "earlyRows": 918,
+      "lateRows": 918,
+      "unionSymbolCount": 918,
+      "commonSymbolCount": 918,
+      "unchangedRowCount": 918,
+      "changedRowCount": 0,
+      "addedRowCount": 0,
+      "removedRowCount": 0,
+      "identityOrNumericConflictCount": 0,
+      "changedRowRateOverUnion": 0,
+      "changedRowRateOverCommon": 0,
+      "fieldChangedCount": {
+        "marginPrevLots": 0,
+        "marginBuyLots": 0,
+        "marginSellLots": 0,
+        "cashRepayLots": 0,
+        "marginBalanceLots": 0,
+        "marginFinanceCompanyLots": 0,
+        "marginUsagePct": 0,
+        "marginLimitLots": 0,
+        "shortPrevLots": 0,
+        "shortSellLots": 0,
+        "shortBuyLots": 0,
+        "shortRepayLots": 0,
+        "shortBalanceLots": 0,
+        "shortFinanceCompanyLots": 0,
+        "shortUsagePct": 0,
+        "shortLimitLots": 0,
+        "offsetLots": 0,
+        "note": 0
+      },
+      "absSums": {
+        "marginPrevLots": 0,
+        "marginBuyLots": 0,
+        "marginSellLots": 0,
+        "cashRepayLots": 0,
+        "marginBalanceLots": 0,
+        "marginFinanceCompanyLots": 0,
+        "marginUsagePct": 0,
+        "marginLimitLots": 0,
+        "shortPrevLots": 0,
+        "shortSellLots": 0,
+        "shortBuyLots": 0,
+        "shortRepayLots": 0,
+        "shortBalanceLots": 0,
+        "shortFinanceCompanyLots": 0,
+        "shortUsagePct": 0,
+        "shortLimitLots": 0,
+        "offsetLots": 0
+      },
+      "maxAbs": {
+        "marginPrevLots": 0,
+        "marginBuyLots": 0,
+        "marginSellLots": 0,
+        "cashRepayLots": 0,
+        "marginBalanceLots": 0,
+        "marginFinanceCompanyLots": 0,
+        "marginUsagePct": 0,
+        "marginLimitLots": 0,
+        "shortPrevLots": 0,
+        "shortSellLots": 0,
+        "shortBuyLots": 0,
+        "shortRepayLots": 0,
+        "shortBalanceLots": 0,
+        "shortFinanceCompanyLots": 0,
+        "shortUsagePct": 0,
+        "shortLimitLots": 0,
+        "offsetLots": 0
+      },
+      "examples": []
+    },
+    "sbl": {
+      "earlyRows": 931,
+      "lateRows": 931,
+      "unionSymbolCount": 931,
+      "commonSymbolCount": 931,
+      "unchangedRowCount": 930,
+      "changedRowCount": 1,
+      "addedRowCount": 0,
+      "removedRowCount": 0,
+      "identityOrNumericConflictCount": 0,
+      "changedRowRateOverUnion": 0.1074,
+      "changedRowRateOverCommon": 0.1074,
+      "fieldChangedCount": {
+        "marginShortPrevShares": 0,
+        "marginShortSellShares": 0,
+        "marginShortBuyShares": 0,
+        "marginShortCashRepayShares": 0,
+        "marginShortBalanceShares": 0,
+        "marginShortLimitShares": 0,
+        "sblShortPrevShares": 0,
+        "sblShortSellShares": 0,
+        "sblShortReturnShares": 0,
+        "sblShortAdjustmentShares": 0,
+        "sblShortBalanceShares": 0,
+        "nextBusinessDaySblShortLimitShares": 1,
+        "note": 1
+      },
+      "absSums": {
+        "marginShortPrevShares": 0,
+        "marginShortSellShares": 0,
+        "marginShortBuyShares": 0,
+        "marginShortCashRepayShares": 0,
+        "marginShortBalanceShares": 0,
+        "marginShortLimitShares": 0,
+        "sblShortPrevShares": 0,
+        "sblShortSellShares": 0,
+        "sblShortReturnShares": 0,
+        "sblShortAdjustmentShares": 0,
+        "sblShortBalanceShares": 0,
+        "nextBusinessDaySblShortLimitShares": 7044
+      },
+      "maxAbs": {
+        "marginShortPrevShares": 0,
+        "marginShortSellShares": 0,
+        "marginShortBuyShares": 0,
+        "marginShortCashRepayShares": 0,
+        "marginShortBalanceShares": 0,
+        "marginShortLimitShares": 0,
+        "sblShortPrevShares": 0,
+        "sblShortSellShares": 0,
+        "sblShortReturnShares": 0,
+        "sblShortAdjustmentShares": 0,
+        "sblShortBalanceShares": 0,
+        "nextBusinessDaySblShortLimitShares": 7044
+      },
+      "examples": [
+        {
+          "symbol": "4527",
+          "name": "方土霖",
+          "changedFields": [
+            "nextBusinessDaySblShortLimitShares",
+            "note"
+          ],
+          "delta": {
+            "marginShortPrevShares": 0,
+            "marginShortSellShares": 0,
+            "marginShortBuyShares": 0,
+            "marginShortCashRepayShares": 0,
+            "marginShortBalanceShares": 0,
+            "marginShortLimitShares": 0,
+            "sblShortPrevShares": 0,
+            "sblShortSellShares": 0,
+            "sblShortReturnShares": 0,
+            "sblShortAdjustmentShares": 0,
+            "sblShortBalanceShares": 0,
+            "nextBusinessDaySblShortLimitShares": 7044,
+            "note": {
+              "from": "V",
+              "to": ""
+            }
+          }
+        }
+      ]
+    }
+  },
+  "crossSourceUnitAudit": {
+    "commonSymbols": 918,
+    "marginShortFiveBalanceFlowFieldsExactLotsTimes1000": "918/918",
+    "shortLimitFloorSharesDiv1000EqualsDisplayedLots": "918/918",
+    "sblOnlyRows": 13,
+    "sblOnlySymbols": [
+      "3485",
+      "6680",
+      "6846",
+      "6904",
+      "6983",
+      "7713",
+      "7743",
+      "7772",
+      "7820",
+      "7828",
+      "7856",
+      "8084",
+      "8092"
+    ],
+    "sblOnlyWithNonzeroSblBalance": 13,
+    "sblOnlyWithSameDaySblActivity": 6
+  },
+  "timingInterpretation": {
+    "earlyCapturedAt": "2026-10-06T21:25:30+08:00",
+    "preLateObservedAt": "2026-10-06T22:28:06+08:00",
+    "lateCapturedAt": "2026-10-06T22:30:34+08:00",
+    "sourceUpdateFirstKnownBound": "(2026-10-06T21:25:30+08:00, 2026-10-06T22:28:06+08:00]",
+    "note": "The provider's second evening state was already distinguishable by full-row fingerprint before the nominal 22:30 target. Exact provider update minute is not asserted."
+  },
+  "guards": [
+    "EARLY and LATE are same-date vintages, not independent trading dates.",
+    "Hash changes must be decomposed by field; hash difference alone is not an economic revision.",
+    "D06-08 margin-short and D06-09 actual SBL-short universes remain separate.",
+    "NULL is not zero; source-native precision is preserved.",
+    "Revision direction is not investor motive or bullish/bearish intent.",
+    "No return/outcome data are used."
+  ],
+  "status": "LATE_CAPTURED / PAIRED_EARLY_LATE_COMPARISON_COMPLETE / FIELD_LEVEL_REVISION_DECOMPOSED / OUTCOMES_CLOSED / FORMAL_LOCKED"
+}
