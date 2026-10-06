@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "S2_CORRECTION_INDEPENDENT_VERIFICATION_V0_1",
+  "directiveId": "S2-CORR-20261006-002",
+  "verifiedAt": "2026-10-06T20:54:24+08:00",
+  "verifiedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "auditBaseMainSha": "78696ca04b908463589b027d9235a44885198ad1",
+  "result": "VERIFIED_CLOSED",
+  "acceptance": {
+    "resonanceNotMappedToBareEnterExit": true,
+    "candidateBoardMonitorOnlySemantics": true,
+    "decisionWorkspaceSeparatesMonitorAndFormalAction": true,
+    "noFrozenDecisionStaysUnavailable": true,
+    "actionableWordingRemoved": true,
+    "regressionGuardsPresent": true,
+    "resonanceRuntimeUnchanged": true,
+    "protectedAuthoritiesUnchanged": true
+  },
+  "implementation": {
+    "implementationPr": 673,
+    "implementationMergeSha": "36afa057bdc2e88238f5c37b926bea9f821b05d9",
+    "queueWritebackPr": 674,
+    "queueWritebackMergeSha": "c1fb873c9b499e1d5a7f9b5c5e954ab32616198a"
+  },
+  "ci": [
+    {
+      "workflow": "System2 Research CI",
+      "runId": 37458264775,
+      "jobId": 112251116356,
+      "result": "PASS"
+    },
+    {
+      "workflow": "V8 Regression Tests",
+      "runId": 37458264777,
+      "jobId": 112251116263,
+      "result": "PASS"
+    },
+    {
+      "workflow": "System2 Research CI merged-main",
+      "runId": 37458445915,
+      "jobId": 112251710622,
+      "result": "PASS"
+    },
+    {
+      "workflow": "System2 Daily Resonance Deploy",
+      "runId": 37458445783,
+      "jobId": 112251709625,
+      "result": "PASS"
+    }
+  ],
+  "verificationEvidence": [
+    "Independent audit re-read latest GitHub main and did not rely on BUILD_LANE's completion claim.",
+    "PR #673 merged as 36afa057bdc2e88238f5c37b926bea9f821b05d9 and changed only system2/deploy/terminal_page.mjs plus system2/tests/institutional_terminal_page_v0_1.test.mjs.",
+    "Candidate Board now labels the field 監控訊號（RESEARCH） and preserves BUY_RESONANCE / EXIT_RESONANCE monitor semantics instead of converting them to bare ENTER / EXIT.",
+    "Decision Workspace now separates monitor signal from formal Frozen Decision Action; without frozen decision authority, the formal action remains NO_FROZEN_DECISION.",
+    "User-facing actionable resonance wording was removed; empty-state wording now refers to research monitor resonance.",
+    "Targeted terminal regression asserts BUY_RESONANCE stays BUY_RESONANCE, EXIT_RESONANCE stays EXIT_RESONANCE, NO_FROZEN_DECISION remains the formal action, and bare ENTER/EXIT mappings are absent.",
+    "System2 Research CI run 37458264775 / job 112251116356 PASS.",
+    "V8 Regression run 37458264777 / job 112251116263 PASS.",
+    "Merged-main System2 Research CI run 37458445915 / job 112251710622 PASS.",
+    "System2 Daily Resonance Deploy run 37458445783 / job 112251709625 PASS, including public read API/UI/schedule checks and System1 production-file isolation.",
+    "Latest-main blob SHAs for daily_resonance_monitor_v0_1.mjs, daily_resonance_read_model_v0_1.mjs and daily_resonance_worker_cycle_v0_1.mjs remain a39fd428e54ce800600e96d23f178ea024f86d98, d5989e563c6995a9b8bb5110ce1ee8ab8e4aa4b4 and 245044b7878360680854b11fda7f8f221d973d33 respectively, matching the pre-fix runtime blobs.",
+    "From FIX_IMPLEMENTED queue merge c1fb873c9b499e1d5a7f9b5c5e954ab32616198a through audit time, main advanced 41 commits and none touched the correction conflict units; no later drift invalidated the fix.",
+    "No strategy logic, assessor policy, preregistration, weights, thresholds, ranking, capacity, final/live selection authority, notification/push authority, capital/order behavior, or System1 Formal Core was changed."
+  ],
+  "residuals": [
+    "Future promotion of resonance monitor evidence into a formal frozen-decision action remains separately validation/governance gated.",
+    "Current terminal still depends on upstream S2-07 frozen candidate/decision population before formal action can become available."
+  ],
+  "closureMeaning": "Closes the S2-16 UI authority-overclaim. Resonance remains research/shadow monitor evidence and is no longer presented as formal ENTER/EXIT decision authority."
+}
