@@ -639,3 +639,15 @@ COV-07 remains PARTIAL until that format repair is committed.
 1. Return the repaired COV-07 artifact to 00 control-plane validator/intake.
 2. Do not create/reserve a new D12 identifier or change maturity until Dependency/overlap/anti-double-count/anti-orphan review and explicit owner approval.
 3. D12-13 remains on the preregistered 2026-10-05 same-effective-date Delta alignment lane; only source observations whose publication/observed clock is not later than the research clock may enter PIT evidence.
+
+
+## 2026-10-06 endpoint-divergence continuation — DR-108..DR-111
+- DR-108: same-continuation official TAIFEX Delta endpoints diverged: interactive page showed 2026/10/06 06:45:18 while Excel-style endpoint still showed 2026-10-05 14:30:17.
+- DR-109: endpoint/presentation identity is mandatory PIT provenance alongside displayed publication timestamp, observedAt, effectiveTradingDate and raw-source identity/hash when authorized.
+- DR-110: 2026/10/06 06:45:18 is the first directly observed current-day Delta version in this research chain; source/replay evidence only, outcomes remain CLOSED.
+- DR-111: endpoint lag/cache/presentation divergence must be separated from model residual. No cherry-picking between official endpoints.
+- Evidence: `research/room09_d12_d13_source_endpoint_divergence_20261006_v0_1.md`.
+- D12 remains 40.0%; no L3 promotion; Formal Core LOCKED.
+
+### Exact next continuation after DR-111
+Preserve both endpoint states as one divergence pair, then materialize common contract support and model-input clocks before Delta residual attribution. Do not count endpoint lag as model error.
