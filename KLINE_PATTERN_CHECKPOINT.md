@@ -3070,3 +3070,98 @@ No maturity or Formal change is authorized by this routing.
 7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 8. Next D01 science: separate persistent structural rejection from immediate snapback / price-discovery completion after volatility or liquidity shock.
 9. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-052 (2026-10-06)
+
+### DL-052 — Immediate snapback / price-discovery completion vs persistent structural rejection
+- DL-050 separated ordinary continuous transitions from auction/limit/event/microstructure repricing.
+- DL-051 separated raw churn from volatility clustering, realized-volatility bursts and liquidity deterioration.
+- DL-052 adds the next persistence firewall: a one-bar / one-window reversal after a shock may be temporary price impact, liquidity provision, bid-ask/discreteness repair or price-discovery completion rather than durable support/resistance rejection.
+- External microstructure evidence supports the alternative mechanisms:
+  liquidity shocks can create temporary price concessions followed by short-term reversal;
+  thin/after-hours/auction-related price deviations can be noisy and subsequently reverse;
+  temporary and permanent price impact must therefore remain distinct.
+- Four clocks are frozen:
+  T0 SHOCK_ANCHOR;
+  T1 IMMEDIATE_REPAIR_WINDOW;
+  T2 STRUCTURAL_TEST_WINDOW;
+  T3 PERSISTENCE_FOLLOWUP.
+- D01 freezes no universal minute/bar duration. Every persistence horizon belongs to one preregistered horizon family.
+- Post-outcome horizon mutation, deletion or best-horizon selection is prohibited.
+- Three reference identities remain separate:
+  R0 PRE_SHOCK_REFERENCE;
+  R1 SHOCK_OBSERVED_PRICE;
+  R2 FROZEN_STRUCTURAL_ZONE.
+- Return toward R0 != rejection at R2.
+- A valid shock reference stores owner-certified shockAt, pre-shock reference type/price and observed shock price.
+- displacementRetentionRatio is descriptive only and has no D01 permanence cutoff.
+- IMMEDIATE_SNAPBACK_CANDIDATE requires valid T0/T1 follow-up but does not imply structural rejection.
+- PRICE_DISCOVERY_COMPLETION_CANDIDATE remains distinct: shock displacement may be retained at a new level after immediate noise/liquidity effects normalize.
+- STRUCTURAL_REJECTION_CANDIDATE requires a valid later structural-zone interaction with predictor state frozen before its response.
+- PERSISTENT_STRUCTURAL_REJECTION_CANDIDATE additionally requires preregistered later persistence receipts, no intervening new shock/mechanism reset, replay-safe continuity and retained rejection orientation.
+- One immediate rejection without later persistence -> TRANSIENT_ZONE_REJECTION_CANDIDATE.
+- Repeated/intervening shock -> REPEATED_SHOCK_OR_MIXED_MECHANISM; later state cannot be attributed naively to the original shock.
+- Transaction-price snapback without a valid midquote / owner efficient-price reference is insufficient.
+- If last trade snaps back but valid midquote does not, MICROSTRUCTURE_BOUNCE_COMPATIBLE is strengthened rather than structural-rejection proof.
+- Owner boundaries remain strict:
+  D04 volatility shock/persistence;
+  D05 spread/depth/liquidity/midquote/transaction microstructure;
+  D11/D17 event clocks;
+  D03 pathEfficiency10;
+  D01 frozen-zone post-shock relation.
+- Post-shock classes:
+  P0 SHOCK_NO_VALID_ZONE_TEST;
+  P1 IMMEDIATE_SNAPBACK_CANDIDATE;
+  P2 PRICE_DISCOVERY_COMPLETION_CANDIDATE;
+  P3 TRANSIENT_ZONE_REJECTION_CANDIDATE;
+  P4 PERSISTENT_STRUCTURAL_REJECTION_CANDIDATE;
+  P5 SHOCK_CONTINUATION_THROUGH_ZONE;
+  P6 REPEATED_SHOCK_OR_MIXED_MECHANISM;
+  P7 NOT_EVALUABLE.
+- Future D16 ladder:
+  S0 RAW_IMMEDIATE_REVERSAL;
+  S1 MICROSTRUCTURE_REFERENCE_CONTROLLED;
+  S2 SHOCK_MECHANISM_CONTROLLED;
+  S3 VOL_LIQUIDITY_CONTEXT_CONTROLLED;
+  S4 FIRST_ZONE_TEST_SEPARATED;
+  S5 PERSISTENCE_HORIZON_FAMILY;
+  S6 REPEATED_SHOCK_EXCLUDED_OR_STRATIFIED;
+  S7 PERSISTENT_REJECTION_RESIDUAL_CANDIDATE;
+  S8 MULTI_DATE_MULTI_REGIME_REPLICATION.
+- Future interpretations:
+  Q0 TEMPORARY_IMPACT_SNAPBACK_EXPLANATION;
+  Q1 PRICE_DISCOVERY_COMPLETION_EXPLANATION;
+  Q2 MICROSTRUCTURE_BOUNCE_EXPLANATION;
+  Q3 SHOCK_MECHANISM_EXPLANATION;
+  Q4 TRANSIENT_ZONE_REJECTION_ONLY;
+  Q5 REPEATED_SHOCK_SENSITIVE;
+  Q6 PERSISTENT_STRUCTURAL_REJECTION_RESIDUAL;
+  Q7 HORIZON_SENSITIVE;
+  Q8 NOT_EVALUABLE.
+- Most post-shock path views remain PRICE_OHLC descendants; default effectiveIndependentEvidenceCount=1.
+- New files:
+  - research/PATTERN_POST_SHOCK_PERSISTENCE_V0_1.md
+  - research/pattern_post_shock_persistence_v0_1.json
+  - research/pattern_post_shock_persistence_v0_1.mjs
+  - research/test_pattern_post_shock_persistence_v0_1.mjs
+  - research/PATTERN_POST_SHOCK_PERSISTENCE_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain open under canonical queue.
+- No outcomes inspected; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-052
+
+1. Reconcile the DL-052 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-052 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve T0/T1/T2/T3 causal clocks and R0/R1/R2 reference identities.
+4. Preserve the full preregistered persistence-horizon family; no best-horizon rescue.
+5. Separate transaction-price snapback from midquote/owner-efficient-price persistence.
+6. Hand S0-S8 / Q0-Q8 familywise/common-support inference to D16.
+7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+8. Next D01 science: separate persistent rejection from market/sector common reversal so a broad-market snapback is not credited to symbol-specific structure.
+9. No runtime wiring / no Formal change.
