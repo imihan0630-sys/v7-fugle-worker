@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-06T21:01:27+08:00",
+  "updatedAt": "2026-10-06T21:12:49+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -829,6 +829,72 @@
       "verificationEvidence": [],
       "finalDisposition": "PENDING",
       "updatedAt": "2026-10-06T21:01:27+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261006-004",
+      "createdAt": "2026-10-06T21:12:49+08:00",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "title": "Institutional terminal can surface prior-session resonance as current-day monitor data",
+      "affectedScope": [
+        "S2-16 terminal freshness",
+        "Candidate Board",
+        "Decision Workspace",
+        "Today Focus",
+        "Resonance Center"
+      ],
+      "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "canonicalRequirement": "Current-session terminal surfaces must fail closed on market-date mismatch. Prior-session resonance history may remain queryable, but it must not be silently reused as current-day monitor state.",
+      "observedProblem": "The terminal calls /api/system2/resonance without marketDate. That API resolves the latest persisted resonance date when marketDate is absent, while pool/operations default to today's Taipei market date. The terminal then consumes resonance rows without verifying market-date alignment, so prior-session rows can appear on today's current-session surfaces.",
+      "evidence": [
+        "terminal_page.mjs load() calls /api/system2/resonance without marketDate",
+        "worker.mjs defaults pool/operations to taipeiMarketDateV0_1(new Date()) but not resonance",
+        "readLatestResonanceApiV0_1 selects latest persisted market_date when marketDate is absent",
+        "candidateRows() prefers S.resonance.symbols",
+        "Decision Workspace, Today Focus and Resonance Center consume selected resonance rows without current-date equality guard",
+        "terminal copy claims bounded current data and no stale pool reuse",
+        "existing tests do not cover terminal resonance market-date alignment"
+      ],
+      "riskIfUnfixed": "Prior-session research monitor rows/charts can look current on today's terminal, causing stale situational awareness and freshness/audit ambiguity even though backend trading authority remains disabled.",
+      "requiredCorrection": [
+        "bind terminal current-session resonance to today's Taipei marketDate or fail closed on mismatch",
+        "prevent prior-session resonance from populating current Candidate/Decision/Today Focus/active Resonance surfaces",
+        "keep latest-any-date API behavior only as explicit historical behavior if still needed",
+        "mark intentionally displayed old data as STALE/PREVIOUS_SESSION and exclude it from current counts",
+        "align decisionTime/chart/asOf/displayed marketDate",
+        "add prior-session contamination regression tests",
+        "add same-day acceptance and explicit historical-query tests",
+        "preserve all resonance/strategy/ranking/capacity/trading/System1 boundaries"
+      ],
+      "acceptanceCriteria": [
+        "current terminal never silently displays resonance rows from a different marketDate",
+        "prior-session data cannot populate current active surfaces without explicit historical/stale state",
+        "same-session resonance remains functional",
+        "date mismatch is fail-closed and visible",
+        "regression tests cover stale contamination, same-day success and historical query behavior",
+        "no protected authority changes"
+      ],
+      "protectedBoundaries": [
+        "resonance formula/state machine",
+        "bounded-pool freshness logic",
+        "S2-07 candidate authority",
+        "strategy logic",
+        "ranking/capacity",
+        "final/live selection authority",
+        "notification/push",
+        "capital/orders",
+        "System1 Formal Core"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "BUILD_LANE",
+      "assignedLane": "BUILD_LANE",
+      "assignedRoom": "System 2｜建置總控室",
+      "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-06T21:12:49+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
