@@ -76,6 +76,33 @@ export async function buildMopsExactVersionObservationV1_6({
     });
   }
 
+  if(Date.parse(observed)<Date.parse(clock.sourceReportedAt)){
+    return deepFreeze({
+      schemaVersion:"S2_S2_07_MOPS_EXACT_VERSION_OBSERVATION_V1_6",
+      version:S2_07_MOPS_EXACT_VERSION_POPULATION_VERSION_V1_6,
+      stockCode:symbol,
+      observationMode:"PROSPECTIVE_POLL",
+      observedAt:observed,
+      firstObservedAt:null,
+      firstObservedAvailableAt:null,
+      availableAt:null,
+      sourceUrl:text(sourceUrl)||null,
+      sourceQueryRef:text(sourceQueryRef)||null,
+      sourceReportedClockEligible:true,
+      sourceReportedAt:clock.sourceReportedAt,
+      sourceClockVersionKey:clock.versionKey,
+      versionKey:null,
+      versionPayloadHash:null,
+      state:"OBSERVATION_PRECEDES_SOURCE_REPORTED_CLOCK",
+      eligible:false,
+      knownAtVersionClockCertified:false,
+      expectedMopsKeysetComplete:false,
+      noRevisionGapThroughCut:false,
+      selectionAuthority:false,
+      system1RuntimeUsed:false,
+    });
+  }
+
   const canonicalRow=canonicalParsedRow(symbol,row);
   const versionPayloadHash=await sha256Hex(canonicalRow);
   const stableIdentity={
