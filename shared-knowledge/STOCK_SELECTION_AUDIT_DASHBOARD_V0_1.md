@@ -273,3 +273,19 @@ technical checks green; owner approval required for Production integration; not 
 No universal curriculum maturity percentage is a launch gate.
 
 Older dashboard sections are historical snapshots where they conflict with this current section.
+
+
+## 2026-10-06 post-audit live drift — System2 CORR-003
+
+Latest System2 correction state:
+- CORR-002 = VERIFIED_CLOSED.
+- CORR-003 = OPEN / BUILD_LANE.
+
+Operational interpretation:
+- terminal infrastructure remains substantially ready;
+- resonance remains monitor-only research/shadow evidence;
+- Candidate Board is not yet authoritative formal candidate output because monitor/pool fallback source and strategy identity require correction;
+- System2 selection-to-capacity remains INCOMPLETE;
+- System2 SDA-022 fingerprints and physical NC-T01 remain pending.
+
+No System1 Launch Gate state changes from this drift.
