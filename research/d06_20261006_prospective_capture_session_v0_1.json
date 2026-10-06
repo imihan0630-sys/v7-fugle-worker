@@ -81,13 +81,19 @@
       ],
       "earlyTargetTaipei": "20:30",
       "lateTargetTaipei": "22:30",
-      "state": "EARLY_COMPLETE_2125 / LATE_2230_PENDING",
+      "state": "EARLY_COMPLETE / LATE_COMPLETE / PAIRED_REVISION_ANALYSIS_COMPLETE / D06_07_08_09_L3",
       "universeGuard": "research/d06_08_09_tpex_margin_sbl_universe_guard_20261005_v0_1.json",
-      "next": "After 22:30 capture identical LATE sources and compare EARLY->LATE on union/common support.",
+      "next": "Continue multi-date revision stability. L4 requires preregistered OOS/Shadow residual incrementality.",
       "earlyReceipt": "research/d06_07_08_09_tpex_leverage_early_20261006_v0_1.json",
       "earlyMarginSnapshot": "research/d06_07_08_tpex_margin_early_snapshot_20261006_2125_v0_1.csv",
       "earlySblSnapshot": "research/d06_08_09_tpex_sbl_early_snapshot_20261006_2125_v0_1.csv",
-      "universePersistenceGuard": "research/d06_08_09_tpex_sbl_only_universe_persistence_20261006_v0_1.json"
+      "universePersistenceGuard": "research/d06_08_09_tpex_sbl_only_universe_persistence_20261006_v0_1.json",
+      "lateReceipt": "research/d06_07_08_09_tpex_leverage_late_20261006_v0_1.json",
+      "lateMarginSnapshot": "research/d06_07_08_tpex_margin_late_snapshot_20261006_2230_v0_1.csv",
+      "lateSblSnapshot": "research/d06_08_09_tpex_sbl_late_snapshot_20261006_2230_v0_1.csv",
+      "comparisonContract": "research/d06_07_08_09_tpex_early_late_comparison_contract_20261006_v0_1.json",
+      "maturityDecisionReceipt": "research/d06_07_08_09_tpex_paired_vintage_l3_decision_20261006_v0_1.json",
+      "maturityDecision": "D06-07/08/09 L2/40 -> L3/60 for Taiwan PIT/source/replay feasibility only."
     },
     {
       "laneId": "D06_05_TDCC_LINEAGE",
@@ -112,7 +118,7 @@
       "next": "No duplicate independent-date credit from morning rereads of the same 2026-10-06 decision generation."
     }
   ],
-  "maturityImpact": "NONE_AT_OPEN",
-  "sessionState": "D06_03_SECOND_DATE_CAPTURED / D06_14_T1_ZERO_REVISION_AND_20261006_TPRELIM_CAPTURED / D06_18_1520_MISSED_POSTCLOSE_DIAGNOSTIC_ONLY / TPEX_LEVERAGE_EARLY_COMPLETE_LATE_2230_PENDING / OUTCOMES_CLOSED",
-  "exactNext": "After 22:30 capture TPEx leverage LATE with the same parser/unit semantics, compare against the frozen 21:25 EARLY snapshots, and only then reassess D06-07/08/09 maturity. D06-14 awaits 2026-10-07 T2_FINAL for 2026-10-05 and T1_REVISED for 2026-10-06. Outcomes/Formal remain closed."
+  "maturityImpact": "D06_07_D06_08_D06_09_L2_TO_L3 / OTHER_CURRENT_LANES_NO_PROMOTION",
+  "sessionState": "20261006_MAIN_CAPTURE_LANES_COMPLETE / D06_03_SECOND_DATE_COMPLETE / D06_14_T1_AND_SECOND_TPRELIM_COMPLETE / D06_18_1520_MISSED_POSTCLOSE_DIAGNOSTIC_ONLY / TPEX_LEVERAGE_EARLY_LATE_COMPLETE_L3 / OUTCOMES_CLOSED",
+  "exactNext": "2026-10-07: capture D06-14 T2_FINAL for tradeDate 2026-10-05 and T1_REVISED for tradeDate 2026-10-06. Continue unresolved D06-05 same-generation TDCC lineage, D06-06 compatible shared price-volume parent, D06-18 true live slot on next valid date, D06-19 direct-retail source discovery, and SDA-007 engineering/D16 dependencies. For D06-07/08/09, future work shifts to multi-date revision stability and L4 OOS/Shadow incrementality."
 }

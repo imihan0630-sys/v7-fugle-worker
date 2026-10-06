@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "D06_07_08_09_TPEX_PAIRED_VINTAGE_L3_DECISION_20261006_V0_1",
+  "updatedAt": "2026-10-06 Asia/Taipei",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "modules": [
+    "D06-07",
+    "D06-08",
+    "D06-09"
+  ],
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "tradeDate": "2026-10-06",
+  "authoritativeParents": [
+    "research/d06_07_08_09_tpex_leverage_early_20261006_v0_1.json",
+    "research/d06_07_08_09_tpex_leverage_late_20261006_v0_1.json",
+    "research/d06_07_08_09_tpex_early_late_comparison_contract_20261006_v0_1.json",
+    "research/d06_08_09_tpex_margin_sbl_universe_guard_20261005_v0_1.json",
+    "research/d06_08_09_tpex_sbl_only_universe_persistence_20261006_v0_1.json"
+  ],
+  "passGateReadback": {
+    "preregistered": "Product-specific TPEx official semantics and prospective readiness/revision demonstrated through an authorized route; paid source existence alone is insufficient.",
+    "sourceAuthority": "Taipei Exchange (TPEx)",
+    "authorizedRoute": "PASS",
+    "prospectiveEarly": "PASS",
+    "prospectiveLate": "PASS",
+    "sameSourceFamily": "PASS",
+    "sameParserUnitSemantics": "PASS",
+    "rawSnapshotsDurable": "PASS",
+    "arithmeticReconciliation": "PASS_ALL_ROWS",
+    "revisionBehaviorObserved": "PASS",
+    "replayability": "PASS_WITH_DURABLE_RAW_SNAPSHOTS_AND_HASHES"
+  },
+  "evidence": {
+    "early": {
+      "capturedAt": "2026-10-06T21:25:30+08:00",
+      "marginRows": 918,
+      "sblRows": 931,
+      "marginFingerprint": "fnv1a64-utf8:fb83c76bf192e3d8",
+      "sblFingerprint": "fnv1a64-utf8:6d5aaffec3a7f000"
+    },
+    "late": {
+      "capturedAt": "2026-10-06T22:30:34+08:00",
+      "marginRows": 918,
+      "sblRows": 931,
+      "marginFingerprint": "fnv1a64-utf8:81385d9868a8937b",
+      "sblFingerprint": "fnv1a64-utf8:9031f41de2a59a70"
+    },
+    "earlyLateRevision": {
+      "margin": {
+        "changedRows": 0,
+        "addedRows": 0,
+        "removedRows": 0,
+        "coreAndFullDisplayedFields": "918/918 unchanged"
+      },
+      "sbl": {
+        "changedRows": 1,
+        "changedRowRatePct": 0.1074,
+        "addedRows": 0,
+        "removedRows": 0,
+        "coreBalanceFlowRevisionRows": 0,
+        "onlyChangedSymbol": "4527",
+        "onlyChangedName": "方土霖",
+        "nextBusinessDaySblShortLimitShares": {
+          "early": 0,
+          "late": 7044
+        },
+        "note": {
+          "early": "V",
+          "late": ""
+        },
+        "officialVSemantics": "不得借券交易且無借券餘額停止借券賣出",
+        "interpretation": "late revision is eligibility/next-business-day-limit state, not current-day SBL balance/flow revision"
+      }
+    },
+    "timing": {
+      "preLateObservedAt": "2026-10-06T22:28:06+08:00",
+      "preLateFingerprintsMatchedLate": true,
+      "laterStateFirstKnownBound": "(2026-10-06T21:25:30+08:00, 2026-10-06T22:28:06+08:00]",
+      "exactProviderUpdateMinute": "UNKNOWN"
+    },
+    "universe": {
+      "marginRows": 918,
+      "sblRows": 931,
+      "commonRows": 918,
+      "persistentSblOnlyRows": 13,
+      "persistentSblOnlyAllNonzeroBalance": true,
+      "implication": "D06-08 and D06-09 denominators must remain separate"
+    }
+  },
+  "maturityDecisions": [
+    {
+      "module": "D06-07",
+      "from": "L2 / 40%",
+      "to": "L3 / 60%",
+      "reason": "Official TPEx margin-financing semantics, prospective EARLY/LATE availability, raw replay snapshots, row-complete arithmetic reconciliation and same-date revision behavior are now demonstrated."
+    },
+    {
+      "module": "D06-08",
+      "from": "L2 / 40%",
+      "to": "L3 / 60%",
+      "reason": "Official TPEx margin-short semantics, exact LOTS↔SHARES cross-source reconciliation, prospective EARLY/LATE snapshots and revision behavior are now demonstrated."
+    },
+    {
+      "module": "D06-09",
+      "from": "L2 / 40%",
+      "to": "L3 / 60%",
+      "reason": "Official actual SBL-short semantics, separate SBL universe, two-date SBL-only population persistence, prospective EARLY/LATE snapshots and an observed eligibility/next-day-limit revision are now demonstrated."
+    }
+  ],
+  "scopeLimits": [
+    "L3 validates Taiwan PIT/source/replay feasibility only.",
+    "No module receives predictive-alpha, return, MFE/MAE or Formal evidence from this promotion.",
+    "Margin financing is leverage evidence, not direct-retail identity or bullish intent.",
+    "Margin short and actual SBL short remain separate primitives.",
+    "SBL balance/activity is not equivalent to securities-lending inventory or bearish conviction.",
+    "EARLY and LATE are same-date vintages and do not create two independent trading-date observations."
+  ],
+  "formalOptimizationCandidate": "NONE",
+  "status": "PAIRED_VINTAGE_SOURCE_REPLAY_GATE_PASS / D06_07_D06_08_D06_09_L3 / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "For L4, preregister OOS/Shadow residual incrementality on common support with liquidity, price/volume, institutional flow, passive/derivatives and regime controls. Continue future EARLY/LATE captures to estimate revision-frequency stability; do not reopen L3 semantics unless source/schema changes."
+}

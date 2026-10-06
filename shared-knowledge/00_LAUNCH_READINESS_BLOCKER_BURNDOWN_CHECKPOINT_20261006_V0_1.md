@@ -144,3 +144,199 @@ Explicit owner approval remains required for:
   system2/SYSTEM2_HISTORICAL_DATA_CHECKPOINT.md
 - System1 SDA-016 current status:
   research/sda016_system1_v819_current_status_20261006_v0_1.json
+
+
+## 2026-10-06 22:xx Asia/Taipei — Independent blocker readback delta
+
+Observed latest main at readback start: `4229dba033eb32dc16390bf3aabb85c898222a55`.
+Always re-read latest main before the next action.
+
+### System2 correction delta
+
+`S2-CORR-20261006-003` is now independently `VERIFIED_CLOSED`.
+
+00 accepts closure because latest canonical queue records:
+- PR #686 merged as `fa9c433cf84d61f400c935cbd70019c7c9d39878`;
+- Formal Candidate Board stays pending/empty without authorized S2-07 candidate data;
+- resonance/pool fallback rows are segregated as `MONITOR_ONLY`;
+- unresolved provenance is not promoted to formal strategy identity;
+- Decision Workspace remains `NOT FORMAL CANDIDATE` / `NO_FROZEN_DECISION`;
+- System2 Research CI and V8 Regression passed;
+- independent verification receipt exists at `system2/evidence/s2_corr_20261006_003_independent_verification.json`;
+- protected strategy/ranking/capacity/trading/System1 authorities were unchanged.
+
+A subsequent correction `S2-CORR-20261006-004` is also `VERIFIED_CLOSED`.
+
+00 accepts that bounded closure because:
+- current terminal resonance is explicitly bound to current Asia/Taipei marketDate;
+- prior-session rows cannot silently populate current active surfaces;
+- explicit historical queries remain separately available;
+- session mismatch fails closed;
+- PR #690 merged as `b18457b4de892ed3beb8502155adfdee1a038ca4`;
+- System2 Research CI, V8 Regression, merged-main CI and Daily Resonance Deploy all PASS;
+- independent verification receipt exists at `system2/evidence/s2_corr_20261006_004_independent_verification.json`;
+- no protected authority changed.
+
+Implication:
+- remove CORR-003 from the active System2 launch blockers.
+- CORR-004 is a terminal freshness correction and does not by itself advance selection-to-capacity authority.
+- System2 remains selection-to-capacity INCOMPLETE and live/final trading DISABLED.
+
+### System1 S1 blocker readback
+
+No S1 promotion is authorized.
+
+#### SDA-001 / SDA-004
+Current System1 Class-A shadow implementation exists and tests passed, but:
+- first genuine SDA shadow diagnostic remains `PENDING_VERIFIED_LINEAGE_INPUT`;
+- D16 residual/OOS validation remains pending;
+- current D03 readback still reports missing runtime dedup diagnostics / genuine lineage closure.
+
+Therefore this blocker family remains OPEN for S1 launch purposes.
+
+#### SDA-009
+Latest canonical System1 handoff is still:
+`READY_FOR_SYSTEM1_CLASS_A_DIAGNOSTIC_IMPLEMENTATION`.
+
+Still missing:
+- System1 candidateSelfContribution / inclusive-vs-LOO diagnostic implementation;
+- gateFlip / rankDelta / Top6 sensitivity receipt;
+- classificationSchemeId / membershipVersion fail-closed implementation;
+- first genuine verified candidate-level receipt;
+- D16 common-support validation.
+
+Therefore SDA-009 remains a true S1 blocker.
+
+#### SDA-016
+Accepted:
+- V8.19 scanOrigin/generation inventory Production verification;
+- Class-A Formal→C1 binding contract frozen;
+- existing current-session `FORMAL_C1_GENERATION_UNLINKED` guard.
+
+Not yet accepted:
+- append-only binding table/runtime writer;
+- protected historical readback;
+- deployed deterministic conflict semantics;
+- first genuine Formal↔C1 binding receipt;
+- generation-set finalization;
+- shared System1/System2 consumption authority.
+
+Therefore SDA-016 remains a true S1 blocker.
+
+### Current gate verdict after this readback
+
+- System1 S1: `PARTIAL` — unchanged.
+- System1 S2 prospective comparison: `NOT_READY`.
+- System2 terminal candidate-vs-monitor governance: corrected for CORR-003.
+- System2 current-session resonance freshness: corrected for CORR-004.
+- System2 selection-to-capacity: `INCOMPLETE`.
+- SDA-022 cross-system independence: `PARTIAL_PASS` — unchanged.
+- Formal Core: LOCKED.
+
+### Exact next continuation point
+
+1. Re-read latest main.
+2. Check whether System1 has landed any new implementation/receipt for:
+   - SDA-001/004 genuine-session lineage diagnostics;
+   - SDA-009 Class-A LOO diagnostic + first genuine receipt;
+   - SDA-016 Class-B Formal→C1 runtime binding + genuine receipt.
+3. Separately check System2 for:
+   - S2-CORR-20261004-001 DATA_LANE progress;
+   - System2 per-strategy SDA-022 fingerprints;
+   - physical NC-T01 evidence.
+4. Advance a launch gate only on machine-verifiable evidence; do not infer completion from contract text, UI behavior or passing CI alone.
+
+
+## 2026-10-06 22:46+ Asia/Taipei — DATA_LANE + SDA-022 readback delta
+
+Observed latest main at start: `84c0bc0c66a68eb3f01b5f2fddd3e658dd3cf81a`.
+Always re-read latest main before acting.
+
+### DATA_LANE progress accepted by 00
+
+2022 TPEx is now physically accepted for raw A1 data coverage.
+
+Run:
+- GitHub Actions `37473405416` / #20;
+- confirmed inputs: `year=2022`, `market=TPEX`;
+- head: `f5f33c9f006e249c604f3f19067bf33f2a106117`.
+
+Accepted evidence:
+- annual backfill = PASS / YEAR_BACKFILL_COMPLETE;
+- 246 official sessions;
+- 815 packs / 195,840 bars;
+- 815/815 R2 HEAD + byte-GET SHA verification PASS;
+- cold rows = fresh official rows = 195,840;
+- 0 missing-from-cold / 0 absent-from-fresh;
+- 0 source-row-hash mismatch;
+- 0 canonical A1 mismatch;
+- sourceVersionState = STABLE;
+- System1 production isolation = PASS.
+
+Replay caveat remains explicit:
+- historical-universe readiness = PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION;
+- expected membership-session bars = 196,015;
+- actual bars = 195,840;
+- 175 symbol-session gaps remain UNKNOWN;
+- data coverage = PASS;
+- replay readiness = PARTIAL.
+
+00 disposition:
+`2022_TPEX_RAW_A1_ACCEPTED_REPLAY_PARTIAL`.
+
+This advances DATA_LANE coverage only. It does not promote System2 selection-to-capacity, SDA-022 independence, or live/final trading authority.
+
+2021 TPEx remains separately blocked by `SOURCE_REVISION_WITH_CANONICAL_A1_CHANGE`; immutable cold history remains preserved. Its revision-lineage/as-of semantics are still unresolved.
+
+Next annual population target from DATA_LANE is 2023 TWSE, while 2021 TPEx revision work continues in parallel.
+
+### System1 S1 blockers — no new closure evidence
+
+Independent repository search/readback found no new genuine evidence changing the prior verdict:
+
+- SDA-001/004:
+  `FIRST_GENUINE_SDA_SHADOW_DIAGNOSTIC=PENDING_VERIFIED_LINEAGE_INPUT` remains the latest explicit state.
+- SDA-009:
+  latest handoff still requires System1 Class-A LOO diagnostic implementation and first genuine candidate-level receipt.
+- SDA-016:
+  contract/runtime status remains Class-A contract accepted with Class-B runtime binding/genuine Formal↔C1 receipt pending.
+
+Therefore:
+- System1 S1 remains `PARTIAL`;
+- System1 S2 prospective comparison remains `NOT_READY`.
+
+### SDA-022 physical-independence readback
+
+Repository inventory and System2 checkpoint show:
+- System1 fingerprint S22-T01~T05 = PASS;
+- D16 prereg S22-T25~T28 = PASS;
+- System2 strategy fingerprints S22-T06~T10 = PENDING;
+- physical NC-T01 S22-T11~T16 = PENDING.
+
+Only schema/intake/oracle artifacts exist for System2 fingerprint/NC-T01 at this readback. No accepted strategy-specific System2 fingerprint receipt and no physical NC-T01 receipt were found.
+
+Important:
+- recent S2-07 V0.7 promotion-linkage chronology hardening is research/evidence grading only;
+- it does not satisfy S22-T06~T10 or NC-T01 by itself;
+- design text, schema tests or synthetic fixtures cannot upgrade `physicalIndependentDiscovery`.
+
+Therefore SDA-022 remains `PARTIAL_PASS`.
+
+### Current gate verdict after this delta
+
+- System1 S1 = PARTIAL.
+- System1 S2 = NOT_READY.
+- System2 infrastructure/terminal = SUBSTANTIALLY_READY.
+- System2 historical raw coverage = advanced through 2022 TPEx, with replay gaps explicit.
+- System2 selection-to-capacity = INCOMPLETE.
+- System2 live/final trading = DISABLED.
+- SDA-022 = PARTIAL_PASS.
+- Formal Core = LOCKED.
+
+### Exact next continuation point
+
+1. Re-read latest main.
+2. Check DATA_LANE for 2023 TWSE physical acceptance or a new explicit blocker.
+3. Check System1 for any genuine receipt/implementation landing for SDA-001/004, SDA-009, or SDA-016.
+4. Check System2 for the first strategy-specific fingerprint receipts S22-T06~T10 and physical NC-T01 S22-T11~T16.
+5. If a machine-verifiable delta lands, perform 00 independent acceptance readback before changing any launch gate.

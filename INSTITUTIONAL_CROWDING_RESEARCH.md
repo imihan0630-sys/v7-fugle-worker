@@ -2343,3 +2343,72 @@ D06-14 revision measurement remains strictly within the same trade date:
 T_PRELIM -> T1_REVISED -> T2_FINAL.
 
 Maturity impact: NONE. D06-14 remains L2/40%.
+
+
+---
+
+## IC-090 — 2026-10-06 TPEx paired EARLY/LATE leverage vintages clear D06-07/08/09 L3 source/PIT gate
+
+Research cycle: 2026-10-06 Asia/Taipei  
+Status: PAIRED_VINTAGE_SOURCE_REPLAY_GATE_PASS / D06_07_D06_08_D06_09_L3 / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_07_08_09_tpex_leverage_early_20261006_v0_1.json`;
+- `research/d06_07_08_09_tpex_leverage_late_20261006_v0_1.json`;
+- `research/d06_07_08_09_tpex_early_late_comparison_contract_20261006_v0_1.json`;
+- `research/d06_07_08_09_tpex_paired_vintage_l3_decision_20261006_v0_1.json`.
+
+EARLY:
+- captured 21:25:30;
+- margin 918 rows, all financing/short arithmetic pass;
+- SBL 931 rows, all margin-short/actual-SBL-short arithmetic pass.
+
+LATE:
+- captured 22:30:34;
+- same 918 / 931 row coverage;
+- all arithmetic still passes.
+
+EARLY -> LATE field-level comparison:
+- margin table: 918/918 rows unchanged across all displayed fields;
+- SBL table: 930/931 rows unchanged;
+- one changed row = 4527 方土霖;
+- current-day SBL balance/sell/return/adjustment fields all unchanged;
+- only next-business-day SBL-short limit changed 0 -> 7,044 shares;
+- note changed `V` -> blank.
+
+Official TPEx note semantics:
+`V = 不得借券交易且無借券餘額停止借券賣出`.
+
+Therefore the observed later-vintage change is a next-day eligibility/limit state update, not a revision to current-day actual SBL short flow.
+
+Timing:
+a PRE_LATE diagnostic at 22:28 already matched the eventual late full-row fingerprints, so the distinguishable later source state first became known within:
+`(21:25:30, 22:28:06]`.
+The exact provider update minute is not asserted.
+
+Universe semantics remain frozen:
+- margin universe = 918;
+- SBL universe = 931;
+- 13 SBL-only Y/not-credit-qualified rows remain structurally separate;
+- D06-08 and D06-09 denominators cannot be collapsed.
+
+Preregistered passGate readback now passes:
+- official semantics;
+- authorized route;
+- prospective EARLY availability;
+- prospective LATE availability;
+- durable raw snapshots + hashes;
+- same parser/unit semantics;
+- row-complete reconciliation;
+- observed revision behavior.
+
+Maturity:
+- D06-07: L2/40 -> L3/60;
+- D06-08: L2/40 -> L3/60;
+- D06-09: L2/40 -> L3/60.
+
+Scope limit:
+this is Taiwan PIT/source/replay feasibility only. No predictive alpha, return, MFE/MAE or Formal evidence is created.
+
+Exact next:
+future L4 work requires preregistered OOS/Shadow residual incrementality and continued multi-date revision stability evidence.

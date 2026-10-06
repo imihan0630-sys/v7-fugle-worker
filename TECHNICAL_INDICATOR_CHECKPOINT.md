@@ -5602,3 +5602,133 @@ No promotion:
 
 Exact next:
 re-read System1/System2/D16 and raw-source/prospective lanes. If no external evidence lands, stop expanding timing governance and wait for/route actual machine evidence; only perform a new D03 semantic tranche when a concrete implementation or evidence receipt exposes a new ambiguity.
+
+
+## TI-1135 through TI-1146 — external machine delta readback (2026-10-06)
+
+Canonical artifacts:
+- `research/D03_EXTERNAL_MACHINE_DELTA_READBACK_20261006_V0_1.md`;
+- `research/d03_external_machine_delta_readback_20261006_v0_1.json`;
+- `research/test_d03_external_machine_delta_readback_v0_1.mjs`;
+- `research/d03_external_machine_delta_execution_receipt_20261006_v0_1.json`.
+
+### TI-1135~1139 — System2 current-session freshness physically accepted
+
+D03 accepts System2 correction `S2-CORR-20261006-004` as a genuine external implementation delta.
+
+Independent verification:
+`system2/evidence/s2_corr_20261006_004_independent_verification.json`
+reports `VERIFIED_CLOSED`.
+
+Accepted facts:
+- current-session resonance is bound to current Asia/Taipei marketDate;
+- prior-session fallback is blocked from current terminal surfaces;
+- explicit historical queries remain available;
+- latest-any-date history is visibly marked;
+- session-date mismatch fails closed;
+- decision/chart session provenance is visible;
+- same-session resonance remains functional;
+- protected authorities remain unchanged.
+
+Physical evidence recorded by the independent auditor:
+- System2 Research CI 37472705542 PASS;
+- V8 Regression 37472705541 PASS;
+- merged-main System2 Research CI 37473038918 PASS;
+- System2 Daily Resonance Deploy 37473038743 PASS.
+
+D03 disposition:
+`SYSTEM2_CURRENT_SESSION_STALE_RESONANCE_CONTAMINATION = CLOSED_FOR_THIS_CONSUMER_PATH`.
+
+This materially satisfies a bounded subset of the D03 timing/temporal-noninterference consumer requirements.
+
+### TI-1140~1142 — D03 dedup remains unimplemented
+
+The accepted freshness correction did not add D03 raw-vs-deduplicated evidence diagnostics.
+
+Still missing in the current daily resonance runtime:
+- rawSignalCount;
+- dedupedEvidenceFamilyCount;
+- effectiveIndependentEvidenceCount;
+- overlappingSignalIds;
+- redundancyGroupContributions;
+- dominantInformationRoots;
+- explicit RG_D03_PRICE_TREND runtime contribution.
+
+Therefore:
+`SEMANTIC_GUARD_PRESENT_RUNTIME_DEDUP_DIAGNOSTICS_MISSING`
+remains correct.
+
+SDA-001 and SDA-004 remain REMEDIATION_IN_PROGRESS.
+The three resonance conditions still map to one PRICE_OHLC / RG_D03_PRICE_TREND family absent D16 residual proof.
+
+### TI-1143 — System1 SDA-022 5/5 is not D03 lineage closure
+
+System1 policy-fingerprint acceptance:
+`shared-knowledge/sda022_system1_fingerprint_acceptance_20261006_v0_1.json`
+is a real 5/5 PASS for SDA-022 policy identity/observability.
+
+Its scope is explicitly:
+`SYSTEM1_POLICY_FINGERPRINT_ONLY`.
+
+It does not implement:
+- redundancyGroupContributions;
+- dominantInformationRoots;
+- D03 effective same-root evidence accounting.
+
+Frozen anti-miscredit rule:
+`SDA022_SYSTEM1_PASS != SDA001_SDA004_SYSTEM1_DEDUP_PASS`.
+
+### TI-1144 — D16 SDA-022 prereg is not the D03 method receipt
+
+D16 now has a valid cross-system SDA-022 D5 preregistration / exploratory outer-stream enrollment.
+
+That experiment is distinct from D03 TI-005/TI-006 and does not satisfy:
+- KD-vs-RSI D03 method receipt;
+- MACD-vs-trend D03 method receipt;
+- D03 interaction/falsification/timing receipt;
+- SDA-001/004 D16 closure.
+
+Canonical D03 handoff still reports:
+`d16MethodReceipt = NOT_YET_RETURNED`.
+
+### TI-1145 — raw/prospective gate remains unchanged
+
+Current D03/D16 handoff remains:
+- rawSourceVersionGate = 2_OF_3;
+- technicalObserverR1 = BLOCKED;
+- outcomes = CLOSED;
+- formalOptimizationCandidate = NONE.
+
+System2 historical-data progress is not silently reused as D03 observer readiness.
+
+### TI-1146 — exact-SHA execution readback
+
+Pinned source main:
+`4a3073baec5f11bde9de0246a52472e45af4d87c`.
+
+Canonical Node fixture PASS / exitCode 0.
+
+Observed:
+- System2 freshness physical verification accepted = true;
+- System2 freshness CI PASS count = 4;
+- System2 D03 dedup diagnostics still missing = 7;
+- System1 D03 redundancy diagnostics still missing = 2;
+- System1 SDA-022 not credited to D03 = true;
+- D16 SDA-022 not credited to D03 = true;
+- raw source gate = 2_OF_3;
+- technicalObserverR1 = BLOCKED;
+- outcomes = CLOSED;
+- D03 = 56.7%.
+
+Exact hashes:
+- schema: `fab50b0c2412f75cd9051ffc1670344a0978a1f588b1d0c955b516608a95f70f`;
+- fixture: `3aa2e29f80e151f24d0c299b1e35ab738a9cff945c62ab23340fdad503499825`.
+
+No maturity promotion:
+- D03 remains 56.7%;
+- D03-09/D03-10 remain L2/40;
+- outcomes remain CLOSED;
+- Formal Core remains LOCKED.
+
+Exact next:
+wait for one of the actual external blockers to change: System2 D03 dedup diagnostics, System1 D03 redundancy diagnostics, D16 D03 method/incrementality receipt, raw-source/prospective observer gate, or protected cutoff-bearing parent path. Do not manufacture progress from additional semantic governance while all five remain blocked.

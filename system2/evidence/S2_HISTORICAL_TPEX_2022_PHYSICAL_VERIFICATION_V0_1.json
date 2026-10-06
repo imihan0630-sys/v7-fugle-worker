@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_DURABLE_EVIDENCE_V0_2",
+  "market": "TPEX",
+  "year": 2022,
+  "disposition": "DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL",
+  "acceptedRun": {
+    "runId": 37473405416,
+    "runNumber": 20,
+    "headSha": "f5f33c9f006e249c604f3f19067bf33f2a106117",
+    "workflowConclusion": "success",
+    "completedAt": "2026-10-06T14:36:51Z",
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37473405416",
+    "artifactId": 11419964963,
+    "artifactName": "system2-historical-coverage-TPEX-2022",
+    "artifactDigest": "sha256:b4c2cfe61389d95865d0b7da358ee83275840d3e512830f2eae62af0ed83c76a",
+    "artifactCreatedAt": "2026-10-06T14:36:46Z",
+    "artifactExpiresAt": "2026-11-05T14:36:44Z",
+    "artifactUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37473405416/artifacts/11419964963"
+  },
+  "backfill": {
+    "tradingDateCount": 246,
+    "officialRowCount": 195840,
+    "packCount": 815,
+    "symbolCount": 815,
+    "firstMarketDate": "2022-01-03",
+    "lastMarketDate": "2022-12-30",
+    "insertedObjectCount": 815,
+    "identicalObjectCount": 0,
+    "insertedManifestCount": 815,
+    "identicalManifestCount": 0,
+    "d1RowsWrittenObserved": 5779,
+    "system1RuntimeChanged": false
+  },
+  "storageVerification": {
+    "receiptId": "S2HCR-65c929e985bbaecff3669551f7e29d5de84f249b12ce561c5352c477aabdff50",
+    "batchId": "S2-HIST-PACK-YEAR|TPEX|2022",
+    "completionReceiptState": "COMPLETE",
+    "packCount": 815,
+    "barCount": 195840,
+    "manifestRollingHash": "65c929e985bbaecff3669551f7e29d5de84f249b12ce561c5352c477aabdff50",
+    "checkpointState": "COMPLETE",
+    "headObjectCountVerified": 815,
+    "byteGetObjectCountVerified": 815,
+    "state": "PASS"
+  },
+  "sourceReconciliation": {
+    "state": "PASS",
+    "dataIntegrityState": "PASS",
+    "sourceVersionState": "STABLE",
+    "coldRowCount": 195840,
+    "freshOfficialRowCount": 195840,
+    "missingFromColdCount": 0,
+    "absentFromFreshOfficialCount": 0,
+    "sourceRowHashMismatchCount": 0,
+    "canonicalA1ValueMismatchCount": 0,
+    "sourceRevisionOnlyCount": 0,
+    "sourceRevisionDateCount": 0,
+    "officialTradingDates": 246,
+    "reconciliationContract": "S2_HISTORICAL_SOURCE_RECONCILIATION_V0_1"
+  },
+  "historicalUniverse": {
+    "readiness": "PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION",
+    "registryId": "S2-DATA-TPEX-2022-OBSERVED-INTERVAL-V0.1",
+    "registryHash": "0a8235b5f2bf2821b4fc088cf473a1cf88ed545c6d42563f2da2dc5cb706ea69",
+    "membershipCount": 815,
+    "replayEligibleCount": 815,
+    "currentCount": 779,
+    "delistedCount": null,
+    "unknownStartCount": null,
+    "observedHistoricalOnlyCount": 36,
+    "currentWithoutObservedRowsCount": 0,
+    "officialDelistingUnionComplete": false,
+    "survivorshipCompleteForDataCoverage": false
+  },
+  "coverage": {
+    "expectedSessions": 246,
+    "actualSessions": 246,
+    "historicalUniverseSize": 815,
+    "expectedBars": 196015,
+    "actualBars": 195840,
+    "missingBars": 175,
+    "unknownBars": 175,
+    "suspensionClassifiedMissingBars": 0,
+    "unexpectedBars": 0,
+    "nonTradingDateBars": 0,
+    "rawCoverageState": "PASS",
+    "symbolSessionReadiness": "PARTIAL_UNKNOWN_GAPS",
+    "pitReadiness": "PASS_CONSERVATIVE_SESSION_FINALITY",
+    "continuityReadiness": "PARTIAL_UNVERIFIED",
+    "technicalPriceReadiness": "PARTIAL_NONPRICE_OBSERVATIONS",
+    "observationStateCounts": {
+      "VALID_OHLC": 190793,
+      "POSITIVE_ACTIVITY_NO_VALID_CLOSE": 2325,
+      "OFFICIAL_ZERO_TRADE_NO_PRICE": 2722
+    },
+    "continuityStateCounts": {
+      "UNVERIFIED": 195840
+    },
+    "mainMissingReasons": {
+      "UNKNOWN_SYMBOL_SESSION_GAP": 175
+    }
+  },
+  "readiness": {
+    "dataCoverageState": "PASS",
+    "replayReadinessState": "PARTIAL",
+    "overallState": "PARTIAL"
+  },
+  "verifierVersion": "S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_4",
+  "correctionDirective": "S2-CORR-20261004-001",
+  "correctionStatusAfterEvidence": "FIX_IN_PROGRESS",
+  "closureAuthority": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "nextMarketYear": {
+    "market": "TWSE",
+    "year": 2023
+  },
+  "protectedBoundaries": {
+    "system1RuntimeChanged": false,
+    "system2StrategyAuthorityChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "capitalOrderAuthorityChanged": false
+  }
+}
