@@ -1134,3 +1134,12 @@ Bounded TPEx August-2026 witnesses:
 3. Add the 2019 pre-effective-year schedule plus the 2018-09-13 regime-change notice as an explicit cross-year negative-control fixture; verify that weekend make-up workdays do not inherit 2018 trading semantics.
 4. Only after zero applicable provenance/replay blockers may HOLIDAY/PRE_HOLIDAY/POST_HOLIDAY receive a bounded L3 readiness review; no automatic promotion.
 5. TURN_OF_MONTH remains separately gated because its state may depend on future official sessions around month-end; lunar/settlement/rebalance families remain source-clock gated.
+
+
+## 2026-10-07 Long-block Stage 15 — D19-13/D19-16 Taiwan cost and liquidity falsification
+- Canonical evidence receipt: `research/d19_stage15_cost_liquidity_falsification_receipt_20261007_v0_1.md`.
+- D19-13: Taiwan pairs-trading evidence provides a strong transaction-cost falsification witness. Pair-search breadth is part of the multiple-testing family; pair/model/version, formation window, hedge ratio, structural breaks, two-leg tradability, borrowability, costs and overlap must be preregistered. Remains L2/40.
+- D19-16: Taiwan evidence supports studying illiquidity pricing but is heterogeneous across controls, market direction and metric definition. Liquidity-as-signal is separated from liquidity-as-execution-friction. Baseline Amihud, ex-overnight, recency-aware and up/down-market variants form a preregistered comparator family. Remains L2/40.
+- First complete factor-layer PIT chain is selected by upstream receipt readiness, not observed performance. Mandatory chain remains universeReceipt -> returnReceipt -> factorInputReceipt -> neutralizationReceipt -> costReceipt -> replayReceipt; missing mandatory evidence stays UNKNOWN.
+- D19 remains 41.3%; no L3/L4 promotion; Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+- Exact next: machine-readable D19-13 preregistration receipt; machine-readable D19-16 PIT input receipt; D19-15 benchmark PIT receipt; then select the first executable factor-layer PIT chain before outcome inspection.
