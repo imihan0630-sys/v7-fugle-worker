@@ -1,0 +1,30 @@
+{
+  "receiptVersion": "D03_INTERACTION_FALSIFICATION_EXECUTION_RECEIPT_V0_1",
+  "executedAtAsiaTaipei": "2026-10-06T08:09:49+08:00",
+  "sourceMainSha": "862b8c903e81e0945ba030b396b8a7d661f91f1e",
+  "runtime": "node",
+  "outcomeDataUsed": false,
+  "formalCoreImpact": "NONE_LOCKED",
+  "fixtures": [
+    {"testPath":"research/test_d03_interaction_negative_control_permutation_oracle_v0_1.mjs","testBlobSha":"797938ce5db3a7f6f945b5d1f00e146018f10250","contractPath":"research/d03_interaction_negative_control_permutation_oracle_20261006_v0_1.json","contractBlobSha":"31bae12a83dc52ddfaaca4eaf6943ab3f4f6276d","exitCode":0,"status":"PASS","cases":21},
+    {"testPath":"research/test_d03_indicator_specific_falsifier_mapping_v0_1.mjs","testBlobSha":"030bac333a5fac8f8ca7d06a3664f7909ddd93f4","contractPath":"research/d03_indicator_specific_falsifier_mapping_20261006_v0_1.json","contractBlobSha":"1a3a1d12b831ced852dfa46f7a0c6f0c0de1bd2b","exitCode":0,"status":"PASS","cases":14},
+    {"testPath":"research/test_d03_pipeline_level_max_statistic_null_replay_v0_1.mjs","testBlobSha":"12f1c4fa58d21ce815e1b4fea18515204e555ea9","contractPath":"research/d03_pipeline_level_max_statistic_null_replay_contract_20261006_v0_1.json","contractBlobSha":"ff83a7af19f62a26945a1e9bac47474a031d586f","exitCode":0,"status":"PASS","cases":15},
+    {"testPath":"research/test_d03_null_generator_validation_and_falsifier_disagreement_v0_1.mjs","testBlobSha":"f625871e7776c5c5d8b2957c71005a4c159a4e96","contractPath":"research/d03_null_generator_validation_and_falsifier_disagreement_contract_20261006_v0_1.json","contractBlobSha":"b5dfdd79904a4000c504cf326c6c83e95dfbf837","exitCode":0,"status":"PASS","cases":15},
+    {"testPath":"research/test_d03_d16_interaction_falsification_method_receipt_v0_1.mjs","testBlobSha":"d81dcff808be123e95d796ed9bdc1a7d69ff3c7d","contractPath":"research/d03_d16_interaction_falsification_method_receipt_schema_20261006_v0_1.json","contractBlobSha":"b61a6bc77c183e703877ee9954f73126ff29ef7d","exitCode":0,"status":"PASS","cases":12},
+    {"testPath":"research/test_d03_falsification_null_of_null_calibration_v0_1.mjs","testBlobSha":"57559def34521916f9635d3d4253b40e8007ff55","contractPath":"research/d03_falsification_null_of_null_calibration_contract_20261006_v0_1.json","contractBlobSha":"0bbd2d59450f459c58ac157e7a2f09dd650d3600","exitCode":0,"status":"PASS","cases":13}
+  ],
+  "aggregate": {
+    "fixtureCount": 6,
+    "caseCount": 90,
+    "passedCases": 90,
+    "failedProcesses": 0,
+    "status": "PASS_CANONICAL_NODE_EXECUTION"
+  },
+  "authorityBoundary": {
+    "contractMechanicsOnly": true,
+    "empiricalD16Receipt": false,
+    "marketEvidenceUnits": 0,
+    "maturityPromotionAuthorized": false,
+    "formalPromotionAuthorized": false
+  }
+}

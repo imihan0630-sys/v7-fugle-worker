@@ -5201,3 +5201,60 @@ No promotion:
 
 Exact next:
 re-read external System1/System2/D16 machine lanes before further semantic expansion. If no external machine evidence lands, the next independent D03 research path is to freeze a "causal-direction / lead-lag placebo hierarchy" that distinguishes predictive timing from contemporaneous association without permitting future-state leakage; however, semantic research must remain maturity-neutral. The next actual maturity gain must come from genuine prospective/raw-source evidence or external machine implementation/readback.
+
+
+
+## TI-971 through TI-978 — interaction-falsification six-fixture execution readback (2026-10-06)
+
+Canonical artifacts:
+- `research/D03_INTERACTION_FALSIFICATION_EXECUTION_READBACK_20261006_V0_1.md`;
+- `research/d03_interaction_falsification_execution_receipt_20261006_v0_1.json`.
+
+### TI-971 — execution provenance
+The six canonical TI-853~970 test blobs and six imported JSON contract blobs were fetched from latest main at `862b8c903e81e0945ba030b396b8a7d661f91f1e`. No test or contract was modified before execution. Every process exited 0. The receipt pins exact repository blob SHAs and observed outputs.
+
+### TI-972 — negative-control/permutation oracle
+Observed:
+`status=PASS; cases=21; naiveRowShuffleRejected=true; arbitraryDerivedShuffleRejected=true; conditionalMisspecificationBlocks=true; dependenceBreakBlocks=true; lineageRecomputeRequired=true; zeroPermutationPRejected=true; pipelineReplayMismatchBlocks=true; unresolvedFalsifierDisagreementBlocks=true; plusOnePForZeroExceedancesM99=0.01`.
+
+### TI-973 — indicator-specific falsifier mapping
+Observed:
+`status=PASS; cases=14; bollingerComponentShuffleRejected=true; adxDmTrShuffleRejected=true; rawVolumeGlobalShuffleRejected=true; descendantRecomputeRequired=true; clockContinuitySymmetryRequired=true`.
+
+### TI-974 — pipeline-level null replay
+Observed:
+`status=PASS; cases=15; fullReplayRequiredAfterSearch=true; fixedCandidateAllowedOnlyWhenActuallyFixed=true; nullCanSelectDifferentWinner=true; supportAndCostSymmetryRequired=true; statisticScaleMustMatch=true; failedNullDrawsRemainVisible=true`.
+
+### TI-975 — null-generator validation/disagreement
+Observed:
+`status=PASS; cases=15; targetBreakAndNuisancePreservationBothRequired=true; supportInflationAndDegradationBothBlocked=true; conditionalMisspecificationSensitivityRequired=true; validLowPowerFalsifierBlocksStrongInference=true; sameNullContradictionBlocks=true; differentNullDisagreementIsNullSpecific=true`.
+
+### TI-976 — D03-to-D16 falsification method receipt
+Observed:
+`status=PASS; cases=12; methodReadyStillDoesNotAuthorizeOutcomes=true; legitimateBlockingStatesAccepted=true; invalidReadyReceiptRejected=true; fixedWinnerAfterSearchRejected=true`.
+
+### TI-977 — null-of-null calibration
+Observed:
+`status=PASS; cases=13; heldOutSyntheticAuditRequired=true; correlatedAndDependentNullWorldCoverageRequired=true; calibrationOverfitGuard=true; syntheticAuditPassMarketEvidenceUnits=0`.
+
+### TI-978 — aggregate interpretation
+All six canonical fixtures executed and 90/90 deterministic cases passed. Every fixture reports `outcomeDataUsed=false` and `formalCoreImpact=NONE_LOCKED`.
+
+This closes the repository Node-execution evidence gap recorded at TI-853~970. It does not provide an empirical D16 receipt, Taiwan-market Alpha, prospective power, OOS evidence, transaction-cost evidence or production authority.
+
+Support: prose and executable invariants agree.
+
+Counterevidence: internally consistent synthetic tests can pass while a real empirical null remains unidentified, low-powered or misspecified.
+
+Alternative explanation: the PASS may establish fixture consistency only, not external scientific validity.
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09 and D03-10 remain L2/40;
+- raw source gate remains 2/3;
+- outcomes remain CLOSED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`;
+- Formal Core remains LOCKED.
+
+Exact next:
+re-read external machine lanes first. If unchanged, freeze a causal-direction / lead-lag placebo hierarchy that separates predictive timing from contemporaneous association while preserving date/sector/regime/symbol dependence and prohibiting future-state leakage. Maturity remains unchanged until genuine prospective/raw-source or external machine evidence arrives.

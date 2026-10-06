@@ -3640,3 +3640,23 @@ Observed mapping fixture:
 `status=PASS; cases=12; currentBollingerEffectiveCount=1; currentAdxEffectiveCount=1; futureTwoComponentsNoInteraction=2; futureOneCanonicalInteraction=3; aliasInflationBlocked=true; weakBaselineBlocked=true; formalCoreImpact=NONE_LOCKED; outcomeDataUsed=false`.
 
 No maturity or Formal change. Exact next is a sparse-cell/date-cluster estimability oracle for future interaction receipts.
+
+
+
+## TI-971 through TI-978 — canonical falsification fixture execution (2026-10-06)
+
+Detailed artifacts:
+- `research/D03_INTERACTION_FALSIFICATION_EXECUTION_READBACK_20261006_V0_1.md`;
+- `research/d03_interaction_falsification_execution_receipt_20261006_v0_1.json`.
+
+The six canonical TI-853~970 fixtures were fetched from latest main with exact blob identities and executed without modification. All six processes exited 0 and 90/90 deterministic cases passed:
+- dependence-preserving negative-control/permutation oracle: 21;
+- indicator-specific falsifier mapping: 14;
+- pipeline-level selected/max-statistic null replay: 15;
+- null-generator validation/falsifier disagreement: 15;
+- D03-to-D16 falsification-method receipt: 12;
+- null-of-null held-out synthetic calibration: 13.
+
+The execution closes the prior Node-receipt gap for contract mechanics only. It accessed no outcome data, contributes zero market-evidence units, does not replace a real D16 method/incrementality/falsification receipt, and does not justify maturity or Formal promotion.
+
+Exact next: external machine readback first; if unchanged, causal-direction/lead-lag placebo hierarchy, maturity-neutral.
