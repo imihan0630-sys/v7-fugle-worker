@@ -987,3 +987,87 @@ This advances historical raw coverage only. It does not promote:
 - System1 S1.
 
 Next DATA_LANE annual target may advance to 2023 TPEx under the same physical acceptance standard, while the separate 2021 TPEx canonical source-revision/as-of blocker remains open.
+
+
+## Fifth five-lane concurrent audit cycle — 2026-10-07
+
+Observed main before write: `57633d6b514877435691fb5d45bd437a03023f4d`.
+
+### A — System1
+NO GENUINE CLOSURE.
+
+- SDA-001/004: `FIRST_GENUINE_SDA_SHADOW_DIAGNOSTIC=PENDING_VERIFIED_LINEAGE_INPUT`.
+- SDA-009: V0.4 effective-build/parity oracle is stronger, but genuine Taiwan candidate-level LOO receipt count remains 0.
+- SDA-016: V8.20 runtime/Production verified; first scheduled post-deploy date was ineligible `FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND`, `mayCountAsZeroPick=false`; genuine Formal↔C1 binding count remains 0; T48 generation-set finalization remains OPEN.
+- System1 S1 remains `PARTIAL`.
+
+### B — System2 build / selection-to-capacity
+MATERIAL PHYSICAL EVIDENCE PRESERVED / NO AUTHORITY PROMOTION.
+
+S2-07 V1.1 merged-main physical evidence is accepted:
+- run `37534597007` PASS;
+- bounded case = 4806 only;
+- mechanical continuity bridge physically reconciles official pre-action close 10.4 to official reference price 14.87;
+- state = `BOUNDED_CONTINUITY_BRIDGE_READY_PIT_BLOCKED`;
+- official historical `firstKnownAt=null`, `availableAt=null`;
+- `pitEventReplayEligible=false`;
+- `technicalContinuityCertified=false`;
+- no history mutation / adjusted-history persistence / selection / ranking / push / capital / order authority.
+
+No later physical knowledge-clock proof was found.
+Selection-to-capacity remains `INCOMPLETE`.
+
+### C — DATA_LANE
+READY FOR NEXT ANNUAL CONTINUATION / NOT YET DISPATCHED.
+
+2023 TWSE remains accepted:
+`2023_TWSE_RAW_A1_ACCEPTED_REPLAY_PARTIAL`.
+
+Latest annual workflow inventory contains run #23 only; no run #24 / 2023 TPEx fresh dispatch exists at this audit readback.
+
+Therefore current DATA_LANE exact next remains:
+- fresh-dispatch `year=2023, market=TPEX`;
+- require terminal backfill + Physical verify + artifact + System1 isolation before acceptance;
+- preserve UNKNOWN symbol-session gaps;
+- keep 2021 TPEx canonical source-revision/as-of blocker independently OPEN.
+
+00 does not take over DATA_LANE dispatch/engineering.
+
+### D — 01–15 research / curriculum
+MATERIAL VALIDATION-QUALITY DELTA / NO MATURITY INFLATION.
+
+D16 added a prospective-attempt ledger/firewall and a causal-comparison example:
+- 2026-10-02 and 2026-10-06 share surface blocker codes `FORMAL_SCAN_NOT_CONFIRMED` / `C1_GENERATION_NOT_FOUND`;
+- their observed causal context differs;
+- 2026-10-02 has a partial causal chain involving cross-midnight target-date drift;
+- 2026-10-06 remains `OBSERVED_FACTS_ONLY` with quality inputs missing but no proof that those missing inputs were the sole cause;
+- future sensitivity analysis must not pool equal blocker codes as one homogeneous missingness mechanism without a preregistered mapping.
+
+This is a statistical self-deception firewall, not Alpha evidence.
+D16 remains 60%.
+Tracker aggregate remains 22 domains / 356 modules / 46.7%.
+
+COV-10 / proposed D20-14 remains `OWNER_APPROVAL_REQUIRED`; no structural curriculum mutation has been executed.
+
+### E — SDA-022 non-convergence
+NO_CHANGE / PHYSICAL SYSTEM2 EVIDENCE STILL MISSING.
+
+Latest repo/action readback:
+- System1 S22-T01~T05 = PASS;
+- D16 S22-T25~T28 = PASS;
+- System2 S22-T06~T10 strategy fingerprints = PENDING;
+- physical NC-T01 S22-T11~T16 = PENDING;
+- no System2 fingerprint workflow run was found;
+- no NC-T01 workflow run was found;
+- no `PHYSICALLY_INDEPENDENT_PATH_OBSERVED` machine receipt was found.
+
+Verdict remains `PARTIAL_PASS`.
+
+### P0 after fifth cycle
+1. DATA_LANE: 2023 TPEx fresh dispatch + physical acceptance evidence.
+2. SDA-022: System2 per-strategy fingerprints + physical NC-T01.
+3. System1: first genuine SDA-001/004, SDA-009 and SDA-016 receipts.
+4. S2-07: historical availability/version-clock provenance for 4806; if it cannot be proven, retain PIT block.
+5. Research validation: preserve D16 attempt-level causal/missingness taxonomy; do not pool blocker codes by label alone.
+
+00 remains five-lane concurrent and does not take over execution lanes.
