@@ -800,3 +800,122 @@ Verdict: PARTIAL_PASS.
 5. Research governance: COV-10 owner decision remains a separate structural gate.
 
 00 remains five-lane concurrent; no single lane may monopolize the cycle.
+
+
+## Fourth five-lane concurrent audit cycle — 2026-10-07
+
+Observed main before write: `0249828379d3b8dc253ded8d9bdc5cccc210d894`.
+
+### A — System1
+MATERIAL GOVERNANCE DELTA / NO GENUINE CLOSURE.
+
+SDA-016 first scheduled post-V8.20 prospective attempt was independently read back:
+- validation: `research/SDA016_ROOM11_V820_RUNTIME_FIRST_SCHEDULED_READBACK_VALIDATION_20261007_V0_1.md`;
+- scheduled workflow run: `37495670280`;
+- disposition: `FIRST_SCHEDULED_DATE_INELIGIBLE`;
+- category: `FORMAL_SCAN_NOT_CONFIRMED`;
+- failure: `C1_GENERATION_NOT_FOUND`;
+- `mayCountAsZeroPick=false`;
+- no C1 evidence / binding receipt / paired result / inventory result / C3 registration was produced.
+
+Therefore:
+- V8.20 runtime engineering + Production deployment remain accepted;
+- first genuine Formal↔C1 binding receipt remains pending;
+- T48 same-session generation-set finalization remains OPEN;
+- SDA-001/004 first genuine lineage diagnostic remains pending;
+- SDA-009 V0.4 genuine candidate-level LOO receipt count remains 0;
+- System1 S1 remains `PARTIAL`.
+
+Governance drift found and repaired:
+`shared-knowledge/stock_selection_audit_queue_v0_1.json` still described PR #680 merge/deploy as pending. 00 reconciled it to the verified V8.20 Production state while keeping SDA-016 `REMEDIATION_IN_PROGRESS`.
+Reconciliation commit:
+`4cfb6efcbe878cb28987b48c1b60258ee58abb84`.
+
+### B — System2 build / selection-to-capacity
+MATERIAL RESEARCH EVIDENCE DELTA / NO AUTHORITY PROMOTION.
+
+S2-07 has physically advanced:
+- V0.9 native corporate-action schedule integration produced four bounded positive schedule cases;
+- V1.0 RAW A1 lineage produced one READY case: 4806;
+- V1.1 bounded 4806 Technical Continuity Bridge run `37534597007` = SUCCESS;
+- targeted tests, physical read-only probe, and System1 isolation guard all PASS.
+
+However the V1.1 contract explicitly remains PIT-blocked:
+- historical official reference event `firstKnownAt/availableAt` are unknown;
+- `pitEventReplayEligible=false`;
+- `technicalContinuityCertified=false`;
+- no adjusted history is persisted;
+- no strategy/ranking/final-selection/push/capital/order authority is promoted.
+
+Selection-to-capacity remains `INCOMPLETE`.
+
+### C — DATA_LANE
+ACTIVE P0.
+
+2023 TWSE failure root cause has advanced from generic Physical verify failure to historical-universe listing-start reconciliation.
+
+Run #22 `37493424179` showed the first repair was insufficient:
+- storage COMPLETE;
+- 1,003 packs / 234,727 bars;
+- R2 1,003 / 1,003 PASS;
+- source-row/canonical A1 mismatches 0 / 0;
+- historical universe 1,101;
+- missing/UNKNOWN 618 / 618;
+- unexpected bars 205, beginning with `2023-03-06|6873`;
+- coverage/replay BLOCKED.
+
+Refined cause:
+CURRENT rows use legal company names while TWSE NEWLISTING rows use short names. Second repair matches same symbol plus conservative legal/short-name alias intersection; same-code/different-company remains rejected.
+Second-fix System2 Research CI `37495340984` = SUCCESS.
+
+Fresh run #23:
+- run `37534409279`;
+- head `676c26a53f59aa8cb6b07afbd0453ba3e06d8112`;
+- migrate PASS;
+- backfill PASS;
+- Physical verify IN_PROGRESS at this audit readback;
+- artifact pending;
+- System1 isolation pending.
+
+No acceptance is granted until terminal Physical verify + artifact + System1 isolation readback.
+
+2021 TPEx source-revision/as-of blocker remains independently OPEN.
+
+### D — 01–15 research / curriculum
+MATERIAL QUALITY DELTA / NO MATURITY INFLATION.
+
+Current tracker remains:
+- 22 domains;
+- 356 modules;
+- maturity-weighted 46.7%.
+
+D03 now explicitly consumes the S2-07 bounded-continuity result as:
+`SYSTEM2_S207_BOUNDED_CONTINUITY_PIT_BLOCKED`,
+while remaining 56.7%.
+
+D09 SDA-009 V0.4 corrected effective-build comparator authority and strengthened layered parity, but remains 57.1% with genuine receipt count 0.
+
+COV-10 / proposed D20-14 remains `OWNER_APPROVAL_REQUIRED`; no module-count change has been executed.
+
+### E — SDA-022 non-convergence
+NO_CHANGE.
+
+Repository readback still shows:
+- System1 fingerprint S22-T01~T05 = PASS;
+- D16 prereg S22-T25~T28 = PASS;
+- System2 strategy fingerprints S22-T06~T10 = PENDING;
+- physical NC-T01 S22-T11~T16 = PENDING.
+
+No System2 policy-fingerprint receipt was found.
+No physical `PHYSICALLY_INDEPENDENT_PATH_OBSERVED` receipt was found.
+
+Verdict remains `PARTIAL_PASS`.
+
+### Current P0 order
+1. DATA_LANE run #23 terminal 2023 TWSE Physical verify readback.
+2. System2 SDA-022 first strategy fingerprints + NC-T01 physical proof.
+3. First genuine System1 SDA-001/004, SDA-009, SDA-016 receipts.
+4. System2 S2-07 PIT knowledge-time provenance for the bounded 4806 continuity bridge, without authority overreach.
+5. Research governance / COV-10 owner decision remains separate.
+
+00 continues five-lane concurrent auditing.
