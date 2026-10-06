@@ -75,7 +75,7 @@ const base={
     correctionObserved:false,
     correctionObservedVersionKeys:[],
   });
-  assert.equal(r.promotionEvidenceReady,true);
+  assert.equal(r.promotionEvidenceReady,true,JSON.stringify(r));
 }
 {
   const r=evaluatePromotionLinkageV0_7({
