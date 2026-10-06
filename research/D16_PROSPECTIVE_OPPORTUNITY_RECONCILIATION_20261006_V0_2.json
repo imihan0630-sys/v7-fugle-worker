@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "D16_PROSPECTIVE_OPPORTUNITY_ATTEMPT_RECONCILIATION_V0_2",
+  "supersedes": "research/D16_PROSPECTIVE_OPPORTUNITY_RECONCILIATION_20261006_V0_1.json",
+  "updatedAt": "2026-10-07T07:04:00+08:00",
+  "owner": "D16 / Room11",
+  "contractRef": "research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_3.json",
+  "opportunity": {
+    "opportunityId": "SYSTEM1_C1_PROSPECTIVE:2026-10-06",
+    "experimentFamilyId": "D16-CAL-01",
+    "marketDate": "2026-10-06",
+    "preregisteredWindowId": "SYSTEM1_C1_PROSPECTIVE_POST_V820",
+    "opportunityRuleVersion": "D16_PROSPECTIVE_OPPORTUNITY_LEDGER_V0_3",
+    "expectedWorkflowName": "System 1 C1 Prospective Evidence",
+    "expectedExecutionWindow": {
+      "scheduledLocal": "2026-10-07T00:10:00+08:00",
+      "scheduleCronUtc": "10 16 * * 1-5"
+    },
+    "targetScanDateRule": "COLLECTOR_PREVIOUS_TAIPEI_DATE",
+    "officialSessionState": "VERIFIED_TRADING_SESSION",
+    "marketSessionIdentityHash": "fnv1a64-ascii:ba1e5c342d793649",
+    "obligationState": "EXPECTED_TRADING_SESSION_ATTEMPT"
+  },
+  "marketSessionEvidence": {
+    "sessionEvidenceClass": "MULTI_SOURCE_DIRECT_SAME_DAY_OFFICIAL_MARKET_ACTIVITY",
+    "evidenceStrength": "DIRECT_ACTIVITY_VERIFIED_3_RECEIPTS",
+    "sourceTradeDate": "2026-10-06",
+    "receipts": [
+      {
+        "path": "research/d06_14_tpex_daytrade_tprelim_capture_20261006_v0_1.json",
+        "blobSha": "e296da4d23830bc489b142f8e9bcce0417be99d1",
+        "authority": "Taipei Exchange (TPEx)",
+        "sourceUrl": "https://www.tpex.org.tw/zh-tw/mainboard/trading/day-trading/statistics/day.html?date=20261006",
+        "rowCount": 843,
+        "contentFingerprint": "fnv1a64-utf8:21c5de02d6096939",
+        "witness": "nonzero official same-day day-trading table"
+      },
+      {
+        "path": "research/d06_03_tpex_dealer_split_capture_20261006_v0_1.json",
+        "blobSha": "5c57e62ef55e8b5c24c1de896e67614179423de5",
+        "authority": "Taipei Exchange (TPEx)",
+        "sourceUrl": "https://www.tpex.org.tw/www/zh-tw/insti/dailyTrade?type=Daily&sect=EW&date=115%2F10%2F06&id=&response=json",
+        "rowCount": 904,
+        "contentFingerprint": "fnv1a64-utf8:7c41deb8312a0370",
+        "witness": "nonzero official same-day institutional dealer table"
+      },
+      {
+        "path": "research/d06_03_twse_dealer_split_capture_20261006_1800_v0_1.json",
+        "blobSha": "1da2d93a80cd3387ee8182b53402f90aae683ba0",
+        "authority": "Taiwan Stock Exchange (TWSE)",
+        "sourceUrl": "https://www.twse.com.tw/rwd/zh/fund/T86?date=20261006&selectType=ALLBUT0999&response=html",
+        "rowCount": 1340,
+        "contentFingerprint": "fnv1a64-utf8:0730a3dd8ae2406a",
+        "witness": "nonzero official same-day public non-block dealer table"
+      }
+    ],
+    "summarySessionReceipt": {
+      "path": "research/d06_20261006_prospective_capture_session_v0_1.json",
+      "blobSha": "efe446defa84adf92429e7f2ddb6c1c6fa01bc1f",
+      "openedAt": "2026-10-06T06:11:31+08:00"
+    },
+    "calendarConflictState": "NO_CONFLICT_OBSERVED_IN_CURRENT_EVIDENCE",
+    "dataAbsenceUsedToProveNonTrading": false
+  },
+  "attemptAnchor": {
+    "attemptId": "SYSTEM1_C1_EVIDENCE:RUN37495670280:JOB112379442583",
+    "workflowRunId": 37495670280,
+    "workflowJobId": 112379442583,
+    "event": "schedule",
+    "runAttempt": 1,
+    "headBranch": "main",
+    "headSha": "646a34263954e0beaf53cfcb897af2cc90c2aca4",
+    "runCreatedAtUtc": "2026-10-06T16:26:06Z",
+    "scheduledAtUtc": "2026-10-06T16:10:00Z",
+    "schedulerDelaySeconds": 966,
+    "conclusion": "failure",
+    "artifactId": 11426824056,
+    "artifactName": "system1-c1-evidence-37495670280",
+    "attemptReceiptRef": "research/D16_PROSPECTIVE_EVIDENCE_ATTEMPT_20261006_V0_1.json"
+  },
+  "reconciliation": {
+    "state": "ATTEMPT_ONE_FAILED_BLOCKER_PRESERVED",
+    "opportunityDateMatchesAttemptTarget": true,
+    "attemptTargetDate": "2026-10-06",
+    "expectedTradingOpportunityN": 1,
+    "operationalAttemptOneObservedN": 1,
+    "prospectiveEvidenceAdmissibleN": 0,
+    "noScheduledAttemptGapN": 0,
+    "nonTradingScheduledRunN": 0,
+    "sessionIdentityUnknownN": 0,
+    "attemptOpportunityDateMismatchN": 0,
+    "coverageFractionAttemptObserved": 1,
+    "evidenceAdmissionFraction": 0
+  },
+  "admission": {
+    "terminalAttemptState": "INELIGIBLE_PARENT_MISSING",
+    "observedBlockerCategory": "FORMAL_SCAN_NOT_CONFIRMED",
+    "verificationFailure": "C1_GENERATION_NOT_FOUND",
+    "countAsZeroPick": false,
+    "countAsNegativeOutcome": false,
+    "countAsStrategyFailure": false,
+    "countInProspectiveEvidenceN": false,
+    "countInMissingnessAccounting": true,
+    "historicalBackfillAllowed": false
+  },
+  "causalSeparation": {
+    "schedulerLayer": {
+      "observed": "SCHEDULE_EVENT_ATTEMPT_ONE_STARTED_966_SECONDS_AFTER_NOMINAL_CRON",
+      "rootCauseOfSchedulerDelay": "UNKNOWN",
+      "schedulerDelayUsedToExplainC1Failure": false
+    },
+    "collectorParentLayer": {
+      "observed": "FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND",
+      "causalAttributionState": "OBSERVED_FACTS_ONLY"
+    }
+  },
+  "promotionImpact": "NONE",
+  "maturityImpact": "NONE",
+  "formalCoreImpact": "NONE"
+}
