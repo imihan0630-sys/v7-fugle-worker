@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-07T05:46:00+08:00",
+  "updatedAt": "2026-10-07T07:26:00+08:00",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -362,15 +362,29 @@
         "D16_common_support_incrementality_or_OOS_validation",
         "00_cross_domain_readback"
       ],
-      "readiness": "D09_LEAVE_ONE_OUT_SEMANTICS_FROZEN_SYSTEM1_DIAGNOSTIC_PENDING",
+      "readiness": "R3_V06_ACCEPTANCE_ORACLE_READY_SYSTEM1_R3A1_CAPTURE_PENDING_GENUINE_RECEIPT_0",
       "receipt": "research/sda009_d09_leave_one_out_circularity_contract_v0_1.json",
       "remainingDelta": [
-        "System1 candidateSelfContribution / inclusive-vs-LOO diagnostic implementation",
-        "System1 gateFlip/rankDelta/Top6 sensitivity receipt",
-        "membershipVersion/classificationSchemeId fail-closed implementation",
-        "D16 common-support rank/selection effect validation",
+        "System1 R3A1 additive C1 capture: currentChangePercent/currentTradeValue + exact membership identity + production sector decision-state projection/digest",
+        "first genuine built-runtime R3A1 parity receipt passing membership, gate and score parity",
+        "System1 R3A2 same-generation market-consensus capture and candidate LOO counterfactual receipt",
+        "Room07 P0-P5 common-support gate/rank/pool/allocation evaluation",
+        "D16 common-support economic/incrementality validation",
         "00 independent closure"
-      ]
+      ],
+      "supportingReceipts": [
+        "research/SDA009_R3_CAPTURE_AND_COUNTERFACTUAL_CONTRACT_V0_5.md",
+        "research/SDA009_SYSTEM1_R3A1_MINIMAL_CAPTURE_HANDOFF_V0_5.md",
+        "research/sda009_r3a1_acceptance_oracle_v0_6.mjs",
+        "research/test_sda009_r3a1_acceptance_oracle_v0_6.mjs"
+      ],
+      "r3a1": {
+        "status": "ACCEPTANCE_ORACLE_V0_6_READY_ENGINEERING_PENDING",
+        "providerCallDeltaRequired": 0,
+        "formalMutationAuthorized": false,
+        "firstGenuineReceiptCount": 0,
+        "exactNext": "SYSTEM1_R3A1_ADDITIVE_CAPTURE_THEN_FIRST_GENUINE_PARITY_RECEIPT"
+      }
     },
     {
       "id": "SDA-010",
@@ -654,7 +668,9 @@
         "research/SDA016_VALIDATION_ORACLE_20261006_V0_5.json",
         "research/SYSTEM1_FORMAL_C1_BINDING_IMPLEMENTATION_20261006.md",
         "research/SDA016_ROOM11_V820_RUNTIME_FIRST_SCHEDULED_READBACK_VALIDATION_20261007_V0_1.md",
-        "research/SDA016_GENERATION_SET_FINALIZATION_CONTRACT_20261007_V0_1.json"
+        "research/SDA016_GENERATION_SET_FINALIZATION_CONTRACT_20261007_V0_1.json",
+        "research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_2.json",
+        "research/SDA016_D16_SUPPLEMENTAL_GOVERNANCE_CROSSWALK_20261007_V0_1.json"
       ],
       "formalC1Binding": {
         "status": "V820_PRODUCTION_VERIFIED_GENUINE_BINDING_PENDING",
@@ -701,6 +717,20 @@
         "t48": "OPEN_SAME_SESSION_GENERATION_SET_FINALIZATION",
         "t48Contract": "research/SDA016_GENERATION_SET_FINALIZATION_CONTRACT_20261007_V0_1.json",
         "t48ContractStatus": "RESEARCH_ONLY_FINALIZATION_SEMANTICS_FROZEN_ENGINEERING_RECEIPT_PENDING"
+      },
+      "opportunityCoverage": {
+        "status": "RESEARCH_ONLY_EXPECTED_OPPORTUNITY_LEDGER_FROZEN_ENGINEERING_RECONCILIATION_PENDING",
+        "contract": "research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_2.json",
+        "canonicalTestCountUnchanged": 58,
+        "mappedTests": [
+          "SDA016-T28",
+          "SDA016-T31",
+          "SDA016-T38",
+          "SDA016-T48"
+        ],
+        "firstScheduledAttemptIsCoverageAnchor": true,
+        "laterRerunRepairsCoverage": false,
+        "noRunRootCauseMayRemainUnknown": true
       }
     },
     {
