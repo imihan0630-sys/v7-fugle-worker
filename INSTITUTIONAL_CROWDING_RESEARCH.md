@@ -2312,3 +2312,34 @@ Therefore the following remain forbidden substitutes:
 D06-19 remains L2/40%. The rescan strengthens the source-gap boundary but does not solve the declared directional capability.
 
 No outcome or Formal change.
+
+
+---
+
+## IC-089 — TPEx day-trading cross-date universe drift must not be confused with revision lineage
+
+Research cycle: 2026-10-06 Asia/Taipei
+Status: CROSS_DATE_UNIVERSE_DRIFT_CONFIRMED / REVISION_VS_DATE_DRIFT_FIREWALL_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable guard:
+`research/d06_14_tpex_daytrade_cross_date_universe_drift_20261005_20261006_v0_1.json`.
+
+T_PRELIM universe comparison:
+- 2026-10-05 rows = 841;
+- 2026-10-06 rows = 843;
+- common symbols = 839;
+- added on 2026-10-06 = 3374 精材 / 4542 科嶠 / 4979 華星光 / 6218 豪勉;
+- absent on 2026-10-06 = 3455 由田 / 6708 天擎;
+- sell-first-suspension flag changes:
+  - 1565 精華: null -> *;
+  - 6171 大城地產: * -> null;
+  - 6561 是方: null -> *.
+
+This is ordinary cross-date source/population drift, not a T+1 revision statistic. The raw row-count difference 843-841=2 must never be interpreted as two T1 additions.
+
+The current official eligibility/change page did not provide matching rows for these compared symbols in the fetched state, so no eligibility causality is assigned. Causes remain UNKNOWN without authoritative historical eligibility evidence.
+
+D06-14 revision measurement remains strictly within the same trade date:
+T_PRELIM -> T1_REVISED -> T2_FINAL.
+
+Maturity impact: NONE. D06-14 remains L2/40%.
