@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "S2_S2_07_SYMBOL_SESSION_INTEGRATION_PHYSICAL_RECEIPT_V0_8",
+  "version": "0.8-RESEARCH",
+  "observedAt": "2026-10-06T15:33:33Z",
+  "implementationMerge": "d7e7a99a032b99a1b6ba9911886912e89b6f0797",
+  "authoritativeRun": {
+    "workflow": "System2 S2-07 Symbol Session Integration V0.8 Readonly",
+    "runId": 37488505236,
+    "jobId": 112354734503,
+    "conclusion": "PASS"
+  },
+  "regressions": {
+    "system2ResearchCi": {
+      "runId": 37488505308,
+      "conclusion": "PASS"
+    },
+    "v8Regression": {
+      "runId": 37488505279,
+      "conclusion": "PASS"
+    }
+  },
+  "interval": {
+    "startDate": "2026-04-05",
+    "endDate": "2026-10-02"
+  },
+  "calendar": {
+    "source": "TWSE_OFFICIAL_HOLIDAY_SCHEDULE_HISTORICAL",
+    "tradingDateCount": 125
+  },
+  "sources": {
+    "TWSE": {
+      "sourceId": "TWSE_TWTAWU",
+      "rowCount": 383,
+      "sourceArtifactHash": "10a78954777b94f838ad4996bad02891ef1e97597f684434b4c7b36d5a659857",
+      "absenceCertifiesNoSuspension": false,
+      "allHistoryCompletenessCertified": false
+    },
+    "TPEX": {
+      "sourceId": "TPEX_SPRC_HIS",
+      "rowCount": 30,
+      "totalCount": 30,
+      "sourceArtifactHash": "184c07e8cfd61f20a8cbf65ab49d2ab86ddac276da450eeed3938ec08c2ffe18",
+      "absenceCertifiesNoSuspension": false,
+      "allHistoryCompletenessCertified": false
+    }
+  },
+  "summary": {
+    "eventCount": 17,
+    "promotionReadyCount": 7,
+    "boundedSymbolSessionEvidenceReadyCount": 0,
+    "blockedCount": 17,
+    "resumeDateObservedCount": 0,
+    "blockerCounts": {
+      "EVENT_LINKAGE_PROMOTION_NOT_READY": 10,
+      "SUSPENSION_RESUMPTION_MATCH_NOT_OBSERVED": 17
+    },
+    "noSuspensionCertifiedCount": 0,
+    "suspensionCoverageComplete": false,
+    "symbolSessionCompletenessCertified": false,
+    "technicalContinuityCertified": false,
+    "selectionAuthority": false,
+    "finalSelectionEnabled": false,
+    "livePushEnabled": false,
+    "capitalImpact": false,
+    "orderImpact": false,
+    "system1RuntimeUsed": false
+  },
+  "interpretation": "GENERIC_HALT_RESUMPTION_SOURCE_DID_NOT_MATCH_FROZEN_CORPORATE_ACTION_RESUME_EVENTS",
+  "nextGate": "CORPORATE_ACTION_NATIVE_STOP_RESUME_SCHEDULE_EVIDENCE"
+}
