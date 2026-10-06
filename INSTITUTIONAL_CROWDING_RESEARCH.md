@@ -2503,3 +2503,47 @@ Maturity impact: NONE. D06-11 remains L2/40%. Fund-index mapping and present-sta
 
 Exact next:
 search for replayable 2026-10-02/2026-10-05 issuer or TWSE vintages for 00923 AUM, units and holdings. If unavailable, preserve historical event-size UNKNOWN and use the already precommitted 2026-11 review calendar to capture these fields prospectively before/at the event.
+
+
+---
+
+## IC-094 — 00923 historical issuer replay separates index rebalance from ETF unit flow
+
+Research cycle: 2026-10-07 Asia/Taipei  
+Status: OFFICIAL_ISSUER_HISTORICAL_DATE_REPLAY_PASS / REBALANCE_END_STATE_OBSERVED / PRIMARY_UNIT_FLOW_ZERO / EXECUTION_CLOCK_UNKNOWN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_11_00923_rebalance_replay_20261002_20261005_v0_1.json`.
+
+The official issuer historical date control for ETF 00923 now yields dated 2026-10-02 and 2026-10-05 fund snapshots. This closes the prior AUM/holdings backfill gap without using the 2026-10-06 current state.
+
+2026-10-02 pre-effective snapshot:
+- fund NAV TWD 39,868,035,542;
+- NAV/unit TWD 41.90;
+- outstanding units 951,423,000;
+- daily unit change 0;
+- review deletions 2887 / 3533 / 6239 are present;
+- review additions 2408 / 2409 / 3189 are absent.
+
+2026-10-05 effective-date snapshot:
+- fund NAV TWD 39,893,722,029;
+- NAV/unit TWD 41.93;
+- outstanding units remain 951,423,000;
+- daily unit change remains 0;
+- review additions 2408 / 2409 / 3189 are present;
+- review deletions 2887 / 3533 / 6239 are absent.
+
+This is a direct falsification of the shortcut `ETF unit flow = index-rebalance flow`. The primary-market unit count is unchanged while the fund portfolio changes constituent membership in exact agreement with the public index review. Therefore ETF creation/redemption and index-review portfolio rebalancing are distinct primitives and cannot be counted as independent confirming votes merely because both relate to passive funds.
+
+Descriptive exposure calculations using issuer AUM x displayed weight imply about TWD 933.1m of end-state exposure across the three added names on 2026-10-05 and about TWD 537.1m of pre-event exposure across the three deleted names on 2026-10-02. These are exposure notionals only. They are not trade values, execution prices, market-impact estimates or alpha evidence.
+
+PIT boundary remains important. The official historical date control proves dated replayability and event-end-state observability, but it does not reconstruct the exact original publication minute or intraday execution path. Therefore D06-11 remains L2/40% rather than being promoted on retrospective evidence alone.
+
+SDA-007 impact:
+- one issuer portfolio snapshot is one primitive receipt;
+- units, holdings and index-event transforms may have multiple consumers but must not create duplicate passive-flow votes;
+- zero unit change does not mean zero rebalancing;
+- holdings change does not prove active conviction.
+
+Exact next:
+use the precommitted 2026-11 official review calendar to capture issuer AUM/units/holdings prospectively around a real public result, preserving exact observedAt/firstKnownAt and any staged transition window. If the source clock is clean, reassess D06-11 for L3 Taiwan PIT feasibility.
