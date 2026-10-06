@@ -3027,3 +3027,53 @@ Until then:
 - no Production remediation claim;
 - no H001 admission;
 - no Formal change.
+
+
+## 2026-10-06 D02 PVE-250 latest-main rebased Class-B owner gate
+
+Canonical evidence:
+- `research/D02_PVE250_REBASED_CANDIDATE_OWNER_GATE_20261006_V0_1.md`;
+- `research/d02_pve250_rebased_candidate_owner_gate_v0_1.json`.
+
+Active D02/System1 shared-runtime candidate:
+- draft PR #668;
+- URL: https://github.com/imihan0630-sys/v7-fugle-worker/pull/668
+- branch `research/d02-pve250-rebased-candidate-20261006`;
+- head `5877f82db1579a02091c7011e1525ea3f4490bad`;
+- mergeable=true;
+- merged=false;
+- deployed=false.
+
+PR #651 is superseded/closed and was never merged or deployed.
+
+The previous candidate had become stale relative to later main. PVE-250 rebuilt the candidate from then-latest main instead of force-updating the old branch.
+
+Latest-main candidate checks:
+- Candidate push CI `37403479188` SUCCESS;
+- Candidate PR CI `37403498580` SUCCESS;
+- Repair CI `37403498568` SUCCESS;
+- Regression `37403498495` regression job SUCCESS.
+
+Candidate Production deploy is intentionally not wired.
+Current `.github/workflows/v7-cloudflare.yml` does not apply `apply_v8_19_1_pve248_candidate.py`.
+
+Governance:
+- candidate preparation/review is complete;
+- no merge/deploy authorization exists;
+- explicit owner approval is required before Production integration;
+- approval does not authorize any Formal A/B, ranking, Top6/3+3, threshold/weight, capital, trade lifecycle, Formal 15m, monitoring-eligibility or push-semantic change;
+- PVE-247 physical oracle remains authoritative;
+- 2026-10-05 remains permanently excluded from retrospective clean H001 evidence.
+
+Exact System1/D02 next action:
+`OWNER_APPROVAL_REQUIRED_FOR_PR_668_CLASS_B_PRODUCTION_INTEGRATION`.
+
+If approved:
+1. wire the validated candidate into the Production build/deploy chain with explicit version/readback;
+2. rerun applicable checks on that exact integration;
+3. merge/deploy only under the approval;
+4. physically read back schedule identity/idempotent recovery, baseline/bootstrap receipt/readiness and fetch-boundary provider/endpoint/rawPayloadHash;
+5. rerun PVE-247 oracle;
+6. keep H001 fail-closed until future receipt admission passes.
+
+If not approved, keep PR #668 draft/unmerged/un-deployed.
