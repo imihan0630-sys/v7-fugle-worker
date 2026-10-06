@@ -1,0 +1,40 @@
+name: System2 S2-07 Pre-Parent Evidence Cut V1.4.1 Readonly
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/s2_07_pre_parent_evidence_cut_v1_4_1.mjs"
+      - "system2/tests/s2_07_pre_parent_evidence_cut_v1_4_1.test.mjs"
+      - "system2/scripts/probe_s2_07_pre_parent_evidence_cut_readonly_v1_4_1.mjs"
+      - "system2/SYSTEM2_S2_07_PRE_PARENT_EVIDENCE_CUT_V1_4_1.md"
+      - ".github/workflows/system2-s2-07-pre-parent-evidence-cut-v1-4-1-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/s2_07_pre_parent_evidence_cut_v1_4_1.mjs"
+      - "system2/tests/s2_07_pre_parent_evidence_cut_v1_4_1.test.mjs"
+      - "system2/scripts/probe_s2_07_pre_parent_evidence_cut_readonly_v1_4_1.mjs"
+      - "system2/SYSTEM2_S2_07_PRE_PARENT_EVIDENCE_CUT_V1_4_1.md"
+      - ".github/workflows/system2-s2-07-pre-parent-evidence-cut-v1-4-1-readonly.yml"
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Identity-domain correction tests
+        run: node system2/tests/s2_07_pre_parent_evidence_cut_v1_4_1.test.mjs
+      - name: Physical fail-closed identity-domain diagnostic
+        run: node system2/scripts/probe_s2_07_pre_parent_evidence_cut_readonly_v1_4_1.mjs
+      - name: No scheduler mutation or System1 authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE '\b(INSERT|UPDATE|DELETE|REPLACE|DROP|ALTER|CREATE)\b' system2/scripts/probe_s2_07_pre_parent_evidence_cut_readonly_v1_4_1.mjs
+          ! grep -qE 'wrangler[[:space:]]+(deploy|secret)|secret[[:space:]]+put|workers[[:space:]]+deploy' system2/scripts/probe_s2_07_pre_parent_evidence_cut_readonly_v1_4_1.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
