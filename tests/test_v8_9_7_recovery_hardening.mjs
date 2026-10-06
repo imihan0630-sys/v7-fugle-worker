@@ -3,6 +3,7 @@ import {readFile} from 'node:fs/promises';
 
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worker.js',import.meta.url),'utf8');
 const quality=await readFile(new URL('./sync_official_quality.mjs',import.meta.url),'utf8');
+const officialFetch=await readFile(new URL('./official_source_fetch.mjs',import.meta.url),'utf8');
 const recovery=await readFile(new URL('./recover_after_market.mjs',import.meta.url),'utf8');
 const workflow=await readFile(new URL('../.github/workflows/v7-market-data.yml',import.meta.url),'utf8');
 
@@ -22,6 +23,10 @@ assert.match(quality,/readonlyPreviewAccepted/);
 assert.match(quality,/bodyPrefix:text\.slice\(0,240\)/);
 assert.match(quality,/attempt<=3/);
 assert.match(quality,/text\\\/html/);
+assert.match(quality,/official_source_fetch\.mjs/);
+assert.match(officialFetch,/const bytes=await response\.arrayBuffer\(\)/);
+assert.match(officialFetch,/attempts=3/);
+assert.match(officialFetch,/timeoutMs=45000/);
 
 assert.match(recovery,/RECOVERY_MARKET_DATE/);
 assert.match(recovery,/historicalRecovery/);
