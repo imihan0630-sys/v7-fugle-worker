@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "D06_19_DIRECT_RETAIL_SOURCE_GAP_UPDATE_20261006_V0_1",
+  "updatedAt": "2026-10-06 Asia/Taipei",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-19",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "searchScope": [
+    "TWSE current official report index and investor-class statistics",
+    "TPEx current official investor-structure and trading-participation sources",
+    "public replayable stock-date investor-type directional data products"
+  ],
+  "verifiedPublicAvailability": {
+    "TWSE": [
+      "market-level natural-person trading-value share",
+      "annual/monthly investor-class trading composition",
+      "market-level natural-person ownership/investment distribution",
+      "institutional stock-level flow products"
+    ],
+    "TPEx": [
+      "market/research-level natural-person participation structure",
+      "historical investor-structure research publications",
+      "institutional stock-level flow products"
+    ]
+  },
+  "unresolvedCoreCapability": {
+    "target": "domestic natural person × stock/security × date × buy/sell directional flow",
+    "publicReplayableCurrentTWSE": "NOT_VERIFIED",
+    "publicReplayableCurrentTPEx": "NOT_VERIFIED",
+    "stockDateDirectionalFlowState": "UNKNOWN"
+  },
+  "forbiddenSubstitutions": [
+    "margin financing != direct retail flow",
+    "day trading != direct retail identity",
+    "odd-lot activity != all retail",
+    "broker branch != beneficial owner",
+    "total market minus institutions != identified natural-person flow",
+    "market-level natural-person share cannot be backfilled to stock-date direction"
+  ],
+  "conclusion": "The 2026-10-06 official-source rescan did not uncover a new public replayable stock×date domestic-natural-person directional feed. Existing market-level direct retail participation sources remain valid context/falsification baselines only.",
+  "maturityDecision": {
+    "module": "D06-19",
+    "level": "L2",
+    "maturityPct": 40,
+    "promotion": "NO",
+    "reason": "Mechanism/falsification and market-level direct participation are defined, but the declared stock-date directional capability still lacks an authorized replayable source contract and TPEx parity."
+  },
+  "status": "SOURCE_GAP_RECONFIRMED_20261006 / STOCK_DATE_DIRECTION_UNKNOWN / MARKET_LEVEL_DIRECT_CONTEXT_ONLY / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Continue source discovery only for directly identified investor-class feeds. If no true stock-date source appears, preserve UNKNOWN rather than substitute proxies."
+}
