@@ -24,6 +24,54 @@ export function d08TwseTableObjectsV0_1(payload){
   if(!Array.isArray(payload.fields)||!Array.isArray(payload.data)) throw new Error("TWSE table fields/data invalid");
   return payload.data.map(row=>Object.fromEntries(payload.fields.map((h,i)=>[h,row[i]])));
 }
+function normalizedCompanyIdentityV0_1(value){
+  return String(value??"").normalize("NFKC").replace(/\s+/g,"").replace(/[－–—]/g,"-").replace(/-創$/u,"");
+}
+export function reconcileD08TwseCurrentListingStartsV0_1(currentRows=[],newRows=[]){
+  if(!Array.isArray(currentRows)||!Array.isArray(newRows)) throw new Error("currentRows/newRows must be arrays");
+  const bySymbol=new Map();
+  for(const row of newRows){
+    if(!ordinary(row?.symbol)||!row?.listingDate) continue;
+    if(!bySymbol.has(row.symbol)) bySymbol.set(row.symbol,[]);
+    bySymbol.get(row.symbol).push(row);
+  }
+  for(const rows of bySymbol.values()) rows.sort((a,b)=>a.listingDate.localeCompare(b.listingDate));
+
+  const adjustedSymbols=[];
+  const rows=currentRows.map((row)=>{
+    const currentName=normalizedCompanyIdentityV0_1(row?.companyName);
+    const candidates=(bySymbol.get(row?.symbol)||[]).filter((candidate)=>{
+      if(!candidate?.listingDate||!row?.listingDate||candidate.listingDate>row.listingDate) return false;
+      const candidateName=normalizedCompanyIdentityV0_1(candidate.companyName);
+      return currentName&&candidateName&&currentName===candidateName;
+    });
+    const earliest=candidates[0]||null;
+    if(!earliest||earliest.listingDate>=row.listingDate) return row;
+    adjustedSymbols.push(row.symbol);
+    return {
+      ...row,
+      listingDate:earliest.listingDate,
+      sourceId:"TWSE_OPENAPI_T187AP03_L_PLUS_NEWLISTING_EARLIEST",
+      sourceName:"TWSE current listed-company basic data + official newlisting earliest continuous listing",
+      sourceUrl:CURRENT_URL+" | "+NEW_URL,
+      sourceRowHash:sha({
+        currentSourceRowHash:row.sourceRowHash||null,
+        newlisting:earliest.raw||{
+          symbol:earliest.symbol,companyName:earliest.companyName,listingDate:earliest.listingDate,
+        },
+        reconciledListingDate:earliest.listingDate,
+      }),
+      listingDateReconciledFrom:row.listingDate,
+      listingDateEvidenceSource:"TWSE_NEWLISTING_EARLIEST_CONTINUOUS_LISTING",
+    };
+  });
+  return deepFreeze({
+    rows:Object.freeze(rows),
+    adjustedCount:adjustedSymbols.length,
+    adjustedSymbols:Object.freeze([...new Set(adjustedSymbols)].sort()),
+    schemaVersion:"D08_TWSE_CURRENT_LISTING_START_RECONCILIATION_V0_1",
+  });
+}
 async function getJson(url,fetchImpl){
   const r=await fetchImpl(url,{
     headers:{accept:"application/json","user-agent":"System2-D08-Universe/0.1"},
@@ -89,7 +137,7 @@ export async function buildD08TwseHistoricalUniverseSourceV0_1({
   for(const h of ["公司代號","公司名稱","上市日期"]){
     if(!Object.prototype.hasOwnProperty.call(currentRaw.payload[0],h)) throw new Error("TWSE current schema missing "+h);
   }
-  const current=currentRaw.payload.map(r=>({
+  const currentBase=currentRaw.payload.map(r=>({
     market:"TWSE",symbol:String(r["公司代號"]??"").trim(),
     companyName:String(r["公司名稱"]??"").trim()||null,
     industry:String(r["產業別"]??"").trim()||null,
@@ -103,6 +151,9 @@ export async function buildD08TwseHistoricalUniverseSourceV0_1({
     companyName:String(r["公司簡稱"]??r["公司名稱"]??"").trim()||null,
     listingDate:parseD08TwseDateV0_1(r["股票上市買賣日期"]),raw:r,
   })).filter(x=>ordinary(x.symbol)&&x.listingDate);
+  const currentReconciliation=reconcileD08TwseCurrentListingStartsV0_1(currentBase,newRows);
+  const current=currentReconciliation.rows;
+
   const delRows=d08TwseTableObjectsV0_1(delRaw.payload).map(r=>({
     symbol:String(r["上市編號"]??r["公司代號"]??"").trim(),
     companyName:String(r["公司名稱"]??r["公司簡稱"]??"").trim()||null,
@@ -162,6 +213,8 @@ export async function buildD08TwseHistoricalUniverseSourceV0_1({
     registry,
     sourceReceipt:deepFreeze({
       currentCount:current.length,newListingHistoryCount:newRows.length,
+      currentListingStartReconciledCount:currentReconciliation.adjustedCount,
+      currentListingStartReconciledSymbols:currentReconciliation.adjustedSymbols,
       delistedCount:delisted.length,datasetStartFallbackCount:unresolved.length,
       datasetStartFallbackSymbols:Object.freeze(unresolved.map(x=>x.symbol).sort()),
       datasetFirstTradingDate:firstTradingDate,
