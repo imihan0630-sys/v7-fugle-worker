@@ -1128,3 +1128,64 @@ Exact next:
 - `SDA-009-R3A2`: after parity PASS, wire a pure C1-side LOO analyzer beside existing C1 sector-component evidence.
 - `SDA-009-R3B`: Room07 consumes the first genuine same-generation receipt using P0-P5 denominator accounting and the V0.2 oracle.
 - D16 then performs common-support economic validation.
+
+
+## SDA-009 R3 V0.4 — effective-build authority and layered parity
+
+Artifact:
+- `research/SDA009_EFFECTIVE_BUILD_AND_PARITY_CORRECTION_V0_4.md`
+- `research/sda009_effective_build_parity_correction_v0_4.json`
+- `research/sda009_c1_atomic_replay_prototype_v0_4.mjs`
+- `research/test_sda009_c1_atomic_replay_prototype_v0_4.mjs`
+- `research/sda009_r3_receipt_oracle_v0_4.mjs`
+- `research/test_sda009_r3_receipt_oracle_v0_4.mjs`
+- `research/SDA009_R3_V0_4_CHECKPOINT_20261006.md`
+
+Status: EFFECTIVE_BUILD_AUTHORITY_CORRECTED / GATE_SCORE_PARITY_SPLIT / ATOMIC_REPLAY_PASS_29 / RECEIPT_ORACLE_PASS_30 / GENUINE_RECEIPT_COUNT_0 / FORMAL_CORE_UNCHANGED
+
+Important correction:
+the repository baseline Worker.js is not the authoritative post-patch deployed Worker for comparator semantics.
+
+The production workflow applies `scripts/apply_v7_5_30.py`, which changes ranking to priorityScore first, then rewardPerRisk, marketConsensusScore, setupQuality, sectorFlow and relativeStrength. V8.20 deploy run `37483896567` succeeded, including the V7.5.30 patch, V8.15.4 provenance patch, Behavioral regression, deployment and deployed-version/config verification.
+
+Therefore prior V0.2 wording that treated rewardPerRisk as the first effective comparator is SUPERSEDED.
+
+SDA-009 implication:
+sector score contributes 14% to base priorityScore and effective post-consensus priorityScore is comparator #1. Sector self-contribution can therefore affect rank without requiring an RR tie, but exact rank/seat effect still requires runtime-equivalent final priority values and same-generation cross-candidate identifiability.
+
+Priority-delta correction:
+`0.14 × sectorScoreDelta` is only `structuralUnroundedSectorContributionDelta`. It must not be called the final priorityScore delta because production also applies clamp, one-decimal rounding, market-consensus bonus, then post-consensus clamp/rounding.
+
+Parity is now layered:
+- gate analysis requires `gateParityState=PASS` against stored production breadth / avgChange / amountVs20DayAverage;
+- score/rank/allocation additionally require production sectorScore or a generation-level sectorDecisionStateDigest;
+- missing production score proof => `SCORE_EFFECT_UNVERIFIED`, not a score/rank conclusion.
+
+Recommended score-parity reference:
+generation-level sectorDecisionStateDigest over sorted score-relevant per-industry fields: industry, stockCount, historicalCoverage, amount, breadth, avgChange, amountVs20DayAverage, score; bind it to scanDate, generationId, sourceMainSha, effectiveRuntimeVersion, membershipDigest and projectionVersion.
+
+V0.3 prototype self-falsification:
+stored-inclusive parity had been optional in code despite being mandatory in the written contract. V0.4 fixes this fail-closed defect.
+
+Local isolated validations:
+- V0.4 atomic replay prototype: PASS / 29 assertions.
+- V0.4 layered receipt oracle: PASS / 30 assertions.
+
+V0.4 receipt authority:
+- gate flip requires gate parity PASS;
+- score effect requires score parity PASS;
+- rank flip requires rankIdentifiability PASS + effective comparator version + comparator attribution;
+- pool-seat flip requires rankIdentifiability PASS + effective comparator version;
+- allocation effect requires allocationIdentifiability PASS.
+
+A lower-layer calculable effect cannot auto-promote a higher-layer conclusion.
+
+System1 implementation search at this checkpoint still finds no SDA-009 runtime implementation of candidateSelfContribution, C1 currentChangePercent/currentTradeValue extension, membershipDigest or parity receipt. Genuine candidate-level Taiwan receipt count remains 0.
+
+Maturity: D09 remains 57.1%; no promotion.
+
+Exact next:
+- `SDA-009-R3A1`: System1 adds the two C1 row atoms + exact membership identity + production sectorScore or sectorDecisionStateDigest, then proves gate and score inclusive parity against the effective built runtime.
+- `SDA-009-R3A2`: after parity PASS, execute pure C1-side candidate LOO and emit first genuine receipt.
+- `SDA-009-R3B`: Room07 evaluates the genuine receipt with V0.4 oracle and P0-P5 denominator accounting.
+- D16 performs common-support economic/incremental validation after genuine evidence exists.
