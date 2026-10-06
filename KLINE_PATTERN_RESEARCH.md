@@ -23723,3 +23723,35 @@ New durable artifacts:
 - research/PATTERN_VOLATILITY_LIQUIDITY_CHURN_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-052 — Persistent structural rejection vs shock snapback / price-discovery completion (2026-10-06)
+
+DL-052 tightens the meaning of a "clean bounce." A rapid reversal at a support/resistance zone can look visually persuasive while being fully explained by market resiliency after a temporary shock.
+
+Microstructure research provides the reason to keep these mechanisms separate. Biais and Weill show that liquidity shocks can produce a sharp price decline and order-flow imbalance followed by gradual price recovery. Lo and Hall study order-book resiliency as replenishment after liquidity shocks. Yamada and Ito explicitly separate price discovery from liquidity recovery, showing that the price process and the liquidity process need not normalize on the same clock. These findings do not say structural levels are irrelevant. They show that a touch-and-snapback pattern is not uniquely structural.
+
+DL-052 therefore freezes independent clocks for shock onset/knowledge, structural opportunity, liquidity recovery, price recovery and price-discovery completion. Only information available by predictorFreezeAt may enter the baseline structural predictor. Later spread/depth normalization, later price recovery or later discovery completion are post-opportunity mechanism/outcome states and cannot be backfilled.
+
+A pre-shock reference is also separated from structural geometry. When valid two-sided quotes exist, the pre-shock midquote is the preferred reference for temporary-mispricing recovery. If only a transaction price is available, the case remains noise-separation incomplete because bid-ask bounce and price discreteness can create apparent reversal. If the pre-shock reference lies inside the structural zone, future inference must compare ordinary reversion to the reference with structural rejection; numerical coincidence does not establish mechanism.
+
+Shock context is frozen into no-preexisting-shock, volatility shock, liquidity shock, mixed shock, shock-begins-after-opportunity and unknown states. A shock that begins after predictor freeze cannot be used to explain or condition the earlier predictor state.
+
+Liquidity recovery and price recovery are not collapsed. Price may recover while spreads/depth remain stressed; liquidity may normalize while price stabilizes at a new level; both may evolve on different clocks. Therefore a generic recoveredAt field is prohibited.
+
+Price discovery creates the opposite problem from temporary-impact recovery. An informative event can move the efficient price permanently through a structural zone. A brief reversal before stabilization may be transitional price discovery rather than durable structural rejection. Event presence itself does not prove causation, so D11 event context remains an orthogonal receipt.
+
+No universal snapback horizon is defined. One bar, five minutes, fifteen minutes, same-day close or a fixed ATR threshold would all be outcome-sensitive without preregistration. D16 must later freeze the evaluation horizon family or consume owner-defined recovery events before opening economic outcomes.
+
+Future inference walks from raw touch response through market-mechanism, volatility-shock, liquidity-shock, pre-shock-reference, recovery-clock and price-discovery controls. Only a response that remains after these mechanisms and then replicates across independent dates/regimes can be called a structural-rejection residual candidate. It is still not causal proof or alpha.
+
+Sixteen adversarial cases are authored. They cover preexisting volatility/mixed shocks, future shocks, incomplete owner receipts, midquote versus transaction reference, future reference rejection, pre/post-opportunity timing, distinct liquidity/price/discovery clocks, timing conflicts, midquote missingness, no automatic snapback interpretation, one effective evidence count and closed outcome join.
+
+New durable artifacts:
+- research/PATTERN_SHOCK_SNAPBACK_V0_1.md
+- research/pattern_shock_snapback_v0_1.json
+- research/pattern_shock_snapback_v0_1.mjs
+- research/test_pattern_shock_snapback_v0_1.mjs
+- research/PATTERN_SHOCK_SNAPBACK_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No runtime wiring and no Formal change. Formal Core remains LOCKED.
