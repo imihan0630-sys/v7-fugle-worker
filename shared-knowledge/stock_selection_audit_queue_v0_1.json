@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-06T19:07:00+08:00",
+  "updatedAt": "2026-10-06",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -612,8 +612,8 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "00_cross_domain_readback"
       ],
-      "readiness": "V0_4_48_TEST_ORACLE_FROZEN_PR644_USEFUL_PARTIAL_PASS_NOT_MERGED_AUTHORITATIVE_FORMAL_C1_BINDING_AND_SHARED_AUTHORITY_PENDING",
-      "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_INTAKE_20261006_V0_3.md",
+      "readiness": "V0_4_48_TEST_ORACLE_FROZEN_PR644_MERGED_V819_PRODUCTION_VERIFIED_GENUINE_C1_READBACK_AUTHORITATIVE_FORMAL_C1_BINDING_AND_SHARED_AUTHORITY_PENDING",
+      "receipt": "research/sda016_system1_v819_current_status_20261006_v0_1.json",
       "remainingDelta": [
         "immutable authoritative Formal decision to exact C1 generation ledger",
         "same-session generation-set finalization receipt",
@@ -623,22 +623,33 @@
         "admission/maturity missingness censoring and positivity accounting",
         "multi-horizon family identity",
         "System1/System2 pass SDA016 V0.4 T01-T48",
-        "genuine deployed/readback evidence where applicable",
+        "first genuine post-deploy V8.19 C1 scanOrigin/generation-inventory readback",
         "independent 00 closure"
       ],
       "system1Engineering": {
-        "status": "PARTIAL_PASS_EXISTING_EXACT_DATASET_MUTATION_GUARD",
-        "receipt": "research/SDA016_SYSTEM1_HOLDOUT_GUARD_VALIDATION_20261005_V0_1.md",
+        "status": "PR644_MERGED_V819_PRODUCTION_VERIFIED_PARTIAL_PASS",
+        "receipt": "research/sda016_system1_v819_current_status_20261006_v0_1.json",
+        "productionEvidence": "research/system1_c1_scan_origin_generation_inventory_pr_644_v0_1.json",
+        "genuineReadbackStatus": "PENDING_FIRST_GENUINE_POST_DEPLOY_C1_SESSION",
+        "authoritativeFormalC1Ledger": "PENDING",
         "formalCoreImpact": "NONE",
         "ticketClosure": false
       },
       "candidateEngineering": {
         "pr": 644,
-        "state": "OPEN_DRAFT_NOT_MERGED_NOT_DEPLOYED",
+        "state": "MERGED_DEPLOYED_PRODUCTION_VERIFIED",
         "contribution": "SCAN_ORIGIN_AND_GENERATION_INVENTORY_PARTIAL_PASS",
-        "ownerApprovalRequiredForMergeDeploy": true,
+        "ownerApprovalRequiredForMergeDeploy": false,
+        "mergeSha": "b79e1e7c22b015e96ecd3780cbf56b21091fd4de",
+        "productionDeployRun": 37382112616,
+        "genuineReadbackStatus": "PENDING_FIRST_GENUINE_POST_DEPLOY_C1_SESSION",
         "ticketClosure": false
-      }
+      },
+      "supportingReceipts": [
+        "research/SDA016_SYSTEM1_V819_SCAN_ORIGIN_INVENTORY_VALIDATION_20261006_V0_1.md",
+        "research/system1_c1_scan_origin_generation_inventory_pr_644_v0_1.json",
+        "research/sda016_system1_v819_current_status_20261006_v0_1.json"
+      ]
     },
     {
       "id": "SDA-017",

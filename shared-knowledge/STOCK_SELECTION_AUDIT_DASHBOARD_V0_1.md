@@ -38,7 +38,7 @@ Queue: shared-knowledge/stock_selection_audit_queue_v0_1.json
 | SDA-013 | HIGH | REMEDIATION_IN_PROGRESS | D13, D18 | REVISION_AND_CLOCK_FIREWALL_DEEPENED_CROSS_MARKET_DATE_MATCHING_REJECTED_CANONICAL_RECEIPT_PENDING |
 | SDA-014 | HIGH | VALIDATION_PENDING | D14 | RESEARCH_EXECUTION_CONTRACT_STRONG_PROSPECTIVE_BROKER_RECEIPTS_PENDING |
 | SDA-015 | HIGH | REMEDIATION_IN_PROGRESS | D15 | PLAN_TIME_SEMANTIC_FIREWALL_STRONG_PRETRADE_RISK_VERSION_AND_PROSPECTIVE_ATTRIBUTION_PENDING |
-| SDA-016 | CRITICAL | REMEDIATION_IN_PROGRESS | D16 | V0_4_48_TEST_ORACLE_FROZEN_PR644_USEFUL_PARTIAL_PASS_NOT_MERGED_AUTHORITATIVE_FORMAL_C1_BINDING_AND_SHARED_AUTHORITY_PENDING |
+| SDA-016 | CRITICAL | REMEDIATION_IN_PROGRESS | D16 | V0_4_48_TEST_ORACLE_FROZEN_PR644_MERGED_V819_PRODUCTION_VERIFIED_GENUINE_C1_READBACK_AUTHORITATIVE_FORMAL_C1_BINDING_AND_SHARED_AUTHORITY_PENDING |
 | SDA-017 | CRITICAL | REMEDIATION_IN_PROGRESS | D18 | ROOM11_V0_3_48_TEST_ORACLE_FROZEN_REPLICATION_SUPPORT_CONTRACT_READY_SYSTEM2_EPISODE_SUPPORT_ENGINE_PENDING |
 | SDA-018 | HIGH | REMEDIATION_IN_PROGRESS | D19 | FACTOR_ZOO_GOVERNANCE_STRONG_D19_12_SCHEDULED_CALENDAR_KNOWNAT_FIRST_RECEIPT_CHALLENGER_OOS_PENDING |
 | SDA-019 | HIGH | VALIDATION_PENDING | D20 | FIRST_PRIMARY_SOCIAL_PARENT_DURABLE_COVERAGE_AND_RESIDUAL_EVIDENCE_IMMATURE_D20_13_LIVE_SOURCE_PENDING |
@@ -164,5 +164,33 @@ System1 current Formal policy identity is machine-observable and CI-guarded. It 
 
 Remaining SDA-022 path:
 System2 fingerprints -> physical NC-T01 -> prospective overlap/divergence -> D16 dependence/incrementality -> 00 independent closure.
+
+Formal Core impact: NONE.
+
+
+## SDA-016 System1 V8.19 current status supersession — 2026-10-06
+
+The earlier Room11 validation correctly recorded PR #644 as open/not deployed at its observation time. That historical record remains intact.
+
+Current authoritative state:
+- PR #644 = MERGED;
+- merge SHA = `b79e1e7c22b015e96ecd3780cbf56b21091fd4de`;
+- V8.19 Production deploy run `37382112616` = SUCCESS;
+- post-merge Regression run `37382112493` = SUCCESS;
+- Production runtime readback = `8.19.0-c1-scan-origin-generation-inventory`;
+- TEST_MODE = false;
+- rollback = not triggered.
+
+SDA-016 is still NOT closed.
+
+Remaining System1 evidence:
+1. first genuine post-deploy C1 scanOrigin / generation-inventory readback;
+2. durable authoritative Formal-decision -> exact C1-generation ledger for later recovery;
+3. same-session generation-set finalization;
+4. shared cross-system holdout-consumption authority and remaining V0.4 oracle evidence;
+5. independent 00 closure.
+
+Current-status receipt:
+`research/sda016_system1_v819_current_status_20261006_v0_1.json`.
 
 Formal Core impact: NONE.
