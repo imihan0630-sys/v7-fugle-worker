@@ -100,3 +100,19 @@ This is deliberate: the first physical V1.3 sample validates the architecture wi
 V1.3 adds no Cron and no production polling budget.
 
 The next shared-owner step is to bind this adapter into the already-frozen event-driven pre-parent source-cut architecture. Any future schedule or production persistence requires its own governed runtime decision and must account for complete source scope, append-only identity, truncation, budget, and no-revision-gap reconciliation.
+
+
+## 2026-10-07 physical acceptance
+
+Dedicated workflow run `37539208003`, job `112527770695`: PASS.  
+System2 Research CI run `37539207913`: PASS.
+
+The exact 4806 TPEx reference row was genuinely observed at `2026-10-06T22:13:44.304Z` with stable identity:
+
+- semanticHash `b6a4c97fdf3ded2bdae7048852540e4f58c1a64da4cbc012e350d5227e20d869`;
+- sourceRowHash `518fcdf6b0f3d5dc8ffaafba59556c86da3cda76dd0e46c528217740c33ae92b`.
+
+The receipt proves availability at the actual observation time, but correctly fails the earlier 2026-10-02 15:30 Asia/Taipei replay cutoff. No scheduler, mutation, System1 use or trading authority was added.
+
+Evidence:
+`system2/evidence/S2_07_OFFICIAL_REFERENCE_AVAILABILITY_OBSERVER_V1_3_PHYSICAL_20261007.json`.
