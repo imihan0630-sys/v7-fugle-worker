@@ -139,3 +139,16 @@ Fresh dispatch was successfully started from latest-main head `a7561639b8d07ab23
 Do not mark 2021 TPEx accepted until the workflow reaches terminal SUCCESS and Physical verify, evidence artifact/readback, completion receipt/coverage reconciliation, and System1 isolation all pass. Exact next continuation point: read back run 37401612529 when terminal, verify acceptance evidence, then advance DATA_LANE to 2022 TWSE only if accepted.
 
 Run URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37401612529
+
+
+## 2026-10-06 2021 TPEx run #18 attempt 1 failure / attempt 2 retry
+
+Run URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37401612529
+
+Attempt 1 terminal result: FAILURE, but annual backfill itself PASSed and System1 production isolation PASSed. Backfill receipt reported 2021 TPEX / 244 trading dates / 191643 official rows / 795 packs / 795 symbols, with 670 inserted objects plus 125 identical existing objects and no System1 runtime change.
+
+The failing step was Physical verify. The verifier ran from 02:24:38Z to 02:37:25Z and then terminated with a raw DOMException TimeoutError. Because the verifier exited before writing /tmp/system2-historical-coverage-TPEX-2021.json, upload-artifact reported no file and no physical evidence artifact was produced. This failure is transport/read-path verification failure, not evidence of source-row mismatch, hash mismatch, D1 quota exhaustion, or System1 contamination.
+
+Before retry, nine execution-critical blobs were compared between run head a7561639b8d07ab23bfd1f1cd961b753ee561249 and latest main; workflow, backfill script, verifier, official historical range/date source, current-listing source, D1 adapter, R2 adapter and cold-pack store were unchanged. Therefore failed-job retry is execution-equivalent and does not bypass a newer relevant implementation.
+
+Attempt 2 was started through GitHub failed-job rerun. At latest readback: run_attempt=2, migrate=SUCCESS, backfill=IN_PROGRESS. Acceptance remains blocked until terminal SUCCESS + Physical verify PASS + evidence artifact + System1 isolation PASS. If attempt 2 reproduces TimeoutError, do not loop retries; open/route a DATA_LANE verifier-resiliency correction with stage-level diagnostics/retry hardening before another annual continuation.

@@ -658,3 +658,85 @@ Therefore:
 - no maturity change;
 - Formal Core remains LOCKED;
 - 00 remains sole closure authority.
+
+
+## 2026-10-06 SDA-022 continuation — System1 5/5 pass + outer-stream enrollment + stopping rule
+
+New validated engineering evidence:
+- System1 machine policy fingerprint receipt exists on main:
+  `shared-knowledge/system1_policy_fingerprint_receipt_v0_1.json`;
+- merge commit:
+  `862b8c903e81e0945ba030b396b8a7d661f91f1e`;
+- Room11 independent source-artifact readback = 3/3 SHA matches;
+- current Formal ranking chain readback matches fingerprint;
+- merge file scope contains only workflow + receipt + test, no Formal selector/ranking/capital/entry/signal/order source mutation.
+
+Room11 validation:
+- `S22-T01 = PASS`;
+- `S22-T02 = PASS`;
+- `S22-T03 = PASS`;
+- `S22-T04 = PASS`;
+- `S22-T05 = PASS`.
+
+Durable validation:
+- `research/SDA022_ROOM11_SYSTEM1_FINGERPRINT_VALIDATION_RETURN_20261006_V0_1.md`;
+- `research/SDA022_ROOM11_SYSTEM1_FINGERPRINT_VALIDATION_RETURN_20261006_V0_1.json`.
+
+Important limitation:
+GitHub connector did not expose an independent workflow run / combined status for the merge commit, so this return does not claim visible CI evidence beyond code-diff/source readback.
+
+Current verified canonical SDA-022 families:
+- System1 fingerprint `S22-T01~T05 = 5/5 PASS`;
+- D16 preregistration `S22-T25~T28 = 4/4 PASS`.
+
+Still absent at latest search:
+- actual System2 per-strategy fingerprint receipt;
+- actual physical NC-T01 receipt.
+
+Therefore `S22-T06~T16` remain pending.
+
+### Outer research-stream enrollment completed before economic outcome access
+
+New:
+`research/D16_SDA022_OUTER_STREAM_ENROLLMENT_20261006_V0_1.json`.
+
+Research stream:
+`ROOM11_CROSS_SYSTEM_INCREMENTALITY_STREAM_20261006_V0_1`.
+
+Hypothesis:
+`SDA022-H01-SYSTEM1-VS-SHORT_MOMENTUM-D5`.
+
+Experiment family:
+`D16-SDA022-01`.
+
+Current stream objective:
+`EXPLORATORY_ONLY`.
+
+This is deliberate:
+no FWER/FDR/mFDR or confirmatory error-control claim is made before a valid outer method is frozen.
+No outcome has been inspected.
+
+### Single-look stopping rule frozen
+
+New:
+- `research/D16_SDA022_D5_STOPPING_RULE_20261006_V0_1.md`;
+- `research/D16_SDA022_D5_STOPPING_RULE_20261006_V0_1.json`.
+
+Rules:
+- one primary inferential opening only;
+- no efficacy early stopping;
+- no futility early stopping from economic outcomes;
+- readiness/integrity/coverage checks may continue outcome-blind;
+- primary opening requires System2 fingerprint, physical NC-T01, prospective pair receipts, common cutoff, model-state encoding, ModelMethodReceipt, MDE/precision target, >=40 effective independent dates, class/replication/coverage/SDA-016 gates, and explicit outer-stream state.
+
+### Central experiment registry updated
+
+`research/EXPERIMENT_REGISTRY.md` now includes:
+`D16-SDA022-01｜System1 vs System2 SHORT_MOMENTUM D5 增量資訊`.
+
+No maturity change.
+D16 = 60%.
+D18 = 52%.
+Formal Core LOCKED.
+Whole SDA-022 remains PARTIAL_PASS.
+Room00 remains sole closure authority.
