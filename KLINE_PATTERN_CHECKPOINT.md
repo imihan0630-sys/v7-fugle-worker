@@ -3366,3 +3366,106 @@ No maturity or Formal change is authorized by this routing.
 7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 8. Next D01 science: separate structural rejection from latency / queue-position advantage and hidden-liquidity execution effects around the zone.
 9. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-055 (2026-10-06)
+
+### DL-055 — Structural rejection vs queue priority / latency / hidden-liquidity execution effects
+- DL-054 separated durable displayed depth from same-price replacement / quote flicker.
+- DL-055 freezes the next execution-mechanism firewall: apparent zone rejection may reflect queue priority, submission/ack latency, hidden/iceberg liquidity, or generic execution mechanics rather than structural memory.
+- External evidence supports the distinction:
+  price-time-priority queues make queue position economically relevant to waiting/fill probability;
+  hidden/iceberg orders can replenish displayed size and alter price/order-flow dynamics;
+  visible top-five depth is not total executable liquidity.
+- D05 owner boundary remains strict:
+  D05 owns exact queue/priority semantics, queue-ahead proxy, own-order lifecycle, submit/ack/fill clocks, fill probability, hidden-liquidity inference and event-clock validity.
+  D01 owns only the relation of owner-certified execution states to the frozen structural zone.
+- Queue states:
+  EXACT_QUEUE_POSITION_KNOWN;
+  QUEUE_AHEAD_PROXY_ONLY;
+  QUEUE_POSITION_UNKNOWN.
+- Public top-five aggregate depth cannot identify exact queue rank.
+- Exact queue requires owner-grade order sequence plus own-order lifecycle.
+- Queue position remains execution-confidence/fill-probability context and is not directional alpha.
+- Latency states:
+  LATENCY_KNOWN;
+  SUBMIT_LATENCY_PARTIAL;
+  ACK_LATENCY_UNKNOWN;
+  NO_OWN_ORDER_LIFECYCLE;
+  NOT_APPLICABLE.
+- No real submitted order -> no exact submit-to-ack latency, no exact own queue rank, no true fill probability and no implementation-shortfall claim.
+- Hidden-liquidity states:
+  DISPLAYED_ONLY_OBSERVED;
+  HIDDEN_LIQUIDITY_CANDIDATE;
+  OWNER_CONFIRMED_HIDDEN_LIQUIDITY;
+  HIDDEN_LIQUIDITY_UNKNOWN.
+- Repeated replenishment / weak price progress may support HIDDEN_LIQUIDITY_CANDIDATE, but candidate != confirmed iceberg.
+- Owner-confirmed hidden liquidity requires valid D05 owner receipt + event-clock evidence.
+- Hypothetical touch = fill is explicitly prohibited.
+- Timing firewall:
+  structuralOpportunityAt;
+  predictorFreezeAt;
+  decisionTimestamp;
+  orderSubmitTimestamp;
+  exchangeAckTimestamp;
+  firstExecutableTimestamp;
+  hiddenLiquidityFirstIndicatedAt;
+  hiddenLiquidityConfirmedAt;
+  fillTimestamp;
+  priceResponseKnownAt.
+- Post-freeze hidden-liquidity / fill state is post-treatment and may not be backfilled into the baseline structural predictor.
+- Generic execution comparator:
+  G0 GENERIC_EXECUTION_ADVANTAGE;
+  G1 ZONE_ASSOCIATED_EXECUTION_ADVANTAGE.
+  If G1 adds no residual representation beyond G0, generic execution mechanics are sufficient.
+- Common-support controls include relative tick, price tier, spread, displayed depth, trade/message intensity, queue-ahead proxy, latency state, hidden-liquidity state, session/auction/VI/limit state, volatility/liquidity regime, structural age and DL-052/DL-053/DL-054 mechanism context.
+- SDA-001 remains active:
+  zone / queue / latency / hidden-liquidity / fill receipts are linked mechanism receipts within one causal parent;
+  effectiveIndependentEvidenceCount remains 1 by default.
+- SDA-002 remains active:
+  every execution receipt retains firstObservableAt / knownAt / predictorFreezeAt / replaySafe;
+  future queue depletion / hidden-liquidity confirmation / fill may not rewrite earlier predictor state.
+- Future D16 ladder:
+  E0 RAW_ZONE_REJECTION;
+  E1 DL054_DEPTH_PERSISTENCE_CONTROLLED;
+  E2 QUEUE_PRIORITY_CONTEXT_CONTROLLED;
+  E3 LATENCY_CONTEXT_CONTROLLED;
+  E4 HIDDEN_LIQUIDITY_CONTEXT_CONTROLLED;
+  E5 GENERIC_EXECUTION_ADVANTAGE_CONTROLLED;
+  E6 OWN_ORDER_LIFECYCLE_CONFIRMED;
+  E7 STRUCTURAL_REJECTION_RESIDUAL_CANDIDATE;
+  E8 MULTI_DATE_MULTI_TICK_TIER_REPLICATION.
+- Future interpretation:
+  Q0 QUEUE_PRIORITY_EXPLANATION;
+  Q1 LATENCY_EXPLANATION;
+  Q2 HIDDEN_LIQUIDITY_EXPLANATION;
+  Q3 GENERIC_EXECUTION_MECHANICS_EXPLANATION;
+  Q4 FILL_SELECTION_SENSITIVE;
+  Q5 OWN_ORDER_DATA_REQUIRED;
+  Q6 STRUCTURAL_REJECTION_RESIDUAL;
+  Q7 NOT_EVALUABLE.
+- New files:
+  - research/PATTERN_QUEUE_LATENCY_HIDDEN_LIQUIDITY_V0_1.md
+  - research/pattern_queue_latency_hidden_liquidity_v0_1.json
+  - research/pattern_queue_latency_hidden_liquidity_v0_1.mjs
+  - research/test_pattern_queue_latency_hidden_liquidity_v0_1.mjs
+  - research/PATTERN_QUEUE_LATENCY_HIDDEN_LIQUIDITY_D16_HANDOFF_V0_1.md
+- 18 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain open under canonical queue.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-055
+
+1. Reconcile the DL-055 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-055 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve exact queue / queue-ahead proxy / unknown as separate states.
+4. Preserve displayed-only / hidden-liquidity candidate / owner-confirmed hidden / unknown as separate states.
+5. Reject hypothetical touch-as-fill and post-freeze hidden-liquidity/fill backfill.
+6. Hand E0-E8 / Q0-Q7 common-support and execution-selection inference to D16.
+7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+8. Next D01 science: separate structural rejection from maker/taker fee economics and passive-vs-aggressive execution selection around the zone.
+9. No runtime wiring / no Formal change.
