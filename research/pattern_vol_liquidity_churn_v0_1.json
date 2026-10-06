@@ -1,0 +1,32 @@
+{
+  "schemaVersion":"pattern-vol-liquidity-churn-v0.1",
+  "updated":"2026-10-06 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "owners":{
+    "zoneLocalPath":"D01",
+    "pathEfficiency":"D03",
+    "volatilityLiquidityMicrostructure":"D04_D05"
+  },
+  "timingFamilies":["PRE_EPISODE_CONTEXT","WITHIN_EPISODE_CONTEXT"],
+  "researchContextClasses":[
+    "L0_BASELINE_MICROSTRUCTURE_CONTEXT",
+    "L1_VOLATILITY_BURST_CONTEXT",
+    "L2_SPREAD_STRESS_CONTEXT",
+    "L3_DEPTH_STRESS_CONTEXT",
+    "L4_VOL_LIQ_MIXED_STRESS_CONTEXT",
+    "L5_SESSION_EDGE_CONTEXT",
+    "L6_QUOTE_STALE_OR_INCOMPLETE",
+    "L7_NOT_EVALUABLE"
+  ],
+  "highChurnEqualsStructuralSignal":false,
+  "staleQuoteEqualsZeroLiquidity":false,
+  "withinEpisodeMicrostructureAlwaysBaselineConfounder":false,
+  "microstructureStressScore":null,
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "residualIncrementalityStatus":"NOT_VALIDATED",
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}

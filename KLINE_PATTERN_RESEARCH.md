@@ -23687,3 +23687,43 @@ New durable artifacts:
 - research/PATTERN_TRANSITION_MECHANICS_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001/SDA-002 remain open. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-051 — Structural-zone churn vs volatility clustering / spread-depth deterioration (2026-10-06)
+
+DL-051 addresses a microstructure confound that remains even after DL-050 separates matching mechanisms.
+
+A structural zone can show high local churn because the market itself is temporarily noisy or illiquid. The same number of state transitions can occur under calm, tight-spread, deep-book conditions or under a volatility burst with widening spreads and depleted depth. Treating those episodes as equivalent would over-credit the structural pattern.
+
+The research state is therefore split into three families.
+
+STRUCTURAL_PATH_STATE remains the D01 object from DL-048/DL-049.
+
+VOLATILITY_STATE is consumed from D04/D05 with PIT realized/normalized volatility and owner-defined burst/regime receipts.
+
+LIQUIDITY_STATE is consumed from D04/D05 with spread, depth, quote freshness and owner stress/regime receipts.
+
+D01 does not define a new volatility threshold, spread threshold or depth threshold.
+
+Timing is also split. PRE_EPISODE_CONTEXT is available before the churn episode and can serve as baseline context. WITHIN_EPISODE_CONTEXT is observed during the episode and may be a contemporaneous mechanism or mediator. Adjusting for it changes the scientific estimand.
+
+This produces two future estimands. E0 asks whether churn adds representation beyond structural geometry under comparable pre-episode microstructure. E1 asks whether churn remains after conditioning on contemporaneous volatility/spread/depth. E1 is mechanism-conditional and cannot be casually described as the same total effect.
+
+Volatility clustering creates a scale problem. A burst can mechanically increase transition count, crossing frequency, cumulative travel and full-zone bar spans. Raw churn therefore requires common support or normalization using owner-provided PIT volatility scale.
+
+Spread widening creates a measurement problem. Transaction prices can alternate more than the quote midpoint. When exact quotes exist, trade-price churn and midpoint churn must be stored separately. OHLC cannot reconstruct midpoint path.
+
+Depth deterioration creates a price-impact problem. Thin books allow smaller order flow to move price through the same zone. High transitions under thin depth do not automatically mean stronger structural rejection or acceptance.
+
+Quote freshness is a hard gate. Stale quotes do not imply zero spread or zero depth; they make quote-adjusted analysis not evaluable.
+
+Twenty-three executable adversarial cases are authored. They cover invalid zone width, future/foreign-owner receipts, baseline/volatility/spread/depth/mixed/session-edge/stale contexts, spread and volatility normalization, same-churn/different-context and same-context/different-churn pairs, within-episode mediator labeling, estimand switching, common-support enforcement, stale trade-vs-midpoint comparison, and non-independent evidence semantics.
+
+New durable artifacts:
+- research/PATTERN_VOL_LIQUIDITY_CHURN_V0_1.md
+- research/pattern_vol_liquidity_churn_v0_1.json
+- research/pattern_vol_liquidity_churn_v0_1.mjs
+- research/test_pattern_vol_liquidity_churn_v0_1.mjs
+- research/PATTERN_VOL_LIQUIDITY_CHURN_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001/SDA-002 remain open. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
