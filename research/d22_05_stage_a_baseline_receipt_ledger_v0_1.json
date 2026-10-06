@@ -1,0 +1,940 @@
+{
+  "schemaVersion": "D22_05_STAGE_A_BASELINE_RECEIPT_LEDGER_V0_1",
+  "generatedAt": "2026-10-07T00:13:00+08:00",
+  "status": "OUTCOME_BLIND / RECEIPT_LEDGER_MATERIALIZED / ALL_22_UNKNOWN_BLOCKED / MATURE_PAIRS_ZERO / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "sourceManifest": {
+    "path": "research/d22_05_stage_a_pairing_manifest_v0_1.json",
+    "sha": "5873ba376562e6d4d98422d83a1aa09aae9ce6d6"
+  },
+  "sourceContract": {
+    "path": "research/d22_05_stage_a_baseline_pairing_contract_v0_1.json"
+  },
+  "counts": {
+    "anchorCount": 22,
+    "baselineFrozenAnchors": 0,
+    "maturePairedAnchors": 0,
+    "unknownBlockedAnchors": 22,
+    "minimumRequiredMaturePairs": 20
+  },
+  "rules": {
+    "missingEvidence": "UNKNOWN",
+    "noBackfill": true,
+    "sameDateUnknownOrderingBlocks": true,
+    "crossDateIssuerReuseProhibited": true,
+    "outcomesOpen": false
+  },
+  "receipts": [
+    {
+      "pairAnchorId": "D22-05-A01",
+      "issuer": "Formosa Chemicals & Fibre",
+      "direction": "NEGATIVE",
+      "anchorDate": "2023-10-30",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A02",
+      "issuer": "Wan Hai Lines",
+      "direction": "NEGATIVE",
+      "anchorDate": "2020-04-14",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A03",
+      "issuer": "Wan Hai Lines",
+      "direction": "POSITIVE",
+      "anchorDate": "2021-04-29",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A04",
+      "issuer": "TCC Group Holdings",
+      "direction": "NEGATIVE",
+      "anchorDate": "2022-04-21",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A05",
+      "issuer": "TCC Group Holdings",
+      "direction": "POSITIVE",
+      "anchorDate": "2024-04-29",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A06",
+      "issuer": "Walsin Lihwa",
+      "direction": "POSITIVE",
+      "anchorDate": "2022-08-09",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A07",
+      "issuer": "Walsin Lihwa",
+      "direction": "NEGATIVE",
+      "anchorDate": "2023-08-24",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A08",
+      "issuer": "Sinyi Realty",
+      "direction": "POSITIVE",
+      "anchorDate": "2021-03-25",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A09",
+      "issuer": "Sinyi Realty",
+      "direction": "NEGATIVE",
+      "anchorDate": "2023-03-29",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A10",
+      "issuer": "Sinyi Realty",
+      "direction": "POSITIVE",
+      "anchorDate": "2024-03-19",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A11",
+      "issuer": "TECO Electric & Machinery",
+      "direction": "POSITIVE",
+      "anchorDate": "2024-02-27",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A12",
+      "issuer": "TECO Electric & Machinery",
+      "direction": "NEGATIVE",
+      "anchorDate": "2026-02-23",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A13",
+      "issuer": "China Steel",
+      "direction": "NEGATIVE",
+      "anchorDate": "2020-04-16",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A14",
+      "issuer": "China Steel",
+      "direction": "POSITIVE",
+      "anchorDate": "2021-04-23",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A15",
+      "issuer": "China Steel",
+      "direction": "NEGATIVE",
+      "anchorDate": "2023-04-28",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A16",
+      "issuer": "Asia Cement",
+      "direction": "POSITIVE",
+      "anchorDate": "2020-09-28",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A17",
+      "issuer": "Asia Cement",
+      "direction": "NEGATIVE",
+      "anchorDate": "2023-09-26",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A18",
+      "issuer": "Asia Cement",
+      "direction": "POSITIVE",
+      "anchorDate": "2024-09-23",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A19",
+      "issuer": "Pegatron",
+      "direction": "POSITIVE",
+      "anchorDate": "2021-01-21",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A20",
+      "issuer": "Pegatron",
+      "direction": "NEGATIVE",
+      "anchorDate": "2026-01-29",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A21",
+      "issuer": "Wiwynn",
+      "direction": "NEGATIVE",
+      "anchorDate": "2021-08-24",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    },
+    {
+      "pairAnchorId": "D22-05-A22",
+      "issuer": "Wiwynn",
+      "direction": "POSITIVE",
+      "anchorDate": "2023-08-22",
+      "baselineStatus": "UNKNOWN_BLOCKED",
+      "maturePair": false,
+      "outcomeOpened": false,
+      "b0": {
+        "d07PreEventPitFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d13PreEventRateMacro": {
+          "status": "UNKNOWN"
+        },
+        "industry": {
+          "status": "UNKNOWN"
+        },
+        "sizeLiquidity": {
+          "status": "UNKNOWN"
+        },
+        "d11KnownEventClock": {
+          "status": "UNKNOWN_OR_NOT_APPLICABLE_UNRESOLVED"
+        }
+      },
+      "b1": {
+        "priorRatingOutlookWatch": {
+          "status": "AVAILABLE_IN_CHALLENGER_EVIDENCE_REQUIRES_VERSIONED_JOIN"
+        },
+        "preEventFundamentals": {
+          "status": "UNKNOWN"
+        },
+        "d22_06PreEventMarketCredit": {
+          "status": "UNKNOWN_OPTIONAL_WHEN_GENUINELY_UNAVAILABLE"
+        }
+      },
+      "blockers": [
+        "Exact same-anchor B0 common-support receipts are not yet frozen.",
+        "No later-vintage or cross-date issuer evidence may be reused as event-date baseline."
+      ]
+    }
+  ],
+  "formalBoundary": {
+    "formalCore": "LOCKED",
+    "optimizationCandidate": "NONE",
+    "systemUse": "RESEARCH_ONLY"
+  },
+  "next": [
+    "Fill exact pre-event receipts anchor by anchor without outcome labels.",
+    "Classify each row only after knownAt/sourceVersion/entityScope/accountingBasis checks.",
+    "Keep outcomes closed until at least 20 mature independent pairs survive."
+  ]
+}
