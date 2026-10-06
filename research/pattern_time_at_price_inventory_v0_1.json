@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "pattern-time-at-price-inventory-v0.1",
+  "updated": "2026-10-06 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "occupancyKinds": [
+    "BAR_VISIT_OCCUPANCY_PROXY",
+    "TRADE_EVENT_OCCUPANCY",
+    "QUOTE_MID_DWELL_TIME"
+  ],
+  "barVisitProxyEqualsExactDwellTime": false,
+  "timeAtPriceEqualsTradedVolume": false,
+  "timeAtPriceEqualsVwap": false,
+  "vwapEqualsParticipantInventoryCost": false,
+  "netFlowEqualsInventory": false,
+  "holdingQuantityEqualsCostBasis": false,
+  "outcomeTunedOccupancyBins": "PROHIBITED",
+  "defaultEffectiveIndependentEvidenceCount": 1,
+  "residualIncrementalityStatus": "NOT_VALIDATED",
+  "outcomeJoin": "CLOSED",
+  "inferenceOwner": "D16",
+  "formalOptimizationCandidate": "NONE",
+  "tickRuleReceiptRequired": true,
+  "parameterFamilyFrozenBeforeOutcome": true,
+  "postOutcomeParameterFamilyMutation": "PROHIBITED",
+  "bestOccupancyVariantAfterOutcome": "PROHIBITED",
+  "researchAdversarialCaseCount": 26
+}
