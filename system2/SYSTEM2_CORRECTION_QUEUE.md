@@ -204,7 +204,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
 - createdAt: 2026-10-06T21:12:49+08:00
 - severity: MEDIUM
-- status: OPEN
+- status: FIX_IMPLEMENTED
 - routingClass: BUILD_LANE
 - assignedLane: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
@@ -241,10 +241,23 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - No protected strategy/trading authority changes are introduced.
 - protectedBoundaries: resonance formula/state machine; bounded-pool freshness logic; S2-07 candidate authority; strategy logic; ranking/capacity; final/live selection authority; notification/push; capital/orders; System1 Formal Core.
 - ownerDecisionRequired: false for current-session freshness enforcement; any future cross-session historical replay UI remains separately scoped.
-- implementationEvidence: PENDING
-- verificationEvidence: PENDING
-- finalDisposition: PENDING
-- updatedAt: 2026-10-06T21:12:49+08:00
+- implementationEvidence:
+  - PR #690 merged as `b18457b4de892ed3beb8502155adfdee1a038ca4`.
+  - Terminal now computes the current `Asia/Taipei` market date and requests `/api/system2/resonance`, `/api/system2/resonance/pool`, and `/api/system2/resonance/operations` with the same explicit `marketDate`.
+  - Terminal performs a second three-way session alignment check; mismatch or missing session provenance yields `SESSION_DATE_MISMATCH` / `SESSION_ALIGNMENT_UNVERIFIED`, clears current selection, and blocks stale/current-state row reuse.
+  - Current-session resonance rows must match terminal marketDate, chart marketDate, row updatedAt Taipei date, and chart asOf Taipei date before entering Today Focus, MONITOR-ONLY rows, Decision Workspace, current monitor counts, or active Resonance Center.
+  - Decision Workspace now exposes Market Date, Row updatedAt, and Chart asOf while formal candidate remains NOT_AVAILABLE and formal action remains NO_FROZEN_DECISION.
+  - `readLatestResonanceApiV0_1` preserves no-date latest-any-date history behavior but marks it `LATEST_AVAILABLE_DATE`; explicit `marketDate` queries are marked `EXPLICIT_MARKET_DATE` with `requestedMarketDate` and `latestAnyDateFallbackUsed` provenance.
+  - New `daily_resonance_current_session_freshness_v0_1.test.mjs` proves explicit current-date query does not fall back to prior-session data, explicit historical-date query remains available, and latest-any-date history is visibly marked.
+  - Targeted freshness test, institutional terminal test, and existing pool freshness audit all PASS in System2 Research CI run `37472705542` / job `112300052873`.
+  - System2 Research CI run `37472705542` PASS and V8 Regression run `37472705541` PASS.
+  - System2 Daily Resonance Deploy run `37473038743` PASS: Worker deployed, public read API/UI/schedules verified, Worker version `17a5e3c7-b9ac-4277-aaa4-bfea685b2846`, runtime URL `https://system2-shadow-research.imihan0630.workers.dev`, and System1 production files unchanged PASS.
+  - Merged-main System2 Research CI run `37473038918` PASS.
+  - Merged-main readback verified explicit current-session queries, stale-row guards, decision time fields, and explicit-vs-latest date-selection semantics; subsequent latest-main drift check showed zero drift across all four correction conflict units.
+  - No resonance EMA16/EMA64/Impulse MACD, 0/3–3/3, PROVISIONAL/CONFIRMED/RETRACTED, lifecycle state machine, pool freshness/invalidation, denominator provenance, bounded max-9/fullMarketScan=false, S2-07 candidate authority, strategy logic, ranking/capacity, push/notification, capital/orders, or System1 Formal Core was changed.
+- verificationEvidence: PENDING — handoff to SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- finalDisposition: PENDING — implementation complete; independent verification required before closure
+- updatedAt: 2026-10-06T21:45:00+08:00
 
 
 ## Closed directives
