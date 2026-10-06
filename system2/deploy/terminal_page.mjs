@@ -107,7 +107,7 @@ a{color:inherit}
 <section class="view" id="view-candidates">
   <div class="pagehead"><div><div class="eyebrow">CANDIDATE BOARD</div><h2>候選股</h2><p>不同策略分開看，不製造假的「萬用總分」。目前只顯示可信 bounded pool / resonance 資料；S2-07 daily strategy assessor 尚未產生正式候選時會明確留空。</p></div><span class="status warn" id="candidateState">UPSTREAM PENDING</span></div>
   <div class="tabs" id="candidateTabs"><button class="active" data-filter="ALL">全部</button><button data-filter="SHORT_MOMENTUM">短線</button><button data-filter="SWING_GROWTH">波段</button><button data-filter="INSTITUTIONAL_ACCUMULATION">法人布局</button><button data-filter="BLACK_HORSE_ACCUMULATION">黑馬</button><button data-filter="INDUSTRY_TREND">產業</button><button data-filter="EVENT_DRIVEN">事件</button><button data-filter="VALUE_REVERSION">價值</button></div>
-  <div class="tablewrap"><table class="table"><thead><tr><th>股票</th><th>策略</th><th>狀態</th><th>共振</th><th>資料</th><th>動作</th></tr></thead><tbody id="candidateBody"></tbody></table></div>
+  <div class="tablewrap"><table class="table"><thead><tr><th>股票</th><th>策略</th><th>狀態</th><th>共振</th><th>資料</th><th>監控訊號（RESEARCH）</th></tr></thead><tbody id="candidateBody"></tbody></table></div>
 </section>
 
 <section class="view" id="view-decision">
@@ -120,9 +120,9 @@ a{color:inherit}
       <div class="lockbox"><strong>下方面板骨架已建好</strong><br>各資料家族等對應 PIT-safe read API 完成後直接接入；目前不以空值推導 bearish / bullish。</div>
     </div>
     <aside class="panel decision-card">
-      <div class="eyebrow">ACTION CARD</div><div class="big-action" id="decisionAction">WATCH</div>
-      <div class="kv"><span>策略</span><span id="decisionStrategy">—</span><span>信心</span><span>—</span><span>進場區</span><span>尚無 frozen decision</span><span>Trigger</span><span>—</span><span>Do-not-chase</span><span>—</span><span>Stop / Invalidation</span><span>—</span><span>Targets</span><span>—</span><span>Max holding</span><span>—</span><span>資料時間</span><span id="decisionTime">—</span></div>
-      <div class="banner"><div>ⓘ</div><div><strong>權限邊界</strong><div class="small">這張卡只允許顯示實際 frozen decision / monitor evidence。沒有資料就不填推測值。</div></div></div>
+      <div class="eyebrow">FROZEN DECISION ACTION</div><div class="big-action" id="decisionAction">NO_FROZEN_DECISION</div>
+      <div class="kv"><span>策略</span><span id="decisionStrategy">—</span><span>監控訊號</span><span id="decisionMonitorSignal">NO_MONITOR_SIGNAL</span><span>正式 Action</span><span id="decisionFormalAction">NO_FROZEN_DECISION</span><span>信心</span><span>—</span><span>進場區</span><span>尚無 frozen decision</span><span>Trigger</span><span>—</span><span>Do-not-chase</span><span>—</span><span>Stop / Invalidation</span><span>—</span><span>Targets</span><span>—</span><span>Max holding</span><span>—</span><span>資料時間</span><span id="decisionTime">—</span></div>
+      <div class="banner"><div>ⓘ</div><div><strong>權限邊界</strong><div class="small">Monitor signal 是 research/shadow evidence，不等於正式進出場決策。只有獨立 frozen decision authority 明確提供 formal action 時才可顯示正式 Action；目前沒有就保持 NO_FROZEN_DECISION。</div></div></div>
     </aside>
   </div>
 </section>
@@ -226,11 +226,14 @@ function candidateRows(){
  return ps.map(x=>typeof x==="string"?{symbol:x,__source:"POOL"}:{...x,__source:"POOL"});
 }
 function strategyOf(r){return r.strategyId||r.strategy||r.strategyName||r.primaryStrategy||"UNRESOLVED_STRATEGY";}
-function actionOf(r){
- if(r.displaySignal==="BUY_RESONANCE") return "ENTER";
- if(r.displaySignal==="EXIT_RESONANCE") return "EXIT";
- if((r.entryCount||0)>0||(r.exitCount||0)>0) return "WATCH";
+function monitorSignalOf(r){
+ if(r.displaySignal==="BUY_RESONANCE") return "BUY_RESONANCE";
+ if(r.displaySignal==="EXIT_RESONANCE") return "EXIT_RESONANCE";
+ if((r.entryCount||0)>0||(r.exitCount||0)>0) return "RESONANCE_FORMING";
  return "WATCH";
+}
+function formalDecisionActionOf(){
+ return "NO_FROZEN_DECISION";
 }
 function candidateTable(){
  const body=document.getElementById("candidateBody");
@@ -241,8 +244,8 @@ function candidateTable(){
   const rc=Math.max(Number(r.entryCount||0),Number(r.exitCount||0));
   const conf=r.signalConfirmationState||r.finality||"—";
   const st=strategyOf(r);
-  const act=actionOf(r);
-  return '<tr data-symbol="'+esc(r.symbol)+'"><td><span class="symbol">'+esc(r.symbol)+'</span></td><td>'+esc(st)+'</td><td><span class="status '+(conf==="CONFIRMED"?"ready":"shadow")+'">'+esc(conf)+'</span></td><td>'+rc+'/3</td><td>'+esc(r.__source)+'</td><td><span class="action '+act.toLowerCase()+'">'+act+'</span></td></tr>'
+  const monitorSignal=monitorSignalOf(r);
+  return '<tr data-symbol="'+esc(r.symbol)+'"><td><span class="symbol">'+esc(r.symbol)+'</span></td><td>'+esc(st)+'</td><td><span class="status '+(conf==="CONFIRMED"?"ready":"shadow")+'">'+esc(conf)+'</span></td><td>'+rc+'/3</td><td>'+esc(r.__source)+'</td><td><span class="status shadow">MONITOR / RESEARCH</span> <span class="action watch">'+esc(monitorSignal)+'</span></td></tr>'
  }).join("");
  body.querySelectorAll("tr[data-symbol]").forEach(tr=>tr.onclick=()=>{S.selected=tr.dataset.symbol;show("decision")});
 }
@@ -270,7 +273,11 @@ function renderDecision(){
  const r=selectedRow();if(r&&!S.selected)S.selected=r.symbol;
  document.getElementById("decisionSymbol").textContent=r?String(r.symbol):"尚未選擇標的";
  document.getElementById("decisionMeta").textContent=r?(stateLabel(r.signalConfirmationState||r.lifecycleState||"WATCH")+" · "+fmt(r.updatedAt||r.chart?.asOf)):"從候選股或共振中心選擇";
- document.getElementById("decisionAction").textContent=r?actionOf(r):"WATCH";
+ const formalAction=formalDecisionActionOf(r);
+ const monitorSignal=r?monitorSignalOf(r):"NO_MONITOR_SIGNAL";
+ document.getElementById("decisionAction").textContent=formalAction;
+ document.getElementById("decisionFormalAction").textContent=formalAction;
+ document.getElementById("decisionMonitorSignal").textContent=monitorSignal;
  document.getElementById("decisionStrategy").textContent=r?strategyOf(r):"—";
  document.getElementById("decisionTime").textContent=r?fmt(r.updatedAt||r.chart?.asOf):"—";
  requestAnimationFrame(()=>drawChart(document.getElementById("decisionChart"),r?.chart||{}));
@@ -306,8 +313,8 @@ function render(){
  document.getElementById("rOps").textContent=stateLabel(ops.state||"—");
  const focus=document.getElementById("todayFocus");
  const triggered=rows.filter(x=>x.displaySignal==="BUY_RESONANCE"||x.displaySignal==="EXIT_RESONANCE");
- focus.innerHTML=triggered.length?'<div style="width:100%">'+triggered.map(x=>'<div class="feeditem"><time>'+esc(x.symbol)+'</time><div><b>'+esc(x.displaySignal)+'</b><br><small>'+esc(x.signalConfirmationState||"")+' · '+esc(x.updatedAt||"")+'</small></div><span class="status '+((x.signalConfirmationState||"")==="CONFIRMED"?"ready":"shadow")+'">'+esc(Math.max(x.entryCount||0,x.exitCount||0))+'/3</span></div>').join("")+'</div>':'<div><b>目前沒有確認的 actionable resonance</b>若上游 capacity 尚未形成，系統保持空白，不強行補位。</div>';
- document.getElementById("commandAlerts").innerHTML=triggered.length?triggered.slice(0,6).map(x=>feedItem(x.symbol,x.displaySignal+" · "+(x.signalConfirmationState||"UNKNOWN"),x.signalConfirmationState==="CONFIRMED"?"ready":"warn")).join(""):feedItem("NOW","沒有新的確認共振或正式候選","locked");
+ focus.innerHTML=triggered.length?'<div style="width:100%">'+triggered.map(x=>'<div class="feeditem"><time>'+esc(x.symbol)+'</time><div><b>'+esc(x.displaySignal)+'</b><br><small>'+esc(x.signalConfirmationState||"")+' · '+esc(x.updatedAt||"")+'</small></div><span class="status '+((x.signalConfirmationState||"")==="CONFIRMED"?"ready":"shadow")+'">'+esc(Math.max(x.entryCount||0,x.exitCount||0))+'/3</span></div>').join("")+'</div>':'<div><b>目前沒有確認的 research monitor resonance</b>若上游 capacity 尚未形成，系統保持空白，不強行補位。</div>';
+ document.getElementById("commandAlerts").innerHTML=triggered.length?triggered.slice(0,6).map(x=>feedItem(x.symbol,x.displaySignal+" · "+(x.signalConfirmationState||"UNKNOWN"),x.signalConfirmationState==="CONFIRMED"?"ready":"warn")).join(""):feedItem("NOW","沒有新的 monitor resonance；正式 frozen decision 未接線","locked");
  document.getElementById("commandOps").innerHTML=[
   feedItem("POOL",stateLabel(ops.state||S.pool?.state||"UNKNOWN"),(S.pool?.symbolCount||0)>0?"ready":"warn"),
   feedItem("D1",h?.schemaVersion?"Schema "+h.schemaVersion:"schema unknown",h?.schemaVersion==="1.1"?"ready":"warn"),
