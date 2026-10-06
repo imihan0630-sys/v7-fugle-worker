@@ -136,7 +136,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
 - createdAt: 2026-10-06T07:38:30+08:00
 - severity: MEDIUM
-- status: OPEN
+- status: FIX_IMPLEMENTED
 - routingClass: BUILD_LANE
 - assignedLane: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
@@ -169,10 +169,19 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - S2-16 read-only/UNKNOWN/LOCKED semantics and System1 isolation remain intact.
 - protectedBoundaries: strategy contracts/preregistration; assessor policy; strategy weights/thresholds; ranking/capacity; final/live selection authority; production push; capital/orders; System1 Formal Core.
 - ownerDecisionRequired: false for truthful UI labeling only; actual strategy activation remains separately owner/evidence gated.
-- implementationEvidence: PENDING
-- verificationEvidence: PENDING
-- finalDisposition: PENDING
-- updatedAt: 2026-10-06T07:38:30+08:00
+- implementationEvidence:
+  - PR #663 merged as `df25510a602e64d7e2ef08d0241ad9d4dbbb717e` after latest-main no-conflict drift check.
+  - Terminal readback on merged main shows INSTITUTIONAL_ACCUMULATION = `OWNER REVIEW PENDING` with explicit not-activated wording.
+  - Terminal readback on merged main shows BLACK_HORSE_ACCUMULATION = `RESEARCH ONLY` with distinctness-not-proven / not-activated Limited Shadow wording.
+  - SHORT_MOMENTUM and SWING_GROWTH remain `ASSESSOR PENDING`.
+  - Targeted `institutional_terminal_page_v0_1.test.mjs` PASS inside System2 Research CI run `37393052475` (job `112042418180`).
+  - System2 Research CI run `37393052475` PASS.
+  - V8 Regression run `37393052777` PASS.
+  - Merged-main regression guards preserve Regime UNKNOWN, Actual Holdings LOCKED, Performance SAMPLE GATED, Event/Industry READ API PENDING, DATA/PIT GATED, `Formal Core: LOCKED`, and `Real orders: DISABLED`.
+  - No strategy logic, assessor policy, preregistration, weights, thresholds, ranking, capacity, final/live selection authority, production push, capital/order, or System1 Formal Core was changed.
+- verificationEvidence: PENDING — handoff to SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- finalDisposition: PENDING — implementation complete; independent verification required before closure
+- updatedAt: 2026-10-06T08:16:36+08:00
 
 ## Closed directives
 
