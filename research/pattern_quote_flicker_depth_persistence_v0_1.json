@@ -1,0 +1,23 @@
+{
+  "schemaVersion":"pattern-quote-flicker-depth-persistence-v0.1",
+  "updated":"2026-10-06 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "samePriceDepthEqualsSameOrderSurvival":false,
+  "flickerEqualsManipulation":false,
+  "sparseSnapshotCanCertifyOrderPersistence":false,
+  "futureSurvivalAsBaseline":"PROHIBITED",
+  "genericFlickerComparatorRequired":true,
+  "d05EventClockRequired":true,
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "states":[
+    "DEPTH_SURVIVAL_CERTIFIED",
+    "DEPTH_REPLACED_SAME_PRICE",
+    "FLICKERING_DISPLAYED_DEPTH",
+    "DEPTH_PERSISTENCE_UNKNOWN"
+  ],
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}

@@ -23783,3 +23783,41 @@ New durable artifacts:
 - research/PATTERN_QUEUE_REFILL_VS_STRUCTURAL_REJECTION_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-054 — Persistent structural rejection vs quote flicker / cancel-repost depth (2026-10-06)
+
+DL-054 refines the queue-refill mechanism in DL-053. A price level can look as though it has persistent visible depth even when the actual resting orders are being rapidly canceled and replaced. A few snapshots cannot distinguish these cases.
+
+The central distinction is between price-level persistence and order-level persistence.
+
+DEPTH_SURVIVAL_CERTIFIED requires owner-grade event evidence that displayed liquidity survives across the intended horizon.
+
+DEPTH_REPLACED_SAME_PRICE means liquidity keeps reappearing around the same price but the underlying order/queue identity changes materially.
+
+FLICKERING_DISPLAYED_DEPTH captures rapid submission/cancellation/modification that creates visible but short-lived liquidity.
+
+DEPTH_PERSISTENCE_UNKNOWN is the required fail-closed state when event clock, sequence completeness or order identity is insufficient.
+
+This distinction matters because the literature does not support a simple story that rapid cancellation always means manipulation. Quote-stuffing research documents episodes with heavy quote/cancel activity, shorter order duration and worse liquidity. Recent work on fleeting/flickering quotes also finds fast cancellations can coexist with liquid price-discovery environments. D01 therefore treats cancellation/repost state as microstructure context rather than behavioral intent.
+
+D05 remains the owner of event-level survival, cancellation, modification, queue turnover, quote freshness and resiliency. D01 does not reconstruct these from candles and does not set its own universal cancellation/flicker thresholds.
+
+Same-price depth across snapshots is explicitly insufficient. The price may be stable while the queue composition changes completely between observations. Sparse open/10m/15m/30m snapshots can say depth was displayed at those moments; they cannot certify same-order survival.
+
+The causal clock remains strict. A five-second survival label becomes known only after the five-second horizon passes. It cannot be backfilled into the predictor at time zero. Future durability is mechanism/outcome-side information unless already known at predictorFreezeAt.
+
+DL-054 also freezes a generic comparator. Zone-associated flicker/replacement must be compared with matched generic flicker/replacement away from the structural zone. If the zone-linked case adds no residual representation after microstructure context, generic quoting dynamics are sufficient.
+
+Anti-double-counting remains unchanged. A zone receipt, depth receipt, cancellation receipt, repost receipt and persistence receipt are linked mechanism observations from one parent. They do not become multiple independent confirmations.
+
+Eighteen adversarial cases are authored. They cover certified survival, same-price replacement, flicker precedence, sparse snapshots, incomplete event clocks, missing order identity, post-freeze survival, baseline-available persistence, replay failure, generic/zone comparator identity, one-parent evidence accounting, manipulation-inference prohibition and unknown persistence.
+
+New durable artifacts:
+- research/PATTERN_QUOTE_FLICKER_DEPTH_PERSISTENCE_V0_1.md
+- research/pattern_quote_flicker_depth_persistence_v0_1.json
+- research/pattern_quote_flicker_depth_persistence_v0_1.mjs
+- research/test_pattern_quote_flicker_depth_persistence_v0_1.mjs
+- research/PATTERN_QUOTE_FLICKER_DEPTH_PERSISTENCE_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.

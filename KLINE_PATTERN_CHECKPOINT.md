@@ -3259,3 +3259,110 @@ No maturity or Formal change is authorized by this routing.
 7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 8. Next D01 science: separate persistent structural rejection from repeated passive-depth display that is continuously cancelled / reposted (quote flicker) rather than economically durable liquidity.
 9. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-054 (2026-10-06)
+
+### DL-054 — Persistent structural rejection vs quote flicker / cancel-repost depth
+- DL-053 separated structural rejection from queue refill / displayed-depth recovery.
+- DL-054 freezes the next microstructure falsification: repeated visible depth near a structural zone may reflect durable resting liquidity, same-price replacement, rapid cancellation/repost, quote flicker, or unknown persistence.
+- External evidence supports the distinction:
+  quote-stuffing episodes can involve sharp increases in new/cancel messages, shorter order duration and worse liquidity;
+  recent flickering-quote research also shows fleeting orders can occur in liquid price-discovery environments;
+  limit-order-book resiliency requires event-clock replenishment/survival measurement rather than sparse snapshot inference.
+- Therefore:
+  cancellation intensity != manipulation;
+  visible depth continuity != same-order survival;
+  same-price depth across snapshots != economically durable liquidity.
+- D05 owner boundary remains strict:
+  D05 owns quote/order-book event clocks, order survival/cancellation/modification, displayed depth, queue state, quote freshness, replenishment/resiliency, sequence completeness and hidden-liquidity/intent caveats.
+  D01 owns only the relation of owner-certified microstructure state to the frozen structural zone.
+- D01 may not infer spoofing, market-maker intent or cancellation survival from OHLCV.
+- Frozen persistence states:
+  F0 DEPTH_SURVIVAL_CERTIFIED;
+  F1 DEPTH_REPLACED_SAME_PRICE;
+  F2 FLICKERING_DISPLAYED_DEPTH;
+  F3 DEPTH_PERSISTENCE_UNKNOWN.
+- Sparse snapshots may support DISPLAYED_DEPTH_PRESENT_AT_SNAPSHOT only.
+  They cannot certify continuous queue persistence / same-order survival / flicker rate.
+- D01 may consume D05 owner receipts for:
+  order lifetime;
+  cancellation/modification/message rates;
+  cancel-to-submit ratio;
+  same-price replacement;
+  queue turnover;
+  horizon survival probability;
+  depth-weighted survival;
+  event-clock completeness.
+- D01 defines no universal high-cancellation / flicker / durable / spoofing threshold.
+- Same-price replacement is treated as price-level persistence without order-level persistence.
+- Fast cancellation/repost may reflect normal liquidity provision, quote competition, price discovery or other mechanisms; D01 makes no behavioral intent claim.
+- Generic comparator:
+  G0 GENERIC_FLICKER_OR_REPLACEMENT;
+  G1 ZONE_ASSOCIATED_FLICKER_OR_REPLACEMENT.
+  If G1 adds no representation beyond G0, generic microstructure dynamics are sufficient.
+- Timing firewall:
+  structuralOpportunityAt;
+  predictorFreezeAt;
+  quoteEventFirstSeenAt;
+  quoteEventLastSeenAt;
+  cancellationObservedAt;
+  repostObservedAt;
+  durabilityConfirmedAt;
+  depthRecoveryAt;
+  priceRecoveryAt.
+- Future survival known only after predictorFreezeAt is POST_TREATMENT_PERSISTENCE and cannot be backfilled into baseline predictors.
+- Event-clock validity remains mandatory.
+  If only sparse snapshots exist -> DEPTH_PERSISTENCE_UNKNOWN.
+  If provider sequence completeness is unresolved -> EVENT_CLOCK_INCOMPLETE.
+  If order identity is unavailable -> ORDER_IDENTITY_UNAVAILABLE.
+- DL-054 refines DL-053:
+  depth that appears to survive/recover is further separated into actual survival vs repeated replacement/flicker.
+- SDA-001 remains active:
+  zone / depth / cancel / repost / persistence receipts are linked mechanism evidence within one causal parent;
+  effectiveIndependentEvidenceCount remains 1 by default.
+- SDA-002 remains active:
+  future order survival cannot become pre-freeze evidence.
+- Future D16 ladder:
+  F0 RAW_ZONE_REJECTION;
+  F1 DL053_REFILL_STATE_CONTROLLED;
+  F2 ORDER_SURVIVAL_VS_REPLACEMENT_SEPARATED;
+  F3 CANCELLATION_REPOST_ACTIVITY_CONTROLLED;
+  F4 GENERIC_FLICKER_CONTROLLED;
+  F5 EVENT_CLOCK_COMPLETENESS_CONTROLLED;
+  F6 STRUCTURAL_REJECTION_RESIDUAL_CANDIDATE;
+  F7 MULTI_DATE_MULTI_TICK_TIER_REPLICATION.
+- Future interpretation:
+  Q0 DISPLAYED_DEPTH_ONLY_EXPLANATION;
+  Q1 SAME_PRICE_REPLACEMENT_EXPLANATION;
+  Q2 QUOTE_FLICKER_EXPLANATION;
+  Q3 GENERIC_CANCELLATION_ACTIVITY_EXPLANATION;
+  Q4 DURABLE_DEPTH_CONTEXT_ONLY;
+  Q5 EVENT_CLOCK_NOT_IDENTIFIABLE;
+  Q6 STRUCTURAL_REJECTION_RESIDUAL;
+  Q7 NOT_EVALUABLE.
+- New files:
+  - research/PATTERN_QUOTE_FLICKER_DEPTH_PERSISTENCE_V0_1.md
+  - research/pattern_quote_flicker_depth_persistence_v0_1.json
+  - research/pattern_quote_flicker_depth_persistence_v0_1.mjs
+  - research/test_pattern_quote_flicker_depth_persistence_v0_1.mjs
+  - research/PATTERN_QUOTE_FLICKER_DEPTH_PERSISTENCE_D16_HANDOFF_V0_1.md
+- 18 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain open under canonical queue.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-054
+
+1. Reconcile the DL-054 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-054 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve same-price snapshot continuity, order survival, replacement and flicker as distinct states.
+4. Reject sparse-snapshot order-persistence claims without D05 event-clock/order-identity evidence.
+5. Keep post-freeze persistence out of baseline predictors.
+6. Hand F0-F7 / Q0-Q7 common-support and residual inference to D16.
+7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+8. Next D01 science: separate structural rejection from latency / queue-position advantage and hidden-liquidity execution effects around the zone.
+9. No runtime wiring / no Formal change.
