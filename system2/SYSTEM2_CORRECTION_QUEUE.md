@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-06 20:54 Asia/Taipei
+Updated: 2026-10-06 21:01 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -136,6 +136,55 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - 2017 TWSE disposition: `DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL`.
 - finalDisposition: PENDING
 - updatedAt: 2026-10-06T00:12:00+08:00
+
+
+### S2-CORR-20261006-003 — Candidate Board presents monitored bounded rows as candidates without resolvable strategy identity
+
+- createdAt: 2026-10-06T21:01:27+08:00
+- severity: MEDIUM
+- status: OPEN
+- routingClass: BUILD_LANE
+- assignedLane: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- modificationOwner: SYSTEM2_BUILD_CONTROL_ROOM
+- blockedBy: none
+- affectedScope: S2-16 Candidate Board / Decision Workspace monitored-row semantics / strategy attribution
+- detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- canonicalRequirement: Until S2-07 exposes a real frozen daily candidate/read API, bounded resonance/pool rows may be reused only as explicitly monitored rows. They must not be presented as formally selected candidates, and strategy filtering/labels must not claim strategy attribution that the read path cannot actually resolve.
+- observedProblem: `terminal_page.mjs::candidateRows()` populates the Candidate Board from `/api/system2/resonance` rows and, when those are absent, falls back to `/api/system2/resonance/pool` symbols. This contradicts the page text saying the board will remain empty when S2-07 has not produced formal candidates. In addition, `strategyOf()` only reads strategyId/strategy/strategyName/primaryStrategy, while the bounded pool carries strategy attribution under `strategyMemberships` and the resonance read model drops strategy membership entirely. As a result monitored rows can appear on a page titled Candidate Board while strategy identity resolves to `UNRESOLVED_STRATEGY`, and the visible strategy tabs cannot reliably perform the claimed per-strategy separation.
+- evidence:
+  - `SYSTEM2_INSTITUTIONAL_TERMINAL_IA_V0_1.md`: candidate/decision surfaces may reuse bounded resonance/pool rows only as monitored rows; they must not relabel diagnostic records as formally selected candidates.
+  - Same IA document lists the next wiring step as S2-07 frozen daily candidate/read API -> Candidate Board + Decision Card.
+  - `terminal_page.mjs`: Candidate Board copy says S2-07 formal candidates will leave the board empty, but `candidateRows()` returns resonance rows and then pool rows.
+  - `terminal_page.mjs::strategyOf()` does not read `strategyMemberships` and falls back to `UNRESOLVED_STRATEGY`.
+  - `daily_resonance_read_model_v0_1.mjs` exposes symbol/finality/lifecycle/resonance fields but no strategy identity.
+  - `daily_resonance_integration_v0_1.mjs` builds pool rows with explicit `strategyMemberships`, so strategy provenance exists upstream but is not consumed by the terminal fallback.
+  - Existing terminal tests do not cover candidateRows fallback, unresolved strategy identity, or strategy-tab correctness.
+- riskIfUnfixed: Operators can interpret monitored pool/resonance rows as System 2 strategy candidates before the S2-07 candidate authority/read model exists, while the UI simultaneously implies per-strategy attribution that the actual data path cannot resolve. This creates false-completion and provenance ambiguity even though no trading authority is granted.
+- requiredCorrection:
+  1. Separate formal candidate rows from monitor-only bounded resonance/pool rows in the terminal state model.
+  2. Until a frozen S2-07 candidate/read API exists, Candidate Board must either stay explicitly empty for formal candidates or render monitor rows in a clearly separate monitor-only section/state that cannot be mistaken for formal selection.
+  3. Do not use `UNRESOLVED_STRATEGY` monitored rows as if they satisfy per-strategy Candidate Board filtering.
+  4. If monitor rows are shown, preserve strategy provenance from pool `strategyMemberships` only as monitor provenance; do not promote it into formal candidate strategy authority.
+  5. Strategy tabs must not claim working per-strategy candidate filtering unless the underlying row has canonical strategy identity from an authorized candidate source.
+  6. Decision Workspace must preserve the same distinction: selecting a monitored row must not imply formal candidate selection/frozen-decision readiness.
+  7. Add regression tests covering: no formal candidate API -> formal candidate board empty/pending; pool/resonance fallback remains monitor-only; unresolved strategy cannot pass a strategy tab as if resolved; pool strategyMemberships are not promoted into formal candidate authority.
+  8. Preserve S2-16 read-only shell, resonance formula/state machine, bounded pool, strategy logic, assessor policy, ranking/capacity, final/live selection, push/orders, and System1 Formal Core.
+- acceptanceCriteria:
+  - UI can no longer present resonance/pool fallback rows as formal candidates when no S2-07 frozen candidate/read API is available.
+  - Formal Candidate Board state is explicitly PENDING/EMPTY until authorized candidate data exists, or monitor-only rows are visibly segregated from formal candidates.
+  - Strategy filtering does not rely on `UNRESOLVED_STRATEGY` or infer formal strategy identity from monitor-only evidence.
+  - Any displayed monitor strategy provenance is explicitly labeled as pool/monitor provenance, not frozen candidate authority.
+  - Decision Workspace does not upgrade a monitored-row selection into formal candidate/frozen-decision readiness.
+  - Regression tests protect candidate-source and strategy-attribution boundaries.
+  - No protected strategy/trading authority changes are introduced.
+- protectedBoundaries: S2-07 assessor/frozen-candidate authority; strategy logic; strategy contracts/preregistration; ranking/capacity; resonance formula/state machine; final/live selection authority; notification/push; capital/orders; System1 Formal Core.
+- ownerDecisionRequired: false for truthful UI/read-model separation only; creating or promoting the actual S2-07 frozen candidate authority remains separately governed.
+- implementationEvidence: PENDING
+- verificationEvidence: PENDING
+- finalDisposition: PENDING
+- updatedAt: 2026-10-06T21:01:27+08:00
+
 
 ## Closed directives
 
