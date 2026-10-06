@@ -38,7 +38,7 @@ Queue: shared-knowledge/stock_selection_audit_queue_v0_1.json
 | SDA-013 | HIGH | REMEDIATION_IN_PROGRESS | D13, D18 | REVISION_AND_CLOCK_FIREWALL_DEEPENED_CROSS_MARKET_DATE_MATCHING_REJECTED_CANONICAL_RECEIPT_PENDING |
 | SDA-014 | HIGH | VALIDATION_PENDING | D14 | RESEARCH_EXECUTION_CONTRACT_STRONG_PROSPECTIVE_BROKER_RECEIPTS_PENDING |
 | SDA-015 | HIGH | REMEDIATION_IN_PROGRESS | D15 | PLAN_TIME_SEMANTIC_FIREWALL_STRONG_PRETRADE_RISK_VERSION_AND_PROSPECTIVE_ATTRIBUTION_PENDING |
-| SDA-016 | CRITICAL | REMEDIATION_IN_PROGRESS | D16 | V0_5_58_TEST_ORACLE_PR644_MERGED_V819_PRODUCTION_VERIFIED_FORMAL_C1_BINDING_CONTRACT_FROZEN_CLASS_B_IMPLEMENTATION_GENUINE_READBACK_SHARED_AUTHORITY_PENDING |
+| SDA-016 | CRITICAL | REMEDIATION_IN_PROGRESS | D16 | V820_PRODUCTION_VERIFIED_FIRST_SCHEDULED_DATE_INELIGIBLE_GENUINE_BINDING_PENDING_T48_OPEN_SHARED_AUTHORITY_PENDING |
 | SDA-017 | CRITICAL | REMEDIATION_IN_PROGRESS | D18 | ROOM11_V0_3_48_TEST_ORACLE_FROZEN_REPLICATION_SUPPORT_CONTRACT_READY_SYSTEM2_EPISODE_SUPPORT_ENGINE_PENDING |
 | SDA-018 | HIGH | REMEDIATION_IN_PROGRESS | D19 | FACTOR_ZOO_GOVERNANCE_STRONG_D19_12_SCHEDULED_CALENDAR_KNOWNAT_FIRST_RECEIPT_CHALLENGER_OOS_PENDING |
 | SDA-019 | HIGH | VALIDATION_PENDING | D20 | FIRST_PRIMARY_SOCIAL_PARENT_DURABLE_COVERAGE_AND_RESIDUAL_EVIDENCE_IMMATURE_D20_13_LIVE_SOURCE_PENDING |
@@ -298,3 +298,15 @@ No System1 Launch Gate state changes from this drift.
 - Current System2 UI risk is now date alignment: prior-session resonance must not appear as current-session monitor data.
 - System2 selection-to-capacity remains INCOMPLETE.
 - System1 Launch Gate remains S1 PARTIAL with the same three true blockers.
+
+
+## SDA-016 V8.20 Production binding status — 2026-10-07
+
+- V8.20 runtime `8.20.0-formal-c1-binding-ledger` is deployed and Production-verified.
+- PR #680 merged; Production deploy run `37483896567` and post-merge Regression `37483896007` passed.
+- First scheduled evidence run `37495670280` was ineligible because no 2026-10-06 Formal/C1 parent existed.
+- The blocker was upstream quality readiness: FINANCIAL and QUARTER_EPS were missing after repeated MOPS response-body timeouts.
+- No historical or synthetic genuine binding is permitted.
+- First legitimate genuine binding remains pending.
+- T48 same-session generation-set finalization remains OPEN.
+- Formal Core impact: NONE.
