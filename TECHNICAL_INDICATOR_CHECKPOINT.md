@@ -5856,8 +5856,10 @@ System2 dedicated workflow `37538083182`, job `112524054856`, exact head `777b58
 Pinned event:
 - TPEX 4806 / capital reduction / effective 2026-10-02;
 - replay cutoff = 2026-10-02T15:30:00+08:00;
-- exact eventVersionId = `S2-CA-EVENT:e3b2b87e8b9526420db7a75656ba8b542d020ff01022b1ba50356b8cdabbd963`;
-- exact sourceRowHash = `518fcdf6b0f3d5dc8ffaafba59556c86da3cda76dd0e46c528217740c33ae92b`.
+- observation eventVersionId from physical receipt = `S2-CA-EVENT:82da757e780d7be2c3474f5ca505d385b55705d44b520f291dc7383f88c391ca`;
+- stable semanticHash = `b6a4c97fdf3ded2bdae7048852540e4f58c1a64da4cbc012e350d5227e20d869`;
+- stable sourceRowHash = `518fcdf6b0f3d5dc8ffaafba59556c86da3cda76dd0e46c528217740c33ae92b`;
+- observationVersionIdUsedAsStableIdentity = false.
 
 Observed MOPS evidence:
 - family rows = 18;
@@ -5884,14 +5886,14 @@ Accepted blocker:
 Frozen anti-look-ahead rules:
 - source-reported timestamp cannot be promoted to public availableAt;
 - retrospective readback cannot become firstObservedAt;
-- MOPS episode chronology cannot certify availability of the exact TPEx reference-price version without explicit version linkage;
+- MOPS episode chronology cannot certify availability of the stable TPEx semantic/source-row identity without explicit linkage;
 - a post-cutoff observer cannot prove pre-cutoff availability.
 
 ### TI-1211~1213 — support, counterevidence and validation boundary
 
 Support:
 - the same capital-reduction episode is physically present and source clocks are parseable;
-- exact exchange reference-event identity is pinned;
+- stable exchange reference-event semantic/source-row identity is pinned, while observation eventVersionId is not a stable cross-fetch identity;
 - dedicated tests, physical probe and isolation guards pass.
 
 Counterevidence / alternative explanation:
@@ -5900,7 +5902,7 @@ Counterevidence / alternative explanation:
 - no OOS, walk-forward, cost, fillability, market-state or alpha evidence exists;
 - no new independent information root is created.
 
-Repository-wide V8 Regression run `37538083218` failed at `tests/test_sda016_formal_c1_binding_governance_sync_v0_1.mjs`, which expected `V0_5_58_TEST_ORACLE`. This is a cross-lane SDA-016 governance-sync assertion, not a V1.2 dedicated-test failure. D03 accepts only the bounded dedicated negative-gate evidence and does not call repository regression green.
+Repository-wide V8 Regression run `37538083218` failed at `tests/test_sda016_formal_c1_binding_governance_sync_v0_1.mjs`, which expected `V0_5_58_TEST_ORACLE`. This is a cross-lane SDA-016 governance-sync assertion, not a V1.2 dedicated-test failure. The merged-main dedicated run `37538787809` and merged-main System2 Research CI `37538787638` both passed after the physical receipt froze the stable semantic/source-row identity. D03 accepts only the bounded dedicated negative-gate evidence and does not call the earlier repository regression green.
 
 ### TI-1214 — maturity and stop rule
 
@@ -5916,4 +5918,4 @@ No promotion:
 - Formal Core remains LOCKED.
 
 Exact next:
-stop blind historical-clock promotion attempts for this bounded event. Reopen only if independent evidence binds the exact TPEx eventVersionId and sourceRowHash to a genuine prospective observation or authoritative publication-time contract no later than the replay cutoff. Continue waiting for System2 D03 dedup diagnostics, System1 D03 redundancy diagnostics, D16 D03 method/incrementality receipts and the protected cutoff-bearing parent path.
+stop blind historical-clock promotion attempts for this bounded event. Reopen only if independent evidence binds the stable TPEx semanticHash and sourceRowHash to a genuine prospective observation or authoritative publication-time contract no later than the replay cutoff. Observation eventVersionId must not be used as stable cross-fetch identity. Continue waiting for System2 D03 dedup diagnostics, System1 D03 redundancy diagnostics, D16 D03 method/incrementality receipts and the protected cutoff-bearing parent path.

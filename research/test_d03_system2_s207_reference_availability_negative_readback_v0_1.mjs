@@ -7,6 +7,9 @@ const o=receipt.observed;
 assert.equal(receipt.classification,'RESEARCH_ONLY_NEGATIVE_GATE_INCREMENTAL_READBACK');
 assert.equal(receipt.formalCoreImpact,'NONE_LOCKED');
 assert.equal(o.symbol,'4806');
+assert.equal(o.stableSemanticHash,'b6a4c97fdf3ded2bdae7048852540e4f58c1a64da4cbc012e350d5227e20d869');
+assert.equal(o.stableSourceRowHash,'518fcdf6b0f3d5dc8ffaafba59556c86da3cda76dd0e46c528217740c33ae92b');
+assert.equal(o.observationVersionIdUsedAsStableIdentity,false);
 assert.equal(o.mopsRelevantRowCount,8);
 assert.equal(o.mopsSourceReportedClockEligibleCount,8);
 assert.equal(o.mopsRetrospectiveOnlyCount,8);
@@ -25,6 +28,8 @@ assert.equal(o.pitReplayBlocker,'OFFICIAL_REFERENCE_EVENT_HISTORICAL_AVAILABILIT
 for(const key of ['knownAtVersionClockCertified','publicAvailabilityLatencyCertified','revisionCoverageComplete','technicalContinuityCertified','allHistoryContinuityCertified','continuityTransformPerformed','historyMutationPerformed','adjustedHistoryPersisted','selectionAuthority','finalSelectionEnabled','livePushEnabled','capitalImpact','orderImpact','system1RuntimeUsed','mutationPerformed']) assert.equal(o[key],false,key);
 assert.equal(receipt.workflowDisposition.dedicatedAvailabilityWorkflow,'SUCCESS');
 assert.equal(receipt.workflowDisposition.system2ResearchCi,'SUCCESS');
+assert.equal(receipt.workflowDisposition.mergedMainDedicatedAvailabilityWorkflow,'SUCCESS');
+assert.equal(receipt.workflowDisposition.mergedMainSystem2ResearchCi,'SUCCESS');
 assert.equal(receipt.workflowDisposition.repositoryRegression,'FAILURE_UNRELATED_CROSS_LANE_GOVERNANCE_SYNC');
 assert.equal(receipt.d03Interpretation.oos,'UNKNOWN_NOT_OPENED');
 assert.equal(receipt.d03Interpretation.walkForward,'UNKNOWN_NOT_OPENED');

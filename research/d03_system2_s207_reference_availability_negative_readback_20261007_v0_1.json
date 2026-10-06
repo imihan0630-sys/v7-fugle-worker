@@ -9,7 +9,10 @@
     "dedicatedWorkflowRunId": 37538083182,
     "dedicatedJobId": 112524054856,
     "system2ResearchCiRunId": 37538083135,
+    "mergedMainDedicatedWorkflowRunId": 37538787809,
+    "mergedMainSystem2ResearchCiRunId": 37538787638,
     "repositoryRegressionRunId": 37538083218,
+    "physicalReceipt": "system2/evidence/S2_07_REFERENCE_EVENT_AVAILABILITY_V1_2_PHYSICAL_20261007.json",
     "system2Contract": "system2/SYSTEM2_S2_07_REFERENCE_EVENT_AVAILABILITY_V1_2.md",
     "system2Runtime": "system2/runtime/s2_07_reference_event_availability_v1_2.mjs"
   },
@@ -20,8 +23,10 @@
     "family": "CAPITAL_REDUCTION",
     "effectiveDate": "2026-10-02",
     "replayCutoffAt": "2026-10-02T07:30:00.000Z",
-    "officialEventVersionId": "S2-CA-EVENT:e3b2b87e8b9526420db7a75656ba8b542d020ff01022b1ba50356b8cdabbd963",
-    "officialSourceRowHash": "518fcdf6b0f3d5dc8ffaafba59556c86da3cda76dd0e46c528217740c33ae92b",
+    "observationEventVersionIdFromPhysicalReceipt": "S2-CA-EVENT:82da757e780d7be2c3474f5ca505d385b55705d44b520f291dc7383f88c391ca",
+    "stableSemanticHash": "b6a4c97fdf3ded2bdae7048852540e4f58c1a64da4cbc012e350d5227e20d869",
+    "stableSourceRowHash": "518fcdf6b0f3d5dc8ffaafba59556c86da3cda76dd0e46c528217740c33ae92b",
+    "observationVersionIdUsedAsStableIdentity": false,
     "officialKnowledgeTimeMode": "HISTORICAL_UNKNOWN",
     "officialFirstKnownAt": null,
     "officialAvailableAt": null,
@@ -63,18 +68,21 @@
   "workflowDisposition": {
     "dedicatedAvailabilityWorkflow": "SUCCESS",
     "system2ResearchCi": "SUCCESS",
+    "mergedMainDedicatedAvailabilityWorkflow": "SUCCESS",
+    "mergedMainSystem2ResearchCi": "SUCCESS",
     "repositoryRegression": "FAILURE_UNRELATED_CROSS_LANE_GOVERNANCE_SYNC",
     "repositoryRegressionFailure": "tests/test_sda016_formal_c1_binding_governance_sync_v0_1.mjs expected V0_5_58_TEST_ORACLE",
     "d03EvidenceAcceptance": "ACCEPT_DEDICATED_NEGATIVE_GATE_EVIDENCE_ONLY"
   },
   "d03Interpretation": {
-    "support": "Eight bounded MOPS rows preserve valid source-reported chronology for the same semantic episode and the exact TPEx reference-event identity is pinned.",
+    "support": "Eight bounded MOPS rows preserve valid source-reported chronology for the same semantic episode; the stable TPEx semantic hash and source-row hash are pinned while observation eventVersionId is explicitly non-authoritative as stable identity.",
     "counterEvidence": "All eight MOPS rows are retrospective source-clock observations; none proves public availability of the exact TPEx reference-price version before the replay cutoff.",
     "alternativeExplanation": "Issuer disclosure chronology proves the capital-reduction episode existed but does not prove when the exchange reference-price row became publicly available.",
     "failureConditions": [
       "source-reported timestamp substituted for public availableAt",
       "retrospective readback substituted for firstObservedAt",
-      "MOPS semantic episode substituted for exact TPEx reference-event version identity",
+      "MOPS semantic episode substituted for stable TPEx semantic-hash and source-row-hash identity",
+      "observation eventVersionId misused as stable cross-fetch identity",
       "late observer accepted after replay cutoff",
       "single-event evidence generalized to all-history continuity"
     ],
@@ -99,5 +107,5 @@
     "outcomes": "CLOSED",
     "formalOptimizationCandidate": "NONE"
   },
-  "exactNextContinuationPoint": "Stop blind historical-clock promotion attempts for the bounded 4806 reference event. Reopen only if independent evidence pins the exact TPEx eventVersionId and sourceRowHash to a prospective observation or authoritative publication-time contract no later than the replay cutoff. Continue waiting for the other four external D03 blockers."
+  "exactNextContinuationPoint": "Stop blind historical-clock promotion attempts for the bounded 4806 reference event. Reopen only if independent evidence pins the stable TPEx semanticHash and sourceRowHash to a prospective observation or authoritative publication-time contract no later than the replay cutoff. Observation eventVersionId must not be used as stable cross-fetch identity. Continue waiting for the other four external D03 blockers."
 }

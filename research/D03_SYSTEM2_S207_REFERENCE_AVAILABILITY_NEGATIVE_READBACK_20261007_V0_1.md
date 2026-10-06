@@ -10,7 +10,8 @@ Accept V1.2 as promotion-relevant negative gate evidence. The exact TPEx 4806 re
 
 - The bounded semantic episode has 18 family rows and 8 relevant MOPS rows.
 - All 8 relevant rows have valid source-reported chronology.
-- Exact TPEx eventVersionId and sourceRowHash are pinned.
+- Stable TPEx semanticHash and sourceRowHash are pinned.
+- Observation eventVersionId is explicitly not used as stable identity because it may change across retrievals while the semantic/source-row identity remains stable.
 - Dedicated workflow and System2 Research CI pass.
 
 ## Counterevidence and alternative explanation
@@ -32,7 +33,7 @@ Accept V1.2 as promotion-relevant negative gate evidence. The exact TPEx 4806 re
 - Date clustering: one event episode only.
 - Cost, fillability and market-state dependence: UNKNOWN.
 
-Repository-wide V8 Regression run 37538083218 failed at an unrelated SDA-016 governance-sync token assertion. The dedicated V1.2 workflow 37538083182 and System2 Research CI 37538083135 both passed. D03 accepts only the bounded dedicated negative-gate evidence and does not treat the repository regression as green.
+Repository-wide V8 Regression run 37538083218 failed at an unrelated SDA-016 governance-sync token assertion. The initial dedicated V1.2 workflow 37538083182 and System2 Research CI 37538083135 passed; merged-main workflow 37538787809 and merged-main System2 Research CI 37538787638 also passed after stable-identity correction. D03 accepts only the bounded dedicated negative-gate evidence and does not treat the earlier repository regression as green.
 
 ## Maturity
 
@@ -46,4 +47,4 @@ Repository-wide V8 Regression run 37538083218 failed at an unrelated SDA-016 gov
 
 ## Exact next
 
-Stop blind historical-clock promotion attempts for this event. Reopen only if independent evidence binds the exact TPEx eventVersionId and sourceRowHash to either a genuine prospective observation or an authoritative publication-time contract no later than the replay cutoff. Continue waiting for the other four external D03 blockers.
+Stop blind historical-clock promotion attempts for this event. Reopen only if independent evidence binds the stable TPEx semanticHash and sourceRowHash to either a genuine prospective observation or an authoritative publication-time contract no later than the replay cutoff. Observation eventVersionId must not be used as stable cross-fetch identity. Continue waiting for the other four external D03 blockers.

@@ -3687,10 +3687,10 @@ Exact next is a prospectively timestamped official-event version before the deci
 
 ## TI-1205 through TI-1214 — exact reference-event availability negative gate (2026-10-07)
 
-System2 V1.2 physically pins the TPEX 4806 reference-event version and eight relevant MOPS rows. All eight rows preserve valid source-reported chronology but are retrospective-only; independent exact-version public-availability evidence is 0, firstKnownAt/availableAt remain null and PIT replay remains false.
+System2 V1.2 physically pins the TPEX 4806 stable semanticHash `b6a4c97fdf3ded2bdae7048852540e4f58c1a64da4cbc012e350d5227e20d869`, stable sourceRowHash `518fcdf6b0f3d5dc8ffaafba59556c86da3cda76dd0e46c528217740c33ae92b` and eight relevant MOPS rows. The physical-receipt observation eventVersionId is `S2-CA-EVENT:82da757e780d7be2c3474f5ca505d385b55705d44b520f291dc7383f88c391ca`, but `observationVersionIdUsedAsStableIdentity=false` because eventVersionId may change across retrievals. All eight rows preserve valid source-reported chronology but are retrospective-only; independent exact-version public-availability evidence is 0, firstKnownAt/availableAt remain null and PIT replay remains false.
 
 This is meaningful negative evidence: issuer disclosure chronology does not prove when the exact exchange reference-price row became publicly available. Historical timestamps cannot be promoted to availableAt, retrospective retrieval cannot become firstObservedAt, and a late observer cannot prove pre-cutoff availability.
 
-Dedicated workflow and System2 Research CI pass. Repository-wide regression fails at an unrelated SDA-016 governance-sync token assertion, so D03 accepts only the dedicated bounded evidence. D03 remains 56.7%; D03-09/D03-10 L2/40; raw gate 2/3; outcomes CLOSED; Formal Core LOCKED.
+Dedicated workflow and System2 Research CI pass. Repository-wide regression fails at an unrelated SDA-016 governance-sync token assertion; merged-main dedicated run `37538787809` and merged-main System2 Research CI `37538787638` pass after the physical receipt freezes stable identity. D03 accepts only the dedicated bounded evidence. D03 remains 56.7%; D03-09/D03-10 L2/40; raw gate 2/3; outcomes CLOSED; Formal Core LOCKED.
 
-Exact next is to stop blind historical-clock promotion attempts and reopen only on exact-version prospective observation or an authoritative publication-time contract before the replay cutoff.
+Exact next is to stop blind historical-clock promotion attempts and reopen only when independent evidence binds the stable semanticHash and sourceRowHash to a prospective observation or an authoritative publication-time contract before the replay cutoff. Observation eventVersionId must not be used as stable cross-fetch identity.
