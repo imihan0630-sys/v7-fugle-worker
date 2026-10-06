@@ -1,0 +1,26 @@
+{
+  "schemaVersion":"pattern-overnight-opening-attribution-v0.1",
+  "updated":"2026-10-07 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "owners":{
+    "gapPattern":"D01-09",
+    "openingAuction":"D05-06",
+    "overnightGapRisk":"D11-10",
+    "nightFutures":"D12-10",
+    "globalContext":"D13_OWNER_FAMILY",
+    "eventGapPath":"D17-12",
+    "tailGapVolatility":"D04-09"
+  },
+  "gapThroughEqualsIntradayRetest":false,
+  "openingPriceEqualsPriorStructureResponse":false,
+  "openPriceCanBackfillPreopenTrial":false,
+  "laterNewsCanBackdate":false,
+  "zoneSkippedImpliesFillAtZone":false,
+  "unresolvedCorporateAction":"DATA_BLOCKED",
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}
