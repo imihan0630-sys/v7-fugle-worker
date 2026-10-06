@@ -27,6 +27,14 @@ export function d08TwseTableObjectsV0_1(payload){
 function normalizedCompanyIdentityV0_1(value){
   return String(value??"").normalize("NFKC").replace(/\s+/g,"").replace(/[－–—]/g,"-").replace(/-創$/u,"");
 }
+function companyIdentityAliasesV0_1(row){
+  const aliases=[
+    row?.companyName,
+    row?.companyShortName,
+    row?.companyLegalName,
+  ].map(normalizedCompanyIdentityV0_1).filter(Boolean);
+  return new Set(aliases);
+}
 export function reconcileD08TwseCurrentListingStartsV0_1(currentRows=[],newRows=[]){
   if(!Array.isArray(currentRows)||!Array.isArray(newRows)) throw new Error("currentRows/newRows must be arrays");
   const bySymbol=new Map();
@@ -39,11 +47,11 @@ export function reconcileD08TwseCurrentListingStartsV0_1(currentRows=[],newRows=
 
   const adjustedSymbols=[];
   const rows=currentRows.map((row)=>{
-    const currentName=normalizedCompanyIdentityV0_1(row?.companyName);
+    const currentAliases=companyIdentityAliasesV0_1(row);
     const candidates=(bySymbol.get(row?.symbol)||[]).filter((candidate)=>{
       if(!candidate?.listingDate||!row?.listingDate||candidate.listingDate>row.listingDate) return false;
-      const candidateName=normalizedCompanyIdentityV0_1(candidate.companyName);
-      return currentName&&candidateName&&currentName===candidateName;
+      const candidateAliases=companyIdentityAliasesV0_1(candidate);
+      return [...currentAliases].some((name)=>candidateAliases.has(name));
     });
     const earliest=candidates[0]||null;
     if(!earliest||earliest.listingDate>=row.listingDate) return row;
@@ -140,6 +148,7 @@ export async function buildD08TwseHistoricalUniverseSourceV0_1({
   const currentBase=currentRaw.payload.map(r=>({
     market:"TWSE",symbol:String(r["公司代號"]??"").trim(),
     companyName:String(r["公司名稱"]??"").trim()||null,
+    companyShortName:String(r["公司簡稱"]??"").trim()||null,
     industry:String(r["產業別"]??"").trim()||null,
     memberState:"CURRENT",listingDate:parseD08TwseDateV0_1(r["上市日期"]),
     delistingDate:null,sourceId:"TWSE_OPENAPI_T187AP03_L",
@@ -149,6 +158,8 @@ export async function buildD08TwseHistoricalUniverseSourceV0_1({
   const newRows=d08TwseTableObjectsV0_1(newRaw.payload).map(r=>({
     symbol:String(r["公司代號"]??"").trim(),
     companyName:String(r["公司簡稱"]??r["公司名稱"]??"").trim()||null,
+    companyShortName:String(r["公司簡稱"]??"").trim()||null,
+    companyLegalName:String(r["公司名稱"]??"").trim()||null,
     listingDate:parseD08TwseDateV0_1(r["股票上市買賣日期"]),raw:r,
   })).filter(x=>ordinary(x.symbol)&&x.listingDate);
   const currentReconciliation=reconcileD08TwseCurrentListingStartsV0_1(currentBase,newRows);
