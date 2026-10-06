@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-10-06 Asia/Taipei",
+  "evidenceCursor": "PVE-250",
+  "status": "LATEST_MAIN_REBASED_CANDIDATE_ALL_CHECKS_PASS / DRAFT_PR_668 / OWNER_APPROVAL_REQUIRED / UNMERGED / NOT_DEPLOYED / H001_FAIL_CLOSED",
+  "activeCandidate": {
+    "pr": 668,
+    "url": "https://github.com/imihan0630-sys/v7-fugle-worker/pull/668",
+    "branch": "research/d02-pve250-rebased-candidate-20261006",
+    "baseMainAtCreation": "05cfe0f0fc4b857dc089355f6fccd7a8ec8100f0",
+    "head": "5877f82db1579a02091c7011e1525ea3f4490bad",
+    "mergeable": true,
+    "draft": true,
+    "merged": false,
+    "deployed": false
+  },
+  "supersededCandidate": {
+    "pr": 651,
+    "state": "closed",
+    "merged": false,
+    "deployed": false
+  },
+  "checks": [
+    {
+      "runId": 37403479188,
+      "name": "D02 PVE-248 Candidate CI",
+      "event": "push",
+      "conclusion": "success"
+    },
+    {
+      "runId": 37403498580,
+      "name": "D02 PVE-248 Candidate CI",
+      "event": "pull_request",
+      "conclusion": "success"
+    },
+    {
+      "runId": 37403498568,
+      "name": "V8 Repair CI",
+      "event": "pull_request",
+      "conclusion": "success"
+    },
+    {
+      "runId": 37403498495,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "conclusion": "success"
+    }
+  ],
+  "changedFiles": [
+    ".github/workflows/d02-pve248-candidate.yml",
+    ".github/workflows/v7-regression.yml",
+    ".github/workflows/v7-repair-ci.yml",
+    "scripts/apply_v8_19_1_pve248_candidate.py",
+    "tests/test_v8_19_1_pve248_runtime_candidate.mjs"
+  ],
+  "productionDeployWired": false,
+  "intendedProtectedFormalChange": false,
+  "pve247OracleRemainsAuthoritative": true,
+  "cleanProspectiveDateIncrement": 0,
+  "maturityChange": false,
+  "formalCoreChange": false,
+  "ownerApprovalRequired": true,
+  "exactNext": "OWNER_APPROVAL_REQUIRED_FOR_PR_668_CLASS_B_PRODUCTION_INTEGRATION"
+}
