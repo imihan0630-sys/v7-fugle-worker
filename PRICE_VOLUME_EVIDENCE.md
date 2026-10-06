@@ -5972,3 +5972,40 @@ Formal Core LOCKED.
 
 Exact next continuation point:
 PVE-250 — explicit owner decision on Class-B Production integration of PR #651. Only after approval may the candidate be wired into the Production build/deploy chain, revalidated, merged/deployed and physically read back under the PVE-247 oracle.
+
+
+# PVE-250 — Latest-main rebased Class-B candidate owner gate (2026-10-06)
+
+Status: LATEST_MAIN_REBASED_CANDIDATE_ALL_CHECKS_PASS / DRAFT_PR_668 / OWNER_APPROVAL_REQUIRED / UNMERGED / NOT_DEPLOYED / H001_FAIL_CLOSED / NO_PROMOTION / FORMAL_UNCHANGED.
+
+Canonical evidence:
+- `research/D02_PVE250_REBASED_CANDIDATE_OWNER_GATE_20261006_V0_1.md`;
+- `research/d02_pve250_rebased_candidate_owner_gate_v0_1.json`.
+
+Active candidate:
+- draft PR #668;
+- branch `research/d02-pve250-rebased-candidate-20261006`;
+- base main at creation `05cfe0f0fc4b857dc089355f6fccd7a8ec8100f0`;
+- head `5877f82db1579a02091c7011e1525ea3f4490bad`;
+- mergeable=true;
+- merged=false;
+- deployed=false.
+
+PR #651 is superseded and closed without merge or deploy.
+
+Latest-main validation:
+- Candidate push CI `37403479188` SUCCESS;
+- Candidate PR CI `37403498580` SUCCESS;
+- Repair CI `37403498568` SUCCESS;
+- Regression `37403498495` regression job SUCCESS.
+
+Candidate Production deploy is not wired.
+PVE-247 oracle remains authoritative.
+No clean prospective date is added.
+D02 remains 60.0%.
+Gate 7 CLOSED.
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Formal Core LOCKED.
+
+Exact next continuation point:
+OWNER_APPROVAL_REQUIRED — explicit approval for Class-B Production integration of PR #668. Without approval remain draft/unmerged/un-deployed.
