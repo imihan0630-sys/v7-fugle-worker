@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "S2_S2_07_OFFICIAL_REFERENCE_AVAILABILITY_OBSERVER_V1_3_PHYSICAL_RECEIPT",
+  "version": "1.3-RESEARCH",
+  "recordedDate": "2026-10-07",
+  "lane": "BUILD_LANE",
+  "status": "PASS_PROSPECTIVE_SAMPLE",
+  "baseMainCommit": "5076e2cd0a5609dc5c89da6d2d01333886a4af8a",
+  "pullRequest": 733,
+  "workflow": {
+    "name": "System2 S2-07 Official Reference Availability Observer V1.3 Readonly",
+    "runId": 37539208003,
+    "jobId": 112527770695,
+    "conclusion": "success"
+  },
+  "exactReference": {
+    "exchange": "TPEX",
+    "symbol": "4806",
+    "actionFamilyId": "CAPITAL_REDUCTION",
+    "effectiveDate": "2026-10-02",
+    "stableSemanticHash": "b6a4c97fdf3ded2bdae7048852540e4f58c1a64da4cbc012e350d5227e20d869",
+    "stableSourceRowHash": "518fcdf6b0f3d5dc8ffaafba59556c86da3cda76dd0e46c528217740c33ae92b",
+    "observationVersionIdUsedAsStableIdentity": false
+  },
+  "prospectiveObservation": {
+    "observedAt": "2026-10-06T22:13:44.304Z",
+    "availableAt": "2026-10-06T22:13:44.304Z",
+    "evidenceClass": "PROSPECTIVE_EXACT_VERSION_OBSERVER",
+    "publicAvailabilityObserved": true,
+    "precisionEligible": false,
+    "knownAtVersionClockCertified": false,
+    "publicAvailabilityLatencyCertified": false
+  },
+  "cutoffChecks": {
+    "historical4806CutoffAt": "2026-10-02T07:30:00.000Z",
+    "historical4806AvailabilityByCutoffProven": false,
+    "historical4806State": "REFERENCE_PUBLIC_AVAILABILITY_NOT_PROVEN_BY_CUTOFF",
+    "currentObservationCutoffAt": "2026-10-06T22:13:44.304Z",
+    "currentAvailabilityByCutoffProven": true,
+    "currentState": "REFERENCE_PUBLICLY_OBSERVED_BY_CUTOFF"
+  },
+  "architecture": {
+    "highFrequencyPollingIntrinsicallyRequired": false,
+    "selectedOnlyCaptureAuthorized": false,
+    "scheduleAdded": false,
+    "fullSourceCutImplemented": false,
+    "noRevisionGapThroughCutCertified": false,
+    "symbolSessionCompletenessCertified": false,
+    "technicalContinuityCertified": false
+  },
+  "authority": {
+    "historyMutationPerformed": false,
+    "selectionAuthority": false,
+    "finalSelectionEnabled": false,
+    "livePushEnabled": false,
+    "capitalImpact": false,
+    "orderImpact": false,
+    "system1RuntimeUsed": false
+  }
+}
