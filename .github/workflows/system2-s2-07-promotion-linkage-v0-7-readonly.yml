@@ -1,0 +1,29 @@
+name: System2 S2-07 Promotion Linkage V0.7 Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/s2_07_promotion_linkage_v0_7.mjs"
+      - "system2/tests/s2_07_promotion_linkage_v0_7.test.mjs"
+      - "system2/scripts/probe_s2_07_promotion_linkage_readonly_v0_7.mjs"
+      - "system2/SYSTEM2_S2_07_PROMOTION_LINKAGE_V0_7.md"
+      - ".github/workflows/system2-s2-07-promotion-linkage-v0-7-readonly.yml"
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - run: node system2/tests/s2_07_promotion_linkage_v0_7.test.mjs
+      - run: node system2/scripts/probe_s2_07_promotion_linkage_readonly_v0_7.mjs
+      - shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'CLOUDFLARE|SYSTEM2_DB|wrangler|secret|deploy|INSERT|UPDATE|DELETE' system2/scripts/probe_s2_07_promotion_linkage_readonly_v0_7.mjs
+          echo "S2-07 V0.7 read-only boundary PASS"
