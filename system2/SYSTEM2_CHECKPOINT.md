@@ -2315,3 +2315,14 @@ T06~T10 PENDING / NC-T01 T11~T16 PENDING.
 No physical fingerprint or NC-T01 receipt has been accepted by 00 yet.
 
 This correction remains BUILD_LANE-owned and does not authorize other lanes to mutate its conflict unit.
+
+
+## 2026-10-06 CORR-003 closed / CORR-004 active pointer
+
+- S2-CORR-20261006-003 = VERIFIED_CLOSED.
+- Independent receipt: system2/evidence/s2_corr_20261006_003_independent_verification.json.
+- S2-CORR-20261006-004 = OPEN / BUILD_LANE.
+
+CORR-004 must bind current terminal resonance to the current Taipei marketDate or explicitly classify prior-session rows as stale/historical and exclude them from current active surfaces/counts. Same-day success and explicit historical-query behavior must remain supported.
+
+This pointer changes no resonance formula, bounded-pool logic, S2-07 candidate authority, strategy logic, ranking/capacity, push/orders or System1 Formal Core.
