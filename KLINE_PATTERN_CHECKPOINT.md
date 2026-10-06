@@ -2804,3 +2804,35 @@ No maturity or Formal change is authorized by this routing.
 5. Keep audit tickets open until canonical closure evidence exists.
 6. Next D01 science: separate time/volume acceptance from price-path entropy / directional churn.
 7. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-049 (2026-10-06)
+
+### DL-049 — Zone acceptance vs path disorder
+- Repeated zone visits do not by themselves establish stable acceptance.
+- D01 keeps zone occupancy separate from close-state transitions and side-to-side movement.
+- D03 remains owner of fixed-window pathEfficiency10; D01 does not duplicate it.
+- Completed-bar close states are BELOW / INSIDE / ABOVE relative to the frozen zone.
+- A bar spanning both zone edges does not reveal intrabar crossing order from OHLC alone.
+- Exact crossing sequence requires timestamped event data.
+- Equal occupancy can coexist with different transition structure; equal transition counts can coexist with different occupancy.
+- No fixed directional sign is assigned to high or low churn.
+- No entropy factor or churn threshold is frozen in v0.1.
+- Tick, price-limit, auction/session, volatility-interruption and liquidity context remain mandatory controls.
+- All OHLC-derived zone-path representations remain PRICE_OHLC information and do not create an extra vote.
+- Current durable artifacts:
+  - research/PATTERN_ZONE_PATH_CHURN_V0_1.md
+  - research/pattern_zone_path_churn_v0_1.json
+- Helper / executable adversarial-test file creation is currently TOOL_BLOCKED by the connector safety layer; this is recorded as an execution blocker and is not counted as completed testing.
+- Draft stacked PR #666 exists and is mergeable against the DL-048 branch.
+- D01 maturity remains 52.7%; outcomes closed; Formal Core unchanged.
+
+### Updated exact next continuation point after DL-049
+
+1. Retry helper/adversarial-test durable write only when the connector mutation is available; do not claim test completion beforehand.
+2. Preserve occupancy, transition structure and exact event-crossing semantics separately.
+3. Keep D03 pathEfficiency10 as owner/control primitive.
+4. Hand zone-path common-support / residual inference to D16 once executable semantics are available.
+5. Resolve the DL-047 -> DL-048 -> DL-049 stacked branch chain in order before claiming main inclusion.
+6. Next D01 science after DL-049 completion: separate ordinary oscillation from auction/limit/event-driven discrete repricing and microstructure bounce.
+7. No runtime wiring / no Formal change.
