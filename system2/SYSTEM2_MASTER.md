@@ -740,3 +740,14 @@ The stable cross-capture identity is `semanticHash + sourceRowHash`. `eventVersi
 Physical run `37538390532` / job `112525069738` found 18 MOPS capital-reduction lineage rows, aligned the active 2026 episode to seed `2026-02-24|16:28:25|3`, and retained 8/8 rows as retrospective source-clock evidence only. There is zero independent exact-source historical public-availability evidence.
 
 Therefore `firstKnownAt=null`, `availableAt=null`, `pitEventReplayEligible=false`, blocker `OFFICIAL_REFERENCE_EVENT_HISTORICAL_AVAILABILITY_UNPROVEN`. No System1/runtime/trading authority changed. Evidence: `system2/evidence/S2_07_REFERENCE_EVENT_AVAILABILITY_V1_2_PHYSICAL_20261007.json`.
+
+
+## 2026-10-07 S2-07 prospective reference observation boundary
+
+S2-07 V1.3 adds the shared-owner candidate adapter for genuine prospective first-observed evidence on exact official continuity reference rows.
+
+Physical run `37539208003` / job `112527770695` observed the exact 4806 TPEx capital-reduction reference row at `2026-10-06T22:13:44.304Z`. Stable identity remains `semanticHash + sourceRowHash`; `eventVersionId` is observation provenance only.
+
+The physical receipt proves the key causal firewall: the observation is valid evidence that the row was public by its actual observation time, but it does not unlock the earlier 2026-10-02 replay cutoff. No scheduler was added. Full pre-parent source-cut completeness, noRevisionGapThroughCut, symbol-session completeness, TECHNICAL_CONTINUITY and all trading authorities remain false.
+
+Evidence: `system2/evidence/S2_07_OFFICIAL_REFERENCE_AVAILABILITY_OBSERVER_V1_3_PHYSICAL_20261007.json`.
