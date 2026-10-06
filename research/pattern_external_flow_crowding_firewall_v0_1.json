@@ -1,0 +1,29 @@
+{
+  "schemaVersion":"pattern-external-flow-crowding-firewall-v0.1",
+  "updated":"2026-10-07 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "highVolumeEqualsCrowding":false,
+  "sameDirectionFollowThroughEqualsStructuralMemory":false,
+  "externalFlowReceiptEqualsIndependentEvidence":false,
+  "unknownFlowEqualsNoFlow":false,
+  "postOpportunityFlowIsBaseline":false,
+  "informationIndependenceStatus":"NOT_VALIDATED",
+  "flowStates":[
+    "EXTERNAL_FLOW_UNKNOWN",
+    "SAME_SYMBOL_DIRECTIONAL_FLOW_PRESENT",
+    "SAME_SYMBOL_OPPOSING_FLOW_PRESENT",
+    "MULTI_PARTICIPANT_CROWDING_PRESENT",
+    "PASSIVE_BASKET_FLOW_PRESENT",
+    "MECHANICAL_HEDGE_FLOW_PRESENT",
+    "LEVERAGE_CROWDING_PRESENT",
+    "COMMON_FACTOR_FLOW_PRESENT",
+    "CROSS_ASSET_COIMPACT_CONTEXT_PRESENT",
+    "MIXED_OR_CONFLICTING_FLOW",
+    "FLOW_DATA_BLOCKED"
+  ],
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}

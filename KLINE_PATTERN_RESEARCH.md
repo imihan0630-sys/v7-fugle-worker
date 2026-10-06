@@ -23951,3 +23951,37 @@ New durable artifacts:
 - research/PATTERN_INFORMATION_CONTENT_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-059 — Structural rejection vs correlated external order flow / crowding / co-impact (2026-10-07)
+
+DL-059 adds an external-flow attribution firewall. Even after separating the studied order's mechanical impact and information content, price can continue in the same direction because many other market participants are simultaneously trading the same way.
+
+Institutional metaorder research shows that different investors' flows can be correlated and that concurrent same-direction metaorders can generate crowding/co-impact. Order-flow imbalance can amplify price movement, and correlated flow can make impact appear more persistent. Cross-impact also allows order flow in related assets to affect the target. Therefore same-direction follow-through is not unique evidence of structural support/resistance.
+
+D01 does not take ownership of these flow taxonomies. D02 already owns volume-origin, leverage-crowding, passive-basket, mechanical-hedge and common-factor-flow semantics. D05 owns event-level order flow and microstructure timing. D01 only consumes owner-certified context and asks whether zone-specific representation remains afterward.
+
+External flow is split into initiating order flow, external same-symbol flow, common-factor/basket flow and cross-asset flow. This prevents the initiating trade from being conflated with the rest of the market.
+
+High volume is explicitly insufficient for crowding. Crowding requires owner-grade participant/category/concentration/correlation evidence. Strong candles, high RVOL and synchronized stocks cannot be renamed institutional crowding or passive flow from charts alone.
+
+Timing remains causal. Only external flow known by predictor freeze is baseline context. Flow that arrives later may mediate or amplify the response but cannot be backfilled into the earlier predictor.
+
+The central comparator is generic external flow away from the structural zone versus comparable external flow at the zone. If the zone-associated case adds no residual representation after external-flow context, generic crowding/order-flow dynamics are sufficient.
+
+Passive baskets, hedging, leverage crowding and broad factor flows are retained separately. A stock can move because of an ETF rebalance, a derivative hedge, a market-wide risk flow or a sector basket without the zone having structural causal force.
+
+Cross-impact is also kept separate. Related futures, ETFs, sector leaders or derivatives can move the target, but D01 defines no cross-impact coefficient and does not infer one from price synchronization.
+
+External-flow receipts are only distinct-information-root candidates. They do not become independent confirmations until D16 validates residual information and dependence.
+
+Twenty adversarial tests are authored. They preserve unknown flow, owner-certified directional/crowding states, replay and timing blocks, partial flow windows, aligned/opposing flow, high-volume-not-crowding semantics, owner validation, information-root dependence and complete denominator states.
+
+New durable artifacts:
+- research/PATTERN_EXTERNAL_FLOW_CROWDING_FIREWALL_V0_1.md
+- research/pattern_external_flow_crowding_firewall_v0_1.json
+- research/pattern_external_flow_crowding_firewall_v0_1.mjs
+- research/test_pattern_external_flow_crowding_firewall_v0_1.mjs
+- research/PATTERN_EXTERNAL_FLOW_CROWDING_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
