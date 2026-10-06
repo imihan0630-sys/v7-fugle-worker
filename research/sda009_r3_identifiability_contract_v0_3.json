@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "SDA009_R3_IDENTIFIABILITY_CONTRACT_V0_3",
+  "auditTicket": "SDA-009",
+  "ownerRoom": "07｜產業與供應鏈研究室",
+  "formalCoreImpact": "NONE",
+  "decisionImpact": false,
+  "populations": {
+    "P0": "IMMUTABLE_SAME_GENERATION_C1_PARENT",
+    "P1": "SECTOR_GATE_REACHED",
+    "P2": "LOO_MECHANICALLY_IDENTIFIABLE",
+    "P3": "DECISION_RELEVANT_EX_SECTOR",
+    "P4": "RANK_IDENTIFIABLE",
+    "P5": "ALLOCATION_IDENTIFIABLE"
+  },
+  "forbiddenDenominators": [
+    "SELECTED_ONLY",
+    "QUALIFIED_ONLY",
+    "SECTOR_GATE_PASS_ONLY",
+    "BASEPASSED_TRUE_ONLY",
+    "BOUNDED_REJECTED_SAMPLE_ONLY"
+  ],
+  "minimumC1AtomicExtension": {
+    "rowFields": [
+      "currentChangePercent",
+      "currentTradeValue"
+    ],
+    "existingReusable": [
+      "symbol",
+      "industry",
+      "pricePool",
+      "feature.historyDays",
+      "feature.avgAmount20",
+      "formalResult.firstFailure",
+      "generationId"
+    ],
+    "newProviderCalls": 0
+  },
+  "membershipLineage": {
+    "required": [
+      "classificationSchemeId",
+      "membershipVersion",
+      "membershipDigest"
+    ],
+    "recommendedSchemeId": "SYSTEM1_RUNTIME_INDUSTRY_LABEL_V1",
+    "digestSemantics": "SHA256(sorted(symbol|industry))",
+    "historicalEffectiveDateFabricationForbidden": true
+  },
+  "parityGate": {
+    "required": true,
+    "compare": [
+      "breadth",
+      "avgChange",
+      "amountVs20DayAverage",
+      "sectorScore",
+      "hardGateComponentStates"
+    ],
+    "failureState": "BLOCKED_PARITY_MISMATCH"
+  },
+  "decisionRelevance": {
+    "mechanicalGateFlipSeparateFromDecisionRelevant": true,
+    "downstreamNonSectorState": [
+      "PASS",
+      "FAIL",
+      "UNKNOWN"
+    ]
+  },
+  "rankFirewall": {
+    "requireComparatorVersion": true,
+    "requireFormalRoundedValues": true,
+    "requirePreSortOrdinal": true,
+    "inventedSymbolTieBreakerForbidden": true,
+    "candidateSpecificNormalizerCrossCandidateComparability": "UNKNOWN_UNTIL_POLICY_FROZEN"
+  },
+  "allocationDecomposition": [
+    "PURE_SCORE_WEIGHT_EFFECT",
+    "SELECTION_COMPOSITION_EFFECT",
+    "DEPLOY_RATIO_REGIME_EFFECT",
+    "POSITION_CAP_EFFECT",
+    "NTD_FLOORING_EFFECT"
+  ],
+  "commonSupportRequiredCounts": [
+    "P0",
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "P5",
+    "BLOCKED",
+    "UNKNOWN"
+  ],
+  "exactNext": [
+    "SDA-009-R3A1 verify two-atom C1 extension plus membership digest achieves inclusive parity",
+    "SDA-009-R3A2 implement pure Class-A C1-side LOO analyzer if parity passes",
+    "SDA-009-R3B evaluate first genuine receipt with P0-P5 denominators and D16 handoff"
+  ]
+}
