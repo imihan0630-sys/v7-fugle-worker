@@ -2277,3 +2277,38 @@ The same 13 Y/not-credit-qualified SBL-only symbols observed on 2026-10-05 persi
 Therefore D06-08 and D06-09 denominator separation is a two-date structural requirement, not a one-day anomaly.
 
 D06-07/08/09 remain L2/40 until the post-22:30 LATE snapshot permits a genuine same-date revision comparison. No Formal change.
+
+
+---
+
+## IC-088 — 2026-10-06 direct-retail source rescan reconfirms stock-date directional gap
+
+Research cycle: 2026-10-06 Asia/Taipei
+Status: SOURCE_GAP_RECONFIRMED / MARKET_LEVEL_DIRECT_CONTEXT_ONLY / STOCK_DATE_DIRECTION_UNKNOWN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable receipt:
+`research/d06_19_direct_retail_source_gap_update_20261006_v0_1.json`.
+
+A current official-source rescan across TWSE and TPEx reconfirmed that directly identified natural-person participation exists at market/aggregate frequency, while a public replayable stock×date domestic-natural-person buy/sell directional feed remains unverified.
+
+Verified current public context includes:
+- TWSE market-level natural-person trading-value share;
+- investor-class market composition in annual/monthly statistical products;
+- natural-person ownership/investment distribution at aggregate frequency;
+- TPEx market/research-level natural-person participation structure.
+
+Still NOT verified:
+`domestic natural person × stock/security × date × buy/sell directional flow`
+as an authorized, public, replayable current TWSE/TPEx source family.
+
+Therefore the following remain forbidden substitutes:
+- margin financing;
+- day trading;
+- odd-lot activity;
+- broker-branch execution;
+- total-minus-institution residual;
+- market-level natural-person participation backfilled to stock-date direction.
+
+D06-19 remains L2/40%. The rescan strengthens the source-gap boundary but does not solve the declared directional capability.
+
+No outcome or Formal change.
