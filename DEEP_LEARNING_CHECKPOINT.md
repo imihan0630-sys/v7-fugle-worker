@@ -2357,3 +2357,35 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
 2. Preserve selected identity, source date, transaction family, recall condition, rate/depth values, capturedAt, content hash and NULL-vs-zero semantics.
 3. If route fails or the slot is missed, record UNKNOWN/MISSING and never backfill later.
 4. After market continue the already-frozen D06-03, D06-14 and TPEx leverage clocks.
+
+
+## 2026-10-06 D06 — post-close SBL query after missed 15:20 slot
+
+- Frozen D06-18 live target was 15:20±5m Asia/Taipei.
+- User-triggered execution occurred at 19:10-19:15, after TWSE SBL service hours.
+- The live 15:20 slot is therefore preserved as MISSED/UNKNOWN and is never backfilled.
+- Durable post-close receipt:
+  - `research/d06_18_twse_sbl_postclose_query_20261006_v0_1.json`.
+- Frozen pilot routes all matched selected identity:
+  - 1101 台泥;
+  - 2451 創見;
+  - 3532 台勝科;
+  - 6187 萬潤;
+  - 9941 裕融.
+- Fixed-rate and competitive-bid 10/3/1-day sections:
+  - totalQty 0 for all five;
+  - rate/depth fields rendered as NULL/dash.
+- Negotiated section:
+  - 1101: 15:01:09.76 / totalQty 7000;
+  - 2451: 15:01:32.23 / totalQty 1450;
+  - 3532: 11:45:32.02 / totalQty 44;
+  - 6187: 14:24:39.33 / totalQty 40;
+  - 9941: no matchTime / totalQty 0.
+- Security pages did not explicitly expose a source/trade date, so values are not date-certified 2026-10-06 live evidence.
+- Negotiated lending quantity is not short-sale volume or bearish intent.
+- D06-18 remains L2/40; D06 remains 48.9%.
+- Global aggregate recalculated to 46.6% / 356 modules due parallel-room tracker changes; no D06 maturity increase caused this.
+- Exact next today:
+  1. D06-03 after-market dealer split;
+  2. D06-14 pinned 20261005 T1 follow-up + pinned 20261006 T_PRELIM if published;
+  3. TPEx leverage EARLY 20:30 / LATE 22:30.
