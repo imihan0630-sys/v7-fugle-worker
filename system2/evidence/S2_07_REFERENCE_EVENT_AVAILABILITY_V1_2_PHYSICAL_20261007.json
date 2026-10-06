@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "S2_S2_07_REFERENCE_EVENT_AVAILABILITY_V1_2_PHYSICAL_RECEIPT",
+  "version": "1.2-RESEARCH",
+  "recordedDate": "2026-10-07",
+  "lane": "BUILD_LANE",
+  "status": "PASS_NEGATIVE_GATE",
+  "baseMainCommit": "777b5876917774a5ad4c32eac3e563df2b3acfe5",
+  "pullRequest": 732,
+  "workflow": {
+    "name": "System2 S2-07 Reference Event Availability V1.2 Readonly",
+    "runId": 37538390532,
+    "jobId": 112525069738,
+    "conclusion": "success"
+  },
+  "target": {
+    "exchange": "TPEX",
+    "symbol": "4806",
+    "family": "CAPITAL_REDUCTION",
+    "effectiveDate": "2026-10-02",
+    "observationEventVersionId": "S2-CA-EVENT:82da757e780d7be2c3474f5ca505d385b55705d44b520f291dc7383f88c391ca",
+    "stableSemanticHash": "b6a4c97fdf3ded2bdae7048852540e4f58c1a64da4cbc012e350d5227e20d869",
+    "stableSourceRowHash": "518fcdf6b0f3d5dc8ffaafba59556c86da3cda76dd0e46c528217740c33ae92b",
+    "observationVersionIdUsedAsStableIdentity": false
+  },
+  "mops": {
+    "familyRowCount": 18,
+    "semanticSeedVersionKey": "2026-02-24|16:28:25|3",
+    "semanticSeedDate": "2026-02-24",
+    "semanticAlignedRowCount": 8,
+    "sourceReportedClockEligibleCount": 8,
+    "retrospectiveOnlyCount": 8
+  },
+  "availability": {
+    "independentEvidenceCount": 0,
+    "independentlyReadyEvidenceCount": 0,
+    "state": "REFERENCE_EVENT_HISTORICAL_AVAILABILITY_NOT_PROVEN",
+    "firstKnownAt": null,
+    "availableAt": null,
+    "pitEventReplayEligible": false,
+    "pitReplayBlocker": "OFFICIAL_REFERENCE_EVENT_HISTORICAL_AVAILABILITY_UNPROVEN",
+    "sourceReportedClockPromotedToAvailableAt": false,
+    "retrospectiveReadbackPromotedToFirstObservedAt": false
+  },
+  "authority": {
+    "knownAtVersionClockCertified": false,
+    "technicalContinuityCertified": false,
+    "historyMutationPerformed": false,
+    "adjustedHistoryPersisted": false,
+    "selectionAuthority": false,
+    "finalSelectionEnabled": false,
+    "livePushEnabled": false,
+    "capitalImpact": false,
+    "orderImpact": false,
+    "system1RuntimeUsed": false
+  }
+}
