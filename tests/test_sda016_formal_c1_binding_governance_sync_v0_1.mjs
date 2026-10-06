@@ -12,21 +12,15 @@ const dashboard=await readFile(new URL("../shared-knowledge/STOCK_SELECTION_AUDI
 
 const issue=queue.issues.find(x=>x.id==="SDA-016");
 assert.ok(issue,"SDA-016 missing");
-assert.match(issue.readiness,/V0_5_58_TEST_ORACLE/);
-assert.ok([
-  "CLASS_A_CONTRACT_FROZEN_CLASS_B_IMPLEMENTATION_PENDING",
-  "CLASS_B_IMPLEMENTED_VALIDATION_IN_PROGRESS",
-  "CLASS_B_IMPLEMENTED_EXACT_HEAD_CI_PASS_MERGE_DEPLOY_APPROVAL_PENDING",
-  "CLASS_B_MERGED_DEPLOYMENT_PENDING",
-  "PRODUCTION_AUTHORITY_ESTABLISHED"
-].includes(issue.formalC1Binding?.status),"unexpected Formal-C1 governance lifecycle");
+assert.match(issue.readiness,/V820_PRODUCTION_VERIFIED/);
+assert.match(issue.readiness,/GENUINE_BINDING_PENDING/);
+assert.match(issue.readiness,/T48_OPEN/);
+assert.equal(issue.formalC1Binding?.status,"V820_PRODUCTION_VERIFIED_GENUINE_BINDING_PENDING");
 assert.equal(issue.formalC1Binding?.contract,"research/sda016_system1_formal_c1_binding_contract_v0_1.json");
-assert.ok([
-  "PENDING_CLASS_B","IMPLEMENTED_UNMERGED","MERGED_NOT_DEPLOYED","PRODUCTION_AUTHORITY_ESTABLISHED"
-].includes(issue.formalC1Binding?.appendOnlyLedgerImplementation),"unexpected append-only ledger lifecycle");
-assert.ok([
-  "PENDING","CLASS_B_IMPLEMENTED_UNMERGED_NOT_PRODUCTION_AUTHORITY","CLASS_B_MERGED_NOT_DEPLOYED","PRODUCTION_AUTHORITY_ESTABLISHED"
-].includes(issue.system1Engineering?.authoritativeFormalC1Ledger),"unexpected authoritative ledger lifecycle");
+assert.equal(issue.formalC1Binding?.appendOnlyLedgerImplementation,"MERGED_DEPLOYED_PRODUCTION_VERIFIED");
+assert.equal(issue.formalC1Binding?.productionAuthority,"RUNTIME_ENGINEERING_VERIFIED_GENUINE_SAMPLE_PENDING");
+assert.match(issue.formalC1Binding?.genuineBindingReadback||"",/GENUINE_PENDING$/);
+assert.equal(issue.formalC1Binding?.t48,"OPEN_SAME_SESSION_GENERATION_SET_FINALIZATION");
 
 assert.equal(contract.status,"CLASS_A_CONTRACT_FROZEN_CLASS_B_IMPLEMENTATION_PENDING");
 assert.equal(contract.formalCoreImpact,"NONE");
@@ -40,9 +34,11 @@ assert.equal(registry.rules.sda016System1FormalC1BindingContract,
 assert.equal(registry.rules.sda016System1FormalC1BindingContractMachine,
   "research/sda016_system1_formal_c1_binding_contract_v0_1.json");
 
-assert.match(dashboard,/V0_5_58_TEST_ORACLE/);
+assert.match(dashboard,/V820_PRODUCTION_VERIFIED_FIRST_SCHEDULED_DATE_INELIGIBLE_GENUINE_BINDING_PENDING_T48_OPEN_SHARED_AUTHORITY_PENDING/);
 assert.match(dashboard,/PR #675 merged the Class-A Formal→C1 binding contract/);
-assert.match(dashboard,/PENDING_CLASS_B/);
+assert.match(dashboard,/append-only Formal→C1 ledger implementation = MERGED_DEPLOYED_PRODUCTION_VERIFIED/);
+assert.match(dashboard,/genuine Formal→C1 binding receipt = PENDING/);
+assert.match(dashboard,/SDA016-T48 same-session generation-set finalization = OPEN/);
 assert.match(dashboard,/v8_plan_archive.*NOT an authoritative parent ledger/);
 assert.match(dashboard,/first genuine post-deploy V8\.19 C1 readback/);
 
