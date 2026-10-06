@@ -25,7 +25,7 @@ for(const path of ['v7-regression.yml','v7-repair-ci.yml','v7-cloudflare.yml']){
  assert.equal(chain.indexOf('scripts/apply_v8_18_0.py'),chain.indexOf('scripts/apply_v8_17_0.py')+1);
  if(chain.includes('scripts/apply_v8_19_0.py')){
    assert.equal(chain.indexOf('scripts/apply_v8_19_0.py'),chain.indexOf('scripts/apply_v8_18_0.py')+1);
-   assert.ok(workflow.includes('const VERSION = \"8.19.0-c1-scan-origin-generation-inventory\";'),path+' latest exact candidate version guard');
+   assert.ok(workflow.includes('const VERSION = \"8.19.1-pve250-runtime-remediation\";'),path+' latest exact candidate version guard');
  } else {
    assert.ok(workflow.includes('const VERSION = \"8.18.0-valuation-source-vintage\";'),path+' V8.18 exact candidate version guard');
  }
