@@ -174,7 +174,7 @@ await t("protected readback route and append-only schema are wired",async()=>{
   assert.match(source,/c1_generation_id TEXT NOT NULL UNIQUE/);
   assert.match(source,/url\.pathname === "\/api\/research\/formal-c1-binding"/);
   assert.match(source,/researchFormalC1Binding: formalC1Binding/);
-  assert.equal((source.match(/persistFormalC1BindingSafe\(env,/g)||[]).length,1);
+  assert.equal((source.match(/formalC1Binding = await persistFormalC1BindingSafe\\(env,/g)||[]).length,1);
   assert.doesNotMatch(source,/UPDATE trade_research_formal_c1_bindings/);
   assert.doesNotMatch(source,/DELETE FROM trade_research_formal_c1_bindings/);
   const unauthorized=await api.default.fetch(new Request("https://fixture.invalid/api/research/formal-c1-binding?scanDate="+day),{},{});
