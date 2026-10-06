@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-06T07:36:00+08:00",
+  "updatedAt": "2026-10-06T19:07:00+08:00",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -849,10 +849,9 @@
         "D16_dependence_and_incrementality_analysis",
         "00_cross_system_readback"
       ],
-      "readiness": "NON_CONVERGENCE_GUARD_BASELINE_28_TEST_ORACLE_AND_MACHINE_RECEIPT_SCHEMAS_FROZEN_RUNTIME_FINGERPRINTS_NC_T01_D16_PENDING",
-      "receipt": "shared-knowledge/SYSTEM1_SYSTEM2_POLICY_FINGERPRINT_BASELINE_20261006_V0_1.md",
+      "readiness": "SYSTEM1_FINGERPRINT_S22_T01_T05_PASS_SYSTEM2_FINGERPRINTS_NC_T01_PROSPECTIVE_OVERLAP_D16_PENDING",
+      "receipt": "shared-knowledge/sda022_system1_fingerprint_acceptance_20261006_v0_1.json",
       "remainingDelta": [
-        "System1 research-only decision-policy fingerprint receipt generated from current effective policy and passing S22-T01~T05",
         "System2 per-strategy policy fingerprint receipts passing S22-T06~T10",
         "NC-T01 physical proof passing S22-T11~T16 without System1 Top6/rank",
         "prospective cross-system overlap/divergence receipts satisfying S22-T17~T24",
@@ -867,8 +866,20 @@
         "shared-knowledge/SDA022_ACCEPTANCE_ORACLE_V0_1.md",
         "shared-knowledge/sda022_acceptance_oracle_v0_1.json",
         "shared-knowledge/cross_system_policy_fingerprint_receipt_schema_v0_1.json",
-        "shared-knowledge/sda022_nc_t01_receipt_schema_v0_1.json"
-      ]
+        "shared-knowledge/sda022_nc_t01_receipt_schema_v0_1.json",
+        "shared-knowledge/system1_policy_fingerprint_receipt_v0_1.json",
+        "shared-knowledge/sda022_system1_fingerprint_acceptance_20261006_v0_1.json"
+      ],
+      "system1Fingerprint": {
+        "status": "S22_T01_T05_PASS",
+        "fingerprintRef": "shared-knowledge/system1_policy_fingerprint_receipt_v0_1.json",
+        "acceptanceRef": "shared-knowledge/sda022_system1_fingerprint_acceptance_20261006_v0_1.json",
+        "fingerprintHash": "a41f0699e9fe4a64476460a4df632d16b663b72fb85f0d612988718d7e06d570",
+        "mergedPr": 660,
+        "mergeCommitSha": "862b8c903e81e0945ba030b396b8a7d661f91f1e",
+        "postMergeRegressionRun": 37391608511,
+        "formalCoreImpact": "NONE"
+      }
     }
   ],
   "lastReconciliation": "shared-knowledge/STOCK_SELECTION_AUDIT_CRITICAL_RECONCILIATION_20261005_V0_1.md",

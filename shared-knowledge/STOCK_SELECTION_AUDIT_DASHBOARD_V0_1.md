@@ -122,10 +122,10 @@ Completed governance/observability:
 Current expected oracle result:
 EVIDENCE_NOT_YET_AVAILABLE.
 
-No fingerprint/NC-T01/D16 prereg receipt has yet been physically accepted by 00.
+System1 policy fingerprint has been physically accepted for S22-T01~T05 via PR #660 and post-merge Regression PASS. System2 fingerprints, NC-T01 physical proof, prospective overlap/divergence evidence and final D16/00 closure remain pending.
 
 Next acceptable progression:
-1. System1 fingerprint -> test S22-T01~T05;
+1. System1 fingerprint -> S22-T01~T05 = PASS;
 2. System2 fingerprints -> test S22-T06~T10;
 3. physical NC-T01 -> test S22-T11~T16;
 4. D16 preregistration -> test S22-T25~T28;
@@ -141,3 +141,28 @@ Current ticket counts:
 - CLOSED: 0.
 
 No Formal behavior change.
+
+
+## SDA-022 System1 machine fingerprint acceptance — 2026-10-06
+
+System1 side:
+- S22-T01 = PASS;
+- S22-T02 = PASS;
+- S22-T03 = PASS;
+- S22-T04 = PASS;
+- S22-T05 = PASS.
+
+Evidence:
+- fingerprint: `shared-knowledge/system1_policy_fingerprint_receipt_v0_1.json`;
+- fingerprint hash: `a41f0699e9fe4a64476460a4df632d16b663b72fb85f0d612988718d7e06d570`;
+- PR #660 merged as `862b8c903e81e0945ba030b396b8a7d661f91f1e`;
+- exact-head Regression / Repair / isolated review all PASS;
+- post-merge Regression run `37391608511` = PASS.
+
+Meaning:
+System1 current Formal policy identity is machine-observable and CI-guarded. It explicitly requires neither System2 candidates nor System2 rank output. This is not a claim that System2 is already physically independent and is not a diversification/incremental-Alpha claim.
+
+Remaining SDA-022 path:
+System2 fingerprints -> physical NC-T01 -> prospective overlap/divergence -> D16 dependence/incrementality -> 00 independent closure.
+
+Formal Core impact: NONE.

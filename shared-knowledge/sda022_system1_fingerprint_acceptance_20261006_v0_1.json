@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "SDA022_SYSTEM1_FINGERPRINT_ACCEPTANCE_V0_1",
+  "updatedAt": "2026-10-06T19:07:00+08:00",
+  "status": "S22_T01_T05_PASS",
+  "ticket": "SDA-022",
+  "scope": "SYSTEM1_POLICY_FINGERPRINT_ONLY",
+  "systemId": "SYSTEM1",
+  "fingerprintRef": "shared-knowledge/system1_policy_fingerprint_receipt_v0_1.json",
+  "fingerprintHash": "a41f0699e9fe4a64476460a4df632d16b663b72fb85f0d612988718d7e06d570",
+  "fingerprintId": "SYSTEM1:V8_FORMAL_SELECTION:2026-10-06:V0.1",
+  "policyId": "V8_FORMAL_SELECTION",
+  "policyVersion": "V8_FORMAL_SELECTION_BASELINE_2026-10-06",
+  "oracleTests": {
+    "S22-T01": "PASS",
+    "S22-T02": "PASS",
+    "S22-T03": "PASS",
+    "S22-T04": "PASS",
+    "S22-T05": "PASS"
+  },
+  "dependencyAssertion": {
+    "requiresSystem2Candidates": false,
+    "requiresSystem2Rank": false,
+    "formalMutation": false
+  },
+  "evidence": {
+    "pullRequest": 660,
+    "exactHead": "a979ea05712cb72fc6e2dc5d70407c91ebbb8b4c",
+    "exactHeadRuns": [
+      {
+        "id": 37391479306,
+        "name": "System1 C1 C2 isolated offline repair review",
+        "conclusion": "success"
+      },
+      {
+        "id": 37391478904,
+        "name": "V8 Regression Tests",
+        "conclusion": "success"
+      },
+      {
+        "id": 37391478850,
+        "name": "V8 Repair CI",
+        "conclusion": "success"
+      }
+    ],
+    "mergeCommitSha": "862b8c903e81e0945ba030b396b8a7d661f91f1e",
+    "postMergeRegression": {
+      "id": 37391608511,
+      "conclusion": "success"
+    }
+  },
+  "safety": {
+    "formalCoreImpact": "NONE",
+    "workerRuntimeChanged": false,
+    "productionDeploymentRequired": false,
+    "system2PolicyChanged": false,
+    "ownerProtectedBoundaryCrossed": false
+  },
+  "remainingSda022Evidence": [
+    "System2 per-strategy fingerprints S22-T06~T10",
+    "physical NC-T01 S22-T11~T16",
+    "prospective overlap/divergence S22-T17~T24",
+    "D16 preregistration S22-T25~T28 and later dependence/incrementality",
+    "00 independent closure"
+  ],
+  "interpretation": "System1 policy identity is now machine-observable and CI-guarded. This does not prove System2 physical independence or economic diversification."
+}
