@@ -69,7 +69,8 @@ assert.equal(schema[0]?.schema_value,"1.1");
 
 const bars=await db.rawQuery(
   `SELECT market, symbol, market_date, canonical_key, price_space,
-          open, high, low, close, source_id, source_row_hash, bar_hash,
+          open_price AS open, high_price AS high, low_price AS low, close_price AS close,
+          source_id, source_row_hash, bar_hash,
           observed_at, available_at, pit_replay_eligible, continuity_state
      FROM s2_historical_a1_bars
     WHERE market='TPEX' AND symbol='4806'
