@@ -75,6 +75,22 @@ assert.equal(ready.adjustedHistoryPersisted,false);
 assert.equal(ready.selectionAuthority,false);
 assert.equal(ready.orderImpact,false);
 
+const compactReady=evaluateBoundedTechnicalContinuityBridgeV1_1({
+  rawA1LineageCase:{
+    state:"BOUNDED_RAW_A1_LINEAGE_READY",
+    market:"TPEX",
+    symbol:"4806",
+    family:"CAPITAL_REDUCTION",
+    previousOfficialSession:"2026-09-22",
+    resumeTradingDate:"2026-10-02",
+  },
+  officialEvent,
+  preSuspensionRawBar:bar("2026-09-22",19,21,18,20),
+  resumeRawBar:bar("2026-10-02",26,27,24,24.5),
+});
+assert.equal(compactReady.boundedTechnicalContinuityBridgeReady,true);
+assert.equal(compactReady.state,"BOUNDED_CONTINUITY_BRIDGE_READY_PIT_BLOCKED");
+
 const badPreClose=evaluateBoundedTechnicalContinuityBridgeV1_1({
   rawA1LineageCase:lineage,
   officialEvent,
