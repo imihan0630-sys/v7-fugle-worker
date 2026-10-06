@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-06 22:40 Asia/Taipei
+Updated: 2026-10-06 23:41 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -32,7 +32,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - affectedScope: S2-03 Historical infrastructure / P0 2017-present TWSE+TPEx daily A1 cold history
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement: System 2 historical infrastructure must physically populate and verify the staged official 2017-present Taiwan-equity daily history before it can be described as complete or used as complete full-market replay evidence.
-- observedProblem: Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE and both 2022 markets. 2021 TPEx remains explicitly BLOCKED on an official-source canonical A1 revision concentrated on 2021-01-14; immutable cold history is preserved and must not be overwritten. CORR-001 stays open for revision-lineage handling, 2023+ market-years, the 2026 incremental path and final full-market PIT replay.
+- observedProblem: Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE and both 2022 markets. 2021 TPEx remains explicitly BLOCKED on an official-source canonical A1 revision. 2023 TWSE run #21 completed cold backfill/storage but Physical verify blocked on 205 unexpected bars caused by historical-universe start-date reconstruction for 6873; a conservative current/newlisting reconciliation fix plus regression guard is committed and awaits CI before fresh re-verification. CORR-001 stays open for both blockers, later market-years, the 2026 incremental path and final full-market PIT replay.
 - evidence:
   - SYSTEM2_CHECKPOINT: run 36545375167 failed before annual ingest.
   - SYSTEM2_CHECKPOINT: repaired continuation required manual 2017 TWSE rerun, then TPEx only after TWSE coverage/hash/manifest/receipt verification.
@@ -106,6 +106,10 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - 2022 TPEx run `37473405416` (#20): SUCCESS; 815 packs / 195,840 bars / 815 R2 HEAD + byte-GET SHA checks PASS; 246 official sessions; 0 missing/extra fresh-official keys; 0 source-row-hash or canonical A1 mismatch; source version STABLE.
   - 2022 TPEx membership-session denominator 196,015 leaves 175 explicit UNKNOWN symbol-session gaps; data coverage PASS / replay readiness PARTIAL; TPEx historical-universe readiness remains `PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION`.
   - 2022 TPEx durable evidence: `system2/evidence/S2_HISTORICAL_TPEX_2022_PHYSICAL_VERIFICATION_V0_1.json`; artifact `11419964963`, digest `sha256:b4c2cfe61389d95865d0b7da358ee83275840d3e512830f2eae62af0ed83c76a`; System1 isolation PASS.
+  - 2023 TWSE run `37482307633` (#21): backfill/storage PASS, Physical verify BLOCKED, artifact `11423484682`, System1 isolation PASS; raw source/storage reconciliation is clean with zero source/canonical mismatches.
+  - Structural blocker: 205 `unexpectedBars`; retained sample begins `2023-03-06|6873`. Official TWSE history shows 6873 began Innovation Board trading on 2023-03-06 and later changed to regular listed trading on 2024-09-26.
+  - Durable blocker evidence: `system2/evidence/S2_HISTORICAL_TWSE_2023_UNIVERSE_BLOCKER_V0_1.json`.
+  - Fix `a0bf42f81fa46fc3854d2c8cf844851327966a9b` + regression guard `045d40399c7845ef76cea4051b4a05b2599e1be2`; fresh 2023/TWSE dispatch waits for fix-bearing System2 Research CI PASS.
   - 2021 TPEx is fail-closed BLOCKED, not rewritten. The coverage matrix preserves the old quota blocker as resolved historical provenance and now records the canonical revision blocker.
 - riskIfUnfixed: Historical replay, factor validation, multi-year backtests, regime robustness and strategy comparison can be mistaken for being backed by a complete market history when only bounded/smoke datasets exist. This creates a false-completion and evidence-coverage risk on a P0 dependency.
 - requiredCorrection:
