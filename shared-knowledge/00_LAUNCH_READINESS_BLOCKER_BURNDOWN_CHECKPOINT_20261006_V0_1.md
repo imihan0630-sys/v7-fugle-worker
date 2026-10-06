@@ -919,3 +919,71 @@ Verdict remains `PARTIAL_PASS`.
 5. Research governance / COV-10 owner decision remains separate.
 
 00 continues five-lane concurrent auditing.
+
+
+## Fourth-cycle terminal delta — 2023 TWSE accepted
+
+Observed latest main before write: `0aa345c5b7681d7ea21232fd460ddeb31c495126`.
+
+DATA_LANE run #23 `37534409279` reached terminal SUCCESS after the prior fourth-cycle in-progress readback.
+
+00 independently accepts 2023 TWSE raw A1 data coverage based on the terminal job logs + uploaded physical artifact.
+
+Run:
+- workflow: System2 Historical Pack Annual Backfill;
+- run: `37534409279`;
+- run head: `676c26a53f59aa8cb6b07afbd0453ba3e06d8112`;
+- migrate = PASS;
+- annual backfill = PASS;
+- Physical verify = PASS;
+- physical artifact upload = PASS;
+- System1 production isolation = PASS.
+
+Physical artifact:
+- name: `system2-historical-coverage-TWSE-2023`;
+- artifact id: `11446466007`;
+- digest: `sha256:83e771a65d4853677210303b5b30b5141e3b9a3902dfbbcb83ef1ad4eb459e27`.
+
+Accepted physical facts:
+- year / market = 2023 / TWSE;
+- official sessions = 239 / 239;
+- packs = 1,003;
+- R2 object verification = 1,003 / 1,003;
+- R2 HEAD verification = 1,003 / 1,003;
+- R2 byte-GET verification = 1,003 / 1,003;
+- cold rows = 234,727;
+- fresh official rows = 234,727;
+- missing-from-cold = 0;
+- absent-from-fresh = 0;
+- source-row hash mismatches = 0;
+- canonical A1 value mismatches = 0;
+- sourceVersionState = STABLE;
+- historical universe size = 1,003;
+- current-listing start reconciliations = 4;
+- expected membership-session bars = 235,345;
+- actual bars = 234,727;
+- missing bars = 618;
+- UNKNOWN bars = 618;
+- unexpected bars = 0;
+- structural coverage = PASS;
+- raw coverage = PASS;
+- historical universe = PASS_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION;
+- symbol-session readiness = PARTIAL_UNKNOWN_GAPS;
+- PIT readiness = PASS_CONSERVATIVE_SESSION_FINALITY;
+- data coverage = PASS;
+- replay readiness = PARTIAL;
+- System1 runtime changed = false.
+
+00 disposition:
+`2023_TWSE_RAW_A1_ACCEPTED_REPLAY_PARTIAL`.
+
+Important:
+the second listing-start reconciliation repair is physically validated because the prior 205 unexpected bars are now 0. The remaining 618 symbol-session gaps remain explicit UNKNOWN and are not coerced to suspension, delisting, no-trade, or zero.
+
+This advances historical raw coverage only. It does not promote:
+- System2 selection-to-capacity;
+- SDA-022 physical independence;
+- live/final trading authority;
+- System1 S1.
+
+Next DATA_LANE annual target may advance to 2023 TPEx under the same physical acceptance standard, while the separate 2021 TPEx canonical source-revision/as-of blocker remains open.
