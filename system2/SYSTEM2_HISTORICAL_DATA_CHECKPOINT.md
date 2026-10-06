@@ -38,6 +38,7 @@ Physically accepted raw A1 market-years:
 - 2022 TWSE: data coverage PASS / replay readiness PARTIAL;
 - 2022 TPEx: data coverage PASS / replay readiness PARTIAL.
 - 2023 TWSE: data coverage PASS / replay readiness PARTIAL.
+- 2023 TPEx: data coverage PASS / replay readiness PARTIAL.
 
 2021 TPEx run `37326149826` / #17 is **not accepted**:
 - migrate SUCCESS;
@@ -433,3 +434,36 @@ Artifact: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/3753440
 Prior blocker evidence V0_1/V0_2 remains immutable historical provenance and is superseded operationally by this accepted run; it must not be deleted.
 
 Next annual continuation: fresh workflow_dispatch `year=2023`, `market=TPEX` from latest main. The separate 2021 TPEx canonical-revision blocker remains open in parallel.
+
+
+## 2026-10-07 2023 TPEx durable acceptance
+
+Run `37537013825` / #24 completed SUCCESS on head `608384f9638989c78d97475fe9417bbfdfa51ade` with confirmed inputs `year=2023`, `market=TPEX`.
+
+Acceptance facts:
+- annual backfill: PASS;
+- official trading dates: 239;
+- cold/fresh official rows: 193,327 / 193,327;
+- packs / symbols: 824 / 824;
+- R2 HEAD / byte verification: 824 / 824 PASS;
+- missing-from-cold / absent-from-fresh: 0 / 0;
+- source-row hash mismatch / canonical A1 mismatch: 0 / 0;
+- source version: STABLE;
+- historical-universe readiness: PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION;
+- expected membership-session bars: 193,722;
+- actual bars: 193,327;
+- UNKNOWN symbol-session gaps: 395;
+- unexpected bars: 0;
+- data coverage: PASS;
+- replay readiness: PARTIAL;
+- System1 production isolation: PASS.
+
+Durable evidence: `system2/evidence/S2_HISTORICAL_TPEX_2023_PHYSICAL_VERIFICATION_V0_1.json`.
+
+Independent audit cross-check: `system2/evidence/S2_CORR_20261004_001_AUDIT_PROGRESS_20261007_V0_1.json` independently confirmed physical acceptance and identified only canonical sync debt; no duplicate correction was created.
+
+Run: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37537013825
+
+Artifact: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37537013825/artifacts/11448741341
+
+Next annual continuation: fresh workflow_dispatch `year=2024`, `market=TWSE` from latest main. The separate 2021 TPEx canonical-revision blocker remains open in parallel.
