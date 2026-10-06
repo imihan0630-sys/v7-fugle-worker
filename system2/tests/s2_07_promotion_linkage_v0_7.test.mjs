@@ -62,13 +62,33 @@ const base={
     sourceId:"TPEX_PAR_VALUE_CHANGE_REFERENCE",
     symbol:"3086",
     family:"PAR_VALUE_CHANGE",
+    effectiveDate:"2026-04-20",
+    officialDetailDateTokens:["2026-04-01","2026-04-20"],
     officialSubtypeSemantic:null,
     semanticSeedVersionKey:null,
     semanticSeedDate:null,
+    semanticAlignedRowCount:2,
+    semanticAlignedVersionKeys:[
+      "2026-03-15|10:00:00|1",
+      "2026-04-01|10:00:00|1",
+    ],
     correctionObserved:false,
     correctionObservedVersionKeys:[],
   });
   assert.equal(r.promotionEvidenceReady,true);
+}
+{
+  const r=evaluatePromotionLinkageV0_7({
+    ...base,
+    semanticAlignedVersionKeys:[
+      "2026-02-24|10:00:00|1",
+      "2026-05-29|10:00:00|1",
+      "2026-10-03|10:00:00|1",
+    ],
+  });
+  assert.equal(r.promotionEvidenceReady,false);
+  assert.equal(r.alignedChronologyReady,false);
+  assert.ok(r.blockers.includes("SEMANTIC_EPISODE_NOT_CERTIFIED"));
 }
 {
   const r=evaluatePromotionLinkageV0_7({...base,officialDetailDateTokens:["2026-10-03"]});

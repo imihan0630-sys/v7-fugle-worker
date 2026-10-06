@@ -30,9 +30,14 @@ export function evaluatePromotionLinkageV0_7(diag={}){
     detailDates.length>0 &&
     detailDates.every(validIsoDate) &&
     detailDates.every(d=>d<=effectiveDate);
+  const alignedChronologyReady=
+    alignedKeys.length>0 &&
+    alignedKeys.every(k=>validIsoDate(k.slice(0,10))) &&
+    alignedKeys.every(k=>k.slice(0,10)<=effectiveDate);
   const alignedEpisodeReady=
     Number(diag.semanticAlignedRowCount)>0 &&
-    alignedKeys.length===Number(diag.semanticAlignedRowCount);
+    alignedKeys.length===Number(diag.semanticAlignedRowCount) &&
+    alignedChronologyReady;
   const familyEpisodeReady=family==="CAPITAL_REDUCTION"
     ?(["RETURN_CAPITAL","LOSS_OFFSET"].includes(text(diag.officialSubtypeSemantic)) &&
       Boolean(diag.semanticSeedVersionKey) &&
@@ -74,6 +79,7 @@ export function evaluatePromotionLinkageV0_7(diag={}){
     blockers:Object.freeze(blockers),
     identityReady,
     detailChronologyReady,
+    alignedChronologyReady,
     alignedEpisodeReady,
     familyEpisodeReady,
     correctionContained,
