@@ -91,4 +91,51 @@ assert.equal(
   true,
 );
 
+
+for(const token of [
+  "FORMAL CANDIDATE PENDING",
+  "FORMAL CANDIDATE PENDING / EMPTY",
+  "S2-07 frozen daily candidate/read API 尚未接線",
+  "MONITOR-ONLY｜Bounded Pool / Resonance",
+  "MONITOR / RESEARCH",
+  "MONITOR PROVENANCE",
+  "strategyMemberships 不等於 formal candidate strategy authority",
+  "MONITOR ROW · NOT FORMAL CANDIDATE",
+  "id=\"decisionCandidateState\">NOT_AVAILABLE",
+  "監控策略來源",
+]) assert.equal(html.includes(token),true,"candidate-monitor separation missing: "+token);
+
+assert.equal(html.includes("function formalCandidateRows()"),true);
+assert.equal(html.includes("return [];"),true);
+assert.equal(html.includes("function monitorRows()"),true);
+assert.equal(html.includes('__rowAuthority:"MONITOR_ONLY"'),true);
+assert.equal(html.includes('strategyAttributionAuthority'),false);
+assert.equal(html.includes("function monitorMembershipsOf(r)"),true);
+assert.equal(html.includes("monitorStrategyMemberships"),true);
+assert.equal(html.includes("strategyMemberships"),true);
+assert.equal(html.includes("MONITOR_PROVENANCE_UNRESOLVED"),true);
+
+assert.equal(html.includes("function candidateRows()"),false);
+assert.equal(html.includes("function strategyOf(r)"),false);
+assert.equal(html.includes("UNRESOLVED_STRATEGY"),false);
+assert.equal(html.includes('candidateState").textContent=(candidateRows()'),false);
+
+assert.equal(
+  html.includes('document.getElementById("candidateState").textContent="FORMAL CANDIDATE PENDING";'),
+  true,
+);
+assert.equal(html.includes("monitorTable();"),true);
+assert.equal(html.includes('data-monitor-symbol'),true);
+assert.equal(html.includes('show("decision")'),true);
+assert.equal(
+  html.includes('document.getElementById("decisionCandidateState").textContent="NOT_AVAILABLE";'),
+  true,
+);
+assert.equal(
+  html.includes('document.getElementById("decisionAction").textContent=formalAction;'),
+  true,
+);
+assert.equal(html.includes("disabled>全部</button>"),true);
+assert.equal(html.includes("正式 per-strategy candidate filtering"),true);
+
 console.log("System2 institutional terminal page V0.1 tests PASS");

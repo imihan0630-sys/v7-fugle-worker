@@ -90,5 +90,8 @@ assert.equal(readModel.symbols[0].adapterState.monitorEligible, true);
 assert.equal(readModel.symbols[0].chart.candles.length, 80);
 assert.equal(readModel.symbols[0].chart.intraday15mAffectsDailyResonance, false);
 assert.equal(readModel.symbols[0].episodeState.episodeId, episode.episode.episodeId);
+assert.deepEqual(readModel.symbols[0].monitorStrategyMemberships, ["SHORT_MOMENTUM"]);
+assert.equal(readModel.symbols[0].strategyAttributionAuthority, "MONITOR_POOL_PROVENANCE_ONLY");
+assert.equal(readModel.symbols[0].formalCandidateStrategyId, null);
 
 console.log("System2 daily resonance read model V0.1 tests passed");

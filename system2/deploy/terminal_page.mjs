@@ -105,23 +105,34 @@ a{color:inherit}
 </section>
 
 <section class="view" id="view-candidates">
-  <div class="pagehead"><div><div class="eyebrow">CANDIDATE BOARD</div><h2>候選股</h2><p>不同策略分開看，不製造假的「萬用總分」。目前只顯示可信 bounded pool / resonance 資料；S2-07 daily strategy assessor 尚未產生正式候選時會明確留空。</p></div><span class="status warn" id="candidateState">UPSTREAM PENDING</span></div>
-  <div class="tabs" id="candidateTabs"><button class="active" data-filter="ALL">全部</button><button data-filter="SHORT_MOMENTUM">短線</button><button data-filter="SWING_GROWTH">波段</button><button data-filter="INSTITUTIONAL_ACCUMULATION">法人布局</button><button data-filter="BLACK_HORSE_ACCUMULATION">黑馬</button><button data-filter="INDUSTRY_TREND">產業</button><button data-filter="EVENT_DRIVEN">事件</button><button data-filter="VALUE_REVERSION">價值</button></div>
-  <div class="tablewrap"><table class="table"><thead><tr><th>股票</th><th>策略</th><th>狀態</th><th>共振</th><th>資料</th><th>監控訊號（RESEARCH）</th></tr></thead><tbody id="candidateBody"></tbody></table></div>
+  <div class="pagehead"><div><div class="eyebrow">CANDIDATE BOARD</div><h2>候選股</h2><p>正式 Candidate Board 只接受未來 S2-07 frozen daily candidate/read API。現有 bounded pool / resonance 資料只會出現在下方獨立的 MONITOR-ONLY 區域，不代表正式選股結果。</p></div><span class="status warn" id="candidateState">FORMAL CANDIDATE PENDING</span></div>
+  <div class="panel">
+    <div class="hero-line"><h3>正式候選｜S2-07 Frozen Candidate</h3><span class="status warn">SOURCE NOT WIRED</span></div>
+    <div class="tabs" id="candidateTabs" aria-label="Formal candidate strategy filters pending">
+      <button class="active" data-filter="ALL" disabled>全部</button><button data-filter="SHORT_MOMENTUM" disabled>短線</button><button data-filter="SWING_GROWTH" disabled>波段</button><button data-filter="INSTITUTIONAL_ACCUMULATION" disabled>法人布局</button><button data-filter="BLACK_HORSE_ACCUMULATION" disabled>黑馬</button><button data-filter="INDUSTRY_TREND" disabled>產業</button><button data-filter="EVENT_DRIVEN" disabled>事件</button><button data-filter="VALUE_REVERSION" disabled>價值</button>
+    </div>
+    <div class="hint">策略 tabs 目前僅保留介面位置；在 authorized frozen candidate source 接線前不執行正式 per-strategy candidate filtering。</div>
+    <div class="tablewrap" style="margin-top:10px"><table class="table"><thead><tr><th>股票</th><th>正式策略</th><th>排名</th><th>分數</th><th>Frozen Decision</th></tr></thead><tbody id="candidateBody"></tbody></table></div>
+  </div>
+  <div class="panel" style="margin-top:12px">
+    <div class="hero-line"><h3>MONITOR-ONLY｜Bounded Pool / Resonance</h3><span class="status shadow" id="monitorState">MONITOR / RESEARCH</span></div>
+    <div class="hint">此區僅顯示監控來源與 pool strategy provenance；strategyMemberships 不等於 formal candidate strategy authority。</div>
+    <div class="tablewrap" style="margin-top:10px"><table class="table"><thead><tr><th>股票</th><th>監控策略來源</th><th>來源</th><th>共振</th><th>狀態</th><th>監控訊號（RESEARCH）</th></tr></thead><tbody id="monitorBody"></tbody></table></div>
+  </div>
 </section>
 
 <section class="view" id="view-decision">
   <div class="pagehead"><div><div class="eyebrow">DECISION WORKSPACE</div><h2>決策工作台</h2><p>圖表、共振、策略、風險與進出場資訊集中在同一畫面。尚未由 frozen decision 提供的 entry / stop / target 不會自行生成。</p></div><span class="status shadow">TRACEABLE DECISION</span></div>
   <div class="split">
     <div class="panel">
-      <div class="hero-line"><div><div class="symbol" id="decisionSymbol">尚未選擇標的</div><div class="muted" id="decisionMeta">從候選股或共振中心選擇</div></div><div class="pills"><span class="pill">日K</span><span class="pill">EMA16</span><span class="pill">EMA64</span><span class="pill">Impulse MACD</span></div></div>
+      <div class="hero-line"><div><div class="symbol" id="decisionSymbol">尚未選擇標的</div><div class="muted" id="decisionMeta">可從 MONITOR-ONLY 或共振中心查看；不代表正式候選</div></div><div class="pills"><span class="pill">日K</span><span class="pill">EMA16</span><span class="pill">EMA64</span><span class="pill">Impulse MACD</span></div></div>
       <div class="chartbox" style="margin-top:12px"><canvas id="decisionChart"></canvas></div>
       <div class="tabs"><button class="active">價量</button><button>籌碼</button><button>法人</button><button>產業</button><button>基本面</button><button>估值</button><button>事件</button><button>Frozen History</button></div>
       <div class="lockbox"><strong>下方面板骨架已建好</strong><br>各資料家族等對應 PIT-safe read API 完成後直接接入；目前不以空值推導 bearish / bullish。</div>
     </div>
     <aside class="panel decision-card">
       <div class="eyebrow">FROZEN DECISION ACTION</div><div class="big-action" id="decisionAction">NO_FROZEN_DECISION</div>
-      <div class="kv"><span>策略</span><span id="decisionStrategy">—</span><span>監控訊號</span><span id="decisionMonitorSignal">NO_MONITOR_SIGNAL</span><span>正式 Action</span><span id="decisionFormalAction">NO_FROZEN_DECISION</span><span>信心</span><span>—</span><span>進場區</span><span>尚無 frozen decision</span><span>Trigger</span><span>—</span><span>Do-not-chase</span><span>—</span><span>Stop / Invalidation</span><span>—</span><span>Targets</span><span>—</span><span>Max holding</span><span>—</span><span>資料時間</span><span id="decisionTime">—</span></div>
+      <div class="kv"><span>監控策略來源</span><span id="decisionStrategy">NO_MONITOR_PROVENANCE</span><span>正式候選</span><span id="decisionCandidateState">NOT_AVAILABLE</span><span>監控訊號</span><span id="decisionMonitorSignal">NO_MONITOR_SIGNAL</span><span>正式 Action</span><span id="decisionFormalAction">NO_FROZEN_DECISION</span><span>信心</span><span>—</span><span>進場區</span><span>尚無 frozen decision</span><span>Trigger</span><span>—</span><span>Do-not-chase</span><span>—</span><span>Stop / Invalidation</span><span>—</span><span>Targets</span><span>—</span><span>Max holding</span><span>—</span><span>資料時間</span><span id="decisionTime">—</span></div>
       <div class="banner"><div>ⓘ</div><div><strong>權限邊界</strong><div class="small">Monitor signal 是 research/shadow evidence，不等於正式進出場決策。只有獨立 frozen decision authority 明確提供 formal action 時才可顯示正式 Action；目前沒有就保持 NO_FROZEN_DECISION。</div></div></div>
     </aside>
   </div>
@@ -219,13 +230,27 @@ function show(view){
 document.querySelectorAll("[data-view]").forEach(x=>x.onclick=()=>show(x.dataset.view));
 const initial=location.hash.slice(1);show(document.getElementById("view-"+initial)?initial:"command");
 
-function candidateRows(){
- const rows=(S.resonance?.symbols||[]).map(x=>({...x,__source:"RESONANCE"}));
- if(rows.length) return rows;
- const ps=Array.isArray(S.pool?.symbols)?S.pool.symbols:[];
- return ps.map(x=>typeof x==="string"?{symbol:x,__source:"POOL"}:{...x,__source:"POOL"});
+function formalCandidateRows(){
+ return [];
 }
-function strategyOf(r){return r.strategyId||r.strategy||r.strategyName||r.primaryStrategy||"UNRESOLVED_STRATEGY";}
+function monitorRows(){
+ const resonanceRows=(S.resonance?.symbols||[]).map(x=>({...x,__source:"RESONANCE_MONITOR",__rowAuthority:"MONITOR_ONLY"}));
+ if(resonanceRows.length) return resonanceRows;
+ const poolRows=Array.isArray(S.pool?.symbols)?S.pool.symbols:[];
+ return poolRows.map(x=>typeof x==="string"
+  ?{symbol:x,__source:"BOUNDED_POOL",__rowAuthority:"MONITOR_ONLY"}
+  :{...x,__source:"BOUNDED_POOL",__rowAuthority:"MONITOR_ONLY"});
+}
+function monitorMembershipsOf(r){
+ const raw=Array.isArray(r?.monitorStrategyMemberships)
+  ?r.monitorStrategyMemberships
+  :(Array.isArray(r?.strategyMemberships)?r.strategyMemberships:[]);
+ return [...new Set(raw.map(x=>typeof x==="string"?x:x?.strategyId).filter(Boolean).map(String))];
+}
+function monitorProvenanceLabel(r){
+ const ids=monitorMembershipsOf(r);
+ return ids.length?ids.join(", "):"MONITOR_PROVENANCE_UNRESOLVED";
+}
 function monitorSignalOf(r){
  if(r.displaySignal==="BUY_RESONANCE") return "BUY_RESONANCE";
  if(r.displaySignal==="EXIT_RESONANCE") return "EXIT_RESONANCE";
@@ -237,19 +262,29 @@ function formalDecisionActionOf(){
 }
 function candidateTable(){
  const body=document.getElementById("candidateBody");
- let rows=candidateRows();
- if(S.filter!=="ALL") rows=rows.filter(r=>strategyOf(r)===S.filter);
- if(!rows.length){body.innerHTML='<tr><td colspan="6"><div class="placeholder"><div><b>目前沒有可驗證候選資料</b>S2-07 assessor / capacity 未完成時，不以 diagnostic 或舊股池冒充今日候選。</div></div></td></tr>';return}
+ const rows=formalCandidateRows();
+ if(!rows.length){
+  body.innerHTML='<tr><td colspan="5"><div class="placeholder"><div><b>FORMAL CANDIDATE PENDING / EMPTY</b>S2-07 frozen daily candidate/read API 尚未接線；bounded pool / resonance 不會填入這張正式候選表。</div></div></td></tr>';
+  return;
+ }
+}
+function monitorTable(){
+ const body=document.getElementById("monitorBody");
+ const rows=monitorRows();
+ document.getElementById("monitorState").textContent=rows.length?"MONITOR ONLY · "+rows.length:"MONITOR ONLY · EMPTY";
+ if(!rows.length){
+  body.innerHTML='<tr><td colspan="6"><div class="placeholder"><div><b>目前沒有 bounded monitor rows</b>這不等於 formal candidate zero-pick conclusion。</div></div></td></tr>';
+  return;
+ }
  body.innerHTML=rows.map(r=>{
   const rc=Math.max(Number(r.entryCount||0),Number(r.exitCount||0));
   const conf=r.signalConfirmationState||r.finality||"—";
-  const st=strategyOf(r);
+  const provenance=monitorProvenanceLabel(r);
   const monitorSignal=monitorSignalOf(r);
-  return '<tr data-symbol="'+esc(r.symbol)+'"><td><span class="symbol">'+esc(r.symbol)+'</span></td><td>'+esc(st)+'</td><td><span class="status '+(conf==="CONFIRMED"?"ready":"shadow")+'">'+esc(conf)+'</span></td><td>'+rc+'/3</td><td>'+esc(r.__source)+'</td><td><span class="status shadow">MONITOR / RESEARCH</span> <span class="action watch">'+esc(monitorSignal)+'</span></td></tr>'
+  return '<tr data-monitor-symbol="'+esc(r.symbol)+'"><td><span class="symbol">'+esc(r.symbol)+'</span></td><td><span class="status shadow">MONITOR PROVENANCE</span> '+esc(provenance)+'</td><td>'+esc(r.__source)+'</td><td>'+rc+'/3</td><td>'+esc(conf)+'</td><td><span class="status shadow">MONITOR / RESEARCH</span> <span class="action watch">'+esc(monitorSignal)+'</span></td></tr>'
  }).join("");
- body.querySelectorAll("tr[data-symbol]").forEach(tr=>tr.onclick=()=>{S.selected=tr.dataset.symbol;show("decision")});
+ body.querySelectorAll("tr[data-monitor-symbol]").forEach(tr=>tr.onclick=()=>{S.selected=tr.dataset.monitorSymbol;show("decision")});
 }
-document.querySelectorAll("#candidateTabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#candidateTabs button").forEach(x=>x.classList.remove("active"));b.classList.add("active");S.filter=b.dataset.filter;candidateTable()});
 
 function drawChart(canvas,chart){
  if(!canvas)return;
@@ -268,17 +303,18 @@ function drawChart(canvas,chart){
  (chart.markers||[]).forEach(m=>{const i=rows.findIndex(r=>r.date===m.date);if(i<0||!Number.isFinite(Number(m.value)))return;c.fillStyle=m.side==="ENTRY"?"#ff5f6d":"#4bd29a";c.beginPath();c.arc(x(i),y(Number(m.value)),5,0,Math.PI*2);c.fill()})
 }
 
-function selectedRow(){const rows=candidateRows();return rows.find(x=>String(x.symbol)===String(S.selected))||rows[0]||null}
+function selectedMonitorRow(){const rows=monitorRows();return rows.find(x=>String(x.symbol)===String(S.selected))||rows[0]||null}
 function renderDecision(){
- const r=selectedRow();if(r&&!S.selected)S.selected=r.symbol;
+ const r=selectedMonitorRow();if(r&&!S.selected)S.selected=r.symbol;
  document.getElementById("decisionSymbol").textContent=r?String(r.symbol):"尚未選擇標的";
- document.getElementById("decisionMeta").textContent=r?(stateLabel(r.signalConfirmationState||r.lifecycleState||"WATCH")+" · "+fmt(r.updatedAt||r.chart?.asOf)):"從候選股或共振中心選擇";
+ document.getElementById("decisionMeta").textContent=r?("MONITOR ROW · NOT FORMAL CANDIDATE · "+stateLabel(r.signalConfirmationState||r.lifecycleState||"WATCH")+" · "+fmt(r.updatedAt||r.chart?.asOf)):"沒有 monitor row；formal candidate/frozen decision 仍未接線";
  const formalAction=formalDecisionActionOf(r);
  const monitorSignal=r?monitorSignalOf(r):"NO_MONITOR_SIGNAL";
  document.getElementById("decisionAction").textContent=formalAction;
  document.getElementById("decisionFormalAction").textContent=formalAction;
+ document.getElementById("decisionCandidateState").textContent="NOT_AVAILABLE";
  document.getElementById("decisionMonitorSignal").textContent=monitorSignal;
- document.getElementById("decisionStrategy").textContent=r?strategyOf(r):"—";
+ document.getElementById("decisionStrategy").textContent=r?monitorProvenanceLabel(r):"NO_MONITOR_PROVENANCE";
  document.getElementById("decisionTime").textContent=r?fmt(r.updatedAt||r.chart?.asOf):"—";
  requestAnimationFrame(()=>drawChart(document.getElementById("decisionChart"),r?.chart||{}));
 }
@@ -287,7 +323,7 @@ function resCard(r){
  return '<div class="rescard" data-symbol="'+esc(r.symbol)+'"><div class="hero-line"><span class="symbol">'+esc(r.symbol)+'</span><span class="status '+((r.signalConfirmationState||"")==="CONFIRMED"?"ready":"shadow")+'">'+esc(r.signalConfirmationState||r.lifecycleState||"WATCH")+'</span></div><div class="meter '+(ex?"exit":"")+'">'+[1,2,3].map(i=>'<i class="'+(i<=n?"on":"")+'"></i>').join("")+'</div><div class="muted">'+n+'/3 · '+esc(r.displaySignal||"WATCH")+'</div></div>'
 }
 function renderResonanceChart(){
- const r=selectedRow();
+ const r=selectedMonitorRow();
  requestAnimationFrame(()=>drawChart(document.getElementById("resChart"),r?.chart||{}));
  document.getElementById("resHint").textContent=r?(r.symbol+" · "+stateLabel(r.displaySignal||r.lifecycleState||"WATCH")+" · "+fmt(r.updatedAt||r.chart?.asOf)):"目前沒有可顯示標的";
 }
@@ -320,8 +356,9 @@ function render(){
   feedItem("D1",h?.schemaVersion?"Schema "+h.schemaVersion:"schema unknown",h?.schemaVersion==="1.1"?"ready":"warn"),
   feedItem("CAPTURE",stateLabel(h?.captureState||"UNKNOWN"),h?.captureState==="CAPTURE_DISABLED"?"ready":"warn")
  ].join("");
- document.getElementById("candidateState").textContent=(candidateRows().length?"BOUNDED DATA":"UPSTREAM PENDING");
+ document.getElementById("candidateState").textContent="FORMAL CANDIDATE PENDING";
  candidateTable();
+ monitorTable();
  document.getElementById("resCards").innerHTML=rows.length?rows.map(resCard).join(""):'<div class="placeholder"><div><b>目前沒有 active bounded pool</b>不掃全市場，也不沿用 stale pool。</div></div>';
  document.querySelectorAll(".rescard").forEach(x=>x.onclick=()=>{S.selected=x.dataset.symbol;renderResonanceChart()});
  document.getElementById("rawHealth").textContent=JSON.stringify(h,null,2);
