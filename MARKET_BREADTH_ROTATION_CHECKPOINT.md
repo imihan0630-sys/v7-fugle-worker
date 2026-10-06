@@ -1050,3 +1050,26 @@ Exact next:
 - `SDA-009-R3A`: System 1 consumes the V0.2 handoff and implements diagnostic-only gate/rank/pool/allocation/normalizer/direction fields while preserving all Formal outputs.
 - `SDA-009-R3B`: Room07 consumes the first verified genuine same-generation receipt and freezes common-support gate direction, pool-seat flip, comparator-attributed rank flip, allocation redistribution and BLOCKED/UNKNOWN states.
 - D16 then evaluates economic incrementality under preregistered sector-size, classification-vintage and PIT-valid state controls.
+
+
+## SDA-009 R3 oracle V0.2 — directional/pool/allocation acceptance
+
+Artifact:
+- `research/SDA009_R3_ORACLE_V0_2_CHECKPOINT_20261006.md`
+- `research/sda009_r3_receipt_oracle_v0_2.mjs`
+- `research/test_sda009_r3_receipt_oracle_v0_2.mjs`
+
+Status: R3_ORACLE_V0_2_IMPLEMENTED / DETERMINISTIC_PASS_16 / GENUINE_RECEIPT_COUNT_0 / SYSTEM1_DIAGNOSTIC_PENDING / FORMAL_CORE_UNCHANGED
+
+V0.2 replaces the coarse global-Top6 interpretation with the actual 3+3 pool semantics. It preserves GENERAL/THOUSAND pool rank and pool Top3 state, self-promotion vs self-suppression direction, local constituent contribution vs max-normalizer externality, comparator-attributed rank flips and capital-allocation spillover.
+
+A rank flip without comparator attribution now fails closed. Candidate/peer allocation changes and residual-cash deltas are visible but remain mechanical evidence only; D16 economic interpretation is still required.
+
+Local isolated validation passes 16 deterministic assertions. This is oracle validation, not Taiwan-market effect evidence.
+
+00 independent readback still reports SDA-009 as a true System1 S1 blocker. Genuine candidate-level LOO receipt count remains 0. D09 remains 57.1%; no maturity promotion.
+
+Exact next:
+- `SDA-009-R3A`: System1 implements the V0.2 research-only diagnostic and emits first verified same-generation receipt.
+- `SDA-009-R3B`: Room07 consumes it with the V0.2 oracle and freezes common-support gate direction, pool-seat flip, comparator-attributed rank flip, allocation redistribution and normalizer externality.
+- D16 then evaluates incremental/economic relevance.
