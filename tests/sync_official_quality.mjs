@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
+import {fetchBufferedOfficialSource} from './official_source_fetch_v0_1.mjs';
 process.on('uncaughtException',error=>{console.error('Quality synchronization failed: '+String(error.message).slice(0,900));process.exit(1);});
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worker.js',import.meta.url),'utf8');
 const helpers=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {parseOfficialCsv,parseMopsIncomeHtml,parseMopsMarketOptions,parseMopsQuarterEpsHtml,validateOfficialQualityData,loadTradingCalendar,mostRecentWeekday,isTradingDate};').toString('base64'));
@@ -18,14 +19,7 @@ await helpers.loadTradingCalendar({},Number(marketDate.slice(0,4)));
 assert.equal(helpers.isTradingDate(marketDate),true,'QUALITY_MARKET_DATE is not a trading day');
 assert.ok(process.env.V7_ADMIN_TOKEN,'Normal V7_ADMIN_TOKEN required');
 async function publicSource(url,options={}) {
-  for(let attempt=0;attempt<3;attempt++) {
-    try {
-      const response=await fetch(url,{...options,redirect:'manual',signal:AbortSignal.timeout(45000)});
-      if([401,403].includes(response.status)) throw new Error('Official source disallows access; stop this synchronization without bypassing restrictions');
-      if((response.status===429 || response.status>=500) && attempt<2) {await new Promise(resolve=>setTimeout(resolve,1000*(attempt+1)));continue;}
-      assert.equal(response.ok,true,`Official source HTTP ${response.status}`);return response;
-    }catch(error){if(attempt>=2 || !/fetch failed|timeout|ECONNRESET|ETIMEDOUT/i.test(String(error))) throw new Error(`Public source ${new URL(url).pathname}: ${error.message}`);await new Promise(resolve=>setTimeout(resolve,1000*(attempt+1)));}
-  }
+  return fetchBufferedOfficialSource(url,options);
 }
 async function admin(path,options={}) {
   for(let attempt=0;attempt<3;attempt++) {

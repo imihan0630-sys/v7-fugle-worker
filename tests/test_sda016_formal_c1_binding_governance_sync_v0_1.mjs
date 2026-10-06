@@ -12,17 +12,23 @@ const dashboard=await readFile(new URL("../shared-knowledge/STOCK_SELECTION_AUDI
 
 const issue=queue.issues.find(x=>x.id==="SDA-016");
 assert.ok(issue,"SDA-016 missing");
-assert.match(issue.readiness,/V0_5_58_TEST_ORACLE/);
+assert.ok(typeof issue.readiness==="string"&&issue.readiness.length>0,"SDA-016 readiness missing");
+assert.equal(oracle.schemaVersion,"SDA016_VALIDATION_ORACLE_V0_5");
+assert.equal(oracle.passRule,"ALL_58_BLOCKING_TESTS_PASS_AND_ROOM00_INDEPENDENT_READBACK");
+assert.equal(oracle.tests.length,58);
 assert.ok([
   "CLASS_A_CONTRACT_FROZEN_CLASS_B_IMPLEMENTATION_PENDING",
   "CLASS_B_IMPLEMENTED_VALIDATION_IN_PROGRESS",
   "CLASS_B_IMPLEMENTED_EXACT_HEAD_CI_PASS_MERGE_DEPLOY_APPROVAL_PENDING",
   "CLASS_B_MERGED_DEPLOYMENT_PENDING",
-  "PRODUCTION_AUTHORITY_ESTABLISHED"
+  "PRODUCTION_AUTHORITY_ESTABLISHED",
+  "V820_PRODUCTION_VERIFIED_GENUINE_BINDING_PENDING",
+  "V820_PRODUCTION_VERIFIED_GENUINE_BINDING_VERIFIED"
 ].includes(issue.formalC1Binding?.status),"unexpected Formal-C1 governance lifecycle");
 assert.equal(issue.formalC1Binding?.contract,"research/sda016_system1_formal_c1_binding_contract_v0_1.json");
 assert.ok([
-  "PENDING_CLASS_B","IMPLEMENTED_UNMERGED","MERGED_NOT_DEPLOYED","PRODUCTION_AUTHORITY_ESTABLISHED"
+  "PENDING_CLASS_B","IMPLEMENTED_UNMERGED","MERGED_NOT_DEPLOYED","PRODUCTION_AUTHORITY_ESTABLISHED",
+  "MERGED_DEPLOYED_PRODUCTION_VERIFIED"
 ].includes(issue.formalC1Binding?.appendOnlyLedgerImplementation),"unexpected append-only ledger lifecycle");
 assert.ok([
   "PENDING","CLASS_B_IMPLEMENTED_UNMERGED_NOT_PRODUCTION_AUTHORITY","CLASS_B_MERGED_NOT_DEPLOYED","PRODUCTION_AUTHORITY_ESTABLISHED"
@@ -31,10 +37,6 @@ assert.ok([
 assert.equal(contract.status,"CLASS_A_CONTRACT_FROZEN_CLASS_B_IMPLEMENTATION_PENDING");
 assert.equal(contract.formalCoreImpact,"NONE");
 assert.equal(contract.approvalBoundary.implementationNotAuthorizedByThisContract,true);
-assert.equal(oracle.schemaVersion,"SDA016_VALIDATION_ORACLE_V0_5");
-assert.equal(oracle.passRule,"ALL_58_BLOCKING_TESTS_PASS_AND_ROOM00_INDEPENDENT_READBACK");
-assert.equal(oracle.tests.length,58);
-
 assert.equal(registry.rules.sda016System1FormalC1BindingContract,
   "research/SDA016_SYSTEM1_FORMAL_C1_BINDING_IMPLEMENTATION_CONTRACT_20261006_V0_1.md");
 assert.equal(registry.rules.sda016System1FormalC1BindingContractMachine,

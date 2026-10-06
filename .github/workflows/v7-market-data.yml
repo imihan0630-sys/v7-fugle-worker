@@ -12,6 +12,11 @@ on:
         description: 'Optional prior trading date (YYYY-MM-DD) for guarded historical quality + after-market recovery'
         required: false
         type: string
+      quality_only:
+        description: 'Read/write official quality snapshots only; never invoke after-market scan recovery'
+        required: false
+        default: false
+        type: boolean
 permissions:
   contents: read
 concurrency:
@@ -47,12 +52,13 @@ jobs:
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
           QUALITY_MARKET_DATE: ${{ steps.calendar.outputs.market_date }}
+          QUALITY_RECOVERY_ONLY: ${{ github.event_name == 'schedule' && github.event.schedule == '45 15 * * 1-5' && '1' || '0' }}
         run: node tests/sync_official_quality.mjs
       - name: Recover missing same-day analysis after complete data (skip prior success)
         if: >-
           steps.calendar.outputs.proceed == 'true' &&
           ((github.event_name == 'schedule' && github.event.schedule == '45 15 * * 1-5') ||
-           (github.event_name == 'workflow_dispatch' && inputs.market_date == ''))
+           (github.event_name == 'workflow_dispatch' && inputs.market_date == '' && inputs.quality_only != true))
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
           RECOVERY_MARKET_DATE: ${{ github.event_name == 'schedule' && steps.calendar.outputs.market_date || '' }}
@@ -60,10 +66,11 @@ jobs:
         run: node tests/recover_after_market.mjs
 
       - name: Historical official quality recovery
-        if: github.event_name == 'workflow_dispatch' && inputs.market_date != ''
+        if: github.event_name == 'workflow_dispatch' && inputs.market_date != '' && inputs.quality_only != true
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
           QUALITY_MARKET_DATE: ${{ inputs.market_date }}
+          QUALITY_RECOVERY_ONLY: '1'
         run: node tests/sync_official_quality.mjs
 
       - name: Historical after-market recovery
