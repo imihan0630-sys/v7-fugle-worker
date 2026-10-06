@@ -2973,3 +2973,100 @@ No maturity or Formal change is authorized by this routing.
 7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 8. Next D01 science: separate structural-zone churn from volatility clustering / realized-volatility bursts and spread/depth deterioration.
 9. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-051 (2026-10-06)
+
+### DL-051 — Zone churn vs volatility clustering / realized-volatility burst / liquidity deterioration
+- DL-049 separated zone occupancy from directional churn/path disorder.
+- DL-050 separated ordinary continuous transitions from auction/limit/event/microstructure repricing.
+- DL-051 adds the next confound firewall: repeated zone transitions can rise mechanically when volatility clusters, same-window realized volatility bursts, spread widens, displayed depth thins, or quote/book freshness deteriorates.
+- Owner boundaries remain strict:
+  D04 owns volatility level, realized-volatility primitives, clustering/persistence and contraction/expansion/shock semantics;
+  D05 owns bid-ask spread, displayed depth, quote freshness/reconnect and liquidity-state components;
+  D03 owns pathEfficiency10 / trend-quality primitives;
+  D01 owns zone-local occupancy/churn geometry and mechanism-conditioned interpretation.
+- D01 creates no duplicate volatility indicator, liquidity score or path-efficiency factor.
+- Causal timing is split into two blocks:
+  PRE_WINDOW_CONTEXT = state known no later than churnWindowStartAt / predictor freeze;
+  WITHIN_WINDOW_MECHANISM = realized burst, spread/depth/freshness deterioration and other states observed during the churn window.
+- If predictorFreezeAt precedes churnWindowEndAt, WITHIN_WINDOW_MECHANISM is a mediator/contemporaneous mechanism and may not be backfilled into the earlier predictor.
+- A completed earlier churn window may be stored as historical state for a later decision only under normal PIT / replay rules.
+- Raw transition count is exposure-sensitive. Preserve zone width, owner-supplied volatility scale and a causally verified crossing-opportunity denominator.
+- Allowed diagnostics when denominator is valid/non-zero:
+  transitionsPerOpportunity;
+  sideFlipsPerOpportunity.
+  Zero/unknown denominator remains UNKNOWN; no pseudo-zero churn rate.
+- Keep distinct:
+  VOLATILITY_LEVEL;
+  VOLATILITY_CLUSTER_STATE;
+  REALIZED_VOLATILITY_BURST.
+  Clustering is persistence of magnitude, not direction.
+- Where valid two-sided quotes exist:
+  midquote local volatility is the primary microstructure volatility control;
+  transaction-price RV is a noise/discreteness diagnostic.
+- Transaction RV alone -> VOLATILITY_NOISE_SEPARATION_INCOMPLETE.
+- Spread/depth states are consumed from D05 owner receipts; no D01 threshold, GOOD/BAD label or directional vote is defined.
+- Stale quote != stable spread.
+  Missing book != zero depth.
+  Reconnect-crossed windows are not continuous observation.
+- Quote/book missingness may be stress-endogenous and must remain in the denominator.
+- Research context classes:
+  L0 STRUCTURAL_CHURN_RAW;
+  L1 HIGH_VOLATILITY_CONTEXT;
+  L2 REALIZED_VOLATILITY_BURST_CONTEXT;
+  L3 SPREAD_DETERIORATION_CONTEXT;
+  L4 DEPTH_DETERIORATION_CONTEXT;
+  L5 VOLATILITY_LIQUIDITY_STRESS_MIXED;
+  L6 STRUCTURAL_CHURN_RESIDUAL_CANDIDATE;
+  L7 NOT_EVALUABLE.
+- L6 is only a research candidate after owner receipts/common support; absence of flags alone does not prove structural churn.
+- Same-window liquidity deterioration may be cause, consequence or feedback; D01 does not infer causal direction from coexistence.
+- DL-050 market-mechanism states remain mandatory; a volatility burst during auction, VI restart or price-limit constraint is not pooled with unconstrained continuous trading.
+- Future D16 ladder:
+  V0 RAW_ZONE_CHURN;
+  V1 PRE_WINDOW_VOL_LEVEL_CONTROLLED;
+  V2 PRE_WINDOW_VOL_CLUSTER_CONTROLLED;
+  V3 OPPORTUNITY_NORMALIZED;
+  V4 WITHIN_WINDOW_RV_BURST_STRATIFIED;
+  V5 SPREAD_DEPTH_FRESHNESS_CONTROLLED;
+  V6 DL050_MECHANISM_CONTROLLED;
+  V7 RESIDUAL_ZONE_CHURN_CANDIDATE;
+  V8 MULTI_DATE_MULTI_REGIME_REPLICATION.
+- Future interpretation:
+  Q0 VOLATILITY_LEVEL_EXPLANATION;
+  Q1 VOLATILITY_CLUSTER_EXPLANATION;
+  Q2 CROSSING_OPPORTUNITY_EXPLANATION;
+  Q3 REALIZED_BURST_EXPLANATION;
+  Q4 LIQUIDITY_DETERIORATION_EXPLANATION;
+  Q5 MICROSTRUCTURE_MISSINGNESS_SENSITIVE;
+  Q6 MARKET_MECHANISM_SENSITIVE;
+  Q7 STRUCTURAL_CHURN_RESIDUAL;
+  Q8 NOT_EVALUABLE.
+- Most volatility/churn descriptors remain PRICE_OHLC descendants.
+  Spread/depth may supply distinct owner primitives, but default effectiveIndependentEvidenceCount remains 1 until D16 residual evidence.
+- New files:
+  - research/PATTERN_VOLATILITY_LIQUIDITY_CHURN_V0_1.md
+  - research/pattern_volatility_liquidity_churn_v0_1.json
+  - research/pattern_volatility_liquidity_churn_v0_1.mjs
+  - research/test_pattern_volatility_liquidity_churn_v0_1.mjs
+  - research/PATTERN_VOLATILITY_LIQUIDITY_CHURN_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain open under canonical queue.
+- No outcomes inspected; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-051
+
+1. Reconcile the DL-051 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-051 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve PRE_WINDOW_CONTEXT and WITHIN_WINDOW_MECHANISM causal timing; never backfill same-window volatility/liquidity deterioration into an earlier predictor.
+4. Preserve crossing-opportunity denominators; zero/UNKNOWN opportunity remains UNKNOWN.
+5. Consume D04/D05 volatility/liquidity/freshness receipts and D03 pathEfficiency10 without duplicating owner primitives.
+6. Hand V0-V8 / Q0-Q8 common-support and residual inference to D16.
+7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+8. Next D01 science: separate persistent structural rejection from immediate snapback / price-discovery completion after volatility or liquidity shock.
+9. No runtime wiring / no Formal change.

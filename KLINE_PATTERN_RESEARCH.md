@@ -23687,3 +23687,39 @@ New durable artifacts:
 - research/PATTERN_TRANSITION_MECHANICS_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001/SDA-002 remain open. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-051 — Zone churn vs volatility clustering / realized-volatility burst / liquidity deterioration (2026-10-06)
+
+DL-051 asks whether repeated crossings around a structural zone are actually structural behavior or simply what a more volatile / less liquid price process mechanically produces.
+
+This distinction matters because a fixed-width zone is easier to traverse when volatility rises. A raw count of six zone transitions in a quiet market and six transitions during a volatility burst does not represent the same exposure to crossing opportunity. D01 therefore preserves both raw churn and a causally defined opportunity denominator. transitionsPerOpportunity and sideFlipsPerOpportunity are permitted as descriptive exposure diagnostics only when the opportunity receipt is verified and positive.
+
+The causal clock is equally important.
+
+PRE_WINDOW_CONTEXT contains volatility/liquidity state known before the churn window begins. This block may be used as baseline conditioning for a study beginning at churnWindowStartAt.
+
+WITHIN_WINDOW_MECHANISM contains realized-volatility burst, spread widening, depth thinning, quote freshness deterioration and other owner states observed while the churn window is unfolding. If the predictor was frozen before the window ended, these fields are contemporaneous mechanisms or mediators, not baseline predictors. They cannot be inserted retroactively into the earlier decision row.
+
+This prevents a subtle lookahead error: observing that a volatile 30-minute episode later developed a large realized-volatility burst and then using that completed burst state to explain why the structure looked weak at the start of the episode.
+
+Volatility itself remains decomposed. Level, clustering and burst are separate. A persistently high-volatility regime is different from a newly expanding same-window burst. Volatility clustering means persistence of magnitude; it does not imply return direction.
+
+Liquidity is consumed rather than recreated. D05 remains owner of bid-ask spread, displayed depth, freshness/reconnect and quote/trade microstructure. D01 defines no spread threshold, depth threshold, scalar liquidity score or bullish/bearish sign. Spread widening and depth thinning can increase price impact and apparent zone crossing without proving structural rejection.
+
+Missingness is part of the mechanism. A stale quote is not evidence of a stable spread. A missing order book is not zero depth. A reconnect interval is not a continuously observed book. These states may become more common during stress, so silently deleting them would bias exactly the high-volatility/high-churn sample we are trying to understand.
+
+Where two-sided quote data are valid, the existing D04/D05 rule is preserved: midquote local volatility is the primary microstructure volatility control, while transaction-price realized volatility is useful as a noise diagnostic. Transaction RV without midquote support cannot cleanly separate efficient-price movement from bid-ask/discreteness noise.
+
+The future falsification sequence is deliberately nested. Start with raw zone churn, then control pre-window volatility level, volatility clustering, crossing opportunities, same-window realized bursts, spread/depth/freshness, and finally the DL-050 auction/limit/event/microstructure mechanism states. Only a residual surviving those layers on common support becomes a stronger structural-churn candidate.
+
+Twenty adversarial cases are authored. They verify causal pre-window timing, reject post-start baseline receipts, prohibit same-window backfill, allow completed windows only for later decisions, reject invalid/zero exposure denominators, preserve high-volatility and clustering as context, preserve realized burst separately, keep spread/depth non-directional, preserve mixed stress, fail closed on stale quotes, distinguish transaction from midquote RV, keep one effective evidence family by default and verify no D01-specific numerical volatility/spread/depth threshold is hard-coded.
+
+New durable artifacts:
+- research/PATTERN_VOLATILITY_LIQUIDITY_CHURN_V0_1.md
+- research/pattern_volatility_liquidity_churn_v0_1.json
+- research/pattern_volatility_liquidity_churn_v0_1.mjs
+- research/test_pattern_volatility_liquidity_churn_v0_1.mjs
+- research/PATTERN_VOLATILITY_LIQUIDITY_CHURN_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
