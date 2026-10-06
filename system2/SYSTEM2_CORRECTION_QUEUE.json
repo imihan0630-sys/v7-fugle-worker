@@ -769,7 +769,7 @@
       "directiveId": "S2-CORR-20261006-003",
       "createdAt": "2026-10-06T21:01:27+08:00",
       "severity": "MEDIUM",
-      "status": "VERIFYING",
+      "status": "VERIFIED_CLOSED",
       "title": "Candidate Board presents monitored bounded rows as candidates without resolvable strategy identity",
       "affectedScope": [
         "S2-16 Candidate Board",
@@ -844,8 +844,8 @@
         "PR #686 merge commit fa9c433cf84d61f400c935cbd70019c7c9d39878 changed only the four expected conflict-unit files.",
         "System2 Research CI 37469475340 PASS; V8 Regression 37469475238 PASS; merged-main System2 Research CI 37469704138 PASS."
       ],
-      "finalDisposition": "VERIFYING — independent evidence is durable; final queue closure readback pending.",
-      "updatedAt": "2026-10-06T21:32:00+08:00"
+      "finalDisposition": "VERIFIED_CLOSED — formal Candidate Board remains empty/pending until authorized S2-07 candidate data exists; resonance/pool rows are segregated as monitor-only with non-formal strategy provenance, Decision Workspace keeps formal candidate unavailable and NO_FROZEN_DECISION, and protected strategy/trading/System1 authorities remain unchanged.",
+      "updatedAt": "2026-10-06T21:33:00+08:00"
     },
     {
       "directiveId": "S2-CORR-20261006-004",
