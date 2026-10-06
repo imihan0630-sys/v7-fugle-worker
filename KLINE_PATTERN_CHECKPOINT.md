@@ -4307,3 +4307,118 @@ No maturity or Formal change is authorized by this routing.
 7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 8. Next D01 science: separate prior-day structural memory from overnight information accumulation and opening-gap price discovery at the next session open.
 9. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-063 (2026-10-07)
+
+### DL-063 — Prior-day structural memory vs overnight information / opening-gap price discovery
+- DL-062 separated continuous-session structure from auction mechanics.
+- DL-063 separates prior-day structural memory from overnight repricing and next-session opening price discovery.
+- Canonical owners remain:
+  D01-09 gap/limit semantics;
+  D05-06 opening auction;
+  D11-10 overnight-gap risk and corporate-action firewall;
+  D12-10 night futures;
+  D13 global/session context;
+  D17 event clocks/post-event path;
+  D04-09 tail/gap volatility.
+- A prior-day structure may carry forward only if replay-safe and confirmed before the prior session ended.
+- Overnight information window is explicit between prior-session end and current opening predictor freeze.
+- No synthetic D01 overnight score is defined.
+- Corporate-action/reference-price uncertainty blocks raw gap interpretation.
+- Opening-gap topology is separated into:
+  GAP_INTO_ZONE;
+  GAP_FROM_BELOW_TO_ABOVE_ZONE;
+  GAP_FROM_ABOVE_TO_BELOW_ZONE;
+  GAP_AWAY_FROM_ZONE_SAME_SIDE;
+  OPEN_FROM_ZONE_TO_SIDE;
+  GAP_PATH_UNKNOWN;
+  CORPORATE_ACTION_BLOCKED.
+- Central falsifier:
+  GAP_THROUGH_EQUALS_INTRADAY_RETEST = FALSE.
+  If price skips the entire zone while the market is closed, no continuous tradable path through the zone was observed.
+- The first actual continuous-session structural opportunity is therefore tracked separately:
+  FIRST_CONTINUOUS_RETEST_AFTER_GAP;
+  CONTINUOUS_RECLAIM_AFTER_GAP;
+  NO_CONTINUOUS_RETEST;
+  LIMIT_OR_AUCTION_CONSTRAINED;
+  OPPORTUNITY_UNKNOWN.
+- Opening auction price is treated as a price-discovery outcome of overnight information aggregation, not automatically a prior-structure response.
+- Historical pre-open trial trajectory remains UNKNOWN unless genuinely archived.
+  OPEN_PRICE_CAN_BACKFILL_PREOPEN_TRIAL = FALSE.
+- Event/news/futures/global receipts require knownAt <= predictorFreezeAt.
+  Later-found news may not be used to explain an earlier open ex ante.
+- Night-futures/global/sector moves are context families, not automatic independent confirmations.
+- Prior-day close-auction contamination from DL-062 is carried forward:
+  a structure established only by the previous closing auction is distinct from one already valid in continuous trading.
+- Allowed gap descriptors remain continuous:
+  raw gap;
+  percent gap;
+  ATR/tick-normalized gap;
+  opening distance to frozen zone;
+  zone-skipped flag.
+  D01 defines no arbitrary large-gap threshold.
+- Primary future comparator:
+  same certified overnight context away from a prior zone vs at/through a prior zone.
+- Complementary gap-path comparator:
+  gap-through without continuous cross vs later true continuous retest/reclaim vs no-retest.
+- Opening limit/delay/liquidity constraints remain explicit; skipped zones do not imply executable fills.
+- SDA-001 remains open:
+  prior structure, overnight event, global market, night futures and opening print can share one initiating information parent.
+  effectiveIndependentEvidenceCount remains 1 by default.
+- SDA-002 remains open:
+  priorStructureConfirmedAt / overnightReceiptKnownAt / preopenTrialFirstObservedAt / openingFinalAt / predictorFreezeAt / firstContinuousOpportunityAt / replaySafe are required.
+- Future D16 ladder:
+  O0 raw next-open zone classification;
+  O1 prior structure timing;
+  O2 prior close auction;
+  O3 corporate action;
+  O4 opening auction phase;
+  O5 certified overnight event;
+  O6 night futures/global lead;
+  O7 gap size/direction;
+  O8 generic overnight comparator;
+  O9 first continuous opportunity;
+  O10 gap-through vs continuous cross;
+  O11 structural memory residual candidate;
+  O12 prospective replication.
+- Future interpretations:
+  corporate-action artifact;
+  opening-price-discovery explanation;
+  overnight-event explanation;
+  night-futures/global-lead explanation;
+  gap-path discontinuity explanation;
+  tradability constraint;
+  prior-close-auction contamination;
+  continuous-retest residual;
+  structural-memory residual;
+  overnight-context unknown;
+  not evaluable.
+- External evidence supports the firewall:
+  pre-opening markets are designed for information gathering/price discovery;
+  overnight information enters order submission before continuous trading;
+  opening gaps can encode new information rather than prior-day chart memory.
+- New files:
+  - research/PATTERN_OVERNIGHT_OPENING_ATTRIBUTION_V0_1.md
+  - research/pattern_overnight_opening_attribution_v0_1.json
+  - research/pattern_overnight_opening_attribution_v0_1.mjs
+  - research/test_pattern_overnight_opening_attribution_v0_1.mjs
+  - research/PATTERN_OVERNIGHT_OPENING_ATTRIBUTION_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-063
+
+1. Keep DL-061/DL-062/DL-063 stacked and durable until the unrelated shared SDA-016 governance regression is synchronized by its canonical owner.
+2. Once shared CI is green, land DL-061 first, then rebase/land DL-062 and DL-063 in order.
+3. Treat standard V8 CI only as Formal-isolation evidence; D01 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+4. Preserve prior-day structure, overnight context, opening auction and first continuous opportunity as separate causal stages.
+5. Never equate gap-through with an intraday retest or infer a fill at a skipped zone.
+6. Hand O0-O12 overnight/opening attribution inference to D16.
+7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+8. Next D01 science: separate prior-zone response from overnight inventory/risk transfer and opening liquidity imbalance when no public information event is identified.
+9. No outcome join / no runtime wiring / no Formal change.
