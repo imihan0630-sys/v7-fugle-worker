@@ -44,6 +44,7 @@ export function evaluateExecutionReceipt(r){
 
   const knownEpoch=epochMs(r.signalKnownAt);
   const submittedEpoch=epochMs(r.orderSubmittedAt);
+  const knownLocal=hhmm(r.signalKnownAt);
   const submitted=hhmm(r.orderSubmittedAt);
   if(submittedEpoch!==null && knownEpoch!==null && knownEpoch>submittedEpoch){
     return {status:'SIGNAL_FINALITY_TOO_LATE_FOR_VENUE'};
@@ -62,7 +63,7 @@ export function evaluateExecutionReceipt(r){
     }
     const [start,end]=v.orderWindow.map(parseHHMM);
     if(submitted<start || submitted>end){
-      return known>end ? {status:'NEXT_OPEN_EXECUTION_REQUIRED'} : {status:'SIGNAL_FINALITY_TOO_LATE_FOR_VENUE'};
+      return knownLocal>end ? {status:'NEXT_OPEN_EXECUTION_REQUIRED'} : {status:'SIGNAL_FINALITY_TOO_LATE_FOR_VENUE'};
     }
     if(r.fillStatus==='NO_FILL') return {status:'NO_FILL'};
     if(r.fillStatus==='PARTIAL_FILL') return {status:'PARTIAL_FILL'};
@@ -73,7 +74,7 @@ export function evaluateExecutionReceipt(r){
   if(r.executionVenueId==='TWSE_AFTER_MARKET_ODD_LOT'){
     const [start,end]=v.orderWindow.map(parseHHMM);
     if(submitted<start || submitted>end){
-      return known>end ? {status:'NEXT_OPEN_EXECUTION_REQUIRED'} : {status:'SIGNAL_FINALITY_TOO_LATE_FOR_VENUE'};
+      return knownLocal>end ? {status:'NEXT_OPEN_EXECUTION_REQUIRED'} : {status:'SIGNAL_FINALITY_TOO_LATE_FOR_VENUE'};
     }
     if(r.executionPriceSource==='SAME_DAY_OFFICIAL_CLOSE'){
       throw new Error('ODD_LOT_PRICE_CANNOT_BE_ASSUMED_OFFICIAL_CLOSE');
