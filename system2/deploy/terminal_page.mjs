@@ -1,3 +1,53 @@
+export function taipeiMarketDateTextV0_1(value = new Date()) {
+  const date = value instanceof Date ? value : new Date(value);
+  if (!Number.isFinite(date.getTime())) throw new Error("valid date is required");
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Taipei",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+  const byType = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return byType.year + "-" + byType.month + "-" + byType.day;
+}
+
+export function resolveTerminalSessionAlignmentV0_1({
+  terminalMarketDate,
+  resonance = null,
+  pool = null,
+  operations = null,
+} = {}) {
+  if (typeof terminalMarketDate !== "string" || !/^\\d{4}-\\d{2}-\\d{2}$/.test(terminalMarketDate)) {
+    throw new Error("terminalMarketDate must be YYYY-MM-DD");
+  }
+  const observedDates = Object.freeze({
+    resonance: resonance?.marketDate || null,
+    pool: pool?.marketDate || null,
+    operations: operations?.marketDate || null,
+  });
+  const missingSources = Object.freeze(
+    Object.entries(observedDates).filter(([, value]) => !value).map(([key]) => key),
+  );
+  const mismatchedSources = Object.freeze(
+    Object.entries(observedDates)
+      .filter(([, value]) => value && value !== terminalMarketDate)
+      .map(([key]) => key),
+  );
+  const currentSessionReady = missingSources.length === 0 && mismatchedSources.length === 0;
+  return Object.freeze({
+    terminalMarketDate,
+    observedDates,
+    missingSources,
+    mismatchedSources,
+    currentSessionReady,
+    state: currentSessionReady
+      ? "CURRENT_SESSION_ALIGNED"
+      : mismatchedSources.length
+        ? "SESSION_DATE_MISMATCH"
+        : "SESSION_ALIGNMENT_UNVERIFIED",
+  });
+}
+
 export function buildSystem2TerminalPageHtml() {
   return `<!doctype html>
 <html lang="zh-Hant">
@@ -132,7 +182,7 @@ a{color:inherit}
     </div>
     <aside class="panel decision-card">
       <div class="eyebrow">FROZEN DECISION ACTION</div><div class="big-action" id="decisionAction">NO_FROZEN_DECISION</div>
-      <div class="kv"><span>監控策略來源</span><span id="decisionStrategy">NO_MONITOR_PROVENANCE</span><span>正式候選</span><span id="decisionCandidateState">NOT_AVAILABLE</span><span>監控訊號</span><span id="decisionMonitorSignal">NO_MONITOR_SIGNAL</span><span>正式 Action</span><span id="decisionFormalAction">NO_FROZEN_DECISION</span><span>信心</span><span>—</span><span>進場區</span><span>尚無 frozen decision</span><span>Trigger</span><span>—</span><span>Do-not-chase</span><span>—</span><span>Stop / Invalidation</span><span>—</span><span>Targets</span><span>—</span><span>Max holding</span><span>—</span><span>資料時間</span><span id="decisionTime">—</span></div>
+      <div class="kv"><span>監控策略來源</span><span id="decisionStrategy">NO_MONITOR_PROVENANCE</span><span>正式候選</span><span id="decisionCandidateState">NOT_AVAILABLE</span><span>監控訊號</span><span id="decisionMonitorSignal">NO_MONITOR_SIGNAL</span><span>正式 Action</span><span id="decisionFormalAction">NO_FROZEN_DECISION</span><span>Market Date</span><span id="decisionMarketDate">—</span><span>Row updatedAt</span><span id="decisionUpdatedAt">—</span><span>Chart asOf</span><span id="decisionChartAsOf">—</span><span>信心</span><span>—</span><span>進場區</span><span>尚無 frozen decision</span><span>Trigger</span><span>—</span><span>Do-not-chase</span><span>—</span><span>Stop / Invalidation</span><span>—</span><span>Targets</span><span>—</span><span>Max holding</span><span>—</span><span>資料時間</span><span id="decisionTime">—</span></div>
       <div class="banner"><div>ⓘ</div><div><strong>權限邊界</strong><div class="small">Monitor signal 是 research/shadow evidence，不等於正式進出場決策。只有獨立 frozen decision authority 明確提供 formal action 時才可顯示正式 Action；目前沒有就保持 NO_FROZEN_DECISION。</div></div></div>
     </aside>
   </div>
@@ -159,6 +209,7 @@ a{color:inherit}
     <div class="metric"><div class="label">確認共振</div><div class="value" id="rConf">—</div><div class="sub">finality confirmed</div></div>
     <div class="metric"><div class="label">最新排程</div><div class="value" id="rOps">—</div><div class="sub">19:00 + intraday audit</div></div>
   </div>
+  <div class="banner" id="sessionGuard"><div>⏱</div><div><strong>CURRENT SESSION CHECK</strong><div class="small" id="sessionGuardText">等待 Taipei marketDate 對齊檢查。</div></div></div>
   <div class="panel" style="margin-top:12px"><h3>Bounded Pool</h3><div class="rescards" id="resCards"></div></div>
   <div class="panel" style="margin-top:12px"><h3>共振圖</h3><div class="chartbox"><canvas id="resChart"></canvas></div><div class="hint" id="resHint">選擇標的查看日K共振。</div></div>
 </section>
@@ -212,7 +263,9 @@ a{color:inherit}
 </nav>
 
 <script>
-const S={health:null,resonance:null,pool:null,ops:null,diag:null,selected:null,view:"command",filter:"ALL"};
+${taipeiMarketDateTextV0_1.toString()}
+${resolveTerminalSessionAlignmentV0_1.toString()}
+const S={health:null,resonance:null,pool:null,ops:null,diag:null,selected:null,view:"command",filter:"ALL",terminalMarketDate:null,sessionAlignment:null};
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const fmt=v=>v===null||v===undefined||v===""?"—":String(v);
 const stateLabel=v=>String(v||"UNKNOWN").replaceAll("_"," ");
@@ -233,13 +286,31 @@ const initial=location.hash.slice(1);show(document.getElementById("view-"+initia
 function formalCandidateRows(){
  return [];
 }
+function timestampMatchesTerminalSession(value){
+ if(!value)return true;
+ const date=new Date(value);
+ if(!Number.isFinite(date.getTime()))return false;
+ return taipeiMarketDateTextV0_1(date)===S.terminalMarketDate;
+}
+function resonanceRowCurrentSessionEligible(r){
+ if(!S.sessionAlignment?.currentSessionReady)return false;
+ if(!r||r.marketDate!==S.terminalMarketDate)return false;
+ if(r.chart?.marketDate&&r.chart.marketDate!==S.terminalMarketDate)return false;
+ if(!timestampMatchesTerminalSession(r.updatedAt))return false;
+ if(!timestampMatchesTerminalSession(r.chart?.asOf))return false;
+ return true;
+}
+function currentResonanceRows(){
+ return (S.resonance?.symbols||[]).filter(resonanceRowCurrentSessionEligible);
+}
 function monitorRows(){
- const resonanceRows=(S.resonance?.symbols||[]).map(x=>({...x,__source:"RESONANCE_MONITOR",__rowAuthority:"MONITOR_ONLY"}));
+ if(!S.sessionAlignment?.currentSessionReady)return [];
+ const resonanceRows=currentResonanceRows().map(x=>({...x,__source:"RESONANCE_MONITOR",__rowAuthority:"MONITOR_ONLY"}));
  if(resonanceRows.length) return resonanceRows;
  const poolRows=Array.isArray(S.pool?.symbols)?S.pool.symbols:[];
  return poolRows.map(x=>typeof x==="string"
-  ?{symbol:x,__source:"BOUNDED_POOL",__rowAuthority:"MONITOR_ONLY"}
-  :{...x,__source:"BOUNDED_POOL",__rowAuthority:"MONITOR_ONLY"});
+  ?{symbol:x,marketDate:S.terminalMarketDate,__source:"BOUNDED_POOL",__rowAuthority:"MONITOR_ONLY"}
+  :{...x,marketDate:S.terminalMarketDate,__source:"BOUNDED_POOL",__rowAuthority:"MONITOR_ONLY"});
 }
 function monitorMembershipsOf(r){
  const raw=Array.isArray(r?.monitorStrategyMemberships)
@@ -271,7 +342,10 @@ function candidateTable(){
 function monitorTable(){
  const body=document.getElementById("monitorBody");
  const rows=monitorRows();
- document.getElementById("monitorState").textContent=rows.length?"MONITOR ONLY · "+rows.length:"MONITOR ONLY · EMPTY";
+ const alignment=S.sessionAlignment;
+ document.getElementById("monitorState").textContent=!alignment?.currentSessionReady
+  ?(alignment?.state||"SESSION_ALIGNMENT_UNVERIFIED")+" · STALE_BLOCKED"
+  :(rows.length?"MONITOR ONLY · "+rows.length:"MONITOR ONLY · EMPTY");
  if(!rows.length){
   body.innerHTML='<tr><td colspan="6"><div class="placeholder"><div><b>目前沒有 bounded monitor rows</b>這不等於 formal candidate zero-pick conclusion。</div></div></td></tr>';
   return;
@@ -307,7 +381,7 @@ function selectedMonitorRow(){const rows=monitorRows();return rows.find(x=>Strin
 function renderDecision(){
  const r=selectedMonitorRow();if(r&&!S.selected)S.selected=r.symbol;
  document.getElementById("decisionSymbol").textContent=r?String(r.symbol):"尚未選擇標的";
- document.getElementById("decisionMeta").textContent=r?("MONITOR ROW · NOT FORMAL CANDIDATE · "+stateLabel(r.signalConfirmationState||r.lifecycleState||"WATCH")+" · "+fmt(r.updatedAt||r.chart?.asOf)):"沒有 monitor row；formal candidate/frozen decision 仍未接線";
+ document.getElementById("decisionMeta").textContent=r?("MONITOR ROW · NOT FORMAL CANDIDATE · CURRENT SESSION "+S.terminalMarketDate+" · "+stateLabel(r.signalConfirmationState||r.lifecycleState||"WATCH")):((S.sessionAlignment?.state||"SESSION_ALIGNMENT_UNVERIFIED")+" · current-session monitor unavailable");
  const formalAction=formalDecisionActionOf(r);
  const monitorSignal=r?monitorSignalOf(r):"NO_MONITOR_SIGNAL";
  document.getElementById("decisionAction").textContent=formalAction;
@@ -315,6 +389,9 @@ function renderDecision(){
  document.getElementById("decisionCandidateState").textContent="NOT_AVAILABLE";
  document.getElementById("decisionMonitorSignal").textContent=monitorSignal;
  document.getElementById("decisionStrategy").textContent=r?monitorProvenanceLabel(r):"NO_MONITOR_PROVENANCE";
+ document.getElementById("decisionMarketDate").textContent=r?fmt(r.marketDate):fmt(S.terminalMarketDate);
+ document.getElementById("decisionUpdatedAt").textContent=r?fmt(r.updatedAt):"—";
+ document.getElementById("decisionChartAsOf").textContent=r?fmt(r.chart?.asOf):"—";
  document.getElementById("decisionTime").textContent=r?fmt(r.updatedAt||r.chart?.asOf):"—";
  requestAnimationFrame(()=>drawChart(document.getElementById("decisionChart"),r?.chart||{}));
 }
@@ -325,15 +402,18 @@ function resCard(r){
 function renderResonanceChart(){
  const r=selectedMonitorRow();
  requestAnimationFrame(()=>drawChart(document.getElementById("resChart"),r?.chart||{}));
- document.getElementById("resHint").textContent=r?(r.symbol+" · "+stateLabel(r.displaySignal||r.lifecycleState||"WATCH")+" · "+fmt(r.updatedAt||r.chart?.asOf)):"目前沒有可顯示標的";
+ document.getElementById("resHint").textContent=r
+  ?(r.symbol+" · marketDate "+fmt(r.marketDate)+" · updatedAt "+fmt(r.updatedAt)+" · chart asOf "+fmt(r.chart?.asOf)+" · "+stateLabel(r.displaySignal||r.lifecycleState||"WATCH"))
+  :((S.sessionAlignment?.state||"SESSION_ALIGNMENT_UNVERIFIED")+" · current-session resonance hidden");
 }
 
 function feedItem(label,text,badge){
  return '<div class="feeditem"><time>'+esc(label)+'</time><div>'+esc(text)+'</div><span class="status '+(badge||"locked")+'">'+esc(badge==="ready"?"READY":badge==="warn"?"CHECK":"INFO")+'</span></div>'
 }
 function render(){
- const rr=S.resonance||{},ops=S.ops||{},dg=S.diag||{},h=S.health||{},rows=rr.symbols||[];
- document.getElementById("poolTop").textContent="POOL "+(S.pool?.symbolCount??rows.length??"—");
+ const rr=S.resonance||{},ops=S.ops||{},dg=S.diag||{},h=S.health||{},rows=currentResonanceRows();
+ const alignment=S.sessionAlignment;
+ document.getElementById("poolTop").textContent="POOL "+(alignment?.currentSessionReady?(S.pool?.symbolCount??rows.length??0):0);
  document.getElementById("diagTop").textContent="DIAG "+stateLabel(dg?.receipt?.state||dg?.state||"—");
  const ok=h?.schemaVersion==="1.1";
  document.getElementById("healthPill").className="health-pill "+(ok?"ok":"warn");
@@ -344,9 +424,18 @@ function render(){
  document.getElementById("mDiag").textContent=stateLabel(dg?.receipt?.state||dg?.state||"—");
  document.getElementById("mHealth").textContent=ok?"ONLINE":"CHECK";
  document.getElementById("rCount").textContent=rows.length;
- document.getElementById("rProv").textContent=rr.provisionalResonanceCount??0;
- document.getElementById("rConf").textContent=rr.confirmedResonanceCount??0;
- document.getElementById("rOps").textContent=stateLabel(ops.state||"—");
+ document.getElementById("rProv").textContent=rows.filter(x=>x.signalConfirmationState==="PROVISIONAL").length;
+ document.getElementById("rConf").textContent=rows.filter(x=>x.signalConfirmationState==="CONFIRMED").length;
+ document.getElementById("rOps").textContent=alignment?.currentSessionReady?stateLabel(ops.state||"—"):stateLabel(alignment?.state||"SESSION_ALIGNMENT_UNVERIFIED");
+ const guard=document.getElementById("sessionGuard");
+ const guardText=document.getElementById("sessionGuardText");
+ if(alignment?.currentSessionReady){
+  guard.style.display="";
+  guardText.textContent="CURRENT_SESSION_ALIGNED · "+S.terminalMarketDate+" · resonance / pool / operations marketDate 一致";
+ }else{
+  guard.style.display="";
+  guardText.textContent=(alignment?.state||"SESSION_ALIGNMENT_UNVERIFIED")+" · terminal="+fmt(S.terminalMarketDate)+" · resonance="+fmt(alignment?.observedDates?.resonance)+" · pool="+fmt(alignment?.observedDates?.pool)+" · operations="+fmt(alignment?.observedDates?.operations)+" · STALE/PREVIOUS_SESSION rows blocked";
+ }
  const focus=document.getElementById("todayFocus");
  const triggered=rows.filter(x=>x.displaySignal==="BUY_RESONANCE"||x.displaySignal==="EXIT_RESONANCE");
  focus.innerHTML=triggered.length?'<div style="width:100%">'+triggered.map(x=>'<div class="feeditem"><time>'+esc(x.symbol)+'</time><div><b>'+esc(x.displaySignal)+'</b><br><small>'+esc(x.signalConfirmationState||"")+' · '+esc(x.updatedAt||"")+'</small></div><span class="status '+((x.signalConfirmationState||"")==="CONFIRMED"?"ready":"shadow")+'">'+esc(Math.max(x.entryCount||0,x.exitCount||0))+'/3</span></div>').join("")+'</div>':'<div><b>目前沒有確認的 research monitor resonance</b>若上游 capacity 尚未形成，系統保持空白，不強行補位。</div>';
@@ -359,7 +448,7 @@ function render(){
  document.getElementById("candidateState").textContent="FORMAL CANDIDATE PENDING";
  candidateTable();
  monitorTable();
- document.getElementById("resCards").innerHTML=rows.length?rows.map(resCard).join(""):'<div class="placeholder"><div><b>目前沒有 active bounded pool</b>不掃全市場，也不沿用 stale pool。</div></div>';
+ document.getElementById("resCards").innerHTML=rows.length?rows.map(resCard).join(""):'<div class="placeholder"><div><b>目前沒有 current-session resonance rows</b>STALE / PREVIOUS_SESSION 不計入今日 monitor count，也不沿用到 current state。</div></div>';
  document.querySelectorAll(".rescard").forEach(x=>x.onclick=()=>{S.selected=x.dataset.symbol;renderResonanceChart()});
  document.getElementById("rawHealth").textContent=JSON.stringify(h,null,2);
  document.getElementById("rawOps").textContent=JSON.stringify(ops,null,2);
@@ -369,10 +458,20 @@ function render(){
 
 async function get(url){const r=await fetch(url,{headers:{accept:"application/json"}});if(!r.ok)throw new Error(url+" HTTP "+r.status);return await r.json()}
 async function load(){
+ const marketDate=taipeiMarketDateTextV0_1(new Date());
+ S.terminalMarketDate=marketDate;
+ const q="?marketDate="+encodeURIComponent(marketDate);
  const results=await Promise.allSettled([
-  get("/health"),get("/api/system2/resonance"),get("/api/system2/resonance/pool"),get("/api/system2/resonance/operations"),get("/api/system2/shadow/diagnostic")
+  get("/health"),get("/api/system2/resonance"+q),get("/api/system2/resonance/pool"+q),get("/api/system2/resonance/operations"+q),get("/api/system2/shadow/diagnostic")
  ]);
  [S.health,S.resonance,S.pool,S.ops,S.diag]=results.map(x=>x.status==="fulfilled"?x.value:null);
+ S.sessionAlignment=resolveTerminalSessionAlignmentV0_1({
+  terminalMarketDate:marketDate,
+  resonance:S.resonance,
+  pool:S.pool,
+  operations:S.ops,
+ });
+ if(!S.sessionAlignment.currentSessionReady)S.selected=null;
  render();
 }
 load();setInterval(load,60000);addEventListener("resize",()=>{renderDecision();renderResonanceChart()});
