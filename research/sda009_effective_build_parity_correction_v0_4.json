@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "SDA009_EFFECTIVE_BUILD_PARITY_CORRECTION_V0_4",
+  "auditTicket": "SDA-009",
+  "formalCoreImpact": "NONE",
+  "effectiveBuildAuthority": {
+    "baselineWorkerIsFinalRuntime": false,
+    "patch": "scripts/apply_v7_5_30.py",
+    "comparatorVersion": "PRIORITY_RR_CONSENSUS_SETUP_SECTOR_RS_7_5_30",
+    "orderedFields": [
+      "postConsensusPriorityScore",
+      "rewardPerRisk",
+      "marketConsensusScore",
+      "setupQuality",
+      "sectorFlow",
+      "relativeStrength"
+    ],
+    "finalTie": "preSortOrdinal_stable_order",
+    "deployRunId": 37483896567,
+    "deployRunConclusion": "success"
+  },
+  "corrections": {
+    "v02RewardRiskFirstInterpretation": "SUPERSEDED",
+    "linearPriorityDeltaFallback": "FORBIDDEN_AS_FINAL_PRIORITY_DELTA",
+    "structuralUnroundedSectorContributionDelta": "0.14 * sectorScoreDelta"
+  },
+  "parity": {
+    "gate": {
+      "required": [
+        "breadth",
+        "avgChange",
+        "amountVs20DayAverage"
+      ],
+      "missing": "BLOCKED",
+      "mismatch": "BLOCKED",
+      "authorizes": "MECHANICAL_GATE_EFFECT_ONLY"
+    },
+    "score": {
+      "requires": "production sectorScore or sectorDecisionStateDigest",
+      "missing": "SCORE_PARITY_UNVERIFIED",
+      "authorizesOnPass": [
+        "scoreEffect",
+        "rankPrerequisite",
+        "allocationPrerequisite"
+      ]
+    }
+  },
+  "minimumC1Delta": {
+    "row": [
+      "currentChangePercent",
+      "currentTradeValue"
+    ],
+    "generation": [
+      "classificationSchemeId",
+      "membershipVersion",
+      "membershipDigest",
+      "sectorDecisionStateDigest_or_productionSectorScore"
+    ],
+    "newProviderCalls": 0
+  },
+  "prototype": {
+    "module": "research/sda009_c1_atomic_replay_prototype_v0_4.mjs",
+    "test": "research/test_sda009_c1_atomic_replay_prototype_v0_4.mjs",
+    "localNode": "22.16.0",
+    "assertions": 29,
+    "result": "PASS"
+  },
+  "genuineTaiwanReceiptCount": 0,
+  "d16Required": true,
+  "exactNext": [
+    "SDA-009-R3A1",
+    "SDA-009-R3A2",
+    "SDA-009-R3B"
+  ]
+}
