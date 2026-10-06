@@ -1167,3 +1167,88 @@ No maturity change.
 D16 = 60%.
 D18 = 52%.
 Formal Core LOCKED.
+
+
+## 2026-10-07 opportunity V0.3 + first physical reconciliation + true premarket candidate
+
+Latest opportunity contract:
+- `research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_3.md`;
+- `research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_3.json`.
+
+V0.3 adds asymmetric market-session evidence:
+- direct same-day official nonzero market activity can certify a trading session;
+- data absence cannot certify a non-trading day;
+- non-trading status still requires authoritative calendar/closure provenance;
+- conflict fails closed.
+
+### First physical reconciled opportunity — 2026-10-06
+
+Canonical:
+- `research/D16_PROSPECTIVE_OPPORTUNITY_RECONCILIATION_20261006_V0_2.json`;
+- `research/D16_PROSPECTIVE_OPPORTUNITY_RECONCILIATION_20261006_V0_2.md`.
+
+Direct session witnesses:
+- TPEx day-trading 843 rows;
+- TPEx dealer split 904 rows;
+- TWSE public dealer split 1340 rows.
+
+All three child receipts were independently read back from main and match the D06 summary session.
+
+Opportunity state:
+`VERIFIED_TRADING_SESSION`.
+
+Attempt-one:
+- schedule event;
+- run_attempt=1;
+- run 37495670280;
+- job 112379442583;
+- nominal 00:10 Taipei;
+- actual 00:26:06 Taipei;
+- scheduler delay 966 seconds;
+- failure preserved.
+
+Counts:
+- expectedTradingOpportunityN=1;
+- operationalAttemptOneObservedN=1;
+- prospectiveEvidenceAdmissibleN=0.
+
+Interpretation:
+- operational attempt coverage = 100%;
+- research evidence admission = 0%;
+- not zero-pick;
+- not negative alpha;
+- not strategy failure.
+
+### First truly prospective opportunity candidate — 2026-10-07
+
+Canonical:
+- `research/D16_PROSPECTIVE_OPPORTUNITY_CANDIDATE_20261007_V0_1.json`;
+- `research/D16_PROSPECTIVE_OPPORTUNITY_CANDIDATE_20261007_V0_2.json`.
+
+First-known commit:
+`c63819a90b0dc56f0080a407036577e763939d87`.
+
+GitHub commit time:
+- UTC 2026-10-06T23:28:12Z;
+- Taipei 2026-10-07T07:28:12+08:00.
+
+This is pre-market relative to normal 09:00 Taiwan cash-session open.
+
+First-known state:
+`SESSION_IDENTITY_UNKNOWN_PREMARKET`.
+
+At first-known:
+- not counted as expected trading opportunity yet;
+- not counted as missing attempt;
+- not counted as prospective evidence;
+- not zero-pick;
+- not strategy failure.
+
+Later session resolution must append a separate receipt and cannot overwrite this pre-market UNKNOWN state.
+
+This is the first Room11 opportunity record created before session resolution rather than reconstructed after the fact.
+
+No maturity change.
+D16 = 60%.
+D18 = 52%.
+Formal Core LOCKED.
