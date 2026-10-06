@@ -3774,3 +3774,80 @@ Current research state:
 Exact next continuation point:
 OWNER_APPROVAL_REQUIRED_FOR_PR_668_CLASS_B_PRODUCTION_INTEGRATION.
 If explicitly approved: wire the validated V8.19.1 candidate into Production build/deploy, rerun applicable checks, merge/deploy under the approval, physically read back the three remediation families, then rerun PVE-247 oracle. If not approved: remain draft/unmerged/un-deployed.
+
+
+## PVE-251 continuation — approved Production remediation physical readback + deterministic live evidence lane (2026-10-07)
+
+Status: CLASS_B_PRODUCTION_INTEGRATION_MERGED_DEPLOYED / SCHEDULE_CLASSIFICATION_REPAIRED / BASELINE_WARMUP_PHYSICALLY_VERIFIED / LIVE_INTRADAY_PROVENANCE_PENDING / PVE247_FAIL_CLOSED / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+Owner-approved Production integration completed:
+- superseding PR #676 merged;
+- merge commit `33da8ba71c5438e66584e615ffa75869ad720660`;
+- V8 Cloudflare Deploy run `37462796433` SUCCESS;
+- deployed physical readback reached `8.19.1-pve250-runtime-remediation` without rollback;
+- subsequent System 1 V8.20 deployment preserves the PVE-250 patch chain before `apply_v8_20_0.py`;
+- current Production runtime observed: `8.20.0-formal-c1-binding-ledger`.
+
+2026-10-06 natural after-market readback:
+- Cloudflare schedule remains `35,55 15 * * mon-fri`;
+- 23:35 is now physically classified `AFTER_MARKET_SCAN`, no longer `INTRADAY_MONITOR`;
+- 23:35 status = SKIPPED because unrelated Formal `DATA_INCOMPLETE` financial/valuation/announcement quality gate failed;
+- persisted cron detail now preserves the explicit skip reason;
+- current readback has not yet observed the matching 23:55 recovery row, so PVE-247 schedule-family gate remains FAIL_CLOSED rather than inferred pass.
+
+Independent PV baseline warmup physically succeeded despite the Formal scan skip:
+- symbol 2454 baseline updated at `2026-10-06T15:35:59.636Z` (23:35:59 Asia/Taipei);
+- validSessions = 80;
+- lastMarketDate = 2026-10-05;
+- bootstrapAttemptAt = `2026-10-06T15:35:58.881Z`;
+- providerStatus = HTTP_200;
+- provider = FUGLE;
+- historical 15m endpoint persisted without secret material;
+- rawPayloadHash = `5f9e89f97d25e0d17050fd2973fe29ce37f8e47262076532d49bdd920b466a75`;
+- rawPayloadHashBasis = EXACT_PROVIDER_RESPONSE_SHA256;
+- rawRowCount = 2337;
+- normalizedSessionCount = 80;
+- rejectedSessionCount = 43;
+- rejection accounting preserved;
+- finalValidSessions = 80.
+
+This proves the PVE-250 fail-open baseline sidecar is decoupled from the Formal after-market success path.
+
+2026-10-05 remains permanently non-retroactive:
+- old intraday rows retain null provider / endpoint / rawPayloadHash;
+- old baselines are not rewritten into prospective clean evidence.
+
+Deterministic read-only evidence lane:
+- branch `research/d02-pve251-live-readonly-20261007`;
+- script `research/d02_pve251_live_remediation_readonly_v0_1.mjs`;
+- workflow `.github/workflows/d02-pve251-live-remediation-readonly.yml`;
+- first branch run `37535349809` SUCCESS;
+- artifact `d02-pve251-live-remediation-readonly-37535349809`;
+- PR #726 opened for main integration;
+- proposed schedule = weekdays 13:20 Asia/Taipei (05:20 UTC);
+- D1 access is SELECT-only through an isolated short-lived Worker; cleanup verified; mutationCount=0.
+
+Initial PVE-247 oracle result before the 2026-10-07 market session:
+- remediationReady=false;
+- H001 receipt eligible=false;
+- schedule blocker: RECOVERY_23_55_READBACK_MISSING;
+- baseline live-row blockers: no current-day slotHistoryCount / finite pvSlotRvol20 / sameSlotBaselineClean yet;
+- provenance blockers: no current-day provider / endpoint / rawPayloadHash / normalizationVersion / semanticFingerprint yet;
+- all outcome / numerical-target / D16-selection / maturity-promotion / Formal-change authorizations remain false.
+
+PR #726 integration blocker:
+- Repair CI passes;
+- D02 branch live audit passes;
+- PR Regression currently fails on pre-existing main test `tests/test_sda016_formal_c1_binding_governance_sync_v0_1.mjs`;
+- stale assertion expects readiness matching `V0_5_58_TEST_ORACLE` while latest main queue state is already `V820_PRODUCTION_VERIFIED_FIRST_SCHEDULED_DATE_INELIGIBLE_GENUINE_BINDING_PENDING_T48_OPEN_SHARED_AUTHORITY_PENDING`;
+- do not modify D16/SDA-016 governance semantics from D02 merely to force green CI.
+
+Current research state:
+- D02 remains 60.0%;
+- clean prospective H001 dates remain 0;
+- Gate 7 CLOSED;
+- FORMAL_OPTIMIZATION_CANDIDATE: NONE;
+- Formal Core LOCKED.
+
+Exact next continuation point:
+PVE-252 — after the 2026-10-07 market opens and a completed >=10:15 intraday 15m row exists, run/read the deterministic PVE-251 audit and require: provider + endpoint + exact raw-response SHA-256 + normalizationVersion + semanticFingerprint; slotHistoryCount>=20; finite pvSlotRvol20; sameSlotBaselineClean=true; matching bootstrap receipt; and the complete 23:35/23:55 schedule-family readback. Keep PVE-247 fail closed for every missing family. In parallel, do not merge PR #726 until its unrelated latest-main SDA-016 regression blocker is resolved by the owning governance lane.
