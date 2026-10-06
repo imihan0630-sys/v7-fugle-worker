@@ -2650,3 +2650,106 @@ Exact next:
 4. T48 stays open until a separate generation-set finalization receipt exists;
 5. if System2 SDA-022 fingerprints or NC-T01 land first, switch to S22-T06~T16;
 6. economic outcomes remain CLOSED.
+
+
+## 2026-10-07 prospective-attempt ledger + SDA016-T48 finalization contract
+
+New durable artifacts:
+- `research/D16_PROSPECTIVE_EVIDENCE_ATTEMPT_LEDGER_CONTRACT_20261007_V0_1.md`;
+- `research/D16_PROSPECTIVE_EVIDENCE_ATTEMPT_LEDGER_CONTRACT_20261007_V0_1.json`;
+- `research/D16_PROSPECTIVE_EVIDENCE_ATTEMPT_20261006_V0_1.json`;
+- `research/D16_PROSPECTIVE_EVIDENCE_ATTEMPT_20261002_RETROSPECTIVE_IMPORT_V0_1.json`;
+- `research/D16_PROSPECTIVE_ATTEMPT_CAUSAL_COMPARISON_20261007_V0_1.md`;
+- `research/SDA016_GENERATION_SET_FINALIZATION_CONTRACT_20261007_V0_1.md`;
+- `research/SDA016_GENERATION_SET_FINALIZATION_CONTRACT_20261007_V0_1.json`.
+
+### Attempt-ledger rule
+
+Every evidence-collection execution must remain visible even when no admissible research evidence is produced.
+
+Keep distinct:
+- operational attempt denominator;
+- research calendar-candidate denominator;
+- target-population eligible denominator;
+- prospective evidence N.
+
+Blocked parent/lineage attempts default to:
+- countAsZeroPick=false;
+- countAsNegativeOutcome=false;
+- countAsStrategyFailure=false;
+- countInProspectiveEvidenceN=false;
+- countInMissingnessAccounting=true.
+
+A later successful rerun does not delete the earlier failed attempt.
+Retrospective repair does not rewrite the original prospective state.
+
+### 10/02 vs 10/06 causal distinction
+
+Both surface:
+`FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND`.
+
+2026-10-02:
+- qualityReady=true;
+- missed ready recovery has a partial proven chain through `CROSS_MIDNIGHT_TARGET_DATE_DRIFT`;
+- direct original normal-scan failure remains unknown;
+- status `PARTIAL_CAUSAL_CHAIN`.
+
+2026-10-06:
+- qualityReady=false;
+- missing FINANCIAL + QUARTER_EPS;
+- no proof these were the sole causal reason for absent Formal/C1;
+- status `OBSERVED_FACTS_ONLY`.
+
+Do not pool them as one homogeneous missingness mechanism without an explicit preregistered mapping.
+
+### T48 finalization semantics
+
+V8.20 parent binding != same-session generation-set finalization.
+
+Future finalization receipt must bind:
+- scan/session identity;
+- complete Production producer registry/version;
+- deterministic producer cutoff rule;
+- terminal producer-attempt states;
+- no pending allowed retry/recovery;
+- non-truncated integrity-complete inventory;
+- canonical generation-set digest;
+- Formal-binding membership consistency.
+
+Observed producer classes are:
+- AFTER_MARKET_SCAN_PIPELINE;
+- STAGE_SELECTION_ROUTE;
+- DIRECT_SAFE_PERSISTENCE_CALLER.
+
+Room11 does not declare this list complete for Production; engineering owner must define the authoritative producer registry.
+
+Late same-date generation after finalization:
+`POST_FINALIZATION_GENERATION_VIOLATION`.
+
+Silent rewrite of a finalization receipt is prohibited.
+
+Supplemental acceptance cases:
+`T48-F01~T48-F10`.
+
+These do NOT expand or replace the canonical SDA016 V0.5 58-test oracle.
+
+Current:
+- T41/T42/T44/T45/T46/T47 = engineering runtime pass;
+- T43 = pass preserved;
+- T48 = OPEN_GENERATION_SET_FINALIZATION_PENDING;
+- genuine Formal↔C1 prospective sample N = 0;
+- System2 SDA-022 fingerprints = pending;
+- NC-T01 = pending.
+
+No maturity change:
+D16 = 60%.
+D18 = 52%.
+Formal Core LOCKED.
+
+Exact next:
+1. re-read latest main and queue;
+2. append every new scheduled evidence attempt to the attempt ledger, whether success or blocked;
+3. first admissible Formal↔C1 receipt must be validated without erasing prior blocked attempts;
+4. if generation-set finalization engineering lands, validate only against T48-F01~F10 and canonical T48;
+5. if System2 fingerprints / NC-T01 land first, switch to SDA-022 S22-T06~T16;
+6. economic outcomes remain CLOSED.
