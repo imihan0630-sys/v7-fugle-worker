@@ -23919,3 +23919,35 @@ New durable artifacts:
 - research/PATTERN_MARKET_IMPACT_SELECTION_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-058 — Structural rejection vs information content / initiating-order alpha (2026-10-07)
+
+DL-058 adds a second attribution firewall on top of DL-057 market impact. A trade near support or resistance can move in the expected direction for two different reasons: the trade itself mechanically moves price, or the initiating decision contains information that correctly predicts later order flow or price movement. Neither mechanism is structural-zone efficacy.
+
+The literature supports this separation. Studies of metaorders distinguish a temporary mechanical component from a more persistent component associated with information/correlation with future order flow. Isolated or less-informed trades can show similar temporary impact yet revert more completely later. This does not identify private information directly; it shows that persistent price displacement cannot be assigned mechanically to the zone.
+
+D05 remains the owner of adverse-selection and markout semantics. D01 consumes only owner-certified receipts and does not reconstruct informed trading from candles.
+
+Information classification is frozen before the predictor. A profitable trade, a persistent post-trade price move or a successful breakout may be an outcome, but none may be used to label the initiating trade informed. Ex-ante strategy signals, public-event receipts or pre-trade microstructure information must carry known-at and replay-safe provenance.
+
+Mechanical impact, information context and structural context stay separate. A buy may be large and mechanically impactful, may also be based on a good signal, and may also occur at support. These mechanisms can coexist and must not be collapsed into one smart-money label.
+
+The primary falsifier compares similarly signalled/information-class orders away from and at a structural zone. If zone-associated cases add no residual representation after information/mechanical controls, the zone interpretation weakens.
+
+A second comparison retains zone events with and without information receipts. Crucially, absence of a receipt is not proof of uninformed trading; UNKNOWN remains UNKNOWN.
+
+Signal lineage is protected by SDA-001. A D03 momentum signal and a D01 structure can be different named representations while sharing the same PRICE_OHLC information root. Independent evidence requires residual validation rather than naming.
+
+Post-trade markout remains outcome-side. It may diagnose adverse selection or mechanism but cannot be backfilled into the pre-trade predictor.
+
+Twenty adversarial tests are authored. They cover unknown information, ex-ante and external receipts, adverse-selection proxy timing, data blocking, known-at clocks, replay safety, information-root aliasing, post-trade markout exclusion, mixed mechanical/information cells, denominator preservation and no profitable-case filtering.
+
+New durable artifacts:
+- research/PATTERN_INFORMATION_CONTENT_FIREWALL_V0_1.md
+- research/pattern_information_content_firewall_v0_1.json
+- research/pattern_information_content_firewall_v0_1.mjs
+- research/test_pattern_information_content_firewall_v0_1.mjs
+- research/PATTERN_INFORMATION_CONTENT_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.

@@ -3693,3 +3693,104 @@ No maturity or Formal change is authorized by this routing.
 7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 8. Next D01 science: separate structural rejection from information content / alpha of the initiating order so informed trading is not misread as zone efficacy.
 9. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-058 (2026-10-07)
+
+### DL-058 — Structural rejection vs information content / initiating-order alpha
+- DL-057 separated structural response from order-size / participation-rate mechanical market impact.
+- DL-058 freezes the next falsification: a trade initiated near a structural zone may move in the expected direction because the initiating decision itself contains information/predictive alpha, not because the zone caused the response.
+- External microstructure evidence supports separating mechanical and informational components:
+  uninformed/isolated metaorders can show temporary impact that decays more fully;
+  more informationally correlated order flow can leave more persistent price displacement;
+  adverse selection is a genuine liquidity-provider risk.
+- These findings are mechanism evidence only and do not prove that any Taiwan order is informed.
+- D05 remains owner of adverse-selection / toxicity / markout / order-book microstructure semantics.
+- D10 remains owner of execution-quality semantics where applicable.
+- D01 owns only whether structural-zone interpretation survives owner-certified information context.
+- Information classes are frozen:
+  I0 INFORMATION_CONTENT_UNKNOWN;
+  I1 EX_ANTE_SIGNAL_RECEIPT_PRESENT;
+  I2 EXTERNAL_INFORMATION_RECEIPT_PRESENT;
+  I3 MICROSTRUCTURE_ADVERSE_SELECTION_PROXY_PRESENT;
+  I4 INFORMATION_PROXY_ONLY;
+  I5 INFORMATION_RECEIPT_DATA_BLOCKED.
+- Outcome leakage is prohibited:
+  profitable trade != informed;
+  persistent post-trade move != informed;
+  successful breakout != informed;
+  positive permanent markout != informed.
+- Information classification must use fields known at/before predictorFreezeAt.
+- Three mechanism families remain separate:
+  MECHANICAL_IMPACT_CONTEXT;
+  INFORMATION_CONTEXT;
+  STRUCTURAL_CONTEXT.
+- No composite smart-money score is defined.
+- Persistent post-trade displacement may reflect information, correlated order flow, structure, permanent impact, regime drift or mixtures.
+- Generic comparator:
+  G0 INFORMED_OR_SIGNALLED_ORDER_AWAY_FROM_ZONE;
+  G1 INFORMED_OR_SIGNALLED_ORDER_AT_ZONE.
+  If G1 adds no residual representation beyond G0, initiating-order information is sufficient.
+- Complementary zone comparison:
+  Z0 ZONE_EVENT_NO_INFORMATION_RECEIPT;
+  Z1 ZONE_EVENT_WITH_INFORMATION_RECEIPT.
+- No-information-receipt does not mean truly uninformed; UNKNOWN remains UNKNOWN.
+- Post-trade markout is outcome/mechanism evidence and cannot become baseline information.
+- External news/event receipts require source/release/first-known/ingest/event identity/replaySafe provenance.
+- Strategy-signal receipts require source system/version/generatedAt/informationRoot/replaySafe lineage.
+- PRICE_OHLC-derived initiating signals and D01 geometry share the same information root by default.
+  Different names do not create independent evidence.
+- Research mechanism cells:
+  M0 low/unknown information + low/unknown own impact;
+  M1 higher information proxy + low/unknown own impact;
+  M2 low/unknown information + high own impact;
+  M3 higher information proxy + high own impact.
+- Future D16 ladder:
+  Y0 RAW_ZONE_RESPONSE;
+  Y1 DL057_MARKET_IMPACT_CONTROLLED;
+  Y2 EX_ANTE_SIGNAL_CLASS_CONTROLLED;
+  Y3 EVENT_NEWS_INFORMATION_CONTROLLED;
+  Y4 ADVERSE_SELECTION_CONTEXT_CONTROLLED;
+  Y5 SAME_INFORMATION_ROOT_DEDUPED;
+  Y6 GENERIC_INFORMED_ORDER_COMPARATOR_CONTROLLED;
+  Y7 NO_INFORMATION_RECEIPT_ZONE_REFERENCE;
+  Y8 STRUCTURAL_REJECTION_RESIDUAL_CANDIDATE;
+  Y9 MULTI_DATE_MULTI_SYMBOL_MULTI_INFORMATION_CLASS.
+- Future interpretations:
+  Q0 INITIATING_SIGNAL_EXPLANATION;
+  Q1 EXTERNAL_INFORMATION_EXPLANATION;
+  Q2 ADVERSE_SELECTION_EXPLANATION;
+  Q3 SAME_INFORMATION_ROOT_ALIAS;
+  Q4 INFORMATION_PLUS_MECHANICAL_IMPACT;
+  Q5 STRUCTURAL_REJECTION_RESIDUAL;
+  Q6 INFORMATION_STATUS_UNKNOWN;
+  Q7 NOT_EVALUABLE.
+- SDA-001 remains open:
+  all same-root PRICE_OHLC signal aliases remain de-duplicated by default.
+- SDA-002 remains open:
+  information receipts require knownAt / predictorFreezeAt / replaySafe;
+  future revisions cannot rewrite baseline predictors.
+- New files:
+  - research/PATTERN_INFORMATION_CONTENT_FIREWALL_V0_1.md
+  - research/pattern_information_content_firewall_v0_1.json
+  - research/pattern_information_content_firewall_v0_1.mjs
+  - research/test_pattern_information_content_firewall_v0_1.mjs
+  - research/PATTERN_INFORMATION_CONTENT_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain open under canonical queue.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-058
+
+1. Reconcile the DL-058 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-058 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve mechanical impact, information context and structural context separately.
+4. Preserve UNKNOWN vs no-receipt vs proxy-only information states.
+5. Hand Y0-Y9 / Q0-Q7 information-content residual inference to D16.
+6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+7. Next D01 science: separate structural rejection from correlated external order-flow / crowding so same-direction follow-through is not attributed to one initiating decision or one zone.
+8. No runtime wiring / no Formal change.

@@ -1,0 +1,23 @@
+{
+  "schemaVersion":"pattern-information-content-firewall-v0.1",
+  "updated":"2026-10-07 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "profitableOrderEqualsInformed":false,
+  "persistentPostTradeMoveEqualsInformation":false,
+  "postTradeMarkoutIsBaselineInformation":false,
+  "samePriceSignalDifferentNameEqualsIndependentEvidence":false,
+  "informationUnknownEqualsUninformed":false,
+  "informationStates":[
+    "INFORMATION_CONTENT_UNKNOWN",
+    "EX_ANTE_SIGNAL_RECEIPT_PRESENT",
+    "EXTERNAL_INFORMATION_RECEIPT_PRESENT",
+    "MICROSTRUCTURE_ADVERSE_SELECTION_PROXY_PRESENT",
+    "INFORMATION_PROXY_ONLY",
+    "INFORMATION_RECEIPT_DATA_BLOCKED"
+  ],
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}
