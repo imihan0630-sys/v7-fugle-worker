@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "S2_S2_07_PRE_PARENT_EVIDENCE_CUT_V1_4_1_PHYSICAL_RECEIPT",
+  "version": "1.4.1-RESEARCH",
+  "recordedDate": "2026-10-07",
+  "status": "PASS_IDENTITY_DOMAIN_CORRECTION",
+  "implementation": {
+    "pullRequest": 736,
+    "mergeCommit": "4748b4dd6e3a9c91cfa1567c0c6c0bf21d3eca69",
+    "supersedesV14IdentitySemantics": true,
+    "v14AuthorityWasNeverGranted": true
+  },
+  "verification": {
+    "dedicatedRunId": 37543866544,
+    "system2ResearchCiRunId": 37543866598,
+    "dedicatedConclusion": "success",
+    "system2ResearchCiConclusion": "success",
+    "v8RegressionRunId": 37543866464,
+    "v8RegressionConclusion": "failure",
+    "v8FailureClass": "PRE_EXISTING_MAIN_STALE_SDA016_GOVERNANCE_ASSERTION",
+    "system2V141Causality": false
+  },
+  "identityDomains": {
+    "requiredSourceLaneDomain": "EIGHT_MARKET_WIDE_SOURCE_LANES",
+    "mopsVersionDomain": "MOPS_DISCLOSURE_VERSION_KEY_SOURCE_REPORTED_AT_EXACT_VERSION_PAYLOAD_HASH",
+    "referenceDomain": "OFFICIAL_REFERENCE_STABLE_REFERENCE_KEY_SOURCE_ROW_HASH",
+    "referenceIdentityDomainCountsTowardMopsKeyset": false,
+    "mopsIdentityDomainCountsTowardNoRevisionGap": true
+  },
+  "physicalDiagnostic": {
+    "state": "PRE_PARENT_EVIDENCE_CUT_BLOCKED",
+    "blockers": [
+      "REQUIRED_MARKET_WIDE_LANE_COUNT_MISMATCH",
+      "EXPECTED_MOPS_KEYSET_NOT_CERTIFIED_COMPLETE"
+    ],
+    "referenceObservationCount": 1,
+    "mopsObservationCount": 0,
+    "referenceStableKey": "ef283de5c542e277e42105f12115cffe4d35a5a3b85fcb4c2f3db5c66fb5ba94",
+    "referenceAvailableAt": "2026-10-06T22:13:44.304Z",
+    "preCutManifestReady": false,
+    "noRevisionGapThroughCut": false
+  },
+  "authority": {
+    "technicalContinuityCertified": false,
+    "selectionAuthority": false,
+    "finalSelectionEnabled": false,
+    "livePushEnabled": false,
+    "capitalImpact": false,
+    "orderImpact": false,
+    "system1RuntimeUsed": false,
+    "formalCoreChanged": false
+  },
+  "nextBuildCursor": [
+    "BUILD_GENUINE_EIGHT_LANE_MARKET_WIDE_SOURCE_CUT",
+    "CAPTURE_PROSPECTIVE_MOPS_EXACT_VERSIONS_FOR_FROZEN_EVENT_POPULATION",
+    "USE_EXACT_VERSION_PAYLOAD_HASH_NOT_PAGE_LEVEL_HASH",
+    "FREEZE_EXPECTED_MOPS_KEYSET_BEFORE_PARENT_CUTOFF",
+    "RUN_POST_PARENT_MOPS_NO_REVISION_GAP_RECONCILIATION"
+  ]
+}
