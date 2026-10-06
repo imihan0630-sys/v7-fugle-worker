@@ -1189,3 +1189,75 @@ Exact next:
 - `SDA-009-R3A2`: after parity PASS, execute pure C1-side candidate LOO and emit first genuine receipt.
 - `SDA-009-R3B`: Room07 evaluates the genuine receipt with V0.4 oracle and P0-P5 denominator accounting.
 - D16 performs common-support economic/incremental validation after genuine evidence exists.
+
+
+## SDA-009 R3 V0.5 — capture-minimality and dual-counterfactual contract
+
+Artifacts:
+- `research/SDA009_R3_CAPTURE_AND_COUNTERFACTUAL_CONTRACT_V0_5.md`
+- `research/sda009_r3_capture_and_counterfactual_contract_v0_5.json`
+- `research/sda009_r3_capture_contract_v0_5.mjs`
+- `research/test_sda009_r3_capture_contract_v0_5.mjs`
+- `research/SDA009_SYSTEM1_R3A1_MINIMAL_CAPTURE_HANDOFF_V0_5.md`
+
+Status: R3A1_IMPLEMENTABILITY_PROVEN / CAPTURE_DONT_RECOMPUTE / DUAL_COUNTERFACTUALS_FROZEN / UNCLASSIFIED_FIREWALL_FROZEN / DETERMINISTIC_PASS_12 / GENUINE_RECEIPT_COUNT_0 / FORMAL_CORE_UNCHANGED
+
+Code-path verification confirms the existing C1 builder already receives the complete same-generation todayRows and the exact production sectorStats consumed by Formal. The row map still has the normalized raw row in scope.
+
+Therefore R3A1 needs no new provider calls and no second production sector calculator.
+
+Minimum row capture:
+- currentChangePercent from raw.changePercent;
+- currentTradeValue from raw.tradeValue.
+
+Minimum generation capture:
+- classificationSchemeId;
+- membershipVersion;
+- membershipDigest over sorted market|symbol|industry;
+- sectorDecisionStateVersion;
+- sectorDecisionStateProjection;
+- sectorDecisionStateDigest over the exact production sectorStats score-relevant projection.
+
+The production projection fields are:
+industry / stockCount / historicalCoverage / amount / breadth / avgChange / amountVs20DayAverage / score.
+
+V8.14 SECTOR_GATE_REJECTED is bounded diagnostic sampling and is explicitly forbidden as the SDA-009 incidence denominator. Full immutable C1 remains P0.
+
+The runtime fallback industry `未分類` is now a frozen research state:
+`UNCLASSIFIED_PSEUDO_BUCKET`.
+Mechanical circularity can be measured, but industry-economic/alpha interpretation is forbidden and D16 must retain it separately.
+
+Two counterfactual questions are now separated:
+
+1. `SDA009_FOCAL_SELF_ATTRIBUTION_V0_1`
+   - only focal candidate uses own LOO state;
+   - peers retain production values;
+   - answers marginal self-contribution attribution.
+
+2. `SDA009_FULL_SELF_EXCLUDED_POLICY_V0_1`
+   - every candidate uses own candidate-specific LOO state;
+   - candidate-specific max-amount normalizer is explicitly part of the policy;
+   - answers full de-circularized 3+3 policy sensitivity.
+
+They must not share one unlabeled rankDelta/seatFlip result.
+
+R3A2 ranking gap is now narrowed:
+currently sector-gate-rejected candidates have no actual post-consensus ranking tuple. Exact resurrected rank later needs only same-generation marketConsensusSources or exact marketConsensusBonus in addition to already durable C1 derivations and the R3A1 sector state.
+
+Gate reach is versioned from actual first-failure semantics:
+pre-sector failure => NOT_REACHED;
+sector failure => REACHED_AND_FAILED_SECTOR;
+later failure => REACHED_AND_FAILED_LATER;
+Formal success => REACHED_AND_PASSED;
+unknown reason => UNKNOWN fail-closed.
+
+Isolated V0.5 contract validation:
+PASS / 12 assertions.
+
+Maturity: D09 remains 57.1%. This round proves implementation minimality and closes additional inference ambiguity, but System1 engineering is still pending, genuine Taiwan candidate-level receipt count is 0 and D16 economic evidence is absent.
+
+Exact next:
+- `SDA-009-R3A1`: System1 implements the two row atoms + six generation capture fields from already-in-scope C1/raw/sectorStats data, zero new provider calls.
+- `SDA-009-R3A1-PARITY`: first genuine built-runtime receipt proves membership, sector-state, gate and score parity.
+- `SDA-009-R3A2`: capture same-generation market consensus input for all feature-admitted rows, then emit separately labeled focal-attribution and full-self-excluded-policy results.
+- `SDA-009-R3B`: Room07 evaluates the first genuine receipt with P0-P5 common-support accounting before D16 validation.
