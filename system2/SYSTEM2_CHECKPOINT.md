@@ -2670,3 +2670,38 @@ Next exact BUILD_LANE continuation:
 3. persist immutable evidence-cut identity and source hashes;
 4. run post-parent bounded-complete reconciliation;
 5. only after `noRevisionGapThroughCut` passes bind symbol-session completeness and continuity receipts to genuine parent generations.
+
+
+## 2026-10-07 S2-07 Pre-Parent Evidence Cut V1.4.1 identity-domain correction — PHYSICAL PASS
+
+V1.4 post-merge integration audit found an identity-domain mismatch: V1.3 official reference-row `stableReferenceKey` had been accepted into a generic exact-version keyset while downstream `noRevisionGapThroughCut` uses MOPS disclosure-version `versionKey/sourceReportedAt` semantics. These identities are not interchangeable.
+
+PR #736 merged as `4748b4dd6e3a9c91cfa1567c0c6c0bf21d3eca69` and supersedes V1.4 for pre-parent identity semantics. No authority was ever granted by V1.4 and its physical cut was blocked, so no replay, selection, push, capital or order result was contaminated.
+
+Physical verification:
+- dedicated V1.4.1 run `37543866544`: PASS;
+- System2 Research CI `37543866598`: PASS;
+- physical diagnostic retains one accepted V1.3 reference observation but zero MOPS observations;
+- `referenceIdentityDomainCountsTowardMopsKeyset=false`;
+- `mopsIdentityDomainCountsTowardNoRevisionGap=true`;
+- current cut remains `PRE_PARENT_EVIDENCE_CUT_BLOCKED`;
+- blockers: `REQUIRED_MARKET_WIDE_LANE_COUNT_MISMATCH`, `EXPECTED_MOPS_KEYSET_NOT_CERTIFIED_COMPLETE`;
+- `preCutManifestReady=false`;
+- `noRevisionGapThroughCut=false`.
+
+V1.4.1 now freezes three separate evidence domains:
+1. exactly eight required market-wide source lanes;
+2. prospective MOPS exact disclosure versions, including exact-version payload hash, `sourceReportedAt` and first-observed clock;
+3. V1.3 official reference-row availability observations, retained only as bounded reference evidence.
+
+Only domain (2) may enter the MOPS expected/observed keyset and later no-revision-gap reconciliation. Historical `sourceReportedAt` remains falsification-only and cannot positively backfill a missing historical version.
+
+V8 Regression `37543866464` reproduces the already documented pre-existing SDA-016 stale assertion and is outside BUILD_LANE ownership; no System1/Formal file changed.
+
+Next exact BUILD_LANE continuation:
+1. build the genuine eight-lane market-wide source cut;
+2. prospectively capture MOPS exact versions for the frozen event population;
+3. use exact-version row/content hashes, not page-level hashes, for version mutation detection;
+4. freeze the complete expected MOPS keyset before parent cutoff;
+5. post-parent run bounded-complete MOPS reconciliation;
+6. only after `noRevisionGapThroughCut` passes bind symbol-session and technical-continuity receipts.

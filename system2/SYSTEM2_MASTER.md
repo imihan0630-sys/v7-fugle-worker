@@ -762,3 +762,10 @@ The current physical V1.3 single 4806 sample correctly remains `PRE_PARENT_EVIDE
 Dedicated V1.4 run `37542639896` and System2 Research CI `37542639932` PASS. V8 Regression has an independently documented pre-existing SDA-016 stale governance assertion and V1.4 changes no System1/Formal file.
 
 No scheduler, selection, push, capital or order authority is enabled. Next BUILD_LANE work is the genuine pre-parent full-scope source cut, followed by bounded-complete post-parent reconciliation before any symbol-session/technical-continuity binding.
+
+
+## 2026-10-07 S2-07 V1.4.1 identity-domain correction
+
+V1.4.1 supersedes V1.4 pre-parent identity semantics after detecting that official reference-row keys and MOPS disclosure-version keys had been conflated. The corrected contract keeps eight market-wide source lanes, MOPS prospective exact versions and official reference observations as separate populations. Only MOPS disclosure versions may certify `noRevisionGapThroughCut`.
+
+PR #736 / merge `4748b4dd6e3a9c91cfa1567c0c6c0bf21d3eca69`; dedicated run `37543866544` PASS; System2 Research CI `37543866598` PASS. Current physical input remains honestly blocked because the genuine eight-lane cut and complete prospective MOPS version population do not yet exist. Formal Core and all trading authority remain locked.
