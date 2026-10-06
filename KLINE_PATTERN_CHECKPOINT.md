@@ -3070,3 +3070,100 @@ No maturity or Formal change is authorized by this routing.
 7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 8. Next D01 science: separate persistent structural rejection from immediate snapback / price-discovery completion after volatility or liquidity shock.
 9. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-052 (2026-10-06)
+
+### DL-052 — Persistent structural rejection vs shock snapback / price-discovery completion
+- DL-051 separated zone churn from volatility clustering / realized-volatility burst / liquidity deterioration.
+- DL-052 freezes the next mechanism firewall: a fast reversal near a structural zone can be temporary liquidity-impact recovery, bid/ask/discreteness correction, volatility overshoot, auction/VI/limit repricing recovery, information-driven price discovery, genuine structural rejection, or a mixture.
+- Immediate touch-and-bounce is therefore insufficient evidence of structural memory.
+- External microstructure evidence strengthens the separation:
+  Biais/Weill (2009) show liquidity shocks can generate sharp price decline/order-flow imbalance followed by gradual price recovery;
+  Lo/Hall (2015) treat limit-order-book resiliency as post-shock replenishment/recovery;
+  Yamada/Ito (2022) explicitly separate price-discovery speed from liquidity-recovery speed.
+- Owner boundaries remain strict:
+  D04 owns volatility shock/burst primitives;
+  D05 owns spread/depth/freshness, resiliency and transaction-vs-midquote noise;
+  D11 owns event identity/timing;
+  D01 owns the frozen-zone relation and opportunity semantics.
+- Separate clocks are mandatory:
+  shockStartedAt;
+  shockKnownAt;
+  shockPeakAt;
+  structuralOpportunityAt;
+  predictorFreezeAt;
+  liquidityRecoveryAt;
+  priceRecoveryAt;
+  priceDiscoveryCompletionAt.
+- Future recovery clocks may never be backfilled into the predictor snapshot.
+- Preferred temporary-impact reference is a valid PRE_SHOCK_MIDQUOTE_REFERENCE.
+  A transaction-price fallback remains REFERENCE_NOISE_SEPARATION_INCOMPLETE.
+- A structural boundary may coincide numerically with the pre-shock reference.
+  Numerical coincidence does not identify whether the later move is structural rejection or ordinary snapback.
+- Frozen shock-timing states:
+  NO_PREEXISTING_SHOCK_CONTEXT;
+  PREEXISTING_VOLATILITY_SHOCK;
+  PREEXISTING_LIQUIDITY_SHOCK;
+  PREEXISTING_MIXED_SHOCK;
+  SHOCK_BEGINS_AFTER_OPPORTUNITY;
+  SHOCK_CONTEXT_UNKNOWN.
+- Liquidity recovery != price recovery.
+  A single generic recoveredAt field is prohibited.
+- Future mechanism candidates:
+  TEMPORARY_IMPACT_RECOVERY_CANDIDATE;
+  PERMANENT_PRICE_DISCOVERY_CANDIDATE;
+  STRUCTURAL_REJECTION_RESIDUAL_CANDIDATE;
+  MIXED_RECOVERY_STRUCTURE_CANDIDATE;
+  NOT_EVALUABLE.
+- No universal 1-bar / 5-minute / 15-minute / 3-bar / N-ATR snapback horizon is frozen.
+  D16 must preregister horizon families or consume owner-defined recovery events before opening outcomes.
+- Midquote vs transaction-price noise separation remains explicit.
+  A transaction-price snapback without valid quote evidence is SNAPBACK_NOISE_SEPARATION_INCOMPLETE.
+- Event/information context can permanently move efficient price.
+  Stabilization on the other side of a zone can therefore be price discovery rather than structural failure; short-lived reversal can be transitional rather than structural rejection.
+- Future D16 ladder:
+  R0 RAW_TOUCH_RESPONSE;
+  R1 DL050_MARKET_MECHANICS_CONTROLLED;
+  R2 PREEXISTING_VOLATILITY_SHOCK_CONTROLLED;
+  R3 PREEXISTING_LIQUIDITY_SHOCK_CONTROLLED;
+  R4 PRE_SHOCK_REFERENCE_SNAPBACK_CONTROLLED;
+  R5 LIQUIDITY_RECOVERY_VS_PRICE_RECOVERY_SEPARATED;
+  R6 PRICE_DISCOVERY_CONTEXT_CONTROLLED;
+  R7 STRUCTURAL_REJECTION_RESIDUAL_CANDIDATE;
+  R8 MULTI_DATE_MULTI_REGIME_REPLICATION.
+- Future interpretations:
+  Q0 AUCTION_LIMIT_MICROSTRUCTURE_EXPLANATION;
+  Q1 VOLATILITY_SHOCK_SNAPBACK_EXPLANATION;
+  Q2 LIQUIDITY_SHOCK_RECOVERY_EXPLANATION;
+  Q3 PRE_SHOCK_REFERENCE_REVERSION_EXPLANATION;
+  Q4 PRICE_DISCOVERY_COMPLETION_EXPLANATION;
+  Q5 MIXED_SHOCK_STRUCTURE_MECHANISM;
+  Q6 STRUCTURAL_REJECTION_RESIDUAL;
+  Q7 NOT_EVALUABLE.
+- One structural opportunity remains one causal parent even when multiple shock/recovery receipts exist.
+  effectiveIndependentEvidenceCount remains 1 by default.
+- New files:
+  - research/PATTERN_SHOCK_SNAPBACK_V0_1.md
+  - research/pattern_shock_snapback_v0_1.json
+  - research/pattern_shock_snapback_v0_1.mjs
+  - research/test_pattern_shock_snapback_v0_1.mjs
+  - research/PATTERN_SHOCK_SNAPBACK_D16_HANDOFF_V0_1.md
+- 16 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain open under canonical queue.
+- No outcomes inspected; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-052
+
+1. Reconcile the DL-052 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-052 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve pre-shock reference, liquidity recovery, price recovery and price-discovery clocks separately; never backfill post-opportunity recovery into baseline predictors.
+4. Keep D04/D05/D11 ownership explicit and do not duplicate their shock, resiliency or event estimators.
+5. Hand R0-R8 / Q0-Q7 common-support and mechanism-separation inference to D16.
+6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+7. Next D01 science: separate persistent rejection from inventory replenishment / queue refill around the zone, especially when displayed depth reforms after the shock.
+8. No runtime wiring / no Formal change.

@@ -1,0 +1,23 @@
+{
+  "schemaVersion":"pattern-shock-snapback-v0.1",
+  "updated":"2026-10-06 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "owners":{
+    "volatilityShock":"D04",
+    "liquidityRecovery":"D05",
+    "eventContext":"D11"
+  },
+  "immediateSnapbackEqualsStructuralRejection":false,
+  "liquidityRecoveryEqualsPriceRecovery":false,
+  "returnToPreShockReferenceEqualsSupportMemory":false,
+  "transactionPriceReversalEqualsEfficientPriceRecovery":false,
+  "postOpportunityRecoveryAsBaselinePredictor":"PROHIBITED",
+  "fixedUniversalSnapbackHorizon":null,
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "futureLadder":["R0","R1","R2","R3","R4","R5","R6","R7","R8"],
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}
