@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_V0_2",
+  "updatedAt": "2026-10-07T07:04:00+08:00",
+  "owner": "D16 / Room11",
+  "status": "RESEARCH_ONLY_EXPECTED_OPPORTUNITY_LEDGER_FROZEN",
+  "formalCoreImpact": "NONE",
+  "maturityImpact": "NONE",
+  "purpose": "Prevent silent no-run dates and calendar misclassification from disappearing from prospective research coverage denominators.",
+  "sourcePatternRef": "system2/SYSTEM2_DECISION_CLOCK_EVIDENCE_AGGREGATION_V0_1.md",
+  "opportunityIdentity": {
+    "opportunityId": "REQUIRED_IMMUTABLE",
+    "experimentFamilyId": "REQUIRED_IF_ASSIGNED",
+    "researchStreamId": "REQUIRED_IF_ASSIGNED",
+    "marketDate": "REQUIRED",
+    "preregisteredWindowId": "REQUIRED",
+    "opportunityRuleVersion": "REQUIRED",
+    "expectedWorkflowName": "REQUIRED",
+    "expectedExecutionWindow": "REQUIRED",
+    "targetScanDateRuleHash": "REQUIRED",
+    "officialSessionStateEnum": [
+      "VERIFIED_TRADING_SESSION",
+      "VERIFIED_NON_TRADING_DAY",
+      "SESSION_IDENTITY_UNKNOWN"
+    ],
+    "marketSessionIdentityHash": "REQUIRED",
+    "obligationStateEnum": [
+      "EXPECTED_TRADING_SESSION_ATTEMPT",
+      "VERIFIED_NON_TRADING_DAY_NO_OBLIGATION",
+      "SESSION_IDENTITY_UNKNOWN",
+      "SCHEDULE_NOT_ACTIVE_YET",
+      "EXPLICIT_PREREG_EXCLUSION"
+    ]
+  },
+  "calendarProvenance": {
+    "calendarSource": "REQUIRED",
+    "calendarSourceIdentity": "REQUIRED",
+    "calendarYear": "REQUIRED",
+    "calendarObservedAt": "REQUIRED",
+    "calendarPayloadDigest": "REQUIRED",
+    "calendarRuleVersion": "REQUIRED",
+    "emergencyClosureOverlayRefs": "REQUIRED_LIST",
+    "firstKnownState": "REQUIRED",
+    "correctionChainRefs": "REQUIRED_LIST"
+  },
+  "system1CurrentWorkflowFacts": {
+    "workflow": ".github/workflows/system1-c1-evidence.yml",
+    "cronUtc": "10 16 * * 1-5",
+    "localInterpretation": "00:10 Asia/Taipei Tuesday-Saturday",
+    "defaultTargetFunction": "previousTaipeiDate()",
+    "defaultTargetIsOfficialPreviousSession": false
+  },
+  "attemptAnchorRule": {
+    "anchor": "FIRST_SCHEDULED_EXECUTION_ATTEMPT_FOR_OPPORTUNITY",
+    "laterRerunCanReplaceAnchor": false,
+    "manualCanReplaceScheduledAnchor": false,
+    "pushCanReplaceScheduledAnchor": false,
+    "preserveAllLaterAttempts": true
+  },
+  "reconciliationStateEnum": [
+    "ATTEMPT_ONE_SUCCESS_ADMISSIBLE",
+    "ATTEMPT_ONE_SUCCESS_RESEARCH_INELIGIBLE",
+    "ATTEMPT_ONE_FAILED_BLOCKER_PRESERVED",
+    "NO_SCHEDULED_ATTEMPT_OBSERVED",
+    "SCHEDULED_RUN_NO_ARTIFACT",
+    "SCHEDULED_RUN_ARTIFACT_INVALID",
+    "DUPLICATE_OR_RERUN_DIAGNOSTIC_ONLY",
+    "ATTEMPT_OPPORTUNITY_DATE_MISMATCH",
+    "SESSION_IDENTITY_CONFLICT",
+    "PENDING_COVERAGE_FINALIZATION"
+  ],
+  "requiredDenominators": [
+    "expectedTradingOpportunityN",
+    "operationalAttemptOneObservedN",
+    "prospectiveEvidenceAdmissibleN",
+    "noScheduledAttemptGapN",
+    "nonTradingScheduledRunN",
+    "sessionIdentityUnknownN",
+    "attemptOpportunityDateMismatchN"
+  ],
+  "emergencyClosureRule": {
+    "silentRewriteAllowed": false,
+    "appendCorrectionRequired": true,
+    "outcomeExposureMustBeRecorded": true,
+    "adaptiveMembershipChangeRequiresSDA016ConsumptionReview": true
+  },
+  "adversarialCases": [
+    {
+      "id": "OPP-O01",
+      "expected": "NO_SCHEDULED_ATTEMPT_OBSERVED"
+    },
+    {
+      "id": "OPP-O02",
+      "expected": "FIRST_ATTEMPT_REMAINS_COVERAGE_ANCHOR"
+    },
+    {
+      "id": "OPP-O03",
+      "expected": "NO_PROMOTION_COVERAGE_REPAIR"
+    },
+    {
+      "id": "OPP-O04",
+      "expected": "DIAGNOSTIC_ONLY_NO_RESEARCH_OPPORTUNITY_INCREMENT"
+    },
+    {
+      "id": "OPP-O05",
+      "expected": "ATTEMPT_OPPORTUNITY_DATE_MISMATCH_OR_NONSESSION_DIAGNOSTIC"
+    },
+    {
+      "id": "OPP-O06",
+      "expected": "APPEND_SESSION_IDENTITY_CORRECTION"
+    },
+    {
+      "id": "OPP-O07",
+      "expected": "FAIL_CLOSED"
+    },
+    {
+      "id": "OPP-O08",
+      "expected": "DO_NOT_REPLACE_ATTEMPT_ONE"
+    },
+    {
+      "id": "OPP-O09",
+      "expected": "REJECT_SURVIVORSHIP_DENOMINATOR"
+    },
+    {
+      "id": "OPP-O10",
+      "expected": "REJECT_PREMATURE_GAP_CLASSIFICATION"
+    },
+    {
+      "id": "OPP-O11",
+      "expected": "ADAPTIVE_CONTAMINATION"
+    },
+    {
+      "id": "OPP-O12",
+      "expected": "NEW_VERSION_AND_CONSUMPTION_REVIEW"
+    }
+  ],
+  "closureAuthority": "00",
+  "supersedes": "research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_1.json",
+  "schedulerProvenance": {
+    "platform": "GITHUB_ACTIONS",
+    "scheduleRunsOnDefaultBranch": true,
+    "scheduledEventMayBeDelayed": true,
+    "scheduledQueuedJobMayBeDroppedUnderHighLoad": true,
+    "noRunObservationDoesNotIdentifyRootCause": true,
+    "causalStateEnum": [
+      "PLATFORM_TRIGGER_STATE_UNKNOWN",
+      "PLATFORM_SCHEDULE_DELAY_OR_DROP_POSSIBLE",
+      "WORKFLOW_NOT_ON_DEFAULT_BRANCH",
+      "WORKFLOW_DISABLED_OR_NOT_ACTIVE",
+      "REPOSITORY_SIDE_TRIGGER_BLOCKED",
+      "INTERNAL_COLLECTOR_NOT_REACHED",
+      "CAUSAL_CHAIN_PROVEN"
+    ]
+  },
+  "externalMethodAnchors": [
+    "GitHub Actions official schedule event documentation",
+    "GitHub Actions official troubleshooting scheduled workflows documentation"
+  ]
+}
