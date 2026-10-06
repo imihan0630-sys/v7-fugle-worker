@@ -24117,3 +24117,31 @@ New durable artifacts:
 - research/PATTERN_OVERNIGHT_OPENING_ATTRIBUTION_D16_HANDOFF_V0_1.md
 
 No outcomes were opened. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001 and SDA-002 remain open. No runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-064 — Prior-zone response vs overnight inventory / opening liquidity imbalance (2026-10-07)
+
+DL-064 addresses the case most likely to create overconfident chart explanations: the stock opens near or through a prior structure, but no obvious public news is found. A naive analyst can then say the chart level itself caused the move. That conclusion is not identified.
+
+The absence of a found public event is first a data-coverage statement. D11-13 and D17 owner receipts must show that the relevant source lanes were actually covered with valid first-known clocks. Otherwise the event state remains UNKNOWN. "No headline in the dataset" is not the same thing as "no public event existed."
+
+Even complete no-event coverage does not imply no information. Inventory transfer, liquidity demand, private/unidentified information and opening order imbalance remain possible. The New York Fed's overnight-drift evidence is especially important here: prior closing order imbalance and inventory-risk/immediacy mechanisms can generate predictable overnight reversal patterns even without a simple public-news explanation.
+
+DL-064 therefore creates two separate axes: public-event evidence and observed pressure/liquidity evidence. Prior-close OFI, signed flow, closing-auction pressure, opening displayed/native imbalance, spread, depth and liquidity state are consumed only from their canonical owners. Missing history stays UNKNOWN.
+
+A strict residual state called STRICT_NO_EVENT_NO_OBSERVED_PRESSURE is available only when event-source coverage is complete, pressure-data coverage is complete, no qualifying pressure is observed, corporate-action continuity is resolved and opening-auction context is replay-safe. Even then, the system explicitly says latentPressureExcluded=false and noInformationClaimAllowed=false. It is a residual observational cohort, not proof that only structural memory remains.
+
+Reverse engineering is prohibited. An overnight reversal cannot be used to manufacture the prior OFI that would explain it. Top-five depth cannot be promoted to full-book imbalance. Price reversal cannot prove dealer inventory. Price and book state cannot identify trader intent.
+
+The primary future falsifier compares the same opening pressure/liquidity environment away from a prior structure versus at the structure. If the apparent zone effect disappears under that comparison, opening-liquidity mechanics are sufficient. D16 will additionally distinguish public-event, prior-close-pressure, opening-imbalance, liquidity, global/night-futures and strict-residual layers.
+
+Twenty adversarial tests are authored. They enforce complete source-lane evidence for no-event classification, reject late coverage/news, preserve buy/sell/combined/unknown pressure states, keep incomplete pressure coverage UNKNOWN, require complete residual-cohort prerequisites, reject inferred OFI/hidden-book/inventory/intent, maintain one effective evidence family and keep outcome joins closed.
+
+New durable artifacts:
+- research/PATTERN_NO_EVENT_OPENING_LIQUIDITY_FIREWALL_V0_1.md
+- research/pattern_no_event_opening_liquidity_firewall_v0_1.json
+- research/pattern_no_event_opening_liquidity_firewall_v0_1.mjs
+- research/test_pattern_no_event_opening_liquidity_firewall_v0_1.mjs
+- research/PATTERN_NO_EVENT_OPENING_LIQUIDITY_D16_HANDOFF_V0_1.md
+
+No outcomes were opened. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001 and SDA-002 remain open. No runtime wiring and no Formal change. Formal Core remains LOCKED.
