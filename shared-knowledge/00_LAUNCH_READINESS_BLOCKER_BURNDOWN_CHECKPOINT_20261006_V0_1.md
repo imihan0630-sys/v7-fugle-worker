@@ -1071,3 +1071,50 @@ Verdict remains `PARTIAL_PASS`.
 5. Research validation: preserve D16 attempt-level causal/missingness taxonomy; do not pool blocker codes by label alone.
 
 00 remains five-lane concurrent and does not take over execution lanes.
+
+
+## Sixth five-lane concurrent audit cycle — 2026-10-07
+
+A — System1
+- SDA-016 T48 finalization semantics now frozen in `research/SDA016_GENERATION_SET_FINALIZATION_CONTRACT_20261007_V0_1.json`.
+- T48 remains OPEN; no engineering finalization receipt exists.
+- first genuine V8.20 Formal-C1 sample remains pending.
+- SDA-001/004 and SDA-009 genuine receipts remain pending.
+- S1 remains PARTIAL.
+- central SDA-016 queue pointer synchronized in commit `43f311fa95b7cbd143d0f3c21a2391eb918b5586`.
+
+B — System2
+- S2-07 V1.1 remains PHYSICAL_PASS_PIT_BLOCKED for 4806.
+- historical firstKnownAt/availableAt remain unknown.
+- selection-to-capacity remains INCOMPLETE.
+- no live/final authority promotion.
+
+C — DATA_LANE
+- 2023 TWSE remains RAW_A1_ACCEPTED_REPLAY_PARTIAL.
+- annual workflow inventory still ends at run #23 `37534409279`.
+- no 2023 TPEx fresh-dispatch run exists yet.
+- next DATA action remains fresh dispatch year=2023 / market=TPEX, then Physical verify + artifact + System1 isolation.
+- 2021 TPEx revision/as-of blocker remains open.
+
+D — Research rooms
+- D06 IC-094 proves ETF unit flow is not equivalent to index-review portfolio rebalance; zero unit change does not imply zero rebalance. D06-11 remains L2 and D06 remains 52.2%.
+- D02 checkpoint is already at PVE-251 merged/deployed Production remediation with live provenance still pending and PVE-247 fail-closed.
+- central D02 tracker was stale and was synchronized without maturity/Formal change in commit `379263329e7116683b39ddf767277b4c88e7f298`.
+- aggregate remains 22 domains / 356 modules / 46.7%.
+
+E — SDA-022
+- System1 T01-T05 PASS.
+- D16 T25-T28 PASS.
+- System2 fingerprints T06-T10 PENDING.
+- physical NC-T01 T11-T16 PENDING.
+- no System2 fingerprint/NC-T01 workflow or physical independence receipt found.
+- verdict remains PARTIAL_PASS.
+
+P0:
+1. 2023 TPEx physical evidence.
+2. System2 fingerprints + NC-T01.
+3. SDA-016 T48 engineering receipt + first genuine Formal-C1 sample.
+4. SDA-001/004 and SDA-009 genuine receipts.
+5. S2-07 historical knowledge-clock provenance.
+
+00 remains five-lane concurrent.
