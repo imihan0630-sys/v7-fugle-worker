@@ -229,6 +229,7 @@ jobs:
           node tests/test_sda022_system1_policy_fingerprint_v0_1.mjs
           node tests/test_sda022_system1_acceptance_sync_v0_1.mjs
           node tests/test_sda016_v819_current_status_sync_v0_1.mjs
+          node tests/test_sda016_formal_c1_binding_contract_v0_1.mjs
           node tests/test_system1_c3_c4_c5_shadow_v0_1.mjs
           node tests/test_system1_c4_ranking_redundancy_v0_1.mjs
           node tests/test_system1_c4_ranking_collection_v0_1.mjs
