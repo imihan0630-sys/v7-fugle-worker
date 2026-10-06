@@ -3,7 +3,7 @@ from pathlib import Path
 import os, re, subprocess, sys, json
 workflow=Path('.github/workflows/v7-regression.yml').read_text(encoding='utf-8')
 scripts=re.findall(r'python3 (scripts/\S+\.py)',workflow)
-tail={"scripts/apply_v8_15_1.py","scripts/apply_v8_15_2.py","scripts/apply_v8_15_3.py","scripts/apply_v8_15_4.py","scripts/apply_v8_16_0.py","scripts/apply_v8_17_0.py","scripts/apply_v8_18_0.py","scripts/apply_v8_19_0.py","scripts/apply_v8_19_1_pve250_prod_stamp.py"}
+tail={"scripts/apply_v8_15_1.py","scripts/apply_v8_15_2.py","scripts/apply_v8_15_3.py","scripts/apply_v8_15_4.py","scripts/apply_v8_16_0.py","scripts/apply_v8_17_0.py","scripts/apply_v8_18_0.py","scripts/apply_v8_19_0.py","scripts/apply_v8_19_1_pve250_prod_stamp.py","scripts/apply_v8_20_0.py"}
 for script in scripts:
     if script not in tail:
         subprocess.run([sys.executable,script],check=True)
@@ -23,6 +23,12 @@ v817_candidate=Path('Worker.js').read_text(encoding='utf-8')
 subprocess.run([sys.executable,'scripts/apply_v8_18_0.py'],check=True)
 v818_candidate=Path('Worker.js').read_text(encoding='utf-8')
 subprocess.run([sys.executable,'scripts/apply_v8_19_0.py'],check=True)
+v819_candidate=Path('Worker.js').read_text(encoding='utf-8')
+if "scripts/apply_v8_19_1_pve250_prod_stamp.py" in scripts:
+    subprocess.run([sys.executable,'scripts/apply_v8_19_1_pve250_prod_stamp.py'],check=True)
+v8191_candidate=Path('Worker.js').read_text(encoding='utf-8')
+if "scripts/apply_v8_20_0.py" in scripts:
+    subprocess.run([sys.executable,'scripts/apply_v8_20_0.py'],check=True)
 candidate=Path('Worker.js').read_text(encoding='utf-8')
 def functions(source):
     matches=list(re.finditer(r'^(?:async )?function (\w+)\(',source,re.M))
@@ -37,7 +43,8 @@ class_b_before=functions(class_b_baseline)
 v816_functions=functions(v816_candidate)
 v817_functions=functions(v817_candidate)
 v818_functions=functions(v818_candidate)
-v819_changed=[name for name,body in v818_functions.items() if body!=after.get(name)]
+v819_functions=functions(v819_candidate)
+v819_changed=[name for name,body in v818_functions.items() if body!=v819_functions.get(name)]
 if set(v819_changed)!={'runAfterMarketScanCore','persistC1PopulationReceipt','persistCompletedC1Safe','verifyC1StoredGeneration'}:
     raise SystemExit('Unexpected C1 scan-origin inventory plumbing changes: '+str(v819_changed))
 v818_changed=[name for name,body in v817_functions.items() if body!=v818_functions.get(name)]
@@ -90,6 +97,7 @@ for name,args in commands:
 Path('artifacts').mkdir(exist_ok=True)
 receipt={'schemaVersion':'SYSTEM1_C1_C2_REPAIR_REVIEW_V0_1','passed':sum(r['exitCode']==0 for r in results),
   'scanOriginInventoryChangedFunctions':v819_changed,'valuationVintageChangedFunctions':v818_changed,'shadowCohortChangedFunctions':v817_changed,'classBChangedFunctions':class_b_changed,'classBNewFunctions':class_b_new,
+  'formalC1BindingCandidate':"8.20.0-formal-c1-binding-ledger" if "scripts/apply_v8_20_0.py" in scripts else None,
   'total':len(results),'changedFunctions':changed,'protectedFunctionCount':len(before)-len(changed),
   'selectorUnchangedExceptCaptureFirewall':True,'fixtureOnly':True,'formalCoreImpact':False,'results':results}
 Path('artifacts/system1-c1-c2-repair-review.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')

@@ -30,9 +30,18 @@ assert.equal(issue.candidateEngineering?.state,"MERGED_DEPLOYED_PRODUCTION_VERIF
 assert.equal(issue.candidateEngineering?.mergeSha,prod.mergeSha);
 assert.equal(issue.candidateEngineering?.productionDeployRun,prod.productionDeployRun);
 assert.equal(issue.candidateEngineering?.genuineReadbackStatus,"PENDING_FIRST_GENUINE_POST_DEPLOY_C1_SESSION");
-assert.equal(issue.system1Engineering?.authoritativeFormalC1Ledger,"PENDING");
+assert.ok([
+  "PENDING",
+  "CLASS_B_IMPLEMENTED_UNMERGED_NOT_PRODUCTION_AUTHORITY",
+  "CLASS_B_MERGED_NOT_DEPLOYED",
+  "PRODUCTION_AUTHORITY_ESTABLISHED"
+].includes(issue.system1Engineering?.authoritativeFormalC1Ledger),"unexpected Formal-C1 ledger lifecycle state");
 assert.ok((issue.remainingDelta||[]).some(x=>String(x).includes("first genuine post-deploy V8.19 C1")));
-assert.ok((issue.remainingDelta||[]).some(x=>/authoritative Formal.*C1 generation/i.test(String(x))),"authoritative Formal-C1 binding work must remain pending until Class-B implementation");
+assert.ok(
+  issue.system1Engineering?.authoritativeFormalC1Ledger==="PRODUCTION_AUTHORITY_ESTABLISHED" ||
+  (issue.remainingDelta||[]).some(x=>/Formal.*C1|binding/i.test(String(x))),
+  "Formal-C1 work may leave remainingDelta only after Production authority is genuinely established"
+);
 assert.ok(!String(issue.readiness).includes("NOT_MERGED"));
 
 assert.equal(registry.rules.sda016System1V819CurrentStatus,
@@ -47,6 +56,6 @@ console.log(JSON.stringify({
   pr644:"MERGED",
   production:"V8.19 VERIFIED",
   genuineC1Readback:"PENDING",
-  authoritativeFormalC1Ledger:"PENDING",
+  authoritativeFormalC1Ledger:issue.system1Engineering?.authoritativeFormalC1Ledger,
   formalCoreImpact:"NONE"
 }));

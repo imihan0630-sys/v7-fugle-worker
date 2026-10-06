@@ -504,3 +504,16 @@ Owner-approved engineering adds same-request valuation/financial/EPS snapshot di
 Owner approved C1 Scan-Origin & Generation Inventory Class-B implementation. V8.19.0 records the runtime invocation path on each immutable C1 generation before persistence and exposes a protected read-only generation inventory from the existing canonical C1 generation table. It intentionally does not guess whether a normal after-market invocation came from Cron, manual admin execution or another external transport when that fact is not captured. Stage-selection is explicitly identified. Pre-V8.19 rows are not backfilled.
 
 The candidate adds no provider call, no D1 table, no scheduler and no Formal decision input. A/B, ranking, Top6/3+3, capital, BUY/ADD/REDUCE/SELL/STOP, 15-minute confirmation, monitoring, push and order semantics remain locked. Branch implementation and exact-head CI may proceed under the owner's Class-B approval; merge / Production deployment remain separately gated. Durable continuation: `research/SYSTEM1_C1_SCAN_ORIGIN_GENERATION_INVENTORY_IMPLEMENTATION_20261005.md`.\n
+
+## 2026-10-06 — V8.20.0 SDA-016 Formal→C1 Binding Class-B candidate
+
+- Owner 明確批准「SDA-016 Formal→C1 Binding Class-B 實裝，Formal Core 維持鎖定」。
+- Candidate runtime：`8.20.0-formal-c1-binding-ledger`。
+- 新增 append-only `trade_research_formal_c1_bindings`，以 unique Formal decision receipt 與 unique C1 generation 建立 exact parent identity。
+- Normal after-market verified Formal save + verified immutable C1 才能寫 binding；stage-selection / direct-safe generation 不具 V0.1 authoritative parent 權限。
+- 新增 protected GET `/api/research/formal-c1-binding`；scanDate 多筆一律全回，不自動挑 latest。
+- 不使用 `v8_plan_archive` 作 authority；歷史 missing binding 不回填。
+- Binding failure 對 Formal business path fail-open、對 research evidence fail-closed；provider delta=0，System2 untouched。
+- A/B、ranking、Top6/3+3、capital、15m、lifecycle、push/order 均維持原樣。
+- 目前是 branch/PR candidate；尚未 Merge、尚未 Production deploy。
+- Durable checkpoint：`research/SYSTEM1_FORMAL_C1_BINDING_IMPLEMENTATION_20261006.md`。

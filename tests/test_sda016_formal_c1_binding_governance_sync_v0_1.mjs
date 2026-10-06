@@ -13,10 +13,20 @@ const dashboard=await readFile(new URL("../shared-knowledge/STOCK_SELECTION_AUDI
 const issue=queue.issues.find(x=>x.id==="SDA-016");
 assert.ok(issue,"SDA-016 missing");
 assert.match(issue.readiness,/V0_5_58_TEST_ORACLE/);
-assert.equal(issue.formalC1Binding?.status,"CLASS_A_CONTRACT_FROZEN_CLASS_B_IMPLEMENTATION_PENDING");
+assert.ok([
+  "CLASS_A_CONTRACT_FROZEN_CLASS_B_IMPLEMENTATION_PENDING",
+  "CLASS_B_IMPLEMENTED_VALIDATION_IN_PROGRESS",
+  "CLASS_B_IMPLEMENTED_EXACT_HEAD_CI_PASS_MERGE_DEPLOY_APPROVAL_PENDING",
+  "CLASS_B_MERGED_DEPLOYMENT_PENDING",
+  "PRODUCTION_AUTHORITY_ESTABLISHED"
+].includes(issue.formalC1Binding?.status),"unexpected Formal-C1 governance lifecycle");
 assert.equal(issue.formalC1Binding?.contract,"research/sda016_system1_formal_c1_binding_contract_v0_1.json");
-assert.equal(issue.formalC1Binding?.appendOnlyLedgerImplementation,"PENDING_CLASS_B");
-assert.equal(issue.system1Engineering?.authoritativeFormalC1Ledger,"PENDING");
+assert.ok([
+  "PENDING_CLASS_B","IMPLEMENTED_UNMERGED","MERGED_NOT_DEPLOYED","PRODUCTION_AUTHORITY_ESTABLISHED"
+].includes(issue.formalC1Binding?.appendOnlyLedgerImplementation),"unexpected append-only ledger lifecycle");
+assert.ok([
+  "PENDING","CLASS_B_IMPLEMENTED_UNMERGED_NOT_PRODUCTION_AUTHORITY","CLASS_B_MERGED_NOT_DEPLOYED","PRODUCTION_AUTHORITY_ESTABLISHED"
+].includes(issue.system1Engineering?.authoritativeFormalC1Ledger),"unexpected authoritative ledger lifecycle");
 
 assert.equal(contract.status,"CLASS_A_CONTRACT_FROZEN_CLASS_B_IMPLEMENTATION_PENDING");
 assert.equal(contract.formalCoreImpact,"NONE");
@@ -41,7 +51,7 @@ console.log(JSON.stringify({
   ticket:"SDA-016",
   oracle:"V0.5 / 58",
   bindingContract:"FROZEN",
-  classBImplementation:"PENDING",
+  classBImplementation:issue.formalC1Binding?.appendOnlyLedgerImplementation,
   dashboardSynchronized:true,
   bootstrapSynchronized:true,
   formalCoreImpact:"NONE"

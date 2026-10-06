@@ -135,7 +135,8 @@ await t('effective Worker wires explicit origins and protected read-only route',
   const runtimeVersion=(source.match(/const VERSION = "([^"]+)";/)||[])[1]||"";
   assert.ok([
     "8.19.0-c1-scan-origin-generation-inventory",
-    "8.19.1-pve250-runtime-remediation"
+    "8.19.1-pve250-runtime-remediation",
+    "8.20.0-formal-c1-binding-ledger"
   ].includes(runtimeVersion),"unexpected V8.19-layer effective Worker version: "+runtimeVersion);
   assert.match(source,/url\.pathname === "\/api\/research\/c1-generation-inventory"/);
   assert.match(source,/scanOrigin:C1_SCAN_ORIGIN\.C1_SCAN_ORIGINS\.AFTER_MARKET_SCAN_PIPELINE/);
