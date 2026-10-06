@@ -2646,3 +2646,46 @@ Re-read external blockers. If unchanged, execute the deterministic admission art
 - Execution receipt written to `research/d03_adx_bollinger_same_parent_admission_execution_receipt_20261007_v0_1.json`.
 - This converts the prior in-session-only structural replay into repository-native execution evidence.
 - No market/outcome evidence added; no maturity promotion. D03 remains 56.7%.
+
+
+## 2026-10-07 D06 — IC-094 00923 official historical rebalance replay
+
+- Room/domain: 05｜法人與籌碼研究室 / D06.
+- Durable artifact: `research/d06_11_00923_rebalance_replay_20261002_20261005_v0_1.json`.
+- Official issuer historical date control for ETF 00923 successfully replayed both 2026-10-02 and 2026-10-05 fund states without substituting 2026-10-06 current data.
+- 2026-10-02:
+  - NAV TWD 39,868,035,542;
+  - NAV/unit TWD 41.90;
+  - outstanding units 951,423,000;
+  - unit change 0;
+  - deleted review names 2887 / 3533 / 6239 present;
+  - added review names 2408 / 2409 / 3189 absent.
+- 2026-10-05:
+  - NAV TWD 39,893,722,029;
+  - NAV/unit TWD 41.93;
+  - outstanding units unchanged at 951,423,000;
+  - unit change 0;
+  - added review names 2408 / 2409 / 3189 present;
+  - deleted review names 2887 / 3533 / 6239 absent.
+- Falsification:
+  - exact constituent rebalance occurred while primary-market unit count stayed unchanged;
+  - ETF creation/redemption flow != index-review portfolio rebalance flow;
+  - the two objects cannot be counted as independent passive-flow votes by default;
+  - zero unit change does not imply zero rebalancing.
+- Descriptive AUM×weight exposure only:
+  - 2026-10-05 added-name end-state exposure about TWD 933.1m total;
+  - 2026-10-02 deleted-name pre-event exposure about TWD 537.1m total;
+  - these are not execution values, trade prices, market impact or alpha.
+- PIT boundary:
+  - historical date replay proves dated end-state observability;
+  - exact original publication minute / firstKnownAt and intraday execution path remain UNKNOWN;
+  - therefore D06-11 remains L2/40 and D06 remains 52.2%.
+- SDA-007 strengthened: one fund portfolio state is one primitive receipt; units/holdings/index-event transforms may have many consumers but cannot manufacture duplicate votes.
+- Outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. Use the already precommitted 2026-11 official index-review calendar for a genuine prospective D06-11 source-clock capture.
+2. On the scheduled after-close public result, capture issuer AUM, outstanding units, unit delta, holdings/weights and exact observedAt/firstKnownAt before and after the effective transition.
+3. Preserve any official multi-day transition window; never collapse staged rebalancing into one effective-day shock.
+4. If prospective source timing is clean and replayable, reassess D06-11 for L3 Taiwan PIT/source feasibility.
+5. In parallel, 2026-10-07 D06-14 still needs T2_FINAL for tradeDate 2026-10-05 and T1_REVISED for tradeDate 2026-10-06 after the relevant source workflow becomes observable.
