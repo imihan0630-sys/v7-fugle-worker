@@ -62,8 +62,11 @@ export function evaluateBoundedTechnicalContinuityBridgeV1_1({
   const resumeTradingDate = text(rawA1LineageCase.resumeTradingDate);
   const blockers = [];
 
-  if (rawA1LineageCase.state !== "BOUNDED_RAW_A1_LINEAGE_READY"
-      || rawA1LineageCase.rawA1LineageBound !== true) {
+  const lineageStateReady = rawA1LineageCase.state === "BOUNDED_RAW_A1_LINEAGE_READY";
+  const lineageFlagContradiction =
+    typeof rawA1LineageCase.rawA1LineageBound === "boolean"
+    && rawA1LineageCase.rawA1LineageBound !== true;
+  if (!lineageStateReady || lineageFlagContradiction) {
     blockers.push("RAW_A1_LINEAGE_NOT_READY");
   }
 
