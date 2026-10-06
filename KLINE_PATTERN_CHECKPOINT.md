@@ -2775,3 +2775,40 @@ No maturity or Formal change is authorized by this routing.
 7. Keep SDA-001/SDA-002 REMEDIATION_IN_PROGRESS until canonical closure evidence exists.
 8. Next D01 science: separate transaction-weighted reference effects from time-at-price / dwell-time reference effects and from explicit participant-inventory data.
 9. No runtime wiring / no Formal change.
+
+## Continuation update — DL-048 (2026-10-06)
+
+### DL-048 — Time-at-price / dwell-time semantic separation
+- Time-at-price, traded-volume weighting and point-in-time position records are separate research objects.
+- BAR_VISIT_OCCUPANCY_PROXY records completed-bar price-bin visits only; it does not estimate exact dwell seconds.
+- Exact dwell requires timestamp-complete trade or quote sequences plus a frozen duration rule.
+- Bar interval, price-bin rule, tick semantics and session segment form a frozen parameter family; no result-driven tuning.
+- Occupancy, volume profile and VWAP remain separate representations.
+- Net flow does not establish point-in-time position state; observed position quantity does not establish acquisition price.
+- Missing exact event / position evidence remains UNKNOWN.
+- Information lineage can include PRICE_OHLC, TRADE_TIME, TRADED_VOLUME, QUOTE_TIME and PARTICIPANT_POSITION.
+- Multiple roots do not create an extra independent vote by default; residual incrementality remains NOT_VALIDATED.
+- T0-T6 comparison classes and D16 handoff are frozen.
+- 26 adversarial cases are durably authored across the executable test files, including direct tick-rule / bin-family freeze guards and an aggregate TP01-TP26 runner.\n- Research-specific Node execution remains TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain REMEDIATION_IN_PROGRESS.
+- D01 maturity remains 52.7%; outcomes closed; Formal Core unchanged.
+
+### Updated exact next continuation point after DL-048
+
+1. Keep DL-048 stacked on the exact DL-047 head until PR #661 lands.
+2. Open a stacked research-only PR with base research/d01-dl047-anchored-vwap-liquidity-20261006.
+3. Preserve occupancy, volume weighting and position observability as separate semantics.
+4. Hand T0-T6 common-support / residual inference to D16.
+5. Keep audit tickets open until canonical closure evidence exists.
+6. Next D01 science: separate time/volume acceptance from price-path entropy / directional churn.
+7. No runtime wiring / no Formal change.
+
+
+### DL-048 machine-guard completion — tick/bin family gap closed
+
+- Direct executable guards now require a frozen occupancy parameter family, point-in-time verified tick-rule receipt, bar interval, price-bin rule, semantic price space and session mechanism.
+- Current/future tick rules may not be backfilled into earlier predictor states.
+- Parameter-family mutation or best interval/bin selection after outcome inspection is prohibited.
+- Aggregate research runner now imports all TP01-TP26 cases so split files cannot be silently omitted.
+- This is a machine-guard completion, not a maturity promotion.
+- D01 remains 52.7%; outcomes CLOSED; Formal Core LOCKED.

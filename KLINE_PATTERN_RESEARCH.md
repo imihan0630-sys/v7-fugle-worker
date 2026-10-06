@@ -23570,3 +23570,49 @@ Durable artifacts:
 - research/PATTERN_ANCHORED_VWAP_LIVE_LIQUIDITY_D16_HANDOFF_V0_1.md
 
 No outcomes were opened. D01 maturity remains 52.7%. SDA-001/SDA-002 remain REMEDIATION_IN_PROGRESS. Formal Core remains LOCKED.
+
+# DL-048 — Time-at-price / dwell-time vs transaction weighting (2026-10-06)
+
+DL-048 separates price occupancy from executed-volume weighting and from point-in-time position observability.
+
+A completed OHLC bar whose high-low range intersects a price bin proves only that the bin was visited within the bar. It does not prove that the market spent the entire bar duration there. The frozen BAR_VISIT_OCCUPANCY_PROXY therefore keeps exactDwellSeconds unavailable and forbids exact-dwell language.
+
+Exact dwell is evaluable only from timestamp-complete trade-event or quote/mid sequences with a preregistered state-duration rule and replay-safe coverage.
+
+Occupancy parameters are part of a research family: bar interval, bin width, tick grouping and session segmentation cannot be selected after outcomes. Only completed information available by predictor freeze can enter the snapshot.
+
+Time occupancy and traded activity remain separate. A price area may receive many bar visits but little executed volume, or brief occupancy with intense turnover. VWAP is a transaction-weighted mean and volume profile is a price distribution of executed volume; neither is time occupancy.
+
+Point-in-time position state also remains separate. Net flow does not prove remaining position quantity, and position quantity alone does not identify acquisition price. Unsupported fields remain UNKNOWN rather than being replaced by VWAP or volume-at-price proxies.
+
+Possible information roots include PRICE_OHLC, TRADE_TIME, TRADED_VOLUME, QUOTE_TIME and PARTICIPANT_POSITION. Raw-root multiplicity does not automatically create independent evidence; the default effective count remains one pending D16 residual validation.
+
+Twenty adversarial cases are durably authored. TP01-TP10 cover bar-visit and exact-dwell clocks. TP11-TP15 cover time-volume/intensity separation. TP16-TP20 cover position/cost observability and information lineage.
+
+Durable artifacts include:
+- research/PATTERN_TIME_AT_PRICE_INVENTORY_V0_1.md
+- research/pattern_time_at_price_inventory_v0_1.json
+- research/pattern_time_at_price_inventory_v0_1.mjs
+- research/test_pattern_time_at_price_occupancy_v0_1.mjs
+- research/test_pattern_time_at_price_flow_v0_1.mjs
+- research/test_pattern_time_at_price_case16_v0_1.mjs
+- research/test_pattern_time_at_price_case17_v0_1.mjs
+- research/test_pattern_time_at_price_case18_v0_1.mjs
+- research/test_pattern_time_at_price_case19_v0_1.mjs
+- research/test_pattern_time_at_price_case20_v0_1.mjs
+- research/PATTERN_TIME_AT_PRICE_INVENTORY_D16_HANDOFF_V0_1.md
+
+No outcomes were opened. D01 maturity remains 52.7%. SDA-001/SDA-002 remain REMEDIATION_IN_PROGRESS. Formal Core remains LOCKED.
+
+
+# DL-048 machine-guard completion — historical tick and bin-family enforcement (2026-10-06)
+
+The first DL-048 draft correctly stated that occupancy depends on bar interval, bin construction, legal tick semantics and session mechanism, but the initial TP01-TP20 executable suite did not directly assert the tick/bin family freeze. This was a document-versus-machine gap.
+
+The helper now validates a frozen parameterFamilyId, registryFrozenAt, barInterval, priceBinRuleId, point-in-time tickRuleReceipt, TECHNICAL_CONTINUITY semantic space, sessionMechanism and predictorFreezeAt.
+
+The guard fails closed when historical tick provenance is missing, the tick receipt is later than the predictor freeze, the parameter family was not frozen before outcome inspection, the family is mutated after outcomes or a best occupancy variant is selected after outcomes.
+
+TP21-TP26 directly cover those states. A new aggregate runner imports TP01-TP26 so future research execution cannot accidentally omit the split test files.
+
+This completion does not change D01 maturity, does not open outcomes and does not authorize Formal promotion.
