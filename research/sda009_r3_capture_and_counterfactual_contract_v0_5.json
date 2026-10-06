@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "SDA009_R3_CAPTURE_AND_COUNTERFACTUAL_CONTRACT_V0_5",
+  "auditTicket": "SDA-009",
+  "formalCoreImpact": "NONE",
+  "implementationPrinciple": "CAPTURE_DONT_RECOMPUTE_IN_FORMAL_PATH",
+  "minimumC1Capture": {
+    "rowFields": [
+      "currentChangePercent",
+      "currentTradeValue"
+    ],
+    "generationFields": [
+      "classificationSchemeId",
+      "membershipVersion",
+      "membershipDigest",
+      "sectorDecisionStateVersion",
+      "sectorDecisionStateProjection",
+      "sectorDecisionStateDigest"
+    ],
+    "newProviderCalls": 0
+  },
+  "membership": {
+    "classificationSchemeId": "SYSTEM1_RUNTIME_INDUSTRY_LABEL_V1",
+    "projection": [
+      "market",
+      "symbol",
+      "industry"
+    ],
+    "unclassifiedState": "UNCLASSIFIED_PSEUDO_BUCKET",
+    "economicInterpretationForUnclassified": "FORBIDDEN"
+  },
+  "sectorDecisionProjectionFields": [
+    "industry",
+    "stockCount",
+    "historicalCoverage",
+    "amount",
+    "breadth",
+    "avgChange",
+    "amountVs20DayAverage",
+    "score"
+  ],
+  "denominator": "FULL_IMMUTABLE_C1_PARENT",
+  "boundedV814SectorRejectedSampleAllowedAsDenominator": false,
+  "counterfactualPolicies": {
+    "focalAttribution": {
+      "id": "SDA009_FOCAL_SELF_ATTRIBUTION_V0_1",
+      "peerState": "PRODUCTION"
+    },
+    "fullLooPolicy": {
+      "id": "SDA009_FULL_SELF_EXCLUDED_POLICY_V0_1",
+      "candidateState": "OWN_LOO",
+      "candidateSpecificNormalizer": true
+    }
+  },
+  "r3a2ExtraForSelfSuppressionRank": [
+    "marketConsensusSources_or_exact_marketConsensusBonus"
+  ],
+  "gateReachStates": [
+    "NOT_REACHED",
+    "REACHED_AND_FAILED_SECTOR",
+    "REACHED_AND_FAILED_LATER",
+    "REACHED_AND_PASSED",
+    "UNKNOWN"
+  ],
+  "validation": {
+    "isolatedAssertions": 12,
+    "result": "PASS"
+  },
+  "genuineTaiwanReceiptCount": 0,
+  "d16Required": true,
+  "exactNext": [
+    "SDA-009-R3A1",
+    "SDA-009-R3A1-PARITY",
+    "SDA-009-R3A2",
+    "SDA-009-R3B"
+  ]
+}
