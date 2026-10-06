@@ -1,6 +1,6 @@
 {
   "schemaVersion": "SYSTEMWIDE_LAUNCH_READINESS_GOVERNANCE_AUDIT_V0_1",
-  "updatedAt": "2026-10-06T20:50:00+08:00",
+  "updatedAt": "2026-10-06",
   "auditOwner": "00",
   "repository": "imihan0630-sys/v7-fugle-worker",
   "auditedMain": "816219437798a93bb11eae15b2f795139e013dcd",
@@ -19,49 +19,49 @@
     {
       "id": "GOV-001",
       "severity": "HIGH",
-      "state": "OPEN_AT_AUDIT",
+      "state": "FIXED_IN_CANONICAL_GOVERNANCE",
       "title": "00 Registry omitted dedicated 00 continuation checkpoint",
       "safeAutoFix": true
     },
     {
       "id": "GOV-002",
       "severity": "HIGH",
-      "state": "OPEN_AT_AUDIT",
+      "state": "FIXED_IN_CANONICAL_GOVERNANCE",
       "title": "Central SDA oracle pointers stale at 48/48 vs current 58/56",
       "safeAutoFix": true
     },
     {
       "id": "GOV-003",
       "severity": "HIGH",
-      "state": "OPEN_AT_AUDIT",
+      "state": "FIXED_IN_CANONICAL_GOVERNANCE",
       "title": "Selection Shadow Launch Gate stale PR #644 merge/deploy state",
       "safeAutoFix": true
     },
     {
       "id": "GOV-004",
       "severity": "MEDIUM",
-      "state": "OPEN_AT_AUDIT",
+      "state": "FIXED_IN_CANONICAL_GOVERNANCE",
       "title": "Launch Gate D02 parallel lane stale at PVE-245/PVE-246 vs PVE-250",
       "safeAutoFix": true
     },
     {
       "id": "GOV-005",
       "severity": "MEDIUM",
-      "state": "OPEN_AT_AUDIT",
+      "state": "FIXED_IN_CANONICAL_GOVERNANCE",
       "title": "SDA-022 queue still lists D16 prereg as pending despite 4/4 pass",
       "safeAutoFix": true
     },
     {
       "id": "GOV-006",
       "severity": "HIGH",
-      "state": "OPEN_AT_AUDIT",
+      "state": "FIXED_IN_CANONICAL_GOVERNANCE",
       "title": "SDA-016/017 queue remaining deltas use superseded oracle versions",
       "safeAutoFix": true
     },
     {
       "id": "GOV-007",
       "severity": "MEDIUM",
-      "state": "OPEN_AT_AUDIT",
+      "state": "FIXED_IN_CANONICAL_GOVERNANCE",
       "title": "00 checkpoint current-state section lags queue counts and next cursor",
       "safeAutoFix": true
     },
@@ -100,7 +100,8 @@
     "infrastructureTerminal": "SUBSTANTIALLY_READY",
     "terminalGovernance": {
       "s2Corr20261006001": "VERIFIED_CLOSED",
-      "s2Corr20261006002": "FIX_IMPLEMENTED_AWAITING_INDEPENDENT_VERIFICATION"
+      "s2Corr20261006002": "VERIFIED_CLOSED",
+      "s2Corr20261006003": "OPEN_BUILD_LANE_CANDIDATE_VS_MONITOR_SOURCE_STRATEGY_IDENTITY"
     },
     "dataLane": {
       "state": "ACTIVE_PARTIAL",
@@ -113,7 +114,8 @@
       "AUTHORIZED_ASSESSOR_POLICY_MAPPING",
       "VALIDATED_REGIME_FUNDAMENTAL_INDUSTRY_CURRENT_CONTINUITY",
       "GENUINE_DAILY_STRATEGY_EVALUATIONS",
-      "REAL_S2_CAPACITY_RUNS_FROM_VALID_DENOMINATOR"
+      "REAL_S2_CAPACITY_RUNS_FROM_VALID_DENOMINATOR",
+      "CANDIDATE_BOARD_FORMAL_CANDIDATE_VS_MONITOR_ONLY_ATTRIBUTION_CORR003"
     ],
     "resonance": "RESEARCH_SHADOW_MONITOR_ONLY",
     "actualHoldings": "NOT_WIRED",
@@ -150,5 +152,11 @@
     "SYSTEM2_OWNER_REVIEW_STRATEGY_ACTIVATION",
     "ACTUAL_HOLDINGS_SOURCE_AUTHORIZATION",
     "LIVE_FINAL_TRADING_AUTHORITY"
-  ]
+  ],
+  "governanceSyncComplete": true,
+  "postAuditDrift": {
+    "s2Corr20261006002": "VERIFIED_CLOSED",
+    "s2Corr20261006003": "OPEN",
+    "implication": "Terminal must not present monitor-only bounded rows as formal strategy-resolved candidates until CORR-003 is independently closed."
+  }
 }
