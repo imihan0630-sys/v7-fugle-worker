@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-06 21:01 Asia/Taipei
+Updated: 2026-10-06 21:12 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -184,6 +184,53 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - verificationEvidence: PENDING
 - finalDisposition: PENDING
 - updatedAt: 2026-10-06T21:01:27+08:00
+
+
+### S2-CORR-20261006-004 — Institutional terminal can surface prior-session resonance as current-day monitor data
+
+- createdAt: 2026-10-06T21:12:49+08:00
+- severity: MEDIUM
+- status: OPEN
+- routingClass: BUILD_LANE
+- assignedLane: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- modificationOwner: SYSTEM2_BUILD_CONTROL_ROOM
+- blockedBy: none
+- affectedScope: S2-16 terminal freshness / Candidate Board / Decision Workspace / Today Focus / Resonance Center
+- detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- canonicalRequirement: Current-session terminal surfaces must fail closed on market-date mismatch. Prior-session resonance history may remain queryable as history, but it must not be silently reused as today's Candidate Board, Decision Workspace, Today Focus or active resonance monitor state.
+- observedProblem: The terminal loads `/api/system2/resonance` without `marketDate`. The Worker passes a null marketDate to `readLatestResonanceApiV0_1()`, which explicitly resolves the most recent persisted `market_date` via `ORDER BY market_date DESC LIMIT 1`. By contrast, `/api/system2/resonance/pool` and `/api/system2/resonance/operations` default to the current Taipei market date. The terminal then prefers `S.resonance.symbols` in Candidate Board and reuses those rows in Decision Workspace, Today Focus and Resonance Center without validating that `S.resonance.marketDate` equals the current/pool/operations market date. A prior-session resonance snapshot can therefore appear on a current-day terminal even when today's active pool is absent or fail-closed.
+- evidence:
+  - `terminal_page.mjs::load()` calls `/api/system2/resonance` without a marketDate query parameter.
+  - `worker.mjs`: `/api/system2/resonance` forwards null marketDate, while pool/operations default to `taipeiMarketDateV0_1(new Date())`.
+  - `readLatestResonanceApiV0_1()`: when marketDate is absent, selects `SELECT market_date FROM s2_resonance_latest ORDER BY market_date DESC LIMIT 1`.
+  - `terminal_page.mjs::candidateRows()` prefers `S.resonance.symbols` over pool fallback.
+  - `selectedRow()`, Decision Workspace, Today Focus and Resonance Center consume these rows without a current-market-date equality guard.
+  - UI text says current bounded data is used and stale pool is not reused, so silent prior-session resonance reuse contradicts the stated freshness boundary.
+  - Existing tests cover pool freshness but do not protect terminal resonance market-date alignment.
+- riskIfUnfixed: Operators may interpret yesterday's or an earlier session's research monitor signal/chart as current-day System 2 monitor evidence. Backend decision/order authority remains false, but the operator-facing stale-state ambiguity can distort situational awareness and invalidate freshness-dependent audit evidence.
+- requiredCorrection:
+  1. Bind terminal current-session resonance reads to the current Taipei market date, or explicitly reject/mask resonance payloads whose marketDate differs from the terminal's current/pool/operations market date.
+  2. Current-session Candidate Board, Decision Workspace, Today Focus and Resonance Center must not consume prior-session resonance rows as active monitor state.
+  3. If historical/latest-any-date resonance remains supported by the API, keep it as an explicit historical query behavior and do not silently use it on current-session terminal surfaces.
+  4. Add a visible STALE / PREVIOUS_SESSION / NOT_CURRENT_SESSION state if old data is intentionally shown for history/reference; it must not count toward current candidate/monitor counts.
+  5. Align `decisionTime`, chart/asOf and displayed marketDate so the user can tell which session the data belongs to.
+  6. Add regression tests where today's pool/operations are empty but yesterday has resonance snapshots; the terminal must remain current-session empty/pending rather than display yesterday's rows.
+  7. Add regression coverage for same-day payload acceptance and explicit historical-date query behavior.
+  8. Preserve resonance formula/state machine, bounded pool freshness semantics, S2-07 candidate authority, strategy logic, ranking/capacity, push/orders, and System1 Formal Core.
+- acceptanceCriteria:
+  - Current-session terminal never silently displays resonance rows whose marketDate differs from today's Taipei market date/current terminal clock.
+  - A prior-session snapshot cannot populate Candidate Board, Decision Workspace, Today Focus or active Resonance Center without an explicit historical/stale presentation state.
+  - Same-session resonance remains visible and functional.
+  - Pool/operations/resonance dates are either aligned or the mismatch is fail-closed and visible.
+  - Regression tests cover prior-session contamination, same-day success and explicit historical-query behavior.
+  - No protected strategy/trading authority changes are introduced.
+- protectedBoundaries: resonance formula/state machine; bounded-pool freshness logic; S2-07 candidate authority; strategy logic; ranking/capacity; final/live selection authority; notification/push; capital/orders; System1 Formal Core.
+- ownerDecisionRequired: false for current-session freshness enforcement; any future cross-session historical replay UI remains separately scoped.
+- implementationEvidence: PENDING
+- verificationEvidence: PENDING
+- finalDisposition: PENDING
+- updatedAt: 2026-10-06T21:12:49+08:00
 
 
 ## Closed directives
