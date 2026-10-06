@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "S2_S2_07_MOPS_EXACT_VERSION_POPULATION_V1_6_PHYSICAL_ACCEPTANCE",
+  "version": "1.6-RESEARCH",
+  "recordedDate": "2026-10-07",
+  "status": "PHYSICAL_PASS_PROSPECTIVE_CAPTURE_COMPLETENESS_PENDING",
+  "implementation": {
+    "pullRequest": 749,
+    "mergeCommit": "bc405245870d6e986cbbf709562ce93c320bb327",
+    "supersededPullRequest": 742
+  },
+  "latestMainPhysicalRun": {
+    "workflowRunId": 37548011614,
+    "jobId": 112556594405,
+    "conclusion": "success",
+    "system2ResearchCiRunId": 37548011621,
+    "system2ResearchCiConclusion": "success",
+    "v8RegressionRunId": 37548011620,
+    "v8RegressionConclusion": "success",
+    "artifactId": 11451716945,
+    "artifactDigest": "sha256:691e66ec3f279ef969b605ff8361052f4bc8c85d5b95655876b643d23786341a",
+    "capturedAt": "2026-10-06T23:47:34.076Z",
+    "state": "PROSPECTIVE_MOPS_EXACT_VERSION_POPULATION_CAPTURED_COMPLETENESS_PENDING",
+    "frozenEventCount": 23,
+    "frozenUniqueSymbolCount": 23,
+    "stableEventUniverseHash": "b7941323ed1969a17697bc58be3d549b7e244f4dfc45b81a0bc6d5645fc305b0",
+    "prospectivePopulationHash": "1186813e80a68c2a7a833fb00e8f39d10aaa733bc0de00424c3c72227d5b9d3d",
+    "uniqueGlobalVersionKeyCount": 161,
+    "coveredSymbolCount": 23,
+    "queryKeysetExactEventCount": 21,
+    "monthOnlyVersionCount": 0,
+    "yearOnlyVersionCount": 7,
+    "sourceClockVersionKeyCollisionCount": 0,
+    "divergentEvents": [
+      {
+        "sourceId": "TWSE_CAPITAL_REDUCTION_REFERENCE",
+        "symbol": "1441",
+        "effectiveDate": "2026-09-29",
+        "annualFamilyVersionCount": 6,
+        "monthFamilyVersionCount": 5,
+        "yearOnlyVersionCount": 1,
+        "monthOnlyVersionCount": 0
+      },
+      {
+        "sourceId": "TPEX_PAR_VALUE_CHANGE_REFERENCE",
+        "symbol": "3086",
+        "effectiveDate": "2026-04-20",
+        "annualFamilyVersionCount": 23,
+        "monthFamilyVersionCount": 17,
+        "yearOnlyVersionCount": 6,
+        "monthOnlyVersionCount": 0
+      }
+    ]
+  },
+  "priorSuccessfulPhysicalRun": {
+    "workflowRunId": 37547303476,
+    "jobId": 112554255465,
+    "conclusion": "success",
+    "artifactId": 11451296954,
+    "artifactDigest": "sha256:9a38bd6f150277b3b3243bf799db9239bd34ea9cbee1aafadd205c9c96dd40fd",
+    "capturedAt": "2026-10-06T23:40:18.625Z",
+    "prospectivePopulationHash": "366a337e54acd0ca356338990988ff2d176c1180acf8d4d4a62e367d7d9c05eb",
+    "uniqueGlobalVersionKeyCount": 159,
+    "queryKeysetExactEventCount": 17,
+    "monthOnlyVersionCount": 9,
+    "yearOnlyVersionCount": 8,
+    "sourceClockVersionKeyCollisionCount": 0,
+    "divergentSymbols": ["2321", "3356", "6241", "6461", "8277", "4806"]
+  },
+  "crossRunStabilityAudit": {
+    "sameStableEventUniverseHash": true,
+    "firstRunVersionCount": 159,
+    "secondRunVersionCount": 161,
+    "secondMinusFirstVersionCount": 9,
+    "firstMinusSecondVersionCount": 7,
+    "commonVersionPayloadMutationCount": 0,
+    "populationMembershipStable": false,
+    "payloadIdentityStableForCommonVersions": true,
+    "interpretation": "Two successful prospective captures minutes apart returned different historical membership while common exact-version payload hashes remained stable. Therefore a single successful annual/month-shard capture cannot certify the complete expected MOPS keyset."
+  },
+  "identityBoundary": {
+    "globalVersionIdentityIncludesStockCode": true,
+    "sourceClockVersionKeyUsedAsGlobalIdentity": false,
+    "stableEventUniverseHashSemantic": "sourceId+symbol+effectiveDate+family",
+    "legacyV01EventUniverseHash": "3e31779c36582bd70378d4b393ce0d4b2510bb84fe557686a0e51d3a2f604049",
+    "legacyHashComparableToStableSemanticHash": false,
+    "reason": "Legacy V0.1 eventUniverseHash included capture-specific eventVersionId; V1.6 deliberately excludes that unstable receipt identity."
+  },
+  "remainingGates": {
+    "sourceSemanticsCertified": false,
+    "monthShardCoverageComplete": false,
+    "expectedMopsKeysetComplete": false,
+    "noRevisionGapThroughCut": false,
+    "noRevisionGapThroughCutCertified": false,
+    "preParentEvidenceCutReady": false,
+    "symbolSessionCompletenessCertified": false,
+    "technicalContinuityCertified": false
+  },
+  "authority": {
+    "scheduleAdded": false,
+    "historyMutationPerformed": false,
+    "selectionAuthority": false,
+    "finalSelectionEnabled": false,
+    "livePushEnabled": false,
+    "capitalImpact": false,
+    "orderImpact": false,
+    "system1RuntimeUsed": false,
+    "formalCoreImpact": false
+  },
+  "nextBuildGate": "REPEATED_CAPTURE_UNION_AND_STABILITY_GATE_BEFORE_EXPECTED_MOPS_KEYSET_FREEZE"
+}
