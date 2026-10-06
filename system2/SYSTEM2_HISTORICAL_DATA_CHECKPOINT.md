@@ -113,3 +113,12 @@ Blob-level drift check from failed run head `ca90efab5a7d6d27cc3d05a545efcd1ce44
 - `system2/deploy/provision_system2_d1.mjs`: `dc8f3376a771676222c99d2b17da5cf7a4cc1f43`.
 
 Therefore the blocker remains infrastructure quota, not execution-code drift. The exact next action is unchanged: after 08:00 Asia/Taipei, fresh-dispatch `year=2021, market=TPEX` from latest main; resume/reconcile immutable partial state; require Physical verify + artifact + System1 isolation before acceptance. Do not rerun the old run merely to bypass fresh-main dispatch semantics.
+
+
+## 2026-10-06 post-reset dispatch readiness
+
+At 2026-10-06 08:12 Asia/Taipei, the documented D1 free-tier reset boundary had passed. The quota wait blocker is therefore no longer the reason to defer execution.
+
+Fresh workflow dispatch remains required by the checkpoint semantics. The connected GitHub toolset exposes workflow read/rerun operations but no workflow_dispatch creation action. The available browser automation profiles currently have no recorded GitHub authenticated session, so a latest-main fresh dispatch cannot be truthfully claimed from this room without GitHub sign-in/authorization.
+
+Do not substitute rerun of failed run 37326149826, because that run is bound to old head ca90efab5a7d6d27cc3d05a545efcd1ce44db247 rather than the latest main. Once authenticated dispatch is available, execute year=2021 / market=TPEX from latest main and continue through Physical verify, evidence artifact/readback and System1 isolation.
