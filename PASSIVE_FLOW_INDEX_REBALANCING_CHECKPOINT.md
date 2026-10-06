@@ -1,7 +1,7 @@
 # Passive Flow & Index Rebalancing Checkpoint
 
 Updated: 2026-09-28 Asia/Taipei
-Current cursor: PF-001 through PF-041 complete.
+Current cursor: PF-001 through PF-042 complete.
 Status: CONCEPT_COMPLETE / SOURCE_MAP_COMPLETE / BOUNDED_MSCI_MEMBERSHIP_CONTRACT_VALIDATED / ETF_NET_UNITS_PROSPECTIVE_CONTRACT_READY / SOURCE_LICENSE_AND_HISTORY_GATES / OUTCOME_DATA_GATED.
 Next: validate prospective ETF units-delta + PCF timestamp/corporate-action semantics on a bounded domestic in-kind sample; seek authorized/licensed membership-event sources; separately improve weight-change/non-MSCI/historical-PIT/close-auction coverage before outcome testing.
 
@@ -117,3 +117,14 @@ Next: validate prospective ETF units-delta + PCF timestamp/corporate-action sema
 2. Freeze L4 OOS/Shadow hypotheses before outcomes.
 3. Test residual incrementality beyond institutional flow/index-event/price-volume/liquidity/regime on common support.
 4. Keep actual execution UNKNOWN and preserve one-event/one-primitive anti-double-count lineage.
+
+
+## PF-042 durable update
+- Third independent prospective decision generation (use date 2026-10-07) captured and repeat-stable.
+- 0050 hash = fnv1a64-utf8:44afa643c503c72c; unit delta +11.5m.
+- 0056 hash = fnv1a64-utf8:38922665d41400f9; unit delta +19.0m.
+- D06-16 remains L3/60: source/PIT feasibility is strongly replicated, but actual execution remains UNKNOWN and L4 requires OOS/Shadow incrementality.
+- No Formal change.
+
+### Exact next after PF-042
+Do not promote from more source replication alone. Preserve future generations append-only and move the next maturity gate to preregistered common-support OOS/Shadow residual incrementality with passive/active anti-double-count controls.
