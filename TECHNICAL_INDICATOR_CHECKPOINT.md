@@ -5732,3 +5732,37 @@ No maturity promotion:
 
 Exact next:
 wait for one of the actual external blockers to change: System2 D03 dedup diagnostics, System1 D03 redundancy diagnostics, D16 D03 method/incrementality receipt, raw-source/prospective observer gate, or protected cutoff-bearing parent path. Do not manufacture progress from additional semantic governance while all five remain blocked.
+
+
+## 2026-10-07 D03 — TI-1189~1194 canonical same-parent admission execution PASS
+
+- Canonical repository-native GitHub Actions execution is now complete for:
+  - `research/d03_adx_bollinger_same_parent_admission_matrix_20261006_v0_1.json`;
+  - `research/test_d03_adx_bollinger_same_parent_admission_matrix_v0_1.mjs`.
+- Workflow: `D03 ADX Bollinger Same-Parent Admission Readonly`.
+- Run: `37493819432`, run #1, head `ee3893e6c6c44ff3d845983ec9e9fc8bfdd41cfa`.
+- Job: `112373110655`.
+- Node: `22.23.3`.
+- Canonical output:
+  - status PASS;
+  - fieldCount 15;
+  - sameParentProjected 4;
+  - conditionalParentOnly 2;
+  - replayCertificationRequired 2;
+  - zeroNewOrdinaryDailyProviderCallDefault true;
+  - maturityPct 56.7;
+  - Formal Core NONE_LOCKED.
+- Isolation guard PASS:
+  - no fetch/provider calls;
+  - no database writes;
+  - no deployment;
+  - no push/trade path.
+- Durable receipt:
+  - `research/d03_adx_bollinger_same_parent_admission_execution_receipt_20261007_v0_1.json`.
+- This closes only the pending canonical-execution proof gap for the admission matrix.
+- It does NOT create market outcome evidence, alpha evidence, or a new independent information root.
+- Five external blockers remain unchanged.
+- D03 remains 56.7%; D03-09/D03-10 remain L2/40; raw gate 2/3; technicalObserverR1 BLOCKED; outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+Re-read the five external blockers. If unchanged, do not open a new semantic/governance tranche. The next legitimate D03 progress must consume a newly landed System2 dedup receipt, System1 redundancy receipt, D16 D03 method/incrementality receipt, raw-source observer receipt, or genuine cutoff-bearing C1 parent through the already-frozen acceptance oracles.
