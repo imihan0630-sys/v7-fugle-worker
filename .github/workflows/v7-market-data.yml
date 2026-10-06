@@ -47,6 +47,7 @@ jobs:
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
           QUALITY_MARKET_DATE: ${{ steps.calendar.outputs.market_date }}
+          QUALITY_RECOVERY_ONLY: ${{ github.event_name == 'schedule' && github.event.schedule == '45 15 * * 1-5' && '1' || '' }}
         run: node tests/sync_official_quality.mjs
       - name: Recover missing same-day analysis after complete data (skip prior success)
         if: >-
