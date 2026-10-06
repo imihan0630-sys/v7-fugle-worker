@@ -1,7 +1,7 @@
 # System 2 S2-07 Technical Continuity Bridge V1.1
 
 Updated: 2026-10-07 Asia/Taipei  
-Status: RESEARCH_ONLY / BUILD_LANE / PHYSICAL_EXECUTION_REQUESTED  
+Status: RESEARCH_ONLY / BUILD_LANE / PHYSICAL_PASS_PIT_BLOCKED  
 Scope: 4806 only  
 Formal Core: LOCKED  
 Trading authority: NONE
@@ -140,3 +140,45 @@ The probe will:
 If the bridge is physically ready but PIT-blocked, the next problem is no longer price geometry. It is historical availability/version-clock provenance for the official reference event.
 
 No strategy, factor, ranking or historical replay may silently consume this bridge until that PIT gate is separately resolved.
+
+
+## Physical result — 2026-10-07
+
+Authoritative merged-main execution:
+
+- merge: `2250ba518e4e6b0e64d2df31406ffe51a9b752df` (PR #724)
+- workflow run: `37534597007`
+- job: `112512227519`
+- System2 Research CI: `37534597078` PASS
+- PR V8 Regression: `37534399074` PASS
+
+Observed 4806 event-boundary geometry:
+
+- official pre-action close = 10.4
+- official resume reference price = 14.87
+- reference-price ratio = 1.4298076923076921
+- RAW pre-suspension close = 10.4
+- transformed pre-suspension close = 14.87
+- RAW resume open = 13.7
+- RAW resume close = 13.4
+- residual open gap = -7.86819098856758%
+- residual close move = -9.885675857431064%
+
+Physical bridge state:
+
+`BOUNDED_CONTINUITY_BRIDGE_READY_PIT_BLOCKED`
+
+The bounded mechanical reset is reconciled, but PIT replay remains blocked because the official reference event is still `HISTORICAL_UNKNOWN` with no certified `firstKnownAt` / `availableAt`.
+
+No history was mutated; no adjusted history was persisted; `technicalContinuityCertified=false`; all selection/final-selection/push/capital/order authority remains false.
+
+Durable evidence:
+
+- `system2/evidence/S2_07_TECHNICAL_CONTINUITY_BRIDGE_V1_1_PHYSICAL_20261007.md`
+- `system2/evidence/S2_07_TECHNICAL_CONTINUITY_BRIDGE_V1_1_PHYSICAL_20261007.json`
+
+Next BUILD_LANE gate:
+
+`OFFICIAL_REFERENCE_EVENT_HISTORICAL_AVAILABILITY_AND_VERSION_CLOCK_PROVENANCE`
+
+Do not backdate the current official retrieval or infer a replay clock from present-day source availability.
