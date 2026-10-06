@@ -1,0 +1,31 @@
+name: D03 ADX Bollinger Same-Parent Admission Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d03_adx_bollinger_same_parent_admission_matrix_20261006_v0_1.json"
+      - "research/test_d03_adx_bollinger_same_parent_admission_matrix_v0_1.mjs"
+      - ".github/workflows/d03-adx-bollinger-same-parent-admission-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run outcome-blind same-parent admission tests
+        run: node research/test_d03_adx_bollinger_same_parent_admission_matrix_v0_1.mjs
+      - name: Confirm isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'fetch\(|CLOUDFLARE|wrangler|INSERT|UPDATE|DELETE|sendPush|processSignalState' research/test_d03_adx_bollinger_same_parent_admission_matrix_v0_1.mjs
+          echo "D03 ADX/Bollinger same-parent admission isolation PASS"
