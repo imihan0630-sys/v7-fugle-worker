@@ -776,3 +776,11 @@ PR #738 / merge `34455da7f47016ee149ffeaa963f798251e9fe3d` physically captured t
 
 This advances only the whole-source snapshot layer. MOPS exact-version expected-keyset completeness, noRevisionGapThroughCut, pre-parent evidence-cut readiness, symbol-session completeness and TECHNICAL_CONTINUITY all remain false. No scheduler or trading authority was added; System1/Formal Core remain unchanged. Next BUILD_LANE gate is prospective MOPS exact-version population capture and complete expected-keyset freeze.
 
+## 2026-10-07 S2-07 V1.6 prospective MOPS exact-version boundary
+
+PR #749 / merge `bc405245870d6e986cbbf709562ce93c320bb327` establishes globally unique, stock-code-scoped MOPS exact-version observations with canonical row-content hashes and genuine prospective observation clocks for the frozen 23-event / 23-symbol low-volume universe.
+
+Latest-main physical run `37548011614` PASS observed 161 exact versions and covered all 23 symbols. However, comparison with earlier successful run `37547303476` (159 versions) found 9 versions newly present and 7 previously observed versions absent, while common exact-version payload hashes had zero mutations. Therefore historical query membership is not stable enough to certify a complete expected MOPS keyset from a single successful capture.
+
+V1.6 is accepted as a prospective exact-version observation layer only. `expectedMopsKeysetComplete`, `noRevisionGapThroughCut`, pre-parent readiness, symbol-session completeness, TECHNICAL_CONTINUITY and all trading authorities remain false. Next BUILD_LANE gate is repeated-capture union/stability reconciliation with earliest-observed preservation.
+
