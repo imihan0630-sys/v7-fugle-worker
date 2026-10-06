@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-06 21:55 Asia/Taipei
+Updated: 2026-10-06 22:40 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -32,7 +32,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - affectedScope: S2-03 Historical infrastructure / P0 2017-present TWSE+TPEx daily A1 cold history
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement: System 2 historical infrastructure must physically populate and verify the staged official 2017-present Taiwan-equity daily history before it can be described as complete or used as complete full-market replay evidence.
-- observedProblem: Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE and 2022 TWSE. 2021 TPEx remains explicitly BLOCKED on an official-source canonical A1 revision concentrated on 2021-01-14; immutable cold history is preserved and must not be overwritten. CORR-001 stays open for revision-lineage handling, later market-years, the 2026 incremental path and final full-market PIT replay.
+- observedProblem: Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE and both 2022 markets. 2021 TPEx remains explicitly BLOCKED on an official-source canonical A1 revision concentrated on 2021-01-14; immutable cold history is preserved and must not be overwritten. CORR-001 stays open for revision-lineage handling, 2023+ market-years, the 2026 incremental path and final full-market PIT replay.
 - evidence:
   - SYSTEM2_CHECKPOINT: run 36545375167 failed before annual ingest.
   - SYSTEM2_CHECKPOINT: repaired continuation required manual 2017 TWSE rerun, then TPEx only after TWSE coverage/hash/manifest/receipt verification.
@@ -103,6 +103,9 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - 2022 TWSE run `37467099680` (#19): SUCCESS; 985 packs / 237,941 bars / 985 R2 HEAD + byte-GET SHA checks PASS; 246 official sessions; 0 missing/extra fresh-official keys; 0 source-row-hash or canonical A1 mismatch; source version STABLE.
   - 2022 TWSE membership-session denominator 238,640 leaves 699 explicit UNKNOWN symbol-session gaps; data coverage PASS / replay readiness PARTIAL.
   - 2022 TWSE durable evidence: `system2/evidence/S2_HISTORICAL_TWSE_2022_PHYSICAL_VERIFICATION_V0_1.json`; artifact `11416932962`, digest `sha256:4718df9b1232cbe7e359a9ea2bdf9a31f03cd9574d744eaedd502293a65baddd`; System1 isolation PASS.
+  - 2022 TPEx run `37473405416` (#20): SUCCESS; 815 packs / 195,840 bars / 815 R2 HEAD + byte-GET SHA checks PASS; 246 official sessions; 0 missing/extra fresh-official keys; 0 source-row-hash or canonical A1 mismatch; source version STABLE.
+  - 2022 TPEx membership-session denominator 196,015 leaves 175 explicit UNKNOWN symbol-session gaps; data coverage PASS / replay readiness PARTIAL; TPEx historical-universe readiness remains `PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION`.
+  - 2022 TPEx durable evidence: `system2/evidence/S2_HISTORICAL_TPEX_2022_PHYSICAL_VERIFICATION_V0_1.json`; artifact `11419964963`, digest `sha256:b4c2cfe61389d95865d0b7da358ee83275840d3e512830f2eae62af0ed83c76a`; System1 isolation PASS.
   - 2021 TPEx is fail-closed BLOCKED, not rewritten. The coverage matrix preserves the old quota blocker as resolved historical provenance and now records the canonical revision blocker.
 - riskIfUnfixed: Historical replay, factor validation, multi-year backtests, regime robustness and strategy comparison can be mistaken for being backed by a complete market history when only bounded/smoke datasets exist. This creates a false-completion and evidence-coverage risk on a P0 dependency.
 - requiredCorrection:
