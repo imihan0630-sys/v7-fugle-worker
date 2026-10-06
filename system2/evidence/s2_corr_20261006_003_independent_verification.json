@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "S2_CORR_INDEPENDENT_VERIFICATION_V0_1",
+  "correctionId": "S2-CORR-20261006-003",
+  "verifierRole": "00_INDEPENDENT_AUDIT",
+  "verifiedAt": "2026-10-06T21:30:00+08:00",
+  "auditedMain": "f56223bb514b0f06762c3361b21ab7c28d14b218",
+  "implementationMerge": "fa9c433cf84d61f400c935cbd70019c7c9d39878",
+  "implementationFiles": [
+    "system2/deploy/terminal_page.mjs",
+    "system2/runtime/daily_resonance_read_model_v0_1.mjs",
+    "system2/tests/daily_resonance_read_model_v0_1.test.mjs",
+    "system2/tests/institutional_terminal_page_v0_1.test.mjs"
+  ],
+  "acceptance": {
+    "resonanceOrPoolRowsNotFormalCandidates": "PASS",
+    "formalCandidateBoardPendingOrEmpty": "PASS",
+    "unresolvedStrategyNotPromoted": "PASS",
+    "monitorStrategyProvenanceMonitorOnly": "PASS",
+    "decisionWorkspaceNoFormalUpgrade": "PASS",
+    "regressionCoveragePresent": "PASS",
+    "protectedAuthorityUnchanged": "PASS"
+  },
+  "observedInLatestMain": {
+    "formalCandidateState": "FORMAL CANDIDATE PENDING",
+    "formalCandidateRows": "EMPTY_UNTIL_AUTHORIZED_S2_07_SOURCE",
+    "monitorRowAuthority": "MONITOR_ONLY",
+    "monitorStrategyAuthority": "MONITOR_POOL_PROVENANCE_ONLY",
+    "formalCandidateStrategyId": null,
+    "unresolvedMonitorProvenance": "MONITOR_PROVENANCE_UNRESOLVED",
+    "decisionCandidateState": "NOT_AVAILABLE",
+    "formalAction": "NO_FROZEN_DECISION"
+  },
+  "ci": [
+    {
+      "id": 37469475340,
+      "name": "System2 Research CI",
+      "event": "pull_request",
+      "conclusion": "success"
+    },
+    {
+      "id": 37469475238,
+      "name": "V8 Regression Tests",
+      "event": "pull_request",
+      "conclusion": "success"
+    },
+    {
+      "id": 37469704138,
+      "name": "System2 Research CI",
+      "event": "push",
+      "headSha": "fa9c433cf84d61f400c935cbd70019c7c9d39878",
+      "conclusion": "success"
+    }
+  ],
+  "diffBoundary": {
+    "changedFileCount": 4,
+    "onlyExpectedConflictUnitFiles": true
+  },
+  "disposition": "PASS_INDEPENDENT_VERIFICATION",
+  "protectedAuthorityChange": false,
+  "notes": [
+    "This verifies candidate-vs-monitor attribution only.",
+    "It does not certify S2-07 assessor/frozen-candidate readiness, ranking/capacity, final/live selection, push/orders, actual holdings, or System1 Formal Core.",
+    "S2-CORR-20261006-004 is separate and remains independently open until its own implementation/verification."
+  ]
+}
