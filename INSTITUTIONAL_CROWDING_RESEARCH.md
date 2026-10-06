@@ -2443,3 +2443,34 @@ Maturity impact: NONE. D06-11 remains L2/40% because a complete multi-index PIT 
 
 Exact next:
 build a prospective multi-index 2026 event registry from official technical notices with separate schedule/public-result/effective clocks and disclosure mode; do not use unavailable licensed-client timestamps or infer realized execution.
+
+
+---
+
+## IC-092 — D06-11 multi-index registry proves event-clock heterogeneity and multi-day transition risk
+
+Research cycle: 2026-10-06 Asia/Taipei  
+Status: MULTI_INDEX_EVENT_REGISTRY_FROZEN / PROSPECTIVE_CALENDAR_PRECOMMITTED / MULTI_DAY_TRANSITION_GUARD / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_11_multi_index_event_registry_20261006_v0_1.json`.
+
+The current official Taiwan Index Plus technical-notice archive supports a replayable public event registry across multiple index families. A prospective 2026 November schedule is now frozen before constituent results are known. Example scheduled public result/effective pairs include 2026-11-17 after-close -> 2026-11-18 and 2026-12-01 after-close -> 2026-12-02. These schedule entries identify future event clocks only; additions/deletions/weights remain UNKNOWN until the public result is actually observed.
+
+Cross-index review events show large heterogeneity in list changes: some current notices have zero additions/deletions, some have 3-in/3-out, and others have 16 deletions or 23-in/23-out. This heterogeneity is descriptive only; list-count magnitude is not passive-flow size without benchmark exposure and constituent weight delta.
+
+A critical timing falsification is now frozen from the official 2026-10-02 Taiwan listed/OTC sustainable high-dividend small/mid-cap index review notice: although the review is effective from 2026-10-05, the notice explicitly specifies an eight-trading-day index-adjustment transition. Therefore `effectiveTradeDate` cannot be universally mapped to a one-day passive-flow shock.
+
+Frozen D06-11 rules:
+1. public review schedule may precommit event clocks but never constituent outcomes;
+2. public strategy event knowledge uses `publicReviewResultFirstKnownAt`;
+3. effective date is not knowledge time;
+4. official transition windows must be preserved rather than collapsed to a single day;
+5. additions/deletions are mechanical exposure candidates only, not realized ETF net flow;
+6. event size requires benchmark/fund exposure plus constituent weight delta before any mechanical-demand estimate;
+7. realized execution remains UNKNOWN without independent execution evidence.
+
+Maturity impact: NONE. D06-11 stays L2/40%. The source/event-clock layer is materially stronger, but benchmarked AUM/weight-delta lineage and actual execution remain incomplete, and no OOS/Shadow outcome evidence is open.
+
+Exact next:
+use the now-precommitted 2026-11 public schedule as a prospective test: capture each scheduled after-close result only when it becomes public, then bind constituent changes to benchmark/fund exposure and weight deltas without using unavailable licensed-client knowledge times. In parallel, distinguish one-day vs staged-transition index families.
