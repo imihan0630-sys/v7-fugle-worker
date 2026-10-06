@@ -82,7 +82,7 @@ function normalizeDailyLane(row, cutoffAt){
     && row.queryTruncated!==true
     && Number.isInteger(Number(row.rowCount))
     && Number(row.rowCount)>=0
-    && row.emptySnapshotCertified !== false;
+    && (Number(row.rowCount)>0 || row.emptySnapshotCertified===true);
   return deepFreeze({
     sourceId,
     exchange:text(row.exchange).toUpperCase()||null,
