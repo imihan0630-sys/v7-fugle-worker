@@ -190,3 +190,21 @@ Two active continuations are now valid and non-conflicting:
 Immediate executable continuation: fresh workflow_dispatch `year=2022`, `market=TWSE` from latest main. Do not use rerun of run #18 because its inputs are 2021/TPEX. After 2022 TWSE terminal completion, perform full Physical verify/artifact/System1-isolation readback before acceptance.
 
 Workflow URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/workflows/system2-historical-pack-2017-backfill.yml
+
+
+## 2026-10-06 2022 TWSE fresh-dispatch run #19
+
+Fresh workflow_dispatch was confirmed on branch `main` with run `37467099680` / #19.
+
+- run head: `507fdd83ad9df9b3703cbc65e8940dda6b0c2662`;
+- latest main at dispatch readback: same SHA `507fdd83ad9df9b3703cbc65e8940dda6b0c2662`;
+- event: `workflow_dispatch`;
+- migrate: SUCCESS;
+- backfill: IN_PROGRESS at latest readback;
+- Physical verify: PENDING;
+- evidence artifact: PENDING;
+- System1 isolation: PENDING.
+
+The REST run payload does not expose workflow_dispatch input values. The requested continuation is 2022/TWSE, and the exact year/market inputs must be verified from the job log before acceptance. Do not accept or advance the market-year solely from run creation metadata.
+
+Run URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37467099680
