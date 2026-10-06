@@ -1,0 +1,41 @@
+name: D02 PVE-251 Live Remediation Readonly
+
+on:
+  push:
+    paths:
+      - "research/d02_pve251_live_remediation_readonly_v0_1.mjs"
+      - ".github/workflows/d02-pve251-live-remediation-readonly.yml"
+      - "research/d02_pve247_remediation_acceptance_oracle_v0_1.mjs"
+  workflow_dispatch:
+  schedule:
+    - cron: "20 5 * * 1-5"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: d02-pve251-live-remediation-readonly
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Read Production remediation evidence without mutation
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node research/d02_pve251_live_remediation_readonly_v0_1.mjs
+      - name: Preserve sanitized PVE-251 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: d02-pve251-live-remediation-readonly-${{ github.run_id }}
+          path: artifacts/d02-pve251-live-remediation-readonly.json
+          if-no-files-found: warn
+          retention-days: 30
