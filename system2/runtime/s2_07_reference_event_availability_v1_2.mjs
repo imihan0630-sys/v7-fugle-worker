@@ -6,8 +6,11 @@ import {
   buildMopsovAvailabilityObservationV0_1,
 } from "./mopsov_prospective_availability_observer_v0_1.mjs";
 import {
+  capitalReductionSemanticV0_5,
+  disclosureStageV0_5,
   familyMatchV0_5,
   issuerScopeEligibleV0_5,
+  officialSubtypeSemanticV0_5,
   versionKeyV0_5,
 } from "./s2_07_event_specific_linkage_v0_5.mjs";
 
@@ -22,11 +25,14 @@ function iso(value) {
   return new Date(value).toISOString();
 }
 
-function evidenceCandidate(row, replayCutoffAt) {
+function evidenceCandidate(row, replayCutoffAt, {officialEventVersionId, officialSourceRowHash}) {
   if (!row || typeof row !== "object") return null;
   const evidenceClass = text(row.evidenceClass);
   const availableAt = iso(row.availableAt ?? row.firstObservedAt);
-  const exactVersionIdentity = row.exactVersionIdentity === true;
+  const exactVersionIdentity =
+    row.exactVersionIdentity === true
+    && text(row.referenceEventVersionId) === officialEventVersionId
+    && text(row.referenceSourceRowHash) === officialSourceRowHash;
   const publicAvailabilityObserved = row.publicAvailabilityObserved === true;
   const publicationSemanticsCertified = row.publicationSemanticsCertified === true;
   const authorizedClass =
@@ -55,6 +61,8 @@ function evidenceCandidate(row, replayCutoffAt) {
     sourceId: text(row.sourceId) || null,
     versionKey: text(row.versionKey) || null,
     evidenceId: text(row.evidenceId) || null,
+    referenceEventVersionId: text(row.referenceEventVersionId) || null,
+    referenceSourceRowHash: text(row.referenceSourceRowHash) || null,
   });
 }
 
@@ -98,7 +106,7 @@ export function evaluateReferenceEventHistoricalAvailabilityV1_2({
     blockers.push("REFERENCE_EVENT_NOT_PHYSICALLY_VERIFIED");
   }
 
-  const relevantRows = mopsRows
+  const familyRows = mopsRows
     .filter((row) =>
       row
       && row.date
@@ -107,6 +115,36 @@ export function evaluateReferenceEventHistoricalAvailabilityV1_2({
       && familyMatchV0_5(row.rowText, family)
     )
     .sort((a, b) => versionKeyV0_5(a).localeCompare(versionKeyV0_5(b)));
+
+  const subtypeSemantic = officialSubtypeSemanticV0_5(
+    officialEvent.continuityEffect?.subtype,
+  );
+  let semanticSeed = null;
+  let relevantRows = familyRows;
+
+  if (family === "CAPITAL_REDUCTION" && subtypeSemantic) {
+    const semanticSeeds = familyRows.filter((row) =>
+      capitalReductionSemanticV0_5(row.rowText) === subtypeSemantic
+      && disclosureStageV0_5(row.rowText) === "CORPORATE_DECISION"
+    );
+    semanticSeed = semanticSeeds.at(-1) ?? null;
+    if (!semanticSeed) {
+      relevantRows = [];
+      blockers.push("MOPS_SEMANTIC_EPISODE_NOT_ALIGNED");
+    } else {
+      relevantRows = familyRows
+        .filter((row) => row.date >= semanticSeed.date)
+        .filter((row) =>
+          !["OTHER_CAPITAL_CHANGE", "BOND_CONVERSION"].includes(
+            disclosureStageV0_5(row.rowText),
+          )
+        )
+        .filter((row) => {
+          const semantic = capitalReductionSemanticV0_5(row.rowText);
+          return semantic === "GENERIC_CAPITAL_REDUCTION" || semantic === subtypeSemantic;
+        });
+    }
+  }
 
   const retrospectiveObservations = relevantRows.map((row) => {
     const clock = mopsovSourceReportedAtV0_1(row);
@@ -129,8 +167,17 @@ export function evaluateReferenceEventHistoricalAvailabilityV1_2({
     });
   });
 
+  const officialEventVersionId = text(officialEvent.eventVersionId);
+  const officialSourceRowHash = text(officialEvent.sourceRowHash);
+  if (!officialEventVersionId || !officialSourceRowHash) {
+    blockers.push("REFERENCE_EVENT_PROVENANCE_IDENTITY_MISSING");
+  }
+
   const independent = independentAvailabilityEvidence
-    .map((row) => evidenceCandidate(row, replayCutoff))
+    .map((row) => evidenceCandidate(row, replayCutoff, {
+      officialEventVersionId,
+      officialSourceRowHash,
+    }))
     .filter(Boolean);
   const readyEvidence = independent
     .filter((row) => row.ready)
@@ -160,11 +207,15 @@ export function evaluateReferenceEventHistoricalAvailabilityV1_2({
     family,
     effectiveDate,
     replayCutoffAt: replayCutoff,
-    officialEventVersionId: text(officialEvent.eventVersionId) || null,
+    officialEventVersionId: officialEventVersionId || null,
+    officialSourceRowHash: officialSourceRowHash || null,
     officialKnowledgeTimeMode: text(officialEvent.knowledgeTimeMode) || null,
     officialFirstKnownAt: officialEvent.firstKnownAt ?? null,
     officialAvailableAt: officialEvent.availableAt ?? null,
 
+    mopsFamilyRowCount: familyRows.length,
+    mopsSemanticSeedVersionKey: semanticSeed ? versionKeyV0_5(semanticSeed) : null,
+    mopsSemanticSeedDate: semanticSeed?.date ?? null,
     mopsRelevantRowCount: relevantRows.length,
     mopsSourceReportedClockEligibleCount: sourceReportedClockEligibleCount,
     mopsRetrospectiveOnlyCount: retrospectiveOnlyCount,
