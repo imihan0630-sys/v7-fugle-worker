@@ -142,3 +142,25 @@
 - 反證：挑戰臂在 untouched chronological OOS 無法優於 base-rate、斜率反覆歸零、效果只存在 row-weighted 或單一日期／episode、或需事後換 target／score／window，皆不得宣稱校準增益。
 - 禁止：在 V0.1 加入 rewardPerRisk、marketConsensusScore、setupQuality、sectorFlow、relativeStrength、Regime、isotonic／Beta／多特徵模型；任何新增皆另立 experiment/version 並計入 multiple-testing family。
 - Formal Core：LOCKED；System 1／System 2 決策不受影響；D16-19、D16-25 成熟度不因預註冊而提高。
+
+
+## D16-SDA022-01｜System1 vs System2 SHORT_MOMENTUM D5 增量資訊
+- 狀態：PREREGISTERED / OUTCOMES_CLOSED / EXPLORATORY_OUTER_STREAM_ENROLLED / FORMAL_CORE_LOCKED。
+- 票：`SDA-022`。
+- 研究流：`ROOM11_CROSS_SYSTEM_INCREMENTALITY_STREAM_20261006_V0_1`。
+- Primary pair：System1 current Formal A/B short-horizon policy vs System2 `SHORT_MOMENTUM / V0.1-CONTRACT`。
+- Primary target：`SDA022_S1_SM_D5_REFERENCE_CLOSE_POSITIVE_V0_1`；精確第五個後續官方台灣交易日 close 高於共同 decision-session reference close。
+- Primary estimand：`DATE_BALANCED_BRIER_LOSS_IMPROVEMENT`，比較 `SYSTEM1_ONLY` vs `SYSTEM1_PLUS_SHORT_MOMENTUM`；date delta = augmented Brier − baseline Brier，負值為有利方向。
+- Primary population：共同資訊截點可證明、兩邊 policy state 可定義的 common-support rows；selected-only 禁止；UNKNOWN / incomplete / admission-blocked 保留分母。
+- Multiple-comparison boundary：D5 + `SYSTEM2_INCREMENTAL_OVER_SYSTEM1` 為唯一 primary；D1/D3/D10 不得救援；其他 System2 strategy 必須另立 experiment/version。
+- Dependence：沿用 D16-06，涵蓋 date clustering、repeated symbols、overlapping D5 windows、sector clustering、Regime / replication-cluster concentration、SDA-016 outcome-footprint consumption、missingness / positivity。
+- Current outer-stream objective：`EXPLORATORY_ONLY`；不得宣稱 confirmatory FWER/FDR/mFDR 控制。
+- Stopping：`SINGLE_PRIMARY_LOOK`；不允許 efficacy / futility outcome peeking；只有 pre-outcome readiness / integrity checks 可持續進行。
+- Primary opening gate：System1 fingerprint 5/5、System2 fingerprint、physical NC-T01、prospective pair receipts、common cutoff、exact model-state encoding、ModelMethodReceipt、MDE/precision target、>=40 effective independent decision dates、class/replication/coverage/consumption gates、explicit outer-stream state 全部完成。
+- Current verified：System1 `S22-T01~T05 = 5/5 PASS`；D16 prereg `S22-T25~T28 = 4/4 PASS`。
+- Current pending：System2 `S22-T06~T10`、physical NC-T01 `S22-T11~T16`、prospective `S22-T17~T24`。
+- Human prereg：`research/SDA022_D16_S1_SHORT_MOMENTUM_D5_INCREMENTALITY_PREREG_20261006_V0_1.md`。
+- Machine prereg：`research/SDA022_D16_S1_SHORT_MOMENTUM_D5_INCREMENTALITY_PREREG_20261006_V0_1.json`。
+- Outer-stream enrollment：`research/D16_SDA022_OUTER_STREAM_ENROLLMENT_20261006_V0_1.json`。
+- Stopping rule：`research/D16_SDA022_D5_STOPPING_RULE_20261006_V0_1.md` / `research/D16_SDA022_D5_STOPPING_RULE_20261006_V0_1.json`。
+- 禁止：在 model method / precision target freeze 前開經濟結果；把 output overlap 當 independent confirmation；把 low overlap 當 diversification；事後改 horizon/strategy/predictor family；刪除失敗 hypothesis 或換 id 重置研究流歷史。
