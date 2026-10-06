@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "D06_03_TWSE_DEALER_SPLIT_CAPTURE_20261006_1800_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-03",
+  "tradeDate": "2026-10-06",
+  "market": "TWSE",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "primitiveReceiptId": "D06-20261006-INSTITUTION-DEALER-SPLIT",
+  "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+  "sourceProduct": "TWSE T86 / TWT86UC public non-block-trade report",
+  "sourceUrl": "https://www.twse.com.tw/rwd/zh/fund/T86?date=20261006&selectType=ALLBUT0999&response=html",
+  "sourceClockContract": "18:00 Asia/Taipei excluding block trades",
+  "capturedAtUpperBound": "2026-10-06T21:21:28+08:00",
+  "coverage": {
+    "totalRows": 1340,
+    "numericValidRows": 1340,
+    "ordinaryFourDigitRows": 1086,
+    "duplicateOrdinaryCodes": 0
+  },
+  "fingerprints": {
+    "canonicalRows": "fnv1a64-utf8:0730a3dd8ae2406a"
+  },
+  "arithmeticReconciliation": {
+    "proprietaryDesk": "1340/1340 PASS",
+    "hedgeDesk": "1340/1340 PASS",
+    "dealerAggregate": "1340/1340 PASS",
+    "institutionTotal": "1340/1340 PASS"
+  },
+  "ordinaryStockDeskStructure": {
+    "proprietaryNonzero": 530,
+    "hedgeNonzero": 494,
+    "bothActive": 334,
+    "oppositeSigns": 152,
+    "oppositePctAmongBothActive": 45.5,
+    "samePositive": 92,
+    "sameNegative": 90,
+    "aggregateDealerNonzero": 690,
+    "aggregateRowsWithOpposingDesks": 152,
+    "opposingPctAmongAggregateNonzero": 22,
+    "hedgeAbsDominant": 360,
+    "proprietaryAbsDominant": 330,
+    "equalAbs": 396
+  },
+  "temporalReplication": {
+    "independentTradeDatesThrough20261006": 2,
+    "priorDate": "2026-10-05",
+    "sameDateCrossMarketDoesNotAddTemporalN": true
+  },
+  "siblingIncludingBlock": {
+    "sourceProduct": "TWTAIUC including block trades",
+    "accessState": "PAID_OFFICIAL_PRODUCT / NOT_AUTHORIZED",
+    "rule": "Do not substitute this public non-block receipt."
+  },
+  "maturityImpact": "NONE",
+  "status": "SECOND_TEMPORAL_DATE_TWSE_CAPTURED / STRUCTURAL_FALSIFICATION_PERSISTS / OUTCOMES_CLOSED / FORMAL_LOCKED"
+}
