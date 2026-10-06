@@ -476,3 +476,125 @@ Exact next continuation:
 1. inspect next legitimate post-deploy Formal decision for a real binding receipt;
 2. verify receipt parent identity against exact immutable C1 generation;
 3. continue monitoring SDA-001/004, SDA-009, 2023 TWSE, and System2 SDA-022 fingerprint/NC-T01 evidence.
+
+
+## 00 多線稽核總控執行板（MANDATORY CONCURRENT LANES）
+
+Effective: 2026-10-06 Asia/Taipei  
+Observed main at activation: `b6dd11b2d038fa7a672dbdc012da64ffb7d16a82`  
+Role: 00｜研究／稽核總控室  
+Formal Core impact: NONE
+
+00 不得再退化成單一 System 1、System 2 或單一研究室的追蹤室。每個 substantive audit cycle 必須同步維持以下五條線，只有當某線沒有新 machine-verifiable delta 時才記錄 NO_CHANGE，不得因另一線活躍而長期跳過。
+
+### Lane A — System 1 launch blocker audit
+Track independently:
+- SDA-001/004 genuine-session lineage/redundancy evidence;
+- SDA-009 genuine same-generation LOO diagnostic;
+- SDA-016 genuine Formal↔C1 parent receipt and remaining finalization/consumption evidence;
+- Formal Core remains LOCKED unless separately approved.
+
+Current readback:
+- SDA-016 V8.20 Production deploy/regression verified;
+- genuine Formal↔C1 receipt still pending;
+- SDA-001/004 genuine receipt pending;
+- SDA-009 genuine receipt count remains 0;
+- System1 S1 remains PARTIAL.
+
+### Lane B — System 2 build / correction / selection-to-capacity audit
+Track independently:
+- S2-07 candidate/read authority and selection-to-capacity;
+- correction queue and independent closure receipts;
+- terminal candidate-vs-monitor truthfulness;
+- resonance remains monitor/research-only unless authority changes;
+- actual holdings remain NOT_WIRED;
+- live/final trading remains DISABLED.
+
+Current readback:
+- terminal correction hardening accepted where independently closed;
+- S2-07 selection-to-capacity remains INCOMPLETE;
+- no live/final authority expansion is accepted.
+
+### Lane C — DATA_LANE historical coverage / replay audit
+Track independently:
+- annual market-year coverage;
+- source revisions / vintage / as-of semantics;
+- UNKNOWN symbol-session gaps;
+- replay readiness separately from raw data coverage;
+- System1 isolation.
+
+Current readback:
+- accepted through 2022 TPEx raw A1 coverage with replay PARTIAL;
+- 2021 TPEx remains blocked by canonical A1 source-revision semantics;
+- next annual target is 2023 TWSE;
+- 00 must not perform DATA_LANE engineering.
+
+### Lane D — 01～15 research-room / curriculum / SDA responsibility audit
+Track independently:
+- tracker aggregate and domain maturity;
+- each room exact next continuation point;
+- assigned SDA/falsification responsibilities;
+- evidence maturity must not be inflated by design-only progress;
+- no room may self-close a cross-room/System gate.
+
+Current tracker:
+- 22 domains;
+- 356 modules;
+- maturity-weighted aggregate 46.7%.
+
+00 should prioritize material research blockers and cross-room dependencies, not chase percentage for its own sake.
+
+### Lane E — Cross-system non-convergence / SDA-022 audit
+Track independently:
+- System1 fingerprints;
+- System2 strategy-specific fingerprints S22-T06~T10;
+- physical NC-T01 S22-T11~T16;
+- prospective overlap/divergence S22-T17~T24;
+- D16 dependence/incrementality;
+- final independent 00 closure.
+
+Current readback:
+- System1 fingerprint PASS;
+- D16 prereg PASS;
+- System2 fingerprints PENDING;
+- physical NC-T01 PENDING;
+- SDA-022 remains PARTIAL_PASS.
+
+Same-symbol overlap is not two independent confirmations until this chain passes.
+
+### Mandatory 00 cycle format
+
+Every substantive 00 continuation must:
+1. refresh latest main;
+2. scan all five lanes;
+3. report material DELTA or NO_CHANGE per lane;
+4. prioritize blockers by launch-risk/severity, not by whichever room changed most recently;
+5. durableize any gate-changing verdict;
+6. never take over BUILD_LANE, DATA_LANE, REMEDIATION_LANE, D16 or System1 engineering;
+7. preserve Formal Core and owner-approval boundaries.
+
+### Current priority order
+
+P0:
+- genuine evidence that can actually change a launch gate;
+- System2 selection-to-capacity truthfulness;
+- SDA-022 physical independence;
+- source/replay blockers that invalidate broad backtests.
+
+P1:
+- research-room SDA remediation / cross-room dependencies;
+- prospective/OOS readiness and first genuine receipts.
+
+P2:
+- maturity advancement that does not currently change launch authority.
+
+### Exact next continuation point
+
+Run the next 00 cycle as five-lane concurrent readback:
+- A: first genuine S1 receipts;
+- B: S2-07 / correction / selection-to-capacity deltas;
+- C: 2023 TWSE or 2021 TPEx revision-lineage delta;
+- D: research-room SDA / tracker material deltas;
+- E: first System2 fingerprint / NC-T01 physical receipt.
+
+Do not let one lane consume the whole 00 cycle unless a CRITICAL gate-changing event requires immediate bounded verification.
