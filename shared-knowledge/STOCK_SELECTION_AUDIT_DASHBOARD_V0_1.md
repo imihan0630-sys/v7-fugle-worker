@@ -289,3 +289,12 @@ Operational interpretation:
 - System2 SDA-022 fingerprints and physical NC-T01 remain pending.
 
 No System1 Launch Gate state changes from this drift.
+
+
+## 2026-10-06 live correction update — CORR-003 closed / CORR-004 open
+
+- CORR-003 = VERIFIED_CLOSED.
+- CORR-004 = OPEN / BUILD_LANE.
+- Current System2 UI risk is now date alignment: prior-session resonance must not appear as current-session monitor data.
+- System2 selection-to-capacity remains INCOMPLETE.
+- System1 Launch Gate remains S1 PARTIAL with the same three true blockers.
