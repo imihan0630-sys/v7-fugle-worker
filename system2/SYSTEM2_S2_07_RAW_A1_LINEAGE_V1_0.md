@@ -1,7 +1,7 @@
 # System 2 S2-07 RAW A1 Lineage V1.0
 
 Updated: 2026-10-07 Asia/Taipei  
-Status: RESEARCH_ONLY / BUILD_LANE / PHYSICAL_EXECUTION_PENDING  
+Status: RESEARCH_ONLY / BUILD_LANE / PHYSICALLY_VERIFIED  
 Formal Core: LOCKED  
 Trading authority: NONE
 
@@ -113,3 +113,37 @@ V1.0 freezes:
 Only cases with physically positive V1.0 RAW A1 lineage may proceed to a later technical-continuity contract.
 
 Cases blocked by missing persisted RAW A1 coverage remain blocked and must not be repaired by BUILD_LANE through ad-hoc history writes. Historical population remains subject to DATA_LANE ownership and canonical data governance.
+
+
+## Physical execution result
+
+Authoritative main execution:
+
+- implementation merge: `4c2350b499f3412b6a2be650c5d601ace2eea760` (PR #718);
+- readonly workflow: `System2 S2-07 RAW A1 Lineage V1.0 Readonly`;
+- run `37496251790` / job `112381430570`: PASS;
+- System2 Research CI `37496251753`: PASS;
+- V8 Regression `37496251698`: PASS.
+
+Observed result:
+
+- 4 bounded V0.9-positive cases evaluated;
+- 1 lineage-ready case: 4806;
+- 3 blocked cases: 5381, 6241, 3086;
+- each blocked case lacks both the pre-suspension and resume-date persisted RAW A1 row in isolated D1;
+- 4806 has exactly one pre-suspension RAW row and one resume-date RAW row, with zero RAW rows during certified suspended official sessions;
+- D1 read-only metrics: 6 requests, 12 rows read, 0 rows written.
+
+The 4806 participating RAW rows retain `continuityState=UNVERIFIED`. Therefore V1.0 proves bounded source/session lineage only; it does not certify technical continuity or any adjustment transform.
+
+Durable evidence:
+
+- `system2/evidence/S2_07_RAW_A1_LINEAGE_V1_0_PHYSICAL_20261007.md`
+- `system2/evidence/S2_07_RAW_A1_LINEAGE_V1_0_PHYSICAL_20261007.json`
+
+Exact continuation:
+
+1. BUILD_LANE may advance 4806 only into a bounded technical-continuity contract/probe;
+2. 5381 / 6241 / 3086 remain blocked on canonical RAW A1 population and stay DATA_LANE-dependent;
+3. BUILD_LANE must not fill those historical gaps ad hoc;
+4. no result generalizes to the other 13 V0.9-blocked events or to selection/trading authority.
