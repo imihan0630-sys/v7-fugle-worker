@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "S2_HISTORICAL_TWSE_2023_UNIVERSE_BLOCKER_EVIDENCE_V0_2",
+  "correctionDirective": "S2-CORR-20261004-001",
+  "market": "TWSE",
+  "year": 2023,
+  "disposition": "DATA_COVERAGE_BLOCKED_HISTORICAL_UNIVERSE_RECONSTRUCTION",
+  "failedRun": {
+    "runId": 37493424179,
+    "runNumber": 22,
+    "headSha": "4f0033fba02603fa0edc7b33e8f38e1cb4c3b6e8",
+    "conclusion": "failure",
+    "completedAt": "2026-10-06T16:15:40Z",
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37493424179",
+    "artifactId": 11426641861,
+    "artifactName": "system2-historical-coverage-TWSE-2023",
+    "artifactDigest": "sha256:b10b6a4e351d003c9c52667179375f804f50a00482e1f57212a6568b6097382d",
+    "artifactUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37493424179/artifacts/11426641861",
+    "annualBackfillState": "SUCCESS",
+    "physicalVerifyState": "BLOCKED",
+    "system1Isolation": "PASS"
+  },
+  "storageVerification": {
+    "state": "PASS",
+    "receiptId": "S2HCR-93d330e280ea444dd7a3a5c7b0ac08df5f85f63c8b81913596b4ec66c8377674",
+    "batchId": "S2-HIST-PACK-YEAR|TWSE|2023",
+    "completionReceiptState": "COMPLETE",
+    "packCount": 1003,
+    "barCount": 234727,
+    "manifestRollingHash": "93d330e280ea444dd7a3a5c7b0ac08df5f85f63c8b81913596b4ec66c8377674",
+    "headObjectCountVerified": 1003,
+    "byteGetObjectCountVerified": 1003
+  },
+  "sourceReconciliation": {
+    "state": "PASS",
+    "sourceVersionState": "STABLE",
+    "coldRowCount": 234727,
+    "freshOfficialRowCount": 234727,
+    "missingFromColdCount": 0,
+    "absentFromFreshOfficialCount": 0,
+    "sourceRowHashMismatchCount": 0,
+    "canonicalA1ValueMismatchCount": 0,
+    "sourceRevisionOnlyCount": 0,
+    "sourceRevisionDateCount": 0,
+    "officialTradingDates": 239
+  },
+  "historicalUniverse": {
+    "readiness": "PASS_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION",
+    "membershipCount": 1101,
+    "replayEligibleCount": 1101,
+    "currentCount": 1089,
+    "delistedCount": 12,
+    "unknownStartCount": 0,
+    "currentListingStartReconciledCount": 0,
+    "diagnosis": "The first fix did not reconcile any current listing start because CURRENT rows carried legal company names while NEWLISTING rows carried company short names. Same-company identity therefore failed to match even after -創 suffix normalization."
+  },
+  "coverage": {
+    "expectedSessions": 239,
+    "actualSessions": 239,
+    "historicalUniverseSize": 1002,
+    "expectedBars": 235140,
+    "matchedActualBars": 234522,
+    "totalStoredRowsInRange": 234727,
+    "missingBars": 618,
+    "unknownBars": 618,
+    "unexpectedBars": 205,
+    "structuralCoverageState": "BLOCKED",
+    "rawCoverageState": "BLOCKED",
+    "dataCoverageState": "BLOCKED",
+    "replayReadinessState": "BLOCKED",
+    "unexpectedBarSamplePrefix": [
+      "2023-03-06|6873",
+      "2023-03-07|6873",
+      "2023-03-08|6873",
+      "2023-03-09|6873",
+      "2023-03-10|6873"
+    ]
+  },
+  "remediation": {
+    "firstFixCommit": "a0bf42f81fa46fc3854d2c8cf844851327966a9b",
+    "firstRegressionCommit": "045d40399c7845ef76cea4051b4a05b2599e1be2",
+    "firstFixDisposition": "INSUFFICIENT_LIVE_MATCHING",
+    "secondFixCommit": "6a227f96cb0af9d6c1620402be25b93167eb4e16",
+    "secondRegressionCommit": "64d2f7e8ecf923e0b133101e340c78222facddef",
+    "secondFixSemantics": "Use conservative alias intersection across legal company name and company short name, after NFKC/whitespace/dash normalization and -創 suffix normalization; require same symbol and earlier official NEWLISTING date; preserve same-code/different-company rejection.",
+    "ciRunId": 37495340984,
+    "ciConclusion": "success",
+    "ciUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37495340984",
+    "liveReverificationState": "PENDING_FRESH_DISPATCH"
+  },
+  "policy": [
+    "Do not accept 2023 TWSE until a fresh post-second-fix workflow dispatch passes Physical verify.",
+    "Do not weaken unexpectedBars fail-closed semantics.",
+    "Do not rewrite immutable cold packs; storage and source reconciliation are already PASS.",
+    "Do not rerun old run #22 because it is bound to the pre-second-fix head."
+  ],
+  "correctionStatus": "FIX_IN_PROGRESS",
+  "protectedBoundaries": {
+    "system1RuntimeChanged": false,
+    "system2StrategyAuthorityChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "capitalOrderAuthorityChanged": false
+  }
+}
