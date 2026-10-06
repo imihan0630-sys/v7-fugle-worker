@@ -1,0 +1,249 @@
+{
+  "schemaVersion": "D03_FACTOR_TIMING_RECEIPT_SCHEMA_V0_1",
+  "updatedAt": "2026-10-06T10:24:00+08:00",
+  "owner": "D03",
+  "classification": "RESEARCH_ONLY_OUTCOME_CLOSED",
+  "formalCoreImpact": "NONE_LOCKED",
+  "requiredReceiptFields": [
+    "receiptVersion",
+    "factorId",
+    "factorVersion",
+    "timingProfileId",
+    "timingProfileVersion",
+    "featureLineageId",
+    "informationRoot",
+    "redundancyGroupId",
+    "parameterFamilyId",
+    "sourceLineageHash",
+    "consumerScopeHash",
+    "signalKnownAtRule",
+    "decisionCutoffRule",
+    "executionClockRule",
+    "legalOffsetFamilyId",
+    "forbiddenFutureOffsetFamilyId",
+    "endpointFamilyId",
+    "ancestryBaselineHash",
+    "commonSupportHash",
+    "purgeEmbargoRuleVersion",
+    "dependenceMethodRef",
+    "multipleTestingFamilyId",
+    "researchStreamId",
+    "selectionPipelineHash",
+    "costFillabilityContractHash",
+    "continuityDisposition",
+    "finalityState",
+    "terminalState",
+    "predictivePrecedenceEligible",
+    "structuralCausalityClaimAllowed"
+  ],
+  "timingProfiles": {
+    "DAILY_COMPLETED": {
+      "appliesTo": [
+        "D03-01",
+        "D03-02",
+        "D03-03",
+        "D03-06",
+        "D03-07",
+        "D03-08"
+      ],
+      "signalKnownAtRule": "AFTER_REQUIRED_SESSION_FINALIZATION",
+      "decisionCutoffRule": "AT_OR_AFTER_SIGNAL_KNOWN_AT_WITH_NO_FUTURE_INPUT",
+      "executionClockRule": "FIRST_EXECUTABLE_EVENT_AFTER_SIGNAL_KNOWN_AT",
+      "legalOffsetFamilyId": "OF_DAILY_COMPLETED_NONFUTURE_V0_1",
+      "futureOffsetPolicy": "SENTINEL_ONLY",
+      "sameCloseFillAllowed": false
+    },
+    "ADX_COMPLETED_CERTIFIED": {
+      "appliesTo": [
+        "D03-09"
+      ],
+      "signalKnownAtRule": "AFTER_CANONICAL_FULL_REPLAY_OR_TRUSTED_STATE",
+      "decisionCutoffRule": "AT_OR_AFTER_CERTIFIED_SIGNAL_KNOWN_AT",
+      "executionClockRule": "FIRST_EXECUTABLE_EVENT_AFTER_SIGNAL_KNOWN_AT",
+      "legalOffsetFamilyId": "OF_DAILY_COMPLETED_NONFUTURE_V0_1",
+      "additionalGates": [
+        "FULL_REPLAY_OR_TRUSTED_PRIOR_STATE"
+      ],
+      "sameCloseFillAllowed": false
+    },
+    "BOLLINGER_COMPLETED_CONTINUOUS": {
+      "appliesTo": [
+        "D03-10"
+      ],
+      "signalKnownAtRule": "AFTER_EXACT_20_ELIGIBLE_SESSION_CONTINUITY",
+      "decisionCutoffRule": "AT_OR_AFTER_CONTINUITY_CERTIFIED_SIGNAL_KNOWN_AT",
+      "executionClockRule": "FIRST_EXECUTABLE_EVENT_AFTER_SIGNAL_KNOWN_AT",
+      "legalOffsetFamilyId": "OF_DAILY_COMPLETED_NONFUTURE_V0_1",
+      "additionalGates": [
+        "EXACT_20_ELIGIBLE_SESSION_CONTINUITY"
+      ],
+      "sameCloseFillAllowed": false
+    },
+    "OUTCOME_RELATION_ONLY": {
+      "appliesTo": [
+        "D03-04"
+      ],
+      "signalKnownAtRule": "NOT_APPLICABLE_OUTCOME_RELATION",
+      "decisionCutoffRule": "PARENT_FROZEN_BEFORE_FUTURE_OUTCOMES",
+      "executionClockRule": "NOT_APPLICABLE",
+      "legalOffsetFamilyId": "OF_OUTCOME_RELATION_NOT_APPLICABLE_V0_1",
+      "predictorUseAllowed": false
+    },
+    "EPISODE_CONFIRMATION": {
+      "appliesTo": [
+        "D03-05"
+      ],
+      "signalKnownAtRule": "CONFIRMATION_CLOCK",
+      "decisionCutoffRule": "AT_OR_AFTER_EPISODE_CONFIRMATION",
+      "executionClockRule": "FIRST_EXECUTABLE_EVENT_AFTER_CONFIRMATION",
+      "legalOffsetFamilyId": "OF_EPISODE_CONFIRMED_NONFUTURE_V0_1",
+      "provisionalSeedAsFinalAllowed": false
+    },
+    "DIVERGENCE_CONFIRMATION": {
+      "appliesTo": [
+        "D03-12"
+      ],
+      "signalKnownAtRule": "MAX_OF_PIVOT_CONFIRMATIONS_INDICATOR_AVAILABILITY_CONTINUITY_PARENT_RECEIPTS",
+      "decisionCutoffRule": "AT_OR_AFTER_FIRST_OBSERVABLE_AT",
+      "executionClockRule": "FIRST_EXECUTABLE_EVENT_AFTER_FIRST_OBSERVABLE_AT",
+      "legalOffsetFamilyId": "OF_DIVERGENCE_CONFIRMED_NONFUTURE_V0_1",
+      "pivotAtAsSignalAllowed": false
+    },
+    "MULTITIMEFRAME_MAX_FINALITY": {
+      "appliesTo": [
+        "D03-13"
+      ],
+      "signalKnownAtRule": "MAX_OF_REQUIRED_COMPONENT_KNOWN_AT",
+      "decisionCutoffRule": "AT_OR_AFTER_LATEST_REQUIRED_COMPONENT_FINALITY",
+      "executionClockRule": "FIRST_EXECUTABLE_EVENT_AFTER_COMPOSITE_SIGNAL_KNOWN_AT",
+      "legalOffsetFamilyId": "OF_MULTITIMEFRAME_FINALITY_NONFUTURE_V0_1",
+      "closingM15GapPolicy": "UNOBSERVED_NO_BACKFILL",
+      "weeklyFinalityPolicy": "CALENDAR_AWARE",
+      "provisionalFinalVersionSeparationRequired": true
+    }
+  },
+  "factorRegistry": [
+    {
+      "factorId": "D03-01",
+      "profile": "DAILY_COMPLETED",
+      "featureLineageId": "D03_PRICE_TREND_MA",
+      "redundancyGroupId": "RG_D03_PRICE_TREND",
+      "parameterFamilyId": "PF_D03_MA_WINDOWS"
+    },
+    {
+      "factorId": "D03-02",
+      "profile": "DAILY_COMPLETED",
+      "featureLineageId": "D03_DIRECT_RETURN",
+      "redundancyGroupId": "RG_D03_DIRECT_RETURN",
+      "parameterFamilyId": "PF_D03_RETURN_5_20_60"
+    },
+    {
+      "factorId": "D03-03",
+      "profile": "DAILY_COMPLETED",
+      "featureLineageId": "D03_PATH_PERSISTENCE",
+      "redundancyGroupId": "RG_D03_PATH_PERSISTENCE",
+      "parameterFamilyId": "PF_D03_PERSISTENCE_V0_1"
+    },
+    {
+      "factorId": "D03-04",
+      "profile": "OUTCOME_RELATION_ONLY",
+      "featureLineageId": "D03_MOMENTUM_CONTINUATION_RELATION",
+      "redundancyGroupId": "RG_D03_OUTCOME_RELATION",
+      "parameterFamilyId": "PF_D03_FORWARD_D5_D10_D20"
+    },
+    {
+      "factorId": "D03-05",
+      "profile": "EPISODE_CONFIRMATION",
+      "featureLineageId": "D03_PULLBACK_EPISODE",
+      "redundancyGroupId": "RG_D03_REVERSAL_EPISODE",
+      "parameterFamilyId": "PF_D03_PULLBACK_EPISODE_V0_1"
+    },
+    {
+      "factorId": "D03-06",
+      "profile": "DAILY_COMPLETED",
+      "featureLineageId": "D03_KD_OSCILLATOR",
+      "redundancyGroupId": "RG_D03_OSCILLATOR",
+      "parameterFamilyId": "PF_D03_KD_CANONICAL"
+    },
+    {
+      "factorId": "D03-07",
+      "profile": "DAILY_COMPLETED",
+      "featureLineageId": "D03_RSI_OSCILLATOR",
+      "redundancyGroupId": "RG_D03_OSCILLATOR",
+      "parameterFamilyId": "PF_D03_RSI_CANONICAL"
+    },
+    {
+      "factorId": "D03-08",
+      "profile": "DAILY_COMPLETED",
+      "featureLineageId": "D03_MACD_TREND",
+      "redundancyGroupId": "RG_D03_PRICE_TREND",
+      "parameterFamilyId": "PF_D03_MACD_CANONICAL"
+    },
+    {
+      "factorId": "D03-09",
+      "profile": "ADX_COMPLETED_CERTIFIED",
+      "featureLineageId": "D03_ADX_TREND_QUALITY",
+      "redundancyGroupId": "RG_D03_DIRECTIONAL_RANGE",
+      "parameterFamilyId": "PF_D03_ADX_CANONICAL"
+    },
+    {
+      "factorId": "D03-10",
+      "profile": "BOLLINGER_COMPLETED_CONTINUOUS",
+      "featureLineageId": "D03_BOLLINGER_ENVELOPE",
+      "redundancyGroupId": "RG_D03_VOLATILITY_ENVELOPE",
+      "parameterFamilyId": "PF_D03_BOLLINGER_CANONICAL"
+    },
+    {
+      "factorId": "D03-12",
+      "profile": "DIVERGENCE_CONFIRMATION",
+      "featureLineageId": "D03_DIVERGENCE_EPISODE",
+      "redundancyGroupId": "RG_D03_REVERSAL_EPISODE",
+      "parameterFamilyId": "PF_D03_DIVERGENCE_BASE_PIVOT_SCALE"
+    },
+    {
+      "factorId": "D03-13",
+      "profile": "MULTITIMEFRAME_MAX_FINALITY",
+      "featureLineageId": "D03_MULTI_TIMEFRAME_CONFLICT",
+      "redundancyGroupId": "RG_D03_MULTI_HORIZON_VIEW",
+      "parameterFamilyId": "PF_D03_WEEKLY_DAILY_M15"
+    }
+  ],
+  "universalRules": {
+    "futureOffsetFamilyId": "OF_FUTURE_LEAKAGE_SENTINEL_ONLY_V0_1",
+    "futureOffsetsMayEnterRanking": false,
+    "structuralCausalityClaimAllowedDefault": false,
+    "sameCloseFillForbiddenForCloseFinalizedFactors": true,
+    "staleOffsetsIncreaseIndependentEvidenceCount": false,
+    "consumerScopeHashRequired": true,
+    "commonSupportHashRequired": true,
+    "inferenceBindingRequired": true
+  },
+  "consumerPolicy": {
+    "system1": "FACTOR_TIMING_RECEIPT_REQUIRED_BEFORE_SHADOW_DIAGNOSTIC_CONSUMPTION_WHEN_TIMING_CLAIM_USED",
+    "system2": "LIVE_VS_FINAL_SCOPE_MUST_MATCH_RECEIPT",
+    "d16": "TIMING_RECEIPT_BINDS_METHOD_POPULATION_SUPPORT_AND_CLOCK"
+  },
+  "allowedTerminalStates": [
+    "TIMING_RECEIPT_READY",
+    "OUTCOME_RELATION_NOT_SIGNAL",
+    "SIGNAL_CLOCK_UNCERTIFIED",
+    "FINALITY_BLOCKED",
+    "CONTINUITY_BLOCKED",
+    "WARMUP_OR_REPLAY_BLOCKED",
+    "ANCESTRY_BASELINE_UNBOUND",
+    "COMMON_SUPPORT_INSUFFICIENT",
+    "INFERENCE_BINDING_INCOMPLETE",
+    "MULTIPLICITY_UNBOUND",
+    "COST_FILLABILITY_UNBOUND",
+    "CONSUMER_SCOPE_MISMATCH",
+    "FUTURE_OFFSET_FORBIDDEN",
+    "VERSION_INCOMPATIBLE"
+  ],
+  "noClaim": {
+    "empiricalPredictiveIncrementality": true,
+    "structuralCausality": true,
+    "formalPromotion": true,
+    "productionReadiness": true
+  },
+  "maturityImpact": "NONE_56_7_PERCENT"
+}
