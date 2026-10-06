@@ -1255,3 +1255,158 @@ Verdict remains PARTIAL_PASS.
 5. SDA-001/004 and SDA-009 first genuine receipts.
 
 00 remains five-lane concurrent.
+
+
+## Eighth five-lane bounded-completion audit cycle — 2026-10-07
+
+Observed main before write: `9b6e91a440e49af5a33c05605822584afce93416`.
+
+This cycle is a bounded completion pass: all actions within 00 governance/audit authority were executed. Remaining items require owner-lane implementation, explicit owner approval, market-time evidence, or genuine prospective receipts. 00 does not fabricate closure.
+
+### A — System1 / SDA blockers
+
+SDA-009:
+- Room07 pre-engineering research responsibility is COMPLETE.
+- V0.6 R3A1 acceptance oracle exists and deterministic tests pass.
+- compact Codex task checkpoint exists at `research/SDA009_SYSTEM1_R3A1_CODEX_TASK_CHECKPOINT_20261007.md`.
+- exact engineering delta is additive research-only C1 capture with provider-call delta = 0 and protected Formal outputs unchanged.
+- genuine Taiwan R3A1 receipt count remains 0.
+- D16 validation remains gated on a genuine same-generation R3A1 PASS receipt.
+- ticket remains REMEDIATION_IN_PROGRESS.
+
+SDA-016:
+- opportunity-ledger governance advanced to V0.3 with asymmetric market-session identity semantics.
+- trading-session identity may be positively established by authoritative calendar provenance or direct same-day official market activity.
+- non-trading status may NOT be inferred from data absence.
+- 2026-10-06 opportunity is now reconciled to its first scheduled attempt with three direct official same-day activity receipts.
+- expectedTradingOpportunityN=1; operationalAttemptOneObservedN=1; prospectiveEvidenceAdmissibleN=0.
+- first attempt remains `INELIGIBLE_PARENT_MISSING / FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND`.
+- scheduler delay was 966 seconds but is not used as the causal explanation for the C1 failure.
+- T48 finalization remains OPEN; no finalization runtime receipt exists.
+- genuine V8.20 Formal-C1 sample count remains 0.
+
+System1 quality transport repair:
+- PR #739 merged as `03a745bd0c0c9a0993604a5dd6b35a4002adb52f`.
+- PR exact-head V8 Regression `37546428451` PASS.
+- PR exact-head V8 Repair CI `37546428459` PASS.
+- merge-head V8 Regression `37546430734` PASS.
+- repair is operational data-pipeline hardening only; Formal Core unchanged.
+- no new genuine C1 session is inferred from this engineering pass.
+
+System1 S1 remains PARTIAL.
+
+### B — System2 build / S2-07
+
+V1.5 eight-lane whole-source cut is physically accepted:
+- source cut state `EIGHT_LANE_MARKET_WIDE_SOURCE_CUT_READY`;
+- 8/8 required lanes eligible;
+- TWSE 4 / TPEx 4;
+- blockers empty;
+- physical artifact `11450381019`;
+- no selection/ranking/push/capital/order authority.
+
+V1.5 closes only the whole-source snapshot gate.
+Still false:
+- expectedMopsKeysetComplete;
+- noRevisionGapThroughCut;
+- preParentEvidenceCutReady;
+- symbolSessionCompletenessCertified;
+- technicalContinuityCertified.
+
+V1.6 MOPS Exact-Version Population is ACTIVE on PR #742:
+- workflow run `37546362383`;
+- contract tests PASS;
+- physical prospective MOPS exact-version capture remains in progress at this readback;
+- V1.6 explicitly cannot certify complete expected MOPS keyset by design;
+- no merge/main authority is granted while the PR workflow remains non-terminal.
+
+Selection-to-capacity remains INCOMPLETE.
+
+### C — DATA_LANE
+
+2023 TPEx is now durably synchronized by DATA_LANE itself:
+`2023_TPEX_RAW_A1_ACCEPTED_REPLAY_PARTIAL`.
+
+00 acceptance from the prior cycle remains valid:
+- 239 sessions;
+- 824 packs;
+- 193,327 cold/fresh rows;
+- R2 HEAD/byte 824/824;
+- source/hash/canonical mismatches 0;
+- unexpected bars 0;
+- 395 UNKNOWN gaps retained;
+- System1 isolation PASS.
+
+No 2024 TWSE annual backfill run is visible at this readback.
+Exact DATA_LANE next is 2024 TWSE fresh dispatch under the same physical acceptance standard.
+2021 TPEx source-revision/as-of remains independently OPEN.
+
+### D — 01-15 research / tracker
+
+Tracker governance synchronized by 00:
+- D09 now records Room07 SDA-009 pre-engineering COMPLETE and waits for genuine System1 R3A1 receipt.
+- D02 now records PVE-252/PVE-253 rather than stale PVE-251 cursor.
+
+D02 current bounded state:
+- PVE-252 premarket reconciliation complete;
+- 23:55 missing receipt classified `RECOVERY_TRIGGER_DELIVERY_GAP`, root cause UNKNOWN;
+- PVE-247 remains fail closed;
+- PVE-253 split-trigger candidate PR #743 has isolated CI PASS but remains draft/unmerged/un-deployed;
+- Production merge/deploy requires explicit owner approval;
+- independent market hinge remains a completed >=10:15 intraday 15m observation.
+- D02 maturity remains 60%.
+
+D16:
+- opportunity ledger V0.3 and first physical opportunity-attempt reconciliation strengthen missingness/scheduler/session firewalls.
+- no maturity promotion.
+- genuine C1 outcome stream remains unopened.
+
+Aggregate remains:
+22 domains / 356 modules / 46.7%.
+
+### E — SDA-022 non-convergence
+
+No gate-changing evidence arrived.
+
+Still:
+- System1 S22-T01~T05 PASS;
+- D16 S22-T25~T28 PASS;
+- System2 per-strategy fingerprints S22-T06~T10 PENDING;
+- physical NC-T01 S22-T11~T16 PENDING;
+- prospective S22-T17~T24 NOT_STARTED.
+
+No System2 policy-fingerprint receipt or accepted physical independent-discovery receipt was found.
+
+S2-07 evidence-quality progress does not substitute for SDA-022 independence proof.
+
+Verdict remains PARTIAL_PASS.
+
+### 00 bounded-completion disposition
+
+Completed within 00 authority:
+- five-lane concurrent audit;
+- 2023 TWSE / 2023 TPEx independent acceptance readbacks;
+- D02/D09 tracker drift correction;
+- SDA-009 V0.6 central queue reconciliation;
+- SDA-016 V0.3 opportunity-ledger pointer reconciliation;
+- SDA-016 V8.20 production/readback governance reconciliation;
+- S2-07 V1.2-V1.5 bounded evidence-chain acceptance;
+- false-closure prevention across all five lanes.
+
+Remaining external/owner-lane gates:
+1. SDA-022 System2 fingerprints + physical NC-T01.
+2. System1 SDA-009 R3A1 implementation + first genuine parity receipt.
+3. SDA-016 T48 runtime finalization receipt + first genuine Formal-C1 sample.
+4. S2-07 V1.6 terminal physical capture, then complete MOPS keyset/no-revision-gap chain.
+5. DATA_LANE 2024 TWSE dispatch/acceptance.
+6. D02 market-time PVE-252 evidence and owner decision for PR #743.
+7. SDA-001/004 first genuine lineage diagnostic.
+
+00 must not implement those owner-lane tasks or convert pending evidence into PASS.
+
+Current launch posture:
+- System1 S1 = PARTIAL.
+- System2 selection-to-capacity = INCOMPLETE.
+- SDA-022 = PARTIAL_PASS.
+- live/final System2 trading authority = DISABLED.
+- Formal Core = LOCKED.
