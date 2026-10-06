@@ -653,3 +653,56 @@ Verdict: PARTIAL_PASS.
 4. Research-room SDA/cross-room dependencies with actual machine evidence.
 
 This order supersedes single-lane fixation. 00 continues all five lanes each cycle.
+
+
+## Second five-lane concurrent audit cycle — 2026-10-06
+
+Observed main: `2f9c156f8220b87bf280fe435c4793ec076a7723`.
+
+### A — System1
+NO_CHANGE on genuine closure evidence.
+- SDA-001/004 first genuine lineage diagnostic remains pending.
+- SDA-009 R3 V0.3 identifiability work advanced, but genuine receipt count remains 0.
+- SDA-016 V8.20 Production is verified; genuine Formal↔C1 receipt remains pending.
+Verdict: S1 remains PARTIAL.
+
+### B — System2 build / selection-to-capacity
+NO_CHANGE on authority.
+- System2 fingerprints S22-T06~T10 remain pending.
+- physical NC-T01 S22-T11~T16 remains pending.
+- selection-to-capacity remains INCOMPLETE.
+- actual holdings/live trading remain not wired/disabled.
+
+### C — DATA_LANE
+ACTIVE.
+- annual backfill run `37482307633` remains in progress;
+- migrate PASS;
+- selected-year packed-history backfill still IN_PROGRESS;
+- physical verification, evidence upload and System1 isolation remain pending.
+No market-year acceptance is granted while the run is non-terminal.
+
+### D — 01–15 research / curriculum
+MATERIAL DELTA.
+COV-10 / D20 specialist return was formally audited by 00:
+- Intake PASS;
+- Dependency Audit PASS;
+- overlap recheck PASS with high double-count risk explicitly bounded;
+- anti-orphan PASS;
+- proposed D20-14 at L0/0%;
+- structural update remains OWNER_APPROVAL_REQUIRED.
+Audit artifact:
+`shared-knowledge/COV10_D20_00_INTAKE_DEPENDENCY_AUDIT_20261006_V0_1.md`.
+No module count, maturity or Formal change has been executed.
+
+### E — SDA-022
+NO_CHANGE.
+System2 physical fingerprints/NC-T01 remain the missing independence evidence.
+Verdict: PARTIAL_PASS.
+
+### Current P0
+1. DATA_LANE run 37482307633 terminal evidence.
+2. System2 fingerprints / NC-T01 physical evidence.
+3. Genuine System1 receipts.
+4. Owner decision on COV-10 structural curriculum addition when desired.
+
+00 continues five-lane concurrent auditing.
