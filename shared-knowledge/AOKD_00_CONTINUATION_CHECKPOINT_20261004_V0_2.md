@@ -1553,3 +1553,20 @@ Exact 00 continuation:
 2. continue waiting for actual System2 fingerprint and NC-T01 receipts;
 3. do not interpret stopping-rule gate wording as current PASS evidence;
 4. preserve System1 Launch Gate S1 PARTIAL until its three true blockers clear.
+
+
+## 2026-10-06 CORR-003 independent closure / CORR-004 current next
+
+- S2-CORR-20261006-003 = VERIFIED_CLOSED by independent 00 verification.
+- Verification receipt: system2/evidence/s2_corr_20261006_003_independent_verification.json.
+- S2-CORR-20261006-004 = OPEN / BUILD_LANE.
+- CORR-004 current issue: prior-session resonance must not silently populate current-session terminal surfaces; current-session resonance must bind to today's Taipei marketDate or fail closed / explicit STALE_PREVIOUS_SESSION.
+- 00 does not implement CORR-004; wait for BUILD_LANE FIX_IMPLEMENTED, then independently verify.
+
+Parallel highest-value System1 path remains:
+1. SDA-001/004 three schema deltas;
+2. SDA-009 Class-A LOO diagnostic;
+3. SDA-016 authoritative append-only Formal->C1 binding + first genuine parent receipt.
+
+Do not reopen CORR-003 unless new evidence shows regression.
+Formal Core remains locked.
