@@ -1523,3 +1523,33 @@ Exact next 00 cursor:
 8. Formal Core remains locked.
 
 Older 21-ticket / 15-remediation / 48-test / PR644-unmerged sections above are historical snapshots only and are superseded by this section for current-state decisions.
+
+
+## 2026-10-06 post-audit System2 correction drift — CURRENT
+
+Latest correction readback:
+- S2-CORR-20261006-002 = VERIFIED_CLOSED.
+- S2-CORR-20261006-003 = OPEN / BUILD_LANE.
+
+CORR-003 issue:
+Candidate Board currently needs a strict formal-candidate vs monitor-only resonance/pool-row boundary and resolvable strategy identity. Monitor-only rows must not be presented as strategy-resolved formal candidates.
+
+Current System2 product interpretation:
+- terminal shell deployment remains valid;
+- resonance remains research/shadow monitor evidence;
+- Candidate Board must not be treated as authoritative formal candidate output until CORR-003 is fixed and independently verified;
+- selection-to-capacity remains INCOMPLETE;
+- no strategy/ranking/capacity/trading/System1 Formal authority is changed by this correction.
+
+SDA-022 readback remains:
+- System1 T01~T05 PASS;
+- System2 T06~T10 PENDING;
+- physical NC-T01 T11~T16 PENDING;
+- prospective T17~T24 NOT_STARTED;
+- D16 T25~T28 PASS.
+
+Exact 00 continuation:
+1. independently intake CORR-003 after BUILD_LANE implementation;
+2. continue waiting for actual System2 fingerprint and NC-T01 receipts;
+3. do not interpret stopping-rule gate wording as current PASS evidence;
+4. preserve System1 Launch Gate S1 PARTIAL until its three true blockers clear.
