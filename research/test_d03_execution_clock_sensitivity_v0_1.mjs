@@ -163,7 +163,7 @@ assert.equal(out.status,'SAME_CLOSING_AUCTION_LOOKAHEAD_FORBIDDEN');
 assert.equal(evaluateExecutionReceipt(base({standardTradingUnitCompatible:false,requestedQuantity:500})).status,'AFTER_MARKET_ODD_LOT_REQUIRED');
 assert.equal(evaluateExecutionReceipt(base({closingPriceExists:false})).status,'AFTER_HOURS_FIXED_PRICE_UNAVAILABLE');
 assert.equal(evaluateExecutionReceipt(base({venueEligible:false})).status,'AFTER_HOURS_FIXED_PRICE_UNAVAILABLE');
-assert.equal(evaluateExecutionReceipt(base({signalKnownAt:'2026-10-06T14:31:00+08:00',orderSubmittedAt:'2026-10-06T14:31:00+08:00})).status,'NEXT_OPEN_EXECUTION_REQUIRED');
+assert.equal(evaluateExecutionReceipt(base({signalKnownAt:'2026-10-06T14:31:00+08:00',orderSubmittedAt:'2026-10-06T14:31:00+08:00'})).status,'NEXT_OPEN_EXECUTION_REQUIRED');
 assert.equal(evaluateExecutionReceipt(base({fillStatus:'NO_FILL',terminalState:'NO_FILL'})).status,'NO_FILL');
 assert.equal(evaluateExecutionReceipt(base({fillStatus:'PARTIAL_FILL',executedQuantity:400,terminalState:'PARTIAL_FILL'})).status,'PARTIAL_FILL');
 assert.equal(evaluateExecutionReceipt(base({executionPolicySelectedAfterOutcome:true})).status,'EXECUTION_POLICY_SELECTION_UNCONTROLLED');
