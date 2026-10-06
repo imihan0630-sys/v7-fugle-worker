@@ -1,0 +1,25 @@
+{
+  "schemaVersion":"pattern-corporate-action-continuity-firewall-v0.1",
+  "updated":"2026-10-07 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "canonicalOwner":"CORPORATE_ACTIONS_LANE",
+  "semanticSpaces":[
+    "RAW_EXECUTION",
+    "TECHNICAL_CONTINUITY",
+    "PRICE_INDEX_COMPARABLE",
+    "TOTAL_RETURN_COMPARABLE"
+  ],
+  "rawExecutionEqualsTechnicalContinuity":false,
+  "mechanicalGapEqualsPatternGap":false,
+  "priceFactorAutomaticallyTransformsVolume":false,
+  "fillDividendOutcomeDefinesAdjustment":false,
+  "laterProviderAdjustmentCanBackfillHistory":false,
+  "dualPriceSpaceEqualsTwoConfirmations":false,
+  "d01BuildsIndependentAdjustmentEngine":false,
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}
