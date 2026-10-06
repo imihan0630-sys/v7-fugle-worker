@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 356,
-    "maturityWeightedPct": 46.5
+    "maturityWeightedPct": 46.6
   },
   "domains": [
     {
@@ -850,7 +850,7 @@
         "FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md",
         "FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md"
       ],
-      "maturityPct": 15.3,
+      "maturityPct": 16.5,
       "modules": [
         {
           "id": "D07-01",
@@ -1009,12 +1009,12 @@
         {
           "id": "D07-18",
           "name": "WACC／Cost of Capital加權平均資金成本",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「WACC／Cost of Capital加權平均資金成本」。研究企業財務、三表預測與鑑識會計。所有假設必須區分管理層指引、分析師估計與模型自建假設，保留 PIT（時點一致性）first-known（首次已知）時間、情境敏感度與財報品質反證，禁止用事後實績回填歷史預測。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D07-18 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / PIT_CONTRACT_DEFINED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED",
+          "next": "建立台股 D07-18 outcome-blind PIT 欄位可行性收據；凍結權益成本、債務成本、稅盾、市場與目標權重 knownAt；完成模型敏感度與金融機構適用性防火牆後才可考慮 L3。"
         },
         {
           "id": "D07-19",
