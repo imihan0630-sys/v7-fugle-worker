@@ -23616,3 +23616,38 @@ The guard fails closed when historical tick provenance is missing, the tick rece
 TP21-TP26 directly cover those states. A new aggregate runner imports TP01-TP26 so future research execution cannot accidentally omit the split test files.
 
 This completion does not change D01 maturity, does not open outcomes and does not authorize Formal promotion.
+
+
+# DL-049 — Zone acceptance vs directional churn / path disorder (2026-10-06)
+
+DL-049 asks whether repeated contact with a structural zone is calm acceptance or merely noisy oscillation.
+
+That distinction cannot be recovered from visit count alone. Two episodes can spend the same fraction of completed bars inside the same zone while one remains stable and the other repeatedly moves between inside and outside states. Conversely, two episodes can have the same transition count but very different occupancy.
+
+D01 therefore freezes a minimal zone-state path model rather than creating a new generic trend factor.
+
+For completed-bar closes relative to frozen zone [L,U], the only close states are BELOW, INSIDE and ABOVE. State-transition counts, direct outside-to-outside flips and maximum consecutive inside runs are zone-local descriptors. D03 remains the owner of fixed-window pathEfficiency10 and trend-quality primitives.
+
+A critical data boundary is preserved. An OHLC bar whose low is below L and high is above U proves only that the bar spans the full zone. It does not reveal which edge was touched first, how many crossings occurred, the exact crossing order, or exact time inside the zone. Those claims require a complete replay-safe timestamped trade or quote sequence.
+
+This distinction prevents coarse OHLC bars from manufacturing microstructure precision.
+
+DL-049 also keeps occupancy and churn separate from direction. High churn does not receive a bullish or bearish sign. No fixed churn threshold and no Shannon-entropy factor are introduced in v0.1. Any entropy-like extension would create another parameter family and must be preregistered separately.
+
+Market-mechanics context is mandatory. Price-limit states, auction/continuous session identity, volatility interruptions, legal tick regime, liquidity/spread conditions and corporate-action continuity can generate apparent oscillation or discrete repricing that is not ordinary unconstrained churn.
+
+Information lineage remains conservative. OHLC-derived path descriptors remain PRICE_OHLC. Exact event paths may add timing provenance such as EVENT_TIME, TRADE_TIME or QUOTE_TIME, but do not automatically become another independent vote. effectiveIndependentEvidenceCount remains one by default and residual incrementality remains unvalidated.
+
+Twenty executable adversarial cases are authored. They cover boundary inclusion, below/inside/above states, direct versus intermediate flips, equal-occupancy/different-churn pairs, equal-transition/different-occupancy pairs, consecutive inside runs, full-zone OHLC ambiguity, invalid inputs, exact trade/quote sequence eligibility, OHLC rejection for exact crossing reconstruction, information lineage, non-independent evidence counting, entropy exclusion and the absence of directional vote fields.
+
+New durable artifacts:
+- research/PATTERN_ZONE_PATH_CHURN_V0_1.md
+- research/pattern_zone_path_churn_v0_1.json
+- research/pattern_zone_state_guard_v0_1.mjs
+- research/pattern_zone_state_transition_v0_1.mjs
+- research/test_pattern_zone_path_churn_v0_1.mjs
+- research/PATTERN_ZONE_PATH_CHURN_D16_HANDOFF_V0_1.md
+
+The earlier TOOL_BLOCKED note is no longer current: helper and test writes now exist durably. Research-specific Node execution is still TEST_EXECUTION_PENDING and must not be inferred from standard V8 CI.
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001/SDA-002 remain open. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
