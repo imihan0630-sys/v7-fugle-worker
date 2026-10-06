@@ -106,7 +106,7 @@ No evidence supports waiting for all domains to reach a universal percentage.
 5. Then begin prospective selection comparison accumulation under latest SDA-016 authority.
 
 ### System2
-1. Independently verify/close S2-CORR-20261006-002.
+1. BUILD_LANE resolve S2-CORR-20261006-003 and obtain independent closure; do not present monitor-only rows as formal candidates.
 2. DATA_LANE resolves 2021 TPEx revision-lineage while later years continue independently.
 3. Finish selection-to-capacity assessor/source/continuity gates.
 4. Emit System2 per-strategy SDA-022 fingerprints.
@@ -123,3 +123,15 @@ No evidence supports waiting for all domains to reach a universal percentage.
 
 ## Audit decision
 No restart, no architecture rewrite, no curriculum-wide completion gate. Next phase = governance synchronization + narrow blocker burn-down + physical receipts.
+
+## Post-audit concurrent drift readback
+
+A final latest-main readback after governance synchronization found:
+- S2-CORR-20261006-002 independently verified and CLOSED.
+- New S2-CORR-20261006-003 OPEN / BUILD_LANE.
+- CORR-003 does not change resonance formula, ranking, capacity, trading authority or System1 Formal Core.
+- It blocks treating the current Candidate Board fallback rows as formal strategy-resolved candidates until source/strategy attribution is corrected and independently verified.
+
+All audit governance findings GOV-001 through GOV-007 were synchronized in canonical files. GOV-008 was already resolved before this audit.
+
+Active project blockers remain engineering/data/physical-evidence blockers, not unresolved governance-document inconsistencies.
