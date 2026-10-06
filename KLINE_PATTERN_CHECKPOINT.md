@@ -3909,3 +3909,120 @@ No maturity or Formal change is authorized by this routing.
 6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 7. Next D01 science: separate structural rejection from cross-sectional leader/follower propagation and sector/index synchronization so apparent zone response is not just common price discovery.
 8. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-060 (2026-10-07)
+
+### DL-060 — Structural response vs leader/follower propagation and common price discovery
+- DL-059 separated structural response from correlated external order flow/crowding.
+- DL-060 freezes the next attribution firewall: an apparent stock-specific support/resistance response may instead be delayed reaction to a market leader, sector, index, ETF, futures contract, supply-chain leader or other common price-discovery channel.
+- D03 remains canonical owner of lead-lag / timing-placebo methodology.
+- D07 owns verified supply-chain lead-lag relations.
+- Breadth/rotation research owns sector participation / leadership-state semantics.
+- D05 owns event-clock / cross-impact context where available.
+- D01 does not build a new lead-lag model; it only tests whether structural representation survives owner-certified common-price-discovery context.
+- Hard clock consumes D03 invariant:
+  leaderSignalKnownAt <= followerPredictorFreeze < followerEndpointWindowStart.
+- Same completed-bar co-movement is contemporaneous association, not lead evidence.
+- Frozen context states:
+  P0 SELF_STRUCTURE_CONTEXT_ONLY;
+  P1 MARKET_INDEX_PRIOR_MOVE_PRESENT;
+  P2 SECTOR_PRIOR_MOVE_PRESENT;
+  P3 VERIFIED_LEADER_PRIOR_MOVE_PRESENT;
+  P4 FUTURES_OR_ETF_PRICE_DISCOVERY_PRIOR_MOVE_PRESENT;
+  P5 SUPPLY_CHAIN_PRIOR_MOVE_PRESENT;
+  P6 CONTEMPORANEOUS_SYNCHRONIZATION_ONLY;
+  P7 MULTIPLE_COMMON_DISCOVERY_CHANNELS;
+  P8 LEAD_LAG_DIRECTION_UNKNOWN;
+  P9 PRICE_DISCOVERY_DATA_BLOCKED.
+- Leader identity must be frozen by an owner registry/relation before outcomes.
+  Outcome-selected leaders are prohibited.
+- Same-bar synchronization may reflect common information, factor beta, passive/index flow, simultaneous reaction, nonsynchronous trading or true lead-lag.
+  Without earlier knownAt, it contributes zero predictive lead evidence.
+- Nonsynchronous trading is a required falsifier:
+  liquidity tier;
+  stale-price state;
+  last-trade freshness;
+  trading intensity;
+  auction/suspension/limit/session state.
+- A lead-lag effect that disappears after those controls is NONSYNCHRONOUS_TRADING_EXPLANATION.
+- Market/sector context stays separate:
+  broad index prior move;
+  sector prior move;
+  sector breadth/participation;
+  equal-weight vs cap-weight state;
+  leadership concentration;
+  market/sector regime.
+- Futures/ETF price-discovery direction may be consumed only from owner-certified relations; same-bar correlation cannot define direction.
+- Supply-chain leadership requires D07 verified edge/relation; theme membership alone is not a causal leader receipt.
+- Primary generic comparator:
+  G0 COMMON_DISCOVERY_EVENT_AWAY_FROM_ZONE;
+  G1 COMMON_DISCOVERY_EVENT_AT_ZONE.
+  If G1 adds no residual representation, common price discovery is sufficient.
+- Complementary zone states preserve no-prior-receipt, market/sector prior move, verified leader prior move, futures/ETF prior discovery, multiple channels, contemporaneous only and direction unknown.
+- Absence of a prior receipt does not prove no common influence; UNKNOWN remains UNKNOWN.
+- Only common-discovery states known before predictorFreezeAt are baseline eligible.
+  Later leader/sector/index movement is POST_OPPORTUNITY_COMMON_DISCOVERY.
+- Direct-price ancestry controls remain mandatory:
+  follower direct trend/return;
+  leader direct trend/return;
+  market/sector return;
+  D01 structure;
+  D02 price-volume;
+  D03 trend/momentum;
+  D18 regime;
+  liquidity/nonsynchronous trading.
+- Different symbols do not automatically create independent evidence.
+  Leader price, sector price, market price and follower structure may share common PRICE_OHLC/common-shock ancestry.
+- SDA-001 remains open:
+  effectiveIndependentEvidenceCount remains 1 by default within one parent unless D16 validates residual/dependence structure.
+- SDA-002 remains open:
+  relationFrozenAt / leaderSignalFirstObservableAt / leaderSignalKnownAt / followerPredictorFreezeAt / replaySafe are required;
+  outcome-selected relations are POST_HOC_RELATION_NOT_ELIGIBLE.
+- Future D16 ladder:
+  L0 RAW_ZONE_RESPONSE;
+  L1 DL057_OWN_IMPACT_CONTROLLED;
+  L2 DL058_INITIATING_INFORMATION_CONTROLLED;
+  L3 DL059_EXTERNAL_FLOW_CONTROLLED;
+  L4 MARKET_INDEX_PRIOR_MOVE_CONTROLLED;
+  L5 SECTOR_PRIOR_MOVE_BREADTH_CONTROLLED;
+  L6 VERIFIED_LEADER_PRIOR_MOVE_CONTROLLED;
+  L7 FUTURES_ETF_PRICE_DISCOVERY_CONTROLLED;
+  L8 NONSYNCHRONOUS_TRADING_CONTROLLED;
+  L9 GENERIC_COMMON_DISCOVERY_COMPARATOR_CONTROLLED;
+  L10 STRUCTURAL_RESPONSE_RESIDUAL_CANDIDATE;
+  L11 MULTI_DATE_MULTI_SYMBOL_MULTI_RELATION_REPLICATION.
+- Future interpretations:
+  Q0 MARKET_COMMON_MOVE_EXPLANATION;
+  Q1 SECTOR_SYNCHRONIZATION_EXPLANATION;
+  Q2 LEADER_FOLLOWER_PROPAGATION_EXPLANATION;
+  Q3 FUTURES_ETF_PRICE_DISCOVERY_EXPLANATION;
+  Q4 NONSYNCHRONOUS_TRADING_EXPLANATION;
+  Q5 MULTIPLE_COMMON_CHANNELS;
+  Q6 STRUCTURAL_RESPONSE_RESIDUAL;
+  Q7 DIRECTION_UNKNOWN;
+  Q8 NOT_EVALUABLE.
+- New files:
+  - research/PATTERN_COMMON_PRICE_DISCOVERY_FIREWALL_V0_1.md
+  - research/pattern_common_price_discovery_firewall_v0_1.json
+  - research/pattern_common_price_discovery_firewall_v0_1.mjs
+  - research/test_pattern_common_price_discovery_firewall_v0_1.mjs
+  - research/PATTERN_COMMON_PRICE_DISCOVERY_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain open under canonical queue.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-060
+
+1. Reconcile the DL-060 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-060 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve market, sector, leader, futures/ETF and supply-chain price-discovery channels separately.
+4. Consume D03/D07/breadth-rotation/D05/D18 owner receipts rather than creating D01 lead-lag models.
+5. Hand L0-L11 / Q0-Q8 common-price-discovery residual inference to D16.
+6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+7. Next D01 science: separate structural response from index-weight / mega-cap mechanical contribution and constituent-arbitrage effects around market/sector moves.
+8. No runtime wiring / no Formal change.
