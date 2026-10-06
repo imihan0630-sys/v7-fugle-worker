@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-06T07:38:30+08:00",
+  "updatedAt": "2026-10-06T10:11:33+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -579,7 +579,7 @@
       "directiveId": "S2-CORR-20261006-001",
       "createdAt": "2026-10-06T07:38:30+08:00",
       "severity": "MEDIUM",
-      "status": "FIX_IMPLEMENTED",
+      "status": "VERIFIED_CLOSED",
       "title": "Institutional terminal labels unapproved research strategies as SHADOW",
       "affectedScope": [
         "S2-16 institutional terminal",
@@ -639,9 +639,27 @@
         "Merged-main regression guards preserve Regime UNKNOWN, Actual Holdings LOCKED, Performance SAMPLE GATED, Event/Industry READ API PENDING, DATA/PIT GATED, `Formal Core: LOCKED`, and `Real orders: DISABLED`.",
         "No strategy logic, assessor policy, preregistration, weights, thresholds, ranking, capacity, final/live selection authority, production push, capital/order, or System1 Formal Core was changed."
       ],
-      "verificationEvidence": [],
-      "finalDisposition": "PENDING — implementation complete; independent verification required before closure",
-      "updatedAt": "2026-10-06T08:16:36+08:00"
+      "verificationEvidence": [
+        "Independent audit confirmed the canonical handoff on latest main was FIX_IMPLEMENTED with independent verification still pending before the AUDIT_LANE transition through VERIFYING.",
+        "Audit base 05cfe0f0fc4b857dc089355f6fccd7a8ec8100f0 was fetched from GitHub main; canonical strategy contract, Limited Shadow preregistry, initial preregistry and source-readiness map all keep INSTITUTIONAL_ACCUMULATION owner-review pending/not activated and BLACK_HORSE_ACCUMULATION research-only with distinctness not proven.",
+        "PR #663 merged as df25510a602e64d7e2ef08d0241ad9d4dbbb717e; its implementation diff changes only terminal_page.mjs and institutional_terminal_page_v0_1.test.mjs.",
+        "Latest-main terminal readback renders INSTITUTIONAL_ACCUMULATION as OWNER REVIEW PENDING with explicit not-activated wording and contains no SHADOW label inside that strategy card.",
+        "Latest-main terminal readback renders BLACK_HORSE_ACCUMULATION as RESEARCH ONLY with explicit distinctness-not-proven/not-activated Limited Shadow wording and contains no SHADOW label inside that strategy card.",
+        "SHORT_MOMENTUM and SWING_GROWTH remain ASSESSOR PENDING; INDUSTRY_TREND, FUNDAMENTAL_GROWTH and VALUE_REVERSION remain DATA GATED; EVENT_DRIVEN remains PIT GATED.",
+        "Independent targeted rerun of institutional_terminal_page_v0_1.test.mjs from an isolated origin/main archive PASS.",
+        "PR checks PASS: System2 Research CI 37393052475 / job 112042418180; V8 Regression 37393052777 / job 112042419105.",
+        "Merged-main checks PASS: System2 Research CI 37393144821 and System2 Daily Resonance Deploy 37393144541 on merge SHA df25510a602e64d7e2ef08d0241ad9d4dbbb717e.",
+        "Most recent applicable main System2 Research CI 37401738108 PASS on af7921f3d7e754b2e9c1ea83212a437d2dea18cd; subsequent audit-base commits do not touch this correction's System2 conflict units.",
+        "Physical public terminal readback returned HTTP 200 at 2026-10-06T10:09:52+08:00 and exposed the corrected IA/BLACK_HORSE labels plus unchanged SHORT_MOMENTUM/SWING_GROWTH states.",
+        "Regime UNKNOWN, Actual Holdings LOCKED, Performance SAMPLE GATED, Event/Industry READ API PENDING, DATA/PIT gates, Formal Core: LOCKED and Real orders: DISABLED remain present.",
+        "Seven later main commits changed eight files after the implementation merge, but none touched the terminal/test/canonical strategy conflict units or Worker.js; latest-main drift does not invalidate the fix.",
+        "No strategy activation, assessor policy, preregistration, weights, thresholds, ranking, capacity, live/final-selection authority, production push, capital/order or System1 Formal Core change was introduced.",
+        "Independent verification receipt: system2/evidence/s2_corr_20261006_001_independent_verification.json"
+      ],
+      "finalDisposition": "VERIFIED_CLOSED — the terminal now truthfully distinguishes non-activated IA and BLACK_HORSE research capability from active Shadow status; all protected strategy and trading authorities remain unchanged.",
+      "updatedAt": "2026-10-06T10:11:33+08:00",
+      "verifiedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "verifiedAt": "2026-10-06T10:11:33+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"

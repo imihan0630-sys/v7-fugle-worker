@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "S2_CORRECTION_INDEPENDENT_VERIFICATION_V0_1",
+  "directiveId": "S2-CORR-20261006-001",
+  "verifiedAt": "2026-10-06T10:11:33+08:00",
+  "verifiedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "auditBaseMainSha": "05cfe0f0fc4b857dc089355f6fccd7a8ec8100f0",
+  "result": "VERIFIED_CLOSED",
+  "lifecycleObserved": [
+    "FIX_IMPLEMENTED",
+    "PENDING_INDEPENDENT_AUDIT",
+    "VERIFYING",
+    "VERIFIED_CLOSED"
+  ],
+  "acceptance": {
+    "queueHandoffStateConfirmed": true,
+    "institutionalAccumulationCanonicalNonActiveState": true,
+    "blackHorseAccumulationCanonicalNonActiveState": true,
+    "otherStrategyStatesUnchanged": true,
+    "targetedTestPass": true,
+    "system2ResearchCiPass": true,
+    "v8RegressionPass": true,
+    "mergedMainReadbackPass": true,
+    "physicalTerminalReadbackPass": true,
+    "latestMainDriftClear": true,
+    "protectedAuthoritiesUnchanged": true
+  },
+  "implementation": {
+    "pullRequest": 663,
+    "pullRequestHeadSha": "6dc89fbf38e18da656315bc7d2067bcf19069ec1",
+    "mergeSha": "df25510a602e64d7e2ef08d0241ad9d4dbbb717e",
+    "changedFiles": [
+      "system2/deploy/terminal_page.mjs",
+      "system2/tests/institutional_terminal_page_v0_1.test.mjs"
+    ]
+  },
+  "ci": [
+    {
+      "scope": "PR_HEAD",
+      "workflow": "System2 Research CI",
+      "runId": 37393052475,
+      "jobId": 112042418180,
+      "result": "PASS"
+    },
+    {
+      "scope": "PR_HEAD",
+      "workflow": "V8 Regression Tests",
+      "runId": 37393052777,
+      "jobId": 112042419105,
+      "result": "PASS"
+    },
+    {
+      "scope": "MERGED_MAIN",
+      "workflow": "System2 Research CI",
+      "runId": 37393144821,
+      "result": "PASS"
+    },
+    {
+      "scope": "MERGED_MAIN",
+      "workflow": "System2 Daily Resonance Deploy",
+      "runId": 37393144541,
+      "result": "PASS"
+    },
+    {
+      "scope": "MOST_RECENT_APPLICABLE_MAIN",
+      "workflow": "System2 Research CI",
+      "runId": 37401738108,
+      "result": "PASS"
+    }
+  ],
+  "runtimeReadback": {
+    "url": "https://system2-shadow-research.imihan0630.workers.dev/terminal",
+    "observedAt": "2026-10-06T10:09:52+08:00",
+    "httpStatus": 200,
+    "institutionalAccumulation": "OWNER REVIEW PENDING / NOT ACTIVATED",
+    "blackHorseAccumulation": "RESEARCH ONLY / DISTINCTNESS NOT PROVEN / LIMITED SHADOW NOT ACTIVATED",
+    "shortMomentum": "ASSESSOR PENDING",
+    "swingGrowth": "ASSESSOR PENDING",
+    "formalCore": "LOCKED",
+    "realOrders": "DISABLED"
+  },
+  "latestMainDrift": {
+    "fromImplementationMergeExclusive": "df25510a602e64d7e2ef08d0241ad9d4dbbb717e",
+    "toAuditBaseInclusive": "05cfe0f0fc4b857dc089355f6fccd7a8ec8100f0",
+    "laterCommitCount": 7,
+    "changedFileCount": 8,
+    "coreConflictUnitsTouched": 0
+  },
+  "verificationEvidence": [
+    "Canonical strategy documents were re-read from fetched GitHub main, not inferred from chat memory or implementation claims.",
+    "The two corrected strategy cards contain their canonical non-active wording and no strategy-card-local SHADOW label.",
+    "Other strategy cards retain their pre-existing canonical pending/gated states.",
+    "The targeted terminal regression test was independently rerun from an isolated origin/main archive and passed.",
+    "PR-head, merged-main and latest-main System2 CI evidence is successful; PR-head V8 Regression is successful.",
+    "The public terminal returned HTTP 200 and physically served the corrected labels and protected-boundary wording.",
+    "No later-main drift touched the correction conflict units or System1 Worker.js.",
+    "No strategy, selection, trading, capital, notification or System1 Formal authority changed."
+  ],
+  "residuals": [
+    "This closure verifies truthful capability-state presentation only; it does not approve or activate INSTITUTIONAL_ACCUMULATION or BLACK_HORSE_ACCUMULATION.",
+    "Any future strategy activation, preregistration, threshold, ranking or live authority remains separately evidence- and owner-gated."
+  ],
+  "closureMeaning": "Closes the S2-16 strategy-state labeling overclaim after canonical, code, test, CI, merged-main, runtime and drift verification."
+}
