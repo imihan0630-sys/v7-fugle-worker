@@ -1449,3 +1449,56 @@ Exact BUILD_LANE continuation:
 4. do not freeze the expected MOPS keyset from this failed run.
 
 00 does not implement this BUILD_LANE repair.
+
+
+## Eighth-cycle terminal delta — System1 quality live-verification harness blocked
+
+Observed main before write: `b589234ea738ad358767f99a3ff7b7ff50f30157`.
+
+System1 PR #739 transport-repair implementation remains engineering-CI accepted:
+- merge `03a745bd0c0c9a0993604a5dd6b35a4002adb52f`;
+- exact-head Regression `37546428451` PASS;
+- exact-head Repair CI `37546428459` PASS;
+- merge-head Regression `37546430734` PASS.
+
+One-shot quality-only live verification PR #745 merged as:
+`faffbe6757fac71655dad92acbd3a8590d3b24c3`.
+
+Its physical workflow run `37547043732` FAILED before any live official-source recovery occurred.
+
+Exact failure:
+- step `Verify transport-retry contract offline` = FAIL;
+- assertion = `V8.9.7+ runtime required`;
+- live quality recovery step = SKIPPED;
+- FINANCIAL/QUARTER_EPS readiness step = SKIPPED.
+
+Independent 00 diagnosis:
+- repository baseline `Worker.js` declares version `7.5.26-q1-statement-column-validation`;
+- Production V8.x authority is produced by the guarded build/patch chain;
+- the verification workflow invoked `tests/test_v8_9_7_recovery_hardening.mjs` directly against baseline Worker.js without first building the effective V8 Worker or binding `V7_TEST_WORKER_PATH` to the built artifact;
+- therefore this run is `VERIFICATION_HARNESS_EFFECTIVE_BUILD_PATH_MISSING`, not evidence that live official-quality transport failed.
+
+00 disposition:
+- PR #739 implementation/CI acceptance remains intact;
+- physical live transport verification remains PENDING;
+- FINANCIAL / QUARTER_EPS live readiness is NOT established by run 37547043732;
+- no genuine C1/Formal-C1 evidence is promoted.
+
+Exact System1 owner-lane continuation:
+construct/use the canonical effective Worker build in the quality-verification workflow, bind the offline contract test to that built artifact, then rerun quality-only physical transport verification. Do not alter Formal Core merely to satisfy the harness.
+
+
+## Eighth-cycle late research delta — D02 PVE-254
+
+D02 read-only remediation evidence lane was merged as PR #746:
+`4e5a89dd135ec32f53126f77efcf0d3f082e7b57`.
+
+Post-merge:
+- D02 PVE-251 Live Remediation Readonly run `37546961200` PASS;
+- V8 Regression on the merge head PASS.
+
+00 accepts PVE-254 as a read-only evidence-collection lane only.
+It does not pass PVE-247, does not create a clean H001 date, does not authorize PR #743 Production split-trigger deployment, and does not change D02 maturity or Formal Core.
+
+Central tracker was synchronized in commit:
+`b589234ea738ad358767f99a3ff7b7ff50f30157`.
