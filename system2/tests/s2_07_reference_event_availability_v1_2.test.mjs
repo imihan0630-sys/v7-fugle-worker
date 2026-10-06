@@ -9,6 +9,8 @@ const officialEvent = {
   actionFamilyId: "CAPITAL_REDUCTION",
   effectiveDate: "2026-10-02",
   eventVersionId: "S2-CA-EVENT:test",
+  sourceRowHash: "reference-row-hash-test",
+  continuityEffect: {subtype: "彌補虧損"},
   knowledgeTimeMode: "HISTORICAL_UNKNOWN",
   firstKnownAt: null,
   availableAt: null,
@@ -85,6 +87,8 @@ const hypotheticalAuthoritative = evaluateReferenceEventHistoricalAvailabilityV1
     availableAt: "2026-09-30T09:00:00+08:00",
     sourceId: "HYPOTHETICAL_OFFICIAL_CONTRACT",
     evidenceId: "fixture-only",
+    referenceEventVersionId: "S2-CA-EVENT:test",
+    referenceSourceRowHash: "reference-row-hash-test",
   }],
 });
 assert.equal(
