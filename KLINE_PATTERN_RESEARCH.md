@@ -23985,3 +23985,33 @@ New durable artifacts:
 - research/PATTERN_EXTERNAL_FLOW_CROWDING_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-060 — Structural response vs leader/follower propagation and common price discovery (2026-10-07)
+
+DL-060 addresses a cross-sectional attribution trap. A stock can appear to bounce from support or break resistance cleanly because another market object moved first and the stock followed the same information-discovery process.
+
+The repository already has a mature D03 timing framework, so D01 does not build another lead-lag detector. It consumes the D03 invariant that a true predictive leader state must be known before the follower decision cutoff and before the follower endpoint starts. Same completed-bar co-movement is therefore contemporaneous synchronization only.
+
+This matters especially for 15-minute and daily bars. If a sector leader and a follower both close strongly in the same bar, the data do not establish that the leader caused or predicted the follower. They may have received common information simultaneously, moved with a common factor, reacted to passive/index flow, or simply differ in trade timing.
+
+A frozen owner relation is required before any leader interpretation. The relation can come from sector leadership, verified supply-chain structure, futures/ETF price-discovery research or another owner-governed relation. Selecting the stock that happened to move first on successful examples is prohibited.
+
+Nonsynchronous trading is a first-class falsifier. Small or illiquid securities can mechanically look like followers because their last trades update later. Liquidity, last-trade freshness, stale prices and auction/limit/session constraints must therefore be visible before interpreting lead-lag.
+
+The common-price-discovery context is split into market prior move, sector prior move, verified leader prior move, futures/ETF prior discovery, supply-chain prior move, contemporaneous-only synchronization, multiple channels and unknown direction.
+
+The primary falsifier compares common-discovery events away from the zone with comparable events at the zone. If the zone case adds no residual representation, the apparent structure is unnecessary for explaining the move.
+
+D01 also keeps direct-price ancestry explicit. Leader return, follower trend, market/sector return, D02 price-volume, D03 momentum and D18 regime can overlap strongly. Different symbols do not automatically imply independent information.
+
+Twenty adversarial tests are authored. They cover valid lead timing, outcome-selected leaders, late-known leader states, replay blocking, multiple channels, same-bar synchronization, earlier-known leaders, direction uncertainty, stale-price/nonsynchronous trading, session constraints, correlated information roots, denominator preservation and no successful-follower filtering.
+
+New durable artifacts:
+- research/PATTERN_COMMON_PRICE_DISCOVERY_FIREWALL_V0_1.md
+- research/pattern_common_price_discovery_firewall_v0_1.json
+- research/pattern_common_price_discovery_firewall_v0_1.mjs
+- research/test_pattern_common_price_discovery_firewall_v0_1.mjs
+- research/PATTERN_COMMON_PRICE_DISCOVERY_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.

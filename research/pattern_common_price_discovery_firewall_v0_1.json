@@ -1,0 +1,27 @@
+{
+  "schemaVersion":"pattern-common-price-discovery-firewall-v0.1",
+  "updated":"2026-10-07 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "sameBarComovementEqualsLead":false,
+  "outcomeSelectedLeaderAllowed":false,
+  "differentSymbolEqualsIndependentEvidence":false,
+  "contemporaneousSynchronizationIsPredictiveEvidence":false,
+  "postOpportunityLeaderMoveIsBaseline":false,
+  "states":[
+    "SELF_STRUCTURE_CONTEXT_ONLY",
+    "MARKET_INDEX_PRIOR_MOVE_PRESENT",
+    "SECTOR_PRIOR_MOVE_PRESENT",
+    "VERIFIED_LEADER_PRIOR_MOVE_PRESENT",
+    "FUTURES_OR_ETF_PRICE_DISCOVERY_PRIOR_MOVE_PRESENT",
+    "SUPPLY_CHAIN_PRIOR_MOVE_PRESENT",
+    "CONTEMPORANEOUS_SYNCHRONIZATION_ONLY",
+    "MULTIPLE_COMMON_DISCOVERY_CHANNELS",
+    "LEAD_LAG_DIRECTION_UNKNOWN",
+    "PRICE_DISCOVERY_DATA_BLOCKED"
+  ],
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}
