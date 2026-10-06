@@ -1,0 +1,18 @@
+{
+ "schemaVersion":"pattern-zone-path-churn-v0.1",
+ "updated":"2026-10-06 Asia/Taipei",
+ "researchOnly":true,
+ "outcomeBlind":true,
+ "formalCore":"LOCKED",
+ "ownerBoundary":{"fixedWindowPathEfficiency":"D03","zoneLocalPath":"D01"},
+ "repeatedVisitsEqualAcceptance":false,
+ "ohlcBarSpanEqualsExactCrossingSequence":false,
+ "highChurnHasFixedDirectionalSign":false,
+ "duplicateD03PathEfficiency":"PROHIBITED",
+ "entropyFactor":null,
+ "defaultEffectiveIndependentEvidenceCount":1,
+ "residualIncrementalityStatus":"NOT_VALIDATED",
+ "outcomeJoin":"CLOSED",
+ "inferenceOwner":"D16",
+ "formalOptimizationCandidate":"NONE"
+}
