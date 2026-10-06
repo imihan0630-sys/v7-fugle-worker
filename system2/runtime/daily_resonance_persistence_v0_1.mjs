@@ -411,14 +411,35 @@ export async function persistResonanceRunV0_1(db, receipt) {
 
 export async function readLatestResonanceApiV0_1(db, { marketDate = null, symbol = null } = {}) {
   assertDb(db);
-  let resolvedDate = marketDate;
+  if (marketDate !== null && !/^\d{4}-\d{2}-\d{2}$/.test(String(marketDate))) {
+    throw new Error("marketDate must be YYYY-MM-DD when provided");
+  }
+  const requestedMarketDate = marketDate || null;
+  const dateSelectionMode = requestedMarketDate ? "EXPLICIT_MARKET_DATE" : "LATEST_AVAILABLE_DATE";
+  let resolvedDate = requestedMarketDate;
   if (!resolvedDate) {
     const dateRow = await db.prepare(
       "SELECT market_date FROM s2_resonance_latest ORDER BY market_date DESC LIMIT 1",
     ).first();
     resolvedDate = dateRow?.market_date || null;
   }
-  if (!resolvedDate) return Object.freeze({ marketDate: null, symbolCount: 0, symbols: [] });
+  if (!resolvedDate) {
+    return Object.freeze({
+      schemaVersion: "SYSTEM2_DAILY_RESONANCE_API_V0_1",
+      requestedMarketDate,
+      marketDate: null,
+      dateSelectionMode,
+      latestAnyDateFallbackUsed: dateSelectionMode === "LATEST_AVAILABLE_DATE",
+      symbolCount: 0,
+      provisionalResonanceCount: 0,
+      confirmedResonanceCount: 0,
+      symbols: Object.freeze([]),
+      fullMarketScan: false,
+      decisionImpact: false,
+      notificationImpact: false,
+      orderImpact: false,
+    });
+  }
 
   const result = symbol
     ? await db.prepare(
@@ -438,7 +459,10 @@ export async function readLatestResonanceApiV0_1(db, { marketDate = null, symbol
   }));
   return Object.freeze({
     schemaVersion: "SYSTEM2_DAILY_RESONANCE_API_V0_1",
+    requestedMarketDate,
     marketDate: resolvedDate,
+    dateSelectionMode,
+    latestAnyDateFallbackUsed: dateSelectionMode === "LATEST_AVAILABLE_DATE",
     symbolCount: symbols.length,
     provisionalResonanceCount: symbols.filter((row) => row.signalConfirmationState === "PROVISIONAL").length,
     confirmedResonanceCount: symbols.filter((row) => row.signalConfirmationState === "CONFIRMED").length,
