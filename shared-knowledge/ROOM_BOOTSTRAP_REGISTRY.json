@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-06T19:07:00+08:00",
+  "updatedAt": "2026-10-06",
   "status": "CANONICAL_ROOM_BOOTSTRAP_REGISTRY_V0_1",
   "repository": "imihan0630-sys/v7-fugle-worker",
   "authoritativeBranch": "main",
@@ -36,7 +36,8 @@
     "userNavigableUrlPolicySource": "shared-knowledge/ROOM_BOOTSTRAP.md",
     "userNavigableUrlPolicySemantics": "When a user is asked to open/login/view/operate a concrete page and a stable safe URL is known, provide the direct clickable URL in the same response; prefer the deepest reliable target and never fabricate or expose secrets.",
     "system1PolicyFingerprintReceipt": "shared-knowledge/system1_policy_fingerprint_receipt_v0_1.json",
-    "sda022System1FingerprintAcceptance": "shared-knowledge/sda022_system1_fingerprint_acceptance_20261006_v0_1.json"
+    "sda022System1FingerprintAcceptance": "shared-knowledge/sda022_system1_fingerprint_acceptance_20261006_v0_1.json",
+    "sda016System1V819CurrentStatus": "research/sda016_system1_v819_current_status_20261006_v0_1.json"
   },
   "identities": [
     {
