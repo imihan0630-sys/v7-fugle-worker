@@ -1261,3 +1261,56 @@ Exact next:
 - `SDA-009-R3A1-PARITY`: first genuine built-runtime receipt proves membership, sector-state, gate and score parity.
 - `SDA-009-R3A2`: capture same-generation market consensus input for all feature-admitted rows, then emit separately labeled focal-attribution and full-self-excluded-policy results.
 - `SDA-009-R3B`: Room07 evaluates the first genuine receipt with P0-P5 common-support accounting before D16 validation.
+
+
+## SDA-009 Room07 research responsibility complete — engineering / D16 pending
+
+Artifacts:
+- `research/SDA009_ROOM07_RESEARCH_COMPLETION_AND_D16_HANDOFF_20261007.md`
+- `research/SDA009_SYSTEM1_R3A1_CODEX_TASK_CHECKPOINT_20261007.md`
+- `research/sda009_r3a1_acceptance_oracle_v0_6.mjs`
+- `research/test_sda009_r3a1_acceptance_oracle_v0_6.mjs`
+
+Status: ROOM07_RESEARCH_RESPONSIBILITY_COMPLETE / SYSTEM1_R3A1_ENGINEERING_PENDING / GENUINE_RECEIPT_COUNT_0 / D16_PENDING / SDA_TICKET_NOT_CLOSED / FORMAL_CORE_UNCHANGED
+
+Room07 has completed the research/falsification/identifiability/capture-contract/oracle responsibility for SDA-009 up to the System1 engineering boundary.
+
+Final research-side executable acceptance:
+- V0.5 capture/counterfactual contract test: PASS / 12 assertions.
+- V0.6 R3A1 acceptance oracle test: PASS / 23 assertions.
+- The execution was performed in an isolated local Node.js environment after latest-main file readback. The local container had no external DNS; that transport limitation was not treated as a test outcome.
+
+V0.6 future genuine-receipt acceptance requires:
+- full C1 parent completeness;
+- per-row currentChangePercent/currentTradeValue;
+- classificationSchemeId/membershipVersion/membershipDigest;
+- sectorDecisionStateProjection/digest;
+- reconstructed inclusive sector parity;
+- score parity;
+- unclassified pseudo-bucket separation.
+
+A PASS only authorizes candidate LOO gate/score research. It does not authorize R3A2 rank, Formal mutation, or SDA closure.
+
+The two research counterfactuals remain distinct:
+- SDA009_FOCAL_SELF_ATTRIBUTION_V0_1;
+- SDA009_FULL_SELF_EXCLUDED_POLICY_V0_1.
+
+D16 trigger is frozen to the first genuine same-generation receipt after R3A1 parity PASS. Required P0-P5 denominator accounting and layered mechanical/decision/allocation/economic estimands are documented in the completion handoff.
+
+Room07 exact next until System1 evidence exists:
+`WAIT_FOR_GENUINE_SYSTEM1_R3A1_RECEIPT / DO_NOT_REDESIGN_SEMANTICS`.
+
+When genuine receipt exists:
+1. run `sda009_r3a1_acceptance_oracle_v0_6.mjs`;
+2. if PASS, run candidate LOO;
+3. run `sda009_r3_receipt_oracle_v0_4.mjs`;
+4. freeze P0-P5 common-support readback;
+5. hand immutable result to D16.
+
+System1 engineering handoff is durable at:
+`research/SDA009_SYSTEM1_R3A1_CODEX_TASK_CHECKPOINT_20261007.md`.
+
+Recommended engineering route:
+Codex / GPT-6 Astra / High.
+
+D09 maturity remains 57.1%. No maturity promotion without genuine Taiwan receipts and D16 evidence.
