@@ -1032,3 +1032,18 @@ Next exact BUILD_LANE continuation:
 3. bind only positive provenance-bearing schedule intervals to official market sessions;
 4. unmatched cases remain `SUSPENSION_PROVENANCE_UNKNOWN`;
 5. RAW A1 lineage only after bounded symbol-session evidence is positive.
+
+
+## 2026-10-07 S2-07 Native Schedule Integration V0.9 — PHYSICAL PASS
+
+- PR #713 / merge `44212a6f3d8556d2ffc98a0f85b7d0e97b65f269`
+- main readonly run `37492646263` / job `112369057180`: PASS
+- System2 Research CI `37492646329`: PASS
+- V8 Regression `37492646417`: PASS
+- 17 events -> 10 source-native schedules certified -> 4 combined bounded symbol-session positives
+- ready symbols: 3086, 4806, 5381, 6241
+- blockers retained: promotion not ready (10); TWSE native detail not self-describing (7)
+- RAW A1 lineage remains unbound; technical continuity and all selection/trading authority remain false
+
+Next BUILD_LANE cursor:
+`S2-07 RAW A1 LINEAGE — BOUNDED FOUR-CASE ONLY`.

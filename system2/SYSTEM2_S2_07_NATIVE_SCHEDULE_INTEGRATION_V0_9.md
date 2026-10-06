@@ -1,7 +1,7 @@
 # System 2 S2-07 Corporate-Action Native Schedule Integration V0.9
 
 Updated: 2026-10-06 Asia/Taipei
-Status: RESEARCH_ONLY / BUILD_LANE / PHYSICAL_EXECUTION_PENDING
+Status: RESEARCH_ONLY / BUILD_LANE / PHYSICALLY_VERIFIED
 Formal Core: LOCKED
 Trading authority: NONE
 
@@ -53,3 +53,33 @@ Based on V0.9a diagnostics, the expected bounded positives are the V0.7-ready TP
 5381, 6241, 4806 and 3086.
 
 This is a physical-test hypothesis, not a completion claim. The readonly workflow must prove it.
+
+
+## Physical execution result
+
+Authoritative main execution:
+- implementation merge: `44212a6f3d8556d2ffc98a0f85b7d0e97b65f269` (PR #713)
+- readonly workflow run: `37492646263`
+- job: `112369057180`
+- conclusion: PASS
+- System2 Research CI: `37492646329` PASS
+- V8 Regression: `37492646417` PASS
+
+Observed:
+- 17 frozen events
+- 7 V0.7 promotion-ready
+- 10 source-native TPEx schedules certified
+- 4 combined bounded positives: 3086, 4806, 5381, 6241
+- 13 remain blocked
+- TWSE compact detail remains non-self-describing and fail-closed
+- no no-suspension certification
+- no RAW A1 binding or technical-continuity certification
+
+Durable evidence:
+- `system2/evidence/S2_07_NATIVE_SCHEDULE_INTEGRATION_V0_9_PHYSICAL_20261007.md`
+- `system2/evidence/S2_07_NATIVE_SCHEDULE_INTEGRATION_V0_9_PHYSICAL_20261007.json`
+
+## Next gate
+
+Proceed to RAW A1 lineage only for the four positive bounded cases.
+Do not generalize the result to all 17 events, to TWSE compact detail, or to technical continuity.
