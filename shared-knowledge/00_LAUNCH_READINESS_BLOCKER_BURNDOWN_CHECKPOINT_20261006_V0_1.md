@@ -406,3 +406,32 @@ No launch-gate promotion from this readback:
 4. Watch DATA_LANE for 2023 TWSE physical evidence or an explicit blocker.
 5. Watch System2 for first strategy fingerprint receipts and physical NC-T01.
 6. Only change launch gates after independent 00 machine-evidence readback.
+
+
+## SDA-016 V8.20 merge readback — 2026-10-06
+
+Observed latest main before write: `0dceb302d94c6e15a4e38e1f06d4bb75ec2381c8`.
+
+PR #680 is merged:
+- merge: `1bd9e05d730f2f7c5909a52502837eabd2bb111f`;
+- title: V8.20.0 authoritative Formal-C1 binding ledger;
+- merged at 2026-10-06T15:01:36Z.
+
+00 accepts that the Class-B append-only Formal→C1 binding implementation has landed in main. The implementation includes the authoritative binding table, protected readback route, exact parent identity, no latest/selected-set inference, and no historical backfill. Formal Core remains unchanged.
+
+SDA-016 is therefore narrowed to:
+`CLASS_B_RUNTIME_MERGED / PRODUCTION_READBACK_AND_GENUINE_RECEIPT_PENDING`.
+
+Still required before SDA-016 can be treated as closed for S1:
+- matching post-merge Production deploy/runtime verification;
+- first legitimate post-deploy genuine Formal↔C1 binding receipt;
+- remaining generation-set finalization / shared-consumption / D16 / 00 closure evidence as applicable.
+
+A merge message or CI pass is not a genuine receipt.
+
+System1 S1 remains `PARTIAL` because SDA-001/004 and SDA-009 genuine evidence are also still missing.
+
+Exact next:
+1. verify V8.20 post-merge deploy/regression and runtime version;
+2. read first genuine Formal↔C1 receipt when one legitimately exists;
+3. continue SDA-001/004, SDA-009, 2023 TWSE, and SDA-022 fingerprint/NC-T01 readback.
