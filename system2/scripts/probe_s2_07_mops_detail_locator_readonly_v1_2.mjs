@@ -35,6 +35,19 @@ function inputPairs(raw){
   return out;
 }
 const html=fetchAnnual();
+const formMatch=html.match(/<form\b[^>]*(?:name|id)=['"]t05st01_fm['"][^>]*>[\s\S]*?<\/form>/i);
+const formHtml=formMatch?.[0]||null;
+const formMeta=formHtml?{
+  openingTag:formHtml.match(/^<form\b[^>]*>/i)?.[0]||null,
+  inputs:[...formHtml.matchAll(/<input\b[^>]*>/gi)].map((m)=>{
+    const tag=m[0];
+    return {
+      type:tag.match(/\btype\s*=\s*['"]([^'"]*)['"]/i)?.[1]||null,
+      name:tag.match(/\bname\s*=\s*['"]([^'"]*)['"]/i)?.[1]||null,
+      value:tag.match(/\bvalue\s*=\s*['"]([^'"]*)['"]/i)?.[1]||null,
+    };
+  }).filter((x)=>x.name),
+}:null;
 const targets=[
   ["2026-08-07","16:45:21","3"],
   ["2026-08-28","15:14:07","1"],
@@ -66,6 +79,7 @@ for(const [date,time,seqNo] of targets){
 }
 console.log(JSON.stringify({
   result:"S2_07_MOPS_DETAIL_LOCATOR_V1_2_COMPLETE",
+  formMeta,
   targetCount:targets.length,
   observedCount:results.filter(x=>x.rowObserved).length,
   rows:results,
