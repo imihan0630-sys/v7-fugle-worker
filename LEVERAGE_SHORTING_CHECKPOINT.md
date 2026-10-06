@@ -393,3 +393,14 @@ Interpretation remains bounded:
 - five-symbol pilot != market representation.
 
 D06-18 remains L2/40. No promotion, no outcomes, no Formal change.
+
+
+## LS-047I / D06-07~09 — 2026-10-06 EARLY captured
+- EARLY receipt: `research/d06_07_08_09_tpex_leverage_early_20261006_v0_1.json`.
+- Margin snapshot: 918 rows; financing 918/918; margin-short 918/918.
+- SBL snapshot: 931 rows; margin-short 931/931; actual-SBL-short 931/931.
+- Cross-source unit audit: 918/918 five flow/balance fields match after lots x1000; limit floor rule 918/918.
+- The same 13 Y/not-credit-qualified SBL-only symbols persist from 2026-10-05; all 13 again have nonzero SBL-short balance.
+- D06-08 and D06-09 must keep separate denominators.
+- D06-07/08/09 remain L2/40.
+- Exact next: after 22:30 capture identical LATE sources and compare EARLY->LATE on union and common support. Outcomes/Formal closed.
