@@ -751,3 +751,14 @@ Physical run `37539208003` / job `112527770695` observed the exact 4806 TPEx cap
 The physical receipt proves the key causal firewall: the observation is valid evidence that the row was public by its actual observation time, but it does not unlock the earlier 2026-10-02 replay cutoff. No scheduler was added. Full pre-parent source-cut completeness, noRevisionGapThroughCut, symbol-session completeness, TECHNICAL_CONTINUITY and all trading authorities remain false.
 
 Evidence: `system2/evidence/S2_07_OFFICIAL_REFERENCE_AVAILABILITY_OBSERVER_V1_3_PHYSICAL_20261007.json`.
+
+
+## 2026-10-07 S2-07 pre-parent evidence-cut boundary
+
+V1.4 is merged and physically verified as the shared-owner manifest/falsification layer after V1.3. It freezes evidence-cut identity, market scope, required source-lane hashes, prospective exact-version keysets, and a two-point `noRevisionGapThroughCut` reconciler.
+
+The current physical V1.3 single 4806 sample correctly remains `PRE_PARENT_EVIDENCE_CUT_BLOCKED`; selected-only capture, incomplete dual-market scope and uncertified expected keysets cannot be promoted into a market-wide cut. This is the intended fail-closed result, not a strategy failure.
+
+Dedicated V1.4 run `37542639896` and System2 Research CI `37542639932` PASS. V8 Regression has an independently documented pre-existing SDA-016 stale governance assertion and V1.4 changes no System1/Formal file.
+
+No scheduler, selection, push, capital or order authority is enabled. Next BUILD_LANE work is the genuine pre-parent full-scope source cut, followed by bounded-complete post-parent reconciliation before any symbol-session/technical-continuity binding.
