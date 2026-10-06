@@ -1164,3 +1164,37 @@ Next BUILD_LANE rule:
 - continue non-conflicting S2-07/build work;
 - 5381 / 6241 / 3086 remain DATA_LANE RAW A1 coverage-owned blockers;
 - all trading/selection authority remains false.
+
+
+## 2026-10-07 S2-07 V1.3 — prospective exact-reference observer
+
+Physical acceptance:
+- PR #733 dedicated workflow run `37539208003`, job `112527770695`: PASS.
+- System2 Research CI run `37539207913`: PASS.
+- no-scheduler/read-only/System1 isolation: PASS.
+- exact reference: 4806 / TPEX / CAPITAL_REDUCTION / effective 2026-10-02.
+- stable semantic hash: `b6a4c97fdf3ded2bdae7048852540e4f58c1a64da4cbc012e350d5227e20d869`.
+- stable source-row hash: `518fcdf6b0f3d5dc8ffaafba59556c86da3cda76dd0e46c528217740c33ae92b`.
+- genuine current prospective observation: `2026-10-06T22:13:44.304Z` (2026-10-07 06:13:44.304 Asia/Taipei).
+- evidence class: `PROSPECTIVE_EXACT_VERSION_OBSERVER`.
+- current-row public availability is proven by that observation time only; exact publication latency remains uncertified.
+- applying this late observation to the historical 4806 replay cutoff 2026-10-02 15:30 Asia/Taipei returns `REFERENCE_PUBLIC_AVAILABILITY_NOT_PROVEN_BY_CUTOFF`.
+- applying the same receipt at its actual observation cutoff returns `REFERENCE_PUBLICLY_OBSERVED_BY_CUTOFF`.
+- this proves the adapter preserves causal time and refuses backdating.
+
+Boundary:
+- `eventVersionId` is still receipt provenance only; stable identity remains `semanticHash + sourceRowHash`.
+- no high-frequency polling is required merely for by-cutoff causality.
+- no selected-only post-parent capture is authorized.
+- no Cron/scheduler was added.
+- full market-wide/full-eligible source cut is not yet implemented.
+- `noRevisionGapThroughCut=false` / not certified.
+- symbol-session completeness and TECHNICAL_CONTINUITY remain uncertified.
+- no strategy/ranking/candidate/push/capital/order authority; System1 untouched.
+
+Next exact BUILD_LANE continuation:
+1. bind V1.3 exact-reference observations into a shared-owner pre-parent evidence-cut manifest;
+2. preserve market-wide/exchange-wide or full-eligible scope; selected-only remains forbidden;
+3. reconcile expected vs observed exact-version keysets with append-only provenance;
+4. implement late-discovered-pre-cut version falsification for `noRevisionGapThroughCut`;
+5. only after that, bind symbol-session completeness and continuity receipts to genuine parent generations.

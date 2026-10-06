@@ -1,0 +1,57 @@
+name: System2 S2-07 Official Reference Availability Observer V1.3 Readonly
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/s2_07_official_reference_availability_observer_v1_3.mjs"
+      - "system2/tests/s2_07_official_reference_availability_observer_v1_3.test.mjs"
+      - "system2/scripts/probe_s2_07_official_reference_availability_observer_readonly_v1_3.mjs"
+      - "system2/SYSTEM2_S2_07_OFFICIAL_REFERENCE_AVAILABILITY_OBSERVER_V1_3.md"
+      - ".github/workflows/system2-s2-07-official-reference-availability-observer-v1-3-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/s2_07_official_reference_availability_observer_v1_3.mjs"
+      - "system2/tests/s2_07_official_reference_availability_observer_v1_3.test.mjs"
+      - "system2/scripts/probe_s2_07_official_reference_availability_observer_readonly_v1_3.mjs"
+      - "system2/SYSTEM2_S2_07_OFFICIAL_REFERENCE_AVAILABILITY_OBSERVER_V1_3.md"
+      - ".github/workflows/system2-s2-07-official-reference-availability-observer-v1-3-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Targeted official reference observer tests
+        run: node system2/tests/s2_07_official_reference_availability_observer_v1_3.test.mjs
+      - name: Read-only physical official reference observation or accepted-receipt reuse
+        shell: bash
+        run: |
+          set -euo pipefail
+          ACCEPTED_CODE_HEAD="2994fc905071660a6ace324e1db28556482b4c37"
+          git fetch --no-tags --depth=1 origin "$ACCEPTED_CODE_HEAD"
+          if git diff --quiet "$ACCEPTED_CODE_HEAD" HEAD -- \
+            system2/runtime/s2_07_official_reference_availability_observer_v1_3.mjs \
+            system2/tests/s2_07_official_reference_availability_observer_v1_3.test.mjs \
+            system2/scripts/probe_s2_07_official_reference_availability_observer_readonly_v1_3.mjs
+          then
+            node -e 'const fs=require("node:fs");const p="system2/evidence/S2_07_OFFICIAL_REFERENCE_AVAILABILITY_OBSERVER_V1_3_PHYSICAL_20261007.json";const r=JSON.parse(fs.readFileSync(p,"utf8"));if(r?.workflow?.conclusion!=="success")throw new Error("accepted physical receipt is not successful");if(r?.workflow?.validatedCodeHeadCommit!=="2994fc905071660a6ace324e1db28556482b4c37")throw new Error("accepted physical receipt code-head mismatch");if(r?.prospectiveObservation?.evidenceClass!=="PROSPECTIVE_EXACT_VERSION_OBSERVER")throw new Error("accepted physical receipt evidence class mismatch");if(r?.cutoffChecks?.historical4806AvailabilityByCutoffProven!==false)throw new Error("accepted physical receipt lost historical fail-closed boundary");console.log("S2-07 V1.3 accepted physical receipt REUSED: core code/probe unchanged")'
+          else
+            node system2/scripts/probe_s2_07_official_reference_availability_observer_readonly_v1_3.mjs
+          fi
+      - name: No scheduler, mutation, or System1 authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE '\\b(INSERT|UPDATE|DELETE|REPLACE|DROP|ALTER|CREATE)\\b' system2/scripts/probe_s2_07_official_reference_availability_observer_readonly_v1_3.mjs
+          ! grep -qE 'wrangler[[:space:]]+(deploy|secret)|secret[[:space:]]+put|workers[[:space:]]+deploy' system2/scripts/probe_s2_07_official_reference_availability_observer_readonly_v1_3.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "S2-07 V1.3 no-scheduler/read-only/System1 isolation PASS"
