@@ -201,3 +201,24 @@ PASS:
 3. 停在 PR #680 merge / Production deploy approval gate；
 4. 只有 owner 另行批准後才可 Merge + deploy；
 5. 部署後才做 genuine Formal→C1 readback。
+
+
+## Merge / Production authorization — 2026-10-06
+
+Owner explicitly authorized:
+
+`批准 PR #680 Merge + V8.20 Production 部署，Formal Core 維持鎖定。`
+
+Authorization scope:
+- PR #680 merge;
+- V8.20 Production deployment;
+- post-deploy runtime/readback verification;
+- genuine Formal→C1 binding verification when a legitimate post-deploy Formal decision exists.
+
+Still forbidden:
+- any Formal Core mutation;
+- A/B, Top6/3+3, comparator, capital, 15m, lifecycle, push/order changes;
+- System2 policy changes;
+- historical binding backfill or synthetic genuine evidence.
+
+A fresh exact-head CI pass after the latest-main lease remains mandatory before merge.
