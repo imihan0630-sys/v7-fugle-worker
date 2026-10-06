@@ -80,3 +80,6 @@ No historical 2026-10-06 Formal/C1 generation will be synthesized. That date rem
 - no Formal save/scan mutation is introduced.
 
 Next valid proof must come prospectively on a future trading session.
+
+
+Final merge lease base: `777b5876917774a5ad4c32eac3e563df2b3acfe5`.
