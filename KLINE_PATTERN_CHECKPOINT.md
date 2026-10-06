@@ -3794,3 +3794,118 @@ No maturity or Formal change is authorized by this routing.
 6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 7. Next D01 science: separate structural rejection from correlated external order-flow / crowding so same-direction follow-through is not attributed to one initiating decision or one zone.
 8. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-059 (2026-10-07)
+
+### DL-059 — Structural rejection vs correlated external order flow / crowding / co-impact
+- DL-057 separated structural response from own-order mechanical impact.
+- DL-058 separated structural response from initiating-order information content.
+- DL-059 freezes the next falsification: same-direction follow-through near a structural zone may be driven by correlated external order flow, institutional crowding, passive basket flow, mechanical hedging, leverage crowding, common-factor flow or cross-impact rather than by the zone itself.
+- External evidence supports the mechanism:
+  institutional metaorders from different investors can be correlated;
+  concurrent same-direction metaorders can generate co-impact/crowding;
+  order-flow imbalances can amplify price moves;
+  correlated metaorders can make impact appear persistent;
+  cross-impact can propagate price effects across related assets.
+- These findings are mechanism evidence only and do not prove any Taiwan event is crowded.
+- Owner boundaries remain strict:
+  D02 owns volume-origin / leverage crowding / passive / hedge / common-factor flow taxonomy;
+  D05 owns event-level order flow / trade pressure / microstructure clocks;
+  D03 owns trend/momentum semantics;
+  D13/D18 own relevant macro/regime context where routed.
+- D01 only tests whether zone interpretation survives owner-certified flow context.
+- External-flow identity is split into:
+  INITIATING_ORDER_FLOW;
+  EXTERNAL_SAME_SYMBOL_FLOW;
+  COMMON_FACTOR_OR_BASKET_FLOW;
+  CROSS_ASSET_FLOW.
+- Frozen flow states:
+  F0 EXTERNAL_FLOW_UNKNOWN;
+  F1 SAME_SYMBOL_DIRECTIONAL_FLOW_PRESENT;
+  F2 SAME_SYMBOL_OPPOSING_FLOW_PRESENT;
+  F3 MULTI_PARTICIPANT_CROWDING_PRESENT;
+  F4 PASSIVE_BASKET_FLOW_PRESENT;
+  F5 MECHANICAL_HEDGE_FLOW_PRESENT;
+  F6 LEVERAGE_CROWDING_PRESENT;
+  F7 COMMON_FACTOR_FLOW_PRESENT;
+  F8 CROSS_ASSET_COIMPACT_CONTEXT_PRESENT;
+  F9 MIXED_OR_CONFLICTING_FLOW;
+  F10 FLOW_DATA_BLOCKED.
+- High volume alone does not prove crowding.
+- Strong candle / high volume / synchronized stocks may not be relabeled as crowding, passive flow or cross-impact without owner-grade receipts.
+- External-flow timing firewall:
+  firstObservableAt;
+  knownAt;
+  flowWindowStart;
+  flowWindowEnd;
+  predictorFreezeAt;
+  sourceVersion;
+  replaySafe.
+- knownAt > predictorFreezeAt -> POST_HOC_EXTERNAL_FLOW_NOT_BASELINE_ELIGIBLE.
+- Flow windows extending beyond predictor freeze are baseline-partial only; later flow is post-treatment/mediator/co-movement context.
+- Primary generic comparator:
+  G0 EXTERNAL_FLOW_EVENT_AWAY_FROM_ZONE;
+  G1 EXTERNAL_FLOW_EVENT_AT_ZONE.
+  If G1 adds no residual representation, generic external flow/crowding is sufficient.
+- Complementary zone states:
+  Z0 flow unknown/no receipt;
+  Z1 external flow present;
+  Z2 mixed/opposing flow.
+  Unknown does not equal no flow.
+- Crowding requires participant/category/concentration/correlation evidence under owner semantics; D01 defines no universal crowding threshold.
+- Passive basket, hedge and common-factor flow remain mechanism/context, not Pattern votes.
+- Cross-impact may come from index/ETF/sector/derivatives/related assets; D01 defines no cross-impact coefficients.
+- Correlated flow can mimic structural persistence through shared signals, metaorder splitting, herding, passive baskets, hedging or common information.
+- External-flow receipts are distinct-information-root candidates only; they are not automatically independent evidence.
+- Future D16 ladder:
+  C0 RAW_ZONE_RESPONSE;
+  C1 DL057_OWN_IMPACT_CONTROLLED;
+  C2 DL058_INITIATING_INFORMATION_CONTROLLED;
+  C3 SAME_SYMBOL_EXTERNAL_FLOW_CONTROLLED;
+  C4 MULTI_PARTICIPANT_CROWDING_CONTROLLED;
+  C5 PASSIVE_HEDGE_LEVERAGE_FLOW_CONTROLLED;
+  C6 COMMON_FACTOR_FLOW_CONTROLLED;
+  C7 CROSS_ASSET_COIMPACT_CONTROLLED;
+  C8 GENERIC_EXTERNAL_FLOW_COMPARATOR_CONTROLLED;
+  C9 STRUCTURAL_REJECTION_RESIDUAL_CANDIDATE;
+  C10 MULTI_DATE_MULTI_SYMBOL_MULTI_FLOW_REGIME.
+- Future interpretations:
+  Q0 SAME_SYMBOL_FLOW_EXPLANATION;
+  Q1 CROWDING_EXPLANATION;
+  Q2 PASSIVE_OR_HEDGE_FLOW_EXPLANATION;
+  Q3 COMMON_FACTOR_FLOW_EXPLANATION;
+  Q4 CROSS_IMPACT_EXPLANATION;
+  Q5 MIXED_FLOW_NOT_IDENTIFIED;
+  Q6 STRUCTURAL_REJECTION_RESIDUAL;
+  Q7 FLOW_STATUS_UNKNOWN;
+  Q8 NOT_EVALUABLE.
+- SDA-001 remains open:
+  external-flow receipts / D01 geometry / D02 volume-origin / D03 momentum are not automatic multi-votes.
+- SDA-002 remains open:
+  flow receipts require firstObservableAt / knownAt / predictorFreezeAt / replaySafe;
+  future crowding cannot rewrite earlier predictors.
+- New files:
+  - research/PATTERN_EXTERNAL_FLOW_CROWDING_FIREWALL_V0_1.md
+  - research/pattern_external_flow_crowding_firewall_v0_1.json
+  - research/pattern_external_flow_crowding_firewall_v0_1.mjs
+  - research/test_pattern_external_flow_crowding_firewall_v0_1.mjs
+  - research/PATTERN_EXTERNAL_FLOW_CROWDING_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain open under canonical queue.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-059
+
+1. Reconcile the DL-059 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-059 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve initiating order, external same-symbol flow, common-factor flow and cross-asset flow separately.
+4. Consume D02/D05/D03/D13/D18 owner receipts rather than inventing duplicate flow taxonomies.
+5. Hand C0-C10 / Q0-Q8 external-flow residual inference to D16.
+6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+7. Next D01 science: separate structural rejection from cross-sectional leader/follower propagation and sector/index synchronization so apparent zone response is not just common price discovery.
+8. No runtime wiring / no Formal change.
