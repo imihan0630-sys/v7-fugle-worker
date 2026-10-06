@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-06T21:47:00+08:00",
+  "updatedAt": "2026-10-06T21:55:42+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -858,7 +858,7 @@
       "directiveId": "S2-CORR-20261006-004",
       "createdAt": "2026-10-06T21:12:49+08:00",
       "severity": "MEDIUM",
-      "status": "FIX_IMPLEMENTED",
+      "status": "VERIFIED_CLOSED",
       "title": "Institutional terminal can surface prior-session resonance as current-day monitor data",
       "affectedScope": [
         "S2-16 terminal freshness",
@@ -930,9 +930,27 @@
         "Merged-main readback verified explicit current-session queries, stale-row guards, decision time fields, and explicit-vs-latest date-selection semantics; subsequent latest-main drift check showed zero drift across all four correction conflict units.",
         "No resonance EMA16/EMA64/Impulse MACD, 0/3–3/3, PROVISIONAL/CONFIRMED/RETRACTED, lifecycle state machine, pool freshness/invalidation, denominator provenance, bounded max-9/fullMarketScan=false, S2-07 candidate authority, strategy logic, ranking/capacity, push/notification, capital/orders, or System1 Formal Core was changed."
       ],
-      "verificationEvidence": [],
-      "finalDisposition": "PENDING — implementation complete; independent verification required before closure",
-      "updatedAt": "2026-10-06T21:45:00+08:00"
+      "verificationEvidence": [
+        "Independent AUDIT_LANE re-read latest GitHub main and did not rely on BUILD_LANE's completion claim.",
+        "PR #690 merged as b18457b4de892ed3beb8502155adfdee1a038ca4 and changed only terminal_page.mjs, daily_resonance_persistence_v0_1.mjs, daily_resonance_current_session_freshness_v0_1.test.mjs, and institutional_terminal_page_v0_1.test.mjs.",
+        "Terminal now computes the current Asia/Taipei market date and queries resonance, pool, and operations with the same explicit marketDate.",
+        "Terminal session alignment rejects mismatched/missing source dates and clears current selection; stale or previous-session rows are blocked from current Candidate/Decision/Today Focus/Resonance surfaces.",
+        "Current-session resonance rows must match terminal marketDate, chart marketDate, row updatedAt Taipei date, and chart asOf Taipei date before they can enter current monitor surfaces.",
+        "Decision Workspace now exposes Market Date, Row updatedAt, and Chart asOf so session provenance is visible.",
+        "readLatestResonanceApiV0_1 preserves no-date latest-any-date historical behavior but marks it LATEST_AVAILABLE_DATE; explicit marketDate queries are marked EXPLICIT_MARKET_DATE and do not fall back.",
+        "Freshness regression proves yesterday-only data does not populate an explicit current-day query, explicit historical-date query remains available, and latest-any-date history remains visibly marked.",
+        "System2 Research CI run 37472705542 / job 112300052873 PASS.",
+        "V8 Regression run 37472705541 / job 112300052650 PASS.",
+        "Merged-main System2 Research CI run 37473038918 / job 112301366833 PASS.",
+        "System2 Daily Resonance Deploy run 37473038743 / job 112301210286 PASS, including public read API/UI/schedule checks and System1 production-file isolation.",
+        "From FIX_IMPLEMENTED writeback commit 05084853bbf37669b738f276aea6792d9b0b87f4 through audit time, latest main is identical for all four correction conflict units; zero drift invalidated the fix.",
+        "No resonance formula/state-machine, bounded-pool freshness semantics, denominator provenance, S2-07 candidate authority, strategy logic, ranking/capacity, notification/push, capital/order behavior, or System1 Formal Core was changed.",
+        "Independent verification receipt: system2/evidence/s2_corr_20261006_004_independent_verification.json"
+      ],
+      "finalDisposition": "VERIFIED_CLOSED — current-session terminal surfaces now fail closed on cross-session resonance date mismatch while explicit historical resonance remains separately queryable; protected strategy/trading authorities remain unchanged.",
+      "updatedAt": "2026-10-06T21:55:42+08:00",
+      "verifiedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "verifiedAt": "2026-10-06T21:55:42+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
