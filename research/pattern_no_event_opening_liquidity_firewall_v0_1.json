@@ -1,0 +1,18 @@
+{
+  "schemaVersion":"pattern-no-event-opening-liquidity-firewall-v0.1",
+  "updated":"2026-10-07 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "noPublicEventEqualsNoInformation":false,
+  "noPublicEventEqualsStructuralMemory":false,
+  "openingReversalEqualsInventoryEffect":false,
+  "priceCanReconstructOrderImbalance":false,
+  "topFiveEqualsFullBookImbalance":false,
+  "noObservedPressureEqualsNoLatentPressure":false,
+  "traderIntentFromPriceOrBook":"PROHIBITED",
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}
