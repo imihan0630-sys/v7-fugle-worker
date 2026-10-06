@@ -340,3 +340,69 @@ Therefore SDA-022 remains `PARTIAL_PASS`.
 3. Check System1 for any genuine receipt/implementation landing for SDA-001/004, SDA-009, or SDA-016.
 4. Check System2 for the first strategy-specific fingerprint receipts S22-T06~T10 and physical NC-T01 S22-T11~T16.
 5. If a machine-verifiable delta lands, perform 00 independent acceptance readback before changing any launch gate.
+
+
+## 2026-10-06 late-session readback — SDA-009 R3 oracle / 2023 TWSE / SDA-022
+
+Observed latest main at readback start: `1bd9e05d730f2f7c5909a52502837eabd2bb111f`.
+Always re-read latest main before the next action.
+
+### SDA-009 R3 oracle V0.2 readback
+
+New research-side acceptance evidence landed:
+- `research/SDA009_R3_ORACLE_V0_2_CHECKPOINT_20261006.md`;
+- `research/sda009_r3_receipt_oracle_v0_2.mjs`;
+- deterministic validation = PASS 16 assertions.
+
+00 accepts this only as a stronger receipt oracle / acceptance ruler.
+
+Important non-closure facts:
+- status explicitly includes `GENUINE_RECEIPT_COUNT_0`;
+- System1 diagnostic implementation remains pending;
+- no genuine same-generation candidate-level LOO receipt exists yet;
+- Formal Core remains unchanged.
+
+Therefore SDA-009 remains a true System1 S1 blocker. The exact engineering/evidence next step is still:
+System1 implements the V0.2 diagnostic and emits the first verified same-generation receipt; Room07 then consumes it through the V0.2 oracle; D16 follows for economic incrementality.
+
+### DATA_LANE 2023 TWSE readback
+
+No durable 2023 TWSE physical-verification evidence was found in `system2/evidence` at this readback.
+
+Therefore:
+- 2022 TPEx remains the latest accepted annual raw A1 continuation;
+- 2023 TWSE remains the next annual DATA_LANE target, not an accepted year;
+- 2021 TPEx remains separately blocked on canonical A1 source-revision lineage/as-of semantics.
+
+### SDA-001/004 readback
+
+Latest explicit state remains:
+`FIRST_GENUINE_SDA_SHADOW_DIAGNOSTIC=PENDING_VERIFIED_LINEAGE_INPUT`.
+
+No new genuine-session receipt was found. Blocker remains open.
+
+### SDA-022 physical independence readback
+
+No machine evidence was found that upgrades:
+- System2 strategy fingerprints S22-T06~T10 from PENDING;
+- physical NC-T01 S22-T11~T16 from PENDING.
+
+Schema/intake/oracle artifacts remain non-sufficient for physical independence.
+
+### Gate verdict
+
+No launch-gate promotion from this readback:
+- System1 S1 = PARTIAL;
+- System1 S2 = NOT_READY;
+- System2 selection-to-capacity = INCOMPLETE;
+- SDA-022 = PARTIAL_PASS;
+- Formal Core = LOCKED.
+
+### Exact next continuation point
+
+1. Re-read latest main.
+2. Watch for first genuine System1 SDA-009 V0.2 receipt.
+3. Watch for SDA-001/004 genuine-session lineage receipt and SDA-016 runtime/genuine binding receipt.
+4. Watch DATA_LANE for 2023 TWSE physical evidence or an explicit blocker.
+5. Watch System2 for first strategy fingerprint receipts and physical NC-T01.
+6. Only change launch gates after independent 00 machine-evidence readback.
