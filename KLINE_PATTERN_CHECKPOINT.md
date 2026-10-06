@@ -4161,3 +4161,134 @@ No maturity or Formal change is authorized by this routing.
 6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 7. Next D01 science: separate structural response from opening/closing-auction mechanics, closing-index replication and end-of-session liquidity concentration.
 8. No outcome join / no runtime wiring / no Formal change.
+
+## Continuation update — DL-062 (2026-10-07)
+
+### DL-062 — Structural response vs opening/closing auction and end-of-session liquidity
+- DL-061 separated structural response from index-weight/passive/ETF/constituent-arbitrage mechanics.
+- DL-062 freezes a Taiwan-specific session/microstructure firewall:
+  opening call auction;
+  closing call auction;
+  indicative auction state;
+  final auction print;
+  delayed close;
+  end-of-session liquidity concentration;
+  month/quarter-end;
+  index-rebalance/passive benchmark-close demand.
+- TWSE official market structure:
+  pre-open and pre-close are call-auction contexts;
+  the last five minutes before close are auction order accumulation/matching;
+  simulated transaction price/volume and order-book information are disseminated;
+  final close can be delayed under extreme indicative-price changes;
+  closing price is a widely used portfolio/index benchmark.
+- Taiwan empirical work shows closing-call design and transparency materially affect closing volatility, efficiency, liquidity and month-end closing behavior.
+- Therefore auction interactions are not assumed equivalent to ordinary continuous-trading structure tests.
+- Frozen session states:
+  CONTINUOUS_TRADING_UNCONSTRAINED;
+  PREOPEN_INDICATIVE_ONLY;
+  OPENING_CALL_FINAL_PRINT;
+  CLOSING_CALL_INDICATIVE_ONLY;
+  CLOSING_CALL_FINAL_PRINT;
+  CLOSING_CALL_DELAYED;
+  POST_CLOSE_FIXED_PRICE;
+  SESSION_PHASE_UNKNOWN.
+- INDICATIVE_PRICE != EXECUTED_PRICE.
+  Indicative snapshots may be used only when their knownAt precedes predictorFreezeAt.
+  The later final auction print may never be backfilled into the earlier predictor state.
+- Any aggregate bar spanning continuous trading and the closing auction without phase decomposition is AUCTION_MIXED_BAR.
+- AUCTION_MIXED_BAR may not be treated as pure continuous data for:
+  touch;
+  breakout;
+  retest;
+  wick/body;
+  volume-confirmation semantics.
+- Opening-call gap through a zone is OPENING_GAP_CROSSING, not a continuous path through the zone.
+- If the only interaction occurs on the final closing-auction print:
+  CLOSING_AUCTION_ONLY_INTERACTION.
+  This is an observed interaction but a different microstructure class from continuous trading.
+- Delayed closing match uses its actual execution time; it is never backdated to scheduled 13:30.
+- Closing-price benchmark demand is separated into owner-certified contexts:
+  month-end/quarter-end;
+  index rebalance;
+  constituent add/delete/weight change;
+  modeled passive flow;
+  verified passive execution;
+  ETF primary-market context;
+  derivative expiry/settlement where available;
+  benchmark-close targeting.
+- High closing volume alone does NOT prove passive flow.
+- Close-liquidity descriptors may include owner-certified auction volume/share, spread/depth, indicative imbalance and market-wide concentration.
+  D01 defines no arbitrary high-close-volume threshold.
+- Primary closing comparator:
+  G0 AUCTION_OR_CLOSE_MECHANICAL_EVENT_AWAY_FROM_ZONE;
+  G1 AUCTION_OR_CLOSE_MECHANICAL_EVENT_AT_ZONE.
+- Opening comparator remains separate:
+  O0 OPENING_CALL_EVENT_AWAY_FROM_ZONE;
+  O1 OPENING_CALL_EVENT_AT_ZONE.
+- Opening/closing are not pooled because information sets, overnight risk, benchmark demand and liquidity composition differ.
+- Required causal clock:
+  mechanicalReceiptKnownAt <= predictorFreezeAt < endpointWindowStart.
+- D04/D05 own microstructure/auction/liquidity context;
+  D06 owns passive/ETF mechanics;
+  D11 owns event/rebalance/expiry clocks where routed;
+  D19 owns benchmark methodology;
+  D12 owns derivative context;
+  D16 owns dependence-aware inference.
+- PRICE_OHLC ancestry remains de-duplicated under SDA-001:
+  effectiveIndependentEvidenceCount = 1 by default within one parent.
+- SDA-002 clock fields remain mandatory:
+  firstObservableAt;
+  knownAt;
+  sessionPhase;
+  predictorFreezeAt;
+  source/version/hash;
+  replaySafe.
+- Future D16 ladder:
+  A0 RAW_ZONE_RESPONSE;
+  A1 CONTINUOUS_VS_AUCTION_PHASE_SEPARATED;
+  A2 OPENING_GAP_CALL_CONTROLLED;
+  A3 CLOSING_INDICATIVE_VS_FINAL_PRINT_SEPARATED;
+  A4 CLOSING_LIQUIDITY_CONCENTRATION_CONTROLLED;
+  A5 MONTH_END_QUARTER_END_CONTROLLED;
+  A6 INDEX_REBALANCE_PASSIVE_CLOSE_CONTROLLED;
+  A7 ETF_BENCHMARK_CLOSE_CONTEXT_CONTROLLED;
+  A8 DERIVATIVE_EXPIRY_SETTLEMENT_CONTROLLED;
+  A9 GENERIC_AUCTION_MECHANICAL_COMPARATOR_CONTROLLED;
+  A10 STRUCTURAL_RESPONSE_RESIDUAL_CANDIDATE;
+  A11 MULTI_DATE_MULTI_SYMBOL_MULTI_AUCTION_REPLICATION.
+- Interpretation states:
+  Q0 AUCTION_PHASE_EXPLANATION;
+  Q1 OPENING_GAP_EXPLANATION;
+  Q2 CLOSING_CALL_PRICE_PRESSURE_EXPLANATION;
+  Q3 END_OF_SESSION_LIQUIDITY_EXPLANATION;
+  Q4 PASSIVE_BENCHMARK_CLOSE_EXPLANATION;
+  Q5 MONTH_END_OR_REBALANCE_EXPLANATION;
+  Q6 DERIVATIVE_SETTLEMENT_EXPLANATION;
+  Q7 MULTIPLE_CLOSE_MECHANISMS;
+  Q8 STRUCTURAL_RESPONSE_RESIDUAL;
+  Q9 NOT_EVALUABLE.
+- New files:
+  - research/PATTERN_AUCTION_CLOSE_LIQUIDITY_FIREWALL_V0_1.md
+  - research/pattern_auction_close_liquidity_firewall_v0_1.json
+  - research/pattern_auction_close_liquidity_firewall_v0_1.mjs
+  - research/test_pattern_auction_close_liquidity_firewall_v0_1.mjs
+  - research/PATTERN_AUCTION_CLOSE_LIQUIDITY_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain open.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-062
+
+1. Reconcile the DL-062 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-062 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve opening, continuous, pre-close indicative, final close, delayed close and post-close phases separately.
+4. Treat auction-mixed bars as non-comparable to pure continuous bars unless phase decomposition is available.
+5. Hand A0-A11 / Q0-Q9 auction-attribution inference to D16.
+6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+7. Next D01 science: separate structural response from overnight information accumulation and previous-close anchoring across opening gaps.
+8. No outcome join / no runtime wiring / no Formal change.
+
