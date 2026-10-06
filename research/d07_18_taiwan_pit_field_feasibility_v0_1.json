@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "0.1",
+  "id": "D07-18-TAIWAN-PIT-FIELD-FEASIBILITY-V0-1",
+  "createdAt": "2026-10-06T16:42:00+08:00",
+  "owner": "06｜基本面與估值研究室",
+  "module": "D07-18",
+  "status": "PIT_FIELD_FEASIBILITY_PARTIAL / UPSTREAM_RECEIPT_LINEAGE_REQUIRED / TARGET_CAPITAL_STRUCTURE_SOURCE_UNPROVEN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED",
+  "formalCoreImpact": "NONE",
+  "purpose": "Outcome-blind feasibility receipt for composing Taiwan enterprise cost of capital without duplicating D13-06 or D22-04 evidence.",
+  "fieldMatrix": [
+    {
+      "field": "riskFreeCurveKnownAt",
+      "owner": "D13-06",
+      "feasibility": "PARTIAL",
+      "evidence": "Repository has strict source-attested Treasury/CBC timing work and requires first-eligible-Taiwan-decision receipts.",
+      "guard": "Consume parent receipt only; never reconstruct a second rate signal in D07-18."
+    },
+    {
+      "field": "issuerDebtCostKnownAt",
+      "owner": "D22-04",
+      "feasibility": "PARTIAL",
+      "evidence": "TPEx security-level fair-value/reference lane is verified, but reproducible multi-date transport and actual transaction history remain incomplete.",
+      "guard": "Fair value/reference is not actual trade; no stale mark may be promoted to marginal debt cost without provenance."
+    },
+    {
+      "field": "equityMarketValueAsOf",
+      "owner": "D07-18 via PIT market primitive",
+      "feasibility": "FEASIBLE_WITH_CLOCK",
+      "evidence": "Decision-time equity value can be composed from PIT-safe market price and compatible share denominator.",
+      "guard": "Corporate actions and denominator vintages must be aligned; no later share count backfill."
+    },
+    {
+      "field": "debtMarketOrCompatibleProxyAsOf",
+      "owner": "D07-18 consuming D22/D07 primitives",
+      "feasibility": "PARTIAL",
+      "evidence": "Accounting debt primitives exist; security-level market debt lane is incomplete.",
+      "guard": "Book debt, fair value, quote and trade are distinct provenance states."
+    },
+    {
+      "field": "taxStatusKnownAt",
+      "owner": "D07-26 dependency",
+      "feasibility": "BLOCKED_DEPENDENCY",
+      "evidence": "D07-26 remains L0; no canonical Taiwan tax-shield availability receipt is yet proven.",
+      "guard": "Do not apply statutory tax shield mechanically when losses/tax assets constrain usability."
+    },
+    {
+      "field": "targetCapitalStructureKnownAt",
+      "owner": "D07-18",
+      "feasibility": "SOURCE_UNPROVEN",
+      "evidence": "Repository search finds no canonical historical target-capital-structure knownAt source.",
+      "guard": "Current market weights may be studied separately; target weights remain UNKNOWN unless explicitly disclosed at the decision time."
+    },
+    {
+      "field": "betaEstimationWindowEnd",
+      "owner": "D07-18 model assumption",
+      "feasibility": "FEASIBLE_WITH_PREREGISTRATION",
+      "evidence": "Can be computed only from data ending at as-of.",
+      "guard": "Window family must be frozen before outcomes; no winner-selected beta window."
+    },
+    {
+      "field": "equityRiskPremiumModelVersion",
+      "owner": "D07-18 model assumption",
+      "feasibility": "FEASIBLE_AS_ASSUMPTION_NOT_OBSERVED_FACT",
+      "evidence": "ERP is model-dependent rather than a uniquely observed company fact.",
+      "guard": "Preserve model/version and sensitivity grid; disagreement producing sign/rank flips => MODEL_UNSTABLE."
+    }
+  ],
+  "antiDoubleCount": {
+    "parentReceiptIdsRequired": [
+      "D13-06 risk-free parent",
+      "D22-04 issuer debt-cost parent",
+      "D07-26 tax parent when available",
+      "capital-structure primitive parent"
+    ],
+    "deterministicRecompositionIndependentVote": false,
+    "d08Consumption": "CONTEXT_ONLY_UNTIL_INCREMENTAL_RESIDUAL_VALIDATION"
+  },
+  "falsification": [
+    "If reasonable beta/ERP/current-vs-target-weight choices materially change sign or rank, mark MODEL_UNSTABLE.",
+    "If WACC adds no information after its parent primitives and growth/valuation controls, no independent vote is allowed.",
+    "If target capital structure is unavailable at as-of, it remains UNKNOWN rather than inferred from later realized financing.",
+    "Financial institutions remain outside the ordinary industrial-company WACC lane until specialized capital semantics are defined."
+  ],
+  "maturityDecision": {
+    "current": "L2/40",
+    "promote": false,
+    "reason": "Physical Taiwan PIT composition is incomplete: target capital structure source is unproven, tax-shield availability depends on D07-26, issuer debt-cost multi-date replay remains partial, and canonical parent receipt lineage is still required."
+  },
+  "formalOptimizationCandidate": "NONE",
+  "exactNext": "Build a small outcome-blind multi-company/multi-date composition panel using only source-attested parent receipts. Use current market weights as a separately labeled scenario, keep target weights UNKNOWN unless contemporaneously disclosed, freeze beta/ERP sensitivity grid, and require D07-26 tax-shield provenance plus D22-04 multi-date debt-cost receipts before any L3 consideration."
+}
