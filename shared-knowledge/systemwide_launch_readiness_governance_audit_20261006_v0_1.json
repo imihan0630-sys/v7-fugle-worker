@@ -158,5 +158,27 @@
     "s2Corr20261006002": "VERIFIED_CLOSED",
     "s2Corr20261006003": "OPEN",
     "implication": "Terminal must not present monitor-only bounded rows as formal strategy-resolved candidates until CORR-003 is independently closed."
+  },
+  "status": "SYSTEMWIDE_AUDIT_COMPLETE_GOVERNANCE_SYNC_COMPLETE_WITH_ACTIVE_EXTERNAL_BLOCKERS",
+  "finalGovernanceSeal": {
+    "preSealMain": "530aa3b7ea40280432a5c014760f98b7acb31d82",
+    "governanceFindingsFixed": [
+      "GOV-001",
+      "GOV-002",
+      "GOV-003",
+      "GOV-004",
+      "GOV-005",
+      "GOV-006",
+      "GOV-007"
+    ],
+    "alreadyResolved": [
+      "GOV-008"
+    ],
+    "activeSystem2Corrections": [
+      "S2-CORR-20261004-001:FIX_IN_PROGRESS:DATA_LANE",
+      "S2-CORR-20261006-003:OPEN:BUILD_LANE"
+    ],
+    "system1LaunchGateUnchanged": "S1_PARTIAL",
+    "formalCoreImpact": "NONE"
   }
 }
