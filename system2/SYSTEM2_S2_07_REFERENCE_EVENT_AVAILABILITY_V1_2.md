@@ -39,16 +39,29 @@ For 4806, V1.2 also reuses the frozen event-specific semantic-episode rule: olde
 V1.2 can recognize a historical availability proof only when an exact event/version has one of these separately certified forms:
 
 1. `PROSPECTIVE_EXACT_VERSION_OBSERVER`
-   - exact TPEx reference-event version ID and source-row hash identity;
+   - exact TPEx reference semantic hash and source-row hash identity;
    - genuinely prospective public observation of that exact reference version;
    - first observation no later than the replay cutoff.
 
 2. `AUTHORITATIVE_PUBLICATION_TIME_CONTRACT`
-   - exact TPEx reference-event version ID and source-row hash identity;
+   - exact TPEx reference semantic hash and source-row hash identity;
    - authoritative source semantics explicitly certify the publication/public-availability timestamp;
    - certified timestamp no later than the replay cutoff.
 
-A historical display timestamp by itself satisfies neither class. MOPS event chronology also cannot certify the availability of the exact TPEx reference-price row unless the evidence is explicitly linked to that reference event/version.
+A historical display timestamp by itself satisfies neither class. MOPS event chronology also cannot certify the availability of the exact TPEx reference-price row unless the evidence is explicitly linked to that stable reference identity.
+
+### Observation ID is not stable source identity
+
+`eventVersionId` is an immutable **observation-version** ID. It intentionally includes source-capture provenance such as the capture ID / fetched-at clock, so the same unchanged official row can receive a different `eventVersionId` when observed again.
+
+V1.2 therefore must not use `eventVersionId` as the cross-capture exact-source key.
+
+Stable exact reference identity for this gate is:
+
+- `semanticHash`: stable normalized event semantics;
+- `sourceRowHash`: stable exact official source-row content.
+
+`eventVersionId` remains useful receipt provenance only.
 
 ## Expected current disposition
 
