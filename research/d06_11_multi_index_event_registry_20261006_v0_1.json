@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "D06_11_MULTI_INDEX_EVENT_REGISTRY_20261006_V0_1",
+  "createdAt": "2026-10-06T23:31:00+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "module": "D06-11",
+  "status": "RESEARCH_ONLY / PIT_EVENT_CLOCK_REGISTRY / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED",
+  "rules": {
+    "publicEventClock": "Use publicReviewResultFirstKnownAt for public-strategy research.",
+    "scheduleSemantics": "A published review schedule reveals only future review timing, not constituent additions/deletions/weights.",
+    "effectiveDateSemantics": "effectiveTradeDate is not eventFirstKnownAt.",
+    "transitionSemantics": "If an official index notice specifies a multi-day transition, preserve the full transition window; do not collapse it to one effective-day shock.",
+    "licensedClock": "licensedClientNoticeFirstKnownAt remains UNKNOWN unless independently observed and authorized.",
+    "realizedFlow": "Index review changes identify mechanical exposure candidates, not realized ETF constituent execution."
+  },
+  "prospectiveScheduleExample": {
+    "sourceNoticeId": 1325,
+    "sourceNoticeDate": "2026-10-01",
+    "publicScheduleObservedByResearchAt": "2026-10-06",
+    "examples": [
+      {
+        "index": "臺灣指數公司特選臺灣 TOP 50 報酬指數",
+        "publicReviewResultScheduledAfterClose": "2026-11-17",
+        "effectiveTradeDate": "2026-11-18"
+      },
+      {
+        "index": "臺灣指數公司特選臺灣上市上櫃 AI 優息動能指數",
+        "publicReviewResultScheduledAfterClose": "2026-11-17",
+        "effectiveTradeDate": "2026-11-18"
+      },
+      {
+        "index": "臺灣指數公司特選臺灣上市上櫃優選多因子 30 指數",
+        "publicReviewResultScheduledAfterClose": "2026-12-01",
+        "effectiveTradeDate": "2026-12-02"
+      }
+    ],
+    "antiLeakage": "Constituent results remain UNKNOWN until the scheduled public result is actually observed."
+  },
+  "observedReviewEvents": [
+    {
+      "noticeId": 1327,
+      "publicNoticeDate": "2026-10-02",
+      "index": "臺灣指數公司特選臺灣ESG低碳50指數",
+      "effectiveAfterCloseDate": "2026-10-02",
+      "effectiveTradeDate": "2026-10-05",
+      "additions": [
+        "2408 南亞科",
+        "2409 友達",
+        "3189 景碩"
+      ],
+      "deletions": [
+        "2887 台新新光金",
+        "3533 嘉澤",
+        "6239 力成"
+      ],
+      "transitionTradingDays": 1,
+      "interpretation": "Non-zero constituent event; realized passive execution remains UNKNOWN."
+    },
+    {
+      "noticeId": 1329,
+      "publicNoticeDate": "2026-10-02",
+      "index": "臺灣指數公司特選臺灣上市上櫃永續高息中小型股指數",
+      "effectiveAfterCloseDate": "2026-10-02",
+      "effectiveTradeDate": "2026-10-05",
+      "additions": [],
+      "deletions": [],
+      "transitionTradingDays": 8,
+      "interpretation": "Official eight-trading-day adjustment transition proves effective date need not equal one-day execution window."
+    },
+    {
+      "noticeId": 1324,
+      "publicNoticeDate": "2026-09-29",
+      "index": "臺灣指數公司特選臺灣大型股代表25指數",
+      "effectiveAfterCloseDate": "2026-09-29",
+      "effectiveTradeDate": "2026-09-30",
+      "additions": [
+        "2059 川湖",
+        "2887 台新新光金",
+        "3008 大立光"
+      ],
+      "deletions": [
+        "2368 金像電",
+        "3443 創意",
+        "8046 南電"
+      ],
+      "transitionTradingDays": 1,
+      "interpretation": "Non-zero constituent event; benchmark exposure and realized trading remain unobserved."
+    },
+    {
+      "noticeId": 1322,
+      "publicNoticeDate": "2026-09-18",
+      "index": "S&P TIP臺灣淨零轉型ESG 50指數",
+      "effectiveAfterCloseDate": "2026-09-18",
+      "effectiveTradeDate": "2026-09-21",
+      "additions": [],
+      "deletionsCount": 16,
+      "transitionTradingDays": 1,
+      "interpretation": "Large deletion event demonstrates event-size heterogeneity; no outcome inference is opened."
+    },
+    {
+      "noticeId": 1317,
+      "publicNoticeDate": "2026-09-16",
+      "index": "臺灣指數公司台灣上市上櫃旗艦動能50指數",
+      "effectiveAfterCloseDate": "2026-09-16",
+      "effectiveTradeDate": "2026-09-17",
+      "additionsCount": 23,
+      "deletionsCount": 23,
+      "transitionTradingDays": 1,
+      "interpretation": "Large rebalance example; magnitude of list change is not passive-flow size without weight/AUM lineage."
+    }
+  ],
+  "sourceUrls": [
+    "https://taiwanindex.com.tw/downloads/technical_notice",
+    "https://backend.taiwanindex.com.tw/api/downloadFile/TechnicalNotices/1325/tw",
+    "https://backend.taiwanindex.com.tw/api/downloadFile/TechnicalNotices/1327/tw",
+    "https://backend.taiwanindex.com.tw/api/downloadFile/TechnicalNotices/1329/tw",
+    "https://backend.taiwanindex.com.tw/api/downloadFile/TechnicalNotices/1324/tw",
+    "https://backend.taiwanindex.com.tw/api/downloadFile/TechnicalNotices/1322/tw",
+    "https://backend.taiwanindex.com.tw/api/downloadFile/TechnicalNotices/1317/tw"
+  ],
+  "maturityDecision": {
+    "level": "L2",
+    "maturityPct": 40,
+    "reason": "Official public event clocks and heterogeneous transition semantics are now replayable, but full PIT-safe historical/prospective panel, benchmarked AUM/weight-delta exposure, licensed-client clock observability and realized execution lineage remain incomplete."
+  },
+  "exactNext": "Freeze a prospective 2026-11 event calendar now, then on each scheduled after-close announcement capture the public result without pre-reading constituent outcomes. Separately acquire benchmark/fund exposure and constituent weight deltas before considering D06-11 L3."
+}
