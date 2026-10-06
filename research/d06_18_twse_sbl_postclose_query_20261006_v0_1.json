@@ -1,0 +1,309 @@
+{
+  "schemaVersion": "D06_18_TWSE_SBL_POSTCLOSE_QUERY_20261006_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-18",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "requestedAt": "2026-10-06T19:10:55+08:00",
+  "completedAt": "2026-10-06T19:15:12+08:00",
+  "serviceHours": "09:00-15:30 Asia/Taipei",
+  "timingState": "POSTCLOSE_OUTSIDE_FROZEN_15_20_SLOT",
+  "frozenSlotState": "MISSED / UNKNOWN / NOT_BACKFILLED",
+  "sourceAuthority": "TWSE",
+  "sourcePagePattern": "https://mis.twse.com.tw/stock/detail-sblInquiry?ch=<symbol>&lang=zhHant",
+  "sourceDateState": "DATE_NOT_EXPLICIT_ON_RENDERED_SECURITY_PAGES",
+  "routeState": "SELECTED_SECURITY_MATCHED_5_OF_5",
+  "pilotScope": "SOURCE_ROUTE_FEASIBILITY_ONLY / NOT_MARKET_REPRESENTATIVE",
+  "frozenSymbols": [
+    "1101",
+    "2451",
+    "3532",
+    "6187",
+    "9941"
+  ],
+  "observations": [
+    {
+      "symbol": "1101",
+      "name": "台泥",
+      "fixedRate": {
+        "notice10": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice3": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice1": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        }
+      },
+      "competitiveBid": {
+        "notice10": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null
+        },
+        "notice3": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null
+        },
+        "notice1": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null
+        }
+      },
+      "negotiated": {
+        "matchTime": "15:01:09.76",
+        "totalQty": 7000
+      }
+    },
+    {
+      "symbol": "2451",
+      "name": "創見",
+      "fixedRate": {
+        "notice10": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice3": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice1": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        }
+      },
+      "competitiveBid": {
+        "notice10": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null
+        },
+        "notice3": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null
+        },
+        "notice1": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null
+        }
+      },
+      "negotiated": {
+        "matchTime": "15:01:32.23",
+        "totalQty": 1450
+      }
+    },
+    {
+      "symbol": "3532",
+      "name": "台勝科",
+      "fixedRate": {
+        "notice10": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice3": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice1": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        }
+      },
+      "competitiveBid": {
+        "notice10": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null
+        },
+        "notice3": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null
+        },
+        "notice1": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null
+        }
+      },
+      "negotiated": {
+        "matchTime": "11:45:32.02",
+        "totalQty": 44
+      }
+    },
+    {
+      "symbol": "6187",
+      "name": "萬潤",
+      "fixedRate": {
+        "notice10": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice3": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice1": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        }
+      },
+      "competitiveBid": {
+        "notice10": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null
+        },
+        "notice3": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null
+        },
+        "notice1": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null
+        }
+      },
+      "negotiated": {
+        "matchTime": "14:24:39.33",
+        "totalQty": 40
+      }
+    },
+    {
+      "symbol": "9941",
+      "name": "裕融",
+      "fixedRate": {
+        "notice10": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice3": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice1": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        }
+      },
+      "competitiveBid": {
+        "notice10": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null
+        },
+        "notice3": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null
+        },
+        "notice1": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null
+        }
+      },
+      "negotiated": {
+        "matchTime": null,
+        "totalQty": 0
+      }
+    }
+  ],
+  "interpretationGuards": [
+    "This post-close observation is not the preregistered 15:20 live receipt and cannot backfill it.",
+    "Rendered security pages did not explicitly expose the source/trade date, so these values are not admitted as date-certified 2026-10-06 evidence.",
+    "Negotiated total quantity is securities-lending transaction volume, not short-sale volume and not bearish intent.",
+    "NULL/dash fields are not numeric zero.",
+    "The five-symbol pilot is not representative of the Taiwan lending market.",
+    "Displayed quote/depth fields and executed quantities remain distinct evidence objects."
+  ],
+  "maturityImpact": "NONE",
+  "status": "POSTCLOSE_QUERY_EXECUTED / 5_OF_5_ROUTE_PASS / FROZEN_1520_SLOT_MISSED_UNKNOWN / DATE_UNCERTIFIED / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Do not use this post-close readback to promote D06-18. On the next genuine trading date, execute the same frozen schema inside a preregistered live slot. For 2026-10-06 continue the remaining after-market D06 lanes; preserve 15:20 as missed/unknown."
+}
