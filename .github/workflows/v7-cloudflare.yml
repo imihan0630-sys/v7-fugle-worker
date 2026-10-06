@@ -75,6 +75,8 @@ on:
       - "scripts/apply_v8_17_0.py"
       - "scripts/apply_v8_18_0.py"
       - "scripts/apply_v8_19_0.py"
+      - "scripts/apply_v8_19_1_pve248_candidate.py"
+      - "scripts/apply_v8_19_1_pve250_prod_stamp.py"
       - "scripts/rebase_v8_12_*.py"
       - "data/v7_formal_scan_backfill.json"
       - "data/recovered_chat_selections.json"
@@ -304,6 +306,10 @@ jobs:
         run: python3 scripts/apply_v8_18_0.py
       - name: Apply V8.19.0 Class-B C1 scan-origin generation inventory
         run: python3 scripts/apply_v8_19_0.py
+      - name: Apply PVE-248 Class-B runtime remediation
+        run: python3 scripts/apply_v8_19_1_pve248_candidate.py
+      - name: Apply PVE-250 approved Production version stamp
+        run: python3 scripts/apply_v8_19_1_pve250_prod_stamp.py
 
       - name: Syntax check Worker.js
         run: |
@@ -314,7 +320,7 @@ jobs:
       - name: Validate V8.7.12 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.19.0-c1-scan-origin-generation-inventory";' Worker.js
+          grep -F 'const VERSION = "8.19.1-pve250-runtime-remediation";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c1_generations' Worker.js
           grep -F 'url.pathname === "/api/research/c1-population"' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c3_cohorts' Worker.js
@@ -470,6 +476,7 @@ jobs:
           node tests/test_system1_shadow_cohort_v8_17_0.mjs
           node tests/test_system1_valuation_source_vintage_v8_18_0.mjs
           node tests/test_system1_c1_scan_origin_generation_inventory_v8_19_0.mjs
+          node tests/test_v8_19_1_pve248_runtime_candidate.mjs
           node tests/test_system1_c3_registration_v0_1.mjs
           node tests/test_system1_c1_c2_collection_v0_1.mjs
           node --check tests/collect_system1_c1_evidence.mjs
