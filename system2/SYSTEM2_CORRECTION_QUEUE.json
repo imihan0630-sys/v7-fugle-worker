@@ -579,7 +579,7 @@
       "directiveId": "S2-CORR-20261006-001",
       "createdAt": "2026-10-06T07:38:30+08:00",
       "severity": "MEDIUM",
-      "status": "OPEN",
+      "status": "FIX_IMPLEMENTED",
       "title": "Institutional terminal labels unapproved research strategies as SHADOW",
       "affectedScope": [
         "S2-16 institutional terminal",
@@ -628,10 +628,20 @@
       "assignedRoom": "System 2｜建置總控室",
       "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
       "blockedBy": [],
-      "implementationEvidence": [],
+      "implementationEvidence": [
+        "PR #663 merged as `df25510a602e64d7e2ef08d0241ad9d4dbbb717e` after latest-main no-conflict drift check.",
+        "Terminal readback on merged main shows INSTITUTIONAL_ACCUMULATION = `OWNER REVIEW PENDING` with explicit not-activated wording.",
+        "Terminal readback on merged main shows BLACK_HORSE_ACCUMULATION = `RESEARCH ONLY` with distinctness-not-proven / not-activated Limited Shadow wording.",
+        "SHORT_MOMENTUM and SWING_GROWTH remain `ASSESSOR PENDING`.",
+        "Targeted `institutional_terminal_page_v0_1.test.mjs` PASS inside System2 Research CI run `37393052475` (job `112042418180`).",
+        "System2 Research CI run `37393052475` PASS.",
+        "V8 Regression run `37393052777` PASS.",
+        "Merged-main regression guards preserve Regime UNKNOWN, Actual Holdings LOCKED, Performance SAMPLE GATED, Event/Industry READ API PENDING, DATA/PIT GATED, `Formal Core: LOCKED`, and `Real orders: DISABLED`.",
+        "No strategy logic, assessor policy, preregistration, weights, thresholds, ranking, capacity, final/live selection authority, production push, capital/order, or System1 Formal Core was changed."
+      ],
       "verificationEvidence": [],
-      "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-06T07:38:30+08:00"
+      "finalDisposition": "PENDING — implementation complete; independent verification required before closure",
+      "updatedAt": "2026-10-06T08:16:36+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
