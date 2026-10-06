@@ -96,3 +96,10 @@ If the physical V1.2 probe confirms the negative state, stop blind historical-cl
 Continue non-conflicting BUILD_LANE work while:
 - 5381 / 6241 / 3086 remain DATA_LANE RAW A1 coverage-blocked;
 - 4806 remains usable only as bounded present-day research geometry, not PIT replay continuity.
+
+
+## 2026-10-07 merged-main receipt staging
+
+Receipt branch base: `777b5876917774a5ad4c32eac3e563df2b3acfe5`.
+
+This documentation-only staging change intentionally retriggers the V1.2 read-only physical workflow with the already-merged V1.2 runtime as its base. Final run identity and physical counts are written back only after that workflow passes.
