@@ -1,0 +1,25 @@
+{
+  "schemaVersion":"pattern-volatility-liquidity-churn-v0.1",
+  "updated":"2026-10-06 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "owners":{
+    "volatility":"D04",
+    "spreadDepthLiquidity":"D05",
+    "pathEfficiency":"D03",
+    "zoneChurn":"D01"
+  },
+  "timingBlocks":["PRE_WINDOW_CONTEXT","WITHIN_WINDOW_MECHANISM"],
+  "withinWindowMayBackfillEarlierPredictor":false,
+  "missingBookEqualsZeroDepth":false,
+  "transactionRvEqualsCleanEfficientPriceVolatility":false,
+  "rawChurnEqualsStructuralChurn":false,
+  "d01CreatesVolatilityLiquidityFactor":"PROHIBITED",
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "residualIncrementalityStatus":"NOT_VALIDATED",
+  "futureLadder":["V0","V1","V2","V3","V4","V5","V6","V7","V8"],
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}
