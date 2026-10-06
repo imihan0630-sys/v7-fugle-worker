@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "SDA016_GENERATION_SET_FINALIZATION_CONTRACT_V0_1",
+  "updatedAt": "2026-10-07T05:34:00+08:00",
+  "owner": "D16 / Room11",
+  "ticket": "SDA-016",
+  "targetTest": "SDA016-T48",
+  "status": "RESEARCH_ONLY_FINALIZATION_SEMANTICS_FROZEN",
+  "formalCoreImpact": "NONE",
+  "maturityImpact": "NONE",
+  "purpose": "Define when a mutable same-session C1 generation inventory can be promoted to a finalized complete generation set.",
+  "finalizationIdentity": {
+    "finalizationReceiptId": "REQUIRED",
+    "scanDate": "REQUIRED",
+    "sessionIdentityHash": "REQUIRED",
+    "finalizationRuleVersion": "REQUIRED",
+    "producerRegistryVersion": "REQUIRED",
+    "producerSetHash": "REQUIRED",
+    "expectedProducerClasses": "REQUIRED_LIST",
+    "producerCutoffRuleHash": "REQUIRED",
+    "finalizedAt": "REQUIRED",
+    "knowledgeCutoff": "REQUIRED",
+    "generationCount": "REQUIRED_NONNEGATIVE_INTEGER",
+    "generationSetDigest": "REQUIRED_SHA256",
+    "generationIds": "REQUIRED_SORTED_LIST",
+    "originCounts": "REQUIRED_MAP",
+    "pendingProducerRefs": "REQUIRED_LIST",
+    "failedProducerRefs": "REQUIRED_LIST",
+    "unresolvedProducerRefs": "REQUIRED_LIST",
+    "postFinalizationViolationCount": "REQUIRED_NONNEGATIVE_INTEGER",
+    "superseded": false,
+    "historicalBackfillPerformed": false
+  },
+  "producerClassesObserved": [
+    "AFTER_MARKET_SCAN_PIPELINE",
+    "STAGE_SELECTION_ROUTE",
+    "DIRECT_SAFE_PERSISTENCE_CALLER"
+  ],
+  "producerRegistryRule": "ENGINEERING_OWNER_MUST_DEFINE_COMPLETE_PRODUCTION_PRODUCER_SET; D16_MUST_NOT_INFER",
+  "closureRequirements": [
+    "OFFICIAL_SESSION_IDENTITY_VERIFIED",
+    "ALL_ALLOWED_PRODUCER_WINDOWS_CLOSED",
+    "NO_RUNNING_PRODUCER_JOB",
+    "NO_PENDING_ALLOWED_RETRY_OR_RECOVERY",
+    "ALL_PRODUCER_ATTEMPTS_TERMINAL",
+    "INVENTORY_NOT_TRUNCATED",
+    "INTEGRITY_COMPLETE",
+    "MODERN_ORIGIN_COVERAGE_COMPLETE",
+    "CANONICAL_GENERATION_SET_DIGEST_VERIFIED"
+  ],
+  "generationSetMaterialRequired": [
+    "generationId",
+    "sessionDate",
+    "decisionAt",
+    "runtimeVersion",
+    "originKind",
+    "pathKind",
+    "contentDigest",
+    "universeDigest",
+    "populationN",
+    "integrityState"
+  ],
+  "bindingRules": [
+    "ALL_EXPLICIT_FORMAL_BINDINGS_FOR_SCAN_DATE_MUST_REFERENCE_GENERATIONS_IN_FINAL_SET",
+    "UNBOUND_LEGITIMATE_GENERATIONS_REMAIN_IN_FINAL_SET",
+    "FORMAL_PARENT_IDENTITY_DOES_NOT_IMPLY_SESSION_SET_FINALIZATION"
+  ],
+  "lateGenerationPolicy": {
+    "silentOverwriteAllowed": false,
+    "defaultDisposition": "POST_FINALIZATION_GENERATION_VIOLATION",
+    "promotionGradeFinalizationRemainsValid": false,
+    "correctionChain": "SEPARATE_GOVERNED_VERSION_REQUIRED_IF_EVER_ALLOWED"
+  },
+  "acceptanceCases": [
+    {
+      "id": "T48-F01",
+      "scenario": "inventory mutable and no receipt",
+      "expected": "GENERATION_SET_NOT_FINALIZED"
+    },
+    {
+      "id": "T48-F02",
+      "scenario": "returnedCount equals generationCount while producer windows open",
+      "expected": "NOT_FINALIZED"
+    },
+    {
+      "id": "T48-F03",
+      "scenario": "parent binding verified without producer closure",
+      "expected": "PARENT_VALID_SET_NOT_FINALIZED"
+    },
+    {
+      "id": "T48-F04",
+      "scenario": "producer registry incomplete",
+      "expected": "FINALIZATION_PRODUCER_SET_UNKNOWN"
+    },
+    {
+      "id": "T48-F05",
+      "scenario": "pending retry/recovery at finalization",
+      "expected": "REJECT_EARLY_FINALIZATION"
+    },
+    {
+      "id": "T48-F06",
+      "scenario": "receipt plus terminal producers plus canonical digest",
+      "expected": "FINALIZED_VERIFIED"
+    },
+    {
+      "id": "T48-F07",
+      "scenario": "late same-date generation after finalization",
+      "expected": "POST_FINALIZATION_GENERATION_VIOLATION"
+    },
+    {
+      "id": "T48-F08",
+      "scenario": "silent finalization replacement",
+      "expected": "REJECT_MUTABLE_FINALIZATION_HISTORY"
+    },
+    {
+      "id": "T48-F09",
+      "scenario": "Formal binding points outside final set",
+      "expected": "FINALIZATION_BINDING_SET_MISMATCH"
+    },
+    {
+      "id": "T48-F10",
+      "scenario": "outcome-informed finalization rule tuning",
+      "expected": "ADAPTIVE_FINALIZATION_RULE_REJECTED"
+    }
+  ],
+  "promotionImpact": "GOVERNANCE_ONLY_NOT_PERFORMANCE_EVIDENCE",
+  "closureAuthority": "00"
+}
