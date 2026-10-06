@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "D06_07_08_09_L3_PROMOTION_ORACLE_PRE_LATE_20261006_V0_1",
+  "frozenAt": "2026-10-06T21:39:30+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "modules": [
+    "D06-07",
+    "D06-08",
+    "D06-09"
+  ],
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "parentPlan": "research/d06_next_trading_day_outcome_blind_capture_plan_v0_1.json",
+  "earlyReceipt": "research/d06_07_08_09_tpex_leverage_early_20261006_v0_1.json",
+  "decisionRule": {
+    "promoteEachModuleToL3OnlyIf": [
+      "A genuine same-trade-date LATE snapshot is captured after the 22:30 target through the same official product family.",
+      "EARLY and LATE raw snapshots are both durably replayable and preserve capturedAt/source semantics.",
+      "Product-specific balance arithmetic passes for all parsed rows in both vintages.",
+      "Union and common-support comparison is possible with added/removed/changed states explicit; missing rows are never zero.",
+      "Unit semantics are stable or any precision change is explicitly reconciled.",
+      "D06-08 margin-short and D06-09 SBL denominators remain separately identifiable; no inner-join censorship.",
+      "No outcome/return information is used."
+    ],
+    "noPromotionIf": [
+      "LATE is missing/unparseable or not demonstrably same trade date.",
+      "Schema drift prevents safe field identity mapping.",
+      "Revision comparison requires backfilling EARLY from LATE.",
+      "Unit or universe differences are unresolved.",
+      "Only source existence is shown without replayable vintage evidence."
+    ],
+    "zeroRevisionRule": "A fully replayable EARLY->LATE comparison with zero row/value revisions still demonstrates observed revision behavior for source/PIT readiness; nonzero revision is not required.",
+    "moduleSpecificScope": {
+      "D06-07": "Margin-financing balance/flow source and vintage readiness only.",
+      "D06-08": "Margin-short balance/flow source, lots/share unit reconciliation and margin-eligible universe only.",
+      "D06-09": "Actual SBL-short source, share-native fields and SBL-specific universe only."
+    }
+  },
+  "maturityBoundary": "Any L3 promotion validates Taiwan PIT/source/replay feasibility only. It does not validate predictive alpha, motive, direction, or Formal use.",
+  "status": "PRE_LATE_PROMOTION_ORACLE_FROZEN / OUTCOME_BLIND / FORMAL_LOCKED",
+  "exactNext": "After 22:30 apply this oracle mechanically to the actual LATE receipt and EARLY->LATE comparison; do not alter criteria after values are seen."
+}
