@@ -435,3 +435,44 @@ Exact next:
 1. verify V8.20 post-merge deploy/regression and runtime version;
 2. read first genuine Formal↔C1 receipt when one legitimately exists;
 3. continue SDA-001/004, SDA-009, 2023 TWSE, and SDA-022 fingerprint/NC-T01 readback.
+
+
+## V8.20 Production verification accepted — 2026-10-06
+
+Observed latest main before this readback: `2bd86ceefcf6d84fff318b0bff951181be5d369e`.
+
+00 independently accepts V8.20 post-merge Production deployment verification.
+
+Matching merge head:
+`1bd9e05d730f2f7c5909a52502837eabd2bb111f`.
+
+Accepted runs:
+- V8 Cloudflare Deploy `37483896567` = SUCCESS;
+- V8 Regression Tests `37483896007` = SUCCESS.
+
+The deploy job explicitly passed:
+- Apply V8.20.0 Formal-C1 authoritative binding;
+- Validate production contract;
+- Deploy Worker code only;
+- Verify deployed version and preserved configuration;
+- Verify research-only counterfactual readback.
+
+Auto rollback did not execute.
+
+Therefore SDA-016 advances to:
+`V8.20_PRODUCTION_VERIFIED / GENUINE_FORMAL_C1_RECEIPT_PENDING`.
+
+Still required:
+- first legitimate post-deploy genuine Formal↔C1 binding receipt;
+- no synthetic/backfilled substitute;
+- remaining generation-set finalization / shared-consumption / D16 / 00 closure evidence as applicable.
+
+System1 S1 remains `PARTIAL` because:
+- SDA-001/004 genuine-session lineage receipt remains pending;
+- SDA-009 genuine LOO receipt count remains 0;
+- SDA-016 genuine Formal↔C1 receipt remains pending.
+
+Exact next continuation:
+1. inspect next legitimate post-deploy Formal decision for a real binding receipt;
+2. verify receipt parent identity against exact immutable C1 generation;
+3. continue monitoring SDA-001/004, SDA-009, 2023 TWSE, and System2 SDA-022 fingerprint/NC-T01 evidence.

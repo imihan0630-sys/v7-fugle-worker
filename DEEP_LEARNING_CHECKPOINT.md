@@ -2484,3 +2484,108 @@ After 22:30 capture identical TPEx leverage LATE sources and compare against the
 6. D06-18: execute a genuine in-slot live SBL receipt on the next valid date; 2026-10-06 15:20 remains MISSED/UNKNOWN.
 7. D06-19: continue direct-retail source discovery only; stock-date natural-person direction remains UNKNOWN.
 8. SDA-007: wait for System1/System2 machine lineage enforcement, prospective one-receipt-many-consumers evidence, D16 residual validation and independent 00 closure.
+
+
+## 2026-10-06 D03 — TI-1147~1164 acceleration tranche: ADX/Bollinger external-evidence compression
+
+- Room/domain: 03｜技術指標與趨勢動能研究室 / D03.
+- User direction: accelerate learning progress without lowering research depth.
+- This tranche does NOT reopen outcome access, does NOT create new indicator families, and does NOT change the five machine blockers frozen at TI-1146.
+- Purpose: compress the future validation path for D03-09 ADX and D03-10 Bollinger by resolving the highest-value external-evidence and redundancy questions before machine gates open.
+
+### External evidence readback
+
+1. Shi (2025), Journal of Multinational Financial Management, "Technical indicators and aggregate stock returns: An updated look":
+   - 105 technical signals can carry useful forecasting information when high-dimensional shrinkage/regularization is used;
+   - the relevant lesson for D03 is NOT "more indicators = more votes";
+   - the evidence instead strengthens the requirement to control collinearity/redundancy and to extract incremental information rather than count aliases.
+
+2. Wu (2025), National Sun Yat-sen University, "An Empirical Study on Trading Strategies Combining Bollinger Bands and Technical Indicators: Evidence from Taiwan Listed Stocks":
+   - sample covers Taiwan-listed stocks, 2015-2024;
+   - Bollinger-based strategies combined with RSI/MACD filters can improve backtest metrics in that design;
+   - this is retained as an external challenge case, NOT as proof of independent D03 alpha;
+   - D03 must explicitly test whether any gain survives controls for direct returns, RSI/MACD family overlap, volatility state and pattern/trend state.
+
+3. 2026 interpretable market-stress feature study:
+   - correlation-based redundancy removal discarded several near-duplicate MA/Bollinger level features before model fitting;
+   - Bollinger bandwidth survived as a more distinct volatility/compression descriptor;
+   - supports D03's decomposition of Bollinger level/touch from Bollinger bandwidth and its anti-alias treatment.
+
+4. Contemporary volatility modeling literature:
+   - Bollinger bandwidth captures close-price dispersion/compression;
+   - ATR captures high-low/gap true-range geometry;
+   - their non-equivalence is structurally plausible, but complementary information must be tested against direct realized volatility and pattern compression before D03-10 can be promoted as an independent factor.
+
+5. Taiwan Bollinger sign evidence remains asymmetric:
+   - Ni et al. (2020), Taiwan 50, reports positive abnormal returns after lower-band events and momentum-compatible behavior at upper-band events in its sample;
+   - this continues to reject the folklore rule upper-band=SELL and lower-band=BUY as a universal mapping.
+
+### TI-1147~1153 — D03-09 ADX validation compression
+
+- ADX remains directionless trend-strength information; high ADX can occur in both strong uptrends and strong downtrends.
+- The most defensible residual hypothesis is narrowed further:
+  1. ADX level must first compete against direct directional efficiency, MA slope/alignment, ret20/ret60, persistence and HH/HL/LH/LL progression.
+  2. ADX slope is the only retained secondary transition hypothesis if ADX level is absorbed.
+  3. +DI/-DI direction is not allowed to convert ADX into a second trend vote unless residual evidence survives.
+- Kill criterion frozen for future evidence review:
+  if ADX/ADX-slope adds no stable incremental information after the direct trend-quality controls, D03-09 is explanation/regime-only and receives no independent vote.
+- No 20/25/40 threshold search is authorized.
+
+### TI-1154~1161 — D03-10 Bollinger validation compression
+
+- Split the family into:
+  - bandwidth/compression;
+  - standardized location (%B / MA-distance);
+  - touch/event state.
+- These three are not allowed to inherit one another's evidence.
+- Future residual order is narrowed:
+  1. BBW vs realized close volatility;
+  2. add ATR/true-range geometry;
+  3. add direct range-compression/VCP/Platform geometry;
+  4. only then test whether BBW contributes residual information.
+- %B/touch must first control MA-distance, direct return/trend, support-resistance/pattern lifecycle and gap/limit-state constraints.
+- Upper/lower touch has no universal sign prior.
+- Kill criterion frozen:
+  if BBW residual collapses after realized-volatility + ATR + pattern compression controls, keep BBW as UI/explanation only; if %B/touch collapses after MA-distance/trend/pattern controls, no independent scoring role.
+
+### TI-1162~1164 — acceleration decision
+
+- This tranche reduces future degrees of freedom rather than adding them.
+- It narrows the first post-gate empirical search space and prevents wasting prospective sample on textbook thresholds or multi-indicator majority voting.
+- No maturity promotion is awarded because:
+  - System2 runtime dedup diagnostics remain missing;
+  - System1 explicit D03 redundancy diagnostics remain incomplete;
+  - D16 D03 method/incrementality receipt remains absent;
+  - raw source gate remains 2/3 and technicalObserverR1 BLOCKED;
+  - PR #600 remains draft/open and no genuine cutoff-bearing post-deploy parent exists.
+- D03 remains 56.7%; D03-09 and D03-10 remain L2/40; outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+
+1. Re-read the five external blockers before each new D03 tranche.
+2. If no blocker changes, do NOT add another governance-only document.
+3. Highest-value allowed preparatory work is limited to evidence compression:
+   - identify direct comparator variables already available in the current parent so the future ADX/Bollinger residual test requires zero unnecessary provider calls;
+   - map comparator availability/missingness and continuity semantics outcome-blind;
+   - prepare one compact field-level admission matrix for D03-09/D03-10 only if it does not duplicate existing contracts.
+4. The first genuine maturity path remains:
+   - D03-10 Bollinger first after genuine cutoff-bearing parent + exact 20 eligible-session continuity;
+   - D03-09 ADX second after canonical FULL_REPLAY/trusted-state certification.
+5. TI-005 KD-vs-RSI and TI-006 MACD-vs-direct-trend remain ahead of ADX/Bollinger for predictive incrementality.
+
+
+## 2026-10-06 D03 — TI-1165~1172 comparator-availability acceleration
+
+- Durable artifact: `research/D03_ADX_BOLLINGER_COMPARATOR_AVAILABILITY_20261006_V0_1.md`.
+- Repository audit confirms the future ADX/Bollinger residual test is primarily a same-parent provenance problem, not a missing-formula or missing-OHLC problem.
+- Already-computable/current-system controls include ret5/10/20/60, ATR%, volatility20, MA-distance/structure, gap context and pattern/compression ingredients.
+- V8.15.3 C1 projection explicitly persisted atrPercent, ret20, maDistance20Pct and lateStage; richer controls such as ret60, volatility20, rangeCompressionSlope, trueRangeDryUp, VCP/Platform geometry and trendPersistence exist elsewhere but are not yet proven complete under the same immutable C1 generation required by D03.
+- Frozen rule: AVAILABLE_IN_REPOSITORY != SAME_PARENT_ADMITTED.
+- Frozen zero-new-call rule: do not request new ordinary daily market-provider calls for ADX/Bollinger comparator reconstruction until the existing canonical inputs are proven insufficient.
+- No maturity promotion: D03 56.7%; D03-09/D03-10 L2/40; raw gate 2/3; technicalObserverR1 BLOCKED; outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. Re-read the five machine blockers.
+2. On first genuine cutoff-bearing C1 parent, inventory actual persisted fields from that generation rather than inferring from source code.
+3. Bind comparator reuse to generationId + decisionCutoffAt + source/continuity lineage + common support.
+4. D03-10 remains first promotion target; D03-09 remains second and additionally needs canonical Wilder FULL_REPLAY/trusted-state certification.
