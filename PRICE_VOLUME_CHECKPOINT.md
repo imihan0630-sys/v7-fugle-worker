@@ -3735,3 +3735,42 @@ Current research state:
 
 Exact next continuation point:
 PVE-250 — OWNER_APPROVAL_REQUIRED for Class-B Production integration of PR #651. If approved, wire the V8.19.1 candidate into the Production build/deploy path, rerun all applicable checks, merge/deploy under that approval, then perform physical readback and rerun the PVE-247 oracle. If not approved, remain draft/unmerged/un-deployed.
+
+
+## PVE-250 continuation — latest-main rebased owner gate (2026-10-06)
+
+Status: LATEST_MAIN_REBASED_CANDIDATE_ALL_CHECKS_PASS / DRAFT_PR_668 / OWNER_APPROVAL_REQUIRED / UNMERGED / NOT_DEPLOYED / H001_FAIL_CLOSED / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+PVE-250 candidate preparation completed.
+
+Active candidate:
+- PR #668: https://github.com/imihan0630-sys/v7-fugle-worker/pull/668
+- branch `research/d02-pve250-rebased-candidate-20261006`;
+- base main at creation `05cfe0f0fc4b857dc089355f6fccd7a8ec8100f0`;
+- head `5877f82db1579a02091c7011e1525ea3f4490bad`;
+- mergeable=true / draft=true;
+- merged=false / deployed=false.
+
+PR #651 superseded and closed without merge/deploy.
+
+Latest-main checks:
+- `37403479188` Candidate push CI SUCCESS;
+- `37403498580` Candidate PR CI SUCCESS;
+- `37403498568` Repair CI SUCCESS;
+- `37403498495` Regression job SUCCESS.
+
+Production deploy workflow still does not apply the candidate.
+PVE-247 oracle remains the physical acceptance authority.
+2026-10-05 remains non-retroactive.
+
+Current research state:
+- remediationReady=false until approved Production integration + physical readback;
+- h001ReceiptEligible=false;
+- clean prospective dates=0;
+- D02=60.0%;
+- Gate 7 CLOSED;
+- Formal Core LOCKED.
+
+Exact next continuation point:
+OWNER_APPROVAL_REQUIRED_FOR_PR_668_CLASS_B_PRODUCTION_INTEGRATION.
+If explicitly approved: wire the validated V8.19.1 candidate into Production build/deploy, rerun applicable checks, merge/deploy under the approval, physically read back the three remediation families, then rerun PVE-247 oracle. If not approved: remain draft/unmerged/un-deployed.
