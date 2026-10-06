@@ -1,0 +1,17 @@
+{
+  "schemaVersion":"pattern-auction-attribution-firewall-v0.1",
+  "updated":"2026-10-07 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "canonicalAuctionOwner":"D05-06",
+  "historicalPreCloseImbalance":"UNKNOWN_UNLESS_ARCHIVED",
+  "finalCloseCanBackfillTrialImbalance":false,
+  "eodVolumeSpikeEqualsAuctionImbalance":false,
+  "finalAuctionPrintCanBeOwnPreclosePredictor":false,
+  "closeConfirmationEqualsContinuousSessionConfirmation":false,
+  "auctionVolumeEqualsDirectionalAlpha":false,
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}
