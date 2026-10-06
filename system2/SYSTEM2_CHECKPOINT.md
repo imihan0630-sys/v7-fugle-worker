@@ -2399,3 +2399,44 @@ Next exact BUILD_LANE continuation:
 1. shared suspension/resumption + symbol-session integration;
 2. preserve event-linkage vs continuity separation;
 3. RAW A1 lineage after continuity provenance is explicit.
+
+
+## 2026-10-06 S2-07 Symbol-Session Integration V0.8 physical result
+
+Authoritative execution:
+- implementation merge: `d7e7a99a032b99a1b6ba9911886912e89b6f0797` (PR #708);
+- workflow: `System2 S2-07 Symbol Session Integration V0.8 Readonly`;
+- run: `37488505236`;
+- job: `112354734503`;
+- conclusion: PASS;
+- System2 Research CI `37488505308` PASS;
+- V8 Regression `37488505279` PASS.
+
+Physical result:
+- eventCount = 17;
+- promotionReadyCount = 7;
+- boundedSymbolSessionEvidenceReadyCount = 0;
+- blockedCount = 17;
+- resumeDateObservedCount = 0;
+- EVENT_LINKAGE_PROMOTION_NOT_READY = 10;
+- SUSPENSION_RESUMPTION_MATCH_NOT_OBSERVED = 17;
+- noSuspensionCertifiedCount = 0;
+- suspensionCoverageComplete = false;
+- symbolSessionCompletenessCertified = false;
+- technicalContinuityCertified = false.
+
+Source evidence:
+- official market trading dates = 125 over 2026-04-05..2026-10-02;
+- TWSE TWTAWU bounded population = 383 rows, artifact hash `10a78954777b94f838ad4996bad02891ef1e97597f684434b4c7b36d5a659857`;
+- TPEx sprcHis bounded population = 30/30 rows, artifact hash `184c07e8cfd61f20a8cbf65ab49d2ab86ddac276da450eeed3938ec08c2ffe18`;
+- neither source lane certifies all-history absence.
+
+Interpretation:
+the generic exchange halt/resumption population does not provide an exact resume-date match for any of the 17 frozen corporate-action events. This is negative source-family evidence, not NO_SUSPENSION evidence and not a reason to relax matching.
+
+Next exact BUILD_LANE continuation:
+1. extract corporate-action-native stop/resume schedule evidence from the already verified official continuity reference/detail lanes;
+2. retain source-family identity instead of relabeling it as generic halt evidence;
+3. bind only positive provenance-bearing schedule intervals to official market sessions;
+4. unmatched cases remain `SUSPENSION_PROVENANCE_UNKNOWN`;
+5. RAW A1 lineage only after bounded symbol-session evidence is positive.
