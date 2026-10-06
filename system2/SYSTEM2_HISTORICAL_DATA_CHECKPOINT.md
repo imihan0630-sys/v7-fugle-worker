@@ -309,3 +309,34 @@ Run: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37473405416
 Disposition: 2022 TPEx is accepted for raw A1 data coverage with replay readiness explicitly PARTIAL. The remaining debt is 175 explicit UNKNOWN symbol-session gaps plus incomplete official TPEx historical delisting-union coverage; none of this is coerced to raw-source completeness.
 
 Next annual continuation: fresh workflow_dispatch `year=2023`, `market=TWSE` from latest main. Keep the separate 2021 TPEx canonical-revision blocker open in parallel.
+
+
+## 2026-10-06 2023 TWSE universe blocker / fix pending CI
+
+Run `37482307633` / #21 was a fresh 2023/TWSE dispatch and completed annual backfill successfully, but Physical verify failed closed with `BLOCKED_MARKET_YEAR_VERIFICATION`.
+
+Confirmed non-blockers:
+- cold storage / completion receipt: PASS;
+- fresh official reconciliation: STABLE;
+- missing-from-cold / absent-from-fresh: 0 / 0;
+- source-row hash mismatch / canonical A1 mismatch: 0 / 0;
+- System1 production isolation: PASS.
+
+Actual blocker:
+- `unexpectedBars = 205`;
+- retained unexpected sample begins `2023-03-06|6873` and continues through the historical period;
+- official TWSE evidence shows 6873 began TWSE Innovation Board trading on 2023-03-06 and later changed to regular listed trading on 2024-09-26;
+- the D08 TWSE universe builder used the CURRENT company basic-data listing date for current memberships and used NEWLISTING history only for DELISTED pairing, so an Innovation-Board-to-mainboard current company could inherit the later listing date and lose earlier continuous TWSE membership.
+
+Durable blocker evidence: `system2/evidence/S2_HISTORICAL_TWSE_2023_UNIVERSE_BLOCKER_V0_1.json`.
+
+Implementation:
+- runtime fix commit: `a0bf42f81fa46fc3854d2c8cf844851327966a9b`;
+- regression-test commit: `045d40399c7845ef76cea4051b4a05b2599e1be2`;
+- reconciliation is conservative: same symbol + normalized same company identity (including `-創` suffix normalization) + earlier official NEWLISTING date; different-company same-code rows are not stitched;
+- verifier fail-closed semantics remain unchanged.
+
+Validation gate: System2 Research CI run `37490564826` is pending at latest readback. Do not fresh-dispatch 2023/TWSE until this CI passes. After PASS, fresh-dispatch 2023/TWSE from then-latest main; do not rerun old run #21 because it is bound to pre-fix head `30a1f9e7b7bf7e344f0cd44242efb701e56b6f4b`.
+
+Run #21: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37482307633
+Fix CI: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37490564826
