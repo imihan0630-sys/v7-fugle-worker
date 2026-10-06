@@ -87,7 +87,7 @@ only when:
 - frozen event distribution remains 9/1/9/4;
 - all 23 symbols have query diagnostics;
 - annual and month-shard transport succeed;
-- no pagination hint appears;
+- the month-shard population has no pagination hint; annual-page pagination remains diagnostic because month sharding is the completeness-oriented path;
 - every frozen symbol has at least one eligible action-family exact version;
 - no exact-version payload conflict exists.
 
