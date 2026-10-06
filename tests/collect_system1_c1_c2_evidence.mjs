@@ -4,6 +4,7 @@ import {collectVerifiedC1C2} from '../research/system1_c1_c2_collection_v0_1.mjs
 import {previousTaipeiDate,collectC1ReadOnlyPreflight} from '../research/system1_c1_readiness_v0_1.mjs';
 import {buildC3Registration} from '../research/system1_c3_registration_v0_1.mjs';
 import {validateC1GenerationInventory} from '../research/system1_c1_generation_inventory_validation_v0_1.mjs';
+import {runtimeRequiresFormalC1Binding,validateFormalC1BindingReadback} from '../research/system1_formal_c1_binding_validation_v0_1.mjs';
 
 const origin=String(process.env.V7_ORIGIN||'https://fugle-test.imihan0630.workers.dev').replace(/\/$/,'');
 const token=String(process.env.V7_ADMIN_TOKEN||'');
@@ -13,6 +14,7 @@ const pairedOutput=resolve(process.env.C2_EVIDENCE_OUTPUT||'artifacts/system1-c2
 const statusPath=resolve(process.env.C1_READINESS_OUTPUT||'artifacts/system1-c1-readiness.json');
 const c3RegistrationPath=resolve(process.env.C3_REGISTRATION_OUTPUT||'artifacts/system1-c3-registration.json');
 const inventoryOutput=resolve(process.env.C1_INVENTORY_OUTPUT||'artifacts/system1-c1-generation-inventory.json');
+const bindingOutput=resolve(process.env.FORMAL_C1_BINDING_OUTPUT||'artifacts/system1-formal-c1-binding.json');
 const registerC3=String(process.env.C3_REGISTER||'').trim().toLowerCase()==='true';
 const save=async(path,value)=>{await mkdir(dirname(path),{recursive:true});await writeFile(path,JSON.stringify(value,null,2)+'\n','utf8');};
 try {
@@ -46,10 +48,45 @@ try {
     runtimeVersion:adapted.effectiveRuntimeVersion,contentDigest:adapted.contentDigest,universeDigest:adapted.universeDigest});
   const inventoryArtifact={observedAt:new Date().toISOString(),...inventory,validation:inventoryValidation,
     safety:{researchOnly:true,decisionImpact:false,formalCoreImpact:false,noPlanChanges:true,noTrade:true,noPush:true}};
+
+  let bindingArtifact;
+  if(runtimeRequiresFormalC1Binding(adapted.effectiveRuntimeVersion)){
+    try{
+      const bindingUrl=new URL('/api/research/formal-c1-binding',origin);
+      bindingUrl.searchParams.set('scanDate',scanDate);
+      const bindingResponse=await fetch(bindingUrl,{headers:{'x-admin-token':token,'accept':'application/json','cache-control':'no-cache'},signal:AbortSignal.timeout(45000)});
+      if([401,403].includes(bindingResponse.status)) throw new Error('FORMAL_C1_BINDING_AUTHORIZATION_REJECTED');
+      const bindingPayload=await bindingResponse.json().catch(()=>null);
+      if(!bindingResponse.ok||!bindingPayload) throw new Error('FORMAL_C1_BINDING_HTTP_'+bindingResponse.status);
+      const validation=validateFormalC1BindingReadback(bindingPayload,{
+        scanDate,generationId:adapted.generationId,decisionAt:adapted.decisionAt,
+        runtimeVersion:adapted.effectiveRuntimeVersion,sourceMainSha:adapted.sourceMainSha,
+        contentDigest:adapted.contentDigest,universeDigest:adapted.universeDigest,populationN:diagnosis.populationN
+      });
+      bindingArtifact={observedAt:new Date().toISOString(),...bindingPayload,validation,
+        safety:{researchOnly:true,decisionImpact:false,formalCoreImpact:false,noPlanChanges:true,noTrade:true,noPush:true}};
+    }catch(bindingError){
+      bindingArtifact={schemaVersion:'SYSTEM1_FORMAL_C1_BINDING_READBACK_BLOCKER_V0_1',
+        observedAt:new Date().toISOString(),status:'BLOCKED',scanDate,generationId:adapted.generationId,
+        runtimeVersion:adapted.effectiveRuntimeVersion,error:String(bindingError?.message||bindingError).slice(0,300),
+        researchOnly:true,decisionImpact:false,formalCoreImpact:false,noPlanChanges:true,noTrade:true,noPush:true};
+      await save(bindingOutput,bindingArtifact);
+      throw bindingError;
+    }
+  }else{
+    bindingArtifact={schemaVersion:'SYSTEM1_FORMAL_C1_BINDING_READBACK_LEGACY_V0_1',
+      observedAt:new Date().toISOString(),status:'LEGACY_PRE_V820_BINDING_NOT_REQUIRED',
+      scanDate,generationId:adapted.generationId,runtimeVersion:adapted.effectiveRuntimeVersion,
+      historicalBackfillPerformed:false,researchOnly:true,decisionImpact:false,formalCoreImpact:false,
+      noPlanChanges:true,noTrade:true,noPush:true};
+  }
+
   await save(output,artifact);await save(pairedOutput,pairedArtifact);await save(inventoryOutput,inventoryArtifact);
+  await save(bindingOutput,bindingArtifact);
   console.log(JSON.stringify({ok:true,output,pairedOutput,scanDate,generationId:adapted.generationId,
     populationN:diagnosis.populationN,coverageComplete:true,originKind:inventoryValidation.originKind,
-    generationCount:inventoryValidation.generationCount,inventoryOutput,formalCoreImpact:false}));
+    generationCount:inventoryValidation.generationCount,inventoryOutput,bindingOutput,
+    formalC1BindingStatus:bindingArtifact.validation?.status||bindingArtifact.status,formalCoreImpact:false}));
   if(registerC3){
     try{
       const headers={'x-admin-token':token,'accept':'application/json','content-type':'application/json'};
