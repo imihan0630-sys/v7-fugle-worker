@@ -23821,3 +23821,33 @@ New durable artifacts:
 - research/PATTERN_QUOTE_FLICKER_DEPTH_PERSISTENCE_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-055 — Structural rejection vs queue priority / latency / hidden-liquidity execution effects (2026-10-06)
+
+DL-055 extends the microstructure falsification chain beyond displayed-depth persistence. A structural zone can appear to reject price even when the observed path is materially shaped by price-time priority, queue position, order-submission latency or latent liquidity.
+
+Queue position is an execution problem, not automatically an alpha problem. Public top-five aggregate depth does not identify an individual order's exact position because it lacks complete order identity and sequencing. Exact queue position therefore requires owner-grade sequence data plus the lifecycle of the actual submitted order. Where only aggregate depth is available, the strongest allowed label is QUEUE_AHEAD_PROXY_ONLY.
+
+Latency is kept as its own clock. Decision time, submit time, exchange acknowledgement and first executable time are distinct. If no real order was submitted, exact submit-to-ack latency does not exist for that hypothetical trade. A market move before the order could have entered the exchange cannot be retroactively described as evidence about the hypothetical fill.
+
+Hidden liquidity is also split into evidence levels. DISPLAYED_ONLY_OBSERVED means only the public surface is known. HIDDEN_LIQUIDITY_CANDIDATE means repeated execution/replenishment patterns are consistent with latent liquidity. OWNER_CONFIRMED_HIDDEN_LIQUIDITY requires owner-grade semantics capable of identifying hidden/iceberg behavior. Candidate and confirmed states are not interchangeable.
+
+The key backtest guard is simple: a touched limit is not a verified fill. Without a submitted order and fill receipt, a hypothetical touch cannot generate an actual fill claim, implementation shortfall or exact queue outcome.
+
+The causal timing guard is equally strict. Hidden-liquidity confirmation, queue depletion and fill information learned after predictorFreezeAt are mechanism/outcome-side states. They may not be inserted into the earlier structural predictor.
+
+The primary falsification compares generic execution advantage with zone-associated execution advantage under matched microstructure context. If similar queue, latency or hidden-liquidity mechanics produce the same behavior away from the structural zone, those execution mechanics are sufficient and the structural-memory interpretation weakens.
+
+Anti-double-counting remains unchanged. Zone, queue, latency, hidden-liquidity and fill receipts are linked mechanism observations attached to one structural opportunity. They do not multiply the effective evidence count.
+
+Eighteen adversarial cases are authored. They cover exact-queue requirements, public-top-five limits, proxy-only state, no directional alpha, own-order latency, invalid clocks, hidden-liquidity candidate vs confirmed state, event-clock failure, post-freeze hidden state, hypothetical touch-as-fill, verified real fills, generic/zone comparators and one-parent information lineage.
+
+New durable artifacts:
+- research/PATTERN_QUEUE_LATENCY_HIDDEN_LIQUIDITY_V0_1.md
+- research/pattern_queue_latency_hidden_liquidity_v0_1.json
+- research/pattern_queue_latency_hidden_liquidity_v0_1.mjs
+- research/test_pattern_queue_latency_hidden_liquidity_v0_1.mjs
+- research/PATTERN_QUEUE_LATENCY_HIDDEN_LIQUIDITY_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
