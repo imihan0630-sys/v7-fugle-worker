@@ -1,0 +1,27 @@
+{
+  "schemaVersion":"pattern-auction-close-liquidity-firewall-v0.1",
+  "updated":"2026-10-07 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "sessionStates":[
+    "CONTINUOUS_TRADING_UNCONSTRAINED",
+    "PREOPEN_INDICATIVE_ONLY",
+    "OPENING_CALL_FINAL_PRINT",
+    "CLOSING_CALL_INDICATIVE_ONLY",
+    "CLOSING_CALL_FINAL_PRINT",
+    "CLOSING_CALL_DELAYED",
+    "POST_CLOSE_FIXED_PRICE",
+    "SESSION_PHASE_UNKNOWN"
+  ],
+  "indicativePriceEqualsExecutedPrice":false,
+  "auctionMixedBarEqualsContinuousBar":false,
+  "openingGapEqualsContinuousCrossing":false,
+  "closingAuctionOnlyInteractionEqualsContinuousInteraction":false,
+  "highCloseVolumeProvesPassiveFlow":false,
+  "finalAuctionPrintCanBeBackfilled":false,
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}
