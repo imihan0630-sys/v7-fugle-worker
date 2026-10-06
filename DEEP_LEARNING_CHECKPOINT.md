@@ -2389,3 +2389,28 @@ Status: D21-01_L3 / D21-03_L2 / D21-04_L2 / FORMAL_CORE_UNCHANGED
   1. D06-03 after-market dealer split;
   2. D06-14 pinned 20261005 T1 follow-up + pinned 20261006 T_PRELIM if published;
   3. TPEx leverage EARLY 20:30 / LATE 22:30.
+
+
+## 2026-10-06 D06 — IC-085~087 evening capture
+
+- D06-03 second prospective temporal date completed.
+  - TPEx: 904/904 numeric-valid and arithmetic reconciliation; 70/143 both-active ordinary stocks have opposite proprietary/hedge signs = 49.0%.
+  - TWSE: 1,340/1,340 numeric-valid and reconciliation; 152/334 = 45.5% opposite desk signs.
+  - Across 2026-10-05 and 2026-10-06, persistent symbol-level disagreement is low: TPEx 26/126 = 20.6% of names with disagreement on either date; TWSE 55/247 = 22.3%.
+  - Aggregate dealerNet remains structurally lossy, but one-day desk disagreement is not treated as a persistent symbol alpha state.
+- D06-14:
+  - 2026-10-05 T1_REVISED captured late T+1: 841/841 unchanged, no added/removed/changed rows, zero revision;
+  - 2026-10-06 T_PRELIM captured: 843 rows, 727 ordinary four-digit, 0 duplicates, 13 flags, fingerprint fnv1a64-utf8:21c5de02d6096939;
+  - T2_FINAL for 2026-10-05 remains mandatory on 2026-10-07; D06-14 remains L2/40.
+- D06-07/08/09 2026-10-06 EARLY captured at 21:25:
+  - margin snapshot 918 rows, financing/margin-short 918/918;
+  - SBL snapshot 931 rows, margin-short/actual-SBL-short 931/931;
+  - cross-source unit audit 918/918;
+  - exact same 13 Y/not-credit-qualified SBL-only symbols persist across two dates, all with nonzero SBL-short balance;
+  - D06-08 and D06-09 denominator separation is structural, not a one-day anomaly.
+- LATE 22:30 remains pending; no D06-07/08/09 promotion yet.
+- D06 maturity remains 48.9%; global aggregate 46.6% / 356 modules at this write.
+- Outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+After 22:30 capture identical TPEx leverage LATE sources and compare against the frozen 21:25 EARLY snapshots on union/common support. Only then reassess D06-07/08/09 maturity.
