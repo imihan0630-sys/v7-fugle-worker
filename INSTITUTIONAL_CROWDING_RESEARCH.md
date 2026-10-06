@@ -2412,3 +2412,34 @@ this is Taiwan PIT/source/replay feasibility only. No predictive alpha, return, 
 
 Exact next:
 future L4 work requires preregistered OOS/Shadow residual incrementality and continued multi-date revision stability evidence.
+
+
+---
+
+## IC-091 — D06-11 index-review event clock must separate public, licensed-client and effective-time knowledge
+
+Research cycle: 2026-10-06 Asia/Taipei  
+Status: PIT_DISCLOSURE_CLOCK_FIREWALL_FROZEN / PUBLIC_ARCHIVE_REPLAYABLE / LICENSED_CLIENT_CLOCK_UNKNOWN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_11_public_index_review_clock_guard_20261006_v0_1.md`.
+
+Official Taiwan Index Plus evidence shows that index-review disclosure modes differ across index families. Some review information is announced publicly before effectiveness; some is published only on the effective date; some technical notices are provided to clients before effectiveness. Therefore one generic `announcementDate` is not a PIT-safe event clock.
+
+D06-11 now freezes distinct clocks:
+- `publicScheduleFirstKnownAt`;
+- `licensedClientNoticeFirstKnownAt` — UNKNOWN unless independently observed and authorized;
+- `publicReviewResultFirstKnownAt`;
+- `effectiveAfterCloseAt`;
+- `effectiveTradeDate`.
+
+For public-strategy research, `eventFirstKnownAt = publicReviewResultFirstKnownAt`. A known future review schedule provides calendar context only and cannot reveal final adds/deletes/weights. `effectiveTradeDate` must never be substituted for event knowledge time.
+
+A current official example, the 2026-10-02 Taiwan High Dividend Momentum Index review notice, states that changes/weight adjustments become effective after the 2026-10-02 close / from 2026-10-05; this specific review had zero additions and zero deletions. It is retained as a clock-semantic example, not an alpha event.
+
+Passive-flow identifiability remains bounded. Index membership/weight change is not realized ETF constituent execution. A mechanical-demand exposure candidate additionally needs benchmark/fund exposure and constituent weight delta; actual passive buy/sell remains UNKNOWN without execution evidence.
+
+Maturity impact: NONE. D06-11 remains L2/40% because a complete multi-index PIT event panel, licensed-client clock observability, benchmarked AUM/weight-delta lineage and OOS/Shadow evidence remain incomplete.
+
+Exact next:
+build a prospective multi-index 2026 event registry from official technical notices with separate schedule/public-result/effective clocks and disclosure mode; do not use unavailable licensed-client timestamps or infer realized execution.
