@@ -4292,3 +4292,127 @@ No maturity or Formal change is authorized by this routing.
 7. Next D01 science: separate structural response from overnight information accumulation and previous-close anchoring across opening gaps.
 8. No outcome join / no runtime wiring / no Formal change.
 
+## Continuation update — DL-063 (2026-10-07)
+
+### DL-063 — Structural response vs overnight information / previous-close anchoring
+- DL-062 separated auction mechanics from continuous trading.
+- DL-063 adds a Taiwan-specific overnight/opening attribution firewall:
+  previous-close anchoring;
+  overnight information accumulation;
+  opening gap size;
+  firm-specific news;
+  market/sector/global overnight moves;
+  pre-open futures/options price discovery;
+  pre-open spot indicative state;
+  opening order-flow/liquidity.
+- Taiwan evidence directly motivates the split:
+  listed stocks do not trade overnight, so information can concentrate into the next opening call;
+  intraday and overnight return components have different predictive behavior;
+  Taiwan pre-open index options/futures can carry information for the post-open spot/ETF market;
+  older Taiwan microstructure evidence links opening prices to prior end-of-day quotes and order-flow dependence.
+- Frozen overnight context states:
+  NO_VERIFIED_OVERNIGHT_RECEIPT;
+  VERIFIED_CORPORATE_OR_FIRM_NEWS;
+  VERIFIED_MARKET_OR_SECTOR_OVERNIGHT_MOVE;
+  VERIFIED_GLOBAL_MACRO_OR_CROSS_ASSET_MOVE;
+  PREOPEN_INDEX_FUTURES_SIGNAL;
+  PREOPEN_INDEX_OPTIONS_SIGNAL;
+  PREOPEN_SPOT_INDICATIVE_SIGNAL;
+  PREVIOUS_CLOSE_ANCHOR_NEAR_ZONE;
+  MULTIPLE_OVERNIGHT_CHANNELS;
+  OVERNIGHT_CONTEXT_UNKNOWN.
+- Previous close is treated as a separate reference price, not as structural proof.
+- Required geometry fields:
+  priorCloseZoneDistance;
+  openingZoneDistance;
+  overnightGapPrice;
+  overnightGapAtr;
+  overnightGapPct;
+  prior/opening side relative to the zone.
+- D01 defines no arbitrary near-prior-close threshold.
+- Opening across opposite sides of the zone remains OPENING_GAP_CROSSING.
+  No continuous intraday path through the zone is invented.
+- Required opening clock:
+  openingFinalPrintKnownAt <= predictorFreezeAt < endpointWindowStart.
+- The opening print cannot simultaneously serve as predictor and the same tested response outcome.
+- Pre-open simulated prices/volumes remain indicative context only.
+  Their exact knownAt snapshots may be stored;
+  the final open may not overwrite prior indicative states.
+- Owner-certified prior price-discovery channels remain separate:
+  firm news;
+  market/sector/global move;
+  futures;
+  options;
+  spot indicative state;
+  opening liquidity/order flow.
+- D01 does not create an OVERNIGHT_SCORE.
+- NO_VERIFIED_OVERNIGHT_RECEIPT does not mean NO_OVERNIGHT_CAUSAL_INFLUENCE.
+  Unknown remains unknown.
+- Primary comparator:
+  G0 OVERNIGHT_SHOCK_AWAY_FROM_ZONE;
+  G1 OVERNIGHT_SHOCK_AT_ZONE.
+- Complementary previous-close comparator:
+  P0 PRIOR_CLOSE_ANCHOR_AWAY_FROM_ZONE;
+  P1 PRIOR_CLOSE_ANCHOR_NEAR_ZONE.
+- Taiwan research suggests overnight information can be overreacted to at the open and later corrected.
+  Therefore an opening bounce/reversal near a zone can reflect correction, liquidity normalization, prior-close anchoring or structural response.
+- High opening volume alone does not identify informed trading.
+- D08 owns news/event receipts;
+  D09/D12 own overnight global/derivative context where routed;
+  D03 owns timing/trend decomposition;
+  D04/D05 own opening microstructure/liquidity;
+  D18 owns regime;
+  D16 owns residual inference.
+- Future D16 ladder:
+  N0 RAW_OPENING_ZONE_RESPONSE;
+  N1 OPENING_AUCTION_PHASE_CONTROLLED;
+  N2 PRIOR_CLOSE_ANCHOR_GEOMETRY_CONTROLLED;
+  N3 OVERNIGHT_GAP_SIZE_CONTROLLED;
+  N4 FIRM_SPECIFIC_OVERNIGHT_EVENT_CONTROLLED;
+  N5 MARKET_SECTOR_GLOBAL_OVERNIGHT_MOVE_CONTROLLED;
+  N6 PREOPEN_FUTURES_SIGNAL_CONTROLLED;
+  N7 PREOPEN_OPTIONS_SIGNAL_CONTROLLED;
+  N8 PREOPEN_SPOT_INDICATIVE_STATE_CONTROLLED;
+  N9 OPENING_ORDER_FLOW_LIQUIDITY_CONTROLLED;
+  N10 GENERIC_OVERNIGHT_SHOCK_COMPARATOR_CONTROLLED;
+  N11 STRUCTURAL_RESPONSE_RESIDUAL_CANDIDATE;
+  N12 MULTI_DATE_MULTI_SYMBOL_MULTI_OVERNIGHT_REGIME_REPLICATION.
+- Interpretation states:
+  Q0 PREVIOUS_CLOSE_ANCHOR_EXPLANATION;
+  Q1 OVERNIGHT_INFORMATION_EXPLANATION;
+  Q2 PREOPEN_DERIVATIVE_PRICE_DISCOVERY_EXPLANATION;
+  Q3 OPENING_AUCTION_ORDER_FLOW_EXPLANATION;
+  Q4 OPENING_OVERREACTION_CORRECTION_EXPLANATION;
+  Q5 MULTIPLE_OVERNIGHT_CHANNELS;
+  Q6 STRUCTURAL_RESPONSE_RESIDUAL;
+  Q7 OVERNIGHT_CONTEXT_UNKNOWN;
+  Q8 NOT_EVALUABLE.
+- SDA-001 remains open:
+  prior close, opening print and D01 structure share PRICE_OHLC ancestry;
+  same-direction derivative/news context is not an automatic independent vote.
+- SDA-002 remains open:
+  all receipts require firstObservableAt/knownAt/predictorFreezeAt/source/version/hash/replaySafe.
+- New files:
+  - research/PATTERN_OVERNIGHT_OPENING_ANCHOR_FIREWALL_V0_1.md
+  - research/pattern_overnight_opening_anchor_firewall_v0_1.json
+  - research/pattern_overnight_opening_anchor_firewall_v0_1.mjs
+  - research/test_pattern_overnight_opening_anchor_firewall_v0_1.mjs
+  - research/PATTERN_OVERNIGHT_OPENING_ANCHOR_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-063
+
+1. Reconcile the DL-063 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-063 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve previous-close geometry, overnight news/global/derivative context and opening liquidity as separate channels.
+4. Never allow opening print or later overnight classifications to leak into the same predictor/outcome window.
+5. Hand N0-N12 / Q0-Q8 residual inference to D16.
+6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+7. Next D01 science: separate structural response from daily price-limit carryover and limit-hit queue mechanics across overnight/opening transitions.
+8. No outcome join / no runtime wiring / no Formal change.
+

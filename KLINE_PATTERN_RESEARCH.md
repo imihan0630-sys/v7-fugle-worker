@@ -24084,3 +24084,34 @@ New durable artifacts:
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
 
+# DL-063 — Structural response vs overnight information / previous-close anchoring (2026-10-07)
+
+DL-063 extends the opening-auction firewall into overnight information attribution.
+
+Taiwan listed stocks do not trade through the overnight interval, so information that arrives after the prior close can be compressed into the next opening call auction. The opening print is therefore not simply another intraday observation. It can embody firm news, global market movement, sector information, futures/options price discovery, queued order flow and reference to the prior close.
+
+The first major distinction is previous-close anchoring. Prior close is stored as a separate reference price with continuous distance descriptors to the old structural zone. D01 does not define a near/far threshold. If a zone happens to lie close to the previous close, a next-morning response can be explained by reference-price behavior rather than structural memory.
+
+The second distinction is the overnight gap itself. OpeningFinalPrice - priorClosePrice is stored in price, ATR and percent units, together with each price's side relative to the zone. If prior close and opening print lie on opposite sides, the event remains OPENING_GAP_CROSSING; no unseen continuous path through the zone is invented.
+
+The third distinction is the opening predictor clock. If the final opening print is used to define the predictor state, it must already be known and the response endpoint must begin strictly afterwards. The same opening print cannot serve as both "the signal" and "proof that the signal worked."
+
+Pre-open simulated prices remain indicative snapshots, not trades. Futures/options/global/news signals remain separate causal context channels with their own knownAt timestamps. A same-direction signal does not become an independent confirmation merely because it comes from another instrument.
+
+Taiwan evidence supports this design. Recent work decomposing intraday and overnight Taiwan returns finds materially different behavior between the two components and argues that overnight information is incorporated at the next opening because cash stocks are not tradable overnight. Taiwan index-option research also shows pre-opening derivatives can contain information for post-open spot and ETF returns. Older microstructure evidence links opening price formation to prior close quotes, order-flow dependence and opening pressure.
+
+The absence of a verified overnight event receipt is not interpreted as proof that no overnight influence existed. NO_VERIFIED_OVERNIGHT_RECEIPT is a data state, not a causal null.
+
+Future D16 analysis receives two complementary comparisons. G0 versus G1 tests matched overnight shock contexts away from versus at the structural zone. P0 versus P1 separately tests previous-close reference geometry. This prevents a structural story from borrowing explanatory power from a nearby previous close.
+
+Twenty adversarial cases are authored. They verify prior-close/opening geometry separation, overnight gap identity, gap crossing, no arbitrary near threshold, knownAt/replay-safe gating, post-freeze event rejection, opening-print timing, separate futures/options/news channels, unknown-context preservation, generic overnight comparators, previous-close comparators and one default effective evidence family.
+
+New durable artifacts:
+- research/PATTERN_OVERNIGHT_OPENING_ANCHOR_FIREWALL_V0_1.md
+- research/pattern_overnight_opening_anchor_firewall_v0_1.json
+- research/pattern_overnight_opening_anchor_firewall_v0_1.mjs
+- research/test_pattern_overnight_opening_anchor_firewall_v0_1.mjs
+- research/PATTERN_OVERNIGHT_OPENING_ANCHOR_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
