@@ -239,3 +239,40 @@ Canonical audit map:
 - ChatGPT Project 邊界不構成治理豁免：只要使用本 repo/shared bootstrap，就套用同一規則。
 
 完全不讀本 repo/shared bootstrap 的獨立 Project 無法被此檔自動強制；若要納入同一治理，必須先把該 Project 的主要建置聊天室接到本 bootstrap/registry。
+
+
+## 十二、使用者可操作網址／入口連結規則（MANDATORY）
+
+本節適用於所有使用本 repository／shared bootstrap 恢復的聊天室，包括新聊天室、跨 Project continuation、00、01～15、System 1、System 2、各 execution lane，以及 Chat／Work／Codex。
+
+### 1. 有穩定網址就必須一起提供
+
+當回覆要求韓哥開啟、登入、查看、確認、操作或前往任何具體頁面，只要存在已知且穩定的使用者可開啟網址，**必須在同一則回覆中直接提供可點擊網址／連結**；不得只說「去 GitHub」、「到 Actions」、「開 Cloudflare」、「看 PR」或要求韓哥自行尋找入口。
+
+典型範圍包括但不限於：
+- GitHub repository、Actions、特定 workflow、workflow run、PR、commit、issue、檔案；
+- Cloudflare dashboard／具體產品或設定入口；
+- 官方文件、登入頁、設定頁；
+- 其他需要使用者實際點擊或操作的官方／可信頁面。
+
+### 2. 優先提供最深層、最直接入口
+
+- 已知特定 workflow URL 時，應給特定 workflow，不只給 repository 首頁。
+- 已知 PR／run／commit／file URL 時，應給該具體頁面，不只給 GitHub 首頁。
+- 若必須先登入，再操作特定頁面，應同時給登入／入口網址與登入後的目標頁網址（若兩者可穩定提供）。
+- 多個網址用途不同時，要以簡短文字標示各自用途。
+
+### 3. 不得虛構或洩漏敏感網址
+
+- 不得為了滿足「要給網址」而猜測不存在的深層 URL。
+- 若無法可靠取得深層網址，提供最近一層的穩定入口網址，並附最短選單路徑。
+- 不得在聊天中暴露 token、secret、signed URL、一次性敏感 query string 或其他認證資訊。
+- 需要 MFA、Secret、新增權限或登入授權時，仍依既有治理要求韓哥介入，但同時提供可用入口網址。
+
+### 4. 新聊天室繼承
+
+本規則屬 ROOM_BOOTSTRAP 的 canonical 全域行為規則。任何依本 bootstrap／registry 恢復的新聊天室均自動繼承，不需韓哥再次提醒。
+
+### 5. 核心判準
+
+**只要回覆中的下一步需要韓哥「點某個地方」，而那個地方有可安全公開且穩定的網址，就把網址一起給韓哥。網址不是可省略的排版細節，而是操作交付的一部分。**
