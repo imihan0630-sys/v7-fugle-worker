@@ -706,3 +706,97 @@ Verdict: PARTIAL_PASS.
 4. Owner decision on COV-10 structural curriculum addition when desired.
 
 00 continues five-lane concurrent auditing.
+
+
+## Third five-lane concurrent audit cycle — 2026-10-06
+
+Observed main: `e99cd6af856d8426ad19afeac4f89853dcbc5f2d`.
+
+### A — System1
+MATERIAL RESEARCH DELTA / NO GENUINE CLOSURE.
+
+SDA-009 advanced to R3 V0.4 effective-build authority and layered parity:
+- effective Production comparator authority corrected to the built runtime rather than baseline Worker.js;
+- gate parity and score parity are now separated;
+- atomic replay = PASS 29 assertions;
+- receipt oracle = PASS 30 assertions;
+- prior wording that rewardPerRisk was first effective comparator is superseded;
+- lower-layer calculable effects cannot auto-promote rank/pool/allocation conclusions;
+- genuine candidate-level Taiwan receipt count remains 0.
+
+Therefore SDA-009 remains open.
+SDA-001/004 genuine lineage receipt remains pending.
+SDA-016 V8.20 Production remains verified; first genuine Formal↔C1 receipt remains pending.
+
+Verdict: System1 S1 remains PARTIAL.
+
+### B — System2 build / selection-to-capacity
+MATERIAL EVIDENCE DELTA / NO AUTHORITY PROMOTION.
+
+S2-07 Symbol-Session Integration V0.8 is physically PASS:
+- run `37488505236`;
+- eventCount 17;
+- promotionReadyCount 7;
+- boundedSymbolSessionEvidenceReadyCount 0;
+- blockedCount 17;
+- resumeDateObservedCount 0;
+- suspensionCoverageComplete=false;
+- symbolSessionCompletenessCertified=false;
+- technicalContinuityCertified=false.
+
+Interpretation:
+generic exchange halt/resumption sources did not produce exact resume-date matches for the frozen corporate-action events. This is negative source-family evidence, not NO_SUSPENSION evidence.
+
+A later Native Schedule Discovery V0.9 read-only workflow `37489133532` also PASSed on its branch, but 00 does not credit it as a canonical main/authority delta until the corresponding main artifact/checkpoint is present and independently read back.
+
+Selection-to-capacity remains INCOMPLETE.
+No push/order/capital/live authority is promoted.
+
+### C — DATA_LANE
+MATERIAL BLOCKER DELTA.
+
+Annual backfill run `37482307633` is terminal FAILURE for 2023 TWSE evidence:
+- migrate = SUCCESS;
+- Backfill selected-year packed history = SUCCESS;
+- Physical verify selected-year market coverage and R2 byte hashes = FAILURE;
+- physical coverage artifact upload = SUCCESS;
+- artifact = `system2-historical-coverage-TWSE-2023`;
+- artifact id = `11423484682`;
+- artifact digest = `sha256:51207f46bbc07726040781551db9c55a018a3ffe62e03231cdf5c9bf8690fba3`;
+- Confirm System1 production files untouched = SUCCESS.
+
+00 classification:
+`2023_TWSE_PHYSICAL_VERIFY_FAILED / FAILURE_CLASS_PENDING_ARTIFACT_READBACK`.
+
+Important:
+- the annual cold-pack backfill itself succeeded;
+- 2023 TWSE is NOT accepted;
+- 00 will not guess source/hash/universe/revision classification before machine evidence is read;
+- no blind retry is authorized by 00;
+- DATA_LANE retains implementation ownership.
+
+2021 TPEx source-revision blocker remains separately open.
+
+### D — 01–15 research / curriculum
+MATERIAL DELTA:
+- D09 / Room07 SDA-009 R3 V0.4 strengthened effective-build parity and self-falsified an earlier comparator assumption without maturity promotion.
+- D09 remains 57.1%.
+- COV-10 / proposed D20-14 remains OWNER_APPROVAL_REQUIRED after successful 00 intake/dependency/overlap/anti-orphan audit.
+- no module-count change is made without owner approval.
+
+### E — SDA-022 non-convergence
+NO_CHANGE.
+- System1 fingerprint S22-T01~T05 = PASS.
+- D16 prereg S22-T25~T28 = PASS.
+- System2 strategy fingerprints S22-T06~T10 = PENDING.
+- physical NC-T01 S22-T11~T16 = PENDING.
+Verdict: PARTIAL_PASS.
+
+### Revised P0 after third cycle
+1. DATA_LANE: classify the 2023 TWSE Physical verify failure from artifact/checkpoint evidence; do not blind-rerun.
+2. System2: continue S2-07 positive continuity evidence while preserving selection-to-capacity boundary.
+3. SDA-022: first System2 strategy fingerprint and physical NC-T01 receipts.
+4. System1: first genuine SDA-001/004, SDA-009, SDA-016 receipts.
+5. Research governance: COV-10 owner decision remains a separate structural gate.
+
+00 remains five-lane concurrent; no single lane may monopolize the cycle.
