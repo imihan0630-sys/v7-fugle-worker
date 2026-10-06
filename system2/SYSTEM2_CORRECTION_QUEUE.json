@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-06T10:11:33+08:00",
+  "updatedAt": "2026-10-06T19:12:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -660,6 +660,71 @@
       "updatedAt": "2026-10-06T10:11:33+08:00",
       "verifiedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "verifiedAt": "2026-10-06T10:11:33+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261006-002",
+      "createdAt": "2026-10-06T19:12:00+08:00",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "title": "Institutional terminal converts research-only resonance into ENTER/EXIT action authority",
+      "affectedScope": [
+        "S2-16 Candidate Board",
+        "S2-16 Decision Workspace",
+        "S2-16 Today Focus action semantics"
+      ],
+      "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "canonicalRequirement": "Daily Resonance V0.1 is research/shadow monitoring evidence only. UI must not relabel resonance signals as formal ENTER/EXIT trading actions unless a distinct frozen-decision authority supplies them.",
+      "observedProblem": "terminal_page.mjs actionOf() maps BUY_RESONANCE to ENTER and EXIT_RESONANCE to EXIT, and renders the result in Candidate Board's action column and Decision Workspace ACTION CARD even though the underlying resonance contract explicitly denies validated production BUY authority and runtime decision/notification/order impacts are false.",
+      "evidence": [
+        "SYSTEM2_DAILY_RESONANCE_MONITOR_V0_1.md: BUY_RESONANCE is research/shadow candidate signal, not validated production BUY authority",
+        "daily_resonance_monitor_v0_1.mjs notes research/shadow candidate, not validated production trading authority",
+        "daily_resonance_read_model_v0_1.mjs and worker-cycle outputs keep decisionImpact=false, notificationImpact=false, orderImpact=false",
+        "terminal_page.mjs actionOf maps BUY_RESONANCE->ENTER and EXIT_RESONANCE->EXIT",
+        "Candidate Board renders mapped value under 動作",
+        "Decision Workspace renders mapped value in ACTION CARD",
+        "Today Focus uses actionable resonance wording",
+        "S2-16 checkpoint says full candidate/frozen-decision population remains pending and no final-selection authority is promoted"
+      ],
+      "riskIfUnfixed": "Operator-facing UI can make research-only resonance monitoring look like authorized entry/exit advice, blurring monitor evidence, frozen-decision, selection, notification and order authority boundaries.",
+      "requiredCorrection": [
+        "Do not map resonance-only BUY_RESONANCE/EXIT_RESONANCE to bare ENTER/EXIT actions",
+        "Use clearly monitor-only resonance labels",
+        "Separate monitor signal from frozen-decision formal action",
+        "When no frozen decision exists, keep formal action unavailable rather than inheriting resonance action",
+        "Qualify Candidate Board action column so monitor evidence is not presented as formal decision authority",
+        "Replace or qualify actionable resonance wording",
+        "Add regression tests for resonance-only vs frozen-decision action semantics",
+        "Preserve resonance formula/state machine/bounded pool and all protected authorities"
+      ],
+      "acceptanceCriteria": [
+        "resonance-only signals are not shown as bare ENTER/EXIT formal actions",
+        "Decision Workspace formal action remains unavailable without frozen decision",
+        "Candidate Board clearly distinguishes monitor signal from formal action",
+        "no user-facing wording upgrades research resonance to live/validated authority",
+        "regression tests prevent reintroduction",
+        "resonance runtime semantics and protected authorities remain unchanged"
+      ],
+      "protectedBoundaries": [
+        "resonance formula/state machine",
+        "strategy logic",
+        "assessor policy",
+        "preregistration",
+        "ranking/capacity",
+        "final/live selection authority",
+        "notification/push",
+        "capital/orders",
+        "System1 Formal Core"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "BUILD_LANE",
+      "assignedLane": "BUILD_LANE",
+      "assignedRoom": "System 2｜建置總控室",
+      "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-06T19:12:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
