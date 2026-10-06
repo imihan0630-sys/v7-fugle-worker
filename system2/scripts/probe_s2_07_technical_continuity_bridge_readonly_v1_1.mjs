@@ -90,6 +90,17 @@ const bridge=evaluateBoundedTechnicalContinuityBridgeV1_1({
   resumeRawBar:resume,
 });
 
+console.log(JSON.stringify({
+  diagnostic:"S2_07_TECHNICAL_CONTINUITY_BRIDGE_V1_1_DIAGNOSTIC",
+  officialContinuityEffect:officialEvent.continuityEffect,
+  officialContinuityEffectState:officialEvent.continuityEffectState,
+  technicalContinuityEvidenceEligible:officialEvent.technicalContinuityEvidenceEligible,
+  preSuspensionRawBar:pre,
+  resumeRawBar:resume,
+  bridgeState:bridge.state,
+  bridgeBlockers:bridge.blockers,
+},null,2));
+
 assert.equal(bridge.boundedTechnicalContinuityBridgeReady,true);
 assert.equal(bridge.technicalContinuityCertified,false);
 assert.equal(bridge.continuityTransformPerformed,false);
