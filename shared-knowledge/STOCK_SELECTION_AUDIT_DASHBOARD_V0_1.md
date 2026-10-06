@@ -221,3 +221,55 @@ Still pending independently:
 - independent 00 closure.
 
 Formal Core impact: NONE.
+
+
+## 2026-10-06 SYSTEMWIDE LAUNCH READINESS — CURRENT
+
+Canonical audit:
+shared-knowledge/SYSTEMWIDE_LAUNCH_READINESS_GOVERNANCE_AUDIT_20261006_V0_1.md
+
+### Current launch states
+
+System1 Selection Shadow:
+S0 PASS / S1 PARTIAL / S2 NOT_READY / S3 NOT_READY / S4 OWNER_APPROVAL_REQUIRED / T1 NOT_READY.
+
+System2:
+- infrastructure/terminal = SUBSTANTIALLY_READY;
+- selection-to-capacity = INCOMPLETE;
+- historical DATA_LANE = ACTIVE_PARTIAL;
+- resonance = RESEARCH_SHADOW_MONITOR_ONLY;
+- actual holdings/live trading = NOT_READY / DISABLED.
+
+Cross-system SDA-022:
+- System1 T01~T05 = PASS;
+- System2 T06~T10 = PENDING;
+- NC-T01 T11~T16 = PENDING;
+- prospective T17~T24 = NOT_STARTED;
+- D16 T25~T28 = PASS;
+- whole ticket = PARTIAL_PASS.
+
+### Current oracle authority
+
+- SDA-016 = V0.5 / 58 blocking tests.
+- SDA-017 = V0.4 / 56 blocking tests.
+- SDA-022 = 28 blocking pre-outcome tests.
+
+### Current System1 S1 blockers
+
+1. SDA-001/004 three schema deltas.
+2. SDA-009 Class-A leave-one-out diagnostic.
+3. authoritative append-only Formal->C1 binding + first genuine parent receipt.
+
+PR #644 is already merged/deployed and is not the remaining blocker.
+
+### Current owner-gated parallel
+
+D02 PVE-250 / PR #668:
+technical checks green; owner approval required for Production integration; not required for first pure Selection Shadow.
+
+### Curriculum context
+
+22 domains / 356 modules / weighted maturity 46.6%.
+No universal curriculum maturity percentage is a launch gate.
+
+Older dashboard sections are historical snapshots where they conflict with this current section.
