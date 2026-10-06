@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-06T23:41:00+08:00",
+  "updatedAt": "2026-10-07T00:26:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -16,7 +16,7 @@
       ],
       "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "canonicalRequirement": "Physically populate and verify staged official 2017-present Taiwan-equity daily history before claiming complete full-market historical coverage/replay.",
-      "observedProblem": "Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE and both 2022 markets. 2021 TPEx remains explicitly BLOCKED on an official-source canonical A1 revision. 2023 TWSE run #21 completed cold backfill/storage but Physical verify blocked on 205 unexpected bars caused by historical-universe start-date reconstruction for 6873: the current-company listing date did not preserve the earlier 2023-03-06 Innovation Board listing interval before its later regular-board conversion. A conservative current/newlisting reconciliation fix and regression guard are committed; fresh 2023 TWSE re-verification is gated on System2 Research CI PASS. CORR-001 stays open for these blockers, later market-years, 2026 incremental history and final full-market PIT replay.",
+      "observedProblem": "Historical raw A1 coverage is accepted through both 2022 markets except 2021 TPEx, which remains explicitly BLOCKED on an official-source canonical A1 revision. 2023 TWSE cold backfill/storage also completes, but Physical verify remains BLOCKED on 205 unexpected bars tied to 6873. Run #22 proved the first listing-start matcher did not fire because CURRENT rows use legal company names while NEWLISTING rows use company short names. A second conservative alias-aware matcher plus realistic regression guard is committed and System2 Research CI PASSed; fresh 2023 TWSE re-verification remains required. CORR-001 stays FIX_IN_PROGRESS for these blockers, later market-years, 2026 incremental history and final full-market PIT replay.",
       "evidence": [
         "SYSTEM2_CHECKPOINT run 36545375167 failed before annual ingest",
         "SYSTEM2_CHECKPOINT requires repaired 2017 TWSE rerun before TPEx",
@@ -107,7 +107,14 @@
         "Durable blocker evidence: system2/evidence/S2_HISTORICAL_TWSE_2023_UNIVERSE_BLOCKER_V0_1.json.",
         "DATA_LANE runtime fix a0bf42f81fa46fc3854d2c8cf844851327966a9b reconciles CURRENT listing starts to earlier official NEWLISTING history only when symbol and normalized company identity match.",
         "Regression guard commit 045d40399c7845ef76cea4051b4a05b2599e1be2 covers the 6873 Innovation-Board-to-mainboard lifecycle and rejects same-code/different-company stitching.",
-        "Fresh 2023 TWSE dispatch is prohibited until the latest fix-bearing System2 Research CI passes; old run #21 must not be rerun because it is bound to pre-fix head 30a1f9e7b7bf7e344f0cd44242efb701e56b6f4b."
+        "Fresh 2023 TWSE dispatch is prohibited until the latest fix-bearing System2 Research CI passes; old run #21 must not be rerun because it is bound to pre-fix head 30a1f9e7b7bf7e344f0cd44242efb701e56b6f4b.",
+        "2023 TWSE post-first-fix run 37493424179 (#22) still BLOCKED with the same 205 unexpected bars; annual backfill/storage and System1 isolation PASSed.",
+        "Run #22 sourceReceipt reported currentListingStartReconciledCount=0, proving the first matcher did not reconcile any CURRENT start date.",
+        "Refined root cause: CURRENT company rows expose legal company names while TWSE NEWLISTING rows expose company short names, so single-field normalized-name equality did not identify the same company.",
+        "Second runtime fix 6a227f96cb0af9d6c1620402be25b93167eb4e16 matches same-symbol CURRENT/NEWLISTING rows through conservative legal-name/short-name alias intersection after normalization while preserving same-code/different-company rejection.",
+        "Second regression commit 64d2f7e8ecf923e0b133101e340c78222facddef uses a realistic legal-name plus short-name 6873 fixture.",
+        "System2 Research CI run 37495340984 PASSed on the second-fix head.",
+        "Durable second blocker evidence: system2/evidence/S2_HISTORICAL_TWSE_2023_UNIVERSE_BLOCKER_V0_2.json."
       ],
       "riskIfUnfixed": "Creates false-completion/evidence-coverage risk for multi-year replay, factor validation, regime robustness and strategy backtesting.",
       "requiredCorrection": [
