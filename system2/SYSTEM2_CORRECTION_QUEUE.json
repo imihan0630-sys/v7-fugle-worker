@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-06T19:12:00+08:00",
+  "updatedAt": "2026-10-06T19:24:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -16,7 +16,7 @@
       ],
       "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "canonicalRequirement": "Physically populate and verify staged official 2017-present Taiwan-equity daily history before claiming complete full-market historical coverage/replay.",
-      "observedProblem": "Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE. 2021 TPEx run #17 was stopped by Cloudflare D1 free-tier daily row-write quota before Physical verify; this is an infrastructure quota blocker, not a data-integrity failure. Replay readiness for accepted years remains PARTIAL because explicit symbol-session UNKNOWNs, RAW continuity debt, and incomplete TPEx historical delisting-union remain. The correction stays open because 2021 TPEx, later market-years, the 2026 incremental path, and the final full-market PIT replay are pending.",
+      "observedProblem": "Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE. The prior 2021 TPEx D1 free-tier quota blocker was cleared by fresh run #18, which completed the annual cold backfill and immutable storage verification. Physical verification now blocks 2021 TPEx on an upstream official-source revision concentrated on 2021-01-14: 780 matched source-row hashes changed, including 698 canonical A1 value changes and 82 source-revision-only rows. Cold/fresh row counts remain identical at 191643 with zero missing/extra keys, and 795/795 R2 byte verification passes. 2021 TPEx therefore remains explicitly BLOCKED rather than accepted; immutable cold history must not be overwritten. CORR-001 stays open for revision-lineage handling, later market-years, the 2026 incremental path, and final full-market PIT replay.",
       "evidence": [
         "SYSTEM2_CHECKPOINT run 36545375167 failed before annual ingest",
         "SYSTEM2_CHECKPOINT requires repaired 2017 TWSE rerun before TPEx",
@@ -77,7 +77,16 @@
         "2021 TPEx run 37326149826 (#17): migrate SUCCESS, backfill stopped at D1 writeCheckpoint due free-tier daily row-write quota, Physical verify skipped, System1 isolation PASS",
         "Cloudflare D1 error explicitly requires waiting until midnight UTC for free-tier daily write reset; no paid upgrade is required for planned continuation",
         "2021 TPEx blocker evidence frozen at system2/evidence/S2_HISTORICAL_TPEX_2021_D1_QUOTA_BLOCKER_V0_1.json",
-        "2021 TPEx coverage matrix remains PENDING with executionState BLOCKED_D1_FREE_TIER_DAILY_ROW_WRITE_LIMIT"
+        "2021 TPEx coverage matrix remains PENDING with executionState BLOCKED_D1_FREE_TIER_DAILY_ROW_WRITE_LIMIT",
+        "2021 TPEx fresh workflow_dispatch run 37401612529 (#18) used head a7561639b8d07ab23bfd1f1cd961b753ee561249; annual backfill completed and System1 production isolation PASSed.",
+        "Run #18 attempt 1 Physical verify ended in a transport TimeoutError before artifact generation; execution-critical workflow/verifier/source/storage blobs were unchanged before retry.",
+        "Run #18 attempt 2 produced artifact 11409737982 (sha256:32a98f1528ea1cdc8154eaa2e31b43e9d2905e92d0a43606c4cf29abd1d2f621) and verifier result BLOCKED_MARKET_YEAR_VERIFICATION.",
+        "2021 TPEx storage verification PASS: completion receipt COMPLETE, 795 packs, 191643 bars, 795/795 R2 HEAD and byte-GET hash checks.",
+        "Fresh official reconciliation: coldRowCount=freshOfficialRowCount=191643, missingFromCold=0, absentFromFresh=0; source revision is concentrated on 2021-01-14.",
+        "2021 TPEx source revision facts: sourceRowHashMismatchCount=780, canonicalA1ValueMismatchCount=698, sourceRevisionOnlyCount=82, sourceVersionState=SOURCE_REVISION_WITH_CANONICAL_A1_CHANGE.",
+        "The 100 retained canonical mismatch samples all differ in volumeShares/tradeValue/transactions while sampled OHLC/change remain stable; this is sample evidence only, not an exhaustive all-698 field claim.",
+        "Durable revision blocker evidence: system2/evidence/S2_HISTORICAL_TPEX_2021_REVISION_BLOCKER_V0_1.json.",
+        "Coverage matrix now records 2021 TPEx as BLOCKED_SOURCE_REVISION_CANONICAL_A1_CHANGE; the prior D1 quota blocker is preserved as resolved historical provenance."
       ],
       "riskIfUnfixed": "Creates false-completion/evidence-coverage risk for multi-year replay, factor validation, regime robustness and strategy backtesting.",
       "requiredCorrection": [
@@ -138,7 +147,9 @@
         "2021 TWSE durable evidence receipt and market-year matrix row are committed under DATA_LANE",
         "Next population target is 2021 TPEx",
         "Historical cold-pack resume semantics preserve immutable partial state: existing R2 objects are hash-checked, existing manifests are immutable-compared, duplicate logical keys are rejected, and completed receipts verify before fast-path return",
-        "2021 TPEx must be fresh-dispatched after free-tier reset; partial cold history must not be deleted or rewritten"
+        "2021 TPEx must be fresh-dispatched after free-tier reset; partial cold history must not be deleted or rewritten",
+        "2021 TPEx current cold schema intentionally preserves one immutable manifest per market/symbol/year/price_space via UNIQUE(market,symbol,year,price_space); revised canonical data cannot silently overwrite the accepted cold capture.",
+        "DATA_LANE disposition is fail-closed: preserve 2021 TPEx as an explicit blocked market-year while revision-lineage/as-of semantics are engineered; continue later market-years under the correction criterion that each year may be completed or explicitly blocked/deferred."
       ],
       "verificationEvidence": [
         "Run 37197090867 migrate/backfill/physical verify/artifact upload/System1 isolation all SUCCESS",
@@ -195,7 +206,7 @@
       "assignedRoom": "System 2｜歷史資料工程室",
       "modificationOwner": "SYSTEM2_HISTORICAL_DATA_ROOM",
       "blockedBy": [
-        "Cloudflare D1 free-tier daily row-write quota; retry not before 2026-10-06T00:00:00Z (2026-10-06 08:00 Asia/Taipei)"
+        "2021 TPEx official-source canonical A1 revision on 2021-01-14 requires explicit revision-lineage/as-of handling before that market-year can be accepted"
       ]
     },
     {
@@ -665,7 +676,7 @@
       "directiveId": "S2-CORR-20261006-002",
       "createdAt": "2026-10-06T19:12:00+08:00",
       "severity": "MEDIUM",
-      "status": "OPEN",
+      "status": "FIX_IMPLEMENTED",
       "title": "Institutional terminal converts research-only resonance into ENTER/EXIT action authority",
       "affectedScope": [
         "S2-16 Candidate Board",
@@ -721,10 +732,21 @@
       "assignedRoom": "System 2｜建置總控室",
       "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
       "blockedBy": [],
-      "implementationEvidence": [],
+      "implementationEvidence": [
+        "PR #673 merged as `36afa057bdc2e88238f5c37b926bea9f821b05d9` after latest-main zero-drift check.",
+        "Candidate Board now labels the field `監控訊號（RESEARCH）` and preserves `BUY_RESONANCE` / `EXIT_RESONANCE` instead of converting them to bare ENTER / EXIT.",
+        "Decision Workspace now separates monitor signal from formal frozen-decision action; without frozen decision data the formal action is `NO_FROZEN_DECISION`.",
+        "`actionable resonance` wording was removed and replaced with research-monitor wording.",
+        "Targeted `institutional_terminal_page_v0_1.test.mjs` PASS in System2 Research CI run `37458264775` / job `112251116356`.",
+        "System2 Research CI run `37458264775` PASS; V8 Regression run `37458264777` PASS.",
+        "Merged-main readback confirms no `actionOf()` mapping, no `return \"ENTER\"`, no `return \"EXIT\"`, and separate monitor/formal fields.",
+        "Daily Resonance runtime files are byte-identical to the pre-fix base: monitor `a39fd428e54ce800600e96d23f178ea024f86d98`, read model `d5989e563c6995a9b8bb5110ce1ee8ab8e4aa4b4`, worker cycle `245044b7878360680854b11fda7f8f221d973d33`.",
+        "Merged-main System2 Research CI run `37458445915` PASS and System2 Daily Resonance Deploy run `37458445783` PASS.",
+        "No strategy logic, assessor policy, preregistration, weights, thresholds, ranking, capacity, final/live selection authority, notification/push authority, capital/order, or System1 Formal Core was changed."
+      ],
       "verificationEvidence": [],
-      "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-06T19:12:00+08:00"
+      "finalDisposition": "PENDING — implementation complete; independent verification required before closure",
+      "updatedAt": "2026-10-06T19:44:43+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"

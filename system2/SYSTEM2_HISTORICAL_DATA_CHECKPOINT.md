@@ -58,19 +58,29 @@ Durable blocker evidence:
 
 ## Important current blocker
 
-2021 TPEx is temporarily blocked by Cloudflare D1 free-tier daily row-write quota.
+2021 TPEx is **no longer blocked by the D1 quota**. Run #18 completed the annual backfill and immutable storage verification, but Physical verify attempt 2 produced a durable blocker:
 
-Observed:
-- run: `37326149826` / #17;
-- failure time: 2026-10-05T14:53:26Z;
-- failure point: `writeCheckpoint()` in `historical_cold_pack_store_v0_1.mjs`;
-- error: daily row write limit exceeded;
-- Physical verify did not run.
+- storage verification: PASS;
+- completion receipt: COMPLETE;
+- R2 HEAD / byte hash: 795 / 795 PASS;
+- cold rows = fresh official rows = 191,643;
+- missing-from-cold = 0; absent-from-fresh = 0;
+- official source revision concentrated on 2021-01-14;
+- source-row hash mismatches = 780;
+- canonical A1 value mismatches = 698;
+- source-revision-only rows = 82;
+- verifier state: `SOURCE_REVISION_WITH_CANONICAL_A1_CHANGE`;
+- data coverage: BLOCKED;
+- System1 production isolation: PASS.
 
-Earliest safe retry under the free tier:
-`2026-10-06T00:00:00Z` = `2026-10-06 08:00 Asia/Taipei`.
+The 100 retained canonical mismatch samples all differ in `volumeShares`, `tradeValue`, and `transactions` while OHLC/change stay equal; this sample must not be generalized beyond the retained sample without further evidence.
 
-No paid upgrade is required for the planned continuation. Do not retry before the quota reset and do not delete/rewrite partial cold history.
+Durable evidence:
+- `system2/evidence/S2_HISTORICAL_TPEX_2021_REVISION_BLOCKER_V0_1.json`
+- artifact: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37401612529/artifacts/11409737982
+- workflow: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37401612529
+
+Do not overwrite immutable cold history and do not accept the market-year by ignoring canonical revisions. The next engineering task is revision-lineage / as-of semantics for canonical A1 source revisions.
 
 ## Protected boundaries
 
@@ -96,7 +106,15 @@ Require, as applicable:
 
 ## Exact next action
 
-After the Cloudflare D1 free-tier daily row-write quota resets at 2026-10-06T00:00:00Z (08:00 Asia/Taipei), fresh-dispatch 2021 TPEx from latest main. The rerun must resume/reconcile immutable partial state, finish annual backfill, complete Physical verify, upload evidence, and confirm System1 isolation before 2021 TPEx can be accepted. Only after durable acceptance advance to 2022 TWSE.
+Resolve the 2021 TPEx canonical A1 source revision blocker before accepting the market-year:
+
+1. inspect existing historical storage/version contracts for revision overlay or supersession support;
+2. preserve the original immutable cold capture and later official revision as separate source versions;
+3. define deterministic PIT/as-of selection so replay cannot silently use a later revision before it was known;
+4. add machine-verifiable regression tests for revision lineage and immutable-history preservation;
+5. re-run Physical verify and only accept 2021 TPEx if the revised provenance contract passes.
+
+Do not blind-rerun run #18 again. Do not advance the coverage claim to PASS until revision semantics are explicit.
 
 
 ## 2026-10-06 pre-reset resume validation
@@ -152,3 +170,23 @@ The failing step was Physical verify. The verifier ran from 02:24:38Z to 02:37:2
 Before retry, nine execution-critical blobs were compared between run head a7561639b8d07ab23bfd1f1cd961b753ee561249 and latest main; workflow, backfill script, verifier, official historical range/date source, current-listing source, D1 adapter, R2 adapter and cold-pack store were unchanged. Therefore failed-job retry is execution-equivalent and does not bypass a newer relevant implementation.
 
 Attempt 2 was started through GitHub failed-job rerun. At latest readback: run_attempt=2, migrate=SUCCESS, backfill=IN_PROGRESS. Acceptance remains blocked until terminal SUCCESS + Physical verify PASS + evidence artifact + System1 isolation PASS. If attempt 2 reproduces TimeoutError, do not loop retries; open/route a DATA_LANE verifier-resiliency correction with stage-level diagnostics/retry hardening before another annual continuation.
+
+
+## 2026-10-06 2021 TPEx canonical revision blocker
+
+Run #18 attempt 2 produced artifact `11409737982` and conclusively changed the blocker classification from infrastructure quota / transient timeout to `SOURCE_REVISION_WITH_CANONICAL_A1_CHANGE`. The D1 quota blocker is resolved; the market-year remains unaccepted because 698 canonical A1 rows changed on official date 2021-01-14. Evidence path: `system2/evidence/S2_HISTORICAL_TPEX_2021_REVISION_BLOCKER_V0_1.json`. Exact continuation is revision-lineage engineering, not another blind retry.
+
+
+## 2026-10-06 continuation after explicit 2021 TPEx revision block
+
+Schema inspection confirms the current cold manifest contract is single-version per `(market, symbol, year, price_space)` via a UNIQUE constraint. It intentionally cannot accept a second canonical version by overwriting the first immutable pack. A future revision layer must therefore be separate from the baseline cold manifest and must preserve explicit observed/captured timing.
+
+CORR-001 acceptance permits each later market-year to have either durable completion or an explicit blocked/deferred receipt. Therefore the 2021 TPEx canonical-revision blocker does not require DATA_LANE to stop annual population of independent later market-years.
+
+Two active continuations are now valid and non-conflicting:
+1. keep 2021 TPEx BLOCKED while revision-lineage/as-of semantics are engineered and verified;
+2. continue annual cold-history population with 2022 TWSE, then 2022 TPEx, preserving the same physical acceptance standard and explicit blockers.
+
+Immediate executable continuation: fresh workflow_dispatch `year=2022`, `market=TWSE` from latest main. Do not use rerun of run #18 because its inputs are 2021/TPEX. After 2022 TWSE terminal completion, perform full Physical verify/artifact/System1-isolation readback before acceptance.
+
+Workflow URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/workflows/system2-historical-pack-2017-backfill.yml

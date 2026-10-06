@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "D03_EXECUTION_CLOCK_SENSITIVITY_SCHEMA_V0_1",
+  "updatedAt": "2026-10-06T20:07:00+08:00",
+  "owner": "D03",
+  "classification": "RESEARCH_ONLY_OUTCOME_CLOSED",
+  "formalCoreImpact": "NONE_LOCKED",
+  "semanticRefinement": {
+    "oldBoolean": "sameCloseFill",
+    "narrowedMeaning": "SAME_CLOSING_AUCTION_FILL_USING_CLOSE_THAT_FINALIZED_SIGNAL",
+    "sameNumericalCloseAtLaterVenueMayBeValid": true
+  },
+  "executionVenues": {
+    "CLOSING_CALL_AUCTION": {
+      "venueId": "TWSE_CLOSING_CALL_AUCTION",
+      "ordinaryMatchTime": "13:30",
+      "signalMayDependOnFinalClose": false,
+      "fillGuaranteed": false
+    },
+    "POST_CLOSE_BOARD_LOT_FIXED_PRICE": {
+      "venueId": "TWSE_AFTER_HOURS_FIXED_PRICE_BOARD_LOT",
+      "orderWindow": [
+        "14:00",
+        "14:30"
+      ],
+      "matchTime": "14:30",
+      "executionPriceSource": "SAME_DAY_OFFICIAL_CLOSE",
+      "standardTradingUnitRequired": true,
+      "fillGuaranteed": false,
+      "samePricePriority": "COMPUTER_RANDOM"
+    },
+    "AFTER_MARKET_ODD_LOT": {
+      "venueId": "TWSE_AFTER_MARKET_ODD_LOT",
+      "orderWindow": [
+        "13:40",
+        "14:30"
+      ],
+      "matchRule": "CALL_AUCTION_AT_ORDER_WINDOW_END",
+      "limitOrderOnly": true,
+      "executionPriceSource": "VENUE_MATCH_NOT_ASSUMED_OFFICIAL_CLOSE",
+      "fillGuaranteed": false
+    },
+    "NEXT_SESSION_OPENING_CALL": {
+      "venueId": "TWSE_NEXT_SESSION_OPENING_CALL",
+      "preopenOrderWindow": [
+        "08:30",
+        "09:00"
+      ],
+      "ordinaryMatchTime": "09:00",
+      "executionPriceSource": "NEXT_SESSION_AUCTION_MATCH",
+      "fillGuaranteed": false
+    },
+    "NEXT_SESSION_CONTINUOUS": {
+      "venueId": "TWSE_NEXT_SESSION_FIRST_EXECUTABLE_CONTINUOUS",
+      "executionPriceSource": "ACTUAL_OR_MODELED_FIRST_EXECUTABLE_MATCH",
+      "fillGuaranteed": false
+    }
+  },
+  "requiredReceiptFields": [
+    "receiptVersion",
+    "factorId",
+    "factorVersion",
+    "signalKnownAt",
+    "decisionCutoffAt",
+    "executionVenueId",
+    "marketRuleVersion",
+    "venueRuleVersion",
+    "tradingUnitRuleVersion",
+    "sessionCalendarVersion",
+    "orderSubmittedAt",
+    "matchEligibleAt",
+    "executionPriceSource",
+    "fillModelVersion",
+    "fillStatus",
+    "requestedQuantity",
+    "executedQuantity",
+    "fallbackPolicyId",
+    "executionPolicyFamilyId",
+    "commonSupportHash",
+    "terminalState"
+  ],
+  "allowedFillStates": [
+    "NOT_ATTEMPTED",
+    "PENDING",
+    "NO_FILL",
+    "PARTIAL_FILL",
+    "FULL_FILL",
+    "BLOCKED"
+  ],
+  "allowedTerminalStates": [
+    "EXECUTION_CLOCK_METHOD_READY",
+    "SAME_CLOSING_AUCTION_LOOKAHEAD_FORBIDDEN",
+    "POST_CLOSE_FIXED_PRICE_ELIGIBLE_UNCERTAIN_FILL",
+    "AFTER_HOURS_FIXED_PRICE_UNAVAILABLE",
+    "AFTER_MARKET_ODD_LOT_REQUIRED",
+    "SIGNAL_FINALITY_TOO_LATE_FOR_VENUE",
+    "NEXT_OPEN_EXECUTION_REQUIRED",
+    "NO_FILL",
+    "PARTIAL_FILL",
+    "VENUE_SUPPORT_BIASED",
+    "EXECUTION_POLICY_SELECTION_UNCONTROLLED",
+    "MARKET_RULE_VERSION_INCOMPATIBLE",
+    "COST_OR_FILLABILITY_UNRESOLVED"
+  ],
+  "invariants": {
+    "closeFinalizedSignalCannotFillOwnClosingAuction": true,
+    "sameNumericalCloseAtLaterVenueIsNotAutomaticallyLookahead": true,
+    "signalKnownBeforeOrderSubmissionRequired": true,
+    "actualSecurityFinalityClockRequired": true,
+    "fillCannotBeInferredFromPriceExistence": true,
+    "boardLotOddLotSeparationRequired": true,
+    "fallbackMustBePreregistered": true,
+    "pathSearchConsumesPolicyBudget": true,
+    "noFillIsNotZeroReturn": true,
+    "partialFillUsesExecutedQuantity": true,
+    "historicalVenueRuleVersionRequired": true
+  },
+  "genericFinalCloseBaseline": "NEXT_SESSION_EXECUTABLE_PATH",
+  "noClaim": {
+    "postCloseFillGuaranteed": false,
+    "nextOpenFillGuaranteed": false,
+    "productionExecutionChange": false,
+    "empiricalAlpha": true,
+    "formalPromotion": true
+  },
+  "maturityImpact": "NONE_56_7_PERCENT"
+}
