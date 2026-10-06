@@ -3676,3 +3676,11 @@ D03 now separates decision-time predictive information from contemporaneous asso
 The 16-case executable oracle passes and uses no outcome data. Timing consistency supports predictive incrementality only, not structural causality. No maturity or Formal change.
 
 Exact next: external machine readback first; otherwise freeze the consumer timing-receipt schema/mapping, maturity-neutral.
+
+## TI-1195 through TI-1204 — System2 S2-07 bounded technical-continuity readback (2026-10-07)
+
+System2 physical run `37498936053` proves one bounded TPEX 4806 capital-reduction event can reconcile RAW close 10.4 to official reference price 14.87 and separate residual resume open/close movement without history mutation. The evidence is materially useful for corporate-action contamination control.
+
+Promotion is rejected because the official event knowledge clock is historical UNKNOWN: `firstKnownAt` and `availableAt` are null and PIT replay is false. One selected positive lineage case cannot establish all-history continuity, OOS, walk-forward, cost, fillability, market-state robustness or independent alpha. D03 remains 56.7%; D03-09/D03-10 remain L2/40; raw gate 2/3; outcomes CLOSED; Formal Core LOCKED.
+
+Exact next is a prospectively timestamped official-event version before the decision cutoff, followed by genuine parent binding and complete expected-parent reconciliation.

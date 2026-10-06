@@ -5766,3 +5766,78 @@ wait for one of the actual external blockers to change: System2 D03 dedup diagno
 
 ### Exact next continuation
 Re-read the five external blockers. If unchanged, do not open a new semantic/governance tranche. The next legitimate D03 progress must consume a newly landed System2 dedup receipt, System1 redundancy receipt, D16 D03 method/incrementality receipt, raw-source observer receipt, or genuine cutoff-bearing C1 parent through the already-frozen acceptance oracles.
+
+## TI-1195 through TI-1204 — System2 S2-07 bounded technical-continuity incremental readback (2026-10-07)
+
+Canonical artifacts:
+- `research/D03_SYSTEM2_S207_TECHNICAL_CONTINUITY_READBACK_20261007_V0_1.md`;
+- `research/d03_system2_s207_technical_continuity_readback_20261007_v0_1.json`;
+- `research/test_d03_system2_s207_technical_continuity_readback_v0_1.mjs`.
+
+### TI-1195~1197 — one physical corporate-action boundary is mechanically reconciled
+
+System2 workflow run `37498936053`, job `112390610918`, exact head `90977b9caed9b3c76b96ac447a3be3d231a416b4`, completed SUCCESS.
+
+For TPEX 4806 / capital reduction:
+- official pre-action close = 10.4;
+- official resume reference price = 14.87;
+- official ratio = 1.4298076923076921;
+- transformed pre-suspension close = 14.87;
+- resume RAW open = 13.7;
+- resume RAW close = 13.4;
+- residual open gap = -7.8681909886%;
+- residual close move = -9.8856758574%.
+
+The mechanical reference-price reset is separable from residual observed movement without mutating RAW history or persisting adjusted history.
+
+### TI-1198~1200 — PIT replay remains blocked
+
+The official event has:
+- `knowledgeTimeMode=HISTORICAL_UNKNOWN`;
+- `firstKnownAt=null`;
+- `availableAt=null`;
+- `pitEventReplayEligible=false`.
+
+Therefore the accepted state is:
+`BOUNDED_CONTINUITY_BRIDGE_READY_PIT_BLOCKED`.
+
+Frozen anti-backfill rule:
+current retrieval of an official historical event cannot be backdated into the 2026-10-02 decision clock.
+
+### TI-1201~1203 — support, counterevidence and bias boundary
+
+Support:
+- exact official reference pair and two RAW boundary bars physically reconcile;
+- dedicated tests, physical probe, read-only guard and System1 isolation pass;
+- rows written = 0.
+
+Counterevidence / alternative explanation:
+- one positive lineage case is selection-conditioned and cannot certify the other blocked cases;
+- one event date cannot establish all-history continuity;
+- residual movement is descriptive and not ADX, Bollinger, momentum, reversal or alpha evidence;
+- no outcome, threshold, factor fit or independent information root was created.
+
+Validation disposition:
+- PIT = BLOCKED fail-closed;
+- OOS / walk-forward = UNKNOWN, not opened;
+- selection bias = one V1.0-positive lineage case;
+- look-ahead = blocked from replay;
+- multiple testing / overfitting = no outcome fit performed;
+- date clustering = single event date;
+- cost, fillability and market-state dependence = UNKNOWN.
+
+### TI-1204 — maturity and routing decision
+
+This narrows one continuity blocker from unknown price geometry to unknown historical availability clock, but does not close the D03 raw-source/prospective observer gate.
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09 and D03-10 remain L2/40;
+- raw source/version gate remains 2/3;
+- technicalObserverR1 remains BLOCKED;
+- outcomes remain CLOSED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`;
+- Formal Core remains LOCKED.
+
+Exact next:
+consume only a prospectively timestamped official-event version whose `firstKnownAt` / `availableAt` precede the decision cutoff, then bind it to a genuine cutoff-bearing parent and complete expected-parent reconciliation. Do not generalize the 4806 event-boundary bridge to all-history technical continuity. The other four external blockers remain unchanged.
