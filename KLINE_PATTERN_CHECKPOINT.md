@@ -4422,3 +4422,116 @@ No maturity or Formal change is authorized by this routing.
 7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 8. Next D01 science: separate prior-zone response from overnight inventory/risk transfer and opening liquidity imbalance when no public information event is identified.
 9. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-064 (2026-10-07)
+
+### DL-064 — Prior-zone response vs overnight inventory / opening liquidity imbalance
+- DL-063 separated identified overnight information/opening repricing from prior structural memory.
+- DL-064 handles the residual "no identified public event" case.
+- Core correction:
+  NO_PUBLIC_EVENT_IDENTIFIED != NO_INFORMATION.
+  NO_PUBLIC_EVENT_IDENTIFIED != STRUCTURAL_MEMORY_PROVEN.
+- External evidence motivates the firewall:
+  New York Fed overnight-drift research links overnight reversals to prior closing order imbalances and inventory-risk/immediacy mechanisms;
+  opening-auction research shows pre-open order imbalance can be resolved through opening price discovery;
+  order imbalance itself is not uniquely private information and can reflect liquidity demand/inventory transfer.
+- Canonical owners consumed:
+  D05-03 spread;
+  D05-04 depth;
+  D05-05 OFI;
+  D05-06 opening/closing auction;
+  D05-09 liquidity regime;
+  D11-13 no-event completeness;
+  D17-01 source coverage;
+  D17-02 first-known clocks;
+  D17-13 scheduled/unscheduled taxonomy;
+  D12-10 night futures;
+  D14 execution/liquidity context.
+- Public-event coverage states:
+  PUBLIC_EVENT_IDENTIFIED;
+  NO_PUBLIC_EVENT_IDENTIFIED_COVERAGE_COMPLETE;
+  PUBLIC_EVENT_STATUS_UNKNOWN;
+  PUBLIC_EVENT_DISCOVERED_AFTER_OPEN;
+  SOURCE_COVERAGE_DATA_BLOCKED.
+- E1 no-event-complete requires owner-certified required source lanes and capture clocks for the overnight interval.
+  Incomplete coverage remains UNKNOWN.
+- Even E1 does not identify private information or trader intent.
+  LATENT_CAUSE_UNIDENTIFIED remains possible.
+- Prior-close / opening pressure contexts preserve only native observations:
+  prior-close OFI/signed volume;
+  prior closing-auction state/imbalance where natively observed;
+  spread/depth/liquidity;
+  opening trial depth / displayed or native imbalance.
+- Hidden full-book imbalance may not be inferred from top-five depth.
+- Inventory/pressure states:
+  NO_CERTIFIED_INVENTORY_PRESSURE_CONTEXT;
+  PRIOR_CLOSE_SELL_PRESSURE_OBSERVED;
+  PRIOR_CLOSE_BUY_PRESSURE_OBSERVED;
+  PRIOR_CLOSE_AUCTION_PRESSURE_OBSERVED;
+  OPENING_LIQUIDITY_IMBALANCE_OBSERVED;
+  PRIOR_CLOSE_AND_OPENING_PRESSURE_CHAIN;
+  PRESSURE_DIRECTION_UNKNOWN;
+  INVENTORY_CONTEXT_DATA_BLOCKED.
+- Public-event × pressure matrix is preserved rather than collapsing "no news" into a structural bucket.
+- Strict residual cohort:
+  STRICT_NO_EVENT_NO_OBSERVED_PRESSURE
+  requires complete event-source coverage, complete pressure coverage, no observed qualifying pressure, resolved corporate action and replay-safe auction context.
+- Even in that cohort:
+  NO_OBSERVED_PRESSURE != NO_LATENT_PRESSURE.
+  no-information claims remain prohibited.
+- Reverse engineering is prohibited:
+  return -> OFI;
+  top-five -> hidden full book;
+  reversal -> inventory;
+  price/book -> trader identity/intent.
+- Opening reversal is consistent with temporary pressure but is not causal proof of inventory mechanics.
+- Primary comparator:
+  same opening pressure/liquidity state away from a valid prior zone vs at a valid prior zone.
+- Future D16 ladder:
+  L0 RAW_PRIOR_ZONE_OPENING_RESPONSE;
+  L1 PUBLIC_EVENT_COMPLETENESS_CONTROLLED;
+  L2 PRIOR_CLOSE_PRESSURE_CONTROLLED;
+  L3 OPENING_AUCTION_IMBALANCE_CONTROLLED;
+  L4 OPENING_SPREAD_DEPTH_LIQUIDITY_CONTROLLED;
+  L5 NIGHT_FUTURES_GLOBAL_CONTEXT_CONTROLLED;
+  L6 GENERIC_OPENING_PRESSURE_COMPARATOR_CONTROLLED;
+  L7 EVENT_X_PRESSURE_MATRIX_CONTROLLED;
+  L8 STRICT_NO_EVENT_NO_OBSERVED_PRESSURE_COHORT;
+  L9 STRUCTURAL_MEMORY_RESIDUAL_CANDIDATE;
+  L10 PROSPECTIVE_MULTI_DATE_REPLICATION.
+- Future interpretations:
+  public-event explanation;
+  prior-close inventory-pressure explanation;
+  opening order-imbalance explanation;
+  opening-liquidity explanation;
+  multiple pressure channels;
+  no-public-event but cause unidentified;
+  structural-memory residual;
+  source coverage incomplete;
+  not evaluable.
+- SDA-001 remains open; cross-session structure/order-flow/opening-price/reversal states are one dependent process by default.
+- SDA-002 remains open; all source/event/pressure receipts require first-known clocks before predictor freeze.
+- New files:
+  - research/PATTERN_NO_EVENT_OPENING_LIQUIDITY_FIREWALL_V0_1.md
+  - research/pattern_no_event_opening_liquidity_firewall_v0_1.json
+  - research/pattern_no_event_opening_liquidity_firewall_v0_1.mjs
+  - research/test_pattern_no_event_opening_liquidity_firewall_v0_1.mjs
+  - research/PATTERN_NO_EVENT_OPENING_LIQUIDITY_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-064
+
+1. Keep DL-061..DL-064 durable/stacked until the unrelated shared SDA-016 governance regression is synchronized by its canonical owner.
+2. Once shared CI is green, land DL-061 first and rebase/land DL-062..DL-064 in order.
+3. Require D11-13/D17 owner coverage before calling any overnight row no-public-event-complete.
+4. Preserve observed pressure vs latent/unidentified pressure semantics; never infer inventory/intent from returns.
+5. Hand L0-L10 residual inference to D16.
+6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+7. Next D01 science: separate structural response from stale/non-synchronous opening prices and illiquidity-driven apparent zone touches in thinly traded stocks.
+8. No outcome join / no runtime wiring / no Formal change.
