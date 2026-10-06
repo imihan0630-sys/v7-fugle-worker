@@ -2395,3 +2395,94 @@ Exact next continuation:
 5. only after upstream pre-outcome observability passes, begin prospective `S22-T17~T24`;
 6. before any economic outcome inference, freeze exact ModelMethodReceipt, MDE/precision target, stopping rule, and outer research-stream confirmatory state or keep analysis exploratory;
 7. Room00 remains sole SDA-022 closure authority.
+
+
+## 2026-10-06 SDA-022 continuation — System1 5/5 PASS + experiment stream fully registered
+
+Canonical whole-ticket oracle:
+- `shared-knowledge/sda022_acceptance_oracle_v0_1.json`;
+- 28 blocking tests;
+- Room00 closure;
+- outcomes CLOSED.
+
+### Newly validated System1 family
+
+Evidence:
+- `shared-knowledge/system1_policy_fingerprint_receipt_v0_1.json`;
+- merge `862b8c903e81e0945ba030b396b8a7d661f91f1e`.
+
+Independent Room11 readback:
+- source artifact SHA matches = 3/3;
+- effective ranking chain matches receipt;
+- candidate/rank dependency on System2 = false/false;
+- lifecycle dependency on System2 = false;
+- Formal mutation = false;
+- merge touched only workflow + fingerprint receipt + dedicated test.
+
+Results:
+- `S22-T01 PASS`;
+- `S22-T02 PASS`;
+- `S22-T03 PASS`;
+- `S22-T04 PASS`;
+- `S22-T05 PASS`.
+
+Durable return:
+- `research/SDA022_ROOM11_SYSTEM1_FINGERPRINT_VALIDATION_RETURN_20261006_V0_1.md`;
+- `research/SDA022_ROOM11_SYSTEM1_FINGERPRINT_VALIDATION_RETURN_20261006_V0_1.json`.
+
+No independent workflow-run evidence was visible through the GitHub connector for the merge commit; do not overclaim CI visibility.
+
+### D16-owned family already passed
+
+- `S22-T25~T28 = 4/4 PASS`.
+
+### New outer-stream enrollment
+
+- `research/D16_SDA022_OUTER_STREAM_ENROLLMENT_20261006_V0_1.json`;
+- researchStreamId = `ROOM11_CROSS_SYSTEM_INCREMENTALITY_STREAM_20261006_V0_1`;
+- hypothesis = `SDA022-H01-SYSTEM1-VS-SHORT_MOMENTUM-D5`;
+- experimentFamilyId = `D16-SDA022-01`;
+- stream objective = `EXPLORATORY_ONLY`;
+- outcomeInspectedHypothesisCount = 0.
+
+No confirmatory multiplicity claim exists yet.
+
+### New stopping rule
+
+- `research/D16_SDA022_D5_STOPPING_RULE_20261006_V0_1.md`;
+- `research/D16_SDA022_D5_STOPPING_RULE_20261006_V0_1.json`.
+
+Primary look:
+`SINGLE_PRIMARY_LOOK`.
+
+Before first primary economic-outcome opening:
+- no efficacy peeking;
+- no futility peeking;
+- no D1/D3/D10 rescue;
+- no predictor/horizon/strategy switching;
+- only outcome-blind readiness/integrity/coverage checks.
+
+### Central registry
+
+`research/EXPERIMENT_REGISTRY.md` now contains `D16-SDA022-01`.
+
+Current canonical SDA-022 status:
+- System1 `T01~T05 = 5/5 PASS`;
+- System2 `T06~T10 = PENDING`;
+- physical NC-T01 `T11~T16 = PENDING`;
+- prospective `T17~T24 = NOT_STARTED`;
+- D16 prereg `T25~T28 = 4/4 PASS`;
+- whole ticket = `PARTIAL_PASS`.
+
+No maturity change:
+- D16 = 60%;
+- D18 = 52%.
+
+Exact next:
+1. re-read latest main/queue;
+2. actual System2 per-strategy fingerprint lands -> validate `S22-T06~T10` only;
+3. physical NC-T01 lands -> validate `S22-T11~T16` only;
+4. after both upstream chains pass, start prospective `S22-T17~T24`;
+5. before primary outcome opening, freeze exact model-state encoding, ModelMethodReceipt, MDE/precision target and explicit confirmatory outer-stream method OR retain exploratory-only interpretation;
+6. no economic-outcome peeking;
+7. Room00 remains sole closure authority.
