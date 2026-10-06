@@ -23755,3 +23755,31 @@ New durable artifacts:
 - research/PATTERN_SHOCK_SNAPBACK_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-053 — Persistent structural rejection vs inventory replenishment / queue refill (2026-10-06)
+
+DL-052 showed that a fast reversal near a structural zone can be shock snapback or price-discovery completion. DL-053 adds a narrower microstructure mechanism: displayed depth can be depleted and then replenished after the same shock.
+
+This matters because order-book resiliency research documents that spread, depth and order-submission intensity can recover after aggressive flow. A bounce that occurs while displayed depth reforms is therefore not automatically a structural-memory event.
+
+The owner boundary is explicit. D05 owns true depth / queue / replenishment / resiliency semantics and event-clock validity. D01 only records the structural zone and asks whether owner-certified liquidity recovery is spatially or temporally related to that zone.
+
+Four states must remain separate: preexisting depth survived, depth was depleted then refilled, depth was depleted without refill, and depth state is unknown. If the available data are only sparse open/10m/15m/30m snapshots, true refill is not identified and the correct state is REFILL_IDENTIFIABILITY_BLOCKED.
+
+Displayed depth is not committed demand. It may be cancelled or displaced, and public depth does not identify hidden liquidity. Likewise, a refill pattern does not prove inventory management, market-maker defence or structural memory. Those stronger mechanism labels are prohibited without owner-grade evidence.
+
+The critical timing firewall is that post-opportunity refill is a mediator/mechanism state. refillFirstObservedAt, refillConfirmedAt, depthRecoveryAt and priceRecoveryAt may not be backfilled into the predictor snapshot. Preexisting depth can enter baseline context only if it was actually observed before predictorFreezeAt.
+
+The primary future falsification compares generic post-shock replenishment with zone-associated replenishment under comparable shock, spread, depth, relative tick, liquidity regime, transaction intensity and session conditions. If zone-associated refill does not add beyond generic resiliency, the structural-memory interpretation weakens.
+
+Sixteen adversarial tests are authored. They block sparse-snapshot refill claims, reject invalid D05 event clocks, distinguish survival from depletion/refill, preserve unknown states, prevent future refill clocks from entering baseline, keep refill localization descriptive, require a generic comparator, and prevent multiple mechanism receipts from multiplying independent sample count.
+
+New durable artifacts:
+- research/PATTERN_QUEUE_REFILL_VS_STRUCTURAL_REJECTION_V0_1.md
+- research/pattern_queue_refill_vs_structural_rejection_v0_1.json
+- research/pattern_queue_refill_vs_structural_rejection_v0_1.mjs
+- research/test_pattern_queue_refill_vs_structural_rejection_v0_1.mjs
+- research/PATTERN_QUEUE_REFILL_VS_STRUCTURAL_REJECTION_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No runtime wiring and no Formal change. Formal Core remains LOCKED.

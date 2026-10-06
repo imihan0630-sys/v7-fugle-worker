@@ -3167,3 +3167,95 @@ No maturity or Formal change is authorized by this routing.
 6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 7. Next D01 science: separate persistent rejection from inventory replenishment / queue refill around the zone, especially when displayed depth reforms after the shock.
 8. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-053 (2026-10-06)
+
+### DL-053 — Persistent structural rejection vs inventory replenishment / queue refill
+- DL-052 separated structural rejection from shock snapback / temporary impact recovery / price-discovery completion.
+- DL-053 adds the next microstructure falsification: price rejection plus later displayed-depth recovery can reflect ordinary liquidity replenishment / queue refill rather than structural memory.
+- External evidence supports rapid post-shock normalization of spread/depth/order-submission intensity in limit-order books; price recovery and liquidity recovery can follow different clocks.
+- Owner boundary remains strict:
+  D05 owns displayed depth, queue/depth imbalance, quote freshness, replenishment/resiliency, event-clock validity and hidden-liquidity/cancellation caveats.
+  D01 owns only the relation between the frozen structural zone and owner-certified liquidity events.
+- D01 does not reconstruct queue events from OHLCV and does not infer hidden liquidity, spoofing, inventory motive or market-maker intent.
+- Four distinct depth states are frozen:
+  PREEXISTING_DEPTH_SURVIVED;
+  DEPTH_DEPLETED_THEN_REFILLED;
+  DEPTH_DEPLETED_NO_REFILL;
+  DEPTH_STATE_UNKNOWN.
+  If event-clock/source semantics are inadequate:
+  REFILL_IDENTIFIABILITY_BLOCKED.
+- Depth survival != depth replenishment.
+  A quote that remained visible through the interaction is different from depth that was consumed and later reappeared.
+- Displayed depth != committed demand.
+  Refill != proven structural memory.
+  Refill != proven inventory rebalancing.
+- Refill localization relative to the structural zone is descriptive only.
+  No universal tick / ATR / percentage proximity threshold is frozen.
+- Generic mechanism comparator is mandatory:
+  G0 generic post-shock refill under matched liquidity/shock/session context;
+  G1 zone-associated refill under comparable context.
+  If G1 adds no representation beyond G0, ordinary order-book resiliency is sufficient.
+- Mandatory timing clocks:
+  structuralOpportunityAt;
+  predictorFreezeAt;
+  depthObservedPreFreezeAt;
+  depletionStartedAt;
+  depletionPeakAt;
+  refillFirstObservedAt;
+  refillConfirmedAt;
+  depthRecoveryAt;
+  priceRecoveryAt.
+- Any refill/recovery observed after predictorFreezeAt is post-treatment / mechanism state and cannot be backfilled into baseline predictors.
+- D05 event-clock validity is required for a true refill label.
+  Sparse open/10m/15m/30m snapshots cannot identify seconds-scale replenishment.
+  If provider semantics cannot certify the intended event process, the mechanism remains blocked or uses weaker displayed-depth-change language.
+- Continuous-session unconstrained observations remain the primary lane.
+  Opening/closing auction, VI, price-limit constrained and trial/noncontinuous states remain separate.
+- DL-053 is nested after DL-052; it does not replace the shock/snapback controls.
+- Future D16 ladder:
+  R0 RAW_TOUCH_RESPONSE;
+  R1 DL052_SHOCK_SNAPBACK_CONTROLLED;
+  R2 PREEXISTING_DEPTH_CONTROLLED;
+  R3 DEPTH_SURVIVAL_VS_DEPLETION_SEPARATED;
+  R4 GENERIC_REFILL_CONTROLLED;
+  R5 ZONE_LOCALIZATION_CONTROLLED;
+  R6 REFILL_TIMING_MEDIATOR_SEPARATED;
+  R7 STRUCTURAL_REJECTION_RESIDUAL_CANDIDATE;
+  R8 MULTI_DATE_MULTI_TICK_TIER_REPLICATION.
+- Future interpretations:
+  Q0 PREEXISTING_DEPTH_EXPLANATION;
+  Q1 GENERIC_RESILIENCY_EXPLANATION;
+  Q2 REFILL_MEDIATED_REJECTION;
+  Q3 ZONE_LOCALIZED_REFILL_ASSOCIATION;
+  Q4 STRUCTURAL_REJECTION_RESIDUAL;
+  Q5 MICROSTRUCTURE_NOT_IDENTIFIABLE;
+  Q6 NOT_EVALUABLE.
+- One structural opportunity remains one causal parent even with multiple microstructure receipts.
+  effectiveIndependentEvidenceCount remains 1 by default.
+- New files:
+  - research/PATTERN_QUEUE_REFILL_VS_STRUCTURAL_REJECTION_V0_1.md
+  - research/pattern_queue_refill_vs_structural_rejection_v0_1.json
+  - research/pattern_queue_refill_vs_structural_rejection_v0_1.mjs
+  - research/test_pattern_queue_refill_vs_structural_rejection_v0_1.mjs
+  - research/PATTERN_QUEUE_REFILL_VS_STRUCTURAL_REJECTION_D16_HANDOFF_V0_1.md
+- 16 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain open under canonical queue.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-053
+
+1. Reconcile the DL-053 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-053 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve depth survival vs depletion/refill vs unknown as distinct states.
+4. Reject sparse-snapshot refill identification unless D05 event-clock evidence is valid.
+5. Keep all post-opportunity refill/recovery clocks out of baseline predictors.
+6. Hand R0-R8 / Q0-Q6 common-support and mechanism-separation inference to D16.
+7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+8. Next D01 science: separate persistent structural rejection from repeated passive-depth display that is continuously cancelled / reposted (quote flicker) rather than economically durable liquidity.
+9. No runtime wiring / no Formal change.

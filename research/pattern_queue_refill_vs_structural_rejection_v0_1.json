@@ -1,0 +1,29 @@
+{
+  "schemaVersion":"pattern-queue-refill-vs-structural-rejection-v0.1",
+  "updated":"2026-10-06 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "owners":{
+    "D01":"frozen zone relation and opportunity semantics",
+    "D05":"depth/queue/resiliency/event-clock primitives",
+    "D16":"common-support and mechanism inference"
+  },
+  "immediateBouncePlusDepthRefillEqualsStructuralMemory":false,
+  "displayedDepthEqualsCommittedDemand":false,
+  "refillEqualsInventoryMotive":false,
+  "postOpportunityRefillAsBaseline":"PROHIBITED",
+  "sparseSnapshotEqualsTrueQueueRefill":false,
+  "genericRefillComparatorRequired":true,
+  "d05OwnerReceiptRequired":true,
+  "states":[
+    "PREEXISTING_DEPTH_SURVIVED",
+    "DEPTH_DEPLETED_THEN_REFILLED",
+    "DEPTH_DEPLETED_NO_REFILL",
+    "DEPTH_STATE_UNKNOWN",
+    "REFILL_IDENTIFIABILITY_BLOCKED"
+  ],
+  "futureInferenceLadder":["R0","R1","R2","R3","R4","R5","R6","R7","R8"],
+  "outcomeJoin":"CLOSED",
+  "formalOptimizationCandidate":"NONE"
+}
