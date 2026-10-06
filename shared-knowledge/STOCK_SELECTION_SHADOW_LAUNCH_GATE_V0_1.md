@@ -29,8 +29,8 @@ Required:
 Current evidence:
 - SDA-001/004 research controls + System1 PR #608 core diagnostics;
 - SDA-009 Room07 leave-one-out contract;
-- SDA-016 Room11 V0.2 oracle T01-T30;
-- SDA-017 Room11 V0.2 oracle T01-T40.
+- SDA-016 current Room11 oracle V0.5 T01-T58;
+- SDA-017 current Room11 oracle V0.4 T01-T56.
 
 S0 does not prove Alpha and authorizes no Formal mutation.
 
@@ -117,7 +117,7 @@ Required for a candidate change:
 - positive and negative cases preserved.
 
 For Regime-conditioned promotion:
-- SDA-017 V0.2 support/episode/fit-clock gates must additionally pass;
+- SDA-017 current V0.4 support/episode/policy-candidate/fit-clock gates must additionally pass;
 - regime construction must be decision-time frozen;
 - unsupported states remain UNKNOWN/ABSTAIN;
 - genuine prospective multi-episode evidence is required.
@@ -169,7 +169,7 @@ Highest-value shortest-path work:
 7. Only then prepare any S3 owner-review candidate.
 
 Parallel but non-blocking to first Selection Shadow:
-- D02 PVE-245 cleanup;
+- D02 PVE-250 / PR #668 owner-gated Production integration and later clean H001 evidence (parallel; not required for first pure Selection Shadow);
 - D06 SDA-007 primitive lineage;
 - D04 prospective volatility evidence;
 - D20/D19 challenger evidence;
@@ -200,3 +200,22 @@ Formal mutation S4 = OWNER_APPROVAL_REQUIRED.
 Trading Shadow promotion gate T1 = NOT_READY.
 
 This verdict is a governance snapshot and must be recomputed from latest main whenever the relevant SDA engineering/evidence changes.
+
+
+## 2026-10-06 systemwide readiness reconciliation
+
+Latest audit:
+shared-knowledge/SYSTEMWIDE_LAUNCH_READINESS_GOVERNANCE_AUDIT_20261006_V0_1.md
+
+Current facts:
+- PR #644 is merged; V8.19 is deployed and Production-verified as a provenance partial pass.
+- S1 remains PARTIAL because the SDA-001/004 three schema deltas, SDA-009 System1 LOO diagnostic, authoritative append-only Formal->C1 binding and first genuine parent receipt are still incomplete.
+- Current SDA-016 authority is V0.5 / 58 blocking tests.
+- Current SDA-017 authority is V0.4 / 56 blocking tests.
+- D02 has advanced to PVE-250 / draft PR #668 with green technical checks and explicit owner gate; this does not block first pure Selection Shadow.
+- SDA-022 is a separate cross-system independence lane: System1 fingerprint and D16 prereg are accepted; System2 fingerprints and physical NC-T01 remain pending.
+
+Gate states remain:
+S0 PASS / S1 PARTIAL / S2 NOT_READY / S3 NOT_READY / S4 OWNER_APPROVAL_REQUIRED / T1 NOT_READY.
+
+No Formal behavior change is authorized by this reconciliation.
