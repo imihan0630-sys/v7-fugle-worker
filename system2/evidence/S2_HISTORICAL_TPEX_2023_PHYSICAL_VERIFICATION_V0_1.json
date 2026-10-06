@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_DURABLE_EVIDENCE_V0_2",
+  "market": "TPEX",
+  "year": 2023,
+  "disposition": "DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL",
+  "acceptedRun": {
+    "runId": 37537013825,
+    "runNumber": 24,
+    "headSha": "608384f9638989c78d97475fe9417bbfdfa51ade",
+    "workflowConclusion": "success",
+    "completedAt": "2026-10-06T22:39:30Z",
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37537013825",
+    "artifactId": 11448741341,
+    "artifactName": "system2-historical-coverage-TPEX-2023",
+    "artifactDigest": "sha256:b69cc4faa66b236cbf3de3afa7807f64f4232ed7494dfb84a29a0c255ffbd4ee",
+    "artifactCreatedAt": "2026-10-06T22:39:27Z",
+    "artifactExpiresAt": "2026-11-05T22:39:26Z",
+    "artifactUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37537013825/artifacts/11448741341"
+  },
+  "backfill": {
+    "tradingDateCount": 239,
+    "officialRowCount": 193327,
+    "packCount": 824,
+    "symbolCount": 824,
+    "firstMarketDate": "2023-01-03",
+    "lastMarketDate": "2023-12-29",
+    "insertedObjectCount": 824,
+    "identicalObjectCount": 0,
+    "insertedManifestCount": 824,
+    "identicalManifestCount": 0,
+    "system1RuntimeChanged": false
+  },
+  "storageVerification": {
+    "state": "PASS",
+    "receiptId": "S2HCR-1f198e165c8b9eb7aeb03af57c4d117157615b0d83d4fda770e048a4f86d6e64",
+    "batchId": "S2-HIST-PACK-YEAR|TPEX|2023",
+    "completionReceiptState": "COMPLETE",
+    "packCount": 824,
+    "barCount": 193327,
+    "manifestRollingHash": "1f198e165c8b9eb7aeb03af57c4d117157615b0d83d4fda770e048a4f86d6e64",
+    "checkpointState": "COMPLETE",
+    "headObjectCountVerified": 824,
+    "byteGetObjectCountVerified": 824
+  },
+  "sourceReconciliation": {
+    "state": "PASS",
+    "dataIntegrityState": "PASS",
+    "sourceVersionState": "STABLE",
+    "coldRowCount": 193327,
+    "freshOfficialRowCount": 193327,
+    "missingFromColdCount": 0,
+    "absentFromFreshOfficialCount": 0,
+    "sourceRowHashMismatchCount": 0,
+    "canonicalA1ValueMismatchCount": 0,
+    "sourceRevisionOnlyCount": 0,
+    "sourceRevisionDateCount": 0,
+    "officialTradingDates": 239
+  },
+  "historicalUniverse": {
+    "readiness": "PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION",
+    "registryId": "S2-DATA-TPEX-2023-OBSERVED-INTERVAL-V0.1",
+    "registryHash": "dd99aa5f975080a6df6d99e986b2a0669895c05cd7a9f56d55b0007f65f2d848",
+    "membershipCount": 824,
+    "replayEligibleCount": 824,
+    "currentCount": 796,
+    "delistedCount": null,
+    "unknownStartCount": null,
+    "observedHistoricalOnlyCount": 28,
+    "currentWithoutObservedRowsCount": 0,
+    "officialDelistingUnionComplete": false,
+    "survivorshipCompleteForDataCoverage": false
+  },
+  "coverage": {
+    "expectedSessions": 239,
+    "actualSessions": 239,
+    "historicalUniverseSize": 824,
+    "expectedBars": 193722,
+    "actualBars": 193327,
+    "missingBars": 395,
+    "unknownBars": 395,
+    "suspensionClassifiedMissingBars": 0,
+    "unexpectedBars": 0,
+    "structuralCoverageState": "PASS",
+    "rawCoverageState": "PASS",
+    "symbolSessionReadiness": "PARTIAL_UNKNOWN_GAPS",
+    "pitReadiness": "PASS_CONSERVATIVE_SESSION_FINALITY",
+    "continuityReadiness": "PARTIAL_UNVERIFIED",
+    "technicalPriceReadiness": "PARTIAL_NONPRICE_OBSERVATIONS",
+    "observationStateCounts": {
+      "VALID_OHLC": 190083,
+      "POSITIVE_ACTIVITY_NO_VALID_CLOSE": 1796,
+      "OFFICIAL_ZERO_TRADE_NO_PRICE": 1448
+    },
+    "continuityStateCounts": {
+      "UNVERIFIED": 193327
+    },
+    "mainMissingReasons": {
+      "UNKNOWN_SYMBOL_SESSION_GAP": 395
+    }
+  },
+  "readiness": {
+    "dataCoverageState": "PASS",
+    "replayReadinessState": "PARTIAL",
+    "overallState": "PARTIAL"
+  },
+  "verifierVersion": "S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_4",
+  "correctionDirective": "S2-CORR-20261004-001",
+  "correctionStatusAfterEvidence": "FIX_IN_PROGRESS",
+  "nextMarketYear": {
+    "market": "TWSE",
+    "year": 2024
+  },
+  "protectedBoundaries": {
+    "system1RuntimeChanged": false,
+    "system2StrategyAuthorityChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "capitalOrderAuthorityChanged": false
+  }
+}
