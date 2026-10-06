@@ -259,3 +259,20 @@ Run: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37467099680
 Disposition: 2022 TWSE is accepted for raw A1 data coverage with replay readiness explicitly PARTIAL; UNKNOWN gaps are retained fail-closed and are not treated as raw-source loss.
 
 Next annual continuation: fresh workflow_dispatch `year=2022`, `market=TPEX` from latest main. Keep the separate 2021 TPEx canonical-revision blocker open in parallel; do not overwrite its immutable cold history.
+
+
+## 2026-10-06 2022 TPEx fresh-dispatch run #20
+
+Fresh workflow_dispatch run `37473405416` / #20 was confirmed on branch `main`.
+
+- run head: `f5f33c9f006e249c604f3f19067bf33f2a106117`;
+- event: `workflow_dispatch`;
+- migrate: SUCCESS;
+- annual backfill: IN_PROGRESS at latest readback;
+- Physical verify / evidence artifact / System1 isolation: PENDING.
+
+Execution-drift validation from run head to then-latest main confirmed the annual workflow, backfill script, verifier, official historical sources, listing metadata source, D1 adapter, R2 adapter and cold-pack store are byte-identical. Later main movement therefore does not change the execution semantics of run #20.
+
+The GitHub API does not expose workflow_dispatch inputs in the run payload and the in-progress job log blob is not yet available for readback. The requested continuation is 2022/TPEX; exact year/market inputs must be confirmed from the job log before market-year acceptance.
+
+Run URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37473405416
