@@ -157,8 +157,8 @@ a{color:inherit}
   <div class="strategygrid">
     <div class="strategy"><b>SHORT_MOMENTUM</b><span class="status warn">ASSESSOR PENDING</span><p>短線動能、價量、突破與執行幾何。</p></div>
     <div class="strategy"><b>SWING_GROWTH</b><span class="status warn">ASSESSOR PENDING</span><p>波段成長、趨勢、基本面與估值共振。</p></div>
-    <div class="strategy"><b>INSTITUTIONAL_ACCUMULATION</b><span class="status shadow">SHADOW</span><p>法人連續性、持股結構與價格尚未充分反映。</p></div>
-    <div class="strategy"><b>BLACK_HORSE_ACCUMULATION</b><span class="status shadow">SHADOW</span><p>大戶增加、散戶下降、量能受控與基本面轉折。</p></div>
+    <div class="strategy"><b>INSTITUTIONAL_ACCUMULATION</b><span class="status warn">OWNER REVIEW PENDING</span><p>法人連續性、持股結構與價格尚未充分反映；策略身份尚未取得 owner approval，因此未啟動。</p></div>
+    <div class="strategy"><b>BLACK_HORSE_ACCUMULATION</b><span class="status locked">RESEARCH ONLY</span><p>大戶增加、散戶下降、量能受控與基本面轉折；與 INSTITUTIONAL_ACCUMULATION 的 distinctness 尚未證明，未啟動 Limited Shadow。</p></div>
     <div class="strategy"><b>INDUSTRY_TREND</b><span class="status warn">DATA GATED</span><p>產業循環、供需、價格、庫存與產能位置。</p></div>
     <div class="strategy"><b>FUNDAMENTAL_GROWTH</b><span class="status warn">DATA GATED</span><p>營收、獲利、毛利率、成長與預期差。</p></div>
     <div class="strategy"><b>EVENT_DRIVEN</b><span class="status warn">PIT GATED</span><p>事件傳導、half-life、beneficiary / victim 與失效條件。</p></div>
