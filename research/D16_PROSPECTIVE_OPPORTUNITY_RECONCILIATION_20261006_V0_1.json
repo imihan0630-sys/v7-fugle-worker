@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "D16_PROSPECTIVE_OPPORTUNITY_ATTEMPT_RECONCILIATION_V0_1",
+  "updatedAt": "2026-10-07T07:04:00+08:00",
+  "owner": "D16 / Room11",
+  "contractRef": "research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_3.json",
+  "opportunity": {
+    "opportunityId": "SYSTEM1_C1_PROSPECTIVE:2026-10-06",
+    "experimentFamilyId": "D16-CAL-01",
+    "marketDate": "2026-10-06",
+    "preregisteredWindowId": "SYSTEM1_C1_PROSPECTIVE_POST_V820",
+    "opportunityRuleVersion": "D16_PROSPECTIVE_OPPORTUNITY_LEDGER_V0_3",
+    "expectedWorkflowName": "System 1 C1 Prospective Evidence",
+    "expectedExecutionWindow": {
+      "scheduledLocal": "2026-10-07T00:10:00+08:00",
+      "scheduleCronUtc": "10 16 * * 1-5"
+    },
+    "targetScanDateRule": "COLLECTOR_PREVIOUS_TAIPEI_DATE",
+    "officialSessionState": "VERIFIED_TRADING_SESSION",
+    "marketSessionIdentityHash": "fnv1a64-ascii:09b55090f6bfff40",
+    "obligationState": "EXPECTED_TRADING_SESSION_ATTEMPT"
+  },
+  "marketSessionEvidence": {
+    "sessionEvidenceClass": "DIRECT_SAME_DAY_OFFICIAL_MARKET_ACTIVITY",
+    "authoritativeSourceRefs": [
+      "research/d06_20261006_prospective_capture_session_v0_1.json",
+      "INSTITUTIONAL_CROWDING_RESEARCH.md#IC-083"
+    ],
+    "sourceArtifactShas": [
+      "efe446defa84adf92429e7f2ddb6c1c6fa01bc1f",
+      "31a87315fab57c9ade1cb5b6ee4bbfd559d265c1"
+    ],
+    "sourceTradeDate": "2026-10-06",
+    "firstObservedAt": "2026-10-06T06:11:31+08:00",
+    "nonzeroActivityWitnesses": [
+      "TPEx day-trading stock rows = 843",
+      "TPEx dealer-split rows = 904",
+      "TWSE public non-block dealer rows = 1340"
+    ],
+    "calendarConflictState": "NO_CONFLICT_OBSERVED_IN_CURRENT_EVIDENCE",
+    "dataAbsenceUsedToProveNonTrading": false
+  },
+  "attemptAnchor": {
+    "attemptId": "SYSTEM1_C1_EVIDENCE:RUN37495670280:JOB112379442583",
+    "workflowRunId": 37495670280,
+    "workflowJobId": 112379442583,
+    "event": "schedule",
+    "runAttempt": 1,
+    "headBranch": "main",
+    "headSha": "646a34263954e0beaf53cfcb897af2cc90c2aca4",
+    "runCreatedAtUtc": "2026-10-06T16:26:06Z",
+    "scheduledAtUtc": "2026-10-06T16:10:00Z",
+    "schedulerDelaySeconds": 966,
+    "conclusion": "failure",
+    "artifactId": 11426824056,
+    "artifactName": "system1-c1-evidence-37495670280",
+    "attemptReceiptRef": "research/D16_PROSPECTIVE_EVIDENCE_ATTEMPT_20261006_V0_1.json"
+  },
+  "reconciliation": {
+    "state": "ATTEMPT_ONE_FAILED_BLOCKER_PRESERVED",
+    "opportunityDateMatchesAttemptTarget": true,
+    "attemptTargetDate": "2026-10-06",
+    "expectedTradingOpportunityN": 1,
+    "operationalAttemptOneObservedN": 1,
+    "prospectiveEvidenceAdmissibleN": 0,
+    "noScheduledAttemptGapN": 0,
+    "nonTradingScheduledRunN": 0,
+    "sessionIdentityUnknownN": 0,
+    "attemptOpportunityDateMismatchN": 0
+  },
+  "admission": {
+    "terminalAttemptState": "INELIGIBLE_PARENT_MISSING",
+    "observedBlockerCategory": "FORMAL_SCAN_NOT_CONFIRMED",
+    "verificationFailure": "C1_GENERATION_NOT_FOUND",
+    "countAsZeroPick": false,
+    "countAsNegativeOutcome": false,
+    "countAsStrategyFailure": false,
+    "countInProspectiveEvidenceN": false,
+    "countInMissingnessAccounting": true,
+    "historicalBackfillAllowed": false
+  },
+  "causalSeparation": {
+    "schedulerLayer": {
+      "observed": "SCHEDULE_EVENT_ATTEMPT_ONE_STARTED_966_SECONDS_AFTER_NOMINAL_CRON",
+      "rootCauseOfSchedulerDelay": "UNKNOWN",
+      "schedulerDelayUsedToExplainC1Failure": false
+    },
+    "collectorParentLayer": {
+      "observed": "FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND",
+      "causalAttributionState": "OBSERVED_FACTS_ONLY"
+    }
+  },
+  "promotionImpact": "NONE",
+  "maturityImpact": "NONE",
+  "formalCoreImpact": "NONE"
+}
