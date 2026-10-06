@@ -598,3 +598,58 @@ Run the next 00 cycle as five-lane concurrent readback:
 - E: first System2 fingerprint / NC-T01 physical receipt.
 
 Do not let one lane consume the whole 00 cycle unless a CRITICAL gate-changing event requires immediate bounded verification.
+
+
+## First five-lane concurrent audit cycle — 2026-10-06
+
+Observed main: `5e80edfb1faddb71ba34c08ebd57262454923147`.
+
+### A — System1
+DELTA / bounded:
+- V8.20 Production deployment and regression are verified.
+- SDA-016 now waits on the first legitimate genuine Formal↔C1 binding receipt.
+NO_CHANGE:
+- SDA-001/004 genuine lineage receipt still pending.
+- SDA-009 genuine LOO receipt count remains zero.
+Verdict: S1 remains PARTIAL.
+
+### B — System2 build / selection-to-capacity
+NO_CHANGE:
+- selection-to-capacity remains INCOMPLETE;
+- actual holdings remain NOT_WIRED;
+- live/final trading remains DISABLED;
+- no authority expansion accepted.
+
+### C — DATA_LANE
+ACTIVE DELTA:
+- Annual backfill workflow run `37482307633` is currently in progress.
+- migrate = SUCCESS;
+- selected-year backfill = IN_PROGRESS;
+- physical verify, artifact upload and System1 isolation are still pending.
+00 does not infer year/market inputs solely from run metadata; acceptance waits for terminal evidence.
+- 2021 TPEx revision-lineage blocker remains separate and open.
+
+### D — 01–15 research / curriculum
+DELTA:
+- tracker aggregate is 22 domains / 356 modules / 46.7% maturity-weighted.
+- D03 latest work advanced deterministic same-parent admission testing without maturity promotion.
+Governance:
+- maturity is not a launch gate;
+- material SDA/cross-room dependencies outrank percentage chasing.
+
+### E — SDA-022 non-convergence
+NO_CHANGE:
+- System1 fingerprint accepted;
+- D16 prereg accepted;
+- System2 strategy fingerprints S22-T06~T10 still pending;
+- physical NC-T01 S22-T11~T16 still pending;
+- no physical receipt accepted by 00.
+Verdict: PARTIAL_PASS.
+
+### P0 after first concurrent cycle
+1. DATA_LANE run `37482307633`: terminal physical verification/readback.
+2. System2 first strategy fingerprint + physical NC-T01.
+3. First genuine gate-changing S1 receipts.
+4. Research-room SDA/cross-room dependencies with actual machine evidence.
+
+This order supersedes single-lane fixation. 00 continues all five lanes each cycle.
