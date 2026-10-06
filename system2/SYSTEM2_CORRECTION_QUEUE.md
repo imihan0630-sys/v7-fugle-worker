@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-06 19:24 Asia/Taipei
+Updated: 2026-10-06 21:55 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -32,7 +32,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - affectedScope: S2-03 Historical infrastructure / P0 2017-present TWSE+TPEx daily A1 cold history
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement: System 2 historical infrastructure must physically populate and verify the staged official 2017-present Taiwan-equity daily history before it can be described as complete or used as complete full-market replay evidence.
-- observedProblem: Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE. The prior 2021 TPEx D1 quota blocker was cleared by run #18, but Physical verify now blocks that market-year on an official-source canonical A1 revision concentrated on 2021-01-14: 780 full source-row revisions, 698 canonical A1 changes, 82 source-revision-only rows, with identical 191,643 cold/fresh row counts and 795/795 R2 byte verification PASS. 2021 TPEx remains explicitly BLOCKED; immutable cold history is not overwritten. CORR-001 stays open for revision-lineage handling, later years, 2026 incremental history and final PIT replay.
+- observedProblem: Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE and 2022 TWSE. 2021 TPEx remains explicitly BLOCKED on an official-source canonical A1 revision concentrated on 2021-01-14; immutable cold history is preserved and must not be overwritten. CORR-001 stays open for revision-lineage handling, later market-years, the 2026 incremental path and final full-market PIT replay.
 - evidence:
   - SYSTEM2_CHECKPOINT: run 36545375167 failed before annual ingest.
   - SYSTEM2_CHECKPOINT: repaired continuation required manual 2017 TWSE rerun, then TPEx only after TWSE coverage/hash/manifest/receipt verification.
@@ -100,6 +100,9 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - 2021 TPEx storage facts: COMPLETE receipt / 795 packs / 191,643 bars / 795 HEAD + 795 byte-GET SHA checks PASS / zero missing or extra fresh-official keys.
   - Source revision is concentrated on `2021-01-14`: 780 source-row hash changes, 698 canonical A1 value changes, 82 source-revision-only rows.
   - Durable revision evidence: `system2/evidence/S2_HISTORICAL_TPEX_2021_REVISION_BLOCKER_V0_1.json`; artifact digest `sha256:32a98f1528ea1cdc8154eaa2e31b43e9d2905e92d0a43606c4cf29abd1d2f621`.
+  - 2022 TWSE run `37467099680` (#19): SUCCESS; 985 packs / 237,941 bars / 985 R2 HEAD + byte-GET SHA checks PASS; 246 official sessions; 0 missing/extra fresh-official keys; 0 source-row-hash or canonical A1 mismatch; source version STABLE.
+  - 2022 TWSE membership-session denominator 238,640 leaves 699 explicit UNKNOWN symbol-session gaps; data coverage PASS / replay readiness PARTIAL.
+  - 2022 TWSE durable evidence: `system2/evidence/S2_HISTORICAL_TWSE_2022_PHYSICAL_VERIFICATION_V0_1.json`; artifact `11416932962`, digest `sha256:4718df9b1232cbe7e359a9ea2bdf9a31f03cd9574d744eaedd502293a65baddd`; System1 isolation PASS.
   - 2021 TPEx is fail-closed BLOCKED, not rewritten. The coverage matrix preserves the old quota blocker as resolved historical provenance and now records the canonical revision blocker.
 - riskIfUnfixed: Historical replay, factor validation, multi-year backtests, regime robustness and strategy comparison can be mistaken for being backed by a complete market history when only bounded/smoke datasets exist. This creates a false-completion and evidence-coverage risk on a P0 dependency.
 - requiredCorrection:
@@ -138,11 +141,147 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - updatedAt: 2026-10-06T00:12:00+08:00
 
 
+### S2-CORR-20261006-003 — Candidate Board presents monitored bounded rows as candidates without resolvable strategy identity
+
+- createdAt: 2026-10-06T21:01:27+08:00
+- severity: MEDIUM
+- status: FIX_IMPLEMENTED
+- routingClass: BUILD_LANE
+- assignedLane: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- modificationOwner: SYSTEM2_BUILD_CONTROL_ROOM
+- blockedBy: none
+- affectedScope: S2-16 Candidate Board / Decision Workspace monitored-row semantics / strategy attribution
+- detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- canonicalRequirement: Until S2-07 exposes a real frozen daily candidate/read API, bounded resonance/pool rows may be reused only as explicitly monitored rows. They must not be presented as formally selected candidates, and strategy filtering/labels must not claim strategy attribution that the read path cannot actually resolve.
+- observedProblem: `terminal_page.mjs::candidateRows()` populates the Candidate Board from `/api/system2/resonance` rows and, when those are absent, falls back to `/api/system2/resonance/pool` symbols. This contradicts the page text saying the board will remain empty when S2-07 has not produced formal candidates. In addition, `strategyOf()` only reads strategyId/strategy/strategyName/primaryStrategy, while the bounded pool carries strategy attribution under `strategyMemberships` and the resonance read model drops strategy membership entirely. As a result monitored rows can appear on a page titled Candidate Board while strategy identity resolves to `UNRESOLVED_STRATEGY`, and the visible strategy tabs cannot reliably perform the claimed per-strategy separation.
+- evidence:
+  - `SYSTEM2_INSTITUTIONAL_TERMINAL_IA_V0_1.md`: candidate/decision surfaces may reuse bounded resonance/pool rows only as monitored rows; they must not relabel diagnostic records as formally selected candidates.
+  - Same IA document lists the next wiring step as S2-07 frozen daily candidate/read API -> Candidate Board + Decision Card.
+  - `terminal_page.mjs`: Candidate Board copy says S2-07 formal candidates will leave the board empty, but `candidateRows()` returns resonance rows and then pool rows.
+  - `terminal_page.mjs::strategyOf()` does not read `strategyMemberships` and falls back to `UNRESOLVED_STRATEGY`.
+  - `daily_resonance_read_model_v0_1.mjs` exposes symbol/finality/lifecycle/resonance fields but no strategy identity.
+  - `daily_resonance_integration_v0_1.mjs` builds pool rows with explicit `strategyMemberships`, so strategy provenance exists upstream but is not consumed by the terminal fallback.
+  - Existing terminal tests do not cover candidateRows fallback, unresolved strategy identity, or strategy-tab correctness.
+- riskIfUnfixed: Operators can interpret monitored pool/resonance rows as System 2 strategy candidates before the S2-07 candidate authority/read model exists, while the UI simultaneously implies per-strategy attribution that the actual data path cannot resolve. This creates false-completion and provenance ambiguity even though no trading authority is granted.
+- requiredCorrection:
+  1. Separate formal candidate rows from monitor-only bounded resonance/pool rows in the terminal state model.
+  2. Until a frozen S2-07 candidate/read API exists, Candidate Board must either stay explicitly empty for formal candidates or render monitor rows in a clearly separate monitor-only section/state that cannot be mistaken for formal selection.
+  3. Do not use `UNRESOLVED_STRATEGY` monitored rows as if they satisfy per-strategy Candidate Board filtering.
+  4. If monitor rows are shown, preserve strategy provenance from pool `strategyMemberships` only as monitor provenance; do not promote it into formal candidate strategy authority.
+  5. Strategy tabs must not claim working per-strategy candidate filtering unless the underlying row has canonical strategy identity from an authorized candidate source.
+  6. Decision Workspace must preserve the same distinction: selecting a monitored row must not imply formal candidate selection/frozen-decision readiness.
+  7. Add regression tests covering: no formal candidate API -> formal candidate board empty/pending; pool/resonance fallback remains monitor-only; unresolved strategy cannot pass a strategy tab as if resolved; pool strategyMemberships are not promoted into formal candidate authority.
+  8. Preserve S2-16 read-only shell, resonance formula/state machine, bounded pool, strategy logic, assessor policy, ranking/capacity, final/live selection, push/orders, and System1 Formal Core.
+- acceptanceCriteria:
+  - UI can no longer present resonance/pool fallback rows as formal candidates when no S2-07 frozen candidate/read API is available.
+  - Formal Candidate Board state is explicitly PENDING/EMPTY until authorized candidate data exists, or monitor-only rows are visibly segregated from formal candidates.
+  - Strategy filtering does not rely on `UNRESOLVED_STRATEGY` or infer formal strategy identity from monitor-only evidence.
+  - Any displayed monitor strategy provenance is explicitly labeled as pool/monitor provenance, not frozen candidate authority.
+  - Decision Workspace does not upgrade a monitored-row selection into formal candidate/frozen-decision readiness.
+  - Regression tests protect candidate-source and strategy-attribution boundaries.
+  - No protected strategy/trading authority changes are introduced.
+- protectedBoundaries: S2-07 assessor/frozen-candidate authority; strategy logic; strategy contracts/preregistration; ranking/capacity; resonance formula/state machine; final/live selection authority; notification/push; capital/orders; System1 Formal Core.
+- ownerDecisionRequired: false for truthful UI/read-model separation only; creating or promoting the actual S2-07 frozen candidate authority remains separately governed.
+- implementationEvidence:
+  - PR #686 merged as `fa9c433cf84d61f400c935cbd70019c7c9d39878` after zero-drift pre-merge conflict-unit check.
+  - Formal Candidate Board now remains `FORMAL CANDIDATE PENDING / EMPTY`; `formalCandidateRows()` returns no rows until an authorized S2-07 frozen candidate/read source exists.
+  - Bounded resonance rows and active-pool fallback rows are isolated under `MONITOR-ONLY｜Bounded Pool / Resonance` with `__rowAuthority="MONITOR_ONLY"` and explicit `MONITOR / RESEARCH` source semantics.
+  - Formal strategy tabs are disabled/pending and no longer filter monitor rows as if they were authorized per-strategy candidates.
+  - `UNRESOLVED_STRATEGY` and `strategyOf()` are removed from candidate attribution; unresolved monitor provenance is represented as `MONITOR_PROVENANCE_UNRESOLVED` rather than a formal candidate strategy.
+  - `daily_resonance_read_model_v0_1.mjs` now exposes `monitorStrategyMemberships`, `strategyAttributionAuthority=MONITOR_POOL_PROVENANCE_ONLY`, and `formalCandidateStrategyId=null`; pool memberships remain monitor provenance only.
+  - Selecting a monitor row opens Decision Workspace with `MONITOR ROW · NOT FORMAL CANDIDATE`, formal candidate state `NOT_AVAILABLE`, and formal action remains `NO_FROZEN_DECISION`.
+  - Targeted `institutional_terminal_page_v0_1.test.mjs` PASS and `daily_resonance_read_model_v0_1.test.mjs` PASS inside System2 Research CI run `37469475340` / job `112288878394`.
+  - System2 Research CI run `37469475340` PASS; V8 Regression run `37469475238` PASS; merged-main System2 Research CI run `37469704138` PASS.
+  - Merged-main readback verified all candidate/monitor separation invariants, followed by latest-main drift check showing zero drift across terminal page, terminal test, resonance read model, and read-model test.
+  - No S2-07 assessor/frozen-candidate authority, strategy logic/contracts/preregistration, ranking, capacity, resonance formula/state machine, final/live selection authority, push/notification, capital/order, or System1 Formal Core was changed.
+- verificationEvidence: PENDING — handoff to SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- finalDisposition: PENDING — implementation complete; independent verification required before closure
+- updatedAt: 2026-10-06T21:18:28+08:00
+
+## Closed directives
+
+### S2-CORR-20261006-004 — Institutional terminal can surface prior-session resonance as current-day monitor data
+
+- createdAt: 2026-10-06T21:12:49+08:00
+- severity: MEDIUM
+- status: VERIFIED_CLOSED
+- routingClass: BUILD_LANE
+- assignedLane: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- modificationOwner: SYSTEM2_BUILD_CONTROL_ROOM
+- blockedBy: none
+- affectedScope: S2-16 terminal freshness / Candidate Board / Decision Workspace / Today Focus / Resonance Center
+- detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- canonicalRequirement: Current-session terminal surfaces must fail closed on market-date mismatch. Prior-session resonance history may remain queryable as history, but it must not be silently reused as today's Candidate Board, Decision Workspace, Today Focus or active resonance monitor state.
+- observedProblem: The terminal loads `/api/system2/resonance` without `marketDate`. The Worker passes a null marketDate to `readLatestResonanceApiV0_1()`, which explicitly resolves the most recent persisted `market_date` via `ORDER BY market_date DESC LIMIT 1`. By contrast, `/api/system2/resonance/pool` and `/api/system2/resonance/operations` default to the current Taipei market date. The terminal then prefers `S.resonance.symbols` in Candidate Board and reuses those rows in Decision Workspace, Today Focus and Resonance Center without validating that `S.resonance.marketDate` equals the current/pool/operations market date. A prior-session resonance snapshot can therefore appear on a current-day terminal even when today's active pool is absent or fail-closed.
+- evidence:
+  - `terminal_page.mjs::load()` calls `/api/system2/resonance` without a marketDate query parameter.
+  - `worker.mjs`: `/api/system2/resonance` forwards null marketDate, while pool/operations default to `taipeiMarketDateV0_1(new Date())`.
+  - `readLatestResonanceApiV0_1()`: when marketDate is absent, selects `SELECT market_date FROM s2_resonance_latest ORDER BY market_date DESC LIMIT 1`.
+  - `terminal_page.mjs::candidateRows()` prefers `S.resonance.symbols` over pool fallback.
+  - `selectedRow()`, Decision Workspace, Today Focus and Resonance Center consume these rows without a current-market-date equality guard.
+  - UI text says current bounded data is used and stale pool is not reused, so silent prior-session resonance reuse contradicts the stated freshness boundary.
+  - Existing tests cover pool freshness but do not protect terminal resonance market-date alignment.
+- riskIfUnfixed: Operators may interpret yesterday's or an earlier session's research monitor signal/chart as current-day System 2 monitor evidence. Backend decision/order authority remains false, but the operator-facing stale-state ambiguity can distort situational awareness and invalidate freshness-dependent audit evidence.
+- requiredCorrection:
+  1. Bind terminal current-session resonance reads to the current Taipei market date, or explicitly reject/mask resonance payloads whose marketDate differs from the terminal's current/pool/operations market date.
+  2. Current-session Candidate Board, Decision Workspace, Today Focus and Resonance Center must not consume prior-session resonance rows as active monitor state.
+  3. If historical/latest-any-date resonance remains supported by the API, keep it as an explicit historical query behavior and do not silently use it on current-session terminal surfaces.
+  4. Add a visible STALE / PREVIOUS_SESSION / NOT_CURRENT_SESSION state if old data is intentionally shown for history/reference; it must not count toward current candidate/monitor counts.
+  5. Align `decisionTime`, chart/asOf and displayed marketDate so the user can tell which session the data belongs to.
+  6. Add regression tests where today's pool/operations are empty but yesterday has resonance snapshots; the terminal must remain current-session empty/pending rather than display yesterday's rows.
+  7. Add regression coverage for same-day payload acceptance and explicit historical-date query behavior.
+  8. Preserve resonance formula/state machine, bounded pool freshness semantics, S2-07 candidate authority, strategy logic, ranking/capacity, push/orders, and System1 Formal Core.
+- acceptanceCriteria:
+  - Current-session terminal never silently displays resonance rows whose marketDate differs from today's Taipei market date/current terminal clock.
+  - A prior-session snapshot cannot populate Candidate Board, Decision Workspace, Today Focus or active Resonance Center without an explicit historical/stale presentation state.
+  - Same-session resonance remains visible and functional.
+  - Pool/operations/resonance dates are either aligned or the mismatch is fail-closed and visible.
+  - Regression tests cover prior-session contamination, same-day success and explicit historical-query behavior.
+  - No protected strategy/trading authority changes are introduced.
+- protectedBoundaries: resonance formula/state machine; bounded-pool freshness logic; S2-07 candidate authority; strategy logic; ranking/capacity; final/live selection authority; notification/push; capital/orders; System1 Formal Core.
+- ownerDecisionRequired: false for current-session freshness enforcement; any future cross-session historical replay UI remains separately scoped.
+- implementationEvidence:
+  - PR #690 merged as `b18457b4de892ed3beb8502155adfdee1a038ca4`.
+  - Terminal now computes the current `Asia/Taipei` market date and requests `/api/system2/resonance`, `/api/system2/resonance/pool`, and `/api/system2/resonance/operations` with the same explicit `marketDate`.
+  - Terminal performs a second three-way session alignment check; mismatch or missing session provenance yields `SESSION_DATE_MISMATCH` / `SESSION_ALIGNMENT_UNVERIFIED`, clears current selection, and blocks stale/current-state row reuse.
+  - Current-session resonance rows must match terminal marketDate, chart marketDate, row updatedAt Taipei date, and chart asOf Taipei date before entering Today Focus, MONITOR-ONLY rows, Decision Workspace, current monitor counts, or active Resonance Center.
+  - Decision Workspace now exposes Market Date, Row updatedAt, and Chart asOf while formal candidate remains NOT_AVAILABLE and formal action remains NO_FROZEN_DECISION.
+  - `readLatestResonanceApiV0_1` preserves no-date latest-any-date history behavior but marks it `LATEST_AVAILABLE_DATE`; explicit `marketDate` queries are marked `EXPLICIT_MARKET_DATE` with `requestedMarketDate` and `latestAnyDateFallbackUsed` provenance.
+  - New `daily_resonance_current_session_freshness_v0_1.test.mjs` proves explicit current-date query does not fall back to prior-session data, explicit historical-date query remains available, and latest-any-date history is visibly marked.
+  - Targeted freshness test, institutional terminal test, and existing pool freshness audit all PASS in System2 Research CI run `37472705542` / job `112300052873`.
+  - System2 Research CI run `37472705542` PASS and V8 Regression run `37472705541` PASS.
+  - System2 Daily Resonance Deploy run `37473038743` PASS: Worker deployed, public read API/UI/schedules verified, Worker version `17a5e3c7-b9ac-4277-aaa4-bfea685b2846`, runtime URL `https://system2-shadow-research.imihan0630.workers.dev`, and System1 production files unchanged PASS.
+  - Merged-main System2 Research CI run `37473038918` PASS.
+  - Merged-main readback verified explicit current-session queries, stale-row guards, decision time fields, and explicit-vs-latest date-selection semantics; subsequent latest-main drift check showed zero drift across all four correction conflict units.
+  - No resonance EMA16/EMA64/Impulse MACD, 0/3–3/3, PROVISIONAL/CONFIRMED/RETRACTED, lifecycle state machine, pool freshness/invalidation, denominator provenance, bounded max-9/fullMarketScan=false, S2-07 candidate authority, strategy logic, ranking/capacity, push/notification, capital/orders, or System1 Formal Core was changed.
+- verificationEvidence:
+  - Independent AUDIT_LANE re-read latest GitHub main and did not rely on BUILD_LANE's completion claim.
+  - PR #690 merged as b18457b4de892ed3beb8502155adfdee1a038ca4 and changed only terminal_page.mjs, daily_resonance_persistence_v0_1.mjs, daily_resonance_current_session_freshness_v0_1.test.mjs, and institutional_terminal_page_v0_1.test.mjs.
+  - Terminal now computes the current Asia/Taipei market date and queries resonance, pool, and operations with the same explicit marketDate.
+  - Terminal session alignment rejects mismatched/missing source dates and clears current selection; stale or previous-session rows are blocked from current Candidate/Decision/Today Focus/Resonance surfaces.
+  - Current-session resonance rows must match terminal marketDate, chart marketDate, row updatedAt Taipei date, and chart asOf Taipei date before they can enter current monitor surfaces.
+  - Decision Workspace now exposes Market Date, Row updatedAt, and Chart asOf so session provenance is visible.
+  - readLatestResonanceApiV0_1 preserves no-date latest-any-date historical behavior but marks it LATEST_AVAILABLE_DATE; explicit marketDate queries are marked EXPLICIT_MARKET_DATE and do not fall back.
+  - Freshness regression proves yesterday-only data does not populate an explicit current-day query, explicit historical-date query remains available, and latest-any-date history remains visibly marked.
+  - System2 Research CI run 37472705542 / job 112300052873 PASS.
+  - V8 Regression run 37472705541 / job 112300052650 PASS.
+  - Merged-main System2 Research CI run 37473038918 / job 112301366833 PASS.
+  - System2 Daily Resonance Deploy run 37473038743 / job 112301210286 PASS, including public read API/UI/schedule checks and System1 production-file isolation.
+  - From FIX_IMPLEMENTED writeback commit 05084853bbf37669b738f276aea6792d9b0b87f4 through audit time, latest main is identical for all four correction conflict units; zero drift invalidated the fix.
+  - No resonance formula/state-machine, bounded-pool freshness semantics, denominator provenance, S2-07 candidate authority, strategy logic, ranking/capacity, notification/push, capital/order behavior, or System1 Formal Core was changed.
+  - Independent verification receipt: `system2/evidence/s2_corr_20261006_004_independent_verification.json`
+- finalDisposition: VERIFIED_CLOSED — current-session terminal surfaces now fail closed on cross-session resonance date mismatch while explicit historical resonance remains separately queryable; protected strategy/trading authorities remain unchanged.
+- verifiedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- verifiedAt: 2026-10-06T21:55:42+08:00
+- updatedAt: 2026-10-06T21:55:42+08:00
+
 ### S2-CORR-20261006-002 — Institutional terminal converts research-only resonance into ENTER/EXIT action authority
 
 - createdAt: 2026-10-06T19:12:00+08:00
 - severity: MEDIUM
-- status: FIX_IMPLEMENTED
+- status: VERIFIED_CLOSED
 - routingClass: BUILD_LANE
 - assignedLane: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
@@ -191,12 +330,25 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - Daily Resonance runtime files are byte-identical to the pre-fix base: monitor `a39fd428e54ce800600e96d23f178ea024f86d98`, read model `d5989e563c6995a9b8bb5110ce1ee8ab8e4aa4b4`, worker cycle `245044b7878360680854b11fda7f8f221d973d33`.
   - Merged-main System2 Research CI run `37458445915` PASS and System2 Daily Resonance Deploy run `37458445783` PASS.
   - No strategy logic, assessor policy, preregistration, weights, thresholds, ranking, capacity, final/live selection authority, notification/push authority, capital/order, or System1 Formal Core was changed.
-- verificationEvidence: PENDING — handoff to SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
-- finalDisposition: PENDING — implementation complete; independent verification required before closure
-- updatedAt: 2026-10-06T19:44:43+08:00
-
-
-## Closed directives
+- verificationEvidence:
+  - Independent audit re-read latest GitHub main and did not rely on BUILD_LANE's completion claim.
+  - PR #673 merged as 36afa057bdc2e88238f5c37b926bea9f821b05d9 and changed only system2/deploy/terminal_page.mjs plus system2/tests/institutional_terminal_page_v0_1.test.mjs.
+  - Candidate Board now labels the field 監控訊號（RESEARCH） and preserves BUY_RESONANCE / EXIT_RESONANCE monitor semantics instead of converting them to bare ENTER / EXIT.
+  - Decision Workspace now separates monitor signal from formal Frozen Decision Action; without frozen decision authority, the formal action remains NO_FROZEN_DECISION.
+  - User-facing actionable resonance wording was removed; empty-state wording now refers to research monitor resonance.
+  - Targeted terminal regression asserts BUY_RESONANCE stays BUY_RESONANCE, EXIT_RESONANCE stays EXIT_RESONANCE, NO_FROZEN_DECISION remains the formal action, and bare ENTER/EXIT mappings are absent.
+  - System2 Research CI run 37458264775 / job 112251116356 PASS.
+  - V8 Regression run 37458264777 / job 112251116263 PASS.
+  - Merged-main System2 Research CI run 37458445915 / job 112251710622 PASS.
+  - System2 Daily Resonance Deploy run 37458445783 / job 112251709625 PASS, including public read API/UI/schedule checks and System1 production-file isolation.
+  - Latest-main blob SHAs for daily_resonance_monitor_v0_1.mjs, daily_resonance_read_model_v0_1.mjs and daily_resonance_worker_cycle_v0_1.mjs remain a39fd428e54ce800600e96d23f178ea024f86d98, d5989e563c6995a9b8bb5110ce1ee8ab8e4aa4b4 and 245044b7878360680854b11fda7f8f221d973d33 respectively, matching the pre-fix runtime blobs.
+  - From FIX_IMPLEMENTED queue merge c1fb873c9b499e1d5a7f9b5c5e954ab32616198a through audit time, main advanced 41 commits and none touched the correction conflict units; no later drift invalidated the fix.
+  - No strategy logic, assessor policy, preregistration, weights, thresholds, ranking, capacity, final/live selection authority, notification/push authority, capital/order behavior, or System1 Formal Core was changed.
+  - Independent verification receipt: `system2/evidence/s2_corr_20261006_002_independent_verification.json`
+- finalDisposition: VERIFIED_CLOSED — resonance remains research/shadow monitor evidence; the terminal no longer converts it into formal ENTER/EXIT authority, and protected strategy/trading authorities remain unchanged.
+- verifiedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- verifiedAt: 2026-10-06T20:54:24+08:00
+- updatedAt: 2026-10-06T20:54:24+08:00
 
 ### S2-CORR-20261006-001 — Institutional terminal labels unapproved research strategies as SHADOW
 
@@ -569,3 +721,26 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 ## Next action
 
 When the independent correction auditor identifies a material issue, append the directive here and update the JSON companion in the same change.
+
+
+## S2-CORR-20261006-003 — VERIFIED_CLOSED
+
+Independent verification:
+- receipt: `system2/evidence/s2_corr_20261006_003_independent_verification.json`;
+- implementation merge: `fa9c433cf84d61f400c935cbd70019c7c9d39878`;
+- System2 Research CI `37469475340` PASS;
+- V8 Regression `37469475238` PASS;
+- merged-main System2 Research CI `37469704138` PASS.
+
+Verified boundaries:
+- formal Candidate Board remains pending/empty until an authorized S2-07 candidate source exists;
+- resonance/pool rows are visibly segregated as MONITOR_ONLY;
+- monitor strategy provenance is not formal candidate strategy authority;
+- unresolved provenance is not promoted to a formal strategy identity;
+- Decision Workspace keeps formal candidate state NOT_AVAILABLE and formal action NO_FROZEN_DECISION;
+- no strategy/ranking/capacity/final-selection/push/order/System1 Formal authority changed.
+
+Final disposition:
+`VERIFIED_CLOSED`.
+
+This closure does not resolve `S2-CORR-20261006-004`, which is a separate current-session date-alignment defect.

@@ -186,13 +186,13 @@ Do not redo accepted work. Use these latest-main contracts as the producer autho
 - SDA-009: consume `research/sda009_d09_leave_one_out_circularity_contract_v0_1.json`. Implement inclusive-vs-leave-one-out candidateSelfContribution, gateFlip, rankDelta, Top6 sensitivity, membershipVersion/classificationSchemeId and fail-closed UNKNOWN handling. Diagnostic only; no live sector gate/rank replacement.
 - SDA-003: consume `research/D02_PVE245_SYSTEM1_RUNTIME_REMEDIATION_HANDOFF_20261005_V0_1.md`. Do not retroactively turn 2026-10-05 into clean evidence. Repair only the frozen runtime/evidence gaps under existing Class governance.
 - SDA-007: consume `research/d06_sda007_flow_ownership_lineage_contract_20261005_v0_1.json`. Implement primitiveReceiptId / parentReceiptIds / informationRoot / motive-state lineage without creating new votes.
-- SDA-016: existing System1 holdout guard is only partial pass. Do not call complete until shared cross-system authority satisfies Room11 V0.4 T01-T48, including footprint/release/missingness/multi-horizon lineage.
+- SDA-016: existing System1 holdout guard is only partial pass. Do not call complete until shared cross-system authority satisfies Room11 V0.5 T01-T58, including footprint/release/missingness/multi-horizon lineage.
 
 ### System 2
 - SDA-001 / SDA-004: corresponding signal/resonance consumers still need canonical lineage/dedup diagnostics; do not equate visual condition count with independent evidence.
 - SDA-007: reuse the D06 primitive lineage contract; no passive/active/crowding duplicate vote from one primitive.
 - SDA-016: converge on one shared physical holdout/consumption authority with System1 rather than forking a second ledger semantics.
-- SDA-017: implement the Room11 V0.2 episode/support contract and pass T01-T40 before specialist revalidation. Preserve structuralEpisodeN, replicationEpisodeN and mechanicalFragmentN separately; learned/fitted Regime dimensions require fitReceipt knowledge cutoff <= decision clock.
+- SDA-017: implement the Room11 current V0.4 episode/support/policy-candidate contract and pass T01-T56 before specialist revalidation. Preserve structuralEpisodeN, replicationEpisodeN and mechanicalFragmentN separately; learned/fitted Regime dimensions require fitReceipt knowledge cutoff <= decision clock.
 
 ### D16 / Room11
 - Revalidate only new engineering deltas against frozen oracles.
@@ -205,8 +205,8 @@ No routing in this section authorizes Formal A/B, ranking, Top6, weight, thresho
 ## 2026-10-06 oracle supersession notice
 
 The latest authoritative validation oracles supersede older test-count references:
-- SDA-016: research/SDA016_VALIDATION_ORACLE_20261006_V0_4.json — 48 blocking tests.
-- SDA-017: research/SDA017_VALIDATION_ORACLE_20261006_V0_3.json — 48 blocking tests.
+- SDA-016: research/SDA016_VALIDATION_ORACLE_20261006_V0_5.json — 58 blocking tests.
+- SDA-017: research/SDA017_VALIDATION_ORACLE_20261006_V0_4.json — 56 blocking tests.
 
 Newly mandatory engineering concerns include:
 - authoritative Formal-decision -> exact C1-generation binding;
@@ -247,3 +247,22 @@ No arbitrary overlap threshold is authorized yet.
 Sole cross-system closure authority. High output overlap is not a failure by itself; hidden policy dependence is. Low overlap is not a success by itself; forced disagreement is prohibited.
 
 No Formal behavior change is authorized by SDA-022.
+
+
+## 2026-10-06 later oracle supersession — V0.5 / V0.4
+
+This section supersedes all earlier current/latest oracle-count references in this routing file.
+
+Current authoritative validation:
+- SDA-016: research/SDA016_VALIDATION_ORACLE_20261006_V0_5.json — 58 blocking tests / T01-T58.
+- SDA-017: research/SDA017_VALIDATION_ORACLE_20261006_V0_4.json — 56 blocking tests / T01-T56.
+
+PR #644 current state:
+- merged;
+- V8.19 deployed;
+- Production-verified provenance partial pass;
+- first genuine post-deploy C1 parent readback still pending;
+- authoritative append-only Formal->C1 binding remains pending under its separate Class-B governance path.
+
+Engineering rooms must not use older 48-test counts as current acceptance authority.
+No previously accepted invariant is revoked; newer oracle versions add blocking deltas.

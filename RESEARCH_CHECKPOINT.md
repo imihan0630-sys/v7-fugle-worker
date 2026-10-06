@@ -2839,12 +2839,12 @@ D02 exact continuation after implementation:
 ## 2026-10-06 SDA oracle supersession pointer
 
 00 audit authority has advanced the current validation baseline:
-- SDA-016: research/SDA016_VALIDATION_ORACLE_20261006_V0_4.json — 48 blocking tests;
-- SDA-017: research/SDA017_VALIDATION_ORACLE_20261006_V0_3.json — 48 blocking tests;
+- SDA-016: research/SDA016_VALIDATION_ORACLE_20261006_V0_5.json — 58 blocking tests;
+- SDA-017: research/SDA017_VALIDATION_ORACLE_20261006_V0_4.json — 56 blocking tests;
 - shared engineering routing: shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_ROUTING_20261005_V0_1.md.
 
 For System 1:
-- PR #644 scan-origin/generation-inventory is a useful Class-B provenance candidate but remains OPEN/DRAFT/NOT_MERGED/NOT_DEPLOYED and does not satisfy authoritative Formal-decision -> exact C1-generation binding by itself;
+- PR #644 scan-origin/generation-inventory is merged and V8.19 is deployed/Production-verified as a provenance partial pass; it still does not satisfy authoritative Formal-decision -> exact C1-generation binding by itself;
 - merge/deploy remains separately owner-gated;
 - S1 Selection Shadow launch gate remains PARTIAL until SDA-001/004 three schema deltas, SDA-009 leave-one-out diagnostic and genuine same-generation parent binding are complete;
 - PVE-246 root causes are certified, but Production remediation is not yet credited.
@@ -3077,3 +3077,26 @@ If approved:
 6. keep H001 fail-closed until future receipt admission passes.
 
 If not approved, keep PR #668 draft/unmerged/un-deployed.
+
+
+## 2026-10-06 systemwide readiness reconciliation pointer
+
+Canonical audit:
+shared-knowledge/SYSTEMWIDE_LAUNCH_READINESS_GOVERNANCE_AUDIT_20261006_V0_1.md
+
+Current acceptance authority:
+- SDA-016 = V0.5 / 58 blocking tests;
+- SDA-017 = V0.4 / 56 blocking tests.
+
+System1 Selection Shadow remains:
+S0 PASS / S1 PARTIAL / S2 NOT_READY / S3 NOT_READY / S4 OWNER_APPROVAL_REQUIRED / T1 NOT_READY.
+
+Current S1 blockers:
+1. SDA-001/004 three diagnostic schema deltas;
+2. SDA-009 Class-A LOO diagnostic;
+3. authoritative append-only Formal->C1 binding + first genuine parent receipt.
+
+D02 current parallel state:
+PVE-250 / PR #668 technically green / OWNER_APPROVAL_REQUIRED / unmerged / undeployed. This is not a blocker for first pure Selection Shadow.
+
+No Formal mutation is authorized by this pointer.

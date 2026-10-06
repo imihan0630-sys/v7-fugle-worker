@@ -44,6 +44,11 @@ export function buildDailyResonanceReadModelV0_1({
       exitCount: snapshot.latest?.exitCount ?? 0,
       warningLevel: snapshot.warningLevel,
       qualityWarnings: snapshot.qualityWarnings,
+      monitorStrategyMemberships: Object.freeze(
+        [...(Array.isArray(snapshot.strategyMemberships) ? snapshot.strategyMemberships : [])].map(String),
+      ),
+      strategyAttributionAuthority: "MONITOR_POOL_PROVENANCE_ONLY",
+      formalCandidateStrategyId: null,
       adapterState: adapter ? Object.freeze({
         monitorEligible: adapter.monitorEligible,
         finalityState: adapter.finalityState,

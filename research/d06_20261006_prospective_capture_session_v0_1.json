@@ -22,17 +22,21 @@
       "module": "D06-14",
       "sourceUrl": "https://www.tpex.org.tw/zh-tw/mainboard/trading/day-trading/statistics/day.html?date=20261006",
       "preopenReceipt": "research/d06_14_tpex_daytrade_preopen_20261006_v0_1.json",
-      "preopenState": "NOT_YET_PUBLISHED / 0_ROWS",
+      "preopenState": "PREOPEN_0_ROWS / T_PRELIM_CAPTURED",
       "clock": "VARIABLE_AFTER_BROKER_REPORTING",
-      "next": "Later today repeat the same date-pinned query; first nonzero stock table becomes T_PRELIM with capturedAt/hash. Do not assume yesterday's first-observed clock repeats."
+      "next": "On 2026-10-07 capture T1_REVISED for tradeDate 2026-10-06.",
+      "captureReceipt": "research/d06_14_tpex_daytrade_tprelim_capture_20261006_v0_1.json",
+      "currentRows": 843,
+      "currentFingerprint": "fnv1a64-utf8:21c5de02d6096939"
     },
     {
       "laneId": "D06_14_T1_20261005",
       "module": "D06-14",
       "sourceUrl": "https://www.tpex.org.tw/zh-tw/mainboard/trading/day-trading/statistics/day.html?date=20261005",
       "earlyReadback": "research/d06_14_tpex_daytrade_t1_calendar_early_readback_20261006_0542_v0_1.json",
-      "state": "T1_CALENDAR_EARLY_STABLE / T1_REVISED_NOT_YET_IDENTIFIED",
-      "next": "After T+1 workflow plausibly completes, recapture pinned 20261005 and apply revision + informative-missingness contracts."
+      "state": "T1_REVISED_CAPTURED / 841_OF_841_UNCHANGED / ZERO_REVISION",
+      "next": "On 2026-10-07 capture T2_FINAL for tradeDate 2026-10-05.",
+      "receipt": "research/d06_14_tpex_daytrade_t1_revised_20261005_captured_20261006_v0_1.json"
     },
     {
       "laneId": "D06_18_BORROW_ECONOMICS",
@@ -56,11 +60,17 @@
     {
       "laneId": "D06_03_DEALER_SPLIT",
       "module": "D06-03",
-      "TPExState": "PENDING_AFTER_MARKET",
+      "TPExState": "CAPTURED_20261006 / 904_OF_904_RECONCILED",
       "TWSEPublicTargetTaipei": "18:00",
       "TWSEPaidIncludingBlockTargetTaipei": "20:00",
       "paidAccessRule": "Do not purchase or substitute without authorization.",
-      "next": "Capture 2026-10-06 prospective dealer proprietary/hedge split under identical semantics; count today as a second temporal date only when a genuine same-date receipt exists."
+      "next": "Accumulate further independent dates; L4 still requires date-clustered OOS/Shadow incrementality versus aggregate dealerNet.",
+      "TWSEState": "PUBLIC_NONBLOCK_CAPTURED_20261006 / 1340_OF_1340_RECONCILED",
+      "receipts": [
+        "research/d06_03_tpex_dealer_split_capture_20261006_v0_1.json",
+        "research/d06_03_twse_dealer_split_capture_20261006_1800_v0_1.json"
+      ],
+      "temporalReplicationCount": 2
     },
     {
       "laneId": "D06_07_08_09_TPEX_VINTAGE",
@@ -71,9 +81,13 @@
       ],
       "earlyTargetTaipei": "20:30",
       "lateTargetTaipei": "22:30",
-      "state": "PENDING_BY_CLOCK",
+      "state": "EARLY_COMPLETE_2125 / LATE_2230_PENDING",
       "universeGuard": "research/d06_08_09_tpex_margin_sbl_universe_guard_20261005_v0_1.json",
-      "next": "Capture both EARLY and LATE on the same date through identical official sources/parser; keep D06-08 and D06-09 denominators separate."
+      "next": "After 22:30 capture identical LATE sources and compare EARLY->LATE on union/common support.",
+      "earlyReceipt": "research/d06_07_08_09_tpex_leverage_early_20261006_v0_1.json",
+      "earlyMarginSnapshot": "research/d06_07_08_tpex_margin_early_snapshot_20261006_2125_v0_1.csv",
+      "earlySblSnapshot": "research/d06_08_09_tpex_sbl_early_snapshot_20261006_2125_v0_1.csv",
+      "universePersistenceGuard": "research/d06_08_09_tpex_sbl_only_universe_persistence_20261006_v0_1.json"
     },
     {
       "laneId": "D06_05_TDCC_LINEAGE",
@@ -99,6 +113,6 @@
     }
   ],
   "maturityImpact": "NONE_AT_OPEN",
-  "sessionState": "D06_18_1520_MISSED_UNKNOWN_POSTCLOSE_QUERY_DONE / D06_03_AFTERMARKET_DUE / D06_14_T1_AND_TODAY_TPRELIM_DUE / TPEX_LEVERAGE_2030_2230_PENDING / OUTCOMES_CLOSED",
-  "exactNext": "Continue 2026-10-06 after-market lanes. D06-18 15:20 is permanently MISSED/UNKNOWN; post-close values are diagnostic only. Next execute D06-03 after-market dealer split, then D06-14 pinned 20261005 T1 follow-up and pinned 20261006 T_PRELIM if available, then TPEx leverage EARLY at 20:30 and LATE at 22:30."
+  "sessionState": "D06_03_SECOND_DATE_CAPTURED / D06_14_T1_ZERO_REVISION_AND_20261006_TPRELIM_CAPTURED / D06_18_1520_MISSED_POSTCLOSE_DIAGNOSTIC_ONLY / TPEX_LEVERAGE_EARLY_COMPLETE_LATE_2230_PENDING / OUTCOMES_CLOSED",
+  "exactNext": "After 22:30 capture TPEx leverage LATE with the same parser/unit semantics, compare against the frozen 21:25 EARLY snapshots, and only then reassess D06-07/08/09 maturity. D06-14 awaits 2026-10-07 T2_FINAL for 2026-10-05 and T1_REVISED for 2026-10-06. Outcomes/Formal remain closed."
 }

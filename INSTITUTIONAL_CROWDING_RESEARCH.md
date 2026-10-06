@@ -2184,3 +2184,162 @@ becomes
 
 Exact next:
 At 2026-10-06 15:20 ±5 minutes, query exactly the frozen five symbols through the same official rendered route. Preserve source date, selected symbol, transaction family, recall condition, rate/depth values, capturedAt and content hash. If the slot is missed or the route fails, record UNKNOWN/MISSING and never substitute a later snapshot.
+
+
+---
+
+## IC-085 — 2026-10-06 dealer-split second temporal date confirms structure but not symbol persistence
+
+Research cycle: 2026-10-06 Asia/Taipei
+Status: SECOND_TEMPORAL_DATE_CAPTURED / STRUCTURAL_DISAGREEMENT_PERSISTS / SYMBOL_LEVEL_PERSISTENCE_LOW / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_03_tpex_dealer_split_capture_20261006_v0_1.json`;
+- `research/d06_03_twse_dealer_split_capture_20261006_1800_v0_1.json`;
+- `research/d06_03_two_date_dealer_disagreement_persistence_guard_v0_1.json`.
+
+2026-10-06 source integrity:
+- TPEx 904/904 numeric-valid; dealer aggregation 904/904; institutional total 904/904;
+- TWSE 1,340/1,340 numeric-valid; proprietary, hedge, aggregate dealer and institutional total all 1,340/1,340.
+
+Ordinary-stock opposite proprietary/hedge signs:
+- TPEx 70/143 both-active = 49.0%;
+- TWSE 152/334 both-active = 45.5%.
+
+Across 2026-10-05 and 2026-10-06:
+- TPEx common ordinary symbols = 755; opposite on either date = 126; opposite on both = 26 = 20.6%;
+- TWSE common ordinary symbols = 1,086; opposite on either date = 247; opposite on both = 55 = 22.3%.
+
+Conclusion:
+aggregate dealerNet continues to hide material internal desk disagreement across two independent dates, but the identity of affected symbols is not highly persistent. This strengthens the structural anti-motive firewall while weakening any temptation to convert one-day desk disagreement into a persistent stock-level alpha state.
+
+D06-03 remains L3/60%. L4 still requires date-clustered OOS/Shadow incrementality versus aggregate dealerNet. No Formal change.
+
+---
+
+## IC-086 — 2026-10-05 T1 revised vintage is zero-revision; 2026-10-06 second T_PRELIM captured
+
+Research cycle: 2026-10-06 Asia/Taipei
+Status: T1_REVISED_ZERO_REVISION / SECOND_T_PRELIM_DATE_CAPTURED / T2_FINAL_PENDING / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_14_tpex_daytrade_t1_revised_20261005_captured_20261006_v0_1.json`;
+- `research/d06_14_tpex_daytrade_tprelim_capture_20261006_v0_1.json`.
+
+For trade date 2026-10-05, late-T+1 comparison against T_PRELIM is:
+- 841 earlier / 841 later;
+- union = common = 841;
+- unchanged = 841;
+- changed/added/removed = 0/0/0;
+- all absolute revision sums = 0;
+- suspension-flag changes = 0.
+
+This is a real zero-revision observation for this date, not an assumption that TPEx never revises. T2 final remains mandatory.
+
+For trade date 2026-10-06:
+- T_PRELIM rows = 843;
+- numeric-valid = 843;
+- ordinary four-digit = 727;
+- duplicates = 0;
+- suspension-flag rows = 13;
+- day-trading shares = 530,117,000;
+- buy value = NTD 136,109,936,790;
+- sell value = NTD 136,525,764,410;
+- canonical fingerprint = fnv1a64-utf8:21c5de02d6096939.
+
+D06-14 remains L2/40 pending T2 finality for 2026-10-05 and later T1/T2 behavior for the second date. No outcome or Formal inference.
+
+---
+
+## IC-087 — 2026-10-06 leverage EARLY complete; D06-09 universe mismatch persists across two dates
+
+Research cycle: 2026-10-06 Asia/Taipei
+Status: EARLY_WINDOW_COMPLETE / LATE_2230_PENDING / TWO_DATE_SBL_ONLY_UNIVERSE_MISMATCH / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_07_08_09_tpex_leverage_early_20261006_v0_1.json`;
+- `research/d06_07_08_tpex_margin_early_snapshot_20261006_2125_v0_1.csv`;
+- `research/d06_08_09_tpex_sbl_early_snapshot_20261006_2125_v0_1.csv`;
+- `research/d06_08_09_tpex_sbl_only_universe_persistence_20261006_v0_1.json`.
+
+Captured at 21:25, after the approximate 20:30 early update and before the 22:30 late update:
+- margin table = 918 rows, 918/918 financing reconciliation, 918/918 margin-short reconciliation;
+- SBL table = 931 rows, 931/931 margin-short reconciliation, 931/931 actual-SBL-short reconciliation;
+- 918 common symbols pass exact lots x1000 -> shares reconciliation on five balance/flow fields;
+- 918/918 limit fields preserve floor(shares/1000) whole-lot display semantics.
+
+The same 13 Y/not-credit-qualified SBL-only symbols observed on 2026-10-05 persist on 2026-10-06 EARLY:
+- overlap = 13/13;
+- all 13 have nonzero SBL-short balances again;
+- 4 have same-day SBL sell;
+- 6 have sell/return/adjustment activity.
+
+Therefore D06-08 and D06-09 denominator separation is a two-date structural requirement, not a one-day anomaly.
+
+D06-07/08/09 remain L2/40 until the post-22:30 LATE snapshot permits a genuine same-date revision comparison. No Formal change.
+
+
+---
+
+## IC-088 — 2026-10-06 direct-retail source rescan reconfirms stock-date directional gap
+
+Research cycle: 2026-10-06 Asia/Taipei
+Status: SOURCE_GAP_RECONFIRMED / MARKET_LEVEL_DIRECT_CONTEXT_ONLY / STOCK_DATE_DIRECTION_UNKNOWN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable receipt:
+`research/d06_19_direct_retail_source_gap_update_20261006_v0_1.json`.
+
+A current official-source rescan across TWSE and TPEx reconfirmed that directly identified natural-person participation exists at market/aggregate frequency, while a public replayable stock×date domestic-natural-person buy/sell directional feed remains unverified.
+
+Verified current public context includes:
+- TWSE market-level natural-person trading-value share;
+- investor-class market composition in annual/monthly statistical products;
+- natural-person ownership/investment distribution at aggregate frequency;
+- TPEx market/research-level natural-person participation structure.
+
+Still NOT verified:
+`domestic natural person × stock/security × date × buy/sell directional flow`
+as an authorized, public, replayable current TWSE/TPEx source family.
+
+Therefore the following remain forbidden substitutes:
+- margin financing;
+- day trading;
+- odd-lot activity;
+- broker-branch execution;
+- total-minus-institution residual;
+- market-level natural-person participation backfilled to stock-date direction.
+
+D06-19 remains L2/40%. The rescan strengthens the source-gap boundary but does not solve the declared directional capability.
+
+No outcome or Formal change.
+
+
+---
+
+## IC-089 — TPEx day-trading cross-date universe drift must not be confused with revision lineage
+
+Research cycle: 2026-10-06 Asia/Taipei
+Status: CROSS_DATE_UNIVERSE_DRIFT_CONFIRMED / REVISION_VS_DATE_DRIFT_FIREWALL_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable guard:
+`research/d06_14_tpex_daytrade_cross_date_universe_drift_20261005_20261006_v0_1.json`.
+
+T_PRELIM universe comparison:
+- 2026-10-05 rows = 841;
+- 2026-10-06 rows = 843;
+- common symbols = 839;
+- added on 2026-10-06 = 3374 精材 / 4542 科嶠 / 4979 華星光 / 6218 豪勉;
+- absent on 2026-10-06 = 3455 由田 / 6708 天擎;
+- sell-first-suspension flag changes:
+  - 1565 精華: null -> *;
+  - 6171 大城地產: * -> null;
+  - 6561 是方: null -> *.
+
+This is ordinary cross-date source/population drift, not a T+1 revision statistic. The raw row-count difference 843-841=2 must never be interpreted as two T1 additions.
+
+The current official eligibility/change page did not provide matching rows for these compared symbols in the fetched state, so no eligibility causality is assigned. Causes remain UNKNOWN without authoritative historical eligibility evidence.
+
+D06-14 revision measurement remains strictly within the same trade date:
+T_PRELIM -> T1_REVISED -> T2_FINAL.
+
+Maturity impact: NONE. D06-14 remains L2/40%.

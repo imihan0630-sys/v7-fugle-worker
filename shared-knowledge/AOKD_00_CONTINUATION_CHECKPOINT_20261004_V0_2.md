@@ -1455,3 +1455,118 @@ Exact next 00 cursor:
 5. only after those pass, begin prospective S22-T17~T24 overlap/divergence accumulation;
 6. no economic outcome interpretation before the preregistration boundary;
 7. Formal Core remains locked.
+
+
+## 2026-10-06 systemwide Launch Readiness + governance audit — CURRENT AUTHORITY
+
+Canonical audit:
+- shared-knowledge/SYSTEMWIDE_LAUNCH_READINESS_GOVERNANCE_AUDIT_20261006_V0_1.md
+- shared-knowledge/systemwide_launch_readiness_governance_audit_20261006_v0_1.json
+
+Current SDA queue:
+- total = 22;
+- REMEDIATION_IN_PROGRESS = 16;
+- VALIDATION_PENDING = 4;
+- BLOCKED_DEPENDENCY = 2;
+- CLOSED = 0.
+
+Current oracle authority:
+- SDA-016 = V0.5 / T01-T58 / 58 blocking tests;
+- SDA-017 = V0.4 / T01-T56 / 56 blocking tests;
+- SDA-022 = 28-test pre-outcome oracle.
+
+Current System1 Selection Shadow:
+- S0 PASS;
+- S1 PARTIAL;
+- S2 NOT_READY;
+- S3 NOT_READY;
+- S4 OWNER_APPROVAL_REQUIRED;
+- T1 NOT_READY.
+
+S1 true blockers:
+1. SDA-001/004 three schema deltas;
+2. SDA-009 System1 Class-A LOO diagnostic;
+3. authoritative append-only Formal->C1 binding + first genuine parent receipt.
+
+Important corrected facts:
+- PR #644 is merged; V8.19 deployed/Production-verified partial pass.
+- D02 is now PVE-250 / PR #668 / technically green / owner-gated / unmerged / undeployed; parallel and non-blocking for first pure Selection Shadow.
+- SDA-022 System1 fingerprint T01~T05 = PASS.
+- SDA-022 D16 prereg T25~T28 = PASS.
+- SDA-022 System2 fingerprints T06~T10 = PENDING.
+- SDA-022 physical NC-T01 T11~T16 = PENDING.
+- SDA-022 prospective T17~T24 = NOT_STARTED.
+
+Current System2 readiness:
+- infrastructure/terminal = substantially ready;
+- S2-CORR-20261006-002 = FIX_IMPLEMENTED, independent verification pending;
+- DATA_LANE = active/partial; 2021 TPEx canonical revision/as-of blocker open;
+- selection-to-capacity = INCOMPLETE;
+- resonance = research/shadow monitor only;
+- actual holdings/live trading = not wired/disabled.
+
+Curriculum:
+- 22 domains;
+- 356 modules;
+- weighted maturity = 46.6%;
+- no universal curriculum percentage is a launch gate.
+- D01 current authoritative maturity = 52.7%; older 51.7% is reconciled historical denominator state.
+
+Exact next 00 cursor:
+1. intake/verify System1 completion of SDA-001/004 schema deltas;
+2. intake/verify System1 SDA-009 diagnostic;
+3. keep SDA-016 Formal->C1 Class-B implementation owner-gated and verify only after durable implementation/readback;
+4. intake System2 fingerprints and physical NC-T01 for SDA-022;
+5. independently verify any closure return for S2-CORR-20261006-002;
+6. audit DATA_LANE revision-lineage progress without stealing DATA_LANE ownership;
+7. keep Launch Gate states unchanged until durable blocker evidence lands;
+8. Formal Core remains locked.
+
+Older 21-ticket / 15-remediation / 48-test / PR644-unmerged sections above are historical snapshots only and are superseded by this section for current-state decisions.
+
+
+## 2026-10-06 post-audit System2 correction drift — CURRENT
+
+Latest correction readback:
+- S2-CORR-20261006-002 = VERIFIED_CLOSED.
+- S2-CORR-20261006-003 = OPEN / BUILD_LANE.
+
+CORR-003 issue:
+Candidate Board currently needs a strict formal-candidate vs monitor-only resonance/pool-row boundary and resolvable strategy identity. Monitor-only rows must not be presented as strategy-resolved formal candidates.
+
+Current System2 product interpretation:
+- terminal shell deployment remains valid;
+- resonance remains research/shadow monitor evidence;
+- Candidate Board must not be treated as authoritative formal candidate output until CORR-003 is fixed and independently verified;
+- selection-to-capacity remains INCOMPLETE;
+- no strategy/ranking/capacity/trading/System1 Formal authority is changed by this correction.
+
+SDA-022 readback remains:
+- System1 T01~T05 PASS;
+- System2 T06~T10 PENDING;
+- physical NC-T01 T11~T16 PENDING;
+- prospective T17~T24 NOT_STARTED;
+- D16 T25~T28 PASS.
+
+Exact 00 continuation:
+1. independently intake CORR-003 after BUILD_LANE implementation;
+2. continue waiting for actual System2 fingerprint and NC-T01 receipts;
+3. do not interpret stopping-rule gate wording as current PASS evidence;
+4. preserve System1 Launch Gate S1 PARTIAL until its three true blockers clear.
+
+
+## 2026-10-06 CORR-003 independent closure / CORR-004 current next
+
+- S2-CORR-20261006-003 = VERIFIED_CLOSED by independent 00 verification.
+- Verification receipt: system2/evidence/s2_corr_20261006_003_independent_verification.json.
+- S2-CORR-20261006-004 = OPEN / BUILD_LANE.
+- CORR-004 current issue: prior-session resonance must not silently populate current-session terminal surfaces; current-session resonance must bind to today's Taipei marketDate or fail closed / explicit STALE_PREVIOUS_SESSION.
+- 00 does not implement CORR-004; wait for BUILD_LANE FIX_IMPLEMENTED, then independently verify.
+
+Parallel highest-value System1 path remains:
+1. SDA-001/004 three schema deltas;
+2. SDA-009 Class-A LOO diagnostic;
+3. SDA-016 authoritative append-only Formal->C1 binding + first genuine parent receipt.
+
+Do not reopen CORR-003 unless new evidence shows regression.
+Formal Core remains locked.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-06",
+  "updatedAt": "2026-10-06T21:50:00+08:00",
   "status": "CANONICAL_ROOM_BOOTSTRAP_REGISTRY_V0_1",
   "repository": "imihan0630-sys/v7-fugle-worker",
   "authoritativeBranch": "main",
@@ -39,7 +39,10 @@
     "sda022System1FingerprintAcceptance": "shared-knowledge/sda022_system1_fingerprint_acceptance_20261006_v0_1.json",
     "sda016System1V819CurrentStatus": "research/sda016_system1_v819_current_status_20261006_v0_1.json",
     "sda016System1FormalC1BindingContract": "research/SDA016_SYSTEM1_FORMAL_C1_BINDING_IMPLEMENTATION_CONTRACT_20261006_V0_1.md",
-    "sda016System1FormalC1BindingContractMachine": "research/sda016_system1_formal_c1_binding_contract_v0_1.json"
+    "sda016System1FormalC1BindingContractMachine": "research/sda016_system1_formal_c1_binding_contract_v0_1.json",
+    "systemwideLaunchReadinessGovernanceAudit": "shared-knowledge/SYSTEMWIDE_LAUNCH_READINESS_GOVERNANCE_AUDIT_20261006_V0_1.md",
+    "systemwideLaunchReadinessGovernanceAuditMachine": "shared-knowledge/systemwide_launch_readiness_governance_audit_20261006_v0_1.json",
+    "room00LaunchReadinessCheckpoint": "shared-knowledge/00_LAUNCH_READINESS_BLOCKER_BURNDOWN_CHECKPOINT_20261006_V0_1.md"
   },
   "identities": [
     {
@@ -53,6 +56,8 @@
       "domains": [],
       "defaultMode": "Chat",
       "checkpoints": [
+        "shared-knowledge/00_LAUNCH_READINESS_BLOCKER_BURNDOWN_CHECKPOINT_20261006_V0_1.md",
+        "shared-knowledge/AOKD_00_CONTINUATION_CHECKPOINT_20261004_V0_2.md",
         "RESEARCH_CHECKPOINT.md",
         "RESEARCH_MASTER_MAP.md",
         "shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md"

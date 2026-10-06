@@ -5492,3 +5492,113 @@ No promotion:
 
 Exact next:
 re-read latest System1/System2/D16 machine lanes. If implementation/evidence has landed, do incremental readback only. Actual maturity gain must come from genuine prospective/raw-source or external machine evidence. If all external lanes remain blocked, any further D03 timing research should be narrowly limited to decision-boundary/execution-clock sensitivity rather than indefinitely expanding governance.
+
+
+## TI-1103 through TI-1134 — decision-boundary / execution-clock sensitivity (2026-10-06)
+
+Canonical artifacts:
+- `research/D03_DECISION_BOUNDARY_EXECUTION_CLOCK_SENSITIVITY_20261006_V0_1.md`;
+- `research/d03_execution_clock_sensitivity_schema_20261006_v0_1.json`;
+- `research/test_d03_execution_clock_sensitivity_v0_1.mjs`;
+- `research/d03_execution_clock_sensitivity_receipt_20261006_v0_1.json`.
+
+### TI-1103~1128 — execution-clock semantics refinement
+
+The earlier shorthand `sameCloseFill=true` is narrowed to:
+`SAME_CLOSING_AUCTION_FILL_USING_CLOSE_THAT_FINALIZED_SIGNAL`.
+
+Frozen:
+- a signal requiring the official final close cannot fill the same closing auction that creates that close;
+- the same numerical closing price at a later causal venue may be valid if the signal was already known before order submission;
+- later same-price execution is not automatically look-ahead;
+- fill probability/quantity/venue eligibility remain separate gates.
+
+Execution paths are now distinguished:
+- TWSE closing call auction;
+- post-close board-lot fixed-price venue;
+- after-market odd-lot venue;
+- next-session opening call;
+- next-session first executable continuous path.
+
+Board-lot fixed-price and odd-lot paths are not interchangeable.
+No-fill is not zero return.
+Partial fill uses executed quantity.
+Fallback between venues/clocks must be preregistered.
+Selecting the best execution clock after outcomes consumes execution-policy/multiplicity budget.
+
+A close-finalized factor's generic deployable baseline remains the next-session executable path unless a separately valid post-close venue path is explicitly modeled.
+
+### TI-1129 — precise same-price semantics
+
+`EXECUTION_PRICE == OFFICIAL_CLOSE` does not identify the execution clock.
+
+Required distinction:
+- `SAME_AUCTION_LOOKAHEAD_FILL` => invalid for close-finalized signal;
+- `SAME_PRICE_LATER_CLOCK` => potentially valid with venue/fill gates.
+
+### TI-1130 — security-level finality matters
+
+Hardcoding 13:30 as the factor-known time is insufficient when a security's close is delayed.
+
+The research clock follows actual security-level finality/source availability.
+
+### TI-1131 — venue support is part of common support
+
+Any post-close fixed-price or odd-lot study must preserve the denominator:
+venue eligibility, valid close, trading-unit compatibility and fill-data availability.
+
+Easy-to-fill subsets cannot represent all D03 candidates.
+
+### TI-1132 — exact-SHA execution falsified three implementation defects before PASS
+
+Canonical execution was attempted against pinned repository SHAs.
+
+Attempt 1:
+- SHA `ecc5e3bea22e123469a9b70898a0b0597c49438c`;
+- failed parse because one next-open assert missed a right parenthesis.
+
+Attempt 2:
+- SHA `00c733e4f703810d1aa7513ed1c08db0cc4d0521`;
+- parsed but exposed a clock bug: HH:MM-only comparison treated next-day 08:45 as earlier than prior-day 13:35.
+
+Attempt 3:
+- SHA `7b46ff12a104ccd9356a94da440dc59fd24d1cbf`;
+- exposed a refactor residue: local-window branch still referenced removed `known`.
+
+All three were fixed before any PASS claim.
+
+### TI-1133 — canonical execution PASS
+
+Final pinned source:
+`9dc014a8da402afa65cb0426e172f99e2320e2e5`.
+
+Observed:
+`status=PASS; cases=17; sameClosingAuctionLookaheadBlocked=true; sameNumericalCloseLaterVenueCanBeCausal=true; postCloseFillNotGuaranteed=true; boardLotOddLotSeparated=true; noClosingPriceBlocksFixedPrice=true; lateFinalityRoutesNextSession=true; noFillNotZeroReturn=true; partialFillExplicit=true; executionPolicySearchControlled=true; marketRuleVersionBound=true; formalCoreImpact=NONE_LOCKED; outcomeDataUsed=false`.
+
+Exact hashes are stored in:
+`research/d03_execution_clock_sensitivity_receipt_20261006_v0_1.json`.
+
+### TI-1134 — evidence boundary
+
+This tranche validates execution-clock semantics and fixture mechanics only.
+
+It does not establish:
+- actual fill rates;
+- empirical after-hours slippage;
+- Taiwan-stock alpha;
+- optimal venue;
+- production execution policy;
+- Formal behavior change.
+
+Market evidence units added = 0.
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09 and D03-10 remain L2/40;
+- raw source gate remains 2/3;
+- outcomes remain CLOSED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`;
+- Formal Core remains LOCKED.
+
+Exact next:
+re-read System1/System2/D16 and raw-source/prospective lanes. If no external evidence lands, stop expanding timing governance and wait for/route actual machine evidence; only perform a new D03 semantic tranche when a concrete implementation or evidence receipt exposes a new ambiguity.

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "D06_08_09_TPEX_SBL_ONLY_UNIVERSE_PERSISTENCE_20261006_V0_1",
+  "updatedAt": "2026-10-06 Asia/Taipei",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "modules": [
+    "D06-08",
+    "D06-09"
+  ],
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "comparisonDates": [
+    "2026-10-05",
+    "2026-10-06 EARLY"
+  ],
+  "firstDate": {
+    "sblOnlyRows": 13,
+    "allNoteY": true,
+    "nonzeroSblBalance": 13,
+    "nonzeroSblSell": 5,
+    "anySameDayActivity": 7
+  },
+  "secondDate": {
+    "sblOnlyRows": 13,
+    "allNoteY": true,
+    "nonzeroSblBalance": 13,
+    "nonzeroSblSell": 4,
+    "anySameDayActivity": 6
+  },
+  "overlap": {
+    "count": 13,
+    "pctOfPrior": 100,
+    "symbols": [
+      "3485",
+      "6680",
+      "6846",
+      "6904",
+      "6983",
+      "7713",
+      "7743",
+      "7772",
+      "7820",
+      "7828",
+      "7856",
+      "8084",
+      "8092"
+    ],
+    "added": [],
+    "removed": []
+  },
+  "interpretation": [
+    "The D06-08 margin-eligible universe and D06-09 SBL universe differ structurally across two consecutive dates.",
+    "All 13 persistent SBL-only rows retain nonzero SBL-short balances on both dates.",
+    "Inner-joining D06-09 to the margin-eligible universe would systematically censor valid SBL observations.",
+    "Credit eligibility is a rule state, not investor identity or motive."
+  ],
+  "maturityImpact": "NONE",
+  "status": "TWO_DATE_UNIVERSE_MISMATCH_PERSISTENCE_PASS / INNER_JOIN_SELECTION_BIAS_CONFIRMED / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Keep D06-08 and D06-09 denominators separate in the 22:30 LATE comparison and all future dates; report common support only as a secondary view."
+}

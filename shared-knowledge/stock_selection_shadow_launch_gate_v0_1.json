@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-06T06:12:00+08:00",
+  "updatedAt": "2026-10-06",
   "status": "CANONICAL_SELECTION_LAUNCH_GOVERNANCE",
   "formalCoreImpact": "NONE",
   "gates": [
@@ -18,9 +18,9 @@
       "blockers": [
         "SDA001_004_THREE_SCHEMA_DELTAS",
         "SDA009_SYSTEM1_LEAVE_ONE_OUT_DIAGNOSTIC",
-        "GENUINE_SAME_GENERATION_PARENT_BINDING"
+        "AUTHORITATIVE_FORMAL_C1_BINDING_AND_GENUINE_PARENT_RECEIPT"
       ],
-      "latestReadback": "System1 PR #644 is useful provenance partial-pass only; OPEN/DRAFT/NOT_MERGED/NOT_DEPLOYED and does not establish authoritative Formal->C1 binding."
+      "latestReadback": "PR #644 is merged, V8.19 deployed and Production-verified as a provenance partial pass. S1 remains PARTIAL because the SDA-001/004 schema deltas, SDA-009 System1 LOO diagnostic, authoritative append-only Formal->C1 binding and first genuine parent receipt remain incomplete."
     },
     {
       "id": "S2",
@@ -30,10 +30,10 @@
       "blockers": [
         "FIRST_GENUINE_SYSTEM1_SDA_RECEIPT",
         "FIRST_GENUINE_D09_LOO_RECEIPT",
-        "SDA016_V0_4_PRE_OUTCOME_REGISTRATION_AND_CONSUMPTION_AUTHORITY",
+        "SDA016_V0_5_REGISTRATION_CONSUMPTION_AUTHORITY",
         "COMMON_SUPPORT_UNKNOWN_ADMISSION_AND_OUTCOME_FOOTPRINT_ACCOUNTING"
       ],
-      "latestReadback": "SDA-016 closure oracle expanded to 48 blocking tests; genuine prospective comparison remains unavailable."
+      "latestReadback": "Current SDA-016 authority is V0.5 / 58 blocking tests. Genuine prospective System1 selection comparison remains unavailable until S1 instrumentation and parent/consumption identity are complete."
     },
     {
       "id": "S3",
@@ -68,14 +68,14 @@
   "currentShortestPath": [
     "System1 complete SDA-001/004 three Shadow output-schema deltas",
     "System1 implement SDA-009 leave-one-out Shadow diagnostic",
-    "establish authoritative genuine same-generation parent binding and first genuine S1 Shadow receipt",
-    "register comparison under SDA-016 V0.4 before outcomes",
-    "accumulate prospective comparison dates with full admission/missingness lineage",
+    "implement authoritative append-only Formal->C1 binding under the owner-governed SDA-016 Class-B path",
+    "obtain first genuine same-generation System1 SDA parent receipt",
+    "register and accumulate prospective comparison under current SDA-016 V0.5 authority",
     "D16 evaluate residual incrementality, multiplicity, dependence and estimand robustness",
     "only then prepare S3 owner-review candidate"
   ],
   "nonBlockingParallel": [
-    "D02 PVE-245 cleanup",
+    "D02 PVE-250 / PR #668 owner-gated Production integration and later clean H001 evidence",
     "D06 SDA-007 primitive lineage",
     "D04 prospective volatility evidence",
     "D19/D20 challenger evidence",
@@ -83,8 +83,10 @@
   ],
   "formalMutationRequiresExplicitOwnerApproval": true,
   "notes": [
-    "PR #644 does not move S1 to PASS because it is not merged/deployed and authoritative Formal->C1 binding remains unresolved.",
-    "PVE-246 root causes are certified but remediation is not implemented; D02 clean H001 date count remains zero.",
-    "System2 SDA-017 remains outside the plain System1 Selection Shadow S1 blocker set, but is mandatory before any Regime-conditioned promotion."
-  ]
+    "PR #644 is no longer an unmerged/deploy blocker; its merged V8.19 provenance improvement still does not establish authoritative Formal->C1 binding or a genuine parent receipt.",
+    "D02 PVE-250 is technically green but owner-gated for Production integration; it does not block first pure System1 Selection Shadow.",
+    "System2 SDA-017 remains outside the plain System1 Selection Shadow S1 blocker set, but current SDA-017 V0.4 / 56-test authority is mandatory before any Regime-conditioned promotion.",
+    "SDA-022 cross-system independence is separate: System1 fingerprint and D16 prereg are accepted, but System2 fingerprints and physical NC-T01 remain pending."
+  ],
+  "systemwideAudit": "shared-knowledge/SYSTEMWIDE_LAUNCH_READINESS_GOVERNANCE_AUDIT_20261006_V0_1.md"
 }

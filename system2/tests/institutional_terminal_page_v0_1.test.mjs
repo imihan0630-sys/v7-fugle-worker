@@ -1,5 +1,9 @@
 import assert from "node:assert/strict";
-import { buildSystem2TerminalPageHtml } from "../deploy/terminal_page.mjs";
+import {
+  buildSystem2TerminalPageHtml,
+  taipeiMarketDateTextV0_1,
+  resolveTerminalSessionAlignmentV0_1,
+} from "../deploy/terminal_page.mjs";
 
 const html=buildSystem2TerminalPageHtml();
 const required=[
@@ -90,5 +94,123 @@ assert.equal(
   html.includes('const formalAction=formalDecisionActionOf(r);'),
   true,
 );
+
+
+for(const token of [
+  "FORMAL CANDIDATE PENDING",
+  "FORMAL CANDIDATE PENDING / EMPTY",
+  "S2-07 frozen daily candidate/read API 尚未接線",
+  "MONITOR-ONLY｜Bounded Pool / Resonance",
+  "MONITOR / RESEARCH",
+  "MONITOR PROVENANCE",
+  "strategyMemberships 不等於 formal candidate strategy authority",
+  "MONITOR ROW · NOT FORMAL CANDIDATE",
+  "id=\"decisionCandidateState\">NOT_AVAILABLE",
+  "監控策略來源",
+]) assert.equal(html.includes(token),true,"candidate-monitor separation missing: "+token);
+
+assert.equal(html.includes("function formalCandidateRows()"),true);
+assert.equal(html.includes("return [];"),true);
+assert.equal(html.includes("function monitorRows()"),true);
+assert.equal(html.includes('__rowAuthority:"MONITOR_ONLY"'),true);
+assert.equal(html.includes('strategyAttributionAuthority'),false);
+assert.equal(html.includes("function monitorMembershipsOf(r)"),true);
+assert.equal(html.includes("monitorStrategyMemberships"),true);
+assert.equal(html.includes("strategyMemberships"),true);
+assert.equal(html.includes("MONITOR_PROVENANCE_UNRESOLVED"),true);
+
+assert.equal(html.includes("function candidateRows()"),false);
+assert.equal(html.includes("function strategyOf(r)"),false);
+assert.equal(html.includes("UNRESOLVED_STRATEGY"),false);
+assert.equal(html.includes('candidateState").textContent=(candidateRows()'),false);
+
+assert.equal(
+  html.includes('document.getElementById("candidateState").textContent="FORMAL CANDIDATE PENDING";'),
+  true,
+);
+assert.equal(html.includes("monitorTable();"),true);
+assert.equal(html.includes('data-monitor-symbol'),true);
+assert.equal(html.includes('show("decision")'),true);
+assert.equal(
+  html.includes('document.getElementById("decisionCandidateState").textContent="NOT_AVAILABLE";'),
+  true,
+);
+assert.equal(
+  html.includes('document.getElementById("decisionAction").textContent=formalAction;'),
+  true,
+);
+assert.equal(html.includes("disabled>全部</button>"),true);
+assert.equal(html.includes("正式 per-strategy candidate filtering"),true);
+
+
+const currentDate="2026-10-06";
+assert.equal(taipeiMarketDateTextV0_1("2026-10-06T15:59:59.000Z"),"2026-10-06");
+assert.equal(taipeiMarketDateTextV0_1("2026-10-06T16:00:00.000Z"),"2026-10-07");
+
+const aligned=resolveTerminalSessionAlignmentV0_1({
+  terminalMarketDate:currentDate,
+  resonance:{marketDate:currentDate},
+  pool:{marketDate:currentDate,state:"NO_ACTIVE_PRESELECTED_POOL",symbols:[]},
+  operations:{marketDate:currentDate,state:"LATEST_POOL_REFRESH_NO_CAPACITY_RECEIPT"},
+});
+assert.equal(aligned.currentSessionReady,true);
+assert.equal(aligned.state,"CURRENT_SESSION_ALIGNED");
+
+const staleResonance=resolveTerminalSessionAlignmentV0_1({
+  terminalMarketDate:currentDate,
+  resonance:{marketDate:"2026-10-05",symbols:[{symbol:"3443"}]},
+  pool:{marketDate:currentDate,state:"NO_ACTIVE_PRESELECTED_POOL",symbols:[]},
+  operations:{marketDate:currentDate,state:"LATEST_POOL_REFRESH_NO_CAPACITY_RECEIPT"},
+});
+assert.equal(staleResonance.currentSessionReady,false);
+assert.equal(staleResonance.state,"SESSION_DATE_MISMATCH");
+assert.deepEqual(staleResonance.mismatchedSources,["resonance"]);
+
+const crossPathMismatch=resolveTerminalSessionAlignmentV0_1({
+  terminalMarketDate:currentDate,
+  resonance:{marketDate:currentDate},
+  pool:{marketDate:"2026-10-05"},
+  operations:{marketDate:currentDate},
+});
+assert.equal(crossPathMismatch.currentSessionReady,false);
+assert.equal(crossPathMismatch.state,"SESSION_DATE_MISMATCH");
+assert.deepEqual(crossPathMismatch.mismatchedSources,["pool"]);
+
+const unverified=resolveTerminalSessionAlignmentV0_1({
+  terminalMarketDate:currentDate,
+  resonance:{marketDate:currentDate},
+  pool:null,
+  operations:{marketDate:currentDate},
+});
+assert.equal(unverified.currentSessionReady,false);
+assert.equal(unverified.state,"SESSION_ALIGNMENT_UNVERIFIED");
+assert.deepEqual(unverified.missingSources,["pool"]);
+
+for(const token of [
+  "CURRENT SESSION CHECK",
+  "CURRENT_SESSION_ALIGNED",
+  "SESSION_DATE_MISMATCH",
+  "SESSION_ALIGNMENT_UNVERIFIED",
+  "STALE_BLOCKED",
+  "STALE / PREVIOUS_SESSION",
+  "decisionMarketDate",
+  "decisionUpdatedAt",
+  "decisionChartAsOf",
+  "current-session resonance hidden",
+  "current-session resonance rows",
+]) assert.equal(html.includes(token),true,"current-session freshness guard missing: "+token);
+
+assert.equal(html.includes('get("/api/system2/resonance"+q)'),true);
+assert.equal(html.includes('get("/api/system2/resonance/pool"+q)'),true);
+assert.equal(html.includes('get("/api/system2/resonance/operations"+q)'),true);
+assert.equal(html.includes('const marketDate=taipeiMarketDateTextV0_1(new Date());'),true);
+assert.equal(html.includes('S.sessionAlignment=resolveTerminalSessionAlignmentV0_1({'),true);
+assert.equal(html.includes('if(!S.sessionAlignment.currentSessionReady)S.selected=null;'),true);
+assert.equal(html.includes('function currentResonanceRows()'),true);
+assert.equal(html.includes('if(!S.sessionAlignment?.currentSessionReady)return [];'),true);
+assert.equal(html.includes('r.marketDate!==S.terminalMarketDate'),true);
+assert.equal(html.includes('r.chart?.marketDate&&r.chart.marketDate!==S.terminalMarketDate'),true);
+assert.equal(html.includes('timestampMatchesTerminalSession(r.updatedAt)'),true);
+assert.equal(html.includes('timestampMatchesTerminalSession(r.chart?.asOf)'),true);
 
 console.log("System2 institutional terminal page V0.1 tests PASS");

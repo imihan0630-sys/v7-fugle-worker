@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "D06_07_08_09_TPEX_LEVERAGE_EARLY_20261006_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "modules": [
+    "D06-07",
+    "D06-08",
+    "D06-09"
+  ],
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "tradeDate": "2026-10-06",
+  "market": "TPEx",
+  "captureLabel": "EARLY",
+  "targetTaipei": "20:30",
+  "capturedAt": "2026-10-06T21:25:30+08:00",
+  "timingSemantics": "Captured after the approximate 20:30 early update and before the preregistered 22:30 late update. It is an EARLY-window snapshot, not an exact 20:30 timestamp.",
+  "sourceAuthority": "Taipei Exchange (TPEx)",
+  "sources": {
+    "margin": {
+      "product": "融資融券餘額表",
+      "url": "https://www.tpex.org.tw/zh-tw/mainboard/trading/margin-trading/transactions.html",
+      "snapshot": "research/d06_07_08_tpex_margin_early_snapshot_20261006_2125_v0_1.csv",
+      "rows": 918,
+      "numericValid": 918,
+      "financingArithmetic": "918/918 PASS",
+      "marginShortArithmetic": "918/918 PASS",
+      "canonicalRowsFingerprint": "fnv1a64-utf8:fb83c76bf192e3d8"
+    },
+    "sbl": {
+      "product": "融券借券賣出餘額",
+      "url": "https://www.tpex.org.tw/zh-tw/mainboard/trading/margin-trading/sbl.html",
+      "snapshot": "research/d06_08_09_tpex_sbl_early_snapshot_20261006_2125_v0_1.csv",
+      "rows": 931,
+      "numericValid": 931,
+      "marginShortArithmetic": "931/931 PASS",
+      "actualSblShortArithmetic": "931/931 PASS",
+      "canonicalRowsFingerprint": "fnv1a64-utf8:6d5aaffec3a7f000"
+    }
+  },
+  "crossSourceUnitAudit": {
+    "commonSymbols": 918,
+    "marginShortFiveBalanceFlowFieldsExactLotsTimes1000": "918/918",
+    "shortLimitFloorSharesDiv1000EqualsDisplayedLots": "918/918",
+    "sblOnlyRows": 13
+  },
+  "guards": [
+    "Actual capturedAt is preserved; do not relabel as exact 20:30.",
+    "This snapshot may be compared only with a genuine post-22:30 LATE snapshot from the same trade date.",
+    "D06-08 margin-short and D06-09 SBL universes remain separate.",
+    "Missing/NULL is not zero; source rendering failures are not market-data zeros.",
+    "No directional/motive/return inference is opened."
+  ],
+  "maturityImpact": "NONE_YET",
+  "status": "EARLY_WINDOW_COMPLETE / 918_MARGIN_AND_931_SBL_RECONCILED / LATE_2230_PENDING / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "After 22:30 capture the same two official pages with identical parser/unit semantics. Compare EARLY->LATE on union and common support, including added/removed rows, numeric revisions, limit precision and SBL-only universe changes."
+}

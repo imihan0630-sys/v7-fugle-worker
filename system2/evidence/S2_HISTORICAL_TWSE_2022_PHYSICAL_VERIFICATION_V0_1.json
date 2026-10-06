@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_DURABLE_EVIDENCE_V0_2",
+  "market": "TWSE",
+  "year": 2022,
+  "disposition": "DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL",
+  "acceptedRun": {
+    "runId": 37467099680,
+    "runNumber": 19,
+    "headSha": "507fdd83ad9df9b3703cbc65e8940dda6b0c2662",
+    "workflowConclusion": "success",
+    "completedAt": "2026-10-06T13:34:32Z",
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37467099680",
+    "artifactId": 11416932962,
+    "artifactName": "system2-historical-coverage-TWSE-2022",
+    "artifactDigest": "sha256:4718df9b1232cbe7e359a9ea2bdf9a31f03cd9574d744eaedd502293a65baddd",
+    "artifactCreatedAt": "2026-10-06T13:34:29Z",
+    "artifactExpiresAt": "2026-11-05T13:34:29Z",
+    "artifactUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37467099680/artifacts/11416932962"
+  },
+  "backfill": {
+    "tradingDateCount": 246,
+    "officialRowCount": 237941,
+    "packCount": 985,
+    "symbolCount": 985,
+    "firstMarketDate": "2022-01-03",
+    "lastMarketDate": "2022-12-30",
+    "insertedObjectCount": 985,
+    "identicalObjectCount": 0,
+    "insertedManifestCount": 985,
+    "identicalManifestCount": 0,
+    "d1RowsWrittenObserved": 6983,
+    "system1RuntimeChanged": false
+  },
+  "storageVerification": {
+    "receiptId": "S2HCR-67c1bd1a7d55d6d0100df716b1d28ec1e1130804b11104f85cd120c10334063a",
+    "batchId": "S2-HIST-PACK-YEAR|TWSE|2022",
+    "completionReceiptState": "COMPLETE",
+    "packCount": 985,
+    "barCount": 237941,
+    "manifestRollingHash": "67c1bd1a7d55d6d0100df716b1d28ec1e1130804b11104f85cd120c10334063a",
+    "checkpointState": "COMPLETE",
+    "headObjectCountVerified": 985,
+    "byteGetObjectCountVerified": 985,
+    "state": "PASS"
+  },
+  "sourceReconciliation": {
+    "state": "PASS",
+    "dataIntegrityState": "PASS",
+    "sourceVersionState": "STABLE",
+    "coldRowCount": 237941,
+    "freshOfficialRowCount": 237941,
+    "missingFromColdCount": 0,
+    "absentFromFreshOfficialCount": 0,
+    "sourceRowHashMismatchCount": 0,
+    "canonicalA1ValueMismatchCount": 0,
+    "sourceRevisionOnlyCount": 0,
+    "sourceRevisionDateCount": 0,
+    "officialTradingDates": 246,
+    "reconciliationContract": "S2_HISTORICAL_SOURCE_RECONCILIATION_V0_1"
+  },
+  "historicalUniverse": {
+    "readiness": "PASS_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION",
+    "registryId": "S2-DATA-TWSE-2022-OFFICIAL-UNION-V0.1",
+    "registryHash": "cfc93773122ead554471e56a4db481d8c02731353b8ac5a39fb7ca0e0e84fc20",
+    "membershipCount": 1114,
+    "replayEligibleCount": 1114,
+    "currentCount": 1089,
+    "delistedCount": 25,
+    "unknownStartCount": 0,
+    "survivorshipCompleteForDataCoverage": true
+  },
+  "coverage": {
+    "expectedSessions": 246,
+    "actualSessions": 246,
+    "historicalUniverseSize": 988,
+    "expectedBars": 238640,
+    "actualBars": 237941,
+    "missingBars": 699,
+    "unknownBars": 699,
+    "unexpectedBars": 0,
+    "nonTradingDateBars": 0,
+    "rawCoverageState": "PASS",
+    "symbolSessionReadiness": "PARTIAL_UNKNOWN_GAPS",
+    "pitReadiness": "PASS_CONSERVATIVE_SESSION_FINALITY",
+    "continuityReadiness": "PARTIAL_UNVERIFIED",
+    "technicalPriceReadiness": "PARTIAL_NONPRICE_OBSERVATIONS",
+    "observationStateCounts": {
+      "VALID_OHLC": 237309,
+      "POSITIVE_ACTIVITY_NO_VALID_CLOSE": 400,
+      "OFFICIAL_ZERO_TRADE_NO_PRICE": 232
+    },
+    "continuityStateCounts": {
+      "UNVERIFIED": 237941
+    },
+    "mainMissingReasons": {
+      "UNKNOWN_SYMBOL_SESSION_GAP": 699
+    }
+  },
+  "readiness": {
+    "dataCoverageState": "PASS",
+    "replayReadinessState": "PARTIAL",
+    "overallState": "PARTIAL"
+  },
+  "verifierVersion": "S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_4",
+  "correctionDirective": "S2-CORR-20261004-001",
+  "correctionStatusAfterEvidence": "FIX_IN_PROGRESS",
+  "closureAuthority": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "nextMarketYear": {
+    "market": "TPEX",
+    "year": 2022
+  },
+  "protectedBoundaries": {
+    "system1RuntimeChanged": false,
+    "system2StrategyAuthorityChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "capitalOrderAuthorityChanged": false
+  }
+}

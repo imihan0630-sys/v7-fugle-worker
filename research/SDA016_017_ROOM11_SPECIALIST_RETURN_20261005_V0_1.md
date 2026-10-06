@@ -740,3 +740,79 @@ D18 = 52%.
 Formal Core LOCKED.
 Whole SDA-022 remains PARTIAL_PASS.
 Room00 remains sole closure authority.
+
+
+## 2026-10-06 SDA-016 Formal→C1 binding contract-layer validation
+
+New canonical validation artifacts:
+- `research/SDA016_ROOM11_FORMAL_C1_BINDING_CONTRACT_VALIDATION_20261006_V0_1.md`;
+- `research/SDA016_ROOM11_FORMAL_C1_BINDING_CONTRACT_VALIDATION_20261006_V0_1.json`.
+
+Authoritative contract:
+- `research/SDA016_SYSTEM1_FORMAL_C1_BINDING_IMPLEMENTATION_CONTRACT_20261006_V0_1.md`;
+- `research/sda016_system1_formal_c1_binding_contract_v0_1.json`.
+
+Merged:
+- PR #675 `b32b266cbd4a23674f1021847944d97cd345d0df`;
+- governance sync PR #678 `dba33aa3e4bb0ff529fec81aa62eab7594c86dc4`.
+
+Contract state:
+`CLASS_A_CONTRACT_FROZEN / CLASS_B_IMPLEMENTATION_PENDING`.
+
+### Current V8.19 state corrected
+
+Latest canonical System1 status now proves:
+- PR #644 merged;
+- merge SHA `b79e1e7c22b015e96ecd3780cbf56b21091fd4de`;
+- Production deploy run `37382112616` success;
+- post-merge regression `37382112493` success;
+- runtime `8.19.0-c1-scan-origin-generation-inventory` verified;
+- testMode=false;
+- rollbackTriggered=false.
+
+Still:
+`PENDING_FIRST_GENUINE_POST_DEPLOY_C1_SESSION`.
+
+### SDA016-T41~T48 interpretation
+
+- T41: contract-covered, runtime pending;
+- T42: contract-covered, runtime pending;
+- T43: existing current-session `FORMAL_C1_GENERATION_UNLINKED` fail-closed guard remains accepted;
+- T44: contract-covered, runtime pending;
+- T45: contract-covered, runtime pending;
+- T46: contract-covered, runtime pending;
+- T47: contract-covered, runtime pending;
+- T48: OPEN, because same-session generation-set finalization is explicitly not solved by V0.1.
+
+No contract-layer acceptance is promoted into deployed runtime evidence.
+
+### Class-B still required
+
+Pending:
+- append-only `trade_research_formal_c1_bindings` table;
+- runtime binding writer;
+- protected historical readback;
+- deterministic runtime conflict behavior;
+- Production deployment;
+- genuine binding readback.
+
+### Governance status
+
+Systemwide governance audit:
+`SYSTEMWIDE_AUDIT_COMPLETE_GOVERNANCE_SYNC_COMPLETE_WITH_ACTIVE_EXTERNAL_BLOCKERS`.
+
+It has already synchronized:
+- central SDA-016/SDA-017 oracle counts to 58/56;
+- SDA-022 D16 prereg 4/4 state;
+- PR #644 merged/deployed state.
+
+Therefore Room11 does not overwrite central governance.
+
+Minor residual:
+the V8.19 current-status receipt text still references remaining V0.4 oracle evidence in one unresolved line; current queue / systemwide audit correctly use V0.5 / 58 tests.
+Treat as stale text only, not authority.
+
+No maturity change.
+D16 = 60%.
+D18 = 52%.
+Formal Core LOCKED.

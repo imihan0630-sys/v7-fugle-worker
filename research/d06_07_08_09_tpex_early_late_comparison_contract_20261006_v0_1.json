@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "D06_07_08_09_TPEX_EARLY_LATE_COMPARISON_CONTRACT_20261006_V0_1",
+  "updatedAt": "2026-10-06 Asia/Taipei",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "modules": [
+    "D06-07",
+    "D06-08",
+    "D06-09"
+  ],
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "tradeDate": "2026-10-06",
+  "earlyParent": "research/d06_07_08_09_tpex_leverage_early_20261006_v0_1.json",
+  "earlyCapturedAt": "2026-10-06T21:25:30+08:00",
+  "lateTargetTaipei": "22:30",
+  "comparisonIdentityKey": [
+    "sourceProduct",
+    "symbol"
+  ],
+  "populationRules": {
+    "marginUniverse": "native margin-transactions table population",
+    "sblUniverse": "native margin-short/SBL table population",
+    "innerJoinForbiddenAsPrimaryView": true,
+    "commonSupportSecondaryOnly": true,
+    "sblOnlyPopulationMustRemainVisible": true
+  },
+  "unitRules": {
+    "marginPage": "LOTS for displayed balance/flow/limit fields",
+    "sblPage": "SHARES",
+    "exactCrossSourceFields": [
+      "prevBalance",
+      "sell",
+      "buy",
+      "cashRepay",
+      "currentBalance"
+    ],
+    "limitRule": "floor(shareLimit/1000) equals displayed whole-lot limit; preserve native precision",
+    "nullRule": "NULL/dash is not zero"
+  },
+  "adjacentVintageRowStates": [
+    "UNCHANGED",
+    "CHANGED_NUMERIC",
+    "ADDED_IN_LATE",
+    "REMOVED_IN_LATE",
+    "IDENTITY_OR_SCHEMA_CONFLICT"
+  ],
+  "requiredMarginMetrics": [
+    "earlyRowCount",
+    "lateRowCount",
+    "unionSymbolCount",
+    "commonSymbolCount",
+    "unchangedRowCount",
+    "changedRowCount",
+    "addedRowCount",
+    "removedRowCount",
+    "identityConflictCount",
+    "sumAbsoluteMarginBalanceRevisionLots",
+    "sumAbsoluteMarginBuyRevisionLots",
+    "sumAbsoluteMarginSellRevisionLots",
+    "sumAbsoluteMarginCashRepayRevisionLots",
+    "sumAbsoluteShortBalanceRevisionLots",
+    "sumAbsoluteShortSellRevisionLots",
+    "sumAbsoluteShortBuyRevisionLots",
+    "sumAbsoluteShortRepayRevisionLots",
+    "maxAbsoluteFieldRevisionLots",
+    "changedRowRateOverUnion",
+    "changedRowRateOverCommon"
+  ],
+  "requiredSblMetrics": [
+    "earlyRowCount",
+    "lateRowCount",
+    "unionSymbolCount",
+    "commonSymbolCount",
+    "unchangedRowCount",
+    "changedRowCount",
+    "addedRowCount",
+    "removedRowCount",
+    "identityConflictCount",
+    "sumAbsoluteMarginShortBalanceRevisionShares",
+    "sumAbsoluteActualSblShortBalanceRevisionShares",
+    "sumAbsoluteActualSblSellRevisionShares",
+    "sumAbsoluteActualSblReturnRevisionShares",
+    "sumAbsoluteActualSblAdjustmentRevisionShares",
+    "maxAbsoluteFieldRevisionShares",
+    "changedRowRateOverUnion",
+    "changedRowRateOverCommon",
+    "sblOnlyEarlyCount",
+    "sblOnlyLateCount",
+    "sblOnlyAdded",
+    "sblOnlyRemoved"
+  ],
+  "passLogic": {
+    "sourceIntegrityRequired": [
+      "late arithmetic reconciliation passes all rows",
+      "same schema/parser semantics as early",
+      "no duplicate symbols",
+      "source date/trade date verified"
+    ],
+    "maturityReassessmentOnlyIf": [
+      "genuine post-22:30 late snapshot exists",
+      "early and late source identities are comparable",
+      "revision metrics are computed on union and common support",
+      "D06-08/D06-09 universe distinction is preserved"
+    ],
+    "promotionNotAutomatic": true,
+    "note": "A clean paired vintage can clear the source/revision feasibility gate, but no predictive alpha or Formal promotion follows without later OOS/Shadow evidence."
+  },
+  "guards": [
+    "Do not call 21:25 EARLY exact 20:30.",
+    "Do not call any pre-22:30 read LATE.",
+    "Do not convert SBL-only rows into missing/zero by margin-table inner join.",
+    "Do not interpret positive/negative revision as bullish/bearish motive.",
+    "Do not treat same-day EARLY/LATE as independent trading dates.",
+    "Do not use later outcome data in this comparison."
+  ],
+  "status": "COMPARISON_CONTRACT_FROZEN_PRE_LATE / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "maturityImpact": "NONE_AT_FREEZE",
+  "exactNext": "After 22:30, capture both official TPEx source families with identical parser/unit semantics, compute all frozen metrics, then reassess D06-07/08/09 source/revision maturity only."
+}

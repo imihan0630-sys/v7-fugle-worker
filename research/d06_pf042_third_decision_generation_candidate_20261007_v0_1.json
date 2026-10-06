@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "D06_PF042_THIRD_DECISION_GENERATION_CANDIDATE_20261007_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-16",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "capturedAt": "2026-10-06T21:35:46+08:00",
+  "decisionUseDate": "2026-10-07",
+  "unitObservationDate": "2026-10-06",
+  "observations": [
+    {
+      "etfCode": "0050",
+      "postingDate": "2026-10-06T16:17:26+08:00",
+      "announceDate": "2026-10-07",
+      "unitsOutstanding": 22233000000,
+      "reportedUnitsDifference": 11500000,
+      "creationUnitSize": 500000,
+      "creationUnitEquivalentNetChange": 23,
+      "pcfTradeDate": "2026-10-06",
+      "sourceHash": "fnv1a64-utf8:44afa643c503c72c",
+      "cashSubstitutionState": "NO_REQUIRED_CASH_SUBSTITUTION_OBSERVED",
+      "corporateActionGuard": "HISTORICAL_SPLIT_2025-06-11 / NO_CURRENT_SPLIT_OBSERVED"
+    },
+    {
+      "etfCode": "0056",
+      "postingDate": "2026-10-06T16:37:37+08:00",
+      "announceDate": "2026-10-07",
+      "unitsOutstanding": 14247034000,
+      "reportedUnitsDifference": 19000000,
+      "creationUnitSize": 500000,
+      "creationUnitEquivalentNetChange": 38,
+      "pcfTradeDate": "2026-10-06",
+      "sourceHash": "fnv1a64-utf8:38922665d41400f9",
+      "cashSubstitutionState": "NO_REQUIRED_CASH_SUBSTITUTION_OBSERVED",
+      "corporateActionGuard": "NO_CURRENT_SPLIT_TEXT_OBSERVED"
+    }
+  ],
+  "guards": [
+    "Creation-unit-equivalent net change is arithmetic scale only, not actual creation order count.",
+    "Units plus PCF imply modeled primary-basket exposure only, not actual constituent execution.",
+    "Third decision generation does not raise maturity without same-generation stability readback and later OOS/Shadow evidence.",
+    "No duplicate independent-date credit is assigned to repeated reads of this same generation."
+  ],
+  "gateAssessment": {
+    "thirdIndependentDecisionGeneration": "CANDIDATE_PASS",
+    "sameGenerationVersionStability": "PENDING_RECHECK",
+    "actualExecutionIdentification": "UNKNOWN",
+    "maturityPromotion": "NONE"
+  },
+  "status": "THIRD_DECISION_GENERATION_CANDIDATE_CAPTURED / STABILITY_RECHECK_PENDING / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Re-read both issuer pages later in the same evening. If hashes and frozen fields are unchanged, convert this candidate into third-generation stability evidence; otherwise append a version delta."
+}

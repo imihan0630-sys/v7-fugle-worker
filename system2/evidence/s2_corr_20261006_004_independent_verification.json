@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "S2_CORRECTION_INDEPENDENT_VERIFICATION_V0_1",
+  "directiveId": "S2-CORR-20261006-004",
+  "verifiedAt": "2026-10-06T21:55:42+08:00",
+  "verifiedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "auditBaseMainSha": "05084853bbf37669b738f276aea6792d9b0b87f4",
+  "result": "VERIFIED_CLOSED",
+  "acceptance": {
+    "currentSessionResonanceBoundToTaipeiMarketDate": true,
+    "priorSessionFallbackBlockedFromCurrentTerminal": true,
+    "explicitHistoricalQueryPreserved": true,
+    "latestAnyDateHistoryMarked": true,
+    "sessionDateMismatchFailsClosed": true,
+    "decisionAndChartSessionProvenanceVisible": true,
+    "sameSessionResonanceStillFunctional": true,
+    "protectedAuthoritiesUnchanged": true
+  },
+  "implementation": {
+    "implementationPr": 690,
+    "implementationMergeSha": "b18457b4de892ed3beb8502155adfdee1a038ca4",
+    "queueWritebackPr": 691,
+    "queueWritebackMergeSha": "05084853bbf37669b738f276aea6792d9b0b87f4"
+  },
+  "ci": [
+    {
+      "workflow": "System2 Research CI",
+      "runId": 37472705542,
+      "jobId": 112300052873,
+      "result": "PASS"
+    },
+    {
+      "workflow": "V8 Regression Tests",
+      "runId": 37472705541,
+      "jobId": 112300052650,
+      "result": "PASS"
+    },
+    {
+      "workflow": "System2 Research CI merged-main",
+      "runId": 37473038918,
+      "jobId": 112301366833,
+      "result": "PASS"
+    },
+    {
+      "workflow": "System2 Daily Resonance Deploy",
+      "runId": 37473038743,
+      "jobId": 112301210286,
+      "result": "PASS"
+    }
+  ],
+  "verificationEvidence": [
+    "Independent AUDIT_LANE re-read latest GitHub main and did not rely on BUILD_LANE's completion claim.",
+    "PR #690 merged as b18457b4de892ed3beb8502155adfdee1a038ca4 and changed only terminal_page.mjs, daily_resonance_persistence_v0_1.mjs, daily_resonance_current_session_freshness_v0_1.test.mjs, and institutional_terminal_page_v0_1.test.mjs.",
+    "Terminal now computes the current Asia/Taipei market date and queries resonance, pool, and operations with the same explicit marketDate.",
+    "Terminal session alignment rejects mismatched/missing source dates and clears current selection; stale or previous-session rows are blocked from current Candidate/Decision/Today Focus/Resonance surfaces.",
+    "Current-session resonance rows must match terminal marketDate, chart marketDate, row updatedAt Taipei date, and chart asOf Taipei date before they can enter current monitor surfaces.",
+    "Decision Workspace now exposes Market Date, Row updatedAt, and Chart asOf so session provenance is visible.",
+    "readLatestResonanceApiV0_1 preserves no-date latest-any-date historical behavior but marks it LATEST_AVAILABLE_DATE; explicit marketDate queries are marked EXPLICIT_MARKET_DATE and do not fall back.",
+    "Freshness regression proves yesterday-only data does not populate an explicit current-day query, explicit historical-date query remains available, and latest-any-date history remains visibly marked.",
+    "System2 Research CI run 37472705542 / job 112300052873 PASS.",
+    "V8 Regression run 37472705541 / job 112300052650 PASS.",
+    "Merged-main System2 Research CI run 37473038918 / job 112301366833 PASS.",
+    "System2 Daily Resonance Deploy run 37473038743 / job 112301210286 PASS, including public read API/UI/schedule checks and System1 production-file isolation.",
+    "From FIX_IMPLEMENTED writeback commit 05084853bbf37669b738f276aea6792d9b0b87f4 through audit time, latest main is identical for all four correction conflict units; zero drift invalidated the fix.",
+    "No resonance formula/state-machine, bounded-pool freshness semantics, denominator provenance, S2-07 candidate authority, strategy logic, ranking/capacity, notification/push, capital/order behavior, or System1 Formal Core was changed."
+  ],
+  "residuals": [
+    "Latest-any-date resonance API behavior remains intentionally available for explicit historical/reference use and must not be reused silently by current-session terminal surfaces.",
+    "Future historical replay UI, if added, should keep historical mode visually and semantically distinct from current-session monitoring."
+  ],
+  "closureMeaning": "Closes the stale cross-session resonance contamination risk. Current-session terminal surfaces now fail closed on market-date mismatch while explicit historical resonance remains separately queryable."
+}

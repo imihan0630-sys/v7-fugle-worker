@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "SDA016_ROOM11_FORMAL_C1_BINDING_CONTRACT_VALIDATION_V0_1",
+  "updatedAt": "2026-10-06T21:08:00+08:00",
+  "ticket": "SDA-016",
+  "validator": "D16 / Room11",
+  "closureAuthority": "00",
+  "contractStatus": "CLASS_A_CONTRACT_FROZEN_CLASS_B_IMPLEMENTATION_PENDING",
+  "productionV819": {
+    "pr644Merged": true,
+    "mergeSha": "b79e1e7c22b015e96ecd3780cbf56b21091fd4de",
+    "productionDeployRun": 37382112616,
+    "productionDeployConclusion": "success",
+    "postMergeRegressionRun": 37382112493,
+    "postMergeRegressionConclusion": "success",
+    "runtimeVersion": "8.19.0-c1-scan-origin-generation-inventory",
+    "runtimeVerified": true,
+    "genuineReadbackStatus": "PENDING_FIRST_GENUINE_POST_DEPLOY_C1_SESSION"
+  },
+  "oracleMapping": [
+    {
+      "id": "SDA016-T41",
+      "state": "CONTRACT_COVERED_RUNTIME_PENDING"
+    },
+    {
+      "id": "SDA016-T42",
+      "state": "CONTRACT_COVERED_RUNTIME_PENDING"
+    },
+    {
+      "id": "SDA016-T43",
+      "state": "CURRENT_SESSION_FAIL_CLOSED_GUARD_ACCEPTED"
+    },
+    {
+      "id": "SDA016-T44",
+      "state": "CONTRACT_COVERED_RUNTIME_PENDING"
+    },
+    {
+      "id": "SDA016-T45",
+      "state": "CONTRACT_COVERED_RUNTIME_PENDING"
+    },
+    {
+      "id": "SDA016-T46",
+      "state": "CONTRACT_COVERED_RUNTIME_PENDING"
+    },
+    {
+      "id": "SDA016-T47",
+      "state": "CONTRACT_COVERED_RUNTIME_PENDING"
+    },
+    {
+      "id": "SDA016-T48",
+      "state": "OPEN_GENERATION_SET_FINALIZATION_PENDING"
+    }
+  ],
+  "classBStillRequired": [
+    "D1_APPEND_ONLY_BINDING_TABLE",
+    "RUNTIME_BINDING_WRITER",
+    "PROTECTED_READBACK_ENDPOINT",
+    "PRODUCTION_DEPLOYMENT",
+    "DETERMINISTIC_RUNTIME_CONFLICT_TESTS",
+    "GENUINE_BINDING_READBACK"
+  ],
+  "statusSyncObservation": "CURRENT_STATUS_RECEIPT_HAS_LEGACY_V0_4_WORDING_QUEUE_HAS_CURRENT_V0_5_58_TEST_AUTHORITY",
+  "wholeTicketPassed": false,
+  "maturityImpact": "NONE",
+  "formalCoreImpact": "NONE"
+}

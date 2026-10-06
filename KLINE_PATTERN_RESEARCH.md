@@ -23616,3 +23616,142 @@ The guard fails closed when historical tick provenance is missing, the tick rece
 TP21-TP26 directly cover those states. A new aggregate runner imports TP01-TP26 so future research execution cannot accidentally omit the split test files.
 
 This completion does not change D01 maturity, does not open outcomes and does not authorize Formal promotion.
+
+
+# DL-049 — Zone acceptance vs directional churn / path disorder (2026-10-06)
+
+DL-049 asks whether repeated contact with a structural zone is calm acceptance or merely noisy oscillation.
+
+That distinction cannot be recovered from visit count alone. Two episodes can spend the same fraction of completed bars inside the same zone while one remains stable and the other repeatedly moves between inside and outside states. Conversely, two episodes can have the same transition count but very different occupancy.
+
+D01 therefore freezes a minimal zone-state path model rather than creating a new generic trend factor.
+
+For completed-bar closes relative to frozen zone [L,U], the only close states are BELOW, INSIDE and ABOVE. State-transition counts, direct outside-to-outside flips and maximum consecutive inside runs are zone-local descriptors. D03 remains the owner of fixed-window pathEfficiency10 and trend-quality primitives.
+
+A critical data boundary is preserved. An OHLC bar whose low is below L and high is above U proves only that the bar spans the full zone. It does not reveal which edge was touched first, how many crossings occurred, the exact crossing order, or exact time inside the zone. Those claims require a complete replay-safe timestamped trade or quote sequence.
+
+This distinction prevents coarse OHLC bars from manufacturing microstructure precision.
+
+DL-049 also keeps occupancy and churn separate from direction. High churn does not receive a bullish or bearish sign. No fixed churn threshold and no Shannon-entropy factor are introduced in v0.1. Any entropy-like extension would create another parameter family and must be preregistered separately.
+
+Market-mechanics context is mandatory. Price-limit states, auction/continuous session identity, volatility interruptions, legal tick regime, liquidity/spread conditions and corporate-action continuity can generate apparent oscillation or discrete repricing that is not ordinary unconstrained churn.
+
+Information lineage remains conservative. OHLC-derived path descriptors remain PRICE_OHLC. Exact event paths may add timing provenance such as EVENT_TIME, TRADE_TIME or QUOTE_TIME, but do not automatically become another independent vote. effectiveIndependentEvidenceCount remains one by default and residual incrementality remains unvalidated.
+
+Twenty executable adversarial cases are authored. They cover boundary inclusion, below/inside/above states, direct versus intermediate flips, equal-occupancy/different-churn pairs, equal-transition/different-occupancy pairs, consecutive inside runs, full-zone OHLC ambiguity, invalid inputs, exact trade/quote sequence eligibility, OHLC rejection for exact crossing reconstruction, information lineage, non-independent evidence counting, entropy exclusion and the absence of directional vote fields.
+
+New durable artifacts:
+- research/PATTERN_ZONE_PATH_CHURN_V0_1.md
+- research/pattern_zone_path_churn_v0_1.json
+- research/pattern_zone_state_guard_v0_1.mjs
+- research/pattern_zone_state_transition_v0_1.mjs
+- research/test_pattern_zone_path_churn_v0_1.mjs
+- research/PATTERN_ZONE_PATH_CHURN_D16_HANDOFF_V0_1.md
+
+The earlier TOOL_BLOCKED note is no longer current: helper and test writes now exist durably. Research-specific Node execution is still TEST_EXECUTION_PENDING and must not be inferred from standard V8 CI.
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001/SDA-002 remain open. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-050 — Ordinary oscillation vs auction / limit / event / microstructure repricing (2026-10-06)
+
+DL-050 prevents a structural-zone churn study from treating all short-horizon price movement as the same market process.
+
+Taiwan's trading mechanism makes that assumption untenable. Opening and closing are call-auction regimes, intraday volatility interruptions can reopen through call auction, daily price limits can constrain one side of the path, and legal tick size varies by price level. These mechanics can generate discrete or censored price paths that look like structural oscillation when viewed only through coarse bars.
+
+The research state is therefore multi-axis rather than single-cause.
+
+MATCHING_MECHANISM distinguishes continuous trading, opening call auction, closing call auction, VI reopening call auction and other auction states.
+
+PRICE_CONSTRAINT_STATE distinguishes unconstrained trading, limit-up constraint, limit-down constraint and special no-limit regimes.
+
+MICROSTRUCTURE_BOUNCE_STATE distinguishes exact quote-confirmed bid-ask bounce from exact-event non-bounce, unverified candidate and not-evaluable states.
+
+EVENT_CONTEXT records whether D11 supplies a verified first-known event context without claiming that the event caused the move.
+
+These axes can coexist. An event-driven opening gap is simultaneously event context and call-auction repricing. A VI reopening may occur under deteriorated liquidity. A structural retest can coexist with quote-confirmed bounce. DL-050 does not force one explanatory winner.
+
+The strongest path guard concerns discrete repricing. If a pre-auction state is BELOW and the auction price is ABOVE the zone, D01 may record that the observed state changed across the zone. It may not invent the unobserved intermediate path, exact crossing count, dwell or continuous traversal sequence.
+
+The strongest microstructure guard concerns bid-ask bounce. Roll's effective-spread logic shows that alternating bid/ask transaction prices can create negative short-horizon serial dependence even when underlying value does not oscillate equivalently. Therefore OHLC or close-state alternation alone is insufficient. D01 accepts a confirmed bounce state only from canonical D04/D05 replay-safe trade/quote evidence.
+
+Price-limit observations are also separated. A level near limit-up or limit-down can exhibit compressed or one-sided movement because the legal trading range truncates the path. Such observations cannot be pooled with unconstrained churn without explicit common-support treatment.
+
+Twenty-two executable adversarial cases are authored. They cover PIT market-rule guards, opening/VI auction states, limit-up and special-no-limit regimes, OHLC rejection for bounce confirmation, exact trade/quote bounce confirmation and rejection, event context without causation, discrete auction crossing ambiguity, ordinary continuous K0 mapping, K1/K2 mechanism classes, mixed limit/event/bounce states, non-independent evidence counting, missing receipt fail-closed behavior and transition clock enforcement.
+
+New durable artifacts:
+- research/PATTERN_TRANSITION_MECHANICS_V0_1.md
+- research/pattern_transition_mechanics_v0_1.json
+- research/pattern_transition_mechanics_v0_1.mjs
+- research/test_pattern_transition_mechanics_v0_1.mjs
+- research/PATTERN_TRANSITION_MECHANICS_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001/SDA-002 remain open. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-051 — Zone churn vs volatility clustering / realized-volatility burst / liquidity deterioration (2026-10-06)
+
+DL-051 asks whether repeated crossings around a structural zone are actually structural behavior or simply what a more volatile / less liquid price process mechanically produces.
+
+This distinction matters because a fixed-width zone is easier to traverse when volatility rises. A raw count of six zone transitions in a quiet market and six transitions during a volatility burst does not represent the same exposure to crossing opportunity. D01 therefore preserves both raw churn and a causally defined opportunity denominator. transitionsPerOpportunity and sideFlipsPerOpportunity are permitted as descriptive exposure diagnostics only when the opportunity receipt is verified and positive.
+
+The causal clock is equally important.
+
+PRE_WINDOW_CONTEXT contains volatility/liquidity state known before the churn window begins. This block may be used as baseline conditioning for a study beginning at churnWindowStartAt.
+
+WITHIN_WINDOW_MECHANISM contains realized-volatility burst, spread widening, depth thinning, quote freshness deterioration and other owner states observed while the churn window is unfolding. If the predictor was frozen before the window ended, these fields are contemporaneous mechanisms or mediators, not baseline predictors. They cannot be inserted retroactively into the earlier decision row.
+
+This prevents a subtle lookahead error: observing that a volatile 30-minute episode later developed a large realized-volatility burst and then using that completed burst state to explain why the structure looked weak at the start of the episode.
+
+Volatility itself remains decomposed. Level, clustering and burst are separate. A persistently high-volatility regime is different from a newly expanding same-window burst. Volatility clustering means persistence of magnitude; it does not imply return direction.
+
+Liquidity is consumed rather than recreated. D05 remains owner of bid-ask spread, displayed depth, freshness/reconnect and quote/trade microstructure. D01 defines no spread threshold, depth threshold, scalar liquidity score or bullish/bearish sign. Spread widening and depth thinning can increase price impact and apparent zone crossing without proving structural rejection.
+
+Missingness is part of the mechanism. A stale quote is not evidence of a stable spread. A missing order book is not zero depth. A reconnect interval is not a continuously observed book. These states may become more common during stress, so silently deleting them would bias exactly the high-volatility/high-churn sample we are trying to understand.
+
+Where two-sided quote data are valid, the existing D04/D05 rule is preserved: midquote local volatility is the primary microstructure volatility control, while transaction-price realized volatility is useful as a noise diagnostic. Transaction RV without midquote support cannot cleanly separate efficient-price movement from bid-ask/discreteness noise.
+
+The future falsification sequence is deliberately nested. Start with raw zone churn, then control pre-window volatility level, volatility clustering, crossing opportunities, same-window realized bursts, spread/depth/freshness, and finally the DL-050 auction/limit/event/microstructure mechanism states. Only a residual surviving those layers on common support becomes a stronger structural-churn candidate.
+
+Twenty adversarial cases are authored. They verify causal pre-window timing, reject post-start baseline receipts, prohibit same-window backfill, allow completed windows only for later decisions, reject invalid/zero exposure denominators, preserve high-volatility and clustering as context, preserve realized burst separately, keep spread/depth non-directional, preserve mixed stress, fail closed on stale quotes, distinguish transaction from midquote RV, keep one effective evidence family by default and verify no D01-specific numerical volatility/spread/depth threshold is hard-coded.
+
+New durable artifacts:
+- research/PATTERN_VOLATILITY_LIQUIDITY_CHURN_V0_1.md
+- research/pattern_volatility_liquidity_churn_v0_1.json
+- research/pattern_volatility_liquidity_churn_v0_1.mjs
+- research/test_pattern_volatility_liquidity_churn_v0_1.mjs
+- research/PATTERN_VOLATILITY_LIQUIDITY_CHURN_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-052 — Persistent structural rejection vs shock snapback / price-discovery completion (2026-10-06)
+
+DL-052 tightens the meaning of a "clean bounce." A rapid reversal at a support/resistance zone can look visually persuasive while being fully explained by market resiliency after a temporary shock.
+
+Microstructure research provides the reason to keep these mechanisms separate. Biais and Weill show that liquidity shocks can produce a sharp price decline and order-flow imbalance followed by gradual price recovery. Lo and Hall study order-book resiliency as replenishment after liquidity shocks. Yamada and Ito explicitly separate price discovery from liquidity recovery, showing that the price process and the liquidity process need not normalize on the same clock. These findings do not say structural levels are irrelevant. They show that a touch-and-snapback pattern is not uniquely structural.
+
+DL-052 therefore freezes independent clocks for shock onset/knowledge, structural opportunity, liquidity recovery, price recovery and price-discovery completion. Only information available by predictorFreezeAt may enter the baseline structural predictor. Later spread/depth normalization, later price recovery or later discovery completion are post-opportunity mechanism/outcome states and cannot be backfilled.
+
+A pre-shock reference is also separated from structural geometry. When valid two-sided quotes exist, the pre-shock midquote is the preferred reference for temporary-mispricing recovery. If only a transaction price is available, the case remains noise-separation incomplete because bid-ask bounce and price discreteness can create apparent reversal. If the pre-shock reference lies inside the structural zone, future inference must compare ordinary reversion to the reference with structural rejection; numerical coincidence does not establish mechanism.
+
+Shock context is frozen into no-preexisting-shock, volatility shock, liquidity shock, mixed shock, shock-begins-after-opportunity and unknown states. A shock that begins after predictor freeze cannot be used to explain or condition the earlier predictor state.
+
+Liquidity recovery and price recovery are not collapsed. Price may recover while spreads/depth remain stressed; liquidity may normalize while price stabilizes at a new level; both may evolve on different clocks. Therefore a generic recoveredAt field is prohibited.
+
+Price discovery creates the opposite problem from temporary-impact recovery. An informative event can move the efficient price permanently through a structural zone. A brief reversal before stabilization may be transitional price discovery rather than durable structural rejection. Event presence itself does not prove causation, so D11 event context remains an orthogonal receipt.
+
+No universal snapback horizon is defined. One bar, five minutes, fifteen minutes, same-day close or a fixed ATR threshold would all be outcome-sensitive without preregistration. D16 must later freeze the evaluation horizon family or consume owner-defined recovery events before opening economic outcomes.
+
+Future inference walks from raw touch response through market-mechanism, volatility-shock, liquidity-shock, pre-shock-reference, recovery-clock and price-discovery controls. Only a response that remains after these mechanisms and then replicates across independent dates/regimes can be called a structural-rejection residual candidate. It is still not causal proof or alpha.
+
+Sixteen adversarial cases are authored. They cover preexisting volatility/mixed shocks, future shocks, incomplete owner receipts, midquote versus transaction reference, future reference rejection, pre/post-opportunity timing, distinct liquidity/price/discovery clocks, timing conflicts, midquote missingness, no automatic snapback interpretation, one effective evidence count and closed outcome join.
+
+New durable artifacts:
+- research/PATTERN_SHOCK_SNAPBACK_V0_1.md
+- research/pattern_shock_snapback_v0_1.json
+- research/pattern_shock_snapback_v0_1.mjs
+- research/test_pattern_shock_snapback_v0_1.mjs
+- research/PATTERN_SHOCK_SNAPBACK_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No runtime wiring and no Formal change. Formal Core remains LOCKED.

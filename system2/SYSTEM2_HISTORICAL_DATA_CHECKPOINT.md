@@ -34,7 +34,8 @@ Physically accepted raw A1 market-years:
 - 2018 TWSE / TPEx: data coverage PASS / replay readiness PARTIAL;
 - 2019 TWSE / TPEx: data coverage PASS / replay readiness PARTIAL;
 - 2020 TWSE / TPEx: data coverage PASS / replay readiness PARTIAL;
-- 2021 TWSE: data coverage PASS / replay readiness PARTIAL.
+- 2021 TWSE: data coverage PASS / replay readiness PARTIAL;
+- 2022 TWSE: data coverage PASS / replay readiness PARTIAL.
 
 2021 TPEx run `37326149826` / #17 is **not accepted**:
 - migrate SUCCESS;
@@ -190,3 +191,88 @@ Two active continuations are now valid and non-conflicting:
 Immediate executable continuation: fresh workflow_dispatch `year=2022`, `market=TWSE` from latest main. Do not use rerun of run #18 because its inputs are 2021/TPEX. After 2022 TWSE terminal completion, perform full Physical verify/artifact/System1-isolation readback before acceptance.
 
 Workflow URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/workflows/system2-historical-pack-2017-backfill.yml
+
+
+## 2026-10-06 2022 TWSE fresh-dispatch run #19
+
+Fresh workflow_dispatch was confirmed on branch `main` with run `37467099680` / #19.
+
+- run head: `507fdd83ad9df9b3703cbc65e8940dda6b0c2662`;
+- latest main at dispatch readback: same SHA `507fdd83ad9df9b3703cbc65e8940dda6b0c2662`;
+- event: `workflow_dispatch`;
+- migrate: SUCCESS;
+- backfill: IN_PROGRESS at latest readback;
+- Physical verify: PENDING;
+- evidence artifact: PENDING;
+- System1 isolation: PENDING.
+
+The REST run payload does not expose workflow_dispatch input values. The requested continuation is 2022/TWSE, and the exact year/market inputs must be verified from the job log before acceptance. Do not accept or advance the market-year solely from run creation metadata.
+
+Run URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37467099680
+
+
+## 2026-10-06 run #19 execution-drift validation
+
+While run #19 remained in annual backfill, execution-critical blobs were compared from run head `507fdd83ad9df9b3703cbc65e8940dda6b0c2662` to then-latest main `816219437798a93bb11eae15b2f795139e013dcd`.
+
+Unchanged blobs:
+- annual workflow: `98121be7b81b79feee939573d7ce2d58e0d8ffd1`;
+- annual backfill script: `c21b59f1d3550601161dc2554ab25c534d26cd95`;
+- physical verifier: `59ecad64c3fd24e9561ac82177609374da0c1e0c`;
+- official historical range source: `c8528388ba82282461ba668dce8a4918122b3499`;
+- official historical date source: `0e08275d8ec545fb4afe799a77fae7952f5d57e9`;
+- current listing metadata source: `c1bf7b4ef8ba6b08b21fc61c991ab7adf6b810de`;
+- remote D1 adapter: `aafef9b8ddf9de3f16cdeca139f574879419a6f2`;
+- remote R2 adapter: `5a9fc975de62e1a10a803529e1db68bf943701d0`;
+- cold-pack store: `5901e414ac8668a31c717ce9c70869fa9eacc888`.
+
+Conclusion: later main movement does not change the execution semantics of run #19. At latest readback, migrate=SUCCESS, annual backfill=IN_PROGRESS, Physical verify/artifact/System1 isolation=PENDING. Continue from run URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37467099680
+
+
+## 2026-10-06 2022 TWSE durable acceptance
+
+Run `37467099680` / #19 completed SUCCESS on head `507fdd83ad9df9b3703cbc65e8940dda6b0c2662` with confirmed inputs `year=2022`, `market=TWSE`.
+
+Acceptance facts:
+- annual backfill: PASS / YEAR_BACKFILL_COMPLETE;
+- official trading dates: 246;
+- cold/fresh official rows: 237,941 / 237,941;
+- packs / symbols: 985 / 985;
+- R2 HEAD / byte-GET verification: 985 / 985 PASS;
+- missing-from-cold / absent-from-fresh: 0 / 0;
+- source-row hash mismatch / canonical A1 mismatch: 0 / 0;
+- source version: STABLE;
+- historical-universe readiness: PASS_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION;
+- expected membership-session bars: 238,640;
+- actual bars: 237,941;
+- UNKNOWN symbol-session gaps: 699;
+- data coverage: PASS;
+- replay readiness: PARTIAL;
+- System1 production isolation: PASS.
+
+Durable evidence: `system2/evidence/S2_HISTORICAL_TWSE_2022_PHYSICAL_VERIFICATION_V0_1.json`.
+
+Artifact: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37467099680/artifacts/11416932962
+
+Run: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37467099680
+
+Disposition: 2022 TWSE is accepted for raw A1 data coverage with replay readiness explicitly PARTIAL; UNKNOWN gaps are retained fail-closed and are not treated as raw-source loss.
+
+Next annual continuation: fresh workflow_dispatch `year=2022`, `market=TPEX` from latest main. Keep the separate 2021 TPEx canonical-revision blocker open in parallel; do not overwrite its immutable cold history.
+
+
+## 2026-10-06 2022 TPEx fresh-dispatch run #20
+
+Fresh workflow_dispatch run `37473405416` / #20 was confirmed on branch `main`.
+
+- run head: `f5f33c9f006e249c604f3f19067bf33f2a106117`;
+- event: `workflow_dispatch`;
+- migrate: SUCCESS;
+- annual backfill: IN_PROGRESS at latest readback;
+- Physical verify / evidence artifact / System1 isolation: PENDING.
+
+Execution-drift validation from run head to then-latest main confirmed the annual workflow, backfill script, verifier, official historical sources, listing metadata source, D1 adapter, R2 adapter and cold-pack store are byte-identical. Later main movement therefore does not change the execution semantics of run #20.
+
+The GitHub API does not expose workflow_dispatch inputs in the run payload and the in-progress job log blob is not yet available for readback. The requested continuation is 2022/TPEX; exact year/market inputs must be confirmed from the job log before market-year acceptance.
+
+Run URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37473405416
