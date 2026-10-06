@@ -769,7 +769,7 @@
       "directiveId": "S2-CORR-20261006-003",
       "createdAt": "2026-10-06T21:01:27+08:00",
       "severity": "MEDIUM",
-      "status": "FIX_IMPLEMENTED",
+      "status": "VERIFYING",
       "title": "Candidate Board presents monitored bounded rows as candidates without resolvable strategy identity",
       "affectedScope": [
         "S2-16 Candidate Board",
@@ -838,9 +838,14 @@
         "Merged-main readback verified all candidate/monitor separation invariants, followed by latest-main drift check showing zero drift across terminal page, terminal test, resonance read model, and read-model test.",
         "No S2-07 assessor/frozen-candidate authority, strategy logic/contracts/preregistration, ranking, capacity, resonance formula/state machine, final/live selection authority, push/notification, capital/order, or System1 Formal Core was changed."
       ],
-      "verificationEvidence": [],
-      "finalDisposition": "PENDING — implementation complete; independent verification required before closure",
-      "updatedAt": "2026-10-06T21:18:28+08:00"
+      "verificationEvidence": [
+        "system2/evidence/s2_corr_20261006_003_independent_verification.json",
+        "Independent 00 readback on latest main verified all seven acceptance criteria.",
+        "PR #686 merge commit fa9c433cf84d61f400c935cbd70019c7c9d39878 changed only the four expected conflict-unit files.",
+        "System2 Research CI 37469475340 PASS; V8 Regression 37469475238 PASS; merged-main System2 Research CI 37469704138 PASS."
+      ],
+      "finalDisposition": "VERIFYING — independent evidence is durable; final queue closure readback pending.",
+      "updatedAt": "2026-10-06T21:32:00+08:00"
     },
     {
       "directiveId": "S2-CORR-20261006-004",
