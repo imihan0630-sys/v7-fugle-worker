@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "D16_SDA022_MODEL_METHOD_RECEIPT_SHELL_V0_1",
+  "owner": "D16 / Room11",
+  "experimentFamilyId": "D16-SDA022-01",
+  "state": "PRE_OUTCOME_METHOD_BRANCH_FROZEN_EXACT_ESTIMATOR_PENDING_POLICY_SEMANTICS",
+  "outcomes": "CLOSED",
+  "targetId": "SDA022_S1_SM_D5_REFERENCE_CLOSE_POSITIVE_V0_1",
+  "primaryEstimand": "DATE_BALANCED_BRIER_LOSS_IMPROVEMENT",
+  "primaryHorizon": "D5_OFFICIAL_SESSION",
+  "strategyPair": [
+    "SYSTEM1_CURRENT_FORMAL_AB_SHORT_HORIZON",
+    "SYSTEM2_SHORT_MOMENTUM_V0_1_CONTRACT"
+  ],
+  "admissibleMethodBranches": {
+    "A": "BOTH_NATIVE_PROBABILITIES",
+    "B": "SYSTEM1_NATIVE_PROBABILITY_PLUS_SYSTEM2_FIXED_CATEGORICAL_OR_ORDINAL_STATE",
+    "C": "BOTH_NONPROBABILISTIC_REQUIRE_STRICTLY_PRIOR_CALIBRATION",
+    "D": "NOT_IDENTIFIABLE_YET"
+  },
+  "forbidden": [
+    "SELECTION_AS_PROBABILITY_1_0",
+    "RAW_RANK_AS_PROBABILITY",
+    "POST_OUTCOME_TRANSFORM_SELECTION",
+    "SYSTEM2_STRATEGY_POOLING",
+    "D1_D3_D10_RESCUE",
+    "FUTURE_TRAINED_CALIBRATOR_BACKFILL"
+  ],
+  "calibrationReceiptRequiredFields": [
+    "trainingStart",
+    "trainingEnd",
+    "labelMaturityCutoff",
+    "informationCutoff",
+    "targetId",
+    "horizon",
+    "stateEncodingVersion",
+    "estimatorFamilyVersion",
+    "regularization",
+    "trainingPopulationRule",
+    "commonSupportRule",
+    "missingnessAdmissionRule",
+    "artifactHash"
+  ],
+  "inferenceUnit": "DECISION_DATE",
+  "dependenceRequired": [
+    "REPEATED_SYMBOL",
+    "OVERLAPPING_D5_FOOTPRINT",
+    "SECTOR_CLUSTER_WHERE_MATERIAL",
+    "D18_REPLICATION_CLUSTER",
+    "SDA016_ADMISSION_AND_FOOTPRINT"
+  ],
+  "stoppingRule": "SINGLE_PRIMARY_LOOK",
+  "mdePrecisionState": "PENDING_OUTCOME_INDEPENDENT_FREEZE_OR_EXPLORATORY_ONLY",
+  "d18RegimeUse": "SECONDARY_NON_RESCUING_DIAGNOSTIC",
+  "currentEvidence": {
+    "system1Fingerprint": "PASS_5_OF_5",
+    "system2Fingerprint": "PENDING",
+    "physicalNcT01": "PENDING",
+    "prospectiveOverlapDivergence": "NOT_STARTED",
+    "d16Preregistration": "PASS_4_OF_4"
+  },
+  "formalOptimizationCandidate": "NONE",
+  "formalCoreImpact": "NONE"
+}
