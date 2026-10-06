@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T00:26:00+08:00",
+  "updatedAt": "2026-10-07T05:32:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -16,7 +16,7 @@
       ],
       "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "canonicalRequirement": "Physically populate and verify staged official 2017-present Taiwan-equity daily history before claiming complete full-market historical coverage/replay.",
-      "observedProblem": "Historical raw A1 coverage is accepted through both 2022 markets except 2021 TPEx, which remains explicitly BLOCKED on an official-source canonical A1 revision. 2023 TWSE cold backfill/storage also completes, but Physical verify remains BLOCKED on 205 unexpected bars tied to 6873. Run #22 proved the first listing-start matcher did not fire because CURRENT rows use legal company names while NEWLISTING rows use company short names. A second conservative alias-aware matcher plus realistic regression guard is committed and System2 Research CI PASSed; fresh 2023 TWSE re-verification remains required. CORR-001 stays FIX_IN_PROGRESS for these blockers, later market-years, 2026 incremental history and final full-market PIT replay.",
+      "observedProblem": "Historical raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE, both 2022 markets and 2023 TWSE. The 2023 TWSE historical-universe blocker is resolved by the alias-aware listing-start repair and live run #23 verification: currentListingStartReconciledCount=4 and unexpectedBars fell from 205 to 0 without weakening fail-closed semantics. 2021 TPEx remains explicitly BLOCKED on an official-source canonical A1 revision. CORR-001 stays FIX_IN_PROGRESS for that blocker, 2023 TPEx and later market-years, the 2026 incremental path and final full-market PIT replay.",
       "evidence": [
         "SYSTEM2_CHECKPOINT run 36545375167 failed before annual ingest",
         "SYSTEM2_CHECKPOINT requires repaired 2017 TWSE rerun before TPEx",
@@ -114,7 +114,14 @@
         "Second runtime fix 6a227f96cb0af9d6c1620402be25b93167eb4e16 matches same-symbol CURRENT/NEWLISTING rows through conservative legal-name/short-name alias intersection after normalization while preserving same-code/different-company rejection.",
         "Second regression commit 64d2f7e8ecf923e0b133101e340c78222facddef uses a realistic legal-name plus short-name 6873 fixture.",
         "System2 Research CI run 37495340984 PASSed on the second-fix head.",
-        "Durable second blocker evidence: system2/evidence/S2_HISTORICAL_TWSE_2023_UNIVERSE_BLOCKER_V0_2.json."
+        "Durable second blocker evidence: system2/evidence/S2_HISTORICAL_TWSE_2023_UNIVERSE_BLOCKER_V0_2.json.",
+        "2023 TWSE fresh post-second-fix run 37534409279 (#23) completed SUCCESS on head 676c26a53f59aa8cb6b07afbd0453ba3e06d8112 with confirmed inputs year=2023 market=TWSE.",
+        "Run #23 live sourceReceipt reported currentListingStartReconciledCount=4 for symbols 2465, 2482, 2486 and 6873.",
+        "The prior 2023 TWSE structural blocker was eliminated without relaxing verifier semantics: unexpectedBars fell from 205 to 0; structuralCoverageState PASS and rawCoverageState PASS.",
+        "2023 TWSE storage/source verification PASS: 1003 packs / 234727 bars / 1003 R2 HEAD + byte checks, 234727 cold rows == 234727 fresh official rows, zero missing/extra/source-row/canonical mismatches, sourceVersionState STABLE.",
+        "2023 TWSE membership-session denominator is 235345 with 234727 actual bars and 618 explicit UNKNOWN_SYMBOL_SESSION_GAP rows; data coverage PASS / replay readiness PARTIAL.",
+        "Durable accepted evidence: system2/evidence/S2_HISTORICAL_TWSE_2023_PHYSICAL_VERIFICATION_V0_1.json; artifact 11446466007 digest sha256:83e771a65d4853677210303b5b30b5141e3b9a3902dfbbcb83ef1ad4eb459e27.",
+        "Prior blocker evidence V0_1/V0_2 remains preserved as historical provenance and is operationally superseded by accepted run #23."
       ],
       "riskIfUnfixed": "Creates false-completion/evidence-coverage risk for multi-year replay, factor validation, regime robustness and strategy backtesting.",
       "requiredCorrection": [
@@ -178,7 +185,8 @@
         "2021 TPEx must be fresh-dispatched after free-tier reset; partial cold history must not be deleted or rewritten",
         "2021 TPEx current cold schema intentionally preserves one immutable manifest per market/symbol/year/price_space via UNIQUE(market,symbol,year,price_space); revised canonical data cannot silently overwrite the accepted cold capture.",
         "DATA_LANE disposition is fail-closed: preserve 2021 TPEx as an explicit blocked market-year while revision-lineage/as-of semantics are engineered; continue later market-years under the correction criterion that each year may be completed or explicitly blocked/deferred.",
-        "Annual continuation may proceed to 2022 TPEx while 2021 TPEx remains explicit BLOCKED, because CORR-001 acceptance permits each later market-year to be completed or explicitly blocked/deferred."
+        "Annual continuation may proceed to 2022 TPEx while 2021 TPEx remains explicit BLOCKED, because CORR-001 acceptance permits each later market-year to be completed or explicitly blocked/deferred.",
+        "2023 TWSE historical-universe reconstruction fix is live-verified and accepted; annual continuation advances to 2023 TPEx while 2021 TPEx remains explicit BLOCKED."
       ],
       "verificationEvidence": [
         "Run 37197090867 migrate/backfill/physical verify/artifact upload/System1 isolation all SUCCESS",
