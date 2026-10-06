@@ -3938,3 +3938,58 @@ Exact next continuation point:
 1. MARKET_HINGE: at/after a completed 2026-10-07 >=10:15 intraday 15m observation, execute the PVE-251 read-only audit and PVE-247 oracle without outcome inspection.
 2. OWNER_GATE: PR #743 remains draft/unmerged/un-deployed until explicit owner approval for the split-trigger Class-B Production change.
 3. PR_726: keep the deterministic 13:20 read-only evidence workflow unmerged until its unrelated latest-main SDA-016 blocker is resolved by the owning lane; then rebase/recreate and merge without changing D02 evidence semantics.
+
+
+## PVE-254 continuation — deterministic live read-only evidence lane merged (2026-10-07)
+
+Status: READONLY_EVIDENCE_LANE_MERGED / POST_MERGE_RUN_PASS / SCHEDULED_1320_TAIPEI_ACTIVE / LIVE_H001_HINGE_PENDING / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+Base blocker resolution:
+- owner-lane PR #739 merged and repaired the unrelated SDA-016 governance/test blocker;
+- D02 did not cherry-pick or modify that lane.
+
+Latest-main rebuild history:
+- PR #744 reproduced the exact two D02 files on a newer main and passed Regression + Repair CI, but main drifted again in unrelated D16 research files before merge;
+- PR #746 rebuilt the exact same two files on the then-latest main;
+- PR #746 Regression run `37546846889` SUCCESS;
+- PR #746 Repair CI run `37546846878` SUCCESS;
+- PR #746 merged as `4e5a89dd135ec32f53126f77efcf0d3f082e7b57`;
+- superseded PRs #726 and #744 were closed unmerged.
+
+Merged files:
+- `research/d02_pve251_live_remediation_readonly_v0_1.mjs`;
+- `.github/workflows/d02-pve251-live-remediation-readonly.yml`.
+
+Post-merge physical workflow activation:
+- GitHub Actions run `37546961200` SUCCESS;
+- runtime observed `8.20.0-formal-c1-binding-ledger`;
+- readOnly=true;
+- mutationCount=0;
+- ephemeral diagnostic Worker cleanup verified;
+- 2454 bootstrap remains 80 valid sessions with exact-response SHA-256 provenance;
+- current premarket run correctly has no 2026-10-07 intraday row and therefore keeps PVE-247 fail closed;
+- schedule-family blocker remains `RECOVERY_23_55_READBACK_MISSING`.
+
+The workflow is now durable on main with deterministic schedule:
+- weekdays 05:20 UTC = 13:20 Asia/Taipei;
+- this is a read-only research evidence schedule, not a Production trading/selection Cron;
+- it does not consume ChatGPT automation slots.
+
+Trading-calendar check:
+- official TWSE 2026 holiday schedule does not list 2026-10-07 as a market holiday;
+- regular centralized market hours remain 09:00-13:30 Asia/Taipei;
+- therefore the planned >=10:15 PVE-252/PVE-254 live hinge is eligible to occur today unless a separate operational/data failure intervenes.
+
+Current research state:
+- D02 = 60.0%;
+- aggregate tracker = 356 modules / 46.7%;
+- clean prospective H001 dates = 0;
+- Gate 7 CLOSED;
+- Formal Core LOCKED;
+- no outcome inspection;
+- no maturity promotion.
+
+Exact next continuation point:
+1. LIVE_HINGE: after the 2026-10-07 10:15 bar is completed and captured, use the merged read-only workflow (manual rerun if needed for immediate inspection; scheduled 13:20 run remains the deterministic coverage receipt) to inspect provider, endpoint, exact-response SHA-256, normalizationVersion, semanticFingerprint, slotHistoryCount>=20, finite pvSlotRvol20, sameSlotBaselineClean=true and matching bootstrap receipt.
+2. ORACLE: rerun/evaluate PVE-247; any missing family remains fail closed.
+3. SCHEDULE_GAP: PR #743 remains a draft split-trigger Class-B candidate and must not merge/deploy without explicit owner approval.
