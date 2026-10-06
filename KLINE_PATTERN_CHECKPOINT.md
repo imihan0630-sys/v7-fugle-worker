@@ -2883,3 +2883,93 @@ No maturity or Formal change is authorized by this routing.
 6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 7. Next D01 science: separate ordinary oscillation from auction/limit/event-driven discrete repricing and microstructure bounce.
 8. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-050 (2026-10-06)
+
+### DL-050 — Ordinary zone oscillation vs discrete repricing / microstructure bounce
+- DL-043 already separated overnight gap / opening auction / immediate post-open / later continuous-session mechanisms.
+- DL-049 already separated zone occupancy from directional churn/path disorder.
+- DL-050 adds a mechanism firewall around those path states:
+  apparent zone crossing/rejection/churn may be ordinary continuous oscillation, auction clearing, price-limit constraint, volatility interruption/restart, event-coincident discrete repricing, microstructure bounce/noise or mixed mechanism.
+- D01 does not redefine market microstructure:
+  D04/D05 own session/auction/limit/VI/halt/spread/depth/quote/trade primitives;
+  D11/D17 own public event instance and event clock;
+  D03 owns pathEfficiency10;
+  D01 owns structural-zone relation and mechanism-conditioned interpretation.
+- Current TWSE public material confirms continuous trading with call auctions at open/close, daily price fluctuation limits with rule-defined exceptions, and volatility interruption that can suspend matching and resume via call auction.
+- Taiwan empirical research on price limits and auction-frequency changes supports treating market-design constraints as potentially material to price discovery/liquidity/volatility.
+- High-frequency jump research separately warns that large observed moves can reflect equilibrium-price jumps or microstructure noise.
+- No TWSE percentage/timing constant is hard-coded in D01.
+  Historical/current rule thresholds must come from owner/exchange as-of receipts.
+- Frozen mechanism classes:
+  UNCONSTRAINED_CONTINUOUS_OSCILLATION_CANDIDATE;
+  AUCTION_CLEARING_REPRICE;
+  PRICE_LIMIT_CONSTRAINED_PATH;
+  VOLATILITY_INTERRUPTION_REPRICE;
+  EVENT_COINCIDENT_DISCRETE_REPRICE;
+  MICROSTRUCTURE_BOUNCE_CANDIDATE;
+  MIXED_MECHANISM;
+  MECHANISM_NOT_EVALUABLE.
+- Geometric side change and executed continuous crossing are separate:
+  GEOMETRIC_SIDE_CHANGE != CONTINUOUS_EXECUTED_CROSS.
+- Auction/gap transition through a zone may cross geometrically without any verified trade through intermediate prices.
+  D01 may not synthesize phantom continuous executions.
+- EVENT_COINCIDENT is explicitly non-causal:
+  event knownAt/releaseAt must be <= transitionAt;
+  later-known events are POST_HOC_NOT_ELIGIBLE;
+  compatible timing does not prove event causation.
+- Corporate-action continuity remains mandatory.
+  Raw reset/split/dividend jumps cannot become ordinary zone oscillation or technical bounce evidence.
+- Bid-ask / microstructure bounce cannot be inferred from OHLC.
+  It is consumable only from a replay-safe D05 direct quote/trade receipt.
+  Missing quote/trade receipt = UNKNOWN, not "no microstructure bounce".
+- DL-049 churn counts remain descriptive but now require mechanism conditioning.
+  Equal sideFlipCount can arise from free continuous trading, auction reset, limit pinning, event gap or bid-ask bounce.
+- D03 pathEfficiency10 remains an owner/control primitive.
+  DL-050 creates no duplicate trend/noise score.
+- Future D16 ladder:
+  R0 RAW_ZONE_CHURN;
+  R1 EXCLUDE_AUCTION_AND_RESTART;
+  R2 EXCLUDE_LIMIT_CONSTRAINED;
+  R3 EVENT_CLOCK_CONTROLLED;
+  R4 MICROSTRUCTURE_CONTROLLED;
+  R5 UNCONSTRAINED_CONTINUOUS_ONLY;
+  R6 MULTI_MECHANISM_ROBUST.
+- Future interpretation states:
+  Q0 AUCTION_MECHANISM_EXPLANATION;
+  Q1 LIMIT_CONSTRAINT_EXPLANATION;
+  Q2 EVENT_COINCIDENT_EXPLANATION;
+  Q3 MICROSTRUCTURE_NOISE_COMPATIBLE;
+  Q4 MIXED_MECHANISM_DEPENDENCE;
+  Q5 UNCONSTRAINED_CONTINUOUS_RESIDUAL;
+  Q6 MULTI_MECHANISM_ROBUST_PATTERN_CANDIDATE;
+  Q7 NOT_EVALUABLE.
+- Mechanism labels remain dependent representations, not extra votes.
+  default effectiveIndependentEvidenceCount=1;
+  residualIncrementalityStatus=NOT_VALIDATED.
+- New files:
+  - research/PATTERN_DISCRETE_REPRICING_MECHANISM_V0_1.md
+  - research/pattern_discrete_repricing_mechanism_v0_1.json
+  - research/pattern_discrete_repricing_mechanism_v0_1.mjs
+  - research/test_pattern_discrete_repricing_mechanism_v0_1.mjs
+  - research/PATTERN_DISCRETE_REPRICING_MECHANISM_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain open under canonical queue.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-050
+
+1. Reconcile the DL-050 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-050 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve DL-043 session decomposition, DL-049 churn and DL-050 market-mechanism labels as separate layers.
+4. Never infer continuous execution from geometric gap-through or infer bid-ask bounce from OHLC alone.
+5. Consume D05 auction/limit/VI/microstructure receipts and D11/D17 event receipts without duplicating owner taxonomies.
+6. Hand R0-R6 / Q0-Q7 common-support and residual inference to D16.
+7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+8. Next D01 science: separate discrete repricing persistence from immediate mechanical reversal / price-discovery completion so a one-bar snapback is not mistaken for durable structural rejection.
+9. No runtime wiring / no Formal change.
