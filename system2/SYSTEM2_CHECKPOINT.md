@@ -2754,3 +2754,59 @@ Next exact BUILD_LANE continuation:
 5. after the parent, run bounded-complete MOPS reconciliation and require `noRevisionGapThroughCut=true`;
 6. only then bind symbol-session and technical-continuity receipts to genuine parent generations.
 
+## 2026-10-07 S2-07 MOPS Exact-Version Population V1.6 — PHYSICAL PASS / MEMBERSHIP STABILITY BLOCKED
+
+Implementation:
+- PR #749 merged as `bc405245870d6e986cbbf709562ce93c320bb327`;
+- superseded PR #742 was closed after its successful physical result was retained as an earlier prospective observation;
+- latest-main dedicated V1.6 run `37548011614` / job `112556594405`: PASS;
+- System2 Research CI `37548011621`: PASS;
+- V8 Regression `37548011620`: PASS;
+- latest artifact `11451716945`, digest `sha256:691e66ec3f279ef969b605ff8361052f4bc8c85d5b95655876b643d23786341a`.
+
+Latest physical capture:
+- frozen event scope = 23 events / 23 unique symbols;
+- stable semantic event-universe hash = `b7941323ed1969a17697bc58be3d549b7e244f4dfc45b81a0bc6d5645fc305b0`;
+- global MOPS version identity includes stock code + source-reported clock + seqNo;
+- 161 unique global exact-version keys observed;
+- all 23 frozen symbols covered;
+- annual/month-shard exact keyset = 21/23 events;
+- year-only versions = 7;
+- month-only versions = 0;
+- source-clock key collision count = 0;
+- divergent latest-run events: 1441 (1 year-only) and 3086 (6 year-only);
+- common annual/month versions have no payload-hash mismatch.
+
+Repeated-capture falsification:
+- prior successful V1.6 run `37547303476` / artifact `11451296954` observed 159 versions, 17/23 exact events, 9 month-only and 8 year-only;
+- latest successful run observed 161 versions, 21/23 exact events, 0 month-only and 7 year-only;
+- between successful runs, latest gained 9 exact-version identities and lost 7;
+- common version payload mutation count = 0;
+- therefore exact-version content identity is stable where the version is returned, but historical query membership is not stable enough to freeze the complete expected MOPS keyset from one capture.
+
+Identity clarification:
+- legacy V0.1 eventUniverseHash `3e31779c36582bd70378d4b393ce0d4b2510bb84fe557686a0e51d3a2f604049` included capture-specific `eventVersionId`;
+- V1.6 `stableEventUniverseHash` intentionally hashes stable semantic event fields only and is not expected to equal the legacy receipt-bound hash.
+
+Authority boundary remains locked:
+- `sourceSemanticsCertified=false`;
+- `monthShardCoverageComplete=false`;
+- `expectedMopsKeysetComplete=false`;
+- `noRevisionGapThroughCut=false`;
+- `preParentEvidenceCutReady=false`;
+- symbol-session completeness=false;
+- technical continuity=false;
+- no scheduler/Cron, history mutation, selection/final-selection, push, capital or order authority;
+- System1 runtime unused; Formal Core unchanged.
+
+Durable evidence:
+`system2/evidence/S2_07_MOPS_EXACT_VERSION_POPULATION_V1_6_PHYSICAL_20261007.json`.
+
+Next exact BUILD_LANE continuation:
+1. implement repeated-capture exact-version union/stability reconciliation;
+2. preserve the earliest observed-at upper bound across immutable receipts, never overwrite it with a later run;
+3. classify membership drift by source query path and exact version;
+4. require bounded repeated-capture stabilization before any complete expected MOPS keyset freeze;
+5. only then bind the MOPS keyset with the accepted V1.5 eight-lane source manifest into the V1.4.1 pre-parent cut;
+6. post-parent reconcile and require `noRevisionGapThroughCut=true` before symbol-session / technical-continuity binding.
+
