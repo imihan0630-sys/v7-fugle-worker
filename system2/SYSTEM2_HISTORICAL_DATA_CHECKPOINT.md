@@ -122,3 +122,20 @@ At 2026-10-06 08:12 Asia/Taipei, the documented D1 free-tier reset boundary had 
 Fresh workflow dispatch remains required by the checkpoint semantics. The connected GitHub toolset exposes workflow read/rerun operations but no workflow_dispatch creation action. The available browser automation profiles currently have no recorded GitHub authenticated session, so a latest-main fresh dispatch cannot be truthfully claimed from this room without GitHub sign-in/authorization.
 
 Do not substitute rerun of failed run 37326149826, because that run is bound to old head ca90efab5a7d6d27cc3d05a545efcd1ce44db247 rather than the latest main. Once authenticated dispatch is available, execute year=2021 / market=TPEX from latest main and continue through Physical verify, evidence artifact/readback and System1 isolation.
+
+
+## 2026-10-06 2021 TPEx fresh-dispatch run #18
+
+Fresh dispatch was successfully started from latest-main head `a7561639b8d07ab23bfd1f1cd961b753ee561249`:
+- workflow run: `37401612529` / run #18;
+- event: `workflow_dispatch`;
+- requested target: 2021 TPEx annual historical pack;
+- migrate job: SUCCESS;
+- backfill job: IN_PROGRESS at latest readback;
+- Physical verify: PENDING;
+- physical coverage artifact: not yet present;
+- System1 isolation step: PENDING.
+
+Do not mark 2021 TPEx accepted until the workflow reaches terminal SUCCESS and Physical verify, evidence artifact/readback, completion receipt/coverage reconciliation, and System1 isolation all pass. Exact next continuation point: read back run 37401612529 when terminal, verify acceptance evidence, then advance DATA_LANE to 2022 TWSE only if accepted.
+
+Run URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37401612529
