@@ -3167,3 +3167,107 @@ No maturity or Formal change is authorized by this routing.
 6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 7. Next D01 science: separate persistent rejection from inventory replenishment / queue refill around the zone, especially when displayed depth reforms after the shock.
 8. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-053 (2026-10-06)
+
+### DL-053 — Persistent structural rejection vs inventory replenishment / queue refill
+- DL-052 separated structural rejection from shock snapback / price-discovery completion.
+- DL-053 freezes the next book-level confound: displayed depth may reform near a structural zone because of generic order-book resiliency / inventory replenishment rather than structural memory.
+- External order-book evidence supports this firewall:
+  Lo/Hall show limit-order-book depth and spread recover after liquidity shocks;
+  effective-market-order resiliency studies show spread/depth can revert toward normal after aggressive order shocks;
+  different liquidity dimensions may recover on different clocks.
+- D05 remains owner of depth, spread, quote freshness, cancellations and replenishment/resiliency primitives.
+  D01 owns only the relation of those receipts to the frozen structural zone.
+- Displayed depth is explicitly not:
+  latent/hidden liquidity;
+  committed defense;
+  investor intent;
+  certified institutional support.
+- Frozen research comparison states:
+  GENERIC_REFILL_NONSTRUCTURAL;
+  STRUCTURE_REFILL_COINCIDENT;
+  STRUCTURE_REFILL_RESIDUAL_CANDIDATE;
+  REFILL_FRAGILE_OR_CANCELLED;
+  NOT_EVALUABLE.
+- Separate clocks are preserved:
+  preShockBookAt;
+  shockStartedAt;
+  depletedBookAt;
+  structuralOpportunityAt;
+  predictorFreezeAt;
+  refillStartedAt;
+  refillMeasuredAt;
+  spreadNormalizedAt;
+  depthNormalizedAt.
+- Post-freeze refill/recovery data may not enter an earlier predictor snapshot.
+- Side-specific semantics remain explicit:
+  support-role opportunity -> bid-side depth is directly relevant visible-side context;
+  resistance-role opportunity -> ask-side depth is directly relevant.
+- Allowed descriptive fields include:
+  preShockSameSideDepth;
+  depletedSameSideDepth;
+  refillSameSideDepth;
+  refillFractionOfPreShockDepth;
+  refillLatency;
+  spreadAtRefill;
+  quoteFreshness;
+  cancellationObserved;
+  executionObservedAtRefillPrice.
+- No universal refill threshold or persistence threshold is frozen by D01.
+- Fleeting displayed depth != executed absorption.
+- Executed interaction at the refill price is stronger observability but still not structural-memory proof.
+- Primary falsifier:
+  does refill at the structural zone add representation beyond matched generic non-structural refill under comparable shock, side, spread/depth, volatility, tick, mechanism, event and DL-052 recovery phase?
+- A refill price inside the structural zone is BOOK_REFILL_ZONE_COINCIDENCE, not STRUCTURAL_SUPPORT_CONFIRMED.
+- Information roots can include PRICE_OHLC + LIVE_ORDER_BOOK + QUOTE_TIME + TRADE_TIME, but default effectiveIndependentEvidenceCount remains 1 until D16 residual evidence exists.
+- Future D16 ladder:
+  Q0 RAW_ZONE_REFILL;
+  Q1 SHOCK_TYPE_CONTROLLED;
+  Q2 PRE_SHOCK_DEPTH_SPREAD_CONTROLLED;
+  Q3 GENERIC_NONSTRUCTURAL_REFILL_CONTROLLED;
+  Q4 CANCELLATION_FLEETING_DEPTH_CONTROLLED;
+  Q5 EXECUTION_INTERACTION_CONTROLLED;
+  Q6 DL052_RECOVERY_PHASE_CONTROLLED;
+  Q7 STRUCTURE_SPECIFIC_REFILL_RESIDUAL;
+  Q8 MULTI_DATE_MULTI_REGIME_REPLICATION.
+- Future interpretations:
+  GENERIC_BOOK_RESILIENCY_EXPLANATION;
+  SPREAD_RECOVERY_EXPLANATION;
+  DEPTH_RECOVERY_EXPLANATION;
+  FLEETING_DISPLAYED_DEPTH_EXPLANATION;
+  EXECUTED_ABSORPTION_CONTEXT;
+  STRUCTURE_SPECIFIC_REFILL_RESIDUAL;
+  MIXED_MECHANISM;
+  NOT_EVALUABLE.
+- New files:
+  - research/PATTERN_QUEUE_REFILL_V0_1.md
+  - research/pattern_queue_refill_v0_1.json
+  - research/pattern_queue_refill_v0_1.mjs
+  - research/test_pattern_queue_refill_v0_1.mjs
+  - research/PATTERN_QUEUE_REFILL_D16_HANDOFF_V0_1.md
+- 16 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain open under canonical queue.
+- No outcomes inspected; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-053
+
+1. Reconcile the DL-053 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-053 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve pre-shock depth, depleted depth, refill depth, cancellation and execution-interaction states separately.
+4. Keep D05 ownership explicit and prohibit D01 depth thresholds / defense labels.
+5. Hand Q0-Q8 generic-resiliency versus zone-specific residual inference to D16.
+6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+7. Next D01 science: separate visible queue refill from actual executed absorption / replenishment under hidden-liquidity uncertainty.
+8. No runtime wiring / no Formal change.
+
+
+### DL-053 integration tracking
+- Research-only PR: #695.
+- Standard V8 isolation workflows must run against the current PR head before merge.
+- Research-specific Node tests remain TEST_EXECUTION_PENDING and are not substituted by standard CI.
