@@ -2486,3 +2486,70 @@ Exact next:
 5. before primary outcome opening, freeze exact model-state encoding, ModelMethodReceipt, MDE/precision target and explicit confirmatory outer-stream method OR retain exploratory-only interpretation;
 6. no economic-outcome peeking;
 7. Room00 remains sole closure authority.
+
+
+## 2026-10-06 SDA-016 Formal→C1 contract validation — Class-A accepted, Class-B pending
+
+New durable validation:
+- `research/SDA016_ROOM11_FORMAL_C1_BINDING_CONTRACT_VALIDATION_20261006_V0_1.md`;
+- `research/SDA016_ROOM11_FORMAL_C1_BINDING_CONTRACT_VALIDATION_20261006_V0_1.json`.
+
+Contract:
+- `research/SDA016_SYSTEM1_FORMAL_C1_BINDING_IMPLEMENTATION_CONTRACT_20261006_V0_1.md`;
+- `research/sda016_system1_formal_c1_binding_contract_v0_1.json`.
+
+Status:
+`CONTRACT_LAYER_ACCEPTED / CLASS_B_RUNTIME_PENDING / WHOLE_TICKET_PARTIAL_PASS`.
+
+V8.19 current state:
+- PR #644 = MERGED;
+- Production deploy = SUCCESS;
+- runtime version = `8.19.0-c1-scan-origin-generation-inventory`;
+- genuine post-deploy C1 readback = PENDING.
+
+Oracle delta mapping:
+- `SDA016-T41`: CONTRACT_COVERED_RUNTIME_PENDING;
+- `SDA016-T42`: CONTRACT_COVERED_RUNTIME_PENDING;
+- `SDA016-T43`: CURRENT_SESSION_FAIL_CLOSED_GUARD_ACCEPTED;
+- `SDA016-T44`: CONTRACT_COVERED_RUNTIME_PENDING;
+- `SDA016-T45`: CONTRACT_COVERED_RUNTIME_PENDING;
+- `SDA016-T46`: CONTRACT_COVERED_RUNTIME_PENDING;
+- `SDA016-T47`: CONTRACT_COVERED_RUNTIME_PENDING;
+- `SDA016-T48`: OPEN_GENERATION_SET_FINALIZATION_PENDING.
+
+Class-B implementation still required:
+- D1 append-only binding table;
+- runtime writer;
+- protected readback endpoint;
+- deterministic runtime conflict tests;
+- Production deployment;
+- genuine Formal↔C1 binding receipt.
+
+Latest systemwide governance audit already fixed:
+- central SDA016/017 oracle pointers to 58/56;
+- SDA022 D16 prereg 4/4 queue state;
+- PR644 merged/deployed state.
+
+Do not rewrite central governance from Room11.
+
+Current parallel SDA-022 state remains:
+- System1 T01~T05 PASS;
+- D16 T25~T28 PASS;
+- System2 T06~T10 PENDING;
+- physical NC-T01 T11~T16 PENDING;
+- prospective T17~T24 NOT_STARTED;
+- outcomes CLOSED.
+
+No maturity change:
+D16 = 60%.
+D18 = 52%.
+Formal Core LOCKED.
+
+Exact next:
+1. re-read latest main and queue;
+2. if SDA-016 Class-B implementation lands, validate only T41/T42/T44/T45/T46/T47 runtime deltas;
+3. T43 remains accepted unless weakened;
+4. T48 waits for separate same-session generation-set finalization receipt;
+5. first genuine V8.19 post-deploy C1 session must be read back without historical synthesis;
+6. if System2 SDA-022 fingerprints or physical NC-T01 lands first, validate T06~T16 instead;
+7. economic outcomes remain CLOSED.
