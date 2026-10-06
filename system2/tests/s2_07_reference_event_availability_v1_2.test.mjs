@@ -8,7 +8,8 @@ const officialEvent = {
   symbol: "4806",
   actionFamilyId: "CAPITAL_REDUCTION",
   effectiveDate: "2026-10-02",
-  eventVersionId: "S2-CA-EVENT:test",
+  eventVersionId: "S2-CA-EVENT:observation-a",
+  semanticHash: "semantic-hash-test",
   sourceRowHash: "reference-row-hash-test",
   continuityEffect: {subtype: "彌補虧損"},
   knowledgeTimeMode: "HISTORICAL_UNKNOWN",
@@ -87,8 +88,9 @@ const hypotheticalAuthoritative = evaluateReferenceEventHistoricalAvailabilityV1
     availableAt: "2026-09-30T09:00:00+08:00",
     sourceId: "HYPOTHETICAL_OFFICIAL_CONTRACT",
     evidenceId: "fixture-only",
-    referenceEventVersionId: "S2-CA-EVENT:test",
+    referenceSemanticHash: "semantic-hash-test",
     referenceSourceRowHash: "reference-row-hash-test",
+    referenceObservationVersionId: "S2-CA-EVENT:observation-older",
   }],
 });
 assert.equal(
@@ -102,6 +104,31 @@ assert.equal(
 );
 assert.equal(hypotheticalAuthoritative.knownAtVersionClockCertified, false);
 assert.equal(hypotheticalAuthoritative.technicalContinuityCertified, false);
+assert.equal(hypotheticalAuthoritative.observationVersionIdUsedAsStableIdentity, false);
+
+const sameStableIdentityDifferentObservation = evaluateReferenceEventHistoricalAvailabilityV1_2({
+  officialEvent: {...officialEvent, eventVersionId: "S2-CA-EVENT:observation-b"},
+  mopsRows: rows,
+  replayCutoffAt: "2026-10-02T15:30:00+08:00",
+  independentAvailabilityEvidence: [{
+    evidenceClass: "AUTHORITATIVE_PUBLICATION_TIME_CONTRACT",
+    exactVersionIdentity: true,
+    publicationSemanticsCertified: true,
+    availableAt: "2026-09-30T09:00:00+08:00",
+    referenceSemanticHash: "semantic-hash-test",
+    referenceSourceRowHash: "reference-row-hash-test",
+    referenceObservationVersionId: "S2-CA-EVENT:observation-a",
+  }],
+});
+assert.equal(sameStableIdentityDifferentObservation.pitEventReplayEligible, true);
+assert.equal(
+  sameStableIdentityDifferentObservation.officialEventVersionId,
+  "S2-CA-EVENT:observation-b",
+);
+assert.equal(
+  sameStableIdentityDifferentObservation.winningEvidence.referenceObservationVersionId,
+  "S2-CA-EVENT:observation-a",
+);
 
 const wrongEvent = evaluateReferenceEventHistoricalAvailabilityV1_2({
   officialEvent: {...officialEvent, symbol: "9999"},

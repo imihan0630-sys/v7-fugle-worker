@@ -149,6 +149,7 @@ console.log(JSON.stringify({
   officialSource: {
     sourceId: "TPEX_CAPITAL_REDUCTION_REFERENCE",
     eventVersionId: officialEvent.eventVersionId,
+    semanticHash: officialEvent.semanticHash,
     sourceRowHash: officialEvent.sourceRowHash,
     knowledgeTimeMode: officialEvent.knowledgeTimeMode,
   },

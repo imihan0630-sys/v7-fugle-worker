@@ -2568,3 +2568,33 @@ Next exact BUILD_LANE continuation:
 2. do not infer or backdate `firstKnownAt` / `availableAt`;
 3. if historical availability cannot be independently proven, keep PIT replay blocked;
 4. no strategy/ranking/candidate authority may consume this bridge before the PIT gate is resolved.
+
+
+## 2026-10-07 S2-07 Reference Event Historical Availability V1.2 physical acceptance
+
+Physical receipt:
+- PR #729 merged V1.2 runtime into main as `777b5876917774a5ad4c32eac3e563df2b3acfe5`.
+- Receipt PR #732 rebased the physical check on that merged main state.
+- Dedicated workflow run `37538390532`, job `112525069738`: PASS.
+- System1 isolation guard: PASS.
+- exact stable reference identity uses `semanticHash + sourceRowHash`, not capture-specific `eventVersionId`.
+- stable semantic hash: `b6a4c97fdf3ded2bdae7048852540e4f58c1a64da4cbc012e350d5227e20d869`.
+- stable source-row hash: `518fcdf6b0f3d5dc8ffaafba59556c86da3cda76dd0e46c528217740c33ae92b`.
+- observed eventVersionId for this run: `S2-CA-EVENT:82da757e780d7be2c3474f5ca505d385b55705d44b520f291dc7383f88c391ca`; this is receipt provenance only.
+- MOPS capital-reduction family rows: 18.
+- 2026 event semantic seed: `2026-02-24|16:28:25|3`.
+- semantic-aligned 2026 episode rows: 8 / 8 source-clock eligible / 8 retrospective-only.
+- independent historical public-availability evidence: 0.
+- state: `REFERENCE_EVENT_HISTORICAL_AVAILABILITY_NOT_PROVEN`.
+- PIT blocker: `OFFICIAL_REFERENCE_EVENT_HISTORICAL_AVAILABILITY_UNPROVEN`.
+- `firstKnownAt=null`, `availableAt=null`, `pitEventReplayEligible=false`.
+- no history mutation, no adjusted-history persistence, no selection/push/capital/order authority, System1 unused.
+
+Accepted conclusion:
+V1.2 closes the **investigation ambiguity**, not the PIT gate. Current official/MOPS evidence does not authorize reconstructing a historical public-availability clock for the exact TPEx 4806 reference-price row. 4806 therefore remains bounded research geometry only; PIT replay continuity stays blocked unless new independent exact-source availability evidence appears.
+
+Next BUILD_LANE rule:
+- do not repeat blind historical-clock promotion attempts for 4806 without new evidence class;
+- continue non-conflicting S2-07/build work;
+- 5381 / 6241 / 3086 remain DATA_LANE RAW A1 coverage-owned blockers;
+- all trading/selection authority remains false.
