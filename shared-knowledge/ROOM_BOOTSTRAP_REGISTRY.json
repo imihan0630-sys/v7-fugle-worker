@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-06T07:35:00+08:00",
+  "updatedAt": "2026-10-06T09:50:00+08:00",
   "status": "CANONICAL_ROOM_BOOTSTRAP_REGISTRY_V0_1",
   "repository": "imihan0630-sys/v7-fugle-worker",
   "authoritativeBranch": "main",
@@ -31,7 +31,10 @@
     "sda022AcceptanceOracle": "shared-knowledge/SDA022_ACCEPTANCE_ORACLE_V0_1.md",
     "sda022AcceptanceOracleMachine": "shared-knowledge/sda022_acceptance_oracle_v0_1.json",
     "crossSystemPolicyFingerprintReceiptSchema": "shared-knowledge/cross_system_policy_fingerprint_receipt_schema_v0_1.json",
-    "sda022NcT01ReceiptSchema": "shared-knowledge/sda022_nc_t01_receipt_schema_v0_1.json"
+    "sda022NcT01ReceiptSchema": "shared-knowledge/sda022_nc_t01_receipt_schema_v0_1.json",
+    "userNavigableUrlPolicy": "MANDATORY_ROOM_BOOTSTRAP_DIRECT_URL_RULE",
+    "userNavigableUrlPolicySource": "shared-knowledge/ROOM_BOOTSTRAP.md",
+    "userNavigableUrlPolicySemantics": "When a user is asked to open/login/view/operate a concrete page and a stable safe URL is known, provide the direct clickable URL in the same response; prefer the deepest reliable target and never fabricate or expose secrets."
   },
   "identities": [
     {
