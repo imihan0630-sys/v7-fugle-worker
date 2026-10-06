@@ -1087,3 +1087,50 @@ Next exact BUILD_LANE continuation:
 2. require independent adjustment/reference-price provenance rather than inferring continuity from price shape;
 3. keep 5381 / 6241 / 3086 blocked until canonical DATA_LANE RAW A1 coverage exists;
 4. do not generalize 4806 to the remaining event population.
+
+
+## 2026-10-07 S2-07 Technical Continuity Bridge V1.1 physical result
+
+Authoritative execution:
+- implementation/trigger merge: `2250ba518e4e6b0e64d2df31406ffe51a9b752df` (PR #724);
+- workflow: `System2 S2-07 Technical Continuity Bridge V1.1 Readonly`;
+- merged-main run `37534597007` / job `112512227519` = PASS;
+- merged-main System2 Research CI `37534597078` = PASS;
+- PR V8 Regression `37534399074` = PASS.
+
+Physical result for the only V1.0-ready case, 4806:
+- official pre-action close = 10.4;
+- official reference price = 14.87;
+- official reference ratio = 1.4298076923076921;
+- RAW pre-suspension close = 10.4;
+- transformed pre-suspension close = 14.87;
+- RAW resume open / close = 13.7 / 13.4;
+- residual open gap = -7.86819098856758%;
+- residual close move = -9.885675857431064%;
+- bridge state = `BOUNDED_CONTINUITY_BRIDGE_READY_PIT_BLOCKED`;
+- bridge blockers = none.
+
+PIT boundary:
+- official `knowledgeTimeMode=HISTORICAL_UNKNOWN`;
+- `firstKnownAt=null`;
+- `availableAt=null`;
+- `pitEventReplayEligible=false`;
+- `pitReplayBlocker=OFFICIAL_EVENT_KNOWLEDGE_CLOCK_HISTORICAL_UNKNOWN`.
+
+Read-only / authority boundary:
+- D1 requestCount=3 / rowsRead=9 / rowsWritten=0;
+- raw history mutated=false;
+- adjusted history persisted=false;
+- continuity transform performed=false;
+- `technicalContinuityCertified=false`;
+- all-history continuity=false;
+- selection/final-selection/push/capital/order=false;
+- System1 runtime unused.
+
+5381 / 6241 / 3086 remain DATA_LANE RAW A1 coverage-blocked and do not inherit 4806's positive result.
+
+Next exact BUILD_LANE continuation:
+1. investigate official reference-event historical availability/version-clock provenance only;
+2. do not infer or backdate `firstKnownAt` / `availableAt`;
+3. if historical availability cannot be independently proven, keep PIT replay blocked;
+4. no strategy/ranking/candidate authority may consume this bridge before the PIT gate is resolved.

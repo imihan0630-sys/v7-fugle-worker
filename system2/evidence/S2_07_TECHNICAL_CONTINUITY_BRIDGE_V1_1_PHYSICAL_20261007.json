@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "S2_07_TECHNICAL_CONTINUITY_BRIDGE_V1_1_PHYSICAL_EVIDENCE",
+  "recordedDate": "2026-10-07",
+  "scope": {
+    "market": "TPEX",
+    "symbol": "4806",
+    "actionFamily": "CAPITAL_REDUCTION",
+    "previousOfficialSession": "2026-09-22",
+    "stopTradingDate": "2026-09-23",
+    "resumeTradingDate": "2026-10-02",
+    "boundedOnly": true
+  },
+  "authoritativeExecution": {
+    "implementationMerge": "2250ba518e4e6b0e64d2df31406ffe51a9b752df",
+    "pullRequest": 724,
+    "workflow": "System2 S2-07 Technical Continuity Bridge V1.1 Readonly",
+    "runId": 37534597007,
+    "jobId": 112512227519,
+    "conclusion": "PASS",
+    "system2ResearchCiRunId": 37534597078,
+    "system2ResearchCiConclusion": "PASS",
+    "prSystem2ResearchCiRunId": 37534398950,
+    "prSystem2ResearchCiConclusion": "PASS",
+    "prV8RegressionRunId": 37534399074,
+    "prV8RegressionConclusion": "PASS"
+  },
+  "officialReferenceEvidence": {
+    "sourceId": "TPEX_CAPITAL_REDUCTION_REFERENCE",
+    "payloadHash": "fb439af4247469a7d023c181e8ce8e71be55671f57e37513e77d217290ecd10a",
+    "responseRangeStart": "2026-09-22",
+    "responseRangeEnd": "2026-10-02",
+    "responseRangeVerified": true,
+    "parserState": "PARSED",
+    "eventVersionId": "S2-CA-EVENT:f9f2ecad690565da8c668dddacf0c671629689023a41c12f99e97ebb83c8396d",
+    "sourceCaptureId": "S2-CA-CAPTURE:29d828a2232a6f1b1725125ecaa1578ed150225d3d989482bf945acae6e2ce5e",
+    "sourceRowHash": "518fcdf6b0f3d5dc8ffaafba59556c86da3cda76dd0e46c528217740c33ae92b",
+    "knowledgeTimeMode": "HISTORICAL_UNKNOWN",
+    "firstKnownAt": null,
+    "availableAt": null,
+    "pitEventReplayEligible": false,
+    "actualResultVerified": true,
+    "continuityEffectState": "VERIFIED",
+    "technicalContinuityEvidenceEligible": true,
+    "preActionClose": 10.4,
+    "officialReferencePrice": 14.87,
+    "referencePriceRatio": 1.4298076923076921,
+    "subtype": "彌補虧損"
+  },
+  "rawBoundaryEvidence": {
+    "preSuspension": {
+      "marketDate": "2026-09-22",
+      "close": 10.4,
+      "sourceId": "A1_TPEX_DAILY_QUOTES_RECENT_HOT_WARMUP_PROSPECTIVE",
+      "sourceRowHash": "a912e6ddf04def697e29348c960d74b9313362aee236e7a24b0683a93310c24e",
+      "barHash": "23c20530ea13b1c535b7dde09a35c1563de42b80e05e863b046d22d9ec40c239",
+      "continuityState": "UNVERIFIED"
+    },
+    "resume": {
+      "marketDate": "2026-10-02",
+      "open": 13.7,
+      "close": 13.4,
+      "sourceId": "A1_TPEX_DAILY_QUOTES_RECENT_HOT_WARMUP_PROSPECTIVE",
+      "sourceRowHash": "4e3d3857ebdf3ccaeaa543bc8ab558bef20a1b2d3d1343729901be9604b163e3",
+      "barHash": "21b1279e8130e3ec52cca92e1eb81d67cac09f698d5f9b9280b6e900396e08a6",
+      "continuityState": "UNVERIFIED"
+    }
+  },
+  "bridgeResult": {
+    "state": "BOUNDED_CONTINUITY_BRIDGE_READY_PIT_BLOCKED",
+    "blockers": [],
+    "boundedTechnicalContinuityBridgeReady": true,
+    "transformedPreSuspensionCloseInReferenceSpace": 14.87,
+    "residualOpenGapRate": -0.0786819098856758,
+    "residualCloseMoveRate": -0.09885675857431064,
+    "mechanicalResetNeutralizedForBoundaryResearch": true,
+    "residualMoveSeparatedFromMechanicalReset": true,
+    "pitTechnicalContinuityReplayEligible": false,
+    "pitReplayBlocker": "OFFICIAL_EVENT_KNOWLEDGE_CLOCK_HISTORICAL_UNKNOWN",
+    "technicalContinuityScope": "EVENT_BOUNDARY_ONLY",
+    "technicalContinuityCertified": false,
+    "allHistoryContinuityCertified": false
+  },
+  "d1": {
+    "databaseName": "system2-research",
+    "schemaVersion": "1.1",
+    "requestCount": 3,
+    "rowsRead": 9,
+    "rowsWritten": 0,
+    "mutationPerformed": false
+  },
+  "protectedBoundaries": {
+    "rawHistoryMutated": false,
+    "adjustedHistoryPersisted": false,
+    "continuityTransformPerformed": false,
+    "selectionAuthority": false,
+    "finalSelectionEnabled": false,
+    "livePushEnabled": false,
+    "capitalImpact": false,
+    "orderImpact": false,
+    "system1RuntimeUsed": false
+  },
+  "blockedCases": [
+    "5381",
+    "6241",
+    "3086"
+  ],
+  "nextBuildGate": "OFFICIAL_REFERENCE_EVENT_HISTORICAL_AVAILABILITY_AND_VERSION_CLOCK_PROVENANCE"
+}
