@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "D16_SDA022_OUTER_STREAM_ENROLLMENT_V0_1",
+  "updatedAt": "2026-10-06T19:02:00+08:00",
+  "owner": "D16 / Room11",
+  "ticket": "SDA-022",
+  "status": "EXPLORATORY_STREAM_ENROLLED_BEFORE_ECONOMIC_OUTCOME_INSPECTION",
+  "formalCoreImpact": "NONE",
+  "contract": "research/D16_ONLINE_EXPERIMENT_STREAM_RECEIPT_CONTRACT_20261006_V0_1.json",
+  "streamIdentity": {
+    "researchStreamId": "ROOM11_CROSS_SYSTEM_INCREMENTALITY_STREAM_20261006_V0_1",
+    "streamScope": "Cross-system System1/System2 predictive-incrementality hypotheses owned by Room11/D16",
+    "streamErrorObjective": "EXPLORATORY_ONLY",
+    "streamErrorLevel": null,
+    "streamMethodId": null,
+    "streamMethodVersion": null,
+    "dependenceAssumptionId": "D16_06_DEPENDENCE_CONTRACT_REQUIRED_BEFORE_CONFIRMATORY_UPGRADE",
+    "hypothesisArrivalPolicyHash": "FROZEN_APPEND_ONLY_NEW_STRATEGY_HORIZON_DIRECTION_REQUIRES_NEW_HYPOTHESIS",
+    "alphaOrEvidenceBudgetPolicyHash": null,
+    "discoveryDefinitionHash": "NO_CONFIRMATORY_DISCOVERY_WHILE_EXPLORATORY_ONLY",
+    "retirementRuleHash": "RETIRED_HYPOTHESES_REMAIN_IN_LEDGER",
+    "streamStartAt": "2026-10-06T19:02:00+08:00",
+    "streamLedgerHeadHash": "GENESIS_SDA022_H01"
+  },
+  "hypothesis": {
+    "hypothesisOrdinal": 1,
+    "hypothesisId": "SDA022-H01-SYSTEM1-VS-SHORT_MOMENTUM-D5",
+    "experimentFamilyId": "D16-SDA022-01",
+    "registeredAt": "2026-10-06T19:02:00+08:00",
+    "parentHypothesisRefs": [
+      "SDA-022",
+      "research/SDA022_D16_S1_SHORT_MOMENTUM_D5_INCREMENTALITY_PREREG_20261006_V0_1.json"
+    ],
+    "priorOutcomeReleaseRefsKnownAtBirth": [],
+    "birthReasonCode": "HIGHEST_STRUCTURAL_CONVERGENCE_RISK_PAIR",
+    "candidateSource": "SYSTEM1_FORMAL_VS_SYSTEM2_SHORT_MOMENTUM",
+    "primaryClaim": "System2 SHORT_MOMENTUM may add D5 predictive information beyond System1 on common support",
+    "nullClaim": "No date-balanced D5 Brier-loss improvement from adding SHORT_MOMENTUM beyond System1",
+    "direction": "SYSTEM2_INCREMENTAL_OVER_SYSTEM1",
+    "analysisMethodState": "PENDING_MACHINE_STATE_ENCODING_AND_MODEL_METHOD_RECEIPT",
+    "innerSequentialPolicyRef": "FIXED_SINGLE_PRIMARY_LOOK_NO_EFFICACY_PEEKING",
+    "outerErrorBudgetAllocation": null,
+    "resultState": "NOT_EVALUATED",
+    "consumptionRef": null
+  },
+  "accounting": {
+    "ledgerHypothesisCount": 1,
+    "outcomeInspectedHypothesisCount": 0,
+    "rejectedHypothesisCount": 0,
+    "nonRejectedHypothesisCount": 0,
+    "inconclusiveHypothesisCount": 0,
+    "retiredHypothesisCount": 0,
+    "deletedOutcomeInspectedHypothesisCount": 0,
+    "aliasResetAllowed": false
+  },
+  "restrictions": [
+    "NO_CONFIRMATORY_CLAIM",
+    "NO_ALPHA_OR_FDR_CLAIM",
+    "NO_ECONOMIC_OUTCOME_INSPECTION_BEFORE_MODEL_METHOD_FREEZE",
+    "NO_D1_D3_D10_RESCUE_OF_D5",
+    "NO_OTHER_SYSTEM2_STRATEGY_POOLING",
+    "NO_HYPOTHESIS_ID_RESET"
+  ],
+  "upgradeToConfirmatoryRequires": [
+    "MODEL_METHOD_RECEIPT_FROZEN",
+    "MDE_OR_PRECISION_TARGET_FROZEN",
+    "OUTER_ERROR_OBJECTIVE_AND_METHOD_FROZEN",
+    "DEPENDENCE_ASSUMPTIONS_PROVEN",
+    "SDA016_CONSUMPTION_VALID",
+    "ROOM00_READBACK"
+  ],
+  "empiricalEvidenceAttached": false,
+  "maturityImpact": "NONE"
+}
