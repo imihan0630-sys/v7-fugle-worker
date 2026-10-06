@@ -1,0 +1,57 @@
+name: System1 Official Quality Transport Verification
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/SYSTEM1_QUALITY_TRANSPORT_LIVE_VERIFY_TRIGGER_20261007.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system1-quality-transport-live-verification
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify transport-retry contract offline
+        run: node tests/test_v8_9_7_recovery_hardening.mjs
+      - name: Recover official quality only for 2026-10-06
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+          QUALITY_MARKET_DATE: '2026-10-06'
+          QUALITY_RECOVERY_ONLY: '1'
+        run: node tests/sync_official_quality.mjs
+      - name: Verify FINANCIAL and QUARTER_EPS readiness only
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const origin='https://fugle-test.imihan0630.workers.dev';
+          const date='2026-10-06';
+          const response=await fetch(origin+'/api/quality-status?marketDate='+date,{
+            headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'accept':'application/json','cache-control':'no-cache'},
+            signal:AbortSignal.timeout(30000)
+          });
+          if([401,403].includes(response.status)) throw new Error('QUALITY_VERIFY_AUTHORIZATION_REJECTED');
+          const quality=await response.json().catch(()=>null);
+          if(!response.ok||!quality) throw new Error('QUALITY_VERIFY_HTTP_'+response.status);
+          const financial=quality.datasets?.FINANCIAL?.ready===true;
+          const quarterEps=quality.datasets?.QUARTER_EPS?.ready===true;
+          if(!financial||!quarterEps) throw new Error('QUALITY_VERIFY_NOT_READY');
+          console.log(JSON.stringify({
+            ok:true,marketDate:quality.marketDate,
+            FINANCIAL:quality.datasets.FINANCIAL,
+            QUARTER_EPS:quality.datasets.QUARTER_EPS,
+            noSelection:true,noPlanChanges:true,noTrade:true,noPush:true
+          }));
+          NODE
