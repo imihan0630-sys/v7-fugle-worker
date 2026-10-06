@@ -23755,3 +23755,31 @@ New durable artifacts:
 - research/PATTERN_SHOCK_SNAPBACK_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-053 — Persistent structural rejection vs inventory replenishment / queue refill (2026-10-06)
+
+DL-053 moves one layer deeper than DL-052. Even after distinguishing temporary price snapback from structural rejection, a visually compelling order-book recovery near the zone can still be generic market resiliency rather than structural memory.
+
+Order-book research shows that spread and depth often recover after liquidity shocks. The recovery process is itself a market-quality mechanism. A large aggressive order can deplete one side of the book, after which new limit orders replenish visible depth and spreads normalize. That recovery may happen whether or not the affected price level carries a historical support/resistance label.
+
+D05 therefore remains the owner of displayed depth, spread, quote freshness, cancellation and resiliency primitives. D01 does not create a second liquidity score. It only records whether an owner-certified refill happens near the frozen structural zone and whether that coincidence adds anything beyond generic matched refill behavior.
+
+Displayed depth is intentionally interpreted conservatively. Visible best-five liquidity can cancel, move or disappear. It is only the visible book, not latent liquidity and not proof of a committed defense. D01 therefore prohibits labels such as "buyers defended the level" or "institutional support" from a snapshot alone.
+
+DL-053 also separates display from execution. A refill that flashes and cancels is different from depth that remains visible, and both are different from actual trades executing at the refill price. Even executed absorption is only stronger observability of interaction; it does not by itself identify why the price subsequently moves.
+
+The primary falsifier is generic resiliency. Future D16 work must compare refill at a structural zone with matched non-structural refill under similar shock severity, book side, pre-shock spread/depth, volatility, relative tick, market mechanism, event context and DL-052 recovery phase. If comparable refill occurs just as often away from structural zones, the structural interpretation weakens.
+
+The clocks are frozen separately: pre-shock book, shock, depleted book, structural opportunity, predictor freeze, refill start/measurement and spread/depth normalization. Post-freeze refill and recovery may not be backfilled into the predictor.
+
+Sixteen adversarial cases are authored. They enforce timing, valid refill fractions, zone coincidence without structural proof, outside-zone generic refill, stale-quote blocking, visible-vs-latent distinction, fleeting-depth handling, execution-observed handling, mandatory generic controls, separate cancellation/execution states, one effective evidence count and closed outcome join.
+
+New durable artifacts:
+- research/PATTERN_QUEUE_REFILL_V0_1.md
+- research/pattern_queue_refill_v0_1.json
+- research/pattern_queue_refill_v0_1.mjs
+- research/test_pattern_queue_refill_v0_1.mjs
+- research/PATTERN_QUEUE_REFILL_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No runtime wiring and no Formal change. Formal Core remains LOCKED.

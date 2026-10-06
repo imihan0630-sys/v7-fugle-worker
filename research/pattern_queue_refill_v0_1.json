@@ -1,0 +1,19 @@
+{
+  "schemaVersion":"pattern-queue-refill-v0.1",
+  "updated":"2026-10-06 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "owner":"D05",
+  "displayedDepthRefillEqualsStructuralDefense":false,
+  "queueRefillEqualsIndependentConfirmation":false,
+  "fleetingDepthEqualsExecutedAbsorption":false,
+  "bookRefillAtZoneEqualsMemory":false,
+  "visibleDepthEqualsLatentLiquidity":false,
+  "behavioralIntentFromBookSnapshot":"PROHIBITED",
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "futureLadder":["Q0","Q1","Q2","Q3","Q4","Q5","Q6","Q7","Q8"],
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}
