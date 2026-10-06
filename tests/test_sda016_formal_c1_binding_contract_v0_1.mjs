@@ -3,6 +3,7 @@ import {readFile} from "node:fs/promises";
 
 const readJson=async p=>JSON.parse(await readFile(new URL("../"+p,import.meta.url),"utf8"));
 const contract=await readJson("research/sda016_system1_formal_c1_binding_contract_v0_1.json");
+const oracle=await readJson("research/SDA016_VALIDATION_ORACLE_20261006_V0_5.json");
 const planPatch=await readFile(new URL("../scripts/apply_v8_3_0.py",import.meta.url),"utf8");
 const v819=await readFile(new URL("../scripts/apply_v8_19_0.py",import.meta.url),"utf8");
 const collector=await readFile(new URL("../research/system1_c1_c2_collection_v0_1.mjs",import.meta.url),"utf8");
@@ -84,6 +85,9 @@ assert.deepEqual(expected,{});
 
 assert.equal(contract.approvalBoundary.currentWorkAuthorized,"CLASS_A_RESEARCH_CONTRACT_AND_OFFLINE_TESTS_ONLY");
 assert.equal(contract.approvalBoundary.implementationNotAuthorizedByThisContract,true);
+for(const id of ["SDA016-T42","SDA016-T43","SDA016-T44","SDA016-T45","SDA016-T46","SDA016-T47","SDA016-T48"]){
+  assert.ok(oracle.tests.some(t=>t.id===id&&t.blocking===true),"missing oracle blocker "+id);
+}
 for(const item of ["new D1 table/schema","runtime binding persistence","protected readback endpoint","Production deployment"])
   assert.ok(contract.approvalBoundary.classBRequiredFor.includes(item));
 assert.ok(contract.approvalBoundary.classCRequiredFor.some(x=>x.includes("Formal selection")));
