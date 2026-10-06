@@ -1,0 +1,41 @@
+{
+  "schemaVersion":"pattern-transition-mechanics-v0.1",
+  "updated":"2026-10-06 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "matchingMechanisms":[
+    "CONTINUOUS",
+    "OPEN_CALL_AUCTION",
+    "CLOSE_CALL_AUCTION",
+    "VI_REOPEN_CALL_AUCTION",
+    "OTHER_CALL_AUCTION",
+    "UNKNOWN"
+  ],
+  "priceConstraintStates":[
+    "UNCONSTRAINED",
+    "DAILY_LIMIT_UP_CONSTRAINED",
+    "DAILY_LIMIT_DOWN_CONSTRAINED",
+    "SPECIAL_NO_LIMIT_REGIME",
+    "UNKNOWN"
+  ],
+  "bounceStates":[
+    "QUOTE_CONFIRMED_BID_ASK_BOUNCE",
+    "EXACT_EVENT_NOT_BOUNCE",
+    "CANDIDATE_UNVERIFIED",
+    "NOT_EVALUABLE"
+  ],
+  "eventContextStates":[
+    "VERIFIED_EVENT_CONTEXT",
+    "VERIFIED_NO_EVENT_CONTEXT",
+    "EVENT_CONTEXT_UNKNOWN"
+  ],
+  "currentRuleBackfillToHistory":"PROHIBITED",
+  "ohlcAlternationProvesBidAskBounce":false,
+  "auctionJumpEqualsContinuousTraversal":false,
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "residualIncrementalityStatus":"NOT_VALIDATED",
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}

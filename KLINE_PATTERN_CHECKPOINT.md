@@ -2883,3 +2883,93 @@ No maturity or Formal change is authorized by this routing.
 6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 7. Next D01 science: separate ordinary oscillation from auction/limit/event-driven discrete repricing and microstructure bounce.
 8. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-050 (2026-10-06)
+
+### DL-050 — Ordinary oscillation vs auction / limit / event / microstructure repricing
+- DL-049 separated occupancy from zone-local churn/path disorder.
+- DL-050 freezes the next confound: observed state transitions can be ordinary continuous oscillation or mechanically different repricing under auction, VI, price-limit, bid-ask-bounce or event context.
+- Current TWSE market-mechanism evidence is encoded only through point-in-time receipts; current rules may not be backfilled into historical samples.
+- Four orthogonal context axes are frozen:
+  MATCHING_MECHANISM;
+  PRICE_CONSTRAINT_STATE;
+  MICROSTRUCTURE_BOUNCE_STATE;
+  EVENT_CONTEXT.
+- Matching mechanisms:
+  CONTINUOUS;
+  OPEN_CALL_AUCTION;
+  CLOSE_CALL_AUCTION;
+  VI_REOPEN_CALL_AUCTION;
+  OTHER_CALL_AUCTION;
+  UNKNOWN.
+- Price constraints:
+  UNCONSTRAINED;
+  DAILY_LIMIT_UP_CONSTRAINED;
+  DAILY_LIMIT_DOWN_CONSTRAINED;
+  SPECIAL_NO_LIMIT_REGIME;
+  UNKNOWN.
+- Microstructure-bounce states:
+  QUOTE_CONFIRMED_BID_ASK_BOUNCE;
+  EXACT_EVENT_NOT_BOUNCE;
+  CANDIDATE_UNVERIFIED;
+  NOT_EVALUABLE.
+- Event context:
+  VERIFIED_EVENT_CONTEXT;
+  VERIFIED_NO_EVENT_CONTEXT;
+  EVENT_CONTEXT_UNKNOWN.
+- A call-auction jump across a zone proves only start/end states and AUCTION_CROSSED_ZONE context.
+  It does not prove continuous traversal, intermediate occupancy, crossing count or dwell.
+- VI reopening is explicitly separated from ordinary continuous churn.
+- Price-limit observations are constraint states and cannot be interpreted as unconstrained acceptance/churn without control.
+- Legal tick scale is point-in-time input; current tick rules may not be used for historical backfill.
+- Bid-ask bounce requires canonical D04/D05 exact trade/quote evidence.
+  OHLC alternation alone can never confirm bid-ask bounce.
+- Roll-style microstructure evidence motivates this firewall: transaction prices can alternate at bid/ask and create negative short-horizon serial dependence without a corresponding change in underlying value.
+- D11 verified event context remains orthogonal:
+  event presence does not prove event causation.
+- Mixed mechanisms remain multi-axis rather than forcing one causal label.
+- Future research classes:
+  K0 ORDINARY_CONTINUOUS_UNCONSTRAINED;
+  K1 OPEN_OR_CLOSE_AUCTION_REPRICING;
+  K2 VI_REOPEN_REPRICING;
+  K3 PRICE_LIMIT_CONSTRAINED;
+  K4 QUOTE_CONFIRMED_BID_ASK_BOUNCE;
+  K5 VERIFIED_EVENT_CONTEXT;
+  K6 MIXED_MECHANISM;
+  K7 NOT_EVALUABLE.
+- DL-049 path/churn descriptors are preserved and stratified by DL-050 mechanism context rather than replaced.
+- Future D16 questions:
+  churn survival in K0 only;
+  share attributable to auction/VI/limit mechanics;
+  bounce explanation of short-horizon side flips;
+  structural residual after spread/depth/bounce controls;
+  event/non-event comparison;
+  OHLC proxy vs exact event reconstruction;
+  residual value after PRICE_OHLC de-duplication.
+- Information roots can include PRICE_OHLC plus TRADE_TIME / QUOTE_TIME / VENUE_RULE, but default effectiveIndependentEvidenceCount remains 1 and residualIncrementalityStatus remains NOT_VALIDATED.
+- New durable artifacts:
+  - research/PATTERN_TRANSITION_MECHANICS_V0_1.md
+  - research/pattern_transition_mechanics_v0_1.json
+  - research/pattern_transition_mechanics_v0_1.mjs
+  - research/test_pattern_transition_mechanics_v0_1.mjs
+  - research/PATTERN_TRANSITION_MECHANICS_D16_HANDOFF_V0_1.md
+- 22 executable adversarial cases authored; research-specific Node execution remains TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain REMEDIATION_IN_PROGRESS.
+- No outcome join; no runtime/Worker/D1 wiring; no Formal change.
+- D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-050
+
+1. Reconcile the DL-050 Class-A branch against then-latest main and merge via research-only PR.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-050 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve matching mechanism, price constraint, microstructure bounce and event context as separate axes.
+4. Preserve auction/VI jumps as discrete repricing and never reconstruct unobserved continuous crossing paths.
+5. Keep D04/D05 microstructure ownership and D11 event ownership explicit.
+6. Hand K0-K7 / Q1-Q7 common-support and residual inference to D16.
+7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+8. Next D01 science: separate structural-zone churn from volatility clustering / realized-volatility bursts and spread/depth deterioration.
+9. No runtime wiring / no Formal change.
