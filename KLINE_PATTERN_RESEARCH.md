@@ -23651,3 +23651,30 @@ New durable artifacts:
 The earlier TOOL_BLOCKED note is no longer current: helper and test writes now exist durably. Research-specific Node execution is still TEST_EXECUTION_PENDING and must not be inferred from standard V8 CI.
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001/SDA-002 remain open. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-050 — Ordinary zone oscillation vs discrete repricing / microstructure bounce (2026-10-06)
+
+DL-050 closes a mechanism gap left after DL-043 and DL-049. Session decomposition already tells us where in the trading day a move occurred, while zone-path churn tells us how often price occupied or crossed a structural zone. Neither alone tells us why an apparent rejection or oscillation occurred.
+
+A zone can appear to reject price because free continuous trading changed direction. It can also appear to reject because the next observed executable price was an auction clearing price, because a price-limit state constrained the available path, because a volatility interruption inserted a discrete restart, because public information arrived between observations, or because last trades bounced between bid and ask while the quote midpoint barely moved.
+
+Those mechanisms now remain separate.
+
+The canonical Taiwan trading mechanism is not reimplemented inside D01. Current TWSE public material confirms that continuous trading coexists with call auctions at open/close, daily fluctuation limits have rule-defined exceptions, and volatility interruption can switch matching into an interruption/restart process. D04/D05 remains owner of the exact as-of mechanism receipts and any historical rule version.
+
+D01 therefore hard-codes no 10% rule, no volatility-interruption threshold, no auction time and no tick table. Missing owner rule receipt is UNKNOWN.
+
+The most important path correction is that geometric crossing is not executed crossing. If a prior observable price is below a zone and the next opening-auction print is above it, the zone was crossed geometrically, but the data do not prove executable trades occurred at intermediate prices. Such a transition is not a CONTINUOUS_TRADE_THROUGH.
+
+Event attribution receives the same restraint. An event whose knownAt is compatible with the discrete repricing may be labeled EVENT_COINCIDENT_DISCRETE_REPRICE, but coincidence is not causation. Events becoming public after the transition are post-hoc and cannot explain the earlier move.
+
+Microstructure bounce is even stricter. A rebound visible only in OHLC is not enough. Bid-ask bounce is a quote/trade mechanism and requires replay-safe D05 primitives. Without direct quote/trade context, the correct state is not "no bounce" but MICROSTRUCTURE_RECEIPT_UNAVAILABLE.
+
+Eight mechanism states are frozen: unconstrained continuous candidate, auction clearing, price-limit constrained path, volatility-interruption repricing, event-coincident repricing, owner-certified microstructure-bounce candidate, mixed mechanism and not evaluable.
+
+Twenty adversarial cases are authored. They verify free continuous classification, auction repricing, limit constraint, volatility interruption, restart-auction mixed states, event timing without causal overclaim, post-hoc event rejection, OHLC-only microstructure ambiguity, owner-certified microstructure receipt, mixed event/microstructure state, session/continuity/halt fail-closed behavior, geometric auction gap-through versus true continuous trade-through, exact sequence requirements, one effective information count and the absence of hard-coded exchange thresholds.
+
+Future D16 analysis receives a nested ladder from raw churn to unconstrained continuous-only evidence and multi-mechanism robustness. A result that disappears after auction, limit, event or microstructure controls is a mechanism explanation, not a Pattern failure to be hidden. A result that survives all of them is still only a stronger structural candidate, not alpha proof.
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
