@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "SDA016_ROOM11_V820_RUNTIME_FIRST_SCHEDULED_READBACK_VALIDATION_V0_1",
+  "updatedAt": "2026-10-07T00:21:00+08:00",
+  "ticket": "SDA-016",
+  "validator": "D16 / Room11",
+  "closureAuthority": "00",
+  "runtime": {
+    "version": "8.20.0-formal-c1-binding-ledger",
+    "mergeSha": "1bd9e05d730f2f7c5909a52502837eabd2bb111f",
+    "productionDeployRun": 37483896567,
+    "productionDeployConclusion": "success",
+    "mergedRegressionRun": 37483896007,
+    "mergedRegressionConclusion": "success",
+    "formalCoreImpact": "NONE"
+  },
+  "exactHeadRuns": [
+    {
+      "id": 37479305244,
+      "name": "V8 Regression Tests",
+      "conclusion": "success"
+    },
+    {
+      "id": 37479305145,
+      "name": "V8 Repair CI",
+      "conclusion": "success"
+    },
+    {
+      "id": 37479305270,
+      "name": "System1 C1 C2 isolated offline repair review",
+      "conclusion": "success"
+    },
+    {
+      "id": 37479305394,
+      "name": "D02 PVE-250 Approved Integration CI",
+      "conclusion": "success"
+    }
+  ],
+  "oracleDelta": [
+    {
+      "id": "SDA016-T41",
+      "state": "ENGINEERING_RUNTIME_PASS"
+    },
+    {
+      "id": "SDA016-T42",
+      "state": "ENGINEERING_RUNTIME_PASS"
+    },
+    {
+      "id": "SDA016-T43",
+      "state": "PASS_PRESERVED"
+    },
+    {
+      "id": "SDA016-T44",
+      "state": "ENGINEERING_RUNTIME_PASS"
+    },
+    {
+      "id": "SDA016-T45",
+      "state": "ENGINEERING_RUNTIME_PASS"
+    },
+    {
+      "id": "SDA016-T46",
+      "state": "ENGINEERING_RUNTIME_PASS"
+    },
+    {
+      "id": "SDA016-T47",
+      "state": "ENGINEERING_RUNTIME_PASS"
+    },
+    {
+      "id": "SDA016-T48",
+      "state": "OPEN_GENERATION_SET_FINALIZATION_PENDING"
+    }
+  ],
+  "firstScheduledAttempt": {
+    "runId": 37495670280,
+    "jobId": 112379442583,
+    "conclusion": "failure",
+    "scanDate": "2026-10-06",
+    "category": "FORMAL_SCAN_NOT_CONFIRMED",
+    "verificationFailure": "C1_GENERATION_NOT_FOUND",
+    "mayCountAsZeroPick": false,
+    "eligibleForResearch": false,
+    "formalScanDate": "2026-09-29",
+    "formalPipelineComplete": false,
+    "institutionReady": true,
+    "qualityReady": false,
+    "missingQuality": [
+      "FINANCIAL",
+      "QUARTER_EPS"
+    ],
+    "artifactId": 11426824056,
+    "artifactName": "system1-c1-evidence-37495670280",
+    "artifactZipDigest": "sha256:29d7659e2451188a52de5c3631e4088a4eedbaa0f3a3da235fffbf9ba7ad3967",
+    "artifactFiles": [
+      "system1-c1-readiness.json"
+    ],
+    "admissionDisposition": "INELIGIBLE_PARENT_MISSING"
+  },
+  "genuineBindingReceiptVerified": false,
+  "wholeTicketPassed": false,
+  "maturityImpact": "NONE",
+  "formalCoreImpact": "NONE"
+}
