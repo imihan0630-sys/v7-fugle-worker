@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "SDA016_SYSTEM1_V819_CURRENT_STATUS_V0_1",
+  "date": "2026-10-06",
+  "status": "PR644_MERGED_V819_PRODUCTION_VERIFIED_GENUINE_C1_READBACK_PENDING",
+  "ticket": "SDA-016",
+  "systemId": "SYSTEM1",
+  "historicalValidationRef": "research/SDA016_SYSTEM1_V819_SCAN_ORIGIN_INVENTORY_VALIDATION_20261006_V0_1.md",
+  "productionEvidenceRef": "research/system1_c1_scan_origin_generation_inventory_pr_644_v0_1.json",
+  "supersedesOnlyCurrentStateClaims": true,
+  "preservesHistoricalValidationRecord": true,
+  "pr644": {
+    "merged": true,
+    "mergeSha": "b79e1e7c22b015e96ecd3780cbf56b21091fd4de",
+    "productionDeployAuthorized": true,
+    "productionDeployRun": 37382112616,
+    "productionDeployConclusion": "success",
+    "postMergeRegressionRun": 37382112493,
+    "postMergeRegressionConclusion": "success"
+  },
+  "productionRuntime": {
+    "verified": true,
+    "version": "8.19.0-c1-scan-origin-generation-inventory",
+    "testMode": false,
+    "liveStore": "D1 primary",
+    "rollbackTriggered": false
+  },
+  "acceptedContribution": [
+    "explicit immutable scanOrigin for V8.19+ C1 generations",
+    "same-session generation inventory with total/returned/truncation semantics",
+    "modern missing/mismatched origin fail-closed",
+    "legacy generations remain explicitly non-inferred/non-backfilled",
+    "Formal score/gate/rank functions unchanged"
+  ],
+  "unresolved": [
+    "first genuine post-deploy C1 generation readback for scanOrigin and generation inventory",
+    "immutable authoritative Formal-decision to exact C1-generation ledger for long-horizon recovery",
+    "same-session generation-set finalization receipt",
+    "shared System1/System2 canonical holdout-consumption authority",
+    "remaining SDA-016 V0.4 oracle evidence and independent 00 closure"
+  ],
+  "interpretation": "V8.19 provenance infrastructure is deployed and Production-verified. This advances SDA-016 engineering evidence but does not close SDA-016 and does not establish the missing authoritative long-horizon Formal-decision to C1-generation ledger.",
+  "safety": {
+    "formalCoreImpact": "NONE",
+    "noHistoricalBackfill": true,
+    "noSyntheticGenuineEvidence": true,
+    "noSystem2PolicyChange": true
+  }
+}
