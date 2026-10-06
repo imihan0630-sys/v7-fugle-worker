@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "2026-10-06.v0.1",
+  "domain": "D17",
+  "modules": [
+    "D17-01",
+    "D17-02",
+    "D17-03",
+    "D17-08"
+  ],
+  "observedAt": "2026-10-06T16:38:00+08:00",
+  "evidenceClass": "SOURCE_CONTRACT_RESEARCH_ONLY",
+  "hypothesis": "A licensed first-party general-news retrieval lane can improve source reliability, but source publication time must not be treated as strategy first-known time until prospective interface-observation latency is measured.",
+  "support": [
+    "CNA announced a subscription MCP service on 2026-08-31 for AI applications to retrieve CNA database content with source attribution.",
+    "CNA product pages separately describe licensed news products and near-real-time editorial distribution to subscribers."
+  ],
+  "falsification": [
+    "Subscription availability does not prove production/commercial reuse rights for this repository or trading system.",
+    "Search/retrieval availability does not prove exhaustive stream completeness.",
+    "Publication timestamp does not prove first interface availability.",
+    "Multiple CNA access surfaces remain one editorial lineage, not independent corroboration."
+  ],
+  "pitGuards": [
+    "Preserve sourcePublishedAt, sourceUpdatedAt, interfaceFirstObservedAt, capturedAt separately.",
+    "Never backdate knownAt to sourcePublishedAt without immutable prospective evidence.",
+    "A missing retrieval result is UNKNOWN unless query completeness and denominator are proven."
+  ],
+  "next": "Prospectively poll a licensed general-news interface at fixed cadence across independent sessions; record query contract, pagination/result limits, article identity, sourcePublishedAt, sourceUpdatedAt, interfaceFirstObservedAt, capturedAt, content hash, and expected/actual denominator. Do not estimate D17-03 half-life before D17-02 clock feasibility is validated.",
+  "maturityDecision": "KEEP_L2",
+  "formalOptimizationCandidate": false,
+  "formalCoreImpact": "NONE",
+  "outcomes": "CLOSED"
+}
