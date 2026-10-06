@@ -959,3 +959,35 @@ Next exact BUILD_LANE continuation:
 3. exclude the four V0.6 divergence cases from promotion-grade linkage until separately source-certified;
 4. shared suspension/resumption + symbol-session integration;
 5. RAW A1 lineage.
+
+
+## 2026-10-06 S2-07 Promotion Linkage V0.7 physical result
+
+Authoritative execution:
+- repair merge: `84c0bc0c66a68eb3f01b5f2fddd3e658dd3cf81a` (PR #698);
+- workflow: `System2 S2-07 Promotion Linkage V0.7 Readonly`;
+- run: `37481645101`;
+- job: `112330996478`;
+- conclusion: PASS.
+
+Physical summary:
+- eventCount = 17;
+- promotionEvidenceReadyCount = 7;
+- promotionEvidenceBlockedCount = 10;
+- promotionLinkageEstablishedCount = 7;
+- cancellationObservedCount = 0;
+- noCancellationCertifiedCount = 0;
+- blockerCounts: TRANSPORT_NOT_READY=8, PAGINATION_NOT_CERTIFIED=8, SOURCE_QUERY_INTEGRITY_NOT_EXACT=6, EVENT_SPECIFIC_ANCHOR_NOT_ESTABLISHED=6, SEMANTIC_EPISODE_NOT_CERTIFIED=2.
+
+Ready bounded events:
+1563, 1441, 6550, 5381, 6241, 4806, 3086.
+
+Important boundary:
+`promotionLinkageEstablished=true` is only bounded event-linkage evidence grade. It does not establish full history completeness, exact knownAt, technical/session continuity, strategy/candidate authority, push/order/capital or trading authority. All corresponding authority/completeness flags remain false.
+
+The initial V0.7 push failed because a PAR_VALUE_CHANGE unit fixture omitted chronology/aligned-episode fields while expecting promotion=true; the evaluator correctly failed closed. PR #698 repaired the fixture and tightened the chronology gate. The authoritative V0.7 physical workflow then passed.
+
+Next exact BUILD_LANE continuation:
+1. shared suspension/resumption + symbol-session integration;
+2. preserve event-linkage vs continuity separation;
+3. RAW A1 lineage after continuity provenance is explicit.
