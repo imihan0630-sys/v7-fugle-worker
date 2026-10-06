@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "SYSTEM1_QUALITY_TRANSPORT_LIVE_VERIFY_TRIGGER_V0_1",
+  "createdAt": "2026-10-07T07:03:00+08:00",
+  "marketDate": "2026-10-06",
+  "purpose": "Verify repaired official-quality transport in GitHub Actions using real MOPS/TWSE/TPEx sources and Worker quality ingestion only.",
+  "recoveryOnly": true,
+  "afterMarketScanAllowed": false,
+  "genuineProspectiveEvidence": false,
+  "formalCoreImpact": "NONE",
+  "system2Impact": "NONE"
+}
