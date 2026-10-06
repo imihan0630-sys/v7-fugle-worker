@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "S2_S2_07_PRE_PARENT_EVIDENCE_CUT_V1_4_PHYSICAL_RECEIPT",
+  "version": "1.4-RESEARCH",
+  "recordedDate": "2026-10-07",
+  "lane": "BUILD_LANE",
+  "status": "PASS_FAIL_CLOSED_CURRENT_SCOPE",
+  "implementation": {
+    "pullRequest": 734,
+    "mergeCommit": "deb426f5611a500826b212346c7f846bfe72b568",
+    "baseMainCommit": "5408eb51dd48f016e4f1030ce2ad41723f36204b",
+    "changedFileCount": 5,
+    "system1FilesChanged": 0
+  },
+  "verification": {
+    "dedicatedWorkflow": {
+      "name": "System2 S2-07 Pre-Parent Evidence Cut V1.4 Readonly",
+      "runId": 37542639896,
+      "jobId": 112539041612,
+      "conclusion": "success"
+    },
+    "system2ResearchCi": {
+      "runId": 37542639932,
+      "conclusion": "success"
+    },
+    "v8Regression": {
+      "runId": 37542639814,
+      "jobId": 112539041523,
+      "conclusion": "failure",
+      "classification": "PRE_EXISTING_MAIN_STALE_SDA016_GOVERNANCE_ASSERTION",
+      "failingTest": "tests/test_sda016_formal_c1_binding_governance_sync_v0_1.mjs",
+      "expectedStaleMarker": "V0_5_58_TEST_ORACLE",
+      "currentMainReadiness": "V820_PRODUCTION_VERIFIED_FIRST_SCHEDULED_DATE_INELIGIBLE_GENUINE_BINDING_PENDING_T48_OPEN_SHARED_AUTHORITY_PENDING",
+      "system2V14Causality": false,
+      "mainAlreadyDocumentsKnownFailure": true
+    }
+  },
+  "v13Observation": {
+    "stableReferenceKey": "ef283de5c542e277e42105f12115cffe4d35a5a3b85fcb4c2f3db5c66fb5ba94",
+    "availableAt": "2026-10-06T22:13:44.304Z",
+    "evidenceClass": "PROSPECTIVE_EXACT_VERSION_OBSERVER"
+  },
+  "currentPhysicalCut": {
+    "state": "PRE_PARENT_EVIDENCE_CUT_BLOCKED",
+    "blockers": [
+      "EVIDENCE_CUT_SCOPE_INVALID",
+      "SELECTED_ONLY_CAPTURE_FORBIDDEN",
+      "MARKET_SCOPE_COVERAGE_MISMATCH",
+      "EXPECTED_VERSION_KEYSET_NOT_CERTIFIED_COMPLETE"
+    ],
+    "evidenceCutId": "S2-ECUT:b202ee83c3919878238a802c28c0e599b6032ae00e1fd5ef227a9d2a844a36f5",
+    "sourceCutManifestHash": "609acccecf41544cb841eda3b64d0148348bdbd30bc26d89b4890d048902e1ec",
+    "preCutManifestReady": false,
+    "noRevisionGapThroughCut": false
+  },
+  "currentPhysicalReconciliation": {
+    "state": "NO_REVISION_GAP_THROUGH_CUT_BLOCKED",
+    "blockers": [
+      "PRE_CUT_MANIFEST_NOT_READY",
+      "POST_BOUNDED_POPULATION_INCOMPLETE",
+      "POST_POPULATION_IDENTITY_UNSTABLE",
+      "PRE_VERSION_MISSING_FROM_POST"
+    ],
+    "noRevisionGapThroughCut": false
+  },
+  "contractAcceptance": {
+    "syntheticValidFullScopeManifestPathTested": true,
+    "lateObservationBlocked": true,
+    "lateDiscoveredPreCutVersionFalsificationTested": true,
+    "postCutLaterVersionAllowed": true,
+    "payloadMutationBlocked": true,
+    "historicalSourceReportedAtPositiveAdmissionForbidden": true,
+    "historicalSourceReportedAtFalsificationOnly": true,
+    "selectedOnlyCaptureAuthorized": false
+  },
+  "authority": {
+    "schedulerAdded": false,
+    "historyMutationPerformed": false,
+    "symbolSessionCompletenessCertified": false,
+    "technicalContinuityCertified": false,
+    "selectionAuthority": false,
+    "finalSelectionEnabled": false,
+    "livePushEnabled": false,
+    "capitalImpact": false,
+    "orderImpact": false,
+    "system1RuntimeUsed": false,
+    "formalCoreChanged": false
+  },
+  "nextBuildCursor": [
+    "IMPLEMENT_GENUINE_MARKET_WIDE_OR_EXCHANGE_WIDE_OR_FULL_ELIGIBLE_PRE_PARENT_CAPTURE",
+    "FREEZE_COMPLETE_EXPECTED_EXACT_VERSION_POPULATION_BEFORE_PARENT_CUTOFF",
+    "PERSIST_IMMUTABLE_EVIDENCE_CUT_ID_AND_SOURCE_HASHES",
+    "RUN_POST_PARENT_BOUNDED_COMPLETE_RECONCILIATION",
+    "BIND_SYMBOL_SESSION_AND_CONTINUITY_ONLY_AFTER_NO_REVISION_GAP_THROUGH_CUT_PASSES"
+  ]
+}
