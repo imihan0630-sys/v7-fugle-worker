@@ -612,10 +612,10 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "00_cross_domain_readback"
       ],
-      "readiness": "V0_5_58_TEST_ORACLE_PR644_MERGED_V819_PRODUCTION_VERIFIED_FORMAL_C1_BINDING_CLASS_B_IMPLEMENTED_VALIDATION_IN_PROGRESS_GENUINE_READBACK_SHARED_AUTHORITY_PENDING",
+      "readiness": "V0_5_58_TEST_ORACLE_PR644_MERGED_V819_PRODUCTION_VERIFIED_FORMAL_C1_BINDING_CLASS_B_IMPLEMENTED_EXACT_HEAD_CI_PASS_MERGE_DEPLOY_GENUINE_READBACK_SHARED_AUTHORITY_PENDING",
       "receipt": "research/sda016_system1_v819_current_status_20261006_v0_1.json",
       "remainingDelta": [
-        "complete exact-head CI for V8.20 append-only Formal decision to exact C1 generation binding; merge/deploy requires separate owner approval, then obtain genuine Production binding readback",
+        "merge/deploy V8.20 append-only Formal→C1 binding only after separate owner approval, then obtain genuine Production binding readback",
         "same-session generation-set finalization receipt",
         "shared System1+System2 canonical holdout-consumption authority",
         "partial decision-date overlap and outcome-information-footprint accounting",
@@ -655,7 +655,7 @@
         "research/SYSTEM1_FORMAL_C1_BINDING_IMPLEMENTATION_20261006.md"
       ],
       "formalC1Binding": {
-        "status": "CLASS_B_IMPLEMENTED_VALIDATION_IN_PROGRESS",
+        "status": "CLASS_B_IMPLEMENTED_EXACT_HEAD_CI_PASS_MERGE_DEPLOY_APPROVAL_PENDING",
         "contract": "research/sda016_system1_formal_c1_binding_contract_v0_1.json",
         "humanContract": "research/SDA016_SYSTEM1_FORMAL_C1_BINDING_IMPLEMENTATION_CONTRACT_20261006_V0_1.md",
         "currentPlanArchiveEligibleAsAuthoritativeLedger": false,
@@ -664,11 +664,33 @@
         "runtimeCandidate": "8.20.0-formal-c1-binding-ledger",
         "implementation": "research/SYSTEM1_FORMAL_C1_BINDING_IMPLEMENTATION_20261006.md",
         "candidatePr": 680,
-        "candidateHead": null,
-        "exactHeadRuns": [],
+        "candidateHead": "c75d4a40ade378e4f1fdbf18ec08b626b5decb79",
+        "exactHeadRuns": [
+          {
+            "id": 37479305244,
+            "name": "V8 Regression Tests",
+            "conclusion": "success"
+          },
+          {
+            "id": 37479305145,
+            "name": "V8 Repair CI",
+            "conclusion": "success"
+          },
+          {
+            "id": 37479305270,
+            "name": "System1 C1 C2 isolated offline repair review",
+            "conclusion": "success"
+          },
+          {
+            "id": 37479305394,
+            "name": "D02 PVE-250 Approved Integration CI",
+            "conclusion": "success"
+          }
+        ],
         "productionAuthority": "NOT_ESTABLISHED",
         "genuineBindingReadback": "PENDING_AFTER_DEPLOYMENT",
-        "system2Impact": "NONE"
+        "system2Impact": "NONE",
+        "validatedEngineeringHead": "c75d4a40ade378e4f1fdbf18ec08b626b5decb79"
       }
     },
     {

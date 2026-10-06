@@ -2,7 +2,7 @@
 
 更新：2026-10-06 Asia/Taipei  
 候選版本：`8.20.0-formal-c1-binding-ledger`  
-狀態：CLASS-B IMPLEMENTED / PR VALIDATION PENDING / NOT MERGED / NOT DEPLOYED  
+狀態：CLASS-B IMPLEMENTED / ENGINEERING ACCEPTED / MERGE+DEPLOY APPROVAL PENDING / NOT MERGED / NOT DEPLOYED  
 Formal Core：LOCKED
 
 ## 目的
@@ -180,10 +180,24 @@ Owner 於 2026-10-06 明確批准：
 
 Class-C 永不由此授權推定。
 
+## Engineering acceptance
+
+Validated engineering head:
+
+`c75d4a40ade378e4f1fdbf18ec08b626b5decb79`
+
+PASS:
+- V8 Regression Tests `37479305244`;
+- V8 Repair CI `37479305145`;
+- System1 C1 C2 isolated offline repair review `37479305270`;
+- D02 PVE-250 Approved Integration CI `37479305394`.
+
+這些 PASS 建立的是 Class-B engineering acceptance，不建立 Production authority。
+
 ## 下一步
 
-1. 完成 PR exact-head CI；
+1. 對本 governance-only acceptance sync head 再跑 final exact-head CI；
 2. 若 main 前進，先做 path overlap / reconcile；
-3. 所有 gate 全綠後標記 engineering acceptance；
-4. 停在 merge/deploy approval gate；
+3. 停在 PR #680 merge / Production deploy approval gate；
+4. 只有 owner 另行批准後才可 Merge + deploy；
 5. 部署後才做 genuine Formal→C1 readback。
