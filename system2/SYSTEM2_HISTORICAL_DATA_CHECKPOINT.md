@@ -34,7 +34,8 @@ Physically accepted raw A1 market-years:
 - 2018 TWSE / TPEx: data coverage PASS / replay readiness PARTIAL;
 - 2019 TWSE / TPEx: data coverage PASS / replay readiness PARTIAL;
 - 2020 TWSE / TPEx: data coverage PASS / replay readiness PARTIAL;
-- 2021 TWSE: data coverage PASS / replay readiness PARTIAL.
+- 2021 TWSE: data coverage PASS / replay readiness PARTIAL;
+- 2022 TWSE: data coverage PASS / replay readiness PARTIAL.
 
 2021 TPEx run `37326149826` / #17 is **not accepted**:
 - migrate SUCCESS;
@@ -226,3 +227,35 @@ Unchanged blobs:
 - cold-pack store: `5901e414ac8668a31c717ce9c70869fa9eacc888`.
 
 Conclusion: later main movement does not change the execution semantics of run #19. At latest readback, migrate=SUCCESS, annual backfill=IN_PROGRESS, Physical verify/artifact/System1 isolation=PENDING. Continue from run URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37467099680
+
+
+## 2026-10-06 2022 TWSE durable acceptance
+
+Run `37467099680` / #19 completed SUCCESS on head `507fdd83ad9df9b3703cbc65e8940dda6b0c2662` with confirmed inputs `year=2022`, `market=TWSE`.
+
+Acceptance facts:
+- annual backfill: PASS / YEAR_BACKFILL_COMPLETE;
+- official trading dates: 246;
+- cold/fresh official rows: 237,941 / 237,941;
+- packs / symbols: 985 / 985;
+- R2 HEAD / byte-GET verification: 985 / 985 PASS;
+- missing-from-cold / absent-from-fresh: 0 / 0;
+- source-row hash mismatch / canonical A1 mismatch: 0 / 0;
+- source version: STABLE;
+- historical-universe readiness: PASS_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION;
+- expected membership-session bars: 238,640;
+- actual bars: 237,941;
+- UNKNOWN symbol-session gaps: 699;
+- data coverage: PASS;
+- replay readiness: PARTIAL;
+- System1 production isolation: PASS.
+
+Durable evidence: `system2/evidence/S2_HISTORICAL_TWSE_2022_PHYSICAL_VERIFICATION_V0_1.json`.
+
+Artifact: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37467099680/artifacts/11416932962
+
+Run: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37467099680
+
+Disposition: 2022 TWSE is accepted for raw A1 data coverage with replay readiness explicitly PARTIAL; UNKNOWN gaps are retained fail-closed and are not treated as raw-source loss.
+
+Next annual continuation: fresh workflow_dispatch `year=2022`, `market=TPEX` from latest main. Keep the separate 2021 TPEx canonical-revision blocker open in parallel; do not overwrite its immutable cold history.
