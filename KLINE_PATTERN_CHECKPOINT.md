@@ -4535,3 +4535,124 @@ No maturity or Formal change is authorized by this routing.
 6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 7. Next D01 science: separate structural response from stale/non-synchronous opening prices and illiquidity-driven apparent zone touches in thinly traded stocks.
 8. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-065 (2026-10-07)
+
+### DL-065 — Structural response vs stale / non-synchronous / thin-trading prices
+- DL-065 freezes observation identity and timestamp alignment before any structural-response claim.
+- Classical nonsynchronous-trading / stale-price research shows stale observations can bias returns, covariance/beta and autocorrelation; timestamp alignment is therefore an evidence-quality requirement.
+- Canonical owners consumed:
+  D02-01 trade/volume data semantics;
+  D02-11 liquidity semantics;
+  D05-03 spread;
+  D05-04 depth;
+  D05-06 auction state;
+  D05-08 odd-lot vs board-lot;
+  D05-09 liquidity state;
+  D05-10 no-trade/pseudo-bar;
+  D14 execution identity;
+  D19-04 stale-price/valid-observation semantics.
+- Observation types are separated:
+  TRADE;
+  QUOTE_MID;
+  BEST_BID;
+  BEST_ASK;
+  AUCTION_MATCH;
+  ODD_LOT_TRADE;
+  PSEUDO_BAR;
+  CARRY_FORWARD_PRICE;
+  UNKNOWN.
+- Only actual transaction observations prove a trade occurred.
+- PSEUDO_BAR / CARRY_FORWARD_PRICE cannot create a new structure event or increase interaction count.
+- Quote touch != trade touch.
+- Odd-lot touch remains distinct from normal board-lot interaction.
+- Daily open identity preserves:
+  scheduledOpenAt;
+  openingAuctionMatchAt;
+  firstTradeAt;
+  firstContinuousTradeAt;
+  dailyOpenSource;
+  firstTradeDelaySeconds;
+  firstContinuousTradeDelaySeconds.
+- D01 defines no fixed stale-seconds threshold.
+- Zone-interaction states are separated:
+  EXECUTED_CONTEMPORANEOUS_ZONE_INTERACTION;
+  AUCTION_ZONE_INTERACTION;
+  ISOLATED_THIN_TRADE_ZONE_INTERACTION;
+  QUOTE_ONLY_ZONE_CONTACT;
+  PSEUDO_OR_STALE_PRICE_OVERLAPS_ZONE;
+  ODD_LOT_ONLY_ZONE_INTERACTION;
+  INTERACTION_IDENTITY_UNKNOWN.
+- One isolated actual trade is preserved as a thin-interaction state rather than automatically promoted to a normal structural response.
+- Target-vs-benchmark comparisons preserve:
+  targetPriceTimestamp;
+  benchmarkPriceTimestamp;
+  timestampGapSeconds;
+  target/benchmark last-trade ages;
+  owner-certified synchronous status.
+- Non-synchronous states include:
+  TARGET_PRICE_STALE_BENCHMARK_FRESH;
+  TARGET_FRESH_BENCHMARK_STALE;
+  BOTH_STALE;
+  TARGET_FIRST_TRADE_DELAYED;
+  QUOTE_FRESH_TRADE_STALE;
+  TIMESTAMP_ALIGNMENT_UNKNOWN.
+- A fresh market index and yesterday's stale target price are not synchronous opening observations.
+- Daily OHLC may support broad geometry if provenance is valid.
+  It does not prove an exact intraday execution path when timestamps/trade identity are unavailable.
+- Bid-ask/microstructure noise is an alternative explanation for isolated prints around a narrow zone.
+  D01 does not infer latent fair value.
+- Later persistence observations cannot rewrite what was known at the first-touch predictor freeze.
+- Missing no-trade/delayed/pseudo/quote/depth states remain explicit denominator states and may not be silently dropped.
+- Primary generic comparator:
+  same liquidity/staleness state away from a valid zone vs at a valid zone.
+- Future D16 ladder:
+  S0 RAW_ZONE_TOUCH;
+  S1 OBSERVATION_IDENTITY_CONTROLLED;
+  S2 NO_TRADE_PSEUDO_BAR_CONTROLLED;
+  S3 OPEN_FIRST_TRADE_DELAY_CONTROLLED;
+  S4 SPREAD_DEPTH_TICK_CONTROLLED;
+  S5 TRADE_VS_QUOTE_TOUCH_CONTROLLED;
+  S6 ODD_LOT_BOARD_LOT_CONTROLLED;
+  S7 TARGET_BENCHMARK_TIMESTAMP_ALIGNMENT_CONTROLLED;
+  S8 GENERIC_STALENESS_COMPARATOR_CONTROLLED;
+  S9 EXECUTED_CONTEMPORANEOUS_TOUCH_ONLY;
+  S10 STRUCTURAL_RESPONSE_RESIDUAL_CANDIDATE;
+  S11 PROSPECTIVE_MULTI_LIQUIDITY_REPLICATION.
+- Future interpretations:
+  pseudo-bar artifact;
+  stale-price artifact;
+  non-synchronous benchmark artifact;
+  quote-only contact;
+  isolated thin-trade explanation;
+  odd-lot context;
+  bid-ask microstructure explanation;
+  executed-structure residual;
+  data identity unknown;
+  not evaluable.
+- SDA-001 remains open; price/spread/depth/quote/tick/benchmark states share microstructure ancestry.
+- SDA-002 remains open; later persistence cannot backfill earlier touch identity.
+- New files:
+  - research/PATTERN_STALE_PRICE_FIREWALL_V0_1.md
+  - research/pattern_stale_price_firewall_v0_1.json
+  - research/pattern_stale_price_firewall_v0_1.mjs
+  - research/test_pattern_stale_price_firewall_v0_1.mjs
+  - research/PATTERN_STALE_PRICE_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-065
+
+1. Keep DL-061..DL-065 durable/stacked until the unrelated shared SDA-016 governance regression is synchronized by its canonical owner.
+2. Once shared CI is green, land DL-061 first and rebase/land DL-062..DL-065 in order.
+3. Preserve observation type, first-trade timing, pseudo/no-trade semantics and target/benchmark timestamps.
+4. Do not define a D01 arbitrary stale-delay threshold.
+5. Hand S0-S11 residual inference to D16.
+6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+7. Next D01 science: separate isolated wick/one-print excursions from accepted/persistent zone interaction without duplicating D02 acceptance/persistence semantics.
+8. No outcome join / no runtime wiring / no Formal change.
