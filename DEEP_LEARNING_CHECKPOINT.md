@@ -2619,3 +2619,20 @@ After 22:30 capture identical TPEx leverage LATE sources and compare against the
 2. On the first genuine cutoff-bearing C1 generation, apply the machine admission matrix to the actual persisted payload.
 3. Any field not physically bound to generationId + decisionCutoffAt + source/continuity lineage + common support remains non-admitted.
 4. If no external blocker changes, the next allowed acceleration path is to prepare deterministic field-admission acceptance cases against this matrix; do not expand the indicator zoo or invent new thresholds.
+
+
+## 2026-10-06 D03 — TI-1183~1188 deterministic admission acceptance artifact
+
+- Added `research/test_d03_adx_bollinger_same_parent_admission_matrix_v0_1.mjs`.
+- The acceptance artifact enforces:
+  - SAME_PARENT_PROJECTED fields still require complete generationId/decisionCutoffAt/sourceLineage/continuityState/commonSupportIdentity;
+  - conditional V8.17 ret60/volatility20 cannot be promoted to full-population same-parent controls;
+  - repository-only compression/trend fields are rejected as same-parent admitted until physically bound;
+  - Wilder replay remains an explicit blocking requirement for D03-09;
+  - maturity/raw-source/observer/outcome/Formal states cannot silently change.
+- In-session structural assertion replay against the frozen matrix passed.
+- Canonical repository Node execution of the new test artifact is still pending; do not mislabel the in-session structural replay as canonical CI.
+- No maturity promotion: D03 remains 56.7%; D03-09/D03-10 remain L2/40.
+
+### Exact next continuation
+Re-read external blockers. If unchanged, execute the deterministic admission artifact in a canonical repository runner when available; otherwise immediately consume any newly landed genuine C1/D16/System1/System2 receipt through the frozen matrix. No new indicator family or threshold search.
