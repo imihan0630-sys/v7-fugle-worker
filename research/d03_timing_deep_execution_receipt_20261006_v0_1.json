@@ -1,0 +1,114 @@
+{
+  "receiptVersion": "D03_TIMING_DEEP_EXECUTION_RECEIPT_V0_1",
+  "executedAtAsiaTaipei": "2026-10-06T10:43:00+08:00",
+  "sourceMainSha": "0d1a4fae2a5a59ede2f046188ba6ccc5a66108db",
+  "executionEngine": "FIRECRAWL_INTERACT_BASH_NODE_EXACT_SHA_PINNED_RAW_BLOBS",
+  "canonicalNodeExecutionClaimed": true,
+  "githubActionsExecutionClaimed": false,
+  "processExitCode": 0,
+  "tests": [
+    {
+      "testPath": "research/test_d03_factor_timing_receipt_schema_v0_1.mjs",
+      "testSha256": "2d9a2543218346b18a57337b226445faecec092e7c4c4095987a51503454b408",
+      "contractPath": "research/d03_factor_timing_receipt_schema_20261006_v0_1.json",
+      "contractSha256": "26a3609e454633fecfa627191ed633ae78700704a186d1fc2c20fd25a97bcf97",
+      "exitCode": 0,
+      "result": {
+        "status": "PASS",
+        "registeredActiveModules": 12,
+        "readyPredictorProfiles": 11,
+        "outcomeRelationNotSignal": 1,
+        "adversarialCases": 18,
+        "futureOffsetRejected": true,
+        "sameCloseFillRejected": true,
+        "adxReplayRequired": true,
+        "bollingerContinuityRequired": true,
+        "divergenceBackdateRejected": true,
+        "multiTimeframeFinalityRequired": true,
+        "d03_04PredictorUseForbidden": true,
+        "structuralCausalityClaimAllowed": false,
+        "formalCoreImpact": "NONE_LOCKED",
+        "outcomeDataUsed": false
+      }
+    },
+    {
+      "testPath": "research/test_d03_temporal_noninterference_differential_oracle_v0_1.mjs",
+      "testSha256": "bf233e115f568fe0177b3a84263d4c854234876b7f2dd4d73264c208cd9a4191",
+      "contractPath": "research/d03_temporal_noninterference_differential_oracle_20261006_v0_1.json",
+      "contractSha256": "b559d3545387f789e6cebd6970ce0524778205dbed566a7e816aab495419051a",
+      "exitCode": 0,
+      "result": {
+        "status": "PASS",
+        "coreAdversarialCases": 13,
+        "registeredFuturePerturbationFamilies": 15,
+        "factorMappingChecks": 3,
+        "governanceChecks": 3,
+        "totalChecks": 34,
+        "futureOutcomeLeakDetected": true,
+        "cacheContaminationDetected": true,
+        "corporateActionRewriteDetected": true,
+        "survivorLeakDetected": true,
+        "normalizationLeakDetected": true,
+        "regimeLeakDetected": true,
+        "finalityBackfillDetected": true,
+        "finiteSentinelPassIsNotUniversalProof": true,
+        "formalCoreImpact": "NONE_LOCKED",
+        "outcomeDataUsed": false
+      }
+    },
+    {
+      "testPath": "research/test_d03_lag_memory_aggregation_falsification_v0_1.mjs",
+      "testSha256": "f1c385ee0f94586c51445a4781c6de63cdbfcf303e831f0f96a15f33a143449b",
+      "contractPath": "research/d03_lag_memory_aggregation_falsification_20261006_v0_1.json",
+      "contractSha256": "4f56fa4640a19d912f1a696aa60a73c8c8ed72ac7f7a6e1f5f00b2126615d6e6",
+      "exitCode": 0,
+      "result": {
+        "status": "PASS",
+        "registeredFactors": 12,
+        "adversarialCases": 10,
+        "governanceChecks": 4,
+        "totalChecks": 26,
+        "rawRootControlRequired": true,
+        "memoryClassBound": true,
+        "boundaryPeakBlocks": true,
+        "plateauDoesNotBecomeExactDelay": true,
+        "temporalAggregationConfoundBlocks": true,
+        "structuralCausalityClaimed": false,
+        "formalCoreImpact": "NONE_LOCKED",
+        "outcomeDataUsed": false
+      }
+    },
+    {
+      "testPath": "research/test_d03_d16_timing_method_receipt_v0_1.mjs",
+      "testSha256": "59e376379815e781d57d45d012793fca9ef60ba4c772f853e5d23f80084a0914",
+      "contractPath": "research/d03_d16_timing_method_receipt_schema_20261006_v0_1.json",
+      "contractSha256": "e048ca5e6244523ad6967d7f69f99790420533de8a55af6856e06075b45715a5",
+      "exitCode": 0,
+      "result": {
+        "status": "PASS",
+        "readyCase": 1,
+        "acceptedBlockingStates": 11,
+        "d03_04OutcomeRelationGuard": 2,
+        "adversarialReadyRejections": 10,
+        "totalCases": 24,
+        "methodReadyDoesNotAuthorizeOutcomes": true,
+        "methodReadyDoesNotProvePredictiveIncrementality": true,
+        "methodReadyDoesNotIdentifyExactLag": true,
+        "structuralCausalityClaimed": false,
+        "formalCoreImpact": "NONE_LOCKED",
+        "outcomeDataUsed": false
+      }
+    }
+  ],
+  "aggregate": {
+    "allFourTestsPass": true,
+    "allExitCodesZero": true,
+    "heterogeneousReportedCheckUnits": 114,
+    "outcomeDataUsed": false,
+    "empiricalPredictiveIncrementalityClaimed": false,
+    "structuralCausalityClaimed": false,
+    "marketEvidenceUnits": 0,
+    "maturityPromotionAuthorized": false,
+    "formalCoreImpact": "NONE_LOCKED"
+  }
+}
