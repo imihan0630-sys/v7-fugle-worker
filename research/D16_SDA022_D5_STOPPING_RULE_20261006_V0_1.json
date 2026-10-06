@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "D16_SDA022_D5_STOPPING_RULE_V0_1",
+  "updatedAt": "2026-10-06T19:02:00+08:00",
+  "experimentFamilyId": "D16-SDA022-01",
+  "researchStreamId": "ROOM11_CROSS_SYSTEM_INCREMENTALITY_STREAM_20261006_V0_1",
+  "state": "PRE_OUTCOME_STOPPING_RULE_FROZEN",
+  "primaryLookPolicy": "SINGLE_PRIMARY_LOOK",
+  "efficacyEarlyStoppingAllowed": false,
+  "futilityEarlyStoppingAllowed": false,
+  "outcomeBlindReadinessChecksAllowed": [
+    "SCHEMA_COMPLETENESS",
+    "RECEIPT_INTEGRITY",
+    "POLICY_FINGERPRINTS",
+    "CLOCK_COMPATIBILITY",
+    "COVERAGE_COUNTS",
+    "UNKNOWN_MISSING_COUNTS",
+    "SUPPORT_READINESS",
+    "DEPENDENCE_DESIGN_READINESS"
+  ],
+  "primaryOpeningRequires": [
+    "S22_T01_T05_PASS",
+    "S22_T06_T10_PASS",
+    "S22_T11_T16_PASS",
+    "PROSPECTIVE_PAIR_RECEIPTS_READY",
+    "COMMON_INFORMATION_CUTOFF_VERIFIED",
+    "MODEL_STATE_ENCODING_FROZEN",
+    "MODEL_METHOD_RECEIPT_FROZEN",
+    "MDE_OR_PRECISION_TARGET_FROZEN",
+    "EFFECTIVE_INDEPENDENT_DECISION_DATES_GTE_40",
+    "BOTH_OUTCOME_CLASSES_SUPPORTED",
+    "MULTIPLE_REPLICATION_CLUSTERS",
+    "NO_SINGLE_CLUSTER_DOMINANCE",
+    "COMPLETE_COVERAGE_MISSING_UNKNOWN_DENOMINATORS",
+    "SDA016_OUTCOME_FOOTPRINT_CONSUMPTION_VALID",
+    "OUTER_STREAM_STATE_EXPLICIT"
+  ],
+  "operationalStopReasons": [
+    "SCHEMA_FAILURE",
+    "DATA_QUALITY_FAILURE",
+    "SOURCE_DISCONTINUITY",
+    "POLICY_VERSION_MUTATION",
+    "CLOCK_INCOMPATIBILITY",
+    "INVALID_LINEAGE",
+    "GOVERNANCE_VIOLATION"
+  ],
+  "currentReadiness": {
+    "system1Fingerprint": "PASS_5_OF_5",
+    "d16PreregBoundary": "PASS_4_OF_4",
+    "system2Fingerprint": "PENDING",
+    "ncT01PhysicalProof": "PENDING",
+    "prospectivePairReceipts": "NOT_STARTED",
+    "primaryOutcomeAccess": "CLOSED"
+  },
+  "maturityImpact": "NONE",
+  "formalCoreImpact": "NONE"
+}
