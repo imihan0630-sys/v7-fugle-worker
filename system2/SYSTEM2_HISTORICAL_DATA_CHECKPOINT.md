@@ -175,3 +175,18 @@ Attempt 2 was started through GitHub failed-job rerun. At latest readback: run_a
 ## 2026-10-06 2021 TPEx canonical revision blocker
 
 Run #18 attempt 2 produced artifact `11409737982` and conclusively changed the blocker classification from infrastructure quota / transient timeout to `SOURCE_REVISION_WITH_CANONICAL_A1_CHANGE`. The D1 quota blocker is resolved; the market-year remains unaccepted because 698 canonical A1 rows changed on official date 2021-01-14. Evidence path: `system2/evidence/S2_HISTORICAL_TPEX_2021_REVISION_BLOCKER_V0_1.json`. Exact continuation is revision-lineage engineering, not another blind retry.
+
+
+## 2026-10-06 continuation after explicit 2021 TPEx revision block
+
+Schema inspection confirms the current cold manifest contract is single-version per `(market, symbol, year, price_space)` via a UNIQUE constraint. It intentionally cannot accept a second canonical version by overwriting the first immutable pack. A future revision layer must therefore be separate from the baseline cold manifest and must preserve explicit observed/captured timing.
+
+CORR-001 acceptance permits each later market-year to have either durable completion or an explicit blocked/deferred receipt. Therefore the 2021 TPEx canonical-revision blocker does not require DATA_LANE to stop annual population of independent later market-years.
+
+Two active continuations are now valid and non-conflicting:
+1. keep 2021 TPEx BLOCKED while revision-lineage/as-of semantics are engineered and verified;
+2. continue annual cold-history population with 2022 TWSE, then 2022 TPEx, preserving the same physical acceptance standard and explicit blockers.
+
+Immediate executable continuation: fresh workflow_dispatch `year=2022`, `market=TWSE` from latest main. Do not use rerun of run #18 because its inputs are 2021/TPEX. After 2022 TWSE terminal completion, perform full Physical verify/artifact/System1-isolation readback before acceptance.
+
+Workflow URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/workflows/system2-historical-pack-2017-backfill.yml
