@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "S2_HISTORICAL_TPEX_2021_REVISION_BLOCKER_EVIDENCE_V0_1",
+  "correctionDirective": "S2-CORR-20261004-001",
+  "market": "TPEX",
+  "year": 2021,
+  "workflow": {
+    "runId": 37401612529,
+    "runNumber": 18,
+    "headSha": "a7561639b8d07ab23bfd1f1cd961b753ee561249",
+    "finalConclusion": "failure",
+    "runAttempt": 2,
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37401612529",
+    "backfillState": "SUCCESS",
+    "physicalVerifyState": "BLOCKED",
+    "artifactId": 11409737982,
+    "artifactName": "system2-historical-coverage-TPEX-2021",
+    "artifactDigest": "sha256:32a98f1528ea1cdc8154eaa2e31b43e9d2905e92d0a43606c4cf29abd1d2f621",
+    "artifactUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37401612529/artifacts/11409737982",
+    "system1Isolation": "PASS"
+  },
+  "attemptHistory": {
+    "attempt1": {
+      "result": "VERIFY_TRANSPORT_TIMEOUT",
+      "physicalVerifyStartedAt": "2026-10-06T02:24:38Z",
+      "physicalVerifyFailedAt": "2026-10-06T02:37:25Z",
+      "error": "DOMException [TimeoutError]: The operation was aborted due to timeout",
+      "artifactProduced": false
+    },
+    "attempt2": {
+      "result": "BLOCKED_MARKET_YEAR_VERIFICATION",
+      "verifierVersion": "S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_4",
+      "artifactProduced": true
+    }
+  },
+  "physicalFacts": {
+    "storageState": "PASS",
+    "completionReceiptState": "COMPLETE",
+    "receiptId": "S2HCR-fef07cc1a951cd1e49ba69e5842b737767bbf51bc8e09b8ee44775f0da8f1cfe",
+    "manifestRollingHash": "fef07cc1a951cd1e49ba69e5842b737767bbf51bc8e09b8ee44775f0da8f1cfe",
+    "packCount": 795,
+    "barCount": 191643,
+    "r2HeadVerified": 795,
+    "r2ByteHashVerified": 795,
+    "officialTradingDates": 244,
+    "freshOfficialRowCount": 191643,
+    "coldRowCount": 191643,
+    "missingFromColdCount": 0,
+    "absentFromFreshOfficialCount": 0,
+    "sourceRowHashMismatchCount": 780,
+    "canonicalA1ValueMismatchCount": 698,
+    "sourceRevisionOnlyCount": 82,
+    "sourceRevisionDateCount": 1,
+    "sourceRevisionDate": "2021-01-14",
+    "expectedBars": 192055,
+    "actualBars": 191643,
+    "missingBars": 412,
+    "unknownBars": 412,
+    "rawCoverageState": "PASS",
+    "symbolSessionReadiness": "PARTIAL_UNKNOWN_GAPS",
+    "dataCoverageState": "BLOCKED",
+    "replayReadinessState": "BLOCKED"
+  },
+  "diagnosis": {
+    "state": "SOURCE_REVISION_WITH_CANONICAL_A1_CHANGE",
+    "notStorageCorruption": true,
+    "notMissingRows": true,
+    "coldHistoryImmutable": true,
+    "observation": "The fresh official source changed 780 matched rows on 2021-01-14; 698 rows changed canonical A1 values and 82 changed only full-source-row identity.",
+    "sampledCanonicalChange": "The verifier artifact retains 100 canonical mismatch samples. In all 100 retained samples, differing canonical fields are volumeShares, tradeValue and transactions while OHLC and change remain equal. This is sample evidence only; the artifact does not exhaustively enumerate field-level differences for all 698 mismatches.",
+    "policy": [
+      "Do not mark 2021 TPEx data coverage accepted.",
+      "Do not overwrite or delete immutable cold history.",
+      "Preserve the original capture and the later official revision as separate auditable source versions.",
+      "Resolve canonical A1 revision semantics through explicit revision lineage/overlay before replay qualification."
+    ]
+  },
+  "nextAction": [
+    "Inspect existing historical storage contracts for revision-version or overlay capability.",
+    "If absent, implement the smallest DATA_LANE revision-lineage layer that preserves both immutable captures and deterministic as-of selection.",
+    "Add regression tests proving canonical revisions cannot be silently relabeled STABLE or overwrite prior cold history.",
+    "Re-verify 2021 TPEx only after revision provenance and replay semantics are explicit."
+  ],
+  "correctionStatus": "FIX_IN_PROGRESS",
+  "protectedBoundaries": {
+    "system1RuntimeChanged": false,
+    "system2StrategyAuthorityChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "capitalOrderAuthorityChanged": false
+  }
+}
