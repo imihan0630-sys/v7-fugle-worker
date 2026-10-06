@@ -1,6 +1,6 @@
 {
   "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_COVERAGE_MATRIX_V0_1",
-  "updatedAt": "2026-10-07T00:24:00+08:00",
+  "updatedAt": "2026-10-07T05:30:00+08:00",
   "scope": {
     "markets": [
       "TWSE",
@@ -238,9 +238,9 @@
       "year": 2023,
       "expectedSessions": 239,
       "actualSessions": 239,
-      "historicalUniverseSize": 1002,
-      "expectedBars": 235140,
-      "actualBars": 234522,
+      "historicalUniverseSize": 1003,
+      "expectedBars": 235345,
+      "actualBars": 234727,
       "missingBars": 618,
       "unknownBars": 618,
       "rawSourceMissingRows": 0,
@@ -259,22 +259,35 @@
       "continuityReadiness": "PARTIAL_UNVERIFIED",
       "technicalPriceReadiness": "PARTIAL_NONPRICE_OBSERVATIONS",
       "symbolSessionReadiness": "PARTIAL_UNKNOWN_GAPS",
-      "dataCoverageState": "BLOCKED",
-      "replayReadinessState": "BLOCKED",
-      "overall": "BLOCKED_HISTORICAL_UNIVERSE_RECONSTRUCTION",
-      "evidencePath": "system2/evidence/S2_HISTORICAL_TWSE_2023_UNIVERSE_BLOCKER_V0_2.json",
-      "githubRunId": 37493424179,
+      "dataCoverageState": "PASS",
+      "replayReadinessState": "PARTIAL",
+      "overall": "PASS_DATA_PARTIAL_REPLAY",
+      "evidencePath": "system2/evidence/S2_HISTORICAL_TWSE_2023_PHYSICAL_VERIFICATION_V0_1.json",
+      "githubRunId": 37534409279,
       "totalStoredRowsInRange": 234727,
-      "unexpectedBars": 205,
+      "unexpectedBars": 0,
       "canonicalA1ValueMismatchCount": 0,
       "sourceVersionState": "STABLE",
       "sourceRevisionOnlyCount": 0,
       "sourceRevisionDateCount": 0,
-      "artifactId": 11426641861,
-      "artifactDigest": "sha256:b10b6a4e351d003c9c52667179375f804f50a00482e1f57212a6568b6097382d",
+      "artifactId": 11446466007,
+      "artifactDigest": "sha256:83e771a65d4853677210303b5b30b5141e3b9a3902dfbbcb83ef1ad4eb459e27",
       "universeReadiness": "PASS_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION",
       "universeBlocker": "CURRENT_LEGAL_NAME_VS_NEWLISTING_SHORT_NAME_ALIAS_MISMATCH",
-      "remediationState": "SECOND_FIX_CI_PASS_FRESH_REVERIFY_PENDING"
+      "remediationState": "LIVE_REVERIFICATION_PASS",
+      "officialDelistingUnionComplete": true,
+      "haltEvidenceState": "OBSERVED",
+      "currentListingStartReconciledCount": 4,
+      "currentListingStartReconciledSymbols": [
+        "2465",
+        "2482",
+        "2486",
+        "6873"
+      ],
+      "priorBlockedEvidencePaths": [
+        "system2/evidence/S2_HISTORICAL_TWSE_2023_UNIVERSE_BLOCKER_V0_1.json",
+        "system2/evidence/S2_HISTORICAL_TWSE_2023_UNIVERSE_BLOCKER_V0_2.json"
+      ]
     },
     {
       "market": "TWSE",
