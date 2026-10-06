@@ -3584,3 +3584,112 @@ No maturity or Formal change is authorized by this routing.
 7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 8. Next D01 science: separate structural rejection from order-size / participation-rate market-impact selection around the zone.
 9. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-057 (2026-10-07)
+
+### DL-057 — Structural rejection vs order-size / participation-rate market-impact selection
+- DL-056 separated passive/aggressive execution selection and fee economics from structural rejection.
+- DL-057 freezes the next falsification: a price move away from a structural zone after an order is submitted may be partly caused by the trader's own order size, participation rate, urgency and execution schedule.
+- External market-impact literature supports several mechanism facts:
+  buy flow tends to push prices upward and sell flow downward;
+  impact grows with executed quantity and often follows a concave square-root-like relation over broad regimes;
+  participation rate changes the impact path, especially at high execution intensity;
+  impact can decay after execution;
+  simultaneous/correlated metaorders can confound naive attribution.
+- These findings are mechanism literature, not Taiwan-equity calibration.
+- D05 remains owner of event-level microstructure / order-book / trade-clock / depth / liquidity receipts.
+- D01 does not reconstruct realized impact from candles.
+- Structural opportunity and execution intervention are separate clocks:
+  STRUCTURAL_OPPORTUNITY_AT;
+  EXECUTION_INTERVENTION_AT.
+- If execution starts before predictor freeze:
+  STRUCTURAL_BASELINE_CONTAMINATED_BY_EXECUTION.
+- Order size and participation rate are separate mechanism dimensions.
+- Participation rate requires interval-matched market volume denominator.
+  shares / daily ADV is proxy-only unless preregistered.
+- No universal D01 threshold defines large order / high participation.
+- Impact measurement states are frozen:
+  M0 NO_REAL_ORDER;
+  M1 ORDER_SUBMITTED_IMPACT_UNMEASURED;
+  M2 IMPACT_MEASUREMENT_PARTIAL;
+  M3 LOCAL_IMPACT_RECEIPT_VALID;
+  M4 IMPACT_MODEL_PROXY_ONLY;
+  M5 IMPACT_DATA_BLOCKED.
+- No hypothetical order receives verified realized-impact fields.
+- Baseline-eligible fields include planned size/participation cap/ex-ante policy/current liquidity.
+- Realized executed quantity/participation/fills/impact/shortfall/decay are post-treatment and cannot rewrite the structural baseline.
+- Response windows are frozen:
+  I0 PRE_EXECUTION_RESPONSE;
+  I1 EXECUTION_OVERLAP_RESPONSE;
+  I2 POST_EXECUTION_DECAY_WINDOW;
+  I3 NO_EXECUTION_REFERENCE;
+  I4 CONTAMINATION_UNKNOWN.
+- Own-order-flow alignment is explicit:
+  BUY near support with expected UP rejection can mechanically mimic successful support;
+  SELL near resistance with expected DOWN rejection can mechanically mimic successful resistance.
+- Alignment is a contamination descriptor, not evidence strength.
+- Generic comparator:
+  G0 GENERIC_IMPACT_EVENT;
+  G1 ZONE_ASSOCIATED_IMPACT_EVENT.
+  If G1 adds no residual representation beyond G0, generic market impact is sufficient.
+- Impact models require venue/instrument/date lineage.
+  Foreign-market parameters cannot be treated as Taiwan local calibration.
+- Concurrent order-flow confounding remains explicit:
+  OTHER_METAORDER_CONFOUND_UNKNOWN when external flow coverage is unavailable.
+- No universal permanent-impact fraction is imported.
+- Opportunity denominator preserves no-order / reject / pending / fill / partial / cancel / unfilled / data-blocked states.
+- Fill-only samples are prohibited.
+- Future D16 ladder:
+  X0 RAW_ZONE_RESPONSE;
+  X1 DL055_QUEUE_LATENCY_HIDDEN_CONTROLLED;
+  X2 DL056_EXECUTION_SELECTION_FEE_CONTROLLED;
+  X3 ORDER_SIZE_CONTROLLED;
+  X4 PARTICIPATION_RATE_CONTROLLED;
+  X5 EXECUTION_OVERLAP_TIMING_CONTROLLED;
+  X6 OWN_IMPACT_ALIGNMENT_CONTROLLED;
+  X7 POST_EXECUTION_DECAY_CONTROLLED;
+  X8 GENERIC_IMPACT_COMPARATOR_CONTROLLED;
+  X9 STRUCTURAL_REJECTION_RESIDUAL_CANDIDATE;
+  X10 MULTI_DATE_MULTI_SYMBOL_LOCAL_CALIBRATION.
+- Future interpretations:
+  Q0 ORDER_SIZE_EXPLANATION;
+  Q1 PARTICIPATION_RATE_EXPLANATION;
+  Q2 OWN_IMPACT_ALIGNMENT_EXPLANATION;
+  Q3 TEMPORARY_IMPACT_DECAY_EXPLANATION;
+  Q4 GENERIC_MARKET_IMPACT_EXPLANATION;
+  Q5 CONCURRENT_ORDER_FLOW_UNRESOLVED;
+  Q6 STRUCTURAL_REJECTION_RESIDUAL;
+  Q7 LOCAL_CALIBRATION_NOT_VALID;
+  Q8 NOT_EVALUABLE.
+- SDA-001 remains open:
+  impact / size / participation / queue / fill / fee / zone are linked mechanism observations;
+  effectiveIndependentEvidenceCount remains 1 by default.
+- SDA-002 remains open:
+  execution/impact receipts retain firstObservableAt / knownAt / predictorFreezeAt / executionStartAt / replaySafe;
+  realized impact cannot backfill baseline predictors.
+- New files:
+  - research/PATTERN_MARKET_IMPACT_SELECTION_V0_1.md
+  - research/pattern_market_impact_selection_v0_1.json
+  - research/pattern_market_impact_selection_v0_1.mjs
+  - research/test_pattern_market_impact_selection_v0_1.mjs
+  - research/PATTERN_MARKET_IMPACT_SELECTION_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain open under canonical queue.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-057
+
+1. Reconcile the DL-057 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-057 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve order size, participation rate, execution timing, own-impact alignment and post-execution decay as separate mechanism fields.
+4. Require local PIT impact-model receipts before any calibrated Taiwan market-impact interpretation.
+5. Preserve full no-order/reject/fill/partial/cancel/unfilled denominator.
+6. Hand X0-X10 / Q0-Q8 market-impact residual inference to D16.
+7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+8. Next D01 science: separate structural rejection from information content / alpha of the initiating order so informed trading is not misread as zone efficacy.
+9. No runtime wiring / no Formal change.

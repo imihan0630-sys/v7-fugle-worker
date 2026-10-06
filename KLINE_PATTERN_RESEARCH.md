@@ -23883,3 +23883,39 @@ New durable artifacts:
 - research/PATTERN_EXECUTION_SELECTION_FEE_ECONOMICS_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-057 — Structural rejection vs order-size / participation-rate market-impact selection (2026-10-07)
+
+DL-057 addresses a particularly dangerous mechanism confound: the researcher's or trader's own execution can move price in the same direction that would normally be called a successful structural rejection.
+
+A buy order near support can mechanically push price upward. A sell order near resistance can mechanically push price downward. If the response window overlaps the execution interval and the study does not separate order size, participation rate and impact decay, a self-induced price move can be mislabeled as support/resistance efficacy.
+
+The market-impact literature makes this concern substantive rather than hypothetical. Across many markets, signed metaorder flow has a directional mechanical price effect. Impact often grows concavely with executed quantity, and participation rate changes the trajectory, especially at high execution intensity. Impact may then partially decay after completion. These findings are used only as mechanism evidence. D01 does not import foreign calibration parameters into Taiwan equities.
+
+Two clocks are therefore frozen: structural opportunity and execution intervention. A structural predictor snapshot intended to study the zone itself must be frozen before execution begins. If execution starts before predictor freeze, the baseline is execution-contaminated.
+
+Order size and participation rate remain separate. Equal total size can be executed slowly with low participation or quickly with high participation. Participation rate requires the market-volume denominator over the actual execution interval; daily ADV is only a proxy unless preregistered.
+
+Real-order measurement is fail-closed. No real order means no realized market-impact claim. Partial data, model proxies and fully local verified receipts are distinguished explicitly. Hypothetical strategies may use sensitivity models but cannot receive realized impact labels.
+
+The response window is split into pre-execution, execution-overlap, post-execution decay, no-execution reference and unknown contamination. Own-impact alignment is stored separately: execution can align with, oppose or be neutral/unknown relative to the expected structural response direction.
+
+The generic falsifier is a comparable execution away from the target structural zone. If a zone-associated execution does not add residual representation beyond generic market impact under comparable size, participation, liquidity and timing conditions, a structural-memory explanation is unnecessary.
+
+Model laundering is prohibited. A square-root model calibrated on another venue/instrument is mechanism literature, not Taiwan calibration. Local calibration requires venue/instrument/date lineage, known-at timing and model-version receipts.
+
+Concurrent external order flow remains a confound. Other participants may execute correlated or opposing metaorders at the same time. When such coverage is unavailable, the correct state is OTHER_METAORDER_CONFOUND_UNKNOWN rather than full attribution to the studied order.
+
+No universal permanent-impact fraction is imported. Post-execution reversion can reflect transient impact, information, structural response, correlated flow or mixtures.
+
+Twenty adversarial tests are authored. They cover no-real-order handling, local receipt verification, proxy-only models, interval participation, daily-volume proxy status, execution-overlap clocks, own-impact direction, foreign/local calibration, denominator integrity and one-effective-evidence-family accounting.
+
+New durable artifacts:
+- research/PATTERN_MARKET_IMPACT_SELECTION_V0_1.md
+- research/pattern_market_impact_selection_v0_1.json
+- research/pattern_market_impact_selection_v0_1.mjs
+- research/test_pattern_market_impact_selection_v0_1.mjs
+- research/PATTERN_MARKET_IMPACT_SELECTION_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.

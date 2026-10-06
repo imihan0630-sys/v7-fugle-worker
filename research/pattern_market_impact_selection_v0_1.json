@@ -1,0 +1,32 @@
+{
+  "schemaVersion":"pattern-market-impact-selection-v0.1",
+  "updated":"2026-10-07 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "ownOrderFlowCanMimicStructuralRejection":true,
+  "orderSizeEqualsParticipationRate":false,
+  "hypotheticalTouchEqualsRealImpact":false,
+  "foreignImpactParametersAreLocalCalibration":false,
+  "realizedImpactIsBaselinePredictor":false,
+  "fillOnlySampleAllowed":false,
+  "fixedPermanentImpactFraction":null,
+  "impactStates":[
+    "NO_REAL_ORDER",
+    "ORDER_SUBMITTED_IMPACT_UNMEASURED",
+    "IMPACT_MEASUREMENT_PARTIAL",
+    "LOCAL_IMPACT_RECEIPT_VALID",
+    "IMPACT_MODEL_PROXY_ONLY",
+    "IMPACT_DATA_BLOCKED"
+  ],
+  "responseWindowClasses":[
+    "PRE_EXECUTION_RESPONSE",
+    "EXECUTION_OVERLAP_RESPONSE",
+    "POST_EXECUTION_DECAY_WINDOW",
+    "NO_EXECUTION_REFERENCE",
+    "CONTAMINATION_UNKNOWN"
+  ],
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}
