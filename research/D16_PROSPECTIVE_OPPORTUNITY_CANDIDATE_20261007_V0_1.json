@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "D16_PROSPECTIVE_OPPORTUNITY_CANDIDATE_V0_1",
+  "owner": "D16 / Room11",
+  "contractRef": "research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_3.json",
+  "candidate": {
+    "opportunityCandidateId": "SYSTEM1_C1_PROSPECTIVE_CANDIDATE:2026-10-07",
+    "marketDate": "2026-10-07",
+    "firstKnownTimestampAuthority": "GITHUB_COMMIT_CREATED_AT",
+    "state": "SESSION_IDENTITY_UNKNOWN_PREMARKET",
+    "officialSessionState": "SESSION_IDENTITY_UNKNOWN",
+    "obligationState": "SESSION_IDENTITY_UNKNOWN",
+    "expectedWorkflowName": "System 1 C1 Prospective Evidence",
+    "expectedScheduledRunIfTrading": "2026-10-08T00:10:00+08:00",
+    "targetScanDateIfTriggeredByCurrentCollector": "2026-10-07"
+  },
+  "statisticalRoles": {
+    "countInExpectedTradingOpportunityN": false,
+    "countInOperationalAttemptDenominator": false,
+    "countInProspectiveEvidenceN": false,
+    "countAsMissingAttempt": false,
+    "countAsZeroPick": false,
+    "countAsStrategyFailure": false
+  },
+  "resolutionRules": [
+    "DIRECT_SAME_DAY_OFFICIAL_MARKET_ACTIVITY_CAN_RESOLVE_TO_VERIFIEDTradingSession",
+    "AUTHORITATIVE_CLOSURE_OR_CALENDAR_CAN_RESOLVE_TO_VERIFIED_NON_TRADING_DAY",
+    "DATA_ABSENCE_CANNOT_RESOLVE_TO_NON_TRADING",
+    "DO_NOT_CREATE_COVERAGE_GAP_BEFORE_SESSION_IDENTITY_AND_EXPECTED_WINDOW_RESOLVE",
+    "APPEND_RESOLUTION_DO_NOT_OVERWRITE_FIRST_KNOWN_STATE"
+  ],
+  "outcomes": "CLOSED",
+  "historicalBackfillAllowed": false,
+  "formalCoreImpact": "NONE",
+  "maturityImpact": "NONE"
+}
