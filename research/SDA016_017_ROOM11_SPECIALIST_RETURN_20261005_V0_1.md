@@ -816,3 +816,104 @@ No maturity change.
 D16 = 60%.
 D18 = 52%.
 Formal Core LOCKED.
+
+
+## 2026-10-07 SDA-016 V8.20 runtime + first scheduled prospective readback
+
+Canonical Room11 validation:
+- `research/SDA016_ROOM11_V820_RUNTIME_FIRST_SCHEDULED_READBACK_VALIDATION_20261007_V0_1.md`;
+- `research/SDA016_ROOM11_V820_RUNTIME_FIRST_SCHEDULED_READBACK_VALIDATION_20261007_V0_1.json`.
+
+### V8.20 runtime accepted at engineering layer
+
+PR #680 merge:
+`1bd9e05d730f2f7c5909a52502837eabd2bb111f`.
+
+Runtime:
+`8.20.0-formal-c1-binding-ledger`.
+
+Exact-head CI independently read:
+- `37479305244` V8 Regression = SUCCESS;
+- `37479305145` V8 Repair CI = SUCCESS;
+- `37479305270` System1 C1/C2 isolated review = SUCCESS;
+- `37479305394` D02 PVE-250 integration CI = SUCCESS.
+
+Merged-main Production:
+- `37483896567` V8 Cloudflare Deploy = SUCCESS;
+- `37483896007` V8 Regression = SUCCESS.
+
+Production deploy explicitly applied V8.20 Formal-C1 authoritative binding and verified deployed version/configuration.
+Formal Core remains unchanged.
+
+Runtime oracle delta:
+- T41 = ENGINEERING_RUNTIME_PASS;
+- T42 = ENGINEERING_RUNTIME_PASS;
+- T43 = PASS_PRESERVED;
+- T44 = ENGINEERING_RUNTIME_PASS;
+- T45 = ENGINEERING_RUNTIME_PASS;
+- T46 = ENGINEERING_RUNTIME_PASS;
+- T47 = ENGINEERING_RUNTIME_PASS;
+- T48 = OPEN_GENERATION_SET_FINALIZATION_PENDING.
+
+These engineering passes do not create prospective research evidence by themselves.
+
+### First scheduled post-deploy attempt — genuine negative readiness evidence
+
+Workflow:
+`System 1 C1 Prospective Evidence`.
+
+Scheduled run:
+`37495670280`.
+
+Job:
+`112379442583`.
+
+Result:
+FAILURE at immutable C1 population receipt collection.
+
+Artifact:
+- ID `11426824056`;
+- name `system1-c1-evidence-37495670280`;
+- ZIP digest `sha256:29d7659e2451188a52de5c3631e4088a4eedbaa0f3a3da235fffbf9ba7ad3967`;
+- only file = `system1-c1-readiness.json`.
+
+Readiness:
+- scanDate = 2026-10-06;
+- category = `FORMAL_SCAN_NOT_CONFIRMED`;
+- verificationFailure = `C1_GENERATION_NOT_FOUND`;
+- mayCountAsZeroPick = false;
+- eligibleForResearch = false;
+- formalScanDate = 2026-09-29;
+- formalPipelineComplete = false;
+- institutionReady = true;
+- qualityReady = false;
+- missingQuality = FINANCIAL + QUARTER_EPS.
+
+D16 admission:
+`INELIGIBLE_PARENT_MISSING`.
+
+This is not:
+- a zero-pick;
+- a negative return;
+- a strategy failure;
+- a valid C1 generation;
+- a genuine Formal↔C1 binding sample.
+
+No historical backfill may convert it into prospective evidence.
+
+### PR #700 interpretation
+
+PR #700 merged read-only collector/validator wiring.
+Its merge-triggered collector also failed while regression passed.
+
+Therefore:
+`GENUINE_READBACK_COLLECTION_PIPELINE_READY`
+but
+`GENUINE_BINDING_RECEIPT_VERIFIED = FALSE`.
+
+Current genuine Formal↔C1 prospective sample count remains zero.
+
+No maturity change.
+D16 = 60%.
+D18 = 52%.
+Formal Core LOCKED.
