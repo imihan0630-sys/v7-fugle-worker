@@ -24015,3 +24015,39 @@ New durable artifacts:
 - research/PATTERN_COMMON_PRICE_DISCOVERY_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-061 — Structural response vs index-weight / passive-flow / constituent-arbitrage effects (2026-10-07)
+
+DL-060 established that a stock-specific structural response can be confounded by common price discovery. DL-061 adds a more mechanical source of false attribution: the target stock, the index used as context, ETFs, futures and passive funds can be linked by benchmark construction and arbitrage itself.
+
+This matters most for large constituents. If a stock has a meaningful weight in the market or sector index, its own return mechanically contributes to the index return. A naive model that says "the market moved first/in the same direction, therefore the stock reaction is externally confirmed" can become circular. The market control partly contains the target.
+
+DL-061 therefore freezes RAW_INDEX_RETURN_IS_EXOGENOUS_CONTROL = FALSE whenever the target is itself a constituent. Historical constituent membership, target weight, methodology version and weight-known timestamp are required. If the target is included and no owner-certified self-excluded or otherwise mechanically decontaminated benchmark exists, the benchmark state is SELF_INCLUDED_BENCHMARK_ONLY and external-market-control interpretation fails closed.
+
+D01 deliberately does not build an approximate ex-self index by subtracting targetWeight × targetReturn. Such a shortcut can be wrong under float-adjusted weights, divisor mechanics, corporate actions, constituent changes, total-return versus price-return definitions and auction conventions. D19-15 or another canonical benchmark owner must provide the valid decontaminated receipt.
+
+The same ownership boundary applies to passive flows. D06-11 and D11-14 own index/passive event clocks. Announcement, effective session, add/delete/transfer, target-weight change, modeled passive-flow exposure, verified execution and unknown execution are separate states. Current AUM or current weights may not be used to infer historical event size.
+
+ETF mechanics are also separated. D06-16 may provide PCF/basket and creation/redemption context, but modeled primary-basket exposure is not actual AP execution and not actual constituent execution. Those claims remain UNKNOWN unless direct evidence exists.
+
+External market-microstructure evidence makes this distinction necessary. Hasbrouck's index-market work shows price discovery can originate in futures/ETF venues. Ben-David, Franzoni and Moussawi show ETF arbitrage can propagate liquidity shocks into underlying stocks. Index-effect work documents demand/price-pressure effects around constituent changes, and later research documents excess comovement among index members. These are plausible alternative mechanisms for a "reaction at a zone."
+
+DL-061 therefore freezes ETF/futures context states for prior price discovery, basis/NAV dislocation, modeled basket arbitrage, verified constituent execution, multi-channel activity, unknown direction and data blocking. Only receipts known before predictorFreezeAt may enter the baseline context.
+
+The primary falsification is a generic mechanical-event comparator. Compare the same kind of passive/index/arbitrage event away from a valid D01 zone and at a valid D01 zone. If the zone case adds no residual representation after common-support controls, the mechanical event is sufficient.
+
+A second diagnostic separates zone opportunities with no known mechanical context, self-included index-only context, verified self-excluded market movement, passive events, ETF arbitrage, futures price discovery and multiple mechanical channels.
+
+Different instruments are not automatically independent evidence. An index, ETF, futures contract and constituent can share common information, benchmark identity, passive-flow ancestry and arbitrage. Within one parent, effectiveIndependentEvidenceCount therefore remains one by default until D16 validates residual/dependence structure.
+
+Twenty adversarial cases are authored. They test target exclusion, unknown historical weights, future/current-weight backfill, self-included benchmark circularity, verified self-excluded receipts, methodology uncertainty, passive-event timing, modeled versus actual passive execution, ETF/futures multi-channel states, unknown direction, post-freeze mechanical context, and the rule that multiple instruments do not multiply independent N.
+
+New durable artifacts:
+- research/PATTERN_INDEX_WEIGHT_ARBITRAGE_FIREWALL_V0_1.md
+- research/pattern_index_weight_arbitrage_firewall_v0_1.json
+- research/pattern_index_weight_arbitrage_firewall_v0_1.mjs
+- research/test_pattern_index_weight_arbitrage_firewall_v0_1.mjs
+- research/PATTERN_INDEX_WEIGHT_ARBITRAGE_D16_HANDOFF_V0_1.md
+
+No outcomes were opened. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001 and SDA-002 remain open. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.

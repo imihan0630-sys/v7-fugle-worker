@@ -4026,3 +4026,139 @@ No maturity or Formal change is authorized by this routing.
 6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 7. Next D01 science: separate structural response from index-weight / mega-cap mechanical contribution and constituent-arbitrage effects around market/sector moves.
 8. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-061 (2026-10-07)
+
+### DL-061 — Structural response vs index-weight / passive-flow / constituent-arbitrage effects
+- DL-060 separated structural response from common price discovery.
+- DL-061 adds a stricter mechanical-attribution firewall:
+  index weighting;
+  passive rebalancing;
+  ETF creation/redemption;
+  ETF/futures price discovery;
+  basket arbitrage;
+  mega-cap concentration;
+  constituent synchronization.
+- External evidence motivates the firewall:
+  Hasbrouck (2003) finds major equity-index price discovery can occur in E-mini futures / ETF markets;
+  Ben-David/Franzoni/Moussawi (2018) find ETF arbitrage can propagate liquidity shocks into underlying stocks;
+  index-effect literature documents price pressure / demand shifts around index changes;
+  recent work documents excess index-member comovement that need not come from firm fundamentals.
+- D01 does not own those mechanisms.
+  It consumes canonical receipts from:
+  D06-11 passive/rebalancing;
+  D06-16 ETF mechanics;
+  D11-14 index-event clocks;
+  D19-15 benchmark methodology/weight vintages;
+  D12 derivative context;
+  D18 large-cap/leadership context.
+- Major new falsifier:
+  a cap-weighted market/sector index containing the target stock is partially endogenous.
+  RAW_INDEX_RETURN_IS_EXOGENOUS_CONTROL = FALSE when targetIncluded = true.
+- Historical target weight, benchmark methodology and composition vintage must be known by predictor freeze.
+  Current weights may not backfill historical dates.
+- If a target is in the benchmark and no owner-certified self-excluded/decontaminated benchmark exists:
+  benchmark state = SELF_INCLUDED_BENCHMARK_ONLY;
+  external-market-control interpretation is fail-closed.
+- D01 does not construct ad-hoc ex-self returns by subtracting weight × target return because benchmark mechanics can involve float adjustment, divisor rules, corporate actions, constituent changes, return type and auction conventions.
+- Frozen index-weight states:
+  TARGET_NOT_IN_BENCHMARK;
+  TARGET_INCLUDED_WEIGHT_KNOWN;
+  TARGET_INCLUDED_WEIGHT_UNKNOWN;
+  SELF_EXCLUDED_BENCHMARK_VERIFIED;
+  SELF_INCLUDED_BENCHMARK_ONLY;
+  INDEX_METHODOLOGY_OR_VINTAGE_UNKNOWN;
+  INDEX_RECONSTITUTION_ACTIVE;
+  WEIGHT_CHANGE_ACTIVE.
+- Mega-cap context preserves target weight, owner-certified concentration / cap-vs-equal-weight / breadth context.
+  D01 defines no arbitrary mega-cap threshold.
+- Passive/rebalance states remain separated:
+  announcement;
+  effective session;
+  add/delete/transfer;
+  weight change;
+  modeled passive flow;
+  verified actual passive execution;
+  execution unknown;
+  data blocked.
+- ETF primary-market semantics remain strict:
+  MODELED_PRIMARY_BASKET_EXPOSURE != ACTUAL_AP_EXECUTION != ACTUAL_CONSTITUENT_EXECUTION.
+  D06-16 owner receipts decide what is actually identified.
+- ETF/futures mechanical context states include:
+  ETF prior price discovery;
+  futures prior price discovery;
+  NAV/basis dislocation;
+  modeled basket arbitrage;
+  verified constituent arbitrage execution;
+  multi-channel;
+  direction unknown;
+  data blocked.
+- Hard clock:
+  receiptKnownAt <= predictorFreezeAt < endpointWindowStart.
+  Later mechanical context is POST_OPPORTUNITY_MECHANICAL_CONTEXT.
+- Same-direction target/index/ETF/futures movement is context only, not independent confirmation.
+- Primary generic comparator:
+  G0 MECHANICAL_EVENT_AWAY_FROM_ZONE;
+  G1 MECHANICAL_EVENT_AT_ZONE.
+  If G1 adds no residual representation after common-support controls, mechanical context is sufficient.
+- Complementary zone states preserve:
+  no mechanical context;
+  self-included index-only;
+  verified self-excluded market move;
+  passive event;
+  ETF arbitrage;
+  futures price discovery;
+  multiple channels;
+  unknown.
+- Different instruments do not automatically create independent evidence.
+  effectiveIndependentEvidenceCount remains 1 by default within one parent until D16 validates dependence/residual structure.
+- SDA-001 remains open.
+- SDA-002 remains open:
+  composition/weight/methodology/event/ETF/futures receipts require firstObservableAt/knownAt/predictorFreezeAt/version/hash/replaySafe.
+- Future D16 ladder:
+  M0 RAW_ZONE_RESPONSE;
+  M1-M4 inherit DL057-DL060;
+  M5 SELF_INCLUDED_BENCHMARK_IDENTIFIED;
+  M6 SELF_EXCLUDED_BENCHMARK_CONTROLLED;
+  M7 INDEX_REBALANCE_PASSIVE_FLOW_CONTROLLED;
+  M8 ETF_PRIMARY_MARKET_CONTEXT_CONTROLLED;
+  M9 ETF_FUTURES_ARBITRAGE_CONTROLLED;
+  M10 MEGA_CAP_CONCENTRATION_BREADTH_CONTROLLED;
+  M11 GENERIC_MECHANICAL_EVENT_COMPARATOR_CONTROLLED;
+  M12 STRUCTURAL_RESPONSE_RESIDUAL_CANDIDATE;
+  M13 MULTI_DATE_MULTI_SYMBOL_MULTI_INDEX_REPLICATION.
+- Future interpretation states:
+  Q0 SELF_INCLUDED_BENCHMARK_CIRCULARITY;
+  Q1 INDEX_WEIGHT_MECHANICAL_EXPLANATION;
+  Q2 PASSIVE_REBALANCE_EXPLANATION;
+  Q3 ETF_ARBITRAGE_EXPLANATION;
+  Q4 FUTURES_PRICE_DISCOVERY_EXPLANATION;
+  Q5 CONSTITUENT_COMOVEMENT_EXPLANATION;
+  Q6 MEGA_CAP_CONCENTRATION_EXPLANATION;
+  Q7 MULTIPLE_MECHANICAL_CHANNELS;
+  Q8 STRUCTURAL_RESPONSE_RESIDUAL;
+  Q9 NOT_EVALUABLE.
+- New files:
+  - research/PATTERN_INDEX_WEIGHT_ARBITRAGE_FIREWALL_V0_1.md
+  - research/pattern_index_weight_arbitrage_firewall_v0_1.json
+  - research/pattern_index_weight_arbitrage_firewall_v0_1.mjs
+  - research/test_pattern_index_weight_arbitrage_firewall_v0_1.mjs
+  - research/PATTERN_INDEX_WEIGHT_ARBITRAGE_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-061
+
+1. Reconcile the DL-061 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-061 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Fail closed whenever a target-containing benchmark is used without historical target-weight/methodology vintage and a canonical self-excluded benchmark receipt.
+4. Preserve MODELED vs ACTUAL passive/ETF execution semantics.
+5. Hand M0-M13 / Q0-Q9 mechanical-attribution inference to D16.
+6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+7. Next D01 science: separate structural response from opening/closing-auction mechanics, closing-index replication and end-of-session liquidity concentration.
+8. No outcome join / no runtime wiring / no Formal change.
