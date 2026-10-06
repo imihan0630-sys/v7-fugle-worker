@@ -917,3 +917,101 @@ No maturity change.
 D16 = 60%.
 D18 = 52%.
 Formal Core LOCKED.
+
+
+## 2026-10-07 D16 prospective-attempt ledger + SDA016-T48 finalization semantics
+
+### Prospective evidence attempt-ledger firewall
+
+New canonical artifacts:
+- `research/D16_PROSPECTIVE_EVIDENCE_ATTEMPT_LEDGER_CONTRACT_20261007_V0_1.md`;
+- `research/D16_PROSPECTIVE_EVIDENCE_ATTEMPT_LEDGER_CONTRACT_20261007_V0_1.json`;
+- `research/D16_PROSPECTIVE_EVIDENCE_ATTEMPT_20261006_V0_1.json`;
+- `research/D16_PROSPECTIVE_EVIDENCE_ATTEMPT_20261002_RETROSPECTIVE_IMPORT_V0_1.json`;
+- `research/D16_PROSPECTIVE_ATTEMPT_CAUSAL_COMPARISON_20261007_V0_1.md`.
+
+New rule:
+every prospective evidence collection execution is a first-class governance event, including blocked attempts.
+
+Operational attempt denominator is distinct from:
+- research calendar-candidate denominator;
+- target-population eligible denominator;
+- prospective evidence N.
+
+Fail-closed defaults for incomplete parent/lineage:
+- not zero-pick;
+- not negative outcome;
+- not strategy failure;
+- not prospective evidence.
+
+Blocked attempts must remain in missingness/accounting history.
+
+### Causal-attribution firewall
+
+2026-10-02 and 2026-10-06 both surface:
+`FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND`.
+
+But they are not causally interchangeable.
+
+2026-10-02:
+- institutionReady=true;
+- qualityReady=true;
+- missed ready recovery attributed to `CROSS_MIDNIGHT_TARGET_DATE_DRIFT`;
+- direct original 23:35/23:55 Worker failure remains unknown;
+- causal status = `PARTIAL_CAUSAL_CHAIN`.
+
+2026-10-06:
+- institutionReady=true;
+- qualityReady=false;
+- missingQuality = FINANCIAL + QUARTER_EPS;
+- no complete chain proves these missing sources were the sole cause of absent Formal/C1;
+- causal status = `OBSERVED_FACTS_ONLY`.
+
+Therefore a shared terminal blocker code must not be treated as one homogeneous missingness mechanism without a preregistered mechanism mapping.
+
+The 2026-10-02 record is a `RETROSPECTIVE_LEDGER_IMPORT` for governance continuity only and creates no new prospective evidence.
+
+### SDA016-T48 finalization semantics frozen
+
+New canonical:
+- `research/SDA016_GENERATION_SET_FINALIZATION_CONTRACT_20261007_V0_1.md`;
+- `research/SDA016_GENERATION_SET_FINALIZATION_CONTRACT_20261007_V0_1.json`.
+
+Key distinction:
+V8.20 Formal→C1 binding establishes authoritative parent identity.
+It does NOT establish complete same-session generation-set finalization.
+
+Finalization now requires an independent pre-outcome append-only receipt binding:
+- session identity;
+- producer registry/version/set hash;
+- deterministic producer cutoff rule;
+- all producer attempts terminal;
+- no pending retry/recovery;
+- non-truncated integrity-complete generation inventory;
+- canonical generation-set digest;
+- all explicit Formal bindings reference members of the final set.
+
+Current observed generation-producing classes:
+- AFTER_MARKET_SCAN_PIPELINE;
+- STAGE_SELECTION_ROUTE;
+- DIRECT_SAFE_PERSISTENCE_CALLER.
+
+Engineering owner must define the complete Production producer registry; D16 must not infer it from currently observed rows.
+
+Late generation after finalization:
+`POST_FINALIZATION_GENERATION_VIOLATION`.
+
+Finalization may not be silently overwritten.
+
+Supplemental T48 cases frozen:
+`T48-F01~T48-F10`.
+
+These are semantic acceptance cases for future engineering validation and do not change the canonical SDA016 V0.5 count of 58 tests.
+
+Current T48:
+`OPEN_GENERATION_SET_FINALIZATION_PENDING`.
+
+No maturity change:
+D16 = 60%.
+D18 = 52%.
+Formal Core LOCKED.
