@@ -2326,3 +2326,44 @@ This correction remains BUILD_LANE-owned and does not authorize other lanes to m
 CORR-004 must bind current terminal resonance to the current Taipei marketDate or explicitly classify prior-session rows as stale/historical and exclude them from current active surfaces/counts. Same-day success and explicit historical-query behavior must remain supported.
 
 This pointer changes no resonance formula, bounded-pool logic, S2-07 candidate authority, strategy logic, ranking/capacity, push/orders or System1 Formal Core.
+
+
+## 2026-10-06 S2-07 Par-Value Divergence V0.6 physical result
+
+Authoritative execution:
+- merge commit: `97cd68011fd6a938d39a23b77e1eafb43404b269`;
+- workflow: `System2 S2-07 Par-Value Divergence V0.6 Readonly`;
+- run: `37479166318`;
+- job: `112322457257`;
+- conclusion: PASS.
+
+Physical summary:
+- eventCount = 4;
+- yearAllSubsetOfMonthUnionCount = 4;
+- monthOnlyRowCount = 4;
+- `MONTH_ONLY_RECURRING_NOTICE_COPY = 3`;
+- `MONTH_ONLY_STOP_DATE_FACE_VALUE_NOTICE = 1`;
+- cancellationDisclosureObservedCount = 0;
+- noCancellationCertifiedCount = 0;
+- sourceSemanticsCertified = false;
+- monthShardCoverageComplete = false;
+- promotionLinkageEstablishedCount = 0;
+- knownAtVersionClockCertified = false;
+- technicalContinuityCertified = false;
+- tradingAuthority = false.
+
+Row-level disposition:
+- 6949 / 2026-09-07 -> one month-only recurring face-value notice;
+- 8937 / 2026-04-13 -> one month-only stop-date face-value notice;
+- 5904 / 2026-08-10 -> one month-only recurring face-value notice;
+- 4747 / 2026-08-31 -> one month-only recurring face-value notice.
+
+Boundary:
+the four V0.5 source divergences are now explained at bounded row/provenance classification level, but the extra rows remain lineage and cannot be discarded. Absence of cancellation disclosure is still history-incomplete, not NO_CANCELLATION.
+
+Next exact BUILD_LANE continuation:
+1. freeze promotion-evidence requirements that do not depend on normalized subject stem;
+2. evaluate the 13 V0.5 exact event-specific candidates against that contract;
+3. exclude the four V0.6 divergence cases from promotion-grade linkage until separately source-certified;
+4. shared suspension/resumption + symbol-session integration;
+5. RAW A1 lineage.

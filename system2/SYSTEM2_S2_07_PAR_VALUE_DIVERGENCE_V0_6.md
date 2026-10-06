@@ -1,7 +1,7 @@
 # System 2 S2-07 Par-Value Source Divergence V0.6
 
 Updated: 2026-10-05 Asia/Taipei
-Status: RESEARCH_ONLY / BUILD_LANE DIAGNOSTIC / PHYSICAL_EXECUTION_PENDING
+Status: RESEARCH_ONLY / BUILD_LANE DIAGNOSTIC / PHYSICALLY_VERIFIED
 Formal Core: LOCKED
 
 ## Scope
@@ -56,3 +56,28 @@ Required output:
 - `tradingAuthority=false`.
 
 A PASS means the diagnostic executed and preserved fail-closed boundaries. It does not by itself certify source completeness, promotion linkage, no-cancellation, exact knownAt, session continuity, or trading authority.
+
+
+## Physical result — 2026-10-06
+
+Authoritative execution:
+- merge: `97cd68011fd6a938d39a23b77e1eafb43404b269`
+- workflow: `System2 S2-07 Par-Value Divergence V0.6 Readonly`
+- run: `37479166318`
+- job: `112322457257`
+- result: PASS
+
+Observed:
+- 4/4 year=all target-family keysets are subsets of the bounded month-union keysets;
+- exactly four month-only target-family rows remain;
+- three classify as `MONTH_ONLY_RECURRING_NOTICE_COPY`;
+- one (8937) classifies as `MONTH_ONLY_STOP_DATE_FACE_VALUE_NOTICE`;
+- all four transport/no-pagination diagnostic gates passed;
+- cancellation disclosures observed = 0, but `noCancellationCertifiedCount=0`;
+- source semantics, month-shard completeness, promotion linkage, exact knownAt, technical continuity and trading authority remain false.
+
+Durable receipt:
+`system2/evidence/S2_07_PAR_VALUE_DIVERGENCE_V0_6_PHYSICAL_20261006.md`
+
+Next:
+promotion-evidence contract over the 13 V0.5 exact candidates, while the four V0.6 divergence cases remain non-promotion until separately source-certified.
