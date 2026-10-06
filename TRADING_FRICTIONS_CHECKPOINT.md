@@ -370,3 +370,30 @@ D14-16 advances to L2 / 40% for mechanism + falsification semantics only.
 Exact next continuation: collect at least three independent prospective Taiwan sessions with immutable decision/mechanism/order lifecycle evidence, preserve unexecuted opportunities, and require broker-confirmed fills for realized execution claims. Three sessions trigger readiness review only; no automatic L3 promotion.
 
 No Formal change and no FORMAL_OPTIMIZATION_CANDIDATE.
+
+
+## D14-EX-002 — D14-17 implementation shortfall / market-impact contract freeze — 2026-10-06
+
+Evidence: `research/D14_17_IMPLEMENTATION_SHORTFALL_MARKET_IMPACT_CONTRACT_20261006_V0_1.md`.
+
+D14-17 now has a frozen mechanism/falsification contract:
+- immutable parent-order identity and decision-time benchmark;
+- delay, spread/price concession, market-impact, explicit fee/tax, and unexecuted opportunity-cost decomposition;
+- filled-only survivor-bias firewall;
+- market/sector/news alternative-explanation firewall for causal impact claims;
+- same-day child-order clustering control;
+- capital-scale/liquidity transportability warning;
+- mechanism provenance for regular-lot, odd-lot, auction, interruption and limit states;
+- broker-confirmed fills required for realized execution claims;
+- PIT/OOS/walk-forward and multiple-testing controls;
+- missing evidence remains UNKNOWN, never 0/BAD.
+
+Boundary remains:
+- D14-15 = order-type semantics;
+- D14-16 = parent-to-child scheduling;
+- D14-17 = implementation-shortfall / market-impact ontology and attribution;
+- D14-18 = alpha decay / urgency.
+
+D14-17 advances to L2 / 40% for mechanism + falsification semantics only.
+Exact next continuation: collect at least three independent prospective Taiwan sessions with immutable decision/mechanism/order-lifecycle evidence, preserve unexecuted opportunities, use mechanism-matched benchmarks, and require broker-confirmed fills for realized execution claims. Three sessions trigger readiness review only; no automatic L3 promotion.
+Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE: NONE.
