@@ -1,0 +1,224 @@
+{
+  "schemaVersion": "S2_S2_07_PROMOTION_LINKAGE_PHYSICAL_RECEIPT_V0_7",
+  "version": "0.7-RESEARCH",
+  "observedAt": "2026-10-06T14:58:09Z",
+  "authoritativeRun": {
+    "workflow": "System2 S2-07 Promotion Linkage V0.7 Readonly",
+    "runId": 37481645101,
+    "jobId": 112330996478,
+    "conclusion": "PASS",
+    "repairMerge": "84c0bc0c66a68eb3f01b5f2fddd3e658dd3cf81a"
+  },
+  "summary": {
+    "eventCount": 17,
+    "promotionEvidenceReadyCount": 7,
+    "promotionEvidenceBlockedCount": 10,
+    "promotionLinkageEstablishedCount": 7,
+    "cancellationObservedCount": 0,
+    "noCancellationCertifiedCount": 0,
+    "blockerCounts": {
+      "TRANSPORT_NOT_READY": 8,
+      "PAGINATION_NOT_CERTIFIED": 8,
+      "SOURCE_QUERY_INTEGRITY_NOT_EXACT": 6,
+      "EVENT_SPECIFIC_ANCHOR_NOT_ESTABLISHED": 6,
+      "SEMANTIC_EPISODE_NOT_CERTIFIED": 2
+    },
+    "eventLinkageCoverageComplete": false,
+    "boundedRevisionHistoryCoverageComplete": false,
+    "correctionHistoryComplete": false,
+    "cancellationHistoryComplete": false,
+    "knownAtVersionClockCertified": false,
+    "revisionCoverageComplete": false,
+    "technicalContinuityCertified": false,
+    "tradingAuthority": false
+  },
+  "events": [
+    {
+      "market": "TWSE",
+      "symbol": "6176",
+      "effectiveDate": "2026-08-24",
+      "family": "CAPITAL_REDUCTION",
+      "state": "PROMOTION_EVIDENCE_BLOCKED",
+      "blockers": [
+        "TRANSPORT_NOT_READY",
+        "PAGINATION_NOT_CERTIFIED",
+        "SOURCE_QUERY_INTEGRITY_NOT_EXACT",
+        "EVENT_SPECIFIC_ANCHOR_NOT_ESTABLISHED",
+        "SEMANTIC_EPISODE_NOT_CERTIFIED"
+      ]
+    },
+    {
+      "market": "TWSE",
+      "symbol": "1563",
+      "effectiveDate": "2026-09-07",
+      "family": "CAPITAL_REDUCTION",
+      "state": "PROMOTION_EVIDENCE_READY_BOUNDED",
+      "blockers": []
+    },
+    {
+      "market": "TWSE",
+      "symbol": "3356",
+      "effectiveDate": "2026-09-21",
+      "family": "CAPITAL_REDUCTION",
+      "state": "PROMOTION_EVIDENCE_BLOCKED",
+      "blockers": [
+        "TRANSPORT_NOT_READY",
+        "PAGINATION_NOT_CERTIFIED"
+      ]
+    },
+    {
+      "market": "TWSE",
+      "symbol": "3591",
+      "effectiveDate": "2026-09-21",
+      "family": "CAPITAL_REDUCTION",
+      "state": "PROMOTION_EVIDENCE_BLOCKED",
+      "blockers": [
+        "TRANSPORT_NOT_READY",
+        "PAGINATION_NOT_CERTIFIED",
+        "SOURCE_QUERY_INTEGRITY_NOT_EXACT",
+        "EVENT_SPECIFIC_ANCHOR_NOT_ESTABLISHED",
+        "SEMANTIC_EPISODE_NOT_CERTIFIED"
+      ]
+    },
+    {
+      "market": "TWSE",
+      "symbol": "1441",
+      "effectiveDate": "2026-09-29",
+      "family": "CAPITAL_REDUCTION",
+      "state": "PROMOTION_EVIDENCE_READY_BOUNDED",
+      "blockers": []
+    },
+    {
+      "market": "TWSE",
+      "symbol": "6550",
+      "effectiveDate": "2026-09-29",
+      "family": "CAPITAL_REDUCTION",
+      "state": "PROMOTION_EVIDENCE_READY_BOUNDED",
+      "blockers": []
+    },
+    {
+      "market": "TWSE",
+      "symbol": "6949",
+      "effectiveDate": "2026-09-07",
+      "family": "PAR_VALUE_CHANGE",
+      "state": "PROMOTION_EVIDENCE_BLOCKED",
+      "blockers": [
+        "TRANSPORT_NOT_READY",
+        "PAGINATION_NOT_CERTIFIED",
+        "SOURCE_QUERY_INTEGRITY_NOT_EXACT",
+        "EVENT_SPECIFIC_ANCHOR_NOT_ESTABLISHED"
+      ]
+    },
+    {
+      "market": "TPEX",
+      "symbol": "5381",
+      "effectiveDate": "2026-04-13",
+      "family": "CAPITAL_REDUCTION",
+      "state": "PROMOTION_EVIDENCE_READY_BOUNDED",
+      "blockers": []
+    },
+    {
+      "market": "TPEX",
+      "symbol": "6241",
+      "effectiveDate": "2026-08-25",
+      "family": "CAPITAL_REDUCTION",
+      "state": "PROMOTION_EVIDENCE_READY_BOUNDED",
+      "blockers": []
+    },
+    {
+      "market": "TPEX",
+      "symbol": "6129",
+      "effectiveDate": "2026-09-14",
+      "family": "CAPITAL_REDUCTION",
+      "state": "PROMOTION_EVIDENCE_BLOCKED",
+      "blockers": [
+        "TRANSPORT_NOT_READY",
+        "PAGINATION_NOT_CERTIFIED"
+      ]
+    },
+    {
+      "market": "TPEX",
+      "symbol": "3710",
+      "effectiveDate": "2026-09-21",
+      "family": "CAPITAL_REDUCTION",
+      "state": "PROMOTION_EVIDENCE_BLOCKED",
+      "blockers": [
+        "TRANSPORT_NOT_READY",
+        "PAGINATION_NOT_CERTIFIED"
+      ]
+    },
+    {
+      "market": "TPEX",
+      "symbol": "8277",
+      "effectiveDate": "2026-09-21",
+      "family": "CAPITAL_REDUCTION",
+      "state": "PROMOTION_EVIDENCE_BLOCKED",
+      "blockers": [
+        "TRANSPORT_NOT_READY",
+        "PAGINATION_NOT_CERTIFIED"
+      ]
+    },
+    {
+      "market": "TPEX",
+      "symbol": "4806",
+      "effectiveDate": "2026-10-02",
+      "family": "CAPITAL_REDUCTION",
+      "state": "PROMOTION_EVIDENCE_READY_BOUNDED",
+      "blockers": []
+    },
+    {
+      "market": "TPEX",
+      "symbol": "8937",
+      "effectiveDate": "2026-04-13",
+      "family": "PAR_VALUE_CHANGE",
+      "state": "PROMOTION_EVIDENCE_BLOCKED",
+      "blockers": [
+        "TRANSPORT_NOT_READY",
+        "PAGINATION_NOT_CERTIFIED",
+        "SOURCE_QUERY_INTEGRITY_NOT_EXACT",
+        "EVENT_SPECIFIC_ANCHOR_NOT_ESTABLISHED"
+      ]
+    },
+    {
+      "market": "TPEX",
+      "symbol": "3086",
+      "effectiveDate": "2026-04-20",
+      "family": "PAR_VALUE_CHANGE",
+      "state": "PROMOTION_EVIDENCE_READY_BOUNDED",
+      "blockers": []
+    },
+    {
+      "market": "TPEX",
+      "symbol": "5904",
+      "effectiveDate": "2026-08-10",
+      "family": "PAR_VALUE_CHANGE",
+      "state": "PROMOTION_EVIDENCE_BLOCKED",
+      "blockers": [
+        "SOURCE_QUERY_INTEGRITY_NOT_EXACT",
+        "EVENT_SPECIFIC_ANCHOR_NOT_ESTABLISHED"
+      ]
+    },
+    {
+      "market": "TPEX",
+      "symbol": "4747",
+      "effectiveDate": "2026-08-31",
+      "family": "PAR_VALUE_CHANGE",
+      "state": "PROMOTION_EVIDENCE_BLOCKED",
+      "blockers": [
+        "SOURCE_QUERY_INTEGRITY_NOT_EXACT",
+        "EVENT_SPECIFIC_ANCHOR_NOT_ESTABLISHED"
+      ]
+    }
+  ],
+  "boundaries": {
+    "noCancellationMayBeClaimed": false,
+    "symbolSessionCompletenessCertified": false,
+    "technicalContinuityCertified": false,
+    "selectionAuthority": false,
+    "finalSelectionEnabled": false,
+    "livePushEnabled": false,
+    "capitalImpact": false,
+    "orderImpact": false,
+    "system1FormalCoreChanged": false
+  }
+}
