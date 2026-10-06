@@ -1,0 +1,21 @@
+{
+  "schemaVersion":"pattern-price-limit-carryover-firewall-v0.1",
+  "updated":"2026-10-07 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "physicalOrderQueueOvernightPersistence":false,
+  "closeAtLimitProvesLockedQueue":false,
+  "limitQueueEqualsStructuralStrength":false,
+  "nextDayContinuationProvesQueueCarryover":false,
+  "structureLimitColocationEqualsConfluence":false,
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "carryoverObjects":[
+    "PHYSICAL_ORDER_QUEUE_SAME_SESSION",
+    "LATENT_UNMET_DEMAND_OR_SUPPLY_CARRYOVER",
+    "NEXT_SESSION_RESUBMITTED_ORDERS"
+  ],
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}

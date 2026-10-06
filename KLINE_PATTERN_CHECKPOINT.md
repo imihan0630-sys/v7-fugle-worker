@@ -4416,3 +4416,117 @@ No maturity or Formal change is authorized by this routing.
 7. Next D01 science: separate structural response from daily price-limit carryover and limit-hit queue mechanics across overnight/opening transitions.
 8. No outcome join / no runtime wiring / no Formal change.
 
+## Continuation update — DL-064 (2026-10-07)
+
+### DL-064 — Structural response vs daily price-limit carryover / limit-queue mechanics
+- DL-063 separated structural response from overnight information and previous-close anchoring.
+- DL-064 freezes a Taiwan-specific daily-price-limit attribution firewall:
+  daily upper/lower price boundaries;
+  magnet/trading-interference effects;
+  delayed price discovery;
+  same-session order queue;
+  latent unmet demand/supply;
+  next-session resubmitted orders.
+- TWSE ordinary stocks are generally limited to 10 percent above/below the current-session opening-auction reference price, subject to explicit exemptions.
+- Historical opening-auction reference price, legal tick/rule vintage and exemption state must be owner-certified; D01 does not assume the reference price always equals prior close.
+- Exchange order validity is session-limited.
+  Therefore:
+  PHYSICAL_ORDER_QUEUE_SAME_SESSION;
+  LATENT_UNMET_DEMAND_OR_SUPPLY_CARRYOVER;
+  NEXT_SESSION_RESUBMITTED_ORDERS
+  are three different objects.
+- Same physical order queue does not persist overnight.
+- Same-price pre-opening priority is randomly arranged by the exchange, while post-open orders follow time priority after price priority.
+- Close at limit does not prove a locked queue.
+  Queue state requires timestamped owner-certified order-book/imbalance receipts.
+- Frozen limit states:
+  NO_LIMIT_PROXIMITY_RECEIPT;
+  LIMIT_PROXIMITY_ONLY;
+  FIRST_LIMIT_HIT;
+  LIMIT_HIT_WITH_VERIFIED_QUEUE;
+  LIMIT_HIT_QUEUE_UNKNOWN;
+  UNLOCK_RELOCK;
+  CLOSE_AT_LIMIT_WITH_VERIFIED_QUEUE;
+  CLOSE_AT_LIMIT_QUEUE_UNKNOWN;
+  PRICE_LIMIT_EXEMPT_OR_NOT_APPLICABLE;
+  LIMIT_STATE_DATA_BLOCKED.
+- Verified queue volume is microstructure context, not structural strength.
+  No LIMIT_QUEUE_STRENGTH_SCORE is defined.
+- Taiwan high-frequency evidence supports an upper-limit magnet effect and broader price-limit literature supports delayed price discovery/trading interference.
+  Taiwan daily evidence also finds overnight continuation after limit moves and later intraday reversal/correction.
+- A structural zone overlapping the legal daily price boundary is STRUCTURE_PRICE_LIMIT_COLOCATION, not independent confluence.
+- Default effectiveIndependentEvidenceCount remains 1 for co-located price-limit/price-structure representations.
+- Same-day comparator:
+  G0 LIMIT_EVENT_AWAY_FROM_STRUCTURAL_ZONE;
+  G1 LIMIT_EVENT_AT_STRUCTURAL_ZONE.
+- Separate next-day comparator:
+  N0 PRIOR_DAY_LIMIT_EVENT_AWAY_FROM_ZONE;
+  N1 PRIOR_DAY_LIMIT_EVENT_AT_ZONE.
+- Next-day continuation may reflect delayed price discovery or latent unmet demand, but never proves the same physical queue survived overnight.
+- Required cross-session fields preserve:
+  day-t final queue receipt;
+  day-t last unlock;
+  order validity end;
+  day-t+1 pre-open state;
+  day-t+1 opening print/reference;
+  day-t+1 new queue receipt.
+- No day-t queue volume is copied into day t+1.
+- Price-limit exemption sessions do not receive fabricated upper/lower bounds.
+- D04/D05 own queue/depth/liquidity microstructure;
+  D08 owns news/event context;
+  D09/D12 own overnight/global/derivative context where routed;
+  D16 owns residual inference.
+- SDA-001 remains open:
+  price-limit price/path and D01 structure share PRICE_OHLC ancestry;
+  queue context is not an automatic independent vote.
+- SDA-002 remains open:
+  every limit/queue receipt needs firstObservableAt/knownAt/predictorFreezeAt/source/version/hash/replaySafe.
+- Future D16 ladder:
+  P0 RAW_ZONE_RESPONSE;
+  P1 PRICE_LIMIT_REFERENCE_AND_EXEMPTION_IDENTIFIED;
+  P2 DISTANCE_TO_LIMIT_CONTROLLED;
+  P3 LIMIT_HIT_PATH_CONTROLLED;
+  P4 QUEUE_VISIBILITY_AND_IMBALANCE_CONTROLLED;
+  P5 UNLOCK_RELOCK_CONTROLLED;
+  P6 NEWS_EVENT_CONTEXT_CONTROLLED;
+  P7 SAME_DAY_GENERIC_LIMIT_COMPARATOR_CONTROLLED;
+  P8 OVERNIGHT_CONTEXT_CONTROLLED;
+  P9 NEXT_SESSION_RESUBMISSION_OPENING_CONTROLLED;
+  P10 NEXT_DAY_GENERIC_LIMIT_CARRYOVER_COMPARATOR_CONTROLLED;
+  P11 STRUCTURAL_RESPONSE_RESIDUAL_CANDIDATE;
+  P12 MULTI_DATE_MULTI_SYMBOL_MULTI_LIMIT_REGIME_REPLICATION.
+- Interpretation states:
+  Q0 PRICE_LIMIT_MAGNET_EXPLANATION;
+  Q1 TRADING_INTERFERENCE_EXPLANATION;
+  Q2 QUEUE_IMBALANCE_EXPLANATION;
+  Q3 DELAYED_PRICE_DISCOVERY_EXPLANATION;
+  Q4 OVERREACTION_CORRECTION_EXPLANATION;
+  Q5 NEWS_OR_EVENT_EXPLANATION;
+  Q6 STRUCTURE_LIMIT_COLOCATION_REDUNDANCY;
+  Q7 STRUCTURAL_RESPONSE_RESIDUAL;
+  Q8 LIMIT_STATE_UNKNOWN;
+  Q9 NOT_EVALUABLE.
+- New files:
+  - research/PATTERN_PRICE_LIMIT_CARRYOVER_FIREWALL_V0_1.md
+  - research/pattern_price_limit_carryover_firewall_v0_1.json
+  - research/pattern_price_limit_carryover_firewall_v0_1.mjs
+  - research/test_pattern_price_limit_carryover_firewall_v0_1.mjs
+  - research/PATTERN_PRICE_LIMIT_CARRYOVER_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-064
+
+1. Reconcile the DL-064 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-064 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve physical same-session queue, latent unmet demand and next-session resubmitted orders as different objects.
+4. Never infer locked queue from close-at-limit alone or copy day-t queue volume into day t+1.
+5. Hand P0-P12 / Q0-Q9 price-limit residual inference to D16.
+6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+7. Next D01 science: separate structural response from ex-dividend/ex-right reference-price adjustments and corporate-action price discontinuities near structural zones.
+8. No outcome join / no runtime wiring / no Formal change.
+
