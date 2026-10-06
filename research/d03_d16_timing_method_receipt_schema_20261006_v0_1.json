@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "D03_D16_TIMING_METHOD_RECEIPT_V0_1",
+  "updatedAt": "2026-10-06T10:40:00+08:00",
+  "owner": "D03",
+  "methodOwner": "D16",
+  "classification": "RESEARCH_ONLY_METHOD_HANDOFF_OUTCOMES_CLOSED",
+  "formalCoreImpact": "NONE_LOCKED",
+  "requiredIdentityFields": [
+    "timingMethodReceiptVersion",
+    "factorId",
+    "factorVersion",
+    "timingProfileId",
+    "timingProfileVersion",
+    "factorTimingReceiptHash",
+    "lineageRegistryHash",
+    "signalKnownAtRule",
+    "decisionCutoffRule",
+    "executionClockRule",
+    "legalOffsetFamilyId",
+    "endpointFamilyId",
+    "targetPopulationHash",
+    "commonSupportHash",
+    "consumerScopeHash",
+    "temporalNoninterferenceContractVersion",
+    "registeredPerturbationFamilySetHash",
+    "latestTwoRunValidationReceiptHash",
+    "memoryClass",
+    "memoryKernelOrReplayVersion",
+    "rawRootControlHash",
+    "lagCandidateSetHash",
+    "temporalAggregationVersion",
+    "lagCorrelationDiagnostics",
+    "outcomeFootprintOverlapDiagnostics",
+    "multipleTestingFamilyId",
+    "researchStreamId",
+    "selectionPipelineHash",
+    "sda016ConsumptionRef",
+    "holdoutIdentity",
+    "terminalState",
+    "structuralCausalityClaimAllowed"
+  ],
+  "requiredMethodFields": [
+    "unresolvedLeakageState",
+    "futureSentinelPolicy",
+    "primaryTimingEstimand",
+    "neighborLagComparisonRule",
+    "boundaryPeakPolicy",
+    "plateauPolicy",
+    "lagMultiplicityMethod",
+    "representationCompatibilityState",
+    "dependenceMethodRef",
+    "costFillabilityDisposition"
+  ],
+  "allowedTerminalStates": [
+    "TIMING_METHOD_READY",
+    "OUTCOME_RELATION_NOT_SIGNAL",
+    "CONTEMPORANEOUS_ONLY",
+    "TEMPORAL_NONINTERFERENCE_BLOCKED",
+    "SIGNAL_CLOCK_UNCERTIFIED",
+    "FINALITY_BLOCKED",
+    "WARMUP_OR_REPLAY_BLOCKED",
+    "COMMON_SUPPORT_INSUFFICIENT",
+    "DEPENDENCE_TOO_STRONG_FOR_CURRENT_SAMPLE",
+    "LAG_MEMORY_CONFOUND_UNRESOLVED",
+    "TEMPORAL_AGGREGATION_CONFOUND",
+    "LAG_PEAK_UNIDENTIFIED",
+    "BOUNDARY_PEAK_SEARCH_INCOMPLETE",
+    "RAW_ROOT_EXPLAINS_EFFECT",
+    "FILTER_DIRECTIONALITY_SENSITIVE",
+    "SUPPORT_THIN_AT_LAG",
+    "COST_OR_FILLABILITY_INVALIDATES",
+    "VERSION_INCOMPATIBLE"
+  ],
+  "readyRequirements": {
+    "unresolvedLeakageState": "NONE",
+    "futureSentinelPolicy": "SENTINEL_ONLY_NO_CANDIDATE_USE",
+    "representationCompatibilityState": "PASS",
+    "costFillabilityDisposition": "PASS",
+    "structuralCausalityClaimAllowed": false
+  },
+  "factorSpecificReadyRequirements": {
+    "D03-04": {
+      "readyAllowed": false,
+      "requiredTerminalState": "OUTCOME_RELATION_NOT_SIGNAL"
+    },
+    "D03-09": {
+      "stateCertificationRequired": "FULL_REPLAY_OR_TRUSTED_STATE"
+    },
+    "D03-10": {
+      "exact20EligibleSessionContinuityRequired": true
+    },
+    "D03-12": {
+      "signalClockAuthority": "FIRST_OBSERVABLE_AT_NOT_PIVOT_AT"
+    },
+    "D03-13": {
+      "latestComponentFinalityRequired": true,
+      "provisionalFinalSeparationRequired": true
+    }
+  },
+  "blockingStatePolicy": {
+    "acceptedAsScientificResult": true,
+    "redesignRequired": false,
+    "postOutcomeRetuningAllowed": false,
+    "maturityPromotion": false
+  },
+  "interpretation": {
+    "methodReadyDoesNotAuthorizeOutcomeExecution": true,
+    "methodReadyDoesNotProvePredictiveIncrementality": true,
+    "methodReadyDoesNotIdentifyExactLag": true,
+    "methodReadyDoesNotClaimStructuralCausality": true,
+    "methodReadyDoesNotChangeFormalCore": true
+  },
+  "current": {
+    "outcomeExecutionAuthorized": false,
+    "rawSourceGate": "2_OF_3",
+    "d03MaturityPct": 56.7,
+    "formalCore": "LOCKED"
+  }
+}
