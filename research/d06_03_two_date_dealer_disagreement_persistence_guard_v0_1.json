@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "D06_03_TWO_DATE_DEALER_DISAGREEMENT_PERSISTENCE_GUARD_V0_1",
+  "updatedAt": "2026-10-06 Asia/Taipei",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-03",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "dates": [
+    "2026-10-05",
+    "2026-10-06"
+  ],
+  "TPEx": {
+    "commonOrdinarySymbols": 755,
+    "bothDesksActiveBothDates": 102,
+    "oppositeDeskEitherDate": 126,
+    "oppositeDeskBothDates": 26,
+    "oppositeOnlyFirstDate": 56,
+    "oppositeOnlySecondDate": 44,
+    "persistentOppositePctAmongEither": 20.6,
+    "persistentOppositePctAmongBothActiveBothDates": 25.5
+  },
+  "TWSE": {
+    "commonOrdinarySymbols": 1086,
+    "bothDesksActiveBothDates": 284,
+    "oppositeDeskEitherDate": 247,
+    "oppositeDeskBothDates": 55,
+    "oppositeOnlyFirstDate": 95,
+    "oppositeOnlySecondDate": 97,
+    "persistentOppositePctAmongEither": 22.3,
+    "persistentOppositePctAmongBothActiveBothDates": 19.4
+  },
+  "interpretation": [
+    "Internal dealer-desk disagreement is structurally common on both dates, so aggregate dealerNet remains an invalid pure-conviction label.",
+    "Symbol-level disagreement is not highly persistent across the two dates; most names with disagreement on either date do not repeat it on both dates.",
+    "Structural persistence does not imply predictive alpha or persistent symbol ranking.",
+    "TWSE and TPEx on the same date are not independent temporal replications."
+  ],
+  "maturityImpact": "NONE",
+  "status": "TWO_DATE_STRUCTURAL_DISAGREEMENT_CONFIRMED / SYMBOL_LEVEL_PERSISTENCE_LOW / NO_ALPHA_INFERENCE / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Accumulate more independent dates. L4 still requires common-support OOS/Shadow comparison of split desks versus aggregate dealerNet, clustered by date."
+}
