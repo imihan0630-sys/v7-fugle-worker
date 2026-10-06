@@ -7,6 +7,7 @@ on:
       - "system2/runtime/s2_07_reference_price_clock_v1_2.mjs"
       - "system2/tests/s2_07_reference_price_clock_v1_2.test.mjs"
       - "system2/scripts/probe_s2_07_reference_price_clock_readonly_v1_2.mjs"
+      - "system2/scripts/probe_s2_07_mops_detail_locator_readonly_v1_2.mjs"
       - "system2/SYSTEM2_S2_07_REFERENCE_PRICE_VERSION_CLOCK_V1_2.md"
       - "system2/evidence/S2_07_TECHNICAL_CONTINUITY_BRIDGE_V1_1_PHYSICAL_20261007.json"
       - ".github/workflows/system2-s2-07-reference-price-clock-v1-2-readonly.yml"
@@ -16,6 +17,7 @@ on:
       - "system2/runtime/s2_07_reference_price_clock_v1_2.mjs"
       - "system2/tests/s2_07_reference_price_clock_v1_2.test.mjs"
       - "system2/scripts/probe_s2_07_reference_price_clock_readonly_v1_2.mjs"
+      - "system2/scripts/probe_s2_07_mops_detail_locator_readonly_v1_2.mjs"
       - "system2/SYSTEM2_S2_07_REFERENCE_PRICE_VERSION_CLOCK_V1_2.md"
       - "system2/evidence/S2_07_TECHNICAL_CONTINUITY_BRIDGE_V1_1_PHYSICAL_20261007.json"
       - ".github/workflows/system2-s2-07-reference-price-clock-v1-2-readonly.yml"
@@ -36,6 +38,8 @@ jobs:
         run: node system2/tests/s2_07_reference_price_clock_v1_2.test.mjs
       - name: Read-only physical 4806 reference-price version-clock probe
         run: node system2/scripts/probe_s2_07_reference_price_clock_readonly_v1_2.mjs
+      - name: Read-only MOPS detail-locator probe
+        run: node system2/scripts/probe_s2_07_mops_detail_locator_readonly_v1_2.mjs
       - name: Read-only and System1 isolation guard
         shell: bash
         run: |
