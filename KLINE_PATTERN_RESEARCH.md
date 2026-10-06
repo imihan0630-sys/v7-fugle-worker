@@ -24145,3 +24145,31 @@ New durable artifacts:
 - research/PATTERN_NO_EVENT_OPENING_LIQUIDITY_D16_HANDOFF_V0_1.md
 
 No outcomes were opened. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001 and SDA-002 remain open. No runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-065 — Structural response vs stale / non-synchronous / thin-trading prices (2026-10-07)
+
+DL-065 addresses a measurement failure that can look exactly like technical structure in thinly traded names. A chart can show an apparent touch or hold at a zone even when the relevant observation is a stale carried price, pseudo-bar, quote-only contact, odd-lot print or isolated trade that is not synchronous with the market context used to explain it.
+
+Classical nonsynchronous-trading research shows that stale prices can bias return, covariance, beta and autocorrelation inference. D01 therefore treats timestamp identity as part of the evidence, not as metadata to ignore.
+
+Observation types are now explicit. Actual trades, auction matches, odd-lot trades, quote mid/bid/ask, pseudo-bars and carry-forward prices are different objects. Quote contact is not execution. A pseudo-bar/no-trade day cannot create a new support/resistance touch, breakout, rejection or higher-low event.
+
+The daily open is also decomposed. Scheduled open time, auction match, first actual trade and first continuous trade can differ materially in thin names. D01 stores the delays continuously and refuses to create a universal stale-seconds threshold.
+
+An actual trade can still be fragile evidence. A single isolated print at the zone remains an ISOLATED_THIN_TRADE_ZONE_INTERACTION until liquidity/execution context shows more. D01 preserves trade count, notional, spread, depth, relative tick and board-lot/odd-lot identity without inventing a minimum-count rule.
+
+Market-relative attribution receives a separate nonsynchronous firewall. A benchmark updated immediately after 09:00 cannot be compared mechanically with a target whose last actual trade was yesterday's close and called contemporaneous confirmation. Target and benchmark timestamps and last-trade ages must be explicit or the alignment remains UNKNOWN.
+
+Daily OHLC can still support broad historical geometry when provenance is reliable, but it cannot prove an exact intraday execution path when timestamps or trade identity are unavailable. This prevents daily wick extremes from silently becoming exact executable retests.
+
+Twenty adversarial cases are authored. They distinguish pseudo-bars, quote-only observations, actual trades, odd-lot and auction matches; preserve first-trade delays without arbitrary thresholds; separate stale/quote/odd-lot/isolated trade contacts; enforce target-benchmark timestamp alignment; reject unverified daily-bar path claims; keep broad geometry use where valid; deduplicate shared microstructure evidence and keep outcome joins closed.
+
+New durable artifacts:
+- research/PATTERN_STALE_PRICE_FIREWALL_V0_1.md
+- research/pattern_stale_price_fireWALL_v0_1.json
+- research/pattern_stale_price_firewall_v0_1.mjs
+- research/test_pattern_stale_price_firewall_v0_1.mjs
+- research/PATTERN_STALE_PRICE_D16_HANDOFF_V0_1.md
+
+No outcomes were opened. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001 and SDA-002 remain open. No runtime wiring and no Formal change. Formal Core remains LOCKED.
