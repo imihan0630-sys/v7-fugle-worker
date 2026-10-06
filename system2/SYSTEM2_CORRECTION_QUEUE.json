@@ -769,7 +769,7 @@
       "directiveId": "S2-CORR-20261006-003",
       "createdAt": "2026-10-06T21:01:27+08:00",
       "severity": "MEDIUM",
-      "status": "OPEN",
+      "status": "FIX_IMPLEMENTED",
       "title": "Candidate Board presents monitored bounded rows as candidates without resolvable strategy identity",
       "affectedScope": [
         "S2-16 Candidate Board",
@@ -825,10 +825,22 @@
       "assignedRoom": "System 2｜建置總控室",
       "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
       "blockedBy": [],
-      "implementationEvidence": [],
+      "implementationEvidence": [
+        "PR #686 merged as `fa9c433cf84d61f400c935cbd70019c7c9d39878` after zero-drift pre-merge conflict-unit check.",
+        "Formal Candidate Board now remains `FORMAL CANDIDATE PENDING / EMPTY`; `formalCandidateRows()` returns no rows until an authorized S2-07 frozen candidate/read source exists.",
+        "Bounded resonance rows and active-pool fallback rows are isolated under `MONITOR-ONLY｜Bounded Pool / Resonance` with `__rowAuthority=\"MONITOR_ONLY\"` and explicit `MONITOR / RESEARCH` source semantics.",
+        "Formal strategy tabs are disabled/pending and no longer filter monitor rows as if they were authorized per-strategy candidates.",
+        "`UNRESOLVED_STRATEGY` and `strategyOf()` are removed from candidate attribution; unresolved monitor provenance is represented as `MONITOR_PROVENANCE_UNRESOLVED` rather than a formal candidate strategy.",
+        "`daily_resonance_read_model_v0_1.mjs` now exposes `monitorStrategyMemberships`, `strategyAttributionAuthority=MONITOR_POOL_PROVENANCE_ONLY`, and `formalCandidateStrategyId=null`; pool memberships remain monitor provenance only.",
+        "Selecting a monitor row opens Decision Workspace with `MONITOR ROW · NOT FORMAL CANDIDATE`, formal candidate state `NOT_AVAILABLE`, and formal action remains `NO_FROZEN_DECISION`.",
+        "Targeted `institutional_terminal_page_v0_1.test.mjs` PASS and `daily_resonance_read_model_v0_1.test.mjs` PASS inside System2 Research CI run `37469475340` / job `112288878394`.",
+        "System2 Research CI run `37469475340` PASS; V8 Regression run `37469475238` PASS; merged-main System2 Research CI run `37469704138` PASS.",
+        "Merged-main readback verified all candidate/monitor separation invariants, followed by latest-main drift check showing zero drift across terminal page, terminal test, resonance read model, and read-model test.",
+        "No S2-07 assessor/frozen-candidate authority, strategy logic/contracts/preregistration, ranking, capacity, resonance formula/state machine, final/live selection authority, push/notification, capital/order, or System1 Formal Core was changed."
+      ],
       "verificationEvidence": [],
-      "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-06T21:01:27+08:00"
+      "finalDisposition": "PENDING — implementation complete; independent verification required before closure",
+      "updatedAt": "2026-10-06T21:18:28+08:00"
     },
     {
       "directiveId": "S2-CORR-20261006-004",
