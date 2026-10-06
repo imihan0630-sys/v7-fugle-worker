@@ -132,7 +132,7 @@ await t('empty legacy-only inventory does not claim modern origin coverage',asyn
 
 await t('effective Worker wires explicit origins and protected read-only route',async()=>{
   const source=fs.readFileSync(process.env.V7_TEST_WORKER_PATH||'Worker.js','utf8');
-  assert.match(source,/const VERSION = "8\.19\.0-c1-scan-origin-generation-inventory";/);
+  assert.match(source,/const VERSION = "8\.19\.1-pve250-runtime-remediation";/);
   assert.match(source,/url\.pathname === "\/api\/research\/c1-generation-inventory"/);
   assert.match(source,/scanOrigin:C1_SCAN_ORIGIN\.C1_SCAN_ORIGINS\.AFTER_MARKET_SCAN_PIPELINE/);
   assert.match(source,/scanOrigin:C1_SCAN_ORIGIN\.C1_SCAN_ORIGINS\.STAGE_SELECTION_ROUTE/);
