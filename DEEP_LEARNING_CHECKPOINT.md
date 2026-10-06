@@ -2589,3 +2589,33 @@ After 22:30 capture identical TPEx leverage LATE sources and compare against the
 2. On first genuine cutoff-bearing C1 parent, inventory actual persisted fields from that generation rather than inferring from source code.
 3. Bind comparator reuse to generationId + decisionCutoffAt + source/continuity lineage + common support.
 4. D03-10 remains first promotion target; D03-09 remains second and additionally needs canonical Wilder FULL_REPLAY/trusted-state certification.
+
+
+## 2026-10-06 D03 — TI-1173~1182 same-parent admission matrix acceleration
+
+- Durable machine artifact: `research/d03_adx_bollinger_same_parent_admission_matrix_20261006_v0_1.json`.
+- Latest-main re-read before this tranche found no change in the five D03 external blockers; the intervening main delta concerned SDA-009 rather than D03.
+- Field-level admission is now separated into:
+  - SAME_PARENT_PROJECTED;
+  - CONDITIONAL_PARENT_ONLY;
+  - DERIVABLE_FROM_AUTHORIZED_HISTORY_NOT_PARENT_PERSISTED;
+  - RESEARCH_OR_SYSTEM_AVAILABLE_NOT_C1_ADMITTED;
+  - REPLAY_CERTIFICATION_REQUIRED;
+  - UNKNOWN.
+- Confirmed same-parent projected controls from the V8.15.3 C1 projection:
+  - atrPercent;
+  - ret20;
+  - maDistance20Pct;
+  - lateStage.
+- ret60 and volatility20 are only conditionally persisted through the V8.17 membershipLiquidity path for bounded rejection/liquidity strata; they are NOT promoted to complete same-parent controls for the whole D03 parent population.
+- Existing MA slope/alignment, path-efficiency, trendPersistence, HH/HL/LH/LL, rangeCompressionSlope, trueRangeDryUp and VCP/Platform semantics are treated as derivable/repository-available but not same-parent admitted until a genuine immutable generation proves exact binding.
+- This prevents a subtle self-deception mode: mistaking source-code feature availability for causal parent availability.
+- Zero-new-ordinary-daily-provider-call default remains frozen.
+- D03-10 remains the first post-gate promotion target; D03-09 remains second and additionally requires Wilder H/L/C FULL_REPLAY or replay-certified trusted state.
+- No maturity promotion: D03 56.7%; D03-09/D03-10 L2/40; raw gate 2/3; observer blocked; outcomes closed; Formal Core locked.
+
+### Exact next continuation
+1. Re-read latest main and the five external blockers.
+2. On the first genuine cutoff-bearing C1 generation, apply the machine admission matrix to the actual persisted payload.
+3. Any field not physically bound to generationId + decisionCutoffAt + source/continuity lineage + common support remains non-admitted.
+4. If no external blocker changes, the next allowed acceleration path is to prepare deterministic field-admission acceptance cases against this matrix; do not expand the indicator zoo or invent new thresholds.
