@@ -23783,3 +23783,35 @@ New durable artifacts:
 - research/PATTERN_QUEUE_REFILL_VS_STRUCTURAL_REJECTION_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-054 — Persistent structural rejection vs quote flicker / cancel-repost cycling (2026-10-06)
+
+DL-053 separated depth survival from depletion and refill. DL-054 asks whether repeatedly visible depth is itself durable.
+
+In an electronic limit-order book, aggregate depth can look stable across snapshots while the underlying orders cancel and repost repeatedly. This matters because the visual impression of a defended price level can survive even when no individual displayed queue has meaningful lifetime.
+
+Three evidence grades are therefore separated. Snapshot presence only says depth was visible when sampled. Event-stream display persistence requires owner-certified quote/event timing. Economic survival through pressure is stronger still: displayed liquidity remains or replenishes under actual opposing marketable pressure. These grades may not be collapsed.
+
+D05 remains the owner of event-level quote persistence, additions, cancellations, executions, quote lifetime and event-clock completeness. D01 does not reconstruct these from candles or sparse depth snapshots.
+
+A sparse top-five snapshot series can support descriptive fields such as displayed depth and snapshot-to-snapshot changes. It cannot identify true cancel counts, repost counts, queue survival or fleeting-order state. If the owner event clock is not sufficient, the correct state is EVENT_CLOCK_NOT_EVALUABLE or SNAPSHOT_ONLY_UNKNOWN_PERSISTENCE.
+
+No universal foreign-market flicker threshold is imported into Taiwan. Millisecond or event-count horizons must be frozen by the proper owner methodology before outcome inspection.
+
+The key falsification is generic persistence. If similar cancel/repost/persistence profiles occur at salient non-structural price levels, zone localization alone cannot prove structural memory. Future D16 work therefore compares matched generic locations with the frozen structural zone.
+
+A second firewall concerns pressure. Displayed depth that is never challenged cannot be called absorptive. Pressure-surviving liquidity requires owner-certified opposing flow plus persistence evidence.
+
+Rapid cancellation is also not equivalent to spoofing. Cancellations can reflect adverse-selection avoidance, queue optimization, information updating, inventory/risk management or benign price discovery. D01 records only descriptive microstructure states and does not infer intent.
+
+Sixteen adversarial tests are authored. They reject sparse-snapshot lifetime inference, invalid event clocks and replay-unsafe sources; separate snapshot presence, persistent untested display, pressure-surviving liquidity, cancel/repost cycling, fleeting display and depletion/refill; block post-freeze quote evidence from baseline; reject spoofing claims without external authority; require a generic comparator; and prevent multiple mechanism receipts from multiplying independent sample count.
+
+New durable artifacts:
+- research/PATTERN_QUOTE_FLICKER_VS_DURABLE_LIQUIDITY_V0_1.md
+- research/pattern_quote_flicker_vs_durable_liquidity_v0_1.json
+- research/pattern_quote_flicker_vs_durable_liquidity_v0_1.mjs
+- research/test_pattern_quote_flicker_vs_durable_liquidity_v0_1.mjs
+- research/PATTERN_QUOTE_FLICKER_VS_DURABLE_LIQUIDITY_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No runtime wiring and no Formal change. Formal Core remains LOCKED.

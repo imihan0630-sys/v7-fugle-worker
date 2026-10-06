@@ -1,0 +1,26 @@
+{
+  "schemaVersion":"pattern-quote-flicker-vs-durable-liquidity-v0.1",
+  "updated":"2026-10-06 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "owners":{"D01":"zone relation","D05":"event/persistence/cancellation semantics","D16":"inference"},
+  "repeatedSnapshotDepthEqualsDurableLiquidity":false,
+  "quoteSizeEqualsQuotePersistence":false,
+  "rapidCancellationEqualsSpoofing":false,
+  "untestedDepthEqualsAbsorption":false,
+  "sparseSnapshotCanIdentifyCancelRepost":false,
+  "postOpportunitySurvivalAsBaseline":"PROHIBITED",
+  "d05OwnerEventReceiptRequired":true,
+  "states":[
+    "SNAPSHOT_ONLY_UNKNOWN_PERSISTENCE",
+    "PERSISTENT_UNTESTED_DISPLAY",
+    "PRESSURE_SURVIVING_LIQUIDITY_CANDIDATE",
+    "CANCEL_REPOST_CYCLING_CANDIDATE",
+    "FLEETING_DISPLAY_CANDIDATE",
+    "DEPLETION_REFILL_CANDIDATE",
+    "EVENT_CLOCK_NOT_EVALUABLE"
+  ],
+  "outcomeJoin":"CLOSED",
+  "formalOptimizationCandidate":"NONE"
+}

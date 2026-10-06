@@ -3259,3 +3259,98 @@ No maturity or Formal change is authorized by this routing.
 7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 8. Next D01 science: separate persistent structural rejection from repeated passive-depth display that is continuously cancelled / reposted (quote flicker) rather than economically durable liquidity.
 9. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-054 (2026-10-06)
+
+### DL-054 — Persistent structural rejection vs quote flicker / cancel-repost cycling
+- DL-053 separated structural rejection from generic queue/depth refill.
+- DL-054 adds a stricter microstructure falsification: repeatedly visible displayed depth can be economically transient because underlying orders may cancel, move and repost rapidly.
+- External evidence motivates the separation:
+  modern LOB research documents high cancellation rates, fleeting orders, flickering quotes and rapid order revisions;
+  raw order-book imbalance can be contaminated by transient displayed liquidity;
+  quote persistence therefore requires event-level timing rather than repeated snapshots.
+- D05 owner boundary remains strict:
+  D05 owns event clock, order additions/cancellations/executions, displayed-depth persistence, quote lifetime, cancel/repost semantics and event completeness.
+  D01 owns only the relation between owner-certified quote persistence and the frozen structural zone.
+- Three evidence grades are separated:
+  P0 SNAPSHOT_PRESENCE;
+  P1 EVENT_STREAM_DISPLAY_PERSISTENCE;
+  P2 ECONOMIC_SURVIVAL_THROUGH_PRESSURE.
+- Repeated snapshot presence is the weakest grade and may not be called durable liquidity.
+- Same mean displayed depth can arise from:
+  large rapidly canceled/reposted quotes;
+  smaller but genuinely persistent depth surviving opposing pressure.
+  No scalar depth-strength score is defined.
+- Frozen mechanism states:
+  SNAPSHOT_ONLY_UNKNOWN_PERSISTENCE;
+  PERSISTENT_UNTESTED_DISPLAY;
+  PRESSURE_SURVIVING_LIQUIDITY_CANDIDATE;
+  CANCEL_REPOST_CYCLING_CANDIDATE;
+  FLEETING_DISPLAY_CANDIDATE;
+  DEPLETION_REFILL_CANDIDATE;
+  EVENT_CLOCK_NOT_EVALUABLE.
+- No universal millisecond / event-count flicker threshold is imported into Taiwan.
+  Persistence horizons belong to D05 methodology / preregistration.
+- Sparse snapshot firewall:
+  periodic top-five snapshots may describe displayed state and snapshot changes,
+  but cannot identify true cancellation count, repost count, individual quote lifetime, queue survival or flicker.
+- Untested displayed depth is not absorption.
+  Pressure-survival requires owner-certified opposing pressure plus persistence evidence.
+- Quote localization relative to the structural zone is descriptive only.
+  No tick/ATR/% proximity threshold is allowed to prove structural memory.
+- Generic persistence comparator is required:
+  G0 matched persistence/cancellation profile at salient non-structural locations;
+  G1 matched profile at the frozen structural zone.
+  If G1 is not distinct from G0, generic liquidity mechanics are sufficient.
+- Timing firewall:
+  firstDisplayedAt known by predictorFreezeAt may be baseline;
+  later lastDisplayedAt / cancellation / repost / pressure / survival assessment are post-treatment mechanism states unless already known by freeze.
+- Rapid cancellation does not identify spoofing, market-maker defense, smart-money support or inventory motive.
+  Public book data alone do not identify intent.
+- Future D16 ladder:
+  R0 RAW_ZONE_RESPONSE;
+  R1 DL052_SHOCK_CONTROLLED;
+  R2 DL053_REFILL_CONTROLLED;
+  R3 SNAPSHOT_SIZE_CONTROLLED;
+  R4 QUOTE_PERSISTENCE_CONTROLLED;
+  R5 CANCEL_REPOST_TURNOVER_CONTROLLED;
+  R6 PRESSURE_SURVIVAL_CONTROLLED;
+  R7 GENERIC_LOCATION_COMPARATOR_CONTROLLED;
+  R8 STRUCTURAL_REJECTION_RESIDUAL_CANDIDATE;
+  R9 MULTI_DATE_TICK_TIER_REPLICATION.
+- Future interpretations:
+  Q0 SNAPSHOT_DEPTH_ILLUSION;
+  Q1 GENERIC_QUOTE_PERSISTENCE;
+  Q2 FLICKER_CANCEL_REPOST_EXPLANATION;
+  Q3 PRESSURE_SURVIVAL_ASSOCIATION;
+  Q4 STRUCTURAL_REJECTION_RESIDUAL;
+  Q5 QUOTE_PERSISTENCE_NOT_IDENTIFIABLE;
+  Q6 NOT_EVALUABLE.
+- One structural opportunity remains one causal parent even when many quote/depth/persistence receipts exist.
+  effectiveIndependentEvidenceCount remains 1 by default.
+- New files:
+  - research/PATTERN_QUOTE_FLICKER_VS_DURABLE_LIQUIDITY_V0_1.md
+  - research/pattern_quote_flicker_vs_durable_liquidity_v0_1.json
+  - research/pattern_quote_flicker_vs_durable_liquidity_v0_1.mjs
+  - research/test_pattern_quote_flicker_vs_durable_liquidity_v0_1.mjs
+  - research/PATTERN_QUOTE_FLICKER_VS_DURABLE_LIQUIDITY_D16_HANDOFF_V0_1.md
+- 16 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain open under canonical queue.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-054
+
+1. Reconcile the DL-054 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-054 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve snapshot presence, event-stream persistence and pressure survival as distinct evidence grades.
+4. Reject flicker/cancel-repost labels under sparse snapshot-only data.
+5. Keep later cancellation/repost/pressure/survival evidence out of baseline predictors when learned after freeze.
+6. Hand R0-R9 / Q0-Q6 common-support and mechanism-separation inference to D16.
+7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+8. Next D01 science: separate genuine pressure-surviving liquidity from price-level migration of the displayed queue, where liquidity follows price rather than defending a fixed structural boundary.
+9. No runtime wiring / no Formal change.
