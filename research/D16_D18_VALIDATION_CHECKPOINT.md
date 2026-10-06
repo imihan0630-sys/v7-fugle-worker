@@ -2753,3 +2753,50 @@ Exact next:
 4. if generation-set finalization engineering lands, validate only against T48-F01~F10 and canonical T48;
 5. if System2 fingerprints / NC-T01 land first, switch to SDA-022 S22-T06~T16;
 6. economic outcomes remain CLOSED.
+
+
+## 2026-10-07 opportunity ledger + scheduler provenance continuation
+
+New:
+- `research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_2.md`;
+- `research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_2.json`;
+- `research/SDA016_D16_SUPPLEMENTAL_GOVERNANCE_CROSSWALK_20261007_V0_1.json`.
+
+Supersedes V0.1 opportunity-ledger machine contract.
+
+Core:
+1. expected market opportunities are generated independently from observed runs/artifacts;
+2. attempt ledger and opportunity ledger are linked but not interchangeable;
+3. first scheduled attempt is immutable coverage anchor;
+4. later rerun/manual/push cannot repair promotion-grade first-attempt coverage;
+5. current System1 default target function `previousTaipeiDate()` is calendar-date based, not official-session based;
+6. market-session identity requires provenance and emergency-closure correction lineage;
+7. no-run gap remains in coverage even while causal attribution is unknown;
+8. GitHub scheduler/platform state is distinct from repository trigger, collector, source, strategy and market-state causes.
+
+Canonical SDA016 count remains 58:
+- opportunity/attempt controls strengthen T28/T31/T38;
+- finalization controls strengthen T48;
+- supplemental cases do not expand canonical oracle count.
+
+Current external blockers unchanged:
+- genuine Formal↔C1 prospective sample N = 0;
+- T48 implementation/readback pending;
+- System2 SDA-022 per-strategy fingerprints pending;
+- physical NC-T01 pending;
+- economic outcomes CLOSED.
+
+No maturity change:
+D16 = 60%.
+D18 = 52%.
+Formal Core LOCKED.
+
+Exact next:
+1. re-read latest main/queue;
+2. enumerate expected market opportunities only when authoritative session provenance is available;
+3. reconcile each opportunity against first scheduled attempt and artifact;
+4. preserve no-run gaps with scheduler causal state UNKNOWN until proven;
+5. validate first genuine Formal↔C1 receipt if it appears;
+6. validate T48 engineering if it appears;
+7. switch to SDA-022 T06~T16 if System2 fingerprint / NC-T01 lands first;
+8. do not open economic outcomes.
