@@ -729,3 +729,14 @@ After representative-routing research was dispositioned at 5/6, S2-07 entered bo
 PR #610 froze the 2026-04-05..2026-10-02 low-volume final-event universe (23 events / 23 symbols) and physically observed MOPS issuer-side action-family history plus pre-effective issuer evidence for all 23 events.
 
 This is 23/23 observability, not exhaustive revision completeness. The next gate is event-to-version linkage and negative no-revision/cancellation qualification. Exact public knownAt and all trading authorities remain locked.
+
+
+## 2026-10-07 S2-07 reference-event clock boundary
+
+S2-07 V1.2 is physically accepted as a fail-closed historical-availability gate for the bounded 4806 / TPEX / CAPITAL_REDUCTION / 2026-10-02 reference event.
+
+The stable cross-capture identity is `semanticHash + sourceRowHash`. `eventVersionId` remains observation-receipt provenance and is not used as a stable source key.
+
+Physical run `37538390532` / job `112525069738` found 18 MOPS capital-reduction lineage rows, aligned the active 2026 episode to seed `2026-02-24|16:28:25|3`, and retained 8/8 rows as retrospective source-clock evidence only. There is zero independent exact-source historical public-availability evidence.
+
+Therefore `firstKnownAt=null`, `availableAt=null`, `pitEventReplayEligible=false`, blocker `OFFICIAL_REFERENCE_EVENT_HISTORICAL_AVAILABILITY_UNPROVEN`. No System1/runtime/trading authority changed. Evidence: `system2/evidence/S2_07_REFERENCE_EVENT_AVAILABILITY_V1_2_PHYSICAL_20261007.json`.
