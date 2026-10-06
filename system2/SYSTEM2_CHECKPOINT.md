@@ -2295,3 +2295,23 @@ SDA-022 current upstream state:
 - physical NC-T01 S22-T11~T16 PENDING.
 
 This pointer does not reorder BUILD_LANE/DATA_LANE/REMEDIATION_LANE ownership and authorizes no strategy, ranking, final-selection, push, order or System1 Formal mutation.
+
+
+## 2026-10-06 post-audit correction drift pointer — CORR-003
+
+Latest Correction Queue:
+- S2-CORR-20261006-002 = VERIFIED_CLOSED.
+- S2-CORR-20261006-003 = OPEN / BUILD_LANE.
+
+CORR-003 exact boundary:
+- formal Candidate Board rows must remain distinct from monitor-only resonance/pool fallback rows;
+- UNRESOLVED_STRATEGY must not be promoted into resolved candidate identity;
+- strategy filtering must use canonical candidate strategy identity;
+- Decision Workspace must not upgrade a monitor row into formal candidate/frozen-decision readiness;
+- protected strategy logic, assessor policy, ranking/capacity, final-selection, push/orders and System1 Formal Core remain unchanged.
+
+System2 SDA-022 remains:
+T06~T10 PENDING / NC-T01 T11~T16 PENDING.
+No physical fingerprint or NC-T01 receipt has been accepted by 00 yet.
+
+This correction remains BUILD_LANE-owned and does not authorize other lanes to mutate its conflict unit.
