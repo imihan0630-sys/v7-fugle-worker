@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-07T07:26:00+08:00",
+  "updatedAt": "2026-10-07 Asia/Taipei",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -670,7 +670,8 @@
         "research/SDA016_ROOM11_V820_RUNTIME_FIRST_SCHEDULED_READBACK_VALIDATION_20261007_V0_1.md",
         "research/SDA016_GENERATION_SET_FINALIZATION_CONTRACT_20261007_V0_1.json",
         "research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_2.json",
-        "research/SDA016_D16_SUPPLEMENTAL_GOVERNANCE_CROSSWALK_20261007_V0_1.json"
+        "research/SDA016_D16_SUPPLEMENTAL_GOVERNANCE_CROSSWALK_20261007_V0_1.json",
+        "research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_3.json"
       ],
       "formalC1Binding": {
         "status": "V820_PRODUCTION_VERIFIED_GENUINE_BINDING_PENDING",
@@ -719,8 +720,8 @@
         "t48ContractStatus": "RESEARCH_ONLY_FINALIZATION_SEMANTICS_FROZEN_ENGINEERING_RECEIPT_PENDING"
       },
       "opportunityCoverage": {
-        "status": "RESEARCH_ONLY_EXPECTED_OPPORTUNITY_LEDGER_FROZEN_ENGINEERING_RECONCILIATION_PENDING",
-        "contract": "research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_2.json",
+        "status": "RESEARCH_ONLY_EXPECTED_OPPORTUNITY_LEDGER_V0_3_FROZEN_ENGINEERING_RECONCILIATION_PENDING",
+        "contract": "research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_3.json",
         "canonicalTestCountUnchanged": 58,
         "mappedTests": [
           "SDA016-T28",
@@ -730,7 +731,9 @@
         ],
         "firstScheduledAttemptIsCoverageAnchor": true,
         "laterRerunRepairsCoverage": false,
-        "noRunRootCauseMayRemainUnknown": true
+        "noRunRootCauseMayRemainUnknown": true,
+        "sessionIdentityRule": "ASYMMETRIC_POSITIVE_TRADING_EVIDENCE_NONTRADING_REQUIRES_AUTHORITATIVE_CALENDAR_OR_CLOSURE_PROVENANCE",
+        "dataAbsenceCanProveNonTradingDay": false
       }
     },
     {
