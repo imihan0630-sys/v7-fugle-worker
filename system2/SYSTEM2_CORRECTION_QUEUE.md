@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-06 19:12 Asia/Taipei
+Updated: 2026-10-06 19:24 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -28,11 +28,11 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - assignedLane: DATA_LANE
 - assignedRoom: System 2｜歷史資料工程室
 - modificationOwner: SYSTEM2_HISTORICAL_DATA_ROOM
-- blockedBy: GitHub workflow_dispatch execution channel / owner login authorization if still required
+- blockedBy: 2021 TPEx official-source canonical A1 revision on 2021-01-14 requires explicit revision-lineage/as-of handling before that market-year can be accepted
 - affectedScope: S2-03 Historical infrastructure / P0 2017-present TWSE+TPEx daily A1 cold history
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement: System 2 historical infrastructure must physically populate and verify the staged official 2017-present Taiwan-equity daily history before it can be described as complete or used as complete full-market replay evidence.
-- observedProblem: Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE. 2021 TPEx run #17 stopped at D1 checkpoint persistence because the Cloudflare D1 free-tier daily row-write quota was exhausted before Physical verify. This is an infrastructure quota blocker, not a data-integrity failure. CORR-001 stays open because 2021 TPEx, later market-years, the 2026 incremental path, and final full-market PIT replay are pending.
+- observedProblem: Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE. The prior 2021 TPEx D1 quota blocker was cleared by run #18, but Physical verify now blocks that market-year on an official-source canonical A1 revision concentrated on 2021-01-14: 780 full source-row revisions, 698 canonical A1 changes, 82 source-revision-only rows, with identical 191,643 cold/fresh row counts and 795/795 R2 byte verification PASS. 2021 TPEx remains explicitly BLOCKED; immutable cold history is not overwritten. CORR-001 stays open for revision-lineage handling, later years, 2026 incremental history and final PIT replay.
 - evidence:
   - SYSTEM2_CHECKPOINT: run 36545375167 failed before annual ingest.
   - SYSTEM2_CHECKPOINT: repaired continuation required manual 2017 TWSE rerun, then TPEx only after TWSE coverage/hash/manifest/receipt verification.
@@ -96,6 +96,11 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - Earliest free-tier retry: `2026-10-06T00:00:00Z` = `2026-10-06 08:00 Asia/Taipei`.
   - Partial cold state is resume-safe and must not be deleted or rewritten; existing R2 objects/manifests remain immutable-checked on retry.
   - Blocker evidence: `system2/evidence/S2_HISTORICAL_TPEX_2021_D1_QUOTA_BLOCKER_V0_1.json`.
+  - 2021 TPEx run `37401612529` (#18): annual backfill/storage PASS and System1 isolation PASS; attempt 2 Physical verify produced durable artifact `11409737982` but blocked on `SOURCE_REVISION_WITH_CANONICAL_A1_CHANGE`.
+  - 2021 TPEx storage facts: COMPLETE receipt / 795 packs / 191,643 bars / 795 HEAD + 795 byte-GET SHA checks PASS / zero missing or extra fresh-official keys.
+  - Source revision is concentrated on `2021-01-14`: 780 source-row hash changes, 698 canonical A1 value changes, 82 source-revision-only rows.
+  - Durable revision evidence: `system2/evidence/S2_HISTORICAL_TPEX_2021_REVISION_BLOCKER_V0_1.json`; artifact digest `sha256:32a98f1528ea1cdc8154eaa2e31b43e9d2905e92d0a43606c4cf29abd1d2f621`.
+  - 2021 TPEx is fail-closed BLOCKED, not rewritten. The coverage matrix preserves the old quota blocker as resolved historical provenance and now records the canonical revision blocker.
 - riskIfUnfixed: Historical replay, factor validation, multi-year backtests, regime robustness and strategy comparison can be mistaken for being backed by a complete market history when only bounded/smoke datasets exist. This creates a false-completion and evidence-coverage risk on a P0 dependency.
 - requiredCorrection:
   1. Resume from the repaired historical-calendar implementation; do not restart architecture design.
