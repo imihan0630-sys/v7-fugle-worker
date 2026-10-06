@@ -2409,3 +2409,14 @@ Exact remaining topology delta:
 8. commit `research/COV06_D10_SPECIALIST_RETURN_V0_1.md`.
 
 No maturity or Formal change is authorized by this routing.
+
+
+## SC-056 source-clock freeze — 2026-10-06 21:12 Asia/Taipei
+
+- Native-source surveillance confirms the latest MOEA industrial-production release available at capture time is 2026-08, published 2026-09-23.
+- Therefore no 2026-09 physical-chain observation is eligible for prospective append yet. Missing future evidence remains UNKNOWN; no September row is fabricated from partial/current web state.
+- The preregistered 1M/2M/3M lag set and production-direction primary metric remain unchanged.
+- Overlapping monthly lag comparisons must not be treated as independent events; future inference must retain serial-dependence caution.
+- Durable receipt: `research/sc056_source_clock_receipt_20261006_2112_v0_1.json`.
+- Status: `SOURCE_CLOCK_FROZEN / SEPTEMBER_NATIVE_RELEASE_NOT_YET_AVAILABLE / KEEP_L2`.
+- Exact next: after the next native industrial-production release, append copper-foil→CCL→PCB and steel-chain observations with sourcePublishedAt/capturedAt frozen before any outcome join. No stock outcome opening and no Formal Core change.
