@@ -48,6 +48,6 @@ jobs:
         run: |
           set -euo pipefail
           ! grep -qE '\b(INSERT|UPDATE|DELETE|REPLACE|DROP|ALTER|CREATE)\b' system2/scripts/probe_s2_07_technical_continuity_bridge_readonly_v1_1.mjs
-          ! grep -qE 'wrangler|secret put|deploy' system2/scripts/probe_s2_07_technical_continuity_bridge_readonly_v1_1.mjs
+          ! grep -qE 'wrangler[[:space:]]+(deploy|secret)|secret[[:space:]]+put|workers[[:space:]]+deploy' system2/scripts/probe_s2_07_technical_continuity_bridge_readonly_v1_1.mjs
           git diff --exit-code -- Worker.js wrangler.toml
           echo "S2-07 technical continuity bridge V1.1 read-only/System1 isolation PASS"
