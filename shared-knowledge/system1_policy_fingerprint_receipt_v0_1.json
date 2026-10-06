@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "CROSS_SYSTEM_POLICY_FINGERPRINT_RECEIPT_V0_1",
+  "fingerprintId": "SYSTEM1:V8_FORMAL_SELECTION:2026-10-06:V0.1",
+  "fingerprintHash": "a41f0699e9fe4a64476460a4df632d16b663b72fb85f0d612988718d7e06d570",
+  "systemId": "SYSTEM1",
+  "strategyId": null,
+  "strategyVersion": null,
+  "policyId": "V8_FORMAL_SELECTION",
+  "policyVersion": "V8_FORMAL_SELECTION_BASELINE_2026-10-06",
+  "effectiveAt": "2026-10-06T07:03:00+08:00",
+  "decisionClockRole": "AFTER_MARKET_SELECTION_WITH_FORMAL_15M_ENTRY_CONFIRMATION",
+  "authorityState": "FORMAL_LOCKED",
+  "sourceArtifacts": [
+    {
+      "path": "shared-knowledge/SYSTEM1_A2_GATE_ROLE_INVENTORY_20261003_V0_1.md",
+      "contentSha": "900acaa3dfafab4f8f46d8dd4f608276716590ef"
+    },
+    {
+      "path": "shared-knowledge/SYSTEM1_SYSTEM2_POLICY_FINGERPRINT_BASELINE_20261006_V0_1.md",
+      "contentSha": "d7d1fefe8dd38bda3077374df8d2a25d9af8f45a"
+    },
+    {
+      "path": "scripts/apply_v7_5_30.py",
+      "contentSha": "56938e1f49480d7b80d65a634f18e829e23212da"
+    }
+  ],
+  "candidateUniverseMode": "INDEPENDENT_AUTHORIZED_UNIVERSE",
+  "candidateUniverseSourceRefs": [
+    "TWSE_TPEX_COMBINED_FORMAL_NORMALIZED",
+    "SYSTEM1_FORMAL_ADMISSION_PIPELINE"
+  ],
+  "requiresOtherSystemCandidateOutput": false,
+  "requiresOtherSystemRankOutput": false,
+  "gateFamilyIds": [
+    "PRICE_FLOOR",
+    "HISTORY_60D",
+    "RS_CONTEXT",
+    "MARKET_CAP_FLOOR",
+    "DAILY_ABNORMALITY",
+    "LIQUIDITY",
+    "SMALL_CAP_SPECIAL",
+    "MID_CAP_LIQUIDITY",
+    "CHIP_CONCENTRATION_PRESENT",
+    "FINANCIAL_SOURCE_COMPLETENESS",
+    "ANNOUNCEMENT_RISK",
+    "VALUATION_RELATIVE_RISK",
+    "SECTOR_GATE",
+    "AB_SETUP",
+    "FUNDAMENTAL_COMPONENT_COUNT",
+    "FUNDAMENTAL_QUALITY",
+    "ATR_QUALITY",
+    "TARGET_AVAILABLE",
+    "REWARD_RISK",
+    "FINAL_SIGNAL_GRADE",
+    "OUTER_SOURCE_AUTHENTICITY",
+    "OUTER_SESSION_CONTINUITY",
+    "OUTER_CORPORATE_ACTION_CONTINUITY",
+    "OUTER_EXECUTION_FEASIBILITY",
+    "OUTER_ACCOUNT_RISK"
+  ],
+  "requiredEvidenceFamilies": [
+    "AB_SETUP",
+    "REWARD_RISK",
+    "LIQUIDITY_RISK",
+    "SOURCE_COMPLETENESS",
+    "FUNDAMENTAL",
+    "SECTOR",
+    "INSTITUTIONAL_CHIP",
+    "RELATIVE_STRENGTH",
+    "ANNOUNCEMENT_RISK"
+  ],
+  "supportiveEvidenceFamilies": [
+    "MARKET_CONSENSUS"
+  ],
+  "contextEvidenceFamilies": [],
+  "informationRoots": [
+    "PRICE_OHLC",
+    "VOLUME_TURNOVER",
+    "OFFICIAL_FUNDAMENTAL_FILINGS",
+    "OFFICIAL_VALUATION",
+    "OFFICIAL_ANNOUNCEMENTS",
+    "OFFICIAL_INSTITUTIONAL_FLOW_OWNERSHIP",
+    "SECTOR_MARKET_BREADTH",
+    "MARKET_CONSENSUS_RECEIPT",
+    "CORPORATE_ACTION_SESSION_CONTINUITY",
+    "ACCOUNT_EXECUTION_STATE"
+  ],
+  "rankingPolicy": {
+    "rankingPolicyId": "SYSTEM1_FORMAL_PRIORITY_COMPARATOR",
+    "rankingPolicyVersion": "V7.5.30_EFFECTIVE_GUARDED_CHAIN",
+    "rankingMechanism": "SYSTEM1_FORMAL_COMPARATOR",
+    "orderedComparatorFields": [
+      "priorityScore",
+      "rewardPerRisk",
+      "marketConsensusScore",
+      "setupQuality",
+      "sectorFlow",
+      "relativeStrength"
+    ]
+  },
+  "capacityPolicy": {
+    "policyId": "TOP6_3PLUS3",
+    "generalPoolMax": 3,
+    "thousandPoolMax": 3,
+    "thousandThresholdTwd": 1000,
+    "totalMax": 6,
+    "crossPoolTransfer": false,
+    "forcedFill": false,
+    "priceFloorTwd": 10,
+    "maxSingleNameAllocationPct": 35
+  },
+  "entryConfirmationPolicy": {
+    "policyId": "FORMAL_15M_CONFIRMATION",
+    "primaryBarMinutes": 15,
+    "auxiliaryBarMinutes": 10,
+    "system2UniversalGate": false
+  },
+  "lifecyclePolicy": {
+    "policyId": "SYSTEM1_FORMAL_TRADE_LIFECYCLE",
+    "states": [
+      "SELECTED",
+      "BUY",
+      "FIRST",
+      "ADD",
+      "FULL",
+      "REDUCE",
+      "REDUCED_CONFIRMED",
+      "RE_ADD_ELIGIBLE",
+      "SELL",
+      "STOP"
+    ],
+    "requiresSystem2State": false
+  },
+  "primaryHorizonSessions": [
+    1,
+    3,
+    5,
+    10
+  ],
+  "unknownSemantics": "UNKNOWN is distinct from FAIL and zero; missing or unverified evidence fails closed where the current Formal contract requires it and must not be fabricated or forward-filled.",
+  "formalMutation": false,
+  "generatedAt": "2026-10-06T07:30:00+08:00",
+  "notes": [
+    "Fingerprint is observability-only and does not change A/B, Top6/3+3, ranking, 15-minute confirmation, capital allocation, lifecycle, push, or order behavior.",
+    "primaryHorizonSessions records the currently preregistered short-horizon cross-system comparison frame; it does not impose a forced exit horizon on Formal positions.",
+    "fingerprintHash is SHA-256 of recursively key-sorted JSON after removing fingerprintHash and generatedAt."
+  ]
+}
