@@ -1,7 +1,7 @@
 # System 2 S2-07 Technical Continuity Bridge V1.1
 
 Updated: 2026-10-07 Asia/Taipei  
-Status: RESEARCH_ONLY / BUILD_LANE / PHYSICAL_EXECUTION_PENDING  
+Status: RESEARCH_ONLY / BUILD_LANE / PHYSICAL_EXECUTION_REQUESTED  
 Scope: 4806 only  
 Formal Core: LOCKED  
 Trading authority: NONE
@@ -116,6 +116,10 @@ Examples:
 - `PRE_SUSPENSION_CLOSE_OFFICIAL_MISMATCH`
 - `MECHANICAL_RESET_BRIDGE_MISMATCH`
 - RAW OHLC / provenance / price-space identity blockers.
+
+## Physical execution continuation
+
+Latest-main BUILD_LANE continuation requests the existing read-only physical probe for the single bounded 4806 case. This request changes no evaluator, official-source parser, RAW history, continuity transform, strategy/ranking authority, notification/order behavior, or System1 runtime. Physical status may advance only from workflow evidence.
 
 ## Physical probe
 
