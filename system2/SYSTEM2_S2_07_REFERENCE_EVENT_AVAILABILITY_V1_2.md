@@ -111,8 +111,24 @@ Continue non-conflicting BUILD_LANE work while:
 - 4806 remains usable only as bounded present-day research geometry, not PIT replay continuity.
 
 
-## 2026-10-07 merged-main receipt staging
+## 2026-10-07 merged-main physical acceptance
 
 Receipt branch base: `777b5876917774a5ad4c32eac3e563df2b3acfe5`.
 
-This documentation-only staging change intentionally retriggers the V1.2 read-only physical workflow with the already-merged V1.2 runtime as its base. Final run identity and physical counts are written back only after that workflow passes.
+Dedicated V1.2 workflow run `37538390532`, job `112525069738`: PASS.
+
+Physical result:
+- stable semantic hash: `b6a4c97fdf3ded2bdae7048852540e4f58c1a64da4cbc012e350d5227e20d869`;
+- stable source-row hash: `518fcdf6b0f3d5dc8ffaafba59556c86da3cda76dd0e46c528217740c33ae92b`;
+- observed receipt eventVersionId: `S2-CA-EVENT:82da757e780d7be2c3474f5ca505d385b55705d44b520f291dc7383f88c391ca`;
+- 18 MOPS capital-reduction family lineage rows;
+- semantic seed `2026-02-24|16:28:25|3`;
+- 8 semantic-aligned 2026 rows, all source-clock eligible and all retrospective-only;
+- independent exact-source historical public-availability evidence: 0;
+- state `REFERENCE_EVENT_HISTORICAL_AVAILABILITY_NOT_PROVEN`;
+- blocker `OFFICIAL_REFERENCE_EVENT_HISTORICAL_AVAILABILITY_UNPROVEN`;
+- `firstKnownAt=null`, `availableAt=null`, `pitEventReplayEligible=false`;
+- System1 isolation guard PASS.
+
+Evidence receipt:
+`system2/evidence/S2_07_REFERENCE_EVENT_AVAILABILITY_V1_2_PHYSICAL_20261007.json`.
