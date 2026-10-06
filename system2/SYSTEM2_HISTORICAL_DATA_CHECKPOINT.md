@@ -35,7 +35,8 @@ Physically accepted raw A1 market-years:
 - 2019 TWSE / TPEx: data coverage PASS / replay readiness PARTIAL;
 - 2020 TWSE / TPEx: data coverage PASS / replay readiness PARTIAL;
 - 2021 TWSE: data coverage PASS / replay readiness PARTIAL;
-- 2022 TWSE: data coverage PASS / replay readiness PARTIAL.
+- 2022 TWSE: data coverage PASS / replay readiness PARTIAL;
+- 2022 TPEx: data coverage PASS / replay readiness PARTIAL.
 
 2021 TPEx run `37326149826` / #17 is **not accepted**:
 - migrate SUCCESS;
@@ -276,3 +277,35 @@ Execution-drift validation from run head to then-latest main confirmed the annua
 The GitHub API does not expose workflow_dispatch inputs in the run payload and the in-progress job log blob is not yet available for readback. The requested continuation is 2022/TPEX; exact year/market inputs must be confirmed from the job log before market-year acceptance.
 
 Run URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37473405416
+
+
+## 2026-10-06 2022 TPEx durable acceptance
+
+Run `37473405416` / #20 completed SUCCESS on head `f5f33c9f006e249c604f3f19067bf33f2a106117` with confirmed inputs `year=2022`, `market=TPEX`.
+
+Acceptance facts:
+- annual backfill: PASS / YEAR_BACKFILL_COMPLETE;
+- official trading dates: 246;
+- cold/fresh official rows: 195,840 / 195,840;
+- packs / symbols: 815 / 815;
+- R2 HEAD / byte-GET verification: 815 / 815 PASS;
+- missing-from-cold / absent-from-fresh: 0 / 0;
+- source-row hash mismatch / canonical A1 mismatch: 0 / 0;
+- source version: STABLE;
+- historical-universe readiness: PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION;
+- expected membership-session bars: 196,015;
+- actual bars: 195,840;
+- UNKNOWN symbol-session gaps: 175;
+- data coverage: PASS;
+- replay readiness: PARTIAL;
+- System1 production isolation: PASS.
+
+Durable evidence: `system2/evidence/S2_HISTORICAL_TPEX_2022_PHYSICAL_VERIFICATION_V0_1.json`.
+
+Artifact: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37473405416/artifacts/11419964963
+
+Run: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37473405416
+
+Disposition: 2022 TPEx is accepted for raw A1 data coverage with replay readiness explicitly PARTIAL. The remaining debt is 175 explicit UNKNOWN symbol-session gaps plus incomplete official TPEx historical delisting-union coverage; none of this is coerced to raw-source completeness.
+
+Next annual continuation: fresh workflow_dispatch `year=2023`, `market=TWSE` from latest main. Keep the separate 2021 TPEx canonical-revision blocker open in parallel.
