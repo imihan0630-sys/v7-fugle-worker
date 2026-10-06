@@ -1073,3 +1073,58 @@ Exact next:
 - `SDA-009-R3A`: System1 implements the V0.2 research-only diagnostic and emits first verified same-generation receipt.
 - `SDA-009-R3B`: Room07 consumes it with the V0.2 oracle and freezes common-support gate direction, pool-seat flip, comparator-attributed rank flip, allocation redistribution and normalizer externality.
 - D16 then evaluates incremental/economic relevance.
+
+
+## SDA-009 R3 identifiability / cohort firewall V0.3 — minimal C1 atomic path
+
+Artifacts:
+- `research/SDA009_R3_IDENTIFIABILITY_AND_COHORT_FIREWALL_V0_3.md`
+- `research/sda009_r3_identifiability_contract_v0_3.json`
+- `research/sda009_c1_atomic_replay_prototype_v0_3.mjs`
+- `research/test_sda009_c1_atomic_replay_prototype_v0_3.mjs`
+
+Status: IDENTIFIABILITY_TIERS_FROZEN / TWO_ATOM_C1_REPLAY_PROTOTYPE_PASS_18 / GENUINE_RECEIPT_COUNT_0 / FORMAL_CORE_UNCHANGED
+
+SDA-009 incidence must not be measured on selected-only, qualified-only, current sector-gate passers only, `basePassed=true` only, or bounded rejected samples. `basePassed=true` is not equivalent to actual sector-gate execution reach because current Formal has `basePassed=true` failures before the sector gate.
+
+Frozen denominator layers:
+P0 = full immutable same-generation C1 parent;
+P1 = actual SECTOR_GATE_REACHED population;
+P2 = mechanically identifiable LOO rows;
+P3 = decision-relevant ex-sector rows;
+P4 = rank-identifiable rows;
+P5 = allocation-identifiable rows.
+
+Current C1 is a strong parent but is not sufficient for exact full LOO replay. The minimum research-only C1 extension is two already-in-memory atoms on every row:
+- `currentChangePercent`;
+- `currentTradeValue`.
+
+With existing industry, feature.historyDays and feature.avgAmount20, those two atoms are sufficient to reconstruct current Formal sector primitives, activity ratio, sector amount, cross-sector max amount and sector score in a pure research analyzer with zero new provider calls.
+
+Membership lineage additionally requires classificationSchemeId, membershipVersion and membershipDigest. Recommended digest semantics: SHA256 over sorted symbol|industry pairs, proving the exact runtime grouping without claiming official historical taxonomy.
+
+Mandatory trust gate: reconstruct the inclusive production sector state first. Any mismatch => `BLOCKED_PARITY_MISMATCH`; no LOO result from that generation is interpretable.
+
+Pure prototype:
+`research/sda009_c1_atomic_replay_prototype_v0_3.mjs`.
+
+Local isolated Node.js v22.16.0:
+PASS / 18 assertions.
+
+The prototype covers inclusive reconstruction, self-promotion, self-suppression, activity LOO, local contribution, max-normalizer externality, zero peers UNKNOWN, one-peer SMALL_N_SENSITIVE, missing atom BLOCKED and parity mismatch BLOCKED.
+
+Candidate-specific full LOO may use a different max-sector-amount normalizer for each candidate. That is valid for causal self-effect but cross-candidate scores are not automatically comparable. Gate analysis may proceed; rank/seat remains UNKNOWN until a cross-candidate comparison policy is frozen and tested.
+
+Mechanical gate flip is separate from decision relevance. A flip is decision-relevant only when independent non-sector downstream gates are PASS on the same generation.
+
+Self-promotion and self-suppression are asymmetric for rank evidence: current qualified self-promotion cases can often identify removal/seat loss from frozen actual pool rank; current sector-gate-rejected self-suppression cases lack an observed qualified counterfactual ranking tuple, so exact seat gain remains UNKNOWN unless ranking primitives are available.
+
+Allocation effects must be decomposed into PURE_SCORE_WEIGHT_EFFECT / SELECTION_COMPOSITION_EFFECT / DEPLOY_RATIO_REGIME_EFFECT / POSITION_CAP_EFFECT / NTD_FLOORING_EFFECT.
+
+Maturity: D09 remains 57.1%. Genuine Taiwan candidate-level LOO receipt count remains 0; D16 outcome evidence remains absent.
+
+Exact next:
+- `SDA-009-R3A1`: System1 verifies two-atom C1 extension + membership identity and inclusive reconstruction parity.
+- `SDA-009-R3A2`: after parity PASS, wire a pure C1-side LOO analyzer beside existing C1 sector-component evidence.
+- `SDA-009-R3B`: Room07 consumes the first genuine same-generation receipt using P0-P5 denominator accounting and the V0.2 oracle.
+- D16 then performs common-support economic validation.
