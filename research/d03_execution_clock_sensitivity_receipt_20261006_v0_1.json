@@ -1,0 +1,64 @@
+{
+  "receiptVersion": "D03_EXECUTION_CLOCK_SENSITIVITY_RECEIPT_V0_1",
+  "executedAtAsiaTaipei": "2026-10-06T21:08:00+08:00",
+  "sourceMainSha": "9dc014a8da402afa65cb0426e172f99e2320e2e5",
+  "executionEngine": "FIRECRAWL_INTERACT_BASH_NODE_EXACT_SHA_PINNED_RAW_BLOBS",
+  "canonicalNodeExecutionClaimed": true,
+  "githubActionsExecutionClaimed": false,
+  "schemaPath": "research/d03_execution_clock_sensitivity_schema_20261006_v0_1.json",
+  "schemaSha256": "c18089edab7880e8ab86d2ca7e0a7fa99fb612bae49817694dd60547a3f0e6b0",
+  "testPath": "research/test_d03_execution_clock_sensitivity_v0_1.mjs",
+  "testSha256": "2e24a7aa3f65f0f21da5bc158fa965adba299140b15918a6674cb3fc86c9bb64",
+  "executionAttempts": [
+    {
+      "attempt": 1,
+      "sourceSha": "ecc5e3bea22e123469a9b70898a0b0597c49438c",
+      "status": "FAIL_SYNTAX",
+      "finding": "MISSING_RIGHT_PAREN_IN_NEXT_OPEN_ASSERT",
+      "resolvedBy": "00c733e4f703810d1aa7513ed1c08db0cc4d0521"
+    },
+    {
+      "attempt": 2,
+      "sourceSha": "00c733e4f703810d1aa7513ed1c08db0cc4d0521",
+      "status": "FAIL_LOGIC",
+      "finding": "HHMM_ONLY_COMPARISON_MISCLASSIFIED_NEXT_DAY_ORDER_AS_EARLIER_THAN_PRIOR_DAY_SIGNAL",
+      "resolvedBy": "7b46ff12a104ccd9356a94da440dc59fd24d1cbf"
+    },
+    {
+      "attempt": 3,
+      "sourceSha": "7b46ff12a104ccd9356a94da440dc59fd24d1cbf",
+      "status": "FAIL_RUNTIME_REF",
+      "finding": "LOCAL_WINDOW_BRANCH_RETAINED_REMOVED_KNOWN_VARIABLE",
+      "resolvedBy": "9dc014a8da402afa65cb0426e172f99e2320e2e5"
+    },
+    {
+      "attempt": 4,
+      "sourceSha": "9dc014a8da402afa65cb0426e172f99e2320e2e5",
+      "status": "PASS",
+      "exitCode": 0
+    }
+  ],
+  "result": {
+    "status": "PASS",
+    "cases": 17,
+    "sameClosingAuctionLookaheadBlocked": true,
+    "sameNumericalCloseLaterVenueCanBeCausal": true,
+    "postCloseFillNotGuaranteed": true,
+    "boardLotOddLotSeparated": true,
+    "noClosingPriceBlocksFixedPrice": true,
+    "lateFinalityRoutesNextSession": true,
+    "noFillNotZeroReturn": true,
+    "partialFillExplicit": true,
+    "executionPolicySearchControlled": true,
+    "marketRuleVersionBound": true,
+    "formalCoreImpact": "NONE_LOCKED",
+    "outcomeDataUsed": false
+  },
+  "scientificBoundary": {
+    "marketEvidenceUnits": 0,
+    "productionExecutionChange": false,
+    "empiricalAlphaClaimed": false,
+    "fillProbabilityValidated": false,
+    "maturityPromotionAuthorized": false
+  }
+}
