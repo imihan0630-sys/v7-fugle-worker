@@ -1,0 +1,61 @@
+name: D02 PVE-248 Candidate CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "research/d02-pve250-rebased-candidate-20261006"
+    paths:
+      - "scripts/apply_v8_19_1_pve248_candidate.py"
+      - "tests/test_v8_19_1_pve248_runtime_candidate.mjs"
+      - ".github/workflows/v7-regression.yml"
+      - ".github/workflows/d02-pve248-candidate.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "scripts/apply_v8_19_1_pve248_candidate.py"
+      - "tests/test_v8_19_1_pve248_runtime_candidate.mjs"
+      - ".github/workflows/v7-regression.yml"
+      - ".github/workflows/d02-pve248-candidate.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Rebuild Worker using regression build-chain
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess
+
+          text=Path(".github/workflows/v7-regression.yml").read_text(encoding="utf-8")
+          start=text.index("- name: Build production Worker from guarded patches")
+          end=text.index("- name: Syntax and offline behavior regression", start)
+          block=text[start:end]
+          commands=[]
+          for raw in block.splitlines():
+              line=raw.strip()
+              if line.startswith("python3 scripts/"):
+                  commands.append(line)
+          if "python3 scripts/apply_v8_19_1_pve248_candidate.py" not in commands:
+              raise SystemExit("PVE-248 candidate missing from regression build chain")
+          for command in commands:
+              print("+",command,flush=True)
+              subprocess.run(command,shell=True,check=True)
+          PY
+      - name: Syntax check
+        run: |
+          cp Worker.js /tmp/pve248-worker.mjs
+          node --check /tmp/pve248-worker.mjs
+      - name: PVE-248 runtime candidate guard
+        env:
+          V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
+        run: node tests/test_v8_19_1_pve248_runtime_candidate.mjs
