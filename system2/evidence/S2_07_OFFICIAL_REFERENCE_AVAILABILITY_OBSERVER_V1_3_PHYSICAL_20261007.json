@@ -10,7 +10,9 @@
     "name": "System2 S2-07 Official Reference Availability Observer V1.3 Readonly",
     "runId": 37539208003,
     "jobId": 112527770695,
-    "conclusion": "success"
+    "conclusion": "success",
+    "validatedCodeHeadCommit": "2994fc905071660a6ace324e1db28556482b4c37",
+    "reusePolicy": "REUSE_ONLY_IF_RUNTIME_TEST_AND_PROBE_DIFF_CLEAN"
   },
   "exactReference": {
     "exchange": "TPEX",
