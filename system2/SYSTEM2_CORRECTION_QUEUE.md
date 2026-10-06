@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-06 10:11 Asia/Taipei
+Updated: 2026-10-06 19:12 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -131,6 +131,55 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - 2017 TWSE disposition: `DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL`.
 - finalDisposition: PENDING
 - updatedAt: 2026-10-06T00:12:00+08:00
+
+
+### S2-CORR-20261006-002 — Institutional terminal converts research-only resonance into ENTER/EXIT action authority
+
+- createdAt: 2026-10-06T19:12:00+08:00
+- severity: MEDIUM
+- status: OPEN
+- routingClass: BUILD_LANE
+- assignedLane: BUILD_LANE
+- assignedRoom: System 2｜建置總控室
+- modificationOwner: SYSTEM2_BUILD_CONTROL_ROOM
+- blockedBy: none
+- affectedScope: S2-16 Candidate Board / Decision Workspace / Today Focus action semantics
+- detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- canonicalRequirement: Daily Resonance V0.1 is a research/shadow monitoring signal only. User-facing UI must preserve that boundary and must not relabel BUY_RESONANCE / EXIT_RESONANCE as authoritative ENTER / EXIT trading actions unless a distinct frozen-decision authority explicitly supplies such an action.
+- observedProblem: `system2/deploy/terminal_page.mjs::actionOf()` maps `BUY_RESONANCE -> ENTER` and `EXIT_RESONANCE -> EXIT`. The resulting labels appear in Candidate Board's 「動作」 column and Decision Workspace's ACTION CARD, while the underlying resonance contract explicitly says BUY_RESONANCE is not validated production BUY authority and runtime read models carry `decisionImpact=false`, `notificationImpact=false`, `orderImpact=false`. The same page also calls these rows `actionable resonance`, creating a user-facing authority overclaim.
+- evidence:
+  - `SYSTEM2_DAILY_RESONANCE_MONITOR_V0_1.md`: BUY_RESONANCE is a research/shadow candidate signal and is not yet validated production BUY authority.
+  - `daily_resonance_monitor_v0_1.mjs`: snapshots state that the output is a research/shadow candidate, not validated production trading authority.
+  - `daily_resonance_read_model_v0_1.mjs`, `daily_resonance_worker_cycle_v0_1.mjs`, and related runtime outputs retain `decisionImpact=false`, `notificationImpact=false`, and `orderImpact=false`.
+  - `terminal_page.mjs::actionOf`: BUY_RESONANCE returns ENTER; EXIT_RESONANCE returns EXIT.
+  - Candidate Board renders this derived value under a column named 「動作」.
+  - Decision Workspace renders the same derived value inside an `ACTION CARD`.
+  - Today Focus text refers to `actionable resonance`.
+  - S2-16 checkpoint says full daily candidate/frozen-decision population remains pending and no final-selection authority is promoted.
+- riskIfUnfixed: Operators can reasonably mistake a research monitor signal for an authorized System 2 entry/exit decision. This weakens the separation between monitor evidence, frozen decision, final-selection authority, notification authority and order authority even though backend trading impact remains disabled.
+- requiredCorrection:
+  1. Stop converting resonance-only `BUY_RESONANCE` / `EXIT_RESONANCE` into bare `ENTER` / `EXIT` actions.
+  2. Preserve monitor semantics in user-visible labels, e.g. `BUY_RESONANCE`, `ENTRY_RESONANCE`, `EXIT_RESONANCE`, or another clearly monitor-only wording.
+  3. Separate monitor signal from frozen-decision action in Decision Workspace. When no frozen decision exists, the formal action field must remain UNKNOWN / NOT_AVAILABLE / NO_FROZEN_DECISION rather than inheriting resonance ENTER/EXIT.
+  4. Candidate Board must not label monitor-only output as authoritative 「動作」 without an explicit research/monitor qualifier; rename or qualify the field if needed.
+  5. Replace or qualify `actionable resonance` wording so it cannot be read as live trade authority.
+  6. Add regression tests proving resonance-only rows cannot render bare ENTER/EXIT as formal decision authority and that no frozen-decision data means no formal action.
+  7. Preserve the underlying resonance formula, BUY_RESONANCE / EXIT_RESONANCE runtime semantics, provisional/confirmed state machine, bounded-pool behavior, and chart markers.
+  8. Do not modify strategy logic, assessor policy, strategy preregistration, ranking/capacity, final/live selection authority, notification/push authority, capital/orders, or System 1 Formal Core.
+- acceptanceCriteria:
+  - Resonance-only BUY_RESONANCE / EXIT_RESONANCE are shown as monitor/research signals, not bare ENTER/EXIT formal actions.
+  - Decision Workspace formal action remains explicitly unavailable when no frozen decision exists.
+  - Candidate Board clearly distinguishes monitor signal from formal decision/action authority.
+  - The terminal contains no user-facing wording that upgrades research resonance into live/validated trading authority.
+  - Regression tests fail if resonance-only evidence is again mapped to formal ENTER/EXIT authority.
+  - Existing resonance calculations, state machine, read APIs, bounded-pool constraints and protected trading authorities remain unchanged.
+- protectedBoundaries: resonance formula/state machine; strategy logic; assessor policy; preregistration; ranking/capacity; final/live selection authority; notification/push; capital/orders; System1 Formal Core.
+- ownerDecisionRequired: false for truthful UI semantics only; any future promotion from resonance monitor evidence to formal trading action requires separate validated authority and governance.
+- implementationEvidence: PENDING
+- verificationEvidence: PENDING
+- finalDisposition: PENDING
+- updatedAt: 2026-10-06T19:12:00+08:00
+
 
 ## Closed directives
 
