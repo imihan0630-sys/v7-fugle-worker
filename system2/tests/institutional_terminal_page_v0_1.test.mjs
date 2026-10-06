@@ -54,4 +54,41 @@ for(const token of [
 assert.equal(html.includes("Formal Core: LOCKED"),true);
 assert.equal(html.includes("Real orders: DISABLED"),true);
 
+
+for(const token of [
+  "監控訊號（RESEARCH）",
+  "FROZEN DECISION ACTION",
+  "id=\"decisionMonitorSignal\">NO_MONITOR_SIGNAL",
+  "id=\"decisionFormalAction\">NO_FROZEN_DECISION",
+  "id=\"decisionAction\">NO_FROZEN_DECISION",
+  "MONITOR / RESEARCH",
+  "research monitor resonance",
+  "Monitor signal 是 research/shadow evidence，不等於正式進出場決策",
+]) assert.equal(html.includes(token),true,"resonance authority boundary missing: "+token);
+
+assert.equal(html.includes("function monitorSignalOf(r)"),true);
+assert.equal(html.includes('if(r.displaySignal==="BUY_RESONANCE") return "BUY_RESONANCE";'),true);
+assert.equal(html.includes('if(r.displaySignal==="EXIT_RESONANCE") return "EXIT_RESONANCE";'),true);
+assert.equal(html.includes('function formalDecisionActionOf()'),true);
+assert.equal(html.includes('return "NO_FROZEN_DECISION";'),true);
+
+assert.equal(html.includes("function actionOf(r)"),false);
+assert.equal(html.includes('return "ENTER";'),false);
+assert.equal(html.includes('return "EXIT";'),false);
+assert.equal(html.includes("actionable resonance"),false);
+assert.equal(html.includes("<th>動作</th>"),false);
+
+assert.equal(
+  html.includes('document.getElementById("decisionAction").textContent=formalAction;'),
+  true,
+);
+assert.equal(
+  html.includes('document.getElementById("decisionMonitorSignal").textContent=monitorSignal;'),
+  true,
+);
+assert.equal(
+  html.includes('const formalAction=formalDecisionActionOf(r);'),
+  true,
+);
+
 console.log("System2 institutional terminal page V0.1 tests PASS");
