@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_DURABLE_EVIDENCE_V0_2",
+  "market": "TWSE",
+  "year": 2023,
+  "disposition": "DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL",
+  "acceptedRun": {
+    "runId": 37534409279,
+    "runNumber": 23,
+    "headSha": "676c26a53f59aa8cb6b07afbd0453ba3e06d8112",
+    "workflowConclusion": "success",
+    "completedAt": "2026-10-06T21:36:32Z",
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37534409279",
+    "artifactId": 11446466007,
+    "artifactName": "system2-historical-coverage-TWSE-2023",
+    "artifactDigest": "sha256:83e771a65d4853677210303b5b30b5141e3b9a3902dfbbcb83ef1ad4eb459e27",
+    "artifactCreatedAt": "2026-10-06T21:36:29Z",
+    "artifactExpiresAt": "2026-11-05T21:36:29Z",
+    "artifactUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37534409279/artifacts/11446466007"
+  },
+  "storageVerification": {
+    "state": "PASS",
+    "receiptId": "S2HCR-93d330e280ea444dd7a3a5c7b0ac08df5f85f63c8b81913596b4ec66c8377674",
+    "batchId": "S2-HIST-PACK-YEAR|TWSE|2023",
+    "completionReceiptState": "COMPLETE",
+    "packCount": 1003,
+    "barCount": 234727,
+    "manifestRollingHash": "93d330e280ea444dd7a3a5c7b0ac08df5f85f63c8b81913596b4ec66c8377674",
+    "checkpointState": "COMPLETE",
+    "headObjectCountVerified": 1003,
+    "byteGetObjectCountVerified": 1003
+  },
+  "sourceReconciliation": {
+    "state": "PASS",
+    "dataIntegrityState": "PASS",
+    "sourceVersionState": "STABLE",
+    "coldRowCount": 234727,
+    "freshOfficialRowCount": 234727,
+    "missingFromColdCount": 0,
+    "absentFromFreshOfficialCount": 0,
+    "sourceRowHashMismatchCount": 0,
+    "canonicalA1ValueMismatchCount": 0,
+    "sourceRevisionOnlyCount": 0,
+    "sourceRevisionDateCount": 0,
+    "officialTradingDates": 239
+  },
+  "historicalUniverse": {
+    "readiness": "PASS_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION",
+    "registryId": "S2-DATA-TWSE-2023-OFFICIAL-UNION-V0.1",
+    "registryHash": "f551fdedd81fe933f1b9623021af0ff87f86dcc6fa98fd5ff5ce1ea23bd7d7df",
+    "membershipCount": 1101,
+    "replayEligibleCount": 1101,
+    "currentCount": 1089,
+    "delistedCount": 12,
+    "unknownStartCount": 0,
+    "currentListingStartReconciledCount": 4,
+    "currentListingStartReconciledSymbols": [
+      "2465",
+      "2482",
+      "2486",
+      "6873"
+    ],
+    "survivorshipCompleteForDataCoverage": true
+  },
+  "coverage": {
+    "expectedSessions": 239,
+    "actualSessions": 239,
+    "historicalUniverseSize": 1003,
+    "expectedBars": 235345,
+    "actualBars": 234727,
+    "totalStoredRowsInRange": 234727,
+    "missingBars": 618,
+    "unknownBars": 618,
+    "unexpectedBars": 0,
+    "mainMissingReasons": {
+      "UNKNOWN_SYMBOL_SESSION_GAP": 618
+    },
+    "observationStateCounts": {
+      "VALID_OHLC": 234311,
+      "POSITIVE_ACTIVITY_NO_VALID_CLOSE": 306,
+      "OFFICIAL_ZERO_TRADE_NO_PRICE": 110
+    },
+    "continuityStateCounts": {
+      "UNVERIFIED": 234727
+    },
+    "structuralCoverageState": "PASS",
+    "rawCoverageState": "PASS",
+    "symbolSessionReadiness": "PARTIAL_UNKNOWN_GAPS",
+    "pitReadiness": "PASS_CONSERVATIVE_SESSION_FINALITY",
+    "continuityReadiness": "PARTIAL_UNVERIFIED",
+    "technicalPriceReadiness": "PARTIAL_NONPRICE_OBSERVATIONS"
+  },
+  "remediationValidation": {
+    "priorBlockedRuns": [
+      37482307633,
+      37493424179
+    ],
+    "priorUnexpectedBars": 205,
+    "acceptedUnexpectedBars": 0,
+    "secondFixRuntimeCommit": "6a227f96cb0af9d6c1620402be25b93167eb4e16",
+    "secondFixRegressionCommit": "64d2f7e8ecf923e0b133101e340c78222facddef",
+    "secondFixCiRunId": 37495340984,
+    "secondFixCiConclusion": "success",
+    "result": "LIVE_REVERIFICATION_PASS"
+  },
+  "readiness": {
+    "dataCoverageState": "PASS",
+    "replayReadinessState": "PARTIAL",
+    "overallState": "PARTIAL"
+  },
+  "verifierVersion": "S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_4",
+  "correctionDirective": "S2-CORR-20261004-001",
+  "correctionStatusAfterEvidence": "FIX_IN_PROGRESS",
+  "nextMarketYear": {
+    "market": "TPEX",
+    "year": 2023
+  },
+  "protectedBoundaries": {
+    "system1RuntimeChanged": false,
+    "system2StrategyAuthorityChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "capitalOrderAuthorityChanged": false
+  }
+}
