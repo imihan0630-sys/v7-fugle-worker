@@ -38,8 +38,8 @@
       "laneId": "D06_18_BORROW_ECONOMICS",
       "module": "D06-18",
       "targetTaipei": "15:20",
-      "state": "LIVE_ROUTE_PREFLIGHT_PASS / 1520_SLOT_PENDING",
-      "next": "At 15:20±5m capture exactly the frozen five symbols through ?ch=<symbol>; preserve selected identity, source date, transaction family, recall condition, rate/depth fields and hash. Pilot is source-feasibility-only.",
+      "state": "FROZEN_1520_SLOT_MISSED_UNKNOWN / POSTCLOSE_QUERY_EXECUTED / DATE_UNCERTIFIED",
+      "next": "Next genuine trading date, execute the same frozen schema inside a preregistered live slot. Do not count the 19:10 post-close values as the missed 15:20 receipt.",
       "routePreflight": "research/d06_18_twse_sbl_live_route_preflight_20261006_v0_1.json",
       "fieldSchema": "research/d06_18_twse_sbl_live_field_schema_v0_1.json",
       "frozenPilotSymbols": [
@@ -48,7 +48,10 @@
         "3532",
         "6187",
         "9941"
-      ]
+      ],
+      "liveSlotResult": "MISSED / UNKNOWN / NOT_BACKFILLED",
+      "postcloseReceipt": "research/d06_18_twse_sbl_postclose_query_20261006_v0_1.json",
+      "postcloseObservation": "5/5 selected routes matched; fixed/competitive sections showed zero totals with NULL rate/depth; negotiated totals observed for 1101=7000, 2451=1450, 3532=44, 6187=40, 9941=0. Rendered page did not explicitly expose source date."
     },
     {
       "laneId": "D06_03_DEALER_SPLIT",
@@ -96,6 +99,6 @@
     }
   ],
   "maturityImpact": "NONE_AT_OPEN",
-  "sessionState": "PREOPEN_REGISTERED / D06_14_PREOPEN_ZERO_ROWS_CAPTURED / D06_18_LIVE_ROUTE_READY_1520_PENDING / ALL_OUTCOMES_CLOSED",
-  "exactNext": "First fixed-clock task is D06-18 at 15:20±5m using the frozen five-symbol TWSE rendered-route pilot. After market capture D06-03; around 20:30/22:30 capture TPEx leverage EARLY/LATE. Later today capture D06-14 2026-10-06 first T_PRELIM and 2026-10-05 T1_REVISED via date-pinned queries. Preserve missing states and do not change gates."
+  "sessionState": "D06_18_1520_MISSED_UNKNOWN_POSTCLOSE_QUERY_DONE / D06_03_AFTERMARKET_DUE / D06_14_T1_AND_TODAY_TPRELIM_DUE / TPEX_LEVERAGE_2030_2230_PENDING / OUTCOMES_CLOSED",
+  "exactNext": "Continue 2026-10-06 after-market lanes. D06-18 15:20 is permanently MISSED/UNKNOWN; post-close values are diagnostic only. Next execute D06-03 after-market dealer split, then D06-14 pinned 20261005 T1 follow-up and pinned 20261006 T_PRELIM if available, then TPEx leverage EARLY at 20:30 and LATE at 22:30."
 }
