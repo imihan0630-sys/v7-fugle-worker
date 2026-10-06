@@ -1,0 +1,183 @@
+{
+  "schemaVersion": "D03_LAG_MEMORY_AGGREGATION_FALSIFICATION_V0_1",
+  "updatedAt": "2026-10-06T10:36:00+08:00",
+  "owner": "D03",
+  "classification": "RESEARCH_ONLY_OUTCOME_CLOSED",
+  "formalCoreImpact": "NONE_LOCKED",
+  "policy": "OBSERVED_LAG_EQUALS_MARKET_DYNAMIC_PLUS_FACTOR_MEMORY_PLUS_AGGREGATION",
+  "requiredReceiptFields": [
+    "factorId",
+    "factorVersion",
+    "memoryClass",
+    "memoryKernelOrReplayVersion",
+    "rawRootControlHash",
+    "lagCandidateSetHash",
+    "lagCorrelationDiagnostics",
+    "lagPeakStability",
+    "temporalAggregationVersion",
+    "outcomeFootprintOverlapDiagnostics",
+    "commonSupportHash",
+    "multipleTestingFamilyId",
+    "researchStreamId",
+    "lagProfileTerminalState"
+  ],
+  "memoryClasses": [
+    "FINITE_WINDOW",
+    "RECURSIVE_IIR",
+    "HYBRID_FINITE_RECURSIVE",
+    "PATH_STATE",
+    "EPISODE_CONFIRMATION",
+    "NESTED_TIMEFRAME",
+    "OUTCOME_RELATION_NOT_PREDICTOR"
+  ],
+  "factorMemoryRegistry": [
+    {
+      "factorId": "D03-01",
+      "memoryClass": "RECURSIVE_IIR",
+      "memoryDescription": "WEIGHTED_OR_RECURSIVE_TREND_STATE",
+      "rawRootControls": [
+        "DIRECT_RETURN",
+        "PRICE_VS_MA",
+        "D01_PRICE_STRUCTURE"
+      ]
+    },
+    {
+      "factorId": "D03-02",
+      "memoryClass": "FINITE_WINDOW",
+      "memoryDescription": "ENDPOINT_RETURN_HORIZON",
+      "rawRootControls": [
+        "PRICE_CLOSE_ENDPOINTS"
+      ]
+    },
+    {
+      "factorId": "D03-03",
+      "memoryClass": "PATH_STATE",
+      "memoryDescription": "PREDECISION_PATH_PERSISTENCE",
+      "rawRootControls": [
+        "DIRECT_RETURN",
+        "PRICE_PATH_HISTORY"
+      ]
+    },
+    {
+      "factorId": "D03-04",
+      "memoryClass": "OUTCOME_RELATION_NOT_PREDICTOR",
+      "memoryDescription": "POSTDECISION_OUTCOME_RELATION",
+      "rawRootControls": []
+    },
+    {
+      "factorId": "D03-05",
+      "memoryClass": "EPISODE_CONFIRMATION",
+      "memoryDescription": "PULLBACK_REVERSAL_PATH_AND_CONFIRMATION",
+      "rawRootControls": [
+        "D01_PRICE_GEOMETRY",
+        "DIRECT_RETURN",
+        "TREND"
+      ]
+    },
+    {
+      "factorId": "D03-06",
+      "memoryClass": "HYBRID_FINITE_RECURSIVE",
+      "memoryDescription": "ROLLING_RANGE_PLUS_RECURSIVE_KD",
+      "rawRootControls": [
+        "DIRECT_RETURN",
+        "RANGE_LOCATION"
+      ]
+    },
+    {
+      "factorId": "D03-07",
+      "memoryClass": "RECURSIVE_IIR",
+      "memoryDescription": "WILDER_STYLE_GAIN_LOSS_STATE",
+      "rawRootControls": [
+        "DIRECT_RETURN",
+        "SIGNED_PRICE_CHANGE"
+      ]
+    },
+    {
+      "factorId": "D03-08",
+      "memoryClass": "RECURSIVE_IIR",
+      "memoryDescription": "CASCADED_EMA_MACD_STATE",
+      "rawRootControls": [
+        "DIRECT_RETURN",
+        "EMA_PARENT_STATES",
+        "PRICE_TREND"
+      ]
+    },
+    {
+      "factorId": "D03-09",
+      "memoryClass": "RECURSIVE_IIR",
+      "memoryDescription": "CASCADED_NONLINEAR_WILDER_DMI_ADX",
+      "rawRootControls": [
+        "DIRECT_TREND",
+        "TRUE_RANGE",
+        "VOLATILITY"
+      ]
+    },
+    {
+      "factorId": "D03-10",
+      "memoryClass": "FINITE_WINDOW",
+      "memoryDescription": "20_SESSION_LOCATION_AND_DISPERSION",
+      "rawRootControls": [
+        "DIRECT_RETURN",
+        "PRICE_VS_SMA",
+        "VOLATILITY"
+      ]
+    },
+    {
+      "factorId": "D03-12",
+      "memoryClass": "EPISODE_CONFIRMATION",
+      "memoryDescription": "BASE_INDICATOR_MEMORY_PLUS_PIVOT_CONFIRMATION",
+      "rawRootControls": [
+        "PRICE_SWING",
+        "BASE_INDICATOR",
+        "REVERSAL_LIFECYCLE"
+      ]
+    },
+    {
+      "factorId": "D03-13",
+      "memoryClass": "NESTED_TIMEFRAME",
+      "memoryDescription": "WEEKLY_DAILY_M15_AGGREGATION_AND_FINALITY",
+      "rawRootControls": [
+        "DAILY_STATE",
+        "WEEKLY_EQUAL_HORIZON",
+        "M15_EXECUTION_CONTEXT"
+      ]
+    }
+  ],
+  "lagProfileDiagnostics": [
+    "LAG_CORRELATION_MATRIX",
+    "COLLINEARITY_DIAGNOSTIC",
+    "LEAVE_ONE_LAG_OUT_STABILITY",
+    "PEAK_SET_OR_PLATEAU_WIDTH",
+    "NEIGHBORING_LAG_UNCERTAINTY",
+    "RAW_ROOT_RESIDUAL_COMPARISON",
+    "OUTCOME_FOOTPRINT_OVERLAP",
+    "DATE_REGIME_CONCENTRATION"
+  ],
+  "forbiddenInterpretations": [
+    "BEST_LAG_EQUALS_CAUSAL_DELAY_WITHOUT_MEMORY_CONTROL",
+    "ADJACENT_LAGS_AS_INDEPENDENT_EVIDENCE",
+    "EXPAND_MAX_LAG_AFTER_BOUNDARY_PEAK_AND_KEEP_CONFIRMATORY_LABEL",
+    "GENERIC_VAR_ON_FILTERED_AGGREGATED_INDICATORS_AS_STRUCTURAL_CAUSALITY",
+    "FILTERED_INDICATOR_OUTPERFORMANCE_WITHOUT_RAW_ROOT_CONTROL"
+  ],
+  "allowedTerminalStates": [
+    "LAG_PROFILE_READY_POINT",
+    "LAG_PROFILE_READY_INTERVAL",
+    "PERSISTENT_PLATEAU",
+    "LAG_MEMORY_CONFOUND_UNRESOLVED",
+    "TEMPORAL_AGGREGATION_CONFOUND",
+    "LAG_PEAK_UNIDENTIFIED",
+    "BOUNDARY_PEAK_SEARCH_INCOMPLETE",
+    "RAW_ROOT_EXPLAINS_EFFECT",
+    "FILTER_DIRECTIONALITY_SENSITIVE",
+    "SUPPORT_THIN_AT_LAG",
+    "VERSION_INCOMPATIBLE"
+  ],
+  "noClaim": {
+    "exactEconomicDelay": true,
+    "structuralCausality": true,
+    "empiricalAlpha": true,
+    "formalPromotion": true
+  },
+  "maturityImpact": "NONE_56_7_PERCENT"
+}
