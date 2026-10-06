@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-06 07:38 Asia/Taipei
+Updated: 2026-10-06 10:10 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -136,7 +136,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 
 - createdAt: 2026-10-06T07:38:30+08:00
 - severity: MEDIUM
-- status: FIX_IMPLEMENTED
+- status: VERIFYING
 - routingClass: BUILD_LANE
 - assignedLane: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
@@ -179,9 +179,9 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - V8 Regression run `37393052777` PASS.
   - Merged-main regression guards preserve Regime UNKNOWN, Actual Holdings LOCKED, Performance SAMPLE GATED, Event/Industry READ API PENDING, DATA/PIT GATED, `Formal Core: LOCKED`, and `Real orders: DISABLED`.
   - No strategy logic, assessor policy, preregistration, weights, thresholds, ranking, capacity, final/live selection authority, production push, capital/order, or System1 Formal Core was changed.
-- verificationEvidence: PENDING — handoff to SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
-- finalDisposition: PENDING — implementation complete; independent verification required before closure
-- updatedAt: 2026-10-06T08:16:36+08:00
+- verificationEvidence: INDEPENDENT_AUDIT_IN_PROGRESS — latest-main, canonical-state, targeted-test, CI, runtime-readback and protected-boundary checks started by SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- finalDisposition: VERIFYING — acceptance evidence under independent review
+- updatedAt: 2026-10-06T10:10:31+08:00
 
 ## Closed directives
 

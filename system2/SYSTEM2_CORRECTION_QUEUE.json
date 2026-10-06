@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-06T07:38:30+08:00",
+  "updatedAt": "2026-10-06T10:10:31+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -579,7 +579,7 @@
       "directiveId": "S2-CORR-20261006-001",
       "createdAt": "2026-10-06T07:38:30+08:00",
       "severity": "MEDIUM",
-      "status": "FIX_IMPLEMENTED",
+      "status": "VERIFYING",
       "title": "Institutional terminal labels unapproved research strategies as SHADOW",
       "affectedScope": [
         "S2-16 institutional terminal",
@@ -639,9 +639,11 @@
         "Merged-main regression guards preserve Regime UNKNOWN, Actual Holdings LOCKED, Performance SAMPLE GATED, Event/Industry READ API PENDING, DATA/PIT GATED, `Formal Core: LOCKED`, and `Real orders: DISABLED`.",
         "No strategy logic, assessor policy, preregistration, weights, thresholds, ranking, capacity, final/live selection authority, production push, capital/order, or System1 Formal Core was changed."
       ],
-      "verificationEvidence": [],
-      "finalDisposition": "PENDING — implementation complete; independent verification required before closure",
-      "updatedAt": "2026-10-06T08:16:36+08:00"
+      "verificationEvidence": [
+        "INDEPENDENT_AUDIT_IN_PROGRESS — latest-main, canonical-state, targeted-test, CI, runtime-readback and protected-boundary checks started by SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR"
+      ],
+      "finalDisposition": "VERIFYING — acceptance evidence under independent review",
+      "updatedAt": "2026-10-06T10:10:31+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
