@@ -1,0 +1,20 @@
+{
+  "schemaVersion":"pattern-execution-selection-fee-economics-v0.1",
+  "updated":"2026-10-06 Asia/Taipei",
+  "researchOnly":true,
+  "outcomeBlind":true,
+  "formalCore":"LOCKED",
+  "importForeignMakerTakerToTwse":"PROHIBITED",
+  "passiveFillSampleIsRandom":false,
+  "aggressiveExecutionIsRandom":false,
+  "touchEqualsPassiveFill":false,
+  "lowerExecutionCostEqualsAlpha":false,
+  "unfilledOpportunitiesCanBeDropped":false,
+  "realizedFeeAsPreFreezePredictor":"PROHIBITED",
+  "defaultEffectiveIndependentEvidenceCount":1,
+  "feeStates":["VENUE_FEE_REGIME_VERIFIED_NON_MAKER_TAKER","VENUE_MAKER_TAKER_REGIME_VERIFIED","BROKER_COMMISSION_ONLY_KNOWN","FEE_REGIME_UNKNOWN"],
+  "executionStyleStates":["PASSIVE_EXECUTION_VERIFIED","AGGRESSIVE_EXECUTION_VERIFIED","MIXED_OR_PARTIAL_EXECUTION","EXECUTION_STYLE_PROXY_ONLY","EXECUTION_STYLE_UNKNOWN"],
+  "outcomeJoin":"CLOSED",
+  "inferenceOwner":"D16",
+  "formalOptimizationCandidate":"NONE"
+}

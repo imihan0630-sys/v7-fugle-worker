@@ -3469,3 +3469,118 @@ No maturity or Formal change is authorized by this routing.
 7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 8. Next D01 science: separate structural rejection from maker/taker fee economics and passive-vs-aggressive execution selection around the zone.
 9. No runtime wiring / no Formal change.
+
+
+## Continuation update — DL-056 (2026-10-06)
+
+### DL-056 — Structural rejection vs passive/aggressive execution selection and fee economics
+- DL-055 separated queue priority, latency and hidden-liquidity effects from structural rejection.
+- DL-056 adds execution-selection / fee-economics selection: passive and aggressive fills are not randomized samples, and fill-only studies can create selection bias.
+- TWSE ordinary-stock official rules reviewed for this tranche establish price/time priority and broker customer commissions.
+  They do not by themselves prove a U.S.-style maker-taker rebate schedule for ordinary equities.
+- Foreign maker-taker economics may be used only as mechanism literature.
+  Local venue/instrument/date owner receipt is required before applying maker/taker fee/rebate semantics.
+- Fee-regime states:
+  VENUE_FEE_REGIME_VERIFIED_NON_MAKER_TAKER;
+  VENUE_MAKER_TAKER_REGIME_VERIFIED;
+  BROKER_COMMISSION_ONLY_KNOWN;
+  FEE_REGIME_UNKNOWN.
+- Special liquidity-provider incentive programs are instrument/program specific and may not be generalized to ordinary equities.
+- Execution-style states:
+  PASSIVE_EXECUTION_VERIFIED;
+  AGGRESSIVE_EXECUTION_VERIFIED;
+  MIXED_OR_PARTIAL_EXECUTION;
+  EXECUTION_STYLE_PROXY_ONLY;
+  EXECUTION_STYLE_UNKNOWN.
+- Verified passive/aggressive execution requires real-order semantics.
+  No hypothetical trade receives a verified execution style.
+- Passive-fill observations are selected by queue position, incoming marketable flow, cancellation/repost, price path, latency, hidden liquidity and order lifetime.
+- Aggressive execution is also selected by urgency, spread/depth, price movement and execution intent/context.
+- Therefore passive vs aggressive execution is execution selection/context, not Pattern evidence.
+- Required opportunity denominator preserves:
+  NO_ORDER_SUBMITTED;
+  ORDER_REJECTED;
+  SUBMITTED_PENDING;
+  FILLED;
+  PARTIAL;
+  CANCELLED;
+  UNFILLED_STUDY_END.
+- Completed fills alone may not define the sample.
+- Hypothetical touch=fill remains prohibited.
+  No real submitted order -> no actual fill, no actual commission/rebate, no implementation-shortfall claim.
+- Fee components remain separate:
+  broker commission;
+  venue/handling charge where applicable;
+  maker rebate/taker fee only if locally verified;
+  transaction tax;
+  instrument-specific charges.
+- Lower execution cost != stock alpha.
+- Timing firewall:
+  structuralOpportunityAt;
+  predictorFreezeAt;
+  executionDecisionAt;
+  orderSubmitAt;
+  exchangeAckAt;
+  firstFillAt;
+  finalFillAt;
+  cancelAt;
+  feeKnownAt;
+  postFillMarkoutKnownAt.
+- Ex-ante fee schedule can be baseline only when effective/known by predictor freeze.
+  Realized fill/fee/rebate/cancel/markout remains post-treatment.
+- Fee receipts require venue/instrument, effectiveFrom/effectiveTo, source/version, knownAt, broker commission schedule ID and maker/taker program ID where applicable.
+- Current fee schedules may not be backfilled historically without PIT validity.
+- Generic execution-selection comparator:
+  G0 GENERIC_EXECUTION_SELECTION;
+  G1 ZONE_ASSOCIATED_EXECUTION_SELECTION.
+  If G1 adds no residual representation beyond G0, execution selection is sufficient.
+- Future D16 ladder:
+  X0 RAW_ZONE_REJECTION;
+  X1 DL055_QUEUE_LATENCY_HIDDEN_CONTROLLED;
+  X2 EXECUTION_STYLE_SELECTION_CONTROLLED;
+  X3 UNFILLED_CANCELLED_DENOMINATOR_INCLUDED;
+  X4 EX_ANTE_FEE_REGIME_CONTROLLED;
+  X5 REALIZED_EXECUTION_COST_SEPARATED;
+  X6 GENERIC_EXECUTION_SELECTION_CONTROLLED;
+  X7 STRUCTURAL_REJECTION_RESIDUAL_CANDIDATE;
+  X8 MULTI_DATE_MULTI_BROKER_OR_FEE_REGIME_REPLICATION.
+- Future interpretation:
+  Q0 PASSIVE_FILL_SELECTION_EXPLANATION;
+  Q1 AGGRESSIVE_URGENCY_SELECTION_EXPLANATION;
+  Q2 NONFILL_OPPORTUNITY_COST_EXPLANATION;
+  Q3 FEE_ECONOMICS_EXPLANATION;
+  Q4 EXECUTION_COST_ONLY;
+  Q5 VENUE_TRANSFER_NOT_VALID;
+  Q6 STRUCTURAL_REJECTION_RESIDUAL;
+  Q7 NOT_EVALUABLE.
+- SDA-001 remains active:
+  execution style, queue state, fee and fill receipts are linked mechanisms;
+  effectiveIndependentEvidenceCount remains 1 by default.
+- SDA-002 remains active:
+  every fee/execution receipt retains firstObservableAt / knownAt / predictorFreezeAt / replaySafe;
+  realized execution outcomes cannot rewrite the baseline predictor.
+- New files:
+  - research/PATTERN_EXECUTION_SELECTION_FEE_ECONOMICS_V0_1.md
+  - research/pattern_execution_selection_fee_economics_v0_1.json
+  - research/pattern_execution_selection_fee_economics_v0_1.mjs
+  - research/test_pattern_execution_selection_fee_economics_v0_1.mjs
+  - research/PATTERN_EXECUTION_SELECTION_FEE_ECONOMICS_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 / SDA-002 remain open under canonical queue.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-056
+
+1. Reconcile the DL-056 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-056 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve all no-order/reject/fill/partial/cancel/unfilled states in the execution opportunity denominator.
+4. Require PIT local fee-regime receipts; never import foreign maker-taker semantics without local proof.
+5. Preserve signal/structural response and execution quality as separate estimands.
+6. Hand X0-X8 / Q0-Q7 fill-selection and cost-separation inference to D16.
+7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+8. Next D01 science: separate structural rejection from order-size / participation-rate market-impact selection around the zone.
+9. No runtime wiring / no Formal change.

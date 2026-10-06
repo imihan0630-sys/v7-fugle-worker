@@ -23851,3 +23851,35 @@ New durable artifacts:
 - research/PATTERN_QUEUE_LATENCY_HIDDEN_LIQUIDITY_D16_HANDOFF_V0_1.md
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-056 — Structural rejection vs passive/aggressive execution selection and fee economics (2026-10-06)
+
+DL-056 addresses a selection effect that appears after queue, latency and hidden-liquidity controls are introduced: the executions we observe are not a random sample of structural opportunities.
+
+A passive limit order can fail to fill because it sits too far back in the queue, marketable flow never reaches it, price moves away, the order is cancelled or hidden liquidity changes the path. Therefore a dataset that keeps only passive fills mechanically conditions on favorable execution circumstances.
+
+Aggressive executions are selected too. Traders may cross the spread because urgency is higher, price is moving, depth is thin or passive queue risk is unacceptable. Passive-versus-aggressive execution cannot therefore be treated as a random treatment assignment.
+
+DL-056 freezes a full execution-opportunity denominator. No order submitted, rejected order, pending order, complete fill, partial fill, cancellation and unfilled-at-study-end all remain visible. A completed-fill-only denominator is prohibited.
+
+The Taiwan fee context also needs a transfer firewall. Current TWSE ordinary-stock rules reviewed for this tranche establish price/time priority and broker customer commissions. Those facts do not by themselves prove the maker-rebate/taker-fee structure commonly studied in some overseas venues. Foreign maker-taker research remains useful mechanism evidence, but a local venue/instrument/date receipt is required before importing those fee labels into Taiwan equity analysis.
+
+Fee context is therefore split into verified local maker-taker, verified local non-maker-taker, broker-commission-only-known and unknown regimes. Special liquidity-provider programs are instrument/program specific and cannot be generalized to ordinary equities.
+
+Execution style is also evidence-tiered: verified passive, verified aggressive, mixed/partial, proxy-only and unknown. A hypothetical trade cannot become verified passive/aggressive execution.
+
+The causal clock remains strict. An ex-ante fee schedule can enter baseline context only when effective and known by predictorFreezeAt. Realized fills, fees, rebates, cancellations and post-fill markouts are outcome/mechanism-side information.
+
+The generic falsification compares execution-selection mechanics at structural zones with matched execution-selection mechanics elsewhere. If structural-zone cases add no residual representation after queue, latency, hidden liquidity, execution style and costs, generic execution selection is sufficient.
+
+Twenty adversarial cases are authored. They verify local fee-regime states, broker-commission-only ambiguity, no-real-order execution-style limits, passive/aggressive/mixed states, full opportunity denominator, fee PIT timing, post-treatment realized cost, foreign maker-taker transfer prohibition, generic/zone comparator semantics and anti-double-counting.
+
+New durable artifacts:
+- research/PATTERN_EXECUTION_SELECTION_FEE_ECONOMICS_V0_1.md
+- research/pattern_execution_selection_fee_economics_v0_1.json
+- research/pattern_execution_selection_fee_economics_v0_1.mjs
+- research/test_pattern_execution_selection_fee_economics_v0_1.mjs
+- research/PATTERN_EXECUTION_SELECTION_FEE_ECONOMICS_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
