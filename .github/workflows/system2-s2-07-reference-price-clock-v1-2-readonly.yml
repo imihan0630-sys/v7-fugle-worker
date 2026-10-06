@@ -1,0 +1,46 @@
+name: System2 S2-07 Reference Price Version Clock V1.2 Readonly
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/s2_07_reference_price_clock_v1_2.mjs"
+      - "system2/tests/s2_07_reference_price_clock_v1_2.test.mjs"
+      - "system2/scripts/probe_s2_07_reference_price_clock_readonly_v1_2.mjs"
+      - "system2/SYSTEM2_S2_07_REFERENCE_PRICE_VERSION_CLOCK_V1_2.md"
+      - "system2/evidence/S2_07_TECHNICAL_CONTINUITY_BRIDGE_V1_1_PHYSICAL_20261007.json"
+      - ".github/workflows/system2-s2-07-reference-price-clock-v1-2-readonly.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/s2_07_reference_price_clock_v1_2.mjs"
+      - "system2/tests/s2_07_reference_price_clock_v1_2.test.mjs"
+      - "system2/scripts/probe_s2_07_reference_price_clock_readonly_v1_2.mjs"
+      - "system2/SYSTEM2_S2_07_REFERENCE_PRICE_VERSION_CLOCK_V1_2.md"
+      - "system2/evidence/S2_07_TECHNICAL_CONTINUITY_BRIDGE_V1_1_PHYSICAL_20261007.json"
+      - ".github/workflows/system2-s2-07-reference-price-clock-v1-2-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Targeted reference-price version-clock tests
+        run: node system2/tests/s2_07_reference_price_clock_v1_2.test.mjs
+      - name: Read-only physical 4806 reference-price version-clock probe
+        run: node system2/scripts/probe_s2_07_reference_price_clock_readonly_v1_2.mjs
+      - name: Read-only and System1 isolation guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE '\b(INSERT|UPDATE|DELETE|REPLACE|DROP|ALTER|CREATE)\b' system2/scripts/probe_s2_07_reference_price_clock_readonly_v1_2.mjs
+          ! grep -qE 'wrangler[[:space:]]+(deploy|secret)|secret[[:space:]]+put|workers[[:space:]]+deploy' system2/scripts/probe_s2_07_reference_price_clock_readonly_v1_2.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "S2-07 reference-price version-clock V1.2 read-only/System1 isolation PASS"
