@@ -24115,3 +24115,32 @@ New durable artifacts:
 
 No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
 
+# DL-064 — Structural response vs daily price-limit carryover / limit-queue mechanics (2026-10-07)
+
+DL-064 separates structural-memory claims from the mechanics created by Taiwan daily price limits.
+
+The exchange constraint is itself a price boundary. For ordinary stocks the legal upper/lower limit is generally built from the current-session opening-auction reference price under the exchange's rule/tick system. A support/resistance zone lying near that legal boundary therefore faces an immediate attribution problem: price may accelerate toward the limit because of magnet/trading-interference behavior, not because the structural zone attracted price.
+
+The research also fixes a common market-language error: an unexecuted queue does not physically persist overnight. TWSE orders are session-limited. A day-t queue is a same-session object. Economic buying or selling pressure may persist, but that is LATENT_UNMET_DEMAND_OR_SUPPLY_CARRYOVER, a different hypothesis. Orders visible in the day-t+1 pre-open book are NEXT_SESSION_RESUBMITTED_ORDERS with new priority. The same-price pre-open order priority is randomly assigned by the exchange, so the previous day's queue ordering cannot be projected forward.
+
+Closing at the daily limit is not sufficient evidence that the stock was continuously "locked." A valid locked/queue interpretation requires timestamped order-book or imbalance receipts. A stock can hit the limit, trade at the bound, unlock and relock, or finish at the limit with unknown queue state. DL-064 preserves all of those paths instead of collapsing them into one limit-up/limit-down label.
+
+Queue size is also not structural strength. A visible limit queue may reflect temporary imbalance, news, strategic cancellation/repricing, liquidity shortage, momentum demand or magnet behavior. D01 stores the queue as microstructure context and never turns it into an automatic bullish/bearish vote.
+
+The structural-overlap case is explicitly de-duplicated. When an old support/resistance zone overlaps the legal daily limit, the state is STRUCTURE_PRICE_LIMIT_COLOCATION. It is not "two confirmations." Both the price-limit contact and D01 geometry are expressed through the same observed price path, so effectiveIndependentEvidenceCount remains one by default.
+
+The future science has two distinct comparators. G0/G1 compare same-day limit events away from versus at the structural zone. N0/N1 compare next-day carryover after prior-day limit events away from versus at the zone. The second comparison additionally requires the DL-063 overnight/opening controls and a fresh next-session order-book receipt.
+
+Taiwan evidence justifies the firewall. High-frequency work documents a magnet effect as prices approach the upper limit. Other Taiwan studies support delayed price discovery and find overnight continuation after limit moves followed by later intraday correction. These mechanisms can create exactly the path that a chart analyst might otherwise label "support held" or "resistance broke."
+
+Twenty adversarial cases are authored. They enforce legal reference/tick receipts, explicit exemptions, proximity versus actual hit, queue-known versus queue-unknown, unlock/relock paths, no physical overnight queue identity, no queue copying across sessions, latent-demand distinction, no confluence vote when structure overlaps the daily limit, no-lookahead queue receipts, separate same-day/next-day comparators and one default effective evidence family.
+
+New durable artifacts:
+- research/PATTERN_PRICE_LIMIT_CARRYOVER_FIREWALL_V0_1.md
+- research/pattern_price_limit_carryover_firewall_v0_1.json
+- research/pattern_price_limit_carryover_firewall_v0_1.mjs
+- research/test_pattern_price_limit_carryover_firewall_v0_1.mjs
+- research/PATTERN_PRICE_LIMIT_CARRYOVER_D16_HANDOFF_V0_1.md
+
+No outcome data were inspected. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
