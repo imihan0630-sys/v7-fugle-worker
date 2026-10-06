@@ -1099,3 +1099,71 @@ No maturity change.
 D16 = 60%.
 D18 = 52%.
 Formal Core LOCKED.
+
+
+## 2026-10-07 first physical opportunity↔attempt reconciliation
+
+New opportunity contract supersession:
+- `research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_3.md`;
+- `research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_3.json`.
+
+V0.3 adds asymmetric market-session identity:
+- direct same-day official nonzero market activity may certify a trading session;
+- absence/zero/unpublished data cannot certify a non-trading day;
+- non-trading identity still requires authoritative calendar/closure evidence;
+- conflicting calendar/activity evidence becomes `MARKET_SESSION_IDENTITY_CONFLICT`.
+
+### 2026-10-06 first physical reconciliation
+
+Canonical:
+- `research/D16_PROSPECTIVE_OPPORTUNITY_RECONCILIATION_20261006_V0_2.json`;
+- `research/D16_PROSPECTIVE_OPPORTUNITY_RECONCILIATION_20261006_V0_2.md`.
+
+Market session:
+`VERIFIED_TRADING_SESSION`.
+
+Direct physical witnesses:
+- TPEx day-trading 843 rows / blob `e296da4d23830bc489b142f8e9bcce0417be99d1`;
+- TPEx dealer split 904 rows / blob `5c57e62ef55e8b5c24c1de896e67614179423de5`;
+- TWSE public dealer split 1340 rows / blob `1da2d93a80cd3387ee8182b53402f90aae683ba0`.
+
+Session identity:
+`fnv1a64-ascii:ba1e5c342d793649`.
+
+Scheduled evidence anchor:
+- run `37495670280`;
+- job `112379442583`;
+- event = schedule;
+- run_attempt = 1;
+- main head = `646a34263954e0beaf53cfcb897af2cc90c2aca4`;
+- nominal 00:10 Taipei;
+- actual start 00:26:06 Taipei;
+- scheduler delay = 966 seconds;
+- conclusion = failure.
+
+The scheduler delay is not asserted as the cause of C1 failure.
+
+Reconciliation:
+`ATTEMPT_ONE_FAILED_BLOCKER_PRESERVED`.
+
+For the first reconciled opportunity:
+- expectedTradingOpportunityN = 1;
+- operationalAttemptOneObservedN = 1;
+- prospectiveEvidenceAdmissibleN = 0;
+- operational attempt coverage = 100%;
+- evidence admission = 0%.
+
+This date remains:
+`INELIGIBLE_PARENT_MISSING / FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND`.
+
+It is not:
+- zero-pick;
+- negative outcome;
+- strategy failure;
+- genuine Formal↔C1 evidence.
+
+No historical backfill.
+No maturity change.
+D16 = 60%.
+D18 = 52%.
+Formal Core LOCKED.
