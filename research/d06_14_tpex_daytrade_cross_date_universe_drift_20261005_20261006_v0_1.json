@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "D06_14_TPEX_DAYTRADE_CROSS_DATE_UNIVERSE_DRIFT_20261005_20261006_V0_1",
+  "updatedAt": "2026-10-06 Asia/Taipei",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-14",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "dates": [
+    "2026-10-05",
+    "2026-10-06"
+  ],
+  "purpose": "Separate ordinary cross-date universe drift from same-trade-date T/T+1/T+2 revision lineage.",
+  "date1": {
+    "rows": 841,
+    "ordinaryFourDigitRows": 725,
+    "suspensionFlagRows": 12
+  },
+  "date2": {
+    "rows": 843,
+    "ordinaryFourDigitRows": 727,
+    "suspensionFlagRows": 13
+  },
+  "comparison": {
+    "commonSymbols": 839,
+    "addedCount": 4,
+    "added": [
+      {
+        "symbol": "3374",
+        "name": "精材"
+      },
+      {
+        "symbol": "4542",
+        "name": "科嶠"
+      },
+      {
+        "symbol": "4979",
+        "name": "華星光"
+      },
+      {
+        "symbol": "6218",
+        "name": "豪勉"
+      }
+    ],
+    "removedCount": 2,
+    "removed": [
+      {
+        "symbol": "3455",
+        "name": "由田"
+      },
+      {
+        "symbol": "6708",
+        "name": "天擎"
+      }
+    ],
+    "sellFirstSuspensionFlagChanges": [
+      {
+        "symbol": "1565",
+        "name": "精華",
+        "from": null,
+        "to": "＊"
+      },
+      {
+        "symbol": "6171",
+        "name": "大城地產",
+        "from": "＊",
+        "to": null
+      },
+      {
+        "symbol": "6561",
+        "name": "是方",
+        "from": null,
+        "to": "＊"
+      }
+    ]
+  },
+  "officialEligibilityCrossCheck": {
+    "page": "https://www.tpex.org.tw/zh-tw/mainboard/trading/day-trading/securities/change.html",
+    "currentObservation": "No direct matching rows for the nine compared symbols were observed in the fetched current page.",
+    "implication": "Do not assign eligibility-change causality from absence of a match; causes remain UNKNOWN unless authoritative historical eligibility evidence is resolved."
+  },
+  "guards": [
+    "Cross-date additions/removals are not revision deltas.",
+    "T_PRELIM(2026-10-05) versus T_PRELIM(2026-10-06) compares different trading universes and market states.",
+    "Do not use row-count difference 843-841=2 as a T+1 revision statistic.",
+    "Eligibility or disclosure-state causes require authoritative same-date evidence; otherwise keep UNKNOWN.",
+    "Suspension-flag state change is separate from full day-trading eligibility."
+  ],
+  "maturityImpact": "NONE",
+  "status": "CROSS_DATE_UNIVERSE_DRIFT_CONFIRMED / REVISION_VS_DATE_DRIFT_FIREWALL_FROZEN / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Use only same-trade-date T_PRELIM/T1/T2 vintages for revision measurement. Treat cross-date universe drift as a separate source/population process."
+}
