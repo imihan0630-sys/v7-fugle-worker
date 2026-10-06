@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-06",
+  "updatedAt": "2026-10-06T20:59:00+08:00",
   "status": "CANONICAL_ACTIVE_AUDIT_QUEUE",
   "owner": "00｜研究總控室",
   "sourceAuditMap": "shared-knowledge/STOCK_SELECTION_SELF_DECEPTION_AUDIT_V0_1.md",
@@ -622,7 +622,7 @@
         "release lineage and transitive cross-room contamination tracking",
         "admission/maturity missingness censoring and positivity accounting",
         "multi-horizon family identity",
-        "System1/System2 pass SDA016 V0.4 T01-T48",
+        "System1/System2 satisfy current SDA016 V0.5 T01-T58 blocking oracle on all new/pending deltas",
         "first genuine post-deploy V8.19 C1 scanOrigin/generation-inventory readback",
         "independent 00 closure"
       ],
@@ -650,7 +650,8 @@
         "research/system1_c1_scan_origin_generation_inventory_pr_644_v0_1.json",
         "research/sda016_system1_v819_current_status_20261006_v0_1.json",
         "research/SDA016_SYSTEM1_FORMAL_C1_BINDING_IMPLEMENTATION_CONTRACT_20261006_V0_1.md",
-        "research/sda016_system1_formal_c1_binding_contract_v0_1.json"
+        "research/sda016_system1_formal_c1_binding_contract_v0_1.json",
+        "research/SDA016_VALIDATION_ORACLE_20261006_V0_5.json"
       ],
       "formalC1Binding": {
         "status": "CLASS_A_CONTRACT_FROZEN_CLASS_B_IMPLEMENTATION_PENDING",
@@ -685,7 +686,7 @@
         "applicable_engineering_guard_and_deterministic_tests",
         "00_cross_domain_readback"
       ],
-      "readiness": "ROOM11_V0_3_48_TEST_ORACLE_FROZEN_REPLICATION_SUPPORT_CONTRACT_READY_SYSTEM2_EPISODE_SUPPORT_ENGINE_PENDING",
+      "readiness": "ROOM11_V0_4_56_TEST_ORACLE_FROZEN_REPLICATION_SUPPORT_AND_POLICY_CANDIDATE_SURVIVORSHIP_CONTRACTS_READY_SYSTEM2_EPISODE_SUPPORT_ENGINE_PENDING",
       "receipt": "shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_INTAKE_20261006_V0_3.md",
       "remainingDelta": [
         "System2 executable immutable episode identity with official-session adjacency",
@@ -696,9 +697,12 @@
         "structuralEpisodeN vs replicationEpisodeN vs mechanicalFragmentN separation",
         "Regime observability/capture coverage by state",
         "link Regime family mutation to SDA-016 consumption authority",
-        "System2 pass SDA017 V0.3 T01-T48",
+        "System2 satisfy current SDA017 V0.4 T01-T56 blocking oracle on all new/pending deltas",
         "genuine prospective multi-episode matured policy evidence",
         "independent 00 closure"
+      ],
+      "supportingReceipts": [
+        "research/SDA017_VALIDATION_ORACLE_20261006_V0_4.json"
       ]
     },
     {
@@ -870,13 +874,12 @@
         "D16_dependence_and_incrementality_analysis",
         "00_cross_system_readback"
       ],
-      "readiness": "SYSTEM1_FINGERPRINT_S22_T01_T05_PASS_SYSTEM2_FINGERPRINTS_NC_T01_PROSPECTIVE_OVERLAP_D16_PENDING",
+      "readiness": "SYSTEM1_FINGERPRINT_5_OF_5_AND_D16_PREREG_4_OF_4_PASS_SYSTEM2_FINGERPRINTS_NC_T01_AND_PROSPECTIVE_OVERLAP_PENDING",
       "receipt": "shared-knowledge/sda022_system1_fingerprint_acceptance_20261006_v0_1.json",
       "remainingDelta": [
         "System2 per-strategy policy fingerprint receipts passing S22-T06~T10",
         "NC-T01 physical proof passing S22-T11~T16 without System1 Top6/rank",
         "prospective cross-system overlap/divergence receipts satisfying S22-T17~T24",
-        "D16 preregistration satisfying S22-T25~T28 before outcomes",
         "D16 dependence/incrementality analysis after prospective support matures",
         "00 independent closure"
       ],
@@ -889,7 +892,11 @@
         "shared-knowledge/cross_system_policy_fingerprint_receipt_schema_v0_1.json",
         "shared-knowledge/sda022_nc_t01_receipt_schema_v0_1.json",
         "shared-knowledge/system1_policy_fingerprint_receipt_v0_1.json",
-        "shared-knowledge/sda022_system1_fingerprint_acceptance_20261006_v0_1.json"
+        "shared-knowledge/sda022_system1_fingerprint_acceptance_20261006_v0_1.json",
+        "research/SDA022_ROOM11_D16_PREREG_VALIDATION_RETURN_20261006_V0_1.md",
+        "research/SDA022_ROOM11_D16_PREREG_VALIDATION_RETURN_20261006_V0_1.json",
+        "research/SDA022_ROOM11_SYSTEM1_FINGERPRINT_VALIDATION_RETURN_20261006_V0_1.md",
+        "research/SDA022_ROOM11_SYSTEM1_FINGERPRINT_VALIDATION_RETURN_20261006_V0_1.json"
       ],
       "system1Fingerprint": {
         "status": "S22_T01_T05_PASS",
@@ -900,6 +907,13 @@
         "mergeCommitSha": "862b8c903e81e0945ba030b396b8a7d661f91f1e",
         "postMergeRegressionRun": 37391608511,
         "formalCoreImpact": "NONE"
+      },
+      "d16Prereg": {
+        "status": "S22_T25_T28_PASS",
+        "passN": 4,
+        "totalN": 4,
+        "receipt": "research/SDA022_ROOM11_D16_PREREG_VALIDATION_RETURN_20261006_V0_1.json",
+        "outcomes": "CLOSED"
       }
     }
   ],
@@ -912,5 +926,5 @@
   "lastHighIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_HIGH_INTAKE_20261006_V0_1.md",
   "lastIncrementalIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_INCREMENTAL_INTAKE_20261006_V0_2.md",
   "lastEngineeringIntake": "shared-knowledge/STOCK_SELECTION_AUDIT_ENGINEERING_INTAKE_20261006_V0_3.md",
-  "lastSystemLevelAudit": "shared-knowledge/SDA022_ACCEPTANCE_ORACLE_V0_1.md"
+  "lastSystemLevelAudit": "shared-knowledge/SYSTEMWIDE_LAUNCH_READINESS_GOVERNANCE_AUDIT_20261006_V0_1.md"
 }
