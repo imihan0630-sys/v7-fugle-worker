@@ -1,0 +1,18 @@
+import assert from "node:assert/strict";
+import {readFile} from "node:fs/promises";
+import {buildOfficialReferenceAvailabilityObservationV1_3} from "../runtime/s2_07_official_reference_availability_observer_v1_3.mjs";
+import {buildPreParentEvidenceCutManifestV1_4_1} from "../runtime/s2_07_pre_parent_evidence_cut_v1_4_1.mjs";
+const receipt=JSON.parse(await readFile(new URL("../evidence/S2_07_OFFICIAL_REFERENCE_AVAILABILITY_OBSERVER_V1_3_PHYSICAL_20261007.json",import.meta.url),"utf8"));
+const referenceObservation=await buildOfficialReferenceAvailabilityObservationV1_3({event:{exchange:receipt.exactReference.exchange,symbol:receipt.exactReference.symbol,actionFamilyId:receipt.exactReference.actionFamilyId,effectiveDate:receipt.exactReference.effectiveDate,semanticHash:receipt.exactReference.stableSemanticHash,sourceRowHash:receipt.exactReference.stableSourceRowHash},observedAt:receipt.prospectiveObservation.observedAt,observationMode:"PROSPECTIVE_POLL",sourceId:"TPEX_CAPITAL_REDUCTION_REFERENCE",payloadHash:receipt.exactReference.stableSourceRowHash,sourceFetchId:"V1.3_PHYSICAL_RECEIPT_REPLAY"});
+const cut=await buildPreParentEvidenceCutManifestV1_4_1({scanDate:"2026-10-07",evidenceCutoffAt:receipt.prospectiveObservation.observedAt,scopeClass:"MARKET_WIDE",requiredMarkets:["TWSE","TPEX"],coveredMarkets:["TWSE","TPEX"],requiredSourceLanes:[],expectedMopsVersionKeys:[],expectedMopsKeysetComplete:false,mopsVersionObservations:[],referenceAvailabilityObservations:[referenceObservation]});
+assert.equal(cut.preCutManifestReady,false);
+assert.equal(cut.referenceAvailabilityObservations.length,1);
+assert.equal(cut.observedMopsVersionKeys.length,0);
+assert.equal(cut.referenceIdentityDomainCountsTowardMopsKeyset,false);
+assert.equal(cut.mopsIdentityDomainCountsTowardNoRevisionGap,true);
+assert.ok(cut.blockers.includes("REQUIRED_MARKET_WIDE_LANE_COUNT_MISMATCH"));
+assert.ok(cut.blockers.includes("EXPECTED_MOPS_KEYSET_NOT_CERTIFIED_COMPLETE"));
+assert.equal(cut.technicalContinuityCertified,false);
+assert.equal(cut.selectionAuthority,false);
+assert.equal(cut.system1RuntimeUsed,false);
+console.log(JSON.stringify({result:"S2_07_PRE_PARENT_EVIDENCE_CUT_V1_4_1_IDENTITY_DOMAIN_DIAGNOSTIC",referenceObservation:{stableReferenceKey:referenceObservation.stableReferenceKey,availableAt:referenceObservation.availableAt},cut:{state:cut.state,blockers:cut.blockers,referenceObservationCount:cut.referenceAvailabilityObservations.length,mopsObservationCount:cut.mopsObservedVersions.length,referenceIdentityDomainCountsTowardMopsKeyset:cut.referenceIdentityDomainCountsTowardMopsKeyset,mopsIdentityDomainCountsTowardNoRevisionGap:cut.mopsIdentityDomainCountsTowardNoRevisionGap,preCutManifestReady:cut.preCutManifestReady,noRevisionGapThroughCut:cut.noRevisionGapThroughCut},authority:{technicalContinuityCertified:cut.technicalContinuityCertified,selectionAuthority:cut.selectionAuthority,system1RuntimeUsed:cut.system1RuntimeUsed}},null,2));
