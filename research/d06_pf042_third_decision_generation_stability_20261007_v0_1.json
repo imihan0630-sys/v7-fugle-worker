@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "D06_PF042_THIRD_DECISION_GENERATION_STABILITY_20261007_V0_1",
+  "updatedAt": "2026-10-06T21:39:30+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-16",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "candidateParent": "research/d06_pf042_third_decision_generation_candidate_20261007_v0_1.json",
+  "decisionUseDate": "2026-10-07",
+  "unitObservationDate": "2026-10-06",
+  "captures": [
+    {
+      "phase": "FIRST",
+      "capturedAt": "2026-10-06T21:35:46+08:00",
+      "hashes": {
+        "0050": "fnv1a64-utf8:44afa643c503c72c",
+        "0056": "fnv1a64-utf8:38922665d41400f9"
+      }
+    },
+    {
+      "phase": "READBACK",
+      "capturedAt": "2026-10-06T21:39:30+08:00",
+      "hashes": {
+        "0050": "fnv1a64-utf8:44afa643c503c72c",
+        "0056": "fnv1a64-utf8:38922665d41400f9"
+      }
+    }
+  ],
+  "frozenFields": {
+    "0050": {
+      "postingDate": "2026-10-06T16:17:26+08:00",
+      "announceDate": "2026-10-07",
+      "unitsOutstanding": 22233000000,
+      "reportedUnitsDifference": 11500000,
+      "creationUnitSize": 500000,
+      "creationUnitEquivalentNetChange": 23,
+      "pcfTradeDate": "2026-10-06",
+      "cashSubstitutionState": "NO_REQUIRED_CASH_SUBSTITUTION_OBSERVED"
+    },
+    "0056": {
+      "postingDate": "2026-10-06T16:37:37+08:00",
+      "announceDate": "2026-10-07",
+      "unitsOutstanding": 14247034000,
+      "reportedUnitsDifference": 19000000,
+      "creationUnitSize": 500000,
+      "creationUnitEquivalentNetChange": 38,
+      "pcfTradeDate": "2026-10-06",
+      "cashSubstitutionState": "NO_REQUIRED_CASH_SUBSTITUTION_OBSERVED"
+    }
+  },
+  "multiGenerationAssessment": {
+    "independentDecisionGenerations": 3,
+    "sameGenerationStabilityDemonstratedForThird": true,
+    "sourcePitFeasibility": "STRONGLY_REPLICATED",
+    "actualConstituentExecution": "UNKNOWN",
+    "predictiveIncrementality": "UNTESTED"
+  },
+  "maturityDecision": {
+    "module": "D06-16",
+    "level": "L3",
+    "maturityPct": 60,
+    "change": "NONE",
+    "reason": "Third prospective independent decision generation replicates source/PIT stability, but L4 requires preregistered OOS/Shadow residual incrementality and still lacks actual AP/constituent execution identification."
+  },
+  "guards": [
+    "Three stable decision generations do not prove alpha.",
+    "Units plus PCF remain modeled primary-basket exposure, not actual constituent execution.",
+    "Creation-unit-equivalent net change is arithmetic scale only.",
+    "Repeated reads within one decision generation do not add independent-date count.",
+    "Same event/primitive ancestry cannot create duplicate D06-11/D06-16/D11 votes."
+  ],
+  "status": "THIRD_INDEPENDENT_DECISION_GENERATION_STABLE / MULTIGENERATION_PIT_REPLICATION_PASS / D06_16_REMAINS_L3 / ACTUAL_EXECUTION_UNKNOWN / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Continue accumulating independent decision generations append-only, but the next maturity gate is not more source replication alone: preregister and execute common-support OOS/Shadow incrementality while preserving actual-execution UNKNOWN."
+}
