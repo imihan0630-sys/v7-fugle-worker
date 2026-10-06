@@ -60,6 +60,8 @@ for(const [date,time,seqNo] of targets){
     hrefs:row?attrs(row,"href"):[],
     onClicks:row?attrs(row,"onclick"):[],
     forms:row?attrs(row,"action"):[],
+    rawRowHtml:["2026-08-07|16:45:21|3","2026-08-28|15:14:20|2","2026-09-08|17:03:24|1"].includes([date,time,seqNo].join("|"))
+      ?row.slice(0,8000):null,
   });
 }
 console.log(JSON.stringify({
