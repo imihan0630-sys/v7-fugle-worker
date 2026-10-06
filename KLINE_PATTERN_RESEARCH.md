@@ -24083,3 +24083,37 @@ New durable artifacts:
 - research/PATTERN_AUCTION_ATTRIBUTION_D16_HANDOFF_V0_1.md
 
 No outcomes were opened. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001 and SDA-002 remain open. No R09, no runtime wiring and no Formal change. Formal Core remains LOCKED.
+
+
+# DL-063 — Prior-day structural memory vs overnight information / opening-gap price discovery (2026-10-07)
+
+A prior-day chart structure survives visually into the next morning, but the price process does not trade continuously through the overnight closure. DL-063 therefore rejects the common shortcut that a next-day opening gap through yesterday's support or resistance is automatically an ordinary retest or breakout of that level.
+
+The correct causal order is prior-day structure, overnight information window, pre-open/opening auction price discovery, and only then continuous-session interaction. A structural root can carry forward only when it was already replay-safe before the previous session ended. The next morning may not retroactively create yesterday's structure.
+
+The overnight window can contain issuer events, scheduled macro releases, unscheduled news, U.S./global moves, sector moves, night-futures information, FX/rate/commodity shocks and corporate-action reference-price changes. D01 consumes those owner receipts and does not create a composite overnight score.
+
+Corporate actions are a hard firewall. If the reference-price adjustment is unresolved, the raw close-to-open gap is DATA_BLOCKED rather than economic evidence.
+
+The key topology distinction is gap-through versus continuous retest. If price was below resistance yesterday and the opening call prints above the entire zone, the market was closed during the missing path. No observed continuous trade crossed the zone. The same applies to a downside gap through support. The old zone may remain a reference point, but the opening move is an overnight/opening-price-discovery state, not an intraday retest.
+
+D01 therefore separately tracks the first true continuous opportunity after the open. Price may later trade back into the zone, reclaim after a gap, never retest, or remain constrained by limits/delayed-open/liquidity conditions. These paths answer a different question from the opening auction itself.
+
+Historical pre-open trial information follows the same strict rule as DL-062: if it was not archived prospectively, it remains UNKNOWN. The final opening price cannot reconstruct the historical trial path.
+
+News and global context must also obey first-known clocks. A news item found at 10:00 cannot be inserted into an 08:59 opening predictor merely because its event happened overnight. Publication/capture semantics come from the owner module.
+
+Prior-day close-auction state is preserved because yesterday's official close can itself contain auction/passive pressure. A structure confirmed only by that close is a different evidence state from one established before the auction.
+
+Future D16 inference compares the same overnight shock away from versus at/through a prior structure, and separately contrasts gap-through cases with later continuous retests/reclaims. If apparent structural failure is concentrated in gap-through cases, path discontinuity/opening repricing is a sufficient alternative. If residual representation survives actual continuous opportunities after these controls, the structural-memory hypothesis becomes stronger but remains research-only.
+
+Twenty adversarial cases are authored. They enforce prior-session timing, corporate-action blocking, certified-vs-late overnight context, gap-through geometry, no assumed fill at skipped zones, first continuous retest identity, constrained openings, no opening-price trial backfill, prospective trial timing, one shared evidence family and closed outcome joins.
+
+New durable artifacts:
+- research/PATTERN_OVERNIGHT_OPENING_ATTRIBUTION_V0_1.md
+- research/pattern_overnight_opening_attribution_v0_1.json
+- research/pattern_overnight_opening_attribution_v0_1.mjs
+- research/test_pattern_overnight_opening_attribution_v0_1.mjs
+- research/PATTERN_OVERNIGHT_OPENING_ATTRIBUTION_D16_HANDOFF_V0_1.md
+
+No outcomes were opened. D01 maturity remains 52.7%. Pattern alpha remains UNKNOWN. SDA-001 and SDA-002 remain open. No runtime wiring and no Formal change. Formal Core remains LOCKED.
