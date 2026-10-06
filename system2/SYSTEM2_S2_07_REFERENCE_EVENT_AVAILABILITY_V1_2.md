@@ -39,16 +39,29 @@ For 4806, V1.2 also reuses the frozen event-specific semantic-episode rule: olde
 V1.2 can recognize a historical availability proof only when an exact event/version has one of these separately certified forms:
 
 1. `PROSPECTIVE_EXACT_VERSION_OBSERVER`
-   - exact TPEx reference-event version ID and source-row hash identity;
+   - exact TPEx reference semantic hash and source-row hash identity;
    - genuinely prospective public observation of that exact reference version;
    - first observation no later than the replay cutoff.
 
 2. `AUTHORITATIVE_PUBLICATION_TIME_CONTRACT`
-   - exact TPEx reference-event version ID and source-row hash identity;
+   - exact TPEx reference semantic hash and source-row hash identity;
    - authoritative source semantics explicitly certify the publication/public-availability timestamp;
    - certified timestamp no later than the replay cutoff.
 
-A historical display timestamp by itself satisfies neither class. MOPS event chronology also cannot certify the availability of the exact TPEx reference-price row unless the evidence is explicitly linked to that reference event/version.
+A historical display timestamp by itself satisfies neither class. MOPS event chronology also cannot certify the availability of the exact TPEx reference-price row unless the evidence is explicitly linked to that stable reference identity.
+
+### Observation ID is not stable source identity
+
+`eventVersionId` is an immutable **observation-version** ID. It intentionally includes source-capture provenance such as the capture ID / fetched-at clock, so the same unchanged official row can receive a different `eventVersionId` when observed again.
+
+V1.2 therefore must not use `eventVersionId` as the cross-capture exact-source key.
+
+Stable exact reference identity for this gate is:
+
+- `semanticHash`: stable normalized event semantics;
+- `sourceRowHash`: stable exact official source-row content.
+
+`eventVersionId` remains useful receipt provenance only.
 
 ## Expected current disposition
 
@@ -96,3 +109,26 @@ If the physical V1.2 probe confirms the negative state, stop blind historical-cl
 Continue non-conflicting BUILD_LANE work while:
 - 5381 / 6241 / 3086 remain DATA_LANE RAW A1 coverage-blocked;
 - 4806 remains usable only as bounded present-day research geometry, not PIT replay continuity.
+
+
+## 2026-10-07 merged-main physical acceptance
+
+Receipt branch base: `777b5876917774a5ad4c32eac3e563df2b3acfe5`.
+
+Dedicated V1.2 workflow run `37538390532`, job `112525069738`: PASS.
+
+Physical result:
+- stable semantic hash: `b6a4c97fdf3ded2bdae7048852540e4f58c1a64da4cbc012e350d5227e20d869`;
+- stable source-row hash: `518fcdf6b0f3d5dc8ffaafba59556c86da3cda76dd0e46c528217740c33ae92b`;
+- observed receipt eventVersionId: `S2-CA-EVENT:82da757e780d7be2c3474f5ca505d385b55705d44b520f291dc7383f88c391ca`;
+- 18 MOPS capital-reduction family lineage rows;
+- semantic seed `2026-02-24|16:28:25|3`;
+- 8 semantic-aligned 2026 rows, all source-clock eligible and all retrospective-only;
+- independent exact-source historical public-availability evidence: 0;
+- state `REFERENCE_EVENT_HISTORICAL_AVAILABILITY_NOT_PROVEN`;
+- blocker `OFFICIAL_REFERENCE_EVENT_HISTORICAL_AVAILABILITY_UNPROVEN`;
+- `firstKnownAt=null`, `availableAt=null`, `pitEventReplayEligible=false`;
+- System1 isolation guard PASS.
+
+Evidence receipt:
+`system2/evidence/S2_07_REFERENCE_EVENT_AVAILABILITY_V1_2_PHYSICAL_20261007.json`.

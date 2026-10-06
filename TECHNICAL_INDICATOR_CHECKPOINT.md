@@ -5841,3 +5841,79 @@ No promotion:
 
 Exact next:
 consume only a prospectively timestamped official-event version whose `firstKnownAt` / `availableAt` precede the decision cutoff, then bind it to a genuine cutoff-bearing parent and complete expected-parent reconciliation. Do not generalize the 4806 event-boundary bridge to all-history technical continuity. The other four external blockers remain unchanged.
+
+## TI-1205 through TI-1214 — exact reference-event historical availability negative gate (2026-10-07)
+
+Canonical artifacts:
+- `research/D03_SYSTEM2_S207_REFERENCE_AVAILABILITY_NEGATIVE_READBACK_20261007_V0_1.md`;
+- `research/d03_system2_s207_reference_availability_negative_readback_20261007_v0_1.json`;
+- `research/test_d03_system2_s207_reference_availability_negative_readback_v0_1.mjs`.
+
+### TI-1205~1207 — exact event identity and semantic episode are bounded
+
+System2 dedicated workflow `37538083182`, job `112524054856`, exact head `777b5876917774a5ad4c32eac3e563df2b3acfe5`, completed SUCCESS. System2 Research CI `37538083135` also completed SUCCESS.
+
+Pinned event:
+- TPEX 4806 / capital reduction / effective 2026-10-02;
+- replay cutoff = 2026-10-02T15:30:00+08:00;
+- exact eventVersionId = `S2-CA-EVENT:e3b2b87e8b9526420db7a75656ba8b542d020ff01022b1ba50356b8cdabbd963`;
+- exact sourceRowHash = `518fcdf6b0f3d5dc8ffaafba59556c86da3cda76dd0e46c528217740c33ae92b`.
+
+Observed MOPS evidence:
+- family rows = 18;
+- bounded semantic-episode rows = 8;
+- source-reported-clock eligible rows = 8;
+- retrospective-only rows = 8.
+
+### TI-1208~1210 — historical display time is not exact public availability
+
+All eight bounded rows preserve issuer disclosure chronology, but:
+- independent exact-version availability evidence count = 0;
+- independently ready evidence count = 0;
+- winning evidence = null;
+- firstKnownAt = null;
+- availableAt = null;
+- pitEventReplayEligible = false.
+
+Accepted state:
+`REFERENCE_EVENT_HISTORICAL_AVAILABILITY_NOT_PROVEN`.
+
+Accepted blocker:
+`OFFICIAL_REFERENCE_EVENT_HISTORICAL_AVAILABILITY_UNPROVEN`.
+
+Frozen anti-look-ahead rules:
+- source-reported timestamp cannot be promoted to public availableAt;
+- retrospective readback cannot become firstObservedAt;
+- MOPS episode chronology cannot certify availability of the exact TPEx reference-price version without explicit version linkage;
+- a post-cutoff observer cannot prove pre-cutoff availability.
+
+### TI-1211~1213 — support, counterevidence and validation boundary
+
+Support:
+- the same capital-reduction episode is physically present and source clocks are parseable;
+- exact exchange reference-event identity is pinned;
+- dedicated tests, physical probe and isolation guards pass.
+
+Counterevidence / alternative explanation:
+- issuer disclosure chronology proves the corporate-action episode existed, not the availability time of the exact exchange reference-price row;
+- one selected positive lineage case cannot generalize to other events or all-history continuity;
+- no OOS, walk-forward, cost, fillability, market-state or alpha evidence exists;
+- no new independent information root is created.
+
+Repository-wide V8 Regression run `37538083218` failed at `tests/test_sda016_formal_c1_binding_governance_sync_v0_1.mjs`, which expected `V0_5_58_TEST_ORACLE`. This is a cross-lane SDA-016 governance-sync assertion, not a V1.2 dedicated-test failure. D03 accepts only the bounded dedicated negative-gate evidence and does not call repository regression green.
+
+### TI-1214 — maturity and stop rule
+
+This closes the question “can existing historical MOPS display clocks prove exact TPEx reference-event public availability?” with a negative answer for the bounded 4806 case. It does not close the raw-source/prospective observer gate.
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09 and D03-10 remain L2/40;
+- raw source/version gate remains 2/3;
+- technicalObserverR1 remains BLOCKED;
+- outcomes remain CLOSED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`;
+- Formal Core remains LOCKED.
+
+Exact next:
+stop blind historical-clock promotion attempts for this bounded event. Reopen only if independent evidence binds the exact TPEx eventVersionId and sourceRowHash to a genuine prospective observation or authoritative publication-time contract no later than the replay cutoff. Continue waiting for System2 D03 dedup diagnostics, System1 D03 redundancy diagnostics, D16 D03 method/incrementality receipts and the protected cutoff-bearing parent path.

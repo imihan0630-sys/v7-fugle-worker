@@ -25,13 +25,13 @@ function iso(value) {
   return new Date(value).toISOString();
 }
 
-function evidenceCandidate(row, replayCutoffAt, {officialEventVersionId, officialSourceRowHash}) {
+function evidenceCandidate(row, replayCutoffAt, {officialSemanticHash, officialSourceRowHash}) {
   if (!row || typeof row !== "object") return null;
   const evidenceClass = text(row.evidenceClass);
   const availableAt = iso(row.availableAt ?? row.firstObservedAt);
   const exactVersionIdentity =
     row.exactVersionIdentity === true
-    && text(row.referenceEventVersionId) === officialEventVersionId
+    && text(row.referenceSemanticHash) === officialSemanticHash
     && text(row.referenceSourceRowHash) === officialSourceRowHash;
   const publicAvailabilityObserved = row.publicAvailabilityObserved === true;
   const publicationSemanticsCertified = row.publicationSemanticsCertified === true;
@@ -61,8 +61,9 @@ function evidenceCandidate(row, replayCutoffAt, {officialEventVersionId, officia
     sourceId: text(row.sourceId) || null,
     versionKey: text(row.versionKey) || null,
     evidenceId: text(row.evidenceId) || null,
-    referenceEventVersionId: text(row.referenceEventVersionId) || null,
+    referenceSemanticHash: text(row.referenceSemanticHash) || null,
     referenceSourceRowHash: text(row.referenceSourceRowHash) || null,
+    referenceObservationVersionId: text(row.referenceObservationVersionId) || null,
   });
 }
 
@@ -168,14 +169,15 @@ export function evaluateReferenceEventHistoricalAvailabilityV1_2({
   });
 
   const officialEventVersionId = text(officialEvent.eventVersionId);
+  const officialSemanticHash = text(officialEvent.semanticHash);
   const officialSourceRowHash = text(officialEvent.sourceRowHash);
-  if (!officialEventVersionId || !officialSourceRowHash) {
-    blockers.push("REFERENCE_EVENT_PROVENANCE_IDENTITY_MISSING");
+  if (!officialSemanticHash || !officialSourceRowHash) {
+    blockers.push("REFERENCE_EVENT_STABLE_IDENTITY_MISSING");
   }
 
   const independent = independentAvailabilityEvidence
     .map((row) => evidenceCandidate(row, replayCutoff, {
-      officialEventVersionId,
+      officialSemanticHash,
       officialSourceRowHash,
     }))
     .filter(Boolean);
@@ -208,7 +210,9 @@ export function evaluateReferenceEventHistoricalAvailabilityV1_2({
     effectiveDate,
     replayCutoffAt: replayCutoff,
     officialEventVersionId: officialEventVersionId || null,
+    officialSemanticHash: officialSemanticHash || null,
     officialSourceRowHash: officialSourceRowHash || null,
+    observationVersionIdUsedAsStableIdentity: false,
     officialKnowledgeTimeMode: text(officialEvent.knowledgeTimeMode) || null,
     officialFirstKnownAt: officialEvent.firstKnownAt ?? null,
     officialAvailableAt: officialEvent.availableAt ?? null,
