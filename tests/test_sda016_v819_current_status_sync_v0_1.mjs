@@ -46,7 +46,10 @@ assert.ok(!String(issue.readiness).includes("NOT_MERGED"));
 
 assert.equal(registry.rules.sda016System1V819CurrentStatus,
   "research/sda016_system1_v819_current_status_20261006_v0_1.json");
-assert.match(dashboard,/PR644_MERGED_V819_PRODUCTION_VERIFIED/);
+assert.match(dashboard,/## SDA-016 System1 V8\.19 current status supersession/);
+assert.match(dashboard,/- PR #644 = MERGED;/);
+assert.match(dashboard,/- V8\.19 Production deploy run `37382112616` = SUCCESS;/);
+assert.match(dashboard,/V820_PRODUCTION_VERIFIED_FIRST_SCHEDULED_DATE_INELIGIBLE_GENUINE_BINDING_PENDING_T48_OPEN_SHARED_AUTHORITY_PENDING/);
 assert.match(dashboard,/SDA-016 is still NOT closed/);
 assert.match(dashboard,/first genuine post-deploy C1 scanOrigin/);
 

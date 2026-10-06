@@ -23,8 +23,15 @@ async function publicSource(url,options={}) {
       const response=await fetch(url,{...options,redirect:'manual',signal:AbortSignal.timeout(45000)});
       if([401,403].includes(response.status)) throw new Error('Official source disallows access; stop this synchronization without bypassing restrictions');
       if((response.status===429 || response.status>=500) && attempt<2) {await new Promise(resolve=>setTimeout(resolve,1000*(attempt+1)));continue;}
-      assert.equal(response.ok,true,`Official source HTTP ${response.status}`);return response;
-    }catch(error){if(attempt>=2 || !/fetch failed|timeout|ECONNRESET|ETIMEDOUT/i.test(String(error))) throw new Error(`Public source ${new URL(url).pathname}: ${error.message}`);await new Promise(resolve=>setTimeout(resolve,1000*(attempt+1)));}
+      assert.equal(response.ok,true,`Official source HTTP ${response.status}`);
+      const body=await response.arrayBuffer();
+      return new Response(body,{status:response.status,statusText:response.statusText,headers:response.headers});
+    }catch(error){
+      const retryable=/fetch failed|timeout|aborted|ECONNRESET|ETIMEDOUT/i.test(String(error));
+      console.error(JSON.stringify({publicSourceRetry:retryable&&attempt<2,path:new URL(url).pathname,attempt:attempt+1,error:String(error?.message||error).slice(0,220)}));
+      if(attempt>=2 || !retryable) throw new Error(`Public source ${new URL(url).pathname}: ${error.message}`);
+      await new Promise(resolve=>setTimeout(resolve,1000*(attempt+1)));
+    }
   }
 }
 async function admin(path,options={}) {
