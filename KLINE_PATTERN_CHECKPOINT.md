@@ -4162,3 +4162,148 @@ No maturity or Formal change is authorized by this routing.
 6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 7. Next D01 science: separate structural response from opening/closing-auction mechanics, closing-index replication and end-of-session liquidity concentration.
 8. No outcome join / no runtime wiring / no Formal change.
+
+
+## Continuation update — DL-062 (2026-10-07)
+
+### DL-062 — Structural response vs opening/closing auction mechanics
+- DL-061 separated structural response from index-weight / passive-flow / ETF-futures mechanical effects.
+- DL-062 adds the session-boundary attribution firewall:
+  opening call auction;
+  closing call-auction accumulation;
+  trial/indicative state;
+  delayed close;
+  final auction print;
+  end-of-session liquidity concentration;
+  passive benchmark replication.
+- D05-06 remains canonical owner of opening/closing auction mechanics.
+  D01 consumes owner receipts and does not redefine the auction model.
+- Canonical D05-06 historical boundary is binding:
+  historical final close/volume may be replayable;
+  complete historical pre-close trial/imbalance is generally UNKNOWN unless actually archived.
+- FINAL_CLOSE_CAN_BACKFILL_TRIAL_IMBALANCE = FALSE.
+- EOD_VOLUME_SPIKE_EQUALS_AUCTION_IMBALANCE = FALSE.
+- FINAL_AUCTION_VOLUME_EQUALS_IMBALANCE = FALSE.
+- Session phases remain distinct:
+  PRE_OPEN;
+  OPEN_TRIAL;
+  OPEN_CALL;
+  CONTINUOUS_SESSION;
+  CLOSE_CALL_ACCUMULATION;
+  CLOSE_TRIAL;
+  CLOSE_DELAYED;
+  CLOSE_FINAL;
+  POST_CLOSE;
+  PHASE_UNKNOWN.
+- Structural timing is separated:
+  PRE_AUCTION_STRUCTURE_CONFIRMED;
+  AUCTION_CREATED_OR_CONFIRMED_STRUCTURE;
+  STRUCTURE_UNKNOWN_AT_AUCTION.
+- A final auction print that is needed to confirm the structure cannot also act as its own pre-close predictor.
+  This extends SDA-002 no-lookahead protection.
+- Close-state transition semantics are frozen:
+  CONTINUOUS_HOLD_BEFORE_AUCTION;
+  AUCTION_MOVED_INTO_HOLD;
+  AUCTION_MOVED_OUT_OF_HOLD;
+  AUCTION_CREATED_OR_CONFIRMED_STRUCTURE;
+  CLOSE_STATE_UNKNOWN.
+- Therefore "closed above resistance" and "held support into close" are not single homogeneous events.
+  The continuous-session state and auction transition must be visible separately.
+- When source-complete, store:
+  lastContinuousPrice;
+  preCloseMidquote;
+  closingTrialPrice;
+  finalAuctionPrice;
+  finalOfficialClose;
+  displacementLastContinuousToAuction;
+  displacementPreCloseMidToAuction;
+  trialToFinalDisplacement.
+- Price displacement does not identify hidden imbalance.
+  True imbalance requires a native D05-06 receipt.
+- Closing volume concentration is context only.
+  Allowed owner-sourced descriptors include:
+  auctionVolume;
+  auctionVolumeShare;
+  lateContinuousVolumeShare;
+  displayed trial depth/imbalance;
+  delayed-close state;
+  passive/index event;
+  execution-cost context.
+- Passive benchmark replication can materially affect CLOSE_FINAL.
+  DL-061 / D06 / D11 receipts are consumed without converting modeled exposure into verified execution.
+- Opening call states are separated from ordinary continuous-session retests:
+  OPEN_TRIAL_APPROACH;
+  OPEN_CALL_GAP_INTO_ZONE;
+  OPEN_CALL_GAP_THROUGH_ZONE;
+  OPEN_AUCTION_HOLD_OR_REJECTION;
+  OPEN_DELAYED_OR_CONSTRAINED;
+  OPEN_CONTEXT_UNKNOWN.
+- A gap through a prior zone at the open can reflect overnight information and auction price discovery and may not be labelled an intraday failed retest.
+- Primary generic comparator:
+  G0 SAME_AUCTION_STATE_AWAY_FROM_ZONE;
+  G1 SAME_AUCTION_STATE_AT_PRECONFIRMED_ZONE.
+- Complementary continuous-vs-auction states:
+  H0 CONTINUOUS_OPPORTUNITY_PRE_AUCTION;
+  H1 AUCTION_ONLY_OPPORTUNITY;
+  H2 CONTINUOUS_AND_AUCTION_CONCORDANT;
+  H3 CONTINUOUS_AND_AUCTION_DIVERGENT;
+  H4 CONTEXT_UNKNOWN.
+- A structural hypothesis is stronger when representation survives outside H1-only auction classifications.
+- Historical missing pre-close trial state remains UNKNOWN and cannot be silently dropped or imputed.
+- Delayed-close cases preserve scheduled vs actual final match time and D05 owner constraint receipts.
+- SDA-001 remains open:
+  structure / auction displacement / auction volume / trial imbalance / passive context do not automatically become independent votes.
+  effectiveIndependentEvidenceCount remains 1 by default within one parent.
+- SDA-002 remains open:
+  structureFirstObservableAt / structureConfirmedAt / auctionStateFirstObservedAt / auctionStateKnownAt / predictorFreezeAt / finalMatchAt / replaySafe are required.
+- Future D16 ladder:
+  A0 RAW_CLOSE_ZONE_CLASSIFICATION;
+  A1 PRE_AUCTION_STRUCTURE_TIMING_CONTROLLED;
+  A2 CONTINUOUS_LAST_PRICE_CONTROLLED;
+  A3 AUCTION_PHASE_CONTROLLED;
+  A4 OBSERVED_TRIAL_STATE_CONTROLLED;
+  A5 AUCTION_VOLUME_CONCENTRATION_CONTROLLED;
+  A6 PASSIVE_INDEX_REPLICATION_CONTROLLED;
+  A7 DELAYED_CLOSE_CONSTRAINT_CONTROLLED;
+  A8 GENERIC_AUCTION_EVENT_COMPARATOR_CONTROLLED;
+  A9 CONTINUOUS_VS_AUCTION_DIVERGENCE_CONTROLLED;
+  A10 STRUCTURAL_RESPONSE_RESIDUAL_CANDIDATE;
+  A11 PROSPECTIVE_MULTI_DATE_REPLICATION.
+- Future interpretations:
+  Q0 FINAL_CLOSE_ONLY_ARTIFACT;
+  Q1 AUCTION_DISPLACEMENT_EXPLANATION;
+  Q2 AUCTION_IMBALANCE_EXPLANATION;
+  Q3 PASSIVE_CLOSE_REPLICATION_EXPLANATION;
+  Q4 DELAYED_CLOSE_CONSTRAINT_EXPLANATION;
+  Q5 OPENING_AUCTION_PRICE_DISCOVERY_EXPLANATION;
+  Q6 CONTINUOUS_STRUCTURE_SURVIVES_AUCTION_CONTROL;
+  Q7 STRUCTURAL_RESPONSE_RESIDUAL;
+  Q8 HISTORICAL_AUCTION_STATE_UNKNOWN;
+  Q9 NOT_EVALUABLE.
+- External evidence supports this firewall:
+  modern closing-auction research finds closing volume has become a large share of daily volume, is strongly associated with passive/indexing activity, and auction price deviations can be temporary/reverting;
+  passive market-on-close activity and index rebalancing can concentrate liquidity and price pressure at the close.
+- New files:
+  - research/PATTERN_AUCTION_ATTRIBUTION_FIREWALL_V0_1.md
+  - research/pattern_auction_attribution_firewall_v0_1.json
+  - research/pattern_auction_attribution_firewall_v0_1.mjs
+  - research/test_pattern_auction_attribution_firewall_v0_1.mjs
+  - research/PATTERN_AUCTION_ATTRIBUTION_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-062
+
+1. Land DL-061 first once the shared SDA-016 governance regression is synchronized by its canonical owner; do not modify D16 governance from D01.
+2. Rebase DL-062 from the merged DL-061/latest main and run standard Formal-isolation CI.
+3. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-062 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+4. Consume D05-06 auction receipts without reconstructing historical trial/imbalance from final close/volume.
+5. Preserve continuous-session vs auction-only structural classification and passive-close context.
+6. Hand A0-A11 / Q0-Q9 auction-attribution inference to D16.
+7. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+8. Next D01 science: separate prior-day structural memory from overnight information accumulation and opening-gap price discovery at the next session open.
+9. No outcome join / no runtime wiring / no Formal change.
