@@ -337,3 +337,36 @@ Room10 remaining D14-17 work:
 7. return MERGE_ELIGIBLE / KEEP_SEPARATE / EVIDENCE_INSUFFICIENT plus maturity map.
 
 D14-17 remains L0/0 until its own mechanism/falsification contract is completed.
+
+
+## D14-EX-001 — VWAP/TWAP/Participation execution scheduling contract (2026-10-06)
+
+D14-16 now has a frozen mechanism/falsification contract.
+
+Durable boundaries:
+- TWAP is a deterministic time-slicing baseline, not a universal optimum.
+- VWAP-style scheduling may use only a volume profile forecast known at decision time; realized future full-day volume is forbidden look-ahead.
+- Participation scheduling adapts to observed eligible volume but can underfill when liquidity falls and can conflict with signal half-life.
+- unfilled/cancelled/rejected/partial/expired quantity remains in the parent-order denominator;
+- opening/closing auctions, continuous regular-lot, volatility interruption and discrete odd-lot matching remain separate mechanism cohorts;
+- plan/signal/push/simulated match never become broker-confirmed fills;
+- missing commission/tax/slippage/mechanism/fill provenance remains UNKNOWN;
+- multiple schedule parameters/horizons/participation caps count as multiple tests;
+- inference clusters by independent decision/session, not child order.
+
+Ownership:
+- D14-15 = order-type semantics;
+- D14-16 = parent-to-child scheduling;
+- D14-17 = implementation-shortfall / market-impact ontology;
+- D14-18 = signal-decay / urgency.
+
+Artifact:
+`research/D14_16_VWAP_TWAP_PARTICIPATION_EXECUTION_CONTRACT_20261006_V0_1.md`.
+
+Status:
+`D14_16_MECHANISM_FALSIFICATION_CONTRACT_FROZEN / TAIWAN_PIT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED`.
+
+D14-16 advances to L2 / 40% for mechanism + falsification semantics only.
+Exact next continuation: collect at least three independent prospective Taiwan sessions with immutable decision/mechanism/order lifecycle evidence, preserve unexecuted opportunities, and require broker-confirmed fills for realized execution claims. Three sessions trigger readiness review only; no automatic L3 promotion.
+
+No Formal change and no FORMAL_OPTIMIZATION_CANDIDATE.
