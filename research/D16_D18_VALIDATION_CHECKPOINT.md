@@ -2800,3 +2800,70 @@ Exact next:
 6. validate T48 engineering if it appears;
 7. switch to SDA-022 T06~T16 if System2 fingerprint / NC-T01 lands first;
 8. do not open economic outcomes.
+
+
+## 2026-10-07 first physical opportunity↔attempt reconciliation
+
+Latest opportunity-ledger authority:
+- `research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_3.md`;
+- `research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_3.json`.
+
+V0.3 rule:
+- positive same-day official market activity can certify `VERIFIED_TRADING_SESSION`;
+- data absence cannot certify a non-trading day;
+- calendar/activity conflict is fail-closed.
+
+First physical reconciliation:
+- `research/D16_PROSPECTIVE_OPPORTUNITY_RECONCILIATION_20261006_V0_2.json`;
+- `research/D16_PROSPECTIVE_OPPORTUNITY_RECONCILIATION_20261006_V0_2.md`.
+
+2026-10-06 session evidence:
+- TPEx day-trading = 843 rows;
+- TPEx dealer split = 904 rows;
+- TWSE public dealer split = 1340 rows;
+- session identity = `fnv1a64-ascii:ba1e5c342d793649`.
+
+Attempt-one:
+- scheduled run `37495670280`;
+- job `112379442583`;
+- run_attempt=1;
+- nominal 00:10 Taipei;
+- actual start 00:26:06 Taipei;
+- scheduler delay = 966s;
+- failure preserved.
+
+Reconciliation:
+- expected opportunity = 1;
+- attempt-one observed = 1;
+- admissible evidence = 0;
+- operational coverage = 100%;
+- evidence admission = 0%.
+
+Admission remains:
+`INELIGIBLE_PARENT_MISSING / FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND`.
+
+Do not infer:
+- zero-pick;
+- negative alpha;
+- strategy failure;
+- scheduler delay caused C1 failure.
+
+Current external blockers remain:
+- genuine Formal↔C1 sample N = 0;
+- T48 finalization implementation pending;
+- System2 SDA-022 fingerprints pending;
+- physical NC-T01 pending;
+- outcomes CLOSED.
+
+No maturity change:
+D16 = 60%.
+D18 = 52%.
+Formal Core LOCKED.
+
+Exact next:
+1. re-read latest main/queue;
+2. build opportunity rows for subsequent verified market sessions independently of run existence;
+3. reconcile first scheduled attempt for each opportunity;
+4. preserve no-run gaps and failed attempt-one anchors;
+5. if the next admissible Formal↔C1 receipt appears, validate without deleting 2026-10-06 failure;
+6. if T48/System2 fingerprint/NC-T01 lands first, switch immediately to that delta.
