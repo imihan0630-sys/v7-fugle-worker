@@ -1410,3 +1410,42 @@ Current launch posture:
 - SDA-022 = PARTIAL_PASS.
 - live/final System2 trading authority = DISABLED.
 - Formal Core = LOCKED.
+
+
+## Eighth-cycle terminal delta — S2-07 V1.6 fail-closed
+
+Observed main before write: `4e5a89dd135ec32f53126f77efcf0d3f082e7b57`.
+
+S2-07 V1.6 MOPS Exact-Version Population did not pass physical capture.
+
+Authoritative run:
+- PR #742 workflow run `37546362383`;
+- terminal status = COMPLETED / FAILURE;
+- contract tests = PASS;
+- physical prospective MOPS exact-version population capture = FAIL;
+- blocker = `MOPS_QUERY_TRANSPORT_OR_SHARD_CAPTURE_INCOMPLETE`;
+- no-mutation/System1-authority step = SKIPPED;
+- physical evidence upload = SKIPPED;
+- no V1.6 physical artifact was produced.
+
+00 disposition:
+`V1_6_CONTRACT_PASS_PHYSICAL_CAPTURE_FAILED_FAIL_CLOSED`.
+
+Important:
+- this is not evidence that V1.6 semantics are invalid;
+- this is not evidence that the expected MOPS keyset is complete;
+- exact issuer/month-shard failure identity is not available from the current job log and must not be invented;
+- V1.5 remains the latest accepted S2-07 physical gate;
+- `expectedMopsKeysetComplete=false`;
+- `noRevisionGapThroughCut=false`;
+- `preParentEvidenceCutReady=false`;
+- symbol-session and technical-continuity certification remain false;
+- no strategy/ranking/final-selection/push/capital/order authority is promoted.
+
+Exact BUILD_LANE continuation:
+1. improve bounded per-symbol / per-shard diagnostics or repair the transport/shard capture completeness failure;
+2. rerun V1.6 physical prospective capture;
+3. only after a successful physical population capture may source/month-shard completeness semantics be evaluated;
+4. do not freeze the expected MOPS keyset from this failed run.
+
+00 does not implement this BUILD_LANE repair.
