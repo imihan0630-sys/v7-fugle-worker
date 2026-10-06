@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "D06_03_TPEX_DEALER_SPLIT_CAPTURE_20261006_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-03",
+  "tradeDate": "2026-10-06",
+  "market": "TPEx",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "primitiveReceiptId": "D06-20261006-INSTITUTION-DEALER-SPLIT",
+  "informationRoot": "INSTITUTIONAL_FLOW_OWNERSHIP",
+  "source": {
+    "authority": "Taipei Exchange",
+    "url": "https://www.tpex.org.tw/www/zh-tw/insti/dailyTrade?type=Daily&sect=EW&date=115%2F10%2F06&id=&response=json",
+    "tableDate": "115/10/06",
+    "capturedAtUpperBound": "2026-10-06T21:21:28+08:00",
+    "canonicalRowsFingerprint": "fnv1a64-utf8:7c41deb8312a0370",
+    "schemaFingerprint": "fnv1a64-utf8:8051cc48ec5796dd"
+  },
+  "quality": {
+    "rows": 904,
+    "numericValid": 904,
+    "ordinaryFourDigitRows": 783,
+    "duplicateOrdinaryCodes": 0,
+    "dealerAggregateReconciliation": "904/904 PASS",
+    "institutionTotalReconciliation": "904/904 PASS"
+  },
+  "ordinaryStockDeskStructure": {
+    "proprietaryNonzero": 177,
+    "hedgeNonzero": 414,
+    "bothActive": 143,
+    "oppositeSigns": 70,
+    "oppositePctAmongBothActive": 49,
+    "samePositive": 41,
+    "sameNegative": 32,
+    "aggregateDealerNonzero": 448,
+    "aggregateRowsWithOpposingDesks": 70,
+    "opposingPctAmongAggregateNonzero": 15.6,
+    "hedgeAbsDominant": 342,
+    "proprietaryAbsDominant": 106,
+    "equalAbs": 335
+  },
+  "temporalReplication": {
+    "independentTradeDatesThrough20261006": 2,
+    "priorDate": "2026-10-05",
+    "sameDateCrossMarketDoesNotAddTemporalN": true
+  },
+  "maturityImpact": "NONE",
+  "status": "SECOND_TEMPORAL_DATE_TPEX_CAPTURED / STRUCTURAL_FALSIFICATION_PERSISTS / OUTCOMES_CLOSED / FORMAL_LOCKED"
+}
