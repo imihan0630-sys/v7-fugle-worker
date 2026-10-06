@@ -3851,3 +3851,90 @@ Current research state:
 
 Exact next continuation point:
 PVE-252 — after the 2026-10-07 market opens and a completed >=10:15 intraday 15m row exists, run/read the deterministic PVE-251 audit and require: provider + endpoint + exact raw-response SHA-256 + normalizationVersion + semanticFingerprint; slotHistoryCount>=20; finite pvSlotRvol20; sameSlotBaselineClean=true; matching bootstrap receipt; and the complete 23:35/23:55 schedule-family readback. Keep PVE-247 fail closed for every missing family. In parallel, do not merge PR #726 until its unrelated latest-main SDA-016 regression blocker is resolved by the owning governance lane.
+
+
+## PVE-252 continuation — premarket reconciliation and recovery-trigger falsification (2026-10-07)
+
+Status: PREMARKET_CONTINUATION_COMPLETE / LIVE_10_15_HINGE_NOT_YET_REACHED / PR_726_BASE_BLOCKER_EXTERNAL / RECOVERY_TRIGGER_DELIVERY_GAP_CONFIRMED / NO_MATURITY_CHANGE / FORMAL_UNCHANGED.
+
+Latest-main recovery:
+- D02 formal maturity remains 60.0%;
+- aggregate tracker = 356 modules / 46.7%;
+- clean prospective H001 dates remain 0;
+- Gate 7 remains CLOSED;
+- SDA-001 and SDA-003 remain open/routed responsibilities.
+
+PR #726 state:
+- D02 read-only PVE-251 evidence stream remains unmerged;
+- its own branch audit passed and Repair CI passed;
+- Regression blocker is still outside D02 ownership: latest main governance state has moved past the stale SDA-016 assertion embedded in the branch/base test;
+- a separate owner-lane PR (#739) contains the active SDA-016 governance/test reconciliation work and has produced successful Regression runs;
+- D02 did not cherry-pick, modify, or merge that owner-lane work.
+
+23:55 recovery falsification:
+- Cloudflare official cron syntax supports comma lists in the minute field, so the configured `35,55 15 * * mon-fri` expression is syntactically valid;
+- the last V8 Production deploy before the 2026-10-06 after-market family completed around 23:02 Asia/Taipei, more than the documented up-to-15-minute Cron propagation window before 23:35 and 23:55;
+- physical D1 readback contains the 23:35 row but no 23:55 row;
+- therefore the missing 23:55 receipt cannot currently be explained by invalid comma syntax or immediate post-deploy propagation;
+- root cause of the missing trigger delivery remains UNKNOWN; classify as `RECOVERY_TRIGGER_DELIVERY_GAP`, not as proof that Cloudflare never supports the combined form.
+
+PVE-247 remains fail closed on schedule-family completeness.
+No outcome access or alpha inference opened.
+
+Exact next continuation point:
+PVE-253 — prepare an isolated split-trigger candidate that gives 23:35 and 23:55 distinct Cloudflare Cron identities and distinct audit job identity while preserving all Formal semantics; do not deploy without new explicit owner approval. Continue PVE-252 live 10:15+ H001 evidence check independently after market open.
+
+
+## PVE-253 continuation — split primary/recovery Class-B candidate prepared (2026-10-07)
+
+Status: CLASS_B_CANDIDATE_PREPARED / ISOLATED_CI_PASS / DRAFT_PR_743 / UNMERGED / NOT_DEPLOYED / FORMAL_UNCHANGED / OWNER_APPROVAL_REQUIRED_FOR_PRODUCTION.
+
+Candidate:
+- branch `research/d02-pve253-split-recovery-candidate-20261007`;
+- draft PR #743;
+- head `837436b1251e63c9767ca377a0394f60b911bb0e`;
+- dedicated CI run `37546507040` SUCCESS.
+
+Candidate runtime semantics:
+- 23:35 separate Cron => explicit PRIMARY role => `AFTER_MARKET_SCAN`;
+- 23:55 separate Cron => explicit RECOVERY role => `AFTER_MARKET_RECOVERY`;
+- existing combined `35,55 15 * * mon-fri` remains recognized for backward compatibility during migration/rollback;
+- both primary and recovery retain the existing `runAfterMarketScan(...,{onlyIfMissing:true})` business semantics;
+- existing PVE baseline fail-open sidecar and raw provenance path are not removed.
+
+Candidate schedule migration:
+- converts one combined 23:35+23:55 trigger into two explicit triggers;
+- preserves all non-PVE System1 schedules byte-for-byte at the cron-string level;
+- current observed inventory 4 triggers -> candidate inventory 5 triggers;
+- conservative guard refuses the split if the pre-split inventory is already >=5;
+- this fits the current conservative Cloudflare Free-plan ceiling of 5 Cron Triggers/account, while paid plans have higher limits;
+- no mutation has been executed against Production.
+
+Deterministic candidate tests cover:
+- current 4-trigger production inventory -> exact 5-trigger split;
+- idempotent already-split state;
+- combined+separate mixed-state rejection;
+- conservative over-limit rejection;
+- explicit runtime PRIMARY / RECOVERY / COMBINED role parsing;
+- explicit `AFTER_MARKET_RECOVERY` audit identity;
+- no Formal selection/ranking/capital/push/trade marker modification in the candidate patch.
+
+Governance:
+- this is a new post-PVE250 Production schedule/runtime representation change and is NOT covered as an automatic deployment by the earlier PR #668/#676 approval;
+- no merge/deploy is authorized by preparation or green isolated CI;
+- Formal Core remains LOCKED.
+
+Parallel live-evidence hinge remains unchanged:
+After 2026-10-07 has a completed >=10:15 15m row, rerun/read PVE-251 and PVE-247. Require provider + endpoint + exact-response SHA-256 + normalizationVersion + semanticFingerprint, slotHistoryCount>=20, finite pvSlotRvol20, sameSlotBaselineClean=true and matching bootstrap receipt. Schedule-family acceptance remains independent and fail closed until both primary and recovery are physically observed.
+
+Current research state:
+- D02 = 60.0%;
+- clean prospective H001 dates = 0;
+- Gate 7 CLOSED;
+- FORMAL_OPTIMIZATION_CANDIDATE: NONE;
+- Formal Core LOCKED.
+
+Exact next continuation point:
+1. MARKET_HINGE: at/after a completed 2026-10-07 >=10:15 intraday 15m observation, execute the PVE-251 read-only audit and PVE-247 oracle without outcome inspection.
+2. OWNER_GATE: PR #743 remains draft/unmerged/un-deployed until explicit owner approval for the split-trigger Class-B Production change.
+3. PR_726: keep the deterministic 13:20 read-only evidence workflow unmerged until its unrelated latest-main SDA-016 blocker is resolved by the owning lane; then rebase/recreate and merge without changing D02 evidence semantics.
