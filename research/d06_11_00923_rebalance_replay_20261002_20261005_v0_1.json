@@ -1,0 +1,133 @@
+{
+  "schemaVersion": "D06_11_00923_REBALANCE_REPLAY_20261002_20261005_V0_1",
+  "createdAt": "2026-10-07T05:33:00+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "module": "D06-11",
+  "status": "RESEARCH_ONLY / OFFICIAL_ISSUER_HISTORICAL_DATE_REPLAY_PASS / REBALANCE_END_STATE_OBSERVED / PRIMARY_UNIT_FLOW_ZERO / EXECUTION_CLOCK_UNKNOWN / FORMAL_CORE_LOCKED",
+  "linkedAuditTickets": [
+    "SDA-007"
+  ],
+  "informationRoot": "ETF_FUND_PORTFOLIO_STATE",
+  "source": {
+    "issuer": "群益證券投資信託股份有限公司",
+    "etfSymbol": "00923",
+    "page": "https://www.capitalfund.com.tw/etf/product/detail/365/buyback",
+    "retrievalSemantics": "Official issuer historical date control / same-site historical page data",
+    "firstKnownAtHistorical": "UNKNOWN",
+    "rule": "Historical replay establishes dated end-state observability but does not reconstruct exact original publication minute or intraday execution path."
+  },
+  "indexEvent": {
+    "index": "臺灣指數公司特選臺灣ESG低碳50指數",
+    "publicReviewDate": "2026-10-02",
+    "effectiveAfterCloseDate": "2026-10-02",
+    "effectiveTradeDate": "2026-10-05",
+    "additions": [
+      "2408 南亞科",
+      "2409 友達",
+      "3189 景碩"
+    ],
+    "deletions": [
+      "2887 台新新光金",
+      "3533 嘉澤",
+      "6239 力成"
+    ]
+  },
+  "snapshots": [
+    {
+      "date": "2026-10-02",
+      "fundNetAssetValueTWD": 39868035542,
+      "navPerUnitTWD": 41.9,
+      "outstandingUnits": 951423000,
+      "unitChange": 0,
+      "targetRows": {
+        "2408": {
+          "present": false
+        },
+        "2409": {
+          "present": false
+        },
+        "2887": {
+          "present": true,
+          "weightPct": 0.9356,
+          "shares": 9042558
+        },
+        "3189": {
+          "present": false
+        },
+        "3533": {
+          "present": true,
+          "weightPct": 0.1768,
+          "shares": 38000
+        },
+        "6239": {
+          "present": true,
+          "weightPct": 0.2347,
+          "shares": 320000
+        }
+      }
+    },
+    {
+      "date": "2026-10-05",
+      "fundNetAssetValueTWD": 39893722029,
+      "navPerUnitTWD": 41.93,
+      "outstandingUnits": 951423000,
+      "unitChange": 0,
+      "targetRows": {
+        "2408": {
+          "present": true,
+          "weightPct": 1.5162,
+          "shares": 1150000
+        },
+        "2409": {
+          "present": true,
+          "weightPct": 0.37,
+          "shares": 3650000
+        },
+        "2887": {
+          "present": false
+        },
+        "3189": {
+          "present": true,
+          "weightPct": 0.4527,
+          "shares": 172000
+        },
+        "3533": {
+          "present": false
+        },
+        "6239": {
+          "present": false
+        }
+      }
+    }
+  ],
+  "derivedDescriptiveOnly": {
+    "aumChangeTWD": 25686487,
+    "aumChangePct": 0.0644287752,
+    "newConstituentApproxEndStateNotionalTWD": {
+      "2408": 604868613.4,
+      "2409": 147606771.51,
+      "3189": 180598879.63,
+      "total": 933074264.54
+    },
+    "deletedConstituentApproxPreEventNotionalTWD": {
+      "2887": 373005340.53,
+      "3533": 70486686.84,
+      "6239": 93570279.42,
+      "total": 537062306.79
+    },
+    "notionalRule": "AUM x displayed fund weight; descriptive end-state/pre-event exposure only, not execution value, trade price, market impact or alpha."
+  },
+  "falsification": [
+    "Outstanding units are identical at 951,423,000 on both 2026-10-02 and 2026-10-05, while the six review constituents flip from old set to new set.",
+    "Therefore zero primary-market unit change does not imply zero constituent rebalancing.",
+    "ETF unit creation/redemption flow and index-review portfolio rebalancing are distinct primitives and must not be double-counted.",
+    "Post/pre holdings identify portfolio end states, not exact intraday trade timing or execution prices.",
+    "AUM x weight is exposure notional, not proof of same-close execution."
+  ],
+  "maturityDecision": {
+    "level": "L2",
+    "maturityPct": 40,
+    "reason": "Historical issuer date replay now validates event-time fund end-state observability and a real constituent transition, but exact historical firstKnownAt/publication minute and intraday execution lineage remain unknown. Prospective source-clock capture is still required before L3 PIT feasibility promotion."
+  },
+  "exactNext": "Use the precommitted 2026-11 review calendar to capture the issuer snapshot clock prospectively before and after an actual review. Preserve observedAt/firstKnownAt, AUM, units, holdings and any transition window. If prospective clock is clean, reassess D06-11 L3."
+}
