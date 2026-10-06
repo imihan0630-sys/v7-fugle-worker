@@ -2440,3 +2440,44 @@ Next exact BUILD_LANE continuation:
 3. bind only positive provenance-bearing schedule intervals to official market sessions;
 4. unmatched cases remain `SUSPENSION_PROVENANCE_UNKNOWN`;
 5. RAW A1 lineage only after bounded symbol-session evidence is positive.
+
+
+## 2026-10-07 S2-07 Corporate-Action Native Schedule Integration V0.9 physical result
+
+Authoritative execution:
+- V0.9a diagnostic merge: `f9235e35de0fee5fb8f3296f59588cd81b8824fe` (PR #712);
+- V0.9 implementation merge: `44212a6f3d8556d2ffc98a0f85b7d0e97b65f269` (PR #713);
+- readonly workflow: `System2 S2-07 Native Schedule Integration V0.9 Readonly`;
+- run `37492646263` / job `112369057180` = PASS;
+- System2 Research CI `37492646329` = PASS;
+- V8 Regression `37492646417` = PASS.
+
+Physical summary:
+- eventCount = 17;
+- promotionReadyCount = 7;
+- nativeScheduleCertifiedCount = 10;
+- boundedNativeSymbolSessionEvidenceReadyCount = 4;
+- blockedCount = 13;
+- EVENT_LINKAGE_PROMOTION_NOT_READY = 10;
+- NATIVE_SCHEDULE_DETAIL_NOT_SELF_DESCRIBING = 7;
+- noSuspensionCertifiedCount = 0.
+
+Positive bounded cases:
+- 5381 / CAPITAL_REDUCTION: stop 2026-04-01 -> resume 2026-04-13;
+- 6241 / CAPITAL_REDUCTION: stop 2026-08-18 -> resume 2026-08-25;
+- 4806 / CAPITAL_REDUCTION: stop 2026-09-23 -> resume 2026-10-02;
+- 3086 / PAR_VALUE_CHANGE: stop 2026-04-09 -> resume 2026-04-20.
+
+Important source semantic split:
+- TPEx `詳細資料` physically exposes explicit `停止買賣日期` / `恢復買賣日期` labels and can support bounded positive schedule evidence.
+- TWSE current compact detail is not self-describing; its date tokens are preserved but are not promoted into stop-date semantics.
+
+Authority boundary remains:
+`rawA1LineageBound=false`, `technicalContinuityCertified=false`, selection/final-selection/push/capital/order=false, System1 unused.
+
+Next exact BUILD_LANE continuation:
+1. bind RAW A1 source lineage only for 5381, 6241, 4806, 3086;
+2. prove expected-session / observed-bar provenance around each certified stop/resume interval without mutating history;
+3. keep suspended sessions distinct from missing-data defects;
+4. only after source-row lineage and session coverage pass may a later gate evaluate technical continuity;
+5. all other 13 events remain blocked and must not inherit these four positives.
