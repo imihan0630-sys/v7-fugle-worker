@@ -2867,3 +2867,53 @@ Exact next:
 4. preserve no-run gaps and failed attempt-one anchors;
 5. if the next admissible Formal↔C1 receipt appears, validate without deleting 2026-10-06 failure;
 6. if T48/System2 fingerprint/NC-T01 lands first, switch immediately to that delta.
+
+
+## 2026-10-07 opportunity V0.3 / first physical reconciliation / premarket candidate
+
+Latest authority:
+- `research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_3.json`.
+
+Market-session evidence is asymmetric:
+- positive direct official same-day market activity may prove trading session;
+- missing data cannot prove non-trading;
+- non-trading requires authoritative calendar/closure evidence.
+
+2026-10-06 reconciliation:
+- `research/D16_PROSPECTIVE_OPPORTUNITY_RECONCILIATION_20261006_V0_2.json`;
+- `research/D16_PROSPECTIVE_OPPORTUNITY_RECONCILIATION_20261006_V0_2.md`;
+- verified trading session via three direct child receipts;
+- expected opportunity 1;
+- attempt-one observed 1;
+- admissible evidence 0;
+- operational coverage 100%;
+- evidence admission 0%;
+- admission remains INELIGIBLE_PARENT_MISSING.
+
+2026-10-07 first-known candidate:
+- `research/D16_PROSPECTIVE_OPPORTUNITY_CANDIDATE_20261007_V0_2.json`;
+- source commit `c63819a90b0dc56f0080a407036577e763939d87`;
+- firstKnownAt = 2026-10-07T07:28:12+08:00;
+- pre-market;
+- state = SESSION_IDENTITY_UNKNOWN_PREMARKET;
+- later resolution append-only;
+- do not count as trading opportunity/missing attempt/evidence until session identity resolves.
+
+Current:
+- genuine Formal↔C1 sample N=0;
+- T48 implementation pending;
+- System2 SDA-022 fingerprint pending;
+- physical NC-T01 pending;
+- outcomes CLOSED.
+
+No maturity change:
+D16=60%.
+D18=52%.
+Formal Core LOCKED.
+
+Exact next:
+1. re-read latest main;
+2. after 2026-10-07 session identity becomes authoritative, append resolution for the premarket candidate;
+3. if it resolves trading, wait for first scheduled attempt and reconcile it without replacing the first-known candidate state;
+4. if it resolves non-trading, record no trading-opportunity obligation;
+5. immediately switch if genuine Formal↔C1, T48, System2 fingerprint, or NC-T01 lands first.
