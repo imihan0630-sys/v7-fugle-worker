@@ -2,7 +2,7 @@
 
 Audited main: f5abe474b7e1871857844fde85e04043fdd6b68f
 Owner: 00｜研究總控／稽核
-Status: SYSTEMWIDE_AUDIT_COMPLETE / GOVERNANCE_SYNC_REQUIRED
+Status: SYSTEMWIDE_AUDIT_COMPLETE / GOVERNANCE_SYNC_COMPLETE_WITH_ACTIVE_EXTERNAL_BLOCKERS
 Formal Core impact: NONE
 
 ## Executive verdict
@@ -135,3 +135,13 @@ A final latest-main readback after governance synchronization found:
 All audit governance findings GOV-001 through GOV-007 were synchronized in canonical files. GOV-008 was already resolved before this audit.
 
 Active project blockers remain engineering/data/physical-evidence blockers, not unresolved governance-document inconsistencies.
+
+
+## Final governance-sync seal
+
+- GOV-001 through GOV-007: FIXED_IN_CANONICAL_GOVERNANCE.
+- GOV-008: RESOLVED / no correction required.
+- Remaining blockers are engineering, data, physical-evidence or owner-approval blockers; they are not unresolved governance-document inconsistencies.
+- Active System2 corrections at final seal: S2-CORR-20261004-001 FIX_IN_PROGRESS / DATA_LANE; S2-CORR-20261006-003 OPEN / BUILD_LANE.
+- System1 Launch Gate remains S1 PARTIAL; no gate was artificially promoted by governance synchronization.
+- Formal Core remains locked.
