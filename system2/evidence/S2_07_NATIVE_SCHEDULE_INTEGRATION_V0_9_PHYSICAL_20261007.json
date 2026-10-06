@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "S2_S2_07_NATIVE_SCHEDULE_INTEGRATION_PHYSICAL_RECEIPT_V0_9",
+  "version": "0.9-RESEARCH",
+  "observedAt": "2026-10-07T00:03:41+08:00",
+  "authoritativeRun": {
+    "mergeCommit": "44212a6f3d8556d2ffc98a0f85b7d0e97b65f269",
+    "pr": 713,
+    "workflow": "System2 S2-07 Native Schedule Integration V0.9 Readonly",
+    "runId": 37492646263,
+    "jobId": 112369057180,
+    "conclusion": "PASS",
+    "system2ResearchCiRunId": 37492646329,
+    "v8RegressionRunId": 37492646417
+  },
+  "interval": {
+    "startDate": "2026-04-05",
+    "endDate": "2026-10-02",
+    "tradingDateCount": 125
+  },
+  "summary": {
+    "eventCount": 17,
+    "promotionReadyCount": 7,
+    "nativeScheduleCertifiedCount": 10,
+    "boundedNativeSymbolSessionEvidenceReadyCount": 4,
+    "blockedCount": 13,
+    "blockerCounts": {
+      "EVENT_LINKAGE_PROMOTION_NOT_READY": 10,
+      "NATIVE_SCHEDULE_DETAIL_NOT_SELF_DESCRIBING": 7
+    },
+    "noSuspensionCertifiedCount": 0
+  },
+  "readyCases": [
+    {
+      "symbol": "5381",
+      "market": "TPEX",
+      "family": "CAPITAL_REDUCTION",
+      "stopTradingStart": "2026-04-01",
+      "resumeTradingDate": "2026-04-13",
+      "sourceId": "TPEX_CAPITAL_REDUCTION_REFERENCE",
+      "sourceRowHash": "64798988766503e2b106f061686e66eae753a41823317555df019e4982dfe8ca"
+    },
+    {
+      "symbol": "6241",
+      "market": "TPEX",
+      "family": "CAPITAL_REDUCTION",
+      "stopTradingStart": "2026-08-18",
+      "resumeTradingDate": "2026-08-25",
+      "sourceId": "TPEX_CAPITAL_REDUCTION_REFERENCE",
+      "sourceRowHash": "08d90d92eacbbb4cb5048b9b9508ba5fa17ee0c1dc3babb0d3cd5b06990c8b22"
+    },
+    {
+      "symbol": "4806",
+      "market": "TPEX",
+      "family": "CAPITAL_REDUCTION",
+      "stopTradingStart": "2026-09-23",
+      "resumeTradingDate": "2026-10-02",
+      "sourceId": "TPEX_CAPITAL_REDUCTION_REFERENCE",
+      "sourceRowHash": "518fcdf6b0f3d5dc8ffaafba59556c86da3cda76dd0e46c528217740c33ae92b"
+    },
+    {
+      "symbol": "3086",
+      "market": "TPEX",
+      "family": "PAR_VALUE_CHANGE",
+      "stopTradingStart": "2026-04-09",
+      "resumeTradingDate": "2026-04-20",
+      "sourceId": "TPEX_PAR_VALUE_CHANGE_REFERENCE",
+      "sourceRowHash": "a835513cec338fabdf0c95bc82dd816b8f8203675aee587a31911245c04540e2"
+    }
+  ],
+  "boundaries": {
+    "nearestPriorDateInferenceAllowed": false,
+    "noSuspensionMayBeClaimed": false,
+    "suspensionCoverageComplete": false,
+    "symbolSessionCompletenessCertified": false,
+    "rawA1LineageBound": false,
+    "technicalContinuityCertified": false,
+    "continuityTransformPerformed": false,
+    "selectionAuthority": false,
+    "finalSelectionEnabled": false,
+    "livePushEnabled": false,
+    "capitalImpact": false,
+    "orderImpact": false,
+    "system1RuntimeUsed": false
+  }
+}
