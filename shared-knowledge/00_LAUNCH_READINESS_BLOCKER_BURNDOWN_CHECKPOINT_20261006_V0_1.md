@@ -245,3 +245,98 @@ Therefore SDA-016 remains a true S1 blocker.
    - System2 per-strategy SDA-022 fingerprints;
    - physical NC-T01 evidence.
 4. Advance a launch gate only on machine-verifiable evidence; do not infer completion from contract text, UI behavior or passing CI alone.
+
+
+## 2026-10-06 22:46+ Asia/Taipei — DATA_LANE + SDA-022 readback delta
+
+Observed latest main at start: `84c0bc0c66a68eb3f01b5f2fddd3e658dd3cf81a`.
+Always re-read latest main before acting.
+
+### DATA_LANE progress accepted by 00
+
+2022 TPEx is now physically accepted for raw A1 data coverage.
+
+Run:
+- GitHub Actions `37473405416` / #20;
+- confirmed inputs: `year=2022`, `market=TPEX`;
+- head: `f5f33c9f006e249c604f3f19067bf33f2a106117`.
+
+Accepted evidence:
+- annual backfill = PASS / YEAR_BACKFILL_COMPLETE;
+- 246 official sessions;
+- 815 packs / 195,840 bars;
+- 815/815 R2 HEAD + byte-GET SHA verification PASS;
+- cold rows = fresh official rows = 195,840;
+- 0 missing-from-cold / 0 absent-from-fresh;
+- 0 source-row-hash mismatch;
+- 0 canonical A1 mismatch;
+- sourceVersionState = STABLE;
+- System1 production isolation = PASS.
+
+Replay caveat remains explicit:
+- historical-universe readiness = PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION;
+- expected membership-session bars = 196,015;
+- actual bars = 195,840;
+- 175 symbol-session gaps remain UNKNOWN;
+- data coverage = PASS;
+- replay readiness = PARTIAL.
+
+00 disposition:
+`2022_TPEX_RAW_A1_ACCEPTED_REPLAY_PARTIAL`.
+
+This advances DATA_LANE coverage only. It does not promote System2 selection-to-capacity, SDA-022 independence, or live/final trading authority.
+
+2021 TPEx remains separately blocked by `SOURCE_REVISION_WITH_CANONICAL_A1_CHANGE`; immutable cold history remains preserved. Its revision-lineage/as-of semantics are still unresolved.
+
+Next annual population target from DATA_LANE is 2023 TWSE, while 2021 TPEx revision work continues in parallel.
+
+### System1 S1 blockers — no new closure evidence
+
+Independent repository search/readback found no new genuine evidence changing the prior verdict:
+
+- SDA-001/004:
+  `FIRST_GENUINE_SDA_SHADOW_DIAGNOSTIC=PENDING_VERIFIED_LINEAGE_INPUT` remains the latest explicit state.
+- SDA-009:
+  latest handoff still requires System1 Class-A LOO diagnostic implementation and first genuine candidate-level receipt.
+- SDA-016:
+  contract/runtime status remains Class-A contract accepted with Class-B runtime binding/genuine Formal↔C1 receipt pending.
+
+Therefore:
+- System1 S1 remains `PARTIAL`;
+- System1 S2 prospective comparison remains `NOT_READY`.
+
+### SDA-022 physical-independence readback
+
+Repository inventory and System2 checkpoint show:
+- System1 fingerprint S22-T01~T05 = PASS;
+- D16 prereg S22-T25~T28 = PASS;
+- System2 strategy fingerprints S22-T06~T10 = PENDING;
+- physical NC-T01 S22-T11~T16 = PENDING.
+
+Only schema/intake/oracle artifacts exist for System2 fingerprint/NC-T01 at this readback. No accepted strategy-specific System2 fingerprint receipt and no physical NC-T01 receipt were found.
+
+Important:
+- recent S2-07 V0.7 promotion-linkage chronology hardening is research/evidence grading only;
+- it does not satisfy S22-T06~T10 or NC-T01 by itself;
+- design text, schema tests or synthetic fixtures cannot upgrade `physicalIndependentDiscovery`.
+
+Therefore SDA-022 remains `PARTIAL_PASS`.
+
+### Current gate verdict after this delta
+
+- System1 S1 = PARTIAL.
+- System1 S2 = NOT_READY.
+- System2 infrastructure/terminal = SUBSTANTIALLY_READY.
+- System2 historical raw coverage = advanced through 2022 TPEx, with replay gaps explicit.
+- System2 selection-to-capacity = INCOMPLETE.
+- System2 live/final trading = DISABLED.
+- SDA-022 = PARTIAL_PASS.
+- Formal Core = LOCKED.
+
+### Exact next continuation point
+
+1. Re-read latest main.
+2. Check DATA_LANE for 2023 TWSE physical acceptance or a new explicit blocker.
+3. Check System1 for any genuine receipt/implementation landing for SDA-001/004, SDA-009, or SDA-016.
+4. Check System2 for the first strategy-specific fingerprint receipts S22-T06~T10 and physical NC-T01 S22-T11~T16.
+5. If a machine-verifiable delta lands, perform 00 independent acceptance readback before changing any launch gate.
