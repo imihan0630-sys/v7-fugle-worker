@@ -1,0 +1,28 @@
+{
+  "receiptVersion": "D03_EXTERNAL_MACHINE_DELTA_EXECUTION_RECEIPT_V0_1",
+  "executedAtAsiaTaipei": "2026-10-06T22:28:00+08:00",
+  "sourceMainSha": "4a3073baec5f11bde9de0246a52472e45af4d87c",
+  "executionEngine": "FIRECRAWL_INTERACT_BASH_NODE_EXACT_SHA_PINNED_RAW_BLOBS",
+  "canonicalNodeExecutionClaimed": true,
+  "githubActionsExecutionClaimed": false,
+  "exitCode": 0,
+  "result": {
+    "status": "PASS",
+    "system2FreshnessPhysicalVerificationAccepted": true,
+    "system2FreshnessCiPassCount": 4,
+    "system2D03DedupDiagnosticsStillMissing": 7,
+    "system1D03RedundancyDiagnosticsStillMissing": 2,
+    "system1Sda022NotCreditedToD03": true,
+    "d16Sda022NotCreditedToD03": true,
+    "rawSourceGate": "2_OF_3",
+    "technicalObserverR1": "BLOCKED",
+    "outcomes": "CLOSED",
+    "maturityPct": 56.7,
+    "formalCoreImpact": "NONE_LOCKED"
+  },
+  "hashes": {
+    "schema": "fab50b0c2412f75cd9051ffc1670344a0978a1f588b1d0c955b516608a95f70f",
+    "fixture": "3aa2e29f80e151f24d0c299b1e35ab738a9cff945c62ab23340fdad503499825"
+  },
+  "maturityImpact": "NONE"
+}
