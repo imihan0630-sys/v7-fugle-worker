@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-06 19:24 Asia/Taipei
+Updated: 2026-10-06 20:54 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -137,12 +137,13 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - finalDisposition: PENDING
 - updatedAt: 2026-10-06T00:12:00+08:00
 
+## Closed directives
 
 ### S2-CORR-20261006-002 — Institutional terminal converts research-only resonance into ENTER/EXIT action authority
 
 - createdAt: 2026-10-06T19:12:00+08:00
 - severity: MEDIUM
-- status: FIX_IMPLEMENTED
+- status: VERIFIED_CLOSED
 - routingClass: BUILD_LANE
 - assignedLane: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
@@ -191,12 +192,25 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - Daily Resonance runtime files are byte-identical to the pre-fix base: monitor `a39fd428e54ce800600e96d23f178ea024f86d98`, read model `d5989e563c6995a9b8bb5110ce1ee8ab8e4aa4b4`, worker cycle `245044b7878360680854b11fda7f8f221d973d33`.
   - Merged-main System2 Research CI run `37458445915` PASS and System2 Daily Resonance Deploy run `37458445783` PASS.
   - No strategy logic, assessor policy, preregistration, weights, thresholds, ranking, capacity, final/live selection authority, notification/push authority, capital/order, or System1 Formal Core was changed.
-- verificationEvidence: PENDING — handoff to SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
-- finalDisposition: PENDING — implementation complete; independent verification required before closure
-- updatedAt: 2026-10-06T19:44:43+08:00
-
-
-## Closed directives
+- verificationEvidence:
+  - Independent audit re-read latest GitHub main and did not rely on BUILD_LANE's completion claim.
+  - PR #673 merged as 36afa057bdc2e88238f5c37b926bea9f821b05d9 and changed only system2/deploy/terminal_page.mjs plus system2/tests/institutional_terminal_page_v0_1.test.mjs.
+  - Candidate Board now labels the field 監控訊號（RESEARCH） and preserves BUY_RESONANCE / EXIT_RESONANCE monitor semantics instead of converting them to bare ENTER / EXIT.
+  - Decision Workspace now separates monitor signal from formal Frozen Decision Action; without frozen decision authority, the formal action remains NO_FROZEN_DECISION.
+  - User-facing actionable resonance wording was removed; empty-state wording now refers to research monitor resonance.
+  - Targeted terminal regression asserts BUY_RESONANCE stays BUY_RESONANCE, EXIT_RESONANCE stays EXIT_RESONANCE, NO_FROZEN_DECISION remains the formal action, and bare ENTER/EXIT mappings are absent.
+  - System2 Research CI run 37458264775 / job 112251116356 PASS.
+  - V8 Regression run 37458264777 / job 112251116263 PASS.
+  - Merged-main System2 Research CI run 37458445915 / job 112251710622 PASS.
+  - System2 Daily Resonance Deploy run 37458445783 / job 112251709625 PASS, including public read API/UI/schedule checks and System1 production-file isolation.
+  - Latest-main blob SHAs for daily_resonance_monitor_v0_1.mjs, daily_resonance_read_model_v0_1.mjs and daily_resonance_worker_cycle_v0_1.mjs remain a39fd428e54ce800600e96d23f178ea024f86d98, d5989e563c6995a9b8bb5110ce1ee8ab8e4aa4b4 and 245044b7878360680854b11fda7f8f221d973d33 respectively, matching the pre-fix runtime blobs.
+  - From FIX_IMPLEMENTED queue merge c1fb873c9b499e1d5a7f9b5c5e954ab32616198a through audit time, main advanced 41 commits and none touched the correction conflict units; no later drift invalidated the fix.
+  - No strategy logic, assessor policy, preregistration, weights, thresholds, ranking, capacity, final/live selection authority, notification/push authority, capital/order behavior, or System1 Formal Core was changed.
+  - Independent verification receipt: `system2/evidence/s2_corr_20261006_002_independent_verification.json`
+- finalDisposition: VERIFIED_CLOSED — resonance remains research/shadow monitor evidence; the terminal no longer converts it into formal ENTER/EXIT authority, and protected strategy/trading authorities remain unchanged.
+- verifiedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
+- verifiedAt: 2026-10-06T20:54:24+08:00
+- updatedAt: 2026-10-06T20:54:24+08:00
 
 ### S2-CORR-20261006-001 — Institutional terminal labels unapproved research strategies as SHADOW
 
