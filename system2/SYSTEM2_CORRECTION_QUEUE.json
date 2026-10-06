@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-06T22:40:00+08:00",
+  "updatedAt": "2026-10-06T23:41:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -16,7 +16,7 @@
       ],
       "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "canonicalRequirement": "Physically populate and verify staged official 2017-present Taiwan-equity daily history before claiming complete full-market historical coverage/replay.",
-      "observedProblem": "Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE and both 2022 markets. 2021 TPEx remains explicitly BLOCKED on an official-source canonical A1 revision concentrated on 2021-01-14; immutable cold history is preserved and must not be overwritten. CORR-001 stays open for revision-lineage work, 2023+ market-years, the 2026 incremental path, and final full-market PIT replay.",
+      "observedProblem": "Initial 2017 backfill defects are repaired. Raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE and both 2022 markets. 2021 TPEx remains explicitly BLOCKED on an official-source canonical A1 revision. 2023 TWSE run #21 completed cold backfill/storage but Physical verify blocked on 205 unexpected bars caused by historical-universe start-date reconstruction for 6873: the current-company listing date did not preserve the earlier 2023-03-06 Innovation Board listing interval before its later regular-board conversion. A conservative current/newlisting reconciliation fix and regression guard are committed; fresh 2023 TWSE re-verification is gated on System2 Research CI PASS. CORR-001 stays open for these blockers, later market-years, 2026 incremental history and final full-market PIT replay.",
       "evidence": [
         "SYSTEM2_CHECKPOINT run 36545375167 failed before annual ingest",
         "SYSTEM2_CHECKPOINT requires repaired 2017 TWSE rerun before TPEx",
@@ -99,7 +99,15 @@
         "2022 TPEx historical-universe denominator 196015 versus 195840 actual bars leaves 175 explicit UNKNOWN_SYMBOL_SESSION_GAP rows; data coverage PASS, replay readiness PARTIAL.",
         "2022 TPEx historical-universe readiness remains PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION; official TPEx delisting-union coverage is not inferred complete.",
         "2022 TPEx physical evidence: system2/evidence/S2_HISTORICAL_TPEX_2022_PHYSICAL_VERIFICATION_V0_1.json; artifact 11419964963 digest sha256:b4c2cfe61389d95865d0b7da358ee83275840d3e512830f2eae62af0ed83c76a.",
-        "2022 TPEx System1 production isolation PASS; no System1 Formal Core/runtime mutation."
+        "2022 TPEx System1 production isolation PASS; no System1 Formal Core/runtime mutation.",
+        "2023 TWSE run 37482307633 (#21) used year=2023 market=TWSE; annual backfill/storage succeeded, Physical verify failed closed with BLOCKED_MARKET_YEAR_VERIFICATION, evidence artifact 11423484682 was produced, and System1 isolation PASSed.",
+        "2023 TWSE source/storage reconciliation is clean: sourceVersionState STABLE, 0 missing-from-cold, 0 absent-from-fresh, 0 source-row-hash mismatch and 0 canonical A1 mismatch.",
+        "2023 TWSE structural blocker: actualBars=234522, expectedBars=235140, missingBars=618, unknownBars=618, unexpectedBars=205; retained unexpected sample starts at 2023-03-06|6873.",
+        "Official TWSE evidence records 6873 starting listed trading on the Taiwan Innovation Board on 2023-03-06 and later changing to regular listed trading on 2024-09-26.",
+        "Durable blocker evidence: system2/evidence/S2_HISTORICAL_TWSE_2023_UNIVERSE_BLOCKER_V0_1.json.",
+        "DATA_LANE runtime fix a0bf42f81fa46fc3854d2c8cf844851327966a9b reconciles CURRENT listing starts to earlier official NEWLISTING history only when symbol and normalized company identity match.",
+        "Regression guard commit 045d40399c7845ef76cea4051b4a05b2599e1be2 covers the 6873 Innovation-Board-to-mainboard lifecycle and rejects same-code/different-company stitching.",
+        "Fresh 2023 TWSE dispatch is prohibited until the latest fix-bearing System2 Research CI passes; old run #21 must not be rerun because it is bound to pre-fix head 30a1f9e7b7bf7e344f0cd44242efb701e56b6f4b."
       ],
       "riskIfUnfixed": "Creates false-completion/evidence-coverage risk for multi-year replay, factor validation, regime robustness and strategy backtesting.",
       "requiredCorrection": [
