@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "D16_PROSPECTIVE_EVIDENCE_ATTEMPT_RECEIPT_V0_1",
+  "attemptId": "SYSTEM1_C1_EVIDENCE:RUN37495670280:JOB112379442583",
+  "contractRef": "research/D16_PROSPECTIVE_EVIDENCE_ATTEMPT_LEDGER_CONTRACT_20261007_V0_1.json",
+  "observedAt": "2026-10-07T00:26:36+08:00",
+  "workflowName": "System 1 C1 Prospective Evidence",
+  "workflowRunId": 37495670280,
+  "workflowJobId": 112379442583,
+  "triggerType": "SCHEDULE",
+  "intendedScanDate": "2026-10-06",
+  "officialSessionState": "NOT_VERIFIED",
+  "headSha": "646a34263954e0beaf53cfcb897af2cc90c2aca4",
+  "lifecycle": {
+    "triggered": true,
+    "generationInventoryValidator": "PASS",
+    "formalC1BindingValidator": "PASS",
+    "parentReadAttempted": true,
+    "parentVerified": false,
+    "inventoryStage": "NOT_REACHED",
+    "formalC1BindingStage": "NOT_REACHED",
+    "outputState": "BLOCKER_EMITTED"
+  },
+  "artifact": {
+    "state": "PRESERVED",
+    "artifactId": 11426824056,
+    "artifactName": "system1-c1-evidence-37495670280",
+    "artifactDigest": "sha256:29d7659e2451188a52de5c3631e4088a4eedbaa0f3a3da235fffbf9ba7ad3967",
+    "artifactFiles": [
+      "system1-c1-readiness.json"
+    ]
+  },
+  "observedBlocker": {
+    "category": "FORMAL_SCAN_NOT_CONFIRMED",
+    "verificationFailure": "C1_GENERATION_NOT_FOUND",
+    "readinessFacts": {
+      "formalScanDate": "2026-09-29",
+      "formalPipelineComplete": false,
+      "institutionDate": "2026-10-06",
+      "institutionReady": true,
+      "qualityDate": "2026-10-06",
+      "qualityReady": false,
+      "missingQuality": [
+        "FINANCIAL",
+        "QUARTER_EPS"
+      ]
+    },
+    "causalAttributionState": "OBSERVED_FACTS_ONLY",
+    "causalAttributionRefs": []
+  },
+  "terminalAttemptState": "INELIGIBLE_PARENT_MISSING",
+  "statisticalRoles": {
+    "countInOperationalAttemptDenominator": true,
+    "countInResearchCalendarCandidateDenominator": "UNKNOWN_PENDING_OFFICIAL_SESSION_AND_TARGET_RULE_PROOF",
+    "countInTargetPopulationEligibleDenominator": "UNKNOWN_PENDING_PREREG_TARGET_RULE_PROOF",
+    "countInProspectiveEvidenceN": false,
+    "countAsZeroPick": false,
+    "countAsNegativeOutcome": false,
+    "countAsStrategyFailure": false,
+    "countInMissingnessAccounting": true
+  },
+  "prospectiveEvidenceState": "NOT_ADMISSIBLE",
+  "historicalBackfillAllowed": false,
+  "formalCoreImpact": "NONE",
+  "maturityImpact": "NONE"
+}
