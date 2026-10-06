@@ -1,0 +1,226 @@
+{
+  "schemaVersion": "SDA016_SYSTEM1_FORMAL_C1_BINDING_CONTRACT_V0_1",
+  "date": "2026-10-06",
+  "status": "CLASS_A_CONTRACT_FROZEN_CLASS_B_IMPLEMENTATION_PENDING",
+  "ticket": "SDA-016",
+  "systemId": "SYSTEM1",
+  "formalCoreImpact": "NONE",
+  "productionRuntimeImpact": "NONE_UNTIL_SEPARATELY_APPROVED_CLASS_B",
+  "objective": "Persist an append-only authoritative binding from one verified System1 Formal decision to the exact immutable C1 generation that produced it, without allowing latest-generation, inventory-position, selected-set-equality, or outcome-guided parent inference.",
+  "currentFacts": {
+    "c1GenerationTable": "trade_research_c1_generations",
+    "c1GenerationIdentity": "generation_id",
+    "currentFormalPointer": "LAST_SCAN_KEY / V7_LAST_AFTER_MARKET_SCAN",
+    "currentFormalPointerMutableAndFiniteRetention": true,
+    "currentPlanArchive": "v8_plan_archive",
+    "currentPlanArchivePrimaryKey": "scan_date",
+    "currentPlanArchiveUsesOnConflictUpdate": true,
+    "currentPlanArchiveEligibleAsAuthoritativeLedger": false,
+    "currentCollectorFailClosedGuard": "FORMAL_C1_GENERATION_UNLINKED"
+  },
+  "implementationScope": {
+    "allowedOriginKinds": [
+      "AFTER_MARKET_SCAN_PIPELINE"
+    ],
+    "excludedWithoutSeparateAuthority": [
+      "STAGE_SELECTION_ROUTE",
+      "DIRECT_SAFE_PERSISTENCE_CALLER"
+    ],
+    "historicalBackfill": false,
+    "providerCallDelta": 0,
+    "decisionImpact": false,
+    "noPlanChanges": true,
+    "noTrade": true,
+    "noPush": true,
+    "system2Untouched": true
+  },
+  "proposedStorage": {
+    "table": "trade_research_formal_c1_bindings",
+    "appendOnly": true,
+    "updatesAllowed": false,
+    "deletesAllowed": false,
+    "primaryKey": "binding_id",
+    "uniqueConstraints": [
+      "formal_decision_receipt_id",
+      "c1_generation_id"
+    ],
+    "columns": [
+      "binding_id",
+      "formal_decision_receipt_id",
+      "scan_date",
+      "plan_date",
+      "formal_decision_at",
+      "formal_runtime_version",
+      "formal_source_main_sha",
+      "formal_result_digest",
+      "formal_selected_symbols_digest",
+      "formal_selected_count",
+      "c1_generation_id",
+      "c1_decision_at",
+      "c1_content_digest",
+      "c1_universe_digest",
+      "c1_population_n",
+      "c1_scan_origin_kind",
+      "parent_selection_rule_version",
+      "binding_json",
+      "binding_digest",
+      "created_at"
+    ]
+  },
+  "receiptFields": [
+    "formalDecisionReceiptId",
+    "scanDate",
+    "planDate",
+    "formalDecisionAt",
+    "formalRuntimeVersion",
+    "formalSourceMainSha",
+    "formalResultDigest",
+    "formalSelectedSymbolsDigest",
+    "formalSelectedCount",
+    "c1GenerationId",
+    "c1DecisionAt",
+    "c1ContentDigest",
+    "c1UniverseDigest",
+    "c1PopulationN",
+    "c1ScanOriginKind",
+    "bindingCreatedAt",
+    "bindingDigest",
+    "parentSelectionRuleVersion",
+    "appendOnly",
+    "superseded"
+  ],
+  "creationBoundary": {
+    "requiredPreconditions": [
+      "formal saveStockConfig readback verified === true",
+      "C1 persistence status === VERIFIED",
+      "C1 saveOk === true",
+      "C1 readbackVerified === true",
+      "C1 origin kind === AFTER_MARKET_SCAN_PIPELINE",
+      "C1 scanDate equals Formal scanDate",
+      "C1 sourceMainSha is present and equals the Formal source build identity used for this decision",
+      "Formal selected-symbol/order digest is computed before any economic outcome access"
+    ],
+    "formalDecisionAtSource": "Use the same request-local Formal/C1 decision clock already frozen in the immutable C1 receipt; do not substitute bindingCreatedAt.",
+    "bindingCreatedAtRole": "Persistence/audit timestamp only; it is not the decision clock.",
+    "externalDeliveryRequired": false,
+    "rationale": "3Min/push delivery success is not part of decision-parent identity; a valid Formal decision can exist even if an external delivery later fails."
+  },
+  "formalResultDigestContract": {
+    "schemaVersion": "SYSTEM1_FORMAL_DECISION_BINDING_PAYLOAD_V0_1",
+    "canonicalization": "recursively key-sorted UTF-8 JSON then SHA-256",
+    "minimumMaterial": [
+      "scanDate",
+      "planDate",
+      "formalDecisionAt",
+      "formalRuntimeVersion",
+      "formalSourceMainSha",
+      "ordered selected Formal plan objects exactly as persisted after verified saveStockConfig"
+    ],
+    "selectedSymbolsDigestMaterial": "ordered selected symbol list, preserving the final Formal order and pool identity",
+    "excludes": [
+      "3Min delivery status",
+      "push delivery status",
+      "future fills",
+      "future returns",
+      "research outcomes"
+    ]
+  },
+  "conflictSemantics": {
+    "exactReplay": "IDEMPOTENT",
+    "sameFormalDecisionDifferentBinding": "CONFLICT_FORMAL_DECISION_REBOUND",
+    "sameC1GenerationDifferentFormalDecision": "CONFLICT_C1_PARENT_REBOUND",
+    "missingVerifiedC1": "FORMAL_C1_BINDING_BLOCKED",
+    "nonAuthoritativeOrigin": "FORMAL_C1_BINDING_ORIGIN_NOT_AUTHORIZED",
+    "historicalMissingBinding": "HISTORICAL_BINDING_NOT_PROVEN"
+  },
+  "readbackContract": {
+    "protectedAdminReadOnly": true,
+    "queries": [
+      "formalDecisionReceiptId",
+      "scanDate"
+    ],
+    "scanDateQueryReturnsAllBindings": true,
+    "latestHeuristicForbidden": true,
+    "inventoryOrdinalHeuristicForbidden": true,
+    "selectedSetEqualityInferenceForbidden": true,
+    "consumerMustPinFormalDecisionReceiptId": true
+  },
+  "failurePolicy": {
+    "businessFormalDecision": "FAIL_OPEN_FROM_RESEARCH_BINDING_FAILURE",
+    "researchEvidence": "FAIL_CLOSED",
+    "requiredObservableStatus": "researchFormalC1Binding",
+    "explanation": "A research binding failure must never change A/B, Top6/3+3, plan allocation, monitoring, 15m signals, push, or orders; it only blocks promotion-grade research use."
+  },
+  "notSolvedByThisContract": [
+    "same-session generation-set finalization receipt",
+    "shared System1/System2 holdout-consumption authority",
+    "outer sequential hypothesis stream accounting",
+    "genuine post-deploy V8.19 C1 evidence",
+    "Room00 closure"
+  ],
+  "adversarialAcceptance": [
+    {
+      "id": "BIND-T01",
+      "scenario": "same Formal decision receipt replayed byte-identically",
+      "expected": "IDEMPOTENT"
+    },
+    {
+      "id": "BIND-T02",
+      "scenario": "same formalDecisionReceiptId points to different C1 generation",
+      "expected": "CONFLICT_FORMAL_DECISION_REBOUND"
+    },
+    {
+      "id": "BIND-T03",
+      "scenario": "same C1 generation is rebound to a different Formal decision",
+      "expected": "CONFLICT_C1_PARENT_REBOUND"
+    },
+    {
+      "id": "BIND-T04",
+      "scenario": "two AFTER_MARKET_SCAN_PIPELINE generations exist on one scanDate",
+      "expected": "ONLY_EXPLICIT_FORMAL_BINDING_IS_AUTHORITATIVE"
+    },
+    {
+      "id": "BIND-T05",
+      "scenario": "later STAGE_SELECTION_ROUTE generation becomes inventory latest",
+      "expected": "MUST_NOT_REPLACE_BOUND_PARENT"
+    },
+    {
+      "id": "BIND-T06",
+      "scenario": "LAST_SCAN_KEY expires but binding row and C1 generation remain",
+      "expected": "HISTORICAL_PARENT_STILL_RECOVERABLE_BY_FORMAL_DECISION_RECEIPT_ID"
+    },
+    {
+      "id": "BIND-T07",
+      "scenario": "historical date has C1 generations but no binding row",
+      "expected": "HISTORICAL_BINDING_NOT_PROVEN_NO_BACKFILL"
+    },
+    {
+      "id": "BIND-T08",
+      "scenario": "binding persistence fails after Formal save succeeded",
+      "expected": "FORMAL_CONTINUES_RESEARCH_EVIDENCE_BLOCKED"
+    },
+    {
+      "id": "BIND-T09",
+      "scenario": "existing mutable v8_plan_archive row is overwritten on same scanDate",
+      "expected": "MUST_NOT_CHANGE_APPEND_ONLY_BINDING"
+    },
+    {
+      "id": "BIND-T10",
+      "scenario": "consumer asks by scanDate with multiple bindings",
+      "expected": "RETURN_ALL_NO_LATEST_PARENT_SELECTION"
+    }
+  ],
+  "approvalBoundary": {
+    "currentWorkAuthorized": "CLASS_A_RESEARCH_CONTRACT_AND_OFFLINE_TESTS_ONLY",
+    "classBRequiredFor": [
+      "new D1 table/schema",
+      "runtime binding persistence",
+      "protected readback endpoint",
+      "Production deployment"
+    ],
+    "classCRequiredFor": [
+      "any use of binding to alter Formal selection, capital, signals, push, orders, or trading lifecycle"
+    ],
+    "implementationNotAuthorizedByThisContract": true
+  }
+}
