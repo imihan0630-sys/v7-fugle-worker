@@ -298,3 +298,17 @@ No maturity or Formal change is authorized by this routing.
 3. D19-04: consume DATA_LANE TPEx universe/full-market/continuity artifacts when verified; do not duplicate their engineering.
 4. D19-04 research-owned gates remain PIT industry vintage, compatible D03/D09 paired redundancy and D14 component-wise cost provenance.
 5. No L4 without prospective/OOS outcome evidence, costs, multiple-testing control and robustness.
+
+
+## Stage 15 completed on 2026-10-07
+- Canonical receipt: `research/d19_stage15_cost_liquidity_falsification_receipt_20261007_v0_1.md`.
+- D19-13: Taiwan pairs evidence supplies a transaction-cost falsification witness; search breadth is now explicitly part of the multiple-testing family. D19-13 remains L2/40.
+- D19-16: Taiwan liquidity evidence is heterogeneous across controls, market direction and metric definitions. Signal and execution-friction roles must be separated; comparator variants must be preregistered. D19-16 remains L2/40.
+- First factor-layer PIT chain must be selected by upstream receipt readiness, not observed performance.
+- D19 aggregate remains 41.3%; no L3/L4 promotion; Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE=NONE.
+
+## Exact next continuation after Stage 15
+1. Freeze machine-readable D19-13 preregistration receipt with search-breadth/multiple-testing and two-leg execution/cost provenance.
+2. Freeze machine-readable D19-16 PIT input receipt separating signal/friction and metric variants.
+3. Build D19-15 benchmark PIT receipt with historical methodology/constituent/weight vintage and sourceHash.
+4. Choose first executable factor-layer PIT chain by upstream receipt completeness before inspecting outcomes; missing mandatory evidence stays UNKNOWN.
