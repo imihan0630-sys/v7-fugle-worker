@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "D03_EXTERNAL_MACHINE_DELTA_READBACK_V0_1",
+  "updatedAt": "2026-10-06T22:23:00+08:00",
+  "owner": "D03",
+  "classification": "RESEARCH_ONLY_INCREMENTAL_EXTERNAL_READBACK",
+  "formalCoreImpact": "NONE_LOCKED",
+  "acceptedDeltas": [
+    {
+      "source": "system2/evidence/s2_corr_20261006_004_independent_verification.json",
+      "topic": "SYSTEM2_CURRENT_SESSION_RESONANCE_FRESHNESS",
+      "disposition": "PHYSICALLY_VERIFIED_ACCEPTED",
+      "d03Credit": "TIMING_CONSUMER_GAP_PARTIALLY_CLOSED",
+      "maturityImpact": "NONE"
+    }
+  ],
+  "explicitlyNotCredited": [
+    {
+      "source": "shared-knowledge/sda022_system1_fingerprint_acceptance_20261006_v0_1.json",
+      "reason": "SYSTEM1_POLICY_FINGERPRINT_ONLY_NOT_D03_REDUNDANCY_DIAGNOSTICS",
+      "cannotSatisfy": [
+        "SDA-001",
+        "SDA-004"
+      ]
+    },
+    {
+      "source": "research/SDA022_D16_S1_SHORT_MOMENTUM_D5_INCREMENTALITY_PREREG_20261006_V0_1.json",
+      "reason": "CROSS_SYSTEM_SDA022_EXPERIMENT_NOT_D03_TI005_TI006_METHOD_RECEIPT",
+      "cannotSatisfy": [
+        "D03_D16_METHOD_RECEIPT",
+        "SDA-001_D16_CLOSURE",
+        "SDA-004_D16_CLOSURE"
+      ]
+    }
+  ],
+  "system2FreshnessAcceptance": {
+    "requiredResult": "VERIFIED_CLOSED",
+    "currentSessionResonanceBoundToTaipeiMarketDate": true,
+    "priorSessionFallbackBlockedFromCurrentTerminal": true,
+    "explicitHistoricalQueryPreserved": true,
+    "latestAnyDateHistoryMarked": true,
+    "sessionDateMismatchFailsClosed": true,
+    "decisionAndChartSessionProvenanceVisible": true,
+    "sameSessionResonanceStillFunctional": true,
+    "protectedAuthoritiesUnchanged": true,
+    "requiredCiPassCount": 4
+  },
+  "stillMissingSystem2D03Diagnostics": [
+    "rawSignalCount",
+    "dedupedEvidenceFamilyCount",
+    "effectiveIndependentEvidenceCount",
+    "overlappingSignalIds",
+    "redundancyGroupContributions",
+    "dominantInformationRoots",
+    "RG_D03_PRICE_TREND"
+  ],
+  "stillMissingSystem1D03Diagnostics": [
+    "redundancyGroupContributions",
+    "dominantInformationRoots"
+  ],
+  "expectedD16Current": {
+    "d16MethodReceipt": "NOT_YET_RETURNED",
+    "outcomes": "CLOSED",
+    "rawSourceVersionGate": "2_OF_3",
+    "technicalObserverR1": "BLOCKED",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "maturityImpact": "NONE_56_7_PERCENT",
+  "outcomeDataUsed": false
+}
