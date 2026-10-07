@@ -52,7 +52,8 @@ function firstDateFromSegments(text,matcher){
   const normalized=String(text??"").replace(/<br\s*\/?\s*>/gi,"\n");
   const segments=normalized.split(/[\n。；;]/).map((x)=>x.trim()).filter(Boolean);
   for(const segment of segments){
-    if(!matcher.test(segment)) continue;
+    const matched=typeof matcher==="function" ? matcher(segment) : matcher.test(segment);
+    if(!matched) continue;
     const date=parseRocDate(segment);
     if(date)return date;
   }
