@@ -1983,3 +1983,42 @@ D07-34 L0/0 -> L2/40.
 L3 remains blocked until a real Taiwan PIT/replay receipt proves proposal/final/correction lineage, distribution source, compatible financial-statement denominator and payment chronology.
 
 Formal Core unchanged. Outcomes closed. FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+## 2026-10-07 Room-06 D07-19 Capital Budgeting / NPV / IRR / Real Options foundation
+
+Status: **D07-19 L2 MECHANISM_AND_FALSIFICATION_DEFINED / PIT_PROJECT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED**
+
+Canonical machine contract:
+- `research/d07_19_capital_budgeting_real_options_foundation_v0_1.json`
+
+Core result:
+- D07-19 owns **project economics**, not management-governance quality.
+- NPV is the value-additivity anchor when project cash flows and discount rates are risk-consistent.
+- IRR is supportive/descriptive only because scale, timing and non-conventional cash flows can make it conflict with NPV.
+- Project cash flow must be incremental, after-tax and decision-time eligible; sunk cost is excluded, while opportunity cost, cannibalization and attributable spillovers are included.
+- Financing effects must not be counted once in cash flow and again in the discount rate.
+- Nominal/real cash-flow and discount-rate bases must be consistent.
+- Real options are admitted only when a concrete defer/expand/contract/abandon/stage decision right exists and uncertainty resolves over time. Narrative flexibility alone is not an option.
+
+H18 boundary is now explicit:
+- **D07-19** = project cash-flow economics, NPV/IRR/MIRR, hurdle-rate consistency, sunk/opportunity cost, cannibalization, real-option states and project scenario/sensitivity.
+- **D21-07** = incentives, board/committee process, allocation governance, managerial implementation and stewardship.
+- Attractive projects can coexist with poor allocation; weak opportunity sets can coexist with disciplined governance. These divergent states prohibit duplicate voting.
+
+PIT / anti-look-ahead rule:
+- project cost, demand, price, volume, margin, capacity, tax, timing and discount-rate assumptions require `knownAt <= projectDecisionKnownAt`;
+- later cost overruns, utilization, margins, impairments or realized returns append as later vintages/outcomes and never rewrite the ex-ante project state;
+- missing project assumptions remain UNKNOWN rather than reconstructed from later realized capex.
+
+Falsification:
+- reject universal “higher IRR is better” and “higher capex is better” rules;
+- reject option value without observable exercise rights;
+- reject project-quality inference that requires later realized outcomes;
+- require incrementality versus D07-18 WACC, D07-20/21 forecasts, D21-07 allocation quality and D08 valuation;
+- no promotion from one issuer, one industry or one capex cycle.
+
+Maturity decision:
+- **D07-19 L0/0% -> L2/40%**.
+- L3 remains closed until Taiwan project-level PIT replay is physically demonstrated across at least two industries with append-only revision handling and a D07-19 vs D21-07 divergent-state case.
+- Outcome join remains CLOSED.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
