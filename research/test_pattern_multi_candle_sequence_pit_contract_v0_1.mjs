@@ -1,0 +1,12 @@
+import assert from "node:assert/strict";
+import {buildSequence,overlapRatio,classifySequenceAlias,preserveSequenceLifecycle} from "./pattern_multi_candle_sequence_pit_contract_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D8301 three-bar sequence known after bar3",()=>assert.equal(buildSequence({sourceBarIds:["1","2","3"],barCloseTimes:["2026-10-07T09:00:00+08:00","2026-10-07T09:05:00+08:00","2026-10-07T09:10:00+08:00"],predictorFreezeAt:"2026-10-07T09:10:00+08:00"}).status,"SEQUENCE_AVAILABLE"));
+t("D8302 bar3 future blocked",()=>assert.equal(buildSequence({sourceBarIds:["1","2","3"],barCloseTimes:["2026-10-07T09:00:00+08:00","2026-10-07T09:05:00+08:00","2026-10-07T09:10:00+08:00"],predictorFreezeAt:"2026-10-07T09:07:00+08:00"}).status,"SEQUENCE_LOOKAHEAD"));
+t("D8303 overlapping windows measured",()=>assert.ok(overlapRatio({a:["1","2","3"],b:["2","3","4"]})>0));
+t("D8304 disjoint windows zero overlap",()=>assert.equal(overlapRatio({a:["1","2"],b:["3","4"]}),0));
+t("D8305 multiple names same bars one vote",()=>assert.equal(classifySequenceAlias({patternNames:["engulfing","reversal"],sourceBarIds:["1","2"]}).effectiveIndependentEvidenceCount,1));
+t("D8306 redundancy group immutable",()=>assert.equal(classifySequenceAlias({patternNames:["x"],sourceBarIds:["1","2"]}).redundancyGroup,"1|2"));
+t("D8307 failed sequence retained",()=>assert.equal(preserveSequenceLifecycle({formed:true,invalidated:true}).failedUnresolvedRetained,true));
+t("D8308 malformed sequence blocked",()=>assert.equal(buildSequence({sourceBarIds:["1"],barCloseTimes:[],predictorFreezeAt:"x"}).status,"UNKNOWN"));
+console.log(`SUMMARY ${p}/8 PASS`);
