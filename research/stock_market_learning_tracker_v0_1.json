@@ -1626,8 +1626,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「產業專屬傳導模型與公司曝險映射」。把產業／產品狀態連到上市公司時，必須經過 taxonomy（分類版本）、產品／營收曝險、上下游位置、定價能力、庫存、產能、訂單與公司原生揭露等橋接；禁止由「產業熱門」直接推論所有成分股受益。保留跨產業共用 schema（結構）與可反證模板，並持續驗證不同產業、公司與 Regime（市場狀態）下的可移植性、PIT（時點一致性）與增量選股價值。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "KEEP / PIT_FEASIBLE_BOUNDED / FIRST_PROSPECTIVE_RECEIPT_FROZEN / WAITING_INDEPENDENT_EVENTS",
-          "next": "SC-029 capture the next independent material/output-price vintage outcome-blind; SC-031 seek issuer-disclosed procurement/pass-through evidence before converting any material benchmark from PROXY_ONLY to bounded company exposure."
+          "status": "KEEP / PIT_FEASIBLE_BOUNDED / TWO_PROSPECTIVE_MATERIAL_EVENT_VINTAGES / E1_D5_MATURED_NOT_OPENED / E2_D5_NOT_MATURE / D16_METHOD_RECEIPT_REQUIRED_BEFORE_OUTCOME_ACCESS / POWER_INSUFFICIENT",
+          "next": "SC-079 exact next: Room11/D16 freezes event-level common-support/dependence/multiplicity method receipt before any E1/D5 outcome value is opened; let E2 D5 mature naturally; accumulate independent material-event vintages/chains; no L4 with matured independent D5 event N=1."
         },
         {
           "id": "D10-13",
