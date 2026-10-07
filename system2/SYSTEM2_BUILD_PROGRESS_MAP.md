@@ -1469,3 +1469,48 @@ Next exact BUILD_LANE continuation:
 3. do not freeze a complete expected MOPS keyset until both provenance stability and source semantics pass;
 4. only then bind the MOPS keyset with the accepted V1.5 eight-lane source manifest into the V1.4.1 pre-parent cut;
 5. post-parent reconcile and require `noRevisionGapThroughCut=true` before symbol-session / technical-continuity promotion.
+
+
+## 2026-10-08 05:53 Stage-1 launch-critical BUILD override — NC-T01 before preserved S2-07 cursor
+
+Observed main before write:
+`aec848a138af10c3b928a047c63f489383ce768e`.
+
+The previous S2-07 MOPS stabilization cursor remains valid but is temporarily lower priority than the current Stage-1 launch blocker.
+
+### BUILD_LANE active launch-critical work
+
+**S2-CORR-20261007-005 — HIGH / OPEN**
+- physical NC-T01 hidden-fallback evidence is not fail-closed;
+- absent audit dimensions can default to false;
+- exact-head static + runtime forbidden-access evidence is required;
+- `HIDDEN_FALLBACK_AUDIT_SHA256` must be bound into the physical receipt.
+
+**S2-CORR-20261007-006 — HIGH / OPEN**
+- W0 continuity-ready is not equivalent to W1 strategy-executable;
+- explicit required-evidence completeness is required;
+- W0-only strategy-INCOMPLETE rows cannot promote requiredInputsState / executionState / candidateGenerationExecutable / legitimate zero-pick.
+
+Combined patch contract:
+`system2/evidence/S2_CORR_005_006_COMBINED_BUILD_HANDOFF_20261008_V0_1.json`.
+
+Latest-main reconfirmation:
+`system2/evidence/S2_CORR_005_006_LATEST_MAIN_RECONFIRMATION_20261008_V0_1.json`.
+
+Physical gate:
+`system2/evidence/S2_STAGE1_NCT01_PHYSICAL_ACCEPTANCE_MATRIX_20261008_V0_2.json`.
+
+### Ordered launch path
+
+1. BUILD: one combined CORR-005 + CORR-006 exact-head patch.
+2. BUILD: exact-head regressions + System2 Research CI + applicable V8; merge.
+3. DATA (parallel owner): real TWSE bounded suspension completeness + three corporate-action families -> source-honest CLEAR_NO_ACTION or CONTINUITY_UNKNOWN.
+4. BUILD: one real read-only/artifact-only SHORT_MOMENTUM NC-T01 using the real continuity receipt and corrected hidden-fallback/W1 gates.
+5. 00: independent T11..T16 recomputation.
+6. REMEDIATION/D1 governance: CORR-003 persistence headroom before persisted SHORT_MOMENTUM -> RANK-01 -> `s2_capacity_runs`.
+7. Then return to the preserved S2-07 MOPS repeated-capture/source-semantics continuation.
+
+Optimization:
+minimal CORR-005/006 patch is outside the 11 hard-bound SDA-022 policy-fingerprint source set; do not regenerate S22-T06..T10 fingerprints unless one of those 11 artifacts actually changes.
+
+Formal Core remains LOCKED.
