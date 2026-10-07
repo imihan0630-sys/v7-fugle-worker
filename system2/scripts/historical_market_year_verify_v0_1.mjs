@@ -765,6 +765,7 @@ const output={
   system2StrategyAuthorityChanged:false,
   finalSelectionAuthorityChanged:false,
   capitalOrderAuthorityChanged:false,
+  d1UsageObservedThisRun:db.metrics,
   observedAt,
   schemaVersion:"S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_7",
 };
