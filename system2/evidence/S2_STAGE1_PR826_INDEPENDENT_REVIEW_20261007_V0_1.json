@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "S2_STAGE1_PR826_INDEPENDENT_REVIEW_V0_1",
+  "recordedAt": "2026-10-07T22:41:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "observedMain": "bf7cb670341c212c093785253654b1edf1728313",
+  "pullRequest": 826,
+  "title": "system2: firewall legacy continuity before NC-T01 replay certification",
+  "headSha": "93ce711c91692d789f96d61a2d0bcd9624f658bd",
+  "baseSha": "da8a816536b2d2a944554e1cc00dd117c33afa4f",
+  "disposition": "CONTENT_PASS_MERGE_CANDIDATE_CANONICAL_MAIN_READBACK_REQUIRED",
+  "codepathFindings": [
+    "Default buildPitReplayWindow semantics remain PRESERVE_INPUT, protecting existing PIT replay/backtest behavior.",
+    "Only the Daily Shadow path using resolveContinuityEvidence requests UNVERIFIED_UNTIL_POST_REPLAY_CERTIFICATION.",
+    "On that NC-T01 path, legacy CLEAR_NO_ACTION and ADJUSTED_CONTINUITY labels are sanitized to UNVERIFIED before replayHash/source-history identity is built.",
+    "Sanitized replay/source-history identity is invariant to the incoming legacy continuity label.",
+    "Unsupported continuityMode fails closed.",
+    "Selected revision provenance tuple remains attached after PIT revision selection.",
+    "The hotfix does not promote CLEAR_NO_ACTION; post-replay hash-bound continuity receipt remains the only promotion authority."
+  ],
+  "regressionEvidence": [
+    {
+      "runId": 37643158725,
+      "name": "System2 NC-T01 Continuity Replay Binding V0.1",
+      "conclusion": "SUCCESS"
+    },
+    {
+      "runId": 37643158786,
+      "name": "System2 Research CI",
+      "conclusion": "SUCCESS"
+    },
+    {
+      "runId": 37643158990,
+      "name": "V8 Regression Tests",
+      "conclusion": "SUCCESS"
+    }
+  ],
+  "staleBaseAudit": {
+    "pathOverlapFromBaseToAuditMain": [],
+    "interpretation": "No concurrent main commit after PR base touched the five PR-modified paths during this audit."
+  },
+  "provenanceAssessment": {
+    "pitReplayVersionStringUnchanged": true,
+    "blocking": false,
+    "reason": "Physical NC-T01 acceptance is already required to bind exact source-generation blob/digest refs; PIT_REPLAY_VERSION is not the sole identity root.",
+    "minimumFinalHashChain": [
+      "SYSTEM2_POLICY_FINGERPRINT_SHA256",
+      "A1_BATCH_SHA256",
+      "PIT_REPLAY_SHA256",
+      "SOURCE_HISTORY_SHA256",
+      "CONTINUITY_RECEIPT_SHA256",
+      "CONTINUITY_TRANSFORM_SHA256",
+      "FACTOR_SNAPSHOT_SHA256",
+      "PERSISTENCE_BATCH_SHA256",
+      "ORCHESTRATION_SHA256",
+      "SHADOW_ACCOUNTING_SHA256"
+    ]
+  },
+  "orderingConsequence": [
+    "Merge/canonicalize #826 before rebuilding/final-freezing #762.",
+    "#762 hard-pins daily_shadow_orchestrator_v0_1.mjs, which #826 modifies.",
+    "After #826 merge, BUILD_LANE must regenerate #762 fingerprints from the then-current source blobs.",
+    "Old #762 receipts remain non-canonical and may not satisfy S22-T06~T10.",
+    "After fingerprints merge, the physical NC-T01 runner/receipt still remains required for S22-T11~T16."
+  ],
+  "protectedBoundaries": [
+    "No System1 Formal Core/runtime mutation",
+    "No strategy weights/threshold/ranking mutation",
+    "No historical D1 rewrite",
+    "No final selection/live push/capital/order authority"
+  ],
+  "implementationPerformedByAudit": false
+}
