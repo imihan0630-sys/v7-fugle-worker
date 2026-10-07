@@ -6396,3 +6396,86 @@ D03 remains:
 
 Exact next:
 route a minimal System2 DATA/BUILD rehabilitation contract that materializes official lifecycle-event union with immutable source identity/hash/effective boundaries, reruns `historical_market_year_coverage_v0_1`, and emits a physical before/after gap-reclassification receipt. D03 consumes only that receipt for Layer-B advancement. Keep Layer-C revision-known-at, genuine V8.20 parent, T48 finalization, D03 dedup/redundancy, D16 incrementality and raw-source observer gates independent.
+
+
+## 2026-10-07 D03 — TI-1293~1308 SHORT_MOMENTUM strategy-clock over-gating firewall
+
+Canonical artifacts:
+- `research/D03_SHORT_MOMENTUM_STRATEGY_CLOCK_OVERGATING_READBACK_20261007_V0_1.md`;
+- `research/d03_short_momentum_strategy_clock_overgating_readback_20261007_v0_1.json`;
+- `research/test_d03_short_momentum_strategy_clock_overgating_readback_v0_1.mjs`.
+
+Cross-owner dependency:
+- `research/D16_STRATEGY_CLOCK_OVERGATING_VALIDATION_20261007_V0_1.md`;
+- correction `S2-CORR-20261007-002`, HIGH / OPEN / BUILD_LANE.
+
+### TI-1293~1297 — global clock is not SHORT_MOMENTUM readiness
+
+Frozen Stage-1 SHORT_MOMENTUM launch requirements are TECHNICAL_STRUCTURE, PRICE_VOLUME and RISK_FRICTION plus universal PIT/session/source-integrity safeguards. B2 INDUSTRY_THESIS and A5 FUNDAMENTAL belong to other strategy dependency lanes and are not SHORT_MOMENTUM launch requirements.
+
+Current global Decision Clock instead:
+- includes A1 TWSE + A1 TPEx + B2 in same-session readiness / candidate timestamp;
+- also requires A5 by the candidate boundary for global requiredReady.
+
+Prospective run `37577209442` observed A5 coverage true, B2 coverage false and global requiredReady false. D03 accepts the contract mismatch:
+`GLOBAL_REQUIRED_SET != SHORT_MOMENTUM_NON_INCOMPLETE_REQUIRED_SET`.
+
+The global artifact may remain valid for genuinely cross-strategy use. It must not be relabeled as SHORT_MOMENTUM strategy readiness.
+
+### TI-1298~1302 — sampling and denominator bias
+
+If globally blocked dates are dropped or counted as natural zero-pick:
+- SHORT_MOMENTUM coverage is understated;
+- zero-pick rate may be inflated;
+- infrastructure starvation can be mistaken for strategy selectivity;
+- outcome samples become conditional on unrelated-source readiness;
+- System1/System2 common support can shrink mechanically and create fake diversification;
+- capacity and incrementality denominators become contaminated.
+
+Required states remain distinct:
+- `STRATEGY_REQUIRED_SOURCE_MISSING`;
+- `UNIVERSAL_INTEGRITY_BLOCK`;
+- `STRATEGY_IRRELEVANT_SOURCE_MISSING`;
+- `POLICY_DISABLED`;
+- `NATURAL_ZERO_PICK`;
+- `DATA_UNKNOWN`.
+
+Required per-strategy denominators include expected opportunities, strategy-required readiness, universal-integrity readiness, evaluable rows, policy-disabled rows, natural zero-picks, data-unknown rows and irrelevant-source-missing-but-nonblocking rows. Global requiredReady cannot substitute for strategyEvaluableN.
+
+### TI-1303~1306 — support, counterevidence and validation boundary
+
+Support:
+- frozen dependency contracts exclude B2/A5 from SHORT_MOMENTUM;
+- current global implementation includes them;
+- one prospective mixed-source state physically shows the global block.
+
+Counterevidence / alternative explanation:
+- removing an irrelevant gate does not prove a candidate, hit rate or alpha;
+- the global clock remains legitimate for use-cases that genuinely require all global sources;
+- one trading date cannot estimate frequency, outcome size or regime persistence;
+- a blocked row may still reflect required A1/integrity failure and must be classified, not automatically admitted.
+
+Validation:
+- PIT: later B2/A5 arrival cannot backdate candidateReadyAt;
+- OOS / walk-forward: UNKNOWN until corrected runtime and prospective receipts exist;
+- selection bias: unrelated-source readiness may create informative censoring;
+- look-ahead: post-boundary source arrival cannot rehabilitate an earlier row;
+- multiple testing / overfitting: no outcome or parameter fit;
+- factor redundancy: irrelevant B2/A5 absence is not missing D03 factor evidence;
+- date clustering: one prospective mixed-source date;
+- costs, fillability and market-state effects: UNKNOWN.
+
+### TI-1307~1308 — authority, maturity and exact next
+
+D03 owns the inference firewall only. BUILD_LANE owns implementation. No runtime, strategy threshold, ranking weight, final selection, push, capital, order or System1 Formal Core change is authorized here.
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09 and D03-10 remain L2/40;
+- raw gate remains 2/3;
+- outcomes remain CLOSED;
+- `FORMAL_OPTIMIZATION_CANDIDATE = NONE`;
+- Formal Core remains LOCKED.
+
+Exact next:
+primary next remains a physical Layer-B lifecycle-event-union rehabilitation receipt with before/after missingReasonCounts. In parallel, consume `S2-CORR-20261007-002` only after corrected strategy-specific readiness and a genuine trading-date mixed-dependency receipt prove SHORT_MOMENTUM evaluable with irrelevant B2/A5 unavailable, SWING_GROWTH blocked when its required evidence is unavailable, and A1/universal PIT/session/source-integrity failures still fail closed. Preserve pre-fix over-gated observations as defect evidence. Continue waiting for Layer C revision-known-at, genuine V8.20 parent, T48 finalization, S2-07 stabilization, D03 dedup/redundancy and raw-source observer gates independently.

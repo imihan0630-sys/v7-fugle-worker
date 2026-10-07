@@ -3707,3 +3707,16 @@ Dedicated workflow `37548011614`, System2 Research CI `37548011621` and V8 Regre
 The 2021 TPEx revision-recovery workflow is not credited before physical execution and an immutable receipt. D03 remains 56.7%; D03-09/D03-10 remain L2/40; raw gate remains 2/3; outcomes remain CLOSED; Formal Core remains LOCKED.
 
 Exact next is repeated-capture union/stability reconciliation with earliest-observed preservation and query-path classification, followed by bounded stabilization, source-manifest/pre-parent binding and post-parent proof of `noRevisionGapThroughCut=true` before any technical-continuity promotion.
+
+
+## TI-1293~1308 — SHORT_MOMENTUM strategy-clock over-gating firewall (2026-10-07)
+
+D03 accepts the D16 and `S2-CORR-20261007-002` finding that the current global Decision Clock is not a valid substitute for SHORT_MOMENTUM strategy readiness. Frozen SHORT_MOMENTUM launch dependencies are technical structure, price-volume and risk-friction evidence plus universal PIT/session/source-integrity safeguards; B2 industry thesis and A5 fundamentals are not required. Yet the global clock includes B2 in same-session readiness and requires A5 by the candidate boundary. Prospective run `37577209442` physically observed A5 available, B2 unavailable and global requiredReady false.
+
+This creates a D03 sampling hazard: global blocking can understate opportunity coverage, inflate apparent zero-pick rates, condition outcome samples on unrelated-source availability, contaminate capacity denominators and make System1/System2 overlap look lower for mechanical reasons. Strategy-required missingness, universal-integrity blocks, irrelevant-source missingness, policy disablement, natural zero-pick and data-unknown must remain separate states. Global requiredReady cannot replace strategyEvaluableN.
+
+Counterevidence is preserved: the global clock remains valid for genuinely cross-strategy uses, removing an irrelevant gate does not prove any candidate or alpha, and the current physical example is one trading date only. OOS, walk-forward, cost, fillability and market-state effects remain UNKNOWN. Later B2/A5 arrival cannot backdate candidateReadyAt.
+
+D03 owns only the inference firewall; BUILD_LANE owns correction implementation. D03 remains 56.7%; D03-09/D03-10 remain L2/40; outcomes remain CLOSED; Formal Core remains LOCKED.
+
+Exact next remains the Layer-B physical lifecycle-event-union rehabilitation receipt. In parallel, accept the strategy-clock correction only after a genuine mixed-dependency receipt proves strategy-specific readiness while universal integrity still fails closed and pre-fix defect rows remain immutable.
