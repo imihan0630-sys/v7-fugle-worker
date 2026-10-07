@@ -175,12 +175,27 @@ scanDate `2026-10-06`. This was not a binding-parent selection defect.
 
 The upstream official-quality chain lacked `FINANCIAL` and `QUARTER_EPS` after
 the full-market MOPS financial body timed out. Main's full-body bounded retry
-was confirmed active by quality-only run `37556241467`, but all three attempts
-still exhausted the generic 45-second deadline on
-`/mops/web/ajax_t163sb04`.
+was confirmed active by quality-only run `37556241467`. PR #769 then shipped a
+targeted 90-second deadline with exact-head 4/4 CI and merge SHA `d13ff8a4`, but
+live run `37563414217` disproved deadline-only repair: both market requests
+exhausted three 90-second attempts.
+
+Read-only diagnostics separated the transport defect:
+
+- Ubuntu run `37563928898` and macOS run `37564354685` both timed out through
+  Node `fetch` even on the small MOPSOV form page;
+- route run `37564746245` reached the official `163.29.17.81` address with
+  HTTP 200 / 50,742 bytes in 8.96 seconds;
+- Node standard HTTPS run `37565002528` reached the same official page with
+  HTTP 200 / 50,742 bytes in 7.411 seconds.
+
+The remaining defect is the Node 22 `fetch`/undici path to MOPSOV, not body
+size, runner OS, source availability or Formal→C1 binding logic.
 
 Minimal repair candidate:
-- targeted 90-second deadline for that large MOPS source only;
+- Node standard HTTPS only for the existing official `mopsov.twse.com.tw`
+  URLs; no mirror, proxy or alternate dataset;
+- targeted 90-second deadline remains only for the large full-market body;
 - global official-source deadline remains 45 seconds;
 - three-attempt bound and 401/403 fail-closed behavior remain unchanged;
 - no Formal, System2, capital, 15m, lifecycle, push or order change.

@@ -29,7 +29,10 @@ assert.equal(issue.formalC1Binding?.contract,"research/sda016_system1_formal_c1_
 assert.equal(issue.system1Engineering?.authoritativeFormalC1Ledger,"PRODUCTION_AUTHORITY_ESTABLISHED");
 assert.equal(issue.formalC1Binding?.appendOnlyLedgerImplementation,"MERGED_DEPLOYED_PRODUCTION_VERIFIED");
 assert.equal(issue.formalC1Binding?.genuineBindingReadback,"FIRST_SCHEDULED_DATE_INELIGIBLE_C1_GENERATION_NOT_FOUND_GENUINE_PENDING");
-assert.equal(issue.formalC1Binding?.qualityRepair,"TARGETED_90S_MOPS_FINANCIAL_BODY_DEADLINE_CANDIDATE_EXACT_HEAD_CI_PENDING");
+assert.equal(issue.formalC1Binding?.qualityRepair,"TARGETED_MOPSOV_NODE_STANDARD_HTTPS_TRANSPORT_CANDIDATE_EXACT_HEAD_CI_PENDING");
+assert.equal(issue.formalC1Binding?.deadlineRepairPr,769);
+assert.equal(issue.formalC1Binding?.deadlineRepairLiveRun,37563414217);
+assert.equal(issue.formalC1Binding?.nodeHttpsTransportEvidenceRun,37565002528);
 assert.equal(issue.formalC1Binding?.firstScheduledEvidenceRootCause,"OFFICIAL_QUALITY_MOPS_FULL_MARKET_BODY_TIMEOUT_FINANCIAL_QUARTER_EPS_MISSING");
 assert.ok([
   "PENDING_CLASS_B","IMPLEMENTED_UNMERGED","MERGED_NOT_DEPLOYED","PRODUCTION_AUTHORITY_ESTABLISHED",

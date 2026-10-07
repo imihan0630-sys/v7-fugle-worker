@@ -532,4 +532,18 @@ The candidate adds no provider call, no D1 table, no scheduler and no Formal dec
 - Formal Core、A/B、Top6/3+3、資金、15m、生命周期、push/order、System2 均未修改。
 - 2026-10-06 仍為 research-ineligible；genuine Formal→C1 binding readback 必須等待
   未來正常排程 session，不能用歷史 recovery 冒充。
+
+### 2026-10-07 — MOPSOV transport root cause narrowed after PR #769
+
+- PR #769 exact-head 4/4 CI 通過並合併為 `d13ff8a40007a3e7e8f8ab0fdfb0970c73fd0d08`；
+  主線 V8 Regression run `37563085710` 成功。
+- quality-only live run `37563414217` 證明單純延長至 90 秒仍不足：上市／上櫃
+  均耗盡 3 次 90 秒 Node `fetch`，readiness 繼續 fail-closed。
+- Ubuntu read-only run `37563928898` 與 macOS run `37564354685` 都在 MOPSOV
+  小型入口頁 timeout，排除 body 大小與 runner OS。
+- route run `37564746245` 以 curl 取得官方 HTTP 200 / 50,742 bytes（8.96s）；
+  Node standard HTTPS run `37565002528` 取得同樣 HTTP 200 / 50,742 bytes（7.411s）。
+- 下一個最小 candidate 僅把既有 `mopsov.twse.com.tw` acquisition transport 從
+  Node 22 `fetch`/undici 切到 Node standard HTTPS；官方 URL、參數、完整 body、解析、
+  3 次上限、401/403 fail-closed、品質門檻及 Formal Core 均不變。
 - Receipt：`research/system1_official_quality_mops_deadline_repair_20261007_v0_1.json`。

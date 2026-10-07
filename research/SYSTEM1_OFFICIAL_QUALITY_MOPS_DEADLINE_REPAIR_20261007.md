@@ -42,8 +42,21 @@ full-market response.
 
 Bounded direct probes on 2026-10-07 observed approximately 1.63 MB (TWSE) and
 1.33 MB (TPEx) response bodies. Sequential completion took about 19s and 26s;
-a Node parallel probe took about 29s and 31s. The generic 45-second bound left
-insufficient transport margin for a slower GitHub runner.
+a Node parallel probe took about 29s and 31s. This justified a bounded
+90-second candidate, but the post-merge live run `37563414217` disproved
+deadline-only repair: both market requests exhausted all three 90-second
+attempts.
+
+The read-only diagnostic run `37563928898` then showed that ordinary official
+sources were healthy while even the small MOPSOV form page timed out through
+Node `fetch`. Moving the same diagnostic to a macOS runner (`37564354685`) did
+not change that result, so the defect was not Ubuntu-specific. A route probe
+in `37564746245` reached the official `163.29.17.81` address by curl with HTTP
+200 and 50,742 bytes in 8.96 seconds. Finally, `37565002528` fetched the same
+official page with Node standard `https` in 7.411 seconds and received the
+same HTTP 200 / 50,742-byte body. The remaining incompatibility is therefore
+the Node 22 `fetch`/undici transport path to `mopsov.twse.com.tw`, not the
+official host, body size, runner OS or Formal→C1 contract.
 
 ## Minimal repair
 
@@ -52,10 +65,13 @@ insufficient transport margin for a slower GitHub runner.
 - keep 401/403 immediate fail-closed behavior;
 - apply a targeted 90-second body deadline only to
   `mops/web/ajax_t163sb04`, the large full-market financial source;
+- use Node standard HTTPS only for the existing official
+  `mopsov.twse.com.tw` acquisition URLs; all other official sources retain
+  `fetch`, and no alternate source, proxy or mirror is introduced;
 - emit bounded retry metadata containing only path, attempt, timeout and a
-  truncated error message;
-- add deterministic regression coverage proving the timeout is targeted and
-  the global default remains unchanged.
+  transport label plus a truncated error message;
+- add deterministic regression coverage proving the timeout and native HTTPS
+  transport are targeted and the global defaults remain unchanged.
 
 No quality threshold, official-source identity, parser, Formal rule, ranking,
 quota, capital, 15-minute confirmation, lifecycle, push or order behavior is
