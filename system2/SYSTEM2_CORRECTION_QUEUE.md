@@ -891,7 +891,7 @@ Correction consequence:
 
 - createdAt: 2026-10-07T16:40:34+08:00
 - severity: HIGH
-- status: OPEN
+- status: REJECTED_WITH_EVIDENCE
 - routingClass: BUILD_LANE
 - assignedLane: BUILD_LANE
 - assignedRoom: System 2｜建置總控室
@@ -946,5 +946,15 @@ Correction consequence:
   - Reason: implementing a strategy/stage-specific execution clock changes admissible decision behavior even though the inconsistency is audit-proven; BUILD_LANE must present the minimal contract-preserving design for owner approval before crossing that protected boundary.
 - implementationEvidence: []
 - verificationEvidence: []
-- finalDisposition: PENDING
-- updatedAt: 2026-10-07T16:54:00+08:00
+- finalDisposition: REJECTED_WITH_EVIDENCE — latest-main Stage-1 preflight / Limited Shadow / capacity runtime does not consume B2/A5/global `requiredReady`; the broader global clock mismatch remains research/watchlist evidence, not a proven current launch-path defect.
+- updatedAt: 2026-10-07T18:43:00+08:00
+
+#### Independent rejection verification
+
+- Durable evidence: `system2/evidence/S2_CORR_20261007_002_REJECTION_VERIFICATION_20261007_V0_1.json` @ `e76d10f345aa05145e01ace6193017697b8efe8f`.
+- `daily_shadow_input_preflight_v0_1.mjs`: Stage-1 `globalInputsReady` = current A1 READY + PIT-history global integrity READY; no B2/A5/global Decision Clock `requiredReady` dependency.
+- `stage1_assessor_policies_v0_1.mjs`: SHORT_MOMENTUM required families remain TECHNICAL_STRUCTURE + PRICE_VOLUME + RISK_FRICTION.
+- `daily_shadow_orchestrator_v0_1.mjs`: strategy run consumes A1/PIT history/strategy assessor; no B2/A5/global Decision Clock gate.
+- `daily_shadow_capacity_orchestrator_v0_1.mjs`: capacity consumes completed strategy runs; no B2/A5/global Decision Clock gate.
+- Existing regression proves `capacityWriteAuthorized=true` under A1/history/assessor readiness and proves SHORT_MOMENTUM-only partial-denominator admissions can create capacity while genuine global integrity failure remains fail-closed.
+- The D16/global-clock mismatch remains a valid research observation and future integration guard. It is not deleted. It is superseded only as evidence for a current HIGH runtime defect.
