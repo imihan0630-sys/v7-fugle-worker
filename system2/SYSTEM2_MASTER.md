@@ -794,3 +794,34 @@ PR #775 / merge `28a42d5d49dce00a42dacf18797b45a904fc6dc3` establishes the Owner
 This implementation does not mean the Owner's current holdings are already loaded. No real Owner screenshot was used in the acceptance fixture and isolated-D1 migration 0009 was not physically applied by the acceptance workflow. `ACTUAL_POSITION_MONITOR_VERIFIED=false` remains authoritative until the first real screenshot completes confirm/persist/readback.
 
 Broker API holdings, broker adapter/token/certificate, System1 holdings import, real orders, live capital authority and broker order routing remain NOT AUTHORIZED / DISABLED.
+
+
+## 2026-10-07 Physical implementation acceptance
+
+PR #772 merged as `14f67ddba88604e73a2488d4a561a571393f026b`. Dedicated workflow run `37578018310` / job `112651161422` completed successfully and uploaded artifact `11464046556` with digest `sha256:644ee13013df713e91403e6a790e509c3f61e59528cc41977359429241e2dc6a`.
+
+Accepted physical result:
+- state = `MOPS_APPEND_ONLY_UNION_READY_STABILIZATION_PENDING`;
+- captureCount = 4;
+- unionVersionKeyCount = 168;
+- latestCaptureVersionKeyCount = 168;
+- unionMissingFromLatestCount = 0;
+- earliestObservedPreserved = true;
+- latestObservedPreserved = true;
+- payloadConflictCount = 0;
+- monthOnlyDriftVersionCount = 21;
+- trailingIdenticalTransitions = 0;
+- boundedStabilizationCandidate = false;
+- unionHash = `2f599d5599f383eedc71de8f3b0ec039e6dbac3689a43bd7dd620153120521ff`.
+
+Interpretation: append-only provenance repair is physically accepted, but bounded stabilization is not yet satisfied. `expectedMopsKeysetComplete=false` and `noRevisionGapThroughCut=false` remain locked. Source semantics / month-shard completeness remain separate gates. No scheduler, selection, push, capital, order or System 1 Formal Core authority changed.
+
+Durable evidence:
+`system2/evidence/S2_07_MOPS_REPEATED_CAPTURE_UNION_STABILITY_V1_7_PHYSICAL_20261007.json`.
+
+Next exact BUILD_LANE continuation:
+1. continue bounded repeated capture stabilization from the durable 168-version union seed;
+2. independently resolve month-shard/source semantics;
+3. do not freeze a complete expected MOPS keyset until both provenance stability and source semantics pass;
+4. only then bind the MOPS keyset with the accepted V1.5 eight-lane source manifest into the V1.4.1 pre-parent cut;
+5. post-parent reconcile and require `noRevisionGapThroughCut=true` before symbol-session / technical-continuity promotion.
