@@ -19,10 +19,11 @@ const lifecycleRuntime = read("runtime/candidate_lifecycle.mjs");
 const resonancePersistence = read("runtime/daily_resonance_persistence_v0_1.mjs");
 
 const canonicalReadinessTerms = [
-  "TARGET_ONLY",
   "DESIGN_APPROVED",
   "VIRTUAL_POSITION_READY",
-  "ACTUAL_HOLDINGS_SOURCE_NOT_WIRED",
+  "ACTUAL_HOLDINGS_SOURCE_AUTHORIZED",
+  "USER_UPLOADED_BROKER_SCREENSHOT",
+  "CHAT_ASSISTED_HOLDINGS_IMPORT_READY",
   "ACTUAL_POSITION_MONITOR_VERIFIED",
 ];
 
@@ -34,10 +35,15 @@ for (const term of canonicalReadinessTerms) {
 }
 
 assert.ok(master.includes("VIRTUAL_POSITION_READY"));
-assert.ok(master.includes("ACTUAL_HOLDINGS_SOURCE_NOT_WIRED"));
+assert.ok(master.includes("ACTUAL_HOLDINGS_SOURCE_AUTHORIZED=USER_UPLOADED_BROKER_SCREENSHOT"));
+assert.ok(master.includes("CHAT_ASSISTED_HOLDINGS_IMPORT_READY"));
 assert.ok(master.includes("ACTUAL_POSITION_MONITOR_VERIFIED=false"));
+assert.ok(master.includes("Broker API holdings integration is `NOT AUTHORIZED`"));
+assert.ok(master.includes("real orders"));
 assert.ok(architecture.includes("VIRTUAL_POSITION_READY"));
+assert.ok(architecture.includes("USER_UPLOADED_BROKER_SCREENSHOT"));
 assert.ok(progress.includes("ACTUAL_POSITION_MONITOR_VERIFIED=false"));
+assert.ok(progress.includes("broker API = NOT AUTHORIZED"));
 
 assert.ok(
   storage.includes("System 2 virtual/simulated positions only; never owner actual holdings"),
@@ -59,8 +65,9 @@ assert.ok(
 );
 
 assert.ok(ui.includes("SIMULATED / VIRTUAL"));
-assert.ok(ui.includes("ACTUAL_HOLDINGS_SOURCE_NOT_WIRED"));
+assert.ok(ui.includes("ACTUAL_HOLDINGS_SOURCE_AUTHORIZED=USER_UPLOADED_BROKER_SCREENSHOT"));
 assert.ok(ui.includes("ACTUAL_POSITION_MONITOR_VERIFIED=false"));
+assert.ok(ui.includes("Broker API"));
 
 assert.ok(
   !master.includes("Actual holdings are continuously monitored in a dedicated POSITION_MONITOR"),
@@ -89,7 +96,9 @@ console.log(JSON.stringify({
   ok: true,
   correction: "S2-CORR-20261004-002",
   implementedState: "VIRTUAL_POSITION_READY",
-  actualHoldingsState: "ACTUAL_HOLDINGS_SOURCE_NOT_WIRED",
+  actualHoldingsState: "USER_UPLOADED_BROKER_SCREENSHOT_AUTHORIZED",
   actualPositionMonitorVerified: false,
+  brokerApiAuthorized: false,
+  realOrdersEnabled: false,
   protectedBoundary: "NO_SYSTEM1_HOLDINGS_IMPORT_WITHOUT_OWNER_AUTHORIZATION",
 }, null, 2));
