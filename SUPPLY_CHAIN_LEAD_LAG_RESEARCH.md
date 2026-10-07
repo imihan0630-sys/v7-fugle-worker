@@ -2893,3 +2893,19 @@ Formal Core unchanged.
 
 Exact next:
 D16 method receipt first; then E1/D5 may be attached under that frozen method. E2 matures naturally. Continue accumulating independent material events/chains.
+
+
+### SC-079 cross-room validation dependency
+
+Dependency request:
+- `research/SC079_D16_VALIDATION_DEPENDENCY_REQUEST_20261008.md`
+
+Room11 / D16 must freeze the event-level validation method before Room07 opens any E1/D5 stock outcome.
+Current:
+- prospective event vintages = 2;
+- matured independent D5 events = 1;
+- opened stock outcomes = 0;
+- D10-12 remains L3/60;
+- inference state = POWER_INSUFFICIENT.
+
+This dependency is now explicit; Room07 must not self-validate the economic/stock effect.
