@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "D06_05_OWNERSHIP_DENOMINATOR_CORPORATE_ACTION_GUARD_V0_1",
+  "createdAt": "2026-10-07T20:41:42+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "module": "D06-05",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "purpose": "Prevent TDCC weekly concentration changes from being misread as ownership accumulation/distribution when corporate actions, denominator changes, or security-identity changes intervene.",
+  "primaryL4CleanSupport": [
+    "same security identity across both TDCC vintages",
+    "17-grade completeness and reconciliation PASS in both vintages",
+    "grade17 total shares exactly unchanged",
+    "no capital reduction, split/reverse split, par-value change, stock-rights issuance, effective cash-capital increase, merger/share exchange/spin-off, delisting/relisting identity event touching the pair window"
+  ],
+  "rules": {
+    "denominatorChanged": "exclude from primary OOS/Shadow ownership-delta test; sensitivity analysis only with explicit controls",
+    "denominatorStableButActionFlagged": "exclude from primary test; denominator equality alone is insufficient",
+    "denominatorStableNoAction": "clean candidate subject to identity/source checks",
+    "repeatedScanDate": "does not increase N; one TDCC sourceDate pair is one ownership-change observation"
+  },
+  "examples": [
+    {
+      "symbol": "2601",
+      "pair": "2026-09-24→2026-10-02",
+      "grade17TotalDeltaPct": -16.29497525174915,
+      "concentrationDeltaPctPoint": 68.40802122838514,
+      "officialEvent": "2026 deficit-offset capital reduction; old shares suspended during pair window",
+      "classification": "HARD_EXCLUDE"
+    },
+    {
+      "symbol": "6550",
+      "pair": "2026-09-24→2026-10-02",
+      "grade17TotalDeltaPct": 0,
+      "concentrationDeltaPctPoint": -25.66548915355135,
+      "officialEvent": "2026 deficit-offset capital reduction; new shares listed 2026-09-29",
+      "classification": "HARD_EXCLUDE_DESPITE_STABLE_DENOMINATOR"
+    }
+  ],
+  "officialSourceRefs": [
+    "TWSE official announcement list for 2601/6550 capital-reduction exchange",
+    "TWSE reduction reference-price rules",
+    "TWSE corporate-action/margin event tables"
+  ],
+  "interpretation": [
+    "corporate-action flag and denominator continuity are complementary controls",
+    "large clean-support concentration change is only an ownership-structure candidate, not institutional identity or motive"
+  ],
+  "l4ReadinessImpact": {
+    "maturityChange": "NONE",
+    "completed": "CORPORATE_ACTION_AND_DENOMINATOR_GUARD_DEFINED",
+    "remaining": [
+      "complete replayable TWSE+TPEx corporate-action registry for each TDCC pair",
+      "security identity / delisting / share-exchange continuity join",
+      "freeze event-clean exact-denominator-stable common support before outcomes",
+      "preregister vintage-clustered OOS/Shadow residual incrementality"
+    ]
+  },
+  "status": "CORPORATE_ACTION_DENOMINATOR_GUARD_FROZEN / ACTION_FLAG_OVERRIDES_DENOMINATOR_EQUALITY / OUTCOMES_CLOSED / FORMAL_LOCKED"
+}
