@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "S2_STAGE1_NCT01_REAL_CONTINUITY_RECEIPT_GAP_V0_1",
+  "recordedAt": "2026-10-07T22:41:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "observedMain": "fb3b0875dfb2718d816fe49e52ff5191f43acc53",
+  "status": "REAL_CLEAR_NO_ACTION_RECEIPT_NOT_YET_OBSERVED",
+  "physicalHistoryWitness": {
+    "marketDate": "2026-10-07",
+    "symbol": "1101",
+    "market": "TWSE",
+    "exactSessionHistoryReady": true,
+    "historyBlockersAbsent": [
+      "INSUFFICIENT_PIT_HISTORY",
+      "SYMBOL_LOCAL_EXPECTED_SESSION_MISSING",
+      "SYMBOL_LOCAL_UNEXPECTED_SESSION_PRESENT"
+    ],
+    "remainingBlocker": "SYMBOL_LOCAL_CONTINUITY_NOT_VERIFIED",
+    "sourceEvidence": [
+      "System2 Daily Shadow Input Preflight Readonly run 37639310919",
+      "S2_CORR_20261007_004_PHYSICAL_READBACK_V0_1.json",
+      "S2_CORR_20261007_004_INDEPENDENT_VERIFICATION_20261007_V0_1.json"
+    ]
+  },
+  "repositorySearchFinding": {
+    "realContinuityReceiptFound": false,
+    "fixtureContinuityReceiptsFound": true,
+    "fixtureExamples": [
+      "system2/tests/nct01_continuity_replay_binding_v0_1.test.mjs uses 1101-like fixture receipt with CLEAR_NO_ACTION_ELIGIBLE",
+      "system2/tests/daily_shadow_exact_session_reconciliation_v0_1.test.mjs contains fixture CLEAR_NO_ACTION historical rows"
+    ],
+    "interpretation": "Fixture success proves contract mechanics only. It cannot satisfy SDA-022 S22-T16 physical-independence evidence."
+  },
+  "canonicalRuntimeReady": {
+    "exactSessionHistoryReconciliationMerged": true,
+    "replayFirstContinuityBindingMerged": true,
+    "legacyContinuitySanitizationMerged": true,
+    "physicalContinuityReceiptProducerObserved": false,
+    "physicalNcT01RunnerObserved": false
+  },
+  "exactRemainingParallelWork": {
+    "DATA_LANE": [
+      "Produce one real read-only exact-window TWSE corporate-action/lifecycle evidence package for an exact-session-ready witness such as 1101.",
+      "The package must prove or fail closed on event/source completeness; absence of rows may not self-promote to NO_EVENT.",
+      "If evidence is sufficient, emit a versioned hash-bound continuity receipt whose symbol/asOf/decision cutoff/date set/sourceHistoryHash match the selected PIT replay window."
+    ],
+    "BUILD_LANE": [
+      "Rebuild/canonicalize the stale SDA-022 policy fingerprints after #817/#825/#826.",
+      "Use merged #825/#826 replay-first validation to consume the real continuity receipt.",
+      "Build the artifact-only NC-T01 runner and typed deterministic sourceGenerationRefs/result receipt.",
+      "Do not let fixture or persisted legacy continuity labels satisfy physical acceptance."
+    ],
+    "AUDIT_LANE": [
+      "Independently verify exact source-generation/hash lineage and S22-T11~T16 after the first physical run."
+    ]
+  },
+  "nonBlockers": [
+    "TPEx continuity parity is not required for the first TWSE witness.",
+    "Full historical market-year completion is not required for this narrow read-only witness.",
+    "CORR-003 D1 write-budget remediation is not required before artifact-only NC-T01, but is required before persisted genuine strategy/rank/capacity work."
+  ],
+  "protectedBoundaries": [
+    "No System1 Formal Core/runtime mutation",
+    "No synthetic OHLC or history rewrite",
+    "No final selection/live push/capital/order authority"
+  ],
+  "correctionClassification": "EXPECTED_STAGE1_CONTINUATION_NOT_NEW_CORRECTION",
+  "implementationPerformedByAudit": false
+}
