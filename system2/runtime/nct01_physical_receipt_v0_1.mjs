@@ -1,6 +1,6 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 import { sha256Hex } from "./decision_archive.mjs";
-import { ncT01HiddenFallbackAuditReceiptViewV0_1 } from "./nct01_hidden_fallback_audit_v0_1.mjs";
+import { validateNcT01HiddenFallbackAuditV0_1 } from "./nct01_hidden_fallback_audit_v0_1.mjs";
 
 export const NCT01_PHYSICAL_RECEIPT_VERSION_V0_1 = "0.1-RESEARCH";
 
@@ -165,7 +165,7 @@ export async function buildNcT01PhysicalIndependenceReceiptV0_1({
     throw new Error("unsupported executionState");
   }
 
-  const auditView = ncT01HiddenFallbackAuditReceiptViewV0_1(hiddenFallbackAuditEvidence);
+  const auditView = await validateNcT01HiddenFallbackAuditV0_1(hiddenFallbackAuditEvidence);
   const rawRefs = uniqueTexts(sharedRawSourceRefs, "sharedRawSourceRefs");
   const universeRefs = uniqueTexts(
     candidateUniverseProvenance,
@@ -177,6 +177,13 @@ export async function buildNcT01PhysicalIndependenceReceiptV0_1({
   const noteRows = uniqueTexts(notes, "notes");
 
   const passRefGaps = requiredPassRefGaps(generation.parsed);
+  const auditDigestRefs = generation.parsed.filter((x) => x.type === "HIDDEN_FALLBACK_AUDIT_SHA256");
+  if (
+    auditView.auditDigest &&
+    !auditDigestRefs.some((x) => x.digest === auditView.auditDigest)
+  ) {
+    passRefGaps.push("HIDDEN_FALLBACK_AUDIT_SHA256_MISMATCH");
+  }
   const outcome = deriveOutcome({
     system1Top6InputAvailable,
     system1RankInputAvailable,
@@ -210,8 +217,10 @@ export async function buildNcT01PhysicalIndependenceReceiptV0_1({
     generatedAt: generated,
     notes: Object.freeze([
       ...noteRows,
+      "HIDDEN_FALLBACK_AUDIT_STATE:" + auditView.auditState,
+      ...(auditView.reauditRequired === true ? ["HIDDEN_FALLBACK_AUDIT_REAUDIT_REQUIRED"] : []),
       ...(passRefGaps.length
-        ? ["MISSING_REQUIRED_TYPED_DIGESTS:" + passRefGaps.join(",")]
+        ? ["MISSING_OR_MISMATCHED_REQUIRED_TYPED_DIGESTS:" + passRefGaps.join(",")]
         : []),
     ]),
   };
@@ -306,7 +315,7 @@ export async function buildNcT01ReceiptFromOrchestrationV0_1({
   const add = (type, digest) => {
     if (digest) sourceGenerationRefs.push(typedRef(type, digest));
   };
-  const auditView = ncT01HiddenFallbackAuditReceiptViewV0_1(hiddenFallbackAuditEvidence);
+  const auditView = await validateNcT01HiddenFallbackAuditV0_1(hiddenFallbackAuditEvidence);
   add("SYSTEM2_POLICY_FINGERPRINT_SHA256", policyFingerprintReceipt.fingerprintHash);
   add("A1_BATCH_SHA256", orchestration.a1BatchHash);
   add("HIDDEN_FALLBACK_AUDIT_SHA256", auditView.auditDigest);
