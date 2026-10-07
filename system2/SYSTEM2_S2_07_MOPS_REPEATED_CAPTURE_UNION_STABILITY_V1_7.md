@@ -120,3 +120,34 @@ After V1.7 physical acceptance:
 5. only after both provenance stability and source semantics pass may an expected MOPS keyset be frozen;
 6. bind that keyset with V1.5 source-lane manifest into the V1.4.1 pre-parent cut;
 7. post-parent reconcile and require `noRevisionGapThroughCut=true` before symbol-session / TECHNICAL_CONTINUITY promotion.
+
+## V1.7.1 incremental seed continuation — 2026-10-07
+
+The accepted 168-version V1.7 union is now treated as a durable append-only seed instead of recomputing the first three historical artifacts on every new observation.
+
+V1.7.1 adds:
+- one accepted V1.7 seed receipt as input;
+- one new genuine V1.6 prospective capture;
+- incremental extension of the union while preserving the original earliest `firstObservedAt`;
+- separate update of `latestObservedAt`;
+- retention of prior and newly accumulated `absentCaptureIds`;
+- pairwise latest-keyset transition measurement against the seed's latest capture;
+- continued trailing-identical-transition counting;
+- hard blocking on global version-key payload conflict or event-universe drift.
+
+This continuation is still research-only. Even if the bounded stabilization candidate becomes true, it does not by itself authorize:
+- `expectedMopsKeysetComplete=true`;
+- `sourceSemanticsCertified=true`;
+- `noRevisionGapThroughCut=true`;
+- pre-parent evidence-cut readiness;
+- symbol-session completeness;
+- TECHNICAL_CONTINUITY;
+- strategy, push, capital or order authority.
+
+Dedicated implementation units:
+- `system2/runtime/s2_07_mops_incremental_union_stability_v1_7_1.mjs`;
+- `system2/tests/s2_07_mops_incremental_union_stability_v1_7_1.test.mjs`;
+- `system2/scripts/probe_s2_07_mops_incremental_union_stability_readonly_v1_7_1.mjs`;
+- `.github/workflows/system2-s2-07-mops-incremental-union-stability-v1-7-1-readonly.yml`.
+
+The fresh capture remains read-only and does not add a scheduler or mutate D1/R2/System 1.
