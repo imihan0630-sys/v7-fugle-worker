@@ -140,6 +140,14 @@ assert.deepEqual(tpexObserved.memberships.find(x=>x.symbol==="3105"),{
 });
 
 assert.equal(tpexCmodeRocDateV0_1("2023-04-10"),"112/04/10");
+assert.equal(parseTpexCmodePositiveStopSessionsV0_1({
+  marketDate:"2023-04-10",coverageTo:"2023-12-31",sourceHash:"e".repeat(64),
+  payload:{reportDate:"資料日期：112/04/10",aaData:[]},
+}).state,"POSITIVE_SESSION_SOURCE_OBSERVED");
+assert.equal(parseTpexCmodePositiveStopSessionsV0_1({
+  marketDate:"2023-04-10",coverageTo:"2023-12-31",sourceHash:"f".repeat(64),
+  payload:{reportDate:"民國112年4月10日",aaData:[]},
+}).state,"POSITIVE_SESSION_SOURCE_OBSERVED");
 
 const cmodePositive=parseTpexCmodePositiveStopSessionsV0_1({
   marketDate:"2023-04-10",
