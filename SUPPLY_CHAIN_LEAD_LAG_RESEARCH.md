@@ -2861,3 +2861,35 @@ Future work:
 - no L4, Alpha, Formal Core, ranking, capital or trading claim is created by these promotions.
 
 Formal Core unchanged.
+
+
+## SC-079 — D10-12 outcome-blind D16 handoff (2026-10-08)
+
+Artifacts:
+- `research/SC079_D10_12_PROSPECTIVE_MATERIAL_TRANSMISSION_D16_HANDOFF_20261008_V0_1.md`
+- `research/sc079_d10_12_prospective_material_transmission_d16_handoff_v0_1.json`
+
+Two prospective event vintages are now frozen:
+- E1: 2026-08 chain, captured 2026-09-30 05:43 Asia/Taipei;
+- E2: 2026-09 chain, captured 2026-10-02 16:23 Asia/Taipei.
+
+Frozen dependence unit:
+`MATERIAL_EVENT_VINTAGE`, not issuer×horizon rows.
+
+The E1 D5 window has elapsed by the 2026-10-07 close but the outcome value remains unopened by Room07.
+E2 D5 is not yet mature.
+
+Current readiness:
+- prospective event N = 2;
+- matured independent D5 event N = 1;
+- opened outcome cells = 0;
+- inference readiness = POWER_INSUFFICIENT.
+
+Before any outcome access, D16 must freeze an event-level method receipt covering common support, dependence, multiplicity, UNKNOWN preservation, no post-outcome route remap and no lag/horizon reselection.
+
+D10-12 remains L3/60.
+No L4 promotion.
+Formal Core unchanged.
+
+Exact next:
+D16 method receipt first; then E1/D5 may be attached under that frozen method. E2 matures naturally. Continue accumulating independent material events/chains.
