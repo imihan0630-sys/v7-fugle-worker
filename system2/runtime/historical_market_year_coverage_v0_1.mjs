@@ -141,8 +141,9 @@ function tpexCmodeStopMarkerPositiveV0_1(value) {
   const marker=normalizeTpexCmodeCellV0_1(value);
   if(!marker) return false;
   const upper=marker.toUpperCase();
-  if(["-","--","—","－","0","N","NO","否","無","正常","未停止"].includes(upper)) return false;
-  return true;
+  if(["Y","YES","1","是","*","＊","V","✓","✔","停止","停止交易"].includes(upper)) return true;
+  if(marker.includes("停止") && !marker.includes("未停止")) return true;
+  return false;
 }
 
 function nextCalendarDateV0_1(iso) {
