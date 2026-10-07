@@ -27,6 +27,9 @@ const changed=structuredClone(base); changed.baseline.sessions[19].bars[0].volum
 assert.notEqual(derive(changed).baselineContentFingerprint,r1.baselineContentFingerprint);
 const withCurrent=structuredClone(base); withCurrent.baseline.sessions.push({marketDate:"2026-10-07",bars:[{slotKey:"11:45",time:"2026-10-07T11:45:00+08:00",volume:999999}]});
 assert.equal(derive(withCurrent).baselineContentFingerprint,r1.baselineContentFingerprint);
+const missingNewest=structuredClone(base);
+missingNewest.baseline.sessions.push({marketDate:"2026-09-21",bars:[{slotKey:"12:00",time:"2026-09-21T12:00:00+08:00",volume:2000}]});
+r=derive(missingNewest); assert.equal(r.sameSlotHistoryValidityState,"FAIL"); assert.equal(r.guard.state,"FAIL"); assert.equal(r.newerInvalidExactSlotSessions.length,1);
 const wideNewer=structuredClone(base); wideNewer.baseline.lastMarketDate="2026-09-21";
 r=derive(wideNewer); assert.equal(r.baselineAsOfDate,"2026-09-20"); assert.equal(r.guard.state,"PASS");
-console.log(JSON.stringify({status:"PASS",assertions:14,example:r1},null,2));
+console.log(JSON.stringify({status:"PASS",assertions:17,example:r1},null,2));
