@@ -7,5 +7,7 @@
   "afterMarketScanAllowed": false,
   "genuineProspectiveEvidence": false,
   "formalCoreImpact": "NONE",
-  "system2Impact": "NONE"
+  "system2Impact": "NONE",
+  "requestedAt": "2026-10-07T09:00:00+08:00",
+  "requestReason": "Execute approved quality-only transport recovery after PR #739 merge; no after-market scan."
 }
