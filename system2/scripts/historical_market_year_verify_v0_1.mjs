@@ -309,7 +309,7 @@ async function fetchTpexCmodePositiveStopSessionsV0_1(marketDates=[]){
             referer:"https://www.tpex.org.tw/zh-tw/mainboard/trading/info/altered.html",
             "user-agent":"System2-DATA-LANE-tpex-cmode-history/0.1",
           },
-          signal:AbortSignal.timeout(30000),
+          signal:AbortSignal.timeout(15000),
         });
         const rawText=await response.text();
         const sourceHash=sha256Text(rawText);
@@ -348,8 +348,8 @@ async function fetchTpexCmodePositiveStopSessionsV0_1(marketDates=[]){
     };
   }
 
-  for(let i=0;i<dates.length;i+=6){
-    const batch=dates.slice(i,i+6);
+  for(let i=0;i<dates.length;i+=8){
+    const batch=dates.slice(i,i+8);
     const results=await Promise.all(batch.map(fetchOne));
     for(const result of results){
       receipts.push({...result,intervals:undefined});
