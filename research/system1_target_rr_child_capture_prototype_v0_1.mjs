@@ -51,11 +51,17 @@ function historyState(raw,parent,sessionDate){
   const noFuture=dates.every(d=>/^\d{4}-\d{2}-\d{2}$/.test(d)&&d<=sessionDate);
   const current=dates.at(-1)===sessionDate;
   const admission=parent?.historyAdmission?.usable===true;
+  const highs=h.map(x=>finite(x?.high)?x.high:(finite(x?.close)?x.close:null));
+  const highCoverage=highs.every(finite);
+  const recomputed20=highCoverage&&highs.length>1?Math.max(...(highs.length>=21?highs.slice(-21,-1):highs.slice(0,-1))):null;
+  const recomputed60=highCoverage&&highs.length>1?Math.max(...(highs.length>=61?highs.slice(-61,-1):highs.slice(0,-1))):null;
   const derivedLevelsPresent=finite(raw?.priorHigh20)&&finite(raw?.priorHigh60);
+  const derivedLevelsMatch=derivedLevelsPresent&&same(raw.priorHigh20,recomputed20)&&same(raw.priorHigh60,recomputed60);
   return {
-    verified:admission&&h.length>=60&&unique&&ordered&&noFuture&&current&&derivedLevelsPresent,
+    verified:admission&&h.length>=60&&unique&&ordered&&noFuture&&current&&highCoverage&&derivedLevelsMatch,
     bars:h.length,lookbackStart:dates[0]||null,lookbackEnd:dates.at(-1)||null,
-    admissionStatus:parent?.historyAdmission?.status||"UNKNOWN",derivedLevelsPresent
+    admissionStatus:parent?.historyAdmission?.status||"UNKNOWN",derivedLevelsPresent,derivedLevelsMatch,
+    recomputedPriorHigh20:recomputed20,recomputedPriorHigh60:recomputed60
   };
 }
 function perSymbolTargetPriceSource(feature,source){
