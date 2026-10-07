@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { deepFreeze } from "./factor_snapshot.mjs";
 import { historicalUniverseMembershipActiveOnDateV0_1 } from "./historical_universe_registry_v0_1.mjs";
 
@@ -100,6 +101,10 @@ function requiredDate(value, field) {
   return text;
 }
 
+function sha256CanonicalV0_1(value) {
+  return createHash("sha256").update(JSON.stringify(value)).digest("hex");
+}
+
 export function tpexCmodeRocDateV0_1(value) {
   const iso=requiredDate(value,"marketDate");
   const year=Number(iso.slice(0,4))-1911;
@@ -188,7 +193,8 @@ export function parseTpexCmodePositiveStopSessionsV0_1({
       suspendedFrom:requestedDate,
       resumedOn:nextCalendarDateV0_1(requestedDate),
       coverageTo:to,
-      sourceRowHash:sourceHash||null,
+      sourceRowHash:sha256CanonicalV0_1({marketDate:requestedDate,row}),
+      sourcePayloadHash:sourceHash||null,
       sourceKind:"TPEX_CMODE_POSITIVE_STOP_SESSION",
       stopMarker:normalizeTpexCmodeCellV0_1(row[6]),
       sessionEvidenceOnly:true,
