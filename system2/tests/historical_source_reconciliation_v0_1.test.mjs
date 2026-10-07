@@ -33,6 +33,7 @@ function row(overrides={}){
   assert.equal(r.sourceVersionState,"STABLE");
   assert.equal(r.sourceRowHashMismatchCount,0);
   assert.equal(r.canonicalA1ValueMismatchCount,0);
+  assert.equal(r.canonicalRevisionLineageRequired,false);
 }
 
 {
@@ -46,6 +47,7 @@ function row(overrides={}){
   assert.equal(r.sourceRowHashMismatchCount,1);
   assert.equal(r.sourceRevisionOnlyCount,1);
   assert.equal(r.canonicalA1ValueMismatchCount,0);
+  assert.equal(r.canonicalRevisionLineageRequired,false);
   assert.deepEqual(r.sourceRevisionByDate,[{marketDate:"2020-02-27",count:1}]);
   assert.equal(r.sourceRevisionOnlySample[0].canonicalA1Stable,true);
 }
@@ -60,6 +62,7 @@ function row(overrides={}){
   assert.equal(r.sourceVersionState,"SOURCE_REVISION_WITH_CANONICAL_A1_CHANGE");
   assert.equal(r.sourceRowHashMismatchCount,1);
   assert.equal(r.canonicalA1ValueMismatchCount,1);
+  assert.equal(r.canonicalRevisionLineageRequired,true);
   assert.deepEqual(r.canonicalA1ValueMismatchSample[0].differingFields,["close"]);
 }
 

@@ -109,6 +109,7 @@ export function reconcileHistoricalSourceRowsV0_1({
       : canonicalA1ValueMismatches.length===0
         ? "SOURCE_REVISION_OBSERVED_CANONICAL_A1_STABLE"
         : "SOURCE_REVISION_WITH_CANONICAL_A1_CHANGE";
+  const canonicalRevisionLineageRequired=canonicalA1ValueMismatches.length>0;
   const state=dataIntegrityState==="BLOCKED"
     ? "BLOCKED"
     : sourceRowHashMismatches.length>0
@@ -119,6 +120,7 @@ export function reconcileHistoricalSourceRowsV0_1({
     state,
     dataIntegrityState,
     sourceVersionState,
+    canonicalRevisionLineageRequired,
     coldRowCount:coldRows.length,
     freshOfficialRowCount:freshOfficialRows.length,
     missingFromColdCount:missingFromCold.length,
@@ -142,6 +144,7 @@ export function reconcileHistoricalSourceRowsV0_1({
       sourceRowHashMismatch:"The official full source row changed between captures; this is preserved as source revision evidence.",
       canonicalA1ValueMismatch:"At least one canonical A1 value used by System2 changed; this reconciliation remains blocked unless a separate physically verified PIT revision-lineage contract proves immutable baseline preservation and deterministic as-of revision selection.",
       sourceRevisionOnly:"The official full source row changed while canonical A1 values remained identical; data coverage may pass but source-version lineage remains explicit.",
+      canonicalRevisionLineageRequired:"Persisted PIT canonical revision rows are required only when canonical A1 values changed; source-row provenance-only changes must not trigger or manufacture a canonical overlay.",
     }),
     schemaVersion:"S2_HISTORICAL_SOURCE_RECONCILIATION_V0_1",
   });
