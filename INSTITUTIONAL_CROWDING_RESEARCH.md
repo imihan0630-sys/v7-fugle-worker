@@ -2606,3 +2606,48 @@ Maturity impact: NONE. D06-19 remains L2/40%. The module is more defensible beca
 
 Exact next:
 only reopen source discovery when an official or authorized field contract explicitly exposes domestic-natural-person identity at stock×date buy/sell grain. Any paid/custom product requires exact field-definition and PIT/replay verification before purchase/contact. Otherwise retail direction stays UNKNOWN and proxies remain separately named constructs.
+
+
+---
+
+## IC-097 — D06-14 complete T/T+1/T+2 revision lineage clears L3 source/PIT gate
+
+Research cycle: 2026-10-07 Asia/Taipei  
+Status: FIRST_COMPLETE_T_T1_T2_CHAIN / SECOND_DATE_T1_REPLICATION / ROW_LEVEL_ZERO_REVISION / D06_14_L3_SOURCE_PIT_REPLAY_READY / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_14_tpex_daytrade_t2_final_20261005_captured_20261007_v0_1.json`;
+- `research/d06_14_tpex_daytrade_t1_revised_20261006_captured_20261007_v0_1.json`;
+- `research/d06_14_daytrade_l3_decision_20261007_v0_1.json`.
+
+The preregistered D06-14 gate is now complete. Official TPEx date-pinned rendering and the official CSV export were used for same-trade-date row-level comparisons rather than aggregate-only summaries.
+
+2026-10-05 first complete chain:
+- T_PRELIM: 841 rows;
+- T1_REVISED: 841 rows, zero changed/added/removed rows;
+- T2_FINAL on 2026-10-07: 841 rows, zero changed/added/removed rows versus both T_PRELIM and T1;
+- total day-trading shares remain 563,183,000;
+- total buy value remains TWD 139,035,902,050;
+- total sell value remains TWD 139,484,441,280;
+- canonical row fingerprint remains `fnv1a64-utf8:48e8edf2952b9b40`.
+
+2026-10-06 second-date replication:
+- T_PRELIM: 843 rows;
+- T1_REVISED on 2026-10-07: 843 rows;
+- union/common support 843/843;
+- zero changed/added/removed rows;
+- totals remain 530,117,000 shares / TWD 136,109,936,790 buy / TWD 136,525,764,410 sell;
+- canonical row fingerprint remains `fnv1a64-utf8:21c5de02d6096939`.
+
+A prior extraction-layer anomaly that reported 251/400 rows is explicitly rejected: the fully rendered official tables and official CSV each resolve to 841/843 rows, matching the canonical parser. Cross-date 841 -> 843 remains population drift between different trade dates, not a revision.
+
+Maturity decision:
+- D06-14 L2/40 -> L3/60;
+- basis = official product semantics + date-pinned replay + preserved first-known/revision lineage + one complete prospective T/T+1/T+2 chain + second-date T->T+1 replication;
+- zero revision is observed evidence and is not generalized into a claim that TPEx never revises.
+
+Scope boundary:
+L3 means Taiwan source/PIT/replay feasibility only. It does not validate predictive alpha, retail identity, motive, overnight inventory, a standalone day-trading score or reuse of the 60% surveillance condition as an alpha threshold.
+
+Exact next:
+on 2026-10-08 capture T2_FINAL for tradeDate 2026-10-06. After that, more source replication alone does not increase maturity; L4 requires preregistered OOS/Shadow residual incrementality on common support against liquidity, direct price-volume, institutional flow, leverage/shorting, passive/index flow and market regime, with date-clustered inference.
