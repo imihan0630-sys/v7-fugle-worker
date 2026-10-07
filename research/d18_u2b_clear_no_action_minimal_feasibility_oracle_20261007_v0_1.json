@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "D18_U2B_CLEAR_NO_ACTION_MINIMAL_FEASIBILITY_ORACLE_V0_1",
+  "owner": "ROOM11_D18",
+  "module": "D18-04",
+  "status": "PRE_EXECUTABLE_BLOCKING_ORACLE_FROZEN",
+  "formalCoreImpact": "NONE",
+  "primaryObject": "U2B_CLEAR_NO_ACTION_PRICE_RETURN",
+  "tests": [
+    {
+      "id": "U2B-T01",
+      "case": "HOLIDAY_PREVIOUS_CALENDAR_DAY",
+      "expect": "USE_EXACT_PREVIOUS_ELIGIBLE_OFFICIAL_SYMBOL_SESSION"
+    },
+    {
+      "id": "U2B-T02",
+      "case": "MISSING_REQUIRED_PRIOR_SESSION_WITH_OLDER_SUBSTITUTE",
+      "expect": "BLOCK_PRIOR_SESSION_SUBSTITUTED"
+    },
+    {
+      "id": "U2B-T03",
+      "case": "NEW_LISTING_NO_COMPARABLE_PRIOR_SESSION",
+      "expect": "BLOCK_RETURN_UNKNOWN"
+    },
+    {
+      "id": "U2B-T04",
+      "case": "OPEN_STOP_RESUME_BOUNDARY_INCOMPLETE",
+      "expect": "BLOCK_CONTINUITY_UNKNOWN"
+    },
+    {
+      "id": "U2B-T05",
+      "case": "ACTION_EVENT_PRESENT",
+      "expect": "BLOCK_CLEAR_NO_ACTION_V0_1"
+    },
+    {
+      "id": "U2B-T06",
+      "case": "CONTINUITY_RECEIPT_WINDOW_MISMATCH",
+      "expect": "BLOCK_RECEIPT_PAIR_MISMATCH"
+    },
+    {
+      "id": "U2B-T07",
+      "case": "SOURCE_ROW_REVISION_CHANGES",
+      "expect": "BLOCK_PAIR_HASH_MISMATCH"
+    },
+    {
+      "id": "U2B-T08",
+      "case": "POST_CUTOFF_CONTINUITY_EVIDENCE",
+      "expect": "BLOCK_PIT_INVALID"
+    },
+    {
+      "id": "U2B-T09",
+      "case": "TECHNICAL_CONTINUITY_PASS_ACTION_FAMILY_SCOPE_UNPROVEN",
+      "expect": "BLOCK_ACTION_FAMILY_COVERAGE_SCOPE_UNPROVEN"
+    },
+    {
+      "id": "U2B-T10",
+      "case": "TPEX_SCOPE_INHERITED_FROM_TWSE",
+      "expect": "BLOCK_MARKET_SCOPE_INHERITANCE"
+    },
+    {
+      "id": "U2B-T11",
+      "case": "NO_USABLE_CLOSE_OR_ZERO_VOLUME_AMBIGUITY",
+      "expect": "DO_NOT_COERCE_TO_ZERO_RETURN"
+    },
+    {
+      "id": "U2B-T12",
+      "case": "U2B_MISSING_ROW",
+      "expect": "DO_NOT_IMPUTE_ZERO"
+    },
+    {
+      "id": "U2B-T13",
+      "case": "EXACT_TWO_SESSION_NO_ACTION_COMPLETE_PROVENANCE",
+      "expect": "DETERMINISTIC_U2B_PRICE_RETURN"
+    }
+  ],
+  "requiredDenominators": [
+    "U0_N",
+    "U1_N",
+    "U2A_N",
+    "U2B_CLEAR_NO_ACTION_READY_N",
+    "U2B_ACTION_EVENT_BLOCKED_N",
+    "U2B_CONTINUITY_UNKNOWN_N",
+    "U2B_PRIOR_SESSION_MISSING_N",
+    "U2B_SOURCE_REVISION_INVALID_N",
+    "U2B_FAMILY_SCOPE_UNPROVEN_N"
+  ],
+  "requiredIdentity": [
+    "currentSourceRowHash",
+    "priorSourceRowHash",
+    "priorEligibleSessionDate",
+    "sessionCalendarVersion",
+    "exactPairHash",
+    "continuityReceiptId",
+    "continuityReceiptHash",
+    "sourceHistoryHash",
+    "actionFamilySetVersion",
+    "priceSpaceVersion",
+    "returnDefinitionVersion"
+  ],
+  "dependencies": [
+    "CORR004_EXACT_SESSION_PHYSICAL_ACCEPTANCE",
+    "SHARED_CONTINUITY_PROMOTION_CERTIFIER_EXECUTABLE",
+    "U2B_ACTION_FAMILY_SET_ADEQUACY_EXPLICIT"
+  ],
+  "maturityImpact": "NONE"
+}
