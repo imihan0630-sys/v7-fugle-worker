@@ -1,0 +1,143 @@
+{
+  "schemaVersion": "d01-first-wave-source-context-receipt-interface-v0.1",
+  "updatedAt": "2026-10-07 Asia/Taipei",
+  "formalCore": "LOCKED",
+  "outcomeJoin": "CLOSED",
+  "commonEnvelope": [
+    "receiptId",
+    "receiptVersion",
+    "market",
+    "symbol",
+    "firstObservableAt",
+    "observedAt",
+    "sourceId",
+    "sourceVersion",
+    "sourceHash",
+    "replaySafe",
+    "completenessScope",
+    "state"
+  ],
+  "receiptFamilies": {
+    "R1_MEMBERSHIP": {
+      "owner": "SYSTEM2_HISTORICAL_UNIVERSE",
+      "required": [
+        "registryId",
+        "registryHash",
+        "membershipStart",
+        "membershipEndExclusive",
+        "membershipStateAtDate",
+        "replayEligible",
+        "futureDelistingHidden",
+        "securityIdentity",
+        "listingAgeEligibleSessions"
+      ]
+    },
+    "R2_RAW_A1": {
+      "owner": "SYSTEM2_DATA_LANE",
+      "required": [
+        "marketDate",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "observationState",
+        "sourceRowHash",
+        "canonicalBarHash",
+        "availableAt",
+        "availabilityBasis"
+      ]
+    },
+    "R3_SYMBOL_SESSION": {
+      "owner": "SYSTEM2_DATA_BUILD_LIFECYCLE",
+      "required": [
+        "officialMarketSession",
+        "symbolExpectedToTrade",
+        "lifecycleState",
+        "eventType",
+        "eventId",
+        "coverageCompleteForSymbolDate"
+      ]
+    },
+    "R4_CORPORATE_ACTION_CONTINUITY": {
+      "owner": "CORPORATE_ACTIONS_LANE",
+      "required": [
+        "continuityReceiptId",
+        "actionType",
+        "actionEventId",
+        "actionFirstKnownAt",
+        "effectiveDate",
+        "rawExecutionState",
+        "technicalContinuityState",
+        "continuityTransformVersion",
+        "continuityTransformHash",
+        "eventCoverageState",
+        "securityIdentityTransitionState"
+      ]
+    },
+    "R5_PRICE_LIMIT_REFERENCE": {
+      "owner": "D05_EXCHANGE_MECHANISM",
+      "required": [
+        "ruleVersion",
+        "referencePrice",
+        "upperLimitPrice",
+        "lowerLimitPrice",
+        "specialReferenceState",
+        "noLimitState",
+        "closeBoundaryState"
+      ]
+    },
+    "R6_DISPOSITION_MATCHING": {
+      "owner": "D05_EXCHANGE_MECHANISM",
+      "required": [
+        "matchingCadenceSeconds",
+        "changedTradingMethodFlag",
+        "prepaymentRule",
+        "marginRestriction",
+        "coverageCompleteForSymbolDate"
+      ]
+    },
+    "R7_PATTERN_OBSERVABILITY": {
+      "owner": "D01",
+      "required": [
+        "moduleId",
+        "featureVersion",
+        "requiredSourceBarIds",
+        "predictorFreezeAt",
+        "lifecycleState",
+        "informationRoot",
+        "redundancyGroup",
+        "deterministicFeatureHash"
+      ]
+    },
+    "R8_OUTCOME_AVAILABILITY": {
+      "owner": "D16_OUTCOME_LANE",
+      "required": [
+        "parentDecisionId",
+        "horizonEligibleSessions",
+        "outcomeWindowStart",
+        "outcomeWindowEnd",
+        "terminalOrCensoringState",
+        "outcomeAvailableAt"
+      ]
+    },
+    "R9_VALIDATION_POLICY": {
+      "owner": "D16",
+      "required": [
+        "experimentId",
+        "protocolVersion",
+        "foldPlanHash",
+        "horizonSetHash",
+        "commonParentComparatorHash",
+        "multiplicityPolicyHash",
+        "searchRegistryHash",
+        "finalHoldoutYear",
+        "finalHoldoutLocked",
+        "noPostHoldoutTuning"
+      ]
+    }
+  },
+  "unknownMandatoryPredictorContextState": "CAUSAL_OOS_BLOCKED",
+  "physicalReceiptCompleteness": false,
+  "oosExecutionReady": false
+}

@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "d01-first-wave-data-readiness-v0.1",
+  "updatedAt": "2026-10-07 Asia/Taipei",
+  "sourceMainAtAudit": "a0cd579dc43d36006a4619cc4528a150d3e245e6",
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "firstWaveModules": [
+    "D01-02",
+    "D01-03",
+    "D01-07",
+    "D01-09"
+  ],
+  "coverageSnapshot": {
+    "matrixUpdatedAt": "2026-10-07T11:55:29+08:00",
+    "twse": {
+      "rawAcceptedYears": [
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "boundedManifestYears": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "explicitUniverseUnionPassYears": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "inferenceYears": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "unknownSymbolSessionGaps2018To2024": 4036,
+      "causalReplayReady": false
+    },
+    "tpex": {
+      "rawAcceptedYears": [
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ],
+      "officialDelistingUnionComplete": false,
+      "year2024": "PENDING_NOT_ACCEPTED",
+      "unknownSymbolSessionGaps2017To2023": 2533,
+      "causalReplayReady": false
+    }
+  },
+  "boundedTwseManifest": {
+    "warmupYear": 2018,
+    "inferenceStartYear": 2019,
+    "finalHoldoutYear": 2024,
+    "folds": [
+      {
+        "train": [
+          2019,
+          2020,
+          2021
+        ],
+        "test": 2022,
+        "minPurgeEligibleSessions": 20
+      },
+      {
+        "train": [
+          2019,
+          2020,
+          2021,
+          2022
+        ],
+        "test": 2023,
+        "minPurgeEligibleSessions": 20
+      }
+    ],
+    "outcomeHorizonsEligibleSessions": [
+      1,
+      5,
+      20
+    ],
+    "executionReady": false
+  },
+  "mandatoryReceiptFamilies": [
+    "POINT_IN_TIME_MEMBERSHIP",
+    "RAW_A1_OBSERVATION",
+    "SYMBOL_SESSION_LIFECYCLE",
+    "CORPORATE_ACTION_CONTINUITY",
+    "PRICE_LIMIT_REFERENCE_STATE",
+    "DISPOSITION_MATCHING_STATE",
+    "BAR_SEQUENCE_OBSERVABILITY",
+    "INFORMATION_ROOT_REDUNDANCY_LINEAGE",
+    "OUTCOME_HORIZON_AVAILABILITY",
+    "D16_VALIDATION_POLICY"
+  ],
+  "blockers": {
+    "symbolSessionLifecycle": "PHYSICAL_COMPLETENESS_NOT_CLOSED",
+    "corporateActionContinuity": "WHOLE_MARKET_HISTORICAL_COMPLETENESS_NOT_CLOSED",
+    "priceLimitReferenceState": "TARGET_YEAR_REPLAY_DATASET_NOT_MATERIALIZED",
+    "dispositionMatchingState": "REPLAY_COMPLETE_HISTORICAL_RECEIPT_NOT_PROVEN",
+    "tpexUniverse": "OFFICIAL_DELISTING_UNION_INCOMPLETE",
+    "tpex2024": "RAW_MARKET_YEAR_NOT_ACCEPTED"
+  },
+  "primaryFullTaiwanFirstWaveDataset": "BLOCKED",
+  "twseBoundedManifest": "FROZEN_EXECUTION_BLOCKED",
+  "outcomeJoin": "CLOSED",
+  "l4Promotion": "NONE"
+}
