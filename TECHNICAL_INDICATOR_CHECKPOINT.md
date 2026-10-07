@@ -6588,3 +6588,131 @@ Exact next:
 3. D03 may advance Layer B only from that physical receipt;
 4. in parallel consume S2-CORR-20261007-002 corrected strategy-specific readiness only after a genuine mixed-dependency trading-date receipt;
 5. keep Layer C revision-known-at, V8.20 genuine parent, T48 finalization, S2-07 stabilization, D03 dedup/redundancy, D16 incrementality and raw-source observer gates independent.
+
+
+## 2026-10-07 D03 — TI-1325~1344 TWSE lifecycle V0.6 implementation acceptance + exact replay-window continuity binding
+
+Canonical D03 artifacts:
+- `research/d03_system2_twse_lifecycle_v06_implementation_acceptance_20261007_v0_1.json`;
+- `research/d03_system2_twse_lifecycle_v06_implementation_execution_receipt_20261007_v0_1.json`.
+
+Canonical dedicated acceptance:
+- workflow `D03 System2 TWSE Lifecycle V0.6 Acceptance`;
+- run `37625151533`;
+- head `ecefbac4e34281591ba0a5efd41d9c3ba63a95c8`;
+- conclusion SUCCESS.
+
+### TI-1325~1330 — System2 TWSE Layer-B implementation is now real repository code
+
+Latest main physically contains:
+- `system2/runtime/twse_regulatory_lifecycle_source_v0_1.mjs`;
+- `system2/scripts/historical_market_year_verify_v0_1.mjs` upgraded to verifier schema `S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFICATION_V0_6`;
+- lifecycle parser tests;
+- targeted market-year lifecycle verifier guard.
+
+Accepted implementation properties:
+- baseline coverage is computed first;
+- only symbols still carrying UNKNOWN gaps are queried against the TWSE official announcement list/detail source;
+- only positive official evidence can create regulatory lifecycle intervals;
+- margin-financing-only notices are excluded from no-trading classification;
+- sourceRowHash, sourcePayloadHash and eventIdentityHash are preserved;
+- before/after UNKNOWN counts and missingReasonCounts are emitted;
+- reclassifiedUnknownBars, conflictCount and interval/event samples are emitted;
+- cold OHLCV is not mutated;
+- announcement-list absence does not certify NO_EVENT;
+- `sourceReportedAt` remains null where exact historical availability time is not proven, so Layer C remains NOT PROVEN.
+
+The original merge commit `8885e60ceb46d07180946940a63f2262c345ee15` had its broad System2 Research CI cancelled by later repository movement. D03 therefore reran the relevant parser and verifier guards on current main under dedicated run `37625151533`, which passed.
+
+This advances Layer B from:
+`RESEARCH_CONTRACT_ONLY`
+to:
+`TWSE_IMPLEMENTATION_MACHINE_ACCEPTED / PHYSICAL_ANNUAL_RERUN_PENDING`.
+
+No maturity promotion is granted before an annual physical verifier V0.6 receipt demonstrates actual before/after reclassification on real market-year data.
+
+### TI-1331~1334 — strategy-clock correction is no longer a current runtime blocker
+
+Canonical correction queue now records:
+`S2-CORR-20261007-002 = REJECTED_WITH_EVIDENCE`.
+
+Accepted nuance:
+- the global A1+B2+A5 Decision Clock mismatch remains a valid research/sampling warning;
+- but latest-main Stage-1 preflight, Limited Shadow and capacity paths do not consume B2/A5/global `requiredReady` as a SHORT_MOMENTUM execution blocker;
+- prospective run `37577209442` therefore remains valid evidence that the global artifact can be over-gated for research use, but it is not proof of a current Stage-1 runtime defect.
+
+D03 consequence:
+- preserve the strategy-specific common-support/sampling firewall;
+- do not use global blocked dates as natural zero-pick evidence;
+- remove S2-CORR-20261007-002 from the active BUILD blocker list;
+- retain it only as a future wiring regression/watchlist requirement.
+
+### TI-1335~1341 — continuity receipt must bind the actual selected PIT replay window
+
+00 audit:
+`system2/evidence/S2_STAGE1_NCT01_CONTINUITY_REPLAY_BINDING_AUDIT_20261007_V0_1.json`
+is accepted as a D03-relevant lineage finding.
+
+Critical result:
+`CURRENT_RESOLVE_CONTINUITY_STATE_IS_NOT_HASH_BOUND_TO_THE_ACTUAL_SELECTED_REPLAY_WINDOW`.
+
+The current pre-replay resolver returns only a text state and executes before the exact PIT replay window exists.
+Therefore a valid continuity witness could be accidentally reused after selected-session/revision drift unless the receipt is validated after replay selection.
+
+D03 freezes the stronger rule:
+promotion-grade technical continuity requires the receipt to bind the exact ordered selected replay window through:
+- `continuityReceiptId`;
+- `sourceHistoryHash`;
+- `continuityTransformHash`;
+- exact ordered marketDate/sourceId/sourceRowHash/availableAt + OHLCV identity;
+- exact eligible-session date set;
+- zero unresolved missing sessions;
+- zero unresolved relevant events.
+
+A string such as `CLEAR_NO_ACTION` or `ADJUSTED_CONTINUITY` by itself is not sufficient provenance.
+
+No historical D1 continuity-state rewrite is required when a post-replay exact-window certifier truthfully proves the selected raw window.
+
+### TI-1342 — RAW + ADJUSTED_CONTINUITY firewall
+
+Current Stage-1 path consumes RAW historical bars and does not apply a TECHNICAL_CONTINUITY price transform before factor computation.
+
+Therefore:
+- first NC-T01 physical witness may be `CLEAR_NO_ACTION` only;
+- `ADJUSTED_CONTINUITY_REQUIRED` stays fail-closed until an actually transformed technical-continuity window exists;
+- relabeling RAW bars with an `ADJUSTED_CONTINUITY` text state is explicitly rejected.
+
+D03 applies the same anti-shortcut to ADX/Bollinger:
+an adjusted-continuity label cannot repair a RAW computation path.
+
+### TI-1343 — D03-09 / D03-10 stale module status corrected
+
+The old module-local wording still said V8.18 Production approval was pending, conflicting with the already accepted V8.20 Production deployment.
+
+Correct current state:
+- V8.20 authoritative Formal->C1 parent-binding runtime = PRODUCTION_VERIFIED;
+- first genuine normal-session Formal->C1 parent receipt = PENDING;
+- Layer-B TWSE lifecycle verifier V0.6 implementation = MACHINE_ACCEPTED;
+- physical annual Layer-B rerun = PENDING;
+- exact replay-window continuity receipt binding = REQUIRED;
+- Layer C revision-known-at = NOT PROVEN.
+
+ADX additionally requires canonical Wilder H/L/C FULL_REPLAY / replay-certified trusted state.
+
+### TI-1344 — maturity, module inventory and exact next
+
+No maturity promotion:
+- D03 = 56.7%;
+- 12 active modules total;
+- 10 modules at current L3/60 milestone;
+- D03-09 and D03-10 remain L2/40;
+- raw source/version gate = 2/3;
+- outcomes = CLOSED;
+- Formal Core = LOCKED.
+
+Exact next:
+1. consume the first physical TWSE annual V0.6 lifecycle rerun receipt and inspect real before/after UNKNOWN counts, reclassified market|symbol|date identities, source hashes and conflicts;
+2. keep TPEx lifecycle parity separate; do not infer TPEx source semantics from TWSE;
+3. require post-replay exact-window continuity receipt binding for any promotion-grade D03/NC-T01 witness;
+4. consume first genuine V8.20 Formal->C1 parent receipt when available;
+5. continue T48 finalization, S2-07 stabilization, System1/System2 D03 dedup/redundancy and D16 incrementality gates independently.
