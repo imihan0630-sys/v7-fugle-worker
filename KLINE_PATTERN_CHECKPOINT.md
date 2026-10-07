@@ -5599,3 +5599,72 @@ No maturity or Formal change is authorized by this routing.
 5. Do not weaken completeness rules to manufacture a clean example.
 6. After an R1-R7 positive control exists, hand the same interface to D16 for future R8/R9 outcome execution.
 7. No L4 promotion and no Formal Core change.
+
+
+## Continuation update — DL-092 (2026-10-07)
+
+### DL-092 — Exact-window R1-R7 positive-control bundle audit
+- Current repository evidence was searched for a real TWSE symbol/window where DL-091 R1-R7 could all be physically satisfied without opening future returns.
+- Existing rich mechanics candidates:
+  8422 on 2025-11-17;
+  3593 on 2025-12-22;
+  8103 on 2025-12-08.
+- Existing corporate-action feature-window evidence explicitly reports these candidates as:
+  pointInTimeReady=true;
+  technicalPriceReady=true;
+  technicalVolumeReady=true;
+  eligibleForMechanicsDelta=true;
+  eventCoverageComplete=UNKNOWN;
+  eligibleForOutcomeInference=false.
+- This proves useful mechanics/continuity examples but not exact-window inference completeness.
+
+### Receipt findings
+- R1:
+  historical-universe infrastructure exists, but these strongest candidates sit in 2025 while canonical annual TWSE 2025 is still pending; no exact accepted annual-history bundle is claimed.
+- R2:
+  real raw-price witnesses exist, but the convenience mechanics artifacts are not themselves the DL-091 canonical A1 sourceRowHash/canonicalBarHash receipt.
+- R3:
+  positive suspension/resumption mechanics exist, but exact-window all-history lifecycle completeness is not certified.
+- R4:
+  continuity mechanics are demonstrable, but eventCoverageComplete remains UNKNOWN; inference readiness is false.
+- R5:
+  legal price-limit/reference source feasibility/specifications exist, but no exact-window DL-091-complete R5 receipt was found for the candidates.
+- R6:
+  disposition/matching mechanism contract exists, but no exact-window CERTIFIED_NORMAL_MATCHING or VERIFIED_DISPOSITION_MATCHING receipt was found.
+- R7:
+  D01 pattern-observability contract is ready but remains upstream-bundle dependent.
+
+### Falsification
+- Positive mechanics witness != inference-ready historical pattern window.
+- Known corporate action != complete event coverage.
+- Missing disposition match != normal continuous matching.
+- Missing price-limit receipt != ordinary limit state.
+- Therefore no R1-R7 positive-control bundle is currently certified.
+
+### Test evidence
+- DL-092 deterministic oracle:
+  12 / 12 PASS under V8-equivalent execution.
+- Cumulative through DL-092:
+  229 / 229 PASS.
+- Native Node parity remains unclaimed.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- R1_R7_POSITIVE_CONTROL_FOUND = FALSE.
+- INTERFACE_COMPOSABILITY = PARTIAL.
+- OOS_EXECUTION_READY = FALSE.
+- SDA-001 remains OPEN.
+- SDA-002 remains OPEN.
+- Outcome join remains CLOSED.
+- Pattern alpha remains UNKNOWN.
+- Formal Core remains LOCKED.
+
+### Updated exact next continuation point after DL-092
+
+1. Start DL-093: freeze one exact-window pre-outcome witness request on an already accepted TWSE historical year.
+2. Prefer a simple ordinary/no-action window; do not select on future pattern success or returns.
+3. Request only R1-R6 physical provenance from existing owners; D01 generates R7.
+4. The witness need not contain any successful pattern.
+5. Once one R1-R7 bundle passes, interface composability can become PASS, but no L4 promotion follows without OOS/prospective evidence.
+6. No outcome join / no Formal Core change.

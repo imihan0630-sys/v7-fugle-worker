@@ -1,0 +1,16 @@
+import assert from "node:assert/strict";
+import {classifyReceiptState,classifyMechanicsWitness,validatePositiveControl,classifyAbsence,canGenerateR7} from "./pattern_exact_window_bundle_audit_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D9201 missing receipt stays missing",()=>assert.equal(classifyReceiptState({exists:false}).status,"RECEIPT_NOT_FOUND"));
+t("D9202 incomplete receipt blocked",()=>assert.equal(classifyReceiptState({exists:true,complete:false,boundToExactWindow:true}).status,"RECEIPT_COMPLETENESS_BLOCKED"));
+t("D9203 non-bound receipt blocked",()=>assert.equal(classifyReceiptState({exists:true,complete:true,boundToExactWindow:false}).status,"RECEIPT_NOT_EXACT_WINDOW_BOUND"));
+t("D9204 fully bound receipt ready",()=>assert.equal(classifyReceiptState({exists:true,complete:true,boundToExactWindow:true}).status,"RECEIPT_READY"));
+t("D9205 mechanics witness can remain inference blocked",()=>assert.equal(classifyMechanicsWitness({pointInTimeReady:true,technicalPriceReady:true,eventCoverageComplete:false,inferenceReady:false}).status,"MECHANICS_READY_INFERENCE_BLOCKED"));
+t("D9206 complete mechanics context can pass",()=>assert.equal(classifyMechanicsWitness({pointInTimeReady:true,technicalPriceReady:true,eventCoverageComplete:true,inferenceReady:true}).status,"INFERENCE_CONTEXT_READY"));
+t("D9207 one missing R6 blocks bundle",()=>assert.equal(validatePositiveControl({r1:"PASS",r2:"PASS",r3:"PASS",r4:"PASS",r5:"PASS",r6:"BLOCKED",r7:"PASS"}).status,"R1_R7_POSITIVE_CONTROL_NOT_FOUND"));
+t("D9208 all R1-R7 pass bundle",()=>assert.equal(validatePositiveControl({r1:"PASS",r2:"PASS",r3:"PASS",r4:"PASS",r5:"PASS",r6:"PASS",r7:"PASS"}).status,"R1_R7_POSITIVE_CONTROL_FOUND"));
+t("D9209 source nonmatch without completeness not normal",()=>assert.equal(classifyAbsence({sourceCoverageComplete:false,matchingRowFound:false}).status,"ABSENCE_CANNOT_CERTIFY_NORMAL"));
+t("D9210 complete source can certify absence",()=>assert.equal(classifyAbsence({sourceCoverageComplete:true,matchingRowFound:false}).status,"CERTIFIED_ABSENCE"));
+t("D9211 R7 blocked before upstream bundle",()=>assert.equal(canGenerateR7({upstreamR1R6Ready:false}).status,"R7_UPSTREAM_BLOCKED"));
+t("D9212 R7 eligible after upstream bundle",()=>assert.equal(canGenerateR7({upstreamR1R6Ready:true}).status,"R7_GENERATION_ELIGIBLE"));
+console.log(`SUMMARY ${p}/12 PASS`);
