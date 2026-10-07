@@ -1353,3 +1353,120 @@ No priority-starvation correction is opened at this time:
 - CORR-003 remains a post-NC-T01 persistence blocker, not a read-only witness blocker.
 
 Formal Core remains LOCKED.
+
+
+## 00 late-session canonical advance — SDA-022 T06~T10 merged + TWSE bounded negative-suspension gate exposed (2026-10-07 23:27 Asia/Taipei)
+
+Observed latest main before write:
+`04b54faa452238b4b31fe3b95d1a63e2251bf60c`.
+
+### CORR-004 is no longer open
+
+S2-CORR-20261007-004 is `VERIFIED_CLOSED`.
+
+Canonical/physical facts:
+- PR #817 merged as `625ea3d0bda28fcd06df4c3163a054573c3982f7`;
+- merged-main read-only preflight run `37639310919` SUCCESS;
+- exact-session reconciliation enabled;
+- 46 real symbols survive exact expected-session reconciliation;
+- 1101/TWSE is a positive exact-session history witness;
+- real negative examples 1213/1218 remain fail-closed;
+- D1 rowsWritten = 0;
+- continuityReadyCount remains 0, correctly preserving the next gate.
+
+### Replay/continuity firewalls are canonical
+
+- PR #825 merged replay-first / hash-bound NC-T01 continuity binding.
+- PR #826 merged legacy continuity-label sanitization for the physical NC-T01 replay path.
+- A physical witness may not inherit stored legacy CLEAR_NO_ACTION/ADJUSTED_CONTINUITY before replay certification.
+- First NC-T01 remains RAW + CLEAR_NO_ACTION only.
+
+### SDA-022 S22-T06~T10 are now CANONICAL PASS
+
+Replacement PR #828 merged as:
+`51946aa75ef1e73c8ff84798f2af957b7018f8de`.
+
+Final implementation head:
+`fc464d49d6adf1f3ab7012cac8b7bba78c2ca169`.
+
+Exact-head PASS:
+- SDA-022 fingerprint workflow `37644326811`;
+- System2 Research CI `37644326767`;
+- V8 Regression `37644326798`.
+
+Final artifact:
+- id `11493956334`;
+- digest `sha256:53342ab89bd430d77ec596d7162f2a3297e246175afdb50c7990d4b8620ab975`.
+
+Canonical hashes:
+- SHORT_MOMENTUM = `115ed06ff7f7492d7b57fb6bf7633e2409c0e55e856e16ece8774fba6f19f8d3`;
+- SWING_GROWTH = `a17d97c5a506395042d1ccaf237d47a7629c24df6c6f14e4e359b17726b3f43b`.
+
+All 11 source-artifact blob identities independently matched canonical main during 00 readback.
+
+Oracle disposition:
+- S22-T06 PASS;
+- S22-T07 PASS;
+- S22-T08 PASS;
+- S22-T09 PASS;
+- S22-T10 PASS;
+- physicalIndependentDiscovery remains false;
+- NC-T01 remains required.
+
+Durable 00 acceptance:
+`system2/evidence/S2_STAGE1_SDA022_T06_T10_CANONICAL_00_ACCEPTANCE_20261007_V0_1.json`.
+
+Old PR #762 is superseded and must not merge/be credited.
+PR #827 is redundant after #828 and must not merge/be separately credited.
+
+### New exact physical blocker: bounded negative suspension completeness
+
+The existing real-receipt builder requires:
+- `archiveReceipt.noEventMayBeClaimed=true`;
+- `archiveReceipt.suspensionCoverageComplete=true`;
+- `archiveReceipt.symbolSessionCompletenessEvidenceReady=true`;
+- `suspensionCoverageByExchange.TWSE=COMPLETE`.
+
+The current TWSE announcement-list lifecycle lane is intentionally positive-only and states `absenceCertifiesNoEvent=false`.
+Existing TWTAWU consumers also conservatively retain `absenceCertifiesNoSuspension=false` / `allHistoryCompletenessCertified=false`.
+
+00 external primary-source readback confirms TWSE itself exposes TWTAWU as a historical trading-halt query with:
+- explicit date-period query;
+- security-code or all-listed-security scope;
+- database availability from 2011-10-03 onward.
+
+This supports a narrower launch solution:
+the first TWSE NC-T01 witness does NOT need all-history suspension completeness.
+It needs only a machine-verifiable bounded completeness receipt for the exact selected replay interval.
+
+Do NOT promote the website description itself to machine completeness.
+The DATA_LANE physical probe must prove the exact requested interval, response/schema/body integrity and absence semantics before an empty/no-row result may become `NO_SUSPENSION_IN_COMPLETE_BOUNDED_WINDOW`.
+
+Durable acceptance contract:
+`system2/evidence/S2_STAGE1_NCT01_TWSE_SUSPENSION_NEGATIVE_COMPLETENESS_HANDOFF_20261007_V0_1.json`.
+
+### Revised shortest truthful path
+
+1. DATA_LANE: produce a real exact-window TWSE suspension-completeness receipt for one exact-session-ready witness; 1101 is only a candidate, not assumed clean.
+2. DATA_LANE: combine that bounded suspension evidence with the three existing TWSE exact-range corporate-action families:
+   - TWT49U ex-right/dividend actual;
+   - TWTAUU capital-reduction actual/reference;
+   - TWTB8U par-value-change actual/reference.
+3. If and only if the archive receipt becomes complete and the witness classifies NO_EVENT / no suspension, emit the first real versioned hash-bound CLEAR_NO_ACTION receipt.
+4. BUILD_LANE: consume that real receipt in the artifact-only NC-T01 runner using the already-merged replay firewall.
+5. NC-T01 must bind the typed end-to-end chain:
+   policy fingerprint -> A1 batch -> PIT replay -> sourceHistory -> continuity receipt/transform -> factor snapshot -> persistence batch -> orchestration -> shadow accounting -> final NC-T01 receipt hash.
+6. 00 independently verifies S22-T11~T16.
+7. Only after NC-T01 does CORR-003 protected D1 write headroom become the persistence blocker before genuine SHORT_MOMENTUM -> RANK-01 -> s2_capacity_runs.
+
+Nonblockers for the first physical witness:
+- TPEx lifecycle parity;
+- full annual market-year rerun;
+- all-history TWTAWU completeness;
+- SWING_GROWTH readiness;
+- MARKET_REGIME;
+- D1 write quota for the artifact-only witness.
+
+System1 remains sentinel-only.
+Formal Core remains LOCKED.
+No final selection, live push, capital or real orders are authorized.
