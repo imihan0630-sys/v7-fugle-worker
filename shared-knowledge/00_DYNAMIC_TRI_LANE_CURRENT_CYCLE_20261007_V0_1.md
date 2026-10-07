@@ -638,3 +638,119 @@ Therefore:
 SWING_GROWTH/B2/A5 remain parallel second-strategy work and must not be promoted back into a global SHORT_MOMENTUM blocker.
 
 Formal Core remains LOCKED.
+
+
+## 00 current-cycle reconciliation — 2026-10-07 19:27:51 Asia/Taipei
+
+Observed latest main before this reconciliation:
+`eb7058e0ba5c37ce5153777799da595e99b11bbe`.
+
+This section supersedes only the CURRENT navigation/status interpretation of older same-day sections. Historical observations remain append-only evidence.
+
+### 1. Stage-1 current A1 is physically READY; old launch-critical A1 classification is superseded
+
+Scheduled System2 Daily Shadow Diagnostic run `37609474459` physically succeeded for marketDate `2026-10-07`.
+
+Observed current Stage-1 source path:
+- TWSE latest OpenAPI remained prior-date, then `A1_TWSE_MI_INDEX_EXACT_DATE_PROSPECTIVE` succeeded for 2026-10-07 with 1,086 normalized ordinary rows;
+- TPEx latest OpenAPI returned HTTP 200 / NON_JSON_RESPONSE, then `A1_TPEX_DAILY_QUOTES_EXACT_DATE_PROSPECTIVE` succeeded for 2026-10-07 with 887 normalized ordinary rows;
+- total A1 ordinary symbols = 1,973;
+- prospective history readback = VERIFIED;
+- preflight `capacityWriteAuthorized=true`;
+- immutable D1 readback = VERIFIED;
+- System1 runtime use = false;
+- final selection / push / capital / orders remain false.
+
+Therefore `S2-CORR-20261007-001` is now MEDIUM and scoped to prospective Decision Clock/source-arrival collector divergence only. It is no longer a proven Stage-1 A1 ingestion blocker.
+
+Durable audit:
+`system2/evidence/S2_CORR_20261007_001_SCOPE_RECLASSIFICATION_20261007_V0_1.json`.
+
+### 2. S2-CORR-20261007-002 is REJECTED_WITH_EVIDENCE
+
+Latest-main runtime readback disproves the assumed coupling between the broad A1+B2+A5 research Decision Clock and the actual Stage-1 execution/capacity path.
+
+Current Stage-1 preflight / Limited Shadow / capacity runtime does not consume B2/A5/global `requiredReady` for SHORT_MOMENTUM.
+
+The global-vs-strategy dependency mismatch remains a valid research/watchlist observation, but it is not a current HIGH launch-path defect and must not consume BUILD_LANE implementation capacity.
+
+Durable rejection:
+`system2/evidence/S2_CORR_20261007_002_REJECTION_VERIFICATION_20261007_V0_1.json`.
+
+### 3. PR #762 is stale-base but semantically current
+
+Independent drift audit against latest main found:
+- PR #762 head = `a5487086ba15f844d775e12bc7ce2c3852749644`;
+- PR base is stale;
+- all 11/11 source-artifact blob SHAs pinned by the fingerprint implementation still exactly match latest main;
+- all 8/8 PR-added paths remain unoccupied on main;
+- SHORT_MOMENTUM / SWING_GROWTH strategy versions, assessor-policy IDs/versions and required-family semantics still match the canonical Stage-1 freeze;
+- old PR-head fingerprint CI / System2 Research CI / V8 Regression were PASS, but they cannot substitute for post-rebase exact-head verification.
+
+Disposition:
+do NOT redesign the fingerprint implementation from scratch.
+BUILD_LANE exact next is latest-main rebase/rebuild -> regenerate receipts -> exact-head fingerprint CI + System2 Research CI + V8 Regression -> canonical merge.
+
+Durable drift audit:
+`system2/evidence/S2_STAGE1_PR762_DRIFT_AUDIT_20261007_V0_1.json`.
+
+### 4. Physical NC-T01 can be compressed to a read-only proof
+
+After canonical #762 fingerprints, the shortest truthful NC-T01 S22-T11~T16 path is:
+- real official current A1;
+- real isolated-D1 PIT history;
+- System1 Top6 input unavailable=false? NO: receipt must explicitly record `system1Top6InputAvailable=false`;
+- System1 rank input `false`;
+- no cached/persisted/alias/cross-project/stale System1-selection fallback;
+- execute real SHORT_MOMENTUM assessor + physical strategy-run path;
+- freeze the canonical `SDA022_NC_T01_RECEIPT_V0_1` receipt and result hash;
+- legitimate zero-pick may PASS independence; missing inputs/runtime failure/dependency fallback may not.
+
+Important:
+the successful 2026-10-07 Daily Shadow diagnostic is seed/input-readiness evidence only. It did not execute strategy evaluation and therefore cannot itself satisfy NC-T01.
+
+The existing remote D1 REST adapter supports SELECT-only `.first()` / `.all()` reads. A minimal NC-T01 proof therefore does not inherently require a D1 row write or `s2_capacity_runs` persistence and need not wait for the current write-quota reset if BUILD_LANE keeps the proof read-only and artifact-only.
+
+Durable handoff:
+`system2/evidence/S2_STAGE1_NC_T01_MINIMAL_PHYSICAL_HANDOFF_20261007_V0_1.json`.
+
+### 5. New recurrent cross-lane quota correction
+
+`S2-CORR-20261007-003` is HIGH / OPEN / REMEDIATION_LANE.
+
+Physical sequence:
+- Daily Shadow Diagnostic run `37609474459` succeeded with D1 `rowsWritten=13130`;
+- approximately 22 minutes later historical run `37611914140` (#30) failed in migrate before backfill because Cloudflare returned the free-tier daily row-write-limit error;
+- a materially equivalent free-tier quota block previously occurred during 2021 TPEx work.
+
+Shared writer concurrency prevents simultaneous writes but does not create a daily write budget/reservation/priority policy.
+
+Required remediation:
+one System2-wide free-tier-safe UTC-day D1 write-budget / writer-priority contract, explicit quota deferral, no invented exact remaining quota, and no automatic paid-plan upgrade.
+
+Durable diagnosis:
+`system2/evidence/S2_CORR_20261007_003_D1_QUOTA_COORDINATION_DIAGNOSIS_V0_1.json`.
+
+### 6. Historical DATA_LANE state
+
+2024 TPEx remains NOT ACCEPTED.
+
+Timeout hardening 60 -> 120 minutes is repository-ready and CI-clean, but fresh run #30 never reached backfill because the D1 free-tier daily row-write quota was already exhausted.
+
+Current physical retry cannot usefully proceed before the free-tier reset:
+`2026-10-08 08:00 Asia/Taipei`,
+unless the REMEDIATION quota-governance fix changes the execution plan without paid billing.
+
+No paid Cloudflare upgrade is authorized.
+
+### Current dynamic priority after reconciliation
+
+1. BUILD_LANE — rebase/canonicalize PR #762 on latest main, then execute the minimal real-data/read-only NC-T01 SHORT_MOMENTUM proof.
+2. BUILD_LANE — use the same genuine strategy execution path to continue strategy evaluation -> strategy-local RANK-01 -> capacity persistence when D1 write headroom truthfully permits it.
+3. REMEDIATION_LANE — implement `S2-CORR-20261007-003` global D1 free-tier write-budget / priority coordination.
+4. DATA_LANE historical — retry 2024 TPEx only after free-tier reset / safe quota gate; do not buy a paid tier automatically.
+5. DATA_LANE research evidence — close MEDIUM `S2-CORR-20261007-001` by aligning the prospective clock collector with the already-working Stage-1 exact-date source-selection contract.
+6. System1 — DEFAULT_LAST / SENTINEL_ONLY unless an explicit escalation condition appears.
+
+Formal Core remains LOCKED.
+Final selection, live push, capital and real orders remain disabled.
