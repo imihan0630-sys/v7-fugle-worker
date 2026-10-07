@@ -1,0 +1,63 @@
+name: D02 PVE265 System2 D1 Top Writes Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/d02-pve265-system2-d1-top-writes-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Query System2 D1 top write statements read-only
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          npm exec --yes wrangler@4.135.0 -- d1 insights system2-research             --time-period 1d             --sort-type sum             --sort-by writes             --sort-direction DESC             --limit 15             --json > artifacts/d02-pve265-system2-d1-top-writes.json
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          const path="artifacts/d02-pve265-system2-d1-top-writes.json";
+          const rows=JSON.parse(fs.readFileSync(path,"utf8"));
+          if(!Array.isArray(rows)) throw new Error("insights output must be array");
+          const clean=rows.map((x,i)=>({
+            rank:i+1,
+            query:String(x.query||""),
+            avgRowsWritten:Number(x.avgRowsWritten||0),
+            totalRowsWritten:Number(x.totalRowsWritten||0),
+            numberOfTimesRun:Number(x.numberOfTimesRun||0),
+            totalRowsRead:Number(x.totalRowsRead||0),
+            avgDurationMs:Number(x.avgDurationMs||0)
+          }));
+          fs.writeFileSync(path,JSON.stringify({
+            schemaVersion:"D02_PVE265_SYSTEM2_D1_TOP_WRITES_READONLY_V0_1",
+            generatedAt:new Date().toISOString(),
+            readOnly:true,
+            mutationCount:0,
+            databaseName:"system2-research",
+            timePeriod:"1d",
+            topWrites:clean
+          },null,2)+"\n");
+          console.log("D02_PVE265_RESULT="+JSON.stringify({topWrites:clean}));
+          NODE
+      - name: Preserve PVE-265 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: d02-pve265-system2-d1-top-writes-${{ github.run_id }}
+          path: artifacts/d02-pve265-system2-d1-top-writes.json
+          if-no-files-found: warn
+          retention-days: 30
