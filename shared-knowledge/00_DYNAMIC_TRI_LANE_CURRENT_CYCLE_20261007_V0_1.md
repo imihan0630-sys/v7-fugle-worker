@@ -2033,3 +2033,101 @@ No current open PR was observed for the combined BUILD patch or TWTAWU producer 
 
 Formal Core remains LOCKED.
 System1 remains sentinel-only.
+
+
+## 00 2026-10-08 06:04 critical-path delta — CORR-005/006 closed, CORR-007 opened
+
+Observed latest main before write:
+`1a30be2be1c8a5253b179057aff73d336f27ab6c`.
+
+### BUILD firewalls 005/006 are independently closed
+
+`S2-CORR-20261007-005 = VERIFIED_CLOSED`.
+`S2-CORR-20261007-006 = VERIFIED_CLOSED`.
+
+Implementation:
+- PR #841;
+- merge `d56f05fbc5986d00adbc81392b9dc0711de5043e`.
+
+Independent closure:
+`system2/evidence/S2_CORR_005_006_INDEPENDENT_CLOSURE_VERIFICATION_20261008_V0_1.json`
+@ `ae31dcc258469a3200926d4a8ba8942635379879`.
+
+Merged-main correction audit:
+- artifact `11513234786`;
+- digest `sha256:2ed893d49e6ba352c6671c87fb4c384d962b7bbae62110c02132f2a399f3c4cb`;
+- 24 transitive System2 runtime blobs;
+- five hidden-fallback dimensions PROVEN_ABSENT;
+- runtime forbidden-access count = 0;
+- auditDigest = `474f511dc592c9882da3f045bdca5e8ad87a36aa41e9f36f6517ce0c04a9f037`.
+
+The artifact explicitly states `physicalAcceptanceEligible=false`; physical NC-T01 remains pending.
+
+### SDA-022 fingerprints correctly changed after #841
+
+Earlier assumption that the minimal correction would remain outside the 11 hard-bound source set is superseded by actual implementation:
+#841 changed `daily_shadow_orchestrator_v0_1.mjs`, which is fingerprint-bound.
+
+BUILD correctly regenerated fingerprints:
+- SHORT_MOMENTUM = `2b50405eb452d89fac996e549e927235c1ce4e5bb0373e8fc0e5243117c5a9bd`;
+- SWING_GROWTH = `727ddc86494ee0d0c2359deee727a8369e2744be7f7c0d0fd5a6efecc4e254af`.
+
+Merged-main fingerprint artifact:
+- id `11514650165`;
+- digest `sha256:91f29b2ae1589e88d15d9535c84d8b8851342a950c97bfa43249378b673ae555`.
+
+S22-T06..T10 remain canonical PASS under the regenerated identities.
+Physical independent discovery remains false; NC-T01 remains required.
+
+### New HIGH promotion-provenance correction — CORR-007
+
+`S2-CORR-20261008-007` — HIGH / OPEN / BUILD_LANE.
+
+Independent finding:
+the corporate-action completeness core accepts `suspensionCoverageByExchange.TWSE=COMPLETE` as a status value.
+CLEAR_NO_ACTION promotion checks that status, but mandatory sourceEvidenceRefs are only matched to the three corporate-action historical range contracts.
+
+Current positive continuity tests can use only three corporate-action refs and no bounded suspension/TWTAWU receipt digest.
+
+Therefore a string-only TWSE COMPLETE state can be cryptographically unbound to the real negative-suspension proof.
+
+Durable audit:
+`system2/evidence/S2_STAGE1_NCT01_SUSPENSION_PROVENANCE_BINDING_AUDIT_20261008_V0_1.json`
+@ `cef80ec06e9ea9448f98dfdbadec4e0915b1be43`.
+
+Required repair:
+- first-class exchange-scoped suspension evidence identity;
+- exact replay/archive interval;
+- immutable receipt/artifact digest;
+- source family/version and timing;
+- digest bound into archive receipt;
+- matching suspension sourceEvidenceRef mandatory for CLEAR_NO_ACTION;
+- missing/mismatch/late evidence => CONTINUITY_UNKNOWN.
+
+### Current exact parallel path
+
+BUILD_LANE:
+1. CORR-007 suspension provenance binding.
+2. exact-head regressions / System2 Research / continuity / applicable V8.
+3. merge + 00 verification.
+
+DATA_LANE:
+1. discover/capture actual TWTAWU export request;
+2. real 1218 positive parity;
+3. exact witness bounded completeness;
+4. emit immutable bounded-suspension evidence object/digest;
+5. three TWSE corporate-action historical range families.
+6. If DATA finishes first, stop at
+   `SUSPENSION_BOUNDED_COMPLETENESS_EVIDENCE_READY / FINAL_CLEAR_NO_ACTION_PROMOTION_BLOCKED_CORR007`.
+
+Convergence:
+- CORR-007 verified;
+- real source-honest CLEAR_NO_ACTION receipt;
+- one coherent read-only/artifact-only SHORT_MOMENTUM NC-T01;
+- 00 recomputes Matrix V0.2 T11..T16.
+
+Only after physical independence:
+CORR-003 becomes the persistence blocker before genuine rank/capacity persistence.
+
+System1 remains sentinel-only.
+Formal Core remains LOCKED.
