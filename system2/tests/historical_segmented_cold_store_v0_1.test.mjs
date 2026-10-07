@@ -126,6 +126,18 @@ const second=await executeHistoricalSegmentPackSetV0_1(args);
 assert.equal(second.state,"ALREADY_COMPLETE");
 assert.equal(second.identicalObjectCount,2);
 assert.equal(second.verification.state,"VERIFIED");
+assert.equal(second.checkpointRepairPerformed,false);
+
+db.checkpoints[0]={...db.checkpoints[0],state:"OBJECTS_AND_MANIFESTS_READY"};
+const repaired=await executeHistoricalSegmentPackSetV0_1({
+  ...args,capturedAt:"2026-10-07T06:05:00Z",
+});
+assert.equal(repaired.state,"ALREADY_COMPLETE");
+assert.equal(repaired.checkpointRepairPerformed,true);
+assert.equal(repaired.verification.state,"VERIFIED");
+assert.equal(db.checkpoints[0].state,"COMPLETE");
+assert.equal(Number(db.checkpoints[0].manifest_committed_count),packSet.packCount);
+assert.equal(Number(db.checkpoints[0].object_ready_count),packSet.packCount);
 
 const verified=await verifyHistoricalSegmentReceiptV0_1({db,objectStore:store,receipt:db.receipts[0]});
 assert.equal(verified.barCount,6);
