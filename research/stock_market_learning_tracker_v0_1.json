@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-07T21:40:00+08:00",
+  "updatedAt": "2026-10-07T21:47:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -853,7 +853,7 @@
         "FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md",
         "FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md"
       ],
-      "maturityPct": 16.5,
+      "maturityPct": 17.6,
       "modules": [
         {
           "id": "D07-01",
