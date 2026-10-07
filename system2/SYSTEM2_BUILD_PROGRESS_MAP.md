@@ -1514,3 +1514,28 @@ Optimization:
 minimal CORR-005/006 patch is outside the 11 hard-bound SDA-022 policy-fingerprint source set; do not regenerate S22-T06..T10 fingerprints unless one of those 11 artifacts actually changes.
 
 Formal Core remains LOCKED.
+
+
+## 2026-10-08 06:02 Stage-1 BUILD priority — CORR-007 suspension provenance binding
+
+CORR-005/006 are independently VERIFIED_CLOSED after merged PR #841.
+
+Active BUILD blocker:
+`S2-CORR-20261008-007` HIGH / OPEN / BUILD_LANE.
+
+Defect:
+TWSE suspension coverage COMPLETE can currently enter CLEAR_NO_ACTION promotion without a mandatory immutable bounded-suspension receipt digest/source ref.
+
+Ordered path:
+1. BUILD implements CORR-007 exact interval + digest + source/timing binding.
+2. DATA concurrently completes TWTAWU V0.2 parity and real bounded receipt.
+3. BUILD consumes only a matching real suspension evidence identity with the three existing corporate-action refs.
+4. Real artifact-only NC-T01.
+5. 00 independent T11..T16 verification.
+6. Then CORR-003 persistence headroom and subsequent rank/capacity work.
+7. Resume preserved S2-07 cursor after launch-critical chain.
+
+Durable audit:
+`system2/evidence/S2_STAGE1_NCT01_SUSPENSION_PROVENANCE_BINDING_AUDIT_20261008_V0_1.json`.
+
+Formal Core remains LOCKED.
