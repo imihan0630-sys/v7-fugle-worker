@@ -1,0 +1,52 @@
+name: System2 NC-T01 Continuity Replay Binding V0.1
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "system2/runtime/nct01_continuity_replay_binding_v0_1.mjs"
+      - "system2/runtime/daily_shadow_orchestrator_v0_1.mjs"
+      - "system2/tests/nct01_continuity_replay_binding_v0_1.test.mjs"
+      - "system2/tests/daily_shadow_nct01_continuity_binding_v0_1.test.mjs"
+      - "system2/tests/daily_shadow_orchestrator_v0_1.test.mjs"
+      - ".github/workflows/system2-nct01-continuity-replay-binding-v0-1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/nct01_continuity_replay_binding_v0_1.mjs"
+      - "system2/runtime/daily_shadow_orchestrator_v0_1.mjs"
+      - "system2/tests/nct01_continuity_replay_binding_v0_1.test.mjs"
+      - "system2/tests/daily_shadow_nct01_continuity_binding_v0_1.test.mjs"
+      - "system2/tests/daily_shadow_orchestrator_v0_1.test.mjs"
+      - ".github/workflows/system2-nct01-continuity-replay-binding-v0-1.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: NC-T01 continuity promotion and replay binding tests
+        run: node system2/tests/nct01_continuity_replay_binding_v0_1.test.mjs
+
+      - name: Daily Shadow NC-T01 mixed-continuity and hash-lineage tests
+        run: node system2/tests/daily_shadow_nct01_continuity_binding_v0_1.test.mjs
+
+      - name: Existing Daily Shadow regression
+        run: node system2/tests/daily_shadow_orchestrator_v0_1.test.mjs
+
+      - name: System1 production isolation
+        run: |
+          set -euo pipefail
+          git diff --exit-code ${{ github.event.pull_request.base.sha || github.event.before }} HEAD -- Worker.js wrangler.toml || {
+            echo "System1 production files changed"
+            exit 1
+          }
+          echo "System1 production files unchanged PASS"
