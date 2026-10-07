@@ -1983,3 +1983,14 @@ D07-34 L0/0 -> L2/40.
 L3 remains blocked until a real Taiwan PIT/replay receipt proves proposal/final/correction lineage, distribution source, compatible financial-statement denominator and payment chronology.
 
 Formal Core unchanged. Outcomes closed. FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+
+## 2026-10-07 Room-06 D07-19 Capital Budgeting / NPV / IRR / Real Options
+
+D07-19 is now frozen at **L2 / 40%** as a research foundation. The module is explicitly separated from D21-07: D07-19 evaluates ex-ante project economics (incremental cash flow, NPV, IRR/MIRR limitations, hurdle-rate consistency, sunk/opportunity cost, cannibalization and real-option decision rights), while D21-07 evaluates managerial allocation governance, incentives and stewardship. This split prevents duplicate voting.
+
+The primary decision metric is NPV because it preserves value additivity under a consistent decision date and risk treatment. IRR remains descriptive/supportive because mutually exclusive projects, scale differences, timing differences and non-conventional cash flows can create ranking reversals or multiple/no IRRs. MIRR may be diagnostic but does not replace NPV. Real-option value is admissible only when there is a concrete defer, expand, contract, abandon or stage right and uncertainty resolves in a way that changes future commitment or cash flows; generic strategic flexibility, TAM narratives or market volatility do not qualify by themselves.
+
+PIT discipline is strict: project cost, demand, price, volume, margin, capacity, tax, timing and discount-rate assumptions must be known by the decision timestamp. Later cost overruns, utilization, impairments, margins or realized returns are append-only later vintages/outcomes and cannot rewrite the original project state. Missing project assumptions remain UNKNOWN rather than being backfilled from realized capex or later operating results.
+
+Falsification gates reject universal “higher IRR is better” or “higher capex is better” rules, reject option value without observable exercise rights, require incrementality versus D07-18 WACC, D07-20/21 forecasts, D21-07 capital-allocation quality and D08 valuation, and prohibit promotion from one issuer, one industry or one capex cycle. L3 requires replayable Taiwan project disclosures across at least two materially different industries, append-only revision handling, and at least one divergent D07-19 versus D21-07 state. Outcomes remain CLOSED and no Formal Optimization Candidate is created.
