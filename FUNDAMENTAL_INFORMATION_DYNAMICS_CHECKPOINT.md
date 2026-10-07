@@ -556,3 +556,17 @@ Maturity:
 - No L4 promotion from archive engineering alone.
 - Formal Core/runtime/selection/scoring/capital/signals unchanged.
 - FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+
+## 2026-10-07 Room-06 D07-19 Capital Budgeting / NPV / IRR / Real Options foundation
+
+Status: **D07-19 L2 MECHANISM_AND_FALSIFICATION_DEFINED / PIT_PROJECT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED**
+
+- Canonical machine contract: `research/d07_19_capital_budgeting_real_options_foundation_v0_1.json`.
+- D07-19 owns project economics; D21-07 owns capital-allocation governance and stewardship.
+- NPV is the value-additivity anchor; IRR/MIRR are supporting diagnostics only.
+- Project cash flow is incremental, after-tax, PIT-valid; sunk costs excluded, opportunity costs/cannibalization included, financing double-count prohibited.
+- Real Options require an actual defer/expand/contract/abandon/stage decision right plus uncertainty resolution over time; narrative flexibility alone is insufficient.
+- PIT rule: decision inputs require knownAt <= projectDecisionKnownAt; later utilization, margins, overruns, impairments and realized returns append as later vintages/outcomes only.
+- Maturity: **L0/0 -> L2/40**. L3 remains blocked pending at least two Taiwan-listed issuers from materially different industries with project-level PIT replay and an explicit D07-19 vs D21-07 divergent case.
+- Outcomes CLOSED. Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE = NONE.
