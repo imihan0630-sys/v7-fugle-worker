@@ -4,6 +4,11 @@ import { selectHistoricalRevisionAsOfV0_1 } from "./historical_revision_lineage_
 
 export const PIT_REPLAY_VERSION = "0.1-RESEARCH";
 
+const CONTINUITY_MODES = new Set([
+  "PRESERVE_INPUT",
+  "UNVERIFIED_UNTIL_POST_REPLAY_CERTIFICATION",
+]);
+
 function requiredText(value, field) {
   if (typeof value !== "string" || !value.trim()) throw new Error(field + " is required");
   return value.trim();
@@ -45,7 +50,7 @@ function normalizeReplayRow(row) {
   };
 }
 
-function selectedRevisionWithProvenance(selectedRevision, rows, key) {
+function selectedRevisionWithProvenance(selectedRevision, rows, key, continuityMode) {
   if (!selectedRevision) return null;
   const matches = rows.filter((row) =>
     row.canonicalKey === selectedRevision.canonicalKey
@@ -68,6 +73,7 @@ function selectedRevisionWithProvenance(selectedRevision, rows, key) {
       availableAt: row.availableAt ?? null,
       observedAt: row.observedAt ?? null,
       capturedAt: row.capturedAt ?? null,
+      continuityState: row.continuityState ?? row.continuity_state ?? "UNVERIFIED",
       pitAvailabilityClass: row.pitAvailabilityClass ?? row.pit_availability_class ?? null,
     };
     const tupleKey = JSON.stringify(tuple);
@@ -80,11 +86,14 @@ function selectedRevisionWithProvenance(selectedRevision, rows, key) {
   return deepFreeze({
     ...selectedRevision,
     ...provenance,
-    continuityState: "UNVERIFIED",
+    continuityState:
+      continuityMode === "UNVERIFIED_UNTIL_POST_REPLAY_CERTIFICATION"
+        ? "UNVERIFIED"
+        : provenance.continuityState ?? selectedRevision.continuityState ?? "UNVERIFIED",
   });
 }
 
-function primitiveBar(row) {
+function primitiveBar(row, continuityMode) {
   return deepFreeze({
     date: row.marketDate,
     open: row.open ?? row.open_price ?? null,
@@ -95,7 +104,10 @@ function primitiveBar(row) {
     tradeValue: row.tradeValue ?? row.trade_value ?? null,
     transactions: row.transactions ?? null,
     change: row.change ?? row.change_value ?? null,
-    continuityState: "UNVERIFIED",
+    continuityState:
+      continuityMode === "UNVERIFIED_UNTIL_POST_REPLAY_CERTIFICATION"
+        ? "UNVERIFIED"
+        : row.continuityState ?? row.continuity_state ?? "UNVERIFIED",
     sourceId: row.sourceId ?? row.source_id ?? null,
     sourceRowHash: row.sourceRowHash ?? row.source_row_hash ?? null,
     availableAt: row.availableAt,
@@ -113,12 +125,17 @@ export async function buildPitReplayWindow({
   priceSpace = "RAW",
   lookbackSessions = 61,
   historicalBars = [],
+  continuityMode = "PRESERVE_INPUT",
 } = {}) {
   const id = requiredText(replayId, "replayId");
   const code = requiredText(symbol, "symbol");
   const date = assertIsoDate(marketDate, "marketDate");
   const clock = assertTimestamp(decisionTimestamp, "decisionTimestamp");
   const space = requiredText(priceSpace, "priceSpace");
+  const replayContinuityMode = requiredText(continuityMode, "continuityMode");
+  if (!CONTINUITY_MODES.has(replayContinuityMode)) {
+    throw new Error("unsupported continuityMode");
+  }
   if (!Number.isInteger(lookbackSessions) || lookbackSessions < 1) {
     throw new Error("lookbackSessions must be a positive integer");
   }
@@ -173,7 +190,12 @@ export async function buildPitReplayWindow({
         rows,
         decisionTimestamp: clock,
       });
-      const revisionWithProvenance = selectedRevisionWithProvenance(selectedRevision, rows, key);
+      const revisionWithProvenance = selectedRevisionWithProvenance(
+        selectedRevision,
+        rows,
+        key,
+        replayContinuityMode,
+      );
       if (revisionWithProvenance) resolved.push(revisionWithProvenance);
     } catch (error) {
       if (
@@ -215,8 +237,11 @@ export async function buildPitReplayWindow({
     state,
     blockerCodes: Object.freeze(blockerCodes),
     excludedCounts: deepFreeze(excluded),
-    bars: Object.freeze(selected.map(primitiveBar)),
+    bars: Object.freeze(selected.map((row) => primitiveBar(row, replayContinuityMode))),
     pointInTimeEligible: state === "READY",
+    ...(replayContinuityMode === "PRESERVE_INPUT"
+      ? {}
+      : { continuityMode: replayContinuityMode }),
     revisionPolicy: "LATEST_AVAILABLE_REVISION_BY_AVAILABLE_AT_FAIL_CLOSED_ON_SAME_AVAILABILITY_CONFLICT",
     resolvedRevisionKeyCount,
     schemaVersion: "S2_PIT_REPLAY_WINDOW_V0_2",
