@@ -57,5 +57,20 @@
     "matchingImplementationPrFound": false,
     "scannedRecentPrRange": "831-850",
     "note": "No PR in the scanned recent range implements CORR-005/006; PR #830 remains the latest source of the affected core files."
+  },
+  "fingerprintInteractionAudit": {
+    "canonicalFingerprintMerge": "51946aa75ef1e73c8ff84798f2af957b7018f8de",
+    "canonicalTests": "S22-T06..S22-T10 PASS",
+    "hardBoundSourceCount": 11,
+    "latestMainBindingMatchCount": 11,
+    "corr005006PrimaryFiles": [
+      "system2/runtime/nct01_physical_receipt_v0_1.mjs",
+      "system2/runtime/nct01_artifact_runner_v0_1.mjs",
+      "system2/runtime/nct01_hidden_fallback_audit_v0_1.mjs (if added)",
+      "system2/tests/nct01_physical_receipt_v0_1.test.mjs",
+      "system2/tests/nct01_artifact_runner_v0_1.test.mjs"
+    ],
+    "overlapWithPolicyFingerprintHardBoundSet": false,
+    "implication": "A minimal CORR-005/006 hardening that stays within the NC-T01 receipt/runner/audit helper/tests does not invalidate S22-T06..T10 policy fingerprints and should not regenerate them. Regenerate only if implementation changes one of the 11 hard-bound policy/source artifacts."
   }
 }
