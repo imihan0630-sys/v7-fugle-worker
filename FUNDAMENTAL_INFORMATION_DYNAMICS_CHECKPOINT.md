@@ -556,3 +556,32 @@ Maturity:
 - No L4 promotion from archive engineering alone.
 - Formal Core/runtime/selection/scoring/capital/signals unchanged.
 - FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+
+## 2026-10-07 Room-06 continuation — D07-19 foundation + D08-03 recovery
+
+GitHub base at continuation start:
+- main = `b6eb36d7919afab9137b3c0b7f50d8ba0b7360ac`.
+
+D08-03 recovery:
+- stale checkpoint pointer PR #588 was re-audited rather than restarted;
+- workflow run 37224491439 had 22 yearly jobs: **21 PASS / only 2026 FAIL**;
+- failed 2026 job id 111592911837 ended at official A6 payload `stat != OK`; this is transport/source-state failure, not evidence that history is absent;
+- only the failed 2026 job was re-run; successful 2005-2025 evidence is retained and must not be needlessly replayed;
+- archive/outcome gates remain unchanged until the 2026 receipt passes.
+
+D07-19:
+- added `research/d07_19_capital_budgeting_real_options_foundation_v0_1.json`;
+- froze project-economics ownership, NPV/IRR limitations, incremental-cash-flow rules, real-option admission, PIT vintages, anti-double-count and falsification;
+- H18 boundary to D21-07 is explicit: project economics vs management allocation/governance;
+- maturity **L0/0 -> L2/40**;
+- D07 tracker maturity becomes **17.6%**;
+- overall 356-module weighted maturity becomes **47.0%**;
+- L3 blocked pending Taiwan project-level PIT replay across at least two industries;
+- outcomes CLOSED; Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+Exact next:
+1. inspect the single-job 2026 rerun and close only that archive gap;
+2. once 2005-2026 year-pack set is complete, build the durable archive manifest + aggregate bundle hash;
+3. materialize the 44 frozen outcome-blind D08-03 percentile snapshots and readback/coverage receipts before opening any return join;
+4. in the D07 lane, prepare D07-19 Taiwan project-replay source contract and select cross-industry positive/counterexample cases without using future outcomes in feature construction.
