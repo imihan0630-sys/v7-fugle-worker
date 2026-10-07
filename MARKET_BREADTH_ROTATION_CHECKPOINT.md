@@ -1465,3 +1465,44 @@ Exact next:
 
 SDA-009 remains interrupt-priority:
 if the first genuine System1 R3A1 receipt appears, immediately pause BR-059A and run the V0.6 acceptance oracle.
+
+
+## BR-059A D09-13 forecast-vs-realized ABF firewall — 2026-10-07
+
+Artifact:
+- `research/BR059A_D09_13_ABF_FORECAST_VS_REALIZED_REVENUE_FIREWALL_20261007.md`
+
+Status: FORECAST_VS_REALIZED_FIREWALL_FROZEN / 8046_ABF_PROJECT_EXPECTED_BENEFIT_NOT_REALIZED_REVENUE / 3189_8046_REALIZED_ABF_NUMERATOR_UNKNOWN / OUTCOMES_CLOSED
+
+New semantic correction:
+issuer-native ABF project expected-sales values are not realized product revenue.
+
+Historical Nan Ya PCB annual-report project-benefit disclosures include ABF-specific projected sales values for Shulin/Kunshan expansion projects. These are numeric and ABF-specific but remain forecast/project-benefit evidence.
+
+Frozen:
+`PROJECTED_PROJECT_SALES_VALUE != REALIZED_PRODUCT_REVENUE`.
+
+Current 8046 evidence hierarchy:
+- 2025 broad realized "circuit board" revenue: valid broad upper bound, not ABF numerator;
+- historical ABF expansion projected sales values: ABF-specific forecast evidence, not realized revenue;
+- current ABF technology/application roadmap: strategic/product evidence, not revenue numerator.
+
+Current 3189 evidence hierarchy:
+- 2025 substrate operating-segment realized revenue: valid broad upper bound, not ABF numerator;
+- current FCBGA/SiP/large-area ABF strategic disclosure: product/strategy evidence, not realized ABF revenue.
+
+Forbidden mixed-axis comparison:
+- realized substrate revenue;
+- realized broad circuit-board revenue;
+- projected ABF project sales;
+- AI/HPC application exposure.
+
+They differ on realized-vs-projected and product-vs-application axes.
+
+D09-13 remains L3 / 60.
+D09 remains 57.1%.
+
+Exact next:
+`BR-059B` continue issuer-native 2025-2026 annual-report/investor-presentation search only for actual realized mutually-exclusive ABF/PP/product mix. Preserve UNKNOWN if only forecast/capacity/application evidence exists.
+
+SDA-009 remains interrupt-priority if genuine System1 R3A1 evidence appears.
