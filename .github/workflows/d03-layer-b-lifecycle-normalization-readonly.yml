@@ -1,0 +1,31 @@
+name: D03 Layer-B Lifecycle Normalization Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d03_layer_b_lifecycle_event_normalization_contract_20261007_v0_1.json"
+      - "research/test_d03_layer_b_lifecycle_event_normalization_contract_v0_1.mjs"
+      - ".github/workflows/d03-layer-b-lifecycle-normalization-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run lifecycle normalization tests
+        run: node research/test_d03_layer_b_lifecycle_event_normalization_contract_v0_1.mjs
+      - name: Confirm isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'fetch\(|wrangler|INSERT|UPDATE|DELETE|sendPush|processSignalState' research/test_d03_layer_b_lifecycle_event_normalization_contract_v0_1.mjs
+          echo "D03 lifecycle normalization isolation PASS"
