@@ -2454,3 +2454,27 @@ Maturity:
 
 Exact next:
 - SC-059 seek a deeper-layer/common-mode Taiwan witness that can falsify naive first-tier redundancy: shared material/site/geography/utility/logistics/process dependency, or an alternate-source qualification/switching-delay constraint.
+
+
+## SC-059 — TSMC common-mode dependency firewall (2026-10-07)
+
+Artifact:
+- `research/SC059_TSMC_COMMON_MODE_DEPENDENCY_FIREWALL_20261007_V0_1.md`
+
+Issuer-native risk disclosures establish that first-tier supplier count cannot close topology risk:
+- supplier assessment explicitly considers supplier location and single procurement source / market-share concentration;
+- business-continuity risk separately includes water, electricity, natural gas, critical facilities/equipment, natural hazards and supply-chain disruption.
+
+Frozen rule:
+`FIRST_TIER_REDUNDANCY_SUPPORTED + COMMON_MODE_UNKNOWN => FULL_NETWORK_RESILIENCE_UNKNOWN`.
+
+The evidence does not identify one exact shared hidden node across all named raw-wafer suppliers; therefore full-network articulation remains `UNKNOWN`.
+
+Maturity:
+- `D10-01` remains L2/40;
+- no aggregate promotion;
+- no stock outcome or Formal change.
+
+Exact next:
+- SC-060 seek one official Taiwan issuer disruption event where an alternate source/path is actually attempted and qualification/capacity/geography/switching delay determines whether redundancy works;
+- preserve event clocks and keep stock outcomes closed.
