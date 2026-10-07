@@ -2555,3 +2555,61 @@ Exact next:
 BR-067 accumulate independent same-clock joint receipts, preferably with both TWSE and TPEx breadth plus continuity-certified median-return context; no outcome join before D16 common-support/OOS preregistration.
 
 Formal Core unchanged.
+
+
+## BR-066 — D09-12 same-day breadth × regime joint receipt (2026-10-07)
+
+Artifacts:
+- `research/BR066_D09_12_SAME_DAY_BREADTH_REGIME_JOINT_RECEIPT_20261007_V0_1.md`
+- `research/br066_d09_12_same_day_breadth_regime_joint_receipt_20261007_v0_1.json`
+
+A bounded same-date joint receipt was frozen at 2026-10-07T23:55:26+08:00:
+- TAIEX close = 49,806.37;
+- TWSE stock-direction breadth = 588 up / 387 down / 99 flat / 5 unmatched / 3 N-A;
+- comparable N = 1,074;
+- advance share = 54.7486%;
+- decline share = 36.0335%;
+- net advance-minus-decline = +18.7151 percentage points;
+- TAIEX context under unchanged D18 formula = UP_TREND_CONTEXT / VOL_CONTRACTING;
+- TPEx equivalent same-clock denominator remains UNKNOWN;
+- no forward outcome was opened.
+
+Adjacent-session falsification:
+- 2026-10-06 replay witness: TAIEX positive while breadth was weak;
+- 2026-10-07 same-date witness: TAIEX slightly negative while TWSE direction breadth was positive.
+
+Frozen:
+`CAP_WEIGHTED_INDEX_DIRECTION != EQUAL_STOCK_DIRECTION_BREADTH`.
+
+D09-12 is promoted L2/40 -> L3/60 on Taiwan PIT data/replay feasibility only.
+No BROAD_POSITIVE/BROAD_NEGATIVE canonical label, predictive Alpha or L4 claim is created.
+
+Exact next:
+BR-067 accumulate independent same-clock receipts with broader venue/continuity coverage before any D16 OOS validation.
+
+## BR-068 — D09-05 post-midnight parent-readiness reconciliation (2026-10-08)
+
+Artifact:
+- `research/BR068_D09_05_POST_MIDNIGHT_PARENT_READINESS_20261008_V0_1.md`
+
+D09-05 remains L2/40.
+
+The isolated Above-MA20/60 builder remains ready, but the first live research receipt remains bound to the genuine same-generation C1 parent required by BR-035.
+
+Latest causal state:
+- prior scheduled C1 attempt = FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND;
+- FINANCIAL official-quality acquisition was not ready;
+- QUARTER_EPS was downstream-blocked;
+- MOPSOV transport incompatibility was narrowed to Node fetch/undici;
+- a native-HTTPS repair candidate exists but production deployment/live readback is not established by Room07;
+- SDA-016 T48 finalization is separate completeness debt, not the immediate missing-generation root cause.
+
+At the bounded readback after 00:15 Asia/Taipei, the expected 00:10 C1 workflow run was not yet observable in the Actions list.
+
+Frozen classification:
+`SCHEDULE_NOT_YET_OBSERVED`, not failure, missed, zero-pick or no-signal.
+
+Exact next:
+consume the first real C1 scheduled run when observable and inspect the actual readiness/population artifact. Only a scanDate=2026-10-07 same-generation complete/readback-verified research-eligible parent may unlock the frozen Above-MA builder. No substitute universe.
+
+Formal Core unchanged.
