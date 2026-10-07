@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "pattern-retest-confirmation-delay-firewall-v0.1",
+  "updated": "2026-10-07 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "retestRequiredIsAlwaysSafer": false,
+  "retestEntrySuperiorityEqualsNewAlpha": false,
+  "noRetestEpisodesMayBeDropped": false,
+  "moreConfirmationAlwaysImprovesEconomicValue": false,
+  "outcomeJoin": "CLOSED",
+  "inferenceOwner": "D16",
+  "formalOptimizationCandidate": "NONE"
+}
