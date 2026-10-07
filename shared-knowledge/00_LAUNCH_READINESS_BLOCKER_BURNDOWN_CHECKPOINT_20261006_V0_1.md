@@ -1650,3 +1650,28 @@ No item in this supersession:
 - changes System1 Formal Core.
 
 Formal Core remains LOCKED.
+
+
+### G4 refinement — middle layer is repository-complete
+
+Latest-main readback confirms G4 is not greenfield construction.
+
+Already implemented:
+- daily strategy orchestrator emits immutable ranking-handoff inputs after strategy assessment;
+- `daily_shadow_capacity_orchestrator_v0_1.mjs` validates same-date/same-clock completed Limited Shadow runs;
+- strategy-local RANK-01 GLOBAL_ADMISSION and ACTIVE_INTRADAY_MONITOR receipts;
+- prior-pool revalidation, INVALIDATED removal and UNKNOWN/INCOMPLETE fail-closed retention semantics;
+- max-12 global / max-3 per-strategy / no-forced-fill / overlap-dedup capacity invariants;
+- isolated persistence batch for ordering receipts and resolvable `s2_capacity_runs`;
+- PARTIAL denominator propagation downstream is independently VERIFIED_CLOSED.
+
+Therefore the remaining G4 delta is primarily physical integration:
+real current A1 + PIT history -> genuine SHORT_MOMENTUM assessment -> existing ranking/capacity assembler -> isolated D1 persistence -> exact readback.
+
+BUILD_LANE should, where practical, make physical NC-T01 exercise this same genuine SHORT_MOMENTUM path. A successful combined milestone could simultaneously provide:
+- S22-T11~T16 physical independence evidence;
+- first genuine strategy evaluation receipt;
+- first genuine immutable capacity receipt;
+provided each contract is independently satisfied and no synthetic fixture substitutes for live source evidence.
+
+No authority promotion is implied.
