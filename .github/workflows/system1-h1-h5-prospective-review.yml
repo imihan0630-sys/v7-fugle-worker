@@ -5,6 +5,7 @@ on:
     paths:
       - 'research/system1_selection_isolated_v0_1.mjs'
       - 'research/system1_h1_h5_prospective_readiness_v0_1.mjs'
+      - 'research/system1_opportunity_loss_bridge_v0_3.mjs'
       - 'tests/test_system1_selection_isolated_v0_1.mjs'
       - 'tests/test_system1_h1_h5_prospective_readiness_v0_1.mjs'
       - 'tests/build_system1_h1_h5_prospective_postprocess.mjs'
@@ -32,4 +33,5 @@ jobs:
       - name: Syntax check offline postprocess
         run: |
           node --check research/system1_h1_h5_prospective_readiness_v0_1.mjs
+          node --check research/system1_opportunity_loss_bridge_v0_3.mjs
           node --check tests/build_system1_h1_h5_prospective_postprocess.mjs
