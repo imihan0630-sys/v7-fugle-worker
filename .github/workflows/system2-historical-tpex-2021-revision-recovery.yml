@@ -1,0 +1,92 @@
+name: System2 Historical 2021 TPEx Revision Recovery
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-isolated-d1-writer
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: system2-research
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Migrate isolated System2 D1 additive revision lineage schema
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_CONFIRM: CREATE_SYSTEM2_ISOLATED_D1
+        run: node system2/deploy/provision_system2_d1.mjs
+
+  recover:
+    needs: migrate
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    environment: system2-research
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Capture immutable baseline plus prospective official revision overlay
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+          SYSTEM2_HISTORY_YEAR: "2021"
+          SYSTEM2_HISTORY_YEAR_MARKET: TPEX
+          SYSTEM2_HISTORY_REVISION_OUTPUT: /tmp/system2-historical-revision-TPEX-2021.json
+        run: |
+          set -euo pipefail
+          node system2/scripts/historical_tpex_2021_revision_overlay_v0_1.mjs \
+            | tee /tmp/system2-historical-revision-TPEX-2021.log
+
+      - name: Physically re-verify 2021 TPEx through PIT revision lineage
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+          SYSTEM2_HISTORY_YEAR: "2021"
+          SYSTEM2_HISTORY_YEAR_MARKET: TPEX
+          SYSTEM2_HISTORY_COVERAGE_OUTPUT: /tmp/system2-historical-coverage-TPEX-2021-revision-recovered.json
+        run: |
+          set -euo pipefail
+          node system2/scripts/historical_market_year_verify_v0_1.mjs \
+            | tee /tmp/system2-historical-coverage-TPEX-2021-revision-recovered.log
+
+      - name: Upload 2021 TPEx revision recovery evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-historical-revision-recovery-TPEX-2021
+          path: |
+            /tmp/system2-historical-revision-TPEX-2021.json
+            /tmp/system2-historical-coverage-TPEX-2021-revision-recovered.json
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Confirm System1 production files untouched
+        if: ${{ always() }}
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          git diff --exit-code -- wrangler.toml Worker.js
+          echo "Production isolation PASS"
