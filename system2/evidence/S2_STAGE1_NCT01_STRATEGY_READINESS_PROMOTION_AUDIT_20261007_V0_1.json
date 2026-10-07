@@ -1,10 +1,10 @@
 {
   "schemaVersion": "S2_STAGE1_NCT01_STRATEGY_READINESS_PROMOTION_AUDIT_V0_1",
-  "recordedAt": "2026-10-07T23:59:18+08:00",
+  "recordedAt": "2026-10-08T00:02:14+08:00",
   "auditor": "00_RESEARCH_AUDIT_CONTROL",
   "issue": "CONTINUITY_READY_WITNESS_CAN_PROMOTE_NCT01_WHILE_STRATEGY_VALIDITY_IS_INCOMPLETE",
   "severity": "HIGH",
-  "observedMain": "b871a00656950553146834b3de4fafa7f64748d8",
+  "observedMain": "LATEST_MAIN_AT_UPDATE",
   "affectedOracle": [
     "S22-T13",
     "S22-T14",
@@ -19,7 +19,8 @@
       "executionState becomes EXECUTED when runComplete and witnessSymbols.length>0",
       "candidateGenerationExecutable is then true",
       "deriveOutcome can therefore return PHYSICALLY_INDEPENDENT_PATH_OBSERVED and LEGITIMATE_ZERO_PICK even when every continuity-ready witness still has strategyValidity=INCOMPLETE",
-      "daily_shadow_orchestrator records continuityBindingState and strategyValidity independently, so continuity READY does not imply strategy validity"
+      "daily_shadow_orchestrator records continuityBindingState and strategyValidity independently, so continuity READY does not imply strategy validity",
+      "strategy_evaluator.mjs computes INVALIDATED before checking missingRequiredEvidence, so strategyValidity=INVALIDATED can coexist with missing required evidence; non-INCOMPLETE alone is not a sufficient required-inputs-ready proof."
     ]
   },
   "oracleConflict": {
@@ -34,20 +35,22 @@
   ],
   "risk": "Physical NC-T01 could falsely claim an independently executable System2 path or legitimate zero-pick even though no witness has complete strategy-required evidence. This would convert strategy-input incompleteness into a valid execution outcome.",
   "requiredCorrection": [
-    "Define physical executable witness as ACCOUNTED + replay READY + continuity READY + no continuity blockers + strategyValidity not INCOMPLETE.",
-    "Prefer strategyValidity=VALID for the first NC-T01 witness unless the frozen strategy contract explicitly recognizes another executable non-INCOMPLETE state.",
+    "Define physical executable witness as ACCOUNTED + replay READY + continuity READY + zero continuity blockers + explicit requiredEvidenceComplete=true.",
+    "requiredEvidenceComplete must be derived from assessment.missingRequiredEvidence.length===0 (or an equivalent exact contract-level proof), not inferred only from strategyValidity.",
+    "strategyValidity must not be INCOMPLETE, but INVALIDATED/WEAKENING/VALID are acceptable only when requiredEvidenceComplete=true; BUY_ELIGIBLE still retains its own VALID-only rule.",
+    "Expose requiredEvidenceComplete and/or missingRequiredEvidenceCount in per-symbol physical diagnostics so the final receipt can be independently audited.",
     "requiredInputsState=READY and executionState=EXECUTED require at least one executable strategy witness, not merely a continuity-ready witness.",
     "candidateGenerationExecutable must remain false when no executable strategy witness exists.",
-    "candidateUniverseProvenance must distinguish CONTINUITY_READY_WITNESS_COUNT from STRATEGY_EXECUTABLE_WITNESS_COUNT.",
+    "candidateUniverseProvenance must distinguish CONTINUITY_READY_WITNESS_COUNT from STRATEGY_EXECUTABLE_WITNESS_COUNT and strategy-required-evidence-complete count.",
     "LEGITIMATE_ZERO_PICK is legal only when at least one executable strategy witness was actually evaluated and all other T11-T15 gates pass.",
-    "Add fail-closed regressions for continuity READY + strategy INCOMPLETE and mixed witness sets."
+    "Add fail-closed regressions for continuity READY + strategy INCOMPLETE, INVALIDATED + missing required evidence, and mixed witness sets."
   ],
   "acceptanceCriteria": [
-    "all continuity-ready witnesses strategy INCOMPLETE => requiredInputsState=INCOMPLETE, executionState=BLOCKED_INPUTS, candidateGenerationExecutable=false, resultClassification=EVIDENCE_INCOMPLETE, zeroPickDisposition=INPUT_INCOMPLETE",
-    "one continuity-ready strategy VALID witness + other incomplete symbols may proceed subject to all other gates",
-    "changing only continuity readiness cannot promote a strategy-incomplete witness to physical independence",
-    "T14 legitimate zero-pick cannot mask T13 strategy-readiness failure",
-    "No strategy thresholds, ranking, capacity, final-selection, push, capital or order semantics are changed"
+    "All continuity-ready witnesses with requiredEvidenceComplete=false => requiredInputsState=INCOMPLETE, executionState=BLOCKED_INPUTS, candidateGenerationExecutable=false, resultClassification=EVIDENCE_INCOMPLETE, zeroPickDisposition=INPUT_INCOMPLETE.",
+    "An INVALIDATED witness with missingRequiredEvidence.length>0 must not count as executable merely because strategyValidity is not INCOMPLETE.",
+    "At least one continuity-ready witness with requiredEvidenceComplete=true and strategyValidity in a contract-valid non-INCOMPLETE terminal/evaluated state may proceed subject to all other gates.",
+    "T14 legitimate zero-pick cannot mask T13 strategy-required-evidence failure.",
+    "No strategy thresholds, ranking, capacity, final-selection, push, capital or order semantics are changed."
   ],
   "formalCoreImpact": "NONE_LOCKED",
   "disposition": "NEW_CORRECTION_REQUIRED"
