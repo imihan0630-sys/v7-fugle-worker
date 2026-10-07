@@ -1,0 +1,31 @@
+name: D03 Technical Continuity History Maturity Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d03_technical_continuity_history_maturity_map_20261007_v0_1.json"
+      - "research/test_d03_technical_continuity_history_maturity_map_v0_1.mjs"
+      - ".github/workflows/d03-technical-continuity-history-maturity-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run continuity maturity firewall tests
+        run: node research/test_d03_technical_continuity_history_maturity_map_v0_1.mjs
+      - name: Confirm isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -qE 'fetch\(|wrangler|INSERT|UPDATE|DELETE|sendPush|processSignalState' research/test_d03_technical_continuity_history_maturity_map_v0_1.mjs
+          echo "D03 technical continuity maturity isolation PASS"
