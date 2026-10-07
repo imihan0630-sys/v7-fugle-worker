@@ -7533,3 +7533,57 @@ Exact next is dual-track:
 2. Parent: next actual ordinary-session C1 artifact containing a genuine immutable C1 generation plus authoritative V8.20 Formal-to-C1 binding after upstream official-quality repair has Production/live-readback evidence.
 
 When W0 and genuine parent both pass, execute the existing D03-10 L3 and parent-binding oracles immediately.
+
+
+## 2026-10-08 D03 — TI-1459~1466 CORR-005 / CORR-006 engineering firewalls verified closed
+
+Latest canonical correction queue now records both:
+- `S2-CORR-20261007-005 = VERIFIED_CLOSED`;
+- `S2-CORR-20261007-006 = VERIFIED_CLOSED`.
+
+Shared implementation merge:
+`d56f05fbc5986d00adbc81392b9dc0711de5043e`.
+
+Independent closure:
+`ae31dcc258469a3200926d4a8ba8942635379879`.
+
+Queue synchronization:
+`5adb2210f0fffa1e12789e51303b2eccf59f24df`.
+
+### TI-1459~1462 — CORR-005 closure
+The NC-T01 hidden-fallback firewall now fails closed when audit evidence is missing or unknown.
+Merged-main evidence binds an exact-head audit digest and proves all five forbidden fallback dimensions absent with runtime forbidden-access count zero.
+
+Audit artifact:
+- id `11513234786`;
+- digest `sha256:2ed893d49e6ba352c6671c87fb4c384d962b7bbae62110c02132f2a399f3c4cb`;
+- audit digest `474f511dc592c9882da3f045bdca5e8ad87a36aa41e9f36f6517ce0c04a9f037`.
+
+This closes the code firewall only.
+It does not credit physical S22-T11~T16 and does not create D03 W0 technical continuity.
+
+### TI-1463~1465 — CORR-006 closure
+W0 continuity-ready is now explicitly separated from W1 strategy-executable.
+Required-evidence completeness / missing-required-evidence count / assessment identity govern execution promotion and legitimate zero-pick.
+
+This confirms the D03 ownership split already frozen in TI-1423~1440:
+a valid technical-continuity W0 receipt can be consumed for D03 technical feasibility without borrowing System2 W1/W2 physical-independence evidence.
+
+The corrected fingerprint-bound runtime required fingerprint regeneration.
+Canonical merged-main hashes are now:
+- SHORT_MOMENTUM `2b50405eb452d89fac996e549e927235c1ce4e5bb0373e8fc0e5243117c5a9bd`;
+- SWING_GROWTH `727ddc86494ee0d0c2359deee727a8369e2744be7f7c0d0fd5a6efecc4e254af`.
+
+### TI-1466 — S2-07 stabilization remains open
+New cross-room readback does not close S2-07:
+- captureCount = 3;
+- unionVersionKeyCount = 168;
+- latestCaptureVersionKeyCount = 163;
+- trailingIdenticalTransitions = 0;
+- boundedStabilizationCandidate = false;
+- expectedMopsKeysetComplete = false.
+
+Therefore S2-07 remains `STABILIZATION_PENDING`.
+
+D03 remains 56.7%, D03-09 / D03-10 remain L2/40, raw source/version gate remains 2/3, outcomes CLOSED, Formal Core LOCKED.
+Exact D03 next remains W0 real receipt + future genuine parent. CORR-005/006 are removed from the open engineering blocker list but their closure is not used as D03 maturity credit.
