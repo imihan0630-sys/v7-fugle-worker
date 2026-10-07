@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "S2_STAGE1_NCT01_PHYSICAL_WRAPPER_RUNTIME_GUARD_AUDIT_V0_1",
+  "recordedAt": "2026-10-08T06:15:00+08:00",
+  "auditor": "00_RESEARCH_AUDIT_CONTROL",
+  "observedMain": "2a579c541ab632c5365bb5612b95f8bb045314a1",
+  "pullRequest": 844,
+  "auditedHead": "9d690d120d017c8fab5424c02e0dfb8a90008a49",
+  "status": "ACCEPTANCE_REFINEMENT_BLOCKING_PRE_MERGE",
+  "correctionClassification": "NOT_NEW_CORRECTION_PR_NOT_MERGED_NO_FALSE_PHYSICAL_CLAIM",
+  "acceptedArchitecture": [
+    "same-cut hidden-fallback audit finalizes after orchestration",
+    "real official A1 plus isolated system2-research D1 physical surface",
+    "no supplied real continuity receipt remains EVIDENCE_INCOMPLETE",
+    "no W1 witness cannot promote physical independence",
+    "full physical-wrapper transitive graph is audited",
+    "physical-looking pass remains PENDING_00_INDEPENDENT_REVIEW",
+    "no final selection/live push/capital/order authority"
+  ],
+  "blockingFindings": [
+    {
+      "id": "PRE_TRANSPORT_D1_READONLY_PREVENTION_MISSING",
+      "severity": "HIGH_ACCEPTANCE_BLOCKER",
+      "evidence": "Physical wrapper uses generic system2/deploy/remote_d1_rest_adapter.mjs. That adapter allows arbitrary SQL via prepare().run(), batch(), and rawQuery(). The workflow detects rowsWritten after execution but does not reject mutating SQL before Cloudflare transport.",
+      "risk": "A future reachable module could mutate isolated D1 before the post-run rowsWritten check fails.",
+      "requiredRepair": "Wrap the generic adapter inside the physical runner with a runner-local read-only guard that rejects mutating SQL before transport. Reuse the repository-proven SELECT/WITH/PRAGMA allow + INSERT/UPDATE/DELETE/REPLACE/CREATE/DROP/ALTER/VACUUM/ATTACH/DETACH deny pattern from .github/workflows/d02-pve244-d1-readonly.yml."
+    },
+    {
+      "id": "RUNTIME_FORBIDDEN_ACCESS_COUNT_DECLARATIVE_NOT_LEDGER_DERIVED",
+      "severity": "HIGH_ACCEPTANCE_BLOCKER",
+      "evidence": "sameCutRuntimeEvidence currently returns instrumented=true and runtimeForbiddenAccessCount=0 as literals.",
+      "risk": "The static architecture is isolated, but the runtime evidence cannot independently distinguish actual guarded no-access from an asserted zero.",
+      "requiredRepair": "Produce a same-cut runtime capability/access ledger. Derive runtimeForbiddenAccessCount from measured/guarded counters rather than a literal. Bind ledger identity and counters into typedEvidence -> runtimeEvidenceDigest -> auditDigest -> HIDDEN_FALLBACK_AUDIT_SHA256 -> final receiptHash."
+    }
+  ],
+  "minimumRuntimeLedger": {
+    "d1": [
+      "databaseName and immutable database identity/digest",
+      "allowedReadQueryCount",
+      "rejectedMutationAttemptCount",
+      "rowsRead",
+      "rowsWritten"
+    ],
+    "network": [
+      "frozen allowed-origin contract identity",
+      "observed origin set",
+      "allowedNetworkRequestCount",
+      "forbiddenOriginAttemptCount"
+    ],
+    "capabilities": [
+      "System1 Top6/rank input capability absent",
+      "System1 selected-list cache/persistence capability absent",
+      "final-selection/push/capital/order capability absent",
+      "D1 persistence executor unavailable/unused"
+    ],
+    "derivation": "runtimeForbiddenAccessCount must be computed from forbidden/mutation/capability violation counters. instrumented=true only when guards are actually active."
+  },
+  "networkGuardRule": {
+    "requirement": "Wrap physical runner fetchImpl and reject any origin outside the frozen source/Cloudflare contract before network access.",
+    "reason": "Static import audit cannot by itself prove a runtime module did not fetch an unexpected external/System1 endpoint.",
+    "exactOrigins": "MUST_BE_DERIVED_FROM_CANONICAL_SOURCE_ADAPTERS_NOT_INVENTED_BY_00"
+  },
+  "regressions": [
+    "mutating SQL rejected before remote request; request counter unchanged for rejected statement",
+    "unexpected network origin rejected before fetch and increments forbidden-origin counter",
+    "canonical official source/System2 D1 reads succeed and increment allowed counters",
+    "guard absent/incomplete => EVIDENCE_INCOMPLETE",
+    "changing runtime ledger changes runtimeEvidenceDigest, auditDigest and final NC-T01 receiptHash",
+    "rowsWritten remains zero as second-line physical readback"
+  ],
+  "corr007Interaction": {
+    "correction": "S2-CORR-20261008-007",
+    "relationship": "ORTHOGONAL_UPSTREAM_BLOCKER",
+    "recommendedOrder": [
+      "Implement/merge CORR-007 as a separate continuity/archive patch.",
+      "Implement #844 runtime guard locally without changing continuity semantics.",
+      "Rebase #844 onto post-CORR-007 main.",
+      "Rerun exact-head checks; merge only when both the upstream provenance contract and wrapper guard are present."
+    ]
+  },
+  "protectedBoundaries": [
+    "Formal Core LOCKED",
+    "System1 runtime/Formal unchanged",
+    "No strategy threshold/weight/ranking/capacity mutation",
+    "No D1 mutation",
+    "No synthetic CLEAR_NO_ACTION",
+    "No final selection/live push/capital/order authority"
+  ],
+  "finalDisposition": "PR844_CONTENT_DIRECTION_PASS_RUNTIME_GUARD_HARDENING_AND_CORR007_REQUIRED_BEFORE_MERGE"
+}
