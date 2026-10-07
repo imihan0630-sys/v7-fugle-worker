@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-08T05:58:00+08:00",
+  "updatedAt": "2026-10-08T06:01:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1527,6 +1527,70 @@
       ],
       "finalDisposition": "VERIFIED_CLOSED — W0 continuity-ready is separated from W1 strategy-executable; explicit requiredEvidenceComplete/missingRequiredEvidenceCount/assessment identity govern execution promotion and legitimate zero-pick. This closes the code firewall only. Physical S22-T13/T14/T16 still require a real coherent NC-T01 run and are not credited by the CI correction artifact.",
       "updatedAt": "2026-10-08T05:58:00+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261008-007",
+      "createdAt": "2026-10-08T06:01:00+08:00",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "title": "NC-T01 CLEAR_NO_ACTION promotion does not bind TWSE suspension completeness to immutable source evidence",
+      "affectedScope": [
+        "System2 NC-T01 S22-T13/S22-T15/S22-T16",
+        "TWSE CLEAR_NO_ACTION continuity promotion",
+        "corporate-action completeness receipt",
+        "sourceEvidenceRefs lineage",
+        "first physical SHORT_MOMENTUM witness"
+      ],
+      "detectedBy": "00_RESEARCH_AUDIT_CONTROL",
+      "canonicalRequirement": "A physical CLEAR_NO_ACTION promotion may rely on TWSE suspension coverage COMPLETE only when that completeness is backed by an immutable exact-window suspension receipt and the exact receipt digest/source identity is bound into the archive and continuity source lineage. A plain status string is not sufficient evidence.",
+      "observedProblem": "buildCorporateActionCompletenessReceiptV0_1 currently accepts suspensionCoverageByExchange as a plain map and derives suspensionCoverageComplete from COMPLETE values. buildNct01TwseClearNoActionPromotionReceiptV0_1 requires TWSE suspension COMPLETE but sourceEvidenceRefs are only required to match the three corporate-action sourceContractResults. Current positive tests can promote with three corporate-action refs and no TWTAWU/suspension receipt digest.",
+      "evidence": [
+        "system2/evidence/S2_STAGE1_NCT01_SUSPENSION_PROVENANCE_BINDING_AUDIT_20261008_V0_1.json @ cef80ec06e9ea9448f98dfdbadec4e0915b1be43.",
+        "system2/runtime/corporate_action_continuity_archive_v0_1.mjs: suspensionCoverageByExchange is status-only; no mandatory exchange-scoped suspension receipt identity/digest is stored.",
+        "system2/runtime/nct01_continuity_replay_binding_v0_1.mjs: archive suspension COMPLETE is checked, but sourceEvidenceRefs are matched only to archiveReceipt.sourceContractResults.",
+        "system2/tests/nct01_continuity_replay_binding_v0_1.test.mjs positive fixture uses only three corporate-action source refs and no suspension completeness ref.",
+        "Existing 00 DATA contracts already require the bounded suspension/parity receipt digest to be bound, so runtime is weaker than canonical acceptance semantics."
+      ],
+      "riskIfUnfixed": "A caller can supply suspensionCoverageByExchange.TWSE=COMPLETE without proving the bounded TWTAWU negative-completeness receipt. If the three corporate-action sources and other replay/session gates pass, CLEAR_NO_ACTION_ELIGIBLE can be produced with an unbound negative-suspension assertion, weakening S22-T13/T15/T16 provenance.",
+      "requiredCorrection": [
+        "Add first-class exchange-scoped suspension completeness evidence to the corporate-action completeness contract; plain COMPLETE alone cannot satisfy physical promotion.",
+        "Require exact interval identity, immutable receipt/artifact digest, source family/version and observation/availability timing.",
+        "Bind the TWSE suspension evidence digest into the archive/completeness receipt hash.",
+        "Require a matching suspension sourceEvidenceRef in buildNct01TwseClearNoActionPromotionReceiptV0_1; missing or mismatched evidence => CONTINUITY_UNKNOWN.",
+        "Keep all three existing TWSE corporate-action historical range refs separately mandatory.",
+        "Preserve prospective vs verified-source-timestamp timing semantics; no post-decision backdating.",
+        "Do not hard-code a witness symbol or assume empty TWTAWU output is complete.",
+        "No strategy/ranking/capacity/System1/Formal/final-selection/push/capital/order changes."
+      ],
+      "acceptanceCriteria": [
+        "TWSE COMPLETE string with no suspension evidence fails closed.",
+        "Missing/invalid suspension digest fails closed.",
+        "Suspension interval mismatch fails closed.",
+        "Missing suspension sourceEvidenceRef fails closed.",
+        "Suspension sourceEvidenceRef digest mismatch fails closed.",
+        "Late prospective suspension evidence fails closed.",
+        "Valid exact-window suspension evidence plus three corporate-action refs preserves the intended CLEAR_NO_ACTION eligible path.",
+        "Changing the suspension receipt digest changes the archive/continuity receipt hash.",
+        "Exact-head System2 Research CI and applicable V8/continuity regressions pass.",
+        "Physical NC-T01 is not credited until DATA supplies a real bounded suspension receipt and one coherent artifact-only run consumes it."
+      ],
+      "protectedBoundaries": [
+        "System1 Formal Core/runtime",
+        "System2 strategy thresholds/weights/ranking/capacity",
+        "No fabricated no-suspension/no-event state",
+        "No historical OHLC mutation",
+        "No final selection/live push/capital/order authority"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "BUILD_LANE",
+      "assignedLane": "BUILD_LANE",
+      "assignedRoom": "System 2｜建置總控室",
+      "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-08T06:01:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
