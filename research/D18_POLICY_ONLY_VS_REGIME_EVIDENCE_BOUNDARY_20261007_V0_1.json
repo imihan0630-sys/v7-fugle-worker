@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "D18_POLICY_ONLY_VS_REGIME_EVIDENCE_BOUNDARY_V0_1",
+  "updatedAt": "2026-10-07T09:01:00+08:00",
+  "owner": "D18 / Room11",
+  "status": "RESEARCH_ONLY_EVIDENCE_LANE_BOUNDARY_FROZEN",
+  "sourcePolicyFreeze": "research/D18_SYSTEM2_STAGE1_POLICY_FREEZE_VALIDATION_20261007_V0_1.json",
+  "policyOnlyLane": {
+    "state": "POLICY_ONLY_PROSPECTIVE_OBSERVATION",
+    "requires": [
+      "EXACT_STRATEGY_AND_ASSESSOR_POLICY_IDENTITY",
+      "IMMUTABLE_DECISION_TIMESTAMP",
+      "PIT_REQUIRED_FAMILY_SEMANTICS",
+      "EXPLICIT_DENOMINATOR_PROVENANCE",
+      "NO_SYSTEM1_RUNTIME_TOP6_RANK_DEPENDENCY",
+      "PHYSICAL_STRATEGY_EVALUATION_EXECUTED",
+      "NO_OUTCOME_DRIVEN_POLICY_MUTATION"
+    ],
+    "eligibleForD18": false,
+    "maySupport": [
+      "SYSTEM2_LAUNCH_ENGINEERING",
+      "SDA022_POLICY_LINEAGE",
+      "COVERAGE_DIAGNOSTICS"
+    ]
+  },
+  "d18RegimeLane": {
+    "state": "D18_STRATEGY_REGIME_PROSPECTIVE_OBSERVATION",
+    "additionalRequires": [
+      "KNOWN_DECISION_TIME_REGIME_OR_STRICT_REPLAY_ELIGIBILITY",
+      "REGIME_POLICY_VERSION_AND_SOURCE_LINEAGE",
+      "FIT_KNOWLEDGE_CUTOFF_VALID",
+      "PROSPECTIVE_EPISODE_IDENTITY",
+      "NO_FUTURE_PERSISTENCE_CONTAMINATION"
+    ]
+  },
+  "unknownRegimeDisposition": "D18_STRATEGY_REGIME_INELIGIBLE_REGIME_UNKNOWN",
+  "retroactiveUpgradeRule": {
+    "casualRetroactiveUpgradeAllowed": false,
+    "replayRequires": [
+      "IMMUTABLE_DECISION_TIME_INPUTS",
+      "ALL_AVAILABLE_AT_LE_DECISION_TIMESTAMP",
+      "REGIME_RULE_FROZEN_BEFORE_DECISION",
+      "NO_FUTURE_INPUT",
+      "FIT_KNOWLEDGE_CUTOFF_LE_DECISION",
+      "IMMUTABLE_REPLAY_DIGEST_AND_SOURCE_CLOCK"
+    ],
+    "failureDisposition": "RETROSPECTIVE_REGIME_LABEL_NOT_PROMOTION_ELIGIBLE"
+  },
+  "partialDenominator": {
+    "corr004Status": "VERIFIED_CLOSED",
+    "policyEvaluationAllowedOnCleanSubset": true,
+    "incompleteSymbolsRemainBlocked": true,
+    "zeroPickRequiresCompleteDenominator": true,
+    "d18ClaimsMustCarryDenominatorProvenance": true
+  },
+  "launchBoundary": {
+    "d18RegimeRequiredForStage1PolicyEvaluation": false,
+    "d18RegimeRequiredForD18Claims": true
+  },
+  "maturityImpact": "NONE",
+  "formalCoreImpact": "NONE"
+}

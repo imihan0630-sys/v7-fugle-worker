@@ -2917,3 +2917,67 @@ Exact next:
 3. if it resolves trading, wait for first scheduled attempt and reconcile it without replacing the first-known candidate state;
 4. if it resolves non-trading, record no trading-opportunity obligation;
 5. immediately switch if genuine Formal↔C1, T48, System2 fingerprint, or NC-T01 lands first.
+
+
+## 2026-10-07 D18 Stage-1 policy frame frozen / strategy evaluation pending
+
+New:
+- `research/D18_SYSTEM2_STAGE1_POLICY_FREEZE_VALIDATION_20261007_V0_1.json`;
+- `research/D18_POLICY_ONLY_VS_REGIME_EVIDENCE_BOUNDARY_20261007_V0_1.json`.
+
+PR #760:
+`41e1d420083b1ea69f98a0ffcf23adab41fafaf1`.
+
+Policy freeze time:
+`2026-10-07T09:00:23+08:00` approximately.
+
+Exact-head checks:
+37554899502 / 37554899513 / 37554899485 / 37554899509 / 37554899506 = SUCCESS.
+
+Stage-1 policy identities:
+- SHORT_MOMENTUM = `S2-ASSESSOR-SM-LAUNCH-001 / 0.1-LAUNCH`;
+- SWING_GROWTH = `S2-ASSESSOR-SG-LAUNCH-001 / 0.1-LAUNCH`.
+
+Current runtime still:
+- strategyEvaluation = ASSESSOR_POLICIES_READY_DIAGNOSTIC_EVALUATION_NOT_EXECUTED;
+- regime = UNKNOWN;
+- ranking/capacity/prediction = not produced;
+- no final selection/live push/capital/order;
+- no System1 runtime use.
+
+D18 interpretation:
+- historical pre-freeze NO_CANONICAL_PROSPECTIVE_POLICY_FRAME remains valid;
+- post-freeze policy-frame blocker is resolved;
+- physical strategy-evaluation evidence still pending;
+- strategy×Regime evidence remains unavailable while Regime is UNKNOWN;
+- no retroactive pre-freeze backfill.
+
+Evidence lanes:
+1. POLICY_ONLY_PROSPECTIVE_OBSERVATION — may support System2 launch/SDA-022, not D18.
+2. D18_STRATEGY_REGIME_PROSPECTIVE_OBSERVATION — requires decision-time KNOWN Regime or strict replay eligibility.
+
+CORR-004 readback:
+`VERIFIED_CLOSED`.
+Partial denominator remains valid and explicit; partial coverage never becomes clean zero-pick.
+
+Current external blockers:
+- System2 per-strategy SDA-022 fingerprints pending;
+- physical NC-T01 pending;
+- first physical Stage-1 strategy evaluation pending;
+- D18 Regime source wiring pending;
+- genuine Formal↔C1 sample N=0;
+- T48 finalization implementation pending;
+- outcomes CLOSED.
+
+No maturity change:
+D16=60%.
+D18=52%.
+Formal Core LOCKED.
+
+Exact next:
+1. re-read latest main;
+2. if first physical Stage-1 evaluation lands, classify Lane A and validate policy id/version + denominator provenance;
+3. if Regime also becomes decision-time KNOWN, evaluate Lane B eligibility;
+4. if System2 policy fingerprints land, validate S22-T06~T10 immediately;
+5. if NC-T01 lands, validate S22-T11~T16;
+6. do not backfill before the 09:00:23 policy freeze.
