@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T23:05:43+08:00",
+  "updatedAt": "2026-10-07T22:41:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1198,7 +1198,10 @@
         "The current warmup workflow permits workflow_dispatch + daily schedule + physical push mutation. The later scheduled run 37595978423 started in the same UTC quota day; it failed on TPEx transport before persistence, but if another comparable five-date batch had completed, warmup alone could exceed the 100k/day account ceiling.",
         "Known measured subset on 2026-10-07: warmup 57,880 + Daily Shadow 13,130 + 2024 TWSE annual 7,358 = 78,368 rowsWritten (78.368% of Free daily ceiling), before any other account/database writers.",
         "Annual cold-pack samples are much smaller: 2023 TPEx 5,842; 2022 TPEx 5,779; 2022 TWSE 6,983 rowsWritten. Removing redundant annual provisioning is valid hygiene but is not the primary measured quota cause.",
-        "Durable calibration: system2/evidence/S2_CORR_20261007_003_D1_WRITE_BUDGET_CALIBRATION_20261007_V0_1.json @ 80103589902232f04cd973b3ab946181884fd9f0."
+        "Durable calibration: system2/evidence/S2_CORR_20261007_003_D1_WRITE_BUDGET_CALIBRATION_20261007_V0_1.json @ 80103589902232f04cd973b3ab946181884fd9f0.",
+        "Writer-priority inventory frozen from latest-main workflow readback: system2/evidence/S2_CORR_20261007_003_D1_WRITER_PRIORITY_INVENTORY_20261007_V0_1.json @ 1e0d8531dd2431509b5b613f799eb7b5ae3c5e08.",
+        "Daily Shadow Diagnostic had two physical runs on 2026-10-07: scheduled run 37609474459 wrote 13,130 rows and later push run 37639310893 still wrote 1,296 rows; same-day known Daily Shadow subtotal = 14,426 rowsWritten. A later push can be cheaper because data already exists, but it is not read-only and may not bypass the account-level budget gate.",
+        "Same-day workflow history shows physical writer activity is multi-class: Historical Pack Real-Source Smoke fired repeatedly from push, Daily Resonance Deploy fired repeatedly from push, Daily Shadow had schedule+push, annual backfill had multiple manual attempts, and Recent A1 warmup had schedule. Concurrency serialized these classes but did not budget the account-wide daily quota."
       ],
       "riskIfUnfixed": "High-priority DATA_LANE work can repeatedly fail after other valid System2 writers consume the daily free quota, wasting Actions/runtime effort and delaying historical/PIT readiness. Ad-hoc responses can also create pressure to purchase a paid tier despite the owner's explicit cost-control preference. Fail-closed data integrity is preserved, but execution continuity and cost governance remain defective.",
       "requiredCorrection": [
@@ -1212,7 +1215,12 @@
         "Persist one compact UTC-day reservation/result receipt per physical writer run and reconcile estimate to actual rowsWritten without creating a high-write ledger itself.",
         "Avoid redundant schema/provision writes when isolated D1 readiness is already verified and no migration is required.",
         "Preserve historical immutability/resume semantics and Daily Shadow evidence semantics.",
-        "No automatic paid-tier upgrade or billing change; any paid change is separately OWNER_DECISION_REQUIRED."
+        "No automatic paid-tier upgrade or billing change; any paid change is separately OWNER_DECISION_REQUIRED.",
+        "Maintain an auditable registry/inventory of every workflow permitted to physically mutate isolated System2 D1 and require new writer workflows to declare writer class/priority/reservation behavior; an unregistered physical writer must fail closed.",
+        "P0 protected operational/launch evidence (normal scheduled Daily Shadow and future controlled persisted SHORT_MOMENTUM/rank/capacity acceptance) receives reservation before lower-priority writers. Daily Shadow manual/push physical acceptance may write only when the shared quota gate grants a protected reservation; otherwise it must defer or remain read-only.",
+        "P2 discretionary warmup/bootstrap ordinary push paths must not physically mutate D1. Schedule/manual physical warmups require quota reservation and quota-adaptive batch size.",
+        "P3 maintenance/smoke ordinary push paths should be test/read-only by default; physical smoke/schema mutation requires explicit manual acceptance or a genuine schema need plus quota reservation. Existing deploy read-only schema fast paths must be preserved.",
+        "Writer priority must not be inferred merely from concurrency order. The quota gate must classify P0/P1/P2/P3 intent before mutation."
       ],
       "acceptanceCriteria": [
         "Ordinary push of any Recent A1 warmup implementation/source/workflow file cannot physically mutate D1 history; push-path regression proves test/read-only behavior.",
@@ -1224,7 +1232,11 @@
         "Warmup max physical dates can shrink below five when quota headroom is insufficient.",
         "Unknown account-wide usage fails conservatively; no exact remaining quota is invented.",
         "No paid-plan upgrade, billing mutation, System1 change, strategy/ranking/final-selection/push/capital/order authority change.",
-        "Independent audit verifies implementation and at least one bounded multi-writer UTC day or equivalent physical evidence without a quota-collision failure."
+        "Independent audit verifies implementation and at least one bounded multi-writer UTC day or equivalent physical evidence without a quota-collision failure.",
+        "A registry test enumerates all workflows using the isolated D1 writer authority and fails if a physical writer lacks an explicit writerClass/priority/quota-gate contract.",
+        "Daily Shadow scheduled P0 work is protected; a later push/manual physical run cannot consume D1 without a granted reservation and can emit an explicit quota deferral/read-only state.",
+        "P2/P3 ordinary push paths cannot silently perform discretionary/maintenance physical D1 mutation; regression covers Recent A1 warmup, hot-history bootstrap, real-source smoke, and at least one maintenance/deploy path.",
+        "Observed same-day sequence equivalent to 13,130 scheduled Daily Shadow + another push acceptance + bulk/warmup writers is budgeted deterministically so lower-priority work defers before Cloudflare hard rejection."
       ],
       "protectedBoundaries": [
         "System1 Formal Core/runtime",
