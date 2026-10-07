@@ -5868,7 +5868,6 @@ No maturity or Formal change is authorized by this routing.
 6. After one R1-R7 composability witness passes, hand it to D16 under DL-087/DL-089; outcomes remain closed until then.
 7. No L4 promotion / no Formal Core change without actual OOS/prospective evidence.
 
-
 ## Continuation update — DL-098~100 (2026-10-07)
 
 ### DL-098 — R7 canonical feature payload
