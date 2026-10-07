@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "D16_SOURCE_ACQUISITION_COARSENING_ADDENDUM_V0_1",
+  "updatedAt": "2026-10-07T09:25:00+08:00",
+  "owner": "D16 / Room11",
+  "status": "RESEARCH_ONLY_OBSERVATION_MECHANISM_FROZEN",
+  "triggerRunId": 37556241467,
+  "observationStages": [
+    "PROVIDER_PUBLICATION_STATE",
+    "TRANSPORT_ACCESS_STATE",
+    "BODY_COMPLETION_STATE",
+    "PARSE_STATE",
+    "SEMANTIC_VALIDATION_STATE",
+    "PERSISTENCE_READBACK_STATE",
+    "RESEARCH_ADMISSION_STATE"
+  ],
+  "stageStateEnum": [
+    "VERIFIED_AVAILABLE",
+    "VERIFIED_UNAVAILABLE",
+    "OBSERVED_SUCCESS",
+    "OBSERVED_FAILURE",
+    "NOT_REACHED",
+    "UNKNOWN"
+  ],
+  "currentWitness": {
+    "dataset": "FINANCIAL",
+    "sourceAuthority": "MOPS",
+    "endpoint": "/mops/web/ajax_t163sb04",
+    "providerPublicationState": "UNKNOWN_FROM_THIS_RUN",
+    "transportAccessState": "OBSERVED_FAILURE",
+    "bodyCompletionState": "OBSERVED_FAILURE",
+    "parseState": "NOT_REACHED",
+    "semanticValidationState": "NOT_REACHED",
+    "persistenceReadbackState": "NOT_REACHED",
+    "researchAdmissionState": "NOT_READY",
+    "classification": "OBSERVATION_CHANNEL_CENSORED",
+    "transportClassification": "MOPS_BATCH_FINANCIAL_TRANSPORT_RETRY_EXHAUSTED",
+    "internalRetries": 3,
+    "independentAcquisitionEpisodeN": 1
+  },
+  "ignorability": {
+    "coarsenedAtRandomEstablished": false,
+    "completeCaseTargetRepresentativenessEstablished": false
+  },
+  "frozenPreOutcomeMissingnessCovariates": [
+    "SOURCE_FAMILY_ENDPOINT_IDENTITY",
+    "LOCAL_QUERY_TIME",
+    "REPORTING_PERIOD_INDICATOR",
+    "REQUEST_PAYLOAD_CLASS",
+    "RUNNER_PLATFORM_IDENTITY",
+    "TIMEOUT_RETRY_POLICY_VERSION",
+    "PRIOR_SOURCE_AVAILABILITY_HISTORY_KNOWN_AT_ATTEMPT",
+    "SESSION_METADATA_KNOWN_AT_ATTEMPT"
+  ],
+  "forbiddenMissingnessInputs": [
+    "LATER_OUTCOME_RETURN",
+    "LATER_SUCCESSFUL_DATA_VALUES",
+    "FUTURE_ENDPOINT_BEHAVIOR",
+    "POST_RESULT_RECLASSIFICATION_FOR_PERFORMANCE"
+  ],
+  "positivity": {
+    "ipwAutomaticallyAuthorized": false,
+    "zeroSupportDisposition": "ACQUISITION_POSITIVITY_NOT_ESTABLISHED",
+    "extremeWeightRescueAllowed": false,
+    "estimandChangeMustBeDeclaredAfterTrimmingOrOverlapWeighting": true
+  },
+  "stageCollapseForbidden": [
+    "PROVIDER_NOT_PUBLISHED",
+    "TRANSPORT_TIMEOUT",
+    "HTTP_AUTHORIZATION_BLOCKED",
+    "BODY_STREAM_INCOMPLETE",
+    "PARSER_FAILURE",
+    "SEMANTIC_VALIDATION_FAILURE",
+    "PERSISTENCE_FAILURE",
+    "READBACK_FAILURE"
+  ],
+  "canonicalOracleMapping": [
+    "SDA016-T28",
+    "SDA016-T31",
+    "SDA016-T33",
+    "SDA016-T39"
+  ],
+  "expandsCanonicalOracleCount": false,
+  "methodAnchors": [
+    "Heitjan & Rubin 1991 Ignorability and Coarse Data",
+    "Seaman & White 2013 Review of inverse probability weighting for dealing with missing data"
+  ],
+  "formalCoreImpact": "NONE",
+  "maturityImpact": "NONE"
+}
