@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "S2_STAGE1_NC_T01_MINIMAL_PHYSICAL_HANDOFF_V0_1",
+  "recordedAt": "2026-10-07T19:24:15+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "status": "BUILD_LANE_HANDOFF_READY",
+  "purpose": "Compress physical NC-T01 S22-T11~T16 to the smallest source-honest System2 execution proof after canonical System2 policy fingerprints.",
+  "canonicalInputs": [
+    "shared-knowledge/SDA022_ACCEPTANCE_ORACLE_V0_1.md Section C",
+    "shared-knowledge/sda022_nc_t01_receipt_schema_v0_1.json",
+    "system2/SYSTEM2_STAGE1_ASSESSOR_POLICY_FREEZE_V0_1.md",
+    "system2/runtime/daily_shadow_a1_source_v0_1.mjs",
+    "system2/runtime/daily_shadow_history_reader_v0_1.mjs",
+    "system2/runtime/stage1_assessor_policies_v0_1.mjs",
+    "system2/runtime/daily_shadow_orchestrator_v0_1.mjs",
+    "system2/deploy/remote_d1_rest_adapter.mjs"
+  ],
+  "prerequisite": {
+    "system2FingerprintPr": 762,
+    "requirement": "Rebase/regenerate/reverify and merge the per-strategy fingerprint receipts to canonical main first.",
+    "auditEvidence": "system2/evidence/S2_STAGE1_PR762_DRIFT_AUDIT_20261007_V0_1.json",
+    "sourceArtifactDigestMatch": "11_OF_11",
+    "addedPathsUnoccupiedOnMain": "8_OF_8"
+  },
+  "physicalSeedEvidence": {
+    "workflowRunId": 37609474459,
+    "marketDate": "2026-10-07",
+    "conclusion": "SUCCESS",
+    "a1OrdinarySymbolCount": 1973,
+    "exactDateFallbackUsedBothMarkets": true,
+    "prospectiveHistoryState": "PROSPECTIVE_HISTORY_READBACK_VERIFIED",
+    "preflightCapacityWriteAuthorized": true,
+    "caveat": "This diagnostic did not execute a strategy assessor/run and therefore is NOT NC-T01 by itself."
+  },
+  "minimalExecutionDesign": {
+    "strategyId": "SHORT_MOMENTUM",
+    "strategyVersion": "V0.1-CONTRACT",
+    "assessorPolicyId": "S2-ASSESSOR-SM-LAUNCH-001",
+    "assessorPolicyVersion": "0.1-LAUNCH",
+    "system1Top6InputAvailable": false,
+    "system1RankInputAvailable": false,
+    "d1Mode": "READ_ONLY_SELECTS_ONLY",
+    "d1WriteRequired": false,
+    "sourceMode": "REAL_OFFICIAL_CURRENT_A1_WITH_EXISTING_EXACT_DATE_FAILOVER",
+    "historyMode": "REAL_ISOLATED_D1_PIT_HISTORY",
+    "executionPath": [
+      "fetchDailyShadowA1SnapshotV0_1",
+      "load/probe PIT A1 history from isolated D1",
+      "assessStage1StrategyV0_1 for SHORT_MOMENTUM",
+      "runDailyLimitedShadowOrchestratorV0_1 or an equivalently hash-bound physical strategy-run path",
+      "build schema-valid SDA022_NC_T01_RECEIPT_V0_1",
+      "upload immutable GitHub artifact / evidence receipt"
+    ],
+    "forbiddenInputs": [
+      "System1 Top6",
+      "System1 ranking",
+      "cached System1 selected list",
+      "persisted System1 selection",
+      "alias reconstruction of System1 output",
+      "cross-project selected-list fallback",
+      "stale shared selected state"
+    ],
+    "authorityAfterPass": {
+      "finalSelection": false,
+      "livePush": false,
+      "capital": false,
+      "order": false,
+      "system1FormalMutation": false
+    }
+  },
+  "s22AcceptanceMapping": {
+    "S22-T11": "Explicitly remove/unavailable System1 Top6 and rank inputs; shared raw source receipts may remain.",
+    "S22-T12": "Hidden fallback audit must prove cached/persisted/alias/cross-project/stale shared System1 selection paths all unused.",
+    "S22-T13": "Real SHORT_MOMENTUM candidate-generation path executes when its own required inputs are READY; non-empty pick is not required.",
+    "S22-T14": "Receipt distinguishes legitimate zero pick from input incomplete, dependency blocked, runtime failure and capacity unresolved.",
+    "S22-T15": "Receipt binds source generation/version, strategy/version, decisionAt, candidate-universe provenance and result hash.",
+    "S22-T16": "Physical real-source/runtime execution is mandatory; synthetic strategy output cannot upgrade physicalIndependentDiscovery."
+  },
+  "quotaInteraction": {
+    "currentWriteQuotaBlocker": "S2-CORR-20261007-003",
+    "conclusion": "NC-T01 need not consume D1 row-write budget if the BUILD implementation is read-only against D1 and emits the receipt as a GitHub artifact.",
+    "caution": "Do not run schema provisioning or diagnostic persistence as a prerequisite when current schema readiness can be verified read-only; any unexpected write path must fail before mutation."
+  },
+  "acceptanceResultRule": {
+    "passClassification": "PHYSICALLY_INDEPENDENT_PATH_OBSERVED",
+    "legitimateZeroPickCanPass": true,
+    "missingRequiredInputsCannotPass": true,
+    "runtimeFailureCannotPass": true,
+    "hiddenSystem1DependencyCannotPass": true
+  },
+  "implementationOwner": "BUILD_LANE",
+  "implementationPerformedByAudit": false
+}
