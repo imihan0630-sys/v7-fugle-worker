@@ -674,3 +674,35 @@ Execution order after run #28 terminal acceptance:
 6. only after both 2025 markets are resolved, advance to the separate 2026 incremental-history path and aggregate full-market replay qualification.
 
 This preflight does not claim 2025 data completion and does not modify System1 Formal Core or production runtime.
+
+
+## 2026-10-07 2026 current-year segmented cold path repository ready
+
+The 2026 current-year history gap now has a repository-implemented segmented-cold design. Physical execution is intentionally NOT started while the 2024 TPEx annual writer is active.
+
+Why a separate path is required:
+- completed-year annual cold manifests are immutable and enforce `UNIQUE (market, symbol, year, price_space)`;
+- writing a partial 2026 annual pack and later extending it would violate the immutable annual-pack contract;
+- large row-wise D1 current-year population would reintroduce the row-write amplification/quota risk already observed during historical population.
+
+Implemented repository path:
+- migration `system2/sql/0010_current_year_segmented_cold_store.sql`;
+- segmented manifest/checkpoint/receipt tables keyed by market/symbol/year/month;
+- runtime `system2/runtime/historical_segmented_cold_store_v0_1.mjs` with create-only R2 objects, immutable manifest conflict detection, receipt-last semantics, R2 HEAD + byte-SHA verification and segment query readback;
+- script `system2/scripts/historical_current_year_segment_backfill_v0_1.mjs` that writes only fully completed Taipei calendar months of the current year and never writes the active incomplete month;
+- workflow `.github/workflows/system2-historical-current-year-segment-backfill.yml`, manual one-market-at-a-time, using the same `system2-isolated-d1-writer` concurrency lock as annual history;
+- historical replay loader now reads segmented manifests only for years that do not yet have a complete annual pack; once an annual pack exists for that year, annual storage supersedes segments to prevent duplicate bars;
+- existing hot/prospective history lanes remain the bridge for the current incomplete month; they are not relabeled as completed-month cold evidence;
+- after the calendar year closes, 2026 can be compacted into the normal annual pack without deleting segment provenance.
+
+Repository validation:
+- System2 Research CI `37590126168`: SUCCESS;
+- `historical_current_year_segment_workflow_guard.test.mjs`: PASS;
+- `historical_segmented_cold_store_v0_1.test.mjs`: PASS;
+- syntax validation: PASS;
+- research SQL validation: PASS;
+- production-isolation guard: PASS.
+
+Current disposition: REPOSITORY_READY / PHYSICAL_EXECUTION_PENDING.
+
+Do not physically run this 2026 path until both 2025 markets are resolved and no annual writer owns the isolated D1/R2 writer lane. The first physical 2026 execution must run TWSE first, verify segment receipts/object hashes/readback, then TPEX, with explicit evidence before aggregate current-year history is considered usable for replay.
