@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { deepFreeze } from "./factor_snapshot.mjs";
 import { historicalUniverseMembershipActiveOnDateV0_1 } from "./historical_universe_registry_v0_1.mjs";
 
-export const HISTORICAL_MARKET_YEAR_COVERAGE_VERSION = "0.2-RESEARCH";
+export const HISTORICAL_MARKET_YEAR_COVERAGE_VERSION = "0.3-RESEARCH";
 
 
 export function buildObservedIntervalUniverseRegistryV0_1({
@@ -468,6 +468,6 @@ export function buildHistoricalMarketYearCoverageV0_1({
     rawCoverageState:structuralCoverageState,
     symbolSessionReadiness,
     pitReadiness,continuityReadiness,technicalPriceReadiness,overallState,
-    schemaVersion:"S2_HISTORICAL_MARKET_YEAR_COVERAGE_V0_2",
+    schemaVersion:"S2_HISTORICAL_MARKET_YEAR_COVERAGE_V0_3",
   });
 }
