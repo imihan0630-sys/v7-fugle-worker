@@ -50,6 +50,9 @@ assert.equal(by.H4_B_RETEST_CONFIRMATION_DELAY.structuralN,null);
 assert.equal(by.H5_DOUBLE_MAX_CHASE_DOWNSTREAM.state,"T1_EXHAUSTIVE_MONITOR_RECEIPT_NOT_AVAILABLE");
 assert.equal(by.H5_DOUBLE_MAX_CHASE_DOWNSTREAM.classifierReady,true);
 assert.equal(out.deferredT1.zeroBeforeT1IsForbidden,true);
+assert.equal(out.opportunityLossBridge.schemaVersion,"SYSTEM1_OPPORTUNITY_LOSS_BRIDGE_V0_3");
+assert.equal(out.opportunityLossBridge.sourceC5Schema,"SYSTEM1_C5_SEMANTIC_REPAIR_V0_2");
+assert.equal(out.opportunityLossBridge.interpretation.canonicalC5SemanticRepairPreserved,true);
 assert.equal(out.formalOptimizationCandidate,"NONE");
 assert.equal(out.formalCoreImpact,false);
 
