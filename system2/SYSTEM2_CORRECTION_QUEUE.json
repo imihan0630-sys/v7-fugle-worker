@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T18:43:00+08:00",
+  "updatedAt": "2026-10-07T19:16:52+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1020,18 +1020,17 @@
     {
       "directiveId": "S2-CORR-20261007-001",
       "createdAt": "2026-10-07T16:27:32+08:00",
-      "severity": "HIGH",
+      "severity": "MEDIUM",
       "status": "OPEN",
-      "title": "Stage-1 prospective A1 daily-close acquisition exhausts without target-date readiness",
+      "title": "Prospective Decision Clock A1 collector diverges from Stage-1 exact-date source path",
       "affectedScope": [
-        "System2 Stage-1 current/prospective A1 source acquisition",
-        "Prospective decision-clock evidence",
-        "Daily Shadow input readiness",
-        "SHORT_MOMENTUM launch-critical data path"
+        "System2 prospective Decision Clock / source-arrival evidence collector",
+        "A1 first-READY timing measurement",
+        "source-selection contract consistency between research clock evidence and Stage-1 ingestion"
       ],
       "detectedBy": "00_RESEARCH_AUDIT_CONTROL",
-      "canonicalRequirement": "System 2 must observe current-day A1 TWSE and TPEx daily-close inputs with source-honest point-in-time receipts before current-day Stage-1 strategy evaluation. Poll exhaustion, stale prior-date payloads, transport/non-JSON responses and true source not-ready states must remain distinguishable; none may be converted into a clean zero-pick or an authorized decision clock.",
-      "observedProblem": "Physical prospective run 37577209442 completed all 30 polling attempts but never established the current-day A1 daily gate. TWSE remained NOT_READY with the prior market date throughout the observed window. TPEx alternated between INVALID_PAYLOAD/NON_JSON_RESPONSE and NOT_READY, with zero READY observations. The immutable daily bundle therefore ended requiredReady=false, precisionEligible=false and without a candidate decision timestamp. Current official_source_probes performs one GET per probe attempt and does not provide an in-attempt bounded recovery for HTTP-200 non-JSON responses. This is distinct from, but operationally related to, the intermittent official-source transport instability already observed in historical TPEx ingestion.",
+      "canonicalRequirement": "Prospective Decision Clock/source-arrival evidence must measure the same versioned source-selection semantics used by the current Stage-1 A1 ingestion path, or explicitly document and justify a different contract. A stale/non-JSON latest OpenAPI response must not be misclassified as market-wide A1 unavailability when the authorized exact-date official source path is READY. firstReadyAt/availableAt must remain actual observed upper bounds.",
+      "observedProblem": "The 2026-10-07 prospective clock collector exhausted 30 attempts using official_source_probes latest-OpenAPI-only semantics, but the later scheduled Daily Shadow Diagnostic physically proved the current Stage-1 A1 ingestion path READY on the same trading date by using its already-implemented exact-date official fallback: TWSE MI_INDEX (1,086 normalized ordinary rows) and TPEx dailyQuotes (887), total 1,973. Stage-1 preflight reported capacityWriteAuthorized=true and prospective history readback verified. Therefore the current defect is collector/source-contract divergence, not a proven Stage-1 A1 ingestion blocker.",
       "evidence": [
         "System2 Prospective Clock Evidence Read-only run 37577209442 COMPLETED/SUCCESS; calendar, safety, daily_arrival, required_dependencies and bundle jobs all completed",
         "A1 artifact 11469331429 digest sha256:4b2b436015a385c89402d071d9f1c8efc644b6fda2707962263a272b81553ef2",
@@ -1051,29 +1050,29 @@
         "At 2026-10-07 18:43 Asia/Taipei, official TWSE MI_INDEX?date=20261007&type=ALLBUT0999 returned HTTP 200 / application/json, stat OK, explicit 2026-10-07 daily-close table, while STOCK_DAY_ALL still exposed 1151006. Therefore the TWSE market had current-day official close data; the current prospective endpoint itself was lagging.",
         "At 2026-10-07 18:43 Asia/Taipei, official TPEx afterTrading/dailyQuotes?date=2026/10/07 returned HTTP 200 / application/json;charset=UTF-8 with explicit 2026-10-07 success and per-stock daily-close rows. This source is already the System2 accepted historical A1 primary for TPEx.",
         "Repository readback: TWSE MI_INDEX and TPEx dailyQuotes are already canonical historical A1 sources with requested-date matching, OHLC validation, duplicate-symbol rejection and normalized RAW fields. Historical receipts explicitly state historicalPublicationTimestampProven=false; their SESSION_CLOSE_FINALITY availableAt must not be reused as prospective first-known/publication time.",
-        "Durable independent diagnosis: system2/evidence/S2_CORR_20261007_001_A1_SOURCE_DIAGNOSIS_20261007_V0_1.json (commit 56d285cb61dd9149b6163221563349ee711428b9)."
+        "Durable independent diagnosis: system2/evidence/S2_CORR_20261007_001_A1_SOURCE_DIAGNOSIS_20261007_V0_1.json (commit 56d285cb61dd9149b6163221563349ee711428b9).",
+        "System2 Daily Shadow Diagnostic run 37609474459 (#22) SUCCESS on head 4854ca2a00b1d8536ad26cbb07c73b7e84109cf2; marketDate 2026-10-07; state READY_FOR_AUTHORIZED_SHADOW_EVALUATION_WITH_SYMBOL_GAPS.",
+        "Run 37609474459 TWSE primary STOCK_DAY_ALL remained on 1151006, then exact-date fallback A1_TWSE_MI_INDEX_EXACT_DATE_PROSPECTIVE succeeded for 2026-10-07 with 1,086 normalized ordinary rows.",
+        "Run 37609474459 TPEx primary returned HTTP 200/NON_JSON_RESPONSE, then exact-date fallback A1_TPEX_DAILY_QUOTES_EXACT_DATE_PROSPECTIVE succeeded for 2026-10-07 with 887 normalized ordinary rows.",
+        "Run 37609474459 preflight capacityWriteAuthorized=true; prospectiveHistory=PROSPECTIVE_HISTORY_READBACK_VERIFIED with 1,973 rows; persistenceState=IMMUTABLE_D1_READBACK_VERIFIED; strategy evaluation remained diagnostic-only and capacity was NOT_PRODUCED.",
+        "Artifact 11476921489 digest sha256:fcce5882ba1a49a9c50e1523d65ed351c5dd5c850db4e292dd2de6cde126fa91.",
+        "Durable scope reclassification: system2/evidence/S2_CORR_20261007_001_SCOPE_RECLASSIFICATION_20261007_V0_1.json @ 30d1e3e01f137495e1018d2a8c01bbcf766fc05f."
       ],
-      "riskIfUnfixed": "SHORT_MOMENTUM cannot produce a genuine current-day Stage-1 strategy-evaluation receipt when its core A1 input family never reaches source-honest READY. NC-T01 S22-T13 physical independence and downstream ranking/capacity evidence can remain blocked, while poll exhaustion could be misread as source absence or a legitimate zero-pick day.",
+      "riskIfUnfixed": "Decision-clock/source-arrival research can understate same-day A1 readiness, bias first-ready latency evidence, and create misleading readiness diagnostics that disagree with the actual Stage-1 ingestion path. The current evidence does not show this collector divergence blocks Stage-1 ingestion itself.",
       "requiredCorrection": [
-        "Keep this correction scoped to the current/prospective A1 observation path; do not duplicate or seize CORR-001 historical annual-backfill ownership.",
-        "Diagnose TWSE prior-date persistence and TPEx NON_JSON_RESPONSE separately; preserve publication/not-ready, transport, body completion, parse and semantic validation states.",
-        "Add only bounded fail-closed transport recovery where justified for transient transport/non-JSON acquisition; do not weaken target-date, schema, coverage, OHLC or PIT validation.",
-        "Ensure the observation window or follow-up observation mechanism can truthfully capture same-day source readiness when it occurs; never infer permanent unavailability merely because the current polling window exhausted.",
-        "Persist/emit the first source-honest READY observation timestamp and preserve all earlier failed/not-ready attempts append-only.",
-        "Re-run a real trading-day prospective receipt before claiming the current A1 gate repaired.",
-        "Separate readiness-window design from transport recovery: TWSE stale-prior-date evidence requires later observation/finality handling, while TPEx transient NON_JSON_RESPONSE can be tested with bounded acquisition retry; do not apply one fix to both failure classes.",
-        "Evaluate a versioned prospective A1 source contract using the already-validated official one-date MI_INDEX (TWSE) / dailyQuotes (TPEx) sources, rather than assuming STOCK_DAY_ALL / large TPEx OpenAPI are the only eligible transports.",
-        "Before any prospective source switch/fallback is accepted, prove same-date canonical-field and ordinary-symbol coverage equivalence against the existing A1 semantics where both sources are available; do not repeat the 2021 TPEx non-equivalent-transport mistake.",
-        "For prospective evidence, availableAt/firstKnownAt must come from the actual observed READY receipt. Do not inherit the historical parser's fixed SESSION_CLOSE_FINALITY timestamp because historicalPublicationTimestampProven=false.",
-        "A source that becomes READY only after the Stage-1 decision window may be valid for history but is not sufficient for same-day Stage-1 readiness; collect prospective first-READY timing on later real trading dates."
+        "Reuse a single versioned A1 source-selection contract between prospective source-arrival measurement and Stage-1 ingestion, or explicitly version/document intentional differences.",
+        "When latest OpenAPI is stale or HTTP-200/non-JSON, allow the already-validated exact-date official source path to be measured without laundering source identity or timing.",
+        "Preserve primary/fallback identities, failure reason, source-date evidence, row coverage and actual observed first-ready time.",
+        "Do not reuse historical SESSION_CLOSE_FINALITY as prospective firstKnownAt/availableAt.",
+        "Add real-trading-date regression/physical evidence where primary is stale/non-JSON and exact-date source is READY.",
+        "Do not change strategy/ranking/final-selection/push/capital/order/System1 authority."
       ],
       "acceptanceCriteria": [
-        "A genuine trading-date run distinguishes TWSE and TPEx current-day readiness independently and preserves every attempt state",
-        "Both required A1 markets either reach target-date READY with exact observedAt provenance or end in an explicit operational/source blocker; no missing state is converted to READY or zero-pick",
-        "Any bounded retry is restricted to approved transient acquisition failures and leaves schema/date/coverage/PIT fail-closed semantics unchanged",
-        "First READY timestamp is derived from physical source observation, not nominal schedule time",
-        "A subsequent immutable decision-clock bundle accurately reflects A1 readiness and does not authorize a decision clock unless all required clock gates actually pass",
-        "No System1 runtime/Formal Core use, no System2 live selection/push/capital/order authority, and no external mutation are introduced by the repair"
+        "Collector and Stage-1 source selection are contract-consistent or intentionally version-separated with explicit rationale.",
+        "A real trading-date stale/non-JSON-primary case records A1 READY when the exact-date official source is genuinely READY.",
+        "firstReadyAt remains the actual prospective observation upper bound.",
+        "UNKNOWN/transport/source-date/schema failures remain fail-closed and source-honest.",
+        "No strategy/ranking/final-selection/live-push/capital/order/System1 authority changes."
       ],
       "protectedBoundaries": [
         "System1 Formal Core",
@@ -1091,7 +1090,7 @@
       "implementationEvidence": [],
       "verificationEvidence": [],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T18:43:00+08:00"
+      "updatedAt": "2026-10-07T19:16:52+08:00"
     },
     {
       "directiveId": "S2-CORR-20261007-002",
@@ -1158,6 +1157,66 @@
       ],
       "finalDisposition": "REJECTED_WITH_EVIDENCE — global A1+B2+A5 Decision Clock mismatch is real as a research/review-clock observation, but latest-main Stage-1 preflight, Limited Shadow strategy-run and capacity paths do not consume B2/A5/global requiredReady. No current SHORT_MOMENTUM runtime over-gating defect was proven; preserve as a future wiring watchlist.",
       "updatedAt": "2026-10-07T18:43:00+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261007-003",
+      "createdAt": "2026-10-07T19:16:52+08:00",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "title": "System2 isolated D1 writers lack global free-tier daily write-budget coordination",
+      "affectedScope": [
+        "System2 isolated D1 writer workflows",
+        "Daily Shadow diagnostic persistence",
+        "historical annual/current-year backfill",
+        "hot-history/bootstrap/smoke/provision/deploy writer scheduling",
+        "free-tier cost and quota governance"
+      ],
+      "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+      "canonicalRequirement": "System2 parallel execution must not repeatedly collide with a known finite free-tier D1 daily row-write limit. Shared writer concurrency prevents simultaneous mutation but is not a quota budget. Cross-workflow writes must preserve enough headroom for prioritized required work, fail/defer explicitly before predictable quota collision where possible, and must never trigger or assume a paid-plan upgrade without explicit owner approval.",
+      "observedProblem": "On 2026-10-07 scheduled Daily Shadow Diagnostic run 37609474459 succeeded and reported D1 metrics of 13,130 rowsWritten. Twenty-two minutes later annual historical run 37611914140 (#30) failed in the migrate job before backfill began because Cloudflare returned HTTP 400: D1 free tier daily row write limit exceeded. A materially identical quota blocker previously stopped 2021 TPEx run #17. The repository serializes writers through group system2-isolated-d1-writer and contains one local Fugle hot-history per-UTC-day quota claim, but no System2-wide daily write-budget/reservation/priority contract exists.",
+      "evidence": [
+        "Daily Shadow Diagnostic run 37609474459 SUCCESS; d1Metrics requestCount=797, rowsRead=583256, rowsWritten=13130; prospective history 1,973 rows and immutable diagnostic readback completed.",
+        "Historical annual run 37611914140 (#30) FAILED in migrate before backfill; Cloudflare D1 HTTP 400 explicitly reported free-tier daily row write limit exceeded; backfill skipped; no artifact.",
+        "Prior recurrence: system2/evidence/S2_HISTORICAL_TPEX_2021_D1_QUOTA_BLOCKER_V0_1.json documents the same free-tier daily row-write blocker on 2021 TPEx run #17.",
+        "Repository-wide search finds shared concurrency group system2-isolated-d1-writer across writer workflows, but no global daily D1 write-budget gate; only local quota protection exists for Fugle hot-history bootstrap.",
+        "Durable diagnosis: system2/evidence/S2_CORR_20261007_003_D1_QUOTA_COORDINATION_DIAGNOSIS_V0_1.json @ 4f885c4e6f717f7cafcfe33e716342090bbda0f2."
+      ],
+      "riskIfUnfixed": "High-priority DATA_LANE work can repeatedly fail after other valid System2 writers consume the daily free quota, wasting Actions/runtime effort and delaying historical/PIT readiness. Ad-hoc responses can also create pressure to purchase a paid tier despite the owner's explicit cost-control preference. Fail-closed data integrity is preserved, but execution continuity and cost governance remain defective.",
+      "requiredCorrection": [
+        "Implement one System2-wide UTC-day D1 write-budget/priority contract spanning isolated writer workflows; concurrency alone is insufficient.",
+        "Classify writer intents and define free-tier-safe reservation/priority behavior for scheduled operational evidence, historical bulk work, bootstrap/smoke/provision and deploy tasks.",
+        "Before large writers begin, emit an explicit QUOTA_BUDGET_DEFERRED/blocked receipt when conservative headroom is unavailable instead of starting predictable failing work.",
+        "Use conservative accounting from known rowsWritten plus reservations/estimates; do not invent an exact remaining Cloudflare quota if it is not directly observable.",
+        "Avoid redundant schema/provision writes when isolated D1 readiness is already verified and no migration is required.",
+        "Preserve historical immutability/resume semantics and Daily Shadow evidence semantics.",
+        "No automatic paid-tier upgrade or paid billing change; any such change is separately OWNER_DECISION_REQUIRED."
+      ],
+      "acceptanceCriteria": [
+        "Two or more System2 writer classes on the same UTC quota day are coordinated by one auditable budget/priority contract rather than concurrency only.",
+        "A later bulk workflow can determine/defer before predictable free-tier exhaustion using conservative evidence.",
+        "Daily Shadow required evidence and DATA_LANE historical progress can be prioritized without changing data/strategy semantics.",
+        "Quota deferral is explicit and cannot be mislabeled data/source failure.",
+        "No paid-plan upgrade, billing mutation, System1 change, strategy/ranking/final-selection/push/capital/order authority change.",
+        "Regression tests cover known-writes/reservations, insufficient-headroom defer, unknown remaining quota fail-safe behavior, and reset-day rollover.",
+        "Independent audit verifies implementation and at least one physical multi-writer day or equivalent bounded evidence without a quota-collision failure."
+      ],
+      "protectedBoundaries": [
+        "System1 Formal Core/runtime",
+        "System2 PIT/UNKNOWN/provenance and immutable history",
+        "System2 strategy/ranking/final-selection semantics",
+        "No automatic paid Cloudflare upgrade",
+        "No live push/capital/order authority"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "REMEDIATION_LANE",
+      "assignedLane": "REMEDIATION_LANE",
+      "assignedRoom": "System 2｜補強修復室",
+      "modificationOwner": "SYSTEM2_REMEDIATION_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-07T19:16:52+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
