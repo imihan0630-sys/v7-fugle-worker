@@ -4,6 +4,10 @@ import { buildPitReplayWindow } from "./pit_replay_v0_1.mjs";
 import { buildA1HistoryPrimitiveBundle } from "./a1_history_primitives_v0_1.mjs";
 import { buildStrategyStateAssessment } from "./strategy_evaluator.mjs";
 import { buildLimitedShadowRunBundleV0_1 } from "./limited_shadow_run_assembler_v0_1.mjs";
+import {
+  bindNct01ContinuityReceiptToReplayV0_1,
+  nct01ContinuitySourceManifestRefsV0_1,
+} from "./nct01_continuity_replay_binding_v0_1.mjs";
 
 export const DAILY_SHADOW_ORCHESTRATOR_VERSION = "0.1-RESEARCH";
 
@@ -106,6 +110,7 @@ export async function runDailyLimitedShadowOrchestratorV0_1({
   lookbackSessions = 61,
   loadPriorHistoricalBars,
   resolveContinuityState = null,
+  resolveContinuityEvidence = null,
   classifyUniverseSymbol = null,
   assessSymbol,
   runWarnings = [],
@@ -140,6 +145,12 @@ export async function runDailyLimitedShadowOrchestratorV0_1({
   }
   if (resolveContinuityState !== null && typeof resolveContinuityState !== "function") {
     throw new Error("resolveContinuityState must be a function");
+  }
+  if (resolveContinuityEvidence !== null && typeof resolveContinuityEvidence !== "function") {
+    throw new Error("resolveContinuityEvidence must be a function");
+  }
+  if (resolveContinuityState !== null && resolveContinuityEvidence !== null) {
+    throw new Error("resolveContinuityState and resolveContinuityEvidence are mutually exclusive");
   }
   if (classifyUniverseSymbol !== null && typeof classifyUniverseSymbol !== "function") {
     throw new Error("classifyUniverseSymbol must be a function");
@@ -183,17 +194,18 @@ export async function runDailyLimitedShadowOrchestratorV0_1({
       continue;
     }
 
-    const continuityState = resolveContinuityState
-      ? requiredText(
-          await resolveContinuityState({
-            symbol,
-            snapshot,
-            marketDate: date,
-            decisionTimestamp: clock,
-          }),
-          "continuityState",
-        )
-      : "UNVERIFIED";
+    let continuityState = "UNVERIFIED";
+    if (!resolveContinuityEvidence && resolveContinuityState) {
+      continuityState = requiredText(
+        await resolveContinuityState({
+          symbol,
+          snapshot,
+          marketDate: date,
+          decisionTimestamp: clock,
+        }),
+        "continuityState",
+      );
+    }
 
     const priorBarsRaw = await loadPriorHistoricalBars({
       symbol,
@@ -207,7 +219,13 @@ export async function runDailyLimitedShadowOrchestratorV0_1({
       throw new Error(`loadPriorHistoricalBars must return an array: ${symbol}`);
     }
 
-    const currentBar = await currentSnapshotReplayRow(snapshot, continuityState);
+    // NC-T01 physical evidence must bind continuity only after the exact RAW
+    // PIT revisions/session set is selected. The pre-replay current bar stays
+    // UNVERIFIED on the hash-bound path.
+    const currentBar = await currentSnapshotReplayRow(
+      snapshot,
+      resolveContinuityEvidence ? "UNVERIFIED" : continuityState,
+    );
     const priorBars = priorBarsRaw.filter((row) => row.marketDate < date);
     const replayWindow = await buildPitReplayWindow({
       replayId: `${runId}|DAILY|${date}|${symbol}`,
@@ -218,6 +236,25 @@ export async function runDailyLimitedShadowOrchestratorV0_1({
       lookbackSessions,
       historicalBars: [...priorBars, currentBar],
     });
+
+    let continuityBinding = null;
+    if (resolveContinuityEvidence) {
+      const continuityReceipt = await resolveContinuityEvidence({
+        symbol,
+        snapshot,
+        marketDate: date,
+        decisionTimestamp: clock,
+        replayWindow,
+      });
+      continuityBinding = await bindNct01ContinuityReceiptToReplayV0_1({
+        continuityReceipt,
+        replayWindow,
+        symbol,
+        marketDate: date,
+        decisionTimestamp: clock,
+      });
+      continuityState = continuityBinding.continuityState;
+    }
 
     const factorBundle = await buildA1HistoryPrimitiveBundle({
       bundleId: `${runId}|A1|${date}|${symbol}`,
@@ -242,7 +279,17 @@ export async function runDailyLimitedShadowOrchestratorV0_1({
     let interactionObservations = [];
     let importantRejected = false;
 
-    if (replayWindow.targetBarPresent !== true) {
+    if (resolveContinuityEvidence && continuityBinding?.state !== "READY") {
+      const continuityWarnings = (continuityBinding?.blockerCodes || []).map(
+        (code) => "CONTINUITY_BINDING:" + code,
+      );
+      assessmentInput = {
+        familyAssessments: defaultUnknownFamilies(contract, "CONTINUITY_BINDING_NOT_READY"),
+        entryReadiness: "BLOCKED",
+        warnings: ["CONTINUITY_BINDING_NOT_READY", ...continuityWarnings],
+      };
+      warnings = ["CONTINUITY_BINDING_NOT_READY", ...continuityWarnings];
+    } else if (replayWindow.targetBarPresent !== true) {
       assessmentInput = {
         familyAssessments: defaultUnknownFamilies(contract, "PIT_REPLAY_TARGET_BAR_UNAVAILABLE"),
         entryReadiness: "BLOCKED",
@@ -261,6 +308,7 @@ export async function runDailyLimitedShadowOrchestratorV0_1({
         snapshot,
         replayWindow,
         factorBundle,
+        continuityBinding,
         regime,
       });
       if (!assessmentResult || typeof assessmentResult !== "object") {
@@ -304,6 +352,21 @@ export async function runDailyLimitedShadowOrchestratorV0_1({
       ]),
     }));
 
+    const sourceManifest = [{
+      sourceId: snapshot.provenance?.sourceId || "A1_DAILY_CLOSE",
+      sourceRowHash: snapshot.sourceRowHash,
+      batchHash: a1SymbolSnapshotBatch.batchHash,
+      availableAt: snapshot.provenance?.availableAt || null,
+    }];
+    if (resolveContinuityEvidence) {
+      sourceManifest.push(
+        ...nct01ContinuitySourceManifestRefsV0_1({
+          replayWindow,
+          binding: continuityBinding,
+        }),
+      );
+    }
+
     candidates.push({
       symbol,
       companyName: snapshot.companyName,
@@ -312,12 +375,7 @@ export async function runDailyLimitedShadowOrchestratorV0_1({
       coreMetrics: factorBundle.coreMetrics,
       factorObservations: factorBundle.factorObservations,
       interactionObservations,
-      sourceManifest: [{
-        sourceId: snapshot.provenance?.sourceId || "A1_DAILY_CLOSE",
-        sourceRowHash: snapshot.sourceRowHash,
-        batchHash: a1SymbolSnapshotBatch.batchHash,
-        availableAt: snapshot.provenance?.availableAt || null,
-      }],
+      sourceManifest,
       assessment,
       entryPlan,
       reasons,
@@ -333,6 +391,13 @@ export async function runDailyLimitedShadowOrchestratorV0_1({
       state: "ACCOUNTED",
       replayState: replayWindow.state,
       replayHash: replayWindow.replayHash,
+      continuityBindingState: continuityBinding?.state || null,
+      continuityBindingHash: continuityBinding?.bindingHash || null,
+      continuityReceiptId: continuityBinding?.continuityReceiptId || null,
+      continuityReceiptHash: continuityBinding?.continuityReceiptHash || null,
+      sourceHistoryHash: continuityBinding?.sourceHistoryHash || null,
+      continuityTransformHash: continuityBinding?.continuityTransformHash || null,
+      continuityBlockerCodes: Object.freeze([...(continuityBinding?.blockerCodes || [])]),
       factorBundleHash: factorBundle.bundleHash,
       strategyValidity: assessment.strategyValidity,
       entryReadiness: assessment.entryReadiness,
