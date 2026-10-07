@@ -2741,3 +2741,33 @@ D06-15 consumes D06-13 broker/branch execution evidence as public-bank-affiliate
 
 Exact next:
 on a future valid trading date, obtain one legally authorized Sponsor receipt after actual publication availability; preserve observedAt/firstKnownAt, enumerate distinct bank_name values, reconcile them with the official eight-bank set, and cross-check a bounded same-date sample against the versioned TWSE broker-family aggregation. Only then reopen D06-15 L3 source/PIT/replay review.
+
+
+---
+
+## IC-100 — D06-05 corporate-action and denominator continuity guard frozen before L4
+
+Research cycle: 2026-10-07 Asia/Taipei  
+Status: CORPORATE_ACTION_DENOMINATOR_GUARD_FROZEN / PIT_EVENT_SOURCE_REGISTRY_FROZEN / EXACT_DENOMINATOR_PRIMARY_SUPPORT / ACTION_FLAG_OVERRIDES_DENOMINATOR_EQUALITY / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_05_ownership_denominator_corporate_action_guard_v0_1.json`;
+- `research/d06_05_weekly_pair_clean_support_audit_20260924_20261002_v0_1.json`;
+- `research/d06_05_corporate_action_source_registry_v0_1.json`.
+
+The 2026-09-24 -> 2026-10-02 TDCC weekly pair was audited outcome-blind on 2,962 common ordinary four-digit securities. 2,783 securities (93.96%) had exact grade-17 denominator continuity and 179 (6.04%) had a denominator change.
+
+The denominator-changed subset is small but disproportionately concentrated in extreme ownership-ratio moves. Median absolute 400-lot-plus concentration change is 0.1625 percentage points in the denominator-changed subset versus 0.0193 in the exact-stable subset, an 8.42x ratio. For absolute concentration moves >=3pp, >=5pp and >=10pp, changed-denominator incidence is respectively about 5.98x, 6.22x and 15.55x the stable-denominator incidence.
+
+Two official-event falsification cases show why denominator continuity and corporate-action masking must be separate controls:
+- 2601 益航: the pair crosses an officially announced deficit-offset capital reduction / old-share suspension window. TDCC grade-17 total falls about 16.29% while 400-lot-plus concentration rises about 68.41pp. This row is mechanically contaminated and may not be labeled accumulation.
+- 6550 北極星藥業-KY: the pair crosses an officially announced deficit-offset capital-reduction/new-share exchange, yet the observed grade-17 total is unchanged while concentration falls about 25.67pp. Therefore exact denominator equality alone does not prove a clean ownership signal.
+
+The L4 primary-support rule is now fail-closed: same security identity, full 17-grade integrity, exact grade-17 denominator continuity, and no PIT-known hard corporate-action event touching the pair. Capital reduction, split/reverse split, par-value change, stock-rights issuance, effective cash-capital increase, merger/share exchange/spin-off and listing-identity transitions are contamination events. Cash-dividend-only events are not automatically ownership-denominator contamination.
+
+PIT clock semantics are also frozen. Announcement/first-known time and effective/share-exchange time are separate fields. A historical decision receipt may use only event information that was public by its decision timestamp. Later-discovered events may diagnose data quality but may not silently rewrite past decision eligibility.
+
+Maturity impact: NONE. D06-05 remains L3/60. The corporate-action/denominator prerequisite for L4 is now defined, but the event registry still needs complete replayable coverage across TWSE and TPEx for each TDCC pair before economic outcomes can open.
+
+Exact next:
+build the first complete pair-level corporate-action mask across both markets, join security-identity/delisting/share-exchange continuity, freeze the final clean common support, and only then preregister vintage-clustered OOS/Shadow residual incrementality. No price/return/MFE/MAE/ranking outcome opens before that support is frozen.
