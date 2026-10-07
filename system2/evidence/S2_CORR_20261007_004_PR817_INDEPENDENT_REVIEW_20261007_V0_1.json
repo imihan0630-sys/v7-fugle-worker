@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "S2_CORR_20261007_004_PR817_INDEPENDENT_REVIEW_V0_1",
+  "recordedAt": "2026-10-07T22:41:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "directiveId": "S2-CORR-20261007-004",
+  "pullRequest": 817,
+  "prHead": "43784e500f678be6ee95710822fdafd2af50ac50",
+  "prBase": "7d8805504776c5944e31fac4589ec0ca38ca817f",
+  "disposition": "REPOSITORY_FIX_PASS_POST_MERGE_PHYSICAL_READBACK_PENDING",
+  "independentFindings": {
+    "exactSessionSetRequiredForHistoryReady": true,
+    "olderRowSubstitutionFailsClosed": true,
+    "missingExpectedSessionBlocker": "SYMBOL_LOCAL_EXPECTED_SESSION_MISSING",
+    "unexpectedSessionBlocker": "SYMBOL_LOCAL_UNEXPECTED_SESSION_PRESENT",
+    "expectedSessionHashBoundIntoDetailLoad": true,
+    "certifiedLifecycleIntervalsSupported": true,
+    "listingBoundaryUsed": true,
+    "symbolLocalIncompleteRemainsLocal": true,
+    "globalIntegritySemanticsPreserved": true,
+    "historicalOhlcvMutation": false,
+    "system1Dependency": false,
+    "finalSelectionAuthority": false,
+    "livePushAuthority": false,
+    "capitalAuthority": false,
+    "orderAuthority": false
+  },
+  "deterministicHashAudit": {
+    "selectedDateSource": "GROUP_CONCAT(market_date)",
+    "normalization": "dateCsv() deduplicates and lexicographically sorts ISO dates before all set/hash diagnostics",
+    "result": "PASS_NO_GROUP_CONCAT_ORDER_HASH_DRIFT"
+  },
+  "requiredRegressionReadback": {
+    "exactCleanLongListed": "PASS",
+    "longListedMissingRecentPlusOlderSubstitute": "PASS_FAIL_CLOSED",
+    "positiveCertifiedLifecycleGap": "PASS",
+    "newListingShortWindow": "PASS",
+    "missingExpectedSessionContract": "PASS_FAIL_CLOSED",
+    "detailLoaderExpectedSessionHashMismatch": "PASS_FAIL_CLOSED",
+    "note": "Functional regressions are implemented in daily_shadow_exact_session_reconciliation_v0_1.test.mjs; guard-only regex test is not the sole evidence."
+  },
+  "ci": {
+    "system2ResearchCi": {
+      "runId": 37627845551,
+      "conclusion": "SUCCESS",
+      "headSha": "43784e500f678be6ee95710822fdafd2af50ac50"
+    },
+    "v8Regression": {
+      "runId": 37627845505,
+      "conclusion": "SUCCESS",
+      "headSha": "43784e500f678be6ee95710822fdafd2af50ac50"
+    }
+  },
+  "latestMainDriftAudit": {
+    "commitsAheadOfPrBase": 70,
+    "mainFilesChangedSincePrBase": 66,
+    "prChangedFiles": 10,
+    "overlappingChangedPaths": 0,
+    "result": "NO_PATH_OVERLAP_WITH_MAIN_SINCE_PR_BASE"
+  },
+  "boundedLimitations": [
+    "TWSE lifecycle lookup is intentionally targeted to full-count exact-session mismatch candidates; other unresolved cases remain fail-closed rather than being promoted READY.",
+    "TPEx lifecycle parity remains unresolved and fail-closed; TWSE semantics are not inherited.",
+    "Repository tests/CI do not replace the required merged-main physical readonly readback.",
+    "A physical witness must demonstrate exact expected/observed session provenance on real data before NC-T01 S22-T13 may use continuity promotion."
+  ],
+  "postMergeAcceptance": [
+    "Merge through DATA_LANE ownership only; AUDIT_LANE does not merge this PR.",
+    "Run System2 Daily Shadow Input Preflight Readonly on merged-main exact SHA.",
+    "Require rowsWritten=0 for the readonly physical proof.",
+    "Require exactSessionReconciliationEnabled=true.",
+    "Require at least one real TWSE witness with exact expected-session reconciliation ready and immutable expected/observed hash provenance.",
+    "Any lifecycle-resolved witness must preserve positive official interval provenance; source absence cannot certify no event.",
+    "Only after independent readback may CORR-004 move from OPEN to FIX_IMPLEMENTED / verification stage."
+  ]
+}
