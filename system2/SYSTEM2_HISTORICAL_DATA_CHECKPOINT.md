@@ -1004,3 +1004,45 @@ Protected boundaries remain unchanged:
 - no final selection/live push/capital/order authority.
 
 Physical acceptance is still pending. After merge, the existing `System2 Daily Shadow Input Preflight Readonly` workflow will be used to prove merged-main exact-session readback with `rowsWritten=0`; at least one real TWSE exact-window witness is required before DATA_LANE may mark CORR-004 `FIX_IMPLEMENTED`.
+
+
+## 2026-10-07 CORR-004 merged-main physical readback
+
+Merged implementation:
+- PR `#817`;
+- merge commit `625ea3d0bda28fcd06df4c3163a054573c3982f7`;
+- Daily Shadow history reader now uses exact expected eligible symbol-session reconciliation and probe-to-load session-hash binding.
+
+Merged-main physical evidence:
+- workflow: `System2 Daily Shadow Input Preflight Readonly`;
+- run: `37639310919`;
+- job: `112853723927`;
+- conclusion: `SUCCESS`;
+- marketDate: `2026-10-07`;
+- ordinary universe: `1,973`;
+- exact-session reconciliation: `true`;
+- history-ready: `46` versus pre-fix reference `51`;
+- continuity-ready: `0`;
+- D1 rows written: `0`;
+- System1 production isolation: `PASS`.
+
+Real witness:
+- `1101 / TWSE` has only `SYMBOL_LOCAL_CONTINUITY_NOT_VERIFIED`;
+- it does not carry `INSUFFICIENT_PIT_HISTORY` or an expected-session-missing blocker;
+- therefore at least one real TWSE symbol passes the merged-main exact-window history gate while continuity remains correctly fail-closed.
+
+Lifecycle behavior:
+- 2 TWSE exact-session mismatch candidates were queried;
+- lifecycle state remained `OBSERVED_POSITIVE_EVENTS_UNCERTIFIED_ABSENCE`;
+- `lifecycleIntervalCount=0`;
+- empty/uncertified lifecycle search did not certify absence and did not wash gaps into PASS.
+
+Durable receipt:
+`system2/evidence/S2_CORR_20261007_004_PHYSICAL_READBACK_V0_1.json`.
+
+DATA_LANE disposition:
+`S2-CORR-20261007-004 = FIX_IMPLEMENTED`.
+
+Because severity is HIGH, DATA_LANE does not self-close. Independent AUDIT_LANE verification is still required before `VERIFIED_CLOSED`.
+
+No System1 Formal Core/runtime, strategy thresholds/weights/ranking, historical OHLC, final selection, live push, capital or order authority changed.
