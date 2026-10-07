@@ -3103,9 +3103,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Breadth參與度×策略」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "DIRECTION_BREADTH_SEMANTICS_AND_TWSE_OFFICIAL_AGGREGATE_PARSER_VALIDATED / TPEX_CROSS_MARKET_CLOCK_AND_U2_CONTINUITY_PENDING",
-          "next": "Prospectively measure TWSE aggregate-breadth availability; verify machine-readable TPEx aggregate breadth; compare aggregate vs per-symbol breadth only on common support; build U2A/U2B receipt only through shared TECHNICAL_CONTINUITY; no coverage/policy threshold yet.",
-          "evidence": "PR #286 merged research-only (346938bc3c7409f06535bde6563fed96b0d4f4e3). TWSE TWTaZU stock-category breadth parser preserves up/down/unchanged/untraded/no-comparison, target-date/PIT/duplicate/subcount fail-closed semantics; final-head System2 Research CI 36784939010, V8 Repair 36784939033 and V8 Regression 36784939167 PASS. TPEx aggregate machine transport/clock and U2B continuity-certified returns remain unproven."
+          "status": "TWSE_EXECUTABLE_AGGREGATE_BREADTH_PARSER_VALIDATED / TPEX_OFFICIAL_MACHINE_SOURCE_SAME_DATE_OBSERVED / TPEX_PARSER_REPLAY_PENDING / U2B_CONTINUITY_PENDING",
+          "next": "Maintain L2/40%. Build/validate a research-only parser/replay for official TPEx /openapi/v1/tpex_mainborad_highlight with target-date, denominator/subcount, raw-hash/provenance and prospective clock guards; then require TWSE+TPEx common-support receipts. Whole-module L3 still requires shared U2B continuity-certified full-market return builder/replay; do not create a second corporate-action engine.",
+          "evidence": "Existing TWSE TWTaZU parser/replay remains validated. 2026-10-07 Room11 live official TPEx OpenAPI readback identified /openapi/v1/tpex_mainborad_highlight returning HTTP 200 application/json with Date=1151007 and internally coherent breadth denominator: rise419+decline357+flat97+unmatched/suspension20=ListedCompanyNumbers893; limit-up23<=rise419 and limit-down3<=decline357. Durable receipt: research/D18_04_TPEX_AGGREGATE_BREADTH_SOURCE_VALIDATION_20261007_V0_1.md. Same-date machine transport is proven; exact first-known/publication time, parser/replay, common-support occupancy and U2B continuity remain unproven."
         },
         {
           "id": "D18-05",
