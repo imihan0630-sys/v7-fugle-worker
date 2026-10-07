@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import {validateRegimeReceipt,classifyChangeType,classifyRootTreatment,classifyRegimeEvidence} from "./pattern_structural_break_regime_reset_firewall_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D8001 retrospective break blocked",()=>assert.equal(validateRegimeReceipt({firstObservableAt:"2026-10-07T08:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",replaySafe:true,retrospectiveOnly:true}).status,"RETROSPECTIVE_BREAK_LOOKAHEAD"));
+t("D8002 future regime receipt blocked",()=>assert.equal(validateRegimeReceipt({firstObservableAt:"2026-10-07T10:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",replaySafe:true,retrospectiveOnly:false}).status,"REGIME_NOT_KNOWN_AT_FREEZE"));
+t("D8003 valid PIT regime receipt",()=>assert.equal(validateRegimeReceipt({firstObservableAt:"2026-10-07T08:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",replaySafe:true,retrospectiveOnly:false}).status,"REGIME_RECEIPT_VALID"));
+t("D8004 volatility-only change separated",()=>assert.equal(classifyChangeType({volatility:true,trend:false,liquidity:false}).status,"VOLATILITY_ONLY_CHANGE"));
+t("D8005 multidimensional change separated",()=>assert.equal(classifyChangeType({volatility:true,trend:true,liquidity:false}).status,"MULTI_DIMENSIONAL_CHANGE"));
+t("D8006 regime alone need not kill root",()=>assert.equal(classifyRootTreatment({regimeReceiptValid:true,newPriceDiscovery:false,mechanicalEvent:false,rootStillObservable:true}).status,"ROOT_ACTIVE_WITH_REGIME_CONTEXT"));
+t("D8007 new price discovery triggers reevaluation",()=>assert.equal(classifyRootTreatment({regimeReceiptValid:true,newPriceDiscovery:true,mechanicalEvent:false,rootStillObservable:true}).status,"ROOT_FRESHNESS_REEVALUATION_REQUIRED"));
+t("D8008 mechanical event kept distinct",()=>assert.equal(classifyRootTreatment({regimeReceiptValid:true,newPriceDiscovery:false,mechanicalEvent:true,rootStillObservable:true}).status,"ROOT_INVALIDATED_BY_MECHANICAL_EVENT"));
+t("D8009 unknown receipt blocks root treatment",()=>assert.equal(classifyRootTreatment({regimeReceiptValid:false,newPriceDiscovery:false,mechanicalEvent:false,rootStillObservable:true}).status,"ROOT_STATE_UNKNOWN"));
+t("D8010 regime context no extra vote",()=>assert.equal(classifyRegimeEvidence({priceRootPresent:true,regimeContextPresent:true}).regimeContextCreatesExtraVote,false));
+console.log(`SUMMARY ${p}/10 PASS`);
