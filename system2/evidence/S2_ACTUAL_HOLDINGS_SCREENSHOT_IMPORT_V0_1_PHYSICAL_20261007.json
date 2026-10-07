@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "S2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_V0_1_PHYSICAL_ACCEPTANCE",
+  "version": "0.1-RESEARCH",
+  "recordedDate": "2026-10-07",
+  "status": "CODE_SCHEMA_UI_VALIDATED_REAL_OWNER_SNAPSHOT_PENDING",
+  "ownerDecision": "System 2 actual holdings are imported from an Owner-uploaded broker holdings screenshot after chat/vision-assisted structured extraction; broker API and automatic broker orders are not authorized.",
+  "implementation": {
+    "pullRequest": 775,
+    "mergeCommit": "28a42d5d49dce00a42dacf18797b45a904fc6dc3",
+    "sourceType": "USER_UPLOADED_BROKER_SCREENSHOT",
+    "contract": "system2/SYSTEM2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_V0_1.md",
+    "migration": "system2/sql/0009_actual_holdings_screenshot_import.sql",
+    "runtimeModules": [
+      "system2/runtime/actual_holdings_validation_v0_1.mjs",
+      "system2/runtime/actual_holdings_snapshot_v0_1.mjs",
+      "system2/runtime/actual_holdings_reconciliation_v0_1.mjs",
+      "system2/runtime/actual_holdings_persistence_v0_1.mjs",
+      "system2/runtime/actual_holdings_read_model_v0_1.mjs"
+    ]
+  },
+  "verification": {
+    "dedicatedWorkflowRunId": 37587329198,
+    "dedicatedWorkflowJobId": 112680392792,
+    "dedicatedWorkflowConclusion": "success",
+    "system2ResearchCiRunId": 37587329275,
+    "system2ResearchCiConclusion": "success",
+    "v8RegressionRunId": 37587329189,
+    "v8RegressionConclusion": "success",
+    "artifactId": 11466623799,
+    "artifactDigest": "sha256:ba59fa9a0d0a23ebf42f52f493a11da2c4193f03876ba5b0fdf3e7350e08404",
+    "firstDedicatedAttempt": {
+      "runId": 37587250983,
+      "conclusion": "failure",
+      "failureClass": "TEST_ASSERTION_CASE_SENSITIVITY_ONLY",
+      "functionalRuntimeTestsBeforeFailure": "PASS",
+      "repairCommit": "6dd8d2849179cfeb5c6336d481bde0d2c1d9d6f3"
+    },
+    "sqliteMigrationValidation": {
+      "result": "PASS",
+      "system2TableCount": 52,
+      "globalSchemaVersion": "1.1",
+      "requiredActualHoldingsTablesPresent": true
+    },
+    "contractProbe": {
+      "result": "S2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_V0_1_CONTRACT_PASS",
+      "idempotency": true,
+      "lowConfidenceState": "REVIEW_REQUIRED",
+      "forbiddenBrokerApiSourceState": "REJECTED",
+      "reconciliationLabelsObserved": [
+        "NEW_POSITION",
+        "QUANTITY_CHANGED",
+        "REDUCED",
+        "CLOSED"
+      ]
+    }
+  },
+  "storage": {
+    "virtualPositionsTableRemainsVirtualOnly": "s2_positions",
+    "actualHoldingsTables": [
+      "s2_actual_holdings_imports",
+      "s2_actual_holdings_snapshots",
+      "s2_actual_holdings_rows",
+      "s2_actual_holdings_reconciliation_events"
+    ],
+    "physicalIsolatedD1MigrationAppliedByThisAcceptance": false,
+    "reason": "Available acceptance workflow validated the additive migration in SQLite and provisioning code. It did not invoke the guarded isolated-D1 provisioning workflow.",
+    "historicalSnapshotsOverwritten": false
+  },
+  "failClosed": {
+    "unknownPreserved": true,
+    "reviewRequiredForLowConfidenceOrAmbiguity": true,
+    "explicitConfirmationRequired": true,
+    "unresolvedIssuesBlockSnapshot": true,
+    "invalidCoreValueCanBeRejected": true,
+    "automaticGuessingAuthorized": false
+  },
+  "reconciliation": {
+    "allowedLabels": [
+      "NEW_POSITION",
+      "INCREASED",
+      "REDUCED",
+      "CLOSED",
+      "UNCHANGED",
+      "AVG_COST_CHANGED",
+      "QUANTITY_CHANGED",
+      "POSSIBLE_CORPORATE_ACTION",
+      "REVIEW_REQUIRED"
+    ],
+    "exactTradePriceInferred": false,
+    "exactTradeTimeInferred": false,
+    "brokerOrderIdInferred": false,
+    "absenceOrQuantityChangeTreatedAsExactTradeHistory": false
+  },
+  "authority": {
+    "brokerApiAuthorized": false,
+    "brokerApiUsed": false,
+    "brokerAdapterAuthorized": false,
+    "brokerTokenRequired": false,
+    "brokerCertificateRequired": false,
+    "realOrdersEnabled": false,
+    "liveCapitalAuthority": false,
+    "brokerOrderRoutingAuthorized": false,
+    "automaticBuySellCancelReplaceAuthorized": false,
+    "system1HoldingsAutoImportAuthorized": false,
+    "system1RuntimeUsed": false,
+    "formalCoreImpact": false
+  },
+  "realOwnerState": {
+    "realOwnerScreenshotUsedInVerification": false,
+    "actualOwnerSnapshotImported": false,
+    "actualPositionMonitorVerified": false,
+    "nextPhysicalGate": "FIRST_REAL_OWNER_SCREENSHOT_CONFIRM_PERSIST_READBACK"
+  },
+  "uiReadModel": {
+    "actualHoldingsSeparated": true,
+    "virtualPositionsSeparated": true,
+    "candidatesSeparated": true,
+    "watchlistSeparated": true,
+    "simulatedFillsSeparated": true,
+    "sourceLabel": "USER_UPLOADED_BROKER_SCREENSHOT",
+    "lastVerifiedBeforeFirstRealImport": "NO VERIFIED SNAPSHOT"
+  }
+}
