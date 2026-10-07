@@ -6,6 +6,7 @@ on:
     paths:
       - "system2/runtime/nct01_physical_receipt_v0_1.mjs"
       - "system2/runtime/nct01_hidden_fallback_audit_v0_1.mjs"
+      - "system2/scripts/generate_nct01_hidden_fallback_audit_v0_1.mjs"
       - "system2/runtime/daily_shadow_orchestrator_v0_1.mjs"
       - "system2/runtime/nct01_artifact_runner_v0_1.mjs"
       - "system2/runtime/daily_shadow_history_prefetch_v0_1.mjs"
@@ -21,6 +22,7 @@ on:
     paths:
       - "system2/runtime/nct01_physical_receipt_v0_1.mjs"
       - "system2/runtime/nct01_hidden_fallback_audit_v0_1.mjs"
+      - "system2/scripts/generate_nct01_hidden_fallback_audit_v0_1.mjs"
       - "system2/runtime/daily_shadow_orchestrator_v0_1.mjs"
       - "system2/runtime/nct01_artifact_runner_v0_1.mjs"
       - "system2/runtime/daily_shadow_history_prefetch_v0_1.mjs"
@@ -56,6 +58,52 @@ jobs:
 
       - name: CORR-005/006 fail-closed regression
         run: node system2/tests/nct01_corr005_006_firewalls_v0_1.test.mjs
+
+      - name: Generate exact-head hidden-fallback audit
+        run: |
+          mkdir -p /tmp/nct01-audit
+          cat > /tmp/nct01-audit/runtime-evidence.json <<'JSON'
+          {
+            "instrumented": true,
+            "sameExecutionCut": true,
+            "runtimeForbiddenAccessCount": 0,
+            "typedEvidence": [
+              "CI_CORRECTION_REGRESSION_ONLY_NO_FORBIDDEN_SYSTEM1_ACCESS"
+            ]
+          }
+          JSON
+          cp /tmp/nct01-audit/runtime-evidence.json system2/evidence/.nct01-runtime-evidence-ci.json
+          node system2/scripts/generate_nct01_hidden_fallback_audit_v0_1.mjs \
+            --runtime-evidence system2/evidence/.nct01-runtime-evidence-ci.json \
+            --generated-at 2026-10-08T00:10:00Z \
+            --output system2/evidence/.nct01-hidden-fallback-audit-ci.json
+          rm system2/evidence/.nct01-runtime-evidence-ci.json
+
+      - name: Verify exact-head hidden-fallback audit
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          const payload=JSON.parse(fs.readFileSync("system2/evidence/.nct01-hidden-fallback-audit-ci.json","utf8"));
+          const audit=payload.audit;
+          if (audit.runnerHeadSha !== process.env.GITHUB_SHA) throw new Error("audit head mismatch");
+          if (audit.auditState !== "CLEAN_PROVEN_ABSENT") throw new Error("audit not clean: "+audit.auditState);
+          if (audit.staticComplete !== true || audit.runtimeComplete !== true) throw new Error("audit incomplete");
+          if (audit.hiddenDependencyPresent !== false) throw new Error("hidden dependency detected");
+          if (!/^[a-f0-9]{64}$/.test(audit.auditDigest)) throw new Error("audit digest invalid");
+          for (const [dimension,rows] of Object.entries(payload.staticFindings||{})) {
+            if (rows.length) throw new Error("static finding "+dimension+": "+rows.join(","));
+          }
+          if (payload.physicalAcceptanceEligible !== false) throw new Error("CI audit must not claim physical acceptance");
+          console.log("NC-T01 exact-head audit PASS", audit.auditDigest);
+          NODE
+
+      - name: Upload correction audit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-nct01-corr005-006-exact-head-audit
+          path: system2/evidence/.nct01-hidden-fallback-audit-ci.json
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Existing replay continuity regression
         run: node system2/tests/nct01_continuity_replay_binding_v0_1.test.mjs
