@@ -146,5 +146,36 @@
       "action": "fresh workflow_dispatch from latest main with year=2024 and market=TPEX",
       "doNotCountRun27AsTpex": true
     }
+  },
+  "laneOwnershipAudit": {
+    "checkedAt": "2026-10-07T15:41:59+08:00",
+    "finding": "CORRECTION_QUEUE_MD_JSON_ASSIGNMENT_DIVERGENCE",
+    "governanceRequirement": {
+      "routingClass": "DATA_LANE",
+      "assignedLane": "DATA_LANE",
+      "assignedRoom": "System 2｜歷史資料工程室",
+      "modificationOwner": "SYSTEM2_HISTORICAL_DATA_ROOM",
+      "auditLaneRole": "READ_ANALYZE_VERIFY_ONLY_UNLESS_OWNER_EXPLICITLY_TRANSFERS_IMPLEMENTATION"
+    },
+    "observedBeforeRepair": {
+      "markdownAssignmentPresent": true,
+      "jsonAssignmentFieldsMissing": true,
+      "markdownBlockedByStale2021TpexRevision": true
+    },
+    "auditLaneRepair": {
+      "queueJsonCommit": "cc8795b71a54c9841afb23e9dd3047794b26cc9d",
+      "queueMarkdownCommit": "7de75dcc57201b205ffac57542bb981cfebcd9b6",
+      "blockedBy": "NONE",
+      "implementationOwnershipTransferred": false
+    },
+    "rationale": "Queue metadata is AUDIT_LANE-owned governance state. This repair does not modify DATA_LANE historical ingestion/runtime/checkpoints and prevents duplicate cross-room execution."
+  },
+  "auditExecutionBoundary": {
+    "currentCorrection": "S2-CORR-20261004-001",
+    "implementationLane": "DATA_LANE",
+    "implementationRoom": "System 2｜歷史資料工程室",
+    "auditLaneMayDispatchAnnualBackfill": false,
+    "auditLaneMayIndependentlyVerify": true,
+    "ownerExplicitOverrideRequiredForCrossLaneImplementation": true
   }
 }
