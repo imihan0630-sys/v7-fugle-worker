@@ -1,0 +1,41 @@
+name: D08 TWSE Universe Provenance V0.2
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/d08-twse-universe-provenance-v0-2.yml"
+      - "system2/runtime/d08_twse_historical_universe_source_v0_1.mjs"
+      - "system2/runtime/d08_twse_historical_universe_source_v0_2.mjs"
+      - "system2/scripts/d08_twse_universe_provenance_v0_2.mjs"
+      - "system2/tests/d08_universe_provenance_version_split_v0_2.test.mjs"
+      - "research/d08_twse_month_end_scan_date_receipt_20261004_v0_1.json"
+      - "research/d08_twse_official_universe_source_receipt_20261004_v0_1.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Guard version split
+        run: |
+          set -euo pipefail
+          node system2/tests/d08_historical_valuation_source_core.test.mjs
+          node system2/tests/d08_universe_provenance_version_split_v0_2.test.mjs
+          node --check system2/scripts/d08_twse_universe_provenance_v0_2.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Capture public-source V0.2 provenance
+        run: |
+          set -euo pipefail
+          node system2/scripts/d08_twse_universe_provenance_v0_2.mjs | tee /tmp/d08-universe-v02.jsonl
+          grep '^D08_TWSE_UNIVERSE_PROVENANCE_V0_2=' /tmp/d08-universe-v02.jsonl
+      - name: Production isolation guard
+        run: |
+          git diff --exit-code -- Worker.js wrangler.toml
