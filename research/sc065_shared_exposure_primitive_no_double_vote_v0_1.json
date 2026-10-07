@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "SC065_SHARED_EXPOSURE_PRIMITIVE_V0_1",
+  "status": "RESEARCH_ONLY_OWNER_GATES_PRESERVED",
+  "observedMainBeforeMachineWrite": "bb2fd23a7b99f12c28128a15c8991ae2039324af",
+  "auditTicket": "SDA-010",
+  "producerDomain": "D10",
+  "consumerDomain": "D17",
+  "structuralAuthority": "D10",
+  "d17StructuralAuthority": "REFERENCE_ONLY",
+  "invariants": [
+    "ONE_STRUCTURAL_PRIMITIVE_MANY_CONSUMERS_NOT_MANY_VOTES",
+    "EVENT_REVEALED_EDGE_CANNOT_EXPLAIN_PRE_EVENT_DECISION",
+    "KNOWN_AT_AND_EFFECTIVE_STATE_BOTH_REQUIRED",
+    "CONSUMER_COUNT_NOT_EVIDENCE_COUNT",
+    "UNKNOWN_CANNOT_BE_FILLED_FROM_EVENT_MAGNITUDE_OR_PRICE_REACTION"
+  ],
+  "requiredPrimitiveFields": [
+    "primitiveId",
+    "primitiveType",
+    "producerDomain",
+    "exposureGraphId",
+    "graphVersion",
+    "edgeId",
+    "knownAt",
+    "effectiveFrom",
+    "effectiveTo",
+    "relationState",
+    "qualificationState",
+    "capacityState",
+    "commonModeState",
+    "sourceReceiptId",
+    "dedupRootId"
+  ],
+  "protectedOwnerGates": [
+    "H10",
+    "COV-06"
+  ],
+  "formalCoreChanged": false,
+  "d10_01": {
+    "level": "L2",
+    "maturityPct": 40
+  },
+  "exactNext": "SC-066 source-trigger/admission matrix, then shift research effort to another open L2 lane until a genuine post-freeze topology receipt exists."
+}
