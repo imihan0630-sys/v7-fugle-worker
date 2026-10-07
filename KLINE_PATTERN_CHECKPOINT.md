@@ -5968,3 +5968,151 @@ No maturity or Formal change is authorized by this routing.
 3. If the owner bundle appears, validate DL-095, then emit R7 and its redundancy graph without outcomes.
 4. D16 receives only deduped/dependency-preserving R7 observations.
 5. No L4 promotion or Formal Core change without actual OOS/prospective evidence.
+
+## Continuation update — DL-103~105 (2026-10-08)
+
+### DL-103 — detector-version representation invariance
+- Three clocks are now separated:
+  marketFirstObservableAt;
+  detectorSpecFrozenAt;
+  outcomeUnblindedAt / experiment outcome unlock.
+- A detector frozen after the historical market date is not automatically lookahead if it consumes only prefix-safe historical inputs and was frozen before the relevant outcome family was opened.
+- Detector-version choice after outcomes is a searched variant and must be counted.
+- Old R7 receipts remain immutable and append-only.
+- Cross-version states frozen:
+  EXACT_REPLAY_EQUIVALENT;
+  SAME_CAUSAL_EPISODE_REPRESENTATION_DRIFT;
+  EXPECTED_SPEC_CHANGE;
+  CLOCK_DRIFT;
+  PROVENANCE_DRIFT;
+  EPISODE_IDENTITY_DRIFT;
+  DATA_BLOCKED.
+- Bug fixes that change historical emitted state create a new research version unless complete canonical payload/clock/source/denominator equivalence is proven.
+
+### DL-104 — cross-version episode identity migration
+- Episode identity is causal lineage, not label similarity or spatial proximity.
+- Identity precedence:
+  immutable root/episode lineage;
+  exact anchors/source bars;
+  boundary/version lineage;
+  causal lifecycle;
+  spatial overlap only as description.
+- Migration classes frozen:
+  UNCHANGED_EPISODE;
+  SAME_EPISODE_REPRESENTATION_CHANGED;
+  EPISODE_SPLIT;
+  EPISODE_MERGE;
+  NEW_EPISODE_IN_NEW_VERSION;
+  DROPPED_EPISODE_IN_NEW_VERSION;
+  CLOCK_DRIFT;
+  PROVENANCE_DRIFT;
+  IDENTITY_UNRESOLVED.
+- Split/merge never rewrites old historical receipts or inherits outcome history as if the new representation always existed.
+- Mapping choice must remain outcome-blind.
+
+### DL-105 — version migration ledger / replay acceptance
+- Detector-version migration ledger is append-only.
+- Outcome access state at migration is frozen as CLOSED / PARTIALLY_OPENED / OPENED.
+- Any version introduced after relevant outcomes were opened must enter the search family and cannot reuse untouched-final-holdout privilege.
+- Exact implementation-equivalence shortcut requires canonical payload, clocks, source identities and denominator states all unchanged.
+- Prefix invariance explicitly compares true prefix vs full-history asOf replay.
+- Future failure/pivot/reclaim/label cannot rewrite an earlier snapshot.
+- NO_STRUCTURE / DATA_BLOCKED / FAILED / EXPIRED / INVALIDATED / UNRESOLVED cases must survive version migration.
+- SDA-002 research semantics are now materially mature but the ticket remains REMEDIATION_IN_PROGRESS pending genuine replay receipts, System1/System2 enforcement, D16 validation and 00 closure.
+
+### Test evidence
+- DL-103~105: 29/29 PASS.
+- Cumulative through DL-105: 341/341 PASS.
+- Native Node parity and OOS performance are not claimed.
+
+### Physical owner readback
+- No physical 1101 / 2021-06-15 R1-R6 bundle was found on latest main before this tranche.
+- D01 did not implement duplicate System2/D05 collectors.
+- Physical R7 remains blocked.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 modules remain L3.
+- DETECTOR_VERSION_INVARIANCE = FROZEN.
+- CROSS_VERSION_EPISODE_MIGRATION = FROZEN.
+- VERSION_LEDGER_APPEND_ONLY = TRUE.
+- POST_HOC_VERSION_SWAP = PROHIBITED.
+- SDA-001 remains OPEN / remediation in progress.
+- SDA-002 remains OPEN / remediation in progress.
+- Outcome join remains CLOSED.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-105
+1. Re-read latest main for the frozen 1101/2021-06-15 owner bundle.
+2. If absent, freeze D01-specific SDA-001/SDA-002 research-side closure-readiness package without claiming ticket closure.
+3. Distinguish research-side completed controls from remaining System1/System2/D16/00 gates.
+4. If R1-R6 appear, validate DL-095, emit R7 under DL-097/DL-098, then apply DL-103~105 version-invariance checks.
+5. No L4 promotion / no Formal Core change without actual OOS/prospective evidence.
+
+
+## Continuation update — DL-106~107 (2026-10-08)
+
+### DL-106 — SDA-001 / SDA-002 research-side closure-readiness
+- D01-specific SDA-001 research semantics are now classified COMPLETE_FOR_CURRENT_SCOPE:
+  PRICE_OHLC root;
+  alias dedup;
+  common-parent comparators;
+  cross-module redundancy graph;
+  cross-scale no-extra-vote firewall;
+  new structural root != new independent evidence.
+- SDA-001 remains REMEDIATION_IN_PROGRESS because cross-domain/System1/System2/D16/00 gates remain.
+- D01-specific SDA-002 causal research semantics are now classified COMPLETE_FOR_CURRENT_SCOPE:
+  label-independent geometry;
+  firstObservableAt/confirmedAt/predictorFreezeAt;
+  failure lifecycle;
+  negative/no-structure/data-blocked retention;
+  immutable episode/version lineage;
+  prefix invariance;
+  version migration firewall;
+  outcome-field firewall.
+- Older audit text that described latest D01 research tests as TEST_EXECUTION_PENDING is stale for the current suite.
+- Current deterministic V8-equivalent D01 execution through DL-107 = 357 / 357 PASS.
+- Native Node parity, genuine physical R7 and prospective/OOS evidence remain unclaimed.
+- SDA-002 remains REMEDIATION_IN_PROGRESS pending physical R7, System1/System2 enforcement, D16 and 00 closure.
+
+### DL-107 — outcome-locked D16 first-wave handoff
+- First-wave module set frozen:
+  D01-02 / D01-03 / D01-07 / D01-09.
+- Chronology preserved:
+  2018 warmup;
+  2019-2021 train -> 2022 test;
+  2019-2022 train -> 2023 test;
+  2024 untouched final holdout;
+  minimum 20 eligible-session purge/embargo.
+- Outcomes remain 1 / 5 / 20 eligible sessions.
+- Common parents, full denominator, redundancy/dependency graph and detector-version search accounting are all frozen before outcomes.
+- Parent/child comparisons require identical universe/window/source/predictor/blocking/censoring/horizon/cost/search-family support.
+- Hierarchical Benjamini-Yekutieli remains primary multiplicity control.
+- NO_WINNER remains valid.
+- D16 execution is NOT_STARTED because physical R1-R7 remains pending.
+
+### Test evidence
+- DL-103~105: 29/29 PASS.
+- DL-106~107: 16/16 PASS.
+- Cumulative through DL-107: 357/357 PASS.
+- Native Node parity and OOS/prospective performance are not claimed.
+
+### Governance
+- D01 maturity remains 60.0%.
+- All 11 modules remain L3.
+- D01_SDA001_RESEARCH_SEMANTICS = COMPLETE_FOR_CURRENT_SCOPE.
+- D01_SDA002_CAUSAL_RESEARCH_SEMANTICS = COMPLETE_FOR_CURRENT_SCOPE.
+- SDA-001 ticket remains OPEN / remediation in progress.
+- SDA-002 ticket remains OPEN / remediation in progress.
+- PHYSICAL_R1_R7 = PENDING.
+- D16_EXECUTION = NOT_STARTED.
+- OUTCOME_JOIN = CLOSED.
+- Formal Core remains LOCKED.
+
+### Exact next continuation after DL-107
+1. Re-read latest main for physical 1101/2021-06-15 R1-R6 owner returns.
+2. If absent, D01 may continue only genuinely new outcome-blind science; do not repeat SDA-001/SDA-002 semantics already marked complete for current scope.
+3. Candidate next science: define episode equivalence under benign source revision / corporate-action registry revision without allowing source-vintage drift to rewrite historical R7.
+4. If R1-R6 appear, validate DL-095, emit R7 under DL-097/DL-098, then apply DL-103~105 version invariance.
+5. Once physical R1-R7 exists, release the already-frozen DL-107 package to D16.
+6. No L4 promotion / no Formal Core change without completed OOS/prospective evidence.
