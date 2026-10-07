@@ -421,3 +421,32 @@ Immediately after NC-T01, BUILD_LANE must move into genuine SHORT_MOMENTUM daily
 - System1: sentinel only unless SDA-022 comparator or other explicit escalation condition triggers.
 
 Formal Core remains LOCKED.
+
+
+## 00 A1 root-cause split — publication lag vs transport integrity
+
+Independent read-only live diagnosis after run `37577209442` separates the A1 failure into two classes:
+
+1. TWSE current A1:
+   - independent live GET returned HTTP 200 / valid JSON / 1,381 rows;
+   - source date still `1151006` (2026-10-06);
+   - therefore the immediate blocker is source publication/readiness timing at the canonical endpoint, not parse failure.
+   - Official TWSE daily-closing product documentation has production batches approximately at 14:00, 15:30 and 17:30; exact OpenAPI timing is not asserted equal.
+   - A collector ending before the later official production horizon cannot safely equate poll exhaustion with end-of-day unavailability.
+
+2. TPEx current A1:
+   - independent live GET returned HTTP 200 / valid complete JSON / about 4.67 MB / 12,245 rows;
+   - source date = `1151007` (2026-10-07);
+   - current-day source publication is therefore physically observable by the later read;
+   - earlier `NON_JSON_RESPONSE` states in GitHub polling are classified as transient acquisition/body-integrity risk, not proof of current-day source absence.
+
+This strengthens `S2-CORR-20261007-001`:
+- TWSE remediation must include later-observation/finality design;
+- TPEx remediation may use bounded acquisition retry only under fail-closed integrity guards;
+- one generic retry policy must not obscure the distinct source states.
+
+Launch-critical consequence:
+A1 remains the true current-data blocker for the SHORT_MOMENTUM narrow Stage-1 path.
+B2 remains SWING_GROWTH-specific and must not regain global Stage-1 blocking status solely for symmetry.
+
+Formal Core remains LOCKED.
