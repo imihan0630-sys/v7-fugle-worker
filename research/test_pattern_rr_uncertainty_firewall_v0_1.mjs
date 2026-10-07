@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import {dedupeUncertainty,classifyRR,validateGeometryChoice,classifyUncertaintyTypes} from "./pattern_rr_uncertainty_firewall_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D7401 same uncertainty root double count blocked",()=>assert.equal(dedupeUncertainty({components:[{uncertaintyRootId:"zone1"},{uncertaintyRootId:"zone1"}]}).status,"UNCERTAINTY_COMPONENT_DOUBLE_COUNT"));
+t("D7402 distinct uncertainty roots preserved",()=>assert.equal(dedupeUncertainty({components:[{uncertaintyRootId:"zone1"},{uncertaintyRootId:"exec1"}]}).uniqueRoots,2));
+t("D7403 gross RR computable without costs",()=>assert.equal(classifyRR({rewardDistance:20,riskDistance:10,executionCostKnown:false}).grossRR,2));
+t("D7404 executable RR blocked without costs",()=>assert.equal(classifyRR({rewardDistance:20,riskDistance:10,executionCostKnown:false}).status,"EXECUTABLE_RR_DATA_BLOCKED"));
+t("D7405 execution costs reduce RR",()=>{const r=classifyRR({rewardDistance:20,riskDistance:10,executionCostKnown:true,roundTripCost:1});assert.ok(r.executableRR<r.grossRR);});
+t("D7406 ex-post geometry choice blocked",()=>assert.equal(validateGeometryChoice({chosenAt:"2026-10-07T08:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",selectedAfterOutcome:true}).status,"MODEL_SELECTION_LOOKAHEAD"));
+t("D7407 future geometry choice blocked",()=>assert.equal(validateGeometryChoice({chosenAt:"2026-10-07T10:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",selectedAfterOutcome:false}).status,"GEOMETRY_NOT_KNOWN_AT_FREEZE"));
+t("D7408 preregistered geometry valid",()=>assert.equal(validateGeometryChoice({chosenAt:"2026-10-07T08:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",selectedAfterOutcome:false}).status,"GEOMETRY_PREREGISTERED"));
+t("D7409 uncertainty types stay separated",()=>assert.equal(classifyUncertaintyTypes({structural:true,execution:true,volatility:true,eventGap:true,modelSelection:true}).status,"UNCERTAINTY_TYPES_SEPARATED"));
+t("D7410 invalid risk distance rejected",()=>assert.equal(classifyRR({rewardDistance:20,riskDistance:0,executionCostKnown:true,roundTripCost:1}).status,"RR_INPUT_INVALID"));
+console.log(`SUMMARY ${p}/10 PASS`);
