@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "D18_PRICE_VS_DENOMINATOR_ACTION_FAMILY_MATRIX_V0_1",
+  "owner": "ROOM11_D18",
+  "status": "SEMANTIC_MATRIX_FROZEN_EXECUTABLE_COVERAGE_PENDING",
+  "familySets": {
+    "priceResetFamilySet": {
+      "purpose": "U2B_PRICE_SPACE_CONTINUITY",
+      "currentStatus": "PARTIAL_STRONG_BUT_NOT_COMPLETE",
+      "families": [
+        {
+          "family": "EX_RIGHT_DIVIDEND",
+          "role": "PRICE_RESET_REQUIRED",
+          "sharedCoverage": "MATERIALLY_PRESENT"
+        },
+        {
+          "family": "CAPITAL_REDUCTION",
+          "role": "PRICE_RESET_REQUIRED_AND_DENOMINATOR_RELEVANT",
+          "sharedCoverage": "MATERIALLY_PRESENT"
+        },
+        {
+          "family": "PAR_VALUE_CHANGE",
+          "role": "PRICE_RESET_REQUIRED_AND_DENOMINATOR_RELEVANT",
+          "sharedCoverage": "MATERIALLY_PRESENT"
+        },
+        {
+          "family": "SPLIT_REVERSE_SPLIT",
+          "role": "PRICE_RESET_REQUIRED_AND_DENOMINATOR_RELEVANT",
+          "sharedCoverage": "SCOPE_MAPPING_UNPROVEN"
+        },
+        {
+          "family": "SUSPENSION_RESUMPTION",
+          "role": "SESSION_AND_REFERENCE_CONTINUITY_REQUIRED",
+          "sharedCoverage": "TWSE_BOUNDED_TWTAWU_PROOF_PATH_PENDING"
+        },
+        {
+          "family": "MERGER_SHARE_CONVERSION_DELISTING_IDENTIFIER_CHANGE",
+          "role": "PAIR_COMPARABILITY_BLOCKER",
+          "sharedCoverage": "V0_1_BLOCK_UNLESS_EXPLICIT_TRANSFORM"
+        }
+      ]
+    },
+    "shareDenominatorFamilySet": {
+      "purpose": "D18_06_EFFECTIVE_MARKET_CAP_MEMBERSHIP",
+      "currentStatus": "BROADER_SCOPE_NOT_EXECUTABLE",
+      "families": [
+        {
+          "family": "STOCK_DIVIDEND_CAPITALIZATION_LISTING",
+          "role": "DENOMINATOR_RELEVANT"
+        },
+        {
+          "family": "CASH_CAPITAL_INCREASE_NEW_SHARE_LISTING",
+          "role": "DENOMINATOR_RELEVANT"
+        },
+        {
+          "family": "CAPITAL_REDUCTION",
+          "role": "DENOMINATOR_RELEVANT"
+        },
+        {
+          "family": "PAR_VALUE_OR_SHARE_UNIT_CHANGE",
+          "role": "DENOMINATOR_RELEVANT"
+        },
+        {
+          "family": "TREASURY_SHARE",
+          "role": "DENOMINATOR_DEFINITION_DEPENDENT"
+        },
+        {
+          "family": "CB_WARRANT_CONVERSION_REALIZED_NEW_SHARES",
+          "role": "DENOMINATOR_RELEVANT"
+        },
+        {
+          "family": "EMPLOYEE_RESTRICTED_SHARE_REALIZED_ISSUANCE",
+          "role": "DENOMINATOR_RELEVANT"
+        },
+        {
+          "family": "MERGER_SHARE_EXCHANGE",
+          "role": "DENOMINATOR_AND_IDENTITY_RELEVANT"
+        }
+      ]
+    }
+  },
+  "forbiddenAliases": [
+    "PRICE_RESET_FAMILY_SET_PASS_AS_SHARE_DENOMINATOR_CERTIFICATE",
+    "SHARE_DENOMINATOR_FAMILY_SET_PASS_AS_PRICE_CONTINUITY_CERTIFICATE",
+    "GENERIC_CORPORATE_ACTION_COMPLETE_WITHOUT_ESTIMAND_SCOPE"
+  ],
+  "requiredReceiptFields": [
+    "priceResetFamilySetVersion",
+    "priceResetCoverageReceiptHash",
+    "shareDenominatorFamilySetVersion",
+    "shareDenominatorCoverageReceiptHash"
+  ],
+  "maturityImpact": "NONE"
+}
