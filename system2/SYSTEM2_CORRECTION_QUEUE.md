@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-07 09:53 Asia/Taipei
+Updated: 2026-10-07 15:41 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -28,7 +28,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - assignedLane: DATA_LANE
 - assignedRoom: System 2｜歷史資料工程室
 - modificationOwner: SYSTEM2_HISTORICAL_DATA_ROOM
-- blockedBy: 2021 TPEx official-source canonical A1 revision on 2021-01-14 requires explicit revision-lineage/as-of handling before that market-year can be accepted
+- blockedBy: NONE — 2021 TPEx blocker is resolved; DATA_LANE is actively continuing 2024+ market-years
 - affectedScope: S2-03 Historical infrastructure / P0 2017-present TWSE+TPEx daily A1 cold history
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement: System 2 historical infrastructure must physically populate and verify the staged official 2017-present Taiwan-equity daily history before it can be described as complete or used as complete full-market replay evidence.
