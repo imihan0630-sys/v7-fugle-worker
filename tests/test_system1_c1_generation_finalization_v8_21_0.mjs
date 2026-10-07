@@ -63,7 +63,7 @@ assert.equal(violated.status,"POST_FINALIZATION_GENERATION_VIOLATION");
 assert.equal(violated.postFinalizationViolationCount,1);
 
 const changed={...receipt,finalizationReceiptId:receipt.finalizationReceiptId+"x"};
-await assert.rejects(()=>persistC1GenerationFinalization(d1,changed),/ID_INVALID|REJECT_MUTABLE_FINALIZATION_HISTORY/);
+await assert.rejects(()=>persistC1GenerationFinalization(d1,changed),/ID_INVALID|RECEIPT_DIGEST_MISMATCH|REJECT_MUTABLE_FINALIZATION_HISTORY/);
 
 await assert.rejects(()=>buildC1GenerationFinalizationReceipt({
   scanDate:day,inventory,bindings:[{scanDate:day,bindingId:"bad",c1GenerationId:"outside"}],
