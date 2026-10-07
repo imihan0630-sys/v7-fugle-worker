@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "D06_05_CORPORATE_ACTION_SOURCE_REGISTRY_V0_1",
+  "createdAt": "2026-10-07T20:41:42+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "module": "D06-05",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "purpose": "PIT-safe event masking for weekly TDCC ownership-concentration deltas.",
+  "eventClockFields": [
+    "announcementFirstKnownAt",
+    "actionType",
+    "suspensionStart",
+    "suspensionEnd",
+    "recordOrExchangeDate",
+    "effectiveOrResumeTradeDate",
+    "oldSecurityId",
+    "newSecurityId",
+    "shareExchangeRatio",
+    "sourceUrl",
+    "observedAt"
+  ],
+  "sourceFamilies": [
+    {
+      "market": "TWSE",
+      "eventTypes": [
+        "stock dividend / rights / cash capital increase"
+      ],
+      "source": "TWSE ex-right/ex-dividend preannouncement and result tables",
+      "urls": [
+        "https://www.twse.com.tw/exchangeReport/TWT48U?response=html",
+        "https://www.twse.com.tw/exchangeReport/TWT49U?response=html"
+      ],
+      "rule": "cash-dividend-only is not a share-denominator contamination event; stock-rights or effective new-share issuance is"
+    },
+    {
+      "market": "TWSE",
+      "eventTypes": [
+        "capital reduction",
+        "capital reduction plus cash capital increase"
+      ],
+      "source": "TWSE capital-reduction announcement/reference-price surfaces plus MOPS announcements",
+      "urls": [
+        "https://www.twse.com.tw/zh/announcement/reduction/twtauu.html",
+        "https://mops.twse.com.tw/"
+      ],
+      "rule": "mask the TDCC pair when share exchange/suspension/effective window touches the pair"
+    },
+    {
+      "market": "TPEx",
+      "eventTypes": [
+        "stock dividend / rights / cash capital increase"
+      ],
+      "source": "TPEx ex-right/ex-dividend preannouncement",
+      "urls": [
+        "https://www.tpex.org.tw/zh-tw/announce/market/ex/announce.html"
+      ],
+      "rule": "preserve actual public announcement time and effective ex-right date"
+    },
+    {
+      "market": "TPEx",
+      "eventTypes": [
+        "capital reduction"
+      ],
+      "source": "TPEx capital-reduction reference/announcement",
+      "urls": [
+        "https://www.tpex.org.tw/zh-tw/announce/market/reduction/reference.html",
+        "https://mops.twse.com.tw/"
+      ],
+      "rule": "mask pair on exchange/suspension/effective overlap"
+    },
+    {
+      "market": "TPEx",
+      "eventTypes": [
+        "par-value change",
+        "split/reverse-split style share-count transformation"
+      ],
+      "source": "TPEx par-value-change reference and MOPS",
+      "urls": [
+        "https://www.tpex.org.tw/zh-tw/announce/market/change/reference.html",
+        "https://mops.twse.com.tw/"
+      ],
+      "rule": "hard contamination because bracket thresholds are share-count based"
+    },
+    {
+      "market": "TWSE/TPEx",
+      "eventTypes": [
+        "merger",
+        "share exchange",
+        "spin-off",
+        "delisting/relisting",
+        "security-id transition"
+      ],
+      "source": "exchange official announcements / MOPS",
+      "urls": [
+        "https://www.twse.com.tw/",
+        "https://www.tpex.org.tw/",
+        "https://mops.twse.com.tw/"
+      ],
+      "rule": "require explicit security-identity lineage; no naive same-code continuity"
+    }
+  ],
+  "pitRules": [
+    "primary event mask may use only event information publicly known no later than the research decision timestamp",
+    "effective date is not knowledge time; store both announcementFirstKnownAt and effective window",
+    "posthoc-discovered events may be tagged for data-quality diagnosis but may not silently rewrite a historical decision receipt",
+    "one corporate-action primitive may feed both ownership cleaning and price-adjustment logic but is counted once"
+  ],
+  "pairClassification": [
+    "CLEAN_PIT_EVENT_FREE_EXACT_DENOMINATOR",
+    "DENOMINATOR_CONTAMINATED",
+    "CORPORATE_ACTION_CONTAMINATED",
+    "IDENTITY_TRANSITION_CONTAMINATED",
+    "EVENT_CLOCK_UNKNOWN_FAIL_CLOSED"
+  ],
+  "status": "SOURCE_REGISTRY_FROZEN / PIT_EVENT_CLOCK_REQUIRED / CASH_DIVIDEND_NOT_AUTOMATIC_SHARE_CONTAMINATION / OUTCOMES_CLOSED / FORMAL_LOCKED"
+}
