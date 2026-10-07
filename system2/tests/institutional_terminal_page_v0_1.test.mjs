@@ -7,8 +7,8 @@ import {
 
 const html=buildSystem2TerminalPageHtml();
 const required=[
-  "多策略智慧選股終端","市場總控","候選股","決策工作台","虛擬部位","共振中心","策略中心","績效中心","事件 / 產業","證據 / 系統",
-  "ACTUAL_HOLDINGS_SOURCE_NOT_WIRED","Formal Core: LOCKED","Real orders: DISABLED",
+  "多策略智慧選股終端","市場總控","候選股","決策工作台","部位管理","共振中心","策略中心","績效中心","事件 / 產業","證據 / 系統",
+  "USER_UPLOADED_BROKER_SCREENSHOT","ACTUAL_POSITION_MONITOR_VERIFIED=false","Formal Core: LOCKED","Real orders: DISABLED",
   "/api/system2/resonance","/api/system2/resonance/pool","/api/system2/resonance/operations","/api/system2/shadow/diagnostic","/health",
 ];
 for(const token of required) assert.equal(html.includes(token),true,"missing UI token: "+token);
@@ -46,9 +46,16 @@ assert.equal(swingGrowth.includes("OWNER REVIEW PENDING"),false);
 for(const token of [
   "Risk-on/off: UNKNOWN",
   "Trend/Range: UNKNOWN",
-  "Actual Holdings</div><div class=\"value\">LOCKED",
-  "ACTUAL_HOLDINGS_SOURCE_NOT_WIRED",
+  "Actual Holdings</div><div class=\"value\">PENDING",
+  "NO VERIFIED OWNER SNAPSHOT",
+  "USER_UPLOADED_BROKER_SCREENSHOT",
   "ACTUAL_POSITION_MONITOR_VERIFIED=false",
+  "Broker API: NOT AUTHORIZED",
+  "ACTUAL HOLDINGS",
+  "VIRTUAL POSITIONS",
+  "CANDIDATES",
+  "WATCHLIST",
+  "SIMULATED FILLS",
   "SAMPLE GATED",
   "READ API PENDING",
   "DATA GATED",
