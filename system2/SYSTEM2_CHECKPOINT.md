@@ -2911,3 +2911,61 @@ Next exact BUILD_LANE continuation:
 3. do not freeze a complete expected MOPS keyset until both provenance stability and source semantics pass;
 4. only then bind the MOPS keyset with the accepted V1.5 eight-lane source manifest into the V1.4.1 pre-parent cut;
 5. post-parent reconcile and require `noRevisionGapThroughCut=true` before symbol-session / technical-continuity promotion.
+
+
+## 2026-10-08 05:52 BUILD_LANE launch-critical cursor supersession — NC-T01 CORR-005/006
+
+Observed main before write:
+`e6c2a8186e95fd8961da1cead56db3dfd92396ad`.
+
+This block supersedes the prior S2-07 continuation **for current Stage-1 launch-critical BUILD scheduling only**.
+The S2-07 cursor remains durable and must resume after the NC-T01 launch gate is cleared; none of its accepted evidence is discarded.
+
+Canonical blockers:
+- `S2-CORR-20261007-005` — HIGH / OPEN / BUILD_LANE:
+  hidden-fallback evidence missing can default to false; S22-T12/T16 cannot physically pass.
+- `S2-CORR-20261007-006` — HIGH / OPEN / BUILD_LANE:
+  continuity-ready W0 can be promoted while strategy-required evidence is incomplete; S22-T13/T14/T16 cannot physically pass.
+
+Latest independent reconfirmation:
+`system2/evidence/S2_CORR_005_006_LATEST_MAIN_RECONFIRMATION_20261008_V0_1.json`
+@ `8770e51a023439ecadd7cf289f82fd056dff1f27`.
+
+00 combined implementation contract:
+`system2/evidence/S2_CORR_005_006_COMBINED_BUILD_HANDOFF_20261008_V0_1.json`
+@ `97cac22a24f28593679092b03819a47fa3d89752`.
+
+Physical acceptance matrix:
+`system2/evidence/S2_STAGE1_NCT01_PHYSICAL_ACCEPTANCE_MATRIX_20261008_V0_2.json`
+@ `9b38a4583c04dea42fb4ee9759f019a9d2fc7070`.
+
+Important optimization:
+- minimal CORR-005/006 hardening does not overlap the 11 canonical SDA-022 policy-fingerprint hard-bound sources;
+- therefore S22-T06..T10 fingerprints must NOT be regenerated unless BUILD actually changes one of those 11 bound artifacts.
+
+### Current exact BUILD_LANE continuation
+
+1. Implement CORR-005 + CORR-006 in **one bounded exact-head patch** because they share the NC-T01 receipt/runner conflict units.
+2. Required core units:
+   - `system2/runtime/nct01_physical_receipt_v0_1.mjs`;
+   - `system2/runtime/nct01_artifact_runner_v0_1.mjs`;
+   - `system2/runtime/daily_shadow_orchestrator_v0_1.mjs`;
+   - exact-head hidden-fallback static/runtime audit helper;
+   - NC-T01 regressions + physical wrapper/workflow.
+3. CORR-005:
+   - no default-false audit semantics;
+   - exact-head static transitive audit + runtime forbidden-access evidence;
+   - bind `HIDDEN_FALLBACK_AUDIT_SHA256`;
+   - missing/UNKNOWN evidence remains EVIDENCE_INCOMPLETE.
+4. CORR-006:
+   - distinguish W0 continuity-ready from W1 strategy-executable;
+   - W1 requires explicit required-evidence completeness;
+   - W0-only / strategy-INCOMPLETE cannot promote execution or legitimate zero-pick.
+5. Run exact-head correction regressions + System2 Research CI + applicable V8 Regression.
+6. Merge only after exact-head PASS.
+7. Wait for DATA_LANE real source-honest CLEAR_NO_ACTION receipt, then execute one read-only/artifact-only real SHORT_MOMENTUM NC-T01.
+8. 00 independently recomputes S22-T11..T16 before any physical-independence credit.
+9. Only after physical NC-T01 does CORR-003 become the dominant persistence blocker before genuine SHORT_MOMENTUM -> RANK-01 -> `s2_capacity_runs`.
+10. After this launch-critical chain is cleared, return to the preserved S2-07 MOPS stabilization cursor.
+
+No strategy thresholds/weights/ranking, capacity policy, System1 Formal Core/runtime, final selection, live push, capital or order authority are changed.
