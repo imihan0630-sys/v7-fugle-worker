@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "S2_CORR_20261007_001_A1_SOURCE_DIAGNOSIS_V0_1",
+  "recordedAt": "2026-10-07T18:43:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "directiveId": "S2-CORR-20261007-001",
+  "scope": "READ_ONLY_SOURCE_DIAGNOSIS_ONLY",
+  "canonicalProspectiveSources": {
+    "TWSE": {
+      "sourceId": "A1_TWSE_DAILY_CLOSE",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL"
+    },
+    "TPEX": {
+      "sourceId": "A1_TPEX_DAILY_CLOSE",
+      "url": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes"
+    }
+  },
+  "liveObservations": [
+    {
+      "observedAt": "2026-10-07T16:54:00+08:00",
+      "market": "TWSE",
+      "endpoint": "STOCK_DAY_ALL",
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "observedPayloadDate": "1151006",
+      "normalizedDate": "2026-10-06",
+      "targetDate": "2026-10-07",
+      "targetDateReady": false,
+      "interpretation": "TARGET_DATE_PUBLICATION_LAG_ON_THIS_ENDPOINT"
+    },
+    {
+      "observedAt": "2026-10-07T18:43:00+08:00",
+      "market": "TWSE",
+      "endpoint": "STOCK_DAY_ALL",
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "observedPayloadDate": "1151006",
+      "normalizedDate": "2026-10-06",
+      "targetDate": "2026-10-07",
+      "targetDateReady": false,
+      "interpretation": "TARGET_DATE_PUBLICATION_LAG_PERSISTS_ON_THIS_ENDPOINT"
+    },
+    {
+      "observedAt": "2026-10-07T18:43:00+08:00",
+      "market": "TWSE",
+      "endpoint": "MI_INDEX?response=json&date=20261007&type=ALLBUT0999",
+      "httpStatus": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "targetDate": "2026-10-07",
+      "targetDateReady": true,
+      "stat": "OK",
+      "perStockDailyCloseTablePresent": true,
+      "interpretation": "CURRENT_DAY_OFFICIAL_TWSE_CLOSE_DATA_EXISTS_ON_ALREADY_VALIDATED_HISTORICAL_A1_SOURCE"
+    },
+    {
+      "observedAt": "2026-10-07T18:43:00+08:00",
+      "market": "TPEX",
+      "endpoint": "tpex_mainboard_daily_close_quotes",
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "observedPayloadDate": "1151007",
+      "normalizedDate": "2026-10-07",
+      "targetDateReady": true,
+      "caveat": "Firecrawl page processing was truncated due page length; this does not prove the official HTTP body was truncated.",
+      "interpretation": "CURRENT_DATE_VISIBLE_BUT_CANONICAL_COLLECTOR_MUST_ESTABLISH_COMPLETE_BODY_PARSE_INTEGRITY"
+    },
+    {
+      "observedAt": "2026-10-07T18:43:00+08:00",
+      "market": "TPEX",
+      "endpoint": "afterTrading/dailyQuotes?response=json&date=2026/10/07",
+      "httpStatus": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "targetDate": "2026-10-07",
+      "targetDateReady": true,
+      "perStockDailyCloseRowsPresent": true,
+      "interpretation": "CURRENT_DAY_OFFICIAL_TPEX_CLOSE_DATA_EXISTS_ON_ALREADY_VALIDATED_HISTORICAL_A1_SOURCE"
+    }
+  ],
+  "repositoryReadback": {
+    "historicalCanonicalSources": {
+      "TWSE": "A1_TWSE_MI_INDEX_HISTORICAL_DAILY",
+      "TPEX": "A1_TPEX_DAILY_QUOTES_HISTORICAL"
+    },
+    "existingHistoricalGuards": [
+      "requested source date must match marketDate",
+      "daily OHLC table must exist",
+      "ordinary symbols normalized",
+      "duplicate ordinary symbols rejected",
+      "OHLC consistency checked",
+      "RAW price-space fields normalized"
+    ],
+    "pitWarning": "Historical parser uses SESSION_CLOSE_FINALITY and explicitly records historicalPublicationTimestampProven=false. That fixed historical availableAt must not be reused as prospective firstKnownAt/availableAt."
+  },
+  "diagnosis": {
+    "TWSE": "The 2026-10-07 failure is not evidence that TWSE lacked current-day official close data. STOCK_DAY_ALL was still on 2026-10-06 while MI_INDEX already exposed 2026-10-07. Endpoint/source-contract suitability for same-day Stage-1 is the issue to test.",
+    "TPEX": "Current-day data was observable on both the OpenAPI family and the already-validated dailyQuotes family. Earlier GitHub-runner NON_JSON_RESPONSE events remain consistent with acquisition/body parsing instability, but this evidence does not prove the official source body itself was invalid.",
+    "combined": "Do not apply one undifferentiated retry rule across TWSE publication lag and TPEx acquisition/body-integrity behavior."
+  },
+  "requiredSafeValidation": [
+    "Version any prospective A1 source-contract change.",
+    "Prove same-date canonical field semantics and ordinary-symbol coverage equivalence before source switch/fallback.",
+    "Preserve actual observedAt as prospective first-known evidence; never backdate from historical close-finality semantics.",
+    "Keep target-date/schema/OHLC/PIT/UNKNOWN guards fail-closed.",
+    "Measure first physical READY time on later real trading dates before claiming the alternative source satisfies the Stage-1 decision window.",
+    "Do not modify System1 or live order/capital authority."
+  ],
+  "implementationPerformed": false,
+  "ownerDecisionRequired": false
+}
