@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "D03_TECHNICAL_CONTINUITY_HISTORY_MATURITY_MAP_V0_1",
+  "updatedAt": "2026-10-07T16:10:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "RESEARCH_ONLY_HISTORY_CONTINUITY_EVIDENCE_DECOMPOSITION",
+  "formalCoreImpact": "NONE_LOCKED",
+  "sourceMainSha": "5374b212b752893973080d7ee1f0ef179774f0f3",
+  "governingRule": "RAW_A1_HISTORY_EXISTENCE_DOES_NOT_IMPLY_SYMBOL_SESSION_COMPLETENESS_AND_DOES_NOT_IMPLY_REVISION_KNOWN_AT_COMPLETENESS",
+  "evidenceLayers": [
+    {
+      "layer": "LAYER_A_RAW_A1_HISTORY",
+      "meaning": "Official historical OHLCV rows and immutable cold-store/source reconciliation.",
+      "canSupport": [
+        "indicator formula replay on observed rows",
+        "hash/readback integrity",
+        "bounded historical feature reconstruction"
+      ],
+      "cannotSupport": [
+        "missing-session interpretation",
+        "corporate-action revision completeness",
+        "decision-time availability"
+      ]
+    },
+    {
+      "layer": "LAYER_B_SYMBOL_SESSION_COMPLETENESS",
+      "meaning": "Expected market/symbol/session denominator with every missing bar explained by halt/suspension/listing/delisting/universe provenance.",
+      "canSupport": [
+        "eligible-session population construction",
+        "exact 20-session Bollinger windows when continuity holds",
+        "ADX recursive session stepping"
+      ],
+      "cannotSupport": [
+        "whether a later correction/revision was already knowable at historical decision time"
+      ]
+    },
+    {
+      "layer": "LAYER_C_REVISION_KNOWN_AT",
+      "meaning": "Exact corporate-action/reference/version fact demonstrably available no later than the historical decision cutoff.",
+      "canSupport": [
+        "promotion-grade technical continuity",
+        "pre-parent evidence cut",
+        "noRevisionGapThroughCut review"
+      ],
+      "cannotSupport": [
+        "predictive alpha or OOS incrementality by itself"
+      ]
+    }
+  ],
+  "marketYearEvidence": [
+    {
+      "market": "TPEX",
+      "year": 2021,
+      "dataCoverage": "PASS",
+      "replayReadiness": "PARTIAL",
+      "officialColdRows": 191643,
+      "freshOfficialRows": 191643,
+      "missingExtraSourceCanonicalMismatchCount": 0,
+      "explicitUnknownSymbolSessionGaps": 412,
+      "continuityState": "UNVERIFIED",
+      "sourceVersionState": "STABLE_CURRENT_REVERIFY",
+      "revisionRowsPersisted": 0,
+      "layerA": "ACCEPT",
+      "layerB": "PARTIAL",
+      "layerC": "NOT_PROVEN",
+      "d03Credit": "FORMULA_REPLAY_INPUT_ONLY_NOT_PROMOTION_CONTINUITY"
+    },
+    {
+      "market": "TPEX",
+      "year": 2023,
+      "dataCoverage": "PASS",
+      "replayReadiness": "PARTIAL",
+      "explicitUnknownSymbolSessionGaps": 395,
+      "unexpectedBars": 0,
+      "layerA": "ACCEPT",
+      "layerB": "PARTIAL",
+      "layerC": "NOT_PROVEN",
+      "d03Credit": "FORMULA_REPLAY_INPUT_ONLY_NOT_PROMOTION_CONTINUITY"
+    },
+    {
+      "market": "TWSE",
+      "year": 2024,
+      "dataCoverage": "PASS",
+      "replayReadiness": "PARTIAL",
+      "coldRows": 246037,
+      "freshOfficialRows": 246037,
+      "explicitUnknownSymbolSessionGaps": 478,
+      "unexpectedBars": 0,
+      "sourceVersionState": "STABLE",
+      "layerA": "ACCEPT",
+      "layerB": "PARTIAL",
+      "layerC": "NOT_PROVEN",
+      "d03Credit": "FORMULA_REPLAY_INPUT_ONLY_NOT_PROMOTION_CONTINUITY"
+    },
+    {
+      "market": "TPEX",
+      "year": 2024,
+      "dataCoverage": "PENDING_NOT_ACCEPTED",
+      "replayReadiness": "NOT_REACHED",
+      "priorRunId": 37587943578,
+      "failureType": "INTERMITTENT_PRIMARY_TRANSPORT_TIMEOUT",
+      "failedDates": [
+        "2024-04-26",
+        "2024-01-15"
+      ],
+      "legacyFallbackAllowed": false,
+      "resilientPrimaryRetryImplementationOnMain": true,
+      "resilienceCiRunId": 37590871628,
+      "layerA": "PENDING_FRESH_PHYSICAL_REVERIFY",
+      "layerB": "NOT_REVIEWABLE",
+      "layerC": "NOT_PROVEN",
+      "d03Credit": "NONE_UNTIL_FRESH_PHYSICAL_ACCEPTANCE"
+    }
+  ],
+  "indicatorImplications": {
+    "bollinger": {
+      "module": "D03-10",
+      "current": "L2_40",
+      "historicalReplayUse": "Layer A accepted rows may be used for deterministic formula/replay engineering after exact eligible-session construction.",
+      "promotionRequirement": [
+        "Layer B complete enough to prove exact 20 eligible sessions with suspension/listing/corporate-action handling",
+        "Layer C known-at/revision closure no later than decisionCutoffAt",
+        "genuine V8.20 Formal-to-C1 parent binding",
+        "finalized same-session C1 generation inventory",
+        "same-parent comparator admission and COMPLETE expected-parent reconciliation"
+      ],
+      "antiShortcut": "A 20-row numerical window is not an eligible 20-session window unless symbol-session continuity is certified."
+    },
+    "adx": {
+      "module": "D03-09",
+      "current": "L2_40",
+      "historicalReplayUse": "Layer A can reconstruct H/L/C recursion only on observed rows.",
+      "promotionRequirement": [
+        "Layer B canonical session continuity",
+        "Layer C revision-known-at closure",
+        "genuine parent and finalized parent set",
+        "canonical Wilder FULL_REPLAY or replay-certified trusted prior state",
+        "same-parent direct-trend controls and D16 residual incrementality"
+      ],
+      "antiShortcut": "A recursive ADX chain with one unexplained missing/adjusted session is not promotion-grade even if the final numeric value looks plausible."
+    }
+  },
+  "transportResilienceInterpretation": {
+    "accepted": "Retrying the same canonical PRIMARY transport after bounded transient exhaustion can repair acquisition reliability without changing source semantics.",
+    "rejected": "Legacy non-equivalent endpoint fallback cannot be used to manufacture historical completeness.",
+    "d03Meaning": "Transport resilience improves the chance of acquiring Layer A evidence; it does not upgrade Layer B or Layer C."
+  },
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "maturityPromotion": false,
+    "rawSourceVersionGate": "2_OF_3",
+    "technicalObserverR1": "BLOCKED",
+    "outcomes": "CLOSED",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "exactNextContinuationPoint": "Consume fresh 2024 TPEX physical acceptance only when DATA_LANE produces it; credit at Layer A first, then separately test symbol-session completeness and revision-known-at. Do not allow raw-history completion to auto-promote D03 continuity. In parallel consume the first genuine V8.20 Formal-to-C1 binding receipt, S2-07 bounded stabilization, System1/System2 D03 dedup/redundancy diagnostics, D16 method/incrementality receipt, and raw-source observer completion."
+}
