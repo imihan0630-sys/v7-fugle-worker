@@ -39,6 +39,21 @@ function maxDate(a, b) {
   return a > b ? a : b;
 }
 
+export function historicalUniverseMembershipActiveOnDateV0_1(membership, marketDate) {
+  if (!membership || typeof membership !== "object") throw new Error("membership is required");
+  const date = isoDate(marketDate, "marketDate");
+  if (membership.replayEligible !== true || !membership.effectiveFrom) return false;
+  if (membership.effectiveFrom > date) return false;
+  if (membership.effectiveTo === null || membership.effectiveTo === undefined) return true;
+  const end = isoDate(membership.effectiveTo, "membership.effectiveTo");
+  // An official delisting date is the first date the old listed security is no longer
+  // an active market member. Observed-interval-only endpoints remain inclusive because
+  // their effectiveTo is the last positively observed trading date, not a termination date.
+  return membership.endBasis === "OFFICIAL_DELISTING_DATE"
+    ? date < end
+    : date <= end;
+}
+
 function normalizeSourceRow(row, index) {
   if (!row || typeof row !== "object" || Array.isArray(row)) {
     throw new Error("sourceRows[" + index + "] must be an object");
@@ -246,12 +261,7 @@ export async function buildHistoricalUniverseSnapshotV0_1({
   const captured = isoTimestamp(capturedAt, "capturedAt");
 
   const members = registry.memberships
-    .filter((x) =>
-      x.replayEligible === true
-      && x.effectiveFrom !== null
-      && x.effectiveFrom <= date
-      && (x.effectiveTo === null || x.effectiveTo >= date),
-    )
+    .filter((x) => historicalUniverseMembershipActiveOnDateV0_1(x, date))
     .map((x) => deepFreeze({
       symbol: x.symbol,
       companyName: x.companyName,
