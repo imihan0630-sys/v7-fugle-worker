@@ -268,4 +268,99 @@ const lateReceipt = await makeReceipt(replay, {
 assert.equal(lateReceipt.disposition, "CONTINUITY_UNKNOWN");
 assert.ok(lateReceipt.blockerCodes.includes("SOURCE_EVIDENCE_OBSERVED_AFTER_DECISION"));
 
+// Availability-clock revision lineage must preserve a single internally
+// consistent provenance tuple across pre/post revision clocks.
+const revisionDate = "2026-09-29";
+const revisionBase = {
+  canonicalKey: ["TWSE", symbol, revisionDate, "RAW"].join("|"),
+  marketDate: revisionDate,
+  market: "TWSE",
+  symbol,
+  companyName: "台泥",
+  priceSpace: "RAW",
+  open: 100,
+  high: 102,
+  low: 99,
+  close: 101,
+  volumeShares: 1000000,
+  tradeValue: 101000000,
+  transactions: 1000,
+  change: 1,
+  continuityState: "UNVERIFIED",
+  pitReplayEligible: true,
+};
+const revisionA = {
+  ...revisionBase,
+  sourceId: "TWSE_REVISION_A",
+  sourceName: "fixture-A",
+  sourceRowHash: await sha256Hex({ revision: "A", symbol, revisionDate }),
+  observedAt: "2026-09-29T05:40:00Z",
+  availableAt: "2026-09-29T05:30:00Z",
+  capturedAt: "2026-09-29T05:40:00Z",
+  pitAvailabilityClass: "PROSPECTIVE_OBSERVED",
+};
+revisionA.barHash = await sha256Hex(revisionA);
+const revisionB = {
+  ...revisionBase,
+  close: 102,
+  sourceId: "TWSE_REVISION_B",
+  sourceName: "fixture-B",
+  sourceRowHash: await sha256Hex({ revision: "B", symbol, revisionDate }),
+  observedAt: "2026-09-29T06:40:00Z",
+  availableAt: "2026-09-29T06:30:00Z",
+  capturedAt: "2026-09-29T06:40:00Z",
+  pitAvailabilityClass: "PROSPECTIVE_OBSERVED",
+};
+revisionB.barHash = await sha256Hex(revisionB);
+
+const preRevisionReplay = await buildPitReplayWindow({
+  replayId: "NCT01-REVISION-PRE",
+  symbol,
+  marketDate: revisionDate,
+  decisionTimestamp: "2026-09-29T06:00:00Z",
+  priceSpace: "RAW",
+  lookbackSessions: 1,
+  historicalBars: [revisionA, revisionB],
+});
+const postRevisionReplay = await buildPitReplayWindow({
+  replayId: "NCT01-REVISION-POST",
+  symbol,
+  marketDate: revisionDate,
+  decisionTimestamp: "2026-09-29T07:00:00Z",
+  priceSpace: "RAW",
+  lookbackSessions: 1,
+  historicalBars: [revisionA, revisionB],
+});
+assert.deepEqual(
+  {
+    sourceId: preRevisionReplay.bars[0].sourceId,
+    sourceRowHash: preRevisionReplay.bars[0].sourceRowHash,
+    barHash: preRevisionReplay.bars[0].barHash,
+    availableAt: preRevisionReplay.bars[0].availableAt,
+  },
+  {
+    sourceId: revisionA.sourceId,
+    sourceRowHash: revisionA.sourceRowHash,
+    barHash: revisionA.barHash,
+    availableAt: revisionA.availableAt,
+  },
+);
+assert.deepEqual(
+  {
+    sourceId: postRevisionReplay.bars[0].sourceId,
+    sourceRowHash: postRevisionReplay.bars[0].sourceRowHash,
+    barHash: postRevisionReplay.bars[0].barHash,
+    availableAt: postRevisionReplay.bars[0].availableAt,
+  },
+  {
+    sourceId: revisionB.sourceId,
+    sourceRowHash: revisionB.sourceRowHash,
+    barHash: revisionB.barHash,
+    availableAt: revisionB.availableAt,
+  },
+);
+assert.notEqual(preRevisionReplay.bars[0].sourceId, postRevisionReplay.bars[0].sourceId);
+assert.notEqual(preRevisionReplay.bars[0].sourceRowHash, postRevisionReplay.bars[0].sourceRowHash);
+assert.notEqual(preRevisionReplay.bars[0].barHash, postRevisionReplay.bars[0].barHash);
+
 console.log("System2 NC-T01 replay continuity binding v0.1 tests passed");
