@@ -1,0 +1,12 @@
+import assert from "node:assert/strict";
+import {classifyGap,validateGapReceipt,preserveGapDenominator,validateFillDefinition,classifyLimitDiscovery} from "./pattern_gap_price_limit_pit_contract_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D8501 ordinary gap separate",()=>assert.equal(classifyGap({}).status,"ORDINARY_OPENING_GAP"));
+t("D8502 corporate action gap separate",()=>assert.equal(classifyGap({corporateAction:true}).status,"CORPORATE_ACTION_MECHANICAL_GAP"));
+t("D8503 multi-cause gap not collapsed",()=>assert.equal(classifyGap({marketWide:true,symbolEvent:true}).status,"MULTI_CAUSE_GAP"));
+t("D8504 valid receipt computes raw gap",()=>assert.equal(validateGapReceipt({priorEligibleClose:100,currentOpen:105,firstObservableAt:"2026-10-07T09:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",replaySafe:true}).rawGap,5));
+t("D8505 future gap blocked",()=>assert.equal(validateGapReceipt({priorEligibleClose:100,currentOpen:105,firstObservableAt:"2026-10-07T09:01:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",replaySafe:true}).status,"GAP_NOT_KNOWN_AT_FREEZE"));
+t("D8506 never-filled gaps retained",()=>assert.equal(preserveGapDenominator({eligibleGaps:100,filledSameSession:20,filledLater:30,neverFilled:25,censored:5,mechanicallyRebased:5,priceLimitConstrained:10,dataBlocked:5}).neverFilledRetained,true));
+t("D8507 future fill cannot be predictor",()=>assert.equal(validateFillDefinition({thresholdFrozen:true,toleranceFrozen:true,horizonFrozen:true,usesFutureFillAsPredictor:true}).status,"GAP_FILL_LOOKAHEAD"));
+t("D8508 limit hit can delay discovery",()=>assert.equal(classifyLimitDiscovery({priorLimitHit:true,freePriceDiscoveryAvailable:false}).status,"PRICE_LIMIT_DELAYED_DISCOVERY"));
+console.log(`SUMMARY ${p}/8 PASS`);
