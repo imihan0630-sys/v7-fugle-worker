@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "D03_SYSTEM2_S207_V17_APPEND_ONLY_UNION_ACCEPTANCE_V0_1",
+  "updatedAt": "2026-10-07T14:49:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "RESEARCH_ONLY_MACHINE_INCREMENTAL_ACCEPTANCE",
+  "formalCoreImpact": "NONE_LOCKED",
+  "source": {
+    "mainShaAtReadback": "18cd0139fd88a1f7891a6d183d3a3a23fe41265d",
+    "system2MergeCommit": "14f67ddba88604e73a2488d4a561a571393f026b",
+    "workflowRunId": 37579422400,
+    "jobId": 112655458121,
+    "artifactId": 11464480276,
+    "artifactDigest": "sha256:3c3c2da61bfa1cced784a9c28daf214dcc1e3e8b4726a49601db70c16230fe85",
+    "workflowName": "System2 S2-07 MOPS Repeated-Capture Union Stability V1.7 Readonly"
+  },
+  "accepted": {
+    "state": "MOPS_APPEND_ONLY_UNION_READY_STABILIZATION_PENDING",
+    "captureCount": 3,
+    "unionVersionKeyCount": 168,
+    "latestCaptureVersionKeyCount": 163,
+    "unionMissingFromLatestCount": 5,
+    "earliestObservedPreserved": true,
+    "latestObservedPreserved": true,
+    "payloadConflictCount": 0,
+    "monthOnlyDriftVersionCount": 21,
+    "unionHash": "2c82abd1f195b8a7b0b0b023ed3150edc2f8e9d5e93714d6b25e2ed9c38cdfb0",
+    "workflowConclusion": "success",
+    "isolationGuard": "PASS"
+  },
+  "stillBlocked": {
+    "trailingIdenticalTransitions": 0,
+    "boundedStabilizationCandidate": false,
+    "expectedMopsKeysetComplete": false,
+    "noRevisionGapThroughCut": false,
+    "rawSourceVersionGate": "2_OF_3",
+    "technicalObserverR1": "BLOCKED",
+    "outcomes": "CLOSED",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "d03Interpretation": {
+    "repairedDefect": "Cross-capture earliest firstObservedAt is now preserved and latestObservedAt is separated.",
+    "acceptedMeaning": "The append-only union can now carry prospective version provenance without losing the earliest genuine observation clock.",
+    "nonAcceptance": "This does not certify complete expected MOPS membership because trailing identical transitions remain zero and five union versions are absent from the latest capture.",
+    "monthShardBoundary": "Twenty-one version identities still belong to month-only drift evidence; retrieval membership remains an unresolved stability problem.",
+    "pitBoundary": "Earliest-observed preservation repairs provenance mechanics but does not retroactively establish historical pre-cutoff availability.",
+    "incrementality": "No indicator alpha, outcome, OOS, cost, fillability, or independent information-root evidence is created."
+  },
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "maturityPromotion": false,
+    "reason": "PROVENANCE_DEFECT_REPAIRED_BUT_STABILIZATION_AND_REVISION_GAPS_REMAIN"
+  },
+  "exactNextContinuationPoint": "Continue bounded repeated captures under V1.7 until the frozen stabilization criterion is physically satisfied without payload conflicts, while preserving the append-only union and earliest-observed clocks. Only then may expectedMopsKeysetComplete be reviewed; noRevisionGapThroughCut must remain false until post-parent revision reconciliation. In parallel continue waiting for System2 D03 raw-vs-dedup diagnostics, System1 D03 redundancy diagnostics, D16 D03 method/incrementality receipts, raw-source observer completion, and cutoff-bearing C1 parent."
+}
