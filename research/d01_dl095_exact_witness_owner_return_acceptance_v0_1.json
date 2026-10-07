@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "D01_DL095_EXACT_WITNESS_OWNER_RETURN_ACCEPTANCE_V0_1",
+  "updatedAt": "2026-10-07T23:32:00+08:00",
+  "formalCore": "LOCKED",
+  "outcomeJoin": "CLOSED",
+  "witness": {
+    "market": "TWSE",
+    "symbol": "1101",
+    "targetDate": "2021-06-15",
+    "interfaceCutoffAt": "2021-06-15T23:59:59+08:00",
+    "expectedSessionCount": 61
+  },
+  "commonIdentityRequired": [
+    "witnessRequestId",
+    "market",
+    "symbol",
+    "targetDate",
+    "interfaceCutoffAt",
+    "ownerId",
+    "ownerReceiptId",
+    "ownerReceiptVersion",
+    "sourceMainSha"
+  ],
+  "exactWindowRequired": [
+    "orderedExpectedSessionDates",
+    "orderedObservedSessionDates",
+    "expectedSessionHash",
+    "observedSessionHash",
+    "unresolvedMissingSessions",
+    "unresolvedUnexpectedSessions",
+    "symbolSessionContractVersion",
+    "sessionCalendarVersion"
+  ],
+  "sharedHistoryIdentity": [
+    "rawHistoryAdmissionReceiptId",
+    "sourceHistoryHash",
+    "continuityReceiptId",
+    "continuityTransformHash",
+    "continuityEngineVersion",
+    "corporateActionRegistryVersion"
+  ],
+  "zeroRowAbsenceCertificationRequired": [
+    "requestedRangeMatchesExactly",
+    "paginationComplete",
+    "parserComplete",
+    "emptyRangeSemanticsCertified",
+    "sourceCoverageComplete",
+    "sourceHash"
+  ],
+  "r4ClearNoActionRequired": [
+    "eventCoverageComplete",
+    "noEventMayBeClaimed",
+    "suspensionCoverageComplete",
+    "symbolSessionCompletenessEvidenceReady",
+    "revisionCoverageComplete",
+    "symbolClassification",
+    "continuityReceiptId",
+    "receiptHash",
+    "sourceHistoryHash"
+  ],
+  "r6NormalRequired": [
+    "coverageCompleteForWindow",
+    "changedTradingMethodResolved",
+    "requestedRangeMatchesExactly",
+    "sourceHash",
+    "firstObservableAt"
+  ],
+  "physicalBundleState": "PENDING",
+  "r7State": "BLOCKED"
+}

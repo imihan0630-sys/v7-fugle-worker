@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "D01_DL093_PREOUTCOME_WITNESS_REQUEST_V0_1",
+  "updatedAt": "2026-10-07T23:32:00+08:00",
+  "sourceMainAtFreeze": "22c1e45a8af68a26054217ad547f831f248d590d",
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "witness": {
+    "market": "TWSE",
+    "symbol": "1101",
+    "targetDate": "2021-06-15",
+    "interfaceCutoffAt": "2021-06-15T23:59:59+08:00",
+    "requiredPriorEligibleSessions": 60,
+    "includeTargetDate": true,
+    "expectedWindowSize": 61,
+    "startDatePolicy": "DERIVE_FROM_CANONICAL_SYMBOL_SESSION_EVIDENCE_NOT_CALENDAR_GUESS",
+    "priceSpace": "RAW_EXECUTION",
+    "outcomeJoin": "CLOSED"
+  },
+  "selectionPolicy": {
+    "targetYearReason": "ACCEPTED_TWSE_TRAINING_YEAR_NOT_FINAL_HOLDOUT",
+    "targetDateReason": "PREEXISTING_D01_TWT84U_HISTORICAL_SOURCE_WITNESS_DATE",
+    "symbolReason": "LONG_STANDING_ORDINARY_TWSE_SOURCE_HISTORY_WITNESS_NOT_OUTCOME_SELECTED",
+    "futureOutcomeUsed": false,
+    "replacementAfterContextInspection": false
+  },
+  "r5ObservedFactualFields": {
+    "source": "TWSE_TWT84U",
+    "targetDate": "2021-06-15",
+    "symbol": "1101",
+    "upperLimitPrice": 56.5,
+    "openingAuctionReferencePrice": 51.4,
+    "lowerLimitPrice": 46.3,
+    "previousReferencePrice": 51.5,
+    "previousClose": 51.4,
+    "mostRecentPriorTradeDate": "2021-06-11",
+    "provenanceHashBound": false,
+    "firstObservableAtBound": false
+  },
+  "mandatoryReceipts": [
+    "R1_MEMBERSHIP",
+    "R2_RAW_A1",
+    "R3_SYMBOL_SESSION",
+    "R4_CORPORATE_ACTION_CONTINUITY",
+    "R5_PRICE_LIMIT_REFERENCE",
+    "R6_DISPOSITION_MATCHING"
+  ],
+  "d01GeneratedAfterUpstream": "R7_PATTERN_OBSERVABILITY",
+  "currentState": "WITNESS_FROZEN_R1_R6_PENDING"
+}

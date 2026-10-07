@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "D01_DL094_WITNESS_SOURCE_AVAILABILITY_V0_1",
+  "updatedAt": "2026-10-07T23:32:00+08:00",
+  "witness": {
+    "market": "TWSE",
+    "symbol": "1101",
+    "targetDate": "2021-06-15"
+  },
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "evidence": {
+    "R1": {
+      "state": "OWNER_INFRA_READY_EXACT_BINDING_PENDING",
+      "registryId": "S2-DATA-TWSE-2021-OFFICIAL-UNION-V0.1",
+      "registryHash": "1ab8e6ae8b3d93624e1bb57f83c4acd8ebe931e5815b5db4e3430278168d0dad",
+      "membershipCount": 1122,
+      "unknownStartCount": 0
+    },
+    "R2": {
+      "state": "OWNER_INFRA_READY_EXACT_BINDING_PENDING",
+      "yearDataCoverage": "PASS",
+      "actualSessions": 244,
+      "actualBars": 232956
+    },
+    "R3": {
+      "state": "MECHANISM_RUNTIME_READY_HISTORICAL_EXACT_RECEIPT_PENDING"
+    },
+    "R4": {
+      "state": "ARCHIVE_CORE_READY_EXACT_WINDOW_COMPLETENESS_PENDING"
+    },
+    "R5": {
+      "state": "TARGET_DATE_FIELDS_OBSERVED_PROVENANCE_CLOCK_PENDING",
+      "source": "TWSE_TWT84U",
+      "officialUrl": "https://www.twse.com.tw/exchangeReport/TWT84U?date=20210615&response=html&selectType=01",
+      "upperLimitPrice": 56.5,
+      "openingAuctionReferencePrice": 51.4,
+      "lowerLimitPrice": 46.3,
+      "previousReferencePrice": 51.5,
+      "previousClose": 51.4,
+      "mostRecentPriorTradeDate": "2021-06-11",
+      "sourceHash": null,
+      "firstObservableAt": null
+    },
+    "R6": {
+      "state": "SOURCE_CONTRACT_READY_EXACT_WINDOW_RECEIPT_PENDING",
+      "sourcePage": "https://www.twse.com.tw/zh/announcement/punish.html",
+      "historicalCoverageFrom": "2001-01",
+      "dateRangeQuerySupported": true,
+      "csvExportSupported": true
+    }
+  },
+  "combinedState": "R1_R6_NOT_COMPLETE",
+  "outcomeJoin": "CLOSED",
+  "l4Promotion": "NONE"
+}

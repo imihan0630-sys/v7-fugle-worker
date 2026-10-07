@@ -5668,3 +5668,118 @@ No maturity or Formal change is authorized by this routing.
 4. The witness need not contain any successful pattern.
 5. Once one R1-R7 bundle passes, interface composability can become PASS, but no L4 promotion follows without OOS/prospective evidence.
 6. No outcome join / no Formal Core change.
+
+
+## Continuation update — DL-093~095 (2026-10-07)
+
+### DL-093 — first exact-window pre-outcome witness frozen
+- Witness:
+  TWSE / 1101 / 2021-06-15.
+- Interface cutoff:
+  2021-06-15T23:59:59+08:00.
+- Required history:
+  exact 60 prior eligible symbol-sessions plus target date = 61 ordered symbol-sessions.
+- Start date is not calendar-guessed; it must be derived from canonical symbol-session evidence.
+- Selection reason is source composability, not outcome:
+  2021 TWSE is an accepted historical raw/universe year;
+  2021-06-15 was already a frozen historical TWT84U source witness date before DL-093;
+  1101 is a long-standing ordinary TWSE source/history witness.
+- No D1/D5/D20 return, MFE, MAE, later Pattern success or strategy outcome was used.
+- Anti-cherry-pick rule:
+  after context inspection, the witness may not be replaced merely because it contains a corporate action, suspension, disposition, unusual matching regime or inconvenient blocker.
+
+### DL-094 — exact witness source-availability audit
+- R1 membership:
+  2021 TWSE owner infrastructure PASS at year level;
+  registry = S2-DATA-TWSE-2021-OFFICIAL-UNION-V0.1;
+  exact 1101 witness binding remains pending.
+- R2 raw A1:
+  2021 TWSE data coverage PASS;
+  exact 61-row source/revision/hash binding remains pending.
+- R3 lifecycle:
+  normalized lifecycle + exact-session runtime semantics now exist;
+  exact historical 2021 witness receipt remains pending.
+- R4 corporate-action continuity:
+  archive core and narrowed TWSE source-family contract exist;
+  exact-window event/source completeness remains pending.
+- R5 price-limit/reference:
+  pre-existing source contract already identified 2021-06-15 as a historical TWT84U witness.
+  Official target-date factual fields for 1101 were observed:
+  upper limit 56.50;
+  opening-auction reference 51.40;
+  lower limit 46.30;
+  previous reference 51.50;
+  previous close 51.40;
+  most recent prior trade date 2021-06-11.
+  This is positive source-field evidence only.
+  Exact raw-payload hash, firstObservableAt/knownAt, rule version/exemption and replay-safe binding remain pending.
+- R6 disposition/matching:
+  official TWSE historical source supports date-range queries/CSV back to January 2001 and event-specific measures/cadence semantics;
+  exact 1101 61-session range receipt is still pending.
+  A no-match cannot become CERTIFIED_NORMAL_MATCHING until source coverage and changed-trading-method state are both resolved.
+- Net result:
+  source-family feasibility is strong;
+  exact-window R1-R6 bundle is not complete;
+  bottleneck is exact materialization/provenance/completeness rather than new Pattern logic.
+
+### DL-095 — owner-return acceptance schema frozen
+- Every owner receipt must bind the same witness identity, exact ordered session set, cutoff and source-history generation.
+- Reused shared System2/D03 lineage:
+  rawHistoryAdmissionReceiptId;
+  sourceHistoryHash;
+  continuityReceiptId;
+  continuityTransformHash;
+  continuityEngineVersion;
+  corporateActionRegistryVersion;
+  ordered source-bar identities.
+- Count-only 61 rows are insufficient; ordered expected/observed date sets and hashes must match.
+- Later evidence cannot be backdated into predictor/context state.
+- Zero-row source result certifies absence only when exact range, pagination, parser, empty-range semantics, coverage and source hash all pass.
+- CLEAR_NO_ACTION eligibility requires complete event/revision/suspension/session evidence and sourceHistoryHash binding.
+- CERTIFIED_NORMAL_MATCHING requires complete disposition source coverage plus changed-trading-method resolution.
+- R1-R6 individually PASS but cross-window/hash mismatch => whole bundle BLOCKED.
+- R7 remains blocked until the cross-receipt bundle passes and outcome fields remain absent.
+
+### Latest-main duplicate-work audit
+- Latest main at the audit moved to 5c8f05d8a2b78a411d63b9006e10d69af4084fb8.
+- New System2 durable evidence explicitly states:
+  REAL_CLEAR_NO_ACTION_RECEIPT_NOT_YET_OBSERVED.
+- A real 1101/TWSE exact-session history witness exists on 2026-10-07, but its remaining blocker is SYMBOL_LOCAL_CONTINUITY_NOT_VERIFIED.
+- Repository CLEAR_NO_ACTION_ELIGIBLE examples remain fixture-only.
+- Therefore DL-093~095 does not duplicate an already completed physical continuity receipt.
+- Existing owner work should produce the real hash-bound source-honest receipt; D01 must not implement a second history/continuity engine.
+
+### Deterministic execution evidence
+- DL-093:
+  16 / 16 PASS.
+- DL-095:
+  18 / 18 PASS.
+- This tranche:
+  34 / 34 PASS.
+- Cumulative through DL-095:
+  263 / 263 PASS.
+- Native Node parity remains unclaimed.
+
+### Governance
+- D01 canonical maturity remains 60.0%.
+- All 11 D01 modules remain L3.
+- WITNESS_IDENTITY_FROZEN = TRUE.
+- SOURCE_FAMILY_FEASIBILITY = STRONG.
+- EXACT_WINDOW_R1_R6_BUNDLE = PENDING.
+- R7_GENERATION = BLOCKED.
+- OUTCOME_JOIN = CLOSED.
+- SDA-001 remains OPEN.
+- SDA-002 remains OPEN.
+- Pattern alpha remains UNKNOWN.
+- Formal Core remains LOCKED.
+
+### Updated exact next continuation point after DL-095
+
+1. Re-read latest main for a real 1101 exact-window continuity/source bundle before opening any new D01 implementation.
+2. If still absent, preserve the frozen DL-093 witness and wait for/cross-check canonical owner returns under DL-095.
+3. R1/R2/R3/R4 owner work belongs to System2 DATA/continuity owners; R5/R6 belong to D05/exchange-mechanism owners.
+4. D01 must not create duplicate source collectors or a second continuity engine.
+5. When R1-R6 physical returns appear, validate the exact ordered date set, sourceHistoryHash, clocks, zero-row semantics and cross-receipt identity first.
+6. Only if all pass may D01 generate R7 without opening outcomes.
+7. After one R1-R7 composability witness passes, hand to D16 for future R8/R9 OOS execution under the already frozen DL-087/DL-089 protocol.
+8. No L4 promotion / no outcome join / no Formal Core change until actual evidence exists.
