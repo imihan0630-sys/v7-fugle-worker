@@ -263,7 +263,7 @@ export async function buildHistoricalStoreIngestBatch({
     },
     rows: Object.freeze(normalized),
     immutable: true,
-    replayPolicy: "AVAILABLE_AT_LTE_DECISION_AND_NO_AMBIGUOUS_REVISION",
+    replayPolicy: "AVAILABLE_AT_LTE_DECISION_LATEST_AVAILABLE_REVISION_FAIL_CLOSED_ON_TIE",
     schemaVersion: "S2_HISTORICAL_INGEST_BATCH_V0_1",
   };
   const batchHash = await sha256Hex(base);
