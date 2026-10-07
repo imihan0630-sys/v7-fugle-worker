@@ -1578,8 +1578,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Pricing Power定價能力」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "TAIWAN_PIT_DATA_FEASIBLE / THREE_EVENT_SINGLE_ISSUER_CALIBRATION / CROSS_INDUSTRY_SOURCE_PARTIAL / OUTCOMES_CLOSED",
-          "next": "SC-034 obtain one different-issuer official full pricing event under the SC-032 state vector; the FPCC candidate remains SOURCE_ACCESS_PARTIAL and does not count. SC-035 prospectively capture native sourcePublishedAt/capturedAt for future pricing events before realized ASP/margin joins."
+          "status": "TAIWAN_PIT_DATA_FEASIBLE / CSC_THREE_EVENT_STATE_CALIBRATION / FPC_SECOND_ISSUER_FULL_POSTED_MATRIX / SELECTIVE_RESPONSE_CROSS_ISSUER_OBSERVED / LIST_PRICE_NOT_REALIZED_ASP / HISTORICAL_EXACT_PUBLIC_CLOCK_PARTIAL / OUTCOMES_CLOSED",
+          "next": "SC-072 capture the first genuinely prospective future issuer pricing event under the unchanged SC-032 state vector with sourcePublishedAt/capturedAt frozen before later ASP/margin or stock outcomes; realized ASP/margin joins require compatible product/time scope and explicit confounders."
         },
         {
           "id": "D10-07",
