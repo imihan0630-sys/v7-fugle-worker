@@ -5784,7 +5784,6 @@ No maturity or Formal change is authorized by this routing.
 7. After one R1-R7 composability witness passes, hand to D16 for future R8/R9 OOS execution under the already frozen DL-087/DL-089 protocol.
 8. No L4 promotion / no outcome join / no Formal Core change until actual evidence exists.
 
-
 ## Continuation update — DL-096~097 (2026-10-07)
 
 ### DL-096 — cross-witness non-equivalence firewall
