@@ -49,8 +49,12 @@
     "projectReplyTimestampTimezone": "Asia/Taipei",
     "projectReplyTimestampAppliesToNewRooms": true,
     "system2GoLivePriorityDirective": "shared-knowledge/SYSTEM2_GO_LIVE_PRIORITY_DIRECTIVE_20261007_V0_1.md",
-    "projectExecutionPriority": "SYSTEM2_GO_LIVE_PROJECT_P0",
-    "system2Stage1GoLiveSemantics": "PRODUCTION_ADVISORY_MONITORING_FIRST_NO_AUTO_ORDER_NO_ACTUAL_HOLDINGS_IMPORT"
+    "projectExecutionPriority": "DYNAMIC_TRI_LANE_LAUNCH_CRITICAL_PRIORITY",
+    "system2Stage1GoLiveSemantics": "PRODUCTION_ADVISORY_MONITORING_FIRST_NO_AUTO_ORDER_NO_ACTUAL_HOLDINGS_IMPORT",
+    "projectExecutionPriorityDirective": "shared-knowledge/PROJECT_EXECUTION_DYNAMIC_TRI_LANE_PRIORITY_DIRECTIVE_20261007_V0_1.md",
+    "system2GoLiveNorthStar": "ACTIVE",
+    "executionLaneScheduling": "DYNAMIC_BY_LAUNCH_CRITICAL_BLOCKER_NOT_FIXED_ROUND_ROBIN",
+    "system1Priority": "DEFAULT_LAST_SENTINEL_ONLY"
   },
   "identities": [
     {
