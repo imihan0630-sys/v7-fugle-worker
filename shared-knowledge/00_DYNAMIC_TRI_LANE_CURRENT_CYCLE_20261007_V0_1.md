@@ -754,3 +754,76 @@ No paid Cloudflare upgrade is authorized.
 
 Formal Core remains LOCKED.
 Final selection, live push, capital and real orders remain disabled.
+
+
+## 00 continuation delta — PR #762 semantic-drift audit + minimal NC-T01 physical contract (2026-10-07 19:28 Asia/Taipei)
+
+Observed latest main during audit advanced concurrently; audit writes preserved latest-main re-read semantics.
+
+### PR #762 — stale base, but source-bound semantics remain current
+
+Independent exact blob readback found:
+- all 11 source artifacts hard-bound by the fingerprint generator remain byte/blob-SHA identical to latest main;
+- all 8 PR-added paths remain absent from main, so no path-occupancy conflict was found;
+- SHORT_MOMENTUM and SWING_GROWTH strategy/version/policy/required-family identities remain aligned with the frozen Stage-1 assessor policy;
+- old PR-head fingerprint/System2/V8 CI are valid historical evidence only and cannot replace exact-head verification after latest-main rebuild.
+
+Durable audit:
+`system2/evidence/S2_STAGE1_PR762_DRIFT_AUDIT_20261007_V0_1.json`.
+
+Disposition:
+- do not redesign #762;
+- BUILD_LANE should rebuild/rebase on latest main, regenerate receipts, rerun exact-head fingerprint + System2 Research CI + V8 Regression, then canonical merge;
+- only merged-main evidence may credit S22-T06~T10.
+
+Audit comment was posted directly to PR #762 with the narrowed continuation.
+
+### NC-T01 — implementation-ready as a thin physical runner
+
+Canonical oracle/schema already exist:
+- `shared-knowledge/SDA022_ACCEPTANCE_ORACLE_V0_1.md`;
+- `shared-knowledge/sda022_nc_t01_receipt_schema_v0_1.json`.
+
+Existing main already provides:
+- `SHORT_MOMENTUM_CONTRACT_V0_1`;
+- Limited Shadow spec `S2-SM-LS-001`;
+- `assessStage1StrategyV0_1`;
+- `runDailyLimitedShadowOrchestratorV0_1`;
+- exact-date official A1 path;
+- PIT history reader/coverage;
+- immutable Limited Shadow run/prediction/persistence-batch construction.
+
+Physical 2026-10-07 Daily Shadow Diagnostic run `37609474459` already proved the input layer:
+- same-date exact-date official A1 = READY;
+- symbolCount = 1,973;
+- `capacityWriteAuthorized=true`;
+- prospective history + immutable D1 readback verified;
+- `system1RuntimeUsed=false`.
+
+It deliberately did NOT execute strategy evaluation and therefore is not itself NC-T01.
+
+Minimal physical NC-T01 after canonical fingerprints:
+1. workflow_dispatch-only System2 research runner;
+2. System1 Top6/rank unavailable by construction;
+3. explicit hidden-fallback audit rejects cached/persisted/alias/cross-project/stale System1 selection state;
+4. real official A1 + isolated PIT history;
+5. SHORT_MOMENTUM assessor bound directly to the existing daily Limited Shadow orchestrator;
+6. canonical NC-T01 receipt binds source generation, strategy identity, decision clock, universe provenance and result hash;
+7. legitimate zero-candidate execution may pass physical independence only when required inputs are READY and execution actually completed;
+8. no final selection, live push, capital, orders or System1 Formal mutation.
+
+Durable audit:
+`system2/evidence/S2_STAGE1_NCT01_MINIMAL_PHYSICAL_EXECUTION_CONTRACT_20261007_V0_1.json`.
+
+This is expected BUILD_LANE continuation, not a new correction.
+
+### Updated true critical path
+
+1. latest-main rebuild/canonical merge of #762;
+2. physical NC-T01 S22-T11~T16;
+3. genuine daily SHORT_MOMENTUM execution;
+4. strategy-local RANK-01;
+5. first truthful immutable `s2_capacity_runs` receipt with denominator provenance;
+6. bounded pool -> Candidate Board / Daily Resonance consumption.
+
+Formal Core remains LOCKED. No broker-order/live-capital authority is added.
