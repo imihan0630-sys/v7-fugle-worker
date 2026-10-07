@@ -232,12 +232,12 @@ assert.equal(ageAwareMissing.globalIntegrityState, "READY");
 assert.equal(ageAwareMissing.diagnostics[0].readinessState, "INCOMPLETE");
 
 const sm = resolveDailyShadowAssessorReadinessV0_1("SHORT_MOMENTUM");
-assert.equal(sm.state, "ASSESSOR_POLICY_NOT_FROZEN");
-assert.equal(sm.permittedAction, "OBSERVE_INPUT_READINESS_ONLY");
-assert.throws(
-  () => assertDailyShadowAssessorAuthorizedV0_1("SHORT_MOMENTUM"),
-  /DAILY_SHADOW_ASSESSOR_NOT_AUTHORIZED/,
-);
+assert.equal(sm.state, "READY");
+assert.equal(sm.permittedAction, "AUTHORIZED_SHADOW_EVALUATION_ONLY");
+assert.equal(sm.system1RuntimeRequired, false);
+assert.equal(sm.system1Top6Required, false);
+assert.equal(sm.system1RankRequired, false);
+assert.equal(assertDailyShadowAssessorAuthorizedV0_1("SHORT_MOMENTUM").state, "READY");
 
 const preflight = buildDailyShadowInputPreflightV0_1({
   marketDate,
@@ -250,10 +250,10 @@ const preflight = buildDailyShadowInputPreflightV0_1({
     continuityCoverage: 1,
   },
 });
-assert.equal(preflight.state, "ASSESSOR_POLICY_BLOCKED");
+assert.equal(preflight.state, "READY_FOR_AUTHORIZED_SHADOW_EVALUATION_WITH_SYMBOL_GAPS");
 assert.equal(preflight.sourceAndHistoryReady, true);
-assert.equal(preflight.assessorReady, false);
-assert.equal(preflight.capacityWriteAuthorized, false);
+assert.equal(preflight.assessorReady, true);
+assert.equal(preflight.capacityWriteAuthorized, true);
 assert.equal(preflight.zeroPickMayBeClaimed, false);
 assert.equal(preflight.finalSelectionEnabled, false);
 assert.equal(preflight.orderImpact, false);
@@ -265,8 +265,10 @@ const incompletePreflight = buildDailyShadowInputPreflightV0_1({
   a1Source: source,
   historyCoverage: coverage,
 });
-assert.equal(incompletePreflight.state, "ASSESSOR_POLICY_BLOCKED");
+assert.equal(incompletePreflight.state, "READY_FOR_AUTHORIZED_SHADOW_EVALUATION_WITH_SYMBOL_GAPS");
 assert.equal(incompletePreflight.globalInputsReady, true);
+assert.equal(incompletePreflight.assessorReady, true);
+assert.equal(incompletePreflight.capacityWriteAuthorized, true);
 assert.equal(incompletePreflight.sourceAndHistoryReady, true);
 assert.equal(incompletePreflight.symbolLocalIncompleteCount, 1);
 assert.equal(incompletePreflight.selectionDenominatorComplete, false);
