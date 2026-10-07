@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "pattern-repeated-touch-decomposition-v0.1",
+  "updated": "2026-10-07 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "moreTouchesAlwaysStronger": false,
+  "moreTouchesAlwaysWeaker": false,
+  "touchCountAloneIdentifiesMechanism": false,
+  "defaultEffectiveIndependentEvidenceCount": 1,
+  "outcomeJoin": "CLOSED",
+  "formalOptimizationCandidate": "NONE"
+}
