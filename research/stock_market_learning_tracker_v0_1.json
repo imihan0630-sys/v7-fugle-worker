@@ -1420,8 +1420,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Above-MA廣度」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / ISOLATED_QA_PASS / BR035_PARENT_GENERATION_BLOCKED_20261006 / C1_GENERATION_NOT_FOUND / LIVE_PIT_RECEIPT_PENDING / KEEP_L2",
-          "next": "BR-035 wait for the first complete verified same-generation C1 parent after System1 repair; then run the existing Above-MA20/60 research builder with effective-dated membership, admitted-history coverage bounds and candidate leave-one-out; no reconstruction from missing parent and no outcome join before receipt QA."
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / ISOLATED_QA_PASS / BR068_PARENT_STILL_UNPROVEN / SCHEDULE_NOT_YET_OBSERVED_AFTER_20261008_0015 / QUALITY_FINANCIAL_TRANSPORT_BLOCKER / QUARTER_EPS_DOWNSTREAM_BLOCKED / NATIVE_HTTPS_REPAIR_NOT_PRODUCTION_PROVEN / KEEP_L2",
+          "next": "Consume first actual 2026-10-08 System 1 C1 Prospective Evidence run when observable; inspect readiness/population artifact, require scanDate=2026-10-07, same-generation identity, complete/readback verified parent and eligibleForResearch=true; if PASS run frozen Above-MA20/60 builder outcome-blind, otherwise append blocker; never substitute another universe."
         },
         {
           "id": "D09-06",
