@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "S2_STAGE1_PR825_REPLAY_PROVENANCE_BLOCKER_AUDIT_V0_1",
+  "recordedAt": "2026-10-07T22:41:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "pullRequest": 825,
+  "prHead": "1245bfed3134200f0c6553509c8a6191d445cca1",
+  "disposition": "BLOCK_MERGE_EXPECTED_BUILD_LANE_FIX",
+  "ci": {
+    "v8Regression": {
+      "runId": 37640864223,
+      "conclusion": "SUCCESS"
+    },
+    "nct01Binding": {
+      "runId": 37640864242,
+      "conclusion": "FAILURE"
+    },
+    "system2ResearchCi": {
+      "runId": 37640864093,
+      "conclusion": "FAILURE"
+    }
+  },
+  "firstFailure": {
+    "test": "system2/tests/nct01_continuity_replay_binding_v0_1.test.mjs",
+    "assertionLine": 170,
+    "expected": "buildNct01ReplaySourceIdentityV0_1.state = READY",
+    "actual": "INCOMPLETE"
+  },
+  "rootCause": {
+    "selectedRevisionFunction": "system2/runtime/historical_revision_lineage_v0_1.mjs::selectHistoricalRevisionAsOfV0_1",
+    "behavior": "selectHistoricalRevisionAsOfV0_1 maps every candidate through internal normalizeRow() and returns that normalized object.",
+    "droppedFields": [
+      "sourceId",
+      "sourceName",
+      "continuityState",
+      "pitAvailabilityClass"
+    ],
+    "preservedFields": [
+      "canonicalKey",
+      "sourceRowHash",
+      "availableAt",
+      "observedAt",
+      "capturedAt",
+      "barHash",
+      "canonical OHLCV fields"
+    ],
+    "downstream": "system2/runtime/pit_replay_v0_1.mjs::primitiveBar expects sourceId from the selected revision, but selectedRevision no longer carries it, so replayWindow.bars[*].sourceId is null.",
+    "nct01Effect": "buildNct01ReplaySourceIdentityV0_1 correctly fail-closes because RAW replay provenance identity is incomplete.",
+    "integrationEffect": "continuity binding never becomes READY, therefore assessSymbol is never called in the integration test."
+  },
+  "safeCorrectionContract": [
+    "Do not weaken or remove sourceId/source provenance requirements from the NC-T01 raw-window identity.",
+    "Preserve or reattach provenance from the same as-of-selected revision; sourceId, sourceRowHash, availableAt and barHash must be revision-consistent.",
+    "Do not change revision selection ordering/latest-available-at semantics or ambiguity fail-closed behavior.",
+    "If shared historical_revision_lineage is changed, coordinate shared DATA/PIT ownership; a localized pit_replay enrichment is acceptable if it is proven identity-consistent.",
+    "Add an availability-clock revision regression that proves pre/post clocks select matching sourceId + sourceRowHash + barHash tuples and never mix revisions.",
+    "Keep RAW + ADJUSTED_CONTINUITY forbidden.",
+    "Rerun dedicated binding workflow, full System2 Research CI and V8 Regression on corrected exact head."
+  ],
+  "positiveDesignObservations": [
+    "PR #825 does not enable final selection, live push, capital or order authority.",
+    "resolveContinuityEvidence and legacy resolveContinuityState are mutually exclusive.",
+    "Missing continuity receipts stay INCOMPLETE and denominator-accounted.",
+    "Binding is designed to incorporate replayHash, sourceHistoryHash, receipt hash and transform hash into source manifests.",
+    "The current red tests demonstrate fail-closed behavior rather than silent promotion."
+  ],
+  "correctionDirectiveCreated": false,
+  "rationale": "The defect is caught pre-merge inside an active BUILD_LANE PR and has not been falsely declared complete; it should be fixed within that PR rather than opening a parallel correction conflict unit.",
+  "implementationPerformedByAudit": false
+}
