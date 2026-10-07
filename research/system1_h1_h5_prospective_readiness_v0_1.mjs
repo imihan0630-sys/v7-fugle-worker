@@ -1,5 +1,5 @@
 import {buildC5SemanticRepairDiagnostic} from "./system1_c5_semantic_repair_v0_2.mjs";
-import {buildSystem1OpportunityLossBridgeV02} from "./system1_opportunity_loss_bridge_v0_2.mjs";
+import {buildSystem1OpportunityLossBridgeV03} from "./system1_opportunity_loss_bridge_v0_3.mjs";
 
 const TARGET_STATES=new Set([
   "TARGET_FOUND","TARGET_NONE_SEARCH_COMPLETE","TARGET_UNKNOWN_SOURCE","TARGET_UNKNOWN_GEOMETRY"
@@ -58,8 +58,8 @@ function targetAudit(c1){
 export function buildSystem1H1H5ProspectiveReadiness({c1Diagnosis,c2Ledger,c3Registration=null}={}){
   verify(c1Diagnosis,c2Ledger);
   const c5=buildC5SemanticRepairDiagnostic(c1Diagnosis,c2Ledger,{strategy:"SHORT"});
-  const bridge=buildSystem1OpportunityLossBridgeV02({
-    c1Diagnosis,c5Diagnostic:c5,c3EntryExperiment:null,lifecycleRows:[]
+  const bridge=buildSystem1OpportunityLossBridgeV03({
+    c1Diagnosis,c5SemanticDiagnostic:c5,c3EntryExperiment:null,lifecycleRows:[]
   });
   const target=targetAudit(c1Diagnosis);
   const c3Registered=c3Registration?.registered===true&&c3Registration?.generationId===c2Ledger.generationId;
