@@ -556,3 +556,49 @@ Maturity:
 - No L4 promotion from archive engineering alone.
 - Formal Core/runtime/selection/scoring/capital/signals unchanged.
 - FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+## 2026-10-07 Room-06 continuation — D07-19 L2 / D08 exact-session archive / universe provenance
+
+Canonical base:
+- main = `7d2cc2f0108f4bb124761ed4eee706096e892b15`.
+
+D07-19 Capital Budgeting / NPV / IRR / Real Options:
+- canonical artifact: `research/d07_19_capital_budgeting_real_options_foundation_v0_1.json`;
+- D07-19 owns project economics; D21-07 owns management capital-allocation/governance;
+- NPV is the value-additivity anchor; IRR/MIRR remain supporting diagnostics because scale, timing and non-conventional cash flows can reverse rankings;
+- project cash flows are incremental and after-tax: sunk cost excluded, opportunity cost/cannibalization included, financing double-count prohibited, nominal/real bases matched;
+- Real Options require a concrete defer/expand/contract/abandon/stage right plus uncertainty that resolves over time; narrative optionality is not admitted;
+- PIT rule: decision inputs require knownAt <= projectDecisionKnownAt; later utilization, margins, cost overruns, impairments and realized returns append as later vintages/outcomes only;
+- maturity: **L0/0 -> L2/40**;
+- D07 weighted maturity = **17.6%**;
+- Room-06 D07+D08 weighted maturity = **21.1%**;
+- L3 remains blocked pending Taiwan project-level PIT replay across at least two materially different industries;
+- outcomes CLOSED; Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+D08-03 exact-session historical valuation archive:
+- PR #798 is merged to main;
+- prior 2026 failure was caused by treating the emergency market closure on 2026-07-10 as a trading date under a scheduled-holiday calendar;
+- year-pack capture now enumerates official monthly FMTQIK actual sessions;
+- frozen receipt: `research/d08_twse_daily_valuation_year_pack_execution_receipt_2026_20261007_v0_1.json`;
+- 2026 PASS = 159 trading dates / 170650 rows / 131500 PE-known / 170647 PB-known;
+- R2 insert + exact readback hash PASS;
+- prior 2005-2025 year-pack evidence is retained; next gate is one durable archive manifest + aggregate packBundleHash, followed by 44 frozen outcome-blind percentile snapshots.
+
+D08 historical-universe provenance V0.1 -> V0.2 requirement:
+- raw 44-date capture is still blocked at 2023-03-31: live reconciled membership = 982 vs frozen V0.1 receipt = 981;
+- this is now localized, not a blind count drift.
+- current-company data reports:
+  - 6873 泓德能源 current listing date = 2024-09-26;
+  - official newlisting history reports its earlier Innovation Board listing = 2023-03-06;
+- current reconciliation correctly moves 6873's effective listing start back to 2023-03-06, which explains the +1 membership at 2023-03-31;
+- 2465 / 2482 / 2486 also reconcile from 2001-09-19 to 2001-09-17, but both dates predate the 2023 dataset start, so they do not explain the 2023-03-31 +1;
+- frozen V0.1 must remain immutable; do NOT patch 981 to 982 in place;
+- required next artifact is a versioned **V0.2 universe-provenance receipt** built under the reconciled-listing-start semantics, with all 44 snapshot counts/hashes regenerated and cross-checked before raw valuation capture resumes.
+
+Room-06 module census after this promotion:
+- D07 = 34 modules;
+- D08 = 19 modules;
+- total = 53 modules;
+- >=L2 = 26 / 53;
+- L0 = 27 / 53;
+- overall 356-module tracker weighted maturity = **47.0%**.
