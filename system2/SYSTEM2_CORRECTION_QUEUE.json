@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T20:46:00+08:00",
+  "updatedAt": "2026-10-07T21:04:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1267,7 +1267,11 @@
         "Physical Daily Shadow run 37609474459 reports historyReadyCount=51 and continuityReadyCount=0 across a 1,973-symbol universe; examples 1101/1102/1103/1104 are historyReady=true but continuityReady=false. The current continuity block prevents immediate strategy misuse, but a future continuity overlay could expose this readiness defect unless repaired first.",
         "research/d02_daily_volume_continuity_contract_20261003_v0_1.md independently freezes the principle that the exact expected prior symbol-session set must be verified and no expected source row may be silently missing",
         "Latest D03 Layer-B lifecycle contract physically validates half-open suspension intervals, inclusive listing start, exclusive delisting boundary and fail-closed conflicts; these semantics must be consumed rather than treating every market session as an expected symbol session",
-        "No evidence shows System1 Formal Core/runtime is involved"
+        "No evidence shows System1 Formal Core/runtime is involved",
+        "PR #813 merged as 8885e60ceb46d07180946940a63f2262c345ee15 and adds system2/runtime/twse_regulatory_lifecycle_source_v0_1.mjs plus historical verifier integration for positive TWSE stop/resume/delist evidence.",
+        "Dedicated D03 System2 TWSE Lifecycle V0.6 Acceptance run 37625151533 SUCCESS on ecefbac4e34281591ba0a5efd41d9c3ba63a95c8.",
+        "D03 v0.6 accepted semantics: half-open no-trading intervals, listing start inclusive, delisting effective date exclusive, overlapping intervals unioned, positive official evidence only, and no cold OHLCV mutation.",
+        "D03 limitation remains explicit: announcement-list absenceCertifiesNoEvent=false and layerCKnownAtProven=false / Layer C NOT_PROVEN. This upstream can subtract certified positive no-trading intervals but cannot certify no lifecycle event from an empty lookup."
       ],
       "riskIfUnfixed": "A long-listed symbol with a missing required recent session can be falsely labeled historyReady and, once continuity evidence becomes available, could execute SHORT_MOMENTUM using a non-contiguous or stale-substituted MA60/ret60 window. That can invalidate NC-T01 S22-T13, strategy evaluation, ranking/capacity receipts and later performance evidence while appearing source-honest.",
       "requiredCorrection": [
@@ -1279,7 +1283,10 @@
         "Do not relabel raw historical continuity_state values merely to make the window pass.",
         "Add a regression where a long-listed symbol has 60 observed rows only because one required recent session is missing and one older row is substituted; historyReady/evaluationInputReady must remain false.",
         "Add a clean long-listed exact-window control and a legitimate lifecycle-gap control so the fix cannot collapse certified non-trading intervals into missing-data errors.",
-        "Re-run a real Daily Shadow readback and preserve exact per-symbol expected/observed window provenance before NC-T01 S22-T13 physical acceptance."
+        "Re-run a real Daily Shadow readback and preserve exact per-symbol expected/observed window provenance before NC-T01 S22-T13 physical acceptance.",
+        "Reuse merged TWSE lifecycle materialization (PR #813 / twse_regulatory_lifecycle_source_v0_1.mjs) for positive certified no-trading intervals instead of creating a duplicate lifecycle parser.",
+        "Do not treat empty TWSE announcement lookup as NO_EVENT; when complete negative lifecycle proof is unavailable, keep exact-session certification UNKNOWN/fail-closed.",
+        "Keep TPEx lifecycle parity separate; do not inherit TWSE source semantics."
       ],
       "acceptanceCriteria": [
         "Long-listed missing-session plus older-substitution regression fails closed",
@@ -1312,7 +1319,7 @@
         "Physical run 37609474459 had historyReadyCount=51 but continuityReadyCount=0/evaluationInputEligibleSymbolCount=0, so no immediate strategy misuse is proven; repair remains required before NC-T01 S22-T13 continuity promotion can make any symbol executable."
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T20:46:00+08:00"
+      "updatedAt": "2026-10-07T21:04:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
