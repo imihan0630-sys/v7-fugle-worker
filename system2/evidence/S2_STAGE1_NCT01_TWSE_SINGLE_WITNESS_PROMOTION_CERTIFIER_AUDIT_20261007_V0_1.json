@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "S2_STAGE1_NCT01_TWSE_SINGLE_WITNESS_PROMOTION_CERTIFIER_AUDIT_V0_1",
+  "recordedAt": "2026-10-07T20:49:01+08:00",
+  "auditor": "00_RESEARCH_AUDIT_CONTROL",
+  "observedMain": "8737aafacd4b61b138bdf0df9fd9695e634d059d",
+  "status": "MINIMAL_PROMOTION_CERTIFIER_GAP_ISOLATED",
+  "purpose": "Freeze the smallest source-honest path from existing TWSE continuity evidence readiness to one consumable CLEAR_NO_ACTION witness for SHORT_MOMENTUM NC-T01, without waiting for market-wide Layer-B rehabilitation or TPEx parity.",
+  "findings": {
+    "currentSeed": {
+      "workflowRunId": 37609474459,
+      "marketDate": "2026-10-07",
+      "currentUniverseCount": 1973,
+      "historyReadyCount": 51,
+      "continuityReadyCount": 0,
+      "evaluationInputEligibleSymbolCount": 0,
+      "exampleCandidate": {
+        "symbol": "1101",
+        "market": "TWSE",
+        "historyReady": true,
+        "continuityCertified": false
+      }
+    },
+    "archiveCore": {
+      "runtime": "system2/runtime/corporate_action_continuity_archive_v0_1.mjs",
+      "completenessReceipt": "buildCorporateActionCompletenessReceiptV0_1",
+      "symbolClassifier": "classifyCorporateActionSymbolWindowV0_1",
+      "positiveEvidenceReadyConditions": [
+        "universeCoverageComplete=true",
+        "every required source contract has at least one exact-range satisfying coverage row",
+        "all required source coverage rows revisionCoverageComplete=true",
+        "event-version reconciliation ambiguityCount=0",
+        "all required exchanges have suspensionCoverageByExchange=COMPLETE"
+      ],
+      "resultingEvidenceReadyStates": [
+        "eventCoverageComplete=true",
+        "noEventMayBeClaimed=true",
+        "suspensionCoverageComplete=true",
+        "symbolSessionCompletenessEvidenceReady=true"
+      ],
+      "deliberateFirewalls": [
+        "symbolSessionCompletenessCertified=false",
+        "technicalContinuityCertified=false",
+        "continuityTransformPerformed=false",
+        "historyMutationPerformed=false",
+        "selectionAuthority=false"
+      ]
+    },
+    "twseOnlyNarrowing": {
+      "supportedByCurrentCore": true,
+      "reason": "requiredExchanges is derived from the actual requiredSourceContracts supplied to the completeness receipt; the core does not hard-require both TWSE and TPEx.",
+      "firstWitnessRequiredCorporateActionFamilies": [
+        "TWSE EX_RIGHT_DIVIDEND HISTORICAL_ACTUAL_RESULT_RANGE",
+        "TWSE CAPITAL_REDUCTION HISTORICAL_ACTUAL_RESULT_RANGE",
+        "TWSE PAR_VALUE_CHANGE HISTORICAL_ACTUAL_RESULT_RANGE"
+      ],
+      "tpexRequiredForFirstTwseWitness": false,
+      "marketWideLayerBCompletionRequiredForFirstWitness": false
+    },
+    "existingSourceStrength": {
+      "emptyRangeSemantics": "PHYSICALLY_ACCEPTED_ENDPOINT_SPECIFIC_FOR_SIX_FROZEN_HISTORICAL_SOURCE_CONTRACTS",
+      "twseLifecycleNormalization": "CONTRACT_MACHINE_PASS",
+      "delistingBoundary": "EXCLUSIVE_OLD_SYMBOL_MEMBERSHIP_BOUNDARY_ON_LATEST_MAIN",
+      "currentRemainingSourceRisk": "Exact-window TWSE suspension/session and source/revision coverage must still be physically proven for the witness interval; absence from one feed cannot certify no event."
+    },
+    "missingCanonicalRuntime": {
+      "repositorySearch": "No canonical runtime path was found that upgrades symbolSessionCompletenessEvidenceReady=true to symbolSessionCompletenessCertified=true or technicalContinuityCertified=true.",
+      "exactTrueLiteralRuntimeSearch": {
+        "symbolSessionCompletenessCertifiedTrueFound": false,
+        "technicalContinuityCertifiedTrueFound": false
+      },
+      "currentOnlyClearNoActionExample": "system2/tests/daily_shadow_orchestrator_v0_1.test.mjs uses a fixture resolveContinuityState callback returning CLEAR_NO_ACTION; this is not production/shadow physical evidence.",
+      "diagnosis": "PROMOTION_CERTIFIER_MISSING_NOT_ARCHIVE_CORE_MISSING"
+    }
+  },
+  "minimalPromotionCertifierContract": {
+    "scope": "ONE_SYMBOL_ONE_MARKET_ONE_EXACT_DECISION_WINDOW",
+    "firstPreferredMarket": "TWSE",
+    "firstCandidatePolicy": "Choose a physically historyReady current TWSE ordinary symbol such as 1101 only as a certification candidate; do not assume it is clean in advance.",
+    "requiredInputs": [
+      "exact marketDate and decisionTimestamp",
+      "exact 60-prior-session window derived from official session/PIT evidence plus current decision date",
+      "PIT universe membership IN_SCOPE for every required session/boundary",
+      "TWSE-only corporate-action completeness receipt over the exact window with eventCoverageComplete=true",
+      "NO_EVENT classification for the symbol, or an explicit adjusted-continuity event path if an event is present",
+      "suspensionCoverageByExchange.TWSE=COMPLETE for the exact window",
+      "no unresolved expected-session gap after normalized lifecycle boundaries",
+      "all source identities, URLs, row hashes/payload hashes, parser versions, requested range, observed/source-reported clocks and revision-completeness state",
+      "immutable receipt hash binding the exact evidence cut and decision cutoff"
+    ],
+    "allowedOutputs": [
+      "CLEAR_NO_ACTION_ELIGIBLE",
+      "ADJUSTED_CONTINUITY_REQUIRED",
+      "CONTINUITY_UNKNOWN"
+    ],
+    "clearNoActionPromotionRule": [
+      "archive receipt eventCoverageComplete=true",
+      "archive receipt noEventMayBeClaimed=true",
+      "archive receipt suspensionCoverageComplete=true",
+      "archive receipt symbolSessionCompletenessEvidenceReady=true",
+      "symbol classification state=NO_EVENT",
+      "PIT universe state=IN_SCOPE",
+      "exact expected symbol-session window has no unresolved gap/conflict",
+      "all bound source evidence is observed no later than the certifier decision cutoff or otherwise has valid source-reported availability semantics",
+      "receipt hash and source-generation refs are complete"
+    ],
+    "failClosedRules": [
+      "NO_EVENT or evidenceReady alone does not authorize CLEAR_NO_ACTION",
+      "source absence is not proof of no event",
+      "a post-cutoff observation cannot be backdated",
+      "unresolved source conflict/revision ambiguity/session gap returns CONTINUITY_UNKNOWN",
+      "do not mutate historical D1 continuity_state rows",
+      "do not shrink the 1,973-symbol candidate universe to the witness symbol"
+    ],
+    "consumptionRule": "BUILD_LANE may map CLEAR_NO_ACTION_ELIGIBLE to resolveContinuityState=CLEAR_NO_ACTION only for the exact symbol/window/decision cutoff bound by the certifier receipt. All other symbols remain UNVERIFIED/INCOMPLETE and denominator-accounted."
+  },
+  "laneActions": {
+    "dataLane": [
+      "Produce the first physical TWSE exact-window source-honest continuity evidence package for a historyReady symbol.",
+      "Use only the three TWSE historical actual-result corporate-action families for the first TWSE witness; TPEx parity remains parallel work.",
+      "Bind TWSE lifecycle/session evidence, PIT membership and all source/revision/empty-range provenance.",
+      "Do not self-promote evidence-ready to technical continuity; output the bounded evidence package for the shared promotion certifier."
+    ],
+    "buildLane": [
+      "Implement the smallest versioned promotion certifier for the bounded witness contract; no new strategy evaluator or historical rewrite.",
+      "Add fail-closed tests for missing source, post-cutoff source, revision ambiguity, unresolved symbol-session gap, event-present path, and valid no-event path.",
+      "Add mixed-continuity regression where one certified symbol executes and uncertified symbols remain INCOMPLETE/accounted.",
+      "Consume the resulting witness through the existing resolveContinuityState seam.",
+      "After canonical S22-T06~T10 fingerprints, execute the read-only/artifact-only NC-T01 S22-T11~T16."
+    ],
+    "auditLane": [
+      "Independently verify the promotion certifier cannot manufacture CLEAR_NO_ACTION from evidenceReady alone.",
+      "Verify full candidate-universe provenance is preserved.",
+      "Verify exact source/window/decision hash binding and no System1 fallback.",
+      "Only then credit the first physical NC-T01 witness."
+    ]
+  },
+  "revisedCriticalPath": [
+    "Canonicalize latest-main System2 fingerprints S22-T06~T10.",
+    "In parallel, DATA_LANE produces one TWSE exact-window continuity evidence package for a physically historyReady symbol.",
+    "BUILD_LANE implements the bounded promotion certifier plus mixed-continuity regression and bounded-batch PIT prefetch.",
+    "Run full-universe read-only NC-T01 with at least one certified READY witness and all uncertified symbols retained as denominator-accounted INCOMPLETE.",
+    "Independently verify S22-T11~T16.",
+    "CORR-003 reserves D1 write budget for the first persisted genuine SHORT_MOMENTUM -> RANK-01 -> s2_capacity_runs run.",
+    "Reuse bounded pool / Candidate Board / Daily Resonance / institutional surfaces; only then review guarded advisory/notification promotion."
+  ],
+  "protectedBoundaries": [
+    "Formal Core LOCKED",
+    "No System1 Top6/rank/cached-selection fallback",
+    "No historical D1 continuity rewrite",
+    "No TPEx coverage inferred from TWSE",
+    "No strategy threshold/weight/ranking mutation",
+    "No final selection/live push/capital/order authority",
+    "No paid Cloudflare upgrade authorization"
+  ]
+}
