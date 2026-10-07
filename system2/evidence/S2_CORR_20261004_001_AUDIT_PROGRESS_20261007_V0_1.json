@@ -5,7 +5,7 @@
   "auditRole": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
   "canonicalMainShaAtAudit": "34455da7f47016ee149ffeaa963f798251e9fe3d",
   "scope": "Historical daily-market backfill / 2023 TPEx acceptance and canonical DATA_LANE synchronization",
-  "findingState": "2021_TPEX_RESOLVED_2024_TWSE_ACCEPTED_2024_TPEX_PENDING_DUPLICATE_DISPATCH_OBSERVED",
+  "findingState": "2024_TPEX_PENDING_AFTER_RUN29_JOB_TIMEOUT",
   "physicalAcceptance": {
     "market": "TPEX",
     "year": 2023,
@@ -145,6 +145,14 @@
       "market": "TPEX",
       "action": "fresh workflow_dispatch from latest main with year=2024 and market=TPEX",
       "doNotCountRun27AsTpex": true
+    },
+    "run29": {
+      "runId": 37593983170,
+      "classification": "CANCELLED_AT_CONFIGURED_60_MINUTE_JOB_TIMEOUT",
+      "accepted": false,
+      "physicalVerify": false,
+      "artifact": false,
+      "system1Isolation": true
     }
   },
   "laneOwnershipAudit": {
@@ -177,5 +185,30 @@
     "auditLaneMayDispatchAnnualBackfill": false,
     "auditLaneMayIndependentlyVerify": true,
     "ownerExplicitOverrideRequiredForCrossLaneImplementation": true
+  },
+  "run29Audit": {
+    "checkedAt": "2026-10-07T18:43:00+08:00",
+    "runId": 37593983170,
+    "runNumber": 29,
+    "headSha": "5c50a246bf91f9b1bc37c99f082bdfec467d5f09",
+    "requestedYear": 2024,
+    "requestedMarket": "TPEX",
+    "terminalState": "CANCELLED",
+    "migrate": "PASS",
+    "backfill": "CANCELLED_BY_JOB_TIMEOUT",
+    "physicalVerify": "SKIPPED",
+    "artifactUpload": "NO_COVERAGE_FILE",
+    "system1Isolation": "PASS",
+    "runtimeSecondsApprox": 3600,
+    "workflowTimeoutMinutes": 60,
+    "diagnosis": "The backfill job reached the configured 60-minute timeout. The annual script fetches the full official market-year range before pack construction/persistence, so source acquisition has no durable resume checkpoint. Bounded PRIMARY transport recovery increased worst-case source-fetch duration beyond the existing job timeout.",
+    "dataIntegrityInterpretation": "NO_MARKET_YEAR_ACCEPTANCE_AND_NO_EVIDENCE_OF_DATA_CORRUPTION",
+    "authorityInterpretation": "DATA_LANE remains modification owner. AUDIT_LANE does not rerun or modify the backfill workflow/runtime.",
+    "nextAcceptanceGuard": [
+      "Do not blind-rerun run #29.",
+      "DATA_LANE must reconcile configured job timeout with bounded PRIMARY retry worst-case runtime and/or make source acquisition safely resumable/chunked.",
+      "Legacy non-equivalent TPEx fallback remains forbidden.",
+      "A fresh fix-bearing run must still reach annual backfill PASS, Physical verify PASS, artifact, and System1 isolation PASS before 2024 TPEX acceptance."
+    ]
   }
 }
