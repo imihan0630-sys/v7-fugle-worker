@@ -171,6 +171,11 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - Coverage: 244 sessions; denominator 192,055; actual 191,643; 412 explicit UNKNOWN symbol-session gaps; unexpectedBars=0; Data Coverage PASS / Replay Readiness PARTIAL.
   - Accepted evidence: `system2/evidence/S2_HISTORICAL_TPEX_2021_PHYSICAL_VERIFICATION_V0_1.json`; artifact `11455912132`, digest `sha256:b26787f62a240bc39dc39d2f82b7a2bc30b4bfcd07f708d3ebffc6713ae4ff46`.
   - Prior canonical-revision interpretation is superseded by transport-semantics root cause evidence; old blocker evidence remains immutable provenance.
+  - Latest-main 2021 TPEx confirmation run `37563020090` (#6): SUCCESS on head `9b145291e04e6c3fcb2a8408a6f7a983d80e4f02`; source-only signature remained `780 / 0 / 780`, zero revision rows were persisted, immutable cold history was not mutated, Physical verifier V0.5 and System1 isolation PASSed.
+  - 2024 TWSE run `37564954928` (#26): SUCCESS on head `6f50f29de3fd90259dadcb94a3964917af4b13c3`; 1,038 packs / 246,037 bars / 1,038 R2 HEAD + byte checks; 242 official sessions; 0 missing/extra/source-row/canonical mismatches; source version STABLE.
+  - 2024 TWSE denominator 246,515 leaves 478 explicit UNKNOWN symbol-session gaps; `unexpectedBars=0`; data coverage PASS / replay readiness PARTIAL.
+  - Durable evidence: `system2/evidence/S2_HISTORICAL_TWSE_2024_PHYSICAL_VERIFICATION_V0_1.json`; artifact `11460055754`, digest `sha256:3ff4f18b7fee67b2ebc3ef9f41597e6ef3f594d7ec8e6c745c520b161b30df5b`.
+  - Annual continuation advances to `2024 / TPEX`; CORR-001 remains `FIX_IN_PROGRESS` pending remaining market-years and independent closure criteria.
 
 ### S2-CORR-20261006-003 — Candidate Board presents monitored bounded rows as candidates without resolvable strategy identity
 

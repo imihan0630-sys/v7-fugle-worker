@@ -40,6 +40,7 @@ Physically accepted raw A1 market-years:
 - 2022 TPEx: data coverage PASS / replay readiness PARTIAL.
 - 2023 TWSE: data coverage PASS / replay readiness PARTIAL.
 - 2023 TPEx: data coverage PASS / replay readiness PARTIAL.
+- 2024 TWSE: data coverage PASS / replay readiness PARTIAL.
 
 2021 TPEx run `37326149826` / #17 is **not accepted**:
 - migrate SUCCESS;
@@ -591,3 +592,58 @@ Run: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37555975307
 Artifact: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37555975307/artifacts/11455912132
 
 Next annual continuation: fresh workflow_dispatch `year=2024`, `market=TWSE` from latest main. 2021 TPEx is no longer an active annual-history blocker.
+
+
+## 2026-10-07 2021 TPEx latest-main recovery confirmation
+
+Recovery run `37563020090` / #6 completed SUCCESS on latest-main head `9b145291e04e6c3fcb2a8408a6f7a983d80e4f02` after the listing-metadata schema fix and its regression synchronization were merged.
+
+Confirmation facts:
+- source-semantics recovery: `PASS_TPEX_2021_SOURCE_SEMANTICS_RECOVERY`;
+- target-date signature: 780 source-row differences / 0 canonical A1 differences / 780 source-only differences;
+- persisted revision rows written: 0;
+- immutable cold history mutated: false;
+- Physical verify V0.5: `PASS_MARKET_YEAR_DATA_PARTIAL_REPLAY_READINESS`;
+- storage: 795 packs / 191,643 bars / 795 R2 HEAD + byte checks;
+- full-year cold/fresh rows: 191,643 / 191,643;
+- full-year source-row / canonical A1 mismatch: 0 / 0;
+- System1 production isolation: PASS.
+
+Run: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37563020090
+
+Artifact: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37563020090/artifacts/11458710901
+
+Artifact digest: `sha256:c8a051d94dba13525525f7cf9645ad74c69ae1bc4f5d488e40106658339fa262`.
+
+
+## 2026-10-07 2024 TWSE durable acceptance
+
+Annual run `37564954928` / #26 completed SUCCESS on latest-main head `6f50f29de3fd90259dadcb94a3964917af4b13c3` with confirmed inputs `year=2024`, `market=TWSE`.
+
+Acceptance facts:
+- annual backfill: PASS / `YEAR_BACKFILL_COMPLETE`;
+- official trading dates: 242;
+- cold/fresh official rows: 246,037 / 246,037;
+- packs / symbols: 1,038 / 1,038;
+- R2 HEAD / byte verification: 1,038 / 1,038 PASS;
+- missing-from-cold / absent-from-fresh: 0 / 0;
+- source-row / canonical A1 mismatch: 0 / 0;
+- source version: STABLE;
+- historical-universe readiness: `PASS_OFFICIAL_CURRENT_NEWLISTING_DELISTING_UNION`;
+- membership-session denominator: 246,515;
+- actual bars: 246,037;
+- UNKNOWN symbol-session gaps: 478;
+- unexpected bars: 0;
+- data coverage: PASS;
+- replay readiness: PARTIAL;
+- System1 production isolation: PASS.
+
+Durable evidence: `system2/evidence/S2_HISTORICAL_TWSE_2024_PHYSICAL_VERIFICATION_V0_1.json`.
+
+Run: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37564954928
+
+Artifact: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37564954928/artifacts/11460055754
+
+Artifact digest: `sha256:3ff4f18b7fee67b2ebc3ef9f41597e6ef3f594d7ec8e6c745c520b161b30df5b`.
+
+Next annual continuation: fresh workflow_dispatch `year=2024`, `market=TPEX` from latest main. CORR-001 remains `FIX_IN_PROGRESS` until all required market-years are completed or explicitly blocked/deferred and independent closure criteria are satisfied.

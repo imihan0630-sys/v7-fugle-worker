@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T09:53:00+08:00",
+  "updatedAt": "2026-10-07T11:55:29+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -138,7 +138,12 @@
         "2021 TPEx recovery run 37555975307 (#3) completed SUCCESS with Physical verifier V0.5 and System1 isolation PASS.",
         "2021 TPEx full-year reconciliation: 191643 cold rows = 191643 fresh official rows; zero missing, extra, source-row and canonical A1 mismatches.",
         "2021 TPEx coverage accepted: 244 sessions, expected 192055 bars, actual 191643, 412 explicit UNKNOWN gaps, unexpectedBars=0, Data Coverage PASS / Replay Readiness PARTIAL.",
-        "Accepted evidence: system2/evidence/S2_HISTORICAL_TPEX_2021_PHYSICAL_VERIFICATION_V0_1.json; artifact 11455912132."
+        "Accepted evidence: system2/evidence/S2_HISTORICAL_TPEX_2021_PHYSICAL_VERIFICATION_V0_1.json; artifact 11455912132.",
+        "Latest-main 2021 TPEx confirmation run 37563020090 (#6) completed SUCCESS on head 9b145291e04e6c3fcb2a8408a6f7a983d80e4f02; source-only signature remained 780/0/780, zero revision rows were persisted, immutable cold history was not mutated, Physical verifier V0.5 and System1 isolation PASSed.",
+        "2024 TWSE run 37564954928 (#26) completed SUCCESS on head 6f50f29de3fd90259dadcb94a3964917af4b13c3 with confirmed inputs year=2024 market=TWSE.",
+        "2024 TWSE storage/source verification PASS: 1038 packs / 246037 bars / 1038 R2 HEAD + byte checks; 246037 cold rows == 246037 fresh official rows; zero missing-from-cold, absent-from-fresh, source-row and canonical A1 mismatches; sourceVersionState STABLE.",
+        "2024 TWSE historical-universe denominator 246515 versus 246037 actual bars leaves 478 explicit UNKNOWN_SYMBOL_SESSION_GAP rows; unexpectedBars=0; data coverage PASS / replay readiness PARTIAL.",
+        "2024 TWSE durable evidence: system2/evidence/S2_HISTORICAL_TWSE_2024_PHYSICAL_VERIFICATION_V0_1.json; artifact 11460055754 digest sha256:3ff4f18b7fee67b2ebc3ef9f41597e6ef3f594d7ec8e6c745c520b161b30df5b."
       ],
       "riskIfUnfixed": "Creates false-completion/evidence-coverage risk for multi-year replay, factor validation, regime robustness and strategy backtesting.",
       "requiredCorrection": [
@@ -206,7 +211,8 @@
         "2023 TWSE historical-universe reconstruction fix is live-verified and accepted; annual continuation advances to 2023 TPEx while 2021 TPEx remains explicit BLOCKED.",
         "2023 TPEx canonical DATA_LANE sync is complete; annual continuation advances to 2024 TWSE while 2021 TPEx remains explicit BLOCKED.",
         "2021 TPEx blocker is reclassified from canonical-source revision to non-equivalent TPEx fallback semantics; fresh primary-only recovery reverify remains the acceptance gate.",
-        "2021 TPEx active annual-history blocker resolved; continuation returns to 2024 TWSE while CORR-001 stays FIX_IN_PROGRESS."
+        "2021 TPEx active annual-history blocker resolved; continuation returns to 2024 TWSE while CORR-001 stays FIX_IN_PROGRESS.",
+        "2024 TWSE is physically accepted as PASS_DATA_PARTIAL_REPLAY; annual continuation advances to 2024 TPEX while CORR-001 stays FIX_IN_PROGRESS."
       ],
       "verificationEvidence": [
         "Run 37197090867 migrate/backfill/physical verify/artifact upload/System1 isolation all SUCCESS",
