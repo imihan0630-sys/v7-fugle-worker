@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "SC056_MOEA_NATIVE_MONTHLY_RELEASE_FRONTIER_V0_1",
+  "status": "PROSPECTIVE_RELEASE_FRONTIER_FROZEN",
+  "observedMainBeforeWrite": "a7fecd4aaa7b76f69a5d8f76e325afd720954450",
+  "domain": "D10-02",
+  "capturedAt": "2026-10-07T19:08:55+08:00",
+  "releaseFamily": "MOEA_INDUSTRIAL_PRODUCTION",
+  "latestObservableOfficialMonthAtCapture": "2026-08",
+  "releaseFamilyPublishedAt": "2026-09-23T16:00:00+08:00",
+  "productInteractiveSourcePublishedAt": "UNKNOWN",
+  "nextReferenceMonth": "2026-09",
+  "nextReferenceMonthState": "SOURCE_NOT_YET_RELEASED_AT_CAPTURE",
+  "frozenProductCodes": [
+    {
+      "code": "2433020",
+      "nameZh": "銅箔",
+      "unit": "公噸"
+    },
+    {
+      "code": "2630010",
+      "nameZh": "銅箔基板",
+      "unit": "平方呎"
+    },
+    {
+      "code": "2630040",
+      "nameZh": "印刷電路板",
+      "unit": "平方呎"
+    }
+  ],
+  "lagCandidatesMonths": [
+    1,
+    2,
+    3
+  ],
+  "primaryMetric": "MONTH_OVER_MONTH_PRODUCTION_DIRECTION",
+  "invariants": [
+    "RELEASE_FAMILY_PUBLISHED_AT_NOT_EQUAL_PRODUCT_DATABASE_EXACT_UPDATE_AT",
+    "SOURCE_NOT_YET_RELEASED_NOT_EQUAL_ZERO",
+    "SOURCE_NOT_YET_RELEASED_NOT_EQUAL_MISSING_AFTER_RELEASE",
+    "NO_CARRY_FORWARD",
+    "NO_IMPUTED_FUTURE_MONTH",
+    "NO_POST_HOC_LAG_SWITCH"
+  ],
+  "currentMaturity": {
+    "level": "L2",
+    "maturityPct": 40
+  },
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "exactNext": "SC-067 capture the first official September 2026 native product-level monthly release after publication, preserving source/capture clocks and frozen lag semantics."
+}
