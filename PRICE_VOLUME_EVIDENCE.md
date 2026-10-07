@@ -6113,3 +6113,93 @@ This incident cannot create positive evidence.
 
 Exact next:
 PVE-257 must surface the persisted exact-slot baseline evidence read-only and compute a deterministic baseline content identity; expected comparable-slot freshness remains UNKNOWN unless an authoritative symbol-session/suspension source proves it.
+
+
+# PVE-257~260 — Minimum sample sufficiency does not imply same-slot baseline freshness (2026-10-07)
+
+## PVE-257: exact-slot baseline content is internally reproducible
+
+The persisted 2454 baseline was reconstructed from D1 without reading outcomes or mutating Production.
+
+For the 2026-10-07 11:45 snapshot:
+- persisted snapshot `baselineAsOfDate` = 2026-10-05;
+- reconstructed last-20 exact-slot `baselineAsOfDate` = 2026-10-05;
+- exact-slot content identity and snapshot identity agree;
+- baseline update time predates the snapshot;
+- exact-slot history validity passes;
+- deterministic content fingerprint = `1ca5ac53a1d04f422eb6676bbc79c65141d66b1243787d06523e85d6c5490d6e`.
+
+This proves the stale date is not a report rendering bug. It is the actual baseline content used by the snapshot.
+
+## PVE-258: 2026-10-06 was a real comparable 11:45 session for 2454
+
+The sanitized provider probe is deliberately narrow and outcome-blind relative to the 2026-10-07 feature:
+- symbol 2454 only;
+- date 2026-10-06 only;
+- 15-minute identity only;
+- no price/outcome fields emitted.
+
+Successful receipt:
+- run `37638102686`;
+- provider HTTP 200;
+- 19 source rows;
+- exactly one 11:45 row;
+- exact-response SHA-256 `47f54378d28df65ffca0741342013a73db3040863c0ea090c1d3252b83f4e9e0`;
+- no mutation.
+
+Thus the latest expected comparable exact slot for 2026-10-07 11:45 is 2026-10-06, while the actual baseline stops at 2026-10-05.
+
+PVE-256 classification is therefore:
+`FAIL / BASELINE_FRESHNESS_MISMATCH`.
+
+The unresolved corporate-action continuity source cannot turn a known freshness mismatch into PASS or UNKNOWN.
+
+## PVE-259: root cause is a freshness hole preserved by a count-only skip
+
+Physical D1 readback of 2026-10-06 found only four 2454 intraday PV snapshots:
+09:00, 09:15, 09:30, 09:45.
+
+There is no 13:00 snapshot.
+
+Current runtime only calls the baseline roll write successfully when the current session has reached the exact 13:00 slot. Therefore the 2026-10-06 session was never rolled into the intraday baseline through that path.
+
+Later historical bootstrap created an 80-session baseline ending 2026-10-05. On the following day, `pvBootstrapSymbol()` treats matching schema + `validSessions>=20` as sufficient to skip historical refresh.
+
+This conflates:
+- sample sufficiency: enough observations exist to calculate a statistic;
+with
+- temporal freshness: the most recent expected comparable observation is actually present.
+
+A system may satisfy the first while violating the second.
+
+## PVE-260: repair invariant
+
+The research-only refresh decision guard makes freshness an independent non-bypassable state.
+
+A baseline may skip historical refresh only if:
+1. schema is valid;
+2. minimum history is satisfied;
+3. latest expected comparable exact-slot date is known;
+4. exact-slot `baselineAsOfDate` equals that expected date;
+5. exact-slot historical validity passes.
+
+If the exact-slot baseline is stale, `validSessions>=20` has no authority to bypass refresh.
+
+Physical case:
+`80 sessions + baseline 2026-10-05 + expected 2026-10-06 => REFRESH_REQUIRED`.
+
+## Anti-self-deception
+
+- Do not repair the 2026-10-07 feature retrospectively into a clean H001 date.
+- Do not inspect outcomes to choose the refresh rule.
+- Do not substitute baseline-wide `lastMarketDate` for exact-slot freshness.
+- Do not infer corporate-action cleanliness from an incomplete “no rows found” source.
+- Do not count a future repaired baseline as alpha evidence until a genuinely prospective feature/outcome lifecycle exists.
+- Do not merge the separate 23:35/23:55 schedule candidate merely because this freshness defect is now certified.
+
+## Status
+
+`SAME_SLOT_BASELINE_CLEAN_FAIL / ROOT_CAUSE_CERTIFIED / REFRESH_INVARIANT_FROZEN / CLEAN_H001_DATES_0 / D02_60_PERCENT / FORMAL_UNCHANGED`.
+
+Exact next:
+PVE-261 should define the owner-gated Production remediation acceptance contract and future-session physical readback requirements, without changing Formal selection logic.
