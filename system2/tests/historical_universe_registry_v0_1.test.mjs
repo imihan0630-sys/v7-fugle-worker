@@ -112,6 +112,18 @@ assert.equal(
   false,
 );
 
+const snapshotOnDelist = await buildHistoricalUniverseSnapshotV0_1({
+  snapshotId: "U-2022-01-05",
+  registry,
+  marketDate: "2022-01-05",
+  capturedAt: "2026-09-28T12:55:00Z",
+});
+assert.equal(
+  snapshotOnDelist.members.some((x) => x.symbol === "2456"),
+  false,
+  "official delisting effective date is an exclusive old-symbol membership boundary",
+);
+
 const snapshotAfterDelist = await buildHistoricalUniverseSnapshotV0_1({
   snapshotId: "U-2022-01-06",
   registry,
