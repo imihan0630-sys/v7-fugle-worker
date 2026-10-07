@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "S2_HISTORICAL_MARKET_YEAR_DURABLE_EVIDENCE_V0_2",
+  "market": "TPEX",
+  "year": 2021,
+  "disposition": "DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL",
+  "acceptedRun": {
+    "runId": 37555975307,
+    "runNumber": 3,
+    "runAttempt": 1,
+    "headSha": "55f6463b9686fa3e9b0515a6a1613fa24e455b56",
+    "workflowName": "System2 Historical 2021 TPEx Revision Recovery",
+    "workflowConclusion": "success",
+    "completedAt": "2026-10-07T01:49:55Z",
+    "runUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37555975307",
+    "artifactId": 11455912132,
+    "artifactName": "system2-historical-revision-recovery-TPEX-2021",
+    "artifactDigest": "sha256:b26787f62a240bc39dc39d2f82b7a2bc30b4bfcd07f708d3ebffc6713ae4ff46",
+    "artifactCreatedAt": "2026-10-07T01:49:52Z",
+    "artifactExpiresAt": "2026-11-06T01:49:51Z",
+    "artifactUrl": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37555975307/artifacts/11455912132"
+  },
+  "transportSemanticsRecovery": {
+    "result": "PASS_TPEX_2021_SOURCE_SEMANTICS_RECOVERY",
+    "targetDate": "2021-01-14",
+    "transportMode": "PRIMARY",
+    "canonicalTransportPolicy": "PRIMARY_ONLY_FAIL_CLOSED_NON_EQUIVALENT_LEGACY",
+    "legacyFallbackCanonicalEligible": false,
+    "targetDateColdRowCount": 780,
+    "targetDateFreshOfficialRowCount": 780,
+    "targetDateMissingFromColdCount": 0,
+    "targetDateAbsentFromFreshOfficialCount": 0,
+    "targetDateSourceRowHashMismatchCount": 780,
+    "targetDateCanonicalA1ValueMismatchCount": 0,
+    "targetDateSourceRevisionOnlyCount": 780,
+    "targetDateSourceVersionState": "SOURCE_REVISION_OBSERVED_CANONICAL_A1_STABLE",
+    "diagnosis": "NON_EQUIVALENT_LEGACY_FALLBACK_FALSE_CANONICAL_REVISION",
+    "action": "DO_NOT_PERSIST_REVISION_OVERLAY; REVERIFY_WITH_PRIMARY_ONLY_CANONICAL_SOURCE",
+    "persistedRevisionRowsWritten": 0,
+    "coldHistoryMutated": false
+  },
+  "storageVerification": {
+    "state": "PASS",
+    "receiptId": "S2HCR-fef07cc1a951cd1e49ba69e5842b737767bbf51bc8e09b8ee44775f0da8f1cfe",
+    "batchId": "S2-HIST-PACK-YEAR|TPEX|2021",
+    "completionReceiptState": "COMPLETE",
+    "packCount": 795,
+    "barCount": 191643,
+    "manifestRollingHash": "fef07cc1a951cd1e49ba69e5842b737767bbf51bc8e09b8ee44775f0da8f1cfe",
+    "headObjectCountVerified": 795,
+    "byteGetObjectCountVerified": 795
+  },
+  "sourceReconciliation": {
+    "state": "PASS",
+    "dataIntegrityState": "PASS",
+    "effectiveDataIntegrityState": "PASS",
+    "sourceVersionState": "STABLE",
+    "coldRowCount": 191643,
+    "freshOfficialRowCount": 191643,
+    "missingFromColdCount": 0,
+    "absentFromFreshOfficialCount": 0,
+    "sourceRowHashMismatchCount": 0,
+    "canonicalA1ValueMismatchCount": 0,
+    "sourceRevisionOnlyCount": 0,
+    "sourceRevisionDateCount": 0,
+    "revisionLineage": null,
+    "officialTradingDates": 244
+  },
+  "historicalUniverse": {
+    "readiness": "PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION",
+    "registryId": "S2-DATA-TPEX-2021-OBSERVED-INTERVAL-V0.1",
+    "registryHash": "f40bbe7d95fc3f375b76afbdf297668037ed7aa88cae339620a67a9229d1e70f",
+    "membershipCount": 795,
+    "replayEligibleCount": 795,
+    "currentCount": 752,
+    "delistedCount": null,
+    "unknownStartCount": null,
+    "observedHistoricalOnlyCount": 43,
+    "currentWithoutObservedRowsCount": 0,
+    "currentListingMetadataHash": "6b3e2350a3cc1b4dc620310a0c496c48c3256a7626014aeed5ca908ebd6f5c42",
+    "currentListingCount": 893,
+    "officialDelistingUnionComplete": false,
+    "survivorshipCompleteForDataCoverage": false
+  },
+  "suspensionEvidence": {
+    "state": "OBSERVED_POSITIVE_INTERVALS_UNCERTIFIED_HISTORY",
+    "intervalCount": 19,
+    "absenceCertifiesNoSuspension": false
+  },
+  "coverage": {
+    "expectedSessions": 244,
+    "actualSessions": 244,
+    "historicalUniverseSize": 795,
+    "expectedBars": 192055,
+    "actualBars": 191643,
+    "totalStoredRowsInRange": 191643,
+    "missingBars": 412,
+    "unknownBars": 412,
+    "suspensionClassifiedMissingBars": 0,
+    "unexpectedBars": 0,
+    "nonTradingDateBars": 0,
+    "missingTradingDates": [],
+    "mainMissingReasons": {
+      "UNKNOWN_SYMBOL_SESSION_GAP": 412
+    },
+    "observationStateCounts": {
+      "VALID_OHLC": 188380,
+      "OFFICIAL_ZERO_TRADE_NO_PRICE": 1941,
+      "POSITIVE_ACTIVITY_NO_VALID_CLOSE": 1322
+    },
+    "continuityStateCounts": {
+      "UNVERIFIED": 191643
+    },
+    "provenanceIssueCount": 0,
+    "structuralCoverageState": "PASS",
+    "rawCoverageState": "PASS",
+    "symbolSessionReadiness": "PARTIAL_UNKNOWN_GAPS",
+    "pitReadiness": "PASS_CONSERVATIVE_SESSION_FINALITY",
+    "continuityReadiness": "PARTIAL_UNVERIFIED",
+    "technicalPriceReadiness": "PARTIAL_NONPRICE_OBSERVATIONS"
+  },
+  "readiness": {
+    "dataCoverageState": "PASS",
+    "replayReadinessState": "PARTIAL",
+    "overallState": "PARTIAL"
+  },
+  "verifierVersion": "S2_HISTORICAL_MARKET_YEAR_PHYSICAL_VERIFY_V0_5",
+  "priorBlockerProvenance": {
+    "quotaEvidencePath": "system2/evidence/S2_HISTORICAL_TPEX_2021_D1_QUOTA_BLOCKER_V0_1.json",
+    "quotaDisposition": "RESOLVED_BY_BACKFILL_COMPLETION",
+    "priorRevisionEvidencePath": "system2/evidence/S2_HISTORICAL_TPEX_2021_REVISION_BLOCKER_V0_1.json",
+    "priorRevisionDisposition": "SUPERSEDED_FALSE_CANONICAL_REVISION_DIAGNOSIS",
+    "transportRootCauseEvidencePath": "system2/evidence/S2_HISTORICAL_TPEX_2021_TRANSPORT_SEMANTICS_ROOT_CAUSE_V0_1.json",
+    "transportRootCauseDisposition": "RESOLVED_BY_PRIMARY_ONLY_FRESH_PHYSICAL_VERIFICATION"
+  },
+  "correctionDirective": "S2-CORR-20261004-001",
+  "correctionStatusAfterEvidence": "FIX_IN_PROGRESS",
+  "nextMarketYear": {
+    "market": "TWSE",
+    "year": 2024
+  },
+  "protectedBoundaries": {
+    "system1RuntimeChanged": false,
+    "system2StrategyAuthorityChanged": false,
+    "finalSelectionAuthorityChanged": false,
+    "capitalOrderAuthorityChanged": false
+  }
+}
