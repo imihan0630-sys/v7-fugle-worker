@@ -37,8 +37,13 @@ const c2={schemaVersion:"SYSTEM1_C2_PAIRED_LEDGER_V0_1",generationId,sessionDate
 const out=buildSystem1H1H5ProspectiveReadiness({c1Diagnosis:c1,c2Ledger:c2,c3Registration:null});
 assert.equal(out.hypotheses.length,5);
 const by=Object.fromEntries(out.hypotheses.map(x=>[x.id,x]));
-assert.equal(by.H1_P1A_SEMANTIC_OVERHARDENING.state,"T0_STRUCTURAL_READY_OUTCOME_PENDING");
+assert.equal(by.H1_P1A_SEMANTIC_OVERHARDENING.state,"T0_STRUCTURAL_READY_CONDITIONAL_UPPER_BOUND_PRESENT");
 assert.equal(by.H1_P1A_SEMANTIC_OVERHARDENING.structuralN,1);
+assert.equal(by.H1_P1A_SEMANTIC_OVERHARDENING.conditionalUpperBound.rankableN,1);
+assert.equal(by.H1_P1A_SEMANTIC_OVERHARDENING.conditionalUpperBound.unknownToPassMutation,false);
+assert.equal(by.H1_P1A_SEMANTIC_OVERHARDENING.conditionalUpperBound.candidateAuthority,false);
+assert.equal(out.c5DailyReport.schemaVersion,"SYSTEM1_C5_DAILY_REPORT_V0_4");
+assert.equal(out.c5DailyReport.conditionalUnknownToPassMutation,false);
 assert.equal(by.H2_TARGET_AVAILABLE_OVERGATING.state,"T0_FOUR_STATE_ECONOMIC_COHORT_AVAILABLE");
 assert.equal(by.H2_TARGET_AVAILABLE_OVERGATING.structuralN,1);
 assert.equal(by.H2_TARGET_AVAILABLE_OVERGATING.legacyTargetRejectedN,2);
@@ -76,8 +81,9 @@ assert.throws(()=>buildSystem1H1H5ProspectiveReadiness({
 }),/MATCHED_C1_C2_REQUIRED/);
 
 console.log(JSON.stringify({
-  ok:true,assertions:22,t0T1Separated:true,
+  ok:true,assertions:27,t0T1Separated:true,
   targetUnknownNeverOpportunity:true,rrRequiresVerifiedTarget:true,
   zeroBeforeNextSessionForbidden:true,classifierReadyNotCaptureReady:true,
+  h1ConditionalUpperBound:true,unknownNeverPromoted:true,
   economicSuperiority:"UNKNOWN",formalOptimizationCandidate:"NONE",formalCoreImpact:false
 }));

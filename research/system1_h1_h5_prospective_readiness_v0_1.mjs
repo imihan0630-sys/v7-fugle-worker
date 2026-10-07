@@ -1,5 +1,6 @@
 import {buildC5SemanticRepairDiagnostic} from "./system1_c5_semantic_repair_v0_2.mjs";
 import {buildSystem1OpportunityLossBridgeV03} from "./system1_opportunity_loss_bridge_v0_3.mjs";
+import {buildC5DailyReport} from "./system1_evidence_automation_v0_1.mjs";
 
 const TARGET_STATES=new Set([
   "TARGET_FOUND","TARGET_NONE_SEARCH_COMPLETE","TARGET_UNKNOWN_SOURCE","TARGET_UNKNOWN_GEOMETRY"
@@ -58,16 +59,35 @@ function targetAudit(c1){
 export function buildSystem1H1H5ProspectiveReadiness({c1Diagnosis,c2Ledger,c3Registration=null}={}){
   verify(c1Diagnosis,c2Ledger);
   const c5=buildC5SemanticRepairDiagnostic(c1Diagnosis,c2Ledger,{strategy:"SHORT"});
+  const c5Daily=buildC5DailyReport(c1Diagnosis,c2Ledger);
   const bridge=buildSystem1OpportunityLossBridgeV03({
     c1Diagnosis,c5SemanticDiagnostic:c5,c3EntryExperiment:null,lifecycleRows:[]
   });
   const target=targetAudit(c1Diagnosis);
   const c3Registered=c3Registration?.registered===true&&c3Registration?.generationId===c2Ledger.generationId;
+  const conditional=c5Daily.conditionalShort;
+  const h1ConditionalRankableN=Number(conditional?.p1aConditionalRankableN)||0;
   const h1={
     id:"H1_P1A_SEMANTIC_OVERHARDENING",timeLayer:"T0_SCAN_SESSION",
-    state:"T0_STRUCTURAL_READY_OUTCOME_PENDING",
+    state:h1ConditionalRankableN>0
+      ?"T0_STRUCTURAL_READY_CONDITIONAL_UPPER_BOUND_PRESENT"
+      :"T0_STRUCTURAL_READY_CONDITIONAL_RANKABLE_ZERO_ON_DATE",
     structuralN:Number(c5.p1aOnlyN)||0,
     deeperRankableUpperBoundN:Number(c5.p1aRankableN)||0,
+    conditionalUpperBound:{
+      safetyUnknownN:Number(conditional?.p1aConditionalSafetyUnknownN)||0,
+      reachABN:Number(conditional?.p1aConditionalReachABN)||0,
+      abPassN:Number(conditional?.p1aConditionalABPassN)||0,
+      reachRRN:Number(conditional?.p1aConditionalReachRRN)||0,
+      rrPassN:Number(conditional?.p1aConditionalRRPassN)||0,
+      gradePassN:Number(conditional?.p1aConditionalGradePassN)||0,
+      rankableN:h1ConditionalRankableN,
+      interpretation:conditional?.interpretation??"UNKNOWN",
+      materialityThresholdStatus:conditional?.materialityThresholdStatus??"NOT_FROZEN",
+      unknownToPassMutation:false,
+      candidateAuthority:false
+    },
+    safetyCaptureDemand:c5Daily.safetyCaptureDemandShort,
     blockers:["ECONOMIC_OUTCOME_NOT_JOINED","MATURITY_THRESHOLD_NOT_SATISFIED"]
   };
   const h2={
@@ -117,7 +137,7 @@ export function buildSystem1H1H5ProspectiveReadiness({c1Diagnosis,c2Ledger,c3Reg
       requiresNextTradingSession:["H4_B_RETEST_CONFIRMATION_DELAY","H5_DOUBLE_MAX_CHASE_DOWNSTREAM"],
       zeroBeforeT1IsForbidden:true
     },
-    c5Diagnostic:c5,opportunityLossBridge:bridge,
+    c5Diagnostic:c5,c5DailyReport:c5Daily,opportunityLossBridge:bridge,
     economicSuperiority:"UNKNOWN",formalOptimizationCandidate:"NONE",
     autoSwitchAuthorized:false,formalCoreLocked:true,researchOnly:true,decisionImpact:false,
     formalCoreImpact:false,noPlanChanges:true,noTrade:true,noPush:true
