@@ -1,0 +1,243 @@
+{
+  "version": "0.1",
+  "id": "BR-063-REPLAY-20261006",
+  "date": "2026-10-07 Asia/Taipei",
+  "module": "D09-12 Breadth×Regime交互作用",
+  "marketDate": "2026-10-06",
+  "status": "REAL_MARKET_REPLAY_WITNESS / PROSPECTIVE_SAME_CLOCK_INELIGIBLE / KEEP_L2 / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "outcomeJoined": false,
+  "sources": {
+    "twseMarketSummary": "https://www.twse.com.tw/en/exchangeReport/MI_INDEX?response=html",
+    "twseMonthlyTaiex": "https://www.twse.com.tw/en/exchangeReport/FMTQIK?response=html",
+    "tpexMarketSummary": "https://www.tpex.org.tw/web/stock/aftertrading/market_highlight/highlight_result.php?d=115%2F10%2F06&l=zh-tw&o=htm",
+    "tpexIndexSummary": "https://www.tpex.org.tw/www/zh-tw/afterTrading/indexSummary?response=html",
+    "sameDayProspectiveWorkflowRun": {
+      "id": 37419347091,
+      "url": "https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37419347091",
+      "name": "System2 Prospective Clock Evidence Read-only",
+      "conclusion": "success",
+      "artifactId": 11397914577,
+      "artifactName": "system2-decision-clock-daily-2026-10-06-37419347091"
+    }
+  },
+  "officialDirectionBreadth": {
+    "TWSE": {
+      "up": 462,
+      "down": 519,
+      "flat": 100,
+      "notComparable": 2,
+      "comparableN": 1081,
+      "advancePct": 42.7382053654,
+      "declinePct": 48.0111008326,
+      "flatPct": 9.250693802,
+      "netAdvanceMinusDeclinePct": -5.2728954672,
+      "comparableCoveragePct": 99.8153277932
+    },
+    "TPEX": {
+      "up": 300,
+      "down": 475,
+      "flat": 90,
+      "untradedOrSuspended": 28,
+      "comparableN": 865,
+      "advancePct": 34.6820809249,
+      "declinePct": 54.9132947977,
+      "flatPct": 10.4046242775,
+      "netAdvanceMinusDeclinePct": -20.2312138728,
+      "comparableCoveragePct": 96.8645016797
+    },
+    "combinedDescriptiveOnly": {
+      "up": 762,
+      "down": 994,
+      "flat": 190,
+      "nonComparableOrUntraded": 30,
+      "comparableN": 1946,
+      "totalN": 1976,
+      "advancePct": 39.1572456321,
+      "declinePct": 51.0791366906,
+      "flatPct": 9.7636176773,
+      "netAdvanceMinusDeclinePct": -11.9218910586,
+      "comparableCoveragePct": 98.4817813765
+    }
+  },
+  "indexState": {
+    "taiex": {
+      "close": 49822.55,
+      "dailyChangePoints": 110.51,
+      "dailyChangePct": 0.22
+    },
+    "tpex": {
+      "close": 430.86,
+      "dailyChangePoints": -1.62,
+      "dailyChangePct": -0.37
+    }
+  },
+  "taiexReplay": {
+    "contextVersion": "D18_TAIEX_CONTEXT_V0_1_RESEARCH_FORMULA_REPLAY",
+    "history25": [
+      {
+        "date": "2026-08-31",
+        "close": 46128.47
+      },
+      {
+        "date": "2026-09-01",
+        "close": 46948.72
+      },
+      {
+        "date": "2026-09-02",
+        "close": 46164.72
+      },
+      {
+        "date": "2026-09-03",
+        "close": 45857.66
+      },
+      {
+        "date": "2026-09-04",
+        "close": 46551.13
+      },
+      {
+        "date": "2026-09-07",
+        "close": 47326.27
+      },
+      {
+        "date": "2026-09-08",
+        "close": 47105.78
+      },
+      {
+        "date": "2026-09-09",
+        "close": 47183.36
+      },
+      {
+        "date": "2026-09-10",
+        "close": 46940.49
+      },
+      {
+        "date": "2026-09-11",
+        "close": 46184.85
+      },
+      {
+        "date": "2026-09-14",
+        "close": 45862.52
+      },
+      {
+        "date": "2026-09-15",
+        "close": 45511.49
+      },
+      {
+        "date": "2026-09-16",
+        "close": 45848.9
+      },
+      {
+        "date": "2026-09-17",
+        "close": 46288
+      },
+      {
+        "date": "2026-09-18",
+        "close": 47180.75
+      },
+      {
+        "date": "2026-09-21",
+        "close": 47718.84
+      },
+      {
+        "date": "2026-09-22",
+        "close": 47800.17
+      },
+      {
+        "date": "2026-09-23",
+        "close": 48157.29
+      },
+      {
+        "date": "2026-09-24",
+        "close": 48024.6
+      },
+      {
+        "date": "2026-09-29",
+        "close": 47631.96
+      },
+      {
+        "date": "2026-09-30",
+        "close": 47940.13
+      },
+      {
+        "date": "2026-10-01",
+        "close": 48353.49
+      },
+      {
+        "date": "2026-10-02",
+        "close": 48475.74
+      },
+      {
+        "date": "2026-10-05",
+        "close": 49712.04
+      },
+      {
+        "date": "2026-10-06",
+        "close": 49822.55
+      }
+    ],
+    "metrics": {
+      "close": 49822.55,
+      "ma20": 47453.461,
+      "ma20FiveSessionsAgo": 46820.7985,
+      "ma20Slope5": 632.6625,
+      "return5": 0.04598991937346275,
+      "return20": 0.07027584507615625,
+      "realizedVol5": 0.008563834312221416,
+      "realizedVol20": 0.010040378681994025,
+      "volRatio5to20": 0.8529393744460477
+    },
+    "trendContext": "UP_TREND_CONTEXT",
+    "volatilityDirection": "VOL_CONTRACTING",
+    "pointInTimeEligible": false,
+    "reason": "OFFICIAL_VALUES_REPLAYED_AFTER_MARKET_DATE_WITHOUT_SAME_DAY_A2_SOURCE_PROBE_RECEIPT"
+  },
+  "breadthContext": {
+    "state": "CONTEXT_RAW",
+    "reason": "MEDIAN_RETURN_NOT_SAME_CLOCK_CONTINUITY_CERTIFIED",
+    "descriptiveDirection": "ADVANCE_SHARE_BELOW_0_5_AND_DECLINES_DOMINATE",
+    "canonicalBroadPositiveNegativeLabelAuthorized": false
+  },
+  "prospectiveClockEvidence": {
+    "collectorRunId": 37419347091,
+    "marketDate": "2026-10-06",
+    "dailyGateComplete": false,
+    "sameSessionClockReady": false,
+    "requiredReady": false,
+    "precisionEligible": false,
+    "publicationTimestampProven": false,
+    "exactDecisionClockAuthorized": false,
+    "a1Twse": {
+      "attemptCount": 30,
+      "readyObserved": false,
+      "statesObserved": [
+        "NOT_READY"
+      ]
+    },
+    "a1Tpex": {
+      "attemptCount": 30,
+      "readyObserved": true,
+      "firstReadyAt": "2026-10-06T08:03:54.274Z",
+      "lastObservedNotReadyAt": "2026-10-06T07:43:02.208Z"
+    },
+    "a2Taiex": {
+      "attemptCount": 0,
+      "readyObserved": false
+    },
+    "b2IndustryDependencyReady": false
+  },
+  "falsificationInterpretation": [
+    "Cap-weighted TAIEX can remain in an up-trend while equal-stock directional breadth is weak.",
+    "This is a real descriptive divergence witness, not predictive evidence.",
+    "The canonical D18 breadth label cannot be assigned because median-return continuity is not same-clock certified.",
+    "The canonical D18 trend context cannot be called prospective for this date because A2 was not captured prospectively."
+  ],
+  "maturityDecision": {
+    "module": "D09-12",
+    "level": "L2",
+    "maturityPct": 40,
+    "promote": false,
+    "reason": "GENUINE_SAME_CLOCK_JOINT_RECEIPT_MISSING"
+  },
+  "exactNext": "Future completed Taiwan session: prospectively capture A2 TAIEX context and breadth under one frozen decision timestamp; only then build BR-063 joint receipt. No retrospective promotion."
+}
