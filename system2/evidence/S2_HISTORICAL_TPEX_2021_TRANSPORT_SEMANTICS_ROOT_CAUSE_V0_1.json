@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "S2_HISTORICAL_TPEX_2021_TRANSPORT_SEMANTICS_ROOT_CAUSE_V0_1",
+  "correctionDirective": "S2-CORR-20261004-001",
+  "market": "TPEX",
+  "year": 2021,
+  "targetDate": "2021-01-14",
+  "disposition": "FALSE_CANONICAL_REVISION_CAUSED_BY_NON_EQUIVALENT_LEGACY_FALLBACK",
+  "priorBlockedRun": {
+    "runId": 37401612529,
+    "runNumber": 18,
+    "artifactId": 11409737982,
+    "artifactDigest": "sha256:32a98f1528ea1cdc8154eaa2e31b43e9d2905e92d0a43606c4cf29abd1d2f621",
+    "observedSourceRowHashMismatchCount": 780,
+    "observedCanonicalA1ValueMismatchCount": 698,
+    "observedSourceRevisionOnlyCount": 82
+  },
+  "recoveryRun1": {
+    "runId": 37552411600,
+    "runNumber": 1,
+    "conclusion": "failure",
+    "failedStep": "Capture immutable baseline plus prospective official revision overlay",
+    "observedAt": "2026-10-07T00:32:46Z",
+    "failure": "Expected frozen canonicalA1ValueMismatchCount=698 but current PRIMARY reconciliation returned 0.",
+    "system1Isolation": "PASS"
+  },
+  "rootCause": {
+    "state": "NON_EQUIVALENT_TPEX_TRANSPORTS",
+    "canonicalPrimary": {
+      "urlTemplate": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?response=json&date=YYYY/MM/DD",
+      "titleObserved": "上櫃股票行情",
+      "representativeRows": {
+        "1240": {
+          "volumeShares": 18564,
+          "tradeValue": 1005344,
+          "transactions": 22
+        },
+        "3228": {
+          "volumeShares": 793962,
+          "tradeValue": 182271509,
+          "transactions": 665
+        }
+      }
+    },
+    "legacyFallback": {
+      "urlTemplate": "https://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_result.php?...",
+      "titleObserved": "上櫃股票每日收盤行情(不含定價)",
+      "canonicalEquivalent": false,
+      "representativeRows": {
+        "1240": {
+          "volumeShares": 18000,
+          "tradeValue": 974800,
+          "transactions": 15
+        },
+        "3228": {
+          "volumeShares": 780000,
+          "tradeValue": 179040000,
+          "transactions": 554
+        }
+      }
+    },
+    "artifactMatchObservation": "Representative canonical mismatch values retained in run #18 artifact match the TPEx legacy '不含定價' endpoint rather than the canonical primary endpoint.",
+    "interpretation": "The 698 apparent canonical A1 changes were caused by switching to a semantically different official transport after primary transport failure, not by a verified official correction of canonical daily A1 values."
+  },
+  "remediation": {
+    "sourceAdapterCommit": "fd0f5aa72d5b1355d27e54832bea7a2b416fc559",
+    "sourceTestCommit": "d4a93108254af302610a658dfbd515404e10beaf",
+    "overlayRecoveryCommit": "0c5c58a76fcc33e50d67354d1c2790271e7973bc",
+    "annualWorkflowGuardCommit": "45e3ab7b55fce704fc6e02f3906572df9ceddf79",
+    "canonicalTransportPolicy": "PRIMARY_ONLY_FAIL_CLOSED_NON_EQUIVALENT_LEGACY",
+    "legacyFallbackCanonicalEligible": false,
+    "revisionOverlayPolicy": "Do not persist revision rows when PRIMARY canonical values equal immutable cold baseline.",
+    "latestSystem2ResearchCiRunId": 37554545204,
+    "latestSystem2ResearchCiConclusion": "success"
+  },
+  "acceptanceGate": [
+    "Fresh recovery run from post-fix main.",
+    "Recovery source-semantics step must return PASS_TPEX_2021_SOURCE_SEMANTICS_RECOVERY or a separately verified real revision lineage.",
+    "Physical verifier V0.5 must complete successfully.",
+    "Data Coverage must be PASS; replay readiness may remain PARTIAL for explicit UNKNOWN gaps / incomplete TPEx delisting union.",
+    "System1 production isolation must PASS."
+  ],
+  "protectedBoundaries": {
+    "coldHistoryMutated": false,
+    "system1RuntimeChanged": false,
+    "formalCoreChanged": false
+  }
+}
