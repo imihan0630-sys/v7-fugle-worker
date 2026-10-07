@@ -3127,8 +3127,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Large-cap vs Small-cap領導×策略」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WAITING_PIT_OOS",
-          "next": "Keep L2 until PIT-safe market-cap source/vintage capture is promotion-grade; control liquidity/limit-state/information-quality redundancy."
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / REPORTED_SHARES_SNAPSHOT_SOURCE_FEASIBILITY_STRONG / S0_S1_TWO_LAYER_VINTAGE_CONTRACT_FROZEN / EFFECTIVE_SHARE_DENOMINATOR_REPLAY_PENDING / SIZE_BUCKET_NOT_FROZEN",
+          "next": "Maintain L2/40%. Build a research-only zero-extra-call S0 observer that preserves official TWSE/TPEx profile share-count source/date/capturedAt/raw-row hash already available in loaded payloads. Do not use S0 for canonical size membership. Obtain shared denominator-vintage authority for S1 effectiveSharesOutstanding, freeze denominatorFamilySetVersion and then build deterministic S1 market-cap receipts before any large/small bucket or outcome work.",
+          "evidence": " 2026-10-07 Room11 froze research/D18_06_REPORTED_SHARES_VS_EFFECTIVE_MARKET_CAP_VINTAGE_CONTRACT_20261007_V0_1.md and research/d18_06_reported_vs_effective_market_cap_vintage_oracle_20261007_v0_1.json. Existing repo path already exposes official sharesOutstanding from TWSE/TPEx company-basic payloads and can plausibly preserve source date/capturedAt with zero extra market calls, but source snapshot date is not economic effective date. S0 REPORTED_SHARES_SNAPSHOT_CONTEXT remains CONTEXT_RAW; only S1 EFFECTIVE_MARKET_CAP_MEMBERSHIP with denominator-vintage proof may enter canonical size buckets. Current shares may never be backfilled against historical prices."
         },
         {
           "id": "D18-07",
@@ -3226,7 +3227,9 @@
           "next": "維持 L2/40%。等待 D13-18 first-known 台灣景氣 vintage、ex-TAIEX circularity control、D22 credit-cycle producer 與 immutable two-dimensional state replay；在此之前不得用 revised cycle labels 或 synthetic states 升 L3。",
           "evidence": "research/D18_15_BUSINESS_CREDIT_CYCLE_STRATEGY_REGIME_20261004_V0_1.md"
         }
-      ]
+      ],
+      "status": "D18_PIT_VECTOR_L3_PARTIAL / D18_04_U2B_MINIMAL_PATH_FROZEN_EXECUTION_PENDING / D18_06_TWO_LAYER_SIZE_VINTAGE_CONTRACT_FROZEN_EFFECTIVE_DENOMINATOR_PENDING / REGIME_POLICY_OUTCOMES_NOT_OPEN",
+      "exactNextContinuationPoint": "優先等待/驗證 CORR-004 與共享 continuity certifier；D18-04 建立 CLEAR_NO_ACTION U2B row/aggregate builder 前先取得 actionFamilySetVersion adequacy。D18-06 建立零新增市場呼叫的 S0 reported-shares provenance observer，保留 sourceReportedDate/capturedAt/raw-row hash；S1 必須等待共享 effective-share denominator-vintage authority，之後再事前凍結大小型 bucket。無真實 executable replay 不升 L3。"
     },
     {
       "id": "D19",
