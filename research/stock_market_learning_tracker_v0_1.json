@@ -1508,8 +1508,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動）」。正式主責為 issuer × observable strategic action × implementation stage × vintage（公司×可觀測策略行動×執行階段×版本）的公司特定策略行動生命週期，包括 actionType、announcementAt、可觀測的 commitment／boardApprovalAt、implementationStage、目標產品／技術／地理、聯盟／M&A／垂直整合／擴產卡位、競爭者反應，以及可歸因於已記錄策略行動的後續市占／產能／產品定位變化。靜態市占水準、進入障礙、替代威脅與產業結構屬 D09-13；若沒有 firm-specific action（公司特定行動）欄位，觀測不得歸為 D09-14。D10 實體產能／供應鏈、D11／D17 事件／新聞時鐘只能作依賴來源，不得複製成第二張票。共享母資料只保留一份 parent receipt；D09-14 只有 actor-specific action lifecycle（行動者特定策略生命週期）提供增量資訊時才形成獨立研究狀態。每個結論必須保存 PIT、行動階段版本、反證、資料品質、冗餘、成本與 System 1／System 2 增量價值。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "DISTINCT_FIRM_ACTION_PIT_CONTRACT / FIRST_TRUE_PROSPECTIVE_COHORT_FROZEN / COHORT_EXPANDED_TO_4_ACTIONS / TWO_POST_FREEZE_ACTIONS_FROZEN_OUTCOME_BLIND / ORIGINAL_ACTIONS_PENDING_NATIVE_MILESTONE / FUTURE_OUTCOMES_CLOSED / H01_KEEP_SEPARATE_SCOPE_DEDUP_CANONICAL",
-          "next": "BR-060 continue native milestone surveillance for the four frozen actions and add issuer-diverse pre-outcome actions when clean native evidence appears; cluster future inference by issuer/action date; freeze implementation milestones before any outcome join; no stock outcome before D16 preregistration/common support and no L4 before prospective/OOS evidence."
+          "status": "DISTINCT_FIRM_ACTION_PIT_CONTRACT / FIVE_FROZEN_ACTIONS / FOUR_ISSUERS / BR064_VIS_VSMC_POST_FREEZE_MOPS_CAPITAL_ACTION / CAPITAL_ACTION_NOT_PHYSICAL_CAPACITY_VOTE / FUTURE_OUTCOMES_CLOSED / H01_KEEP_SEPARATE_SCOPE_DEDUP_CANONICAL",
+          "next": "BR-065 continue native milestone surveillance across all five frozen actions; preserve issuer clustering and shared D10 lineage for physical milestones; VIS/VSMC shareholder-specific subscription remains UNKNOWN unless directly disclosed; no stock/economic outcome before D16 preregistration/common support."
         }
       ],
       "status": "D09_57_1_PERCENT / SDA009_ROOM07_RESEARCH_RESPONSIBILITY_COMPLETE / R3_V06_ACCEPTANCE_ORACLE_READY / SYSTEM1_R3A1_ENGINEERING_PENDING / GENUINE_RECEIPT_COUNT_0 / BR035_PARENT_GENERATION_BLOCKED / BR063_REPLAY_ONLY_SAME_CLOCK_MISSING / D16_VALIDATION_PENDING / SDA_TICKET_NOT_CLOSED / FORMAL_CORE_UNCHANGED",
@@ -1636,8 +1636,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Trade Policy／Export Controls／Sanctions Supply-chain Transmission貿易政策出口管制制裁供應鏈傳導」。研究政策、出口限制、制裁、補貼與地緣瓶頸如何經供應鏈、產能、成本、交期與定價權傳導；必須區分政策公告、正式生效與企業實際暴露，禁止把新聞標題直接當產業受益證據。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "TAIWAN_ISSUER_POLICY_EXPOSURE_PIT_FEASIBLE / CURRENT_BIS_PARENTAGE_AND_ENTITY_AUTHORIZATION_VINTAGES / NEGATIVE_CONTROLS / OUTCOMES_CLOSED",
-          "next": "Prospectively append the next BIS rule/list/license vintage after SC-047 capture; add compatible issuer customer/destination exposure only when disclosed; preregister outcome windows before financial/stock tests."
+          "status": "TAIWAN_ISSUER_POLICY_EXPOSURE_PIT_FEASIBLE / SC047_CURRENT_BIS_PARENTAGE_AND_ENTITY_AUTHORIZATION / SC075_POST_FREEZE_NULL_DENOMINATOR / NO_NEW_POST_20261004_BIS_VINTAGE_OBSERVED_THROUGH_20261007T2212 / HISTORICAL_20260924_RULE_NOT_PROSPECTIVE / OUTCOMES_CLOSED",
+          "next": "SC-076 capture the first official BIS rule/list/license vintage published strictly after the SC-047 freeze, preserving publication/effective/expiry clocks; issuer customer/destination/product exposure remains UNKNOWN without compatible issuer-native evidence; preregister outcome windows before any revenue/margin/stock test."
         },
         {
           "id": "D10-14",
@@ -1646,8 +1646,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Industrial Policy／Subsidy／Geopolitical Bottleneck產業政策補貼與地緣瓶頸」。研究政策、出口限制、制裁、補貼與地緣瓶頸如何經供應鏈、產能、成本、交期與定價權傳導；必須區分政策公告、正式生效與企業實際暴露，禁止把新聞標題直接當產業受益證據。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "POLICY_TO_CAPACITY_TAIWAN_PIT_FEASIBLE / TWO_ISSUER_CONTROLS_TSMC_GLOBALWAFERS / DISBURSEMENT_HVM_FIREWALL / OUTCOMES_CLOSED",
-          "next": "SC-051 seek fresh official GlobalWafers physical milestone/disbursement evidence and a delayed/cancelled/under-utilized policy-supported Taiwan-issuer control; no L4 before prospective common-support outcomes."
+          "status": "POLICY_TO_CAPACITY_TAIWAN_PIT_FEASIBLE / GLOBALWAFERS_US317P8M_PLUS_ITALY_EUR30M_REALIZED_SUPPORT / SHERMAN_TIER1_QUALIFICATION / STP_VOLUME_PRODUCTION_ENTERING / UTSUNOMIYA_ONLINE_HIGH_UTILIZATION / FOXCONN_WISCONSIN_SCOPE_RESET_NEGATIVE_CONTROL / OUTCOMES_CLOSED",
+          "next": "SC-074 capture the next genuinely new policy/disbursement/project-scope event under separate award/disbursement/capex/facility/qualification/HVM/utilization/revision states; no policy headline may be promoted directly into capacity or earnings exposure; future L4 requires prospective common-support validation."
         }
       ]
     },
