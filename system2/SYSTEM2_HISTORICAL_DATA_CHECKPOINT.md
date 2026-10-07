@@ -493,3 +493,30 @@ Exact next action: run the dedicated recovery workflow from latest main. It will
 Recovery workflow URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/workflows/system2-historical-tpex-2021-revision-recovery.yml
 
 Acceptance gate: overlay result must be `PASS_TPEX_2021_REVISION_LINEAGE`, verifier must be terminal SUCCESS with `effectiveDataIntegrityState=PASS_WITH_PIT_REVISION_LINEAGE`, Data Coverage PASS, System1 isolation PASS. Only then may 2021 TPEx move from BLOCKED to PASS/PARTIAL and annual continuation return to 2024 TWSE.
+
+
+## 2026-10-07 2021 TPEx revision-lineage recovery ready for execution
+
+DATA_LANE priority is temporarily switched from 2024 annual continuation back to the unresolved 2021 TPEx canonical source revision blocker.
+
+Implemented recovery path:
+- generic PIT revision-lineage evaluator: `system2/runtime/historical_revision_lineage_v0_1.mjs`;
+- PIT replay now resolves the latest version whose `availableAt <= decisionTimestamp`, while same-availability conflicting revisions remain fail-closed;
+- bounded 2021-01-14 TPEx overlay persistence: `system2/scripts/historical_tpex_2021_revision_overlay_v0_1.mjs`;
+- overlay preserves immutable cold baseline and writes official revised values only as a second hot-A1 version with `availabilityBasis=PROSPECTIVE_OBSERVATION` and revision first-known timestamp;
+- frozen blocker signature is enforced: 780 source-row revisions / 698 canonical A1 changes / 82 source-only revisions / one market date 2021-01-14;
+- annual physical verifier V0.5 accepts canonical changes only when physical persisted lineage proves baseline/revised coverage and deterministic pre/post as-of selection;
+- no D1 schema migration was required; existing `s2_historical_a1_bars` multi-version semantics are reused;
+- dedicated recovery workflow: `.github/workflows/system2-historical-tpex-2021-revision-recovery.yml`.
+
+Validation completed before execution:
+- System2 Research CI run `37550297713`: SUCCESS on the idempotent recovery implementation;
+- V8 Regression run `37550326757`: SUCCESS on annual workflow integration;
+- V8 Regression run `37550329803`: SUCCESS after dedicated recovery workflow addition;
+- latest-main critical runtime/test/verifier/overlay blobs remain byte-identical to the CI-PASS implementation.
+
+Exact execution action: fresh-dispatch the dedicated `System2 Historical 2021 TPEx Revision Recovery` workflow. It performs overlay persistence -> V0.5 physical re-verification -> evidence upload -> System1 isolation. No year/market input is required.
+
+Workflow URL: https://github.com/imihan0630-sys/v7-fugle-worker/actions/workflows/system2-historical-tpex-2021-revision-recovery.yml
+
+Do not advance to 2024 TWSE until this dedicated recovery reaches terminal verification. Do not rerun old run #18 as a substitute.
