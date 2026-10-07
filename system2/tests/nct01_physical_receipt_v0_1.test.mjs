@@ -4,12 +4,40 @@ import {
   buildNcT01ReceiptFromOrchestrationV0_1,
   nct01RequiredPassRefTypesV0_1,
 } from "../runtime/nct01_physical_receipt_v0_1.mjs";
+import { buildNcT01HiddenFallbackAuditV0_1 } from "../runtime/nct01_hidden_fallback_audit_v0_1.mjs";
 
 const h=(c)=>String(c).repeat(64);
 const typed=(type,c)=>type+":"+h(c);
 
+const cleanAudit=await buildNcT01HiddenFallbackAuditV0_1({
+  runnerEntryPoint:"system2/runtime/nct01_artifact_runner_v0_1.mjs",
+  runnerHeadSha:"a".repeat(40),
+  auditedBlobIdentities:[
+    {path:"system2/runtime/nct01_artifact_runner_v0_1.mjs",blobSha:"b".repeat(40)},
+    {path:"system2/runtime/nct01_physical_receipt_v0_1.mjs",blobSha:"c".repeat(40)},
+  ],
+  perDimensionDisposition:{
+    cachedSystem1SelectionUsed:"PROVEN_ABSENT",
+    persistedSystem1SelectionUsed:"PROVEN_ABSENT",
+    aliasReconstructionUsed:"PROVEN_ABSENT",
+    crossProjectFallbackUsed:"PROVEN_ABSENT",
+    staleSharedStateUsed:"PROVEN_ABSENT",
+  },
+  runtimeEvidence:{
+    instrumented:true,
+    sameExecutionCut:true,
+    runtimeForbiddenAccessCount:0,
+    runtimeEvidenceDigest:h("d"),
+    typedEvidence:["NO_FORBIDDEN_SYSTEM1_ACCESS"],
+  },
+  forbiddenSourceFamilyVersion:"S2-NCT01-FORBIDDEN-SOURCES-V0_1",
+  auditGeneratedAt:"2026-10-07T07:30:30Z",
+});
+
 const allRefs=nct01RequiredPassRefTypesV0_1().map((type,index)=>
-  typed(type,String((index%9)+1)),
+  type==="HIDDEN_FALLBACK_AUDIT_SHA256"
+    ? type+":"+cleanAudit.auditDigest
+    : typed(type,String((index%9)+1)),
 );
 
 const base={
@@ -17,13 +45,7 @@ const base={
   decisionAt:"2026-10-07T07:30:00Z",
   strategyId:"SHORT_MOMENTUM",
   strategyVersion:"V0.1-CONTRACT",
-  hiddenFallbackAudit:{
-    cachedSystem1SelectionUsed:false,
-    persistedSystem1SelectionUsed:false,
-    aliasReconstructionUsed:false,
-    crossProjectFallbackUsed:false,
-    staleSharedStateUsed:false,
-  },
+  hiddenFallbackAuditEvidence:cleanAudit,
   sharedRawSourceRefs:["A1_TWSE_OFFICIAL","S2_D1_PIT_HISTORY"],
   candidateUniverseProvenance:["UNIVERSE_VERSION:TEST","BASE_UNIVERSE_COUNT:2"],
   requiredInputsState:"READY",
@@ -61,13 +83,37 @@ assert.equal(missingTyped.resultClassification,"EVIDENCE_INCOMPLETE");
 assert.equal(missingTyped.zeroPickDisposition,"INPUT_INCOMPLETE");
 assert.ok(missingTyped.notes.some((x)=>x.includes("CONTINUITY_RECEIPT_SHA256")));
 
+const hiddenAudit=await buildNcT01HiddenFallbackAuditV0_1({
+  runnerEntryPoint:"system2/runtime/nct01_artifact_runner_v0_1.mjs",
+  runnerHeadSha:"a".repeat(40),
+  auditedBlobIdentities:[
+    {path:"system2/runtime/nct01_artifact_runner_v0_1.mjs",blobSha:"b".repeat(40)},
+  ],
+  perDimensionDisposition:{
+    cachedSystem1SelectionUsed:"PROVEN_ABSENT",
+    persistedSystem1SelectionUsed:"PRESENT",
+    aliasReconstructionUsed:"PROVEN_ABSENT",
+    crossProjectFallbackUsed:"PROVEN_ABSENT",
+    staleSharedStateUsed:"PROVEN_ABSENT",
+  },
+  runtimeEvidence:{
+    instrumented:true,
+    sameExecutionCut:true,
+    runtimeForbiddenAccessCount:1,
+    runtimeEvidenceDigest:h("e"),
+    typedEvidence:["PERSISTED_SYSTEM1_SELECTION_ACCESS"],
+  },
+  forbiddenSourceFamilyVersion:"S2-NCT01-FORBIDDEN-SOURCES-V0_1",
+  auditGeneratedAt:"2026-10-07T07:30:30Z",
+});
 const hidden=await buildNcT01PhysicalIndependenceReceiptV0_1({
   ...base,
   receiptId:"NC-T01-TEST-HIDDEN",
-  hiddenFallbackAudit:{
-    ...base.hiddenFallbackAudit,
-    persistedSystem1SelectionUsed:true,
-  },
+  hiddenFallbackAuditEvidence:hiddenAudit,
+  sourceGenerationRefs:[
+    ...allRefs.filter((x)=>!x.startsWith("HIDDEN_FALLBACK_AUDIT_SHA256:")),
+    "HIDDEN_FALLBACK_AUDIT_SHA256:"+hiddenAudit.auditDigest,
+  ],
 });
 assert.equal(hidden.resultClassification,"HIDDEN_SYSTEM1_DEPENDENCY");
 assert.equal(hidden.zeroPickDisposition,"DEPENDENCY_BLOCKED");
@@ -111,6 +157,9 @@ const orchestration={
       sourceHistoryHash:h("e"),
       continuityTransformHash:h("f"),
       continuityBlockerCodes:[],
+      missingRequiredEvidenceCount:0,
+      requiredEvidenceComplete:true,
+      assessmentHash:h("6"),
       strategyValidity:"VALID",
       entryReadiness:"BUY_ELIGIBLE",
     },
@@ -124,6 +173,12 @@ const orchestration={
       sourceHistoryHash:h("8"),
       continuityTransformHash:null,
       continuityBlockerCodes:["CONTINUITY_RECEIPT_MISSING"],
+      missingRequiredEvidenceCount:1,
+      requiredEvidenceComplete:false,
+      assessmentHash:h("7"),
+      missingRequiredEvidenceCount:1,
+      requiredEvidenceComplete:false,
+      assessmentHash:h("8"),
       strategyValidity:"INCOMPLETE",
       entryReadiness:"BLOCKED",
     },
@@ -156,7 +211,7 @@ const assembled=await buildNcT01ReceiptFromOrchestrationV0_1({
   orchestration,
   policyFingerprintReceipt:policy,
   sharedRawSourceRefs:["A1_TWSE_OFFICIAL","S2_D1_PIT_HISTORY"],
-  hiddenFallbackAudit:base.hiddenFallbackAudit,
+  hiddenFallbackAuditEvidence:cleanAudit,
   generatedAt:"2026-10-07T07:31:00Z",
 });
 assert.equal(assembled.requiredInputsState,"READY");
@@ -194,7 +249,7 @@ const noWitness=await buildNcT01ReceiptFromOrchestrationV0_1({
   },
   policyFingerprintReceipt:policy,
   sharedRawSourceRefs:["A1_TWSE_OFFICIAL","S2_D1_PIT_HISTORY"],
-  hiddenFallbackAudit:base.hiddenFallbackAudit,
+  hiddenFallbackAuditEvidence:cleanAudit,
   generatedAt:"2026-10-07T07:31:00Z",
 });
 assert.equal(noWitness.requiredInputsState,"INCOMPLETE");
