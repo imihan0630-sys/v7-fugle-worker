@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "0.1",
+  "moduleId": "D07-34",
+  "researchDate": "2026-10-07",
+  "scope": "Taiwan listed-company dividend/payout sustainability; outcome-blind append-only PIT replay contract",
+  "formalCoreImpact": "NONE",
+  "outcomes": "CLOSED",
+  "maturityImpact": "NONE",
+  "authority": {
+    "canonicalTracker": "research/stock_market_learning_tracker_v0_1.json",
+    "sourceFamilies": [
+      "MOPS/TWSE material-information dividend decisions",
+      "MOPS ex-right/ex-dividend announcements",
+      "TWSE ex-right/ex-dividend schedule"
+    ],
+    "sourceEvidence": [
+      "TWSE material-information clause 14 separates board dividend decision/change, record date, payment-date change and late payment",
+      "TWSE current disclosures expose decision/fact time, total cash dividend, per-share dividend, ex-date, record date and payment date",
+      "TWSE current disclosure for 2330 shows per-share dividend can change solely because outstanding shares changed while total cash distribution stayed constant"
+    ]
+  },
+  "eventIdentity": {
+    "key": [
+      "symbol",
+      "fiscalDistributionPeriod",
+      "eventType",
+      "publishedAt",
+      "sourceRecordIdentity"
+    ],
+    "eventTypes": [
+      "PROPOSAL_OR_BOARD_DECISION",
+      "FINAL_APPROVAL_OR_CHANGE",
+      "RECORD_DATE",
+      "EX_DATE",
+      "PAYMENT_DATE",
+      "PAYMENT_DATE_CHANGE",
+      "LATE_PAYMENT",
+      "PER_SHARE_AMOUNT_ADJUSTMENT"
+    ],
+    "appendOnly": true,
+    "correctionRule": "Never overwrite an earlier known state. A correction/amendment is a new event linked by supersedesEventId.",
+    "clocks": [
+      "publishedAt",
+      "factDate",
+      "decisionDate",
+      "recordDate",
+      "exDate",
+      "paymentDate"
+    ],
+    "missingRule": "UNKNOWN_NEVER_ZERO"
+  },
+  "payoutSemantics": {
+    "preserve": [
+      "totalCashDistribution",
+      "cashDividendPerShare",
+      "stockDividendPerShare",
+      "distributionSource",
+      "sharesDenominator",
+      "sharesDenominatorKnownAt",
+      "ordinaryVsSpecial",
+      "currency"
+    ],
+    "distributionSourceStates": [
+      "CURRENT_EARNINGS",
+      "RETAINED_EARNINGS",
+      "CAPITAL_OR_LEGAL_RESERVE",
+      "MIXED",
+      "UNKNOWN"
+    ],
+    "invariant": "Per-share dividend change is not a payout-cut signal unless total distribution and share-denominator lineage are reconciled."
+  },
+  "sustainabilityJoin": {
+    "allowedParents": [
+      "D07-02 earnings",
+      "D07-05 CFO/FCF",
+      "D07-06 leverage/liquidity",
+      "D11 event clocks",
+      "D21 capital-allocation governance",
+      "D07-32 financial-institution capital semantics"
+    ],
+    "knownAtRule": "Financial-statement denominators may join only after their own first-known timestamp.",
+    "antiDoubleCount": "One parent receipt may feed validation/context but may not create duplicate independent votes."
+  },
+  "falsification": [
+    "High yield can be caused by price decline and is not quality.",
+    "High payout can reflect maturity/weak reinvestment opportunity rather than alpha.",
+    "Stable DPS can be funded by reserves or leverage rather than current earnings/CFO.",
+    "A lower DPS after share-count change is not necessarily a lower total payout.",
+    "A dividend cut can rationally preserve liquidity and reduce distress risk."
+  ],
+  "biasFirewalls": {
+    "selectionBias": "Replay cohort must include maintain/increase/cut/omit states; do not sample only persistent payers.",
+    "lookAhead": "Never backfill final approval, payment or corrected per-share amount into an earlier decision state.",
+    "dataSnooping": "No payout/yield/coverage threshold may be chosen after return inspection.",
+    "multipleTesting": "Coverage variants must be preregistered before outcome join.",
+    "factorRedundancy": "Earnings/CFO/leverage primitives remain owned by D07-02/05/06.",
+    "eventClustering": "Multiple dividend notices from one corporate decision chain are one linked episode, not independent alpha events.",
+    "accountingRevision": "Restated financial denominators remain separate vintages.",
+    "corporateActions": "Share-count changes, capital reductions/increases and stock dividends require denominator lineage.",
+    "transactionCostLiquidity": "Any later strategy test must include executable liquidity/cost controls; not relevant to source-contract maturity.",
+    "regimeDependence": "Any later outcome test must stratify or control cycle/regime without post-hoc best-regime selection."
+  },
+  "l3Gate": {
+    "required": [
+      "multi-company multi-date physical replay receipts",
+      "at least one maintain/increase/cut/omit state where source history permits",
+      "proposal/final/correction/ex-date/payment chronology",
+      "distribution-source and share-denominator lineage",
+      "compatible earnings/CFO denominator knownAt",
+      "coverage/missingness receipt with explicit UNKNOWN"
+    ],
+    "currentState": "NOT_SATISFIED"
+  },
+  "exactNextContinuationPoint": "Build a bounded multi-company historical append-only replay from official MOPS/TWSE records; preserve all vintages and explicit UNKNOWN; keep outcomes closed. If historical transport cannot reproduce proposal/final/payment clocks, mark SOURCE_BLOCKED or PROSPECTIVE_ONLY_FEASIBLE and continue the parallel D08-03 lane.",
+  "formalOptimizationCandidate": "NONE"
+}
