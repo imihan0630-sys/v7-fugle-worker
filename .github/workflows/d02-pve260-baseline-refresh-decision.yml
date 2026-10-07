@@ -1,0 +1,23 @@
+name: D02 PVE260 Baseline Refresh Decision
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "research/d02_pve260_baseline_refresh_decision_v0_1.mjs"
+      - "tests/test_d02_pve260_baseline_refresh_decision_v0_1.mjs"
+      - ".github/workflows/d02-pve260-baseline-refresh-decision.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tests/test_d02_pve260_baseline_refresh_decision_v0_1.mjs
