@@ -6140,3 +6140,64 @@ No promotion:
 
 Exact next:
 continue bounded V1.7 repeated captures until the frozen stabilization rule is physically satisfied without payload conflicts, preserving append-only union identity and earliest-observed clocks. Only after stabilization may `expectedMopsKeysetComplete` be reviewed. `noRevisionGapThroughCut` must remain false until post-parent revision reconciliation. Continue in parallel waiting for System2 D03 raw-vs-dedup diagnostics, System1 D03 redundancy diagnostics, D16 D03 method/incrementality receipts, raw-source observer completion and the cutoff-bearing C1 parent.
+
+
+## 2026-10-07 D03 — TI-1249~1258 System1 V8.20 / T48 parent-path decomposition
+
+Canonical D03 artifact:
+- `research/d03_system1_v820_t48_parent_path_decomposition_20261007_v0_1.json`.
+
+### TI-1249~1252 — authoritative parent identity is implemented but evidence is still pending
+
+Latest-main confirms:
+- Production runtime `8.20.0-formal-c1-binding-ledger` is deployed/verified;
+- append-only `trade_research_formal_c1_bindings` exists;
+- exact Formal decision receipt -> exact immutable C1 generation binding is the intended authoritative parent identity;
+- first legitimate normal-session genuine binding receipt is still pending.
+
+Therefore the D03 parent path is no longer accurately described as “binding mechanism not implemented.”
+It is:
+`MECHANISM_PRODUCTION_VERIFIED / FIRST_GENUINE_PARENT_RECEIPT_PENDING`.
+
+No historical recovery, stage-selection replay or ineligible scheduled attempt can substitute for that genuine receipt.
+
+### TI-1253~1256 — T48 is a second and distinct gate
+
+PR #780 merged only the proposal:
+- `research/SYSTEM1_SDA016_T48_CLASS_B_PROPOSAL_20261007.md`;
+- candidate runtime `8.21.0-c1-generation-set-finalization`;
+- implementation NOT AUTHORIZED;
+- separate owner approval required for implementation;
+- later merge + Production deploy require separate approval.
+
+T48 does not redefine Formal parent identity.
+Its proposed role is to prove when the complete same-session immutable C1 generation inventory is terminal for research consumption.
+
+D03 therefore freezes two distinct gates:
+1. authoritative exact parent identity = V8.20 genuine Formal->C1 binding;
+2. complete same-session parent-set finalization = T48/V8.21 future append-only finalization receipt.
+
+Passing one does not imply the other.
+
+### TI-1257 — D03 promotion consequence
+
+D03-10 Bollinger cannot promote from a genuine bound parent alone if same-session generation-set finalization / complete expected-parent reconciliation remains unproven.
+D03-09 ADX inherits both parent gates and additionally requires canonical Wilder H/L/C FULL_REPLAY or replay-certified trusted state.
+
+This removes a future false-positive path in which “exact parent selected” could be mistaken for “all eligible same-session parents are known and finalized.”
+
+### TI-1258 — maturity and exact next
+
+No promotion:
+- D03 remains 56.7%;
+- D03-09 and D03-10 remain L2/40;
+- raw source/version gate remains 2/3;
+- technicalObserverR1 remains BLOCKED;
+- outcomes remain CLOSED;
+- Formal Core remains LOCKED.
+
+Exact next:
+1. consume the first legitimate post-deploy V8.20 genuine Formal->C1 binding receipt from a normal Taiwan session;
+2. separately keep T48 as proposal-only until owner-authorized implementation, merge/deploy approval, Production verification and same-session generation-set finalization receipt exist;
+3. require both exact parent identity and finalized complete same-session generation inventory before promotion-grade same-parent reconciliation;
+4. continue waiting for System2 D03 raw-vs-dedup diagnostics, System1 D03 redundancy diagnostics, D16 D03 method/incrementality receipts, raw-source observer completion and S2-07 bounded stabilization.
