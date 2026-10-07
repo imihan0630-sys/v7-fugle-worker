@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "S2_CORR_20261007_003_D1_QUOTA_COORDINATION_DIAGNOSIS_V0_1",
+  "recordedAt": "2026-10-07T19:15:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "proposedDirectiveId": "S2-CORR-20261007-003",
+  "finding": "RECURRENT_CROSS_WORKFLOW_D1_FREE_TIER_WRITE_QUOTA_COLLISION",
+  "currentControls": {
+    "sharedConcurrencyGroup": "system2-isolated-d1-writer",
+    "cancelInProgress": false,
+    "effect": "serializes writers but does not reserve or budget a daily free-tier write quota",
+    "localQuotaControls": [
+      "daily_shadow_fugle_hot_history_bootstrap_v0_1.mjs limits that specific bootstrap to one physical batch per UTC quota day"
+    ],
+    "globalDailyWriteBudgetGate": false
+  },
+  "sameDayEvidence": [
+    {
+      "workflowRunId": 37609474459,
+      "workflow": "System2 Daily Shadow Diagnostic",
+      "startedAt": "2026-10-07T10:45:13Z",
+      "conclusion": "SUCCESS",
+      "d1Metrics": {
+        "requestCount": 797,
+        "rowsRead": 583256,
+        "rowsWritten": 13130
+      },
+      "note": "Persisted 1,973 prospective A1 rows plus diagnostic shards/readback in the isolated System2 D1."
+    },
+    {
+      "workflowRunId": 37611914140,
+      "workflow": "System2 Historical Pack Annual Backfill",
+      "startedAt": "2026-10-07T11:07:05Z",
+      "headSha": "cd99cd22f2019a8666c3fc25347d0e6fbbd2c595",
+      "conclusion": "FAILURE",
+      "failureStage": "migrate",
+      "cloudflareHttpStatus": 400,
+      "cloudflareMessage": "Your account has exceeded D1's free tier daily row write limit. Upgrade to a paid plan or wait until tomorrow (midnight UTC) to continue.",
+      "backfillStarted": false,
+      "physicalVerifyStarted": false,
+      "artifactProduced": false
+    }
+  ],
+  "recurrenceEvidence": [
+    "Prior 2021 TPEx run #17 was also blocked by D1 free-tier daily row-write quota; durable evidence already exists in system2/evidence/S2_HISTORICAL_TPEX_2021_D1_QUOTA_BLOCKER_V0_1.json.",
+    "Repository already contains local free-tier protection for Fugle hot-history bootstrap, proving quota risk is known but not governed globally."
+  ],
+  "costBoundary": {
+    "paidUpgradeAuthorized": false,
+    "automaticPaidUpgradeForbidden": true,
+    "ownerPreference": "Avoid unexpected recurring charges; remain on free-tier behavior unless owner explicitly approves a paid change.",
+    "resetSemanticsFromCloudflareError": "midnight UTC",
+    "nextResetTaipei": "2026-10-08T08:00:00+08:00"
+  },
+  "diagnosis": "Writer concurrency prevents simultaneous D1 mutation but does not coordinate finite daily write capacity across scheduled diagnostics, historical population, smoke/provision, hot-history and resonance/deploy writers. A successful earlier writer can consume quota and cause a later high-priority writer to fail before useful work starts.",
+  "requiredRemediation": [
+    "Create one System2-wide UTC-day D1 write-budget/priority contract spanning isolated writer workflows; do not rely only on concurrency.",
+    "Classify writer intents (scheduled operational evidence, historical bulk backfill, bootstrap, smoke/provision, deploy) and define explicit free-tier-safe priority/reservation behavior without purchasing a paid plan.",
+    "Before a large write workflow starts, fail/skip with an explicit QUOTA_BUDGET_DEFERRED receipt when reserved headroom is unavailable instead of beginning and colliding with Cloudflare's hard limit.",
+    "Do not claim exact remaining Cloudflare quota unless directly observable; use conservative accounting from known rowsWritten plus reservations/estimates.",
+    "Avoid redundant schema/provision writes when the isolated D1 schema is already verified ready.",
+    "Keep historical resumability/immutability and daily diagnostic evidence semantics unchanged.",
+    "Any paid-tier upgrade remains OWNER_DECISION_REQUIRED and is outside this correction."
+  ],
+  "protectedBoundaries": [
+    "System1 Formal Core/runtime",
+    "System2 strategy/ranking/selection semantics",
+    "PIT/UNKNOWN/provenance semantics",
+    "No automatic paid-plan upgrade",
+    "No live capital/order/push authority"
+  ]
+}
