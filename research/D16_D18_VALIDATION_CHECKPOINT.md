@@ -3927,3 +3927,131 @@ Exact next:
 4. build research-only U2B row/aggregate receipt;
 5. execute the 13-test oracle and one physical no-action pair;
 6. measure U2B coverage before any breadth/return Regime threshold.
+
+
+## 2026-10-07 D18-06 reported-shares vs effective-market-cap vintage split
+
+New durable artifacts:
+- `research/D18_06_REPORTED_SHARES_VS_EFFECTIVE_MARKET_CAP_VINTAGE_CONTRACT_20261007_V0_1.md`;
+- `research/d18_06_reported_vs_effective_market_cap_vintage_oracle_20261007_v0_1.json`.
+
+### Existing source feasibility
+
+Repository readback confirms that the official company-profile path already exposes sharesOutstanding:
+- TPEx `mopsfin_t187ap03_O` exposes `Date` + `IssueShares`;
+- TWSE profile/CSV path exposes issued common-share fields and validates an export/source date;
+- current Formal enrichment can already fall back to `sharesOutstanding × same-day close`;
+- current normalized/persisted paths discard source branch/date detail;
+- custom enrichment may override shares or explicit market-cap fields.
+
+Therefore a research-only prospective shares-source observer can plausibly preserve source/date/capturedAt provenance with zero additional market-data calls.
+
+This is source observability only, not historical denominator-vintage proof.
+
+### Two-layer size-vintage contract
+
+S0:
+`REPORTED_SHARES_SNAPSHOT_CONTEXT`.
+
+S0 binds official source row identity, sourceReportedDate, capturedAt/observedAt, sharesOutstanding and decision clock.
+
+An allowed descriptive derived value is:
+`REPORTED_SHARES_X_SAME_DAY_CLOSE_CONTEXT`.
+
+S0 is CONTEXT_RAW and cannot define canonical large/small membership.
+
+S1:
+`EFFECTIVE_MARKET_CAP_MEMBERSHIP`.
+
+S1 additionally requires:
+- sharesEffectiveForMarketDate=true;
+- shared denominatorVintageReceiptId/hash;
+- effective-date or validity-interval semantics;
+- no unresolved capital-supply/corporate-action denominator event;
+- exact same-day PIT close;
+- PIT market membership;
+- source/effective evidence available under the decision clock;
+- explicit price-space/unit/version identity.
+
+Only S1 may enter D18-06 canonical size buckets.
+
+### Core firewall
+
+`SOURCE_DATE_MATCH != SHARES_EFFECTIVE_FOR_MARKET_DATE`.
+
+A current/daily source row date proves the reporting snapshot, not automatically the economic effective date of the share denominator.
+
+Forbidden:
+`todaySharesOutstanding × historicalClose`
+without independent denominator-vintage proof.
+
+Current shares may not reconstruct missing historical market cap.
+
+### Source branch ambiguity
+
+Current market cap can be:
+- custom explicit cap;
+- custom shares × close;
+- official shares × close.
+
+Numerical equality does not merge provenance identity.
+
+For first D18 research:
+official source rows are preferred because their raw source identity is directly observable.
+
+Custom cap/shares remain QA/context unless full source/date/capturedAt/vintage provenance is bound.
+
+Unknown source branch => no S1 membership.
+
+### Issued shares != free float
+
+D18-06 V0.1 may eventually use total issued-share market capitalization if explicitly named.
+
+It must not be relabeled as free-float/investable capitalization.
+
+Free-float size is a separate source/vintage contract.
+
+### Denominator ladder
+
+Per date:
+- M0 MARKET_BASE_UNIVERSE;
+- M1 REPORTED_SHARES_SNAPSHOT_KNOWN;
+- M2 EFFECTIVE_SHARE_DENOMINATOR_CERTIFIED;
+- M3 EFFECTIVE_MARKET_CAP_KNOWN;
+- M4 SIZE_BUCKET_ELIGIBLE.
+
+Missing/ambiguous size membership is never coerced to SMALL.
+
+### Oracle
+
+The machine oracle freezes 13 adversarial tests covering:
+- equal numeric shares with different vintage;
+- source date vs later effective date;
+- current-share historical backfill;
+- custom override without provenance;
+- post-decision source row;
+- unresolved capital-supply event;
+- listing/market-transfer ambiguity;
+- close-date mismatch;
+- no TWSE->TPEx semantic inheritance;
+- issued shares not free float;
+- equal cap/different denominator identity;
+- one clean fully certified deterministic S1 positive case.
+
+### Maturity
+
+D18-06 remains L2/40.
+
+S0 source feasibility is strong.
+S1 effective denominator-vintage replay and size bucket builder do not yet exist.
+
+No size-leadership outcome or policy claim is opened.
+
+### Exact next
+
+1. Preserve S0 shares source/date/capturedAt/raw-row hash prospectively with zero new calls where possible.
+2. Reuse shared corporate-action/capital-supply owner for S1 effective denominator semantics; do not build a second denominator truth.
+3. Freeze `denominatorFamilySetVersion`.
+4. Build deterministic S1 market-cap receipt/replay.
+5. Freeze size-bucket construction before outcomes.
+6. Only after executable Taiwan PIT replay consider D18-06 L3.
