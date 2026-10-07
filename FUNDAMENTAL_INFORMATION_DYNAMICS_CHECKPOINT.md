@@ -556,3 +556,34 @@ Maturity:
 - No L4 promotion from archive engineering alone.
 - Formal Core/runtime/selection/scoring/capital/signals unchanged.
 - FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+## 2026-10-07 Room-06 continuation — D07-19 + D08 exact-session archive
+
+Base:
+- latest main at work start = `403f8947f60cb42e383e3ea945045a46ea3dc093`.
+
+D07-19:
+- added `research/d07_19_capital_budgeting_real_options_foundation_v0_1.json`;
+- froze project-economics ownership, NPV/IRR limitations, incremental cash-flow rules, real-option admission, PIT vintages, anti-double-count and falsification;
+- H18 boundary to D21-07 is explicit: D07-19 owns project economics; D21-07 owns management allocation/governance;
+- proposed maturity **L0/0 -> L2/40**; tracker promotion is applied separately to avoid shared-tracker merge conflicts;
+- L3 remains blocked pending Taiwan project-level PIT replay across at least two industries;
+- outcomes CLOSED; Formal Core unchanged; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+D08-03:
+- re-audited the historical archive rather than restarting it;
+- prior 2005-2025 year packs remain PASS;
+- 2026 originally failed on nominal date 2026-07-10 because scheduled holiday-calendar logic did not capture the emergency typhoon market closure;
+- official FMTQIK exact July sessions omit 2026-07-10; the D08 capture path was corrected to use exact monthly FMTQIK sessions;
+- 2026 exact-session year pack PASS: 159 trading dates, 170650 rows, R2 inserted/readbackVerified=true;
+- receipt: `research/d08_twse_daily_valuation_year_pack_execution_receipt_2026_20261007_v0_1.json`;
+- next D08 gate: durable archive manifest + aggregate bundle hash, then 44 frozen outcome-blind percentile snapshots.
+
+Open provenance anomaly:
+- the separate raw-valuation 44-date capture currently detects historical universe source drift at 2023-03-31 (live rebuild 982 vs frozen receipt 981);
+- this is not being papered over by changing the expected count. A new versioned universe-provenance receipt or immutable source snapshot is required before that path can proceed.
+
+Room scope:
+- D07 = 34 modules;
+- D08 = 19 modules;
+- Room-06 total = 53 modules.
