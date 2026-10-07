@@ -119,18 +119,67 @@ const reconciliation=reconcileHistoricalSourceRowsV0_1({
 });
 assert.equal(reconciliation.missingFromColdCount,0,"revision overlay refuses missing cold rows");
 assert.equal(reconciliation.absentFromFreshOfficialCount,0,"revision overlay refuses rows absent from fresh official source");
+assert.equal(fresh.transportMode,"PRIMARY",
+  "2021 TPEx recovery requires canonical PRIMARY transport");
 assert.equal(reconciliation.sourceRowHashMismatchCount,780,
-  "2021 TPEx revision signature changed: expected 780 source-row revisions");
-assert.equal(reconciliation.canonicalA1ValueMismatchCount,698,
-  "2021 TPEx revision signature changed: expected 698 canonical A1 revisions");
-assert.equal(reconciliation.sourceRevisionOnlyCount,82,
-  "2021 TPEx revision signature changed: expected 82 source-only revisions");
+  "2021 TPEx source-row revision signature changed: expected 780 rows");
 assert.equal(reconciliation.sourceRevisionDateCount,1,
-  "2021 TPEx revision overlay expects exactly one revised market date");
+  "2021 TPEx recovery expects exactly one source-row revision date");
 assert.equal(reconciliation.sourceRevisionByDate?.[0]?.marketDate,targetDate,
-  "2021 TPEx revision date changed from the frozen blocker date");
+  "2021 TPEx source-row revision date changed from the frozen blocker date");
 assert.equal(reconciliation.sourceRevisionByDate?.[0]?.count,780,
-  "2021 TPEx revision-date count changed from the frozen blocker signature");
+  "2021 TPEx source-row revision-date count changed from the frozen blocker signature");
+
+if(reconciliation.canonicalA1ValueMismatchCount===0){
+  assert.equal(reconciliation.sourceRevisionOnlyCount,780,
+    "PRIMARY canonical equality expects all 780 differences to be source-row-only");
+  const output={
+    result:"PASS_TPEX_2021_SOURCE_SEMANTICS_RECOVERY",
+    market,year,targetDate,
+    transport:{
+      mode:fresh.transportMode,
+      sourceUrl:fresh.sourceUrl,
+      canonicalPolicy:"PRIMARY_ONLY_FAIL_CLOSED_NON_EQUIVALENT_LEGACY",
+      legacyFallbackCanonicalEligible:false,
+    },
+    annualColdReceipt:{
+      receiptId:receipt.receipt_id,
+      packCount:Number(receipt.pack_count),
+      barCount:Number(receipt.bar_count),
+      headObjectCountVerified:headVerification.objectCountVerified,
+      byteGetObjectCountVerified:objectByteHashVerified,
+    },
+    sourceReconciliation:{
+      coldRowCount:baselineRows.length,
+      freshOfficialRowCount:fresh.rows.length,
+      missingFromColdCount:reconciliation.missingFromColdCount,
+      absentFromFreshOfficialCount:reconciliation.absentFromFreshOfficialCount,
+      sourceRowHashMismatchCount:reconciliation.sourceRowHashMismatchCount,
+      canonicalA1ValueMismatchCount:0,
+      sourceRevisionOnlyCount:reconciliation.sourceRevisionOnlyCount,
+      sourceVersionState:reconciliation.sourceVersionState,
+    },
+    diagnosis:{
+      state:"NON_EQUIVALENT_LEGACY_FALLBACK_FALSE_CANONICAL_REVISION",
+      priorBlockedArtifact:"system2/evidence/S2_HISTORICAL_TPEX_2021_REVISION_BLOCKER_V0_1.json",
+      legacyEndpointSemantic:"上櫃股票每日收盤行情(不含定價)",
+      action:"DO_NOT_PERSIST_REVISION_OVERLAY; REVERIFY_WITH_PRIMARY_ONLY_CANONICAL_SOURCE",
+    },
+    persistedRevisionRowsWritten:0,
+    coldHistoryMutated:false,
+    system1RuntimeChanged:false,
+    schemaVersion:"S2_HISTORICAL_TPEX_2021_SOURCE_SEMANTICS_RECOVERY_V0_1",
+  };
+  const json=JSON.stringify(output,null,2);
+  if(outputPath)await writeFile(outputPath,json+"\n","utf8");
+  console.log(json);
+  process.exit(0);
+}
+
+assert.equal(reconciliation.canonicalA1ValueMismatchCount,698,
+  "unexpected canonical A1 revision count; frozen lineage path expects 698");
+assert.equal(reconciliation.sourceRevisionOnlyCount,82,
+  "unexpected source-only revision count; frozen lineage path expects 82");
 
 const changedKeys=new Set([
   ...reconciliation.sourceRowHashMismatchSample,
