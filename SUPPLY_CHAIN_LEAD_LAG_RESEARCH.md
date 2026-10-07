@@ -2539,3 +2539,108 @@ L3 preflight is now frozen prospectively. A qualifying promotion receipt must be
 Exact next:
 - SC-063 capture the next genuinely new issuer-native topology disclosure/event after contract freeze;
 - pre-existing historical documents may enrich controls but cannot count as the prospective L3 qualifying receipt.
+
+
+## 2026-10-07 continuation — D10-01 prospective graph closure and D10-02 native release frontier
+
+### SC-063 — first post-freeze prospective null observation
+
+Artifact:
+- `research/SC063_FIRST_POST_FREEZE_PROSPECTIVE_NULL_OBSERVATION_20261007_V0_1.md`
+
+The SC-062 prospective topology contract was frozen at GitHub committer time
+`2026-10-07T16:30:37+08:00`.
+
+A bounded same-day post-freeze disclosure search found no qualifying new topology mutation. Pre-freeze or non-topology same-day candidates were not promoted.
+
+Frozen denominator rules:
+- `NO_EVENT_DATE_IS_DATA`;
+- `BOUNDED_NO_EVENT_OBSERVATION != PROOF_NO_EVENT_EXISTED_ANYWHERE`.
+
+D10-01 remains L2/40.
+
+### SC-064 — versioned graph timing / SDA-010 handoff
+
+Artifacts:
+- `research/SC064_D10_01_VERSIONED_GRAPH_TIMING_AND_SDA010_HANDOFF_20261007_V0_1.md`
+- `research/sc064_d10_01_versioned_graph_timing_contract_v0_1.json`
+
+Research-side graph timing now freezes:
+- `knownAt` separately from `effectiveFrom/effectiveTo`;
+- scheduled / active / expired / cancelled relation states;
+- append-only graph versions;
+- pre-event graph selection;
+- no event-driven historical backfill.
+
+Historical ASPEED-to-ASE capacity-contract disclosure is retained only as semantic calibration: a known future relation is not active before its disclosed effective date.
+
+Frozen rules:
+- `KNOWN_RELATION != ACTIVE_RELATION`;
+- `EVENT_ATTRIBUTION_CONSUMES_PRE_EVENT_GRAPH`;
+- `EVENT_DOES_NOT_BACKFILL_PRE_EVENT_GRAPH`.
+
+SDA-010 owner gates remain protected. No closure claim.
+
+### SC-065 — shared D10 structural primitive / D17 reference-only consumption
+
+Artifacts:
+- `research/SC065_D10_D17_SHARED_EXPOSURE_PRIMITIVE_AND_NO_DOUBLE_VOTE_20261007_V0_1.md`
+- `research/sc065_shared_exposure_primitive_no_double_vote_v0_1.json`
+
+The same structural exposure root may have many consumers but only one independent structural root.
+
+Frozen rules:
+- `ONE_STRUCTURAL_PRIMITIVE_MANY_CONSUMERS != MANY_INDEPENDENT_VOTES`;
+- `EVENT_REVEALED_EDGE_CANNOT_EXPLAIN_PRE_EVENT_DECISION`;
+- D17 structural authority is `REFERENCE_ONLY`;
+- missing capacity/exposure/common-mode values remain UNKNOWN.
+
+SDA-010 remains BLOCKED_DEPENDENCY pending protected owner decisions, canonical implementation, shared System1/System2 enforcement, genuine prospective divergent path evidence, D16 validation and 00 closure.
+
+D10-01 remains L2/40.
+
+### SC-066 — prospective topology source-admission matrix and stop rule
+
+Artifact:
+- `research/SC066_D10_01_PROSPECTIVE_TOPOLOGY_SOURCE_ADMISSION_MATRIX_20261007_V0_1.md`
+
+Future topology evidence is now deterministically classified as primary, periodic/context, plan/scheduled, secondary/discovery-only, event-known-at, or NULL observation.
+
+Hard stop:
+`NO_MORE_D10_01_SCHEMA_EXPANSION_WITHOUT_REAL_NEW_RECEIPT`.
+
+D10-01 background next:
+capture the first genuinely post-SC-062 authoritative topology mutation and then reassess L3 under the already-frozen gate.
+
+### Return to SC-056 — MOEA native monthly release frontier
+
+Artifacts:
+- `research/SC056_MOEA_NATIVE_MONTHLY_RELEASE_FRONTIER_20261007_V0_1.md`
+- `research/sc056_moea_native_monthly_release_frontier_v0_1.json`
+
+The existing Playwright collector handoff remains engineering-complete locally / CI source-access blocked and is NOT reimplemented.
+
+Current official MOEA publication frontier at the 2026-10-07 capture clock:
+- latest official Industrial Production reference month: 2026-08;
+- official release-family timestamp: 2026-09-23 16:00 Asia/Taipei;
+- September 2026 Industrial Production is not yet present in the current official release sequence;
+- exact product-interactive database update time remains UNKNOWN.
+
+Frozen missing-state semantics:
+`2026-09 = SOURCE_NOT_YET_RELEASED_AT_CAPTURE`, not zero, carry-forward, imputation or generic missing.
+
+The 1M/2M/3M lag set and month-over-month production-direction primary metric remain unchanged.
+
+Maturity:
+- D10-02 remains L2/40;
+- D10-09 remains L3/60;
+- no Formal or stock-outcome change.
+
+### Exact next active continuation
+
+SC-067:
+on the first official publication of September 2026 product-level Industrial Production data, capture the same 2433020 / 2630010 / 2630040 physical chain with source/capture clocks frozen before any later-month outcome inspection; then append only the newly enabled edge-wise 1M/2M/3M direction rows under unchanged semantics.
+
+Background waits:
+- D10-01: first genuine post-SC-062 topology mutation.
+- D09 / SDA-009: genuine System1 R3A1 receipt; current canonical genuine receipt count remains 0.
