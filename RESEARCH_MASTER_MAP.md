@@ -197,7 +197,7 @@ Formal Core remains LOCKED.
 - SC-046 freezes TSMC Arizona industrial-policy award -> facility-milestone clocks and the firewall AWARDED_MAX != DISBURSED != SPENT != QUALIFIED_CAPACITY != HVM_OUTPUT. D10-14 advances L2 -> L3 data feasibility only.
 - BR-057 freezes 8046/3189 PCB/ABF product-scope plus total-revenue denominators while leaving unavailable ABF/AI revenue numerators UNKNOWN.
 - BR-058 freezes the first true prospective D09-14 issuer-action cohort before outcomes: UMC phased expansion and Foxconn/Mitsubishi Electric MOU. D09-14 remains L3 until future prospective outcomes exist.
-- D10-01 and D09-12 remain blocked. The prior D09-07 repeated-snapshot blocker is superseded by BR-045, and the prior D10-04 cross-company/cross-industry capacity-source blocker is superseded by SC-052.
+- SC-077 promoted D10-01 to L3 on bounded Taiwan PIT topology-source/replay feasibility while full graph/SDA-010 implementation remains later debt. BR-066 promoted D09-12 to L3 on a same-date 2026-10-07 official TWSE breadth + TAIEX context receipt under one decision cutoff, with TPEx same-clock scope preserved as UNKNOWN. D09-05 remains the only Room07 L2 module pending a genuine same-generation System1 C1 parent. The prior D09-07 repeated-snapshot blocker is superseded by BR-045, and the prior D10-04 cross-company/cross-industry capacity-source blocker is superseded by SC-052.
 - No Production or Formal Core behavior changed.
 
 
