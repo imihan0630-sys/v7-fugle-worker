@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-08T00:02:14+08:00",
+  "updatedAt": "2026-10-08T00:04:01+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1483,9 +1483,13 @@
       "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
       "blockedBy": null,
       "implementationEvidence": [],
-      "verificationEvidence": [],
+      "verificationEvidence": [
+        "D16 independent blocking oracle research/d16_sda022_nct01_strategy_executable_witness_oracle_20261008_v0_1.json @ commit 8c31de2aeebd95e861d3cd05be5e188ef491121e.",
+        "D16 W0/W1/W2 separation confirms CONTINUITY_READY does not imply STRATEGY_EXECUTABLE and SR-T01 requires all-continuity-ready/all-strategy-incomplete => INCOMPLETE_BLOCKED_INPUTS_NOT_ZERO_PICK.",
+        "D16 permits VALID/WEAKENING/INVALIDATED as evaluated W1 states but current strategy_evaluator prioritizes hard invalidation before missingRequiredEvidence; BUILD must therefore bind explicit requiredEvidenceComplete/missingRequiredEvidenceCount so INVALIDATED cannot mask missing required evidence."
+      ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-08T00:02:14+08:00"
+      "updatedAt": "2026-10-08T00:04:01+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
