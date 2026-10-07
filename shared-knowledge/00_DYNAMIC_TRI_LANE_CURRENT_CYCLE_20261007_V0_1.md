@@ -983,3 +983,49 @@ This narrows, rather than expands, the work: no D1 history rewrite and no second
 
 Formal Core remains LOCKED.
 
+
+
+## 00 supersession — CORR-20261007-004 exact-session gate precedes physical NC-T01 S22-T13 (2026-10-07 20:59:04 Asia/Taipei)
+
+Observed latest main before audit evidence:
+`f6cfa41e4bd88cb0d5cfa0286d585d81192dc729`.
+
+A new DATA_LANE HIGH correction changes the interpretation of the earlier single-witness continuity path:
+
+`S2-CORR-20261007-004` — long-listed Daily Shadow history readiness can silently substitute an older row for a missing expected symbol-session.
+
+Independent runtime verification confirms:
+- `daily_shadow_history_reader_v0_1.mjs` ranks available PIT rows by date and accepts the latest required count;
+- for long-listed symbols, `ageLimited=false` makes `ageBoundaryMatches=true`;
+- `historyReady` therefore checks count + ambiguity but does not reconcile the exact expected eligible-session set;
+- a missing recent required session can be silently replaced by an older row while count remains 60;
+- existing regressions do not falsify this case.
+
+Durable verification:
+`system2/evidence/S2_CORR_20261007_004_INDEPENDENT_CODEPATH_VERIFICATION_20261007_V0_1.json`.
+
+NC-T01 consequence:
+- the 51 symbols reported `historyReady=true` in run `37609474459` are NOT automatically trusted as continuity-witness seeds;
+- symbol 1101 remains only a candidate for exact-window investigation, not a prequalified clean witness;
+- `continuityReadyCount=0` / `evaluationInputEligibleSymbolCount=0` means no immediate strategy misuse is proven;
+- physical S22-T13 must wait until at least one symbol passes exact eligible-session reconciliation and then a hash-bound continuity receipt matches that exact replay window.
+
+Durable supersession:
+`system2/evidence/S2_STAGE1_NCT01_EXPECTED_SESSION_GATE_SUPERSESSION_20261007_V0_1.json`.
+
+### Revised parallel critical path
+
+May continue now:
+1. BUILD_LANE: latest-main rebuild/canonical merge of SDA-022 policy fingerprints S22-T06~T10;
+2. BUILD_LANE: continuity receipt/hash binding and bounded PIT batch/prefetch engineering;
+3. REMEDIATION_LANE: CORR-003 account-level D1 quota-budget governance;
+4. DATA_LANE: CORR-20261007-001 prospective clock collector alignment.
+
+Must complete before physical NC-T01 S22-T13:
+1. DATA_LANE: repair CORR-20261007-004 with exact expected eligible symbol-session reconciliation;
+2. physical Daily Shadow readback proves at least one exact-window history-ready witness;
+3. continuity receipt binds exact date set / revision identity / sourceHistoryHash to the replay window consumed by factor primitives;
+4. first witness may promote only `CLEAR_NO_ACTION` over RAW history; `ADJUSTED_CONTINUITY` remains fail-closed until a real transformed technical-continuity window exists;
+5. then execute artifact-only NC-T01 and independently verify S22-T11~T16.
+
+Formal Core remains LOCKED. No final selection, live push, capital or order authority is enabled.
