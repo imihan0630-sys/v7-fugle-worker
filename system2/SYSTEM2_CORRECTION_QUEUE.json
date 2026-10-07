@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T16:54:00+08:00",
+  "updatedAt": "2026-10-07T18:43:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -16,7 +16,7 @@
       ],
       "detectedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "canonicalRequirement": "Physically populate and verify staged official 2017-present Taiwan-equity daily history before claiming complete full-market historical coverage/replay.",
-      "observedProblem": "Historical raw A1 data coverage is physically accepted through TWSE 2024 and TPEx 2023, including the resolved 2021 TPEx transport-semantics case. 2024 TPEx remains PENDING after annual run #28 failed twice on different intermittent TPEx PRIMARY transport timeouts before Physical verify. A bounded PRIMARY-only transport-exhaustion recovery fix is CI-PASS on latest main; fresh latest-main 2024/TPEX dispatch is required. CORR-001 also remains FIX_IN_PROGRESS for both 2025 markets, 2026 segmented current-year physical acceptance, aggregate machine-readable completion and final full-market PIT replay.",
+      "observedProblem": "Historical raw A1 coverage is accepted through TWSE 2024 and TPEx 2023. 2024 TPEx remains unaccepted: run #28 failed twice on intermittent PRIMARY transport timeouts, and fix-bearing fresh run #29 then reached the workflow's configured 60-minute job timeout before full-year source acquisition completed. Because annual source acquisition precedes pack/persistence, run #29 produced no Physical verify or coverage artifact. CORR-001 remains FIX_IN_PROGRESS for a bounded DATA_LANE repair and subsequent fresh physical acceptance, then 2025/2026 continuation and aggregate replay qualification.",
       "evidence": [
         "SYSTEM2_CHECKPOINT run 36545375167 failed before annual ingest",
         "SYSTEM2_CHECKPOINT requires repaired 2017 TWSE rerun before TPEx",
@@ -149,7 +149,8 @@
         "Blind reruns of old run #28 are stopped because it is bound to pre-resilience head 9dff76fb235e8da38e8f07c38e355c7be6046d5a.",
         "Bounded PRIMARY-only transport recovery is implemented in system2/runtime/official_historical_backfill_source_v0_1.mjs; legacy TPEx '不含定價' fallback remains canonical-ineligible and data-integrity failures remain fail-closed.",
         "System2 Research CI 37590871628 SUCCESS on head e46f3a2049cc774a64b15eea360a4f6ea79fe494 with PRIMARY-only transport recovery regression.",
-        "2026 current-year segmented cold path is repository-ready but physical execution remains pending until both 2025 markets are resolved and writer lane is free; checkpoint documents the isolated monthly immutable design."
+        "2026 current-year segmented cold path is repository-ready but physical execution remains pending until both 2025 markets are resolved and writer lane is free; checkpoint documents the isolated monthly immutable design.",
+        "2024 TPEx fresh run 37593983170 (#29) used fix-bearing head 5c50a246bf91f9b1bc37c99f082bdfec467d5f09 and confirmed inputs 2024/TPEX, but the backfill job was cancelled at the configured 60-minute timeout before source-range completion; Physical verify was skipped, no coverage artifact was produced, and System1 isolation PASSed. Annual script fetches the full official range before pack/persistence, so source acquisition has no durable resume checkpoint."
       ],
       "riskIfUnfixed": "Creates false-completion/evidence-coverage risk for multi-year replay, factor validation, regime robustness and strategy backtesting.",
       "requiredCorrection": [
@@ -270,12 +271,12 @@
         "2021 TWSE disposition DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL"
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T15:41:59+08:00",
+      "updatedAt": "2026-10-07T18:43:00+08:00",
       "routingClass": "DATA_LANE",
       "assignedLane": "DATA_LANE",
       "assignedRoom": "System 2｜歷史資料工程室",
       "modificationOwner": "SYSTEM2_HISTORICAL_DATA_ROOM",
-      "blockedBy": null
+      "blockedBy": "2024 TPEx annual source acquisition exceeds the current 60-minute job budget after bounded PRIMARY transport recovery; the full-year source-fetch phase has no durable resume checkpoint."
     },
     {
       "directiveId": "S2-CORR-20261004-002",
@@ -1041,7 +1042,9 @@
         "00 secondary live diagnostic: TPEx official tpex_mainboard_daily_close_quotes returned HTTP 200 / application/json / valid complete JSON / approximately 4.67 MB / 12245 rows with Date 1151007 (2026-10-07), proving current-day TPEx data existed at the later observation; this supports classifying the earlier GitHub-runner NON_JSON_RESPONSE states as transient acquisition/body-integrity failures rather than absence of current-day TPEx publication",
         "Official TWSE E-shop daily-closing product states production occurs approximately at 14:00, 15:30 and 17:30 on each trading day. This does not prove the exact STOCK_DAY_ALL OpenAPI endpoint updates on the identical schedule, but it falsifies any assumption that a collector ending before 17:30 can treat non-readiness as end-of-day unavailability.",
         "Independent Firecrawl live readback at 2026-10-07T16:54+08:00: TWSE STOCK_DAY_ALL returned HTTP 200 / application/json with observed payload date 1151006 (2026-10-06), so target date 2026-10-07 was still not published on that endpoint in this observation.",
-        "Independent Firecrawl live readback at 2026-10-07T16:54+08:00: TPEx tpex_mainboard_daily_close_quotes returned HTTP 200 / application/json and exposed observed date 1151007 (2026-10-07), but the independent client reported a truncated body / invalid complete JSON. This supports acquisition/body-integrity variability rather than absence of current-day TPEx publication."
+        "Independent Firecrawl live readback at 2026-10-07T16:54+08:00: TPEx tpex_mainboard_daily_close_quotes returned HTTP 200 / application/json and exposed observed date 1151007 (2026-10-07), but the independent client reported a truncated body / invalid complete JSON. This supports acquisition/body-integrity variability rather than absence of current-day TPEx publication.",
+        "Independent Firecrawl live readback at 2026-10-07T18:43+08:00: TWSE STOCK_DAY_ALL returned HTTP 200 / application/json and still exposed payload date 1151006 (2026-10-06), so this endpoint remained target-date NOT_READY for 2026-10-07 at that observation.",
+        "Independent Firecrawl live readback at 2026-10-07T18:43+08:00: TPEx tpex_mainboard_daily_close_quotes exposed payload date 1151007 (2026-10-07). Firecrawl warned that the page was too long to process in full, so its reported truncation cannot be used as proof that the official source body itself was truncated; complete-body transport integrity remains to be established by the canonical collector."
       ],
       "riskIfUnfixed": "SHORT_MOMENTUM cannot produce a genuine current-day Stage-1 strategy-evaluation receipt when its core A1 input family never reaches source-honest READY. NC-T01 S22-T13 physical independence and downstream ranking/capacity evidence can remain blocked, while poll exhaustion could be misread as source absence or a legitimate zero-pick day.",
       "requiredCorrection": [
@@ -1077,7 +1080,7 @@
       "implementationEvidence": [],
       "verificationEvidence": [],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T16:54:00+08:00"
+      "updatedAt": "2026-10-07T18:43:00+08:00"
     },
     {
       "directiveId": "S2-CORR-20261007-002",
