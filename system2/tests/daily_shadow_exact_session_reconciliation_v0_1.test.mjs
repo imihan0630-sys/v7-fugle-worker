@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { probePitHistoryCoverageV0_1 } from "../runtime/daily_shadow_history_reader_v0_1.mjs";
+import { probePitHistoryCoverageV0_1, loadPitPriorA1BarsV0_1 } from "../runtime/daily_shadow_history_reader_v0_1.mjs";
+import { sha256Hex } from "../runtime/decision_archive.mjs";
 
 function isoDays(start,count){
   const out=[];
@@ -138,5 +139,77 @@ const noContract=await probePitHistoryCoverageV0_1({
 });
 assert.equal(noContract.historyReadyCount,0);
 assert.ok(noContract.diagnostics[0].blockerCodes.includes("SYMBOL_LOCAL_EXPECTED_SESSION_CONTRACT_UNAVAILABLE"));
+
+function detailRow(date,index=0){
+  return {
+    bar_id:`B-1101-${date}`,
+    canonical_key:`TWSE|1101|${date}|RAW`,
+    market_date:date,
+    market:"TWSE",
+    symbol:"1101",
+    company_name:"台泥",
+    price_space:"RAW",
+    open_price:100+index,
+    high_price:102+index,
+    low_price:99+index,
+    close_price:101+index,
+    volume_shares:1000000,
+    trade_value:101000000,
+    transactions:1000,
+    change_value:1,
+    continuity_state:"CLEAR_NO_ACTION",
+    source_id:"FIXTURE",
+    source_name:"fixture",
+    source_url:null,
+    source_row_hash:`SRC-${date}`,
+    observed_at:"2026-10-07T06:00:00.000Z",
+    available_at:"2026-10-07T06:00:00.000Z",
+    pit_availability_class:"CONSERVATIVE_SESSION_FINALITY",
+    pit_replay_eligible:1,
+    captured_at:"2026-10-07T06:00:00.000Z",
+    bar_hash:`HASH-${date}`,
+    schema_version:"S2_HISTORICAL_A1_BAR_V0_2",
+  };
+}
+function detailDb(rows){
+  return {
+    prepare(){
+      return {
+        bind(){
+          return {async all(){return {results:rows};}};
+        },
+      };
+    },
+  };
+}
+
+const loadDates=expected60.slice(-3);
+const loadExpectedHash=await sha256Hex({
+  market:"TWSE",symbol:"1101",marketDate:"2026-10-07",dates:loadDates,
+});
+const loadedExact=await loadPitPriorA1BarsV0_1({
+  db:detailDb(loadDates.map((date,index)=>detailRow(date,index)).reverse()),
+  symbol:"1101",
+  market:"TWSE",
+  marketDate:"2026-10-07",
+  decisionTimestamp:"2026-10-07T07:30:00.000Z",
+  lookbackSessions:3,
+  minimumMarketDate:loadDates[0],
+  expectedSessionHash:loadExpectedHash,
+});
+assert.deepEqual(loadedExact.map((row)=>row.marketDate),loadDates);
+
+await assert.rejects(
+  ()=>loadPitPriorA1BarsV0_1({
+    db:detailDb([detailRow(olderReplacement),...loadDates.slice(1).map((date,index)=>detailRow(date,index+1))]),
+    symbol:"1101",
+    market:"TWSE",
+    marketDate:"2026-10-07",
+    decisionTimestamp:"2026-10-07T07:30:00.000Z",
+    lookbackSessions:3,
+    expectedSessionHash:loadExpectedHash,
+  }),
+  /EXPECTED_SESSION_HASH_MISMATCH/,
+);
 
 console.log("System2 CORR-004 exact expected-session reconciliation tests passed");
