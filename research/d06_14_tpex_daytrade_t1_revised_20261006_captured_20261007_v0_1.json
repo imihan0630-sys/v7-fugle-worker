@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "D06_14_TPEX_DAYTRADE_T1_REVISED_20261006_CAPTURED_20261007_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-14",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "tradeDate": "2026-10-06",
+  "vintageLabel": "T1_REVISED",
+  "revisionSequence": 1,
+  "isFinal": false,
+  "sourceAuthority": "Taipei Exchange (TPEx)",
+  "pageUrl": "https://www.tpex.org.tw/zh-tw/mainboard/trading/day-trading/statistics/day.html?date=20261006",
+  "csvUrl": "https://www.tpex.org.tw/www/zh-tw/intraday/stat?type=Daily&date=2026%2F10%2F06&response=csv",
+  "capturedAtUpperBound": "2026-10-07T15:49:23+08:00",
+  "parentPrelimReceipt": "research/d06_14_tpex_daytrade_tprelim_capture_20261006_v0_1.json",
+  "current": {
+    "rowCount": 843,
+    "firstSymbol": "00411A",
+    "lastSymbol": "9962",
+    "totalDayTradeShares": 530117000,
+    "totalDayTradeBuyValue": 136109936790,
+    "totalDayTradeSellValue": 136525764410,
+    "canonicalFingerprint": "fnv1a64-utf8:21c5de02d6096939",
+    "csvByteLength": 43753
+  },
+  "comparisonToTPrelim": {
+    "unionSymbolCount": 843,
+    "commonSymbolCount": 843,
+    "addedRowCount": 0,
+    "removedRowCount": 0,
+    "changedRowCount": 0,
+    "unchangedRowCount": 843,
+    "sumAbsoluteDayTradeSharesRevision": 0,
+    "sumAbsoluteBuyValueRevision": 0,
+    "sumAbsoluteSellValueRevision": 0
+  },
+  "parserAuthority": "Official CSV rows were compared symbol-by-symbol and field-by-field against the immutable T_PRELIM JSON; page row count independently rendered 843.",
+  "status": "T1_REVISED_CAPTURED / 843_OF_843_UNCHANGED / ZERO_ROW_UNIVERSE_AND_NUMERIC_REVISION / T2_FINAL_PENDING_20261008 / OUTCOMES_CLOSED / FORMAL_LOCKED"
+}
