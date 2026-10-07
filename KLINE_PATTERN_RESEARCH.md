@@ -24221,3 +24221,22 @@ Primary falsification compares high-volatility structural-zone moves without int
 Twenty adversarial cases are authored. They cover opening/rolling/reset reference regimes, the 3.5% trigger semantics, two-minute delay, restart auction, order restrictions/deletion, potential-vs-executed crossing, no invented path, replay-safe timing, generic comparators and same-root evidence de-duplication.
 
 Research-specific Node execution remains TEST_EXECUTION_PENDING. No outcomes were opened. D01 maturity remains 52.7%; SDA-001/SDA-002 remain open; Pattern alpha remains UNKNOWN; Formal Core remains LOCKED.
+
+
+# DL-068 — Structural response vs disposition-security extended matching cadence (2026-10-07)
+
+DL-068 isolates a Taiwan-market microstructure distortion that can directly change chart geometry: disposition securities and certain altered-trading-method securities may trade using extended matching intervals / periodic call auction instead of ordinary continuous matching.
+
+The current official TWSE disposition rules were re-read live. Depending on disposition history and altered-trading-method state, official examples include approximately 2, 10, 25, 45 and 60 minute matching intervals, with surveillance authorities able to adjust matching time. Operating Rule 58-9 explicitly identifies disposition / altered-method periodic-auction securities as securities with extended matching intervals.
+
+The main scientific correction is that wall-clock time is not executable-opportunity time. A security waiting 45 or 60 minutes for the next scheduled match has not demonstrated 45 or 60 minutes of stable accepted price. No-trade intervals receive no pseudo-bars and no forward-filled "stable close" interpretation.
+
+Indicative/computed prices before a scheduled match remain distinct from actual executed trades. Likewise, when one periodic match occurs below a structural zone and the next actual match occurs above it, the event is PERIODIC_MATCH_GAP_CROSSING rather than a continuously observed breakout.
+
+This matters for bar-based Pattern research. A normal 15-minute bar may contain many executions while a disposition 15-minute bar may contain zero or one possible match. Flat stale last prices can therefore manufacture apparent low volatility, support, base formation or VCP contraction. Promotion-grade research must retain actual trade count, scheduled match opportunity count, executed match count and a no-forward-fill receipt.
+
+DL-067 remains nested because an extended-cadence security can also encounter intraday price-stabilization postponement. Matching cadence and volatility interruption are separate mechanism layers and cannot be counted as independent Pattern confirmations.
+
+Future D16 work receives normal-cadence vs extended-cadence, away-from-zone vs at-zone and within-symbol before/during/after disposition comparators. Any structural residual must survive cadence normalization, quote-vs-execution controls, pseudo-bar exclusion, periodic gap handling, liquidity/trade-count controls and ancillary regulatory restrictions.
+
+Twenty adversarial cases are authored. Research-specific Node execution remains TEST_EXECUTION_PENDING. No outcomes were opened. D01 maturity remains 52.7%; SDA-001/SDA-002 remain open; Pattern alpha remains UNKNOWN; Formal Core remains LOCKED.
