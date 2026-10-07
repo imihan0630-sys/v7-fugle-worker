@@ -3729,3 +3729,16 @@ The first physical annual V0.6 receipt is still absent. D03 therefore preregiste
 All 18 deterministic cases pass. A complete zero-delta annual run is accepted only as negative evidence and cannot promote Layer B or maturity. OOS, walk-forward, costs, fillability, market-state and alpha remain UNKNOWN. D03 remains 56.7%; D03-09/D03-10 remain L2/40; outcomes CLOSED; Formal Core LOCKED; FORMAL_OPTIMIZATION_CANDIDATE = NONE.
 
 Exact next: consume the first physical TWSE annual V0.6 receipt and validate it against this oracle. Keep TPEx parity, Layer-C known-at, exact-window continuity binding, genuine V8.20 parent, T48, S2-07, consumer dedup and D16 incrementality independent.
+
+
+## TI-1475 through TI-1494 — CORR-007 suspension provenance promotion firewall (2026-10-08)
+
+D03 accepts `S2-CORR-20261008-007` as a real W0 promotion blocker. Current code can treat `suspensionCoverageByExchange.TWSE=COMPLETE` as sufficient while sourceEvidenceRefs bind only the three corporate-action source contracts. A plain COMPLETE state, even when hashed, is not immutable proof of bounded suspension completeness.
+
+The D03 firewall requires the exact TWSE replay interval, a first-class bounded suspension receipt digest/source/version, one matching additive sourceEvidenceRef, causal observation/availability timing, zero partial-source/conflict state, exact-session readiness and archive-hash sensitivity to the suspension digest. Missing, mismatched, late or unbound evidence remains `CONTINUITY_UNKNOWN`.
+
+The 20-case executable oracle passes and rejects every frozen counterexample. It proves contract mechanics only: CORR-007 implementation, the real TWTAWU receipt, W0 continuity, OOS, walk-forward, costs, fillability, market states and alpha remain pending/UNKNOWN.
+
+D03 remains 56.7%; D03-09/D03-10 remain L2/40; outcomes CLOSED; Formal Core LOCKED; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
+
+Exact next: accept merged-main CORR-007 verification and real bounded suspension evidence on the W0 track; independently wait for a future genuine V8.20 parent. Run existing D03-10 oracles only when both admissible inputs exist.
