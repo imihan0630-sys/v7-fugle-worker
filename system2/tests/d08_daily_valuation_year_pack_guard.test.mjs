@@ -14,7 +14,7 @@ assert.match(s,/outcomeJoin:false/);
 assert.doesNotMatch(s,/createRemoteD1RestAdapter|s2_outcome|Worker\.js|return outcome/i);
 
 assert.match(w,/environment: system2-research/);
-assert.match(w,/year: \[2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026\]/);
+assert.match(w,/year: \[2026\]/);
 assert.match(w,/max-parallel: 1/);
 assert.match(w,/D08_YEAR: "\$\{\{ matrix\.year \}\}"/);
 assert.match(w,/d08_historical_valuation_percentile_engine\.test\.mjs/);
@@ -24,5 +24,5 @@ assert.doesNotMatch(w,/wrangler.*deploy|V7_DB|STOCKS_KV|PUSH_WEBHOOK_URL|FUGLE_A
 
 console.log(JSON.stringify({
   ok:true,guard:"D08_DAILY_VALUATION_YEAR_PACK_CAPTURE",
-  fullArchiveYears:"2005-2026",maxParallel:1,outcomeAccess:false,formalCoreImpact:false
+  diagnosticYear:2026,maxParallel:1,outcomeAccess:false,formalCoreImpact:false
 }));
