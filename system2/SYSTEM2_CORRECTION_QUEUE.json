@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T22:41:00+08:00",
+  "updatedAt": "2026-10-07T23:45:41+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1353,6 +1353,69 @@
       ],
       "finalDisposition": "VERIFIED_CLOSED — exact expected eligible symbol-session reconciliation is merged, regression-tested and physically verified on real 2026-10-07 Daily Shadow readback. CORR-004 history/session scope is closed. Continuity certification remains a separate NC-T01 gate; this closure does not promote continuity, strategy selection, push, capital or orders.",
       "updatedAt": "2026-10-07T23:05:43+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261007-005",
+      "createdAt": "2026-10-07T23:45:41+08:00",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "title": "NC-T01 hidden-fallback audit defaults missing evidence to false",
+      "affectedScope": [
+        "System2 physical NC-T01 S22-T12/S22-T16",
+        "nct01 physical receipt classification",
+        "artifact-only SHORT_MOMENTUM independence evidence",
+        "future physicalIndependentDiscovery promotion"
+      ],
+      "detectedBy": "00_RESEARCH_AUDIT_CONTROL",
+      "canonicalRequirement": "Physical NC-T01 may pass only when cached/persisted/alias/cross-project/stale System1 selection fallbacks are explicitly machine-audited as unavailable/unused. Missing audit evidence must remain UNKNOWN/INCOMPLETE and may not be coerced to false.",
+      "observedProblem": "Merged PR #830 adds nct01_physical_receipt_v0_1.mjs where hiddenAudit(input={}) converts omitted audit fields to false; buildNcT01PhysicalIndependenceReceiptV0_1 defaults hiddenFallbackAudit={} and runNcT01ArtifactOnlyV0_1 defaults all five flags to false. deriveOutcome can therefore classify PHYSICALLY_INDEPENDENT_PATH_OBSERVED when hidden-fallback audit evidence was never actually supplied, provided the other gates pass.",
+      "evidence": [
+        "PR #830 merged as d2050fbc3379dfe618447f88f8104b31e494a633.",
+        "nct01_physical_receipt_v0_1.mjs::hiddenAudit maps missing flags to false via === true.",
+        "buildNcT01PhysicalIndependenceReceiptV0_1 defaults hiddenFallbackAudit to {}.",
+        "nct01_artifact_runner_v0_1.mjs defaults hiddenFallbackAudit to five false values.",
+        "The PR workflow runs semantic tests and System1 production-file isolation, but no real physical NC-T01 artifact is produced yet.",
+        "SDA022 acceptance oracle S22-T12 requires explicit hidden-fallback audit over cached/persisted/alias/cross-project/stale selection state.",
+        "Durable independent review: system2/evidence/S2_STAGE1_PR830_INDEPENDENT_REVIEW_20261007_V0_1.json @ dccb652e4f7c93ea44ae5a49d03cf18a8c133c1e.",
+        "00 PR #830 audit comment: issuecomment-6041397389."
+      ],
+      "riskIfUnfixed": "A future physical runner could omit hiddenFallbackAudit and still receive all-false values, allowing a false S22-T12/S22-T16 independence PASS. This would turn absence of audit evidence into negative evidence and weaken the independent-discovery claim.",
+      "requiredCorrection": [
+        "Require all five hidden-fallback dimensions to be explicitly present for any physical PASS; missing or non-boolean values fail closed as EVIDENCE_INCOMPLETE.",
+        "Generate a machine audit on the exact physical runner head/transitive System2 execution path proving System1 Top6/rank and cached/persisted/alias/cross-project/stale selection fallbacks are unavailable/unused by construction.",
+        "Bind the machine audit digest into the physical NC-T01 receipt dependency graph. Preferred minimal form: HIDDEN_FALLBACK_AUDIT_SHA256 typed sourceGenerationRef; do not require a top-level schema version bump merely for this digest.",
+        "Require the hidden-fallback audit digest for PHYSICALLY_INDEPENDENT_PATH_OBSERVED.",
+        "Add regressions: missing audit object; one missing field; missing audit digest; any true dependency flag; complete machine-bound clean audit.",
+        "Keep artifact-only physical execution read-only; no D1 mutation or System1 runtime access.",
+        "Do not alter strategy thresholds/weights/ranking, capacity semantics, final selection, push, capital or order authority."
+      ],
+      "acceptanceCriteria": [
+        "Omitted hiddenFallbackAudit cannot produce PHYSICALLY_INDEPENDENT_PATH_OBSERVED.",
+        "Any missing/unknown audit dimension fails closed.",
+        "Any true dependency flag yields HIDDEN_SYSTEM1_DEPENDENCY.",
+        "A clean audit requires an immutable machine evidence digest bound into receiptHash through typed sourceGenerationRefs.",
+        "Exact-head tests prove receiptHash changes when hidden-fallback audit digest changes.",
+        "Physical workflow on merged main produces and binds the exact-head hidden-fallback audit before S22-T12/S22-T16 can pass.",
+        "No false physicalIndependentDiscovery claim is made before the real continuity witness and machine audit both exist.",
+        "System1 Formal Core/runtime and all trading authorities remain unchanged."
+      ],
+      "protectedBoundaries": [
+        "System1 Formal Core and runtime",
+        "System2 frozen strategy identities and assessor policy",
+        "No synthetic physical independence evidence",
+        "No D1 mutation in artifact-only NC-T01",
+        "No final selection/live push/capital/order authority"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "BUILD_LANE",
+      "assignedLane": "BUILD_LANE",
+      "assignedRoom": "System 2｜建置總控室",
+      "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
+      "blockedBy": null,
+      "implementationEvidence": [],
+      "verificationEvidence": [],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-07T23:45:41+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
