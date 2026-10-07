@@ -3017,3 +3017,47 @@ Durable audit:
 10. Preserve the older S2-07 MOPS cursor for post-NC-T01 continuation.
 
 No strategy/ranking/capacity/System1 Formal/final-selection/live-push/capital/order semantics change.
+
+
+## 2026-10-08 06:22 BUILD_LANE exact cursor refinement — CORR-007 first, then PR #844 physical guard
+
+CORR-005/006 remain VERIFIED_CLOSED at the code-firewall layer. Do not reopen or redo them unless new contradicting evidence appears.
+
+Active launch-critical BUILD chain:
+
+1. **S2-CORR-20261008-007 — HIGH / OPEN**
+   - implement first-class TWSE bounded suspension evidence identity in the corporate-action completeness receipt;
+   - status-only `TWSE=COMPLETE` must fail closed;
+   - require exact interval + immutable suspension receipt digest + source/version/timing;
+   - require one matching suspension `sourceEvidenceRef` in CLEAR_NO_ACTION promotion;
+   - preserve all three existing corporate-action range refs separately.
+   - minimal contract:
+     `system2/evidence/S2_CORR_007_SUSPENSION_PROVENANCE_BINDING_HANDOFF_20261008_V0_1.json`
+     @ `eaa0e609eb48727b6047100d9848ccbc4b921594`.
+
+2. **PR #844 — same-cut NC-T01 physical read-only workflow**
+   - current wrapper architecture is directionally accepted;
+   - merge remains blocked by:
+     a. CORR-007 canonical provenance binding;
+     b. runner-local pre-transport D1 read-only prevention;
+     c. same-cut runtime guard ledger whose counters derive runtimeForbiddenAccessCount instead of a literal zero.
+   - acceptance refinement:
+     `system2/evidence/S2_STAGE1_NCT01_PHYSICAL_WRAPPER_RUNTIME_GUARD_AUDIT_20261008_V0_1.json`
+     @ `37dc3020f43c3a0fb0e19f44570a44f11eec073d`.
+
+3. Recommended conflict-safe order:
+   - merge CORR-007 as its own bounded continuity/archive patch;
+   - harden #844's runner-local runtime guard in parallel without changing continuity semantics;
+   - rebase #844 onto post-CORR-007 latest main;
+   - rerun exact-head NC-T01 / Research / applicable V8 and all physical-wrapper guard regressions;
+   - merge #844 only after both prerequisites are present.
+
+4. First post-merge physical smoke may legitimately remain `EVIDENCE_INCOMPLETE` when no real continuity receipt is supplied. That is expected fail-closed behavior, not failure.
+
+5. DATA_LANE owns the real TWTAWU/parity receipt. BUILD must not fabricate or infer bounded completeness from empty rows.
+
+6. Only a later coherent real run consuming the real DATA receipt may be offered to 00 for S22-T11..T16 physical acceptance.
+
+Preserved post-NC-T01 cursor:
+S2-07 MOPS stabilization remains durable and resumes after the Stage-1 physical gate.
+Formal Core remains LOCKED.
