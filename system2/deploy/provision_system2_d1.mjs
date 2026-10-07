@@ -100,6 +100,7 @@ const migrationFiles = [
   "../sql/0006_historical_cold_store.sql",
   "../sql/0007_daily_resonance_integration.sql",
   "../sql/0008_historical_revision_lineage.sql",
+  "../sql/0009_actual_holdings_screenshot_import.sql",
 ];
 for (const migrationFile of migrationFiles) {
   const sqlText = await readFile(new URL(migrationFile, import.meta.url), "utf8");
@@ -152,6 +153,10 @@ const requiredTables = [
   "s2_resonance_latest",
   "s2_resonance_episodes",
   "s2_resonance_episode_events",
+  "s2_actual_holdings_imports",
+  "s2_actual_holdings_snapshots",
+  "s2_actual_holdings_rows",
+  "s2_actual_holdings_reconciliation_events",
 ];
 const missingTables = requiredTables.filter((name) => !tables.includes(name));
 assert.deepEqual(missingTables, [], `missing System2 tables: ${missingTables.join(", ")}`);

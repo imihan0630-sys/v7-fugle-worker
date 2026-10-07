@@ -189,16 +189,17 @@ a{color:inherit}
 </section>
 
 <section class="view" id="view-positions">
-  <div class="pagehead"><div><div class="eyebrow">POSITION LIFECYCLE</div><h2>虛擬部位</h2><p>System 2 現階段只允許 SIMULATED / VIRTUAL 部位。真實券商庫存來源尚未授權接線，因此實際持股區永久鎖住直到 provenance / reconciliation 驗證完成。</p></div><span class="status shadow">VIRTUAL ONLY</span></div>
+  <div class="pagehead"><div><div class="eyebrow">POSITION MANAGEMENT</div><h2>部位管理</h2><p>ACTUAL HOLDINGS 與 VIRTUAL POSITIONS 永久分離。真實持股只接受 Owner 主動上傳券商庫存截圖後的確認快照；不串券商 API，也不把模擬成交轉成真實庫存。</p></div><span class="status shadow">NO BROKER ORDER AUTHORITY</span></div>
   <div class="grid g3">
-    <div class="metric"><div class="label">Virtual Positions</div><div class="value">READY</div><div class="sub">runtime 已具備，UI read API 待接</div></div>
-    <div class="metric"><div class="label">Actual Holdings</div><div class="value">LOCKED</div><div class="sub">ACTUAL_HOLDINGS_SOURCE_NOT_WIRED</div></div>
-    <div class="metric"><div class="label">Actual Monitor</div><div class="value">FALSE</div><div class="sub">ACTUAL_POSITION_MONITOR_VERIFIED=false</div></div>
+    <div class="metric"><div class="label">Actual Holdings Source</div><div class="value" style="font-size:15px">AUTHORIZED</div><div class="sub">USER_UPLOADED_BROKER_SCREENSHOT</div></div>
+    <div class="metric"><div class="label">Actual Holdings</div><div class="value">PENDING</div><div class="sub">NO VERIFIED OWNER SNAPSHOT · ACTUAL_POSITION_MONITOR_VERIFIED=false</div></div>
+    <div class="metric"><div class="label">Virtual Positions</div><div class="value">READY</div><div class="sub">SIMULATED / VIRTUAL ONLY</div></div>
   </div>
   <div class="grid g2" style="margin-top:12px">
-    <div class="panel"><h3>模擬部位板</h3><div class="placeholder"><div><b>介面已就位，資料 API 尚未接線</b>未來顯示：模擬成交、成本、MFE/MAE、停損、加減碼、策略歸因、持有天數。</div></div></div>
-    <div class="panel"><h3>真實持股</h3><div class="lockbox"><strong>🔒 OWNER / PROVENANCE GATE</strong><br>禁止把 signal、suggested shares、plan 或 simulated fill 冒充成實際持股。只有授權 holdings source + reconciliation + readback 驗證完成後才解鎖。</div></div>
+    <div class="panel"><h3>ACTUAL HOLDINGS｜真實持股</h3><div class="lockbox"><strong>Source: USER_UPLOADED_BROKER_SCREENSHOT</strong><br>Last verified: NO VERIFIED SNAPSHOT<br>流程：上傳截圖 → ChatGPT/視覺辨識 → deterministic validation → REVIEW/CONFIRM → immutable snapshot。低信心或歧義不猜值、不寫入。<br><br><strong>Broker API: NOT AUTHORIZED · Real orders: DISABLED</strong></div></div>
+    <div class="panel"><h3>VIRTUAL POSITIONS｜模擬部位</h3><div class="placeholder"><div><b>SIMULATED / VIRTUAL</b>來源為模擬成交與 s2_positions，只用於研究績效與虛擬持倉生命週期；永遠不能冒充 Actual Holdings。</div></div></div>
   </div>
+  <div class="panel" style="margin-top:12px"><h3>資料域隔離</h3><div class="pills"><span class="pill">ACTUAL HOLDINGS</span><span class="pill">VIRTUAL POSITIONS</span><span class="pill">CANDIDATES</span><span class="pill">WATCHLIST</span><span class="pill">SIMULATED FILLS</span></div><div class="hint">各資料域來源與 authority 分開；Actual Holdings 只接受 confirmed screenshot snapshot。</div></div>
 </section>
 
 <section class="view" id="view-resonance">

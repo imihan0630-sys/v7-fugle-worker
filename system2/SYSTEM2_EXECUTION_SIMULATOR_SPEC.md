@@ -210,3 +210,20 @@ Still not implemented / not claimed:
 - scheduled execution/outcome job;
 - corporate-action registry integration;
 - real order placement or live recommendations.
+
+## Owner broker/order boundary — 2026-10-07
+
+System 2 actual holdings are sourced from Owner-uploaded broker screenshots under:
+`system2/SYSTEM2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_V0_1.md`.
+
+Execution simulation remains simulation only. It must never convert a System 2 decision or simulated fill into a broker instruction.
+
+Current permanent boundary unless Owner later explicitly approves a new contract:
+- real order execution = DISABLED;
+- broker order routing = NOT AUTHORIZED;
+- automatic buy/sell/cancel/replace = NOT AUTHORIZED;
+- live capital authority = DISABLED;
+- broker holdings API = NOT AUTHORIZED;
+- broker token/certificate binding = NOT REQUIRED / NOT AUTHORIZED.
+
+Actual Holdings may influence HOLD / ADD / RE-ADD / RESTORE / REDUCE / EXIT / WARNING decision support, but those outputs remain advisory and cannot be consumed by a live-order adapter.

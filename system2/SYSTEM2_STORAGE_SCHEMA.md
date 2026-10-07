@@ -459,8 +459,10 @@ Semantic guard:
 - `quantity` / `cost_basis` in this table are virtual-position accounting fields derived from the System 2 simulation lane; they are not broker/account ownership evidence.
 - A `POSITION_MONITOR` state backed by `s2_positions` means simulated/virtual position monitoring.
 - Do not overload this table with actual holdings.
-- Current actual-holdings readiness is `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`; `ACTUAL_POSITION_MONITOR_VERIFIED=false`.
-- A future actual-holdings store/adapter requires owner authorization plus source/account scope, as-of time, reconciled quantity, cost/fill provenance where available, ownership provenance, reconciliation/UNKNOWN semantics and physical persistence/readback evidence.
+- Actual holdings use a separate screenshot-import store; `s2_positions` remains virtual-only.
+- Authorized source: `USER_UPLOADED_BROKER_SCREENSHOT` with chat/vision-assisted structured extraction, deterministic validation, explicit confirmation and immutable readback.
+- `ACTUAL_POSITION_MONITOR_VERIFIED=false` until a real Owner screenshot completes that chain.
+- Broker API holdings and System 1 holdings import remain unauthorized.
 - Signal, trigger, suggested/requested-share and plan records cannot be converted into actual holdings.
 
 ### s2_outcomes
@@ -538,3 +540,65 @@ The SQL file under `system2/sql/` is design/test material only and is not applie
 A future shared D1/database integration is Class B because shared runtime/storage could indirectly affect production. Owner review is required before applying any System 2 migration to a production-shared database.
 
 Preferred deployment architecture is a separate System 2 database/binding if practical, even if the website/frontend remains shared.
+
+### s2_actual_holdings_imports
+Immutable structured extraction / validation receipt for one Owner-uploaded broker screenshot.
+
+Key fields:
+- import_id
+- source_type = USER_UPLOADED_BROKER_SCREENSHOT
+- source_image_sha256 / source_image_ref / source_image_name
+- broker_name / account_alias
+- screenshot_captured_at / received_at
+- extraction_version / extraction_confidence
+- validation_version / validation_state / review_state
+- raw_extraction_json / normalized_extraction_json / validation_json
+- idempotency_key / import_hash / schema_version
+
+### s2_actual_holdings_snapshots
+Immutable confirmed Actual Holdings snapshot. Never overwrites a previous snapshot.
+
+Key fields:
+- snapshot_id / import_id / previous_snapshot_id
+- source_type / source_image_sha256
+- broker_name / account_alias
+- received_at / effective_as_of
+- extraction_version / validation_version / review_state
+- snapshot_state = CONFIRMED_ACTUAL_HOLDINGS
+- row_count / rows_hash
+- source_provenance_json
+- raw_extraction_json / confirmed_holdings_json
+- reconciliation_json
+- idempotency_key / snapshot_hash
+- immutable / schema_version
+
+### s2_actual_holdings_rows
+Confirmed rows belonging to one immutable snapshot.
+
+- snapshot_id + symbol primary key
+- company_name
+- quantity
+- average_cost
+- market_price / market_value
+- unrealized_pnl / unrealized_pnl_percent
+- currency
+- row_confidence
+- validation_state
+- row_json / row_hash / schema_version
+
+### s2_actual_holdings_reconciliation_events
+Append-only previous-vs-current exposure reconciliation.
+
+- event_id
+- snapshot_id / previous_snapshot_id
+- symbol
+- event_types_json
+- prior_row_json / current_row_json
+- explanation_json
+- trade_inference = NOT_INFERRED
+- review_required
+- event_hash / schema_version
+
+Allowed reconciliation labels include NEW_POSITION, INCREASED, REDUCED, CLOSED, UNCHANGED, AVG_COST_CHANGED, QUANTITY_CHANGED, POSSIBLE_CORPORATE_ACTION and REVIEW_REQUIRED.
+
+Two holdings snapshots never prove exact intermediate trade price/time/order identity.

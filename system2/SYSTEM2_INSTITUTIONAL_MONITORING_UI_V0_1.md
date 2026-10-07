@@ -207,11 +207,13 @@ Do not expose a fake universal score when strategy meanings differ.
 This board is a target UI surface with a strict provenance split.
 
 Current readiness:
-- `VIRTUAL_POSITION_READY`: System 2 may display simulated/virtual positions sourced from `s2_positions`, clearly labeled **SIMULATED / VIRTUAL**.
-- `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`: no owner actual-holdings board may be populated from current System 2 runtime.
-- `ACTUAL_POSITION_MONITOR_VERIFIED=false`: the UI must not relabel virtual positions, signals, suggested shares, plans or simulated fills as actual holdings.
+- `VIRTUAL_POSITION_READY`: simulated/virtual positions sourced from `s2_positions` remain clearly labeled **SIMULATED / VIRTUAL**.
+- `ACTUAL_HOLDINGS_SOURCE_AUTHORIZED=USER_UPLOADED_BROKER_SCREENSHOT`: the Actual Holdings board may only consume a confirmed screenshot snapshot from the dedicated actual-holdings read model.
+- `CHAT_ASSISTED_HOLDINGS_IMPORT_READY=CODE_TESTED_PENDING_REAL_OWNER_SNAPSHOT`: the UI must show no current holdings until a real Owner screenshot has passed validation + confirmation + persistence/readback.
+- `ACTUAL_POSITION_MONITOR_VERIFIED=false` until that real snapshot exists.
+- Virtual positions, signals, suggested shares, plans, candidates and simulated fills can never be relabeled actual holdings.
 
-When a future owner-authorized actual-holdings source + reconciliation path is physically verified, actual holdings must be visually separate from both candidates and simulated positions. The actual board must expose source/as-of/reconciliation provenance and distinguish UNKNOWN/conflict states.
+The Actual Holdings board must remain visually separate from VIRTUAL POSITIONS, CANDIDATES, WATCHLIST and SIMULATED FILLS and expose Source, Last verified/effectiveAsOf and reconciliation/review state. Low-confidence imports remain REVIEW_REQUIRED and must not appear as verified holdings.
 
 For a verified actual holding, the target board may show:
 - reconciled quantity;
@@ -351,3 +353,11 @@ Recommended implementation path:
 9. usability testing and latency/readability acceptance;
 10. production activation only under the applicable owner/runtime gates.
 
+### Actual Holdings source badge
+
+Until a real verified snapshot exists, display:
+- Source: `USER_UPLOADED_BROKER_SCREENSHOT`;
+- Last verified: `NO VERIFIED SNAPSHOT`;
+- State: `OWNER SCREENSHOT IMPORT PENDING`.
+
+After a verified import, display the immutable snapshot source/as-of/readback identity. Never expose broker API connectivity because it is not authorized.

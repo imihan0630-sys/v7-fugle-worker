@@ -2810,3 +2810,36 @@ Next exact BUILD_LANE continuation:
 5. only then bind the MOPS keyset with the accepted V1.5 eight-lane source manifest into the V1.4.1 pre-parent cut;
 6. post-parent reconcile and require `noRevisionGapThroughCut=true` before symbol-session / technical-continuity binding.
 
+## 2026-10-07 Owner decision — Actual Holdings via uploaded broker screenshot
+
+Owner supersedes the prior actual-holdings-source uncertainty with this explicit System 2 source decision:
+
+- authorized source = `USER_UPLOADED_BROKER_SCREENSHOT`;
+- Owner uploads broker inventory/holdings image into ChatGPT;
+- ChatGPT/vision assists extraction into a structured payload;
+- deterministic validation preserves UNKNOWN and routes ambiguity/low confidence to `REVIEW_REQUIRED`;
+- explicit confirmation is required before a snapshot can be written;
+- confirmed data enters dedicated immutable `s2_actual_holdings_*` storage;
+- every new snapshot reconciles against the prior snapshot without inventing intermediate fills/orders.
+
+Permanent current broker/order boundary:
+- broker holdings API = `NOT AUTHORIZED`;
+- broker adapter/token/certificate = `NOT AUTHORIZED / NOT REQUIRED`;
+- System 1 holdings import = `NOT AUTHORIZED`;
+- real orders = `DISABLED`;
+- live capital authority = `DISABLED`;
+- broker order routing = `NOT AUTHORIZED`.
+
+Implementation unit:
+- `SYSTEM2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_V0_1.md`;
+- additive migration `0009_actual_holdings_screenshot_import.sql`;
+- validation / snapshot / reconciliation / persistence / read-model runtimes;
+- UI wording and regression tests.
+
+Readiness truth:
+- source contract is Owner-authorized;
+- code/schema validation may become implementation-ready after CI;
+- no real Owner holdings snapshot has yet been physically imported in this checkpoint;
+- therefore `ACTUAL_POSITION_MONITOR_VERIFIED=false` remains authoritative.
+
+After this bounded Owner-directed change is completed and merged, BUILD_LANE returns to the pre-existing S2-07 continuation cursor without discarding it.

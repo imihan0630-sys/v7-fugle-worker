@@ -135,11 +135,13 @@ V8 A/B, Top6/3+3, capital rules and live-state machine are never prerequisites f
 
 Capability/readiness must be explicit:
 
-- `TARGET_ONLY` / `DESIGN_APPROVED`: once an owner-authorized actual-holdings source and reconciliation path exist, verified actual holdings belong to a dedicated POSITION_MONITOR layer outside candidate/entry-monitor caps, with symmetric HOLD / REDUCE / EXIT and ADD / RE-ADD / RESTORE decisions.
-- `VIRTUAL_POSITION_READY`: the current implemented System 2 position lifecycle is simulated/virtual. `SIM_FILLED -> POSITION_MONITOR` and open `s2_positions` represent System 2 simulated positions, not owner actual holdings.
-- `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`: System 2 currently has no authorized actual-holdings ingestion/reconciliation contract or physically verified quantity/cost/fill/ownership readback.
-- `ACTUAL_POSITION_MONITOR_VERIFIED=false`: actual holdings must not be presented as continuously monitored today.
-- Signal prices, suggested shares, plan snapshots and simulated fills must never be promoted into actual holdings. System 1/V8 holdings must not be imported without explicit owner authorization.
+- `DESIGN_APPROVED`: verified actual holdings belong to a dedicated actual-holdings monitor outside candidate/entry-monitor caps, with symmetric HOLD / REDUCE / EXIT and ADD / RE-ADD / RESTORE decision support.
+- `VIRTUAL_POSITION_READY`: `SIM_FILLED -> POSITION_MONITOR` and open `s2_positions` remain System 2 simulated/virtual positions only.
+- `ACTUAL_HOLDINGS_SOURCE_AUTHORIZED=USER_UPLOADED_BROKER_SCREENSHOT`: the Owner-authorized actual-holdings source is an explicitly uploaded broker inventory/holdings screenshot, converted by ChatGPT/vision assistance into a structured payload and then deterministically validated.
+- `CHAT_ASSISTED_HOLDINGS_IMPORT_READY=CODE_TESTED_PENDING_REAL_OWNER_SNAPSHOT`: screenshot extraction is not trusted until validation + explicit review/confirmation + immutable persistence/readback pass.
+- `ACTUAL_POSITION_MONITOR_VERIFIED=false` until a real Owner screenshot has completed that physical chain. Synthetic tests do not prove current holdings.
+- Signal prices, suggested shares, plan snapshots, candidates, simulated fills and virtual positions must never be promoted into actual holdings. System 1/V8 holdings must not be imported without explicit owner authorization.
+- Broker API holdings integration is `NOT AUTHORIZED`; real orders, live capital authority and broker order routing are `DISABLED / NOT AUTHORIZED` until a future explicit Owner approval.
 - Re-add after a prior reduction is not rejected solely because current price is above the reduce price; this remains an approved design rule whose exact sizing/re-add thresholds require prospective validation.
 
 ## Capacity rules
@@ -193,6 +195,7 @@ Capability/readiness must be explicit:
 - `system2/SYSTEM2_CANDIDATE_LIFECYCLE_CONTRACT_V0_1.md`
 - `system2/SYSTEM2_EXECUTION_SIMULATOR_SPEC.md`
 - `system2/SYSTEM2_POSITION_MANAGEMENT_ARCHITECTURE.md`
+- `system2/SYSTEM2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_V0_1.md`
 - `system2/SYSTEM2_MARKET_REGIME_V0.md`
 - `system2/SYSTEM2_FACTOR_ENGINE_CONTRACT.md`
 - `system2/SYSTEM2_STRATEGY_CONTRACT_V0.md`

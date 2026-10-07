@@ -64,12 +64,16 @@ Candidate, watch, entry-zone, trigger, hold, reduce/exit, thesis weakening/inval
 ### L8 Position / Exposure Management
 The owner-approved target architecture supports both actual and simulated position monitoring, but current physical readiness is not symmetric across those sources.
 
-- `DESIGN_APPROVED`: verified actual holdings, once an authorized source/reconciliation path is wired, remain outside candidate/active-entry capacities and may be compared with desired exposure for symmetric HOLD / REDUCE / EXIT / ADD / RE-ADD / RESTORE decisions.
-- `VIRTUAL_POSITION_READY`: current System 2 runtime supports simulated fills and virtual `s2_positions`; the literal `POSITION_MONITOR` lifecycle state currently refers to that simulated/virtual lane.
-- `ACTUAL_HOLDINGS_SOURCE_NOT_WIRED`: no authorized System 2 actual-holdings ingestion/reconciliation runtime is currently proven.
-- `ACTUAL_POSITION_MONITOR_VERIFIED=false`: no UI/API/runtime may claim owner actual holdings are continuously monitored until source, reconciliation, provenance and physical readback evidence exist.
+- `DESIGN_APPROVED`: verified actual holdings remain outside candidate/active-entry capacities and may be compared with desired exposure for symmetric HOLD / REDUCE / EXIT / ADD / RE-ADD / RESTORE decisions.
+- `VIRTUAL_POSITION_READY`: current simulated fills and virtual `s2_positions` remain a separate virtual lane.
+- `ACTUAL_HOLDINGS_SOURCE_AUTHORIZED=USER_UPLOADED_BROKER_SCREENSHOT`: current authorized external ownership evidence begins only from an Owner-uploaded broker holdings screenshot, followed by chat/vision-assisted structured extraction.
+- `CHAT_ASSISTED_HOLDINGS_IMPORT_READY=CODE_TESTED_PENDING_REAL_OWNER_SNAPSHOT`: deterministic validation, explicit confirmation, immutable snapshot and reconciliation are implemented as the intended System 2 actual-holdings path.
+- `ACTUAL_POSITION_MONITOR_VERIFIED=false`: no UI/API/runtime may claim current Owner holdings are physically monitored until a real screenshot import has persisted and read back successfully.
+- Broker API/account-token integration and System 1 holdings import are not authorized by this source contract.
 
-Detailed contract: `system2/SYSTEM2_POSITION_MANAGEMENT_ARCHITECTURE.md`.
+Detailed contracts:
+- `system2/SYSTEM2_POSITION_MANAGEMENT_ARCHITECTURE.md`;
+- `system2/SYSTEM2_ACTUAL_HOLDINGS_SCREENSHOT_IMPORT_V0_1.md`.
 
 ### L9 Performance/Research
 Frozen decision snapshots, simulated fills, costs/slippage, outcomes, attribution, OOS and version comparison.
@@ -179,9 +183,9 @@ Daily revalidation must preserve the prior day's state and the exact RETAIN / RE
 
 This is an owner-approved **target invariant**, not a statement of current operational actual-holdings capability.
 
-- Once an owner-authorized actual-holdings source and reconciliation path are wired, verified actual holdings are outside the 12-symbol candidate/watch capacity and outside the per-strategy 3-symbol ACTIVE_ENTRY_MONITOR capacity.
-- Until then, existing implemented `POSITION_MONITOR` runtime state is virtual/simulated only.
-- Actual ownership may be called reconciled only from authorized holding/fill provenance with quantity/as-of/reconciliation evidence; signal, suggested-share, plan or simulated-fill records are insufficient.
+- Verified actual holdings imported from the authorized screenshot path are outside the 12-symbol candidate/watch capacity and the per-strategy 3-symbol ACTIVE_ENTRY_MONITOR capacity.
+- Existing `s2_positions` / simulated `POSITION_MONITOR` remains a separate virtual lane and cannot establish ownership.
+- Actual ownership may be called reconciled only from a confirmed screenshot snapshot with quantity/as-of/provenance/reconciliation evidence; signal, suggested-share, plan or simulated-fill records are insufficient.
 - Every verified holding cycle is intended to evaluate both downside reduction risk and upside ADD/RE-ADD opportunity.
 - A stock rising after reduction is not automatically classified as chasing; re-add uses current structure/thesis/RR and recovery evidence.
-- Any System 1/V8 shared-holdings or broker-holdings integration is `OWNER_DECISION_REQUIRED` before implementation.
+- Broker API holdings integration and System 1/V8 holdings import remain `OWNER_DECISION_REQUIRED` and are currently `NOT AUTHORIZED`.
