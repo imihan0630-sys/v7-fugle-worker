@@ -54,7 +54,7 @@ jobs:
       - name: Capture fourth current V1.6 population
         run: node system2/scripts/probe_s2_07_mops_exact_version_population_readonly_v1_6.mjs
 
-      - name: Reconcile append-only union and stability
+      - name: Reconcile three-capture append-only union and stability
         run: node system2/scripts/probe_s2_07_mops_repeated_capture_union_stability_readonly_v1_7.mjs
 
       - name: No mutation scheduler or System1 authority
