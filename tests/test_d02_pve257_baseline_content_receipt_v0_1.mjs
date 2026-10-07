@@ -1,0 +1,32 @@
+import assert from "node:assert/strict";
+import {deriveBaselineContentReceiptV01 as derive} from "../research/d02_pve257_baseline_content_receipt_v0_1.mjs";
+
+const mkSessions=(n=20,{start=1,slot="11:45",badIndex=-1,duplicateIndex=-1}={})=>Array.from({length:n},(_,i)=>{
+  const d=new Date(Date.UTC(2026,8,start+i,3,45));
+  const marketDate=d.toISOString().slice(0,10);
+  const bar={slotKey:slot,time:`${marketDate}T11:45:00+08:00`,volume:i===badIndex?null:1000+i};
+  return {marketDate,bars:i===duplicateIndex?[bar,{...bar,volume:9999}]:[bar]};
+});
+const base={marketDate:"2026-10-07",slotKey:"11:45",slotHistoryCount:20,pvSlotRvol20:0.72,expectedLatestComparableSlotDate:"2026-09-20",corporateActionContinuityProof:"CLEAN",baseline:{sessions:mkSessions(20),lastMarketDate:"2026-09-20"}};
+let r=derive(base);
+assert.equal(r.guard.state,"PASS");
+assert.equal(r.baselineAsOfDate,"2026-09-20");
+assert.equal(r.last20ExactSlotDates.length,20);
+assert.match(r.baselineContentFingerprint,/^[0-9a-f]{64}$/);
+assert.equal(derive({...base,expectedLatestComparableSlotDate:null}).guard.state,"UNKNOWN");
+assert.equal(derive({...base,expectedLatestComparableSlotDate:"2026-09-21"}).guard.state,"FAIL");
+assert.equal(derive({...base,baseline:{...base.baseline,sessions:mkSessions(20,{badIndex:19})}}).guard.state,"FAIL");
+assert.equal(derive({...base,baseline:{...base.baseline,sessions:mkSessions(20,{duplicateIndex:19})}}).guard.state,"FAIL");
+const resetSessions=mkSessions(30,{start:1});
+r=derive({...base,expectedLatestComparableSlotDate:"2026-09-30",corporateActionContinuityProof:null,baseline:{sessions:resetSessions,lastMarketDate:"2026-09-30",corporateActionResetAt:"2026-09-11"}});
+assert.equal(r.corporateActionContinuityState,"RESET_CLEAN_GE20");
+assert.equal(r.guard.state,"PASS");
+const r1=derive(base), r2=derive({...base,baseline:{...base.baseline,sessions:[...base.baseline.sessions].reverse()}});
+assert.equal(r1.baselineContentFingerprint,r2.baselineContentFingerprint);
+const changed=structuredClone(base); changed.baseline.sessions[19].bars[0].volume+=1;
+assert.notEqual(derive(changed).baselineContentFingerprint,r1.baselineContentFingerprint);
+const withCurrent=structuredClone(base); withCurrent.baseline.sessions.push({marketDate:"2026-10-07",bars:[{slotKey:"11:45",time:"2026-10-07T11:45:00+08:00",volume:999999}]});
+assert.equal(derive(withCurrent).baselineContentFingerprint,r1.baselineContentFingerprint);
+const wideNewer=structuredClone(base); wideNewer.baseline.lastMarketDate="2026-09-21";
+r=derive(wideNewer); assert.equal(r.baselineAsOfDate,"2026-09-20"); assert.equal(r.guard.state,"PASS");
+console.log(JSON.stringify({status:"PASS",assertions:14,example:r1},null,2));
