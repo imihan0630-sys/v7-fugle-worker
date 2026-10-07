@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T16:05:00+08:00",
+  "updatedAt": "2026-10-07T16:27:32+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1012,6 +1012,66 @@
       "updatedAt": "2026-10-06T21:55:42+08:00",
       "verifiedBy": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
       "verifiedAt": "2026-10-06T21:55:42+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261007-001",
+      "createdAt": "2026-10-07T16:27:32+08:00",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "title": "Stage-1 prospective A1 daily-close acquisition exhausts without target-date readiness",
+      "affectedScope": [
+        "System2 Stage-1 current/prospective A1 source acquisition",
+        "Prospective decision-clock evidence",
+        "Daily Shadow input readiness",
+        "SHORT_MOMENTUM launch-critical data path"
+      ],
+      "detectedBy": "00_RESEARCH_AUDIT_CONTROL",
+      "canonicalRequirement": "System 2 must observe current-day A1 TWSE and TPEx daily-close inputs with source-honest point-in-time receipts before current-day Stage-1 strategy evaluation. Poll exhaustion, stale prior-date payloads, transport/non-JSON responses and true source not-ready states must remain distinguishable; none may be converted into a clean zero-pick or an authorized decision clock.",
+      "observedProblem": "Physical prospective run 37577209442 completed all 30 polling attempts but never established the current-day A1 daily gate. TWSE remained NOT_READY with the prior market date throughout the observed window. TPEx alternated between INVALID_PAYLOAD/NON_JSON_RESPONSE and NOT_READY, with zero READY observations. The immutable daily bundle therefore ended requiredReady=false, precisionEligible=false and without a candidate decision timestamp. Current official_source_probes performs one GET per probe attempt and does not provide an in-attempt bounded recovery for HTTP-200 non-JSON responses. This is distinct from, but operationally related to, the intermittent official-source transport instability already observed in historical TPEx ingestion.",
+      "evidence": [
+        "System2 Prospective Clock Evidence Read-only run 37577209442 COMPLETED/SUCCESS; calendar, safety, daily_arrival, required_dependencies and bundle jobs all completed",
+        "A1 artifact 11469331429 digest sha256:4b2b436015a385c89402d071d9f1c8efc644b6fda2707962263a272b81553ef2",
+        "Decision-clock bundle artifact 11469168019 digest sha256:9e1ff9c1ad5a88406095b405a057ce97c90ef051fe347ef13eb8a204388b1baf",
+        "A1_TWSE_DAILY_CLOSE: 30/30 attempts NOT_READY; target date 2026-10-07 never observed in the run",
+        "A1_TPEX_DAILY_CLOSE: 30 attempts with no READY observation; observed INVALID_PAYLOAD/NON_JSON_RESPONSE and NOT_READY states remain explicit",
+        "Daily bundle: requiredReady=false; precisionEligible=false; candidateTimestamp=null; exactDecisionClockAuthorized=false; cronAuthorized=false; externalMutationPerformed=false",
+        "system2/runtime/official_source_probes.mjs uses a single GET per probe and returns NON_JSON_RESPONSE on JSON parse failure after HTTP success",
+        "Historical DATA_LANE separately observed intermittent TPEx PRIMARY transport exhaustion in 2024 annual run 37587943578; historical bounded PRIMARY-only recovery is already implemented under existing CORR-001 and is not duplicated by this directive"
+      ],
+      "riskIfUnfixed": "SHORT_MOMENTUM cannot produce a genuine current-day Stage-1 strategy-evaluation receipt when its core A1 input family never reaches source-honest READY. NC-T01 S22-T13 physical independence and downstream ranking/capacity evidence can remain blocked, while poll exhaustion could be misread as source absence or a legitimate zero-pick day.",
+      "requiredCorrection": [
+        "Keep this correction scoped to the current/prospective A1 observation path; do not duplicate or seize CORR-001 historical annual-backfill ownership.",
+        "Diagnose TWSE prior-date persistence and TPEx NON_JSON_RESPONSE separately; preserve publication/not-ready, transport, body completion, parse and semantic validation states.",
+        "Add only bounded fail-closed transport recovery where justified for transient transport/non-JSON acquisition; do not weaken target-date, schema, coverage, OHLC or PIT validation.",
+        "Ensure the observation window or follow-up observation mechanism can truthfully capture same-day source readiness when it occurs; never infer permanent unavailability merely because the current polling window exhausted.",
+        "Persist/emit the first source-honest READY observation timestamp and preserve all earlier failed/not-ready attempts append-only.",
+        "Re-run a real trading-day prospective receipt before claiming the current A1 gate repaired."
+      ],
+      "acceptanceCriteria": [
+        "A genuine trading-date run distinguishes TWSE and TPEx current-day readiness independently and preserves every attempt state",
+        "Both required A1 markets either reach target-date READY with exact observedAt provenance or end in an explicit operational/source blocker; no missing state is converted to READY or zero-pick",
+        "Any bounded retry is restricted to approved transient acquisition failures and leaves schema/date/coverage/PIT fail-closed semantics unchanged",
+        "First READY timestamp is derived from physical source observation, not nominal schedule time",
+        "A subsequent immutable decision-clock bundle accurately reflects A1 readiness and does not authorize a decision clock unless all required clock gates actually pass",
+        "No System1 runtime/Formal Core use, no System2 live selection/push/capital/order authority, and no external mutation are introduced by the repair"
+      ],
+      "protectedBoundaries": [
+        "System1 Formal Core",
+        "System1 runtime and candidate/rank outputs",
+        "System2 final selection/live push/capital/order authority",
+        "No retrospective relabeling of failed/not-ready observations as prospective READY",
+        "No legacy non-equivalent TPEx transport may satisfy canonical A1 semantics"
+      ],
+      "ownerDecisionRequired": false,
+      "routingClass": "DATA_LANE",
+      "assignedLane": "DATA_LANE",
+      "assignedRoom": "System 2｜歷史資料工程室",
+      "modificationOwner": "SYSTEM2_HISTORICAL_DATA_ROOM",
+      "blockedBy": null,
+      "implementationEvidence": [],
+      "verificationEvidence": [],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-07T16:27:32+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
