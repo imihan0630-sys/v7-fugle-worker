@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "D07_26_TAX_PRIMARY_SOURCE_FALSIFICATION_20261008_V0_1",
+  "researchRoom": "06",
+  "moduleId": "D07-26",
+  "evidenceClass": "PRIMARY_STANDARD_PLUS_PREDECLARED_SYNTHETIC_FALSIFICATION",
+  "researchDateAsiaTaipei": "2026-10-08",
+  "parent": "research/d07_26_income_tax_deferred_tax_foundation_v0_1.json",
+  "sourceRefs": [
+    {
+      "url": "https://www.ifrs.org/issued-standards/list-of-standards/ias-12-income-taxes/",
+      "authority": "IFRS Foundation",
+      "evidence": "IAS 12 separates current tax, deferred tax assets/liabilities and temporary differences; standard history includes May 2023 Pillar Two exception."
+    },
+    {
+      "url": "https://www.ifrs.org/content/dam/ifrs/publications/pdf-standards/english/2022/issued/part-a/ias-12-income-taxes.pdf",
+      "authority": "IFRS Foundation IAS 12 published text",
+      "evidence": "IAS 12 paragraphs 34-36: unused tax-loss/credit deferred-tax asset recognition requires probable usable taxable profit and appropriate entity/tax authority/timing; prior losses demand stronger support."
+    },
+    {
+      "url": "https://www.ifrs.org/news-and-events/news/2023/05/iasb-amends-tax-accounting-requirements/",
+      "authority": "IFRS Foundation",
+      "evidence": "2023 amendment introduced temporary exception for deferred tax related to Pillar Two and targeted disclosure; accounting version must be PIT-dated."
+    }
+  ],
+  "mechanism": "Separate reported income-tax expense, current-tax payable, deferred-tax recognition and actual tax cash settlements. An effective-tax-rate level alone cannot identify recurring tax efficiency or usable interest tax shields.",
+  "falsificationAndAlternatives": [
+    {
+      "hypothesis": "Low reported effective tax rate signals durable cash-tax efficiency.",
+      "counterexample": "Illustrative pretax income 100, current-tax expense 20 and deferred-tax benefit 10 imply income-tax expense 10 and ETR 10%; current tax remains 20, cash paid remains UNKNOWN without payment statement.",
+      "alternative": "Deferred recognition/timing, nonrecurring credits or geographic mix can produce the low ETR.",
+      "invalidWhen": "Tax reconciliation, current/deferred split, nonrecurring effects or payment vintage unavailable."
+    },
+    {
+      "hypothesis": "An existing deferred-tax asset proves that debt interest produces a fully usable current-period tax shield.",
+      "counterexample": "IAS 12 recognition is an accounting assessment of future deductible differences/losses; interest deductibility, local tax-law limits, timing and same-entity taxable income are separate conditions.",
+      "alternative": "Tax losses, group relief restrictions, interest deduction limits, and future reversals may change realizability.",
+      "invalidWhen": "Jurisdiction, taxable entity, usable income and tax-law-vintage not independently proven."
+    },
+    {
+      "hypothesis": "A decrease in statutory-tax-adjusted WACC is a known economic improvement.",
+      "counterexample": "Illustrative debt weight 0.40 and pretax debt cost 0.05 with 0.20 statutory tax rate give 0.004 (40 basis points) assumed tax-shield WACC benefit; if shield usability UNKNOWN the 40bp is an assumption, not observed evidence.",
+      "alternative": "Debt pricing, leverage risk and equity-cost changes can dominate or offset tax-shield effects.",
+      "invalidWhen": "Debt spread, weight, tax shield, equity-risk inputs or PIT version absent."
+    },
+    {
+      "hypothesis": "Deferred tax asset growth is unambiguously good news.",
+      "counterexample": "A recognized asset can face recoverability uncertainty; IAS 12 requires prospective taxable-profit support, and later realized profit cannot retroactively prove historical support.",
+      "alternative": "Temporary-difference timing, loss carryforwards, impairment/recognition adjustments, tax-planning opportunities.",
+      "invalidWhen": "Recognition evidence and tax-law validity unavailable."
+    }
+  ],
+  "pitRequiredFields": [
+    "reportPeriod",
+    "filingFirstKnownAt",
+    "currentTaxExpense",
+    "deferredTaxExpenseOrBenefit",
+    "incomeTaxExpenseProfitLoss",
+    "cashTaxPaid",
+    "taxReconciliation",
+    "deferredTaxAsset",
+    "deferredTaxLiability",
+    "unusedLossCreditDisclosure",
+    "sameTaxEntityAndAuthority",
+    "taxLawVersionKnownAt",
+    "restatementVersion",
+    "taxShieldUsabilityState"
+  ],
+  "accountingGuards": [
+    "Income tax expense in profit or loss is not necessarily the sum of every tax item disclosed; tax recognized in OCI/equity and discontinued operations require classification.",
+    "Current-tax expense is not identical to actual cash tax paid; payables, prepayments and settlements must be separately observed.",
+    "Negative or near-zero pretax earnings make effective-tax-rate ratios unstable; preserve numerator and denominator and mark percentage UNKNOWN where unsuitable.",
+    "Accounting recognition of deferred tax assets does not itself prove contemporaneous cash tax relief or interest deductibility.",
+    "Do not use present-day IAS 12 version or later amended filings as historical first-known."
+  ],
+  "antiBias": [
+    "PIT first-known and append-only restatements",
+    "OOS/walk-forward only after actual historical data and frozen cohorts",
+    "selection bias including loss-making and delisted firms",
+    "no look-ahead, snooping or multiple testing",
+    "no factor double count with D07-18 WACC and D07-06 leverage",
+    "date/industry event clusters",
+    "corporate actions and tax-entity reorganizations",
+    "transaction costs/liquidity/regime only at future strategy evaluation"
+  ],
+  "dataSourceStatus": {
+    "IFRS_ACCOUNTING_MECHANISM": "PASS",
+    "TAIWAN_MULTI_ISSUER_PIT_FIELD_REPLAY": "NOT_PROVEN",
+    "INTEREST_TAX_DEDUCTIBILITY_EVIDENCE": "UNKNOWN",
+    "RETURN_OUTCOME_JOIN": "CLOSED"
+  },
+  "maturityDecision": {
+    "level": "L2",
+    "pct": 40,
+    "reason": "Mechanism, countermechanisms, concrete synthetic falsification and PIT source contract established; Taiwan physical PIT evidence not yet proven, so L3 prohibited."
+  },
+  "formalCoreChanged": false,
+  "formalOptimizationCandidate": "NONE",
+  "exactNext": "Map Taiwan general-industry issuer current/deferred tax, cash taxes, unused losses/credits, tax reconciliation and tax-law vintages from actual MOPS filing versions across >=2 issuers and >=2 dates; preserve firstKnownAt and revisions; do not consume tax shield in D07-18 until legally and empirically supported."
+}
