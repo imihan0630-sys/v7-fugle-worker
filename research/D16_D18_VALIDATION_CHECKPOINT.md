@@ -3326,3 +3326,97 @@ Formal Core LOCKED.
 4. Continue FINANCIAL -> QUARTER_EPS nested acquisition validation on the next genuine quality run; preserve prior failed episode.
 5. On 2026-10-08 after the expected 00:10 C1 window, reconcile the 2026-10-07 opportunity.
 6. Outcomes remain CLOSED until explicit opening gates pass.
+
+
+## 2026-10-07 forecast-calibration-decision separation + strategy-clock over-gating validation
+
+New durable research:
+- `research/D16_FORECAST_CALIBRATION_DECISION_SEPARATION_20261007_V0_1.md`;
+- `research/D16_STRATEGY_CLOCK_OVERGATING_VALIDATION_20261007_V0_1.md`.
+
+### Forecast -> calibration -> uncertainty -> decision chain
+
+Room11 now freezes strict evidence-layer separation:
+
+FORECAST
+-> CALIBRATION
+-> UNCERTAINTY
+-> DECISION / ABSTAIN
+-> DOWNSTREAM ALLOCATION
+with CAUSAL and STRESS/SIMULATION lanes remaining distinct.
+
+Key conclusions:
+- forecast discrimination does not prove calibration;
+- calibration does not prove after-cost decision value;
+- decision value does not prove causal identification;
+- a calibrated probability is not a position size;
+- simulation-path count is not empirical market N;
+- conformal-style uncertainty guarantees require explicit time-series dependence/exchangeability semantics and cannot be assumed from generic distribution-free claims.
+
+D16-19 remains sole CalibrationReceipt producer.
+D16-25 consumes calibration quality and owns uncertainty/utility/ABSTAIN; no second calibrator or probability authority.
+D15 remains downstream sizing/allocation owner.
+
+Proper-scoring improvement cannot be double-counted as independent forecast + calibration + Alpha confirmation when derived from the same parent outcome evidence.
+
+Sequential/repeated forecast monitoring is now explicitly mapped to SDA-016:
+continuous descriptive updates are allowed, but repeated formal inference requires preregistered checkpoints or sequentially valid methodology.
+
+### New System2 strategy-clock correction intake
+
+Canonical correction:
+`S2-CORR-20261007-002`.
+
+Room11 verdict:
+`AUDIT_DEFECT_CONFIRMED / STATISTICALLY_MATERIAL / CORRECTION_PENDING`.
+
+Observed defect:
+global Decision Clock requires B2/A5-linked readiness that frozen SHORT_MOMENTUM Stage-1 semantics do not require.
+
+Statistical consequence:
+this creates strategy-irrelevant censoring and can distort:
+- SHORT_MOMENTUM coverage;
+- zero-pick rate;
+- opportunity prevalence;
+- capacity denominator;
+- System1/System2 common support;
+- SDA-022 overlap/diversification/incrementality;
+- D18 policy attribution.
+
+Required strategy-local categories are now frozen:
+- STRATEGY_REQUIRED_SOURCE_MISSING;
+- UNIVERSAL_INTEGRITY_BLOCK;
+- STRATEGY_IRRELEVANT_SOURCE_MISSING;
+- POLICY_DISABLED;
+- NATURAL_ZERO_PICK;
+- DATA_UNKNOWN.
+
+A strategy-irrelevant missing source must not be relabeled strategy DATA_UNKNOWN or zero-pick.
+
+D16-14 interpretation:
+existing global-vs-strategy-stage mismatch is now independently confirmed as a real launch-path defect, but corrected runtime + prospective receipt remain pending, so D16-14 stays L3.
+
+D16-09 interpretation:
+until corrected, global requiredReady is not promotion-grade as the SHORT_MOMENTUM coverage/zero-pick denominator.
+
+D18 interpretation:
+an over-gated strategy absence is infrastructure admission failure, not POLICY_DISABLED and not evidence that a Regime gate worked.
+
+### Current maturity
+
+No Room11 maturity inflation:
+- D16 = 60%;
+- D18 = 52%.
+
+Global tracker remains whatever latest main states; this research does not create a Taiwan PIT L3/L4 upgrade.
+
+Formal Core LOCKED.
+Economic outcomes CLOSED.
+
+### Exact next continuation
+
+1. If S2-CORR-20261007-002 implementation lands, validate mixed-dependency physical receipts immediately.
+2. Require SDA-022 common-support construction to consume strategy-specific readiness rather than global requiredReady.
+3. If T48 implementation or genuine finalization receipt lands, bind its generation-set digest into SelectionFamilyReceipt.
+4. Continue first genuine forecast/calibration/decision series when C1 prospective outcomes become available.
+5. Preserve all pre-repair over-gated observations as immutable failure evidence.
