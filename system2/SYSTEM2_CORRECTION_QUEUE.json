@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T16:33:46+08:00",
+  "updatedAt": "2026-10-07T16:40:34+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1076,6 +1076,69 @@
       "verificationEvidence": [],
       "finalDisposition": "PENDING",
       "updatedAt": "2026-10-07T16:33:46+08:00"
+    },
+    {
+      "directiveId": "S2-CORR-20261007-002",
+      "createdAt": "2026-10-07T16:40:34+08:00",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "title": "Global Decision Clock over-gates SHORT_MOMENTUM with unrelated B2/A5 dependencies",
+      "affectedScope": [
+        "System2 Stage-1 Decision Clock / prospective readiness",
+        "SHORT_MOMENTUM first-launch path",
+        "strategy-specific source dependency semantics",
+        "physical NC-T01 S22-T13 and downstream capacity eligibility"
+      ],
+      "detectedBy": "00_RESEARCH_AUDIT_CONTROL",
+      "canonicalRequirement": "Launch-critical readiness must be evaluated against the frozen strategy/stage dependency contract. A global source gate must not require source families that the strategy does not consume merely because another strategy needs them. UNKNOWN/missing strategy-irrelevant sources must not globally suppress an otherwise truthfully evaluable strategy.",
+      "observedProblem": "Current global Decision Clock computes sameSessionClockReady/candidateTimestamp from A1 TWSE + A1 TPEx + B2 and also requires A5 availability by the candidate boundary for global requiredReady. Frozen Stage-1 SHORT_MOMENTUM semantics do not require B2 or A5, and D16 explicitly records GLOBAL_REQUIRED_SET != SHORT_MOMENTUM_NON_INCOMPLETE_REQUIRED_SET. The current global clock can therefore defeat the approved single-independent-strategy Stage-1 path.",
+      "evidence": [
+        "SYSTEM2_DECISION_CLOCK_EVIDENCE_AGGREGATION_V0_1.md: global candidate uses A1 TWSE + A1 TPEx + B2, then A5 boundary",
+        "decision_clock_daily_evidence.mjs: B2 directly contributes to sameSessionClockReady",
+        "D16_STRATEGY_STAGE_CLOCK_DEPENDENCY_AUDIT_V0_1.md: GLOBAL_REQUIRED_SET != SHORT_MOMENTUM_NON_INCOMPLETE_REQUIRED_SET",
+        "D18_POLICY_ONLY_VS_REGIME_EVIDENCE_BOUNDARY_20261007_V0_1.md: SHORT_MOMENTUM launch policy does not require MARKET_REGIME; SWING_GROWTH requires PIT-valid INDUSTRY_THESIS + FUNDAMENTAL_QUALITY",
+        "SYSTEM2_STAGE1_ASSESSOR_POLICY_FREEZE_V0_1.md: per-strategy Stage-1 policies frozen",
+        "Prospective run 37577209442: A5 coverage=true / B2 coverage=false / global requiredReady=false",
+        "Dynamic-priority governance permits a single genuinely independent launch strategy before a second strategy is ready"
+      ],
+      "riskIfUnfixed": "SHORT_MOMENTUM can remain globally blocked by B2/A5 even after its own A1 inputs, #762 and NC-T01 are ready, causing artificial opportunity starvation and making the narrow Stage-1 path non-executable.",
+      "requiredCorrection": [
+        "Preserve the existing global cross-strategy Decision Clock artifact for use-cases that genuinely require A1+B2+A5; do not reinterpret historical evidence",
+        "Add/expose strategy-stage dependency-aware readiness for Stage-1 execution rather than weakening the global artifact in place",
+        "SHORT_MOMENTUM readiness uses only its frozen required inputs plus universal PIT/session/source-integrity safeguards",
+        "SWING_GROWTH remains fail-closed on missing B2/A5-required thesis/fundamental evidence",
+        "Preserve explicit per-strategy clock/dependency identities and immutable evidence; no favorable rerun/cherry-picking",
+        "Do not change strategy thresholds, ranking weights, selection policy, final-selection, push, capital or orders",
+        "Add mixed dependency regression tests for SHORT_MOMENTUM-ready/SWING_GROWTH-blocked plus A1/global-integrity negative controls",
+        "Require a real trading-date prospective receipt for physical acceptance"
+      ],
+      "acceptanceCriteria": [
+        "strategy/stage readiness matches frozen dependency contract",
+        "SHORT_MOMENTUM is not blocked solely by unavailable B2/A5 when those inputs are not required by its frozen Stage-1 policy",
+        "SWING_GROWTH stays INCOMPLETE/BLOCKED when required thesis/fundamental evidence is unavailable",
+        "global source/PIT/session/integrity defects still fail closed",
+        "UNKNOWN is never coerced to zero/pass and denominator provenance remains complete",
+        "global Decision Clock historical evidence remains append-only",
+        "real-date physical evidence validates corrected dependency routing before launch promotion",
+        "System1 Formal Core and final-selection/live-push/capital/order authority remain unchanged"
+      ],
+      "protectedBoundaries": [
+        "System1 Formal Core",
+        "System2 strategy identities and frozen Stage-1 assessor policies",
+        "PIT/UNKNOWN/source-integrity semantics",
+        "ranking/capacity max12/max3/no-forced-fill semantics",
+        "final selection / notification / live capital / orders"
+      ],
+      "ownerDecisionRequired": true,
+      "routingClass": "BUILD_LANE",
+      "assignedLane": "BUILD_LANE",
+      "assignedRoom": "System 2｜建置總控室",
+      "modificationOwner": "SYSTEM2_BUILD_CONTROL_ROOM",
+      "blockedBy": [],
+      "implementationEvidence": [],
+      "verificationEvidence": [],
+      "finalDisposition": "PENDING",
+      "updatedAt": "2026-10-07T16:40:34+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
