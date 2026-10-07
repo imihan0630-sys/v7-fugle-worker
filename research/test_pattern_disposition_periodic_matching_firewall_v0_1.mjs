@@ -1,0 +1,16 @@
+import assert from "node:assert/strict";
+import {classifyCadence,normalizeTouchEvidence,classifyBarContamination,classifyParticipantSelection,buildDispositionLineage,classifyComparator} from "./pattern_disposition_periodic_matching_firewall_v0_1.mjs";
+let p=0; const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D6801 unknown receipt fails closed",()=>assert.equal(classifyCadence({receiptVerified:false,matchingCadenceSeconds:120}).status,"DISPOSITION_MATCHING_REGIME_UNKNOWN"));
+t("D6802 cadence validates",()=>assert.equal(classifyCadence({receiptVerified:true,matchingCadenceSeconds:120}).status,"CADENCE_VALID"));
+t("D6803 wall clock does not multiply touches",()=>{const r=normalizeTouchEvidence({wallClockMinutes:10,matchingOpportunityCount:5,touchCount:2});assert.equal(r.touchesPerOpportunity,.4);assert.equal(r.wallClockPersistenceEqualsIndependentTouchCount,false);});
+t("D6804 synthetic bars contaminate",()=>assert.equal(classifyBarContamination({expectedMatchCount:5,observedMatchCount:5,syntheticBarsInserted:true}).status,"SYNTHETIC_CONTINUITY_CONTAMINATION"));
+t("D6805 missing prints preserved",()=>assert.equal(classifyBarContamination({expectedMatchCount:5,observedMatchCount:3,syntheticBarsInserted:false}).missingMatchCount,2));
+t("D6806 prepayment changes participant context",()=>assert.equal(classifyParticipantSelection({prepaymentRule:"FULL",marginRestriction:"NONE",brokerOrderCapState:"NONE"}).directionalSignal,false));
+t("D6807 margin restriction changes context",()=>assert.equal(classifyParticipantSelection({prepaymentRule:"NONE",marginRestriction:"ACTIVE",brokerOrderCapState:"NONE"}).status,"PARTICIPANT_SELECTION_CONTEXT_ACTIVE"));
+t("D6808 price-derived representations count once",()=>assert.equal(buildDispositionLineage({}).effectiveIndependentEvidenceCount,1));
+t("D6809 unmatched trigger path not comparable",()=>assert.equal(classifyComparator({treated:true,triggerPathMatched:false}).status,"NOT_COMPARABLE_TRIGGER_SELECTION"));
+t("D6810 matched treated comparator explicit",()=>assert.equal(classifyComparator({treated:true,triggerPathMatched:true}).status,"G1_DISPOSITION_PERIODIC_MATCHING"));
+t("D6811 matched control comparator explicit",()=>assert.equal(classifyComparator({treated:false,triggerPathMatched:true}).status,"G0_ABNORMAL_CONTINUOUS_MATCHING"));
+t("D6812 invalid cadence blocked",()=>assert.equal(classifyCadence({receiptVerified:true,matchingCadenceSeconds:0}).status,"DATA_BLOCKED"));
+console.log(`SUMMARY ${p}/12 PASS`);
