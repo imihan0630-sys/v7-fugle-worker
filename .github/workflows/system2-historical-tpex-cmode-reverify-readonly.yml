@@ -1,0 +1,107 @@
+name: System2 TPEx Cmode Historical Reverify Readonly
+
+on:
+  workflow_dispatch:
+    inputs:
+      year:
+        description: "Accepted TPEx market-year to reverify without writes"
+        required: true
+        default: "2023"
+        type: choice
+        options:
+          - "2021"
+          - "2023"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/system2-historical-tpex-cmode-reverify-readonly.yml"
+      - "system2/runtime/historical_market_year_coverage_v0_1.mjs"
+      - "system2/scripts/historical_market_year_verify_v0_1.mjs"
+      - "system2/tests/historical_market_year_coverage_v0_1.test.mjs"
+      - "system2/tests/historical_market_year_lifecycle_verify_guard.test.mjs"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-tpex-cmode-reverify-readonly-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  reverify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    environment: system2-research
+    env:
+      TARGET_YEAR: ${{ github.event_name == 'workflow_dispatch' && inputs.year || '2023' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Reverify accepted TPEx market-year without persistence
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+          SYSTEM2_HISTORY_YEAR: ${{ env.TARGET_YEAR }}
+          SYSTEM2_HISTORY_YEAR_MARKET: TPEX
+          SYSTEM2_HISTORY_COVERAGE_OUTPUT: /tmp/system2-tpex-cmode-reverify.json
+        run: |
+          set -euo pipefail
+          node system2/scripts/historical_market_year_verify_v0_1.mjs | tee /tmp/system2-tpex-cmode-reverify.log
+
+      - name: Assert reverify remained read-only and print lifecycle delta
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs=require("fs");
+          const p="/tmp/system2-tpex-cmode-reverify.json";
+          const j=JSON.parse(fs.readFileSync(p,"utf8"));
+          const rowsWritten=Number(j?.d1UsageObservedThisRun?.rowsWritten ?? -1);
+          if(rowsWritten!==0) throw new Error("read-only reverify wrote D1 rows: "+rowsWritten);
+          if(j.market!=="TPEX") throw new Error("expected TPEX evidence");
+          if(!["2021","2023"].includes(String(j.year))) throw new Error("unexpected year");
+          console.log(JSON.stringify({
+            result:j.result,
+            market:j.market,
+            year:j.year,
+            verifierVersion:j.verifierVersion,
+            rowsWritten,
+            overallState:j.overallState,
+            replayReadinessState:j.replayReadinessState,
+            beforeUnknownBars:j.tpexCmodeEvidence?.beforeUnknownBars ?? null,
+            afterUnknownBars:j.tpexCmodeEvidence?.afterUnknownBars ?? null,
+            reclassifiedUnknownBars:j.tpexCmodeEvidence?.reclassifiedUnknownBars ?? null,
+            cmodeState:j.tpexCmodeEvidence?.state ?? null,
+            queriedDateCount:j.tpexCmodeEvidence?.queriedDateCount ?? null,
+            positiveStopSessionCount:j.tpexCmodeEvidence?.positiveStopSessionCount ?? null,
+            intervalCount:j.tpexCmodeEvidence?.intervalCount ?? null,
+          },null,2));
+          NODE
+
+      - name: Upload TPEx cmode reverify evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-tpex-cmode-reverify-${{ env.TARGET_YEAR }}
+          path: |
+            /tmp/system2-tpex-cmode-reverify.json
+            /tmp/system2-tpex-cmode-reverify.log
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Confirm System1 production files untouched
+        if: ${{ always() }}
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          git diff --exit-code -- wrangler.toml Worker.js
+          echo "Production isolation PASS"
