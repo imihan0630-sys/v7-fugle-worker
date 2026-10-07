@@ -1755,3 +1755,93 @@ No open PR for CORR-005, CORR-006, or the TWTAWU bounded-completeness producer w
 System1 remains sentinel-only.
 Formal Core remains LOCKED.
 No final selection, live push, capital or real orders are authorized.
+
+
+## 00 post-midnight independent confirmation — CORR-006 + D16 witness oracle + TWTAWU export boundary (2026-10-08 00:04 Asia/Taipei)
+
+Observed latest main during this segment advanced through D16 and 00 audit commits.
+
+### CORR-006 independently confirmed by D16
+
+D16 added:
+`research/d16_sda022_nct01_strategy_executable_witness_oracle_20261008_v0_1.json`
+at commit:
+`8c31de2aeebd95e861d3cd05be5e188ef491121e`.
+
+D16 freezes three distinct layers:
+- W0 = CONTINUITY_READY_WITNESS;
+- W1 = STRATEGY_EXECUTABLE_WITNESS;
+- W2 = RANK_ELIGIBLE_WITNESS.
+
+Blocking semantics align with CORR-006:
+- W0 does not imply W1;
+- all continuity-ready / all strategy-incomplete => INCOMPLETE_BLOCKED_INPUTS_NOT_ZERO_PICK;
+- legitimate zero-pick is legal only after W1 exists and the other physical gates pass;
+- generated candidates must trace to W1 in the same coherent evidence cut.
+
+00 additionally found an implementation/oracle identity issue:
+`strategy_evaluator.mjs` chooses `INVALIDATED` before `INCOMPLETE`.
+Therefore hard invalidation may mask simultaneously missing required evidence in the validity label.
+
+CORR-006 was tightened accordingly:
+physical W1 needs explicit `requiredEvidenceComplete` derived from `assessment.missingRequiredEvidence.length===0` (or an equivalent exact contract proof), plus a non-INCOMPLETE evaluated validity state.
+Do not infer required-input completeness solely from the validity label.
+
+Required provenance now distinguishes:
+- CONTINUITY_READY_WITNESS_COUNT;
+- REQUIRED_EVIDENCE_COMPLETE_WITNESS_COUNT;
+- STRATEGY_EXECUTABLE_WITNESS_COUNT;
+- strategy validity state counts.
+
+Durable 00 audit:
+`system2/evidence/S2_STAGE1_NCT01_STRATEGY_READINESS_PROMOTION_AUDIT_20261007_V0_1.json`.
+
+Correction:
+`S2-CORR-20261007-006` = HIGH / OPEN / BUILD_LANE.
+
+### TWTAWU export discovery result remains fail-closed
+
+Fresh public TWSE page readback confirms the human surface exposes:
+- bounded date inputs;
+- security-code / blank-all scope;
+- category selector;
+- HTML/print output;
+- CSV download;
+- history from 2011-10-03.
+
+However the public page extraction did not expose a stable machine CSV request URL/contract.
+Search did not produce a trustworthy direct TWTAWU CSV endpoint.
+
+Therefore the prior handoff remains unchanged:
+- do not invent `response=csv` or another guessed endpoint;
+- DATA_LANE physical runner must capture the actual official export request or another verified official download contract;
+- positive-window JSON-vs-export parity must pass before negative empty-window completeness may be claimed;
+- until then `absenceCertifiesNoSuspension=false` and CONTINUITY_UNKNOWN remain mandatory.
+
+Official human surface:
+`https://www.twse.com.tw/zh/trading/historical/twtawu.html`.
+
+### Exact continuation after this segment
+
+Parallel BUILD_LANE:
+1. CORR-005 exact-head transitive hidden-fallback static audit + runtime forbidden-access zero evidence + HIDDEN_FALLBACK_AUDIT_SHA256 binding.
+2. CORR-006 W0->W1 readiness repair using explicit required-evidence-complete semantics.
+3. Real artifact-only physical wrapper after both repairs.
+
+Parallel DATA_LANE:
+1. capture the actual official TWTAWU export request for an exact bounded interval;
+2. positive JSON/export parity;
+3. witness exact replay-window negative completeness;
+4. corporate-action completeness;
+5. first real hash-bound CLEAR_NO_ACTION continuity receipt.
+
+Then:
+- one coherent SHORT_MOMENTUM artifact-only NC-T01 evidence cut;
+- 00 independently recomputes S22-T11~T16;
+- only after physical independence does CORR-003 become the dominant persistence blocker.
+
+No open implementation PR was observed yet for CORR-005, CORR-006 or the TWTAWU bounded-completeness producer.
+
+System1 remains sentinel-only.
+Formal Core remains LOCKED.
+No final selection, live push, capital or real orders are authorized.
