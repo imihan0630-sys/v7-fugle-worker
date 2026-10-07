@@ -68,7 +68,6 @@ function selectedRevisionWithProvenance(selectedRevision, rows, key) {
       availableAt: row.availableAt ?? null,
       observedAt: row.observedAt ?? null,
       capturedAt: row.capturedAt ?? null,
-      continuityState: row.continuityState ?? row.continuity_state ?? "UNVERIFIED",
       pitAvailabilityClass: row.pitAvailabilityClass ?? row.pit_availability_class ?? null,
     };
     const tupleKey = JSON.stringify(tuple);
@@ -81,6 +80,7 @@ function selectedRevisionWithProvenance(selectedRevision, rows, key) {
   return deepFreeze({
     ...selectedRevision,
     ...provenance,
+    continuityState: "UNVERIFIED",
   });
 }
 
@@ -95,7 +95,7 @@ function primitiveBar(row) {
     tradeValue: row.tradeValue ?? row.trade_value ?? null,
     transactions: row.transactions ?? null,
     change: row.change ?? row.change_value ?? null,
-    continuityState: row.continuityState ?? row.continuity_state ?? "UNVERIFIED",
+    continuityState: "UNVERIFIED",
     sourceId: row.sourceId ?? row.source_id ?? null,
     sourceRowHash: row.sourceRowHash ?? row.source_row_hash ?? null,
     availableAt: row.availableAt,
