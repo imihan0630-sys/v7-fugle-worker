@@ -2857,3 +2857,8 @@ Maturity:
 3. D06-13 remains complete-universe authorization/cost gated.
 4. D06-19 remains direct domestic-natural-person stock-date directional-source gated.
 5. D06-05 remains at L3 and waits for a genuinely new TDCC sourceDate; repeated 2026-10-02 consumption earns no new evidence count.
+
+
+## 2026-10-07 D06 — IC-100
+
+D06-05 corporate-action / denominator guard completed. Durable artifacts: `research/d06_05_ownership_denominator_corporate_action_guard_v0_1.json`, `research/d06_05_weekly_pair_clean_support_audit_20260924_20261002_v0_1.json`, `research/d06_05_corporate_action_source_registry_v0_1.json`. D06-05 remains L3/60; outcomes remain closed. Exact next: build one complete replayable TWSE+TPEx corporate-action mask for a TDCC pair, join security-identity continuity, freeze event-clean exact-denominator support, then preregister clustered out-of-sample validation.
