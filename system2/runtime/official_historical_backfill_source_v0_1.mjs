@@ -89,6 +89,8 @@ export async function fetchOfficialHistoricalA1RangeV0_1({
   pauseMs = 0,
   onDateReceipt = null,
   includeRowProvenance = false,
+  dateTransportRetryRounds = 2,
+  dateTransportRetryCooldownMs = 5000,
 } = {}) {
   const contract = officialHistoricalA1SourceContractV0_1(market);
   if (typeof fetchImpl !== "function") throw new Error("fetchImpl is required");
@@ -99,6 +101,12 @@ export async function fetchOfficialHistoricalA1RangeV0_1({
     throw new Error("onDateReceipt must be a function");
   }
   if (typeof includeRowProvenance !== "boolean") throw new Error("includeRowProvenance must be boolean");
+  if (!Number.isInteger(dateTransportRetryRounds) || dateTransportRetryRounds < 1 || dateTransportRetryRounds > 4) {
+    throw new Error("dateTransportRetryRounds must be an integer from 1 to 4");
+  }
+  if (!Number.isInteger(dateTransportRetryCooldownMs) || dateTransportRetryCooldownMs < 0 || dateTransportRetryCooldownMs > 60000) {
+    throw new Error("dateTransportRetryCooldownMs must be an integer from 0 to 60000");
+  }
 
   const trading = await buildOfficialTradingDatesV0_1({
     fromDate,
@@ -111,12 +119,29 @@ export async function fetchOfficialHistoricalA1RangeV0_1({
   const dateReceipts = [];
   for (let i = 0; i < trading.tradingDates.length; i += 1) {
     const marketDate = trading.tradingDates[i];
-    const receipt = await fetchOfficialHistoricalA1DateV0_1({
-      market,
-      marketDate,
-      observedAt,
-      fetchImpl,
-    });
+    let receipt = null;
+    let transportRecoveryRound = 0;
+    for (let round = 0; round < dateTransportRetryRounds; round += 1) {
+      try {
+        receipt = await fetchOfficialHistoricalA1DateV0_1({
+          market,
+          marketDate,
+          observedAt,
+          fetchImpl,
+        });
+        transportRecoveryRound = round;
+        break;
+      } catch (error) {
+        const message = String(error?.message || error);
+        const transportExhausted = message.includes("official historical A1 source exhausted transports");
+        if (!transportExhausted || round + 1 >= dateTransportRetryRounds) throw error;
+        if (dateTransportRetryCooldownMs > 0) {
+          await new Promise((resolve) =>
+            setTimeout(resolve, dateTransportRetryCooldownMs * (round + 1)));
+        }
+      }
+    }
+    if (!receipt) throw new Error(`official historical A1 receipt missing after transport retries: ${market} ${marketDate}`);
     if (receipt.state !== "READY") {
       throw new Error(`official historical A1 not READY: ${market} ${marketDate} ${receipt.state}`);
     }
@@ -142,6 +167,8 @@ export async function fetchOfficialHistoricalA1RangeV0_1({
       ordinarySymbolCount: receipt.ordinarySymbolCount,
       sourceDateEvidenceBasis: receipt.sourceDateEvidenceBasis,
       sourceId: receipt.sourceId,
+      transportMode: receipt.transportMode,
+      transportRecoveryRound,
       state: receipt.state,
     });
     dateReceipts.push(dateReceipt);
@@ -164,7 +191,9 @@ export async function fetchOfficialHistoricalA1RangeV0_1({
     dateReceipts: Object.freeze(dateReceipts),
     calendarSource: trading.source,
     noNonTradingDateRequests: true,
-    schemaVersion: "S2_OFFICIAL_HISTORICAL_A1_RANGE_V0_1",
+    transportRecoveryCount: dateReceipts.filter((x) => Number(x.transportRecoveryRound || 0) > 0).length,
+    transportRetryPolicy: "PRIMARY_ONLY_RETRY_AFTER_TRANSPORT_EXHAUSTION",
+    schemaVersion: "S2_OFFICIAL_HISTORICAL_A1_RANGE_V0_2",
   });
 }
 
