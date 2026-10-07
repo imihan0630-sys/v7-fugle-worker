@@ -1,0 +1,143 @@
+{
+  "schemaVersion": "D03_LAYER_B_LIFECYCLE_EVENT_NORMALIZATION_CONTRACT_V0_1",
+  "updatedAt": "2026-10-07T20:38:00+08:00",
+  "owner": "03｜技術指標與趨勢動能研究室",
+  "classification": "RESEARCH_ONLY_IMPLEMENTATION_CONTRACT",
+  "formalCoreImpact": "NONE_LOCKED",
+  "sourceMainSha": "370d8d62f57c9e142cd3159afee47f7ed4ff0055",
+  "objective": "Normalize official listing, regulatory no-trading, resumption, delisting and reorganization events into one deterministic symbol-session lifecycle before historical coverage classification.",
+  "sourceReuse": {
+    "TWSE": [
+      {
+        "role": "REGULATORY_NO_TRADING_INTERVAL",
+        "existingRuntime": "historical_market_year_verify_v0_1.mjs::fetchTwseSuspensionIntervals",
+        "source": "TWSE_TWTAWU",
+        "status": "EXISTING_PARTIAL_EVENT_CLASS"
+      },
+      {
+        "role": "LISTING_AND_DELISTING_BOUNDARIES",
+        "existingRuntime": "d08_twse_historical_universe_source_v0_1.mjs",
+        "source": "TWSE company/newlisting + company/suspendListing",
+        "status": "EXISTING_OFFICIAL_UNION"
+      }
+    ],
+    "TPEX": [
+      {
+        "role": "HALT_RESUME_INTERVAL",
+        "existingRuntime": "historical_market_year_verify_v0_1.mjs::fetchTpexSuspensionIntervals",
+        "source": "TPEX /www/zh-tw/bulletin/sprcHis",
+        "status": "EXISTING_PARTIAL_EVENT_CLASS"
+      },
+      {
+        "role": "DELISTING_BOUNDARY",
+        "source": "TPEX official delisted-company registry / underlying machine response to be pinned",
+        "status": "OFFICIAL_PAGE_EXISTS_MACHINE_CONTRACT_NOT_YET_PINNED"
+      },
+      {
+        "role": "REGULATORY_STOP_RESUME_OUTSIDE_sprcHis",
+        "source": "TPEX official bulletin structured source or pinned bulletin machine index",
+        "status": "SOURCE_CONTRACT_REQUIRED"
+      }
+    ]
+  },
+  "canonicalEventTypes": [
+    "LISTING_START",
+    "REGULATORY_STOP",
+    "REGULATORY_RESUME",
+    "DELISTING_EFFECTIVE",
+    "SHARE_CONVERSION_STOP",
+    "MARKET_MIGRATION_OUT",
+    "MARKET_MIGRATION_IN"
+  ],
+  "normalizedFields": [
+    "market",
+    "symbol",
+    "eventType",
+    "effectiveFrom",
+    "effectiveToExclusive",
+    "membershipAction",
+    "tradingAction",
+    "sourceId",
+    "sourceUrl",
+    "sourceRowHash",
+    "sourcePayloadHash",
+    "observedAt",
+    "sourceReportedAt",
+    "eventIdentityHash"
+  ],
+  "intervalSemantics": {
+    "stopResume": "A no-trading interval is [stopDate,resumeDate). The stopDate is excluded from expected price rows; resumeDate is again eligible if the security is still a member.",
+    "delisting": "Delisting effective date is an exclusive membership boundary. The old symbol is not expected to have a daily price row on the delisting effective date unless an official source explicitly states that trading occurs that date.",
+    "listing": "Listing/trading start date is an inclusive membership boundary.",
+    "shareConversion": "If share conversion causes stop trading before delisting, represent both [stopDate,delistingDate) no-trading interval and membership termination at delistingDate. Do not fabricate a bar or extend the old symbol after the conversion boundary.",
+    "openEndedStop": "If no resume date exists, end the no-trading interval at the earliest proven delisting/migration-out boundary; otherwise keep it open through verification coverage and do not infer resumption.",
+    "overlap": "Union overlapping no-trading intervals after semantic normalization. Never subtract the same symbol-session twice."
+  },
+  "authorityAndConflictRules": [
+    "OFFICIAL_EFFECTIVE_DATE_BEATS_FREE_TEXT_INFERENCE",
+    "DELISTING_TERMINATES_OLD_SYMBOL_MEMBERSHIP",
+    "RESUME_REOPENS_TRADING_ONLY_IF_MEMBERSHIP_REMAINS_ACTIVE",
+    "MARKET_MIGRATION_OUT_TERMINATES_OLD_MARKET_MEMBERSHIP_AND_MIGRATION_IN_STARTS_NEW_MARKET_MEMBERSHIP",
+    "SOURCE_DISAGREEMENT_FAILS_CLOSED_TO_CONFLICT_NOT_BEST_GUESS",
+    "SOURCE_ABSENCE_NEVER_CERTIFIES_NO_EVENT",
+    "NO_SYNTHETIC_OHLC_FOR_NON_TRADING_INTERVALS"
+  ],
+  "dedupeIdentity": {
+    "baseKey": "market|symbol|eventType|effectiveFrom|effectiveToExclusive",
+    "eventIdentityHash": "sha256(canonical normalized event payload)",
+    "exactDuplicate": "collapse only when canonical event payload is identical",
+    "conflictingDuplicate": "retain both source claims and emit EVENT_BOUNDARY_CONFLICT"
+  },
+  "coverageIntegration": {
+    "before": "historical_market_year_coverage_v0_1 receives suspensionIntervals only",
+    "after": "coverage receives canonical lifecycle state per market|symbol|date or normalized interval set plus membership boundaries",
+    "missingReasonPriority": [
+      "NOT_A_MEMBER_ON_DATE",
+      "OFFICIAL_REGULATORY_NO_TRADING_INTERVAL",
+      "OFFICIAL_LISTING_OR_MIGRATION_BOUNDARY",
+      "UNKNOWN_SYMBOL_SESSION_GAP"
+    ],
+    "invariant": "A1 storage/source reconciliation is unchanged. Lifecycle classification may change the expected denominator or gap reason, never mutate cold OHLCV."
+  },
+  "acceptanceCases": [
+    {
+      "id": "TWSE_8101_2024",
+      "rule": "stop 2024-08-22, resume 2024-11-19 => [2024-08-22,2024-11-19) no-trading"
+    },
+    {
+      "id": "TWSE_1701_2024",
+      "rule": "share-conversion stop 2024-08-21 plus delisting 2024-09-02 => [2024-08-21,2024-09-02) no-trading and old-symbol membership ends 2024-09-02"
+    },
+    {
+      "id": "TPEX_4806_2023",
+      "rule": "stop 2023-04-10, resume 2023-10-12 => [2023-04-10,2023-10-12) no-trading"
+    },
+    {
+      "id": "TPEX_3089_2021",
+      "rule": "stop 2021-01-20, resume 2021-07-20 => [2021-01-20,2021-07-20) no-trading"
+    }
+  ],
+  "forbiddenShortcuts": [
+    "DO_NOT_PARSE_ONE_ANNOUNCEMENT_SENTENCE_AS_THE_ONLY_CANONICAL_SOURCE_IF_A_STRUCTURED_OFFICIAL_REGISTRY_EXISTS",
+    "DO_NOT_TREAT_CHANGED_TRADING_METHOD_AS_NO_TRADING",
+    "DO_NOT_USE_DELISTING_DATE_AS_LAST_TRADING_DATE_BY_DEFAULT",
+    "DO_NOT_FILL_CLASSIFIED_GAPS_WITH_PREVIOUS_CLOSE",
+    "DO_NOT_ADVANCE_LAYER_C_FROM_LAYER_B_EVENT_CLASSIFICATION"
+  ],
+  "indicatorSemantics": {
+    "bollinger": "Window population counts valid eligible trading observations, not calendar dates and not fabricated rows across official no-trading intervals.",
+    "adx": "Recursive state may consume only certified observation chronology. No TR/DM is synthesized for official no-trading intervals; resume bridging/restart remains a separate certified continuity rule."
+  },
+  "maturityDecision": {
+    "d03MaturityPct": 56.7,
+    "d03_09": "L2_40",
+    "d03_10": "L2_40",
+    "maturityPromotion": false,
+    "layerB": "CAUSAL_CONTRACT_ADVANCED_PHYSICAL_RERUN_PENDING",
+    "layerC": "NOT_PROVEN",
+    "rawSourceVersionGate": "2_OF_3",
+    "outcomes": "CLOSED",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "exactNextContinuationPoint": "BUILD/DATA should implement or materialize this normalized lifecycle-event union without changing Formal Core, then rerun historical market-year coverage and emit immutable before/after denominator and missingReasonCounts plus event-source hashes. D03 may advance Layer B only from that physical receipt. Separately monitor S2-CORR-20261007-002 physical strategy-specific readiness, V8.20 genuine Formal-to-C1 parent, T48 finalization, S2-07 stabilization, D03 dedup/redundancy, D16 incrementality and Layer-C revision-known-at."
+}
