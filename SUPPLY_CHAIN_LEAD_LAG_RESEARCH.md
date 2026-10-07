@@ -3033,3 +3033,22 @@ Exact next SC-086:
 continue the same prospective official BIS/Federal Register observation contract. Freeze the first genuinely new post-freeze rule/list/license publication with publication/effective/expiry clocks and keep issuer exposure UNKNOWN absent contemporaneous issuer-native evidence.
 
 Formal Core unchanged.
+
+
+### SC-080 BUILD_LANE next-capture dependency
+
+Dependency request:
+- `research/SC080_D10_10_NEXT_LIVE_CAPTURE_BUILD_LANE_DEPENDENCY_20261008.md`
+
+Room07 accepts the existing V1.7 three-capture / 168-version append-only union as the durable seed.
+
+Required upstream delta:
+- add the next genuine live MOPS exact-version capture against that seed;
+- do not reclassify the first three captures;
+- do not use the superseded PR-head fourth capture as final-code acceptance;
+- preserve earliest firstObservedAt and append-only absence semantics;
+- return captureCount>=4 plus membership delta, payload-conflict, trailing-transition and stabilization fields.
+
+This is a BUILD_LANE engineering dependency, not a Room07 implementation task.
+
+D10-10 remains L3/60 until the returned receipt plus source/keyset semantics satisfy the frozen L4 gates.
