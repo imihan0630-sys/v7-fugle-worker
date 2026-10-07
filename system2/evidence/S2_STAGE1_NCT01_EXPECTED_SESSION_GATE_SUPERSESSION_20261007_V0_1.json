@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "S2_STAGE1_NCT01_EXPECTED_SESSION_GATE_SUPERSESSION_V0_1",
+  "recordedAt": "2026-10-07T20:59:04+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "observedMain": "f6cfa41e4bd88cb0d5cfa0286d585d81192dc729",
+  "relatedCorrection": "S2-CORR-20261007-004",
+  "disposition": "PHYSICAL_S22_T13_BLOCKED_PENDING_EXACT_SYMBOL_SESSION_RECONCILIATION",
+  "supersedesInterpretation": [
+    "A symbol's current historyReady=true state is not sufficient by itself to nominate it as a continuity-certification witness.",
+    "The previously named TWSE symbol 1101 remains only a candidate for exact-window investigation, not a prequalified clean witness."
+  ],
+  "why": {
+    "runtimeDefect": "Long-listed history readiness currently accepts count>=required without exact expected eligible-session reconciliation, allowing an older row to replace a missing required recent session.",
+    "physicalSeed": "2026-10-07 Daily Shadow run 37609474459 had historyReadyCount=51, continuityReadyCount=0 and evaluationInputEligibleSymbolCount=0.",
+    "ncT01Impact": "S22-T13 requires a real System2 strategy path with its own required inputs READY. A continuity receipt cannot truthfully promote a symbol whose exact PIT history window may already contain an undetected expected-session hole."
+  },
+  "sequencing": {
+    "mayProceedInParallel": [
+      "BUILD_LANE latest-main rebuild/canonical merge of SDA-022 policy fingerprints S22-T06~T10",
+      "BUILD_LANE continuity receipt/hash binding design and regressions",
+      "BUILD_LANE bounded PIT batch/prefetch transport optimization",
+      "REMEDIATION_LANE CORR-003 D1 quota-budget work",
+      "DATA_LANE CORR-20261007-001 prospective clock collector alignment"
+    ],
+    "mustPrecedePhysicalS22T13": [
+      "DATA_LANE repair CORR-20261007-004 exact required eligible symbol-session reconciliation",
+      "Real Daily Shadow readback proving at least one witness symbol has exact-window history readiness",
+      "Hash-bound continuity receipt for that exact selected replay window",
+      "Only CLEAR_NO_ACTION may be first promoted over RAW history; ADJUSTED_CONTINUITY remains fail-closed until transformed technical-continuity history exists"
+    ]
+  },
+  "exactWitnessGate": [
+    "Derive expected eligible sessions from official trading dates plus PIT listing membership and certified lifecycle no-trading intervals.",
+    "Compare exact expected-vs-observed date set/hash; count and first/last boundaries alone are insufficient.",
+    "No older row substitution for a missing required eligible session.",
+    "Revision identity and decision cutoff remain bound to the selected replay window.",
+    "Continuity receipt sourceHistoryHash/date set must match the exact replay window consumed by factor primitives.",
+    "Unresolved or mismatched history remains INCOMPLETE and denominator-accounted."
+  ],
+  "protectedBoundaries": [
+    "No System1 Formal Core/runtime mutation",
+    "No strategy thresholds/weights/ranking mutation",
+    "No synthetic OHLC/history repair",
+    "No whole-universe history veto",
+    "No final selection/live push/capital/order authority"
+  ],
+  "implementationPerformedByAudit": false
+}
