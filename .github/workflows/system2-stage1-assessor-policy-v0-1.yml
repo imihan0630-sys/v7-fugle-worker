@@ -65,6 +65,5 @@ jobs:
       - name: System1 production isolation
         run: |
           set -euo pipefail
-          git fetch origin main --depth=1
-          git diff --exit-code origin/main...HEAD -- Worker.js wrangler.toml
+          git diff --exit-code HEAD^1 HEAD -- Worker.js wrangler.toml
           echo "System1 production files unchanged PASS"
