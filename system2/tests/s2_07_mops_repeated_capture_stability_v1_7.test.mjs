@@ -14,9 +14,10 @@ function obs(key,stock,payload,firstObservedAt,sourceReportedAt="2026-10-01T01:0
     firstObservedAt,
   };
 }
-function capture(label,capturedAt,observations,universe=U){
+function capture(label,capturedAt,observations,universe=U,queryDiagnostics=[]){
   return {
     captureLabel:label,
+    queryDiagnostics,
     receipt:{
       capturedAt,
       stableEventUniverseHash:universe,
@@ -111,5 +112,44 @@ const mismatch=await reconcileRepeatedMopsCapturesV1_7({
   requiredTrailingZeroUnionGrowthCaptures:1,
 });
 assert.ok(mismatch.blockers.includes("STABLE_EVENT_UNIVERSE_HASH_MISMATCH"));
+
+
+const diagKey="S2-MOPS-V:"+H("4");
+const diagnosticResolved=await reconcileRepeatedMopsCapturesV1_7({
+  captures:[
+    capture("R1","2026-10-07T00:01:00.000Z",[A1],U,[{
+      symbol:"2603",sourceId:"TWSE_CAPITAL_REDUCTION_REFERENCE",family:"CAPITAL_REDUCTION",
+      yearOnlyVersionKeys:[diagKey],monthOnlyVersionKeys:[],
+    }]),
+    capture("R2","2026-10-07T00:06:00.000Z",[
+      A1,
+      {...obs("4","2603","4","2026-10-07T00:05:30.000Z"),versionKey:diagKey},
+    ]),
+  ],
+  minimumCaptureCount:2,
+  requiredTrailingZeroUnionGrowthCaptures:1,
+});
+assert.equal(diagnosticResolved.unresolvedDiagnosticOnlyVersionCount,0);
+const resolvedDiag=diagnosticResolved.unionVersions.find(v=>v.versionKey===diagKey);
+assert.ok(resolvedDiag);
+assert.equal(resolvedDiag.earliestIdentityObservedAt,"2026-10-07T00:01:00.000Z");
+assert.equal(resolvedDiag.earliestExactPayloadObservedAt,"2026-10-07T00:05:30.000Z");
+assert.equal(resolvedDiag.diagnosticIdentityEvidenceCount,1);
+
+const unresolvedKey="S2-MOPS-V:"+H("5");
+const diagnosticUnresolved=await reconcileRepeatedMopsCapturesV1_7({
+  captures:[
+    capture("R1","2026-10-07T00:01:00.000Z",[A1],U,[{
+      symbol:"2609",sourceId:"TPEX_CAPITAL_REDUCTION_REFERENCE",family:"CAPITAL_REDUCTION",
+      yearOnlyVersionKeys:[unresolvedKey],monthOnlyVersionKeys:[],
+    }]),
+    capture("R2","2026-10-07T00:06:00.000Z",[A1]),
+  ],
+  minimumCaptureCount:2,
+  requiredTrailingZeroUnionGrowthCaptures:1,
+});
+assert.equal(diagnosticUnresolved.unresolvedDiagnosticOnlyVersionCount,1);
+assert.ok(diagnosticUnresolved.blockers.includes("DIAGNOSTIC_ONLY_VERSION_WITHOUT_EXACT_PAYLOAD_PROVENANCE"));
+assert.equal(diagnosticUnresolved.boundedRepeatedCaptureUnionStabilized,false);
 
 console.log("S2-07 repeated MOPS capture stability V1.7 tests PASS");
