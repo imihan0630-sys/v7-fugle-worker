@@ -2712,3 +2712,26 @@ Re-read external blockers. If unchanged, execute the deterministic admission art
 3. D06-18 L4 path: preregister OOS/Shadow residual incrementality against D06-09 actual-SBL-short, liquidity, direct price-volume, passive/index flow and market-regime controls.
 4. D06-14: later on 2026-10-07, after TPEx T+1/T+2 workflow is plausibly complete, rerun canonical row-level parser for tradeDate 20261005 and 20261006 before assigning T2_FINAL/T1_REVISED.
 5. D06-05 remains blocked by `sameGenerationJoin=false`; D06-06 remains blocked by compatible shared price-volume parent.
+
+
+## 2026-10-07 D06 — IC-096 D06-19 direct-retail source exclusion matrix
+
+- Durable artifact: `research/d06_19_direct_retail_source_exclusion_matrix_20261007_v0_1.json`.
+- Current official TWSE/TPEx source surfaces were rescanned for the exact construct: domestic natural-person × stock × date × buy/sell direction.
+- No verified public/replayable direct feed was found.
+- Broker/branch trading reports are execution-channel data, not beneficial-owner identity.
+- Foreign-natural-person aggregate flow has identity but wrong market grain and wrong domestic identity target.
+- Foreign-investor stock-level flow has stock/date direction but wrong investor class.
+- Historical order/execution product pages do not establish a domestic-natural-person identity field and remain UNVERIFIED rather than assumed usable.
+- TPEx natural-person market-share statistics are aggregate context only.
+- Personal investor record-query systems are individual access, not a marketwide research source.
+- Forbidden substitutions frozen: margin, day trading, odd lot, branch/broker, total-minus-institution residual, market-level natural-person share, foreign-natural-person flow and emerging-stock trade-side labels.
+- D06-19 remains L2/40. Negative source evidence strengthens the guard but does not promote maturity.
+- D06 overall remains 53.3%; global 356-module maturity remains 46.8%.
+- Outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. D06-14 remains the next time-dependent lane later on 2026-10-07: canonical row-level T2_FINAL for tradeDate 20261005 and T1_REVISED for tradeDate 20261006 after the TPEx revision workflow is plausibly complete.
+2. D06-05 remains blocked: repository has the TDCC parent and preregistered lineage fields, but no genuine 2026-10-05 concentration-consuming research rows; do not fabricate a retrospective same-generation join.
+3. D06-19 reopens only on an explicit official/authorized domestic-natural-person stock-date directional field contract.
+4. D06-18 remains L3/60; accumulate future in-slot dates but do not inflate maturity from source repetition alone.
