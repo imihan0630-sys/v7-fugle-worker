@@ -440,3 +440,28 @@ No outcome or Formal evidence is implied.
 ### Exact next
 Continue multi-date EARLY/LATE captures for revision-frequency stability.
 L4 requires OOS/Shadow residual incrementality, not more source existence evidence.
+
+
+## LS-047J / D06-18 — 2026-10-07 genuine in-slot TWSE live receipt; bounded L3 promotion
+
+Durable receipt: `research/d06_18_twse_sbl_live_slot_20261007_v0_1.json`.
+
+The frozen 15:20 ±5m source contract was finally executed inside the allowed window on 2026-10-07. Capture window was 15:15:02-15:21:05 Asia/Taipei. All five frozen securities matched the requested identities and the official rendered page visibly showed 2026-10-07.
+
+Observed source state:
+- 1101 台泥: fixed/competitive 10/3/1-day states zero/NULL; negotiated 12:48:01.97 / 11,234.
+- 2451 創見: fixed/competitive 10/3/1-day states zero/NULL; negotiated 14:47:28.05 / 211.
+- 3532 台勝科: competitive-bid 3-day recall matched 14:57:19.04, total/latest qty 13, latest fee 4.00%, displayed lend/borrow qty 0/0; negotiated 11:57:52.97 / 12.
+- 6187 萬潤: fixed/competitive zero/NULL; negotiated 0.
+- 9941 裕融: fixed/competitive zero/NULL; negotiated 0.
+
+This is the first post-contract live TWSE rate/supply receipt that is both in-slot and source-date-certified. The prior 2026-10-05 missing slot and 2026-10-06 missed/post-close observations remain immutable historical records and are not rewritten.
+
+D06-18 promotes L2/40 -> L3/60 for bounded TWSE PIT/source feasibility only. TRUE_UTILIZATION remains prohibited because total lendable inventory is still unverified. Cross-market parity and predictive outcome evidence remain absent.
+
+### Exact next
+1. Accumulate independent in-slot trading dates without changing the frozen pilot after seeing outcomes.
+2. Preserve transaction family, recall term, rule vintage and NULL-vs-zero semantics.
+3. Seek naturally occurring positive displayed depth; never select symbols after inspecting the desired state.
+4. L4 requires preregistered OOS/Shadow residual incrementality and D16 validation.
+5. True utilization remains UNKNOWN until a verified total-lendable-inventory denominator exists.
