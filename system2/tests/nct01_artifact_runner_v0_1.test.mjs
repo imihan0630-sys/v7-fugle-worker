@@ -1,7 +1,32 @@
 import assert from "node:assert/strict";
 import { runNcT01ArtifactOnlyV0_1 } from "../runtime/nct01_artifact_runner_v0_1.mjs";
+import { buildNcT01HiddenFallbackAuditV0_1 } from "../runtime/nct01_hidden_fallback_audit_v0_1.mjs";
 
 const h=(c)=>String(c).repeat(64);
+const cleanAudit=await buildNcT01HiddenFallbackAuditV0_1({
+  runnerEntryPoint:"system2/runtime/nct01_artifact_runner_v0_1.mjs",
+  runnerHeadSha:"a".repeat(40),
+  auditedBlobIdentities:[
+    {path:"system2/runtime/nct01_artifact_runner_v0_1.mjs",blobSha:"b".repeat(40)},
+    {path:"system2/runtime/nct01_physical_receipt_v0_1.mjs",blobSha:"c".repeat(40)},
+  ],
+  perDimensionDisposition:{
+    cachedSystem1SelectionUsed:"PROVEN_ABSENT",
+    persistedSystem1SelectionUsed:"PROVEN_ABSENT",
+    aliasReconstructionUsed:"PROVEN_ABSENT",
+    crossProjectFallbackUsed:"PROVEN_ABSENT",
+    staleSharedStateUsed:"PROVEN_ABSENT",
+  },
+  runtimeEvidence:{
+    instrumented:true,
+    sameExecutionCut:true,
+    runtimeForbiddenAccessCount:0,
+    runtimeEvidenceDigest:h("f"),
+    typedEvidence:["NO_FORBIDDEN_SYSTEM1_ACCESS"],
+  },
+  forbiddenSourceFamilyVersion:"S2-NCT01-FORBIDDEN-SOURCES-V0_1",
+  auditGeneratedAt:"2026-10-07T07:30:30Z",
+});
 const policy={
   strategyId:"SHORT_MOMENTUM",
   strategyVersion:"V0.1-CONTRACT",
@@ -47,6 +72,9 @@ function fakeOrchestratorFactory({withWitness=true}={}){
           sourceHistoryHash:h("5"),
           continuityTransformHash:h("6"),
           continuityBlockerCodes:[],
+          missingRequiredEvidenceCount:0,
+          requiredEvidenceComplete:true,
+          assessmentHash:h("6"),
           strategyValidity:"VALID",
           entryReadiness:"WATCH",
         }
@@ -60,6 +88,9 @@ function fakeOrchestratorFactory({withWitness=true}={}){
           sourceHistoryHash:h("5"),
           continuityTransformHash:null,
           continuityBlockerCodes:["CONTINUITY_RECEIPT_MISSING"],
+          missingRequiredEvidenceCount:1,
+          requiredEvidenceComplete:false,
+          assessmentHash:h("7"),
           strategyValidity:"INCOMPLETE",
           entryReadiness:"BLOCKED",
         };
@@ -85,6 +116,9 @@ function fakeOrchestratorFactory({withWitness=true}={}){
           sourceHistoryHash:h("a"),
           continuityTransformHash:null,
           continuityBlockerCodes:["CONTINUITY_RECEIPT_MISSING"],
+          missingRequiredEvidenceCount:1,
+          requiredEvidenceComplete:false,
+          assessmentHash:h("7"),
           strategyValidity:"INCOMPLETE",
           entryReadiness:"BLOCKED",
         },
@@ -120,6 +154,7 @@ const common={
   policyFingerprintReceipt:policy,
   sharedRawSourceRefs:["A1_TWSE_OFFICIAL","S2_D1_PIT_HISTORY"],
   historyPrefetchEvidence:{prefetchHash:h("f")},
+  hiddenFallbackAuditEvidence:cleanAudit,
 };
 
 const pass=await runNcT01ArtifactOnlyV0_1({
@@ -134,6 +169,10 @@ assert.equal(pass.receipt.system1RankInputAvailable,false);
 assert.equal(pass.evidence.continuityReceiptInputCount,1);
 assert.equal(pass.evidence.continuityReadySymbolCount,1);
 assert.deepEqual(pass.evidence.continuityReadySymbols,["1101"]);
+assert.equal(pass.evidence.requiredEvidenceCompleteSymbolCount,1);
+assert.equal(pass.evidence.strategyExecutableSymbolCount,1);
+assert.equal(pass.evidence.hiddenFallbackAuditState,"CLEAN_PROVEN_ABSENT");
+assert.equal(pass.evidence.hiddenFallbackAuditIntegrityValid,true);
 assert.equal(pass.evidence.d1PersistenceExecuted,false);
 assert.equal(pass.evidence.finalSelectionEnabled,false);
 assert.equal(pass.evidence.system1RuntimeUsed,false);
