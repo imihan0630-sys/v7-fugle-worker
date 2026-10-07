@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "pattern-cup-base-handle-pit-contract-v0.1",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "completedCupMayBeBackpainted": false,
+  "visualSimilarityEqualsAlpha": false,
+  "handleAutomaticallyAddsIndependentVote": false,
+  "failedBasesMayBeDropped": false,
+  "d01_07_PIT_DataContract": "FEASIBLE",
+  "outcomeJoin": "CLOSED"
+}
