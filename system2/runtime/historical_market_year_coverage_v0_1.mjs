@@ -114,13 +114,17 @@ export function tpexCmodeRocDateV0_1(value) {
 
 function tpexCmodeDateFromAnyV0_1(value) {
   const text=String(value??"").trim();
-  let m=text.match(/^(\d{3})[\/\-.](\d{1,2})[\/\-.](\d{1,2})$/);
+  let m=text.match(/(?:^|\D)(\d{3})[\/\-.](\d{1,2})[\/\-.](\d{1,2})(?:\D|$)/);
   if(m){
     return String(Number(m[1])+1911).padStart(4,"0")+"-"+String(Number(m[2])).padStart(2,"0")+"-"+String(Number(m[3])).padStart(2,"0");
   }
-  m=text.match(/^(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})$/);
+  m=text.match(/(?:^|\D)(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})(?:\D|$)/);
   if(m){
     return m[1]+"-"+String(Number(m[2])).padStart(2,"0")+"-"+String(Number(m[3])).padStart(2,"0");
+  }
+  m=text.match(/(?:民國)?\s*(\d{2,3})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日/);
+  if(m){
+    return String(Number(m[1])+1911).padStart(4,"0")+"-"+String(Number(m[2])).padStart(2,"0")+"-"+String(Number(m[3])).padStart(2,"0");
   }
   return null;
 }
