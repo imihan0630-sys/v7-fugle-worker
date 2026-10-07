@@ -35,6 +35,7 @@ Physically accepted raw A1 market-years:
 - 2019 TWSE / TPEx: data coverage PASS / replay readiness PARTIAL;
 - 2020 TWSE / TPEx: data coverage PASS / replay readiness PARTIAL;
 - 2021 TWSE: data coverage PASS / replay readiness PARTIAL;
+- 2021 TPEx: data coverage PASS / replay readiness PARTIAL;
 - 2022 TWSE: data coverage PASS / replay readiness PARTIAL;
 - 2022 TPEx: data coverage PASS / replay readiness PARTIAL.
 - 2023 TWSE: data coverage PASS / replay readiness PARTIAL.
@@ -547,3 +548,46 @@ Fresh recovery is required because run #1 is bound to pre-fix head. Do not use R
 https://github.com/imihan0630-sys/v7-fugle-worker/actions/workflows/system2-historical-tpex-2021-revision-recovery.yml
 
 Acceptance gate: source-semantics recovery PASS, Physical verifier V0.5 SUCCESS, Data Coverage PASS, System1 isolation PASS. Only then reclassify 2021 TPEx to PASS/PARTIAL and resume 2024 TWSE.
+
+
+## 2026-10-07 2021 TPEx durable acceptance after transport-semantics recovery
+
+Recovery run `37555975307` / #3 completed SUCCESS on head `55f6463b9686fa3e9b0515a6a1613fa24e455b56`.
+
+The prior 2021-01-14 canonical-revision diagnosis is superseded. Direct official-source comparison proved that the old legacy fallback reports `上櫃股票每日收盤行情(不含定價)` and is not canonical-equivalent to PRIMARY `上櫃股票行情`. The apparent 698 canonical changes in run #18 matched the legacy fallback semantics rather than a verified official canonical correction.
+
+Recovery facts:
+- source-semantics recovery result: `PASS_TPEX_2021_SOURCE_SEMANTICS_RECOVERY`;
+- canonical transport: PRIMARY only / fail-closed;
+- target-date cold/fresh rows: 780 / 780;
+- target-date source-row differences: 780;
+- target-date canonical A1 mismatches: 0;
+- persisted revision rows written: 0;
+- immutable cold history mutated: false.
+
+Physical verifier V0.5 acceptance facts:
+- official trading dates: 244;
+- cold/fresh full-year rows: 191,643 / 191,643;
+- packs / R2 HEAD / byte checks: 795 / 795 / 795 PASS;
+- missing-from-cold / absent-from-fresh: 0 / 0;
+- source-row hash mismatch / canonical A1 mismatch: 0 / 0;
+- effective data integrity: PASS;
+- expected membership-session bars: 192,055;
+- actual bars: 191,643;
+- UNKNOWN symbol-session gaps: 412;
+- unexpected bars: 0;
+- data coverage: PASS;
+- replay readiness: PARTIAL;
+- System1 production isolation: PASS.
+
+Accepted evidence: `system2/evidence/S2_HISTORICAL_TPEX_2021_PHYSICAL_VERIFICATION_V0_1.json`.
+
+Historical blocker provenance remains preserved and must not be deleted:
+- `system2/evidence/S2_HISTORICAL_TPEX_2021_REVISION_BLOCKER_V0_1.json` — superseded false canonical-revision diagnosis;
+- `system2/evidence/S2_HISTORICAL_TPEX_2021_TRANSPORT_SEMANTICS_ROOT_CAUSE_V0_1.json` — root-cause evidence.
+
+Run: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37555975307
+
+Artifact: https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/37555975307/artifacts/11455912132
+
+Next annual continuation: fresh workflow_dispatch `year=2024`, `market=TWSE` from latest main. 2021 TPEx is no longer an active annual-history blocker.
