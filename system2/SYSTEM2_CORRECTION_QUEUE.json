@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-07T19:30:51+08:00",
+  "updatedAt": "2026-10-07T19:34:03+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -274,10 +274,15 @@
         "2021 TWSE disposition DATA_COVERAGE_ACCEPTED_REPLAY_READINESS_PARTIAL",
         "AUDIT readback: timeout hardening merge 211b84fa2e1b8dbf7090c4e48df5ce51beee3596 changes only annual backfill job budget 60→120 minutes plus checkpoint/test; no source-integrity or System1 boundary weakening observed.",
         "System2 Research CI 37610316535 SUCCESS and V8 Regression 37610316546 SUCCESS on timeout-hardening merge.",
-        "Independent audit evidence system2/evidence/S2_CORR_20261004_001_AUDIT_PROGRESS_20261007_V0_1.json @ 19dc73ca3f0723f602700b82b28bd93fd460e499 classifies the change REPOSITORY_HARDENING_PASS_PHYSICAL_ACCEPTANCE_PENDING; no post-hardening 2024/TPEX physical acceptance exists yet."
+        "Independent audit evidence system2/evidence/S2_CORR_20261004_001_AUDIT_PROGRESS_20261007_V0_1.json @ 19dc73ca3f0723f602700b82b28bd93fd460e499 classifies the change REPOSITORY_HARDENING_PASS_PHYSICAL_ACCEPTANCE_PENDING; no post-hardening 2024/TPEX physical acceptance exists yet.",
+        "DATA_LANE quota hardening commit d5031e1966da1fd75ec0499d17fabc19ca459d83 removes the redundant annual migrate/provision job and needs:migrate while preserving the 120-minute annual timeout.",
+        "Independent readback confirms historical_pack_year_backfill_v0_1.mjs still performs a read-only s2_schema_meta schema_version query and fails closed unless schemaVersion=1.1 before annual persistence.",
+        "System2 Research CI 37612590153 SUCCESS and V8 Regression 37612590073 SUCCESS on d5031e1966da1fd75ec0499d17fabc19ca459d83.",
+        "Independent verification: system2/evidence/S2_CORR_20261004_001_RUN30_QUOTA_HARDENING_AUDIT_20261007_V0_1.json @ d60a0bb7b0fd9db1ab64d798f763e950516659c9.",
+        "Disposition: direct run #30 redundant-provision cause repaired at repository level; 2024 TPEx physical acceptance remains pending a fresh post-reset run."
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T19:16:52+08:00",
+      "updatedAt": "2026-10-07T19:34:03+08:00",
       "routingClass": "DATA_LANE",
       "assignedLane": "DATA_LANE",
       "assignedRoom": "System 2｜歷史資料工程室",
@@ -1186,7 +1191,9 @@
         "Official Cloudflare D1 Free contract verified 2026-10-07: account-wide 100,000 rows written/day, 5,000,000 rows read/day, UTC-day reset at 00:00; enforcement since 2026-09-01 rejects queries after the daily limit is exceeded. Durable evidence: system2/evidence/S2_CORR_20261007_003_CLOUDFLARE_FREE_TIER_CONTRACT_20261007_V0_1.json @ 0ca1329925d253546e2eacc7958c55adb96c4498.",
         "Historical open PR #653 proposed skipping D1 schema writes for UI-only deploys, but its objective is already superseded by canonical main commit b2ae3488309df83bf9a6399c81ec5b1321ce2be2: ensure_system2_d1_ready.mjs uses READ_ONLY_FAST_PATH with schemaMutationPerformed=false and writeReadVerification=SKIPPED_ALREADY_READY when schema 1.1 is complete.",
         "PR #653 was independently closed as SUPERSEDED after audit comment 6037043870; its workflow-specific gate must not be treated as the remaining solution to CORR-003.",
-        "Residual CORR-003 scope is therefore global account-level quota budgeting/reservation/priority across all D1 writer classes, not UI-only deploy schema suppression."
+        "Residual CORR-003 scope is therefore global account-level quota budgeting/reservation/priority across all D1 writer classes, not UI-only deploy schema suppression.",
+        "DATA_LANE partial risk reduction d5031e1966da1fd75ec0499d17fabc19ca459d83 removes redundant annual D1 reprovisioning while preserving a read-only schema 1.1 gate; CI 37612590153 and V8 37612590073 PASS.",
+        "Audit classifies d503 as partial CORR-003 risk reduction only, not closure: legitimate annual writes and multiple other System2 writer classes still share the account-wide daily quota without a global budget/reservation/priority contract. Evidence d60a0bb7b0fd9db1ab64d798f763e950516659c9."
       ],
       "riskIfUnfixed": "High-priority DATA_LANE work can repeatedly fail after other valid System2 writers consume the daily free quota, wasting Actions/runtime effort and delaying historical/PIT readiness. Ad-hoc responses can also create pressure to purchase a paid tier despite the owner's explicit cost-control preference. Fail-closed data integrity is preserved, but execution continuity and cost governance remain defective.",
       "requiredCorrection": [
@@ -1226,7 +1233,7 @@
       "implementationEvidence": [],
       "verificationEvidence": [],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T19:30:51+08:00"
+      "updatedAt": "2026-10-07T19:34:03+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
