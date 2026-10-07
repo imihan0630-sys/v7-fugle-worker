@@ -36,7 +36,7 @@ export function parseOfficialHistoricalA6ValuationPayloadV0_1({
 }={}){
   const date=isoDate(marketDate);
   if(!payload||typeof payload!=="object"||Array.isArray(payload)) throw new Error("A6 payload must be object");
-  if(payload.stat!=="OK") throw new Error("A6 source stat not OK");
+  if(payload.stat!=="OK") throw new Error("A6 source stat not OK "+date+" stat="+String(payload.stat??"UNKNOWN"));
   if(!Array.isArray(payload.fields)||!Array.isArray(payload.data)) throw new Error("A6 fields/data invalid");
   const required=["證券代號","證券名稱","本益比","股價淨值比"];
   const missing=required.filter(h=>!payload.fields.includes(h));
@@ -97,17 +97,10 @@ export function parseOfficialHistoricalA6ValuationPayloadV0_1({
   });
 }
 
-export function buildOfficialHistoricalA6ValuationUrlsV0_1(marketDate){
-  const date=isoDate(marketDate);
-  const query="?response=json&date="+compact(date)+"&selectType=ALL";
-  return Object.freeze([
-    OFFICIAL_HISTORICAL_A6_VALUATION_SOURCE.sourceUrl+query,
-    "https://www.twse.com.tw/rwd/zh/afterTrading/BWIBBU_d"+query,
-  ]);
-}
-
 export function buildOfficialHistoricalA6ValuationUrlV0_1(marketDate){
-  return buildOfficialHistoricalA6ValuationUrlsV0_1(marketDate)[0];
+  const date=isoDate(marketDate);
+  return OFFICIAL_HISTORICAL_A6_VALUATION_SOURCE.sourceUrl+
+    "?response=json&date="+compact(date)+"&selectType=ALL";
 }
 
 export async function fetchOfficialHistoricalA6ValuationDateV0_1({
@@ -115,33 +108,31 @@ export async function fetchOfficialHistoricalA6ValuationDateV0_1({
   retryAttempts=3,retryDelayMs=350,
 }={}){
   if(typeof fetchImpl!=="function") throw new Error("fetchImpl is required");
-  const urls=buildOfficialHistoricalA6ValuationUrlsV0_1(marketDate);
+  const url=buildOfficialHistoricalA6ValuationUrlV0_1(marketDate);
   let last=null;
   for(let attempt=1;attempt<=retryAttempts;attempt++){
-    for(const url of urls){
-      try{
-        const res=await fetchImpl(url,{
-          headers:{accept:"application/json,text/plain,*/*","user-agent":"System2-D08-A6-History/0.1"},
-          signal:AbortSignal.timeout(45000),
-        });
-        if(!res.ok) throw new Error("A6 transport HTTP "+res.status);
-        const text=await res.text();
-        const payload=JSON.parse(text);
-        const bytes=Buffer.byteLength(text,"utf8");
-        const hash=createHash("sha256").update(text).digest("hex");
-        return parseOfficialHistoricalA6ValuationPayloadV0_1({
-          marketDate,payload,observedAt,sourceUrl:url,sourcePayloadHash:hash,sourcePayloadBytes:bytes,
-        });
-      }catch(e){
-        const msg=String(e?.message||e);
-        if(msg.includes("SOURCE_DATE_MISMATCH")||msg.includes("schema drift")||
-           msg.includes("source stat")||msg.includes("duplicate A6")||msg.includes("date evidence")){
-          throw e;
-        }
-        last=e;
+    try{
+      const res=await fetchImpl(url,{
+        headers:{accept:"application/json,text/plain,*/*","user-agent":"System2-D08-A6-History/0.1"},
+        signal:AbortSignal.timeout(45000),
+      });
+      if(!res.ok) throw new Error("A6 transport HTTP "+res.status);
+      const text=await res.text();
+      const payload=JSON.parse(text);
+      const bytes=Buffer.byteLength(text,"utf8");
+      const hash=createHash("sha256").update(text).digest("hex");
+      return parseOfficialHistoricalA6ValuationPayloadV0_1({
+        marketDate,payload,observedAt,sourceUrl:url,sourcePayloadHash:hash,sourcePayloadBytes:bytes,
+      });
+    }catch(e){
+      const msg=String(e?.message||e);
+      if(msg.includes("SOURCE_DATE_MISMATCH")||msg.includes("schema drift")||
+         msg.includes("source stat")||msg.includes("duplicate A6")||msg.includes("date evidence")){
+        throw e;
       }
+      last=e;
+      if(attempt<retryAttempts) await new Promise(r=>setTimeout(r,retryDelayMs*attempt));
     }
-    if(attempt<retryAttempts) await new Promise(r=>setTimeout(r,retryDelayMs*attempt));
   }
   throw new Error("A6 historical source exhausted transports "+marketDate+": "+String(last?.message||last));
 }
