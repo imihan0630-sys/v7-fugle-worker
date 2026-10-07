@@ -167,6 +167,31 @@ System2 fingerprints -> physical NC-T01 -> prospective overlap/divergence -> D16
 
 Formal Core impact: NONE.
 
+## SDA-016 first scheduled V8.20 readback root cause — 2026-10-07
+
+The first scheduled post-deploy V8.20 C1 evidence run `37495670280` correctly
+failed closed with `FORMAL_SCAN_NOT_CONFIRMED / C1_GENERATION_NOT_FOUND` for
+scanDate `2026-10-06`. This was not a binding-parent selection defect.
+
+The upstream official-quality chain lacked `FINANCIAL` and `QUARTER_EPS` after
+the full-market MOPS financial body timed out. Main's full-body bounded retry
+was confirmed active by quality-only run `37556241467`, but all three attempts
+still exhausted the generic 45-second deadline on
+`/mops/web/ajax_t163sb04`.
+
+Minimal repair candidate:
+- targeted 90-second deadline for that large MOPS source only;
+- global official-source deadline remains 45 seconds;
+- three-attempt bound and 401/403 fail-closed behavior remain unchanged;
+- no Formal, System2, capital, 15m, lifecycle, push or order change.
+
+The 2026-10-06 date remains research-ineligible and cannot be backfilled.
+Genuine Formal↔C1 binding readback remains pending a future ordinary scheduled
+session. Receipt:
+`research/system1_official_quality_mops_deadline_repair_20261007_v0_1.json`.
+
+Formal Core impact: NONE.
+
 
 ## SDA-016 System1 V8.19 current status supersession — 2026-10-06
 

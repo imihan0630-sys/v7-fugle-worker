@@ -30,8 +30,16 @@ export async function fetchBufferedOfficialSource(url,options={},{
       return new Response(bytes,{status:response.status,statusText:response.statusText,headers:response.headers});
     }catch(error){
       const retryable=!error?.permanent&&RETRYABLE.test(String(error));
+      const pathname=(()=>{try{return new URL(url).pathname;}catch{return String(url);}})();
+      console.error(JSON.stringify({
+        officialSourceRetry:retryable&&attempt<maxAttempts,
+        path:pathname,
+        attempt,
+        maxAttempts,
+        timeoutMs:timeout,
+        error:String(error?.message||error).slice(0,220)
+      }));
       if(attempt>=maxAttempts||!retryable){
-        const pathname=(()=>{try{return new URL(url).pathname;}catch{return String(url);}})();
         throw new Error(`Public source ${pathname}: ${error?.message||error}`);
       }
       await sleep(1000*attempt);

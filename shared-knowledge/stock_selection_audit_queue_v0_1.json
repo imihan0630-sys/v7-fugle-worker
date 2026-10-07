@@ -641,11 +641,11 @@
         "independent 00 closure"
       ],
       "system1Engineering": {
-        "status": "PR644_MERGED_V819_PRODUCTION_VERIFIED_PARTIAL_PASS",
+        "status": "V820_PRODUCTION_VERIFIED_GENUINE_BINDING_PENDING",
         "receipt": "research/sda016_system1_v819_current_status_20261006_v0_1.json",
         "productionEvidence": "research/system1_c1_scan_origin_generation_inventory_pr_644_v0_1.json",
         "genuineReadbackStatus": "PENDING_FIRST_GENUINE_POST_DEPLOY_C1_SESSION",
-        "authoritativeFormalC1Ledger": "CLASS_B_IMPLEMENTED_UNMERGED_NOT_PRODUCTION_AUTHORITY",
+        "authoritativeFormalC1Ledger": "PRODUCTION_AUTHORITY_ESTABLISHED",
         "formalCoreImpact": "NONE",
         "ticketClosure": false
       },
@@ -671,7 +671,8 @@
         "research/SDA016_GENERATION_SET_FINALIZATION_CONTRACT_20261007_V0_1.json",
         "research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_2.json",
         "research/SDA016_D16_SUPPLEMENTAL_GOVERNANCE_CROSSWALK_20261007_V0_1.json",
-        "research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_3.json"
+        "research/D16_PROSPECTIVE_OPPORTUNITY_LEDGER_CONTRACT_20261007_V0_3.json",
+        "research/system1_official_quality_mops_deadline_repair_20261007_v0_1.json"
       ],
       "formalC1Binding": {
         "status": "V820_PRODUCTION_VERIFIED_GENUINE_BINDING_PENDING",
@@ -715,6 +716,8 @@
         "productionRegressionRun": 37483896007,
         "firstScheduledEvidenceRun": 37495670280,
         "firstScheduledEvidenceDisposition": "INELIGIBLE_PARENT_MISSING_FORMAL_SCAN_NOT_CONFIRMED",
+        "firstScheduledEvidenceRootCause": "OFFICIAL_QUALITY_MOPS_FULL_MARKET_BODY_TIMEOUT_FINANCIAL_QUARTER_EPS_MISSING",
+        "qualityRepair": "TARGETED_90S_MOPS_FINANCIAL_BODY_DEADLINE_CANDIDATE_EXACT_HEAD_CI_PENDING",
         "t48": "OPEN_SAME_SESSION_GENERATION_SET_FINALIZATION",
         "t48Contract": "research/SDA016_GENERATION_SET_FINALIZATION_CONTRACT_20261007_V0_1.json",
         "t48ContractStatus": "RESEARCH_ONLY_FINALIZATION_SEMANTICS_FROZEN_ENGINEERING_RECEIPT_PENDING"
