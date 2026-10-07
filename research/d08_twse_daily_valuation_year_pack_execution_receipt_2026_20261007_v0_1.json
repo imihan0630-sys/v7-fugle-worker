@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "D08_TWSE_DAILY_VALUATION_YEAR_PACK_EXECUTION_RECEIPT_2026_V0_1",
+  "generatedAt": "2026-10-07T11:39:00Z",
+  "researchOnly": true,
+  "outcomeJoin": false,
+  "formalCoreImpact": false,
+  "diagnosis": {
+    "originalFailure": "A6_SOURCE_STAT_NOT_OK",
+    "failingNominalDate": "2026-07-10",
+    "sourceStat": "很抱歉，沒有符合條件的資料!",
+    "rootCause": "scheduled holiday calendar treated an emergency market closure as a trading date",
+    "officialExactSessionEvidence": {
+      "source": "TWSE_OFFICIAL_FMTQIK_MONTHLY_HISTORICAL",
+      "julyAroundClosure": [
+        "2026-07-08",
+        "2026-07-09",
+        "2026-07-13"
+      ],
+      "excluded": "2026-07-10"
+    },
+    "correction": "D08 year-pack capture now enumerates actual monthly FMTQIK trading sessions rather than inferring current-year sessions from the scheduled holiday calendar."
+  },
+  "execution": {
+    "workflowRunId": 37615172534,
+    "jobId": 112771665000,
+    "result": "PASS",
+    "year": 2026,
+    "fromDate": "2026-01-01",
+    "toDate": "2026-08-31",
+    "calendarSource": "TWSE_OFFICIAL_FMTQIK_MONTHLY_HISTORICAL",
+    "tradingDateCount": 159,
+    "totalRows": 170650,
+    "totalPeKnown": 131500,
+    "totalPbKnown": 170647,
+    "minDailySymbolCount": 1061,
+    "maxDailySymbolCount": 1084,
+    "minDailyPeKnownRatio": 0.7546816479400749,
+    "maxDailyPeKnownRatio": 0.8048103607770583,
+    "minDailyPbKnownRatio": 0.9990636704119851,
+    "maxDailyPbKnownRatio": 1,
+    "sourceBundleHash": "c2b119988cb2a82cd91c32f7c53a4737fecef72780027d801f8c0c8a87a27738",
+    "packPayloadHash": "6c3f78dd17d56202c29ff434e071675d764129c1a34a4e132e1b73ad3f2390ad",
+    "objectSha256": "394500b2cd7c52cb2452cbbb5728d02e3f798475e3301177d699e734e9d56485",
+    "objectKey": "research/d08/twse-daily-valuation-year-pack-v0.1/2026/6c3f78dd17d56202c29ff434e071675d764129c1a34a4e132e1b73ad3f2390ad.json.gz",
+    "gzipBytes": 2052058,
+    "inserted": true,
+    "readbackVerified": true
+  },
+  "archiveState": {
+    "priorYearsPassing": 21,
+    "priorYearRange": "2005-2025",
+    "currentYearPassing": true,
+    "completeYearPackRange": "2005-09-02 through 2026-08-31",
+    "next": "build durable archive manifest and aggregate bundle hash, then materialize 44 frozen outcome-blind percentile snapshots"
+  },
+  "guards": {
+    "noReturns": true,
+    "noD1Writes": true,
+    "noSystem1Runtime": true,
+    "noFormalCoreImpact": true
+  }
+}
