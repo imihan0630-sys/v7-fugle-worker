@@ -2875,3 +2875,7 @@ D06-05 corporate-action / denominator guard completed. Durable artifacts: `resea
 - System2 shared source lanes are physically validated, but lane-level totals cannot substitute for exact pair-row persistence.
 - D06-05 stays L3/60; outcomes remain closed.
 - Exact next: materialize the exact pair event list from the validated shared archive, freeze event-clean common-support row set + hash, then preregister vintage-clustered OOS/Shadow validation.
+
+
+## 2026-10-07 D06 — IC-101
+D06-05 first bounded pair corporate-action mask stored at `research/d06_05_pair_corporate_action_mask_20260924_20261002_v0_1.json`. Pair 2026-09-24→2026-10-02: known hard masks 1235/1441/2323/2601/4806/6550; exact-denominator support 2783 falls to an upper bound 2779 after currently materialized stable-denominator event masks. This is not final clean N because exact-pair TPEx ex-right/dividend and identity-transition rows are not yet materialized. D06-05 stays L3/60 and outcomes remain closed. Exact next: materialize full shared exact-pair event rows, freeze final event-clean row-set hash, then preregister vintage-clustered OOS/Shadow validation.
