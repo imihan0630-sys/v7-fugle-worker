@@ -8,7 +8,9 @@ const CAUSES=new Set([
   "MAX_CHASE_15M_BLOCK_B","MAX_CHASE_QUOTE_BLOCK","STOP_PLAN_INVALIDATED",
   "TRIAL_QUOTE_BLOCK","BUY_SIGNAL_OBSERVED_NO_FILL_EVIDENCE"
 ]);
-const hash=x=>createHash("sha256").update(JSON.stringify(x)).digest("hex");
+const canonical=x=>Array.isArray(x)?x.map(canonical):x&&typeof x==="object"
+  ?Object.fromEntries(Object.keys(x).sort().map(k=>[k,canonical(x[k])])):x;
+const hash=x=>createHash("sha256").update(JSON.stringify(canonical(x))).digest("hex");
 const inc=(o,k,n=1)=>{o[k]=(o[k]||0)+n;};
 const gate=(o,id)=>String(o?.gates?.[id]?.status||"UNKNOWN");
 
