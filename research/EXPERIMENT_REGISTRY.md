@@ -160,6 +160,7 @@
 - Current verified：System1 `S22-T01~T05 = 5/5 PASS`；D16 prereg `S22-T25~T28 = 4/4 PASS`。
 - Current pending：System2 `S22-T06~T10`、physical NC-T01 `S22-T11~T16`、prospective `S22-T17~T24`、MDE/precision target。
 - Model method freeze：`research/D16_SDA022_D5_MODEL_METHOD_FREEZE_20261007_V0_1.md` / `research/d16_sda022_d5_model_method_receipt_20261007_v0_1.json`。Primary encoding = coarse System1 policy state + SHORT_MOMENTUM entry-readiness state；ridge logistic lambda=1 primary，0.1/10 non-rescuing sensitivity；identity calibration；no interaction / rank / Regime / gate-vector expansion；date-balanced Brier remains primary。
+- Effect-target derivation firewall：`research/D16_SDA022_D5_EFFECT_TARGET_DERIVATION_FIREWALL_20261007_V0_1.md`。Repository-wide readback found no disjoint genuine Taiwan D5 Brier planning series and no justified decision-utility/precision policy; numerical MDE/precision target therefore remains `TARGET_VALUE_PENDING_FREEZE`. Arbitrary 1%/5%/fixture thresholds and the 40-date support floor may not be promoted into a numerical target.
 - Human prereg：`research/SDA022_D16_S1_SHORT_MOMENTUM_D5_INCREMENTALITY_PREREG_20261006_V0_1.md`。
 - Machine prereg：`research/SDA022_D16_S1_SHORT_MOMENTUM_D5_INCREMENTALITY_PREREG_20261006_V0_1.json`。
 - Outer-stream enrollment：`research/D16_SDA022_OUTER_STREAM_ENROLLMENT_20261006_V0_1.json`。
