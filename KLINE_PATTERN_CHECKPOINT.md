@@ -4700,7 +4700,7 @@ No maturity or Formal change is authorized by this routing.
   - research/PATTERN_SUSPENSION_REOPENING_FIREWALL_V0_1.md
   - research/pattern_suspension_reopening_firewall_v0_1.json
   - research/PATTERN_SUSPENSION_REOPENING_D16_HANDOFF_V0_1.md
-- Deterministic helper/tests are not yet authored in this tranche.
+- Deterministic helper and 20 adversarial tests are authored; TEST_EXECUTION_PENDING.
 - No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no Formal change.
 - Current D01 maturity remains 52.7%.
 - Pattern alpha UNKNOWN.
@@ -4709,8 +4709,8 @@ No maturity or Formal change is authorized by this routing.
 
 ### Updated exact next continuation point after DL-066
 
-1. Add deterministic suspension-session exclusion / stale-anchor / reopening classifier and adversarial tests.
-2. Test pseudo-bar contamination, stale-anchor persistence, benchmark catch-up, corporate-action overlap, reopening price-limit constraint and first-auction false-breakout cases.
+1. Execute the DL-066 research Node tests independently; until then keep TEST_EXECUTION_PENDING.
+2. Validate pseudo-bar contamination, stale-anchor persistence, benchmark catch-up, corporate-action overlap, reopening price-limit constraint and first-auction false-breakout cases from the authored 20-test suite.
 3. Keep R0-R13 / Q0-Q9 residual inference owned by D16.
 4. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
 5. Next D01 science: define and falsify structural-anchor freshness/half-life without inventing arbitrary calendar-time decay; compare session-count, information-arrival and volatility-scaled freshness definitions.
