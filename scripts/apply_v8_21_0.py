@@ -144,7 +144,9 @@ async function finalizeC1GenerationSetSafe(env,scanDate) {
     if(bindingRead.count<1) return blocked("C1_FINALIZATION_FORMAL_BINDING_MISSING");
     const finalizedAt=new Date().toISOString();
     const sessionIdentityHash=await C1_GENERATION_FINALIZATION.c1FinalizationSha256({
-      schemaVersion:"SYSTEM1_SESSION_IDENTITY_V0_1",scanDate:date
+      schemaVersion:"SYSTEM1_SESSION_IDENTITY_V0_1",
+      marketScope:"TWSE_TPEX_COMMON_TRADING_SESSION",
+      scanDate:date,timeZone:"Asia/Taipei",calendarTradingDateVerified:true
     });
     const receipt=await C1_GENERATION_FINALIZATION.buildC1GenerationFinalizationReceipt({
       scanDate:date,inventory,bindings:bindingRead.bindings,sessionIdentityHash,
