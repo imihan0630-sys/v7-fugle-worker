@@ -1,6 +1,7 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
+import { sha256Hex } from "./decision_archive.mjs";
 
-export const DAILY_SHADOW_HISTORY_READER_VERSION = "0.3-RESEARCH";
+export const DAILY_SHADOW_HISTORY_READER_VERSION = "0.4-RESEARCH";
 
 function requiredText(value, field) {
   if (typeof value !== "string" || !value.trim()) throw new Error(`${field} is required`);
@@ -30,6 +31,52 @@ function positiveInt(value, field, max = 250) {
 function assertDb(db) {
   if (!db || typeof db.prepare !== "function") throw new Error("SYSTEM2_DB read adapter is required");
   return db;
+}
+
+function dateCsv(value) {
+  const text = String(value || "").trim();
+  if (!text) return [];
+  const out = [...new Set(text.split(",").map((x) => x.trim()).filter(Boolean))].sort();
+  for (const date of out) isoDate(date, "selectedSessionDates[]");
+  return out;
+}
+
+function intervalContainsDate(date, interval) {
+  if (date < interval.suspendedFrom) return false;
+  if (interval.resumedOn) return date < interval.resumedOn;
+  return date <= interval.coverageTo;
+}
+
+function buildLifecycleIndex(intervals, coverageTo) {
+  if (!Array.isArray(intervals)) throw new Error("certifiedNoTradingIntervals must be an array");
+  const index = new Map();
+  for (const raw of intervals) {
+    if (!raw || typeof raw !== "object") continue;
+    const market = requiredText(raw.market, "certifiedNoTradingIntervals[].market");
+    const symbol = requiredText(raw.symbol, "certifiedNoTradingIntervals[].symbol");
+    const suspendedFrom = isoDate(raw.suspendedFrom, "certifiedNoTradingIntervals[].suspendedFrom");
+    const resumedOn = raw.resumedOn ? isoDate(raw.resumedOn, "certifiedNoTradingIntervals[].resumedOn") : null;
+    const intervalCoverageTo = isoDate(raw.coverageTo || coverageTo, "certifiedNoTradingIntervals[].coverageTo");
+    if (resumedOn && resumedOn < suspendedFrom) {
+      throw new Error("certified no-trading interval resumes before suspension");
+    }
+    const key = market + "|" + symbol;
+    if (!index.has(key)) index.set(key, []);
+    index.get(key).push(deepFreeze({
+      market,
+      symbol,
+      suspendedFrom,
+      resumedOn,
+      coverageTo: intervalCoverageTo,
+      sourceRowHash: raw.sourceRowHash || null,
+      lifecycleSource: raw.lifecycleSource || raw.sourceId || "CERTIFIED_NO_TRADING_INTERVAL",
+    }));
+  }
+  for (const rows of index.values()) {
+    rows.sort((a, b) => a.suspendedFrom.localeCompare(b.suspendedFrom)
+      || String(a.resumedOn || "").localeCompare(String(b.resumedOn || "")));
+  }
+  return index;
 }
 
 function normalizeRow(row) {
@@ -136,6 +183,7 @@ export async function probePitHistoryCoverageV0_1({
   priceSpace = "RAW",
   listingMetadata = null,
   priorTradingDates = null,
+  certifiedNoTradingIntervals = [],
 } = {}) {
   assertDb(db);
   if (!snapshotBatch || typeof snapshotBatch !== "object") {
@@ -150,10 +198,12 @@ export async function probePitHistoryCoverageV0_1({
         .filter((x) => x < date)
         .sort()
     : null;
-  const ageAwareAvailable =
+  const exactSessionContractAvailable =
     listingMetadata?.state === "READY"
     && listingMetadata?.byMarketSymbol
-    && tradingDates?.length >= required;
+    && Array.isArray(tradingDates)
+    && tradingDates.length > 0;
+  const lifecycleIndex = buildLifecycleIndex(certifiedNoTradingIntervals, date);
 
   const result = await db.prepare(
     `WITH eligible AS (
@@ -189,7 +239,8 @@ export async function probePitHistoryCoverageV0_1({
                AND continuity_max IN ('CLEAR_NO_ACTION','ADJUSTED_CONTINUITY')
               THEN 1 ELSE 0 END) AS continuity_eligible_count,
             MIN(market_date) AS first_selected_date,
-            MAX(market_date) AS last_selected_date
+            MAX(market_date) AS last_selected_date,
+            GROUP_CONCAT(market_date, ',') AS selected_dates_csv
        FROM ranked
       WHERE rn <= ?
       GROUP BY symbol, market`,
@@ -211,41 +262,80 @@ export async function probePitHistoryCoverageV0_1({
     const selectedDateCount = Number(row?.selected_date_count || 0);
     const ambiguousDateCount = Number(row?.ambiguous_date_count || 0);
     const continuityEligibleCount = Number(row?.continuity_eligible_count || 0);
-    const listing = market && ageAwareAvailable
+    const listing = market && exactSessionContractAvailable
       ? listingMetadata.byMarketSymbol[`${market}|${symbol}`] || null
       : null;
     const listingDate = listing?.listingDate || null;
+    const selectedDates = dateCsv(row?.selected_dates_csv);
+    const selectedSet = new Set(selectedDates);
+    const selectedFirstDate = selectedDates[0] || row?.first_selected_date || null;
+    const selectedLastDate = selectedDates.at(-1) || row?.last_selected_date || null;
+    const lifecycleIntervals = market
+      ? lifecycleIndex.get(`${market}|${symbol}`) || []
+      : [];
+
     let requiredForSymbol = required;
     let ageLimited = false;
+    let expectedDates = [];
     let expectedFirstDate = null;
-    let expectedLastDate = tradingDates?.at(-1) || null;
-    if (listingDate && listingDate < date && tradingDates) {
-      const expectedDates = tradingDates.filter((x) => x >= listingDate).slice(-required);
-      if (expectedDates.length < required && listingDate >= tradingDates[0]) {
+    let expectedLastDate = null;
+    let expectedSessionCalendarSufficient = false;
+    let lifecycleExcludedSessionCount = 0;
+    let sessionReconciliationState = "EXPECTED_SESSION_CONTRACT_UNAVAILABLE";
+
+    if (exactSessionContractAvailable && market && listingDate) {
+      const membershipDates = listingDate === date
+        ? []
+        : tradingDates.filter((x) => x >= listingDate);
+      const eligibleDates = membershipDates.filter((x) => {
+        const excluded = lifecycleIntervals.some((interval) => intervalContainsDate(x, interval));
+        if (excluded) lifecycleExcludedSessionCount += 1;
+        return !excluded;
+      });
+      const listingBoundaryInsideCalendar = listingDate >= tradingDates[0];
+      expectedSessionCalendarSufficient =
+        eligibleDates.length >= required || listingBoundaryInsideCalendar;
+      if (expectedSessionCalendarSufficient) {
+        expectedDates = eligibleDates.slice(-required);
         requiredForSymbol = expectedDates.length;
-        ageLimited = true;
+        ageLimited = requiredForSymbol < required && listingBoundaryInsideCalendar;
         expectedFirstDate = expectedDates[0] || null;
         expectedLastDate = expectedDates.at(-1) || null;
+        sessionReconciliationState = "EXACT_EXPECTED_SESSION_SET_AVAILABLE";
+      } else {
+        expectedDates = eligibleDates;
+        expectedFirstDate = expectedDates[0] || null;
+        expectedLastDate = expectedDates.at(-1) || null;
+        sessionReconciliationState = "EXPECTED_SESSION_CALENDAR_WINDOW_INSUFFICIENT";
       }
-    } else if (listingDate === date && tradingDates) {
-      requiredForSymbol = 0;
-      ageLimited = true;
-      expectedFirstDate = null;
-      expectedLastDate = null;
+    } else if (exactSessionContractAvailable && market && !listingDate) {
+      sessionReconciliationState = "LISTING_BOUNDARY_UNCERTIFIED";
     }
-    const selectedFirstDate = row?.first_selected_date || null;
-    const selectedLastDate = row?.last_selected_date || null;
-    const ageBoundaryMatches = !ageLimited || (
-      selectedDateCount === requiredForSymbol
-      && (requiredForSymbol === 0 || (
-        selectedFirstDate === expectedFirstDate
-        && selectedLastDate === expectedLastDate
-      ))
-    );
+
+    const expectedSet = new Set(expectedDates);
+    const missingExpectedSessions = expectedDates.filter((x) => !selectedSet.has(x));
+    const unexpectedSelectedSessions = selectedDates.filter((x) => !expectedSet.has(x));
+    const observedExpectedSessionCount = expectedDates.length - missingExpectedSessions.length;
+    const exactSessionReconciliationReady =
+      sessionReconciliationState === "EXACT_EXPECTED_SESSION_SET_AVAILABLE"
+      && selectedDates.length === selectedDateCount
+      && selectedDateCount === requiredForSymbol
+      && missingExpectedSessions.length === 0
+      && unexpectedSelectedSessions.length === 0;
+
+    const expectedSessionHash = sessionReconciliationState === "EXACT_EXPECTED_SESSION_SET_AVAILABLE"
+      ? await sha256Hex({ market, symbol, marketDate: date, dates: expectedDates })
+      : null;
+    const observedSessionHash = await sha256Hex({
+      market,
+      symbol,
+      marketDate: date,
+      dates: selectedDates,
+    });
+
     const historyReady =
       ambiguousDateCount === 0
-      && selectedDateCount >= requiredForSymbol
-      && ageBoundaryMatches;
+      && exactSessionReconciliationReady;
     const continuityReady =
       historyReady
       && continuityEligibleCount >= requiredForSymbol;
@@ -256,6 +346,13 @@ export async function probePitHistoryCoverageV0_1({
     const blockerCodes = [];
     if (!market) blockerCodes.push("CURRENT_SYMBOL_MARKET_IDENTITY_MISSING");
     if (ambiguousDateCount > 0) blockerCodes.push("SYMBOL_LOCAL_REVISION_AMBIGUITY");
+    if (!exactSessionContractAvailable) blockerCodes.push("SYMBOL_LOCAL_EXPECTED_SESSION_CONTRACT_UNAVAILABLE");
+    else if (!listingDate) blockerCodes.push("SYMBOL_LOCAL_LISTING_BOUNDARY_UNCERTIFIED");
+    if (sessionReconciliationState === "EXPECTED_SESSION_CALENDAR_WINDOW_INSUFFICIENT") {
+      blockerCodes.push("SYMBOL_LOCAL_EXPECTED_SESSION_CALENDAR_WINDOW_INSUFFICIENT");
+    }
+    if (missingExpectedSessions.length > 0) blockerCodes.push("SYMBOL_LOCAL_EXPECTED_SESSION_MISSING");
+    if (unexpectedSelectedSessions.length > 0) blockerCodes.push("SYMBOL_LOCAL_UNEXPECTED_SESSION_PRESENT");
     if (!historyReady) blockerCodes.push("INSUFFICIENT_PIT_HISTORY");
     if (historyReady && !continuityReady) blockerCodes.push("SYMBOL_LOCAL_CONTINUITY_NOT_VERIFIED");
 
@@ -270,11 +367,25 @@ export async function probePitHistoryCoverageV0_1({
       listingDate,
       requiredPriorSessionsForSymbol: requiredForSymbol,
       listingAgeLimited: ageLimited,
-      listingAgeBasis: ageAwareAvailable
-        ? listingDate ? "OFFICIAL_CURRENT_LISTING_DATE_PLUS_OFFICIAL_TRADING_DATES" : "LISTING_DATE_UNKNOWN_STRICT_60"
-        : "AGE_AWARE_METADATA_UNAVAILABLE_STRICT_60",
+      listingAgeBasis: exactSessionContractAvailable
+        ? listingDate ? "OFFICIAL_CURRENT_LISTING_DATE_PLUS_OFFICIAL_TRADING_DATES" : "LISTING_BOUNDARY_UNCERTIFIED"
+        : "EXPECTED_SESSION_CONTRACT_UNAVAILABLE",
       expectedFirstDate,
       expectedLastDate,
+      expectedSessionCount: expectedDates.length,
+      observedExpectedSessionCount,
+      missingExpectedSessionCount: missingExpectedSessions.length,
+      unexpectedSessionCount: unexpectedSelectedSessions.length,
+      expectedSessionHash,
+      observedSessionHash,
+      missingExpectedSessionSample: Object.freeze(missingExpectedSessions.slice(0, 8)),
+      unexpectedSessionSample: Object.freeze(unexpectedSelectedSessions.slice(0, 8)),
+      selectedSessionDateCount: selectedDates.length,
+      lifecycleExcludedSessionCount,
+      certifiedLifecycleIntervalCount: lifecycleIntervals.length,
+      expectedSessionCalendarSufficient,
+      sessionReconciliationState,
+      exactSessionReconciliationReady,
       historyReady,
       continuityReady,
       evaluationInputReady: continuityReady,
@@ -323,9 +434,11 @@ export async function probePitHistoryCoverageV0_1({
     marketDate: date,
     decisionTimestamp: clock,
     requiredPriorSessions: required,
-    listingAgeAware: ageAwareAvailable,
+    listingAgeAware: exactSessionContractAvailable,
+    exactSessionReconciliationEnabled: exactSessionContractAvailable,
     listingMetadataState: listingMetadata?.state || "NOT_PROVIDED",
     priorTradingDateCount: tradingDates?.length || 0,
+    certifiedNoTradingIntervalCount: certifiedNoTradingIntervals.length,
     currentUniverseCount: currentCount,
     accountedSymbolCount,
     accountingComplete,
