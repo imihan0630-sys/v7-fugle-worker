@@ -1697,3 +1697,46 @@ Exact next:
 wait for a later ordinary-session scheduled C1 artifact after upstream official-quality transport repair is production/live-readback verified. Accept only a complete/readback-verified/research-eligible parent, then run the frozen MA20/MA60 builder outcome-blind.
 
 Formal Core unchanged.
+
+
+## BR-043A — D09-09 shared R3A1 parent dependency (2026-10-08)
+
+Artifact:
+- `research/BR043A_D09_09_SHARED_R3A1_PARENT_DEPENDENCY_20261008_V0_1.md`
+
+BR-043's live/source-only dispersion receipt is now explicitly bound to the same immutable parent data root as SDA-009 R3A1.
+
+Current canonical SDA-009 state:
+- genuine R3A1 receipt count = 0;
+- required additive capture fields include currentChangePercent, currentTradeValue, exact membership identity and production sector decision-state projection/digest.
+
+These are the exact live parent fields needed by BR-043.
+
+Frozen:
+`BR043_PARENT_DATA ⊆ SDA009_R3A1_PARENT_DATA`.
+`ONE_PARENT_DATA_ROOT / MULTIPLE_RESEARCH_CONSUMERS`.
+
+Do not create a separate Room07 parent capture, selected-only denominator, current-membership historical backfill or synthetic-to-live substitution.
+
+D09-09 remains L3/60.
+BR-043 stays reserved for the first genuine live dispersion receipt after R3A1 acceptance.
+
+Exact next:
+on first genuine R3A1 PASS, reuse that immutable member set to freeze CSSD/CSAD/IQR/MAD, coverage and trade-value Top1/Top3 removal outcome-blind; then accumulate independent dates before D16 prospective/OOS testing.
+
+Formal Core unchanged.
+
+## Room07 L4 promotion priority matrix (2026-10-08)
+
+Artifact:
+- `research/ROOM07_D09_D10_L4_PROMOTION_PRIORITY_MATRIX_20261008_V0_1.md`
+
+The room now uses gate-based prioritization rather than broad module cycling:
+1. interrupt for genuine SDA-009 R3A1 or valid D09-05 C1 parent;
+2. consume D16 method receipts for D09-14 / D10-12 before outcomes;
+3. consume new prospective captures/releases for near-L4 modules;
+4. capture real event-arrival lanes;
+5. otherwise accumulate independent prospective cohorts;
+6. never replay already-counted historical evidence merely to raise progress.
+
+No maturity change from this governance artifact.
