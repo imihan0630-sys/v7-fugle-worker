@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "D16_D18_SELECTION_FAMILY_RECEIPT_CONTRACT_V0_1",
+  "updatedAt": "2026-10-07T15:43:00+08:00",
+  "status": "RESEARCH_ONLY_FROZEN",
+  "formalCoreImpact": "NONE",
+  "required": {
+    "identity": [
+      "familyId",
+      "ownerDomain",
+      "targetId",
+      "horizon",
+      "benchmarkId",
+      "candidateSetVersion"
+    ],
+    "versions": [
+      "strategyVersion",
+      "policyVersion",
+      "regimeVersion"
+    ],
+    "searchSpace": [
+      "featureSourceFamilyIds",
+      "testedModelFamilies",
+      "testedThresholds",
+      "testedWindows",
+      "testedStateCounts",
+      "testedHysteresisRules",
+      "testedWeightMaps",
+      "testedRefitCadences"
+    ],
+    "accounting": [
+      "trialCountObserved",
+      "uniquePolicyFingerprintCount",
+      "nearDuplicateClusterCount",
+      "discardedVariantCount"
+    ],
+    "evidenceBoundary": [
+      "outerOosPolicy",
+      "outerEvidenceState",
+      "stoppingRule",
+      "evidenceOpenState"
+    ],
+    "lineage": [
+      "datasetIdentity",
+      "generationSetDigest",
+      "holdoutUseLedgerId",
+      "experimentRegistryId"
+    ]
+  },
+  "allowedOuterEvidenceStates": [
+    "OUTER_UNTOUCHED",
+    "OUTER_CONSUMED",
+    "FAMILY_EXPANDED_POST_OUTCOME",
+    "REQUIRES_NEW_FORWARD_EVIDENCE"
+  ],
+  "forbidden": {
+    "resetFamilyByRenaming": true,
+    "omitFailedVariants": true,
+    "treatCombinatorialSplitCountAsIndependentMarketN": true,
+    "usePostSelectionCorrectionToRepairPITFailure": true,
+    "reuseConsumedOuterAsUntouched": true
+  },
+  "evidenceHierarchy": [
+    "GENUINE_PROSPECTIVE_RECEIPT",
+    "UNTOUCHED_CHRONOLOGICAL_OOS",
+    "NESTED_WALK_FORWARD_SELECTION",
+    "FAMILY_LEVEL_POST_SELECTION_DIAGNOSTICS",
+    "IN_SAMPLE_DESCRIPTIVE"
+  ],
+  "methodRoles": {
+    "WHITE_REALITY_CHECK": "FAMILY_LEVEL_BENCHMARK_RELATIVE_DATA_SNOOPING_DIAGNOSTIC",
+    "HANSEN_SPA": "FAMILY_LEVEL_PREDICTIVE_SUPERIORITY_DIAGNOSTIC",
+    "PBO_STYLE": "SELECTION_PROCESS_FRAGILITY_DIAGNOSTIC",
+    "DSR": "POST_SELECTION_PERFORMANCE_RATIO_DIAGNOSTIC"
+  },
+  "dependence": {
+    "reportSeparately": [
+      "rowN",
+      "symbolN",
+      "independentDecisionDateN",
+      "regimeEpisodeN",
+      "transitionN",
+      "policyActionN",
+      "effectiveOuterBlockN"
+    ],
+    "iidRowBootstrapPrimary": false,
+    "preserveChronology": true,
+    "purgeOverlappingOutcomes": true
+  },
+  "auditMapping": [
+    "SDA-016",
+    "SDA-017",
+    "SDA-022"
+  ],
+  "maturityImpact": "NONE"
+}
