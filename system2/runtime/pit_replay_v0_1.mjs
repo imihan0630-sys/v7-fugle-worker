@@ -1,5 +1,6 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 import { sha256Hex } from "./decision_archive.mjs";
+import { selectHistoricalRevisionAsOfV0_1 } from "./historical_revision_lineage_v0_1.mjs";
 
 export const PIT_REPLAY_VERSION = "0.1-RESEARCH";
 
@@ -124,17 +125,23 @@ export async function buildPitReplayWindow({
 
   const resolved = [];
   const ambiguousRevisionKeys = [];
+  let resolvedRevisionKeyCount = 0;
   for (const [key, rows] of grouped.entries()) {
     const hashes = [...new Set(rows.map((x) => x.barHash))];
-    if (hashes.length > 1) {
-      ambiguousRevisionKeys.push(key);
-      continue;
+    if (hashes.length > 1) resolvedRevisionKeyCount += 1;
+    try {
+      const selectedRevision = selectHistoricalRevisionAsOfV0_1({
+        rows,
+        decisionTimestamp: clock,
+      });
+      if (selectedRevision) resolved.push(selectedRevision);
+    } catch (error) {
+      if (/REVISION_AMBIGUITY_AT_SAME_AVAILABILITY/.test(String(error?.message || error))) {
+        ambiguousRevisionKeys.push(key);
+        continue;
+      }
+      throw error;
     }
-    rows.sort((a, b) =>
-      String(a.observedAt || "").localeCompare(String(b.observedAt || ""))
-      || String(a.barHash).localeCompare(String(b.barHash)),
-    );
-    resolved.push(rows.at(-1));
   }
 
   if (ambiguousRevisionKeys.length) {
@@ -167,8 +174,9 @@ export async function buildPitReplayWindow({
     excludedCounts: deepFreeze(excluded),
     bars: Object.freeze(selected.map(primitiveBar)),
     pointInTimeEligible: state === "READY",
-    revisionPolicy: "FAIL_CLOSED_ON_DIFFERING_ELIGIBLE_REVISIONS",
-    schemaVersion: "S2_PIT_REPLAY_WINDOW_V0_1",
+    revisionPolicy: "LATEST_AVAILABLE_REVISION_BY_AVAILABLE_AT_FAIL_CLOSED_ON_SAME_AVAILABILITY_CONFLICT",
+    resolvedRevisionKeyCount,
+    schemaVersion: "S2_PIT_REPLAY_WINDOW_V0_2",
   };
 
   const replayHash = await sha256Hex(base);
