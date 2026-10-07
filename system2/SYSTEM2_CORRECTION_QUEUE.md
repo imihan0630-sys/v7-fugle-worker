@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-07 07:22 Asia/Taipei
+Updated: 2026-10-07 09:02 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -32,7 +32,7 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
 - affectedScope: S2-03 Historical infrastructure / P0 2017-present TWSE+TPEx daily A1 cold history
 - detectedBy: SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR
 - canonicalRequirement: System 2 historical infrastructure must physically populate and verify the staged official 2017-present Taiwan-equity daily history before it can be described as complete or used as complete full-market replay evidence.
-- observedProblem: Historical raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE, both 2022 markets and both 2023 markets. The 2023 TWSE historical-universe blocker is live-verified resolved, and 2023 TPEx run #24 is physically accepted with data coverage PASS / replay readiness PARTIAL. 2021 TPEx remains explicitly BLOCKED on an official-source canonical A1 revision. CORR-001 stays FIX_IN_PROGRESS for that blocker, 2024+ market-years, the 2026 incremental path and final full-market PIT replay.
+- observedProblem: Historical raw A1 data coverage is physically accepted for 2017-2020 on both TWSE and TPEx, plus 2021 TWSE, both 2022 markets and both 2023 markets. 2021 TPEx remains BLOCKED, but the prior diagnosis of 698 canonical A1 source revisions has been superseded: those values match the non-equivalent TPEx legacy `不含定價` fallback that was incorrectly treated as canonical-equivalent when primary transport failed. Canonical TPEx A1 is now `PRIMARY_ONLY_FAIL_CLOSED`; latest PRIMARY reconciliation returns 0 canonical A1 mismatches against immutable cold history. Fresh post-fix Physical re-verification is still required before 2021 TPEx can move to PASS/PARTIAL. CORR-001 stays FIX_IN_PROGRESS for this fresh reverify, 2024+ market-years, 2026 incremental history and final full-market PIT replay.
 - evidence:
   - SYSTEM2_CHECKPOINT: run 36545375167 failed before annual ingest.
   - SYSTEM2_CHECKPOINT: repaired continuation required manual 2017 TWSE rerun, then TPEx only after TWSE coverage/hash/manifest/receipt verification.
@@ -123,6 +123,11 @@ Execution-lane governance: `system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md`
   - TPEx historical-universe readiness remains `PARTIAL_OBSERVED_INTERVAL_NO_OFFICIAL_DELISTING_UNION`; official delisting union is not inferred complete.
   - Durable evidence: `system2/evidence/S2_HISTORICAL_TPEX_2023_PHYSICAL_VERIFICATION_V0_1.json`; artifact `11448741341`, digest `sha256:b69cc4faa66b236cbf3de3afa7807f64f4232ed7494dfb84a29a0c255ffbd4ee`.
   - Independent audit progress receipt `system2/evidence/S2_CORR_20261004_001_AUDIT_PROGRESS_20261007_V0_1.json` independently confirmed the same physical acceptance and found only canonical sync debt inside existing CORR-001; no duplicate correction was opened.
+  - 2021 TPEx recovery run `37552411600` (#1) failed before revision persistence because current PRIMARY reconciliation returned `canonicalA1ValueMismatchCount=0` instead of the frozen 698; System1 isolation PASSed.
+  - Direct official-source comparison proves transport semantics differ: PRIMARY `上櫃股票行情` includes values such as 1240 volume/value/tx `18,564 / 1,005,344 / 22`, while legacy `上櫃股票每日收盤行情(不含定價)` returns `18,000 / 974,800 / 15`. Run #18 mismatch samples match the legacy values.
+  - Canonical TPEx historical A1 transport is now `PRIMARY_ONLY_FAIL_CLOSED_NON_EQUIVALENT_LEGACY`; legacy fallback is diagnostic-only and cannot satisfy canonical ingestion.
+  - System2 Research CI `37554545204` PASSed after the source-policy/recovery fix. Durable evidence: `system2/evidence/S2_HISTORICAL_TPEX_2021_TRANSPORT_SEMANTICS_ROOT_CAUSE_V0_1.json`.
+  - Fresh post-fix recovery dispatch is required; old run #1 must not be Re-run because it is bound to the pre-fix head.
   - 2021 TPEx is fail-closed BLOCKED, not rewritten. The coverage matrix preserves the old quota blocker as resolved historical provenance and now records the canonical revision blocker.
 - riskIfUnfixed: Historical replay, factor validation, multi-year backtests, regime robustness and strategy comparison can be mistaken for being backed by a complete market history when only bounded/smoke datasets exist. This creates a false-completion and evidence-coverage risk on a P0 dependency.
 - requiredCorrection:
