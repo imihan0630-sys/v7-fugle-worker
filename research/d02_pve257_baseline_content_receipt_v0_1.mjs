@@ -45,7 +45,8 @@ export function deriveBaselineContentReceiptV01(input={}) {
   }
   const last20=dedup.slice(-20);
   const baselineAsOfDate=last20.at(-1)?.marketDate??null;
-  const sameSlotHistoryValidityState=last20.length>=20?"PASS":(sessions.length?"FAIL":"UNKNOWN");
+  const newerInvalidExactSlotSessions=baselineAsOfDate?invalid.filter(x=>x.marketDate&&x.marketDate>baselineAsOfDate):[];
+  const sameSlotHistoryValidityState=last20.length<20?(sessions.length?"FAIL":"UNKNOWN"):(newerInvalidExactSlotSessions.length?"FAIL":"PASS");
   let corporateActionContinuityState=input.corporateActionContinuityProof??null;
   if(!corporateActionContinuityState && resetAt && last20.length>=20 && last20.every(x=>x.marketDate>=resetAt)) corporateActionContinuityState="RESET_CLEAN_GE20";
   const contentIdentity={schemaVersion:"D02_PVE257_BASELINE_CONTENT_RECEIPT_V0_1",slotKey,marketDate,resetAt,last20};
@@ -56,6 +57,7 @@ export function deriveBaselineContentReceiptV01(input={}) {
     corporateActionResetAt:resetAt,
     eligibleExactSlotSessionCount:dedup.length,
     invalidExactSlotSessions:invalid,
+    newerInvalidExactSlotSessions,
     last20ExactSlotDates:last20.map(x=>x.marketDate),
     baselineAsOfDate,
     baselineContentFingerprint:sha256(contentIdentity),
