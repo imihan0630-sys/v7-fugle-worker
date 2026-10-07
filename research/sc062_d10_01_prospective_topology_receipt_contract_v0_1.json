@@ -1,0 +1,53 @@
+{
+  "version": "0.1",
+  "id": "SC-062",
+  "date": "2026-10-07 Asia/Taipei",
+  "domain": "D10-01",
+  "status": "CONTRACT_FROZEN_PROSPECTIVE_CAPTURE_READY",
+  "primitives": {
+    "connectivity": [
+      "SINGLE_PATH_SUPPORTED",
+      "MULTI_PATH_SUPPORTED",
+      "PATH_IDENTITY_PARTIAL",
+      "UNKNOWN"
+    ],
+    "capacityRedundancy": [
+      "ALTERNATE_CAPACITY_SUFFICIENT_SUPPORTED",
+      "ALTERNATE_CAPACITY_PARTIAL",
+      "CONCENTRATED_EXPOSURE",
+      "CAPACITY_UNKNOWN",
+      "UNKNOWN"
+    ],
+    "commonMode": [
+      "COMMON_MODE_IDENTIFIED",
+      "COMMON_MODE_PARTIAL",
+      "NO_COMMON_MODE_SUPPORTED",
+      "COMMON_MODE_UNKNOWN"
+    ]
+  },
+  "invariants": [
+    "NO_BACKFILL_OF_LATER_IDENTITIES",
+    "NO_ANONYMOUS_IDENTITY_GUESS",
+    "NO_EQUAL_WEIGHT_FILL_FOR_MISSING_EXPOSURE",
+    "MULTI_PATH_DOES_NOT_IMPLY_CAPACITY_SUFFICIENCY",
+    "FIRST_TIER_REDUNDANCY_DOES_NOT_IMPLY_FULL_NETWORK_RESILIENCE",
+    "UNKNOWN_DOES_NOT_IMPLY_SAFE",
+    "REVISION_APPENDS_NEW_RECEIPT"
+  ],
+  "l3PromotionPreflight": [
+    "CONTRACT_PRE_FROZEN",
+    "ONE_FUTURE_INDEPENDENT_ISSUER_OR_SOURCE_UPDATE",
+    "CLOCKS_PASS",
+    "PAST_RECEIPT_REPLAYS_WITHOUT_FUTURE_UPDATE",
+    "IDENTITY_UNKNOWN_GUARDS_PASS",
+    "THREE_PRIMITIVES_SEPARATE",
+    "NO_FORMAL_OR_STOCK_OUTCOME_USED"
+  ],
+  "currentMaturity": {
+    "level": "L2",
+    "maturityPct": 40
+  },
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "exactNext": "SC-063 capture the next genuinely new issuer-native topology disclosure/event after contract freeze; historical pre-existing material cannot qualify as the prospective L3 receipt."
+}
