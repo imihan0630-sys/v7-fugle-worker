@@ -3705,3 +3705,108 @@ Economic outcomes CLOSED.
 5. Freeze a justified SDA022 D5 MDE/precision target only from pre-outcome decision/precision logic; do not invent an arbitrary value.
 6. If a prospective common-cutoff pair receipt lands, bind it to the frozen SDA022 model method before any D5 outcome opening.
 7. Continue D18-04 U2B and D18-06 PIT size-vintage work when no higher-priority external trigger has landed.
+
+
+## 2026-10-07 CORR-004 exact-session lifecycle adversarial validation + SDA-022 numerical-target firewall
+
+New durable Room11 artifacts:
+- `research/D16_CORR004_EXACT_SESSION_LIFECYCLE_VALIDATION_20261007_V0_1.md`;
+- `research/D16_CORR004_EXACT_SESSION_LIFECYCLE_ORACLE_20261007_V0_1.json`;
+- `research/D16_SDA022_D5_EFFECT_TARGET_DERIVATION_FIREWALL_20261007_V0_1.md`.
+
+### Critical-path ordering
+
+00 independently proved PR #817 changes the history-reader blob hard-pinned by PR #762. Therefore:
+1. refresh/reverify and merge PR #817 first;
+2. merged-main read-only physical preflight must prove at least one TWSE exact-session witness with `rowsWritten=0`;
+3. then regenerate/rebuild PR #762 fingerprints against the post-#817 reader digest;
+4. only then may S22-T06~T10 be credited;
+5. replay-first hash-bound CLEAR_NO_ACTION continuity and physical NC-T01 S22-T11~T16 follow.
+
+This supersedes the earlier shorthand that placed #762 before CORR-004.
+
+### CORR-004 statistical boundary
+
+For each symbol/decision-date/lookback:
+`EXPECTED_ELIGIBLE_SYMBOL_SESSION_SET == SELECTED_PIT_SYMBOL_SESSION_SET`
+is required for promotion-grade history readiness.
+
+A nominal 60-row window is invalid if one required recent eligible session is missing and one older row substitutes.
+
+Missing expected sessions are DATA_INCOMPLETE, not NATURAL_ZERO_PICK.
+
+PR #817 at audited head `43784e500f678be6ee95710822fdafd2af50ac50` implements the core exact-session repair, exposes expected/observed hashes, rejects `EXPECTED_SESSION_HASH_MISMATCH`, preserves symbol-local incompleteness and has green System2/V8/assessor checks. Merged-main physical evidence is still pending.
+
+### Lifecycle open-interval adversarial gap
+
+TWSE lifecycle source says `absenceCertifiesNoEvent=false`, but an observed STOP without observed RESUME can currently normalize to an open interval through coverageTo.
+
+If RESUME evidence is missing because source retrieval is partial and resumed-session D1 bars are also missing, that open interval could wrongly delete true expected sessions and recreate stale substitution through the exception path.
+
+Room11 therefore freezes:
+- `CLOSED_POSITIVE_BOUNDARIES_CERTIFIED`;
+- `OPEN_ACTIVE_THROUGH_DATE_CERTIFIED`;
+- `NOT_ADMISSIBLE_BOUNDARY_INCOMPLETE`.
+
+Only the first two may remove sessions from the expected eligible set.
+
+Machine oracle `D16_CORR004_EXACT_SESSION_LIFECYCLE_ORACLE_V0_1` contains ten blocking tests covering stale substitution, clean exact window, closed suspension, incomplete open STOP, partial source + missing resumed bars, post-STOP observed bars, TPEx parity, probe/load date-set hash binding, separate revision lineage and no whole-universe veto.
+
+### NC-T01 provenance refinement
+
+Physical independence must bind the actual selected PIT replay window, not a pre-replay continuity string.
+
+First physical witness:
+- CLEAR_NO_ACTION only;
+- exact RAW replay window;
+- ADJUSTED_CONTINUITY remains fail-closed until transformed technical-continuity bars exist.
+
+Physical source-generation lineage must retain typed immutable digests for:
+- System2 policy fingerprint;
+- A1 batch;
+- PIT replay;
+- source history;
+- continuity receipt;
+- continuity transform;
+- factor snapshot;
+- persistence batch;
+- orchestration;
+- shadow accounting.
+
+Decision/run/prediction hashes alone are insufficient continuity provenance.
+
+Primary execution root = `orchestrationHash`.
+Final evidence root = `receiptHash`.
+
+### D16-SDA022-01 effect target
+
+Repository-wide readback found no disjoint genuine Taiwan D5 Brier effect series suitable as lawful prior planning evidence.
+
+D16-CAL-01 remains before first genuine C1 outcome sequence; D02 Brier-oriented numerical targets are also pending; no prior genuine System1-vs-SHORT_MOMENTUM D5 Brier delta exists.
+
+Therefore current state remains:
+`TARGET_VALUE_PENDING_FREEZE`.
+
+Allowed future numerical rationale bases:
+- COST_BENEFIT;
+- THEORETICAL_BOUND;
+- PRIOR_INDEPENDENT_EVIDENCE;
+- PRECISION_REQUIREMENT.
+
+The existing >=40 effective independent-date support floor is not a power/precision guarantee and cannot be recycled as a numerical target.
+
+### Maturity and exact next
+
+No maturity change:
+- D16 = 60%;
+- D18 = 52%.
+
+No PR/CI/governance completion is counted as mature Taiwan OOS evidence.
+
+Exact next:
+1. validate refreshed/merged PR #817;
+2. validate read-only merged-main physical exact-session witness and lifecycle open-boundary fail-closed behavior;
+3. validate regenerated post-CORR004 PR #762 fingerprints;
+4. validate replay-bound CLEAR_NO_ACTION continuity + physical NC-T01 hash chain;
+5. keep D16-SDA022-01 numerical target pending until a lawful derivation basis exists;
+6. if no trigger lands, continue D18-04 U2 true-return continuity and D18-06 PIT size-vintage work.
