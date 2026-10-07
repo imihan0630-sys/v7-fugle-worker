@@ -2981,3 +2981,63 @@ Exact next:
 4. if System2 policy fingerprints land, validate S22-T06~T10 immediately;
 5. if NC-T01 lands, validate S22-T11~T16;
 6. do not backfill before the 09:00:23 policy freeze.
+
+
+## 2026-10-07 System1 quality live verification blocked by harness authority mismatch
+
+New durable audit:
+- `research/D16_SYSTEM1_QUALITY_VERIFICATION_HARNESS_AUDIT_20261007_V0_1.md`;
+- `research/D16_SYSTEM1_QUALITY_VERIFICATION_HARNESS_AUDIT_20261007_V0_1.json`.
+
+PR #763 merge:
+`420094e95adba8366c6e2f96ecf45e028cd64e41`.
+
+Run:
+`37555765564`.
+
+Observed:
+- offline `test_v8_9_7_recovery_hardening.mjs` failed on `V8.9.7+ runtime required`;
+- live quality recovery never executed;
+- FINANCIAL / QUARTER_EPS readiness verification never executed;
+- no artifact emitted.
+
+Root authority model:
+- root `Worker.js` = intentional 7.5.26 baseline;
+- `apply_v7_5_27.py` expects that baseline;
+- canonical deploy/repair chains patch baseline through V8.20;
+- effective Production authority remains `8.20.0-formal-c1-binding-ledger`.
+
+Dedicated quality-verification workflow:
+- does not execute canonical build chain;
+- does not set `V7_TEST_WORKER_PATH`;
+- therefore incorrectly runs a V8.9.7+ test against the baseline file.
+
+Disposition:
+`BUILD_CHAIN_OMITTED_IN_VERIFICATION_HARNESS`.
+
+Quality state from this run:
+- FINANCIAL = UNKNOWN;
+- QUARTER_EPS = UNKNOWN;
+- repair PASS = false;
+- live-source failure proven = false.
+
+Exact next:
+1. re-read latest main for System1 harness repair;
+2. if repaired run appears, verify effective-runtime contract step first;
+3. require actual live recovery step execution;
+4. require FINANCIAL and QUARTER_EPS readback;
+5. keep 2026-10-06 original prospective failure immutable;
+6. do not convert repair into retrospective prospective evidence.
+
+Parallel:
+- System2 Stage-1 policy frame is frozen;
+- first physical Stage-1 evaluation still pending;
+- System2 SDA-022 fingerprint / NC-T01 still pending;
+- D18 Regime wiring pending;
+- T48 pending;
+- outcomes CLOSED.
+
+No maturity change:
+D16=60%.
+D18=52%.
+Formal Core LOCKED.
