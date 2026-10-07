@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "S2_STAGE1_NCT01_CONTINUITY_BINDING_IMPLEMENTATION_HANDOFF_V0_1",
+  "status": "00_AUDIT_ACCEPTANCE_CONTRACT_FROZEN_BUILD_LANE_IMPLEMENTATION_PENDING",
+  "createdAt": "2026-10-07T21:00:00+08:00",
+  "owner": "00_RESEARCH_AUDIT_CONTROL",
+  "observedMain": "f6cfa41e4bd88cb0d5cfa0286d585d81192dc729",
+  "formalCoreImpact": "NONE",
+  "targetStrategy": {
+    "strategyId": "SHORT_MOMENTUM",
+    "strategyVersion": "V0.1-CONTRACT",
+    "firstPhysicalWitnessContinuityState": "CLEAR_NO_ACTION",
+    "adjustedContinuityAllowedForFirstWitness": false
+  },
+  "existingRuntimeFacts": {
+    "orchestrator": "system2/runtime/daily_shadow_orchestrator_v0_1.mjs::runDailyLimitedShadowOrchestratorV0_1",
+    "replayBuilder": "system2/runtime/pit_replay_v0_1.mjs::buildPitReplayWindow",
+    "primitiveBuilder": "system2/runtime/a1_history_primitives_v0_1.mjs::buildA1HistoryPrimitiveBundle",
+    "continuityResolverRunsBeforeReplayWindow": true,
+    "continuityResolverCurrentReturnType": "TEXT_STATE_ONLY",
+    "pitReplayWindowCarriesReplayHash": true,
+    "pitReplayWindowPreservesSelectedRevisionIdentity": true,
+    "primitiveSourcePayloadHashBindsContinuityReceipt": false,
+    "primitiveBundleCarriesContinuityReceiptIdentity": false
+  },
+  "problemStatement": "A text-only continuity state resolved before PIT replay selection cannot prove that continuity certification applies to the exact selected PIT revisions/session set consumed by the factor engine.",
+  "canonicalReuse": {
+    "sharedContract": "research/TECHNICAL_INDICATOR_CONTINUITY_HANDOFF_V0_1.md",
+    "requiredIdentityFields": [
+      "continuityReceiptId",
+      "receiptVersion",
+      "sourceFamilyVersion",
+      "sourceHistoryHash",
+      "rawHistoryAdmissionReceiptId",
+      "symbolSessionContractVersion",
+      "sessionCalendarVersion",
+      "continuityEngineVersion",
+      "corporateActionRegistryVersion",
+      "continuityTransformHash"
+    ],
+    "requiredCoverageSemantics": [
+      "exact expected eligible-session set",
+      "exact ordered selected bar/source identities",
+      "unresolvedMissingSessions=0",
+      "unresolvedRelevantEvents=0",
+      "no pseudo-bar admission",
+      "PIT-valid event/version provenance"
+    ],
+    "noSecondAdjustmentEngine": true
+  },
+  "minimalBuildLaneDelta": [
+    "Build the RAW PIT replay window before resolving continuity.",
+    "Derive an immutable exact selected-window identity from the chosen PIT revisions/session set. Preserve existing replayHash and add/derive sourceHistoryHash under shared continuity semantics; do not silently redefine either hash.",
+    "Resolve and validate the continuity receipt only after the replay window exists.",
+    "Require receipt symbol, asOf/marketDate, decision cutoff, exact eligible-session/date set and sourceHistoryHash to match the selected replay window.",
+    "Require shared D03 continuity identity/provenance fields.",
+    "For the first NC-T01 witness, accept only CLEAR_NO_ACTION over RAW bars. RAW plus ADJUSTED_CONTINUITY must fail closed.",
+    "Thread continuityReceiptId/sourceHistoryHash/continuityTransformHash and selected replay-window identity into factor/candidate provenance.",
+    "Leave unmatched, missing, late, ambiguous or unresolved continuity as UNVERIFIED/INCOMPLETE.",
+    "Do not rewrite immutable historical D1 rows merely to change continuity labels.",
+    "Do not create a second corporate-action or technical-indicator continuity engine."
+  ],
+  "ncT01Binding": {
+    "schema": "shared-knowledge/sda022_nc_t01_receipt_schema_v0_1.json",
+    "schemaChangeRequiredForFirstWitness": false,
+    "bindingRule": "Use existing candidateUniverseProvenance/sourceGenerationRefs plus receipt/result hashes to bind immutable continuity and replay references. New top-level structured fields would require a versioned schema change.",
+    "physicalIndependenceRequiresRealData": true
+  },
+  "requiredRegressions": [
+    "CLEAR_NO_ACTION exact-window happy path",
+    "wrong symbol receipt -> fail closed",
+    "wrong asOf/marketDate -> fail closed",
+    "post-cutoff receipt -> fail closed",
+    "selected date-set drift -> fail closed",
+    "selected source-row/revision drift -> fail closed",
+    "missing continuityReceiptId/sourceHistoryHash -> fail closed",
+    "unresolved eligible-session gap -> fail closed",
+    "unresolved relevant corporate action -> fail closed",
+    "RAW bars plus ADJUSTED_CONTINUITY -> reject",
+    "uncertified symbols remain INCOMPLETE and denominator-accounted",
+    "no System1 Top6/rank/cached/persisted/alias/cross-project/stale fallback"
+  ],
+  "physicalAcceptance": [
+    "PR #762 fingerprints rebuilt on latest main, exact-head checks pass, and S22-T06~T10 canonically merged.",
+    "At least one real current SHORT_MOMENTUM symbol has real official A1 + PIT replay window + matching hash-bound CLEAR_NO_ACTION continuity receipt.",
+    "Real read-only/artifact-only NC-T01 runner executes with System1 Top6/rank unavailable by construction.",
+    "00 independently passes S22-T11 through S22-T16."
+  ],
+  "prohibitedShortcuts": [
+    "string-only CLEAR_NO_ACTION not bound to exact replay window",
+    "backdating a later continuity receipt",
+    "provider-adjusted data as unversioned shortcut",
+    "ADJUSTED_CONTINUITY while feeding RAW bars",
+    "historical raw D1 rewrite",
+    "synthetic-only NC-T01 physical acceptance",
+    "System1 candidate/rank fallback",
+    "selection/push/capital/order authority"
+  ],
+  "exactNext": [
+    "BUILD_LANE rebuilds PR #762 on latest main and canonically merges after exact-head checks.",
+    "DATA_LANE produces one exact-window TWSE continuity evidence package for a physically history-ready symbol and fails closed if not clean.",
+    "BUILD_LANE implements replay-first hash-bound CLEAR_NO_ACTION validation plus regressions.",
+    "BUILD_LANE executes real read-only/artifact-only NC-T01.",
+    "00 independently verifies S22-T11~T16.",
+    "Only then may persisted SHORT_MOMENTUM -> RANK-01 -> s2_capacity_runs proceed when D1 headroom permits."
+  ]
+}
