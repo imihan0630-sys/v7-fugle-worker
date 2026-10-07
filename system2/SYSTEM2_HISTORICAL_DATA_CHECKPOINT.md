@@ -740,3 +740,27 @@ Disposition: 2024 TPEx remains PENDING / NOT ACCEPTED. Old run #28 must not be r
 Exact next execution: fresh workflow_dispatch from latest main, `year=2024`, `market=TPEX`. Acceptance still requires annual backfill PASS + Physical verify PASS + artifact + System1 isolation PASS.
 
 Workflow: https://github.com/imihan0630-sys/v7-fugle-worker/actions/workflows/system2-historical-pack-2017-backfill.yml
+
+
+## 2026-10-07 2024 TPEx run #29 timeout diagnosis / bounded timeout hardening
+
+Fresh annual run `37593983170` / #29 used confirmed inputs `year=2024 / market=TPEX` on head `5c50a246bf91f9b1bc37c99f082bdfec467d5f09`.
+
+Terminal facts:
+- migrate: SUCCESS;
+- annual backfill ran from 2026-10-07T08:28:55Z until the GitHub Actions job limit;
+- backfill job was CANCELLED after exceeding the configured `timeout-minutes: 60`;
+- Physical verify was skipped;
+- no physical coverage JSON/artifact was produced;
+- System1 production isolation: PASS;
+- no market-year acceptance is claimed from run #29.
+
+This changes the blocker classification from source transport failure to workflow execution-budget insufficiency for the resilient path. The bounded PRIMARY transport-recovery implementation remained fail-closed; the job simply did not have enough wall-clock headroom to complete annual ingest plus downstream physical verification.
+
+DATA_LANE hardening:
+- annual backfill job timeout increased from 60 to 120 minutes;
+- timeout remains finite and applies only to the isolated System2 annual-history writer job;
+- strategy/ranking/final-selection, System1 Formal Core, production push, capital/order behavior and broker routing are unchanged;
+- regression guard now requires the bounded 120-minute annual timeout so the transport-recovery path cannot silently regress to the known 60-minute cutoff.
+
+After this hardening is merged and CI is green, the exact physical continuation is a new fresh workflow_dispatch from latest main with `year=2024 / market=TPEX`. Do not rerun #29 because it is bound to the pre-timeout-hardening head. Acceptance still requires annual backfill PASS + Physical verify PASS + artifact + System1 isolation PASS.
