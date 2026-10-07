@@ -780,3 +780,54 @@ Final disposition:
 `VERIFIED_CLOSED`.
 
 This closure does not resolve `S2-CORR-20261006-004`, which is a separate current-session date-alignment defect.
+
+
+## S2-CORR-20261007-001 — OPEN / HIGH / DATA_LANE
+
+- title: Stage-1 prospective A1 daily-close acquisition exhausts without target-date readiness
+- detectedBy: 00_RESEARCH_AUDIT_CONTROL
+- affectedScope:
+  - System2 Stage-1 current/prospective A1 source acquisition;
+  - Prospective decision-clock evidence;
+  - Daily Shadow input readiness;
+  - SHORT_MOMENTUM launch-critical data path.
+- canonicalRequirement:
+  System 2 must observe current-day A1 TWSE and TPEx daily-close inputs with source-honest point-in-time receipts before current-day Stage-1 strategy evaluation. Poll exhaustion, stale prior-date payloads, transport/non-JSON responses and true source-not-ready states must remain separate and fail closed.
+- observedProblem:
+  - prospective run `37577209442` completed all 30 attempts but never established current-day A1 readiness;
+  - TWSE remained NOT_READY with prior-date payload lineage throughout the observed window;
+  - TPEx produced no READY observation and alternated between explicit NOT_READY and INVALID_PAYLOAD/NON_JSON_RESPONSE states;
+  - immutable bundle ended `requiredReady=false`, `precisionEligible=false`, `candidateTimestamp=null`;
+  - current `system2/runtime/official_source_probes.mjs` performs one GET per probe attempt and does not perform an in-attempt bounded recovery after an HTTP-success/non-JSON payload.
+- evidence:
+  - workflow run `37577209442`: COMPLETED / SUCCESS;
+  - A1 artifact `11469331429`, digest `sha256:4b2b436015a385c89402d071d9f1c8efc644b6fda2707962263a272b81553ef2`;
+  - daily bundle artifact `11469168019`, digest `sha256:9e1ff9c1ad5a88406095b405a057ce97c90ef051fe347ef13eb8a204388b1baf`;
+  - no System1 runtime use, no Cron authorization and no external mutation.
+- riskIfUnfixed:
+  SHORT_MOMENTUM cannot produce a genuine current-day Stage-1 evaluation receipt from its core A1 family; physical NC-T01 S22-T13 and downstream capacity evidence can remain blocked. Poll exhaustion must never become source absence or a clean zero-pick day.
+- requiredCorrection:
+  1. Keep this correction scoped to current/prospective A1; historical annual backfill remains under existing CORR-001.
+  2. Diagnose TWSE prior-date persistence and TPEx NON_JSON_RESPONSE separately.
+  3. Preserve publication/not-ready, transport, body, parse and semantic states.
+  4. Add only bounded fail-closed acquisition recovery where justified; never weaken target-date/schema/coverage/OHLC/PIT checks.
+  5. Ensure later/follow-up observation can capture same-day readiness when it genuinely occurs; polling-window exhaustion is not proof of permanent unavailability.
+  6. Preserve the first physical READY timestamp and every earlier failed/not-ready attempt append-only.
+  7. Require a later real-trading-date prospective receipt before repair acceptance.
+- acceptanceCriteria:
+  - TWSE and TPEx current-day readiness are independently observable;
+  - READY requires physical target-date source evidence;
+  - retries cannot bypass schema/date/coverage/PIT guards;
+  - first READY timestamp comes from observed source state;
+  - the immutable daily bundle remains fail closed until all required clock gates pass;
+  - System1 Formal Core and System2 final-selection/push/capital/order authority remain unchanged.
+- routingClass: DATA_LANE
+- assignedLane: DATA_LANE
+- assignedRoom: System 2｜歷史資料工程室
+- modificationOwner: SYSTEM2_HISTORICAL_DATA_ROOM
+- ownerDecisionRequired: false
+- blockedBy: null
+- implementationEvidence: []
+- verificationEvidence: []
+- finalDisposition: PENDING
+- updatedAt: 2026-10-07T16:27:32+08:00
