@@ -93,14 +93,39 @@
     "historical raw D1 rewrite",
     "synthetic-only NC-T01 physical acceptance",
     "System1 candidate/rank fallback",
-    "selection/push/capital/order authority"
+    "selection/push/capital/order authority",
+    "runFingerprintHash-only continuity provenance",
+    "decisionHash-only continuity provenance",
+    "free-text sourceGenerationRefs without typed immutable digest semantics"
   ],
   "exactNext": [
     "BUILD_LANE rebuilds PR #762 on latest main and canonically merges after exact-head checks.",
-    "DATA_LANE produces one exact-window TWSE continuity evidence package for a physically history-ready symbol and fails closed if not clean.",
-    "BUILD_LANE implements replay-first hash-bound CLEAR_NO_ACTION validation plus regressions.",
+    "DATA_LANE closes CORR-004 enough to produce at least one exact expected-session physical witness; count-ready alone is insufficient.",
+    "BUILD_LANE implements replay-first hash-bound CLEAR_NO_ACTION validation plus bounded PIT batch/prefetch and regressions.",
+    "BUILD_LANE threads immutable replay/continuity refs into factor sourceManifest before factor snapshot hashing and implements the typed NC-T01 hash chain from the linked end-to-end audit.",
     "BUILD_LANE executes real read-only/artifact-only NC-T01.",
-    "00 independently verifies S22-T11~T16.",
-    "Only then may persisted SHORT_MOMENTUM -> RANK-01 -> s2_capacity_runs proceed when D1 headroom permits."
-  ]
+    "00 independently verifies S22-T11~T16 including end-to-end receipt-hash recomputation.",
+    "Only then may persisted SHORT_MOMENTUM -> RANK-01 -> s2_capacity_runs proceed when CORR-003-protected D1 headroom permits."
+  ],
+  "endToEndHashLineageAudit": {
+    "evidencePath": "system2/evidence/S2_STAGE1_NCT01_END_TO_END_HASH_LINEAGE_AUDIT_20261007_V0_1.json",
+    "evidenceCommit": "be271bf22a2ed2323e53d8db6d04dce2db3aba2b",
+    "conclusion": "RUN_FINGERPRINT_HASH_ALONE_INSUFFICIENT; PHYSICAL_NC_T01_MUST_BIND_REPLAY_CONTINUITY_FACTOR_PERSISTENCE_ORCHESTRATION_AND_FINAL_RECEIPT_ROOT",
+    "primaryPhysicalExecutionRoot": "orchestrationHash",
+    "finalEvidenceRoot": "receiptHash",
+    "minimumTypedDigestRefs": [
+      "SYSTEM2_POLICY_FINGERPRINT_SHA256",
+      "A1_BATCH_SHA256",
+      "PIT_REPLAY_SHA256",
+      "SOURCE_HISTORY_SHA256",
+      "CONTINUITY_RECEIPT_SHA256",
+      "CONTINUITY_TRANSFORM_SHA256",
+      "FACTOR_SNAPSHOT_SHA256",
+      "PERSISTENCE_BATCH_SHA256",
+      "ORCHESTRATION_SHA256",
+      "SHADOW_ACCOUNTING_SHA256"
+    ],
+    "mandatoryRegression": "Two valid continuity receipts yielding identical factor/evaluation values may keep decisionHash equal, but factor snapshot hash, persistenceBatchHash, orchestrationHash and final NC-T01 receiptHash must differ."
+  },
+  "updatedAt": "2026-10-07T21:09:16+08:00"
 }
