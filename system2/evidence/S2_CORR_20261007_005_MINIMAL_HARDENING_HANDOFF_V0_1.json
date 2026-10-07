@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "S2_CORR_20261007_005_MINIMAL_HARDENING_HANDOFF_V0_1",
+  "recordedAt": "2026-10-07T23:27:00+08:00",
+  "observedMain": "6adbd5c64065f04ace5648265b2e96ca5dd462e3",
+  "owner": "00_RESEARCH_AUDIT_CONTROL",
+  "correctionId": "S2-CORR-20261007-005",
+  "assignedLane": "BUILD_LANE",
+  "status": "MINIMAL_FIX_CONTRACT_FROZEN_IMPLEMENTATION_PENDING",
+  "reuse": {
+    "existingAudit": "system2/evidence/S2_STAGE1_NCT01_HIDDEN_SYSTEM1_DEPENDENCY_STATIC_AUDIT_20261007_V0_1.json",
+    "oldScopeFileCount": 21,
+    "oldStaticFinding": "NO_STATIC_SYSTEM1_TOP6_OR_RANK_DEPENDENCY_FOUND_IN_BOUND_SCOPE",
+    "oldLimitation": "static audit cannot prove runtime/environment/cache absence and is stale after later source blob changes / #825 / #830"
+  },
+  "minimalDelta": [
+    "Regenerate the static dependency audit on the exact physical-runner head; do not reuse old blob SHAs as current evidence.",
+    "Expand the closure root to include nct01_artifact_runner_v0_1.mjs, nct01_physical_receipt_v0_1.mjs, daily_shadow_history_prefetch_v0_1.mjs and every transitive System2 runtime/source adapter actually imported by the physical wrapper.",
+    "Persist sorted file path + blob SHA inventory, forbidden-marker classifications and explicit results for cached/persisted/alias/cross-project/stale fallback surfaces.",
+    "Canonical-hash the complete machine audit payload after excluding its own digest field.",
+    "Pass the five audit dimensions explicitly. Missing field or non-boolean is UNKNOWN and must block physical PASS.",
+    "Add HIDDEN_FALLBACK_AUDIT_SHA256:<digest> to sourceGenerationRefs and add it to the required-pass ref set.",
+    "The physical workflow must rebuild this audit on its own exact head and feed that exact digest to the NC-T01 receipt builder; a separately generated/stale audit is not sufficient.",
+    "Keep System1 Top6/rank inputs structurally unavailable; do not add any adapter merely to prove they are false.",
+    "Do not change strategy, ranking, capacity, final-selection, push, capital or order semantics."
+  ],
+  "requiredDynamicAssertions": [
+    "system1Top6InputAvailable === false",
+    "system1RankInputAvailable === false",
+    "cachedSystem1SelectionUsed === false",
+    "persistedSystem1SelectionUsed === false",
+    "aliasReconstructionUsed === false",
+    "crossProjectFallbackUsed === false",
+    "staleSharedStateUsed === false",
+    "real A1/PIT source refs exist",
+    "real continuity receipt is bound before a witness is executable"
+  ],
+  "requiredRegressions": [
+    "hiddenFallbackAudit omitted -> EVIDENCE_INCOMPLETE",
+    "any one audit field omitted -> EVIDENCE_INCOMPLETE",
+    "any audit field non-boolean -> EVIDENCE_INCOMPLETE",
+    "all five false but audit digest missing -> EVIDENCE_INCOMPLETE",
+    "audit digest present but does not match exact-head machine audit -> EVIDENCE_INCOMPLETE",
+    "any dependency flag true -> HIDDEN_SYSTEM1_DEPENDENCY",
+    "clean exact-head audit + full typed refs + real witness may reach PHYSICALLY_INDEPENDENT_PATH_OBSERVED",
+    "changing any audited blob SHA changes hidden-fallback audit digest and final receiptHash"
+  ],
+  "physicalAcceptance": [
+    "Exact-head machine audit artifact is uploaded with digest.",
+    "NC-T01 artifact contains the same HIDDEN_FALLBACK_AUDIT_SHA256 digest.",
+    "00 independently recomputes/compares the audit digest and the receiptHash dependency chain.",
+    "No S22-T12/S22-T16 PASS before the real continuity witness exists."
+  ],
+  "noSchemaBumpRequiredForMinimalFix": true,
+  "reason": "SDA022_NC_T01_RECEIPT_V0_1 sourceGenerationRefs already accept additional typed digest refs.",
+  "formalCoreImpact": "NONE_LOCKED"
+}
