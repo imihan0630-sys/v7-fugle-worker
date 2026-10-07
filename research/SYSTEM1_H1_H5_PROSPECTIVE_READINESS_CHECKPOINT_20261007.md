@@ -58,3 +58,16 @@ No A/B, Top6/3+3, rank, capital, 15m semantics, maxChase, retest, signal, push, 
 FORMAL_OPTIMIZATION_CANDIDATE = NONE.
 
 Bridge V0.3 explicitly adapts canonical SYSTEM1_C5_SEMANTIC_REPAIR_V0_2 into the older V0.2 bridge compatibility schema without weakening either verifier. The adapter is research-only and preserves source schema identity.
+
+## H1 conditional upper-bound enhancement
+
+The scheduled offline postprocess now also emits `system1-c5-daily-report.json`.
+
+For H1 it preserves three separate estimands:
+- strict P1-A structural blockers from canonical C5 semantic repair;
+- conditional reach upper bound if unresolved safety evidence were later proven PASS;
+- safety-capture engineering demand.
+
+Conditional reach never mutates UNKNOWN to PASS, never creates a candidate, never authorizes selection, and never counts candidate lift as economic success.
+
+The purpose is to decide whether expensive future safety-receipt capture is even worth considering before any Class-B request.
