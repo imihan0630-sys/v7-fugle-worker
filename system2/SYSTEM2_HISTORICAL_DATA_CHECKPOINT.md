@@ -1066,7 +1066,7 @@ Historical endpoint behavior is supported by a public reproducibility witness th
 Repository implementation on branch `system2-data/tpex-cmode-history-source-20261007`:
 - `tpexCmodeRocDateV0_1` converts ISO dates to the official ROC request date;
 - `parseTpexCmodePositiveStopSessionsV0_1` accepts only source-date-identified responses;
-- only a positive non-empty `停止交易` marker produces a one-session lifecycle interval;
+- only an explicit whitelisted positive `停止交易` marker (or text carrying positive stop semantics) produces a one-session lifecycle interval; unknown/non-recognized markers remain unclassified;
 - each accepted row has an independent canonical SHA-256 row hash plus the enclosing payload hash;
 - source absence / empty markers never certify NO_EVENT;
 - coverage now emits unique `unknownSessionDates`, allowing targeted source lookup instead of scanning the whole calendar.
