@@ -6,6 +6,7 @@ import {
   parseHistoricalTwseMonthlyTradingDatesV0_1,
   isHistoricalTradingDateV0_1,
   fetchHistoricalTwseCalendarV0_1,
+  fetchHistoricalTwseMonthlyTradingDatesV0_1,
 } from "../runtime/historical_twse_calendar_v0_1.mjs";
 
 const rocPayload={
@@ -56,6 +57,22 @@ const fmtqikJanuary={
 const january=parseHistoricalTwseMonthlyTradingDatesV0_1(fmtqikJanuary,2017,1);
 assert.deepEqual(january.tradingDates,["2017-01-03","2017-01-04"]);
 assert.equal(january.source,"TWSE_OFFICIAL_FMTQIK_MONTHLY_HISTORICAL");
+
+const typhoonExact=await fetchHistoricalTwseMonthlyTradingDatesV0_1({
+  year:2026,month:7,
+  fetchImpl:async ()=>({ok:true,status:200,async json(){return {
+    stat:"OK",date:"20260701",
+    fields:["日期","成交股數","成交金額","成交筆數","發行量加權股價指數","漲跌點數"],
+    data:[
+      ["115/07/08","1","2","3","1","1"],
+      ["115/07/09","1","2","3","1","1"],
+      ["115/07/13","1","2","3","1","1"],
+    ],
+  };}}),
+});
+assert.deepEqual(typhoonExact.tradingDates,["2026-07-08","2026-07-09","2026-07-13"]);
+assert.equal(typhoonExact.tradingDates.includes("2026-07-10"),false,
+  "exact monthly market sessions must exclude an emergency closure absent from FMTQIK");
 
 const exactCalendar={
   year:2017,
