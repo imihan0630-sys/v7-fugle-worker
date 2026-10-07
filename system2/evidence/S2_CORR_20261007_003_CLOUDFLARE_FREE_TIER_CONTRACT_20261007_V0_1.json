@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "S2_CORR_20261007_003_CLOUDFLARE_FREE_TIER_CONTRACT_V0_1",
+  "checkedAt": "2026-10-07T19:30:51+08:00",
+  "observedMain": "7ca72b69eb21c654146bcdd94664e2a92883a964",
+  "vendor": "Cloudflare",
+  "product": "D1",
+  "plan": "Workers Free",
+  "officialSources": [
+    {
+      "title": "Cloudflare D1 Pricing",
+      "url": "https://developers.cloudflare.com/d1/platform/pricing/",
+      "checkedAt": "2026-10-07T19:30:51+08:00",
+      "facts": {
+        "rowsReadPerDay": 5000000,
+        "rowsWrittenPerDay": 100000,
+        "resetAtUtc": "00:00",
+        "scope": "ACCOUNT_FREE_PLAN_DAILY_LIMIT",
+        "rowsWrittenDefinition": "INSERT/UPDATE/DELETE rows contribute to rows written; indexed writes can add additional written rows.",
+        "observability": "Per-query meta exposes rows_read/rows_written; dashboard and GraphQL Analytics can also track usage."
+      }
+    },
+    {
+      "title": "Cloudflare D1 free-tier limit enforcement changelog",
+      "url": "https://developers.cloudflare.com/changelog/post/2026-09-01-d1-free-tier-limit-enforcement/",
+      "checkedAt": "2026-10-07T19:30:51+08:00",
+      "facts": {
+        "effectiveDate": "2026-09-01",
+        "enforcement": "Queries fail once the account exceeds daily row-read or row-write limits until midnight UTC reset.",
+        "storedDataAffected": false
+      }
+    }
+  ],
+  "projectPhysicalEvidence": {
+    "dailyShadowRun": {
+      "runId": 37609474459,
+      "rowsRead": 583256,
+      "rowsWritten": 13130,
+      "conclusion": "SUCCESS"
+    },
+    "historicalRun": {
+      "runId": 37611914140,
+      "conclusion": "FAILURE",
+      "failureStage": "migrate",
+      "errorClass": "D1_FREE_TIER_DAILY_ROW_WRITE_LIMIT_EXCEEDED",
+      "backfillStarted": false
+    }
+  },
+  "governanceImplications": [
+    "The hard writer ceiling is account-wide rather than a per-workflow or per-database budget.",
+    "system2-isolated-d1-writer concurrency prevents simultaneous mutation but cannot prevent sequential workflows from consuming the same 100,000-row account-wide daily write allowance.",
+    "Known per-run rowsWritten can be accumulated as an auditable lower bound; unknown external/account writers require conservative reserve rather than claiming an exact remaining quota.",
+    "Writer reservation must account for index-amplified rows where applicable.",
+    "Rows-read risk is secondary but real: the same account has a 5,000,000 rows-read/day Free ceiling and should be observed by the same governance surface even though CORR-003 was opened from a write-limit failure.",
+    "No paid-plan upgrade is authorized by this evidence."
+  ],
+  "remediationAcceptanceRefinement": [
+    "Global Free-plan budget constant must use official ceiling 100,000 rowsWritten per UTC day at the account level unless future vendor evidence changes.",
+    "UTC quota day resets at 00:00 UTC.",
+    "Use query meta/dashboard/GraphQL evidence when available; otherwise conservative known-write accounting plus reservation estimates must fail/defer rather than invent available headroom.",
+    "A workflow classified as bulk/high-write must not start if its conservative reservation would exceed the remaining auditable writer budget after protected reservations.",
+    "Quota deferral must be classified operationally (QUOTA_BUDGET_DEFERRED or equivalent), not as source/data failure.",
+    "Paid-plan changes remain OWNER_DECISION_REQUIRED."
+  ],
+  "protectedBoundaries": [
+    "No automatic billing/plan change",
+    "No System1 Formal/runtime mutation",
+    "No strategy/ranking/final-selection changes",
+    "No weakening of PIT/UNKNOWN/history immutability"
+  ]
+}
