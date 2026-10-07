@@ -5072,3 +5072,55 @@ No maturity or Formal change is authorized by this routing.
 6. Hand residual incrementality to D16.
 7. Keep SDA-001/SDA-002 open.
 8. No Formal Core change.
+
+
+## Continuation update — DL-074 (2026-10-07)
+
+### DL-074 — Zone width / stop / target / RR uncertainty firewall
+- D01-11 target/resistance/RR geometry was extended with explicit uncertainty lineage.
+- Structural geometry uncertainty, execution uncertainty, volatility risk, event-gap risk and model-selection uncertainty are now distinct objects.
+- The same uncertainty root may not be counted repeatedly in zone width, confirmation padding, stop padding, target haircut or confidence.
+- Gross geometric RR and executable RR are permanently separated.
+- Executable RR requires owner-certified execution cost/slippage receipt; D01 does not fabricate slippage.
+- Candidate stop families frozen:
+  ZONE_INVALIDATION_STOP;
+  VOLATILITY_SCALED_STOP;
+  SWING_INVALIDATION_STOP;
+  FIXED_RISK_STOP;
+  HYBRID_PREREGISTERED_STOP.
+- Candidate target families frozen:
+  NEXT_STRUCTURAL_RESISTANCE;
+  MEASURED_MOVE;
+  PRIOR_SWING_EXTREME;
+  VOLATILITY_SCALED_TARGET;
+  HYBRID_PREREGISTERED_TARGET.
+- Stop/target selection after observing survival/outcome is prohibited.
+- Wider structural uncertainty is not assumed to widen stop and target symmetrically.
+- D16 ladder R0-R12 frozen.
+- 10 adversarial tests authored; TEST_EXECUTION_PENDING.
+- New files:
+  - research/PATTERN_RR_UNCERTAINTY_FIREWALL_V0_1.md
+  - research/pattern_rr_uncertainty_firewall_v0_1.mjs
+  - research/test_pattern_rr_uncertainty_firewall_v0_1.mjs
+  - research/pattern_rr_uncertainty_firewall_v0_1.json
+  - research/PATTERN_RR_UNCERTAINTY_D16_HANDOFF_V0_1.md
+  - research/D01_DL074_EVIDENCE_LEDGER_V0_1.md
+- Research evidence reinforces that transaction costs can erase apparent technical-rule profitability and that stop/take-profit levels are jointly dependent decision objects.
+- SDA-001 remains open.
+- SDA-002 remains open.
+- No outcome join; no runtime/Worker/D1 wiring; no Formal change.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-074
+
+1. Execute DL-068~074 research Node tests independently; keep TEST_EXECUTION_PENDING until actual execution evidence exists.
+2. Start DL-075: breakout-confirmation / retest-entry / stop-placement path dependence.
+3. Preserve one immutable structural episode even when one episode emits breakout, retest, reclaim and continuation representations.
+4. Prevent the same price path from becoming multiple independent trade signals.
+5. Separate entry timing quality from structural alpha and from execution quality.
+6. Hand episode-level residual inference to D16.
+7. Keep SDA-001/SDA-002 open.
+8. No Formal Core change.
