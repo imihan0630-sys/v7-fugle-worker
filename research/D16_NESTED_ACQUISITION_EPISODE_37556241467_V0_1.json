@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "D16_NESTED_ACQUISITION_EPISODE_RECEIPT_V0_1",
+  "runId": 37556241467,
+  "owner": "D16 / Room11",
+  "episodes": [
+    {
+      "acquisitionEpisodeId": "S1Q:37556241467:FINANCIAL",
+      "dataset": "FINANCIAL",
+      "stage": "BATCH_FINANCIAL_STATEMENTS",
+      "parentAcquisitionEpisodeId": null,
+      "attempted": true,
+      "terminalState": "MOPS_BATCH_FINANCIAL_TRANSPORT_RETRY_EXHAUSTED",
+      "role": "ROOT_OBSERVED_FAILURE",
+      "independentEpisodeCredit": 1
+    },
+    {
+      "acquisitionEpisodeId": "S1Q:37556241467:QUARTER_EPS",
+      "dataset": "QUARTER_EPS",
+      "stage": "QUARTER_EPS_REVIEW",
+      "parentAcquisitionEpisodeId": "S1Q:37556241467:FINANCIAL",
+      "attempted": false,
+      "terminalState": "DOWNSTREAM_NOT_REACHED_UPSTREAM_BLOCKED",
+      "role": "DERIVED_DOWNSTREAM_BLOCK",
+      "independentEpisodeCredit": 0
+    }
+  ],
+  "counts": {
+    "acquisitionAttemptedDatasetN": 1,
+    "acquisitionObservedFailureN": 1,
+    "downstreamNotReachedN": 1,
+    "independentAcquisitionEpisodeN": 1,
+    "blockedDatasetN": 2
+  },
+  "historicalBackfillAllowed": false,
+  "outcomes": "CLOSED",
+  "formalCoreImpact": "NONE",
+  "maturityImpact": "NONE"
+}
