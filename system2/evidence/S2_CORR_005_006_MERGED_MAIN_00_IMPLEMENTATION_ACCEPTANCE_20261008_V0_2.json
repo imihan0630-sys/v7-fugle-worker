@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "S2_CORR_005_006_MERGED_MAIN_00_IMPLEMENTATION_ACCEPTANCE_V0_2",
+  "recordedAt": "2026-10-08T06:08:00+08:00",
+  "auditor": "00_RESEARCH_AUDIT_CONTROL",
+  "supersedes": "system2/evidence/S2_CORR_005_006_MERGED_MAIN_00_IMPLEMENTATION_ACCEPTANCE_20261008_V0_1.json",
+  "supersededCommit": "0890b8bf8fd31835baef8f4966d8d15a202e12f0",
+  "supersessionReason": "V0.1 was committed from a stale queue read during concurrent main advancement. Canonical queue had already been independently advanced to VERIFIED_CLOSED at 05:58 Asia/Taipei by ae31dcc2 / 5adb2210 / 552214c6. This V0.2 reconciles the race without changing the physical NC-T01 boundary.",
+  "observedLatestMain": "e9549a11ff21496a676720daca48a1303243544c",
+  "canonicalClosure": {
+    "corr005": "VERIFIED_CLOSED",
+    "corr006": "VERIFIED_CLOSED",
+    "independentClosureEvidence": "system2/evidence/S2_CORR_005_006_INDEPENDENT_CLOSURE_VERIFICATION_20261008_V0_1.json",
+    "evidenceCommit": "ae31dcc258469a3200926d4a8ba8942635379879",
+    "queueClosureCommit": "5adb2210f0fffa1e12789e51303b2eccf59f24df",
+    "markdownMirrorCommit": "552214c6da223f8542b9f6f253e79b16aacf993a",
+    "closureMeaning": "CODE_FIREWALLS_VERIFIED_FIXED_ONLY"
+  },
+  "mergedImplementation": {
+    "pullRequest": 841,
+    "mergeCommit": "d56f05fbc5986d00adbc81392b9dc0711de5043e",
+    "fiveMergedMainChecksAllPass": true,
+    "postMergeDriftOverlapWith841ConflictFiles": 0
+  },
+  "mergedMainArtifacts": {
+    "hiddenFallbackAudit": {
+      "runId": 37693224252,
+      "artifactId": 11513234786,
+      "artifactDigest": "sha256:2ed893d49e6ba352c6671c87fb4c384d962b7bbae62110c02132f2a399f3c4cb",
+      "runnerHeadSha": "d56f05fbc5986d00adbc81392b9dc0711de5043e",
+      "auditDigest": "474f511dc592c9882da3f045bdca5e8ad87a36aa41e9f36f6517ce0c04a9f037",
+      "auditedBlobCount": 24,
+      "staticComplete": true,
+      "staticClean": true,
+      "runtimeComplete": true,
+      "runtimeClean": true,
+      "hiddenDependencyPresent": false,
+      "physicalAcceptanceEligible": false,
+      "typedRuntimeEvidence": [
+        "CI_CORRECTION_REGRESSION_ONLY_NO_FORBIDDEN_SYSTEM1_ACCESS"
+      ]
+    },
+    "policyFingerprint": {
+      "runId": 37693224237,
+      "artifactId": 11514650165,
+      "artifactDigest": "sha256:91f29b2ae1589e88d15d9535c84d8b8851342a950c97bfa43249378b673ae555",
+      "shortMomentum": "2b50405eb452d89fac996e549e927235c1ce4e5bb0373e8fc0e5243117c5a9bd",
+      "swingGrowth": "727ddc86494ee0d0c2359deee727a8369e2744be7f7c0d0fd5a6efecc4e254af",
+      "sourceArtifactCount": 11,
+      "physicalIndependentDiscovery": false,
+      "ncT01Required": true
+    }
+  },
+  "interpretation": {
+    "corr005": "The defect was missing-evidence false promotion. It is closed because missing/UNKNOWN/tampered/static-only/runtime-incomplete audit inputs now fail closed and a bound audit digest is mandatory. The CI runtime payload is not accepted as physical proof; that remains a separate T12/T16 launch gate.",
+    "corr006": "The defect was W0 continuity-ready promoting strategy-incomplete execution/zero-pick. It is closed because W1 required-evidence completeness and assessment identity now control execution/candidate admission. Real W1 physical observation remains a separate T13/T14/T16 launch gate.",
+    "whyClosureDoesNotEqualPhysicalPass": "The merged-main correction artifact explicitly sets physicalAcceptanceEligible=false, and Matrix V0.2 still requires one coherent real source-honest continuity-backed NC-T01 run with actual same-cut runtime no-forbidden-access evidence."
+  },
+  "physicalGateStillPending": {
+    "matrix": "system2/evidence/S2_STAGE1_NCT01_PHYSICAL_ACCEPTANCE_MATRIX_20261008_V0_2.json",
+    "S22_T11": "PHYSICAL_PENDING",
+    "S22_T12": "PHYSICAL_RUNTIME_EVIDENCE_PENDING",
+    "S22_T13": "REAL_CLEAR_NO_ACTION_AND_W1_PENDING",
+    "S22_T14": "REAL_EXECUTION_ZERO_PICK_CLASSIFICATION_PENDING",
+    "S22_T15": "PHYSICAL_TYPED_HASH_CHAIN_PENDING",
+    "S22_T16": "NOT_YET_PROVEN",
+    "physicalPassCount": 0,
+    "physicalGateCount": 6
+  },
+  "exactNext": [
+    "DATA_LANE complete TWTAWU bounded official-representation parity, exact replay-window suspension completeness, three TWSE corporate-action exact-range families, and first real source-honest CLEAR_NO_ACTION receipt.",
+    "BUILD_LANE prepare/execute the real artifact-only SHORT_MOMENTUM NC-T01 wrapper so runtime no-forbidden-access evidence is produced from the same actual execution cut rather than a CI correction-regression payload.",
+    "00 independently recompute Matrix V0.2 S22-T11 through S22-T16 from one coherent immutable cut.",
+    "Only after physical NC-T01 PASS does CORR-003 become the persistence blocker before genuine SHORT_MOMENTUM -> RANK-01 -> s2_capacity_runs."
+  ],
+  "finalDisposition": "CANONICAL_CORRECTION_CLOSURE_ACCEPTED_PHYSICAL_NCT01_STILL_PENDING",
+  "formalCoreImpact": "NONE_LOCKED"
+}
