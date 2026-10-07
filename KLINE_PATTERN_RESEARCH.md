@@ -24204,3 +24204,20 @@ Future D16 attribution proceeds through S0-S12 and interpretation Q0-Q9, separat
 Twenty-four adversarial cases are authored. Research-specific Node execution remains TEST_EXECUTION_PENDING; V8 CI is not a substitute receipt.
 
 SDA-001 and SDA-002 remain open. No outcome join, no historical Shadow fabrication, no runtime/Worker/D1 wiring and no Formal change. D01 maturity remains 52.7%, Pattern alpha remains UNKNOWN and Formal Core remains LOCKED.
+
+
+# DL-067 — Structural response vs intraday volatility interruption / delayed matching (2026-10-07)
+
+DL-067 separates TWSE intraday volatility interruption from genuine technical-structure behavior.
+
+The current TWSE trading-mechanism page was re-read live. For regular trading, a potential execution price moving more than 3.5% away from the relevant interruption reference can postpone matching for two minutes. Trading restarts through call auction and then returns to continuous trading. During interruption, market/IOC/FOK orders are not accepted, existing market orders are automatically deleted, and limit ROD orders may be added. The restart call-auction price becomes the reference for the following five minutes before the rolling five-minute weighted-average reference resumes.
+
+This creates a direct attribution hazard. The trigger uses a potential execution price, not an executed trade. The delayed interval has no normal continuous-trading path. The restart call auction sees a modified order set. The restart print also resets the short-horizon reference regime. A chart that ignores those mechanics can mistake the sequence for a clean breakout, support failure or retest.
+
+DL-067 therefore separates trigger potential price, restart call price and first post-interruption continuous trade. It also separates the opening reference phase, rolling five-minute reference phase and post-interruption reset-reference phase. A restart call crossing an old structural zone is not automatically a confirmed breakout; post-interruption confirmation requires a preregistered observation rule.
+
+Primary falsification compares high-volatility structural-zone moves without interruption against interruption events at the zone, plus interruption events away from old structural zones. Future D16 work must control reference regime, matching delay, order-set mutation, restart auction, daily-price-limit interaction, time-of-day/trading phase and D04/D05 liquidity/order-flow state before any structural residual is considered.
+
+Twenty adversarial cases are authored. They cover opening/rolling/reset reference regimes, the 3.5% trigger semantics, two-minute delay, restart auction, order restrictions/deletion, potential-vs-executed crossing, no invented path, replay-safe timing, generic comparators and same-root evidence de-duplication.
+
+Research-specific Node execution remains TEST_EXECUTION_PENDING. No outcomes were opened. D01 maturity remains 52.7%; SDA-001/SDA-002 remain open; Pattern alpha remains UNKNOWN; Formal Core remains LOCKED.

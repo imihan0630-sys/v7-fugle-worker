@@ -4752,3 +4752,103 @@ No maturity or Formal change is authorized by this routing.
 7. Next D01 science: separate structural response from intraday volatility interruption / delayed matching / dynamic price-stabilization mechanics, which are not the same as multi-session suspension.
 8. No outcome join / no runtime wiring / no Formal change.
 
+
+
+## Continuation update — DL-067 (2026-10-07)
+
+### DL-067 — Structural response vs intraday volatility interruption / delayed matching
+- DL-066 separated multi-session suspension/resumption stale-price anchoring from technical structure.
+- DL-067 freezes TWSE intraday volatility interruption as a separate matching-mechanism layer.
+- Official TWSE rule facts were re-read live from the current trading-mechanism page:
+  potential execution price beyond +/-3.5% of the interruption reference triggers the mechanism;
+  matching is postponed for two minutes;
+  resumption occurs by call auction and then continuous trading resumes;
+  market/IOC/FOK orders are not accepted during interruption;
+  existing market orders are automatically deleted;
+  limit ROD orders may be added;
+  the restart call-auction price becomes the reference for the next five minutes before rolling five-minute weighted-average reference resumes.
+- This mechanism is NOT multi-session suspension and NOT the daily price limit.
+- Trigger potential execution price is not an executed price and cannot be used as a breakout/support-break event.
+- Reference regimes are frozen separately:
+  OPENING_REFERENCE_PHASE;
+  ROLLING_FIVE_MINUTE_REFERENCE;
+  POST_INTERRUPTION_RESET_REFERENCE.
+- Frozen interruption states:
+  NORMAL_CONTINUOUS_TRADING;
+  INTERRUPTION_TRIGGER_CANDIDATE;
+  MATCHING_POSTPONED;
+  INTERRUPTION_ORDER_ACCEPTANCE;
+  RESTART_CALL_AUCTION;
+  RESTART_CALL_PRINT;
+  POST_INTERRUPTION_REFERENCE_RESET_WINDOW;
+  RETURN_TO_ROLLING_CONTINUOUS_REFERENCE;
+  INTERRUPTION_PROVENANCE_UNKNOWN.
+- Two-minute matching delay is not price acceptance.
+- Pre-trigger order set does not remain unchanged because order eligibility changes and market orders may be deleted.
+- Structural crossing states are separated:
+  TRIGGER_POTENTIAL_ZONE_CROSS;
+  RESTART_CALL_ZONE_CROSS;
+  POST_INTERRUPTION_CONTINUOUS_CROSS_OBSERVED.
+- No continuous path through the delayed interval is invented.
+- Restart call print != confirmed breakout.
+- Post-interruption structural confirmation requires a preregistered observation window; best-after-outcome window selection is prohibited.
+- DL-064 daily-price-limit and DL-062 auction semantics remain mandatory.
+- One interruption episode keeps one immutable event identity; repeated snapshots do not multiply N.
+- Primary comparators:
+  G0 HIGH_VOLATILITY_MOVE_WITHOUT_INTERRUPTION_AT_STRUCTURAL_ZONE;
+  G1 VOLATILITY_INTERRUPTION_AT_STRUCTURAL_ZONE;
+  H0 VOLATILITY_INTERRUPTION_AWAY_FROM_STRUCTURAL_ZONE;
+  H1 VOLATILITY_INTERRUPTION_AT_STRUCTURAL_ZONE.
+- Future D16 ladder:
+  V0 RAW_STRUCTURAL_RESPONSE;
+  V1 VOLATILITY_INTERRUPTION_EVENT_IDENTIFIED;
+  V2 TRIGGER_POTENTIAL_VS_EXECUTED_PRICE_SEPARATED;
+  V3 REFERENCE_PRICE_REGIME_CONTROLLED;
+  V4 MATCHING_DELAY_CONTROLLED;
+  V5 ORDER_SET_MUTATION_CONTROLLED;
+  V6 RESTART_CALL_AUCTION_CONTROLLED;
+  V7 POST_INTERRUPTION_REFERENCE_RESET_CONTROLLED;
+  V8 DAILY_PRICE_LIMIT_CONTEXT_CONTROLLED;
+  V9 TIME_OF_DAY_AND_TRADING_PHASE_CONTROLLED;
+  V10 GENERIC_HIGH_VOLATILITY_COMPARATOR_CONTROLLED;
+  V11 AWAY_FROM_ZONE_INTERRUPTION_COMPARATOR_CONTROLLED;
+  V12 LIQUIDITY_ORDER_FLOW_CONTROLLED;
+  V13 STRUCTURAL_RESPONSE_RESIDUAL_CANDIDATE;
+  V14 MULTI_EVENT_MULTI_SYMBOL_MULTI_REGIME_REPLICATION.
+- Interpretation states:
+  Q0 TRIGGER_WITHOUT_EXECUTION_EXPLANATION;
+  Q1 MATCHING_DELAY_EXPLANATION;
+  Q2 ORDER_SET_MUTATION_EXPLANATION;
+  Q3 RESTART_AUCTION_EXPLANATION;
+  Q4 REFERENCE_RESET_EXPLANATION;
+  Q5 DAILY_LIMIT_INTERACTION_EXPLANATION;
+  Q6 GENERIC_HIGH_VOLATILITY_EXPLANATION;
+  Q7 LIQUIDITY_ORDER_FLOW_EXPLANATION;
+  Q8 STRUCTURAL_RESPONSE_RESIDUAL;
+  Q9 INTERRUPTION_PROVENANCE_UNKNOWN;
+  Q10 NOT_EVALUABLE.
+- New files:
+  - research/PATTERN_INTRADAY_VOLATILITY_INTERRUPTION_FIREWALL_V0_1.md
+  - research/pattern_intraday_volatility_interruption_firewall_v0_1.json
+  - research/pattern_intraday_volatility_interruption_firewall_v0_1.mjs
+  - research/test_pattern_intraday_volatility_interruption_firewall_v0_1.mjs
+  - research/PATTERN_INTRADAY_VOLATILITY_INTERRUPTION_D16_HANDOFF_V0_1.md
+- 20 adversarial tests authored; TEST_EXECUTION_PENDING.
+- SDA-001 remains open: price-derived interruption/pattern states share PRICE_OHLC ancestry by default.
+- SDA-002 remains open: trigger/reference/restart timestamps require replay-safe first-known receipts.
+- No outcome join; no historical Shadow fabrication; no runtime/Worker/D1 wiring; no R09.
+- Current D01 maturity remains 52.7%.
+- Pattern alpha UNKNOWN.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-067
+
+1. Reconcile the DL-067 Class-A branch against then-latest main before PR because parallel rooms remain active.
+2. Treat V8 Repair/Regression CI only as Formal-isolation evidence; DL-067 research Node tests remain TEST_EXECUTION_PENDING unless independently executed.
+3. Preserve trigger-potential price, restart call price and first post-interruption continuous trade as distinct states.
+4. Consume D04/D05 trading-phase, auction, liquidity and order-book receipts; do not build a second D01 matching engine.
+5. Hand V0-V14 / Q0-Q10 mechanism-attribution inference to D16.
+6. Keep SDA-001/SDA-002 open until canonical closure evidence exists.
+7. Next D01 science: separate structural response from disposition-security periodic matching / altered matching cadence, where apparent persistence may be a microstructure artifact.
+8. No outcome join / no runtime wiring / no Formal change.
