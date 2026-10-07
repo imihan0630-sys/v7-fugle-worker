@@ -570,3 +570,31 @@ Status: **D07-19 L2 MECHANISM_AND_FALSIFICATION_DEFINED / PIT_PROJECT_REPLAY_PEN
 - PIT rule: decision inputs require knownAt <= projectDecisionKnownAt; later utilization, margins, overruns, impairments and realized returns append as later vintages/outcomes only.
 - Maturity: **L0/0 -> L2/40**. L3 remains blocked pending at least two Taiwan-listed issuers from materially different industries with project-level PIT replay and an explicit D07-19 vs D21-07 divergent case.
 - Outcomes CLOSED. Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+
+## 2026-10-08 Room-06 D07-20 三大財報聯動預測基礎
+
+Status: **D07-20 L2 / MECHANISM_AND_FALSIFICATION_DEFINED / TAIWAN_PIT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED**
+
+- Canonical machine contract: `research/d07_20_integrated_three_statement_forecast_foundation_v0_1.json`.
+- D07-20 owns integrated statement reconciliation and forecast-vintage integrity; D07-21 owns revenue/margin/OPEX drivers, D07-22 owns working-capital/CAPEX/FCF detail, D07-23 owns scenarios, D08 consumes forecast outputs for valuation.
+- Three-statement closure is a consistency/data-quality state, not standalone alpha and not an independent valuation vote.
+- PIT guard: management guidance, consensus and model assumptions are separate provenance lanes; later filings, restatements, guidance revisions and realized outcomes append only.
+- IFRS 18 transition is a presentation vintage; line-item/subtotal changes cannot be interpreted as economic improvement without comparable mapping.
+- Maturity: **L0/0 -> L2/40**. L3 remains blocked pending Taiwan historical PIT replay across >=3 issuers and >=2 materially different industries.
+- Outcomes CLOSED. Formal Core unchanged. FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+
+
+## 2026-10-08 Room-06 D08-03 outcome-blind percentile materialization PASS
+
+Status: **PERCENTILE_SNAPSHOT_MATERIALIZATION_PASS / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED**
+
+- Dedicated execution: GitHub Actions run `37648084681` PASS.
+- Durable receipt: `research/d08_twse_historical_valuation_percentile_materialization_receipt_20261008_v0_1.json`.
+- 44 frozen TWSE scan dates materialized from the 2005-2026 daily valuation archive, reconciled universe V0.2 and raw valuation V0.3.
+- Cohort member rows=45305; raw observed=45059; PE known=35737; PB known=45054.
+- PE percentile known totals: 252=34452, 756=32436, 1260=30567, expanding=34452.
+- PB percentile known totals: 252=43548, 756=41237, 1260=39489, expanding=43548.
+- snapshotBundleHash=`2b16513f237ca1c45b1658d5eaa35b5b45d7f23766b87aff7b8a85aec11f1c91`; objectBundleHash=`235f2c43281846aa8be65f26829935a0193875ee92fe5169784f3f73c355a077`.
+- All 44 immutable objects passed readback. No returns, outcome join, D1 writes, System1 runtime or Formal Core impact.
+- D08-03 remains **L3/60**; next gate is outcome-blind control snapshot freeze before any Historical-Valuation Shadow join.
