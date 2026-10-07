@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "D06_05_WEEKLY_PAIR_CLEAN_SUPPORT_AUDIT_20260924_20261002_V0_1",
+  "createdAt": "2026-10-07T20:41:42+08:00",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "module": "D06-05",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "pair": {
+    "priorSourceDate": "2026-09-24",
+    "currentSourceDate": "2026-10-02"
+  },
+  "ordinaryFourDigitCommonSupport": 2962,
+  "exactDenominatorStable": 2783,
+  "exactDenominatorStablePct": 93.95678595543552,
+  "denominatorChanged": 179,
+  "denominatorChangedPct": 6.0432140445644835,
+  "medianAbsConcentrationDeltaPctPoint": {
+    "all": 0.02240462609123739,
+    "denominatorStable": 0.019305566092612025,
+    "denominatorChanged": 0.16248608538557363,
+    "changedToStableRatio": 8.416540836259385
+  },
+  "extremeTail": {
+    "absDeltaAtLeast3pp": {
+      "stablePct": 0.9342436219906576,
+      "changedPct": 5.58659217877095,
+      "rateRatio": 5.979802320584443
+    },
+    "absDeltaAtLeast5pp": {
+      "stablePct": 0.35932446999640677,
+      "changedPct": 2.2346368715083798,
+      "rateRatio": 6.218994413407822
+    },
+    "absDeltaAtLeast10pp": {
+      "stablePct": 0.10779734099892202,
+      "changedPct": 1.675977653631285,
+      "rateRatio": 15.547486033519554
+    }
+  },
+  "knownContaminationCases": [
+    {
+      "symbol": "2601",
+      "denominatorDeltaPct": -16.29497525174915,
+      "concentrationDeltaPctPoint": 68.40802122838514,
+      "knownEvent": "capital reduction",
+      "classification": "HARD_EXCLUDE"
+    },
+    {
+      "symbol": "6550",
+      "denominatorDeltaPct": 0,
+      "concentrationDeltaPctPoint": -25.66548915355135,
+      "knownEvent": "capital reduction/new-share exchange",
+      "classification": "HARD_EXCLUDE_DESPITE_STABLE_DENOMINATOR"
+    }
+  ],
+  "conclusion": [
+    "denominator changes are only about 6% of ordinary common support but are disproportionately represented in large concentration moves",
+    "stable denominator is necessary but not sufficient; corporate-action event flags are independently required",
+    "2783 is only an upper-bound clean-support count before exhaustive event and identity exclusions"
+  ],
+  "status": "PRE_OUTCOME_CLEAN_SUPPORT_AUDIT / EVENT_REGISTRY_NOT_YET_EXHAUSTIVE / OUTCOMES_CLOSED / FORMAL_LOCKED"
+}
