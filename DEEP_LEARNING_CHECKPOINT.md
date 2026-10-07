@@ -2808,3 +2808,28 @@ Maturity:
 3. D06-05 remains blocked by absence of genuine same-generation concentration-consuming research rows; do not fabricate a retrospective join.
 4. D06-19 remains UNKNOWN for direct domestic retail direction until an explicit official/authorized stock-date investor-identity field contract exists.
 5. D06-18 remains L3/60; future in-slot dates are replication, not automatic maturity increases.
+
+
+## 2026-10-07 D06 — IC-098 D06-05 fresh same-generation ownership lineage
+
+- Durable artifacts:
+  - `research/d06_05_tdcc_same_generation_lineage_20261007_v0_1.json`;
+  - `research/d06_05_tdcc_weekly_change_falsification_20260924_20261002_v0_1.json`;
+  - `research/d06_05_ownership_l3_decision_20261007_v0_1.json`.
+- Historical 2026-10-05 join remains immutable false; no retrospective reconstruction was performed.
+- New outcome-blind generation `D06-20261007-TDCC-OWNERSHIP-LINEAGE-R1` binds 4,078 parsed concentration rows to official parent `D06-20261005-TDCC-WEEKLY`.
+- Transport mirror raw bytes reproduce official parent fingerprint `fnv1a64-utf8:ad1a265c0a3dcaf8` exactly after BOM normalization; mirror authority remains false.
+- Source integrity: 69,326 bracket rows / 4,078 securities / 4,078 reconciliation PASS / 0 missing grade sets.
+- Child row-set hash `fnv1a64-utf8:e48be87cc678e625` recomputes exactly on GitHub readback.
+- Weekly 2026-09-24 -> 2026-10-02 common support: 4,056 securities; ordinary four-digit common support 2,962. Ordinary 400+ concentration increase/decrease/unchanged = 956/873/1,133; median abs delta 0.02pp, p90 0.63pp, p99 3.26pp.
+- Large weekly deltas remain economically ambiguous until capital/corporate-action/denominator continuity is controlled.
+- D06-05 promotes L2/40 -> L3/60 for identity-agnostic large-holder ownership concentration source/PIT/replay feasibility only.
+- Holder identity/passive share/active-institution share/motive remain UNKNOWN.
+- D06 aggregate 54.4% -> 55.6%; global 356-module tracker remains 46.9% after rounding.
+- Outcomes CLOSED; Formal Core LOCKED.
+
+### Exact next continuation
+1. Continue D06-15 public-bank proxy source-contract work: freeze official eight-bank policy set separately from broker execution proxy membership and current code mapping.
+2. D06-05 waits for the next genuinely new TDCC sourceDate; repeated use of the 2026-10-02 vintage earns no additional evidence count or maturity.
+3. Before D06-05 L4, freeze corporate-action/capital/denominator continuity and preregister vintage-clustered OOS/Shadow residual incrementality.
+4. D06-11 remains prospective-November-clock gated; D06-13 remains full-universe authorization/cost gated; D06-19 remains direct domestic-natural-person source gated.
