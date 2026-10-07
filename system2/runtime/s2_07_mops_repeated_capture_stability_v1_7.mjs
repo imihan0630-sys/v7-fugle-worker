@@ -21,6 +21,25 @@ function normalizeCapture(input,index){
   const stableEventUniverseHash=text(receipt.stableEventUniverseHash);
   if(!hash64(stableEventUniverseHash)) throw new Error("capture["+index+"].stableEventUniverseHash invalid");
   const observations=Array.isArray(receipt.observations)?receipt.observations:[];
+  const queryDiagnostics=Array.isArray(input.queryDiagnostics)?input.queryDiagnostics:[];
+  const diagnosticIdentityEvidence=[];
+  for(const d of queryDiagnostics){
+    const stockCode=text(d?.symbol);
+    for(const [queryPath,keys] of [
+      ["ANNUAL_ONLY",d?.yearOnlyVersionKeys],
+      ["MONTH_ONLY",d?.monthOnlyVersionKeys],
+    ]){
+      for(const key of Array.isArray(keys)?keys:[]){
+        diagnosticIdentityEvidence.push({
+          versionKey:text(key),
+          stockCode,
+          sourceId:text(d?.sourceId)||null,
+          family:text(d?.family)||null,
+          queryPath,
+        });
+      }
+    }
+  }
   return {
     label:text(input.captureLabel||input.runId||input.workflowRunId||("CAPTURE_"+(index+1))),
     capturedAt,
@@ -29,6 +48,7 @@ function normalizeCapture(input,index){
     coveredSymbolCount:Number(receipt.coveredSymbolCount||0),
     uniqueGlobalVersionKeyCount:Number(receipt.uniqueGlobalVersionKeyCount||observations.length),
     observations,
+    diagnosticIdentityEvidence,
   };
 }
 
@@ -83,8 +103,10 @@ export async function reconcileRepeatedMopsCapturesV1_7({
 
   const captureSets=[];
   const union=new Map();
+  const diagnosticIdentityMap=new Map();
   const payloadConflictKeys=new Set();
   const identityConflictKeys=new Set();
+  const diagnosticIdentityConflictKeys=new Set();
   const captureDiagnostics=[];
   const cumulative=new Set();
 
@@ -147,6 +169,32 @@ export async function reconcileRepeatedMopsCapturesV1_7({
       });
     }
 
+    for(const e of capture.diagnosticIdentityEvidence){
+      if(!versionKeyOk(e.versionKey)||!/^[1-9][0-9]{3}$/.test(e.stockCode)){
+        blockers.push("DIAGNOSTIC_VERSION_IDENTITY_INVALID");
+        continue;
+      }
+      let record=diagnosticIdentityMap.get(e.versionKey);
+      if(!record){
+        record={
+          versionKey:e.versionKey,
+          stockCode:e.stockCode,
+          evidence:[],
+        };
+        diagnosticIdentityMap.set(e.versionKey,record);
+      }else if(record.stockCode!==e.stockCode){
+        diagnosticIdentityConflictKeys.add(e.versionKey);
+      }
+      record.evidence.push({
+        captureIndex:ci,
+        captureLabel:capture.label,
+        capturedAt:capture.capturedAt,
+        queryPath:e.queryPath,
+        sourceId:e.sourceId,
+        family:e.family,
+      });
+    }
+
     if(duplicateKeys.size) blockers.push("DUPLICATE_VERSION_KEY_WITHIN_CAPTURE");
     if(set.size!==capture.uniqueGlobalVersionKeyCount) blockers.push("CAPTURE_VERSION_COUNT_MISMATCH");
 
@@ -171,6 +219,12 @@ export async function reconcileRepeatedMopsCapturesV1_7({
 
   if(payloadConflictKeys.size) blockers.push("MOPS_VERSION_PAYLOAD_MUTATION_ACROSS_CAPTURES");
   if(identityConflictKeys.size) blockers.push("MOPS_VERSION_IDENTITY_CONFLICT_ACROSS_CAPTURES");
+  if(diagnosticIdentityConflictKeys.size) blockers.push("DIAGNOSTIC_VERSION_STOCK_IDENTITY_CONFLICT");
+
+  const unresolvedDiagnosticOnly=[...diagnosticIdentityMap.values()]
+    .filter(record=>!union.has(record.versionKey))
+    .sort((a,b)=>a.versionKey.localeCompare(b.versionKey));
+  if(unresolvedDiagnosticOnly.length) blockers.push("DIAGNOSTIC_ONLY_VERSION_WITHOUT_EXACT_PAYLOAD_PROVENANCE");
 
   const captureTimes=normalized.map(c=>c.capturedAt);
   const versions=[...union.values()].map(record=>{
@@ -182,8 +236,16 @@ export async function reconcileRepeatedMopsCapturesV1_7({
       if(Date.parse(record.sourceReportedAt)<=Date.parse(captureTimes[i])) missingEarlierWhileSourceExisted+=1;
     }
     const missingAfterFirstSeen=bits.slice(Math.max(firstIndex,0)).filter(x=>!x).length;
+    const diagnosticEvidence=diagnosticIdentityMap.get(record.versionKey)?.evidence||[];
+    const earliestIdentityObservedAt=[record.earliestObservedAt,...diagnosticEvidence.map(x=>x.capturedAt)]
+      .filter(Boolean)
+      .sort((a,b)=>Date.parse(a)-Date.parse(b))[0]||record.earliestObservedAt;
     return {
       ...record,
+      earliestExactPayloadObservedAt:record.earliestObservedAt,
+      earliestIdentityObservedAt,
+      diagnosticIdentityEvidenceCount:diagnosticEvidence.length,
+      diagnosticIdentityEvidence:diagnosticEvidence,
       presenceBits:bits.map(Boolean),
       presenceCount:bits.filter(Boolean).length,
       absenceCount:bits.filter(x=>!x).length,
@@ -258,6 +320,12 @@ export async function reconcileRepeatedMopsCapturesV1_7({
     payloadMutationVersionKeys:deepFreeze([...payloadConflictKeys].sort()),
     identityConflictCount:identityConflictKeys.size,
     identityConflictVersionKeys:deepFreeze([...identityConflictKeys].sort()),
+    diagnosticIdentityConflictCount:diagnosticIdentityConflictKeys.size,
+    diagnosticIdentityConflictVersionKeys:deepFreeze([...diagnosticIdentityConflictKeys].sort()),
+    diagnosticObservedIdentityCount:diagnosticIdentityMap.size,
+    unresolvedDiagnosticOnlyVersionCount:unresolvedDiagnosticOnly.length,
+    unresolvedDiagnosticOnlyVersionKeys:deepFreeze(unresolvedDiagnosticOnly.map(x=>x.versionKey)),
+    unresolvedDiagnosticOnlyEvidence:deepFreeze(unresolvedDiagnosticOnly),
     membershipPatternCounts:deepFreeze(patternCounts),
     lateDiscoveredPreexistingVersionCount:lateDiscoveredPreexisting.length,
     lateDiscoveredPreexistingVersionKeys:deepFreeze(lateDiscoveredPreexisting.map(v=>v.versionKey)),
