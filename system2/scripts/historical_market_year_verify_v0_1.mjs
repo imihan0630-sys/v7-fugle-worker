@@ -420,7 +420,8 @@ if(market==="TWSE"){
 }else{
   const currentListing=await fetchCurrentListingMetadataV0_1({
     observedAt,
-    minimumByMarket:{TWSE:500,TPEX:400},
+    markets:["TPEX"],
+    minimumByMarket:{TPEX:400},
   });
   assert.equal(currentListing.state,"READY","current listing metadata must be READY");
   registry=buildObservedIntervalUniverseRegistryV0_1({
