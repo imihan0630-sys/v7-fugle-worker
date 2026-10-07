@@ -1,0 +1,216 @@
+import assert from "node:assert/strict";
+import {
+  buildNcT01PhysicalIndependenceReceiptV0_1,
+  buildNcT01ReceiptFromOrchestrationV0_1,
+  nct01RequiredPassRefTypesV0_1,
+} from "../runtime/nct01_physical_receipt_v0_1.mjs";
+
+const h=(c)=>String(c).repeat(64);
+const typed=(type,c)=>type+":"+h(c);
+
+const allRefs=nct01RequiredPassRefTypesV0_1().map((type,index)=>
+  typed(type,String((index%9)+1)),
+);
+
+const base={
+  receiptId:"NC-T01-TEST-001",
+  decisionAt:"2026-10-07T07:30:00Z",
+  strategyId:"SHORT_MOMENTUM",
+  strategyVersion:"V0.1-CONTRACT",
+  hiddenFallbackAudit:{
+    cachedSystem1SelectionUsed:false,
+    persistedSystem1SelectionUsed:false,
+    aliasReconstructionUsed:false,
+    crossProjectFallbackUsed:false,
+    staleSharedStateUsed:false,
+  },
+  sharedRawSourceRefs:["A1_TWSE_OFFICIAL","S2_D1_PIT_HISTORY"],
+  candidateUniverseProvenance:["UNIVERSE_VERSION:TEST","BASE_UNIVERSE_COUNT:2"],
+  requiredInputsState:"READY",
+  executionState:"EXECUTED",
+  candidateGenerationExecutable:true,
+  generatedCandidates:["1101"],
+  sourceGenerationRefs:allRefs,
+  generatedAt:"2026-10-07T07:31:00Z",
+};
+
+const pass=await buildNcT01PhysicalIndependenceReceiptV0_1(base);
+assert.equal(pass.schemaVersion,"SDA022_NC_T01_RECEIPT_V0_1");
+assert.equal(pass.resultClassification,"PHYSICALLY_INDEPENDENT_PATH_OBSERVED");
+assert.equal(pass.zeroPickDisposition,"NOT_ZERO_PICK");
+assert.equal(pass.system1Top6InputAvailable,false);
+assert.equal(pass.system1RankInputAvailable,false);
+assert.equal(pass.formalMutation,false);
+assert.match(pass.receiptHash,/^[a-f0-9]{64}$/);
+
+const zero=await buildNcT01PhysicalIndependenceReceiptV0_1({
+  ...base,
+  receiptId:"NC-T01-TEST-ZERO",
+  generatedCandidates:[],
+});
+assert.equal(zero.resultClassification,"PHYSICALLY_INDEPENDENT_PATH_OBSERVED");
+assert.equal(zero.zeroPickDisposition,"LEGITIMATE_ZERO_PICK");
+
+const missingTyped=await buildNcT01PhysicalIndependenceReceiptV0_1({
+  ...base,
+  receiptId:"NC-T01-TEST-MISSING-REF",
+  generatedCandidates:[],
+  sourceGenerationRefs:allRefs.filter((x)=>!x.startsWith("CONTINUITY_RECEIPT_SHA256:")),
+});
+assert.equal(missingTyped.resultClassification,"EVIDENCE_INCOMPLETE");
+assert.equal(missingTyped.zeroPickDisposition,"INPUT_INCOMPLETE");
+assert.ok(missingTyped.notes.some((x)=>x.includes("CONTINUITY_RECEIPT_SHA256")));
+
+const hidden=await buildNcT01PhysicalIndependenceReceiptV0_1({
+  ...base,
+  receiptId:"NC-T01-TEST-HIDDEN",
+  hiddenFallbackAudit:{
+    ...base.hiddenFallbackAudit,
+    persistedSystem1SelectionUsed:true,
+  },
+});
+assert.equal(hidden.resultClassification,"HIDDEN_SYSTEM1_DEPENDENCY");
+assert.equal(hidden.zeroPickDisposition,"DEPENDENCY_BLOCKED");
+
+const runtimeFailure=await buildNcT01PhysicalIndependenceReceiptV0_1({
+  ...base,
+  receiptId:"NC-T01-TEST-RUNTIME",
+  executionState:"RUNTIME_FAILURE",
+  candidateGenerationExecutable:false,
+  generatedCandidates:[],
+});
+assert.equal(runtimeFailure.resultClassification,"EVIDENCE_INCOMPLETE");
+assert.equal(runtimeFailure.zeroPickDisposition,"RUNTIME_FAILURE");
+
+await assert.rejects(
+  ()=>buildNcT01PhysicalIndependenceReceiptV0_1({
+    ...base,
+    receiptId:"NC-T01-TEST-BAD-REF",
+    sourceGenerationRefs:["PIT_REPLAY_SHA256:not-a-hash"],
+  }),
+  /typed digest format/,
+);
+
+const orchestration={
+  strategyId:"SHORT_MOMENTUM",
+  strategyVersion:"V0.1-CONTRACT",
+  decisionTimestamp:"2026-10-07T07:30:00.000Z",
+  a1BatchHash:h("a"),
+  baseUniverseCount:2,
+  eligibleCount:2,
+  accountedCount:2,
+  orchestrationHash:h("b"),
+  perSymbolDiagnostics:[
+    {
+      symbol:"1101",
+      state:"ACCOUNTED",
+      replayState:"READY",
+      replayHash:h("c"),
+      continuityBindingState:"READY",
+      continuityReceiptHash:h("d"),
+      sourceHistoryHash:h("e"),
+      continuityTransformHash:h("f"),
+      continuityBlockerCodes:[],
+      strategyValidity:"VALID",
+      entryReadiness:"BUY_ELIGIBLE",
+    },
+    {
+      symbol:"1213",
+      state:"ACCOUNTED",
+      replayState:"READY",
+      replayHash:h("7"),
+      continuityBindingState:"INCOMPLETE",
+      continuityReceiptHash:null,
+      sourceHistoryHash:h("8"),
+      continuityTransformHash:null,
+      continuityBlockerCodes:["CONTINUITY_RECEIPT_MISSING"],
+      strategyValidity:"INCOMPLETE",
+      entryReadiness:"BLOCKED",
+    },
+  ],
+  bundle:{
+    runReceipt:{
+      runState:"COMPLETE",
+      universeVersion:"A1-ORDINARY-EQUITY-V0.1",
+    },
+    factorRows:[
+      {symbol:"1101",snapshot_hash:h("1")},
+      {symbol:"1213",snapshot_hash:h("2")},
+    ],
+    decisionSnapshots:[
+      {evaluation:{symbol:"1101",state:"QUALIFIED_NOT_SELECTED"}},
+      {evaluation:{symbol:"1213",state:"INCOMPLETE"}},
+    ],
+    fingerprint:{shadowAccountingHash:h("3")},
+    persistenceBatch:{batchHash:h("4")},
+  },
+};
+const policy={
+  strategyId:"SHORT_MOMENTUM",
+  strategyVersion:"V0.1-CONTRACT",
+  fingerprintHash:h("5"),
+};
+
+const assembled=await buildNcT01ReceiptFromOrchestrationV0_1({
+  receiptId:"NC-T01-ASSEMBLED",
+  orchestration,
+  policyFingerprintReceipt:policy,
+  sharedRawSourceRefs:["A1_TWSE_OFFICIAL","S2_D1_PIT_HISTORY"],
+  hiddenFallbackAudit:base.hiddenFallbackAudit,
+  generatedAt:"2026-10-07T07:31:00Z",
+});
+assert.equal(assembled.requiredInputsState,"READY");
+assert.equal(assembled.executionState,"EXECUTED");
+assert.equal(assembled.candidateGenerationExecutable,true);
+assert.equal(assembled.resultClassification,"PHYSICALLY_INDEPENDENT_PATH_OBSERVED");
+assert.deepEqual(assembled.generatedCandidates,["1101"]);
+assert.ok(assembled.candidateUniverseProvenance.includes("CONTINUITY_READY_WITNESS_COUNT:1"));
+assert.ok(assembled.candidateUniverseProvenance.includes("SYMBOL_LOCAL_INCOMPLETE_COUNT:1"));
+assert.ok(assembled.sourceGenerationRefs.includes("SYSTEM2_POLICY_FINGERPRINT_SHA256:"+h("5")));
+assert.ok(assembled.sourceGenerationRefs.includes("PIT_REPLAY_SHA256:"+h("c")));
+assert.ok(assembled.sourceGenerationRefs.includes("CONTINUITY_RECEIPT_SHA256:"+h("d")));
+assert.ok(assembled.sourceGenerationRefs.includes("FACTOR_SNAPSHOT_SHA256:"+h("1")));
+assert.ok(!assembled.sourceGenerationRefs.includes("CONTINUITY_RECEIPT_SHA256:"+h("7")));
+
+const noWitness=await buildNcT01ReceiptFromOrchestrationV0_1({
+  receiptId:"NC-T01-NO-WITNESS",
+  orchestration:{
+    ...orchestration,
+    perSymbolDiagnostics:orchestration.perSymbolDiagnostics.map((x)=>({
+      ...x,
+      continuityBindingState:"INCOMPLETE",
+      continuityReceiptHash:null,
+      continuityTransformHash:null,
+      continuityBlockerCodes:["CONTINUITY_RECEIPT_MISSING"],
+      strategyValidity:"INCOMPLETE",
+      entryReadiness:"BLOCKED",
+    })),
+    bundle:{
+      ...orchestration.bundle,
+      decisionSnapshots:orchestration.bundle.decisionSnapshots.map((x)=>({
+        evaluation:{...x.evaluation,state:"INCOMPLETE"},
+      })),
+    },
+  },
+  policyFingerprintReceipt:policy,
+  sharedRawSourceRefs:["A1_TWSE_OFFICIAL","S2_D1_PIT_HISTORY"],
+  hiddenFallbackAudit:base.hiddenFallbackAudit,
+  generatedAt:"2026-10-07T07:31:00Z",
+});
+assert.equal(noWitness.requiredInputsState,"INCOMPLETE");
+assert.equal(noWitness.executionState,"BLOCKED_INPUTS");
+assert.equal(noWitness.candidateGenerationExecutable,false);
+assert.equal(noWitness.resultClassification,"EVIDENCE_INCOMPLETE");
+assert.equal(noWitness.zeroPickDisposition,"INPUT_INCOMPLETE");
+
+const changed=await buildNcT01PhysicalIndependenceReceiptV0_1({
+  ...base,
+  receiptId:"NC-T01-TEST-CHANGED",
+  sourceGenerationRefs:[
+    ...allRefs.filter((x)=>!x.startsWith("PIT_REPLAY_SHA256:")),
+    "PIT_REPLAY_SHA256:"+h("9"),
+  ],
+});
+assert.notEqual(pass.receiptHash,changed.receiptHash);
+
+console.log("System2 NC-T01 physical receipt v0.1 tests passed");
