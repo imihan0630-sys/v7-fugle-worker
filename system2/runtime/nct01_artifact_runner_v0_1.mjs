@@ -4,6 +4,7 @@ import { findLimitedShadowSpec } from "./limited_shadow_v0_1.mjs";
 import { assessStage1StrategyV0_1 } from "./stage1_assessor_policies_v0_1.mjs";
 import { runDailyLimitedShadowOrchestratorV0_1 } from "./daily_shadow_orchestrator_v0_1.mjs";
 import { buildNcT01ReceiptFromOrchestrationV0_1 } from "./nct01_physical_receipt_v0_1.mjs";
+import { validateNcT01HiddenFallbackAuditV0_1 } from "./nct01_hidden_fallback_audit_v0_1.mjs";
 
 export const NCT01_ARTIFACT_RUNNER_VERSION_V0_1 = "0.1-RESEARCH";
 
@@ -110,6 +111,10 @@ export async function runNcT01ArtifactOnlyV0_1({
     ],
   });
 
+  const hiddenFallbackAuditView=await validateNcT01HiddenFallbackAuditV0_1(
+    hiddenFallbackAuditEvidence,
+  );
+
   const receipt=await buildNcT01ReceiptFromOrchestrationV0_1({
     receiptId:requiredText(receiptId,"receiptId"),
     orchestration,
@@ -183,10 +188,12 @@ export async function runNcT01ArtifactOnlyV0_1({
     requiredEvidenceCompleteSymbols:Object.freeze(requiredEvidenceCompleteSymbols),
     strategyExecutableSymbolCount:strategyExecutableSymbols.length,
     strategyExecutableSymbols:Object.freeze(strategyExecutableSymbols),
-    hiddenFallbackAuditState:hiddenFallbackAuditEvidence?.auditState||"EVIDENCE_INCOMPLETE",
-    hiddenFallbackAuditDigest:hiddenFallbackAuditEvidence?.auditDigest||null,
-    hiddenFallbackRunnerHeadSha:hiddenFallbackAuditEvidence?.runnerHeadSha||null,
-    hiddenFallbackTransitiveManifestHash:hiddenFallbackAuditEvidence?.transitiveManifestHash||null,
+    hiddenFallbackAuditState:hiddenFallbackAuditView.auditState,
+    hiddenFallbackAuditDigest:hiddenFallbackAuditView.auditDigest,
+    hiddenFallbackRunnerHeadSha:hiddenFallbackAuditView.runnerHeadSha,
+    hiddenFallbackTransitiveManifestHash:hiddenFallbackAuditView.transitiveManifestHash,
+    hiddenFallbackAuditIntegrityValid:hiddenFallbackAuditView.auditIntegrityValid,
+    hiddenFallbackReauditRequired:hiddenFallbackAuditView.reauditRequired,
     hiddenFallbackRuntimeForbiddenAccessCount:
       Number.isInteger(hiddenFallbackAuditEvidence?.runtimeEvidence?.runtimeForbiddenAccessCount)
         ? hiddenFallbackAuditEvidence.runtimeEvidence.runtimeForbiddenAccessCount
