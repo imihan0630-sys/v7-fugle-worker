@@ -316,7 +316,9 @@ GitHub專屬checkpoint：
 | D08-19 | Reverse DCF／Market-Implied Expectations／Expectations Gap反向DCF、市場隱含預期與預期差 | L0 未研究 | 0% |
 
 
-### D09｜產業／族群／市場廣度／輪動 — 57.1%
+### D09｜產業／族群／市場廣度／輪動 — 58.6%
+> 2026-10-07 BR-066：以同日共同決策截止時鐘凍結官方 TWSE 上市股票方向廣度與 TAIEX 狀態，TPEx 同時鐘分母維持 UNKNOWN，不回填；D09-12 依 L3 = TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED 定義由 L2/40% 升至 L3/60%。這是資料可行性升級，不代表 BROAD_POSITIVE/BROAD_NEGATIVE、預測 Alpha 或 L4 前瞻/OOS 成立。D09 由 57.1% 升至 58.6%。
+
 
 > 2026-10-04 BR-062：D18 市場狀態建構器依賴已達 L3，但缺與真實官方廣度同 marketDate／decisionTimestamp 的持久化聯合收據；測試 fixture 與事後歷史重建均不得替代，因此 D09-12 維持 L2。
 
@@ -340,7 +342,7 @@ GitHub專屬checkpoint：
 | D09-09 | 橫截面報酬離散度 | L3 台股PIT資料可行 | 60% |
 | D09-10 | 產業成交值／集中度 | L3 台股PIT資料可行 | 60% |
 | D09-11 | 題材股與正式產業分類橋接 | L3 台股PIT資料可行 | 60% |
-| D09-12 | Breadth×Regime交互作用 | L2 機制＋反證 | 40% |
+| D09-12 | Breadth×Regime交互作用 | L3 台股PIT資料可行 | 60% |
 | D09-13 | Industry Structure／Competitive Dynamics／Porter Five Forces（產業結構／競爭動態／波特五力） | L3 台股PIT資料可行 | 60% |
 | D09-14 | Firm Competitive Strategy／Strategic Actions（公司競爭策略／策略行動） | L3 台股PIT資料可行 | 60% |
 
