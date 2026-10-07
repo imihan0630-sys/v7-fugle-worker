@@ -1404,3 +1404,64 @@ future completed Taiwan session -> actual prospective A2 + breadth under one exa
 D09 remains 57.1%.
 No maturity promotion.
 SDA-009 exact next remains authoritative and is not overwritten by this parallel research work.
+
+
+## BR-059 D09-13 issuer-native ABF numerator upper-bound firewall — 2026-10-07
+
+Artifact:
+- `research/BR059_D09_13_ABF_REVENUE_NUMERATOR_BOUNDARY_20261007.md`
+
+Status: ISSUER_NATIVE_UPPER_BOUND_EVIDENCE_FROZEN / 3189_ABF_NUMERATOR_UNKNOWN / 8046_ABF_NUMERATOR_UNKNOWN / TAXONOMY_FIREWALL_STRENGTHENED / OUTCOMES_CLOSED
+
+Official 2025 issuer-native disclosure now provides numeric broad-category upper bounds for both priority issuers:
+
+### 3189 Kinsus
+2025 consolidated revenue:
+- total: NTD 39,351,096 thousand;
+- substrate operating segment: NTD 32,311,845 thousand;
+- substrate share of total: approximately 82.11%.
+
+This is a valid broad substrate-business upper bound only.
+It is not an ABF-specific numerator because the substrate segment contains multiple substrate technologies/products.
+
+Frozen:
+`KINSUS_3189_ABF_NUMERATOR = UNKNOWN`.
+
+### 8046 Nan Ya PCB
+2025 consolidated revenue:
+- total: NTD 40,172,990 thousand;
+- broad "circuit board" category: NTD 39,060,099 thousand;
+- broad category share of total: approximately 97.23%.
+
+Issuer-native product scope includes conventional PCB, HDI, rigid-flex, ABF substrate and PP substrate.
+
+Therefore the broad circuit-board category is only an upper bound and is not an ABF-compatible numerator.
+
+Frozen:
+`NANYA_8046_ABF_NUMERATOR = UNKNOWN`.
+
+### Cross-issuer firewall
+
+The two available 2025 numeric scopes are not mutually comparable:
+- 3189 = substrate operating segment;
+- 8046 = broad circuit-board product category.
+
+Neither equals ABF revenue.
+
+Forbidden substitutions:
+- AI/HPC application revenue -> ABF revenue;
+- substrate segment share -> ABF share;
+- broad circuit-board share -> ABF share;
+- capacity/shipment/roadmap -> revenue numerator;
+- sell-side/media estimates -> issuer-native numerator.
+
+This round materially improves measurement validity but does not create a new Alpha result.
+
+D09-13 remains L3 / 60.
+D09 remains 57.1%.
+
+Exact next:
+`BR-059A` continue issuer-native annual-report / investor-presentation search for mutually exclusive product-level disclosure that can isolate ABF for 3189 or 8046. If unavailable, retain UNKNOWN and keep current values as upper bounds only.
+
+SDA-009 remains interrupt-priority:
+if the first genuine System1 R3A1 receipt appears, immediately pause BR-059A and run the V0.6 acceptance oracle.
