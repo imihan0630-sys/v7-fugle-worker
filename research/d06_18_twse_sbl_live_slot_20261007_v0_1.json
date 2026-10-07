@@ -1,0 +1,381 @@
+{
+  "schemaVersion": "D06_18_TWSE_SBL_LIVE_SLOT_20261007_V0_1",
+  "ownerRoom": "05｜法人與籌碼研究室",
+  "domain": "D06",
+  "module": "D06-18",
+  "researchOnly": true,
+  "outcomesUsed": false,
+  "formalCoreImpact": "NONE",
+  "preregisteredTarget": "15:20 ±5 minutes Asia/Taipei",
+  "captureWindow": {
+    "startedAt": "2026-10-07T15:15:02+08:00",
+    "completedAt": "2026-10-07T15:21:05+08:00",
+    "slotQualified": true
+  },
+  "sourceAuthority": "TWSE",
+  "sourcePagePattern": "https://mis.twse.com.tw/stock/detail-sblInquiry?ch=<symbol>&lang=zhHant",
+  "routeState": "5_OF_5_SELECTED_SECURITY_MATCH / VISIBLE_PAGE_DATE_2026_10_07",
+  "frozenSymbols": [
+    "1101",
+    "2451",
+    "3532",
+    "6187",
+    "9941"
+  ],
+  "retrievalChannel": "Firecrawl live browser/query under GLOBAL_EXTERNAL_WEB_TOOL_POLICY_V0_1",
+  "contentHash": {
+    "algorithm": "sha256",
+    "scope": "normalized core symbol/date/negotiated/3532 competitive-3d observation fields",
+    "value": "8a7229f4e4e55bea75ab9c9b79bdcc54f9cbd2f5bc40a85a247c97a23bd1ea8e"
+  },
+  "quotePersistenceAndRuleVintage": {
+    "quoteClockGuard": "TWSE borrowing quotes in fixed/competitive-bid transactions are same-day; lending quotes may persist until cancellation.",
+    "feeSettlementVintage": "2026-06-01 TWSE securities-lending fee settlement/payment rule vintage preserved.",
+    "recallTermsPreserved": [
+      "10-day",
+      "3-day",
+      "1-day"
+    ]
+  },
+  "observations": [
+    {
+      "symbol": "1101",
+      "name": "台泥",
+      "sourceDate": "2026-10-07",
+      "fixedRate": {
+        "notice10": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice3": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice1": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        }
+      },
+      "competitiveBid": {
+        "notice10": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null,
+          "bestFive": null
+        },
+        "notice3": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null,
+          "bestFive": null
+        },
+        "notice1": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null,
+          "bestFive": null
+        }
+      },
+      "negotiated": {
+        "matchTime": "12:48:01.97",
+        "totalQty": 11234
+      }
+    },
+    {
+      "symbol": "2451",
+      "name": "創見",
+      "sourceDate": "2026-10-07",
+      "fixedRate": {
+        "notice10": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice3": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice1": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        }
+      },
+      "competitiveBid": {
+        "notice10": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null,
+          "bestFive": null
+        },
+        "notice3": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null,
+          "bestFive": null
+        },
+        "notice1": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null,
+          "bestFive": null
+        }
+      },
+      "negotiated": {
+        "matchTime": "14:47:28.05",
+        "totalQty": 211
+      }
+    },
+    {
+      "symbol": "3532",
+      "name": "台勝科",
+      "sourceDate": "2026-10-07",
+      "fixedRate": {
+        "notice10": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice3": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice1": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        }
+      },
+      "competitiveBid": {
+        "notice10": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null,
+          "bestFive": null
+        },
+        "notice3": {
+          "matchTime": "14:57:19.04",
+          "totalQty": 13,
+          "lendQty": 0,
+          "borrowQty": 0,
+          "latestQty": 13,
+          "latestFeePct": 4,
+          "bestFive": {
+            "displayedZeroDepth": true,
+            "note": "Rendered five levels showed zero/empty depth after the matched trade; no positive quote depth remained at capture."
+          }
+        },
+        "notice1": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null,
+          "bestFive": null
+        }
+      },
+      "negotiated": {
+        "matchTime": "11:57:52.97",
+        "totalQty": 12
+      }
+    },
+    {
+      "symbol": "6187",
+      "name": "萬潤",
+      "sourceDate": "2026-10-07",
+      "fixedRate": {
+        "notice10": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice3": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice1": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        }
+      },
+      "competitiveBid": {
+        "notice10": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null,
+          "bestFive": null
+        },
+        "notice3": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null,
+          "bestFive": null
+        },
+        "notice1": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null,
+          "bestFive": null
+        }
+      },
+      "negotiated": {
+        "matchTime": null,
+        "totalQty": 0
+      }
+    },
+    {
+      "symbol": "9941",
+      "name": "裕融",
+      "sourceDate": "2026-10-07",
+      "fixedRate": {
+        "notice10": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice3": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        },
+        "notice1": {
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "feePct": null
+        }
+      },
+      "competitiveBid": {
+        "notice10": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null,
+          "bestFive": null
+        },
+        "notice3": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null,
+          "bestFive": null
+        },
+        "notice1": {
+          "matchTime": null,
+          "totalQty": 0,
+          "lendQty": null,
+          "borrowQty": null,
+          "latestQty": null,
+          "latestFeePct": null,
+          "bestFive": null
+        }
+      },
+      "negotiated": {
+        "matchTime": null,
+        "totalQty": 0
+      }
+    }
+  ],
+  "verifiedLiveRateExample": {
+    "symbol": "3532",
+    "transactionType": "COMPETITIVE_BID",
+    "recallNotificationTerm": "3-day",
+    "matchTime": "14:57:19.04",
+    "executedQty": 13,
+    "latestFeePct": 4,
+    "displayedLendQtyAtCapture": 0,
+    "displayedBorrowQtyAtCapture": 0,
+    "interpretation": "Verified dated live cost/execution observation. It does not identify bearish motive, market-wide scarcity, or true utilization."
+  },
+  "firstKnownAtSemantics": {
+    "exactProviderPublicationOrUpdateMinute": "UNKNOWN",
+    "researchObservationUpperBound": "2026-10-07T15:21:05+08:00",
+    "note": "Receipt is point-in-time eligible because all five were re-read inside the preregistered slot and the page visibly certified 2026-10-07. Earlier pre-slot reads are retained only as diagnostics, not as the qualifying receipt."
+  },
+  "capabilityBoundary": {
+    "admitted": "TWSE displayed borrow cost / displayed availability-demand state / transaction-family and recall-term-specific execution state",
+    "unknown": [
+      "verified total lendable inventory",
+      "true utilization",
+      "market-wide shorting constraint",
+      "TPEx parity",
+      "beneficial-owner motive",
+      "directional bearish conviction"
+    ],
+    "forbiddenConversions": [
+      "displayed lend quantity -> total lendable inventory",
+      "borrow fee -> bearish conviction",
+      "negotiated lending quantity -> short-sale volume",
+      "zero displayed depth -> zero total supply",
+      "five-symbol pilot -> market-representative cross-section"
+    ]
+  },
+  "l3Decision": {
+    "decision": "PROMOTE_D06_18_L2_40_TO_L3_60_BOUNDED_TWSE_PIT_FEASIBILITY",
+    "rationale": "The previously missing first genuine post-contract live TWSE receipt now exists inside the preregistered slot, with visible source date, security identity, transaction-family/recall-term separation, and a non-null live competitive-bid fee example. L3 is bounded to TWSE displayed borrow-cost/availability economics; true utilization and cross-market generalization remain UNKNOWN.",
+    "doesNotMean": [
+      "predictive alpha validated",
+      "true utilization observable",
+      "TPEx parity complete",
+      "Formal Core change"
+    ]
+  },
+  "status": "LIVE_SLOT_PASS / DATE_CERTIFIED / 5_OF_5_ROUTE_PASS / FIRST_NON_NULL_COMPETITIVE_FEE_CAPTURED / TRUE_UTILIZATION_UNKNOWN / D06_18_L3_BOUNDED_TWSE_PIT / OUTCOMES_CLOSED / FORMAL_LOCKED",
+  "exactNext": "Accumulate independent in-slot trading dates and source-state diversity; capture nonzero displayed depth when naturally observed without cherry-picking. Before L4, preregister OOS/Shadow residual incrementality with D06-09 actual-SBL-short, liquidity, price-volume, passive/index flow and regime controls. Keep true utilization UNKNOWN until a verified total-lendable-inventory denominator exists."
+}
