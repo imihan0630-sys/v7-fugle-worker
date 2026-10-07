@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-08T00:04:30+08:00",
+  "updatedAt": "2026-10-08T00:07:00+08:00",
   "status": "ACTIVE",
   "governance": "system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md",
   "directives": [
@@ -1420,10 +1420,11 @@
         "D16 HF-T01..HF-T12 independently confirm: missing audit object/dimension/digest => EVIDENCE_INCOMPLETE; any PRESENT dimension => HIDDEN_SYSTEM1_DEPENDENCY; audit/head/manifest drift => re-audit; shared raw market data alone is allowed; same-stock overlap is not failure by itself.",
         "D16 physical-pass contract additionally requires RUNTIME_NO_FORBIDDEN_ACCESS_EVIDENCE; static audit alone is insufficient.",
         "00 minimal implementation contract: system2/evidence/S2_CORR_20261007_005_MINIMAL_HARDENING_HANDOFF_V0_1.json.",
-        "Latest 00 drift audit found 19/21 files from the prior static audit unchanged; daily_shadow_orchestrator_v0_1.mjs and pit_replay_v0_1.mjs changed, and the NC-T01 runner/receipt/prefetch/continuity-binding files must be added to the exact-head closure."
+        "Latest 00 drift audit found 19/21 files from the prior static audit unchanged; daily_shadow_orchestrator_v0_1.mjs and pit_replay_v0_1.mjs changed, and the NC-T01 runner/receipt/prefetch/continuity-binding files must be added to the exact-head closure.",
+        "00 combined minimal build handoff: system2/evidence/S2_CORR_005_006_COMBINED_BUILD_HANDOFF_20261008_V0_1.json @ commit 97cac22a24f28593679092b03819a47fa3d89752."
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-07T23:27:00+08:00"
+      "updatedAt": "2026-10-08T00:07:00+08:00"
     },
     {
       "directiveId": "S2-CORR-20261007-006",
@@ -1490,10 +1491,11 @@
         "00 independent codepath readback on latest main confirms executableWitnesses currently checks ACCOUNTED + replay READY + continuity READY + zero continuity blockers but does not require requiredEvidenceComplete or strategyValidity non-INCOMPLETE.",
         "00 independently confirmed canonical strategy_evaluator semantics: missing required evidence => INCOMPLETE, while hard-invalidation precedence can produce INVALIDATED before missing-required-evidence disposition; strategyValidity label alone is therefore insufficient.",
         "00 superseding physical acceptance matrix: system2/evidence/S2_STAGE1_NCT01_PHYSICAL_ACCEPTANCE_MATRIX_20261008_V0_2.json @ commit 9b38a4583c04dea42fb4ee9759f019a9d2fc7070.",
-        "00 accepts D16 W0/W1/W2 semantics for NC-T01: physical independence requires at least one W1 STRATEGY_EXECUTABLE_WITNESS; W0 continuity-ready alone cannot promote requiredInputsState/executionState/legitimate-zero-pick."
+        "00 accepts D16 W0/W1/W2 semantics for NC-T01: physical independence requires at least one W1 STRATEGY_EXECUTABLE_WITNESS; W0 continuity-ready alone cannot promote requiredInputsState/executionState/legitimate-zero-pick.",
+        "00 combined minimal build handoff: system2/evidence/S2_CORR_005_006_COMBINED_BUILD_HANDOFF_20261008_V0_1.json @ commit 97cac22a24f28593679092b03819a47fa3d89752."
       ],
       "finalDisposition": "PENDING",
-      "updatedAt": "2026-10-08T00:04:30+08:00"
+      "updatedAt": "2026-10-08T00:07:00+08:00"
     }
   ],
   "executionLaneGovernance": "system2/SYSTEM2_EXECUTION_LANE_GOVERNANCE_V0_1.md"
