@@ -3420,3 +3420,100 @@ Economic outcomes CLOSED.
 3. If T48 implementation or genuine finalization receipt lands, bind its generation-set digest into SelectionFamilyReceipt.
 4. Continue first genuine forecast/calibration/decision series when C1 prospective outcomes become available.
 5. Preserve all pre-repair over-gated observations as immutable failure evidence.
+
+
+## 2026-10-07 TPEx aggregate breadth source validation + prospective source-contract equivalence
+
+New durable artifacts:
+- `research/D18_04_TPEX_AGGREGATE_BREADTH_SOURCE_VALIDATION_20261007_V0_1.md`;
+- `research/D16_PROSPECTIVE_SOURCE_CONTRACT_EQUIVALENCE_20261007_V0_1.md`.
+
+### D18-04 TPEx aggregate breadth breakthrough
+
+Official machine source identified and same-date observed:
+`/openapi/v1/tpex_mainborad_highlight`.
+
+2026-10-07 observed payload:
+- Date 1151007;
+- ListedCompanyNumbers 893;
+- PriceRiseCompanyNumbers 419;
+- PriceDeclineCompanyNumbers 357;
+- PriceFlatCompanyNumbers 97;
+- UnmatchedCompanyNumbersSuspensionStocksIncluded 20;
+- LimitUpCompanyNumbers 23;
+- LimitDownCompanyNumbers 3.
+
+Denominator identity:
+419 + 357 + 97 + 20 = 893 exactly.
+
+Subcount guards:
+23 <= 419 and 3 <= 357.
+
+Therefore the prior blocker
+`TPEX_AGGREGATE_MACHINE_SOURCE_UNKNOWN`
+is closed.
+
+New narrower D18-04 blockers:
+1. TPEx executable parser/replay + target-date/raw-hash/provenance/denominator guards;
+2. TWSE+TPEx common-support prospective receipts;
+3. shared U2B continuity-certified full-market return builder/replay;
+4. prospective context occupancy before policy outcome opening.
+
+D18-04 remains L2/40 because U2B and executable TPEx parser/replay are not yet complete.
+
+### D16-11 source-contract equivalence firewall
+
+2026-10-07 official-source diagnosis proves provider identity is not enough:
+- TWSE STOCK_DAY_ALL remained prior-date at 18:43 Taipei;
+- official requested-date MI_INDEX exposed current-day 2026-10-07 daily-close data;
+- TPEx current-day daily-close data was observable on official source families.
+
+Frozen distinction:
+PROVIDER
+!= DATASET_SEMANTIC_CONTRACT
+!= ENDPOINT_TRANSPORT.
+
+Any future prospective source substitution/fallback must be versioned and outcome-blind.
+
+Required before source promotion:
+- target/session identity;
+- field/unit/price-space equivalence;
+- ordinary-share population reconciliation;
+- same-date common-support comparison;
+- endpoint-specific prospective READY/stale/transport/body states;
+- revision semantics;
+- raw provenance/parser version;
+- frozen ex-ante fallback order;
+- parallel future-date observation;
+- no historical first-known backdating.
+
+A later-discovered READY endpoint cannot rewrite an earlier stale/blocked receipt.
+
+D16-11 remains L3/60 because no multi-date source-routing implementation/equivalence receipt exists yet.
+
+### External trigger status
+
+`S2-CORR-20261007-002`:
+OPEN / BUILD_LANE / ownerDecisionRequired=false.
+ImplementationEvidence remains empty.
+
+Therefore Room11 does not self-implement the strategy-clock repair.
+Existing statistical verdict remains:
+strategy-irrelevant B2/A5 missingness must not censor SHORT_MOMENTUM.
+
+### Current maturity
+
+- D16 = 60%;
+- D18 = 52%;
+- no Room11 maturity increase this cycle.
+
+No Formal change.
+Economic outcomes CLOSED.
+
+### Exact next continuation
+
+1. If S2-CORR-20261007-002 implementation lands, validate mixed-dependency strategy-specific physical receipts immediately.
+2. Route/consume a TPEx aggregate-breadth parser/replay when the owning implementation lane provides it; require exact denominator/subcount guards.
+3. Continue shared TECHNICAL_CONTINUITY/U2B dependency; no second corporate-action engine in D18.
+4. If A1 prospective source remediation lands, require versioned dual-source equivalence and first-known clocks before promotion.
+5. Switch immediately if T48, NC-T01, SDA-022 System2 fingerprint or genuine Formal<->C1 evidence lands.
