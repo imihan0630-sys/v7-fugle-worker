@@ -1252,3 +1252,107 @@ No maturity change.
 D16 = 60%.
 D18 = 52%.
 Formal Core LOCKED.
+
+
+## 2026-10-07 D18 System2 Stage-1 policy freeze + evidence-lane split
+
+New canonical validation:
+- `research/D18_SYSTEM2_STAGE1_POLICY_FREEZE_VALIDATION_20261007_V0_1.md`;
+- `research/D18_SYSTEM2_STAGE1_POLICY_FREEZE_VALIDATION_20261007_V0_1.json`;
+- `research/D18_POLICY_ONLY_VS_REGIME_EVIDENCE_BOUNDARY_20261007_V0_1.md`;
+- `research/D18_POLICY_ONLY_VS_REGIME_EVIDENCE_BOUNDARY_20261007_V0_1.json`.
+
+### Stage-1 policy frame is now frozen
+
+PR #760 merge:
+`41e1d420083b1ea69f98a0ffcf23adab41fafaf1`.
+
+Freeze time:
+approximately `2026-10-07T09:00:23+08:00`.
+
+Exact-head checks all SUCCESS:
+- 37554899502 verify;
+- 37554899513 preflight;
+- 37554899485 diagnostic;
+- 37554899509 regression;
+- 37554899506 verify.
+
+Frozen policies:
+- SHORT_MOMENTUM / `S2-ASSESSOR-SM-LAUNCH-001 / 0.1-LAUNCH`;
+- SWING_GROWTH / `S2-ASSESSOR-SG-LAUNCH-001 / 0.1-LAUNCH`.
+
+Properties accepted:
+- no weighted universal score;
+- no outcome-tuned numeric threshold;
+- UNKNOWN required evidence blocks;
+- System1 runtime/Top6/rank are explicit non-dependencies;
+- SWING_GROWTH A1 timing cannot manufacture missing industry/fundamental thesis.
+
+### Important runtime boundary
+
+Current daily diagnostic still states:
+`ASSESSOR_POLICIES_READY_DIAGNOSTIC_EVALUATION_NOT_EXECUTED`.
+
+Also:
+- ranking NOT_EXECUTED;
+- capacity NOT_PRODUCED;
+- prediction snapshot NOT_PRODUCED;
+- zeroPickDay=null;
+- finalSelection/livePush/capital/order false;
+- system1RuntimeUsed=false;
+- regime = UNKNOWN / VALIDATED_REGIME_SOURCES_NOT_WIRED.
+
+Therefore:
+`NO_CANONICAL_PROSPECTIVE_POLICY_FRAME`
+is prospectively superseded after policy-freeze time by
+`CANONICAL_STAGE1_POLICY_FRAME_FROZEN`,
+but no physical strategy evaluation or D18 strategy×Regime evidence exists yet.
+
+No date before the freeze may be backfilled into this policy identity.
+
+### CORR-004 compatibility
+
+Latest System2 correction queue:
+`S2-CORR-20261004-004 = VERIFIED_CLOSED`.
+
+This confirms:
+- symbol-local UNKNOWN/INCOMPLETE does not globally block clean symbols;
+- partial-denominator capacity may proceed truthfully;
+- incomplete symbols stay blocked/non-admitted;
+- partial coverage cannot become clean zero-pick;
+- denominator provenance remains explicit.
+
+PR #760 did not replace or weaken these semantics.
+
+### Evidence-lane split
+
+Lane A:
+`POLICY_ONLY_PROSPECTIVE_OBSERVATION`.
+
+A physical policy evaluation may support:
+- System2 launch engineering;
+- SDA-022 policy lineage/overlap work;
+- coverage diagnostics.
+
+It does not count as D18 if Regime is UNKNOWN.
+
+Lane B:
+`D18_STRATEGY_REGIME_PROSPECTIVE_OBSERVATION`.
+
+Requires decision-time KNOWN Regime or strict replay eligibility with frozen rule + immutable decision-time inputs + availability clocks.
+
+Casual retroactive Regime relabeling is prohibited.
+
+This split intentionally avoids making D18 Regime wiring an unnecessary blocker for System2 Stage-1 launch, while preserving D18 claim integrity.
+
+### SDA-022 status
+
+PR #760 is policy-definition material only.
+It does not itself satisfy:
+- S22-T06~T10 System2 per-strategy fingerprint;
+- S22-T11~T16 NC-T01.
+
+No maturity change:
+- D16 = 60%;
+- D18 = 52%;
+- Formal Core LOCKED.
