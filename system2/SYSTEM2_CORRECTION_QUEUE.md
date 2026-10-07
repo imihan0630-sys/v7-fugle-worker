@@ -1,6 +1,6 @@
 # System 2 Correction Queue
 
-Updated: 2026-10-07 23:05:43 Asia/Taipei
+Updated: 2026-10-08 05:36 Asia/Taipei
 Status: ACTIVE
 Governance: `system2/SYSTEM2_CORRECTION_GOVERNANCE_V0_1.md`
 Machine-readable companion: `system2/SYSTEM2_CORRECTION_QUEUE.json`
@@ -1031,6 +1031,14 @@ Correction consequence:
 - updatedAt: 2026-10-07T19:43:05+08:00
 
 
+#### 2026-10-08 05:36 independent reset-window / writer-trigger audit
+
+- Durable evidence: `system2/evidence/S2_CORR_20261007_003_WRITER_TRIGGER_WINDOW_AUDIT_20261008_V0_1.json` @ `c69ad63559a5655b473b4060f04016f08e098e1d`.
+- Twelve workflows share `system2-isolated-d1-writer`.
+- Scheduled high-write writers do not begin immediately after the 08:00 Asia/Taipei Free-plan reset: Recent A1 warmup is 16:30 and Daily Shadow is 18:35 on weekdays.
+- This does **not** create a quota-safe morning window by itself: several credentialed writer workflows can still physically mutate D1 on ordinary main push.
+- Therefore CORR-003 must budget/reserve across trigger classes; time-of-day and concurrency ordering alone are insufficient.
+
 ### S2-CORR-20261007-004 — Long-listed Daily Shadow history readiness can silently substitute an older row for a missing expected symbol-session
 
 - severity: HIGH
@@ -1104,6 +1112,13 @@ Correction consequence:
 - finalDisposition: PENDING
 
 
+#### 2026-10-08 05:36 latest-main reconfirmation
+
+- Durable evidence: `system2/evidence/S2_CORR_005_006_LATEST_MAIN_RECONFIRMATION_20261008_V0_1.json` @ `8770e51a023439ecadd7cf289f82fd056dff1f27`.
+- `nct01_physical_receipt_v0_1.mjs`, `nct01_artifact_runner_v0_1.mjs` and their tests have not changed since merged PR #830 (`d2050fbc3379dfe618447f88f8104b31e494a633`).
+- Missing hidden-fallback evidence still defaults to false; no required `HIDDEN_FALLBACK_AUDIT_SHA256` typed ref exists in the current physical PASS ref set.
+- No BUILD implementation PR for CORR-005 was found in the recent PR range audited.
+
 ### S2-CORR-20261007-006 — NC-T01 continuity-ready witness can promote physical execution while strategy required evidence is incomplete
 
 - createdAt: 2026-10-07T23:59:18+08:00
@@ -1129,3 +1144,10 @@ Correction consequence:
 - evidence:
   `system2/evidence/S2_STAGE1_NCT01_STRATEGY_READINESS_PROMOTION_AUDIT_20261007_V0_1.json`.
 - finalDisposition: PENDING
+
+#### 2026-10-08 05:36 latest-main reconfirmation
+
+- Durable evidence: `system2/evidence/S2_CORR_005_006_LATEST_MAIN_RECONFIRMATION_20261008_V0_1.json` @ `8770e51a023439ecadd7cf289f82fd056dff1f27`.
+- Current `executableWitnesses` still promotes from ACCOUNTED + replay READY + continuity READY + no continuity blockers without requiring `requiredEvidenceComplete=true` or excluding strategy INCOMPLETE.
+- Current tests still lack the continuity-ready/strategy-INCOMPLETE and INVALIDATED-plus-missing-required-evidence fail-closed cases.
+- Minimal CORR-005/006 hardening does not overlap the 11 hard-bound policy fingerprint sources; S22-T06~T10 canonical fingerprints need not be regenerated unless BUILD changes one of those 11 artifacts.
