@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "D03_LAYER_B_GAP_EVENT_SOURCE_EXECUTION_RECEIPT_V0_1",
+  "updatedAt": "2026-10-07T16:48:00+08:00",
+  "workflow": {
+    "name": "D03 Layer-B Gap Event-Source Readonly",
+    "runId": 37595689041,
+    "headSha": "8fc77ab75bb05e20d4a771425ca2b86d416f177d",
+    "conclusion": "success"
+  },
+  "test": "research/test_d03_layer_b_symbol_session_gap_event_source_blind_spot_v0_1.mjs",
+  "spec": "research/d03_layer_b_symbol_session_gap_event_source_blind_spot_20261007_v0_1.json",
+  "result": {
+    "state": "PASS",
+    "twse2024DirectCandidateReclassBars": 373,
+    "twse2024DirectCandidateReclassPct": 78.03347280334728,
+    "tpex2023DirectCandidateReclassBars": 296,
+    "tpex2023DirectCandidateReclassPct": 74.9367088607595,
+    "tpex2021DirectCandidateReclassBars": 144,
+    "tpex2021DirectCandidateReclassPct": 34.95145631067961,
+    "maturityPromotion": false
+  },
+  "boundary": "This is a causal-classification acceptance oracle, not a canonical rewrite of historical missingReasonCounts. Physical Layer-B advancement requires the official lifecycle-event union to be materialized and the coverage verifier rerun."
+}
