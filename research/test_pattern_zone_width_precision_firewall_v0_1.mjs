@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import {validateZone,classifyCrossing,normalizeWidth,buildZoneFamilyLineage} from "./pattern_zone_width_precision_firewall_v0_1.mjs";
+let p=0;const t=(n,f)=>{f();p++;console.log("PASS",n);};
+t("D7301 valid preregistered zone",()=>assert.equal(validateZone({family:"TICK_FIXED",lowerBound:99,upperBound:101,definedAt:"2026-10-07T08:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",outcomeBasedResize:false}).status,"ZONE_VALID"));
+t("D7302 outcome resizing blocked",()=>assert.equal(validateZone({family:"TICK_FIXED",lowerBound:99,upperBound:101,definedAt:"2026-10-07T08:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",outcomeBasedResize:true}).status,"WIDTH_SELECTION_LOOKAHEAD"));
+t("D7303 future zone blocked",()=>assert.equal(validateZone({family:"SPREAD_SCALED",lowerBound:99,upperBound:101,definedAt:"2026-10-07T10:00:00+08:00",predictorFreezeAt:"2026-10-07T09:00:00+08:00",outcomeBasedResize:false}).status,"ZONE_NOT_AVAILABLE_AT_FREEZE"));
+t("D7304 inside zone",()=>assert.equal(classifyCrossing({low:99.5,high:100.5,close:100,lowerBound:99,upperBound:101}).status,"INSIDE_ZONE"));
+t("D7305 full cross",()=>assert.equal(classifyCrossing({low:98,high:102,close:100,lowerBound:99,upperBound:101}).status,"FULL_ZONE_CROSS"));
+t("D7306 close beyond zone",()=>assert.equal(classifyCrossing({low:100,high:103,close:102,lowerBound:99,upperBound:101}).status,"CLOSE_BEYOND_ZONE"));
+t("D7307 width normalized to ticks",()=>assert.equal(normalizeWidth({lowerBound:99,upperBound:101,tickSize:.5,midPrice:100,volatilityUnit:2}).widthTicks,4));
+t("D7308 width normalized to bps",()=>assert.equal(normalizeWidth({lowerBound:99,upperBound:101,tickSize:.5,midPrice:100,volatilityUnit:2}).widthBps,200));
+t("D7309 width normalized to vol units",()=>assert.equal(normalizeWidth({lowerBound:99,upperBound:101,tickSize:.5,midPrice:100,volatilityUnit:2}).widthVolatilityUnits,1));
+t("D7310 multiple width families remain one root",()=>assert.equal(buildZoneFamilyLineage({families:["TICK_FIXED","VOLATILITY_SCALED"]}).effectiveIndependentEvidenceCount,1));
+console.log(`SUMMARY ${p}/10 PASS`);
