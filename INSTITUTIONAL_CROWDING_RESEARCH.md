@@ -2796,3 +2796,28 @@ Primary L4 clean support is now fail-closed: same security identity, full 17-gra
 PIT clocks remain separate: announcement first-known time is not the same as effective/share-exchange time. A later-discovered event may diagnose data quality but may not silently rewrite historical decision eligibility.
 
 Maturity impact: NONE. D06-05 remains L3/60. The next prerequisite is a complete replayable TWSE+TPEx pair-level corporate-action mask plus security-identity continuity, followed by clean-support freeze before any outcome columns open.
+
+
+---
+
+## IC-101 — D06-05 first bounded TDCC pair corporate-action mask materialized
+
+Research cycle: 2026-10-07 Asia/Taipei  
+Status: BOUNDED_PAIR_MASK_MATERIALIZED / SHARED_EVENT_PRIMITIVES_REUSED / FINAL_CLEAN_SUPPORT_NOT_FROZEN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Durable evidence:
+- `research/d06_05_pair_corporate_action_mask_20260924_20261002_v0_1.json`.
+
+The first executable ownership-cleaning mask is now materialized for the TDCC 2026-09-24 -> 2026-10-02 pair. It reuses shared Corporate Actions/System2 event primitives rather than minting duplicate event evidence.
+
+Known hard masks in the pair are 1235, 1441, 2323, 2601, 4806 and 6550. Two of them (2601 and 4806) are already removed by exact denominator-change filtering. Four others (1235, 1441, 2323 and 6550) have exact stable grade-17 denominators but remain event-contaminated, proving again that denominator equality alone is insufficient.
+
+Starting from 2,962 ordinary common-support securities, denominator-change filtering leaves 2,783. Removing the four known stable-denominator hard-event names leaves an upper bound of 2,779. This is explicitly NOT final clean N.
+
+Pure cash-dividend observations such as 2109, 7631 and 9927 are not automatically share-denominator contamination. 2323 is masked because of its separate capital-reduction state, not because of its cash dividend.
+
+Shared-source audit found an important persistence gap: System2 has physically validated the six historical corporate-action source lanes and event-version/revision machinery, but the complete TWSE/TPEx ex-right/dividend event rows are not persisted in GitHub as an exact-pair event list. Therefore Room05 may not infer a full pair event set from lane-level event totals alone.
+
+Current pair-mask coverage remains bounded rather than complete. The main unresolved materialization is the exact TPEx ex-right/dividend event set and merger/share-exchange/security-identity transitions for this pair. Historical firstKnownAt also remains UNKNOWN where it was not prospectively observed; retrospective event identity is usable for contamination diagnosis, not to backdate signal knowledge.
+
+Maturity impact: NONE. D06-05 remains L3/60. The next meaningful step is exact-pair event-row materialization + final clean-support hash; only after that may the vintage-clustered OOS/Shadow protocol open outcomes.
