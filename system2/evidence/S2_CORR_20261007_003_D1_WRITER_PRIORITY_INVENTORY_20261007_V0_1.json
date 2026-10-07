@@ -1,0 +1,318 @@
+{
+  "schemaVersion": "S2_CORR_20261007_003_D1_WRITER_PRIORITY_INVENTORY_V0_1",
+  "recordedAt": "2026-10-07T22:41:00+08:00",
+  "auditor": "SYSTEM2_INDEPENDENT_CORRECTION_AUDITOR",
+  "directiveId": "S2-CORR-20261007-003",
+  "observedMain": "d2050fbc3379dfe618447f88f8104b31e494a633",
+  "officialBudget": {
+    "rowsWrittenPerUtcDay": 100000,
+    "rowsReadPerUtcDay": 5000000,
+    "resetAtUtc": "00:00",
+    "scope": "Cloudflare Workers Free account-wide",
+    "paidUpgradeAuthorized": false
+  },
+  "sameDayObservedRuns": {
+    "dateUtc": "2026-10-07",
+    "dailyShadow": [
+      {
+        "runId": 37609474459,
+        "event": "schedule",
+        "conclusion": "SUCCESS",
+        "rowsWritten": 13130,
+        "rowsRead": 583256,
+        "interpretation": "first same-day persisted diagnostic/prospective-history run"
+      },
+      {
+        "runId": 37639310893,
+        "event": "push",
+        "conclusion": "SUCCESS",
+        "rowsWritten": 1296,
+        "rowsRead": 589944,
+        "interpretation": "later same-day push still physically mutated D1; lower write cost does not make push read-only"
+      }
+    ],
+    "dailyShadowKnownRowsWrittenSubtotal": 14426,
+    "historicalRealSourceSmokePushRuns": [
+      {
+        "runId": 37586552856,
+        "conclusion": "SUCCESS"
+      },
+      {
+        "runId": 37587454388,
+        "conclusion": "FAILURE"
+      },
+      {
+        "runId": 37589506485,
+        "conclusion": "CANCELLED"
+      },
+      {
+        "runId": 37590839032,
+        "conclusion": "CANCELLED"
+      }
+    ],
+    "resonanceDeployPushRuns": [
+      {
+        "runId": 37587454390,
+        "conclusion": "SUCCESS"
+      },
+      {
+        "runId": 37589506505,
+        "conclusion": "SUCCESS"
+      },
+      {
+        "runId": 37589515529,
+        "conclusion": "SUCCESS"
+      }
+    ],
+    "annualBackfillManualRuns": [
+      {
+        "runId": 37579384088,
+        "conclusion": "SUCCESS"
+      },
+      {
+        "runId": 37587943578,
+        "conclusion": "FAILURE"
+      },
+      {
+        "runId": 37593983170,
+        "conclusion": "CANCELLED"
+      },
+      {
+        "runId": 37611914140,
+        "conclusion": "FAILURE_D1_QUOTA_BEFORE_BACKFILL"
+      }
+    ],
+    "recentA1WarmupSchedule": [
+      {
+        "runId": 37595978423,
+        "conclusion": "FAILURE_BEFORE_PERSISTENCE"
+      }
+    ],
+    "interpretation": "The account-wide quota is shared by many independently triggered writer classes. Serialization prevents overlap but not same-day budget exhaustion."
+  },
+  "measuredCalibration": {
+    "recentA1WarmupPriorPhysicalRun": {
+      "runId": 37550201160,
+      "logicalRowsInserted": 9640,
+      "rowsWritten": 57880,
+      "writeAmplificationApprox": 6,
+      "fractionOfDailyWriteBudget": 0.5788,
+      "event": "push"
+    },
+    "dailyShadowScheduledRun": {
+      "runId": 37609474459,
+      "rowsWritten": 13130,
+      "fractionOfDailyWriteBudget": 0.1313
+    },
+    "dailyShadowLaterPush": {
+      "runId": 37639310893,
+      "rowsWritten": 1296,
+      "fractionOfDailyWriteBudget": 0.01296
+    },
+    "firstPersistedShortMomentumPlanningEstimate": {
+      "estimatedRowsWrittenFloor": 21729,
+      "provenance": "S2_STAGE1_NCT01_G4_D1_FOOTPRINT_AND_READ_PATH_AUDIT_20261007_V0_1",
+      "physicalMetaOverridesEstimate": true
+    }
+  },
+  "writerClasses": [
+    {
+      "workflow": ".github/workflows/system2-daily-shadow-diagnostic.yml",
+      "class": "P0_PROTECTED_OPERATIONAL_EVIDENCE",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch",
+        "push"
+      ],
+      "currentPhysicalMutationOnPush": true,
+      "measuredWriteCost": "13,130 first daily persisted run; 1,296 later same-day push observed; cost is state-dependent",
+      "auditRecommendation": [
+        "Reserve budget for the one normal scheduled daily run.",
+        "Manual/push physical acceptance may run only after the shared quota gate grants conservative reservation.",
+        "Do not assume a later push is cheap merely because one observed later run wrote 1,296 rows.",
+        "If no reservation is available, push path should stop before physical mutation and emit QUOTA_BUDGET_DEFERRED or use read-only validation."
+      ]
+    },
+    {
+      "workflow": "future physical SHORT_MOMENTUM -> RANK-01 -> s2_capacity_runs",
+      "class": "P0_PROTECTED_LAUNCH_EVIDENCE",
+      "triggers": [
+        "explicit controlled acceptance only"
+      ],
+      "currentPhysicalWorkflowExists": false,
+      "measuredWriteCost": "planning floor ~21,729 rowsWritten; physical D1 meta remains authoritative",
+      "auditRecommendation": [
+        "Reserve explicit headroom before first persisted genuine strategy/capacity run.",
+        "Artifact-only NC-T01 S22-T11~T16 does not require this D1 write reserve; persisted ranking/capacity does."
+      ]
+    },
+    {
+      "workflow": ".github/workflows/system2-historical-pack-2017-backfill.yml",
+      "class": "P1_CONTROLLED_BULK_DATA",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "currentPhysicalMutationOnPush": false,
+      "observedSamples": "historical annual rowsWritten typically ~5.8k-7.4k in accepted examples",
+      "auditRecommendation": [
+        "Manual only is correct.",
+        "Use shared quota reservation before annual persistence.",
+        "Defer explicitly when protected P0 reserve would be breached."
+      ]
+    },
+    {
+      "workflow": ".github/workflows/system2-historical-current-year-segment-backfill.yml",
+      "class": "P1_CONTROLLED_BULK_DATA",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "currentPhysicalMutationOnPush": false,
+      "auditRecommendation": [
+        "Manual only is correct.",
+        "Budget migration/schema and segment persistence conservatively.",
+        "Do not start when account-wide headroom cannot be demonstrated."
+      ]
+    },
+    {
+      "workflow": ".github/workflows/system2-recent-a1-hot-history-warmup.yml",
+      "class": "P2_DISCRETIONARY_WARMUP_HIGH_WRITE",
+      "triggers": [
+        "workflow_dispatch",
+        "schedule",
+        "push"
+      ],
+      "currentPhysicalMutationOnPush": true,
+      "measuredWriteCost": "57,880 rowsWritten in one prior five-date run (~57.88% of daily Free write budget)",
+      "auditRecommendation": [
+        "Ordinary push must not physically mutate D1.",
+        "Schedule/manual physical warmup must pass shared quota reservation.",
+        "Max dates must shrink adaptively using measured rowsWritten-per-date and protected reserve.",
+        "Defer before writing if conservative reservation does not fit."
+      ]
+    },
+    {
+      "workflow": ".github/workflows/system2-hot-history-bootstrap.yml",
+      "class": "P2_DISCRETIONARY_WARMUP",
+      "triggers": [
+        "workflow_dispatch",
+        "push"
+      ],
+      "currentPhysicalMutationOnPush": true,
+      "boundedLogicalWriteCap": "insertedBarCount <= 9000; up to 3 sessions",
+      "auditRecommendation": [
+        "Ordinary push should run tests/planning only, not physical history mutation.",
+        "Manual physical bootstrap must pass the same account-level quota gate.",
+        "Logical row cap is not sufficient; reserve using measured/index-amplified rowsWritten."
+      ]
+    },
+    {
+      "workflow": ".github/workflows/system2-fugle-raw-hot-history-bootstrap.yml",
+      "class": "P2_DISCRETIONARY_WARMUP",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "currentPhysicalMutationOnPush": false,
+      "auditRecommendation": [
+        "Manual-only trigger is appropriate.",
+        "Still require shared quota reservation before physical D1 mutation."
+      ]
+    },
+    {
+      "workflow": ".github/workflows/system2-historical-pack-real-source-smoke.yml",
+      "class": "P3_MAINTENANCE_PHYSICAL_SMOKE",
+      "triggers": [
+        "workflow_dispatch",
+        "push"
+      ],
+      "currentPhysicalMutationOnPush": true,
+      "sameDayPushMultiplicityObserved": true,
+      "auditRecommendation": [
+        "Ordinary push should run unit/parser/packing/read-only checks only.",
+        "Physical bounded smoke should require manual explicit acceptance plus quota reservation.",
+        "Do not reprovision schema on every push when read-only schema-ready path exists."
+      ]
+    },
+    {
+      "workflow": ".github/workflows/system2-historical-d1-physical-smoke.yml",
+      "class": "P3_MAINTENANCE_PHYSICAL_SMOKE",
+      "triggers": [
+        "workflow_dispatch",
+        "push-on-workflow-file"
+      ],
+      "currentPhysicalMutationOnPush": true,
+      "auditRecommendation": [
+        "Push should be non-mutating CI only.",
+        "Physical smoke belongs behind explicit manual confirmation and quota reservation."
+      ]
+    },
+    {
+      "workflow": ".github/workflows/system2-historical-d1-bounded-smoke.yml",
+      "class": "P3_MAINTENANCE_PHYSICAL_SMOKE",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "currentPhysicalMutationOnPush": false,
+      "auditRecommendation": [
+        "Manual explicit confirmation is appropriate.",
+        "Replace redundant full provision with read-only schema readiness where safe.",
+        "Require quota reservation."
+      ]
+    },
+    {
+      "workflow": ".github/workflows/system2-isolated-d1-provision.yml",
+      "class": "P3_SCHEMA_MAINTENANCE",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "currentPhysicalMutationOnPush": false,
+      "auditRecommendation": [
+        "Keep explicit owner/operator confirmation.",
+        "Only genuine schema migration/provision should write.",
+        "Do not consume budget merely to prove an already-ready schema."
+      ]
+    },
+    {
+      "workflow": ".github/workflows/system2-resonance-deploy.yml",
+      "class": "P3_DEPLOY_WITH_CONDITIONAL_D1_WRITE",
+      "triggers": [
+        "workflow_dispatch",
+        "push"
+      ],
+      "currentSchemaBehavior": "ensure_system2_d1_ready.mjs has READ_ONLY_FAST_PATH when schema is already ready",
+      "auditRecommendation": [
+        "Retain read-only fast path for ordinary UI/runtime deploys.",
+        "If a genuine schema mutation is required, quota gate must reserve before D1 mutation.",
+        "Do not classify deploy itself as guaranteed zero-write."
+      ]
+    },
+    {
+      "workflow": ".github/workflows/system2-historical-tpex-2021-revision-recovery.yml",
+      "class": "P3_SPECIAL_RECOVERY",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "currentPhysicalMutationOnPush": false,
+      "auditRecommendation": [
+        "Manual-only is appropriate.",
+        "Any future rerun must reserve quota and avoid redundant provision when schema is already ready."
+      ]
+    }
+  ],
+  "proposedPrioritySemantics": {
+    "P0": "Protected current-day launch/operational evidence. Reserve first.",
+    "P1": "Necessary bulk data progress. May consume remaining budget after protected P0 reservation.",
+    "P2": "Discretionary warmup/bootstrap. Deferrable and quota-adaptive; ordinary push must not physically mutate high-write history.",
+    "P3": "Maintenance/smoke/schema/deploy. Prefer read-only fast paths; physical mutation requires explicit manual or genuine schema need plus quota reservation."
+  },
+  "remediationDesignConstraints": [
+    "One account-wide UTC-day budget contract must be shared by all physical System2 D1 writers.",
+    "A workflow's concurrency membership is necessary but not sufficient.",
+    "Reservation decisions must use known rowsWritten and conservative estimates; unknown account-level external usage fails conservatively.",
+    "Do not hard-code exact remaining quota when it cannot be proven.",
+    "Persist compact reservation/result receipts in existing low-write infrastructure-check storage if practical.",
+    "Result receipts should reconcile reserved estimate to actual D1 meta.rows_written/rows_read.",
+    "Quota deferral is an operational state, not source/data corruption.",
+    "No automatic Cloudflare paid-plan upgrade."
+  ],
+  "implementationPerformedByAudit": false
+}
